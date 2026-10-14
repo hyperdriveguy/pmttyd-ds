@@ -118,4 +118,16 @@ int main() {
  unbound.tick(17,{});Backend later;run(unbound,later,34);
  assert(!unbound.waitingForProvider && *troubleQuestFlag(unbound.switches,5374));
  assert((later.messages==std::vector<std::string>{"irai_00","irai_01","irai_03"}));
+ // Retained nonempty children cannot exhaust the finite entry pool through
+ // source-case root reentry. Admission stops before constructor assertions.
+ TroubleBoardEvent pool;Backend held;held.quests={1};held.blockNpc=true;
+ assert(pool.begin(0,23,initial(true)));
+ unsigned admitted=1;
+ for(unsigned visit=0;visit<10000 && admitted<300;++visit) {
+  pool.tick(visit*17,held.services());assert(!pool.failed);
+  if(!pool.rootAlive){if(!pool.appendRoot(TroubleBoardRoot::Board))break;++admitted;}
+ }
+ assert(admitted>100 && admitted<300 && pool.active() && !pool.rootAlive);
+ assert(!pool.appendRoot(TroubleBoardRoot::Board));
+
 }

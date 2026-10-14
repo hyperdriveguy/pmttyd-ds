@@ -59,8 +59,11 @@
 #include "field_actors.hpp"
 #include "field_object_collision.hpp"
 #include "field_save_objects.hpp"
+#include "trouble_board_presentation.hpp"
 namespace ttyd {
 struct NpcTalkPlayer;
+struct NativeTroubleBoard;
+bool loadNativeTroubleBoardAssets(const char* root);
 // Native fixed simulation frequency. Rendering and original callback/event
 // timebase owners are separate; do not convert action windows to draw frames.
 constexpr int TickRate = 60;
@@ -259,6 +262,13 @@ public:
     RoadMotion roadMotion;
     RoadCaseAdmission roadAdmission;
     FieldDoorState fieldDoor;
+    std::shared_ptr<NativeTroubleBoard> troubleBoard;
+    std::vector<uint32_t> troubleBoardSounds; // Original low13 sound rows, not generic UI cues.
+    std::optional<int32_t> fieldPartyCurrentIndex=0; // Explicit source BSS boot view of8041ead0; separate from Mario party selection.
+    // True consumes a recognized case9 contact, including unavailable-provider admission.
+    bool tryTroubleBoardContact(uint32_t keys);
+    bool troubleBoardLocked() const;
+    TroubleBoardPresentation* troubleBoardPresentation() const;
     bool troubleDoorNotice=false; // Original locked front-door KeyOff/print/KeyOn owner.
     bool roadCasesEnabled=true;
     RoadPolicy roadPolicy=RoadPolicy::Generic;
@@ -333,7 +343,7 @@ public:
     const FieldActorRecord* nearbyFieldActor() const;
     uint32_t fieldNpcContact() const{return fieldNpcHit;}
     const FieldNpcInstance* fieldNpcState(uint32_t key) const;
-    bool fieldNpcTalkActive() const {return goombaAcquisition.active() || goombaReward.active() || goombaHandIn.active() || fieldActorTalk.message.active();}
+    bool fieldNpcTalkActive() const {return troubleBoardLocked() || goombaAcquisition.active() || goombaReward.active() || goombaHandIn.active() || fieldActorTalk.message.active();}
     // Bind only after native providers are ready; registry/pouch owners remain Game-owned.
     void bindFieldItemGetPresentation(const FieldItemGetServices& services) {fieldItemGetPresentation=services;}
     MarioMotionSfx& fieldMarioSoundHandles() {return marioMotionSounds;}
@@ -365,6 +375,9 @@ public:
     const GoombaReward& fieldReward() const {return goombaReward;}
     const std::vector<FieldNpcSoundRequest>& fieldNpcSounds() const{return npcSoundRequests;}
 private:
+    void troubleBoardEventMain(const Input&);
+    void troubleBoardPresentationMain(const Input&);
+    int32_t troubleBoardCall(TroubleEventRequest&);
     NpcTalkPlayer fieldNpcTalkPlayer() const;
     FieldActorTalkInventory fieldNpcTalkInventory(const FieldActorRecord&) const;
     bool fieldNpcTalkBound(const FieldActorRecord&) const;

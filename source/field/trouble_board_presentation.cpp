@@ -11,11 +11,19 @@ bool TroubleBoardPresentation::bind(TroubleBoardEvent& event,const MessageAssets
  event_=&event;assets_=&assets;font_=&font;room_=room;services_=services;return true;
 }
 bool TroubleBoardPresentation::visit(uint64_t visit,uint64_t now,const TroubleBoardInput& input) {
- if(!event_ || (visited_ && visit<=lastVisit_))return false;
- visited_=true;lastVisit_=visit;now_=now;input_=input;
+ return eventMain(visit,now,input) && presentationMain(input);
+}
+bool TroubleBoardPresentation::eventMain(uint64_t visit,uint64_t now,const TroubleBoardInput& input) {
+ if(!event_ || presentationPending_ || (visited_ && visit<=lastVisit_))return false;
+ visited_=true;lastVisit_=visit;now_=now;input_=input;presentationPending_=true;
  event_->tick(now,{this,[](void* p,TroubleEventRequest& r){return static_cast<TroubleBoardPresentation*>(p)->call(r);}});
+ return true;
+}
+bool TroubleBoardPresentation::presentationMain(const TroubleBoardInput& input) {
+ if(!presentationPending_)return false;
+ presentationPending_=false;
  if(menu_)menu_->iconMain();
- if(message.active())message.tick(now,input.messageTriggers);
+ if(message.active())message.tick(now_,input.messageTriggers);
  if(selection.active())selection.tick(input.selection);
  if(services_.selectionSound) {
   for(auto id:selection.sounds)services_.selectionSound(services_.soundUser,id);

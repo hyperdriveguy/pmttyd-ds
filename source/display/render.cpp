@@ -1260,6 +1260,7 @@ void Renderer::world(const Game& g) {
     }
     // Original stage400000 opaques,500000 shadows,600000 translucent.
     if(!battle){drawFieldActors(true);if(g.trioBattleActive){drawMap(true,g,true,&trioBackground);drawMap(true,g,true,&trioStage);}else drawMap(false,g,true);drawOpeningDeparture(g,true);}
+    if(g.trioBattleActive)drawAudienceScene(g);
 }
 // Native diagnostic/menu reflow. Coordinates,scale and C2D layers below
 // are pixel-layout choices; source dialogue uses originalMessage instead.
@@ -1306,6 +1307,21 @@ void Renderer::overlay(const Game& g) {
         }
         originalMessage(g);if(!tutorialReady || g.harborTutorial.failed || g.harborTutorial.introComplete)text(!tutorialReady?"Development notice: tutorial presentation unavailable":g.prompt(),25,112,.43f,Ink);return;}
     if(g.harborEncounter.locked()){originalMessage(g);if(g.harborEncounter.failed || g.harborEncounter.pendingService)text(g.prompt(),25,112,.43f,Ink);return;}
+    if(auto* board=g.troubleBoardPresentation();board &&
+       (g.troubleBoardLocked() || board->message.active() || board->selection.active() || board->menu())) {
+        const auto& anchor=board->anchor();
+        CameraPoint worldAnchor{anchor.x*.01f,anchor.y*.01f,anchor.z*.01f};
+        CameraPoint mario{g.progress.position.x,g.groundHeight+g.jumpHeight,g.progress.position.z};
+        originalMessage(g,&board->message,anchor.fixed?&worldAnchor:nullptr,&mario);
+        if(auto* menu=board->menu();menu && menu->displayed())troubleQuestMenu(*menu);
+        const auto& choice=board->selection;
+        if(choice.active()) {
+            originalMessage(g,&choice.message);const auto& box=choice.message.geometry;
+            choice.cursorY=std::fma(.30000001192092896f,box.y-float(31*choice.current+58)-choice.cursorY,choice.cursorY);
+            messageIconImage(0x1f8,g.ticks,200+(box.x+2)*MessageWindowScale,120-choice.cursorY*.5f,1,uint8_t(choice.opacity));
+        }
+        return;
+    }
     if(g.saveObjects && (g.saveLocked() || g.saveObjects->presentation.message.active())) {
         const auto& p=g.saveObjects->presentation;originalMessage(g,&p.message);
         const auto& choice=p.selection;
@@ -1506,13 +1522,15 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
     if(departureRoom.vertices && !g.openingDeparture.active)freeOpeningDeparture();
     for(auto i=messageDynamicWindows.begin();i!=messageDynamicWindows.end();) {
         const auto id=i->first;const auto& story=g.storyPresentation();
-        const bool keep=id==story.message.serial || id==story.selection.message.serial || id==g.harborStory.message.serial ||
+        const auto* board=g.troubleBoardPresentation();
+        const bool keep=(board && (id==board->message.serial || id==board->selection.message.serial)) || id==story.message.serial || id==story.selection.message.serial || id==g.harborStory.message.serial ||
             id==g.harborEncounter.message.serial || id==g.harborTutorial.message.serial || id==g.fieldActorTalk.message.serial || (g.saveObjects && (id==g.saveObjects->presentation.message.serial || id==g.saveObjects->presentation.selection.message.serial));
         if(!keep)i=messageDynamicWindows.erase(i);else ++i;
     }
     C2D_TextBufClear(textBuffer);
     // Frame-local cursors reset to0 AFTER the synchronization boundary;borrowed
     // GPU buffers below persist as allocations,not independent frame copies.
+    if(g.harborTutorial.running() || g.trioBattleActive)prepareAudienceDrawing();
     if(!C3D_FrameBegin(C3D_FRAME_SYNCDRAW))return;
     item95IconCount=0;
     windowFrameCount=0;
@@ -1561,6 +1579,7 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
 // services close. This call is end-of-owner lifecycle,not a per-frame reset.
 void Renderer::shutdown() {
     releaseClassMenuDrawing();
+    releaseAudienceDrawing();
     if(c3dReady) C3D_FrameSync();
     if(shadowTexture44.imported){Tex3DS_TextureFree(shadowTexture44.imported);C3D_TexDelete(&shadowTexture44.texture);shadowTexture44.imported=nullptr;}
     releaseItem95Icons();

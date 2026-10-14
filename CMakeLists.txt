@@ -1441,3 +1441,10 @@ add_executable(trouble_board_presentation_tests tests/trouble_board_presentation
 target_link_libraries(trouble_board_presentation_tests PRIVATE ttyd_core)
 add_test(NAME trouble_board_presentation COMMAND trouble_board_presentation_tests)
 set_tests_properties(trouble_board_presentation PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Native Trouble Center exact contact, saved-bank and retained UI composition.
+target_sources(ttyd_core PRIVATE source/runtime/trouble_board_native.cpp)
+add_executable(trouble_board_native_tests tests/trouble_board_native_tests.cpp)
+target_link_libraries(trouble_board_native_tests PRIVATE ttyd_core)
+add_test(NAME trouble_board_native COMMAND trouble_board_native_tests)
+set_tests_properties(trouble_board_native PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

@@ -931,6 +931,7 @@ const FieldActorRecord* Game::nearbyFieldActor() const {
 // A confirmed candidate starts next invocation, and returning from a finished
 // talk never immediately rescans/restarts it in that same invocation.
 void Game::updateFieldNpcTalk(const Input& input) {
+    if(troubleBoardLocked())return;
     if(npcTalkWaiting) {
         if(!fieldActorTalk.message.active() && !goombaHandIn.active() && !goombaAcquisition.active() && !goombaReward.active()){npcTalkWaiting=false;npcTalkCandidate=0;}
         return; // Source wait/return owner does not scan again in this invocation.
@@ -1214,6 +1215,7 @@ void Game::restore(const Progress& saved) {
     const auto retainedSpotlight=battleSpotlight;
     const auto retainedTrioRandom=trioRandom;
     const auto retainedPublicSfx=publicSfx;
+    const auto retainedPartyCurrentIndex=fieldPartyCurrentIndex;
     const uint32_t retainedFieldMarioCameraId=fieldMarioBattle.cameraId;
     const auto retainedMarioPoseHandles=fieldMarioBattle.poseHandles;
     decltype(fieldParties.poses) retainedMarioPoses;
@@ -1229,6 +1231,7 @@ void Game::restore(const Progress& saved) {
     // validation. Keep the reset work on the heap, then move its owned state.
     auto reset=std::make_unique<Game>(false);
     *this = std::move(*reset);
+    fieldPartyCurrentIndex=retainedPartyCurrentIndex;
     commandPalette=retainedCommandPalette;
     shadows=retainedShadows;
     cameraManager=retainedCameras;
@@ -2009,6 +2012,7 @@ void Game::tick(const Input& rawInput) {
             game.partnerPresentation.update(ordinary?game.partner.x-previous.x:0,
                 ordinary?game.partner.z-previous.z:0,movementClass,game.ticks,game.fieldMovement.headingOffsetDegrees,
                 game.partnerFollow.motion!=PartnerFollow::Motion::Ground);
+            game.troubleBoardPresentationMain(raw);
         }
     } presentation{*this,partner,rawInput};
     Input input=rawInput;const Input& i=input;
@@ -2029,6 +2033,7 @@ void Game::tick(const Input& rawInput) {
         goombaReward.eventMain(ticks*1000/60);
         if(goombaReward.complete()){applyFieldItemStateRequest(ItemGetRequest::KeyOn);scene=Scene::Explore;}
     }
+    troubleBoardEventMain(i); // EVT reads the previous input publication; windows run at scope exit.
     if(arriving || warpRequest>=0)retainedFieldMainX=0; // Source road choreography keys off before Mario input publication.
     if(i.physicalSnapshot) {
         std::array<RawPad,4> raw{};raw[0].buttons=i.physicalButtons;
@@ -2061,6 +2066,10 @@ void Game::tick(const Input& rawInput) {
     progress.originalSaveMode=saveObjects->switches.mode;
     // Input/control locks suppress actions/saving but advance neutral Mario
     // movement. A held lock is not a universal simulation freeze.
+    if(troubleBoardLocked()) {
+        if(fieldJump.airborne)dispatchFieldAir();
+        move(Input{});saveRequested=false;return;
+    }
     if(saveLocked()) {
         if(fieldJump.airborne)dispatchFieldAir();
         move(Input{});saveRequested=false;return;
@@ -2456,6 +2465,7 @@ void Game::tick(const Input& rawInput) {
         fieldStep.tick();fieldVerticalVelocity=fieldStep.velocity;
         groundHeight=progress.elevation=fieldStep.height;jumpHeight=0;
     }
+    if(tryTroubleBoardContact((i.confirm?0x100u:0u)|(i.cancel?0x200u:0u)))return;
     if(i.confirm && !i.cancel && !airborne()) {
         for(size_t n=0;n<fieldDoors().size();++n) {
             const auto& d=fieldDoors()[n];if(d.room!=progress.room)continue;

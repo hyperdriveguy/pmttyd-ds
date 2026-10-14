@@ -23,7 +23,8 @@ struct TroubleEventRequest {
 };
 struct TroubleEventServices {
  void* user=nullptr;
- //0 yields the original callback;2 acknowledges actual provider completion.
+ //0 retains/yields;2 clears/continues. Direction providers also return1
+ // to clear/yield at the original positive-duration endpoint.
  // MenuInit publishes a retained nonzero work pointer; MenuMain/Select publish
  // LW0. Providers must retain their first request before yielding for resources
  // or a later world service; subsequent polls keep original first=false.
@@ -41,6 +42,8 @@ public:
  TroubleBoardEvent& operator=(TroubleBoardEvent&&)=default;
  bool begin(uint64_t milliseconds,int32_t story,const FieldActorTalkState&,TroubleBoardRoot=TroubleBoardRoot::Board);
  void tick(uint64_t milliseconds,const TroubleEventServices&);
+ bool synchronizeSavedState(int32_t story,const FieldActorTalkState&);
+ bool appendRoot(TroubleBoardRoot); // Source case reentry shares the retained manager and outstanding children.
  bool active() const{return runtime_ && started && !finished && !failed;}
  FieldActorTalkState switches;
  bool started=false,finished=false,failed=false,waitingForProvider=false,rootAlive=false;

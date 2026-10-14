@@ -79,6 +79,7 @@ int main() {
        !requireAsset("room warps",ttyd::loadWarps("romfs:/rooms.bin")) ||
        !requireAsset("field pipes",ttyd::loadFieldPipes("romfs:/field-pipes.bin")) ||
        !requireAsset("field doors",ttyd::loadFieldDoors("romfs:/doors.pmdoor")) ||
+       !requireAsset("Trouble Center events",ttyd::loadNativeTroubleBoardAssets("romfs:")) ||
        !requireAsset("camera roads",ttyd::loadCameraRoadAssets("romfs:")) ||
        !requireAsset("harbor tutorial",ttyd::loadHarborTutorialAssets("romfs:")) ||
        !requireAsset("harbor encounter",ttyd::loadHarborEncounterAssets("romfs:")) ||
@@ -236,6 +237,7 @@ int main() {
             pending={};pending.x=i.x;pending.z=i.z;pending.jumpHeld=i.jumpHeld;pending.cancelHeld=i.cancelHeld;
             pending.physicalSnapshot=i.physicalSnapshot;pending.physicalButtons=i.physicalButtons;
             if(frontend.screen==ttyd::FrontScreen::Playing && game.progress.sound) audio.play(game);
+            game.troubleBoardSounds.clear(); // Consume once per native audio visit, including muted/unavailable playback.
             if(noticeTicks>0)--noticeTicks;
         }
         // Native overload policy drops whole remaining ticks (and the fraction),

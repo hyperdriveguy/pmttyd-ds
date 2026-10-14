@@ -28,6 +28,8 @@ public:
            const TroubleBoardPresentationServices&);
  // Explicit monotonically increasing simulation visit, independent of ms and FPS.
  bool visit(uint64_t visit,uint64_t milliseconds,const TroubleBoardInput&);
+ bool eventMain(uint64_t visit,uint64_t milliseconds,const TroubleBoardInput&);
+ bool presentationMain(const TroubleBoardInput&);
  MessagePlayback message;
  MessageSelection selection;
  const TroubleBoardAnchor& anchor() const{return anchor_;}
@@ -45,7 +47,7 @@ private:
  TroubleBoardAnchor anchor_;
  TroubleBoardInput input_;
  uint64_t now_=0,lastVisit_=0;
- bool visited_=false;
+ bool visited_=false,presentationPending_=false;
  int32_t activeQuest_=0;
  int32_t call(TroubleEventRequest&);
 };

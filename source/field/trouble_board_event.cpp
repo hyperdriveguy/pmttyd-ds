@@ -99,6 +99,7 @@ struct TroubleBoardEventRuntime {
   if(owner->failed)return 0;
   if(!services.call){owner->pendingFunction=fn;return 0;}
   const auto status=services.call(services.user,request);
+  if(status==1 && (kind==TroubleEventCall::MarioDirection || kind==TroubleEventCall::PartyDirection))return 1;
   if(status!=0 && status!=2){owner->failed=true;return 0;}
   if(status==0){owner->pendingFunction=fn;return 0;}
   if(kind==TroubleEventCall::MenuInit) {
@@ -137,6 +138,31 @@ bool TroubleBoardEvent::begin(uint64_t time,int32_t story,const FieldActorTalkSt
  TroubleBoardEvent next;next.switches=state;next.runtime_=std::make_shared<TroubleBoardEventRuntime>();next.runtime_->owner=&next;
  if(!next.runtime_->initialize(time,story,root))return false;
  next.started=true;*this=std::move(next);runtime_->owner=this;return true;
+}
+bool TroubleBoardEvent::synchronizeSavedState(int32_t story,const FieldActorTalkState& state) {
+ if(!runtime_ || !started || failed || !state.trouble.valid() || !state.quest1420)return false;
+ for(int32_t f=5374;f<=5421;++f)if(!troubleQuestFlag(state,f))return false;
+ for(int32_t b=1469;b<=1474;++b)if(!troubleQuestByte(state,b))return false;
+ const auto op=runtime_->vm.interpreterServices().operands;
+ writeSavedSwitch(SavedSwitchFamily::GlobalByte,0,story,op);
+ writeSavedSwitch(SavedSwitchFamily::GlobalByte,1420,*state.quest1420,op);
+ for(int32_t f=5374;f<=5421;++f)writeSavedSwitch(SavedSwitchFamily::GlobalFlag,f,*troubleQuestFlag(state,f),op);
+ for(int32_t b=1469;b<=1474;++b)writeSavedSwitch(SavedSwitchFamily::GlobalByte,b,*troubleQuestByte(state,b),op);
+ switches=state;return true;
+}
+bool TroubleBoardEvent::appendRoot(TroubleBoardRoot root) {
+ if(!runtime_ || !started || failed || rootAlive ||
+    (root!=TroubleBoardRoot::Board && root!=TroubleBoardRoot::Counter))return false;
+ // Reserve the source root's largest immediate constructor burst before the
+ // allocator's original free-slot assertion. This is finite native admission.
+ const auto& context=runtime_->vm.field;
+ int free=0;for(int n=0;n<context.capacity;++n)if(!(context.entries[n].flags&1))++free;
+ const int required=root==TroubleBoardRoot::Board && !*troubleQuestFlag(switches,5374)?5:2;
+ if(free<required)return false;
+ runtime_->owner=this;
+ auto creation=runtime_->vm.creationServices();
+ auto& entry=createRootEvent(runtime_->vm.schedule,root==TroubleBoardRoot::Counter?Counter:Board,0,0x20,creation);
+ rootEventId=entry.id;rootAlive=true;finished=false;return true;
 }
 void TroubleBoardEvent::tick(uint64_t time,const TroubleEventServices& services) {
  if(!active())return;

@@ -26,6 +26,7 @@
 #include "window_frame.hpp"
 #include "window_font.hpp"
 #include "battle_class_backend.hpp"
+#include "battle_audience_backend.hpp"
 #include "native_camera_draw.hpp"
 #include "native_display_state.hpp"
 #include "native_shadow_program.hpp"
@@ -159,6 +160,12 @@ private:
     unsigned classVertexCount=0;
     bool prepareClassMenuDrawing();
     void releaseClassMenuDrawing();
+    BattleAudienceResources audienceAssets;BattleAudienceBackend audienceBatch;
+    Texture audienceTexture;Vertex* audienceVertices=nullptr;
+    unsigned audienceOpaqueCount=0,audienceVertexCount=0;bool audiencePrepared=false;
+    bool prepareAudienceDrawing();
+    void releaseAudienceDrawing();
+    void drawAudienceScene(const Game&,bool lower=false);
     std::unique_ptr<BattleStartupResources> tutorialStartupResources;
     std::array<Texture,9> tutorialStartupTextures;
     HarborTutorial* tutorialStartupOwner=nullptr;
@@ -432,6 +439,7 @@ private:
     bool ready=false,titleResourceAttempted=false,titleResourceReady=false;
     OpeningHousePcmPlayer openingHousePcm;
     struct Clip { int16_t* data=nullptr; uint32_t samples=0; ndspWaveBuf wave{}; };
+    std::array<Clip,4> troubleClips{}; // Original rows5/19/42/43 on NDSP20..23; row18 borrows clip0/channel2.
     // Eight primary-sample cues reside on native NDSP channels2..9;opening
     // map sound uses channel19. Samples counts are PCM frames,not byte lengths.
     Clip clips[8];

@@ -72,6 +72,22 @@ bool Audio::init() {
         constexpr float gains[]={80.f/127,0.65f,100.f/127,110.f/127,100.f/127,100.f/127,45.f/127,45.f/127};
         float mix[12]{};mix[0]=mix[1]=gains[n]*.65f;ndspChnSetMix(n+2,mix);
     }
+    constexpr unsigned troubleRows[]={5,19,42,43};
+    constexpr float troubleVolumes[]={105,75,90,90};
+    for(unsigned n=0;n<troubleClips.size();++n) {
+        char path[64];std::snprintf(path,sizeof(path),"romfs:/trouble-sfx-%u.wav",troubleRows[n]);
+        FILE* file=std::fopen(path,"rb");PcmHeader pcm;
+        if(!file || !readHeader(file,pcm) || pcm.channels!=1 || pcm.rate!=22050 || pcm.frames>8192) {
+            if(file)std::fclose(file);shutdown();return false;
+        }
+        auto& clip=troubleClips[n];clip.samples=pcm.frames;clip.data=(int16_t*)linearAlloc(pcm.frames*2);
+        if(!clip.data || std::fread(clip.data,2,pcm.frames,file)!=pcm.frames){std::fclose(file);shutdown();return false;}
+        std::fclose(file);DSP_FlushDataCache(clip.data,pcm.frames*2);
+        clip.wave.data_pcm16=clip.data;clip.wave.nsamples=pcm.frames;clip.wave.looping=false;
+        ndspChnSetInterp(20+n,NDSP_INTERP_LINEAR);ndspChnSetRate(20+n,pcm.rate);ndspChnSetFormat(20+n,NDSP_FORMAT_MONO_PCM16);
+        // Same conservative native primary-sample mix policy as existing cues.
+        float mix[12]{};mix[0]=mix[1]=troubleVolumes[n]/127.f*.65f;ndspChnSetMix(20+n,mix);
+    }
     musicWorkerRun.store(true,std::memory_order_release);
     musicThread=threadCreate([](void* owner){
         auto* audio=static_cast<Audio*>(owner);
@@ -97,6 +113,13 @@ void Audio::play(const Game& game) {
     for(const auto& request:game.fieldNpcSounds()) {
         for(int index=0;index<8;++index)if(request.key==OriginalCueNames[index]) {
             auto& clip=clips[index];ndspChnWaveBufClear(index+2);clip.wave.status=NDSP_WBUF_FREE;ndspChnWaveBufAdd(index+2,&clip.wave);break;
+        }
+    }
+    for(auto row:game.troubleBoardSounds) {
+        constexpr uint32_t rows[]={5,19,42,43};
+        if(row==18){auto& clip=clips[0];ndspChnWaveBufClear(2);clip.wave.status=NDSP_WBUF_FREE;ndspChnWaveBufAdd(2,&clip.wave);}
+        else for(unsigned n=0;n<troubleClips.size();++n)if(row==rows[n]) {
+            auto& clip=troubleClips[n];ndspChnWaveBufClear(20+n);clip.wave.status=NDSP_WBUF_FREE;ndspChnWaveBufAdd(20+n,&clip.wave);break;
         }
     }
     int cue=static_cast<int>(audioCue(game));
@@ -241,6 +264,7 @@ void Audio::shutdown() {
     }
     for(auto& stream:music)if(stream.file){std::fclose(stream.file);stream.file=nullptr;}
     if(streamData) {linearFree(streamData);streamData=nullptr;}
+    for(auto& clip:troubleClips){if(clip.data)linearFree(clip.data);clip={};}
     for(auto& clip:clips) {
         if(clip.data)linearFree(clip.data);
         clip={};
