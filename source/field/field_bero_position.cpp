@@ -11,6 +11,7 @@ std::optional<FieldBeroPosition> fieldBeroNormalPosition(std::array<int32_t,3> x
  FieldBeroPosition out;
  out.start=out.finish={float(xyz[0]),float(xyz[1]),float(xyz[2])};
  if(xyz[0]==100000 && (!s.center || !s.center(s.user,name,out.start)))return std::nullopt;
+ out.center=out.start;
  if(distance!=0) {
   if(!s.floor || !s.sine || !s.cosine || !s.negativeMultiplySubtract || !s.multiplyAdd)return std::nullopt;
   auto heading=single(single(360.f*float(direction))*.125f);

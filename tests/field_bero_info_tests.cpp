@@ -57,10 +57,16 @@ int main(){
  assert(uint32_t((*published)[5])==position && uint32_t((*published)[7])==0xffff0000);
  const auto originalEnd=game.progress.position;const auto startView=*game.fieldBeroStart;
  game.fieldCameraShift.current=25;game.fieldCameraShift.previousMilliseconds=12345;
+ EventEntry bank;assert(game.fieldBeroInfo.intoInfo(bank));
+ game.fieldBeroInitial=std::make_shared<FieldBeroInitialEvent>();
+ assert(game.fieldBeroInitial->begin(game.fieldBeroInfo,bank.locals,0));
+ {auto borrowed=game.fieldBeroInitial;assert(!game.executeFieldBeroInitial() && !borrowed->finished && !game.fieldRecoveryWords[0]);}
  game.beginRoadArrival();const auto originalStart=game.progress.position;
+ assert(game.fieldBeroInitial && game.fieldBeroInitial->finished && game.fieldBeroInitial->locals && !game.fieldBeroInitialPending);
+ assert(game.fieldRecoveryWords[0] && game.fieldRecoveryWords[1] && game.fieldRecoveryWords[2] && !game.fieldRecoveryReload);
  assert(game.fieldBeroStartApplied && game.fieldCameraShift.current==0 && game.fieldCameraShift.previousMilliseconds==12345);
  assert(originalStart.x==startView.position.x*.01f && originalStart.z==startView.position.z*.01f);
- const auto save=game.progress;game.restore(save);assert(!game.fieldBeroInfo.known() && !game.fieldBeroInfo.publication() && !game.fieldBeroInfo.registered() && !game.fieldBeroInfo.currentNumber() && !game.fieldBeroPosition && !game.fieldBeroStart && !game.fieldBeroStartApplied);
+ const auto save=game.progress;game.restore(save);assert(!game.fieldBeroInfo.known() && !game.fieldBeroInfo.publication() && !game.fieldBeroInfo.registered() && !game.fieldBeroInfo.currentNumber() && !game.fieldBeroPosition && !game.fieldBeroStart && !game.fieldBeroStartApplied && !game.fieldBeroInitial && !game.fieldRecoveryWords[0]);
  // Isolated authored-length variant proves the actual road endpoint consumes
  // the table field while preserving the source fixed30-unit start radius.
  char temporary[]="/tmp/ttyd-bero-length-XXXXXX";assert(mkdtemp(temporary));const std::filesystem::path fixture(temporary);

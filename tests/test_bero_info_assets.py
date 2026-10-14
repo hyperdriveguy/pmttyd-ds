@@ -1,4 +1,4 @@
-import json,struct,sys,unittest
+import hashlib,json,struct,sys,unittest
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
 from rel_event_inventory import read_bindings
@@ -50,5 +50,9 @@ class BeroInfoAssets(unittest.TestCase):
   self.assertEqual(struct.unpack('>15I',span(0x8030cd78,60)),(0,0xf000000,20000,100000,0,0,0xffffffff,0,0xffffffff,0,0,0,0x10001,0,0))
   self.assertEqual(span(0x80416060,20).hex(),'00020032fe363c80000000000000000200000001')
   self.assertEqual(span(0x80416074,20),span(0x80416060,20))
+  self.assertEqual(hashlib.sha256(span(0x8030f060,0x278)).hexdigest(),'214cdff31534df948655149d8ba53441124be40ce6b980d353dee0b48952c519')
+  self.assertEqual(struct.unpack('>I',span(0x8030f2d8,4))[0],meta['initial_position']['prefetch_word'])
+  self.assertEqual(meta['initial_position']['size'],0x278)
+  self.assertFalse(any(a<=0x8041e9f8<a+size for a,size,_ in segments)) # Globals are mutable runtime storage.
   for n,name in enumerate([b'n_',b'ne_',b'e_',b'se_',b's_',b'sw_',b'w_',b'nw_']):
    ptr=struct.unpack('>I',span(0x802c2c28+4*n,4))[0];self.assertEqual(span(ptr,len(name)+1),name+b'\0')

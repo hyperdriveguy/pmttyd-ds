@@ -19,6 +19,7 @@ struct FieldPositionWorld {
  void (*write)(void*,uintptr_t,uint32_t)=nullptr;
  void (*roadReset)(void*)=nullptr;
  void (*shiftReset)(void*)=nullptr;
+ uint16_t (*half)(void*,uintptr_t)=nullptr;
 };
 int32_t fieldMarioSetPositionEvent(EventEntry&,const FieldPositionOperands&,const FieldPositionWorld&);
 int32_t fieldPartySetPositionEvent(EventEntry&,const FieldPositionOperands&,const FieldPositionWorld&);

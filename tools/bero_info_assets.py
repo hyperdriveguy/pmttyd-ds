@@ -68,6 +68,8 @@ def build(iso=DEFAULT_ISO):
    if len(found)!=1:raise ValueError('Invalid DOL span')
    disc.seek(dol+found[0]);blob=disc.read(size);put(address,blob);spans.append(dict(address=address,size=size,sha256=hashlib.sha256(blob).hexdigest()));return blob
   dolread(0x8030cd78,60);prefix=dolread(0x802c2c28,32);dolread(0x804204c0,32);dolread(0x80416060,40)
+  initial=dolread(0x8030f060,0x27c) # Original0x278-byte object plus actual adjacent scanner-prefetch word.
+  if hashlib.sha256(initial[:0x278]).hexdigest()!='214cdff31534df948655149d8ba53441124be40ce6b980d353dee0b48952c519':raise ValueError('Unexpected original initial-position event')
   if struct.unpack('>8I',prefix)!=tuple(0x804204c0+4*n for n in range(8)):raise ValueError('Original direction prefix table changed')
  # Merge adjacent original bytes; all spans have original four-byte boundaries.
  segments=[]
@@ -82,7 +84,7 @@ def build(iso=DEFAULT_ISO):
   descriptor+=struct.pack('<3I',t['room'],t['address'],len(t['entries']))
   descriptor+=b''.join(struct.pack('<I',e['source_node']) for e in t['entries'])
  (out/'bero-info.bin').write_bytes(descriptor)
- (out/'bero-info.json').write_text(json.dumps(dict(source='rel/gor.rel',source_sha256=digest,tables=tables,dol_spans=spans,policy='Original table/data pointers retained; referenced event/PPC bodies excluded except original20-byte default entry/exit EVT bodies',license='Original Nintendo/Intelligent Systems resources; local use only, no redistribution rights'),indent=2)+'\n')
+ (out/'bero-info.json').write_text(json.dumps(dict(source='rel/gor.rel',source_sha256=digest,tables=tables,dol_spans=spans,initial_position=dict(address=0x8030f060,size=0x278,sha256=hashlib.sha256(initial[:0x278]).hexdigest(),prefetch_address=0x8030f2d8,prefetch_word=struct.unpack('>I',initial[0x278:])[0]),policy='Original tables, default entry/exit EVT and complete initial-position EVT retained; adjacent actual word is scanner context, not part of the event. No executable PPC. Mutable Bero globals are excluded.',license='Original Nintendo/Intelligent Systems resources; local use only, no redistribution rights'),indent=2)+'\n')
  print('Original Bero info:',len(tables),'tables,',sum(len(t['entries']) for t in tables),'entries,',pos,'bytes')
 if __name__=='__main__':
  p=argparse.ArgumentParser();p.add_argument('--iso',default=DEFAULT_ISO);build(p.parse_args().iso)

@@ -8,6 +8,7 @@ namespace ttyd {
 struct EventEntry;
 class FieldMapFlags;
 class FieldBeroExec;
+class EventAddressSpace;
 struct FieldBeroInfoProgram;
 bool loadFieldBeroInfoAssets(const char* root);
 // Exact source-selected entry query over original data, with a native GP incoming
@@ -30,6 +31,7 @@ public:
  bool intoInfo(EventEntry&) const; // Writes only original LW1..8; unavailable holds.
  bool readWord(uint32_t address,uint32_t&) const;
  bool readByte(uint32_t address,uint8_t&) const;
+ bool importScripts(EventAddressSpace&) const;
  bool known() const;
  std::optional<std::array<int32_t,8>> publication() const{return known()?publication_:std::nullopt;}
 private:

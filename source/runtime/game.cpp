@@ -318,7 +318,8 @@ void Game::beginRoadArrival() {
     if(std::fabs(roadMotion.step[0])>.001f)facing=roadMotion.step[0]>0?1:-1;
     turnScale=1;turnTick=0;
     progress.position=arrivalStart;partner=arrivalStart;arriving=true;saveRequested=false;
-    applyFieldBeroStart();
+    if(fieldBeroInfo.known()){fieldBeroInitialPending=true;executeFieldBeroInitial();}
+    else applyFieldBeroStart(); // Legacy no-catalog host bridge.
 }
 void Game::cancelRoad() {
     beroExec->unknown(); // No recovered cancellation clear; preserve missing provenance.
@@ -2177,6 +2178,7 @@ void Game::tick(const Input& rawInput) {
         move(Input{});saveRequested=false;return;
     }
     if(arriving) {
+        if(fieldBeroInitialPending && !executeFieldBeroInitial()){saveRequested=false;return;}
         fade.tick();const bool finished=roadMotion.tick();
         progress.position={roadMotion.position[0],roadMotion.position[1]};partner=progress.position;
         cacheFieldScreen();publishFieldCameraTarget();

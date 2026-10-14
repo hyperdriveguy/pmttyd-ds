@@ -1551,3 +1551,10 @@ add_executable(battle_audience_actor_control_tests tests/battle_audience_actor_c
 target_link_libraries(battle_audience_actor_control_tests PRIVATE ttyd_core)
 add_test(NAME battle_audience_actor_control COMMAND battle_audience_actor_control_tests)
 set_tests_properties(battle_audience_actor_control PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Execute the unchanged original Bero initial-position script over live services.
+target_sources(ttyd_core PRIVATE source/field/field_bero_initial_event.cpp)
+add_executable(field_bero_initial_event_tests tests/field_bero_initial_event_tests.cpp)
+target_link_libraries(field_bero_initial_event_tests PRIVATE ttyd_core)
+add_test(NAME field_bero_initial_event COMMAND field_bero_initial_event_tests)
+set_tests_properties(field_bero_initial_event PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

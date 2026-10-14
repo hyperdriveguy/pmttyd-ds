@@ -22,6 +22,8 @@ FieldPositionWorld Game::fieldPositionWorld() {
   if(triple(address,Mario+0x8c,n))return bits(n==0?g.progress.position.x*100:n==1?(g.groundHeight+g.jumpHeight)*100:g.progress.position.z*100);
   if(triple(address,Mario+0xec,n))return bits(lane(g.marioCamera.retained,n));
   if(triple(address,Mario+0xf8,n))return bits(lane(g.marioCameraCollision,n));
+  if(triple(address,Mario+0x2e4,n)){assert(g.fieldRecoveryWords[n]);return *g.fieldRecoveryWords[n];}
+  if(address==Mario+0x2e0){assert(g.fieldRecoveryReload);return *g.fieldRecoveryReload;}
   if(triple(address,Camera+0x94,n))return bits(lane(g.fieldCamera.point,n));
   if(triple(address,Camera+0xac,n))return bits(lane(g.fieldCameraCollisionTarget,n));
   for(const auto& actor:g.fieldParties.actors)if(actor) {
@@ -40,6 +42,8 @@ FieldPositionWorld Game::fieldPositionWorld() {
   }
   if(triple(address,Mario+0xec,n)){lane(g.marioCamera.retained,n)=value;return;}
   if(triple(address,Mario+0xf8,n)){lane(g.marioCameraCollision,n)=value;return;}
+  if(triple(address,Mario+0x2e4,n)){g.fieldRecoveryWords[n]=word;return;}
+  if(address==Mario+0x2e0){g.fieldRecoveryReload=word;return;}
   if(triple(address,Camera+0x94,n)){lane(g.fieldCamera.point,n)=value;return;}
   if(triple(address,Camera+0xac,n)){lane(g.fieldCameraCollisionTarget,n)=value;return;}
   for(auto& actor:g.fieldParties.actors)if(actor) {
@@ -49,7 +53,8 @@ FieldPositionWorld Game::fieldPositionWorld() {
   assert(false);
  };
  w.roadReset=[](void* p){auto& g=*static_cast<Game*>(p);g.cameraRoadWork={};g.fieldCameraCandidateActive=false;g.fieldCameraCandidateShiftRate=0;};
- w.shiftReset=[](void* p){static_cast<Game*>(p)->fieldCameraShift.reset();};return w;
+ w.shiftReset=[](void* p){static_cast<Game*>(p)->fieldCameraShift.reset();};
+ w.half=[](void* p,uintptr_t address)->uint16_t{assert(address==Mario+0x2e);return uint16_t(static_cast<Game*>(p)->fieldJump.motion);};return w;
 }
 bool Game::applyFieldBeroStart() {
  if(fieldBeroStartApplied)return true;
@@ -75,5 +80,30 @@ bool Game::applyFieldBeroStart() {
  context.selector=1;fieldPartySetPositionEvent(context.event,o,world);
  fieldCameraRoadResetEvent(world);
  fieldBeroStartApplied=true;return true;
+}
+bool Game::executeFieldBeroInitial() {
+ // A copied Game may observe completion, but cannot advance a shared pending VM.
+ if(fieldBeroInitial && !fieldBeroInitial->finished && fieldBeroInitial.use_count()!=1)return false;
+ if(fieldBeroInitial && fieldBeroInitial->finished){fieldBeroInitialPending=false;return true;}
+ if(!fieldBeroInfo.known() || !fieldBeroInfo.registered() || !fieldBeroPosition || !fieldPartyCurrentIndex || *fieldPartyCurrentIndex>=2)return false;
+ if(!fieldBeroInitial) {
+  auto next=std::make_shared<FieldBeroInitialEvent>();EventEntry parentBank;
+  // Ordinary root constructor and untouched residual locals are source-proven;
+  // selected outputs are real, not invented case IDs or checkpoint history.
+  if(!fieldBeroInfo.intoInfo(parentBank) || !next->begin(fieldBeroInfo,parentBank.locals,ticks*1000/60))return false;
+  fieldBeroInitial=std::move(next);
+ }
+ FieldBeroPositionServices geometry;geometry.user=this;
+ geometry.center=[](void* p,const std::string&,FieldWallVector& out){auto& g=*static_cast<Game*>(p);if(!g.fieldBeroPosition)return false;out=g.fieldBeroPosition->center;return true;};
+ geometry.floor=[](void*,FieldWallVector origin,FieldWallVector direction,float length){const auto hit=fieldShadowRay(origin,direction,length);return FieldBeroFloor{!hit.unresolvedObject,hit.found,hit.point.y};};
+ geometry.sine=[](void*,float a){return float(std::sin(double(a)));};geometry.cosine=[](void*,float a){return float(std::cos(double(a)));};
+ geometry.negativeMultiplySubtract=[](void*,float a,float b,float c){return -std::fma(a,b,-c);};geometry.multiplyAdd=[](void*,float a,float b,float c){return std::fma(a,b,c);};
+ fieldBeroInitial->tick(ticks*1000/60,geometry,fieldPositionWorld());
+ if(!fieldBeroInitial->finished)return false;
+ fieldBeroPosition=fieldBeroInitial->position;fieldBeroStart=fieldBeroStartPublication(fieldBeroPosition->start);
+ assert(fieldBeroStart);fieldBeroStartApplied=true;fieldBeroInitialPending=false;
+ arrivalStart={fieldBeroStart->position.x*.01f,fieldBeroStart->position.z*.01f};
+ arrivalEnd={fieldBeroPosition->finish.x*.01f,fieldBeroPosition->finish.z*.01f};
+ roadMotion.begin({arrivalStart.x,arrivalStart.z},{arrivalEnd.x,arrivalEnd.z});return true;
 }
 }

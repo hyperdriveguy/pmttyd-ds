@@ -65,6 +65,7 @@
 #include "trouble_board_presentation.hpp"
 #include "field_bero_position.hpp"
 #include "field_position_event.hpp"
+#include "field_bero_initial_event.hpp"
 namespace ttyd {
 struct NpcTalkPlayer;
 struct NativeTroubleBoard;
@@ -275,6 +276,11 @@ public:
     FieldPositionWorld fieldPositionWorld(); // Live native actor/camera storage adapters.
     bool applyFieldBeroStart(); // Ordered position setters and camera reset for a known start.
     bool fieldBeroStartApplied=false;
+    std::shared_ptr<FieldBeroInitialEvent> fieldBeroInitial;
+    bool fieldBeroInitialPending=false;
+    bool executeFieldBeroInitial();
+    std::array<std::optional<uint32_t>,3> fieldRecoveryWords{}; // Actual written recovery+2e4/8/c lanes, engine IEEE32.
+    std::optional<uint32_t> fieldRecoveryReload; // Unknown until an actual +2e0 writer.
     std::shared_ptr<NativeTroubleBoard> troubleBoard;
     std::vector<uint32_t> troubleBoardSounds; // Original low13 sound rows, not generic UI cues.
     std::optional<int32_t> fieldPartyCurrentIndex=0; // Explicit source BSS boot view of8041ead0; separate from Mario party selection.

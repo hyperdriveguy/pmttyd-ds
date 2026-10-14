@@ -16,7 +16,7 @@ struct FieldBeroPositionServices {
  float (*multiplyAdd)(void*,float,float,float)=nullptr;
 };
 struct FieldBeroPosition {
- FieldWallVector start,finish,recovery;
+ FieldWallVector start,finish,recovery,center;
 };
 // Resolved-value body of bero_get_position_normal. Original world lookup/ray
 // and SDK numerical services are explicit; no callback ABI/side-effect claim.

@@ -3,6 +3,7 @@
 #include "field_bero_exec.hpp"
 #include "event_script_assets.hpp"
 #include "event_manager.hpp"
+#include "event_address_space.hpp"
 #include <cstdio>
 #include <cstring>
 #include <unordered_map>
@@ -42,7 +43,9 @@ bool loadFieldBeroInfoAssets(const char* root) {
  }
  uint32_t word=0;for(unsigned w=0;ok && w<15;++w)ok=next->data.readWord(next->fallback+4*w,word);
  for(unsigned n=0;ok && n<8;++n){std::string text;ok=next->data.readWord(next->prefixes+4*n,word) && next->text(word,text) && !text.empty();}
- ok=ok && next->data.readWord(next->defaultEvent,word) && next->data.readWord(next->defaultOut,word) && std::fgetc(f)==EOF;std::fclose(f);if(!ok)return false;
+ ok=ok && next->data.readWord(next->defaultEvent,word) && next->data.readWord(next->defaultOut,word) &&
+  next->data.readWord(0x8030f060,word) && word==0x0001005b && next->data.readWord(0x8030f064,word) && word==0x8007a214 &&
+  next->data.readWord(0x8030f2d0,word) && word==2 && next->data.readWord(0x8030f2d4,word) && word==1 && next->data.readWord(0x8030f2d8,word) && std::fgetc(f)==EOF;std::fclose(f);if(!ok)return false;
  assets=std::move(next);++generation;return true;
 }
 void FieldBeroInfo::invalidate(){program_.reset();room_=UINT32_MAX;incomingKnown_=false;registered_=false;entries_={};switches_={};incoming_.clear();publication_.reset();}
@@ -86,6 +89,7 @@ bool FieldBeroInfo::infoByIndex(EventEntry& event,int32_t index) const {
  return true;
 }
 bool FieldBeroInfo::known() const{return program_ && generation_==generation && incomingKnown_;}
+bool FieldBeroInfo::importScripts(EventAddressSpace& memory) const{return program_ && generation_==generation && memory.importScripts(program_->data);}
 bool FieldBeroInfo::publishIncoming(const std::string& name,uint32_t flags) {
  if(!program_ || generation_!=generation || name.size()>=64 || name.find('\0')!=std::string::npos)return false;
  incoming_=name;flags_=flags;incomingKnown_=true;EventEntry event;
