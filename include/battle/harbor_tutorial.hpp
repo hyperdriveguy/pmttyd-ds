@@ -74,6 +74,8 @@ public:
     uint32_t dispatchHitEvent(int32_t actorId,uint32_t code);
     uint32_t dispatchDirectHitEvent(int32_t actorId,uint32_t code,uint32_t script);
     bool buildWeaponMenu(uint32_t type);
+    bool selectWeapon(unsigned row);
+    std::vector<std::array<int32_t,2>> weaponTargets;
     uint32_t weaponMenuType=0;std::vector<HarborTutorialWeaponRow> weaponRows;
     bool readPackedWord(uint32_t address,uint32_t& value) const;
     bool running() const{return triggered;}

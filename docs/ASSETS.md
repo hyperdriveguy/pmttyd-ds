@@ -87,3 +87,12 @@ grants are not repeated. Mapped message RAM copies existing localized label
 bytes/control tokens and retains original key pointers internally. Licensing
 restrictions and ignored private pack paths remain unchanged. No texture,
 geometry, lighting or generated dialogue conversion was added.
+
+## Native weapon-menu decision evidence (2026-10-14)
+
+Shared setup80122068/6c and decision80123210/150 follow the existing full
+read-only ISO verifier and reuse original weapon, message and candidate data.
+The tutorial decision writes actual target state without new game payload,
+rewritten labels, texture/geometry/lighting conversion or generated dialogue.
+Private asset paths and Nintendo/Intelligent Systems licensing restrictions
+remain unchanged.

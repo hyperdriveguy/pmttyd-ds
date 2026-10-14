@@ -169,6 +169,11 @@ bool HarborTutorial::buildWeaponMenu(uint32_t type){
  const bool built=r.packed->buildWeaponMenu(type,*this,&r,[](void* self,uint32_t key){auto& r=*static_cast<HarborTutorialRuntime*>(self);const auto id=r.text(key);return r.packed->cacheMenuLabel(key,messages.find(id.c_str()));});
  r.packed->capture(*this);return built;
 }
+bool HarborTutorial::selectWeapon(unsigned row){
+ if(!runtime_ || failed || !initialized || !introComplete || phaseActive || attackActive || damageActive || row>=weaponRows.size() || !weaponRows[row].enabled)return false;
+ auto& r=*runtime_;r.scene=this;r.packed->publish(*this);
+ const bool selected=r.packed->selectWeapon(row,*this,&r,[](void* self,uint32_t key){auto& r=*static_cast<HarborTutorialRuntime*>(self);const auto id=r.text(key);return r.packed->cacheMenuLabel(key,messages.find(id.c_str()));});r.packed->capture(*this);return selected;
+}
 bool HarborTutorial::readPackedWord(uint32_t address,uint32_t& value)const{return runtime_ && runtime_->packed && runtime_->packed->readWord(address,value);}
 void HarborTutorial::animationComplete(int32_t id){const auto slot=visualSlot(id);if(!runtime_ || slot<0)return;runtime_->complete[size_t(slot)]=true;runtime_->completeEpoch[size_t(slot)]=actors[size_t(slot)].poseAt;}
 }

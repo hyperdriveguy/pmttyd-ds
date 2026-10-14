@@ -53,6 +53,9 @@ void nativeWeaponRows(){
  assert(scene.introComplete && scene.buildWeaponMenu(0) && scene.weaponRows.size()==1);
  const auto jump=scene.weaponRows[0];
  assert(jump.weapon==0x803538a8 && jump.enabled && jump.reason==0 && jump.nameAddress && jump.label=="Normal Jump" && jump.icon==167);
+ assert((scene.selectWeapon(0) && scene.weaponTargets==std::vector<std::array<int32_t,2>>({{2,1}})));
+ uint32_t selectedByte=0;assert(scene.readPackedWord(0x84000edc,selectedByte) && (selectedByte&255)==0);
+ assert(scene.actors[1].hp==7 && !scene.attackActive && !scene.damageActive);assert(!scene.selectWeapon(1));
  assert(scene.buildWeaponMenu(1) && scene.weaponRows.size()==1 && scene.weaponRows[0].weapon==0x80353de8 && scene.weaponRows[0].enabled);
  assert(scene.actors[1].hp==7 && scene.actors[0].hp==5 && !scene.attackActive && !scene.damageActive && scene.result==0);
  assert(!scene.buildWeaponMenu(6));

@@ -864,3 +864,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Goomba3 item-get field services and event resume order](field/GOOMBA3_ITEMGET_FIELD_SERVICE_AND_EVENT_RESUME_ORDER.md).
 
 - [Tutorial native weapon-table providers and pouch ownership](battle/TUTORIAL_NATIVE_WEAPON_TABLE_BINDINGS.md)
+
+- [Shared original weapon-menu setup and decision](battle/NATIVE_WEAPON_MENU_SETUP_AND_DECISION.md)

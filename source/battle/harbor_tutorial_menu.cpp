@@ -1,5 +1,6 @@
 #include "harbor_tutorial_packed.hpp"
 #include "battle_weapon_table.hpp"
+#include "battle_weapon_menu_decision.hpp"
 #include "battle_packed_pouch.hpp"
 #include "battle_weapon_icons.hpp"
 #include "battle_weapon_cost.hpp"
@@ -50,4 +51,18 @@ bool HarborTutorialPacked::buildWeaponMenu(uint32_t type,HarborTutorial& scene,v
  for(int32_t n=0;n<visibleCount;++n){const auto row=Battle+0x171c+0x80+28*uint32_t(n);HarborTutorialWeaponRow r;r.weapon=word(row);r.enabled=word(row+4)!=0;r.nameAddress=word(row+8);uint16_t icon=0;if(!vm.memory.readHalf(row+12,icon))std::abort();r.icon=icon;r.ordinal=int32_t(word(row+16));r.item=int32_t(word(row+20));r.reason=int32_t(word(row+24));if(r.nameAddress)for(unsigned j=0;j<MenuRam+0x4000-r.nameAddress;++j){const auto c=byte(r.nameAddress+j);if(!c)break;r.label+=char(c);}scene.weaponRows.push_back(std::move(r));}
  return true;
 }
+bool HarborTutorialPacked::selectWeapon(unsigned index,HarborTutorial& scene,void* messageUser,uint32_t(*message)(void*,uint32_t)){
+ struct Context{HarborTutorialPacked* p;HarborTutorial* scene;void* messageUser;uint32_t(*message)(void*,uint32_t);};Context context{this,&scene,messageUser,message};
+ BattleWeaponMenuDecisionServices s;s.memory=nativeBattleActorServices(vm);s.user=&context;
+ s.unit=[](void* self,uint32_t b,int32_t id){return battleRegistryUnit(b,id,nativeBattleActorServices(static_cast<Context*>(self)->p->vm));};
+ s.build=[](void* self,uint32_t b,uint32_t type){auto& c=*static_cast<Context*>(self);assert(b==Battle);return c.p->buildWeaponMenu(type,*c.scene,c.messageUser,c.message);};
+ s.enemyBelong=[](void* self,uint32_t u){const auto raw=static_cast<Context*>(self)->p->byte(u+0xc);const auto side=raw<128?int32_t(raw):int32_t(raw)-256;return side==0?1:side==1?0:side;};
+ s.belong=[](void* self,uint32_t u){return int32_t(static_cast<Context*>(self)->p->byte(u+0xc));};
+ s.sample=[](void* self,uint32_t buffer,uint32_t w,int32_t actor,int32_t enemy,uint32_t admission,uint32_t attributes,int32_t direction){auto& p=*static_cast<Context*>(self)->p;samplePackedBattleCandidates({nativeBattleActorServices(p.vm),buffer},w,actor,enemy,admission,attributes,direction,nativeBattleSamplingServices(p.vm));return true;};
+ const auto decided=decidePackedBattleWeapon(Battle,scene.weaponMenuType,index,s);if(!decided)return false;
+ scene.weaponTargets.clear();const auto buffer=Battle+0x428;const auto rawCount=byte(buffer+0xa6c);const int32_t count=rawCount<128?int32_t(rawCount):int32_t(rawCount)-256;
+ for(int32_t j=0;j<count;++j){const auto raw=byte(buffer+0xa6d+uint32_t(j));const int32_t permutation=raw<128?int32_t(raw):int32_t(raw)-256;const auto row=buffer+4+36*uint32_t(permutation);uint16_t unit=0,part=0;if(!vm.memory.readHalf(row,unit) || !vm.memory.readHalf(row+2,part))std::abort();scene.weaponTargets.push_back({unit<32768?int32_t(unit):int32_t(unit)-65536,part<32768?int32_t(part):int32_t(part)-65536});}
+ return true;
+}
+
 }

@@ -1103,3 +1103,8 @@ target_compile_options(opening_house_pcm_native_stub_tests PRIVATE -UNDEBUG)
 add_test(NAME opening_house_pcm_native_stub COMMAND opening_house_pcm_native_stub_tests)
 
 target_sources(ttyd_core PRIVATE source/battle/harbor_tutorial_menu.cpp)
+
+target_sources(ttyd_core PRIVATE source/battle/battle_weapon_menu_decision.cpp)
+add_executable(battle_weapon_menu_decision_tests tests/battle_weapon_menu_decision_tests.cpp)
+target_link_libraries(battle_weapon_menu_decision_tests PRIVATE ttyd_core)
+add_test(NAME battle_weapon_menu_decision COMMAND battle_weapon_menu_decision_tests)
