@@ -1,3 +1,37 @@
+## 2026-10-14 — Original weapon rows, eligibility and party domain
+
+Committed `3b5c7bd`: shared complete local weapon-table builder, target-count
+wrapper and eligibility updater. It emits original Jump/Hammer/badge/inventory/
+Special rows and delegates party key1 through its real callback/count-address
+protocol. Private cursor/count cells, partial descriptors, untouched padding,
+late tutorial override, original name/icon order, empty/dummy rows, signed
+levels/items/counts, wrapped cursor correction and fresh owner/pointer reads
+follow source contracts. Unbound party/update/sample providers retain explicit
+port boundaries; no fabricated labels, party rows or success values.
+
+Native launch correction: Goombella uses party domain6/cursor4c8 instead of
+Item domain2/cursor51c; Hammer uses its4bc cursor instead of Jump4b0. Physical
+navigation/cancellation and original labels/icons stay unchanged. Live Headbonk
+checks domain6 and source attack-class count16f55. Generated source tables still
+need real native providers and tutorial menu/input integration; this library
+is not a completed tutorial menu or gameplay substitute.
+
+Validation: shared make test passed224/224 C++ and138/138 Python tests. Final
+focused builder/trio tests passed2/2 after a store-order fix and mutation fixture;
+native make all passed/rebuilt 3DSX. Existing read-only ISO verifiers passed
+10 bodies/52 data spans/894 builder anchors and20 menu/target bodies/344 anchors.
+Tests cover private count mutation, empty/negative cursor preservation, signed
+inventory, live levels/captured Special mask, late replacement presentation,
+item-pointer read after ordinal/ID stores, captured eligibility count and raw
+side addressing into a private target buffer. No Azahar/Dolphin run; no new
+game payload or conversion. Scoped commits preserve concurrent gauge/audio/
+rendering work. A fixture callback return type was corrected before final checks.
+
+Next: real source table/party/cost/sampling/message providers in native runtime;
+original tutorial class/submenu/input/selection, player action and turn ownership;
+source camera, window/effect/audio/audience consumers and physical alternatives
+to optional lower-screen audience taps. Full tutorial/battle goal stays active.
+
 ## 2026-10-14 — Source state6 registration and status-window arbitration
 
 Committed `9a5e83c`: native player command launch and enemy action state6 now
