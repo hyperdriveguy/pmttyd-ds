@@ -37,13 +37,22 @@ Filed by the native overworld implementation session, 2026-10-12, as one of the 
   Three biased shift channels, target/height gates, owner snapshots, expiration
   arithmetic and heading flag/cache pinned; room framing remains open.
 
-- [ ] Ordinary room camera tracking/limits, authored events and height changes;
-  native fixed framing/.07 smoothing remains provisional.
-- [ ] Camera tracking/yaw/screen projection recovery to replace fixed framing/
+- [ ] Authored camera-road **limits**, authored-event admission and room height
+  changes; native fixed framing/.07 smoothing stays provisional until that
+  service is reconstructed. *(Partial: zone selection, authored curves, eye/at
+  construction and the event/dolly/interpolation consumers are delivered; the
+  lifecycle contract itself still reports "authored camera-road zone/curve
+  selection and limits remain unclosed".)*
+- [x] Camera tracking/yaw/screen projection recovery to replace fixed framing/
   .07 smoothing/default on-screen assumptions — re-requested alongside the
-  Rogueport roads binding, whose verbatim paragraph is kept in
-  [OW-ROAD-01](OW-ROAD-01.md).
-- [ ] Camera/control projection owners, which the same delivery leaves unbound.
+  Rogueport roads binding (kept verbatim in [OW-ROAD-01](OW-ROAD-01.md)) and
+  answered by the [camera lifecycle/projection](../behavior/camera/OVERWORLD_CAMERA_LIFECYCLE_AND_PROJECTION.md)
+  contract, which closes ordinary field camera lifecycle, player target/follow,
+  input yaw and screen-cache composition.
+- [x] Camera/control projection owners — answered by the same lifecycle/
+  projection contract and its evidence manifest (all 75 gor_00–04 EVT camera
+  owners, 332 camera calls and the five original camera containers pinned;
+  verifier `tools/verify_overworld_camera.py`).
 
 ## Request text (verbatim)
 
@@ -53,8 +62,25 @@ Filed by the native overworld implementation session, 2026-10-12, as one of the 
 ## Answers and delivery notes (append-only history)
 
 The camera recovery follow-up arrived inside the Rogueport roads delivery note;
-it is preserved verbatim there ([OW-ROAD-01](OW-ROAD-01.md)). No camera contract
-has been delivered yet.
+it is preserved verbatim there ([OW-ROAD-01](OW-ROAD-01.md)).
+
+Camera contract delivery (2026-10-12): the request was filed at 12:04 and the
+first contract landed at 14:06 (`cd25466`), followed by
+[lifecycle/projection](../behavior/camera/OVERWORLD_CAMERA_LIFECYCLE_AND_PROJECTION.md),
+[container](../behavior/camera/OVERWORLD_CAMERA_CONTAINER.md),
+[straight paths](../behavior/camera/OVERWORLD_CAMERA_STRAIGHT_PATHS.md),
+[zone triangles](../behavior/camera/OVERWORLD_CAMERA_ZONE_TRIANGLES.md),
+[road state](../behavior/camera/OVERWORLD_CAMERA_ROAD_STATE.md),
+[road transitions](../behavior/camera/OVERWORLD_CAMERA_ROAD_TRANSITIONS.md),
+[dolly/event blends](../behavior/camera/OVERWORLD_CAMERA_DOLLY_AND_EVENT_BLENDS.md),
+[interpolation/timer domain](../behavior/camera/OVERWORLD_CAMERA_INTERPOLATION_AND_TIMER_DOMAIN.md),
+[authored segment dispatch](../behavior/camera/OVERWORLD_CAMERA_AUTHORED_SEGMENT_DISPATCH.md),
+[map lifetime](../behavior/camera/OVERWORLD_CAMERA_MAP_LIFETIME_AND_DUPLICATES.md),
+[moving shift correction](../behavior/camera/OVERWORLD_CAMERA_MOVING_SHIFT_CORRECTION.md)
+and [collision target/shift](../behavior/camera/OVERWORLD_CAMERA_COLLISION_TARGET_AND_SHIFT.md).
+Tracking, input yaw and screen projection are therefore closed; the lifecycle
+contract's own remainder (authored zone/curve limits) stays open above. These
+camera deliveries are not yet registered in the [delivery log](DELIVERY_LOG.md).
 
 ## 2026-10-13 — Complete local Mario camera shifts and update controls
 

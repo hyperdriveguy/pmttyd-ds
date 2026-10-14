@@ -16,13 +16,19 @@ Filed by the native overworld implementation session, 2026-10-12, as one of the 
   provisionally suppress the outer display subtree while entered; replace
   this adapter with the recovered source fade and restoration behavior.
 
-- [ ] Actual Rogueport road event trigger shapes/directions/conditions, story
-  gates, arrival/departure camera and party ownership, and door/pipe/event
-  transitions. Native distance<.7 and toward-marker dot gate, cooldown60 and
-  reciprocal endpoint extrapolation need shipped caller/input bindings.
-- [ ] Exact node contacts and source registration attribute overlays must
+- [ ] Arrival/departure camera and party ownership plus the EVT scheduling that
+  binds the shipped caller/input. *(Partial: trigger shapes, conditions, story
+  gates and door/pipe/event transitions are delivered by the
+  [roads contract](../behavior/overworld/OVERWORLD_ROGUEPORT_ROADS.md); exact
+  contact identity replaced the `distance<.7`/dot-gate/cooldown60/
+  reciprocal-extrapolation guesses.)*
+- [x] Exact node contacts and source registration attribute overlays must
   replace radius/dot/cooldown guesses; preserve documented story callbacks and
-  distinguish the station north train door from an ordinary road.
+  distinguish the station north train door from an ordinary road — answered by
+  the [Rogueport roads contract](../behavior/overworld/OVERWORLD_ROGUEPORT_ROADS.md)
+  (delivered `2f88fc4`, 2026-10-12 13:39; node/attribute table, story5/6/7
+  travel exclusions and the separate gated station-north train door; verifier
+  `tools/verify_overworld_roads.py`).
 - [ ] Dynamic NPC/block classification, special attributes/modes, original
   numeric services and source execution traces remain unbound.
 

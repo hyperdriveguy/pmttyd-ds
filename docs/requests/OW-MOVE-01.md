@@ -5,21 +5,40 @@ Filed by the native overworld implementation session, 2026-10-12, and moved here
 
 ## Open todos
 
-- [ ] Complete idle/walk/dash jump/transform/threshold arbitration, including
-  multiple surviving motion requests in one dispatcher invocation. Breadcrumbs:
+- [x] Plain idle/walk/dash jump/threshold arbitration, including multiple
+  surviving motion requests in one dispatcher invocation — answered by the
+  [ordinary motion arbitration](../behavior/overworld/OVERWORLD_MOTION_ARBITRATION.md)
+  contract (bounded plain0/1/2 domain, nine source-derived callback paths,
+  derived four-callback domain bound; see the history section below).
+- [ ] Transform/external-motion arbitration (`marioChkTransform80092624`) and
+  the dispatcher tails outside that plain domain. Breadcrumbs:
   mot_stay800a7120→800a71a8; mot_walk80087bf8→80087c4c; marioChkJump80092814;
   marioChkTransform80092624; marioMotion8009461c/marioChgMot8009455c.
-- [ ] Complete input producer stick clamp/deadzone and native signed-axis adapter
-  domain. Breadcrumbs: marioUpdateKeyData80095cb0, marioGetStick80095af8 and
-  GP+13b8/13bc, physical PAD service documentation. Native .15 radial deadzone
-  is provisional and is not documented by these field consumers.
+- [ ] Complete input producer stick clamp/deadzone and native signed-axis
+  adapter domain. Breadcrumbs: marioUpdateKeyData80095cb0, marioGetStick80095af8
+  and GP+13b8/13bc, physical PAD service documentation. Native .15 radial
+  deadzone is provisional and is not documented by these field consumers.
+  *(Partial: the `marioUpdateKeyData` body is delivered
+  ([key-data publication](../behavior/overworld/OVERWORLD_MARIO_KEY_DATA_UPDATE.md)
+  — six GP pad bytes, per-flag zeroing, **no** local deadzone) and the global
+  producer is delivered
+  ([physical producer](../behavior/input/PHYSICAL_INPUT_PRODUCER.md); the
+  arbitration contract states that SDK producer clamping/deadzone and native
+  Circle Pad quantization "remain separate adapter boundaries", so PADRead/
+  PADClamp effects and the signed-axis adapter stay open.)*
+- [x] Landing/reentry ownership — answered by the
+  [ordinary airborne/landing contract](../behavior/overworld/OVERWORLD_AIRBORNE_AND_LANDING.md)
+  (landing tuple/angle/node ownership, authoritative D=V/V=V landing, late
+  ground dispatch; delivered `35f82d8` with `a4df746`/`ce29235` addenda and
+  recorded under [OW-SUPPORT-01](OW-SUPPORT-01.md)).
 - [ ] Airborne wall deflection and floor/slope movement-rate composition.
   Breadcrumbs: marioMoveMain800594a8 calls marioGetMoveRate800969a4 then
   marioCheckWall8008b790; special flag paths and angle/speed writes need all
   owners.
-- [ ] Full ledge-loss, landing/reentry, external motion, movement badge0x143,
-  Paper/background modes, conveyors and additive velocity producers. Local
-  motion leaves alone do not establish all persistent storage owners.
+- [ ] Full ledge-loss, external motion, movement badge0x143, Paper/background
+  modes, conveyors and additive velocity producers. Local motion leaves alone
+  do not establish all persistent storage owners. *(The landing/reentry half of
+  this item is now answered — see the landing/reentry todo above.)*
 - [ ] Original isolated Dolphin traces: stable walk/dash launch, neutral release,
   opposite/orthogonal air input, idle launch, threshold crossing+jump, wall hit,
   slope and ledge loss. Record original revision/controller/input timestamps and

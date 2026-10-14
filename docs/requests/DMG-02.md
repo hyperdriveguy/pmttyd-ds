@@ -10,9 +10,15 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   original `belong` getter needs closure.
 - [ ] Concrete boss/Mario/partner part attributes, kind `9c/a0/a4/a8` sound
   pointers and the original effect/macro resources.
-- [ ] Action-record `AddCount`/`AddPoint` saturation and storage, audience
-  helper state/RNG effects, hit-event dispatch inputs and all reachable
-  death/revival/recovery scripts.
+- [x] Action-record `AddCount`/`AddPoint` saturation and storage — answered
+  ([byte updates](../behavior/battle/BATTLE_ACTION_RECORD_BYTE_UPDATES.md) and
+  [turn rules](../behavior/battle/BATTLE_ACTION_RECORD_TURN_RULES.md);
+  delivery-log row `Action-record saturation/storage and turn-rule judgment`,
+  documentation agent ID2: complete `AddCount` 0x8018f990/`AddPoint`
+  0x8018f96c bodies, guard/narrow-store-before-cap, ordered count/point call
+  sequences and 34 direct DOL sites).
+- [ ] Audience helper state/RNG effects, hit-event dispatch inputs and all
+  reachable death/revival/recovery scripts.
 - [ ] Shared FP owner lookup/update reconstruction and pouch/item151
   consumption (no invented revival).
 - [ ] Exact numerical/rounding and position-query/service request order with

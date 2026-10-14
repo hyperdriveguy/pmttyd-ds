@@ -5,8 +5,11 @@ Filed by the native overworld implementation session, 2026-10-12, and moved here
 
 ## Open todos
 
-- [ ] Exact original triangle/math/traversal/aliasing and exceptional delta
-  domains.
+- [x] Traversal-ordering half of the triangle/math/traversal/aliasing domain —
+  answered by the [hit-vector traversal order](../behavior/battle/BATTLE_HIT_VEC_TRAVERSAL_ORDER.md)
+  contract, which also resolves `hitVec` as an alias of the partially contracted
+  `hitCheckVecFilter`.
+- [ ] Triangle-interior float math, aliasing and exceptional delta domains.
 - [ ] SDK/camera/vertical writers.
 - [ ] Dynamic surfaces/attributes/force/root matrices.
 - [ ] Special modes/poses/sounds/hazards.

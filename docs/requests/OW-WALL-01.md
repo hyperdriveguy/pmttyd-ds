@@ -5,12 +5,18 @@ Filed by the native overworld implementation session, 2026-10-12, and moved here
 
 ## Open todos
 
-- [ ] Full `hitCheckVecFilter`/triangle intersection and query traversal
-  ordering, floating-point exceptional boundaries and scene/native registry
-  identity.
+- [x] Query traversal ordering of `hitCheckVecFilter` — half answered by the
+  [hit-vector traversal order](../behavior/battle/BATTLE_HIT_VEC_TRAVERSAL_ORDER.md)
+  contract (region/loop/call skeleton, all 49 `bl` targets resolved, ISO-read
+  SDA values, NaN-safe gate patterns).
+- [ ] Triangle-intersection float math inside `hitCheckVecFilter`,
+  floating-point exceptional boundaries and scene/native registry identity —
+  the traversal contract's own stated remainder.
 - [ ] +14 view flag writers (direction8/2), dynamic NPC hidden-block owner
   resolution, balloon contact selection and remaining wall-contact counter/field
-  consumers.
+  consumers. *(Partial: the wall contract already pins the view8/2 direction
+  count and wrapper pass-through/contact/counter ownership; the writers and the
+  hidden-owner/balloon owners remain open.)*
 - [ ] Vivian/roll/Paper/motion25/26/28, map-specific bypass/stationary stage and
   dou10_yoko_yari hazard-helper execution/reachability.
 - [ ] Original isolated collision traces: oblique walls, approach corners,8/2
@@ -66,3 +72,13 @@ current full make test passes29 CTest suites,including core and field_wall,
 plus58 Python tests. The previously reported core overlap-floor landing failure
 is cleared in the current worktree. Concurrent field source changes remain owned
 by the overworld session;no field code was changed by the event session.
+
+Delivery (2026-10-12, `3a80648`): the traversal-ordering half of the remaining
+request was answered by
+[hit-vector traversal order](../behavior/battle/BATTLE_HIT_VEC_TRAVERSAL_ORDER.md)
+— full `hitCheckVecFilter` 0x800158a4 region/loop/call skeleton, all 49 `bl`
+targets resolved, ISO-read SDA values and NaN-safe gate patterns. Triangle
+interiors, chunk ownership and callback identity stay open, as does the
+`BATTLE_HIT_CHECK_FILTER` marshal contract's relation to the remaining
+`+14`/hidden-owner/balloon consumers. The open todos above are split
+accordingly.
