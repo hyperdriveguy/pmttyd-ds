@@ -2,6 +2,50 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Retained original three-window item selector owner
+
+Feature4cc7402 binds explicit-table template0 lifecycle in an area-independent
+portable owner: original list/header/help rectangles, duplicate rows, per-slot
+sequence/main/deferred-display registration order, A-before-B, close-before-ready,
+index retention and ready-only deletion. Pure draw requests retain source
+clipping/easing, distinct name/icon color services, outlined heading, low16
+centering, header post-draw mutation, mutable font palette and exact help paging/
+icons. Source refresh/interpolation/sound/status/font/input remain injected
+services. See [native owner](behavior/message/NATIVE_ITEM_TABLE_SELECTION_OWNER.md)
+and [draw requests](behavior/message/ITEM_TABLE_SELECTION_DRAW_REQUESTS.md).
+
+Delegated source recovery now covers
+[window-font consumers](behavior/message/WINDOW_FONT_STRING_AND_MESSAGE_CONSUMERS.md),
+including outlined string versus message consumers and destructive embedded-icon
+font resets. The six original US strings used by quest95/107 have no tags; both
+descriptions have one LF, hence two help lines. Existing native glyph metrics
+retain patched source WID1 widths; read-only US startup evidence sets original GP+16c to1, selecting
+spacing2 and single-byte mapping. Broader mutable-font/config lifetime remains
+a separate service. No dialogue rewrite or asset conversion was added.
+
+Validation: isolated source snapshot audited byte-for-byte against1248919, then
+applied only this owner/tests/contracts/CMake/index additions. Its make test
+passed167 CTest/110 Python (/tmp/item-selection-runtime-isolated-test.log),
+and make all passed (/tmp/item-selection-runtime-isolated-native.log). Shared
+make all also passed after fixing ARM int32_t/std::max type deduction
+(/tmp/item-selection-runtime-checked-native.log). Shared make test final rerun
+failed linking field_wall_tests with undefined main
+(/tmp/item-selection-runtime-checked-test.log); current source and object both
+contain main. Shared build output is not counted as a final passing test;
+isolated validation distinguishes this feature from concurrent source/build
+changes. Independent two-pass read-only source review found no lifecycle or
+scoped draw arithmetic mismatch after API clarification. Link audit passed994
+Markdown files/zero broken links; diff check passed. No new native selector
+capture or hardware benchmark: its display/event binding is still unbound.
+
+Next: implement original plain window-font GPU drawing and deferred native
+list/header/help rendering using the recovered consumers, source configuration/
+spacing and existing original texture/icon packs. Bind manager-slot allocation,
+physical repeat/GP cadence/status/audio and original event key ownership. Then
+execute Goomba4 quest95/107 messages/branches with original pouch removal and
+persistent switch writes; legacy unknown state must stay unknown. Full selector,
+quest, hardware performance and full-game goals remain open.
+
 ## 2026-10-13 — First-demo inbox: notice/pipe flags and save mapping
 
 Prioritized new DEMO-01/GSF-01 opening-demo requests. [Flag contract](behavior/story/OPENING_GSF_NOTICE_PIPE_AND_SAVE_STORAGE.md)

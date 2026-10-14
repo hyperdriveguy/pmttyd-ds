@@ -641,3 +641,17 @@ alpha and all nine quads are retained; the original panel texture is reused.
 Full selector list/header/help/scissor, manager/input/event/inventory ownership
 and Goomba4 quest branches remain unbound. This delivers a rendering component
 and does not close OW-INTERACT-01 or establish Dolphin/New2DS raster/performance.
+
+### 2026-10-13 — Retained selector owner and window-font used path
+
+[Native retained owner](../behavior/message/NATIVE_ITEM_TABLE_SELECTION_OWNER.md)
+now binds template0 traversal/result retention and source-space draw plans.
+[Exact draw requests](../behavior/message/ITEM_TABLE_SELECTION_DRAW_REQUESTS.md)
+and [font consumers](../behavior/message/WINDOW_FONT_STRING_AND_MESSAGE_CONSUMERS.md)
+recover outlined heading/string, row/header matrix-message, help direct-message,
+source width/spacing/edge/icon/reset dependencies. Quest95/107's six original
+US strings are plain and descriptions have two lines, so their actual used
+font path can bind while broader font services remain open. Full native
+rendering/manager/input/event/pouch/switch binding and matched raster/hardware
+performance remain OPEN. Read-only US startup now pins GP+16c=1 and spacing2; please finish
+its broader read/write lifetime and live palette/font mutations.

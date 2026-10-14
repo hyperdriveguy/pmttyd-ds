@@ -712,3 +712,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Used awakening and prologue event owners](story/NATIVE_OPENING_AWAKENING.md)
 
 - [Native retained explicit-table selector owner](message/NATIVE_ITEM_TABLE_SELECTION_OWNER.md) and [original draw requests](message/ITEM_TABLE_SELECTION_DRAW_REQUESTS.md).
+
+- [Window font string/message consumers](message/WINDOW_FONT_STRING_AND_MESSAGE_CONSUMERS.md): source scanner, edge/icon/reset requests and explicit quest text census.
