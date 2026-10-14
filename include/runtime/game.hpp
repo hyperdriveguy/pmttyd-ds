@@ -3,6 +3,7 @@
 #include "goomba_hand_in.hpp"
 #include "goomba_acquisition.hpp"
 #include "field_item_mario.hpp"
+#include "mario_motion_sfx.hpp"
 #include "field_party.hpp"
 #include <array>
 #include <cstdint>
@@ -299,6 +300,8 @@ public:
     bool fieldNpcTalkActive() const {return goombaAcquisition.active() || goombaHandIn.active() || fieldActorTalk.message.active();}
     // Bind only after native providers are ready; registry/pouch owners remain Game-owned.
     void bindFieldItemGetPresentation(const FieldItemGetServices& services) {fieldItemGetPresentation=services;}
+    MarioMotionSfx& fieldMarioSoundHandles() {return marioMotionSounds;}
+    const MarioMotionSfx& fieldMarioSoundHandles() const {return marioMotionSounds;}
     void bindFieldItemMarioPost(const FieldItemMarioPost& post) {fieldItemMarioPost=post;}
     bool applyFieldItemMarioRequest(ItemGetRequest);
     unsigned fieldMarioMotion() const {return fieldJump.motion;}
@@ -316,6 +319,7 @@ private:
     FieldItemRegistry fieldItemRegistry;
     FieldItemGetServices fieldItemGetPresentation{};
     FieldItemMarioPost fieldItemMarioPost{};
+    MarioMotionSfx marioMotionSounds;
     bool fieldNpcTalkCandidateAlive() const;
     uint32_t npcTalkCandidate=0;
     uint32_t npcTalkPending=0;

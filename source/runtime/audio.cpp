@@ -199,6 +199,7 @@ void Audio::updateFrontend(const OpeningTitle& title,bool enabled){
     const auto snapshot=title.bgm.snapshot();frontendMusic(snapshot.tracks,snapshot.volumes);
 }
 void Audio::shutdown() {
+    fieldSfxBackend.clear();fieldMarioOwner=nullptr;
     if(ready)ndspSetCallback(nullptr,nullptr);
     musicWorkerRun.store(false,std::memory_order_release);
     if(musicThread){LightEvent_Signal(&musicWake);threadJoin(musicThread,U64_MAX);threadFree(musicThread);musicThread=nullptr;}

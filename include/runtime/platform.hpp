@@ -1,4 +1,5 @@
 #pragma once
+#include "field_sfx_ndsp.hpp"
 #include <atomic>
 #include "item_get_windows.hpp"
 #include "field_bgm_envelope.hpp"
@@ -309,6 +310,9 @@ class Audio {
 public:
     bool init();
     void play(const Game& game);
+    void bindFieldMarioMotion(Game&);
+    FieldSfxNdsp& fieldSfxVoices() {return fieldSfxBackend;}
+    bool fieldMarioPostReady(unsigned previousMotion) const;
     void update(Scene scene, bool enabled,bool harborDanger=false,int professorMusic=0,uint32_t room=0,bool thinking=false);
     void updateFrontend(int track,bool enabled);
     void updateFrontend(const OpeningDemo&,bool enabled);
@@ -330,6 +334,7 @@ public:
     bool resumeItemGetFieldMusic(int32_t gpRate); // Original Ona0,NULL/1000ms and synchronous BGMMain.
 
 private:
+    FieldSfxNdsp fieldSfxBackend;Game* fieldMarioOwner=nullptr;
     bool ready=false,titleResourceAttempted=false,titleResourceReady=false;
     OpeningHousePcmPlayer openingHousePcm;
     struct Clip { int16_t* data=nullptr; uint32_t samples=0; ndspWaveBuf wave{}; };
