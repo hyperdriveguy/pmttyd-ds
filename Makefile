@@ -43,6 +43,8 @@ DATA		:=	data
 INCLUDES	:=	include
 GRAPHICS	:=	gfx
 GFXBUILD	:=	$(BUILD)
+SOUNDTRACK ?= switch
+SWITCH_AUDIO_LIBRARY ?= local-assets/switch/audio
 ROMFS		:=	romfs
 #GFXBUILD	:=	$(ROMFS)/gfx
 
@@ -226,6 +228,8 @@ assets-ready:
 	@python3 tools/item_presentation_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
 	@python3 tools/field_actor_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
 	@python3 tools/audio_map.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)" --output local-assets/audio-map/native --romfs romfs
+
+	@python3 tools/switch_soundtrack.py --soundtrack "$(SOUNDTRACK)" --library "$(SWITCH_AUDIO_LIBRARY)" --output romfs
 
 $(BUILD):
 	@mkdir -p $@

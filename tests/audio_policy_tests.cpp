@@ -12,6 +12,26 @@ int main() {
     assert(audioTrack(Scene::Battle,true)==1);assert(audioTrack(Scene::Victory,true)==2);
     assert(audioTrack(Scene::Defeat,true)==-1);assert(audioTrack(Scene::FieldDefeat,true)==-1);
     assert(audioTrack(Scene::Battle,false)==-1);
+    for(uint32_t room=0;room<6;++room) {
+        constexpr int districts[]={0,13,14,15,16,11};
+        assert(soundtrackTrack(Scene::Explore,true,false,0,room,false,true)==districts[room]);
+        assert(soundtrackTrack(Scene::Dialogue,true,false,0,room,false,true)==districts[room]);
+        assert(soundtrackTrack(Scene::Explore,true,false,0,room,false,false)==(room==5?11:0));
+        assert(soundtrackTrack(Scene::Explore,true,true,0,room,false,true)==3);
+        assert(soundtrackTrack(Scene::Explore,false,true,1,room,false,true)==-1);
+    }
+    assert(soundtrackTrack(Scene::Battle,true,false,0,0,true,true)==17);
+    assert(soundtrackTrack(Scene::Battle,true,false,0,0,false,true)==1);
+    assert(soundtrackTrack(Scene::Battle,true,false,0,0,true,false)==1);
+    assert(soundtrackTrack(Scene::Victory,true,false,0,0,true,true)==2);
+    assert(soundtrackTrack(Scene::Explore,true,false,1,2,false,true)==10);
+    assert(soundtrackTrack(Scene::Explore,true,false,-1,2,false,true)==-1);
+    assert(soundtrackTrack(Scene::Explore,true,false,0,99,false,true)==0);
+    assert(soundtrackTrack(Scene::Defeat,true,false,0,0,true,true)==-1);
+    assert(!musicAssetPath(-1,true) && !musicAssetPath(18,true));
+    assert(std::strcmp(musicAssetPath(4,true),"romfs:/soundtrack-switch/title.wav")==0);
+    assert(std::strcmp(musicAssetPath(14,false),"romfs:/rogueport.wav")==0);
+    assert(std::strcmp(musicAssetPath(17,false),"romfs:/battle.wav")==0);
     std::array<unsigned char,44> raw{};
     auto u16=[&](int o,unsigned v){raw[o]=v;raw[o+1]=v>>8;};
     auto u32=[&](int o,unsigned v){for(int n=0;n<4;++n)raw[o+n]=v>>(8*n);};

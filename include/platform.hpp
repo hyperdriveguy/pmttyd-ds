@@ -222,7 +222,7 @@ class Audio {
 public:
     bool init();
     void play(const Game& game);
-    void update(Scene scene, bool enabled,bool harborDanger=false,int professorMusic=0,uint32_t room=0);
+    void update(Scene scene, bool enabled,bool harborDanger=false,int professorMusic=0,uint32_t room=0,bool thinking=false);
     void updateFrontend(int track,bool enabled);
     void updateFrontend(const OpeningDemo&,bool enabled);
     void updateFrontend(const OpeningTitle&,bool enabled);
@@ -245,6 +245,7 @@ private:
     MusicStream music[3];
     unsigned musicSlot=0;
     int musicTrack=-1;
+    bool switchSoundtrack=false;
     int16_t* streamData=nullptr;
     void stopMusic(unsigned slot);
     void switchTrack(int track,bool preservePrevious=false);

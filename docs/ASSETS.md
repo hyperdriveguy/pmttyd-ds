@@ -1406,3 +1406,22 @@ ENV scheduler remain unbound. No substitute bird loop, generated art or tone
 is added. See [sound contract](behavior/audio/NATIVE_OPENING_HOUSE_SOUNDS.md).
 Original resources retain Nintendo/Intelligent Systems copyright; local use
 only without redistribution rights. Extracted/compiled assets stay outside history.
+
+## Native Switch soundtrack pack (2026-10-13)
+
+Default `make all` uses the existing verified Switch1.0.0 decoded library at
+`local-assets/switch/audio/manifest.json` and `pcm/stream/`. The18 exact sound
+names/aliases live in [bindings](../config/switch_soundtrack.json); generated
+`romfs/soundtrack-switch/manifest.json` retains source paths/hashes, sound IDs,
+PCM hashes/rates/channels/frame counts and BFSAR loop intervals per track.
+The packager verifies all selected PCM hashes and loop sidecars before copying
+unchanged canonical PCM16 WAVs. There is no resampling, normalization, added
+fade or generated replacement. Runtime streams original48k stereo through NDSP;
+district/Think selection is a [native adapter](behavior/audio/NATIVE_SWITCH_SOUNDTRACK.md),
+not recovered Switch event routing. GameCube primary/house SFX stay active.
+`SOUNDTRACK=gamecube` removes only the Switch pack/selection marker.
+
+Original streams are Nintendo/Intelligent Systems copyright. Local extraction
+and conversion grant no redistribution license. The source library, generated
+pack/manifest and compiled3DSX stay outside history; no ISO/NSP is committed or
+modified. Decoder provenance/license remains in [Switch audio assets](switch/AUDIO_ASSETS.md).

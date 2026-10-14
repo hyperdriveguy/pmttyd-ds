@@ -688,3 +688,6 @@ Opening movement: [original Parakarry glide](story/NATIVE_OPENING_NPC_GLIDE.md).
 - [Field party current-index selection and entry gate](partner/FIELD_PARTY_CURRENT_INDEX_SELECTION.md): primary/auxiliary live pointer lookup, word0 mask8 exclusion and canonical pouch unlock before destructive construction.
 
 Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENING_HOUSE_SOUNDS.md).
+
+The [native Switch soundtrack adapter](audio/NATIVE_SWITCH_SOUNDTRACK.md) is
+an explicit asset/presentation adaptation, outside recovered US behavior.

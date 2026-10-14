@@ -20,7 +20,7 @@ bool Audio::frontendTrackReady(int track) {
     if(track!=4)return ready && music[musicSlot].file && music[musicSlot].track==track;
     if(titleResourceAttempted)return titleResourceReady;
     titleResourceAttempted=true;
-    FILE* file=std::fopen("romfs:/title.wav","rb");
+    FILE* file=std::fopen(musicAssetPath(4,switchSoundtrack),"rb");
     if(!file)return false;
     PcmHeader pcm;
     if(readHeader(file,pcm) && pcm.frames && std::fseek(file,0,SEEK_END)==0){
@@ -30,6 +30,8 @@ bool Audio::frontendTrackReady(int track) {
     std::fclose(file);return titleResourceReady;
 }
 bool Audio::init() {
+    FILE* selection=std::fopen("romfs:/soundtrack-switch.bin","rb");
+    if(selection){char magic[4]{};switchSoundtrack=std::fread(magic,1,4,selection)==4 && !std::memcmp(magic,"SWM1",4);std::fclose(selection);}
     if(R_FAILED(ndspInit())) return false;
     ready=true;ndspSetOutputMode(NDSP_OUTPUT_STEREO);
     streamData=(int16_t*)linearAlloc(StreamFrames*2*3*3*2);
@@ -98,14 +100,14 @@ void Audio::switchTrack(int track,bool preservePrevious) {
 void Audio::startMusic(unsigned slot,int track){
     auto& stream=music[slot];
     stream.track=track;stream.position=0;stream.ended=false;stream.loop=false;
-    const char* names[]={"rogueport","battle","victory","harbor-danger","title","demo-book","demo-market","opening-house","opening-voyage","opening-sailing","professor-music","underground-music","harbor-tutorial-music"};
-    if(track<0 || track>=int(sizeof(names)/sizeof(names[0])))return;
-    char path[96];std::snprintf(path,sizeof(path),"romfs:/%s.wav",names[track]);stream.file=std::fopen(path,"rb");
+    const char* asset=musicAssetPath(track,switchSoundtrack);
+    if(!asset)return;
+    char path[128];stream.file=std::fopen(asset,"rb");
     if(!stream.file)return;
     PcmHeader pcm;
     if(!readHeader(stream.file,pcm)) {std::fclose(stream.file);stream.file=nullptr;return;}
     stream.channels=pcm.channels;stream.rate=pcm.rate;stream.loopStart=0;stream.loopEnd=pcm.frames;
-    std::snprintf(path,sizeof(path),"romfs:/%s.wav.loop",names[track]);FILE* loop=std::fopen(path,"rb");
+    std::snprintf(path,sizeof(path),"%s.loop",asset);FILE* loop=std::fopen(path,"rb");
     if(loop) {
         uint32_t points[2];
         if(std::fread(points,4,2,loop)==2 && points[0]<points[1] && points[1]<=stream.loopEnd) {
@@ -138,11 +140,9 @@ void Audio::fill(MusicStream& stream,unsigned slot,ndspWaveBuf& buffer) {
     DSP_FlushDataCache(buffer.data_pcm16,filled*stream.channels*2);ndspChnWaveBufAdd(MusicChannels[slot],&buffer);
 }
 void Audio::serviceMusic(){for(unsigned slot=0;slot<3;++slot)for(auto& buffer:music[slot].buffers)if(buffer.status==NDSP_WBUF_DONE)fill(music[slot],slot,buffer);}
-void Audio::update(Scene scene,bool enabled,bool harborDanger,int professorMusic,uint32_t room) {
+void Audio::update(Scene scene,bool enabled,bool harborDanger,int professorMusic,uint32_t room,bool thinking) {
     if(!ready)return;
-    int wanted=enabled && harborDanger && (scene==Scene::Explore || scene==Scene::Dialogue)?3:audioTrack(scene,enabled);
-    if(enabled && room==5 && (scene==Scene::Explore || scene==Scene::Dialogue))wanted=11;
-    if(enabled && professorMusic)wanted=professorMusic<0?-1:10;
+    int wanted=soundtrackTrack(scene,enabled,harborDanger,professorMusic,room,thinking,switchSoundtrack);
     if(wanted!=musicTrack)switchTrack(wanted);
     if(!enabled)for(int n=0;n<8;++n)ndspChnWaveBufClear(n+2);
     serviceMusic();

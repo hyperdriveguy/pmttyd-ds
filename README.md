@@ -1,8 +1,9 @@
 # Paper Mario: TTYD — New 2DS XL prototype
 
 A native homebrew remake in development. The current slice uses original
-Rogueport geometry/textures, original ordinary Mario and Goombella animations, other character idle poses, and original music
-converted locally from your US GameCube ISO. It includes five connected Rogueport outdoor rooms, exploration, dialogue,
+Rogueport geometry/textures, original ordinary Mario and Goombella animations, other character idle poses, and locally converted Switch soundtrack arrangements.
+Geometry, dialogue and sound-effect samples continue to use your US GameCube ISO.
+It includes five connected Rogueport outdoor rooms, exploration, dialogue,
 a small Crump battle harness, touch menus and versioned saves.
 
 The underground trio executes original attacks, enemy turns, wing fall and
@@ -105,7 +106,8 @@ GameCube-based; they are not verified Switch implementations.
 ## Build and run
 
 Installed dependencies: devkitARM, libctru, citro3d, citro2d, tex3ds and picasso.
-Host asset tools require Python 3, Pillow and NumPy. Host tests require CMake and
+Host asset tools require Python 3, Pillow and NumPy. The default soundtrack also
+requires the decoded local Switch library described below. Host tests require CMake and
 a native C++17 compiler. The local ISO is required at build time only.
 
 ```sh
@@ -150,22 +152,31 @@ then converts the streams and all 1,247 bank samples into the ignored
 are retained in PCM16 WAVs with `.wav.loop` sidecars; the library manifest records
 source paths, hashes and sample IDs. An alternate ISO can be supplied with
 `TTYD_ISO=/path/to/G8ME01.iso make audio-assets`. The full library stays outside
-RomFS; the current slice still packages its three selected music tracks.
+RomFS; the current slice packages selected tracks separately.
 Bank WAVs are named `pmario-<four-digit-hex-ID>.wav` in `pcm/samples/`;
 only the 212 looped samples have loop sidecars. These are original sample
 sources; MusyX macros and game event playback still require implementation.
 
 `make audio-map` creates a searchable catalog of 3,218 named GameCube entries
 and all 10,256 Switch sound records with wave dependencies. `make all` packages
-five original GameCube primary-sample effects alongside the corrected Rogueport,
-battle and victory music. Complete macro/event playback remains unfinished.
+eight original GameCube primary-sample effects. Default builds then package
+18 Switch arrangements alongside the GameCube music retained for reference.
+Complete macro/event playback remains unfinished.
 See [audio mappings and trigger guidance](docs/AUDIO_MAPPING.md).
 
 The separate Switch 1.0.0 audio library is generated with
 `python3 tools/switch_audio.py` from the verified extracted
 `local-assets/switch/romfs/`. Its raw resources, PCM16 WAVs and loop sidecars
-stay in ignored `local-assets/switch/audio/`; current native audio selection
-remains GameCube-based. Decoder setup, asset coverage and provenance are in
+stay in ignored `local-assets/switch/audio/`. `make all` verifies and packages
+18 selected arrangements under ignored `romfs/soundtrack-switch/`, retaining
+original PCM16 rates/channels and BFSAR loop points. Rogueport has separate
+plaza, harbor, east, west and station arrangements; ordinary battle selection
+uses the quieter Think variant. These selections adapt to the native slice and
+do not reproduce the Switch adaptive music engine. SFX remain GameCube samples.
+Use `make all SOUNDTRACK=gamecube` to build with the original music, or set
+`SWITCH_AUDIO_LIBRARY=/path/to/decoded/library` for another library location.
+A missing or corrupt Switch track fails the default build explicitly.
+Decoder setup, asset coverage and provenance are in
 [Switch audio assets](docs/switch/AUDIO_ASSETS.md).
 
 ## Controls

@@ -55,8 +55,12 @@ from BFSAR stream extensions, not the loopless standalone Opus headers; BFWAV
 loops come from their own headers. The manifest preserves sound names and raw
 FWSD/group/control data, but does not render event mixing, pitch, envelopes,
 layering, transitions or adaptive music. No gameplay listening, audible-loop,
-hardware or runtime-mix equivalence is claimed. Current native audio continues
-to use the GameCube assets.
+hardware or runtime-mix equivalence is claimed. Default native builds now
+package 18 Switch arrangements with original PCM
+rates/channels and loop intervals. The native slice chooses district and battle
+selection variants through a presentation adapter; this does not establish
+original Switch event routing or adaptive mixing. GameCube SFX remain active.
+See [native soundtrack adapter](../behavior/audio/NATIVE_SWITCH_SOUNDTRACK.md).
 
 ## Decoder and reproduction
 
