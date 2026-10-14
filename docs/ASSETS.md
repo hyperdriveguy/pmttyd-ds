@@ -1154,3 +1154,19 @@ Nintendo/Intelligent Systems licensing remains inherited with no redistribution
 rights. No raw ISO, extracted original bytes, previews, packs or compiled native
 assets were committed. Native resource/binding proof is separate from raster
 parity and playable audience items.
+
+### 2026-10-14 — Frankly atlas residency for native battle finishing draws
+
+Reused existing private professor assets for an independent battle texture owner:
+read-only ISO a/c_kuri_h and a/c_kuri_h- -> local-assets/professor/c_kuri_h and
+c_kuri_h.tpl -> romfs/professor.{pose-directory.bin,draw-model.bin,draw-textures.bin,
+pmanim,t3x,bin,json}. No conversion or new extraction was performed in this step.
+Original MODEL/TPL metadata and17 animation descriptors are unchanged. Existing
+surface converter keeps15 image cells in a1024x256 RGBA8 atlas,124px images with2px
+borders and UVscale4; the native texture consumes1MiB before descriptor overhead.
+It uses a separate import during trio battle residency because the field room's
+professor texture is retired on battle entry. Resource identity, cell mapping and
+UV correction remain tied to the exact converted professor package, not a model
+name match against another atlas. GPU work synchronizes before retirement.
+Original Nintendo/Intelligent Systems assets remain private; no redistribution
+rights are granted and no raw ISO/derived pack is committed.

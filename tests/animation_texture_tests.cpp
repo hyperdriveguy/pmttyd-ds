@@ -4,6 +4,7 @@
 #include <vector>
 #include <fstream>
 #include <iterator>
+#include <cstring>
 using namespace ttyd;
 struct Trace {
     uint32_t hold=0;bool ci=false;int mathHold=-1;unsigned gets=0;
@@ -30,6 +31,25 @@ int main(){
     assert(!animationTextureCell(AnimationTextureRequest{0}));
     assert(pool.selectName(*handle,"PKR_D_1",true,{}) && pool.main(*handle,{}));pose.shape.textures[9]=1;t={};c={};
     assert(resumeAnimationTexture(pose,draw,s,c) && t.calls[2].descriptor==45 && animationTextureCell(t.calls[2])==10);
+    // Captured finishing queue request: Frankly descriptor0 Z_1, slot11,
+    // original image17 -> package cell9. Its atlas retains full 1024 width.
+    const auto frankly=loadBattlePoseResource("romfs/professor.pose-directory.bin","romfs/professor.pmanim");
+    assert(frankly && frankly->modelName=="c_kuri_h");
+    BattlePosePool npcs;const auto npc=npcs.enter(frankly,1,{});assert(npc && npcs.main(*npc,{}));
+    const auto* professor=npcs.pose(*npc);assert(professor && professor->word(0x14)==0);
+    AnimationTextureRequest held;held.function=0x802b7880;held.pose=professor;held.slot=11;held.state=0;held.descriptor=17;
+    held.image=*frankly->textures->image(17);assert(animationTextureCell(held)==9);
+    assert(loadBattlePoseResource("romfs/professor.pose-directory.bin","romfs/professor.pmanim")==frankly);
+    // Use actual conversion sidecars rather than inferring atlas scale from a
+    // model name or substituting Mario's resident layout.
+    auto atlasScale=[](const char* path,const char* magic){std::ifstream f(path,std::ios::binary);char tag[8];float scale=0;f.read(tag,8);f.read(reinterpret_cast<char*>(&scale),4);assert(f && std::memcmp(tag,magic,8)==0 && f.peek()==EOF);return scale;};
+    const auto franklyScale=atlasScale("romfs/professor.bin","PMPNPC1");
+    const auto marioScale=atlasScale("romfs/trio-attack-mario.bin","PMSUV1\0");
+    const auto partnerScale=atlasScale("romfs/trio-attack-goombella.bin","PMSUV1\0");
+    assert(franklyScale==4 && animationAtlasDimensions(1024,256,franklyScale));
+    assert(animationAtlasDimensions(512,512,marioScale) && animationAtlasDimensions(512,256,partnerScale));
+    assert(!animationAtlasDimensions(512,512,franklyScale) && !animationAtlasDimensions(1024,256,partnerScale));
+    assert(!animationAtlasDimensions(256,64,franklyScale) && !animationAtlasDimensions(1024,256,0));
     // Original CI branch request order, supplied by an explicit test provider.
     t={};t.ci=true;c={};assert(resumeAnimationTexture(pose,draw,s,c));
     const uint32_t expected[]{0x802b78d4,0x802b74fc,0x802b7544,0x802b790c,0x802b7880,0x802b4e04,0x802ba3d0};

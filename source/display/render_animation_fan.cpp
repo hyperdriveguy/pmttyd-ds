@@ -3,7 +3,7 @@ namespace ttyd {
 bool Renderer::finishingAnimationGeometry(const AnimationShapeCall& request){
     AnimationFanTexture texture;
     if(finishingAtlas){texture.resource=finishingAtlas->resource;texture.cell=finishingAtlas->cell;
-        texture.uvScale=texture.resource==trioPartnerAnimations?trioPartnerUVScale:trioMarioUVScale;
+        if(!finishingAnimationTextureOwner(texture.resource,texture.uvScale))return false;
         texture.generator=finishingTextureGenerator;texture.matrix=finishingTextureMatrix;}
     AnimationFanSubmit submit{this,[](void* user,const AnimationFanBatch& fan){
         auto& renderer=*static_cast<Renderer*>(user);const auto& program=renderer.finishingShadowProgram;
@@ -12,7 +12,7 @@ bool Renderer::finishingAnimationGeometry(const AnimationShapeCall& request){
         if(fan.slots){
             if(!renderer.finishingAtlas || renderer.finishingAtlas->resource!=fan.resource || renderer.finishingAtlas->cell!=fan.texture.cell || program.texture!=ShadowTexture::CharacterAtlas)return false;
             AnimationFanTexture current;current.resource=renderer.finishingAtlas->resource;current.cell=renderer.finishingAtlas->cell;
-            current.uvScale=current.resource==renderer.trioPartnerAnimations?renderer.trioPartnerUVScale:renderer.trioMarioUVScale;
+            if(!renderer.finishingAnimationTextureOwner(current.resource,current.uvScale))return false;
             current.generator=renderer.finishingTextureGenerator;current.matrix=renderer.finishingTextureMatrix;
             if(!(current==fan.texture))return false;
         }

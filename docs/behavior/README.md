@@ -1120,3 +1120,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native original icon resources](display/NATIVE_ORIGINAL_ICON_RESOURCES.md):
   complete original directory/TPL, lossless cells, registered GP/published camera
   reads and bounded actual native texture residency; material/raster still open.
+
+- [Original stage dark/light callbacks](display/BATTLE_STAGE_DARK_AND_LIGHT_CALLBACKS.md) — unconditional dark quads, retained stage alpha, light-entry loop and exact shared GX state; native callback binding remains open.

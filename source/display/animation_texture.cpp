@@ -31,6 +31,9 @@ bool AnimationTextureResource::read(FILE* file){
     }
     return true;
 }
+bool animationAtlasDimensions(uint32_t width,uint32_t height,float uvScale){
+    return (width==512 || width==1024) && (uvScale==1 || uvScale==2 || uvScale==4 || uvScale==8) && height==width/uvScale;
+}
 std::optional<uint16_t> animationTextureCell(const AnimationTextureRequest& r){
     if(!r.pose || !r.pose->resource || !r.pose->resource->draw || !r.pose->resource->bank)return {};
     const auto& resource=*r.pose->resource;const auto selected=r.pose->word(0x14);if(selected>=resource.names.size())return {};

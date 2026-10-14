@@ -6254,3 +6254,63 @@ using original assets; do not assume the model from the last submitted fan is
 the pending owner. Exact reciprocal primitives, lit geometry, remaining queue
 callbacks and field restoration remain open. Request EVT-01 records the boundary;
 full prologue/remake goal remains active. Concurrent foreign edits were preserved.
+
+### 2026-10-14 — Bind original Frankly atlas to native finishing geometry
+
+The held texture load is c_kuri_h slot11/state0/descriptor17/image17, selected
+original descriptor0 Z_1, converted cell9. Native captured request is in
+artifacts/azahar-texture-frontier-probe/data/azahar-emu/sdmc/3ds/ttyd-2ds/texture-request.txt.
+Frankly had valid source/palette metadata but no resident battle atlas owner.
+Renderer now loads the existing professor resource through the exact shared
+cache key, imports its unchanged atlas during trio residency, and shares one
+resource resolver across texture load, GPU restoration and fan UV capture/retry.
+His full1024x256 atlas/UVscale4 is admitted alongside the half-resolution512-wide
+Mario/Goombella packages. The native layout predicate requires width512/1024,
+scale1/2/4/8 and matching height; this is a conversion-domain policy, not a GX
+rule. No model-name substitution, regenerated texture, authored art or fabricated
+draw completion is used.
+
+Field-room retirement remains independent: Frankly's battle texture has its own
+import (1MiB RGBA8 before overhead) and all retirement/shutdown paths synchronize
+GPU work and clear captured character bindings before freeing it. Strong resource
+identity reuses the already loaded bank. Native tests cover captured image17 to
+cell9, shared cache identity, actual conversion sidecars, all three atlas layouts
+and mismatched dimensions. Read-only parallel source/key census found no missing
+palette cell across Mario4080/Goombella1350/Frankly1562 reachable binding states;
+implementation review found no blocking ownership/UV/lifecycle defect. This
+census is static converted-data evidence, not original execution observation.
+
+Validation used frozen917e8c30a0f6bdf3f879b6e6685e31e134cf3c93 plus only owned
+changes in artifacts/frankly-atlas-source; concurrent foreign work was preserved.
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test -o assets-ready exited0:320/320 C++
+(35.66s),185/185 Python (28.108s),log artifacts/frankly-atlas-test.log. Clean
+make all -j4 -o assets-ready DEBUG_SHORT_BOOT=1 and restored normal rebuild
+exited0,logs artifacts/frankly-atlas-build.log and frankly-atlas-build-restored.log.
+Audit3416 tracked/owned files and2029 private RomFS files had zero mismatches; manifest
+artifacts/frankly-atlas-validation-manifest.json. Normal binary reproduced exactly
+after removing the private harness, SHA2568acc88e0bca134090a4a42b347c7a5b3afe27d594a423d2fa49c8fb0b981d9e5.
+Existing committed icon-residency code/private icon packs were included in the
+frozen base; this step does not claim those changes as new work.
+
+Isolated Azahar15s normal and150s ending runs exited0, logs
+artifacts/frankly-atlas-smoke-normal.log and frankly-atlas-smoke-ending.log.
+Inspected normal capture retains original Rogueport/Mario/Goombella art at60 App
+FPS/100% emulator speed. Actual ending C3D fan counts advance122/476 vertices to
+133/520: Mario35,Goombella87,Frankly11. Last fan is c_kuri_h draw6684,count4,
+cell0,UVscale4. Queue advances to camera4,class2 stage callback80138da8,count21.
+Telemetry lives in artifacts/azahar-frankly-atlas-ending. Ending capture remains
+black fade/development field-restoration notice at60 FPS/100%; source raster,
+visible finishing geometry, restored field and New2DSXL performance parity are
+not established. User emulator profile/saves untouched; assets stayed private.
+No new extraction/conversion was needed; reuse/licensing is recorded in ASSETS.
+
+Next bind actual stage callbacks80138da8/801389a0. EVT-01 requests bodies and
+live owners rather than treating registration as implementation. Read-only source
+research under artifacts/stage-callback-evidence and the new display contract
+BATTLE_STAGE_DARK_AND_LIGHT_CALLBACKS.md finds the first callback
+unconditionally emits three black quads: it cannot safely be acknowledged as an
+empty callback. Source stage state/GPU setup/primitive submission remain to be
+bound. Remaining callbacks, original traces and field restoration are still open;
+the full prologue/remake goal remains active.
+
+tools/check_doc_links.py checked1323 frozen Markdown files with0 broken links.

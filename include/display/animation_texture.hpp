@@ -36,4 +36,7 @@ bool resumeAnimationTexture(const BattlePose&,uint32_t draw,const AnimationTextu
 // Native whole-image atlas identity; use the selected converted package's
 // palette, never a texture-name-only match across differently packed atlases.
 std::optional<uint16_t> animationTextureCell(const AnimationTextureRequest&);
+// Native converted atlas layouts; logical 1024-square coordinates are cropped
+// vertically and may be downsampled uniformly to half width.
+bool animationAtlasDimensions(uint32_t width,uint32_t height,float uvScale);
 }

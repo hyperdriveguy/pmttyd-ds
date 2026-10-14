@@ -4541,3 +4541,38 @@ binding. Exact fres estimates/FPSCR/subnormals/NaN payloads, lit-normal consumpt
 and original execution comparison remain open. No double-precision rescue,
 identity fallback or fabricated draw completion was introduced. Parent EVT-01
 and prologue/full-game goals remain open.
+
+### 2026-10-14 — Frankly atlas bound; stage callback body requested
+
+The former GXLoadTexObj802b7880 wait is c_kuri_h slot11/state0/descriptor17,
+original image17, selected descriptor0 Z_1, package cell9. Private native capture:
+artifacts/azahar-texture-frontier-probe/data/azahar-emu/sdmc/3ds/ttyd-2ds/texture-request.txt.
+Exact resource cache identity is now bound to a separate battle-resident import
+of the unchanged professor1024x256 atlas (UVscale4), independently of field-room
+texture retirement. Source descriptor/image and converted cell ownership checks
+remain intact. Load, GPU restoration and fan UV resolution share that owner.
+The actual native ending submits11 Frankly fans and133 total/520 vertices;
+queue then holds at camera4,class2 callback80138da8, count21. Prior hold was
+122 fans/476 vertices. This is native runtime command evidence, not original
+raster equivalence. Full indexed geometry/presentation and field restoration
+remain unfinished.
+
+Open documentation request: recover original bodies80138da8 and801389a0,
+including direct control/call order, resources, live stage/global/model owners,
+source primitive paths and conditions for legitimate empty work. Their stage
+registration/ordering is already documented in
+[display footer](../behavior/display/BATTLE_DISPLAY_FOOTER_REGISTRATION_AND_MUTATION.md);
+registration alone does not bind either callback. Read-only investigation is in
+progress under artifacts/stage-callback-evidence. Best effort must use actual
+source requests/owners; do not accept the callback as a no-op merely to drain the
+queue. Parent EVT-01 and the prologue/remake goal remain open.
+
+Read-only delivery: the [complete dark/light callback contract](../behavior/display/BATTLE_STAGE_DARK_AND_LIGHT_CALLBACKS.md)
+now records the recovered bodies, helpers, hashes, constants and exact GX order.
+Dark has no early gate and always emits three quads; its initial stage alpha140
+makes a no-op incorrect. Light always sets GPU state and then tests12 live flags,
+emitting18 triangles per active entry. No new image assets are required. Native
+stage owners, retained direct primitive submission, depth/blend translation and
+active rotation/normalize remain open. Private evidence report is
+artifacts/stage-callback-evidence/report.md; this delivery is static original
+source evidence, not original execution/raster verification.

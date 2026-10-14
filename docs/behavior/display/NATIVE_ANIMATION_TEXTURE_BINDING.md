@@ -45,19 +45,26 @@ The native GPU domain is coordinate0,kind0,CMPR,clamp,linear,no mipmaps/edge/bia
 no CI. Init/LOD prepare typed object state; Load requires a valid palette cell,
 exact converted resource identity and actual live GPU texture. Texture-name
 matching alone is insufficient: two packages can share an original TPL name but
-pack different atlas cells. Only actual resident trioMarioTexture/trioPartnerTexture
-are admitted here, with verified dimensions/UV scale. Load binds them through
-Citro3D and publishes the character-atlas texture0 owner in shared display state.
-Later restoration resolves that same resident owner. Scene retirement synchronizes
-GPU work, invalidates this binding and then frees the scene texture. It never
+pack different atlas cells. Actual resident Mario, Goombella and Frankly battle
+textures are admitted by exact shared resource identity. Frankly reuses the
+original professor package independently of field-room retirement: its atlas
+is1024x256,UVscale4; current Mario/Goombella packages are512x512/512x256 with
+scales1/2. The native converted layout domain is width512 or1024 and scale1/2/4/8,
+with height exactly width/scale. This is a conversion admission policy, not a
+GX texture-size rule. Load binds the actual resident texture through Citro3D
+and publishes the character-atlas texture0 owner in shared display state.
+Later restoration and indexed-fan UV scaling resolve that same resource owner.
+Scene retirement synchronizes GPU work, invalidates this binding and then frees
+all three scene textures. It never
 casts source offsets to PICA pointers or uses a missing texture as success.
 
 The coordinate generator and matrix feed the
 [indexed-fan UV consumer](NATIVE_ANIMATION_INDEXED_FAN_SUBMISSION.md). Source T24 matrix must apply FIRST, then atlas cell crop and V-height
 correction ONCE. Setup alone does not submit or acknowledge any vertices. Generic
 multislot/CI request tests do not establish corresponding GPU support. Frankly's
-room5 atlas has a different resident owner and is not substituted with a Mario,
-map-icon or unrelated texture. Interleaved/reentrant local-object production
+battle residency owns its own imported professor atlas; field room5 can free its
+separate texture safely. It is never substituted with Mario, map-icon or another
+texture. Interleaved/reentrant local-object production
 would additionally need explicit object generation checks; the current callback
 is one retained same-resource draw in the blocked camera queue.
 

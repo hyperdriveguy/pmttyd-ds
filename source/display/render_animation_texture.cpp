@@ -1,6 +1,13 @@
 #include "platform.hpp"
 #include <cmath>
 namespace ttyd {
+Renderer::Texture* Renderer::finishingAnimationTextureOwner(const std::shared_ptr<const BattlePoseResource>& resource,float& uvScale){
+    if(!resource)return nullptr;
+    if(resource==trioMarioAnimations){uvScale=trioMarioUVScale;return &trioMarioTexture;}
+    if(resource==trioPartnerAnimations){uvScale=trioPartnerUVScale;return &trioPartnerTexture;}
+    if(resource==trioFranklyAnimations){uvScale=trioFranklyUVScale;return &trioFranklyTexture;}
+    return nullptr;
+}
 bool Renderer::finishingAnimationTexture(const AnimationTextureRequest& r){
     if(r.coordinate!=0)return false; // Multitexture shader/array ownership remains separate.
     switch(r.function){
@@ -13,9 +20,8 @@ bool Renderer::finishingAnimationTexture(const AnimationTextureRequest& r){
     case 0x802b7880:{
         if(!finishingTextureObjectReady || !finishingTextureLODReady || !r.pose || !r.pose->resource || r.image.index!=finishingTextureObject.image.index)return false;
         const auto cell=animationTextureCell(r);if(!cell)return false;
-        auto* texture=r.pose->resource==trioPartnerAnimations?&trioPartnerTexture:r.pose->resource==trioMarioAnimations?&trioMarioTexture:nullptr;
-        const float uvScale=r.pose->resource==trioPartnerAnimations?trioPartnerUVScale:trioMarioUVScale;
-        if((uvScale!=1 && uvScale!=2) || !texture || !texture->imported || texture->texture.fmt!=GPU_RGBA8 || texture->texture.width!=512 || texture->texture.height!=unsigned(512/uvScale))return false;
+        float uvScale=1;auto* texture=finishingAnimationTextureOwner(r.pose->resource,uvScale);
+        if(!texture || !texture->imported || texture->texture.fmt!=GPU_RGBA8 || !animationAtlasDimensions(texture->texture.width,texture->texture.height,uvScale))return false;
         const auto previous=finishingAtlas;finishingAtlas=FinishingAtlas{r.pose->resource,*cell};
         C3D_TexSetFilter(&texture->texture,GPU_LINEAR,GPU_LINEAR);C3D_TexSetWrap(&texture->texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
         ShadowGXRequest request;request.kind=ShadowGX::TextureBind;request.texture=ShadowTexture::CharacterAtlas;

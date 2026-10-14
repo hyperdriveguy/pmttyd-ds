@@ -19,7 +19,7 @@ bool Renderer::finishingShadowGpu(const NativeShadowProgram& p){
             auto* texture=sourceIconTexture();if(!texture)return false;C3D_TexBind(0,texture);
         }else if(*p.texture==ShadowTexture::CharacterAtlas){
             if(!finishingAtlas)return false;
-            auto* texture=finishingAtlas->resource==trioPartnerAnimations?&trioPartnerTexture:finishingAtlas->resource==trioMarioAnimations?&trioMarioTexture:nullptr;
+            float uvScale=1;auto* texture=finishingAnimationTextureOwner(finishingAtlas->resource,uvScale);
             if(!texture || !texture->imported)return false;
             C3D_TexBind(0,&texture->texture);
         }else{
