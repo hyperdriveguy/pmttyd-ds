@@ -1,3 +1,43 @@
+## 2026-10-14 — Complete original facing and Harbor Jump continuation
+
+Committed `59317591`. Shared CalculateFaceDirection8010e684/318 implements
+all original mode gates/ordering: actor/part seeds, captured-battle side default,
+movement direction, target comparison, fresh literal-X comparison and final
+word inversion. It preserves argument/raw-output capture, current-global unit
+lookups, retained-unit part lookups, unit-before-part byte reads, explicit
+absolute versus local part positions and single arithmetic. Combined modes are
+not reduced to exclusive choices. Direction-write8010e5a8/6c narrows only189.
+Harbor binds both with real event/unit/part/platform services.
+
+Tests cover mode precedence, combined17, signed seeds, exact read order,
+offsets/absolute XYZ, equality/NaN, integer-to-single rounding, inversion and
+low8 write preserving188. The selected original Jump now executes its facing
+calculation/write and stops live at StartAC80107788. Repeated ticks preserve
+HP/result and the one payment count; no animation, hit, action result or
+source tutorial/story completion is invented. Automatic Game/menu activation
+and the target Input/re-entry loop remain separate integration work.
+
+Validation: isolated snapshot /home/carson/Documents/blender_tests/pm-port/artifacts/tutorial-facing-se_b69nv, based on d771b764 plus scoped files,
+passed final `make test`:232/232 C++ and141/141 Python tests. Native
+`make all -o assets-ready BUILD=build-facing-review TARGET=ttyd-facing-review`
+passed with prepared shared private assets, then rebuilt the final read-order
+change successfully. Artifact: that review folder's ttyd-facing-review.3dsx.
+Exact logs: ignored artifacts/tutorial-facing-full-test.log and
+artifacts/tutorial-facing-native.log. Read-only ISO verifier passed19 complete
+camera/action/facing/precheck spans, including both new whole wrappers. Source
+snapshot matched final changed code/test/verifier files; scoped diff check
+passed. A mixed-auto declaration was corrected before green builds. No new
+asset conversion/payload, Azahar/Dolphin, measured timing or visual-fidelity
+claim. Concurrent field/display work was preserved in scoped commits.
+
+Next: implement complete StartAC with actual help/audience-window setter and
+original TimingA manager cadence; then pose, motion/hits and action completion.
+Connect original class/target Input and common re-entry to player registration,
+render original HUD/menu with physical controls, and finish second-screen
+scene/audience with optional hostile-item taps plus a physical alternative.
+Verify actual play/visuals in isolated Azahar. Goal stays active; full tutorial/
+battle systems and full-game work remain incomplete.
+
 ## 2026-10-14 — Harbor Jump camera, takeoff and original AC preparation
 
 Committed `ba0850b3`. Complete shared explicit-parts homing resolves all five
