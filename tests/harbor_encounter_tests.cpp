@@ -22,6 +22,16 @@ int main(int argc,char**){
     assert((e.messageOrder==std::vector<std::string>{"mac_0_022","mac_0_023","mac_0_024"}));
     for(unsigned t=3000;t<3100;++t)e.tick(t*17,0x100,15);
     assert(e.story==4 && !e.finished && e.messageOrder.size()==3);
+    // Real field movement rarely lands on Q1024-exact coordinates. The event
+    // reads its own root through set/getEventFloat before requesting the jump.
+    for(auto position:{std::array<float,3>{0.12345f,15,-100.875f},
+                       std::array<float,3>{-25.4f,15,-100.12345f},
+                       std::array<float,3>{-25.4f,15,-300.12345f}}){
+        HarborEncounter walked;assert(walked.begin(0,position,2,false));
+        for(unsigned t=1;t<3000 && !walked.battleRequested;++t){walked.tick(t*17,t%4==0?0x100:0,15);assert(!walked.failed);}
+        assert(walked.battleRequested && walked.battleSetup==2 && walked.hp==5);
+        assert(walked.messageOrder==e.messageOrder && walked.story==4 && walked.locked());
+    }
     HarborEncounter resume;assert(resume.begin(0,{1000,1000,1000},10,true));
     assert((resume.actors[0].position==std::array<float,3>{-220,15,90}));assert(!resume.locked());
     resume.actors[0].position={0,15,-100};
@@ -36,7 +46,19 @@ int main(int argc,char**){
     assert(game.harborStory.finished && game.harborEncounter.messageOrder.size()==3);
     assert(game.prompt()==std::string("Development notice: original tutorial battle service pending"));
     assert(loadHarborTutorialAssets("romfs"));
-    Game tutorialGame;saved.hp=2;tutorialGame.restore(saved);
+    Game approach;saved.position={-1.5f,-1.1f};approach.restore(saved);
+    for(unsigned t=0;t<6000 && approach.progress.originalStory==3;++t){Input input;input.confirm=t%4==0;approach.tick(input);}
+    assert(approach.progress.originalStory==4 && !approach.harborEncounter.locked());
+    for(unsigned t=0;t<120;++t)approach.tick(Input{});
+    assert(!approach.harborEncounter.battleRequested);
+    // The direct diagonal fixture walked into A_ni_03/pCube101 walls.
+    // Retain those original colliders and walk the gap ahead of pCube94 instead.
+    for(unsigned t=0;t<30;++t){Input input;input.physicalSnapshot=true;input.x=-1;approach.tick(input);}
+    for(unsigned t=0;t<110;++t){Input input;input.physicalSnapshot=true;input.z=-1;approach.tick(input);}
+    for(unsigned t=0;t<150 && !approach.harborEncounter.locked();++t){Input input;input.physicalSnapshot=true;input.x=1;approach.tick(input);}
+    for(unsigned t=0;t<6000 && !approach.harborTutorial.message.active();++t){Input input;input.confirm=t%4==0;approach.tick(input);}
+    assert(approach.harborTutorial.running() && approach.scene==Scene::Battle);
+    Game tutorialGame;saved.position={0,-1};saved.hp=2;tutorialGame.restore(saved);
     for(unsigned t=0;t<6000 && !tutorialGame.harborTutorial.message.active();++t){Input input;input.confirm=t%4==0;tutorialGame.tick(input);assert(!tutorialGame.harborTutorial.failed);}
     assert(tutorialGame.harborTutorial.running() && tutorialGame.harborTutorial.message.id()=="mac_0_b_t1_000");
     assert(tutorialGame.progress.originalStory==4 && tutorialGame.scene==Scene::Battle && tutorialGame.progress.hp==5);

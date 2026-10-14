@@ -22,3 +22,15 @@ original battle request. The further field-walking fixture still fails before
 reaching the encounter trigger; no complete walked route is claimed by this
 correction. See [native HUD/menu scope](../display/NATIVE_BATTLE_HUD_AND_SUBMENU.md)
 for this session's separate presentation changes.
+
+## 2026-10-13 follow-up: walked fixture through retained geometry
+
+Private route probes identify original A_ni_03/pCube101_q00025 walls blocking
+that fixture's direct path. The regression now walks left, then toward the gap
+before northern pCube94_q00019, then right until the real source event admits.
+The movement ticks use actual physical Circle Pad snapshots; no touch, teleport,
+collision bypass, forced story/result write or fabricated tutorial completion
+is used. The existing original three messages, HP floor, setup2 and first
+mac_0_b_t1_000 tutorial message follow through the native owner. This tests a
+native route, not matched original movement or hardware performance. Input
+counts are fixture steering choices, not measured original timing constants.

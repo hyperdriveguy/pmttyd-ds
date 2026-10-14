@@ -2,6 +2,58 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Original damage-controller composition and physical harbor route
+
+Featuref39c355 implements the complete local BattleCheckDamage800fb01c and
+BattleCheckPikkyoro800fde2c orchestration over packed source state and explicit
+service providers. It preserves independent guard reads, mode-specific
+superguard responses, shared HP/FP code, status/reaction priority, hit-count and
+sequence publication, retained RNG, audience classifications and full counter
+tail call ordering. Counter contributions retain separate wrapped50/100 signed
+divisions, negative amounts and zero-only fallback; AC stop retains the battle
+captured before callbacks. No PreCheckDamage is inserted, and no effect handle
+or callback success is fabricated. The old preliminary BATTLE_CHECK_DAMAGE
+page now points to the accurate entry/body contract.
+[Portable owner and limits](behavior/battle/NATIVE_DAMAGE_ORCHESTRATION_OWNER.md).
+
+The failing harbor walking fixture was colliding with original A_ni_03 and
+pCube101_q00025 geometry, not proving a failed encounter gate. Private probes
+retain those walls and find a route through the gap ahead of pCube94_q00019.
+The regression now uses actual physical Circle Pad snapshots to walk left,
+then through that gap, then right into the unchanged source trigger. Original
+three field messages, HP floor, setup2 and first tutorial message follow without
+touch, teleport, collision bypass or forced story/result writes. Removed only
+the temporary fixture diagnostic print. Direct positive/negative non-Q1024
+encounter regressions from the prior jump-admission work are retained.
+[Follow-up route scope](behavior/story/NATIVE_HARBOR_ENCOUNTER_EVENT_FLOAT_ADMISSION.md).
+Fixture steering counts are not measured original timing constants.
+
+Validation: final `make test` passed186/186 CTest and122/122 Python
+(artifacts/damage-orchestration-tests-reviewed.log). Final `make all` passed
+(artifacts/damage-orchestration-all-final.log). Focused controller/physical-route
+checks2/2 passed (artifacts/damage-orchestration-route-focused.log). The read-only
+verifier pins both full source bodies (640/106 instructions), five original
+effect constants and13 literal capture/guard/multiply/divide/stop/help anchors
+(artifacts/damage-orchestration-source-pins.json); it does not execute original
+code. Tests cover superguard bytes0..5, flag short-circuiting, every five-gate
+selection subset/rank, odd/negative/wrapped counter amounts, FP code overwrite,
+status priority, source status arguments, retained RNG and publication/capture
+ordering. Doc links checked1017 files/zero broken; diff check passed.
+No new Azahar/Dolphin/hardware capture or performance parity is claimed. ISO
+access stayed read-only; user emulator profiles/saves and private source payloads
+were untouched by this increment.
+
+Remaining: the new complete portable damage controller is not yet installed in
+HarborTutorial or TrioAttack; their existing admission/frontiers remain honest.
+Bind actual calculator/application/status/revival/effect/audience/hit-event and
+AC/help providers before replacing scoped native paths. Then install original
+system/Mario/Crump/helper registry/entry ownership and original startup/player-
+command/turn/result/field continuation. Preserve original rotating menus and
+complete HUD/window cadence; lower-scene continuation and optional audience
+bad-item tapping still need original actors/throw gates and physical controls.
+The full battle/tutorial objective stays active; neither native tutorial combat
+nor the full-game remake is reported complete.
+
 ## 2026-10-13 — Native original item-selector font, icons and controls
 
 Feature0a08d95 adds source US plain-window-font geometry/measurement/outline
