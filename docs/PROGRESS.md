@@ -1,3 +1,65 @@
+## 2026-10-14 — Original audience draw and native stack correction
+
+Implemented and committed `a4c2fc37`: whole original audience draw/GetFront
+branches, normals, profile scaling, pivot/rotation matrices, source RGBA/UV
+selection and retained flip register behavior. The native backend consumes actual
+source-created members and original animation frame bytes. Opaque/translucent
+passes share a simulation-timestamp animation guard; tutorial lower scene replays
+prepared vertices without another animation visit. This does not populate the
+fresh tutorial audience or replace the trio lower menu with scene imagery.
+Original TPL CLAMP/linear sampling now uses exact edge texels in atlas gutters;
+UV-boundary tessellation preserves source end-pose overshoot without atlas bleed.
+No original asset pixels or compiled packs were committed. See
+[draw contract](behavior/battle/AUDIENCE_DRAW_NORMALS_FLIP_AND_NATIVE_ATLAS_CLAMP.md)
+and [asset conversion record](ASSETS.md).
+
+Validation used the isolated frozen snapshot
+`artifacts/audience-draw-3v804l5x` (base
+`eb3dd161a98252ce0e96639be9a52ff12a5f1301`, plus owned changes), preserving
+concurrent unrelated work. `make test` exited0:283/283 C++ and167/167 Python
+checks (`artifacts/audience-draw-test-api-fix.log`). Tests include actual8-member
+native initialization/draw packets, same-timestamp animation deduplication,
+negative exact-multiple retained flip behavior, guest texture reuse, clamp
+geometry area and all224 original frame interiors/gutters. Read-only ISO source
+verifier pinned9 bodies and4 data spans (`artifacts/audience-draw-source.log`).
+`TMPDIR="$PWD/artifacts/tmp" make all -o assets-ready
+BUILD=build-audience-draw-review TARGET=ttyd-audience-draw-review` exited0 with
+normal entry restored (`artifacts/audience-draw-native-final-normal.log`).
+`-o assets-ready` uses the already generated private original packs in this frozen
+snapshot. First native attempts caught a missing camera type include and the
+3DS SDK `quad` macro collision; corrected include and renamed backend callback
+`emitQuad`. The initial upper-warp test expectation was corrected to source40;
+no source height constant was changed.
+
+Native graphics fixture testing is **not a visible audience acceptance pass**.
+`tools/emulator_smoke.py` used separate project-local profiles and an ignored
+explicit positive-pouch fixture, never user saves/profile or normal story grants.
+Xvfb initially failed from sandbox socket access; approved display escalation
+allowed testing. First fixture raised an undefined instruction with SP below the
+main stack and LR in actorNodeMatrix. Disassembly showed main reserving28596
+bytes plus saved registers from the default32768-byte stack. Commit `7ff6b866`
+places Renderer in a unique heap owner, reducing that reservation to11476 bytes
+plus saved registers. Subsequent10- and50-second isolated runs exited0 with no
+native exception detected, but captures remained black/App0FPS. An ignored
+startup trace reached renderer initialization, required asset loads, game
+allocation and frontend completion, then stopped within the forced trio fixture
+setup before its completion marker. Artifacts:
+`artifacts/azahar-audience-draw-heap`, `artifacts/azahar-audience-draw-long`,
+`artifacts/azahar-audience-draw-trace`. No visible original raster fidelity,
+normal-story battle admission or successful first draw is claimed. Diagnostic
+main changes were removed and the normal native target rebuilt successfully.
+
+Remaining work: locate the fixture stall between pouch/intro/menu/attack setup,
+then prove actual source audience GPU output. Bind original audience main/type
+controllers and reaction/throw telegraphs; keep physical X interruption alongside
+optional audience taps. Reflow the trio lower screen to the continuing scene and
+original menu. Finish original battle scheduler/class menu/turn cadence, tutorial
+followups and field return; public sound allocation still has no actual voice
+playback. Native math/world-camera adapters are explicitly not original Gekko/GX
+numerical/raster equality. No controls, dialogue or story grants were changed by
+this increment. Full tutorial/real battles remain incomplete; the goal stays
+active.
+
 ## 2026-10-14 — Native audience Sound1 and real pending public slots
 
 Commite5045a47 implements whole original __psndSFXOn pending allocation and
