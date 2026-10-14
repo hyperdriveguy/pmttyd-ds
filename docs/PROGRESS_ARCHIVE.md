@@ -13374,3 +13374,44 @@ normalization/distance and handheld projection adapters, earlier field history,
 arbitrary pointer interpolation/unsupported modes, shadow preparation and
 ordered field return remain separate work. No physical hardware or original
 Dolphin execution for this step.
+
+## 2026-10-14 — Original letterbox scalar continuation
+
+Source snapshot `artifacts/letterbox-source/OWNED_BASE.txt` uses bc2cfe37 plus
+three owned letterbox files, three shared-file hunks in
+`artifacts/letterbox-shared-edits.json`, owned CMake registration and the two
+harbor fixture coordinates in `artifacts/letterbox-harbor-validation-edits.json`.
+The harbor correction was already made by its owner and subsequently committed
+in948c0672; only the coordinates enter this validation snapshot, not this camera
+commit. Other concurrent tutorial/window/actor changes are excluded; later
+independent commits remain preserved by scoped commit.
+
+Final isolated `make test` CMAKE_BUILD_PARALLEL_LEVEL4: exit0,257/257 C++ and
+145/145 Python, log `artifacts/letterbox-test-validated.log`. Native
+`make all -j4 DEBUG_SHORT_BOOT=1 BUILD=build-letterbox TARGET=ttyd-letterbox`:
+exit0, `artifacts/letterbox-build-final.log`. Exact source/binary manifests and
+immutable ELF/3DSX/SMDH: `artifacts/letterbox-validated`.
+
+First `letterbox-test.log` exposed an owned integration tick placed before
+camera Main had resumed; corrected its chronology. Second
+`letterbox-test-final.log` passed256 of257 C++ checks; the surviving harbor
+failure also reproduced on pristine base in `artifacts/harbor-base-check` with
+shared romfs. Private diagnostics showed the old fixture landed beside a step
+with ground-.1327 versus groundAt floor.15. Changing only authored trigger fixture
+start to(-.30,-3) and subsequent X to-.25 made the whole base harbor test pass,
+ground/floor.15 and jump0. No collision asset or physics changes were warranted.
+Final broad test includes these independently verified owner coordinates.
+
+The finishing tests use explicit fixture Bero0/current4 values to verify21st
+letterbox request, original two sequence reads, clear-sound completion, sort,
+current-camera0 publication and exact missing viewport802ba56c. The default
+native path retains20 records and holds real Bero query8007ac40. No provider
+result is inferred from native fieldSequence or Scene. Sound provider availability
+and pointer/capacity holds are tested separately. Source Draw completion in the
+all-disabled domain clears display-global8041e810 and advances only to original
+outer marioStMain8006f904; no direct teardown shortcut.
+
+No emulator, physical hardware or original Dolphin run for this step. Native
+callbacks/material/shadow/letterbox/dummy raster and retained global producers
+remain open. Trig/normalization, native pointer/rate and earlier field history
+are declared adapters. No asset extraction/payload was committed.

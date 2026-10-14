@@ -145,6 +145,10 @@ struct TrioAttackRuntime {
     bool cameraHistoryComplete=true,cameraUpdateAvailable=false,cameraMainWaiting=false;
     std::shared_ptr<CameraManager> cameras;
     CameraMainCursor cameraMainCursor;
+    CameraDrawCursor cameraDrawCursor;
+    CameraLetterboxCursor letterboxCursor;
+    std::optional<CameraLetterboxServices> letterboxServices;
+    bool cameraDrawWaiting=false;
     BattleCameraTremorCursor cameraTremorCursor;
     std::optional<TrioPoseDrawRequest> poseDraw;
     std::optional<CameraDepthSnapshot> cameraDepth;
@@ -1610,8 +1614,36 @@ struct TrioAttackRuntime {
             if(pending!=next)endingRequest(next);pending=next;
         }
     }
+    void continueFinishingDraw(){
+        cameraDrawWaiting=true;CameraDrawServices services;services.user=this;
+        services.letterbox=[](void* user,DisplayQueue& queue){
+            auto& r=*static_cast<TrioAttackRuntime*>(user);CameraLetterboxServices provider;
+            if(r.letterboxServices)provider=*r.letterboxServices;
+            else {
+                provider.user=&r;
+                provider.partySlot0=[](void* user)->std::optional<uintptr_t>{
+                    const auto& r=*static_cast<TrioAttackRuntime*>(user);if(!r.fieldParties)return {};
+                    return reinterpret_cast<uintptr_t>(r.fieldParties->pointer(0));
+                };
+                provider.query=[](void*,LetterboxQuery query,uintptr_t party)->std::optional<int32_t>{
+                    if(query==LetterboxQuery::PartyFlags && party)return int32_t(reinterpret_cast<const FieldPartyActor*>(party)->word(0));
+                    if(query==LetterboxQuery::Rate)return 60; // Explicit native NTSC simulation adapter.
+                    return {}; // Actual BeroEXEC/current sequence/Key/Ctrl producers must be supplied.
+                };
+            }
+            return updateCameraLetterbox(*r.cameras->camera(8),queue,provider,r.letterboxCursor);
+        };
+        if(cameras->draw(displayQueue,services,cameraDrawCursor)){
+            cameraDrawWaiting=false;
+            word(0x8041e810,0);pending=0x8006f904;endingRequest(pending); // Actual next outer Main; no teardown shortcut.
+        }else {
+            uint32_t next=cameraDrawCursor.stage==0?letterboxCursor.pending:cameraDrawCursor.stage==3?0x802ba56c:0x8000f454;
+            if(pending!=next)endingRequest(next);pending=next;
+        }
+    }
     void tick(uint64_t time,ProfessorStory& s,uint32_t triggers,const BattlePadSample* physical){
         scene=&s;now=time;
+        if(pending==0x8000f454 || cameraDrawWaiting)continueFinishingDraw();
         if(pending==0x8000f704 || cameraMainWaiting)publishFinishingCameras();
         if(waitingPoseDepth && (waitingPosePriority || cameraDepth)){
             pending=0;
@@ -1658,7 +1690,8 @@ void TrioAttack::setCameraDepthSnapshot(std::optional<CameraDepthSnapshot> snaps
     if(!runtime_)return;
     runtime_->cameraDepthLensAdapter.reset();runtime_->cameraDepth=std::move(snapshot);
 }
-const CameraDepthSnapshot* TrioAttack::cameraDepthSnapshot()const{if(runtime_ && runtime_->pending==0x8000f454)return &runtime_->cameras->camera(4)->matrices;return runtime_ && runtime_->cameraDepth?&*runtime_->cameraDepth:nullptr;}
+const CameraDepthSnapshot* TrioAttack::cameraDepthSnapshot()const{if(runtime_ && (runtime_->pending==0x8000f454 || runtime_->cameraDrawWaiting))return &runtime_->cameras->camera(4)->matrices;return runtime_ && runtime_->cameraDepth?&*runtime_->cameraDepth:nullptr;}
+void TrioAttack::setCameraLetterboxServices(const CameraLetterboxServices& services){if(runtime_)runtime_->letterboxServices=services;}
 const CameraManager* TrioAttack::cameras()const{return runtime_?runtime_->cameras.get():nullptr;}
 const DisplayQueue* TrioAttack::displayQueue()const{return runtime_?&runtime_->displayQueue:nullptr;}
 std::optional<TrioShadowDrawRequest> TrioAttack::shadowDrawRequest()const{return runtime_?runtime_->shadowDraw:std::nullopt;}

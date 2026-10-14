@@ -2010,3 +2010,29 @@ Next: source NPC move-position easing/collision, complete force-move tick and
 Mario direction-set timing, original crowd/effect/SFX services, and full tutorial/
 postbattle progression. Existing story3 timing and movement bridges remain
 adapters; no complete original-fidelity opening or full remake claim is made.
+
+## 2026-10-14 — Original letterbox scalar continuation
+
+Implemented original letterbox decisions, fresh sequence/Key/Ctrl/party reads,
+sound-provider order, signed bar/alpha animation and always-registered borrowed
+callback. Holds retain flag/scalar work and captured pointers. Native finishing
+now enters the actual Draw owner, binds slot0, then waits at missing BeroEXEC
+8007ac40; no scene-derived global values are fabricated. Explicit integration
+providers resume through registration/sort to real GX viewport802ba56c while
+preserving prefix work. [Scope](behavior/camera/NATIVE_LETTERBOX_SCALAR_CONTINUATION.md).
+
+Final isolated make test passed257/257 C++ and145/145 Python checks; native
+make all DEBUG_SHORT_BOOT=1 passed. Validation includes the harbor owner's two
+fixture-coordinate corrections, independently proved necessary on unchanged
+base; those changes are outside this camera commit. Exact snapshot/logs, initial
+failed checks and provenance are in the
+[archive](PROGRESS_ARCHIVE.md#2026-10-14--original-letterbox-scalar-continuation).
+No Azahar/hardware run for this step.
+
+Next: bind original BeroEXEC reset/mask writers, actual sequence-current lifecycle
+and other retained letterbox globals, then real native viewport/projection,
+queued part/material/shadow/letterbox and dummy GPU work. Native fieldSequence2
+is not original current4 for trio. Sound SetFlag accumulated1/2 gates are now
+correctly documented. Ordered outer Main/sequence exit/BattleEnd/field return,
+original numeric/history parity and hardware performance remain open. Full
+playable original-fidelity prologue goal stays active.

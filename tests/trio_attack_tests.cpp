@@ -471,6 +471,24 @@ int main(){
             assert(charged.cameraManager->camera(5)->eye==charged.cameraManager->camera(4)->eye && charged.cameraManager->camera(7)->at==charged.cameraManager->camera(4)->at);
             assert(charged.cameraManager->camera(6)->eye[2]!=charged.cameraManager->camera(4)->eye[2]);
             assert(std::count_if(charged.trioAttack.requests().begin(),charged.trioAttack.requests().end(),[](const auto& request){return request.function==0x8003ed2c && !request.rawOperands.empty() && request.rawOperands[0]==0;})==callsBeforeCameraResume);
+            charged.trioAttack.tick((charged.ticks+4)*1000/60,charged.trioBattleIntro);
+            assert(charged.trioAttack.pendingFunction()==0x8007ac40 && queue->count()==20 && !charged.cameraManager->currentIndex());
+            struct LetterboxFixture {Game* game;uint32_t sequenceReads=0,soundClears=0;} fixture{&charged};
+            CameraLetterboxServices supplied;supplied.user=&fixture;
+            supplied.partySlot0=[](void* user)->std::optional<uintptr_t>{return reinterpret_cast<uintptr_t>(static_cast<LetterboxFixture*>(user)->game->fieldPartyState().pointer(0));};
+            supplied.query=[](void* user,LetterboxQuery query,uintptr_t)->std::optional<int32_t>{
+                auto& fixture=*static_cast<LetterboxFixture*>(user);
+                if(query==LetterboxQuery::BeroExec)return 0; // Explicit fixture value, never inferred from native scene.
+                if(query==LetterboxQuery::Sequence){++fixture.sequenceReads;return 4;}
+                if(query==LetterboxQuery::Rate)return 60;return {};
+            };
+            supplied.soundFlag=[](void* user,bool set,uint16_t mask){assert(!set && mask==0x20);++static_cast<LetterboxFixture*>(user)->soundClears;return true;};
+            charged.trioAttack.setCameraLetterboxServices(supplied);
+            charged.trioAttack.tick((charged.ticks+5)*1000/60,charged.trioBattleIntro);
+            assert(charged.trioAttack.pendingFunction()==0x802ba56c && queue->count()==21 && charged.cameraManager->currentIndex()==0);
+            assert(fixture.sequenceReads==2 && fixture.soundClears==1);
+            charged.trioAttack.tick((charged.ticks+6)*1000/60,charged.trioBattleIntro);
+            assert(queue->count()==21 && fixture.sequenceReads==2 && fixture.soundClears==1); // No replay while actual GX viewport is missing.
 
             assert(charged.trioAttack.readWord(0x84201204,value) && (value&3)==2); // Source name request consumed; forced path stays active.
             assert(charged.trioAttack.readWord(0x84000ef4,value) && (value&0x80000000));

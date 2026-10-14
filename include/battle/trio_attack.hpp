@@ -12,6 +12,7 @@
 #include "positional_sfx_registry.hpp"
 #include "camera_depth.hpp"
 #include "camera_manager.hpp"
+#include "camera_letterbox.hpp"
 #include "display_queue.hpp"
 #include "shadow_work.hpp"
 #include "battle_display_footer.hpp"
@@ -37,6 +38,7 @@ public:
     const CameraDepthSnapshot* cameraDepthSnapshot() const;
     const DisplayQueue* displayQueue() const;
     const CameraManager* cameras() const;
+    void setCameraLetterboxServices(const CameraLetterboxServices&);
     std::optional<TrioShadowDrawRequest> shadowDrawRequest() const;
     const ShadowWork* shadowWork() const;
     const BattleCommandPalette* commandPalette() const;

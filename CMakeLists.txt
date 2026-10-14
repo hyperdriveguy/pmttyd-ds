@@ -1298,3 +1298,9 @@ target_link_libraries(trouble_quest_window_tests PRIVATE ttyd_core)
 add_test(NAME trouble_quest_window COMMAND trouble_quest_window_tests)
 set_tests_properties(trouble_quest_window PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 set_tests_properties(battle_action_class_table PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Source letterbox decisions/scalars and resumable borrowed registration.
+target_sources(ttyd_core PRIVATE source/display/camera_letterbox.cpp)
+add_executable(camera_letterbox_tests tests/camera_letterbox_tests.cpp)
+target_link_libraries(camera_letterbox_tests PRIVATE ttyd_core)
+add_test(NAME camera_letterbox COMMAND camera_letterbox_tests)

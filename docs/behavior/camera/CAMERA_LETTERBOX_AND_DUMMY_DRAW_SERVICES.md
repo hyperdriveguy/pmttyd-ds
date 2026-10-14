@@ -33,8 +33,12 @@ precedes all these initializers. It is a sound-global flag change, not an icon.
 Disable: request seqGetSeq AGAIN. Result3 preserves existing100/sound state;
 any other result clears100 and requests psndClearFlag800dc0f8(mask20), even if
 100 was already clear. Do not collapse two sequence reads into one snapshot.
-The sound setters OR/AND-clear their retained global halfword; no inferred
-music restart belongs in this helper.
+The sound setters mutate retained halfword803df73e. ClearFlag only AND-clears;
+SetFlag ORs then tests the **accumulated** bits1/2, requesting BGM/environment
+Off_f_d for groups0/1 when those bits are set. With both bits clear, adding20
+requests no additional sound service. No music restart belongs in this helper.
+See [global owner and live side-effect gates](CAMERA_LETTERBOX_GLOBAL_PRODUCERS.md)
+and the [original sound routing contract](../audio/FIELD_ITEM95_FANFARE_BGM_ROUTING_AND_QUERIES.md).
 
 Animation freshly reads flags0. Enabled100 stores alpha255, adds3 separately
 to each signed bar, stores to halfword, reloads/sign-extends, then caps top49
