@@ -136,14 +136,14 @@ int32_t Game::troubleBoardCall(TroubleEventRequest& r) {
   if(!progress.originalPouch)return 0;
   progress.originalPouch->addCoins(r.values[0]);return 2;
  case TroubleEventCall::Cancel: {
-  if(!progress.originalPouch)return 0;
+  if(!r.cancellationItems || (!r.cancellationItems->empty() && !progress.originalPouch))return 0;
   struct Context {Game* game;TroubleQuestServices* switches;} context{this,&r.switches};
   TroubleQuestServices services;services.user=&context;
   services.clearFlag=[](void* p,int32_t f){auto& c=*static_cast<Context*>(p);c.switches->clearFlag(c.switches->user,f);};
   services.setByte=[](void* p,int32_t b,uint8_t v){auto& c=*static_cast<Context*>(p);c.switches->setByte(c.switches->user,b,v);};
   services.countItem=[](void* p,int32_t item){return static_cast<Context*>(p)->game->progress.originalPouch->keyItemCount(item);};
   services.removeItem=[](void* p,int32_t item){return static_cast<Context*>(p)->game->progress.originalPouch->removeKeyItem(item);};
-  return cancelTroubleQuest(r.values[0],services).value_or(0);
+  return cancelTroubleQuestItems(*r.cancellationItems,services).value_or(0);
  }
  default:return 0; // Actual NPC/door/item/world providers remain pending.
  }

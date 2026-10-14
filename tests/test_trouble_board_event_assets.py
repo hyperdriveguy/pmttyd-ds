@@ -31,3 +31,21 @@ class OriginalTroubleBoardData(unittest.TestCase):
             self.fail('Missing source data word')
         table=objects['irai_start_event']['address']
         for q in range(1,31):self.assertEqual(word(table+4*(q-1)),objects['irai_start_event01' if q==1 else 'irai_start_event04' if q==4 else 'irai_start_event_null']['address'])
+
+    @unittest.skipUnless(Path('romfs/trouble-board-events.json').is_file(),'original local board pack unavailable')
+    def test_all_original_cancellation_lists(self):
+        meta=json.loads(Path('romfs/trouble-board-events.json').read_text())
+        packed=Path('romfs/trouble-board-events.pmevt').read_bytes()
+        count=struct.unpack_from('>I',packed,8)[0]
+        def word(address):
+            for n in range(count):
+                base,size,offset=struct.unpack_from('>III',packed,12+12*n)
+                if base<=address and address+4<=base+size:return struct.unpack_from('>I',packed,offset+address-base)[0]
+            self.fail('Original cancellation data absent')
+        objects={o['name']:o for o in meta['objects']};table=objects['irai_item_table']['address']
+        expected={1:49,2:95,13:107,16:110,17:98,19:73,23:99,25:109,29:100}
+        for quest in range(1,31):
+            pointer=word(table+4*(quest-1));first=word(pointer)
+            if quest in expected:
+                self.assertEqual(first,expected[quest]);self.assertEqual(word(pointer+4),0xffffffff)
+            else:self.assertEqual(first,0xffffffff)

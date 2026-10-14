@@ -11,15 +11,13 @@ std::optional<int32_t> startTroubleQuest(const TroubleQuestServices& s) {
     if(!switchesReady(s))return {};
     resetWorkingSwitches(s);return 2;
 }
-std::optional<int32_t> cancelTroubleQuest(int32_t quest,const TroubleQuestServices& s) {
-    // These are the recovered original irai_item_table bindings. Remaining
-    // tasks require their actual tables; no arbitrary quest index is admitted.
-    const int32_t item=quest==2?95:quest==13?107:0;
-    if(!item || !switchesReady(s) || !s.countItem || !s.removeItem)return {};
+std::optional<int32_t> cancelTroubleQuestItems(const std::vector<int32_t>& items,const TroubleQuestServices& s) {
+    if(!switchesReady(s) || (!items.empty() && (!s.countItem || !s.removeItem)))return {};
+    // Native finite key-item branch. Validate before the source reset; list order
+    // and repeated fresh counts remain the original table-driven operation.
+    for(auto item:items)if(item<1 || item>120)return {};
     resetWorkingSwitches(s);
-    // Source rechecks after every removal and ignores the removal result. No
-    // parameter revision, cached quantity, synthetic clamp or quest1420 write.
-    while(s.countItem(s.user,item)>0)s.removeItem(s.user,item);
+    for(auto item:items)while(s.countItem(s.user,item)>0)s.removeItem(s.user,item);
     return 2;
 }
 }

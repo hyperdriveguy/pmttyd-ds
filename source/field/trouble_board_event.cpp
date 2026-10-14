@@ -10,7 +10,11 @@
 #include <unordered_map>
 namespace ttyd {
 namespace {
-struct TroubleBoardProgram {EventScriptAssets scripts;std::unordered_map<uint32_t,TroubleEventCall> callbacks;};
+struct TroubleBoardProgram {
+ EventScriptAssets scripts;std::unordered_map<uint32_t,TroubleEventCall> callbacks;
+ std::array<std::vector<int32_t>,30> cancellationItems;
+ std::array<uint32_t,30> cancellationAddresses{};
+};
 std::shared_ptr<const TroubleBoardProgram> assets;
 constexpr uint32_t Functions[]={0x800e7474,0x800d2008,0x800d284c,0x800d2090,0x800d23c4,0x800d21fc,
  0x90110600,0x9010fedc,0x9010fe60,0x800e6de8,0x800eb21c,0x80070110,0x901108b0,0x800f1018,
@@ -36,6 +40,19 @@ bool loadTroubleBoardEventAssets(const char* root) {
  for(uint32_t address:{Board,Counter,Installer,Confirmation,Confirmation+29*4})ok=ok && next.readWord(address,word);
  if(!ok)return false;
  auto program=std::make_shared<TroubleBoardProgram>();program->scripts=std::move(next);program->callbacks=std::move(called);
+ // Read all30 original pointers and signed -1-terminated lists from the same
+ // relocated data closure; never infer an item's identity from a quest number.
+ for(unsigned q=0;q<30;++q) {
+  uint32_t address=0;if(!program->scripts.readWord(0x90545cd4+4*q,address))return false;
+  program->cancellationAddresses[q]=address;bool terminated=false;
+  for(unsigned n=0;n<121;++n) {
+   uint32_t item=0;if(!program->scripts.readWord(address+4*n,item))return false;
+   if(item==0xffffffff){terminated=true;break;}
+   if(item<1 || item>120)return false;
+   program->cancellationItems[q].push_back(int32_t(item));
+  }
+  if(!terminated)return false;
+ }
  assets=std::move(program);return true;
 }
 struct TroubleBoardEventRuntime {
@@ -96,6 +113,12 @@ struct TroubleBoardEventRuntime {
    assert(flag>=5405 && flag<=5421);writeSavedSwitch(SavedSwitchFamily::GlobalFlag,flag,0,r.vm.interpreterServices().operands);};
   request.switches.setByte=[](void* p,int32_t byte,uint8_t v){auto& r=*static_cast<TroubleBoardEventRuntime*>(p);
    assert(byte>=1469 && byte<=1474);writeSavedSwitch(SavedSwitchFamily::GlobalByte,byte,v,r.vm.interpreterServices().operands);};
+  if(kind==TroubleEventCall::Cancel) {
+   const auto quest=request.values[0];
+   if(quest<1 || quest>30){owner->failed=true;return 0;}
+   request.cancellationItems=&program->cancellationItems[unsigned(quest-1)];
+   request.cancellationItemsAddress=program->cancellationAddresses[unsigned(quest-1)];
+  }
   if(owner->failed)return 0;
   if(!services.call){owner->pendingFunction=fn;return 0;}
   const auto status=services.call(services.user,request);

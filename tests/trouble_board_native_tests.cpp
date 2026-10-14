@@ -25,7 +25,7 @@ void run(Game& g,int choice=0,int row=1) {
 int main() {
  assert(loadHarborStoryAssets("romfs") && loadNativeTroubleBoardAssets("romfs"));
  assert(loadFieldActorCatalog("romfs") && loadFieldSaveObjectAssets("romfs"));
- assert(loadGround("romfs/map.ground") && loadCollision("romfs/map.walls") && loadHead("romfs/map.head"));
+ assert(loadGround("romfs/gor_02.ground") && loadCollision("romfs/gor_02.walls") && loadHead("romfs/gor_02.head"));
  auto wrong=initial(true);wrong.wallContact.sourceNode=0x12d514;assert(!wrong.tryTroubleBoardContact(0x100));
  wrong.wallContact.sourceNode=0x12d518;wrong.fieldDoor.interiorMask=0;assert(!wrong.tryTroubleBoardContact(0x100));
  wrong.fieldDoor.interiorMask=4;wrong.roadAdmission.window=true;assert(!wrong.tryTroubleBoardContact(0x100));
@@ -88,6 +88,28 @@ int main() {
  assert(fee && confirmations && !counter.troubleBoardLocked());
  assert(*counter.progress.originalNpcTalkState.quest1420==0);
  assert(counter.progress.originalPouch->keyItemCount(95)==0 && !counter.fieldKeysOff);
+ // All original task-table lists, including true empty lists, drive actual
+ // counter cancellation. Other keys/resources survive the original loop.
+ constexpr int expectedItems[30]={49,95,0,0,0,0,0,0,0,0,0,0,107,0,0,110,98,0,73,0,0,0,99,0,109,0,0,0,100,0};
+ for(unsigned quest=1;quest<=30;++quest) {
+  auto task=initial(true);task.progress.originalStory=401;task.wallContact.sourceNode=0x12d3e0;
+  task.progress.originalNpcTalkState.quest1420=uint8_t(quest);
+  task.progress.originalPouch=std::make_shared<ProloguePouch>();
+  auto& pouch=*task.progress.originalPouch;pouch.half(0x78,70);pouch.half(0x70,10);
+  for(auto item:{49,95,107,110,98,73,99,109,100})for(int count=0;count<3;++count)assert(pouch.insertKeyItem(item)==1);
+  for(int f=5405;f<=5421;++f)setTroubleQuestFlag(task.progress.originalNpcTalkState,f,true);
+  assert(task.tryTroubleBoardContact(0x100));
+  for(unsigned n=0;n<8000 && task.troubleBoardLocked();++n) {
+   Input i;auto* p=task.troubleBoardPresentation();
+   if(p->message.canAdvanceText())i.confirm=true;
+   if(p->selection.state==1){const int wanted=p->selection.count==3?1:0;if(p->selection.current!=wanted)i.z=1;else i.confirm=true;}
+   task.tick(i);
+  }
+  assert(!task.troubleBoardLocked() && !task.fieldKeysOff && *task.progress.originalNpcTalkState.quest1420==0);
+  assert(pouch.half(0x78)==40 && pouch.half(0x70)==10);
+  for(auto item:{49,95,107,110,98,73,99,109,100})assert(pouch.keyItemCount(item)==(item==expectedItems[quest-1]?0:3));
+  for(int f=5405;f<=5421;++f)assert(!*troubleQuestFlag(task.progress.originalNpcTalkState,f));
+ }
  // Unknown source selector global is retained as pending, not guessed from Mario.
  auto unknown=initial();unknown.fieldPartyCurrentIndex.reset();assert(unknown.tryTroubleBoardContact(0x100));
  unknown.tick({});unknown.fieldPartyCurrentIndex=0;unknown.tick({});

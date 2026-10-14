@@ -27,15 +27,17 @@ int main() {
         h.pouch.half(0xa0,item);h.pouch.half(0xa4,other);h.pouch.half(0xae,item);h.pouch.half(0x190,item);
         h.pouch.half(0x70,3);h.pouch.half(0x74,1);h.pouch.half(0x78,123);h.pouch.half(0x92,-9);
         const auto before=h.pouch;
-        assert(cancelTroubleQuest(quest,s)==2);resetOrder(h);
+        assert(cancelTroubleQuestItems({item},s)==2);resetOrder(h);
         assert(h.removes==3 && h.checks==4 && h.pouch.keyItemCount(item)==0 && h.pouch.keyItemCount(other)==1);
         for(unsigned n=0;n<before.bytes.size();++n)if(n<0xa0 || n>=0x192)assert(before.bytes[n]==h.pouch.bytes[n]);
         for(int n=0;n<3;++n){assert(h.calls[23+2*n]==-item);assert(h.calls[24+2*n]==-1000-item);}
         assert(h.calls.back()==-item); // Fresh zero count terminates, despite ignored-77 result.
-        h.calls.clear();h.checks=h.removes=0;assert(cancelTroubleQuest(quest,s)==2);resetOrder(h);assert(h.checks==1 && h.removes==0);
+        h.calls.clear();h.checks=h.removes=0;assert(cancelTroubleQuestItems({item},s)==2);resetOrder(h);assert(h.checks==1 && h.removes==0);
     }
     h={};s=services(h);
-    for(int quest:{-1,0,1,3,12,14,255})assert(!cancelTroubleQuest(quest,s));
-    assert(h.calls.empty());s.setByte=nullptr;assert(!startTroubleQuest(s) && !cancelTroubleQuest(2,s));assert(h.calls.empty());
-    s=services(h);s.removeItem=nullptr;assert(!cancelTroubleQuest(13,s));assert(h.calls.empty());
+    for(int item:{-1,0,121,255})assert(!cancelTroubleQuestItems({item},s));
+    assert(h.calls.empty());s.setByte=nullptr;assert(!startTroubleQuest(s) && !cancelTroubleQuestItems({95},s));assert(h.calls.empty());
+    s=services(h);s.countItem=s.removeItem=nullptr;
+    assert(cancelTroubleQuestItems({},s)==2);resetOrder(h);h.calls.clear();
+    s=services(h);s.removeItem=nullptr;assert(!cancelTroubleQuestItems({107},s));assert(h.calls.empty());
 }

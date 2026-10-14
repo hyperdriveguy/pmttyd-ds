@@ -19,6 +19,8 @@ struct TroubleEventRequest {
  std::array<int32_t,16> locals{}; // Installer case wrapper saves all16 LW words.
  int32_t selection=0,quest=0,work=0,result=0,story=0,activeQuest=0;
  TroubleQuestServices switches; // Actual VM working-flag/byte writers for cancellation.
+ const std::vector<int32_t>* cancellationItems=nullptr; // Immutable original table list, borrowed from this runtime.
+ uint32_t cancellationItemsAddress=0;
  std::string text; // Original ID/name bytes; no rewritten dialogue.
 };
 struct TroubleEventServices {

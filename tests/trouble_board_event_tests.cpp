@@ -49,7 +49,8 @@ struct Backend {
     s.setByte=[](void* p,int32_t byte,uint8_t v){auto& c=*static_cast<Context*>(p);c.switches->setByte(c.switches->user,byte,v);};
     s.countItem=[](void* p,int32_t item){auto& b=*static_cast<Context*>(p)->backend;return item==95?b.item95:b.item107;};
     s.removeItem=[](void* p,int32_t item){auto& b=*static_cast<Context*>(p)->backend;--(item==95?b.item95:b.item107);return 1;};
-    return cancelTroubleQuest(r.values[0],s).value_or(0);
+    assert(r.cancellationItems && r.cancellationItemsAddress);
+    return cancelTroubleQuestItems(*r.cancellationItems,s).value_or(0);
    }
    if(r.kind==TroubleEventCall::MenuInit){assert(r.argumentCount==0);r.result=0x70001000;}
    if(r.kind==TroubleEventCall::MenuMain){assert(r.work==0x70001000);r.result=b.quests.empty()?-1:b.quests[std::min(size_t(b.menu-1),b.quests.size()-1)];}
