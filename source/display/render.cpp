@@ -1561,6 +1561,7 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
 void Renderer::shutdown() {
     releaseClassMenuDrawing();
     if(c3dReady) C3D_FrameSync();
+    if(shadowTexture44.imported){Tex3DS_TextureFree(shadowTexture44.imported);C3D_TexDelete(&shadowTexture44.texture);shadowTexture44.imported=nullptr;}
     releaseItem95Icons();
     releaseItemGetEffect();
     releaseTutorialCurtain();

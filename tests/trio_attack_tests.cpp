@@ -530,6 +530,21 @@ int main(){
             assert(statePackets.size()==7 && pipeline.state()->color && pipeline.state()->alpha && !pipeline.state()->depthWrite && pipeline.state()->sourceBlend==4 && pipeline.state()->destinationBlend==5 && pipeline.state()->rasterAdmitted());
             charged.trioAttack.resumeFinishingDraw(frameServices);
             assert(statePackets.size()==7 && charged.trioAttack.pendingFunction()==0x8002d3d8); // Captured shadow callback resumes without replaying class states.
+            struct ShadowFrameBinding {const TrioAttack* attack;DisplayDispatchServices original;unsigned requests=0,lookups=0;} binding{&charged.trioAttack,frameServices.display};
+            frameServices.display.user=&binding;
+            frameServices.display.state=[](void* user,const DisplayStateRequest& r){auto& b=*static_cast<ShadowFrameBinding*>(user);return b.original.state(b.original.user,r);};
+            frameServices.display.callback=[](void* user,uint32_t camera,uint32_t identity,uint32_t borrowed){
+                auto& b=*static_cast<ShadowFrameBinding*>(user);if(identity!=0x8002d3d8)return false;
+                ShadowDisplayServices source;source.user=&b;
+                source.gx=[](void* user,const ShadowGXRequest&){++static_cast<ShadowFrameBinding*>(user)->requests;return true;};
+                source.texture44=[](void* user,ShadowTexture& texture){++static_cast<ShadowFrameBinding*>(user)->lookups;texture=ShadowTexture::N64Texture44;return true;};
+                return b.attack->resumeShadowDisplay(camera,borrowed,source);
+            };
+            charged.trioAttack.resumeFinishingDraw(frameServices);
+            assert(charged.cameraManager->currentIndex()==2 && queue->count()==21 && charged.trioAttack.pendingFunction()==0x800158a4);
+            assert(binding.requests==73 && binding.lookups==1);
+            const auto classStates=statePackets.size();charged.trioAttack.resumeFinishingDraw(frameServices);
+            assert(binding.requests==73 && binding.lookups==1 && statePackets.size()==classStates); // Completed camera1 setup never replays while camera2 ray is held.
 
 
 

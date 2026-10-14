@@ -13792,3 +13792,74 @@ Next: actual ordered setup/retained GPU state and N64 resource owner/binding,
 then camera2 collision/image/projection services; remaining source callbacks,
 production Bero/get_info, Init/Main/Exit and ordered field return. Full prologue
 goal remains active. Original story/message content is unchanged.
+
+## 2026-10-14 — Native ordered shadow setup and camera2 ray frontier
+
+Implemented the complete finite camera1/4/5/7 setup/record-scan continuation,
+with typed current display/camera owners and captured GX arguments across
+holds. Shared source pool remains live; count tests are fresh. Admitted geometry
+requires its genuine complete matrix/GX/bounding provider. Shadow/collision
+cursors are retained by the runtime under the actual captured dispatcher call;
+production simulation emits no GPU work. Native mask/blend/depth/alpha use the
+existing class owner. Shader/material/arrays/descriptors/texture/fog/cull have
+their own retained source owner, restored after camera/mask state. Actual
+dummy seeds source TEVREG0 alpha129 independently of native shader constants.
+
+Native loaded44 resource adapter imports verified private16x16 RGBA8 before
+publishing/binding. It validates dimension/format/no mip levels/bias0 and sets
+repeat S/T,linear min/mag. Original N64 full palette/load/archive/DVD/language
+and unloaded1x1 dummy remain unbound; no record-type inference is used.
+Source indexed identities are logical input declarations, never ARM pointers;
+geometry decoding, matrix/UV adaptations, EFB bounding and image work remain
+separate obligations. A0*raster or texture*raster alpha maps to a native
+two-stage program; GX/PICA fixed-point rounding/raster correspondence unproven.
+
+Validation with TMPDIR=`artifacts/native-stage-map-tmp`:
+
+- Frozen `artifacts/shadow-gpu-source/OWNED_BASE.txt` base
+  d6ce4c9be1231d654013aef88813433149fcc09e plus six owned files and scoped
+  runtime/renderer/integration-test/CMake hunks; foreign uncommitted edits are
+  excluded. Private packs reused; no wholesale asset-rebuild parity claim.
+- Initial `make test` passed the new shadow/finishing checks but failed the
+  newly committed door count3 assertion against shared private pack count2.
+  `tools/door_assets.py` from the frozen source regenerated original geometry
+  bindings into `artifacts/shadow-gpu-door-assets/`. Its pack overlays the
+  frozen RomFS with individual symlinks; shared private packs are untouched.
+- Final `CMAKE_BUILD_PARALLEL_LEVEL=4 make test` exits0:276/276 C++ and162/162
+  Python, `artifacts/shadow-gpu-test-final.log`. Covers source order/holds,
+  fresh material versus captured failed call, mandatory texture query/binding,
+  array replacement, geometry waits, inherited A0/dummy state and source
+  dispatcher progress into camera2's unavailable independent ray.
+- Final `make all -o assets-ready -j4 DEBUG_SHORT_BOOT=1 BUILD=build-shadow-gpu
+  TARGET=ttyd-shadow-gpu` exits0, `artifacts/shadow-gpu-build-final.log`.
+  Frozen source and isolated source-matched door pack embedded; converters
+  otherwise skipped to reuse verified existing private resources.
+- Test-only `artifacts/shadow-gpu-harness-source` adds explicit resolved Bero
+  bit1 clear after a staged checkpoint and request/texture/ray/frontier probes.
+  No source ray result is invented: the observation provider returns unavailable.
+  Harness make all exits0, `artifacts/shadow-gpu-harness-build.log`.
+- Isolated `tools/emulator_smoke.py --binary
+  artifacts/shadow-gpu-harness-source/ttyd-shadow-gpu-harness.3dsx
+  --save-fixture artifacts/fixtures/underground-trio-story11.bin --seconds15
+  --input-script tests/azahar_trio_exp_icons.py
+  --output-dir artifacts/azahar-shadow-gpu` exits0. No detected native exception;
+  `artifacts/shadow-gpu-emulator.log`. Personal profiles/saves untouched.
+- Actual isolated SD probes: shadow-requests.txt has exactly73 acknowledged
+  source calls (prefixes0,21,49 and slot0 bind52); shadow-texture.txt has one
+  loaded44 import,16x16/nativefmt0(RGBA8),max/min/bias0,param00002206 (repeat
+  S/T,linear min/mag). shadow-frontier.txt reports pending800158a4,camera2,
+  queue21,three type2/camera4 records with flags1,A0=129. shadow-ray.txt reports
+  origin(-100,11,-5),direction(0,-1,0),length150,filter8002d380. No matrix
+  preparation bit was fabricated; the real source query remains unavailable.
+- Viewed original-ending-fade-export-boundary.png: opaque ending with visible
+  development field-restoration notice. No shadow raster, field-return,
+  original-game numeric/event/history or hardware parity claim.
+- Immutable ELF/3DSX/SMDH, source/own-hunk and isolated door-pack hashes recorded
+  under `artifacts/shadow-gpu-validated/`. Scoped whitespace checks pass.
+
+Documentation recovered conditional camera2 profile selection and mandatory
+projection/image restoration. Completed Collision does not imply class5 success
+or an unconditional camGetPtr4 query. Next recover/bind source ray traversal and
+actual battle map/context/filter ownership, then profile/image/GPU services,
+geometry and remaining callbacks/outer lifecycle/field return. Full original
+prologue goal remains active; story content/dialogue unchanged.

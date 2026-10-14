@@ -28,6 +28,7 @@
 #include "battle_class_backend.hpp"
 #include "native_camera_draw.hpp"
 #include "native_display_state.hpp"
+#include "native_shadow_program.hpp"
 #include <memory>
 #include <3ds.h>
 #include <citro2d.h>
@@ -123,6 +124,11 @@ private:
     shaderProgram_s program{};
     NativeCameraDraw finishingCameraDraw;
     NativeDisplayState finishingDisplayState;
+    NativeShadowProgram finishingShadowProgram;
+    bool finishingShadowRequest(const ShadowGXRequest&);
+    bool finishingShadowGpu(const NativeShadowProgram&);
+    bool finishingShadowCallback(const Game&,uint32_t camera,uint32_t identity,uint32_t userdata);
+    bool prepareShadowTexture44();
     bool finishingDisplayPipeline(const NativeDisplayPipeline&);
     bool finishingCameraPacket(const NativeCameraPacket&);
     void resumeFinishingCamera(const Game&);
@@ -146,6 +152,7 @@ private:
     int itemGetEffectTransform=0,itemGetEffectProjection=0;
     bool prepareSceneActorTextures(const Game&);
     Texture messageIndicatorTexture;
+    Texture shadowTexture44; // Native loaded resource adapter; original palette loader remains separate.
     BattleClassAssets classAssets;
     std::array<Texture,2> classTextures;
     Vertex* classVertices=nullptr;

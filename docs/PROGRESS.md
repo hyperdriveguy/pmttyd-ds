@@ -2941,3 +2941,31 @@ its separate1222 talk branch, then exact door/wall/material/collision callback
 and original audio ownership. Existing movement/camera/follower and case tick
 adapters do not establish original execution/raster or hardware parity. Full
 Trouble Center/remake goal remains active.
+
+## 2026-10-14 — Native ordered shadow setup and camera2 ray frontier
+
+Bound source Polygon/cylinder/Texture setup, retained material/TEV/attribute
+state and actual N64 texture44 import/sampler/binding inside renderer frames.
+Dummy seeds retained A0=129; restoration preserves source state without request
+or geometry replay. Camera1's rejected-record domain completes all73 GX
+requests before camera2/class5 enters the independent collision preparation.
+[Scope](behavior/display/NATIVE_ORDERED_SHADOW_SETUP_AND_CAMERA2_RAY_FRONTIER.md).
+
+Frozen make test passes276/276 C++ and162/162 Python; final native make all
+DEBUG_SHORT_BOOT=1 passes. Isolated instrumented Azahar records73 requests
+once, loaded16x16/no-mip texture44 with repeat/linear sampler, and ray frontier
+800158a4 at camera2/queue21. Three type2/camera4 records retain flags1; no
+fabricated preparation. Ending notice remains visible; no detected native
+exception. Explicit test-only Bero resolution; production history still open.
+Exact [validation](PROGRESS_ARCHIVE.md#2026-10-14--native-ordered-shadow-setup-and-camera2-ray-frontier).
+
+Initial host validation found a stale shared two-door pack against newly
+committed three-door source. Regenerated it from the frozen committed converter
+into an isolated RomFS overlay; shared packs/source/foreign edits were preserved.
+
+Next: source-correct independent filtered ray/map-context binding, retained
+mutable camera2 projection/image profile and ordered suffix, actual geometry/
+bounds/image services and remaining source callbacks. Full N64 async/language/
+dummy lifecycle, production Bero/get_info, Init/Main/Exit and ordered field
+return remain open. Original execution/raster/audio parity and hardware
+performance remain unverified; full original-fidelity prologue goal stays active.

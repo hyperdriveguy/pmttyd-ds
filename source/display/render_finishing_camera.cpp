@@ -31,7 +31,7 @@ bool Renderer::finishingCameraPacket(const NativeCameraPacket& p){
             C3D_ImmSendAttrib(xyz[0],xyz[1],xyz[2],1);
             C3D_ImmSendAttrib(0,0,0,1);C3D_ImmSendAttrib(0,0,0,0);
         }
-        C3D_ImmDrawEnd();finishingDisplayState.afterDummy(); // Logical source state is seeded only by the real dummy, never restoration.
+        C3D_ImmDrawEnd();finishingDisplayState.afterDummy();finishingShadowProgram.afterDummy(); // Logical source state is seeded only by the real dummy, never restoration.
     }
     return true;
 }
@@ -52,17 +52,23 @@ void Renderer::resumeFinishingCamera(const Game& game){
     if(!finishingCameraDraw.restore(submit))return;
     NativeDisplaySubmit pipeline{this,[](void* user,const NativeDisplayPipeline& p){return static_cast<Renderer*>(user)->finishingDisplayPipeline(p);}};
     if(!finishingDisplayState.restore(pipeline))return;
+    if(finishingShadowProgram.seeded && !finishingShadowGpu(finishingShadowProgram))return;
     CameraDrawServices services;services.user=&submit;
     services.request=[](void* user,const CameraDrawRequest& r){
         const auto& submit=*static_cast<NativeCameraSubmit*>(user);
         return static_cast<Renderer*>(submit.user)->finishingCameraDraw.request(r,submit);
     };
-    services.display.user=&pipeline;
+    struct DisplayBridge {NativeDisplaySubmit* pipeline;const Game* game;} displayBridge{&pipeline,&game};
+    services.display.user=&displayBridge;
     services.display.state=[](void* user,const DisplayStateRequest& request){
-        const auto& pipeline=*static_cast<NativeDisplaySubmit*>(user);
+        const auto& pipeline=*static_cast<DisplayBridge*>(user)->pipeline;
         return static_cast<Renderer*>(pipeline.user)->finishingDisplayState.request(request,pipeline);
     };
-    // Borrowed shadow/part/material callbacks remain actual provider waits.
+    services.display.callback=[](void* user,uint32_t camera,uint32_t identity,uint32_t borrowed){
+        const auto& b=*static_cast<DisplayBridge*>(user);
+        return static_cast<Renderer*>(b.pipeline->user)->finishingShadowCallback(*b.game,camera,identity,borrowed);
+    };
+    // Actual shadow setup; admitted geometry, independent rays and other callbacks retain provider waits.
     game.trioAttack.resumeFinishingDraw(services);
 }
 }

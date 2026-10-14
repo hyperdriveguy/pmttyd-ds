@@ -3972,3 +3972,16 @@ actual retained palette state/texture binding, then camera2's independent
 filter8002d380 ray and remaining image/projection callbacks are still required.
 No callback success, synthetic floor/preparation, runtime raster parity or full
 EVT-01 closure follows from this partial delivery.
+
+### 2026-10-14 — Ordered native shadow setup reaches independent camera2 ray
+
+Native [source setup continuation](../behavior/display/NATIVE_ORDERED_SHADOW_SETUP_AND_CAMERA2_RAY_FRONTIER.md)
+now retains source TEV register0, full ordered Polygon/cylinder/Texture setup,
+actual imported texture44 and frame restoration. The supported camera1 rejected
+record domain completes through real setup before camera2/class5 reaches its
+independent hitCheckVecFilter800158a4. Geometry/bounds, the ray provider, actual
+mutable projection profiles and [class5 image/projection suffix](../behavior/display/SHADOW_CAMERA2_CLASS5_ORDERED_SUFFIX.md)
+remain unbound. The dummy's [source A0 identity](../behavior/display/DUMMY_DRAW_TEV_REGISTER0_AND_SHADOW_INHERITANCE.md)
+is129 and is retained separately from current native TexEnv constants. Native
+loaded44 publication follows actual import, with full original N64 load history
+and dummy still open. No field-return/raster/runtime or EVT-01 closure claim.

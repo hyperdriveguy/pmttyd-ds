@@ -959,3 +959,7 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native shadow collision cursor and original texture import](display/NATIVE_SHADOW_COLLISION_CURSOR_AND_TEXTURE_IMPORT.md)
 
 - [Native Trouble Center front door/lock notice](field/NATIVE_TROUBLE_CENTER_FRONT_DOOR_AND_LOCK_NOTICE.md) and [original type4 kanban art/material](display/ORIGINAL_KANBAN_TYPE4_WINDOW_AND_LOCK_NOTICE.md) — distinct authored interior/collision state, story23 access and original sign message; complete case/board/animation/audio remains open.
+
+- [Dummy TEV register0 and shadow inheritance](display/DUMMY_DRAW_TEV_REGISTER0_AND_SHADOW_INHERITANCE.md)
+- [Shadow camera2 class5 ordered suffix](display/SHADOW_CAMERA2_CLASS5_ORDERED_SUFFIX.md)
+- [Native ordered shadow setup and camera2 ray frontier](display/NATIVE_ORDERED_SHADOW_SETUP_AND_CAMERA2_RAY_FRONTIER.md)

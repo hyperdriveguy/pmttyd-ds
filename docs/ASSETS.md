@@ -535,3 +535,14 @@ and conversion grant no redistribution rights. No ISO, original pixels, compiled
 catalog or texture is committed. Population, animation selection, texture/GPU
 binding, original draw behavior and throw events remain separate work. Current
 source setup4 tutorial capacity is zero; preparing resources does not change it.
+
+## 2026-10-14 — Native shadow texture44 binding
+
+The finishing renderer lazily imports private `romfs/shadow-texture44.t3x`,
+validates16x16 native RGBA8/no mip levels/LOD bias0, and binds repeat S/T with
+linear min/mag. The resource persists across frame restoration and is deleted
+after GPU synchronization during renderer shutdown. This is an explicit native
+loaded44 resource adapter; original full N64 palette/async/language lifecycle
+and its 1x1 unloaded dummy remain unbound. [Native scope](behavior/display/NATIVE_ORDERED_SHADOW_SETUP_AND_CAMERA2_RAY_FRONTIER.md).
+Original paths/hash/conversion/rights remain those in the prior texture44 entry;
+no new original payload, resampling or redistribution license.

@@ -1400,3 +1400,9 @@ add_test(NAME battle_scene_views COMMAND battle_scene_views_tests)
 # Original door pack and actual native field/save admission.
 add_test(NAME field_door_assets COMMAND field_door_tests original)
 set_tests_properties(field_door_assets PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Ordered shadow setup/callback continuation and native inherited shader state.
+target_sources(ttyd_core PRIVATE source/display/shadow_display.cpp source/display/native_shadow_program.cpp)
+add_executable(shadow_display_tests tests/shadow_display_tests.cpp)
+target_link_libraries(shadow_display_tests PRIVATE ttyd_core)
+add_test(NAME shadow_display COMMAND shadow_display_tests)

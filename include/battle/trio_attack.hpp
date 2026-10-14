@@ -18,6 +18,7 @@
 #include "source_sound_flags.hpp"
 #include "display_queue.hpp"
 #include "shadow_work.hpp"
+#include "shadow_display.hpp"
 #include "battle_display_footer.hpp"
 namespace ttyd {
 bool loadTrioAttackAssets(const char* root);
@@ -46,6 +47,7 @@ public:
     void setSoundFlags(std::shared_ptr<SourceSoundFlags>);
     bool finishingDrawPending() const;
     void resumeFinishingDraw(const CameraDrawServices&) const;
+    bool resumeShadowDisplay(uint32_t camera,uint32_t userdata,const ShadowDisplayServices&) const;
     std::optional<TrioShadowDrawRequest> shadowDrawRequest() const;
     const ShadowWork* shadowWork() const;
     const BattleCommandPalette* commandPalette() const;
