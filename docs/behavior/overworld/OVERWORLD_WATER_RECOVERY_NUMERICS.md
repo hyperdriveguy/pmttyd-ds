@@ -39,22 +39,28 @@ behavior in the port is authored, not original.
 
 ## Rise/travel (stages 10/11, 12, 13, 14, 20)
 
+Slot discipline (re-verified instruction by instruction): [68] = stage,
+[72] = counter. An earlier revision mixed the two in several bullets below;
+the corrected mapping is authoritative.
+
 - Stage 10 (8013b028): counter++; on reaching exactly 2 → SFX 405,
-  counter = 11, else straight to the rise core (8013b06c). Two-tick arm.
-- Stage 11 core: [144] += rise lane; [708] −= lane with floor at 0
-  (negative intermediate kept in r3 only when below zero... precisely:
-  `fsubs` then `fcmpo`-ordered store keeps 0.0 on the not-greater path);
-  [144]/[696] NaN-safe compare selects the land-check branch
-  (`marioBgmodeChk` == 1 → vectored splash call, else SFX 186).
+  stage = 11, else straight to the rise core (8013b06c). Two-tick arm.
+- Stage 11 core: [144] += [708]; [708] −= 1.0 (the 10.0-floor branch
+  stores the identical value, so unconditional in ordered cases). [144]
+  vs [696] NaN-safe compare selects the land-check branch: bgmode != 1 →
+  vectored splash call (0x8022645c) then SFX 186; == 1 → SFX 186 only.
+- Rise ceiling (8013b0fc, same stage): if [144] ≥ [696] + 500.0, the
+  [520]-gated branch selects a position triple (via 0x80013ef0 or the
+  map-name `strcmp` chain) into the stack slots, then the bit6-gated splash
+  call; [704] = lane quotient via `fdivs` (the travel-rate computation —
+  a measured divisor, not the port's 0.08).
 - Stage 12 (8013b350): [240] += [704]; [140/148] snapshot to [236/244]
-  after the 0x80005de4 call; counter-- → stage 13 on expiry, plus the
-  +0 flag OR and 0x8009412c call. The +0x80 flag and callee identities
-  past this are open.
-- Stage 13 (8013b3c4): counter-- → stage 20 on expiry (counter preset 20
-  at the transition... precisely `li 0, 20` stored to the counter slot).
+  after the 0x80005de4 call; counter-- → stage = 13 on expiry, plus
+  [Mario+0] |= 0x80 and the 0x8009412c call. On that transition [72] is
+  set to 1, so stage 13 runs exactly one tick.
+- Stage 13 (8013b3c4): counter-- → stage = 20 on expiry.
 - Stage 14 (8013b3e0): [240] += [704] again; snapshots again; counter-- →
-  on expiry flag OR, 0x8009412c call, counter = 20, stage stays for the
-  fallthrough return (transition target open — see listing).
+  on expiry flag OR, 0x8009412c call, [Mario+4] low-bit clear, stage = 20.
 - Stage 20 (8013b438): `marioGetFallSpd` body call (0x80094098, fall
   integrator), [520]-gated branch, then the `marioChkLandon` landing query
   (0x8008dc70, contracted) with the bgmode-gated K(−18568 = 50.0) compare
@@ -62,9 +68,9 @@ behavior in the port is authored, not original.
 
 ## Landing/HP chain (stages 30/31/32/33)
 
-- Stage 30 (8013b544): stage = 50?? No — writes stage([68]) = 31... precisely:
-  `li 3, 50` → [72] (counter = 50); `li 0, 31` → [68] (stage 31). (Matches
-  the poses doc's "count48=50"-style landing handoff modulo its notation.)
+- Stage 30 (8013b544): counter = 50 (`li 3, 50` → [72]), stage = 31
+  (`li 0, 31` → [68]). (Matches the poses doc's landing handoff modulo
+  its "count48" notation.)
 - Stage 31 (8013b554): counter--; while > 0 return; on expiry read live
   HP byte; `pouchDamage(-1)` call (0x800d3d3c) when the sign test passes;
   then `pouchGetHP`-style read (0x800d3d30): nonzero → stage 33 written to
