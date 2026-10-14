@@ -107,3 +107,11 @@ original round-trip claim. Exact record/checksum and limitations are linked.
 five serialized banks back through GP+8 record mapping. Its explicit subsequent
 repairs/resets do not overlap the banks; no swReInit request occurs locally.
 Full caller admission/later switch lifetime and original round-trip remain open.
+
+## Continuation lifetime exception (2026-10-13)
+
+[Complete continueGame](SAVE_CONTINUE_GAME_PARTY_AND_DESTINATION_DISPATCH.md)
+requests swInit and swByteSet(0,0) in its switch4==23 arm after live restore.
+That source branch clears banks before aaa_00/prologue request; do not extend
+the restore leaf's byte-copy proof into unconditional bank lifetime. Actual
+switch4 providers/caller admission and original execution remain open.

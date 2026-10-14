@@ -111,3 +111,11 @@ full continueGame/admission/party/map/pointer repair, record schemas and later
 switch lifetime, read-all/async write/header/backup/SDK service internals, actual
 slot/value/extent/alias/IRQ/clock/namespace domains and original save/load/
 corruption/recovery/multi-slot traces. Native persistence/full-game remain OPEN.
+
+## Complete continuation caller delivery (2026-10-13)
+
+[Full local continueGame](SAVE_CONTINUE_GAME_PARTY_AND_DESTINATION_DISPATCH.md)
+now extends this manifest's scoped entry: party/sound/countdown preparation and
+25 switch4 room/door requests, including switch23 bank reset. Upstream admission,
+child composition and original load execution remain separate. The earlier
+scoped hash did not itself establish this complete caller interpretation.

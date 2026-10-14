@@ -25,6 +25,10 @@ any original card/switch persistence requests below.
   continueGame entry — [restore/preserved GP](../behavior/memory/CARD_LIVE_NAMESPACE_RESTORE_AND_PRESERVED_GP.md).
   Six reverse block copies include switch banks; selected live words/bit8,
   clock/reset/literal123 and caller overwrite pinned. Admission/lifetime open.
+- [x] Complete local continueGame restore/party/sound/countdown and25-entry
+  switch4 destination dispatch — [continuation caller](../behavior/memory/SAVE_CONTINUE_GAME_PARTY_AND_DESTINATION_DISPATCH.md).
+  Exact GP fields/room/door keys and switch23 reset arm pinned; admission/scene
+  execution and other namespace writers remain open.
 - [ ] Complete composed original save/load service and record: save-file format/layout, checksum algorithm, corruption detection/repair, backup recovery, error/recovery states, multi-slot management and card-operation timing/coordination.
 - [x] Complete local swdrv access/init/reset and bank word counts; true
   rotate-by-five arithmetic — [corrected switch storage](../behavior/memory/SW_SET.md).
@@ -158,3 +162,19 @@ exhaustive one-site census/fresh ISO pins passed; links/scoped diff passed.
 Docs only; no make test/all rerun; raw artifacts stay /tmp. SAVE-01 remains
 OPEN: full admission/caller/schema/namespace lifetime/async/SDK and original
 round-trip/corruption/recovery/native binding not proved by local restore.
+
+## 2026-10-13 — Complete save continuation caller and switch4 destinations
+
+Delivered [continueGame](../behavior/memory/SAVE_CONTINUE_GAME_PARTY_AND_DESTINATION_DISPATCH.md).
+Unconditional restore/slot writes, party kill/entry, sound flag bracketing,
+countdown and GP bit precede switch4 dispatch.25 exact GP110/108/room/door/
+sequence3 requests retained. Switch0 uses saved room; switch23 runs stg0 init,
+party clearing, swInit/swByteSet0 then aaa_00/prologue. This is a source-owned
+exception to retaining restored banks, not a general load reset. No dialogue
+or actual scene admission inferred from room-key requests.
+
+Validation: manifest37 spans/388 anchors/39 calls; independent all340 words/
+25 literal cases/special reset/prefix/call/string/source pins passed; restore
+pins reverified. Links/scoped diff passed. Docs only; no make test/all rerun;
+raw artifacts stay /tmp. Upstream loadMain/admission/children/schemas/runtime/
+original successful load/reset/room/party traces remain OPEN; SAVE-01 OPEN.

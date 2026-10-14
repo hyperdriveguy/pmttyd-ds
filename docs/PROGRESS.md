@@ -2,6 +2,27 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox save continuation party and destination caller
+
+Completed local continueGame/table/source keys; SAVE-01 portion checked.
+[Continuation contract](behavior/memory/SAVE_CONTINUE_GAME_PARTY_AND_DESTINATION_DISPATCH.md)
+pins restore/current slot/party/sound/countdown order, switch4 dispatch,25 exact
+GP110/108/room/door/sequence3 requests and switch23 stg0/party/bank reset arm.
+Switch0 retains saved room; other arms can request authored destinations.
+No scene execution/dialogue or unconditional post-load bank lifetime invented.
+
+Validation: ISO manifest37 spans/388 anchors/39 calls; independent all340 words/
+25 literal cases/special reset/prefix/call/string/source pins passed; restore
+pins reverified. Link audit passed987 Markdown files/zero broken links;
+scoped diff passed. Docs only; no make test/all rerun. Raw ELF/listing/generator
+stay /tmp; no save blobs/assets/body distribution. Concurrent native edits
+excluded. Approved push pending valid GitHub credentials.
+
+Next: upstream loadMain/event/UI admission, GP110/108/switch4 writers and full
+party/sound/countdown/stg0/sequence/room/door child composition; async/header/
+read-all/repair/SDK schemas and original load/reset/room/party/corruption/native
+traces. SAVE-01/native persistence and parent/full-game requests remain OPEN.
+
 ## 2026-10-13 — Shared original type0 frame geometry and citro3d binding
 
 Committed feature1248919 adds host-testable original absolute/centered nine-quad
