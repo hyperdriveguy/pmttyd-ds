@@ -155,3 +155,19 @@ capture/build artifacts/ remain ignored; Nintendo/Intelligent Systems assets
 have no redistribution license. Isolated audio validation uses existing private
 artifacts/roms/dspfirm.cdc copied only to that test profile, never committed.
 [Native acquisition validation](behavior/field/NATIVE_GOOMBA3_PARCEL_ACQUISITION.md).
+
+## Original coin reward source (2026-10-14)
+
+Read-only ISO research pins `sound/stream/ff_get4_32k.stm` for original row219
+BGM_FF_GET_ITEM1, SHA256
+9abc00c564a50d6b3dadc5a76ff11ab428a0556152a7d1550502bf03451d38de.
+It is stereo32000Hz/65352 frames, nonlooping by COMMON restartFFFFFFFF despite
+DSP loop flags. [Exact resource/container evidence](behavior/audio/GOOMBA3_COIN_FANFARE_ROW219_RESOURCE_AND_NONLOOP_RETIREMENT.md).
+Original msg/US/global.txt coin title and original gor_01 reward text retain
+IDs/control tokens. Icon.bin403 refers to icon.tpl414..417, duration6 each;
+effect7 reuses original effect.tpl42/44 with its own scale/color. Private
+inspection listings remain ignored artifacts/reference/goomba3-services/coin*.
+These increments add portable logic/text expansion; no new PCM/Tex3DS pack,
+texture scaling, geometry reduction or lighting conversion is introduced.
+Native conversion/playback is next. Original Nintendo/Intelligent Systems
+local-use/no-redistribution restrictions remain; no extracted payload committed.

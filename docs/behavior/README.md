@@ -895,3 +895,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Original item95 camera/key/system fields](field/ITEM95_CAMERA_KEY_AND_SYSTEM_LEVEL_PROVIDERS.md) and [native Goomba3 parcel acquisition](field/NATIVE_GOOMBA3_PARCEL_ACQUISITION.md) — original windows/effect/icon/audio binding, independent simulation owners and isolated native grant validation; remaining providers explicit.
 
 | [AP report construction](battle/BATTLE_AP_RECOVERY_REPORT_BUILD.md) | Allocation/copy, audience-kind sum, original float factors, slot bonus, RNG and caller clear | Native bingo point increment, aftereffect and complete presentation/scheduling |
+
+- [Goomba3 original coin callback](field/GOOMBA3_COIN20_PRESENTATION_CLOCK_WINDOW_AND_RETIREMENT.md), [row219 resource/nonloop retirement](audio/GOOMBA3_COIN_FANFARE_ROW219_RESOURCE_AND_NONLOOP_RETIREMENT.md), and [portable reward/coin binding](field/PORTABLE_GOOMBA3_REWARD_AND_COIN_CALLBACK.md) — source clocks, acknowledged grant and independent borrowed-window lifetime; native providers remain open.

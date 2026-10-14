@@ -904,3 +904,20 @@ open. Original ISO music is the runtime default. No payload is committed.
 [Binding, exact validation and limits](../behavior/field/NATIVE_GOOMBA3_PARCEL_ACQUISITION.md),
 [source field owners](../behavior/field/ITEM95_CAMERA_KEY_AND_SYSTEM_LEVEL_PROVIDERS.md).
 Parent requests remain open.
+
+### 2026-10-14 — Portable reward caller and complete finite coin callback
+
+Committed `9172923a` and `b41495e1`: original Goomba3 reward dialogue,
+blocking coin20 return, quest1420 clear, flag5376 and speaker0 completion text
+retain source order. Complete finite coin states preserve original placement
+polynomials, strict GP-low clock comparisons, A-only delayed grant, current
+resolved amount and audio/window/retirement order. Source pouch coin leaf wraps
+before clamp; stable parameter storage remains borrowed after return2.
+Final isolated242 C++/142 Python tests and native build passed; no native
+reward-playback claim. [Implementation/validation](../behavior/field/PORTABLE_GOOMBA3_REWARD_AND_COIN_CALLBACK.md),
+[fresh callback source](../behavior/field/GOOMBA3_COIN20_PRESENTATION_CLOCK_WINDOW_AND_RETIREMENT.md),
+[original row219](../behavior/audio/GOOMBA3_COIN_FANFARE_ROW219_RESOURCE_AND_NONLOOP_RETIREMENT.md).
+Existing east quest2 hand-in is bound. Original quest acceptance, native coin
+window/icon403/effect7/fanfare219, flag5376 save owner and full chain validation
+remain open. No fabricated dialogue, instant coin reward or asset substitution.
+Parent requests stay open.

@@ -1,3 +1,43 @@
+## 2026-10-14 — Original Goomba3 reward caller and finite coin service
+
+Committed `9172923a` and `b41495e1`. Portable reward retains original
+irai_02_02 attribution, blocking coin20, quest1420=0, flag5376 and original
+sys_request_finish speaker0. Source reward guard reads5406, not5405. Finite
+coin callback preserves per-call Mario/camera reads and polynomial placement,
+strict GP-low wrapped/signed >200/>500 waits, A-only state10→100, current
+amount grant, resumeA0-before-Off201 and source return2 before window retirement.
+Pouch coin arithmetic stores low16 before signed clamp. Stable parameter
+storage stays borrowed until explicit state101 cleanup; no native gameplay
+reward is advertised before its presentation/switch providers exist.
+
+Source documentation now pins the complete callback/window/title/icon403/
+effect7 and distinct row219 ff_get4_32k stream: stereo32000Hz,65352frames,
+COMMON restartFFFFFFFF/nonloop despite DSP loop flags. No key-fanfare/color/
+icon substitute or rewritten dialogue is introduced. New native icon lifecycle
+and reward-binding requests are in ITEM-01. Existing Goomfrey/Goomba4 quest2
+hand-in is already implemented; the earlier parcel handoff's “delivery/reward
+unbound” wording should be read as remaining end-to-end validation/reward
+providers, not absence of that hand-in owner.
+
+Validation: final isolated tree b5e0c2fa5e74c25aa35aa4c3482a7a0af9180b13 passed
+make test:242/242 C++ and142/142 Python; make all passed. Native artifact
+artifacts/ttyd-field-coin-reviewed.3dsx SHA256
+eb98e3fed60da05043601c011b7108c8aadbe9f3c54d7ff49af2371b0e91b0a2.
+Logs: ignored artifacts/field-coin-final-test.log and field-coin-final-build.log.
+Reward-only prior snapshot passed241 C++/142 Python/native build. Source review
+caught C++ argument read order; explicit locals and regression checks now pass.
+Tests compose actual reward/coin owners with original message bytes, source
+clock/grant boundaries and delayed parameter cleanup. Native compilation only;
+no Azahar/Dolphin/hardware rendering/audio performance observation this increment.
+Concurrent changes preserved through scoped snapshots/commits; no asset payload.
+
+Next: bind native coin window, descriptor403's original four-frame icon owner,
+effect7 and row219 PCM/NDSP stream with retained cleanup; add original5376 switch
+persistence and actual Game admission. Complete upstream quest acceptance and
+verify acquisition→Goomfrey hand-in→McGoomba reward in isolated Azahar. Continue
+original areas/events/object coverage and hardware profiling. Goal stays active.
+[Contracts, evidence and limits](behavior/field/PORTABLE_GOOMBA3_REWARD_AND_COIN_CALLBACK.md).
+
 ## 2026-10-14 — Complete AP report build and invitation cleanup
 
 Committed `a94b41e6`. Shared ApRecoveryBuild preserves12-byte allocation/reuse/
