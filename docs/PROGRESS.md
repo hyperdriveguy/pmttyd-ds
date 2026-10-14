@@ -1,3 +1,34 @@
+## 2026-10-14 — Source state6 registration and status-window arbitration
+
+Committed `9a5e83c`: native player command launch and enemy action state6 now
+use the existing complete source registration helper. Actor recapture, status/
+category/gravity selection, RNG, real ROOT construction, actual event ID/owner
+binding, wait deletion after construction and channel6 advancement replace
+manual/native shortened paths. Selection/count publication stays separate;
+suppressed registration does not invent attack completion or delete its wait.
+
+Implemented shared original status-window priority/checker, Event OnOff and
+field setters. Native harness entry projects source Init state5 EventOn then
+SystemOn; state6 uses SystemOff, and state9 restores SystemOn under its original
+Bef4 mask30 gate. Original icon/font HUD uses the native projected visibility;
+open/close projection is immediate and original window slide animation remains
+unimplemented. No source timing measurement or full renderer fidelity claimed.
+
+Validation: shared `TMPDIR=artifacts/tutorial-admission-tmp
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test` passed220/220 C++ and138/138 Python tests.
+Focused original registration/trio regression passed2/2. Native make all passed
+and rebuilt 3DSX. Six complete status-window bodies passed read-only US SHA256
+verification; existing Jump registry/state6 and root-constructor verifiers also
+passed. No Azahar/Dolphin run this step. No new game payload or conversion;
+source inspection stays ignored. Scoped commits preserve concurrent break-slot,
+audio and other work; host/native validation reflects the combined tree.
+
+Next: tutorial original menu/table/input and player action admission; complete
+original action/turn sequencing, guard/lethal/status/counter and presentation
+providers; source camera/shake, window animation, effect/audio/audience consumers.
+Preserve original menu/HUD art and physical-button routes, with optional audience
+taps on the lower screen. Full tutorial/battle objective remains active.
+
 ## 2026-10-14 — Original command attack selection and records
 
 Committed `1e3d142`: complete shared _btlcmd_SetAttackEvent selector, weapon attack
