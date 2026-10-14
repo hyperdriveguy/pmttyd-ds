@@ -1,3 +1,60 @@
+## 2026-10-14 — Original audience member dispatch, motion and three idle reactions
+
+Commit `bb51dc1d` replaces the native positive-audience generic controller stub
+with the whole local80192a0c dispatcher and motion tail. Its21 original state
+calls retain typed unavailable providers. Whole WaitHurimuki80192164,
+WaitKubiKatamuke80192054 and WaitJump80191f20 now run with the existing original
+packed SetAnimation/ChangeStatus helpers. Native GetFront consumes retained
+camera4 eye/at through the existing source dot-product helper. Main Wait and
+reactions4..20 still suspend at their real function addresses, with no successful
+no-op controller. This increment does not yet advance the normal positive-crowd
+loop beyond its first idle decision.
+[Control contract and source pins](behavior/battle/AUDIENCE_MEMBER_CONTROL_AND_IDLE_REACTIONS.md).
+
+Motion keeps axis-by-axis position/velocity single stores, updated-X facing,
+negative-height reset before integration, type11 reset, type2 single phase wrap,
+narrowed sine and final offset stores. Native double libm sine remains a declared
+SDK numeric adapter, not Gekko math parity. Turn/tilt inclusive phase boundaries,
+signed timer arithmetic and jump fallthrough/repeat/landing ordering follow the
+read-only US DOL. No action-command timing, controls, story/dialogue, original
+menu/HUD art, camera cadence, lower-screen replay or unit/model scale changed.
+
+Exact validation used isolated `artifacts/battle-lens-qwwrj2n7`, refreshed from
+frozen tracked base `3bd2bc4fc5c39f7e0535b17415ada803307acfd8` plus owned source,
+CMake and tests. Unrelated live animation/render/field work was excluded. First
+focused executable passed. First full run passed296/298 C++ tests; two newer
+field loaders rejected older private snapshot packs (trouble_board_native and
+field_bero_info). After that run and the native build terminated, regenerated
+private door_data, bero_info and trouble_board_event packs with that snapshot's
+matching extractors and the read-only ISO. Extraction exited0
+(`artifacts/audience-actor-assets-refresh.log`); no extracted/compiled data was
+committed. An initial final-source copy command used the snapshot cwd and failed
+before writing; corrected to absolute root/snapshot paths before final builds.
+
+Cleaned newly introduced misleading-indentation warnings and added a combined
+state/dispatcher test through all three type7 jumps and landings. Final
+`MAKEFLAGS=-j4 make test` exited0:298/298 C++ and173/173 Python
+(`artifacts/audience-actor-test-final.log`). Tests also cover all21 targets,
+low-byte front selection, inclusive tilt/turn phases, state-provider holds before
+motion, earlier stores retained before missing sine, negative height/type11,
+exactly one phase wrap, offsets, retained hover/NaN facing, and unchanged original
+pack constants. Final `TMPDIR="$PWD/artifacts/tmp" make all -o assets-ready
+BUILD=build-battle-lens TARGET=ttyd-battle-lens` exited0
+(`artifacts/audience-actor-native-final.log`); assets-ready bypass uses the private
+validated packs, including the refreshed field closures. Both initial native and
+final native builds exited0; remaining compiler warnings predate this increment.
+Owned diff checks passed. Scoped temporary-index commit preserved other threads'
+changes. No new emulator/visual acceptance or hardware-performance claim.
+
+Next: port whole Wait80192260 and its actual helpers, retaining exact FPR0
+instruction dataflow and resolving/explicitly representing the low-ratio branch's
+caller FPR29 dependency rather than inventing zero. Then close reactions/entry/
+item controllers and original normal Main/outer camMain/camDraw cadence so the
+inherited field view advances into battle framing. Harmful-item telegraphs,
+physical X plus optional audience taps, original class/turn/menu choreography,
+tutorial followup hits, field return and actual voice playback remain open. The
+tutorial and real battle goal remains active and incomplete.
+
 ## 2026-10-14 — Published native field view survives shared camera4 battle entry
 
 Previous turn made progress by removing an artificial mode2 lens-hook gate.
