@@ -13415,3 +13415,36 @@ No emulator, physical hardware or original Dolphin run for this step. Native
 callbacks/material/shadow/letterbox/dummy raster and retained global producers
 remain open. Trig/normalization, native pointer/rate and earlier field history
 are declared adapters. No asset extraction/payload was committed.
+
+## 2026-10-14 — Retained BeroEXEC and Key39 binding
+
+Source snapshot `artifacts/bero-source/OWNED_BASE.txt` plus three owned Bero
+files, six shared-file hunk sets `artifacts/bero-shared-edits.json` and owned
+CMake registration. Concurrent tutorial/UI/asset work excluded; scoped commit
+preserves later independent commits. Immutable ELF/3DSX/SMDH and source/binary
+SHA manifests: `artifacts/bero-validated`.
+
+Final isolated `make test` CMAKE_BUILD_PARALLEL_LEVEL4 exit0:258/258 C++ and
+145/145 Python, log `artifacts/bero-test.log`. Native `make all -j4
+DEBUG_SHORT_BOOT=1 BUILD=build-bero TARGET=ttyd-bero` exit0:
+`artifacts/bero-build.log`. Tests prove highbit/nonzero-negative-operation masks,
+unknown versus known projected bits, get_info-only reset, captured raw operand
+pointer and fresh post-resolver owner, checkpoint invalidation, Key39 low-HP
+idle suppression with Ctrl38==0, and finishing resume to current-sequence8002e210.
+
+Isolated Azahar immutable3DSX, `artifacts/azahar-bero-road`, fixture
+`artifacts/fixtures/east-road.bin`, seconds15 and `tests/azahar_roads.py`:
+exit0, no detected native exception. All saved-room assertions passed for
+plaza→east→plaza twice. Viewed `road-east-return-1.png`; original plaza assets,
+Mario/Goombella and the saved-return state are visible. Log
+`artifacts/bero-emulator.log`. This checks native travel continuity; it does not
+observe private bit stores, establish original/Dolphin timing, pixel parity,
+full event execution or physical performance. No original Dolphin/hardware run.
+
+Native literal road writes are scoped milestone adapters to the recovered
+shared scripts. Full room get_info/HitObj construction/reset, custom children,
+NPC/case/door/pipe lifetime and original cancellation remain open. Existing
+restore is deliberately not a false get_info reset. Native letterbox queries
+only proven bit1, not an invented whole word or Scene-derived value. The other
+sequence/Key/ability/audio globals and deferred GPU/ordered field return still
+need actual providers. No new ISO payload/assets committed.

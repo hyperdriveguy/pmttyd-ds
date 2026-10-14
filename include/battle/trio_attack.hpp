@@ -13,6 +13,7 @@
 #include "camera_depth.hpp"
 #include "camera_manager.hpp"
 #include "camera_letterbox.hpp"
+#include "field_bero_exec.hpp"
 #include "display_queue.hpp"
 #include "shadow_work.hpp"
 #include "battle_display_footer.hpp"
@@ -44,7 +45,7 @@ public:
     const BattleCommandPalette* commandPalette() const;
     const BattleCameraFrame* cameraFrameState() const;
     bool cameraHistoryComplete() const;
-    bool begin(const TrioBattleCommands&,ProfessorStory&,int16_t marioHp,std::shared_ptr<ProloguePouch> entryPouch={},uint32_t* fieldNpcBattleFlags=nullptr,FieldMarioBattleState* fieldMario=nullptr,FieldPartyRegistry* fieldParties=nullptr,const FieldPartyAppearanceServices* appearance=nullptr,std::shared_ptr<BattleSpotlightState> spotlight={},std::shared_ptr<BattleRandom> random={},std::shared_ptr<PositionalSfxRegistry> sounds={},std::shared_ptr<ShadowWork> shadows={},std::shared_ptr<BattleCommandPalette> palette={},std::shared_ptr<CameraManager> cameras={});
+    bool begin(const TrioBattleCommands&,ProfessorStory&,int16_t marioHp,std::shared_ptr<ProloguePouch> entryPouch={},uint32_t* fieldNpcBattleFlags=nullptr,FieldMarioBattleState* fieldMario=nullptr,FieldPartyRegistry* fieldParties=nullptr,const FieldPartyAppearanceServices* appearance=nullptr,std::shared_ptr<BattleSpotlightState> spotlight={},std::shared_ptr<BattleRandom> random={},std::shared_ptr<PositionalSfxRegistry> sounds={},std::shared_ptr<ShadowWork> shadows={},std::shared_ptr<BattleCommandPalette> palette={},std::shared_ptr<CameraManager> cameras={},std::shared_ptr<FieldBeroExec> bero={});
     void tick(uint64_t milliseconds,ProfessorStory&,uint32_t triggers=0,const BattlePadSample* physical=nullptr);
     bool statusWindowVisible() const;
     bool active() const;

@@ -226,12 +226,14 @@ bool Game::finishWarp() {
     registerRoadCases(false);partnerFollow={};saveRequested=true;return true;
 }
 void Game::beginRoadArrival() {
+    beroExec->onOff(0,1); // Native arrival adapter: original info_run request8030ed94.
     roadMotion.begin({arrivalStart.x,arrivalStart.z},{arrivalEnd.x,arrivalEnd.z});
     if(std::fabs(roadMotion.step[0])>.001f)facing=roadMotion.step[0]>0?1:-1;
     turnScale=1;turnTick=0;
     progress.position=arrivalStart;partner=arrivalStart;arriving=true;saveRequested=false;
 }
 void Game::cancelRoad() {
+    beroExec->unknown(); // No recovered cancellation clear; preserve missing provenance.
     if(departureOriginValid) {
         progress.position=departureOrigin;groundHeight=progress.elevation=departureHeight;
         cameraX=departureOrigin.x;cameraZ=departureOrigin.z;cameraHeight=departureHeight;rebaseFieldCamera();
@@ -1102,6 +1104,7 @@ void Game::restore(const Progress& saved) {
     const auto retainedCommandPalette=commandPalette;
     const auto retainedShadows=shadows;
     const auto retainedCameras=cameraManager;
+    const auto retainedBero=beroExec;
     const auto retainedSpotlight=battleSpotlight;
     const auto retainedTrioRandom=trioRandom;
     const auto retainedPublicSfx=publicSfx;
@@ -1123,6 +1126,7 @@ void Game::restore(const Progress& saved) {
     commandPalette=retainedCommandPalette;
     shadows=retainedShadows;
     cameraManager=retainedCameras;
+    beroExec=retainedBero;beroExec->unknown(); // Restore is not original get_info; unsaved transition history is unavailable.
     battleSpotlight=retainedSpotlight;
     trioRandom=retainedTrioRandom;
     publicSfx=retainedPublicSfx;
@@ -1499,7 +1503,7 @@ void Game::checkFieldRoadCases() {
         for(size_t n=0;n<roads.size();++n) {
             const auto& road=roads[n];
             if(road.source==progress.room && roadContactMatches(roadPassContact.sourceNode,road.sourceNode,roadCasesEnabled,roadAdmission)) {
-                warpRequest=int(n);resolveRoadCallbacks(road);departureOrigin=progress.position;departureHeight=groundHeight;departureOriginValid=true;saveRequested=false;break;
+                warpRequest=int(n);resolveRoadCallbacks(road);beroExec->onOff(1,0x10000);beroExec->onOff(0,1);departureOrigin=progress.position;departureHeight=groundHeight;departureOriginValid=true;saveRequested=false;break;
             }
         }
     }
@@ -1772,7 +1776,7 @@ void Game::updateMarioPresentation() {
         keys.partyId=[](){return 1;}; // Current follower harness, not original pouch/party ownership.
         keys.party=[this](int){return &fieldKeyPartner;};
         keys.sequence=[this](){return fieldSequence;};
-        keys.inputByte=[this](){return fieldMarioControlOffCheck(fieldMarioBattle);};
+        keys.inputByte=[this](){return int8_t(fieldMarioBattle.keyDepth);};
         keys.shipChanging=[this](){return fieldShipChanging;};
         keys.rollEnabled=[this](){return fieldRollEnabled;};keys.slitEnabled=[this](){return fieldSlitEnabled;};
         keys.christineStatus=[this](){return fieldChristineStatus;};keys.bomheiKeyCheck=[this](){return fieldBomheiKeyCheck;};
@@ -1908,7 +1912,7 @@ void Game::tick(const Input& rawInput) {
         fade.tick();const bool finished=roadMotion.tick();
         progress.position={roadMotion.position[0],roadMotion.position[1]};partner=progress.position;
         cacheFieldScreen();publishFieldCameraTarget();
-        if(finished){arriving=false;registerRoadCases(true);saveRequested=true;partnerFollow.reset({partner.x,partnerHeight,partner.z},{progress.position.x,groundHeight,progress.position.z});}
+        if(finished){arriving=false;registerRoadCases(true);beroExec->onOff(1,1);beroExec->onOff(0,0x10000);saveRequested=true;partnerFollow.reset({partner.x,partnerHeight,partner.z},{progress.position.x,groundHeight,progress.position.z});}
         return;
     }
     if(fade.active()){fade.tick();return;}
@@ -1922,6 +1926,7 @@ void Game::tick(const Input& rawInput) {
         // complete EVT credits, key nesting and sequencer remain separate services.
         if(!departureParentStarted){departureParentStarted=true;departurePause=11;}
         const bool requestMap=--departurePause==0;
+        if(requestMap)beroExec->onOff(0,8); // Original independent parent request8030dba0.
         // Key-off neutralizes input, not Mario simulation or retained air travel.
         if(fieldJump.airborne || fieldStep.active() || !groundContact.sourceNode) {
             move({});if(requestMap)fade.startOut();return;
@@ -1934,7 +1939,7 @@ void Game::tick(const Input& rawInput) {
         if(!departureDone) {
             if(std::fabs(roadMotion.step[0])>.001f)facing=roadMotion.step[0]>0?1:-1;
             turnScale=1;turnTick=0;
-            if(roadMotion.tick())departureDone=true;
+            if(roadMotion.tick()){departureDone=true;beroExec->onOff(0,0x10000);beroExec->onOff(1,1);}
             progress.position={roadMotion.position[0],roadMotion.position[1]};
             cacheFieldScreen();publishFieldCameraTarget();
         }
@@ -1973,6 +1978,7 @@ void Game::tick(const Input& rawInput) {
         return; // Motion publication and partner/NPC lifecycle remain separate owners.
     }
     if(fieldDoor.active()) {
+        beroExec->unknown(); // Interior mask choreography has no bound shared Bero child.
         const auto& door=fieldDoors()[size_t(fieldDoor.selected)];
         const auto previous=fieldDoor.position;
         const bool complete=fieldDoor.tick(door);
@@ -2072,7 +2078,7 @@ void Game::tick(const Input& rawInput) {
             }
             if(trioCommands.state==TrioBattleCommands::State::AttackReady && progress.originalPouch && !trioAttack.active() && !trioAttack.finished())progress.originalPouch->half(0x70,int16_t(progress.hp)); // Current field HP enters the original resource snapshot once.
             const auto partyAppearance=fieldPartyAppearanceServices();
-            if(trioCommands.state==TrioBattleCommands::State::AttackReady && trioAttack.begin(trioCommands,trioBattleIntro,progress.hp,progress.originalPouch,&professorStory.actors[3].npcBattleFlags,&fieldMarioBattle,&fieldParties,&partyAppearance,battleSpotlight,trioRandom,publicSfx,shadows,commandPalette,cameraManager)) {
+            if(trioCommands.state==TrioBattleCommands::State::AttackReady && trioAttack.begin(trioCommands,trioBattleIntro,progress.hp,progress.originalPouch,&professorStory.actors[3].npcBattleFlags,&fieldMarioBattle,&fieldParties,&partyAppearance,battleSpotlight,trioRandom,publicSfx,shadows,commandPalette,cameraManager,beroExec)) {
                 const auto sample=inputProducer.channels[0].battleSample();
                 const uint32_t triggers=i.physicalSnapshot?sample.pressed:(i.confirm?0x100u:0u)|(i.cancel?0x200u:0u);
                 // Native field lens snapshot in engine units. Roll/projection-extra history

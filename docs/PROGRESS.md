@@ -2245,3 +2245,26 @@ generic summaries; retain exact dialogue/assets and original/provisional scope.
 Continue incremental commits and required validation. The user's **port-code
 documentation goal remains active**: this is a substantial first pass, not
 complete coverage of the port, and not a completed remake claim.
+
+## 2026-10-14 — Retained BeroEXEC and Key39 binding
+
+Added original BeroEXEC startup/resolved-mask ownership with explicit bit
+provenance. Generic-road admission, independent inline/parent requests and
+arrival publish documented masks through scoped adapters; restore/cancel/unbound
+interior history stays unavailable. Trio letterbox uses the exact known bit1
+projection; explicit clear resumes it to the separate current-sequence wait.
+Corrected idle Key input from Ctrl38 to signed Key39.
+[Scope](behavior/overworld/NATIVE_BERO_EXEC_OWNER_AND_ROAD_ADAPTER.md).
+
+Final isolated make test passed258/258 C++ and145/145 Python checks; native
+make all DEBUG_SHORT_BOOT=1 passed. Isolated Azahar completed two reciprocal
+plaza/east road round trips with all four saved-room assertions and no detected
+native exception. Exact snapshot/logs/manifests and capture limits are in the
+[archive](PROGRESS_ARCHIVE.md#2026-10-14--retained-beroexec-and-key39-binding).
+
+Next: actual get_info room table/HitObj reset and remaining custom/door/pipe
+writers, full original sequence current/next/exit/init lifecycle, then deferred
+GPU/part/material/shadow/letterbox/dummy and ordered field return. Known bit1
+does not certify the whole global word or original event timing. Native current
+sequence remains unbound; full playable original-fidelity prologue goal stays
+active. Original numeric/history and physical performance verification remain.

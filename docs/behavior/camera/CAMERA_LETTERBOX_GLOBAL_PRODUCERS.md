@@ -64,9 +64,10 @@ increment/decrement; preserve nesting rather than generic input enablement.
 marioChkKey8005c47c/13c has the complete ordered service predicate in
 [Key admission](../overworld/OVERWORLD_MARIO_LOW_HP_IDLE.md). Its byte test is
 **Mario39**, represented by FieldMarioBattleState.keyDepth. Field KeyOff/On
-item services mutate that distinct byte. Native updateMarioPresentation currently
-passes controlDepth to FieldKeyServices.inputByte; that is a binding mismatch,
-not evidence the source queries byte38 here.
+item services mutate that distinct byte. Native idle now reads signed keyDepth
+through FieldKeyServices.inputByte, correcting the former controlDepth binding;
+see [native producer follow-through](../overworld/NATIVE_BERO_EXEC_OWNER_AND_ROAD_ADAPTER.md).
+Other native Key ability/party/sequence adapters remain separate fidelity gaps.
 
 Key first captures partyGetPtr(marioGetPartyId()). Native FieldPartyRegistry's
 current(fieldMarioBattle), pointer(index), actor.word0 and actor.bytes31 can

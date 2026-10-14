@@ -473,6 +473,9 @@ int main(){
             assert(std::count_if(charged.trioAttack.requests().begin(),charged.trioAttack.requests().end(),[](const auto& request){return request.function==0x8003ed2c && !request.rawOperands.empty() && request.rawOperands[0]==0;})==callsBeforeCameraResume);
             charged.trioAttack.tick((charged.ticks+4)*1000/60,charged.trioBattleIntro);
             assert(charged.trioAttack.pendingFunction()==0x8007ac40 && queue->count()==20 && !charged.cameraManager->currentIndex());
+            charged.beroExec->onOff(1,1); // Explicit original resolved clear request restores knowledge of consumer bit1.
+            charged.trioAttack.tick((charged.ticks+4)*1000/60,charged.trioBattleIntro);
+            assert(charged.trioAttack.pendingFunction()==0x8002e210 && queue->count()==20); // Current sequence remains an independent owner.
             struct LetterboxFixture {Game* game;uint32_t sequenceReads=0,soundClears=0;} fixture{&charged};
             CameraLetterboxServices supplied;supplied.user=&fixture;
             supplied.partySlot0=[](void* user)->std::optional<uintptr_t>{return reinterpret_cast<uintptr_t>(static_cast<LetterboxFixture*>(user)->game->fieldPartyState().pointer(0));};

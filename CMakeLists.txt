@@ -1323,3 +1323,9 @@ target_sources(ttyd_core PRIVATE source/battle/battle_class_raster.cpp)
 add_executable(battle_class_raster_tests tests/battle_class_raster_tests.cpp)
 target_link_libraries(battle_class_raster_tests PRIVATE ttyd_core)
 add_test(NAME battle_class_raster COMMAND battle_class_raster_tests)
+
+# Retained original BeroEXEC producer and resolved event writer.
+target_sources(ttyd_core PRIVATE source/field/field_bero_exec.cpp)
+add_executable(field_bero_exec_tests tests/field_bero_exec_tests.cpp)
+target_link_libraries(field_bero_exec_tests PRIVATE ttyd_core)
+add_test(NAME field_bero_exec COMMAND field_bero_exec_tests)
