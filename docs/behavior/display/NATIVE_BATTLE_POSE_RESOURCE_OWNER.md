@@ -79,7 +79,14 @@ time below the first converted key also remains unavailable. Independent
 source discrete sample lanes34/38/80 now use their independent retained
 `PMPOSE02` timeline. Version1/synthetic resources without that data retain
 their partial adapter domain; continuous keys never fabricate discrete state.
-Compressed-cache lanes3c/40 still require their real retained owner.
+Five native cumulative buffers now retain actual replay state separately from
+fractional position/auxiliary/node outputs. Rebuild, forward and same-current
+paths publish the source intermediate and final3c/40 stores. Current>next
+preserves earlier fractional outputs; discrete byte/texture state still advances.
+Replay uses fused signed-byte increments and cubic output follows the source
+operation order. ARM tangent/libm, distinct native buffers and decoded absolute
+indices adapt the original GQR/copy/relative-stream services; exceptional,
+aliasing and malformed-address domains remain unsupported.
 The typed TestXLU query uses retained MODEL wordc4 bit8 and is unavailable
 without model metadata. See the [native sidecar format](../format/NATIVE_BATTLE_POSE_DIRECTORY.md).
 
@@ -112,10 +119,19 @@ and material-light8 operation, and existing part-world-position service.
 Automatic/status-specific pose and effect-pattern branches retain their real
 providers; no lookup synthesizes a pending request.
 
-At animPoseMain8003ed2c the harness produces best-effort ordinary CPU output,
-then retains that full source Main boundary. Source Main/facing/GX publication,
-remaining parts/queued display, complete global cadence, teardown and field
-return remain incomplete. The existing renderer still uses its presentation
+Ordinary Main now completes for the admitted real resource, unlinked pose,
+private output selector0 and flags8clear domain. The typed native work retains
+its source animInit output selector; a nonzero selector requires its actual
+alternate-output owner. Facing admission checks the real pose flags after
+sampling, retaining its unavailable provider when bit8 is set. See the
+[complete source audit](ORDINARY_BATTLE_POSE_MAIN_COMPLETION_AUDIT.md).
+
+The trio continuation retains pre-Main world coordinates, computes original
+part alpha/RGB, uses actual model TestXLU and holds at dispCalcZ8001086c with
+the depth vector and camera4/class/part arguments retained. Suppressed draw
+branches keep the enclosing display provider pending; remaining parts/queued
+display, complete global cadence, teardown and field return remain incomplete.
+The existing renderer still uses its presentation
 clock; sharing immutable banks does not silently substitute that clock for
 registered pose history. Full original battle/prologue parity is not claimed.
 

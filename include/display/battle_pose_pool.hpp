@@ -1,5 +1,6 @@
 #pragma once
 #include "actor_animation.hpp"
+#include "actor_animation_cache.hpp"
 #include <memory>
 #include <optional>
 
@@ -20,6 +21,7 @@ struct BattlePose {
     std::array<uint8_t,0x170> state{};
     std::shared_ptr<const BattlePoseResource> resource;
     ActorAnimationSample shape; // Real per-pose CPU output and retained hierarchy workspace.
+    ActorAnimationCache cache; // Fully replayed current-key state, separate from fractional output.
     int32_t archiveType=0;
     uint32_t word(unsigned offset) const;
     void word(unsigned offset,uint32_t value);
@@ -46,6 +48,8 @@ public:
     std::optional<bool> testTranslucent(int32_t handle) const;
     const BattlePose* slot(unsigned index) const {return index<poses_.size()?poses_[index].get():nullptr;}
     bool setRate(int32_t handle,float rate);
+    bool main(int32_t handle,BattlePoseClock);
+    uint32_t outputSelector=0; // Native work owner's source animInit W+e8 history.
     bool selectName(int32_t handle,const std::string& name,bool force,BattlePoseClock);
     bool selectIndex(int32_t handle,uint32_t index,bool force,BattlePoseClock);
     bool evaluate(int32_t handle,BattlePoseClock);

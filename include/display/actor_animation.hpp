@@ -160,6 +160,11 @@ struct ActorAnimationPose {
             for(const auto& r:keys[next].nodes)out.nodes[r.index]+=actorNodeDelta(r,q,keys[next].time-keys[last].time);
         }
         out.selectedTime=selected;out.last=last;out.next=next;out.fraction=q;
+        return assemble(out);
+    }
+    // Consume already sampled output buffers; shared by presentation and the
+    // battle owner, whose cumulative caches have a separate lifetime.
+    bool assemble(ActorAnimationSample& out) const {
         auto& world=out.world;world.assign(groups.size(),ActorMatrix{});
         auto& seen=out.seen;seen.assign(groups.size(),0);
         auto& active=out.active;active.assign(groups.size(),0);

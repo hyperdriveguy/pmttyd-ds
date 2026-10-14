@@ -134,6 +134,7 @@ struct TrioAttackRuntime {
     std::shared_ptr<ProloguePouch> entryPouch;
     std::array<PartnerBattleSnapshot,7> partySnapshots{};
     BattlePosePool poses;
+    std::optional<TrioPoseDrawRequest> poseDraw;
     std::map<uint32_t,int32_t> partPoseHandles;
     std::array<TrioRewardIcon,19> rewardIcons{};
     uint64_t rewardIconClockAt=UINT64_MAX,gaugeClockAt=UINT64_MAX;
@@ -1262,10 +1263,24 @@ struct TrioAttackRuntime {
                     endingRequest(0x80128b10,{int32_t(part)});
                     BattlePartPositionServices position;position.memory=actors;
                     position.fma=[](void*,float a,float b,float c){return std::fma(a,b,c);};position.add=[](void*,float a,float b){return a+b;};
-                    (void)packedPartWorldPosition(part,position);
-                    // Best-effort ordinary CPU output is real; the complete
-                    // source Main/facing/GX publication remains an explicit gate.
-                    endingRequest(0x8003ed2c,{handle});poses.evaluate(handle,{now,now});pending=0x8003ed2c;return false;
+                    const auto capturedPosition=packedPartWorldPosition(part,position);
+                    endingRequest(0x8003ed2c,{handle});
+                    if(!poses.main(handle,{now,now})){pending=0x8003ed2c;return false;}
+                    auto depth=capturedPosition;depth[2]+=real(part+0x4f8);
+                    byte(part+0x4f7,uint8_t(int16_t(half(word(part+4)+0x34))));
+                    endingRequest(0x80127814,{int32_t(unit),18});
+                    if(checkPackedBattleStatus(unit,18,actors) || (word(unit+0x104)&8))byte(part+0x4f7,uint8_t((int32_t(byte(part+0x4f7))*128)/255));
+                    byte(part+0x4f7,uint8_t((int32_t(byte(part+0x4f7))*int32_t(byte(part+0x4f3)))/255));
+                    for(unsigned channel=0;channel<3;++channel)byte(part+0x4f4+channel,byte(part+0x4f0+channel));
+                    if((word(unit+0x104)&0x01000000) || (word(part+0x1ac)&0x01000000) || ((word(part+0x1ac)&1) && (word(unit+0x104)&0x10))){pending=0x801024f0;return false;}
+                    int32_t drawClass=2;
+                    if(byte(part+0x4f7)==255){
+                        endingRequest(0x80039c0c,{handle});const auto translucent=poses.testTranslucent(handle);
+                        if(!translucent){pending=0x80039c0c;return false;}drawClass=*translucent?2:1;
+                    }
+                    if(word(part+0x204)&0x100){pending=0x801024f0;return false;}
+                    poseDraw=TrioPoseDrawRequest{part,4,drawClass,depth};
+                    endingRequest(0x8001086c);pending=0x8001086c;return false; // Actual camera4 depth provider, before dispEntry.
                 }
                 pending=0x80103084;endingRequest(pending,{int32_t(unit)});return false;
             }
@@ -1348,6 +1363,7 @@ const std::vector<ProfessorServiceRequest>& TrioAttack::requests()const{static c
 const std::vector<TrioAudienceAudioRequest>& TrioAttack::audienceAudioRequests()const{static const std::vector<TrioAudienceAudioRequest> empty;return runtime_?runtime_->audienceAudioTrace:empty;}
 bool TrioAttack::readWord(uint32_t a,uint32_t& v)const{return runtime_ && runtime_->vm.memory.readWord(a,v);}
 const BattlePosePool* TrioAttack::battlePosePool()const{return runtime_?&runtime_->poses:nullptr;}
+std::optional<TrioPoseDrawRequest> TrioAttack::poseDrawRequest()const{return runtime_?runtime_->poseDraw:std::nullopt;}
 const BattlePose* TrioAttack::battlePose(uint32_t part)const{
     if(!runtime_)return nullptr;
     const auto binding=runtime_->partPoseHandles.find(part);

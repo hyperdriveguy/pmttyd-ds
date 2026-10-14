@@ -250,6 +250,9 @@ suffix.
 | [Animation samples](display/ANIMATION_TIMELINE_SAMPLING.md) | Complete continuous/discrete scans,predecessors/fraction and original M_Z_1 metadata | Loaded-pointer/count/time domains and original traces |
 | [Native pose sidecar](format/NATIVE_BATTLE_POSE_DIRECTORY.md) | Original descriptor identity, model flags and independent discrete timeline conversion | Native format; full Main/cache/backend ownership remains open |
 | [Animation delta cache](display/ANIMATION_COMPRESSED_DELTA_CACHE.md) | Complete base/rebuild/forward/same-key and five compressed relative-index streams | Copy/alias/capacity/resource/FPSCR/consumers |
+| [Ordinary Main completion audit](display/ORDINARY_BATTLE_POSE_MAIN_COMPLETION_AUDIT.md) | Complete scalar/store and engine-call census for fresh unlinked private-output poses | ARM numeric adapters, alternate/linked/facing ownership and queued camera4 draw |
+| [Native cache and ordinary Main](display/NATIVE_ANIMATION_CACHE_AND_ORDINARY_MAIN.md) | Retained five-channel native replay/output and scoped Main completion | General linked/paper/facing, camera depth/queue and original numeric/hardware parity |
+| [Battle pose camera4 depth](display/BATTLE_POSE_DEPTH_CAMERA4_MATRICES_AND_CALCZ.md) | Original view/homogeneous projection, depth priority and actual matrix writer chain | Battle-camera framing, live matrix ownership and queued draws |
 | [Animation interpolation](display/ANIMATION_OUTPUT_INTERPOLATION.md) | Complete linear/cubic/tangent guard/end-seam and final cache writes | Renderer/numeric/lifetime/original animation |
 | [Animation facing](display/ANIMATION_MAIN_CAMERA_FACING.md) | Complete camera/atan2/two wraps/sign tail | Camera/libm/flags/renderer/runtime |
 | [Mario post-Main draw queue](battle/ORDINARY_MARIO_POST_POSE_MAIN_ALPHA_AND_DRAW_QUEUE.md) | Original alpha products, model TestXLU, facing admission and draw gates | Camera4 view/projection and queued callback |

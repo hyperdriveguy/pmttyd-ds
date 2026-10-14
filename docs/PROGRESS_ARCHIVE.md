@@ -12942,3 +12942,71 @@ profile/save changes or Azahar/physical hardware run. No measured performance
 claim. Next: actual compressed cache/output ownership, full Main/camera4 draw
 queue and real ordered battle teardown/result/field return. Full prologue
 parity remains incomplete.
+
+
+## 2026-10-14 — Retained pose cache and ordinary Main completion
+
+Added native ActorAnimationCache with five real retained cumulative channels
+and independent position/auxiliary/node fractional output. Source dispatch
+rebuilds from bases when old=-1 or old>current, advances only old+1..current,
+and skips replay on equal current. Source base-copy and per-key stream order
+is retained; signed-byte float increments use FMA1/16, byte deltas wrap and
+texture shifts use separate additions. The old=-1 intermediate3c=0 store and
+same-key fraction-decrease positive-zero40 store are actual callback writes
+to the typed pose, followed by finalcurrent3c/fraction40. Cubic output follows
+literal rounded/fused source order and OUT tangent guard precedes IN lookup.
+Current==next copies caches; current>next preserves previous fractional output
+while consuming current byte/texture state. Decoded absolute destination indices
+adapt original cumulative-relative streams; numeric/alias/general pointer
+domains remain explicitly limited. Release drops the retained cache workspace.
+
+Pool main entry completes complete-metadata/unlinked/private-output/flags8clear
+poses. Native work explicitly owns outputSelector initialized0 from source
+animInit W+e8 writer; nonzero requires its real alternate-output provider.
+Linked recursion is unavailable; optional facing checks actual record bit8
+after sampling. This completes an ordinary service domain through declared
+ARM/GQR/copy/tangent adapters, not full original animation/GX/global ownership.
+Native hierarchy/vertex assembly consumes sampled outputs separately.
+
+The trio continuation captures worldXYZ BEFORE Main, reloads depth offset,
+computes exact source alpha/RGB products and typed TestXLU. Actual ordinary
+Mario yields opaque class1 and retains camera4/part/depth at dispCalcZ8001086c.
+Suppressed draw paths keep enclosing btlDispMain pending. The agent recovered
+full source Main store/call census and original depth matrix writer/helper
+chain. Actual battle-camera framing/view/projection remains missing; native
+fixed camera is not substituted as original ownership. Requests/EVT-01 has
+implementation breadcrumbs; parent remains open.
+
+Validation:
+
+- Shared make test passed237/237 C++ and142/142 Python checks,
+  artifacts/battle-cache-tests.log.
+- Coherent artifacts/battle-cache-source snapshot is committed base
+  20b931095ada936aa8efa6790acd3f7dff67acce plus ten owned code/test files and
+  exact CMake registration. make test passed235/235 C++ and142/142 Python,
+  battle-cache-isolated-tests.log. Standalone fresh cache test also passed.
+  Regressions cover replay branches, fraction history, reverse/seam/endpoint,
+  byte/texture/cubic guard cases, unavailable output/facing domains and actual
+  trio completed lanes plus opaque draw request at the new source frontier.
+- Shared make all BUILD=build-cache TARGET=ttyd-cache -j4 passed,
+  battle-cache-native.log. Isolated full native make all with -o assets-ready,
+  same BUILD/TARGET and DEBUG_SHORT_BOOT=1 passed,
+  battle-cache-isolated-native.log.
+- Immutable isolated ELF/3DSX and source/binary SHA256 manifests are under
+  artifacts/battle-cache-validated. Isolated tools/emulator_smoke.py run with
+  underground-trio-story11 fixture,45-second boot and azahar_trio_exp_icons.py
+  input completed exit0; battle-cache-emulator.log, captures/profile under
+  artifacts/azahar-battle-cache. Viewed original-exp-and-victory-30.png shows
+  original10 Star Point reward/victory; original-ending-fade-export-boundary.png
+  shows the existing field-restoration hold. No application exception detected.
+  These emulator images do not prove physical performance, field return or
+  original bit-level animation parity.
+- Documentation checker1147 files/0 broken links and scoped whitespace check
+  passed. Source audit agent ran verify_animation_main.py successfully:
+  1773 instructions,17 constants,5spans,2imports and65caller sites. This is
+  static original source evidence, not executed original Main comparison.
+
+No ISO writes, asset conversion change, user emulator profile/save edits or
+physical hardware test. Next: actual battle-camera framing/matrix ownership,
+homogeneous depth/queue callbacks, remaining factories/parts and real ordered
+battle teardown/result/field return. Full prologue parity is incomplete.

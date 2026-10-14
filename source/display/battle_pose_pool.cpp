@@ -93,6 +93,7 @@ std::optional<int32_t> BattlePosePool::enter(std::shared_ptr<const BattlePoseRes
         ++textures_[texture].references;models_[model].flags=1;models_[model].texture=texture;models_[model].resource=resource;
     }
     ++models_[model].references;pose.resource=resource;pose.shape=std::move(shape);pose.archiveType=archiveType_;
+    allocateActorAnimationCache(*initial,pose.cache);
     pose.word(0,1);pose.word(4,0);pose.word(8,0);pose.word(0xc,uint32_t(mode));pose.word(0x10,model);pose.word(0x14,0);restart(pose,clock);
     for(unsigned offset:{0x70u,0x74u,0x7cu})pose.scalar(offset,0);
     pose.word(0x90,0xffffffff);for(unsigned offset:{0xe0u,0xe4u,0xe8u,0xecu,0x154u,0x158u})pose.word(offset,0);
@@ -101,6 +102,12 @@ std::optional<int32_t> BattlePosePool::enter(std::shared_ptr<const BattlePoseRes
     return int32_t(handle);
 }
 bool BattlePosePool::setRate(int32_t handle,float rate){auto* p=pose(handle);if(!p)return false;p->scalar(0x44,rate);return true;}
+bool BattlePosePool::main(int32_t handle,BattlePoseClock clock){
+    auto* p=pose(handle);
+    if(!p || p->word(0x90)!=0xffffffff || outputSelector || !p->resource->modelFlags || p->resource->discrete.size()!=p->resource->names.size())return false;
+    if(!evaluate(handle,clock))return false;
+    return !(p->word(0)&8); // A real optional-facing provider is required when admitted.
+}
 bool BattlePosePool::selectName(int32_t handle,const std::string& name,bool force,BattlePoseClock clock){
     auto* p=pose(handle);if(!p)return false;const auto& names=p->resource->names;uint32_t index=0;
     for(size_t i=0;i<names.size();++i)if(names[i]==name){index=uint32_t(i);break;}
@@ -139,11 +146,20 @@ bool BattlePosePool::evaluate(int32_t handle,BattlePoseClock clock){
         if(discrete==0)return false; // Actual predecessor-1 provider remains unavailable.
         p->word(0x80,timeline[discrete-1].value);
     }
-    // CPU sampler/cache is an explicit ordinary conversion adapter, not source
-    // GX/paired-single Main. Repeated calls at one clock do not add elapsed ticks.
-    if(!animation->evaluateSelected(p->scalar(0x24),p->shape))return false;
-    p->word(0x28,uint32_t(p->shape.last));p->word(0x2c,uint32_t(p->shape.next));p->scalar(0x30,p->shape.fraction);
-    return true;
+    if(current<0 || !std::isfinite(p->scalar(0x24)))return false;
+    int32_t next=int32_t(p->word(0x2c));
+    const float time=animation->keys[size_t(current)].time;
+    float span=0;
+    if(animation->loop && size_t(next)>=animation->keys.size()){
+        next=0;p->word(0x2c,0);span=rounded(animation->end-time);
+    }else span=rounded(animation->keys[size_t(next)].time-time);
+    const float fraction=span==0?0:rounded(rounded(p->scalar(0x24)-time)/span);
+    p->scalar(0x30,fraction);
+    ActorAnimationCacheStores stores{p,[](void* u,int32_t v){static_cast<BattlePose*>(u)->word(0x3c,uint32_t(v));},
+        [](void* u,float v){static_cast<BattlePose*>(u)->scalar(0x40,v);}};
+    if(!sampleActorAnimationCache(*animation,p->cache,p->shape,current,next,fraction,int32_t(p->word(0x3c)),p->scalar(0x40),stores))return false;
+    p->shape.selectedTime=p->scalar(0x24);
+    return animation->assemble(p->shape);
 }
 bool BattlePosePool::clearEffect(int32_t handle){auto* p=pose(handle);if(!p || p->word(0x90)!=0xffffffff)return false;p->word(0x90,0xffffffff);p->word(0xec,p->word(0xec)&~1u);return true;}
 bool BattlePosePool::release(int32_t handle){
@@ -160,6 +176,6 @@ bool BattlePosePool::release(int32_t handle){
         if(texture.references==0){texture.resource.reset();texture.flags=0;}
         model.resource.reset();
     }
-    p->word(0,0);p->resource.reset();p->shape=ActorAnimationSample{};return true;
+    p->word(0,0);p->resource.reset();p->shape=ActorAnimationSample{};p->cache=ActorAnimationCache{};return true;
 }
 }

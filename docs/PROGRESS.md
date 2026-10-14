@@ -680,3 +680,27 @@ No Azahar/hardware revalidation or complete Main claim for this step.
 Next: real compressed cache3c/40/output ownership, full Main and camera4 depth
 queue, then ordered battle teardown/result/field return. The full playable
 original-fidelity prologue goal remains active.
+
+
+## 2026-10-14 — Retained pose cache and ordinary Main completion
+
+Native battle poses now retain cumulative five-channel state separately from
+fractional output, implement original rebuild/forward/same-key rules and cubic
+ordering, preserve loop-seam output and publish actual3c/40 cache history.
+Ordinary Main completes for real metadata, unlinked/private-output poses with
+facing bit8clear. The trio continues through source alpha and TestXLU, then
+retains camera4/class/part/depth at actual dispCalcZ8001086c.
+[Scope and limits](behavior/display/NATIVE_ANIMATION_CACHE_AND_ORDINARY_MAIN.md).
+
+Shared make test passed237/237 C++ and142/142 Python checks; isolated snapshot
+passed235/235 C++ and142/142 Python checks. Both native builds passed. Azahar
+on the immutable isolated build reached original10 Star Points/victory and
+the existing field-restoration hold without a detected exception. Exact logs,
+source/binary manifests and limits are in the
+[archive](PROGRESS_ARCHIVE.md#2026-10-14--retained-pose-cache-and-ordinary-main-completion).
+
+Next: original battle-camera framing and live camera4 matrices, homogeneous
+depth/queue callbacks, remaining pose factories/parts and real ordered battle
+teardown/result/field return. General linked/paper/facing, exceptional numeric
+domains, original libm bit parity and hardware performance remain unverified.
+The full original-fidelity playable prologue goal stays active.

@@ -18,9 +18,11 @@ struct BattlePose;
 class BattlePosePool;
 struct TrioRewardIcon {std::array<float,3> position{};float scale=1;uint8_t alpha=255;bool hidden=true;uint64_t animationTick=0;};
 struct TrioAudienceAudioRequest {std::optional<uint32_t> key;int32_t right=0,left=0;std::optional<int32_t> handle;};
+struct TrioPoseDrawRequest {uint32_t part=0;int32_t camera=4,drawClass=1;std::array<float,3> depth{};};
 // Executes original event data; unsupported callbacks keep their event waiting.
 class TrioAttack {
 public:
+    std::optional<TrioPoseDrawRequest> poseDrawRequest() const;
     bool begin(const TrioBattleCommands&,ProfessorStory&,int16_t marioHp,std::shared_ptr<ProloguePouch> entryPouch={},uint32_t* fieldNpcBattleFlags=nullptr,FieldMarioBattleState* fieldMario=nullptr,FieldPartyRegistry* fieldParties=nullptr,const FieldPartyAppearanceServices* appearance=nullptr,std::shared_ptr<BattleSpotlightState> spotlight={},std::shared_ptr<BattleRandom> random={},std::shared_ptr<PositionalSfxRegistry> sounds={});
     void tick(uint64_t milliseconds,ProfessorStory&,uint32_t triggers=0,const BattlePadSample* physical=nullptr);
     bool statusWindowVisible() const;

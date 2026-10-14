@@ -38,6 +38,7 @@ void stateAndTime(){
     assert(pool.selectName(*id,"walk",true,{0,300}) && p->timestamp()==300 && p->word(0x3c)==0xffffffff && p->scalar(0x40)==0 && p->word(0x80)==0 && p->scalar(0x84)==0);
     assert(pool.evaluate(*id,{123,400}) && p->scalar(0x20)==3 && p->shape.selectedTime==3);
     assert(p->scalar(0x24)==3 && p->scalar(0x84)==.3f && p->word(0x28)==0 && p->word(0x2c)==1 && p->scalar(0x30)==.3f);
+    assert(p->word(0x3c)==0 && p->scalar(0x40)==.3f && p->cache.positions[0][0]==0 && p->shape.positions[0][0]==.3f);
     const auto positions=p->shape.positions;assert(pool.evaluate(*id,{0,400}) && p->shape.positions==positions && p->scalar(0x20)==3);
     assert(pool.setRate(*id,2) && p->timestamp()==300 && pool.evaluate(*id,{0,400}) && p->scalar(0x20)==12 && p->shape.selectedTime==2);
     assert(p->scalar(0x24)==2 && p->scalar(0x84)==1.2f && p->scalar(0x30)==.2f);
@@ -59,6 +60,9 @@ void discreteTimeline(){
     r->modelFlags=9;r->discrete={{{0,0x12345678}},{{0,5}},{{0,7},{2,11},{8,13}}};
     BattlePosePool pool;auto id=pool.enter(r,1,{});assert(id);
     assert(pool.testTranslucent(*id)==true && !pool.testTranslucent(-1));
+    assert(pool.main(*id,{0,0}) && pool.pose(*id)->word(0x3c)==0 && pool.pose(*id)->scalar(0x40)==0);
+    pool.outputSelector=1;assert(!pool.main(*id,{0,0}));pool.outputSelector=0;
+    pool.pose(*id)->word(0,9);assert(!pool.main(*id,{0,0}));pool.pose(*id)->word(0,1);
     assert(pool.evaluate(*id,{0,0}) && pool.pose(*id)->word(0x80)==0x12345678 && pool.pose(*id)->word(0x34)==0 && pool.pose(*id)->word(0x38)==0);
     assert(pool.selectName(*id,"walk",true,{0,0}));
     assert(pool.evaluate(*id,{0,50}));auto* p=pool.pose(*id);

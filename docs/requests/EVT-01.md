@@ -3809,3 +3809,23 @@ independent of animation selection/pose flags/material alpha. The
 [owner scope](../behavior/display/NATIVE_BATTLE_POSE_RESOURCE_OWNER.md) record
 admission limits and version1 compatibility. Compressed cache3c/40 and full
 Main remain open; this does not close EVT-01 or clear Main8003ed2c pending.
+
+
+### 2026-10-14 — Retained animation cache, ordinary Main and depth frontier
+
+The native pose owner now retains separate cumulative position/auxiliary/byte/
+node/texture buffers and fractional outputs. Source rebuild/forward/same-key
+branches, intermediate3c=0 and40=+0 stores, cubic operation order, loop-seam
+output preservation and final3c/40 publication are implemented. The native
+Main entry completes the admitted complete-metadata/unlinked/private-output/
+flags8clear domain through declared ARM/GQR/copy/tangent adapters; general
+linked/paper/facing and exceptional/alias domains remain unavailable.
+[Implementation scope](../behavior/display/NATIVE_ANIMATION_CACHE_AND_ORDINARY_MAIN.md),
+[source closure audit](../behavior/display/ORDINARY_BATTLE_POSE_MAIN_COMPLETION_AUDIT.md).
+
+The actual trio continuation retains pre-Main coordinates, source alpha/RGB
+and model TestXLU, then holds with camera4/class/part/depth retained at
+dispCalcZ8001086c. The recovered [depth contract](../behavior/display/BATTLE_POSE_DEPTH_CAMERA4_MATRICES_AND_CALCZ.md)
+requires actual battle-camera framing and view/projection writers, homogeneous
+divide and source priority math. Native fixed renderer framing is not original
+camera4 ownership. Parent request and full prologue remain open.
