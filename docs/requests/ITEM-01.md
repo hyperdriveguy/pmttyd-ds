@@ -1,0 +1,43 @@
+# ITEM-01 — Field inventory/pouch and field item use
+
+**Status: OPEN.** Part of the [request inbox](../DOCUMENTATION_REQUESTS.md);
+validated deliveries and locks are registered in the
+[delivery log](DELIVERY_LOG.md). Filed by the native implementation session,
+2026-10-13, for the first demo milestone ([milestones](../MILESTONES.md)) and the
+full-game end goal. The slice is explicitly requested; no independent
+research-agent ownership or completion claim is made.
+
+## Open todos
+
+- [ ] The original field inventory/pouch record layout, item slots and counts, as
+  distinct from the battle pouch already documented.
+- [ ] Field item use: which items are usable in the field, their effects and
+  consumption, the full-HP/eligibility guards, and the menu/targeting flow.
+- [ ] Where field and battle pouch state share or copy, and how the save block
+  stores the field inventory.
+- [ ] Item acquisition at the opening stage (pickup/chest/shop) and the key-item
+  (key-item count) semantics the NPC gates already read.
+
+## Request text (verbatim)
+
+Native implementation source audit / documentation request (2026-10-13), first
+demo milestone + full-game end goal: the native field item menu is a fixture.
+`include/game.hpp` carries `int hp = 10, mushrooms = 1;` and
+`enum class Menu { Status, Map, Items, Settings }`; `source/game.cpp` heals from a
+counter (`else if (menu==Menu::Items && progress.mushrooms>0 && progress.hp<10) {
+--progress.mushrooms; progress.hp=std::min(10,progress.hp+5); ... }`) and refuses
+at full HP, matching the README's "a mushroom cannot be used at full HP" note.
+The battle pouch is separately recovered (`source/battle_packed_pouch.cpp`:
+0x5d4-byte pouch with 121/20/32/200/200 counts, seven 14-byte partner records;
+`source/battle_damage.cpp` item151 revival check), and
+`progress.originalPouch->keyItemCount(95/107)` is read by field NPC gates, but the
+original field inventory — item definitions, slot/count layout, field-use effects
+and guards, the menu flow and save storage — is unrecovered, so the demo's items
+and every later chapter's inventory are limited to a mushroom counter.
+[DMG-01](DMG-01.md) and the weapon-table deliveries cover battle item rows, not
+field inventory state or use. Please recover the original field inventory/pouch
+and field item-use contract. No lock reserved.
+
+## Answers and delivery notes (append-only history)
+
+No delivery yet.

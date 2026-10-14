@@ -72,6 +72,9 @@ contradict the recovered contracts.
 | DEMO-01 | D1 | The integration contract the completion assessment calls missing: entry conditions, persistent writes, branch/join and re-entry. |
 | RESULT-01 | D1 | Battle-result publication, victory, story advance and the save-unblock producer. |
 | GSF-01 | D1 + G1 | Opening story-flag map and save-block story switches; the same system gates every later chapter. |
+| TRACE-01 | D1 + G1 | Matched original execution trace — the validation oracle D1 acceptance needs, and the first of the whole-game trace corpus. |
+| ITEM-01 | D1 + G1 | Field inventory/pouch and field item use (the demo's items; every later chapter's inventory). |
+| PARTNER-FULL-01 | G1 | Field lifecycle and abilities of the six non-Goombella partners. |
 | AC-01, AC-02, AC-03 | D1 | Jump/Hammer/defense ownership and impact cadence. |
 | DMG-01, DMG-02 | D1 | Weapon power, part defense, damage dispatch/application. |
 | STATUS-01 | D1 | Status lifetime and turn ownership. |
