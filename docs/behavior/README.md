@@ -469,7 +469,7 @@ suffix.
 | [Tutorial state services](battle/BATTLE_TUTORIAL_STATE_SERVICES.md) | Unit-work slots,exact phase/turn checks,raw-mask flags and two relocated feedback-byte readers | Producers/lifetimes,counter semantics and original comparisons |
 | [Harbor tutorial configuration](story/HARBOR_TUTORIAL_CONFIGURATION.md) | Prolog/index2 binding,single group/unit,kind/init pointers and17 known setup draws | Tutorial scripts,stat/runtime overrides,rewards and original traces |
 | [Harbor opening bindings](story/STORY_HARBOR_OPENING_BINDINGS.md) | Seven original REL spans,story-state entry/write graph,actor setup,20 message/speaker references and battle boundary | Complete scene/event/service conditions,tutorial config and original traces |
-| [GSW[0] chapter value table](story/OPENING_GSW0_CHAPTER_VALUE_TABLE.md) | Every GSW[0] comparison literal across the 16 scanned opening events: 402 is the prologue-complete sentinel (aaa_00_init_evt admits only ==402), 34 distinct chapter values, identity vs threshold test split, and two decomposed range sandwiches | Chapter names, written values for opcode-50 stores, SWITCH case bodies, GSW[1420] literal, execution traces |
+| [GSW[0] chapter value table](story/OPENING_GSW0_CHAPTER_VALUE_TABLE.md) | Every GSW[0] comparison literal across the 16 scanned opening events plus the complete 3-command opcode-50 **write set** (`prologue2`→2, `epilogue_evt2`→403, `kurihakase_first_talk`→9), GSW[0] as a GP+174 WORD, 402-vs-403 correction, 34 distinct chapter values and two decomposed range sandwiches | Origin of 402/404 (never written in the scanned set), whether 9 is forward progress, 8 opcode-34 SWITCH case bodies, GSW[1420] literal, execution traces |
 | [Opening area init story-state map](story/OPENING_AREA_INIT_STORY_STATE_MAP.md) | gor/muj/tik area inits: GSW[0] read by every init as a multi-way chapter gate, the professor writes it, GSW[1420] as a second word, GSF read/write map with shared GSF[39], six more area exits including the muj_20 bidirectional ship join | Per-comparison chapter values, GSF 5300-5600 operand role, GSF-to-save-block mapping, gor_04, original traces |
 | [Opening scene state and persistence](story/OPENING_SCENE_STATE_AND_PERSISTENCE.md) | ISO-read census of dmo/aaa/sys events: GSW[0] is the only saved story word (written by prologue2/epilogue_evt2, read by aaa_00_init_evt); GF/GW are context-local and LW entry-local; decoded branch graph: nine-step sys/evt_start route plus four aaa exits with map/entrance identifiers, and GSW[0] written before the fade/mapchange | Whether the route is linear, opcodes 93/95/108 direction, -1 fade sentinel, gor/muj/tik modules, written values |
 | [Original baseline](../ORIGINAL_BEHAVIOR.md) | Disc/DOL identity, evidence rules, subsystem order, basic waits/callback continuations, initial complete-game scope | Most systems beyond the initial recovered contracts |
@@ -805,6 +805,11 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Native original item95 windows](display/NATIVE_ITEM95_WINDOWS.md) and [source frame/display/font order](message/ITEM95_GET_WINDOW_DISPLAY_ORDER_AND_FONT_COLORS.md).
 
-- [Native original item-get effect](display/NATIVE_ITEM_GET_EFFECT6.md), [GX state/projected texture](effect/FIELD_ITEM_GET_TYPE6_GX_STATE_AND_PROJECTED_TEXTURE.md), and [source camera5 producer/projection](camera/FIELD_ITEM_GET_CAMERA5_PRODUCER_AND_PROJECTION.md).
-
 - [Native reaction attributes, facing, flags and data children](battle/NATIVE_REACTION_ATTRIBUTES_FACING_AND_FLAGS.md).
+
+- [Audience Init resources and live-domain bootstrap](battle/AUDIENCE_INIT_ORDER_RESOURCES_AND_LIVE_DOMAIN_BOOTSTRAP.md): complete initializer requests and real TPL/noise/window history.
+- [Exact setup4 zero-count operation order](battle/AUDIENCE_SETUP4_ZERO_COUNT_EXACT_OPERATION_ORDER.md): corrected successful admission,107 draws and300 no-draw requests.
+- [Nonzero audience target chunks and rounding](battle/AUDIENCE_NONZERO_TARGET_ADJUSTMENT_CHUNKS_AND_ROUNDING.md): source signed chunks, ratio updates and outer cancellation/clamps.
+- [Native audience startup and resource owners](battle/NATIVE_AUDIENCE_STARTUP_AND_ORIGINAL_RESOURCE_OWNERS.md): actual initialized empty domain, original TPL payloads and persistent trio RNG.
+
+- [Native original item-get effect](display/NATIVE_ITEM_GET_EFFECT6.md), [GX state/projected texture](effect/FIELD_ITEM_GET_TYPE6_GX_STATE_AND_PROJECTED_TEXTURE.md), and [source camera5 producer/projection](camera/FIELD_ITEM_GET_CAMERA5_PRODUCER_AND_PROJECTION.md).

@@ -263,3 +263,44 @@ all scenes, joins or the complete playable-demo contract. DEMO-01 stays OPEN.
 now pins captured record/flag/conclusion priority and no-write path. Source
 checks passed; field nonzero wait is not exact victory. Full battle ending,
 scene joins, story advance/save-unblock and original execution remain OPEN.
+
+## 2026-10-13 — ID 3: `GSW[0]` write set (closes the transition gap)
+
+[Chapter value table, new "write set" section](../behavior/story/OPENING_GSW0_CHAPTER_VALUE_TABLE.md).
+The previous delivery left the chapter *transition* open because opcode 50
+stores `evtGetValue(operand1)`, not a literal. That reasoning was right about
+the handler and wrong about the consequence: operand1 is an operand of the
+same command, so the value **is** in the event span.
+
+**All three written values are recovered, and all three are immediates**
+(`operand > -20000000`, returned raw by `evtGetValue`):
+
+| Module / event | Cmd | `GSW[0] <-` |
+|---|---|---|
+| `aaa/evt_prologue2` | 49 | **2** |
+| `aaa/epilogue_evt2` | 117 | **403** |
+| `gor/kurihakase_first_talk` | 176 | **9** |
+
+A full sweep for commands whose first operand is the `GSW[0]` marker finds
+54 references: 51 comparisons plus exactly these 3 stores.
+
+**Correction that matters for the port: 402 ≠ 403.** The epilogue writes
+**403**, while all six `== 402` gates test **402**. So 402 is not
+"game complete", and — separately — **402 is never written anywhere in the
+six scanned modules** (`dmo`, `aaa`, `sys`, `gor`, `muj`, `tik`). Its source
+is outside the scanned set; I am not guessing a save default or an unnamed
+module. `gor_00` cmd 148 tests `!= 404`, and 404 is likewise never written
+here, so 403 and 404 are two distinct states.
+
+**`GSW[0]` is a word, not a byte.** `evtSetValue` routes `GSW` via
+`swByteGet`/`swByteSet`, which at index 0 operate on the complete `WORD` at
+`GP+174`. A byte-sized store truncates 403/404.
+
+**Self-correction carried into the contract:** the "Remaining gaps" list
+previously named three opcode-34 SWITCH sites on `GSW[0]`. The complete list
+is **eight** — `gor_00` cmds 12, 98; `gor_02` cmds 0, **112**; `gor_03` cmds
+17, 60, 158; `muj_00` cmd 82. Case bodies still unexpanded.
+
+Still open: chapter names, the origin of 402/404, whether the professor's
+`9` is forward progress (the entry path into that event is not established),
+the eight SWITCH case bodies, and `GSW[1420]`. No execution trace.

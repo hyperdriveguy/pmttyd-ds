@@ -1,3 +1,37 @@
+## 2026-10-13 — ID 3 — GSW[0] write set: chapter transition closed
+
+Solved the top open question on DEMO-01. The previous delivery called the
+chapter transition unprovable because opcode 50 stores
+`evtGetValue(operand1)` rather than a literal. The handler claim was right;
+the conclusion was wrong, because operand1 is an operand of the same
+command and therefore lives in the event span. All three sources are
+`operand > -20000000`, which `evtGetValue` returns raw.
+
+Recovered write set for `GSW[0]` (only 3 of 54 `GSW[0]`-marker commands are
+stores; the other 51 are comparisons, opcodes 24/25/26/28/29):
+
+- `aaa/evt_prologue2` cmd 49 → **2**
+- `aaa/epilogue_evt2` cmd 117 → **403**
+- `gor/kurihakase_first_talk` cmd 176 → **9**
+
+Load-bearing correction: **402 is not 403 and is never written** in the six
+scanned modules (`dmo`, `aaa`, `sys`, `gor`, `muj`, `tik`). The epilogue
+writes 403; all six `== 402` gates test 402; `gor_00` cmd 148 tests
+`!= 404` and 404 is also never written. So 402/404 must originate outside
+the scanned set and no origin is guessed. Also: `GSW[0]` is a WORD store
+(`swByteGet`/`swByteSet` at index 0 operate on `WORD(GP+174)`), so a byte
+store would truncate 403/404.
+
+Self-correction: the remaining-gaps list named 3 opcode-34 SWITCH sites on
+`GSW[0]`; the complete list is 8 (`gor_00` 12/98, `gor_02` 0/112, `gor_03`
+17/60/158, `muj_00` 82).
+
+Validation: `/tmp` REL event spans re-extracted from the read-only ISO and
+rescanned; opcode-50 semantics and the immediate-band return are class-B
+contracts already in `EVENT_ASSIGNMENT_ARITHMETIC_AND_DATA_CURSOR.md` and
+`EVENT_INTEGER_OPERAND_NAMESPACES.md`. Docs-only change; `make test` /
+`make all` not rerun. No execution trace.
+
 # Progress and next-session handoff
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
@@ -11563,39 +11597,3 @@ Next implement original AudienceInit/live records/resource handles, full ordered
 AudienceMain window/sound/slot/display services, then BattleEnd/StageEnd real
 frees, map/context/NPC/event release and delayed native field return. Full
 playable original-fidelity prologue goal remains active and unfinished.
-
-
-Documentation-request session (native implementation, 2026-10-13): filed two
-grounded provenance requests and verified two delivered bounded contracts against
-the read-only US ISO; docs only, no native source change, no make rerun.
-
-Filed: AUDIO-01 (original BGM sequence/event binding and SFX cue selection) and
-RNG-01 (original seed lifecycle and random-consumer census), both D1+G1, each with
-a request file, an inbox row and a milestone-map row. AUDIO-01 is grounded in
-include/audio_policy.hpp, whose audioTrack/soundtrackTrack/musicAssetPath invent
-track indices, .wav names and a Switch variant (self-described native adapter),
-plus source/audio.cpp's sidecar .loop lookup, fixed 0.65 mix and overridden Jump
-table entry; RNG-01 is grounded in the open items of behavior/meta/RANDOMNESS.md
-and the many native platform.irand/BattleRandom consumers.
-
-Verified with tools/inspect_dol_function.py (artifacts under /tmp, outside
-history): (1) GSF-01's bounded delivery, [OPENING_GSF_NOTICE_PIPE_AND_SAVE_STORAGE]
--- swSet 0x800858fc/swGet 0x800858b4 confirm GP=*(r13-28496)=0x80415fd0,
-addr=GP+0x178+4*trunc(N/32), mask=1<<(N&31); swInit 0x80085980 confirms the five
-extents and word174 store; the 164-byte event span 0x8030b4ec reproduces SET
-GSF233=1 before evt_msg_print and the independent GSW0>=7 -> GSF236 write after
-the first END_IF. (2) RESULT-01's phase0 priority region 0x802152b0..0x80215350
-reproduces every ordered alternative (40->4 at802152cc, 20->5 at802152e4,
-own->3 at80215308, enemy->1 at8021532c, 10->4 at80215344, SetResult 0x80114508)
-using captured I and the reread GetResult 0x80114500 at8021534c. Neither
-verification establishes runtime execution; the flag10/20/40 writer domains and
-the tutorial outcome/field-return/save-unblock remain OPEN.
-
-Commits: c2730fb (AUDIO-01/RNG-01), abf37bc (GSF-01 verification), de3fa39
-(RESULT-01 verification). The concurrent docs agent's uncommitted edits in
-docs/DOCUMENTATION_REQUESTS.md (priority table), docs/PROGRESS.md and other files
-were not swept; only the four own paths were staged per commit.
-
-Next: continue the D1/G1 request loop; verify remaining deliveries (DEMO-01
-story-state maps, STAR-01 fill callers) before applying; keep original story and
-audio provenance as the acceptance gate.
