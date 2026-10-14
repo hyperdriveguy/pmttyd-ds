@@ -1,3 +1,30 @@
+## 2026-10-14 — Deferred Mario item-get motion/control
+
+Committed `7929601c`. Game can now request original motion15/stay through
+finite motion-table callbacks and initialize M_I_U on the following admitted
+Mario owner, before later item ControlOff. Entry resets44/48/50 and horizontal
+speed180 without clearing unrelated vertical/air state; original display-sector
+heading drives the front-bank static pose. Control uses retained nested byte
+and main2; stay is deferred. Nonnull idle/fall post providers are required at
+candidate and pending admission; native cancellation is not registered yet.
+
+Validation: review treeb6f6a2ea passed `make test`229/229 C++ and141/141 Python
+and native `make all BUILD=build-goomba-acquisition-review
+TARGET=ttyd-goomba-acquisition-review`. Tests cover deferred Game acquisition
+pose/control order, missing exits, preserved motion fields, pose locks and
+special/unsupported guards. Shared CMake configure initially hit an unfinished
+concurrent battle test reference; review isolated the owned source changes.
+[Exact validation/artifact](behavior/field/NATIVE_ITEM95_MARIO_MOTION_PROVIDER.md).
+No native gameplay capture or physical performance claim; no new game payload.
+
+Next: implement/register actual native idle/fall voice cancellation and inline
+horizontal motion clear (174/17c/180/18c, not additiveY178); key/system/camera,
+original windows/effect/icon and existing audio providers after Game restore.
+Preserve sound/window/effect visits, borrowed close storage and once-only5405.
+Capture native acquisition in isolated Azahar, measure rendering, then finish
+full-storage UI and additional event/area paths. Default native acquisition
+still lacks presentation providers. The broad remake goal remains active.
+
 ## 2026-10-14 — Original target confirmation and command finalization
 
 Committed `92e366e0`. Shared Input state11 preserves the pre-refresh unit/part

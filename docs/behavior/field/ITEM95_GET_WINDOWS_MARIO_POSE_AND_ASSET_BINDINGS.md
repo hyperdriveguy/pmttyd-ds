@@ -60,7 +60,7 @@ owners rather than silently substitute directional-input page controls.
 ## Mario get-item motion and original pose
 
 marioChgGetItemMotion80094c90/100 special currentmotion22 calls800a15a8;
-21/25 clear verticalfloat180;26 returns. Ordinary path rejects Mario mainflag
+21/25 clear retained base horizontal speed float180;26 returns. Ordinary path rejects Mario mainflag
 10000000. If oldmotion30 is16/17 it conditionally clears displayflags08000000
 and4. Then preserve currentmotion2e into previousmotion30,set current15,
 call previousmotion's table80310030+12*previous +8 exitcallback ifnonnull,
@@ -68,7 +68,7 @@ OR pendingword0c bit1. This requests motion initialization, not an immediate
 pose call inside the service. Special forms/flags require their own admission.
 
 Motion15 table row803100e4 holds mot_getItem80092a3c/58,othercallbacksNULL.
-On pendingbit1:clearbit1,clear words48/44 andhalf50,clear vertical180,
+On pendingbit1:clearbit1,clear words48/44 andhalf50,clear retained base horizontal speed180,
 marioAdjustMoveDir800965fc,then marioChgPose80058d84 with original
 string80420a14 **M_I_U**. Later invocations pendingclear do nothing locally.
 Original pose-bank routing remains

@@ -876,3 +876,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Native battle pose resource owner](display/NATIVE_BATTLE_POSE_RESOURCE_OWNER.md) — real player-part handles, complete source indices, shared CPU banks and the Main boundary.
 - [Part pending modes and automatic status selection](battle/PART_PENDING_POSE_MODES_AND_AUTOMATIC_STATUS_SELECTION.md) — original effect gates, status priority and unchanged extra-part descriptor0.
+
+- [Item95 Mario motion and control provider](field/NATIVE_ITEM95_MARIO_MOTION_PROVIDER.md) — deferred source entry, horizontal-speed mapping, post readiness and front-bank routing.

@@ -11,7 +11,7 @@ This pins source requests and admission; it does not execute original code.
 ## Get-item request and previous motion flags
 
 marioChgGetItemMotion80094c90/100 reads current unsigned motion+2e.
-Decimal22 calls800a15a8 and returns;21/25 clear float+180 and return;
+Decimal22 calls800a15a8 and returns;21/25 clear base horizontal speed float+180 and return;
 26 returns unchanged. Remaining motion requests obtain Mario again and return
 unchanged when main word0 has10000000. These returns do not queue15.
 
@@ -35,7 +35,7 @@ while word0c bit1 remains set. mot_getItem80092a3c/58 obtains Mario and returns
 without local mutation when pending1 is clear. With pending1 set, order is:
 
 1. Clear pending1 in word0c.
-2. Clear word48, signed-half storage50, word44, then float180 to0.
+2. Clear word48, signed-half storage50, word44, then base horizontal speed float180 to0.
 3. Call marioAdjustMoveDir800965fc.
 4. Call marioChgPose80058d84 with original80420a14 string **M_I_U**.
 
@@ -111,6 +111,58 @@ Success item cleanup calls CtrlOn/KeyOn then StayMotion; the next admitted
 MarioMain consumes it. Failure substate3 also calls StayMotion but retains
 control-off at the discard frontier: pending stay may remain unconsumed while
 main2 remains set. Do not immediately switch to idle for this failure request.
+
+## Finite ordinary post callbacks and item entry movement clear
+
+Fresh raw original table80310030 rows,12 bytes(main,reserved,post):
+
+| Decimal current motion | Row | Main | Reserved | Post |
+| --- | --- | --- | --- | --- |
+| 0 | 80310030 | 800a6c50 | 0 | 800a6b10 |
+| 1 | 8031003c | 80087994 | 0 | 0 |
+| 2 | 80310048 | 8008763c | 0 | 0 |
+| 3 | 80310054 | 8009b480 | 0 | 0 |
+| 10 | 803100a8 | 8009af1c | 0 | 8009aed4 |
+| 11 | 803100b4 | 8009af1c | 0 | 0 |
+| 15 | 803100e4 | 80092a3c | 0 | 0 |
+
+**Ordinary idle0 has a nonnull post**. For its new15, mot_stay_post800a6b10
+cancels retained word27c if not−1: psndSFXOff(handle),then27c=−1. Next apply
+the same rule to word280. Handle−1 skips both call and write; new19/20's
+retain280 exception does not apply to15. Read each handle at its source stage;
+post does not reset motion phases, pose or movement fields. Full cancellation
+and cue ownership is [idle sound](../overworld/OVERWORLD_MARIO_IDLE_SOUND_CUES.md).
+A native idle-field adapter must retain actual provider handle lifetime, rather
+than substitute a cue ID or cancel an arbitrary last-played sound.
+
+Motion10 post mot_fall_post8009aed4/48 obtains Mario, reads word284;
+if not−1 calls psndSFXOff284 then writes284=−1. Otherwise returns unchanged.
+Motion11 shares the fall main but deliberately has no post. Null rows do not
+implicitly run idle/fall cleanup. Get/Stay requests must dispatch the post of
+actual old current motion after installing their new current motion.
+
+The itemseq substate0 clear at800abcc4 loads original804210b4 float0 and
+writes, in order,174/17c/180/18c(at800abcc8/ccc/cd0/cd4). Source roles:
+
+| Mario float offset | Role in the original movement owner |
+| --- | --- |
+| 174 | External/additive X displacement |
+| 17c | External/additive Z displacement |
+| 180 | Retained base horizontal travel speed at heading1a4 |
+| 18c | Computed combined horizontal displacement norm |
+
+This is an inline item-owner clear; no DOL service named clearMarioMotion is
+called. In marioMoveMain800594a8,59808–1c adds17c to combinedZ and174 to
+combinedX;59818–38 separately adds178 to rootY. Combined norm is stored18c
+at59988. Item clear does **not** write178(additiveY), vertical jump/fall
+components, current/previous motion, heading, pending entry or air flags.
+See [movement fields](../overworld/OVERWORLD_MARIO_MOVEMENT.md) and
+[direction composition](../overworld/OVERWORLD_MARIO_DISPLAY_DIRECTION.md).
+
+Erratum: earlier window/pose contract described180 as vertical. Its operand
+label is corrected to base horizontal speed; raw addresses and clears remain
+unchanged. Portable provider names must not imply a vertical reset from this
+four-float source operation.
 
 ## Evidence and limits
 

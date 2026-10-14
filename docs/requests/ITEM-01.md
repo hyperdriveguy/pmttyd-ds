@@ -223,3 +223,20 @@ pins pending entry, heading, front M_I_U and control-off dispatch gate.
 Native main/renderer/audio registration, motion/control/camera providers,
 original windows/effect consumers and full discard UI remain pending. Parent
 requests stay open; host callback fixtures do not establish native playability.
+
+### 2026-10-14 — Deferred original Mario item-get and control binding
+
+Committed `7929601c`: finite motion request/entry uses existing Game motion,
+movement and pose owners; required original idle/fall exits are injected and
+checked before admission. Pending15 is consumed by the later Mario owner,
+resets44/48/50 and horizontal180 while retaining unrelated vertical/air state,
+AdjustMoveDir then original front-bank M_I_U. ControlOff/On use retained nested
+byte/main2; stay is deferred. Game fixtures check actual acquisition order.
+Isolated229 C++/141 Python tests and native build passed.
+[Provider/validation](../behavior/field/NATIVE_ITEM95_MARIO_MOTION_PROVIDER.md).
+Fresh source corrected prior vertical180 wording: inline clear174/17c/180/18c
+is additiveX/Z, base horizontal speed and combined norm; additiveY178 stays.
+[Source exit/clear contract](../behavior/field/ITEM95_MARIO_MOTION15_ENTRY_DISPLAY_AND_STAY.md).
+Actual native idle/fall sound cancellation and other main/renderer/audio
+providers still need registration. Full discard/special forms and native
+render/performance validation remain open; parent requests stay open.
