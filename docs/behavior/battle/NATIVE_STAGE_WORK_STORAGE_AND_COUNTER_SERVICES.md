@@ -17,13 +17,18 @@ unsigned endpoints, signed mode, fresh duration/remaining reads, interpolation,
 fctiwz provider and low-byte output. Callback changes to the global battle owner
 do not redirect this pass. Provider suspension preserves prior writes.
 
-Native scratch cleanup binds the live map heap, not a fabricated successful
-free. Native spotlight, active entry and positive interpolation requests remain
-explicit unavailable services; the ending still holds at8013800c before any
-entry/counter work runs. This does not claim spotlight initialization, active
-effect/display completion, original numeric curves, whole-engine success or
-field return. These services must be bound before the initializer's two child
-calls and complete original StageMain can be claimed operational.
+Native scratch cleanup binds the live map heap. Spotlight Main calls the
+existing packed spotlight provider; active stage entries still report their
+own unavailable boundary. Counter interpolation now reuses existing
+[cameraInterpolation/intplGetValue](../camera/OVERWORLD_CAMERA_INTERPOLATION_AND_TIMER_DOMAIN.md)
+for built-in modes0..13, with the original count0 return before mode dispatch.
+Indirect callback-pointer modes remain unavailable at80006c8c; there is no
+linear fallback or step/output clamp. Native fctiwz adaptation truncates finite
+values in [-2147483648,2147483648), then the original low-byte store wraps them.
+An unsupported conversion reports StageMain80139150, preserving the prior
+counter decrement and withholding the output write. Gekko numeric parity,
+active stage/effect/display completion, complete outer cadence and field return
+remain unproven. This binding does not acknowledge those remaining providers.
 
 Host tests verify nonzero prior storage and boundary preservation, original
 defaults, inactive/null and last active entry, spotlight-first admission,
@@ -32,3 +37,8 @@ four-counter ordering and signed mode/endpoints, negative/zero skips, wrapping
 elapsed, output low-byte conversion and callback mutation between counters.
 Native trio tests inspect the actual mapped original material/position fields
 and retain the existing incomplete-engine/field-control assertions.
+Additional tests run all four real curve providers for15 ticks (modes0/4/11/12),
+checking fixed first/middle/final output bytes and exactly60 curve requests.
+Completed counters request no additional curve. An indirect-mode hold preserves
+its already decremented counter and its previous output byte. These are packed
+counter/provider tests, not native visual fade acceptance.

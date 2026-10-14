@@ -828,7 +828,7 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Portable forced item95 receive](field/PORTABLE_ITEM95_RECEIVE_SEQUENCE.md), [original window/Mario/icon bindings](field/ITEM95_GET_WINDOWS_MARIO_POSE_AND_ASSET_BINDINGS.md), [exact packed insertion](unit/POUCH_KEY_ITEM95_RECEIVE_INSERTION.md), and [type6 effect bank/update/draw](effect/FIELD_ITEM_GET_TYPE6_BANK_UPDATE_AND_DRAW.md).
 
 - [Stage work initialization and inactive/counter Main](battle/STAGE_WORK_INITIALIZATION_AND_INACTIVE_COUNTER_PASS.md): original defaults, scratch free order and four interpolation counter ABIs.
-- [Native stage-work storage and counter services](battle/NATIVE_STAGE_WORK_STORAGE_AND_COUNTER_SERVICES.md): exact scalar initialization, retained cleanup owner and explicit active/spotlight/numeric dependencies.
+- [Native stage-work storage and counter services](battle/NATIVE_STAGE_WORK_STORAGE_AND_COUNTER_SERVICES.md): scalar initialization, retained cleanup, bound built-in interpolation/finite conversion and remaining active-entry dependencies.
 
 - [Spotlight mutable colour bootstrap and AcHelp admission](battle/SPOTLIGHT_MUTABLE_COLOUR_BOOTSTRAP_AND_AC_HELP_ADMISSION.md): actual BSS clearing, source zero-to-white record colour and help display gates.
 - [Native spotlight allocation and ending stage pass](battle/NATIVE_SPOTLIGHT_ALLOCATION_AND_ENDING_STAGE_PASS.md): real five-record map bank, retained session state and source-predicate progress to AudienceMain.

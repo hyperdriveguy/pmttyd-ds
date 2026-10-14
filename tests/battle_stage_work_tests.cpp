@@ -1,4 +1,5 @@
 #include "battle_stage_work.hpp"
+#include "field_camera_events.hpp"
 #include <cassert>
 #include <cstring>
 #include <map>
@@ -84,4 +85,22 @@ int main() {
     Fixture fresh;fresh.init();fresh.word(F::W+0xaf0,1);fresh.word(F::W+0xaf4,1);s=fresh.services();
     s.interpolate=[](void* p,int32_t,int32_t,int32_t,float a,float)->std::optional<float>{auto& f=*static_cast<Fixture*>(p);if(!f.interpolation++)f.bytes[F::W+0xaeb]=239;else assert(a==239);return 0;};
     assert(packedBattleStageWorkMain(s) && fresh.interpolation==2);
+    // Actual built-in interpolation/finite conversion used by the native owner.
+    // All four fades advance to their last byte, without a linear fallback.
+    Fixture live;live.init();s=live.services();
+    s.interpolate=[](void* p,int32_t mode,int32_t step,int32_t count,float a,float b){++static_cast<Fixture*>(p)->interpolation;return cameraInterpolation(mode,step,count,a,b);};
+    s.truncate=[](void*,float v)->std::optional<int32_t>{if(std::isfinite(v) && v>=-2147483648.f && v<2147483648.f)return int32_t(v);return {};};
+    const int curves[]={0,4,11,12};
+    for(unsigned i=0;i<4;++i){live.word(F::W+count[i],15);live.word(F::W+duration[i],15);
+        live.bytes[F::W+start[i]]=20+i;live.bytes[F::W+end[i]]=100+i;live.bytes[F::W+mode[i]]=curves[i];}
+    constexpr uint8_t first[]={25,31,22,31},middle[]={57,78,57,76};
+    for(unsigned tick=1;tick<=15;++tick){assert(packedBattleStageWorkMain(s));
+        for(unsigned i=0;i<4;++i){assert(live.word(F::W+count[i])==15-tick);
+            if(tick==1)assert(live.bytes[F::W+output[i]]==first[i]);
+            if(tick==7)assert(live.bytes[F::W+output[i]]==middle[i]);
+            if(tick==15)assert(live.bytes[F::W+output[i]]==100+i);}}
+    assert(live.interpolation==60 && packedBattleStageWorkMain(s) && live.interpolation==60);
+    Fixture callback;callback.init();callback.word(F::W+count[0],2);callback.word(F::W+duration[0],2);callback.bytes[F::W+mode[0]]=255;
+    s=callback.services();s.interpolate=[](void*,int32_t mode,int32_t step,int32_t count,float a,float b){return cameraInterpolation(mode,step,count,a,b);};
+    assert(!packedBattleStageWorkMain(s) && callback.word(F::W+count[0])==1 && callback.bytes[F::W+output[0]]==0);
 }

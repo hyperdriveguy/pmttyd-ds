@@ -338,7 +338,16 @@ struct TrioAttackRuntime {
         s.spotlightMain=[](void* p){auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x8013800c);const bool ready=packedBattleSpotlightMain(r.spotlightServices());r.publishSpotlight();return ready;};
         s.activeEntry=[](void* p,uint32_t){static_cast<TrioAttackRuntime*>(p)->pending=0x80139150;return false;};
         s.freeScratch=[](void* p,uint32_t allocation){auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x800f8908);eventMapFree(r.word(0x8041e80c),allocation,r.vm.memoryBinding.services());return true;};
-        s.interpolate=[](void* p,int32_t,int32_t,int32_t,float,float)->std::optional<float>{auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x80006c8c);r.pending=0x80006c8c;return std::nullopt;};
+        s.interpolate=[](void* p,int32_t mode,int32_t elapsed,int32_t duration,float start,float end)->std::optional<float>{
+            auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x80006c8c,{mode,elapsed,duration});
+            const auto value=cameraInterpolation(mode,elapsed,duration,start,end);
+            if(!value)r.pending=0x80006c8c;
+            return value;
+        };
+        s.truncate=[](void* p,float value)->std::optional<int32_t>{
+            if(std::isfinite(value) && value>=-2147483648.f && value<2147483648.f)return int32_t(value);
+            static_cast<TrioAttackRuntime*>(p)->pending=0x80139150;return {};
+        };
         return packedBattleStageWorkMain(s);
     }
     BattleAudienceInitServices audienceInitServices() {
