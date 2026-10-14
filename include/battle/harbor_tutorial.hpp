@@ -29,6 +29,7 @@ struct HarborTutorialWeaponRow {
 };
 struct ProloguePouch;
 struct HarborTutorialRuntime;
+class DisplayQueue;
 // Source setup2 unit initialization and guarded phase requests. This owner does
 // not infer combat outcomes or advance the field story. Native IDs follow the
 // original fresh registry order: system0, Mario1, Crump2, spawned helper3.
@@ -86,6 +87,8 @@ public:
     bool selectWeapon(unsigned row);
     std::vector<std::array<int32_t,2>> weaponTargets;
     uint32_t weaponMenuType=0;std::vector<HarborTutorialWeaponRow> weaponRows;
+    // Borrowed original action-command display requests for this simulation tick.
+    const DisplayQueue* actionDisplayQueue() const;
     bool readPackedWord(uint32_t address,uint32_t& value) const;
     bool running() const{return triggered;}
 private:

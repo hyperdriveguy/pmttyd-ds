@@ -72,7 +72,7 @@ bool HarborTutorialPacked::provisionFreshFieldInformation(uint32_t c,uint32_t gr
  PackedFieldBattleInformationServices services;services.memory=nativeBattleActorServices(vm);services.marioPartyId=[](void*)->int32_t{return 0;};services.party=[](void*,int32_t id){assert(id==0);return uint32_t(0);};services.partyKind=[](void*,int32_t)->int32_t{std::abort();};
  const auto info=preparePackedFieldBattleInformation(f,npc,word(0x8041eb00),services);word(Battle+0x2738,info);return true;
 }
-void HarborTutorialPacked::samplePhysical(uint64_t time,const BattlePadSample* sample){physicalCurrent=sample!=nullptr;if(!sample || sampledAt==time)return;sampledAt=time;auto general=readPackedBattlePad(Battle+0xf2c,nativeBattleActorServices(vm));general.update(*sample);writePackedBattlePad(Battle+0xf2c,general,nativeBattleActorServices(vm));auto pad=readPackedBattlePad(Battle+0x1d1c,nativeBattleActorServices(vm));pad.update(*sample);writePackedBattlePad(Battle+0x1d1c,pad,nativeBattleActorServices(vm));}
+void HarborTutorialPacked::samplePhysical(uint64_t time,const BattlePadSample* sample){physicalCurrent=sample!=nullptr;if(!sample || sampledAt==time)return;sampledAt=time;auto general=readPackedBattlePad(Battle+0xf2c,nativeBattleActorServices(vm));general.update(*sample);writePackedBattlePad(Battle+0xf2c,general,nativeBattleActorServices(vm));sampledPhysical=*sample;}
 bool HarborTutorialPacked::registerActor(HarborTutorialActor& a){
  if(a.id<0 || a.id>3 || registered[a.id])return false;
  const uint32_t id=uint32_t(a.id),u=Units+id*0x1000,p=Parts+id*0x1000,k=a.id==1?word(0x80416a50):a.sourceKind;

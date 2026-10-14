@@ -59,15 +59,48 @@ the shared providers; no replacement arc or generated sound is supplied.
 Host tests check manager pad/main/display order, null-main display skip, fresh
 display publication, zero-return clearing only main, missing providers, captured
 versus current owners, help modes and StartAC token/on gates. The native original
-Jump graph prepares state100/help2, executes Mario motion and stops live at
-ResultAC80107708 with unchanged HP/result and one payment. This is not an action
-success, complete hit, full original scheduling or visual/audio playback proof.
+Jump fixture without a physical input provider prepares state100/help2, executes
+Mario motion and stops live at ResultAC80107708 with unchanged HP/result and one
+payment. Physical-sample continuation is described below; neither fixture proves
+full original scheduling or visual/audio playback.
 
-The shared manager is not yet invoked automatically by Harbor. Complete native
-private-pad/sequence/manager cadence, TimingA callback execution and display-queue
-ownership must be composed next; do not substitute another rendering-frame tick
-or silently clear the remaining callbacks. ResultAC/StopAC, pose consumption,
-hits and post-action scheduling remain required. Game still needs the original
-class/target menu activation and physical controls, extracted HUD/menu rendering
-and second-screen scene/audience interaction. Source listings and validation
-logs remain in ignored artifacts; no original-runtime measurement is asserted.
+## Native Harbor manager admission (2026-10-14)
+
+Harbor now composes the shared manager before its event-manager pass on each
+new physical simulation sample. General pad sampling remains first; the private
+pad update is owned by the manager's first provider and runs even with null
+Main. A retained sample and timestamp guard prevent both pad-history shifting
+and another Main invocation on a repeated timestamp. Missing physical input
+supplies no synthetic sample and does not advance Main. This is a native
+scheduler admission policy, not recovered original frame cadence or a complete
+BattleMain/sequence/stage/audience owner.
+
+The bound Main identity8012aae0 loads/stores the existing TimingA command work
+and invokes its complete local state machine. State1000 sets60 then decrements
+to59 in the same invocation; state1001 reaches state1002 after the remaining59
+invocations; the following invocation clears all four callbacks. Those clears
+belong to TimingA Main, while the outer manager still clears only Main on0 and
+freshly rereads Display. Other Main identities stay explicitly unbound.
+
+Original dispEntry requests are registered in a runtime-owned DisplayQueue,
+with camera8/class1/original callback/borrowed BattleWork/priority15. The queue
+is reset for a new admitted tick and exposed as a borrowed read-only view via
+HarborTutorial::actionDisplayQueue(). It does not execute the draw callback or
+claim a rendered action-command cue. Null Main skips display; the state1002
+cleanup therefore leaves the next queue empty. Queue entries persist across
+same-timestamp retries; a new timestamp without physical input presents an
+empty queue and retains command/pad work.
+
+Native original Jump fixtures verify the registered identity, camera/class/
+userdata, source sort key399985, exact deferred countdown, cleanup of all four
+callbacks, repeated timestamp and absent-input behavior. Failed Jump still
+finishes its original attack/recovery root, applies1 damage and produces the
+original failure feedback under explicit phase dispatch. Successful Jump still
+stops at original voice80104508. Portable manager tests independently cover
+pad/main/display ordering and fresh publication.
+
+Game still needs original class/target menu activation, turn/post-action/phase
+scheduling, extracted HUD/menu drawing, action-command display consumption,
+complete voice playback and second-screen scene/audience interaction with a
+physical-button equivalent. No original-runtime cadence or visual/audio
+measurement is asserted; source assets remain private and unchanged.

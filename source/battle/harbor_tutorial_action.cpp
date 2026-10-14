@@ -1,7 +1,66 @@
 #include "battle_action_events.hpp"
+#include "battle_action_manager.hpp"
 #include "battle_packed_pad.hpp"
 #include "harbor_tutorial_packed.hpp"
 namespace ttyd {
+bool HarborTutorialPacked::actionManager(uint64_t time) {
+  if (actionManagedAt == time)
+    return true;
+  // Missing platform sample does not fabricate an empty pad update or advance
+  // source callbacks. Render retries also do not consume another simulation
+  // tick.
+  actionDisplays.reinitialize();
+  if (!physicalCurrent || sampledAt != time)
+    return true;
+  actionManagedAt = time;
+  BattleActionManagerServices s;
+  s.memory = nativeBattleActorServices(vm);
+  s.user = this;
+  s.pad = [](void *self, uint32_t address, int32_t channel) {
+    auto &p = *static_cast<HarborTutorialPacked *>(self);
+    if (channel != 0 || address != Battle + 0x1d1c)
+      return false;
+    auto pad = readPackedBattlePad(address, nativeBattleActorServices(p.vm));
+    pad.update(p.sampledPhysical);
+    writePackedBattlePad(address, pad, nativeBattleActorServices(p.vm));
+    return true;
+  };
+  s.main = [](void *self, uint32_t callback,
+              uint32_t b) -> std::optional<int32_t> {
+    auto &p = *static_cast<HarborTutorialPacked *>(self);
+    if (callback != 0x8012aae0)
+      return std::nullopt;
+    TimingACommand c;
+    c.state = int32_t(p.word(b + 0x1c9c));
+    c.finishCountdown = int32_t(p.word(b + 0x1f54));
+    c.flags = p.word(b + 0x1f50);
+    c.classification = int32_t(p.word(b + 0x1ce8));
+    for (unsigned i = 0; i < c.scratch.size(); ++i)
+      c.scratch[i] = p.word(b + 0x1f20 + 4 * i);
+    const auto result = c.tick();
+    p.word(b + 0x1c9c, uint32_t(c.state));
+    p.word(b + 0x1f54, uint32_t(c.finishCountdown));
+    p.word(b + 0x1f50, c.flags);
+    p.word(b + 0x1ce8, uint32_t(c.classification));
+    for (unsigned i = 0; i < c.scratch.size(); ++i)
+      p.word(b + 0x1f20 + 4 * i, c.scratch[i]);
+    // State1002's four clears belong to TimingA Main; the outer manager only
+    // clears Main on zero and freshly rereads Display afterwards.
+    if (!c.callbacksLive)
+      for (const auto offset : {0x1ca0u, 0x1ca8u, 0x1ca4u, 0x1cacu})
+        p.word(b + offset, 0);
+    return result;
+  };
+  s.display = [](void *self, int32_t camera, int32_t drawClass,
+                 uint32_t callback, uint32_t argument, float priority) {
+    auto &p = *static_cast<HarborTutorialPacked *>(self);
+    return p.actionDisplays.enter(uint32_t(camera), drawClass, callback,
+                                  argument,
+                                  priority) == DisplayAdmission::Registered;
+  };
+  return packedBattleActionCommandManager(Battle, s);
+}
+
 bool HarborTutorialPacked::actionEvent(EventEntry &e, uint32_t function,
                                        int32_t &result) {
   BattleActionEventServices s;

@@ -5,6 +5,7 @@
 #include "battle_damage_application.hpp"
 #include "battle_camera_requests.hpp"
 #include "battle_packed_generic_jump.hpp"
+#include "display_queue.hpp"
 #include <unordered_map>
 #include <optional>
 namespace ttyd {
@@ -20,6 +21,8 @@ public:
  BattlePackedMovePositionServices movement;BattlePackedGenericJumpServices jump;
  BattleCameraRequestServices camera;bool physicalCurrent=false;uint64_t sampledAt=UINT64_MAX;
  void samplePhysical(uint64_t milliseconds,const BattlePadSample*);
+ bool actionManager(uint64_t milliseconds);
+ DisplayQueue actionDisplays;
  explicit HarborTutorialPacked(EventNativeRuntime& r):vm(r){}
  bool provision();
  bool provisionFreshPouch(const char* originalYoshiName,const ProloguePouch* entry=nullptr);
@@ -46,6 +49,8 @@ public:
  bool invoke(EventEntry&,uint32_t function,int32_t first,int32_t& result);
  bool readWord(uint32_t address,uint32_t& value) const{return vm.memory.readWord(address,value);}
 private:
+ BattlePadSample sampledPhysical{};
+ uint64_t actionManagedAt=UINT64_MAX;
  std::array<bool,4> registered{};
  static constexpr uint32_t MenuRam=0x84600000;
  uint32_t menuTextAt=MenuRam+0x1000;std::unordered_map<uint32_t,uint32_t> menuText;

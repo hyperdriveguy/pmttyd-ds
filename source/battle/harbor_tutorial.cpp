@@ -168,13 +168,18 @@ void HarborTutorial::setStartupFade(void* user,void(*entry)(void*,int32_t,int32_
 void HarborTutorial::tick(uint64_t time,uint32_t keys,const BattlePadSample* physical){if(!runtime_ || failed || time<now)return;now=time;auto& r=*runtime_;r.scene=this;if(message.active())message.tick(now,keys);
  const auto speakerSlot=visualSlot(speaker);
  if(message.poseRequestSerial!=r.messagePoseSerial && speakerSlot>=0){r.messagePoseSerial=message.poseRequestSerial;auto& a=actors[size_t(speakerSlot)];const auto& pose=message.poseRequest==MessagePlayback::PoseRequest::Talk?a.talkPose:a.stayPose;if(!pose.empty()){a.pose=pose;a.poseAt=message.poseRequestedAt;}}
- r.packed->samplePhysical(time,physical);r.packed->publish(*this);r.vm.gp.timestamp=now*eventClockRate(243000000);r.vm.runManager();r.packed->publish(*this);r.packed->capture(*this);
+ r.packed->samplePhysical(time,physical);r.packed->publish(*this);
+ // Native scheduler admission: one physical simulation sample owns pad/Main/
+ // queue registration. Full source sequence/stage/audience Main remains open.
+ if(!r.packed->actionManager(time) && !pendingService)pendingService=0x800fa5b0;
+ r.vm.gp.timestamp=now*eventClockRate(243000000);r.vm.runManager();r.packed->publish(*this);r.packed->capture(*this);
  damageActive=r.packed->hitEventsActive();
  if(!initialized && r.packed->unitInitReady())initialized=true;
  if(initialized && !r.openingDispatched && dispatchPhase(1,0x04000001))r.openingDispatched=true;
  if(attackActive && !r.exists(r.attackRoot))attackActive=false;
  if(phaseActive && !r.exists(r.phaseRoot)){phaseActive=false;if(r.openingDispatched && !r.phaseInterrupted && phaseWord==0x04000001)introComplete=true;}
 }
+const DisplayQueue* HarborTutorial::actionDisplayQueue()const{return runtime_?&runtime_->packed->actionDisplays:nullptr;}
 bool HarborTutorial::dispatchPhase(int32_t sourceTurn,uint32_t sourcePhase){if(!runtime_ || failed || !initialized || phaseActive || attackActive || damageActive || !actors[0].phase)return false;turn=sourceTurn;phaseWord=sourcePhase;runtime_->phaseInterrupted=false;runtime_->phaseRoot=runtime_->root(actors[0].phase,CrumpId,0x20).id;runtime_->packed->recordPhase(CrumpId,runtime_->phaseRoot);phaseActive=true;return true;}
 bool HarborTutorial::dispatchInstalledAttack(int32_t id){const auto slot=visualSlot(id);if(!runtime_ || failed || !initialized || !introComplete || phaseActive || attackActive || damageActive || (id!=CrumpId && id!=HelperId) || slot<0 || !actors[size_t(slot)].attack)return false;pendingService=0;runtime_->attackRoot=runtime_->root(actors[size_t(slot)].attack,id).id;runtime_->packed->recordAttack(id,runtime_->attackRoot);attackActive=true;return true;}
 bool HarborTutorial::dispatchSelectedAttack(){
