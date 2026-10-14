@@ -595,3 +595,19 @@ closure stays205objects/5464bytes. Original PPC functions are external service
 identities, never exported/executed code. Existing read-only US gor.rel hash,
 local extraction and Nintendo/Intelligent Systems licensing remain unchanged.
 [Runtime/provenance scope](behavior/field/ORIGINAL_TROUBLE_CENTER_EVENT_RUNTIME_ADAPTER.md).
+
+## 2026-10-14 — Independent original battle collision registry
+
+`tools/battle_hit_assets.py` reads US ISO `m/bti_01/d` and `m/stg_00_1/d`
+read-only, verifying bank SHA256213c62e758be15bc0731b3fa58558d1b2c565ea1c96e91111ea07b52cf751ca8
+and8d749bd8caad7fced1596231b755dc4e372e938816e10add8a8e0d7a69f5a2e1.
+Private originals/provenance: `local-assets/battle-hit/`. Compiled runtime
+pack and metadata: `romfs/battle-hit.bin` / `.json`. Contains original selected
+collision roots bti_A and A, five initial hierarchy/mesh slots and166 complete
+source-winding triangles in engine units (source parent Scale10). No geometry
+reduction/render offsets/native-coordinate round-trip. Single-precision initial
+axis-aligned transforms/bbox expansion; declared native sqrt radius adaptation.
+Initial flags0 snapshot and later unknown-history invalidation are separate
+from original live bmapLoad/hitMain. [Native scope](behavior/battle/NATIVE_BATTLE_HIT_REGISTRY_AND_SHADOW_PREPARATION.md).
+Rights remain Nintendo/Intelligent Systems; private local conversion grants no
+redistribution license. No original payload or compiled pack is committed.

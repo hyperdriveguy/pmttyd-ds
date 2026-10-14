@@ -1420,3 +1420,10 @@ add_executable(trouble_board_event_tests tests/trouble_board_event_tests.cpp)
 target_link_libraries(trouble_board_event_tests PRIVATE ttyd_core)
 add_test(NAME trouble_board_event COMMAND trouble_board_event_tests)
 set_tests_properties(trouble_board_event PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Independent source-order initial battle HitObj registry and shadow ray.
+target_sources(ttyd_core PRIVATE source/battle/battle_hit_registry.cpp)
+add_executable(battle_hit_registry_tests tests/battle_hit_registry_tests.cpp)
+target_link_libraries(battle_hit_registry_tests PRIVATE ttyd_core)
+add_test(NAME battle_hit_registry COMMAND battle_hit_registry_tests)
+set_tests_properties(battle_hit_registry PROPERTIES WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")

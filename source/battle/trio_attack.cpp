@@ -225,6 +225,7 @@ struct TrioAttackRuntime {
     FieldPartyRegistry* fieldParties=nullptr;
     FieldPartyAppearanceServices fieldAppearance;
     StageMapObjects stageBackground,stageForeground;
+    BattleHitRegistry battleHits;
     std::shared_ptr<BattleSpotlightState> spotlight;
     bool spotlightInitialized=false;
     explicit TrioAttackRuntime(std::shared_ptr<BattleRandom> rng):vm(0x81000000,platform(this)),randomOwner(std::move(rng)),random(*randomOwner) {}
@@ -273,6 +274,7 @@ struct TrioAttackRuntime {
     bool initializeStageObjects() {
         if(half(0x85000000+0x88)!=0)return false; // Signed rank halfword; following halfword is level.
         if(!stageBackground.load((stageMapRoot+"/bti_01.mapobj").c_str()) || !stageForeground.load((stageMapRoot+"/stg_00_1.mapobj").c_str()))return false;
+        if(!battleHits.load((stageMapRoot+"/battle-hit.bin").c_str()))return false; // Declared initial battle context/HitObj snapshot, independent of field geometry.
         word(Battle+0x18110,0);word(Battle+0x18114,0x80374c38);byte(Battle+0x182a6,255);word(Battle+0x182b8,0);word(Battle+0x182bc,0);
         // Typed current map root is retained from the original hierarchy pack.
         if(!stageForeground.root() || !stageForeground.flag(stageForeground.root(),2,false))return false;
@@ -1749,13 +1751,18 @@ bool TrioAttack::resumeShadowDisplay(uint32_t camera,uint32_t userdata,const Sha
     services.geometry=[](void* user,ShadowGeometry kind,uint32_t camera,const CameraState& view,ShadowRecord& record){auto& b=*static_cast<Bridge*>(user);return b.source->geometry && b.source->geometry(b.source->user,kind,camera,view,record);};
     services.collision.user=&bridge;
     services.collision.currentCamera=[](void* user){return static_cast<Bridge*>(user)->runtime->cameras->current()!=nullptr;};
-    services.collision.ray=[](void* user,const ShadowCollisionRay& ray,ShadowCollisionHit& hit){auto& b=*static_cast<Bridge*>(user);const auto& s=b.source->collision;return s.ray?s.ray(s.user,ray,hit):ShadowRayResult::Unavailable;};
+    services.collision.ray=[](void* user,const ShadowCollisionRay& ray,ShadowCollisionHit& hit){
+        auto& b=*static_cast<Bridge*>(user);const auto& s=b.source->collision;
+        return s.ray?s.ray(s.user,ray,hit):b.runtime->battleHits.ray(ray,hit);
+    };
     return shadowDisplay(*runtime_->shadows,camera,userdata,runtime_->shadowDisplayCursor,runtime_->shadowDisplayGlobals,services);
 }
 const CameraManager* TrioAttack::cameras()const{return runtime_?runtime_->cameras.get():nullptr;}
 const DisplayQueue* TrioAttack::displayQueue()const{return runtime_?&runtime_->displayQueue:nullptr;}
 std::optional<TrioShadowDrawRequest> TrioAttack::shadowDrawRequest()const{return runtime_?runtime_->shadowDraw:std::nullopt;}
 const ShadowWork* TrioAttack::shadowWork()const{return runtime_?runtime_->shadows.get():nullptr;}
+void TrioAttack::invalidateBattleHitRegistry(){if(runtime_)runtime_->battleHits.invalidate();}
+const BattleHitRegistry* TrioAttack::battleHitRegistry()const{return runtime_?&runtime_->battleHits:nullptr;}
 const BattleCommandPalette* TrioAttack::commandPalette()const{return runtime_?runtime_->palette.get():nullptr;}
 const BattleCameraFrame* TrioAttack::cameraFrameState()const{return runtime_?&runtime_->cameraFrame:nullptr;}
 bool TrioAttack::cameraHistoryComplete()const{return runtime_ && runtime_->cameraHistoryComplete;}

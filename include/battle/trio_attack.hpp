@@ -19,6 +19,7 @@
 #include "display_queue.hpp"
 #include "shadow_work.hpp"
 #include "shadow_display.hpp"
+#include "battle_hit_registry.hpp"
 #include "battle_display_footer.hpp"
 namespace ttyd {
 bool loadTrioAttackAssets(const char* root);
@@ -48,6 +49,8 @@ public:
     bool finishingDrawPending() const;
     void resumeFinishingDraw(const CameraDrawServices&) const;
     bool resumeShadowDisplay(uint32_t camera,uint32_t userdata,const ShadowDisplayServices&) const;
+    void invalidateBattleHitRegistry(); // Unknown collision/context writers must explicitly reopen their producer.
+    const BattleHitRegistry* battleHitRegistry() const;
     std::optional<TrioShadowDrawRequest> shadowDrawRequest() const;
     const ShadowWork* shadowWork() const;
     const BattleCommandPalette* commandPalette() const;

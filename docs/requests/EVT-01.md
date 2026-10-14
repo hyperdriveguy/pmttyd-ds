@@ -3994,3 +3994,16 @@ MapWork before unconditional outer hitMain rebuilds this chain. Native field
 groundAt and the packed battle floor snapshot do not supply that registry.
 Documentation recovery of battle stage roots, original traversal/gates/ties and
 raw hit normals is ongoing; the production ray remains explicitly unavailable.
+
+### 2026-10-14 — Native independent battle-map shadow ray
+
+Implemented [source-order battle registry and ray binding](../behavior/battle/NATIVE_BATTLE_HIT_REGISTRY_AND_SHADOW_PREPARATION.md)
+using original bti_01/stg_00_1 collision hierarchy and initial source flags0
+snapshot. Preserves source sphere/cull/edge/strict endpoint/tie/filter behavior,
+raw winner orientation, exact FMA/reduction structure and explicit unknown
+history/MOBJ holds. Native sqrt replaces original rsqrt/Newton; numeric/raster
+parity remains open. The actual finishing callback prepares its three live
+type2/camera4 records before the unbound camera2 profile/image suffix. No
+field floor or B.floor substitution. Original full map/context/publication/
+binding lifecycle, camera2 suffix, geometry and field return remain open;
+EVT-01 and full prologue are not closed.

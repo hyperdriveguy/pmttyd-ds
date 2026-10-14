@@ -538,6 +538,7 @@ int main(){
                 ShadowDisplayServices source;source.user=&b;
                 source.gx=[](void* user,const ShadowGXRequest&){++static_cast<ShadowFrameBinding*>(user)->requests;return true;};
                 source.texture44=[](void* user,ShadowTexture& texture){++static_cast<ShadowFrameBinding*>(user)->lookups;texture=ShadowTexture::N64Texture44;return true;};
+                source.collision.ray=[](void*,const ShadowCollisionRay&,ShadowCollisionHit&){return ShadowRayResult::Unavailable;}; // Explicit host query hold, independent of real runtime registry.
                 return b.attack->resumeShadowDisplay(camera,borrowed,source);
             };
             charged.trioAttack.resumeFinishingDraw(frameServices);
@@ -545,6 +546,20 @@ int main(){
             assert(binding.requests==73 && binding.lookups==1);
             const auto classStates=statePackets.size();charged.trioAttack.resumeFinishingDraw(frameServices);
             assert(binding.requests==73 && binding.lookups==1 && statePackets.size()==classStates); // Completed camera1 setup never replays while camera2 ray is held.
+            struct NativeRayBinding {const TrioAttack* attack;DisplayDispatchServices original;} nativeRay{&charged.trioAttack,frameServices.display};
+            frameServices.display.user=&nativeRay;
+            frameServices.display.state=[](void* user,const DisplayStateRequest& r){auto& b=*static_cast<NativeRayBinding*>(user);return b.original.state(b.original.user,r);};
+            frameServices.display.callback=[](void* user,uint32_t camera,uint32_t identity,uint32_t borrowed){
+                if(identity!=0x8002d3d8)return false;
+                return static_cast<NativeRayBinding*>(user)->attack->resumeShadowDisplay(camera,borrowed,{}); // Retained runtime registry, no field/B.floor substitute.
+            };
+            charged.trioAttack.resumeFinishingDraw(frameServices);
+            assert(charged.trioAttack.pendingFunction()==0x8002d3d8 && charged.cameraManager->currentIndex()==2 && charged.trioAttack.battleHitRegistry()->known());
+            const auto* prepared=charged.trioAttack.shadowWork();assert(prepared->count()==3);
+            for(unsigned i=0;i<3;++i){const auto& r=*prepared->record(i);assert(r.flags==3 && std::fabs(r.matrix[7]-1.f)<.000001f && r.matrix[3]==r.position[0] && r.matrix[11]==r.position[2]);}
+            const auto savedMatrix=prepared->record(0)->matrix;charged.trioAttack.invalidateBattleHitRegistry();
+            charged.trioAttack.resumeFinishingDraw(frameServices);
+            assert(!charged.trioAttack.battleHitRegistry()->known() && prepared->record(0)->matrix==savedMatrix); // Completed preparation is not replayed by the subsequent profile/image hold.
 
 
 

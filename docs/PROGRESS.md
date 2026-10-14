@@ -3120,3 +3120,33 @@ EVT scheduling, share original field saved banks and lifetime, then source
 c_monban and nonempty NPC/door children. Standalone callback fixtures do not
 prove interactive board gameplay or physical3DS performance. Broad original
 remake goal remains active.
+
+## 2026-10-14 — Native independent battle-map shadow ray
+
+Imported original bti_01/stg_00_1 collision hierarchy in source map/slot/strip
+order: five initial slots,166 triangles,engine units and original sphere/cull
+metadata. Native retained registry binds independent finishing shadow queries,
+with strict edges/endpoints/ties, actual flags publication and tagged-owner
+holds. Exact source FMA/reduction forms; sqrt remains a declared numerical
+adaptation. [Scope](behavior/battle/NATIVE_BATTLE_HIT_REGISTRY_AND_SHADOW_PREPARATION.md).
+
+Frozen make test passes277/277 C++ and166/166 Python; make all
+DEBUG_SHORT_BOOT=1 SOUNDTRACK=gamecube passes. Isolated Azahar verifies all
+three type2/camera4 records become flags3 after actual battle-map hits. First
+ray selects map0/node25508 A_bti_1_00/triangle1,distance11,point(-100,0,-5),
+normal(-0,1,0). Matrices have original normal liftY1 and diagonal(-20,20,-20).
+Camera2/queue21 now holds at the profile/image suffix, not the ray. Ending
+notice visible; no detected native exception. Explicit test-only Bero history.
+[Exact validation](PROGRESS_ARCHIVE.md#2026-10-14--native-independent-battle-map-shadow-ray).
+
+Initial new sphere test retained a12-unit length while expecting a150-unit
+midpoint; corrected the test fixture, with no implementation change. Native
+original stage snapshot is explicit; full original live map/context/binding/
+MOBJ mutation history and PPC numeric/raster parity are not established.
+
+Next: retained mutable camera2 profile, exact viewport/view/projection/image
+suffix, source GPU geometry/bounds/cylinder and remaining callbacks. Bind
+unsupported registry writers with invalidation/restoration; compare original
+rsqrt/math/history against source execution. Full N64 lifecycle, production
+Bero/get_info, Init/Main/Exit and ordered field return remain open. Full
+original-fidelity prologue goal stays active; original story dialogue unchanged.

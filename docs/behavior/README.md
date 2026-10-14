@@ -969,3 +969,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Original audience population, seats, entry and animation ownership](battle/AUDIENCE_POPULATION_SEATS_ENTRY_AND_ANIMATION_OWNERS.md)
 
 - [Original Trouble Center event runtime adapter](field/ORIGINAL_TROUBLE_CENTER_EVENT_RUNTIME_ADAPTER.md) — actual installer/board/counter words, immutable callback catalog and known switches; source world/message/menu/case services still require native binding.
+
+- [Shadow downward ray, active battle maps and finite acceptance](field/SHADOW_DOWNWARD_RAY_ACTIVE_BATTLE_MAP_AND_FINITE_ACCEPTANCE.md)
+- [Native battle HitObj registry and shadow preparation](battle/NATIVE_BATTLE_HIT_REGISTRY_AND_SHADOW_PREPARATION.md)

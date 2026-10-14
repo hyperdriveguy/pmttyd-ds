@@ -13863,3 +13863,76 @@ or an unconditional camGetPtr4 query. Next recover/bind source ray traversal and
 actual battle map/context/filter ownership, then profile/image/GPU services,
 geometry and remaining callbacks/outer lifecycle/field return. Full original
 prologue goal remains active; story content/dialogue unchanged.
+
+## 2026-10-14 — Native independent battle-map shadow ray
+
+Separate battle HitObj owner/query now replaces the unavailable provider in
+actual finishing shadow Collision. The current selected battle snapshot uses
+original bti_01/bti_A then stg_00_1/A collision roots, Scale10 engine units,
+source slot/strip order, original attributes/cull, source bbox midpoint/expanded
+maximum spheres, and initialized runtime flags0. No field groundAt or B.floor
+lookup is used. Atomic finite queries preserve source sphere/one-two-sided
+plane/edge/strict endpoint/earlier tie behavior, normal orientation and source
+FMA/reductions. Native sqrt/inverse normalization remains explicitly adapted.
+Unknown context/transform/generated-slot/owner history invalidates the registry;
+unmapped tagged MOBJ is unavailable, never a fabricated filter/farther floor.
+Initial snapshot/publication is a native constructor adapter, not full original
+bmapLoad/hitMain/history or source execution closure. Original mutation services
+remain separate obligations. [Contract](behavior/battle/NATIVE_BATTLE_HIT_REGISTRY_AND_SHADOW_PREPARATION.md).
+
+Validation completed with TMPDIR=`artifacts/native-stage-map-tmp`:
+
+- `python3 tools/battle_hit_assets.py` exits0. Read-only original map banks
+  match the recorded US source hashes. Private pack/provenance remain in
+  local-assets/battle-hit and RomFS; ASSETS records paths/conversion/rights.
+  All166 triangles retained; no renderer offset/geometry reduction/round-trip.
+- Frozen `artifacts/battle-hit-source/OWNED_BASE.txt` base
+  a6b5e3bbc1c756568855c5b64bf98ed3f2e36fee plus five owned files and scoped
+  runtime/header/renderer/integration-test/Make/CMake hunks. Foreign uncommitted
+  audience/Trouble Center/refactor changes excluded. Existing private packs
+  linked, with new collision converter executed explicitly.
+- Initial make test failed only the new synthetic sphere case: the fixture's
+  length remained12 from a preceding test while center-64 expected L150. The
+  source sphere correctly rejected it. Corrected fixture length and moved its
+  temporary binary under ignored artifacts; implementation unchanged.
+- Final `CMAKE_BUILD_PARALLEL_LEVEL=4 make test` exits0:277/277 C++ and166/166
+  Python (`artifacts/battle-hit-test-final.log`). Covers publication/runtime
+  flags, stable ties, strict endpoints, winding/coplanar modes, ordinary attr4,
+  unknown/rejected/accepted tagged MOBJ, sphere gate, empty/unknown registries,
+  failed/trailing-byte import, original hierarchy/banks/triangle counts/engine
+  units, three independent real-map queries and source callback integration.
+- `make all -o assets-ready -j4 DEBUG_SHORT_BOOT=1 SOUNDTRACK=gamecube
+  BUILD=build-battle-hit TARGET=ttyd-battle-hit` exits0
+  (`artifacts/battle-hit-build.log`). This reuses private packs; no full
+  conversion/runtime/hardware parity claim.
+- Parallel read-only source review confirmed corrected dot/cross/normal square
+  magnitude operation forms and complete current fixed-map geometry/order/
+  spheres. Native sqrt, exceptional float and original history remain limits.
+- Test-only `artifacts/battle-hit-harness-source` supplies explicit resolved
+  Bero bit1 after staged checkpoint and a native prepared-record/registry/ray
+  probe. It uses the actual runtime ray, never an injected hit or matrix.
+  Harness make all exits0 (`artifacts/battle-hit-harness-build.log`).
+- Isolated `tools/emulator_smoke.py --binary
+  artifacts/battle-hit-harness-source/ttyd-battle-hit-harness.3dsx
+  --save-fixture artifacts/fixtures/underground-trio-story11.bin --seconds 15
+  --input-script tests/azahar_trio_exp_icons.py
+  --output-dir artifacts/azahar-battle-hit` exits0
+  (`artifacts/battle-hit-emulator.log`), no detected native exception. User
+  emulator profile/saves untouched.
+- Actual isolated SD `battle-hit-frontier.txt`: pending8002d3d8/camera2/queue21,
+  known registry/five objects. All three type2/camera4 records have flags3,
+  translation(-100,1,-5),(-140,1,5),(-60,1,-30),diagonal(-20,20,-20)
+  with retained signed-zero lanes. Independent probe selects map0/node25508
+  A_bti_1_00/triangle1,distance11,point(-100,0,-5),normal(-0,1,0).
+  This is native evidence, not an original runtime observation.
+- Viewed original-ending-fade-export-boundary.png: opaque ending and visible
+  development field-restoration notice. No actual shadow-volume raster,
+  completed image callbacks/field return or hardware performance claim.
+- Immutable native/harness binaries, source/hunk and private collision pack
+  hashes recorded in `artifacts/battle-hit-validated/manifest.json`; scoped
+  whitespace checks pass. No original payloads or compiled packs committed.
+
+Next: original mutable camera2 shadow profiles and exact view/viewport/scissor/
+projection/image continuation, GPU geometry/bounds/cylinder and remaining source
+callbacks; complete map/context/writer lifecycle and original numeric/history
+observations. Full original-fidelity prologue remains active.

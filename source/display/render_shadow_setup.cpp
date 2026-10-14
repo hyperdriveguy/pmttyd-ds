@@ -66,7 +66,7 @@ bool Renderer::finishingShadowCallback(const Game& game,uint32_t camera,uint32_t
         if(!static_cast<Renderer*>(user)->prepareShadowTexture44())return false;
         texture=ShadowTexture::N64Texture44;return true;
     };
-    // Geometry/bounds and independent ray providers remain unavailable.
+    // Runtime owns the independent battle-map ray; geometry/bounds and camera2 images remain unavailable.
     return game.trioAttack.resumeShadowDisplay(camera,userdata,services);
 }
 }
