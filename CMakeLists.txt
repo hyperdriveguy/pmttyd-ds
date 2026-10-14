@@ -1636,3 +1636,10 @@ add_executable(map_material_color_tests tests/map_material_color_tests.cpp)
 target_link_libraries(map_material_color_tests PRIVATE ttyd_core)
 add_test(NAME map_material_color COMMAND map_material_color_tests)
 set_tests_properties(map_material_color PROPERTIES WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+
+# Original Mario key nesting and background/camera preparation callbacks.
+target_sources(ttyd_core PRIVATE source/field/field_mario_preparation.cpp)
+add_executable(field_mario_preparation_tests tests/field_mario_preparation_tests.cpp)
+target_link_libraries(field_mario_preparation_tests PRIVATE ttyd_core)
+add_test(NAME field_mario_preparation COMMAND field_mario_preparation_tests)
+set_tests_properties(field_mario_preparation PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

@@ -65,6 +65,7 @@
 #include "trouble_board_presentation.hpp"
 #include "field_bero_position.hpp"
 #include "field_position_event.hpp"
+#include "field_mario_preparation.hpp"
 #include "field_bero_initial_event.hpp"
 namespace ttyd {
 struct NpcTalkPlayer;
@@ -273,6 +274,7 @@ public:
     FieldBeroInfo fieldBeroInfo;
     std::optional<FieldBeroPosition> fieldBeroPosition; // Actual admitted start/end/recovery calculation; not complete EVT world execution.
     std::optional<FieldBeroStartPublication> fieldBeroStart; // READF words and quantized starting actor values.
+    FieldMarioPreparationWorld fieldMarioPreparationWorld(); // Key domain uses the existing live counter/flag owner.
     FieldPositionWorld fieldPositionWorld(); // Live native actor/camera storage adapters.
     bool applyFieldBeroStart(); // Ordered position setters and camera reset for a known start.
     bool fieldBeroStartApplied=false;

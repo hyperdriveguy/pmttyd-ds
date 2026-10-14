@@ -95,6 +95,14 @@ struct FieldAreaEventRuntime {
    s.owner=[](void* p){return static_cast<FieldAreaEventRuntime*>(p)->services.beroExec;};
    return fieldBeroExecOnOffEvent(e,s);
   }
+  if(fn==0x800e7474 && services.mario.admit) {
+   FieldMarioPreparationOperands o;o.user=this;
+   o.word=[](void* p,uint32_t a){return static_cast<FieldAreaEventRuntime*>(p)->word(a);};
+   o.value=[](void* p,EventEntry& e,int32_t raw){auto& r=*static_cast<FieldAreaEventRuntime*>(p);return getEventValue(e,raw,r.vm.interpreterServices().operands);};
+   return fieldMarioKeyEvent(e,o,services.mario);
+  }
+  if((fn==0x800e73ec || fn==0x800e7410) && services.mario.admit)return fieldMarioBackgroundEvent(fn==0x800e7410,services.mario);
+  if(fn==0x800e7314 && services.mario.admit)return fieldMarioCameraYOffEvent(services.mario);
   if(fn==0x8007a50c){const auto address=uint32_t(e.locals[0]);if(!services.beroInfo || !services.beroExec || !services.map || services.map->room()!=room)return 0;return services.beroInfo->registerOriginal(address,*services.map,*services.beroExec)?2:0;}
   if(fn==0x8007a214){
    if(!services.beroInfo || !services.beroInfo->registered())return 0;

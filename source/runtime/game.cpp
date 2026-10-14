@@ -1987,10 +1987,9 @@ bool Game::applyFieldItemStateRequest(ItemGetRequest r) {
     case ItemGetRequest::Camera8FlagOn:itemCamera8Flags|=0x200;return true;
     case ItemGetRequest::Camera8FlagOff:itemCamera8Flags&=~uint16_t(0x200);return true;
     case ItemGetRequest::KeyOff:
-        fieldMarioBattle.flags|=8;fieldMarioBattle.keyDepth=uint8_t(fieldMarioBattle.keyDepth+1);fieldKeysOff=true;return true;
+        fieldMarioKeyOff(fieldMarioPreparationWorld());return true;
     case ItemGetRequest::KeyOn:
-        fieldMarioBattle.keyDepth=uint8_t(fieldMarioBattle.keyDepth-1);
-        if(!fieldMarioBattle.keyDepth)fieldMarioBattle.flags&=~8u;
+        fieldMarioKeyOn(fieldMarioPreparationWorld());
         fieldKeysOff=(fieldMarioBattle.flags&8) || goombaAcquisition.active() || goombaReward.active();return true;
     case ItemGetRequest::SystemLevel2:
         itemSystemRequest=2;itemSystemMask&=0xfffffff3;itemSystemMask|=3;goombaAcquisition.stopEvents(2);return true;

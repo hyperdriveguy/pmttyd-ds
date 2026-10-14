@@ -1,5 +1,6 @@
 #pragma once
 #include "field_case.hpp"
+#include "field_mario_preparation.hpp"
 #include "event_operands.hpp"
 #include "event_gp_addresses.hpp"
 #include <memory>
@@ -34,6 +35,7 @@ struct FieldAreaEventServices {
  FieldBeroInfo* beroInfo=nullptr;
  FieldBeroExec* beroExec=nullptr;
  AnimationGroupPrefetch* prefetch=nullptr;
+ FieldMarioPreparationWorld mario;
  void* user=nullptr;
  // Exact npc_hide_onoff owner; zero holds,2 completes. Not an empty-list stub.
  int32_t (*hideNpcs)(void*,uint32_t record,bool hide)=nullptr;
