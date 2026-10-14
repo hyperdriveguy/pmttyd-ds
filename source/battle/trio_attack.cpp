@@ -146,6 +146,7 @@ struct TrioAttackRuntime {
     std::shared_ptr<CameraManager> cameras;
     std::shared_ptr<FieldBeroExec> bero;
     std::shared_ptr<OriginalSequence> sequence;
+    std::shared_ptr<SourceSoundFlags> soundFlags;SoundFlagCursor letterboxSoundCursor;
     CameraMainCursor cameraMainCursor;
     CameraDrawCursor cameraDrawCursor;
     CameraLetterboxCursor letterboxCursor;
@@ -1623,6 +1624,11 @@ struct TrioAttackRuntime {
             if(r.letterboxServices)provider=*r.letterboxServices;
             else {
                 provider.user=&r;
+                provider.soundFlag=[](void* user,bool set,uint16_t mask){
+                    auto& r=*static_cast<TrioAttackRuntime*>(user);if(!r.soundFlags)return false;
+                    if(!set){r.soundFlags->clear(mask);return true;}
+                    return r.soundFlags->set(mask,{},r.letterboxSoundCursor);
+                };
                 provider.partySlot0=[](void* user)->std::optional<uintptr_t>{
                     const auto& r=*static_cast<TrioAttackRuntime*>(user);if(!r.fieldParties)return {};
                     return reinterpret_cast<uintptr_t>(r.fieldParties->pointer(0));
@@ -1698,6 +1704,7 @@ void TrioAttack::setCameraDepthSnapshot(std::optional<CameraDepthSnapshot> snaps
 const CameraDepthSnapshot* TrioAttack::cameraDepthSnapshot()const{if(runtime_ && (runtime_->pending==0x8000f454 || runtime_->cameraDrawWaiting))return &runtime_->cameras->camera(4)->matrices;return runtime_ && runtime_->cameraDepth?&*runtime_->cameraDepth:nullptr;}
 void TrioAttack::setCameraLetterboxServices(const CameraLetterboxServices& services){if(runtime_)runtime_->letterboxServices=services;}
 void TrioAttack::setOriginalSequence(std::shared_ptr<OriginalSequence> sequence){if(runtime_)runtime_->sequence=std::move(sequence);}
+void TrioAttack::setSoundFlags(std::shared_ptr<SourceSoundFlags> flags){if(runtime_)runtime_->soundFlags=std::move(flags);}
 const CameraManager* TrioAttack::cameras()const{return runtime_?runtime_->cameras.get():nullptr;}
 const DisplayQueue* TrioAttack::displayQueue()const{return runtime_?&runtime_->displayQueue:nullptr;}
 std::optional<TrioShadowDrawRequest> TrioAttack::shadowDrawRequest()const{return runtime_?runtime_->shadowDraw:std::nullopt;}

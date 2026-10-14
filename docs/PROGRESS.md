@@ -2518,3 +2518,25 @@ completion. Preserve original assets/dialogue, meaningful local numeric notes,
 exact validation and incremental commits. The full **port-code documentation goal
 remains active**; portable helper coverage does not finish renderer or whole-port
 documentation, and no complete-remake claim is made.
+
+## 2026-10-14 — Shared original sound flags and native letterbox clear
+
+Implemented retained unsigned16-bit psnd flags, complete ClearFlag leaf and
+source-ordered resumable SetFlag inherited BGM/ENV fades. Field battle0x10,
+item-get0x80 and trio letterbox0x20 share this owner; battle/field/checkpoint
+reset no longer erases it. Finishing reads retained current4 and clears the
+actual sound word, animates/registers letterbox once and reaches missing GX
+viewport802ba56c with21 records. [Source](behavior/audio/GAME_SOUND_FLAG_OWNER_AND_ORDERED_SET_CLEAR.md)
+and [native scope](behavior/audio/NATIVE_SHARED_SOUND_FLAG_OWNER.md).
+
+Isolated make test passed266/266 C++ and159/159 Python; native make all
+DEBUG_SHORT_BOOT=1 passed. Isolated Azahar reached the trio battle/action-command
+presentation without a detected native exception. Source order/width/lifetime
+review passed. [Exact validation](PROGRESS_ARCHIVE.md#2026-10-14--shared-original-sound-flags-and-native-letterbox-clear).
+
+Next: actual GPU viewport/scissor/projection inside native frame recording,
+original queue callback/part/material/shadow/letterbox/dummy providers, ordered
+battle Init/Main/Exit and field return. Native nonzero inherited fade groups,
+full sound/history/Key predicates, original event timing, audible/raster parity
+and physical performance remain unverified. The original-fidelity prologue goal
+stays active; this is a scalar/native continuation milestone.

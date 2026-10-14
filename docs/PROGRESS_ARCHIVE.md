@@ -13513,3 +13513,71 @@ Next: complete actual battle Init/Main/Exit services and source outer-loop
 admission; sound/Key/Ctrl, full original transition histories, deferred GPU/
 material/part/shadow/dummy, then ordered field return. Full EVT-01 and the
 original-fidelity prologue goal remain open.
+
+## 2026-10-14 — Shared original sound flags and native letterbox clear
+
+`SourceSoundFlags` owns the original psnd803df6e8+56 unsignedhalf, initialized
+at the explicit source psndInit zero store. ClearFlag AND-clears requested32-bit
+mask and stores low16 with no downstream services. SetFlag ORs/stores once,
+captures inherited mask1, requests BGM groups0/1(duration1000,flags0), reloads
+live half for mask2 and requests ENV groups0/1. Missing providers preserve
+branch/mask/store/completed-call prefixes. Tests mutate the owner between
+callbacks and during waits, verify no repeated OR, fresh ENV admission,
+captured ENV branch after clears, all group args, width/truncation and zero
+initialization. Full audio startup and original writer census remain open.
+
+Game's old uint32 fieldSoundFlags and startBattle reset were removed. Field
+battle0x10, item-get0x80 on/off and letterbox0x20 share the retained owner. Game
+restore preserves identity; successfully staged native checkpoint replacement
+imports the boot owner only after validation, without modifying it on failure.
+Current native writers preserve inherited masks1/2 clear, allowing supported
+setters to finish without fades. Arbitrary nonzero inherited fades suspend at
+real service identities; no native fade/group success is fabricated. The
+legacy field-battle void callback remains bounded to that clear-gate domain.
+
+Finishing integration uses actual original battle-start sequence4 ownership
+and real shared sound ClearFlag. A deliberately removed leaf provider causes
+800dc0f8; restoring the native owner clears only0x20, animates/registers the
+21st record and advances to actual viewport802ba56c. Repeated ticks preserve
+21 records and flags without injected letterbox sequence/sound override,
+repeated camera collection or fabricated GPU/teardown completion. Original
+battle Init/Main/Exit and field return remain separate providers.
+
+Frozen source baseline bea3ba69daf69a99b4aaf9c2d2f6447c95abce17 plus exact owned
+hunks/new portable files is in `artifacts/sound-source/OWNED_BASE.txt`. Other
+pending edits were excluded. Existing private romfs/gfx/local-assets packs
+were reused through symlinks; private payloads are not independently frozen or
+certified as complete original content. Native/source hashes and immutable
+ELF/3DSX/SMDH: `artifacts/sound-validated/manifest.json`.
+
+- `CMAKE_BUILD_PARALLEL_LEVEL=4 make test`: exit0,266/266 C++ and159/159 Python;
+  `artifacts/sound-test-final.log`.
+- `make all -o assets-ready -j4 DEBUG_SHORT_BOOT=1 BUILD=build-sound
+  TARGET=ttyd-sound`: exit0; `artifacts/sound-build-final.log`.
+- Initial isolated builds exposed a too-short snapshot hunk anchor: the
+  snapshot retained the removed harness reset word although live code was
+  correct. Corrected the snapshot and strengthened the owned startBattle
+  anchor, then reran both required checks. Initial failure logs are
+  `artifacts/sound-test.log` and `artifacts/sound-build.log`.
+- Independent read-only source review passed widths, captured/live gates,
+  group order/arguments, cursor holds and owner lifetime. It retains the
+  explicit clear-gate limitation for the legacy void field service.
+- Isolated Azahar, immutable3DSX, fixture
+  `artifacts/fixtures/underground-trio-story11.bin`, seconds15,
+  `tests/azahar_trio_battle_intro.py`: exit0, no detected native exception;
+  `artifacts/sound-emulator.log` and captures
+  `artifacts/azahar-sound-trio`. Viewed `battle-intro-complete.png`: original
+  stage, Mario/Goombella, three enemies and Normal Jump action-command
+  presentation are visible. This verifies native entry continuity, not
+  private sound stores, audible parity, finishing GPU completion, original
+  timing, exit or physical performance. User profiles/saves were untouched.
+- Contract local links and scoped diff-check pass. Original sound documentation
+  uses fresh read-only ISO function hashes and confirms battle Init mask0x80
+  (decimal128), now explicitly spelled in the sequence contract. ISO was not
+  modified; no extracted assets/packs or original payloads are committed.
+
+Next: deferred native GPU state and actual queue callbacks inside FrameBegin,
+then ordered source Init/Main/Exit/field return and remaining global/history
+providers. AUDIO-01/EVT-01 and the playable original-fidelity prologue goal
+remain open. Existing native gameplay still runs through its scoped adapter
+while actual source battle Init holds.

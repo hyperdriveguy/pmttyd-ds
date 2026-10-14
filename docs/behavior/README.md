@@ -942,3 +942,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Original sequence table and field/battle lifecycle](platform/ORIGINAL_SEQUENCE_TABLE_AND_FIELD_BATTLE_LIFECYCLE.md): recovered callback rows, fresh reads and ordered source Init/Main/Exit.
 - [Native original sequence owner](platform/NATIVE_ORIGINAL_SEQUENCE_OWNER.md): separate current/requested ownership, genuine native synchronization, field Exit and truthful battle Init hold.
+
+- [Original sound flag owner and ordered set/clear](audio/GAME_SOUND_FLAG_OWNER_AND_ORDERED_SET_CLEAR.md): explicit startup halfword, complete clear leaf and inherited BGM/ENV fade calls.
+- [Native shared sound flag owner](audio/NATIVE_SHARED_SOUND_FLAG_OWNER.md): retained field/battle/letterbox state and real missing-fade/GPU continuation limits.

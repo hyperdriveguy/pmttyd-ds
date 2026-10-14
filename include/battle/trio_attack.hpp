@@ -15,6 +15,7 @@
 #include "camera_letterbox.hpp"
 #include "field_bero_exec.hpp"
 #include "original_sequence.hpp"
+#include "source_sound_flags.hpp"
 #include "display_queue.hpp"
 #include "shadow_work.hpp"
 #include "battle_display_footer.hpp"
@@ -42,6 +43,7 @@ public:
     const CameraManager* cameras() const;
     void setCameraLetterboxServices(const CameraLetterboxServices&);
     void setOriginalSequence(std::shared_ptr<OriginalSequence>);
+    void setSoundFlags(std::shared_ptr<SourceSoundFlags>);
     std::optional<TrioShadowDrawRequest> shadowDrawRequest() const;
     const ShadowWork* shadowWork() const;
     const BattleCommandPalette* commandPalette() const;

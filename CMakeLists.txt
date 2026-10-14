@@ -1348,3 +1348,9 @@ target_sources(ttyd_core PRIVATE source/display/battle_class_icon_material.cpp)
 add_executable(battle_class_icon_material_tests tests/battle_class_icon_material_tests.cpp)
 target_link_libraries(battle_class_icon_material_tests PRIVATE ttyd_core)
 add_test(NAME battle_class_icon_material COMMAND battle_class_icon_material_tests)
+
+# Retained original sound halfword and ordered inherited fade gates.
+target_sources(ttyd_core PRIVATE source/audio/source_sound_flags.cpp)
+add_executable(source_sound_flags_tests tests/source_sound_flags_tests.cpp)
+target_link_libraries(source_sound_flags_tests PRIVATE ttyd_core)
+add_test(NAME source_sound_flags COMMAND source_sound_flags_tests)

@@ -10,6 +10,7 @@
 #include "field_item_get_effect.hpp"
 #include "field_party.hpp"
 #include "original_sequence.hpp"
+#include "source_sound_flags.hpp"
 #include <array>
 #include <cstdint>
 #include <cstddef>
@@ -276,6 +277,7 @@ public:
     std::shared_ptr<BattleCommandPalette> commandPalette=std::make_shared<BattleCommandPalette>(); // Source boot lifetime; survives restore and battle entry.
     std::shared_ptr<CameraManager> cameraManager=[](){auto bank=std::make_shared<CameraManager>();bank->initializeBoot(608,480);return bank;}(); // Native NTSC boot adapter; retained independently of battle entry.
     std::shared_ptr<OriginalSequence> originalSequence=[](){auto owner=std::make_shared<OriginalSequence>();owner->importNativeField();return owner;}(); // Explicit native field snapshot, not source boot/Init execution.
+    std::shared_ptr<SourceSoundFlags> soundFlags=std::make_shared<SourceSoundFlags>(); // Retained psndInit halfword view; other sound startup remains separate.
     std::shared_ptr<FieldBeroExec> beroExec=std::make_shared<FieldBeroExec>(); // Source boot word; transition provenance is tracked separately.
     std::shared_ptr<ShadowWork> shadows=std::make_shared<ShadowWork>(); // Retained native source request owner; GPU preparation remains separate.
     std::shared_ptr<BattleSpotlightState> battleSpotlight=std::make_shared<BattleSpotlightState>();
@@ -353,7 +355,7 @@ public:
     uint16_t itemCamera8Flags=0;
     uint32_t itemSystemMask=0;
     int32_t itemSystemRequest=0;
-    uint32_t itemSoundFlags() const{return fieldSoundFlags;}
+    uint32_t itemSoundFlags() const{return soundFlags->value();}
     unsigned fieldMarioMotion() const {return fieldJump.motion;}
     bool fieldMarioMotionPending() const {return fieldJump.pendingEntry;}
     FieldItemRegistry& fieldItems() {return fieldItemRegistry;}
@@ -408,7 +410,7 @@ private:
     bool marioFieldControl=true,partnerFieldControl=true;
     // Recorded requests: original prepare/post/audio internals remain unbound.
     bool fieldPrepareRequested=false,fieldPostRequested=false,fieldBgmStopRequested=false;
-    uint32_t fieldSoundFlags=0;
+    SoundFlagCursor fieldSoundSetCursor; // Native used masks preserve inherited bits1/2 clear; nonzero gates wait for fades.
     FieldBattleServices fieldBattleServices();
     bool returnFromBattle(int32_t harnessResult);
     void updatePartner();

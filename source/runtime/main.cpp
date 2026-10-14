@@ -115,6 +115,7 @@ int main() {
         if(!candidate.checkpointGround(height)){restoreFailure="Checkpoint ground unavailable";return false;}
         if(!ttyd::walkable(checkpoint.position,height)){restoreFailure="Checkpoint position blocked";return false;}
         if(!renderer.changeRoom(checkpoint.room)){restoreFailure=renderer.resourceFailure().empty()?"Checkpoint scene unavailable":renderer.resourceFailure();return false;}
+        candidate.soundFlags=game.soundFlags; // Audio boot owner survives a successfully staged checkpoint.
         game=std::move(candidate);transaction.commit();return true;
     };
     game.restore(game.progress);

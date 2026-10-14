@@ -79,7 +79,7 @@ seq_battleInit80073f20/f8 ignores the work argument locally:
 4. Unless skipped: psndBGMOff800daefc(1024), then capture data.word2f0 and call
    psndBGMOn800db7a0(1,captured value).
 5. psndENVOff800d76b8(1024); padRumbleOff80005f28(0);
-   evtStopAll80035c68(4); psndSetFlag800dc110(80), in that order.
+   evtStopAll80035c68(4); psndSetFlag800dc110(0x80), in that order.
 6. Fresh fbatGetPointer, read word10. If exactly00800000 or01000000 and retained
    global8041e968==0: marioCtrlOff8005c2c4; partyCtrlOff800bed44;
    padRumbleOff(0). Otherwise return.

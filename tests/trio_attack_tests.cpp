@@ -485,25 +485,19 @@ int main(){
             assert(!charged.originalSequence->main(sequenceServices) && sequenceSyncs==1);
             assert(charged.originalSequence->state.current==4 && charged.originalSequence->pending()==0x80073f20);
             assert(!charged.originalSequence->main(sequenceServices) && sequenceSyncs==1); // No replay of sync/Exit/publication.
+            SoundFlagCursor soundFixture;
+            assert(charged.soundFlags->set(0x20,{},soundFixture));
+            const auto retainedSound=charged.soundFlags->value();
+            charged.trioAttack.setSoundFlags({}); // Deliberately remove the native leaf provider to test its independent hold.
             charged.beroExec->onOff(1,1); // Explicit original resolved clear request restores knowledge of consumer bit1.
             charged.trioAttack.tick((charged.ticks+4)*1000/60,charged.trioBattleIntro);
             assert(charged.trioAttack.pendingFunction()==0x800dc0f8 && queue->count()==20); // Retained current4 reaches the separate sound-clear provider.
-            struct LetterboxFixture {Game* game;uint32_t sequenceReads=0,soundClears=0;} fixture{&charged};
-            CameraLetterboxServices supplied;supplied.user=&fixture;
-            supplied.partySlot0=[](void* user)->std::optional<uintptr_t>{return reinterpret_cast<uintptr_t>(static_cast<LetterboxFixture*>(user)->game->fieldPartyState().pointer(0));};
-            supplied.query=[](void* user,LetterboxQuery query,uintptr_t)->std::optional<int32_t>{
-                auto& fixture=*static_cast<LetterboxFixture*>(user);
-                if(query==LetterboxQuery::BeroExec)return 0; // Explicit fixture value, never inferred from native scene.
-                if(query==LetterboxQuery::Sequence){++fixture.sequenceReads;return fixture.game->originalSequence->state.current;}
-                if(query==LetterboxQuery::Rate)return 60;return {};
-            };
-            supplied.soundFlag=[](void* user,bool set,uint16_t mask){assert(!set && mask==0x20);++static_cast<LetterboxFixture*>(user)->soundClears;return true;};
-            charged.trioAttack.setCameraLetterboxServices(supplied);
+            charged.trioAttack.setSoundFlags(charged.soundFlags);
             charged.trioAttack.tick((charged.ticks+5)*1000/60,charged.trioBattleIntro);
             assert(charged.trioAttack.pendingFunction()==0x802ba56c && queue->count()==21 && charged.cameraManager->currentIndex()==0);
-            assert(fixture.sequenceReads==0 && fixture.soundClears==1);
+            assert(charged.soundFlags->value()==uint16_t(retainedSound&~0x20u));
             charged.trioAttack.tick((charged.ticks+6)*1000/60,charged.trioBattleIntro);
-            assert(queue->count()==21 && fixture.sequenceReads==0 && fixture.soundClears==1); // No replay while actual GX viewport is missing.
+            assert(queue->count()==21 && charged.soundFlags->value()==uint16_t(retainedSound&~0x20u)); // Native clear and registration do not replay at missing viewport.
 
             assert(charged.trioAttack.readWord(0x84201204,value) && (value&3)==2); // Source name request consumed; forced path stays active.
             assert(charged.trioAttack.readWord(0x84000ef4,value) && (value&0x80000000));

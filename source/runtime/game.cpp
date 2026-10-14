@@ -1208,6 +1208,7 @@ void Game::restore(const Progress& saved) {
     const auto retainedCameras=cameraManager;
     const auto retainedBero=beroExec;
     const auto retainedSequence=originalSequence;
+    const auto retainedSoundFlags=soundFlags;
     const auto retainedSpotlight=battleSpotlight;
     const auto retainedTrioRandom=trioRandom;
     const auto retainedPublicSfx=publicSfx;
@@ -1229,6 +1230,7 @@ void Game::restore(const Progress& saved) {
     commandPalette=retainedCommandPalette;
     shadows=retainedShadows;
     cameraManager=retainedCameras;
+    soundFlags=retainedSoundFlags; // Source sound flags survive field/checkpoint/battle adapters.
     originalSequence=retainedSequence;originalSequence->importNativeField(); // Native checkpoint admission resets unsaved callback history.
     beroExec=retainedBero;beroExec->unknown(); // Restore is not original get_info; unsaved transition history is unavailable.
     battleSpotlight=retainedSpotlight;
@@ -1647,7 +1649,7 @@ FieldBattleServices Game::fieldBattleServices() {
     s.partyControl=[](void* p,uintptr_t,bool enabled) {
         auto& g=*static_cast<Game*>(p);g.fieldParties.control(enabled);g.partnerFieldControl=g.fieldParties.controlsEnabled();
     };
-    s.soundFlag=[](void* p,uint32_t mask) {static_cast<Game*>(p)->fieldSoundFlags|=mask;};
+    s.soundFlag=[](void* p,uint32_t mask) {auto& g=*static_cast<Game*>(p);g.soundFlags->set(mask,{},g.fieldSoundSetCursor);};
     s.setSequence=[](void* p,int32_t sequence) {auto& g=*static_cast<Game*>(p);g.fieldSequence=sequence;g.originalSequence->request(sequence,0,0);};
     s.sequence=[](void* p)->int32_t {return static_cast<Game*>(p)->fieldSequence;};
     s.stopBattleBgm=[](void* p) {static_cast<Game*>(p)->fieldBgmStopRequested=true;};
@@ -1886,8 +1888,8 @@ bool Game::applyFieldItemStateRequest(ItemGetRequest r) {
         itemSystemRequest=2;itemSystemMask&=0xfffffff3;itemSystemMask|=3;goombaAcquisition.stopEvents(2);return true;
     case ItemGetRequest::SystemLevel0:
         itemSystemRequest=0;itemSystemMask&=0xfffffff0;goombaAcquisition.startEvents(0xef);return true;
-    case ItemGetRequest::SoundFlag80On:fieldSoundFlags|=0x80;return true;
-    case ItemGetRequest::SoundFlag80Off:fieldSoundFlags&=~0x80u;return true;
+    case ItemGetRequest::SoundFlag80On:return soundFlags->set(0x80,{},fieldSoundSetCursor);
+    case ItemGetRequest::SoundFlag80Off:soundFlags->clear(0x80);return true;
     case ItemGetRequest::ClearMarioMotion:fieldMovement.speed=0;return true; // Unmodeled additive X/Z and norm have no retained native producers.
     case ItemGetRequest::Camera4:fieldMarioBattle.cameraId=4;return true;
     default:return applyFieldItemMarioRequest(r);
@@ -2243,6 +2245,7 @@ void Game::tick(const Input& rawInput) {
             const auto partyAppearance=fieldPartyAppearanceServices();
             if(trioCommands.state==TrioBattleCommands::State::AttackReady && trioAttack.begin(trioCommands,trioBattleIntro,progress.hp,progress.originalPouch,&professorStory.actors[3].npcBattleFlags,&fieldMarioBattle,&fieldParties,&partyAppearance,battleSpotlight,trioRandom,publicSfx,shadows,commandPalette,cameraManager,beroExec)) {
                 trioAttack.setOriginalSequence(originalSequence);
+                trioAttack.setSoundFlags(soundFlags);
                 const auto sample=inputProducer.channels[0].battleSample();
                 const uint32_t triggers=i.physicalSnapshot?sample.pressed:(i.confirm?0x100u:0u)|(i.cancel?0x200u:0u);
                 // Native field lens snapshot in engine units. Roll/projection-extra history
