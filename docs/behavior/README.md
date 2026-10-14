@@ -989,3 +989,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Shadow auxiliary setup and shared restore cursors](display/SHADOW_AUXILIARY_SETUP_AND_SHARED_RESTORE_CURSORS.md) — complete class0/2/7 source order, color masks and shared buffers.
 - [Cylinder shadow per-record geometry and bounds cadence](display/CYLINDER_SHADOW_PER_RECORD_GEOMETRY_AND_BOUNDS_CADENCE.md) — three passes, original indexed arrays and camera1-only bounds.
 - [Audience camera4 class1/class2 callback and empty bank](display/AUDIENCE_CAMERA4_CLASS1_CLASS2_CALLBACK_AND_EMPTY_BANK.md) — actual 17-call GX prefix, 200 fresh record admissions, palette/matrix/quad order.
+
+- [Original audience draw, normals, flip and native atlas clamp](battle/AUDIENCE_DRAW_NORMALS_FLIP_AND_NATIVE_ATLAS_CLAMP.md)

@@ -167,6 +167,14 @@ struct TrioAttackRuntime {
     std::shared_ptr<BattleCommandPalette> palette;
     BattleFooterCursor commandDisplayCursor,audienceDisplayCursor,slotDisplayCursor;
     BattleAudienceAnimationCursor audienceAnimationCursor;
+    uint64_t audienceAnimationAt=UINT64_MAX;
+    bool prepareAudienceAnimationData(){
+        if(audienceAnimationAt==now)return true;
+        BattleAudienceAnimationServices animation;animation.actors=nativeBattleActorServices(vm);animation.user=this;
+        animation.scriptWord=[](void* p,uint32_t address)->std::optional<uint32_t>{uint32_t value;if(!static_cast<TrioAttackRuntime*>(p)->vm.memory.readWord(address,value))return {};return value;};
+        if(!processPackedBattleAudienceAnimations(word(0x8041eb90)+0x2858+0x1bc,animation,audienceAnimationCursor))return false;
+        audienceAnimationAt=now;return true;
+    }
     bool audienceAnimationStarted=false;uint8_t audienceDisplayPhase=0;uint32_t audienceDisplayFlags=0;
     bool displayActive=false,displayUnitPrefixDone=false;
     int32_t displayIndex=0;uint32_t displayPart=0;
@@ -1525,10 +1533,7 @@ struct TrioAttackRuntime {
                     endingRequest(0x801a4224);endingRequest(0x801a86a0);(void)word(0x8041eb90);
                     endingRequest(0x801a8664,{0});audienceAnimationStarted=true;
                 }
-                BattleAudienceAnimationServices animation;animation.actors=actors;animation.user=this;
-                animation.scriptWord=[](void* p,uint32_t address)->std::optional<uint32_t>{uint32_t value=0;if(!static_cast<TrioAttackRuntime*>(p)->vm.memory.readWord(address,value))return {};return value;};
-                const auto first=word(0x8041eb90)+0x2858+0x1bc;
-                if(!processPackedBattleAudienceAnimations(first,animation,audienceAnimationCursor)){pending=0x801a4224;return false;}
+                if(!prepareAudienceAnimationData()){pending=0x801a4224;return false;}
                 endingRequest(0x801a86a0);audienceDisplayFlags=word(word(0x8041eb90)+0x2858);audienceDisplayPhase=1;
             }
             BattleAudienceWindowServices window;window.user=this;
@@ -1740,6 +1745,7 @@ uint32_t TrioAttack::pendingFunction()const{return runtime_?runtime_->pending:0;
 const std::vector<ProfessorServiceRequest>& TrioAttack::requests()const{static const std::vector<ProfessorServiceRequest> empty;return runtime_?runtime_->trace:empty;}
 const std::vector<TrioAudienceAudioRequest>& TrioAttack::audienceAudioRequests()const{static const std::vector<TrioAudienceAudioRequest> empty;return runtime_?runtime_->audienceAudioTrace:empty;}
 bool TrioAttack::readWord(uint32_t a,uint32_t& v)const{return runtime_ && runtime_->vm.memory.readWord(a,v);}
+bool TrioAttack::prepareAudienceDrawing(const BattleAudienceDrawServices& supplied)const{if(!runtime_ || !runtime_->prepareAudienceAnimationData())return false;auto services=supplied;services.actors=nativeBattleActorServices(runtime_->vm);return drawPackedBattleAudience(services);}
 const BattlePosePool* TrioAttack::battlePosePool()const{return runtime_?&runtime_->poses:nullptr;}
 std::optional<TrioPoseDrawRequest> TrioAttack::poseDrawRequest()const{return runtime_?runtime_->poseDraw:std::nullopt;}
 void TrioAttack::setCameraDepthLensAdapter(float fov,float aspect,float nearPlane,float farPlane){

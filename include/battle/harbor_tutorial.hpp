@@ -3,6 +3,7 @@
 #include "battle_defense.hpp"
 #include "battle_damage_orchestration.hpp"
 #include "battle_timing_display.hpp"
+#include "battle_audience_draw.hpp"
 #include <array>
 #include <memory>
 #include <vector>
@@ -106,6 +107,7 @@ public:
     // Borrowed original action-command display requests for this simulation tick.
     const DisplayQueue* actionDisplayQueue() const;
     bool readPackedWord(uint32_t address,uint32_t& value) const;
+    bool prepareAudienceDrawing(const BattleAudienceDrawServices&) const;
     bool running() const{return triggered;}
 private:
     uint32_t dispatchHit(int32_t,uint32_t,uint32_t,bool direct);

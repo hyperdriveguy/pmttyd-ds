@@ -27,6 +27,7 @@ class OriginalAudienceResources(unittest.TestCase):
                 image, palette = struct.unpack_from('>II', raw, table + 8*i)
                 height, width, fmt, pixels = struct.unpack_from('>HHII', raw, image)
                 self.assertEqual((width, height, fmt, palette), (64, 64, 14, 0))
+                self.assertEqual(struct.unpack_from('>4I', raw, image+12), (0, 0, 1, 1))
                 self.assertLessEqual(pixels + 2048, size)
 
     def test_native_catalog_preserves_every_bank_frame_and_pixel(self):
@@ -61,11 +62,12 @@ class OriginalAudienceResources(unittest.TestCase):
                 self.assertEqual(struct.unpack_from('<4I4f', catalog, 20 + slot * 32),
                                  (bank, index, 64, 64, x/1024, 1-y/1024,
                                   (x+64)/1024, 1-(y+64)/1024))
-                for edge in [atlas.crop((x-2, y-2, x+66, y)),
-                             atlas.crop((x-2, y+64, x+66, y+66)),
-                             atlas.crop((x-2, y, x, y+64)),
-                             atlas.crop((x+64, y, x+66, y+64))]:
-                    self.assertEqual(edge.tobytes(), bytes(len(edge.tobytes())))
+                for dy in range(-2, 66):
+                    for dx in range(-2, 66):
+                        if 0 <= dx < 64 and 0 <= dy < 64:
+                            continue
+                        self.assertEqual(atlas.getpixel((x+dx, y+dy)),
+                                         original.getpixel((min(max(dx, 0), 63), min(max(dy, 0), 63))))
         # Last cell and trailing atlas margins have no fabricated imagery.
         self.assertIsNone(atlas.crop((952, 954, 1024, 1024)).getbbox())
 

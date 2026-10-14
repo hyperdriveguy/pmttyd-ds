@@ -1459,3 +1459,10 @@ add_executable(field_npc_position_tests tests/field_npc_position_tests.cpp)
 target_link_libraries(field_npc_position_tests PRIVATE ttyd_core)
 add_test(NAME field_npc_position COMMAND field_npc_position_tests)
 set_tests_properties(field_npc_position PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Whole original audience draw, frame preparation and native clamp tessellation.
+target_sources(ttyd_core PRIVATE source/battle/battle_audience_draw.cpp source/display/battle_audience_backend.cpp)
+add_executable(battle_audience_draw_tests tests/battle_audience_draw_tests.cpp)
+target_link_libraries(battle_audience_draw_tests PRIVATE ttyd_core)
+add_test(NAME battle_audience_draw COMMAND battle_audience_draw_tests)
+set_tests_properties(battle_audience_draw PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

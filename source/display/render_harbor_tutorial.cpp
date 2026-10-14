@@ -93,6 +93,7 @@ void Renderer::worldTutorial(const Game& g,bool lower) {
         C3D_TexBind(0,&tutorialActors[i].image.texture);C3D_DrawArrays(GPU_TRIANGLES,first,count-first);
     }
     drawMap(true,g,true,&harborBattleBackground);drawMap(true,g,true,&harborBattleStage);
+    drawAudienceScene(g,lower);
     if(!lower)drawTutorialCurtain();
 }
 }

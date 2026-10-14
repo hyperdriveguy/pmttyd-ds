@@ -641,3 +641,19 @@ shared source asset was rolled back. Snapshot-only files and compiled packs
 remain ignored. Existing bank hashes/license are retained in the manifests:
 Nintendo/Intelligent Systems original assets, local use only, no redistribution
 rights. This validation variant supplies no claim of audience draw fidelity.
+
+## 2026-10-14 — Original audience sampler and atlas edge correction
+
+The224 original normal/Luigi TPL headers uniformly specify CLAMP S/T, linear
+min/mag (0,0,1,1). Source hashes and64x64 CMPR frame pixels remain unchanged.
+Normal bank frame92 has a nontransparent image border. `tools/audience_assets.py`
+now repeats exact original edge texels in each2px gutter instead of universally
+transparent padding. Interior frame RGBA/indices/catalog coordinates are identical;
+there is no frame resize, added artwork, additional atlas page or mipmap. Native
+allocation remains1024x1024 RGBA8/4MiB. Private products retain the existing
+`local-assets/audience/atlas.png` and `romfs/audience-frames.t3x`/catalog/metadata
+paths. Compiled T3X changes because of correct sampler gutters; catalog is unchanged.
+Native UV-boundary tessellation preserves the source1.075 end-pose coordinates
+without atlas bleed or compressing in-range interpolation. Rights remain original
+Nintendo/Intelligent Systems; no redistribution license is granted and no original
+pixels/compiled packs enter history. [Draw/sampler contract](behavior/battle/AUDIENCE_DRAW_NORMALS_FLIP_AND_NATIVE_ATLAS_CLAMP.md).

@@ -50,6 +50,14 @@ def build(iso=DEFAULT_ISO, output='romfs', work='local-assets/audience'):
             slot = len(frames)
             x, y = (slot % 15) * 68 + 2, (slot // 15) * 68 + 2
             atlas.paste(bitmap, (x, y))
+            # Original GX CLAMP/linear sampler: repeat exact edge texels in the
+            # atlas gutter, including the nontransparent border of normal92.
+            for dy in range(-2, h + 2):
+                for dx in range(-2, w + 2):
+                    if 0 <= dx < w and 0 <= dy < h:
+                        continue
+                    atlas.putpixel((x + dx, y + dy), bitmap.getpixel(
+                        (min(max(dx, 0), w - 1), min(max(dy, 0), h - 1))))
             uv = (x / 1024, 1 - y / 1024,
                   (x + w) / 1024, 1 - (y + h) / 1024)
             payload += struct.pack('<4I4f', handle, index, w, h, *uv)
@@ -71,7 +79,7 @@ def build(iso=DEFAULT_ISO, output='romfs', work='local-assets/audience'):
         banks=banks, frames=frames, dimensions=[1024, 1024], texture_bytes=4194304,
         catalog=str(out / 'audience-frames.bin'), texture=str(out / 'audience-frames.t3x'),
         atlas=str(root / 'atlas.png'),
-        conversion='Byte-for-byte TPL import; CMPR to RGBA8; 68px cells with 2px transparent padding; no resampling; original bank/index retained',
+        conversion='Byte-for-byte TPL import; CMPR to RGBA8; 68px cells with 2px original CLAMP edge extrusion; no resampling; original bank/index retained',
         license='Nintendo/Intelligent Systems original assets, local use only; no redistribution rights',
         limitations='Resource preparation only; original population, animation selection, GX draw and throw events require native binding')
     (out / 'audience-resources.json').write_text(json.dumps(metadata, indent=2) + '\n')
