@@ -88,3 +88,8 @@ native raster fidelity. Actual renderer texture binding and providers are still
 required before replacing the development class-readiness acknowledgment or
 activating normal Game tutorial command scheduling. Preserve the original upper
 menu and [lower audience continuation](../display/NATIVE_BATTLE_HUD_AND_SUBMENU.md).
+
+A finite native atlas/quad/GPU backend is now available in
+[the display contract](../display/NATIVE_CLASS_MENU_PACKET_BACKEND.md).
+Source memory/actor projection/ring ownership, disabled TEV and normal Game
+activation remain incomplete; this does not claim a visible playable menu.

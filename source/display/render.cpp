@@ -1357,7 +1357,7 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
     C3D_RenderTargetClear(top,C3D_CLEAR_ALL,battle?0xA6CBD8FF:0,0);
     C3D_FrameDrawOn(top);if(g.harborTutorial.running())worldTutorial(g);else if(battleMapsReady)world(g);
     drawFieldItemGet(g);
-    C2D_Prepare();C2D_SceneBegin(top);overlay(g);
+    classVertexCount=0;C2D_Prepare();C2D_SceneBegin(top);overlay(g);
     if(!battleMapsReady)text(actorTexturesReady?"Development notice: battle map unavailable":"Development notice: scene actor texture unavailable",16,220,.42f,Ink);
     if(g.trioBattleActive && g.trioAttack.endingFadeAlpha())C2D_DrawRectSolid(0,0,.99f,400,240,C2D_Color32(0,0,0,g.trioAttack.endingFadeAlpha()));
     if(g.fade.alpha())C2D_DrawRectSolid(0,0,.99f,400,240,C2D_Color32(0,0,0,g.fade.alpha()));
@@ -1373,6 +1373,7 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
     C3D_FrameEnd(0);
 }
 void Renderer::shutdown() {
+    releaseClassMenuDrawing();
     if(c3dReady) C3D_FrameSync();
     releaseItem95Icons();
     releaseItemGetEffect();

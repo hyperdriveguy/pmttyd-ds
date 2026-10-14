@@ -25,6 +25,7 @@
 #include "battle_startup_resources.hpp"
 #include "window_frame.hpp"
 #include "window_font.hpp"
+#include "battle_class_backend.hpp"
 #include <memory>
 #include <3ds.h>
 #include <citro2d.h>
@@ -41,6 +42,8 @@ class TroubleQuestPresentation;
 class Renderer {
 public:
     bool init();
+    bool drawClassMenu(const BattleClassBackend&);
+    const BattleClassAssets* classMenuAssets();
     bool changeRoom(uint32_t room);
     const std::string& resourceFailure() const{return frontFailure;}
     void beginFrontend();
@@ -120,6 +123,12 @@ private:
     int itemGetEffectTransform=0,itemGetEffectProjection=0;
     bool prepareSceneActorTextures(const Game&);
     Texture messageIndicatorTexture;
+    BattleClassAssets classAssets;
+    std::array<Texture,2> classTextures;
+    Vertex* classVertices=nullptr;
+    unsigned classVertexCount=0;
+    bool prepareClassMenuDrawing();
+    void releaseClassMenuDrawing();
     std::unique_ptr<BattleStartupResources> tutorialStartupResources;
     std::array<Texture,9> tutorialStartupTextures;
     HarborTutorial* tutorialStartupOwner=nullptr;
@@ -331,6 +340,8 @@ private:
 class Audio {
 public:
     bool init();
+    bool drawClassMenu(const BattleClassBackend&);
+    const BattleClassAssets* classMenuAssets();
     void play(const Game& game);
     void bindFieldMarioMotion(Game&);
     void muteFieldItemPresentation(bool);
