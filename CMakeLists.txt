@@ -1042,3 +1042,5 @@ add_executable(field_item_registry_tests tests/field_item_registry_tests.cpp)
 target_link_libraries(field_item_registry_tests PRIVATE ttyd_core)
 add_test(NAME field_item_registry_original COMMAND field_item_registry_tests)
 set_tests_properties(field_item_registry_original PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+target_sources(ttyd_core PRIVATE source/harbor_tutorial_damage.cpp)

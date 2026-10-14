@@ -2,8 +2,43 @@
 #include <cassert>
 #include <iostream>
 using namespace ttyd;
+uint64_t prepareCrumpAttack(HarborTutorial& scene,int32_t hp){
+ assert(scene.beginFresh(0,hp,10,4));uint64_t tick=0;
+ for(unsigned n=0;n<1500 && !scene.introComplete;++n){
+  if(scene.pendingService==0x80106980)scene.animationComplete(1);
+  scene.tick((++tick)*1000/60,n%4==0?0x100:0);
+ }
+ assert(scene.introComplete && !scene.failed && scene.dispatchInstalledAttack(2));
+ return tick;
+}
+void ordinaryCrumpImpact(){
+ HarborTutorial scene;auto tick=prepareCrumpAttack(scene,7);
+ BattlePadSample noInput;
+ for(unsigned n=0;n<600 && scene.actors[1].hp==7 && !scene.failed;++n)scene.tick((++tick)*1000/60,0,&noInput);
+ assert(!scene.failed && scene.actors[1].hp==6 && scene.result==0 && scene.damageActive);
+ auto word=[&](uint32_t at){uint32_t value=0;assert(scene.readPackedWord(at,value));return value;};
+ assert(word(0x84101208)==7 && word(0x8410120c)==6 && word(0x84101264)==1);
+ assert(word(0x84102284)==1 && word(0x84102280)==1 && (word(0x84101270)>>24)==1);
+ assert(word(0x841012b4)!=0 && word(0x84101278)==0x10117);
+ bool sourceFlags=false;for(const auto& request:scene.requests)if(request.function==0x8010a78c && request.owner==2){assert(request.rawOperands[4]==0x100);sourceFlags=true;}assert(sourceFlags);
+ assert(scene.damageEffects.size()==2 && scene.damageEffects[0].kind==DamageEffectKind::Hit && scene.damageEffects[1].kind==DamageEffectKind::DamageStar && scene.damageEffects[1].integers[1]==1);
+ assert(scene.damageAudienceRequests.size()==1 && scene.damageAudienceRequests[0].first==DamageAudienceRequest::GuardBad);
+ assert(scene.damageNotices.size()==3 && scene.damageNotices[0].kind==DamageNoticeKind::ActionCount && scene.damageNotices[1].kind==DamageNoticeKind::ActionPoint && scene.damageNotices[2].kind==DamageNoticeKind::MarioBigDamage);
+ for(unsigned n=0;n<400 && !scene.pendingService && (scene.attackActive || scene.damageActive);++n)scene.tick((++tick)*1000/60,0,&noInput);
+ assert(scene.pendingService==0x8012b3d0 && scene.actors[1].pose=="M_D_1" && scene.damageActive && scene.attackActive);
+ bool damageSound=false;for(const auto& request:scene.soundRequests)if(request.owner==1 && request.name=="SFX_MARIO_DAMAGE1"){assert(request.key && request.handle);damageSound=true;}assert(damageSound);
+ assert(!scene.failed && scene.actors[1].hp==6 && scene.result==0);
+
+}
+void retainedLethalImpact(){
+ HarborTutorial scene;auto tick=prepareCrumpAttack(scene,1);BattlePadSample noInput;
+ for(unsigned n=0;n<600 && scene.pendingService!=0x8010a78c;++n)scene.tick((++tick)*1000/60,0,&noInput);
+ assert(!scene.failed && scene.attackActive && scene.pendingService==0x8010a78c && scene.actors[1].hp==1);
+ for(unsigned n=0;n<10;++n)scene.tick((++tick)*1000/60,0,&noInput);
+ assert(scene.actors[1].hp==1 && scene.damageEffects.empty() && scene.damageNotices.empty() && scene.damageAudienceRequests.empty() && !scene.damageActive && scene.result==0);
+}
 int main(){
- assert(loadHarborTutorialAssets("romfs"));HarborTutorial t;assert(t.begin(0,7));
+ assert(loadHarborTutorialAssets("romfs"));ordinaryCrumpImpact();retainedLethalImpact();HarborTutorial t;assert(t.begin(0,7));
  for(uint64_t tick=1;tick<300 && !t.message.active();++tick)t.tick(tick*1000/60,0);
  uint32_t packedSystem=0;
  assert(!t.failed);assert(t.initialized);assert(t.actors[0].hp==5 && t.actors[0].maxHp==5);
@@ -59,6 +94,7 @@ int main(){
  t.tick((++tick)*1000/60,0,&physical);
  assert(t.readPackedWord(0x84001cb0,packed) && packed==4);
  assert(t.pendingService==0x8010a78c && t.actors[1].hp==hpBeforeDefense && t.result==0);
+ assert(t.damageEffects.empty() && t.damageNotices.empty() && t.damageAudienceRequests.empty());
  bool originalSound=false;for(const auto& r:t.soundRequests)if(r.operation==HarborTutorialSoundRequest::Operation::Trigger && r.owner==2){assert(r.key && !r.name.empty() && r.handle && r.time>0);originalSound=true;}assert(originalSound);
  // ResultACDefence clears the private history; a second pass at this timestamp
  // must not resample the producer trigger and resurrect that cleared history.

@@ -31,6 +31,14 @@ public:
  bool readWord(uint32_t address,uint32_t& value) const{return vm.memory.readWord(address,value);}
 private:
  std::array<bool,4> registered{};
+ bool checkDamageCore(uint32_t attacker,uint32_t defender,uint32_t part,uint32_t weapon,uint32_t flags,int32_t& result);
+ void readDamage(unsigned id);void writeDamage(unsigned id);
+ DamageApplicationServices damageApplication();
+ std::array<DamageUnit,4> damageUnits{};std::array<DamagePart,4> damageParts{};
+ std::array<std::array<int8_t,5>,4> defenses{},defenseAttributes{};
+ std::array<std::array<std::string,4>,4> damageSounds{};
+ std::vector<DamageEffect> damageEffects;std::vector<DamageNotice> damageNotices;
+ std::vector<std::pair<DamageAudienceRequest,int32_t>> damageAudienceRequests;
  bool freshPouch=false;uint32_t nextSoundHandle=1;
  std::vector<HarborTutorialSoundRequest> sounds;
  uint32_t requestSound(uint32_t unit,uint32_t key,const std::array<float,3>&);

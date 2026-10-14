@@ -820,3 +820,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Tutorial damage amount and reaction marker](battle/TUTORIAL_HIT_DAMAGE_AMOUNT_AND_REACTION_MARKER.md)
 
 - [CheckDamage event wrapper and calling-event ownership](battle/CHECK_DAMAGE_EVENT_WRAPPER.md)
+
+- [Tutorial ordinary Crump impact](battle/TUTORIAL_ORDINARY_CRUMP_IMPACT.md)

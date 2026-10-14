@@ -113,10 +113,23 @@ void HarborTutorialPacked::capture(HarborTutorial& scene){
   a.maxMoves=signByte(byte(u+0x21));a.wait=word(u+0x28c);a.phase=word(u+0x298);a.attack=word(u+0x2a0);a.confusion=word(u+0x2a4);a.damage=word(u+0x2b0);a.entry=word(u+0x2b8);
  }
  scene.chosenUnit=chosenUnit;scene.chosenPart=chosenPart;
+ for(auto& effect:damageEffects)scene.damageEffects.push_back(std::move(effect));
+ damageEffects.clear();
+ for(auto& notice:damageNotices)scene.damageNotices.push_back(std::move(notice));
+ damageNotices.clear();
+ for(auto& request:damageAudienceRequests)scene.damageAudienceRequests.push_back(std::move(request));
+ damageAudienceRequests.clear();
  for(auto& r:sounds){r.time=scene.now;scene.soundRequests.push_back(std::move(r));}sounds.clear();
  auto& c=scene.camera;c.flags=word(Battle+0x2754);c.priority=int32_t(word(Battle+0x275c));c.mode=int32_t(word(Battle+0x2760));c.owner=int32_t(word(Battle+0x2764));c.target=int32_t(word(Battle+0x2768));c.ownerPart=int32_t(word(Battle+0x276c));c.targetPart=int32_t(word(Battle+0x2770));c.zoom=real(Battle+0x2778);uint16_t halfword=0;required(vm.memory.readHalf(Battle+0x277c,halfword));c.speed=int16_t(halfword);required(vm.memory.readHalf(Battle+0x277e,halfword));c.remaining=int16_t(halfword);for(unsigned i=0;i<3;++i){c.home[i]=real(Battle+0x2810+4*i);c.hit[i]=real(Battle+0x281c+4*i);}
 }
 bool HarborTutorialPacked::invoke(EventEntry& e,uint32_t function,int32_t first,int32_t& result){
+ if(function==0x8010a78c){
+  BattleCheckDamageEventServices services;services.units=nativeBattleUnitEventServices(vm);services.user=this;
+  services.part=[](void* self,uint32_t u,int32_t id){auto& p=*static_cast<HarborTutorialPacked*>(self);return packedUnitPart(u,id,nativeBattleActorServices(p.vm).memory);};
+  services.checkDamage=[](void* self,uint32_t a,uint32_t d,uint32_t part,uint32_t w,uint32_t flags,int32_t& out){return static_cast<HarborTutorialPacked*>(self)->checkDamageCore(a,d,part,w,flags,out);};
+  services.eventExists=[](void* self,uint32_t id){auto& runtime=static_cast<HarborTutorialPacked*>(self)->vm;for(int32_t i=0;i<runtime.battle.capacity;++i)if(runtime.battle.entries[i].id==id && (runtime.battle.entries[i].flags&1))return true;return false;};
+  result=battleCheckDamageEvent(e,services);return result!=0;
+ }
  if(registry.invoke(e,function,first,result))return true;
  switch(function){
  case 0x8010a500:case 0x8010a388:case 0x8010a55c:case 0x8010a32c:case 0x8010a4a4:{const auto u=actor(e);const uint32_t offset=function==0x8010a500?0x28c:function==0x8010a388?0x2a0:function==0x8010a55c?0x2b0:function==0x8010a32c?0x2a4:0x2b8;word(u+offset,uint32_t(raw(e,1)));if(function==0x8010a388)word(u+0x2ac,0);result=2;return true;}

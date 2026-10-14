@@ -1940,3 +1940,12 @@ Systems music/art remain private local assets; no redistribution rights are
 conferred and no extracted payload is committed. Final emulator DSP firmware
 copies reside only in ignored isolated profiles, read from the user's existing
 firmware file; firmware is not a game asset or committed/distributed here.
+
+## Tutorial ordinary Crump impact (2026-10-14)
+
+The existing private harbor tutorial REL/DOL pack supplies the original Crump
+weapon power, Mario kind damage-sound pointer, part defense tables and reaction
+scripts. No additional game payload was extracted or converted; M_D_1 and
+original HUD art use existing private packs. The new binding retains original
+SFX_MARIO_DAMAGE1 requests but does not claim native sample/effect/crowd
+playback. Existing Nintendo/Intelligent Systems licensing restrictions remain.

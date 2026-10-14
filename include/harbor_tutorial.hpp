@@ -1,6 +1,7 @@
 #pragma once
 #include "message_playback.hpp"
 #include "battle_defense.hpp"
+#include "battle_damage_orchestration.hpp"
 #include <array>
 #include <memory>
 #include <vector>
@@ -43,6 +44,9 @@ public:
     MessagePlayback message;std::vector<std::string> messageOrder;
     std::vector<HarborTutorialRequest> requests;
     std::vector<HarborTutorialSoundRequest> soundRequests;
+    std::vector<DamageEffect> damageEffects;
+    std::vector<DamageNotice> damageNotices;
+    std::vector<std::pair<DamageAudienceRequest,int32_t>> damageAudienceRequests;
     bool begin(uint64_t milliseconds,int32_t marioHp,int32_t marioMaxHp=10);
     // Explicit original new-game entry context; creates the verified fresh pouch
     // and executes Mario kind+bc initialization before admitting intro phase.
