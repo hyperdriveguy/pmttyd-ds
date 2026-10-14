@@ -55,14 +55,13 @@ these clears. Other NPC fields/flags are unchanged on that early route.
 Store C+0x1c at B+0xac. If its signed value is1 or2, skip audience initialization;
 otherwise process16 byte pairs beginning C+0x20. For each pair, compute width
 as sign_extend(second byte)-sign_extend(first byte)+1; request irand(width); add the
-original **unsigned** first byte and store low8 of the sum at B+0xb0+i. Equal
+freshly reloaded **unsigned** first byte (after the RNG call) and store low8 of the sum at B+0xb0+i. Equal
 bounds still request irand(1). Invalid/inverted bounds are not checked locally.
 This signed-width/unsigned-add distinction must be preserved for high-byte data.
 
-Set B+4, +0xc, +0x10, +0x14 to0; copy C+8 to B+8 and C+0x40 to B+0xc0.
-The load of C+0x18 is overwritten before use in this body; do not infer that it
-is installed into the information block here. Other consumers may use that
-configuration field separately.
+Copy C+0x18 to B+4, C+8 to B+8 and C+0x40 to B+0xc0; set B+0xc,
++0x10 and +0x14 to0. The C+0x18 store at0x80043f40 precedes those clears.
+This corrects the earlier transcription that mistakenly described B+4 as zero.
 
 ## Group selection and per-unit item selection
 
@@ -95,7 +94,8 @@ There are no local unit-count/output-array bounds. The harbor's concrete count1
 and zero item table avoid those unsupported domains. Preserve random draw
 consumption even when a list has only one possible group.
 
-Finally clear npc+0x316. If a group exists, follow group+4 to first unit, then
+Finally clear npc+0x316, then freshly load the group pointer from B+0x18.
+If that group exists, follow group+4 to first unit, then
 unit+0 to its kind record, and copy kind byte+0x12 into npc+0x316. This assumes a
 valid first unit even for malformed zero-unit groups. OR npc word0 with
 0x10000000. The flag and byte's later field/battle consumers remain open.

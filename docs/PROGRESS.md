@@ -6672,3 +6672,19 @@ House05 and full original story/events/NPCs/objects remain unfinished. EVT-01 an
 the full user goal remain active.
 
 tools/check_doc_links.py checked1330 Markdown files with zero broken links.
+
+## Original numeric NPC battle setup and area registry (2026-10-14)
+
+Implemented source-order mutable area lookup/registration, fresh GP prefix lookup, numeric0x44-row selection and four associated200-byte copies. Each pair loads both source words before storing; slots are freshly read in order. Corrected inner C+18 flag installation, post-RNG audience first-byte reload and post-clear selected-group reload. Harbor regression now expects original20000010 flags. No Game actor creation, pose factory or fabricated battle setup is installed.
+
+Code commit 87284cd0b05d77b6a75257640b2c0380afb4c92f. Frozen isolated source tree 83060ec914cddedccb92777734f1b318c78b5d45; audited3404 tracked files,zero mismatches. Required CMAKE_BUILD_PARALLEL_LEVEL=4 make test -o assets-ready passed320/320 C++ in36.55s and182/182 Python in41.512s. Required make all -j4 -o assets-ready SOUNDTRACK=gamecube exited0 with no new warning after loop-brace cleanup. Logs artifacts/area-battle-setup-test.log and artifacts/area-battle-setup-build.log. Existing original private packs reused unchanged. The current merged workspace includes concurrent unrelated work; the entire merged workspace is not claimed validated as one build.
+
+Initial host run caught the obsolete harbor zero-flag assertion and a fixture attempting to overlap the already-owned GP pointer cell. Corrected the source expectation and reused the actual EventNative GP provider. Final tests cover signed audience ranges with RNG mutation, selected-group mutation after byte clear, first exact area-name match, unknown-name no-op registration, positive/negative/-1 index routes, associated-slot mutation, overlapping word-pair copies and original setup2. No source failure remains in the final suite.
+
+Excluded ARM probe built successfully and isolated Azahar exited0: fixture=PASS,draws17,bound50,stage95540870,group95540c08,flags20000010,childFlags20000010. Fixture uses original setup2 and native RNG arithmetic with explicit test seed1 and test-owned registry/actors; it does not certify Game NPC construction, original area-module lifecycle or production shared RNG ordering. Temporary main restored exactly. User emulator profiles/saves untouched. Logs/profile artifacts/area-battle-setup-probe-smoke.log and artifacts/azahar-area-battle-setup-probe. Normal3DSX SHA256 36bc131ca0f1186c7ab23acf3547fc6d27fb93cd1cdc6180d1eef3a9db185a2f. Full identities artifacts/area-battle-setup-validation-manifest.json.
+
+No render path,asset conversion,art,audio or story text changed. No new visual-parity,New2DSXL timing or rendering-performance claim. Helpers allocate no host area maps/per-frame resources; exact memory ordering takes precedence over replacing the original association copy with an alias-unsafe host memcpy. Documentation links checked1331 Markdown files,zero broken links.
+
+Documentation inbox reviewed: RNG-01 remains open. Read-only source check found initialized next@rand.c=1 at8041e3c0 and startup/BSS bounds consistent with cold-boot preservation; this does not establish newgame/load/indirect writers or complete consumer ordering. No RNG owners were silently combined.
+
+Next: bounded original gor setup0 graph in shared90 namespace, actual mutable area-module registration, one admitted session RNG and real NPC registration/pose owners; then bind full original init/regular world effects. Existing normal-position/Mario entry and full-story fidelity frontiers remain unfinished. EVT-01/full user goal remain active.

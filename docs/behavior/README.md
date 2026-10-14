@@ -1135,3 +1135,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native original icon material programs](display/NATIVE_ICON_MATERIAL_PROGRAMS.md):
   actual flat light/map/fog-off services, canonical TEV registers and PICA plans;
   isolated pixel validation, retained scene primitive/replay still open.
+
+- [Original numeric NPC battle setup and mutable area lookup](field/NATIVE_NUMERIC_NPC_BATTLE_SETUP_AND_AREA_REGISTRY.md): ordered area/index selection, associated-copy semantics and corrected inner setup reads.

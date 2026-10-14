@@ -4636,3 +4636,5 @@ closure also hits ambiguous REL60aac,so the current EVT pack is not complete
 battle data. Next bind genuine registration,original tribe/pose resources,area
 registry/shared RNG and battle setup,then initialization-event primitives. Full
 EVT-01 and live area integration remain open.
+
+Numeric NPC battle setup update: reusable source-order area registry lookup/registration, GP prefix and numeric row selection, inner setup and four associated information copies are now implemented. Three inner transcription errors corrected; original setup2 carries C+18=20000010. See [native contract](../behavior/field/NATIVE_NUMERIC_NPC_BATTLE_SETUP_AND_AREA_REGISTRY.md). Actual Game NPC registration/poses, gor setup0 admission, mutable original area-module lifecycle and shared RNG ordering remain open.

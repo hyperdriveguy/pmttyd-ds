@@ -1205,3 +1205,5 @@ original icon108 (A button); its captured interior pixels match scalar RGBA
 references within1 level. This is separate from original GX hardware parity or
 normal scene composition. Existing original-resource licensing/private-pack
 restrictions remain unchanged; no original bytes, probe main or binary committed.
+
+NPC battle numeric setup phase: no new extracted assets, conversion or pack payload. Reused private original harbor-tutorial-events.pmevt with its95 guest address domain for setup2 verification; shared area packs retain90. Corrected source C+18→information+4 mapping (harbor value20000010). The reusable registry code does not fabricate initialized area rows or import immutable DOL data as mutable RAM. Original Nintendo/Intelligent Systems asset licensing/local-use restrictions remain unchanged.
