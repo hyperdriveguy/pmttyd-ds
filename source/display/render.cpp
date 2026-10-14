@@ -1145,8 +1145,10 @@ void Renderer::world(const Game& g) {
         characterModel(a.pose.c_str(),float(g.harborEncounter.now-a.poseAt)*.06f,g.progress.position,g.groundHeight+g.jumpHeight,right?180:0,right,false,&harborMarioAnimations,harborMarioUVScale);
     } else if(!battle && (g.trioBattleActive || g.storyPresentation().locked())) {
         const auto& a=g.storyPresentation().actors[0];const bool right=a.yaw>0 && a.yaw<180;
+        const float cameraAngle=npcAngles.angle(frame.eye.x,frame.eye.z,frame.at.x,frame.at.z);
+        const bool mirror=g.trioBattleActive?battleMirrorZ(right?180:0,a.battleRotation[1],cameraAngle,a.battleFlags):right;
         characterModel(a.moving?"M_W_1":a.pose.c_str(),float(g.storyPresentation().now-a.poseAt)*.06f,g.trioBattleActive?Vec2{a.position[0]*.01f,a.position[2]*.01f}:g.progress.position,g.trioBattleActive?a.position[1]*.01f:g.groundHeight,
-                       right?180:0,right,false,g.trioBattleActive?trioMarioAnimations->bank.get():&professorMarioAnimations,g.trioBattleActive?trioMarioUVScale:professorMarioUVScale);
+                       right?180:0,mirror,false,g.trioBattleActive?trioMarioAnimations->bank.get():&professorMarioAnimations,g.trioBattleActive?trioMarioUVScale:professorMarioUVScale,g.trioBattleActive?&a:nullptr);
     } else if(!battle && g.marioPresentation.supported && !(g.marioPresentation.displayFlags&1))
         characterModel(g.marioPresentation.selected,g.marioPresentation.animationFrame(),g.progress.position,g.water.active()?g.water.position[1]:g.groundHeight+g.jumpHeight,
                        g.marioPresentation.drawYaw(),g.marioPresentation.reflectZ(),false,questPose?&goombaQuestAnimations:itemGetPose?&fieldItemGetAnimations:nullptr,questPose?goombaQuestUVScale:itemGetPose?fieldItemGetUVScale:1);

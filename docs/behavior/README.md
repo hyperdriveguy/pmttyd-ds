@@ -1026,3 +1026,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Native Bero tables and incoming query](field/NATIVE_BERO_TABLES_AND_INCOMING_QUERY.md) — exact original tables and real road-arrival LW1..8 publication, with residual bank still unknown.
 - [Bero selected entry and incoming local bank](event/BERO_SELECTED_ENTRY_AND_INCOMING_LOCAL_BANK.md) — complete into_info values and later ordinary/save-load producer boundaries.
+
+- [Mario trio published transform consumption](display/MARIO_TRIO_PUBLISHED_TRANSFORM_CONSUMPTION.md)
