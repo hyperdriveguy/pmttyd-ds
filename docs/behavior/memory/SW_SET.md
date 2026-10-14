@@ -93,3 +93,10 @@ Remaining SAVE-01: complete story/namespace writers, exact card record inclusion
 reload/backup/checksum/error/timing and all original persistence traces. The
 bank word counts, local access/reset contracts and rotate encoding are answered.
 No native PM2D migration or original save round-trip is claimed.
+
+## Write-side serialization delivery (2026-10-13)
+
+[Complete cardWrite](../format/CARD_WRITE_RECORD_ASSEMBLY_AND_CHECKSUM.md)
+now proves GP0..13d7 copied at record+8, including all five bank extents above.
+This adds original write-side inclusion, not read/load/reset/lifetime or an
+original round-trip claim. Exact record/checksum and limitations are linked.

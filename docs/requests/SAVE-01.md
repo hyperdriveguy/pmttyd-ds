@@ -9,6 +9,10 @@ adding a scoped indoor-door mask at byte33 and retaining version1/2/3 loading.
 See [native format](../behavior/format/NATIVE_SAVE_FORMAT.md). This does not close
 any original card/switch persistence requests below.
 
+- [x] Complete local cardWrite record assembly/additive checksum and
+  write-side switch-bank inclusion — [record contract](../behavior/format/CARD_WRITE_RECORD_ASSEMBLY_AND_CHECKSUM.md).
+  All187 words/six copied blocks/five bank extents pinned; read/load validation,
+  field schemas and persistence lifetime remain open.
 - [ ] Complete original `cardMain` save/load state machine and record: save-file format/layout, checksum algorithm, corruption detection/repair, backup recovery, error/recovery states, multi-slot management and card-operation timing/coordination.
 - [x] Complete local swdrv access/init/reset and bank word counts; true
   rotate-by-five arithmetic — [corrected switch storage](../behavior/memory/SW_SET.md).
@@ -77,3 +81,19 @@ Yes/No/B-cancel without a write on refusal, with GSF233/236 already updated;
 success is gated by completed source code0. A native PM2D backend must remain
 an explicit adapter. Original card record/slots/format/error mapping and global
 persistent save semantics remain OPEN. Static read-only evidence only.
+
+## 2026-10-13 — Complete write-side record and checksum preparation
+
+Delivered [cardWrite](../behavior/format/CARD_WRITE_RECORD_ASSEMBLY_AND_CHECKSUM.md):
+raw slot addressing, busy/state publication, live Mario/partner/time/counter/GP
+changes, six exact copy blocks, version trailer and additive byte checksum.
+First8800 bytes feed a sum/complement outside the covered range. GP copy includes
+all five proven switch extents, including local banks and full-word special
+byte0. No FNV/SDK-directory checksum substituted or original round-trip claimed.
+
+Validation: read-only ISO manifest11 spans/187 anchors/16 calls; independent
+all187 words/ten literal vectors/six copies/five switch extents/checksum loop/
+masks/time/call sites/fresh pins passed. Link/scoped diff checks passed. Docs
+only; no make test/all rerun; raw artifacts stay /tmp. SAVE-01 stays OPEN:
+cardMain/async/read/version/corruption/backup/load and namespace/lifetime/native
+binding need recovery and original execution; this child does not perform IO.

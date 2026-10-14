@@ -3,6 +3,27 @@
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
 
+## 2026-10-13 — Inbox original save record and checksum preparation
+
+Completed local cardWrite; SAVE-01 record/checksum/write-side bank inclusion
+portion checked. [Record contract](behavior/format/CARD_WRITE_RECORD_ASSEMBLY_AND_CHECKSUM.md)
+pins busy/raw slot/live GP/Mario/party/time publications, six source block copies,
+all five switch extents including locals/full-word byte0, version trailer and
+8800-byte additive sum/complement. This gives the 2DS XL save adapter concrete
+source serialization requirements; full original persistence remains unclosed.
+
+Validation: read-only ISO manifest11 spans/187 anchors/16 calls; independent
+all187 words/ten literal vectors/six copies/five switch extents/checksum loop/
+masks/time/call sites/fresh pins passed. Link audit passed972 Markdown files/
+zero broken links; scoped diff passed. Docs/evidence only; no make test/all
+rerun. Raw ELF/listing/generator stay /tmp; no save blobs/assets/body distribution.
+Concurrent native edits excluded. Approved push pending valid GitHub credentials.
+
+Next: original reader validation/version/header/async write/cardMain/error/
+backup/copy/load plus precise namespace schemas/lifetime; original multi-slot/
+corruption/recovery/round-trip traces. Native save replacement, SAVE-01 and
+parent/full-game requests remain OPEN.
+
 ## 2026-10-13 — Switch soundtrack variants and native audio build
 
 Implemented default Switch1.0.0 soundtrack packaging from the existing decoded
