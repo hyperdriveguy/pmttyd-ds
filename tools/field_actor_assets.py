@@ -125,6 +125,10 @@ def build(iso):
     npc_constants=npc_source_data(iso)
     work = Path('local-assets/field-actors');work.mkdir(parents=True, exist_ok=True)
     setup = work/'gor_02.s';extract(iso, 'm/gor_02/s', setup)
+    plaza_setup=work/'gor_01.s';extract(iso,'m/gor_01/s',plaza_setup)
+    goomba3=tagged_npcs(plaza_setup.read_bytes().decode('shift_jis'))['クリボー３']
+    if goomba3['tribe']!='NPCクリボー' or goomba3['aitype']!='なし':
+        raise ValueError('Unsupported original plaza Goomba setup')
     chu = tagged_npcs(setup.read_bytes().decode('shift_jis'))['チューさん３']
     if chu['tribe'] != 'チューさん' or chu['aitype'] != 'なし':
         raise ValueError('Unsupported original stationary actor setup')
@@ -146,7 +150,11 @@ def build(iso):
     models = [(m['asset'],m['scale']) for m in model_specs]
     # Source Frankly init: exact story8/10 branches; story9 hides his NPC.
     # Interior admission is the current same-map door visibility adapter.
-    records = [dict(key=identifier('gor_02','チューさん３'),room=2,model=0,required=0,forbidden=0,low=0,high=55,
+    records = [dict(key=identifier('gor_01','クリボー３'),room=0,model=4,required=0,forbidden=0,low=0,high=55,
+                    position=goomba3['position'],yaw=goomba3['yaw'],pose='S_1',npc_flags=0x00080603,
+                    talk_prefix='gor_01_028_',source_talk_present=1,
+                    source='m/gor_01/s:クリボー３;gor.rel:kuribo3_init@0x32f64/talk@0x32f7c;regular wander/side-gravity pending'),
+               dict(key=identifier('gor_02','チューさん３'),room=2,model=0,required=0,forbidden=0,low=0,high=55,
                     position=chu['position'],yaw=chu['yaw'],pose='CHU_S_1',talk_prefix='gor_02_031_',source='m/gor_02/s:チューさん３'),
                dict(key=identifier('gor_02','クリハカセ'),room=2,model=1,required=2,forbidden=0,low=8,high=8,
                     position=[-135,0,-240],yaw=90,pose='S_1',source='gor.rel:kurihakase_init@0x410c8'),
@@ -163,6 +171,7 @@ def build(iso):
                     talk_rules=[(0,limit,'gor_02_030_'+suffix) for limit,suffix in [(56,'00'),(112,'01'),(164,'02_01'),(175,'03'),(176,'03_01'),(215,'03_02'),(261,'04'),(339,'05'),(373,'06'),(401,'07')]]+[(3,0,'gor_02_030_08')],source='gor.rel:kuribo4_init@0x438f0/regular@0x43924')]
     tagged_order={name:i for i,name in enumerate(tagged_npcs(setup.read_bytes().decode('shift_jis')))}
     source_order={identifier('gor_02',name):i for name,i in tagged_order.items()}
+    source_order.update({identifier('gor_01',name):i for i,name in enumerate(tagged_npcs(plaza_setup.read_bytes().decode('shift_jis')))})
     records.sort(key=lambda r:(r['room'],source_order.get(r['key'],0)))
     # Original bbox fields consumed by mobjHitEntry, not rendered pose bounds.
     bounds=struct.unpack_from('>6f',Path('local-assets/map-objects/MOBJ_SaveBlock').read_bytes(),0xd0)

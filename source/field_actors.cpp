@@ -31,6 +31,14 @@ const FieldActorAssets& fieldActorCatalog(){return catalog;}
 uint64_t fieldActorCatalogGeneration(){return generation;}
 const NpcAngleTable& fieldNpcAngles(){return npcAngles;}
 std::string fieldActorTalkKey(const FieldActorRecord& actor,int32_t story,const FieldActorTalkState& state,const FieldActorTalkInventory& items) {
+    // Original plaza Goomba3 quest arm precedes its ordinary story switch.
+    // Acquisition/reward require their own event services; only the unchanged
+    // waiting print is complete here. Unknown quest/flags do not imply zero.
+    if(actor.room==0 && actor.key==0x42ff5f1f) {
+        if(!state.quest1420)return {};
+        if(*state.quest1420==2)
+            return state.flag5406==false && state.flag5405==true?"irai_02_01":std::string{};
+    }
     if(!ordinaryTalkGuard(actor,state,items))return {};
     if(actor.talkRulesBound) {
         const auto* rule=talkRule(actor,story);return rule?rule->message:std::string{};
@@ -41,6 +49,10 @@ std::string fieldActorTalkKey(const FieldActorRecord& actor,int32_t story,const 
     return actor.talkPrefix+"0"+char('0'+branch);
 }
 bool fieldActorTalkAvailable(const FieldActorRecord& actor,int32_t story,const FieldActorTalkState& state,const FieldActorTalkInventory& items) {
+    if(actor.room==0 && actor.key==0x42ff5f1f) {
+        if(!state.quest1420)return false;
+        if(*state.quest1420==2)return state.flag5406==false && state.flag5405==true;
+    }
     if(!ordinaryTalkGuard(actor,state,items))return false;
     return actor.talkRulesBound?talkRule(actor,story)!=nullptr:!actor.talkPrefix.empty();
 }

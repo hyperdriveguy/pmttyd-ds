@@ -938,3 +938,13 @@ target_sources(ttyd_core PRIVATE source/battle_stage_objects.cpp)
 add_executable(battle_stage_objects_tests tests/battle_stage_objects_tests.cpp)
 target_link_libraries(battle_stage_objects_tests PRIVATE ttyd_core)
 add_test(NAME battle_stage_objects COMMAND battle_stage_objects_tests)
+
+target_sources(ttyd_core PRIVATE source/trouble_quest_services.cpp)
+add_executable(trouble_quest_services_tests tests/trouble_quest_services_tests.cpp)
+target_link_libraries(trouble_quest_services_tests PRIVATE ttyd_core)
+add_test(NAME trouble_quest_services COMMAND trouble_quest_services_tests)
+
+add_executable(goomba3_talk_tests tests/goomba3_talk_tests.cpp)
+target_link_libraries(goomba3_talk_tests PRIVATE ttyd_core)
+add_test(NAME goomba3_talk_original COMMAND goomba3_talk_tests)
+set_tests_properties(goomba3_talk_original PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
