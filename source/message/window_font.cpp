@@ -1,6 +1,7 @@
 #include "window_font.hpp"
 #include <algorithm>
 #include <cassert>
+#include <cmath>
 namespace ttyd {
 namespace {
 int16_t signedHalf(uint32_t value) {
@@ -23,13 +24,14 @@ bool measurePlainWindowFont(const MessageFont& font,const char* text,uint32_t sp
     out=next;return true;
 }
 bool windowFontQuadIntersects(const WindowFontQuad& q,WindowFontTransform t,WindowFontClip clip) {
-    const float left=t.x+(float(q.originX)+q.left)*t.scaleX,right=t.x+(float(q.originX)+q.right)*t.scaleX;
-    const float top=t.y+(float(q.originY)+q.top)*t.scaleY,bottom=t.y+(float(q.originY)+q.bottom)*t.scaleY;
+    const float left=t.x+q.pitchX+(float(q.originX)+q.left)*t.scaleX,right=t.x+q.pitchX+(float(q.originX)+q.right)*t.scaleX;
+    const float top=t.y+q.pitchY+(float(q.originY)+q.top)*t.scaleY,bottom=t.y+q.pitchY+(float(q.originY)+q.bottom)*t.scaleY;
     return std::max(left,right)>clip.left && std::min(left,right)<clip.right &&
         std::max(top,bottom)>clip.bottom && std::min(top,bottom)<clip.top;
 }
 bool drawPlainWindowFont(const MessageFont& font,const char* text,WindowFontConsumer consumer,
     const WindowFontStyle& style,const WindowFontDrawServices& services,int32_t x,int32_t y) {
+    if(consumer==WindowFontConsumer::StringPitch)return false;
     WindowFontMeasurement checked;if(!measurePlainWindowFont(font,text,style.spacing,checked))return false;
     assert(services.emitQuad && services.random);
     int32_t penX=consumer==WindowFontConsumer::MessageDirect?x:0;
@@ -66,4 +68,25 @@ bool drawPlainWindowFont(const MessageFont& font,const char* text,WindowFontCons
     }
     return true;
 }
+bool drawPlainWindowFontPitch(const MessageFont& font,const char* text,const WindowFontStyle& style,
+ const WindowFontDrawServices& services,float x,float y,float scaleX,float scaleY) {
+ (void)scaleY; // Native per-glyph matrix applies captured Y scale.
+ if(!text || style.edge || !services.emitQuad || !services.random)return false;
+ for(const auto* p=reinterpret_cast<const uint8_t*>(text);*p;++p) {
+  if(*p=='<' || *p=='\n')return false; // Original command/line consumers is a separate provider.
+  const uint16_t code=font.mapping[*p];if(code!=0xffff && code>=font.glyphs.size())return false;
+ }
+ float pen=x;
+ for(const auto* p=reinterpret_cast<const uint8_t*>(text);*p;++p) {
+  const uint16_t code=font.mapping[*p];if(code==0xffff)continue;
+  const auto& glyph=font.glyphs[code];
+  WindowFontQuad q{0,-2,int16_t(glyph.width),int16_t(-2-int(glyph.height)),glyph.x,glyph.y,
+   uint16_t(glyph.x+glyph.width),uint16_t(glyph.y+glyph.height),effective(style.color,style.alpha)};
+  q.pitchX=pen;q.pitchY=y;
+  services.random(services.user,64);services.random(services.user,64);services.emitQuad(services.user,q);
+  pen=std::fma(scaleX,float(signedWord(uint32_t(glyph.width)+style.spacing)),pen);
+ }
+ return true;
+}
+
 }

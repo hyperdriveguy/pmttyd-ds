@@ -42,8 +42,8 @@ bool Renderer::sourceWindowFont(const char* text,WindowFontConsumer consumer,Ite
         // vertices for complete quads outside the source scissor.
         if(context.clip) {
             const auto& r=context.request;const auto& clip=*context.clip;
-            const float ox=context.consumer==WindowFontConsumer::MessageDirect?0:r.x;
-            const float oy=context.consumer==WindowFontConsumer::MessageDirect?0:r.y;
+            const float ox=(context.consumer==WindowFontConsumer::MessageDirect || context.consumer==WindowFontConsumer::StringPitch)?0:r.x;
+            const float oy=(context.consumer==WindowFontConsumer::MessageDirect || context.consumer==WindowFontConsumer::StringPitch)?0:r.y;
             const float sx=context.consumer==WindowFontConsumer::MessageDirect?1:r.scaleX;
             const float sy=context.consumer==WindowFontConsumer::MessageDirect?1:r.scaleY;
             if(!windowFontQuadIntersects(q,{ox,oy,sx,sy},
@@ -51,8 +51,11 @@ bool Renderer::sourceWindowFont(const char* text,WindowFontConsumer consumer,Ite
         }
         if(renderer.windowFontCount==MaxWindowFontQuads){context.overflow=true;return;}
         auto* vertices=renderer.windowFontVertices+renderer.windowFontCount++*6;
-        const float x0=float(q.originX)+float(q.left),x1=float(q.originX)+float(q.right);
-        const float y0=float(q.originY)+float(q.top),y1=float(q.originY)+float(q.bottom);
+        const bool pitch=context.consumer==WindowFontConsumer::StringPitch;
+        const float x0=pitch?std::fma(context.request.scaleX,float(q.left),q.pitchX):float(q.originX)+float(q.left);
+        const float x1=pitch?std::fma(context.request.scaleX,float(q.right),q.pitchX):float(q.originX)+float(q.right);
+        const float y0=pitch?std::fma(context.request.scaleY,float(q.top),q.pitchY):float(q.originY)+float(q.top);
+        const float y1=pitch?std::fma(context.request.scaleY,float(q.bottom),q.pitchY):float(q.originY)+float(q.bottom);
         const float r=(q.rgba>>24)/255.f,g=((q.rgba>>16)&255)/255.f,b=((q.rgba>>8)&255)/255.f,a=(q.rgba&255)/255.f;
         const float u0=q.u0/512.f,u1=q.u1/512.f,v0=1-q.v0/256.f,v1=1-q.v1/256.f;
         vertices[0]={x0,y0,0,u0,v0,r,g,b,a};vertices[1]={x1,y0,0,u1,v0,r,g,b,a};vertices[2]={x1,y1,0,u1,v1,r,g,b,a};
@@ -60,13 +63,15 @@ bool Renderer::sourceWindowFont(const char* text,WindowFontConsumer consumer,Ite
     };
     if(colorTokens) {
         if(consumer!=WindowFontConsumer::MessageDirect || !drawColorWindowFont(font,*colorTokens,supplied,services,int32_t(request.x),int32_t(request.y)))return false;
+    } else if(consumer==WindowFontConsumer::StringPitch) {
+        if(!drawPlainWindowFontPitch(font,text,supplied,services,request.x,request.y,request.scaleX,request.scaleY))return false;
     } else if(!drawPlainWindowFont(font,text,consumer,supplied,services,int32_t(request.x),int32_t(request.y)))return false;
     if(context.overflow)return false;
     const unsigned count=windowFontCount*6-start;if(!count)return true;
     C2D_Flush();
     GSPGPU_FlushDataCache(windowFontVertices+start,count*sizeof(Vertex));
     C3D_Mtx local,viewport,model,projection,transform;Mtx_Identity(&local);
-    if(consumer!=WindowFontConsumer::MessageDirect){Mtx_Translate(&local,request.x,request.y,0,true);Mtx_Scale(&local,request.scaleX,request.scaleY,1);}
+    if(consumer!=WindowFontConsumer::MessageDirect && consumer!=WindowFontConsumer::StringPitch){Mtx_Translate(&local,request.x,request.y,0,true);Mtx_Scale(&local,request.scaleX,request.scaleY,1);}
     Mtx_Identity(&viewport);Mtx_Translate(&viewport,200,120,0,true);Mtx_Scale(&viewport,.5f,-.5f,1);
     Mtx_Multiply(&model,&viewport,&local);Mtx_OrthoTilt(&projection,0,400,240,0,-1,1,true);Mtx_Multiply(&transform,&projection,&model);
     C3D_BindProgram(&program);auto* attrs=C3D_GetAttrInfo();AttrInfo_Init(attrs);

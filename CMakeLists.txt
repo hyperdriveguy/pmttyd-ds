@@ -1290,3 +1290,11 @@ target_sources(ttyd_core PRIVATE source/battle/battle_act_ui.cpp source/battle/h
 add_executable(battle_act_ui_tests tests/battle_act_ui_tests.cpp)
 target_link_libraries(battle_act_ui_tests PRIVATE ttyd_core)
 add_test(NAME battle_act_ui COMMAND battle_act_ui_tests)
+
+# Original Trouble Center display requests and exact US cache.
+target_sources(ttyd_core PRIVATE source/field/trouble_quest_window.cpp)
+add_executable(trouble_quest_window_tests tests/trouble_quest_window_tests.cpp)
+target_link_libraries(trouble_quest_window_tests PRIVATE ttyd_core)
+add_test(NAME trouble_quest_window COMMAND trouble_quest_window_tests)
+set_tests_properties(trouble_quest_window PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+set_tests_properties(battle_action_class_table PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

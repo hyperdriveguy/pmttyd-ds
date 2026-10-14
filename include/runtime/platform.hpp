@@ -1,4 +1,5 @@
 #pragma once
+#include "trouble_quest_window.hpp"
 #include "field_sfx_ndsp.hpp"
 #include <atomic>
 #include "item_get_windows.hpp"
@@ -84,6 +85,7 @@ private:
     bool itemSelector(ItemSelectionPresentation&);
     bool itemGetWindows(ItemGetWindows&,uint32_t sourceFrameCounter);
     bool coinGetWindow(CoinGetWindow&,uint32_t sourceFrameCounter);
+    bool troubleQuestWindow(TroubleQuestWindowCache&,TroubleQuestMenuWork&,const TroubleWindowServices& state);
     bool drawGetWindow(const ItemGetWindowDisplay&,uint32_t palette0,uint32_t sourceFrameCounter);
     bool itemGetEffect(const FieldItemGetEffect6&,uint32_t cameraID,const C3D_Mtx& nativeWorldToClip,const CameraViewport& sourceViewport,float cameraYaw,uint32_t shadowRGB);
     bool prepareItemGetEffect();
