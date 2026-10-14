@@ -135,7 +135,18 @@ int MessagePlayback::play(uint64_t now,uint32_t input) {
     lastTime=now;
     while(cursor<records.size() && records[cursor].schedule<=elapsed) {
         const auto& r=records[cursor];
-        if(r.code==0xffff)return 0;
+        if(r.code==0xffff) {
+            if(requireTerminalInput) {
+                // A source key following the final glyph already gates this
+                // page. Only a payload lacking that gate needs the adaptation.
+                for(size_t i=cursor;i>0;--i) {
+                    const auto code=records[i-1].code;
+                    if(code==0xfffe)break;
+                    if(code<0xfff0)return 4;
+                }
+            }
+            return 0;
+        }
         if(r.code==0xfffc){++cursor;elapsed=r.schedule;flags&=~4u;return 1;}
         if(r.code==0xfffe && int32_t(r.x)==acceptedKey){wait=1;elapsed=r.schedule;flags&=~4u;}
         else if(r.code==0xfffd){scrollTarget-=r.y;elapsed=r.schedule;}
@@ -160,7 +171,8 @@ void MessagePlayback::tick(uint64_t now,uint32_t input) {
     if(state==6){windowFlags|=2;const uint64_t a=(now-animationTime)*255/200;alpha=uint8_t(std::min<uint64_t>(a,255));if(a>255){state=1;lastTime=now;}return;}
     if(state==7){animationTime=now;state=8;}
     if(state==8){if(alpha==0){state=0;windowFlags=0;return;}const uint64_t a=(now-animationTime)*255/200;alpha=uint8_t(a>=255?0:255-a);return;}
+    if(state==9){if(input&0x300)state=7;return;}
     if(state==3){if(input&0x300){state=1;wait=2;if((input&0x200) && !(flags&0x80))flags|=4;}return;}
-    if(state==1){const int result=play(now,input);if(result==0){state=7;talking=false;requestPose(PoseRequest::Stay);}else if(result==1){state=2;windowFlags&=~2u;talking=false;requestPose(PoseRequest::Stay);}else if(result==2)state=3;}
+    if(state==1){const int result=play(now,input);if(result==0){state=7;talking=false;requestPose(PoseRequest::Stay);}else if(result==1){state=2;windowFlags&=~2u;talking=false;requestPose(PoseRequest::Stay);}else if(result==2)state=3;else if(result==4){state=9;talking=false;requestPose(PoseRequest::Stay);}}
 }
 }

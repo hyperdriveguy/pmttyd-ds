@@ -1439,3 +1439,30 @@ native presentation adaptation. See
 Nintendo/Intelligent Systems ownership and local-use licensing limitations
 apply. The ISO, extracted images, compiled packs and captures remain outside
 source history. Original raster and New2DS XL hardware performance remain open.
+
+### Opening Peach atlas overlap budget (2026-10-13)
+
+Original read-only `G8ME01.iso:a/c_peach` and `a/c_peach-` continue to supply
+all19 opening demo poses and their original cells. `tools/opening_assets.py`
+now halves only the packed Peach atlas with Lanczos to512×512 RGBA8; normalized
+UV, cell order, pose/geometry data and original animation timing are retained.
+Ignored `romfs/c_peach.t3x` uses1MiB of native texture storage instead of4MiB.
+This permits the final storybook zoom/fade to coexist with the original market
+map and actors. The atlas, extracted sources and compiled RomFS remain private
+local products; original Nintendo/Intelligent Systems ownership is unchanged,
+and no redistribution rights are granted or original payloads committed.
+
+## 2026-10-13 — Used original awakening camera and capture
+
+Original `m/gor_10/c` from the read-only US revision0 ISO is retained unchanged
+as ignored `romfs/opening-gor_10.camera`; extraction/provenance lives in ignored
+`local-assets/opening/gor_10.c[.provenance.json]`. The gor10 native mesh omits
+original `marukongou`, `densha`, `pukupuku` subtrees as its source awakening
+initializer hides them. Original geometry/material textures remain from the
+same ISO; this modifies visibility, without replacement art. Awakening eyelids
+are source procedural quads; depth uses a current native-world GPU capture
+with recovered eight original sampling offsets/weights. Capture storage is
+private runtime data, not an extracted or distributed original asset. Native
+RGBA8 capture adapts the original RGB565 copy/TEV pipeline. Original Nintendo
+assets remain proprietary, retained for local development; no ISO or original
+payload is committed or distributed.

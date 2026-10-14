@@ -25,8 +25,8 @@ public:
     bool resume(uint64_t now);
     void tick(uint64_t now,uint32_t triggers);
     bool active() const{return state!=0;}
-    bool waiting() const{return state==3;}
-    bool canAdvanceText() const{return waiting() && wait==1 && alpha==255 && windowType!=5;}
+    bool waiting() const{return state==3 || state==9;}
+    bool canAdvanceText() const{return waiting() && (wait==1 || state==9) && alpha==255 && windowType!=5;}
     bool complete() const{return state==0;}
     bool stopped() const{return state==2;} // Retained window after source once_stop.
     const std::string& id() const{return identity;}
@@ -38,6 +38,9 @@ public:
     uint16_t windowFlags=0; // W allocation/poll bits; distinct from D playback flags.
     bool pending() const{return (windowFlags&2)!=0;}
     uint16_t acceptedKey=0,wait=0,state=0;
+    // Opt-in presentation adaptation for interactive New Game dialogue.
+    // Original records/tokens and ordinary source playback remain unchanged.
+    bool requireTerminalInput=false;
     uint8_t alpha=255;
     uint32_t talkCountdown=0;
     bool talkLatched=false,talking=false; // General_Main requests, independent of window state.

@@ -825,3 +825,7 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/romfs/opening-house-sounds.bin")
     add_test(NAME opening_house_sounds_original COMMAND opening_house_sounds_tests original)
     set_tests_properties(opening_house_sounds_original PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 endif()
+
+add_executable(opening_wake_tests tests/opening_wake_tests.cpp)
+target_link_libraries(opening_wake_tests PRIVATE ttyd_core)
+add_test(NAME opening_wake COMMAND opening_wake_tests)

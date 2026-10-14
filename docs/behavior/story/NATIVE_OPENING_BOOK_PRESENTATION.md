@@ -146,3 +146,25 @@ original front bending, the rune back, and subsequent narration after the
 final draw acknowledgement. Earlier azahar-original-demo-paper completed the
 unskipped37-message route but exposed a native depth-layering bug; it is retained
 as regression evidence and is not proof of visible page rendering.
+
+## Native final-adjust resource lifetime and memory budget
+
+The book-to-market zoom simultaneously renders the original final book layers,
+last captured paper, original market map and market actors. This overlap must
+retain the authored180-tick adjustment and message/event ownership. Resource
+admission failure must not be mistaken for GPU rendering performance or scene
+completion. An isolated native Azahar run on2026-10-13 reproduced a3273KiB
+free-linear report followed by repeated `c_peach` texture admission failures;
+the status bar fell to1FPS while the authored zoom barely advanced.
+
+The converted Peach bank now retains all19 original poses and texture cells
+at512×512 RGBA8, using half-size Lanczos from its packed1024×1024 atlas. The
+GPU allocation is1MiB rather than4MiB; normalized UV and original model data
+remain unchanged. This is a native memory adaptation, not a recovered original
+texture-resolution choice or hardware performance measurement.
+
+Finishing the adjustment synchronizes the completed GPU work and retires only
+book image textures and captured pages. The admitted market map, actor banks,
+sampled poses and map animation clocks retain their owner across that boundary.
+Demo exit still releases the whole frontend. No event is skipped, and no failed
+render is acknowledged as successful original scene completion.

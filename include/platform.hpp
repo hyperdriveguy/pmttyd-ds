@@ -138,6 +138,13 @@ private:
     uint8_t* bookCapturePixels=nullptr;
     bool captureBookPage(OpeningDemo&,unsigned);
     void freeBookCaptures();
+    C3D_Tex wakeCaptureTexture{};
+    bool wakeCaptureReady=false;
+    C3D_RenderTarget* wakeWorldTarget=nullptr;
+    bool prepareWakeWorld();
+    Vertex* wakeEffectVertices=nullptr;
+    bool frontWakeEffects(const OpeningWake&);
+    void freeWakeEffects();
     std::array<Texture,2> demoEffectTextures;
     bool demoEffectsReady=false;
     bool frontDemoEffects(const DemoChestEffects&,CameraPoint,CameraPoint);
@@ -209,7 +216,8 @@ private:
     bool characterModel(const char* pose,float frame,Vec2 root,float rootY,float yaw,bool reflectZ,bool companion=false,const ActorAnimationPack* custom=nullptr,float uvScale=1,const ProfessorSceneActor* battleActor=nullptr);
     void marioGroundShadow(const FieldShadowRecord&);
     void harborActors(const Game&);
-    void originalMessage(const Game&,const MessagePlayback* supplied=nullptr);
+    void originalMessage(const Game&,const MessagePlayback* supplied=nullptr,
+                         const CameraPoint* speakerAnchor=nullptr,const CameraPoint* marioAnchor=nullptr);
     void messageBorder(const MessageWindowPlan&,uint8_t alpha,int type=0);
     int marioAirShadow(const FieldShadowRecord&);
     void shadow(Vec2 p,float radius,float floor=0);

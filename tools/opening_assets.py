@@ -31,7 +31,7 @@ def main():
     images += [(f'demo-{i}','demo.tpl',i) for i in [0,1,2,8,9,10,11,12]]
     tracks=[('title','sys_tit1_32k'),('demo-book','sys_demo1_32k'),('demo-market','sys_demo2_32k'),('opening-house','evt_mri1_32k'),('opening-voyage','sys_opn1_32k'),('opening-sailing','evt_kou1_32k')]
     required=[f'opening-{r}.vertices' for r in ['aaa_00','aaa_00-interior','muj_20','gor_10']]+[n+ext for n,_,_ in images for ext in ['.t3x','.size']]+[n+'.wav' for n,_ in tracks]+['prologue.t3x','prologue.size']
-    required += ['opening-aaa_00.houseobj','demo-page.pmanim','demo-page.bin','demo-page.json','demo-page-back.t3x','demo-page-back.size']
+    required += ['opening-aaa_00.houseobj','opening-gor_10.camera','demo-page.pmanim','demo-page.bin','demo-page.json','demo-page-back.t3x','demo-page-back.size']
     required += [n+ext for n in ['c_luigi','c_paretta','c_peach','c_nazo','demo-chest'] for ext in ['.pmanim','.t3x','.uvscale']]
     if manifest.exists() and json.loads(manifest.read_text()).get('fingerprint')==fingerprint and all((out/n).exists() for n in required) and cached_maps_complete(out):return
     records=[]
@@ -55,7 +55,7 @@ def main():
         for ext in ['d','t']:
             extract(a.iso,f'm/{room}/{ext}',work/(room+'.'+ext));records.append(json.loads((work/(room+'.'+ext+'.provenance.json')).read_text()))
         prefix='opening-'+variant
-        hidden=('S_naka',) if variant=='aaa_00' else ('S_ie_door',) if variant=='aaa_00-interior' else ()
+        hidden=('S_naka',) if variant=='aaa_00' else ('S_ie_door',) if variant=='aaa_00-interior' else ('marukongou','densha','pukupuku') if variant=='gor_10' else ()
         info=convert(work/(room+'.d'),work/variant,hidden=hidden,scene_root='S_naka' if variant=='aaa_00-interior' else None,object_bindings=('S_ie_door','S_posuto','sai_ki2','sai_ki1') if variant=='aaa_00' else ())
         if variant=='aaa_00':shutil.copyfile(work/variant/'map.houseobj',out/(prefix+'.houseobj'))
         for ext in ['vertices','batches','uvanim','meshanim']:shutil.copyfile(work/variant/('map.'+ext),out/(prefix+'.'+ext))
@@ -63,6 +63,8 @@ def main():
             png=work/variant/f'texture-{index}.png';convert_tpl(work/(room+'.t'),png,index)
             im=Image.open(png).convert('RGBA');w,h=im.size;im.resize((min(128,1<<(w-1).bit_length()),min(128,1<<(h-1).bit_length())),Image.Resampling.LANCZOS).save(png)
             subprocess.run([tex3ds,'-f','rgba8','-z','auto','-o',str(out/f'{prefix}-{index}.t3x'),str(png)],check=True,stdout=subprocess.DEVNULL)
+    extract(a.iso,'m/gor_10/c',work/'gor_10.c');shutil.copyfile(work/'gor_10.c',out/'opening-gor_10.camera')
+    records.append(json.loads((work/'gor_10.c.provenance.json').read_text()))
     scene_poses={'c_luigi':['L_5','L_6','L_7','L_8','L_9','L_11'],
                  'c_paretta':['S_1'],
                  'c_peach':['P_Z_1','P_S_1','P_T_1','P_W_1','P_S_7','P_T_13','P_W_7','P_S_4','P_T_4','P_W_4','P_S_8','P_T_14','P_W_8','P_B_1','P_B_2','P_T_7','P_H_1','P_B_3','P_B_4'],
@@ -76,7 +78,14 @@ def main():
         mesh=compile_surface_mesh(models,out/(bank+'.pmanim'),png) if bank=='demo-chest' else compile_mesh(models,out/(bank+'.pmmesh'),png,out/(bank+'.pmanim'))
         height=128
         while height<((mesh['textures']+7)//8)*128:height*=2
-        Image.open(png).crop((0,0,1024,height)).save(png)
+        atlas=Image.open(png).crop((0,0,1024,height))
+        # The storybook and market coexist during the authored final zoom.
+        # Peach's nineteen poses require a full-height atlas: RGBA8 at1024²
+        # costs4MiB, exceeding the remaining linear arena during that overlap.
+        # Keep every original cell/pose and normalized UV; halve this bank's
+        # raster dimensions rather than dropping the book or an actor.
+        if bank=='c_peach':atlas=atlas.resize((512,height//2),Image.Resampling.LANCZOS)
+        atlas.save(png)
         (out/(bank+'.uvscale')).write_bytes(struct.pack('<f',1024/height))
         subprocess.run([tex3ds,'-f','rgba8','-z','auto','-o',str(out/(bank+'.t3x')),str(png)],check=True,stdout=subprocess.DEVNULL)
         (out/(bank+'.size')).write_bytes(struct.pack('<4I',128,128,128,128))
@@ -94,5 +103,5 @@ def main():
     (out/'prologue.size').write_bytes(struct.pack('<4I',x,max(im.height for im in letters),512,128))
     from opening_book_assets import build as build_book
     build_book(a.iso,out)
-    manifest.write_text(json.dumps(dict(fingerprint=fingerprint,sources=records,images=images,music=tracks,conversion='Large background raster half-size Lanczos; small title masks unchanged; transparent power-of-two padding; original-rate PCM16 music and loop intervals',license='Original Nintendo/Intelligent Systems assets for local use; no redistribution rights'),indent=2)+'\n')
+    manifest.write_text(json.dumps(dict(fingerprint=fingerprint,sources=records,images=images,music=tracks,conversion='Large background raster half-size Lanczos; Peach animation atlas half-size Lanczos (512x512 RGBA8, all original cells/poses and normalized UV retained); small title masks unchanged; transparent power-of-two padding; original-rate PCM16 music and loop intervals',license='Original Nintendo/Intelligent Systems assets for local use; no redistribution rights'),indent=2)+'\n')
 if __name__=='__main__':main()

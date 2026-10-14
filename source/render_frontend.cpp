@@ -1,6 +1,7 @@
 #include "platform.hpp"
 #include <algorithm>
 #include <cstdio>
+#include <cmath>
 namespace ttyd {
 namespace {constexpr int MaxVertices=12000;
 constexpr auto FieldRGB=GPU_WRITEMASK(GPU_WRITE_RED|GPU_WRITE_GREEN|GPU_WRITE_BLUE);
@@ -13,7 +14,7 @@ void Renderer::beginFrontend(){
     frontActive=true;
 }
 void Renderer::releaseFrontend(){
-    C3D_FrameSync();freeTitleCurtains();freeBookCaptures();freeDemoEffects();freeRoom(frontRoom);frontMapName.clear();frontHouseObjects.clear();frontDrawSnapshot.reset();
+    C3D_FrameSync();freeTitleCurtains();freeBookCaptures();freeWakeEffects();freeDemoEffects();freeRoom(frontRoom);frontMapName.clear();frontHouseObjects.clear();frontDrawSnapshot.reset();
     for(auto& t:frontTextures)if(t.image.imported){Tex3DS_TextureFree(t.image.imported);C3D_TexDelete(&t.image.texture);}
     frontTextures.clear();
     for(auto& a:cineActors)if(a.image.imported){Tex3DS_TextureFree(a.image.imported);C3D_TexDelete(&a.image.texture);}
@@ -61,10 +62,14 @@ void Renderer::frontMessage(const MessagePlayback& message,uint64_t ticks) {
     }
 }
 bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const OpeningSequence* opening,const OpeningDemo& demo) {
+    if(opening && opening->part==OpeningPart::Wake && !wakeWorldTarget)return false;
     if(frontMapName!=map) {
         // A cutscene owns one map. Release the preceding scene before staging
         // its successor; retaining both can exhaust the native linear arena.
-        C3D_FrameSync();freeRoom(frontRoom);frontMapName.clear();frontHouseObjects.clear();
+        // renderFrontend already synchronized before starting this frame.
+        // A second FrameSync inside the active first map frame can wait for
+        // a presentation that this unfinished frame has not submitted.
+        freeRoom(frontRoom);frontMapName.clear();frontHouseObjects.clear();
         if(!opening && demo.book.adjusting){
             // The original prior page owners are finished. Keep only the book
             // layers used by final adjust while admitting the marketplace.
@@ -95,8 +100,13 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
     auto& snapshot=*frontDrawSnapshot;snapshot.progress.room=255;snapshot.ticks=(opening?opening->now:demo.now)*60/1000;
     snapshot.fieldCameraFrame.eye={eye.x*.01f,eye.y*.01f,eye.z*.01f};snapshot.fieldCameraFrame.at={at.x*.01f,at.y*.01f,at.z*.01f};
     C3D_Mtx projection,view;
-    Mtx_PerspTilt(&projection,C3D_AngleFromDegrees(42),C3D_AspectRatioTop,.1f,80,false);
+    // camInit/camLoadRoad retain the original camera4 lens25; native aspect
+    // adapts the viewport without changing the authored eye/aim framing.
+    const bool wakeWorld=opening && opening->part==OpeningPart::Wake;
+    if(wakeWorld)Mtx_Persp(&projection,C3D_AngleFromDegrees(25),C3D_AspectRatioTop,.1f,80,false);
+    else Mtx_PerspTilt(&projection,C3D_AngleFromDegrees(25),C3D_AspectRatioTop,.1f,80,false);
     Mtx_LookAt(&view,FVec3_New(eye.x*.01f,eye.y*.01f,eye.z*.01f),FVec3_New(at.x*.01f,at.y*.01f,at.z*.01f),FVec3_New(0,1,0),false);
+    if(opening && opening->part==OpeningPart::Wake)Mtx_Translate(&view,0,opening->wake.viewShiftY*.01f,0,false);
     Mtx_Multiply(&worldTransform,&projection,&view);
     C2D_Flush();C3D_BindProgram(&program);
     auto* attrs=C3D_GetAttrInfo();AttrInfo_Init(attrs);AttrInfo_AddLoader(attrs,0,GPU_FLOAT,3);AttrInfo_AddLoader(attrs,1,GPU_FLOAT,2);AttrInfo_AddLoader(attrs,2,GPU_FLOAT,4);
@@ -106,6 +116,10 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
     for(int n=0;n<6;++n)C3D_TexEnvInit(C3D_GetTexEnv(n));
     auto* env=C3D_GetTexEnv(0);C3D_TexEnvSrc(env,C3D_Both,GPU_TEXTURE0,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR);C3D_TexEnvFunc(env,C3D_Both,GPU_MODULATE);
     const uint32_t visibleGroups=!opening && demo.bookComplete?demo.market.visibleMapGroups():UINT32_MAX;
+    // The original608x480 world occupies304x240 pixels; crop the centered
+    // full400 projection so its effective world aspect remains19/15.
+    if(wakeWorld){C3D_SetViewport(0,0,400,240);C3D_SetScissor(GPU_SCISSOR_NORMAL,48,0,352,240);}
+    else C3D_SetScissor(GPU_SCISSOR_NORMAL,0,48,240,352);
     drawMap(false,snapshot,false,&frontRoom,visibleGroups);
     count=0; // Each queued actor retains its own range until frame submission.
     if(cineActors.empty())cineActors.reserve(4);
@@ -182,21 +196,36 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
     }
     drawMap(false,snapshot,true,&frontRoom,visibleGroups);
     if(!opening && demo.bookComplete)ok=frontDemoEffects(demo.market.effects,eye,at) && ok;
-    C2D_Prepare();C2D_SceneBegin(top);return ok;
+    C3D_SetScissor(GPU_SCISSOR_DISABLE,0,0,240,400);
+    C2D_Prepare();C2D_SceneBegin(wakeWorld?wakeWorldTarget:top);
+    if(wakeWorld){C2D_SceneSize(400,240,false);C3D_SetViewport(0,0,400,240);}
+    return ok;
 }
 void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,const OpeningSequence& opening,const char* notice) {
     // Keep only the current demonstration image/scene family resident. This
     // also bounds a natural (unskipped) storybook run and letter/map overlays.
-    const uint32_t phase=f.screen==FrontScreen::Demo?(demo.bookComplete && !demo.book.adjusting?199:100):
+    const uint32_t phase=f.screen==FrontScreen::Demo?100:
         f.screen==FrontScreen::Opening?200+uint32_t(opening.part):0;
     if(phase!=frontPhase){releaseFrontend();frontPhase=phase;}
+    if(f.screen==FrontScreen::Demo && demo.bookComplete && !demo.book.adjusting && !frontTextures.empty()) {
+        // Final adjust retires the book alone. The already admitted market,
+        // actor samples and map animation clocks continue across this boundary.
+        // Synchronize before releasing texture pointers retained by the GPU.
+        C3D_FrameSync();freeBookCaptures();
+        for(auto& texture:frontTextures)if(texture.image.imported){Tex3DS_TextureFree(texture.image.imported);C3D_TexDelete(&texture.image.texture);}
+        frontTextures.clear();
+    }
     C2D_TextBufClear(textBuffer);C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
     windowFrameCount=0;
     messageIndicatorCount=0;
-    C3D_RenderTargetClear(top,C3D_CLEAR_ALL,0,0);C3D_FrameDrawOn(top);C2D_Prepare();C2D_SceneBegin(top);
+    const bool wakeWorld=f.screen==FrontScreen::Opening && opening.part==OpeningPart::Wake;
+    const bool wakeReady=!wakeWorld || prepareWakeWorld();
+    auto* worldTarget=wakeWorld && wakeReady?wakeWorldTarget:top;
+    C3D_RenderTargetClear(worldTarget,C3D_CLEAR_ALL,0,0);C3D_FrameDrawOn(worldTarget);C2D_Prepare();C2D_SceneBegin(worldTarget);
+    if(wakeWorld && wakeReady){C2D_SceneSize(400,240,false);C3D_SetViewport(0,0,400,240);}
     uint8_t titleBlackPresented=0;uint32_t titlePresentedType=0;float titlePresentedFrame=-1,titlePresentedScale=0;
     int entryPresented=-1;uint8_t exitPresented=0;
-    bool ok=true;std::array<float,4> paperPresented{{-1,-1,-1,-1}};
+    bool ok=wakeReady;std::array<float,4> paperPresented{{-1,-1,-1,-1}};
     std::array<bool,4> captureRequested{};
     if(f.screen==FrontScreen::Demo && demo.bookComplete) {
         const auto& scene=demo.market;
@@ -211,7 +240,7 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,const OpeningSequenc
         CameraPoint eye{-376,154,65},at{-63,75,-247};
         if(opening.part==OpeningPart::House || opening.part==OpeningPart::HouseReturn){const auto& scene=opening.house;eye={scene.eye[0],scene.eye[1],scene.eye[2]};at={scene.at[0],scene.at[1],scene.at[2]};}
         if(opening.part==OpeningPart::Voyage){eye={0,500,1400};at={0,0,0};}
-        if(opening.part==OpeningPart::Wake){eye={0,200,1000};at={0,0,0};}
+        if(opening.part==OpeningPart::Wake){eye=opening.wakeEye;at=opening.wakeAt;}
         if(opening.part==OpeningPart::Arrival){eye={2,225,1015};at={2,50,243};}
         if(opening.part==OpeningPart::MapDisplay)ok=frontImage("opening-map",48,0,304,240);
         else if(opening.part==OpeningPart::Letter)ok=frontImage("opening-letter",88,30,224,148);
@@ -258,6 +287,33 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,const OpeningSequenc
             if(C2D_DrawRectSolid(48,0,0,304,240,rgb(240,240,240,alpha)))exitPresented=alpha;else ok=false;
         }
     }
+    if(f.screen==FrontScreen::Opening && opening.part==OpeningPart::Wake)ok=frontWakeEffects(opening.wake) && ok;
+    if(f.screen==FrontScreen::Opening && opening.message.active()) {
+        if(!frontDrawSnapshot)frontDrawSnapshot=std::make_unique<Game>();
+        auto& snapshot=*frontDrawSnapshot;snapshot.ticks=opening.now*60/1000;
+        CameraPoint anchor{},mario{};const CameraPoint* supplied=nullptr;
+        if(opening.part==OpeningPart::House || opening.part==OpeningPart::HouseReturn) {
+            const unsigned id=opening.speaker==0x468?2:1;
+            const auto& a=opening.house.actors[id];
+            anchor={a.position[0]*.01f,a.position[1]*.01f,a.position[2]*.01f};
+            const char* bank=id==2?"c_paretta":"c_luigi";
+            for(const auto& gpu:cineActors)if(gpu.name==bank && !gpu.sample.vertices.empty()) {
+                // Read the same source pose vertices and root transform that
+                // were rendered, avoiding an invented speaker-height offset.
+                const bool right=a.yaw>0 && a.yaw<180;
+                const ActorRootTransform transform({anchor.x,anchor.y,anchor.z},right?180:0,false);
+                float lowX=INFINITY,highX=-INFINITY,lowZ=INFINITY,highZ=-INFINITY;
+                for(const auto& v:gpu.sample.vertices) {
+                    const auto p=transform.point(v);anchor.y=std::max(anchor.y,p[1]);
+                    lowX=std::min(lowX,p[0]);highX=std::max(highX,p[0]);lowZ=std::min(lowZ,p[2]);highZ=std::max(highZ,p[2]);
+                }
+                anchor.x=(lowX+highX)*.5f;anchor.z=(lowZ+highZ)*.5f;
+            }
+            const auto& m=opening.house.actors[0];mario={m.position[0]*.01f,m.position[1]*.01f,m.position[2]*.01f};
+            supplied=&anchor;
+        }
+        originalMessage(snapshot,&opening.message,supplied,&mario);
+    }
     C2D_Flush();C2D_TargetClear(bottom,Paper);C2D_Prepare();C2D_SceneBegin(bottom);
     if(f.screen==FrontScreen::Demo) {
         if(demo.message.active() && demo.speaker)text(demo.speaker==0x2040?"Peach":"Merchant",16,22,.5f,Ink);
@@ -274,12 +330,9 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,const OpeningSequenc
         }
         text("D-pad: select   A: play   B: title",16,195,.44f,Ink);
     } else {
-        if(opening.message.active() && opening.speaker)text(opening.speaker==0x468?"Parakarry":"Luigi",16,22,.5f,Ink);
-        frontMessage(opening.message,opening.now*60/1000);
         if(opening.part==OpeningPart::Voyage)text("A / START: continue",16,195,.46f,Ink);
         else if(opening.message.waiting())text("A / B: next",16,195,.46f,Ink);
         if(opening.failed)text(opening.failure.c_str(),16,188,.40f,Red);
-        text("Development sequence / scene services pending",10,215,.36f,Ink);
     }
     if(!ok){text("Original front-end texture unavailable",10,216,.4f,Red);if(!frontFailure.empty())text(frontFailure.c_str(),10,203,.35f,Red);}
     if(notice && *notice)text(notice,10,229,.35f,Ink);

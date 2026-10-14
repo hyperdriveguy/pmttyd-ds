@@ -1,4 +1,5 @@
 #include "opening_sequence.hpp"
+#include "camera_road_view.hpp"
 namespace ttyd {
 bool OpeningSequence::load(const char* base) {
     if(!base || !loadOpeningHouseSoundAssets(base))return false;
@@ -8,6 +9,10 @@ bool OpeningSequence::load(const char* base) {
     for(unsigned i=0;i<3;++i)if(!pendingRooms[i].load((root+"/messages/"+names[i]+".txt").c_str()))return false;
     const char* ids[]={"pro_00","pro_01","pro_02","pro_03","pro_05","pro_04","mac_0_012","mac_0_013","mac_0_013_01","mac_0_014","mac_0_015"};
     for(unsigned i=0;i<11;++i){MessagePlayback probe;const unsigned room=i<5?0:i<9?1:2;if(!probe.open(ids[i],pendingRooms[room].find(ids[i]),pendingFont,0))return false;}
+    CameraRoadAsset pendingCamera;CameraRoadWork road;
+    if(!pendingCamera.load((root+"/opening-gor_10.camera").c_str()) || !road.update(pendingCamera,{0,0,0},{0,0,0},0,0))return false;
+    const auto frame=cameraRoadFrame(road.current);if(!frame || !road.current.active)return false;
+    wakeEye={frame->eye.x*100,frame->eye.y*100,frame->eye.z*100};wakeAt={frame->at.x*100,frame->at.y*100,frame->at.z*100};wakeCamera=std::move(pendingCamera);
     global=std::move(pendingGlobal);rooms=std::move(pendingRooms);font=std::move(pendingFont);ready=true;return true;
 }
 const char* OpeningSequence::find(const char* id) const {
@@ -16,16 +21,18 @@ const char* OpeningSequence::find(const char* id) const {
     if(const char* raw=rooms[room].find(id))return raw;
     return global.find(id);
 }
-bool OpeningSequence::print(const char* id,uint32_t who){speaker=who;const char* raw=find(id);if(!raw || !message.open(id,raw,font,now)){failure=std::string(raw?"Unsupported original message: ":"Missing original message: ")+id;failed=true;return false;}return true;}
+bool OpeningSequence::print(const char* id,uint32_t who){speaker=who;const char* raw=find(id);if(!raw || !message.open(id,raw,font,now)){failure=std::string(raw?"Unsupported original message: ":"Missing original message: ")+id;failed=true;return false;}message.requireTerminalInput=true;return true;}
 bool OpeningSequence::enter(OpeningPart p,uint64_t time){
     part=p;index=0;now=time;waiting=false;message={};
     speaker=0;
     if(p==OpeningPart::House)house.begin(time*60/1000);
+    if(p==OpeningPart::Prologue)heading.begin(time);
+    if(p==OpeningPart::Wake)wake.begin(time);
     if(p==OpeningPart::Complete)return true;
     if(!ready){failure="Original opening resources unavailable";failed=true;return false;}
     // Native presentation pacing; source service/parallel choreography is not
     // replaced with a claim that these are original measured durations.
-    deadline=time+(p==OpeningPart::House?0:p==OpeningPart::Prologue?3000:p==OpeningPart::MapDisplay?0:1000);
+    deadline=time+(p==OpeningPart::House?0:p==OpeningPart::Prologue || p==OpeningPart::Wake?0:p==OpeningPart::MapDisplay?0:1000);
     return true;
 }
 void OpeningSequence::begin(uint64_t time){failed=false;failure.clear();story=0;enter(OpeningPart::House,time);}
@@ -33,7 +40,11 @@ void OpeningSequence::tick(uint64_t time,uint32_t keys){
     if(failed || complete() || time<now)return;
     now=time;
     if(part==OpeningPart::House)house.advance(now*60/1000);
-    if(message.active()){message.tick(now,keys);if(message.active())return;deadline=now;if(part==OpeningPart::House){house.messageComplete(index-1);house.advance(now*60/1000);}}
+    if(part==OpeningPart::Prologue)heading.tick(now,keys);
+    if(part==OpeningPart::Wake)wake.tick(now);
+    if(message.active()){message.tick(now,keys);if(message.active())return;deadline=now;if(part==OpeningPart::House){house.messageComplete(index-1);house.advance(now*60/1000);}
+        if(part==OpeningPart::Wake)wake.messageComplete(index-1);
+    }
     if(now<deadline)return;
     switch(part){
     case OpeningPart::House:{const char* ids[]={"pro_00","pro_01","pro_02","pro_03"};if(index<4 && house.messageReady(index)){print(ids[index],index==0?0x468:0x474);++index;}else if(index==4 && house.complete)enter(OpeningPart::Letter,time);break;}
@@ -41,8 +52,8 @@ void OpeningSequence::tick(uint64_t time,uint32_t keys){
     case OpeningPart::HouseReturn:if(index==0){print("pro_05",0x474);++index;}else enter(OpeningPart::MapDisplay,time);break;
     case OpeningPart::MapDisplay:if(++index==128){story=2;enter(OpeningPart::Voyage,time);}break;
     case OpeningPart::Voyage:if(!waiting){waiting=true;deadline=time+10000;}else if(keys&0x1100)enter(OpeningPart::Prologue,time);break;
-    case OpeningPart::Prologue:enter(OpeningPart::Wake,time);break;
-    case OpeningPart::Wake:{const char* ids[]={"mac_0_012","mac_0_013","mac_0_013_01"};if(index<3){print(ids[index],0);++index;}else enter(OpeningPart::Arrival,time);break;}
+    case OpeningPart::Prologue:if(heading.complete)enter(OpeningPart::Wake,time);break;
+    case OpeningPart::Wake:{const char* ids[]={"mac_0_012","mac_0_013","mac_0_013_01"};if(index<3 && wake.messageReady(index)){print(ids[index],0);++index;}else if(index==3 && wake.complete)enter(OpeningPart::Arrival,time);break;}
     case OpeningPart::Arrival:{const char* ids[]={"mac_0_014","mac_0_015"};if(index<2){print(ids[index],0);++index;}else {story=3;enter(OpeningPart::Complete,time);}break;}
     case OpeningPart::Complete:break;
     }

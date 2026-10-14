@@ -8859,3 +8859,124 @@ bank, PeraOff, Mario pose/material readers and setters, original HP/pose/init,
 appearance2 and Hello. Also bind authored joining history and persistent
 party/map lifetimes, RuleKeep/audience and exit/context/sequence/result
 publication. Native return/full prologue parity remain unfinished.
+
+## 2026-10-13 — Admit original Peach during the book-to-market overlap
+
+Reproduced the reported natural opening slowdown in an isolated Azahar profile.
+The initial book rendered60FPS, but the final zoom repeatedly reported
+`Scene texture failed: c_peach (3273 KB free)` and App1FPS. The native renderer
+was retrying the entire original19-pose Peach bank on each failed frame; its
+1024×1024 RGBA8 atlas required4MiB while the authored book/market overlap left
+only3273KiB of linear storage. This was failed resource admission, not successful
+scene playback at a slow rate.
+
+The original Peach atlas now uses half-size Lanczos512×512 RGBA8 (1MiB), keeping
+all original cells, normalized UV and19 poses. Private evidence confirms the
+PMANIM and uvscale SHA256 hashes exactly match the pre-fix originals; model,
+geometry and animation data remain unchanged. The renderer retains the admitted
+market map, actors, samples and map animation clocks when the authored180-tick
+adjustment finishes, synchronizing and retiring only book textures/captures.
+It no longer destroys/reloads the whole market at that presentation boundary.
+Original scene events, message IDs/dialogue/order and the final zoom are retained.
+Implementation/asset contract commit76ebdf0; no extracted or compiled payloads
+were committed. See [book resource contract](behavior/story/NATIVE_OPENING_BOOK_PRESENTATION.md)
+and [asset record](ASSETS.md).
+
+Validation in ignored `artifacts/opening-transition-perf/`: `make all` passed
+(`artifacts/build-fixed.log`), final `make test` passed170/170 CTest and110/110
+Python (`artifacts/tests-fixed.log`), py_compile and scoped git diff --check
+passed. Private `artifacts/peach-atlas-evidence.json` records unchanged animation
+hashes, all19 poses and exact1MiB/4MiB allocation sizes. Isolated natural smoke
+used `tools/emulator_smoke.py --fresh-save --seconds 1 --input-script
+artifacts/profile_transition.py --output-dir artifacts/fixed`; captures at120s
+show the actual book zoom over the live market at36FPS, and130/155s show original
+Peach/merchant scene/dialogue at60FPS/100% speed, without resource error notices.
+These are Azahar status-bar observations under software rendering, not measured
+physical New2DS XL performance or original-runtime/Dolphin parity. The source
+snapshot's doc-link checker reported one existing PROGRESS link to the parent's
+uncommitted house-sound contract; no new links were broken.
+
+Remaining: finish integrated parent house-audio/fresh-file arrival validation,
+retain the original scene rendering/timing fidelity gaps already documented,
+and measure physical hardware performance. This fixes the demonstrated texture
+admission loop; it does not claim full opening or full-game fidelity/completion.
+
+The final240s capture retained the original merchant/chest scene at60FPS;
+A then requested the original demo-to-title exit; the last capture shows its
+white fade (`artifacts/fixed/title.png`), not a fully displayed title. The
+isolated smoke exited successfully with no application exception; user profiles
+and saves were untouched. Next callback work is assigned separately: original
+Voyage logo/start/paper-boat local transforms, coordinated with the voyage owner.
+
+
+## 2026-10-13 — Interactive opening bubbles, house lens and used awakening
+
+New Game messages now use the existing original top-screen window/panel/masks/
+font/tail renderer. House anchors come from the actual rendered original speaker
+pose and Mario root projected by that same world matrix. Duplicate flat lower
+character text/name labels and the development-sequence footer are removed.
+Original US IDs/bytes/tokens/order/speakers remain. Opening playback opts into
+an input wait for otherwise unkeyed terminal text; original final<k> retains one
+press, and demo/book default timing is unchanged. The house/world camera now
+uses source25 lens and centered304x240 crop/effective19/15 aspect, preserving
+its original eye/aim/curve11/5000ms/2000ms requests.
+[Input/framing contract](behavior/story/NATIVE_OPENING_INPUT_AND_FRAMING.md).
+
+Bound used gor awakening waits, literal speakers0 and original depth/eyelid WW
+interpolation/publication, source camera road at retained sys Mario0/0/0 and
+simulation-owned cam_yure Y-view translation. Original marukongou/densha/
+pukupuku hidden subtrees are omitted. Native current-world GPU rendering feeds
+recovered eight polynomial UV taps/weights into the original quad; original
+black eyelid quads draw before windows. Real VRAM/render-target admission,
+resource lifetime and failed-target checks replace the initial readback design.
+The new-map consumer uses the frame owner's existing synchronization. The
+portable Prologue helper exposes actual fade/display-work/start/presentation
+acknowledgments and source3000/2000/3000 waits plus0x1300 input; it does not
+invent elapsed-only display completion. Parent owns the actual heading provider.
+[Awakening/event contract](behavior/story/NATIVE_OPENING_AWAKENING.md).
+
+Validation: scoped branch make test171/171 CTest +110/110 Python passed
+(artifacts/wake-tests-final.log); normal make all passed without warning/error
+(artifacts/wake-native-final.log). Read-only verifier pins four original events,
+three draw/motion bodies and31 awakening/heading/camera anchors
+(artifacts/wake-source-verification.log); original house verifier31 anchors
+also passes. Earlier bubble/lens-only fresh-file native flow reached saved
+story3 (artifacts/azahar-dialogue-camera/); that run predates new heading/Wake
+binding. A separate ignored fixture starts the real Wake owner directly;
+reviewed closed-eyes held012, source opening/blur/reveal and013_01 printing in
+artifacts/azahar-wake-reviewed/. These samples report60FPS/3.81–5.56ms.
+Cold boot captures at5s were premature: original resource initialization
+completed around11s in diagnostic trace, so0FPS startup frames were not proof
+of a persistent rendering stall. Trace/temporary fixture main edits were
+restored; no production debug bootstrap or fake native heading acknowledgment
+is committed. New links are valid; whole-branch link audit retains one existing
+broken link to the parent pending house-sound contract. py_compile/diff check
+pass. Original ISO, user emulator profiles and user saves remain untouched.
+
+Limitations/next: integrate parent's actual sys heading display/resources and
+boat/sky/arrival providers, then run the whole fresh-file route against the
+combined normal binary. This branch's new heading protocol intentionally waits
+its real native display provider. Source eyelid/depth clocks/global cadence,
+SDK trig, RGBA8 versus RGB565/TEV precision, full map animation, waking sleep/
+find/creak/ENV audio and hardware/original-runtime raster comparison remain
+open. Full remake and broader battle/tutorial/join are not complete; current
+user scope ends at Rogueport arrival.
+
+## 2026-10-13 — Integrated bubble, camera, wake and book-memory corrections
+
+Primary integrates the independently reviewed original opening bubble/camera,
+Wake event/effect and bounded Peach atlas changes. New Game keeps unkeyed
+terminal pages until input, preserving original IDs/control tokens; these held
+pages also use the existing original advance indicator. Ordinary message
+playback and the storybook remain outside this opt-in presentation change.
+
+Validation: primary `make all` passed
+(`artifacts/opening-corrections-primary-all.log`); `make test` passed175/175
+CTest and116/116 Python (`artifacts/opening-corrections-primary-tests.log`).
+Read-only Wake verifier passed31 original anchors; doc links993 files/0broken.
+Individual isolated Wake and natural book-transition evidence is recorded above.
+This combined build has not yet had a complete native fresh-flow test: its
+portable heading now correctly waits for the pending real native display owner.
+Skies/ship arrival/departure and the animated heading are still being integrated.
+The user corrections and arrival-scoped goal remain active; no complete opening,
+full-game, original-runtime or hardware parity claim is made.

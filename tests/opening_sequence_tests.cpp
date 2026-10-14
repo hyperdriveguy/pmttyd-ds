@@ -27,13 +27,21 @@ int main(){
     OpeningSequence opening;assert(opening.load("romfs"));opening.begin(0);ids.clear();std::vector<uint32_t> speakers;
     bool voyageGate=false;
     for(now=0;now<300000 && !opening.complete();now+=17){
-        const uint32_t keys=(now/17)%4==0?0x100u:0u;opening.tick(now,keys);assert(!opening.failed);
+        const uint32_t keys=(now/17)%4==0?0x100u:0u;
+        // Explicit host display providers; native renderer must publish real
+        // source work/fade completions independently of these test doubles.
+        opening.heading.entryComplete=opening.heading.displayReady=opening.heading.startFadeComplete=opening.heading.started=opening.heading.exitComplete=true;
+        opening.tick(now,keys);assert(!opening.failed);
         if(opening.part==OpeningPart::Voyage)voyageGate=true;
         if(opening.message.active() && (ids.empty() || ids.back()!=opening.message.id())){ids.push_back(opening.message.id());speakers.push_back(opening.speaker);}
     }
     assert(opening.complete() && voyageGate && opening.story==3);
     assert((ids==std::vector<std::string>{"pro_00","pro_01","pro_02","pro_03","pro_04","pro_05","mac_0_012","mac_0_013","mac_0_013_01","mac_0_014","mac_0_015"}));
     assert((speakers==std::vector<uint32_t>{0x468,0x474,0x474,0x474,0,0x474,0,0,0,0,0}));
+    OpeningSequence noInput;assert(noInput.load("romfs"));noInput.begin(0);
+    for(now=0;now<120000;now+=17)noInput.tick(now,0);
+    assert(noInput.part==OpeningPart::House && noInput.message.id()=="pro_00" && noInput.message.waiting());
+    assert(noInput.house.messageReady(0) && noInput.message.requireTerminalInput);
     OpeningSequence gate;assert(gate.load("romfs"));gate.begin(0);
     for(now=0;now<200000 && gate.part!=OpeningPart::Voyage;now+=17)gate.tick(now,0x100);
     assert(gate.part==OpeningPart::Voyage);for(unsigned i=0;i<3000;++i){now+=17;gate.tick(now,0);}assert(gate.part==OpeningPart::Voyage);

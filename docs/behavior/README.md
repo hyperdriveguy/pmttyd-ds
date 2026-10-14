@@ -706,3 +706,7 @@ an explicit asset/presentation adaptation, outside recovered US behavior.
 Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENING_HOUSE_SOUNDS.md).
 
 - [Field party entry camera/resource/animation admission](partner/FIELD_PARTY_ENTRY_ANIMATION_ADMISSION.md): stored camera ownership, constructor field order, original resource selection, mode2/archive and pose/material admission domains.
+
+- [New Game dialogue input and house framing](story/NATIVE_OPENING_INPUT_AND_FRAMING.md)
+
+- [Used awakening and prologue event owners](story/NATIVE_OPENING_AWAKENING.md)

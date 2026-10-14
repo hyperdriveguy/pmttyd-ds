@@ -40,6 +40,26 @@ int main(int argc,char**) {
     indicatorGate.tick(1100,0x100);assert(!indicatorGate.canAdvanceText());
     for(uint64_t ms=1101;ms<2000 && indicatorGate.active();ms+=17)indicatorGate.tick(ms,0);
     assert(indicatorGate.complete() && !indicatorGate.canAdvanceText());
+    // The interactive opening adaptation keeps terminal text until a new
+    // trigger, without editing raw bytes or changing default source playback.
+    MessagePlayback interactive;assert(interactive.open("interactive","Hello",font,0));
+    interactive.requireTerminalInput=true;
+    for(uint64_t ms=0;ms<10000;ms+=17)interactive.tick(ms,0);
+    assert(interactive.active() && interactive.waiting() && interactive.state==9);
+    assert(interactive.canAdvanceText());
+    assert(interactive.rawText()=="Hello" && interactive.cursor==5 && interactive.alpha==255);
+    interactive.tick(10000,0x100);assert(interactive.state==7);
+    for(uint64_t ms=10001;ms<11000;ms+=17)interactive.tick(ms,0);
+    assert(interactive.complete());
+    assert(interactive.open("original-key","Hello<k>",font,0));interactive.requireTerminalInput=true;
+    uint64_t interactiveTime=0;
+    for(;interactiveTime<10000 && !interactive.waiting();interactiveTime+=17)interactive.tick(interactiveTime,0);
+    assert(interactive.state==3);interactive.tick(interactiveTime,0x100);
+    for(interactiveTime+=17;interactiveTime<11000 && interactive.active();interactiveTime+=17)interactive.tick(interactiveTime,0);
+    assert(interactive.complete()); // The original final key requires one press.
+    assert(interactive.open("ordinary","Hello",font,0) && !interactive.requireTerminalInput);
+    for(uint64_t ms=0;ms<10000;ms+=17)interactive.tick(ms,0);
+    assert(interactive.complete());
     MessagePlayback gated;assert(gated.open("gate","<dkey><wait 350>A</dkey>B",font,0));
     assert(gated.records[0].code==0xfff5 && gated.records[0].flags==1 && gated.records[0].schedule==0);
     assert(gated.records[2].code==0xfff5 && gated.records[2].flags==0 && gated.records[2].schedule==375);

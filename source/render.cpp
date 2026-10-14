@@ -529,7 +529,7 @@ void Renderer::harborActors(const Game& g) {
         vertex(x+m[2],y+m[2],z,right,1,0xffffffff);vertex(x,y+m[2],z,left,1,0xffffffff);vertex(x,y,z,left,0,0xffffffff);
     }
 }
-void Renderer::originalMessage(const Game& g,const MessagePlayback* supplied) {
+void Renderer::originalMessage(const Game& g,const MessagePlayback* supplied,const CameraPoint* suppliedAnchor,const CameraPoint* suppliedMario) {
     const bool fieldTalk=g.fieldActorTalk.message.active();
     const bool professor=g.storyPresentation().locked();
     const bool tutorial=g.harborTutorial.running();
@@ -554,8 +554,13 @@ void Renderer::originalMessage(const Game& g,const MessagePlayback* supplied) {
         return std::isfinite(x) && std::isfinite(y);
     };
     float anchorX=0,anchorY=0,marioX=0,marioY=0;unsigned mode=0;
-    const bool newWindow=!supplied && messageWindowSerial!=message.serial;
-    if(newWindow && tutorial && g.harborTutorial.speaker>=0 && g.harborTutorial.speaker<3) {
+    const bool newWindow=(!supplied || suppliedAnchor) && messageWindowSerial!=message.serial;
+    if(suppliedAnchor) {
+        messageTalkAnchor=*suppliedAnchor;
+        if(project(messageTalkAnchor,anchorX,anchorY) && suppliedMario && project(*suppliedMario,marioX,marioY))
+            mode=message.windowType==1?7:messageSpeakerMode(anchorX,marioX);
+    }
+    if(newWindow && !supplied && tutorial && g.harborTutorial.speaker>=0 && g.harborTutorial.speaker<3) {
         const auto id=unsigned(g.harborTutorial.speaker);const auto& a=g.harborTutorial.actors[id];
         messageTalkAnchor={a.position[0]*.01f,a.position[1]*.01f,a.position[2]*.01f};
         const auto* pose=tutorialActors[id].animations.pose(a.pose.c_str());
@@ -563,7 +568,7 @@ void Renderer::originalMessage(const Game& g,const MessagePlayback* supplied) {
         const auto& mario=g.harborTutorial.actors[1].position;
         if(project(messageTalkAnchor,anchorX,anchorY) && project({mario[0]*.01f,mario[1]*.01f,mario[2]*.01f},marioX,marioY))mode=message.windowType==1?7:messageSpeakerMode(anchorX,marioX);
     }
-    if(newWindow && !tutorial && professor) {
+    if(newWindow && !supplied && !tutorial && professor) {
         const auto& a=g.storyPresentation().actors[g.storyPresentation().speaker];const auto& root=g.storyPresentation().speakerRoot;
         messageTalkAnchor={root[0]*.01f,root[1]*.01f,root[2]*.01f};
         const ActorAnimationPack* animations=&partnerAnimations;
@@ -590,14 +595,14 @@ void Renderer::originalMessage(const Game& g,const MessagePlayback* supplied) {
         if(project(messageTalkAnchor,anchorX,anchorY) && project({g.progress.position.x,g.groundHeight,g.progress.position.z},marioX,marioY))
             mode=message.windowType==1?7:messageSpeakerMode(anchorX,marioX);
     }
-    if(newWindow && fieldTalk && !professor) {
+    if(newWindow && !supplied && fieldTalk && !professor) {
         const auto& actor=g.fieldActorTalk.actor;
         messageTalkAnchor={actor.position[0]*.01f,actor.position[1]*.01f,actor.position[2]*.01f};
         if(actor.npcHeight>0)messageTalkAnchor=NpcPresentation::talkAnchor(actor.position,actor.npcHeight);
         if(project(messageTalkAnchor,anchorX,anchorY) && project({g.progress.position.x,g.groundHeight+g.jumpHeight,g.progress.position.z},marioX,marioY))
             mode=message.windowType==1?7:messageSpeakerMode(anchorX,marioX);
     }
-    for(unsigned i=0;newWindow && !tutorial && !fieldTalk && !professor && i<g.harborStory.actors.size();++i) {
+    for(unsigned i=0;newWindow && !supplied && !tutorial && !fieldTalk && !professor && i<g.harborStory.actors.size();++i) {
         const auto& actor=g.harborStory.actors[i];if(actor.key!=(encounter?g.harborEncounter.speaker:g.harborStory.speaker))continue;
         const auto& root=encounter?g.harborEncounter.speakerRoot:g.harborStory.speakerRoot;
         messageTalkAnchor={root[0]*.01f,root[1]*.01f,root[2]*.01f};
@@ -624,7 +629,7 @@ void Renderer::originalMessage(const Game& g,const MessagePlayback* supplied) {
     }
     if(newWindow){messageWindowSerial=message.serial;messagePlacement=mode;}
     if(!project(messageTalkAnchor,anchorX,anchorY))mode=0;
-    else mode=messagePlacement;
+    else mode=supplied && !suppliedAnchor?0:messagePlacement;
     if(message.windowType==11 || message.windowType==5 || message.windowType==3)mode=0;
     if(message.placementOverride>=0)mode=unsigned(message.placementOverride);
     auto plan=messageWindowPlan(message.geometry,mode,anchorX,anchorY,message.alpha,message.windowType);
