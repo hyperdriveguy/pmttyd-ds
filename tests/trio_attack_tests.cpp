@@ -340,13 +340,19 @@ int main(){
             uint32_t retainedBattleHeader=0;assert(charged.trioAttack.readWord(0x84000000,retainedBattleHeader));
             for(unsigned n=0;n<100 && !charged.trioAttack.pendingFunction();++n)charged.tick(Input{});
             assert(charged.trioAttack.pendingFunction()==0x800f8e28u);
-            charged.tick(Input{}); // Next engine pass runs the original four-service prefix.
-            assert(charged.trioAttack.pendingFunction()==0x80149798u && charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001f);
+            charged.tick(Input{}); // Next pass binds stage objects/icons and reaches the real spotlight provider.
+            assert(charged.trioAttack.pendingFunction()==0x8013800cu && charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001f);
             assert(charged.trioAttack.readWord(0x84000ef4,value) && !(value&0x80000000));
             const auto& engineRequests=charged.trioAttack.requests();
-            constexpr uint32_t enginePrefix[]{0x800f7b28,0x8011a43c,0x8011f1ec,0x800fa5b0,0x80149798};
-            assert(engineRequests.size()>=5);
-            for(unsigned i=0;i<5;++i)assert(engineRequests[engineRequests.size()-5+i].function==enginePrefix[i]);
+            constexpr uint32_t enginePrefix[]{0x800f7b28,0x8011a43c,0x8011f1ec,0x800fa5b0,0x80149798,0x801aa168,0x80139150,0x8013800c};
+            assert(engineRequests.size()>=8);
+            for(unsigned i=0;i<8;++i)assert(engineRequests[engineRequests.size()-8+i].function==enginePrefix[i]);
+            const auto* stageMap=charged.trioAttack.stageMap(false);const auto* backMap=charged.trioAttack.stageMap(true);
+            assert(stageMap && backMap && stageMap->vertices()==3393 && backMap->vertices()==11721);
+            assert(!(*stageMap->flags("isi_1")&1) && !(*stageMap->flags("isi_2")&1) && (*stageMap->flags("B_kabe")&1));
+            assert((*backMap->flags("escape_wall")&1) && (*backMap->flags("spotlight")&1));
+            for(unsigned record=0;record<7;++record)assert(charged.trioAttack.readWord(0x8401715c+record*0x7c,value) && value==record+1);
+            assert(charged.trioAttack.readWord(0x8401715c+7*0x7c,value) && value==0);
             assert(charged.fieldMarioBattleState().partyIndices[0]==(fastReward?0:255) && charged.fieldMarioBattleState().partyIndices[1]==255);
             if(fastReward) {
                 assert(charged.fieldPartyState().pointer(0) && !charged.fieldPartyState().pointer(1));

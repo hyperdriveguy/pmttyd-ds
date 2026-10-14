@@ -52,7 +52,7 @@ def wall_segments(collision,metadata=None,with_triangles=False):
             segments.add((*p,*q,float(a[:,1].min()),float(a[:,1].max()),*tag,*geometry))
     return sorted(segments)
 
-def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mesh_ambient=(),event_groups=None,scene_root=None,scene_offsets=None,object_bindings=(),initial_pose=None,local_offsets=None,named_lighting=()):
+def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mesh_ambient=(),event_groups=None,scene_root=None,scene_offsets=None,object_bindings=(),initial_pose=None,local_offsets=None,named_lighting=(),map_objects=False):
     event_groups=event_groups or {}
     raw=Path(path).read_bytes();base=32
     table=32+u(raw,4)+u(raw,8)*4;names=table+u(raw,12)*8
@@ -122,7 +122,7 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
             local_matrix=local_matrix@selected[name];m=parent@local_matrix
         if visible and name in local_offsets:
             local_matrix=local_matrix@trans(local_offsets[name]);m=parent@local_matrix
-        node_info[o]={'name':name,'parent':parent_node,'local':local_matrix,'world':m.copy()}
+        node_info[o]={'name':name,'parent':parent_node,'local':local_matrix,'world':m.copy(),'scene_offset':node_offset.copy()}
         node_exterior=exterior or name.startswith('S_gai_kabe')
         node_group=exterior_group
         if node_exterior and not node_group and u(raw,o+92):
@@ -313,6 +313,20 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
                         bound.append((index,*local,x,y,z))
                 out.write(struct.pack('<II12f',tag,len(bound),*matrix[:3,:].flatten()))
                 for row in sorted(bound):out.write(struct.pack('<I6f',*row))
+    # Original complete node hierarchy and raw local coordinates for native maps.
+    if map_objects:
+        ordered=list(node_info);indices={node:i for i,node in enumerate(ordered)}
+        with (output/'map.mapobj').open('wb') as out:
+            out.write(struct.pack('<8sII',b'PMMAP001',count,len(ordered)))
+            for node in ordered:
+                info=node_info[node];name=info['name'].encode('ascii')
+                if len(name)>=64:raise ValueError('Native map object name exceeds field')
+                rows=position_bindings.get(node,[])
+                out.write(struct.pack('<i64s12fI',indices[info['parent']] if info['parent'] is not None else -1,name,*info['local'][:3,:].flatten(),len(rows)))
+                inverse=np.linalg.inv(info['world']);offset=info['scene_offset']
+                for index,x,y,z in rows:
+                    local=(inverse@np.array([*(np.array([x,y,z])-offset)/scale,1]))[:3]
+                    out.write(struct.pack('<I3f',index,*local))
     # Complete static collision mesh for upward head rays, without slope filtering.
     with (output/'map.head').open('wb') as out:
         out.write(struct.pack('<4sI',b'HEAD',len(head_geometry)))

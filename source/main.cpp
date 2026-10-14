@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <atomic>
 #include <cstdio>
+#include <cstring>
 #include <sys/stat.h>
 namespace {
 double seconds() { return svcGetSystemTick()/double(SYSCLOCK_ARM11); }
@@ -62,8 +63,27 @@ int main() {
         gfxExit();
         return 1;
     }
-    if(!loadRoomCollision(0) || !(ttyd::loadWarps("romfs:/rooms.bin") && ttyd::loadFieldPipes("romfs:/field-pipes.bin")) || !ttyd::loadFieldDoors("romfs:/doors.pmdoor") || !ttyd::loadCameraRoadAssets("romfs:") || !ttyd::loadHarborTutorialAssets("romfs:") || !ttyd::loadHarborEncounterAssets("romfs:") || !ttyd::loadHarborStoryAssets("romfs:") || !ttyd::loadFieldActorCatalog("romfs:") || !ttyd::loadFieldSaveObjectAssets("romfs:") || !ttyd::loadProfessorStoryAssets("romfs:") || !ttyd::loadUndergroundStoryAssets("romfs:") || !ttyd::loadTrioBattleAssets("romfs:") || !ttyd::loadTrioAttackAssets("romfs:")) {
-        renderer.shutdown();romfsExit();gfxExit();return 1;
+    const char* failedAsset=nullptr;
+    auto requireAsset=[&](const char* name,bool ready){if(!ready)failedAsset=name;return ready;};
+    if(!requireAsset("initial room collision",loadRoomCollision(0)) ||
+       !requireAsset("room warps",ttyd::loadWarps("romfs:/rooms.bin")) ||
+       !requireAsset("field pipes",ttyd::loadFieldPipes("romfs:/field-pipes.bin")) ||
+       !requireAsset("field doors",ttyd::loadFieldDoors("romfs:/doors.pmdoor")) ||
+       !requireAsset("camera roads",ttyd::loadCameraRoadAssets("romfs:")) ||
+       !requireAsset("harbor tutorial",ttyd::loadHarborTutorialAssets("romfs:")) ||
+       !requireAsset("harbor encounter",ttyd::loadHarborEncounterAssets("romfs:")) ||
+       !requireAsset("harbor story",ttyd::loadHarborStoryAssets("romfs:")) ||
+       !requireAsset("field actor catalog",ttyd::loadFieldActorCatalog("romfs:")) ||
+       !requireAsset("save objects",ttyd::loadFieldSaveObjectAssets("romfs:")) ||
+       !requireAsset("professor story",ttyd::loadProfessorStoryAssets("romfs:")) ||
+       !requireAsset("underground story",ttyd::loadUndergroundStoryAssets("romfs:")) ||
+       !requireAsset("trio introduction",ttyd::loadTrioBattleAssets("romfs:")) ||
+       !requireAsset("trio attacks",ttyd::loadTrioAttackAssets("romfs:"))) {
+        if(failedAsset)svcOutputDebugString(failedAsset,int32_t(std::strlen(failedAsset)));
+        renderer.shutdown();consoleInit(GFX_TOP,nullptr);
+        std::printf("Development asset load failed:\n%s\nPress START to exit.\n",failedAsset?failedAsset:"unknown");
+        while(aptMainLoop()){hidScanInput();if(hidKeysDown()&KEY_START)break;gfxFlushBuffers();gfxSwapBuffers();gspWaitForVBlank();}
+        romfsExit();gfxExit();return 1;
     }
     ttyd::Audio audio;audio.init();
     auto ownedGame=std::make_unique<ttyd::Game>();auto& game=*ownedGame;ttyd::Progress saved;

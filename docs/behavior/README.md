@@ -777,3 +777,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Original native weapon-menu icons](display/NATIVE_WEAPON_MENU_ICONS.md).
 
 - [Portable forced item95 receive](field/PORTABLE_ITEM95_RECEIVE_SEQUENCE.md), [original window/Mario/icon bindings](field/ITEM95_GET_WINDOWS_MARIO_POSE_AND_ASSET_BINDINGS.md), [exact packed insertion](unit/POUCH_KEY_ITEM95_RECEIVE_INSERTION.md), and [type6 effect bank/update/draw](effect/FIELD_ITEM_GET_TYPE6_BANK_UPDATE_AND_DRAW.md).
+
+- [Native stage-map owner and GPU updates](battle/NATIVE_STAGE_MAP_OWNER_AND_GPU_UPDATES.md): original complete node hierarchy, seven rank0 records, source flags/matrix latches and live revision-driven 3DS updates.
+- [Spotlight work, init and Main admission](battle/STAGE_SPOTLIGHT_WORK_INIT_AND_MAIN_ADMISSION.md): real SBSS/bank ownership, five spot records, retained inactive/level-up gate, procedural draw and free frontier.

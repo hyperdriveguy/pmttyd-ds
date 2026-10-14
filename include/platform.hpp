@@ -111,6 +111,7 @@ private:
         std::array<float,4> fenceCapturePlane{};
         bool fenceCaptured=false;
         uint64_t fenceTick=UINT64_MAX;
+        uint64_t stageMapRevision=UINT64_MAX;
     };
     Room plaza,stage,frontRoom,trioBackground,trioStage,harborBattleBackground,harborBattleStage;
     std::string frontMapName;
@@ -253,6 +254,7 @@ private:
     FieldShadowGeometry shadowGeometry;
     bool loadMap(const char* name,Room& room);
     bool prepareBattleMaps(const Game&);
+    const StageMapObjects* updateStageMap(const Game&,Room&);
     uint32_t residentFieldRoom=0; // Native GPU residency, separate from simulation area state.
     bool loadFieldActors(uint32_t roomId,Room& room);
     void fieldActors(const Game&);

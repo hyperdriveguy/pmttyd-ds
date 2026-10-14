@@ -10811,3 +10811,65 @@ Next consume named bindings with real additional matrices and native vertex
 uploads, source frame-latch/recalculation, actual seven-record initializer and
 upstream writers, then remaining ordered engine/teardown/sequence services.
 Full playable prologue goal remains active and unfinished.
+
+## 2026-10-13 — Native original stage-map objects and live GPU buffers
+
+Exported original complete stage/background map-node hierarchies124/108,
+authoredlocal matrices and vertex-local bindings with placement bake removed
+exactly once. Source sidecar retains actual stage and seven descriptor
+addresses. Native rank0 builds five selected+two hidden records from original
+readonly definitions/cache999, retains escapeY200, source root/group flags,
+real null script gates and ironframe hiding. Pouch rank is signedhalf88; level
+is the separatehalf8a. Typed map owner replaces address-based MapWork/index
+projection, without claiming whole original constructor/loader/ABI semantics.
+
+Source translate/rotate reset once perflag200 series, right-concat source
+T/Rz/Ry/Rx/pivots; explicit simulation map-frame recalculation preserves
+authored hierarchy, clears only200 and retains200000. Native 3DS renderer
+uses this same owner to update Room linear vertices/cache only on revisions
+and skips named hidden draw ranges through actual material batches. Cached
+visibility runs change only with mask1 flags, removing repeated pervertex
+scans from every drawn batch. Model
+.1/engine.01 coordinate bridge reproduces every original3393 stage vertex.
+Portable math is an explicit numerical adapter; original paired-single/
+GX/map-animation/lighting/outer-cadence/hardware parity remains open.
+
+Native attack ticks now execute actual StageObjectMain; ending's ordered
+engine pass completes stage objects, checks16 live icon records and reaches
+StageMain's mandatory spotlight8013800c. Seven records/hidden names/source
+request order tested, wrapperendbit remains0, fieldresult0/story11/control
+hold retained. Real spotlight work/bank/init/display/free documentation now
+delivered for next implementation; no forced engine/field success.
+
+Validation: make test204/204 CTest +131/131 Python and make all passed
+(artifacts/native-stage-map-tests-final.log and native-stage-map-all.log).
+Isolated DEBUG_SHORT_BOOT build using build-native-stage-map-debug and target
+ttyd-native-stage-map-debug passed (native-stage-map-debug-diagnostic.log).
+Immutable artifacts/native-stage-map-loader2-snapshot binary completed actual
+trio attacks through EXP10/victory/black fade in azahar-native-stage-map-final,
+reviewed target/victory30/ending captures. Target29FPS/3.47ms, EXP30FPS/3.61ms,
+black60FPS/3.91ms are sampled Azahar values, not hardware or a controlled
+performance comparison. No native exception observed; fixture is legacyunjoined.
+Prior valid precache capture also reached the same actual arena/end boundary.
+
+The first normal-frontend capture consumed input during storybook and did not
+reachbattle; it is not battle evidence. A later cached snapshot returned to
+Azahar launcher beforegameplay; its capture is explicitly rejected. Startup
+now names the rejected asset loader via console/native debug only onfailure
+while preserving original load order/short-circuit admission. Latest diagnostic
+image boots and completesroute withno rejectedloader; earlierstartup failure
+was not reproduced, its underlying cause is not claimed resolved by logging.
+Shared debug-short target hit absentELF duringnm whileanotherbuild produced
+that samefile; a private build/target completed and supplies immutable evidence.
+Scoped diff/link checks pass; no emulatoruserprofile/save or ISO changes.
+
+Initial test found rank word
+read included adjacent level, fixed to sourcehalf. Later fullCTests passed but
+Python asset tests exhausted shared /tmp; rerun uses project-local TMPDIR
+without removing any foreign files. New original assets rebuilt read-only
+with python3 tools/trio_battle_assets.py; private paths/hashes/licensing in
+docs/ASSETS.md. No full prologue or hardware completion claim.
+
+Next actual spotlight allocation/work and stage idle/tween domains, then
+audience window/sound/slot/display, BattleEnd/map/context/NPC/event release
+and native delayed sequence/field return. Goal remains active and unfinished.

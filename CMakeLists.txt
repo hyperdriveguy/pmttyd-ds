@@ -970,3 +970,13 @@ target_sources(ttyd_core PRIVATE source/field_item_get.cpp)
 add_executable(field_item_get_tests tests/field_item_get_tests.cpp)
 target_link_libraries(field_item_get_tests PRIVATE ttyd_core)
 add_test(NAME field_item_get COMMAND field_item_get_tests)
+
+# Original native named map hierarchy and deferred additional matrices.
+target_sources(ttyd_core PRIVATE source/stage_map_objects.cpp)
+add_executable(stage_map_objects_tests tests/stage_map_objects_tests.cpp)
+target_link_libraries(stage_map_objects_tests PRIVATE ttyd_core)
+add_test(NAME stage_map_objects COMMAND stage_map_objects_tests)
+if(EXISTS "${CMAKE_SOURCE_DIR}/romfs/stg_00_1.mapobj")
+    add_test(NAME stage_map_objects_original COMMAND stage_map_objects_tests original)
+    set_tests_properties(stage_map_objects_original PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+endif()

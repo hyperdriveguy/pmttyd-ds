@@ -222,3 +222,135 @@ Ignored evidence: artifacts/recovered-temp-evidence/stage5-* and ending-top4-
 BattleStageObjectMain.dis. Checked exact selecteddescriptor/default/cache,
 transform/visibility call order and native pack limitations. Documentation only;
 no native/shared docs edits, build rerun or commit; scoped diff check passed.
+
+## Rank0 initializer request completion: maps, flags, null script gates
+
+Follow-up after native incremental commit27779ad; this appendix adds source
+side effects beyond the already recovered seven-record projection. Parent
+reported source Main/full32 portable logic and original selected5+hidden2
+metadata import; actual CPU-map/GPU provider still remains a native boundary.
+That projection is valid record state, not proof the following requests ran.
+No claim of independent native build/run validation is made by this audit.
+
+Exact used StageObjectInit initial service/storage order for rank0:
+
+1. Capture B, I/S/stage/count/array and memset32 records(B1715c,0,f80).
+2. Query pouch rank. Rank1..3 requests mapPlayAnimationLv80029de4 with original
+   rank name and(1,0), then writes rank-specific B18110 pointer. Rank0 skips
+   that request, writes B18110=0. Query pouch AGAIN; B18114 becomes
+   80373e38+e00+rank*78c, hence80374c38 for0. BYTE B182a6=ff;
+   WORD B182b8=0; WORD B182bc=0 at80149cc8/cc/cd0.
+3. At80149cd4 call mapGetWork8002b438. It returns
+   WORD8041e660 + signed32index(WORD8041e664)*2f4, without null/bounds guard.
+   Caller dereferences current mapWork+a8→object+8→name pointer, then calls
+   mapGrpFlagOff(rootName,2) at80149ce8. The original runtime root owner is
+   required; don't substitute a guessed scene-name or treat it as a null-safe
+   no-op. Primary map table/current-index lifetime is a separate map provider.
+4. In order A1,A2,B,C: mapGetMapObj(name), and only when nonnull,
+   mapGrpFlagOn(name,1) then mapGrpFlagOff(name,2).
+   Name literals80423028/2c/30/34. Callsites On80149d04/2c/54/7c,
+   Off80149d10/38/60/88. These initialize subtree hide then clear displayflag2;
+   skip BOTH mutations for missing group.
+5. mapGrpFlagOn(escape_wall,1) at80149d94, without the existence test used for
+   A1/A2/B/C. Address802f439c is the original name string.
+6. Build/reveal selectedfive in source order through mapGrpFlagOff(name,1)
+   at80149f30, for each immediately after its fields/cache copies. Used
+   categories2 skip unitEntry; update layer counts A1=1,A2=2,B=1,C=1;
+   ironframe gate count0. Don't defer all reveals until after the whole loop.
+7. Query pouch rank AGAIN at80149fec. Rank0 skips rank>0 decoration loop.
+8. Build escape_wall ordinal6; its BattleStageGetPtr80139864 request at
+   8014a154 supplies current Wb28 before Ystore at164. Then hide1 before
+   OR R68bit1. Build spotlight ordinal7 and hide1 before OR R68bit1, using
+   the inline descriptor-list termination already documented above.
+
+After all records, source-owned stage event requests are conditional:
+
+| Caller site / input stage field | Condition and actual source request |
+| --- | --- |
+| 8014a308 /stage190 | Nonnull→evtEntry(script,priority10,flags0); return discarded |
+| 8014a328 /stage1a0 | A1 layercount!=0 AND pointer!=0→same evtEntry; returned event WORD15c→B18100 |
+| 8014a354 /stage1a4 | A2 count!=0 AND pointer!=0→same evtEntry; eventWORD15c→B18104 |
+| 8014a380 /stage1a8 | B count!=0 AND pointer!=0→same evtEntry; eventWORD15c→B18108 |
+| 8014a3ac /stage1ac | C count!=0 AND pointer!=0→same evtEntry; eventWORD15c→B1810c |
+
+Function800374ac is **evtEntry**, not mapPlayAnimation. These fields are
+script pointers; they are not clip names or animation resources. Actual
+selected tik stage2619c has raw0 at all those five pointer fields, with no
+local/import/foreign relocations. Therefore NONE of these requests executes
+in this bounded exact setup4 initializer. No invented curtain script or
+successful empty event is needed. Separate upstream intro/dontyo source
+animation requests are not disproven by this initializer's null pointers.
+The actual used layercounts keep missing-layer flags2/4/8 clear. Stage bytes
+1b1/1b2/1b3 are also0 and do not OR those overrides. Its ironframe count0
+sets BYTE B180f8 mask20, then mapGrpFlagOn(if_body,1) at8014a478 and
+mapGrpFlagOn(if_wire,1) at8014a484, in that order. Source string addresses
+802f4484 and802f4540, from the retained802f42b8 table+1cc/+288.
+
+The first genuinely unbound map service in native whole-initializer order is
+mapGetWork8002b438, after rank0 storage setup; its root lookup followed by
+mapGrpFlagOff(rootName,2) is a concrete required provider. The whole seven-
+record projection does not make root/subtree flags, map owner/current-index,
+subsequent source frame matrix latches or animation services operational.
+An equivalent native typed map registry may own those original names/flags
+with GPU draw suppression as an explicitly documented renderer adaptation.
+Actual setup4's null evtEntry fields can be bound as source branch skips.
+
+Raw stage2619c+190..1b3 (REL2632c/24), all36 byteszero, SHA256
+6db65fd59fd356f6729140571b5bcd6bb3b83492a16e1bf0a3884442fc3c8a0e;
+relocation census over this range found NONE. Source rank0/root/hide/reveal/
+script-null and ironframe service order checked against complete Init listing.
+Read-only evidence under ignored artifacts/recovered-temp-evidence/stage5-*.
+Documentation-only appendix; no code/shared index/progress/inbox edits or commit.
+
+## Group flag provider: used mask1/2 subtree mutation
+
+Complete mapGrpFlagOn8001edd0/118 and Off8001ecb8/118 capture current mapWork
+through the same globalbase/currentindex as mapGetWork. They search loaded
+map entries/object records by strcmp original node name and supplied key.
+With a found named object, On calls mapFlgOn8001f1fc(object,mask,0) at8001eed0;
+Off calls mapFlgOff8001eee8(object,mask,0) at8001edb8.
+
+The used1/2 domain mutates target WORD0 and its entire descendant subtree.
+Child pointerE4 and siblingE8 are source object links. Helper arg3=0 means
+DO NOT propagate to the TARGET's sibling subtree. Child recursion passes1,
+allowing the complete chain of child siblings and their descendants. Source
+bodies unroll several levels before recursion; equivalent typed depth-first
+traversal may preserve target-before-children ordering. No parent flag read
+or inherited immutable-hidden predicate is performed by either setter.
+
+For On(mask1 or2), each visited nodeflags is read, ORmask, then stored. For
+Off, each is read, ANDcomplementmask, then stored. Thus parent hide1 followed
+by Off(selectedChild,1) makes that child's subtree independently visible even
+while parent/sibling WORDs remain1. Renderer filtering must use the actual
+source draw flag semantics for geometry owners, rather than checking every
+ancestor's currenthide as an overriding visibility rule.
+
+On's generalmask100 domain checks nodeWORD114 and can skip its own OR when
+that pointer isnull; traversal still continues. That does not admit any skip
+for usedmask1/2. Main visibility synchronization uses mapGetMapObj before
+issuing setters, but Init's unconditional hide/reveal requests need real
+existing names. Missing target in the public group wrappers takes the original
+name-not-found request queue branch (36-byte records803c97b0 indexed by
+WORD8041e674, marksWORD+20=0, copies up to31chars, setsWORD8041e670=1 and
+updates queuedindex). It is not a recovered silent no-op. Exact queue capacity/
+consumer callback and invalid-string domains are separate if such a missing
+name is admitted by a native provider.
+
+mapReCalcMatrix removes WORDmask200 after rebuilding WORLD; it does not clear
+200000, hide1 or display2 at those latch-consumption sites. Preserve these
+WORD masks rather than narrowing native visibility to a bool that loses
+transform/type history.
+
+Complete raw DOL SHA256 additions:
+
+| Body | Address/size(hex) | SHA256 |
+| --- | --- | --- |
+| mapGetWork | 8002b438/14 | ddbc7aaeeb36ae24182217ef14c98d9a241a088126b1f39c314207b07ca13abc |
+| mapGrpFlagOn | 8001edd0/118 | 0c197b783322085525b1f43a8d57015f5decb97c4fb0da1413a739df07478e7a |
+| mapGrpFlagOff | 8001ecb8/118 | 3f647242377dd37ad4fa51ba0d1fe5a3e2974ba097228ae90275f4d24af75755 |
+| mapFlgOn | 8001f1fc/440 | a141d54bf320389afa083b6dc77294c59ce4f727fb49824221432f5bc1da5d61 |
+| mapFlgOff | 8001eee8/314 | 63d6a25d7e27a529869cfefca8a933b14ad0201998a763f4458c5b49b074047e |
+
+Used mask1/2 subtree/root-sibling scope and matrix latch writes checked against
+complete helpers. Native node registry/map-load order/root selection remains
+an implementation/service owner; no invented original current root is supplied.

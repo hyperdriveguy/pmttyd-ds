@@ -7,6 +7,7 @@
 #include "point_get.hpp"
 #include "field_party.hpp"
 #include "field_party_appearance.hpp"
+#include "stage_map_objects.hpp"
 namespace ttyd {
 bool loadTrioAttackAssets(const char* root);
 std::shared_ptr<const ActorAnimationPack> fieldMarioAnimationBank();
@@ -31,6 +32,7 @@ public:
     bool rewardPresentationActive() const;
     uint8_t endingFadeAlpha() const;
     std::shared_ptr<ProloguePouch> exportedPouch() const;
+    const StageMapObjects* stageMap(bool background) const;
 private:
     std::shared_ptr<TrioAttackRuntime> runtime_;
 };

@@ -3574,3 +3574,19 @@ Native StageObjectMain still needs real map-object/frame/GPU owners, complete
 used initializer and upstream writers before completion acknowledgement. Next
 spotlight/audience window/sound/display and BattleEnd resource/context/sequence
 providers; parent remains open, no original-runtime equivalence assertion.
+
+### 2026-10-13 — Live stage-map matrix, flags and GPU ownership
+
+Native source stage-object Main now uses actual original complete node
+hierarchy/local-vertex packs, seven source descriptors and typed map flags/
+additional matrices. Original used rank0 source group/root/script-null gates
+and explicit map-frame latch/recalculation feed the same3DS linear buffers
+with revision-controlled uploads and hidden draw ranges. See
+[native binding](../behavior/battle/NATIVE_STAGE_MAP_OWNER_AND_GPU_UPDATES.md).
+Ordered engine reaches actual inactive-icon pass then StageMain's required
+batSpotMain8013800c; no wrapper endflag/result/control is prematurely published.
+Delivered [spotlight source](../behavior/battle/STAGE_SPOTLIGHT_WORK_INIT_AND_MAIN_ADMISSION.md)
+pins real SBSS/bank/init/liveness/free services and bounded fresh no-level-up
+inactive domain. Next bind that real owner/allocation, remaining stage work,
+audience window/sound/draw, BattleEnd/context and native sequence restoration.
+Original full loader/map ABI/animation/numerics/outer cadence remain open.

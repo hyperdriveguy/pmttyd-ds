@@ -430,6 +430,7 @@ void Renderer::updateCutaways(Room& room,const Game& g) {
 }
 void Renderer::drawMap(bool battle,const Game& game,bool translucent,Room* supplied,uint32_t sceneVisibleGroups,bool alphaCapture) {
     auto& room=supplied?*supplied:battle?stage:plaza;
+    const auto* stageObjects=updateStageMap(game,room);
     if(!supplied && !battle && !translucent && game.progress.room==2 && game.professorStory.captureRequested && !room.fenceOriginal.empty()) {
         const auto& scene=game.professorStory;
         if(!room.fenceCaptured) {
@@ -517,7 +518,8 @@ void Renderer::drawMap(bool battle,const Game& game,bool translucent,Room* suppl
         const GPU_CULLMODE culls[]={GPU_CULL_BACK_CCW,GPU_CULL_FRONT_CCW,GPU_CULL_NONE,GPU_CULL_NONE};
         C3D_CullFace(culls[(batch.layer>>24)&3]);
         C3D_DepthTest(true,GPU_GREATER,(batch.layer&255)==2?(battle || alphaCapture?GPU_WRITE_COLOR:FieldRGB):(battle || alphaCapture?GPU_WRITE_ALL:FieldRGBDepth));
-        C3D_DrawArrays(GPU_TRIANGLES,batch.start,batch.count);
+        if(stageObjects)stageObjects->visibleRanges(batch.start,batch.count,[](uint32_t first,uint32_t size){C3D_DrawArrays(GPU_TRIANGLES,first,size);});
+        else C3D_DrawArrays(GPU_TRIANGLES,batch.start,batch.count);
     }
     C3D_CullFace(GPU_CULL_NONE);
     C3D_DepthTest(true,GPU_GREATER,battle?GPU_WRITE_ALL:FieldRGBDepth);

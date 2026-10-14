@@ -19,6 +19,7 @@
 #include "battle_general_rule.hpp"
 #include "battle_audience_sound.hpp"
 #include "battle_main.hpp"
+#include "battle_stage_objects.hpp"
 #include "battle_stage_floor.hpp"
 #include "battle_sequence_startup.hpp"
 #include "battle_drop_material.hpp"
@@ -36,6 +37,9 @@ EventScriptAssets scripts;NpcAngleTable sourceAngles;bool assetsReady=false;
 std::string fieldPartnerAnimationPath;
 std::weak_ptr<const ActorAnimationPack> fieldPartnerAnimationCache;
 std::shared_ptr<const ActorAnimationPack> fieldMarioBank;
+std::string stageMapRoot;
+std::array<uint32_t,7> stageDescriptors{};
+uint32_t sourceStage=0;
 std::shared_ptr<const ActorAnimationPack> fieldPartnerAnimationBank() {
     if(auto cached=fieldPartnerAnimationCache.lock())return cached;
     auto bank=std::make_shared<ActorAnimationPack>();
@@ -66,6 +70,13 @@ bool loadTrioAttackAssets(const char* root) {
     }
     fieldMarioBank=std::move(marioBank);
     fieldPartnerAnimationPath=std::string(root)+"/partner.pmanim";fieldPartnerAnimationCache.reset();
+    FILE* stageFile=std::fopen((std::string(root)+"/trio-stage-objects.bin").c_str(),"rb");if(!stageFile)return false;
+    std::array<uint32_t,8> stageData{};char stageMagic[8];
+    const bool stageValid=std::fread(stageMagic,8,1,stageFile)==1 && !std::memcmp(stageMagic,"PMSTOBJ1",8) && std::fread(stageData.data(),4,8,stageFile)==8 && std::fgetc(stageFile)==EOF;
+    std::fclose(stageFile);if(!stageValid)return false;
+    uint32_t descriptorWord=0;
+    for(unsigned i=1;i<stageData.size();++i)if(!next.readWord(stageData[i],descriptorWord) || !descriptorWord)return false;
+    sourceStage=stageData[0];std::copy(stageData.begin()+1,stageData.end(),stageDescriptors.begin());stageMapRoot=root;
     scripts=std::move(next);reactionUnits=units;reactionGroup=group;franklyPhase=phase;assetsReady=true;return true;
 }
 struct TrioAttackRuntime {
@@ -94,6 +105,7 @@ struct TrioAttackRuntime {
     FieldMarioBattleState* fieldMario=nullptr;
     FieldPartyRegistry* fieldParties=nullptr;
     FieldPartyAppearanceServices fieldAppearance;
+    StageMapObjects stageBackground,stageForeground;
     TrioAttackRuntime():vm(0x81000000,platform(this)) {}
     static EventNativePlatform platform(TrioAttackRuntime* self) {
         EventNativePlatform p;p.user=self;p.clock=[](void*)->uint32_t{return 243000000;};
@@ -118,6 +130,44 @@ struct TrioAttackRuntime {
     void half(uint32_t a,int32_t v){required(vm.memory.writeHalf(a,uint16_t(v)));}
     void real(uint32_t a,float v){word(a,bits(v));}
     float real(uint32_t a)const{const auto v=word(a);float f;std::memcpy(&f,&v,4);return f;}
+    StageMapObjects* stageMapOwner(const std::string& name) {
+        if(stageForeground.flags(name))return &stageForeground;
+        if(stageBackground.flags(name))return &stageBackground;
+        return nullptr;
+    }
+    bool initializeStageObjects() {
+        if(half(0x85000000+0x88)!=0)return false; // Signed rank halfword; following halfword is level.
+        if(!stageBackground.load((stageMapRoot+"/bti_01.mapobj").c_str()) || !stageForeground.load((stageMapRoot+"/stg_00_1.mapobj").c_str()))return false;
+        word(Battle+0x18110,0);word(Battle+0x18114,0x80374c38);byte(Battle+0x182a6,255);word(Battle+0x182b8,0);word(Battle+0x182bc,0);
+        // Typed current map root is retained from the original hierarchy pack.
+        if(!stageForeground.root() || !stageForeground.flag(stageForeground.root(),2,false))return false;
+        auto flag=[&](const std::string& name,bool on,uint32_t mask=1){auto* owner=stageMapOwner(name);return owner && owner->flag(name,mask,on);};
+        for(const auto* name:{"A1","A2","B","C"})if(auto* owner=stageMapOwner(name)){owner->flag(name,1,true);owner->flag(name,2,false);}
+        if(!flag("escape_wall",true))return false;
+        real(Battle+0x16f24,200); // Source StageInit W+b28 scalar, retained by escape-wall entry.
+        for(unsigned i=0;i<stageDescriptors.size();++i) {
+            const auto r=Battle+0x1715c+0x7c*i,d=stageDescriptors[i];
+            word(r,i+1);word(r+0x64,d);word(r+0x6c,0xffffffff);
+            for(unsigned axis=0;axis<3;++axis)word(r+4+4*axis,word(d+8+4*axis));
+            if(i==5)word(r+8,word(Battle+0x16f24));
+            for(unsigned axis=0;axis<3;++axis)word(r+0x1c+4*axis,0);
+            for(unsigned value=0;value<12;++value)word(r+0x34+4*value,word(0x802f42b8+4*value));
+            if(!flag(text(word(d)),i>=5))return false;
+            if(i>=5)word(r+0x68,word(r+0x68)|1);
+        }
+        // All five original setup4 script fields are null. Keep a real gate.
+        for(const auto offset:{0x190u,0x1a0u,0x1a4u,0x1a8u,0x1acu})if(word(sourceStage+offset))return false;
+        byte(Battle+0x180f8,byte(Battle+0x180f8)|0x20);
+        return flag("if_body",true) && flag("if_wire",true);
+    }
+    bool updateStageObjects() {
+        BattleStageObjectServices s;s.actors=nativeBattleActorServices(vm);s.user=this;
+        s.translate=[](void* p,uint32_t name,const StageMapObjects::Point& value){auto& r=*static_cast<TrioAttackRuntime*>(p);auto* m=r.stageMapOwner(r.text(name));return m && m->translate(r.text(name),value);};
+        s.rotate=[](void* p,uint32_t name,const StageMapObjects::Point& value){auto& r=*static_cast<TrioAttackRuntime*>(p);auto* m=r.stageMapOwner(r.text(name));return m && m->rotate(r.text(name),value);};
+        s.groupFlags=[](void* p,uint32_t name)->std::optional<uint32_t>{auto& r=*static_cast<TrioAttackRuntime*>(p);auto* m=r.stageMapOwner(r.text(name));return m?m->flags(r.text(name)):std::nullopt;};
+        s.groupFlag=[](void* p,uint32_t name,uint32_t mask,bool on){auto& r=*static_cast<TrioAttackRuntime*>(p);auto* m=r.stageMapOwner(r.text(name));return m && m->flag(r.text(name),mask,on);};
+        return packedBattleStageObjectMain(s);
+    }
     int32_t raw(EventEntry& e,unsigned i)const{return int32_t(word(e.arguments+4*i));}
     int32_t value(EventEntry& e,unsigned i){return getEventValue(e,raw(e,i),vm.interpreterServices().operands);}
     void output(EventEntry& e,unsigned i,int32_t v){setEventValue(e,raw(e,i),v,vm.interpreterServices().operands);}
@@ -400,6 +450,7 @@ struct TrioAttackRuntime {
         jumpBackend.runtime=&vm;jumpBackend.user=this;jumpBackend.play=[](void*,uint32_t,const std::array<float,3>&)->uint32_t{return 0;};
         jump=nativeBattleMarioJumpServices(jumpBackend);ok=ok && bindBattleMarioJumpPositionCallback(registry,jump);
         if(!ok)return false;
+        if(!initializeStageObjects())return false;
         return launch(menu);
 
     }
@@ -992,6 +1043,15 @@ struct TrioAttackRuntime {
                 r.readPad(captured+0x1d1c,r.privatePad);r.privatePad.update(c.sample);
                 r.writePad(captured+0x1d1c,r.privatePad);r.actionManager();return !r.pending;
             }
+            if(fn==0x80149798){if(r.updateStageObjects())return true;r.pending=fn;return false;}
+            if(fn==0x801aa168) {
+                for(unsigned i=0;i<16;++i) {
+                    const auto icon=Battle+0x182cc+0x9c*i;
+                    if((r.half(icon)&1) && r.word(icon+0x1c)){r.pending=fn;return false;}
+                }
+                return true; // Actual live inactive bank; never cleared to pass this gate.
+            }
+            if(fn==0x80139150){r.endingRequest(0x8013800c);r.pending=0x8013800c;return false;}
             r.pending=fn;return false; // Real stage/map/render/audio providers remain required.
         };
         pending=0;
@@ -1004,7 +1064,7 @@ struct TrioAttackRuntime {
             if(physical)sample=*physical;else {sample.snapshot.buttons=uint16_t(triggers);sample.pressed=triggers;}
             vm.gp.timestamp=time*eventClockRate(243000000);completionPass(sample);
         }
-        if(!pending){if(sampledAt!=time){sampledAt=time;checkBrokenUnits();BattlePadSample sample;if(physical)sample=*physical;else {sample.snapshot.buttons=uint16_t(triggers);sample.pressed=triggers;}readPad(Battle+0xf2c,generalPad);generalPad.update(sample);writePad(Battle+0xf2c,generalPad);history=generalPad.triggers;vm.gp.timestamp=time*eventClockRate(243000000);if(word(Battle+4)==3)ending();else if(!done){if(word(Battle+0xf20)<0x06000007)enemyAction();else postAction();}else handoff();readPad(Battle+0x1d1c,privatePad);privatePad.update(sample);writePad(Battle+0x1d1c,privatePad);actionManager();}vm.runManager();if(hasBrokenUnit())done=false;}iconClock(time);if(pointGetClockAt!=time){pointGetClockAt=time;pointGet.tick();}if(endingFadeClockAt!=time){endingFadeClockAt=time;endingFade.tick(60);}publish(s);
+        if(!pending){if(sampledAt!=time){sampledAt=time;checkBrokenUnits();BattlePadSample sample;if(physical)sample=*physical;else {sample.snapshot.buttons=uint16_t(triggers);sample.pressed=triggers;}readPad(Battle+0xf2c,generalPad);generalPad.update(sample);writePad(Battle+0xf2c,generalPad);history=generalPad.triggers;vm.gp.timestamp=time*eventClockRate(243000000);if(word(Battle+4)==3)ending();else if(!done){if(word(Battle+0xf20)<0x06000007)enemyAction();else postAction();}else handoff();readPad(Battle+0x1d1c,privatePad);privatePad.update(sample);writePad(Battle+0x1d1c,privatePad);actionManager();if(!updateStageObjects() && !pending)pending=0x80149798;}vm.runManager();if(hasBrokenUnit())done=false;}iconClock(time);if(pointGetClockAt!=time){pointGetClockAt=time;pointGet.tick();}if(endingFadeClockAt!=time){endingFadeClockAt=time;endingFade.tick(60);}stageBackground.recalculate();stageForeground.recalculate();publish(s);
     }
     void publish(ProfessorStory& s){for(unsigned id=1;id<7;++id){const uint32_t u=word(Battle+0x20+4*id);if(!u){s.actors[visual[id]].hidden=true;continue;}for(unsigned axis=0;axis<3;++axis)s.actors[visual[id]].position[axis]=real(u+0x3c+4*axis);s.actors[visual[id]].yaw=byte(u+0x189)==1?90:270;s.actors[visual[id]].battleFlags=word(u+0x1c);for(unsigned axis=0;axis<3;++axis){s.actors[visual[id]].battleRotation[axis]=real(u+0x60+4*axis)+real(u+0x6c+4*axis);s.actors[visual[id]].battlePivot[axis]=real(u+0x78+4*axis);s.actors[visual[id]].battleScale[axis]=(axis<2?real(u+0x114):1.f)*real(u+0x9c+4*axis)*real(u+0x90+4*axis);s.actors[visual[id]].battleDisplayOffset[axis]=real(u+0x54+4*axis);}}}
 };
@@ -1023,6 +1083,7 @@ bool TrioAttack::readWord(uint32_t a,uint32_t& v)const{return runtime_ && runtim
 namespace ttyd {
 const PointGetEffect* TrioAttack::rewardEffect() const {return runtime_ && runtime_->pointGet.active?&runtime_->pointGet:nullptr;}
 std::shared_ptr<ProloguePouch> TrioAttack::exportedPouch() const {return runtime_ && runtime_->endingExported?runtime_->entryPouch:nullptr;}
+const StageMapObjects* TrioAttack::stageMap(bool background)const{return runtime_?(background?&runtime_->stageBackground:&runtime_->stageForeground):nullptr;}
 uint8_t TrioAttack::endingFadeAlpha() const {return runtime_?runtime_->endingFade.alpha():0;}
 bool TrioAttack::rewardPresentationActive() const {return runtime_ && runtime_->word(Battle+4)==3 && runtime_->word(Battle+0xf24)>=0x07000008;}
 const std::array<TrioRewardIcon,19>* TrioAttack::rewardIcons() const {if(!runtime_)return nullptr;const auto end=runtime_->word(Battle+0xf28);return end && (runtime_->word(end+0x30)&2)?&runtime_->rewardIcons:nullptr;}

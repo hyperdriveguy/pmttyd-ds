@@ -1800,3 +1800,22 @@ pack emitted by this portable sequence implementation. Inspection reports
 remain ignored under artifacts/reference/goomba3-services. Original copyrighted
 assets stay local; no extracted payload/ISO committed or redistribution rights
 created. Full native effect/window rendering remains provider work.
+
+## 2026-10-13 — Original complete stage map-node and descriptor packs
+
+Read-only original m/stg_00_1/d and m/bti_01/d converted with optional map_objects
+export in tools/map_convert.py. Ignored PMMAP001 metadata now retains124/108
+complete authored node hierarchies and rendered vertex-local coordinates,
+removing baked scene offsets before runtime source translation exactly once.
+romfs/stg_00_1.mapobj69184bytes SHA256
+d8ae5e7b9e317516a6203a180f7c1eb75cd2cd0e079cffbb6d7e54232241b484;
+romfs/bti_01.mapobj200512bytes SHA256
+7b4dab2f72c019237bcafecd579b53c966c44166ebc0a653e4b9282f4d384c9b.
+romfs/trio-stage-objects.bin40bytes SHA256
+e84dfce285302f6164b4bc85f5e86a2de92f97ca65669bc104d79ba546af4a3a
+stores original relocated tik stage/5descriptors and2DOL builtin addresses;
+actual descriptor/name/position data stays in existing original readonly pack.
+Existing .1 model/.01 engine native coordinate bridge and texture scaling
+remain. Native CPU matrices and3DS revision-driven vertex cache uploads now
+consume these original bindings. Nintendo/Intelligent Systems assets; no
+redistribution rights granted; no private payload committed.

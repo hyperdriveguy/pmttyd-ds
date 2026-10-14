@@ -45,6 +45,8 @@ def build(iso):
     data=struct.pack('<8sI',b'PMBUNIT2',4)
     for r in units:data+=struct.pack('<Ihh3fI',r['type'],r['hp'],r['fp'],*r['position'],r['attributes'])+struct.pack('<5b5BII',*r['defense'],*r['defenseAttributes'],r['partAttributes'],r['counterAttributes'])+struct.pack('<9fh64s',*r['partPosition'],*r['hitOffset'],*r['samplingOffset'],r['forwardBias'],r['nameKey'].encode('ascii'))
     Path('romfs/trio-battle-units.bin').write_bytes(data)
+    stage_descriptors=[address(0x25c08+i*0x18) for i in range(5)]+[0x80417ca0,0x80417cb8]
+    Path('romfs/trio-stage-objects.bin').write_bytes(struct.pack('<8s8I',b'PMSTOBJ1',address(0x2619c),*stage_descriptors))
     # Retain the actual default weapon targeting words and name IDs from main.dol.
     commands=[]
     with Path(iso).open('rb') as disc:
@@ -68,8 +70,8 @@ def build(iso):
         d=work/(room+'.d');t=work/(room+'.tpl');extract(iso,'m/'+room+'/d',d);extract(iso,'m/'+room+'/t',t)
         manifest=Path('romfs/'+room+'-battle.json');fingerprint=hashlib.sha256(d.read_bytes()+t.read_bytes()+Path(__file__).read_bytes()+Path('tools/map_convert.py').read_bytes()).hexdigest()
         if manifest.exists() and json.loads(manifest.read_text()).get('fingerprint')==fingerprint:continue
-        info=convert(d,work/room,hidden=('escape_wall','spotlight','if_body','if_wire'),object_bindings=('escape_wall','spotlight')) if room=='bti_01' else convert(d,work/room,scene_root=('A1','isi_1','isi_2','B_mati','C'),scene_offsets={'A1':(0,0,-.5),'isi_1':(-2.02,0,-.17),'isi_2':(2,0,-.3)},object_bindings=('isi_1','isi_2','A1','B_mati','C'))
-        for ext in ('vertices','batches','uvanim','meshanim','houseobj'):shutil.copyfile(work/room/('map.'+ext),Path('romfs')/(room+'.'+ext))
+        info=convert(d,work/room,hidden=('escape_wall','spotlight','if_body','if_wire'),object_bindings=('escape_wall','spotlight'),map_objects=True) if room=='bti_01' else convert(d,work/room,scene_root=('A1','isi_1','isi_2','B_mati','C'),scene_offsets={'A1':(0,0,-.5),'isi_1':(-2.02,0,-.17),'isi_2':(2,0,-.3)},object_bindings=('isi_1','isi_2','A1','B_mati','C'),map_objects=True)
+        for ext in ('vertices','batches','uvanim','meshanim','houseobj','mapobj'):shutil.copyfile(work/room/('map.'+ext),Path('romfs')/(room+'.'+ext))
         for index,_ in enumerate(info['textures']):
             image=work/f'{room}-{index}.png';convert_tpl(t,image,index);bitmap=Image.open(image).convert('RGBA');w,h=bitmap.size
             bitmap.resize((min(128,1<<(w-1).bit_length()),min(128,1<<(h-1).bit_length())),Image.Resampling.LANCZOS).save(image)
