@@ -21,6 +21,8 @@
 #include "battle_main.hpp"
 #include "battle_hit_code_events.hpp"
 #include "battle_attack_selection.hpp"
+#include "battle_attack_registration.hpp"
+#include "battle_status_window.hpp"
 #include "battle_camera_requests.hpp"
 #include "battle_stage_objects.hpp"
 #include "battle_stage_work.hpp"
@@ -382,6 +384,7 @@ struct TrioAttackRuntime {
         case 0x8010d980:word(Battle+0xf00,word(Battle+0xf00)+uint32_t(value(e,0)));return 2;
         case 0x80113f88:{const auto u=unit(e),k=word(u+0x10);for(unsigned i=0;i<3;++i)output(e,i+1,int32_t(float(value(e,i+1))+real(k+0x90+4*i)));return 2;}
         case 0x8010da28:{const auto u=unit(e);if((word(u+0x1c)&0x40000000) && word(u+0x308)){const auto setup=word(word(Battle+0x2738)+0xc);unsigned i=0;while(i<8 && word(setup+0x7c+4*i))++i;word(setup+0x7c+4*i,word(u+0x308));word(u+0x308,0);}return 2;}
+        case 0x80103e34:return battleStatusWindowOnOffEvent(e,statusWindowServices());
         case 0x80105df8:clearStatus(unit(e));return 2;
         case 0x80113304:{const auto u=unit(e);if(!u)return 2;half(u+0x10c,0);clearStatus(u);const uint32_t mode=uint32_t(raw(e,1));if(mode&2)word(u+0x104,word(u+0x104)|0x20000);else {byte(u+0x135,1);if(!(mode&1))word(u+0x1c,word(u+0x1c)|0x80000000);}return 2;}
         case 0x80106dfc: {
@@ -552,6 +555,10 @@ struct TrioAttackRuntime {
         spotlightInitialized=true;publishSpotlight();
         endingRequest(0x801a83f8);if(!initializePackedBattleAudience(audienceInitServices()))return false;
         endingRequest(0x8020507c);if(!initializePackedBattleBreakSlot(slotServices()))return false;
+        // Project original Init state5 window requests at harness entry.
+        // Complete startup sequencing/resource readiness remains separate.
+        packedBattleStatusWindowSet(0x2748,true,statusWindowServices());
+        packedBattleStatusWindowSet(0x2744,true,statusWindowServices());
         return launch(menu);
 
     }
@@ -951,7 +958,7 @@ struct TrioAttackRuntime {
         auto state=word(Battle+0xf20);
         if(state==0x06000007){if(!barrier())return;word(Battle+0xf20,++state);} // Adjust is empty under original ff message work.
         if(state==0x06000008){if(!barrier() || !messagesIdle())return;word(Battle+0xf20,++state);}
-        if(state==0x06000009){const auto u=word(Battle+0x20+4*word(Battle+0x420));if(u){word(u+0x1c,word(u+0x1c)&~0x04000000);if(word(u+0x27c)&8){byte(u+0x129,0);word(u+0x27c,word(u+0x27c)&~8);}if(byte(Battle+0x18ff9)==1)byte(Battle+0x18ff9,0);word(u+0x25c,0);consumeBattleActorMove(Battle,u,phaseServices());}reserveItems();if(pending)return;word(Battle+0xef4,word(Battle+0xef4)&~4u);word(Battle+0xf20,++state);}
+        if(state==0x06000009){if(!(word(Battle+0xef4)&0x30))packedBattleStatusWindowSet(0x2744,true,statusWindowServices());const auto u=word(Battle+0x20+4*word(Battle+0x420));if(u){word(u+0x1c,word(u+0x1c)&~0x04000000);if(word(u+0x27c)&8){byte(u+0x129,0);word(u+0x27c,word(u+0x27c)&~8);}if(byte(Battle+0x18ff9)==1)byte(Battle+0x18ff9,0);word(u+0x25c,0);consumeBattleActorMove(Battle,u,phaseServices());}reserveItems();if(pending)return;word(Battle+0xef4,word(Battle+0xef4)&~4u);word(Battle+0xf20,++state);}
         // Audience/BreakSlot producers are explicit native presentation adapters;
         // actual readiness fields/events are polled, never inferred from HP.
         if(state==0x0600000a){if(!audienceIdle())return;if(!concluded() && !breakSlotIdle())return;word(Battle+0xf20,++state);}
@@ -1050,19 +1057,30 @@ struct TrioAttackRuntime {
             return;
         }
     }
+    bool statusWindowOpen=true;
+    BattleStatusWindowServices statusWindowServices(){
+        BattleStatusWindowServices s;s.units=nativeBattleUnitEventServices(vm);s.user=this;
+        s.isOpen=[](void* self){return static_cast<TrioAttackRuntime*>(self)->statusWindowOpen;};
+        s.open=[](void* self){auto& r=*static_cast<TrioAttackRuntime*>(self);r.statusWindowOpen=true;r.endingRequest(0x8013c3b8);};
+        s.close=[](void* self){auto& r=*static_cast<TrioAttackRuntime*>(self);r.statusWindowOpen=false;r.endingRequest(0x8013c390);};return s;
+    }
+    void registerSelectedAttack(){
+        root=0;BattleAttackRegistrationServices s;s.memory=nativeBattleUnitEventServices(vm).memory;s.events=vm.creationServices();s.schedule=&vm.schedule;s.user=this;
+        s.unit=[](void* self,uint32_t b,int32_t id){return battleRegistryUnit(b,id,nativeBattleActorServices(static_cast<TrioAttackRuntime*>(self)->vm));};
+        s.status=[](void* self,uint32_t u,int32_t type)->int32_t{return checkPackedBattleStatus(u,type,nativeBattleActorServices(static_cast<TrioAttackRuntime*>(self)->vm))?1:0;};
+        s.irand=[](void* self,int32_t bound){return static_cast<TrioAttackRuntime*>(self)->random.bounded(bound);};
+        s.windowOff=[](void* self){auto& r=*static_cast<TrioAttackRuntime*>(self);packedBattleStatusWindowSet(0x2744,false,r.statusWindowServices());};
+        s.create=[](void* self,uint32_t script,int32_t priority,uint32_t flags){auto& r=*static_cast<TrioAttackRuntime*>(self);auto& entry=createRootEvent(r.vm.schedule,script,priority,flags,r.vm.creationServices());r.root=entry.id;return &entry;};
+        s.advance=[](void* self,uint32_t b,int32_t channel){auto& r=*static_cast<TrioAttackRuntime*>(self);packedBattleIncrementSequence(b,uint32_t(channel),nativeBattleUnitEventServices(r.vm).memory);};
+        registerBattleAttackState6(Battle,s);
+    }
     void enemyAction() {
         const auto u=word(Battle+0x20+4*word(Battle+0x420));required(u!=0);
         const auto state=word(Battle+0xf20);
         if(state==0x06000000){word(u+0x284,0);word(u+0x2d0,0);const auto audience=(Battle+0x2858);word(audience+0x137d4,0);word(audience,word(audience)&~0x1ff0u);word(Battle+0xf20,0x06000003);return;}
         if(state==0x06000003){word(u+0x2ac,1);word(u+0x1c,word(u+0x1c)|0x04000000);word(Battle+0xf20,0x06000006);return;}
         if(state!=0x06000006)return;
-        if(word(Battle+0xef4)&0x40000000){if(!pending)pending=0x8011b5e0;return;}
-        bool suppressed=false;for(unsigned status:{1u,2u,9u})if(phaseServices().status(&vm,u,status)){suppressed=true;break;}
-        if(byte(u+0x135) && !(word(u+0x104)&0x10000))suppressed=true;
-        if(!suppressed){if(phaseServices().status(&vm,u,6))(void)random.bounded(100);if(phaseServices().status(&vm,u,5)){if(!pending)pending=0x8011b5e0;return;}
-            auto& e=createRootEvent(vm.schedule,word(u+0x2a0),10,0,vm.creationServices());e.owner=int32_t(word(u));root=e.id;word(u+0x2a8,e.id);
-            const auto wait=word(u+0x290);if(wait)deleteEventId(wait,vm.creationServices());word(u+0x290,0);
-        }word(Battle+0xf20,0x06000007);
+        registerSelectedAttack();
     }
     void prepareActor(bool command=true){for(unsigned i=0;i<12;++i)byte(Battle+0x18ffc+i,0);for(unsigned i=0;i<64;++i){const auto u=word(Battle+0x20+4*i);if(!u)continue;word(u+0x27c,word(u+0x27c)&0x80002000);for(unsigned o:{0x264u,0x268u,0x26cu,0x280u})word(u+o,0);half(u+0x260,0);for(unsigned o=0x270;o<=0x273;++o)byte(u+o,0);}
         readyActor=selectBattlePhaseActor(Battle,phaseServices());const auto u=word(Battle+0x20+4*readyActor);word(Battle+0x420,readyActor);word(u+0x27c,word(u+0x27c)|0x1000);word(Battle+0xf1c,0x05000009);word(Battle+0xf20,command?0x06000002:0x06000000);
@@ -1073,8 +1091,7 @@ struct TrioAttackRuntime {
         BattleAttackSelectionServices selection;selection.memory=nativeBattleActorServices(vm);selection.user=this;
         selection.cursor=[](void* self,uint32_t command,uint32_t type,uint32_t& cursor){auto& r=*static_cast<TrioAttackRuntime*>(self);return findPackedCommandCursor(command,type,cursor,nativeBattlePackedSelectionServices(r.vm));};
         if(!packedSetBattleAttackEvent(u,Battle+0x171c,selection))return false;
-        const auto script=word(u+0x2a0);word(Battle+0xef4,word(Battle+0xef4)|4);word(Battle+0xf20,0x06000007);word(Battle+0xf1c,0x05000009);const auto wait=word(u+0x290);if(wait)deleteEventId(wait,vm.creationServices());word(u+0x290,0);
-        auto& e=createRootEvent(vm.schedule,script,10,0,vm.creationServices());e.owner=menu.actor;root=e.id;word(u+0x2a8,e.id);done=false;readyActor=-1;return true;
+        word(Battle+0xef4,word(Battle+0xef4)|4);word(Battle+0xf20,0x06000006);word(Battle+0xf1c,0x05000009);registerSelectedAttack();done=false;readyActor=-1;return true;
     }
     bool hasBrokenUnit() const {for(unsigned id=0;id<64;++id){const auto u=word(Battle+0x20+4*id);if(u && (word(u+0x1c)&0x80000000))return true;}return false;}
     void checkBrokenUnits() {
@@ -1187,6 +1204,7 @@ struct TrioAttackRuntime {
 };
 bool TrioAttack::begin(const TrioBattleCommands& menu,ProfessorStory& scene,int16_t hp,std::shared_ptr<ProloguePouch> entryPouch,uint32_t* fieldNpcBattleFlags,FieldMarioBattleState* fieldMario,FieldPartyRegistry* fieldParties,const FieldPartyAppearanceServices* appearance,std::shared_ptr<BattleSpotlightState> spotlight,std::shared_ptr<BattleRandom> random,std::shared_ptr<PositionalSfxRegistry> sounds){if(!assetsReady || !menu.attack || !((menu.actor==1 && (menu.attack->weapon==0x803538a8 || menu.attack->weapon==0x80353de8)) || (menu.actor==2 && menu.attack->weapon==0x80393ea8)))return false;if(runtime_)return runtime_->done && runtime_->readyActor==menu.actor && runtime_->launch(menu);auto r=std::make_shared<TrioAttackRuntime>(random?std::move(random):std::make_shared<BattleRandom>(1));r->publicSfx=sounds?std::move(sounds):std::make_shared<PositionalSfxRegistry>();r->spotlight=spotlight?std::move(spotlight):std::make_shared<BattleSpotlightState>();r->fieldNpcBattleFlags=fieldNpcBattleFlags;r->fieldMario=fieldMario;r->fieldParties=fieldParties;if(appearance)r->fieldAppearance=*appearance;if(!r->initialize(menu,scene,hp,std::move(entryPouch)))return false;runtime_=std::move(r);return true;}
 void TrioAttack::tick(uint64_t time,ProfessorStory& scene,uint32_t triggers,const BattlePadSample* physical){if(runtime_)runtime_->tick(time,scene,triggers,physical);}
+bool TrioAttack::statusWindowVisible()const{return !runtime_ || runtime_->statusWindowOpen;}
 bool TrioAttack::active()const{return runtime_ && !runtime_->done;}
 bool TrioAttack::finished()const{return runtime_ && runtime_->done;}
 int32_t TrioAttack::commandActor()const{if(!runtime_ || runtime_->pending || !runtime_->done || runtime_->word(Battle+0xf18)!=0x04000002)return -1;if(runtime_->readyActor>=0)return runtime_->readyActor;if(runtime_->word(Battle+0xf1c)!=0x05000008)return -1;for(unsigned i=0;i<64;++i){const int32_t id=int32_t(runtime_->word(Battle+0x120+4*i));if(id<0 || id>=64)continue;const auto u=runtime_->word(Battle+0x20+4*id);if(u && int8_t(runtime_->byte(u+0x22))>0 && runtime_->byte(u+0x20)!=10 && runtime_->byte(u+0x20)!=1 && (!runtime_->byte(u+0x135) || (runtime_->word(u+0x104)&0x10000)))return id;}return -1;}

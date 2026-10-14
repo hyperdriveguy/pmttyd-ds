@@ -2041,3 +2041,13 @@ fade/tail/group0 attenuation and exact source device scheduling remain separate
 owners. See [provider scope](behavior/audio/NATIVE_KEY_ITEM_FANFARE_PROVIDER.md).
 Original Nintendo/Intelligent Systems rights/local-use restrictions still apply;
 no original extracted/converted assets are committed or distributed.
+
+## Status-window arbitration and action registration evidence (2026-10-14)
+
+Read-only US DOL checker800f7514/b8, event80103e34/7c, and System/Event
+On/Off2c-byte setters are fully pinned by tools/verify_battle_status_window.py.
+Existing Jump/root verifiers pin state6 registration and root construction.
+No new game payload or texture/geometry/lighting conversion changed; original
+HUD resources remain in existing ignored packs. Window slide animation is
+unimplemented. Inspection ELF remains ignored; original source content retains
+Nintendo/Intelligent Systems licensing restrictions.

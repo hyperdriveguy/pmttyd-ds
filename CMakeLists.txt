@@ -1068,3 +1068,8 @@ add_executable(battle_break_slot_tests tests/battle_break_slot_tests.cpp)
 target_link_libraries(battle_break_slot_tests PRIVATE ttyd_core)
 add_test(NAME battle_break_slot COMMAND battle_break_slot_tests)
 set_tests_properties(battle_break_slot PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+target_sources(ttyd_core PRIVATE source/battle_status_window.cpp)
+add_executable(battle_status_window_tests tests/battle_status_window_tests.cpp)
+target_link_libraries(battle_status_window_tests PRIVATE ttyd_core)
+add_test(NAME battle_status_window COMMAND battle_status_window_tests)

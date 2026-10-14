@@ -57,6 +57,9 @@ int main(){
     ProfessorStory scene;assert(scene.beginTrioBattleIntro(0));
     TrioBattleCommands menu;assert(menu.begin(scene));menu.input(0x100,0);menu.chooseTarget(2);menu.input(0x100,0);
     TrioAttack jump;assert(jump.begin(menu,scene,10));
+    assert(!jump.statusWindowVisible());
+    uint32_t statusOwner=0;assert(jump.readWord(0x84002744,statusOwner) && statusOwner==0);
+    assert(jump.readWord(0x84002748,statusOwner) && statusOwner==1);
     uint32_t selectedRecord=0;assert(jump.readWord(0x84016f38,selectedRecord) && (selectedRecord>>24)==1);
     assert(jump.readWord(0x841012a0,selectedRecord) && selectedRecord==0x80355cf0); // Selection precedes source event execution.
     jump.tick(17,scene);
@@ -141,6 +144,7 @@ int main(){
         twice.tick(t,twiceScene,press?0x100:0);timingPresses+=press;previousPose=pose;
     }
     assert(timingPresses==2 && twice.finished() && !twice.pendingFunction());
+    assert(twice.statusWindowVisible());
     assert(twice.readWord(0x84001cb8,value) && value==2 && twice.readWord(0x84001cb4,value) && value==2);
     const auto secondHit=std::find_if(twice.requests().rbegin(),twice.requests().rend(),[](const ProfessorServiceRequest& r){return r.function==0x8010a78c;});
     assert(secondHit!=twice.requests().rend() && secondHit->rawOperands[4]==0x20100);

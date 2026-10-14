@@ -6,6 +6,7 @@
 #include <algorithm>
 namespace ttyd {
 void Renderer::battleHud(const Game& g) {
+    if(g.trioBattleActive && !g.trioAttack.statusWindowVisible())return;
     if(g.harborTutorial.running() && !g.harborTutorial.statusVisible)return;
     int hp=g.progress.hp,maxHp=10,fp=0,maxFp=0;
     if(g.progress.originalPouch) {
