@@ -1,3 +1,54 @@
+## 2026-10-13 — Original reaction control and no-damage completion
+
+Feature `e8e6097` binds complete CheckAttribute, ResetFaceDirection and On/
+OffUnitFlag callbacks, with original raw masks, source capture order, signed
+belong and exact byte/word destinations. The trio no longer resolves raw flag/
+attribute masks as script variables or uses unsigned belong for facing reset.
+Tutorial CheckDataEvent/RunDataEventChild now use existing complete services,
+including actual source child creation/owner inheritance. Seven complete query/
+control bodies are pinned read-only; no asset/script/dialogue expansion.
+[Native scope](behavior/battle/NATIVE_REACTION_ATTRIBUTES_FACING_AND_FLAGS.md);
+[assets](ASSETS.md).
+
+The actual code100|18 no-damage reaction now finishes through original VM roots,
+retaining HP/result and the stored finished handle. Its earlier pending-root
+assertion was correctly updated to test natural completion. Normal-element
+code300|23 continues through metadata/data requests and remains live at
+GetDamage8010f458 (signed amount270). That amount still awaits source damage
+application; no HP change or complete attack is fabricated. Tests also cover
+raw-mask domains, any overlap, pre-resolution facing ownership, signed belong,
+adjacent-byte preservation and flag OR/off behavior. Initial mixed-auto C++
+declaration error was corrected; stale-executable output from that failed build
+is not final evidence. Original-data probes distinguish no-damage from ordinary
+normal-element hit codes.
+
+Shared `make test` reached210/211 CTest but failed the trio ending assertion while
+concurrent audience/RNG bootstrap edits were in progress
+(`artifacts/tutorial-reaction-final-tests.log`). A current-source configuration
+also briefly referenced an absent audience test. The coherent HEAD-based snapshot
+plus this feature at `artifacts/reaction-review/` passed209/209 CTest and133/133
+Python (`artifacts/tutorial-reaction-review-tests.log`), invoked as
+`TMPDIR="$PWD/artifacts/tutorial-admission-tmp" CMAKE_BUILD_PARALLEL_LEVEL=4 make -C artifacts/reaction-review test`.
+The snapshot excludes uncommitted audience work; its passing result does not
+claim that the mixed shared tree's audience ending assertion has been fixed.
+
+Normal `make all` passed (`artifacts/tutorial-reaction-all.log`); debug build
+with `-o assets-ready` passed (`artifacts/tutorial-reaction-debug.log`). Immutable
+private image: `artifacts/reaction-services-native-snapshot/ttyd-reaction-services.3dsx`.
+Isolated Azahar physical harbor route still reaches the original tutorial
+stage/actors/HUD and existing action-service notice in
+`artifacts/azahar-reaction-services/`. This validates introduction regression,
+not native damage/turn completion or hardware parity. Final doc links:1091 files,
+zero broken; earlier concurrent optimization-link failures are not final results.
+Scoped diff checks pass. Unrelated edits/staging are preserved.
+
+Next: bind GetDamage and remaining common damage motion/status/animation/effect
+providers; complete original damage application/orchestration, startup/UnitEntry,
+player command ownership and turn scheduling. Continue original rotating menus
+and lower-screen crowd with optional hostile-item taps plus physical controls.
+No-damage root completion is a source branch, not completion of the requested
+battle/tutorial goal. Preserve original US dialogue/tokens and simulation ticks.
+
 ## 2026-10-13 — ID 3 — GSW[0] write set: chapter transition closed
 
 Solved the top open question on DEMO-01. The previous delivery called the
