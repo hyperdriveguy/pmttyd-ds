@@ -19,11 +19,11 @@ import extract_audio
 
 def stream_fixture(enabled=True):
     raw = bytearray(320)
-    struct.pack_into('>HHII', raw, 0, 0x200, 32000, 2, 8)
+    struct.pack_into('>HHIII', raw, 0, 0x200, 32000, 2, 16, 8 if enabled else 0xffffffff)
     for channel in range(2):
         header = 64 + channel * 96
-        struct.pack_into('>IIIHHIII', raw, header, 14, 16, 32000, enabled, 0, 4, 15, 2)
-        raw[256 + channel * 32:264 + channel * 32] = bytes([0, 0x11 * (channel + 1)]) + bytes(6)
+        struct.pack_into('>IIIHHIII', raw, header, 28, 32, 32000, enabled, 0, 18, 34, 2)
+        raw[256 + channel * 32:272 + channel * 32] = (bytes([0, 0x11 * (channel + 1)]) + bytes(6)) * 2
     return raw
 
 
@@ -75,13 +75,13 @@ class AudioAssetTests(unittest.TestCase):
             source = Path(directory) / 'source.stm'; pcm = Path(directory) / 'out.wav'
             source.write_bytes(stream_fixture())
             record = stm(source, pcm)
-            self.assertEqual(record['loop'], (2, 14))
+            self.assertEqual(record['loop'], (14, 28))
             verify_pcm(pcm, record)
             with wave.open(str(pcm), 'rb') as wav:
                 self.assertEqual(struct.unpack('<4h', wav.readframes(2)), (1, 2, 1, 2))
-            self.assertEqual(pcm.stat().st_size, 44 + 14 * 2 * 2)
-            # The exported interval preserves the intro then repeats only 2..13.
-            self.assertEqual(struct.unpack('<II', Path(str(pcm) + '.loop').read_bytes()), (2, 14))
+            self.assertEqual(pcm.stat().st_size, 44 + 28 * 2 * 2)
+            # The exported interval preserves the intro then repeats only 14..27.
+            self.assertEqual(struct.unpack('<II', Path(str(pcm) + '.loop').read_bytes()), (14, 28))
 
     def test_nonloop_removes_stale_sidecar_and_source_is_protected(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -94,10 +94,29 @@ class AudioAssetTests(unittest.TestCase):
             with self.assertRaises(ValueError): stm(source, source)
             self.assertEqual(source.read_bytes(), stream_fixture(False))
 
+    def test_container_nonloop_overrides_looped_dsp_channels(self):
+        # Original key-item fanfare has DSP loop1 but COMMON+0c ffffffff.
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / 'fanfare.stm'; pcm = Path(directory) / 'out.wav'
+            raw = stream_fixture(True)
+            struct.pack_into('>I', raw, 12, 0xffffffff)
+            source.write_bytes(raw)
+            Path(str(pcm) + '.loop').write_bytes(struct.pack('<II', 2, 14))
+            record = stm(source, pcm)
+            self.assertFalse(record['loop_enabled'])
+            self.assertIsNone(record['loop'])
+            self.assertEqual(record['container_loop_offset'], 0xffffffff)
+            self.assertEqual(record['samples'], 28)
+            self.assertFalse(Path(str(pcm) + '.loop').exists())
+            verify_pcm(pcm, record)
+            with wave.open(str(pcm), 'rb') as wav:
+                self.assertEqual(wav.getnframes(), 28)
+                self.assertEqual(struct.unpack('<4h', wav.readframes(2)), (1, 2, 1, 2))
+
     def test_invalid_loop_flags_bounds_and_truncated_stream(self):
         with tempfile.TemporaryDirectory() as directory:
             source = Path(directory) / 'source.stm'; pcm = Path(directory) / 'out.wav'
-            for offset, fmt, value in [(172, 'H', 0), (80, 'I', 40), (76, 'H', 2)]:
+            for offset, fmt, value in [(172, 'H', 0), (80, 'I', 80), (80, 'I', 4), (80, 'I', 2), (84, 'I', 16), (76, 'H', 2), (12, 'I', 3), (12, 'I', 16), (8, 'I', 8)]:
                 raw = stream_fixture(); struct.pack_into('>' + fmt, raw, offset, value)
                 source.write_bytes(raw)
                 with self.assertRaises(ValueError): stm(source, pcm)
@@ -129,7 +148,7 @@ class AudioAssetTests(unittest.TestCase):
             with self.assertRaises(ValueError): sample_directory(sdir)
             source = Path(directory) / 'source.stm'; pcm = Path(directory) / 'out.wav'
             source.write_bytes(stream_fixture()); record = stm(source, pcm)
-            Path(str(pcm) + '.loop').write_bytes(struct.pack('<II', 0, 15))
+            Path(str(pcm) + '.loop').write_bytes(struct.pack('<II', 0, 29))
             with self.assertRaises(ValueError): verify_pcm(pcm, record)
             pcm.write_bytes(pcm.read_bytes()[:-2])
             with self.assertRaises(ValueError): verify_pcm(pcm, record)

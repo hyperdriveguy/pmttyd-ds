@@ -39,10 +39,17 @@ def stm(input,output):
     if raw[:2]!=b'\x02\x00':raise ValueError('Not a TTYD STM')
     channels=u(raw,4);rate=struct.unpack_from('>H',raw,2)[0];stride=(u(raw,8)+32)//32*32
     if channels not in (1,2) or not 8000<=rate<=48000:raise ValueError('Invalid STM format')
+    # SoundSSPlayChEx_main reads COMMON+0c for loop admission. The DSP
+    # channel loop flag can remain1 even for original nonlooping fanfares.
+    # Keep channel bounds as codec metadata; COMMON's sentinel owns playback.
+    container_loop=u(raw,12)
     decoded=[];loop=None;loop_enabled=None
     for n in range(channels):
         header=64+n*96;count=u(raw,header);coefs=struct.unpack_from('>16h',raw,header+28)
         hist1,hist2=struct.unpack_from('>hh',raw,header+64)
+        if u(raw,header+20)!=u(raw,8)*2+2:raise ValueError('STM container/DSP loop end mismatch')
+        if container_loop!=0xffffffff and u(raw,header+16)!=container_loop*2+2:
+            raise ValueError('STM container/DSP loop start mismatch')
         decoded.append(decode(raw[256+n*stride:256+(n+1)*stride],count,coefs,hist1,hist2))
         enabled=struct.unpack_from('>H',raw,header+12)[0]
         if enabled not in (0,1):raise ValueError('Invalid STM loop flag')
@@ -52,6 +59,15 @@ def stm(input,output):
         if loop is not None and current!=loop:raise ValueError('Mismatched channel loops')
         loop=current;loop_enabled=enabled
     if len({len(x) for x in decoded})!=1:raise ValueError('Mismatched sample counts')
+    # The source PCM extent can finish partway through the final DSP frame.
+    # The supplied US streams use complete frame-aligned encoded loop offsets.
+    count=len(decoded[0]);total=u(raw,8)
+    if total!=((count+13)//14)*8:raise ValueError('STM container/DSP extent mismatch')
+    loop_enabled=container_loop!=0xffffffff
+    if loop_enabled:
+        if container_loop%8 or container_loop>=total:raise ValueError('Invalid STM container loop offset')
+        loop=(container_loop//8*14,count)
+        if not 0<=loop[0]<loop[1]:raise ValueError('Invalid STM container loop extent')
     pcm=array.array('h')
     if channels==1:pcm=decoded[0]
     else:
@@ -61,7 +77,7 @@ def stm(input,output):
     sidecar=Path(str(output)+'.loop')
     if loop_enabled:sidecar.write_bytes(struct.pack('<II',*loop))
     else:sidecar.unlink(missing_ok=True)
-    return {'source':str(input),'rate':rate,'channels':channels,'samples':len(decoded[0]),'loop':loop if loop_enabled else None,'loop_enabled':bool(loop_enabled),'conversion':'DSP ADPCM to PCM16; original rate, channels, and loop points retained'}
+    return {'source':str(input),'rate':rate,'channels':channels,'samples':len(decoded[0]),'loop':loop if loop_enabled else None,'loop_enabled':bool(loop_enabled),'container_loop_offset':container_loop,'loop_source':'STM COMMON+0c encoded restart offset; DSP sample count','conversion':'DSP ADPCM to PCM16; original rate/channels, container loop admission and codec loop points retained'}
 
 def sample_directory(path):
     raw=Path(path).read_bytes();out=[];o=0
