@@ -19,6 +19,7 @@
 #include "battle_general_rule.hpp"
 #include "battle_audience_sound.hpp"
 #include "battle_main.hpp"
+#include "battle_stage_floor.hpp"
 #include "battle_sequence_startup.hpp"
 #include "battle_drop_material.hpp"
 #include "battle_packed_pouch.hpp"
@@ -150,12 +151,7 @@ struct TrioAttackRuntime {
         case 0x80115648:output(e,0,int8_t(byte(word(0x8041eb00)+0x99)));return 2;
         case 0x80107ad4:word(Battle+0x1cc4,uint32_t(raw(e,0)));return 2;
         case 0x80107a64:for(unsigned i=0;i<8;++i){const auto parameter=value(e,i);if(uint32_t(parameter)!=0xf1194d80)word(Battle+0x1cc8+4*i,uint32_t(parameter));}return 2;
-        case 0x8010510c:{
-            const float x=float(value(e,0));const int32_t destination=raw(e,1);
-            const float z=float(value(e,2));const auto b=word(0x8041eb90);(void)x;
-            const float floor=z<=real(b+0x16f28)?0.f:real(b+0x16f30);
-            setEventValue(e,destination,int32_t(floor),vm.interpreterServices().operands);return 2;
-        }
+        case 0x8010510c:return battleStageFloorPositionEvent(e,nativeBattleUnitEventServices(vm),vm.platform.user,vm.platform.signedWordFloat);
         case 0x80056120:{std::array<int32_t,4> args{};for(unsigned i=0;i<4;++i)args[i]=value(e,i);e.locals[11]=args[0];e.locals[12]=args[1];e.locals[13]=args[2];e.locals[14]=0;e.locals[15]=args[3];return 2;}
         case 0x80055f90:{if(e.locals[11]!=5){if(!pending)pending=fn;return 0;}const auto sample=cameraInterpolation(e.locals[11],e.locals[14],e.locals[15],float(e.locals[12]),float(e.locals[13]));required(sample.has_value());setEventFloat(e,raw(e,0),*sample,vm.interpreterServices().operands);output(e,1,e.locals[14]<e.locals[15]?1:0);e.locals[14]=int32_t(uint32_t(e.locals[14])+1);return 2;}
         case 0x80105020:{const auto u=unit(e);std::array<int32_t,7> a{};for(unsigned i=0;i<7;++i)a[i]=value(e,i+1);const auto record=u+0x18c;word(record,uint32_t(a[0]));word(record+4,uint32_t(a[1]));half(record+0xc,a[2]);half(record+0xe,a[3]);half(record+0x10,a[3]);half(record+0x14,0);half(record+8,a[5]);half(record+0xa,a[6]);word(record+0x18,0xffffffff);return 2;}
@@ -348,7 +344,7 @@ struct TrioAttackRuntime {
         allocateEventBattleMapPool(m);
         word(0x8041e844,0);vm.gp.refreshRate=60;vm.gp.timestamp=now*eventClockRate(243000000);vm.initializeContexts();vm.gp.battleContext=1;
         half(Battle+8,2);half(Battle+0x10,1);
-        real(Battle+0x16f28,90);real(Battle+0x16f30,-50); // Source fresh BattleStageInit floor fields.
+        initializePackedBattleStageFloorFields(Battle,nativeBattleActorServices(vm).memory);
         for(unsigned i=0;i<64;++i)word(Battle+0x16f5c+8*i,0xffffffff);
         for(unsigned i=0;i<28;++i)byte(Battle+0x18da0+12*i,0xff);
         half(Battle,0);word(Battle+0xf14,0x0300004c);word(Battle+0xf18,0x04000002);word(Battle+0xf1c,0x05000009);word(Battle+0xf20,0x06000007);

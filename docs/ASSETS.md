@@ -1742,3 +1742,17 @@ ISO offset991157056,size13044,SHA256
 75f6c76940df2609dcfbfcdf42bd6f108a653fd7a8d25154c6f906c24d641eb5.
 The current combined catalog JSON retains its earlier east-setup provenance
 field; this separate record identifies the additional plaza source.
+
+## 2026-10-13 — Original native stage-floor services
+
+The shared floor consumer uses existing private DOL segments; no source payload,
+texture or dialogue changes are introduced. The read-only verifier pins
+TransStageFloorPosition8010510c/c0, BattleGetFloorHeight800f7b84/50,
+BattleStageGetPtr80139864/10, BattleStageInit80139780/e4 and constants
+80422b44/8 (90.0/-50.0),80422170/4 (positive zero). Only the two source
+floor-field initialization writes are installed, not all StageInit transitive
+services. The full floor helper and event wrapper retain global stage ownership
+and mutable packed fields for tutorial and ordinary combat.
+See [native scope](behavior/battle/NATIVE_STAGE_FLOOR_AND_JUMP_RECOVERY.md).
+Nintendo/Intelligent Systems original resources; no redistribution rights.
+ISO remains read-only; private packs remain ignored.
