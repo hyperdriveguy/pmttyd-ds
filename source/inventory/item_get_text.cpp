@@ -7,4 +7,9 @@ std::string expandUsItemGetText(std::string text,const char* name) {
  const bool vowel=*name && std::strchr("AEIOUaeiou",*name);
  replace("<AN>",vowel?"an ":"a ");replace("<ITEM>",name);return text;
 }
+std::string expandUsCoinGetText(std::string text,int32_t amount) {
+ const auto number=text.find("<NUM>");if(number!=std::string::npos)text.replace(number,5,std::to_string(amount));
+ const auto suffix=text.find("<S>");if(suffix!=std::string::npos)text.replace(suffix,3,amount==1?"":"s");
+ return text;
+}
 }

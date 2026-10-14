@@ -1201,3 +1201,9 @@ target_sources(ttyd_core PRIVATE source/battle/battle_ap_report.cpp source/battl
 add_executable(battle_ap_report_tests tests/battle_ap_report_tests.cpp)
 target_link_libraries(battle_ap_report_tests PRIVATE ttyd_core)
 add_test(NAME battle_ap_report COMMAND battle_ap_report_tests)
+
+target_sources(ttyd_core PRIVATE source/field/field_coin_get.cpp)
+add_executable(field_coin_get_tests tests/field_coin_get_tests.cpp)
+target_link_libraries(field_coin_get_tests PRIVATE ttyd_core)
+add_test(NAME field_coin_get COMMAND field_coin_get_tests)
+set_tests_properties(field_coin_get PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
