@@ -106,8 +106,8 @@ Differences from the stream route:
 ## Effect route (`0x800da204`..`0x800da330`) — no channel probe
 
 ```asm
-800da204: lhz     0, 6(25)             ; slot[+0x06]
-800da208: rlwinm  0, 0, 0, 30, 30      ; bit 30
+800da204: lhz     0, 6(25)             ; slot[+0x06]  (SIGN-EXTENDED)
+800da208: rlwinm  0, 0, 0, 30, 30      ; mask 0x40000000, on a sign-extended halfword
 800da20c: bt      2, 0x800da2bc         ; clear -> non-positional route
 800da210: lbz     4, 8(25)             ; slot[+0x08] volume
 ...
@@ -132,6 +132,41 @@ Differences again:
   When clear, control goes to `0x800da2bc`, a route that does not call
   `calc3D`.
 
+### What "bit 30" actually tests
+
+The mask `0x40000000` is applied to a value just produced by `lhz`, which
+**sign-extends** a 16-bit halfword into bits 16..31. Bit 30 lies entirely
+inside that sign-extension region, so it is set exactly when bit 15 is —
+i.e. when the halfword is **negative as `int16`**.
+
+```cpp
+// (int16)slot->flags & 0x8000   --  nothing to do with 0x40000000
+if ((int16_t)slot->flags < 0) { /* calc3D spatial route */ }
+```
+
+A reader taking "bit 30" literally would hunt for `0x40000000` in the
+provisioner, find nothing, and wrongly conclude the route is dead. This
+note exists to prevent that.
+
+The field is **not** cleared before this test. The preceding pair
+`rlwinm 0, 3, 0, 24, 22` / `sth 0, 6(25)` at `0x800DA044` has mask
+`0xFF7FFFFF` — MB > ME, a wrapped range that **includes** bits 0..15 — so it
+normalises a sign-extended value to a zero-extended one and preserves the
+low 16 bits. The genuine clear is `rlwinm 0, 0, 0, 16, 30` at `0x800DA390`
+(mask `0x7FFF0000`, MB <= ME, so bits 0..15 fall outside the mask), and it
+sits in the **live** pass at `0x800DA38C`, *after* this startup test.
+
+### Two `calc3D` call sites, only one of them live
+
+| Site | Guard | Role |
+|------|-------|------|
+| `0x800DA264` | sign of `slot+0x06` (above) | startup / pending-start route |
+| `0x800DA3F8` | none; reached from the live pass after the convergence at `0x800DA36C` | **per-frame spatial update for playing sounds** |
+
+The live site is the one that runs every frame. Immediately after it the
+routine re-reads `row.word1` and dispatches on bit 0 to `SoundSSSetPanCh`,
+so the live spatial update serves the stream backend too, not only effects.
+
 Both effect follow-ups follow the `-1` handle guard at
 `0x800da28c` (`addis 0,3,1; cmplwi 0,65535`), so a failed `SoundEfxPlayEx`
 skips `SoundEfxSetVolume`.
@@ -145,7 +180,7 @@ skips `SoundEfxSetVolume`.
 | Stale-stop sweep | **yes** | no | no |
 | Resource field | `row.word2` | `row.word1 & 0xF` | `row.word1 & 0xFFFF` |
 | Exhaustion | handle `-1` | handle `-1` | handle from backend |
-| Spatial route | no | no | **bit 30** of `slot+0x06` |
+| Spatial route | no | no | **sign** of `slot+0x06` as int16 |
 | Services | `PlayCh`, `SetPanCh`, `SetVolCh`, `SetSrndPanCh`, `GetVolCh`, `StopCh`, `Check` | `PlayCh`, `SetVolCh`, `GetVolCh`, `Check`, `StopCh` | `PlayEx`, `SetVolume`, `GetVolume`, `SetPitch`, `SetPan`, `SetSrndPan`, `SetAux1`, `Check`, `Stop` |
 
 ## Porting notes
@@ -166,14 +201,20 @@ skips `SoundEfxSetVolume`.
    processing.
 5. Bit 30 of `slot+0x06` is what routes an effect through `calc3D`.
    `__psndSFXOn` sets bits 1, 2, 4, 16, 32, 128, 256, 512, 640, 1024 and
-   2048 but **not** bit 30, so where bit 30 comes from is open (see gaps).
+   2048 (maximum `0xBB7`) but **not** bit 15, so what makes the field
+   negative is open (see gaps).
 
 ## Remaining gaps
 
-- **Who sets bit 30 of `slot+0x06`.** `__psndSFXOn` does not, and the
-  `sth 0, 6(25)` at `0x800DA048` clears the whole field for engine-backed
-  slots each frame. The route therefore depends on state set outside the
-  positional-SFX family, and that writer was not located.
+- **Who sets bit 15 of `slot+0x06`** (equivalently, what makes the
+  halfword negative). `__psndSFXOn` builds the field from a `0x101` base
+  plus conditional ORs of 2, 4, 16, 32, 128, 256, 512, 640, 1024 and 2048 —
+  a maximum of `0xBB7` — so bit 15 is never set by the provisioner. No
+  store to `slot+0x06` elsewhere in `pmario_sound.o` supplies it either;
+  the only other writer is `sth 5, 6(6)` in `psndInit`. Either the startup
+  spatial route is dead for provisioner-produced slots, or a writer outside
+  this family exists. **Not determined.**
+- The live `calc3D` site at `0x800DA3F8` and its `PAN` consumer chain.
 - The later half of the function (from `0x800DA330` to the epilogue): the
   per-frame volume/pan/pitch updates for already-playing sounds, which
   account for most of the remaining `SoundSSSetVolCh` /

@@ -962,6 +962,58 @@ produced would be an artifact.
 pitch updates for already-playing sounds and accounts for most of the
 remaining backend call sites.
 
+### ID 3, 2026-10-13 — correction: `rlwinm` masks, and which `calc3D` call site is live
+
+A follow-up correction to my own dispatch delivery, and a correction of a
+correction I made while checking it.
+
+**My "bit 30" reading was mislabelled.** The test is
+`lhz 0, 6(25)` then `rlwinm 0, 0, 0, 30, 30`, mask `0x40000000`, applied to
+a value `lhz` just **sign-extended**. Bit 30 lies wholly inside the
+sign-extension region, so it is set exactly when **bit 15** is — i.e. the
+condition is *`(int16)slot+0x06 < 0`*. The contract now says so in code
+form, because a reader who takes "bit 30" literally hunts for `0x40000000`
+in the provisioner, finds nothing, and wrongly concludes the route is dead.
+
+**A claim I made earlier this session was wrong.** I documented
+`0x800DA048` (`rlwinm 0, 3, 0, 24, 22` / `sth 0, 6(25)`) as *clearing*
+`slot+0x06`. It does not. `rlwinm` with **MB > ME** builds a wrapped mask
+that includes bits 0..15 — here `0xFF7FFFFF` — so the store **preserves**
+the low 16 bits and merely normalises a sign-extended halfword to a
+zero-extended one. The real clear is `rlwinm 0, 0, 0, 16, 30` at
+`0x800DA390` (MB <= ME, mask `0x7FFF0000`, low 16 outside the mask), and
+that one is in the **live** pass, after the startup test. Both
+[AUDIO_FRAME_DRIVER_AND_SFX_UPDATE](../behavior/audio/AUDIO_FRAME_DRIVER_AND_SFX_UPDATE.md)
+and the dispatch contract are corrected, with the two masks tabulated
+side by side so they are not conflated again.
+
+I reached the wrong conclusion twice here by reasoning about `rlwinm` in my
+head instead of computing it. Decoding both mask cases in Python — including
+the MB>ME wrap — is what settled it, and it is now recorded in the
+contract.
+
+**Substantive finding: there are two `calc3D` call sites, and only the
+second is live.**
+
+| Site | Guard | Role |
+| --- | --- | --- |
+| `0x800DA264` | sign of `slot+0x06` | startup / pending-start route |
+| `0x800DA3F8` | none; live pass after the convergence at `0x800DA36C` | **per-frame spatial update** |
+
+The live site runs every frame for playing sounds and is followed by a
+`row.word1` bit-0 dispatch to `SoundSSSetPanCh`, so the live spatial update
+also serves the stream backend — not only effects, as my dispatch doc
+implied.
+
+**Still open, unchanged:** what sets bit 15 of `slot+0x06`. The provisioner
+tops out at `0xBB7`, and the only other writer in `pmario_sound.o` is
+`sth 5, 6(6)` in `psndInit`. Either the startup spatial route is dead for
+provisioner-produced slots or a writer outside this family exists; **not
+determined**. A binary-wide search for any `addi`/`oris` loading `0x4000`
+found no candidate in `pmario_sound.o`, which is consistent with the
+provisioner never setting it and does not rule out a `stw` of data-derived
+value from elsewhere.
+
 ## Answers and delivery notes
 
 ### ID 3, 2026-10-12 — `BtlUnit_snd_se_pos` / `psndSFX_pos` / `psndSFXOff` complete bodies

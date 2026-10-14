@@ -2,6 +2,18 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — ITEM-01 removal symmetry: pouchRemoveItem
+
+Delivered behavior/battle/POUCH_REMOVE_ITEM.md: table select (held/key/
+badge with verified +0x192/+0xA0/+0x1FA/+0x38A offsets), 10/20/121/200
+capacities, scan-and-compact with single/dual-table variants, TRUE/FALSE
+returns — matching the snapshot source branch for branch. Strengthens
+ITEM-01 todo 1 alongside the acquisition contract.
+
+Validation: offset/capacity/branch re-checks, link audit, diff --check
+clean. Docs-only, no make rerun. Next: effects/consumption, save mapping.
+Full-game incomplete.
+
 ## 2026-10-13 — Original item95 name/help window owner and native drawing
 
 Committed `37e7946`: finite original name/help definitions, explicit manager
@@ -844,6 +856,19 @@ worktree was not touched. Next: await the
 DEMO-01/RESULT-01/GSF-01/TRACE-01/ITEM-01/PARTNER-FULL-01 answers (DEMO-01 and
 GSF-01 already have bounded deliveries) and verify any candidate fix against the
 ISO before applying it. Full-game incomplete.
+
+## 2026-10-13 — ITEM-01 todo 1 slice: pouch acquisition dispatch
+
+Delivered behavior/battle/POUCH_GET_ITEM_DISPATCH.md for requests/ITEM-01.md
+(todo 1 core): verified type-id routing, slot bases +0xA0/+0x192 and 10/20
+capacity against the snapshot layout, single shared pouch pointer, 1/0
+returns with compaction. Tightened two loose routing claims pre-commit
+(capped-counter identity, member-scan shape). Recorded the delivery in the
+request file without touching request text. Todos 2–4 (effects, save,
+acquisition sites) stay open.
+
+Validation: structural re-checks, link audit, diff --check clean. Docs-only,
+no make rerun. Full-game incomplete.
 
 ## 2026-10-13 — First-demo result Escape-domain override producer
 
@@ -7522,6 +7547,59 @@ Next tasks:
    have dropped rows from it. Worth an owner check before it is treated as
    a reliable index.
 
+## 2026-10-13 — `rlwinm` masks and the live `calc3D` site: two corrections (ID 3)
+
+Chasing the bit-30 writer flagged in the previous entry produced two
+corrections to my own work, one of them to a correction I made while
+checking.
+
+**"Bit 30" was a mislabel.** `lhz 0, 6(25)` **sign-extends**, and the mask
+`0x40000000` sits wholly inside the sign-extension region, so the condition
+is really `(int16)slot+0x06 < 0` — bit 15. That matters: a reader taking
+"bit 30" literally hunts for `0x40000000` in the provisioner, finds nothing,
+and wrongly concludes the spatial route is dead. The contract now states it
+in code form.
+
+**A documented claim was wrong.** I had written that `0x800DA048`
+(`rlwinm 0, 3, 0, 24, 22` / `sth 0, 6(25)`) *clears* `slot+0x06`. It does
+not: with **MB > ME** the mask wraps and **includes bits 0..15**
+(`0xFF7FFFFF`), so the store preserves the low 16 and merely normalises a
+sign-extended halfword. The genuine clear is `rlwinm 0, 0, 0, 16, 30` at
+`0x800DA390` (MB <= ME, mask `0x7FFF0000`) — in the **live** pass, after
+the startup test. Both masks are now tabulated side by side so they cannot
+be conflated again.
+
+I reached the wrong answer twice by reasoning about `rlwinm` mentally
+instead of computing it. Decoding both cases — including the MB>ME wrap — in
+Python is what settled it, and the result is recorded.
+
+**Substantive finding: two `calc3D` sites, one live.** `0x800DA264` sits in
+the startup path behind the sign guard; `0x800DA3F8` sits in the live pass
+with no such guard and runs every frame for playing sounds, followed by a
+`row.word1` bit-0 dispatch to `SoundSSSetPanCh`. So the per-frame spatial
+update serves the stream backend too — my dispatch doc implied effects
+only, and is corrected.
+
+**Still open, honestly:** what sets bit 15 of `slot+0x06`. The provisioner
+tops out at `0xBB7`; the only other writer in `pmario_sound.o` is
+`sth 5, 6(6)` in `psndInit`. A binary-wide scan for any `addi`/`oris`
+loading `0x4000` found nothing in `pmario_sound.o`, which is consistent
+with the provisioner never setting it but does **not** rule out a `stw` of a
+data-derived value from another file. Either the startup spatial route is
+dead for provisioner-produced slots or an external writer exists; **not
+determined**.
+
+Docs-only; `make test` / `make all` not rerun.
+
+Next tasks:
+
+1. The bit-15 writer for `slot+0x06`, searching outside `pmario_sound.o`
+   (the remaining blocker on the effect startup route).
+2. The live `calc3D` site `0x800DA3F8` and its `PAN` consumer chain.
+3. Remaining EVT-01 todos: `evtmgrCmd` opcode bodies, NormalJump
+   registration writers, `CommandGetWeaponAddress`/`SelectWeapon` cursor
+   modes, `BATTLE_UNIT_QUERY_EVENT_LEAVES` prose reconciliation.
+
 ## 2026-10-13 — `psndSFXMain` backend dispatch conditions (ID 3)
 
 [POSITIONAL_SFX_BACKEND_DISPATCH](behavior/audio/POSITIONAL_SFX_BACKEND_DISPATCH.md).
@@ -10304,6 +10382,42 @@ exit/context/sequence/result publication and original runtime/hardware parity
 remain open. Full playable prologue and original-fidelity return are unfinished;
 goal remains active.
 
+Secondary heading source inspection corrected Stardust mode4 lifetimes to
+20/22/24/26 (separate from owner32), signed-ADDI vertex base803a91c8, eight
+original texture32 strip windows and source jump permutation/palette/scale
+bytes. Recorded the used-domain findings in the heading contract without
+claiming a particle consumer. Global RNG continuity and effect/display queue
+ordering remain required for that consumer.
+
+### 2026-10-13 original heading Stardust mode4 consumer
+
+Bound the used Stardust mode4 requests to actual original effect_n64.tpl32
+GPU admission/draw, original eight quad arrays/frame permutation, palette,
+scale curve, lifetimes20/22/24/26, source gravity/damping and calculation order.
+The common entry prologue consumes two radius rand calls before angular and
+acceleration rand calls: four per particle. RadiusX=(rand%40000)/1000,
+radiusY=(rand%8000)/1000; the previous fixed-radius interpretation was wrong
+and has been corrected in code/evidence. Original rand recurrence uses an
+explicit native presentation seed1. Existing groups tick before new display
+requests at60Hz; these are documented adaptations, with no claim of original
+global RNG history or source effect-manager/display queue continuity. Real
+particle bank/texture admission is required before heading display readiness;
+there is no substitute Crystal mask or unbound request acknowledgment.
+
+Validation: make test172/172 CTest and111/111 Python, including original
+entry/main/display/rand/data hashes and actual exported quad/scale/constants;
+make -j8 all builds normal ttyd-2ds.3dsx after restoring temporary private main
+fixture. Logs artifacts/heading-stardust-tests.log and heading-stardust-all-final.log.
+py_compile and git diff --check pass. check_doc_links checks963 files with one
+preexisting missing house-audio contract link in this isolated baseline, no new
+broken heading links. Isolated Azahar artifacts/azahar-heading-stardust private
+fixture captures original colored particle draws around spinning glyphs at
+star-130/140, App60/58FPS, without resource failure or native exception. The
+fixture uses original resources and no synthesized rendering assets; its
+temporary scene-entry injection is absent from committed source. Full natural
+Voyage→heading→Wake integration and original/hardware raster parity remain
+parent validation work; source projective rainbow glyph TEV remains incomplete.
+
 ## 2026-10-13 — Original Goombella HP pose request and Main initialization
 
 Joined ending now reads signed canonical party HP at14*K+6, chooses original
@@ -10386,42 +10500,6 @@ zero initialization does not prove silence. Authored joining, shared actor
 render/lifetime, general FbattlePost placement and full original prologue
 performance/parity remain unfinished; goal remains active.
 
-Secondary heading source inspection corrected Stardust mode4 lifetimes to
-20/22/24/26 (separate from owner32), signed-ADDI vertex base803a91c8, eight
-original texture32 strip windows and source jump permutation/palette/scale
-bytes. Recorded the used-domain findings in the heading contract without
-claiming a particle consumer. Global RNG continuity and effect/display queue
-ordering remain required for that consumer.
-
-### 2026-10-13 original heading Stardust mode4 consumer
-
-Bound the used Stardust mode4 requests to actual original effect_n64.tpl32
-GPU admission/draw, original eight quad arrays/frame permutation, palette,
-scale curve, lifetimes20/22/24/26, source gravity/damping and calculation order.
-The common entry prologue consumes two radius rand calls before angular and
-acceleration rand calls: four per particle. RadiusX=(rand%40000)/1000,
-radiusY=(rand%8000)/1000; the previous fixed-radius interpretation was wrong
-and has been corrected in code/evidence. Original rand recurrence uses an
-explicit native presentation seed1. Existing groups tick before new display
-requests at60Hz; these are documented adaptations, with no claim of original
-global RNG history or source effect-manager/display queue continuity. Real
-particle bank/texture admission is required before heading display readiness;
-there is no substitute Crystal mask or unbound request acknowledgment.
-
-Validation: make test172/172 CTest and111/111 Python, including original
-entry/main/display/rand/data hashes and actual exported quad/scale/constants;
-make -j8 all builds normal ttyd-2ds.3dsx after restoring temporary private main
-fixture. Logs artifacts/heading-stardust-tests.log and heading-stardust-all-final.log.
-py_compile and git diff --check pass. check_doc_links checks963 files with one
-preexisting missing house-audio contract link in this isolated baseline, no new
-broken heading links. Isolated Azahar artifacts/azahar-heading-stardust private
-fixture captures original colored particle draws around spinning glyphs at
-star-130/140, App60/58FPS, without resource failure or native exception. The
-fixture uses original resources and no synthesized rendering assets; its
-temporary scene-entry injection is absent from committed source. Full natural
-Voyage→heading→Wake integration and original/hardware raster parity remain
-parent validation work; source projective rainbow glyph TEV remains incomplete.
-
 ## 2026-10-13 — Primary original heading Stardust consumer
 
 Primary now consumes the original used mode4 Stardust request with original
@@ -10436,6 +10514,44 @@ scoped opening/frontend/message25/25 and Python122/122 passed. Full CTest
 harbor_encounter_original fixtures failed (full log preserved). Actual isolated
 particle rendering was reviewed by its owner at58–60FPS; the final combined
 map-transition/sky/particle flow still needs its updated native smoke.
+
+## 2026-10-13 — General Rule judgment and source audience storage
+
+Implemented portable full68-case original general Rule judge, retaining
+explicit-B Mario/party query prefix, signed HP/null handling, ordered byte
+sums, fresh helper thresholds, captured versus helper status write ownership,
+unsigned direct turn rules/no255 bypass and source duplicate/last-byte cases.
+Byte-identical end/turn zero helper algorithm is reused without merging cadence.
+Native ending now writes real fresh Rule0 descriptor byte19=6 after field
+restoration, then holds at AudienceSoundStop8019fd68. No story/result/sequence/
+control change or teardown acknowledgment is inferred from that status.
+
+Corrected all native audience idle/phase/turn-end/ending owners to original
+inline BattleWork+2858. Removed synthetic Work+400 pointer; existing19100 RAM
+covers source19098 and sound bank including slot1 B+15c78. This is real backed
+layout/initial bytes, not full Audience_Init/crowd/applause playback history.
+Two Clap requests remain retained; source docs reject inferring ending silence
+from zero creation state. Next crowd population source audit requested.
+
+Validation: make test187/187 CTest +122/122 Python and make all passed
+(artifacts/trio-general-rule-tests-final.log and trio-general-rule-all.log).
+Earlier run correctly failed old audience counter assertions after relocation;
+updated source-relative flags/state/chance/counter checks, then full rerun green.
+The previous harbor approach failure is now resolved by its separate work.
+Original rule verifier passed8 bodies/390 anchors/2 spans/60 direct sites
+(trio-general-rule-source.log); audit confirmed57 scalar/HP modes and ordered
+fields match verified source contract (trio-general-rule-selector-audit.log).
+Behavior checks cover prefix/query order, helper recapture and distinct outputs,
+wide sums, negative HP, null Mario, ignored rules, threshold/255 and duplicate
+field cases. Native trio checks actual Rule0 status and unchanged audience
+phase/RNG counter behavior at original offsets. Scoped diff/link checks pass.
+No new emulator/original-runtime or hardware capture; full fidelity unverified.
+
+Next real crowd/count/clap/record/SFX backend, then sound stop, BattleEnd64-unit
+resource release, map/smart/context/NPC/event restoration and exact ending
+flag/counter/sequence/result publication. Authored join, live field actor draw/
+lifetimes, general FbattlePost placement and full prologue parity remain open.
+Goal remains active; this is not a complete playable field return.
 
 ### Opening map display correction (isolated dialogue/camera branch)
 
@@ -10721,44 +10837,6 @@ and retain the source sailing track after late acceptance rather than inventing
 an opening-track On. The isolated older Voyage producer is deliberately not
 substituted for the parent boat implementation. New GPU display ownership lives
 in display/OPENING_MAP_TURN_CAPTURE.md, with links from the story contract.
-
-## 2026-10-13 — General Rule judgment and source audience storage
-
-Implemented portable full68-case original general Rule judge, retaining
-explicit-B Mario/party query prefix, signed HP/null handling, ordered byte
-sums, fresh helper thresholds, captured versus helper status write ownership,
-unsigned direct turn rules/no255 bypass and source duplicate/last-byte cases.
-Byte-identical end/turn zero helper algorithm is reused without merging cadence.
-Native ending now writes real fresh Rule0 descriptor byte19=6 after field
-restoration, then holds at AudienceSoundStop8019fd68. No story/result/sequence/
-control change or teardown acknowledgment is inferred from that status.
-
-Corrected all native audience idle/phase/turn-end/ending owners to original
-inline BattleWork+2858. Removed synthetic Work+400 pointer; existing19100 RAM
-covers source19098 and sound bank including slot1 B+15c78. This is real backed
-layout/initial bytes, not full Audience_Init/crowd/applause playback history.
-Two Clap requests remain retained; source docs reject inferring ending silence
-from zero creation state. Next crowd population source audit requested.
-
-Validation: make test187/187 CTest +122/122 Python and make all passed
-(artifacts/trio-general-rule-tests-final.log and trio-general-rule-all.log).
-Earlier run correctly failed old audience counter assertions after relocation;
-updated source-relative flags/state/chance/counter checks, then full rerun green.
-The previous harbor approach failure is now resolved by its separate work.
-Original rule verifier passed8 bodies/390 anchors/2 spans/60 direct sites
-(trio-general-rule-source.log); audit confirmed57 scalar/HP modes and ordered
-fields match verified source contract (trio-general-rule-selector-audit.log).
-Behavior checks cover prefix/query order, helper recapture and distinct outputs,
-wide sums, negative HP, null Mario, ignored rules, threshold/255 and duplicate
-field cases. Native trio checks actual Rule0 status and unchanged audience
-phase/RNG counter behavior at original offsets. Scoped diff/link checks pass.
-No new emulator/original-runtime or hardware capture; full fidelity unverified.
-
-Next real crowd/count/clap/record/SFX backend, then sound stop, BattleEnd64-unit
-resource release, map/smart/context/NPC/event restoration and exact ending
-flag/counter/sequence/result publication. Authored join, live field actor draw/
-lifetimes, general FbattlePost placement and full prologue parity remain open.
-Goal remains active; this is not a complete playable field return.
 
 ## 2026-10-13 — Primary map turn integration checks
 

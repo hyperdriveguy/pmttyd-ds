@@ -116,7 +116,7 @@ the 40-slot table size that `pssfx`'s 1600-byte size also implies.
 800da03c: addi    29, 29, 1           ; count live slots
 800da040: bt      2, 0x800da398        ; low 5 clear -> local/software route
 800da044: rlwinm  0, 3, 0, 24, 22
-800da048: sth     0, 6(25)            ; slot+0x06 = 0   <-- cleared
+800da048: sth     0, 6(25)            ; slot+0x06 = NORMALISED (low16 kept)
 800da04c: lhz     3, 14(25)           ; slot+0x0e (lifetime counter)
 800da050: cmplwi  3, 0
 800da058: addi    0, 3, -1
@@ -124,10 +124,31 @@ the 40-slot table size that `pssfx`'s 1600-byte size also implies.
 800da060: b       0x800da9d0          ; next slot
 ```
 
-For an engine-backed slot the routine **clears `slot+0x06` outright and
+For an engine-backed slot the routine **normalises `slot+0x06` and
 decrements the lifetime counter at `slot+0x0e`**, skipping the slot once
 the counter reaches zero. That is a countdown lifetime in frames, distinct
 from the engine's own voice end that phase 1 reaps.
+
+**Correction (ID 3, 2026-10-13).** An earlier version of this document
+said `slot+0x06` is "cleared outright" at `0x800DA048`. That was wrong.
+`rlwinm rA, rS, 0, MB=24, ME=22` has **MB > ME**, so its mask is the
+wrapped range `bits 24..31 | bits 0..22` = `0xFF7FFFFF`. Bits 0..15 are
+**inside** the mask and survive, so the `sth` stores the value's low 16
+bits unchanged: the instruction converts a sign-extended halfword back to
+a zero-extended one.
+
+The two masks used in this function behave differently and must not be
+conflated:
+
+| Site | Instruction | Mask | Effect of the following `sth` |
+|------|-------------|------|--------------------------------|
+| `0x800DA044` | `rlwinm 0,x,0,24,22` | `0xFF7FFFFF` (MB>ME) | low 16 **preserved** — normalisation |
+| `0x800DA390` | `rlwinm 0,0,0,16,30` | `0x7FFF0000` (MB<=ME) | low 16 **zeroed** — a true clear |
+
+Only the second one clears the field, and it sits in the **live** pass at
+`0x800DA390`, after the startup dispatch. That ordering is what lets the
+startup path's own `slot+0x06` test see the pre-clear value; see
+[POSITIONAL_SFX_BACKEND_DISPATCH](POSITIONAL_SFX_BACKEND_DISPATCH.md).
 
 ### Channel dispatch
 
