@@ -94,3 +94,35 @@ Neither setup nor gate proves class selection/query-event reachability.
 and complete downstream Input/event routing are still needed before asserting
 that every selected-weapon query has an initialized cursor output. The wider
 native Game binding and original platform execution remain open.
+
+## Portable implementation (2026-10-14)
+
+[Shared act-menu control](../../../source/battle/battle_act_menu.cpp) implements
+complete Setup/End/Main/position gate/cursor-init bodies against original packed
+addresses and a [typed original request interface](../../../include/battle/battle_act_menu.hpp).
+UI Init/End, class-table/weapon production, source cursor getters and other
+callees remain provider requests; readiness failure is optional/nullopt after
+preceding effects, not a source0 return or suspended stack. The known original
+Display Main identity remains its documented blr service boundary. Source
+Main returns local0/1 independently of any display/helper scalar result.
+
+Setup retains F, requests builder/cursor/UI in order, then reads current flags
+and M558 before the exact nine resets. Cursor counts and excluded498/4a4/510
+are preserved. End clears only bit1(value1) after its UI provider. Position
+checks captured flags, retained Mario then Party, signed move bytes and ordered
+short-circuit status1/2/9/27; the Mario-only104 restriction is not added to Party.
+Main preserves live class-count validation, retained row/type, reason precedence,
+wrapped signed timer, post-camera pending gates, fresh selected row after sound,
+all14 type routes/default, type2 zero/nonzero result policy, source reason reads
+after End, navigation priority and post-sound cursor reloads, audience ordering
+and the fresh repeated position query. No touch-only input, renamed source key,
+clamp, generated sound or replacement menu style is introduced.
+
+[Host fixtures](../../../tests/battle_act_menu_tests.cpp) verify these owner/order
+and boundary cases including UI/sound mutations, zero-count navigation, timer
+wrap, disabled reason preservation and different answers to repeated position
+gates. The unchanged read-only verifier pins24 bodies/3 spans/472 instructions
+for six complete source bodies and18 linked callee identities. No original
+runtime observation or rendered class menu is claimed. Native class-table and
+UI constructors, provider registration into Harbor Input, Game first-act/turn
+scheduling and original menu rendering remain required before normal playback.

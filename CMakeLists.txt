@@ -1250,3 +1250,12 @@ target_sources(ttyd_core PRIVATE source/battle/battle_command_pose.cpp)
 add_executable(battle_command_pose_tests tests/battle_command_pose_tests.cpp)
 target_link_libraries(battle_command_pose_tests PRIVATE ttyd_core)
 add_test(NAME battle_command_pose COMMAND battle_command_pose_tests)
+
+# Link the already committed original native display footer owner.
+target_sources(ttyd_core PRIVATE source/battle/battle_display_footer.cpp)
+
+# Complete original class-menu control, setup/end and position gate.
+target_sources(ttyd_core PRIVATE source/battle/battle_act_menu.cpp)
+add_executable(battle_act_menu_tests tests/battle_act_menu_tests.cpp)
+target_link_libraries(battle_act_menu_tests PRIVATE ttyd_core)
+add_test(NAME battle_act_menu COMMAND battle_act_menu_tests)
