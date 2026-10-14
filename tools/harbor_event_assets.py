@@ -55,7 +55,7 @@ def build(iso=DEFAULT_ISO):
  (work/'manifest.json').write_text(json.dumps(dict(event=event,callbacks=called,sections=sections,actors=actors,foreign=foreign,source='rel/gor.rel',license='Original Nintendo/Intelligent Systems local data; no redistribution rights'),indent=2)+'\n')
  # Retain the original pose IDs requested by this event, including effect-bank poses.
  tpl=work/'a_mario.tpl';extract(iso,'a/a_mario-',tpl);models=[]
- for bank,poses in [('a_mario',['M_S_1','M_W_1','M_J_1B','M_J_1C']),('e_mario',['M_I_N','M_N_H'])]:
+ for bank,poses in [('a_mario',['M_S_1','M_W_1','M_R_1','M_J_1B','M_J_1C']),('e_mario',['M_I_N','M_N_H'])]:
   model=work/bank;extract(iso,'a/'+bank,model)
   if model.read_bytes()[0x44:0x84].split(b'\0')[0]!=b'a_mario':raise ValueError('Unexpected Mario texture owner')
   models.append((model,tpl,poses))

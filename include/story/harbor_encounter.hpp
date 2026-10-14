@@ -8,7 +8,7 @@ namespace ttyd {
 bool loadHarborEncounterAssets(const char* root);
 struct HarborEncounterActor {
     std::array<float,3> position{};float yaw=90;uint32_t flags=0;
-    bool moving=false;std::string pose="M_S_1";uint64_t poseAt=0;
+    bool moving=false;float speed=0;std::string pose="M_S_1";uint64_t poseAt=0;
 };
 struct HarborEncounterCamera {std::array<float,3> eye{},at{};int duration=0,curve=11;};
 struct HarborEncounterRequest {uint32_t function=0,command=0;uint64_t time=0;std::vector<int32_t> operands;};
@@ -16,7 +16,7 @@ struct HarborEncounterRuntime;
 class HarborEncounter {
 public:
     bool triggered=false,finished=false,failed=false,admitted=false;
-    bool controlEnabled=true,battleRequested=false;
+    bool controlEnabled=true,battleRequested=false,scriptedJump=false;
     int keyDepth=0,battleSetup=-1,hp=10;int32_t story=4;
     uint32_t speaker=0,pendingService=0;uint64_t now=0;
     std::array<HarborEncounterActor,5> actors{}; // Mario,Goombella,Crump,A,B.

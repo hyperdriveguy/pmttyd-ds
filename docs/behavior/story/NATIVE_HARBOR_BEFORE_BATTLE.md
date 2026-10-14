@@ -34,7 +34,8 @@ print-entry anchors. Mario's original M_I_N/M_N_H effect-bank clips and ordinary
 M_S_1/M_W_1/jump clips use original a_mario textures; no pose aliases or redraws
 are fabricated. Camera requests use the existing source interpolation adapter.
 NPC movement uses the existing native linear speed bridge; original driver
-stepping/easing/collision, automatic poses and display yaw remain unbound.
+stepping/easing/collision remain unbound. Original automatic pose profiles and
+camera-relative facing now bind through the [actor motion adapter](NATIVE_HARBOR_ACTOR_MOTION_AND_FACING.md).
 Environment/effect/SFX calls retain raw requests and remain pending presentation
 backends. Crowd setup belongs to the preceding scene/init and is still unbound.
 The VM does not claim a complete original scheduler, field main-loop or hardware

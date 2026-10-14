@@ -1825,6 +1825,18 @@ void Game::tick(const Input& rawInput) {
             game.updateFieldNpcCandidates();
             game.updateFieldNpcTalk(talkInput); // NPC owner follows current Mario/object updates.
             game.updateFieldNpcPresentation();
+            if(game.harborStory.enabled && game.harborStory.triggered) {
+                auto& story=game.harborStory;
+                for(auto& a:story.actors) {
+                    const auto root=std::array<float,3>{a.x,a.y,a.z};
+                    a.actualSpeed=a.hasPreviousRoot?std::hypot(root[0]-a.previousRoot[0],root[2]-a.previousRoot[2])*TickRate:0;
+                    a.previousRoot=root;a.hasPreviousRoot=true;
+                }
+                NpcCameraService camera{&game.fieldCameraFrame,[](void* p){const auto& f=*static_cast<FieldCameraFrame*>(p);return NpcCamera{{f.eye.x*100,f.eye.y*100,f.eye.z*100},{f.at.x*100,f.at.y*100,f.at.z*100}};}};
+                const bool encounter=game.harborEncounter.running();
+                story.preparePresentation(fieldNpcAngles(),camera,encounter?&game.harborEncounter.message:&story.message,
+                    encounter?game.harborEncounter.speaker:story.speaker,game.ticks*1000/TickRate);
+            }
             const uint32_t itemTriggers=raw.physicalSnapshot?game.inputProducer.channels[0].pressed:
                 (raw.confirm?0x100u:0u)|(raw.cancel?0x200u:0u);
             game.goombaAcquisition.itemMain(itemTriggers); // Item owner follows this visit's Mario/NPC owners.
@@ -2140,17 +2152,39 @@ void Game::tick(const Input& rawInput) {
     if(progress.room==1 && progress.originalStory==4 && !harborEncounter.triggered)beginHarborEncounter(harborResume);
     if(harborEncounter.running()) {
         const bool passive=!harborEncounter.locked();
-        if(passive)harborEncounter.actors[0].position={progress.position.x*100,(groundHeight+jumpHeight)*100,progress.position.z*100};
+        // Key-off suppresses new actions while the ordinary airborne owner keeps
+        // running. Scripted XZ travel and the explicit jump own separate lanes.
+        auto& mario=harborEncounter.actors[0];
+        if(!passive && fieldJump.airborne && !harborEncounter.scriptedJump) {
+            dispatchFieldAir();move(Input{});updateMarioPresentation();
+            mario.position[1]=(groundHeight+jumpHeight)*100;
+            if(!mario.moving){mario.position[0]=progress.position.x*100;mario.position[2]=progress.position.z*100;}
+            if(!mario.moving && !(mario.flags&2)) {
+                if(mario.pose!=marioPresentation.front){mario.pose=marioPresentation.front;mario.poseAt=ticks*1000/60;}
+            }
+        }
+        if(passive) {
+            mario.position={progress.position.x*100,(groundHeight+jumpHeight)*100,progress.position.z*100};
+            mario.yaw=marioPresentation.facing;
+            mario.pose=marioPresentation.front;mario.poseAt=marioPresentation.poseStartMilliseconds;
+        }
         float support=0;const auto& root=harborEncounter.actors[0].position;
         std::optional<float> floor;
         if(groundAt({root[0]*.01f,root[2]*.01f},root[1]*.01f,support))floor=std::round(support*100000.f)/1000.f;
         harborEncounter.tick(ticks*1000/60,(i.confirm || tap?0x100u:0u)|(i.cancel?0x200u:0u),floor);
         if(!passive || harborEncounter.locked()) {
             const auto& m=harborEncounter.actors[0].position;progress.position={m[0]*.01f,m[2]*.01f};
-            groundHeight=progress.elevation=m[1]*.01f;jumpHeight=0;
+            if(harborEncounter.scriptedJump || !fieldJump.airborne) {
+                groundHeight=progress.elevation=m[1]*.01f;jumpHeight=0;
+            }
+        }
+        if(harborEncounter.locked() && !harborEncounter.scriptedJump && !(mario.flags&2)) {
+            const char* motionPose=fieldJump.airborne?marioPresentation.front:
+                mario.moving?(mario.speed>60?"M_R_1":"M_W_1"):nullptr;
+            if(motionPose && mario.pose!=motionPose){mario.pose=motionPose;mario.poseAt=ticks*1000/60;}
         }
         for(unsigned n=0;n<4;++n){const auto& source=harborEncounter.actors[n+1];auto& actor=harborStory.actors[n];
-            actor.x=source.position[0];actor.y=source.position[1];actor.z=source.position[2];actor.moving=source.moving;actor.display=source.yaw==90?180:0;}
+            actor.x=source.position[0];actor.y=source.position[1];actor.z=source.position[2];actor.moving=source.moving;actor.display=source.yaw>0 && source.yaw<180?180:0;actor.yaw=source.yaw;actor.flags=source.flags|3;}
         while(harborCameraCursor<harborEncounter.cameras.size()){const auto& c=harborEncounter.cameras[harborCameraCursor++];setCameraView({c.eye[0],c.eye[1],c.eye[2]},{c.at[0],c.at[1],c.at[2]},c.duration,uint8_t(c.curve));}
         progress.hp=harborEncounter.hp;progress.originalStory=harborEncounter.story;saveRequested=false;
         scene=harborEncounter.locked()?Scene::Dialogue:Scene::Explore;

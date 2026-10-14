@@ -17,7 +17,13 @@ int main(int argc,char**){
         assert(!e.failed && !e.locked() && e.messageOrder.empty());
     }
     HarborEncounter e;assert(e.begin(0,{-25.5f,15,-100},2,false));
-    for(unsigned t=1;t<3000 && !e.battleRequested;++t){e.tick(t*17,t%4==0?0x100:0,15);assert(!e.failed);}
+    bool sawRun=false,sawJump=false,sawLockedJumpPose=false;
+    for(unsigned t=1;t<3000 && !e.battleRequested;++t){e.tick(t*17,t%4==0?0x100:0,15);assert(!e.failed);
+        sawRun|=e.actors[0].moving && e.actors[0].pose=="M_R_1";
+        sawJump|=e.scriptedJump && e.actors[0].position[1]>15;
+        sawLockedJumpPose|=e.scriptedJump && (e.actors[0].flags&2) && e.actors[0].pose=="M_I_N";
+    }
+    assert(sawRun && sawJump && sawLockedJumpPose);
     assert(e.battleRequested && e.battleSetup==2 && e.hp==5 && e.story==4 && e.pendingService && e.locked());
     assert((e.messageOrder==std::vector<std::string>{"mac_0_022","mac_0_023","mac_0_024"}));
     for(unsigned t=3000;t<3100;++t)e.tick(t*17,0x100,15);
@@ -39,6 +45,21 @@ int main(int argc,char**){
     assert(resume.battleRequested && resume.hp==10 && resume.story==4);
     assert(loadHarborStoryAssets("romfs"));
     CollisionTransition geometry;assert(geometry.load("romfs/gor_00"));geometry.commit();
+    // Key-off during an ordinary jump keeps the vertical owner alive while
+    // source mov_pos2 owns horizontal reposition. No aerial root becomes floor.
+    Game air;Progress aerial;aerial.room=1;aerial.originalStory=4;aerial.elevation=.15f;
+    aerial.position={0,-.99f};air.restore(aerial);assert(air.beginHarborEncounter(false));
+    Input launch;launch.confirm=true;launch.jumpHeld=true;air.tick(launch);
+    assert(air.fieldAirMotion().airborne);air.progress.position.z=-1.01f;
+    const float initialY=air.groundHeight+air.jumpHeight;
+    bool movedVertically=false;
+    for(unsigned n=0;n<90 && air.fieldAirMotion().airborne;++n) {
+        air.tick({});assert(!air.harborEncounter.failed);
+        movedVertically|=std::fabs(air.groundHeight+air.jumpHeight-initialY)>.0001f;
+    }
+    assert(movedVertically && !air.fieldAirMotion().airborne && air.harborEncounter.locked());
+    float landedFloor=0;assert(groundAt(air.progress.position,air.groundHeight+.1f,landedFloor));
+    assert(std::fabs(air.groundHeight-landedFloor)<.001f && air.jumpHeight==0);
     Game game;Progress saved;saved.room=1;saved.elevation=.15f;saved.position={0,-1};saved.originalStory=3;
     game.restore(saved);
     for(unsigned t=0;t<6000 && !game.harborEncounter.battleRequested;++t){Input input;input.confirm=t%4==0;game.tick(input);assert(!game.harborEncounter.failed);}

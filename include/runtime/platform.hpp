@@ -256,6 +256,7 @@ private:
     bool messageSystemProgramReady=false;
     int messageSystemTransform=0;float messageSystemPhase=0;
 
+    std::array<CineActor,2> harborNpcAnimations;int harborCrumpEnd=0;
     Texture harborMarioTexture;
     ActorAnimationPack harborMarioAnimations;
     Texture goombaQuestTexture;ActorAnimationPack goombaQuestAnimations;float goombaQuestUVScale=1;

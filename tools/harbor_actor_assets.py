@@ -10,12 +10,16 @@ import subprocess
 from PIL import Image
 from iso_assets import DEFAULT_ISO, extract
 from character_bake import bake
+from character_mesh import compile_mesh
+from field_actor_assets import npc_source_data
 from audio_convert import stm
 
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--iso',default=DEFAULT_ISO)
     args=parser.parse_args();work=Path('local-assets/harbor-actors');work.mkdir(parents=True,exist_ok=True)
+    source=npc_source_data(args.iso, [('c_pkr',0x803316d0),('c_kanbu_ibt',0x80332690),('c_zako_n',0x803326e4)])
+    if source['c_pkr']['run_threshold']!=20:raise ValueError('Harbor Goombella run threshold changed')
     models=[];records=[]
     for name,bank in [('c_kanbu_ibt','c_kanbu'),('c_zako_n','c_zako_n')]:
         model=work/name;tpl=work/(bank+'.tpl')
@@ -25,6 +29,26 @@ def main():
         if binding!=bank:raise ValueError('Original actor texture bank changed: '+binding)
         models.append((model,tpl))
         records.extend([json.loads(model.with_suffix('.provenance.json').read_text()),json.loads(tpl.with_suffix('.tpl.provenance.json').read_text())])
+    for i,(model,tpl) in enumerate(models):
+        profile=source[model.name]
+        poses=list(dict.fromkeys(['Z_1',profile['idle'],profile['talk_pose'],profile['walk'],profile['run']]))
+        prefix=Path('romfs')/('harbor-crump' if i==0 else 'harbor-xnaut')
+        helpers=b''.join(Path('tools/'+n).read_bytes() for n in ['character_mesh.py','character_animation_pack.py','character_animation_data.py','character_node.py','character_bake.py'])
+        digest=hashlib.sha256(Path(__file__).read_bytes()+helpers+model.read_bytes()+tpl.read_bytes()).hexdigest()
+        cache=prefix.with_suffix('.json')
+        if not(cache.exists() and json.loads(cache.read_text()).get('fingerprint')==digest and all(prefix.with_suffix('.'+e).exists() for e in ['pmanim','t3x','bin'])):
+            meta=compile_mesh([(model,tpl,poses)],prefix.with_suffix('.pmmesh'),work/(prefix.name+'-atlas.png'),prefix.with_suffix('.pmanim'))
+            height=128
+            while height<((meta['textures']+7)//8)*128:height*=2
+            image=Image.open(work/(prefix.name+'-atlas.png')).crop((0,0,1024,height)).resize((512,height//2),Image.Resampling.LANCZOS)
+            image.save(work/(prefix.name+'-runtime.png'))
+            prefix.with_suffix('.bin').write_bytes(struct.pack('<8sf',b'PMHUV001',1024/height))
+            tex3ds=shutil.which('tex3ds') or '/opt/devkitpro/tools/bin/tex3ds'
+            subprocess.run([tex3ds,'-f','rgba8','-z','auto','-o',str(prefix.with_suffix('.t3x')),str(work/(prefix.name+'-runtime.png'))],check=True,stdout=subprocess.DEVNULL)
+            meta.update(fingerprint=digest,profile=profile,source='a/'+model.name,license='Original local Nintendo/Intelligent Systems data; no redistribution rights')
+            cache.write_text(json.dumps(meta,indent=2)+'\n')
+        if [profile[k] for k in ['idle','talk_pose','walk','run']]!=['S_1','T_1','W_1','R_1'] or profile['run_threshold']!=50:
+            raise ValueError('Harbor native pose profile changed')
     music=work/'danger.stm';extract(args.iso,'sound/stream/evt_kik4_32k.stm',music)
     records.append(json.loads(music.with_suffix('.stm.provenance.json').read_text()))
     helpers=b''.join(Path('tools/'+name).read_bytes() for name in ['character_bake.py','character_node.py','iso_assets.py','audio_convert.py'])

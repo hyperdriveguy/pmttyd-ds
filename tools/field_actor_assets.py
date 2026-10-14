@@ -49,7 +49,7 @@ def fixed(value):
         raise ValueError('Invalid catalog string')
     return data.ljust(32, b'\0')
 
-def npc_source_data(iso):
+def npc_source_data(iso, tribes=None):
     """Only original DOL data: tribe dimensions/pose strings and angle table."""
     with Path(iso).open('rb') as disc:
         if disc.read(8)!=b'G8ME01\0\0':raise ValueError('US revision0 required')
@@ -64,7 +64,7 @@ def npc_source_data(iso):
             if len(data)!=size:raise ValueError('Truncated source constant')
             return data
         result={}
-        for name,address in [('c_tyusan',0x80333554),('c_kuri_h',0x80333014),('c_f_mura',0x80333110),('c_kuribo_n',0x8033335c)]:
+        for name,address in (tribes or [('c_tyusan',0x80333554),('c_kuri_h',0x80333014),('c_f_mura',0x80333110),('c_kuribo_n',0x8033335c)]):
             raw=read(address,0x54);width,height=struct.unpack_from('>2f',raw,0x28)
             ptr=struct.unpack_from('>I',raw,0x14)[0];talk=bytearray()
             for i in range(32):

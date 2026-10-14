@@ -20,6 +20,25 @@ int main(int argc,char**) {
         const FontGlyph glyph{0,0,10,22,{0,0}};for(int i=0;i<256;++i)font.write(reinterpret_cast<const char*>(&glyph),8);font.close();
         assert(loadHarborStoryAssets(directory));
     }
+    NpcAngleTable angles;
+    if(argc>1)assert(angles.load("romfs/npc-angle.bin"));
+    HarborStory poses;poses.reset(true);
+    NpcCamera camera{{0,120,500},{0,40,-300}};
+    NpcCameraService cameraService{&camera,[](void* p){return *static_cast<NpcCamera*>(p);}};
+    poses.preparePresentation(angles,cameraService,nullptr,0,0);
+    assert(poses.actors[0].yaw==90 && poses.actors[1].yaw==270);
+    assert(poses.actors[1].poseClock.pose=="S_1");
+    const auto left=poses.actors[1].presentation.matrix.v;
+    poses.actors[1].yaw=90;poses.actors[1].actualSpeed=49;
+    poses.preparePresentation(angles,cameraService,nullptr,0,17);
+    assert(poses.actors[1].poseClock.pose=="W_1" && poses.actors[1].poseClock.poseAt==17);
+    assert(poses.actors[1].presentation.matrix.v!=left);
+    poses.actors[1].actualSpeed=50;poses.preparePresentation(angles,cameraService,nullptr,0,34);
+    assert(poses.actors[1].poseClock.pose=="R_1" && poses.actors[1].poseClock.poseAt==34);
+    poses.preparePresentation(angles,cameraService,nullptr,0,51);
+    assert(poses.actors[1].poseClock.poseAt==34);
+    poses.actors[1].actualSpeed=0;poses.preparePresentation(angles,cameraService,nullptr,0,68);
+    assert(poses.actors[1].poseClock.pose=="S_1" && poses.actors[1].poseClock.poseAt==68);
     clearCollision();Game game;Progress p;p.room=1;p.originalStory=3;p.position={0,-.999f};game.restore(p);
     game.tick({});assert(!game.harborStory.triggered);game.progress.position.z=-1;game.tick({});
     assert(game.harborStory.triggered && game.scene==Scene::Dialogue && game.harborStory.speaker==0x14b28);

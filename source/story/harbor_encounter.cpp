@@ -59,15 +59,17 @@ struct HarborEncounterRuntime {
             // Native movement backend adaptation. The original event owns the
             // resolved operands, blocking continuation and independent inlines.
             const float distance=std::hypot(m.target[0]-m.start[0],m.target[2]-m.start[2]);
-            m.begin=scene->now;m.end=m.begin+uint64_t((distance+1)/rate*1000);m.active=true;a.moving=true;
-            if(m.target[0]!=m.start[0])a.yaw=m.target[0]>m.start[0]?90:270;
+            m.begin=scene->now;m.end=m.begin+std::max<uint64_t>(1,uint64_t((distance+1)/rate*1000));m.active=true;a.moving=true;a.speed=rate;
+            if(actor==0){a.pose=rate>60?"M_R_1":"M_W_1";a.poseAt=scene->now;}
+            if(distance>0)a.yaw=npcReviseAngle(std::atan2(m.target[0]-m.start[0],m.start[2]-m.target[2])*57.29577951308232f);
         }
         return m.active?0:2;
     }
     void advance(){for(unsigned i=0;i<5;++i){auto& m=moves[i];if(!m.active)continue;
         const float t=std::min(1.f,float(scene->now-m.begin)/float(m.end-m.begin));
-        for(unsigned k=0;k<3;++k)scene->actors[i].position[k]=m.start[k]+(m.target[k]-m.start[k])*t;
-        if(t==1){m.active=false;scene->actors[i].moving=false;}
+        for(unsigned k=0;k<3;++k)if(i!=0 || k!=1)scene->actors[i].position[k]=m.start[k]+(m.target[k]-m.start[k])*t;
+        if(t==1){m.active=false;auto& a=scene->actors[i];a.moving=false;a.speed=0;
+            if(i==0){a.pose="M_S_1";a.poseAt=scene->now;}}
     }}
     int32_t call(EventEntry& e,uint32_t function,bool first){
         const auto found=callbacks.find(function);if(found==callbacks.end()){scene->failed=true;return 0;}
@@ -96,9 +98,11 @@ struct HarborEncounterRuntime {
             // floats. Admit only that exact round-trip of this stationary
             // root, rather than demanding unencoded C++ float equality.
             const auto eventCoordinate=[](float coordinate){return float(int32_t(coordinate*1024.f))/1024.f;};
-            if(x!=eventCoordinate(a.position[0]) || z!=eventCoordinate(a.position[2]) || value(e,4)!=0 || !jump.begin(a.position[1],y,int(float(value(e,3))*.06f),number(e,5))){scene->pendingService=function;return 0;}jumpLive=true;}
+            if(x!=eventCoordinate(a.position[0]) || z!=eventCoordinate(a.position[2]) || value(e,4)!=0 || !jump.begin(a.position[1],y,int(float(value(e,3))*.06f),number(e,5))){scene->pendingService=function;return 0;}jumpLive=scene->scriptedJump=true;
+            if(!(a.flags&2)){a.pose="M_J_1B";a.poseAt=scene->now;}}
             if(!jumpLive)return 0;
-            const int result=jump.tick(floor);a.position[1]=jump.y;if(result){jumpLive=false;}return result;}
+            const int result=jump.tick(floor);a.position[1]=jump.y;if(!(a.flags&2) && jump.phase==2 && a.pose!="M_J_1C"){a.pose="M_J_1C";a.poseAt=scene->now;}
+            if(result){jumpLive=scene->scriptedJump=false;if(!(a.flags&2)){a.pose="M_S_1";a.poseAt=scene->now;}}return result;}
         case 18:setEventValue(e,operand(e,0),scene->hp,vm.interpreterServices().operands);return 2;
         case 19:scene->hp=value(e,0);return 2;
         case 20:if(npc(e,0)!=2){scene->failed=true;return 0;}scene->battleSetup=value(e,1);return 2;

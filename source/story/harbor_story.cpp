@@ -16,7 +16,7 @@ const MessageFont& harborMessageFont(){return font;}
 void HarborStory::reset(bool available) {
     *this=HarborStory{};enabled=available;
     actors={{{0x14b28,175,15,-300},{0x14b40,225,15,-300},{0x14b5c,255,15,-330},{0x14b6c,280,15,-330}}};
-    actors[0].display=180;
+    actors[0].display=180;actors[0].yaw=90;
 }
 bool HarborStory::print(int id,unsigned actor) {
     char key[20];std::snprintf(key,sizeof(key),"mac_0_%03d",id);speaker=actors[actor].key;
@@ -36,7 +36,7 @@ void HarborStory::advanceActors(uint64_t delta) {
         if(a.pending && now>=a.moveAt) {
             // Original get_position float encoding then integer ADD(LW0,-N).
             a.targetX=std::trunc(std::trunc(a.x*1024.f)/1024.f)-a.displacement;
-            a.display=a.targetX<a.x?0:180;
+            a.display=a.targetX<a.x?0:180;a.yaw=a.targetX<a.x?270:90;
             a.pending=false;a.moving=true;
             travel=std::min(delta,now-a.moveAt);
         }
@@ -49,6 +49,17 @@ void HarborStory::advanceActors(uint64_t delta) {
             if(std::fabs(diff)<=distance){a.x=a.targetX;a.moving=false;}
             else a.x+=std::copysign(distance,diff);
         }
+    }
+}
+void HarborStory::preparePresentation(const NpcAngleTable& angles,const NpcCameraService& camera,const MessagePlayback* text,uint32_t who,uint64_t time) {
+    for(unsigned i=0;i<actors.size();++i) {
+        auto& a=actors[i];
+        const float threshold=i==0?20:50; // Original tribe +3c: Goombella20, Crump/X-Naut50.
+        const char* base=i==0?(a.actualSpeed<.10000000149011612f?"PKR_S_1":a.actualSpeed<threshold?"PKR_W_1":"PKR_R_1"):
+            a.actualSpeed<.10000000149011612f?"S_1":a.actualSpeed<threshold?"W_1":"R_1";
+        a.poseClock.update(base,i==0?"PKR_T_1":"T_1",text && who==a.key && (a.flags&0x200)?text:nullptr,time);
+        NpcMatrixInput input;input.root={a.x,a.y,a.z};input.yaw=a.yaw;input.flags=a.flags;
+        a.presentationReady=a.presentation.prepare(input,angles,camera);
     }
 }
 void HarborStory::tick(uint64_t time,uint32_t keys) {

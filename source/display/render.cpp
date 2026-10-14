@@ -94,6 +94,17 @@ bool Renderer::init() {
         std::fread(&fieldItemGetUVScale,4,1,itemUV)==1 && std::fgetc(itemUV)==EOF;std::fclose(itemUV);
     if(!itemValid || !(fieldItemGetUVScale==1 || fieldItemGetUVScale==2 || fieldItemGetUVScale==4 || fieldItemGetUVScale==8))return false;
     if(!partnerAnimations.load("romfs:/partner.pmanim"))return false;
+    for(unsigned i=0;i<harborNpcAnimations.size();++i) {
+        auto& a=harborNpcAnimations[i];const std::string prefix=i==0?"romfs:/harbor-crump":"romfs:/harbor-xnaut";
+        if(!a.animations.load((prefix+".pmanim").c_str()))return false;
+        FILE* uv=std::fopen((prefix+".bin").c_str(),"rb");if(!uv)return false;
+        char magic[8];const bool valid=std::fread(magic,8,1,uv)==1 && !std::memcmp(magic,"PMHUV001",8) && std::fread(&a.uvScale,4,1,uv)==1 && std::fgetc(uv)==EOF;std::fclose(uv);
+        if(!valid || !(a.uvScale==1 || a.uvScale==2 || a.uvScale==4 || a.uvScale==8))return false;
+        FILE* image=std::fopen((prefix+".t3x").c_str(),"rb");if(!image)return false;
+        a.image.imported=Tex3DS_TextureImportStdio(image,&a.image.texture,nullptr,false);std::fclose(image);
+        if(!a.image.imported)return false;
+        C3D_TexSetFilter(&a.image.texture,GPU_LINEAR,GPU_LINEAR);
+    }
     if(!harborMarioAnimations.load("romfs:/harbor-mario.pmanim"))return false;
     FILE* harborUV=std::fopen("romfs:/harbor-mario.bin","rb");if(!harborUV)return false;
     char harborMagic[8];bool harborValid=std::fread(harborMagic,8,1,harborUV)==1 && !std::memcmp(harborMagic,"PMHUV001",8) && std::fread(&harborMarioUVScale,4,1,harborUV)==1 && std::fgetc(harborUV)==EOF;
@@ -605,12 +616,17 @@ void Renderer::shadow(Vec2 p,float r,float floor) {
     vertex(x1,floor+.012f,z1,.25f,.25f,white);vertex(x0,floor+.012f,z1,0,.25f,white);vertex(x0,floor+.012f,z0,0,.5f,white);
 }
 void Renderer::harborActors(const Game& g) {
+    harborCrumpEnd=count;
     for(unsigned i=1;i<4;++i) {
-        const auto& actor=g.harborStory.actors[i];const unsigned cell=i==1?0:1;
-        const auto& m=harborActorMetrics[cell];const float x=actor.x*.01f+m[0],y=actor.y*.01f+m[1],z=actor.z*.01f;
-        const float left=cell*.5f,right=left+.5f;
-        vertex(x,y,z,left,0,0xffffffff);vertex(x+m[2],y,z,right,0,0xffffffff);vertex(x+m[2],y+m[2],z,right,1,0xffffffff);
-        vertex(x+m[2],y+m[2],z,right,1,0xffffffff);vertex(x,y+m[2],z,left,1,0xffffffff);vertex(x,y,z,left,0,0xffffffff);
+        const auto& actor=g.harborStory.actors[i];auto& bank=harborNpcAnimations[i==1?0:1];
+        const auto* pose=bank.animations.pose(actor.poseClock.pose.c_str());
+        if(actor.presentationReady && pose && pose->evaluate(float(g.ticks*1000/TickRate-actor.poseClock.poseAt)*.06f,bank.sample) && bank.sample.vertices.size()<=size_t(MaxVertices-count)) {
+            for(const auto& v:bank.sample.vertices) {
+                const auto point=actor.presentation.point(v);
+                vertex(point[0],point[1],point[2],v.u,1-(1-v.v)*bank.uvScale,0xffffffff);
+            }
+        }
+        if(i==1)harborCrumpEnd=count;
     }
 }
 void Renderer::originalMessage(const Game& g,const MessagePlayback* supplied,const CameraPoint* suppliedAnchor,const CameraPoint* suppliedMario) {
@@ -973,7 +989,7 @@ void Renderer::world(const Game& g) {
     const bool itemGetPose=!battle && !std::strcmp(g.marioPresentation.selected,"M_I_U");
     if(!battle && g.harborEncounter.locked()) {
         const auto& a=g.harborEncounter.actors[0];const bool right=a.yaw>0 && a.yaw<180;
-        characterModel(a.moving?"M_W_1":a.pose.c_str(),float(g.harborEncounter.now-a.poseAt)*.06f,g.progress.position,g.groundHeight,right?180:0,right,false,&harborMarioAnimations,harborMarioUVScale);
+        characterModel(a.pose.c_str(),float(g.harborEncounter.now-a.poseAt)*.06f,g.progress.position,g.groundHeight+g.jumpHeight,right?180:0,right,false,&harborMarioAnimations,harborMarioUVScale);
     } else if(!battle && (g.trioBattleActive || g.storyPresentation().locked())) {
         const auto& a=g.storyPresentation().actors[0];const bool right=a.yaw>0 && a.yaw<180;
         characterModel(a.moving?"M_W_1":a.pose.c_str(),float(g.storyPresentation().now-a.poseAt)*.06f,g.trioBattleActive?Vec2{a.position[0]*.01f,a.position[2]*.01f}:g.progress.position,g.trioBattleActive?a.position[1]*.01f:g.groundHeight,
@@ -992,7 +1008,9 @@ void Renderer::world(const Game& g) {
                              g.partnerPresentation.yaw(),g.partnerPresentation.reflectZ(),true);
     if(!battle && g.harborStory.enabled && g.harborStory.triggered) {
         const auto& a=g.harborStory.actors[0];
-        characterModel(a.moving?"PKR_W_1":"PKR_S_1",float(g.ticks),{a.x*.01f,a.z*.01f},a.y*.01f,a.display,a.display==180,true);
+        const auto* pose=partnerAnimations.pose(a.poseClock.pose.c_str());
+        if(a.presentationReady && pose && pose->evaluate(float(g.ticks*1000/TickRate-a.poseClock.poseAt)*.06f,actorSample) && actorSample.vertices.size()<=size_t(MaxVertices-count))
+            for(const auto& v:actorSample.vertices){const auto p=a.presentation.point(v);vertex(p[0],p[1],p[2],v.u,v.v,0xffffffff);}
     }
     const int partnerEnd=count;
     actorMetrics={};
@@ -1019,6 +1037,7 @@ void Renderer::world(const Game& g) {
         for(unsigned index:indices){const auto& v=points[index];const auto q=transform.point({v[0],v[1],0,v[2],v[3]});vertex(q[0],q[1],q[2],v[2],v[3],0xffffffff);}
     }
     const int professorItemEnd=count;
+    harborCrumpEnd=count;
     if(!battle && g.harborStory.enabled && g.harborStory.triggered)harborActors(g);
     const int harborEnd=count;
     bool polygonShadow=false;int airShadowCount=0;
@@ -1061,7 +1080,8 @@ void Renderer::world(const Game& g) {
     if(!battle)drawFieldActors(false);
     if(undergroundEnd>fieldActorEnd){C3D_TexBind(0,&undergroundTexture.texture);C3D_DrawArrays(GPU_TRIANGLES,fieldActorEnd,undergroundEnd-fieldActorEnd);}
     if(professorItemEnd>undergroundEnd){C3D_TexBind(0,&professorMapTexture.texture);C3D_DrawArrays(GPU_TRIANGLES,undergroundEnd,professorItemEnd-undergroundEnd);}
-    if(harborEnd>professorItemEnd){C3D_TexBind(0,&harborTexture.texture);C3D_DrawArrays(GPU_TRIANGLES,professorItemEnd,harborEnd-professorItemEnd);}
+    if(harborCrumpEnd>professorItemEnd){C3D_TexBind(0,&harborNpcAnimations[0].image.texture);C3D_DrawArrays(GPU_TRIANGLES,professorItemEnd,harborCrumpEnd-professorItemEnd);}
+    if(harborEnd>harborCrumpEnd){C3D_TexBind(0,&harborNpcAnimations[1].image.texture);C3D_DrawArrays(GPU_TRIANGLES,harborCrumpEnd,harborEnd-harborCrumpEnd);}
     if(polygonShadow || airShadowCount) {
         C3D_TexEnvInit(env);
         C3D_TexEnvSrc(env,C3D_Both,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR);
@@ -1114,7 +1134,6 @@ void Renderer::overlay(const Game& g) {
         if(!coinGetWindow(*g.coinWindows,uint32_t(g.ticks)))text("Development notice: coin window unavailable",16,220,.42f,Ink);
         return;
     }
-
     if(g.acquisitionWindows && g.acquisitionWindows->retained()) {
         if(!itemGetWindows(*g.acquisitionWindows,uint32_t(g.ticks)))text("Development notice: item acquisition windows unavailable",16,220,.42f,Ink);
         return;
@@ -1370,6 +1389,7 @@ void Renderer::shutdown() {
     if(partnerTextures.imported) {Tex3DS_TextureFree(partnerTextures.imported);C3D_TexDelete(&partnerTextures.texture);}
     if(trioPartnerTexture.imported){Tex3DS_TextureFree(trioPartnerTexture.imported);C3D_TexDelete(&trioPartnerTexture.texture);}
     if(trioMarioTexture.imported){Tex3DS_TextureFree(trioMarioTexture.imported);C3D_TexDelete(&trioMarioTexture.texture);}
+    for(auto& a:harborNpcAnimations)if(a.image.imported){Tex3DS_TextureFree(a.image.imported);C3D_TexDelete(&a.image.texture);}
     if(harborMarioTexture.imported){Tex3DS_TextureFree(harborMarioTexture.imported);C3D_TexDelete(&harborMarioTexture.texture);}
     if(professorMarioTexture.imported) {Tex3DS_TextureFree(professorMarioTexture.imported);C3D_TexDelete(&professorMarioTexture.texture);}
     if(professorMapTexture.imported) {Tex3DS_TextureFree(professorMapTexture.imported);C3D_TexDelete(&professorMapTexture.texture);}

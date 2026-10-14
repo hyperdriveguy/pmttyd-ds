@@ -306,3 +306,25 @@ frame format so future UI consumers retain IDs and frames. No generated icons,
 rewritten labels or ISO/source-payload commit. Native class texture binding is
 not yet implemented. Nintendo/Intelligent Systems resources have no granted
 redistribution rights; all extracted/compiled payloads stay ignored.
+
+## 2026-10-14 — Animated Crump opening field actors
+
+Read-only `/home/carson/games/roms/G8ME01.iso` sources `a/c_kanbu_ibt`,
+`a/c_kanbu-`, `a/c_zako_n`, `a/c_zako_n-` now produce private
+`romfs/harbor-crump.{pmanim,t3x,bin,json}` and
+`romfs/harbor-xnaut.{pmanim,t3x,bin,json}`. Original Z_1, S_1, T_1, W_1 and R_1
+clips retain authored geometry, discrete visibility and continuous animation.
+Existing converter places original textures into a bordered atlas, crops unused
+rows and scales1024-wide art to512 with Lanczos; the binary retains the UV scale.
+Independent actor pose/facing owners share immutable enemy banks and texture
+resources. Original Goombella clips already exist in `partner.pmanim`.
+Harbor Mario adds original M_R_1 from `a/a_mario`, sharing `a/a_mario-` with the
+existing ordinary/effect bank conversion. The old baked enemy pack remains
+only for legacy message-anchor metrics; live enemy art uses animated geometry.
+
+Source tribe records `0x803316d0`, `0x80332690`, `0x803326e4` establish the pose
+profiles/run thresholds; private JSON retains enemy source hashes and profiles.
+Extraction/conversion stays in ignored `local-assets/harbor-actors/`,
+`local-assets/harbor-event/` and `romfs/`. Original Nintendo/Intelligent Systems
+copyrighted assets: local use only; no redistribution rights granted. No ISO,
+extracted originals or compiled packs enter source history.
