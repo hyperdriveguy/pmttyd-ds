@@ -1,5 +1,13 @@
 #include "platform.hpp"
 namespace ttyd {
+void Audio::muteFieldItemPresentation(bool mute) {
+ LightLock_Lock(&musicMutex);
+ if(fieldItemMuted!=mute) {
+  fieldItemMuted=mute;
+  for(unsigned slot=0;slot<3;++slot)if(music[slot].file)musicMix(slot,music[slot].nativeVolume);
+ }
+ LightLock_Unlock(&musicMutex);
+}
 bool Audio::fieldMarioPostReady(unsigned old) const {
  if(!fieldMarioOwner)return false;
  const auto& handles=fieldMarioOwner->fieldMarioSoundHandles();

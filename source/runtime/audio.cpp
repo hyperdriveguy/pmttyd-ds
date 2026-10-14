@@ -32,8 +32,8 @@ bool Audio::frontendTrackReady(int track) {
 }
 bool Audio::init() {
     LightLock_Init(&musicMutex);LightEvent_Init(&musicWake,RESET_ONESHOT);
-    FILE* selection=std::fopen("romfs:/soundtrack-switch.bin","rb");
-    if(selection){char magic[4]{};switchSoundtrack=std::fread(magic,1,4,selection)==4 && !std::memcmp(magic,"SWM1",4);std::fclose(selection);}
+    // User preference: original ISO music. Converted Switch arrangements stay optional library assets.
+    switchSoundtrack=false;
     if(R_FAILED(ndspInit())) return false;
     ready=true;ndspSetOutputMode(NDSP_OUTPUT_STEREO);
     streamData=(int16_t*)linearAlloc(StreamFrames*2*3*3*2);
@@ -103,8 +103,9 @@ void Audio::stopMusic(unsigned slot) {
     for(auto& buffer:stream.buffers)buffer.status=NDSP_WBUF_FREE;
 }
 void Audio::musicMix(unsigned slot,uint8_t volume) {
+    music[slot].nativeVolume=volume;
     const float gain=(music[slot].track==18 || itemGetFieldSlot==int(slot))?float(volume)*.007874015718698502f:.65f*float(volume)/127.f;
-    float mix[12]{};mix[0]=mix[1]=gain;
+    float mix[12]{};mix[0]=mix[1]=fieldItemMuted?0:gain;
     ndspChnSetMix(MusicChannels[slot],mix);
 }
 void Audio::switchTrack(int track,bool preservePrevious) {
@@ -162,7 +163,10 @@ void Audio::serviceMusic(){MusicLock guard(musicMutex);if(!ready || !streamData)
 void Audio::update(Scene scene,bool enabled,bool harborDanger,int professorMusic,uint32_t room,bool thinking) {
     if(!ready)return;
     int wanted=soundtrackTrack(scene,enabled,harborDanger,professorMusic,room,thinking,switchSoundtrack);
-    if(wanted!=musicTrack)switchTrack(wanted);
+    bool retainedItem=false;
+    {MusicLock lock(musicMutex);retainedItem=(scene==Scene::Explore || scene==Scene::Dialogue) &&
+        (keyItemSlot>=0 || keyItemTailSlot>=0 || itemGetFieldSlot>=0);}
+    if(wanted!=musicTrack && !retainedItem)switchTrack(wanted);
     if(!enabled)for(int n=0;n<8;++n)ndspChnWaveBufClear(n+2);
     if(!musicThread)serviceMusic();
 }

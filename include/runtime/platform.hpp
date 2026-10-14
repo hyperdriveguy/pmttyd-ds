@@ -34,6 +34,7 @@
 #include <cstdio>
 namespace ttyd {
 struct Metrics { float simulationMs=0, renderMs=0, gpuMs=0, fps=0; int steps=0; uint64_t droppedTicks=0; };
+class Audio;
 class Renderer {
 public:
     bool init();
@@ -41,6 +42,8 @@ public:
     const std::string& resourceFailure() const{return frontFailure;}
     void beginFrontend();
     void advanceTutorialAnimations(Game&);
+    void bindFieldItemGet(Game&,Audio&);
+    void advanceFieldItemPresentation();
     void releaseFrontend(bool preserveMapTurn=false,bool preserveTitle=false);
     bool prepareOpeningDeparture(const OpeningHarborScene&,uint64_t fieldTick);
     void render(const Game&, const Metrics&, const char* notice, bool audioAvailable);
@@ -51,6 +54,11 @@ public:
     struct ActorMetrics {uint32_t visible=0,vertices=0,overflow=0,sampleFailures=0;};
     ActorMetrics fieldActorMetrics() const {return actorMetrics;}
 private:
+    Game* itemGetGame=nullptr;Audio* itemGetAudio=nullptr;
+    bool itemGetAssetsAttempted=false,itemGetAssetsReady=false;
+    bool prepareFieldItemGet();
+    void fieldItemGetRequest(ItemGetRequest);
+    void drawFieldItemGet(const Game&);
     struct Vertex { float x,y,z,u,v,r,g,b,a; };
     Vertex* vertices=nullptr;
     Vertex* messageTailVertices=nullptr;
@@ -311,6 +319,7 @@ public:
     bool init();
     void play(const Game& game);
     void bindFieldMarioMotion(Game&);
+    void muteFieldItemPresentation(bool);
     FieldSfxNdsp& fieldSfxVoices() {return fieldSfxBackend;}
     bool fieldMarioPostReady(unsigned previousMotion) const;
     void update(Scene scene, bool enabled,bool harborDanger=false,int professorMusic=0,uint32_t room=0,bool thinking=false);
@@ -323,6 +332,7 @@ public:
     bool available() const { return ready; }
     bool frontendTrackReady(int track);
     bool keyItemFanfareReady();
+    bool prepareFieldItemGetAudio();
     bool beginKeyItemFanfare(int32_t gpRate=60); // Fresh native GP60 default; replacement remains external.
     int32_t keyItemFanfareCheck(); // Source query shape: -1 vacant, 0 assigned.
     void releaseKeyItemFanfare(); // Backend release, not source Off201 fade.
@@ -334,6 +344,7 @@ public:
     bool resumeItemGetFieldMusic(int32_t gpRate); // Original Ona0,NULL/1000ms and synchronous BGMMain.
 
 private:
+    bool fieldItemMuted=false;
     FieldSfxNdsp fieldSfxBackend;Game* fieldMarioOwner=nullptr;
     bool ready=false,titleResourceAttempted=false,titleResourceReady=false;
     OpeningHousePcmPlayer openingHousePcm;
@@ -344,6 +355,7 @@ private:
     struct MusicStream {
         FILE* file=nullptr;
         int track=-1;
+        uint8_t nativeVolume=127;
         bool loop=false,ended=false;
         uint32_t rate=32000,channels=2,position=0,loopStart=0,loopEnd=0;
         ndspWaveBuf buffers[3]{};

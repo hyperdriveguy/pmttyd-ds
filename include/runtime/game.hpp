@@ -4,6 +4,8 @@
 #include "goomba_acquisition.hpp"
 #include "field_item_mario.hpp"
 #include "mario_motion_sfx.hpp"
+#include "item_get_windows.hpp"
+#include "field_item_get_effect.hpp"
 #include "field_party.hpp"
 #include <array>
 #include <cstdint>
@@ -304,6 +306,14 @@ public:
     const MarioMotionSfx& fieldMarioSoundHandles() const {return marioMotionSounds;}
     void bindFieldItemMarioPost(const FieldItemMarioPost& post) {fieldItemMarioPost=post;}
     bool applyFieldItemMarioRequest(ItemGetRequest);
+    bool applyFieldItemStateRequest(ItemGetRequest);
+    ItemGetPoint fieldItemMarioPosition() const {return {progress.position.x*100,(groundHeight+jumpHeight)*100,progress.position.z*100};}
+    std::shared_ptr<ItemGetWindows> acquisitionWindows;
+    FieldItemGetEffect6 acquisitionEffect;
+    uint16_t itemCamera8Flags=0;
+    uint32_t itemSystemMask=0;
+    int32_t itemSystemRequest=0;
+    uint32_t itemSoundFlags() const{return fieldSoundFlags;}
     unsigned fieldMarioMotion() const {return fieldJump.motion;}
     bool fieldMarioMotionPending() const {return fieldJump.pendingEntry;}
     FieldItemRegistry& fieldItems() {return fieldItemRegistry;}

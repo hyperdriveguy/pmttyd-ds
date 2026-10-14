@@ -15,7 +15,7 @@ bool GoombaAcquisition::begin(const FieldActorRecord& actor,ProloguePouch& pouch
     !talk.canPrint(actor,"irai_02_00",font,now))return false;
  if(!talk.print(actor,"irai_02_00",font,now))return false;
  talk_=&talk;switches_=&state;pouch_=&pouch;registry_=&registry;presentation_=p;mapBlend_=blend;
- owner_=this;entry_=nullptr;get_=FieldItem95Get{};phase_=Phase::Printing;return true;
+ owner_=this;stopped_=false;entry_=nullptr;get_=FieldItem95Get{};phase_=Phase::Printing;return true;
 }
 void GoombaAcquisition::publishEntry() {
  if(!entry_ || !(entry_->flags&1))return;
@@ -37,7 +37,7 @@ FieldItemGetServices GoombaAcquisition::services() {
  return s;
 }
 void GoombaAcquisition::eventMain() {
- if(!canAdvance())return;
+ if(!canAdvance() || stopped_)return;
  if(phase_==Phase::Printing){if(talk_->message.active())return;phase_=Phase::EntryPending;}
  if(phase_==Phase::EntryPending) {
   if(!registry_->enter95(Name,{0,-1000,0},true,mapBlend_))return; // Native available-slot frontier, no story write.

@@ -67,7 +67,11 @@ int main() {
         services.request=[](void* p,ItemGetRequest r){
             if(r==ItemGetRequest::GetItemMotion || r==ItemGetRequest::StayMotion ||
                r==ItemGetRequest::ControlOff || r==ItemGetRequest::ControlOn)
-                assert(static_cast<Game*>(p)->applyFieldItemMarioRequest(r));
+                assert(static_cast<Game*>(p)->applyFieldItemStateRequest(r));
+            else if(r==ItemGetRequest::KeyOff || r==ItemGetRequest::KeyOn || r==ItemGetRequest::SystemLevel2 ||
+                    r==ItemGetRequest::SystemLevel0 || r==ItemGetRequest::Camera8FlagOn || r==ItemGetRequest::Camera8FlagOff ||
+                    r==ItemGetRequest::SoundFlag80On || r==ItemGetRequest::SoundFlag80Off || r==ItemGetRequest::ClearMarioMotion || r==ItemGetRequest::Camera4)
+                assert(static_cast<Game*>(p)->applyFieldItemStateRequest(r));
         };
         services.effect=[](void*,int32_t,ItemGetPoint){return uintptr_t(1);};
         services.window=[](void*,uint32_t definition,const char*){return definition==0x80313dc8?1:2;};
@@ -86,6 +90,7 @@ int main() {
         for(int n=0;n<5000 && game.fieldActorTalk.message.active();++n)game.tick(confirm);
         assert(!game.fieldActorTalk.message.active() && game.fieldAcquisition().active() && game.scene==Scene::Dialogue);
         game.tick({});assert(game.progress.originalPouch->keyItemCount(95)==1 && game.fieldAcquisition().get().substate()==2);
+        assert(game.fieldAcquisition().stopped() && game.itemSystemMask==3 && game.itemCamera8Flags&0x200 && game.fieldMarioBattleState().keyDepth==1);
         assert(game.fieldMarioMotion()==15 && game.fieldMarioMotionPending() && std::strcmp(game.marioPresentation.selected,"M_I_U"));
         assert(game.progress.originalNpcTalkState.flag5405==false);
         Game obtaining=game;assert(!obtaining.fieldAcquisition().canAdvance());
@@ -95,6 +100,7 @@ int main() {
         game.tick(confirm);assert(game.fieldAcquisition().active() && game.progress.originalNpcTalkState.flag5405==false);
         assert(!std::strcmp(game.marioPresentation.selected,"M_I_U") && game.fieldMarioMotion()==0 && game.fieldMarioMotionPending());
         game.tick({});assert(game.fieldAcquisition().complete() && game.progress.originalNpcTalkState.flag5405==true);
+        assert(!game.fieldAcquisition().stopped() && !game.itemSystemMask && !(game.itemCamera8Flags&0x200) && !game.fieldMarioBattleState().keyDepth);
         assert(game.scene==Scene::Explore && !game.fieldNpcTalkActive() && !game.fieldKeysOff);
         assert(game.fieldControlEnabled() && !(game.fieldMarioBattleState().flags&2) && std::strcmp(game.marioPresentation.selected,"M_I_U"));
         game.tick({});assert(game.progress.originalPouch->keyItemCount(95)==1);

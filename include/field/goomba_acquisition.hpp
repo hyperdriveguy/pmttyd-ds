@@ -13,6 +13,9 @@ public:
  bool begin(const FieldActorRecord&,ProloguePouch&,FieldActorTalkState&,
             FieldActorTalk&,const MessageFont&,FieldItemRegistry&,const FieldItemGetServices&,
             uint64_t now,bool mapBlend=false);
+ void stopEvents(uint32_t mask){if(mask&6)stopped_=true;}
+ void startEvents(uint32_t mask){if(mask&6)stopped_=false;}
+ bool stopped() const{return stopped_;}
  void eventMain();
  void itemMain(uint32_t sourceTriggers);
  bool active() const{return phase_!=Phase::Idle && phase_!=Phase::Complete;}
@@ -23,6 +26,7 @@ public:
 private:
  enum class Phase {Idle,Printing,EntryPending,Getting,Complete};
  const GoombaAcquisition* owner_=nullptr;
+ bool stopped_=false;
  Phase phase_=Phase::Idle;
  FieldActorTalk* talk_=nullptr;FieldActorTalkState* switches_=nullptr;
  ProloguePouch* pouch_=nullptr;FieldItemRegistry* registry_=nullptr;

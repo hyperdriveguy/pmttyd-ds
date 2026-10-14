@@ -1708,6 +1708,27 @@ void Game::battle(const Input& i) {
         else { phase=Phase::Select; phaseTick=0; }
     }
 }
+bool Game::applyFieldItemStateRequest(ItemGetRequest r) {
+    switch(r) {
+    case ItemGetRequest::Camera8FlagOn:itemCamera8Flags|=0x200;return true;
+    case ItemGetRequest::Camera8FlagOff:itemCamera8Flags&=~uint16_t(0x200);return true;
+    case ItemGetRequest::KeyOff:
+        fieldMarioBattle.flags|=8;fieldMarioBattle.keyDepth=uint8_t(fieldMarioBattle.keyDepth+1);fieldKeysOff=true;return true;
+    case ItemGetRequest::KeyOn:
+        fieldMarioBattle.keyDepth=uint8_t(fieldMarioBattle.keyDepth-1);
+        if(!fieldMarioBattle.keyDepth)fieldMarioBattle.flags&=~8u;
+        fieldKeysOff=(fieldMarioBattle.flags&8) || goombaAcquisition.active();return true;
+    case ItemGetRequest::SystemLevel2:
+        itemSystemRequest=2;itemSystemMask&=0xfffffff3;itemSystemMask|=3;goombaAcquisition.stopEvents(2);return true;
+    case ItemGetRequest::SystemLevel0:
+        itemSystemRequest=0;itemSystemMask&=0xfffffff0;goombaAcquisition.startEvents(0xef);return true;
+    case ItemGetRequest::SoundFlag80On:fieldSoundFlags|=0x80;return true;
+    case ItemGetRequest::SoundFlag80Off:fieldSoundFlags&=~0x80u;return true;
+    case ItemGetRequest::ClearMarioMotion:fieldMovement.speed=0;return true; // Unmodeled additive X/Z and norm have no retained native producers.
+    case ItemGetRequest::Camera4:fieldMarioBattle.cameraId=4;return true;
+    default:return applyFieldItemMarioRequest(r);
+    }
+}
 bool Game::applyFieldItemMarioRequest(ItemGetRequest r) {
     const uint32_t main=uint32_t(fieldIdle.mainFlags)|fieldMarioBattle.flags;
     switch(r) {
@@ -1804,7 +1825,7 @@ void Game::tick(const Input& rawInput) {
     ++ticks;++fieldCameraSimulationTicks;openingDeparture.advance(ticks,progress.room); sound=Sound::None;overheadContact=false;headObjectKey=0;headContact={};
     if(goombaAcquisition.active()) {
         goombaAcquisition.eventMain(); // Event manager precedes this visit's Mario/NPC/item owners.
-        if(goombaAcquisition.complete()){fieldKeysOff=false;scene=Scene::Explore;}
+        if(goombaAcquisition.complete()){fieldKeysOff=(fieldMarioBattle.flags&8)!=0;scene=Scene::Explore;}
     }
     if(scene==Scene::Explore || scene==Scene::Dialogue)beginFieldCameraTick();
     if(arriving || warpRequest>=0)retainedFieldMainX=0; // Source road choreography keys off before Mario input publication.

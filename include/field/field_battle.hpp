@@ -7,7 +7,7 @@ namespace ttyd {
 // memset point, not a claim to implement the complete MarioInit record.
 struct FieldMarioBattleState {
     uint32_t flags=0,secondaryFlags=0;
-    uint8_t controlDepth=0;
+    uint8_t controlDepth=0,keyDepth=0;
     std::array<uint8_t,2> partyIndices{{255,255}}; // Source MarioInit245/246 explicit ff stores.
     std::array<uint8_t,2> savedPartyKinds{{0,0}}; // Source constructor memset247/248.
     uint32_t cameraId=4; // Source marioInitCamId writes4 after constructor memset; retained word134 view.

@@ -23,6 +23,18 @@ bool Audio::keyItemFanfareReady() {
     if(loop){std::fclose(loop);ok=false;}
     keyItemResourceReady=ok;return ok;
 }
+bool Audio::prepareFieldItemGetAudio() {
+    if(!keyItemFanfareReady())return false;
+    Lock lock(musicMutex);retireKeyItemFanfare();
+    if(keyItemSlot>=0 || keyItemTailSlot>=0)return false;
+    auto& stream=music[musicSlot];
+    // Muted presentation still owns the source field stream/logical clock.
+    if(!stream.file && musicTrack==-1 && fieldItemMuted){startMusic(musicSlot,0,70);if(stream.file)musicTrack=0;}
+    if(!stream.file || stream.track!=0 || stream.channels!=2 || stream.rate!=32000)return false;
+    bool free=false;for(const auto& candidate:music)free|=!candidate.file;if(!free)return false;
+    if(itemGetFieldSlot>=0)return itemGetFieldSlot==int(musicSlot) && itemGetFieldTrack==0;
+    itemGetFieldSlot=int(musicSlot);itemGetFieldTrack=0;itemGetFieldEnvelope.bind(70,100,false);return true;
+}
 void Audio::retireKeyItemFanfare() {
     const int slots[2]={keyItemSlot,keyItemTailSlot};
     for(int slot:slots){

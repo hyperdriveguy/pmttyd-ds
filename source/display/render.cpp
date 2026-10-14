@@ -259,7 +259,9 @@ bool Renderer::prepareSceneActorTextures(const Game& g) {
     const bool trio=g.trioBattleActive;
     const bool quest=!trio && !g.harborEncounter.locked() && !g.storyPresentation().locked() &&
         (!std::strcmp(g.marioPresentation.selected,"M_N_5B") || !std::strcmp(g.marioPresentation.selected,"M_N_C"));
-    const bool item=!trio && !g.harborEncounter.locked() && !g.storyPresentation().locked() && !std::strcmp(g.marioPresentation.selected,"M_I_U");
+    const bool item=!trio && !g.harborEncounter.locked() && !g.storyPresentation().locked() && !std::strcmp(g.marioPresentation.selected,"M_I_U") || (!trio && itemGetAssetsReady && g.progress.room==0 &&
+        g.progress.originalNpcTalkState.quest1420==2 && g.progress.originalNpcTalkState.flag5406==false &&
+        g.progress.originalNpcTalkState.flag5405==false);
     const bool retire=(!trio && (trioMarioTexture.imported || trioPartnerTexture.imported)) || (!quest && goombaQuestTexture.imported) || (!item && fieldItemGetTexture.imported);
     const bool admit=(trio && (!trioMarioTexture.imported || !trioPartnerTexture.imported)) || (quest && !goombaQuestTexture.imported) || (item && !fieldItemGetTexture.imported);
     if(!retire && !admit)return true;
@@ -1099,6 +1101,10 @@ void Renderer::button(const char* label,float x,float y,float w,float h,bool act
     text(label,x+7,y+8,.48f,disabled?rgb(135,129,116):Ink);
 }
 void Renderer::overlay(const Game& g) {
+    if(g.acquisitionWindows && g.acquisitionWindows->retained()) {
+        if(!itemGetWindows(*g.acquisitionWindows,uint32_t(g.ticks)))text("Development notice: item acquisition windows unavailable",16,220,.42f,Ink);
+        return;
+    }
     if(g.itemSelection && g.itemSelection->owner.retained()) {
         if(!itemSelector(*g.itemSelection))text("Development notice: item selector presentation unavailable",16,220,.42f,Ink);
         return;
@@ -1307,6 +1313,7 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
     const bool battle=g.scene==Scene::Battle || g.scene==Scene::Victory || g.scene==Scene::Defeat;
     C3D_RenderTargetClear(top,C3D_CLEAR_ALL,battle?0xA6CBD8FF:0,0);
     C3D_FrameDrawOn(top);if(g.harborTutorial.running())worldTutorial(g);else if(battleMapsReady)world(g);
+    drawFieldItemGet(g);
     C2D_Prepare();C2D_SceneBegin(top);overlay(g);
     if(!battleMapsReady)text(actorTexturesReady?"Development notice: battle map unavailable":"Development notice: scene actor texture unavailable",16,220,.42f,Ink);
     if(g.trioBattleActive && g.trioAttack.endingFadeAlpha())C2D_DrawRectSolid(0,0,.99f,400,240,C2D_Color32(0,0,0,g.trioAttack.endingFadeAlpha()));

@@ -1171,3 +1171,7 @@ target_sources(ttyd_core PRIVATE source/battle/battle_action_events.cpp source/b
 add_executable(battle_action_events_tests tests/battle_action_events_tests.cpp)
 target_link_libraries(battle_action_events_tests PRIVATE ttyd_core)
 add_test(NAME battle_action_events COMMAND battle_action_events_tests)
+
+add_executable(field_item_state_tests tests/field_item_state_tests.cpp)
+target_link_libraries(field_item_state_tests PRIVATE ttyd_core)
+add_test(NAME field_item_state COMMAND field_item_state_tests)
