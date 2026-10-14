@@ -682,3 +682,5 @@ Opening title: [ordinary entry, prompt and idle return](display/NATIVE_OPENING_T
 Opening movement: [original Parakarry glide](story/NATIVE_OPENING_NPC_GLIDE.md).
 
 - [Field Mario owner, control depth and battle preparation](field/MARIO_OWNER_CONTROL_DEPTH_AND_BATTLE_PREPARE.md): source constructor memset boundary, persistent field pointer, byte-wrapping control operations, ordered preparation, two-slot party controls and ending1f cleanup.
+
+- [Field party current-index selection and entry gate](partner/FIELD_PARTY_CURRENT_INDEX_SELECTION.md): primary/auxiliary live pointer lookup, word0 mask8 exclusion and canonical pouch unlock before destructive construction.

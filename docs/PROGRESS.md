@@ -7991,3 +7991,15 @@ party restoration, Rule0, audience stop and original exit/sequence/result
 publication. No native field-return capture or full prologue/hardware parity
 is claimed. Goal remains active.
 
+
+## 2026-10-13 — Field party lookup gate before restoration
+
+Completed source lookup/entry audit after Mario owner commit bda11e8:
+primary then auxiliary signed indices require nonnull actors with word0 bit8
+clear; ordinary entry checks the canonical pouch unlock before destroying
+existing primary actors. Added three whole-body hashes and an EVT-01 inbox
+breadcrumb. Native fixed party tokens remain unbound registry adapters.
+Next bind actual two-slot field ownership and constructor/appearance/Hello
+services using these gates and original joining history. Documentation-only
+follow-up: scoped diff check passed; prior native validation remains173 CTest,
+111 Python and make all. Full prologue/field return remains unfinished.

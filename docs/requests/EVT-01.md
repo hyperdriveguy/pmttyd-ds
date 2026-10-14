@@ -3244,3 +3244,16 @@ publication/child/callback sites checked; error-wrapper pins reverified.
 Category1 bypasses cancellation; other categories preserve the captured high
 byte while reading fresh globals. Physical errors/recovery children/providers/
 original IO/audio/native binding remain open; EVT-01 stays OPEN.
+
+### 2026-10-13 — Field party current-index and entry admission audit
+
+Read-only complete marioGetPartyId80141050, partyGetPtr800bf1b4 and
+marioPartyEntry801412fc recovered in
+[the current-index contract](../behavior/partner/FIELD_PARTY_CURRENT_INDEX_SELECTION.md).
+Primary/auxiliary signed owner indices select only nonnull actors with word0
+mask8 clear; fixed native token1 is not equivalent. Kind1 entry checks
+canonical pouch14*kind lowbit before destroying existing primary actors.
+Three whole body hashes pin this delivery; no native registry or source
+execution claim. Remaining request stays open: slot/actor initialization,
+original join history, allocation/animation/appearance/Hello, complete
+ending/exit/context/sequence/result publication and original execution checks.
