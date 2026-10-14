@@ -12,6 +12,9 @@ const FieldActorTalkRule* talkRule(const FieldActorRecord& actor,int32_t story) 
     return nullptr;
 }
 bool ordinaryTalkGuard(const FieldActorRecord& actor,const FieldActorTalkState& state,const FieldActorTalkInventory& items) {
+    // Garf's original quest1 arm precedes the ordinary story switch. Unknown
+    // state cannot select ordinary dialogue; key selection/unlock is separate.
+    if(actor.initialization==FieldActorInit::Garf)return state.quest1420 && *state.quest1420!=1;
     // Original gor_02/Goomba4 profile, independent from reusable c_kuribo_n art.
     if(actor.room!=2 || actor.key!=0x2b0a9f83)return true;
     const auto excludes=[&](uint8_t quest,const std::optional<bool>& flag,const std::optional<int32_t>& count) {
@@ -78,7 +81,10 @@ bool FieldActorTalk::print(const FieldActorRecord& source,const char* id,const M
 }
 std::optional<std::array<float,3>> fieldActorInitialPosition(const FieldActorRecord& actor,const FieldActorTalkState& state) {
  if(actor.initialization==FieldActorInit::Static)return actor.position;
- if(actor.initialization!=FieldActorInit::Borodo2 || !state.quest1420)return {};
+ if(!state.quest1420)return {};
+ if(actor.initialization==FieldActorInit::Garf)
+  return *state.quest1420==1?std::array<float,3>{445,0,120}:std::array<float,3>{10,0,-460};
+ if(actor.initialization!=FieldActorInit::Borodo2)return {};
  if(*state.quest1420==4) {
   if(!state.flag5406)return {};
   if(*state.flag5406)return std::array<float,3>{0,-1000,0};
@@ -162,7 +168,7 @@ bool FieldActorAssets::read(FILE* f) {
         } else a.sourceTalkPresent=!a.talkPrefix.empty();
         if(version9) {
             std::array<unsigned char,32> name{};uint32_t init=0;
-            if(!scalar(name) || !scalar(init) || init>1)return false;
+            if(!scalar(name) || !scalar(init) || init>uint32_t(FieldActorInit::Garf))return false;
             size_t length=0;while(length<name.size() && name[length])++length;
             if(length==name.size() || (a.kind==0 && !length) || (a.kind==1 && length))return false;
             for(size_t n=length;n<name.size();++n)if(name[n])return false;
@@ -174,7 +180,9 @@ bool FieldActorAssets::read(FILE* f) {
             }
             a.eventName.assign(reinterpret_cast<const char*>(name.data()),length);
             a.initialization=FieldActorInit(init);
-            if(init && (a.kind || a.wander.enabled || models[a.model].originalName!="c_borodo_n" || a.eventName!=std::string("\x83\x7b\x83\x8d\x83\x68\x81\x5b\x82\x51",10)))return false;
+            if(init && (a.kind || a.wander.enabled))return false;
+            if(a.initialization==FieldActorInit::Borodo2 && (models[a.model].originalName!="c_borodo_n" || a.eventName!=std::string("\x83\x7b\x83\x8d\x83\x68\x81\x5b\x82\x51",10)))return false;
+            if(a.initialization==FieldActorInit::Garf && (models[a.model].originalName!="c_monban" || a.eventName!=std::string("\x93\x90\x91\xaf\x92\x63\x82\x51",8)))return false;
         }
         if(a.storyGate==2 && a.storyLow!=a.storyHigh)return false;
         if(!a.talkPrefix.empty() && (a.kind!=0 || a.talkPrefix.size()!=11 ||

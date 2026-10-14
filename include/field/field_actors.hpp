@@ -32,7 +32,7 @@ struct FieldActorTalkState {
 };
 // Live original inventory observations, not cached/persisted mushroom quantities.
 struct FieldActorTalkInventory {std::optional<int32_t> item95,item107;};
-enum class FieldActorInit:uint32_t {Static=0,Borodo2=1};
+enum class FieldActorInit:uint32_t {Static=0,Borodo2=1,Garf=2};
 struct FieldActorRecord {
     uint32_t key=0,room=0,model=0,interiorRequired=0,interiorForbidden=0,storyGate=0,kind=0; // 0 NPC, 1 map object.
     uint32_t systemForbidden=0;
@@ -57,7 +57,7 @@ struct FieldActorRecord {
 std::optional<std::array<float,3>> fieldActorInitialPosition(const FieldActorRecord&,const FieldActorTalkState&);
 std::string fieldActorTalkKey(const FieldActorRecord&,int32_t story,const FieldActorTalkState& state={},const FieldActorTalkInventory& items={});
 bool fieldActorTalkAvailable(const FieldActorRecord&,int32_t story,const FieldActorTalkState& state={},const FieldActorTalkInventory& items={});
-// PMNPC001..008 are local containers. They describe recovered static init subsets;
+// PMNPC001..009 are local containers. They describe recovered static init subsets;
 // scripted actor movement/flags and the original NPC driver are separate owners.
 class FieldActorAssets {
 public:

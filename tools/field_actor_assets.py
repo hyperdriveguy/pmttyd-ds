@@ -64,7 +64,7 @@ def npc_source_data(iso, tribes=None):
             if len(data)!=size:raise ValueError('Truncated source constant')
             return data
         result={}
-        for name,address in (tribes or [('c_tyusan',0x80333554),('c_kuri_h',0x80333014),('c_f_mura',0x80333110),('c_kuribo_n',0x8033335c),('c_borodo_n',0x80332d20)]):
+        for name,address in (tribes or [('c_tyusan',0x80333554),('c_kuri_h',0x80333014),('c_f_mura',0x80333110),('c_kuribo_n',0x8033335c),('c_borodo_n',0x80332d20),('c_monban',0x80333404)]):
             raw=read(address,0x54);width,height=struct.unpack_from('>2f',raw,0x28)
             ptr=struct.unpack_from('>I',raw,0x14)[0];talk=bytearray()
             for i in range(32):
@@ -153,6 +153,7 @@ def build(iso):
     # Keep original RGBA; half-resolution atlas fits the room's resident linear
     # memory budget while preserving normalized UVs and original mesh geometry.
     borodo_scale=compile_model(iso,'field-borodo','c_borodo_n',['S_1','T_1','W_1','R_1'],texture_scale=.5)
+    garf_scale=compile_model(iso,'field-garf','c_monban',['S_1','T_1','W_1','R_1'],texture_scale=.5)
     professor_scale = json.loads(Path('romfs/professor.json').read_text())['uv_scale']
     object_scale=build_objects(iso)
     model_specs = [
@@ -162,6 +163,7 @@ def build(iso):
         dict(asset='field-darkly',scale=darkly_scale,original='c_f_mura',path=work/'c_f_mura'),
         dict(asset='field-goomba',scale=goomba_scale,original='c_kuribo_n',path=work/'c_kuribo_n'),
         dict(asset='field-borodo',scale=borodo_scale,original='c_borodo_n',path=work/'c_borodo_n'),
+        dict(asset='field-garf',scale=garf_scale,original='c_monban',path=work/'c_monban'),
     ]
     models = [(m['asset'],m['scale']) for m in model_specs]
     # Source Frankly init: exact story8/10 branches; story9 hides his NPC.
@@ -192,6 +194,14 @@ def build(iso):
     records.append(dict(key=identifier('gor_02','ボロドー２'),room=2,model=5,required=0,forbidden=0,low=0,high=0,gate=0,
         position=borodo['position'],yaw=borodo['yaw'],pose='S_1',npc_flags=0x40080603,source_talk_present=1,
         initialization=1,source='m/gor_02/s:ボロドー２;gor.rel:borodo2_init@0x443c0/talk@0x44518'))
+    garf=tagged_npcs(setup.read_bytes().decode('shift_jis'))['盗賊団２']
+    if garf['tribe']!='門番' or garf['aitype']!='なし' or garf['position']!=[0,-1000,0] or garf['yaw']!=270:
+        raise ValueError('Unexpected original Garf setup')
+    records.append(dict(key=identifier('gor_02','盗賊団２'),room=2,model=6,required=0,forbidden=0,low=0,high=0,gate=0,
+        position=garf['position'],yaw=garf['yaw'],pose='S_1',npc_flags=0x40080603,source_talk_present=1,
+        initialization=2,talk_prefix='gor_02_011_',
+        talk_rules=[(0,limit,'gor_02_011'+suffix) for limit,suffix in [(56,''),(164,'_01'),(215,'_02'),(261,'_03'),(339,'_04'),(373,'_05'),(401,'_06')]]+[(3,0,'gor_02_011_07')],
+        source='m/gor_02/s:盗賊団２;gor.rel:tozokudan2_init@0x42444/talk@0x42c04'))
     event_names={identifier(room,name):name for room,text in [('gor_02',setup.read_bytes()),('gor_01',plaza_setup.read_bytes())]
                  for name in tagged_npcs(text.decode('shift_jis'))}
     tagged_order={name:i for i,name in enumerate(tagged_npcs(setup.read_bytes().decode('shift_jis')))}

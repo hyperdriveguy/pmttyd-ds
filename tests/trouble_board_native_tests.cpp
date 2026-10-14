@@ -60,6 +60,11 @@ int main() {
  // appends into the SAME manager, rather than dropping or waiting on that child.
  auto child=initial(true);assert(child.tryTroubleBoardContact(0x100));run(child,0,0);
  assert(*child.progress.originalNpcTalkState.quest1420==1);
+ const FieldActorRecord* garf=nullptr;
+ for(const auto& actor:fieldActorCatalog().actors())if(actor.initialization==FieldActorInit::Garf)garf=&actor;
+ assert(garf);for(int n=0;n<40;++n)child.tick({});
+ const auto* startedGarf=child.fieldNpcState(garf->key);
+ assert(startedGarf && startedGarf->body.root.x==445 && startedGarf->body.root.z==120);
  auto* retained=child.troubleBoardPresentation();
  child.wallContact.sourceNode=0x12d3e0;
  assert(child.tryTroubleBoardContact(0x100) && child.troubleBoardLocked());
@@ -109,13 +114,13 @@ int main() {
   assert(pouch.half(0x78)==40 && pouch.half(0x70)==10);
   for(auto item:{49,95,107,110,98,73,99,109,100})assert(pouch.keyItemCount(item)==(item==expectedItems[quest-1]?0:3));
   for(int f=5405;f<=5421;++f)assert(!*troubleQuestFlag(task.progress.originalNpcTalkState,f));
-  if(quest==4) {
+  if(quest==1 || quest==4) {
    // Its original independently launched end child moves the actual actor,
    // even though init placed it below-map with5406 set before cancellation.
    for(int n=0;n<40;++n)task.tick({});
-   for(const auto& actor:fieldActorCatalog().actors())if(actor.initialization==FieldActorInit::Borodo2) {
+   for(const auto& actor:fieldActorCatalog().actors())if(actor.initialization==(quest==1?FieldActorInit::Garf:FieldActorInit::Borodo2)) {
     const auto* live=task.fieldNpcState(actor.key);assert(live && live->initialized);
-    assert(live->body.root.x==-475 && live->body.root.y==0 && live->body.root.z==-180);
+    assert(live->body.root.x==(quest==1?10:-475) && live->body.root.y==0 && live->body.root.z==(quest==1?-460:-180));
    }
   }
  }

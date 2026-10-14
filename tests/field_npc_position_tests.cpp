@@ -9,6 +9,10 @@ int main() {
  state.quest1420=4;assert(!fieldActorInitialPosition(rule,state));
  state.flag5406=false;assert((fieldActorInitialPosition(rule,state)==std::array<float,3>{-475,0,-180}));
  state.flag5406=true;assert((fieldActorInitialPosition(rule,state)==std::array<float,3>{0,-1000,0}));
+ rule.initialization=FieldActorInit::Garf;state={};assert(!fieldActorInitialPosition(rule,state));
+ state.quest1420=1;assert((fieldActorInitialPosition(rule,state)==std::array<float,3>{445,0,120}));
+ state.quest1420=0;assert((fieldActorInitialPosition(rule,state)==std::array<float,3>{10,0,-460}));
+ state.quest1420=4;assert((fieldActorInitialPosition(rule,state)==std::array<float,3>{10,0,-460}));
  assert(loadFieldActorCatalog("romfs") && loadHarborStoryAssets("romfs"));
  assert(loadGround("romfs/gor_02.ground") && loadCollision("romfs/gor_02.walls") && loadHead("romfs/gor_02.head"));
  const FieldActorRecord* actor=nullptr;
@@ -35,4 +39,19 @@ int main() {
  game.tick({});assert(game.fieldNpcState(actor->key)->body.root.x==350);
  Game completed(false);completed.progress=game.progress;completed.tick({});
  assert(completed.fieldNpcState(actor->key)->body.root.y==-1000);
+ const FieldActorRecord* garf=nullptr;
+ for(const auto& a:fieldActorCatalog().actors())if(a.initialization==FieldActorInit::Garf){assert(!garf);garf=&a;}
+ assert(garf && garf->eventName==std::string("\x93\x90\x91\xaf\x92\x63\x82\x51",8));
+ assert(fieldActorCatalog().models()[garf->model].originalName=="c_monban");
+ assert(!fieldActorTalkAvailable(*garf,23,{}));state.quest1420=1;
+ assert(!fieldActorTalkAvailable(*garf,23,state));state.quest1420=0;
+ MessageAssets messages;assert(messages.loadRoom("romfs/messages/gor_02.txt"));
+ for(const auto& b:std::vector<std::pair<int,const char*>>{{0,"gor_02_011"},{55,"gor_02_011"},{56,"gor_02_011_01"},{163,"gor_02_011_01"},{164,"gor_02_011_02"},{214,"gor_02_011_02"},{215,"gor_02_011_03"},{260,"gor_02_011_03"},{261,"gor_02_011_04"},{338,"gor_02_011_04"},{339,"gor_02_011_05"},{372,"gor_02_011_05"},{373,"gor_02_011_06"},{400,"gor_02_011_06"},{401,"gor_02_011_07"}}) {
+  assert(fieldActorTalkKey(*garf,b.first,state)==b.second && messages.find(b.second));
+ }
+ Game quest1(false);quest1.progress=game.progress;quest1.progress.originalNpcTalkState.quest1420=1;quest1.tick({});
+ auto* garfLive=quest1.fieldNpcState(garf->key);assert(garfLive && garfLive->initialized);
+ assert(garfLive->body.root.x==445 && garfLive->body.root.y==0 && garfLive->body.root.z==120);
+ quest1.progress.originalNpcTalkState.quest1420=0;quest1.tick({});
+ assert(quest1.fieldNpcState(garf->key)->body.root.x==445); // No replay of source init.
 }
