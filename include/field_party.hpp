@@ -22,10 +22,11 @@ struct FieldPartyActor {
         for(unsigned i=0;i<4;++i)bytes[offset+i]=uint8_t(value>>(24-8*i));
     }
 };
-// Converted original c_pkr resource and native CPU shape ownership. These
+// Converted original Mario/partner resources and native CPU shape ownership. These
 // handles belong to this field registry; GPU/time/ABI equivalence is separate.
 struct FieldPartyPose {
     uint32_t flags=1,materialFlags=0,materialLightFlags=0;
+    uint32_t sourceResource=0;
     int32_t mode=2,archiveType=0;
     uint64_t enteredMilliseconds=0;
     std::shared_ptr<const ActorAnimationPack> resource;
@@ -34,7 +35,7 @@ struct FieldPartyPose {
 };
 struct FieldPartyRegistry {
     std::array<std::unique_ptr<FieldPartyActor>,2> actors;
-    std::array<std::unique_ptr<FieldPartyPose>,2> poses;
+    std::array<std::unique_ptr<FieldPartyPose>,5> poses; // Used native domain: three Mario owners and two partner owners.
     uint32_t currentDefinition=0; // Original global kind-record pointer view.
     FieldPartyRegistry()=default;
     FieldPartyRegistry(const FieldPartyRegistry& other):currentDefinition(other.currentDefinition) {
@@ -86,17 +87,40 @@ struct FieldPartyRegistry {
         if(mario.flags&0x80000000)actor->word(4,actor->word(4)|0x8000);
     }
     int32_t enterPose(uint32_t sourceResource,int32_t mode,std::shared_ptr<const ActorAnimationPack> bank,uint64_t milliseconds) {
-        if(sourceResource!=0x804213e0 || mode!=2 || !bank)return -1;
-        const auto* base=bank->pose("PKR_S_1");ActorAnimationSample validation;
+        const char* shape=nullptr;
+        switch(sourceResource) {
+        case 0x804213e0:shape="PKR_S_1";break;
+        case 0x802c18a0:shape="M_S_1";break;
+        case 0x802c18a8:shape="M_S_1R";break;
+        case 0x802c18b4:shape="M_I_5";break;
+        default:return -1;
+        }
+        if(mode!=2 || !bank)return -1;
+        const auto* base=bank->pose(shape);ActorAnimationSample validation;
         if(!base || !base->evaluate(base->start,validation) || validation.vertices.empty())return -1;
         for(unsigned index=0;index<poses.size();++index)if(!poses[index]) {
-            auto pose=std::make_unique<FieldPartyPose>();pose->resource=std::move(bank);pose->enteredMilliseconds=milliseconds;
+            auto pose=std::make_unique<FieldPartyPose>();pose->resource=std::move(bank);pose->sourceResource=sourceResource;pose->enteredMilliseconds=milliseconds;
             pose->shape.positions=base->positions;pose->shape.normals=base->normals;pose->shape.nodes=base->nodes;
             pose->shape.visibility=base->visibility;pose->shape.world.resize(base->groups.size());
             pose->shape.vertices.reserve(base->bindings.size()); // Real workspace; no animation is selected before the authored pose request.
             poses[index]=std::move(pose);return int32_t(index);
         }
         return -1; // Explicit native admission failure; original exhausted/negative-handle domain is not repaired.
+    }
+    FieldPartyPose* pose(int32_t handle) const {
+        return handle>=0 && unsigned(handle)<poses.size()?poses[unsigned(handle)].get():nullptr;
+    }
+    bool initializeMario(FieldMarioBattleState& mario,std::shared_ptr<const ActorAnimationPack> bank,uint64_t milliseconds) {
+        constexpr std::array<uint32_t,3> resources{{0x802c18a0,0x802c18a8,0x802c18b4}};
+        for(unsigned i=0;i<resources.size();++i) {
+            mario.poseHandles[i]=enterPose(resources[i],2,bank,milliseconds);
+            if(mario.poseHandles[i]<0)return false;
+        }
+        return true;
+    }
+    void reinitializeMario(const FieldMarioBattleState& mario) {
+        for(auto handle:mario.poseHandles)if(auto* owner=pose(handle))owner->materialFlags=0;
+        for(auto handle:mario.poseHandles)if(auto* owner=pose(handle))owner->materialLightFlags|=2;
     }
 };
 }

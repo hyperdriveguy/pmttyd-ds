@@ -1023,6 +1023,9 @@ bool Game::beginWater() {
 }
 void Game::restore(const Progress& saved) {
     const uint32_t retainedFieldMarioCameraId=fieldMarioBattle.cameraId;
+    const auto retainedMarioPoseHandles=fieldMarioBattle.poseHandles;
+    decltype(fieldParties.poses) retainedMarioPoses;
+    for(auto handle:retainedMarioPoseHandles)if(fieldParties.pose(handle))retainedMarioPoses[unsigned(handle)]=std::move(fieldParties.poses[unsigned(handle)]);
     partnerPresentation={};partnerPresentation.startTick=partnerPresentation.nowTick=ticks;
     const Progress p=saved; // Caller may pass this game's own progress.
     const uint64_t cameraClock=fieldCameraSimulationTicks,shiftTimestamp=fieldCameraShift.previousMilliseconds;
@@ -1032,9 +1035,11 @@ void Game::restore(const Progress& saved) {
     const auto retainedPresentation=marioPresentation;
     // A full Game reset exceeds the remaining native stack under checkpoint
     // validation. Keep the reset work on the heap, then move its owned state.
-    auto reset=std::make_unique<Game>();
+    auto reset=std::make_unique<Game>(false);
     *this = std::move(*reset);
     fieldMarioBattle.cameraId=retainedFieldMarioCameraId; // Source reinit preserves the camera ID across record reset.
+    fieldMarioBattle.poseHandles=retainedMarioPoseHandles;fieldParties.poses=std::move(retainedMarioPoses);
+    fieldParties.reinitializeMario(fieldMarioBattle); // Original live pose material clear, then light|2; clocks/resources survive.
     marioPresentation.facing=retainedPresentation.facing;marioPresentation.display=retainedPresentation.display;marioPresentation.target=retainedPresentation.target;
     fieldCameraEvents=cameraEvents;fieldCameraFlags=retainedCameraFlags;
     fieldCameraFrame=retainedFrame;fieldCameraAuthored=retainedAuthored;

@@ -3476,3 +3476,15 @@ Mario pose installation or material read is fabricated. The request continues
 at the actual shared pose owner/boot/material producer rather than the now
 bound selector. See [Mario material provenance](../behavior/partner/FIELD_MARIO_POSE_HANDLES_AND_MATERIAL_PROVENANCE.md).
 Parent EVT-01 remains open; no rendering, appearance or completed return claim.
+
+### 2026-10-13 — Actual Mario resource owners and material inheritance
+
+Bound ordinary three-bank boot to existing original PMANIM resources in a
+common native pose pool; ReInit preserves actual records and clocks, clears
+material and adds light2. Joined partner EntryMain now reads both live Mario
+selectors/handles and copies their material/light masks with original OR order.
+Boundary advances to partyGetHp80140ea4; HP-dependent original pose/import,
+kuribo_init, appearance2/Hello, renderer/lifetime and subsequent ending/exit
+owners remain open. Local contracts delivered; parent request is not complete.
+See [native registry](../behavior/partner/NATIVE_FIELD_PARTY_REGISTRY.md) and
+[Mario provenance](../behavior/partner/FIELD_MARIO_POSE_HANDLES_AND_MATERIAL_PROVENANCE.md).

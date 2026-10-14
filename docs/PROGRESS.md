@@ -9446,3 +9446,42 @@ Still active: replace the map reveal's incomplete timing/scene adapter, bind
 original heading Stardust, finish original Voyage lighting appearance, and
 rerun the combined final flow/debug-short build. Projective glyph rainbow TEV,
 full SDK subtitle metrics and general original rendering/sound remain limited.
+
+## 2026-10-13 — Shared field Mario poses and partner material inheritance
+
+Native ordinary boot now admits actual original a_mario/a_mario_r/e_mario
+resource-backed CPU pose/shape records and installs three distinct Mario
+handles. Existing converted characters.pmanim shares immutable bank data;
+source resource identities and mutable buffers remain separate. The supported
+native pool now covers three Mario plus two partner owners, so Goombella's
+handle cannot alias a Mario owner. This is a scoped converted backend, not
+original global pool capacity, asynchronous file/cache ABI or completed GPU
+rendering. Existing original clips/atlas are reused unchanged.
+
+Game re-entry retains actual Mario records, handles/resources/entry clocks,
+clears each material and then adds light mask2, preserving other light bits.
+The reset skips animation bootstrap to avoid discarded shape allocations.
+Joined EntryMain performs separate live WORD4 selections for material/light,
+reads each actual source pose and ORs the masks onto the actual new partner
+pose. Missing owners retain the read boundary. No constant material0/light2
+substitution; the native ending frontier is now partyGetHp80140ea4.
+
+Validation: make all passed (artifacts/trio-mario-owners-all.log); separately
+invoked Python suite120/120 passed (trio-mario-owners-python.log). make test
+built and passed183/184 CTest (trio-mario-owners-tests.log), including portable
+field protocol, original shared pose/resource/re-entry checks and full
+trio_attack_original. Only the concurrent uncommitted harbor approach test
+failed at line58; its earlier fractional-coordinate branch now passes.
+Notified its active worker and did not modify that work. Tests cover real
+three-bank identity, same-pool partner handles, retained record identity and
+clock, material clear/light OR, shared immutable versus independent mutable
+copy ownership, and live nonzero differing Mario masks inherited by joined
+ending. Scoped diff/link checks passed. No new native capture or hardware
+measurement; full working-tree suite is not claimed green.
+
+Next source HP/pose selector and kuribo_init, import actual PKR_D_2 for low
+HP, then appearance2/Hello/field draw and actor lifetime integration. Authored
+join/map material producers, alternate Mario resources, RuleKeep/audience,
+exit/context/sequence/result publication and original runtime/hardware parity
+remain open. Full playable prologue and original-fidelity return are unfinished;
+goal remains active.

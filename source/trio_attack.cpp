@@ -30,6 +30,7 @@ namespace {
 EventScriptAssets scripts;NpcAngleTable sourceAngles;bool assetsReady=false;
 std::string fieldPartnerAnimationPath;
 std::weak_ptr<const ActorAnimationPack> fieldPartnerAnimationCache;
+std::shared_ptr<const ActorAnimationPack> fieldMarioBank;
 std::shared_ptr<const ActorAnimationPack> fieldPartnerAnimationBank() {
     if(auto cached=fieldPartnerAnimationCache.lock())return cached;
     auto bank=std::make_shared<ActorAnimationPack>();
@@ -42,6 +43,7 @@ constexpr std::array<unsigned,7> visual{{0,0,1,3,5,4,2}};
 void required(bool ok){if(!ok)std::abort();}
 uint32_t bits(float v){uint32_t b;std::memcpy(&b,&v,4);return b;}
 }
+std::shared_ptr<const ActorAnimationPack> fieldMarioAnimationBank() {return fieldMarioBank;}
 bool loadTrioAttackAssets(const char* root) {
     if(!root || !loadProloguePouchAssets(root))return false;
     EventScriptAssets next;if(!next.load((std::string(root)+"/trio-attack-events.pmevt").c_str()))return false;
@@ -51,6 +53,13 @@ bool loadTrioAttackAssets(const char* root) {
     const bool valid=std::fread(magic,8,1,f)==1 && !std::memcmp(magic,"PMTHIT3",8) && std::fread(&count,4,1,f)==1 && count==3 && std::fread(units.data(),16,3,f)==3 && std::fread(&group,4,1,f)==1 && std::fread(&phase,4,1,f)==1 && std::fgetc(f)==EOF;
     std::fclose(f);if(!valid)return false;
     if(!sourceAngles.load((std::string(root)+"/npc-angle.bin").c_str()))return false;
+    auto marioBank=std::make_shared<ActorAnimationPack>();
+    if(!marioBank->load((std::string(root)+"/characters.pmanim").c_str()))return false;
+    for(const char* name:{"M_S_1","M_S_1R","M_I_5"}) {
+        const auto* base=marioBank->pose(name);ActorAnimationSample sample;
+        if(!base || !base->evaluate(base->start,sample) || sample.vertices.empty())return false;
+    }
+    fieldMarioBank=std::move(marioBank);
     fieldPartnerAnimationPath=std::string(root)+"/partner.pmanim";fieldPartnerAnimationCache.reset();
     scripts=std::move(next);reactionUnits=units;reactionGroup=group;franklyPhase=phase;assetsReady=true;return true;
 }
@@ -704,7 +713,18 @@ struct TrioAttackRuntime {
                     endingRequest(0x800593fc);
                     const auto marioPose=fieldMario->poseHandles[unsigned(fieldMarioAnimationId(*fieldMario))];
                     endingRequest(0x8004069c,{marioPose});
-                    pending=0x8004069c;return; // Actual Mario resource-backed material owner must precede inheritance, HP/init and placement.
+                    const auto* materialOwner=fieldParties->pose(marioPose);
+                    if(!materialOwner){pending=0x8004069c;return;}
+                    endingRequest(0x80040730,{pose,int32_t(materialOwner->materialFlags)});
+                    fieldParties->pose(pose)->materialFlags|=materialOwner->materialFlags;
+                    endingRequest(0x800593fc);
+                    const auto marioLightPose=fieldMario->poseHandles[unsigned(fieldMarioAnimationId(*fieldMario))];
+                    endingRequest(0x80040684,{marioLightPose});
+                    const auto* lightOwner=fieldParties->pose(marioLightPose);
+                    if(!lightOwner){pending=0x80040684;return;}
+                    endingRequest(0x800406f0,{pose,int32_t(lightOwner->materialLightFlags)});
+                    fieldParties->pose(pose)->materialLightFlags|=lightOwner->materialLightFlags;
+                    pending=0x80140ea4;return; // Original HP-dependent pose selection/init and placement follow live inheritance.
                 } // Real source -1 return: no unlock, kill or constructor side effects.
             }else {
                 endingRequest(0x80141198);

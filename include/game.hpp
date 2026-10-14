@@ -155,6 +155,9 @@ struct FieldNpcInstance {
 struct FieldNpcSoundRequest {std::string key;uint32_t mask=0;FieldWallVector root;};
 class Game {
 public:
+    explicit Game(bool initializeAnimation=true) {
+        if(initializeAnimation)if(auto bank=fieldMarioAnimationBank())fieldParties.initializeMario(fieldMarioBattle,std::move(bank),0);
+    }
     Progress progress;
     Vec2 partner{1.4f,2.5f};
     float groundHeight = 0, partnerHeight = 0;

@@ -210,6 +210,12 @@ int main(){
             // Explicit checkpoint history of the authored Goombella join.
             charged.progress.originalPouch=createProloguePouch();assert(charged.progress.originalPouch);
             charged.progress.originalPouch->half(14,1);
+            // Explicit retained material history proves copying live owners,
+            // rather than substituting creation defaults or fixed light2.
+            for(unsigned i=0;i<3;++i) {
+                auto* owner=charged.fieldPartyState().pose(charged.fieldMarioBattleState().poseHandles[i]);assert(owner);
+                owner->materialFlags=0x1800u+i;owner->materialLightFlags=0x42u+i;
+            }
         }
         for(unsigned n=0;n<3600 && !charged.trioBattleActive;++n)charged.tick(advance);
         for(unsigned n=0;n<3600 && !charged.trioBattleIntro.finished;++n)charged.tick(advance);
@@ -332,14 +338,14 @@ int main(){
             for(unsigned n=0;n<59;++n)charged.tick(Input{});assert(charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001a);
             charged.tick(Input{});assert(charged.trioBattleIntro.actors[0].pose=="M_R_1" && charged.trioBattleIntro.actors[1].pose=="PKR_R_1");
             for(unsigned n=0;n<100 && !charged.trioAttack.pendingFunction();++n)charged.tick(Input{});
-            assert(charged.trioAttack.pendingFunction()==(fastReward?0x8004069cu:0x8018ef8cu) && charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001f);
+            assert(charged.trioAttack.pendingFunction()==(fastReward?0x80140ea4u:0x8018ef8cu) && charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001f);
             assert(charged.fieldMarioBattleState().partyIndices[0]==255 && charged.fieldMarioBattleState().partyIndices[1]==255);
             if(fastReward) {
                 assert(charged.fieldPartyState().pointer(0) && !charged.fieldPartyState().pointer(1));
                 const auto* actor=charged.fieldPartyState().pointer(0);
-                assert(actor->word(0)==1 && actor->word(4)==0 && actor->word(0xc)==0);
-                const auto* pose=charged.fieldPartyState().poses[0].get();assert(pose && pose->resource && pose->flags==1 && pose->mode==2 && pose->archiveType==0);
-                assert(pose->materialFlags==0 && pose->materialLightFlags==0 && !pose->shape.positions.empty() && !pose->shape.world.empty());
+                assert(actor->word(0)==1 && actor->word(4)==0 && actor->word(0xc)==3);
+                const auto* pose=charged.fieldPartyState().pose(int32_t(actor->word(0xc)));assert(pose && pose->resource && pose->flags==1 && pose->mode==2 && pose->archiveType==0);
+                assert(pose->materialFlags==0x1800 && pose->materialLightFlags==0x42 && !pose->shape.positions.empty() && !pose->shape.world.empty());
                 assert(pose->shape.vertices.empty()); // Entry has not selected a pose or submitted a draw.
                 assert(actor->word(0x160)==FieldMarioOwnerAddress && actor->word(0x164)==charged.fieldMarioBattleState().cameraId);
                 assert(charged.fieldMarioBattleState().cameraId==4);

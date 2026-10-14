@@ -1537,3 +1537,18 @@ scaled to512x64 with Lanczos. `msg/US/global` supplies the exact
 Ignored heading-resources.json records source hashes, conversions and licensing;
 extracted/compiled resources stay outside source history and confer no
 redistribution rights. [Provider boundaries](behavior/display/NATIVE_OPENING_HEADING.md).
+
+## 2026-10-13 — Shared field Mario pose owners
+
+Reused ignored romfs/characters.pmanim, converted from the read-only US ISO
+paths a/a_mario, a/a_mario_r and a/e_mario with their original a/a_mario- and
+a/a_mario_r- textures. Existing converter clips and atlas unchanged. Real
+M_S_1, M_S_1R and M_I_5 geometry-backed shapes admit the respective bank
+owners; those names validate resource/shape availability, not an authored
+pose request or completed animation draw. Source resource identities remain
+802c18a0/18a8/18b4 and mode2/archive0 in separate mutable records sharing
+the existing immutable converted container. No new extraction/conversion.
+Original copyrighted assets and compiled packs remain ignored/private; no
+source payload or ISO distributed. CPU ownership is now common with c_pkr,
+while the renderer's separate cache, full animation coverage and GPU/time/
+original file-pool fidelity remain unfinished.

@@ -86,11 +86,35 @@ int main(int argc,char**) {
     CHECK(animation.enterPose(0x802cb340,2,bank,17)==-1 && !animation.poses[0]); // No substitute for the original d_mario override.
     CHECK(animation.enterPose(0x804213e0,0,bank,17)==-1 && animation.enterPose(0x804213e0,2,nullptr,17)==-1);
     CHECK(animation.enterPose(0x804213e0,2,bank,17)==0 && animation.enterPose(0x804213e0,2,bank,34)==1);
+    for(int32_t slot=2;slot<5;++slot)CHECK(animation.enterPose(0x804213e0,2,bank,51)==slot);
     CHECK(animation.enterPose(0x804213e0,2,bank,51)==-1 && animation.poses[0]->enteredMilliseconds==17);
     CHECK(animation.poses[0]->resource==animation.poses[1]->resource && !animation.poses[0]->shape.positions.empty());
     animation.poses[0]->flags=0x1009;animation.poses[0]->paperOff();CHECK(animation.poses[0]->flags==0x1001);
     FieldPartyRegistry animatedFork=animation;animatedFork.poses[0]->shape.positions[0][0]+=1;
     CHECK(animatedFork.poses[0]->resource==animation.poses[0]->resource && animatedFork.poses[0]->shape.positions[0]!=animation.poses[0]->shape.positions[0]);
+    auto marioBank=std::make_shared<ActorAnimationPack>();CHECK(marioBank->load("romfs/characters.pmanim"));
+    FieldPartyRegistry shared;FieldMarioBattleState parents;
+    CHECK(shared.initializeMario(parents,marioBank,123));
+    CHECK((parents.poseHandles==std::array<int32_t,3>{{0,1,2}}));
+    for(unsigned i=0;i<3;++i) {
+        auto* owner=shared.pose(parents.poseHandles[i]);CHECK(owner && owner->resource==marioBank && !owner->shape.positions.empty());
+        CHECK(owner->enteredMilliseconds==123 && owner->shape.vertices.empty());
+        owner->materialFlags=0x1800;owner->materialLightFlags=0x40u<<i;
+    }
+    CHECK(shared.pose(0)->sourceResource==0x802c18a0 && shared.pose(1)->sourceResource==0x802c18a8 && shared.pose(2)->sourceResource==0x802c18b4);
+    CHECK(shared.enterPose(0x804213e0,2,bank,234)==3 && shared.enterPose(0x804213e0,2,bank,345)==4);
+    shared.reinitializeMario(parents);
+    for(unsigned i=0;i<3;++i)CHECK(shared.pose(int32_t(i))->materialFlags==0 && shared.pose(int32_t(i))->materialLightFlags==((0x40u<<i)|2));
+    CHECK(shared.pose(3)->materialLightFlags==0 && !shared.pose(-1) && !shared.pose(5));
+    CHECK(loadTrioAttackAssets("romfs"));Game persistent;
+    auto handles=persistent.fieldMarioBattleState().poseHandles;
+    auto* original=persistent.fieldPartyState().pose(handles[1]);CHECK(original && original->resource);
+    original->materialFlags=0x1800;original->materialLightFlags=0x40;original->enteredMilliseconds=987;
+    persistent.restore(Progress{});
+    CHECK(persistent.fieldMarioBattleState().poseHandles==handles && persistent.fieldPartyState().pose(handles[1])==original);
+    CHECK(original->enteredMilliseconds==987 && original->materialFlags==0 && original->materialLightFlags==0x42);
+    Game independent=persistent;independent.fieldPartyState().pose(handles[1])->materialLightFlags|=0x100;
+    CHECK(original->materialLightFlags==0x42 && independent.fieldPartyState().pose(handles[1])->resource==original->resource);
     }
     for(bool partner:{false,true}) {
         Fixture f;if(!partner)f.partner=0;auto s=f.services();

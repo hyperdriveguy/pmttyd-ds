@@ -44,9 +44,9 @@ propagates the Mario80000000 flag into party8000. Ordinary kind1 resolves
 c_pkr or the original d_mario override. Normal c_pkr now admits an owned
 native CPU pose/resource/shape workspace with mode2/archive0, publishes its
 real registry handle and runs PeraOff; missing/unsupported resources retain
-the animPoseEntry barrier. It executes MarioAnimeId800593fc and stops at
-MaterialGet8004069c before material inheritance, init callback, appearance,
-current-index publication or Hello.
+the animPoseEntry barrier. It executes both MarioAnimeId800593fc selections and stops at
+partyGetHp80140ea4 after live material/light inheritance, before HP-dependent
+pose selection, init callback, appearance, current-index publication or Hello.
 No animation is selected or GPU draw acknowledged by this admission. See
 [constructor animation admission](FIELD_PARTY_ENTRY_ANIMATION_ADMISSION.md).
 Existing primary destruction remains partyKill800be69c; other kind/auxiliary
@@ -68,12 +68,29 @@ general postbattle placement, actual field actor rendering/mode integration,
 RuleKeep/audience, original resource/context/sequence/result publication and
 original execution/hardware verification. This is not a playable native return.
 
-The converted animation backend owns two partner pose slots, sharing immutable
-original c_pkr animation data while retaining independent CPU shape buffers.
-These native registry handles are not an emulation of the original global
-pose-pool capacity or indices. Original Mario pose/material ownership must be
-bound consistently before exposing the shared original handle callbacks.
-Native entry milliseconds are simulation-clock metadata, not original GP
-timebase/shape allocator/GX equivalence. The field renderer still owns its
-separate imported bank/texture projection; linking this pose owner to actual
-field drawing and lifecycle remains required.
+The converted animation backend owns five shared native pose slots: three
+ordinary Mario field owners plus the two supported field partner actors.
+Game boot uses actual converted a_mario/a_mario_r/e_mario geometry/animation
+resources in source order, publishing three nonnegative handles only on real
+admission. The common PMANIM container shares immutable data; each record
+retains its exact source resource identity and independent mutable shape.
+Goombella's later handle therefore cannot alias an occupied Mario owner.
+This is not original global pool capacity or general NPC/render ABI emulation.
+
+Game re-entry retains the existing Mario records, handles, resources and entry
+clocks. It clears each live Mario material, then ORs light2, matching the
+recovered ReInit operations and preserving other light bits. The heap reset
+skips a new animation bootstrap, avoiding discarded shape allocations. Existing
+partner lifetime/reset adaptation remains separate from original partyKill.
+Original alternate Mario character modes, all authored door/blend producers,
+complete original animation banks, GP time, shape allocation and GX raster
+parity remain open. Original handle-null/exhaustion behavior is not repaired
+with fallback banks: native admission failure holds its provider.
+
+Joined EntryMain now independently reads WORD4 for material and light,
+resolves each retained Mario handle in the same registry, reads its live mask
+and ORs it onto the actual new partner pose in original order. No current
+material value is inferred from boot defaults. HP-dependent pose selection
+is the next source boundary. Native entry milliseconds remain simulation-clock
+metadata; the renderer still owns separate imported bank/texture projections.
+Connecting these owners to actual drawing and all lifecycles remains required.
