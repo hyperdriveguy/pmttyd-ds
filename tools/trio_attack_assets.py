@@ -35,6 +35,11 @@ def build(iso=DEFAULT_ISO):
                     else:split.append((start,body))
                 spans=split
             segments.extend(spans)
+        # Immutable audience scripts/item tables from their exact original owner.
+        from harbor_tutorial_dol_assets import segments as tutorial_data
+        audience=[span for span in tutorial_data(iso) if span[0]==0x8041c638]
+        if len(audience)!=1:raise ValueError('Missing pinned original audience scripts')
+        segments.extend(audience)
         # Immutable Goombella defense/status/default attack/wait data, beyond
         # the mutable-tail cutoff. Import only its exact admitted source span.
         off,va=(struct.unpack_from('>I',header,b+11*4)[0] for b in (0,0x48))
@@ -70,7 +75,7 @@ def build(iso=DEFAULT_ISO):
         spans.append(dict(address=address,size=len(data),sha256=hashlib.sha256(data).hexdigest()));offset+=len(data)
     packed=b'PMEVT001'+struct.pack('>I',len(segments))+b''.join(table+payload)
     Path('romfs/trio-attack-events.pmevt').write_bytes(packed)
-    manifest.update(format='PMEVT001',segments=spans,size=len(packed),sha256=hashlib.sha256(packed).hexdigest(),conversion='Unchanged original DOL data sections7..12; section11 trimmed at80418000; live manager/context/global ranges excluded; relocated tik non-executable data sections included; no PPC text',limitation='Original source data and dependencies only; native callback coverage and owned runtime fields remain required')
+    manifest.update(format='PMEVT001',segments=spans,size=len(packed),sha256=hashlib.sha256(packed).hexdigest(),conversion='Unchanged original DOL data sections7..12; section11 trimmed at80418000; live manager/context/global ranges excluded; exact immutable audience scripts at8041c638/14e8 admitted; relocated tik non-executable data sections included; no PPC text',limitation='Original source data and dependencies only; native callback coverage and owned runtime fields remain required')
     Path('romfs/trio-attack.json').write_text(json.dumps(manifest,indent=2)+'\n')
     work=Path('local-assets/trio-battle');work.mkdir(parents=True,exist_ok=True)
     model=work/'b_mario';tpl=work/'a_mario.tpl';extract(iso,'a/b_mario',model);extract(iso,'a/a_mario-',tpl)

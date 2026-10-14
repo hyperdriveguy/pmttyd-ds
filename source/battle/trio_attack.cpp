@@ -29,6 +29,7 @@
 #include "battle_stage_work.hpp"
 #include "battle_action_help.hpp"
 #include "battle_audience_init.hpp"
+#include "battle_audience_population.hpp"
 #include "battle_audience_resources.hpp"
 #include "battle_audience_target.hpp"
 #include "battle_audience_main.hpp"
@@ -313,7 +314,15 @@ struct TrioAttackRuntime {
         BattleAudienceInitServices s;s.actors=nativeBattleActorServices(vm);s.user=this;
         s.random=[](void* p,int32_t bound){auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x80005da0,{bound});return r.random.bounded(bound);};
         s.fma=[](void*,float a,float b,float c){return std::fma(a,b,c);};
-        s.setting=[](void* p){auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x801a60c4);if(initializePackedSetup4ZeroAudience(r.audienceInitServices()))return true;r.pending=0x801a60c4;return false;};
+        s.setting=[](void* p){
+            auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x801a60c4);
+            BattleAudiencePopulationServices population;const auto inherited=r.audienceInitServices();
+            population.actors=inherited.actors;population.user=p;population.random=inherited.random;population.fma=inherited.fma;
+            population.randomRaw=[](void* self)->std::optional<int32_t>{auto& owner=*static_cast<TrioAttackRuntime*>(self);owner.endingRequest(0x8026c324);return owner.random.next();};
+            population.truncate=[](void*,float value)->std::optional<int32_t>{if(std::isfinite(value) && value<2147483648.f && value>=-2147483648.f)return int32_t(value);return {};};
+            if(initializePackedBattleAudiencePopulation(population))return true;
+            r.pending=0x801a60c4;return false;
+        };
         s.texture=[](void* p,const char* path)->std::optional<uint32_t>{auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x801a86ac);return audienceResources.handle(path);};
         s.noise=[](void* p){auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x801a0b88);return noiseAlwaysBattleAudienceSound(r.audienceSoundServices());};
         s.target=[](void* p){auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x801a1c60);if(updatePackedBattleAudienceZeroTarget(nativeBattleActorServices(r.vm)))return true;r.pending=0x801a1708;return false;};

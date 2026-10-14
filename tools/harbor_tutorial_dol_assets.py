@@ -29,6 +29,17 @@ def segments(iso):
      else:split.append((start,body))
     spans=split
    result.extend(spans)
+  # Immutable audience scripts/item tables only, beyond the mutable sdata cutoff.
+  # Whole battle_audience_kind_data.o sdata extent, source-pinned; no globals.
+  audience_address,audience_size=0x8041c638,0x14e8
+  for i in range(18):
+   off,va,length=[struct.unpack_from('>I',h,b+4*i)[0] for b in [0,0x48,0x90]]
+   if va<=audience_address and audience_address+audience_size<=va+length:
+    disc.seek(base+off+audience_address-va);data=disc.read(audience_size)
+    import hashlib
+    if len(data)!=audience_size or hashlib.sha256(data).hexdigest()!='27efa23577efb6deb3204baf406fdda61546d5700ec4c25f04e8b59fad724cc4':raise ValueError('Original audience script data changed')
+    result.append((audience_address,data));break
+  else:raise ValueError('Unmapped original audience script data')
   # Original system wait/attack/damage streams sit beyond the bounded sdata
   # import above. Admit the three8-byte streams and their actual final label-scan
   # lookahead word. Never synthesize an end sentinel or import mutable globals.

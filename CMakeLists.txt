@@ -1406,3 +1406,10 @@ target_sources(ttyd_core PRIVATE source/display/shadow_display.cpp source/displa
 add_executable(shadow_display_tests tests/shadow_display_tests.cpp)
 target_link_libraries(shadow_display_tests PRIVATE ttyd_core)
 add_test(NAME shadow_display COMMAND shadow_display_tests)
+
+# Original audience population, weighted seats, placement and animation ownership.
+target_sources(ttyd_core PRIVATE source/battle/battle_audience_population.cpp)
+add_executable(battle_audience_population_tests tests/battle_audience_population_tests.cpp)
+target_link_libraries(battle_audience_population_tests PRIVATE ttyd_core)
+add_test(NAME battle_audience_population COMMAND battle_audience_population_tests)
+set_tests_properties(battle_audience_population PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

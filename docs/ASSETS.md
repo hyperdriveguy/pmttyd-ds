@@ -563,3 +563,25 @@ sections excluded, ADDR32 pointers relocated to the explicit native section map.
 Temporary REL/metadata and compiled packs remain ignored. Both resource groups
 are Nintendo/Intelligent Systems original assets with no redistribution rights.
 [Source and native scope](behavior/field/NATIVE_TROUBLE_CENTER_DIARY_AND_SCOPED_EVENT_DATA.md).
+
+## 2026-10-14 — Original audience animation and item-table data
+
+Read-only US DOL `battle_audience_kind_data.o` owns182 sdata symbols in exact
+address span8041c638/14e8, ending8041db20. SHA256:
+`27efa23577efb6deb3204baf406fdda61546d5700ec4c25f04e8b59fad724cc4`.
+`tools/harbor_tutorial_dol_assets.py` now imports only this hash-pinned immutable
+extent beyond the existing80418000 cutoff. `tools/trio_attack_assets.py` reuses
+that same original span. Private compiled products:
+`romfs/harbor-tutorial-events.pmevt` and `romfs/trio-attack-events.pmevt`; existing
+private metadata records pack extents/hashes. Original big-endian addresses,
+frame indices, counters, loops, waits and item weights are unchanged. Native
+mutable globals/pouch/current-battle/SDK heap descriptors stay outside the import.
+No source executable text or replacement animation table is imported.
+
+This binds source audience record animation pointers to original data used by
+its existing interpreter and the prepared224-frame atlas. It does not bind
+original crowd GX drawing or known-key positional audio. No additional raster
+art or music was extracted. Nintendo/Intelligent Systems rights remain inherited;
+local conversion grants no redistribution license. Original payloads, compiled
+packs and evidence stay ignored. See
+[population/animation ownership](behavior/battle/AUDIENCE_POPULATION_SEATS_ENTRY_AND_ANIMATION_OWNERS.md).
