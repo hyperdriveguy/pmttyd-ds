@@ -1,3 +1,59 @@
+## 2026-10-14 — Original action-class descriptors and class-menu icon pack
+
+Committed `9a8a9d32`. Complete shared _btlcmd_MakeActClassTable now preserves
+unit/pouch/setup-definition/cursor ownership and entry order before wrapped
+M-zero, raw ABI return, seven ordered admissions, live kind/level/flag checks,
+all eligibility checks even after denial, reason preservation, original message
+keys and source icon selection. Message providers can change kinds, levels and
+flags; subsequent source reads remain fresh. Operations/Lecture are independent
+tests, allowing both/neither under mutation. Disabled rows still count; padding,
+unused rows, leading fields and cursor+4 remain intact. Current count publication
+and signed index correction retain negative and zero-count behavior.
+
+Native buildClassMenu exposes actual Mario descriptors from the original field
+pouch/definition and unchanged US label/cache providers. Native fixture builds
+these records before its existing physical menu/target/cancellation/attack flow;
+HP4/7, one payment, failure/dealt1 and result0 still come from the actual failed
+Jump. This API does not open class UI or auto-advance turns. Class-table/UI
+registration, constructor/animation/resource ownership and Game activation remain
+unfinished. No table-shaped placeholders or rewritten labels are introduced.
+
+Imported original IDs334..343 from icon.bin/icon.tpl images339..348, one static
+48x48 frame each. Existing message/HUD atlas could not admit ten extra images;
+the completed importer uses a dedicated256x256 RGBA8 sheet (262144 bytes) with
+2px transparent borders and no resampling. Original general atlas remains
+unchanged. Added its normal assets-ready producer. Private outputs are
+local-assets/battle-class-icons/ and romfs/battle-class-icons.bin/t3x/json,
+using existing PMICON1 format. Original pixels/UVs/padding and portable loader
+are tested; native dedicated texture binding/drawing remains pending. Licensing
+and conversion choices are in ASSETS; original payloads/ISO are not committed.
+
+Validation: isolated artifacts/tutorial-class-table-tpbgou0l, based on
+f9afecc2 plus scoped changes, passed `make test`:255/255 C++ and145/145
+Python, no skips. Source fixtures cover kind/level/counter signedness, absence
+versus disable, mutable message providers, retained cursor, both/neither final
+rows, reason/padding/count/index boundaries and provider frontiers. Native fixture
+checks real class labels/types/reasons before battle continuation. Final native
+`make all -o assets-ready BUILD=build-class-table-review
+TARGET=ttyd-class-table-review` passed with prepared private assets. Artifact:
+that snapshot's ttyd-class-table-review.3dsx (451945808 bytes); mmap verified the
+actual original class .bin embedded. Logs: artifacts/tutorial-class-table-test.log,
+tutorial-class-table-native.log and tutorial-class-table-assets.log. Read-only
+class verifier passed4 bodies/7 spans/366 anchors (complete producer and3 linked
+services). Final scoped files matched review; diff check passed. Initial atlas
+capacity failure was resolved with the dedicated sheet, preserving all general
+assets. No Azahar/Dolphin, new original-runtime measurements or rendered/playable
+class-menu claim. Concurrent camera/book/quest/render changes were preserved.
+
+Next: original ActSelect UI Init/End and texture/resource lifetime, class-menu
+provider bindings into Harbor's existing full Input controller, source first-act/
+turn/post-action/phase scheduler and physical class/weapon/target presentation in
+Game. Then native rendered menu/cancellation smoke and original-runtime comparison,
+successful voice/pitch/volume/follow-up hits, hazards/guard/status domains, and
+second-screen scene/audience extension with optional hostile-item taps and a
+physical equivalent. Tutorial/real battle/full remake goal remains active and
+incomplete; descriptors/resources alone do not prove a playable original loop.
+
 ## 2026-10-14 — Original class-menu controls and physical cancellation handoff
 
 Committed `f7b4fba1`. Complete portable ActMenu Main/Setup/End, cursor initializer
