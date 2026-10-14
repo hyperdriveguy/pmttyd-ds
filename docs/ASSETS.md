@@ -77,3 +77,13 @@ source order; converted subsets must not redefine original numeric indices.
 Nintendo/Intelligent Systems assets; no redistribution rights. Neither model
 payloads, packs nor the ISO are committed. See the
 [storage/directory contract](behavior/display/NATIVE_BATTLE_PART_STORAGE_AND_POSE_DIRECTORY.md).
+
+## Tutorial native menu labels and pouch state (2026-10-14)
+
+No additional ISO payload was extracted. Existing original weapon/ItemData,
+msg/US and icon packs supply native table pointers, labels and icons unchanged.
+The field's complete original pouch snapshot is copied at battle entry; new-game
+grants are not repeated. Mapped message RAM copies existing localized label
+bytes/control tokens and retains original key pointers internally. Licensing
+restrictions and ignored private pack paths remain unchanged. No texture,
+geometry, lighting or generated dialogue conversion was added.

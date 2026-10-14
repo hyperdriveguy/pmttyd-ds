@@ -862,3 +862,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Weapon-selection callers and cursor domains](battle/WEAPON_SELECTION_CALLERS_AND_CURSOR_DOMAINS.md) — static callers, type words and unresolved runtime reachability.
 - Event recovery: [Jump Continue](event/BTLEVTCMD_JUMP_CONTINUE.md), [Jump Position](event/BTLEVTCMD_JUMP_POSITION.md), [Jump Setting](event/BTLEVTCMD_JUMP_SETTING.md), and [event-entry construction](event/EVT_ENTRY_TYPE_CONSTRUCTION.md).
 - [Goomba3 item-get field services and event resume order](field/GOOMBA3_ITEMGET_FIELD_SERVICE_AND_EVENT_RESUME_ORDER.md).
+
+- [Tutorial native weapon-table providers and pouch ownership](battle/TUTORIAL_NATIVE_WEAPON_TABLE_BINDINGS.md)
