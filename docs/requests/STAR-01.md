@@ -51,4 +51,9 @@ status with [STATUS-01](STATUS-01.md), and star/story flags with
 
 ## Answers and delivery notes (append-only history)
 
-No delivery yet.
+Delivered [star-power gauge storage](../behavior/battle/STAR_POWER_GAUGE_STORAGE.md)
+(2026-10-13, no lock, static artifacts only) for todo 1 (storage half):
+`pouchAddAP`/`pouchSetAP` complete add/floor/cap at pouch+122/+124 with US
+rows and an explicit storage-vs-policy boundary. Fill callers (2 link
+sites), thresholds/levels, max-SP writers, consume/reset, and save mapping
+stay open. No native/test/CMake/asset change by this answer.
