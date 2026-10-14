@@ -15,6 +15,18 @@ Original-game mechanics evidence for the US GameCube G8ME01 binary. This ledger 
 Dolphin booted the original ISO in an isolated profile and captured its initial
 health/safety screen. No gameplay capture has yet established timing or exact
 tutorial rules.
+The opening book was additionally observed on2026-10-14 in an isolated Dolphin
+profile using the read-only US disc0/revision0 ISO. Evidence is retained under
+artifacts/dolphin-book-width: reference-t110.png shows the initial illustrated
+page and green inside cover; reference-t125.png shows the first turned rune
+back beside the storm illustration. The original viewport clips the left page,
+so these views do not establish its full width. Health-screen A input was sent
+only in this profile; capture labels are process-relative seconds including
+that wait, not measured original event timing. Source A_1 terminal bounds and
+the separate native width adapter are static/resource evidence documented in
+[the book contract](behavior/display/NATIVE_OPENING_BOOK_COVER.md), not a
+runtime measurement from these screenshots. Original dialogue/art are visible;
+complete raster, sound, image-camera and physical hardware parity remain open.
 The code is a playable development harness, not a verified faithful recreation.
 Keep this distinction in future reports. Do not treat test expectations as
 observations of the original game.

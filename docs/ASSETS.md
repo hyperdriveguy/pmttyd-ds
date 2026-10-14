@@ -119,6 +119,14 @@ original Nintendo/Intelligent Systems material for private local use; no new
 redistribution rights or committed ISO/extracted payload. Diagnostic captures
 and native binaries remain ignored project artifacts.
 
+Follow-up book framing reuses these same asset paths/conversions: the opening
+pan centers the spine, then fades back toward the illustrated page during the
+final zoom. Left-folded paper uses the same native pixel scale in X/Y to retain
+the rune back's portrait proportions; captured-front dimensions stay193x240.
+This changes native placement only, not source geometry samples, UVs, texture
+scaling, original English story or licensing. See the
+[book layout adapter](behavior/display/NATIVE_OPENING_BOOK_COVER.md).
+
 
 ## 2026-10-14 — Battle discrete state and model flags sidecars
 

@@ -1,3 +1,49 @@
+## 2026-10-14 — Turned book page width
+
+Follow-up user report resolved in commitbc2cfe37. The native crop placement
+compressed the source terminal39.9395-unit page width to120.4426px while its
+49.875-unit height used249.375px. The left-folded side now uses the same5px/unit
+as Y, yielding199.6975px and a narrow inside-cover border. The captured front
+retains193/64px/unit and unchanged frame0 registration; placement is continuous
+at authored hinge x=-32. All four original A_1 samples/UVs/materials, source rune
+texture, captures, narration and180-tick presentation gates remain intact. This
+piecewise native aspect adapter is documented explicitly; it is not recovered
+original image-camera/GX raster equivalence. The inside-cover pan and final-fade
+focus corrections from4dfec42d/2b62bdf3 remain active.
+
+Validation: both updated book tests pass2/2 (artifacts/book-width-tests.log).
+Required shared make test passes258/259 C++ checks; unrelated
+harbor_encounter_original fails tests/harbor_encounter_tests.cpp:26
+sawRun/sawJump/sawLockedJumpPose after concurrent actor changes
+(book-width-shared-test.log). Standalone Python passes145/145
+(book-width-python.log). Isolated native make -o assets-ready all passes
+(book-width-native.log), using the already converted original packs and snapshot
+base4dfec42d plus the scoped final-fade/width changes. A first compiler attempt
+lost a temporary assembly file; rerun with snapshot-local TMPDIR passed.
+
+Isolated Azahar normal run artifacts/azahar-book-width exits0 without native
+exception, completing four turns, final zoom and market/Peach handoff. Reviewed
+initial green cover, first/remaining turned pages, terminal Rogueport page(t116),
+fade/zoom(t122) and Peach(t136). The left paper now occupies the inside cover
+rather than leaving a broad green strip; front registration remains intact.
+Final immutable playtest artifact: artifacts/book-width-current/ttyd-2ds.3dsx;
+manifest records exact source scope and binary SHA. Native snapshot/captures and
+source inspection remain ignored; no user emulator profile/saves or ISO writes.
+
+Original US read-only Dolphin comparison also completed in an isolated profile
+(artifacts/dolphin-book-width, book-width-dolphin.log). First illustration and
+first turned rune back are observed at t110/t125; the original viewport clips
+the left page and does not establish its complete width. Health-screen input and
+process-relative capture labels are not a measurement of original event timing.
+Observation is recorded in MECHANICS.md; source bounds remain static resource
+evidence. Original cover/capture/camera anchors previously pass65 read-only and
+are unchanged by this layout adapter. Asset paths/conversions/license are in
+ASSETS.md. Scoped whitespace/document links checked.
+
+Next: physical New2DS XL visual/performance checks, original outer image-camera/
+projection comparison and existing cold scene IO stalls. Separate harbor battle
+actor/timing regression remains with its owner. Full remake stays incomplete.
+
 ## 2026-10-14 — Opened book inside-cover framing
 
 Commits4dfec42d and2b62bdf3. User clarified that the green inside cover immediately after opening looked

@@ -96,6 +96,18 @@ its captured replacement: every crop pixel differs by at most2 RGB levels,
 mean absolute channel error0.0003742. This is an Azahar comparison of native
 paths, not an original-runtime or hardware observation.
 
+The native left-side width adapter treats the capture hinge x=-32 as a
+continuous boundary. On its right, the captured front retains193/64 pixels per
+authored X unit, preserving the flat capture's registration. On its left, X
+uses the same240/48=5 pixels per unit as Y, preserving the turned back's portrait
+proportions instead of applying the front crop compression again. Source A_1
+frame180 has X bounds[-71.9395,-32] and Y[-24.0625,25.8125]; the native turned
+width consequently becomes199.6975 pixels, versus the former120.4426, with the
+same249.375-pixel height. Placement stays continuous at the hinge, including
+final image scaling, pan and fade. Original mesh samples, UVs, textures and
+180-tick completion are unchanged. This piecewise native layout is an explicit
+adapter, not recovered original camera/image projection or original raster parity.
+
 During final adjustment, the market renders beneath desktop/cover/page layers;
 source fade alpha and final img4 scale/translation consume the portable snapshot.
 The original BGM6000ms request and subsequent marketplace start are consumed by
