@@ -3,6 +3,55 @@
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
 
+## 2026-10-13 — Switch soundtrack variants and native audio build
+
+Implemented default Switch1.0.0 soundtrack packaging from the existing decoded
+local library:18 exact named arrangements cover the13 existing native cues,
+separate Rogueport harbor/east/west/station variants and ordinary battle Think.
+Native scene/district/command selection uses these files while keeping original
+GameCube primary and house SFX. Title admission validates the selected asset
+independently of NDSP/mute. Existing opening BGM fades and three fixed streaming
+owners remain active. [Adapter scope](behavior/audio/NATIVE_SWITCH_SOUNDTRACK.md),
+[bindings](../config/switch_soundtrack.json), [provenance](ASSETS.md).
+
+The packager verifies PCM hashes, canonical headers/payload extents and source
+BFSAR loop sidecars before copying unchanged48k stereo music into ignored
+romfs/soundtrack-switch. No original media or converted assets are committed.
+Default make all explicitly requires the decoded Switch library;
+SOUNDTRACK=gamecube remains supported. A persistent SWM1/GCM1 top-level marker
+forces embedded RomFS rebuilds in either direction. Both modes retain original
+SFX; the final ttyd-2ds.3dsx uses Switch music. The Switch pack is270MiB;
+resulting native binary444,989,908 bytes (GameCube162,148,348). Streaming retains
+fixed buffers rather than loading whole songs into linear memory.
+
+Validation: final make test passes173/173 CTest and116/116 Python checks
+(artifacts/switch-soundtrack-tests-complete.log). make all passes with both
+SOUNDTRACK=gamecube and default Switch, including rebuilt3DSX and mode/track-count
+checks (artifacts/switch-soundtrack-{gamecube,switch}-final.log and
+switch-soundtrack-build-modes.txt). Isolated Azahar immutable integration binary
+under artifacts/switch-soundtrack-snapshot reached original fresh-file house,
+letter/voyage/prologue and saved harbor story3. Dedicated temporary audio sink
+capture matches Switch Demo_1/Title (.998/.637 normalized correlation) and all
+four original house samples (.931/.819/.975/.649). Evidence under
+artifacts/azahar-switch-soundtrack/:audio.wav/audio-analysis.json/stages.json
+and screenshots; launch log in artifacts/switch-soundtrack-audio-smoke.log.
+Original emulator profiles/saves and source ISO/RomFS were untouched.
+Final doc-link audit passes and git diff --check passes.
+
+Earlier combined runs caught the concurrent field-party Game-copy compilation
+change and two transient missing partner test executables. The stable final
+rerun above is green; those failures were not bypassed. Incremental soundtrack
+commits fc072e4 and d5a5900 precede the marker/test/validation handoff commit.
+Other concurrent native/doc changes remain separate.
+
+Limits/next: selection is a native slice adapter, not recovered Switch adaptive
+routing. Normal/Think changes currently restart their streams. Implement phase
+synchronization, seamless district transitions, Switch intro/stem chains and
+remaining contextual arrangements as later audio work. Listen through all18
+tracks/loop boundaries, profile48k stream I/O on actual New2DS XL, and finish
+full MusyX/spatial/ENV/SFX consumers. Captured opening output does not establish
+all-track or hardware parity, complete prologue gameplay or full-game completion.
+
 ## 2026-10-13 — Inbox Rogueport camera coverage reconciliation
 
 [Porting coverage map](behavior/camera/ROGUEPORT_CAMERA_PORTING_COVERAGE_AND_REMAINING_BINDINGS.md)

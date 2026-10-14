@@ -28,7 +28,9 @@ missing tracks fail packaging rather than silently substituting another song.
 All18 files stream from RomFS through three2048-frame buffers per active owner;
 the full songs are never loaded into linear RAM. Original GameCube assets stay
 separate so their converters/cache checks are unchanged. SOUNDTRACK=gamecube
-removes only the Switch pack/marker and retains SFX and original music.
+removes only the Switch pack and writes GCM1 to the same top-level marker,
+retaining SFX and original music. The marker forces embedded RomFS rebuilding
+in both directions when the soundtrack selection changes.
 
 Limitations: changing normal/Think tracks restarts the selected stream. Phase
 synchronization, Switch stems, seamless district transitions, title/home/battle
@@ -42,3 +44,12 @@ Provenance and licensing: Nintendo/Intelligent Systems original assets remain
 copyrighted; local conversion provides no redistribution rights. Source files,
 PCM and compiled RomFS/binaries remain ignored. Decoder licensing and exact
 upstream identity are retained in the [library record](../../switch/AUDIO_ASSETS.md).
+
+Validation (2026-10-13): isolated Azahar fresh-file flow reached saved harbor
+story3 with original local DSP firmware. Dedicated temporary audio-sink capture
+matched Switch Demo_1 (normalized waveform correlation .998) and Title (.637),
+plus original house flight/postbox/open/shut samples (.931/.819/.975/.649).
+Capture/report: `artifacts/azahar-switch-soundtrack/audio.wav`, `audio-analysis.json`
+and opening screenshots. These establish native output for those cues, not
+all18 audible tracks, seamless loops or hardware equivalence. Both soundtrack
+modes rebuilt embedded3DSX successfully; the final build is Switch.

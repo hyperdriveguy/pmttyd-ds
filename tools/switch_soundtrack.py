@@ -49,9 +49,12 @@ def package(library, output, config, soundtrack='switch'):
     destination = output / 'soundtrack-switch'
     marker = output / 'soundtrack-switch.bin'
     if soundtrack == 'gamecube':
-        marker.unlink(missing_ok=True)
+        output.mkdir(parents=True, exist_ok=True)
         if destination.exists():
             shutil.rmtree(destination)
+        # Keep a top-level dependency in both modes so switching back rebuilds
+        # the embedded RomFS instead of leaving an older Switch binary intact.
+        marker.write_bytes(b'GCM1')
         return []
     settings = json.loads(config.read_text())
     if settings['schema'] != 1 or len(settings['tracks']) != 18:

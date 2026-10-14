@@ -1,5 +1,6 @@
 import hashlib
 import json
+import re
 from pathlib import Path
 import struct
 import sys
@@ -12,6 +13,13 @@ from switch_soundtrack import package
 
 
 class SwitchSoundtrackTests(unittest.TestCase):
+    def test_config_matches_native_track_id_order(self):
+        root = Path(__file__).resolve().parents[1]
+        config = json.loads((root / 'config/switch_soundtrack.json').read_text())
+        paths = re.findall(r'"romfs:/soundtrack-switch/([^"\n]+)\.wav"',
+                           (root / 'include/audio_policy.hpp').read_text())
+        self.assertEqual(paths, [alias for alias, _ in config['tracks']])
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
@@ -77,7 +85,10 @@ class SwitchSoundtrackTests(unittest.TestCase):
         (self.output / 'jump.wav').write_bytes(b'original sfx')
         (self.output / 'rogueport.wav').write_bytes(b'original music')
         package(self.library, self.output, self.config, 'gamecube')
-        self.assertFalse((self.output / 'soundtrack-switch.bin').exists())
+        self.assertEqual((self.output / 'soundtrack-switch.bin').read_bytes(), b'GCM1')
         self.assertFalse((self.output / 'soundtrack-switch').exists())
         self.assertEqual((self.output / 'jump.wav').read_bytes(), b'original sfx')
         self.assertEqual((self.output / 'rogueport.wav').read_bytes(), b'original music')
+        self.run_pack()
+        self.assertEqual((self.output / 'soundtrack-switch.bin').read_bytes(), b'SWM1')
+        self.assertEqual(len(list((self.output / 'soundtrack-switch').glob('*.wav'))), 18)

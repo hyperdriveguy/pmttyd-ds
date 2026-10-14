@@ -1419,7 +1419,8 @@ unchanged canonical PCM16 WAVs. There is no resampling, normalization, added
 fade or generated replacement. Runtime streams original48k stereo through NDSP;
 district/Think selection is a [native adapter](behavior/audio/NATIVE_SWITCH_SOUNDTRACK.md),
 not recovered Switch event routing. GameCube primary/house SFX stay active.
-`SOUNDTRACK=gamecube` removes only the Switch pack/selection marker.
+`SOUNDTRACK=gamecube` removes only the Switch pack and updates the selection
+marker to GCM1, forcing an embedded RomFS rebuild.
 
 Original streams are Nintendo/Intelligent Systems copyright. Local extraction
 and conversion grant no redistribution license. The source library, generated
