@@ -2589,3 +2589,55 @@ battle Init/Main/Exit and field return. Native nonzero inherited fade groups,
 full sound/history/Key predicates, original event timing, audible/raster parity
 and physical performance remain unverified. The original-fidelity prologue goal
 stays active; this is a scalar/native continuation milestone.
+
+
+## 2026-10-14 — Main renderer, platform resources and shader code documentation
+
+Commit `3b45502b` documents `source/display/render.cpp`,
+`include/runtime/platform.hpp` and the world/system-window vertex shaders, plus
+[new renderer guide](code/renderer.md). Inline numeric/ownership notes cover
+native arena budgets, vertex attributes/permutations, color byte conventions,
+sidecar dimensions/UV scales, packed map bits, resource residency/cleanup,
+model sampling keys, scene atlas admission, alpha-preserving field masks and
+three-pass shadow masking, map UV/mesh/fence updates, cutaway holds, source text
+records/reflow/atlas cells, presentation RNG/tween cadence, UI hitbox/minimap
+choices, frame cursor reset and C2D/PICA ownership handoffs. GPU allocations and
+source identities remain distinct; original versus native/harness numerics are
+explicit. No shaders, source dialogue or executable behavior were rewritten.
+
+Architecture now matches the actual GPU room policy: synchronize/retire the
+previous Room before destination loading to bound linear memory, then attempt
+old-room reload on rejection. That reload can also fail. This is separate from
+in-memory collision rollback and must not be described as keeping both GPU rooms
+staged. The stale v2-only checkpoint overview also now points to the versioned
+committed-format guide rather than presenting32 bytes as the current format.
+Concurrent save/sequence/class/field implementations remain outside this pass.
+
+Frozen baseline `a8c781a71dd12de712e03927c31fdf518a8b7c5e` plus exactly this
+comment pass passes **266/266 C++ and159/159 Python** via
+`CMAKE_BUILD_PARALLEL_LEVEL=4 make test`, and normal native
+`make all -o assets-ready -j4` passes, including fresh compilation of both
+annotated `.v.pica` shaders. Logs:
+`artifacts/renderer-code-documentation-validation/host.log` and `native.log`.
+`manifest.json` records baseline, source hashes, unchanged executable-token checks
+for both C++ files and both shaders, live/frozen equality and ELF/3DSX hashes.
+Code-guide relative links and scoped whitespace checks pass. Native validation
+reuses the previous accepted private RomFS/matching icon cache and skips pack
+regeneration; other local-asset folders remain shared read dependencies. No new
+asset extraction/conversion, ISO write, emulator/profile/save change or hardware
+validation occurred. Existing compiler warnings remain outside documentation.
+The later architecture-prose correction does not change compiled/tested source.
+
+A comments-only index patch excluded unrelated worktree changes. The pass adds
+two distinct C++ files to prior96 (98 total) plus two shaders; counts track
+review progress only and do not prove whole-port completion. Native rendered
+parity and original global dispatch/camera history remain separate claims.
+
+Next: every scene-specific `source/display/render_*.cpp` adapter—frontend/opening,
+message/window/item services, battle startup/curtain/HUD/classes—plus their
+remaining shaders/resource helpers. Re-review recent class-menu and native camera
+GPU providers once their authoritative implementation settles. Continue field/
+NPC/partner, remaining battle, message/inventory/story modules and relevant port
+build/tool code. Re-audit concurrent additions and changed checkpoint formats at
+completion; do not claim complete documentation from comment density, file count
+or passing unrelated tests. The full **port-code documentation goal remains active**.

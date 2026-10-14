@@ -44,13 +44,15 @@ NDSP channel 1. Loop metadata is separate. Original MusyX banks are preserved
 locally; sound-event macro interpretation remains unfinished. No synthesized
 sound effects are used.
 
-Save v2 is 32 explicitly encoded little-endian bytes: magic PM2D, version,
-position float32 x/z, HP, mushroom count, completion/sound flags, room ID, signed floor elevation at .1 resolution,
-and FNV-1a checksum. Version 1 migrates to plaza at zero elevation. Decoding validates structural
-content independently of active collision; runtime loading validates the saved
-room floor and wall clearance. Writes close a temporary
-file before replacement; a valid previous save becomes `.bak`. The 3DS backend
-commits on close; host tests additionally use fsync. Battle state is transient.
+Native PM2D checkpoints use explicit little-endian fields for position, resources,
+room/elevation, story and supported saved-switch state. Extended versions retain
+packed original pouch storage and distinguish unknown legacy switches from known
+false/zero. The [checkpoint code guide](code/save-format.md) describes the committed
+layout and migrations; checkpoint encoding is separate from original card records.
+Decoding validates structural content independently of active collision; runtime
+loading validates saved floor/wall clearance. Writes close a temporary file before
+replacement, retaining a valid previous save as `.bak`; hosts additionally fsync.
+Battle/pose/event state remains transient.
 
 Current settings are sound on/off. Saves are at
 `sdmc:/3ds/ttyd-2ds/progress.bin`. Menu errors are shown on the bottom screen.
