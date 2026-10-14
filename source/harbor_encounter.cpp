@@ -92,7 +92,11 @@ struct HarborEncounterRuntime {
         case 14:if(first){HarborEncounterCamera r;for(unsigned i=0;i<3;++i){r.eye[i]=number(e,i);r.at[i]=number(e,i+3);}r.duration=value(e,6);r.curve=value(e,7);scene->cameras.push_back(r);}return 2;
         case 15:{auto& a=scene->actors[0];const auto mask=uint32_t(value(e,1));if(value(e,0)==1)a.flags|=mask;else a.flags&=~mask;return 2;}
         case 17:{auto& a=scene->actors[0];if(first){const float x=number(e,0),y=number(e,1),z=number(e,2);
-            if(x!=a.position[0] || z!=a.position[2] || value(e,4)!=0 || !jump.begin(a.position[1],y,int(float(value(e,3))*.06f),number(e,5))){scene->pendingService=function;return 0;}jumpLive=true;}
+            // The preceding source get-position callback stores Q1024 event
+            // floats. Admit only that exact round-trip of this stationary
+            // root, rather than demanding unencoded C++ float equality.
+            const auto eventCoordinate=[](float coordinate){return float(int32_t(coordinate*1024.f))/1024.f;};
+            if(x!=eventCoordinate(a.position[0]) || z!=eventCoordinate(a.position[2]) || value(e,4)!=0 || !jump.begin(a.position[1],y,int(float(value(e,3))*.06f),number(e,5))){scene->pendingService=function;return 0;}jumpLive=true;}
             if(!jumpLive)return 0;
             const int result=jump.tick(floor);a.position[1]=jump.y;if(result){jumpLive=false;}return result;}
         case 18:setEventValue(e,operand(e,0),scene->hp,vm.interpreterServices().operands);return 2;

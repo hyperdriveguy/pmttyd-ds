@@ -2,6 +2,62 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Original battle HUD art and physical-control submenu binding
+
+Feature3c4bf18 imports verified original US status-window art and both numeral
+sets through read-only DOL/icon.bin/icon.tpl sources. Rectangle packing keeps
+unchanged pixels/frame dimensions/order/delays in the existing1MiB atlas.
+The live tutorial/trio HUD reads current packed Mario HP/FP instead of waiting
+for field export; the tutorial's explicit statusVisible gate is retained.
+Trio lower-screen lists use original type0 frames, US glyphs and selection hand.
+Shared visible-row/tap geometry preserves D-pad/Circle Pad selection, A confirm
+and B cancellation; no required menu action is touch-only. The duplicate top
+placeholder target box was removed after capture showed it overlapping the HUD.
+[HUD/menu scope](behavior/display/NATIVE_BATTLE_HUD_AND_SUBMENU.md),
+[asset provenance](ASSETS.md).
+
+Also corrected harbor stationary-jump admission to compare resolved X/Z to the
+actual root's exact source Q1024 event-float round-trip. Non-Q1024 field roots
+no longer stall this bounded adapter merely because the original preceding
+get-position encoded them. General travel/height/30Hz jump behavior remains
+unbound; no source dialogue/story/branch was rewritten.
+[Encounter scope](behavior/story/NATIVE_HARBOR_ENCOUNTER_EVENT_FLOAT_ADMISSION.md).
+
+Validation: final normal `make all` passed
+(artifacts/battle-ui-all-reviewed.log). Debug-short build and final private-pack
+rebuild passed (artifacts/battle-ui-debug-pack-final.log). `make test` reached
+183/184 passing CTest checks; harbor_encounter_original still fails its further
+field-walking fixture before entering the encounter trigger (line58), after
+its direct non-Q1024 encounter assertions pass. This failure is unresolved,
+not counted as a passing full suite (artifacts/battle-ui-test-final.log).
+Separately all120 Python tests passed (artifacts/battle-ui-python-final.log),
+including original table pins, unchanged HUD pixels, atlas bounds/nonoverlap
+and existing selector art checks. Final focused trio command/intro/tutorial
+checks3/3 pass (artifacts/battle-ui-focused-tests-final.log). Doc links checked
+1013 files/zero broken; scoped diff check passed.
+
+Isolated Azahar uses immutable artifacts/battle-ui-snapshot/ttyd-2ds-debug-short.3dsx
+with only the native underground story11 test save. Physical-input capture
+completed successfully in artifacts/azahar-battle-original-ui-reviewed/;
+reviewed commands.png actually shows Goombella's Headbonk menu, and the target
+captures show original Goomba/Spiky Goomba/Paragoomba labels and visible cursor.
+Old script capture names are not proof of Mario/Hammer ownership. These captures
+predate removal of the duplicate top target box; final build validates that
+simple presentation removal, without a second capture claim. The observed
+Azahar status shows20FPS/100% speed at the reviewed command capture, not a
+physical2DS performance or original-runtime parity result. Initial sandboxed
+Xvfb socket admission failed; the authorized isolated-display rerun passed.
+User emulator profiles/saves and the ISO remained untouched.
+
+Next: resolve the further walked harbor fixture, bind original tutorial player
+commands/turn/attack/result progression and complete field-return ownership.
+Replace this weapon-submenu adapter with the full original rotating action menu;
+add partner status/AP/coin/Star Point display and original window cadence.
+Bind original audience actors, throw telegraphs/targeting and a physical stop-
+throw action before optional lower-screen tapping. Lower scene continuation,
+audience interactions and complete tutorial combat remain unfinished; the
+user's battle/tutorial goal is active, and full-game completion is not claimed.
+
 ## 2026-10-13 — Filed MENU-01 and PROGRESS-01 (full-game path)
 
 Filed two full-game requests on the G1 path, each grounded in native source, and

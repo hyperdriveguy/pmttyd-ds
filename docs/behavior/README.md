@@ -732,3 +732,4 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native explicit item selector rendering](message/NATIVE_ITEM_SELECTOR_RENDERING.md), [source icon anchors/flags](display/ITEM_SELECTOR_ICON_ANCHORS_AND_FLAGS.md), and [pouch parameter revision](unit/POUCH_PARAMETER_REVISION.md).
 
 - [Native original battle HUD and button-accessible submenu](display/NATIVE_BATTLE_HUD_AND_SUBMENU.md)
+- [Harbor stationary jump and encoded event-position admission](story/NATIVE_HARBOR_ENCOUNTER_EVENT_FLOAT_ADMISSION.md)
