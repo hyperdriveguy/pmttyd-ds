@@ -17,16 +17,18 @@ bool Renderer::loadDemoPaper() {
     demoPaperReady=pose && pose->bindings.size()==triangles*3 && pose->start==0 && pose->end==180 && !pose->loop;
     return demoPaperReady;
 }
-bool Renderer::frontBookPaper(OpeningDemo& demo,std::array<float,4>& presented) {
-    bool active=false;for(const auto& page:demo.book.pages)active|=page.active;
+bool Renderer::frontBookPaper(OpeningDemo& demo,std::array<float,4>& presented,bool capture) {
+    bool active=false;for(const auto& page:demo.book.pages)active|=page.active && !page.capturePending;
     if(!active)return true;
     C2D_Flush();C3D_BindProgram(&program);
     auto* attrs=C3D_GetAttrInfo();AttrInfo_Init(attrs);AttrInfo_AddLoader(attrs,0,GPU_FLOAT,3);AttrInfo_AddLoader(attrs,1,GPU_FLOAT,2);AttrInfo_AddLoader(attrs,2,GPU_FLOAT,4);
     // Original capture rectangle and mesh, native orthographic outer projection.
     // Source camera/FOV/depth/image-base services remain a separate dependency.
-    C3D_Mtx projection;Mtx_OrthoTilt(&projection,0,400,240,0,-100,100,true);
+    C3D_Mtx projection;if(capture)Mtx_Ortho(&projection,110,366,256,0,-100,100,true);
+    else Mtx_OrthoTilt(&projection,0,400,240,0,-100,100,true);
     C3D_FVUnifMtx4x4(GPU_VERTEX_SHADER,transformLoc,&projection);
-    C3D_SetScissor(GPU_SCISSOR_NORMAL,0,0,240,400);
+    if(capture)C3D_SetScissor(GPU_SCISSOR_NORMAL,0,16,193,256);
+    else C3D_SetScissor(GPU_SCISSOR_NORMAL,0,0,240,400);
     C3D_DepthTest(true,GPU_GEQUAL,GPU_WRITE_ALL);C3D_AlphaTest(true,GPU_GEQUAL,128);
     C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_ONE,GPU_ZERO,GPU_ONE,GPU_ZERO);
     for(int n=0;n<6;++n)C3D_TexEnvInit(C3D_GetTexEnv(n));
@@ -62,6 +64,6 @@ bool Renderer::frontBookPaper(OpeningDemo& demo,std::array<float,4>& presented) 
         for(unsigned t=0;t<124;) {unsigned end=t+1;while(end<124 && demoPaperSurfaces[end].capture==demoPaperSurfaces[t].capture)++end;C3D_TexBind(0,demoPaperSurfaces[t].capture?front:&back->image.texture);C3D_DrawArrays(GPU_TRIANGLES,first+t*3,(end-t)*3);t=end;}
         presented[n]=frame;
     }
-    C3D_SetScissor(GPU_SCISSOR_DISABLE,0,0,240,400);C3D_CullFace(GPU_CULL_NONE);C3D_AlphaTest(true,GPU_GREATER,0);C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_SRC_ALPHA,GPU_ONE_MINUS_SRC_ALPHA,GPU_ONE,GPU_ONE_MINUS_SRC_ALPHA);C2D_Prepare();C2D_SceneBegin(top);return ok;
+    C3D_SetScissor(GPU_SCISSOR_DISABLE,0,0,240,400);C3D_CullFace(GPU_CULL_NONE);C3D_AlphaTest(true,GPU_GREATER,0);C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_SRC_ALPHA,GPU_ONE_MINUS_SRC_ALPHA,GPU_ONE,GPU_ONE_MINUS_SRC_ALPHA);C2D_Prepare();if(!capture)C2D_SceneBegin(top);return ok;
 }
 }

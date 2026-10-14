@@ -200,8 +200,7 @@ private:
     bool demoPaperReady=false,demoPaperAttempted=false;
     std::array<C3D_Tex,4> bookCaptureTextures{};
     std::array<bool,4> bookCaptureReady{};
-    uint8_t* bookCapturePixels=nullptr;
-    bool captureBookPage(OpeningDemo&,unsigned);
+    C3D_RenderTarget* prepareBookCapture(unsigned);
     void freeBookCaptures();
     ActorAnimationPack mapTurnAnimations;ActorAnimationSample mapTurnSample;
     C3D_Tex mapTurnCapture{};C3D_RenderTarget* mapTurnTarget=nullptr;
@@ -222,8 +221,8 @@ private:
     bool frontDemoEffects(const DemoChestEffects&,CameraPoint,CameraPoint);
     void freeDemoEffects();
     bool loadDemoPaper();
-    bool frontBookCover(const OpeningDemo&);
-    bool frontBookPaper(OpeningDemo&,std::array<float,4>&);
+    bool frontBookCover(const OpeningDemo&,bool capture=false);
+    bool frontBookPaper(OpeningDemo&,std::array<float,4>&,bool capture=false);
     bool prepareFrontWorld(const char*,const OpeningSequence*,const OpeningDemo&);
     bool frontWorld(const char*,CameraPoint,CameraPoint,const OpeningSequence*,const OpeningDemo&);
     struct FrontTexture {std::string name;Texture image;std::array<uint32_t,4> size{};};

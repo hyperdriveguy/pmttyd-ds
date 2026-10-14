@@ -291,6 +291,14 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,OpeningSequence& ope
     // frame is still displayed. Chest opening must never perform first-use IO.
     const bool marketReady=f.screen!=FrontScreen::Demo || !demo.bookComplete ||
         (prepareFrontWorld("opening-demo-market",nullptr,demo) && prepareDemoEffects());
+    std::array<bool,4> captureRequested{};
+    std::array<C3D_RenderTarget*,4> bookTargets{};
+    if(f.screen==FrontScreen::Demo && !demo.bookComplete && !demo.failed){
+        for(unsigned n=0;n<4;++n)if(demo.book.pages[n].active && demo.book.pages[n].capturePending){
+            captureRequested[n]=true;bookTargets[n]=prepareBookCapture(n);
+            if(!bookTargets[n])demo.failed=true;
+        }
+    }
     C2D_TextBufClear(textBuffer);C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
     windowFrameCount=0;
     windowFontCount=0;
@@ -308,7 +316,6 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,OpeningSequence& ope
     int mapPresented=-1;
     float mapTurnPresented=-1;unsigned mapTurnType=0;
     bool ok=wakeReady && mapCaptureReady && mapWorldReady && marketReady;std::array<float,4> paperPresented{{-1,-1,-1,-1}};
-    std::array<bool,4> captureRequested{};
     if(f.screen==FrontScreen::Demo && demo.bookComplete) {
         const auto& scene=demo.market;
         ok=marketReady && frontWorld("opening-demo-market",{scene.eye[0],scene.eye[1],scene.eye[2]},{scene.at[0],scene.at[1],scene.at[2]},nullptr,demo);
@@ -345,12 +352,20 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,OpeningSequence& ope
     } else if(f.screen==FrontScreen::Demo) {
         if(!loadDemoPaper() || !frontImage("demo-page-back",0,0,0,0)){demo.failed=true;ok=false;}
         else demo.paperServicesBound=true;
-        for(unsigned n=0;n<4;++n)if(demo.book.pages[n].active && demo.book.pages[n].capturePending) {
-            captureRequested[n]=true;
-        }
         ok=frontImage("demo-0",OpeningBookView::desktop[0],OpeningBookView::desktop[1],OpeningBookView::desktop[2],OpeningBookView::desktop[3]) && ok;
         count=0;ok=frontBookCover(demo) && ok;
         if(demoPaperReady)ok=frontBookPaper(demo,paperPresented) && ok;
+        for(unsigned n=0;n<4;++n)if(captureRequested[n]){
+            auto* target=bookTargets[n];if(!target){ok=false;continue;}
+            C2D_Flush();C3D_RenderTargetClear(target,C3D_CLEAR_ALL,0,0);
+            C2D_Prepare();C2D_SceneBegin(target);
+            const auto& desktop=OpeningBookView::desktop;
+            ok=frontImage("demo-0",desktop[0]-OpeningBookView::captureLeft,desktop[1],desktop[2],desktop[3]) && ok;
+            ok=frontBookCover(demo,true) && ok;
+            std::array<float,4> ignored{{-1,-1,-1,-1}};
+            ok=frontBookPaper(demo,ignored,true) && ok;
+            C2D_Flush();C2D_Prepare();C2D_SceneBegin(top);
+        }
     } else {
         ok=frontImage("title-background",48,0,304,240);
         const bool title=f.screen==FrontScreen::Title;
@@ -467,10 +482,9 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,OpeningSequence& ope
     if(ok && titlePresentedType)f.title.presented(titlePresentedType,titlePresentedFrame,titlePresentedScale);
     if(entryPresented>=0 && ok)demo.exit.entryPresented(uint8_t(entryPresented));
     if(ok)demo.exit.presented(exitPresented);
-    if(std::any_of(captureRequested.begin(),captureRequested.end(),[](bool value){return value;})){
-        if(!ok){demo.failed=true;return;}
-        C3D_FrameSync();
-        for(unsigned n=0;n<4;++n)if(captureRequested[n] && !captureBookPage(demo,n))demo.failed=true;
+    for(unsigned n=0;n<4;++n)if(captureRequested[n]){
+        if(bookTargets[n])C3D_RenderTargetDelete(bookTargets[n]);
+        if(ok)demo.book.captureComplete(n);else demo.failed=true;
     }
     for(unsigned n=0;n<4;++n)if(paperPresented[n]>=180)demo.book.presented(n,paperPresented[n]);
 }
