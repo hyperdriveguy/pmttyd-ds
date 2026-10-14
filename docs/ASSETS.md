@@ -1785,3 +1785,18 @@ Private command metadata PMTCMD2 adds the source icon field; old packs rebuild.
 See [native scope](behavior/display/NATIVE_WEAPON_MENU_ICONS.md). ISO stays
 read-only; extracted images, atlas, compiled packs and captures remain ignored.
 Nintendo/Intelligent Systems original resources; no redistribution rights.
+
+## 2026-10-13 — Original item95 receive presentation identities
+
+Read-only US DOL/ISO recovery identifies a/a_mario M_I_U(index39,static0..0),
+item95 icon descriptor307 -> icon.tpl image312 and original base effect bank
+`e/us/effect.tpl` (266784bytes,SHA256
+3b62850fe75afb95eebb9fc240e20204d5ed320fba0fc956729f28405c2c789b).
+Effect6 uses images42/44 plus source dispatcher image43, not effect_us.tpl or
+an invented sparkle. Window definitions80313dc8/df0 and original global
+msg_window_item_get/in_irai_butsu/msg_irai_butsu remain source content;
+US template expansion is not assumed to be sprintf. No new art conversion or
+pack emitted by this portable sequence implementation. Inspection reports
+remain ignored under artifacts/reference/goomba3-services. Original copyrighted
+assets stay local; no extracted payload/ISO committed or redistribution rights
+created. Full native effect/window rendering remains provider work.

@@ -2,6 +2,53 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Original portable item95 receive owner and packed insertion
+
+Implemented finite fresh mode16/main1003 itemseq_GetItem owner with typed
+original service requests: same-call0/1 control/motion/effect, source50/62
+positions, effect6, correct silence/BGM/fanfare routing, both original window
+definitions before deferred receive95, next-call2/3 control-off, window action0
+and A/B-trigger acknowledgment, original teardown/restoration and all-name
+entry cleanup. No fixed500ms/render delay, fabricated dialogue, parameter
+revision or task5405 write. Failed receive opens original failure window and
+reaches source sub5 close/stay/iconflag2/type1 selection boundary; discard
+continuation remains pending, holding control and not manufacturing success.
+
+Added exact packed key-array insertion: highest zero120..0, backward overlapping
+shift, front insertion, preserving gaps/duplicates/raw bytes. Full121 slots
+return0 without writes. ProloguePouch exposes the array branch, not the full
+resource/upgrade dispatcher. Tests use actual packed pouch through the receive
+callback, proving once-only grant after both windows and untouched HP/FP.
+Corrected legacy unit/POUCH_GET_ITEM.md's erroneous lookup/pointer description;
+verified US receive is800d50cc and95 returns success1/failure0.
+
+Source documentation now pins name/help definitions/callbacks, US template
+expansion dependency, static original a/a_mario M_I_U pose, icon307/TPL312,
+and actual e/us/effect.tpl bank/type6 clock/scale/two-quads/TEV. Prior get-item
+frontier shorthand is superseded by the recovered direct receive sequence.
+Full effect pass0 color producer/PICA mapping, US expansion and window-manager
+services remain explicit providers. Native Goomba3 acquisition is not yet
+playable and stays unavailable until those providers are supplied.
+
+Final scoped source treee85100b42222092ca87a84c5653c4ea2ab7af37f verified2264
+tracked files byte-for-byte. make all passed (artifacts/item95-reviewed-native.log),
+make test passed201 CTest/131 Python (artifacts/item95-reviewed-test.log).
+Initial treeaa704c9e639d775959b1bb2d79004b87c9c5848f passed200/130 and native
+build before stronger routing tests/current committed battle-icon integration.
+Independent source review found no finite receive/insertion mismatch; exact
+request order, BGM counts/placement, original windows, once-only grant,
+action/button gates, terminal no-repeat, failed/no-ready admission, full storage
+and highest-zero gap semantics are covered. Documentation1051 Markdown files/0
+broken links and diff check passed. No new GUI/emulator/hardware claim: these
+new providers are portable mechanics, with native compilation verified.
+
+Next bind original window-manager/action/text expansion, M_I_U/icon/effect6
+and original audio/registry/control services, then actual Goomba3 acquisition
+and later reward/Trouble Center acceptance. Continue original actor/object
+coverage through shared catalogs/portable services. Original ISO remains
+read-only; user emulator profile/saves unchanged. Full remake goal remains
+active/unfinished; ITEM-01/OW-INTERACT-01 remain open.
+
 ## 2026-10-13 — Original equipment and partner weapon-menu art
 
 Feature `2d25ab0` adds original boot/Hammer/Headbonk sprites to the existing

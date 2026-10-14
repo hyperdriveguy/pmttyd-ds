@@ -714,3 +714,16 @@ global scheduler/RNG and later vertical/reflection/filter domains remain open.
 Full item95 get-item sequence recovery continues; parent request remains open.
 
 Delivered [item95 normal get sequence](../behavior/field/GOOMBA3_ITEM95_GET_SEQUENCE_AND_DEFERRED_GRANT.md), including entry mode16/runtime flag distinction, deferred grant, original windows and acknowledgment/cleanup. Native acquisition/presentation and full-storage UI remain pending.
+
+### 2026-10-13 — Portable original item95 receive and source presentation providers
+
+Delivered [portable receive owner](../behavior/field/PORTABLE_ITEM95_RECEIVE_SEQUENCE.md),
+[exact packed insertion](../behavior/unit/POUCH_KEY_ITEM95_RECEIVE_INSERTION.md),
+[original windows/pose/icon](../behavior/field/ITEM95_GET_WINDOWS_MARIO_POSE_AND_ASSET_BINDINGS.md)
+and [type6 effect bank/update/draw](../behavior/effect/FIELD_ITEM_GET_TYPE6_BANK_UPDATE_AND_DRAW.md).
+Actual low-level95 insertion and receive service order are implemented/tested;
+original windows precede grant, acknowledgment precedes cleanup, failure holds
+at actual discard sub5. No task completion or native presentation is fabricated.
+Corrected the legacy pouchGetItem pointer-lookup stub. Native window/text/effect/
+audio/registry/control bindings, discard continuation and upstream quest callers
+remain open; parent request stays open.

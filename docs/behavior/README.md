@@ -775,3 +775,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Original NPC map-side/Goomba3 zero-vertical path](field/FIELD_NPC_MAP_SIDE_MOVEMENT_AND_GOOMBA3_ZERO_VERTICAL.md) [native map-side/Goomba3 wandering](field/NATIVE_NPC_MAP_SIDE_AND_GOOMBA3_WANDER.md), and [item95 deferred grant sequence](field/GOOMBA3_ITEM95_GET_SEQUENCE_AND_DEFERRED_GRANT.md).
 
 - [Original native weapon-menu icons](display/NATIVE_WEAPON_MENU_ICONS.md).
+
+- [Portable forced item95 receive](field/PORTABLE_ITEM95_RECEIVE_SEQUENCE.md), [original window/Mario/icon bindings](field/ITEM95_GET_WINDOWS_MARIO_POSE_AND_ASSET_BINDINGS.md), [exact packed insertion](unit/POUCH_KEY_ITEM95_RECEIVE_INSERTION.md), and [type6 effect bank/update/draw](effect/FIELD_ITEM_GET_TYPE6_BANK_UPDATE_AND_DRAW.md).
