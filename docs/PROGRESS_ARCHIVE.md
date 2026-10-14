@@ -13330,3 +13330,47 @@ providers. Renderer uses live controller vectors, original converted animations
 and its existing citro3d geometry path. Finishing remains8000f704; no teardown
 shortcut or field-return claim. Native assets remain ignored, sourced read-only
 from supplied ISO; no new original payload enters source history.
+
+## 2026-10-14 — Retained camera bank and original tremor consumption
+
+Immutable source snapshot: `artifacts/camera-manager-source/OWNED_BASE.txt`,
+basef9afecc29ed93085db79d3b7c61fe7ec76b38c73 plus eight owned camera/math/frame
+files, five shared-file hunk sets in `artifacts/camera-manager-shared-edits.json`
+and owned CMake registration. Other concurrent tutorial, window, item and
+render work was excluded. ELF/3DSX/SMDH and exact source/binary hashes:
+`artifacts/camera-manager-validated`. The tested snapshot is authoritative for
+this validation; later independent commits are preserved by the scoped commit.
+
+Final isolated `make test`, CMAKE_BUILD_PARALLEL_LEVEL4: exit0,255/255 C++ and
+144/144 Python, `artifacts/camera-manager-test-final.log`. Native `make all -j4
+DEBUG_SHORT_BOOT=1 BUILD=build-camera-manager TARGET=ttyd-camera-manager`: exit0,
+`artifacts/camera-manager-build-final.log`.
+
+Initial `camera-manager-test.log` passed254 of255 C++ checks and exposed the
+unconsumed tremor provider during finishing camera callback resumption. Recovered
+both complete original tails and implemented their exact scalar order/cursor;
+final tests cover phasebit2, wrapping/signed/zero/negative timers, both-axis
+sequential camera shifts, amplitude/speed stores and baseline/earlier-axis hold.
+Private diagnostic logs `camera-manager-diagnostic-*.log` locate that wait;
+diagnostic print was removed before final snapshot/build/test.
+
+Azahar immutable3DSX, isolated `artifacts/azahar-camera-manager`, fixture
+`artifacts/fixtures/underground-trio-story11.bin`, seconds45 and
+`tests/azahar_trio_exp_icons.py`: exit0, no detected native exception. Viewed
+boot, partner-menu, enemy-impact-recovery08, original-hammer13,
+original-exp-and-victory30 and original-ending-fade-export-boundary captures.
+The actual attacks, source10-Star-Point victory and existing black development
+field-restoration hold remain visible. Captures prove those rendered states,
+not original/Dolphin pixel parity, full GPU draw or physical performance.
+Log: `artifacts/camera-manager-emulator.log`.
+
+Camera bank lifetime and complete supported finishing callback traversal now
+operate natively. Source effect5/7 and image6 callbacks retain distinct lenses;
+main never publishes a draw-current index. The portable sorted draw owner tests
+real ordering/holds/reset, but native letterbox/GPU providers remain unbound.
+Source letterbox/dummy and BeroEXEC writers were recovered; corrected old dummy
+NumChans identity. No original payload/assets were committed. Numeric trig,
+normalization/distance and handheld projection adapters, earlier field history,
+arbitrary pointer interpolation/unsupported modes, shadow preparation and
+ordered field return remain separate work. No physical hardware or original
+Dolphin execution for this step.

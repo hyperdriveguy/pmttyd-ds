@@ -18,7 +18,7 @@ struct Fixture {
     uint16_t h(uint32_t a){uint16_t v;assert(vm.memory.readHalf(a,v));return v;}
     BattleCameraFrameServices services(){
         BattleCameraFrameServices s;s.requests.positions.memory=nativeBattleActorServices(vm);s.user=this;
-        s.interpolate=[](void* u,int32_t,int32_t step,int32_t duration,float a,float b)->std::optional<float>{static_cast<Fixture*>(u)->steps.push_back(step);return a+(b-a)*float(step)/float(duration);};
+        s.interpolate=[](void* u,int32_t,int32_t step,int32_t duration,float a,float b)->std::optional<float>{static_cast<Fixture*>(u)->steps.push_back(step);return duration==0?b:a+(b-a)*float(step)/float(duration);};
         s.rumbleOff=[](void* u,int32_t channel){static_cast<Fixture*>(u)->rumble.push_back(channel);};return s;
     }
 };
@@ -38,7 +38,37 @@ int main(){
     assert(f.h(0x477c)==1 && f.h(0x477e)==3);
     assert(updateBattleCameraFrame(0x2000,f.frame,s) && f.w(0x47d8)==0 && f.frame.eye==CameraDepthPoint({0,100,300}));
     const auto calls=f.steps.size();assert(updateBattleCameraFrame(0x2000,f.frame,s) && f.steps.size()==calls && f.w(0x4760)==3);
-    f.w(0x4754,2);assert(!updateBattleCameraFrame(0x2000,f.frame,s)); // Tremor remains a real provider.
+    f.w(0x4754,2);auto missing=s;missing.interpolate=nullptr;BattleCameraTremorCursor continuation;
+    assert(!updateBattleCameraFrame(0x2000,f.frame,missing,&continuation));
+    assert(continuation.active && continuation.axis==1 && continuation.stage==1 && f.h(0x477c)==3 && f.h(0x477e)==3);
+    const auto heldBaseline=f.w(0x4780);assert(updateBattleCameraFrame(0x2000,f.frame,s,&continuation));
+    assert(!continuation.active && !(f.w(0x4754)&2) && f.w(0x483c)==0xffffffff && f.w(0x4780)==heldBaseline);
+    Fixture shake;auto ss=shake.services();initializeBattleCamera(0x2000,ss.requests);updateBattleCameraFrame(0x2000,shake.frame,ss);
+    setBattleCameraMode(0x2000,0,0,ss.requests);shake.w(0x4754,3);
+    shake.w(0x4828,0);shake.w(0x482c,0);shake.w(0x4830,6);shake.w(0x4834,6);shake.w(0x4838,6);shake.w(0x483c,4);
+    shake.f(0x4840,4);shake.f(0x4844,0);shake.f(0x4848,6);shake.f(0x484c,0);
+    assert(updateBattleCameraFrame(0x2000,shake.frame,ss));
+    assert(shake.frame.eye[0]==4 && shake.frame.at[0]==4 && shake.frame.eye[1]==106 && shake.frame.at[1]==56);
+    assert(shake.w(0x4780)==0 && shake.w(0x4784)==0x42dc0000 && shake.w(0x4798)==0); // Baseline X0/Y110 predates tremor.
+    assert(shake.steps==std::vector<int32_t>({0,1}) && shake.h(0x477c)==1 && shake.h(0x477e)==1);
+    assert(shake.w(0x4838)==5 && shake.w(0x483c)==3 && shake.w(0x4850)==0x40800000 && shake.w(0x4854)==0x40800000);
+    // Zero and negative timers still interpolate/decrement; zero clears only its bit.
+    shake.w(0x4838,0);shake.w(0x483c,0xffffffff);const auto callsBefore=shake.steps.size();
+    assert(updateBattleCameraFrame(0x2000,shake.frame,ss));
+    assert(shake.steps.size()==callsBefore+2 && shake.w(0x4754)==2 && shake.w(0x4838)==0xffffffff && shake.w(0x483c)==0xfffffffe);
+    // A missing tail provider cannot replay the baseline or overwrite earlier X shake.
+    Fixture resumed;auto rs=resumed.services();initializeBattleCamera(0x2000,rs.requests);updateBattleCameraFrame(0x2000,resumed.frame,rs);
+    setBattleCameraMode(0x2000,0,0,rs.requests);resumed.w(0x4754,3);
+    resumed.w(0x4830,6);resumed.w(0x4834,6);resumed.w(0x4838,6);resumed.w(0x483c,6);
+    resumed.f(0x4840,4);resumed.f(0x4848,6);
+    auto unavailable=rs;unavailable.interpolate=[](void* user,int32_t,int32_t step,int32_t duration,float a,float b)->std::optional<float>{
+        auto& f=*static_cast<Fixture*>(user);f.steps.push_back(step);if(f.steps.size()==2)return {};return duration==0?b:a+(b-a)*float(step)/float(duration);
+    };
+    BattleCameraTremorCursor tail;assert(!updateBattleCameraFrame(0x2000,resumed.frame,unavailable,&tail));
+    assert(tail.axis==1 && resumed.frame.eye[0]==4 && resumed.w(0x4838)==5 && resumed.h(0x477c)==3);
+    const auto baselineZ=resumed.w(0x4788);assert(updateBattleCameraFrame(0x2000,resumed.frame,rs,&tail));
+    assert(resumed.frame.eye[0]==4 && resumed.frame.eye[1]==116 && resumed.w(0x4788)==baselineZ && resumed.w(0x4838)==5 && resumed.w(0x483c)==5);
+
     Fixture intro;auto is=intro.services();intro.w(0x50008,0);initializeBattleCamera(0x2000,is.requests);
     for(unsigned i=0;i<10;++i)assert(updateBattleCameraFrame(0x2000,intro.frame,is));
     assert(intro.w(0x4760)==3 && intro.w(0x47d8)==120 && intro.steps.empty());

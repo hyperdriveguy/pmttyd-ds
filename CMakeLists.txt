@@ -1278,3 +1278,9 @@ add_executable(battle_action_class_table_tests tests/battle_action_class_table_t
 target_link_libraries(battle_action_class_table_tests PRIVATE ttyd_core)
 add_test(NAME battle_action_class_table COMMAND battle_action_class_table_tests)
 set_tests_properties(battle_action_class_table PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Retained source camera bank and resumable global update/draw owners.
+target_sources(ttyd_core PRIVATE source/display/camera_manager.cpp)
+add_executable(camera_manager_tests tests/camera_manager_tests.cpp)
+target_link_libraries(camera_manager_tests PRIVATE ttyd_core)
+add_test(NAME camera_manager COMMAND camera_manager_tests)

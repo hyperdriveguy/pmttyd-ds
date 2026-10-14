@@ -456,6 +456,21 @@ int main(){
 
             charged.trioAttack.tick((charged.ticks+2)*1000/60,charged.trioBattleIntro);
             assert(queue->count()==20 && shadow->count()==3); // Held outer camera does not repeat collection.
+            assert(charged.trioAttack.pendingFunction()==0x8000ea68); // Explicit depth alone supplies no camera callback/lens history.
+            assert(charged.trioAttack.cameras()==charged.cameraManager.get());
+            const auto callsBeforeCameraResume=std::count_if(charged.trioAttack.requests().begin(),charged.trioAttack.requests().end(),[](const auto& request){return request.function==0x8003ed2c && !request.rawOperands.empty() && request.rawOperands[0]==0;});
+            charged.trioAttack.setCameraDepthLensAdapter(charged.fieldCameraFrame.fov,608.f/480.f,charged.fieldCameraFrame.nearPlane*100,charged.fieldCameraFrame.farPlane*100);
+            charged.trioAttack.tick((charged.ticks+3)*1000/60,charged.trioBattleIntro);
+            assert(charged.trioAttack.pendingFunction()==0x8000f454 && !charged.trioAttack.cameraHistoryComplete());
+            assert(queue->count()==20 && shadow->count()==3 && !charged.cameraManager->currentIndex());
+            assert(charged.cameraManager->camera(2)->projectionKind==1 && charged.cameraManager->camera(8)->viewport[4]==.1f);
+            assert(charged.cameraManager->camera(4)->matrices.view==charged.trioAttack.cameraDepthSnapshot()->view);
+            const auto publishedProjection=charged.trioAttack.cameraDepthSnapshot()->projection;
+            charged.trioAttack.setCameraDepthLensAdapter(30,608.f/480.f,1,32768);
+            assert(charged.trioAttack.cameraDepthSnapshot()->projection==publishedProjection); // Draw consumes publication, not a recomputed adapter.
+            assert(charged.cameraManager->camera(5)->eye==charged.cameraManager->camera(4)->eye && charged.cameraManager->camera(7)->at==charged.cameraManager->camera(4)->at);
+            assert(charged.cameraManager->camera(6)->eye[2]!=charged.cameraManager->camera(4)->eye[2]);
+            assert(std::count_if(charged.trioAttack.requests().begin(),charged.trioAttack.requests().end(),[](const auto& request){return request.function==0x8003ed2c && !request.rawOperands.empty() && request.rawOperands[0]==0;})==callsBeforeCameraResume);
 
             assert(charged.trioAttack.readWord(0x84201204,value) && (value&3)==2); // Source name request consumed; forced path stays active.
             assert(charged.trioAttack.readWord(0x84000ef4,value) && (value&0x80000000));

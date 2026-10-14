@@ -29,16 +29,19 @@ CameraDepthSnapshot publishCameraMatrices(CameraDepthSnapshot c,CameraMatrixPubl
         return out;
     };
     c.view=concat(rotation,c.view);c.view=concat(translation,c.view);
+    publishCameraExtra(c.projection,state);
+    return c;
+}
+void publishCameraExtra(CameraProjectionMatrix& projection,CameraMatrixPublication& state){
     if(state.flags&8){
-        const auto previous=c.projection;
+        const auto previous=projection;
         for(unsigned i=0;i<4;++i)for(unsigned j=0;j<4;++j){
             float v=round32(state.extra[i][0]*previous[0][j]);
             for(unsigned k=1;k<4;++k)v=std::fma(state.extra[i][k],previous[k][j],v);
-            c.projection[i][j]=round32(v);
+            projection[i][j]=round32(v);
         }
         state.flags=uint16_t(state.flags&~8u);
     }
-    return c;
 }
 CameraDepthPoint cameraDepthView(const CameraDepthSnapshot& c,CameraDepthPoint p){return {row(c.view[0],p),row(c.view[1],p),row(c.view[2],p)};}
 CameraDepthPoint cameraDepthProject(const CameraDepthSnapshot& c,CameraDepthPoint p){
@@ -51,19 +54,39 @@ float cameraQueueDepth(const CameraDepthSnapshot& c,CameraDepthPoint p){
     if(depth<0)depth=0;else if(depth>10000)depth=10000;
     return round32(-1.f*depth);
 }
-std::optional<CameraDepthSnapshot> makeCameraDepthSnapshot(CameraDepthPoint eye,CameraDepthPoint at,CameraDepthPoint up,float fov,float aspect,float nearPlane,float farPlane){
-    for(float v:{eye[0],eye[1],eye[2],at[0],at[1],at[2],up[0],up[1],up[2],fov,aspect,nearPlane,farPlane})if(!std::isfinite(v))return {};
-    if(fov<=0 || fov>=180 || aspect<=0 || nearPlane<=0 || farPlane<=nearPlane)return {};
-    CameraDepthPoint back{eye[0]-at[0],eye[1]-at[1],eye[2]-at[2]};if(!normalize(back))return {};
-    auto right=cross(up,back);if(!normalize(right))return {};up=cross(back,right);
-    CameraDepthSnapshot c;const std::array<CameraDepthPoint,3> axes{right,up,back};
-    for(size_t i=0;i<3;++i){const auto& a=axes[i];c.view[i]={a[0],a[1],a[2],-(a[0]*eye[0]+a[1]*eye[1]+a[2]*eye[2])};}
+CameraProjectionMatrix cameraPerspective(float fov,float aspect,float nearPlane,float farPlane){
+    CameraProjectionMatrix p{};
     const float angle=round32(0.01745329238474369f*round32(.5f*fov));
     const float cot=round32(float(1./std::tan(double(angle))));
     const float inverse=round32(1.f/round32(farPlane-nearPlane));
-    c.projection[0][0]=round32(cot/aspect);c.projection[1][1]=cot;
-    c.projection[2][2]=round32(-nearPlane*inverse);
-    c.projection[2][3]=round32(inverse*-round32(farPlane*nearPlane));c.projection[3][2]=-1;
+    p[0][0]=round32(cot/aspect);p[1][1]=cot;
+    p[2][2]=round32(-nearPlane*inverse);
+    p[2][3]=round32(inverse*-round32(farPlane*nearPlane));p[3][2]=-1;
+    return p;
+}
+CameraProjectionMatrix cameraOrthographic(float top,float bottom,float left,float right,float nearPlane,float farPlane){
+    CameraProjectionMatrix p{};
+    const float width=round32(right-left),height=round32(top-bottom),xSum=round32(right+left);
+    const float xInverse=round32(1.f/width),yInverse=round32(1.f/height);
+    p[0][0]=round32(2.f*xInverse);p[0][3]=round32(xInverse*-xSum);
+    const float ySum=round32(top+bottom),zSpan=round32(farPlane-nearPlane),zInverse=round32(1.f/zSpan);
+    p[1][1]=round32(2.f*yInverse);p[1][3]=round32(yInverse*-ySum);
+    p[2][2]=round32(-1.f*zInverse);p[2][3]=round32(-farPlane*zInverse);p[3][3]=1;
+    return p;
+}
+std::optional<CameraViewMatrix> cameraLookAtAdapter(CameraDepthPoint eye,CameraDepthPoint at,CameraDepthPoint up){
+    for(float v:{eye[0],eye[1],eye[2],at[0],at[1],at[2],up[0],up[1],up[2]})if(!std::isfinite(v))return {};
+    CameraDepthPoint back{eye[0]-at[0],eye[1]-at[1],eye[2]-at[2]};if(!normalize(back))return {};
+    auto right=cross(up,back);if(!normalize(right))return {};up=cross(back,right);
+    CameraViewMatrix view{};const std::array<CameraDepthPoint,3> axes{right,up,back};
+    for(size_t i=0;i<3;++i){const auto& a=axes[i];view[i]={a[0],a[1],a[2],-(a[0]*eye[0]+a[1]*eye[1]+a[2]*eye[2])};}
+    return view;
+}
+std::optional<CameraDepthSnapshot> makeCameraDepthSnapshot(CameraDepthPoint eye,CameraDepthPoint at,CameraDepthPoint up,float fov,float aspect,float nearPlane,float farPlane){
+    for(float v:{fov,aspect,nearPlane,farPlane})if(!std::isfinite(v))return {};
+    if(fov<=0 || fov>=180 || aspect<=0 || nearPlane<=0 || farPlane<=nearPlane)return {};
+    const auto view=cameraLookAtAdapter(eye,at,up);if(!view)return {};
+    CameraDepthSnapshot c{*view,cameraPerspective(fov,aspect,nearPlane,farPlane)};
     CameraMatrixPublication nativeUpright; // Explicit adapter; no inherited roll/extra provider.
     return publishCameraMatrices(c,nativeUpright);
 }

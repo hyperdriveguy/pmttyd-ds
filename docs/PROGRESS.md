@@ -1738,3 +1738,29 @@ and dummy GPU providers, then ordered sequence-manager exit/BattleEnd/field retu
 The finishing camMain8000f704 hold remains. Gekko math, inherited field roll/extra
 history, complete draw cadence and hardware performance remain unverified. Full
 playable original-fidelity prologue goal stays active.
+
+## 2026-10-14 — Retained camera bank and original tremor consumption
+
+Added the13-camera retained bank, resumable Main and source-ordered portable
+Draw owner. Game preserves its shared bank through restore/battle entry. Both
+original tremor axes now interpolate, shift the live camera, restore speeds
+and consume timers without republishing baseline or replaying earlier work.
+Finishing native Main completes all13 camera updates and advances to actual
+camDraw8000f454, preserving its20 borrowed records. Explicit missing-lens
+callbacks still hold and resume without recollection.
+[Scope](behavior/camera/NATIVE_CAMERA_BANK_AND_DEFERRED_DRAW_OWNER.md).
+
+Final isolated make test passed255/255 C++ and144/144 Python checks; native
+make all DEBUG_SHORT_BOOT=1 passed. Isolated Azahar completed the actual trio
+attack/victory/fade sequence without a detected native exception and reached
+the existing field-restoration hold. Exact logs/snapshot/manifests, initial
+failed tremor integration check and reviewed captures are in the
+[archive](PROGRESS_ARCHIVE.md#2026-10-14--retained-camera-bank-and-original-tremor-consumption).
+
+Next: bind recovered BeroEXEC/letterbox global/scalar owners into the shared
+camera8, then actual ascending-camera viewport/projection/borrowed GPU callbacks,
+shadow preparation and genuine dummy draw. Native Draw is not certified by
+portable tests; camDraw remains the finishing wait. Ordered sequence-manager
+exit/BattleEnd/field return, full field-camera history, source Gekko numerics and
+physical performance remain open. Full playable original-fidelity prologue goal
+stays active.

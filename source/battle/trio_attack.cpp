@@ -142,7 +142,10 @@ struct TrioAttackRuntime {
     BattlePosePool poses;
     BattleCameraFrame cameraFrame;
     uint64_t cameraClockAt=UINT64_MAX;
-    bool cameraHistoryComplete=true;
+    bool cameraHistoryComplete=true,cameraUpdateAvailable=false,cameraMainWaiting=false;
+    std::shared_ptr<CameraManager> cameras;
+    CameraMainCursor cameraMainCursor;
+    BattleCameraTremorCursor cameraTremorCursor;
     std::optional<TrioPoseDrawRequest> poseDraw;
     std::optional<CameraDepthSnapshot> cameraDepth;
     std::optional<std::array<float,4>> cameraDepthLensAdapter;
@@ -1558,19 +1561,58 @@ struct TrioAttackRuntime {
         publishPackedBattleMainResult(Battle,packedBattleMainAfterRequests(Battle,actors),actors);
         pending=0x8000f704;endingRequest(pending);
     }
-    void updateCamera(uint64_t time) {
-        if(cameraClockAt==time)return;cameraClockAt=time;
+    bool updateCamera(uint64_t time) {
+        if(cameraClockAt==time)return cameraUpdateAvailable;cameraClockAt=time;
         BattleCameraFrameServices camera;camera.requests.positions=nativeBattlePartPositionServices(vm);camera.user=this;
         camera.interpolate=[](void*,int32_t curve,int32_t step,int32_t duration,float start,float end){return cameraInterpolation(curve,step,duration,start,end);};
         camera.rumbleOff=[](void*,int32_t){}; // New2DS XL has no rumble motor; native hardware adapter.
-        if(!updateBattleCameraFrame(Battle,cameraFrame,camera))cameraHistoryComplete=false;
+        cameraUpdateAvailable=updateBattleCameraFrame(Battle,cameraFrame,camera,&cameraTremorCursor);
+        if(!cameraUpdateAvailable)cameraHistoryComplete=false;
         if(cameraDepthLensAdapter){
             const auto& lens=*cameraDepthLensAdapter;
             cameraDepth=makeCameraDepthSnapshot(cameraFrame.eye,cameraFrame.at,cameraFrame.up,lens[0],lens[1],lens[2],lens[3]);
         }
+        return cameraUpdateAvailable;
+    }
+    void publishFinishingCameras(){
+        cameraMainWaiting=true;
+        CameraMainServices services;services.user=this;
+        services.lookAt=[](void*,const CameraState& c){return cameraLookAtAdapter(c.eye,c.at,c.up);};
+        services.callback=[](void* user,uint32_t identity,uint32_t,CameraState& c){
+            auto& r=*static_cast<TrioAttackRuntime*>(user);
+            auto distanceYaw=[&](){
+                const float x=c.eye[0]-c.at[0],y=c.eye[1]-c.at[1],z=c.eye[2]-c.at[2];
+                c.distance=std::sqrt(x*x+y*y+z*z); // Declared native PSVECDistance numeric adapter.
+                c.yaw=sourceAngles.angle(c.eye[0],c.eye[2],c.at[0],c.at[2]);
+            };
+            if(identity==0x8000ea68){
+                if(c.publication.flags&2)return true; // Callback admission only; Main still publishes view/extra.
+                if(c.mode!=2 || !r.cameraDepthLensAdapter || !r.updateCamera(r.now))return false;
+                c.eye=r.cameraFrame.eye;c.at=r.cameraFrame.at;c.up=r.cameraFrame.up;distanceYaw();
+                if(c.projectionKind==0)c.matrices.projection=cameraPerspective(c.fov,1.2666666507720947f,c.nearPlane,c.farPlane);
+                else {
+                    const float halfY=c.distance*float(std::tan(0.21816615760326385));
+                    const float halfX=(608.f*halfY)/480.f;
+                    c.matrices.projection=cameraOrthographic(halfY,-halfY,-halfX,halfX,c.nearPlane,c.farPlane);
+                }
+                return true;
+            }
+            if(identity==0x8000e974){
+                const auto* source=r.cameras->camera(4);c.eye=source->eye;c.at=source->at;c.up=source->up;distanceYaw();
+            }else if(identity!=0x8000ea30)return false;
+            c.matrices.projection=cameraPerspective(c.fov,c.aspect,c.nearPlane,c.farPlane);return true;
+        };
+        if(cameras->main(false,services,cameraMainCursor)){
+            cameraMainWaiting=false;cameraDepth=cameras->camera(4)->matrices;
+            pending=0x8000f454;endingRequest(pending); // Actual camDraw remains a separate GPU/letterbox owner.
+        }else {
+            const uint32_t next=cameraMainCursor.stage==0?cameraMainCursor.callback:0x8029e330;
+            if(pending!=next)endingRequest(next);pending=next;
+        }
     }
     void tick(uint64_t time,ProfessorStory& s,uint32_t triggers,const BattlePadSample* physical){
         scene=&s;now=time;
+        if(pending==0x8000f704 || cameraMainWaiting)publishFinishingCameras();
         if(waitingPoseDepth && (waitingPosePriority || cameraDepth)){
             pending=0;
             if(registerPoseDraw()){displayPart=word(poseDraw->part);if(displayPrefix())finishDisplayContinuation();}
@@ -1590,7 +1632,7 @@ struct TrioAttackRuntime {
     }
     void publish(ProfessorStory& s){for(unsigned id=1;id<7;++id){const uint32_t u=word(Battle+0x20+4*id);if(!u){s.actors[visual[id]].hidden=true;continue;}for(unsigned axis=0;axis<3;++axis)s.actors[visual[id]].position[axis]=real(u+0x3c+4*axis);s.actors[visual[id]].yaw=byte(u+0x189)==1?90:270;s.actors[visual[id]].battleFlags=word(u+0x1c);for(unsigned axis=0;axis<3;++axis){s.actors[visual[id]].battleRotation[axis]=real(u+0x60+4*axis)+real(u+0x6c+4*axis);s.actors[visual[id]].battlePivot[axis]=real(u+0x78+4*axis);s.actors[visual[id]].battleScale[axis]=(axis<2?real(u+0x114):1.f)*real(u+0x9c+4*axis)*real(u+0x90+4*axis);s.actors[visual[id]].battleDisplayOffset[axis]=real(u+0x54+4*axis);}}}
 };
-bool TrioAttack::begin(const TrioBattleCommands& menu,ProfessorStory& scene,int16_t hp,std::shared_ptr<ProloguePouch> entryPouch,uint32_t* fieldNpcBattleFlags,FieldMarioBattleState* fieldMario,FieldPartyRegistry* fieldParties,const FieldPartyAppearanceServices* appearance,std::shared_ptr<BattleSpotlightState> spotlight,std::shared_ptr<BattleRandom> random,std::shared_ptr<PositionalSfxRegistry> sounds,std::shared_ptr<ShadowWork> shadows,std::shared_ptr<BattleCommandPalette> palette){if(!assetsReady || !menu.attack || !((menu.actor==1 && (menu.attack->weapon==0x803538a8 || menu.attack->weapon==0x80353de8)) || (menu.actor==2 && menu.attack->weapon==0x80393ea8)))return false;if(runtime_)return runtime_->done && runtime_->readyActor==menu.actor && runtime_->launch(menu);auto r=std::make_shared<TrioAttackRuntime>(random?std::move(random):std::make_shared<BattleRandom>(1));r->palette=palette?std::move(palette):std::make_shared<BattleCommandPalette>();r->shadows=shadows?std::move(shadows):std::make_shared<ShadowWork>();r->publicSfx=sounds?std::move(sounds):std::make_shared<PositionalSfxRegistry>();r->spotlight=spotlight?std::move(spotlight):std::make_shared<BattleSpotlightState>();r->fieldNpcBattleFlags=fieldNpcBattleFlags;r->fieldMario=fieldMario;r->fieldParties=fieldParties;if(appearance)r->fieldAppearance=*appearance;if(!r->initialize(menu,scene,hp,std::move(entryPouch)))return false;runtime_=std::move(r);return true;}
+bool TrioAttack::begin(const TrioBattleCommands& menu,ProfessorStory& scene,int16_t hp,std::shared_ptr<ProloguePouch> entryPouch,uint32_t* fieldNpcBattleFlags,FieldMarioBattleState* fieldMario,FieldPartyRegistry* fieldParties,const FieldPartyAppearanceServices* appearance,std::shared_ptr<BattleSpotlightState> spotlight,std::shared_ptr<BattleRandom> random,std::shared_ptr<PositionalSfxRegistry> sounds,std::shared_ptr<ShadowWork> shadows,std::shared_ptr<BattleCommandPalette> palette,std::shared_ptr<CameraManager> cameras){if(!assetsReady || !menu.attack || !((menu.actor==1 && (menu.attack->weapon==0x803538a8 || menu.attack->weapon==0x80353de8)) || (menu.actor==2 && menu.attack->weapon==0x80393ea8)))return false;if(runtime_)return runtime_->done && runtime_->readyActor==menu.actor && runtime_->launch(menu);auto r=std::make_shared<TrioAttackRuntime>(random?std::move(random):std::make_shared<BattleRandom>(1));r->cameras=std::move(cameras);if(!r->cameras){r->cameras=std::make_shared<CameraManager>();r->cameras->initializeBoot(608,480);}r->cameras->camera(4)->mode=2;r->palette=palette?std::move(palette):std::make_shared<BattleCommandPalette>();r->shadows=shadows?std::move(shadows):std::make_shared<ShadowWork>();r->publicSfx=sounds?std::move(sounds):std::make_shared<PositionalSfxRegistry>();r->spotlight=spotlight?std::move(spotlight):std::make_shared<BattleSpotlightState>();r->fieldNpcBattleFlags=fieldNpcBattleFlags;r->fieldMario=fieldMario;r->fieldParties=fieldParties;if(appearance)r->fieldAppearance=*appearance;if(!r->initialize(menu,scene,hp,std::move(entryPouch)))return false;runtime_=std::move(r);return true;}
 void TrioAttack::tick(uint64_t time,ProfessorStory& scene,uint32_t triggers,const BattlePadSample* physical){if(runtime_)runtime_->tick(time,scene,triggers,physical);}
 bool TrioAttack::statusWindowVisible()const{return !runtime_ || runtime_->statusWindowOpen;}
 bool TrioAttack::active()const{return runtime_ && !runtime_->done;}
@@ -1606,6 +1648,9 @@ std::optional<TrioPoseDrawRequest> TrioAttack::poseDrawRequest()const{return run
 void TrioAttack::setCameraDepthLensAdapter(float fov,float aspect,float nearPlane,float farPlane){
     if(!runtime_)return;
     runtime_->cameraDepthLensAdapter=std::array<float,4>{fov,aspect,nearPlane,farPlane};
+    runtime_->cameraHistoryComplete=false; // Field lens/vectors supplied by native adapters; original full history is unavailable.
+    auto& camera=*runtime_->cameras->camera(4);
+    camera.fov=fov;camera.aspect=aspect;camera.nearPlane=nearPlane;camera.farPlane=farPlane;
     const auto& frame=runtime_->cameraFrame;
     runtime_->cameraDepth=makeCameraDepthSnapshot(frame.eye,frame.at,frame.up,fov,aspect,nearPlane,farPlane);
 }
@@ -1613,7 +1658,8 @@ void TrioAttack::setCameraDepthSnapshot(std::optional<CameraDepthSnapshot> snaps
     if(!runtime_)return;
     runtime_->cameraDepthLensAdapter.reset();runtime_->cameraDepth=std::move(snapshot);
 }
-const CameraDepthSnapshot* TrioAttack::cameraDepthSnapshot()const{return runtime_ && runtime_->cameraDepth?&*runtime_->cameraDepth:nullptr;}
+const CameraDepthSnapshot* TrioAttack::cameraDepthSnapshot()const{if(runtime_ && runtime_->pending==0x8000f454)return &runtime_->cameras->camera(4)->matrices;return runtime_ && runtime_->cameraDepth?&*runtime_->cameraDepth:nullptr;}
+const CameraManager* TrioAttack::cameras()const{return runtime_?runtime_->cameras.get():nullptr;}
 const DisplayQueue* TrioAttack::displayQueue()const{return runtime_?&runtime_->displayQueue:nullptr;}
 std::optional<TrioShadowDrawRequest> TrioAttack::shadowDrawRequest()const{return runtime_?runtime_->shadowDraw:std::nullopt;}
 const ShadowWork* TrioAttack::shadowWork()const{return runtime_?runtime_->shadows.get():nullptr;}

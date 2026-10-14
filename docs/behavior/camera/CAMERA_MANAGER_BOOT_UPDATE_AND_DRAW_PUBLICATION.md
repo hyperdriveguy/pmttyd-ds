@@ -152,7 +152,7 @@ only if flags0&1. For an admitted camera:
    current-record publication already recovered by the native display queue.
 7. sysDummyDraw80005ad8(C+11c). This is real GPU work after callbacks; source
    begins GXLoadPosMtxImm(view,0)802ba2fc, GXSetCurrentMtx(0)802ba39c,
-   GXSetCullMode(0)802b6f3c, GXSetNumTexGens(1), GXSetNumTevStages(1),
+   GXSetNumChans(0)802b6f3c, GXSetNumTexGens(1), GXSetNumTevStages(1),
    GXSetTexCoordGen2(0,1,4,60,0,125), and many TEV/channel/depth states. It
    disables color/alpha/depth writes and submits a real triangle. See
    [framebuffer-alpha owner](../overworld/OVERWORLD_FIELD_FRAMEBUFFER_ALPHA.md).
