@@ -82,6 +82,7 @@ contradict the recovered contracts.
 | SERVICE-01 | G1 | Shops, inns and NPC item/coin services (no shop appears in the demo). |
 | AUDIO-01 | D1 + G1 | Original BGM sequence/event binding and SFX cue selection; D1 step 4's selected tutorial music and the acceptance criterion's original music/SFX. |
 | RNG-01 | D1 + G1 | Original seed lifecycle and random-consumer census; the tutorial battle's draws and every later random consumer. |
+| CONTENT-01 | G1 | Reachable chapter/interlude/minigame/optional-content census and per-mode mechanics (everything after the prologue). |
 | AC-01, AC-02, AC-03 | D1 | Jump/Hammer/defense ownership and impact cadence. |
 | DMG-01, DMG-02 | D1 | Weapon power, part defense, damage dispatch/application. |
 | STATUS-01 | D1 | Status lifetime and turn ownership. |
