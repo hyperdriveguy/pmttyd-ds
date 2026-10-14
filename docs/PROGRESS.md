@@ -1,3 +1,51 @@
+## 2026-10-14 — Original selected Mario attack in Harbor runtime
+
+Committed `f36818c0`. Harbor's explicit confirmed-command scheduler bridge
+consumes a successful original weapon decision, publishes the source event,
+and registers it through complete shared state6 rules. Original Jump80355cf0
+now has a real priority10 ROOT/owner1, actual U2a8, wait cancellation, status
+window SystemOff and channel6 advance. Source suppression admits no invented
+root. Table rebuild invalidates the native decision latch; selection sets it
+and publication consumes it. The bridge is not an automatic UI/controller.
+
+Selected target/weapon, guard wait and complete fortune query callbacks are
+bound. The live64-entry no-protector declaration route preserves target/part
+outputs. Shared ordinary item0/FP0/AP0 payment retains real FP access, point/
+count and AddAP(0) narrowing/clamping. Other declaration/cost domains remain
+explicit frontiers. Harbor event status-window requests now use source packed
+arbitration; native startup EventOn/SystemOn and immediate visibility projection
+are adapter policies. Source slide animation remains open. Capture preserves
+live battle flags against later scene publication.
+
+Validation: isolated source snapshot based on f1754748 plus these six code/test
+files passed `make test`:230/230 C++ and141/141 Python tests. Isolated native
+`make all -o assets-ready BUILD=build-player-review TARGET=ttyd-player-review`
+passed with previously prepared shared private assets. Artifact:
+artifacts/tutorial-player-review/ttyd-player-review.3dsx. Exact logs:
+artifacts/tutorial-player-review-test.log and tutorial-player-review-native.log.
+Read-only ISO verifiers passed status-window6 bodies; attack-selection11 bodies/
+8 data spans/301 anchors; weapon selection/cost16 bodies/2 constants; and fortune
+child15 bodies/9 data spans/240 anchors. Scoped diff check passed. Initial live
+checks encountered concurrent missing audio-test wiring and a native callback
+return-type mismatch; the latter was fixed and tested in the isolated snapshot.
+Missing isolated private-asset links were corrected before the final green run.
+No Azahar/Dolphin or new asset conversion; no playable-menu/full-battle claim.
+
+The integration test completes the original intro, uses physical A in the
+source weapon submenu, then explicitly supplies confirmed scheduler admission.
+The actual Jump graph retains Crump2/body1, increments zero-cost action count
+exactly once, runs data-key7/fortune child and stops live at camera homing-
+unitparts8012bc70. Repeated ticks preserve HP/result/count; no invented attack
+outcome. The Game still does not automatically invoke this bridge.
+
+Next: implement the complete camera homing-unitparts request (read-only listing
+artifacts/tutorial-player-camera-next.txt), then original Mario pose, AC manager/
+motion/hit providers. Bind class/target menu Input and common pending/progress
+re-entry to selected registration, and render original HUD/menu with physical
+controls. Finish second-screen scene/audience and optional hostile-item taps
+with a physical equivalent. Verify in isolated Azahar. Goal remains active;
+tutorial and full-game work remain incomplete.
+
 ## 2026-10-14 — Deferred Mario item-get motion/control
 
 Committed `7929601c`. Game can now request original motion15/stay through
