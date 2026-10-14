@@ -411,6 +411,7 @@ int main(){
             assert(pose->word(0x3c)==pose->word(0x28) && pose->scalar(0x40)==pose->scalar(0x30));
             const auto draw=charged.trioAttack.poseDrawRequest();assert(draw && draw->part==0x84201000 && draw->camera==4 && draw->drawClass==1);
             assert(charged.trioAttack.readWord(0x84002760,value) && value==17 && charged.trioAttack.cameraFrameState());
+            assert(charged.trioAttack.readWord(0x84201060,value) && value==0x3f800000 && charged.trioAttack.readWord(0x842011a0,value) && (value&0xffff)==20);
             assert(charged.trioAttack.readWord(0x842014f4,value) && value==0xffffffff);
             assert(charged.trioAttack.readWord(0x84201204,value) && (value&3)==2); // Source name request consumed; forced path stays active.
             assert(charged.trioAttack.readWord(0x84000ef4,value) && !(value&0x80000000));

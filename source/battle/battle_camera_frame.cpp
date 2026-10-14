@@ -1,6 +1,7 @@
 #include "battle_camera_frame.hpp"
 #include <cstring>
 #include <cassert>
+#include <cmath>
 namespace ttyd {
 namespace {
 uint32_t word(const BattleCameraRequestServices& s,uint32_t a){return s.positions.memory.memory.word(s.positions.memory.memory.user,a);}
@@ -16,7 +17,6 @@ bool move(uint32_t b,BattleCameraFrame& c,CameraDepthPoint eye,CameraDepthPoint 
     CameraDepthPoint& de,CameraDepthPoint& da,const BattleCameraRequestServices& s){
     int32_t xy=int16_t(half(s,b+0x277c)),z=int16_t(half(s,b+0x277e));
     if(xy<0 || xy>=5){xy=1;half(s,b+0x277c,1);}if(z<0 || z>=6){z=1;half(s,b+0x277e,1);}
-    if((xy!=1 && xy!=3) || (z!=1 && z!=3))return false;
     const auto mario=battleMarioUnit(b,s.positions.memory);
     if(relative){
         if(word(s,b+0xef4)&0x100){const float home=real(s,mario+0x38),offset=single(-home*.25f);eye[2]=single(eye[2]+home);at[2]=single(at[2]+home);eye[1]=single(eye[1]+offset);at[1]=single(at[1]+offset);}
@@ -24,7 +24,10 @@ bool move(uint32_t b,BattleCameraFrame& c,CameraDepthPoint eye,CameraDepthPoint 
     }
     float extent=single(single(600.f-eye[2])*.5f);if(extent<0)extent=0;
     if(clamp){const float lo=single(-100.f-extent),hi=single(100.f+extent);for(auto* p:{&eye,&at}){if((*p)[0]<lo)(*p)[0]=lo;else if((*p)[0]>hi)(*p)[0]=hi;}}
-    auto axis=[&](float& current,float target,float& delta,int32_t speed){delta=single(target-current);if(speed==1)delta=single(delta/5.f);current=single(current+delta);};
+    auto axis=[&](float& current,float target,float& delta,int32_t speed){
+        constexpr float divisors[]{1.5f,15.f,5.f,1.f,200.f,100.f};
+        delta=single(target-current);if(speed!=3)delta=single(delta/divisors[speed]);current=single(current+delta);
+    };
     axis(c.eye[0],eye[0],de[0],xy);axis(c.eye[1],eye[1],de[1],xy);
     axis(c.at[0],at[0],da[0],xy);axis(c.at[1],at[1],da[1],xy);c.up={0,1,0};
     axis(c.eye[2],eye[2],de[2],z);axis(c.at[2],at[2],da[2],z);return true;
@@ -55,9 +58,35 @@ bool updateBattleCameraFrame(uint32_t b,BattleCameraFrame& c,const BattleCameraF
     if(mode!=3)word(s,b+0x27d8,0);
     c.eye=vector(s,b+0x2780);c.at=vector(s,b+0x2798);const auto oldEye=c.eye,oldAt=c.at;
     vector(s,b+0x278c,c.eye);vector(s,b+0x27a4,c.at);CameraDepthPoint de{},da{};
-    if(mode==15 || mode==16){
-        half(s,b+0x277c,3);half(s,b+0x277e,3);const float x=mode==16?-100.f:0.f;
-        if(!move(b,c,{x,110,500},{x,60,0},true,true,de,da,s))return false;
+    if(mode==0 || mode==15 || mode==16){
+        if(mode!=0){half(s,b+0x277c,3);half(s,b+0x277e,3);}const float x=mode==16?-100.f:0.f;
+        if(!move(b,c,{x,110,mode==0?750.f:500.f},{x,60,0},true,true,de,da,s))return false;
+    }else if(mode==7 || mode==10 || mode==11){
+        const auto first=battleRegistryUnit(b,int32_t(word(s,b+0x2764)),s.positions.memory);
+        uint32_t part=0;bool missing=!first;
+        if(first){part=packedRegistryPart(int32_t(word(s,b+0x2764)),int32_t(word(s,b+0x276c)),s.positions.memory);if(mode!=7 && !part)missing=true;}
+        if(mode==11){
+            const auto second=battleRegistryUnit(b,int32_t(word(s,b+0x2768)),s.positions.memory);
+            uint32_t secondPart=0;if(second)secondPart=packedRegistryPart(int32_t(word(s,b+0x2768)),int32_t(word(s,b+0x2770)),s.positions.memory);
+            if(!second || !secondPart)missing=true;
+            if(!missing){
+                const auto a=packedPartWorldPosition(part,s.positions),hit=packedHitPosition(second,secondPart,s.positions);
+                float wa=single(float(int16_t(half(s,first+0xcc)))-24.f),wb=single(float(int16_t(half(s,second+0xcc)))-24.f);if(wa<0)wa=0;if(wb<0)wb=0;
+                float denominator=single(real(s,b+0x281c)-real(s,b+0x2810));if(denominator==0)denominator=10;
+                float ratio=single(single(hit[0]-a[0])/denominator);if(ratio<.5f)ratio=.5f;else if(ratio>1)ratio=1;
+                const float g=single(1.f-ratio),q=-std::fma(1.5f,single(wa+wb),-single(2.f*real(s,b+0x2778))),z=single(g*q),x=single(g*real(s,b+0x281c));
+                float y=single(single(real(s,b+0x2820)/80.f)*single(a[1]-real(s,b+0x2820)));if(y<0)y=0;else if(y>100)y=100;
+                const float lift=float(std::fma(20.0,-double(g),double(y))),t=single(-z/9.f);
+                if(!move(b,c,{x,single(single(110.f+lift)+t),single(750.f-z)}, {x,single(single(60.f+lift)+t),-z},true,true,de,da,s))return false;
+            }
+        }else if(!missing){
+            auto p=mode==7?vector(s,first+0x3c):packedHitPosition(first,part,s.positions);
+            p[1]=single(p[1]+single(single(float(int16_t(half(s,first+0xce)))-50.f)*.5f));
+            float width=single(float(int16_t(half(s,first+0xcc)))-24.f);if(width<0)width=0;
+            const float q=-std::fma(1.5f,width,-real(s,b+0x2778));if(p[1]<0)p[1]=0;else if(p[1]>100)p[1]=100;const float t=single(-q/9.f);
+            if(!move(b,c,{p[0],single(single(110.f+p[1])+t),single(750.f-q)}, {p[0],single(single(60.f+p[1])+t),-q},true,true,de,da,s))return false;
+        }
+        if(missing)setBattleCameraMode(b,0,0,s);
     }else if(mode==17 || mode==18){
         const auto mario=battleMarioUnit(b,s.positions.memory),party=battlePartyUnit(b,s.positions.memory);
         if(!mario)return false;auto center=vector(s,mario+0x30);

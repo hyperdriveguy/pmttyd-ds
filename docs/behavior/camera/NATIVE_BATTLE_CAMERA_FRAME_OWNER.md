@@ -15,13 +15,17 @@ data bank, without creating a new asset format.
 `BattleCameraFrame` retains camera eye/at/up separately from packed target,
 old-vector and delta fields. The scalar update implements default14..16,
 mode3 timeline and victory17/18 against actual packed unit home positions.
-Source axis order, bounds, relative/mirror offsets, speed1 division by5,
+Source axis order, bounds, relative/mirror offsets, speed1 division by15,
 speed3 delta/add, old-vector freezes, EyeZ cap and baseline publication are
 preserved. Mode14 reaches the actual mode3 timeline; no stationary shortcut
 skips its callbacks. Mode3 decrements before six interpolation calls, rereads
 its control words for each axis and restores only speed277c. Source curves use
 the existing portable intpl adapter; arbitrary callback-pointer curves remain
-unavailable. Unimplemented modes0..13 except3 and19/20 return unavailable.
+unavailable. Action modes0/7/10/11 now follow original current/world/hit
+queries and signed kind-derived width/height. Width compensation is1.5.
+The complete ordinary speed branches use1.5/15/5/direct/200 divisors, with
+Z-speed5 divisor100 and the separate X/Y guard rejecting5 to1.
+Unimplemented modes1/2/4/5/6/8/9/12/13/19/20 return unavailable.
 Unsigned modes>20 follow the source no-handler common tail. Tremor admits its
 real missing provider after baseline publication, rather than clearing flags.
 
@@ -60,6 +64,9 @@ Source authorities: [Init/default/victory](BATTLE_CAMERA_INIT_DEFAULT_AND_VICTOR
 [add zoom/Y-axis ABI](BATTLE_CAMERA_ADD_ZOOM_AND_NOMOVE_Y_EVENT_ABI.md),
 [requests](../battle/BATTLE_CAMERA_REQUESTS.md) and
 [depth/matrix writers](../display/BATTLE_POSE_DEPTH_CAMERA4_MATRICES_AND_CALCZ.md).
+The [action-mode constant audit](BATTLE_CAMERA_ACTION_MODES_0_7_10_11_AND_FIELD_RESET.md)
+supersedes the earlier incorrect speed1 divisor5 attribution. Code and tests
+now use the independently reread original word41700000=15 at8042275c.
 Host tests verify initializer extent, home-versus-current position, recurrence,
 axis freeze, timeline/counter/restoration behavior, request gates, homogeneous
 division, signed-zero/NaN clamp handling and ordinary source-space projection.

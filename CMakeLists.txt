@@ -1207,3 +1207,8 @@ add_executable(field_coin_get_tests tests/field_coin_get_tests.cpp)
 target_link_libraries(field_coin_get_tests PRIVATE ttyd_core)
 add_test(NAME field_coin_get COMMAND field_coin_get_tests)
 set_tests_properties(field_coin_get PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+target_sources(ttyd_core PRIVATE source/display/display_queue.cpp)
+add_executable(display_queue_tests tests/display_queue_tests.cpp)
+target_link_libraries(display_queue_tests PRIVATE ttyd_core)
+add_test(NAME display_queue COMMAND display_queue_tests)

@@ -3850,3 +3850,15 @@ queue admission and distinct immediate/deferred continuations are in the new
 [queue contract](../behavior/display/ORDINARY_BATTLE_DISPLAY_QUEUE_ADMISSION.md).
 No original cadence, full camera restoration, queue callback or field return
 claim; EVT-01 and prologue goals remain open.
+
+
+### Native display queue/action-camera implementation follow-up (2026-10-14)
+
+Implemented source record/key/sort and resumable deferred dispatch in the
+[native queue owner](../behavior/display/NATIVE_DISPLAY_QUEUE_OWNER.md).
+Camera0/7/10/11 and source MoveTo divisors now use verified DOL constants;
+speed1=15 supersedes the previous incorrect5 attribution. Original initializer
+dimensions and part defaults are retained. The
+[inherited camera4 contract](../behavior/camera/UNDERGROUND_BATTLE_CAMERA4_ENTRY_AND_INHERITED_LENS.md)
+identifies field/event history still needed before actual matrix binding.
+Queue/GPU callbacks, shadow continuation and ordered field return remain open.

@@ -121,12 +121,17 @@ eyeX and atX separately to[-100-extent,100+extent] using source ordered tests.
 There is no matching Y clamp in this helper.
 
 For speed1, update eyeX,eyeY,atX,atY in that order: delta=single
-(target-current)/5, store to supplied output then reload it and single-add to
+(target-current)/15, store to supplied output then reload it and single-add to
 camera. Also set camera up C24/28/2c=(0,1,0). The separate Z-speed1 block
 does the same for eyeZ then atZ. Speed3 uses direct target-current then addition;
 first speed3 still sets the same up vector. No additional service call is made
 inside these arithmetic blocks. Other admitted speed levels are real branches,
 not covered by a speed1 substitute; unsupported modes retain their providers.
+
+Constant correction: speed1 loads8042275c=15, not80422760=5 (the latter
+belongs to speed2). The earlier /5 attribution is superseded by these actual
+r2-relative operands. Main target width compensation similarly loads
+80422754=1.5, not15; the action-mode contract records that separate operation.
 
 ## Main common publication and conditional tail
 

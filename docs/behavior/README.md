@@ -257,6 +257,10 @@ suffix.
 | [Battle camera mode3 timeline](camera/BATTLE_CAMERA_MODE3_TIMELINE_AND_MOVETO_CAPTURE.md) | Captured MoveTo targets, decrement/sampling order and speed restoration | Pointer curves, remaining controller modes and actual frame history |
 | [Battle camera add zoom/Y-axis](camera/BATTLE_CAMERA_ADD_ZOOM_AND_NOMOVE_Y_EVENT_ABI.md) | Exact operand/truncation/gate ABI and packed writes | Framing and exceptional integer conversion |
 | [Native battle camera owner](camera/NATIVE_BATTLE_CAMERA_FRAME_OWNER.md) | Real request writes, retained supported-mode frame updates and SDK depth math | Complete camera4 history/matrices, remaining modes/shakes and queued callbacks |
+| [Battle camera action modes](camera/BATTLE_CAMERA_ACTION_MODES_0_7_10_11_AND_FIELD_RESET.md) | Source0/7/10/11 formulas, verified constants and kind dimension writers | Remaining modes/shakes and inherited camera-extra history |
+| [Inherited battle camera4 lens](camera/UNDERGROUND_BATTLE_CAMERA4_ENTRY_AND_INHERITED_LENS.md) | Boot Entry and mode2-only battle transition with retained lens/offset | Reachable field/event writer continuity and actual matrices |
+| [Part Entry defaults](battle/TRIO_PART_ENTRY_SCALE_RADIUS_AND_ROTATION_DEFAULTS.md) | Original descriptor radius/height, unit scales and zero rotation/pivot stores | Complete unit/part factories and draw/shadow consumers |
+| [Native display queue](display/NATIVE_DISPLAY_QUEUE_OWNER.md) | Actual borrowed records, source sort and resumable deferred dispatch | GX/PICA, camera/cadence, callback and userdata lifetime owners |
 | [Ordinary battle queue admission](display/ORDINARY_BATTLE_DISPLAY_QUEUE_ADMISSION.md) | Borrowed queue registration and distinct immediate/deferred providers | Actual native queue/GX/callback/cadence and userdata lifetime |
 | [Animation interpolation](display/ANIMATION_OUTPUT_INTERPOLATION.md) | Complete linear/cubic/tangent guard/end-seam and final cache writes | Renderer/numeric/lifetime/original animation |
 | [Animation facing](display/ANIMATION_MAIN_CAMERA_FACING.md) | Complete camera/atan2/two wraps/sign tail | Camera/libm/flags/renderer/runtime |

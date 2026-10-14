@@ -24,8 +24,8 @@ callback identity8010128c, camera4/class2, using a separate retained priority
 at stackc. Original ordinary Mario part attributes9 omit this bit, so this
 registration is skipped. The next block80102d24 tests U104 mask20000000,
 then80102d30 tests P1ac mask02000000. If both are clear, the next actual service
-is **BtlUnit_GetPartsPos80128b10 at80102d4c**, with r3=P, r4=stack48 and
-r5/r6 retaining the earlier X/Z output destinations. Mario U10402040000 and
+is **BtlUnit_GetPartsWorldPos80128b10 at80102d4c**, with r3=P, r4=stack48 (X), r5=stack4c (Y) and r6=stack50 (Z),
+three separate float output pointers. Mario U10402040000 and
 P1ac9 take this path. Do not substitute deferred btlUnitPartsDisp as the
 immediate execution continuation after dispEntry, or claim the enclosing
 btlDispMain finished merely because its pose registration returned.
@@ -124,3 +124,55 @@ No native edit/test, original draw execution or prologue completion follows
 from this documentation. Camera matrices/framing, enclosing post-registration
 branches, valid native lifetime, exact sort/cadence, actual callback matrix/
 material/GPU execution and battle return remain separately owned requirements.
+
+
+## Fresh continuation after the part-position query
+
+A second read-only audit follows80102d4c. Copy returned stack48/4c/50 to
+shadow temporary3c/40/44. Test U1c mask00010000. Clear skips the optional
+partner midpoint request; set first calls BattleGetPartnerPtr800f86f4(B,U),
+then if nonnull gets partner position80128c7c and averages each axis with
+single additions and multiplication by source0.5 (80422234). The midpoint
+changes only the shadow temporary, not the earlier world-position outputs.
+Ordinary fresh Mario without that flag uses its own fresh part world position.
+
+At80102df4 call BattleGetFloorHeight800f7b84(B,shadowX,shadowY,shadowZ).
+The [floor contract](../battle/BATTLE_JUMP_EVENT_CALLBACKS.md#used-counter-recovery-stage-floor-wrapper-and-original-initialization)
+requires actual stage threshold/low-floor ownership; its fresh values are90
+and−50, not an unconditional zero. Retain rounded result floor and overwrite
+shadowY with it. Compare ORIGINAL returned world Y (stack4c) with floor. If
+originalY<=floor, factor=1; otherwise factor=R(R(100-R(originalY-floor))/100).
+Ordered factor>double1 sets1; ordered factor<source binary32.1 sets.1.
+The unclamped unordered domain is not a reason to insert a synthetic finite
+fallback. Constants1,100,.1 are8042224c/270/274; double1 at802ee450.
+
+Radius computation80102e48..e90 converts signed P1a2 to float through the
+source double-bias sequence, then in this exact order:
+
+```
+t = R(float(S16(P1a2)) * U90)
+t = R(P60 * t)
+t = R(U114 * t)
+radius = R(factor * t)
+radius = R(radius * P78)
+```
+
+If U1c00010000 is set and radius<16, replace by16. Independently, if radius<10,
+replace by8. These are ordered comparisons; the last replacement is not a
+clamp to10. At80102ec8 call shadowEntry8002be98(shadowX,R(floor+10),shadowZ,
+radius). Original source constants16,10,8 are80422230/228/278. ShadowEntry
+borrows/copies into a separate64-record shadow request owner, whose Main and
+Display cadence are [independent](ITEM95_ICON_MAP_BLEND_AND_SHADOW_ADMISSION.md#shadow-request-is-independently-owned).
+It does not immediately call a unit-part callback or draw a synthesized ellipse.
+
+After the shadow request, source kind filtering80102ecc..2f04 may request
+animPoseSetPaperAnimGroup80039824; ordinary Mario kinddf is outside the listed
+paper kinds. The next ordinary part-local service is801261f8 at80102f74,
+then follow the live next-part pointer P0. This audit does not claim the body
+of801261f8 or enclosing unit-tail/special callback branches is implemented.
+
+Independent code search of include/,source/,tests/ on2026-10-14 found no
+qqsort/fsort/display-queue implementation at the time of this delivery. Native
+registration/sort/current-work/live-dispatch ownership therefore remains actual
+implementation work, not reuse of a tested existing sorter. Documentation
+algorithm models remain separate evidence from a native implementation.

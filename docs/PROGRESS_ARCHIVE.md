@@ -13077,3 +13077,33 @@ Azahar/hardware run. Next: complete camera4 entry/lens/matrix and remaining
 controller/shake ownership, real queued part draw callbacks, then battle
 teardown/result/field return. The native trio still holds at dispCalcZ8001086c;
 full original-fidelity prologue remains incomplete.
+
+
+## 2026-10-14 — Native display queue and original action camera framing
+
+Validated snapshot: artifacts/display-owner-source, base
+9172923a7f5780f712f1e2cf1439956800fab8d6 plus the eight owned files listed
+in OWNED_BASE.txt and display-owner-cmake.txt. Source and immutable binary
+SHA256 manifests: artifacts/display-owner-validated/SOURCE_SHA256SUMS and
+SHA256SUMS. Extracted assets remain private and outside source history.
+
+Validation:
+- make -C artifacts/display-owner-source test:242/242 C++ and142/142 Python
+  passed; artifacts/display-owner-isolated-tests-final.log.
+- make -C artifacts/display-owner-source -o assets-ready all
+  BUILD=build-display-owner TARGET=ttyd-display-owner -j4:passed;
+  artifacts/display-owner-isolated-native-final.log.
+- Standalone display queue tests passed exhaustive ternary keys through
+  length7, repeated/all-equal sizes through1024, source tie reversal, and
+  suspended callback/count-reset continuation.
+- Earlier builds exposed missing cmath and an invalid empty part-list fixture;
+  both were corrected before the final snapshot. No emulator/hardware check.
+
+Source DOL constant reads confirm speed1=15 at8042275c (ISO3eefdc), distinct
+from speed2=5 at80422760. The previous camera-owner step's divisor5 claim
+is superseded. Queue registration, sorting and typed dispatch are implemented;
+actual inherited camera4 state, callback cadence, original part drawing and
+GX/PICA binding remain unimplemented. The camera homing paths use original
+unit dimensions. Part scale/radius stores restore initializer state; position
+getter offsets must be assessed from their own source logic. Full prologue
+fidelity and ordered field restoration remain unfinished.

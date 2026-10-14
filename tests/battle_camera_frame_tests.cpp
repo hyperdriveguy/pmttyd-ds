@@ -30,8 +30,8 @@ int main(){
     f.f(0x40030,-100);f.f(0x42030,-120);f.f(0x4003c,999);f.f(0x4203c,999); // Current positions must not supply home center.
     assert(setBattleCameraMode(0x2000,0,17,s.requests));setBattleCameraOffset(0x2000,0,100,100,100,s.requests);
     assert(updateBattleCameraFrame(0x2000,f.frame,s));
-    assert(f.frame.eye==CameraDepthPoint({-22,108,470}) && f.frame.at==CameraDepthPoint({-22,58,0}) && f.h(0x477c)==1);
-    f.w(0x4754,4);assert(updateBattleCameraFrame(0x2000,f.frame,s) && f.frame.eye[0]==-22 && f.w(0x47bc)==0);
+    assert(f.frame.eye==CameraDepthPoint({-7.333333492279052734f,109.33333587646484375f,490}) && f.frame.at==CameraDepthPoint({-7.333333492279052734f,59.333332061767578125f,0}) && f.h(0x477c)==1);
+    const float frozenX=f.frame.eye[0];f.w(0x4754,4);assert(updateBattleCameraFrame(0x2000,f.frame,s) && f.frame.eye[0]==frozenX && f.w(0x47bc)==0);
     f.w(0x4754,0);setBattleCameraMode(0x2000,0,18,s.requests);assert(updateBattleCameraFrame(0x2000,f.frame,s) && f.frame.eye[1]<108);
     setBattleCameraMode(0x2000,0,3,s.requests);setBattleCameraMoveTo(0x2000,0,2,4,{0,100,300},{0,50,0},f.frame,s.requests);
     assert(updateBattleCameraFrame(0x2000,f.frame,s) && f.w(0x47d8)==1 && f.steps==std::vector<int32_t>(6,1));
@@ -43,4 +43,12 @@ int main(){
     for(unsigned i=0;i<10;++i)assert(updateBattleCameraFrame(0x2000,intro.frame,is));
     assert(intro.w(0x4760)==3 && intro.w(0x47d8)==120 && intro.steps.empty());
     assert(updateBattleCameraFrame(0x2000,intro.frame,is) && intro.steps==std::vector<int32_t>(6,1));
+    Fixture attack;auto as=attack.services();initializeBattleCamera(0x2000,as.requests);updateBattleCameraFrame(0x2000,attack.frame,as);
+    attack.f(0x4003c,30);attack.f(0x40040,20);attack.w(0x4764,0);attack.w(0x476c,99);
+    attack.w(0x40014,0x40400);attack.w(0x40400,0x40800);attack.w(0x40404,0x40500);attack.w(0x40500,1);attack.w(0x40804,0x40900);attack.w(0x40900,2);
+    assert(attack.vm.memory.writeHalf(0x400cc,36) && attack.vm.memory.writeHalf(0x400ce,50));
+    setBattleCameraMode(0x2000,0,7,as.requests);setBattleCameraSpeed(0x2000,0,3,as.requests);
+    assert(updateBattleCameraFrame(0x2000,attack.frame,as) && attack.frame.eye==CameraDepthPoint({30,132,768}) && attack.frame.at==CameraDepthPoint({30,82,18})); // Width compensation1.5; mode7 discards missing part.
+    const auto retained=attack.frame.eye;setBattleCameraMode(0x2000,0,10,as.requests);
+    assert(updateBattleCameraFrame(0x2000,attack.frame,as) && attack.w(0x4760)==0 && attack.frame.eye==retained); // Missing part resets mode without running default this call.
 }

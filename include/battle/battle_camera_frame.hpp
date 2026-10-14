@@ -12,7 +12,7 @@ struct BattleCameraFrameServices {
 void initializeBattleCamera(uint32_t,const BattleCameraRequestServices&);
 bool setBattleCameraMoveTo(uint32_t,int32_t priority,int32_t duration,int32_t curve,
     CameraDepthPoint eye,CameraDepthPoint at,const BattleCameraFrame&,const BattleCameraRequestServices&);
-// Init/default14..16, timeline3 and victory17/18; other modes/shakes need
+// Default0/14..16, timeline3, action7/10/11 and victory17/18; other modes/shakes need
 // their actual providers. This does not assert prior framing history/cadence.
 bool updateBattleCameraFrame(uint32_t,BattleCameraFrame&,const BattleCameraFrameServices&);
 int32_t battleCameraMoveToEvent(EventEntry&,const BattleCameraFrame&,const BattleCameraRequestServices&);

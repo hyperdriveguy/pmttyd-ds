@@ -565,7 +565,7 @@ struct TrioAttackRuntime {
             }
         }
         word(Units+6*0x1000+0x298,franklyPhase);
-        for(unsigned id=1;id<7;++id){const auto unit=Units+id*0x1000;initializePackedBattleHpGauge(unit,nativeBattleActorServices(vm));byte(unit+0x311,255);byte(unit+0x312,255);for(auto part=word(unit+0x14);part;part=word(part)){real(part+0x208,1);real(part+0x20c,1);word(part+0x4f0,0xffffffff);word(part+0x1c0,0xffffffff);byte(part+0x1c4,0);byte(part+0x214,0);byte(part+0x215,0);}}
+        for(unsigned id=1;id<7;++id){const auto unit=Units+id*0x1000;half(unit+0xcc,half(word(unit+0x10)+0x16));half(unit+0xce,half(word(unit+0x10)+0x18));initializePackedBattleHpGauge(unit,nativeBattleActorServices(vm));byte(unit+0x311,255);byte(unit+0x312,255);for(auto part=word(unit+0x14);part;part=word(part)){half(part+0x1a2,half(word(part+4)+0x30));half(part+0x1a4,half(word(part+4)+0x32));real(part+0x78,1);for(unsigned axis=0;axis<3;++axis){real(part+0x6c+4*axis,1);real(part+0x60+4*axis,1);real(part+0x3c+4*axis,0);real(part+0x48+4*axis,0);real(part+0x54+4*axis,0);}real(part+0x208,1);real(part+0x20c,1);word(part+0x4f0,0xffffffff);word(part+0x1c0,0xffffffff);byte(part+0x1c4,0);byte(part+0x214,0);byte(part+0x215,0);}}
         // Source per-part EntAnime domain currently admitted for the two player
         // models. Other unit factories remain explicit providers at display.
         for(unsigned id=1;id<=2;++id)for(auto part=word(Units+id*0x1000+0x14);part;part=word(part)){

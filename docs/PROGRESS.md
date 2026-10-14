@@ -998,3 +998,25 @@ and shakes, real display queue/part callbacks, then ordered battle teardown
 and field return. The trio still holds at dispCalcZ8001086c; fixed renderer
 framing has not been relabeled as original camera4. Full prologue parity
 remains unfinished and the goal stays active.
+
+
+## 2026-10-14 — Native display queue and original action camera framing
+
+Added a host-testable native display queue with original record layout,
+class/depth keys, source sort branches and deferred dispatch continuation.
+Implemented camera modes0/7/10/11 and remaining MoveTo speed branches;
+corrected the earlier speed1 divisor from5 to the ISO-confirmed15. Unit kind
+dimensions and part radius/height, scale, rotation and pivot defaults now
+come from original initializer stores.
+[Scope](behavior/display/NATIVE_DISPLAY_QUEUE_OWNER.md).
+
+Final isolated make test passed242/242 C++ and142/142 Python tests; native
+make all passed. Exact logs, snapshot and binary manifests are recorded in
+the [archive](PROGRESS_ARCHIVE.md#2026-10-14--native-display-queue-and-original-action-camera-framing).
+No Azahar or hardware run for this step.
+
+Next: retain actual field-to-battle camera4 lens/offset/matrix history, bind
+the queue to original draw callbacks and native GPU services, and implement
+ordered teardown/field return. The trio still holds at dispCalcZ8001086c;
+the queue is not yet connected to rendered battle parts. Remaining controller
+modes/shakes and full prologue parity stay open; the goal remains active.
