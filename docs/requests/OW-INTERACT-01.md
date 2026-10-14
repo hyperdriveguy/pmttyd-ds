@@ -960,3 +960,12 @@ both detached-tail assertions fail, including a controlled owner-count burst.
 No physical fade/drain or full reward claim. [Exact scope and evidence](../behavior/audio/NATIVE_COIN_FANFARE_ROW219_PROVIDER.md).
 Native window lifetime,5376/Game reward admission and full quest chain remain
 open; parent requests stay open.
+
+### 2026-10-14 — McGoomba reward Game admission
+
+Game now admits original quest2/5406 reward through actual retained coin provider,
+outer NPC key hold and EVT-before-Mario owners. Completion preserves1420clear→
+5376set→speaker0 finish. Integrated host fixture grants20 once and saves source
+state; original acceptance/full chain and clock/polling/hardware parity remain
+open. [Exact provider/validation](../behavior/field/NATIVE_GOOMBA3_REWARD_ADMISSION.md).
+Parent stays open.

@@ -376,3 +376,12 @@ Actual window deletion retires borrowed params after the manager visit.
 [Provider scope](../behavior/field/NATIVE_COIN_GET_PRESENTATION_SERVICES.md).
 Native original reward admission/outer key hold/quest acceptance remain pending;
 rawsvc clock is best effort pending original GP38 freeze integration. Parent stays open.
+
+### 2026-10-14 — McGoomba reward Game admission
+
+Game now admits original quest2/5406 reward through actual retained coin provider,
+outer NPC key hold and EVT-before-Mario owners. Completion preserves1420clear→
+5376set→speaker0 finish. Integrated host fixture grants20 once and saves source
+state; original acceptance/full chain and clock/polling/hardware parity remain
+open. [Exact provider/validation](../behavior/field/NATIVE_GOOMBA3_REWARD_ADMISSION.md).
+Parent stays open.

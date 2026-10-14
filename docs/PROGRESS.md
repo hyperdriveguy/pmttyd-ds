@@ -1,3 +1,38 @@
+## 2026-10-14 — Native original McGoomba reward event
+
+Committed d7b2c245. Game now admits source Goomba3 quest2/knowntrue5406 reward,
+without5405/5376 admission guards. Original irai_02_02 attribution/order,
+blocking coin20, quest1420clear→5376set→sys_request_finish speaker0 remain.
+One outer NPC KeyOff holds through completion, then KeyOn. Reward EVT follows
+camera publication and precedes current Mario; coin waits still visit Mario so
+Get/Stay motions advance. Full coin service shape/post/resource readiness is
+required before candidacy; copied Game cannot invoke live reward services.
+
+Final isolated tree5c0faad74ecd588ac03b1f86848f3e2f3a8faef1 passes sequential
+make assets-ready, make test -o assets-ready (250/250 C++,144/144 Python) and
+normal make all -o assets-ready. Logs artifacts/reward-admission-{assets,test,
+build}.log. Normal reviewed artifact SHA256
+976e3b28e35d03178d877ee5be8cf409a7b2a0e2e1134576f0d9b51569bac5e1.
+Read-only review passes; source audit matches and concurrent work preserved.
+
+Isolated DEBUG_SHORT_BOOT Azahar reward capture/save passes using explicit
+room0/story8/deliveredquest2, soundenabled/original100coin pouch and private DSP.
+Saved v9: quest0/5376true/5406true/120coins/HP10/FP5, both checksums; further input
+retains120. Inspected source dialogue, coin/window/pink effect and finish captures
+under artifacts/azahar-goomba3-reward/. Log reward-admission-smoke.log. Debug
+artifact SHA256046e6c6e0ed726f1a2475cf037eaef6b011749cadc9abfaa782d70769e7f14cb.
+No reward instrumentation/forced transitions, new payload or user profile/save
+mutation. Early startup capture black; later rendered stages supply the evidence.
+Private source restored/audited; normal-main rebuild timestamp restored.
+[Exact contract/evidence](behavior/field/NATIVE_GOOMBA3_REWARD_ADMISSION.md).
+
+Next: original Trouble Center acceptance and complete acquisition→Goomfrey→
+McGoomba reward validation from that accepted state. Original GP38 admitted-delta
+pause clock and retained-input polling parity remain unbound; native audio tail/
+matched Dolphin sound/pixels and hardware performance remain unverified. Continue
+original area events/NPCs/objects using existing catalogs/providers. Full-game
+goal stays active/incomplete; finite reward execution is now native playable.
+
 ## 2026-10-14 — Native retained coin presentation services
 
 Committed50f5ceb1. Renderer now binds original coin window/403/type7/camera5,

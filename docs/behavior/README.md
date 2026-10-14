@@ -920,3 +920,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native completion5376 checkpoint v9](format/NATIVE_REWARD5376_CHECKPOINT_V9.md) — independent optional completion, unchanged legacy masks/unknown migration and exact-size atomic recovery; native reward admission remains pending.
 
 - [Native coin-get presentation services](field/NATIVE_COIN_GET_PRESENTATION_SERVICES.md) — retained Game callback/window, original icon/effect/audio/Mario services, independent deletion and explicit raw-clock adaptation; reward admission remains pending.
+
+- [Native McGoomba reward admission](field/NATIVE_GOOMBA3_REWARD_ADMISSION.md) — original quest2/5406 guard, blocking coin20, ordered5376 completion, one outer key hold and same-visit Mario event binding.
