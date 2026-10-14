@@ -5,6 +5,7 @@
 #include <optional>
 #include <string>
 #include <vector>
+#include "trouble_quest_state.hpp"
 #include "message_assets.hpp"
 #include "message_playback.hpp"
 namespace ttyd {
@@ -27,6 +28,7 @@ struct FieldActorWander {
 struct FieldActorTalkState {
     std::optional<uint8_t> quest1420;
     std::optional<bool> flag5405,flag5406,flag5407,flag5376;
+    TroubleQuestExtraState trouble;
 };
 // Live original inventory observations, not cached/persisted mushroom quantities.
 struct FieldActorTalkInventory {std::optional<int32_t> item95,item107;};

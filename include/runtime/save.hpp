@@ -3,8 +3,8 @@
 #include <array>
 #include <string>
 namespace ttyd {
-// Native v8/v9 header + packed original pouch + checksum; not a card record.
-using SaveBytes=std::array<uint8_t,0x600>;
+// Native checkpoint: legacy header/pouch plus v10 finite quest state. Not a card record.
+using SaveBytes=std::array<uint8_t,0x620>;
 // Invalid input encodes an all-zero buffer, which decodeSave rejects. The
 // byte array is always largest-version sized; file writes choose the version size.
 SaveBytes encodeSave(const Progress& progress);

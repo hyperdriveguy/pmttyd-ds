@@ -50,7 +50,7 @@ def main():
     if args.save_fixture:
         if args.reference_dolphin:raise ValueError('Save fixtures are for the native Azahar build only')
         fixture=Path(args.save_fixture).read_bytes()
-        if len(fixture) not in (32,40,1536):raise ValueError('Expected a native32/40-byte legacy or1536-byte v8 save fixture')
+        if len(fixture) not in (32,40,1536,1568):raise ValueError('Expected a native32/40-byte legacy,1536-byte v8/v9 or1568-byte v10 save fixture')
         directory=OUT/'data/azahar-emu/sdmc/3ds/ttyd-2ds';directory.mkdir(parents=True,exist_ok=True)
         (directory/'progress.bin').write_bytes(fixture)
     env['QT_QPA_PLATFORM']='xcb' ;env['LIBGL_ALWAYS_SOFTWARE']='1'

@@ -1360,3 +1360,9 @@ target_sources(ttyd_core PRIVATE source/battle/battle_act_ring_position.cpp)
 add_executable(battle_act_ring_position_tests tests/battle_act_ring_position_tests.cpp)
 target_link_libraries(battle_act_ring_position_tests PRIVATE ttyd_core)
 add_test(NAME battle_act_ring_position COMMAND battle_act_ring_position_tests)
+
+# Persistent finite original Trouble Center switch domain.
+target_sources(ttyd_core PRIVATE source/field/trouble_quest_state.cpp)
+add_executable(trouble_quest_state_tests tests/trouble_quest_state_tests.cpp)
+target_link_libraries(trouble_quest_state_tests PRIVATE ttyd_core)
+add_test(NAME trouble_quest_state COMMAND trouble_quest_state_tests)

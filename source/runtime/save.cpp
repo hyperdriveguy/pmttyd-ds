@@ -18,10 +18,10 @@ uint32_t checksum(const SaveBytes& b,int length) { uint32_t v=2166136261u; for(i
 bool read(const std::string& path, Progress& p) {
     FILE* f=std::fopen(path.c_str(),"rb"); if(!f) return false;
     SaveBytes b{};const size_t size=std::fread(b.data(),1,b.size(),f);
-    // v1..2=32 bytes; v3..7=40; v8..9=0x600. Reject both truncation and
+    // v1..2=32 bytes; v3..7=40; v8..9=0x600; v10=0x620. Reject truncation and
     // trailing bytes before decoding the zero-filled largest-version buffer.
     bool ok=(size==32 && (get(b,4)==1 || get(b,4)==2)) || (size==40 && get(b,4)>=3 && get(b,4)<=7) ||
-        (size==b.size() && (get(b,4)==8 || get(b,4)==9));
+        (size==0x600 && (get(b,4)==8 || get(b,4)==9)) || (size==b.size() && get(b,4)==10);
     ok=ok && std::fgetc(f)==EOF; std::fclose(f);
     return ok && decodeSave(b,p);
 }
@@ -34,10 +34,12 @@ SaveBytes encodeSave(const Progress& p) {
     // Do not infer original quest state from a legacy checkpoint's empty bytes.
     const bool known=talk.quest1420 || talk.flag5405 || talk.flag5406;
     const bool completed=talk.flag5376.has_value();
-    const bool extended=p.originalPouch || talk.flag5407.has_value() || completed;
+    if(!talk.trouble.valid())return b;
+    const bool trouble=talk.trouble.present();
+    const bool extended=p.originalPouch || talk.flag5407.has_value() || completed || trouble;
     // Pick the minimum emitted version retaining the supplied optional state:
     // 6=save-block flags, 7=quest guards, 8=pouch/5407, 9=5376 completion guard.
-    std::memcpy(b.data(),"PM2D",4); put(b,4,completed?9:extended?8:known?7:6);
+    std::memcpy(b.data(),"PM2D",4); put(b,4,trouble?10:completed?9:extended?8:known?7:6);
     uint32_t x,z; std::memcpy(&x,&p.position.x,4); std::memcpy(&z,&p.position.z,4);
     put(b,8,x); put(b,12,z); put(b,16,p.hp); put(b,20,p.mushrooms);
     // Packed word at 20: mushrooms[7:0], quest1420[15:8]; bits16..18
@@ -64,6 +66,17 @@ SaveBytes encodeSave(const Progress& p) {
         if(p.originalPouch)std::memcpy(b.data()+40,p.originalPouch->bytes.data(),p.originalPouch->bytes.size());
         put(b,1532,checksum(b,1532));
     }
+    if(trouble) {
+        // v10 appends additional state after the unchanged legacy pouch and
+        // checksum. Four named header flags have no duplicate extension bits.
+        for(unsigned i=0;i<6;++i) {
+            b[1536+i]=uint8_t(talk.trouble.known>>(8*i));
+            b[1542+i]=uint8_t(talk.trouble.values>>(8*i));
+            b[1549+i]=talk.trouble.bytes[i];
+        }
+        b[1548]=talk.trouble.byteKnown;
+        put(b,1564,checksum(b,1564));
+    }
     return b;
 }
 // Copy shared storage explicitly; copying Progress alone aliases the live pouch.
@@ -74,9 +87,13 @@ Progress snapshotSaveProgress(const Progress& p) {
 }
 bool decodeSave(const SaveBytes& b, Progress& p) {
     const uint32_t version=get(b,4);
-    if(std::memcmp(b.data(),"PM2D",4) || version<1 || version>9 ||
+    if(std::memcmp(b.data(),"PM2D",4) || version<1 || version>10 ||
        (version>=3?get(b,36)!=checksum(b,36):get(b,28)!=checksum(b,28)))return false;
     if(version>=8 && get(b,1532)!=checksum(b,1532))return false;
+    if(version==10) {
+        if(get(b,1564)!=checksum(b,1564))return false;
+        for(unsigned i=1555;i<1564;++i)if(b[i])return false;
+    } else for(unsigned i=1536;i<b.size();++i)if(b[i])return false;
     if(version>=3 && (b[32]>1 || (version==3 && b[33]) ||
        (version<5?b[34]!=0:version==5?b[34]>1:(b[34]&~7u)!=0) ||
        (version<6 && b[35]) || (!b[32] && get(b,28))))return false;
@@ -87,7 +104,7 @@ bool decodeSave(const SaveBytes& b, Progress& p) {
     if(version>=7) {
         // Reserved-bit masks depend on version. A value without its knowledge
         // bit is invalid, rather than silently turning unknown state into known.
-        if((packed&(version==9?0xfc000000u:version==8?0xff000000u:0xffe00000u)) || (!(packed&0x10000u) && (packed&0xff00u)) ||
+        if((packed&(version>=9?0xfc000000u:version==8?0xff000000u:0xffe00000u)) || (!(packed&0x10000u) && (packed&0xff00u)) ||
            (!(packed&0x20000u) && (packed&0x80000u)) || (!(packed&0x40000u) && (packed&0x100000u)))return false;
         if(packed&0x10000u)out.originalNpcTalkState.quest1420=uint8_t(packed>>8);
         if(packed&0x20000u)out.originalNpcTalkState.flag5405=(packed&0x80000u)!=0;
@@ -101,9 +118,18 @@ bool decodeSave(const SaveBytes& b, Progress& p) {
             std::memcpy(out.originalPouch->bytes.data(),b.data()+40,out.originalPouch->bytes.size());
         } else for(unsigned i=40;i<1532;++i)if(b[i])return false;
     }
-    if(version==9) {
+    if(version>=9) {
         if(!(packed&0x1000000u) && (packed&0x2000000u))return false;
         if(packed&0x1000000u)out.originalNpcTalkState.flag5376=(packed&0x2000000u)!=0;
+    }
+    if(version==10) {
+        auto& t=out.originalNpcTalkState.trouble;
+        for(unsigned i=0;i<6;++i) {
+            t.known|=uint64_t(b[1536+i])<<(8*i);
+            t.values|=uint64_t(b[1542+i])<<(8*i);
+            t.bytes[i]=b[1549+i];
+        }
+        t.byteKnown=b[1548];if(!t.valid())return false;
     }
     // Native checkpoint sanity bounds: finite X/Z within +/-100, mushrooms<=99,
     // boolean bytes<=1; v1 has neither a room nor an elevation field.
@@ -136,7 +162,7 @@ bool writeSave(const std::string& path,const Progress& p) {
     // can leave only .bak; loadSave tries it. No full power-loss guarantee is made.
     const std::string tmp=path+".tmp",bak=path+".bak";
     FILE* f=std::fopen(tmp.c_str(),"wb"); if(!f) return false;
-    const size_t size=get(b,4)>=8?b.size():40;
+    const size_t size=get(b,4)==10?b.size():get(b,4)>=8?0x600:40;
     bool ok=std::fwrite(b.data(),1,size,f)==size;
     if(std::fflush(f)!=0) ok=false;
     // libctru's filesystem backend closes/commits files; fsync is used on hosts.
