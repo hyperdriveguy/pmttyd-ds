@@ -837,3 +837,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Audience live count, AP leaves and sound failure adapters](battle/AUDIENCE_LIVE_COUNT_AP_EMPTY_LEAVES_AND_SOUND_FAILURE_ADAPTERS.md).
 
 - [Native original attack-command selection](battle/NATIVE_ATTACK_COMMAND_SELECTION.md)
+
+- [Original fanfare stereo gain/group fade](audio/FIELD_KEY_ITEM_FANFARE_STEREO_GAIN_AND_GROUP_FADE.md) and [native key-item fanfare provider](audio/NATIVE_KEY_ITEM_FANFARE_PROVIDER.md).

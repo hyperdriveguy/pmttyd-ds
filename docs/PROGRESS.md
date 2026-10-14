@@ -408,6 +408,87 @@ contracts already in `EVENT_ASSIGNMENT_ARITHMETIC_AND_DATA_CURSOR.md` and
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-14 — Original key-item fanfare export and native streaming provider
+
+Committed `8a80166e8c28d0225ca7948bf7096f4783934d25`. Original key-item
+fanfare is now packaged with ISO provenance/PCM hash and source row217,
+volume80/pan64. Native track18 always uses the original GameCube asset in both
+soundtrack modes. Fresh playback takes an available existing music slot, streams
+through the existing three4096-frame buffers and exposes -1 vacant/0 assigned.
+It refuses duplicate/full-pool admission instead of overwriting another owner.
+Exact source stereo gain is published before first buffer submission. Natural
+retirement waits producer EOF and absence of queued/playing NDSP buffers;
+explicit backend release and shutdown clear submissions before releasing storage.
+No fixed duration timer or extra full-PCM allocation is used.
+[Native scope](behavior/audio/NATIVE_KEY_ITEM_FANFARE_PROVIDER.md),
+[source stereo gain/group fade](behavior/audio/FIELD_KEY_ITEM_FANFARE_STEREO_GAIN_AND_GROUP_FADE.md).
+
+Independent review corrected two issues before final validation: initial gain
+publication must precede queuing, and stale fanfare loop sidecars must prevent
+cache reuse. Final review confirmed both fixes and found no other concrete
+slot/buffer/mutex/shutdown issue. Another session's adjacent existing audio-policy
+test assertion was preserved during narrow private-index commit resolution;
+no foreign working/staged changes were discarded.
+
+Exact validation:
+
+- Review tree `0501e87ca8f0c776b599e99d47c1dfafa29009ec`, baseline
+  `44dc9b85101b2cb7baeca24dd7f4a5eb704782ec`; all2332 tracked files matched
+  the isolated review tree (`artifacts/item95-fanfare-source-audit.txt`).
+- First host run exposed an older isolated pack missing its new fanfare manifest
+  field; regenerated through the source exporter, then final `make test` passed
+  210/210 CTests and135 Python tests (`artifacts/item95-fanfare-reviewed-test.log`).
+  Asset tests verify original stream provenance/hash, row/gain/pan, stereo32000Hz,
+  83888frames/PCM16, exact PCM hash and absence of loop sidecar. Final
+  `make -j4 all` passed without compiler warnings
+  (`artifacts/item95-fanfare-reviewed-native.log`); exporter log
+  `artifacts/item95-fanfare-reviewed-assets.log`.
+- Preserved normal artifact `artifacts/ttyd-item95-fanfare-reviewed.3dsx`, SHA256
+  `2227c085988f4d5848ab258bcb9ee98afa150fe42dd7e572413343b65203b486`.
+- Private harness `/tmp/item95-fanfare-preview.py` modified only isolated
+  source/main.cpp after preserving that normal artifact; stable test artifact
+  `artifacts/ttyd-item95-fanfare-preview.3dsx`, build log
+  `artifacts/item95-fanfare-preview-build.log`. Harness applies no story/pouch
+  writes and uses a private development checkpoint. It invokes provider methods,
+  logs results and explicitly releases the second play; release is not sourceOff201.
+- `/tmp/item95-fanfare-audio-capture.py` used a temporary Pulse null sink and
+  isolated tools/emulator_smoke.py profile/save at `artifacts/azahar-item95-fanfare`,
+  with the existing local DSP firmware copied only into that profile. All tools
+  exited0 and temporary sink was unloaded. Native log: ready1; begin at tick60
+  query0; duplicate refused; natural query-1 at tick217 (2.624048s after start);
+  second begin tick307/query0; explicit release tick337/query-1. Actual drain
+  drove natural vacancy. Captured48000Hz stereo PCM is nonzero (peak18434),
+  retained in provider.wav/statistics; viewed boot.png showed the field at60FPS
+  without an exception. These prove bounded backend playback/lifetime, not a
+  full original event or matched source-device audio schedule/loudness.
+
+Next: bind original Off201 integer group fade/detached100ms tail and group0
+quantized attenuation/retained-cursor resume before wiring the original
+acquisition acknowledgment. Explicit `releaseKeyItemFanfare` is backend cleanup,
+not an equivalent Off201 callback. Then integrate original Goomba3 quest2 event,
+item-main order/second active check, control/motion/camera/windows/effect/pouch
+services and5405 after wrapper completion. Source forced replacement/full-pool
+arbitration, original SoundSS prefetch/IRQ/codec/device cadence and hardware
+performance remain incomplete. The overall remake and requests remain active.
+
+Audio comparison follow-up: the initial isolated Azahar profile enabled audio
+stretching, causing variable alignment and weak whole-wave comparison despite
+99.3–99.94% explained energy in local stereo segments/source gain near80/127.
+Read-only diagnostics are in `artifacts/azahar-item95-fanfare/diagnosis-summary.json`
+and local/stereo fits. No concrete ring-buffer defect was found.
+A NEW profile `artifacts/azahar-item95-fanfare-unstretched` explicitly disabled
+stretching (`enable_audio_stretching=false` and its default=false; runtime log
+confirmed false); `/tmp/item95-fanfare-audio-capture-unstretched.py` repeated the
+same stable test binary, temporary sink/private save/DSP setup and clean exit.
+Native ready/begin/duplicate/natural-drain/release results all passed again.
+The complete48000Hz stereo capture correlates0.98832866 with original32000Hz PCM
+under linear reference resampling; fitted gain0.62030529 vs requested0.62992126,
+peak18491. `original-pcm-comparison.json` retains that evidence. Resampler/phase,
+source-device timing and physical loudness parity remain unverified; this is
+strong native PCM/provider evidence, not complete MusyX/hardware equivalence.
+Final documentation link check:1118 Markdown files/zero broken links before
+index/handoff insertion; all inserted links use existing checked destinations.
+
 ## 2026-10-14 — Original fanfare retirement and container loop correction
 
 Source review closed the key-item fanfare ambiguity, enabling faithful native

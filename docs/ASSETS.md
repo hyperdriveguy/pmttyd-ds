@@ -2019,3 +2019,25 @@ ISO verifier tools/verify_battle_attack_selection.py pins the full selector/
 classifier and called leaves. No additional game payload or conversion changed;
 Nintendo/Intelligent Systems licensing restrictions and ignored private asset
 paths remain unchanged. Source inspection ELF stays in ignored artifacts.
+
+## Original key-item fanfare pack and native provider (2026-10-14)
+
+`tools/field_item_get_assets.py` now extracts `sound/stream/ff_get2_32k.stm`
+read-only into ignored `local-assets/field-item-get/ff_get2_32k.stm`, verifies
+source SHA256847b529744401aa5590b821ff7502a65b1ac59045306dc8792d6d44b4e05f7dc
+and packages ignored `romfs/field-item-get-key-fanfare.wav`. Original32000Hz,
+stereo,83888frames/PCM16, coefficients/history and final-frame sample extent
+are retained without resampling. Source COMMON one-shot policy excludes loop
+sidecars. Converter fingerprints and required-file/no-sidecar admission prevent
+reuse of the prior incompatible pack. Original row217/BGM_FF_GET_KEYITEM1,
+volume80/pan64, extraction provenance and PCM hash are in field-item-get.json.
+The original PCM SHA256 is d8d7ca2222a3d30edb062bf91ff5999fe6e5b810c271097b2042e93077a6b596.
+
+The native track18 path always selects this GameCube asset in both soundtrack
+modes. Fresh playback shares the existing three147456-byte ring-buffer stream
+slots; no extra full-PCM allocation. Source stereo gain uses80*single3c010204
+on both authored channels before first buffer submission. Native original BGM
+fade/tail/group0 attenuation and exact source device scheduling remain separate
+owners. See [provider scope](behavior/audio/NATIVE_KEY_ITEM_FANFARE_PROVIDER.md).
+Original Nintendo/Intelligent Systems rights/local-use restrictions still apply;
+no original extracted/converted assets are committed or distributed.

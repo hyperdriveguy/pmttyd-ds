@@ -164,3 +164,17 @@ PCM was checked at stereo32000Hz/83888 frames with no loop sidecar.
 No synthetic duration timer is needed. Native original audio routing, retained
 field-music attenuation/resume and actual stream retirement still need binding;
 parent acquisition/service requests remain open.
+
+### 2026-10-14 — Original native key-item fanfare provider
+
+Pack now includes original key-item fanfare PCM/provenance, preserving the
+source COMMON one-shot policy. Native fresh-group playback shares the existing
+three streaming slots, publishes source stereo gain before queueing and exposes
+-1 vacant/0 assigned after actual backend drain, with bounded duplicate/full-pool
+admission. Explicit backend release clears buffers without claiming sourceOff201.
+[Native scope](../behavior/audio/NATIVE_KEY_ITEM_FANFARE_PROVIDER.md) and
+[source gain/fade recovery](../behavior/audio/FIELD_KEY_ITEM_FANFARE_STEREO_GAIN_AND_GROUP_FADE.md)
+record boundaries. Original Off201 fade/detached100ms tail and group0 retained-
+cursor attenuation/resume remain native bindings; full Goomba3 pickup event and
+item-main/control/motion/window/pouch/5405 ownership still need integration.
+Parent requests remain open.
