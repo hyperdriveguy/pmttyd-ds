@@ -98,13 +98,14 @@ int main() {
     std::ifstream pack("romfs/field-actors.pmnpc",std::ios::binary);std::vector<uint8_t> bytes((std::istreambuf_iterator<char>(pack)),{});
     auto word=[&](size_t p){uint32_t value;std::memcpy(&value,bytes.data()+p,4);return value;};
     size_t row=16+word(8)*100;
+    const size_t nameExtension=std::memcmp(bytes.data(),"PMNPC009",8)==0?36:0;
     for(unsigned n=0;n<word(12);++n) {
         const size_t tail=row+204+word(row+200)*40;
         if(word(row)==actor->key) {
             const float position[]={130,0,-385};std::memcpy(bytes.data()+row+40,position,12);
             std::memset(bytes.data()+tail+4,0,184); // Static harness body, original event present but no playback rules.
         }
-        row=tail+188;
+        row=tail+188+nameExtension;
     }
     char temporary[]="/tmp/ttyd-npc-nearest-XXXXXX";assert(mkdtemp(temporary));const std::filesystem::path fixture(temporary);
     std::filesystem::create_directory(fixture/"messages");

@@ -1453,3 +1453,9 @@ target_sources(ttyd_core PRIVATE source/display/shadow_projection_pass.cpp)
 add_executable(shadow_projection_pass_tests tests/shadow_projection_pass_tests.cpp)
 target_link_libraries(shadow_projection_pass_tests PRIVATE ttyd_core)
 add_test(NAME shadow_projection_pass COMMAND shadow_projection_pass_tests)
+
+# Exact original NPC name/initial-placement and retained position mutation.
+add_executable(field_npc_position_tests tests/field_npc_position_tests.cpp)
+target_link_libraries(field_npc_position_tests PRIVATE ttyd_core)
+add_test(NAME field_npc_position COMMAND field_npc_position_tests)
+set_tests_properties(field_npc_position PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

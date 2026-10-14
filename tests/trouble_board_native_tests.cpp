@@ -109,7 +109,26 @@ int main() {
   assert(pouch.half(0x78)==40 && pouch.half(0x70)==10);
   for(auto item:{49,95,107,110,98,73,99,109,100})assert(pouch.keyItemCount(item)==(item==expectedItems[quest-1]?0:3));
   for(int f=5405;f<=5421;++f)assert(!*troubleQuestFlag(task.progress.originalNpcTalkState,f));
+  if(quest==4) {
+   // Its original independently launched end child moves the actual actor,
+   // even though init placed it below-map with5406 set before cancellation.
+   for(int n=0;n<40;++n)task.tick({});
+   for(const auto& actor:fieldActorCatalog().actors())if(actor.initialization==FieldActorInit::Borodo2) {
+    const auto* live=task.fieldNpcState(actor.key);assert(live && live->initialized);
+    assert(live->body.root.x==-475 && live->body.root.y==0 && live->body.root.z==-180);
+   }
+  }
  }
+ auto start4=initial(true);start4.progress.originalStory=401;start4.tick({});
+ const FieldActorRecord* borodo=nullptr;
+ for(const auto& actor:fieldActorCatalog().actors())if(actor.initialization==FieldActorInit::Borodo2)borodo=&actor;
+ assert(borodo && start4.setFieldNpcPosition(borodo->eventName,{350,0,120}));
+ start4.wallContact.sourceNode=0x12d518; // Contact fixture after the NPC initialization visit.
+ assert(start4.tryTroubleBoardContact(0x100));run(start4,0,3);
+ for(int n=0;n<40;++n)start4.tick({});
+ assert(*start4.progress.originalNpcTalkState.quest1420==4);
+ const auto* moved=start4.fieldNpcState(borodo->key);
+ assert(moved && moved->body.root.x==-475 && moved->body.root.y==0 && moved->body.root.z==-180);
  // Unknown source selector global is retained as pending, not guessed from Mario.
  auto unknown=initial();unknown.fieldPartyCurrentIndex.reset();assert(unknown.tryTroubleBoardContact(0x100));
  unknown.tick({});unknown.fieldPartyCurrentIndex=0;unknown.tick({});

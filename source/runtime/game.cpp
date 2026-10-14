@@ -985,6 +985,21 @@ const FieldNpcInstance* Game::fieldNpcState(uint32_t key) const {
     if(fieldNpcRoom!=progress.room || fieldNpcGeneration!=fieldActorCatalogGeneration())return nullptr;
     const auto found=fieldNpcs.find(key);return found==fieldNpcs.end()?nullptr:&found->second;
 }
+bool Game::setFieldNpcPosition(const std::string& name,FieldWallVector position) {
+    if(name.empty() || !std::isfinite(position.x) || !std::isfinite(position.y) || !std::isfinite(position.z))return false;
+    synchronizeFieldNpcs();
+    for(const auto& actor:fieldActorCatalog().actors()) {
+        if(actor.kind || actor.eventName!=name || !actor.visible(progress.room,progress.originalStory,fieldDoor.interiorMask,fieldSystemFlags))continue;
+        const auto found=fieldNpcs.find(actor.key);
+        if(found==fieldNpcs.end() || !found->second.initialized || found->second.scripted)return false;
+        auto& state=found->second;
+        // Original evt_npc_set_position writes previous first, then current.
+        // Preserve flags, direction, pose, timers and regular-event anchors.
+        state.body.previous=position;state.body.root=position;state.movement.root=position;
+        state.positionOverride=true;++state.placement;return true;
+    }
+    return false;
+}
 void Game::synchronizeFieldNpcs() {
     const auto generation=fieldActorCatalogGeneration();
     if(fieldNpcGeneration!=generation || fieldNpcRoom!=progress.room) {
@@ -1126,6 +1141,13 @@ void Game::updateFieldNpcCollision() {
             flags=(actor.npcFlags&~source.flagMask)|(source.flags&source.flagMask);
         }
         const auto inserted=fieldNpcs.try_emplace(actor.key);auto& instance=inserted.first->second;
+        if(!scripted && !instance.initialized && actor.initialization!=FieldActorInit::Static) {
+            const auto initial=fieldActorInitialPosition(actor,progress.originalNpcTalkState);
+            if(!initial){instance.seen=ticks;continue;} // Unknown source bank retains the pending init.
+            root=*initial;instance.body.previous=instance.body.root={root[0],root[1],root[2]};
+            instance.movement.root=instance.body.root;instance.positionOverride=true;++instance.placement;
+        }
+        if(!scripted && instance.positionOverride){root={instance.body.root.x,instance.body.root.y,instance.body.root.z};placement=instance.placement;}
         if(!actor.wander.enabled && !scripted && !instance.initialized) {
             instance.movement.yaw=actor.yaw;instance.initialized=true;
         }

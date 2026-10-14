@@ -76,6 +76,15 @@ bool FieldActorTalk::print(const FieldActorRecord& source,const char* id,const M
     if(!message.open(id,text,font,now))return false;
     messages=std::move(next);actor=source;return true;
 }
+std::optional<std::array<float,3>> fieldActorInitialPosition(const FieldActorRecord& actor,const FieldActorTalkState& state) {
+ if(actor.initialization==FieldActorInit::Static)return actor.position;
+ if(actor.initialization!=FieldActorInit::Borodo2 || !state.quest1420)return {};
+ if(*state.quest1420==4) {
+  if(!state.flag5406)return {};
+  if(*state.flag5406)return std::array<float,3>{0,-1000,0};
+ }
+ return std::array<float,3>{-475,0,-180};
+}
 bool FieldActorAssets::load(const char* path) {
     FILE* f=std::fopen(path,"rb");if(!f)return false;
     const bool ok=read(f);std::fclose(f);return ok;
@@ -91,7 +100,8 @@ bool FieldActorAssets::read(FILE* f) {
     };
     std::array<char,8> magic{};uint32_t modelCount=0,actorCount=0;
     if(!scalar(magic))return false;
-    const bool version8=!std::memcmp(magic.data(),"PMNPC008",8);
+    const bool version9=!std::memcmp(magic.data(),"PMNPC009",8);
+    const bool version8=version9 || !std::memcmp(magic.data(),"PMNPC008",8);
     const bool version7=version8 || !std::memcmp(magic.data(),"PMNPC007",8);
     const bool version6=version7 || !std::memcmp(magic.data(),"PMNPC006",8);
     const bool version5=version6 || !std::memcmp(magic.data(),"PMNPC005",8);
@@ -150,13 +160,29 @@ bool FieldActorAssets::read(FILE* f) {
                (!w.enabled && (w.flags || w.radius || w.speed || w.runThreshold || w.stepPeriod || !w.idle.empty() || !w.walk.empty() || !w.run.empty() || !w.soundLeft.empty() || !w.soundRight.empty())) ||
                (a.kind && a.sourceTalkPresent) || (!a.sourceTalkPresent && !a.talkRules.empty()))return false;
         } else a.sourceTalkPresent=!a.talkPrefix.empty();
+        if(version9) {
+            std::array<unsigned char,32> name{};uint32_t init=0;
+            if(!scalar(name) || !scalar(init) || init>1)return false;
+            size_t length=0;while(length<name.size() && name[length])++length;
+            if(length==name.size() || (a.kind==0 && !length) || (a.kind==1 && length))return false;
+            for(size_t n=length;n<name.size();++n)if(name[n])return false;
+            for(size_t n=0;n<length;++n) {
+                const auto c=name[n];
+                if((c>=0x20 && c<=0x7e) || (c>=0xa1 && c<=0xdf))continue;
+                if(!((c>=0x81 && c<=0x9f) || (c>=0xe0 && c<=0xfc)) || ++n>=length ||
+                   name[n]<0x40 || name[n]>0xfc || name[n]==0x7f)return false;
+            }
+            a.eventName.assign(reinterpret_cast<const char*>(name.data()),length);
+            a.initialization=FieldActorInit(init);
+            if(init && (a.kind || a.wander.enabled || models[a.model].originalName!="c_borodo_n" || a.eventName!=std::string("\x83\x7b\x83\x8d\x83\x68\x81\x5b\x82\x51",10)))return false;
+        }
         if(a.storyGate==2 && a.storyLow!=a.storyHigh)return false;
         if(!a.talkPrefix.empty() && (a.kind!=0 || a.talkPrefix.size()!=11 ||
            (version7?a.talkPrefix[3]!='_':a.talkPrefix.substr(0,4)!="gor_") ||
            a.talkPrefix[6]!='_' || a.talkPrefix.back()!='_'))return false;
         for(float v:a.position)if(!std::isfinite(v) || std::fabs(v)>100000)return false;
         for(uint32_t j=0;j<i;++j) {
-            const auto& b=actors[j];if(a.key!=b.key || a.room!=b.room)continue;
+            const auto& b=actors[j];if(a.room!=b.room || (a.key!=b.key && (!version9 || a.eventName.empty() || a.eventName!=b.eventName)))continue;
             const bool distinctInterior=(a.interiorRequired&b.interiorForbidden) || (b.interiorRequired&a.interiorForbidden);
             const bool distinctStory=(a.storyGate==1 && b.storyGate==1 && (a.storyHigh<b.storyLow || b.storyHigh<a.storyLow)) ||
                 (a.storyGate==2 && b.storyGate==1 && b.storyLow==b.storyHigh && b.storyLow==a.storyLow) ||

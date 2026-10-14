@@ -129,6 +129,8 @@ int32_t Game::troubleBoardCall(TroubleEventRequest& r) {
   } else {actor->scalar(0x10c,direction);actor->scalar(0x110,direction);actor->scalar(0x100,heading);}
   if(++turn.counter>count){s.turns.erase(found);return 1;}return 0;
  }
+ case TroubleEventCall::NpcPosition:
+  return setFieldNpcPosition(r.text,{float(r.values[1]),float(r.values[2]),float(r.values[3])})?2:0;
  case TroubleEventCall::CoinRead:
   if(!progress.originalPouch)return 0;
   r.result=progress.originalPouch->half(0x78);return 2;

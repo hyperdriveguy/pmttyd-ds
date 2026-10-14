@@ -180,7 +180,7 @@ struct FieldNpcInstance {
     int posePhase=0;
     uint32_t secondaryFlags=0;
     float savedYaw=0;
-    bool scripted=false,initialized=false,paused=false,presentationReady=false;
+    bool scripted=false,initialized=false,paused=false,presentationReady=false,positionOverride=false;
 };
 struct FieldNpcSoundRequest {std::string key;uint32_t mask=0;FieldWallVector root;};
 // Portable runtime composition; GPU/SD/NDSP work belongs to platform adapters.
@@ -343,6 +343,7 @@ public:
     const FieldActorRecord* nearbyFieldActor() const;
     uint32_t fieldNpcContact() const{return fieldNpcHit;}
     const FieldNpcInstance* fieldNpcState(uint32_t key) const;
+    bool setFieldNpcPosition(const std::string& originalName,FieldWallVector enginePosition);
     bool fieldNpcTalkActive() const {return troubleBoardLocked() || goombaAcquisition.active() || goombaReward.active() || goombaHandIn.active() || fieldActorTalk.message.active();}
     // Bind only after native providers are ready; registry/pouch owners remain Game-owned.
     void bindFieldItemGetPresentation(const FieldItemGetServices& services) {fieldItemGetPresentation=services;}

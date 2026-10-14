@@ -32,12 +32,15 @@ struct FieldActorTalkState {
 };
 // Live original inventory observations, not cached/persisted mushroom quantities.
 struct FieldActorTalkInventory {std::optional<int32_t> item95,item107;};
+enum class FieldActorInit:uint32_t {Static=0,Borodo2=1};
 struct FieldActorRecord {
     uint32_t key=0,room=0,model=0,interiorRequired=0,interiorForbidden=0,storyGate=0,kind=0; // 0 NPC, 1 map object.
     uint32_t systemForbidden=0;
     int32_t storyLow=0,storyHigh=0;
     std::array<float,3> position{}; // Original engine XYZ, scaled only by renderer.
     float yaw=0,scale=2; // Original model scalar; objects own distinct scales.
+    std::string eventName; // Original Shift-JIS lookup bytes, independent of native FNV key.
+    FieldActorInit initialization=FieldActorInit::Static;
     std::string pose,talkPrefix,sourceName; // Empty when the recovered talk event is unbound.
     float npcWidth=0,npcHeight=0; // Source tribe dimensions, independent of draw scalar.
     std::string talkPose;
@@ -51,6 +54,7 @@ struct FieldActorRecord {
             !(system&systemForbidden) && (!storyGate || (story && (storyGate==2?*story!=storyLow:*story>=storyLow && *story<=storyHigh)));
     }
 };
+std::optional<std::array<float,3>> fieldActorInitialPosition(const FieldActorRecord&,const FieldActorTalkState&);
 std::string fieldActorTalkKey(const FieldActorRecord&,int32_t story,const FieldActorTalkState& state={},const FieldActorTalkInventory& items={});
 bool fieldActorTalkAvailable(const FieldActorRecord&,int32_t story,const FieldActorTalkState& state={},const FieldActorTalkInventory& items={});
 // PMNPC001..008 are local containers. They describe recovered static init subsets;

@@ -64,7 +64,7 @@ def npc_source_data(iso, tribes=None):
             if len(data)!=size:raise ValueError('Truncated source constant')
             return data
         result={}
-        for name,address in (tribes or [('c_tyusan',0x80333554),('c_kuri_h',0x80333014),('c_f_mura',0x80333110),('c_kuribo_n',0x8033335c)]):
+        for name,address in (tribes or [('c_tyusan',0x80333554),('c_kuri_h',0x80333014),('c_f_mura',0x80333110),('c_kuribo_n',0x8033335c),('c_borodo_n',0x80332d20)]):
             raw=read(address,0x54);width,height=struct.unpack_from('>2f',raw,0x28)
             ptr=struct.unpack_from('>I',raw,0x14)[0];talk=bytearray()
             for i in range(32):
@@ -98,7 +98,7 @@ def npc_source_data(iso, tribes=None):
         return result
 
 
-def compile_model(iso,asset,name,poses):
+def compile_model(iso,asset,name,poses,texture_scale=1):
     work = Path('local-assets/field-actors');work.mkdir(parents=True, exist_ok=True)
     model = work/name;tpl = work/(name+'.tpl')
     extract(iso, 'a/'+name, model)
@@ -109,7 +109,7 @@ def compile_model(iso,asset,name,poses):
     extract(iso, 'a/'+bank+'-', tpl)
     helpers = ['character_mesh.py','character_surface_mesh.py','character_bake.py','character_node.py','character_animation_pack.py','character_animation_data.py','iso_assets.py']
     fingerprint = hashlib.sha256(Path(__file__).read_bytes() + b''.join(Path('tools',p).read_bytes() for p in helpers) +
-                                 model.read_bytes()+tpl.read_bytes()+json.dumps(poses).encode()).hexdigest()
+                                 model.read_bytes()+tpl.read_bytes()+json.dumps([poses,texture_scale]).encode()).hexdigest()
     manifest = Path('romfs/'+asset+'.json')
     required = [Path('romfs/'+asset+'.'+suffix) for suffix in ['pmmesh','pmanim','t3x']]
     if not (manifest.exists() and all(p.exists() for p in required) and json.loads(manifest.read_text()).get('fingerprint') == fingerprint):
@@ -117,10 +117,13 @@ def compile_model(iso,asset,name,poses):
         result = compile_surface_mesh([(model,tpl,poses)],required[1],work/(asset+'.png'))
         height = 128
         while height < ((result['textures']+7)//8)*128:height *= 2
-        Image.open(work/(asset+'.png')).crop((0,0,1024,height)).save(work/(asset+'-runtime.png'))
+        runtime=Image.open(work/(asset+'.png')).crop((0,0,1024,height))
+        if texture_scale!=1:
+            runtime=runtime.resize((int(1024*texture_scale),int(height*texture_scale)),Image.Resampling.LANCZOS)
+        runtime.save(work/(asset+'-runtime.png'))
         tex3ds = shutil.which('tex3ds') or '/opt/devkitpro/tools/bin/tex3ds'
         subprocess.run([tex3ds,'-f','rgba8','-z','auto','-o',str(required[2]),str(work/(asset+'-runtime.png'))],check=True,stdout=subprocess.DEVNULL)
-        result.update(fingerprint=fingerprint,uv_scale=1024/height,
+        result.update(fingerprint=fingerprint,uv_scale=1024/height,native_texture_size=list(runtime.size),
                       original_index0=zero,
                       assets=[json.loads(p.read_text()) for p in [model.with_suffix('.provenance.json'),tpl.with_suffix('.tpl.provenance.json')]],
                       license='Local original Nintendo/Intelligent Systems assets; no redistribution rights')
@@ -147,6 +150,9 @@ def build(iso):
     darkly_scale=compile_model(iso,'field-darkly','c_f_mura',['S_1',npc_constants['c_f_mura']['talk_pose']])
     goomba_scale=compile_model(iso,'field-goomba','c_kuribo_n',['S_1','T_1','W_1','R_1'])
     chu_scale = compile_model(iso,'field-chu','c_tyusan',['CHU_S_1',npc_constants['c_tyusan']['talk_pose']])
+    # Keep original RGBA; half-resolution atlas fits the room's resident linear
+    # memory budget while preserving normalized UVs and original mesh geometry.
+    borodo_scale=compile_model(iso,'field-borodo','c_borodo_n',['S_1','T_1','W_1','R_1'],texture_scale=.5)
     professor_scale = json.loads(Path('romfs/professor.json').read_text())['uv_scale']
     object_scale=build_objects(iso)
     model_specs = [
@@ -155,6 +161,7 @@ def build(iso):
         dict(asset='field-saveblock',scale=object_scale,original='MOBJ_SaveBlock',path=Path('local-assets/map-objects/MOBJ_SaveBlock'),hit=True),
         dict(asset='field-darkly',scale=darkly_scale,original='c_f_mura',path=work/'c_f_mura'),
         dict(asset='field-goomba',scale=goomba_scale,original='c_kuribo_n',path=work/'c_kuribo_n'),
+        dict(asset='field-borodo',scale=borodo_scale,original='c_borodo_n',path=work/'c_borodo_n'),
     ]
     models = [(m['asset'],m['scale']) for m in model_specs]
     # Source Frankly init: exact story8/10 branches; story9 hides his NPC.
@@ -179,13 +186,21 @@ def build(iso):
                     position=[-370,0,130],yaw=270,pose='S_1',npc_flags=0x40080603,source_talk_present=1,
                     wander=dict(radius=70,speed=30),talk_prefix='gor_02_030_',
                     talk_rules=[(0,limit,'gor_02_030_'+suffix) for limit,suffix in [(56,'00'),(112,'01'),(164,'02_01'),(175,'03'),(176,'03_01'),(215,'03_02'),(261,'04'),(339,'05'),(373,'06'),(401,'07')]]+[(3,0,'gor_02_030_08')],source='gor.rel:kuribo4_init@0x438f0/regular@0x43924')]
+    borodo=tagged_npcs(setup.read_bytes().decode('shift_jis'))['ボロドー２']
+    if borodo['tribe']!='盗賊' or borodo['aitype']!='なし' or borodo['position']!=[0,-1000,0] or borodo['yaw']!=270:
+        raise ValueError('Unexpected original Borodo2 setup')
+    records.append(dict(key=identifier('gor_02','ボロドー２'),room=2,model=5,required=0,forbidden=0,low=0,high=0,gate=0,
+        position=borodo['position'],yaw=borodo['yaw'],pose='S_1',npc_flags=0x40080603,source_talk_present=1,
+        initialization=1,source='m/gor_02/s:ボロドー２;gor.rel:borodo2_init@0x443c0/talk@0x44518'))
+    event_names={identifier(room,name):name for room,text in [('gor_02',setup.read_bytes()),('gor_01',plaza_setup.read_bytes())]
+                 for name in tagged_npcs(text.decode('shift_jis'))}
     tagged_order={name:i for i,name in enumerate(tagged_npcs(setup.read_bytes().decode('shift_jis')))}
     source_order={identifier('gor_02',name):i for name,i in tagged_order.items()}
     source_order.update({identifier('gor_01',name):i for i,name in enumerate(tagged_npcs(plaza_setup.read_bytes().decode('shift_jis')))})
     records.sort(key=lambda r:(r['room'],source_order.get(r['key'],0)))
     # Original bbox fields consumed by mobjHitEntry, not rendered pose bounds.
     bounds=struct.unpack_from('>6f',Path('local-assets/map-objects/MOBJ_SaveBlock').read_bytes(),0xd0)
-    data = bytearray(struct.pack('<8sII',b'PMNPC008',len(models),len(records)))
+    data = bytearray(struct.pack('<8sII',b'PMNPC009',len(models),len(records)))
     collision=[]
     for spec in model_specs:
         asset,scale=spec['asset'],spec['scale']
@@ -220,6 +235,10 @@ def build(iso):
         data += struct.pack('<3I3fI',r['source_talk_present'],int(w is not None),w.get('flags',0) if w else 0,w['radius'] if w else 0,w['speed'] if w else 0,dims['run_threshold'] if w else 0,dims['step_period'] if w else 0)
         for field in ['idle','walk','run','sound_left','sound_right']:
             data += fixed(dims[field]) if w and dims[field] else bytes(32)
+        r['event_name']=event_names[r['key']] if r.get('kind',0)==0 else ''
+        event_name=r['event_name'].encode('shift_jis')
+        if len(event_name)>=32:raise ValueError('Original NPC name exceeds native finite record')
+        data+=event_name.ljust(32,b'\0')+struct.pack('<I',r.get('initialization',0))
     Path('romfs/field-actors.pmnpc').write_bytes(data)
     Path('romfs/field-actors.json').write_text(json.dumps(dict(models=models,actors=records,collision=collision,npc_constants=npc_constants,
         setup=json.loads(setup.with_suffix('.s.provenance.json').read_text()),
