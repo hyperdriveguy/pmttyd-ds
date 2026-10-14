@@ -1137,3 +1137,20 @@ No original asset payload, scaling, pack format, art, audio or dialogue changed;
 existing original source leaf centers and licensing remain unchanged. Hierarchy
 and runtime-transform support require future genuine providers. Original ISO,
 extracted assets and generated packs stay private/ignored.
+
+### Native complete original icon directory and cells (2026-10-14)
+
+`tools/source_icon_assets.py` opens the US ISO read-only and keeps unchanged
+icon.bin/icon.tpl in ignored romfs/source-icons. The complete572-entry directory
+and613 original images feed real matrix-icon/native resource binding. Converted
+previews stay in local-assets/source-icons; source cells retain original pixels
+and sizes, with2px source-wrap gutters inside lossless power-of-two RGBA8 T3X
+files. No replacement art or resampling. sources.json records every original/
+converted hash and DOL constant spans.
+[Paths, original hashes, conversion, native residency and limitations](behavior/display/NATIVE_ORIGINAL_ICON_RESOURCES.md).
+Renderer imports cells outside submitted frames with101 slots for the full item bank/AP image and retains
+actual bound texture ownership; that cache policy is an adaptation. Original
+Nintendo/Intelligent Systems licensing remains inherited with no redistribution
+rights. No raw ISO, extracted original bytes, previews, packs or compiled native
+assets were committed. Native resource/binding proof is separate from raster
+parity and playable audience items.

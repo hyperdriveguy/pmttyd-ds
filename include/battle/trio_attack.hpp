@@ -77,6 +77,8 @@ public:
     const std::vector<ProfessorServiceRequest>& requests() const;
     const std::vector<TrioAudienceAudioRequest>& audienceAudioRequests() const;
     bool readWord(uint32_t address,uint32_t& value) const;
+    std::optional<uint32_t> sourceIconWord(uint32_t) const;
+    std::optional<uint32_t> sourceIconCamera(std::optional<uint32_t> index={}) const;
     bool prepareAudienceDrawing(const BattleAudienceDrawServices&) const;
     bool resumeAudienceCallback(uint32_t camera,uint32_t userdata,const BattleAudienceCallbackServices&) const;
     bool resumeAudienceAux(uint32_t camera,uint32_t callback,uint32_t userdata,const BattleAudienceAuxServices&) const;

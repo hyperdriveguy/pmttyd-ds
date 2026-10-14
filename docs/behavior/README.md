@@ -1116,3 +1116,7 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Native original indexed animation fan submission](display/NATIVE_ANIMATION_INDEXED_FAN_SUBMISSION.md): independent source array decoding, retained fan completion, ST11/atlas mapping and actual Citro3D triangle fans.
 - [Native indexed-fan numeric and array bridge](display/NATIVE_INDEXED_FAN_NUMERIC_AND_ARRAY_BRIDGE.md): original ST11 texgen input, serialized attribute offsets, one model transform and one atlas adaptation.
+
+- [Native original icon resources](display/NATIVE_ORIGINAL_ICON_RESOURCES.md):
+  complete original directory/TPL, lossless cells, registered GP/published camera
+  reads and bounded actual native texture residency; material/raster still open.

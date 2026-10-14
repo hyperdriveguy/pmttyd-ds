@@ -69,8 +69,9 @@ providers, low16 IDs/flags, both GP aliases, single/zero-frame records, strict
 boundaries, signed negative clocks, zero-delay and ten-frame sums, matrix camera
 capture, retained selection and linked waits. A coupled actual audience callback
 runs through the full matrix-icon wrapper to an explicitly held iconGX provider;
-source records and metadata remain fixture memory. Native resource/global/GP
-binding and iconGX emission are still open. These tests do not establish visible
+source records and metadata remain fixture memory. [Native directory/resource/registered-GP and published-camera reads](NATIVE_ORIGINAL_ICON_RESOURCES.md)
+are now bound. Full outer Main GP ownership and native iconGX emission remain
+open. These tests do not establish visible
 items, native frame cadence, two-screen framing or playable audience throws.
 
 Private inspection artifacts: `artifacts/audience-icon-color.dis`,

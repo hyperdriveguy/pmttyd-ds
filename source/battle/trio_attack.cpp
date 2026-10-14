@@ -6,6 +6,7 @@
 #include "map_material_color.hpp"
 #include "map_material_tev.hpp"
 #include "animation_texture.hpp"
+#include "source_icon_resources.hpp"
 #include "battle_event_callbacks.hpp"
 #include "event_memory_bootstrap.hpp"
 #include "event_memory_release.hpp"
@@ -1917,6 +1918,12 @@ bool TrioAttack::resumeAudienceCallback(uint32_t camera,uint32_t userdata,const 
     services.currentRecord=[](void* user){return static_cast<Bridge*>(user)->runtime->displayQueue.current();};
     services.request=[](void* user,const BattleAudienceGXRequest& r){const auto* s=static_cast<Bridge*>(user)->source;return s->request && s->request(s->user,r);};
     return resumePackedBattleAudienceCallback(services,runtime_->audienceCallbackCursor);
+}
+std::optional<uint32_t> TrioAttack::sourceIconCamera(std::optional<uint32_t> index) const{
+    return runtime_?sourceIconCameraIdentity(runtime_->cameras.get(),index):std::nullopt;
+}
+std::optional<uint32_t> TrioAttack::sourceIconWord(uint32_t address) const{
+    return runtime_?sourceIconRuntimeWord(runtime_->cameras.get(),runtime_->vm.gpAddresses,address):std::nullopt;
 }
 bool TrioAttack::resumeAudienceAux(uint32_t camera,uint32_t callback,uint32_t userdata,const BattleAudienceAuxServices& source) const{
     if(!runtime_ || !runtime_->cameras || (callback!=0x801a37f0 && callback!=0x801a36c8))return false;

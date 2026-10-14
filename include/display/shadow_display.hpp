@@ -13,7 +13,7 @@ enum class ShadowGX : uint32_t {
     ClearDesc=0x802b4520,Desc=0x802b3c08,Format=0x802b4558,
     TextureBind=0x802b7880,TexCoordGen=0x802b4e04,PositionMatrix=0x802ba2fc,TevColor=0x802b8ab8,AlphaUpdate=0x802b93ac
 };
-enum class ShadowTexture {N64Texture44,UnloadedDummy,CharacterAtlas};
+enum class ShadowTexture {N64Texture44,UnloadedDummy,CharacterAtlas,SourceIcon};
 struct ShadowGXRequest {
     ShadowGX kind=ShadowGX::NumChans;
     std::array<int32_t,7> values{};

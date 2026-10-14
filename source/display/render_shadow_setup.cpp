@@ -15,7 +15,9 @@ bool Renderer::prepareShadowTexture44(){
 bool Renderer::finishingShadowGpu(const NativeShadowProgram& p){
     if(!p.seeded)return false;
     if(p.texture){
-        if(*p.texture==ShadowTexture::CharacterAtlas){
+        if(*p.texture==ShadowTexture::SourceIcon){
+            auto* texture=sourceIconTexture();if(!texture)return false;C3D_TexBind(0,texture);
+        }else if(*p.texture==ShadowTexture::CharacterAtlas){
             if(!finishingAtlas)return false;
             auto* texture=finishingAtlas->resource==trioPartnerAnimations?&trioPartnerTexture:finishingAtlas->resource==trioMarioAnimations?&trioMarioTexture:nullptr;
             if(!texture || !texture->imported)return false;

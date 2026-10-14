@@ -1682,3 +1682,10 @@ add_executable(animation_fan_tests tests/animation_fan_tests.cpp)
 target_link_libraries(animation_fan_tests PRIVATE ttyd_core)
 add_test(NAME animation_fan COMMAND animation_fan_tests)
 set_tests_properties(animation_fan PROPERTIES WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+
+# Actual original icon directory, TPL descriptors and texture binding.
+target_sources(ttyd_core PRIVATE source/display/source_icon_resources.cpp)
+add_executable(source_icon_resources_tests tests/source_icon_resources_tests.cpp)
+target_link_libraries(source_icon_resources_tests PRIVATE ttyd_core)
+add_test(NAME source_icon_resources COMMAND source_icon_resources_tests)
+set_tests_properties(source_icon_resources PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

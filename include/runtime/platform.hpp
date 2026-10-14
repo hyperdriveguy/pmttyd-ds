@@ -33,6 +33,7 @@
 #include "native_shadow_program.hpp"
 #include "map_material_light.hpp"
 #include "animation_texture.hpp"
+#include "source_icon_resources.hpp"
 #include <memory>
 #include <3ds.h>
 #include <citro2d.h>
@@ -158,6 +159,15 @@ private:
     // Paired ownership:Tex3DS import descriptor and C3D_Tex allocation each
     // require their own free. Struct copying does not clone either resource.
     struct Texture { C3D_Tex texture{}; Tex3DS_Texture imported=nullptr; };
+    SourceIconResources sourceIcons;
+    struct SourceIconCell {Texture gpu;uint32_t index=UINT32_MAX;uint64_t stamp=0;};
+    std::array<SourceIconCell,101> sourceIconCells{}; // Full100-item bank plus single-frame AP icon442.
+    std::optional<uint32_t> pendingSourceIcon,boundSourceIcon;uint64_t sourceIconStamp=0;
+    void prepareSourceIcons(const Game&);
+    void releaseSourceIcons();
+    bool bindSourceIcon(uint32_t);
+    C3D_Tex* sourceIconTexture();
+    std::optional<uint32_t> sourceIconCall(const Game&,const SourceIconGXCall&);
     Vertex* itemGetEffectVertices=nullptr;
     std::array<Texture,2> itemGetEffectTextures;
     DVLB_s* itemGetEffectShader=nullptr;shaderProgram_s itemGetEffectProgram{};

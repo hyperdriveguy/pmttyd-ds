@@ -111,8 +111,10 @@ and acknowledged width queries remain captured. A real matrix wrapper runs
 through packed fixture metadata, camera concat and this full GX body to a held
 primitive provider; releasing it neither repeats selection nor emits twice.
 
-Native icon directory/texture resource ownership, true GP publication, all
-linked GX/map consumers and actual raster submission still need binding. Tests
+[Native original resource binding](NATIVE_ORIGINAL_ICON_RESOURCES.md) now supplies
+the directory, all613 TPL images, existing VM GP/published camera reads and actual
+resident native texture binding. Full outer Main GP ownership/cadence, linked
+GX/map consumers and actual raster submission remain open. Tests
 use explicit service fixtures, not native PICA pixels or hardware. Matrix
 numerics use the supplied adapter; Gekko paired-single/FPSCR parity is unproven.
 Missing mapped source fields/providers retain unavailability after preceding

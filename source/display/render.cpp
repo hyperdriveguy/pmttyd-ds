@@ -1556,6 +1556,7 @@ void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audio
 // before admitting battle atlases;field return reverses that dependency.
 // SYNCDRAW permits CPU arenas to be reused only after previous GPU work finishes.
 void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool audioAvailable) {
+    prepareSourceIcons(g);
     const bool battleOwner=g.trioBattleActive || g.scene==Scene::Battle || g.scene==Scene::Victory || g.scene==Scene::Defeat;
     const bool mapsFirst=!battleOwner || prepareBattleMaps(g);
     const bool actorTexturesReady=mapsFirst && prepareSceneActorTextures(g);
@@ -1628,6 +1629,7 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
 // before deleting borrowed linear buffers/textures/shaders/targets;then C2D/C3D
 // services close. This call is end-of-owner lifecycle,not a per-frame reset.
 void Renderer::shutdown() {
+    releaseSourceIcons();
     releaseClassMenuDrawing();
     releaseAudienceDrawing();
     if(c3dReady) C3D_FrameSync();

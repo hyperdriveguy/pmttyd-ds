@@ -95,8 +95,15 @@ void Renderer::resumeFinishingCamera(const Game& game){
                 ShadowGXRequest request;request.kind=static_cast<ShadowGX>(r.function);request.values=r.arguments;
                 return static_cast<Renderer*>(user)->finishingShadowRequest(request);
             };
-            // Icon ownership is separate; an active entry retains its real
-            // icon request until metadata/current-camera/geometry are bound.
+            struct IconBridge {Renderer* renderer;const Game* game;} iconBridge{&renderer,b.game};
+            SourceIconMatrixServices icon;icon.user=&iconBridge;
+            icon.word=[](void* u,uint32_t address)->std::optional<uint32_t>{auto& b=*static_cast<IconBridge*>(u);const auto resource=b.renderer->sourceIcons.word(address);return resource?resource:b.game->trioAttack.sourceIconWord(address);};
+            icon.half=[](void* u,uint32_t address){return static_cast<IconBridge*>(u)->renderer->sourceIcons.half(address);};
+            icon.currentCamera=[](void* u){return static_cast<IconBridge*>(u)->game->trioAttack.sourceIconCamera();};
+            icon.matrix=[](void*,BattleAudienceMatrixRequest& r){BattleAudienceAuxServices math;bindAudienceAuxMathAdapter(math);return math.matrix(nullptr,r);};
+            SourceIconGXServices gx;gx.user=&iconBridge;gx.word=icon.word;gx.half=icon.half;gx.matrix=icon.matrix;
+            gx.call=[](void* u,const SourceIconGXCall& r){auto& b=*static_cast<IconBridge*>(u);return b.renderer->sourceIconCall(*b.game,r);};
+            icon.gx=&gx;auxiliary.sourceIcon=&icon;
             return b.game->trioAttack.resumeAudienceAux(camera,identity,borrowed,auxiliary);
         }
         if(identity==0x80101774){
