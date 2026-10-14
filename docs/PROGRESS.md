@@ -1,3 +1,39 @@
+## 2026-10-14 — Tutorial native weapon providers and field-pouch entry
+
+Implementation is committed in `452a29cd`; contract/asset record in `aff81380`.
+The tutorial now binds the complete shared table/eligibility/private-target
+helpers to original packed units/weapons, current pouch/equipped queries, icon
+leaves, FP/AP costs, actual packed sampling and original US labels. Mapped label
+storage copies text/control tokens unchanged and caches original key pointers.
+The API exposes source descriptors only after intro/no active phase/attack/hit;
+it does not confirm a command, create an attack or advance story/turn state.
+
+The first live menu check exposed bare pouchInit level0, which correctly emits
+no ordinary Jump row. Game tutorial entry now uses beginFromPouch when original
+field storage exists, copying every entry byte without new-game grants/reset.
+Original Mario resource import/revision carries HP/FP/base/max values before
+his source init. Tests preserve HP7/FP2 and boots/hammer levels, enabled original
+Normal Jump803538a8/icon167 and Hammer80353de8, disabled empty-item row/reason3,
+empty locked Special domain, unchanged combat state and entry-copy independence.
+Party NPC helper3 remains separate; tutorial party delegation is unbound. Legacy
+storage-less saves keep the prior bare-pouch harness. Battle export, full gear
+import and class/submenu/input/player action/turn ownership remain incomplete.
+
+Validation: corrected shared make test passed224/224 C++ and141/141 Python tests.
+The first Python pass failed a relocated map_visibility include path, then
+passed after its correction. Default native make all hit stale pre-migration
+shader dependency paths; isolated TMPDIR=artifacts/tutorial-admission-tmp make
+all BUILD=build-tutorial-menu-layout TARGET=ttyd-2ds-menu-layout passed and built
+ttyd-2ds-menu-layout.3dsx from the new subsystem layout. No Azahar/Dolphin run or
+native menu visual/playability claim. No new game payload/conversion. Runtime
+changes landed during concurrent commits; current source/history was inspected
+and the required bindings/CMake source registration are present in HEAD.
+
+Next: original tutorial class/submenu/input and decision, selected target and
+source action registration, action timing/player impact/turns; camera/window/
+effect/audio/audience consumers with original assets and physical input. Keep
+lower-screen audience taps optional. The full tutorial/battle goal stays active.
+
 # Project progress and handoff
 
 Updated 2026-10-14. The dated implementation record is preserved in
