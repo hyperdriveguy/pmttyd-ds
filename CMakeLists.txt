@@ -1018,3 +1018,7 @@ add_executable(item_get_windows_tests tests/item_get_windows_tests.cpp)
 target_link_libraries(item_get_windows_tests PRIVATE ttyd_core)
 add_test(NAME item_get_windows_original COMMAND item_get_windows_tests)
 set_tests_properties(item_get_windows_original PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+add_executable(map_draw_cache_tests tests/map_draw_cache_tests.cpp)
+target_include_directories(map_draw_cache_tests PRIVATE include)
+add_test(NAME map_draw_cache COMMAND map_draw_cache_tests)

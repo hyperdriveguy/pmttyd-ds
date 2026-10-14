@@ -8,6 +8,7 @@
 #include "message_system_shbin.h"
 #include "field_camera.hpp"
 #include "map_visibility.hpp"
+#include "map_draw_cache.hpp"
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
@@ -509,7 +510,8 @@ void Renderer::drawMap(bool battle,const Game& game,bool translucent,Room* suppl
     }
     auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,room.vertices,sizeof(Vertex),3,0x210);
     const GPU_TEXTURE_WRAP_PARAM wraps[]={GPU_CLAMP_TO_EDGE,GPU_REPEAT,GPU_MIRRORED_REPEAT};
-    for(auto batch:room.batches) {
+    MapDrawCache state; // Valid only inside this uninterrupted map pass.
+    for(const auto& batch:room.batches) {
         if(!battle && game.progress.room==2 && batch.layer>>26==8 && game.professorStory.fenceHidden && !game.professorStory.fenceVisible)continue;
         if((!battle || supplied) && ((batch.layer&255)==2)!=translucent)continue;
         if(!battle) {
@@ -520,12 +522,20 @@ void Renderer::drawMap(bool battle,const Game& game,bool translucent,Room* suppl
         uint32_t group=(batch.layer>>8)&65535;
         if(!battle && group && room.occluders[group].hidden)continue;
         C3D_Tex* texture=batch.texture<0?&atlas:&room.textures[batch.texture].texture;
-        C3D_TexSetWrap(texture,wraps[std::min<uint32_t>(batch.wrapS,2)],wraps[std::min<uint32_t>(batch.wrapT,2)]);
-        C3D_TexBind(0,texture);
+        const auto wrapS=wraps[std::min<uint32_t>(batch.wrapS,2)];
+        const auto wrapT=wraps[std::min<uint32_t>(batch.wrapT,2)];
         // GX winding maps to the opposite PICA enum in this view transform.
         const GPU_CULLMODE culls[]={GPU_CULL_BACK_CCW,GPU_CULL_FRONT_CCW,GPU_CULL_NONE,GPU_CULL_NONE};
-        C3D_CullFace(culls[(batch.layer>>24)&3]);
-        C3D_DepthTest(true,GPU_GREATER,(batch.layer&255)==2?(battle || alphaCapture?GPU_WRITE_COLOR:FieldRGB):(battle || alphaCapture?GPU_WRITE_ALL:FieldRGBDepth));
+        const auto cull=culls[(batch.layer>>24)&3];
+        const auto mask=(batch.layer&255)==2?(battle || alphaCapture?GPU_WRITE_COLOR:FieldRGB):(battle || alphaCapture?GPU_WRITE_ALL:FieldRGBDepth);
+        const auto changes=state.apply(texture,uint32_t(wrapS),uint32_t(wrapT),uint32_t(cull),uint32_t(mask));
+        if(changes.texture) {
+            // Wrap mutates the texture descriptor; bind afterwards to publish it.
+            C3D_TexSetWrap(texture,wrapS,wrapT);
+            C3D_TexBind(0,texture);
+        }
+        if(changes.cull)C3D_CullFace(cull);
+        if(changes.depth)C3D_DepthTest(true,GPU_GREATER,mask);
         if(stageObjects)stageObjects->visibleRanges(batch.start,batch.count,[](uint32_t first,uint32_t size){C3D_DrawArrays(GPU_TRIANGLES,first,size);});
         else C3D_DrawArrays(GPU_TRIANGLES,batch.start,batch.count);
     }
