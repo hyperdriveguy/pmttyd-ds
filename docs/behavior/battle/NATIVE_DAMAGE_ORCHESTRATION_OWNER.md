@@ -63,3 +63,48 @@ Next: bind the original calculators/application/status/event/effect/audience
 providers into tutorial and ordinary battle callers, preserving unsupported
 service admission. Then close original player-command and turn/result/field
 ownership and compare matched original execution traces.
+
+## Harbor player impact and live Mario power (2026-10-14)
+
+Harbor's native ordinary damage binding now retains actual attacker/defender
+IDs instead of hardcoding Crump2→Mario1 throughout calculations/application.
+It admits that existing route plus Mario1→Crump2 with original Jump80189cb0 or
+Hammer80189c38 HP callbacks. The bodypart, FP/status/counter/guard and lethal
+provider gates remain explicit. This is not a general all-status/all-enemy
+or inventory/death admission claim.
+
+Mario power uses shared original power callbacks with actual action-result bit,
+current pouch jump/hammer level, actor2ff/300 bonus byte and live weapon+20 table
+words. No level1, bonus0 or inferred success power is substituted. Upper-only
+index clamp and original negative-index address arithmetic remain the shared
+callback semantics. Lethal admission compares the actual callback's base power;
+its read-only preview is native preflight policy, not an extra original damage
+calculation. Calculations then execute the original callback again against the
+unchanged native source fields.
+
+Attacker flags/dealt HP, defender resources, direct application and original
+reaction-event ownership now use those retained IDs. Damage sound metadata
+also uses the actual defender and matching original kind sound-table entry,
+instead of assigning every reaction to Mario and the first Mario key. The
+recipient owner is restored after synchronous application. Effect/audio/audience
+requests still need complete presentation consumers.
+
+The native original Jump fixture supplies no action press after aging menu A
+out of general history. TimingA result0 selects source ordinary power1; the
+shared damage/calculation/application path changes Crump HP5→4, records Mario
+U284=1 and registers actual Crump U2b4. The source script then stops live at
+AcrobatNotry8010749c. Additional ticks retain HP4 and dealt1, proving no repeated
+impact while that request waits. Original damage-sound owner2/key are retained.
+The success fixture still stops before damage at original voice80104508; its
+HP stays5. Existing Crump→Mario and retained lethal/guard frontiers remain tests.
+These are controlled native fixtures, not Dolphin measurements or a complete
+playable attack, turn, tutorial or scene transition.
+
+Voice inspection found full wrapper80104508/d8 selects a key from the original
+5-entry or10-entry tables after its RNG draw, then calls BtlUnit_snd_se8012619c/
+5c. That service reads position and calls snd_se_pos80126088/114, which checks
+size statuses, consumes a41-bound pitch draw, triggers3D sound, sets pitch and
+reads/sets current volume for the literal sentinel. A no-op voice completion or
+invented volume would omit required work/RNG. Complete voice/backend binding,
+AcrobatNotry/audience effects, lethal/status/inventory and post-action ownership
+remain follow-up tasks. Read-only listings are retained in ignored artifacts.
