@@ -44,7 +44,7 @@ int main() {
     assert(game.trioCommands.selected()[0]==4);
     physical.physicalButtons=0;game.tick(physical);physical.physicalButtons=0x300;game.tick(physical);
     assert(game.trioCommands.state==TrioBattleCommands::State::Command && !game.trioCommands.attack);
-    Input hammer;hammer.touchX=200;hammer.touchY=120;game.tick(hammer);
+    Input hammer;hammer.touchX=200;hammer.touchY=137;game.tick(hammer);
     assert(game.trioCommands.state==TrioBattleCommands::State::Target && game.trioCommands.count()==1);
     assert(game.professorStory.messageOrder.size()==7 && game.trioBattleIntro.messageOrder.size()==5 && !game.saveRequested);
     std::cout<<"Original four-unit metadata, Frankly init/entry, phase gate, five exact messages and status/camera requests passed\n";

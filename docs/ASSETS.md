@@ -1552,3 +1552,19 @@ Original copyrighted assets and compiled packs remain ignored/private; no
 source payload or ISO distributed. CPU ownership is now common with c_pkr,
 while the renderer's separate cache, full animation coverage and GPU/time/
 original file-pool fidelity remain unfinished.
+
+## 2026-10-13 — Original battle HUD and numeral import
+
+Read-only US G8ME01 revision0 DOL status table8036edd0 and numeral arrays80415084
+are verified by tools/battle_hud_assets.py. Original icon.bin/icon.tpl supply
+all13 status rows and both10-digit sets: Mario badge427, flower441, stars442/443,
+coin444, resource bars472..475, multiply478, slash480 and digits481..500.
+The shared converter now uses rectangle packing to retain those images plus
+existing message/selector/EXP assets inside the existing512x512 RGBA8 atlas;
+all original frame pixels/dimensions/delays remain unchanged, with2px transparent
+padding. No new GPU texture allocation or image resampling is introduced.
+Originals/PNGs remain ignored local-assets/message-icons/; detailed verified
+source-table metadata and compiled packs remain ignored romfs/message-icons.*.
+Nintendo/Intelligent Systems rights remain with their owners; no redistribution
+license is granted. No ISO, original payload or compiled pack is committed.
+See [native HUD/menu scope](behavior/display/NATIVE_BATTLE_HUD_AND_SUBMENU.md).

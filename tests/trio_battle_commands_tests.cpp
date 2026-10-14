@@ -1,9 +1,20 @@
+#include "battle_menu_layout.hpp"
 #include "trio_battle_commands.hpp"
 #include <cassert>
 #include <cstring>
 #include <iostream>
 using namespace ttyd;
 int main() {
+    // All rendered rows share one touch mapping; outside edges cannot confirm.
+    assert(BattleMenuLayout::touchedRow(18,92,3)==0);
+    assert(BattleMenuLayout::touchedRow(301,121,3)==0);
+    assert(BattleMenuLayout::touchedRow(200,122,3)==1);
+    assert(BattleMenuLayout::touchedRow(200,181,3)==2);
+    assert(BattleMenuLayout::touchedRow(17,100,3)==-1);
+    assert(BattleMenuLayout::touchedRow(302,100,3)==-1);
+    assert(BattleMenuLayout::touchedRow(200,182,3)==-1);
+    assert(BattleMenuLayout::touchedRow(200,122,1)==-1);
+    assert(BattleMenuLayout::touchedRow(200,100,0)==-1);
     assert(loadProfessorStoryAssets("romfs") && loadUndergroundStoryAssets("romfs") && loadTrioBattleAssets("romfs"));
     ProfessorStory scene;assert(scene.beginTrioBattleIntro(0));
     TrioBattleCommands menu;assert(menu.begin(scene));

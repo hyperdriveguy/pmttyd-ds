@@ -51,7 +51,9 @@ private:
     static constexpr unsigned MaxWindowFrames=64; // Native arena capacity, not an original manager limit.
     Vertex* windowFrameVertices=nullptr;
     unsigned windowFrameCount=0;
-    bool sourceWindowFrame(const WindowFrameMesh&);
+    bool sourceWindowFrame(const WindowFrameMesh&,bool onBottom=false);
+    void battleHud(const Game&);
+    void battleMenuRows(const Game&);
     int count=0, transformLoc=0, marioPose=0;
     shaderProgram_s program{};
     C3D_Mtx worldTransform{};

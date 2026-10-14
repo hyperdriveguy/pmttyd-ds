@@ -1,6 +1,6 @@
 #include "platform.hpp"
 namespace ttyd {
-bool Renderer::sourceWindowFrame(const WindowFrameMesh& mesh) {
+bool Renderer::sourceWindowFrame(const WindowFrameMesh& mesh,bool onBottom) {
     if(!windowFrameVertices || !messagePanel.imported || windowFrameCount>=MaxWindowFrames)return false;
     C2D_Flush();
     const unsigned start=windowFrameCount++*54;
@@ -19,10 +19,10 @@ bool Renderer::sourceWindowFrame(const WindowFrameMesh& mesh) {
     Mtx_Identity(&local);Mtx_Translate(&local,mesh.centerX,mesh.centerY,0,true);
     Mtx_RotateZ(&local,mesh.rotationDegrees*.01745329238474369f,true);
     Mtx_Scale(&local,mesh.scale,mesh.scale,mesh.scale);
-    Mtx_Identity(&viewport);Mtx_Translate(&viewport,200,120,0,true);
+    Mtx_Identity(&viewport);Mtx_Translate(&viewport,onBottom?160:200,120,0,true);
     Mtx_Scale(&viewport,MessageWindowScale,-.5f,1);
     Mtx_Multiply(&model,&viewport,&local);
-    Mtx_OrthoTilt(&projection,0,400,240,0,-1,1,true);Mtx_Multiply(&transform,&projection,&model);
+    Mtx_OrthoTilt(&projection,0,onBottom?320:400,240,0,-1,1,true);Mtx_Multiply(&transform,&projection,&model);
     C3D_BindProgram(&program);
     auto* attrs=C3D_GetAttrInfo();AttrInfo_Init(attrs);
     AttrInfo_AddLoader(attrs,0,GPU_FLOAT,3);AttrInfo_AddLoader(attrs,1,GPU_FLOAT,2);AttrInfo_AddLoader(attrs,2,GPU_FLOAT,4);
@@ -34,7 +34,7 @@ bool Renderer::sourceWindowFrame(const WindowFrameMesh& mesh) {
     for(int n=0;n<6;++n)C3D_TexEnvInit(C3D_GetTexEnv(n));
     auto* env=C3D_GetTexEnv(0);C3D_TexEnvSrc(env,C3D_Both,GPU_TEXTURE0,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR);C3D_TexEnvFunc(env,C3D_Both,GPU_MODULATE);
     C3D_TexBind(0,&messagePanel.texture);C3D_DrawArrays(GPU_TRIANGLES,start,54);
-    C2D_Prepare();C2D_SceneBegin(top);
+    C2D_Prepare();C2D_SceneBegin(onBottom?bottom:top);
     // Prepare restores C2D's GEQUAL/depth-write defaults. Source window
     // contents remain a UI layer; do not let stage depth occlude the next icons.
     C3D_DepthTest(false,GPU_ALWAYS,GPU_WRITE_COLOR);

@@ -1,3 +1,4 @@
+#include "battle_menu_layout.hpp"
 #include "camera_road_view.hpp"
 #include "game.hpp"
 #include "wall_geometry.hpp"
@@ -1896,10 +1897,13 @@ void Game::tick(const Input& rawInput) {
                     repeats=(pad.directionRepeat&0xa000?0x80000u:0u)|(pad.directionRepeat&0x5000?0x40000u:0u)|
                         (pad.repeat&6?0x80000u:0u)|(pad.repeat&9?0x40000u:0u);
                 }
-                if(tap && i.touchY>=100 && i.touchY<158) {
-                    if(trioCommands.state==TrioBattleCommands::State::Command)trioCommands.chooseCommand(unsigned(i.touchX)/160);
-                    else if(trioCommands.state==TrioBattleCommands::State::Target)trioCommands.chooseTarget(unsigned(i.touchX)/106);
-                    buttons|=0x100;
+                if(tap && (trioCommands.state==TrioBattleCommands::State::Command || trioCommands.state==TrioBattleCommands::State::Target)) {
+                    const bool target=trioCommands.state==TrioBattleCommands::State::Target;
+                    const int row=BattleMenuLayout::touchedRow(i.touchX,i.touchY,target?trioCommands.count():trioCommands.actor==2?1:2);
+                    if(row>=0) {
+                        if(target)trioCommands.chooseTarget(unsigned(row));else trioCommands.chooseCommand(unsigned(row));
+                        buttons|=0x100;
+                    }
                 }
                 trioCommands.input(buttons,repeats);
             }
