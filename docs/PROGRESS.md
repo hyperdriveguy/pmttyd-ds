@@ -10203,3 +10203,9 @@ Normal final scene snapshot played original Title→Files→House→letter→map
 Normal make all and final make test191/191 +125/125 Python passed before the following small status-label/fixture maintenance. make debug-short passed; actual isolated debug boot opens the plaza harness60FPS/13.49ms without frontend. Documentation1026 links/0 broken. Original harbor init/table verifier now34 anchors. Additional unskipped final book smoke is running.
 
 The status menu now uses the actual field party registry instead of claiming Goombella joined at arrival; story3 displays an arrival status instead of the later plaza harness objective. The smoke accepts the independently extended1536-byte v8 save, preserving the same room1/story3 header assertion. No existing user saves were migrated or touched. Final UI rebuild and updated fresh smoke follow.
+
+## 2026-10-13 — Final unskipped smoke exposed backdrop reload regression
+
+Final combined unskipped book smoke found a real resource-lifetime regression after the newly imported sky/backdrop: final book cleanup erased all frontTextures, including opening-bg-dmo_00. The marketplace then loaded this original backdrop again on every frame. Actual captures market-arrival10FPS/2.57ms and peach-turn0FPS/2.21ms showed frame IO churn despite cheap draw work. This is not accepted as a passing performance run.
+
+Corrected cleanup to find and retire only demo-prefixed book images, preserving the market backdrop and its single admission. GPU synchronization remains before freeing queued book pointers. Native rebuild and a new unskipped run are required to close this correction. No original art, pose, story clock or message IDs were dropped.

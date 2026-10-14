@@ -261,13 +261,17 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,OpeningSequence& ope
     const bool mapWorldReady=!(f.screen==FrontScreen::Opening && opening.part==OpeningPart::Voyage && opening.mapTransition.entryRequested && !opening.mapTransition.entryComplete) || prepareFrontWorld("opening-muj_20",&opening,demo);
     const bool mapCapture=f.screen==FrontScreen::Opening && opening.part==OpeningPart::MapDisplay && opening.mapTransition.requested && !opening.mapTransition.captureReady;
     const bool mapCaptureReady=!mapCapture || prepareMapTurn(opening.mapTransition);
-    if(f.screen==FrontScreen::Demo && demo.bookComplete && !demo.book.adjusting && !frontTextures.empty()) {
+    if(f.screen==FrontScreen::Demo && demo.bookComplete && !demo.book.adjusting &&
+       std::any_of(frontTextures.begin(),frontTextures.end(),[](const auto& texture){return texture.name.rfind("demo-",0)==0;})) {
         // Final adjust retires the book alone. The already admitted market,
         // actor samples and map animation clocks continue across this boundary.
         // Synchronize before releasing texture pointers retained by the GPU.
         C3D_FrameSync();freeBookCaptures();
-        for(auto& texture:frontTextures)if(texture.image.imported){Tex3DS_TextureFree(texture.image.imported);C3D_TexDelete(&texture.image.texture);}
-        frontTextures.clear();
+        for(auto texture=frontTextures.begin();texture!=frontTextures.end();) {
+            if(texture->name.rfind("demo-",0)!=0){++texture;continue;}
+            if(texture->image.imported){Tex3DS_TextureFree(texture->image.imported);C3D_TexDelete(&texture->image.texture);}
+            texture=frontTextures.erase(texture);
+        }
     }
     C2D_TextBufClear(textBuffer);C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
     windowFrameCount=0;
