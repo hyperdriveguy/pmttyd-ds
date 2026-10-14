@@ -37,9 +37,9 @@ Return value: not set on all paths observed — the visible exits are plain
 8008afa8: fmr     29, 1                 ; f1 -> r29
 8008afac: fmr     30, 2                 ; f2 -> r30
 8008afb0: bl      0x8005e0c0            ; marioGetPtr
-8008afb4lfs lfs     0, , -27540(r2)         ; threshold constant A
+8008afb4: lfs     0,  -27540(r2) = 24         ; threshold constant A
 8008afb8: mr      31, 3                 ; r31 = Mario
-8008afbclfs lfs     1, , -27544(r2)
+8008afbc: lfs     1,  -27544(r2) = 40
 8008afc0: fcmpu   0, 29, 0             ; compare f1 against constant A
 8008afc4: stfs    1, 532(3)            ; mario[+0x214] = constant B
 8008afc8: bt      2, 0x8008b01c        ; if f1 < A -> skip
@@ -48,7 +48,7 @@ Return value: not set on all paths observed — the visible exits are plain
 8008afd4: bf      2, 0x8008b01c        ; if == 0 -> skip
 ```
 
-Two gates precede the body: `f1 >= constant@-27540(r2)` **and**
+Two gates precede the body: `f1 >= 24.0` (`-27540(r2)`) **and**
 `mario[+0x50] != 0`. Both must hold; otherwise control falls to
 `0x8008b01c`.
 
@@ -120,7 +120,7 @@ Immediately after the search, the same status-bit family used by
 ## Exit to the staying search
 
 ```asm
-8008b2d4lfs lfs     0, , -27540(r2)
+8008b2d4: lfs     0,  -27540(r2) = 24
 8008b2d8: fcmpu   0, 29, 0
 8008b2dc: bf      2, 0x8008b2ec
 8008b2e0: fmr     1, 30
@@ -160,7 +160,7 @@ the function returns immediately — no further processing.
 | `+0x1d4` | word | wall-hold counter, armed to 14 |
 | `+0x1e4` | word | latched `searchFrontWall` result |
 | `+0x1f8` | word | controls the `+0x180` reset |
-| `+0x214` | float | set to constant `-27544(r2)` on every call |
+| `+0x214` | float | set to constant `-27544(r2) = 40` on every call |
 
 ## Porting notes
 
@@ -175,7 +175,9 @@ the function returns immediately — no further processing.
 
 ## Remaining gaps
 
-- Numeric values of the `lfs` constants at `-27544(r2)` / `-27540(r2)`
+- Semantic names for the remaining constants; their **values** are known and
+  tabulated in
+  [SMALL_DATA_R2_BASE_AND_FLOAT_POOLS](../binary/SMALL_DATA_R2_BASE_AND_FLOAT_POOLS.md)
   are not extracted; the second one is the activation threshold.
 - The three `hitCheckVecFilter` descriptors are built from stack data that
   has not been fully mapped.

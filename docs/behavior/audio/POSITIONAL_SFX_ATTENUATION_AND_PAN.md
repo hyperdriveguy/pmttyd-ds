@@ -277,9 +277,34 @@ Raw bits, read directly: `0.5` = `3fe0000000000000`, `3.14` =
 `40091eb851eb851f`, `double_to_int` = `4330000080000000`, `2^52` =
 `4330000000000000`.
 
-The eight `r2`-relative `lfs` constants at `-23372`..`-23408(r2)` are
-**not** resolved; `r2`'s base is not established. They are used only as
-scale factors in the clamps and the `sin` term.
+The eight `r2`-relative `lfs` constants are now **resolved**: `r2` is
+`0x8042B038` (see
+[SMALL_DATA_R2_BASE_AND_FLOAT_POOLS](../binary/SMALL_DATA_R2_BASE_AND_FLOAT_POOLS.md),
+where the field pool independently corroborates the base via pi/4).
+
+| Offset | Value | Use in this function |
+|--------|-------|---------------------|
+| `-23412(r2)` | `0.03125` (1/32) | scale in the `srawi 0,3,6` / magic-double divide |
+| `-23408(r2)` | `0.0` | loaded at `0x800DC868` |
+| `-23404(r2)` | `0.0` | loaded beside it |
+| `-23400(r2)` | **NaN** | the d2<=0 poison constant |
+| `-23396(r2)` | `0.0174533` (**pi/180**) | degrees-to-radians scale |
+| `-23392(r2)` | `0.0078125` (1/128) | 7-bit quantisation scale |
+| `-23388(r2)` | `0.03125` (1/32) | scale |
+| `-23384(r2)` | `0.0` | **divisor** at `0x800DC98C` — see below |
+| `-23380(r2)` | `6.283185` (**2*pi**) | multiplies `f2` before the divide |
+| `-23376(r2)` | `78.75` | compared against `fabs(f31)` |
+| `-23372(r2)` | `0.349` (**pi/9**) | multiplied by `mulli 29,100` |
+
+So the "3.14" seen in the `lfd` table is a separate constant from the
+`2*pi` and `pi/180` in the `r2` pool; both exist.
+
+**Flagged, unresolved:** `-23384(r2)` is `0.0` and sits in the divisor
+position of `fdivs 0, 3, 2` at `0x800DC98C`, preceded by
+`fcmpo 0, 1, 0` at `0x800DC988` against `-23376(r2) = 78.75`. The pool
+value is not in doubt and the instruction order is unambiguous, so whether
+that branch is reachable or is guarded so the division never executes was
+**not** determined here.
 
 ## Porting notes
 
@@ -301,7 +326,6 @@ scale factors in the clamps and the `sin` term.
 
 - The helper at `0x800dcbc8` (the planar distance primitive) is called but
   not decoded.
-- The eight `r2`-relative `lfs` scale constants.
 - The exact IEEE-754 class → case 1..5 mapping in the classifier, and
   which of cases 2..5 are reachable in practice.
 - What `r5`/`r6` (out0/out1) are used for by the caller; this function

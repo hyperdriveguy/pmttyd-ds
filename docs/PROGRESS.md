@@ -22,6 +22,19 @@ these, which is expected and fine.
 Validation: doc-link check 988 files/0 broken; index diff additive only. No
 `make` rerun (docs only). Full-game incomplete.
 
+## 2026-10-12 — Stage-12 counter provenance closed, stale hypothesis withdrawn
+
+Traced the travel-setup region: stage-12 countdown is a computed
+travel-tick count (lane float → `fctiwz` → `extsh` → [72] at 8013b2a4–ac),
+not the stage-10 stale inheritance hypothesized earlier — withdrawn in the
+doc. Lane identity and the [72]==0 bypass rationale stay open. With this,
+FIELD-RECOVERY-01 todo 1's numeric half is as closed as static reading gets
+(stages, counters incl. provenance, HP tick, transitions, SDA set, named
+authored gaps); float-chain lane roles remain the honest remainder.
+
+Validation: sequence asserts, diff --check clean. Docs-only. Next: triangle
+interiors, pose domains. Incomplete.
+
 ## 2026-10-13 — Inbox save continuation party and destination caller
 
 Completed local continueGame/table/source keys; SAVE-01 portion checked.
@@ -123,7 +136,6 @@ opening playtest chain. Docs-agent concurrent edits were left untouched.
 Validation: doc-link check 980 files/0 broken; index diff additive only. No
 `make` rerun (docs only). Full-game incomplete.
 
-
 ## 2026-10-13 — Inbox single-slot read validation and copy selection
 
 Completed local read_main/table; SAVE-01 portion checked.
@@ -145,6 +157,21 @@ Next: live resident-record restore/schema/pointer repair/switch-reset consumers,
 read-all/async write/header/backup repair/SDK/provider domains and original
 save/load/multi-slot/corruption/recovery traces. Native persistence replacement,
 SAVE-01 and other parent/full-game requests remain OPEN.
+
+## 2026-10-12 — Water-doc slot-attribution repair
+
+Rewrote the rise/travel stage bullets after finding systematic [68]/[72]
+confusion in my own draft (stage-10 "counter = 11", stage-13/14 "counter =
+20", inverted land-check branches, drafting leftover in stage 30): [68] =
+stage and [72] = counter throughout, verified per transition (13→20, 14→20,
+12→13 with one-tick 13). Also corrected stage 11 ([708] −= 1.0 with no-op
+10.0 floor; bgmode≠1 → splash+SFX, ==1 → SFX only) and added the travel-rate
+fdivs finding. This is the second self-found slot error in these docs;
+slot claims now require adjacent-instruction proof, not recollection.
+
+Validation: transition-slot asserts, instruction re-checks, diff --check
+clean. Docs-only. Next: triangle interiors, pose domains. Incomplete.
+
 
 ## 2026-10-13 — Inbox card dispatcher and completion callbacks
 
@@ -6507,6 +6534,60 @@ Next tasks:
 5. `docs/behavior/README.md` is a contended file: three concurrent commits
    have dropped rows from it. Worth an owner check before it is treated as
    a reliable index.
+
+## 2026-10-13 — `r2` small-data base resolved: the provisional-constant gap closes (ID 3)
+
+[SMALL_DATA_R2_BASE_AND_FLOAT_POOLS](behavior/binary/SMALL_DATA_R2_BASE_AND_FLOAT_POOLS.md).
+This closes the item I recorded as "the largest single source of
+provisional numbers" across three sessions, and retires the fabricated
+`0x800494xx` addresses I published in the field-collision session.
+
+**`r2 = 0x8042B038`, verified rather than guessed.** My first attempt at
+this (a brute-force scan for a plausible float pool) produced 3700
+candidates and then 11862 — the filters were worthless because integer
+tables and zero regions dominate. What settled it was anchoring on a
+semantic fact I had already established: `marioSlitChkWallAround` sweeps 8
+equally spaced directions with its increment at `-27524(r2)`, and at this
+base that word is **π/4** — 8 × 45° = 360°, exactly what the loop provably
+does. A base 4 bytes higher puts 2.0 where π/4 must be, so alignment is
+unambiguous. The audio pool at the same base then independently yields π/180,
+1/128, 1/32, 2π, π/9, π/30, 360, 255 — a coherent trigonometry pool.
+
+**`r2` is shared across object files.** The `mario_hit.o` and
+`pmario_sound.o` pools are two windows into one contiguous constant region
+at `0x8042449c`..`0x8042550c`, not per-file bases — which is why one base
+resolved both.
+
+46 field and 21 audio constants are now ISO-read and annotated inline in
+the affected contracts. Concrete consequences:
+
+- `marioCheckWall` / `marioCheckWall_roll`: gate is **`f1 >= 24.0`**, and
+  `mario[+0x214]` is published as **40.0**.
+- `marioSlitChkWallAround`: angle step confirmed **π/4**.
+- Roll/head-search branchless select: **-0.01** and **1.4**.
+- `searchFrontWall`: compares `fabs(d)` against **78.75**.
+- `calc3D`: scales by **π/180**, **1/128**, **1/32**, multiplies by **π/9**.
+  Its `3.14` `lfd` is a separate constant from the pool's 2π and π/180.
+
+I also repaired six field/audio documents where an earlier bulk regex had
+mangled disassembly lines into `8008b7c4lfs lfs 0, , -27540(r2)`.
+
+**Flagged, not resolved:** `-23384(r2)` is `0.0` and sits in the divisor
+of `fdivs 0, 3, 2` in `calc3D`. The pool value is not in doubt and the
+instruction order is unambiguous; whether the branch is reachable or
+guarded was not determined, so I left it open rather than rationalising it.
+
+Docs-only; `make test` / `make all` not rerun.
+
+Next tasks:
+
+1. `psndSFXMain`'s per-channel dispatch conditions — the last item in the
+   positional-SFX chain.
+2. Constants outside the two windows, and whether the pool continues past
+   them.
+3. Remaining EVT-01 todos: `evtmgrCmd` opcode bodies, NormalJump
+   registration writers, `CommandGetWeaponAddress`/`SelectWeapon` cursor
+   modes, `BATTLE_UNIT_QUERY_EVENT_LEAVES` prose reconciliation.
 
 ## 2026-10-13 — Audio frame driver, plus two corrections to my own ID 3 work
 

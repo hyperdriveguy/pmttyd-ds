@@ -851,6 +851,58 @@ start wrappers, accessors, stop, position update, frame driver and
 attenuation. What remains is the `psndSFXMain` per-channel dispatch
 conditions and the backend `Sound*` services themselves.
 
+### ID 3, 2026-10-13 — `r2` small-data base resolved, constant pools tabulated
+
+[Small-data r2 base and float pools](../behavior/binary/SMALL_DATA_R2_BASE_AND_FLOAT_POOLS.md).
+
+This closes the "largest single source of provisional numbers" that I
+recorded against this project in three separate sessions. Every
+`lfs/lfd N(r2)` operand in the field-collision and audio contracts was
+previously documented only as an offset, because the base register was
+unknown — and my earlier attempt to invent absolute addresses was wrong.
+
+**`r2 = 0x8042B038`.** Verified, not guessed. Two independent anchors:
+
+1. **Field.** `marioSlitChkWallAround` sweeps 8 evenly spaced directions
+   and its angle increment is documented as the `lfs` at `-27524(r2)`.
+   At this base that word is **`0.7853981853` = pi/4**. Eight steps of 45
+   degrees sum to 360, which is exactly what the 8-iteration loop does.
+   The rest of the pool is the degree/probe vocabulary of field collision:
+   16, 40, 24, 12, 20, 25, 2, 1/32, 0.01, -0.01, 1.4, 1.2, 10, 30, 270,
+   90, 60, -60, 100, -100, 35, 5, -0.3, -0.7, -1.5, 300, 698, 185, 80, 15.
+2. **Audio.** The same base yields pi/180 (`0.0174533`), 1/128, 1/32,
+   **2*pi** (`6.283185`), pi/9 (`0.349`), pi/30 (`0.1047`), 360, 255, 30,
+   -30, 6, 8, 78.75, 1.0, 0.01, 0.1 — a trigonometry/audio-scale pool.
+
+A base 4 bytes higher puts 2.0 where pi/4 must be and fails the field
+anchor, so the alignment is unambiguous. **`r2` is shared across object
+files**: the two pools are windows into one contiguous constant region at
+`0x8042449c`..`0x8042550c`, not per-file bases.
+
+46 field and 21 audio constants are now read from the ISO and annotated
+inline in the affected contracts. Consequences worth noting:
+
+- The fabricated `0x800494xx` addresses I published earlier are superseded;
+  they were this pool at the wrong base.
+- `marioCheckWall` / `marioCheckWall_roll`: the activation gate is
+  **`f1 >= 24.0`** and the value written to `mario[+0x214]` is **40.0**.
+- `marioSlitChkWallAround`: the angle step is confirmed **pi/4**.
+- The roll/head-search branchless select uses **-0.01** and **1.4**.
+- `searchFrontWall` compares `fabs(d)` against **78.75**.
+- `calc3D` scales by **pi/180**, **1/128**, **1/32** and multiplies by
+  **pi/9**. Its `3.14` `lfd` is a *separate* constant from the `2*pi` and
+  `pi/180` in the pool; both exist.
+
+**One item flagged, not resolved:** `-23384(r2)` is `0.0` and sits in the
+divisor position of `fdivs 0, 3, 2` at `0x800DC98C` in `calc3D`, after a
+`fcmpo` against `-23376(r2) = 78.75`. The pool value is not in doubt and
+the instruction order is unambiguous; whether the branch is reachable or
+guarded was not determined.
+
+**Still open:** constants outside the two tabulated windows and the pool's
+contiguity beyond them. Nothing else in the audio or field chain depends
+on this any more.
+
 ## Answers and delivery notes
 
 ### ID 3, 2026-10-12 — `BtlUnit_snd_se_pos` / `psndSFX_pos` / `psndSFXOff` complete bodies

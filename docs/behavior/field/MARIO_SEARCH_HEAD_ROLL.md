@@ -90,22 +90,22 @@ the out-of-range index 5 fall through to the shared path at `0x8008bec4`.
 ## Displacement case (index 1 shape), `0x8008bd18`
 
 ```asm
-8008bd18lfs lfs     1, , -27420(r2)
+8008bd18: lfs     1,  -27420(r2) = 25 = 25
 8008bd1c: lfs     0, 420(29)           ; mario[+0x1a4]
-8008bd20lfs lfs     2, , -27480(r2)
+8008bd20: lfs     2,  -27480(r2) = 270 = 270
 8008bd24: fadds   1, 1, 0
-8008bd28lfs lfs     0, , -27500(r2)
+8008bd28: lfs     0,  -27500(r2) = 1.2
 8008bd2c: fmuls   1, 2, 1
 8008bd30: fdivs   28, 1, 0            ; f28 = (c1 + mario[0x1a4]) * c2 / c3
 8008bd34: fmr     1, 28
 8008bd38: bl      0x80272410           ; sin
 8008bd3c: frsp    2, 1
-8008bd40lfs lfs     0, , -27380(r2)
+8008bd40: lfs     0,  -27380(r2) = 80 = 80
 8008bd48: fmuls   0, 0, 2             ; cos(f28) * c
 8008bd4c: stfs    0, 12(1)
 8008bd50: bl      0x80271ea8           ; cos
 8008bd54: frsp    0, 1
-8008bd5clfs lfs     1, , -27464(r2)
+8008bd5c: lfs     1,  -27464(r2) = -60 = -60
 8008bd68: fneg    0, 0
 8008bd6c: fmuls   0, 2, 0             ; -sin(f28) * c
 8008bd70: stfs    0, 8(1)
@@ -168,12 +168,12 @@ these as debug strings was wrong.
 
 ```asm
 8008bfc0: lfs     1, 52(1)
-8008bfc4lfs lfs     0, , -27540(r2)
+8008bfc4: lfs     0,  -27540(r2) = 24
 8008bfcc: fcmpo   0, 1, 0
 8008bfd4: cror    2, 1, 2              ; branchless select
-8008bfdclfs lfs     0, , -27508(r2)        ;   value A
-8008bfe4lfs lfs     0, , -27504(r2)        ;   value B
-8008bfe8lfs lfs     3, , -27544(r2)
+8008bfdc: lfs     0,  -27508(r2) = -0.01        ;   value A
+8008bfe4: lfs     0,  -27504(r2) = 1.4        ;   value B
+8008bfe8: lfs     3,  -27544(r2) = 40
 8008bfec: lis     0, 17200             ; 0x800C4330
 8008bff0: stw     0, 136(1)
 8008bff8: fmadds  0, 3, 1, 0           ; c68 + hitDistance
@@ -187,8 +187,8 @@ these as debug strings was wrong.
 ```
 
 The `cror 2, 1, 2` is a **branchless select** between the constants at
-`-27508(r2)` and `-27504(r2)`, chosen by whether `stack[52]` compares
-equal to `-27540(r2)`. The reduction then computes
+`-27508(r2) = -0.01` and `-27504(r2) = 1.4`, chosen by whether `stack[52]` compares
+equal to `-27540(r2) = 24`. The reduction then computes
 `(c68 + hitDistance)` truncated with `fctiwz`, and a scaled residual
 `(f0 - c) / c3`. The `xoris 0, 0, 32768` at `0x8008c018` is the standard
 PPC idiom for **negating a float via its integer representation**.
@@ -226,8 +226,8 @@ The result is written **only when the truncated value is nonzero**.
 
 ## Remaining gaps
 
-- Values of the `lfs` constants at `-27500(r2)`, `-27480(r2)`,
-  `-27464(r2)`, `-27420(r2)`, `-27380(r2)` (probe radius, angle scale,
+- Values of the `lfs` constants at `-27500(r2) = 1.2`, `-27480(r2) = 270 = 270`,
+  `-27464(r2) = -60 = -60`, `-27420(r2) = 25 = 25`, `-27380(r2) = 80 = 80` (probe radius, angle scale,
   sin/cos multipliers) are not extracted.
 - Semantics of dedicated directions 2, 3 and 4 are only known from their
   placement in the dispatch chain, not decoded.

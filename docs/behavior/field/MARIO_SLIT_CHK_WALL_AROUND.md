@@ -54,8 +54,9 @@ sweep's back-edge is at `0x80088790` (`bt` to `0x80088644`).
 ```
 
 `f31` is the loaded angle increment, so the eight probes are equally
-spaced. The increment is one of the `lfs` constants at `-27540(r2)`
-.. `-27520(r2)`.
+spaced. The increment is `-27524(r2) = 0.7853981853`, which is **pi/4**:
+8 steps of 45 degrees sum to exactly 360 degrees, confirming that the
+8-iteration loop is a full-circle sweep.
 
 Per-direction result classification (`0x80088448`..`0x80088494`) — three
 ways to mark a direction as blocked:
@@ -121,7 +122,7 @@ only the scaled offset.
 | Address | Role |
 |---------|------|
 | `0x80343b78` | static work descriptor (`lis 3,-32724` + `addi 31,3,15224`) |
-| `-27540(r2)`, `-27532(r2)`, `-27528(r2)`, `-27524(r2)`, `-27520(r2)` | `lfs` angle/probe constants |
+| `-27540(r2) = 24`, `-27532(r2) = 20`, `-27528(r2) = 25`, `-27524(r2) = 0.785398`, `-27520(r2) = 2` | `lfs` angle/probe constants |
 | `0x80091434`, `0x80091504`, `0x800915e4` | filter-label **code addresses** — `chkfilterVecVivian`, `chkfilterVecRoll`, `chkfilterVec` — passed to `hitCheckVecFilter`; **not strings** |
 
 ## Porting notes
@@ -139,8 +140,9 @@ only the scaled offset.
 
 ## Remaining gaps
 
-- Exact semantic names for the `lfs` constants at `-27540(r2)`..`80`
-  (probe length, angle step, and origin offsets are not identified).
+- Semantic names for the remaining field constants; their **values** are
+  now known and tabulated in
+  [SMALL_DATA_R2_BASE_AND_FLOAT_POOLS](../binary/SMALL_DATA_R2_BASE_AND_FLOAT_POOLS.md).
 - Layout of the 16-byte result groups and the side arrays written by
   `hitCheckVecFilter`; the mapping from `side[i]` to a direction is not
   recovered.

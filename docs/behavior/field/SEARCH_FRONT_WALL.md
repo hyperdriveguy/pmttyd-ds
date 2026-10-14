@@ -92,7 +92,7 @@ that function and this one are gated on one specific field.
 
 ```asm
 8008a3b0: lfs     0, 540(24)           ; mario[+0x21c]
-8008a3b4lfs lfs     1, , -27524(r2)
+8008a3b4: lfs     1,  -27524(r2) = 0.785398
 8008a3b8: fabs    0, 0
 8008a3bc: fcmpo   0, 0, 1
 8008a3c0: cror    2, 1, 2              ; branchless select

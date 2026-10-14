@@ -39,14 +39,14 @@ Stack frame: 96 bytes.
 ```asm
 8008b504: bl      0x8005e0c0           ; marioGetPtr
 8008b508: li      0, 0
-8008b50clfs lfs     1, , -27508(r2)         ; scale constant
+8008b50c: lfs     1,  -27508(r2) = -0.01         ; scale constant
 8008b510: stb     0, 63(3)             ; mario[+0x3f] = 0
 8008b518: lwz     0, 0(3)              ; mario[+0]
 8008b51c: lfs     0, 440(3)            ; mario[+0x1b8]
 8008b520: rlwinm. 0, 0, 0, 11, 11      ; bit 11
 8008b524: fmuls   29, 1, 0             ; r29 = c494_8c * mario[+0x1b8]
 8008b528: bt      2, 0x8008b530
-8008b52clfs lfs     29, , -27540(r2)        ; else r29 = c494_6c
+8008b52c: lfs     29,  -27540(r2) = 24        ; else r29 = c494_6c
 ```
 
 Probe length `r29` is `c494_8c * mario[+0x1b8]` when **bit 11 of
@@ -137,11 +137,11 @@ present in the original and is not a transcription artifact.
 8008b628: lfs     1, 428(31)           ; mario[+0x1ac]
 8008b62c: bl      0x800963fc           ; toMovedir
 8008b634: fmr     30, 1               ; r30 = movedir
-8008b640lfs lfs     3, , -27508(r2)
+8008b640: lfs     3,  -27508(r2) = -0.01
 8008b65c: lfs     0, 440(31)           ; mario[+0x1b8]
 8008b660: fmuls   1, 3, 0             ; f1 = c494_8c * mario[+0x1b8]
 8008b664: bl      0x80005de4           ; movePos  (r3=&stack16, r4=&stack24)
-8008b668lfs lfs     0, , -27500(r2)
+8008b668: lfs     0,  -27500(r2) = 1.2
 8008b678: fadds   30, 30, 0            ; r30 += c494_94
 8008b670: lfs     1, 440(31)           ; f1 = mario[+0x1b8]
 8008b680: fmr     2, 30
@@ -151,7 +151,7 @@ present in the original and is not a transcription artifact.
 8008b698: fcmpo   0, 1, 0
 8008b69c: cror    2, 1, 2              ; branchless select
 8008b6a4: stw     3, 484(31)           ; mario[+0x1e4] = result
-8008b6a8lfs lfs     1, , -27508(r2)
+8008b6a8: lfs     1,  -27508(r2) = -0.01
 8008b6ac: lfs     0, 8(1)
 8008b6b0: fmuls   0, 1, 0
 8008b6b4: stfs    0, 12(1)             ; stack[12] = c494_8c * distance
@@ -199,7 +199,7 @@ When **bit 23 of `mario[+0x24c]` is clear**, a fourth probe runs with
 ```asm
 8008b720: lwz     5, 140(31)
 8008b724: fmr     2, 31                ; f2 = entry angle
-8008b730lfs lfs     1, , -27540(r2)
+8008b730: lfs     1,  -27540(r2) = 24
 8008b734: li      4, 0                 ; r4 = NULL output
 8008b74c: lfs     4, 444(31)           ; f4 = mario[+0x1bc]
 8008b750: bl      0x800888d0           ; marioChkWallAround
