@@ -75,6 +75,8 @@ public:
     MessagePlayback message;
     FieldActorRecord actor;
     bool begin(const FieldActorRecord&,int32_t story,const MessageFont&,uint64_t now,const FieldActorTalkState& state={},const FieldActorTalkInventory& items={});
+    bool canPrint(const FieldActorRecord&,const char* id,const MessageFont&,uint64_t now) const;
+    bool print(const FieldActorRecord&,const char* id,const MessageFont&,uint64_t now);
 private:
     MessageAssets messages;
 };

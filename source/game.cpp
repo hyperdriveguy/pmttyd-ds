@@ -774,6 +774,7 @@ bool Game::near(Vec2 p, float d) const { return length(progress.position,p) < d;
 NpcTalkPlayer Game::fieldNpcTalkPlayer() const {
     NpcTalkPlayer mario;mario.root={progress.position.x*100,(groundHeight+jumpHeight)*100,progress.position.z*100};
     mario.motion=fieldJump.motion;mario.displayTurn=marioPresentation.display;
+    mario.keyDepth=int8_t(goombaHandIn.keyDepth());
     mario.cameraSnapshot=marioPresentation.offset;
     mario.viewFlags=marioPresentation.displayFlags;mario.flags=uint32_t(fieldIdle.mainFlags);
     mario.viewYaw=fieldNpcAngles().angle(fieldCameraFrame.eye.x,fieldCameraFrame.eye.z,fieldCameraFrame.at.x,fieldCameraFrame.at.z);
@@ -793,6 +794,13 @@ bool Game::fieldNpcTalkCandidateAlive() const {
             [&](const auto& actor){return actor.key==npcTalkCandidate &&
                 actor.visible(progress.room,progress.originalStory,fieldDoor.interiorMask,fieldSystemFlags);});
 }
+bool Game::fieldNpcTalkBound(const FieldActorRecord& actor) const {
+    if(!progress.originalStory)return false;
+    const auto items=fieldNpcTalkInventory(actor);
+    return fieldActorTalkAvailable(actor,*progress.originalStory,progress.originalNpcTalkState,items) ||
+        (progress.originalPouch && pouchRevisionAvailable(*progress.originalPouch) &&
+         goombaQuest2Admitted(actor,progress.originalNpcTalkState,items));
+}
 const FieldActorRecord* Game::nearbyFieldActor() const {
     if(scene!=Scene::Explore || !fieldControlEnabled() || fieldKeysOff || saveLocked() || water.active() ||
        fieldStep.active() || fieldDoor.active() || arriving || fade.active() || warpRequest>=0 || pipeRequest>=0)return nullptr;
@@ -810,7 +818,7 @@ const FieldActorRecord* Game::nearbyFieldActor() const {
         const auto live=fieldNpcs.find(actor.key);
         const auto root=live!=fieldNpcs.end()?live->second.body.root:FieldWallVector{actor.position[0],actor.position[1],actor.position[2]};
         const auto flags=live!=fieldNpcs.end()?live->second.body.flags:actor.npcFlags;
-        const bool talkBound=progress.originalStory && fieldActorTalkAvailable(actor,*progress.originalStory,progress.originalNpcTalkState,fieldNpcTalkInventory(actor));
+        const bool talkBound=fieldNpcTalkBound(actor);
         scan.consider({actor.key,root,actor.npcWidth,actor.npcHeight,flags,talkBound},mario,fieldNpcAngles(),rays);
     }
     if(scan.candidate)for(const auto& actor:fieldActorCatalog().actors())
@@ -819,7 +827,7 @@ const FieldActorRecord* Game::nearbyFieldActor() const {
 }
 void Game::updateFieldNpcTalk(const Input& input) {
     if(npcTalkWaiting) {
-        if(!fieldActorTalk.message.active()){npcTalkWaiting=false;npcTalkCandidate=0;}
+        if(!fieldActorTalk.message.active() && !goombaHandIn.active()){npcTalkWaiting=false;npcTalkCandidate=0;}
         return; // Source wait/return owner does not scan again in this invocation.
     }
     if(npcTalkPending) {
@@ -829,7 +837,15 @@ void Game::updateFieldNpcTalk(const Input& input) {
                 actor.visible(progress.room,progress.originalStory,fieldDoor.interiorMask,fieldSystemFlags)) {
                 auto current=actor;const auto live=fieldNpcs.find(actor.key);
                 if(live!=fieldNpcs.end())current.position={live->second.body.root.x,live->second.body.root.y,live->second.body.root.z};
-                if(fieldActorTalk.begin(current,*progress.originalStory,harborMessageFont(),ticks*1000/60,progress.originalNpcTalkState,fieldNpcTalkInventory(current))) {
+                const auto items=fieldNpcTalkInventory(current);
+                bool started=false;
+                if(goombaQuest2Admitted(current,progress.originalNpcTalkState,items) && progress.originalPouch) {
+                    if(!itemSelection)itemSelection=std::make_shared<ItemSelectionPresentation>();
+                    started=goombaHandIn.begin(current,*progress.originalPouch,progress.originalNpcTalkState,
+                                              fieldActorTalk,*itemSelection,harborMessageFont(),ticks*1000/60);
+                    if(started)fieldKeysOff=true;
+                } else started=fieldActorTalk.begin(current,*progress.originalStory,harborMessageFont(),ticks*1000/60,progress.originalNpcTalkState,items);
+                if(started) {
                     if(!(current.npcFlags&0x01000000))fieldActorTalk.actor.yaw=npcReviseAngle(fieldNpcAngles().angle(current.position[0],current.position[2],
                         progress.position.x*100,progress.position.z*100));
                     if(live!=fieldNpcs.end())live->second.movement.yaw=fieldActorTalk.actor.yaw;
@@ -842,7 +858,7 @@ void Game::updateFieldNpcTalk(const Input& input) {
     const FieldActorRecord* actor=nullptr;
     if(fieldNpcEventCandidate) {
         for(const auto& row:fieldActorCatalog().actors())if(row.key==fieldNpcEventCandidate && progress.originalStory &&
-            fieldActorTalkAvailable(row,*progress.originalStory,progress.originalNpcTalkState,fieldNpcTalkInventory(row))){actor=&row;break;}
+            fieldNpcTalkBound(row)){actor=&row;break;}
     } else actor=nearbyFieldActor();
     npcTalkCandidate=fieldNpcEventCandidate?fieldNpcEventCandidate:actor?actor->key:0;
     npcTalkGeneration=fieldActorCatalogGeneration();
@@ -1196,7 +1212,7 @@ const char* Game::prompt() const {
     if (progress.room==0 && !progress.crumpDefeated && near(CrumpPosition)) return "A: confront Lord Crump";
     if (progress.room==0 && near(NpcPosition)) return "A: talk";
     if(fieldNpcTalkCandidateAlive()) {
-        for(const auto& actor:fieldActorCatalog().actors())if(actor.key==npcTalkCandidate && progress.originalStory && !fieldActorTalkAvailable(actor,*progress.originalStory,progress.originalNpcTalkState,fieldNpcTalkInventory(actor)))return "Development notice: NPC event unavailable";
+        for(const auto& actor:fieldActorCatalog().actors())if(actor.key==npcTalkCandidate && progress.originalStory && !fieldNpcTalkBound(actor))return "Development notice: NPC event unavailable";
         return "A: talk";
     } // Retained simulation result; no render-time map ray.
     return "Circle Pad: move   A: jump   X: partner";
@@ -1871,6 +1887,11 @@ void Game::tick(const Input& rawInput) {
         }
         if(tap)selection.buttons|=0x100;
         itemSelection->tick(selection,TickRate,uint32_t(ticks));
+        if(goombaHandIn.active()) {
+            goombaHandIn.tick(ticks*1000/60);
+            fieldKeysOff=goombaHandIn.keyDepth()!=0;
+            if(!goombaHandIn.active()){scene=Scene::Explore;progress.hp=progress.originalPouch->half(0x70);}
+        }
         if(fieldJump.airborne)dispatchFieldAir();
         move(Input{});saveRequested=false;return;
     }
@@ -1878,8 +1899,20 @@ void Game::tick(const Input& rawInput) {
         if(fieldJump.airborne)dispatchFieldAir();
         move(Input{});
         fieldActorTalk.message.tick(ticks*1000/60,(i.confirm || tap?0x100u:0u)|(i.cancel?0x200u:0u));
-        saveRequested=false;if(!fieldActorTalk.message.active())scene=Scene::Explore;
+        if(goombaHandIn.active()) {
+            goombaHandIn.tick(ticks*1000/60);
+            fieldKeysOff=goombaHandIn.keyDepth()!=0;
+            if(!goombaHandIn.active())progress.hp=progress.originalPouch->half(0x70);
+        }
+        saveRequested=false;if(!fieldActorTalk.message.active() && !goombaHandIn.active())scene=Scene::Explore;
         return;
+    }
+    if(goombaHandIn.active()) {
+        if(fieldJump.airborne)dispatchFieldAir();
+        move(Input{});goombaHandIn.tick(ticks*1000/60);
+        fieldKeysOff=goombaHandIn.keyDepth()!=0;
+        if(!goombaHandIn.active()){scene=Scene::Explore;progress.hp=progress.originalPouch->half(0x70);}
+        saveRequested=false;return;
     }
     if(trioBattleActive) {
         trioBattleIntro.tick(ticks*1000/60,(i.confirm || tap?0x100u:0u)|(i.cancel?0x200u:0u),false);

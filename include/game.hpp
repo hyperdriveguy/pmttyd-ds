@@ -1,5 +1,6 @@
 #pragma once
 #include "item_selection_presentation.hpp"
+#include "goomba_hand_in.hpp"
 #include "field_party.hpp"
 #include <array>
 #include <cstdint>
@@ -293,6 +294,8 @@ public:
 private:
     NpcTalkPlayer fieldNpcTalkPlayer() const;
     FieldActorTalkInventory fieldNpcTalkInventory(const FieldActorRecord&) const;
+    bool fieldNpcTalkBound(const FieldActorRecord&) const;
+    GoombaHandIn goombaHandIn;
     bool fieldNpcTalkCandidateAlive() const;
     uint32_t npcTalkCandidate=0;
     uint32_t npcTalkPending=0;

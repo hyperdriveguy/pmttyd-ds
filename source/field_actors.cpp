@@ -45,13 +45,23 @@ bool fieldActorTalkAvailable(const FieldActorRecord& actor,int32_t story,const F
     return actor.talkRulesBound?talkRule(actor,story)!=nullptr:!actor.talkPrefix.empty();
 }
 bool FieldActorTalk::begin(const FieldActorRecord& source,int32_t story,const MessageFont& font,uint64_t now,const FieldActorTalkState& state,const FieldActorTalkInventory& items) {
-    if(message.active() || assetRoot.empty() || source.talkPrefix.size()<6)return false;
     const auto key=fieldActorTalkKey(source,story,state,items);if(key.empty())return false;
+    return print(source,key.c_str(),font,now);
+}
+bool FieldActorTalk::canPrint(const FieldActorRecord& source,const char* id,const MessageFont& font,uint64_t now) const {
+    if(!id || assetRoot.empty() || source.talkPrefix.size()<6)return false;
+    MessageAssets probe;
+    if(!probe.loadGlobal((assetRoot+"/messages/global.txt").c_str()) ||
+       !probe.loadRoom((assetRoot+"/messages/"+source.talkPrefix.substr(0,6)+".txt").c_str()))return false;
+    const auto* text=probe.find(id);MessagePlayback playback;return text && playback.open(id,text,font,now);
+}
+bool FieldActorTalk::print(const FieldActorRecord& source,const char* id,const MessageFont& font,uint64_t now) {
+    if(message.active() || !id || assetRoot.empty() || source.talkPrefix.size()<6)return false;
     MessageAssets next;
     if(!next.loadGlobal((assetRoot+"/messages/global.txt").c_str()) ||
        !next.loadRoom((assetRoot+"/messages/"+source.talkPrefix.substr(0,6)+".txt").c_str()))return false;
-    const auto* text=next.find(key.c_str());if(!text)return false;
-    if(!message.open(key.c_str(),text,font,now))return false;
+    const auto* text=next.find(id);if(!text)return false;
+    if(!message.open(id,text,font,now))return false;
     messages=std::move(next);actor=source;return true;
 }
 bool FieldActorAssets::load(const char* path) {
