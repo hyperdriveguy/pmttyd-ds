@@ -35,5 +35,6 @@ class BeroInfoAssets(unittest.TestCase):
   self.assertEqual(east['entries'][0]['source_node'],1215808)
   self.assertEqual(struct.unpack('>15I',span(0x8030cd78,60)),(0,0xf000000,20000,100000,0,0,0xffffffff,0,0xffffffff,0,0,0,0x10001,0,0))
   self.assertEqual(span(0x80416060,20).hex(),'00020032fe363c80000000000000000200000001')
+  self.assertEqual(span(0x80416074,20),span(0x80416060,20))
   for n,name in enumerate([b'n_',b'ne_',b'e_',b'se_',b's_',b'sw_',b'w_',b'nw_']):
    ptr=struct.unpack('>I',span(0x802c2c28+4*n,4))[0];self.assertEqual(span(ptr,len(name)+1),name+b'\0')

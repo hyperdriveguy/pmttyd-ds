@@ -19,6 +19,9 @@ public:
  uint64_t epoch() const{return epoch_;}
  bool mapFlag(const std::string& name,uint32_t mask,bool on);
  bool hitEnabled(const std::string& name,bool enabled);
+ bool hitFlags(const std::string& name,uint16_t mask,bool on);
+ std::optional<uint32_t> hitSourceNode(const std::string& name) const; // Name lookup excludes80, not1.
+ uint32_t room() const;
  std::optional<uint32_t> mapFlags(const std::string& name) const;
  std::optional<bool> hitEnabled(const std::string& name) const;
  const std::vector<uint32_t>& disabledHits() const{return disabled_;}
@@ -35,7 +38,7 @@ private:
  uint32_t room_=UINT32_MAX;
  uint64_t generation_=0,epoch_=0;
  std::vector<uint32_t> flags_,disabled_;
- std::vector<uint8_t> hitDisabled_;
+ std::vector<uint16_t> hitFlags_;
  mutable std::vector<std::array<uint32_t,2>> visible_;
  mutable bool dirty_=true;
  int find(const std::string&) const;

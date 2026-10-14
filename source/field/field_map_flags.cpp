@@ -50,12 +50,12 @@ bool loadFieldMapFlagAssets(const char* root) {
  ok=ok && std::fgetc(f)==EOF;std::fclose(f);if(!ok)return false;
  assets=std::move(next);++generation;return true;
 }
-void FieldMapFlags::invalidate() {geometry_.reset();flags_.clear();hitDisabled_.clear();disabled_.clear();visible_.clear();dirty_=true;room_=UINT32_MAX;++epoch_;}
+void FieldMapFlags::invalidate() {geometry_.reset();flags_.clear();hitFlags_.clear();disabled_.clear();visible_.clear();dirty_=true;room_=UINT32_MAX;++epoch_;}
 void FieldMapFlags::synchronize(uint32_t room) {
  if(room_==room && generation_==generation)return;
  invalidate();room_=room;generation_=generation;
  const auto it=assets.find(room);if(it==assets.end())return;
- geometry_=it->second;flags_.resize(geometry_->nodes.size());hitDisabled_.resize(flags_.size());
+ geometry_=it->second;flags_.resize(geometry_->nodes.size());hitFlags_.resize(flags_.size());
 }
 bool FieldMapFlags::ready(uint32_t vertices) const{return geometry_ && generation_==generation && geometry_->vertices==vertices;}
 int FieldMapFlags::find(const std::string& name) const {
@@ -73,17 +73,18 @@ bool FieldMapFlags::mapFlag(const std::string& name,uint32_t mask,bool on) {
  }
  return true;
 }
-bool FieldMapFlags::hitEnabled(const std::string& name,bool enabled) {
+bool FieldMapFlags::hitEnabled(const std::string& name,bool enabled) {return hitFlags(name,1,!enabled);}
+bool FieldMapFlags::hitFlags(const std::string& name,uint16_t mask,bool on) {
  const auto target=find(name);if(target<0 || !geometry_->nodes[unsigned(target)].collision)return false;
- for(unsigned n=unsigned(target);n<hitDisabled_.size();++n) {
+ for(unsigned n=unsigned(target);n<hitFlags_.size();++n) {
   auto parent=int(n);while(parent>=0 && parent!=target)parent=geometry_->nodes[unsigned(parent)].parent;
-  if(parent>=0 && geometry_->nodes[n].collision)hitDisabled_[n]=!enabled;
+  if(parent>=0 && geometry_->nodes[n].collision)hitFlags_[n]=on?uint16_t(hitFlags_[n]|mask):uint16_t(hitFlags_[n]&~mask);
  }
- disabled_.clear();for(unsigned n=0;n<hitDisabled_.size();++n)if(hitDisabled_[n])disabled_.push_back(geometry_->nodes[n].source);
+ disabled_.clear();for(unsigned n=0;n<hitFlags_.size();++n)if(hitFlags_[n]&0x81)disabled_.push_back(geometry_->nodes[n].source);
  std::sort(disabled_.begin(),disabled_.end());return true;
 }
 std::optional<uint32_t> FieldMapFlags::mapFlags(const std::string& name) const{const auto n=find(name);return n<0?std::nullopt:std::optional<uint32_t>(flags_[unsigned(n)]);}
-std::optional<bool> FieldMapFlags::hitEnabled(const std::string& name) const{const auto n=find(name);return n<0 || !geometry_->nodes[unsigned(n)].collision?std::nullopt:std::optional<bool>(!hitDisabled_[unsigned(n)]);}
+std::optional<bool> FieldMapFlags::hitEnabled(const std::string& name) const{const auto n=find(name);return n<0 || !geometry_->nodes[unsigned(n)].collision?std::nullopt:std::optional<bool>(!(hitFlags_[unsigned(n)]&0x81));}
 void FieldMapFlags::refreshVisibility() const {
  if(!dirty_)return;
  visible_.clear();uint32_t n=0;
@@ -94,5 +95,9 @@ void FieldMapFlags::refreshVisibility() const {
  }
  dirty_=false;
 }
+std::optional<uint32_t> FieldMapFlags::hitSourceNode(const std::string& name) const {
+ const auto n=find(name);return n<0 || !geometry_->nodes[unsigned(n)].collision || (hitFlags_[unsigned(n)]&0x80)?std::nullopt:std::optional<uint32_t>(geometry_->nodes[unsigned(n)].source);
+}
+uint32_t FieldMapFlags::room() const{return ready(vertices())?room_:UINT32_MAX;}
 uint32_t FieldMapFlags::vertices() const{return geometry_?geometry_->vertices:0;}
 }

@@ -1,4 +1,6 @@
 #include "field_bero_info.hpp"
+#include "field_map_flags.hpp"
+#include "field_bero_exec.hpp"
 #include "event_script_assets.hpp"
 #include "event_manager.hpp"
 #include <cstdio>
@@ -9,7 +11,7 @@ namespace ttyd {
 struct FieldBeroInfoProgram {
  struct Table {uint32_t address;std::vector<uint32_t> nodes;};
  EventScriptAssets data;
- uint32_t fallback=0,defaultEvent=0,prefixes=0;
+ uint32_t fallback=0,defaultEvent=0,defaultOut=0,prefixes=0;
  std::unordered_map<uint32_t,Table> tables;
  bool text(uint32_t address,std::string& out) const {
   out.clear();for(unsigned n=0;n<64;++n){uint8_t byte=0;if(!data.readByte(address+n,byte))return false;if(!byte)return true;out.push_back(char(byte));}return false;
@@ -23,8 +25,8 @@ bool loadFieldBeroInfoAssets(const char* root) {
  if(!next->data.load((base+"/bero-info.pmevt").c_str()))return false;
  FILE* f=std::fopen((base+"/bero-info.bin").c_str(),"rb");if(!f)return false;
  char magic[8];uint32_t count=0;
- bool ok=std::fread(magic,8,1,f)==1 && !std::memcmp(magic,"PMBRIO01",8) && std::fread(&count,4,1,f)==1 && count && count<=64 &&
-  std::fread(&next->fallback,4,1,f)==1 && std::fread(&next->defaultEvent,4,1,f)==1 && std::fread(&next->prefixes,4,1,f)==1;
+ bool ok=std::fread(magic,8,1,f)==1 && !std::memcmp(magic,"PMBRIO02",8) && std::fread(&count,4,1,f)==1 && count && count<=64 &&
+  std::fread(&next->fallback,4,1,f)==1 && std::fread(&next->defaultEvent,4,1,f)==1 && std::fread(&next->prefixes,4,1,f)==1 && std::fread(&next->defaultOut,4,1,f)==1;
  for(unsigned n=0;ok && n<count;++n) {
   uint32_t room=0,number=0;FieldBeroInfoProgram::Table t{};
   ok=std::fread(&room,4,1,f)==1 && std::fread(&t.address,4,1,f)==1 && !(t.address&3) && std::fread(&number,4,1,f)==1 && number && number<=16;
@@ -40,14 +42,48 @@ bool loadFieldBeroInfoAssets(const char* root) {
  }
  uint32_t word=0;for(unsigned w=0;ok && w<15;++w)ok=next->data.readWord(next->fallback+4*w,word);
  for(unsigned n=0;ok && n<8;++n){std::string text;ok=next->data.readWord(next->prefixes+4*n,word) && next->text(word,text) && !text.empty();}
- ok=ok && next->data.readWord(next->defaultEvent,word) && std::fgetc(f)==EOF;std::fclose(f);if(!ok)return false;
+ ok=ok && next->data.readWord(next->defaultEvent,word) && next->data.readWord(next->defaultOut,word) && std::fgetc(f)==EOF;std::fclose(f);if(!ok)return false;
  assets=std::move(next);++generation;return true;
 }
-void FieldBeroInfo::invalidate(){program_.reset();room_=UINT32_MAX;incomingKnown_=false;incoming_.clear();publication_.reset();}
+void FieldBeroInfo::invalidate(){program_.reset();room_=UINT32_MAX;incomingKnown_=false;registered_=false;entries_={};switches_={};incoming_.clear();publication_.reset();}
 void FieldBeroInfo::synchronize(uint32_t room) {
  if(room_==room && generation_==generation)return;
  invalidate();room_=room;generation_=generation;
  if(assets && assets->tables.count(room))program_=assets;
+}
+bool FieldBeroInfo::registered() const{return program_ && generation_==generation && registered_;}
+bool FieldBeroInfo::initialize(const FieldMapFlags& map,FieldBeroExec& exec) {
+ if(!program_ || generation_!=generation || map.room()!=room_)return false;
+ if(registered_)return true;
+ const auto& table=program_->tables.at(room_);
+ // Missing/flag80 names would invoke the still-unbound original map-error ring.
+ // Hold that diagnostic domain; ordinary validated names perform the real stores.
+ for(unsigned n=0;n<table.nodes.size();++n){uint32_t pointer=0;std::string name;
+  if(!program_->data.readWord(table.address+60*n,pointer) || !program_->text(pointer,name) || map.hitSourceNode(name)!=std::optional<uint32_t>(table.nodes[n]))return false;
+ }
+ entries_={};for(unsigned n=0;n<table.nodes.size();++n){entries_[n]=table.address+60*n;switches_[n]=-1;}
+ exec.afterInfo();registered_=true;return true;
+}
+std::optional<float> FieldBeroInfo::length(int32_t index) const {
+ if(!program_ || generation_!=generation || index<0)return std::nullopt;
+ const auto& t=program_->tables.at(room_);if(uint32_t(index)>=t.nodes.size())return std::nullopt;
+ uint32_t word=0,kind=0;if(!program_->data.readWord(t.address+60*uint32_t(index)+24,word))return std::nullopt;
+ if(word!=UINT32_MAX)return float(signedWord(word));
+ if(!program_->data.readWord(t.address+60*uint32_t(index)+4,kind))return std::nullopt;
+ kind=(kind>>16)&0xfff;return kind==0 || kind==3 || kind==0xf00?30.f:60.f;
+}
+bool FieldBeroInfo::infoByIndex(EventEntry& event,int32_t index) const {
+ if(!registered() || index<0 || uint32_t(index)>=program_->tables.at(room_).nodes.size() || !switches_[unsigned(index)])return false;
+ const auto address=entries_[unsigned(index)];uint32_t name=0,kind=0,direction=0,entry=0,caseType=0,exit=0,map=0,destination=0;
+ if(!readWord(address,name) || !readWord(address+4,kind) || !readWord(address+8,direction) || !readWord(address+28,entry) || !readWord(address+32,caseType) || !readWord(address+36,exit) || !readWord(address+40,map) || !readWord(address+44,destination))return false;
+ kind>>=16;
+ if(direction==20000){direction=10000;if((kind&0xfff)<=1){std::string text;if(!program_->text(name,text))return false;direction=8;
+  for(unsigned n=0;n<8;++n){uint32_t pointer=0;std::string prefix;if(!readWord(program_->prefixes+4*n,pointer) || !program_->text(pointer,prefix))return false;if(text.compare(0,prefix.size(),prefix)==0){direction=n;break;}}
+ }}
+ if(caseType==UINT32_MAX)switch(kind&0xfff){case 0xf00:caseType=0;break;case 0:caseType=10;break;case 1:caseType=9;break;case 2:caseType=4;break;case 3:caseType=7;break;}
+ const uint32_t words[]={name,kind,direction,address+12,entry?entry:program_->defaultEvent,0xffff0000,uint32_t(*switches_[unsigned(index)]),caseType,exit?exit:program_->defaultOut,0xffff0000,map,destination};
+ for(unsigned n=0;n<12;++n)event.locals[n+3]=signedWord(words[n]);
+ return true;
 }
 bool FieldBeroInfo::known() const{return program_ && generation_==generation && incomingKnown_;}
 bool FieldBeroInfo::publishIncoming(const std::string& name,uint32_t flags) {

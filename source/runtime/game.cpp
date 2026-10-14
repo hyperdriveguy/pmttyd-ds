@@ -251,8 +251,8 @@ bool Game::resolveRoadCallbacks(const RoadWarp& road) {
     return roadPolicy==RoadPolicy::Generic;
 }
 uint32_t Game::warpTarget() const {return warpRequest>=0 && size_t(warpRequest)<roads.size()?roads[warpRequest].target:UINT32_MAX;}
-// Reciprocal marker direction positions arrival .3 native units (30 engine)
-// before/after its center. Validate start floor, then restore staged Game.
+// Reciprocal marker start uses the original fixed30-unit radius; the final
+// offset uses the original entry length query. Validate floor, then restore.
 // This is the scoped native arrival adapter, not the complete mapchange event.
 bool Game::finishWarp() {
     if(warpRequest<0 || size_t(warpRequest)>=roads.size())return false;
@@ -262,7 +262,11 @@ bool Game::finishWarp() {
     if(reverse==roads.end())return false;
     float dx=0,dz=0;roadDirection(reverse->direction,dx,dz);
     const Vec2 start{reverse->x+dx*.3f,reverse->z+dz*.3f};
-    Vec2 arrival{reverse->x-dx*.3f,reverse->z-dz*.3f};
+    float entryLength=30.f; // Legacy no-catalog adapter; native boot requires the original catalog.
+    FieldBeroInfo destinationInfo;destinationInfo.synchronize(w.target);
+    if(destinationInfo.publishRoadIncoming(w.arrivalNode,fieldSystemFlags))
+        if(const auto state=destinationInfo.publication())if(const auto length=destinationInfo.length((*state)[0]))entryLength=*length;
+    Vec2 arrival{reverse->x-dx*entryLength*.01f,reverse->z-dz*entryLength*.01f};
     RoadMotion staged;
     if(!staged.begin({start.x,start.z},{arrival.x,arrival.z}))return false;
     if(!roadStartGround(start,reverse->centerY,height))return false;
@@ -271,9 +275,11 @@ bool Game::finishWarp() {
     const RoadCallback entryCallback=inCallback(w);
     restore(next);groundHeight=height;cameraHeight=height;partner=arrival;partnerHeight=height;partnerContact=groundContact;
     fieldSystemFlags=entryCallback==RoadCallback::DebugArrival?systemFlags&~0x40u:systemFlags;
-    // Actual original table query outputs for this incoming named road. This
-    // does not acknowledge the remaining Bero child or its later local writes.
-    fieldBeroInfo.publishRoadIncoming(w.arrivalNode,fieldSystemFlags);
+    // Actual valid-name get_info and query/set-now prefix for this named road.
+    // Remaining Bero child execution and later local writes stay unbound.
+    fieldBeroInfo.initialize(fieldMapFlags,*beroExec);
+    if(fieldBeroInfo.publishRoadIncoming(w.arrivalNode,fieldSystemFlags))
+        if(const auto query=fieldBeroInfo.publication())fieldBeroInfo.setCurrentNumber((*query)[0]);
     rebaseFieldCamera();
     arrivalStart=start;arrivalEnd=arrival;
     registerRoadCases(false);partnerFollow={};saveRequested=true;return true;
@@ -1311,6 +1317,7 @@ void Game::restore(const Progress& saved) {
     fieldCameraFrame=retainedFrame;fieldCameraAuthored=retainedAuthored;
     fieldCameraSimulationTicks=cameraClock;fieldCameraShift.previousMilliseconds=shiftTimestamp;
     progress = p;
+    fieldBeroInfo.unknownCurrentNumber(); // Restore is not an original set_now_number writer.
     fenceCollisionDisabled=p.room==2 && p.originalStory.value_or(0)>=10;
     troubleDoorNotice=false;
     fieldDoor.interiorMask=p.interiorMask;
