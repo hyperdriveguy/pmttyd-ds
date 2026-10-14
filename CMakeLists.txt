@@ -1088,3 +1088,8 @@ target_sources(ttyd_core PRIVATE source/battle_hp_gauge.cpp)
 add_executable(battle_hp_gauge_tests tests/battle_hp_gauge_tests.cpp)
 target_link_libraries(battle_hp_gauge_tests PRIVATE ttyd_core)
 add_test(NAME battle_hp_gauge COMMAND battle_hp_gauge_tests)
+
+target_sources(ttyd_core PRIVATE source/battle_weapon_table.cpp)
+add_executable(battle_weapon_table_tests tests/battle_weapon_table_tests.cpp)
+target_link_libraries(battle_weapon_table_tests PRIVATE ttyd_core)
+add_test(NAME battle_weapon_table COMMAND battle_weapon_table_tests)

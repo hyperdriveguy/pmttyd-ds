@@ -850,3 +850,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Unit alpha construction and display size lanes](battle/UNIT_ALPHA_CONSTRUCTION_AND_DISPLAY_SIZE_STATUS_LANES.md).
 - [Forced part-pose display rate and animation frontier](battle/FORCED_PART_POSE_DISPLAY_RATE_AND_ANIMATION_FRONTIER.md).
 - [Battle pose pool provisioning and native admission](display/BATTLE_POSE_POOL_PROVISIONING_AND_TYPED_NATIVE_ADMISSION.md).
+
+- [Shared original weapon-table production and eligibility](battle/NATIVE_WEAPON_TABLE_PRODUCTION.md)

@@ -1091,7 +1091,7 @@ struct TrioAttackRuntime {
         readyActor=selectBattlePhaseActor(Battle,phaseServices());const auto u=word(Battle+0x20+4*readyActor);word(Battle+0x420,readyActor);word(u+0x27c,word(u+0x27c)|0x1000);word(Battle+0xf1c,0x05000009);word(Battle+0xf20,command?0x06000002:0x06000000);
         for(unsigned i=0;i<64;++i){const auto id=word(Battle+0x120+4*i);if(id==0xffffffff)continue;const auto p=word(Battle+0x20+4*id);if(p && byte(p+0x20)==1)byte(p+0x20,0);}word(u+0x284,0);word(u+0x2d0,0);
     }
-    bool launch(const TrioBattleCommands& menu){const auto weapon=menu.attack->weapon;word(Battle+0x420,menu.actor);word(Battle+0x1c5c,menu.actor==2?2:menu.command);word(Battle+0x171c+0x540,menu.actor==2?2:menu.command);word(Battle+0x171c+(menu.actor==2?0x51c:0x4b0),0);word(Battle+0x171c+0x80,weapon);for(unsigned i=0;i<menu.candidates.bytes.size();++i)byte(Battle+0x428+i,menu.candidates.bytes[i]);
+    bool launch(const TrioBattleCommands& menu){const auto weapon=menu.attack->weapon;word(Battle+0x420,menu.actor);word(Battle+0x1c5c,menu.actor==2?6:menu.command);word(Battle+0x171c+0x540,menu.actor==2?6:menu.command);word(Battle+0x171c+(menu.actor==2?0x4c8:menu.command==0?0x4b0:0x4bc),0);word(Battle+0x171c+0x80,weapon);for(unsigned i=0;i<menu.candidates.bytes.size();++i)byte(Battle+0x428+i,menu.candidates.bytes[i]);
         const auto u=word(Battle+0x20+4*menu.actor);
         BattleAttackSelectionServices selection;selection.memory=nativeBattleActorServices(vm);selection.user=this;
         selection.cursor=[](void* self,uint32_t command,uint32_t type,uint32_t& cursor){auto& r=*static_cast<TrioAttackRuntime*>(self);return findPackedCommandCursor(command,type,cursor,nativeBattlePackedSelectionServices(r.vm));};

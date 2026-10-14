@@ -175,6 +175,8 @@ int main(){
     assert(game.trioAttack.readWord(0x84101020,value) && ((value>>24)&255)==10 && ((value>>8)&255)==0);
     assert(game.trioAttack.readWord(0x84102020,value) && ((value>>8)&255)==1);
     game.tick(advance);game.tick(Input{});assert(game.trioAttack.active());
+    assert(game.trioAttack.readWord(0x84001c5c,value) && value==6);
+    assert(game.trioAttack.readWord(0x84016f54,value) && ((value>>16)&255)==1);
     for(unsigned i=0;i<1200 && !game.trioAttack.pendingFunction() && !game.trioAttack.finished();++i)game.tick(Input{});
     assert(game.trioAttack.finished() && !game.trioAttack.pendingFunction());
     assert(game.trioBattleIntro.actors[3].hidden && game.trioBattleIntro.actors[1].pose=="PKR_S_1");

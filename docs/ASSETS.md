@@ -2051,3 +2051,12 @@ No new game payload or texture/geometry/lighting conversion changed; original
 HUD resources remain in existing ignored packs. Window slide animation is
 unimplemented. Inspection ELF remains ignored; original source content retains
 Nintendo/Intelligent Systems licensing restrictions.
+
+## Original weapon-table production (2026-10-14)
+
+Shared table/eligibility helpers use original weapon/ItemData pointers, keys,
+icons and source badge/Special arrays already present in private packs. Existing
+read-only ISO verifiers pin the complete builder and target/updater bodies.
+No new game payload, text rewrite, texture, geometry or lighting conversion was
+added. Extracted assets remain ignored; Nintendo/Intelligent Systems licensing
+restrictions remain. Inspection ELF stays under ignored artifacts.
