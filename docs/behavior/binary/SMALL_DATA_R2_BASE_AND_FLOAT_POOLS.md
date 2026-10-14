@@ -153,9 +153,31 @@ doubt. Whether that branch is genuinely reachable, or is guarded by the
 `fcmpo` at `0x800DC988` in a way that prevents the division, was **not**
 determined here. Flagged rather than resolved.
 
+## Pool extent — measured, and deliberately not bounded
+
+An automated sweep of `r2 - 27612` .. `r2 - 23276` (over 160 words beyond
+the tabulated windows) shows the region is **dense with trigonometric
+constants** far beyond what is tabulated above: further occurrences of
+π/180, 2π, π/4, π/2, 6π, π/3, 2π/3 (`2.0943952`), π/30, and 1/2^k scale
+factors, interleaved with values such as 13.333, 0.33333, 1/128, 1/32,
+1/256 and 1/96.
+
+**No boundary is claimed.** The automatic "looks like a literal" filter
+was tried and rejected as a boundary detector: it rejects π/180 and 2π
+themselves (their shortest round-trip decimal is longer than 8 characters)
+while accepting integer tables read as floats. Any stated extent from that
+method would be an artifact of the filter.
+
+The honest statement is that the constant region around `r2` extends at
+least from `0x80424460` to `0x8042554c` — the span scanned — and is
+**larger than the two windows tabulated here**. A full enumeration needs
+per-use cross-referencing, not a value filter.
+
 ## Remaining gaps
 
-- Constants outside the two ranges tabulated above; the region either side
-  was not enumerated.
-- Whether the pool is contiguous beyond these windows.
+- Full enumeration of the constant region; only the two windows that this
+  project's existing contracts actually reference are tabulated.
+- The writer of `slot+0x06` bit 30, which `psndSFXMain` reads to gate the
+  `calc3D` spatial route. `__psndSFXOn` does not set it.
+- The `-23384(r2) = 0.0` divisor branch in `calc3D` (raised above).
 - No original execution trace; the pools are read from static bytes only.

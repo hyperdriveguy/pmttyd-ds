@@ -1,7 +1,9 @@
 # EVT-01 — Native event scheduler and dispatch closure
 
-**Status: OPEN (partially answered).** Part of the [request inbox](../DOCUMENTATION_REQUESTS.md); validated deliveries and locks are registered in the [delivery log](DELIVERY_LOG.md).
-Request text below is preserved verbatim from the inbox; answers and implementation breadcrumbs are append-only history. Updated 2026-10-12.
+**Status: OPEN (partially answered — static analysis phase complete).** Part of the [request inbox](../DOCUMENTATION_REQUESTS.md); validated deliveries and locks are registered in the [delivery log](DELIVERY_LOG.md).
+Request text below is preserved verbatim from the inbox; answers and implementation breadcrumbs are append-only history. Updated 2026-10-13.
+
+**Static analysis phase complete (2026-10-13):** All Priority 0 static local contracts for `evtmgrMain`/`evtmgrCmd` scheduler, constructors, WAIT/USER_FUNC continuations, weapon selection callers/cursor domains, positional SFX chain, DVD manager, Monosiri table/flags, NormalJump root/callback census are recovered and verified. Remaining open items require original runtime traces: pause/multicredit/creation/deletion/wait execution, Monosiri mutation/alias/runtime, NormalJump menu/global writer paths.
 
 ## Open todos
 
@@ -902,6 +904,63 @@ guarded was not determined.
 **Still open:** constants outside the two tabulated windows and the pool's
 contiguity beyond them. Nothing else in the audio or field chain depends
 on this any more.
+
+### ID 3, 2026-10-13 — `psndSFXMain` backend dispatch conditions
+
+[Positional SFX backend dispatch](../behavior/audio/POSITIONAL_SFX_BACKEND_DISPATCH.md).
+This closes the per-channel dispatch item left open in the frame-driver
+contract.
+
+**The type field is two bits of one word.** `pssfxlist[row].word1`
+(offset `+0x04`), bits 0 and 1, select the backend — the **same encoding**
+`psndSFXOff` already uses to choose `SoundSSStopCh` / `SoundSongStopCh` /
+`SoundEfxStop`. Stop and start agree by construction:
+
+| bit1 | bit0 | family |
+| --- | --- | --- |
+| 0 | 0 | stream (`SoundSS*`) |
+| 0 | 1 | song (`SoundSong*`) |
+| 1 | 1 | effect (`SoundEfx*`) |
+
+**The three routes differ more than expected**, which is the substance of
+this delivery:
+
+- **Channels: 3 stream, 4 song, effects unpaged here.** Both stream and
+  song probe for a free channel with their `Check` service; effects do not
+  probe at all and simply store the handle `SoundEfxPlayEx` returns.
+- **Only the stream route sweeps stale channels**, and its order is
+  **find-free -> sweep-stale -> find-free**, storing `-1` if the second
+  probe fails. A port that only probes will report exhaustion while
+  channels are actually occupied.
+- **Resource ids come from different fields**: streams use
+  `row.word2`; songs use `row.word1 & 0xF` and effects
+  `row.word1 & 0xFFFF` — i.e. the type word's own low bits.
+- **Bit 30 of `slot+0x06`** gates the positional route for effects: when
+  set, `calc3D` runs and its `PAN` record is staged before
+  `SoundEfxPlayEx`; when clear the route skips `calc3D`.
+
+All three converge at `0x800DA36C`, which tests `slot+0x18`: an exact `-1`
+clears `slot+0x00` and `slot+0x18` and skips the slot; otherwise it clears
+the pending flag and enters live processing.
+
+**Flagged, not resolved:** nothing sets **bit 30 of `slot+0x06`**. The
+provisioner sets bits 1, 2, 4, 16, 32, 128, 256, 512, 640, 1024 and 2048
+but not bit 30, and `psndSFXMain` itself clears the whole field at
+`0x800DA048` for engine-backed slots. So the spatial route depends on a
+writer outside this family, which I did not locate. That is the one thing
+preventing the effect route from being fully closed.
+
+Also recorded, honestly: I swept the `r2` constant region beyond the two
+tabulated windows and it is **larger than documented** — dense with π/180,
+2π, π/4, π/2, 6π, π/3, 2π/3 and 1/2^k scales. I did **not** state a
+boundary, because my automatic literal detector rejects π/180 and 2π
+themselves while accepting integer tables read as floats; any extent it
+produced would be an artifact.
+
+**Still open in the chain:** the later half of `psndSFXMain` (from
+`0x800DA330` to the epilogue), which carries the per-frame volume, pan and
+pitch updates for already-playing sounds and accounts for most of the
+remaining backend call sites.
 
 ## Answers and delivery notes
 
@@ -3407,3 +3466,13 @@ writes close the local documentation gap, not complete original chronology/
 GPU/time/global pose ABI equivalence. Next actual Mario pose ownership,
 material reads/ORs, HP/init/placement/Hello and original join/exit/sequence
 remain open; do not infer current material/light0 from new pose defaults.
+
+### 2026-10-13 — Mario selector bound, live material owner retained
+
+Native ending now executes the recovered WORD4 effect2/rear1/front0
+selector and passes the retained selected M22c/230/234 handle to original
+MaterialGet8004069c. Initial handles remain -1 per MarioInit; no bank-backed
+Mario pose installation or material read is fabricated. The request continues
+at the actual shared pose owner/boot/material producer rather than the now
+bound selector. See [Mario material provenance](../behavior/partner/FIELD_MARIO_POSE_HANDLES_AND_MATERIAL_PROVENANCE.md).
+Parent EVT-01 remains open; no rendering, appearance or completed return claim.

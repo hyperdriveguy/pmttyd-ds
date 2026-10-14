@@ -49,6 +49,7 @@ suffix.
 
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
+| [Native original prologue heading](display/NATIVE_OPENING_HEADING.md) | Original glyph/background palette, subtitle GPU cache/ring, source letter clock, real curtain/exit presentation acknowledgments | Projective rainbow TEV, Stardust mode4 particle consumer, original/hardware raster parity |
 | [Trio field-return handshake](battle/UNDERGROUND_TRIO_FIELD_RETURN_HANDSHAKE.md) | Exact sequence>30/callback teardown/retained fade presets, authored Goombella join, nested controls and original field wait/161-command continuation | Native BattleEnd/context release/appearance/party constructor/sequence/pouch-save lifetimes and original execution |
 | [Ending map-heap free and remaining-unit teardown](battle/ENDING_HEAP_FREE_AND_REMAINING_UNIT_TEARDOWN.md) | Exact BattleFree/_mapFree header/coalescing/null behavior and later ordered BattleEnd64-unit/resources/free/global clear | Native map allocator/bootstrap/field constructors and transitive teardown/context lifetime |
 | [Battle ending original map allocation](memory/BATTLE_END_MAP_ALLOCATION_BINDING.md) | Actual BattleAlloc8934,32-byte best-fit/split/fill/cache, nested400KiB arena/bootstrap and correct E alloc/free pairing | Native prior allocation history/arena/SDK/cache/adapted addresses and original execution |
@@ -223,6 +224,7 @@ suffix.
 | [SFX update/corrections](audio/POSITIONAL_SFX_UPDATE_OWNERS_AND_SOURCE_CORRECTIONS.md) | Complete psndMain cooldown owner; scoped SFXMain completion sweep/pending transition/preference tail; corrected source masks/ABI/dispatch | Full SFXMain middle/spatial/start/backend/resource and original execution |
 | [Audio frame driver and SFX update](audio/AUDIO_FRAME_DRIVER_AND_SFX_UPDATE.md) | Complete psndMain (init_f gate, signed-byte cooldown decrement, fixed 4-service order) plus psndSFXMain structure: literal 40-slot loop bound, SoundSSCheck reaping, slot+0x06 clear with slot+0x0E countdown, live count to G5B, preference reset; records the clrlwi low-13 and counter-reload corrections | Per-channel dispatch conditions, calc3D, psndENV/BGM interaction, psndInit globals, original traces |
 | [Small-data r2 base and float pools](binary/SMALL_DATA_R2_BASE_AND_FLOAT_POOLS.md) | r2 = 0x8042B038 verified by the pi/4 eight-direction anchor and a pi/radian audio pool; 46 field and 21 audio constants ISO-read and tabulated | Constants outside the two windows, pool contiguity beyond them, and the -23384 zero-divisor branch |
+| [SFX backend dispatch](audio/POSITIONAL_SFX_BACKEND_DISPATCH.md) | Stream/song/effect selected by row.word1 bits 0-1; 3 stream channels with stale-sweep, 4 song channels, unpaged effects; resource ids word2 / word1&0xF / word1&0xFFFF; bit 30 of slot+0x06 gates calc3D | Writer of slot+0x06 bit 30 and the later per-frame volume/pan/pitch update half |
 | [Positional attenuation and pan](audio/POSITIONAL_SFX_ATTENUATION_AND_PAN.md) | calc3D structure: flags bit7 add/bit6 replace listener, distance minus global+0x3C, three-iteration frsqrte Newton refinement with frsp, NaN at zero distance, pan window [64,196] to 0..127, and the PAN record at 0x8041EB18; all seven lfd/lfs constants ISO-read and named | Distance helper 0x800DCBC8, eight r2-relative scales, classifier case semantics, out0/out1 use |
 | [DMG-01 initialization/count binding](battle/DMG_01_INITIALIZATION_AND_JUMP_COUNT_BINDINGS.md) | Full local Entry/UnitSetup composition, signed HP/FP copies, original Jump shared count reset/success stores/readout | Other counters/loadout/mutations, full consumer graph and original multihit traces |
 | [EVT-01 service consolidation](event/EVT_01_SERVICE_CONTRACT_AND_REMAINING_BINDINGS.md) | Scheduler/constructor/wait composition, corrected leaf capture, conditional Jump root/registry and local menu writers | Original traces, query-specific cursor domains, dynamic/global/platform/numeric bindings |
@@ -714,13 +716,16 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Field party entry camera/resource/animation admission](partner/FIELD_PARTY_ENTRY_ANIMATION_ADMISSION.md): stored camera ownership, constructor field order, original resource selection, mode2/archive and pose/material admission domains.
 
+- [Native retained explicit-table selector owner](message/NATIVE_ITEM_TABLE_SELECTION_OWNER.md) and [original draw requests](message/ITEM_TABLE_SELECTION_DRAW_REQUESTS.md).
+
 - [New Game dialogue input and house framing](story/NATIVE_OPENING_INPUT_AND_FRAMING.md)
 
 - [Used awakening and prologue event owners](story/NATIVE_OPENING_AWAKENING.md)
 
-- [Native retained explicit-table selector owner](message/NATIVE_ITEM_TABLE_SELECTION_OWNER.md) and [original draw requests](message/ITEM_TABLE_SELECTION_DRAW_REQUESTS.md).
-
 - [Window font string/message consumers](message/WINDOW_FONT_STRING_AND_MESSAGE_CONSUMERS.md): source scanner, edge/icon/reset requests and explicit quest text census.
 
 - [Fresh opening GW8 provenance and resolved ship jump operand](story/OPENING_FRESH_GW8_PROVENANCE.md)
+
 - [Field Mario pose handles and material provenance](partner/FIELD_MARIO_POSE_HANDLES_AND_MATERIAL_PROVENANCE.md): exact display selector, original field bank creation, re-entry and authored material/light writers.
+
+- [Native explicit item selector rendering](message/NATIVE_ITEM_SELECTOR_RENDERING.md), [source icon anchors/flags](display/ITEM_SELECTOR_ICON_ANCHORS_AND_FLAGS.md), and [pouch parameter revision](unit/POUCH_PARAMETER_REVISION.md).

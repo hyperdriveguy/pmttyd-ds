@@ -26,7 +26,7 @@ bool OpeningSequence::enter(OpeningPart p,uint64_t time){
     part=p;index=0;now=time;waiting=false;message={};enteredAt=time;sceneAdmitted=false;sceneReadyNotification=false;sceneFailure.clear();
     speaker=0;
     if(p==OpeningPart::House)house.begin(time*60/1000);
-    if(p==OpeningPart::Prologue)heading.begin(time);
+    if(p==OpeningPart::Prologue){heading.begin(time);headingDisplay.begin(time*60/1000);}
     if(p==OpeningPart::Wake)wake.begin(time);
     if(p==OpeningPart::Arrival)harbor.begin(time*60/1000,globalWork8);
     if(p==OpeningPart::Voyage)voyage.begin(time*60/1000);
@@ -53,7 +53,7 @@ void OpeningSequence::tick(uint64_t time,uint32_t keys){
         }
     }
     if(part==OpeningPart::House)house.advance(now*60/1000);
-    if(part==OpeningPart::Prologue)heading.tick(now,keys);
+    if(part==OpeningPart::Prologue){heading.tick(now,keys);headingDisplay.advance(now*60/1000);}
     if(part==OpeningPart::Wake)wake.tick(now);
     if(part==OpeningPart::Voyage)voyage.advance(now*60/1000,keys);
     if(part==OpeningPart::Arrival){harbor.advance(now*60/1000);globalWork8=harbor.work8;if(harbor.storyPublished)story=3;}

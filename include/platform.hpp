@@ -34,7 +34,7 @@ public:
     void advanceTutorialAnimations(Game&);
     void releaseFrontend();
     void render(const Game&, const Metrics&, const char* notice, bool audioAvailable);
-    void renderFrontend(Frontend&, OpeningDemo&, const OpeningSequence&, const char* notice);
+    void renderFrontend(Frontend&, OpeningDemo&, OpeningSequence&, const char* notice);
     void shutdown();
     bool bindTutorialStartupResources(HarborTutorial&);
     void releaseTutorialStartupResources();
@@ -114,6 +114,19 @@ private:
     bool loadTitleCurtains();
     bool frontTitleCurtain(OpeningTitle&,uint32_t&,float&,float&);
     void freeTitleCurtains();
+    CineActor headingCurtain;
+    bool headingResourcesReady=false,headingResourcesAttempted=false;
+    bool headingCurtainStarted=false;
+    uint64_t headingCurtainStart=0,headingExitStart=UINT64_MAX;
+    MessagePlayback headingSubtitle;
+    C3D_Tex headingSubtitleTexture{};
+    C3D_RenderTarget* headingSubtitleTarget=nullptr;
+    bool headingSubtitleAllocated=false,headingSubtitleCaptured=false;
+    float headingSubtitleWidth=0;
+    bool loadHeadingResources();
+    bool captureHeadingSubtitle();
+    bool frontHeading(OpeningSequence&,bool&,bool&,bool&,bool&);
+    void freeHeading();
     std::array<CineActor,3> tutorialActors;
     bool tutorialReady=false;
     BattleCurtainFade tutorialFade;

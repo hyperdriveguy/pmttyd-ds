@@ -3,6 +3,7 @@
 #include "message_playback.hpp"
 #include "opening_house_scene.hpp"
 #include "opening_heading.hpp"
+#include "opening_heading_display.hpp"
 #include "opening_wake.hpp"
 #include "camera_road_assets.hpp"
 #include "opening_harbor_scene.hpp"
@@ -17,6 +18,7 @@ public:
     MessagePlayback message;
     OpeningHouseScene house;
     OpeningHeading heading;
+    OpeningHeadingDisplay headingDisplay;
     OpeningWake wake;
     CameraPoint wakeEye{},wakeAt{};
     mutable OpeningHarborScene harbor;

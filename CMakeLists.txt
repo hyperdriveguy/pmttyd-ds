@@ -856,3 +856,7 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/romfs/partner.pmanim")
     add_test(NAME field_party_animation_original COMMAND field_battle_tests original)
     set_tests_properties(field_party_animation_original PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 endif()
+
+add_executable(opening_heading_display_tests tests/opening_heading_display_tests.cpp)
+target_include_directories(opening_heading_display_tests PRIVATE include)
+add_test(NAME source_opening_heading_display COMMAND opening_heading_display_tests)

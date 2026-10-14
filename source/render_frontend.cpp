@@ -14,7 +14,7 @@ void Renderer::beginFrontend(){
     frontActive=true;
 }
 void Renderer::releaseFrontend(){
-    C3D_FrameSync();freeTitleCurtains();freeBookCaptures();freeWakeEffects();freeShipCapture();freeDemoEffects();freeRoom(frontRoom);frontMapName.clear();frontHouseObjects.clear();frontShipObjects.clear();frontDrawSnapshot.reset();
+    C3D_FrameSync();freeHeading();freeTitleCurtains();freeBookCaptures();freeWakeEffects();freeShipCapture();freeDemoEffects();freeRoom(frontRoom);frontMapName.clear();frontHouseObjects.clear();frontShipObjects.clear();frontDrawSnapshot.reset();
     for(auto& t:frontTextures)if(t.image.imported){Tex3DS_TextureFree(t.image.imported);C3D_TexDelete(&t.image.texture);}
     frontTextures.clear();
     for(auto& a:cineActors)if(a.image.imported){Tex3DS_TextureFree(a.image.imported);C3D_TexDelete(&a.image.texture);}
@@ -226,7 +226,7 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
     if(wakeWorld){C2D_SceneSize(400,240,false);C3D_SetViewport(0,0,400,240);}
     return ok;
 }
-void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,const OpeningSequence& opening,const char* notice) {
+void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,OpeningSequence& opening,const char* notice) {
     // Keep only the current demonstration image/scene family resident. This
     // also bounds a natural (unskipped) storybook run and letter/map overlays.
     const uint32_t phase=f.screen==FrontScreen::Demo?100:
@@ -251,6 +251,7 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,const OpeningSequenc
     if(wakeWorld && wakeReady){C2D_SceneSize(400,240,false);C3D_SetViewport(0,0,400,240);}
     uint8_t titleBlackPresented=0;uint32_t titlePresentedType=0;float titlePresentedFrame=-1,titlePresentedScale=0;
     int entryPresented=-1;uint8_t exitPresented=0;
+    bool headingEntryPresented=false,headingOpenPresented=false,headingStartedPresented=false,headingExitPresented=false;
     float shipPresented=-1;bool shipCaptureRequested=false;
     uint8_t voyageWhitePresented=0;
     bool ok=wakeReady;std::array<float,4> paperPresented{{-1,-1,-1,-1}};
@@ -272,7 +273,7 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,const OpeningSequenc
         if(opening.part==OpeningPart::Arrival){eye=opening.harbor.eye;at=opening.harbor.at;}
         if(opening.part==OpeningPart::MapDisplay)ok=frontImage("opening-map",48,0,304,240);
         else if(opening.part==OpeningPart::Letter)ok=frontImage("opening-letter",88,30,224,148);
-        else if(opening.part==OpeningPart::Prologue){ok=frontImage("prologue",48,95,304,55);}
+        else if(opening.part==OpeningPart::Prologue){ok=frontHeading(opening,headingEntryPresented,headingOpenPresented,headingStartedPresented,headingExitPresented);}
         else if(map){const std::string prefix=opening.part==OpeningPart::HouseReturn || (opening.part==OpeningPart::House && opening.house.interior)?"opening-aaa_00-interior":opening.part==OpeningPart::Arrival?"opening-gor_00":"opening-"+std::string(map);ok=frontWorld(prefix.c_str(),eye,at,&opening,demo);}
         if(opening.part==OpeningPart::Voyage){
             ok=frontVoyageLogo(opening.voyage.logo) && ok;
@@ -379,6 +380,13 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,const OpeningSequenc
     }
     if(ok && voyageWhitePresented==255)opening.voyage.presentedWhite(voyageWhitePresented);
     if(ok && shipPresented>=60)opening.harbor.presented(shipPresented);
+    if(ok && (headingEntryPresented || headingOpenPresented || headingStartedPresented || headingExitPresented)){
+        C3D_FrameSync();
+        if(headingEntryPresented)opening.heading.entryComplete=true;
+        if(headingOpenPresented)opening.heading.startFadeComplete=true;
+        if(headingStartedPresented)opening.heading.started=true;
+        if(headingExitPresented)opening.heading.exitComplete=true;
+    }
     if(ok)f.title.presentedBlack(titleBlackPresented);
     if(ok && titlePresentedType)f.title.presented(titlePresentedType,titlePresentedFrame,titlePresentedScale);
     if(entryPresented>=0 && ok)demo.exit.entryPresented(uint8_t(entryPresented));

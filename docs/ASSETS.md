@@ -1527,3 +1527,13 @@ arbitrary pose handle. GPU texture admission/drawing, original file/archive/
 GP-time/shape ABI and full pose lifecycle remain distinct consumers. These
 local assets remain copyrighted Nintendo/Intelligent Systems data from the
 user-provided ISO, kept private/ignored and not committed or distributed.
+
+Original sys prologue heading exports `e/us/effect_sys.tpl` images0..3 and
+19..25 at their original160x160/64x64 resolution with transparent power-of-two
+padding. The center curtain uses `a/OFF_d_maku_center` and its original companion
+TPL, Z_1/A_1 hierarchy/materials/colors/poses intact; only its1024x128 atlas is
+scaled to512x64 with Lanczos. `msg/US/global` supplies the exact
+`msg_stg_seq_prolouge` subtitle, rendered with the existing original font.
+Ignored heading-resources.json records source hashes, conversions and licensing;
+extracted/compiled resources stay outside source history and confer no
+redistribution rights. [Provider boundaries](behavior/display/NATIVE_OPENING_HEADING.md).

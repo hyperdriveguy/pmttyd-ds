@@ -6679,6 +6679,63 @@ Next tasks:
    have dropped rows from it. Worth an owner check before it is treated as
    a reliable index.
 
+## 2026-10-13 — `psndSFXMain` backend dispatch conditions (ID 3)
+
+[POSITIONAL_SFX_BACKEND_DISPATCH](behavior/audio/POSITIONAL_SFX_BACKEND_DISPATCH.md).
+Closes the per-channel dispatch item left open in the frame-driver
+contract.
+
+The backend is selected by **two bits of one word**: `pssfxlist[row].word1`
+(offset `+0x04`), bits 0 and 1 — bit0 clear → stream, bit0 set and bit1
+clear → song, both set → effect. This is the same encoding `psndSFXOff`
+already uses to pick `SoundSSStopCh` / `SoundSongStopCh` / `SoundEfxStop`,
+so stop and start agree by construction.
+
+The interesting part is how much the three routes differ:
+
+- **3 stream channels, 4 song channels, effects unpaged.** Stream and song
+  both probe for a free channel via their `Check` service; effects don't
+  probe at all and store whatever `SoundEfxPlayEx` returns.
+- **Only the stream route sweeps stale channels**, in the order
+  find-free → sweep-stale → find-free, storing `-1` if the second probe
+  fails. A port that only probes would report exhaustion while channels
+  are actually occupied.
+- **Resource ids come from different fields**: streams `row.word2`, songs
+  `row.word1 & 0xF`, effects `row.word1 & 0xFFFF` — the type word's own
+  low bits for the latter two.
+- **Bit 30 of `slot+0x06`** gates the positional route for effects; when
+  set `calc3D` runs and its `PAN` record is staged before `SoundEfxPlayEx`.
+
+All three converge at `0x800DA36C`, where an exact `-1` handle clears
+`slot+0x00` and `slot+0x18` and skips the slot.
+
+**Flagged, not resolved:** nothing sets bit 30 of `slot+0x06`. The
+provisioner sets 1, 2, 4, 16, 32, 128, 256, 512, 640, 1024 and 2048 but
+not 30, and `psndSFXMain` clears the whole field at `0x800DA048` for
+engine-backed slots each frame. The spatial route therefore depends on a
+writer outside this family, which I did not locate. That single gap
+prevents the effect route being fully closed.
+
+**On the `r2` pool:** I swept beyond the two tabulated windows and the
+region is **larger than documented** — dense with π/180, 2π, π/4, π/2, 6π,
+π/3, 2π/3 and 1/2^k scales. I deliberately did **not** state a boundary:
+my automatic literal detector rejects π/180 and 2π themselves while
+accepting integer tables read as floats, so any extent it produced would
+be an artifact of the filter. Recorded in the contract as a measured
+extent plus an explicit refusal to bound it.
+
+Docs-only; `make test` / `make all` not rerun.
+
+Next tasks:
+
+1. The **bit 30 writer** for `slot+0x06` — the last blocker on the effect
+   route. Search outside `pmario_sound.o` for writers of that field.
+2. The later half of `psndSFXMain` (`0x800DA330`..epilogue): per-frame
+   volume/pan/pitch updates for playing sounds.
+3. Remaining EVT-01 todos: `evtmgrCmd` opcode bodies, NormalJump
+   registration writers, `CommandGetWeaponAddress`/`SelectWeapon` cursor
+   modes, `BATTLE_UNIT_QUERY_EVENT_LEAVES` prose reconciliation.
+
 ## 2026-10-13 — `r2` small-data base resolved: the provisional-constant gap closes (ID 3)
 
 [SMALL_DATA_R2_BASE_AND_FLOAT_POOLS](behavior/binary/SMALL_DATA_R2_BASE_AND_FLOAT_POOLS.md).
@@ -9271,3 +9328,58 @@ Actual combined heading/map reveal and complete fresh-file arrival still need
 native integration/verification. Isolated latest Voyage now reaches60FPS, but
 white sky/horizon appearance is being compared with the original before any
 fidelity claim. Goal remains active; full-game/hardware parity is not claimed.
+
+## 2026-10-13 — Mario animation selector at partner return
+
+Bound original marioAnimeId800593fc to persistent Mario WORD4: effect
+mask10000000 wins over rear80000000, otherwise front. Added explicit signed
+M22c/230/234 handle views with original MarioInit -1 defaults. Joined ending
+now records the live selector and selected handle before holding at original
+MaterialGet8004069c. No positive Mario handle or material value is fabricated.
+Battle cleanup preserves selector bits and handles while clearing WORD4 bit0.
+
+Validation pending current make test/all; logs artifacts/trio-mario-selector-
+{tests,all}.log. Checks cover effect/rear precedence, unrelated WORD0/WORD4
+bits, retained handles and ending cleanup. Original resource admission and
+joined/unjoined battle regressions remain in the full suite. No new asset
+conversion, native emulator capture or hardware measurement.
+
+Next install actual field Mario resource-backed poses in the shared ownership
+domain, preserve original ReInit/door material producers, then copy material/
+light in original separate selector order and continue HP/init/appearance2/Hello.
+Field return and full prologue remain unfinished; goal remains active.
+
+### 2026-10-13 original sys prologue heading provider
+
+Replaced the native static prologue card with the original US sys display
+consumer: eight source glyphs/background palette, exact staggered curve5 letter
+clock and subtitle strip from original `msg_stg_seq_prolouge`. Source curtain32
+Z_1 and35 A_1 use their actual pose hierarchy/materials; exit19 performs the
+real500ms black fade. Entry/open/start/exit producer flags now acknowledge only
+successful GPU presentation followed by synchronization. Display state1 requires
+real texture/pose/font/subtitle target admission; resource failure cannot advance
+the handshake. The private subtitle target uses512x32 VRAM, as Citro3D rejects
+linear texture memory for RenderTargetCreateFromTex. No CPU readback.
+
+Exact validation in isolated artifacts/opening-heading-native: make test
+172/172 CTest and110/110 Python; make -j8 all builds ttyd-2ds.3dsx,
+py_compile and git diff --check pass. Logs artifacts/heading-tests-vram-final.log
+and heading-all-vram-final.log. Original asset exporter successfully validates
+Z_1 span0/one key and A_1 span60/121keys, original11 raster dimensions, descriptor
+and subtitle ID. Asset hashes/conversion/license manifest remains ignored.
+
+Isolated Azahar private direct-heading fixture, with temporary main.cpp injection
+restored before final normal build: artifacts/azahar-heading-vram shows the
+original closed curtain, moving PROLOGUE letters and B-triggered exit to Wake,
+60FPS. artifacts/azahar-heading-held boots35s, holds input a further16s, shows
+all eight glyphs, spinning original coin/background and complete rotating
+A ROGUE'S WELCOME subtitle ring at60FPS; B then exits to Wake. No native
+exception or heading admission failure after the VRAM fix. This fixture proves
+the heading provider only; it does not prove natural full-opening integration.
+
+Limits: source glyph projective rainbow multi-TEV passes, exact SDKFontGetWidth
+subtitle cache metrics and original Stardust mode4 particle consumer remain
+unbound; the source particle request is retained without a Crystal substitute.
+Original-runtime/Dolphin and hardware raster parity remain unverified. See
+behavior/display/NATIVE_OPENING_HEADING.md. Parent integrates the provider with
+the current Voyage/Wake producers and verifies the natural transition.
