@@ -5827,7 +5827,7 @@ exited0, log artifacts/tev-render-build-final.log. Restored normal-j4 build exit
 log artifacts/tev-render-build-restored.log. Binary SHA256
 a75fa5b36744db1e6fe70716c4b9334a4cb6c8f44721ab4a6afd389816c56a0e, identical before/after temporary instrumentation restoration.
 All temporary hooks are excluded from source history. Headers/layouts were frozen
-before native compilation. Documentation links: 1315 Markdown files,zero broken links.
+before native compilation. Documentation links: 1317 Markdown files,zero broken links.
 
 Isolated80s normal fresh-save and150s ending runs exited0; logs
 artifacts/tev-render-smoke-normal.log and tev-render-smoke-ending.log, output
