@@ -16,8 +16,8 @@ void setupPackedNpcBattleInformation(uint32_t npc,uint32_t c,const PackedNpcBatt
  const auto b=npc+0x230;clear(b,200);clear(b+0x7c,32);
  if(!c || !word(c))return;
  store(b+0xac,word(c+0x1c));const auto audience=signedWord(word(b+0xac));
- if(audience<=0 || audience>=3)for(unsigned i=0;i<16;++i){const auto first=byte(c+0x20+2*i),last=byte(c+0x21+2*i);const auto draw=random(signedByte(last)-signedByte(first)+1);m.storeByte(m.user,b+0xb0+i,uint8_t(uint32_t(first)+uint32_t(draw)));}
- (void)word(c+0x18);store(b+4,0);store(b+8,word(c+8));store(b+0xc,0);store(b+0x10,0);store(b+0x14,0);store(b+0xc0,word(c+0x40));
+ if(audience<=0 || audience>=3)for(unsigned i=0;i<16;++i){const auto first=byte(c+0x20+2*i),last=byte(c+0x21+2*i);const auto draw=random(signedByte(last)-signedByte(first)+1);m.storeByte(m.user,b+0xb0+i,uint8_t(uint32_t(byte(c+0x20+2*i))+uint32_t(draw)));}
+ store(b+4,word(c+0x18));store(b+8,word(c+8));store(b+0xc,0);store(b+0x10,0);store(b+0x14,0);store(b+0xc0,word(c+0x40));
  const auto selector=signedWord(word(c+0xc));uint32_t list;
  if(selector>=signedWord(0xf8405b80) && selector<=signedWord(0xf8d9f200)){assert(s.savedFlag);list=word(c+(s.savedFlag(s.user,add(selector,130000000))?0x10:0x14));}else list=word(c+0x14);
  store(b+0x18,0);
@@ -32,8 +32,39 @@ void setupPackedNpcBattleInformation(uint32_t npc,uint32_t c,const PackedNpcBatt
   }
  }
  m.storeByte(m.user,npc+0x316,0);
- if(group)m.storeByte(m.user,npc+0x316,byte(word(word(group+4))+0x12));
+ const auto finalGroup=word(b+0x18);
+ if(finalGroup)m.storeByte(m.user,npc+0x316,byte(word(word(finalGroup+4))+0x12));
  store(npc,word(npc)|0x10000000);
+}
+uint32_t packedBattleAreaData(const char* name,const BattleActorServices& s,uint32_t registry){
+ const auto& m=s.memory;assert(name && m.word && s.byte);
+ for(auto entry=registry+8;;entry+=4){
+  const auto record=m.word(m.user,entry);if(!record)return 0;
+  auto text=m.word(m.user,record);const auto* expected=reinterpret_cast<const uint8_t*>(name);
+  for(;;++text,++expected){const auto actual=s.byte(s.user,text);if(actual!=*expected)break;if(!actual)return record;}
+ }
+}
+void registerPackedBattleArea(const char* name,uint32_t table,uint32_t numbers,const BattleActorServices& s,uint32_t registry){
+ const auto record=packedBattleAreaData(name,s,registry);if(!record)return;
+ assert(s.memory.storeWord);s.memory.storeWord(s.memory.user,record+8,table);s.memory.storeWord(s.memory.user,record+0xc,numbers);
+}
+void setPackedNpcBattleInformation(uint32_t npc,int32_t index,const PackedNpcBattleSetupServices& s,uint32_t registry){
+ const auto& m=s.memory.memory;assert(m.word && m.storeWord && s.memory.byte);
+ uint32_t configuration=0;
+ if(index!=-1){
+  const auto gp=m.word(m.user,0x80415fd0);char area[4];
+  for(unsigned i=0;i<3;++i){area[i]=char(s.memory.byte(s.memory.user,gp+0x12c+i));}
+  area[3]=0;
+  const auto record=packedBattleAreaData(area,s.memory,registry);
+  configuration=m.word(m.user,record+8);
+  if(index>0)configuration+=uint32_t(index)*0x44u;
+ }
+ setupPackedNpcBattleInformation(npc,configuration,s);
+ for(unsigned i=0;i<4;++i){const auto child=m.word(m.user,npc+0x330+4*i);if(!child)continue;
+  // Both loads precede both stores: preserve overlapping associations and
+  // service-visible writes rather than replacing this with a host memcpy.
+  for(unsigned offset=0;offset<200;offset+=8){const auto a=m.word(m.user,npc+0x230+offset);const auto b=m.word(m.user,npc+0x234+offset);m.storeWord(m.user,child+0x230+offset,a);m.storeWord(m.user,child+0x234+offset,b);}
+ }
 }
 void initializePackedBattleInformation(uint32_t i,const EventMemoryServices& m){
  assert(m.storeWord && m.storeByte);

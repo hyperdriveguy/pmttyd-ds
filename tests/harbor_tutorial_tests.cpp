@@ -285,7 +285,7 @@ int main(){
  assert(fresh.readPackedWord(0x8450002c,packed) && packed==0x84501230);
  assert(fresh.readPackedWord(0x84501230,packed) && packed==0x95540870);
  assert(fresh.readPackedWord(0x84501248,packed) && packed==0x95540c08);
- assert(fresh.readPackedWord(0x84501234,packed) && packed==0);
+ assert(fresh.readPackedWord(0x84501234,packed) && packed==0x20000010);
  assert(fresh.readPackedWord(0x84400070,packed) && packed==0x0007000a);
  assert(fresh.readPackedWord(0x841011c4,packed) && packed==0x802f4018);
  assert(fresh.readPackedWord(0x841011c8,packed) && packed==0x802f4030);
