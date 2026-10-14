@@ -4152,3 +4152,15 @@ cover exact source bytes/lists and start/end mutations, room/catalog cleanup and
 nonreplayed initialization. Next bind the manual installer's case snapshots and
 actual geometry/collision/material1800 owners. Full shared global EVT/map lifetime,
 Garf key49 interaction and original runtime comparison remain OPEN.
+
+### 2026-10-14 — Actual item/AP callback local bodies
+
+[Retained item/AP scope](../behavior/display/RETAINED_AUDIENCE_ITEM_AP_CALLBACKS.md)
+now binds guarded DispItem801a37f0 and DispApSrc801a36c8, their distinct owner
+captures,18 unconditional GXInit setters,AP4-state suffix and100 fresh records
+per bank. Complete six/five matrix graphs retain actual icon/alpha arguments;
+native matrix adapters are bound, genuine icon services remain unavailable.
+Original initialized bank inactivity is inspected rather than inferred from
+empty actors. Correct row scaling,Item radians3c8efa35 and Concat zero-term FMA
+are retained. Continue original borrowed-part80101774 and icon loaded/current
+camera/metadata/geometry owners; full EVT-01 stays open.

@@ -85,6 +85,16 @@ void Renderer::resumeFinishingCamera(const Game& game){
             };
             return b.game->trioAttack.resumeAudienceCallback(camera,borrowed,audience);
         }
+        if(identity==0x801a37f0 || identity==0x801a36c8){
+            BattleAudienceAuxServices auxiliary;auxiliary.common.user=&renderer;bindAudienceAuxMathAdapter(auxiliary);
+            auxiliary.common.request=[](void* user,const BattleAudienceGXRequest& r){
+                ShadowGXRequest request;request.kind=static_cast<ShadowGX>(r.function);request.values=r.arguments;
+                return static_cast<Renderer*>(user)->finishingShadowRequest(request);
+            };
+            // Icon ownership is separate; an active entry retains its real
+            // icon request until metadata/current-camera/geometry are bound.
+            return b.game->trioAttack.resumeAudienceAux(camera,identity,borrowed,auxiliary);
+        }
         return renderer.finishingShadowCallback(*b.game,camera,identity,borrowed);
     };
     // Actual shadow setup; admitted geometry, independent rays and other callbacks retain provider waits.

@@ -620,6 +620,13 @@ int main(){
             assert(audienceBinding.requests==16 && charged.cameraManager->currentIndex()==4 && charged.trioAttack.pendingFunction()==0x80101774);
             charged.trioAttack.resumeFinishingDraw(frameServices);
             assert(audienceBinding.requests==16); // Completed prefix never replays at the following actor callback hold.
+            // Inactivity is established from each actual retained bank, not
+            // inferred from the200 audience actors or absent texture services.
+            for(unsigned i=0;i<100;++i){
+                assert(charged.trioAttack.readWord(0x84002858+0xf25c+0x48*i,value) && (value&3)==0);
+                assert(charged.trioAttack.readWord(0x84002858+0x10e7c+0x60*i,value) && !(value&1));
+            }
+            assert(!charged.trioAttack.resumeAudienceAux(4,0x801a37f0,0,{})); // Different live borrowed callback cannot be consumed.
 
 
 

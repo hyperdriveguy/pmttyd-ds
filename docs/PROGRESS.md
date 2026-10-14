@@ -3785,3 +3785,46 @@ Q1 mutation capture, raster parity and hardware performance remain unverified.
 Broad remake goal remains active and incomplete.
 [Native scope](behavior/field/NATIVE_AREA_DOOR_DATA_AND_GW11.md);
 [source installer](behavior/field/HOUSE05_ORIGINAL_INSTALLER_GW11_AND_NPC_LIST_CONSUMERS.md).
+
+
+## 2026-10-14 — Retained audience item/AP local draw bodies
+
+Bound actual DispItem801a37f0 and DispApSrc801a36c8 to their invoking records.
+Their18-command GXInit, AP4-state suffix and distinct100-record banks retain
+original order/owner captures. Active items/AP execute complete six/five SDK
+matrix-request graphs and retain genuine icon/alpha arguments until the original
+icon service becomes available. Inactive entries perform source setup/scan;
+no actor-bank inference, bank clearing or missing-geometry acknowledgement.
+Native shader retains texture-times-vertex RGB/alpha and native matrix adapters
+preserve row-scaled translation, actual Item radians and Concat zero-term FMA.
+
+Validation: frozen8adbd48618dbe9b273587e0c2564c14c486e19be plus exact owned
+hunks. make test passed289 C++/169 Python; make all passed DEBUG_SHORT_BOOT=1,
+SOUNDTRACK=gamecube. Logs: artifacts/audience-aux-test-verified.log and
+ audience-aux-build-production.log. The final focused matrix/cursor fixture also
+passed after formatting-only cleanup (audience-aux-local-final.log).
+Initial suite lacked the newer base's private door-data pack; regenerated that
+existing recipe in the isolated snapshot and reran. Source review corrected a
+fixture's Item radians constant and the adapter's omitted Z-column zero FMA;
+AP state fixtures now apply real NativeDisplayState instead of only tracing IDs.
+
+Native isolated180-second physical/menu-input harness completed actual Item
+setup/scan: auxiliary-complete.txt records801a37f0, camera4, vertex material1,
+textureRGB1. Next hold is borrowed-part80101774, camera4/class1,queue21.
+Evidence: artifacts/azahar-audience-aux/data/azahar-emu/sdmc/3ds/ttyd-2ds/.
+AP is later in the actual queue and was not reached. No cylinder lists or complete
+battle rendering/field return are claimed. Test-only Bero bit1 clear remains
+explicit; normal sources/build contain no trace, controller or Bero changes.
+Hashes are in artifacts/audience-aux-validation-manifest.json.
+
+Delivered original part matrix/material/history contract and corrected older
+trio prose: DrawMtx uses unshifted stack520; −5 belongs only to separate stack4c0
+history. Mandatory history is ten68-byte records, separate from geometry.
+Next bind80101774 actual matrices, poseF0/E8 material stores, three DrawMtx
+passes and CPU history owner. Then reach translucent audience/cylinder/AP,
+complete icon metadata/current-camera/GX providers and ordered field return.
+Original raster/SDK rounding, hardware performance, nonempty icon ownership and
+persistent target pixels across render holds remain open. Broad prologue goal
+stays active and incomplete.
+[Native item/AP scope](behavior/display/RETAINED_AUDIENCE_ITEM_AP_CALLBACKS.md);
+[part source contract](behavior/display/ORDINARY_BATTLE_PART_CALLBACK_MATRIX_MATERIAL_AND_HISTORY.md).

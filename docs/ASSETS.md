@@ -737,3 +737,16 @@ prefix; no executable PPC or replacement art/music is generated. Original
 Nintendo/Intelligent Systems resources retain original copyright; local
 conversion grants no redistribution rights. ISO/extracted data/packs remain
 outside source history. [Native scope](behavior/field/NATIVE_AREA_DOOR_DATA_AND_GW11.md).
+
+
+### 2026-10-14 — Retained item/AP draw dependencies
+
+No new art payload was imported for these callbacks. Original item table
+803108a8, immutable constants and DATA color80424978 are consumed through the
+existing private trio-attack-events.pmevt DOL-data imports. Matrix/icon identities
+remain source addresses, never ARM pointers. Native inactive banks require no
+icon texture lookup; active original icon metadata/palette/geometry ownership
+remains unbound. Isolated validation refreshed the newer base's existing
+ door-data recipe against the read-only ISO, writing only its private packs.
+All original assets retain their original copyrights and local-only handling;
+ISO, extracted data, compiled packs and binaries remain excluded from history.

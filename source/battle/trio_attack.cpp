@@ -164,6 +164,7 @@ struct TrioAttackRuntime {
     ShadowMainCursor shadowMainCursor;
     ShadowDisplayCursor shadowDisplayCursor;
     BattleAudienceCallbackCursor audienceCallbackCursor;
+    std::array<BattleAudienceAuxCursor,2> audienceAuxCursors;
     ShadowDisplayGlobals shadowDisplayGlobals;
     std::shared_ptr<BattleCommandPalette> palette;
     BattleFooterCursor commandDisplayCursor,audienceDisplayCursor,slotDisplayCursor;
@@ -1707,6 +1708,8 @@ struct TrioAttackRuntime {
                     next=cameraDrawCursor.display.callback;
                     if(next==0x8002d3d8 && shadowDisplayCursor.active)next=shadowDisplayCursor.pending;
                     if(next==0x801a38f8 && audienceCallbackCursor.active)next=audienceCallbackCursor.pending;
+                    if(next==0x801a37f0 && audienceAuxCursors[0].active)next=audienceAuxCursors[0].pending;
+                    if(next==0x801a36c8 && audienceAuxCursors[1].active)next=audienceAuxCursors[1].pending;
                 }
                 else if(cameraDrawCursor.display.stage==0)next=0x802b9380;
             }
@@ -1779,6 +1782,16 @@ bool TrioAttack::resumeAudienceCallback(uint32_t camera,uint32_t userdata,const 
     services.currentRecord=[](void* user){return static_cast<Bridge*>(user)->runtime->displayQueue.current();};
     services.request=[](void* user,const BattleAudienceGXRequest& r){const auto* s=static_cast<Bridge*>(user)->source;return s->request && s->request(s->user,r);};
     return resumePackedBattleAudienceCallback(services,runtime_->audienceCallbackCursor);
+}
+bool TrioAttack::resumeAudienceAux(uint32_t camera,uint32_t callback,uint32_t userdata,const BattleAudienceAuxServices& source) const{
+    if(!runtime_ || !runtime_->cameras || (callback!=0x801a37f0 && callback!=0x801a36c8))return false;
+    const auto& call=runtime_->cameraDrawCursor.display;
+    if(!call.invoking || call.callback!=callback || call.camera!=camera || call.userdata!=userdata)return false;
+    struct Bridge {TrioAttackRuntime* runtime;const BattleAudienceAuxServices* source;} bridge{runtime_.get(),&source};
+    auto services=source;services.common.actors=nativeBattleActorServices(runtime_->vm);services.common.user=&bridge;
+    services.common.camera=[](void* user,uint32_t index)->const CameraState*{return static_cast<Bridge*>(user)->runtime->cameras->camera(index);};
+    services.common.request=[](void* user,const BattleAudienceGXRequest& r){const auto& s=static_cast<Bridge*>(user)->source->common;return s.request && s.request(s.user,r);};
+    return resumePackedBattleAudienceAux(callback,services,runtime_->audienceAuxCursors[callback==0x801a36c8]);
 }
 bool TrioAttack::resumeShadowDisplay(uint32_t camera,uint32_t userdata,const ShadowDisplayServices& source) const{
     if(!runtime_ || !runtime_->shadows || !runtime_->cameras)return false;

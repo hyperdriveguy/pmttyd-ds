@@ -973,12 +973,18 @@ Sunit=(U114*U9c*U90,U114*Ua0*U94,signZ*Ua4*U98), signZ fromthegate above.
 
 Part angles: x=P3c+P48, y=P40+P4c+cameraCorrection, z=P44+P50.
 Part scale Sp=(P6c*P60,P70*P64,P74*P68). Source concat sequence801020d8..
-801022dc (P4fc0): startUnitM; leftmultiplySp,T(-partPivot),RyPart,RzPart,
-RxPart,T(+partPivot),T(worldPartXYZ),T(P30,P34,P38),T(0,0,-5).
-Consequently the final passed matrix is:
+801022ac (P4fc0): startUnitM; leftmultiplySp,T(-partPivot),RyPart,RzPart,
+RxPart,T(+partPivot),T(worldPartXYZ),T(P30,P34,P38).
+The matrix passed to animation draw is:
 
-`M = T(0,0,-5) * T(partDisplay) * T(worldPartXYZ) * T(partPivot)
+`Mdraw = T(partDisplay) * T(worldPartXYZ) * T(partPivot)
 * RxPart * RzPart * RyPart * T(-partPivot) * Sp * UnitM`.
+
+Source801022b8 copies stack520 Mdraw into stack4c0. Sites801022cc..22dc
+apply T(0,0,-5) only to that separate history matrix:
+`Mhistory=T(0,0,-5)*Mdraw`. DrawMtx uses stack520; history uses stack4c0.
+[Exact callback operands/material/history](../display/ORDINARY_BATTLE_PART_CALLBACK_MATRIX_MATERIAL_AND_HISTORY.md)
+correct the earlier misplaced depth-bias interpretation.
 
 worldPartX=U3c+P24*directionFactor, where directionFactor is1/-1 fromsignedPbd,
 or the source battle-side direction ifPbd==0. worldPartY=U40+P28+
@@ -994,15 +1000,16 @@ GetGravityDispOffset80100ffc/64 computes4*sin((3*P1a6+270)%360)+4, using source
 sin-degree service80125cd4 andsinglefmadds. Freshphase0makesboth0, no newlift.
 
 Withfreshzero offsets/pivots/partangles andunit/part scale1, the used matrix
-reduces to `T(Ux,Uy,Uz-5) * Rx(U6c) * Rz(U74) * Ry(U70)
+reduces to `T(Ux,Uy,Uz) * Rx(U6c) * Rz(U74) * Ry(U70)
 * diag(1,1,signZ)`. It applies to original48-frameYspin and30-frameXtip; no
 heightcenter translation or post-billboard screen-space rotation is introduced.
 NegativeZ gate can change duringYspin asqchanges; preservecamera/facing algebra.
 
-Calls at80102428..46c pass the SAME finalM andangleA, scale2.0 to
-animPoseDrawMtx(poseID,M,pass1/2/3,A,2). Pose/resource admission still owns which
-passes draw. Original common depthtranslation-5 is source geometry, not a
-native arbitrarydepthbias. Original model resource's scalar2 is separate from
+Calls at80102428..46c pass the SAME Mdraw andangleA, scale2.0 to
+animPoseDrawMtx(poseID,Mdraw,pass1/2/3,A,2). Pose/resource admission still owns
+which passes draw. Mandatory801014f4 after these passes stores Mhistory;
+its translation-5 must not be added to rendered geometry.
+Original model resource's scalar2 is separate from
 unit scale1. [Draw wrapper](../display/ANIMATION_DRAW_WRAPPER_AND_ADMISSION.md)
 and [inner facing](../display/ANIMATION_INNER_DRAW_FACING.md) close ensuing
 angle/camera/smoothing/reflection/uniformscale request algebra; do not append

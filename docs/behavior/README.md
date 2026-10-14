@@ -1015,3 +1015,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native area door data and GW11](field/NATIVE_AREA_DOOR_DATA_AND_GW11.md) — original72-byte map-owned copy, once-only init and real Q1 parameter writes; cases/material consumers remain separate.
 
 - [Native plain-RAM word access](event/NATIVE_PLAIN_RAM_WORD_FAST_PATH.md)
+
+- [Retained audience item/AP callbacks](display/RETAINED_AUDIENCE_ITEM_AP_CALLBACKS.md) — real GX init,100-record bank admissions, complete local matrix/icon request cursors and native provider boundaries.
+- [Ordinary battle part callback, matrix/material/history](display/ORDINARY_BATTLE_PART_CALLBACK_MATRIX_MATERIAL_AND_HISTORY.md) — corrected separate draw/history matrices, pose material stores, three draw passes and mandatory history tail.

@@ -33,12 +33,13 @@ bool Renderer::finishingShadowGpu(const NativeShadowProgram& p){
     const uint32_t abgr=((rgba>>8)&255)<<16 | ((rgba>>16)&255)<<8 | (rgba>>24);
     auto* env=C3D_GetTexEnv(0);
     C3D_TexEnvColor(env,(p.audienceColor && !p.material?inheritedRGB:abgr) | (uint32_t(p.registerAlpha)<<24));
-    if(p.audienceColor){C3D_TexEnvSrc(env,C3D_RGB,GPU_TEXTURE0,GPU_CONSTANT);C3D_TexEnvFunc(env,C3D_RGB,GPU_ADD);}
+    if(p.textureRGB){C3D_TexEnvSrc(env,C3D_RGB,p.materialVertex?GPU_PRIMARY_COLOR:GPU_CONSTANT,GPU_TEXTURE0);C3D_TexEnvFunc(env,C3D_RGB,GPU_MODULATE);}
+    else if(p.audienceColor){C3D_TexEnvSrc(env,C3D_RGB,GPU_TEXTURE0,GPU_CONSTANT);C3D_TexEnvFunc(env,C3D_RGB,GPU_ADD);}
     else {C3D_TexEnvSrc(env,C3D_RGB,p.rasterRGB && p.materialVertex?GPU_PRIMARY_COLOR:GPU_CONSTANT);C3D_TexEnvFunc(env,C3D_RGB,GPU_REPLACE);}
     C3D_TexEnvSrc(env,C3D_Alpha,p.alpha==NativeShadowProgram::TextureRaster?GPU_TEXTURE0:GPU_CONSTANT);
     C3D_TexEnvFunc(env,C3D_Alpha,GPU_REPLACE);
     if(p.alpha!=NativeShadowProgram::Register){
-        if(!p.material && !p.audienceColor)return false;
+        if(!p.material && !p.audienceColor && !p.materialVertex)return false;
         env=C3D_GetTexEnv(1);C3D_TexEnvColor(env,p.material?uint32_t(uint8_t(*p.material))<<24:inheritedAlpha);
         C3D_TexEnvSrc(env,C3D_RGB,GPU_PREVIOUS);C3D_TexEnvFunc(env,C3D_RGB,GPU_REPLACE);
         C3D_TexEnvSrc(env,C3D_Alpha,GPU_PREVIOUS,p.materialVertex?GPU_PRIMARY_COLOR:GPU_CONSTANT);C3D_TexEnvFunc(env,C3D_Alpha,GPU_MODULATE);
