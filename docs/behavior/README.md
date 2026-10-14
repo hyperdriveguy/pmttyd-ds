@@ -1137,3 +1137,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
   isolated pixel validation, retained scene primitive/replay still open.
 
 - [Original numeric NPC battle setup and mutable area lookup](field/NATIVE_NUMERIC_NPC_BATTLE_SETUP_AND_AREA_REGISTRY.md): ordered area/index selection, associated-copy semantics and corrected inner setup reads.
+
+- [Bounded original gor setup0 field data](field/BOUNDED_ORIGINAL_GOR_SETUP_ZERO_DATA.md): source-owned shared90 views, preserved relocations and exact255-draw verification.
+- [Original map NPC registration and pose owners](field/ORIGINAL_MAP_NPC_REGISTRATION_AND_POSE_OWNERS.md): constructor/map registration, duplicate lookup, initial fields and real pose/lifetime requirements.

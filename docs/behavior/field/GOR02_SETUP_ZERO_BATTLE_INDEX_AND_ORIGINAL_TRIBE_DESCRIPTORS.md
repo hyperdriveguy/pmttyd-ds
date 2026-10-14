@@ -84,3 +84,9 @@ For every listed row except Chu, descriptor+08 and+10 strings are S_1,
 fields are the source of setup's late pose-buffer copies and initial pose
 request. Real animation handle/readiness, pose mutation, named actor record,
 and original map registration lifetime remain separate required owners.
+
+The finite field-reader graph is now exported in the shared area pack; see
+[bounded setup0 views](BOUNDED_ORIGINAL_GOR_SETUP_ZERO_DATA.md). This avoids the
+unbounded whole-table closure without admitting other numeric rows or the stage
+body. The [actual registration producer](ORIGINAL_MAP_NPC_REGISTRATION_AND_POSE_OWNERS.md)
+has a separate earlier map battle request and real pose/resource/lifetime owners.
