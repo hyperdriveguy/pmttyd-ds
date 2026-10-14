@@ -329,6 +329,7 @@ suffix.
 | [Plane flight motion](overworld/OVERWORLD_PLANE_FLIGHT_MOTION.md) | Complete re-extracted mot_plane flyMain: entry gates, stage machine, sin chains and SDA set; dot-product leaf in traversal doc | chkCollision/table/stage semantics, cadence and flight |
 | [Mario key-data update](overworld/OVERWORLD_MARIO_KEY_DATA_UPDATE.md) | Complete pad-byte/flag publication, per-flag zeroing order, key-check gate and edge word; no deadzone in-body | Pad producers, flag meanings, callee internals and effects |
 | [Pouch item dispatch](battle/POUCH_GET_ITEM_DISPATCH.md) | Complete type-id routing, slot/capacity cross-check, insert/compaction returns; effects/save/shops open | Subroutine internals, effects, save format and callers |
+| [Pouch item removal](battle/POUCH_REMOVE_ITEM.md) | Complete table select/scan/compaction with verified offsets, snapshot-matched | Effects, save format, callers and lifetimes |
 | [Shadow driver leaves](display/SHADOW_DRIVER_ACCESSOR_LEAVES.md) | Complete fifteen shadowGet* bodies: three SDA record selectors, ramp texture objects, matrix/projection/colour pointers, 72-stride config table, smartTexObj gate and the 255-division faded colour packer | Record layouts, table meaning, smartTexObj policy, callers and effects |
 | [After-reaction queue](battle/BATTLE_AFTER_REACTION_QUEUE.md) | Complete init/entry/release for the 64-record B+0x16F5C queue, duplicate/full-table returns and matched-pair compaction | Main-loop consumer link, value identity, cadence and callers |
 | [Status window/camera X](battle/BATTLE_STATUS_WINDOW_CHECK_AND_NOMOVE_X.md) | Complete BattleStatusWindowCheck eight-word gate plus open/close dispatch, camera no-move X bit with equality guard, event wrapper | Word meanings, status-window leaves and effects |
@@ -734,28 +735,31 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Native original battle HUD and button-accessible submenu](display/NATIVE_BATTLE_HUD_AND_SUBMENU.md)
 - [Harbor stationary jump and encoded event-position admission](story/NATIVE_HARBOR_ENCOUNTER_EVENT_FLOAT_ADMISSION.md)
+
 - [Ordinary party entry first appearance order](partner/FIELD_PARTY_ENTRY_FIRST_APPEARANCE_ORDER.md): exact wrapper scale/display captures, placement-before-index publication and fresh Hello's second placement.
 
-- [Native explicit item selector rendering](message/NATIVE_ITEM_SELECTOR_RENDERING.md), [source icon anchors/flags](display/ITEM_SELECTOR_ICON_ANCHORS_AND_FLAGS.md), and [pouch parameter revision](unit/POUCH_PARAMETER_REVISION.md).
 - [Native ordinary partner appearance and Hello](partner/NATIVE_FIELD_PARTY_APPEARANCE.md): live owner/heading/ray services, original single/dual placement policy and delayed current-index publication.
+
 - [Audience sound bank and ending clap](audio/BATTLE_AUDIENCE_SOUND_BANK_AND_ENDING_CLAP.md): exact original bank/init/slot1 producer/stop history and backend dependency.
 
 - [Portable original damage orchestration owner](battle/NATIVE_DAMAGE_ORCHESTRATION_OWNER.md)
+
+- [Native general rule and audience storage](battle/NATIVE_GENERAL_RULE_AND_AUDIENCE_STORAGE.md): all68 selectors, retained unit/helper ownership and corrected inline audience bank.
 
 - [Opening map display](story/OPENING_MAP_DISPLAY.md): original item/pose prelude, alpha callback, native presentation admission and group512 music handoff.
 
 - [Opening map BGM](audio/OPENING_MAP_BGM.md): group512 integer off and original same-group replacement tail.
 
 - [Opening map turn capture](display/OPENING_MAP_TURN_CAPTURE.md): original49/50 sparse geometry, dynamic material inheritance, GPU ownership and final-pose acknowledgment.
-- [Native general rule and audience storage](battle/NATIVE_GENERAL_RULE_AND_AUDIENCE_STORAGE.md): all68 selectors, retained unit/helper ownership and corrected inline audience bank.
 
 - [Opening arrival field departure ownership](story/OPENING_FIELD_DEPARTURE_OWNER.md)
 
+- [Native setup2 registry and separate visual projection](battle/HARBOR_NATIVE_REGISTRY_AND_VISUAL_PROJECTION.md)
+
 - [Native Goomba4 quest2 hand-in](field/NATIVE_GOOMBA4_QUEST2_HAND_IN.md) and [source talk control/pose admission](field/GOOMBA4_QUEST_TALK_CONTROL_AND_POSE_ADMISSION.md).
+
 - [Native audience sound record binding](audio/NATIVE_BATTLE_AUDIENCE_SOUND.md): clap/stop/volume metadata, live count filtering and explicit unavailable-key backend failure.
 - [Setup4 initial crowd and pouch gate](battle/AUDIENCE_SETUP4_INITIAL_POPULATION_AND_POUCH_GATE.md): actual setup/rank/capacity/desired count, RNG and zero-weight/key domains.
-
-- [Native setup2 registry and separate visual projection](battle/HARBOR_NATIVE_REGISTRY_AND_VISUAL_PROJECTION.md)
 
 - [Ending top-bank4 service owners](battle/ENDING_TOP_BANK4_SERVICE_OWNERS_AND_IDLE_DOMAINS.md): real seven-service ownership, used idle domains and exact source sequence setter correction.
 - [Field-return counter and fade order](battle/FIELD_RETURN_SEQUENCE_COUNTER_AND_INCOMING_FADE_ORDER.md): signed wrapping delay, state5-only listener tail, fresh GP callbacks/presets and timestamp globals.
@@ -765,6 +769,9 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Portable stage-object update and bindings](battle/NATIVE_STAGE_OBJECT_UPDATE_AND_BINDINGS.md): full32-record Main, original vertex ownership export and retained native map/renderer frontier.
 
 - [Native scene actor GPU texture lifetime](display/NATIVE_SCENE_ACTOR_GPU_TEXTURE_LIFETIME.md).
+
+- [Native stage-map owner and GPU updates](battle/NATIVE_STAGE_MAP_OWNER_AND_GPU_UPDATES.md): original complete node hierarchy, seven rank0 records, source flags/matrix latches and live revision-driven 3DS updates.
+- [Spotlight work, init and Main admission](battle/STAGE_SPOTLIGHT_WORK_INIT_AND_MAIN_ADMISSION.md): real SBSS/bank ownership, five spot records, retained inactive/level-up gate, procedural draw and free frontier.
 
 - [Native Goomba4 quest13](field/NATIVE_GOOMBA4_QUEST13_HAND_IN.md), [native pouch checkpoint v8](format/NATIVE_POUCH_CHECKPOINT_V8.md), and [Trouble Center writers/acquisition](field/TROUBLE_CENTER_QUEST2_13_WRITERS_AND_ACQUISITION.md).
 
@@ -778,16 +785,14 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Portable forced item95 receive](field/PORTABLE_ITEM95_RECEIVE_SEQUENCE.md), [original window/Mario/icon bindings](field/ITEM95_GET_WINDOWS_MARIO_POSE_AND_ASSET_BINDINGS.md), [exact packed insertion](unit/POUCH_KEY_ITEM95_RECEIVE_INSERTION.md), and [type6 effect bank/update/draw](effect/FIELD_ITEM_GET_TYPE6_BANK_UPDATE_AND_DRAW.md).
 
-- [Native stage-map owner and GPU updates](battle/NATIVE_STAGE_MAP_OWNER_AND_GPU_UPDATES.md): original complete node hierarchy, seven rank0 records, source flags/matrix latches and live revision-driven 3DS updates.
-- [Spotlight work, init and Main admission](battle/STAGE_SPOTLIGHT_WORK_INIT_AND_MAIN_ADMISSION.md): real SBSS/bank ownership, five spot records, retained inactive/level-up gate, procedural draw and free frontier.
-
 - [Stage work initialization and inactive/counter Main](battle/STAGE_WORK_INITIALIZATION_AND_INACTIVE_COUNTER_PASS.md): original defaults, scratch free order and four interpolation counter ABIs.
 - [Native stage-work storage and counter services](battle/NATIVE_STAGE_WORK_STORAGE_AND_COUNTER_SERVICES.md): exact scalar initialization, retained cleanup owner and explicit active/spotlight/numeric dependencies.
 
-- [Native original item-get visual resources](display/NATIVE_ITEM_GET_VISUAL_RESOURCES.md), [US title expansion/window gates](message/ITEM95_US_TEMPLATE_EXPANSION_AND_WINDOW_ACKNOWLEDGMENT.md), and [effect startup color/quad verification](effect/FIELD_ITEM_GET_TYPE6_STARTUP_COLOR_AND_QUAD_VERIFICATION.md).
-
 - [Spotlight mutable colour bootstrap and AcHelp admission](battle/SPOTLIGHT_MUTABLE_COLOUR_BOOTSTRAP_AND_AC_HELP_ADMISSION.md): actual BSS clearing, source zero-to-white record colour and help display gates.
 - [Native spotlight allocation and ending stage pass](battle/NATIVE_SPOTLIGHT_ALLOCATION_AND_ENDING_STAGE_PASS.md): real five-record map bank, retained session state and source-predicate progress to AudienceMain.
+
+- [Native original item-get visual resources](display/NATIVE_ITEM_GET_VISUAL_RESOURCES.md), [US title expansion/window gates](message/ITEM95_US_TEMPLATE_EXPANSION_AND_WINDOW_ACKNOWLEDGMENT.md), and [effect startup color/quad verification](effect/FIELD_ITEM_GET_TYPE6_STARTUP_COLOR_AND_QUAD_VERIFICATION.md).
+
 - [Audience Main inline owners and ordinary empty domains](battle/AUDIENCE_MAIN_INLINE_OWNERS_AND_ORDINARY_EMPTY_DOMAINS.md): complete subservice order, window/throw side effects and corrected WinSetActive ownership.
 
 - [Native harbor hit-reaction ownership](battle/NATIVE_HARBOR_HIT_REACTION_OWNERSHIP.md).
