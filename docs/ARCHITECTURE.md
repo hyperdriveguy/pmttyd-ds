@@ -6,8 +6,10 @@ RomFS, GPU objects, NDSP, and SD access. Start with README and PROGRESS.
 
 Original static NPC setup now uses a portable, validated per-area catalog.
 Records reference model+pose namespaces and explicit story/interior gates.
-Destination-room animation packs and textures stage with geometry and share
-resources among instances; rejection retains the current room. Texture-grouped
+Destination-room animation packs and textures load with geometry and share
+resources among instances. The current GPU loader retires the prior room first
+to bound linear memory and attempts to reload it on rejection; restoration can
+also fail. Collision rollback has a separate in-memory owner. Texture-grouped
 actor spans use the existing linear GPU buffer/citro3d pipeline. Per-model
 sampling caches simulation ticks, retains hierarchy workspace, and hoists root
 trigonometry per instance. Complete source NPC/event drivers remain separate
@@ -24,8 +26,10 @@ system is not implemented. Outdoor roads stream the destination room and commit 
 
 The renderer loads the current original Rogueport room into a linear GPU
 buffer, groups triangles by original material, and binds converted GX textures.
-Destination textures and geometry are staged before GPU synchronization and
-disposal of the previous room; failed loads keep the current rendering.
+The current renderer synchronizes GPU work and disposes the previous room
+before destination loading. A failed destination attempts to reload the previous
+room while preserving the original error; this is distinct from atomic collision
+rollback. See [renderer ownership](code/renderer.md) for limits and pass state.
 Character idle poses plus original Mario jump/hammer textures are baked from original layered geometry into a shared
 transparent atlas. World geometry and paper billboards use a PICA vertex shader;
 menus and text use citro2d. The battle stage also uses original geometry from stg_01. Encounter-specific

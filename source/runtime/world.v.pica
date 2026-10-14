@@ -1,3 +1,6 @@
+; Native world/message vertex ABI: v0 XYZ, v1 UV, v2 RGBA.
+; Four uniform rows are clip transform; constants.y=1 supplies homogeneous W
+; so translation participates in dp4. CPU owns UV orientation and color sampling.
 .fvec transform[4]
 .constf constants(0.0, 1.0, 0.0, 0.0)
 .out outpos position

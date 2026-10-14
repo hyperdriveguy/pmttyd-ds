@@ -12,6 +12,7 @@ Recovered original behavior and its evidence remain in
 | [Game composition](game-composition.md) | Room collision, units, tick order, restore and follower ownership |
 | [Checkpoint bytes](save-format.md) | Native save encoder, decoder and file replacement |
 | [Battle core](battle-core.md) | Action commands, private input, status, resources and damage accounting |
+| [Native renderer](renderer.md) | GPU buffers, pack flags, residency, field masks, text reflow and frame boundaries |
 | [Display services](display-services.md) | Camera/queue/shadow continuations and authored road numerics |
 | [Animation data](animation-data.md) | Pose/cache/surface formats and map upload helpers |
 | [Event VM](event-vm.md) | Scheduler, operand tags, opcodes, address mappings and allocator services |
@@ -35,9 +36,10 @@ Avoid comments that merely repeat the C++ statement.
 
 The current pass covers runtime main/input/save, the event VM implementation,
 core battle action/status/resource/damage helpers, and Game/portable runtime
-helper composition, plus portable display/camera/animation helpers.
+helper composition, portable display/camera/animation helpers, and main renderer/
+platform resource ownership.
 Audio/frontend service notes are included in the runtime guide. Platform
-renderer/GPU implementation, field subsystem modules, remaining battle, message,
+scene-specific render adapters, field subsystem modules, remaining battle, message,
 inventory and
 story implementations still require a systematic inline numeric/behavior audit;
 existing comments and contracts in those areas do not imply complete coverage.

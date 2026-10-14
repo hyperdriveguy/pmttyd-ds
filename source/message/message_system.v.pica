@@ -1,3 +1,6 @@
+; System window ABI: v0 XYZ, v1 repeating pattern UV, v2 mask UV, v3 RGBA.
+; Mask UV feeds BOTH texture units1/2 (alpha/RGB masks); TEV mixing is CPU state.
+; constants.y=1 supplies homogeneous W for the four-row clip transform.
 .fvec transform[4]
 .constf constants(0.0, 1.0, 0.0, 0.0)
 .out outpos position

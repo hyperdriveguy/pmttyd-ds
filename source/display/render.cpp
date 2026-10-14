@@ -15,22 +15,34 @@
 #include <cstdio>
 #include <cstring>
 #include <limits>
+// Native Citro3D/Citro2D adapter, not the original global GX dispatcher.
+// Resource/format/state legends: docs/code/renderer.md. Scene methods below
+// distinguish retained original requests from provisional handheld framing.
 namespace ttyd {
 namespace {
+// Native transient arena capacity12000 vertices. Field writes preserve alpha
+// because Mario air shadows use the framebuffer alpha channel as a mask;
+// battle/capture draws opt into all channels where their owners require them.
 constexpr int MaxVertices=12000;
 constexpr auto FieldRGB=GPU_WRITEMASK(GPU_WRITE_RED|GPU_WRITE_GREEN|GPU_WRITE_BLUE);
 constexpr auto FieldRGBDepth=GPU_WRITEMASK(FieldRGB|GPU_WRITE_DEPTH);
 // Provisional legacy billboard/shadow framing for unbound presentation domains.
 // Ordinary Mario uses original model coordinates and the source scalar2.
 constexpr float LegacyPaperCharacterScale=.16f;
+// Native UI palette packed as C2D ABGR (low byte red), not source RGBA.
+// shade extracts RGB lanes8 bits apart, rescales and returns opaque native color.
 constexpr uint32_t Ink=0xff352d29, Paper=0xffdff2fb, Gold=0xff62c7f3, Red=0xff4966d8;
 uint32_t rgb(unsigned r,unsigned g,unsigned b,unsigned a=255) { return C2D_Color32(r,g,b,a); }
 uint32_t shade(uint32_t c,float factor) { return rgb((c&255)*factor,((c>>8)&255)*factor,((c>>16)&255)*factor); }
 }
+// Readiness flags permit cleanup after partial initialization; allocations
+// are native arenas. No copied original GPU heap/address ownership is implied.
 bool Renderer::init() {
     if(!loadItemPresentations("romfs:/item-presentations.bin") || !loadItemSelectorAssets("romfs:") || !loadPouchRevisionAssets("romfs:"))return false;
     if(!C3D_Init(C3D_DEFAULT_CMDBUF_SIZE)) return false;
     c3dReady=true;
+    // Native C2D capacity2048; tilted top target240x400 represents400x240
+    // landscape pixels. Bottom is320x240; transfers convert RGBA8 to LCD RGB8.
     if(!C2D_Init(2048)) return false;
     c2dReady=true;
     top=C3D_RenderTargetCreate(240,400,GPU_RB_RGBA8,GPU_RB_DEPTH24_STENCIL8);
@@ -48,6 +60,9 @@ bool Renderer::init() {
     shaderProgramInit(&messageSystemProgram);messageSystemProgramReady=true;
     shaderProgramSetVsh(&messageSystemProgram,&messageSystemShader->DVLE[0]);
     messageSystemTransform=shaderInstanceGetUniformLocation(messageSystemProgram.vertexShader,"transform");
+    // Native budgets:system four quads=24 vertices,tail two quads=12,
+    // indicator256 vertices. Window frame54=9 quads*6; font6 per glyph quad.
+    // MaxWindowFrames64/MaxWindowFontQuads1024 and text8192 are arena policy.
     messageSystemVertices=(SystemVertex*)linearAlloc(sizeof(SystemVertex)*24);
     vertices=(Vertex*)linearAlloc(sizeof(Vertex)*MaxVertices);
     messageTailVertices=(Vertex*)linearAlloc(sizeof(Vertex)*12);
@@ -62,6 +77,8 @@ bool Renderer::init() {
     windowFontVertices=(Vertex*)linearAlloc(sizeof(Vertex)*6*MaxWindowFontQuads);
     textBuffer=C2D_TextBufNew(8192);
     if(!vertices || !messageTailVertices || !windowFrameVertices || !windowFontVertices || !messageSystemVertices || !textBuffer) return false;
+    // Ten original window textures:panel,pattern, masks42..49. Only pattern
+    // repeats; masks/panel clamp. Eight masks split four alpha/four RGB inputs.
     for(unsigned i=0;i<10;++i) {
         std::string name=i==0?"panel":i==1?"system-pattern":std::to_string(40+i);
         auto& texture=i==0?messagePanel:i==1?messageSystemPattern:messageSystemMasks[i-2];
@@ -84,6 +101,9 @@ bool Renderer::init() {
     C3D_TexSetFilter(&sky.texture,GPU_LINEAR,GPU_LINEAR);
     if(!actorAnimations.load("romfs:/characters.pmanim"))return false;
     if(!goombaQuestAnimations.load("romfs:/goomba-quest-mario.pmanim") || !bindGoombaQuest13Poses(goombaQuestAnimations))return false;
+    // UV sidecars:8-byte format magic+float scale,exact EOF. Powers1/2/4/8
+    // describe atlas/texture padding scale; V expression1-(1-v)*scale retains
+    // the original orientation. Limits are per-sidecar native admission checks.
     FILE* questUV=std::fopen("romfs:/goomba-quest-mario.bin","rb");if(!questUV)return false;
     char questMagic[8];const bool questValid=std::fread(questMagic,8,1,questUV)==1 && !std::memcmp(questMagic,"PMQ13UV1",8) &&
         std::fread(&goombaQuestUVScale,4,1,questUV)==1 && std::fgetc(questUV)==EOF;std::fclose(questUV);
@@ -125,6 +145,8 @@ bool Renderer::init() {
     professorMarioTexture.imported=Tex3DS_TextureImportStdio(storyTexture,&professorMarioTexture.texture,nullptr,false);std::fclose(storyTexture);
     if(!professorMarioTexture.imported)return false;
     C3D_TexSetFilter(&professorMarioTexture.texture,GPU_LINEAR,GPU_LINEAR);C3D_TexSetWrap(&professorMarioTexture.texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
+    // PMSICON1 stores two float dimensions for the professor map icon;
+    // each positive<=1024 is a native resource bound, not world-space size.
     FILE* mapMetrics=std::fopen("romfs:/professor-map.bin","rb");if(!mapMetrics)return false;
     char mapMagic[8];const bool mapValid=std::fread(mapMagic,8,1,mapMetrics)==1 && !std::memcmp(mapMagic,"PMSICON1",8) &&
         std::fread(professorMapSize.data(),8,1,mapMetrics)==1 && std::fgetc(mapMetrics)==EOF;
@@ -176,6 +198,8 @@ bool Renderer::init() {
         C3D_TexSetFilter(&entry.second->texture,GPU_LINEAR,GPU_LINEAR);
         C3D_TexSetWrap(&entry.second->texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
     }
+    // PMHNPC2 has exactly two XYZ dimension/anchor records for Crump/X-Naut.
+    // +/-10 bound is native converted-metric validation, not source actor limits.
     FILE* metrics=std::fopen("romfs:/harbor-actors.bin","rb");if(!metrics)return false;
     char magic[8];uint32_t n=0;
     const bool valid=std::fread(magic,8,1,metrics)==1 && !std::memcmp(magic,"PMHNPC2",8) && std::fread(&n,4,1,metrics)==1 && n==2 && std::fread(harborActorMetrics.data(),sizeof(harborActorMetrics),1,metrics)==1 && std::fread(harborTalkOffsets.data(),sizeof(harborTalkOffsets),1,metrics)==1 && std::fgetc(metrics)==EOF;
@@ -184,6 +208,10 @@ bool Renderer::init() {
     for(const auto& m:harborTalkOffsets)for(float v:m)if(!std::isfinite(v) || std::fabs(v)>10)return false;
     return loadMap("map",plaza) && loadFieldActors(0,plaza);
 }
+// Native pack admission mutates its supplied pending Room as it loads;
+// callers must free partial resources on failure. Descriptor counts cap512
+// batches/256 textures; geometry cap16MiB and whole Vertex stride guard memory.
+// Batch textures -1 use the fallback atlas. Triangle-list counts are multiples3.
 bool Renderer::loadMap(const char* name,Room& room) {
     const auto unavailable=[&](const char* reason){frontFailure=std::string(reason)+": "+name;return false;};
     char path[96];std::snprintf(path,sizeof(path),"romfs:/%s.batches",name);
@@ -203,6 +231,10 @@ bool Renderer::loadMap(const char* name,Room& room) {
     for(auto b:room.batches) if(b.start>room.vertexCount || b.count>room.vertexCount-b.start || b.texture<-1 || b.texture>=int32_t(textureCount))return unavailable("Map binding range invalid");
     for(auto batch:room.batches)if(batch.layer>>26==8)
         for(uint32_t i=0;i<batch.count;++i)room.fenceOriginal.push_back({batch.start+i,room.vertices[batch.start+i]});
+    // Packed layer:uint8 source layer,bits8..23 cutaway group,bits24..25
+    // GX cull,bits26..31 event visibility group. Group8 is professor fence.
+    // Native cutaway group cap1024; opening harbor/muj packs admit14/13
+    // event groups versus ordinary max12. These IDs are converter metadata.
     const uint32_t maxEventGroup=std::strcmp(name,"opening-gor_00")==0?14u:std::strcmp(name,"opening-muj_20")==0?13u:12u;
     uint32_t groups=0;
     for(auto batch:room.batches) {if(batch.count%3 || ((batch.layer>>8)&65535)>1024 || (batch.layer>>26)>maxEventGroup)return unavailable("Map visibility group invalid");groups=std::max(groups,(batch.layer>>8)&65535);}
@@ -235,12 +267,19 @@ bool Renderer::loadMap(const char* name,Room& room) {
     GSPGPU_FlushDataCache(room.vertices,size_t(room.vertexCount)*sizeof(Vertex));
     return true;
 }
+// Release Tex3DS descriptor AND GPU texture,then linear geometry; resetting
+// Room clears CPU animation/cutaway/NPC caches. Caller must synchronize GPU
+// users first; freeRoom itself does not wait for submitted draws.
 void Renderer::freeRoom(Room& room) {
     for(auto& texture:room.textures) if(texture.imported) {Tex3DS_TextureFree(texture.imported);C3D_TexDelete(&texture.texture);}
     for(auto& model:room.actorModels)if(model.texture.imported){Tex3DS_TextureFree(model.texture.imported);C3D_TexDelete(&model.texture.texture);}
     if(room.vertices)linearFree(room.vertices);
     room=Room{};
 }
+// Linear-memory policy retires old field Room before loading destination.
+// On failure,reload the previous room if it existed; this restoration can also
+// fail. Collision transaction rollback is independent and cannot restore GPU
+// residency. UINT32_MAX records absent residentFieldRoom during the attempt.
 bool Renderer::changeRoom(uint32_t room) {
     frontFailure.clear();
     if(room!=1)freeOpeningDeparture();
@@ -267,6 +306,9 @@ bool Renderer::changeRoom(uint32_t room) {
     }
     plaza=std::move(next);residentFieldRoom=room;frontActive=false;return true;
 }
+// Switch mutually exclusive quest/item/trio atlases outside an active frame.
+// C3D_FrameSync precedes freeing descriptors referenced by earlier draws.
+// Resource failure is explicit; do not treat a successful CPU pose as texture ready.
 bool Renderer::prepareSceneActorTextures(const Game& g) {
     const bool trio=g.trioBattleActive;
     const bool quest=!trio && !g.harborEncounter.locked() && !g.storyPresentation().locked() &&
@@ -294,6 +336,9 @@ bool Renderer::prepareSceneActorTextures(const Game& g) {
     if(item && !load("romfs:/field-item-get-mario.t3x",fieldItemGetTexture))return false;
     return true;
 }
+// Native GPU residency differs from Game room state. Trio uses bti_01/stg_00_1,
+// legacy harness uses stage; tutorial owns dedicated startup maps. Battle entry
+// frees field Room before map admission; field return reloads its room/NPC bank.
 bool Renderer::prepareBattleMaps(const Game& g) {
     if(g.harborTutorial.running())return true; // Dedicated startup owns its field retirement/battle maps.
     const bool legacy=!g.harborTutorial.running() && (g.scene==Scene::Battle || g.scene==Scene::Victory || g.scene==Scene::Defeat);
@@ -315,6 +360,9 @@ bool Renderer::prepareBattleMaps(const Game& g) {
     freeRoom(stage);
     return plaza.vertices && residentFieldRoom==g.progress.room?true:changeRoom(g.progress.room);
 }
+// Share texture/animation bank per MODEL,not one GPU resource per actor.
+// Validate required poses before room acceptance; underground room5 additionally
+// retains professor model even without an ordinary catalog placement.
 bool Renderer::loadFieldActors(uint32_t roomId,Room& room) {
     for(uint32_t index=0;index<fieldActorAssets.models().size();++index) {
         bool used=roomId==5 && fieldActorAssets.models()[index].asset=="professor";
@@ -334,6 +382,10 @@ bool Renderer::loadFieldActors(uint32_t roomId,Room& room) {
     }
     return true;
 }
+// CPU geometry emits into the common transient arena. Cache key is tick+pose
+// NAME+sample frame,so equal-model instances with independent clocks can sample
+// differently. Native root*.01 converts engine units; source scale uses actor
+// profile. Live simulation presentation supersedes fallback catalog draw state.
 void Renderer::fieldActors(const Game& g) {
     if(plaza.actorStart==UINT64_MAX || g.ticks<plaza.actorStart)plaza.actorStart=g.ticks;
     for(auto& gpu:plaza.actorModels) {
@@ -413,6 +465,10 @@ void Renderer::fieldActors(const Game& g) {
         gpu.count=count-gpu.start;
     }
 }
+// Original actor pass3 translucent;pass2 alpha>=128 opaque,pass1 fallback
+// alpha>8. Cull2 suppresses actor draw,3 none; mapped PICA winding differs
+// from map adaptation below. Translucent color writes retain alpha/depth mask.
+// Restore the native common state for later owners after this pass.
 void Renderer::drawFieldActors(bool translucent) {
     for(auto& model:plaza.actorModels)for(const auto& batch:model.batches) {
         if((batch.pass==3)!=translucent || !batch.count || batch.cull==2)continue;
@@ -432,6 +488,9 @@ void Renderer::drawFieldActors(bool translucent) {
     C3D_CullFace(GPU_CULL_NONE);C3D_DepthTest(true,GPU_GREATER,FieldRGBDepth);C3D_AlphaTest(true,GPU_GREATER,8);
     C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_SRC_ALPHA,GPU_ONE_MINUS_SRC_ALPHA,GPU_ONE,GPU_ONE_MINUS_SRC_ALPHA);
 }
+// Native visual adaptation: camera rays to Mario root+.12/+ .65 and partner
+// +.3 world heights test original triangles. Hold a blocked group eight simulation
+// ticks to prevent flicker. This neither changes collision nor original scene flags.
 void Renderer::updateCutaways(Room& room,const Game& g) {
     Point3 eye{g.fieldCameraFrame.eye.x,g.fieldCameraFrame.eye.y,g.fieldCameraFrame.eye.z};
     const float actorY=g.water.active()?g.water.position[1]:g.groundHeight+g.jumpHeight;
@@ -457,11 +516,17 @@ void Renderer::updateCutaways(Room& room,const Game& g) {
         occluder.hidden=blocked || g.ticks<occluder.hiddenUntil;
     }
 }
+// Opaque pass owns mesh/UV CPU updates; translucent pass reads same prepared
+// room geometry. Bind transforms remain immutable source samples, avoiding drift.
+// Caller runs inside synchronized FrameBegin before modifying GPU-visible data.
 void Renderer::drawMap(bool battle,const Game& game,bool translucent,Room* supplied,uint32_t sceneVisibleGroups,bool alphaCapture) {
     auto& room=supplied?*supplied:battle?stage:plaza;
     const auto* stageObjects=updateStageMap(game,room);
     if(!supplied && !battle && !translucent && game.progress.room==2 && game.professorStory.captureRequested && !room.fenceOriginal.empty()) {
         const auto& scene=game.professorStory;
+        // Capture fence view/bounds ONCE for original A_1 paper warp. Per-tick
+        // warped positions derive from retained originals,not previous warped XYZ.
+        // Capture publishes source pixel bounds separately from native view plane.
         if(!room.fenceCaptured) {
             room.fenceCaptureView=game.fieldCameraFrame.view;
             float xmin=INFINITY,ymin=INFINITY,xmax=-INFINITY,ymax=-INFINITY;
@@ -528,12 +593,17 @@ void Renderer::drawMap(bool battle,const Game& game,bool translucent,Room* suppl
             }
         }
     }
+    // Vertex stream has position3/UV2/RGBA4 floats; three attribute loaders
+    // map consecutive fields with permutation0x210 (low nibble attribute0).
+    // Cache flush runs use vertex COUNT*sizeof(Vertex),not byte count as draw size.
     auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,room.vertices,sizeof(Vertex),3,0x210);
     const GPU_TEXTURE_WRAP_PARAM wraps[]={GPU_CLAMP_TO_EDGE,GPU_REPEAT,GPU_MIRRORED_REPEAT};
     MapDrawCache state; // Valid only inside this uninterrupted map pass.
     for(const auto& batch:room.batches) {
         if(!battle && game.progress.room==2 && batch.layer>>26==8 && game.professorStory.fenceHidden && !game.professorStory.fenceVisible)continue;
         if((!battle || supplied) && ((batch.layer&255)==2)!=translucent)continue;
+        // Explicit32-bit scene mask overrides default GSW0 visibility. UINT32_MAX
+        // means use default groups; avoid shifting when eventGroup>=32.
         if(!battle) {
             const auto eventGroup=batch.layer>>26;
             if(sceneVisibleGroups!=UINT32_MAX) {if(eventGroup>=32 || !(sceneVisibleGroups&(1u<<eventGroup)))continue;}
@@ -547,6 +617,8 @@ void Renderer::drawMap(bool battle,const Game& game,bool translucent,Room* suppl
         // GX winding maps to the opposite PICA enum in this view transform.
         const GPU_CULLMODE culls[]={GPU_CULL_BACK_CCW,GPU_CULL_FRONT_CCW,GPU_CULL_NONE,GPU_CULL_NONE};
         const auto cull=culls[(batch.layer>>24)&3];
+        // Source layer2 is translucent:skip depth writes. Field RGB-only keeps
+        // the shadow mask; battle/alpha capture retains its own full color mask.
         const auto mask=(batch.layer&255)==2?(battle || alphaCapture?GPU_WRITE_COLOR:FieldRGB):(battle || alphaCapture?GPU_WRITE_ALL:FieldRGBDepth);
         const auto changes=state.apply(texture,uint32_t(wrapS),uint32_t(wrapT),uint32_t(cull),uint32_t(mask));
         if(changes.texture) {
@@ -562,11 +634,16 @@ void Renderer::drawMap(bool battle,const Game& game,bool translucent,Room* suppl
     C3D_CullFace(GPU_CULL_NONE);
     C3D_DepthTest(true,GPU_GREATER,battle?GPU_WRITE_ALL:FieldRGBDepth);
 }
+// Common color input is C2D packed ABGR; normalized float lanes are RGBA.
+// Original per-vertex RGBA can replace them. Overflow silently drops a vertex
+// here; full actor paths preflight capacity to avoid emitting partial triangles.
 void Renderer::vertex(float x,float y,float z,float u,float v,uint32_t color,const ActorColor* rgba) {
     if(count>=MaxVertices) return;
     vertices[count++]={x,y,z,u,v,(color&255)/255.f,((color>>8)&255)/255.f,((color>>16)&255)/255.f,((color>>24)&255)/255.f};
     if(rgba){auto& vertex=vertices[count-1];vertex.r=(*rgba)[0];vertex.g=(*rgba)[1];vertex.b=(*rgba)[2];vertex.a=(*rgba)[3];}
 }
+// Legacy untextured quad samples the neutral atlas point(496/512,1-240/256).
+// Two triangles=6 vertices; the sibling ground helper uses the same cell.
 void Renderer::quad(Vec2 a,Vec2 b,float y0,float y1,uint32_t c) {
     float u=496.f/512,v=1-240.f/256;
     vertex(a.x,y0,a.z,u,v,c);vertex(b.x,y0,b.z,u,v,c);vertex(b.x,y1,b.z,u,v,c);
@@ -577,6 +654,8 @@ void Renderer::ground(float x0,float z0,float x1,float z1,float y,uint32_t c) {
     vertex(x0,y,z0,u,v,c);vertex(x1,y,z0,u,v,c);vertex(x1,y,z1,u,v,c);
     vertex(x1,y,z1,u,v,c);vertex(x0,y,z1,u,v,c);vertex(x0,y,z0,u,v,c);
 }
+// Legacy harness box lighting factors1.08/.70/.82/.74 shade its faces only;
+// they are not original material lighting measurements.
 void Renderer::box(float x,float z,float w,float d,float h,uint32_t c) {
     ground(x,z,x+w,z+d,h,shade(c,1.08f));
     quad({x,z+d},{x+w,z+d},0,h,c);
@@ -584,6 +663,9 @@ void Renderer::box(float x,float z,float w,float d,float h,uint32_t c) {
     quad({x+w,z+d},{x+w,z},0,h,shade(c,.82f));
     quad({x+w,z},{x,z},0,h,shade(c,.74f));
 }
+// Legacy billboard atlas:four .25-wide columns and two .5-high rows.
+// Mario jump/hammer use the upper/lower pose row choice; face swaps U endpoints.
+// Original ordinary actor model rendering uses characterModel instead.
 void Renderer::character(int index,Vec2 p,float h,float w,float face,float lift,float tilt) {
     h*=LegacyPaperCharacterScale;w*=LegacyPaperCharacterScale;tilt*=LegacyPaperCharacterScale;
     const int cell=(index==0 && marioPose>0)?marioPose:index;
@@ -595,6 +677,9 @@ void Renderer::character(int index,Vec2 p,float h,float w,float face,float lift,
     vertex(x0,y0,p.z,left,bottomV,white);vertex(x1,y0,p.z,right,bottomV,white);vertex(x1+tilt,y1,p.z,right,topV,white);
     vertex(x1+tilt,y1,p.z,right,topV,white);vertex(x0+tilt,y1,p.z,left,topV,white);vertex(x0,y0,p.z,left,bottomV,white);
 }
+// Reject complete pose on arena overflow. Root scale.02 combines original
+// scalar2 and world scale.01. Battle-only display offsets convert engine units;
+// native -.05 Z separation avoids overlapping submitted actor surfaces.
 bool Renderer::characterModel(const char* name,float frame,Vec2 root,float rootY,float yaw,bool reflectZ,bool companion,const ActorAnimationPack* custom,float uvScale,const ProfessorSceneActor* battleActor) {
     const auto* pose=(custom?*custom:companion?partnerAnimations:actorAnimations).pose(name);
     if(!pose || !pose->evaluate(frame,actorSample) || actorSample.vertices.size()>size_t(MaxVertices-count))return false;
@@ -607,6 +692,8 @@ bool Renderer::characterModel(const char* name,float frame,Vec2 root,float rootY
     }
     return true;
 }
+// Legacy elliptical atlas shadow:aspect.45,radius scaled by harness paper
+// scale,vertical offset.012 world units. Source Mario shadows use other helpers.
 void Renderer::shadow(Vec2 p,float r,float floor) {
     r*=LegacyPaperCharacterScale;
     float x0=p.x-r,x1=p.x+r,z0=p.z-r*.45f,z1=p.z+r*.45f;
@@ -615,6 +702,9 @@ void Renderer::shadow(Vec2 p,float r,float floor) {
     vertex(x0,floor+.012f,z0,0,.5f,white);vertex(x1,floor+.012f,z0,.25f,.5f,white);vertex(x1,floor+.012f,z1,.25f,.25f,white);
     vertex(x1,floor+.012f,z1,.25f,.25f,white);vertex(x0,floor+.012f,z1,0,.25f,white);vertex(x0,floor+.012f,z0,0,.5f,white);
 }
+// Story actors1 Crump,2/3 X-Nauts share two original animation/texture banks.
+// pose clock milliseconds*.06 produces60Hz authored animation frame; draw does
+// not advance simulation clock. harborCrumpEnd partitions texture spans.
 void Renderer::harborActors(const Game& g) {
     harborCrumpEnd=count;
     for(unsigned i=1;i<4;++i) {
@@ -629,6 +719,10 @@ void Renderer::harborActors(const Game& g) {
         if(i==1)harborCrumpEnd=count;
     }
 }
+// Draw source records unchanged; screen reflow changes presentation only.
+// Native top center(200,120) maps source centered UI with horizontal
+// MessageWindowScale and vertical.5. Capture speaker placement per message serial
+// while reprojecting its retained talk anchor against the actual world matrix.
 void Renderer::originalMessage(const Game& g,const MessagePlayback* supplied,const CameraPoint* suppliedAnchor,const CameraPoint* suppliedMario) {
     const bool fieldTalk=g.fieldActorTalk.message.active();
     const bool professor=g.storyPresentation().locked();
@@ -730,6 +824,8 @@ void Renderer::originalMessage(const Game& g,const MessagePlayback* supplied,con
     if(newWindow){messageWindowSerial=message.serial;messagePlacement=mode;}
     if(!project(messageTalkAnchor,anchorX,anchorY))mode=0;
     else mode=supplied && !suppliedAnchor?0:messagePlacement;
+    // Types3 system,5 panel,11 borderless suppress speaker placement;
+    // source placementOverride wins last. Type1 uses its distinct bubble geometry.
     if(message.windowType==11 || message.windowType==5 || message.windowType==3)mode=0;
     if(message.placementOverride>=0)mode=unsigned(message.placementOverride);
     auto plan=messageWindowPlan(message.geometry,mode,anchorX,anchorY,message.alpha,message.windowType);
@@ -739,6 +835,9 @@ void Renderer::originalMessage(const Game& g,const MessagePlayback* supplied,con
     auto& messageDynamic=messageDynamicWindows[message.serial];
     if(messageDynamic.empty())for(const auto& r:message.records)messageDynamic.push_back(r.value);
     while(messageDynamic.size()<message.records.size())messageDynamic.push_back(message.records[messageDynamic.size()].value);
+    // Source text color is RGBA (000000ff=opaque black),unlike native UI ABGR.
+    // Recordsfff7 color /fff8 icon bypass glyph lookup; flags1 dynamic scale,
+    //2 jitter,4 wave,10000(hex) vertical-size gate retain source presentation data.
     uint32_t color=0x000000ff;
     for(size_t i=0;i<std::min(message.cursor,message.records.size());++i) {
         const auto& r=message.records[i];if(r.code==0xfff7){color=r.flags;continue;}
@@ -755,12 +854,18 @@ void Renderer::originalMessage(const Game& g,const MessagePlayback* supplied,con
         if(r.flags&2) {
             auto jitter=[&](){messageRng^=messageRng<<13;messageRng^=messageRng>>17;messageRng^=messageRng<<5;return (messageRng%10000)%3;};
             x+=jitter()*MessageWindowScale;y-=jitter()*.5f;
+        // Native wave/jitter adapters:millisecond phase .01,position phase.02,
+        // amplitude3.2 source units; xorshift13/17/5 above owns presentation RNG.
+        // Dynamics relax via .5 FMA even when their glyph is clipped below.
         } else if((r.flags&4) && !(r.flags&1)) {
             const float phase=.01f*float(g.ticks*1000/60-message.openedAt)-.02f*(plan.textX+r.x);
             x+=3.2f*std::cos(phase)*MessageWindowScale;y+=3.2f*std::sin(phase)*.5f;
         }
         x+=float(glyph.width>>1)*(1-dynamic)*r.scale*MessageWindowScale;
         y+=12*(1-dynamic)*r.scale*.5f;
+        // Original window-local crop bands:system inset4/height-50,ordinary
+        // type1 height126/others100;native panel5 can span all240 pixels.
+        // Font atlas512x256 normalized UVs crop both geometry and source texels.
         const bool system=message.windowType==3 || message.windowType==11;
         const float clipTop=message.windowType==5?0:120-plan.textY*.5f-(system?4:0);
         const float clipBottom=message.windowType==5?240:clipTop+(system?message.geometry.height-50:message.windowType==1?126:100)*.5f;
@@ -777,6 +882,9 @@ void Renderer::originalMessage(const Game& g,const MessagePlayback* supplied,con
     }
     if(message.canAdvanceText())messageAdvanceIndicator(plan,g.ticks);
 }
+// Original HOS_C_1 pose scale5/yaw180,anchor offsets(-52,+31),UV scale8;
+// native indicator arena256. C2D_Flush precedes temporary3D pipeline takeover
+// and C2D_Prepare/SceneBegin restores2D ownership after submission.
 void Renderer::messageAdvanceIndicator(const MessageWindowPlan& plan,uint64_t ticks,bool onBottom) {
     const auto* pose=messageIndicatorAnimations.pose("HOS_C_1");
     if(!pose || !pose->evaluate(float(ticks),messageIndicatorSample) ||
@@ -802,6 +910,9 @@ void Renderer::messageAdvanceIndicator(const MessageWindowPlan& plan,uint64_t ti
     C3D_TexBind(0,&messageIndicatorTexture.texture);C3D_DrawArrays(GPU_TRIANGLES,first,messageIndicatorCount-first);
     C2D_Prepare();C2D_SceneBegin(onBottom?bottom:top);
 }
+// Icon anchor centerX/bottomY; source frame dimensions scale to native
+// UI(.5 vertical/MessageWindowScale horizontal),then bottom alignment.
+// C2D layer.6 is native UI order,not source display-queue depth.
 void Renderer::messageIconImage(uint32_t id,uint64_t ticks,float centerX,float bottomY,float scale,uint8_t alpha) {
     const auto* icon=messageIcon(id);if(!icon)return;const auto& frame=icon->frame(ticks);
     Tex3DS_SubTexture sub{};sub.width=frame.width;sub.height=frame.height;
@@ -810,11 +921,16 @@ void Renderer::messageIconImage(uint32_t id,uint64_t ticks,float centerX,float b
     C2D_Image image{&messageIconTexture.texture,&sub};C2D_ImageTint tint;C2D_PlainImageTint(&tint,rgb(255,255,255,alpha),0);
     C2D_DrawParams params={{centerX-width*.5f,bottomY-height,width,height},{0,0},.6f,0};C2D_DrawImage(image,&params,&tint);
 }
+// Window types:5 nine-slice panel,3 system multi-texture pattern;other
+// ordinary bubbles use original shadow/fill pairs and a sheared tail. Native
+// C2D depth.4/.5/.6/.7 is layer ordering,not simulation or original queue time.
 void Renderer::messageBorder(const MessageWindowPlan& plan,uint8_t alpha,int type) {
     const auto& b=plan.box;
     if(type==5) {
         const auto* original=Tex3DS_GetSubTexture(messagePanel.imported,0);
         C2D_ImageTint tint;C2D_PlainImageTint(&tint,rgb(255,255,255,alpha),0);
+        // Panel:source30-unit corners split three24px texture slices per axis.
+        // Middle stretches independently; this is not uniform image scaling.
         const float x[]={0,30,b.width-30,b.width},y[]={0,30,b.height-30,b.height};
         for(int row=0;row<3;++row)for(int col=0;col<3;++col) {
             auto sub=*original;sub.width=24;sub.height=24;
@@ -827,6 +943,9 @@ void Renderer::messageBorder(const MessageWindowPlan& plan,uint8_t alpha,int typ
         return;
     }
     if(type==3) {
+        // Native renderer-owned pattern phase .005 per DRAW,wrap10. This is
+        // presentation cadence,not action timing or measured original clock.
+        // System four quads use32-unit edges and128/64 pattern periods.
         messageSystemPhase+=.005f;if(messageSystemPhase>10)messageSystemPhase-=10;
         const float w=std::max(b.width,32.f),h=std::max(b.height,32.f);
         const float quads[4][4]={{0,0,w-32,h-32},{0,h-32,w-32,32},{w-32,0,32,h-32},{w-32,h-32,32,32}};
@@ -861,6 +980,9 @@ void Renderer::messageBorder(const MessageWindowPlan& plan,uint8_t alpha,int typ
         }
         C3D_TexBind(1,nullptr);C3D_TexBind(2,nullptr);C2D_Prepare();C2D_SceneBegin(top);return;
     }
+    // Bubble atlas1024x512:tail cell(600,0/64,48,64),type1 cells
+    // (600,128/192,232,64),ordinary cells(0,0/176,560,176). Pass0
+    // shadow precedes pass1 fill; V flips during subtexture creation.
     auto image=[&](unsigned x,unsigned y,unsigned w,unsigned h) {
         Tex3DS_SubTexture sub{};sub.width=w;sub.height=h;sub.left=x/1024.f;sub.right=(x+w)/1024.f;sub.top=1-y/512.f;sub.bottom=1-(y+h)/512.f;return sub;
     };
@@ -898,6 +1020,8 @@ void Renderer::messageBorder(const MessageWindowPlan& plan,uint8_t alpha,int typ
         C2D_DrawImageAt(bubble,200+b.x*MessageWindowScale,120-b.y*.5f,.4f,&tint,b.width*MessageWindowScale/sub.width,b.height*.5f/sub.height);
     }
 }
+// Six original strip points triangulate into12 vertices(four triangles).
+// Source XYZ converts engine->world*.01; untextured TEV uses record color.
 void Renderer::marioGroundShadow(const FieldShadowRecord& record) {
     const auto points=fieldShadowPolygon(record);
     constexpr int triangles[]={0,1,2,2,1,3,2,3,4,4,3,5}; // Original strip triangulation.
@@ -905,6 +1029,9 @@ void Renderer::marioGroundShadow(const FieldShadowRecord& record) {
         const auto p=points[index];vertex(p.x*.01f,p.y*.01f,p.z*.01f,0,0,record.color);
     }
 }
+// Emit three equal-sized spans for vertex material,zero material and global
+// material. Preflight all3*mesh vertices; later world pass uses these exact
+// spans for alpha OR,front-face zero and destination-alpha RGB blend.
 int Renderer::marioAirShadow(const FieldShadowRecord& record) {
     const auto mesh=fieldAirShadowVertices(shadowGeometry,record,fieldAirShadowPlan(record));
     if(mesh.empty() || mesh.size()*3>size_t(MaxVertices-count))return 0;
@@ -919,6 +1046,10 @@ int Renderer::marioAirShadow(const FieldShadowRecord& record) {
     }
     return int(mesh.size());
 }
+// Geometry assembly and actual draw submission use named span endpoints.
+// Legacy Scene::Battle differs from trioBattleActive (source stage/control path).
+// Fixed legacy camera eye(0,2.8,5.5),target(0,1,-.4),near.1/far80 and
+// jump/retreat arcs are native harness framing,not original battle-camera parity.
 void Renderer::world(const Game& g) {
     count=0;
     bool battle=g.scene==Scene::Battle || g.scene==Scene::Victory || g.scene==Scene::Defeat;
@@ -942,6 +1073,8 @@ void Renderer::world(const Game& g) {
     Mtx_Multiply(&transform,&projection,&view);
     worldTransform=transform;
     // Original room backdrop, drawn without depth writes before the room.
+    // Native sky backdrop spans60x36 world units atZ-25;writes RGB before
+    // room depth. Its dimensions bound the adapter view,not original map geometry.
     const float x0=cam-30,x1=cam+30,y0=-12,y1=24,z=-25;
     vertex(x0,y0,z,0,0,0xffffffff);vertex(x1,y0,z,1,0,0xffffffff);vertex(x1,y1,z,1,1,0xffffffff);
     vertex(x1,y1,z,1,1,0xffffffff);vertex(x0,y1,z,0,1,0xffffffff);vertex(x0,y0,z,0,0,0xffffffff);
@@ -950,6 +1083,8 @@ void Renderer::world(const Game& g) {
         if(g.progress.room==0)shadow(NpcPosition,.48f);
         if(g.progress.room==0 && !g.progress.crumpDefeated) shadow(CrumpPosition,.65f);
         struct Actor { int index;Vec2 p;float h,w,face,lift,tilt; };
+        // Legacy paper bob .22 radians/tick with.018 amplitude;billboard
+        // widths/heights and synthetic Crump placement below are harness inputs.
         float bob=std::sin(g.ticks*.22f)*.018f;
         std::array<Actor,4> actors{{
             {0,g.progress.position,1.45f,1.45f*g.turnScale,g.facing,g.water.active()?g.water.position[1]:g.groundHeight+g.jumpHeight,bob},
@@ -1053,6 +1188,9 @@ void Renderer::world(const Game& g) {
         }
     }
 
+    // All transient CPU geometry must reach GPU cache before its spans draw.
+    // Map/actor helpers can replace BufInfo,so restore this stream before each
+    // contiguous character/material span. Six leading vertices belong to sky.
     if(count)GSPGPU_FlushDataCache(vertices,size_t(count)*sizeof(Vertex));
     C3D_BindProgram(&program);
     auto* attrs=C3D_GetAttrInfo();AttrInfo_Init(attrs);
@@ -1093,6 +1231,9 @@ void Renderer::world(const Game& g) {
         } else {
             // Source LEQUAL becomes GEQUAL with the reversed native projection.
             // Preserve each record's alpha OR, front-face zero, RGB mask blend.
+            // Field shadow mask:OR alpha on one face set,zero opposite faces,
+            // then draw global color through destination alpha while preserving
+            // depth. Field room RGB masks keep that alpha from earlier clobbering.
             C3D_DepthTest(true,GPU_GEQUAL,GPU_WRITE_ALPHA);
             C3D_CullFace(GPU_CULL_FRONT_CCW);
             C3D_ColorLogicOp(GPU_LOGICOP_OR);
@@ -1116,10 +1257,14 @@ void Renderer::world(const Game& g) {
     // Original stage400000 opaques,500000 shadows,600000 translucent.
     if(!battle){drawFieldActors(true);if(g.trioBattleActive){drawMap(true,g,true,&trioBackground);drawMap(true,g,true,&trioStage);}else drawMap(false,g,true);drawOpeningDeparture(g,true);}
 }
+// Native diagnostic/menu reflow. Coordinates,scale and C2D layers below
+// are pixel-layout choices; source dialogue uses originalMessage instead.
 void Renderer::text(const char* str,float x,float y,float scale,uint32_t color) {
     C2D_Text t;C2D_TextParse(&t,textBuffer,str);C2D_TextOptimize(&t);
     C2D_DrawText(&t,C2D_WithColor,x,y,.5f,scale,scale,color);
 }
+// Native panel styling:shadow(+2,+3),two-pixel border;UI palette differs
+// from original source window materials. It is not original message art.
 void Renderer::panel(float x,float y,float w,float h,uint32_t color) {
     C2D_DrawRectSolid(x+2,y+3,.4f,w,h,rgb(36,28,32,110));
     C2D_DrawRectSolid(x,y,.4f,w,h,Ink);
@@ -1129,6 +1274,9 @@ void Renderer::button(const char* label,float x,float y,float w,float h,bool act
     panel(x,y,w,h,disabled?rgb(207,201,184):active?Gold:Paper);
     text(label,x+7,y+8,.48f,disabled?rgb(135,129,116):Ink);
 }
+// UI ownership priority:coin/item windows,selector,tutorial/encounter/save,
+// story/trio,then legacy harness notices. Source message records stay separate
+// from development notices and static harness HP labels.
 void Renderer::overlay(const Game& g) {
     if(g.coinWindows && g.coinWindows->retained()) {
         if(!coinGetWindow(*g.coinWindows,uint32_t(g.ticks)))text("Development notice: coin window unavailable",16,220,.42f,Ink);
@@ -1187,6 +1335,8 @@ void Renderer::overlay(const Game& g) {
                 messageIconImage(404,icon.animationTick,200+icon.position[0]*MessageWindowScale,120-icon.position[1]*.5f,icon.scale,icon.alpha);
             }
             if(const auto* effect=g.trioAttack.rewardEffect())for(const auto& q:pointGetQuads(*effect)){
+                // Effect namespace0x10000 separates PointGet textures124..131
+                // from icon.bin IDs; shadow pass black/alpha128 is original art tint.
                 const auto* asset=messageIcon(0x10000+q.texture);if(!asset)continue;const auto& frame=asset->frames[0];
                 Tex3DS_SubTexture sub{};sub.width=frame.width;sub.height=frame.height;
                 sub.left=frame.u0+(frame.u1-frame.u0)*q.u0;sub.right=frame.u0+(frame.u1-frame.u0)*q.u1;sub.top=frame.v0;sub.bottom=frame.v1;
@@ -1227,6 +1377,9 @@ void Renderer::overlay(const Game& g) {
         text(g.scene==Scene::Victory?"Development encounter complete.":"A: retry   B: leave battle",92,128,.43f,Ink);
     }
 }
+// Native bottom-screen harness menu;bounds match Game hitboxes. Four tabs
+// use76px pitch;action row[177,216),retry[107,155),attack row[100,158).
+// Prototype timing bars read simulation state;they do not own command timing.
 void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audioAvailable) {
     if(g.harborTutorial.running())return;
     if(g.trioBattleActive && g.trioAttack.rewardPresentationActive()) {
@@ -1314,6 +1467,9 @@ void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audio
             button(g.progress.sound?"Sound: ON / Y":"Sound: OFF / Y",16,177,288,39,true);
         } else {
             panel(18,93,284,113,rgb(205,183,142));
+            // Native minimap fits real collision footprint into270x100 pixels
+            // centered(160,149);.1 lower span guard avoids division by zero.
+            // Walls filter to current elevation;markers6/4px are UI choices.
             const Rect bounds=collisionBounds();
             float width=std::max(.1f,bounds.x1-bounds.x0),depth=std::max(.1f,bounds.z1-bounds.z0);
             float scale=std::min(270.f/width,100.f/depth);
@@ -1335,6 +1491,9 @@ void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audio
         text(line,9,225,.34f,Ink);
     }
 }
+// Resource transitions precede FrameBegin. Battle maps retire field resources
+// before admitting battle atlases;field return reverses that dependency.
+// SYNCDRAW permits CPU arenas to be reused only after previous GPU work finishes.
 void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool audioAvailable) {
     const bool battleOwner=g.trioBattleActive || g.scene==Scene::Battle || g.scene==Scene::Victory || g.scene==Scene::Defeat;
     const bool mapsFirst=!battleOwner || prepareBattleMaps(g);
@@ -1348,6 +1507,8 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
         if(!keep)i=messageDynamicWindows.erase(i);else ++i;
     }
     C2D_TextBufClear(textBuffer);
+    // Frame-local cursors reset to0 AFTER the synchronization boundary;borrowed
+    // GPU buffers below persist as allocations,not independent frame copies.
     C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
     item95IconCount=0;
     windowFrameCount=0;
@@ -1359,6 +1520,8 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
     drawFieldItemGet(g);
     classVertexCount=0;C2D_Prepare();C2D_SceneBegin(top);overlay(g);
     if(!battleMapsReady)text(actorTexturesReady?"Development notice: battle map unavailable":"Development notice: scene actor texture unavailable",16,220,.42f,Ink);
+    // Native fade layer.99 covers top400x240 and bottom320x240. Opaque255
+    // may still show an explicit development hold notice;it is not field teardown.
     if(g.trioBattleActive && g.trioAttack.endingFadeAlpha())C2D_DrawRectSolid(0,0,.99f,400,240,C2D_Color32(0,0,0,g.trioAttack.endingFadeAlpha()));
     if(g.fade.alpha())C2D_DrawRectSolid(0,0,.99f,400,240,C2D_Color32(0,0,0,g.fade.alpha()));
     C2D_Flush();
@@ -1372,6 +1535,9 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
     C2D_Flush();
     C3D_FrameEnd(0);
 }
+// Cleanup accepts partial init. Specialized release owners and GPU sync run
+// before deleting borrowed linear buffers/textures/shaders/targets;then C2D/C3D
+// services close. This call is end-of-owner lifecycle,not a per-frame reset.
 void Renderer::shutdown() {
     releaseClassMenuDrawing();
     if(c3dReady) C3D_FrameSync();

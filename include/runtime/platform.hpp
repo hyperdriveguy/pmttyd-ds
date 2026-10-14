@@ -34,11 +34,19 @@
 #include <vector>
 #include <unordered_map>
 #include <cstdio>
+// Native libctru/Citro3D/NDSP ownership boundary. Resource objects below have
+// explicit release paths;the POD texture wrappers are not automatic RAII owners.
+// Numeric/format/lifetime reference: docs/code/renderer.md.
 namespace ttyd {
+// Timing fields are milliseconds;fps counts presented outer frames,steps
+// counts simulation visits,droppedTicks records discarded catch-up backlog.
 struct Metrics { float simulationMs=0, renderMs=0, gpuMs=0, fps=0; int steps=0; uint64_t droppedTicks=0; };
 class Audio;
 struct MessageIconFrame;
 class TroubleQuestPresentation;
+// Scene GPU residency and service-bound buffers outlive individual draws.
+// init can fail partway;shutdown uses readiness flags and explicit release.
+// Call changeRoom/resource preparation outside submitted GPU frame ownership.
 class Renderer {
 public:
     bool init();
@@ -68,8 +76,12 @@ private:
     bool prepareFieldItemGetResources();
     void fieldItemGetRequest(ItemGetRequest);
     void drawFieldItemGet(const Game&);
+    //36-byte stream:XYZ3,UV2,RGBA4 binary32. Loader permutation0x210 maps
+    // these three consecutive attributes to world.v.pica v0/v1/v2.
     struct Vertex { float x,y,z,u,v,r,g,b,a; };
     Vertex* vertices=nullptr;
+    // Fixed native linear arenas:tail12(2 quads),indicator256;window frame
+    //54 per frame(9 quads),font6 per glyph quad. Counts are frame-local cursors.
     Vertex* messageTailVertices=nullptr;
     Vertex* messageIndicatorVertices=nullptr;
     unsigned messageIndicatorCount=0;
@@ -114,7 +126,11 @@ private:
     C3D_Tex atlas{};
     Tex3DS_Texture imported=nullptr;
     C2D_TextBuf textBuffer=nullptr;
+    //24-byte native descriptor:vertex start/count,texture(-1 fallback),packed
+    // layer low8,cutaway group8..23,cull24..25,event group26..31,wrapS/T.
     struct MapBatch { uint32_t start,count; int32_t texture; uint32_t layer,wrapS,wrapT; };
+    // Paired ownership:Tex3DS import descriptor and C3D_Tex allocation each
+    // require their own free. Struct copying does not clone either resource.
     struct Texture { C3D_Tex texture{}; Tex3DS_Texture imported=nullptr; };
     Vertex* itemGetEffectVertices=nullptr;
     std::array<Texture,2> itemGetEffectTextures;
@@ -133,6 +149,9 @@ private:
     std::array<Texture,9> tutorialStartupTextures;
     HarborTutorial* tutorialStartupOwner=nullptr;
     struct Occluder {Bounds3 bounds{};std::vector<uint32_t> batches;uint64_t hiddenUntil=0;bool hidden=false;};
+    // One bank/texture per model plus retained CPU sample. tick=UINT64_MAX,
+    // frame=-1 invalidate the cache;key also includes pose name and sample time.
+    // start/count address actual transient vertices,not map indices.
     struct FieldActorModelGpu {
         uint32_t model=0;
         Texture texture;
@@ -144,6 +163,9 @@ private:
         int start=0,count=0;
         std::vector<ActorSurfaceBatch> batches;
     };
+    // Owns imported map geometry/textures,animation bind tracks,cutaway bounds,
+    // actor model banks and capture/cache state. freeRoom clears all after GPU
+    // sync. Animation UINT64_MAX epochs defer initialization until first draw.
     struct Room {
         struct NpcDrawState {NpcPresentation presentation;NpcPoseClock clock;};
         std::unordered_map<uint32_t,NpcDrawState> npcs;
@@ -175,6 +197,8 @@ private:
     OpeningShipObjects departureObjects;
     void drawOpeningDeparture(const Game&,bool translucent);
     void freeOpeningDeparture();
+    // Frontend capture uses a separate heap Game snapshot,not another live
+    // field simulation. Cinematic packs own their textures and CPU sample caches.
     std::unique_ptr<Game> frontDrawSnapshot;
     struct CineActor {std::string name;ActorAnimationPack animations;Texture image;float uvScale=1;ActorAnimationSample sample;const ActorAnimationPose* sampledPose=nullptr;float sampledTime=-1;};
     std::vector<CineActor> cineActors;
@@ -228,6 +252,8 @@ private:
     std::array<float,4> demoPaperFrames{{-1,-1,-1,-1}};
     struct DemoPaperSurface {uint32_t capture,pass,cull;};
     std::vector<DemoPaperSurface> shipPaperSurfaces;
+    //124 imported demo surface descriptors;four sample/capture slots preserve
+    // original separate paper windows. Counts are pack/workspace identities.
     std::array<DemoPaperSurface,124> demoPaperSurfaces{};
     bool demoPaperReady=false,demoPaperAttempted=false;
     std::array<C3D_Tex,4> bookCaptureTextures{};
@@ -263,6 +289,9 @@ private:
     void frontMessage(const MessagePlayback&,uint64_t ticks);
     Texture sky,characterTextures,partnerTextures,fontTexture,harborTexture,messageWindowTexture;
     Texture messagePanel,messageSystemPattern;
+    // System pattern uses four alpha masks and four RGB mix masks.
+    //44-byte SystemVertex has XYZ3,patternUV2,maskUV2,RGBA4;0x3210
+    // maps four attributes to message_system.v.pica,which shares mask UVs.
     std::array<Texture,8> messageSystemMasks;
     struct SystemVertex {float x,y,z,u,v,s,t,r,g,b,a;};
     SystemVertex* titlePromptVertices=nullptr;
@@ -295,6 +324,9 @@ private:
     std::array<std::array<float,3>,2> harborActorMetrics{};
     std::array<std::array<float,3>,2> harborTalkOffsets{};
     mutable std::vector<float> messageDynamic;
+    // Glyph dynamic scale is per window serial,so simultaneous body/choice
+    // windows cannot reset each other. Retire entries only when all live source
+    // message owners stop referring to that serial.
     mutable std::unordered_map<uint64_t,std::vector<float>> messageDynamicWindows;
     mutable std::string messageIdentity;
     mutable uint64_t messageSerial=0;
@@ -337,6 +369,9 @@ private:
     void panel(float x,float y,float w,float h,uint32_t color);
     void button(const char*,float x,float y,float w,float h,bool active,bool disabled=false);
 };
+// NDSP borrows Clip/MusicStream wave descriptors and PCM backing storage.
+// Clear queues/stop callback/join worker before releasing allocations.
+// Source BGM envelope state and native PCM slots have separate lifetimes.
 class Audio {
 public:
     bool init();
@@ -377,9 +412,14 @@ private:
     bool ready=false,titleResourceAttempted=false,titleResourceReady=false;
     OpeningHousePcmPlayer openingHousePcm;
     struct Clip { int16_t* data=nullptr; uint32_t samples=0; ndspWaveBuf wave{}; };
+    // Eight primary-sample cues reside on native NDSP channels2..9;opening
+    // map sound uses channel19. Samples counts are PCM frames,not byte lengths.
     Clip clips[8];
     Clip openingMapSound;uint32_t openingMapSoundRate=0;bool openingMapSoundAttempted=false;
     void updateOpeningMapTurn(const OpeningSequence&,bool);
+    // Three streams with three buffers each retain FIXED descriptor addresses.
+    // Volume127=source full range;rate32000/channels2 are initial native values,
+    // replaced by decoded header. positions/loop bounds are sample FRAME indices.
     struct MusicStream {
         FILE* file=nullptr;
         int track=-1;
@@ -393,6 +433,8 @@ private:
     bool itemFanfareReady(int track);
     bool prepareItemGetAudio(int track);
     bool beginItemGetFanfare(int track,int32_t gpRate);
+    // Slot -1 means backend vacant;0..2 native streams are independent of
+    // original BGM group/track IDs. Ending fanfare can retain a separate tail slot.
     int keyItemSlot=-1,keyItemTailSlot=-1;
     FieldBgmEnvelope keyItemEnvelope;
     FieldStreamFade keyItemTail;
@@ -410,6 +452,8 @@ private:
     void frontendMusic(const std::array<int,3>& tracks,const std::array<uint8_t,3>& volumes);
     void fill(MusicStream&,unsigned slot,ndspWaveBuf&);
     void musicMix(unsigned slot,uint8_t volume);
+    // PCM refill runs on a separate worker;NDSP callback only signals the event.
+    // Source envelope helpers requiring this lock document it beside their API.
     LightLock musicMutex;LightEvent musicWake;Thread musicThread=nullptr;
     std::atomic<bool> musicWorkerRun{false};
     void serviceMusic();
