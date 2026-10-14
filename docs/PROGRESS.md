@@ -1,3 +1,62 @@
+## 2026-10-14 — Native audience Sound1 and real pending public slots
+
+Commite5045a47 implements whole original __psndSFXOn pending allocation and
+AudienceGetInfo1/2/Sound1/2. Typed public slots retain original lookup/gates,
+last-free search, strict priority reclaim, defaults/flags, separately-rounded
+delay arithmetic, retained coordinates/engine, low16 preference/generation and
+actual handle encoding. Native assigned audience requests now invoke the real
+Info1→default positional On→volume chain against session-owned publicSfx.
+[Pending ownership and limits](behavior/audio/AUDIENCE_SOUND_START_AND_PUBLIC_PENDING_ALLOCATION.md).
+
+The explicit positive development pouch now completes native begin: actual8
+original members, noise handle0127, slot39/generation1, original key3925,
+volume101/row-volume107, pending flag1 and engine-1. The actual audience audio
+request retains that handle. This closes the previous Sound1 allocation frontier
+through original source behavior; no backend voice/channel or known-key-1 result
+is substituted. Fresh empty setup4 remains the original8c0 domain. The source
+story producer of8c is not inferred from this manually supplied test input.
+
+Correction: the original noise/clap rows are effects (noise FX159..162,
+clap153..156, descriptor200000xx), not SoundSS streams. Earlier handoff language
+calling the missing service a stream was too specific. Original name/table/
+constant data was already present in private DOL packs. No additional original
+PCM, music, artwork or compiled asset extraction occurred this increment.
+Actual psndSFXMain dispatch, original macro/sample/voice backend execution,
+spatial updates and audible NDSP output still require binding. Original pending
+Check can report occupancy before a voice exists; it does not prove playback.
+
+Validation: frozen artifacts/audience-sound-dlqk0uau, base
+93388a913750f0cd1a591f13d74d154adc653905 plus only this increment. Final
+make test passes280/280 C++ and167/167 Python checks
+(artifacts/audience-sound-test-final.log). New checks cover null-position/stale
+engine retention, defaults, preference/generation wrap, full name scan/miss,
+mute/cooldown/story gates, raw flags, equal-priority exhaustion, strict reclaim/
+failed active stops, missing conversion retaining its published prefix, zero
+volume still starting/setting volume, real-1 retained through Sound1, Sound2
+member position and actual pending allocation. Native positive startup asserts
+real public registry and audience state; the prior unavailable-audio assertion
+was updated only after the real producer was implemented and native begin passed.
+An initial test expected source63 rather than actual GetInfo1 constant250; the
+source-data implementation was correct and that test expectation was corrected.
+
+Required native make all -o assets-ready BUILD=build-audience-sound-review
+TARGET=ttyd-audience-sound-review passes using the prepared private original
+packs (artifacts/audience-sound-native-final.log), producing170357496-byte3DSX.
+Source verifier passes10 bodies,5 spans and r2 pin
+(artifacts/audience-sound-source.log). No Azahar/hardware/audio-output parity
+run occurred. Other concurrent source changes were excluded from the frozen
+increment and preserved during scoped commits. No action-command/render cadence,
+input policy, UI style, original dialogue or story writes were changed.
+
+Next: bind actual effect pending dispatch/original macro/sample playback and
+public slot lifetime updates; retain genuine backend stop failures. Bind
+original audience Act/control and DispAudience801a38f8 to real prepared member
+records/frames on both scene views, plus positive target changes. Real harmful
+throw telegraphs/interrupt targeting must precede optional taps with physical X.
+Normal tutorial admission, source class-ring readiness/menu drawing, command/
+turn scheduling, successful Jump voice and battle teardown/field return remain
+incomplete. The full tutorial/real-battle goal remains active.
+
 ## 2026-10-14 — Original audience population, placement and animation owners
 
 Commit9ec56730 implements whole local SettingAudience, weighted front/back and
