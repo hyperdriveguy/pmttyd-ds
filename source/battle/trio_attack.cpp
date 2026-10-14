@@ -1638,7 +1638,9 @@ struct TrioAttackRuntime {
             };
             if(identity==0x8000ea68){
                 if(c.publication.flags&2)return true; // Callback admission only; Main still publishes view/extra.
-                if(c.mode!=2 || !r.cameraDepthLensAdapter || !r.updateCamera(r.now))return false;
+                // Original mode2 consumes the retained camera's own lens.
+                // A manual native depth-test adapter is not a source prerequisite.
+                if(c.mode!=2 || !r.updateCamera(r.now))return false;
                 c.eye=r.cameraFrame.eye;c.at=r.cameraFrame.at;c.up=r.cameraFrame.up;distanceYaw();
                 if(c.projectionKind==0)c.matrices.projection=cameraPerspective(c.fov,1.2666666507720947f,c.nearPlane,c.farPlane);
                 else {

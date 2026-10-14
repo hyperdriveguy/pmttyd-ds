@@ -457,14 +457,15 @@ int main(){
 
             assert(shadow->record(0)->flags==1 && shadow->record(1)->flags==1); // Preparation has not been invented.
 
+            auto* retainedCamera=charged.cameraManager->camera(4);
+            retainedCamera->fov=31;retainedCamera->nearPlane=2;retainedCamera->farPlane=20000;retainedCamera->aspect=1.7f;
             charged.trioAttack.tick((charged.ticks+2)*1000/60,charged.trioBattleIntro);
-            assert(queue->count()==20 && shadow->count()==3); // Held outer camera does not repeat collection.
-            assert(charged.trioAttack.pendingFunction()==0x8000ea68); // Explicit depth alone supplies no camera callback/lens history.
+            assert(queue->count()==20 && shadow->count()==3); // Camera publication does not repeat collection.
+            assert(charged.trioAttack.pendingFunction()==0x8000f454); // No manual depth-lens hook is required.
             assert(charged.trioAttack.cameras()==charged.cameraManager.get());
+            assert(retainedCamera->fov==31 && retainedCamera->nearPlane==2 && retainedCamera->farPlane==20000 && retainedCamera->aspect==1.7f);
+            assert(retainedCamera->matrices.projection==cameraPerspective(31,1.2666666507720947f,2,20000)); // Source mode2 uses fixed aspect, retaining C3c.
             const auto callsBeforeCameraResume=std::count_if(charged.trioAttack.requests().begin(),charged.trioAttack.requests().end(),[](const auto& request){return request.function==0x8003ed2c && !request.rawOperands.empty() && request.rawOperands[0]==0;});
-            charged.trioAttack.setCameraDepthLensAdapter(charged.fieldCameraFrame.fov,608.f/480.f,charged.fieldCameraFrame.nearPlane*100,charged.fieldCameraFrame.farPlane*100);
-            charged.trioAttack.tick((charged.ticks+3)*1000/60,charged.trioBattleIntro);
-            assert(charged.trioAttack.pendingFunction()==0x8000f454 && !charged.trioAttack.cameraHistoryComplete());
             assert(queue->count()==20 && shadow->count()==3 && !charged.cameraManager->currentIndex());
             assert(charged.cameraManager->camera(2)->projectionKind==1 && charged.cameraManager->camera(8)->viewport[4]==.1f);
             assert(charged.cameraManager->camera(4)->matrices.view==charged.trioAttack.cameraDepthSnapshot()->view);
