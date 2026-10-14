@@ -3985,3 +3985,12 @@ remain unbound. The dummy's [source A0 identity](../behavior/display/DUMMY_DRAW_
 is129 and is retained separately from current native TexEnv constants. Native
 loaded44 publication follows actual import, with full original N64 load history
 and dummy still open. No field-return/raster/runtime or EVT-01 closure claim.
+
+### 2026-10-14 — Independent shadow ray map-context research
+
+Next source-provider finding: hitCheckVecFilter uses the active HitObj chain
+8041e628 selected from the map index8041e664. Original bmapLoad selects battle
+MapWork before unconditional outer hitMain rebuilds this chain. Native field
+groundAt and the packed battle floor snapshot do not supply that registry.
+Documentation recovery of battle stage roots, original traversal/gates/ties and
+raw hit normals is ongoing; the production ray remains explicitly unavailable.

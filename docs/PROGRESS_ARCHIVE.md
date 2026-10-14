@@ -13840,7 +13840,7 @@ Validation with TMPDIR=`artifacts/native-stage-map-tmp`:
   Harness make all exits0, `artifacts/shadow-gpu-harness-build.log`.
 - Isolated `tools/emulator_smoke.py --binary
   artifacts/shadow-gpu-harness-source/ttyd-shadow-gpu-harness.3dsx
-  --save-fixture artifacts/fixtures/underground-trio-story11.bin --seconds15
+  --save-fixture artifacts/fixtures/underground-trio-story11.bin --seconds 15
   --input-script tests/azahar_trio_exp_icons.py
   --output-dir artifacts/azahar-shadow-gpu` exits0. No detected native exception;
   `artifacts/shadow-gpu-emulator.log`. Personal profiles/saves untouched.
