@@ -1,3 +1,54 @@
+## 2026-10-14 — TimingA result evaluation and deferred StopAC
+
+Committed `a4def146`. Shared ResultAC captures work, calls its result provider or
+reads null-callback result&2, then rereads the live pending bit independently;
+scalar returns never substitute for that stored bit. Help0 resolves its own
+current help/audience-window owners. StopAC invokes the retained delete callback
+before help0 and preserves callbacks/result/count for deferred cleanup. Stored
+result/count readers preserve raw destinations and signed words without any
+evaluation/reset. Unknown providers remain explicit completion frontiers.
+
+Harbor admits actual TimingA result8012a8c4 using original options, actor flags/
+automatic byte, battle flags, general trigger history, difficulty, result/count/
+classification and RNG. Ordinary history evaluation requires a current physical
+producer; missing input is not interpreted as no press. No-pad source routes
+retain their own admission. Actual delete8012a7c0 stores1000 without prematurely
+removing callbacks. Complete native manager/private-pad/display ownership and
+finish countdown scheduling remain unbound; this is not full TimingA cadence.
+
+Tests prove ignored scalar return versus fresh pending bit, null fallback and
+separate reread, help owner recapture, missing providers, deferred stop keeping
+callbacks/count, and raw readers. Native source-script fixtures age menu A out
+of general history, supply physical samples per simulation visit and establish
+no-press result0/count0/class2 versus one-window-press result2/count1/class3.
+Both clear help mode through source effects. With missing physical input Jump
+still waits at ResultAC. With samples failure reaches CheckDamage8010a78c;
+success reaches original voice80104508. HP and story result stay unchanged at
+these service frontiers. These are controlled fixtures, not original measured
+impact timing, a playable Game flow or completed battle/tutorial evidence.
+
+Validation: isolated snapshot /home/carson/Documents/blender_tests/pm-port/artifacts/tutorial-result-rvjxv33f, based on20b93109 plus scoped files,
+passed `make test`:235/235 C++ and142/142 Python tests. Native
+`make all -o assets-ready BUILD=build-result-review TARGET=ttyd-result-review`
+passed using prepared private assets, with final result-reader rebuild passing.
+Artifact: that folder's ttyd-result-review.3dsx. Logs: ignored
+artifacts/tutorial-result-full-test.log, tutorial-result-native.log and
+ tutorial-result-native-final.log. Read-only ISO verifiers passed30 whole motion/
+action/protocol spans; ordinary Jump19 bodies/268 commands/57 anchors; existing
+Jump contracts10 fingerprints/55 instructions/9 constants. Final isolated source
+matched scoped code/test/verifier files; diff check passed. An operand-service
+type mismatch was fixed before green builds. No Azahar/Dolphin, new payload or
+conversion, original-runtime timing or native visual/audio fidelity claim.
+Concurrent field/display changes were preserved in scoped commits.
+
+Next: bind original voice and Mario damage/power/source reactions, complete
+native private-pad/sequence/TimingA main/display queue, then StopAC finish and
+post-action control. Connect original class/target Input and re-entry to player
+registration; consume original poses, render original HUD/menu with physical
+controls and finish second-screen scene/audience plus optional hostile-item taps
+with a physical alternative. Validate play/visuals in isolated Azahar. Goal stays
+active; full tutorial/battle systems and full-game work remain incomplete.
+
 ## 2026-10-14 — StartAC/help, shared manager and Mario motion
 
 Committed `751b81d5`. Complete source StartAC captures battle before resolving
