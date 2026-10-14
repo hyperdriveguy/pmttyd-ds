@@ -55,3 +55,7 @@ complete item-main dispatch/control/window/camera/pouch event binding. Explicit
 backend release must not be wired as an equivalent Off201 request. Original A/B
 acknowledgment may precede fanfare EOF; it must not wait for natural vacancy.
 Provider validation does not claim a playable acquisition or physical3DS parity.
+
+## 2026-10-14 follow-up: envelopes and retained field resume
+
+[Portable/native envelope owner](PORTABLE_FIELD_BGM_ENVELOPES_AND_NATIVE_ITEM_AUDIO.md) now supplies Off201 integer group fade, separate100ms tail, logical vacancy before physical release and retained field3800/A0 controls. On_f_d synchronous BGMMain and group0-before1 are retained. Source row67/global metadata remains caller-owned; live global slew/flags, full stream arbitration and event/Mario/window/pouch integration remain unfinished. Explicit backend release remains separate from Off201.

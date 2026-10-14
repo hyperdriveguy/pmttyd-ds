@@ -809,3 +809,20 @@ record boundaries. Original Off201 fade/detached100ms tail and group0 retained-
 cursor attenuation/resume remain native bindings; full Goomba3 pickup event and
 item-main/control/motion/window/pouch/5405 ownership still need integration.
 Parent requests remain open.
+
+### 2026-10-14 — Original audio envelopes, tail and retained field resume
+
+Portable original primary Off201/secondary3800/A0 counters and clean floating
+SoundSS tail now have native fanfare/field-stream consumers. Logical group vacancy
+is separate from retained physical tail; per-invocation volume publication precedes
+counter updates. On_f_d synchronous BGMMain and group0-before1 order are retained.
+Native original-mode test preserved field producer position90112 across NULLresume,
+with silent8→false and successful fanfare fade/tail reuse. Both code steps passed
+211 CTests/135 Python tests and native builds.
+[Control/provider scope](../behavior/audio/PORTABLE_FIELD_BGM_ENVELOPES_AND_NATIVE_ITEM_AUDIO.md),
+[secondary/tail boundaries](../behavior/audio/FIELD_BGM_SECONDARY_BOUNDARIES_AND_DETACHED_TAIL.md),
+[plaza row67](../behavior/audio/ROGUEPORT_PLAZA_INIT_BGM_AND_ITEMGET_RESUME_OWNER.md),
+and [source global percentage](../behavior/audio/FIELD_BGM_GLOBAL_PERCENTAGE_INITIALIZATION_AND_SLEW.md).
+Full source sound flags/arbitration/global slew, source device scheduling and
+physical performance remain unbound/unverified. Native event/Mario/window/item-main
+and once-only pouch/5405 acquisition integration are next; parent requests stay open.

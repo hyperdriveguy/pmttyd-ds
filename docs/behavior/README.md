@@ -852,3 +852,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Battle pose pool provisioning and native admission](display/BATTLE_POSE_POOL_PROVISIONING_AND_TYPED_NATIVE_ADMISSION.md).
 
 - [Shared original weapon-table production and eligibility](battle/NATIVE_WEAPON_TABLE_PRODUCTION.md)
+
+- [Source BGM secondary/tail boundaries](audio/FIELD_BGM_SECONDARY_BOUNDARIES_AND_DETACHED_TAIL.md), [plaza BGM/resume owner](audio/ROGUEPORT_PLAZA_INIT_BGM_AND_ITEMGET_RESUME_OWNER.md), [global percentage initialization/slew](audio/FIELD_BGM_GLOBAL_PERCENTAGE_INITIALIZATION_AND_SLEW.md), and [portable/native item-audio envelopes](audio/PORTABLE_FIELD_BGM_ENVELOPES_AND_NATIVE_ITEM_AUDIO.md).

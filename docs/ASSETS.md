@@ -2060,3 +2060,21 @@ read-only ISO verifiers pin the complete builder and target/updater bodies.
 No new game payload, text rewrite, texture, geometry or lighting conversion was
 added. Extracted assets remain ignored; Nintendo/Intelligent Systems licensing
 restrictions remain. Inspection ELF stays under ignored artifacts.
+
+## Original item-get BGM control and retained plaza stream (2026-10-14)
+
+The source Off201/Off3800/NULLcontinue controls add no extracted/generated audio.
+Native fanfare/retained stereo field gains use source float3c010204 after binding,
+with source integer primary/secondary/global envelope publication. The source
+100ms detached tail retains original streaming buffers until its own stop;
+field resume retains the existing PCM producer cursor instead of reopening music.
+
+Final GameCube `romfs/rogueport.wav` and the isolated review pack both match
+original stg_gor2 PCM:32000Hz/stereo/3284008 frames, SHA256
+`d83abec5e38338a1740e5644523bcbddf34fc879d0af4a6906a6aeba7897fc6d`.
+`config/audio_bindings.json`/the final audio_map packaging step select that
+original row67 stream after an older build_assets gor1 intermediate. Original
+licensing and ignored-pack restrictions remain unchanged. Isolated field-audio
+validation uses SOUNDTRACK=gamecube; normal configured soundtrack selection is
+preserved. See [source plaza binding](behavior/audio/ROGUEPORT_PLAZA_INIT_BGM_AND_ITEMGET_RESUME_OWNER.md)
+and [portable/native control scope](behavior/audio/PORTABLE_FIELD_BGM_ENVELOPES_AND_NATIVE_ITEM_AUDIO.md).
