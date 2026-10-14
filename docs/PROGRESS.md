@@ -1,3 +1,72 @@
+## 2026-10-14 — Original audience idle breathing and reaction decisions
+
+Previous goal turn made progress by porting member dispatch/motion and three
+idle reactions. Commit `177648dc` now implements whole local
+BattleAudienceCtrlProcessKinopioWait80192260/7ac, binds it at the existing native
+member-state provider, and ports whole offset-seat801a2768 and
+BreakTurn80203370 helpers. Existing packed SetAnimation/ChangeStatus and
+AddTargetNum helpers remain the actual owners. This removes the unconditional
+native Wait stub; it does not insert audience calls across another unavailable
+provider or close the normal outer battle/camera cadence.
+[Source contract](behavior/battle/AUDIENCE_IDLE_BREATHING_AND_DECISIONS.md).
+
+The source breathing update is a fused coefficient*FPR0+scale, with FPR0 equal
+to1/.5/.25/0 in its ratio branches, rather than multiplying current scale.
+FPR29 independently selects breathing duration1/2/4; the low/unordered branch
+does not assign it. The portable service explicitly carries optional double
+callerF29 and stops only where an instruction needs missing provenance. It
+never invents0 or borrows another member's local value. Type2 and type4 through
+timer188 can run without that register. Native single-product/fused adapters
+admit exactly single-valued, non-NaN inputs; unsupported numeric provenance
+remains explicit. Gekko FPSCR/GQR parity remains unproven.
+
+Retained source behavior includes all type breathing phases, inclusive/reset
+boundaries, final fnmsubs negate, signed/wrapped timers, flag40 priority and
+clear60, unit0 kind236..239 exclusion/fresh upper-bound lookup, original target
+delta, item/suppression gates, one bound360000 RNG call, reaction1/2/4 cutoffs,
+break-turn override, type11 exclusion and source preceding-row neighbour test.
+Original constants/type table come from existing unchanged PMEVT data. Whole
+idle can still stop at missing caller FPR29, numeric/target services or invalid
+unit state; subsequent reactions4..20 remain their own provider boundaries.
+
+Validation used existing isolated `artifacts/battle-lens-qwwrj2n7`, refreshed
+from frozen tracked base `b2ce440d3fbb0f8f1298746f984da784d12fb76d` plus owned
+source/tests/CMake. Concurrent later field/shape-render changes were excluded.
+The baseline includes the committed original model traversal increment; used its
+matching `write_directory` to regenerate private Mario/Goombella/Frankly standard
+pose-directory and unchanged raw-model companions from existing original local
+resources. No pack format or texture conversion was changed by this increment.
+No original extracted asset, inspection ELF/text or compiled pack was committed;
+ISO inspection remained read-only.
+
+Initial focused tests passed. Added and passed an original positive population8
+-> whole Control -> member dispatcher -> Wait chain for20 ticks sharing actual
+source RNG; its front service is explicitly a test value1. This proves that
+portable positive control chain, not native full cadence or visual framing.
+Other tests cover every breathing type and phase, threshold-register distinction,
+missing-register/service partial stores, damage/item gates, reaction cutoffs and
+neighbour existence. Existing Python pack test now pins the original type table
+and all consumed additional constants. No fabricated crowd/story grant was added
+to production.
+
+Final `MAKEFLAGS=-j4 make test` exited0:300/300 C++ and174/174 Python
+(`artifacts/audience-idle-test.log`). Final `MAKEFLAGS=-j4 TMPDIR="$PWD/artifacts/tmp"
+make all -o assets-ready BUILD=build-battle-lens TARGET=ttyd-battle-lens` exited0
+(`artifacts/audience-idle-native.log`); assets-ready bypass reuses the private
+validated original packs. Both build processes were observed terminal before
+committing. Owned diff checks passed; scoped temporary-index commit preserves
+other threads' work. No new emulator/visual acceptance or hardware-performance
+claim. Original controls, dialogue, menu/HUD art, action timing and two-screen
+scene replay were unchanged.
+
+Next: close original state4/JoyRaiseArm and remaining reaction/entry/item
+controllers, and establish caller-register provenance where required. Bind
+normal battle Main/outer camMain/camDraw in original order so inherited field
+framing advances to the battle view. Harmful-item telegraphs with physical X and
+optional audience taps, original menu/turn choreography, tutorial followup hits,
+field return and actual voice playback remain open. The full tutorial and real
+battle goal remains active and incomplete.
+
 ## 2026-10-14 — Original audience member dispatch, motion and three idle reactions
 
 Commit `bb51dc1d` replaces the native positive-audience generic controller stub
