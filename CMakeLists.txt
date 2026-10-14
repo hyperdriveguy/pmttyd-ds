@@ -1390,3 +1390,9 @@ target_sources(ttyd_core PRIVATE source/display/shadow_collision.cpp)
 add_executable(shadow_collision_tests tests/shadow_collision_tests.cpp)
 target_link_libraries(shadow_collision_tests PRIVATE ttyd_core)
 add_test(NAME shadow_collision COMMAND shadow_collision_tests)
+
+# Native two-screen battle scene continuation with consistent pixel scale.
+target_sources(ttyd_core PRIVATE source/display/battle_scene_views.cpp)
+add_executable(battle_scene_views_tests tests/battle_scene_views_tests.cpp)
+target_link_libraries(battle_scene_views_tests PRIVATE ttyd_core)
+add_test(NAME battle_scene_views COMMAND battle_scene_views_tests)

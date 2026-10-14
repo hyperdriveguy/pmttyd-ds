@@ -229,6 +229,7 @@ private:
     bool frontHeading(OpeningSequence&,bool&,bool&,bool&,bool&);
     void freeHeading();
     std::array<CineActor,3> tutorialActors;
+    std::array<std::array<int,2>,3> tutorialDrawRanges{};
     bool tutorialReady=false;
     BattleCurtainFade tutorialFade;
     CineActor tutorialCurtain;
@@ -242,7 +243,7 @@ private:
     void drawTutorialCurtain();
     void releaseTutorialCurtain();
     bool loadTutorialPresentation();
-    void worldTutorial(const Game&);
+    void worldTutorial(const Game&,bool lower=false);
     ActorAnimationPack shipPaperAnimations;
     ActorAnimationSample shipPaperSample;
     bool shipPaperReady=false,shipPaperAttempted=false,shipCaptureReady=false;

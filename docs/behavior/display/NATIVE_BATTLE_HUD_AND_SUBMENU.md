@@ -98,3 +98,8 @@ original-game screenshots and original ISO art for final UI shapes and styling.
 Keep original command menus with the upper battle presentation; the lower view
 remains available for audience telegraphs and optional stop-throw interaction,
 with equivalent physical input.
+
+The tutorial's native renderer now has a
+[two-screen scene continuation](NATIVE_BATTLE_TWO_SCREEN_SCENE.md).
+Original audience construction/display and normal class-menu scheduling remain
+separate; this is not a claim that the lower audience interaction is finished.

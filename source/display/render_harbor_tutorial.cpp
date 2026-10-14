@@ -1,5 +1,6 @@
 #include "platform.hpp"
 #include "battle_actor_rotation.hpp"
+#include "battle_scene_views.hpp"
 #include <algorithm>
 #include <cstdio>
 #include <cstring>
@@ -40,7 +41,7 @@ void Renderer::advanceTutorialAnimations(Game& game) {
             game.harborTutorial.animationComplete(a.id);
     }
 }
-void Renderer::worldTutorial(const Game& g) {
+void Renderer::worldTutorial(const Game& g,bool lower) {
     if(!loadTutorialPresentation())return;
     // Native initial battle framing. Original mode/moveto camera requests are
     // retained by the source owner; its complete camera driver remains unbound.
@@ -48,6 +49,13 @@ void Renderer::worldTutorial(const Game& g) {
     Mtx_PerspTilt(&projection,C3D_AngleFromDegrees(42),C3D_AspectRatioTop,.1f,80,false);
     Mtx_LookAt(&view,FVec3_New(0,2.8f,5.5f),FVec3_New(0,1.f,-.4f),FVec3_New(0,1,0),false);
     Mtx_Multiply(&worldTransform,&projection,&view);
+    if(lower){
+        BattleSceneMatrix source;
+        for(unsigned row=0;row<4;++row){const auto& r=worldTransform.r[row];source[row]={r.x,r.y,r.z,r.w};}
+        const auto continued=lowerBattleSceneMatrix(source);
+        for(unsigned row=0;row<4;++row){const auto& r=continued[row];worldTransform.r[row]=FVec4_New(r[0],r[1],r[2],r[3]);}
+    }
+
     C3D_BindProgram(&program);
     auto* attributes=C3D_GetAttrInfo();AttrInfo_Init(attributes);
     AttrInfo_AddLoader(attributes,0,GPU_FLOAT,3);AttrInfo_AddLoader(attributes,1,GPU_FLOAT,2);AttrInfo_AddLoader(attributes,2,GPU_FLOAT,4);
@@ -59,8 +67,15 @@ void Renderer::worldTutorial(const Game& g) {
     drawMap(true,g,false,&harborBattleBackground);drawMap(true,g,false,&harborBattleStage);
     C3D_CullFace(GPU_CULL_NONE);C3D_DepthTest(true,GPU_GREATER,GPU_WRITE_ALL);C3D_AlphaTest(true,GPU_GREATER,8);
     C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_SRC_ALPHA,GPU_ONE_MINUS_SRC_ALPHA,GPU_ONE,GPU_ONE_MINUS_SRC_ALPHA);
-    count=0;
+    if(!lower){count=0;tutorialDrawRanges={};}
     for(unsigned i=0;i<3;++i) {
+        if(lower){
+            // Reuse the exact top-pass vertices. Other top overlays/curtain
+            // keep their arena ranges; the second view writes no actor data.
+            const auto span=tutorialDrawRanges[i];if(!span[1])continue;
+            auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);
+            C3D_TexBind(0,&tutorialActors[i].image.texture);C3D_DrawArrays(GPU_TRIANGLES,span[0],span[1]);continue;
+        }
         const auto& a=g.harborTutorial.actors[i];if(a.id<0)continue;
         const auto* pose=tutorialActors[i].animations.pose(a.pose.c_str());
         if(!pose || !pose->evaluate(float(g.harborTutorial.now-a.poseAt)*.06f,actorSample) || actorSample.vertices.size()>size_t(12000-count))continue;
@@ -72,11 +87,12 @@ void Renderer::worldTutorial(const Game& g) {
             vertex(a.position[0]*.01f+p[0],a.position[1]*.01f+p[1],a.position[2]*.01f+p[2],v.u,1-(1-v.v)*tutorialActors[i].uvScale,0xffffffff,actorSample.colors.empty()?nullptr:&actorSample.colors[n]);
         }
         if(count==first)continue;
+        tutorialDrawRanges[i]={first,count-first};
         GSPGPU_FlushDataCache(vertices+first,size_t(count-first)*sizeof(Vertex));
         auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);
         C3D_TexBind(0,&tutorialActors[i].image.texture);C3D_DrawArrays(GPU_TRIANGLES,first,count-first);
     }
     drawMap(true,g,true,&harborBattleBackground);drawMap(true,g,true,&harborBattleStage);
-    drawTutorialCurtain();
+    if(!lower)drawTutorialCurtain();
 }
 }

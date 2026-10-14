@@ -46,10 +46,11 @@ bool Renderer::init() {
     if(!C2D_Init(2048)) return false;
     c2dReady=true;
     top=C3D_RenderTargetCreate(240,400,GPU_RB_RGBA8,GPU_RB_DEPTH24_STENCIL8);
-    bottom=C2D_CreateScreenTarget(GFX_BOTTOM,GFX_LEFT);
+    bottom=C3D_RenderTargetCreate(240,320,GPU_RB_RGBA8,GPU_RB_DEPTH24_STENCIL8);
     if(!top || !bottom) return false;
     constexpr uint32_t flags=GX_TRANSFER_FLIP_VERT(0)|GX_TRANSFER_OUT_TILED(0)|GX_TRANSFER_RAW_COPY(0)|GX_TRANSFER_IN_FORMAT(GX_TRANSFER_FMT_RGBA8)|GX_TRANSFER_OUT_FORMAT(GX_TRANSFER_FMT_RGB8)|GX_TRANSFER_SCALING(GX_TRANSFER_SCALE_NO);
     C3D_RenderTargetSetOutput(top,GFX_TOP,GFX_LEFT,flags);
+    C3D_RenderTargetSetOutput(bottom,GFX_BOTTOM,GFX_LEFT,flags);
     shader=DVLB_ParseFile((uint32_t*)world_shbin,world_shbin_size);
     if(!shader) return false;
     shaderProgramInit(&program);programReady=true;
@@ -1531,7 +1532,18 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
     if(g.trioBattleActive && g.trioAttack.endingFadeAlpha())C2D_DrawRectSolid(0,0,.99f,400,240,C2D_Color32(0,0,0,g.trioAttack.endingFadeAlpha()));
     if(g.fade.alpha())C2D_DrawRectSolid(0,0,.99f,400,240,C2D_Color32(0,0,0,g.fade.alpha()));
     C2D_Flush();
-    C2D_TargetClear(bottom,Paper);C2D_Prepare();C2D_SceneBegin(bottom);menu(g,m,notice,audioAvailable);
+    if(g.harborTutorial.running()){
+        // Original scene continuation, centered at native320 width. Same
+        // immutable actor snapshot; no second simulation/animation advance.
+        const auto topWorld=worldTransform;
+        C3D_RenderTargetClear(bottom,C3D_CLEAR_ALL,0x000000ff,0);
+        if(C3D_FrameDrawOn(bottom)){
+            C3D_SetViewport(0,0,240,320);C3D_SetScissor(GPU_SCISSOR_DISABLE,0,0,240,320);
+            C3D_DepthMap(true,-1,0);worldTutorial(g,true);
+        }
+        worldTransform=topWorld;
+    }else C2D_TargetClear(bottom,Paper);
+    C2D_Prepare();C2D_SceneBegin(bottom);menu(g,m,notice,audioAvailable);
     if(g.trioBattleActive && g.trioAttack.endingFadeAlpha())C2D_DrawRectSolid(0,0,.99f,320,240,C2D_Color32(0,0,0,g.trioAttack.endingFadeAlpha()));
     if(g.fade.alpha())C2D_DrawRectSolid(0,0,.99f,320,240,C2D_Color32(0,0,0,g.fade.alpha()));
     if(g.trioBattleActive && g.trioAttack.pendingFunction() && g.trioAttack.endingFadeAlpha()==255){
