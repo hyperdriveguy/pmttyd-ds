@@ -1,3 +1,42 @@
+## 2026-10-14 — Native original rotating coin and camera publication
+
+Committed `200e326d`. Actual coin403 now retains source frame0/414/delay6,
+cycles all four original frames every six icon-owner calls even while hidden,
+and preserves phase on reveal. Queued resources resolve/advance in the same
+visit; named setters/delete retain first-active duplicate behavior. Renderer
+reads published frame state and reuses the existing icon shader/vertex pool.
+Original40x40 pixels414..417 fit unchanged in the same512x512/1MiB atlas with
+2px padding. No generated art/resampling or larger native allocation.
+
+Native icon visit now follows Game item owners and precedes sound/windows/
+effects. Game publishes camera5 immediately after camera4 before acquisition
+EVT/Mario; drawing consumes this snapshot, correcting previous render-time
+camera5 rebuilding. Existing up/aspect/math/shadow/global-context limits remain.
+
+Final isolated treeff860bbe78016b77ae9cf4f9bd72b18dc7831f70 passed make test:
+247/247 C++ and142/142 Python; make all passed. Logs ignored
+artifacts/coin-icon-test.log and coin-icon-build.log. Normal artifact
+artifacts/ttyd-coin-icon-reviewed.3dsx SHA256
+d11a48afceb38a4fa482dc60fc826d2fa9d72d321ba3548ac3645a7b0e066d9f.
+Read-only source review and animation/duplicate/camera snapshot checks pass.
+
+Clean DEBUG_SHORT_BOOT parcel capture/save passes: one95,5405true/5406false,
+quest2,HP10/FP5 retained, using explicit room0/story8 test state/private DSP.
+Log artifacts/coin-icon-parcel-smoke.log. Private simulation-driven raster
+preview shows original coin rotating with source title/pink effect, records18
+phase captures and proves unchanged checkpoint bytes. Evidence:
+artifacts/azahar-coin-icon-raster/ and coin-icon-raster-smoke.log. Preview adds
+no reward/audio/Mario-motion/quest writes and validates no complete quest.
+Private source restored; audit matches. No user emulator profile/saves touched,
+matched Dolphin/hardware parity or stable60 claim; concurrent work preserved.
+
+Next: bind distinct row219 ff_get4 PCM/NDSP, native parameter retirement on
+actual window deletion,5376 persistence and Game reward admission. Complete
+original task acceptance and verify acquisition→Goomfrey→McGoomba reward in
+isolated Azahar. Continue original areas/events/objects and actual hardware
+profiling. Goal remains active; full game remains incomplete.
+[Exact source, assets, validation and limitations](behavior/display/NATIVE_COIN403_ANIMATION_AND_CAMERA_PUBLICATION.md).
+
 ## 2026-10-14 — Original TimingA display and A-button HUD icons
 
 Committed `17b6bced`. Complete shared original battleAcDisp_TimingA8012a7cc/f8

@@ -909,3 +909,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Goomba3 original coin callback](field/GOOMBA3_COIN20_PRESENTATION_CLOCK_WINDOW_AND_RETIREMENT.md), [row219 resource/nonloop retirement](audio/GOOMBA3_COIN_FANFARE_ROW219_RESOURCE_AND_NONLOOP_RETIREMENT.md), and [portable reward/coin binding](field/PORTABLE_GOOMBA3_REWARD_AND_COIN_CALLBACK.md) — source clocks, acknowledged grant and independent borrowed-window lifetime; native providers remain open.
 
 - [Original coin403 animation/visibility/camera](display/COIN403_ICON_ANIMATION_VISIBILITY_AND_CAMERA5.md) and [native coin window/effect7 providers](display/NATIVE_COIN_WINDOW_AND_EFFECT7_PROVIDERS.md) — original text gates, cached glyphs, distinct effect kind and corrected camera5 request, with isolated raster/acquisition evidence.
+
+- [Native original coin403 animation and camera publication](display/NATIVE_COIN403_ANIMATION_AND_CAMERA_PUBLICATION.md) — source hidden frame cycles, original four-frame atlas, icon-before-sound simulation and early retained camera5; isolated rendering/checkpoint evidence.

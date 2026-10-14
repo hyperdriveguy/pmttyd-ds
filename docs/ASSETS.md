@@ -201,3 +201,25 @@ requirement or rewritten story/control-token payload was introduced. Original
 Nintendo/Intelligent Systems resources remain copyright-protected with no
 redistribution rights. The prepared isolated review atlas/build is recorded in
 PROGRESS; original ISO is never modified or committed.
+
+## Original coin403 frame pack (2026-10-14)
+
+Read-only ISO `icon.bin` descriptor403 at178a selects actual `icon.tpl` images
+414..417, each40x40CMPR/duration6. Converter now includes all four in the existing
+message/UI icon atlas. Private extraction is local-assets/message-icons/;
+compiled romfs/message-icons.bin/.json/.t3x remain ignored. Original pixels are
+RGBA8 decoded, packed with2px padding without resampling; atlas stays512x512,
+1MiB native texture. No authored replacement, geometry or lighting bake.
+Converted original RGBA byte hashes:
+
+| Original TPL index | RGBA SHA256 |
+| --- | --- |
+| 414 | 7f85c9f3cbcb704994ef58023af5823e04d6ed5dc1261a151ff7d606e74b0a03 |
+| 415 | 125d5a4232222ea046562186884f5c19003a7b1839ab3b3622f25a693e1b6de7 |
+| 416 | 61ebc34fea5111bb00248f45c4c9f437c17b0f415de4a4ea82acc2f8d368ceff |
+| 417 | fd057d9f758f01a8c1b59a15a3d947b257e430c78afff6bdaed95eeb7993f7c1 |
+
+Hashes/audit also live in ignored artifacts/coin-icon-pixel-audit.json. Native
+animation/preview evidence: [provider validation](behavior/display/NATIVE_COIN403_ANIMATION_AND_CAMERA_PUBLICATION.md).
+Original Nintendo/Intelligent Systems local-use/no-redistribution restrictions
+remain; extracted/compiled artwork and embedded native binaries are not committed.

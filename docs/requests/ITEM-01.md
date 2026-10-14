@@ -322,3 +322,17 @@ pins hidden frame cycling, six-call durations and camera5; native animation
 binding remains next. Borrowed native cleanup must use actual window deletion,
 as deleted-slot action retains1. Native audio219/switch5376/Game/upstream/full
 chain/hardware parity remain open; parent requests remain open.
+
+### 2026-10-14 — Original animated coin403 native provider
+
+Committed `200e326d`: original icon.tpl414..417 included in the same512 atlas;
+retained six-call counters cycle while hidden and are consumed without render
+clock advancement. Constructor/named setters/delete retain source duplicate
+ownership. Native icon simulation follows items and precedes sound. Game now
+publishes camera5 after camera4 and before acquisition events/Mario; draw consumes
+that snapshot. Final isolated247 C++/142 Python/native build passed; parcel
+Azahar persistence and private original coin/window/effect rotation preview pass,
+with preview checkpoint byte-identical. [Scope and exact validation](../behavior/display/NATIVE_COIN403_ANIMATION_AND_CAMERA_PUBLICATION.md).
+Native full reward/audio219/parameter retirement/switch5376/acceptance and full
+chain/hardware parity remain open; no preview grant or complete quest claim.
+Parent requests stay open.
