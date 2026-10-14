@@ -36,8 +36,8 @@ void Audio::retireKeyItemFanfare() {
         if(!retained)stopMusic(unsigned(slot));
     }
 }
-bool Audio::beginKeyItemFanfare() {
-    if(!keyItemFanfareReady())return false;
+bool Audio::beginKeyItemFanfare(int32_t gpRate) {
+    if(gpRate<=0 || !keyItemFanfareReady())return false;
     Lock lock(musicMutex);retireKeyItemFanfare();
     if(keyItemSlot>=0 || keyItemTailSlot>=0)return false; // Fresh group/clean-tail domain; replacement unbound.
     unsigned slot=0;while(slot<3 && music[slot].file)++slot;
@@ -47,8 +47,8 @@ bool Audio::beginKeyItemFanfare() {
     keyItemSlot=int(slot);keyItemEnvelope.bind(80);
     // Source row217/type2 pan64 publishes80 to each hard-panned channel.
     // sndStreamMix uses original1/127; no native .65 adapter factor here.
-    // startMusic publishes this gain before submitting the first buffer.
-    return true;
+    // Source On_f_d invokes all admitted groups before returning.
+    return itemGetBgmMain(gpRate);
 }
 int32_t Audio::keyItemFanfareCheck() {
     if(!ready)return -1;
@@ -66,9 +66,11 @@ bool Audio::fadeKeyItemFanfare(int32_t milliseconds,int32_t gpRate) {
     Lock lock(musicMutex);retireKeyItemFanfare();
     return keyItemSlot<0 || keyItemEnvelope.off201(*duration);
 }
-bool Audio::tickKeyItemAudio(int32_t gpRate) {
-    if(!ready || gpRate<=0)return false;
-    Lock lock(musicMutex);retireKeyItemFanfare();
+bool Audio::itemGetBgmMain(int32_t gpRate) {
+    if(itemGetFieldSlot>=0){
+        const auto publication=itemGetFieldEnvelope.main();if(!publication)return false;
+        if(publication->published)musicMix(unsigned(itemGetFieldSlot),publication->volume);
+    }
     if(keyItemSlot>=0){
         const auto publication=keyItemEnvelope.main();if(!publication)return false;
         if(publication->published)musicMix(unsigned(keyItemSlot),publication->volume);
@@ -77,6 +79,12 @@ bool Audio::tickKeyItemAudio(int32_t gpRate) {
             keyItemTailSlot=keyItemSlot;keyItemSlot=-1;
         }
     }
+    return true;
+}
+bool Audio::tickKeyItemAudio(int32_t gpRate) {
+    if(!ready || gpRate<=0)return false;
+    Lock lock(musicMutex);retireKeyItemFanfare();
+    if(!itemGetBgmMain(gpRate))return false;
     // Source outer order: BGMMain publishes/detaches, then SoundSSMain.
     // The first detached subtraction can happen in this same admitted call.
     if(keyItemTailSlot>=0){
@@ -86,4 +94,32 @@ bool Audio::tickKeyItemAudio(int32_t gpRate) {
     }
     return true;
 }
+bool Audio::retainItemGetFieldMusic(uint8_t base,int8_t global,bool bypass) {
+    if(!ready)return false;
+    Lock lock(musicMutex);
+    const auto& stream=music[musicSlot];
+    if(!stream.file || stream.channels!=2 || stream.track==KeyItemTrack)return false;
+    if(itemGetFieldSlot>=0)return itemGetFieldSlot==int(musicSlot) && itemGetFieldTrack==stream.track;
+    itemGetFieldSlot=int(musicSlot);itemGetFieldTrack=stream.track;
+    itemGetFieldEnvelope.bind(base,global,bypass);return true;
+}
+bool Audio::itemGetFieldMusicSilent() {
+    if(!ready)return false;
+    Lock lock(musicMutex);return itemGetFieldSlot>=0 && itemGetFieldEnvelope.silent();
+}
+bool Audio::muteItemGetFieldMusic(int32_t gpRate) {
+    if(!ready)return false;
+    const auto duration=fieldBgmDuration(1000,gpRate);if(!duration)return false;
+    Lock lock(musicMutex);
+    return itemGetFieldSlot>=0 && itemGetFieldEnvelope.mute3800(*duration);
+}
+bool Audio::resumeItemGetFieldMusic(int32_t gpRate) {
+    if(!ready)return false;
+    const auto duration=fieldBgmDuration(1000,gpRate);if(!duration)return false;
+    Lock lock(musicMutex);retireKeyItemFanfare();
+    if(itemGetFieldSlot<0 || !itemGetFieldEnvelope.resumeA0(*duration))return false;
+    // No fopen/seek/startMusic: source NULLcontinue retains the authored cursor.
+    return itemGetBgmMain(gpRate);
+}
+
 }

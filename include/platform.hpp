@@ -319,11 +319,15 @@ public:
     bool available() const { return ready; }
     bool frontendTrackReady(int track);
     bool keyItemFanfareReady();
-    bool beginKeyItemFanfare(); // Fresh group1 only; source replacement/fades external.
+    bool beginKeyItemFanfare(int32_t gpRate=60); // Fresh native GP60 default; replacement remains external.
     int32_t keyItemFanfareCheck(); // Source query shape: -1 vacant, 0 assigned.
     void releaseKeyItemFanfare(); // Backend release, not source Off201 fade.
     bool fadeKeyItemFanfare(int32_t milliseconds,int32_t gpRate);
-    bool tickKeyItemAudio(int32_t gpRate); // One admitted BGMMain then SoundSSMain invocation.
+    bool tickKeyItemAudio(int32_t gpRate); // One admitted group0/1 BGMMain then SoundSSMain invocation.
+    bool retainItemGetFieldMusic(uint8_t sourceBase,int8_t sourceGlobal,bool sourceBypassGlobal);
+    bool itemGetFieldMusicSilent();
+    bool muteItemGetFieldMusic(int32_t gpRate); // Original Off3800/1000ms.
+    bool resumeItemGetFieldMusic(int32_t gpRate); // Original Ona0,NULL/1000ms and synchronous BGMMain.
 
 private:
     bool ready=false,titleResourceAttempted=false,titleResourceReady=false;
@@ -344,6 +348,9 @@ private:
     int keyItemSlot=-1,keyItemTailSlot=-1;
     FieldBgmEnvelope keyItemEnvelope;
     FieldStreamFade keyItemTail;
+    int itemGetFieldSlot=-1,itemGetFieldTrack=-1;
+    FieldBgmEnvelope itemGetFieldEnvelope;
+    bool itemGetBgmMain(int32_t gpRate); // Caller holds musicMutex; source group order0 then1.
     void retireKeyItemFanfare(); // Caller holds musicMutex.
     unsigned musicSlot=0;
     int musicTrack=-1;

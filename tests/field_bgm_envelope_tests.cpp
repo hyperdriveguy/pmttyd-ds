@@ -20,9 +20,13 @@ int main() {
  for(int r=60;r>24;--r){assert(field.secondaryRemaining()==r);auto p=field.main();assert(p->volume==80*(r*127/60)/127);}
  assert(field.silent() && field.secondaryRemaining()==24 && field.main()->volume==31);
  assert(field.mute3800(1) && field.secondaryRemaining()==24 && field.main()->volume==31);
- assert(field.resumeA0(60) && !field.silent());
+ assert(field.resumeA0(60) && !field.silent() && field.primaryRemaining()==1);
  for(int r=24;r<=60;++r){assert(field.secondaryRemaining()==r);assert(field.secondaryState()==16);auto p=field.main();assert(p->volume==80*(r*127/60)/127);}
  assert(field.secondaryState()==0 && field.main()->volume==80 && field.check()==0);
+ FieldBgmEnvelope plaza;plaza.bind(70,100,false);assert(plaza.mute3800(60));
+ for(int i=0;i<36;++i)plaza.main();
+ assert(plaza.main()->volume==27);
+ assert(plaza.resumeA0(60));assert(plaza.main()->volume==27 && plaza.secondaryRemaining()==25); // On_f_d synchronous BGMMain.
  FieldBgmEnvelope fast;fast.bind(80,50,false);assert(fast.mute3800(60,true));
  for(int i=0;i<8;++i)fast.main();
  assert(fast.secondaryRemaining()==24 && fast.main()->volume==15);

@@ -11,7 +11,7 @@ std::optional<int16_t> fieldBgmDuration(int32_t ms,int32_t rate) {
  return int16_t(value);
 }
 void FieldBgmEnvelope::bind(uint8_t base,int8_t global,bool bypass) {
- *this={};assigned_=true;base_=base;global_=global;bypassGlobal_=bypass;
+ *this={};assigned_=true;base_=base;global_=global;bypassGlobal_=bypass;primaryDuration_=primaryRemaining_=1;
 }
 bool FieldBgmEnvelope::off201(int16_t d) {
  if(!assigned_ || secondary_)return false;
@@ -27,8 +27,9 @@ bool FieldBgmEnvelope::mute3800(int16_t d,bool fast) {
 }
 bool FieldBgmEnvelope::resumeA0(int16_t d,bool fast) {
  if(!assigned_ || primary_)return false;
+ if(secondary_==8 && d<=0)return false;
+ primaryDuration_=primaryRemaining_=1;
  if(secondary_!=8)return true;
- if(d<=0)return false;
  secondary_=16;secondaryDuration_=d;secondaryRemaining_=int16_t(int32_t(d)*40/100);fast_=fast;return true;
 }
 std::optional<FieldBgmPublication> FieldBgmEnvelope::main() {

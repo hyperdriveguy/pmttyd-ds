@@ -96,13 +96,14 @@ void Audio::stopMusic(unsigned slot) {
     ndspChnWaveBufClear(MusicChannels[slot]);
     if(keyItemSlot==int(slot)){keyItemSlot=-1;keyItemEnvelope.backendVacant();}
     if(keyItemTailSlot==int(slot)){keyItemTailSlot=-1;keyItemTail.clear();}
+    if(itemGetFieldSlot==int(slot)){itemGetFieldSlot=itemGetFieldTrack=-1;itemGetFieldEnvelope.backendVacant();}
     auto& stream=music[slot];
     if(stream.file){std::fclose(stream.file);stream.file=nullptr;}
     stream.track=-1;stream.ended=false;
     for(auto& buffer:stream.buffers)buffer.status=NDSP_WBUF_FREE;
 }
 void Audio::musicMix(unsigned slot,uint8_t volume) {
-    const float gain=music[slot].track==18?float(volume)*.007874015718698502f:.65f*float(volume)/127.f;
+    const float gain=(music[slot].track==18 || itemGetFieldSlot==int(slot))?float(volume)*.007874015718698502f:.65f*float(volume)/127.f;
     float mix[12]{};mix[0]=mix[1]=gain;
     ndspChnSetMix(MusicChannels[slot],mix);
 }
@@ -218,7 +219,7 @@ void Audio::shutdown() {
         if(clip.data)linearFree(clip.data);
         clip={};
     }
-    keyItemSlot=keyItemTailSlot=-1;keyItemEnvelope={};keyItemTail={};keyItemResourceAttempted=keyItemResourceReady=false;
+    keyItemSlot=keyItemTailSlot=itemGetFieldSlot=itemGetFieldTrack=-1;keyItemEnvelope={};keyItemTail={};itemGetFieldEnvelope={};keyItemResourceAttempted=keyItemResourceReady=false;
     musicTrack=-1;
 }
 }
