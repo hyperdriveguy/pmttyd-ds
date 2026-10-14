@@ -126,3 +126,8 @@ for six complete source bodies and18 linked callee identities. No original
 runtime observation or rendered class menu is claimed. Native class-table and
 UI constructors, provider registration into Harbor Input, Game first-act/turn
 scheduling and original menu rendering remain required before normal playback.
+
+Native follow-up: the complete UI Init/End allocation and array bodies and
+physical harbor bindings are now documented in
+[the class UI contract](ACT_SELECT_UI_ALLOCATION_AND_NATIVE_BINDING.md).
+Original visible presentation and Game activation remain separate frontiers.

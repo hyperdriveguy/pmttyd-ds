@@ -73,7 +73,8 @@ HarborTutorialPacked::commandInput(HarborTutorial &scene, void *messageUser,
       return 0;
     }
     case F::CommandPose:
-      return p.commandPose(a[0], *c.scene) ? std::optional<uint32_t>(0) : missing();
+      return p.commandPose(a[0], *c.scene) ? std::optional<uint32_t>(0)
+                                           : missing();
     case F::HelpKey:
       packedBattleActionHelpSetKey(a[0], nativeBattleActorServices(p.vm));
       return 0;
@@ -81,6 +82,15 @@ HarborTutorialPacked::commandInput(HarborTutorial &scene, void *messageUser,
       packedBattleActionHelpSetDisplay(int32_t(a[0]),
                                        nativeBattleActorServices(p.vm));
       return 0;
+    case F::ActSetup: {
+      const auto result =
+          p.actMenu(*c.scene, c.messageUser, c.message, true, a[1]);
+      return result ? std::optional<uint32_t>(uint32_t(*result)) : missing();
+    }
+    case F::ActMain: {
+      const auto result = p.actMenu(*c.scene, c.messageUser, c.message, false);
+      return result ? std::optional<uint32_t>(uint32_t(*result)) : missing();
+    }
     case F::WeaponMain: {
       const auto value = p.inputWeaponMenu(*c.scene, c.messageUser, c.message);
       return value ? std::optional<uint32_t>(uint32_t(*value)) : missing();

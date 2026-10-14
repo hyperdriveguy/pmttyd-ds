@@ -7,6 +7,7 @@
 #include "battle_packed_generic_jump.hpp"
 #include "display_queue.hpp"
 #include <unordered_map>
+#include <unordered_set>
 #include <optional>
 namespace ttyd {
 // Native storage/provider policy. All gameplay fields copied below retain source
@@ -31,6 +32,9 @@ public:
  bool provisionFreshFieldInformation(uint32_t configuration,uint32_t expectedGroup,uint32_t expectedStage);
  bool registerActor(HarborTutorialActor&);
  bool unitInitReady();
+ std::optional<int32_t> actMenu(HarborTutorial&,void*,uint32_t(*)(void*,uint32_t),bool setup,uint32_t flag=0);
+ bool classUiRelease(uint32_t);
+ void captureClassRows(HarborTutorial&);
  bool buildClassMenu(HarborTutorial&,void*,uint32_t(*)(void*,uint32_t));
  bool buildWeaponMenu(uint32_t type,HarborTutorial&,void* messageUser,uint32_t(*message)(void*,uint32_t));
  bool updateWeaponEligibility(uint32_t type);
@@ -57,6 +61,7 @@ private:
  uint64_t actionManagedAt=UINT64_MAX,actionDisplayedAt=UINT64_MAX;
  std::array<bool,4> registered{};
  static constexpr uint32_t MenuRam=0x84600000;
+ std::unordered_set<uint32_t> classUiAllocations;
  uint32_t commandUnbound=0;
  uint32_t menuTextAt=MenuRam+0x1000;std::unordered_map<uint32_t,uint32_t> menuText;
 

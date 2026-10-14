@@ -221,6 +221,15 @@ bool HarborTutorial::selectWeapon(unsigned row){
  auto& r=*runtime_;r.scene=this;r.packed->publish(*this);
  const bool selected=r.packed->selectWeapon(row,*this,&r,[](void* self,uint32_t key){auto& r=*static_cast<HarborTutorialRuntime*>(self);const auto id=r.text(key);return r.packed->cacheMenuLabel(key,messages.find(id.c_str()));});r.packed->capture(*this);return selected;
 }
+bool HarborTutorial::openClassMenu(){
+ if(!runtime_ || failed || !initialized || !introComplete || phaseActive || attackActive || damageActive)return false;
+ auto& r=*runtime_;r.scene=this;r.packed->publish(*this);
+ if(!r.packed->buildClassMenu(*this,&r,[](void* self,uint32_t key){auto& r=*static_cast<HarborTutorialRuntime*>(self);const auto id=r.text(key);return r.packed->cacheMenuLabel(key,messages.find(id.c_str()));}))return false;
+ r.vm.memory.writeWord(HarborTutorialPacked::Battle+0x171c,0);
+ const auto result=r.packed->commandInput(*this,&r,[](void* self,uint32_t key){auto& r=*static_cast<HarborTutorialRuntime*>(self);const auto id=r.text(key);return r.packed->cacheMenuLabel(key,messages.find(id.c_str()));});
+ r.packed->capture(*this);return result.has_value();
+}
+void HarborTutorial::classMenuPresented(){if(runtime_ && classMenuOpen){uint32_t w=0;if(runtime_->packed->readWord(HarborTutorialPacked::Battle+0x1c78,w) && w)runtime_->vm.memory.writeByte(w+0x14,1);}}
 bool HarborTutorial::buildClassMenu(){
  if(!runtime_ || failed || !initialized || !introComplete || phaseActive || attackActive || damageActive)return false;
  auto& r=*runtime_;r.scene=this;r.packed->publish(*this);

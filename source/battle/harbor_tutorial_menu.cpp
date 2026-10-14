@@ -55,13 +55,15 @@ bool HarborTutorialPacked::buildClassMenu(HarborTutorial& scene,void* messageUse
  s.pouch=[](void* self)->std::optional<uint32_t>{return static_cast<Context*>(self)->p->word(0x8041eb00);};
  s.message=[](void* self,uint32_t key)->std::optional<uint32_t>{auto& c=*static_cast<Context*>(self);return c.message(c.messageUser,key);};
  const auto built=makePackedBattleActionClassTable(Battle,s);if(!built)return false;
+ captureClassRows(scene);return true;
+}
+void HarborTutorialPacked::captureClassRows(HarborTutorial& scene){
  const auto menu=Battle+0x171c,cursor=menu+0x498;scene.classRows.clear();scene.classRowIndex=int32_t(word(cursor));
  const auto count=word(cursor+8);assert(count<=7);
  for(uint32_t i=0;i<count;++i){const auto row=menu+20*i;HarborTutorialClassRow v;v.type=word(row+8);v.enabled=word(row+0xc)!=0;v.nameAddress=word(row+0x10);v.reason=word(row+0x18);uint16_t icon=0;if(!vm.memory.readHalf(row+0x14,icon))std::abort();v.icon=icon;
   if(v.nameAddress)for(uint32_t at=v.nameAddress;;++at){const auto b=byte(at);if(!b)break;v.label.push_back(char(b));}
   scene.classRows.push_back(std::move(v));
  }
- return true;
 }
 bool HarborTutorialPacked::buildWeaponMenu(uint32_t type,HarborTutorial& scene,void* messageUser,uint32_t(*message)(void*,uint32_t)){
  weaponDecided=false;commandFinalized=false;commandUnbound=0;scene.commandInputPending=0;

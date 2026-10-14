@@ -25,7 +25,7 @@ std::optional<int32_t> HarborTutorialPacked::inputWeaponMenu(HarborTutorial& sce
  s.trigger=[](void* self,uint32_t mask){return static_cast<Context*>(self)->p->word(Battle+0xf44)&mask;};
  s.repeat=[](void* self,uint32_t mask){return static_cast<Context*>(self)->p->word(Battle+0xfbc)&mask;};
  s.sound=[](void* self,uint32_t sound){static_cast<Context*>(self)->scene->weaponMenuSounds.push_back(sound);};
- s.endUI=[](void* self,uint32_t){static_cast<Context*>(self)->scene->weaponMenuOpen=false;return true;};
+ s.endUI=[](void* self,uint32_t b){auto& c=*static_cast<Context*>(self);const auto old=c.p->word(b+0x1c78);if(old && !c.p->classUiRelease(old))return false;c.p->word(b+0x1c78,0);c.scene->weaponMenuOpen=false;return true;};
  s.decide=[](void* self,uint32_t,uint32_t type,uint32_t index){auto& c=*static_cast<Context*>(self);assert(type==c.scene->weaponMenuType);return c.p->selectWeapon(index,*c.scene,c.messageUser,c.message);};
  s.targetSetup=[](void* self,uint32_t){static_cast<Context*>(self)->scene->weaponTargetMenuOpen=true;return true;};
  s.lightFriend=[](void*){};s.lightEnemy=[](void*){};s.display=[](void*,uint32_t){}; // These exact original leaves are blr stubs.

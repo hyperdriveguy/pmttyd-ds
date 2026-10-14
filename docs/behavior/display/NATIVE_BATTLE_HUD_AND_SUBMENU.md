@@ -56,3 +56,28 @@ Next: bind the original tutorial player-command scheduler and full rotating
 menu, then original audience actors/throw telegraphs/targeting before adding an
 optional lower-screen tap shortcut with a physical stop-throw alternative.
 The current lower screen remains a submenu surface, not a fabricated audience.
+
+## User layout references, 2026-10-14
+
+The two battle screenshots supplied in conversation establish the intended
+presentation: compact original HUD across the top; circular action-class icons
+beside Mario; the selected command in a white speech bubble; original stage,
+curtains and audience art. Original US ISO resources and dialogue remain the
+implementation baseline. The references do not authorize replacement art or
+invented menu labels.
+
+The lower screen must continue the battle scene into the lower part of the
+audience. It must not become a separate menu/dashboard surface. The existing
+lower-screen submenu adapter described above is interim and must be replaced
+when the full class/weapon presentation is bound. A native 400-wide top and
+320-wide bottom view need a consistent scene continuation with an explicit
+horizontal crop; they must not duplicate the stage or stretch audience art.
+Exact camera/reflow placement still needs visual validation on the two screens.
+
+D-pad/Circle Pad, A and B must cover navigation, confirmation and cancellation.
+Audience touch targets are optional shortcuts for actual actors preparing
+rocks or other harmful throws, with a physical stop-throw alternative. Do not
+make every audience member tappable or invent throw events to fill the lower
+screen. Bind original actors, telegraphs and the throw/response window first.
+The physical command path is documented in the
+[class UI binding](../battle/ACT_SELECT_UI_ALLOCATION_AND_NATIVE_BINDING.md).

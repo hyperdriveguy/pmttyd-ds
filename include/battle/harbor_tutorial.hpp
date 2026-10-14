@@ -85,6 +85,9 @@ public:
     // Source damage producer bridge: original reaction roots, no HP/result synthesis.
     uint32_t dispatchHitEvent(int32_t actorId,uint32_t code);
     uint32_t dispatchDirectHitEvent(int32_t actorId,uint32_t code,uint32_t script);
+    bool openClassMenu();
+    void classMenuPresented();
+    bool classMenuOpen=false;
     bool buildClassMenu();
     std::vector<HarborTutorialClassRow> classRows;
     int32_t classRowIndex=0;

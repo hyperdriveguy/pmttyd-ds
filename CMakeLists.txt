@@ -1284,3 +1284,9 @@ target_sources(ttyd_core PRIVATE source/display/camera_manager.cpp)
 add_executable(camera_manager_tests tests/camera_manager_tests.cpp)
 target_link_libraries(camera_manager_tests PRIVATE ttyd_core)
 add_test(NAME camera_manager COMMAND camera_manager_tests)
+
+# Complete original ActSelect UI allocation/lifecycle and native class providers.
+target_sources(ttyd_core PRIVATE source/battle/battle_act_ui.cpp source/battle/harbor_tutorial_act_menu.cpp)
+add_executable(battle_act_ui_tests tests/battle_act_ui_tests.cpp)
+target_link_libraries(battle_act_ui_tests PRIVATE ttyd_core)
+add_test(NAME battle_act_ui COMMAND battle_act_ui_tests)

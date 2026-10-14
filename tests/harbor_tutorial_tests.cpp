@@ -153,7 +153,7 @@ void sampledPlayerResult(bool success){
  }
 }
 void nativeCommandFlow(){
- auto pouch=initializeProloguePouch("Yoshi");pouch.half(0x70,7);HarborTutorial scene;BattlePadSample quiet,a,b;
+ auto pouch=initializeProloguePouch("Yoshi");pouch.half(0x70,7);pouch.bytes[0x98]=1;HarborTutorial scene;BattlePadSample quiet,a,b;
  a.snapshot.buttons=a.pressed=BattleButtonA;b.snapshot.buttons=b.pressed=0x300;
  assert(scene.beginFromPouch(0,pouch,4));
  for(unsigned n=0;n<1500 && !scene.introComplete;++n){if(scene.pendingService==0x80106980)scene.animationComplete(1);scene.tick((n+1)*1000/60,n%4==0?0x100:0,&quiet);}
@@ -188,9 +188,13 @@ void nativeCommandFlow(){
  // An in-body provider frontier cannot be retried as a new source stack. A
  // later call must not turn a partial state write into a completed command.
  assert(scene.openWeaponMenu(0));scene.weaponMenuPresented();BattlePadSample cancelOnly;cancelOnly.snapshot.buttons=cancelOnly.pressed=0x200;
- scene.tick(scene.now+17,0,&cancelOnly);assert(!scene.inputCommand(cancelOnly) && scene.commandInputPending==0x80122794 && word(0x8400171c)==1 && !scene.weaponMenuOpen);
- const auto restore=word(0x84001c70);scene.tick(scene.now+17,0,&quiet);
- assert(!scene.inputCommand(quiet) && scene.commandInputPending==0x80122794 && word(0x8400171c)==1 && word(0x84001c70)==restore && !scene.dispatchSelectedAttack());
+ scene.tick(scene.now+17,0,&cancelOnly);assert(scene.inputCommand(cancelOnly)==0 && !scene.commandInputPending && word(0x8400171c)==2 && !scene.weaponMenuOpen && scene.classMenuOpen);
+ const auto classWork=word(0x84001c78);assert(classWork && classWork!=0x84600c00 && word(classWork+0xc)==10 && ((word(classWork+0x14)>>24)&255)==0);
+ scene.tick(scene.now+17,0,&quiet);assert(scene.inputCommand(quiet)==0 && scene.classMenuOpen);
+ scene.classMenuPresented();assert((word(classWork+0x14)>>24)==1);
+ scene.tick(scene.now+17,0,&a);assert(scene.inputCommand(a)==0 && !scene.classMenuOpen && scene.weaponMenuOpen && word(0x8400171c)==7);
+ assert(word(0x84001c78)==0x84600c00); // Original End released the actual class allocation before the weapon adapter.
+
 }
 int main(){
  assert(loadMessageIcons("romfs/message-icons.bin") && messageIcon(108) && messageIcon(109));
