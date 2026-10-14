@@ -1,4 +1,4 @@
-import hashlib,json,struct,unittest
+import hashlib,json,struct,unittest,wave
 from pathlib import Path
 from PIL import Image
 class OriginalItemGetAssets(unittest.TestCase):
@@ -17,3 +17,17 @@ class OriginalItemGetAssets(unittest.TestCase):
                 self.assertEqual(list(image.size),row['dimensions'])
                 self.assertEqual(hashlib.sha256(image.tobytes()).hexdigest(),row['pixel_sha256'])
                 self.assertTrue(all(r==g==b==a for r,g,b,a in image.convert('RGBA').getdata()))
+
+    def test_original_key_item_fanfare(self):
+        manifest=Path('romfs/field-item-get.json')
+        if not manifest.exists():self.skipTest('Original local item-get pack not built')
+        data=json.loads(manifest.read_text());row=data['fanfare']
+        self.assertEqual(row['provenance']['source_path'],'sound/stream/ff_get2_32k.stm')
+        self.assertEqual(row['provenance']['sha256'],'847b529744401aa5590b821ff7502a65b1ac59045306dc8792d6d44b4e05f7dc')
+        self.assertEqual((row['original_row'],row['volume'],row['pan']),(217,80,64))
+        pcm=Path('romfs')/row['output']
+        self.assertEqual(hashlib.sha256(pcm.read_bytes()).hexdigest(),row['pcm_sha256'])
+        self.assertFalse(row['loop_enabled']);self.assertIsNone(row['loop'])
+        self.assertFalse(Path(str(pcm)+'.loop').exists())
+        with wave.open(str(pcm),'rb') as audio:
+            self.assertEqual((audio.getframerate(),audio.getnchannels(),audio.getnframes(),audio.getsampwidth()),(32000,2,83888,2))

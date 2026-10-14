@@ -36,6 +36,7 @@ inline int soundtrackTrack(Scene scene,bool enabled,bool harborDanger,int profes
     return track;
 }
 inline const char* musicAssetPath(int track,bool switchSoundtrack) {
+    if(track==18)return "romfs:/field-item-get-key-fanfare.wav"; // Original row217 in both soundtrack modes.
     constexpr const char* original[]={
         "romfs:/rogueport.wav","romfs:/battle.wav","romfs:/victory.wav",
         "romfs:/harbor-danger.wav","romfs:/title.wav","romfs:/demo-book.wav",

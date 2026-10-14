@@ -317,6 +317,11 @@ public:
     void shutdown();
     bool available() const { return ready; }
     bool frontendTrackReady(int track);
+    bool keyItemFanfareReady();
+    bool beginKeyItemFanfare(); // Fresh group1 only; source replacement/fades external.
+    int32_t keyItemFanfareCheck(); // Source query shape: -1 vacant, 0 assigned.
+    void releaseKeyItemFanfare(); // Backend release, not source Off201 fade.
+
 private:
     bool ready=false,titleResourceAttempted=false,titleResourceReady=false;
     OpeningHousePcmPlayer openingHousePcm;
@@ -332,6 +337,9 @@ private:
         ndspWaveBuf buffers[3]{};
     };
     MusicStream music[3];
+    bool keyItemResourceAttempted=false,keyItemResourceReady=false;
+    int keyItemSlot=-1;
+    void retireKeyItemFanfare(); // Caller holds musicMutex.
     unsigned musicSlot=0;
     int musicTrack=-1;
     bool switchSoundtrack=false;

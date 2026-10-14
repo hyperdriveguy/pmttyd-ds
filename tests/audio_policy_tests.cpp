@@ -29,9 +29,10 @@ int main() {
     assert(soundtrackTrack(Scene::Explore,true,false,0,99,false,true)==0);
     assert(soundtrackTrack(Scene::Defeat,true,false,0,0,true,true)==-1);
     assert(std::strcmp(musicAssetPath(5,true),"romfs:/demo-book.wav")==0);
-    assert(!musicAssetPath(-1,true) && !musicAssetPath(18,true));
+    assert(!musicAssetPath(-1,true) && !musicAssetPath(19,true));
     assert(std::strcmp(musicAssetPath(4,true),"romfs:/soundtrack-switch/title.wav")==0);
     assert(std::strcmp(musicAssetPath(14,false),"romfs:/rogueport.wav")==0);
+    for(bool remake:{false,true})assert(std::strcmp(musicAssetPath(18,remake),"romfs:/field-item-get-key-fanfare.wav")==0);
     assert(std::strcmp(musicAssetPath(17,false),"romfs:/battle.wav")==0);
     std::array<unsigned char,44> raw{};
     auto u16=[&](int o,unsigned v){raw[o]=v;raw[o+1]=v>>8;};
