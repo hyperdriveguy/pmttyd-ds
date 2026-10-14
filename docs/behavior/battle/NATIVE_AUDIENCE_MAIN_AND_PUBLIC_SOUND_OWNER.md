@@ -15,16 +15,18 @@ services/final stores; source C functions themselves have no readiness return.
 Ctrl zeros/recounts right then left into the actual cached fields, preserving
 its0b/0c state exclusions. Flags10 motion performs original single-rounded
 d0/dc/e4 updates and ground clamp regardless of existence. Existing actors
-of types0..12 retain the generic Kinopio80192a0c provider; type>12 skips it.
+of types0..12 dispatch the reconstructed Kinopio80192a0c controller; type>12
+skips it. Its implemented states and remaining register/entry/special-state
+providers are tracked in the current audience control contracts.
 The real throw tail publishes the override max before its battle flag gate,
 uses actual signed counter/max and original RNG bounds, and preserves every
 admitted draw and1000 two-draw swaps even with zero actors. ItemOn(index,0,1)
-executes the actual flag/type0 table/seat/GetExist rejection prefix. Nonzero
-actor types or active continuation remain providers. No fabricated actor,
-item, successful throw, or counter increment is supplied.
-
-Item processing reads100 actual item flags; any bit1 admission retains its
-provider. AP returns only under its actual A.flags2clear condition. A.flags2set
+now calls the whole original creation body, retaining species table, explicit
+kind switch gate, seat/GetExist/state/flag checks and requested record limit.
+Its actual return1 owns the counter increment. The flags-clear-only ItemMain
+admission is replaced by the whole100-record local lifecycle; see
+[item creation and lifecycle](AUDIENCE_ITEM_CREATION_SELECTION_AND_LIFECYCLE.md).
+Presentation metadata remains owned by the original present-item system. AP returns only under its actual A.flags2clear condition. A.flags2set
 retains the full source AP graph, including its empty termination audio/HUD
 tail. Window invokes the previously recovered count follower/timer/mode4
 pass, independently of the pouch display gate.
@@ -53,9 +55,9 @@ that original On fails merely because NDSP is absent: source On can allocate
 a pending public slot before backend playback starts. Original provisioning
 and real audible battle effects remain required for final sound fidelity.
 
-Fresh actual setup4/zero-capacity initialization and current producer history
-now allow AudienceMain to complete. The next held engine service is
-BreakSlot_Main80203aa0. Its real Init/allocation and used idle pass, surviving
-unit display, ordered draw consumers, BattleEnd and field restoration remain
-next work. No forced engine end bit, result, restored control or story advance
-is written to pass these boundaries.
+Fresh setup4/zero-capacity initialization admits the source empty AudienceMain
+path. Later contracts add positive-crowd controls, item lifecycle, original
+break-slot idle ownership and ordered display consumers. Their remaining
+providers and normal cadence must still be closed before full battle/field
+return is operational. No forced engine end bit, result, restored control or
+story advance is written to pass those boundaries.

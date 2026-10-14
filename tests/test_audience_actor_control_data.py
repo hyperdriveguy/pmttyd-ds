@@ -27,8 +27,18 @@ class AudienceActorControlData(unittest.TestCase):
             0x804244ec: 0x40c00000, 0x80424500: 0xc2c80000,
             0x80424504: 0x3dcccccd, 0x80424558: 0xbf000000,
             0x80424560: 0x42f00000, 0x80424568: 0x44160000,
+            0x80424a04: 0x41200000, 0x80424a60: 0x41f00000,
+            0x80424a64: 0x41700000, 0x80424a68: 0x40e00000,
+            0x80424a6c: 0xc1200000, 0x80424a70: 0x41900000,
+            0x80424a74: 0xbe4ccccd, 0x804249e0: 0x3fc00000,
+            0x804249e8: 0x3dcccccd,
         }.items():
             self.assertEqual(word(address), bits, f'{address:08x}')
+
+        self.assertEqual([word(0x8039cd34+4*i) for i in range(8)], [
+            0x801a4fcc, 0x801a50f4, 0x801a52c8, 0x801a53a4,
+            0x801a5654, 0x801a56fc, 0x801a5788, 0x801a57d4,
+        ])
 
         self.assertEqual([word(0x80397af8+4*i) for i in range(10)], [
             0x8019276c, 0x8019276c, 0x8019281c, 0x8019276c, 0x801923dc,

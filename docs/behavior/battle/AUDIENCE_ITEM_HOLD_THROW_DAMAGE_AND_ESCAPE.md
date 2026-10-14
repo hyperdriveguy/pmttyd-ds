@@ -129,8 +129,9 @@ to deletion. Sound tests cover lane capture before stop versus fresh position,
 real handle initialization, -1 rejection, missing volume, X0 and unordered X.
 Pack tests pin all additional float constants.
 
-Item allocation/selection at801a5aac, live item Main/flight/collision and item
-rendering remain separate providers. Actor Enter11 and special states13..20,
+[Item creation and Main](AUDIENCE_ITEM_CREATION_SELECTION_AND_LIFECYCLE.md)
+now implement allocation, selection and all eight local item states. Item
+rendering and original present-item execution remain separate owners. Actor Enter11 and special states13..20,
 idle low-ratio caller-register provenance, full normal Main/camera cadence and
 real voice playback remain open. These checks do not prove playable throws,
 visual telegraphs, successful audience taps or a full battle. Physical X and

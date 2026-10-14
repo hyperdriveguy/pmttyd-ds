@@ -39,6 +39,7 @@
 #include "battle_audience_population.hpp"
 #include "battle_audience_actor_control.hpp"
 #include "battle_audience_item_control.hpp"
+#include "battle_audience_item_main.hpp"
 #include "battle_audience_idle.hpp"
 #include "battle_audience_resources.hpp"
 #include "battle_audience_target.hpp"
@@ -461,10 +462,22 @@ struct TrioAttackRuntime {
                     return false;
                 };
                 control.random=[](void* p,int32_t bound){auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x80005da0,{bound});return r.random.bounded(bound);};
-                control.itemOn=[](void* p,int32_t index){auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x801a5aac,{index,0,1});auto result=packedBattleAudienceEmptyItemOn(index,nativeBattleActorServices(r.vm));if(!result)r.pending=0x801a5aac;return result;};
+                control.itemOn=[](void* p,int32_t index){
+                    auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x801a5aac,{index,0,1});
+                    BattleAudienceItemEntryServices entry;entry.actors=nativeBattleActorServices(r.vm);entry.user=p;
+                    entry.switchValue=[](void* p,int32_t index)->std::optional<int32_t>{auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x800858b4,{index});return readSavedSwitch(SavedSwitchFamily::GlobalFlag,index,r.vm.interpreterServices().operands);};
+                    auto result=createPackedBattleAudienceItem(index,0,1,entry);if(!result)r.pending=0x801a5aac;return result;
+                };
                 if(packedBattleAudienceControl(control))return true;
             } else if(fn==0x801a4f0c) {
-                if(packedBattleAudienceInactiveItems(actors))return true;
+                BattleAudienceItemMainServices items;items.actors=actors;items.user=&r;
+                items.random=[](void* p,int32_t bound)->std::optional<int32_t>{auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x80005da0,{bound});return r.random.bounded(bound);};
+                items.hitPosition=[](void* p,uint32_t unit,uint32_t part)->std::optional<std::array<float,3>>{auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x801289ec,{int32_t(unit),int32_t(part)});if(!part){r.pending=0x801289ec;return {};}return packedHitPosition(unit,part,nativeBattlePartPositionServices(r.vm));};
+                items.interpolate=[](void* p,int32_t mode,int32_t step,int32_t duration,float start,float end)->std::optional<float>{auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x80006c8c,{mode,step,duration});auto result=cameraInterpolation(mode,step,duration,start,end);if(!result)r.pending=0x80006c8c;return result;};
+                items.truncate=[](void*,float value)->std::optional<int32_t>{if(std::isfinite(value) && value>=-2147483648.f && value<2147483648.f)return int32_t(value);return {};};
+                items.fma=[](void*,float x,float y,float z){return std::fma(x,y,z);};
+                items.stopSound=[](void* p,int32_t slot){auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x8019fd68,{slot});return stopBattleAudienceSound(slot,r.audienceSoundServices());};
+                if(processPackedBattleAudienceItems(items))return true;
             } else if(fn==0x801a4998) {
                 if(packedBattleAudienceInactiveApSources(actors))return true;
             } else if(fn==0x801a4570) {packedBattleAudienceWindowMain(actors);return true;

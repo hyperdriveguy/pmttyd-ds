@@ -1045,3 +1045,19 @@ Nintendo/Intelligent Systems licensing grants no redistribution rights. Tests us
 an in-memory altered model/CI provider only; no synthetic image is shipped.
 Private validation emits the three companions from existing read-only extracts
 and refreshes baseline Bero/door data only in owned private cache directories.
+
+## Audience item creation and lifecycle source inspection (2026-10-14)
+
+Read-only US ISO DOL BattleAudienceItemOn801a5aac/1fc,
+ItemCtrlProcess801a4f0c/958, DetectTargetPlayer801a5864/d0 and
+pouchGetEmptyHaveItemCnt800d5614/60 were inspected with
+`tools/inspect_dol_function.py`, together with their source getters/bit/status
+leaves. Inspection ELF/text stays ignored under `artifacts/`. The portable code
+uses unchanged PMEVT species weights, dispatch8039cd34, SDATA2 literals and the
+original four c0-byte harmful-item descriptors at8039c880 (SHA256
+b10aa7c23a8d3d4e8aeab030ea0771400131d1a10e17ef319bd86c949ad711e1).
+[Source contract](behavior/battle/AUDIENCE_ITEM_CREATION_SELECTION_AND_LIFECYCLE.md).
+No source PPC text, ISO, generated pack or extracted asset is committed. No new
+art/HUD conversion, asset format, scaling or licensing choice. Validation reuses
+the prior isolated original packs; all generated material remains private under
+the existing asset provenance policy. ISO access remains read-only.

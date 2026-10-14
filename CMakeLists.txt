@@ -1615,3 +1615,10 @@ add_executable(animation_texture_tests tests/animation_texture_tests.cpp)
 target_link_libraries(animation_texture_tests PRIVATE ttyd_core)
 add_test(NAME animation_texture COMMAND animation_texture_tests)
 set_tests_properties(animation_texture PROPERTIES WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+
+# Original audience item creation and100-record lifecycle.
+target_sources(ttyd_core PRIVATE source/battle/battle_audience_item_main.cpp)
+add_executable(battle_audience_item_main_tests tests/battle_audience_item_main_tests.cpp)
+target_link_libraries(battle_audience_item_main_tests PRIVATE ttyd_core)
+add_test(NAME battle_audience_item_main COMMAND battle_audience_item_main_tests)
+set_tests_properties(battle_audience_item_main PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

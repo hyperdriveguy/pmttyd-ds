@@ -1082,3 +1082,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Native animation texture binding](display/NATIVE_ANIMATION_TEXTURE_BINDING.md) — original TPL metadata, retained object/UV calls and matching resident atlas ownership.
 - [Native animation texture state and atlas identity](display/NATIVE_ANIMATION_TEXTURE_STATE_AND_ATLAS_IDENTITY.md) — PMANIM3/4 live T24 lanes, cross-pose palette checks, exact package dimensions/UV mapping and real GPU residency boundaries.
+
+- [Audience item creation, selection and lifecycle](battle/AUDIENCE_ITEM_CREATION_SELECTION_AND_LIFECYCLE.md): whole creation/100-item Main, player targeting, flight/receipt/bounce/cleanup and original presentation metadata.
