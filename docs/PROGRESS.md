@@ -2,6 +2,31 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox native field-loop dependency: complete marioMain
+
+Completed the local MAINLOOP-01 marioMain graph and checked that portion;
+[complete contract](behavior/overworld/MARIO_MAIN_COMPLETE_REQUEST_GRAPH.md)
+replaces inaccurate earlier sketch claims. Six calls are room-name strcmp,
+801a938c is camera preparation, HP query/sequence setter replace the mistaken
+HP addition/seqMain identities. Exact motion/flag/character-mode routing,
+timers, position ring, eight owner-captured finishes and sequence(5,0,0) gates
+are pinned. This addresses a concrete 2DS XL field-loop need; subsequent inbox
+selection should follow native dependencies rather than exhaustive DVD hardware
+recovery. No native code changed or unverified mechanics invented.
+
+Validation: read-only ISO manifest41 spans/654 anchors/100 calls. Independent
+all638 words/35 child identities, full U16 motion-group/positive s16 remainder
+domains,34 mathematical vectors/eight finish sites/room names/four floats/pins
+passed. Link audit passed957 Markdown files/zero broken links; scoped diff
+check passed. No make test/all rerun for docs/evidence only; raw listings/ELFs/
+generator stay /tmp. Concurrent native changes excluded. Approved push remains
+pending valid GitHub credentials after authentication rejection.
+
+Next: MAINLOOP-01 child/provider/sequence5 ownership and pause/cadence/original
+execution binding; assess field interaction/partner and encounter scheduler/
+damage/input dependencies against the native slice. Parent requests/full-game
+remain OPEN; original physical timing still needs observations.
+
 ## 2026-10-13 — Inbox DVD error category and recovery dispatch
 
 Completed CategorizeError/cbForStateGettingError; EVT-01 portions checked.

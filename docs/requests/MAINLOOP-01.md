@@ -4,7 +4,8 @@
 
 Open todos:
 
-- [ ] Complete `marioMain` 8005a7e0 per-retrace body: motion dispatch 801a938c, the six subsystem updates 8026d464 at offsets 864-904, motion-ID threshold chains (0x8/0x14/0x18/0x19/0x1a/0x21) and their semantics, gravity single 1.0/moon 0.5 selection, position save-slot copies and counter 52, input gate (work+4920 mask 0x100f) and the battle-transition state5/seqMain 8002e218 condition and parameter construction.
+- [x] Complete local `marioMain` request graph — [complete contract](../behavior/overworld/MARIO_MAIN_COMPLETE_REQUEST_GRAPH.md): active/input/badge gate, exact moon room gravity comparisons, timers, motion equalities/flag order, position ring and eight finish blocks. Corrected target identities replace the earlier sketch; no local battle-state5 assignment.
+- [ ] Complete child mechanics and actual pointer/room/badge/input/motion/flag/ring domains; sequence5 ownership and original execution/native binding. Local caller coverage alone does not close these.
 - [ ] `marioStMain` retrace cadence plus pause/timebase interaction so the native fixed-60Hz accumulator can reproduce original pause behaviour. Pause/RNG sub-asks already filed under AC-01/EVT-01 remain open.
 
 ## Request text (verbatim)
@@ -26,3 +27,22 @@ cadence plus pause/timebase interaction so the native accumulator can reproduce
 original pause behaviour;GAME_OUTER_LOOP_AND_EVENT_UPDATE_ORDER.md currently
 declares measured cadence/original traces open. No lock reserved;pause/RNG
 sub-asks already filed under AC-01/EVT-01 remain open.
+
+## 2026-10-13 — Complete local marioMain graph and source corrections
+
+Delivered [complete request graph](../behavior/overworld/MARIO_MAIN_COMPLETE_REQUEST_GRAPH.md)
+for the native 2DS XL field-loop dependency. Replaced the incorrect earlier
+sketch with a corrected pointer/summary. Six supposed subsystem updates are
+strcmp moon-room checks;801a938c is marioPreCamera,8002e218 is seqSetSeq,
+800d3d30 is pouchGetHP. Eight conditional sequence requests assign(5,0,0)
+after signed HP<=0, with no local battle-state5/parameter construction.
+Exact motion groups, character-mode bypasses, flags, timer/ring/finish owners
+and fresh reads are recorded; no provisional native cadence used as evidence.
+
+Validation: read-only ISO verifier41 spans/654 anchors/100 calls; independent
+all638-word coverage/35 child identities, complete65536-value motion-group and
+32767-value timer remainder checks,34 mathematical vectors/eight finish sites/
+room names/four floats/pins; Markdown links and scoped diff checks passed.
+Docs/evidence only; no make test/all rerun. Temporary raw listings stay /tmp.
+Child/provider/sequence/pause/cadence/original traces/full native binding remain
+open; MAINLOOP-01 stays OPEN. Other sessions' native changes excluded.
