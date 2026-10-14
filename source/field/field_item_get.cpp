@@ -1,11 +1,11 @@
 #include "field_item_get.hpp"
 namespace ttyd {
-bool FieldItem95Get::begin(const char* name,const FieldItemGetServices& s) {
+bool FieldItem95Get::begin(const char* name,const FieldItemGetServices& s,ItemGetPoint initial) {
  if(state_==ItemGetStep::Running || state_==ItemGetStep::DiscardPending || !name || !*name ||
     !s.ready || !s.mario || !s.request || !s.effect || !s.window || !s.windowAction ||
     !s.bgmSilent || !s.bgmCheck || !s.receive || !s.removeNamedEntries || !s.ready(s.user))return false;
  services_=s;name_=name;state_=ItemGetStep::Running;substate_=0;flags_=0x1003;
- status_=0;position_={0,-1000,0};effect_=0;discard_=0;for(auto& w:windows_)w=-1;return true;
+ status_=0;position_=initial;effect_=0;discard_=0;for(auto& w:windows_)w=-1;return true;
 }
 ItemGetStep FieldItem95Get::tick(uint32_t buttons) {
  if(state_!=ItemGetStep::Running)return state_;

@@ -32,7 +32,7 @@ enum class ItemGetStep {Idle,Running,Complete,DiscardPending};
 // by the caller. Full discard selection/other modes need their own providers.
 class FieldItem95Get {
 public:
- bool begin(const char* sourceName,const FieldItemGetServices&);
+ bool begin(const char* sourceName,const FieldItemGetServices&,ItemGetPoint sourceInitial={0,-1000,0});
  ItemGetStep tick(uint32_t triggeredButtons);
  ItemGetStep state() const{return state_;}
  uint16_t substate() const{return substate_;}
