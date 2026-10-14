@@ -9088,3 +9088,29 @@ verifier explicitly reports callback_store_closure=false. Native fresh bank0
 plus retained actual writes/resolved position is an explicit source-based
 bridge; unconditional original-runtime zero/full-flow parity remains unproved.
 Parent owns ship jump/arrival integration and fresh-route validation.
+
+## 2026-10-13 — Combined native mail hold and natural transition observations
+
+Immutable `artifacts/opening-corrections-snapshot/ttyd-2ds.3dsx` from the combined
+bubble/camera/Wake/book correction build was tested with fresh isolated Azahar
+profiles. `artifacts/azahar-opening-corrections-bubbles/` reaches the real title
+and file selector; `mail-dialogue-held.png` and `mail-dialogue-still-held.png`
+show the unchanged original Mail call bubble/advance star separated by8seconds
+without input,60FPS/5.26–6.79ms. A closes the bubble and resumes original
+Parakarry flight (`mail-dialogue-next.png`,60FPS/4.94ms). Skies are not yet in
+this snapshot. This scoped run deliberately ends before the pending heading
+provider; it is not complete arrival validation. Initial sandbox Xvfb failed
+to bind its local socket; the authorized isolated-display rerun passed.
+
+`artifacts/azahar-opening-corrections-book/` follows the natural unskipped demo:
+at120s the real final book zoom displays37FPS/84% speed/12.47ms; at155s the
+original Peach marketplace scene displays60FPS/100%/7.56ms, continuing through
+the240s capture without an allocation failure. A then requests the original
+white exit; the final capture is that fade, not proof of fully displayed title.
+Both scripts exit successfully with no native application exception. Values
+are Azahar status-bar observations, not a physical2DS benchmark or original
+execution/raster parity. User emulator profiles/saves remain untouched.
+
+Next: integrate actual heading display and original skies/ship consumers,
+finish the unresolved Voyage sky appearance, and run the combined fresh-file
+route through actual boat arrival/departure and the saved story3 endpoint.
