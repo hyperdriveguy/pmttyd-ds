@@ -23,12 +23,15 @@ research-agent ownership or completion claim is made.
   persistence](../behavior/story/OPENING_SCENE_STATE_AND_PERSISTENCE.md):
   across `dmo`/`aaa`/`sys` the **only saved story value is `GSW[0]`**, written
   by `evt_prologue2` and `epilogue_evt2` and read (as a gate) by
-  `aaa_00_init_evt`; `GSF` is never used by those modules; every `GF`/`GW`
-  use is intra-event and context-local, and `LW` is entry-local. Per-command
-  operand positions, opcodes and event SHA-256s are tabulated.
-  *Save-block 233/236 remain with GSF-01, and the written **values** are not
-  recovered — opcode 50 stores `evtGetValue(operand1)`, so the value is not an
-  operand.*
+  `aaa_00_init_evt`; every `GF`/`GW` use is intra-event and context-local,
+  and `LW` is entry-local. Per-command operand positions, opcodes and event
+  SHA-256s are tabulated.
+  *Superseded in scope by the [area-init map](../behavior/story/OPENING_AREA_INIT_STORY_STATE_MAP.md),
+  which shows `GSW[0]` read by every `gor`/`muj`/`tik` area init, the
+  **professor** as a `GSW[0]` writer, `GSW[1420]` as a second story word, and
+  `GSF` heavily used — so the earlier "GSF never used" claim is narrowed to
+  those three modules. Save-block 233/236 remain with GSF-01, and written
+  **values** are not recovered — opcode 50 stores `evtGetValue(operand1)`.*
 - [ ] The branch/join graph across harbor → professor → underground → lecture and
   back to the field, including each branch's requirement and where scenes join —
   **graph structure answered** for the scanned modules by
@@ -117,6 +120,55 @@ literal operand.
 Static only — no execution trace. Event SHA-256s for all ten scanned
 spans are tabulated in the contract.
 
+## 2026-10-13 — ID 3: gor/muj/tik area-init state map
+
+[Opening area init story-state map](../behavior/story/OPENING_AREA_INIT_STORY_STATE_MAP.md).
+Scanned the fifteen `gor`, `muj` and `tik` opening / area-init events with
+the same method as the previous delivery, and **corrected an over-broad
+claim in it**.
+
+**Correction.** The previous delivery said `GSF` is "**never** used by any
+opening event". It was never used by `dmo`/`aaa`/`sys` — all that scan
+covered — but across the area inits `GSF` is the **dominant** persistent
+flag family. The claim is now scoped to its actual evidence.
+
+**`GSW[0]` is the chapter gate, read by every area init**, with a
+multi-way opcode mix — `24` (`==`), `25` (`!=`), `26` (`<`), `28` (`<=`),
+`29` (`>=`) and `34` (SWITCH). Read counts: `gor_00` 12, `gor_01` 10,
+`gor_02` 11, `gor_03` 6, `muj_00` 9, `muj_20` 5, `tik_00` 3. A port that
+tests only `== 0` will mis-admit chapters.
+
+**The Professor writes `GSW[0]`.** `kurihakase_first_talk` (in **`gor_02`**)
+writes it at command 176 — the only `GSW[0]` write across the sixteen events
+scanned in both deliveries. The chapter transition is therefore driven by
+the professor scene; treating the prologue/epilogue writes as the sole
+producer would miss the professor branch entirely.
+
+**A second story word:** `GSW[1420]`, read at `gor_01` cmd 126 and `gor_02`
+cmd 63. Not the index-0 exception, so it is a byte in the GP+578+ array.
+
+**`GSF` map.** Writes: `gor_00` → 1180, 1178, **39**; `gor_01` → 1191,
+1189, 1190; `gor_02` → 1203; `gor_03` → 1229; `muj_00` → 3125, **39**;
+`tik_00` → 6, 237. **`GSF[39]` is written by both `gor_00` and `muj_00`**, so
+it is a cross-area marker rather than an area-local one.
+
+**Six further area exits**, resolving two joins:
+
+- `gor/gor_muj_ship_start` cmd 79 and `muj/muj_gor_ship_start` cmd 75 both
+  exit to **`muj_20`** — the ship voyage is a **bidirectional join** on that map.
+- `muj/evt_prologue` cmd 49 exits to **`sys_01` / entrance `prologue`**, so
+  `muj_20`'s prologue is the join between the `aaa` prologue and the `sys_01`
+  sequence.
+- `muj/epilogue_evt` → `muj_01`; `gor/epilogue_evt` → `muj_21`;
+  `tik/epilogue_evt` → `moo_04`.
+
+**Not resolved:** which comparison value on each `GSW[0]` test corresponds to
+which chapter — only the operand index and band are tabulated, not the
+literals. The `GSF` 5300-5600 band appears solely in opcode-91 operand
+positions and is very likely callee arguments rather than flag accesses.
+Neither is claimed.
+
+## 2026-10-13 — ID 3 correction: the branch graph WAS decoded
 ## 2026-10-13 — ID 3 correction: the branch graph WAS decoded
 
 The reply above says the `evt_bero_mapchange` targets were "raw immediates

@@ -48,7 +48,15 @@ is touched three times:
 | `aaa/epilogue_evt2` | 117 | 50 | **WRITE** |
 | `aaa/aaa_00_init_evt` | 19 | 24 | **READ** |
 
-`GSF` (the saved flag family) is **never used** by any opening event.
+`GSF` (the saved flag family) is **never used by these three modules**
+(`dmo`, `aaa`, `sys`) — which is all this contract scanned.
+
+> **Correction.** An earlier version of this line read "never used by any
+> opening event". That was too broad and is wrong. Scanning the `gor`, `muj`
+> and `tik` area-init events shows `GSF` is the **dominant** persistent flag
+> family in the opening areas. See
+> [OPENING_AREA_INIT_STORY_STATE_MAP](OPENING_AREA_INIT_STORY_STATE_MAP.md).
+
 Per this request's own scope, save-block 233/236 are filed separately in
 [GSF-01](../../requests/GSF-01.md); this contract says nothing about them
 and does not claim they are unreached.
@@ -238,7 +246,7 @@ REL digests: `dmo.rel` 26328 bytes
 |---|---|
 | Persistent writes per scene | **Partly answered.** `GSW[0]` is the only saved story word in these modules, written by `evt_prologue2` and `epilogue_evt2`, read by `aaa_00_init_evt`. `GF`/`GW`/`LW` are context or entry local and do not persist. Save-block 233/236 remain with GSF-01. |
 | Entry conditions per scene | **Partly answered.** `aaa_00_init_evt` gates on `GSW[0]`. Other scenes' gates are not in these modules or not identified. |
-| Branch/join graph | **Answered for the scanned modules.** Nine `evt_bero_mapchange` requests in `sys/evt_start` and one each in `evt_prologue`, `evt_prologue2`, `epilogue_evt` and `epilogue_evt2`. Targets decode to map and entrance identifiers — see the graph section below. An earlier version of this document wrongly said they were undecoded raw immediates. |
+| Branch/join graph | **Answered across the scanned modules**, including the `gor`/`muj`/`tik` exits in the [area-init map](OPENING_AREA_INIT_STORY_STATE_MAP.md). Nine `evt_bero_mapchange` requests in `sys/evt_start` and one each in `evt_prologue`, `evt_prologue2`, `epilogue_evt` and `epilogue_evt2`. Targets decode to map and entrance identifiers — see the graph section below. An earlier version of this document wrongly said they were undecoded raw immediates. |
 | Re-entry behaviour | **Not answered.** Requires the save-block map (GSF-01) and an execution trace. |
 
 ## Porting notes
@@ -261,14 +269,15 @@ REL digests: `dmo.rel` 26328 bytes
   writes.
 - **`-1` fade sentinel semantics.** Observed in the demo events but not
   verified.
-- Whether `GSF` is genuinely unused in the opening, or reached through a
-  user-function callee rather than a direct operand. The inventory sees
-  direct operands and relocated annotations only, so a callee inside a
-  `USER_FUNC` operand is not covered by this scan.
-- `gor`, `muj`, `tik` and the remaining opening modules were not scanned
-  in this pass; only `dmo`, `aaa` and `sys`. Note that `muj_20` and
-  `gor_10` appear here only as *destination identifiers*, not as scanned
-  modules.
+- **`GSF` use outside `dmo`/`aaa`/`sys` is covered by the companion
+  area-init contract**, which finds it heavily used in `gor`/`muj`/`tik`.
+  What remains open is whether `GSF` is also reached through a user-function
+  callee rather than a direct operand: the inventory sees direct operands and
+  relocated annotations only, so a callee inside a `USER_FUNC` operand is not
+  covered by either scan.
+- `gor`, `muj`, `tik` area inits were scanned in the companion
+  [area-init map](OPENING_AREA_INIT_STORY_STATE_MAP.md); `gor_04_init_evt`
+  and the remaining area inits still are not.
 - Exact per-command operand values for the reads and writes above are not
   tabulated — only the destination operand index and band. Opcode 50 writes
   `evtGetValue(operand1)` into `operand0`, so the written *value* is not in

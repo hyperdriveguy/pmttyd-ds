@@ -7620,6 +7620,60 @@ Next tasks:
    have dropped rows from it. Worth an owner check before it is treated as
    a reliable index.
 
+## 2026-10-13 — DEMO-01: opening area-init story-state map (ID 3)
+
+[OPENING_AREA_INIT_STORY_STATE_MAP](behavior/story/OPENING_AREA_INIT_STORY_STATE_MAP.md).
+Scanned the fifteen `gor`, `muj` and `tik` opening / area-init events with
+the same REL-inventory + operand-namespace method as the previous delivery.
+
+**Corrected an over-broad claim of mine.** The previous delivery said
+`GSF` is "**never** used by any opening event". It was never used by
+`dmo`/`aaa`/`sys` — all that scan covered — but across the area inits
+`GSF` is the **dominant** persistent flag family. That claim is now scoped
+to its actual evidence rather than deleted, since it remains true for those
+three modules.
+
+**`GSW[0]` is the chapter gate, read by every area init** — `gor_00` 12
+times, `gor_02` 11, `gor_01` 10, `muj_00` 9, `gor_03` 6, `muj_20` 5,
+`tik_00` 3 — with a **multi-way** opcode mix (`==`, `!=`, `<`, `<=`, `>=`,
+SWITCH). A port testing only `== 0` will mis-admit chapters.
+
+**The Professor writes `GSW[0]`.** `kurihakase_first_talk` in `gor_02`
+writes it at cmd 176 — the only such write across all sixteen events
+scanned in both deliveries. So the chapter transition is driven by the
+professor scene; treating the prologue/epilogue writes as the sole producer
+would miss the professor branch entirely.
+
+**`GSW[1420]`** is a second story word in the opening (`gor_01` cmd 126,
+`gor_02` cmd 63), stored as a byte rather than the index-0 word exception.
+
+**`GSF` map**, including **`GSF[39]` written by both `gor_00` and
+`muj_00`** — a cross-area marker, not an area-local one. Plus `gor_01` →
+1191/1189/1190, `gor_02` → 1203, `gor_03` → 1229, `muj_00` → 3125,
+`tik_00` → 6/237.
+
+**Two joins resolved.** `gor_muj_ship_start` and `muj_gor_ship_start` both
+exit to `muj_20` — the ship voyage is a **bidirectional join**. And
+`muj_20/evt_prologue` exits to `sys_01`/`prologue`, making it the join
+between the `aaa` prologue and the `sys_01` sequence.
+
+**Not resolved:** which comparison literal on each `GSW[0]` test maps to
+which chapter (only operand index and band tabulated), and whether the
+`GSF` 5300-5600 band — which appears solely in opcode-91 operand positions
+— is callee arguments rather than flag accesses. Neither is claimed.
+
+Docs-only; `make test` / `make all` not rerun.
+
+Next tasks:
+
+1. Extract the comparison literals on the `GSW[0]` tests to build the
+   chapter-to-value table — that is the entry-condition answer DEMO-01
+   still lacks.
+2. Map `GSF` indices to save-block slots for GSF-01.
+3. Confirm whether the `GSF` 5300-5600 band is callee arguments.
+4. `gor_04_init_evt` and the remaining area inits.
+5. Remaining inbox: RESULT-01, TRACE-01, and the EVT-01 residue.
+
 ## 2026-10-13 — DEMO-01: opening scene state and persistence census (ID 3)
 
 Pivoted from EVT-01 — its static items are now essentially exhausted, with
