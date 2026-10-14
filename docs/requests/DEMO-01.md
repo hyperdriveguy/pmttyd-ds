@@ -532,3 +532,37 @@ Method parity: same flat parser, same `us_symbols.csv` symbol table, same ISO
 (bytes only). Limit: static byte census, no original execution and no
 native/source change; the delivery's own remaining gaps (chapter titles,
 reachability, `GSW[1420]`/`GSW[665]` producers, save serialisation) stay open.
+
+## 2026-10-13 — Native session verification: game-wide `GSW` census counts
+
+Independently reproduced [the census](../behavior/story/SAVED_STORY_WORD_CENSUS_GSW.md)
+from the read-only US ISO. The counts reproduce exactly, under one counting rule
+the contract leaves implicit and a naive scan gets wrong: **operand position 0
+only** — a `GSW` reference at operand0 of a writer opcode is a write, at
+operand0 of any other opcode is a read; operands at position ≥1 are *not*
+counted. (Counting every operand inflates the result to 45 words / 2299 refs,
+because `GSW`-band values also occur as opcode-91 `USER_FUNC` arguments and
+opcode-50 sources.) Under the operand0 rule:
+
+- **31 words, 2213 references**; `GSW[0]` **427/1514**; `GSW[1420]` **33/86**;
+  `GSW[1469]` **10/6**, writer opcodes `{50, 53, 79}`. Every row of the
+  delivery's table matches, including `501` 4/17, `1122` 8/8 (`53`×8), `1123`
+  5/6 (`50`×5), `1321` 12/8 (`50`×9, `53`×3).
+- `GSW[0]`: **394** distinct literal values, min **2** max **405**, gaps exactly
+  `22, 36, 126, 177, 186, 281, 349, 351, 357, 381`; the single non-literal
+  store is `tou2/evt_random_battle2` cmd 83 (`<- LW[0]`); per-module store
+  counts and chapter-value runs match the table.
+- `GSW[1420]`: 33 writes all opcode 50, **32 store 0**, the one nonzero is
+  `gor/gor_irai_main` cmd 38 (`<- LW[11]`); read opcode mix `24`×75, `25`×7,
+  `34`×3, `115`×1; module distribution `gor 35, pik 9, bom 8, tou 8, jon 7,
+  nok 4, tik 3, win 3, dou 2, gon 2, mri 2, usu 2, rsh 1` — all exact.
+- `GSW[1469]`: the three opcode-79 `|=` sites are `rsh/talk_cook` cmds
+  **42/46/50** with bits **1/2/4** — exact.
+
+**One delivery correction (off-by-one):** the text says `GSW[1420]` has
+"exactly 32 distinct literals", but the set it then lists is `0..30` — **31**
+values, which is what the bytes give (31 distinct, contiguous 0..30). The "32"
+is wrong; the listed set is right.
+
+Limit: static byte census only; no original execution and no native/source
+change.
