@@ -12534,3 +12534,33 @@ Remaining: bind live gauge initialization/direct-damage timers/Main, original
 status/parts/display queue consumers and ordered teardown/field restoration.
 Active slot/controller states still retain source providers. Full playable
 original-fidelity prologue remains incomplete and the goal stays active.
+
+## 2026-10-14 — Further optimization audit
+
+Read-only audit found additional concrete work: eight house NDSP channels are
+cleared on every non-House update after sample loading (480 clear calls/second
+at 60 updates/second); actor rendering deep-copies complete records, including
+talk-rule vectors/strings, before rejecting mismatched models; actor surfaces
+run four clip passes even when the triangle is inside one UV tile. Further
+paths include collision ray scratch reuse, unchanged music-mix suppression,
+exact map-frame caching, immutable animation prefix checkpoints and eliminating
+the small per-frame book-cover vector. Earlier synchronous save/cold audio/
+music-mutex/cutaway candidates remain relevant. No runtime code was changed.
+
+Temporary header instrumentation under artifacts/optimization-audit evaluated
+first poses in all 40 local animation packs at frames 0/17/45: 221,707 surface
+triangle calls, 209,823 exact single-bin-contained candidates (94.6%), zero
+failed evaluations and zero direct-output comparison mismatches. Complete
+vertex bytes and colors compared against the existing clipping result. This
+is sampled asset-work evidence, not a gameplay-weighted profile or measured
+FPS gain; broader boundary/pose/native validation remains necessary. Probe
+source/instrumented headers/executable and surface-work.tsv are retained.
+No private asset conversion/extraction or user emulator profile/save changes.
+
+The [further audit](optimization/FURTHER_OPTIMIZATION_AUDIT.md) records current
+source locations, priorities, behavior-preserving boundaries and implementation
+validation requirements. Documentation-only handoff plus local analysis probe;
+no make/test/native rebuild because product code is unchanged. Next implement
+and validate idle-audio cleanup, actor-copy filtering and single-bin surface
+fast paths as separate scopes; profile whole-loop percentiles and allocation/
+NDSP call counts on hardware. Full remake remains unfinished.
