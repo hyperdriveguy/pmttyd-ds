@@ -421,3 +421,82 @@ game-wide `GSW` layout. The other ~200 areas are unscanned and `GSW[1420]` /
 Remaining on this contract: chapter names, origin of 402/404/`GSW[1420]`,
 direction of the professor's `9`, and the runtime meaning of each ladder
 body's `op91`/`op92`/`op94` calls. No execution trace.
+
+## 2026-10-13 — ID 3: game-wide GSW census; 402/404 origins closed
+
+[Game-wide saved-word census](../behavior/story/SAVED_STORY_WORD_CENSUS_GSW.md)
+and [child-entry nesting](../event/EVENT_CHILD_ENTRY_NESTING_AND_FLAT_PARSE.md).
+Widened the sweep from six modules to **all 29 shipped `rel/*.rel`** —
+**7290 events, 234878 commands**. This closes three gaps and corrects two
+earlier claims of mine.
+
+### The 402 and 404 origins are found
+
+- **`las/last_evt_4@las_29.o` cmd 489 → `GSW[0] <- 402`**
+- `end/unk_evt_end_00004654` cmd 5 and `unk_evt_end_00004718` cmd 15 →
+  `GSW[0] <- 404`
+
+This **overturns the ordering my earlier deliveries implied.** I had
+402 pending → prologue2 writes 2 → … → epilogue writes 403. In fact 402 is the
+**last value of the `las` chapter band**, written immediately *before* 403.
+402 is not a pre-prologue sentinel; it is a late-game state. A fresh save
+cannot legitimately hold 402, so **how a new game reaches the prologue gate is
+now an open question rather than a settled one.**
+
+Also new: **`GSW[0] <- 405`** by `gor/return_gorotsuki_town@gor_00.o` cmd 206
+— a post-ending return to the starting town, above 404.
+
+### `GSW[0]` is a 405-chapter counter, not a handful of values
+
+427 opcode-50 stores, **394 distinct values spanning 2..405** with exactly ten
+gaps: `22 36 126 177 186 281 349 351 357 381`. The numbering is one
+**game-wide** sequence — `gor` alone spans 3..405, `las` owns 382..402. A
+per-module chapter map is tabulated in the contract. **281 is never written**
+even though `gor_03_init_evt` cmd 21 tests `>= 281`.
+
+### Correction: `GSW[1420]` is not a boolean
+
+I reported it as a word gated on `== 1` / `!= 1`. That was accurate about
+those two sites and wrong about the word: it has **86 read sites in 13
+modules** against exactly **32 distinct literals, 0 through 30** — contiguous.
+Its 33 writers are all opcode 50, 32 storing literal `0` and one copying
+`LW[11]`. **No shipped REL event writes it a value in 1..30**, and with the
+corrected writer set there is no `+=`, `OR` or `SET raw` on it either. The one
+event that does arithmetic on it, `gor/gor_irai_tenshu_main`, tests `>= 30` on
+a local copy — independent corroboration of the ceiling. I did **not** invent
+a producer: it is outside the 29 modules or reached by a form this sweep does
+not cover.
+
+### Correction: my writer-opcode set was incomplete
+
+An intermediate sweep used only `{50,51,53..58,63}` as writers and **missed
+opcode 79** (`OR resolved`) and `77`/`80`. That omission hid `GSW[1469]`, the
+**only bitfield in the game**: `rsh/talk_cook` cmds 42/46/50 do
+`GSW[1469] |= 1`, `|= 2`, `|= 4`. A port modelling every saved word as an
+integer counter passes the `+= 1` sites and breaks these three. The contract
+now lists the writer set and the non-writer set explicitly so the exclusion is
+auditable.
+
+Also named from the writer set alone: `GSW[1122]` = key count (`kagi1_evt`…
+`kagi8_evt`, eight `+= 1`), `GSW[1123]` = enemy kill index (stores 1,2,3,4),
+`GSW[870]` = train route (0/1/2/3 across four modules), `GSW[1321]` = jon floor
+selector (0,50,80,9,49,79,99 plus `+= 1`/`+= 2`/`+= 5`).
+
+### New method contract: child-entry nesting
+
+`parse_commands` is a **flat** walk, so `INLINE`/`BROTHER` bodies appear in the
+same list as parent commands with nothing marking them — every "command *N*"
+citation is ambiguous until a depth test is applied. Established over all 7290
+events: four openers but only **two** closers (`INLINE_ID` shares
+`END_INLINE`, `BROTHER_ID` shares `END_BROTHER`), exact pairing counts
+(2779/120/837/106 = 3842), **zero unbalanced spans**, max depth 2, and only six
+events nest two deep.
+
+I then re-checked every index I had already published: all `GSW[0]` stores, all
+eight SWITCH ladders and their `END_SWITCH` commands are at **depth 0**, and no
+opener or closer falls inside any ladder span. The earlier indices stand — but
+that was verified, not assumed.
+
+Still open: chapter titles, reachability (a writable chapter is not a
+reachable chapter), `GSW[1420]`'s nonzero producer, `GSW[665]`'s absent
+writer, and save-block serialisation of these 30 words. No execution trace.

@@ -1,3 +1,57 @@
+## 2026-10-13 — ID 3 — game-wide GSW census; 402/404 origins closed
+
+Widened the event sweep from six modules to all 29 shipped `rel/*.rel`:
+**7290 events, 234878 commands**. Delivered
+`docs/behavior/story/SAVED_STORY_WORD_CENSUS_GSW.md` and
+`docs/behavior/event/EVENT_CHILD_ENTRY_NESTING_AND_FLAT_PARSE.md`, and revised
+the opening chapter table.
+
+Closed gaps:
+
+- **402's writer found**: `las/last_evt_4@las_29.o` cmd 489. This overturns
+  the ordering earlier deliveries implied (402 pending -> 2 -> ... -> 403).
+  402 is the last value of the `las` chapter band, written just before the
+  epilogue's 403, so 402 is a late-game state and how a fresh save reaches
+  the prologue gate is now open rather than settled.
+- **404's writers found**: the two `end/unk_evt_end_*` events. Plus 405 by
+  `gor/return_gorotsuki_town` cmd 206, a post-ending return to town.
+- **GSW[0] is a 405-chapter counter**: 427 stores, 394 distinct values over
+  2..405, ten gaps. One game-wide sequence, not per-area; `gor` alone spans
+  3..405. Per-module chapter map tabulated. 281 is never written even though
+  `gor_03` tests `>= 281`.
+
+Corrections to my own earlier work:
+
+- **GSW[1420] is not a boolean.** 86 read sites in 13 modules against exactly
+  32 literals, 0..30. All 33 writers are opcode 50, 32 storing literal 0. No
+  shipped REL event writes it 1..30; no producer invented.
+- **My writer-opcode set was incomplete.** It omitted opcode 79 (`OR
+  resolved`), which hid GSW[1469] - the only bitfield in the game
+  (`rsh/talk_cook` does |= 1, |= 2, |= 4). Writer and non-writer sets are now
+  both listed explicitly in the contract.
+
+New method finding: `parse_commands` is a flat walk, so INLINE/BROTHER bodies
+are indistinguishable from parent commands. Established over all 7290 events:
+four openers share only two closers (INLINE_ID uses END_INLINE, BROTHER_ID
+uses END_BROTHER), exact pairing counts 2779/120/837/106 = 3842, zero
+unbalanced spans, max depth 2. Every previously published index was re-checked
+at depth 0 and stands; no opener/closer falls inside any SWITCH ladder span.
+
+Validation: read-only ISO re-read via tools/iso_assets.inventory and
+dol_event_inventory.parse_commands; band and writer classifications taken from
+existing class-B contracts, not re-derived. Docs-only; `make test` /
+`make all` not rerun. No execution trace. ISO bytes and ELFs stayed in /tmp.
+
+## 2026-10-13 — SERVICE-01 open-shape half: shop setup and flag
+
+Delivered behavior/field/FIELD_SHOP_SETUP_AND_FLAG.md: `evt_shop_setup`
+record build (216-byte alloc, currentMapName copy, stock loop over the
+arg2 table) with key-item admission for 51/55–59 via `pouchCheckItem`, and
+`shop_flag_onoff`'s shop-work bit switch at [[r13+7232]+0]. Both bodies
+newly extracted read-only; callee identities from us-symbols. Flows,
+prices, gating, presentation remain open. Complements the coin-* leaves
+commit; docs-only, no make rerun. Full-game incomplete.
+
 ## 2026-10-13 — ID 3 — GSW census; GSW[1420] resolved
 
 Closed the last named gap in the opening chapter table with a complete `GSW`

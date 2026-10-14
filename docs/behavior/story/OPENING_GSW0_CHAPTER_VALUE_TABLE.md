@@ -42,10 +42,11 @@ value being mirrored.
 402 as a distinguished state, several of them as a skip guard
 (`!= 402`).
 
-**What is not established:** that 402 is the demo milestone's completion
-value. Nothing scanned here names it, and — as the write set below shows —
-**402 is never written anywhere in the six scanned modules.** It cannot be
-the post-epilogue value; see the 402/403 distinction below.
+**What is not established here:** that 402 is the demo milestone's completion
+value. Nothing in these sixteen events names it or writes it. **Both gaps are
+closed outside this file's scope** — see *Game-wide context* above:
+`las/last_evt_4` cmd 489 is the writer, and 402 is the end of the `las`
+chapter band, not a pre-prologue state.
 
 ## The `GSW[0]` write set (opcode 50)
 
@@ -87,14 +88,18 @@ This is the load-bearing correction. `epilogue_evt2` writes **403**, but
 every `== 402` gate in the opening tests **402**. Those are two different
 states, so:
 
-- **402 is not "game complete".** The epilogue does not write it.
-- **402 is never written at all** in the six scanned modules (`dmo`, `aaa`,
-  `sys`, `gor`, `muj`, `tik`). Its source is outside the scanned set — most
-  likely a save-load default or a module not covered by the opening sweep.
-  **Not claimed:** any specific origin.
-- `gor_00_init_evt` cmd 148 additionally tests `!= 404`, so **403 and 404
-  are separate adjacent terminal-ish states**, and 404 is likewise never
-  written in the scanned set.
+- **402 is not "game complete" and not a prologue sentinel.** The epilogue
+  writes 403, not 402. The writer of 402 is `las/last_evt_4@las_29.o`
+  cmd 489 — the end of the `las` chapter band. The epilogue's **403** is
+  therefore one step *after* 402, not the state 402 gates on.
+- `gor_00_init_evt` cmd 148 additionally tests `!= 404`, and **404 is a
+  distinct state written by the two `end` module events**
+  (`unk_evt_end_00004654` cmd 5, `unk_evt_end_00004718` cmd 15). A third
+  value, **405**, is written by `gor/return_gorotsuki_town@gor_00.o`
+  cmd 206 — a post-ending return to the starting town.
+
+Both writers are outside the six modules scanned for this table; see
+*Game-wide context*.
 
 The only ordering the event spans themselves support is:
 
@@ -123,9 +128,11 @@ established by the span scan. **No execution trace.**
    are immediates, so a port that hard-codes "write the operand" is
    equivalent **for these three commands only** — it is not equivalent in
    general, and opcode 51 (raw store, no getter) is a separate case.
-3. Initialise `GSW[0]` to a state that makes `aaa_00_init_evt` admit, since
-   402 is never produced by the scanned event code. If the port picks a
-   different sentinel it must change all 10 `402` tests with it.
+3. Initialise `GSW[0]` to a state that makes `aaa_00_init_evt` admit. The
+   game's own route reaches 402 only at the very end of the `las` chapter
+   band, so a fresh save cannot legitimately hold 402 — **how a fresh save
+   reaches the prologue is still open.** Do not treat 402 as a default value
+   without resolving that.
 
 ## Opcode-34 SWITCH ladders on `GSW[0]`
 
@@ -277,6 +284,27 @@ to `GSF[3125]` and `GSF[39]`.
 4. Do not add a `DEFAULT` where the source has none, and do not add an
    `END_SWITCH` body where the ladder falls out with no state change.
 
+## Game-wide context
+
+This table is scoped to sixteen events in six modules. The full picture across
+all 29 shipped REL modules — 7290 events, 31 saved words, and the 427
+`GSW[0]` stores covering values 2..405 — is in
+[the game-wide saved-word census](SAVED_STORY_WORD_CENSUS_GSW.md). Two results
+from there correct or extend this file directly:
+
+1. **The 402 origin is closed, and 402 is not a pre-prologue sentinel.**
+   `las/last_evt_4@las_29.o` cmd 489 writes `GSW[0] <- 402`, the last value of
+   the `las` chapter band, immediately before `aaa/epilogue_evt2` writes 403
+   and the `end` module events write 404. The ordering this file could
+   previously only imply (402 pending → 2) is wrong at the front.
+2. **`GSW[1420]` is not a boolean.** It has 86 read sites in 13 modules
+   against exactly 32 distinct literals, **0 through 30**. The `== 1` / `!= 1`
+   sites cited below are two points inside that range.
+
+Also see [child-entry nesting](../event/EVENT_CHILD_ENTRY_NESTING_AND_FLAT_PARSE.md):
+every command index in this file was re-checked at nesting depth 0, so the
+flat parse did not misattribute any of them.
+
 ## Complete `GSW` census across the six scanned modules
 
 A sweep of **every** operand in all sixteen events that falls in the `GSW`
@@ -289,8 +317,8 @@ band (`-180000000 < operand <= -160000000`, base `-170000000`, index
 | `GSW[1420]` | 2 | `gor/gor_01_init_evt` cmd 126, `gor/gor_02_init_evt` cmd 63 |
 | `GSW[108]` | 1 | `gor/gor_01_init_evt` cmd 64 |
 
-**`GSW[1420]` closes the previous gap.** Both uses are comparisons against
-the literal **1**, and the polarity is opposite:
+**`GSW[1420]` — corrected by the wider census.** Within these six modules
+both uses compare against the literal **1** with opposite polarity:
 
 ```
 gor/gor_01_init_evt  cmd[126]  op24  GSW[1420] == 1
@@ -298,9 +326,15 @@ gor/gor_02_init_evt  cmd[63]   op25  GSW[1420] != 1
 ```
 
 In each case a false test skips a single `op91` command — cmd 127 in
-`gor_01` (a 9-operand call) and cmd 64 in `gor_02`. There is **no write** to
-`GSW[1420]` anywhere in the six scanned modules, exactly as for 402 and 404.
-Its producer is outside the scanned set; not guessed here.
+`gor_01` (a 9-operand call) and cmd 64 in `gor_02`.
+
+An earlier revision of this file treated that as the word's role. It is not.
+Across all 29 REL modules `GSW[1420]` has **86 read sites in 13 modules**
+against exactly **32 distinct literals, 0 through 30** — a contiguous domain,
+not a two-state flag. There is **no write** to `GSW[1420` inside the six
+modules; the wider census finds 33 writes game-wide, all opcode 50, 32 of them
+the literal `0` and one a copy of `LW[11]`. See
+[the census](SAVED_STORY_WORD_CENSUS_GSW.md).
 
 **`GSW[108]` is a callee argument, not a flag read.** It appears once, at
 `gor_01` cmd 64, in **operand position 1 of opcode 91** — a service call's
@@ -467,11 +501,15 @@ test would change which chapters are admitted.
 
 ## Remaining gaps
 
-- **Which chapter each value names.** The numbers are recovered; the
-  chapter *titles* are not, and no mapping to area or scene is claimed
-  beyond the event each test lives in.
-- **The origin of 402 and 404.** Both are tested and neither is written in
-  the six scanned modules. Needs a wider module sweep or a save-format read.
+- **Which chapter each value names.** The numbers are recovered and the
+  producer event for each is recovered in the wider census, but the chapter
+  *titles* are not, and reachability is not established.
+- **How a fresh save reaches 402.** 402 is now attributed to
+  `las/last_evt_4`, at the end of the chapter band, so the prologue gate is
+  satisfied by a state the player only reaches near the end. What a new game
+  starts with is unresolved.
+- **`GSW[1420]`'s nonzero producer.** Its 0..30 domain and 86 read sites are
+  recovered; no shipped REL event writes it a value in 1..30.
 - **Whether `kurihakase_first_talk`'s `9` is forward progress.** The value
   is recovered; the direction is not, because the entry path into that
   event is not established.

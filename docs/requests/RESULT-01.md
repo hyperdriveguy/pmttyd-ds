@@ -184,3 +184,9 @@ Not re-run: the 736-stream "exactly one site" census and the mask-set arm's
 `WaitEventEnd(LW15)`@8034f038/END_EVENT@8034f044 ordering; those remain the
 manifest's pinned evidence. Verified bytes only; no original execution, no source
 change.
+
+Addendum: the mask-set arm tail is also verified. `0x8034f038` is
+`0002005b 8011389c fe363c8f` = WaitEventEnd(LW15) (`0xfe363c8f` = LW15), followed
+by `00000002` END_EVENT at8034f044 before `00000021` END_IF at8034f048 — so the
+mask2 arm ends the event and does not fall through to the terminal
+`InterruptStop(0)`.
