@@ -1035,3 +1035,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Bero indexed query, length and registration state](overworld/BERO_INDEXED_INFO_LENGTH_AND_REGISTRATION_STATE.md) — source writer order, SW versus ID, hit flags and fixed-radius placement algebra.
 
 - [Trio source camera4 lens consumption](display/TRIO_SOURCE_CAMERA4_LENS_CONSUMPTION.md)
+
+- [Bero shared case pool, IDs and switch wrappers](overworld/BERO_CASE_POOL_IDS_AND_SWITCH_WRAPPER_LIFETIME.md) — real first-free allocation, separate BeroID/SW, priorities and wrapper lifetime.
+- [Native case pool and Trouble installer](field/NATIVE_CASE_POOL_AND_TROUBLE_INSTALLER.md) — retained records, actual installed event reentry and remaining field-owner boundaries.

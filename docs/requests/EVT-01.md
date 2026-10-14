@@ -4219,3 +4219,17 @@ remain open. Next recover/bind actual case allocation/BeroID and switch callers,
 Mario/party position callbacks and encoded initial_pos high locals, then exact
 house05 local snapshots and generic door open/close/material1800/key49 events.
 Full source/runtime/original trace requirements and parent EVT-01 stay OPEN.
+
+### 2026-10-14 — Retained case pool and original installer follow-through
+
+[Source case ownership](../behavior/overworld/BERO_CASE_POOL_IDS_AND_SWITCH_WRAPPER_LIFETIME.md)
+answers allocation/deletion/reinit, BeroID and switch-wrapper priorities/callers.
+[Native binding](../behavior/field/NATIVE_CASE_POOL_AND_TROUBLE_INSTALLER.md)
+now constructs actual bounded records, preserves all16 saved local words and
+runs original installed board/counter scripts in the retained VM. Raw arg3 uses
+evtGetNumber, correcting earlier evtGetFloat prose. Remaining implementation:
+one shared field case/EVT/area lifetime, complete source mark/contact/NPC gates,
+BeroID/switch callers and real incoming-bank providers. Documentation research
+continues on ordinary initial_pos LW10..12 versus save-load case LW13/14 and
+called Mario/party/camera services. Parent EVT-01 stays OPEN; current isolated
+Installer-root locals do not certify full gor_02 initialization locals.

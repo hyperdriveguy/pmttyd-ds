@@ -810,3 +810,13 @@ REL entries, provenance and relocation remain unchanged. No new art/audio or
 executable PPC is imported. Original Nintendo/Intelligent Systems rights apply;
 conversion grants no distribution rights. ISO/extracted/compiled resources stay
 ignored and outside history. [Native scope](behavior/field/NATIVE_BERO_REGISTRATION_AND_COLLISION_ROLLBACK.md).
+
+### 2026-10-14 — Retained case installer source use
+
+No asset conversion or pack format changes. Case services use original recovered
+US DOL logic; Trouble installer/board/counter use the existing205-object,
+5464-byte original REL event closure with unchanged US message IDs/tokens. Source
+listings remain ignored under artifacts/bero-case-*. Native contiguous case
+records are storage adaptation, not extracted executable PPC. Existing original
+Nintendo/Intelligent Systems rights apply; no redistribution rights are granted.
+ISO/extracted packs and compiled native artifacts stay outside history.

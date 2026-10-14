@@ -125,7 +125,7 @@ forward probe1e4 and current NPC talk owner rather than repolling A in drawing.
 ## Case registration and retained event lifetime
 
 `evt_run_case_evt`80070110/d8 resolves type,arg1,name via evtGetValue,
-arg3 via evtGetFloat,arg4 via evtGetValue. Nonzeroarg1 ORs8000 into U16type;
+arg3 via evtGetNumber800310fc (raw namespace/index conversion),arg4 via evtGetValue. Nonzeroarg1 ORs8000 into U16type;
 work descriptor stores name,arg3 callback/float bits and copies16 callerLW
 words. It stores eventscript pointer atdescriptor54 and event priority0 at58.
 caseEntry8006ec28/100 finds first inactive160-byte slot,clears it,stores its

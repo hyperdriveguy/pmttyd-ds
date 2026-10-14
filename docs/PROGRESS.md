@@ -4245,3 +4245,58 @@ original position/party services before reconstructing complete house05 local
 banks. Continue generic door open/close/material1800/key49, original NPC events
 and additional area packs. Rendering/hardware fidelity and the full remake
 remain active and incomplete.
+
+### 2026-10-14 — Actual case records and retained Trouble installer
+
+Commit4e91b0de adds reusable FieldCasePool:64 contiguous160-byte records, original
+first-free allocation, type8000→flag4, saved names/argument/callback/script/
+priority and all16 caller local words. Deletion/reinit clear active1 only;
+explicit mode0 event deletion checks/retires the real event first. Full pool,
+invalid indices and names>=64 hold as native admission policies instead of
+reproducing original unchecked overrun/strcpy. Typed records do not certify
+arbitrary original RAM/global-wp alias ordering.
+
+Registration retains captured args, value reads0/1/2, raw evtGetNumber arg3,
+value arg4, saved locals before index publication and fresh raw arg5 afterward.
+Ordinary priority0 and Bero priority20 remain distinct. Actual second dispatch
+pass checks real IDs, preserves live-event suppression, creates source roots,
+publishes case index/ID/locals and calls NPC stop only for priority20. Missing
+stop/free-event providers retain the pending mark. New bodies execute only on a
+later manager visit. Case-created root IDs are tracked independently of active
+records, so record deletion/reuse cannot hide a surviving event.
+
+TroubleBoardEvent now owns original evt_run_case_evt internally. The original
+retained Installer actually registers board/counter cases and their exact VM
+snapshots. Tests trigger those installed scripts, suppress duplicate starts and
+reenter after completion while retaining saved state/independent descendants.
+This pool currently belongs to that runtime; Game's existing direct contact/root
+adapter is not yet migrated. A standalone Installer constructor proves its own
+zero locals only, not the original full gor_02/house05 incoming16-word bank.
+Full shared field allocation order, mark pass, BeroID/party/door events stay open.
+See [native scope](behavior/field/NATIVE_CASE_POOL_AND_TROUBLE_INSTALLER.md).
+
+Validation: private frozen tree b919e5618f65529a46869df2d7f4be121b50b391,
+3272 tracked files, zero mismatches; make assets-ready SOUNDTRACK=gamecube,
+make test (293 C++/171 Python) and normal make all passed. Initial run also
+passed; final rerun includes independent root-ID tracking. Logs:
+artifacts/field-case-assets.log,field-case-test.log,field-case-build.log,
+field-case-test-final.log,field-case-build-final.log; source audit:
+artifacts/field-case-source-audit.json. Validation excludes concurrent live edits;
+committed owned source matches the tested snapshot, with only the owned CMake
+registration included. New source/header names are automatically found by the
+native Makefile; no compiled/extracted resources were committed.
+
+Normal archive artifacts/field-case-normal.3dsx SHA256
+45e31e314ac58840b0674590a0debdec279b008bdb2dd5d68ae5412338cf0e55.
+Isolated20s fresh-save smoke artifacts/azahar-field-case-normal exited0;
+inspected boot.png shows original storybook/US text,100% speed,60 App FPS and
+3.85ms emulator frame time. This validates boot only, not native in-world case
+dispatch, full rendering fidelity or actual New2DSXL hardware performance. User
+emulator profiles/saves remain untouched.
+
+Next: bind a shared field case/EVT/area lifetime and actual source mark-pass
+providers, then actual BeroID/switch callers. Recover/bind ordinary initial_pos
+start-coordinate float locals and Mario/party/camera effects before constructing
+real house05 case snapshots; do not substitute final arrival coordinates or
+invent missing locals. Continue generic open/close/material1800/key49, original
+NPC events and additional area packs. Goal and full remake remain incomplete.
