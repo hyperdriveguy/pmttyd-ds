@@ -1127,3 +1127,13 @@ original gor02/DOL event catalogs. The attached initial_pos runs from unchanged
 private event words. No synthetic partner, pose, dialogue or sound was generated.
 Existing original event/prefetch/texture packs remain private and retain their
 Nintendo/Intelligent Systems licensing and local-only handling.
+
+### Future native ROAD leaf admission (2026-10-14)
+
+The native room converter now rejects selected road/pipe hit markers with
+children, retaining the original static transformed-leaf center domain. It does
+not export a drawable parent's bounding-box center as original hitObjGetPos.
+No original asset payload, scaling, pack format, art, audio or dialogue changed;
+existing original source leaf centers and licensing remain unchanged. Hierarchy
+and runtime-transform support require future genuine providers. Original ISO,
+extracted assets and generated packs stay private/ignored.

@@ -6069,3 +6069,42 @@ real teardown/field return. Keep full scene submission/history behind real owner
 Other lit/multitexture/out-of-cell sampler domains, broader animations/indoor/
 event/visibility/story requirements and the complete playable prologue remain
 unfinished. EVT-01 and the full goal stay active.
+
+### 2026-10-14 — Validate native ROAD leaf centers for future areas
+
+Implementation69507f18c300f36fa2ec2711b38ee3c66cacf0c8 makes the native
+road_hit conversion boundary reject named drawable markers with children. A
+finite parent bounding-box center is not original hitObjGetPos leaf traversal.
+Existing8 ordinary original ROAD leaves are verified through this production
+converter boundary in the source-backed Bero test; a drawable-parent/child case
+proves hierarchy rejection while the actual leaf center remains admitted.
+This applies to callers exporting road and pipe centers without changing formats
+or source geometry. General hierarchy/live transforms remain unimplemented.
+
+Validation used frozen tree2d0dd66e25d36968c41de8f264404079d83fdeab in
+artifacts/source-checks/trouble-world. CMAKE_BUILD_PARALLEL_LEVEL=4 make test
+-o assets-ready exited0:318/318 C++ (33.71s),182/182 Python (30.120s),log
+artifacts/area-road-test.log. make all -j4 -o assets-ready SOUNDTRACK=gamecube
+exited0,log artifacts/area-road-build.log. Audit3400 tracked files,zero mismatches;
+manifest artifacts/area-road-validation-manifest.json. Rebuilt native binary
+SHA25695a10f873fd78e3ae062d0fe9cf3989a2721fb35b7f6eacc48f61fc09f082992
+matches the preceding emulator-tested normal binary exactly; no repeat emulator
+run was necessary for this converter-only change. Existing original private
+packs were reused; no new conversion or art/audio generation.
+
+An initial targeted test in the shared live checkout failed because its existing
+Bero pack lacked the original8030f060 event span expected by the unchanged
+source-backed test. The isolated validated packs pass the entire suite, including
+all original catalog/length assertions and the added converter checks. No shared
+asset cache was overwritten to mask that mismatch. Concurrent foreign source
+changes remain preserved and are not part of this isolated validation claim.
+
+Next shared normal-position work must also establish complete same-room collision
+load provenance. Existing collisionReady indicates wall loading only, and
+applyDoorCollision's room is a filter/overlay owner which restore can update; it
+cannot alone certify ground/head/returns geometry. Bind actual staged transaction
+ownership before interpreting an unloaded ray as a genuine floor miss. Shared
+six mutable S/E globals,ordered recovery/actor/camera writes,nonzero Entry/Entry2
+and live area lifecycle remain pending. Full remake goal and EVT-01 remain active.
+
+tools/check_doc_links.py checked1322 Markdown files with zero broken links.

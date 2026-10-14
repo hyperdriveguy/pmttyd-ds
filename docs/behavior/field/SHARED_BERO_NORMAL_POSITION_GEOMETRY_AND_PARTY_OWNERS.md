@@ -38,12 +38,12 @@ one part and matching exported centers in
 artifacts/outer-bank-road-leaf-centers.json. This is a finite static-source
 adaptation of hitObjGetPos,whose general form can traverse child hierarchies
 and runtime matrices. ROADv1's48-byte records carry source/arrival node IDs and
-centerY but no leaf/runtime-transform proof bits. As inspected in this task,
-tools/room_convert.py::road_hit checks unique name,parts>0 and finite center;
-it does not currently reject nodes with children. Therefore future areas need
-explicit conversion-time leaf admission or a genuine hierarchy/live-transform
-provider before this lookup can be generalized. Current shipped proof remains
-valid independently of that missing future-input check.
+centerY but no leaf/runtime-transform proof bits. tools/room_convert.py::road_hit now checks unique name,parts>0,finite center
+and rejects any selected node with children. This admits the existing static
+transformed-leaf center adaptation for future imports. A hierarchical road still
+requires a genuine hierarchy/live-transform provider before it can be imported;
+its drawable parent bounding-box center is not accepted as an approximation.
+This validation does not establish arbitrary runtime-transform support.
 
 Game.fieldBeroPosition->center is a cached result from one previously admitted
 arrival calculation. Existing standalone adapter returns it while ignoring
