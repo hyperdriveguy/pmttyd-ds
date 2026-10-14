@@ -69,7 +69,8 @@ NPC setup/gazigazi and earlier outer requests remain unbound. House05 has its
 own original inline installer, with open LW15=4; generic entry must never replace
 it. The full parent now starts in the shared owner with explicit GP input; its
 pipe prefetch now has an original-resource provider; ordinary arrival stops at
-Mario key_onoff800e7474. Next complete
+background-off with the current native key-only owner. Complete actor storage
+also admits the source background helper and reaches previous-party. Next complete
 parent/cases/GW record lifetime, share the Bero
 and Trouble services, and continue the original house05 installer with the real
 returned bank. Coordinated unload must retire events before releasing area data.

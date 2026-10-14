@@ -4436,3 +4436,16 @@ and remaining parent NPC services; live Game/shared-area integration stays open.
 Implemented original80021860 stage arithmetic, C2 red-to-alpha, map flag suppression and retained800217c8 getter/request order. Trio uses one primary battle map owner shared with translucency, fresh clear plus original bti_01 fog, not the enabled background fog. Actual K0 register0 is retained/restored separately from future TEV routing; only fog-off has native GPU support. Enabled fog equation/LUT, later map writers, original material TEV and indexed fan submission remain open. See [native scope](../behavior/display/NATIVE_MAP_MATERIAL_COLOR_AND_FOG.md). Exact validation is in PROGRESS; EVT-01 remains open.
 
 2026-10-14 display follow-up: [primary-map material ownership](../behavior/display/BATTLE_PRIMARY_MAP_MATERIAL_OWNERSHIP.md) rechecks917 DOL words and both map fog chunks. Fresh bank1 primary bti_01 keeps blend bits2/4/8 and fog bit1 clear; background stg_00_1 fog is not substituted. A present enabled0 fog table preserves a prior bit1, unlike the absent-table clear branch, so fresh memset history matters. Fog helper retains its own current-camera pointer before group lookup; outer shape camera admission is a separate getter. Later mutable map writers and GX/PICA image parity remain open.
+
+### Shared Mario key ownership and background preparation (2026-10-14)
+
+Recovered exact key leaf access order and fresh actor ownership in the
+[key source contract](../behavior/field/BERO_KEY_LEAVES_FRESH_ACTOR_OWNERS_AND_NEXT_ROAD_FRONTIER.md).
+Bound key/background/camera-Y callbacks with explicit owner admission. Game's
+key-only adapter and item acquisition now share the real wrapping byte/main8;
+full synthetic storage advances the unchanged original parent to previous-party.
+See [native contract](../behavior/field/NATIVE_MARIO_KEY_AND_BACKGROUND_PREPARATION.md).
+Native form/dimension/movement/camera follow storage and consumers remain incomplete;
+refusal holds before effects. Previous-party needs actual allocation/art/setup,
+then shared attached initial_pos length/geometry/actor binding. No automatic
+cancellation unlock or successful whole-area-init claim is added. Request open.

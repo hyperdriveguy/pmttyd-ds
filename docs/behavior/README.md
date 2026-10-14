@@ -1089,3 +1089,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Native last-stage color and fog continuation](display/NATIVE_MAP_MATERIAL_COLOR_AND_FOG.md): source byte arithmetic, retained camera/request order, shared primary map owner and bounded K0/fog GPU state.
 - [Battle primary-map material ownership and fog retention](display/BATTLE_PRIMARY_MAP_MATERIAL_OWNERSHIP.md): primary versus background fog, fresh clear/color flags, exact disabled-table load behavior and retained camera pointer.
+
+- [Original Bero key leaves and next ROAD actor frontier](field/BERO_KEY_LEAVES_FRESH_ACTOR_OWNERS_AND_NEXT_ROAD_FRONTIER.md).
+- [Native shared Mario keys and background preparation](field/NATIVE_MARIO_KEY_AND_BACKGROUND_PREPARATION.md).

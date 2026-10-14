@@ -5552,3 +5552,66 @@ texture/raster/K0, followed by original indexed fans with source UV transforms,
 atlas crop and one V correction. Geometry, original image parity, battle-to-field
 return and broader prologue requirements remain unfinished. EVT-01 and the full
 goal remain active; actual New2DSXL hardware performance is unmeasured.
+
+### Original Mario key/background callbacks and shared native key owner (2026-10-14)
+
+Added source-ordered key_onoff800e7474, bgmode_on800e7410, bgmode_off800e73ec
+and cam_y_off800e7314 through explicit per-callback world admission. Key leaves
+preserve wrapping U8+39, signed rereads, exact main8 writes and fresh/captured
+Mario lookup boundaries. Background preserves source form-dependent dimensions/
+movement parameters and camera4 U16/display masks. No fallback success, boolean
+key counter or cancellation unlock is introduced. Source recovery confirms
++184/+188 are movement parameters, not renderer scale; exact native consumers
+must be wired before admitting background.
+
+Game now exposes its actual key owner through fieldMarioPreparationWorld; item
+acquisition KeyOn/Off shares the same source leaves instead of separate arithmetic.
+No Bero-only counter exists. The native adapter admits keys only: incomplete
+form/dimension/movement/camera-follow fields explicitly refuse before effects.
+A fully supplied synthetic actor image executes the genuine original parent/
+attached Bero child through background-off to previous-party800e3058. The native
+Game probe reaches background-off after adding a real second nested key hold.
+
+Validation used frozen tree d5f4f03c75241340fb059998605c6cfe913e3785 in
+artifacts/source-checks/trouble-world. Initial make test exposed one pre-existing
+private-cache omission: the recently committed animation texture loader required
+original draw-textures companions. Regenerated Mario/Goombella/Frankly metadata
+and unchanged TPL companions with the checked-in writer, verifying original TPL
+SHA256 first; no source bypass. Log artifacts/area-mario-texture-assets.log.
+Final CMAKE_BUILD_PARALLEL_LEVEL=4 make test -o assets-ready exited0:312/312 C++
+(35.73s),180/180 Python (47.660s), log artifacts/area-mario-test-final.log.
+make all -j4 -o assets-ready SOUNDTRACK=gamecube exited0; final repack after
+asset refresh exited0, logs artifacts/area-mario-build.log and build-final.log.
+Existing trio/shadow compiler warnings remain outside this change; none in new
+Mario files. Normal3DSX SHA256
+8b26c0eb6f5ea7186bc2077b28aaec45453f7ae5353bc7b61dbc39076ff98601.
+Restored-source audit3369 tracked files,zero mismatches. Manifest
+artifacts/area-mario-validation-manifest.json records normal/probe binaries,
+assets/prefetch/texture/log identities. Concurrent unrelated edits remain intact;
+this does not claim the merged live tree was tested as one build.
+
+Isolated native prefix probe exited0: genuine story402 sound-skip/explicit GP
+fixture, actual Game item-owned hold plus original Bero key-off gives depth2,
+main8,EXEC1,two live events,three original resident files after18 simulation
+calls; pending800e73ec. Explicit item/direct releases restore depth0/unlocked
+in that same Game. No automatic cancellation release or complete parent result
+is claimed. Log artifacts/area-mario-probe-smoke.log, private profile
+artifacts/azahar-area-mario-probe. Temporary main restored, probe excluded.
+
+Normal isolated east→plaza travel/save assertions exited0; inspected captures
+retain original geometry and Mario/NPC sprites. During concurrent host/native
+validation, Azahar shows39 FPS/65% east and39 FPS/66% plaza; in-app counters show
+60 simulation FPS,CPU7.6/5.8ms,GPU0.5ms. These captures do not establish hardware
+performance or original raster parity. Key callbacks add no draw work. User
+emulator profiles/saves were not touched.
+
+Next integrate real form/dimension/movement storage with existing movement,
+collision and camera/display consumers, then original previous-party allocation/
+art/setup. Keep the original attached initial_pos in the shared scheduler; its
+next length/geometry/world callbacks remain needed. Game's separate Bero/Trouble
+VMs, real GP/checkpoint/world lifetime, house05 and case activation are still
+unfinished. EVT-01/documentation inbox and full original events/NPCs/objects goal
+remain active.
+
+Implementation commit3a1b2f80. tools/check_doc_links.py checked1311 Markdown
+files with zero broken links.

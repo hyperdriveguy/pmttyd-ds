@@ -1075,3 +1075,14 @@ pose registration, texture conversion or GPU upload. Payload residency82924 byte
 plus table41984. ROMFS staging, source extracts, binaries and probe profiles stay
 ignored. Original Nintendo/Intelligent Systems assets remain locally licensed
 with no redistribution grant. No original asset bytes are committed.
+
+### Mario preparation constants and unchanged field assets (2026-10-14)
+
+Mario key/background callbacks now use the original source flag/byte operations
+and exact binary32 dimension/movement constants documented in the Bero prefix
+contract (Mario sdata2 addresses80420004/08/78/88/b8/bc/c0/c4). No graphics,
+animations, music, dialogue, ISO bytes or packs were changed by this phase.
+Existing read-only original groups/texture and event packs are reused. Conversion
+validation refreshed only ignored private door/Bero-prefetch outputs. The native
+key adapter uses existing Game state; it does not create a substitute actor asset.
+Original Nintendo/Intelligent Systems licensing and local-only handling remain.

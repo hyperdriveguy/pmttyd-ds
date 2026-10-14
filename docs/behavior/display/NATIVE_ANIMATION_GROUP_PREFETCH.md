@@ -55,7 +55,9 @@ EXEC-get8007aa04 instead captures args, reads the known live EXEC owner first,
 reads raw destination, then evtSetValue. Unknown EXEC state holds. Existing exact
 EXEC-onoff8007aa34 resolves both captured arguments before updating the live owner.
 This allows the genuine ordinary info_run to finish prefetch/flags/EXEC and reach
-Mario key_onoff800e7474; that world primitive remains pending.
+Mario key_onoff800e7474. Its later
+[native preparation binding](../field/NATIVE_MARIO_KEY_AND_BACKGROUND_PREPARATION.md)
+now uses the shared Game key owner; native background ownership remains pending.
 
 Tests check all -1/0/positive readiness combinations, both unconditional requests,
 post-request alias lookup, empty fallback, retained phase transitions, absent

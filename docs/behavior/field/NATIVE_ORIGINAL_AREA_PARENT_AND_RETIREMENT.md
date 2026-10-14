@@ -53,8 +53,10 @@ and cancellation, not successful completion of the full map initializer.
 
 The originally unbound callback8007a154 now has a bounded
 [original-resource prefetch provider](../display/NATIVE_ANIMATION_GROUP_PREFETCH.md).
-The original flags/EXEC requests are also bound; ordinary arrival now stops at
-Mario key_onoff800e7474. Game still runs separate Bero and Trouble runtimes.
+The original flags/EXEC requests are also bound. Subsequent
+[key/background preparation](NATIVE_MARIO_KEY_AND_BACKGROUND_PREPARATION.md)
+now reaches previous-party with fully admitted actor storage, or background-off
+with Game's key-only adapter. Game still runs separate Bero and Trouble runtimes.
 Real GP/checkpoint ownership, native sound, subsequent
 Mario/party services, NPC setup/gazigazi, original house05 inline installer,
 shared map heap/GW lifetime and complete case activation remain required before
