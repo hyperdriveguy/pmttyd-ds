@@ -7886,3 +7886,22 @@ field return. Next: bind actual field Mario/party storage, authored join
 history and constructor/appearance providers, then original exit/sequence
 publication and the remaining original postbattle party/collision/music
 callbacks. Full prologue parity and hardware validation remain unfinished.
+
+## 2026-10-13 — Opening goal scope and Parakarry glide
+
+The user clarified that this opening goal ends at Rogueport arrival. Harbor
+battle/tutorial and Goombella joining are separate follow-up work. Existing saves
+are not a constraint for this goal. The source Parakarry delivery/departure glide
+is now integrated into primary, including independent source float curve11,
+vertical arc, incremental deltas, terminal arithmetic and completion-yield gates.
+[Glide contract](behavior/story/NATIVE_OPENING_NPC_GLIDE.md).
+
+Validation: primary `make all` and `make test`171/171 CTest +110/110 Python pass
+(`artifacts/opening-glide-primary-{all,tests}.log`). The prior concurrent
+underground postbattle assertion failure is resolved in this integrated rerun.
+Read-only glide evidence verifies four original body hashes and43 anchors
+(`artifacts/opening-glide-source-evidence.log`). Title integration also passed
+`make debug-short` (`artifacts/opening-title-primary-debug-short.log`).
+Next finish prepared original house PCM cues, run the final fresh-file native
+route, and complete this arrival-scoped goal. Broader battle/SDK work remains
+separate; no full-game completion is claimed.

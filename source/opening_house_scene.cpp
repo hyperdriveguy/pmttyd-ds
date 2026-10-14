@@ -8,7 +8,7 @@ void OpeningHouseScene::appendProgram() {
     auto ms=[&](unsigned value){wait((uint64_t(value)*60+999)/1000);};
     auto set=[&](unsigned actor,std::array<float,3> p){requests.push_back({Kind::Set,actor,p});};
     auto move=[&](unsigned actor,float x,float z,bool parallel=false){requests.push_back({parallel?Kind::ParallelMove:Kind::Move,actor,{x,0,z}});};
-    auto glide=[&](std::array<float,3> p){requests.push_back({Kind::Move,2,p});};
+    auto glide=[&](std::array<float,3> p,uint32_t command){Request r{Kind::Glide,2,p};r.sourceCommand=command;requests.push_back(r);};
     auto pose=[&](unsigned actor,const char* p,const char* talk=nullptr){Request r{Kind::Pose,actor};r.pose=p;r.talk=talk;requests.push_back(r);};
     auto yaw=[&](unsigned actor,float value){requests.push_back({Kind::Yaw,actor,{value,0,0}});};
     auto door=[&](float value){requests.push_back({Kind::Door,0,{value,0,0}});};
@@ -17,8 +17,8 @@ void OpeningHouseScene::appendProgram() {
     // Original root: camera request followed by WAIT_MSEC4000. The initial
     // BGM WAIT1500 belongs to an independent inline, not this root's deadline.
     Request camera{Kind::Camera};camera.point={145,122,717};camera.aim={145,108,-180};camera.duration=300;requests.push_back(camera);
-    ms(4000);set(2,{500,500,0});glide({210,25,-30});yaw(2,180);ms(500);shake();yaw(2,0);ms(500);message(0);
-    glide({0,300,-100});requests.push_back({Kind::Visible,2,{0,0,0}});
+    ms(4000);set(2,{500,500,0});glide({210,25,-30},0x1008);yaw(2,180);ms(500);shake();yaw(2,0);ms(500);message(0);
+    glide({0,300,-100},0x1108);requests.push_back({Kind::Visible,2,{0,0,0}});
     set(1,{20,30,-150});yaw(1,90);door(180);ms(500);move(1,63,-110);door(0);
     move(1,195,0);move(1,225,-75);ms(500);shake();ms(340);pose(1,"L_5");ms(500);
     pose(1,"L_11");move(1,195,0);move(1,63,-110);pose(1,"L_5");door(180);ms(500);
@@ -44,8 +44,8 @@ void OpeningHouseScene::startMove(unsigned actor,const std::array<float,3>& targ
     auto& a=actors[actor];auto& m=motion[actor];m.start=a.position;m.target=target;
     if(actor!=2)m.target[1]=a.position[1];
     const float dx=m.target[0]-a.position[0],dy=m.target[1]-a.position[1],dz=m.target[2]-a.position[2];
-    // Source operand is80. Native bridge uses constant80 engine units/second;
-    // original glide/heading equations are deliberately not claimed here.
+    // Walking remains the native constant80 bridge. Parakarry uses the distinct
+    // original glide callback owner below, not this waypoint interpolation.
     const float distance=std::sqrt(dx*dx+dy*dy+dz*dz);
     m.begin=tick;m.end=tick+std::max<uint64_t>(1,uint64_t(std::ceil(distance*60/80)));m.active=true;a.moving=true;
     if(actor<2 && (dx || dz))a.yaw=std::atan2(dx,dz)*180/3.14159265358979323846f;
@@ -53,11 +53,17 @@ void OpeningHouseScene::startMove(unsigned actor,const std::array<float,3>& targ
 }
 void OpeningHouseScene::updateMotion() {
     auto advance=[&](Motion& m,std::array<float,3>& p){if(!m.active)return;const float t=std::min(1.f,float(tick-m.begin)/float(m.end-m.begin));for(unsigned i=0;i<3;++i)p[i]=m.start[i]+(m.target[i]-m.start[i])*t;if(t==1)m.active=false;};
-    for(unsigned i=0;i<3;++i){const bool moving=motion[i].active;advance(motion[i],actors[i].position);actors[i].moving=motion[i].active;
+    for(unsigned i=0;i<2;++i){const bool moving=motion[i].active;advance(motion[i],actors[i].position);actors[i].moving=motion[i].active;
         if(i==0 && moving && !motion[i].active){
             if(motion[i].target[0]==-125 && motion[i].target[2]==-290)startMove(0,{-85,30,-310});
             else {actors[0].pose="M_S_1";actors[0].poseTick=tick;actors[0].yaw=90;}
         }
+    }
+    if(parakarryGlide.active && tick>glideUpdated){
+        glideUpdated=tick;
+        const auto result=parakarryGlide.step(float(tick-glideBegin)/60.f,1.f/60.f);
+        actors[2].position=parakarryGlide.position;actors[2].moving=parakarryGlide.active;
+        if(result==1)glideResume=tick+1; // Original result1 clears/yields, unlike result2.
     }
     auto curve=[&](Motion& m,std::array<float,3>& p) {
         if(!m.active)return;
@@ -91,6 +97,7 @@ void OpeningHouseScene::step() {
             case Kind::Wait:deadline=tick+r.duration;break;
             case Kind::Set:actors[r.actor].position=r.point;actors[r.actor].visible=true;break;
             case Kind::Move:case Kind::ParallelMove:startMove(r.actor,r.point);break;
+            case Kind::Glide:glideUpdated=glideBegin=tick;glideResume=0;parakarryGlide.begin(actors[2].position,r.point,r.sourceCommand);actors[2].moving=parakarryGlide.active;if(parakarryGlide.result==1)glideResume=tick+1;break;
             case Kind::Pose:actors[r.actor].pose=r.pose;actors[r.actor].talkPose=r.talk;actors[r.actor].poseTick=tick;break;
             case Kind::Yaw:actors[r.actor].yaw=r.point[0];break;
             case Kind::Visible:actors[r.actor].visible=r.point[0]!=0;break;
@@ -101,7 +108,7 @@ void OpeningHouseScene::step() {
             case Kind::Message:waitingMessage=true;nextMessage=r.actor;break;
             }
         }
-        if((r.kind==Kind::Wait && tick<deadline) || (r.kind==Kind::Move && motion[r.actor].active) || (r.kind==Kind::Message && waitingMessage))return;
+        if((r.kind==Kind::Wait && tick<deadline) || (r.kind==Kind::Move && motion[r.actor].active) || (r.kind==Kind::Glide && (parakarryGlide.active || tick<glideResume)) || (r.kind==Kind::Message && waitingMessage))return;
         ++cursor;started=false;
     }
     complete=true;

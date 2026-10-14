@@ -676,3 +676,5 @@ Collection-level detail was split out of this index on 2026-10-12; the register 
 
 Opening title: [ordinary entry, prompt and idle return](display/NATIVE_OPENING_TITLE.md), [demo fades](display/NATIVE_OPENING_DEMO_FADES.md), and [BGM owners](audio/OPENING_TITLE_BGM_OWNERS.md).
 - [Native original type0 window frame](display/NATIVE_TYPE0_WINDOW_FRAME.md): shared source geometry and citro3d transform/buffer binding; live EXP caller and future selector frames.
+
+Opening movement: [original Parakarry glide](story/NATIVE_OPENING_NPC_GLIDE.md).

@@ -20,7 +20,8 @@ int main(int argc,char**) {
     assert(house.treeX==150);
     uint64_t tick=300;
     while(!house.messageReady(0)){house.advance(++tick);assert(tick<2000);}
-    assert((house.actors[2].position==std::array<float,3>{210,25,-30}));
+    assert((house.parakarryGlide.target==std::array<float,3>{210,25,-30}));
+    assert(house.actors[2].position==house.parakarryGlide.position && house.parakarryGlide.result==1);
     const auto delivery=tick;house.advance(tick+500);tick+=500;
     assert(house.messageReady(0) && !house.messageReady(1) && house.actors[2].visible);
     house.messageComplete(1);house.advance(tick);assert(house.messageReady(0));

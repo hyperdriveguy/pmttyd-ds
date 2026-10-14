@@ -810,3 +810,8 @@ target_sources(ttyd_core PRIVATE source/window_frame.cpp)
 add_executable(window_frame_tests tests/window_frame_tests.cpp)
 target_link_libraries(window_frame_tests PRIVATE ttyd_core)
 add_test(NAME window_frame COMMAND window_frame_tests)
+
+target_sources(ttyd_core PRIVATE source/opening_npc_glide.cpp)
+add_executable(opening_npc_glide_tests tests/opening_npc_glide_tests.cpp)
+target_link_libraries(opening_npc_glide_tests PRIVATE ttyd_core)
+add_test(NAME opening_npc_glide COMMAND opening_npc_glide_tests)
