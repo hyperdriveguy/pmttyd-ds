@@ -12,12 +12,20 @@ uint32_t rgb(unsigned r,unsigned g,unsigned b,unsigned a=255){return C2D_Color32
 void Renderer::beginFrontend(){
     C3D_FrameSync();freeOpeningDeparture();
     for(auto* room:{&plaza,&stage,&trioBackground,&trioStage})freeRoom(*room);
+    // Admit Title before the opening clock/music starts. Preserve these small
+    // owners across the attract demo so its white exit performs no cold import.
+    for(const char* name:{"title-background","title-logo","title-copyright","title-prompt","title-prompt-pattern"})
+        if(!frontImage(name,0,0,0,0)){frontFailure="Title image admission failed";break;}
+    if(!loadTitleCurtains())frontFailure="Title curtain admission failed";
     frontActive=true;
 }
-void Renderer::releaseFrontend(bool preserveMapTurn){
-    C3D_FrameSync();if(!preserveMapTurn)freeMapTurn();freeHeading();freeTitleCurtains();freeBookCaptures();freeWakeEffects();freeShipCapture();freeDemoEffects();freeRoom(frontRoom);frontMapName.clear();frontHouseObjects.clear();frontShipObjects.clear();frontDrawSnapshot.reset();
-    for(auto& t:frontTextures)if(t.image.imported){Tex3DS_TextureFree(t.image.imported);C3D_TexDelete(&t.image.texture);}
-    frontTextures.clear();
+void Renderer::releaseFrontend(bool preserveMapTurn,bool preserveTitle){
+    C3D_FrameSync();if(!preserveMapTurn)freeMapTurn();freeHeading();if(!preserveTitle)freeTitleCurtains();freeBookCaptures();freeWakeEffects();freeShipCapture();freeDemoEffects();freeRoom(frontRoom);frontMapName.clear();frontHouseObjects.clear();frontShipObjects.clear();frontDrawSnapshot.reset();
+    for(auto i=frontTextures.begin();i!=frontTextures.end();){
+        if(preserveTitle && i->name.rfind("title-",0)==0){++i;continue;}
+        if(i->image.imported){Tex3DS_TextureFree(i->image.imported);C3D_TexDelete(&i->image.texture);}
+        i=frontTextures.erase(i);
+    }
     for(auto& a:cineActors)if(a.image.imported){Tex3DS_TextureFree(a.image.imported);C3D_TexDelete(&a.image.texture);}
     cineActors.clear();
 }
@@ -74,7 +82,7 @@ bool Renderer::prepareFrontWorld(const char* map,const OpeningSequence* opening,
             // The original prior page owners are finished. Keep only the book
             // layers used by final adjust while admitting the marketplace.
             for(auto i=frontTextures.begin();i!=frontTextures.end();){
-                const bool keep=i->name=="demo-0" || i->name=="demo-1" || i->name=="demo-2" || i->name=="demo-7" || i->name=="demo-12" || i->name=="demo-page-back";
+                const bool keep=i->name.rfind("title-",0)==0 || i->name=="demo-0" || i->name=="demo-1" || i->name=="demo-2" || i->name=="demo-7" || i->name=="demo-12" || i->name=="demo-page-back";
                 if(keep){++i;continue;}
                 if(i->image.imported){Tex3DS_TextureFree(i->image.imported);C3D_TexDelete(&i->image.texture);}
                 i=frontTextures.erase(i);
@@ -255,7 +263,7 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,OpeningSequence& ope
     // also bounds a natural (unskipped) storybook run and letter/map overlays.
     const uint32_t phase=f.screen==FrontScreen::Demo?100:
         f.screen==FrontScreen::Opening?200+uint32_t(opening.part==OpeningPart::MapDisplay?OpeningPart::HouseReturn:opening.part):0;
-    if(phase!=frontPhase){releaseFrontend(f.screen==FrontScreen::Opening && opening.part==OpeningPart::Voyage && opening.mapTransition.entryRequested && !opening.mapTransition.entryComplete);frontPhase=phase;}
+    if(phase!=frontPhase){releaseFrontend(f.screen==FrontScreen::Opening && opening.part==OpeningPart::Voyage && opening.mapTransition.entryRequested && !opening.mapTransition.entryComplete,f.screen==FrontScreen::Demo || f.screen==FrontScreen::Title || f.screen==FrontScreen::Files);frontPhase=phase;}
     if(opening.mapTransition.entryComplete && mapTurnReady){C3D_FrameSync();freeMapTurn();}
     const bool mapWorldReady=!(f.screen==FrontScreen::Opening && opening.part==OpeningPart::Voyage && opening.mapTransition.entryRequested && !opening.mapTransition.entryComplete) || prepareFrontWorld("opening-muj_20",&opening,demo);
     const bool mapCapture=f.screen==FrontScreen::Opening && opening.part==OpeningPart::MapDisplay && opening.mapTransition.requested && !opening.mapTransition.captureReady;

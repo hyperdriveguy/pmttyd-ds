@@ -37,7 +37,7 @@ public:
     const std::string& resourceFailure() const{return frontFailure;}
     void beginFrontend();
     void advanceTutorialAnimations(Game&);
-    void releaseFrontend(bool preserveMapTurn=false);
+    void releaseFrontend(bool preserveMapTurn=false,bool preserveTitle=false);
     bool prepareOpeningDeparture(const OpeningHarborScene&,uint64_t fieldTick);
     void render(const Game&, const Metrics&, const char* notice, bool audioAvailable);
     void renderFrontend(Frontend&, OpeningDemo&, OpeningSequence&, const char* notice);

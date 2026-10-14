@@ -24,3 +24,9 @@ Chest effect textures are admitted with the marketplace before the first
 market frame, rather than performing their first file import at chest opening.
 This reduces first-use work; it does not establish complete hardware performance
 or eliminate every synchronous scene load.
+
+Title images and curtain owners are admitted before the frontend simulation
+clock and its first music request start. They survive Demo/Title/Files phase
+changes and the final book adjustment, and retire on entering New Game or
+Playing. The white chest exit therefore performs no first-use Title import.
+This shifts that bounded resource work into initial boot admission.
