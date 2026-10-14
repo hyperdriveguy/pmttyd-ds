@@ -4,6 +4,7 @@
 #include "battle_packed_pouch.hpp"
 #include "battle_weapon_icons.hpp"
 #include "battle_weapon_cost.hpp"
+#include "battle_attack_selection.hpp"
 #include <cassert>
 #include <cmath>
 #include <cstring>
@@ -44,6 +45,7 @@ void HarborTutorialPacked::captureWeaponRows(uint32_t type,HarborTutorial& scene
  scene.weaponRowIndex=int32_t(word(activeCursor));
 }
 bool HarborTutorialPacked::buildWeaponMenu(uint32_t type,HarborTutorial& scene,void* messageUser,uint32_t(*message)(void*,uint32_t)){
+ weaponDecided=false;
  if(!freshPouch || (type!=0 && type!=1 && type!=2 && type!=4))return false;
  word(Battle+0x420,1);readDamage(1);
  struct Context{HarborTutorialPacked* p;void* messageUser;uint32_t(*message)(void*,uint32_t);};Context context{this,messageUser,message};
@@ -71,7 +73,16 @@ bool HarborTutorialPacked::selectWeapon(unsigned index,HarborTutorial& scene,voi
  const auto decided=decidePackedBattleWeapon(Battle,scene.weaponMenuType,index,s);if(!decided)return false;
  scene.weaponTargets.clear();const auto buffer=Battle+0x428;const auto rawCount=byte(buffer+0xa6c);const int32_t count=rawCount<128?int32_t(rawCount):int32_t(rawCount)-256;
  for(int32_t j=0;j<count;++j){const auto raw=byte(buffer+0xa6d+uint32_t(j));const int32_t permutation=raw<128?int32_t(raw):int32_t(raw)-256;const auto row=buffer+4+36*uint32_t(permutation);uint16_t unit=0,part=0;if(!vm.memory.readHalf(row,unit) || !vm.memory.readHalf(row+2,part))std::abort();scene.weaponTargets.push_back({unit<32768?int32_t(unit):int32_t(unit)-65536,part<32768?int32_t(part):int32_t(part)-65536});}
+ weaponDecided=true;
  return true;
+}
+bool HarborTutorialPacked::selectAttackEvent(){
+ if(!weaponDecided)return false;
+ BattleAttackSelectionServices selection;selection.memory=nativeBattleActorServices(vm);selection.user=this;
+ selection.cursor=[](void* self,uint32_t menu,uint32_t type,uint32_t& cursor){auto& p=*static_cast<HarborTutorialPacked*>(self);return findPackedCommandCursor(menu,type,cursor,nativeBattlePackedSelectionServices(p.vm));};
+ const bool selected=packedSetBattleAttackEvent(Units+0x1000,Battle+0x171c,selection);
+ if(selected)weaponDecided=false;
+ return selected;
 }
 
 }

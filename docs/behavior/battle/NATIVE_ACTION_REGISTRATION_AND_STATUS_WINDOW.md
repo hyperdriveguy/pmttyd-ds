@@ -46,3 +46,49 @@ See [original action controller](BATTLE_ACTION_CONTROLLER.md),
 Next: original tutorial menu/table/input and player action ownership, complete
 action/turn scheduler, camera/effect/audio/audience consumers and original
 window animation. Physical controls remain required; touch is optional.
+
+## Harbor tutorial selected-player bridge (2026-10-14)
+
+Harbor's explicit `dispatchSelectedAttack()` scheduler bridge consumes one
+successful original weapon decision and uses the complete shared selector and
+state6 registration. It rejects missing decisions, open weapon UI, intro/phase/
+attack/damage overlap and empty targets. Rebuilding the weapon table clears the
+native decision latch; successful selection sets it, and attack publication
+consumes it. This latch is native admission policy, not an original field.
+The selected original event replaces the installed wait-only Mario attack;
+source U2a8/root owner/wait cancellation/status/RNG/channel6 rules then apply.
+A suppressed registration is admitted without inventing a root.
+
+The caller explicitly supplies already confirmed-command scheduler context,
+analogous to the trio launch bridge. This API does not execute Input state11,
+state29, the common re-entry tail or the complete action controller. There is
+no development-button binding, automatic tick launch, fabricated target-confirm
+progress, source turn consumption or HP/story result write. The native Game
+still needs those original controllers and presentation providers wired before
+this becomes a visible playable menu flow.
+
+Harbor now binds shared selected-target, command-weapon, guard-wait and complete
+Majinai-query callbacks. AttackDeclare admits the live no-protector domain:
+scan all64 actual registry entries and retain the unbound core if any U140
+matches the translated target. Otherwise preserve the wrapper's target/part
+outputs. Ordinary item0/FP0/AP0 payment runs the shared payment core, including
+Get/SetFp, captured-work point/count and AddAP(0) narrowing/clamping; nonzero
+cost/item domains remain unbound. These are source-domain admissions, not
+claims that all attack-declaration/payment routes are implemented.
+
+Event status-window requests now use the shared arbitration against actual
+packed fields. Fresh EventOn/SystemOn field initialization is explicit native
+entry policy, as in trio. Source open/close results project immediate visibility;
+slide animation remains unimplemented. Capture retains live battle flags to
+prevent the next scene publish from erasing shared callback writes.
+
+The host integration starts with the original field pouch/intro and source
+weapon-menu A decision, then explicitly invokes the confirmed scheduler bridge.
+It checks original Jump80355cf0, category0, actual attack/wait IDs, channel6
+advance, source window field/visibility, Crump2/body1 outputs and exactly one
+zero-cost action-count increment. Jump runs its data-key7 and fortune child,
+then remains live at camera homing-unitparts8012bc70 across repeated ticks.
+HP/result stay unchanged. This camera request, original Mario walking/running
+pose presentation, action setup/manager/motion/hits and automatic menu/controller
+integration remain follow-up providers. Host evidence is not a GPU/original-
+runtime observation or complete Jump/tutorial verification.

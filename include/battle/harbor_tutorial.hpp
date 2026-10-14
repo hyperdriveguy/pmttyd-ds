@@ -71,6 +71,9 @@ public:
     // Called by an original battle scheduler, never automatically from HP or a
     // development button. Only already installed Crump/NPC attack hooks exist.
     bool dispatchInstalledAttack(int32_t actorId);
+    // Explicit scheduler bridge after original target confirmation. Consumes
+    // the last successful source weapon decision; never runs from HP or tick.
+    bool dispatchSelectedAttack();
     // Source damage producer bridge: original reaction roots, no HP/result synthesis.
     uint32_t dispatchHitEvent(int32_t actorId,uint32_t code);
     uint32_t dispatchDirectHitEvent(int32_t actorId,uint32_t code,uint32_t script);

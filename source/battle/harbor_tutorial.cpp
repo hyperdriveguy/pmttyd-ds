@@ -6,6 +6,10 @@
 #include "field_camera_events.hpp"
 #include "harbor_tutorial_packed.hpp"
 #include "prologue_pouch.hpp"
+#include "battle_attack_registration.hpp"
+#include "battle_status_window.hpp"
+#include "battle_packed_status.hpp"
+#include "battle_sequence_startup.hpp"
 #include <cassert>
 #include <cstdio>
 #include <cstring>
@@ -56,6 +60,23 @@ struct HarborTutorialRuntime {
  std::string text(uint32_t a){std::string s;for(unsigned i=0;i<256;++i){uint8_t c=0;if(!vm.memory.readByte(a+i,c)){scene->failed=true;return {};}if(!c)return s;s+=char(c);}scene->failed=true;return {};}
  int32_t actor(EventEntry& e,unsigned i=0){int32_t v=value(e,i);if(v==-2)v=e.owner;else if(v==-3)v=1;const auto slot=scene->visualSlot(v);if(slot<0){scene->failed=true;return 0;}return slot;}
  EventEntry& root(uint32_t a,int32_t owner,uint32_t flags=0){auto services=vm.creationServices();auto& e=createRootEvent(vm.schedule,a,10,flags,services);e.owner=owner;return e;}
+ BattleStatusWindowServices statusWindowServices(){
+  BattleStatusWindowServices s;s.units=nativeBattleUnitEventServices(vm);s.user=this;
+  s.isOpen=[](void* self){return static_cast<HarborTutorialRuntime*>(self)->scene->statusVisible;};
+  s.open=[](void* self){static_cast<HarborTutorialRuntime*>(self)->scene->statusVisible=true;};
+  s.close=[](void* self){static_cast<HarborTutorialRuntime*>(self)->scene->statusVisible=false;};
+  return s; // Native visibility projection; source slide animation is separate.
+ }
+ void registerSelectedAttack(){
+  attackRoot=0;BattleAttackRegistrationServices s;s.memory=nativeBattleActorServices(vm).memory;s.events=vm.creationServices();s.schedule=&vm.schedule;s.user=this;
+  s.unit=[](void* self,uint32_t b,int32_t id){return battleRegistryUnit(b,id,nativeBattleActorServices(static_cast<HarborTutorialRuntime*>(self)->vm));};
+  s.status=[](void* self,uint32_t u,int32_t type)->int32_t{return checkPackedBattleStatus(u,type,nativeBattleActorServices(static_cast<HarborTutorialRuntime*>(self)->vm))?1:0;};
+  s.irand=[](void* self,int32_t bound){return static_cast<HarborTutorialRuntime*>(self)->packed->random.bounded(bound);};
+  s.windowOff=[](void* self){auto& r=*static_cast<HarborTutorialRuntime*>(self);packedBattleStatusWindowSet(0x2744,false,r.statusWindowServices());};
+  s.create=[](void* self,uint32_t script,int32_t priority,uint32_t flags){auto& r=*static_cast<HarborTutorialRuntime*>(self);auto& e=createRootEvent(r.vm.schedule,script,priority,flags,r.vm.creationServices());r.attackRoot=e.id;return &e;};
+  s.advance=[](void* self,uint32_t b,int32_t channel){auto& r=*static_cast<HarborTutorialRuntime*>(self);packedBattleIncrementSequence(b,uint32_t(channel),nativeBattleActorServices(r.vm).memory);};
+  registerBattleAttackState6(HarborTutorialPacked::Battle,s);
+ }
  bool exists(uint32_t id){for(int32_t i=0;i<vm.battle.capacity;++i)if(vm.battle.entries[i].id==id && (vm.battle.entries[i].flags&1))return true;return false;}
  bool tablePose(HarborTutorialActor& a,int32_t type){uint32_t table=a.id==1?source[11]:word(word(a.sourceKind+0xb8)+0x48);
  for(unsigned i=0;i<80;++i){const auto name=word(table+i*8+4);if(!name)break;if(word(table+i*8)==uint32_t(type)){a.pose=text(name);a.poseAt=scene->now;const auto slot=scene->visualSlot(a.id);if(slot>=0)complete[size_t(slot)]=false;return true;}}return false;}
@@ -89,7 +110,7 @@ struct HarborTutorialRuntime {
  e.locals[0]=int32_t(*sample);e.locals[1]=p.step<p.limit?1:0;++p.step;return 2;}
  case 21:{auto& a=scene->actors[actor(e)];for(unsigned i=0;i<3;++i){const auto v=raw(e,i+1);if(v!=-1000000000)a.rotation[i]=float(value(e,i+1));}return 2;}
  case 22:return exists(uint32_t(value(e,0)))?0:2;
- case 23:scene->statusVisible=value(e,0)!=0;return 2;
+ case 23:return battleStatusWindowOnOffEvent(e,statusWindowServices());
  case 24:{auto& a=scene->actors[actor(e)];const auto i=value(e,1);if(i<0 || i>=16){scene->failed=true;return 0;}output(e,2,a.work[i]);return 2;}
  case 25:scene->actors[actor(e)].talkPose=text(uint32_t(value(e,1)));return 2;
  case 26:scene->actors[actor(e)].stayPose=text(uint32_t(value(e,1)));return 2;
@@ -109,7 +130,11 @@ struct HarborTutorialRuntime {
  }
  bool initialize(){if(!vm.memory.registerRam(0x82000000,std::vector<uint8_t>(1024*1024)) || !vm.memory.registerRam(0x8041f070,std::vector<uint8_t>(16)) || !vm.memory.registerRam(0x8041e428,std::vector<uint8_t>(4)) || !vm.memory.registerRam(0x8041e844,std::vector<uint8_t>(4)) || !vm.memory.importScripts(scripts))return false;
  auto m=vm.memoryBinding.services();auto start=eventSdkInitializeAllocator(0x82000000,0x82100000,1,m);if(eventSdkCreateHeap(start,0x82100000,m)!=0 || !vm.memory.writeWord(0x8041e844,0) || !vm.memory.writeWord(0x81000004,60))return false;
- vm.gp.timestamp=scene->now*eventClockRate(243000000);vm.initializeContexts();vm.gp.battleContext=1;packed=std::make_unique<HarborTutorialPacked>(vm);if(!packed->provision())return false;return true;}
+ vm.gp.timestamp=scene->now*eventClockRate(243000000);vm.initializeContexts();vm.gp.battleContext=1;packed=std::make_unique<HarborTutorialPacked>(vm);if(!packed->provision())return false;
+ // Explicit native fresh window context, matching the trio bridge. Subsequent
+ // visibility is arbitrated through the complete original setter/check.
+ packedBattleStatusWindowSet(0x2748,true,statusWindowServices());
+ packedBattleStatusWindowSet(0x2744,true,statusWindowServices());return true;}
 };
 bool HarborTutorial::begin(uint64_t time,int32_t hp,int32_t maxHp){return beginWithContext(time,hp,maxHp,false,0);}
 bool HarborTutorial::beginFresh(uint64_t time,int32_t hp,int32_t maxHp,int32_t story){return beginWithContext(time,hp,maxHp,true,story);}
@@ -151,6 +176,20 @@ void HarborTutorial::tick(uint64_t time,uint32_t keys,const BattlePadSample* phy
 }
 bool HarborTutorial::dispatchPhase(int32_t sourceTurn,uint32_t sourcePhase){if(!runtime_ || failed || !initialized || phaseActive || attackActive || damageActive || !actors[0].phase)return false;turn=sourceTurn;phaseWord=sourcePhase;runtime_->phaseInterrupted=false;runtime_->phaseRoot=runtime_->root(actors[0].phase,CrumpId,0x20).id;runtime_->packed->recordPhase(CrumpId,runtime_->phaseRoot);phaseActive=true;return true;}
 bool HarborTutorial::dispatchInstalledAttack(int32_t id){const auto slot=visualSlot(id);if(!runtime_ || failed || !initialized || !introComplete || phaseActive || attackActive || damageActive || (id!=CrumpId && id!=HelperId) || slot<0 || !actors[size_t(slot)].attack)return false;pendingService=0;runtime_->attackRoot=runtime_->root(actors[size_t(slot)].attack,id).id;runtime_->packed->recordAttack(id,runtime_->attackRoot);attackActive=true;return true;}
+bool HarborTutorial::dispatchSelectedAttack(){
+ if(!runtime_ || failed || !initialized || !introComplete || phaseActive || attackActive || damageActive || weaponMenuOpen || weaponTargets.empty() || !runtime_->packed->weaponDecided)return false;
+ auto& r=*runtime_;r.scene=this;r.packed->publish(*this);
+ // Explicit confirmed-command scheduler entry, analogous to the trio launch;
+ // not an implementation of Input's pending/progress loop or target UI.
+ const auto b=HarborTutorialPacked::Battle;
+ if(!r.vm.memory.writeWord(b+0x420,MarioId) || !r.vm.memory.writeWord(b+0x171c+0x540,weaponMenuType))return false;
+ if(!r.packed->selectAttackEvent())return false;
+ battleFlags|=4;r.vm.memory.writeWord(b+0xef4,battleFlags);
+ r.vm.memory.writeWord(b+0xf20,0x06000006);
+ pendingService=0;r.registerSelectedAttack();r.packed->capture(*this);
+ weaponTargetMenuOpen=false;attackActive=r.attackRoot!=0;
+ return true; // Admission succeeded even if a source status suppressed a root.
+}
 uint32_t HarborTutorial::dispatchHit(int32_t id,uint32_t code,uint32_t script,bool direct){
  if(!runtime_ || failed || !actorById(id))return 0;
  auto& r=*runtime_;r.scene=this;r.packed->publish(*this);

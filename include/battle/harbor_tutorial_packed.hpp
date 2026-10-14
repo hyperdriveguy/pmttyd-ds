@@ -32,6 +32,8 @@ public:
  bool openWeaponMenu(uint32_t type,HarborTutorial&,void*,uint32_t(*)(void*,uint32_t));
  std::optional<int32_t> inputWeaponMenu(HarborTutorial&,void*,uint32_t(*)(void*,uint32_t));
  void weaponMenuPresented();
+ bool selectAttackEvent();
+ bool weaponDecided=false;
  bool selectWeapon(unsigned row,HarborTutorial&,void* messageUser,uint32_t(*message)(void*,uint32_t));
  uint32_t cacheMenuLabel(uint32_t key,const char* originalText);
  uint32_t runHitEvent(int32_t id,uint32_t code);

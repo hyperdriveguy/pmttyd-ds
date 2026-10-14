@@ -13,6 +13,7 @@
 #include "battle_hit_code_events.hpp"
 #include "prologue_pouch.hpp"
 #include "battle_unit_resources.hpp"
+#include "battle_weapon_cost.hpp"
 namespace ttyd {
 namespace {void required(bool ok){if(!ok)std::abort();}int32_t signByte(uint8_t b){return b<128?int32_t(b):int32_t(b)-256;}}
 uint32_t HarborTutorialPacked::word(uint32_t a)const{uint32_t v=0;required(vm.memory.readWord(a,v));return v;}
@@ -38,7 +39,7 @@ bool HarborTutorialPacked::provision(){
  camera.user=this;camera.signedWordFloat=[](void* self,int32_t v){auto& p=*static_cast<HarborTutorialPacked*>(self);return p.vm.platform.signedWordFloat(p.vm.platform.user,v);};
  camera.rumbleOn=[](void* self,int32_t channel){static_cast<HarborTutorialPacked*>(self)->rumbleRequests.push_back(channel);};
  return registry.bind(0x80113f1c,&vm,[](void* p,EventEntry& e,int32_t){return battleMarkUnit1feEvent(e,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));}) && registry.bind(0x8010f458,&vm,[](void* p,EventEntry& e,int32_t){auto& vm=*static_cast<EventNativeRuntime*>(p);return battleGetHitDamageEvent(e,nativeBattleUnitEventServices(vm),nativeBattleActorServices(vm));}) && registry.bind(0x80105b40,&vm,[](void* p,EventEntry& e,int32_t){return battleUnitFlagEvent(e,true,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));}) && registry.bind(0x80105ae0,&vm,[](void* p,EventEntry& e,int32_t){return battleUnitFlagEvent(e,false,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));}) && registry.bind(0x8010a010,&vm,[](void* p,EventEntry& e,int32_t){return runBattleDataChild(e,nativeBattleDataChildServices(*static_cast<EventNativeRuntime*>(p)));}) && registry.bind(0x8010e4bc,&vm,[](void* p,EventEntry& e,int32_t){auto& vm=*static_cast<EventNativeRuntime*>(p);return battleResetUnitFacingEvent(e,nativeBattleUnitEventServices(vm),nativeBattleActorServices(vm));}) && registry.bind(0x8010e430,&vm,[](void* p,EventEntry& e,int32_t){return battleCheckUnitAttributeEvent(e,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));}) && registry.bind(0x8010f0e8,&vm,[](void* p,EventEntry& e,int32_t){return battleCheckHitPatternEvent(e,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));}) && registry.bind(0x8010f2e8,&vm,[](void* p,EventEntry& e,int32_t){return battleCheckHitCodeEvent(e,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));}) &&
- registry.bind(0x8010f374,&vm,[](void* p,EventEntry& e,int32_t){return battleGetHitCodeEvent(e,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));}) && bindBattleCheckDataCallback(registry,vm) && bindBattleGetBodyIdCallback(registry,vm) && bindBattleSetMoveSpeedCallback(registry,vm) && bindBattleMovePositionCallback(registry,movement) && bindBattleJumpSettingCallback(registry,vm) && bindBattleGetPosCallback(registry,vm) && bindBattleGetHomePosCallback(registry,vm) && bindBattleGetHitPosCallback(registry,vm) && bindBattleGetUnitWorkCallback(registry,vm) && bindBattleSetUnitWorkCallback(registry,vm) && bindBattleGetHpCallback(registry,vm) && bindBattleGetMaxHpCallback(registry,vm) && bindBattleStartWaitCallback(registry,vm) && bindBattleStopWaitCallback(registry,vm);
+ registry.bind(0x8010f374,&vm,[](void* p,EventEntry& e,int32_t){return battleGetHitCodeEvent(e,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));}) && bindBattleCheckDataCallback(registry,vm) && bindBattleGetBodyIdCallback(registry,vm) && bindBattleSetMoveSpeedCallback(registry,vm) && bindBattleMovePositionCallback(registry,movement) && bindBattleJumpSettingCallback(registry,vm) && bindBattleGetPosCallback(registry,vm) && bindBattleGetHomePosCallback(registry,vm) && bindBattleGetHitPosCallback(registry,vm) && bindBattleGetUnitWorkCallback(registry,vm) && bindBattleSetUnitWorkCallback(registry,vm) && bindBattleGetHpCallback(registry,vm) && bindBattleGetMaxHpCallback(registry,vm) && bindBattleStartWaitCallback(registry,vm) && bindBattleStopWaitCallback(registry,vm) && bindBattleSelectedTargetCallback(registry,vm) && bindBattleCommandWeaponCallback(registry,vm) && bindBattleWaitGuardMoveCallback(registry,vm) && bindBattleMajinaiQueryCallback(registry,vm);
 }
 uint32_t HarborTutorialPacked::requestSound(uint32_t u,uint32_t key,const std::array<float,3>& pos){HarborTutorialSoundRequest r;r.handle=nextSoundHandle++;r.key=key;r.owner=int32_t(word(u));r.position=pos;for(unsigned i=0;i<128;++i){const auto c=byte(key+i);if(!c)break;r.name+=char(c);}sounds.push_back(r);return r.handle;}
 bool HarborTutorialPacked::provisionFreshPouch(const char* name,const ProloguePouch* entry){
@@ -117,6 +118,7 @@ void HarborTutorialPacked::publish(const HarborTutorial& scene){
  }
 }
 void HarborTutorialPacked::capture(HarborTutorial& scene){
+ scene.battleFlags=word(Battle+0xef4);
  for(unsigned slot=0;slot<4;++slot){auto& a=slot?scene.actors[slot-1]:scene.systemActor;if(a.id<0 || a.id>3 || !registered[a.id])continue;const auto u=Units+uint32_t(a.id)*0x1000;
   uint16_t v=0;required(vm.memory.readHalf(u+0x10c,v));a.hp=int16_t(v);required(vm.memory.readHalf(u+0x108,v));a.maxHp=int16_t(v);
   for(unsigned axis=0;axis<3;++axis){a.position[axis]=real(u+0x3c+4*axis);a.home[axis]=real(u+0x30+4*axis);}
@@ -145,6 +147,29 @@ bool HarborTutorialPacked::invoke(EventEntry& e,uint32_t function,int32_t first,
  }
  if(registry.invoke(e,function,first,result))return true;
  switch(function){
+ case 0x801059a0:{
+  const auto u=actor(e),weapon=uint32_t(value(e,1));
+  if(word(weapon+8) || byte(weapon+0x11) || byte(weapon+0x12))return false;
+  const auto id=word(u);if(id>3)return false;readDamage(id);
+  DamageWeapon w;w.itemId=0;w.fpCost=0;w.apCost=0;
+  struct Payment{HarborTutorialPacked* p;uint32_t id,battle;};Payment c{this,id,0};
+  WeaponCostServices cost;cost.user=&c;
+  cost.captureWork=[](void* self)->void*{auto& c=*static_cast<Payment*>(self);c.battle=c.p->word(0x8041eb90);return &c.battle;};
+  cost.getFp=[](void* self,DamageUnit& d){auto& p=*static_cast<Payment*>(self)->p;return getUnitFp(d,p.damageApplication());};
+  cost.setFp=[](void* self,DamageUnit& d,int32_t fp){auto& c=*static_cast<Payment*>(self);setUnitFp(d,fp,c.p->damageApplication());c.p->writeDamage(c.id);d.kind=int32_t(c.p->word(Units+c.id*0x1000+8));};
+  cost.point=[](void* self,void* work,uint32_t field,int32_t amount){auto& p=*static_cast<Payment*>(self)->p;const auto at=*static_cast<uint32_t*>(work)+field;auto v=p.byte(at);addActionPoint(v,amount);p.byte(at,v);};
+  cost.count=[](void* self,void* work,uint32_t field){auto& p=*static_cast<Payment*>(self)->p;const auto at=*static_cast<uint32_t*>(work)+field;auto v=p.byte(at);addActionCount(v);p.byte(at,v);};
+  cost.addAp=[](void* self,int32_t delta){auto& p=*static_cast<Payment*>(self)->p;const auto at=p.word(0x8041eb00);std::array<uint8_t,0x5d4> bytes{};for(unsigned j=0;j<bytes.size();++j)bytes[j]=p.byte(at+j);addPouchAp(bytes.data(),delta);p.byte(at+0x7a,bytes[0x7a]);p.byte(at+0x7b,bytes[0x7b]);};
+  payWeaponCost(damageUnits[id],w,cost);result=2;return true;
+ }
+ case 0x8010ad00:{
+  (void)actor(e);const auto target=translateBattleActor(&e,value(e,1),nativeBattleActorServices(vm));const auto part=value(e,2);
+  // Complete wrapper in the proven no-protector domain. Query the live entire
+  // registry; any matching protector retains the original unbound core.
+  const auto b=word(0x8041eb90);
+  for(unsigned id=0;id<64;++id){const auto u=word(b+0x20+4*id);if(u && int32_t(word(u+0x140))==target)return false;}
+  output(e,1,target);output(e,2,part);chosenUnit=target;chosenPart=part;result=2;return true;
+ }
  case 0x8010a500:case 0x8010a388:case 0x8010a55c:case 0x8010a32c:case 0x8010a4a4:{const auto u=actor(e);const uint32_t offset=function==0x8010a500?0x28c:function==0x8010a388?0x2a0:function==0x8010a55c?0x2b0:function==0x8010a32c?0x2a4:0x2b8;word(u+offset,uint32_t(raw(e,1)));if(function==0x8010a388)word(u+0x2ac,0);result=2;return true;}
  case 0x8010fce0:{const auto battle=word(0x8041eb90);const auto id=translateBattleActor(&e,value(e,0),nativeBattleActorServices(vm));if(id!=-1){const auto u=word(battle+0x20+4u*uint32_t(id));byte(u+0x21,uint8_t(value(e,1)));if(signByte(byte(u+0x22))>signByte(byte(u+0x21)))byte(u+0x22,byte(u+0x21));}result=2;return true;}
  case 0x80104b08:{const auto u=actor(e),launch=uint32_t(value(e,1)),land=uint32_t(value(e,2));word(u+0x1c4,launch);word(u+0x1c8,land);result=2;return true;}
