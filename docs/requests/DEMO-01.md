@@ -120,6 +120,48 @@ literal operand.
 Static only — no execution trace. Event SHA-256s for all ten scanned
 spans are tabulated in the contract.
 
+## 2026-10-13 — ID 3: `GSW[0]` chapter value table
+
+[GSW[0] chapter value table](../behavior/story/OPENING_GSW0_CHAPTER_VALUE_TABLE.md).
+Extracts the comparison right-hand sides the previous delivery left open, so
+the chapter gate now has values.
+
+**The sentinel is 402.** It appears in all seven events that reference it,
+and only ever as an equality or inequality — **6 × `== 402`**, **4 ×
+`!= 402`**, the most-tested value in the opening by a wide margin.
+
+The load-bearing fact: **`aaa/aaa_00_init_evt` admits only when
+`GSW[0] == 402`** (cmd 19). That is the prologue module's init, and it is
+the only gate in the scanned set that is a single equality. The `!= 402`
+tests in `gor_00`, `gor_02` and `tik_00` sit at the top of their inits and
+read as skip guards.
+
+I am **not** claiming 402 is the demo milestone's completion value. The
+tests are consistent with 402 meaning "prologue complete", but nothing
+scanned names it and no trace shows a write of it. The only `GSW[0]` writer
+across all sixteen events is `kurihakase_first_talk` cmd 176, and opcode 50
+stores `evtGetValue(operand1)` — so **which chapter the professor advances
+to is not recovered**. The chapter *transition* remains unproven; this
+delivery recovers the values a gate tests against, not what sets them.
+
+**34 distinct values** across the opening:
+`2 6 7 10 19 23 56 121 123 172 215 217 223 229 230 231 257 258 260 267
+268 269 277 341 377 382 400 402 404`.
+
+`GSW[0]` behaves as a **monotonic chapter counter**: values below 25
+(`gor_01`, `gor_02`) are tested by identity, while 121-404 are also tested
+by threshold (`>=`, `<`, `<=`).
+
+**Range decompositions** that a port must reproduce rather than simplify:
+`gor_02` cmds 97/101/102/109 give `>= 7`, `>= 10`, `<= 10`, `== 10` — an
+identity test on 7/10 written as a threshold sandwich; `muj_00` cmds
+63/70/75/76 give `<= 255`, `< 260`, `>= 257`, `< 258`. Collapsing these
+into one range test would change which chapters are admitted.
+
+Still open: chapter names, the written values, the SWITCH (opcode 34)
+case bodies, and the `GSW[1420]` literal.
+
+## 2026-10-13 — ID 3: gor/muj/tik area-init state map
 ## 2026-10-13 — ID 3: gor/muj/tik area-init state map
 
 [Opening area init story-state map](../behavior/story/OPENING_AREA_INIT_STORY_STATE_MAP.md).

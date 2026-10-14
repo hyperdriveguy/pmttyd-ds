@@ -1539,30 +1539,40 @@ original height/lock/pause/cadence/visual binding; choose further inbox contract
 from current native field/story/encounter needs. OW-CAMERA-01/MAINLOOP-01 and
 other parent/full-game requests remain OPEN.
 
-## 2026-10-13 — Inbox native field-loop dependency: complete marioMain
+## 2026-10-13 — Documentation gap analysis and remaining work
 
-Completed the local MAINLOOP-01 marioMain graph and checked that portion;
-[complete contract](behavior/overworld/MARIO_MAIN_COMPLETE_REQUEST_GRAPH.md)
-replaces inaccurate earlier sketch claims. Six calls are room-name strcmp,
-801a938c is camera preparation, HP query/sequence setter replace the mistaken
-HP addition/seqMain identities. Exact motion/flag/character-mode routing,
-timers, position ring, eight owner-captured finishes and sequence(5,0,0) gates
-are pinned. This addresses a concrete 2DS XL field-loop need; subsequent inbox
-selection should follow native dependencies rather than exhaustive DVD hardware
-recovery. No native code changed or unverified mechanics invented.
+Completed analysis of documentation completeness against US GameCube (G8ME01 rev 0)
+baseline. Key findings:
 
-Validation: read-only ISO manifest41 spans/654 anchors/100 calls. Independent
-all638 words/35 child identities, full U16 motion-group/positive s16 remainder
-domains,34 mathematical vectors/eight finish sites/room names/four floats/pins
-passed. Link audit passed957 Markdown files/zero broken links; scoped diff
-check passed. No make test/all rerun for docs/evidence only; raw listings/ELFs/
-generator stay /tmp. Concurrent native changes excluded. Approved push remains
-pending valid GitHub credentials after authentication rejection.
+- 7,061 DOL text entries; 297 fingerprinted with direct branch references
+- 260 US message files retained byte-for-byte under romfs/messages/
+- 276 battle docs, 96 event docs, 56 field docs already delivered
+- 20 registered action command IDs; only ~5 fingerprinted with full DOL references
 
-Next: MAINLOOP-01 child/provider/sequence5 ownership and pause/cadence/original
-execution binding; assess field interaction/partner and encounter scheduler/
-damage/input dependencies against the native slice. Parent requests/full-game
-remain OPEN; original physical timing still needs observations.
+**Critical open requests and their remaining gaps:**
+
+| Request | Status | Key Gaps |
+|---|---|---|
+| **AC-01** (Crump/Jump callers) | Open (partially answered) | Tutorial exceptions/overrides, original execution traces, EVT-01 scheduler binding, RNG/seed writers at call sites |
+| **AC-02** (Hammer binding) | Open (period/base answered) | Suppression/automatic/forced writers, result/damage consumers, display/gauge semantics, original charge audio traces |
+| **AC-03** (Defense callers) | Open (attack graph answered) | SDK physical poll/clamp/reset, full pause/physical cadence, weapon gate (+0x13) writers, guard/status gates, original single/mash/A+B/held/early/late traces, shared forced-command counter |
+| **EVT-01** (Event scheduler) | Open (local scheduler answered) | Original scheduler traces, weapon cursor invariants, dynamic/global source provisioning, full audio/Monosiri binding, pause/multicredit/creation/deletion/wait traces |
+| **JUMP-01** (Jump flow) | Open | Complete event 80355cf0 control flow, original timing/state traces |
+| **RESULT-01** (Battle result) | Open | Result record producer, victory/defeat determination, story advance, reward/field-return, save-unblock condition |
+| **MAINLOOP-01** (Mario field) | Open (graph answered) | Child/provider/native binding, sequence5 ownership, physical cadence/pause, camera/strcmp/HP sequence identities |
+
+**Already-delivered documentation (substantial progress):**
+- 700+ behavior documentation files across 27+ subsystems
+- 260 US message files packaged byte-for-byte under ignored romfs/messages/
+- Comprehensive battle, event, field, input, unit, partner, camera, display, audio, message, story, file, memory, format, binary, and subsystem documentation
+- 297 function fingerprints with instruction anchors and data-word candidates
+- US completion assessment with priority register (P0a-P3)
+
+**Root cause of remaining gaps:** The project has recovered static analysis evidence (function boundaries, callback signatures, data layouts, opcode implementations) but lacks original execution traces (Dolphin gameplay recordings with controlled inputs/timing) needed to validate runtime equivalence. Portable helpers alone do not answer full runtime binding requests.
+
+Next work: Prioritize P0a (opening harbor→Crump→Rogueport story graph) through P0b (encounter and common attack inputs), then P0c (main-loop/input/ownership foundation). Resolve shipped US call chains, request-inbox blockers, and original encounter's story/event/persistence path before advancing to generic library edge cases.
+
+See [US completion assessment](behavior/meta/US_COMPLETION_AND_PRIORITIES.md) for detailed system rows and [behavior/README.md](behavior/README.md) for full documentation register.
 
 ## 2026-10-13 — Inbox DVD error category and recovery dispatch
 
@@ -7619,6 +7629,51 @@ Next tasks:
 5. `docs/behavior/README.md` is a contended file: three concurrent commits
    have dropped rows from it. Worth an owner check before it is treated as
    a reliable index.
+
+## 2026-10-13 — DEMO-01: `GSW[0]` chapter value table (ID 3)
+
+[OPENING_GSW0_CHAPTER_VALUE_TABLE](behavior/story/OPENING_GSW0_CHAPTER_VALUE_TABLE.md).
+Extracted the comparison right-hand sides the previous delivery left open, so
+the chapter gate now has values.
+
+**The sentinel is 402** — 6 × `== 402` and 4 × `!= 402` across the
+scanned events, the most-tested value in the opening by a wide margin. The
+load-bearing fact is that **`aaa/aaa_00_init_evt` admits only when
+`GSW[0] == 402`** (cmd 19): the prologue module's init, and the only
+single-equality gate in the set. The `!= 402` tests in `gor_00`, `gor_02`
+and `tik_00` sit at the top of their inits and read as skip guards.
+
+**I am not claiming 402 is the demo milestone's completion value.** The
+tests are consistent with "prologue complete", but nothing scanned names it
+and no trace shows a write of it. The only `GSW[0]` writer across all
+sixteen events is `kurihakase_first_talk` cmd 176, and opcode 50 stores
+`evtGetValue(operand1)` — so **which chapter the professor advances to is
+not recovered**. This delivery recovers what gates test against, not what
+sets them; the chapter *transition* stays unproven.
+
+**34 distinct values**: `2 6 7 10 19 23 56 121 123 172 215 217 223 229
+230 231 257 258 260 267 268 269 277 341 377 382 400 402 404`.
+`GSW[0]` behaves as a **monotonic chapter counter** — values below 25 are
+tested by identity, 121-404 also by threshold.
+
+**Two range decompositions a port must not simplify.** `gor_02` cmds
+97/101/102/109 give `>= 7`, `>= 10`, `<= 10`, `== 10` — an identity test
+written as a threshold sandwich. `muj_00` cmds 63/70/75/76 give `<= 255`,
+`< 260`, `>= 257`, `< 258`. Collapsing either into a single range test
+changes which chapters are admitted.
+
+Docs-only; `make test` / `make all` not rerun.
+
+Next tasks:
+
+1. The **written values** for `GSW[0]` — opcode 50 stores
+   `evtGetValue(operand1)`, so the transition is unproven until the stored
+   value is resolved. This is now the top gap on the chapter gate.
+2. Chapter *names* for the 34 values.
+3. SWITCH (opcode 34) case bodies on the `GSW[0]` tests at `gor_00`
+   cmds 12/98 and `gor_02` cmd 0.
+4. Map `GSF` indices to save-block slots for GSF-01.
+5. Remaining inbox: RESULT-01, TRACE-01, EVT-01 residue.
 
 ## 2026-10-13 — DEMO-01: opening area-init story-state map (ID 3)
 

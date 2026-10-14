@@ -156,9 +156,12 @@ Two things fall out of this:
 
 ## Remaining gaps
 
-- **Which `GSW[0]` comparison value corresponds to which chapter.** The
-  operand values are literals on the right-hand side of each comparison and
-  were not extracted; only the operand *index* and band are tabulated.
+- **Which `GSW[0]` comparison value corresponds to which chapter.** Now
+  extracted — see
+  [OPENING_GSW0_CHAPTER_VALUE_TABLE](OPENING_GSW0_CHAPTER_VALUE_TABLE.md):
+  402 is the prologue-complete sentinel and 34 distinct values are
+  tabulated. What remains is the chapter *name* for each value, which is
+  not established.
 - The 5300-5600 `GSF` band in opcode-91 operand positions — very likely
   callee arguments rather than flag accesses, unconfirmed.
 - Opcode **11, 52, 93, 95 and 108** directions remain undetermined
