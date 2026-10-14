@@ -1,3 +1,43 @@
+## 2026-10-14 — Harbor Jump camera, takeoff and original AC preparation
+
+Committed `ba0850b3`. Complete shared explicit-parts homing resolves all five
+arguments before the signed priority gate; preserves actor/part IDs and actual
+home XYZ; target-1 preserves the target fields; other targets use the original
+part/hit-position helper. Native Harbor binds this request plus the complete
+existing takeoff, move-frame, jump-parameter, fall-acceleration and frame-to-ms
+providers with runtime-owned backend/service lifetimes. Camera Main/rendering
+is separate; this is not a full camera presentation claim.
+
+Original GetWeaponActionLv, AcSetDifficulty and SetupAC now run in the selected
+Jump graph. Setup preserves source reset/registration order, raw options,
+actor-token display gate and fields outside its reset scope. It does not invoke
+TimingA initialization/Main or clear history/parameters. Tests verify original
+TimingA callback addresses, difficulty3, Mario1/part1 and Crump2/part1 camera
+state, one zero-cost payment and unchanged HP/result. The original script now
+stops live at CalculateFaceDirection8010e684 across repeated ticks, after the
+actual takeoff calculation; no invented hit/turn/tutorial result is produced.
+
+Validation: isolated snapshot /home/carson/Documents/blender_tests/pm-port/artifacts/tutorial-camera-000pqybf based on d413a9e9 plus changed code/test
+files passed `make test`:231/231 C++ and141/141 Python tests. Native
+`make all -o assets-ready BUILD=build-camera-review TARGET=ttyd-camera-review`
+passed using previously prepared shared private assets. Artifact: that review
+folder's ttyd-camera-review.3dsx. Exact logs: ignored
+artifacts/tutorial-camera-final-test.log and tutorial-camera-final-native.log.
+Read-only ISO verifier now pins17 complete camera/action/facing/precheck spans;
+Jump preparation verifier passed13 bodies/5 constants/68 anchors. Source files
+in the isolated snapshot match all changed code/test/verifier files. Scoped
+diff check passed. A fresh unique snapshot avoided an older review directory's
+symlinks; fixture offset errors were corrected before the final green run.
+No Azahar/Dolphin, new payload/conversion, measured timing or playable-menu claim.
+
+Next: implement complete original facing/pose request services, TimingA manager
+cadence, Jump motion/hits and post-action scheduler. Connect source class/target
+Input and common re-entry to original player registration. Preserve physical
+A/B/directions and simulation-tick timing; render the original HUD/menu, then
+second-screen scene/audience and optional hostile-item taps with a physical
+alternative. Validate in isolated Azahar. Full tutorial/battle and full-game
+work remain incomplete; goal stays active.
+
 ## 2026-10-14 — Native Mario retained sound posts
 
 Committed `eb9155a9`. Native main now binds actual Audio idle/fall exit services
