@@ -112,8 +112,7 @@ bool Renderer::drawClassMenu(const BattleClassBackend &batch) {
   C3D_TexEnvSrc(env, C3D_Both, GPU_TEXTURE0, GPU_PRIMARY_COLOR,
                 GPU_PRIMARY_COLOR);
   C3D_TexEnvFunc(env, C3D_Both, GPU_MODULATE);
-  C3D_TexBind(1, nullptr);
-  C3D_TexBind(2, nullptr);
+  parkUnusedSamplers();
   unsigned at = first;
   for (const auto &q : batch.quads) {
     C3D_Tex *texture = nullptr;

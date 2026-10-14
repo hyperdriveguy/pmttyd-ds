@@ -171,6 +171,7 @@ private:
     bool sourceIconState(const ShadowGXRequest&);
     bool applySourceIconProgram(const NativeIconPlan&);
     bool publishSourceIconProgram(const NativeIconPlan&,C3D_Tex&);
+    void parkUnusedSamplers(); // Initialized renderer; font stays resident until shutdown.
     RetainedIconFrames retainedIcons;
     std::optional<NativeCameraPacket> iconViewport,iconScissor,iconTransform;
     bool captureSourceIcon(const Game&,const SourceIconGXQuad&);

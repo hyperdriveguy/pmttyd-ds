@@ -58,12 +58,13 @@ before fades. This does not establish original whole-HUD/source queue ordering.
 Both screen replays publish GPU state directly; they do not rewrite canonical
 GX registers, source bindings/cursors, clocks, animation, RNG or item simulation.
 
-Unused native samplers bind the same live2D image as TEX0; the compiled TEV
-program still reads TEX0 only. The installed Citro3D1.7.1 C3D_TexBind dereferences
+Unused native samplers now bind the resident original font image through the
+[shared native sampler helper](NATIVE_UNUSED_SAMPLER_RESIDENCY.md); the compiled
+TEV program still reads TEX0 only. The installed Citro3D1.7.1 C3D_TexBind dereferences
 its texture argument, so nullptr is not a supported disable operation. The native
 probe exposed the previous null binds as unmapped reads at address0xc; the safe
-bind probe must show no such accesses before emulator termination. Other native
-render paths with null binds remain a separate repair frontier.
+bind probe must show no such accesses before emulator termination. The shared helper also repairs the other native
+menu/item/effect/system-window null binds.
 
 ## Limits
 

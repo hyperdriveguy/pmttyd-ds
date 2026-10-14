@@ -45,7 +45,7 @@ bool Renderer::fieldIcon(const FieldItemIcon& icon,uint32_t cameraID,const C3D_M
  else C3D_ColorLogicOp(GPU_LOGICOP_COPY);
  for(unsigned n=0;n<6;++n)C3D_TexEnvInit(C3D_GetTexEnv(n));
  auto* env=C3D_GetTexEnv(0);C3D_TexEnvSrc(env,C3D_Both,GPU_TEXTURE0,GPU_PRIMARY_COLOR);C3D_TexEnvFunc(env,C3D_Both,GPU_MODULATE);
- C3D_TexBind(0,&messageIconTexture.texture);C3D_TexBind(1,nullptr);C3D_TexBind(2,nullptr);C3D_DrawArrays(GPU_TRIANGLES,start,6);
+ C3D_TexBind(0,&messageIconTexture.texture);parkUnusedSamplers();C3D_DrawArrays(GPU_TRIANGLES,start,6);
  C3D_DepthMap(true,-1,0);C2D_Prepare();C2D_SceneBegin(top);C3D_DepthTest(false,GPU_ALWAYS,GPU_WRITE_COLOR);
  C3D_AlphaTest(true,GPU_GREATER,8);C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_SRC_ALPHA,GPU_ONE_MINUS_SRC_ALPHA,GPU_ONE,GPU_ONE_MINUS_SRC_ALPHA);
  return true;

@@ -1149,3 +1149,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [VM-owned original battle registry and module registration](field/NATIVE_VM_BATTLE_MODULE_REGISTRATION.md): raw zeroed registry, source gor binding, original number lookup and bounded runtime availability.
 
 - [Enemy HP draw and native Tattle checker](battle/ENEMY_HP_DRAW_AND_NATIVE_TATTLE_CHECK.md) — live64-slot gates, independent switch/battle bits, camera4 projection and retained active-child holds.
+
+- [Native unused sampler residency](display/NATIVE_UNUSED_SAMPLER_RESIDENCY.md) — original resident font fallback for unused PICA units; command, item, effect and message paths.

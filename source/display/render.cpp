@@ -1000,7 +1000,7 @@ void Renderer::messageBorder(const MessageWindowPlan& plan,uint8_t alpha,int typ
             C3D_TexBind(1,&messageSystemMasks[q].texture);C3D_TexBind(2,&messageSystemMasks[q+4].texture);
             C3D_DrawArrays(GPU_TRIANGLES,q*6,6);
         }
-        C3D_TexBind(1,nullptr);C3D_TexBind(2,nullptr);C2D_Prepare();C2D_SceneBegin(top);return;
+        parkUnusedSamplers();C2D_Prepare();C2D_SceneBegin(top);return;
     }
     // Bubble atlas1024x512:tail cell(600,0/64,48,64),type1 cells
     // (600,128/192,232,64),ordinary cells(0,0/176,560,176). Pass0

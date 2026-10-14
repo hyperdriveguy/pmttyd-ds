@@ -67,7 +67,7 @@ bool Renderer::itemGetEffect(const FieldItemGetEffect6& effect,uint32_t cameraID
  // Citro3D perspective reverses depth relative to GX's LEQUAL domain.
  C3D_DepthTest(true,GPU_GEQUAL,static_cast<GPU_WRITEMASK>(GPU_WRITE_COLOR & ~GPU_WRITE_ALPHA));
  C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_SRC_ALPHA,GPU_ONE_MINUS_SRC_ALPHA,GPU_SRC_ALPHA,GPU_ONE_MINUS_SRC_ALPHA);
- C3D_TexBind(0,&itemGetEffectTextures[0].texture);C3D_TexBind(1,&itemGetEffectTextures[1].texture);C3D_TexBind(2,nullptr);
+ parkUnusedSamplers();C3D_TexBind(0,&itemGetEffectTextures[0].texture);C3D_TexBind(1,&itemGetEffectTextures[1].texture);
  for(unsigned n=0;n<6;++n)C3D_TexEnvInit(C3D_GetTexEnv(n));
  const auto abgr=[](uint32_t c){return C2D_Color32(c>>24,(c>>16)&255,(c>>8)&255,c&255);};
  // Two GX stages become three PICA stages because each PICA stage owns one
@@ -83,7 +83,7 @@ bool Renderer::itemGetEffect(const FieldItemGetEffect6& effect,uint32_t cameraID
   Mtx_Multiply(&transform,&world,&model);C3D_FVUnifMtx4x4(GPU_VERTEX_SHADER,itemGetEffectTransform,&transform);
   C3D_DrawArrays(GPU_TRIANGLES,pass*6,6);
  }
- C3D_DepthMap(true,-1,0);C3D_TexBind(1,nullptr);C2D_Prepare();C2D_SceneBegin(top);C3D_DepthTest(false,GPU_ALWAYS,GPU_WRITE_COLOR);
+ C3D_DepthMap(true,-1,0);parkUnusedSamplers();C2D_Prepare();C2D_SceneBegin(top);C3D_DepthTest(false,GPU_ALWAYS,GPU_WRITE_COLOR);
  C3D_AlphaTest(true,GPU_GREATER,8);C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_SRC_ALPHA,GPU_ONE_MINUS_SRC_ALPHA,GPU_ONE,GPU_ONE_MINUS_SRC_ALPHA);
  return true;
 }
