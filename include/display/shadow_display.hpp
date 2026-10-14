@@ -10,7 +10,7 @@ enum class ShadowGX : uint32_t {
     Depth=0x802b93d8,DepthLocation=0x802b940c,Alpha=0x802b8d60,ColorUpdate=0x802b9380,
     CurrentMatrix=0x802ba39c,Cull=0x802b5c8c,Array=0x802b4db0,
     ClearDesc=0x802b4520,Desc=0x802b3c08,Format=0x802b4558,
-    TextureBind=0x802b7880,TexCoordGen=0x802b4e04
+    TextureBind=0x802b7880,TexCoordGen=0x802b4e04,PositionMatrix=0x802ba2fc,TevColor=0x802b8ab8,AlphaUpdate=0x802b93ac
 };
 enum class ShadowTexture {N64Texture44,UnloadedDummy};
 struct ShadowGXRequest {
@@ -19,6 +19,7 @@ struct ShadowGXRequest {
     uint32_t color=0;
     std::array<float,4> floats{};
     ShadowTexture texture=ShadowTexture::N64Texture44;
+    CameraViewMatrix matrix{};
 };
 enum class ShadowGeometry {Polygon,Cylinder,Texture,Projection};
 enum class ShadowPassKind : uint32_t {
@@ -31,6 +32,21 @@ struct ShadowPassRequest {
     std::array<uint32_t,4> scissor{};
     CameraProjectionMatrix projection{};
     uint32_t projectionKind=0;
+};
+struct ShadowCylinderBounds {
+    uint32_t function=0;int16_t slot=0;std::array<uint16_t,4> values{};
+};
+struct ShadowCylinderServices {
+    bool enabled=false;void* user=nullptr;
+    bool (*list)(void*,uint32_t sourceAddress,uint32_t bytes)=nullptr;
+    bool (*bounds)(void*,ShadowCylinderBounds&)=nullptr;
+};
+struct ShadowCylinderCursor {
+    bool active=false,requestPending=false;
+    uint32_t camera=0,stage=0,pass=0,step=0,listIndex=0,listCount=0;
+    ShadowRecord* record=nullptr;const CameraState* view=nullptr;
+    std::array<uint32_t,4> lists{},bytes{};
+    ShadowGXRequest request;ShadowCylinderBounds bounds;
 };
 struct ShadowDisplayServices {
     void* user=nullptr;
@@ -47,6 +63,7 @@ struct ShadowDisplayServices {
     bool (*pass)(void*,ShadowPassRequest&)=nullptr;
     CameraState* (*mutableCurrentCamera)(void*)=nullptr;
     std::optional<uint32_t> (*gp14)(void*)=nullptr;
+    ShadowCylinderServices cylinder;
 };
 struct ShadowDisplayCursor {
     bool active=false,requestPending=false,geometryPending=false;
@@ -66,15 +83,18 @@ struct ShadowDisplayCursor {
     ShadowPassRequest passRequest;
     ShadowAuxiliaryState* auxiliary=nullptr;
     bool auxiliarySetupStarted=false;
+    ShadowCylinderCursor cylinder;
 };
 // Typed cold-start fog words; later source writers must update these owners.
 struct ShadowDisplayGlobals {
-    uint32_t polygonFog=0,textureFog=0,projectionFog=0;
+    uint32_t polygonFog=0,textureFog=0,projectionFog=0,cylinderTevRGB=0,cylinderZeroMaterial=0;
     CameraViewMatrix savedView{};
     std::array<float,6> savedViewport{};
     std::array<uint32_t,4> savedScissor{};
 };
-// Class5 suffix from cache invalidation through counter-gated End restoration.
+bool shadowCylinder(ShadowWork&,uint32_t camera,const CameraState&,ShadowRecord&,
+                    ShadowCylinderCursor&,const ShadowDisplayGlobals&,const ShadowDisplayServices&,uint32_t& pending);
+// Camera2 setup and counter-gated End restoration.
 bool shadowProjectionPass(ShadowWork&,ShadowDisplayCursor&,ShadowDisplayGlobals&,const ShadowDisplayServices&);
 bool shadowDisplay(ShadowWork&,uint32_t camera,uint32_t userdata,
                    ShadowDisplayCursor&,ShadowDisplayGlobals&,const ShadowDisplayServices&);

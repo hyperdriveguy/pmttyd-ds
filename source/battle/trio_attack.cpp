@@ -1788,6 +1788,7 @@ bool TrioAttack::resumeShadowDisplay(uint32_t camera,uint32_t userdata,const Sha
     services.gx=[](void* user,const ShadowGXRequest& request){auto& b=*static_cast<Bridge*>(user);return b.source->gx && b.source->gx(b.source->user,request);};
     services.texture44=[](void* user,ShadowTexture& texture){auto& b=*static_cast<Bridge*>(user);return b.source->texture44 && b.source->texture44(b.source->user,texture);};
     services.geometry=[](void* user,ShadowGeometry kind,uint32_t camera,const CameraState& view,ShadowRecord& record){auto& b=*static_cast<Bridge*>(user);return b.source->geometry && b.source->geometry(b.source->user,kind,camera,view,record);};
+    services.cylinder=source.cylinder;
     services.collision.user=&bridge;
     services.collision.currentCamera=[](void* user){return static_cast<Bridge*>(user)->runtime->cameras->current()!=nullptr;};
     services.collision.ray=[](void* user,const ShadowCollisionRay& ray,ShadowCollisionHit& hit){

@@ -50,6 +50,12 @@ bool NativeCameraDraw::projection(const CameraProjectionMatrix& p,const NativeCa
     NativeCameraPacket packet{};packet.kind=NativeCameraCommand::Projection;packet.transform=nativeCameraTransform(p,view_);
     if(!s.submit(s.user,packet))return false;projection_=p;return true;
 }
+bool NativeCameraDraw::position(const CameraViewMatrix& view,const NativeCameraSubmit& s){
+    if(!s.submit || !projection_)return false;
+    for(const auto& row:view)for(float v:row)if(!std::isfinite(v))return false;
+    NativeCameraPacket packet{};packet.kind=NativeCameraCommand::Projection;packet.transform=nativeCameraTransform(*projection_,view);
+    if(!s.submit(s.user,packet))return false;view_=view;return true;
+}
 bool NativeCameraDraw::request(const CameraDrawRequest& r,const NativeCameraSubmit& s){
     if(!r.camera || !s.submit)return false;
     const auto& c=*r.camera;NativeCameraPacket packet{};

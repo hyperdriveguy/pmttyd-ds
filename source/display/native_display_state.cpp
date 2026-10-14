@@ -10,8 +10,9 @@ bool NativeDisplayState::request(const DisplayStateRequest& r,const NativeDispla
         // Source identity leaves the admitted viewport depth range intact.
         if(r.floats[0]!=1 || r.floats[1]!=0)return false;break;
     case DisplayGXState::BlendMode:
-        if(r.values[0]==0){next.sourceBlend=1;next.destinationBlend=0;}
-        else if(r.values[0]==1 && r.values[1]==4 && r.values[2]==5){next.sourceBlend=4;next.destinationBlend=5;}
+        if(r.values[0]==0){next.sourceBlend=1;next.destinationBlend=0;next.logicOr=false;}
+        else if(r.values[0]==1 && ((r.values[1]==4 && r.values[2]==5) || (r.values[1]==1 && r.values[2]==1) || (r.values[1]==6 && r.values[2]==7))){next.sourceBlend=r.values[1];next.destinationBlend=r.values[2];next.logicOr=false;}
+        else if(r.values==std::array<int32_t,5>{2,1,1,7,0})next.logicOr=true;
         else return false;break;
     case DisplayGXState::ZCompareLocation:if(!bit(0))return false;next.beforeAlpha=r.values[0];break;
     case DisplayGXState::AlphaCompare:

@@ -4099,3 +4099,17 @@ retain mutable main flags before source800 hide/show (static publication
 currently reloads catalog flags). Name lookup/registration must not be gated
 by800. Key49 selection, original unlock scene and runtime/raster comparisons
 remain OPEN; no fabricated door acknowledgment or quest dialogue fallback.
+
+### 2026-10-14 — Native cylinder geometry provider
+
+[Native admitted-record provider](../behavior/display/NATIVE_CYLINDER_SHADOW_PROVIDER.md)
+now binds matrix slot0, captured TEVREG0 alpha, all three source mask/blend/
+material/cull passes and original fan/strip pairs from shadows.pmshadow.
+[Native command evidence](../behavior/display/CYLINDER_NATIVE_CULL_LOGIC_BLEND_AND_LATE_DEPTH.md)
+confirms actual alpha OR, front/back mapping and destination-alpha factors.
+Camera1 bounds/cube resources, nonzero image paths and persistent target pixels
+across render-provider holds remain open. Actual retained draw is still held at
+preceding camera4 audience801a38f8. Uncommitted audience world adapter is not its
+callback; bind retained current-record/camera queries and producer history,
+correct scalar grouping, genuine GX state and cursor before claiming closure.
+Full EVT-01 remains open.

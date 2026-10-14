@@ -5,6 +5,7 @@ namespace ttyd {
 struct NativeDisplayPipeline {
     bool color=false,alpha=false,depth=false,depthWrite=false,beforeAlpha=false,alphaReject=true;
     int32_t compare=7,sourceBlend=0,destinationBlend=1;
+    bool logicOr=false;
     bool rasterAdmitted() const{return !(beforeAlpha && alphaReject && depth && depthWrite);}
 };
 struct NativeDisplaySubmit {void* user=nullptr;bool (*submit)(void*,const NativeDisplayPipeline&)=nullptr;};

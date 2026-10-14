@@ -5,7 +5,7 @@ namespace ttyd {
 // Logical indexed arrays are retained for a future geometry decoder; source
 // identities are never cast to ARM pointers. Only the verified setup domain.
 struct NativeShadowProgram {
-    bool seeded=false,rasterRGB=false,fogOff=false;
+    bool seeded=false,rasterRGB=false,fogOff=false,materialVertex=false;
     enum Alpha {Register,RegisterRaster,TextureRaster} alpha=Register;
     uint8_t registerAlpha=0;
     std::optional<uint32_t> material;

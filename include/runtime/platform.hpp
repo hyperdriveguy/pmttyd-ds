@@ -130,6 +130,7 @@ private:
     bool finishingShadowGpu(const NativeShadowProgram&);
     bool finishingShadowCallback(const Game&,uint32_t camera,uint32_t identity,uint32_t userdata);
     bool prepareShadowTexture44();
+    ShadowDisplayServices finishingShadowServices();
     bool finishingDisplayPipeline(const NativeDisplayPipeline&);
     bool finishingCameraPacket(const NativeCameraPacket&);
     void resumeFinishingCamera(const Game&);

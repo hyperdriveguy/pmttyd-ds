@@ -699,3 +699,15 @@ remain ignored, outside source history. Existing Citro3D model batches share
 this one texture bank across actors. Original Nintendo/Intelligent Systems
 resources; local conversion grants no redistribution rights. No new music or
 replacement art was introduced. [Native scope](behavior/field/NATIVE_GARF_INIT_AND_ORDINARY_TALK.md).
+
+
+### 2026-10-14 — Reuse original cylinder shadow geometry on native GPU
+
+The native finishing provider reuses the existing ignored romfs/shadows.pmshadow
+pack extracted from the read-only US G8ME01 ISO: original60 float positions,
+five INDEX8 fan/strip lists and ordinary/no-decay RGBA palettes. No new payload
+was imported or converted; original index order/winding and authored floats are
+preserved. Prepared source matrices supply scale/translation. Citro3D consumes
+palette bytes as normalized vertex colors; RGBA8/depth24 remains a declared
+native target adaptation. Original game assets retain their original copyright;
+private packs/ISO are excluded from source history and redistribution.

@@ -7,7 +7,10 @@ std::optional<NativeShadowProgram> NativeShadowProgram::request(const ShadowGXRe
     auto slot=[](int32_t attribute){return attribute==9?0:attribute==11?1:attribute==13?2:-1;};
     switch(r.kind){
     case ShadowGX::NumChans:if(!args({1}))return {};next.chans=1;break;
-    case ShadowGX::ChanCtrl:if(!args({4,0,0,0,0,2,2}))return {};break;
+    case ShadowGX::ChanCtrl:
+        if(!args({4,0,0,0,0,2,2}) && !args({4,0,0,1,0,2,2}))return {};
+        next.materialVertex=r.values[3]==1;break;
+    case ShadowGX::TevColor:if(!args({1}))return {};next.registerAlpha=uint8_t(r.color);break;
     case ShadowGX::ChanMaterial:if(!args({4}))return {};next.material=r.color;break;
     case ShadowGX::NumTexGens:if(!args({0}) && !args({1}))return {};next.texGens=r.values[0];break;
     case ShadowGX::NumTevStages:if(!args({1}))return {};break;
@@ -25,12 +28,12 @@ std::optional<NativeShadowProgram> NativeShadowProgram::request(const ShadowGXRe
         if(!args({0}) || r.floats!=std::array<float,4>{})return {};
         next.fogOff=true;next.fogColor=r.color;break;
     case ShadowGX::CurrentMatrix:if(!args({0}))return {};break; // Slot0; actual matrix upload belongs to geometry.
-    case ShadowGX::Cull:if(!args({0}))return {};next.cull=0;break;
+    case ShadowGX::Cull:if(!args({0}) && !args({1}) && !args({2}))return {};next.cull=r.values[0];break;
     case ShadowGX::Array:{
         int index=slot(r.values[0]);if(index<0 || r.values[2]!=(index==1?4:12))return {};
         uint32_t address=uint32_t(r.values[1]);
         if(index==0 && address!=0x80304b00 && address!=0x80304ce0)return {};
-        if(index==1 && address!=0x80415140)return {};
+        if(index==1 && address!=0x80415140 && address!=0x80415160)return {};
         if(!args({r.values[0],r.values[1],r.values[2]}))return {};
         if(index==2)return {};
         next.arrays[index]=address;next.strides[index]=r.values[2];break;

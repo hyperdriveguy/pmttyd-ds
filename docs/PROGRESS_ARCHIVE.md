@@ -14038,3 +14038,29 @@ bounds are recovered but await the preceding callback. Then all other queue
 callbacks, nonzero shadow images, source global/table/pointer writers, N64
 lifecycle, production Bero/get_info, Init/Main/Exit and ordered field return.
 Full original-fidelity prologue deliverable remains unachieved.
+
+
+## 2026-10-14 — Native per-record cylinder shadow geometry
+
+Bound original prepared record matrices, TEVREG0 alpha and all three cylinder
+passes to native Citro3D commands. The existing private shadows.pmshadow pack
+supplies original indexed fans/strips, positions and both cylinder palettes.
+Retained cursors preserve acknowledged commands and captured list arguments;
+source alpha OR, destination-alpha blend and front/back culling use verified
+native mappings. Cube resources and camera1 bounds remain unavailable.
+
+Validation: isolated source based on b866809147dc03239869733043e746b147dd9f9c
+plus exact owned edits; make test passed284 C++/167 Python and make all passed
+(DEBUG_SHORT_BOOT=1,SOUNDTRACK=gamecube). Logs: artifacts/cylinder-test-final.log
+and cylinder-build-final.log. Test-only provider harness also built, but isolated
+Azahar cylinder-emulator.log stopped during Normal Jump before reaching its
+probe. No GPU provider result or visible shadow parity is claimed. The displayed
+pending-service notice is generic; existing Jump damage domains for targets1/2
+remain unsupported and the actual pending address was not captured in this run.
+
+Limits/next: bind the preceding retained camera4 audience callback801a38f8 and
+producer/current-record state. Command cursors do not preserve framebuffer pixels
+across provider holds after emitted geometry. Cube/bounds, nonzero image suffix,
+full battle draw completion/field return and original raster comparison remain
+open. Broad prologue goal remains active and incomplete.
+[Provider scope](behavior/display/NATIVE_CYLINDER_SHADOW_PROVIDER.md).

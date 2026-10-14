@@ -1001,3 +1001,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Garf original talk and registered/hidden actor admission](field/GARF_ORIGINAL_TALK_AND_REGISTERED_HIDDEN_ACTOR_ADMISSION.md) — all source quest/ordinary branches and flag800 admission boundaries.
 - [Native Garf init and ordinary talk](field/NATIVE_GARF_INIT_AND_ORDINARY_TALK.md) — original c_monban actor/profile, exact story messages and pending house05 services.
+
+- [Native cylinder shadow provider](display/NATIVE_CYLINDER_SHADOW_PROVIDER.md) — retained per-record matrix/TEV/three-pass/indexed geometry and bounds frontier.
+- [Cylinder native cull, logic, blend and late depth](display/CYLINDER_NATIVE_CULL_LOGIC_BLEND_AND_LATE_DEPTH.md) — installed command semantics, source winding and RGBA6/RGBA8 limits.

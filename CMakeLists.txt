@@ -1466,3 +1466,8 @@ add_executable(battle_audience_draw_tests tests/battle_audience_draw_tests.cpp)
 target_link_libraries(battle_audience_draw_tests PRIVATE ttyd_core)
 add_test(NAME battle_audience_draw COMMAND battle_audience_draw_tests)
 set_tests_properties(battle_audience_draw PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+target_sources(ttyd_core PRIVATE source/display/shadow_cylinder.cpp)
+add_executable(shadow_cylinder_tests tests/shadow_cylinder_tests.cpp)
+target_link_libraries(shadow_cylinder_tests PRIVATE ttyd_core)
+add_test(NAME shadow_cylinder COMMAND shadow_cylinder_tests)

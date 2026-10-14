@@ -50,9 +50,11 @@ bool Renderer::finishingDisplayPipeline(const NativeDisplayPipeline& p){
     // is not the GX before-alpha control; admitted class pairings use late test.
     C3D_EarlyDepthTest(false,GPU_EARLYDEPTH_GEQUAL,0);
     C3D_AlphaTest(p.alphaReject,p.alphaReject?GPU_GEQUAL:GPU_ALWAYS,p.alphaReject?128:0);
-    auto factor=[](int32_t value){return value==0?GPU_ZERO:value==1?GPU_ONE:value==4?GPU_SRC_ALPHA:GPU_ONE_MINUS_SRC_ALPHA;};
+    auto factor=[](int32_t value){return value==0?GPU_ZERO:value==1?GPU_ONE:value==4?GPU_SRC_ALPHA:value==5?GPU_ONE_MINUS_SRC_ALPHA:value==6?GPU_DST_ALPHA:GPU_ONE_MINUS_DST_ALPHA;};
     const auto source=factor(p.sourceBlend),destination=factor(p.destinationBlend);
-    C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,source,destination,source,destination);return true;
+    if(p.logicOr)C3D_ColorLogicOp(GPU_LOGICOP_OR);
+    else C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,source,destination,source,destination);
+    return true;
 }
 void Renderer::resumeFinishingCamera(const Game& game){
     if(!game.trioBattleActive || !game.trioAttack.finishingDrawPending())return;

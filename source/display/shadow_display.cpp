@@ -65,7 +65,7 @@ std::optional<ShadowGXRequest> setup(unsigned helper,unsigned step,const ShadowW
     }
     return {};
 }
-bool scan(ShadowWork& work,ShadowDisplayCursor& c,unsigned helper,const ShadowDisplayServices& s){
+bool scan(ShadowWork& work,ShadowDisplayCursor& c,unsigned helper,const ShadowDisplayGlobals& globals,const ShadowDisplayServices& s){
     constexpr uint8_t types[]{0,2,1};
     constexpr ShadowGeometry kinds[]{ShadowGeometry::Polygon,ShadowGeometry::Cylinder,ShadowGeometry::Texture};
     constexpr uint32_t functions[]{0x8002c818,0x8002bf84,0x8002c484};
@@ -77,7 +77,9 @@ bool scan(ShadowWork& work,ShadowDisplayCursor& c,unsigned helper,const ShadowDi
             c.geometryPending=true;
         }
         c.pending=functions[helper];
-        if(!s.geometry || !s.geometry(s.user,kinds[helper],c.camera,*c.view,record))return false;
+        if(helper==1 && s.cylinder.enabled){
+            if(!shadowCylinder(work,c.camera,*c.view,record,c.cylinder,globals,s,c.pending))return false;
+        }else if(!s.geometry || !s.geometry(s.user,kinds[helper],c.camera,*c.view,record))return false;
         c.geometryPending=false;++c.index;
     }
     return true;
@@ -165,7 +167,7 @@ bool shadowDisplay(ShadowWork& work,uint32_t camera,uint32_t userdata,ShadowDisp
         }
         if(c.phase==3 || c.phase==7 || c.phase==10){
             const unsigned helper=c.phase==3?0:c.phase==7?1:2;
-            if(!scan(work,c,helper,s))return false;
+            if(!scan(work,c,helper,globals,s))return false;
             if(helper==2){c.active=false;c.pending=0;return true;}
             c.phase=helper==0?4:8;c.pool=nullptr;
         }

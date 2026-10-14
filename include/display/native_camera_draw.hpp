@@ -20,6 +20,7 @@ public:
     bool viewport(std::array<float,6>,const NativeCameraSubmit&,bool rounded=false);
     bool scissor(std::array<uint32_t,4>,const NativeCameraSubmit&,bool rounded=false);
     bool projection(const CameraProjectionMatrix&,const NativeCameraSubmit&);
+    bool position(const CameraViewMatrix&,const NativeCameraSubmit&);
     const std::optional<std::array<float,6>>& viewport()const{return logicalViewport_;}
     const std::optional<std::array<uint32_t,4>>& scissor()const{return logicalScissor_;}
     // Reapply backend state only; never resubmit the source dummy vertices.
