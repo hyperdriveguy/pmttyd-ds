@@ -1426,3 +1426,16 @@ Original streams are Nintendo/Intelligent Systems copyright. Local extraction
 and conversion grant no redistribution license. The source library, generated
 pack/manifest and compiled3DSX stay outside history; no ISO/NSP is committed or
 modified. Decoder provenance/license remains in [Switch audio assets](switch/AUDIO_ASSETS.md).
+
+## 2026-10-13 — Shared native original window-frame geometry
+
+The native type0 frame reuses the existing original `f/msgWindow.tpl`
+descriptor0,72x72CMPR texture and Tex3DS subtexture bounds. No new extraction,
+resampling, generated art or pack format is introduced. Source nine-quad
+positions/UVs, selector decoration1 blue tint and separate rectangle centers
+feed a shared citro3d triangle renderer; half-size screen reflow remains a
+native presentation adaptation. See
+[native binding](behavior/display/NATIVE_TYPE0_WINDOW_FRAME.md). Existing
+Nintendo/Intelligent Systems ownership and local-use licensing limitations
+apply. The ISO, extracted images, compiled packs and captures remain outside
+source history. Original raster and New2DS XL hardware performance remain open.

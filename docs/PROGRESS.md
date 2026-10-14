@@ -2,6 +2,48 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Shared original type0 frame geometry and citro3d binding
+
+Committed feature1248919 adds host-testable original absolute/centered nine-quad
+geometry, selector base/tab plans and a reusable native GPU renderer. It reuses
+the original72x72 msgWindow descriptor0 texture; source RGB/low8alpha, signed
+tab centering and independent rectangle transforms are retained. Original
+trio EXP now calls this backend. A preallocated64-frame arena, unique54-vertex
+slices and one draw per frame avoid draw-time allocation and deferred-buffer
+aliasing. Review fixed explicit citro2d depth/alpha/blend restoration. See
+[native scope](behavior/display/NATIVE_TYPE0_WINDOW_FRAME.md).
+
+Validation: shared make test passed167 CTest/110 Python, make all and debug-short
+builds passed (/tmp/window-frame-final-{test,native,debug-native}.log). An
+isolated source snapshot at1248919 passed166 CTest/110 Python, normal and
+debug-short native builds (/tmp/window-frame-isolated-{test,native,short-native}.log).
+The shared suite includes concurrent work; isolated results identify this
+feature. Temporary diagnostic source probes were restored to exact commit
+blobs. Link check passed980 Markdown files/zero broken links; diff check passed.
+
+A clean isolated Azahar capture after40 seconds shows original trio dialogue
+(artifacts/azahar-window-frame-crossed-warmup/boot.png). Earlier12-second black
+captures were insufficient startup waits: diagnostic logs completed frames,
+and the new frame backend had not yet been called. The original before-trigger
+fixture also renders both screens. Emulation profiles/save fixtures and assets
+remain ignored; the user's emulator profile/saves were not modified.
+
+The longer clean battle run completed successfully in
+artifacts/azahar-window-frame-isolated-exp-warm. Direct inspection of
+original-exp-and-victory-24.png and its frame-detail crop shows the translucent
+original frame beneath animated stars;25/28 show original PointGet/victory
+content afterward.40 shows the existing field-restoration-pending development
+notice. Reward captures display about29..30 emulator App FPS, not hardware
+measurements. Xvfb socket access needed sandbox escalation for this isolated
+run. No native exception was reported.
+
+Limitations/next: full selector list/header/help/scissor and manager/input/event
+ownership remain unbound. Bind original inventory/persistent switch banks before
+Goomba4 quest95/107 branches; expand the existing per-area actor/object registry
+without fabricated story. Compare rotated/scaled selector frames, original
+GX/PICA raster and New2DS XL hardware speed/memory. No original SDK arithmetic,
+matched Dolphin raster, complete selector/quest or full-game completion claim.
+
 ## 2026-10-13 — Inbox live save restore and preserved GP fields
 
 Completed cardCopy2Main/cardGetFilePtr and scoped continueGame entry; SAVE-01

@@ -630,3 +630,14 @@ spans/hashes plus180-write/36-vertex numeric checker; no native source/assets/
 shared index/PROGRESS/ASSETS/build/profile/save edits. Camera/filter/raster,
 full list/header/help rendering, original clocks/input/event ownership and
 Dolphin/New2DS correctness/performance remain OPEN.
+
+### 2026-10-13 — Native shared source window-frame binding
+
+The recovered frame/tab geometry now has a shared host-testable plan and
+preallocated citro3d backend; see
+[native binding](../behavior/display/NATIVE_TYPE0_WINDOW_FRAME.md). Original
+EXP uses the shared path. Source base/tab centers, signed centering, RGB/low8
+alpha and all nine quads are retained; the original panel texture is reused.
+Full selector list/header/help/scissor, manager/input/event/inventory ownership
+and Goomba4 quest branches remain unbound. This delivers a rendering component
+and does not close OW-INTERACT-01 or establish Dolphin/New2DS raster/performance.
