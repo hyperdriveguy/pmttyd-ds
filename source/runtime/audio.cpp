@@ -104,7 +104,7 @@ void Audio::stopMusic(unsigned slot) {
 }
 void Audio::musicMix(unsigned slot,uint8_t volume) {
     music[slot].nativeVolume=volume;
-    const float gain=(music[slot].track==18 || itemGetFieldSlot==int(slot))?float(volume)*.007874015718698502f:.65f*float(volume)/127.f;
+    const float gain=(itemGetFanfareProfile(music[slot].track) || itemGetFieldSlot==int(slot))?float(volume)*.007874015718698502f:.65f*float(volume)/127.f;
     float mix[12]{};mix[0]=mix[1]=fieldItemMuted?0:gain;
     ndspChnSetMix(MusicChannels[slot],mix);
 }
@@ -224,7 +224,7 @@ void Audio::shutdown() {
         if(clip.data)linearFree(clip.data);
         clip={};
     }
-    keyItemSlot=keyItemTailSlot=itemGetFieldSlot=itemGetFieldTrack=-1;keyItemEnvelope={};keyItemTail={};itemGetFieldEnvelope={};keyItemResourceAttempted=keyItemResourceReady=false;
+    keyItemSlot=keyItemTailSlot=itemGetFieldSlot=itemGetFieldTrack=-1;keyItemEnvelope={};keyItemTail={};itemGetFieldEnvelope={};itemFanfareResourceAttempted={};itemFanfareResourceReady={};
     musicTrack=-1;
 }
 }

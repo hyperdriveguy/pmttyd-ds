@@ -11,9 +11,9 @@ def build(iso=DEFAULT_ISO,output='romfs',work='local-assets/field-item-get'):
     out=Path(output);cache=Path(work);out.mkdir(parents=True,exist_ok=True);cache.mkdir(parents=True,exist_ok=True)
     dependencies=[Path(__file__),*[Path(__file__).parent/n for n in ['iso_assets.py','character_mesh.py','character_animation_pack.py','character_animation_data.py','character_bake.py','audio_convert.py']]]
     fingerprint=hashlib.sha256(b''.join(p.read_bytes() for p in dependencies)+str((Path(iso).stat().st_size,Path(iso).stat().st_mtime_ns)).encode()).hexdigest()
-    required=['field-item-get-key-fanfare.wav','field-item-get-mario.pmanim','field-item-get-mario.t3x','field-item-get-mario.bin',*[f'field-item-get-effect-{i}.t3x' for i in [42,43,44]]]
+    required=['field-item-get-key-fanfare.wav','field-item-get-coin-fanfare.wav','field-item-get-mario.pmanim','field-item-get-mario.t3x','field-item-get-mario.bin',*[f'field-item-get-effect-{i}.t3x' for i in [42,43,44]]]
     manifest=out/'field-item-get.json'
-    if manifest.exists() and not (out/'field-item-get-key-fanfare.wav.loop').exists() and all((out/p).is_file() for p in required) and json.loads(manifest.read_text()).get('fingerprint')==fingerprint:return
+    if manifest.exists() and not any((out/(name+'.loop')).exists() for name in required[:2]) and all((out/p).is_file() for p in required) and json.loads(manifest.read_text()).get('fingerprint')==fingerprint:return
     for source,name in [('a/a_mario','a_mario'),('a/a_mario-','a_mario.tpl'),('e/us/effect.tpl','effect.tpl')]:extract(iso,source,cache/name)
     raw=(cache/'effect.tpl').read_bytes()
     if hashlib.sha256(raw).hexdigest()!='3b62850fe75afb95eebb9fc240e20204d5ed320fba0fc956729f28405c2c789b':raise ValueError('Original US base effect bank changed')
@@ -40,7 +40,14 @@ def build(iso=DEFAULT_ISO,output='romfs',work='local-assets/field-item-get'):
     fanfare.update(provenance=json.loads(Path(str(raw_audio)+'.provenance.json').read_text()),
         output='field-item-get-key-fanfare.wav',pcm_sha256=hashlib.sha256((out/'field-item-get-key-fanfare.wav').read_bytes()).hexdigest(),
         original_bgm='BGM_FF_GET_KEYITEM1',original_row=217,volume=80,pan=64)
-    metadata.update(fanfare=fanfare,fingerprint=fingerprint,dimensions=[1024,height],uv_scale=1024/height,effect_images=images,
+    source='sound/stream/ff_get4_32k.stm';raw_coin=cache/'ff_get4_32k.stm';extract(iso,source,raw_coin)
+    if hashlib.sha256(raw_coin.read_bytes()).hexdigest()!='9abc00c564a50d6b3dadc5a76ff11ab428a0556152a7d1550502bf03451d38de':raise ValueError('Original coin fanfare changed')
+    coin=stm(raw_coin,out/'field-item-get-coin-fanfare.wav')
+    if coin['rate']!=32000 or coin['channels']!=2 or coin['samples']!=65352 or coin['loop_enabled']:raise ValueError('Original coin fanfare PCM metadata changed')
+    coin.update(provenance=json.loads(Path(str(raw_coin)+'.provenance.json').read_text()),
+        output='field-item-get-coin-fanfare.wav',pcm_sha256=hashlib.sha256((out/'field-item-get-coin-fanfare.wav').read_bytes()).hexdigest(),
+        original_bgm='BGM_FF_GET_ITEM1',original_row=219,volume=80,pan=64,bypass_global=True)
+    metadata.update(fanfare=fanfare,coin_fanfare=coin,fingerprint=fingerprint,dimensions=[1024,height],uv_scale=1024/height,effect_images=images,
         sources=[json.loads((cache/name).with_suffix('.tpl.provenance.json' if name.endswith('.tpl') else '.provenance.json').read_text()) for name in ['a_mario','a_mario.tpl','effect.tpl']],
         conversion='Original M_I_U mesh/sparse animation, existing124px+2px-border pose cells; unused atlas lowerhalf cropped. Effect masks original dimensions/RGBA conversion, no resampling/color tint bake.',
         license='Original Nintendo/Intelligent Systems assets for local use; no redistribution rights',limitations='Original type6 shader/camera/window/control providers remain separate; assets alone do not establish raster parity')

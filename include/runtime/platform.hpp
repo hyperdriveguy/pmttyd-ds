@@ -337,8 +337,11 @@ public:
     bool available() const { return ready; }
     bool frontendTrackReady(int track);
     bool keyItemFanfareReady();
+    bool coinFanfareReady();
     bool prepareFieldItemGetAudio();
+    bool prepareFieldCoinGetAudio();
     bool beginKeyItemFanfare(int32_t gpRate=60); // Fresh native GP60 default; replacement remains external.
+    bool beginCoinFanfare(int32_t gpRate=60); // Original row219, shared group1; fresh-slot admission only.
     int32_t keyItemFanfareCheck(); // Source query shape: -1 vacant, 0 assigned.
     void releaseKeyItemFanfare(); // Backend release, not source Off201 fade.
     bool fadeKeyItemFanfare(int32_t milliseconds,int32_t gpRate);
@@ -366,7 +369,10 @@ private:
         ndspWaveBuf buffers[3]{};
     };
     MusicStream music[3];
-    bool keyItemResourceAttempted=false,keyItemResourceReady=false;
+    std::array<bool,2> itemFanfareResourceAttempted{},itemFanfareResourceReady{};
+    bool itemFanfareReady(int track);
+    bool prepareItemGetAudio(int track);
+    bool beginItemGetFanfare(int track,int32_t gpRate);
     int keyItemSlot=-1,keyItemTailSlot=-1;
     FieldBgmEnvelope keyItemEnvelope;
     FieldStreamFade keyItemTail;

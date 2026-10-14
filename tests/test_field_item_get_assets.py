@@ -31,3 +31,15 @@ class OriginalItemGetAssets(unittest.TestCase):
         self.assertFalse(Path(str(pcm)+'.loop').exists())
         with wave.open(str(pcm),'rb') as audio:
             self.assertEqual((audio.getframerate(),audio.getnchannels(),audio.getnframes(),audio.getsampwidth()),(32000,2,83888,2))
+
+    def test_original_coin_fanfare(self):
+        manifest=Path('romfs/field-item-get.json')
+        if not manifest.exists():self.skipTest('Original local item-get pack not built')
+        row=json.loads(manifest.read_text())['coin_fanfare']
+        self.assertEqual(row['provenance']['source_path'],'sound/stream/ff_get4_32k.stm')
+        self.assertEqual(row['provenance']['sha256'],'9abc00c564a50d6b3dadc5a76ff11ab428a0556152a7d1550502bf03451d38de')
+        self.assertEqual((row['original_row'],row['volume'],row['pan'],row['bypass_global']),(219,80,64,True))
+        pcm=Path('romfs')/row['output'];self.assertEqual(hashlib.sha256(pcm.read_bytes()).hexdigest(),row['pcm_sha256'])
+        self.assertFalse(row['loop_enabled']);self.assertIsNone(row['loop']);self.assertFalse(Path(str(pcm)+'.loop').exists())
+        with wave.open(str(pcm),'rb') as audio:
+            self.assertEqual((audio.getframerate(),audio.getnchannels(),audio.getnframes(),audio.getsampwidth()),(32000,2,65352,2))

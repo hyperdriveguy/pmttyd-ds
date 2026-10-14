@@ -37,6 +37,7 @@ inline int soundtrackTrack(Scene scene,bool enabled,bool harborDanger,int profes
 }
 inline const char* musicAssetPath(int track,bool switchSoundtrack) {
     if(track==18)return "romfs:/field-item-get-key-fanfare.wav"; // Original row217 in both soundtrack modes.
+    if(track==19)return "romfs:/field-item-get-coin-fanfare.wav"; // Original row219, independent of optional soundtrack.
     constexpr const char* original[]={
         "romfs:/rogueport.wav","romfs:/battle.wav","romfs:/victory.wav",
         "romfs:/harbor-danger.wav","romfs:/title.wav","romfs:/demo-book.wav",
@@ -63,6 +64,11 @@ inline const char* musicAssetPath(int track,bool switchSoundtrack) {
     return original[track<13?track:0];
 }
 struct PcmHeader {uint32_t rate=0,channels=0,frames=0;};
+struct ItemGetFanfareProfile {int track,row;uint32_t frames;uint8_t volume,pan;bool bypassGlobal;};
+inline const ItemGetFanfareProfile* itemGetFanfareProfile(int track) {
+    static constexpr ItemGetFanfareProfile profiles[]={{18,217,83888,80,64,true},{19,219,65352,80,64,true}};
+    return track==18?&profiles[0]:track==19?&profiles[1]:nullptr;
+}
 inline bool pcmHeader(const unsigned char* p,PcmHeader& out) {
     auto u16=[p](int i)->uint32_t {return p[i]|uint32_t(p[i+1])<<8;};
     auto u32=[p](int i)->uint32_t {return p[i]|uint32_t(p[i+1])<<8|uint32_t(p[i+2])<<16|uint32_t(p[i+3])<<24;};

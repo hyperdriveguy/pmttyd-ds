@@ -5,26 +5,32 @@ namespace ttyd {
 namespace {
 struct Lock {LightLock& mutex;explicit Lock(LightLock& value):mutex(value){LightLock_Lock(&mutex);}~Lock(){LightLock_Unlock(&mutex);}};
 constexpr int KeyItemTrack=18;
+constexpr int CoinTrack=19;
 }
-bool Audio::keyItemFanfareReady() {
-    if(!ready)return false;
+bool Audio::keyItemFanfareReady() {return itemFanfareReady(KeyItemTrack);}
+bool Audio::coinFanfareReady() {return itemFanfareReady(CoinTrack);}
+bool Audio::itemFanfareReady(int track) {
+    const auto* profile=itemGetFanfareProfile(track);if(!ready || !profile)return false;
     Lock lock(musicMutex);
-    if(keyItemResourceAttempted)return keyItemResourceReady;
-    keyItemResourceAttempted=true;
-    FILE* file=std::fopen(musicAssetPath(KeyItemTrack,false),"rb");
+    const unsigned index=unsigned(track-KeyItemTrack);
+    if(itemFanfareResourceAttempted[index])return itemFanfareResourceReady[index];
+    itemFanfareResourceAttempted[index]=true;
+    const char* asset=musicAssetPath(track,false);FILE* file=std::fopen(asset,"rb");
     if(!file)return false;
     unsigned char header[44]{};PcmHeader pcm;
     bool ok=std::fread(header,1,44,file)==44 && pcmHeader(header,pcm) &&
-        pcm.rate==32000 && pcm.channels==2 && pcm.frames==83888;
-    if(ok)ok=std::fseek(file,0,SEEK_END)==0 && std::ftell(file)==44+83888*4;
+        pcm.rate==32000 && pcm.channels==2 && pcm.frames==profile->frames;
+    if(ok)ok=std::fseek(file,0,SEEK_END)==0 && std::ftell(file)==long(44+profile->frames*4);
     std::fclose(file);
     // The source COMMON restart marker is nonlooping. Reject stale sidecars.
-    FILE* loop=std::fopen("romfs:/field-item-get-key-fanfare.wav.loop","rb");
+    const auto loopPath=std::string(asset)+".loop";FILE* loop=std::fopen(loopPath.c_str(),"rb");
     if(loop){std::fclose(loop);ok=false;}
-    keyItemResourceReady=ok;return ok;
+    itemFanfareResourceReady[index]=ok;return ok;
 }
-bool Audio::prepareFieldItemGetAudio() {
-    if(!keyItemFanfareReady())return false;
+bool Audio::prepareFieldItemGetAudio() {return prepareItemGetAudio(KeyItemTrack);}
+bool Audio::prepareFieldCoinGetAudio() {return prepareItemGetAudio(CoinTrack);}
+bool Audio::prepareItemGetAudio(int track) {
+    if(!itemFanfareReady(track))return false;
     Lock lock(musicMutex);retireKeyItemFanfare();
     if(keyItemSlot>=0 || keyItemTailSlot>=0)return false;
     auto& stream=music[musicSlot];
@@ -48,16 +54,19 @@ void Audio::retireKeyItemFanfare() {
         if(!retained)stopMusic(unsigned(slot));
     }
 }
-bool Audio::beginKeyItemFanfare(int32_t gpRate) {
-    if(gpRate<=0 || !keyItemFanfareReady())return false;
+bool Audio::beginKeyItemFanfare(int32_t gpRate) {return beginItemGetFanfare(KeyItemTrack,gpRate);}
+bool Audio::beginCoinFanfare(int32_t gpRate) {return beginItemGetFanfare(CoinTrack,gpRate);}
+bool Audio::beginItemGetFanfare(int track,int32_t gpRate) {
+    if(gpRate<=0 || !itemFanfareReady(track))return false;
     Lock lock(musicMutex);retireKeyItemFanfare();
     if(keyItemSlot>=0 || keyItemTailSlot>=0)return false; // Fresh group/clean-tail domain; replacement unbound.
     unsigned slot=0;while(slot<3 && music[slot].file)++slot;
     if(slot==3)return false; // Never evict another retained group/tail to fabricate admission.
-    startMusic(slot,KeyItemTrack,80);
+    const auto& profile=*itemGetFanfareProfile(track);
+    startMusic(slot,track,profile.volume);
     if(!music[slot].file)return false;
-    keyItemSlot=int(slot);keyItemEnvelope.bind(80);
-    // Source row217/type2 pan64 publishes80 to each hard-panned channel.
+    keyItemSlot=int(slot);keyItemEnvelope.bind(profile.volume,100,profile.bypassGlobal);
+    // Source row217/219 type2 pan64 publishes80 to each hard-panned channel.
     // sndStreamMix uses original1/127; no native .65 adapter factor here.
     // Source On_f_d invokes all admitted groups before returning.
     return itemGetBgmMain(gpRate);
@@ -110,7 +119,7 @@ bool Audio::retainItemGetFieldMusic(uint8_t base,int8_t global,bool bypass) {
     if(!ready)return false;
     Lock lock(musicMutex);
     const auto& stream=music[musicSlot];
-    if(!stream.file || stream.channels!=2 || stream.track==KeyItemTrack)return false;
+    if(!stream.file || stream.channels!=2 || itemGetFanfareProfile(stream.track))return false;
     if(itemGetFieldSlot>=0)return itemGetFieldSlot==int(musicSlot) && itemGetFieldTrack==stream.track;
     itemGetFieldSlot=int(musicSlot);itemGetFieldTrack=stream.track;
     itemGetFieldEnvelope.bind(base,global,bypass);return true;
