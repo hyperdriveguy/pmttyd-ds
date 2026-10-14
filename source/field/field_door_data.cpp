@@ -1,4 +1,5 @@
 #include "field_door_data.hpp"
+#include "field_map_flags.hpp"
 #include "event_script_assets.hpp"
 #include <cstdio>
 #include <cstring>
@@ -44,7 +45,7 @@ bool loadFieldDoorDataAssets(const char* root) {
 }
 void FieldDoorDataWorld::synchronize(uint32_t room) {
  if(room_!=room || generation_!=generation) {
-  copies_.clear();initialized_=false;room_=room;generation_=generation;
+  copies_.clear();initialized_=false;room_=room;generation_=generation;mapPhase_=0;
  }
 }
 bool FieldDoorDataWorld::initialize(uint32_t room,std::optional<uint8_t> quest) {
@@ -74,6 +75,19 @@ bool FieldDoorDataWorld::setParameter(uint32_t address,int32_t selector,uint32_t
  if(generation_!=generation || !initialized_)return false;
  for(auto& c:copies_)if(c.address==address){c.words[13]=value;return true;}
  return false;
+}
+bool FieldDoorDataWorld::initializeHouse05Map(FieldMapFlags& map) {
+ if(room_!=2 || !workAddress(11))return false;
+ if(mapEpoch_!=map.epoch()){mapEpoch_=map.epoch();mapPhase_=0;}
+ auto text=[&](uint32_t offset,std::string& name){
+  uint32_t pointer=0;if(!readWord(workAddress(11)+offset,pointer))return false;
+  name.clear();if(!pointer)return true;
+  for(unsigned n=0;n<64;++n){uint8_t byte=0;if(!assets->scripts.readByte(pointer+n,byte))return false;if(!byte)return true;name.push_back(char(byte));}return false;
+ };
+ std::string name;
+ if(mapPhase_==0){if(!text(0x20,name) || (!name.empty() && !map.mapFlag(name,1,true)))return false;++mapPhase_;}
+ if(mapPhase_==1){if(!text(0x24,name) || (!name.empty() && !map.hitEnabled(name,false)))return false;++mapPhase_;}
+ return mapPhase_==2;
 }
 bool FieldDoorDataWorld::npcNames(uint32_t address,std::vector<std::string>& result) const {
  uint32_t pointer=0;return readWord(address+0x34,pointer) && assets && names(assets->scripts,pointer,result);

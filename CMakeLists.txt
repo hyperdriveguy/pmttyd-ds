@@ -1488,3 +1488,10 @@ target_sources(ttyd_core PRIVATE source/battle/battle_audience_aux_callback.cpp)
 add_executable(battle_audience_aux_callback_tests tests/battle_audience_aux_callback_tests.cpp)
 target_link_libraries(battle_audience_aux_callback_tests PRIVATE ttyd_core)
 add_test(NAME battle_audience_aux_callback COMMAND battle_audience_aux_callback_tests)
+
+# Original named field map visibility and hit subtree overlay.
+target_sources(ttyd_core PRIVATE source/field/field_map_flags.cpp)
+add_executable(field_map_flags_tests tests/field_map_flags_tests.cpp)
+target_link_libraries(field_map_flags_tests PRIVATE ttyd_core)
+add_test(NAME field_map_flags COMMAND field_map_flags_tests)
+set_tests_properties(field_map_flags PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

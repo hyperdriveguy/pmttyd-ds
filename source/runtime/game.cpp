@@ -57,13 +57,16 @@ int harnessDamage(DamageUnit& attacker,DamageUnit& defender,DamagePart& part,Dam
 std::vector<RoadWarp> roads;
 std::vector<uint32_t> roadAttributeNodes;
 std::vector<uint32_t> disabledDoorNodes;
+std::vector<uint32_t> disabledEventNodes;
 uint32_t doorCollisionRoom=UINT32_MAX,doorCollisionMask=UINT32_MAX;
 bool fenceCollisionDisabled=false;
 bool doorCollisionEnabled(uint32_t node) {
     if(fenceCollisionDisabled && std::binary_search(professorFenceCollisionNodes().begin(),professorFenceCollisionNodes().end(),node))return false;
-    return !std::binary_search(disabledDoorNodes.begin(),disabledDoorNodes.end(),node);
+    return !std::binary_search(disabledDoorNodes.begin(),disabledDoorNodes.end(),node) &&
+        !std::binary_search(disabledEventNodes.begin(),disabledEventNodes.end(),node);
 }
-void applyDoorCollision(uint32_t room,uint32_t mask) {
+void applyDoorCollision(uint32_t room,uint32_t mask,const FieldMapFlags& flags) {
+    disabledEventNodes=flags.disabledHits();
     if(room==doorCollisionRoom && mask==doorCollisionMask)return;
     doorCollisionRoom=room;doorCollisionMask=mask;
     disabledDoorNodes.clear();
@@ -1019,10 +1022,10 @@ bool Game::setFieldNpcFlags(const std::string& name,uint32_t mask,bool enabled) 
 void Game::synchronizeFieldNpcs() {
     const auto generation=fieldActorCatalogGeneration();
     if(fieldNpcGeneration!=generation || fieldNpcRoom!=progress.room) {
-        fieldDoorData.invalidate();
+        fieldDoorData.invalidate();fieldMapFlags.invalidate();
         fieldNpcs.clear();fieldNpcEventCandidate=0;fieldNpcGeneration=generation;fieldNpcRoom=progress.room;
     }
-    fieldDoorData.synchronize(progress.room);
+    fieldDoorData.synchronize(progress.room);fieldMapFlags.synchronize(progress.room);
 }
 // Source wander providers consume the prior pose/contact publications. Native
 // sound-name tokens1/2 select left/right keys; they are not original addresses.
@@ -1228,7 +1231,9 @@ void Game::updateFieldNpcCollision() {
     }
     // Original gor_02 installs its copy after NPC setup/init. This finite
     // native copy/list prefix does not acknowledge later door case providers.
-    if(npcInitReady)fieldDoorData.initialize(progress.room,progress.originalNpcTalkState.quest1420);
+    if(npcInitReady && fieldDoorData.initialize(progress.room,progress.originalNpcTalkState.quest1420))
+        fieldDoorData.initializeHouse05Map(fieldMapFlags);
+    applyDoorCollision(progress.room,fieldDoor.interiorMask,fieldMapFlags);
 }
 bool Game::recoveryReturn(ReturnPoint& point) const {return groundReturn(returnContact,point);}
 bool Game::beginWater() {
@@ -1301,7 +1306,8 @@ void Game::restore(const Progress& saved) {
     fenceCollisionDisabled=p.room==2 && p.originalStory.value_or(0)>=10;
     troubleDoorNotice=false;
     fieldDoor.interiorMask=p.interiorMask;
-    applyDoorCollision(p.room,fieldDoor.interiorMask);
+    synchronizeFieldNpcs();
+    applyDoorCollision(p.room,fieldDoor.interiorMask,fieldMapFlags);
     harborStory.reset(p.room==1 && p.originalStory && *p.originalStory==3);
     harborResume=p.room==1 && p.originalStory==4;
     // Native checkpoint follower placement starts30 engine units left of Mario,
@@ -2015,8 +2021,9 @@ void Game::updateMarioPresentation() {
 // ordinary input from advancing a locked scene, but neutral movement may keep
 // airborne/support physics alive. See game-composition guide for full order.
 void Game::tick(const Input& rawInput) {
+    synchronizeFieldNpcs();
     fenceCollisionDisabled=progress.room==2 && (progress.originalStory.value_or(0)>=10 || professorStory.fenceCollisionOff);
-    applyDoorCollision(progress.room,fieldDoor.interiorMask);
+    applyDoorCollision(progress.room,fieldDoor.interiorMask,fieldMapFlags);
     // Scope-exit publication is gameplay work, not just rendering. Every early
     // return still updates save objects/NPC responses/talk/poses/itemMain/cases.
     // Do not move this tail solely to the ordinary Explore branch.
@@ -2213,7 +2220,7 @@ void Game::tick(const Input& rawInput) {
             fieldMovement.headingX=dx/fieldMovement.speed;fieldMovement.headingZ=dz/fieldMovement.speed;
             marioPresentation.facing=PartnerPresentation::wrap(std::atan2(dx,-dz)*57.29577951308232f);
         }
-        applyDoorCollision(progress.room,fieldDoor.interiorMask);
+        applyDoorCollision(progress.room,fieldDoor.interiorMask,fieldMapFlags);
         groundAt(progress.position,groundHeight,groundHeight,&groundContact);
         progress.elevation=groundHeight;partnerHeight=groundHeight;
         if(professorStory.locked()) {
@@ -2546,7 +2553,7 @@ void Game::tick(const Input& rawInput) {
                 if(professorStory.beginFence(ticks*1000/60,{progress.position.x*100,groundHeight*100,progress.position.z*100},
                     {partner.x*100,partnerHeight*100,partner.z*100}))scene=Scene::Dialogue;
             }
-            applyDoorCollision(progress.room,fieldDoor.interiorMask);
+            applyDoorCollision(progress.room,fieldDoor.interiorMask,fieldMapFlags);
             const auto& target=opening?d.inside:d.outside;
             setCameraTarget({target[0]*100,(groundHeight*100)+2,target[2]*100},100,150,11);
             saveRequested=false;return;

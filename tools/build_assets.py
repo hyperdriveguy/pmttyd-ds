@@ -29,6 +29,7 @@ def main():
     fingerprint=hashlib.sha256(b''.join(p.read_bytes() for p in scripts)+str((source.stat().st_size,source.stat().st_mtime_ns)).encode()).hexdigest()
     manifest=OUTPUT/'manifest.json'
     required=['shadows.pmshadow','characters.pmanim','characters.pmmesh','characters-mesh.t3x','characters.t3x','sky.t3x','map.vertices','map.batches','rogueport.wav','battle.wav','victory.wav','stage.vertices','stage.batches','map.walls','map.ground','gor_00.vertices','gor_02.vertices','gor_03.vertices','gor_04.vertices','map.uvanim','stage.uvanim','gor_00.uvanim','gor_02.uvanim','gor_03.uvanim','gor_04.uvanim','rooms.bin','map.meshanim','stage.meshanim','gor_00.meshanim','gor_02.meshanim','gor_03.meshanim','gor_04.meshanim']
+    required.extend(['field-map-flags.bin',*[prefix+'.mapflags' for prefix in ['map','gor_00','gor_02','gor_03','gor_04']]])
     required.extend(prefix+'.returns' for prefix in ['map','gor_00','gor_02','gor_03','gor_04'])
     required.extend(prefix+'.head' for prefix in ['map','gor_00','gor_02','gor_03','gor_04'])
     required.extend(prefix+'.camera' for prefix in ['map','gor_00','gor_02','gor_03','gor_04'])
@@ -76,7 +77,7 @@ def main():
     Image.open(WORK/'sky.png').convert('RGB').resize((256,256),Image.Resampling.LANCZOS).save(WORK/'sky-runtime.png');texture(WORK/'sky-runtime.png',OUTPUT/'sky.t3x','rgb565')
     camera=asset('m/gor_01/c','gor_01.c');shutil.copyfile(camera,OUTPUT/'map.camera')
     model=asset('m/gor_01/d','gor_01.d');tpl=asset('m/gor_01/t','gor_01.tpl');summary=convert(model,WORK/'map',mesh_ambient=('hae',),event_groups=EVENT_GROUPS.get('gor_01',{}))
-    for filename in ['map.vertices','map.batches','map.walls','map.ground','map.head','map.uvanim','map.meshanim']:shutil.copyfile(WORK/'map'/filename,OUTPUT/filename)
+    for filename in ['map.vertices','map.batches','map.walls','map.ground','map.head','map.uvanim','map.meshanim','map.mapflags']:shutil.copyfile(WORK/'map'/filename,OUTPUT/filename)
     for index,name in enumerate(summary['textures']):
         path=WORK/'map'/f'texture-{index}.png';convert_tpl(tpl,path,index)
         image=Image.open(path).convert('RGBA');w,h=image.size
@@ -93,7 +94,7 @@ def main():
         ambient=('mizu','noname','ie_01_light') if room=='gor_02' else ('nami','nami_02','hiki_nami') if room=='gor_00' else ()
         mesh_ambient=('nami',) if room=='gor_00' else ()
         info=convert(room_model,WORK/room,hidden=hidden,ambient=ambient,mesh_ambient=mesh_ambient,event_groups=EVENT_GROUPS.get(room,{}));rooms[room]=info
-        for ext in ['vertices','batches','walls','ground','head','uvanim','meshanim']:shutil.copyfile(WORK/room/f'map.{ext}',OUTPUT/f'{room}.{ext}')
+        for ext in ['vertices','batches','walls','ground','head','uvanim','meshanim','mapflags']:shutil.copyfile(WORK/room/f'map.{ext}',OUTPUT/f'{room}.{ext}')
         for index,name in enumerate(info['textures']):
             path=WORK/room/f'texture-{index}.png';convert_tpl(room_tpl,path,index)
             image=Image.open(path).convert('RGBA');w,h=image.size
@@ -165,6 +166,9 @@ def main():
     with (OUTPUT/'rooms.bin').open('wb') as out:
         out.write(struct.pack('<4sII',b'ROAD',1,len(links)))
         for link in links:out.write(struct.pack('<II5f4If',order.index(link['source']),order.index(link['target']),link['center'][0],link['center'][2],link['spawn'][0],link['spawn'][2],link['spawn'][1],link['source_node'],link['arrival_node'],link['direction'],link['arrival_direction'],link['center'][1]))
+    with (OUTPUT/'field-map-flags.bin').open('wb') as out:
+        out.write(struct.pack('<8sI',b'PMFLDS01',5))
+        for room,prefix in enumerate(['map','gor_00','gor_02','gor_03','gor_04']):out.write(struct.pack('<I64s',room,(prefix+'.mapflags').encode()))
     stage_model=asset('m/stg_01/d','stage.d');stage_tpl=asset('m/stg_01/t','stage.tpl')
     stage_summary=convert(stage_model,WORK/'stage',hidden=('stg__MASUKU','stg_kaaten_01_a','stg_kaaten_01_b','switch_dai','switch_mark','switch_osu'))
     for extension in ['vertices','batches','uvanim','meshanim']:shutil.copyfile(WORK/'stage'/f'map.{extension}',OUTPUT/f'stage.{extension}')

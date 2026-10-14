@@ -43,6 +43,7 @@
 #include "field_road.hpp"
 #include "field_door.hpp"
 #include "field_door_data.hpp"
+#include "field_map_flags.hpp"
 #include "field_camera_state.hpp"
 #include "field_camera_shift.hpp"
 #include "camera_road_state.hpp"
@@ -264,6 +265,7 @@ public:
     RoadCaseAdmission roadAdmission;
     FieldDoorState fieldDoor;
     FieldDoorDataWorld fieldDoorData;
+    FieldMapFlags fieldMapFlags;
     std::shared_ptr<NativeTroubleBoard> troubleBoard;
     std::vector<uint32_t> troubleBoardSounds; // Original low13 sound rows, not generic UI cues.
     std::optional<int32_t> fieldPartyCurrentIndex=0; // Explicit source BSS boot view of8041ead0; separate from Mario party selection.

@@ -235,6 +235,19 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
     with (output/'map.batches').open('wb') as out:
         out.write(struct.pack('<II',len(batches),len(textures)))
         for b in batches:out.write(struct.pack('<IIiIII',*b))
+    # Native event flag overlay: exact source hierarchy and converted vertex owners.
+    ordered_flags=list(node_info);flag_ids={node:i for i,node in enumerate(ordered_flags)}
+    flag_owners=[None]*count
+    for node,rows in position_bindings.items():
+        for index,*_ in rows:flag_owners[index]=flag_ids[node]
+    if any(owner is None for owner in flag_owners):raise ValueError('Unowned map flag vertex')
+    with (output/'map.mapflags').open('wb') as out:
+        out.write(struct.pack('<8sII',b'PMFLG001',count,len(ordered_flags)))
+        for node in ordered_flags:
+            info=node_info[node];name=info['name'].encode('ascii')
+            if len(name)>=64:raise ValueError('Native map flag name exceeds field')
+            out.write(struct.pack('<iII64s',flag_ids[info['parent']] if info['parent'] is not None else -1,node-base,int(node-base in collision_nodes),name))
+        out.write(struct.pack('<'+'H'*count,*flag_owners))
     runtime_tracks=[]
     for clip in ambient:
         matches=[a for a in animations if a['name']==clip]

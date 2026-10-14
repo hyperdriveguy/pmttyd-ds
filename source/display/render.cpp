@@ -631,10 +631,14 @@ void Renderer::drawMap(bool battle,const Game& game,bool translucent,Room* suppl
         }
         if(changes.cull)C3D_CullFace(cull);
         if(changes.depth)C3D_DepthTest(true,GPU_GREATER,mask);
-        const auto submit=[&](uint32_t first,uint32_t size){
+        const auto draw=[&](uint32_t first,uint32_t size){
             if(game.trioBattleActive && (supplied==&trioBackground || supplied==&trioStage))
                 trioSceneMaps[translucent?1:0].push_back({room.vertices,*texture,first,size,uint32_t(mask),cull,true});
             C3D_DrawArrays(GPU_TRIANGLES,first,size);
+        };
+        const auto submit=[&](uint32_t first,uint32_t size){
+            if(!battle && !supplied && game.fieldMapFlags.ready(room.vertexCount))game.fieldMapFlags.visibleRanges(first,size,draw);
+            else draw(first,size);
         };
         if(stageObjects)stageObjects->visibleRanges(batch.start,batch.count,submit);
         else submit(batch.start,batch.count);
