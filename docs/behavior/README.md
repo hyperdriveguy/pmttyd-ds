@@ -1127,3 +1127,7 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Stage-light SDK axis rotation/normalize](display/STAGE_LIGHT_AXIS_ROTATION_AND_NORMALIZE.md) — exact original arithmetic graph and explicit native estimate/libm boundary.
 - [Native stage dark/light continuations](display/NATIVE_STAGE_DARK_AND_LIGHT_CONTINUATIONS.md) — retained live stage owners, actual direct quads/triangles and shared depth/blend/channel state.
+
+- [Ordered NPC setup installation and provider frontier](field/NPC_SETUP_ORDERED_INSTALLATION_AND_RETAINED_PROVIDER_FRONTIER.md) — full source read/effect order and suspension boundaries.
+- [gor02 battle index0 and original tribe descriptors](field/GOR02_SETUP_ZERO_BATTLE_INDEX_AND_ORIGINAL_TRIBE_DESCRIPTORS.md) — populated setup RNG,all fifteen actors and actual resource dependencies.
+- [Native retained NPC setup scheduling](field/NATIVE_RETAINED_NPC_SETUP_EVENT_SCHEDULING.md) — independent init/regular roots and retained allocation admission.

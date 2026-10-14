@@ -6489,3 +6489,96 @@ field restoration and full prologue fidelity remain unfinished. EVT-01 records
 the exact boundary; full user goal remains active.
 
 tools/check_doc_links.py checked1326 frozen Markdown files with0 broken links.
+
+### 2026-10-14 — Retained original NPC setup installation and event scheduling
+
+Implementation13a221d7ed223bb267d08c4bb6d98bbf9df2ff20 adds actual8005323c
+ordered metadata/init/regular setup to the shared area dispatcher. It captures
+actor+28 before init deletion, preserves pair-load order and fresh repeated
+metadata reads, performs required battle/strcpy/pose calls and sets field mode1.
+Init/regular roots use actual shared VM creation,priority0,flags0/20,byte10=0/1,
+actor context170 and real IDs. Null-init clears initID without deletion; null
+regular leaves the previous regular ID alone. Resume reads installed actor+124
+again after actual deletion rather than using a stale setup-row script.
+
+A retained cursor holds one source invocation across native allocation admission,
+after the required old-event deletion and fresh script capture. It never repeats
+completed effects. This permits replacement even when the pool was full before
+deletion. Genuine source0 after first phase or a live-init poll resets the cursor;
+next source call freshly resolves table/getter and scans. Owner/memory/event-
+service/caller+ID swaps are rejected while held. Source restart resets; actual
+retirement removes state. Absent typed services retain first admission before a
+pure generic hold. Full world pre-admission guarantees real readable/registered
+actor,descriptor,pose,battle/RNG and mode services before row effects. It cannot
+be a resource-success stub. Backing storage must outlive pending events.
+[Native contract](behavior/field/NATIVE_RETAINED_NPC_SETUP_EVENT_SCHEDULING.md).
+
+New source research proves all fifteen gor02 setup rows request populated battle
+index0. Each present actor consumes16 irand(1)+1 irand(50) before publishing kind/
+battle state and child copies; no null/-1 or zero-RNG shortcut is correct. Actual
+tribe/model descriptors for all actors are recovered. General battle-table
+packing still hits ambiguous REL60aac; the event pack alone does not establish
+battle/kind/stage/resource readiness. These dependencies remain native Game
+admission requirements. Existing idle catalog initialized flags/preplaced models
+are not registered source actors or completed initialization events. No Game
+provider is installed until those real owners exist.
+
+Validation frozen tree2ca69878199966269995b2352e741f7ac214a688 in
+artifacts/source-checks/trouble-world. CMAKE_BUILD_PARALLEL_LEVEL=4 make test
+-o assets-ready exited0:320/320 C++ (33.61s),182/182 Python (26.192s),log
+artifacts/area-npc-setup-test.log. make all -j4 -o assets-ready
+SOUNDTRACK=gamecube exited0,log artifacts/area-npc-setup-build.log. Isolated source
+audit3404 tracked files,zero mismatches after probe main restoration. Exact
+source/binary/probe/log identities:
+artifacts/area-npc-setup-validation-manifest.json. The current merged worktree
+also contains concurrent unrelated changes and is not claimed validated as one
+build. The independent NPC CMake append was rebased onto concurrent registrations
+for commit without changing the frozen validation tree or foreign edits.
+
+Focused tests cover unavailable/late first admission,retained owner/table/script,
+wrong world/memory/event-service/caller rejection,post-delete fresh reads,
+captured descriptor despite pointer mutation,pair reads and second triple
+mutation,null script semantics,actual-null first lookup with separate poll
+admission,source restart,genuine wait reset,installed regular changes and a full
+pool freed by deletion. Initial native bridge compile needed explicit bool
+conversion of evtCheckID. Initial area fixture wrongly assumed unrelated story
+events kept a fixed total count; final tests verify the actual fifteen init IDs
+and independence directly. Both focused tests and the full suite pass.
+
+The original full-parent host fixture supplies explicitly test-owned actor memory,
+battle and pose effects to verify only callback forwarding/metadata/scheduling.
+After late admission it creates all fifteen original init roots with exact
+script pointers/context/type/flags/byte; retiring only setup caller leaves them
+alive. The fixture does not implement real battle0 or Game registration and is
+not shipped. Original child init callbacks remain responsible for their actual
+world effects; no fake init completion is inferred from rendering.
+
+Isolated Azahar ARM probe exited0:fixture=PASS,initRoots15,getters1,modes1,
+battleRequests15,observed live17. The earlier position chain also passes at
+NPCsetup after19 simulation calls. The world is deliberately synthetic fixture
+memory,battle request recording and null descriptor pose entries; it certifies
+real ARM shared-VM scheduling,not populated battle/RNG/pose behavior or source
+NPC creation. All actual VM events are retired before fixture storage is
+released. Log artifacts/area-npc-setup-probe-smoke.log,profile
+artifacts/azahar-area-npc-setup-probe. Initial excluded probe compile needed a
+uint32_t return annotation for the ARM typedef; final probe build exited0.
+Temporary main restored exactly;user emulator profiles/saves untouched.
+
+Normal3DSX SHA256c984860ab20367e5aa5d5bd409290437c89564399ad23e076c12ee06bcdb8185
+is byte-identical to the preceding original-position normal binary. That binary
+already passed isolated east→plaza/save assertions and inspected60 App FPS/100%
+emulator speed,CPU7.6/6.9ms,GPU0.5ms. No redundant normal smoke run was made;
+previous runtime evidence is referenced in the manifest. This does not establish
+new setup hardware performance,New2DSXL timing or original raster parity. No
+asset pack payload/conversion,render path,art,audio or dialogue changed; existing
+original private event/prefetch/texture packs reused unchanged.
+
+Next bind genuine exact-name NPC registration/constructor and original tribe/
+pose/resource owners,actual area battle-table registry/shared RNG and populated
+setup0,then real init/regular event primitives and actor-context lookups. Retire
+pending events before replacing worlds. Independent Mario-entry sequence/field
+mode/stop/entry owners,real GP/checkpoint lifecycle,live Bero/Trouble coordination,
+House05 and full original story/events/NPCs/objects remain unfinished. EVT-01 and
+the full user goal remain active.
+
+tools/check_doc_links.py checked1330 Markdown files with zero broken links.

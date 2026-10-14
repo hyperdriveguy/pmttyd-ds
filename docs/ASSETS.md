@@ -1179,3 +1179,16 @@ publish mutable S/E runtime globals and retain complete collision room provenanc
 No pack format, texture/geometry reduction, image, dialogue, music or sound changed.
 Original Nintendo/Intelligent Systems assets retain existing private licensing;
 ISO access stays read-only, and packs/extracts/binaries remain ignored.
+
+### Original NPC setup and populated battle data research (2026-10-14)
+
+No original asset bytes or conversion changed.8005323c uses unchanged original
+setup rows and init/regular script addresses from the private retained gor02/DOL
+closure. Read-only DOL/REL inspection recovered actual fifteen-row tribe/model
+and populated battle0 dependencies; source paths/addresses are in the field
+contracts. Inspection ELF/disassembly remains private. General battle-table data
+closure is still incomplete and no empty substitute was exported. Synthetic
+actor memory/battle/pose effects occur only in explicit validation fixtures;
+Game receives no fabricated actor registration or resource-success provider.
+Original Nintendo/Intelligent Systems data retain existing private licensing;
+ISO/extracts/packs/probes/binaries stay ignored,with no distribution grant.

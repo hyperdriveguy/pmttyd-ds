@@ -4619,3 +4619,20 @@ bars it requires ordered viewport/projection/scissor reads/restoration and live
 signed16 vertices/material state. Do not equate queued camera with its retained
 camera or skip bars on an unverified emptiness assumption. Parent EVT-01 and the
 prologue/remake goal remain open.
+
+### 2026-10-14 — Retained original NPC setup scheduling
+
+8005323c now dispatches typed ordered actor metadata/init/regular setup in the
+shared area VM. Actual deletion precedes capacity admission; native allocation
+holds retain completed progress,but genuine source waits freshly resolve their
+table next invocation. Original fifteen gor02 init roots are source-backed host
+and ARM scheduling fixtures; Game still requires real actor/resource/battle owners.
+[Implementation scope](../behavior/field/NATIVE_RETAINED_NPC_SETUP_EVENT_SCHEDULING.md).
+
+New source review proves all fifteen rows use populated battle0: at least17 shared
+RNG requests per actor,actual group/kind/stage data and propagated battle records.
+Do not substitute -1,null,zero RNG or catalog initialized flags. General battle
+closure also hits ambiguous REL60aac,so the current EVT pack is not complete
+battle data. Next bind genuine registration,original tribe/pose resources,area
+registry/shared RNG and battle setup,then initialization-event primitives. Full
+EVT-01 and live area integration remain open.

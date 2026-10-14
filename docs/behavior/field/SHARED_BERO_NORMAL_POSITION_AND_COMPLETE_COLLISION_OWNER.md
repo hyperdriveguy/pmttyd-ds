@@ -87,3 +87,8 @@ evt_npc_setup8005323c at4d630. The observed three live events and keyDepth1 are
 specific to that fixture/continuation, not a universal Bero invariant. Actual
 NPC registration, source init-event creation/polling and regular-event/resource
 ownership remain required. Preplaced models alone cannot satisfy npc_setup.
+
+The [retained NPC setup wrapper](NATIVE_RETAINED_NPC_SETUP_EVENT_SCHEDULING.md)
+now supplies ordered metadata and actual init/regular root creation/polling for
+admitted owners. Game still needs genuine actor registration,tribe/pose resources
+and populated battle0/area/shared RNG services before binding that owner.
