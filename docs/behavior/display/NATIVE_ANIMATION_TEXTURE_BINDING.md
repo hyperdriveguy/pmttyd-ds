@@ -52,8 +52,8 @@ Later restoration resolves that same resident owner. Scene retirement synchroniz
 GPU work, invalidates this binding and then frees the scene texture. It never
 casts source offsets to PICA pointers or uses a missing texture as success.
 
-The coordinate generator and matrix are retained for the future indexed-fan UV
-consumer. Source T24 matrix must apply FIRST, then atlas cell crop and V-height
+The coordinate generator and matrix feed the
+[indexed-fan UV consumer](NATIVE_ANIMATION_INDEXED_FAN_SUBMISSION.md). Source T24 matrix must apply FIRST, then atlas cell crop and V-height
 correction ONCE. Setup alone does not submit or acknowledge any vertices. Generic
 multislot/CI request tests do not establish corresponding GPU support. Frankly's
 room5 atlas has a different resident owner and is not substituted with a Mario,
@@ -68,5 +68,6 @@ original execution observations. Actual native trace/remaining work lives in
 PROGRESS and EVT-01. The later
 [ordinary TEV binding](NATIVE_MAP_TEV_PROGRAM_AND_ORDINARY_COMBINER.md) now
 completes the admitted light/texture/last-stage color/fog-off/TEV setup prefix.
-Real indexed fan submission still gates part history and camera queue completion;
-other GPU material/fog/projected domains remain separate provider boundaries.
+The indexed-fan backend now submits admitted original geometry. Later normal
+numeric/material/callback providers still gate complete part history and camera
+queue completion; other GPU fog/projected domains remain separate boundaries.

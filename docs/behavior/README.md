@@ -1113,3 +1113,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native previous-party admission and shared attached position prefix](partner/NATIVE_PREVIOUS_PARTY_AND_SHARED_INITIAL_POSITION_PREFIX.md).
 
 - [Shared Bero normal-position geometry and party owners](field/SHARED_BERO_NORMAL_POSITION_GEOMETRY_AND_PARTY_OWNERS.md) — actual requested-name/ROAD leaf resolution, collision readiness, mutable globals and distinct party current owner.
+
+- [Native original indexed animation fan submission](display/NATIVE_ANIMATION_INDEXED_FAN_SUBMISSION.md): independent source array decoding, retained fan completion, ST11/atlas mapping and actual Citro3D triangle fans.
+- [Native indexed-fan numeric and array bridge](display/NATIVE_INDEXED_FAN_NUMERIC_AND_ARRAY_BRIDGE.md): original ST11 texgen input, serialized attribute offsets, one model transform and one atlas adaptation.

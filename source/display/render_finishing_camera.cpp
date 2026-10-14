@@ -160,9 +160,7 @@ void Renderer::resumeFinishingCamera(const Game& game){
                     for(unsigned row=0;row<3;++row)for(unsigned col=0;col<4;++col)q.matrix[row][col]=(*r.matrix)[4*row+col];
                     return renderer.finishingShadowRequest(q);}
                 if(r.function==0x802ba39c || r.function==0x802b5c8c){ShadowGXRequest q;q.kind=static_cast<ShadowGX>(r.function);q.values[0]=int32_t(r.arguments[0]);return renderer.finishingShadowRequest(q);}
-                // Material light/texture/TEV and indexed geometry must bind
-                // their actual state owners before this callback can finish.
-                return false;
+                return renderer.finishingAnimationGeometry(r);
             };
             inner.shape=&shape;
             BattlePartDisplayServices part;part.inner=&inner;

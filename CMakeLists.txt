@@ -1675,3 +1675,10 @@ add_executable(field_previous_party_tests tests/field_previous_party_tests.cpp)
 target_link_libraries(field_previous_party_tests PRIVATE ttyd_core)
 add_test(NAME field_previous_party COMMAND field_previous_party_tests)
 set_tests_properties(field_previous_party PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Original indexed animation fans and native-source attribute decoding.
+target_sources(ttyd_core PRIVATE source/display/animation_fan.cpp)
+add_executable(animation_fan_tests tests/animation_fan_tests.cpp)
+target_link_libraries(animation_fan_tests PRIVATE ttyd_core)
+add_test(NAME animation_fan COMMAND animation_fan_tests)
+set_tests_properties(animation_fan PROPERTIES WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})

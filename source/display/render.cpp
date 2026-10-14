@@ -291,7 +291,7 @@ bool Renderer::changeRoom(uint32_t room) {
     // the linear heap while a second field room/NPC set is staged.
     C3D_FrameSync();for(auto* unused:{&stage,&trioBackground,&trioStage})freeRoom(*unused);
     if(finishingShadowProgram.texture==ShadowTexture::CharacterAtlas){finishingShadowProgram.texture.reset();}
-    finishingAtlas.reset();finishingTextureObjectReady=false;finishingTextureLODReady=false;
+    finishingAnimationFans.reset();finishingAtlas.reset();finishingTextureObjectReady=false;finishingTextureLODReady=false;
     for(auto* unused:{&goombaQuestTexture,&fieldItemGetTexture,&trioMarioTexture,&trioPartnerTexture})if(unused->imported){
         Tex3DS_TextureFree(unused->imported);C3D_TexDelete(&unused->texture);*unused=Texture{};
     }
@@ -326,7 +326,7 @@ bool Renderer::prepareSceneActorTextures(const Game& g) {
     if(!retire && !admit)return true;
     C3D_FrameSync();
     const auto release=[](Texture& slot){if(slot.imported){Tex3DS_TextureFree(slot.imported);C3D_TexDelete(&slot.texture);slot=Texture{};}};
-    if(!trio){if(finishingShadowProgram.texture==ShadowTexture::CharacterAtlas)finishingShadowProgram.texture.reset();finishingAtlas.reset();finishingTextureObjectReady=false;finishingTextureLODReady=false;release(trioMarioTexture);release(trioPartnerTexture);}
+    if(!trio){finishingAnimationFans.reset();if(finishingShadowProgram.texture==ShadowTexture::CharacterAtlas)finishingShadowProgram.texture.reset();finishingAtlas.reset();finishingTextureObjectReady=false;finishingTextureLODReady=false;release(trioMarioTexture);release(trioPartnerTexture);}
     if(!quest)release(goombaQuestTexture);
     if(!item)release(fieldItemGetTexture);
     const auto load=[&](const char* path,Texture& slot){

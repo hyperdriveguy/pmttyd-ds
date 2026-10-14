@@ -18,6 +18,7 @@
 #include "actor_mesh.hpp"
 #include "actor_animation.hpp"
 #include "battle_pose_pool.hpp"
+#include "animation_fan.hpp"
 #include "field_air_shadow.hpp"
 #include "field_actors.hpp"
 #include "npc_presentation.hpp"
@@ -131,6 +132,8 @@ private:
     std::optional<FinishingAtlas> finishingAtlas;
     std::optional<BattleActMatrix> finishingTextureMatrix;uint32_t finishingTextureGenerator=60;
     bool finishingAnimationTexture(const AnimationTextureRequest&);
+    AnimationFanStream finishingAnimationFans;
+    bool finishingAnimationGeometry(const AnimationShapeCall&);
     std::optional<BattleActMatrix> finishingShapeNormal; // Actual source normal-matrix owner; consumed by future lit-shape backend.
     NativeDisplayState finishingDisplayState;
     NativeShadowProgram finishingShadowProgram;

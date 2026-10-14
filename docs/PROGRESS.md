@@ -5995,3 +5995,77 @@ and Game's separate Bero/Trouble area coordination remain unfinished. House05,
 remaining original events/NPCs/objects and full-game fidelity remain active work.
 
 tools/check_doc_links.py checked1322 Markdown files with zero broken links.
+
+### 2026-10-14 — Original indexed animation fans on PICA
+
+Bound source ClearDesc/INDEX16 descriptors/formats/arrays and actual triangle-fan
+submission. The retained decoder keeps independent global animated position and
+normal bases, original MODEL color/UV byte bases, low16 indices and source RGBA
+byte order. It never substitutes flattened animation vertices or applies node/
+legacy actor transforms twice. TEX0 uses original ST11, including matrix columns2
+and3; source matrix precedes package atlas crop and ONE V correction. Independent
+read-only DOL/SDK/backend review confirmed these input/owner domains.
+See [native fan scope](behavior/display/NATIVE_ANIMATION_INDEXED_FAN_SUBMISSION.md)
+and [numeric/array evidence](behavior/display/NATIVE_INDEXED_FAN_NUMERIC_AND_ARRAY_BRIDGE.md).
+
+One reusable64-vertex staging array avoids per-fan allocation;64 is native
+admission, not source LOW16's limit. Final FIFO succeeds only after actual complete
+fan submission. Held submission retries captured vertices/texture without replaying
+acknowledged fans; zero/one/two-count primitives produce no triangles. Native
+validates current resident package/cell/generator/matrix and unlit channel owners,
+restores acknowledged GPU state and calls real C3D_ImmDrawBegin(TRIANGLE_FAN),
+actual XYZ/ST/RGBA attributes and End. Normals remain validated/retained; no lighting
+is faked by the shader without a normal input. Both existing atlas-release paths
+now reset staged geometry before freeing textures, with their FrameSync lifetime.
+
+Host geometry census passes all170 original fans/653 indexed vertices for actual
+trio b_mario,c_pkr and c_kuri_h using independent array bases/selectors. Broad census
+uses an explicit cell0 fixture; it does not prove every animated key/palette. First
+actual Goombella cell is separately resolved through original descriptor/TPL and
+converted package. Tests cover normal/color235..237 beyond position count128,
+held-final/prefix data, ST11 cancellation/identity60, crop/one V correction,
+invalid indices/owners/NaN/capacity and altered raw RGBA bytes. Synthetic variants
+are fixtures, not original instructions/GPU observations. Independent review found
+no blocker in the admitted serialized one-slot/unlit domain.
+
+Validation freezes1d7cfe7f plus only owned edits in artifacts/fan-render-source.
+Reuses the previous private original-asset pack; no new extraction, image conversion,
+shared cache writes or ISO writes. Headers/layouts were frozen before native
+compilation. Final `CMAKE_BUILD_PARALLEL_LEVEL=4 make -C artifacts/fan-render-source test`
+exited0:318/318 C++ and181/181 Python tests; log artifacts/fan-render-test.log.
+Focused decoder test also exited0. Native
+`TMPDIR="$PWD/artifacts/native-stage-map-tmp" make -C artifacts/fan-render-source all -o assets-ready BUILD=build-fan-render TARGET=ttyd-fan-render -j6`
+exited0, log artifacts/fan-render-build.log. Restored normal-j4 build exited0,
+log artifacts/fan-render-build-restored.log. Normal3DSX SHA256
+589b93fe3b2a8e748fb5c82056cfd653752658a1bc120578d966c75d06765fdb, identical before/after temporary harness restoration.
+Source audit2081 tracked/owned input files and1410 private-pack files:zero
+mismatches. Exact hashes:artifacts/fan-render-validation-manifest.json. Concurrent
+later shared work is preserved; the merged live tree is not claimed tested as
+one build. Documentation links:1322 Markdown files,zero broken links.
+
+Isolated80s normal fresh-save and150s ending runs exited0; logs
+artifacts/fan-render-smoke-normal.log and fan-render-smoke-ending.log, output
+artifacts/azahar-fan-render-normal and azahar-fan-render-ending. Inspected normal
+capture shows original storybook art at60AppFPS/100% emulator speed. The ending
+capture remains black fade/development field-restoration notice at60AppFPS/100%,
+not original visible-geometry/field-return parity. Actual source callback emitted
+104 GPU fans/404 vertices. Private fan-submission.txt ends at b_mario draw30296,
+fan count4,cell4,scale1,first XYZ(4.893848,9.350096,-.2014849),
+UV(.5493376,.9288505),white source RGBA. Camera4/queue21/part callback80101774
+now waits at inverse-transpose8029df28 rather than descriptor setup802b4520.
+Exact next matrix operands/reason for the finite adapter's refusal still need
+capture; no singular/overflow cause is inferred. Harness uses deterministic
+physical/menu input and explicit Bero fixture bit1 clear, no combat-state writes
+or fake geometry/history/queue success. All temporary hooks restored and excluded
+from history; emulator profiles/saves isolated. A later hold does not replay
+already submitted actors across outer frames; sustained rendering equivalence
+and complete callback/field-return remain open. Citro3D immediate float24 rounding,
+nonzero culling/mirrored-model and original framebuffer parity are unverified;
+actual New2DSXL hardware performance remains unmeasured.
+
+Next capture the actual held inverse-transpose input and close its original
+reciprocal/nonfinite/singular behavior, then the remaining finishing callbacks and
+real teardown/field return. Keep full scene submission/history behind real owners.
+Other lit/multitexture/out-of-cell sampler domains, broader animations/indoor/
+event/visibility/story requirements and the complete playable prologue remain
+unfinished. EVT-01 and the full goal stay active.

@@ -55,8 +55,9 @@ selective publication and native setter/count/K0 retention. Synthetic inputs
 and permissive providers are test fixtures, not original execution observations.
 Native build/trace/smoke evidence is recorded in PROGRESS and EVT-01.
 
-Remaining work includes real original indexed fan submission/UV atlas binding,
-projected/timed/depth providers and holders, other GPU equations and enabled fog,
+The [indexed-fan backend](NATIVE_ANIMATION_INDEXED_FAN_SUBMISSION.md) now binds
+admitted original geometry and atlas UVs. Remaining work includes wider geometry/
+normal numeric domains, projected/timed/depth providers and holders, other GPU equations and enabled fog,
 GX/PICA quantization/clamp/cache comparison, original frames, hardware timing,
 battle-to-field return and the wider playable prologue. This is implementation
 progress in an admitted source path, not a complete rendering-system claim.

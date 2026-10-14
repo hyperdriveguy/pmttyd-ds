@@ -4502,3 +4502,9 @@ Next normal-position must read incoming name through actual VM GP+11c, not the
 standalone85000000 alias; bind genuine geometry, S/E globals, fresh recovery
 writes, captured motion25 test and later READF/actor/camera effects. Actual
 nonzero party construction and full Game/GP/world lifetime remain open.
+
+### 2026-10-14 native original indexed fan submission
+
+Bound actual source INDEX16 descriptors, independent animated position/normal and original MODEL color/UV arrays, ST11 then package atlas crop/one V correction, and real Citro3D triangle fans. All170 source fans/653 vertices pass the host geometry census. Native ending submits104 fans/404 vertices and now waits at inverse-transpose8029df28 instead of ClearDesc. Need capture exact next matrix operands and close actual source reciprocal/nonfinite/singular numeric behavior; the existing finite adapter remains the best-effort boundary, no identity normal or fake success. Full callback/field-return closure, sustained images, lit/multislot/out-of-cell domains and original raster/hardware comparisons remain open. See [native fan scope](../behavior/display/NATIVE_ANIMATION_INDEXED_FAN_SUBMISSION.md); exact validation is in PROGRESS. EVT-01 remains open.
+
+2026-10-14 indexed-fan read-only check: [numeric and array bridge](../behavior/display/NATIVE_INDEXED_FAN_NUMERIC_AND_ARRAY_BRIDGE.md) confirms original source4/type1 generator uses ST11, including matrix column2 plus column3; current SRT column2 is zero. Raw MODEL array/count/endian and local-position versus composed-model domains are recorded. Native submission and original frame comparison remain implementation/validation work.
