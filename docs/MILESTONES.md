@@ -77,6 +77,7 @@ contradict the recovered contracts.
 | PARTNER-FULL-01 | G1 | Field lifecycle and abilities of the six non-Goombella partners. |
 | MENU-01 | G1 | Original field pause menu entries, navigation, pause ownership and saving (the demo only opens it once; every later session uses it). |
 | PROGRESS-01 | G1 | Star points, level-up bonus selection, BP and badges, and their save persistence (the demo's first encounter has no-level-up tail). |
+| FIELD-ENEMY-01 | G1 | Roaming field enemies, contact battle entry and post-battle respawn (the demo's encounter is scripted). |
 | AC-01, AC-02, AC-03 | D1 | Jump/Hammer/defense ownership and impact cadence. |
 | DMG-01, DMG-02 | D1 | Weapon power, part defense, damage dispatch/application. |
 | STATUS-01 | D1 | Status lifetime and turn ownership. |

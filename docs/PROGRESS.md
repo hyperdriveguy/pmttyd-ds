@@ -2,6 +2,28 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Filed FIELD-ENEMY-01 (roaming field enemies)
+
+Filed [FIELD-ENEMY-01](requests/FIELD-ENEMY-01.md) on the full-game path and
+added its inbox and milestone-map rows. Grounded in native source: the field
+actor record carries only `kind` 0=NPC/1=map object with a wander domain and no
+enemy kind or aggro/contact fields, and the only field battle the port drives is
+the scripted harbor Crump encounter. The request asks for the original roaming
+enemy kind/registration and per-area lifetime, the field AI (notice/aggro,
+approach/retreat, speeds, timers), the Mario-contact and first-strike trigger
+that hands off to the existing
+[field battle entry/return protocol](behavior/field/FIELD_BATTLE_ENTRY_AND_RETURN.md),
+the danger presentation and the post-battle respawn. Scoped G1 (the demo's
+encounter is scripted); it must not be short-circuited by a scripted-only entry.
+
+Validation: doc-link audit 1012 files / 0 broken; docs only, no make rerun.
+Limitation/incident: the first commit of this change (`08f9605`) was dropped when
+the concurrent session ran `reset: moving to HEAD~1` on top of it (reflog
+HEAD@{3}); the worktree content survived and it was re-committed on the current
+tip with only these paths staged. Next: continue the D1/G1 request loop and
+verify delivered answers against the read-only ISO before applying. Full-game
+incomplete.
+
 ## 2026-10-13 — ITEM-01 removal symmetry: pouchRemoveItem
 
 Delivered behavior/battle/POUCH_REMOVE_ITEM.md: table select (held/key/
