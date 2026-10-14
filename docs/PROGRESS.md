@@ -1,3 +1,85 @@
+## 2026-10-14 — Native sampler safety across original battle/item/message art
+
+Previous goal turn made progress with retained original icon geometry. Commit
+`3cd7b24b3cbe3f0ea48ffedb5fefc67832b356e4` repairs the remaining explicit null
+sampler binds in the command-class, item95/coin, item-get and system-message
+renderers, and gives source icons a persistent unused-sampler owner.
+[Contract](behavior/display/NATIVE_UNUSED_SAMPLER_RESIDENCY.md).
+The full tutorial/battle goal remains active and incomplete.
+
+Read-only local Citro3D1.7.1 disassembly confirms that C3D_TexBind for units1/2
+loads texture+0xc before storing a binding. No null disable was assumed from
+other APIs. SDK archive identity and instruction evidence live in
+`artifacts/sampler-sdk.json` and `artifacts/sampler-sdk-bind-disassembly.txt`.
+The shared native helper parks unused units on the original font already
+required by Renderer::init. That texture outlives transient icon/menu/effect
+banks. This also replaces the prior source-icon fallback to its current image,
+removing unused-unit dependence on that image's eventual eviction/retirement.
+
+Actual sampled textures/stages are preserved: command/field/source icons read
+TEX0; the item-get effect still uses original pattern44/opacity42 at units0/1;
+system messages still use their three original textures during each quadrant.
+Multi-texture paths park again before Citro2D. No sampler helper allocation,
+substitute art, asset conversion, dialogue, menu styling, control, simulation
+clock or source GX-owner mutation. Input still requires the unfinished source
+command/item execution; no touch-only control was introduced.
+
+Validated frozen `artifacts/battle-lens-qwwrj2n7` at baseline
+`9b5450f850d15bd6e71747f781e159641e1f4ee3` plus the owned repair. Audited1689
+source/include/test/tool/build inputs, zero mismatches; identities in
+`artifacts/sampler-source-manifest.json`. Concurrent field NPC work was preserved
+and excluded. The whole live working tree is not claimed tested as one build.
+The existing committed door converter refreshed the private original registry/
+setup pack to103308 bytes/970 objects, with field-area-battle metadata. Original
+font/icon/effect/window images were reused unchanged, outside source history.
+
+Required `CMAKE_BUILD_PARALLEL_LEVEL=4 make test -o assets-ready` passed327/327
+C++ in35.23s and190/190 Python in30.838s, exit0; log
+`artifacts/sampler-test.log`. Required native `MAKEFLAGS=-j4 TMPDIR=artifacts/tmp
+make all -o assets-ready BUILD=build-battle-lens TARGET=ttyd-battle-lens` exited0;
+logs `artifacts/sampler-native.log` and `artifacts/sampler-native-final.log`.
+Normal main restored exactly. Normal3DSX SHA256
+`805eda651c61a775e186c08596a4cf04db74c40a598cd35f2b7d03ed12f73616`.
+Existing unrelated warnings remain; no new production warning. No new portable
+test mirrors the binding implementation; actual GPU paths are checked below.
+Documentation links checked1341 Markdown files, zero broken links.
+
+Excluded native fixture uses real original command icon334 through the class
+backend in normal and disabled states, actual item95/icon307, kind6 item-get
+pattern/opacity and original type3 message-window art. It supplies explicit
+fixture placement and does not run original menu/event/story execution.
+After a real bank release/reimport and then effect retirement, native status
+reports `ok=1 reloads=1 retired=1`. Isolated Azahar exited0; inspected captures
+under `artifacts/azahar-sampler-ready`, with zero unmapped accesses/native
+exceptions in its log captured before termination. User profiles/saves untouched.
+
+Pixel checks retain395 normal-icon,394 disabled-icon and421 item95 pixels;
+those three regions match exactly across initial/reload/retirement captures.
+The effect has1020 non-background pixels before/after reload and zero after
+retirement; the original system-window region retains9702 non-background pixels.
+Checker/output: `artifacts/sampler-pixel-check.py` and profile `pixel-check.json`.
+First fixture failed because it omitted original message-icon metadata loading;
+that resource admission was corrected in the excluded fixture, not bypassed in
+production. Its failure evidence remains under `artifacts/azahar-sampler`.
+
+The retained two-screen icon fixture also passed against this repair, with zero
+changed display pixels across all518400 pixels in three top+bottom captures
+versus the preceding accepted original-icon fixture. Its pre-stop log has zero
+unmapped accesses/native exceptions. Evidence under
+`artifacts/azahar-sampler-icons/pixel-comparison.json`. The original seam, held
+pass and empty completion behavior remain exercised. Neither fixture certifies
+full normal battle completion, original GX raster parity, hardware safety beyond
+the exercised paths, or New2DSXL performance. Temporary mains were restored.
+
+Next close actual Main/camera cadence and missing source draw providers, GP
+counter ownership and real present-item/receipt execution. Connect the recovered
+harmful-item selection/query to physical X and optional lower audience taps;
+retain original command/HUD art and physical alternatives. Whole original-frame
+actor/pose admission, AP/HUD source ordering, enabled fog/lit programs, original
+1x1 dummy resource, tutorial follow-ups, full command/turn/damage flow, actual
+SFX voices and finishing field restoration remain open. No story or battle
+success is inferred from these GPU fixtures.
+
 ## 2026-10-14 — Retained original icon geometry and two-screen composition
 
 Previous goal turn made progress on original icon materials/resources. Commit
