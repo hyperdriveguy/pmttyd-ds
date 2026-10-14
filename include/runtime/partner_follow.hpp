@@ -27,19 +27,28 @@ struct PartnerFollow {
     static float distance(CameraPoint a,CameraPoint b){return std::hypot(a.x-b.x,a.z-b.z);}
     // These are speed-control thresholds, not a required resting gap.
     static float nearThreshold(float targetActivity){return targetActivity==0?.45f:.5f;}
+    // Source width26 engine units: half-width .13 plus speed sets trail reach.
+    // Acquisition distance is100 engine units for idle owner,50 when moving.
     static float historyReach(float speed){return .5f*.26f+speed;}
     static float acquisitionDistance(float ownerSpeed){return ownerSpeed==0?1.f:.5f;}
+    // Work in ENGINE units for original easing coefficients .05/.1 and
+    // offsets .5/-1, then scale back. Preserve binary32 FMA order.
     static float adjustedSpeed(float current,float target) {
         float s=current*100,t=target*100;
         if(t>0)s=std::min(t,std::fma(.05000000074505806f,(.5f+t)-s,s));
         else s=std::max(0.f,std::fma(.10000000149011612f,-1.f-s,s));
         return s*.01f;
     }
+    // Source excess term is.1*(separation-45), capped1.5 engine units;
+    // terms below1 drop to0 rather than providing fractional catch-up.
     static float catchupSpeed(float ownerSpeed,float separation) {
         float extra=std::min(1.5f,(separation*100.f-45.f)*.10000000149011612f);
         if(extra<1.f)extra=0;
         return (ownerSpeed*100.f+extra)*.01f;
     }
+    // Dimensions: Goombella26x24, Mario20x37 engine units. Overlap limits
+    // use source factors .4/.3/.4; bearings within4 degrees turn +/-90.
+    // Movement floors1 or4 engine units, or .8*owner speed, are source terms.
     void correctOverlap(CameraPoint& root,CameraPoint owner,float speed,const PartnerFollowServices& s) {
         const float dx=root.x-owner.x,dz=root.z-owner.z;
         if(std::fabs(dx)>.4f*(.26f+.2f) || std::fabs(dz)>.3f*(.26f+.2f) ||
@@ -57,6 +66,10 @@ struct PartnerFollow {
     // partySearchGround's five probes and finite ordinary Goombella domain.
     // The terrain callback is the native static-room ray adapter.
     bool support(CameraPoint root,float depth,float dropLimit,float& height,const PartnerFollowServices& s) const {
+        // Five probes at3/8 width; origin upper margin3/4 body height.
+        // Lower .001 native=.1 engine, support drop2 vs close tolerance11
+        // engine units. Sentinel -100 native=-10000 engine. Q1000 quantizes
+        // ENGINE coordinates, so .00001 combines division1000 and scale .01.
         constexpr float width=.26f,bodyHeight=.24f;
         const float a=.375f*width*headingX,b=.375f*width*headingZ;
         const CameraPoint offsets[]={{0,0,0},{a,0,b},{-b,0,a},{b,0,-a},{-a,0,-b}};
@@ -77,6 +90,10 @@ struct PartnerFollow {
         *this=PartnerFollow{};initialized=true;lastSource=owner;
         trail.push_back({root});trail.push_back({owner});
     }
+    // Source jump preparation: distance/2.25*.9 selects count clamped12..40;
+    // height target25 engine unless |deltaY|>=300 (up delta or down10).
+    // With half-count a, curvature=2h/(a*a-a), takeoff speed clamps3..13
+    // engine units/tick; horizontal2.25 engine units/tick. No render timing.
     void beginJump(CameraPoint root,CameraPoint target) {
         const float d=distance(root,target)*100;
         float r=(d/2.25f)*.9f;
@@ -93,6 +110,8 @@ struct PartnerFollow {
     static CameraPoint move(CameraPoint root,CameraPoint target,float budget,const PartnerFollowServices& s) {
         const float d=distance(root,target);if(d==0)return root;
         const float step=std::min(d,budget),dx=(target.x-root.x)/d*step,dz=(target.z-root.z)/d*step;
+        // Native swept-collision substep .025 world=2.5 engine units, unrelated
+        // to source jump counts. Slide tests X before Z on a rejected diagonal.
         const int count=std::max(1,int(std::ceil(step/.025f)));
         for(int n=0;n<count;++n) {
             auto next=root;next.x+=dx/count;next.z+=dz/count;
@@ -115,6 +134,9 @@ struct PartnerFollow {
         }
         return true;
     }
+    // Source projected-coordinate recovery bounds[-100,700] X /650 Y are
+    // in the caller's projection space, not 3DS pixel limits. Vertical searches
+    // begin200 engine units up, step50 down, reach300, then use26/74 band.
     bool recover(CameraPoint& root,CameraPoint owner,const PartnerFollowServices& s) {
         if(!s.project)return false;
         const auto screen=s.project(root);if(!screen.valid)return false;
@@ -147,6 +169,8 @@ struct PartnerFollow {
         // Append actual post-collision XYZ, suppress consecutive jump marks.
         // The native vector retains an air edge at equal XYZ to avoid losing
         // short jumps; this differs from the original raw ring append guard.
+        // Native vector cap512 (original ring has80). Equal-root tolerance
+        // .001 merges a jump edge into the last mark; append stalls at capacity.
         if(trail.size()<512 && !(sourceJumping && ownerJumping) && (owner.x!=lastSource.x || owner.y!=lastSource.y || owner.z!=lastSource.z || ownerJumping!=sourceJumping)) {
             if(ownerJumping && !sourceJumping && !trail.empty() && distance(trail.back().point,owner)<.001f) {
                 trail.back().jump=true;trail.back().point=owner;
@@ -154,11 +178,16 @@ struct PartnerFollow {
             lastSource=owner;
         }
         sourceJumping=ownerJumping;
+        // Native below-room safety fallback resets to owner below -20 world.
+        // This adapter recovery is distinct from Mario's water/void state machine.
         if(root.y<-20) {root=owner;reset(root,owner);warped=true;return;}
         if(motion==Motion::Ground && recover(root,owner,s))return;
         if(motion==Motion::Ground) {
             const float separation=std::hypot(distance(root,owner),root.y-owner.y);
             if(separation>=acquisitionDistance(speed))homing=true;
+            // Source close speed1 engine below45-distance, far3 at>=50,
+            // otherwise owner speed or2.25. Easing can run TWICE per visit
+            // at separation>=45 before the source catch-up override.
             const float target=separation<.45f?.01f:separation>=.5f?.03f:speed>0?speed:.0225f;
             if(homing) {
                 horizontalSpeed=adjustedSpeed(horizontalSpeed,target);
@@ -185,6 +214,8 @@ struct PartnerFollow {
             }
         }
         if(motion!=Motion::Ground) {
+            // Source fall acceleration fallback -1.4 / terminal -16 engine
+            // units per tick; below, homing/nonhoming fall entries use -1/-1.5.
             if(motion==Motion::Fall && acceleration==0)acceleration=-.014f;
             velocity+=acceleration;if(motion==Motion::Fall)velocity=std::max(velocity,-.16f);
             root.y+=velocity;
@@ -221,6 +252,8 @@ struct PartnerFollow {
             else {motion=Motion::Fall;velocity=0;acceleration=homing?-.01f:-.015f;}
         }
         if(motion==Motion::Ground && homing && horizontalSpeed>0 && remaining>reach && distance(root,before)<.001f)++blocked;else blocked=0;
+        // Native blocked-path repair waits more than8 visits. Only erase
+        // stale marks whose intervening path is swept/supported; jump marks stop it.
         if(blocked>8) {
             // Discard only obsolete marks reachable by a supported swept path.
             // Never shortcut a jump marker or cut through a wall/gap.

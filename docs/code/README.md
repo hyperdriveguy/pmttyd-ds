@@ -9,6 +9,7 @@ Recovered original behavior and its evidence remain in
 | Guide | Implementation covered |
 | --- | --- |
 | [Runtime ownership](runtime.md) | Native main loop, physical input, audio and frontend |
+| [Game composition](game-composition.md) | Room collision, units, tick order, restore and follower ownership |
 | [Checkpoint bytes](save-format.md) | Native save encoder, decoder and file replacement |
 | [Battle core](battle-core.md) | Action commands, private input, status, resources and damage accounting |
 | [Event VM](event-vm.md) | Scheduler, operand tags, opcodes, address mappings and allocator services |
@@ -31,9 +32,10 @@ Avoid comments that merely repeat the C++ statement.
 ## Documentation audit status
 
 The current pass covers runtime main/input/save, the event VM implementation,
-and core battle action/status/resource/damage helpers.
-Audio/frontend service notes are included in the runtime guide. The large
-`Game` composition, rendering/animation, field, battle, message, inventory and
+core battle action/status/resource/damage helpers, and Game/portable runtime
+helper composition.
+Audio/frontend service notes are included in the runtime guide. Platform
+rendering/animation, field subsystem modules, remaining battle, message, inventory and
 story implementations still require a systematic inline numeric/behavior audit;
 existing comments and contracts in those areas do not imply complete coverage.
 Progress and exact validation are recorded in [PROGRESS](../PROGRESS.md).

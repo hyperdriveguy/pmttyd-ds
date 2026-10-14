@@ -1,6 +1,9 @@
 #pragma once
 #include <cstdint>
 namespace ttyd {
+// Native room-change presentation gate. Opaque must be PRESENTED at least
+// once before ready permits blocking resource replacement, even if simulation
+// reaches Opaque during multi-tick catch-up. Alpha spans0..255 by integer ratio.
 struct TransitionFade {
     // Original default map-change duration300ms at NTSC60Hz.
     static constexpr int Duration=18;

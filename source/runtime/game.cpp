@@ -19,6 +19,10 @@
 #include <unordered_map>
 #include <string>
 #include <cassert>
+// Runtime composition and native room geometry cache. Native map/world values
+// use .01 original engine-unit scale; source NPC/event/camera records use engine
+// units. *100 and *.01 at service boundaries are deliberate conversions.
+// Ownership/order/pack legends: docs/code/game-composition.md.
 namespace ttyd {
 namespace {
 // Original callback parameters; loadout, mode and full event-state ownership
@@ -47,6 +51,9 @@ int harnessDamage(DamageUnit& attacker,DamageUnit& defender,DamagePart& part,Dam
     calculateFpDamage(&attacker,defender,part,weapon,code,flags,battle);
     return int(damage);
 }
+// Room collision is process-global, not owned by each candidate Game. Room
+// transactions swap geometry/index/return data; semantic actor state is Game-owned.
+// UINT32_MAX room/mask sentinels force the first derived collision-mask update.
 std::vector<RoadWarp> roads;
 std::vector<uint32_t> roadAttributeNodes;
 std::vector<uint32_t> disabledDoorNodes;
@@ -64,11 +71,16 @@ void applyDoorCollision(uint32_t room,uint32_t mask) {
         disabledDoorNodes.insert(disabledDoorNodes.end(),d.interiorNodes.begin(),d.interiorNodes.end());
     std::sort(disabledDoorNodes.begin(),disabledDoorNodes.end());
 }
+// Road registration overlays original pass-through/inclusion mask0x00800000
+// on matching source nodes without mutating the immutable imported attributes.
 GroundContact runtimeContact(GroundContact contact) {
     if(std::find(roadAttributeNodes.begin(),roadAttributeNodes.end(),contact.sourceNode)!=roadAttributeNodes.end())
         contact.attributes|=0x00800000;
     return contact;
 }
+// Stable native room IDs:0 plaza,1 harbor,2 east,3 west,4 station,5 underground.
+// Node852904 is harbor outgoing marker;1382128 plaza incoming,1215808 east
+// incoming. These are converted original node identities, not world coordinates.
 RoadCallback outCallback(const RoadWarp& road) {
     return road.source==1 && road.sourceNode==852904?RoadCallback::HarborOut:RoadCallback::None;
 }
@@ -83,6 +95,9 @@ bool collisionReady=false;
 std::vector<Vec2> wallLevels;
 std::vector<GroundContact> wallContacts;
 std::vector<WallTriangle> wallTriangles;
+// Triangle positions are three XYZ triples (9 floats). Cull3 means two-sided.
+// GroundContact has attributes/source-node words (8 bytes); ReturnPoint XYZ is12.
+// Head pack prefix48 bytes =36 positions +8 metadata +4 original cull index.
 struct GroundTriangle { float v[9];GroundContact contact;uint32_t cull=3; };
 static_assert(sizeof(GroundContact)==8,"Ground metadata must contain two uint32 words");
 static_assert(sizeof(ReturnPoint)==12,"Return position must contain three float32 values");
@@ -93,14 +108,20 @@ std::vector<HeadTriangle> head;
 std::unordered_map<uint32_t,ReturnPoint> groundReturns;
 using SpatialIndex=std::unordered_map<uint64_t,std::vector<uint32_t>>;
 SpatialIndex wallIndex,groundIndex,headIndex;
+// Legacy no-pack development bounds. Valid ground imports replace these
+// with real room extents; GridSize2 is a native broad-phase cell width.
 Rect roomBounds{-9,-4.5f,9,4};
 constexpr float GridSize=2.f;
+// Pack signed cell coordinates as their uint32 bit patterns in high/low32.
+// floor (not truncation) maps negative coordinates into the correct grid cell.
 uint64_t cellKey(int x,int z) {return (uint64_t(uint32_t(x))<<32)|uint32_t(z);}
 const std::vector<uint32_t>& nearby(const SpatialIndex& index,Vec2 p) {
     static const std::vector<uint32_t> empty;
     auto cell=index.find(cellKey(int(std::floor(p.x/GridSize)),int(std::floor(p.z/GridSize))));
     return cell==index.end()?empty:cell->second;
 }
+// Native import guards: finite coordinates within +/-4096 world units and
+// at most2,000,000 total cell references. These bound memory, not original rooms.
 bool indexBounds(SpatialIndex& index,uint32_t n,float x0,float z0,float x1,float z1,size_t& references) {
     if(!std::isfinite(x0) || !std::isfinite(z0) || !std::isfinite(x1) || !std::isfinite(z1) ||
        std::max({std::fabs(x0),std::fabs(z0),std::fabs(x1),std::fabs(z1)})>4096)return false;
@@ -115,12 +136,17 @@ bool indexBounds(SpatialIndex& index,uint32_t n,float x0,float z0,float x1,float
 
 
 float length(Vec2 a, Vec2 b) { return std::hypot(a.x-b.x, a.z-b.z); }
+// Native bottom-screen tab hitbox x[8,312), y[44,82), four76-pixel columns.
+// -1 means no press-edge tab hit, not an invalid Menu value.
 int menuButton(const Input& i) {
     if (i.touchY >= 44 && i.touchY < 82 && i.touchX >= 8 && i.touchX < 312)
         return (i.touchX-8)/76;
     return -1;
 }
 }
+// Swap-based rollback owns the imported geometry and query indexes together. It also
+// carries road attribute overlays; door masks are recalculated separately.
+// A failed destination must not leave indexes referring to another room's data.
 struct CollisionSnapshot {
     std::vector<Rect> savedWalls;
     std::vector<Vec2> savedLevels;
@@ -144,6 +170,9 @@ struct CollisionSnapshot {
         std::swap(savedBounds,roomBounds);std::swap(ready,collisionReady);
     }
 };
+// Construction removes current collision into previous; load stages destination
+// data in the global cache. Uncommitted destruction swaps the old cache back.
+// Nested Game validation queries the staged cache, not its own collision copy.
 CollisionTransition::CollisionTransition():previous(std::make_unique<CollisionSnapshot>()) {previous->swapActive();}
 CollisionTransition::~CollisionTransition() {if(!committed)previous->swapActive();}
 bool CollisionTransition::load(const char* prefix) {
@@ -154,6 +183,8 @@ bool CollisionTransition::load(const char* prefix) {
     return staged;
 }
 void CollisionTransition::commit() {if(staged)committed=true;}
+// Save and room-pack ABI: keep these IDs stable when adding packaged areas.
+// Unknown IDs return null so import/save/transition validation can reject them.
 const char* roomAsset(uint32_t room) {
     static const char* names[]={"map","gor_00","gor_02","gor_03","gor_04","tik_01"};
     return room<6?names[room]:nullptr;
@@ -162,6 +193,9 @@ const char* roomName(uint32_t room) {
     static const char* names[]={"Rogueport plaza","Rogueport harbor","Rogueport east side","Rogueport west side","Rogueport station","Rogueport underground"};
     return room<6?names[room]:"Unknown area";
 }
+// Normal-Mario inclusion masks0x00080080 or0x00800000 override trigger mask4.
+// Height spans are tested at both lower/upper body rays; no levels means legacy
+// walls extend through all heights, not that they are absent.
 bool wallAtLevel(size_t n,float elevation) {
     if(n<wallContacts.size()) {
         if(!doorCollisionEnabled(wallContacts[n].sourceNode))return false;
@@ -175,6 +209,9 @@ bool wallAtLevel(size_t n,float elevation) {
            (height.x<=elevation+WallUpperRay && height.z>=elevation+WallUpperRay);
 }
 Rect collisionBounds() {return roomBounds;}
+// ROAD v1:12-byte magic/version/count header and48-byte RoadWarp records.
+// count<=128 is a native pack bound. Directions0/2/4/6 are cardinal source codes.
+// Require exactly one reverse marker pairing before replacing the road registry.
 bool loadWarps(const char* path) {
     FILE* file=std::fopen(path,"rb");if(!file)return false;
     char magic[4];uint32_t version=0,count=0;
@@ -204,6 +241,9 @@ bool Game::resolveRoadCallbacks(const RoadWarp& road) {
     return roadPolicy==RoadPolicy::Generic;
 }
 uint32_t Game::warpTarget() const {return warpRequest>=0 && size_t(warpRequest)<roads.size()?roads[warpRequest].target:UINT32_MAX;}
+// Reciprocal marker direction positions arrival .3 native units (30 engine)
+// before/after its center. Validate start floor, then restore staged Game.
+// This is the scoped native arrival adapter, not the complete mapchange event.
 bool Game::finishWarp() {
     if(warpRequest<0 || size_t(warpRequest)>=roads.size())return false;
     const auto& w=roads[warpRequest];float height=w.spawnY;
@@ -241,6 +281,9 @@ void Game::cancelRoad() {
     warpRequest=-1;departureDone=false;departureParentStarted=false;departurePause=0;roadMotion={};arriving=false;saveRequested=false;
     fade.startIn();
 }
+// Legacy fallback rectangles are harness geometry only. Real walls use exact
+// triangle slices at two body-ray heights or radius-inflated segment distance.
+// 1e-8 ignores degenerate segment/triangle projections; do not divide by zero.
 bool walkable(Vec2 p,float elevation) {
     constexpr float r = BodyRadius;
     if (!std::isfinite(p.x) || !std::isfinite(p.z) || !std::isfinite(elevation) || std::fabs(p.x)>4096 || std::fabs(p.z)>4096) return false;
@@ -268,6 +311,10 @@ bool walkable(Vec2 p,float elevation) {
         if (p.x > b.x0-r && p.x < b.x1+r && p.z > b.z0-r && p.z < b.z1+r) return false;
     return true;
 }
+// Wall count high bits:0x80000000 height spans,0x40000000 attributes/nodes,
+// 0x20000000 triangles; low29 bits count. Metadata requires heights; triangles
+// require metadata. Native cap100000. Old records remain valid legacy inputs.
+// Build validated geometry and indexes before publishing any replacement.
 bool loadCollision(const char* path) {
     FILE* file=std::fopen(path,"rb");if(!file)return false;
     uint32_t count=0;bool ok=std::fread(&count,4,1,file)==1;
@@ -306,6 +353,9 @@ bool loadCollision(const char* path) {
     if(ok) {wallLevels.swap(heights);wallContacts.swap(contacts);wallTriangles.swap(geometry);walls.swap(data);wallIndex.swap(next);collisionReady=true;}
     return ok;
 }
+// HEAD:magic/count plus48-byte prefixes (positions,contact,cull). Bounds are
+// computed locally after import, not read as an ABI-dependent C++ struct tail.
+// Cull values0..3 retain original indices; cap100000 is native admission policy.
 bool loadHead(const char* path) {
     FILE* file=std::fopen(path,"rb");if(!file)return false;
     char magic[4];uint32_t count=0;
@@ -350,6 +400,9 @@ FieldShadowHit fieldShadowRay(FieldWallVector origin,FieldWallVector direction,f
         test(ground[n].v,ground[n].cull,ground[n].contact);
     return result;
 }
+// token0=no hit, static token=n+1, dynamic token follows the static range.
+// objectKey identifies a Game-owned object; it is not a source map node.
+// Multi-cell rays sort/deduplicate candidates so equal-depth source order survives.
 static FieldWallHit fieldMapRay(FieldWallVector origin,FieldWallVector direction,float maximum,const std::vector<FieldObjectTriangle>* objects,bool wallPolicy) {
     // Geometry cache is in native scale. Policy inputs/outputs are engine units.
     origin={origin.x*.01f,origin.y*.01f,origin.z*.01f};maximum*=.01f;
@@ -432,6 +485,10 @@ bool headCollision(Vec2 p,Vec2 direction,float worldY,float velocity,float& clam
     if(result.contact)clampedRoot=result.correction;
     return result.contact;
 }
+// Five source probes: center, forward, left, right, back; normalized heading
+// radius HeadProbeRadius. The first admitted ray wins, not the global minimum.
+// Head cull1 excludes upward-facing triangles. Native 1e-6 rejects zero headings,
+// 1e-8 degenerate projected triangles. Bounds are low-inclusive/high-exclusive.
 FieldHeadQuery searchFieldHead(Vec2 p,Vec2 direction,float worldY,float velocity,float rayExtension,
                               FieldSlope* slopes,bool narrowCone,const std::vector<FieldObjectTriangle>* objects) {
     FieldHeadQuery result;
@@ -490,6 +547,9 @@ FieldHeadQuery searchFieldHead(Vec2 p,Vec2 direction,float worldY,float velocity
     }
     return result;
 }
+// Ground count high bits:0x80000000 contact metadata,0x40000000 cull index;
+// low30 bits count. Cull needs metadata. Each XYZ triple uses3 floats, with
+//36-byte legacy geometry,44-byte tagged or48-byte faced records. Cap100000.
 bool loadGround(const char* path) {
     FILE* file=std::fopen(path,"rb");if(!file)return false;
     uint32_t count=0;bool ok=std::fread(&count,4,1,file)==1;
@@ -520,6 +580,9 @@ bool loadGround(const char* path) {
     }
     return ok;
 }
+// RPOS v1:12-byte header and16-byte node/XYZ rows. Nodes must be nonzero
+// and unique; finite coordinates within +/-4096 are a native import bound.
+// Return entries are room-local; replacing ground invalidates the old map.
 bool loadGroundReturns(const char* path) {
     FILE* file=std::fopen(path,"rb");if(!file)return false;
     char magic[4];uint32_t version=0,count=0;
@@ -540,6 +603,11 @@ bool groundReturn(const GroundContact& contact,ReturnPoint& point) {
     auto found=groundReturns.find(contact.sourceNode);if(found==groundReturns.end())return false;
     point=found->second;return true;
 }
+// Highest triangle in (low,high] wins before slope rejection; a rejected
+// steep closest floor does not reveal a lower floor. Native barycentric tolerance
+// +/-1e-4 admits edge roundoff. Filter flags differ for Mario and ordinary partner.
+// Legacy empty packs can supply Y0; only successful queries publish floor outputs
+// (objectKey resets at entry, and slope tilt stores may precede rejection).
 static bool groundWithin(Vec2 p,float low,float high,float& height,GroundContact* contact,float* slope=nullptr,
                          FieldSlope* record=nullptr,bool rejectSteep=true,bool actorFilter=true,bool partnerFilter=false,
                          const std::vector<FieldObjectTriangle>* objects=nullptr,uint32_t* objectKey=nullptr) {
@@ -595,6 +663,8 @@ static bool groundWithin(Vec2 p,float low,float high,float& height,GroundContact
             best=q(best*100.f)*.01f;
         }
         const float angle=floorSlopeDegrees(nx,ny,nz);
+        // Original ordinary support cone rejects slopes>=50 degrees. Restore
+        // prior inclination on rejection, but retain earlier projected tilt stores.
         if(rejectSteep && angle>=50) {
             // Projected tilts were written before the cone gate; +218 wasn't.
             if(record)record->inclination=previousInclination;
@@ -612,6 +682,8 @@ bool groundAt(Vec2 p,float reference,float& height,GroundContact* contact,float*
     if(ground.empty() && std::isfinite(reference))return groundWithin(p,-.5f,StepHeight,height,contact,slope,nullptr,true,true,false,objects,objectKey);
     return groundWithin(p,reference-.5f,reference+StepHeight,height,contact,slope,nullptr,true,true,false,objects,objectKey);
 }
+// Original marker Y survives a missing floor. This broad native downward
+// adapter uses10000 WORLD-unit reach; it is not the normal support probe.
 bool roadStartGround(Vec2 p,float sourceY,float& height) {
     if(!std::isfinite(p.x) || !std::isfinite(p.z) || !std::isfinite(sourceY))return false;
     height=sourceY; // Null ray retains the original marker Y.
@@ -646,6 +718,10 @@ bool landingFootprint(Vec2 p,Vec2 direction,float worldY,float velocity,float& h
     FieldSlope slope;const auto result=searchFieldSupport(p,direction,worldY,velocity,slope,velocity);
     if(result.found){height=result.height;if(contact)*contact=result.contact;}return result.found;
 }
+// Five probes use FloorFootRadius. Native .001 lower margin and .05 upper
+// margin represent .1/5 engine units; Q1000 output quantizes ENGINE units.
+// *.00001 combines /1000 quantization with .01 engine-to-world conversion.
+// A too-distant floor can set delta on a miss; callers use it to choose falling.
 FieldSupport searchFieldSupport(Vec2 p,Vec2 direction,float rootY,float velocity,FieldSlope& slope,float depth,const std::vector<FieldObjectTriangle>* objects) {
     slope={};FieldSupport result;result.height=rootY;
     const float length=std::hypot(direction.x,direction.z);
@@ -680,6 +756,8 @@ void Game::dispatchFieldAir() {
         fieldJump.height=0;jumpBase=groundHeight=progress.elevation=root;jumpHeight=0;
     } else fieldJump.dispatch(jumpBase+fieldJump.height);
 }
+// Dynamic triangles cache by catalog generation, room, known story, interior
+// mask and system flags. Object keys use a separate namespace from static nodes.
 void Game::refreshFieldObjects() {
     const uint64_t generation=fieldActorCatalogGeneration();
     if(fieldObjectGeneration==generation && fieldObjectRoom==progress.room && fieldObjectStory==progress.originalStory &&
@@ -689,6 +767,8 @@ void Game::refreshFieldObjects() {
     buildFieldObjectCollision(fieldActorCatalog(),progress.room,progress.originalStory,fieldDoor.interiorMask,
                               fieldSystemFlags,fieldObjectTriangles);
 }
+// Clearance<=.05 native units (5 engine) counts as nearby obstruction even
+// without contact. Query publishes metadata separately from a ceiling response.
 FieldHeadQuery Game::queryOverhead(float rootY,float velocity,float extension) {
     refreshFieldObjects();
     const auto result=searchFieldHead(progress.position,moveDirection,rootY,velocity,extension,
@@ -751,6 +831,9 @@ void Game::finishVertical(float worldY) {
     if(fieldJump.airborne)jumpHeight=jumpBase+fieldJump.height-groundHeight;
     if(groundHeight+jumpHeight<=VoidThreshold)beginVoid();
 }
+// Validate an authored remembered return or stable room respawn before starting
+// recovery. Bottomless motion33 and water motion31 are original motion IDs.
+// Clear pending warp/save requests; transient recovery roots cannot checkpoint.
 bool Game::beginVoid() {
     ReturnPoint destination=roomRespawn,candidate;
     float floor=destination.y;
@@ -783,6 +866,8 @@ NpcTalkPlayer Game::fieldNpcTalkPlayer() const {
     mario.viewYaw=fieldNpcAngles().angle(fieldCameraFrame.eye.x,fieldCameraFrame.eye.z,fieldCameraFrame.at.x,fieldCameraFrame.at.z);
     return mario;
 }
+// gor_02 Goomba4 key0x2b0a9f83: quest2/item95 and quest13/item107 require
+// explicitly known quest/guard state. Legacy unknown switches never imply items.
 FieldActorTalkInventory Game::fieldNpcTalkInventory(const FieldActorRecord& actor) const {
     FieldActorTalkInventory items;const auto& state=progress.originalNpcTalkState;
     if(actor.room!=2 || actor.key!=0x2b0a9f83)return items;
@@ -839,6 +924,10 @@ const FieldActorRecord* Game::nearbyFieldActor() const {
         if(actor.key==scan.candidate && actor.visible(progress.room,progress.originalStory,fieldDoor.interiorMask,fieldSystemFlags))return &actor;
     return nullptr;
 }
+// Candidate/pending/waiting are three distinct invocation phases. Record a
+// generation with the candidate; catalog reload must not reuse a stale actor key.
+// A confirmed candidate starts next invocation, and returning from a finished
+// talk never immediately rescans/restarts it in that same invocation.
 void Game::updateFieldNpcTalk(const Input& input) {
     if(npcTalkWaiting) {
         if(!fieldActorTalk.message.active() && !goombaHandIn.active() && !goombaAcquisition.active() && !goombaReward.active()){npcTalkWaiting=false;npcTalkCandidate=0;}
@@ -899,6 +988,9 @@ void Game::synchronizeFieldNpcs() {
         fieldNpcs.clear();fieldNpcEventCandidate=0;fieldNpcGeneration=generation;fieldNpcRoom=progress.room;
     }
 }
+// Source wander providers consume the prior pose/contact publications. Native
+// sound-name tokens1/2 select left/right keys; they are not original addresses.
+// Frame conversion is60Hz; pose epochs are integer milliseconds.
 void Game::updateFieldNpcEvents() {
     synchronizeFieldNpcs();npcSoundRequests.clear();
     if((scene!=Scene::Explore && scene!=Scene::Dialogue) || trioBattleActive || water.active() ||
@@ -959,6 +1051,8 @@ void Game::updateFieldNpcCandidates() {
     }
     fieldNpcEventCandidate=uint32_t(scan.candidate);
 }
+// NPC active/visible gate is flags&3==3. Source body flag0x8000 publishes
+// presentation flag0x100; camera-facing work belongs to simulation, not draw.
 void Game::updateFieldNpcPresentation() {
     for(const auto& actor:fieldActorCatalog().actors()) {
         if(actor.kind || !actor.visible(progress.room,progress.originalStory,fieldDoor.interiorMask,fieldSystemFlags))continue;
@@ -977,6 +1071,10 @@ void Game::updateFieldNpcPresentation() {
         instance.presentationReady=instance.presentation.prepare(input,fieldNpcAngles(),camera);
     }
 }
+// Retain prior body root until the admitted source end snapshot. Scripted
+// placement generation changes reset that root to avoid spurious collision deltas.
+// Wander dt uses milliseconds/1000; a gap>500ms admits16ms as a native bridge.
+// Pose speed<.10000000149011612 is stay, below source run threshold is walk.
 void Game::updateFieldNpcCollision() {
     fieldNpcHit=0;synchronizeFieldNpcs();
     if((scene!=Scene::Explore && scene!=Scene::Dialogue) || trioBattleActive || water.active() ||
@@ -1100,6 +1198,10 @@ bool Game::beginWater() {
     fieldMovement.speed=0;
     jumpHeight=0;fieldJump={};fieldJump.motion=31;fieldStep={};fieldVerticalVelocity=0;warpRequest=-1;saveRequested=false;return true;
 }
+// Restore rebuilds per-room/transient Game state but explicitly retains session
+// services, original Mario pose handles/facing and camera clocks/history. Copy
+// saved BEFORE replacing *this because saved may alias this->progress.
+// Native road/story setup is gated by explicit room/story, never harness victory.
 void Game::restore(const Progress& saved) {
     const auto retainedCommandPalette=commandPalette;
     const auto retainedShadows=shadows;
@@ -1143,6 +1245,8 @@ void Game::restore(const Progress& saved) {
     applyDoorCollision(p.room,fieldDoor.interiorMask);
     harborStory.reset(p.room==1 && p.originalStory && *p.originalStory==3);
     harborResume=p.room==1 && p.originalStory==4;
+    // Native checkpoint follower placement starts30 engine units left of Mario,
+    // falling back to Mario's root when that offset is blocked.
     partner = {p.position.x-0.3f,p.position.z};
     groundHeight=p.elevation;partnerHeight=p.elevation;
     if (!walkable(partner,p.elevation)) partner = p.position;
@@ -1177,6 +1281,8 @@ bool Game::checkpointGround(float& height) {
     refreshFieldObjects();
     return groundAt(progress.position,progress.elevation,height,nullptr,nullptr,&fieldObjectTriangles);
 }
+// Partner floor adapter applies its distinct attribute filter and rejects
+// water mask0x200. It samples Game-owned object triangles alongside room ground.
 void Game::updatePartner() {
     refreshFieldObjects();
     PartnerFollowServices services;
@@ -1196,6 +1302,9 @@ void Game::updatePartner() {
         float floor=root.y;groundAt(partner,root.y,floor,&partnerContact,nullptr,&fieldObjectTriangles);
     }
 }
+// Scoped bank1 follower bridge chooses Goombella vs Mario from source distance
+// decision. Paper yaw retains90/270 unless movement heading enters10..170 or
+//190..350 degrees; movement tolerance1e-6 is native positional noise policy.
 void Game::updateTemporaryProfessor() {
     if(!professorStory.temporaryProfessor || (professorStory.locked() && !(fieldDoor.active() && professorStory.fenceStarted)) || (progress.room!=2 && progress.room!=5) ||
        (scene!=Scene::Explore && scene!=Scene::Dialogue) || warpRequest>=0 || fade.active())return;
@@ -1233,6 +1342,8 @@ bool Game::beginHarborEncounter(bool resume) {
     harborStory.enabled=harborStory.triggered=harborStory.finished=true;harborCameraCursor=0;
     return true;
 }
+// Harness dialogue kind1 has two development notices; other kinds three.
+// These notices/prompts are separate from original message IDs and story scenes.
 void Game::openDialogue(int kind) {
     scene = Scene::Dialogue; dialogueKind = kind; dialoguePage = 0;
     sound = Sound::Confirm;
@@ -1285,6 +1396,9 @@ void Game::rebaseFieldCamera() {
     if(cameraRoadAsset(progress.room))fieldCameraFlags|=4;
     if(fieldCameraViewAdapter && !fieldCameraAuthored)fieldCameraFrame=adaptedFieldCameraFrame(cameraX,cameraHeight,cameraZ);
 }
+// Field flags2 pauses this view update;4 enables camera roads. Collision
+// target adds1 ENGINE unit to the retained contact Y. Prepare/finish use
+// candidates and commit only admitted camera state; view mode3 bypasses roads.
 void Game::beginFieldCameraTick() {
     if(!fieldCameraInitialized)rebaseFieldCamera();
     if(fieldCameraFlags&2){fieldMovement.headingOffsetDegrees=cameraHeadingSnapshot(fieldCameraFrame.yaw);return;}
@@ -1358,6 +1472,11 @@ void Game::cacheFieldScreen() {
     fieldScreen=projectCameraRoot({progress.position.x,rootY,progress.position.z},
                                  fieldCameraFrame.view,fieldCameraFrame.projection,fieldCameraFrame.viewport);
 }
+// This function composes recovered owners; order differs for ascent and fall.
+// Ground classes0/1/2=stay/walk/dash. Retained travel is independent of current
+// stick drift and display facing. An already-launched call skips double gravity.
+// Angular constants57.295779513 and.01745329238474369 convert radians/degrees;
+// source angles are degrees while host sin/cos take radians.
 void Game::move(const Input& i,bool launched) {
     refreshFieldObjects();wallObjectKey=0;
     retainedFieldMainX=fieldKeysOff?0:int8_t(std::clamp(i.x,-1.f,1.f)*70);
@@ -1481,6 +1600,8 @@ void Game::move(const Input& i,bool launched) {
             }
         }
     }
+    // Legacy billboard turn adapter: stick dead zone.15, ten-tick turn,
+    // minimum width scale.08. Source Mario paper presentation is a separate owner.
     if (std::fabs(x) > .15f && (x>0 ? 1.f : -1.f) != facing) {
         facing = x>0 ? 1.f : -1.f; turnTick=10;
     }
@@ -1531,11 +1652,16 @@ FieldBattleServices Game::fieldBattleServices() {
     s.postMario=[](void* p) {static_cast<Game*>(p)->fieldPostRequested=true;};
     return s;
 }
+// Native fieldSequence2 indicates this adapter's field return request. It
+// must not be confused with original current-sequence IDs used by other services.
 bool Game::returnFromBattle(int32_t harnessResult) {
     // Development outcome tokens only; original outcome producers are unrecovered.
     fieldBattleWork.result=harnessResult;fieldSequence=2;
     return waitFieldBattleEnd(fieldBattleServices())==2;
 }
+// Legacy Crump harness slots0/1 and fixture stats differ from original tutorial
+// and trio registries. Zero defense arrays have5 elemental lanes; reserve32 is
+// a native request-vector allocation hint, not a source event queue capacity.
 void Game::startBattle() {
     fieldPrepareRequested=fieldPostRequested=fieldBgmStopRequested=false;fieldSoundFlags=0;
     startFieldBattle(0,true,fieldBattleServices());
@@ -1568,6 +1694,9 @@ void Game::attackDone() {
     phase=Phase::Impact; phaseTick=0;
     sound=actionSuccess ? Sound::Success : Sound::Hit;
 }
+// Record the latest hit's effect/audio/notice/event requests for later binding.
+// Clearing the trace does not execute/drain those services. Stored lastHp narrows
+// signed8:128 is the sign boundary,256 the byte wrap modulus.
 void Game::applyBattleDamage(bool enemyTarget,int32_t hp,int32_t fp,uint32_t code) {
     struct Context {
         DamageUnit* player;DamageUnit* enemy;DamageUnit* target;
@@ -1606,6 +1735,9 @@ void Game::applyBattleDamage(bool enemyTarget,int32_t hp,int32_t fp,uint32_t cod
     lastDamage=context.target->lastHp<128?context.target->lastHp:int(context.target->lastHp)-256;
     progress.hp=playerBattleUnit.hp;enemyHP=enemyBattleUnit.hp;
 }
+// General pad updates precede harness sequence setup; private AC pad update
+// and main callbacks precede later StartAC/result event requests. This chronology
+// matters even when the main callback is inactive. Counts advance once per tick.
 void Game::battle(const Input& i) {
     BattlePadSample padInput=inputProducer.channels[0].battleSample();
     auto stick=[](float value) {return std::isfinite(value)?int8_t(std::clamp(value,-1.f,1.f)*70):int8_t(0);};
@@ -1623,6 +1755,9 @@ void Game::battle(const Input& i) {
     hammerInput.difficulty=attackDifficulty(3,0,0); // Default weapon byte3, no badge modifiers.
     // Adapt the Circle Pad's normalized70-unit range to original main-stick X.
     hammerInput.held=generalBattlePads[0].held.entries[0];
+    // Native selection IDs0 Jump,1 Hammer,2 Mushroom; wrap modulo3. Touch
+    // region x[8,312),y[100,158) uses102-pixel columns. Mushroom heals5 to
+    // harness max10. Impact42/enemy-impact36 are provisional simulation delays.
     const bool selecting=phase==Phase::Select;
     bool startCommand=false;
     // Harness sequence adapter runs between general and private pad updates.
@@ -1730,6 +1865,10 @@ void Game::battle(const Input& i) {
         else { phase=Phase::Select; phaseTick=0; }
     }
 }
+// Source key flag8 uses a BYTE nesting depth; balanced KeyOn/Off requests
+// are required (no saturation). Level2 sets low mask3/stops type2; level0
+// clears low nibble/resumes types0xef. Camera8 mask0x200/sound mask0x80
+// belong to their separate owners, not the Mario control flag2.
 bool Game::applyFieldItemStateRequest(ItemGetRequest r) {
     switch(r) {
     case ItemGetRequest::EffectPayload5:acquisitionEffect.camera(5);return true;
@@ -1812,9 +1951,16 @@ void Game::updateMarioPresentation() {
         fieldIdle.startFrame=int16_t(marioPresentation.poseStartFrame);
     }
 }
+// One simulation visit. Entry consumes prior camera/NPC publications; local
+// exit owner always runs on return. Priority branches intentionally prevent
+// ordinary input from advancing a locked scene, but neutral movement may keep
+// airborne/support physics alive. See game-composition guide for full order.
 void Game::tick(const Input& rawInput) {
     fenceCollisionDisabled=progress.room==2 && (progress.originalStory.value_or(0)>=10 || professorStory.fenceCollisionOff);
     applyDoorCollision(progress.room,fieldDoor.interiorMask);
+    // Scope-exit publication is gameplay work, not just rendering. Every early
+    // return still updates save objects/NPC responses/talk/poses/itemMain/cases.
+    // Do not move this tail solely to the ordinary Explore branch.
     struct PresentationOnExit {
         Game& game;Vec2 previous;const Input& raw;
         ~PresentationOnExit(){
@@ -1848,6 +1994,8 @@ void Game::tick(const Input& rawInput) {
             const auto& axes=game.inputProducer.channels[0].analog;
             const int mainX=raw.physicalSnapshot?axes.mainX:std::isfinite(raw.x)?int(std::clamp(raw.x,-1.f,1.f)*70.f):0;
             const int mainY=raw.physicalSnapshot?axes.mainY:std::isfinite(raw.z)?int(std::clamp(raw.z,-1.f,1.f)*70.f):0;
+            // Source stick-class radius55 squared=3025; classes1/2 select
+            // follower walk/run presentation after mapping to +/-70 PAD units.
             const int movementClass=mainX*mainX+mainY*mainY<=3025?1:2;
             const bool ordinary=(game.scene==Scene::Explore || game.scene==Scene::Dialogue) &&
                 !game.water.active() && !game.fade.active() && !game.arriving && game.warpRequest<0;
@@ -1904,6 +2052,8 @@ void Game::tick(const Input& rawInput) {
     saveObjects->tickEvents(ticks*1000/60,saveInput);
     progress.originalFlag233=saveObjects->switches.firstHit;progress.originalFlag236=saveObjects->switches.postStoryHit;
     progress.originalSaveMode=saveObjects->switches.mode;
+    // Input/control locks suppress actions/saving but advance neutral Mario
+    // movement. A held lock is not a universal simulation freeze.
     if(saveLocked()) {
         if(fieldJump.airborne)dispatchFieldAir();
         move(Input{});saveRequested=false;return;
@@ -1917,6 +2067,9 @@ void Game::tick(const Input& rawInput) {
     }
     if(fade.active()){fade.tick();return;}
     if(pipeRequest>=0)return;
+    // DeparturePause11 is the native60Hz bridge for150ms+2 source waits;
+    // movement target offset1.5 world units=150 engine. Scene-specific
+    // callbacks can refuse this generic transition without fabricating completion.
     if(warpRequest>=0) {
         if(size_t(warpRequest)>=roads.size()){cancelRoad();return;}
         if(!resolveRoadCallbacks(roads[warpRequest]))return; // Preserve unresolved/custom original scene ownership.
@@ -1949,6 +2102,9 @@ void Game::tick(const Input& rawInput) {
     if(scene==Scene::FieldDefeat) {if(i.confirm || (tap && i.touchY>=107 && i.touchY<155))reloadRequested=true;return;}
     if(water.active()) {
         retainedFieldMainX=fieldKeysOff?0:int8_t(std::clamp(i.x,-1.f,1.f)*70);
+        // Recovery phases15(void travel),12/14(water hidden/follow) are
+        // original mot_damage states. Display bit1 hides Mario; camera-follow
+        // mask0x10000 persists until Complete/Dead, independent of field control.
         const bool bottomlessTravel=water.kind==RecoveryKind::Void && water.state==15;
         const bool waterFollow=water.kind==RecoveryKind::Water && (water.state==12 || water.state==14);
         const int previousRecoveryState=water.state;
@@ -2001,6 +2157,8 @@ void Game::tick(const Input& rawInput) {
         }
         publishFieldCameraTarget();saveRequested=false;
         if(complete) {
+            // Source curve11; closing releases over100ms, opening immediately.
+            // Native follower trail is rebased after choreography completes.
             releaseCameraTarget(fieldDoor.opening?0:100,11);
             partnerFollow.reset({partner.x,partnerHeight,partner.z},{progress.position.x,groundHeight,progress.position.z});
         }
@@ -2045,6 +2203,9 @@ void Game::tick(const Input& rawInput) {
         if(!goombaHandIn.active()){scene=Scene::Explore;progress.hp=progress.originalPouch->half(0x70);}
         saveRequested=false;return;
     }
+    // Original trio services own their explicit command/attack continuations.
+    // Camera adapter uses original608/480 lens aspect; exported pouch HP lives
+    // at0x70. Do not route completion through the legacy Crump victory branch.
     if(trioBattleActive) {
         trioBattleIntro.tick(ticks*1000/60,(i.confirm || tap?0x100u:0u)|(i.cancel?0x200u:0u),false);
         while(trioBattleCameraCursor<trioBattleIntro.cameras.size()) {
@@ -2092,6 +2253,9 @@ void Game::tick(const Input& rawInput) {
             else {
                 trioCommands.syncPositions(trioBattleIntro);
                 uint32_t buttons=(i.confirm?0x100u:0u)|(i.cancel?0x200u:0u);
+                // Adapt general direction masks to battle virtual left/right:
+                // 0xa000=up/right,0x5000=down/left; physical D-pad6=right/down,
+                //9=left/up. Preserve this source-menu axis folding.
                 uint32_t repeats=(i.right?0x80000u:0u)|(i.left?0x40000u:0u);
                 if(i.physicalSnapshot) {
                     const auto& pad=inputProducer.channels[0];
@@ -2138,6 +2302,8 @@ void Game::tick(const Input& rawInput) {
             if(c.off)releaseCameraView(c.duration,uint8_t(c.curve));
             else setCameraView({c.eye[0],c.eye[1],c.eye[2]},{c.at[0],c.at[1],c.at[2]},c.duration,uint8_t(c.curve));
         }
+        // Original setup4 with pending BattleStart provider0x8004ef54 admits
+        // the trio introduction; setup2 below admits harbor tutorial instead.
         if(professorStory.underground && professorStory.battleSetup==4 && professorStory.pendingService==0x8004ef54) {
             if(trioBattleIntro.beginTrioBattleIntro(ticks*1000/60)) {
                 trioBattleActive=true;setCameraView({0,100,450},{0,50,0},0,11);scene=Scene::Dialogue;saveRequested=false;return;
@@ -2211,6 +2377,8 @@ void Game::tick(const Input& rawInput) {
             const auto eye=CameraPoint{fieldCameraFrame.eye.x*100,fieldCameraFrame.eye.y*100,fieldCameraFrame.eye.z*100};
             const auto at=CameraPoint{fieldCameraFrame.at.x*100,fieldCameraFrame.at.y*100,fieldCameraFrame.at.z*100};
             const auto now=fieldCameraTickMilliseconds(fieldCameraSimulationTicks);
+            // Source-scene stage IDs2/9 and5 install these ENGINE-unit views
+            // with500ms/curve11; they are script stage IDs, not saved story words.
             if(harborStory.stage==2 || harborStory.stage==9)fieldCameraEvents.setView({100,127,45},{100,75,-250},eye,at,500,11,now);
             else if(harborStory.stage==5)fieldCameraEvents.setView({120,105,-53},{120,70,-250},eye,at,500,11,now);
             else if(harborStory.finished)fieldCameraEvents.viewOff(eye,at,500,11,now);
@@ -2236,6 +2404,8 @@ void Game::tick(const Input& rawInput) {
         progress.crumpDefeated=true; scene=Scene::Explore; saveRequested=true; menu=Menu::Status;
         return;
     }
+    // Legacy harness retry restores HP10; original story/tutorial defeat
+    // ownership is separate. Bottom-screen retry band is y[107,155).
     if (scene==Scene::Defeat) {
         if (i.confirm || (tap && i.touchY>=107 && i.touchY<155)) {
             if(!returnFromBattle(-1))return; // Release this development battle's control hold before retrying.
@@ -2253,6 +2423,8 @@ void Game::tick(const Input& rawInput) {
     if (tab>=0 && tab<4) { menu=static_cast<Menu>(tab); sound=Sound::Confirm; }
     if (i.left) menu=static_cast<Menu>((static_cast<int>(menu)+3)%4);
     if (i.right) menu=static_cast<Menu>((static_cast<int>(menu)+1)%4);
+    // Native field menu action band y[177,216); four tabs wrap modulo4.
+    // Mushroom heal5/max10 and exit/save actions belong to the legacy harness.
     if ((i.touchY>=177 && i.touchY<216 && tap) || i.menuConfirm) {
         if (menu==Menu::Settings) { progress.sound=!progress.sound; saveRequested=true; }
         else if (menu==Menu::Items && progress.mushrooms>0 && progress.hp<10) {
@@ -2295,6 +2467,8 @@ void Game::tick(const Input& rawInput) {
             saveRequested=false;return;
         }
     }
+    // Prior invocation's talk candidate suppresses A-jump BEFORE this visit
+    // rescans NPCs at scope exit. Removing that retention replays a talk edge.
     const bool retainedNpcTalk=fieldNpcTalkCandidateAlive();
     const bool launched=i.confirm && !i.cancel && !airborne() && !retainedNpcTalk &&
         !(progress.room==0 && ((!progress.crumpDefeated && near(CrumpPosition)) || near(NpcPosition)));
@@ -2314,6 +2488,8 @@ void Game::tick(const Input& rawInput) {
     const int8_t pipeY=i.physicalSnapshot?inputProducer.channels[0].analog.mainY:int8_t(std::clamp(-i.z,-1.f,1.f)*70);
     if(tryFieldPipe(pipeY))return;
     if((groundContact.attributes&0x200) && !fieldJump.airborne && beginWater())return;
+    // Source harbor trigger compares event integer Z after1/1024 engine-unit
+    // quantization and truncation to integer against -100. Keep both truncations.
     if(harborStory.enabled && !harborStory.triggered &&
        std::trunc(std::trunc(progress.position.z*100.f*1024.f)/1024.f)<=-100 && harborStory.begin(ticks*1000/60)) {
         scene=Scene::Dialogue;saveRequested=false;return;

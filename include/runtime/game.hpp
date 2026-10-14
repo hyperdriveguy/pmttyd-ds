@@ -59,6 +59,8 @@
 #include "field_save_objects.hpp"
 namespace ttyd {
 struct NpcTalkPlayer;
+// Native fixed simulation frequency. Rendering and original callback/event
+// timebase owners are separate; do not convert action windows to draw frames.
 constexpr int TickRate = 60;
 // Provisional native step allowance; original movement remains to be measured.
 constexpr float StepHeight = .25f;
@@ -67,6 +69,8 @@ constexpr float BodyRadius = .1f;
 constexpr float WalkSpeed=FieldMovement::Walk, DashSpeed=FieldMovement::Dash;
 // Circle Pad magnitude maps to the original clamped70-unit stick range.
 constexpr float DashThreshold=FieldMovement::DashStick;
+// Floor probe radius7.5 engine units at .01 scale. VoidThreshold -20 is
+// the native below-room fallback; wall rays11/26.64 engine units from root.
 constexpr float FloorFootRadius=.075f;
 constexpr float VoidThreshold=-20.f;
 constexpr float WallLowerRay = .11f, WallUpperRay = .2664f;
@@ -89,6 +93,8 @@ struct FieldSupport {
 };
 struct ReturnPoint {float x=0,y=0,z=0;};
 struct Rect { float x0, z0, x1, z1; };
+// Unconverted development-fixture rectangles and actor placements only.
+// Imported room geometry/catalogs replace these in the original-assets path.
 inline constexpr std::array<Rect, 4> Obstacles{{
     {-9,-4.5f,-4,-1.5f}, {3.5f,-4.5f,9,-1.5f},
     {-1.1f,-1.1f,1.1f,0.6f}, {-8.7f,2.2f,-7.2f,3.5f}
@@ -107,6 +113,9 @@ struct BattleRules {
     static constexpr int JumpImpact = 48, JumpDifficulty = 3;
     static constexpr int EnemyImpact = 54;
 };
+// Logical simulation input: normalized X/Z, press/release edges and held state.
+// physicalButtons uses source GameCube masks; touch -1 means no press edge.
+// Field cancel may mean partner dialogue while other scenes interpret B.
 struct Input {
     float x = 0, z = 0;
     bool confirm = false, cancel = false, jumpHeld = false;
@@ -126,6 +135,8 @@ struct DamageServiceRequest {
     DamageNotice notice{DamageNoticeKind::ActionCount};
     uint32_t code=0;
 };
+// Converted ROAD v1 record:48 bytes, native coordinates; direction codes
+//0/2/4/6 and original source/arrival-node IDs remain source metadata.
 struct RoadWarp {
     uint32_t source,target;
     float x,z,spawnX,spawnZ,spawnY;
@@ -135,6 +146,9 @@ struct RoadWarp {
 const char* roomAsset(uint32_t room);
 const char* roomName(uint32_t room);
 bool loadWarps(const char* path);
+// Checkpoint state only; transient VM/control/pose/air state is Game-owned.
+// Original pouch is shared live storage; snapshotSaveProgress deep-copies it
+// for a worker write. Native defaults are development starts, not story evidence.
 struct Progress {
     FieldActorTalkState originalNpcTalkState;
     std::shared_ptr<ProloguePouch> originalPouch; // Legacy checkpoints omit it; v8 retains packed original storage.
@@ -164,6 +178,9 @@ struct FieldNpcInstance {
     bool scripted=false,initialized=false,paused=false,presentationReady=false;
 };
 struct FieldNpcSoundRequest {std::string key;uint32_t mask=0;FieldWallVector root;};
+// Portable runtime composition; GPU/SD/NDSP work belongs to platform adapters.
+// Room collision itself is process-global; candidate Games query staged geometry.
+// Units and owner chronology: docs/code/game-composition.md.
 class Game {
 public:
     explicit Game(bool initializeAnimation=true) {
@@ -173,6 +190,8 @@ public:
     OpeningFieldDeparture openingDeparture;
     bool retainOpeningDeparture(const OpeningHarborScene&);
     Vec2 partner{1.4f,2.5f};
+    // Native root plane and follower rootY; jumpHeight is relative to ground,
+    // whereas source callbacks receive absolute (ground+jump)*100 engine Y.
     float groundHeight = 0, partnerHeight = 0;
     float groundMetadataHeight=0; // Source +1c4; distinct from actual rootY.
     bool overheadContact=false;
@@ -266,6 +285,9 @@ public:
     Menu menu = Menu::Status;
     int selection = 0, enemyHP = BattleRules::CrumpHP, phaseTick = 0;
     int dialoguePage = 0, dialogueKind = 0, lastDamage = 0;
+    // Native simulation visits, including locked/early-return branches.
+    // Millisecond adapters use ticks*1000/60; restore resets ticks but preserves
+    // the separate camera simulation clock and session-owned services.
     uint64_t ticks = 0;
     bool actionSuccess = false, guarded = false, saveRequested = false;
     Sound sound = Sound::None;
@@ -353,6 +375,8 @@ private:
     FieldItemMarioPost fieldItemMarioPost{};
     MarioMotionSfx marioMotionSounds;
     bool fieldNpcTalkCandidateAlive() const;
+    // Prior scan, deferred confirmed actor and active talk wait are separate
+    // states. Generation prevents pending actor keys surviving catalog replacement.
     uint32_t npcTalkCandidate=0;
     uint32_t npcTalkPending=0;
     bool npcTalkWaiting=false;
@@ -367,6 +391,8 @@ private:
     void updateFieldNpcPresentation();
     std::unordered_map<uint32_t,FieldNpcInstance> fieldNpcs;
     uint64_t fieldNpcGeneration=0;
+    // ~0u/UINT*_MAX sentinels denote no cached room/generation, not room0.
+    // The first refresh must rebuild a cache even when the active room is plaza.
     uint32_t fieldNpcRoom=~0u;
     uint32_t fieldNpcHit=0;
     void updateFieldNpcCollision();
@@ -374,6 +400,8 @@ private:
     FieldBattleWork fieldBattleWork;
     FieldMarioBattleState fieldMarioBattle;
     FieldPartyRegistry fieldParties;
+    // Native adapter sequence2; original sequencer current IDs have distinct
+    // lifecycle and are not inferred from this field or Scene enumeration.
     int32_t fieldSequence=2;
     bool marioFieldControl=true,partnerFieldControl=true;
     // Recorded requests: original prepare/post/audio internals remain unbound.
@@ -445,6 +473,9 @@ private:
 };
 struct CollisionSnapshot;
 // Stages a room's collision; destruction restores the previous data unless committed.
+// Transaction lifetime temporarily replaces active global query data. Candidate
+// Game validation must run inside it; commit only after renderer/arrival accept.
+// Failure restores geometry and its indexes/metadata together without rereading.
 class CollisionTransition {
 public:
     CollisionTransition();
