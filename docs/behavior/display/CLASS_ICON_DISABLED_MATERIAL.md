@@ -39,3 +39,8 @@ verify channel order, coefficient, accumulation and final-alpha ownership. The
 native build compiles the actual shader-state calls, but an emulator-visible
 class fixture/raster comparison is still required when the source ring producer,
 projection and normal Game tutorial ownership are connected.
+
+A subsequent native restore audit explicitly clears all six texture-environment
+stages, restores ordinary modulation and then restores Citro2D after the batch.
+This complements the per-quad reset; extra disabled stages cannot remain active
+across the native backend boundary. Visual raster verification remains separate.

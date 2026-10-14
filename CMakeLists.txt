@@ -1354,3 +1354,9 @@ target_sources(ttyd_core PRIVATE source/audio/source_sound_flags.cpp)
 add_executable(source_sound_flags_tests tests/source_sound_flags_tests.cpp)
 target_link_libraries(source_sound_flags_tests PRIVATE ttyd_core)
 add_test(NAME source_sound_flags COMMAND source_sound_flags_tests)
+
+# Complete original ring center/offset helpers with native projection providers.
+target_sources(ttyd_core PRIVATE source/battle/battle_act_ring_position.cpp)
+add_executable(battle_act_ring_position_tests tests/battle_act_ring_position_tests.cpp)
+target_link_libraries(battle_act_ring_position_tests PRIVATE ttyd_core)
+add_test(NAME battle_act_ring_position COMMAND battle_act_ring_position_tests)

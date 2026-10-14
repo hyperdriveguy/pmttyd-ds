@@ -81,3 +81,7 @@ continuation on the lower screen.
 The circle/bubble linked consumer bodies and private original surfaces now have
 [their own complete local contract](CLASS_CIRCLE_AND_SPEECH_BUBBLE_DRAW.md).
 Native GX/SDK/icon/font providers and renderer activation remain open.
+
+Whole original center/offset local helpers now have
+[their own provider contract](ACT_RING_CENTER_AND_OFFSET_PROVIDERS.md).
+Actual native projection and libm/raster parity remain separate bindings.

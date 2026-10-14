@@ -167,6 +167,14 @@ bool Renderer::drawClassMenu(const BattleClassBackend &batch) {
     C3D_DrawArrays(GPU_TRIANGLES, at, 6);
     at += 6;
   }
+  // Clear the extra disabled-icon stages before restoring Citro2D's layer.
+  // This also leaves ordinary texture/record modulation for any cached state.
+  for (unsigned stage = 0; stage < 6; ++stage)
+    C3D_TexEnvInit(C3D_GetTexEnv(stage));
+  auto *restored = C3D_GetTexEnv(0);
+  C3D_TexEnvSrc(restored, C3D_Both, GPU_TEXTURE0, GPU_PRIMARY_COLOR,
+                GPU_PRIMARY_COLOR);
+  C3D_TexEnvFunc(restored, C3D_Both, GPU_MODULATE);
   C2D_Prepare();
   C2D_SceneBegin(top);
   C3D_DepthTest(false, GPU_ALWAYS, GPU_WRITE_COLOR);
