@@ -1033,3 +1033,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Native Bero registration and collision rollback](field/NATIVE_BERO_REGISTRATION_AND_COLLISION_ROLLBACK.md) — valid-name registration, indexed/length/current-number values and transaction-owned filters.
 - [Bero indexed query, length and registration state](overworld/BERO_INDEXED_INFO_LENGTH_AND_REGISTRATION_STATE.md) — source writer order, SW versus ID, hit flags and fixed-radius placement algebra.
+
+- [Trio source camera4 lens consumption](display/TRIO_SOURCE_CAMERA4_LENS_CONSUMPTION.md)

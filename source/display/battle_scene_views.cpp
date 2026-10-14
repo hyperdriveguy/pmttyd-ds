@@ -1,5 +1,13 @@
 #include "battle_scene_views.hpp"
+#include "camera_manager.hpp"
+#include <cmath>
 namespace ttyd {
+std::optional<BattleSceneLens> battleSceneLens(const CameraManager* owner) {
+  const auto* camera=owner?owner->camera(4):nullptr;
+  if(!camera || camera->projectionKind!=0 || !std::isfinite(camera->fov) || camera->fov<=0 || camera->fov>=180 ||
+     !std::isfinite(camera->nearPlane) || !std::isfinite(camera->farPlane) || camera->nearPlane<=0 || camera->farPlane<=camera->nearPlane)return {};
+  return BattleSceneLens{camera->fov,camera->nearPlane*.01f,camera->farPlane*.01f};
+}
 std::array<float, 4> lowerBattleSceneClip(const std::array<float, 4> &top) {
   return {top[0] + 2 * top[3], top[1] * 1.25f, top[2], top[3]};
 }

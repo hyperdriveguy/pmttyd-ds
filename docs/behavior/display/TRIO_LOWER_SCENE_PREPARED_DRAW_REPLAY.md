@@ -26,13 +26,14 @@ font, icons and selection hand. Harness action notices receive original type0
 frames to keep them readable over the continued scene. This is presentation
 reflow; physical command/action input and simulation timing are unchanged.
 
-Until the original camera4 producer publishes a view, trio framing uses the
-existing native tutorial camera adapter: eye(0,2.8,5.5), at(0,1,-.4), FOV42,
-near.1 and far80. These are provisional native presentation constants, not
-measured original values. A suspended field camera no longer frames the battle;
-original published battle eye/at/up still take precedence. Audience GetFront uses
-the same fallback/live eye and at as the visible world. Complete original lens,
-framing and producer cadence remain open.
+Until the original camera4 producer publishes a view, trio framing retains the
+provisional native eye(0,2.8,5.5)/at(0,1,-.4) adapter. These are presentation
+constants, not measured original values. The lens now reads the actual retained
+camera4 FOV and near/far fields, converting distances to native units; see
+[lens consumption](TRIO_SOURCE_CAMERA4_LENS_CONSUMPTION.md). A suspended field
+camera no longer frames the battle. Original published battle eye/at/up still
+take precedence, and Audience GetFront uses the same eye/at as the visible world.
+Original cached projection/refresh cadence, framing and view producer remain open.
 
 This replays the independent native world adapter, not the separately queued
 original camera/display/GX traversal. Original camera4 framing, queued effects

@@ -1,5 +1,6 @@
 #include "battle_actor_rotation.hpp"
 #include "battle_camera_frame.hpp"
+#include "battle_scene_views.hpp"
 #include "platform.hpp"
 #include "paper_fence_warp.hpp"
 #include "message_icons.hpp"
@@ -1075,7 +1076,11 @@ void Renderer::world(const Game& g) {
     auto frame=g.fieldCameraFrame;
     // Native battle framing until original camera4's producer publishes a view.
     // A suspended field camera must not frame the source-owned battle stage.
-    if(g.trioBattleActive){frame.eye={0,2.8f,5.5f};frame.at={0,1.f,-.4f};frame.fov=42;frame.nearPlane=.1f;frame.farPlane=80;}
+    if(g.trioBattleActive){
+        const auto lens=battleSceneLens(g.trioAttack.cameras());if(!lens)return;
+        frame.eye={0,2.8f,5.5f};frame.at={0,1.f,-.4f};
+        frame.fov=lens->fov;frame.nearPlane=lens->nearPlane;frame.farPlane=lens->farPlane;
+    }
     CameraDepthPoint up{0,1,0};
     if(g.trioBattleActive && g.trioAttack.cameraDepthSnapshot()) {
         if(const auto* live=g.trioAttack.cameraFrameState()) {
