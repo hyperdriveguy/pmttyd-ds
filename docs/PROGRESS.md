@@ -12327,7 +12327,7 @@ basebb063b1 plus owned overlay passes full native build and final rebuild in
 artifacts/audience-main-native-source; logs audience-main-debug{,-final}.log.
 Immutable3DSX/ELF and SHA256 manifest:artifacts/audience-main-native-snapshot.
 Shared-checkout builds contained concurrent unrelated work; commit is scoped.
-Doc checker1113 Markdown files/0 broken links; scoped diff check passes.
+Doc checker1114 Markdown files/0 broken links (audience-main-doc-links-final.log); scoped diff check passes.
 
 Isolated artifacts/azahar-audience-main story11 fixture runs actual trio
 attacks, remaining target selection, source10-Star-Point reward/victory and
