@@ -1,3 +1,53 @@
+## 2026-10-14 — Original Mario impact and defender sound attribution
+
+Committed `ecb4226c`. Harbor damage now retains attacker/defender IDs through
+power, HP/FP calculation, direct application, flags/dealt HP and actual hit-event
+registration. Existing Crump2→Mario1/default power remains; Mario1→Crump2 admits
+original Jump/Hammer callback identities with live action bit, current pouch
+level, actor bonus byte and source weapon power-table reads. No invented level,
+success power or lower-index clamp is supplied. Native read-only base-power
+preview supports the existing lethal preflight policy; status/counter/guard/
+FP/inventory/other-unit domains remain explicitly bounded.
+
+Damage sound metadata now identifies the actual defender and matching original
+kind sound-table entry. Its synchronous owner is restored after application;
+reactions no longer universally get Mario's identity and first sound key.
+The source-script no-action-press Jump fixture applies1 damage: Crump HP5→4,
+Mario U284=1 and real Crump U2b4 reaction. It stops at AcrobatNotry8010749c;
+repeated ticks retain HP4/dealt1 without replaying the impact. Native fixture
+assertions also retain original owner2 sound keys. Existing Crump impact and
+retained lethal/guard checks pass. Success still waits at voice80104508 with
+Crump HP5. Story/battle result remains0; no turn/tutorial completion is invented.
+
+Validation: isolated snapshot /home/carson/Documents/blender_tests/pm-port/artifacts/tutorial-hit-7pc2paby, based on5a3784ae plus the three scoped
+code/test files, passed `make test`:236/236 C++ and142/142 Python tests. Native
+`make all -o assets-ready BUILD=build-player-hit-review
+TARGET=ttyd-player-hit-review` passed with prepared private assets. Artifact:
+that review folder's ttyd-player-hit-review.3dsx. Logs: ignored
+artifacts/tutorial-player-hit-full-test.log and tutorial-player-hit-native.log.
+Read-only orchestration verifier matched complete BattleCheckDamage/Pikkyoro/
+presentation spans and13 anchors; return verifier retained17 ordered entries,
+5 sentinels and21 native hierarchy bindings. Final snapshot matched scoped code/
+tests; diff check passed. No new asset conversion/payload, Azahar/Dolphin,
+original-runtime measurement or complete playable attack/battle/visual claim.
+Concurrent field/display/camera work preserved through scoped commits.
+
+Voice source inspection explains its remaining boundary: wrapper picks from
+original5/10-key tables using RNG; unit sound derives position and size-status
+pitch, consumes a41-bound draw, starts3D sound, sets pitch and gets/sets live
+volume for its sentinel. Do not bypass those operations with a no-op or invented
+volume. Listings remain ignored artifacts/tutorial-voice-source.txt,
+tutorial-unit-sound-source.txt and tutorial-position-sound-source.txt.
+
+Next: bind complete original voice/backend pitch/volume, AcrobatNotry/audience
+and source hit/aftereffect/finish services. Compose private-pad/TimingA main/
+display queue and post-action control, preserve deferred StopAC cleanup, and
+connect original class/target Input/re-entry to registration. Render original
+HUD/menu with physical controls and second-screen scene/audience, including
+optional hostile-item taps with a physical alternative. Verify actual play in
+isolated Azahar. Goal remains active; tutorial/battle systems and full game
+remain incomplete.
+
 ## 2026-10-14 — TimingA result evaluation and deferred StopAC
 
 Committed `a4def146`. Shared ResultAC captures work, calls its result provider or
