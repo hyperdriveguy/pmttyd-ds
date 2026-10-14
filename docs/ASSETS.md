@@ -474,3 +474,16 @@ comparison are in `artifacts/asset-pipeline-validation/`. The tracked
 [upstream conversion records](../assets/original/conversion-provenance.json)
 retain detailed original source identities/settings. No emulator/hardware parity
 is asserted for this pipeline change.
+
+## 2026-10-14 — Original deferred shadow texture44
+
+Read-only US ISO `e/us/effect_n64.tpl`, descriptor44 (decimal/hex2c),
+16x16 GX_I4. `tools/shadow_texture_assets.py` verifies the source bank, header
+and raw RGBA hashes; converts intensity to exact RGBA8 native tiling without
+resize, padding, mipmaps or replacement art. Private source/PNG/provenance:
+`local-assets/shadow/`; compiled texture and sampler/provenance metadata:
+`romfs/shadow-texture44.t3x` / `.json`. Repeat S/T, linear min/mag and LOD0
+must be applied by the eventual native binding. Full identities and original
+loaded/dummy branch are in [the resource contract](behavior/display/SHADOW_TEXTURE44_RESOURCE_AND_SAMPLER.md).
+Rights remain Nintendo/Intelligent Systems; private local conversion grants no
+redistribution license. No original payloads or compiled packs are committed.

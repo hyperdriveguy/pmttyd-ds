@@ -1384,3 +1384,9 @@ target_sources(ttyd_core PRIVATE source/display/native_display_state.cpp)
 add_executable(native_display_state_tests tests/native_display_state_tests.cpp)
 target_link_libraries(native_display_state_tests PRIVATE ttyd_core)
 add_test(NAME native_display_state COMMAND native_display_state_tests)
+
+# Independent original shadow collision preparation and retained query cursor.
+target_sources(ttyd_core PRIVATE source/display/shadow_collision.cpp)
+add_executable(shadow_collision_tests tests/shadow_collision_tests.cpp)
+target_link_libraries(shadow_collision_tests PRIVATE ttyd_core)
+add_test(NAME shadow_collision COMMAND shadow_collision_tests)

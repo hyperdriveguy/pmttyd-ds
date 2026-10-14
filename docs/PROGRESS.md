@@ -2780,3 +2780,25 @@ production Bero/get_info and full source Init/Main/Exit/field return. Empty
 eligible shadow domains cannot bypass setup or acknowledge callback success.
 Original timing, numeric/history, raster/audio parity and hardware performance
 remain unverified; full original-fidelity prologue goal stays active.
+
+## 2026-10-14 — Independent shadow collision continuation and original texture
+
+Added portable collision preparation with a retained camera/pool/ray cursor,
+independent source filter identity, fresh post-hit dimensions/flags and literal
+binary32 matrix operations. Misses preserve records; bypass records use the
+recovered translation leaf. Imported exact original US N64 texture44, without
+resizing, with verified pixel/source hashes and original sampler metadata.
+[Scope](behavior/display/NATIVE_SHADOW_COLLISION_CURSOR_AND_TEXTURE_IMPORT.md).
+
+Frozen make test passes273/273 C++ and160/160 Python; native make all
+DEBUG_SHORT_BOOT=1 passes. No Azahar or hardware run: native shadowDisp binding
+is unchanged and this helper has no production ray provider yet. Exact
+[validation](PROGRESS_ARCHIVE.md#2026-10-14--independent-shadow-collision-continuation-and-original-texture).
+
+Next: implement actual ordered camera1 Polygon/cylinder/Texture setup and
+retained palette/texture binding, then connect independent filter8002d380 rays
+and camera2 image/projection services. Remaining part/material/stage/audience/
+menu/EXP/letterbox callbacks, production Bero and full Init/Main/Exit/field return
+remain open. No callback-success shortcut or story dialogue change; original
+runtime/raster/audio parity and hardware performance remain unverified. Full
+original-fidelity prologue goal stays active.

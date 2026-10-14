@@ -952,3 +952,8 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native finishing camera GPU adapter](camera/NATIVE_FINISHING_CAMERA_GPU_ADAPTER.md): full matrix/rotated rectangle mapping, actual dummy triangle and retained backend restoration.
 
 - [Native class state and shadow frontier](display/NATIVE_CLASS_STATE_AND_SHADOW_FRONTIER.md): independent write masks, bounded late-depth class mapping, cached restoration and genuine shadow callback wait.
+
+- [Shadow complete ordered setup and rejected-record continuations](display/SHADOW_DISPLAY_SETUP_AND_EMPTY_RECORD_CONTINUATIONS.md)
+- [Shadow N64 texture44 resource and sampler](display/SHADOW_TEXTURE44_RESOURCE_AND_SAMPLER.md)
+- [Shadow collision preparation captures and store order](display/SHADOW_COLLISION_PREPARATION_CAPTURE_AND_STORE_ORDER.md)
+- [Native shadow collision cursor and original texture import](display/NATIVE_SHADOW_COLLISION_CURSOR_AND_TEXTURE_IMPORT.md)

@@ -3959,3 +3959,16 @@ Corrected native idle Key from Ctrl38 to Key39 and reconciled the [producer audi
 ### 2026-10-14 native class GPU state and captured shadow wait
 
 [Native class state](../behavior/display/NATIVE_CLASS_STATE_AND_SHADOW_FRONTIER.md) now consumes actual common/class requests with independent masks, preserved viewport range, reversed depth and explicit supported late-depth pairing. The preceding real dummy seeds known state; restoration does not reset acknowledged class fields. Finishing camera1 class9 emits seven state requests and holds at captured shadowDisp8002d3d8 with21 records; repeated callback resumes do not replay states. Shadow Polygon performs setup before record tests, so empty eligible domains do not permit callback success. Actual shadow/material/geometry/texture/ray providers, remaining cameras and full exit/return stay open; EVT-01 remains open.
+
+### 2026-10-14 — Deferred shadow setup, independent preparation and resource
+
+Recovered complete [ordered setup/admission](../behavior/display/SHADOW_DISPLAY_SETUP_AND_EMPTY_RECORD_CONTINUATIONS.md),
+[collision captures/store order](../behavior/display/SHADOW_COLLISION_PREPARATION_CAPTURE_AND_STORE_ORDER.md)
+and [N64 texture44 lookup/sampler](../behavior/display/SHADOW_TEXTURE44_RESOURCE_AND_SAMPLER.md).
+Portable collision continuation and exact private texture import are implemented;
+[native scope](../behavior/display/NATIVE_SHADOW_COLLISION_CURSOR_AND_TEXTURE_IMPORT.md).
+The production frontier remains shadowDisp8002d3d8 camera1: complete GX setup,
+actual retained palette state/texture binding, then camera2's independent
+filter8002d380 ray and remaining image/projection callbacks are still required.
+No callback success, synthetic floor/preparation, runtime raster parity or full
+EVT-01 closure follows from this partial delivery.

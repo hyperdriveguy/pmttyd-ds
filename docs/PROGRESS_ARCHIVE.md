@@ -13744,3 +13744,51 @@ Next: complete original shadow Polygon and subsequent ray/geometry/images/
 cylinder/texture providers, then remaining camera/callback/material owners,
 production transition history and ordered source Init/Main/Exit/field return.
 Full EVT-01 and the original-fidelity prologue goal remain open.
+
+## 2026-10-14 — Independent shadow collision continuation and original texture
+
+Implemented `shadowPrepareCollision` independently of rendering and support
+queries. Its fixed64-record typed pool/captured owner persists across required
+camera/ray provider holds. Source admission and ray arguments stay pinned;
+hit dimensions/flags and per-loop count stay fresh. Exact separate binary32
+operations preserve signed zero; failed queries do not prepare or overwrite
+records. Original service-free PSMTXTrans is an inline leaf adaptation.
+Owner replacement, exceptional float flags/NaN payloads and native ray/GPU
+services remain outside the admitted portable domain. Source contracts are
+[setup](behavior/display/SHADOW_DISPLAY_SETUP_AND_EMPTY_RECORD_CONTINUATIONS.md),
+[collision](behavior/display/SHADOW_COLLISION_PREPARATION_CAPTURE_AND_STORE_ORDER.md)
+and [resource](behavior/display/SHADOW_TEXTURE44_RESOURCE_AND_SAMPLER.md).
+
+Read-only converter validates original `e/us/effect_n64.tpl` and descriptor44
+(header/128-byte tiled source/decoded16x16 RGBA hashes). Native private RGBA8
+pack retains exact intensity and alpha without resize/padding/mipmaps; sampler
+metadata requires repeat S/T and linear min/mag. It does not assert a retained
+original palette loaded flag or bind the fallback dummy. ASSETS records paths
+and rights; no original payloads/compiled packs are committed.
+
+Validation completed with TMPDIR=`artifacts/native-stage-map-tmp`:
+
+- `python3 tools/shadow_texture_assets.py` exits0; original verified assets
+  exported into ignored `local-assets/shadow/` and `romfs/`.
+- Frozen `artifacts/shadow-source/OWNED_BASE.txt` records base commit and five
+  owned source/test/tool files; only own CMake/Make hunks were added. Private
+  RomFS/gfx/local-assets/reference are linked from existing local packs.
+- `make test` exits0:273/273 C++ and160/160 Python; log
+  `artifacts/shadow-test.log`. New tests cover unavailable camera/ray services,
+  held capture/fresh fields, appended count, misses, gates, signed zero, NaN
+  radius admission, exact original source/pixels/sampler and altered-bank
+  rejection. No unrelated source changes in the frozen snapshot.
+- `make all -o assets-ready -j4 DEBUG_SHORT_BOOT=1 BUILD=build-shadow
+  TARGET=ttyd-shadow` exits0; `artifacts/shadow-build.log`. Skipping asset-ready
+  reuses private packs; new texture converter was executed explicitly above.
+- Immutable ELF/3DSX/SMDH, owned-source hashes and build hunks recorded in
+  `artifacts/shadow-validated/manifest.json`. Scoped whitespace check passes.
+- No emulator or physical hardware run: this portable helper is intentionally
+  unbound until source ordered shadow setup and actual independent ray services
+  are ready. Production still waits at camera1 shadowDisp8002d3d8. No gameplay,
+  original execution/raster/audio or hardware performance claim.
+
+Next: actual ordered setup/retained GPU state and N64 resource owner/binding,
+then camera2 collision/image/projection services; remaining source callbacks,
+production Bero/get_info, Init/Main/Exit and ordered field return. Full prologue
+goal remains active. Original story/message content is unchanged.
