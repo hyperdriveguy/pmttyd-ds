@@ -1130,3 +1130,8 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/romfs/trio-attack-mario.pose-directory.bin")
     add_test(NAME battle_pose_pool_original COMMAND battle_pose_pool_tests original)
     set_tests_properties(battle_pose_pool_original PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 endif()
+
+target_sources(ttyd_core PRIVATE source/battle/battle_target_selection.cpp)
+add_executable(battle_target_selection_tests tests/battle_target_selection_tests.cpp)
+target_link_libraries(battle_target_selection_tests PRIVATE ttyd_core)
+add_test(NAME battle_target_selection COMMAND battle_target_selection_tests)

@@ -100,3 +100,34 @@ arrives;merely storing29 does not set P1. Pending BYTE(B1c74) can force same-cal
 re-entry. [Attack dispatch and other states](COMMAND_INPUT_AUXILIARY_STATES_AND_ATTACK_DISPATCH.md)
 complete the tail. This local route does not prove every reachable original
 menu/input/weapon/query domain or complete source-event scheduling.
+
+## Shared implementation and admission boundary (2026-10-14)
+
+[`battle_target_selection.cpp`](../../../source/battle/battle_target_selection.cpp)
+implements the complete local state11 route against source-address memory and
+explicit services. `processPackedBattleTargetSelection` returns provider
+readiness, not Input's original progress value. Refresh, menu-end, command-pose,
+cost and audience providers must own their complete invoked services. An
+unbound provider stops at that frontier after preceding source effects; this is
+not a resumable state machine and callers must not blindly replay the handler.
+
+`finalizePackedBattleCommand` implements state29: the retained actor goes to
+attack selection before the two fresh flag reads and light-off request; the
+result is the original1. Missing attack-selection readiness returns no result.
+The separate original attack selector can publish the Jump event80355cf0,
+category0 and usage count without creating an attack root.
+
+Host tests cover pair/part remapping, first matching duplicate, permutation
+changes, independent repeat gates, fixed-target gating, cancel priority and
+post-pose type reread, confirmation-before-End, fresh flags, retained type for
+multi-item cost literals, existing actor-mode exclusion, post-confirm audience
+interruption, unbound service readiness and selector-before-final-flags order.
+An integration fixture uses the real shared attack selector for the Jump row.
+These are deterministic source fixtures, not original-runtime observations.
+No provisional timing constant or gameplay result is introduced.
+
+The native Harbor tutorial does not yet invoke these handlers. Its original
+class/target presentation, command-pose and complete UI/help owners, common
+pending/progress re-entry and selected-player event registration remain the next
+integration step. Confirming state29 alone must not synthesize same-call
+progress, damage, a root handle, tutorial completion or a field-story advance.
