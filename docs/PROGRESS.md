@@ -1,3 +1,39 @@
+## 2026-10-14 — Original Trouble Center selection producer
+
+Committed a1dfd26a. New retained portable menu implements original30-slot story
+unlock order, including20/21 before19, no completed-task filtering, exact A/B/
+repeat/page/scroll/icon/SFX requests and next-call one-based selection publication.
+Required original display/provider interface keeps native resources external;
+no fabricated menu or acceptance writes. Source94 remains opaque; complete
+original display does not use it. Copyguard and unknown-provider admission retained.
+
+Source recovery corrected earlier acceptance prose: LW11 is one-based quest ID;
+opcode115 is debug, notincrement; acceptance writes1420=ID after nonblocking
+RUN_EVT of start_event[ID-1]. Original board/counter map cases, lecture, full
+selection producer and Yes/No caller are documented. Complete window display/
+64 US title/client/content resource provenance recovered; original frame/clipping/
+colors/width rules now available for next native backend. No new asset pack.
+
+Final isolated tree3239633f9328ade5d0fd2e6ef77d26439424567a passes make test
+-o assets-ready (252/252 C++,144/144 Python) and normal make all -o assets-ready;
+sequential assets-ready passed, converters unchanged. Logs artifacts/trouble-menu-
+{assets,final-test,final-build}.log. Normal reviewed artifact SHA256
+31499e76d8902f39d666fe01f7fbbe6942568ced17b290a5e6d412cbe33b1f60.
+Initial host missing committed footer dependency registration/native mixed-width
+min failures fixed and oldlogs retained. Read-only source review passes; audit
+matches and concurrent edits preserved. No new native menu/hardware capture.
+[Producer validation](behavior/field/PORTABLE_TROUBLE_CENTER_MENU_PRODUCER.md),
+[original board](behavior/field/TROUBLE_CENTER_BOARD_SELECTION_AND_ACCEPTANCE.md),
+[original drawing/US cache](behavior/display/TROUBLE_CENTER_ORIGINAL_WINDOW_DISPLAY_AND_US_CACHE.md).
+
+Next: source window backend/icons/US cached strings and complete global switch
+providers; source case9/door/cutaway ownership for actual east billboard (notNPC
+or professor mask2); first lecture and confirmation/acceptance event. Consolidate
+all30 help/confirmation table bindings, then validate acceptedquest2→parcel→
+Goomfrey→McGoomba reward in isolated Azahar. Original GP38/pad/NDSP parity,
+matched Dolphin/hardware performance and future original areas remain open.
+Full-game goal remains active/incomplete; native board UI is not yet playable.
+
 ## 2026-10-14 — Native original McGoomba reward event
 
 Committed d7b2c245. Game now admits source Goomba3 quest2/knowntrue5406 reward,

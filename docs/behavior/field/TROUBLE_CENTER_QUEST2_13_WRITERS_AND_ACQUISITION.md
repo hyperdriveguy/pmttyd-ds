@@ -11,14 +11,16 @@ Center UI/NPC setup. No dialogue prose or extracted assets are added.
 ## Acceptance establishes the working switches
 
 `gor_irai_main` gor_irai.o,file660a0/1f8 contains the actual acceptance owner.
-After original selection machinery publishes LW11 as a zero-based table index,
+After original selection machinery publishes LW11 as a one-based quest ID,
 it prints the indexed exposition and LW12 description, requests
 `evt_msg_select(0,irai_01)`. In selection-result LW0==0 (Yes), it appends
-`irai_73`, calls `irai_start_func`, obtains `irai_start_event[LW11]` and runs
-that child, then sets GSW1420=LW11 and increments GSW1420. The resulting quest
-number is one-based. Never set the quest merely from reading its consumer guard.
-The menu's availability/filtering and LW11/LW12 producer remain separate C
-services; this contract does not admit arbitrary quest acceptance in every story.
+`irai_73`, calls `irai_start_func`, obtains `irai_start_event[LW11-1]` and requests
+that event through nonblocking opcode92 RUN_EVT, then sets GSW1420=LW11.
+Following opcode115 is a debug-register instruction, not an increment.
+Never set the quest merely from reading its consumer guard.
+The menu's availability and LW11/LW12 producer are recovered in the
+[board selection contract](TROUBLE_CENTER_BOARD_SELECTION_AND_ACCEPTANCE.md);
+this contract does not admit arbitrary quest acceptance in every story.
 
 `irai_start_func` file10a48/7c has no operands/firstCall behavior. It clears
 GSF5405..5421 inclusive (17 flags), then sets GSW1469..1474 inclusive (six

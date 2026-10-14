@@ -924,3 +924,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native coin-get presentation services](field/NATIVE_COIN_GET_PRESENTATION_SERVICES.md) — retained Game callback/window, original icon/effect/audio/Mario services, independent deletion and explicit raw-clock adaptation; reward admission remains pending.
 
 - [Native McGoomba reward admission](field/NATIVE_GOOMBA3_REWARD_ADMISSION.md) — original quest2/5406 guard, blocking coin20, ordered5376 completion, one outer key hold and same-visit Mario event binding.
+
+- [Original window display/US cache](display/TROUBLE_CENTER_ORIGINAL_WINDOW_DISPLAY_AND_US_CACHE.md) — original frames, clipping, colors/width scales and64 US resources; native backend pending.
+- [Original Trouble Center board selection/acceptance](field/TROUBLE_CENTER_BOARD_SELECTION_AND_ACCEPTANCE.md) and [portable menu producer](field/PORTABLE_TROUBLE_CENTER_MENU_PRODUCER.md) — original30-slot unlock order, one-based outputs/debug115 correction, exact input/icon requests; native case/window bindings remain pending.

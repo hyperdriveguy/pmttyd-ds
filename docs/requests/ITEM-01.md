@@ -385,3 +385,19 @@ outer NPC key hold and EVT-before-Mario owners. Completion preserves1420clear→
 state; original acceptance/full chain and clock/polling/hardware parity remain
 open. [Exact provider/validation](../behavior/field/NATIVE_GOOMBA3_REWARD_ADMISSION.md).
 Parent stays open.
+
+### 2026-10-14 — Trouble Center selection source correction and producer
+
+Recovered full original list/init/main/check/end and board/counter installers.
+LW11 is one-based; opcode115 is debug, notincrement; quest2 writes1420=2.
+Original completed quests remain listed, but active1420/nonzero completion blocks
+A. Portable producer now retains source unlock order, exact cursor/input/icon/
+SFX requests and next-call quest publication. [Source and native gaps](../behavior/field/TROUBLE_CENTER_BOARD_SELECTION_AND_ACCEPTANCE.md).
+Native case9/door/lecture/global-switch banks/string cache/window display and
+confirmation/acceptance event are still required. Parent stays open.
+
+- [ ] Recover complete irai_window_disp frame/text/completion styling and draw94
+  owner, plus all30 original client/contents/help/confirmation table bindings.
+  Frame/text/style and all64 title/client/content resources are now documented;
+  all30 help/confirmation table bindings remain to be consolidated. No fabricated
+  native menu while source window/case bindings are pending.

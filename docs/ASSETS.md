@@ -271,3 +271,24 @@ under its12000-vertex budget. Nintendo/Intelligent Systems copyright applies;
 no redistribution rights. Original ISO and converted payloads stay outside
 source history. Native source command-pose helpers copy the selected original
 name; physical B remains the cancellation input.
+
+## Trouble Center map inspection and menu references (2026-10-14)
+
+Read-only original m/gor_02/d at ISOoffset991830984,size1513698,SHA256
+ d738bff28f92ed2a2d0658fb836b0a6e91b915a32553897b47032febe2f62353,
+was inspected for authored A_i04_keizi/A_i04_kunter hierarchy transforms.
+Source inspection listings stay temporary/ignored; no new map conversion or
+native interaction anchor is inferred from bbox midpoints. Portable menu
+references original icon descriptors504/524/134/136; no new native menu atlas
+or generated artwork is packaged in this step. Existing local original maps/
+compiled packs remain outside history. Nintendo/Intelligent Systems assets have
+no redistribution license; no ISO/payload/binary committed.
+[Source paths and limits](behavior/field/TROUBLE_CENTER_BOARD_SELECTION_AND_ACCEPTANCE.md).
+
+
+Original US msg/US/gor_02.txt inspection: ISOoffset1177698108,size128972,
+SHA2561958e3d22bb27b01332e08b67f279a33f21e0e8a3aba2b947ad8c2a446144f16.
+All64 menu title/client/content IDs exist and fit source21/31-byte cache slots;
+per-ID original byte offsets/hashes remain in temporary inspection JSON. This
+is source resource inspection, not a new text conversion or authored replacement.
+No original message payload enters source history. [Display/US bindings](behavior/display/TROUBLE_CENTER_ORIGINAL_WINDOW_DISPLAY_AND_US_CACHE.md).
