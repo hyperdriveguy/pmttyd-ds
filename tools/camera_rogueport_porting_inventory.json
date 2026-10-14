@@ -1,0 +1,125 @@
+{
+  "schema": 1,
+  "scope": "Read-only five-room camera metadata for porting coverage; authored version/extra/disable/fixed-Y/count/index domains, not runtime or geometry output evidence",
+  "camera_files": [
+    {
+      "path": "m/gor_00/c",
+      "size": 2048,
+      "sha256": "3d6f746ec51b1ba3165ba67aee2ca1fe17deb2d11a8fda9d3181a72356246d0c",
+      "version": "1.01",
+      "record_count": 3,
+      "nonzero_extra_curve_records": [],
+      "disabled_version101_records": [],
+      "fixed_y_version101_records": [],
+      "combined_row_counts": [
+        12
+      ],
+      "endpoint_index_pairs": [
+        [
+          2,
+          3
+        ]
+      ]
+    },
+    {
+      "path": "m/gor_01/c",
+      "size": 7700,
+      "sha256": "173e43d28c5b557f7c47686c043e64c2ec0ebe61b29e12882b61b19262611757",
+      "version": "1.01",
+      "record_count": 11,
+      "nonzero_extra_curve_records": [],
+      "disabled_version101_records": [],
+      "fixed_y_version101_records": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "combined_row_counts": [
+        12
+      ],
+      "endpoint_index_pairs": [
+        [
+          2,
+          3
+        ]
+      ]
+    },
+    {
+      "path": "m/gor_02/c",
+      "size": 11316,
+      "sha256": "ccf70290b06daa8d965b03e3796df9cf846c8f88c71651ac61aa3831f7aae41f",
+      "version": "1.01",
+      "record_count": 14,
+      "nonzero_extra_curve_records": [],
+      "disabled_version101_records": [],
+      "fixed_y_version101_records": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        10,
+        11
+      ],
+      "combined_row_counts": [
+        12
+      ],
+      "endpoint_index_pairs": [
+        [
+          2,
+          3
+        ]
+      ]
+    },
+    {
+      "path": "m/gor_03/c",
+      "size": 11392,
+      "sha256": "a0b2e3a1faa40d87f67d49bdd6917722b20aa480f969b3a42203b366060977af",
+      "version": "1.01",
+      "record_count": 14,
+      "nonzero_extra_curve_records": [],
+      "disabled_version101_records": [],
+      "fixed_y_version101_records": [
+        2,
+        3,
+        4,
+        6,
+        7,
+        9,
+        11
+      ],
+      "combined_row_counts": [
+        12
+      ],
+      "endpoint_index_pairs": [
+        [
+          2,
+          3
+        ]
+      ]
+    },
+    {
+      "path": "m/gor_04/c",
+      "size": 1304,
+      "sha256": "9c6e9cfde7fd0986d25604dcb8eccef220f34bb431cbe21fd349f1d2b01a9c8b",
+      "version": "1.01",
+      "record_count": 2,
+      "nonzero_extra_curve_records": [],
+      "disabled_version101_records": [],
+      "fixed_y_version101_records": [
+        1
+      ],
+      "combined_row_counts": [
+        12
+      ],
+      "endpoint_index_pairs": [
+        [
+          2,
+          3
+        ]
+      ]
+    }
+  ]
+}

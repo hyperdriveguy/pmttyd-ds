@@ -19,9 +19,9 @@ fresh G=[80414fa8] fields1ec/1f0/1f4/1f8/1fc/200. Each publication reloads G.
 Divide each supplied float separately by original10.0 bits41200000/8041f644;
 request calcCamRoad8000b6cc(G+68,G+d8,f1..f6) at8000abb4 using one freshly loaded
 G for the two pointer arguments. All six original inputs are published before
-that request. Incoming r5/r6/r7 are locally unassigned up to this child; its
-forwarded scalar consumers remain separate (including the existing argument7
-correction request). Child return ignored; no local input/active/extent guard.
+that request. Incoming seventh FLOAT f7 is forwarded without division here; calcCamRoad
+captures it into f22 at8000b798. This is separate from integer register r7.
+Child return ignored; no local input/active/extent guard.
 
 After child, fresh G.c8 nonzero admits compareCamRoad(G+d8,G+68,G+d4) at8000abd4.
 Nonzero result K starts/restarts the transition in order:
@@ -150,7 +150,7 @@ and paired-single state restored; three direct calls, no indirect calls.
 ## Evidence and remaining work
 
 [Manifest](../../../tools/camera_road_manager_time_evidence.json):13 spans/
-398 anchors (all370 body words/five constants/23 scoped divider ABI words),nine
+399 anchors (all370 body words/five constants/23 divider ABI words/one f7 capture),nine
 local calls, no indirect sites. Eight pair-copy layouts, six quotient-delta/five
 bus-divisor/six progress mathematical vectors, exact publication/capture/child/
 branch/source pins checked independently. Existing finite transition manifest

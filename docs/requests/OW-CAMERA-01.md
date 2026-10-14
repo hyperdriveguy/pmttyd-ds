@@ -5,6 +5,14 @@ Filed by the native overworld implementation session, 2026-10-12, as one of the 
 
 ## Open todos
 
+- [x] Reconciled bounded shipped-camera container/zone/straight-dispatch/
+  duplicate, shift/lifecycle and event-blend deliveries — [porting coverage](../behavior/camera/ROGUEPORT_CAMERA_PORTING_COVERAGE_AND_REMAINING_BINDINGS.md).
+  Nine source verifiers pass;44 records/494 triangles/220 pairs and finite
+  boundaries indexed. Five-file metadata verifies zero extras/disables and20
+  fixed-Y records. This checks documentation delivery, not native composition.
+- [ ] Compose and validate these source services across all44 actual records;
+  retain numeric/provider/clock/pause/alias boundaries and original visual traces.
+
 - [x] Complete local camRoadMain/getV60FPS — [manager/timebase supplement](../behavior/camera/FIELD_CAMERA_ROAD_MANAGER_COPY_AND_TIMEBASE.md).
   Fresh/captured work, eight pair-copy loops, timestamp/progress/finish order,
   signed division requests and returned-quotient rollover pinned; selector open.
@@ -142,3 +150,20 @@ verifier re-passed seven spans/62 anchors/eight admission cases. Link/scoped
 checks passed. Docs only; no make test/all rerun; raw artifacts stay /tmp.
 Geometry/selection/limits, libraries/state/time/IRQ/alias/FP domains and original
 camera/pause/cadence/visual/native binding remain OPEN; parent stays OPEN.
+
+## 2026-10-13 — Reconciled Rogueport camera porting coverage
+
+[Coverage map](../behavior/camera/ROGUEPORT_CAMERA_PORTING_COVERAGE_AND_REMAINING_BINDINGS.md)
+registers existing bounded container/zone/path/duplicate/shift/lifecycle/event
+contracts with concrete native dependency order. Nine verifiers re-passed;
+source inventory matches five existing file hashes and confirms all44 records
+version1.01/extraCurveCount0/disable0/count12/endpoints2,3;20 fixed-Y gates.
+Circular/extra-curve engine branches are not admitted by these shipped data,
+but full-game obligations remain. Moving correction composition across all44
+queries still needs validation; original visuals/native framing stay OPEN.
+
+Corrected the manager supplement's ABI ambiguity: seventh correction argument
+is f7, captured as f22 at8000b798, distinct from integer r7. Added original
+capture pin; manager manifest now399 anchors. Nine source checks, metadata
+assertions, capture pin, link audit/scoped diff passed. Docs only; no make
+rerun or raw assets committed. Parent remains OPEN.

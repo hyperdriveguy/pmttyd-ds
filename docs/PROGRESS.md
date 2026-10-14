@@ -3,6 +3,29 @@
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
 
+## 2026-10-13 — Inbox Rogueport camera coverage reconciliation
+
+[Porting coverage map](behavior/camera/ROGUEPORT_CAMERA_PORTING_COVERAGE_AND_REMAINING_BINDINGS.md)
+joins existing bounded geometry/shift/lifecycle/event deliveries into native
+2DS XL dependency order; OW-CAMERA-01 delivered portions checked. Fresh metadata
+matches five original file hashes;44 version1.01 records have no extra curves/
+disables, count12/endpoints2,3;20 have fixed-Y gates. Shipped220 segment pairs
+use straight dispatch and494 triangles include234 nonhorizontal/8 zero3D/
+16 zeroXZ cases. Full native composition across these domains remains open.
+
+Validation: nine existing source verifiers passed (exact counts in coverage
+contract); fresh metadata assertions/file hashes passed. Corrected previous
+manager ABI ambiguity: seventh float f7 captured in f22, distinct from integer
+r7; added verified source pin, manager manifest13 spans/399 anchors/nine calls.
+Link audit passed971 Markdown files/zero broken links; scoped diff passed.
+Docs only; no make test/all rerun; no raw assets/body distribution. Concurrent
+native edits excluded. Approved push pending valid GitHub credentials.
+
+Next: validate composed candidate/correction queries across all44 source records,
+remaining provider/clock/pause/math/FP/alias/runtime domains and original native
+camera traces; prioritize fresh field/story/encounter inbox dependencies rather
+than re-recovering already delivered bounded contracts. Parents/full-game OPEN.
+
 ## 2026-10-13 — Original animated textbox advance star
 
 Implemented in b20c9e8. Ready textboxes now show the original `hoshi_2` /

@@ -491,7 +491,8 @@
     "2149993472": "38800000",
     "2149993476": "38600000",
     "2149993480": "38210010",
-    "2149993484": "4e800020"
+    "2149993484": "4e800020",
+    "2147530648": "fec03890"
   },
   "direct_calls": [
     {
@@ -730,5 +731,10 @@
   ],
   "road_work_pointer": 2151763880,
   "gp_pointer": 2151768016,
-  "bus_clock_address": 2147483896
+  "bus_clock_address": 2147483896,
+  "forwarded_shift_capture": {
+    "site": 2147530648,
+    "source_fp_register": 7,
+    "destination_fp_register": 22
+  }
 }
