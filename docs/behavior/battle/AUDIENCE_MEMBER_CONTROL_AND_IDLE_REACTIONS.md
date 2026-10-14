@@ -54,8 +54,9 @@ and native double libm sine as the declared SDK adapter. It records the actual
 unavailable state address. Subsequent increments implement
 [Wait with explicit caller FPR29 availability](AUDIENCE_IDLE_BREATHING_AND_DECISIONS.md)
 and [cheering, celebratory jumps and booing](AUDIENCE_CHEERING_JUMPS_AND_BOOING.md).
-States7/8/10..20, actual voice playback and full normal battle/camera scheduling
-remain unavailable. No fabricated caller register is supplied. These functions
+[Item hold/throw, damage and escape](AUDIENCE_ITEM_HOLD_THROW_DAMAGE_AND_ESCAPE.md)
+now implement states7/8/10/12. Enter11, special states13..20, real voice playback
+and full normal battle/camera scheduling remain unavailable. No fabricated caller register is supplied. These functions
 do not establish a complete positive-audience battle loop or accepted framing.
 
 Tests cover inclusive motion phases, jump fallthrough/repeats, all21 dispatch

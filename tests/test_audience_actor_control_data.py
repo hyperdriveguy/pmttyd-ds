@@ -24,6 +24,9 @@ class AudienceActorControlData(unittest.TestCase):
             0x8042457c: 0x4059999a, 0x80424578: 0xbe4ccccd,
             0x80424580: 0x3fc00000, 0x80424584: 0x41400000,
             0x80424554: 0x46fffe00, 0x8042453c: 0x41a00000,
+            0x804244ec: 0x40c00000, 0x80424500: 0xc2c80000,
+            0x80424504: 0x3dcccccd, 0x80424558: 0xbf000000,
+            0x80424560: 0x42f00000, 0x80424568: 0x44160000,
         }.items():
             self.assertEqual(word(address), bits, f'{address:08x}')
 

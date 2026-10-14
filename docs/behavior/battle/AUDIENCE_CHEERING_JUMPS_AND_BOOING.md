@@ -89,9 +89,9 @@ not a claim about original new-game seed production.
 
 Existing Python pack tests pin the additional constants. Native compilation and
 host tests prove the implemented control boundary; they do not prove full native
-outer Main/camera cadence or accepted battle framing. ItemOn/Throw7/8,
-Damage/Enter/Escape10..12 and special states13..20 remain providers, along with
-idle's missing low-ratio caller-register provenance. Harmful-item telegraphs,
+outer Main/camera cadence or accepted battle framing. [ItemOn/Throw, Damage and Escape](AUDIENCE_ITEM_HOLD_THROW_DAMAGE_AND_ESCAPE.md)
+now implement states7/8/10/12. Enter11 and special states13..20 remain providers,
+along with idle's missing low-ratio caller-register provenance. Harmful-item telegraphs,
 physical X plus optional audience taps, original menu/turn choreography and full
 story/tutorial/field return still require their original owners. No dialogue,
 menu/HUD asset, action-command timing or two-screen replay layout is changed.

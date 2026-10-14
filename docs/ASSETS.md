@@ -984,3 +984,20 @@ Intelligent Systems licensing remains local-use-only, with no redistribution
 rights granted. Normal asset builds invoke the importer after battle-hit assets.
 Validation uses its own material-light cache and private RomFS; source maps and
 constants are unchanged. No new image conversion or external code was used.
+
+## Audience holding/throwing/damage/escape source inspection (2026-10-14)
+
+Read-only US ISO DOL ItemOn80191a48/168, ItemThrow80191980/c8,
+Damage8019173c/148, Escape80191290/1e0, ItemGetPtr801a8624/40,
+GetEscapeChangeOK801a27e8/fc, GetSysCtrl801a2960/60 and
+SoundItemThrow801a044c/f0 were inspected with `tools/inspect_dol_function.py`.
+Ignored inspection ELF/text stays under `artifacts/`. Source pins and exact
+native scope are in the
+[control contract](behavior/battle/AUDIENCE_ITEM_HOLD_THROW_DAMAGE_AND_ESCAPE.md).
+Code uses unchanged existing PMEVT constants and original sound-key addresses;
+no executable source text is linked or committed. No new art/HUD conversion,
+asset format, scale or licensing choice was introduced. Native sound requests
+reuse existing original public SFX metadata; real voice playback remains open.
+Private validation refreshes original door/Bero/Trouble/material-light packs
+using the committed baseline's extractors, with the ISO read-only. Generated
+material retains the existing private-use licensing and stays outside history.

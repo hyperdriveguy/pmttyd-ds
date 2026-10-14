@@ -1595,3 +1595,10 @@ add_executable(map_material_light_tests tests/map_material_light_tests.cpp)
 target_link_libraries(map_material_light_tests PRIVATE ttyd_core)
 add_test(NAME map_material_light COMMAND map_material_light_tests)
 set_tests_properties(map_material_light PROPERTIES WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+
+# Original audience held-item, damage and escape controllers.
+target_sources(ttyd_core PRIVATE source/battle/battle_audience_item_control.cpp)
+add_executable(battle_audience_item_control_tests tests/battle_audience_item_control_tests.cpp)
+target_link_libraries(battle_audience_item_control_tests PRIVATE ttyd_core)
+add_test(NAME battle_audience_item_control COMMAND battle_audience_item_control_tests)
+set_tests_properties(battle_audience_item_control PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

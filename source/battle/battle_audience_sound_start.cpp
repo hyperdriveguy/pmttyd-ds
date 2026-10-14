@@ -37,4 +37,17 @@ std::optional<int32_t> startPackedBattleAudienceSound2(uint32_t key,int32_t slot
     const auto position=packedBattleAudienceSoundInfo2(slot,s.actors);if(!s.on)return {};
     return s.on(s.user,key,position);
 }
+bool playPackedBattleAudienceThrowSound(int32_t kind,int32_t slot,const BattleAudienceSoundStartServices& s,const BattleAudienceSoundServices& sound){
+    const auto position=packedBattleAudienceSoundInfo2(slot,s.actors);
+    const int32_t lane=position[0]<=scalar(0x80424988,s.actors)?10:11;
+    const auto r=battleAudienceSoundRecord(lane,s.actors);const auto& m=s.actors.memory;
+    if(!stopBattleAudienceSound(lane,sound))return false;
+    const auto handle=startPackedBattleAudienceSound2(kind==0?0x802fa43c:0x802fa458,slot,s);if(!handle)return false;
+    m.storeWord(m.user,r+4,uint32_t(*handle));if(*handle==-1)return true;
+    m.storeWord(m.user,r,m.word(m.user,r)|1);m.storeWord(m.user,r+0xc,0xffffffff);m.storeWord(m.user,r+0x10,0);
+    if(!sound.volume)return false;
+    const auto volume=sound.volume(sound.user,*handle);if(!volume)return false;
+    m.storeByte(m.user,r+0x1d,*volume);m.storeByte(m.user,r+0x1c,*volume);
+    m.storeWord(m.user,r+0x18,0);m.storeWord(m.user,r+0x14,0);m.storeByte(m.user,r+0x1e,100);return true;
+}
 }

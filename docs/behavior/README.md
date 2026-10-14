@@ -1072,3 +1072,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Native battle material-light binding](display/NATIVE_MAP_MATERIAL_LIGHT_BINDING.md) — original map bytes, bank owner, retained light selection and separate RGB/alpha channels.
 - [GX channel control and color-register semantics](display/GX_CHANNEL_CONTROL_AND_COLOR_REGISTER_SEMANTICS.md) — original separate RGB/alpha versus combined dispatch, partial register writes and disabled vertex-material passthrough.
+
+- [Audience item hold/throw, damage and escape](battle/AUDIENCE_ITEM_HOLD_THROW_DAMAGE_AND_ESCAPE.md): whole states7/8/10/12, correct item pointers/penalty, escape eligibility and throw-sound registry records.
