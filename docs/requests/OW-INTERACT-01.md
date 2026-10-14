@@ -751,3 +751,16 @@ rendering reuses existing font/frame resources and batches glyphs through C3D.
 Global manager slot sharing, failure/discard window, native item/effect/audio/
 control integration and original outer cadence remain open. This provider alone
 does not enable quest acquisition; the parent request remains open.
+
+2026-10-13 follow-up: read-only source recovery pins projected image44 POS
+coordinates, direct image42 UV, distinct repeat/mirror wrapping, exact draw
+state and actual camera5/class2 dispatch. Camera5 copies camera4 eye/up/target
+but owns lens/clip/depth and excludes camera4 final zoom correction.
+[Source effect](../behavior/effect/FIELD_ITEM_GET_TYPE6_GX_STATE_AND_PROJECTED_TEXTURE.md),
+[camera producer](../behavior/camera/FIELD_ITEM_GET_CAMERA5_PRODUCER_AND_PROJECTION.md),
+[native shader/camera scope](../behavior/display/NATIVE_ITEM_GET_EFFECT6.md).
+Portable projected matrix and finite camera5 frame implemented; native PICA
+consumes original masks with two passes, explicit projection/viewport, no render
+clock or tint bake. Source camera4 prepared-vector supply/display sorting,
+icon307 binding, original audio/control/name teardown and native quest acquisition
+remain open; full-storage discard remains pending. Parent request stays open.

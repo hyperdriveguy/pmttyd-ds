@@ -16,8 +16,7 @@ remain in their established bank. No per-frame extraction or texture upload.
 Original `e/us/effect.tpl` images42(128x128),43(16x128),44(16x16) are exported
 without resampling or tinting. I4 intensity becomes equal RGBA components;
 source and decoded-pixel hashes are recorded in the ignored generated manifest.
-These texture packs are prepared resources; the native effect draw shader is
-still pending.
+These texture packs are consumed by the [native finite effect shader](NATIVE_ITEM_GET_EFFECT6.md); original camera/display scheduling and quest binding remain pending.
 
 `FieldItemGetEffect6` owns the source-driver clock, startup scale curve,
 indefinite lifetime1000, soft-delete16-call fade and deletion ordering. Draw
@@ -35,7 +34,8 @@ See [original effect](../effect/FIELD_ITEM_GET_TYPE6_BANK_UPDATE_AND_DRAW.md),
 [US text/window acknowledgment](../message/ITEM95_US_TEMPLATE_EXPANSION_AND_WINDOW_ACKNOWLEDGMENT.md),
 and [portable receive owner](../field/PORTABLE_ITEM95_RECEIVE_SEQUENCE.md).
 
-Next providers: original window action/close service, GX-to-PICA effect shader,
-camera/layer ordering, original audio/control and item-name registry teardown.
+Next integration: bind the [original name/help windows](NATIVE_ITEM95_WINDOWS.md),
+[native projected effect/camera provider](NATIVE_ITEM_GET_EFFECT6.md), source
+camera/display scheduling, original audio/control and item-name registry teardown.
 Connect those to the portable receive owner before enabling actual acquisition;
 retain the failed-receive discard frontier rather than fabricating success.

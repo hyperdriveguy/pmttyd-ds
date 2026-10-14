@@ -2,6 +2,62 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Original projected item-get effect and camera5 provider
+
+Committed `5b7b910`: portable source projected texture matrix and explicit
+camera4-default/camera5-request field, finite camera5 frame from copied original
+eye/up/target, and native original effect6/count1 two-pass renderer. Recovered
+image44 POS texgen, separate image42 UV, repeat/mirror sampling, actual GX
+blend/Z/alpha state and camera5 independent projection/depth. PICA vertex shader
+projects the original texture matrix; three hardware combiner stages preserve
+source gray/orange interpolation and raster modulation without tint baking.
+Lazy65KiB original texture residency and12-vertex432-byte arena; original
+clock/fade remains independent of drawing. Synchronized inactive/shutdown
+resource release and following UI depth/texture state restoration are explicit.
+Corrected “layer5” terminology: payload+38 is camera5, display class2.
+[Native scope](behavior/display/NATIVE_ITEM_GET_EFFECT6.md),
+[GX/projected texture](behavior/effect/FIELD_ITEM_GET_TYPE6_GX_STATE_AND_PROJECTED_TEXTURE.md),
+[camera5 producer](behavior/camera/FIELD_ITEM_GET_CAMERA5_PRODUCER_AND_PROJECTION.md).
+
+Exact validation: fixed complete baseline d18faf7 plus owned host changes formed
+review treea8a02694a3fea07fc682c2dba05019bbc2126c6c; `make test` passed
+209/209 CTests and133 Python tests. Independent source review then caught
+camera5's RGB-only framebuffer-write mask; correcting that3DS-only source formed
+finaltree7d0a5282b76091d1c50e9a45ecd2ed75fea77593. Final `make -j4 all`
+passed, all final tracked review files byte-audited before preview instrumentation.
+Logs `artifacts/item-get-effect-reviewed-{test,native}.log`.
+Normal binary `artifacts/ttyd-item-get-effect-reviewed.3dsx`, SHA256
+57df4d180cae4cd871a9743ca52c6126d0508b082c652fbad535bf7cc6ba29e0.
+Other active sessions' changes were excluded from validation and preserved.
+
+Isolated Azahar graphics-only harness displayed original M_I_U, title/help and
+projected dotted effect using separately prepared camera5 lens25/near1/far100,
+source viewportdepth.2/.3. An effect-only second capture confirmed original
+image42 starburst opacity silhouette unobscured by title/help. Both settled
+captures show60FPS(native rollingCPU~9.3..9.4ms/GPU.5ms) in software Azahar;
+this is emulator observation, not hardware profiling or matched Dolphin pixels.
+Harness explicitly requests soft deletion at600 simulationticks, then returns
+to ordinary drawing with no native exception. It tests rendering/deletion,
+not original acknowledgment or quest acquisition. Captures under
+`artifacts/azahar-item-get-effect{,-outline}/`; outline binary/script retained
+ignored for inspection. Private Main/Render instrumentation removed afterward.
+Only isolated generated test profiles/checkpoints used; no user emulator saves,
+item grant, quest/story flag write or invented dialogue.
+
+Documentation scan found7 broken header links in another session's new
+optimization request files; corrected just their relative paths in the worktree,
+preserving those untracked files for their owner. Subsequent documentation link
+check passed1089 files/0 broken. New contracts stay in subsystem folders.
+
+Next: supply source camera4 prepared vectors/outer update and camera5 display
+queue/depth-sort rather than infer them from final camera4 view; bind original
+icon307/TPL312, key/fanfare/audio/control and named item registry. Connect the
+existing original receive/window/effect providers to actual Goomba3 quest2
+acquisition and5405 progression. Failed-receive discard and global window
+allocation remain pending. Continue remaining original NPC/event/area content;
+this is an early slice and does not complete the broad remake goal.
+
+
 ## 2026-10-13 — SERVICE-01 coin half: add/set/gate leaves
 
 Delivered behavior/battle/POUCH_COIN_TRANSACTION.md: +120 coin field with

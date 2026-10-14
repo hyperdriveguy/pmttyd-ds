@@ -1856,3 +1856,16 @@ ID is copied from the actual flagged part definition.
 See [native scope](behavior/battle/NATIVE_HARBOR_HIT_REACTION_OWNERSHIP.md).
 Nintendo/Intelligent Systems resources; no redistribution rights granted. ISO
 is read-only; live-source/hardware equivalence is not established by static pins.
+
+## 2026-10-13 — Original item-get texture sampling in native effect
+
+Existing local `romfs/field-item-get-effect-44.t3x` and `-42.t3x` consume
+unchanged original `e/us/effect.tpl` images44/42. Source TPL descriptor review
+pins image44 repeat and image42/43 mirror in both axes, linear min/mag, zero
+LOD range/bias and no mipmaps. Native shader projects source POS for44 and
+retains quad UV for42; it applies source orange/gray in the combiner, leaving
+exported grayscale pixels unchanged. No additional extraction/resampling/tint
+bake or distributable asset pack introduced. Image43 stays exported but count1
+has no particle vertices requiring native residency. Original copyrighted
+resources remain local/ignored with existing source and decoded-pixel hashes;
+no redistribution rights created. [Native scope](behavior/display/NATIVE_ITEM_GET_EFFECT6.md).

@@ -44,7 +44,7 @@ nameItemGet,maincallback80212188,activeflags|2. Payload fields:
 | 1c | age0 |
 | 20 | scale-mode0 |
 | 34 | alpha255 |
-| 38 | initial4,then item95 caller overwrites5 |
+| 38 | camera4 initially, then item95 caller overwrites5 |
 
 EffItemGetMain80212188/300 is called through
 [effect-driver update](EFFECT_DRIVER_UPDATE_AND_TEXTURE_CACHE.md).
@@ -65,8 +65,9 @@ separate1.1/.9 scaling and are outside original freshtype6 mode0.
 No additional particle-update loop executes for count1.
 
 Compute dispCalcZ(effectXYZ);call dispEntry(payload+38,2,
-effItemGetDisp802118a0,effectpointer,z). Source caller's5 is retained verbatim;
-full display-manager pass/camera scheduling remains its own provider.
+effItemGetDisp802118a0,effectpointer,z). Source caller's camera5 and display class2 are retained verbatim;
+full display-manager camera/pass scheduling remains its own provider.
+See [projected texture and GX state](FIELD_ITEM_GET_TYPE6_GX_STATE_AND_PROJECTED_TEXTURE.md).
 
 ## Two retained main quads and camera transforms
 
