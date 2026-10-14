@@ -22,6 +22,7 @@
 #include "field_shadow.hpp"
 #include "battle_timing_a.hpp"
 #include "battle_hammer.hpp"
+#include "positional_sfx_registry.hpp"
 #include "battle_defense.hpp"
 #include "battle_damage.hpp"
 #include "battle_damage_application.hpp"
@@ -245,6 +246,7 @@ public:
     float cameraX = 1, jumpHeight = 0, facing = 1, turnScale = 1;
     bool trioBattleActive=false;ProfessorStory trioBattleIntro;TrioBattleCommands trioCommands;TrioAttack trioAttack;size_t trioBattleCameraCursor=0;
     std::shared_ptr<BattleSpotlightState> battleSpotlight=std::make_shared<BattleSpotlightState>();
+    std::shared_ptr<PositionalSfxRegistry> publicSfx=std::make_shared<PositionalSfxRegistry>(); // Session owner; original On/backend provisioning remains incomplete.
     std::shared_ptr<BattleRandom> trioRandom=std::make_shared<BattleRandom>(1); // Source boot seed; field/story interleaving remains incomplete.
     const ProfessorStory& storyPresentation() const {return trioBattleActive?trioBattleIntro:professorStory;}
     Scene scene = Scene::Explore;

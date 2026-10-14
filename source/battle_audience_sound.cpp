@@ -1,5 +1,7 @@
 #include "battle_audience_sound.hpp"
 #include <cassert>
+#include <cstring>
+#include <cmath>
 namespace ttyd {
 namespace {
 uint32_t base(const BattleActorServices& s){return currentBattleAddress(s)+0x2858;}
@@ -13,12 +15,40 @@ int32_t battleAudienceHalfCount(bool right,const BattleActorServices& s) {
     int32_t count=0;
     for(unsigned row=0;row<10;++row)for(unsigned column=0;column<10;++column) {
         const auto record=base(s)+0x1bc+0x134*(20*row+(right?10:0)+column);
-        const auto flags=word(s,record);
+        const auto flags=word(s,base(s)+0x1bc+0x134*(20*row+(right?10:0)+column));
         if(!(flags&1) || (flags&0x102))continue;
         const auto state=s.byte(s.user,record+0x19);
         if(state!=0xc && state!=0xd && state!=0x11)++count;
     }
     return count;
+}
+bool noiseMainBattleAudienceSound(const BattleAudienceSoundServices& s) {
+    const auto b=currentBattleAddress(s.actors),a=base(s.actors),r=battleAudienceSoundRecord(2,s.actors);
+    const auto left=battleAudienceHalfCount(false,s.actors),right=battleAudienceHalfCount(true,s.actors),count=left+right;
+    if(!(word(s.actors,a)&0x10000) && (word(s.actors,b+0xef4)&0x80))setBattleAudienceVolume(2,60,80,s.actors);
+    else if((word(s.actors,a)&0x10000) && !(word(s.actors,b+0xef4)&0x80))setBattleAudienceVolume(2,0,80,s.actors);
+    if(count==0) {
+        if(s.actors.byte(s.actors.user,r+8)!=0) {
+            if(!s.stop || !s.stop(s.user,int32_t(word(s.actors,r+4))))return false;
+            byte(s.actors,r+8,0);
+        }
+    } else if(count>0 && count<=200) {
+        const uint8_t category=count<50?1:count<100?2:count<150?3:4;
+        if(s.actors.byte(s.actors.user,r+8)!=category) {
+            if(!noiseAlwaysBattleAudienceSound(s))return false;
+            byte(s.actors,r+8,category);
+        }
+    }
+    if(!(word(s.actors,a)&0x2000) || count==0)byte(s.actors,r+0x1d,0);
+    else {
+        auto real=[&](uint32_t x){auto v=word(s.actors,x);float f;std::memcpy(&f,&v,4);return f;};
+        volatile float product=real(0x804249b4)*float(count);
+        volatile float quotient=product/real(0x804249b8);
+        volatile float value=real(0x804249b4)+quotient;
+        if(!std::isfinite(value) || value>=2147483648.f || value<-2147483648.f)return false;
+        byte(s.actors,r+0x1d,uint8_t(int32_t(value)));
+    }
+    return true;
 }
 bool stopBattleAudienceSound(int32_t slot,const BattleAudienceSoundServices& s) {
     const auto record=battleAudienceSoundRecord(slot,s.actors);

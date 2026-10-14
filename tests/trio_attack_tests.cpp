@@ -362,13 +362,14 @@ int main(){
             uint32_t retainedBattleHeader=0;assert(charged.trioAttack.readWord(0x84000000,retainedBattleHeader));
             for(unsigned n=0;n<100 && !charged.trioAttack.pendingFunction();++n)charged.tick(Input{});
             assert(charged.trioAttack.pendingFunction()==0x800f8e28u);
-            charged.tick(Input{}); // Actual spotlight/stage/help inactive passes reach the audience provider.
-            assert(charged.trioAttack.pendingFunction()==0x801a836cu && charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001f);
+            const auto engineCursor=charged.trioAttack.requests().size();
+            charged.tick(Input{}); // Source audience updates reach the next slot provider.
+            assert(charged.trioAttack.pendingFunction()==0x80203aa0u && charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001f);
             assert(charged.trioAttack.readWord(0x84000ef4,value) && !(value&0x80000000));
             const auto& engineRequests=charged.trioAttack.requests();
             constexpr uint32_t enginePrefix[]{0x800f7b28,0x8011a43c,0x8011f1ec,0x800fa5b0,0x80149798,0x801aa168,0x80139150,0x8013800c,0x802168a4,0x801a836c};
-            assert(engineRequests.size()>=10);
-            for(unsigned i=0;i<10;++i)assert(engineRequests[engineRequests.size()-10+i].function==enginePrefix[i]);
+            assert(engineRequests.size()>=engineCursor+10);
+            for(unsigned i=0;i<10;++i)assert(engineRequests[engineCursor+i].function==enginePrefix[i]);
             assert(charged.battleSpotlight->work[0]==5 && charged.battleSpotlight->work[1]==0x85600040 && charged.battleSpotlight->work[2]==0);
             assert(charged.trioAttack.readWord(0x8401900c,value) && value==0);
             const auto* stageMap=charged.trioAttack.stageMap(false);const auto* backMap=charged.trioAttack.stageMap(true);

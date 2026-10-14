@@ -16,6 +16,7 @@ int32_t battleAudienceHalfCount(bool right,const BattleActorServices&);
 bool stopBattleAudienceSound(int32_t,const BattleAudienceSoundServices&);
 bool clapBattleAudienceSound(int32_t lifetime,int32_t fade,const BattleAudienceSoundServices&);
 bool noiseAlwaysBattleAudienceSound(const BattleAudienceSoundServices&);
+bool noiseMainBattleAudienceSound(const BattleAudienceSoundServices&);
 void setBattleAudienceVolume(int32_t slot,int32_t target,int32_t duration,const BattleActorServices&);
 void setAllBattleAudienceVolumes(int32_t target,int32_t duration,const BattleActorServices&);
 }

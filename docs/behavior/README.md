@@ -832,3 +832,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Horizontal battle camera shake request](battle/CAMERA_HORIZONTAL_SHAKE_REQUEST.md)
 
 - [Original key-item fanfare container loop and stream retirement](audio/FIELD_KEY_ITEM_FANFARE_CONTAINER_LOOP_AND_RETIREMENT.md).
+
+- [Native AudienceMain and public sound owner](battle/NATIVE_AUDIENCE_MAIN_AND_PUBLIC_SOUND_OWNER.md): integrated source recount/throw/window/sound path and next slot boundary.
+- [Audience live count, AP leaves and sound failure adapters](battle/AUDIENCE_LIVE_COUNT_AP_EMPTY_LEAVES_AND_SOUND_FAILURE_ADAPTERS.md).

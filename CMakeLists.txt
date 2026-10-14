@@ -1052,3 +1052,8 @@ add_test(NAME battle_audience_live COMMAND battle_audience_live_tests)
 add_executable(positional_sfx_registry_tests tests/positional_sfx_registry_tests.cpp)
 target_link_libraries(positional_sfx_registry_tests PRIVATE ttyd_core)
 add_test(NAME positional_sfx_registry COMMAND positional_sfx_registry_tests)
+
+target_sources(ttyd_core PRIVATE source/battle_audience_main.cpp)
+add_executable(battle_audience_main_tests tests/battle_audience_main_tests.cpp)
+target_link_libraries(battle_audience_main_tests PRIVATE ttyd_core)
+add_test(NAME battle_audience_main COMMAND battle_audience_main_tests)

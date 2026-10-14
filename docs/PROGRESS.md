@@ -12293,3 +12293,52 @@ lifetime and source sound provisioning; implement Ctrl/throw, Item/AP and
 NoiseMain and integrate complete AudienceMain. Ending still holds at801a836c;
 then real SlotInit/idleMain and surviving-unit display providers are required.
 No battle result, field return or prologue completion is asserted. Goal active.
+
+### 2026-10-14 — AudienceMain native integration and retained sound ownership
+
+Bound AudienceMain801a836c in the real ordered engine completion pass. Source
+B/A captures, conditional window activation, five service order and fresh
+final flag publication are preserved. Ctrl now performs real right/left
+recounts, original flag10 scalar motion/ground clamp, generic AI admission
+and throw gates/RNG/shuffle/ItemOn rejection prefix. Inactive item/AP gates
+use actual live fields; active AI, item/AP and positive ItemOn continuations
+remain their providers. NoiseMain uses source L-then-R live counting and
+category/transition/amplitude state. SoundMain now runs against the retained
+public slot registry. See [native scope](behavior/battle/NATIVE_AUDIENCE_MAIN_AND_PUBLIC_SOUND_OWNER.md).
+
+Game passes a persistent shared public SFX bank through runtime creation and
+retains it across restore; AudienceInit does not erase it. Movement/Hammer
+mocks now declare request failure-1 rather than returning unallocated0. This
+can change continuous sound retry history. It is not original On provisioning
+or proof that absent NDSP playback makes original On fail: source allocation
+can precede backend creation. Original public provisioning, audible battle
+effects, field/global audio interleaving and full backend parity remain open.
+Source live-count/AP/motion and native failure-adapter evidence is indexed
+and the EVT inbox is updated. Existing private original item-table data was
+used; no new asset transformation or distributed payload.
+
+Validation: make test217/217 CTest and136/136 Python pass
+(artifacts/audience-main-tests-final.log). After a formatting correction,
+current-source scoped rebuild and CTest2/2 pass (audience-main-scoped-final.log).
+make all passes (audience-main-all.log); final make -o assets-ready all also
+passes (audience-main-all-final.log), reusing already converted private packs.
+Both successful full test runs retained. Coherent native short-boot snapshot
+basebb063b1 plus owned overlay passes full native build and final rebuild in
+artifacts/audience-main-native-source; logs audience-main-debug{,-final}.log.
+Immutable3DSX/ELF and SHA256 manifest:artifacts/audience-main-native-snapshot.
+Shared-checkout builds contained concurrent unrelated work; commit is scoped.
+Doc checker1113 Markdown files/0 broken links; scoped diff check passes.
+
+Isolated artifacts/azahar-audience-main story11 fixture runs actual trio
+attacks, remaining target selection, source10-Star-Point reward/victory and
+black fade/export hold. Script terminal0; reviewed final target, victory30 and
+ending capture with no observed native exception. Emulator samples20FPS/2.78ms
+target,30FPS/3.55ms reward,60FPS/4.17ms held black are observations, not physical
+New2DS XL parity. User emulator profile/saves and original ISO unchanged.
+
+Bridge regression now reaches BreakSlot_Main80203aa0 after AudienceMain,
+without forced engine end/result/story/control writes. Native capture remains
+a development field-restoration hold, not a completed field return. Next:
+real SlotInit/mapheap array owners and idle SlotMain, surviving-unit display
+(HpGaugeMain first), queued draw consumers and original BattleEnd/field
+restoration. Complete playable original-fidelity prologue remains the goal.

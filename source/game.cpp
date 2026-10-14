@@ -1081,6 +1081,7 @@ bool Game::beginWater() {
 void Game::restore(const Progress& saved) {
     const auto retainedSpotlight=battleSpotlight;
     const auto retainedTrioRandom=trioRandom;
+    const auto retainedPublicSfx=publicSfx;
     const uint32_t retainedFieldMarioCameraId=fieldMarioBattle.cameraId;
     const auto retainedMarioPoseHandles=fieldMarioBattle.poseHandles;
     decltype(fieldParties.poses) retainedMarioPoses;
@@ -1098,6 +1099,7 @@ void Game::restore(const Progress& saved) {
     *this = std::move(*reset);
     battleSpotlight=retainedSpotlight;
     trioRandom=retainedTrioRandom;
+    publicSfx=retainedPublicSfx;
     fieldMarioBattle.cameraId=retainedFieldMarioCameraId; // Source reinit preserves the camera ID across record reset.
     fieldMarioBattle.poseHandles=retainedMarioPoseHandles;fieldParties.poses=std::move(retainedMarioPoses);
     fieldParties.reinitializeMario(fieldMarioBattle); // Original live pose material clear, then light|2; clocks/resources survive.
@@ -1970,7 +1972,7 @@ void Game::tick(const Input& rawInput) {
             }
             if(trioCommands.state==TrioBattleCommands::State::AttackReady && progress.originalPouch && !trioAttack.active() && !trioAttack.finished())progress.originalPouch->half(0x70,int16_t(progress.hp)); // Current field HP enters the original resource snapshot once.
             const auto partyAppearance=fieldPartyAppearanceServices();
-            if(trioCommands.state==TrioBattleCommands::State::AttackReady && trioAttack.begin(trioCommands,trioBattleIntro,progress.hp,progress.originalPouch,&professorStory.actors[3].npcBattleFlags,&fieldMarioBattle,&fieldParties,&partyAppearance,battleSpotlight,trioRandom)) {
+            if(trioCommands.state==TrioBattleCommands::State::AttackReady && trioAttack.begin(trioCommands,trioBattleIntro,progress.hp,progress.originalPouch,&professorStory.actors[3].npcBattleFlags,&fieldMarioBattle,&fieldParties,&partyAppearance,battleSpotlight,trioRandom,publicSfx)) {
                 const auto sample=inputProducer.channels[0].battleSample();
                 const uint32_t triggers=i.physicalSnapshot?sample.pressed:(i.confirm?0x100u:0u)|(i.cancel?0x200u:0u);
                 trioAttack.tick(ticks*1000/60,trioBattleIntro,triggers,i.physicalSnapshot?&sample:nullptr);
