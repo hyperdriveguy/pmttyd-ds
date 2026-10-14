@@ -49,6 +49,9 @@ bool Renderer::captureHeadingSubtitle(){
 }
 bool Renderer::frontHeading(OpeningSequence& opening,bool& entryPresented,bool& openPresented,bool& startedPresented,bool& exitPresented){
     if(!loadHeadingResources())return false;
+    if(!opening.headingDisplay.stardust.ready){
+        if(!opening.headingDisplay.stardust.load("romfs:/heading-stardust.bin") || !frontImage("heading-stardust",0,0,0,0)){frontFailure="Original heading Stardust admission failed";return false;}
+    }
     auto& heading=opening.heading;auto& display=opening.headingDisplay;
     if(heading.displayRequested && !heading.displayReady){
         if(!captureHeadingSubtitle()){frontFailure="Original heading subtitle capture failed";return false;}
@@ -85,6 +88,18 @@ bool Renderer::frontHeading(OpeningSequence& opening,bool& entryPresented,bool& 
             for(unsigned n=0;n<62;++n){if(n%2){point(n);point(n+2);point(n+1);}else{point(n);point(n+1);point(n+2);}}
             drawRange(&headingSubtitleTexture,first,count-first);
         }
+        // Source mode4 texture32: C0*(1-TEXC)+TEXC, alpha=A0*TEXA.
+        auto star=std::find_if(frontTextures.begin(),frontTextures.end(),[](const auto& t){return t.name=="heading-stardust";});
+        if(star==frontTextures.end())return false;
+        C3D_TexEnvSrc(env,C3D_RGB,GPU_CONSTANT,GPU_PRIMARY_COLOR,GPU_TEXTURE0);C3D_TexEnvFunc(env,C3D_RGB,GPU_INTERPOLATE);C3D_TexEnvColor(env,0xffffffff);
+        C3D_TexEnvSrc(env,C3D_Alpha,GPU_TEXTURE0,GPU_PRIMARY_COLOR);C3D_TexEnvFunc(env,C3D_Alpha,GPU_MODULATE);
+        for(const auto& group:display.stardust.groups)if(group.started && group.age){unsigned visible=0;
+            for(const auto& particle:group.particles)if(particle.frame>=0){const int first=count;const auto rgba=display.stardust.color(group,visible++);const auto color=C2D_Color32(rgba[0],rgba[1],rgba[2],rgba[3]);
+                constexpr unsigned order[]={0,1,2,0,2,3};for(unsigned n:order){const auto& v=display.stardust.quads[particle.frame][n];vertex(group.x+particle.x+v.x*particle.scale,group.y+particle.y+v.y*particle.scale,v.z*particle.scale,v.s/star->size[2],1-v.t/star->size[3],color);}
+                drawRange(&star->image.texture,first,6);
+            }
+        }
+        C3D_TexEnvSrc(env,C3D_Both,GPU_TEXTURE0,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR);C3D_TexEnvFunc(env,C3D_Both,GPU_MODULATE);
         if(display.state==2 && !heading.started)startedPresented=ok;
     }
     if(heading.startFadeRequested && !headingCurtainStarted){headingCurtainStarted=true;headingCurtainStart=opening.now*60/1000;}

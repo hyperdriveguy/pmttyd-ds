@@ -9623,3 +9623,54 @@ Documentation confirms slot1 applause has real producers during ending; fresh
 zero initialization does not prove silence. Authored joining, shared actor
 render/lifetime, general FbattlePost placement and full original prologue
 performance/parity remain unfinished; goal remains active.
+
+Secondary heading source inspection corrected Stardust mode4 lifetimes to
+20/22/24/26 (separate from owner32), signed-ADDI vertex base803a91c8, eight
+original texture32 strip windows and source jump permutation/palette/scale
+bytes. Recorded the used-domain findings in the heading contract without
+claiming a particle consumer. Global RNG continuity and effect/display queue
+ordering remain required for that consumer.
+
+### 2026-10-13 original heading Stardust mode4 consumer
+
+Bound the used Stardust mode4 requests to actual original effect_n64.tpl32
+GPU admission/draw, original eight quad arrays/frame permutation, palette,
+scale curve, lifetimes20/22/24/26, source gravity/damping and calculation order.
+The common entry prologue consumes two radius rand calls before angular and
+acceleration rand calls: four per particle. RadiusX=(rand%40000)/1000,
+radiusY=(rand%8000)/1000; the previous fixed-radius interpretation was wrong
+and has been corrected in code/evidence. Original rand recurrence uses an
+explicit native presentation seed1. Existing groups tick before new display
+requests at60Hz; these are documented adaptations, with no claim of original
+global RNG history or source effect-manager/display queue continuity. Real
+particle bank/texture admission is required before heading display readiness;
+there is no substitute Crystal mask or unbound request acknowledgment.
+
+Validation: make test172/172 CTest and111/111 Python, including original
+entry/main/display/rand/data hashes and actual exported quad/scale/constants;
+make -j8 all builds normal ttyd-2ds.3dsx after restoring temporary private main
+fixture. Logs artifacts/heading-stardust-tests.log and heading-stardust-all-final.log.
+py_compile and git diff --check pass. check_doc_links checks963 files with one
+preexisting missing house-audio contract link in this isolated baseline, no new
+broken heading links. Isolated Azahar artifacts/azahar-heading-stardust private
+fixture captures original colored particle draws around spinning glyphs at
+star-130/140, App60/58FPS, without resource failure or native exception. The
+fixture uses original resources and no synthesized rendering assets; its
+temporary scene-entry injection is absent from committed source. Full natural
+Voyage→heading→Wake integration and original/hardware raster parity remain
+parent validation work; source projective rainbow glyph TEV remains incomplete.
+
+## 2026-10-13 — Primary original heading Stardust consumer
+
+Primary now consumes the original used mode4 Stardust request with original
+texture32, eight signed-short quads, palette/scale data, lifetimes and source
+random arithmetic. The separate presentation seed1 and60Hz update ordering
+are explicit port choices; original global RNG continuity is not asserted.
+No Crystal substitute or unbound-particle acknowledgment is used.
+
+Primary native make all passed (artifacts/opening-stardust-primary-all.log),
+scoped opening/frontend/message25/25 and Python122/122 passed. Full CTest
+182/184 passed; independently changing trio_attack_original and
+harbor_encounter_original fixtures failed (full log preserved). Actual isolated
+particle rendering was reviewed by its owner at58–60FPS; the final combined
+map-transition/sky/particle flow still needs its updated native smoke.

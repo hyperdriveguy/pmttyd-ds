@@ -1586,3 +1586,11 @@ Private converted PMANIM196722bytes SHA256
 ea235288e62746f61ded08437ec7cb9e0385daa93a562b8d7c7f1dd741c6ff8a.
 Asset manifest retains source provenance/fingerprint; source assets/packs are
 original copyrighted data, remain ignored/private and are not distributed.
+
+Heading Stardust mode4 uses original `e/us/effect_n64.tpl` index32,176x22
+unchanged raster with transparent256x32 storage padding. The exporter pins
+original entry/main/display/rand bodies and the eight signed-short quad arrays,
+source palette/scale bytes and constants from the read-only DOL. Their hashes
+and paths remain in the ignored heading resource manifest. No Crystal mask or
+replacement particle geometry is used; original copyrighted bytes remain
+private and outside source history.

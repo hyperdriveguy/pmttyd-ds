@@ -38,11 +38,47 @@ A/B/START mask0x1300 starts the real500ms black exit.
 Limits: source glyph projective rainbow multi-TEV passes are not fully bound;
 the native primary brightness fold is present. Existing original-font metrics
 adapt the subtitle cache rather than reproducing SDKFontGetWidth/crop exactly.
-The source Stardust mode4 requests are retained but their particle renderer is
-unbound; no CrystalN64 substitute is used. Original-runtime/Dolphin raster
+The source Stardust mode4 requests now use the bounded original particle
+consumer below; no CrystalN64 substitute is used. Original-runtime/Dolphin raster
 comparison and physical hardware remain unverified. The isolated heading
 fixture proves only this provider, not completion of the full opening.
 
 Implementation: [display clock](../../../include/opening_heading_display.hpp),
 [native provider](../../../source/render_opening_heading.cpp),
 [asset exporter](../../../tools/opening_heading_assets.py).
+
+## Recovered secondary Stardust mode4 evidence
+
+Entry801eda2c, main801ed630 and display801ed208 confirm texture32 from the
+original effect bank, not Crystal109/110. Four particles use random X/Y radii bounded by the source entry parameters. Entry owner lifetime32 increases by2 per particle, but particle lifetimes
+use the separate r29=20/22/24/26. Initial velocityXY is0; accelerationY=-0.05.
+The extra integer `(rand()%50)/1000` truncates to0. Each particle consumes four original rand calls, including the common entry
+prologue radius draws. Mode4 main applies vx*=0.96, vy+=ay, position+=velocity,
+lifetime--. Lifetime>20 or<0 hides the particle; visible ticks advance the
+scale byte sequence60,90,100,104,106,108,109 multiplied by0.01, then relax
+scale toward0.1 using `scale += 0.1*(0.1-scale)`.
+
+Signed ADDI resolves the original eight N64 vertex arrays to803a91c8 (not
+803b91c8), each56bytes with four signed-short XYZ/ST plusRGBA vertices. XYZ
+uses±8 quads; fraction5 ST windows are22pixels wide across the176x22 strip.
+Jump table803a9388 selects array indices3,4,5,6,7,0,1,2. Original palette
+36bytes at80419c90 cycles through twelve source RGB colors, advancing3bytes
+per drawn particle from `(ownerAge-1)*3`; scale bytes live at80419cbc. Startup
+r2=80427440/r13=8041cf20 are established in
+[original randomness](../meta/RANDOMNESS.md). Native presentation uses explicit seed1 with the original recurrence and
+32-bit wrap. RadiusX=(rand%40000)/1000 and radiusY=(rand%8000)/1000; angular
+position is `fma(90,i+1,rand%360)`, times source tau/360. The final rand draw
+feeds the original truncated acceleration expression. Each display simulation
+tick advances existing particles before spawning newly requested groups; the
+first subsequent tick can draw. The owner-age color strip advances only for
+visible particles, matching the source draw skip. Native TEV preserves the
+source color equation `palette*(1-textureRGB)+textureRGB` and alpha textureA.
+Original texture32 remains176x22 with transparent256x32 storage padding, no
+image scaling, and the actual source signed-short quad geometry. Missing bank
+or GPU texture admission prevents display admission; there is no unbound
+request acknowledgment.
+
+The explicit seed and effect-before-display60Hz cadence are provisional native
+presentation bridges. Original global RNG continuity and display/effect-manager
+queue ordering, numeric GPU and original/hardware raster parity remain unverified.
+They do not alter story dialogue, input masks or event conditions.
