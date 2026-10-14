@@ -2,6 +2,26 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Three more demo/end-goal requests: TRACE-01, ITEM-01, PARTNER-FULL-01
+
+Continued the milestone-scoped request loop.
+[TRACE-01](requests/TRACE-01.md) asks for the matched original opening-encounter
+execution trace — the validation oracle D1 acceptance needs (the completion
+assessment notes no matched trace exists, P0a asks for the branch/re-entry trace,
+and AC-01/INPUT-01/OW-* already ask for pieces of it).
+[ITEM-01](requests/ITEM-01.md) asks for the field inventory/pouch and field item
+use, grounded in the native mushroom-counter fixture (`Menu::Items`,
+`progress.mushrooms`) versus the separately recovered battle pouch and key-item
+reads. [PARTNER-FULL-01](requests/PARTNER-FULL-01.md) asks for the six
+non-Goombella partners' field lifecycle and abilities (OW-PARTNER-01 covers only
+Goombella; battle-side partner routing exists, the field does not) for full-game
+breadth. Index rows and the [milestones](MILESTONES.md) map updated. The docs
+agent's concurrent work on item selection and the field party registry overlaps
+these, which is expected and fine.
+
+Validation: doc-link check 988 files/0 broken; index diff additive only. No
+`make` rerun (docs only). Full-game incomplete.
+
 ## 2026-10-13 — Inbox save continuation party and destination caller
 
 Completed local continueGame/table/source keys; SAVE-01 portion checked.
