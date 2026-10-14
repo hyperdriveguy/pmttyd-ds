@@ -1259,3 +1259,10 @@ target_sources(ttyd_core PRIVATE source/battle/battle_act_menu.cpp)
 add_executable(battle_act_menu_tests tests/battle_act_menu_tests.cpp)
 target_link_libraries(battle_act_menu_tests PRIVATE ttyd_core)
 add_test(NAME battle_act_menu COMMAND battle_act_menu_tests)
+
+target_sources(ttyd_core PRIVATE source/battle/battle_display_footer.cpp)
+# Original Trouble Center one-based selection producer.
+target_sources(ttyd_core PRIVATE source/field/trouble_quest_menu.cpp)
+add_executable(trouble_quest_menu_tests tests/trouble_quest_menu_tests.cpp)
+target_link_libraries(trouble_quest_menu_tests PRIVATE ttyd_core)
+add_test(NAME trouble_quest_menu COMMAND trouble_quest_menu_tests)
