@@ -19,6 +19,13 @@ int main(){
     assert(std::fabs(adjusted[0]-238.25f)<.001f && adjusted[1]==-67.5f);
     const auto faded=openingBookPaperPoint(-32,24,0,6,2,3,-10.5f,0);
     assert(std::fabs(faded[0]-34.25f)<.001f && faded[1]==adjusted[1]);
+    // The captured front stays193px wide. The source final deformation's
+    //39.9395-unit back spans199.6975px at the same5px/unit as its height.
+    const auto turned=openingBookPaperPoint(-71.9395f,24,0,6);
+    assert(std::fabs(turned[0]-12.3025f)<.001f);
+    const auto hingeLeft=openingBookPaperPoint(-32.001f,24,0,6);
+    const auto hingeRight=openingBookPaperPoint(-31.999f,24,0,6);
+    assert(std::fabs(hingeLeft[0]-212)<.006f && std::fabs(hingeRight[0]-212)<.006f);
     assert(OpeningBookView::desktop[0]==0 && OpeningBookView::desktop[2]==400);
     assert(OpeningBookView::desktop[1]<0 && OpeningBookView::desktop[3]>240);
     auto zero=openingBookCover(288,352,1.5f,0);assert(zero);

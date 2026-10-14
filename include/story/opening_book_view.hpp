@@ -19,7 +19,11 @@ inline float openingBookPan(float scale,float angle,float fade=0){
 // Source capture-rectangle placement, then ImageBaseMatrix T(offset)*S(scale).
 // Offsets live in the virtual64x48 image plane, outside the crop's local scale.
 inline std::array<float,3> openingBookPaperPoint(float x,float y,float z,float depth,float scale=1,float offsetX=0,float offsetY=0,float panWeight=1){
-    const float vx=-32.f+64.f*124.f/608.f+(x+32.f)*386.f/608.f;
+    // The front reproduces the captured rectangle. Once folded left of its
+    // hinge, retain the back's portrait proportions with the vertical pixel
+    // scale instead of compressing its width by the front capture's aspect.
+    const float horizontal=x<-32.f?64.f*240.f/(48.f*304.f):386.f/608.f;
+    const float vx=-32.f+64.f*124.f/608.f+(x+32.f)*horizontal;
     const float vy=24.f+(y-24.f);
     return {{200.f+(offsetX+scale*vx)*304.f/64.f+OpeningBookView::openPan*scale*panWeight,120.f-(offsetY+scale*vy)*240.f/48.f,
              depth-16.f-z*scale*193.f/64.f}};
