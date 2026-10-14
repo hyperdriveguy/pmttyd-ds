@@ -1,40 +1,3 @@
-## 2026-10-14 — Original weapon rows, eligibility and party domain
-
-Committed `3b5c7bd`: shared complete local weapon-table builder, target-count
-wrapper and eligibility updater. It emits original Jump/Hammer/badge/inventory/
-Special rows and delegates party key1 through its real callback/count-address
-protocol. Private cursor/count cells, partial descriptors, untouched padding,
-late tutorial override, original name/icon order, empty/dummy rows, signed
-levels/items/counts, wrapped cursor correction and fresh owner/pointer reads
-follow source contracts. Unbound party/update/sample providers retain explicit
-port boundaries; no fabricated labels, party rows or success values.
-
-Native launch correction: Goombella uses party domain6/cursor4c8 instead of
-Item domain2/cursor51c; Hammer uses its4bc cursor instead of Jump4b0. Physical
-navigation/cancellation and original labels/icons stay unchanged. Live Headbonk
-checks domain6 and source attack-class count16f55. Generated source tables still
-need real native providers and tutorial menu/input integration; this library
-is not a completed tutorial menu or gameplay substitute.
-
-Validation: shared make test passed224/224 C++ and138/138 Python tests. Final
-focused builder/trio tests passed2/2 after a store-order fix and mutation fixture;
-native make all passed/rebuilt 3DSX. Existing read-only ISO verifiers passed
-10 bodies/52 data spans/894 builder anchors and20 menu/target bodies/344 anchors.
-Tests cover private count mutation, empty/negative cursor preservation, signed
-inventory, live levels/captured Special mask, late replacement presentation,
-item-pointer read after ordinal/ID stores, captured eligibility count and raw
-side addressing into a private target buffer. No Azahar/Dolphin run; no new
-game payload or conversion. Scoped commits preserve concurrent gauge/audio/
-rendering work. A fixture callback return type was corrected before final checks.
-A concurrent subsystem folder migration began after validation (battle files
-now under source/battle and include/battle); its combined build is not rechecked
-by this step. Preserve that reorganization and use current paths next session.
-
-Next: real source table/party/cost/sampling/message providers in native runtime;
-original tutorial class/submenu/input/selection, player action and turn ownership;
-source camera, window/effect/audio/audience consumers and physical alternatives
-to optional lower-screen audience taps. Full tutorial/battle goal stays active.
-
 # Project progress and handoff
 
 Updated 2026-10-14. The dated implementation record is preserved in
@@ -64,7 +27,7 @@ Validation: fresh `make BUILD=build-structure-check all` passed and produced the
 native 3DSX; `cmake -S . -B /tmp/pm-port-structure-cmake
 -DCMAKE_CXX_COMPILER=/usr/bin/g++` configured successfully and
 `cmake --build /tmp/pm-port-structure-cmake --target ttyd_core -j4` built the
-host library. `python3 tools/check_doc_links.py` checked 1126 Markdown files
+host library. `python3 tools/check_doc_links.py` checked 1130 Markdown files
 with 0 broken links; `git diff --check` passed. A first build in the reused
 default directory failed on stale dependency paths from the old layout; the
 fresh build passed after Makefile directory discovery was anchored to TOPDIR.
@@ -82,17 +45,20 @@ ownership. Do not treat harness completion as original-game completion.
 
 ## Current state
 
-At the latest documented handoff, native builds and host tests passed; the
-most recent exact results are listed under Validation below. This workspace may
-contain newer uncommitted feature work, which should be validated by its owner.
+The latest full host-test counts are preserved in the archive. This session's
+combined native and host-library build results are recorded below; all
+organization and follow-up changes are committed.
 
 - The source-based opening reaches the original arrival checkpoint. Original US
   messages, actors, music selections and assets are retained where bound; full
   renderer/audio parity is unverified.
 - The battle harness has original trio attack selection/execution, damage and
-  reward work, plus the recent source state6 registration, status-window
-  arbitration, slot initialization and HP gauge/display prefix.
-- The latest battle boundary is surviving-unit display and pose admission.
+  reward work, source state6 registration, status-window arbitration, slot
+  initialization, HP gauge/display prefix, original weapon rows and a partial
+  tutorial weapon-menu builder. Tutorial input/selection and full encounter
+  flow remain incomplete.
+- The latest battle boundary is surviving-unit display and pose admission, with
+  source default pose identity and non-overlapping native part records retained.
   Original field/battle pose-pool provisioning, remaining status/icon/part
   consumers, battle teardown, field restoration and save/result owners remain
   open. See [HP gauge/display scope](behavior/battle/NATIVE_HP_GAUGE_HISTORY_AND_DISPLAY_PREFIX.md)
@@ -119,14 +85,17 @@ conversion, and licensing notes remain in [ASSETS.md](ASSETS.md).
 
 ## Latest recorded code validation
 
-The newest archived implementation entry reports `make test` passing 222/222
-CTest and 138/138 Python tests, and `make all` passing. That validation was for
-the recorded HP-gauge/display change at that point in the shared tree. It is not
-a claim that the current uncommitted combined checkout has been rebuilt or that
-hardware behavior is verified. Check the dated archive before relying on older
-counts or emulator captures.
+The combined reorganized checkout passed `make BUILD=build-structure-check all`,
+CMake configure and `ttyd_core` build, the 1130-file Markdown link audit, and
+`git diff --check`. `make test` was not run this session. The most recent full
+test counts remain the dated results in the archive; they predate this combined
+reorganization. No hardware behavior is claimed. Check the archive before
+relying on older test counts or emulator captures.
 
-This documentation cleanup changes no runtime code or asset conversion.
+The repository reorganization preserves runtime behavior. Separate feature
+commits in this session add the opening-book layout correction, battle part and
+pose identity handling, and tutorial weapon-menu construction; none is a claim
+of full original battle completion.
 
 ## 2026-10-14 — Item-get audio providers
 
@@ -139,5 +108,15 @@ performance and steady integration throughput remain unverified. Native pickup
 print/entry/item-main/control/windows/pouch/5405 integration is next.
 [Exact validation, artifacts, limitations and next work](behavior/audio/NATIVE_ITEM_GET_AUDIO_VALIDATION_2026_10_14.md)
 retain the detailed record while this handoff/archive reorganization proceeds.
-Concurrent subsystem migration began after the isolated review builds; its
-combined new directory layout was not validated by these audio checks.
+The combined reorganized checkout was subsequently rebuilt in this session; the
+audio measurements above remain the earlier isolated results.
+
+## Session commits (2026-10-14)
+
+Repository organization is committed in `8e70c746`. Separate follow-up commits
+cover the opening-book layout (`b97fa9c6`), battle-part/pose identity
+(`83402d8a`), CMake registrations (`b3455044`), message-asset order
+(`7f5245f6`), tutorial weapon menu and pouch import (`452a29cd`), recovered
+behavior contracts (`9390b332`), generated-build ignores (`b43651bf`), and the
+renderer notice (`de2dd009`). Earlier independent agent changes are preserved
+in their own commits.
