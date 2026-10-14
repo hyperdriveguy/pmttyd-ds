@@ -26,7 +26,7 @@ bool loadNativeTroubleBoardAssets(const char* root) {
  if(!root)return false;
  MessageAssets probe;
  const std::string path=root;
- if(!loadTroubleBoardEventAssets(root) || !loadFieldDoorDataAssets(root) || !loadFieldMapFlagAssets(root) || !probe.loadGlobal((path+"/messages/global.txt").c_str()) ||
+ if(!loadTroubleBoardEventAssets(root) || !loadFieldDoorDataAssets(root) || !loadFieldMapFlagAssets(root) || !loadFieldBeroInfoAssets(root) || !probe.loadGlobal((path+"/messages/global.txt").c_str()) ||
     !probe.loadRoom((path+"/messages/gor_02.txt").c_str()))return false;
  assetRoot=path;return true;
 }

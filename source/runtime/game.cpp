@@ -266,6 +266,9 @@ bool Game::finishWarp() {
     const RoadCallback entryCallback=inCallback(w);
     restore(next);groundHeight=height;cameraHeight=height;partner=arrival;partnerHeight=height;partnerContact=groundContact;
     fieldSystemFlags=entryCallback==RoadCallback::DebugArrival?systemFlags&~0x40u:systemFlags;
+    // Actual original table query outputs for this incoming named road. This
+    // does not acknowledge the remaining Bero child or its later local writes.
+    fieldBeroInfo.publishRoadIncoming(w.arrivalNode,fieldSystemFlags);
     rebaseFieldCamera();
     arrivalStart=start;arrivalEnd=arrival;
     registerRoadCases(false);partnerFollow={};saveRequested=true;return true;
@@ -1025,7 +1028,7 @@ void Game::synchronizeFieldNpcs() {
         fieldDoorData.invalidate();fieldMapFlags.invalidate();
         fieldNpcs.clear();fieldNpcEventCandidate=0;fieldNpcGeneration=generation;fieldNpcRoom=progress.room;
     }
-    fieldDoorData.synchronize(progress.room);fieldMapFlags.synchronize(progress.room);
+    fieldDoorData.synchronize(progress.room);fieldMapFlags.synchronize(progress.room);fieldBeroInfo.synchronize(progress.room);
 }
 // Source wander providers consume the prior pose/contact publications. Native
 // sound-name tokens1/2 select left/right keys; they are not original addresses.

@@ -1495,3 +1495,10 @@ add_executable(field_map_flags_tests tests/field_map_flags_tests.cpp)
 target_link_libraries(field_map_flags_tests PRIVATE ttyd_core)
 add_test(NAME field_map_flags COMMAND field_map_flags_tests)
 set_tests_properties(field_map_flags PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Exact original selected Bero entry data and retained incoming query outputs.
+target_sources(ttyd_core PRIVATE source/field/field_bero_info.cpp)
+add_executable(field_bero_info_tests tests/field_bero_info_tests.cpp)
+target_link_libraries(field_bero_info_tests PRIVATE ttyd_core)
+add_test(NAME field_bero_info COMMAND field_bero_info_tests)
+set_tests_properties(field_bero_info PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
