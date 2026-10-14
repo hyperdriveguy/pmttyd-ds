@@ -1,5 +1,6 @@
 #pragma once
 #include "field_battle.hpp"
+#include "actor_animation.hpp"
 #include <array>
 #include <cassert>
 #include <memory>
@@ -21,15 +22,27 @@ struct FieldPartyActor {
         for(unsigned i=0;i<4;++i)bytes[offset+i]=uint8_t(value>>(24-8*i));
     }
 };
+// Converted original c_pkr resource and native CPU shape ownership. These
+// handles belong to this field registry; GPU/time/ABI equivalence is separate.
+struct FieldPartyPose {
+    uint32_t flags=1,materialFlags=0,materialLightFlags=0;
+    int32_t mode=2,archiveType=0;
+    uint64_t enteredMilliseconds=0;
+    std::shared_ptr<const ActorAnimationPack> resource;
+    ActorAnimationSample shape;
+    void paperOff() {flags&=~8u;}
+};
 struct FieldPartyRegistry {
     std::array<std::unique_ptr<FieldPartyActor>,2> actors;
+    std::array<std::unique_ptr<FieldPartyPose>,2> poses;
     uint32_t currentDefinition=0; // Original global kind-record pointer view.
     FieldPartyRegistry()=default;
     FieldPartyRegistry(const FieldPartyRegistry& other):currentDefinition(other.currentDefinition) {
         for(unsigned i=0;i<actors.size();++i)if(other.actors[i])actors[i]=std::make_unique<FieldPartyActor>(*other.actors[i]);
+        for(unsigned i=0;i<poses.size();++i)if(other.poses[i])poses[i]=std::make_unique<FieldPartyPose>(*other.poses[i]);
     }
     FieldPartyRegistry& operator=(const FieldPartyRegistry& other) {
-        if(this!=&other){FieldPartyRegistry copy(other);actors=std::move(copy.actors);currentDefinition=copy.currentDefinition;}return *this;
+        if(this!=&other){FieldPartyRegistry copy(other);actors=std::move(copy.actors);poses=std::move(copy.poses);currentDefinition=copy.currentDefinition;}return *this;
     }
     FieldPartyRegistry(FieldPartyRegistry&&)=default;
     FieldPartyRegistry& operator=(FieldPartyRegistry&&)=default;
@@ -71,6 +84,19 @@ struct FieldPartyRegistry {
         if(index==1)actor->word(0,actor->word(0)|4);
         currentDefinition=0x803143e8+uint32_t(kind)*0x28;
         if(mario.flags&0x80000000)actor->word(4,actor->word(4)|0x8000);
+    }
+    int32_t enterPose(uint32_t sourceResource,int32_t mode,std::shared_ptr<const ActorAnimationPack> bank,uint64_t milliseconds) {
+        if(sourceResource!=0x804213e0 || mode!=2 || !bank)return -1;
+        const auto* base=bank->pose("PKR_S_1");ActorAnimationSample validation;
+        if(!base || !base->evaluate(base->start,validation) || validation.vertices.empty())return -1;
+        for(unsigned index=0;index<poses.size();++index)if(!poses[index]) {
+            auto pose=std::make_unique<FieldPartyPose>();pose->resource=std::move(bank);pose->enteredMilliseconds=milliseconds;
+            pose->shape.positions=base->positions;pose->shape.normals=base->normals;pose->shape.nodes=base->nodes;
+            pose->shape.visibility=base->visibility;pose->shape.world.resize(base->groups.size());
+            pose->shape.vertices.reserve(base->bindings.size()); // Real workspace; no animation is selected before the authored pose request.
+            poses[index]=std::move(pose);return int32_t(index);
+        }
+        return -1; // Explicit native admission failure; original exhausted/negative-handle domain is not repaired.
     }
 };
 }

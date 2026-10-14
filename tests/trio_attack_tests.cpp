@@ -332,12 +332,15 @@ int main(){
             for(unsigned n=0;n<59;++n)charged.tick(Input{});assert(charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001a);
             charged.tick(Input{});assert(charged.trioBattleIntro.actors[0].pose=="M_R_1" && charged.trioBattleIntro.actors[1].pose=="PKR_R_1");
             for(unsigned n=0;n<100 && !charged.trioAttack.pendingFunction();++n)charged.tick(Input{});
-            assert(charged.trioAttack.pendingFunction()==(fastReward?0x8004176cu:0x8018ef8cu) && charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001f);
+            assert(charged.trioAttack.pendingFunction()==(fastReward?0x800593fcu:0x8018ef8cu) && charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001f);
             assert(charged.fieldMarioBattleState().partyIndices[0]==255 && charged.fieldMarioBattleState().partyIndices[1]==255);
             if(fastReward) {
                 assert(charged.fieldPartyState().pointer(0) && !charged.fieldPartyState().pointer(1));
                 const auto* actor=charged.fieldPartyState().pointer(0);
-                assert(actor->word(0)==1 && actor->word(4)==0 && actor->word(0xc)==0xffffffff);
+                assert(actor->word(0)==1 && actor->word(4)==0 && actor->word(0xc)==0);
+                const auto* pose=charged.fieldPartyState().poses[0].get();assert(pose && pose->resource && pose->flags==1 && pose->mode==2 && pose->archiveType==0);
+                assert(pose->materialFlags==0 && pose->materialLightFlags==0 && !pose->shape.positions.empty() && !pose->shape.world.empty());
+                assert(pose->shape.vertices.empty()); // Entry has not selected a pose or submitted a draw.
                 assert(actor->word(0x160)==FieldMarioOwnerAddress && actor->word(0x164)==charged.fieldMarioBattleState().cameraId);
                 assert(charged.fieldMarioBattleState().cameraId==4);
                 assert(actor->bytes[0x31]==1 && actor->bytes[0x2f]==0 && actor->word(0x18)==0 && actor->word(8)==0);

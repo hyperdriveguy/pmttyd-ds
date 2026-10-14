@@ -41,9 +41,12 @@ Mario camera ID and writes camera, negative pose/event IDs, primary flags,
 slot, encoded native owner identity and kind in source order. It updates
 saved primary kind only when zero, publishes the full used kind record and
 propagates the Mario80000000 flag into party8000. Ordinary kind1 resolves
-c_pkr or the original d_mario override, then stops at animPoseEntry8004176c
-with mode2. No pose handle, material, init callback, appearance, current-index
-publication or Hello is fabricated. See
+c_pkr or the original d_mario override. Normal c_pkr now admits an owned
+native CPU pose/resource/shape workspace with mode2/archive0, publishes its
+real registry handle and runs PeraOff; missing/unsupported resources retain
+the animPoseEntry barrier. It stops at MarioAnimeId800593fc before material
+inheritance, init callback, appearance, current-index publication or Hello.
+No animation is selected or GPU draw acknowledged by this admission. See
 [constructor animation admission](FIELD_PARTY_ENTRY_ANIMATION_ADMISSION.md).
 Existing primary destruction remains partyKill800be69c; other kind/auxiliary
 constructor domains remain separate providers. If no free slot exists, the
@@ -63,3 +66,13 @@ constructor and animation/material providers, distinct appearance2/Hello and
 general postbattle placement, actual field actor rendering/mode integration,
 RuleKeep/audience, original resource/context/sequence/result publication and
 original execution/hardware verification. This is not a playable native return.
+
+The converted animation backend owns two partner pose slots, sharing immutable
+original c_pkr animation data while retaining independent CPU shape buffers.
+These native registry handles are not an emulation of the original global
+pose-pool capacity or indices. Original Mario pose/material ownership must be
+bound consistently before exposing the shared original handle callbacks.
+Native entry milliseconds are simulation-clock metadata, not original GP
+timebase/shape allocator/GX equivalence. The field renderer still owns its
+separate imported bank/texture projection; linking this pose owner to actual
+field drawing and lifecycle remains required.

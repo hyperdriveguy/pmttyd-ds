@@ -28,6 +28,14 @@
 namespace ttyd {
 namespace {
 EventScriptAssets scripts;NpcAngleTable sourceAngles;bool assetsReady=false;
+std::string fieldPartnerAnimationPath;
+std::weak_ptr<const ActorAnimationPack> fieldPartnerAnimationCache;
+std::shared_ptr<const ActorAnimationPack> fieldPartnerAnimationBank() {
+    if(auto cached=fieldPartnerAnimationCache.lock())return cached;
+    auto bank=std::make_shared<ActorAnimationPack>();
+    if(!bank->load(fieldPartnerAnimationPath.c_str()) || !bank->pose("PKR_S_1"))return {};
+    fieldPartnerAnimationCache=bank;return bank;
+}
 std::array<std::array<uint32_t,4>,3> reactionUnits{};uint32_t reactionGroup=0,franklyPhase=0;
 constexpr uint32_t Battle=0x84000000,Units=0x84100000,Parts=0x84200000,Kinds=0x84300000,Work=0x84400000;
 constexpr std::array<unsigned,7> visual{{0,0,1,3,5,4,2}};
@@ -43,6 +51,7 @@ bool loadTrioAttackAssets(const char* root) {
     const bool valid=std::fread(magic,8,1,f)==1 && !std::memcmp(magic,"PMTHIT3",8) && std::fread(&count,4,1,f)==1 && count==3 && std::fread(units.data(),16,3,f)==3 && std::fread(&group,4,1,f)==1 && std::fread(&phase,4,1,f)==1 && std::fgetc(f)==EOF;
     std::fclose(f);if(!valid)return false;
     if(!sourceAngles.load((std::string(root)+"/npc-angle.bin").c_str()))return false;
+    fieldPartnerAnimationPath=std::string(root)+"/partner.pmanim";fieldPartnerAnimationCache.reset();
     scripts=std::move(next);reactionUnits=units;reactionGroup=group;franklyPhase=phase;assetsReady=true;return true;
 }
 struct TrioAttackRuntime {
@@ -687,7 +696,12 @@ struct TrioAttackRuntime {
                     endingRequest(0x801a94f0);fieldParties->initializeBeforePose(slot,uint8_t(kind),*fieldMario);
                     if(kind!=1){pending=0x800be144;return;} // Other definition/resource records retain their provider.
                     const uint32_t resource=(fieldParties->pointer(slot)->word(4)&0x8000)?0x802cb340:0x804213e0;
-                    endingRequest(0x8004176c,{int32_t(resource),2});pending=0x8004176c;return; // Pose admission precedes material flags, init callback and placement.
+                    endingRequest(0x8004176c,{int32_t(resource),2});
+                    const auto pose=fieldParties->enterPose(resource,2,resource==0x804213e0?fieldPartnerAnimationBank():nullptr,now);
+                    if(pose<0){pending=0x8004176c;return;}
+                    fieldParties->pointer(slot)->word(0xc,uint32_t(pose));
+                    endingRequest(0x800414b0,{pose});fieldParties->poses[unsigned(pose)]->paperOff();
+                    pending=0x800593fc;return; // Actual Mario pose selector/material owners precede HP/pose/init and placement.
                 } // Real source -1 return: no unlock, kill or constructor side effects.
             }else {
                 endingRequest(0x80141198);

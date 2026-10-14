@@ -719,3 +719,4 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Window font string/message consumers](message/WINDOW_FONT_STRING_AND_MESSAGE_CONSUMERS.md): source scanner, edge/icon/reset requests and explicit quest text census.
 
 - [Fresh opening GW8 provenance and resolved ship jump operand](story/OPENING_FRESH_GW8_PROVENANCE.md)
+- [Field Mario pose handles and material provenance](partner/FIELD_MARIO_POSE_HANDLES_AND_MATERIAL_PROVENANCE.md): exact display selector, original field bank creation, re-entry and authored material/light writers.

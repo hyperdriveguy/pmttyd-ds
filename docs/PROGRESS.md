@@ -9135,3 +9135,45 @@ execution/raster parity. User emulator profiles/saves remain untouched.
 Next: integrate actual heading display and original skies/ship consumers,
 finish the unresolved Voyage sky appearance, and run the combined fresh-file
 route through actual boat arrival/departure and the saved story3 endpoint.
+
+## 2026-10-13 — Native original partner animation admission
+
+Joined ending now admits an actual converted c_pkr animation resource and
+owned CPU pose/shape workspace, publishes its nonnegative registry handle
+in actorPc and applies original PeraOff mask8. Mode2/archive0 and new
+material/light defaults0 are recorded; simulation milliseconds are explicit
+native metadata. Original positions/normals/nodes/visibility and hierarchy
+workspace come from the strict existing PMANIM decoder. No animation name
+is selected, vertex draw submitted or GPU consumer acknowledged at entry.
+Immutable bank data is reused; simulation clones keep independent mutable
+shape workspaces. Missing, unsupported d_mario or exhausted native partner
+pose slots retain animation admission rather than minting a fake handle.
+The partner-only native handle namespace/capacity is not original global
+pose-pool ABI/capacity. Mario ownership must be joined consistently before
+original shared-handle callbacks are declared supported.
+
+The ending frontier is now MarioAnimeId800593fc before original material
+inheritance. Documentation recovered WORD4 effect2/rear1/front0 priority,
+actual logoExit/marioPoseInit creation of a_mario/a_mario_r/e_mario mode2
+poses and re-entry/char-mode/door/blend material writers. Ordinary ReInit
+clears material and adds light mask2; newly created zero defaults do not
+justify a constant current Mario material. Added exact source hashes and
+inbox breadcrumbs; no original asset conversion or raw payload changed.
+
+Validation: make test176/176 CTest +116/116 Python and make all passed
+(artifacts/trio-field-animation-tests-final.log,
+artifacts/trio-field-animation-all.log). Original geometry-backed checks
+are separate from portable field protocol checks. First run correctly failed
+because the new asset check ran from the portable test's build directory;
+added a source-root original-assets test instead of weakening admission.
+Checks cover supported/failing resource/mode/pool admission, real shape
+buffers, bank reuse, paper flags and independent snapshots. Native joined
+ending checks real handle/defaults and unchanged current indices/story/result.
+Scoped diff/link checks passed. No new native GPU/animation/material or
+hardware capture claim; prior battle capture uses the unchanged unjoined path.
+
+Next bind actual Mario field pose ownership/selectors/material producers,
+then exact HP/pose/kuribo_init, appearance2 and Hello with source assets,
+renderer/lifecycle and original join/map history. RuleKeep/audience and
+exit/context/sequence/result publication remain open. Full native prologue
+parity and field return are unfinished; goal remains active.

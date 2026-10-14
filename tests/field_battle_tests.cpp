@@ -25,7 +25,7 @@ struct Fixture {
         s.postMario=[](void* p) {static_cast<Fixture*>(p)->calls.push_back("post");};return s;
     }
 };
-int main() {
+int main(int argc,char**) {
     // Source control nesting and byte wrapping preserve unrelated flags.
     FieldMarioBattleState mario;mario.flags=0x80401000;mario.secondaryFlags=0x12345679;
     CHECK(fieldMarioControlOff(mario)==1 && mario.flags==0x80401002);
@@ -72,6 +72,18 @@ int main() {
     Game cameraOwner;CHECK(cameraOwner.fieldMarioBattleState().cameraId==4);
     cameraOwner.setFieldMarioCameraId(0xffffffff);cameraOwner.restore(Progress{});
     CHECK(cameraOwner.fieldMarioBattleState().cameraId==0xffffffff); // Raw ID survives native re-entry, without a range clamp.
+    if(argc>1) {
+    auto bank=std::make_shared<ActorAnimationPack>();CHECK(bank->load("romfs/partner.pmanim"));
+    FieldPartyRegistry animation;
+    CHECK(animation.enterPose(0x802cb340,2,bank,17)==-1 && !animation.poses[0]); // No substitute for the original d_mario override.
+    CHECK(animation.enterPose(0x804213e0,0,bank,17)==-1 && animation.enterPose(0x804213e0,2,nullptr,17)==-1);
+    CHECK(animation.enterPose(0x804213e0,2,bank,17)==0 && animation.enterPose(0x804213e0,2,bank,34)==1);
+    CHECK(animation.enterPose(0x804213e0,2,bank,51)==-1 && animation.poses[0]->enteredMilliseconds==17);
+    CHECK(animation.poses[0]->resource==animation.poses[1]->resource && !animation.poses[0]->shape.positions.empty());
+    animation.poses[0]->flags=0x1009;animation.poses[0]->paperOff();CHECK(animation.poses[0]->flags==0x1001);
+    FieldPartyRegistry animatedFork=animation;animatedFork.poses[0]->shape.positions[0][0]+=1;
+    CHECK(animatedFork.poses[0]->resource==animation.poses[0]->resource && animatedFork.poses[0]->shape.positions[0]!=animation.poses[0]->shape.positions[0]);
+    }
     for(bool partner:{false,true}) {
         Fixture f;if(!partner)f.partner=0;auto s=f.services();
         CHECK(startFieldBattle(-3,true,s)==0);

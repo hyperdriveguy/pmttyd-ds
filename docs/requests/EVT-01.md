@@ -3393,3 +3393,17 @@ two separate material-reader captures. No guessed pose handle or material
 consumer acknowledgement was added. Parent request remains open for actual
 resource/shape/time/pose admission, material owner binding, placement/Hello,
 joining history and original complete ending/exit/sequence/runtime behavior.
+
+### 2026-10-13 — Real c_pkr pose owner and Mario material provenance
+
+Native joined ending admits the existing converted original c_pkr resource,
+allocates actual CPU shape/pose storage, publishes its registry handle and
+runs PeraOff; unsupported/missing resource remains pending. The frontier
+is MarioAnimeId800593fc and actual material owner binding. See
+[material provenance](../behavior/partner/FIELD_MARIO_POSE_HANDLES_AND_MATERIAL_PROVENANCE.md)
+and [native registry](../behavior/partner/NATIVE_FIELD_PARTY_REGISTRY.md).
+Exact WORD4 selector and source field pose creation/reinit/door/char-mode
+writes close the local documentation gap, not complete original chronology/
+GPU/time/global pose ABI equivalence. Next actual Mario pose ownership,
+material reads/ORs, HP/init/placement/Hello and original join/exit/sequence
+remain open; do not infer current material/light0 from new pose defaults.

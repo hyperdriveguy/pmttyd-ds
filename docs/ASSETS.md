@@ -1466,3 +1466,22 @@ private runtime data, not an extracted or distributed original asset. Native
 RGBA8 capture adapts the original RGB565 copy/TEV pipeline. Original Nintendo
 assets remain proprietary, retained for local development; no ISO or original
 payload is committed or distributed.
+
+## 2026-10-13 — Field partner pose admission reuses original c_pkr
+
+Native field animation admission now loads existing ignored
+romfs/partner.pmanim derived from read-only ISO a/c_pkr and a/c_pkr-.
+The existing converter retains PKR_Z_1/S_1/W_1/R_1/J_1A/T_1 and produces
+partner.pmmesh plus partner-mesh.t3x. No new extraction, texture scaling,
+geometry or licensing conversion choice is introduced here. The six-pose
+subset is not every animation in the source model; later HP/pose branches
+need their exact original additional clips before being treated as supported.
+
+Original c_pkr static resource key804213e0/mode2 routes to this actual loaded
+bank. Admission requires decoded PKR_S_1 geometry and allocates independent
+CPU shape workspaces; immutable bank data is reused. The original d_mario
+override802cb340 remains unsupported and cannot substitute c_pkr or mint an
+arbitrary pose handle. GPU texture admission/drawing, original file/archive/
+GP-time/shape ABI and full pose lifecycle remain distinct consumers. These
+local assets remain copyrighted Nintendo/Intelligent Systems data from the
+user-provided ISO, kept private/ignored and not committed or distributed.

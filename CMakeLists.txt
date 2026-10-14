@@ -834,3 +834,8 @@ target_sources(ttyd_core PRIVATE source/item_selection_runtime.cpp)
 add_executable(item_selection_runtime_tests tests/item_selection_runtime_tests.cpp)
 target_link_libraries(item_selection_runtime_tests PRIVATE ttyd_core)
 add_test(NAME item_selection_runtime COMMAND item_selection_runtime_tests)
+
+if(EXISTS "${CMAKE_SOURCE_DIR}/romfs/partner.pmanim")
+    add_test(NAME field_party_animation_original COMMAND field_battle_tests original)
+    set_tests_properties(field_party_animation_original PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+endif()
