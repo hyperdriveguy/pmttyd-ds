@@ -6,9 +6,13 @@ preference: original-looking art, original music and sound effects. Use original
 ISO assets, with texture scaling, geometry reduction and lighting adjustments as
 needed. The initial vector placeholders and generated tones were rejected.
 
-Open /home/carson/games/roms/G8ME01.iso read-only. Keep extracted assets and
-compiled packs outside source history. Do not distribute or commit the ISO.
+Open /home/carson/games/roms/G8ME01.iso read-only. Track editable original and custom assets under assets/ with provenance and
+per-asset licensing. Keep temporary extraction caches and compiled packs outside
+source history. Do not distribute or commit the ISO.
 Record asset paths, conversion choices and licensing in docs/ASSETS.md.
+Normal builds compile assets/manifest.json after the ISO-backed base pack. Never
+re-import over checked-in asset edits; new imports require an empty destination.
+Original rights are retained; tracking a source asset grants no new license.
 
 Behavior contracts live under docs/behavior/ in per-subsystem folders (battle/,
 event/, field/, partner/, message/, format/ and others; see
