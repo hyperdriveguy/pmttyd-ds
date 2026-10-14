@@ -1101,6 +1101,11 @@ void Renderer::button(const char* label,float x,float y,float w,float h,bool act
     text(label,x+7,y+8,.48f,disabled?rgb(135,129,116):Ink);
 }
 void Renderer::overlay(const Game& g) {
+    if(g.coinWindows && g.coinWindows->retained()) {
+        if(!coinGetWindow(*g.coinWindows,uint32_t(g.ticks)))text("Development notice: coin window unavailable",16,220,.42f,Ink);
+        return;
+    }
+
     if(g.acquisitionWindows && g.acquisitionWindows->retained()) {
         if(!itemGetWindows(*g.acquisitionWindows,uint32_t(g.ticks)))text("Development notice: item acquisition windows unavailable",16,220,.42f,Ink);
         return;

@@ -58,6 +58,8 @@ private:
     Game* itemGetGame=nullptr;Audio* itemGetAudio=nullptr;
     bool itemGetAssetsAttempted=false,itemGetAssetsReady=false;
     bool prepareFieldItemGet();
+    bool prepareFieldCoinGet();
+    bool prepareFieldItemGetResources();
     void fieldItemGetRequest(ItemGetRequest);
     void drawFieldItemGet(const Game&);
     struct Vertex { float x,y,z,u,v,r,g,b,a; };

@@ -4,6 +4,7 @@
 #include "goomba_reward.hpp"
 #include "item_get_windows.hpp"
 #include "field_camera_events.hpp"
+#include "game.hpp"
 #include <cassert>
 #include <cmath>
 #include <string>
@@ -139,4 +140,17 @@ int main() {
  assert(native.positionReads==reads && native.pouch.half(0x78)==20);
  assert(!owned.retireDeletedWindow() && owned.bind(ns));
  assert(owned.invoke(7,true,0)==0 && native.window.retained() && native.parameter[0]==7);
+ // Game retains its callback separately from per-frame presentation binding.
+ // Rebinding providers cannot overwrite an active borrowed amount.
+ Game game;Harness gameServices;
+ assert(!game.fieldCoinGetReady() && !game.invokeFieldCoinGet(20,true,0));
+ game.bindFieldCoinGetPresentation(services(gameServices));
+ assert(game.fieldCoinGetReady() && game.invokeFieldCoinGet(20,true,0)==0);
+ assert(!game.fieldCoinGetReady() && game.fieldCoinGet().parameter()[0]==20);
+ game.bindFieldCoinGetPresentation(services(gameServices));
+ assert(!game.invokeFieldCoinGet(7,true,0) && game.fieldCoinGet().parameter()[0]==20);
+ gameServices.clock.low+=201;assert(game.invokeFieldCoinGet(20,false,0)==0);
+ gameServices.clock.low+=501;assert(game.invokeFieldCoinGet(20,false,0)==0);
+ assert(game.invokeFieldCoinGet(20,false,0x100)==0 && game.invokeFieldCoinGet(20,false,0)==2);
+ assert(gameServices.pouch.half(0x78)==20 && !game.retireFieldCoinWindow()); // Missing deletion observation retains ownership.
 }

@@ -2,6 +2,7 @@
 #include "item_selection_presentation.hpp"
 #include "goomba_hand_in.hpp"
 #include "goomba_acquisition.hpp"
+#include "field_coin_get.hpp"
 #include "field_item_mario.hpp"
 #include "mario_motion_sfx.hpp"
 #include "item_get_windows.hpp"
@@ -311,6 +312,15 @@ public:
     bool applyFieldItemStateRequest(ItemGetRequest);
     ItemGetPoint fieldItemMarioPosition() const {return {progress.position.x*100,(groundHeight+jumpHeight)*100,progress.position.z*100};}
     std::shared_ptr<ItemGetWindows> acquisitionWindows;
+    std::shared_ptr<CoinGetWindow> coinWindows;
+    void bindFieldCoinGetPresentation(const FieldCoinGetServices& services) {fieldCoinPresentation=services;}
+    bool fieldCoinGetReady() const {return !fieldCoinCallback.retained() && fieldCoinPresentation.ready && fieldCoinPresentation.ready(fieldCoinPresentation.user);}
+    std::optional<int32_t> invokeFieldCoinGet(int32_t amount,bool firstCall,uint32_t triggers) {
+        if(firstCall && !fieldCoinCallback.bind(fieldCoinPresentation))return {};
+        return fieldCoinCallback.invoke(amount,firstCall,triggers);
+    }
+    bool retireFieldCoinWindow() {return fieldCoinCallback.retireDeletedWindow();}
+    const FieldCoinGet& fieldCoinGet() const {return fieldCoinCallback;}
     FieldItemGetEffect6 acquisitionEffect;
     uint16_t itemCamera8Flags=0;
     uint32_t itemSystemMask=0;
@@ -328,6 +338,8 @@ private:
     bool fieldNpcTalkBound(const FieldActorRecord&) const;
     GoombaHandIn goombaHandIn;
     GoombaAcquisition goombaAcquisition;
+    FieldCoinGet fieldCoinCallback;
+    FieldCoinGetServices fieldCoinPresentation{};
     FieldItemRegistry fieldItemRegistry;
     FieldItemGetServices fieldItemGetPresentation{};
     FieldItemMarioPost fieldItemMarioPost{};
