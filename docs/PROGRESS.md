@@ -1,3 +1,28 @@
+## 2026-10-13 — Tutorial ordinary Crump hit reaction
+
+Implemented and committed `d1b2e99`: shared original GetDamage signed-byte
+query and null-safe U16+1fe reaction marker, bound in tutorial and trio.
+The original Crump ordinary 0x300|23 reaction now enters D_1, respects its
+timed source interval, and finishes without a pending service. Tests retain
+source root replacement/cancellation and unchanged HP/result. These callbacks
+do not calculate/apply damage or complete a player attack.
+
+Validation: native `TMPDIR=artifacts/tutorial-admission-tmp make all` passed.
+Shared `make test` first could not configure while a concurrent CMake edit
+named missing tests/field_item_registry_tests.cpp. Once that file existed,
+the shared rerun passed 213/213 C++ tests and 134/134 Python tests.
+A separate HEAD-based snapshot with only this change passed all 209 C++ and
+133 Python tests. Its first Python run had used a stale copied seven-body
+expectation; the corrected full rerun passed. Focused shared ISO verifier test passed, checking
+10 complete read-only original US DOL bodies. No Azahar or Dolphin run this
+step; host source-script completion does not prove visual playback.
+
+Next: connect tutorial command/action ownership and complete attacks/turn flow;
+retain physical-button paths, original command menu/HUD, and audience taps as
+an optional second-screen action. Generic DefaultDamage wait restoration is
+separate from the Crump fixture. Full tutorial, lower-screen audience handling,
+and real battle delivery remain in progress. Original assets remain private.
+
 ## 2026-10-13 — ID 3 — NOTE: shared-index commit hazard (recurrence)
 
 The game-wide GSW census and child-entry nesting contracts in the entry above
