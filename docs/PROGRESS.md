@@ -2193,3 +2193,55 @@ Next: native original gor_02 case9/door/lecture/global bank/save and original
 help/confirmation/acceptance EVT, input/local-clock admission and matching sample
 playback. Hardware/raster/event parity remains open. This step provides a callable
 backend, not native board gameplay or a completed remake. Goal remains active.
+
+
+## 2026-10-14 — Port code documentation: runtime, event VM and battle core
+
+Commits `517fa879`, `b4635a79` and `ecde3ebb` add the
+[port code guide](code/README.md), runtime ownership/timing, current native
+v1..9 checkpoint byte/knowledge-bit tables, event VM implementation walkthrough
+and core battle action/status/resource/damage guide. Source/header maps and the
+project README link to this collection. Inline comments in **48 C++ files**
+explain original masks, opcode/state/result numbers, packed offsets, signed
+narrowing/wrap, callback counts, provider ownership and native policy values.
+This pass uses the requested nearby-comment option for recovered binary values;
+it does not rewrite numeric ABI constants or assign invented names to unknown
+fields. In particular, it documents retained PAD samples after transfer errors,
+first-poll wait decrement, WAIT_MSEC low-word signed/unsigned division, independent
+handler/manager result protocols, flat/nested scan asymmetries, unresolved pointer
+aliases, distinct map/SDK allocator headers, optional save-state knowledge,
+private defense/general action input and requested-versus-consumed damage.
+
+Final frozen baseline `99943ec006d7fbaf4dd7a0af6e03e90d1c390861` plus exactly
+this documentation pass passes **260/260 C++ and 145/145 Python** through
+`CMAKE_BUILD_PARALLEL_LEVEL=4 make test`, and normal native
+`make all -o assets-ready -j4` passes. Exact logs are
+`artifacts/code-documentation-validation/host-final.log` and `native-final.log`;
+`manifest.json` records baseline, source hashes, unchanged executable-token
+checks for all48 touched C++ files, and ELF/3DSX hashes. Live files match the
+frozen source hashes. Code-guide local links and scoped `git diff --check` pass.
+The isolated native build reuses existing private packs via `romfs`/`local-assets`
+symlinks and skips regeneration; it does not independently freeze/verify every
+private asset. No new emulator or hardware validation was needed/performed for
+these comment-only executable changes. ISO and user emulator profiles/saves
+were not modified. Existing compiler warnings remain outside this pass.
+
+Initial shared `make test` failed because concurrent CMake edits referenced a
+not-yet-present `tests/battle_class_raster_tests.cpp`; initial shared `make all`
+failed on a stale pre-migration shader dependency. Those attempts are recorded
+in `artifacts/code-documentation-test.log` and `code-documentation-native.log`,
+and are not counted as passing checks. A fresh isolated source/build avoids
+those unrelated mutations; other working-tree changes were excluded from the
+documentation commits and validation snapshot. The first isolated runtime/event
+pass also passed260/260 C++ and145/145 Python plus native build (`host.log`,
+`native.log`), before adding battle-core comments and final validation.
+
+Next documentation tasks, in order: audit the large `source/runtime/game.cpp`
+and remaining runtime headers (especially units, collision pack flags and tick
+ownership), renderer/animation/camera helpers, field/NPC/partner mechanics,
+remaining battle packed/event/menu/display helpers, then message/inventory/story
+modules and shaders. Review existing comments rather than blanket-inserting
+generic summaries; retain exact dialogue/assets and original/provisional scope.
+Continue incremental commits and required validation. The user's **port-code
+documentation goal remains active**: this is a substantial first pass, not
+complete coverage of the port, and not a completed remake claim.
