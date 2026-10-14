@@ -5692,3 +5692,85 @@ form then recomputes state and performs later character-mode calls. Next work
 must connect actual movement/static speed reads, collision/talk dimensions and
 split camera/display consumers. This is constructor/provider evidence, not a
 claim that native background behavior is integrated.
+
+### 2026-10-14 — Original TEV continuation and ordinary GPU combiner
+
+Implemented retained80021b80 original mode0/no-texture/generic bases and all eight
+fixed mode1..7/12 literal programs. Constant K0 stage preserves all8 setter order,
+source flags, counts and input capture. Timed bases and six optional middle blocks
+remain real provider dependencies, never successful omissions. Callback record
+initializes I0, retains held state and reloads only K/C/I; B stays original.
+Final source requests always publish low8(C/K/I) in original order.
+
+Native state now admits the retail stage0 GXSetTevOp0,0, exact identity/K0 second
+stage and indirect0. Source stage-count2 requires all255 setter-mask bits plus
+known K0. Actual Citro3D uses PICA0/1 for independent raster RGB/alpha sources,
+PICA2 for PREV*K0 with its own copied constant, other stages pass through.
+Count1 disables that stage without erasing retained K0/configuration; later
+accepted K0 writes/restoration update the active stage. No CPU pixel multiplication
+or setup-only geometry acknowledgement is used. Native no-texture raster alpha
+and generic multiply base are bounded too; arbitrary fixed/multitexture equations
+still hold. Projection0/texture-null character-shadow exits use actual ShadowWork
++10c/flags and retain the completed projection getter across a texture wait.
+Enabled projected texture holder/matrix and nonnull callback bodies remain open.
+See [native TEV scope](behavior/display/NATIVE_MAP_TEV_PROGRAM_AND_ORDINARY_COMBINER.md).
+
+Independent read-only source review verified retail table-driven GXSetTevOp:
+no invented nested setter calls. Original current banks use N1/M0; native first
+body flags arise from source OR40/status16 handling, not names. Corrected source
+constraints distinguish projected-texture matrix+7c from camera projection+3c,
+and raw shadow color from a pointer. Installed PICA cannot select another stage's
+constant directly. See [source evidence](behavior/display/ORIGINAL_ORDINARY_TEV_SDK_AND_SHADOW_SOURCE_DOMAIN.md).
+Original verifiers exited0: ordinary303 scoped words/5 identities/3 spans/6 sites,
+fixed903 words/all150 decoded requests. Tests compare ALL150 fixed-table requests
+to that independently decoded original manifest, plus held captures, signed/low8
+cases, dependencies, callback selective publication and native state retention.
+Synthetic providers/records are host fixtures, not original CPU/GPU execution.
+
+Validation freezes21bc672c plus only owned changes in artifacts/tev-render-source.
+Initial host/native compilation exposed an incorrect runtime type name in the
+new bridge; corrected it to TrioAttackRuntime. No header/layout changed during
+native compilation. Reused the prior private original-asset pack and generated
+its missing baseline field-prefetch table/pipe/slit payloads with the frozen
+baseline converter: four unchanged ISO files,124908 bytes total, original hashes
+and provenance. No converter changed, no shared cache/ISO writes. Source/config/
+assets/tests/tools audit2067 files, private pack1410 files; exact hashes in
+artifacts/tev-render-validation-manifest.json. Concurrent later shared changes
+are preserved and the merged live tree is not claimed tested as one build.
+
+Final `CMAKE_BUILD_PARALLEL_LEVEL=4 make -C artifacts/tev-render-source test`
+exited0:314/314 C++ and181/181 Python tests, log artifacts/tev-render-test.log.
+Focused C++/Python table checks also pass. Normal native
+`TMPDIR="$PWD/artifacts/native-stage-map-tmp" make -C artifacts/tev-render-source all -o assets-ready BUILD=build-tev-render TARGET=ttyd-tev-render -j6`
+exited0, log artifacts/tev-render-build-final.log. Restored normal-j4 build exited0,
+log artifacts/tev-render-build-restored.log. Binary SHA256
+a75fa5b36744db1e6fe70716c4b9334a4cb6c8f44721ab4a6afd389816c56a0e, identical before/after temporary instrumentation restoration.
+All temporary hooks are excluded from source history. Headers/layouts were frozen
+before native compilation. Documentation links: 1315 Markdown files,zero broken links.
+
+Isolated80s normal fresh-save and150s ending runs exited0; logs
+artifacts/tev-render-smoke-normal.log and tev-render-smoke-ending.log, output
+artifacts/azahar-tev-render-normal and azahar-tev-render-ending. Inspected normal
+capture shows original storybook/US text. Its uncontrolled concurrent-host sample
+is50AppFPS/84% emulator speed, not a hardware performance measurement. Ending
+capture shows60AppFPS/100% speed but remains black fade/development field-restoration
+notice, not geometry or original-image/field-return parity. Actual camera4/queue21
+now reaches ClearDesc802b4520, advancing past TEV80021b80. Private tev-binding.txt
+records draw0x5284,stages2,constant mask255,texgens1,known indirect0,K0ffffffff,
+textureRGB1,TextureRaster alpha and both vertex material sources1. Actual PICA2
+RGB/alpha sources0xef(PREV/CONSTANT),both functions1(MODULATE),constantffffffff.
+No fake geometry or queue completion. Temporary harness uses deterministic physical/
+menu input and explicit Bero fixture bit1 clear; no combat-state writes. All probes
+were restored; emulator profiles/saves are isolated. Independent fan data census
+found no out-of-bounds source indices/current transformed UVs; next-step report
+artifacts/tev-source-evidence/fan-next-step.md remains static evidence, not a draw.
+
+
+Next bind actual original vertex descriptors/arrays and indexed fans to PICA,
+using global animated position/normal arrays, original global MODEL color/UV
+arrays, independent shape bases, source UV matrix then atlas crop/one V correction.
+Do not substitute flattened idle meshes or infer normal/color bounds from position
+counts. Full TEV/projected/depth/timed/fog backend coverage, original image parity,
+battle-to-field return and broader prologue story/event/indoor/visibility work
+remain unfinished. EVT-01 and the full goal stay active; actual New2DSXL hardware
+performance remains unmeasured.

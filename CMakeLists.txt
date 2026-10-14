@@ -1661,3 +1661,10 @@ target_sources(ttyd_core PRIVATE source/display/source_icon_gx.cpp)
 add_executable(source_icon_gx_tests tests/source_icon_gx_tests.cpp)
 target_link_libraries(source_icon_gx_tests PRIVATE ttyd_core)
 add_test(NAME source_icon_gx COMMAND source_icon_gx_tests)
+
+# Original TEV fixed request programs and ordinary native combiner.
+target_sources(ttyd_core PRIVATE source/display/map_material_tev.cpp)
+add_executable(map_material_tev_tests tests/map_material_tev_tests.cpp)
+target_link_libraries(map_material_tev_tests PRIVATE ttyd_core)
+add_test(NAME map_material_tev COMMAND map_material_tev_tests)
+set_tests_properties(map_material_tev PROPERTIES WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})

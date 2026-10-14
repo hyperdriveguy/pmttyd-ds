@@ -6,7 +6,7 @@ namespace ttyd {
 struct MapMaterialGroup {
     uint16_t flags=0;
     std::array<uint32_t,3> colors{};
-    uint32_t fogType=0,fogColor=0;
+    uint32_t fogType=0,fogColor=0,tevCallback=0;
     float fogStart=0,fogEnd=0;
 };
 struct MapMaterialColorServices {

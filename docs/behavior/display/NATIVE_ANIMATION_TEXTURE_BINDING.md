@@ -65,5 +65,8 @@ Host tests cover real image44, held load capture/nonreplay, live state1 palette,
 CI order, reversed two-slot/nonzero-kind skipping, live float capture and source
 matrix composition. Synthetic altered resources/providers are test inputs, not
 original execution observations. Actual native trace/remaining work lives in
-PROGRESS and EVT-01; last-stage blend/fog/TEV and real fan submission still gate
-part history and camera queue completion.
+PROGRESS and EVT-01. The later
+[ordinary TEV binding](NATIVE_MAP_TEV_PROGRAM_AND_ORDINARY_COMBINER.md) now
+completes the admitted light/texture/last-stage color/fog-off/TEV setup prefix.
+Real indexed fan submission still gates part history and camera queue completion;
+other GPU material/fog/projected domains remain separate provider boundaries.

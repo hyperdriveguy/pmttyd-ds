@@ -3,6 +3,7 @@
 #include "shadow_collision.hpp"
 namespace ttyd {
 enum class ShadowGX : uint32_t {
+    TevOp=0x802b88d4,TevSwapMode=0x802b8c98,TevKColorSel=0x802b8be0,TevKAlphaSel=0x802b8c3c,NumIndStages=0x802b87ac,
     TevKColor=0x802b8b7c,NumChans=0x802b6f3c,ChanCtrl=0x802b6f78,ChanMaterial=0x802b6e54,ChanAmbient=0x802b6d6c,
     NumTexGens=0x802b5084,NumTevStages=0x802b8fcc,TevOrder=0x802b8e30,
     TevColorOp=0x802b89e8,TevAlphaOp=0x802b8a50,TevColorIn=0x802b8960,

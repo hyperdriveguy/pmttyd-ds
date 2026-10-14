@@ -28,10 +28,12 @@ unbound event callbacks still hold. Arbitrary map reload semantics are not added
 
 The native state owner admits GXSetTevKColor register0, retains it independently
 of TEV routing and restores the RGBA value into reserved PICA constant register5.
-That register remains unused by the currently admitted shadow/audience stages;
-future material TEV setup must consume K0 explicitly. Merely storing K0 does not
-multiply pixels or acknowledge a completed material TEV program. Dummy state does
-not erase this source register. Fog-off uses the existing actual Citro3D backend.
+That register remains unused by the shadow/audience stages. The
+[ordinary material TEV backend](NATIVE_MAP_TEV_PROGRAM_AND_ORDINARY_COMBINER.md)
+now copies retained K0 into its own active PICA constant stage and multiplies
+PREV there. Merely storing K0 does not itself acknowledge a completed material
+program. Dummy state does not erase this source register. Fog-off uses the
+existing actual Citro3D backend.
 Enabled fog requests are produced correctly by the portable helper but remain
 unavailable in the native backend pending actual fog equations/LUT support.
 

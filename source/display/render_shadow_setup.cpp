@@ -45,14 +45,25 @@ bool Renderer::finishingShadowGpu(const NativeShadowProgram& p){
     else {C3D_TexEnvSrc(env,C3D_RGB,p.rasterRGB && p.materialVertex?GPU_PRIMARY_COLOR:GPU_CONSTANT);C3D_TexEnvFunc(env,C3D_RGB,GPU_REPLACE);}
     C3D_TexEnvSrc(env,C3D_Alpha,p.alpha==NativeShadowProgram::TextureRaster?GPU_TEXTURE0:GPU_CONSTANT);
     C3D_TexEnvFunc(env,C3D_Alpha,GPU_REPLACE);
-    if(p.alpha!=NativeShadowProgram::Register){
+    if(p.alpha==NativeShadowProgram::Raster){
+        if(!p.alphaMaterialVertex && !p.material)return false;
+        C3D_TexEnvColor(env,(env->color&0xffffff)|(p.material?uint32_t(uint8_t(*p.material))<<24:0));
+        C3D_TexEnvSrc(env,C3D_Alpha,p.alphaMaterialVertex?GPU_PRIMARY_COLOR:GPU_CONSTANT);
+    }else if(p.alpha!=NativeShadowProgram::Register){
         if(!p.material && !p.audienceColor && !p.alphaMaterialVertex)return false;
         env=C3D_GetTexEnv(1);C3D_TexEnvColor(env,p.material?uint32_t(uint8_t(*p.material))<<24:inheritedAlpha);
         C3D_TexEnvSrc(env,C3D_RGB,GPU_PREVIOUS);C3D_TexEnvFunc(env,C3D_RGB,GPU_REPLACE);
         C3D_TexEnvSrc(env,C3D_Alpha,GPU_PREVIOUS,p.alphaMaterialVertex?GPU_PRIMARY_COLOR:GPU_CONSTANT);C3D_TexEnvFunc(env,C3D_Alpha,GPU_MODULATE);
     }
-    // K0 register state is independent of TEV routing. Reserve the last PICA
-    // constant register until the original material TEV consumer binds it.
+    if(p.tevStages==2){
+        if(p.constantStageMask!=255 || !p.tevKColor0)return false;
+        const uint32_t k=*p.tevKColor0;
+        auto* constant=C3D_GetTexEnv(2); // Base GX stage uses PICA0/1 for independent channel sources.
+        C3D_TexEnvColor(constant,((k&255)<<24)|((k&0xff00)<<8)|((k>>8)&0xff00)|(k>>24));
+        C3D_TexEnvSrc(constant,C3D_Both,GPU_PREVIOUS,GPU_CONSTANT);
+        C3D_TexEnvFunc(constant,C3D_Both,GPU_MODULATE);
+    }
+    // Retained K0 owner is independent of stage-local PICA constants.
     if(p.tevKColor0){const uint32_t k=*p.tevKColor0;C3D_TexEnvColor(C3D_GetTexEnv(5),((k&255)<<24)|((k&0xff00)<<8)|((k>>8)&0xff00)|(k>>24));}
     if(p.cull)C3D_CullFace(*p.cull==0?GPU_CULL_NONE:*p.cull==1?GPU_CULL_BACK_CCW:GPU_CULL_FRONT_CCW);
     if(p.fogOff){C3D_FogGasMode(GPU_NO_FOG,GPU_PLAIN_DENSITY,false);C3D_FogColor(*p.fogColor>>8);}

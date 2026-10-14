@@ -4,6 +4,7 @@
 #include "animation_shape_render.hpp"
 #include "map_material_light.hpp"
 #include "map_material_color.hpp"
+#include "map_material_tev.hpp"
 #include "animation_texture.hpp"
 #include "battle_event_callbacks.hpp"
 #include "event_memory_bootstrap.hpp"
@@ -187,6 +188,7 @@ struct TrioAttackRuntime {
     MapMaterialLightCursor materialLightCursor;
     std::optional<MapMaterialGroup> poseDrawMapGroup; // Actual selected primary bank1 material state.
     MapMaterialColorCursor materialColorCursor;
+    MapTevCursor materialTevCursor;uint8_t materialShadowPhase=0;
     ShadowDisplayGlobals shadowDisplayGlobals;
     std::shared_ptr<BattleCommandPalette> palette;
     BattleFooterCursor commandDisplayCursor,audienceDisplayCursor,slotDisplayCursor;
@@ -2038,6 +2040,31 @@ bool TrioAttack::resumeTexture(const BattlePose& pose,uint32_t draw,const Animat
     if(!runtime_)return false;
     const bool complete=resumeAnimationTexture(pose,draw,services,runtime_->poseTextureCursor);
     if(!complete)pending=runtime_->poseTextureCursor.pending;
+    return complete;
+}
+bool TrioAttack::resumeMaterialTev(const MapTevInput& input,const MapTevServices& source,uint32_t& pending)const{
+    if(!runtime_)return false;
+    if(!runtime_->materialTevCursor.active)runtime_->materialShadowPhase=0;
+    struct Bridge {TrioAttackRuntime* runtime;const MapTevServices* source;} bridge{runtime_.get(),&source};
+    MapTevServices services;services.user=&bridge;
+    services.gx=[](void* u,const ShadowGXRequest& r){const auto& b=*static_cast<Bridge*>(u);return b.source->gx && b.source->gx(b.source->user,r);};
+    services.branch=[](void* u,uint32_t entry,const MapTevInput& i,MapTevCounters& counts,uint32_t& pending){
+        auto& b=*static_cast<Bridge*>(u);if(b.source->branch)return b.source->branch(b.source->user,entry,i,counts,pending);
+        if(entry==0x8002bc7c){const auto* shadow=b.runtime->shadows.get();if(!shadow)return false;
+            if(!b.runtime->materialShadowPhase){if(!shadow->preparationGate)return true;b.runtime->materialShadowPhase=1;}
+            pending=0x8002bca0;
+            if(!(shadow->flags&1)){b.runtime->materialShadowPhase=0;return true;}
+            return false; // Enabled texture needs real embedded object/holder and +7c projection-texture matrix.
+        }
+        if(entry==0x800248a8){const auto& group=b.runtime->poseDrawMapGroup;
+            if(!group)return false;
+            if(group->tevCallback){pending=group->tevCallback;return false;}
+            counts.indirect=0;return true; // Fresh clear's actual null callback still publishes record+18=0.
+        }
+        return false;
+    };
+    const bool complete=resumeMapMaterialTev(input,services,runtime_->materialTevCursor);
+    if(!complete)pending=runtime_->materialTevCursor.pending;
     return complete;
 }
 const MapMaterialGroup* TrioAttack::materialGroup()const{return runtime_ && runtime_->poseDrawMapGroup?&*runtime_->poseDrawMapGroup:nullptr;}

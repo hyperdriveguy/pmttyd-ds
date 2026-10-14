@@ -2,6 +2,7 @@
 #include "battle_pose_inner.hpp"
 #include "animation_shape_render.hpp"
 #include "map_material_color.hpp"
+#include "map_material_tev.hpp"
 namespace ttyd {
 bool Renderer::finishingCameraPacket(const NativeCameraPacket& p){
     const auto& r=p.rect;
@@ -129,6 +130,13 @@ void Renderer::resumeFinishingCamera(const Game& game){
                     texture.matrix=[](void*,BattleAudienceMatrixRequest& r){BattleAudienceAuxServices math;bindAudienceAuxMathAdapter(math);return math.matrix(nullptr,r);};
                     texture.gx=[](void* u,const AnimationTextureRequest& q){return static_cast<InnerBridge*>(u)->renderer->finishingAnimationTexture(q);};
                     return bridge.game->trioAttack.resumeTexture(*r.pose,r.draw,texture,pending);
+                }
+                if(r.function==0x80021b80){
+                    if(!r.matrix)return false;
+                    MapTevInput input;input.slots=int32_t(r.arguments[0]);input.mode=r.arguments[1];input.flags=r.arguments[2];input.model=*r.matrix;
+                    MapTevServices tev;tev.user=bridge.renderer;
+                    tev.gx=[](void* u,const ShadowGXRequest& q){return static_cast<Renderer*>(u)->finishingShadowRequest(q);};
+                    return bridge.game->trioAttack.resumeMaterialTev(input,tev,pending);
                 }
                 if(r.function==0x80021860 || r.function==0x800217c8){
                     MapMaterialColorServices material;material.user=&bridge;

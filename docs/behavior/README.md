@@ -1102,3 +1102,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Original iconGX draw service](display/ORIGINAL_ICON_GX_DRAW_SERVICE.md):
   full local icon matrix, texture, material, fog, alpha and primitive sequence;
   linked through matrix-icon wrappers, native resource/raster binding open.
+
+- [Native map TEV continuation and ordinary combiner](display/NATIVE_MAP_TEV_PROGRAM_AND_ORDINARY_COMBINER.md): fixed original request tables, retained optional boundaries/count publication and actual texture/raster/K0 Citro3D routing.
+- [Original ordinary TEV SDK and shadow source domain](display/ORIGINAL_ORDINARY_TEV_SDK_AND_SHADOW_SOURCE_DOMAIN.md): retail GXSetTevOp table, three original draw-bank domains, corrected shadow getter ownership and stage-local PICA constant constraints.

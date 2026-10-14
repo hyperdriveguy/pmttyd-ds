@@ -48,6 +48,7 @@ public:
     const DisplayQueue* displayQueue() const;
     const CameraManager* cameras() const;
     bool resumeTexture(const BattlePose&,uint32_t,const struct AnimationTextureServices&,uint32_t& pending) const;
+    bool resumeMaterialTev(const struct MapTevInput&,const struct MapTevServices&,uint32_t& pending) const;
     const struct MapMaterialGroup* materialGroup() const;
     bool resumeMaterialColor(uint32_t,uint32_t,uint32_t,uint32_t,const struct MapMaterialColorServices&,uint32_t& pending) const;
     const struct MapMaterialLightWork* materialLights() const;

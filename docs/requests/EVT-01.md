@@ -4458,3 +4458,18 @@ on ReInit, and actual movement/collision/talk/camera consumers. +184/+188 are ba
 walk/dash speeds; native integration must replace relevant static speed/dimension
 reads and connect actual camera/display flags. Do not admit background using
 unused shadow fields. Native Game integration remains open.
+
+### 2026-10-14 native original TEV request and ordinary GPU binding
+
+Implemented retained80021b80 ordinary/no-texture/generic and all eight fixed base request programs, original constant-stage ordering, optional source-provider boundaries and selective callback/low-byte final counts. Native binds ordinary texture/raster then K0 through actual Citro3D combiners, preserving independent RGB/alpha material sources, and real shadow projection0/texture-null/fresh-map null-callback exits. All150 fixed requests match the independently decoded original manifest. Projected/timed/depth/nonnull callback providers, other GPU programs, indexed geometry, original frames and full field return remain open. See [native TEV scope](../behavior/display/NATIVE_MAP_TEV_PROGRAM_AND_ORDINARY_COMBINER.md); exact validation is in PROGRESS. EVT-01 stays open.
+
+### Ordinary TEV SDK and source-domain review (2026-10-14)
+
+[Retail/source evidence](../behavior/display/ORIGINAL_ORDINARY_TEV_SDK_AND_SHADOW_SOURCE_DOMAIN.md)
+confirms Mario24/Goombella16/Frankly12 draws all use N1/M0, the actual retail
+GXSetTevOp table, raw character-shadow color and shared preparation-gate/flag
+queries. PICA constants are stage-local; the native source constant stage maps
+to PICA2 after independent base RGB/alpha routing. Read-only implementation
+review found no blocker in the admitted ordinary single-blocked-queue domain.
+Enabled projected holders/matrices, other native TEV topologies, geometry,
+original framebuffer parity and field return remain open; EVT-01 stays active.
