@@ -25,14 +25,16 @@ bool Renderer::frontBookCover(const OpeningDemo& demo){
     for(int n=0;n<6;++n)C3D_TexEnvInit(C3D_GetTexEnv(n));
     auto* env=C3D_GetTexEnv(0);C3D_TexEnvSrc(env,C3D_Both,GPU_TEXTURE0,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR);C3D_TexEnvFunc(env,C3D_Both,GPU_MODULATE);
     bool ok=true;
-    std::vector<BookCoverQuad> composition{(*quads)[0]};
+    std::array<BookCoverQuad,5> composition{};unsigned quadCount=0;
+    composition[quadCount++]=(*quads)[0];
     if(demo.book.image>=8 && demo.book.image<=12){
         const unsigned page=demo.book.image-8;
-        composition.push_back(*openingBookPage(288,352,demo.book.scale,page,demo.book.offsetX,demo.book.offsetY,demo.book.fade));
-        composition.push_back(*openingBookIllustration(demo.book.scale,page,demo.book.offsetX,demo.book.offsetY,demo.book.fade));
+        composition[quadCount++]=*openingBookPage(288,352,demo.book.scale,page,demo.book.offsetX,demo.book.offsetY,demo.book.fade);
+        composition[quadCount++]=*openingBookIllustration(demo.book.scale,page,demo.book.offsetX,demo.book.offsetY,demo.book.fade);
     }
-    composition.push_back((*quads)[1]);composition.push_back((*quads)[2]);
-    for(const auto& quad:composition){
+    composition[quadCount++]=(*quads)[1];composition[quadCount++]=(*quads)[2];
+    for(unsigned i=0;i<quadCount;++i){
+        const auto& quad=composition[i];
         if(!openingBookFaceVisible(quad))continue;
         auto* art=texture(quad.palette);if(!art||count>12000-6){ok=false;continue;}
         const int first=count;constexpr unsigned indices[]={0,1,2,2,3,0};

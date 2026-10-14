@@ -324,30 +324,34 @@ void Renderer::fieldActors(const Game& g) {
         gpu.start=count;
         gpu.batches.clear();
         const auto& model=fieldActorAssets.models()[gpu.model];
-        for(const auto& sourceActor:fieldActorAssets.actors()) {
-            auto actor=sourceActor;
+        for(const auto& actor:fieldActorAssets.actors()) {
             if(actor.model!=gpu.model)continue;
             const bool scripted=model.asset=="professor" && (g.progress.room==2 || g.progress.room==5) && g.storyPresentation().triggered;
             if(scripted) {
                 if(actor.storyLow!=8 || g.storyPresentation().actors[2].hidden)continue;
-                actor.position=g.storyPresentation().actors[2].position;actor.yaw=g.storyPresentation().actors[2].yaw;
-                actor.pose=g.storyPresentation().message.talking && g.storyPresentation().speaker==2?"T_1":g.trioBattleActive?g.storyPresentation().actors[2].pose:g.storyPresentation().actors[2].moving?"W_1":"S_1";
             } else if(!actor.visible(g.progress.room,g.progress.originalStory,g.fieldDoor.interiorMask,g.fieldSystemFlags))continue;
+            // Keep immutable story/talk/wander metadata in the catalog. Only
+            // these presentation fields vary for the current instance.
+            auto position=actor.position;float yaw=actor.yaw;std::string poseName=actor.pose;
+            if(scripted) {
+                position=g.storyPresentation().actors[2].position;yaw=g.storyPresentation().actors[2].yaw;
+                poseName=g.storyPresentation().message.talking && g.storyPresentation().speaker==2?"T_1":g.trioBattleActive?g.storyPresentation().actors[2].pose:g.storyPresentation().actors[2].moving?"W_1":"S_1";
+            }
             const auto* live=actor.kind==0 && !scripted?g.fieldNpcState(actor.key):nullptr;
-            if(live && live->initialized){if(!live->presentationReady)continue;actor.position={live->body.root.x,live->body.root.y,live->body.root.z};actor.yaw=live->movement.yaw;actor.pose=live->pose;}
+            if(live && live->initialized){if(!live->presentationReady)continue;position={live->body.root.x,live->body.root.y,live->body.root.z};yaw=live->movement.yaw;poseName=live->pose;}
             uint32_t npcFlags=live && live->initialized?live->body.flags:actor.npcFlags;
             if(scripted)npcFlags=(npcFlags&~g.storyPresentation().actors[2].flagMask)|
                 (g.storyPresentation().actors[2].flags&g.storyPresentation().actors[2].flagMask);
             if(actor.kind==0 && npcFlags && (npcFlags&3)!=3)continue;
             float frame=float(g.ticks-plaza.actorStart);
             if(actor.kind==0 && g.fieldActorTalk.message.active() && g.fieldActorTalk.actor.key==actor.key)
-                actor.yaw=g.fieldActorTalk.actor.yaw;
-            if(g.saveObjects)if(const auto* object=g.saveObjects->find(actor.key)){actor.pose=object->pose;frame=object->frame;}
+                yaw=g.fieldActorTalk.actor.yaw;
+            if(g.saveObjects)if(const auto* object=g.saveObjects->find(actor.key)){poseName=object->pose;frame=object->frame;}
             const NpcPresentation* npc=nullptr;
             if(actor.kind==0) {
-                const auto* selected=selectNpcAnimation(gpu.animations,actor.pose.c_str());
+                const auto* selected=selectNpcAnimation(gpu.animations,poseName.c_str());
                 if(!selected){++actorMetrics.sampleFailures;continue;}
-                actor.pose=selected->name;
+                poseName=selected->name;
                 std::string talkPose;
                 if(!actor.talkPose.empty())talkPose=selectNpcAnimation(gpu.animations,actor.talkPose.c_str())->name;
                 if(live && live->initialized) {
@@ -357,10 +361,10 @@ void Renderer::fieldActors(const Game& g) {
                     const uint64_t now=g.ticks*1000/60;
                     if(now<state.clock.poseAt)state={};
                     if(npcFlags&0x8000)mutableNpc->flags|=0x100;else mutableNpc->flags&=~0x100u;
-                    frame=state.clock.update(actor.pose,talkPose,
+                    frame=state.clock.update(poseName,talkPose,
                         g.fieldActorTalk.actor.key==actor.key?&g.fieldActorTalk.message:nullptr,now);
-                    actor.pose=state.clock.pose;
-                    NpcMatrixInput input;input.root=actor.position;input.yaw=actor.yaw;input.drawScale=actor.scale;
+                    poseName=state.clock.pose;
+                    NpcMatrixInput input;input.root=position;input.yaw=yaw;input.drawScale=actor.scale;
                     input.flags=npcFlags;
                     NpcCameraService camera;camera.user=const_cast<FieldCameraFrame*>(&g.fieldCameraFrame);
                     camera.read=[](void* p) {
@@ -371,13 +375,13 @@ void Renderer::fieldActors(const Game& g) {
                 }
             }
             ++actorMetrics.visible;
-            if(gpu.tick!=g.ticks || gpu.pose!=actor.pose || gpu.frame!=frame) {
-                const auto* pose=gpu.animations.pose(actor.pose.c_str());
+            if(gpu.tick!=g.ticks || gpu.pose!=poseName || gpu.frame!=frame) {
+                const auto* pose=gpu.animations.pose(poseName.c_str());
                 if(!pose || !pose->evaluate(frame,gpu.sample)){++actorMetrics.sampleFailures;continue;}
-                gpu.tick=g.ticks;gpu.pose=actor.pose;gpu.frame=frame;
+                gpu.tick=g.ticks;gpu.pose=poseName;gpu.frame=frame;
             }
             if(gpu.sample.vertices.size()>size_t(MaxVertices-count)){++actorMetrics.overflow;continue;}
-            const ActorRootTransform root({actor.position[0]*.01f,actor.position[1]*.01f,actor.position[2]*.01f},actor.yaw,false,actor.scale*.01f);
+            const ActorRootTransform root({position[0]*.01f,position[1]*.01f,position[2]*.01f},yaw,false,actor.scale*.01f);
             const uint32_t first=uint32_t(count);
             for(size_t i=0;i<gpu.sample.vertices.size();++i) {
                 const auto& v=gpu.sample.vertices[i];const auto p=npc?npc->point(v):root.point(v);
