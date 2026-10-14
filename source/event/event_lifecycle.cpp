@@ -18,6 +18,9 @@ void copyBack(EventEntry& target,const EventEntry& source) {
     target.messageFields[3]=a;target.messageFields[4]=b;target.messageFields[5]=source.messageFields[5];target.messageFields[6]=source.messageFields[6];
 }
 }
+// Recursively delete waiting child and owned brothers before owner. A child
+// copies16 local words,3 flags and7 message words back to its waiting parent,
+// clears parent wait bit0x10, then retires allocation bit1 and resets storage.
 void deleteEvent(EventEntry& e,const EventCreationServices& s) {
     auto& c=currentContext(s);
     if(!(e.flags&1))return;
@@ -38,6 +41,8 @@ void deleteEventId(uint32_t id,const EventCreationServices& s) {
     auto& c=currentContext(s);auto* entries=c.entries;assert(entries || c.capacity<=0);
     for(int32_t slot=0;slot<c.capacity;++slot)if((entries[slot].flags&1) && entries[slot].id==id)deleteEvent(entries[slot],s);
 }
+// Restart resets instruction/timer/stack/label progress but preserves identity,
+// links and local storage. 0xff means empty loop/switch stack; it is not index255.
 EventEntry& restartEvent(EventEntry& e,const EventCreationServices& s) {
     const uint32_t script=e.restartScript;e.nextCommand=script;e.currentCommand=script;e.opcode=0;
     e.timescale=1.f;e.credit=0.f;e.loopIndex=e.switchIndex=0xff;

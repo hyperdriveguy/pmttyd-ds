@@ -1,5 +1,9 @@
 #include "event_context_addresses.hpp"
 
+// Packed context is0xa0 bytes:0=capacity,4..83=32 work words,84..8f=3
+// flag words,90=entry-array token,94=raw field,98/9c=timestamp high/low.
+// Big-endian lane shifts24-8*(offset&3) keep byte aliases live.2^32 bounds
+// reject address wrap; unregistering entry arrays preserves unresolved tokens.
 namespace ttyd {
 namespace {
 int32_t sw(uint32_t v) {return v<=0x7fffffff?static_cast<int32_t>(v):static_cast<int32_t>(int64_t(v)-0x100000000LL);}

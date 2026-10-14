@@ -1,5 +1,8 @@
 #include "event_address_space.hpp"
 
+// Original32-bit big-endian memory facade: live entry/context/runtime/GP
+// fields precede RAM. 0x100000000 is the exclusive32-bit address ceiling.
+// Byte/half/word aliases update the same semantic state; this is not host RAM.
 namespace ttyd {
 bool EventAddressSpace::readByte(uint32_t a,uint8_t& v) const {
     if(entries_.readByte(a,v) || contexts_.readByte(a,v) || runtime_.readByte(a,v) || gp_.readByte(a,v))return true;
@@ -27,6 +30,8 @@ bool EventAddressSpace::unregisterRam(uint32_t base,std::vector<uint8_t>* bytes)
     }
     return false;
 }
+// Replace an allocated subspan with semantic entry storage while retaining
+// left/right RAM fragments. Failure leaves regions/output unchanged.
 bool EventAddressSpace::extractRam(uint32_t base,uint32_t size,std::vector<uint8_t>& bytes) {
     const uint64_t end=uint64_t(base)+size;
     if(!size || end>0x100000000ULL)return false;
@@ -47,6 +52,8 @@ bool EventAddressSpace::extractRam(uint32_t base,uint32_t size,std::vector<uint8
     }
     return false;
 }
+// Prepare all segment bytes before publication; validated script assets
+// already guarantee sorted/nonoverlapping segments. Existing mappings reject import.
 bool EventAddressSpace::importScripts(const EventScriptAssets& scripts) {
     std::vector<Region> imported;
     for(const auto& segment:scripts.segments()) {

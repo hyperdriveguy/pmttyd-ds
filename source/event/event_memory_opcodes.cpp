@@ -2,6 +2,10 @@
 #include <cassert>
 #include <cstring>
 
+// Memory opcodes74/75 install UW/UF,76 allocates UW words;77..80 AND/OR
+// (resolved/raw masks),81/82 ms<->60Hz conversion;83..86 absolute
+// integer/IEEE-float access;87..90 indirect variable access. Handler2 completes.
+// Absolute addresses are emulated tokens; they must be mapped by services.
 namespace ttyd {
 namespace {
 int32_t signedWord(uint32_t v) {return v<=0x7fffffff?static_cast<int32_t>(v):static_cast<int32_t>(int64_t(v)-0x100000000LL);}
@@ -17,6 +21,8 @@ void storeFloat(const EventDispatchServices& s,EventEntry& e,int32_t d,float v) 
 float ieee(uint32_t v) {float f;static_assert(sizeof(f)==sizeof(v),"binary32 required");std::memcpy(&f,&v,sizeof(f));return f;}
 uint32_t ieee(float f) {uint32_t v;std::memcpy(&v,&f,sizeof(v));return v;}
 }
+// Source memset: replicated low8 fill byte (0x01010101), align to4, then
+// write32-byte chunks as8 words. Preserve provider store sizes and order.
 uint32_t eventFillMemory(uint32_t address,int32_t fill,uint32_t n,const EventMemoryServices& s) {
     const uint32_t original=address;const uint8_t value=static_cast<uint8_t>(fill);
     if(n>=32) {
@@ -28,6 +34,8 @@ uint32_t eventFillMemory(uint32_t address,int32_t fill,uint32_t n,const EventMem
     while(n!=0) {byte(s,address++,value);--n;}
     return original;
 }
+// Source cache line32 bytes. Include leading misalignment via address&31;
+// +31/>>5 rounds up to lines. Wrapped arithmetic is intentional.
 void eventFlushMemory(uint32_t address,uint32_t length,const EventMemoryServices& s) {
     if(length==0)return;
     uint32_t count=(length+(address&31)+31)>>5;assert(s.flushBlock && s.systemCall);
@@ -35,6 +43,9 @@ void eventFlushMemory(uint32_t address,uint32_t length,const EventMemoryServices
     do {s.flushBlock(s.user,address);address+=32;--count;}while(count!=0);
     s.systemCall(s.user);
 }
+// Map allocator:32-byte alignment/header, header+0=next,+4=size,+8=used
+// halfword. Best-fit scan, then split and clear/flush payload. This is distinct
+// from the SDK doubly-linked heap format in event_heap_allocation.cpp.
 uint32_t eventMapAllocate(uint32_t root,uint32_t bytes,const EventMemoryServices& s) {
     const uint32_t payload=(bytes+31)&0xffffffe0u;if(payload==0)return 0;
     const uint32_t span=payload+32;uint32_t best=0,bestSize=0,bestNext=0,h=root;
@@ -56,6 +67,7 @@ std::optional<int32_t> eventMemoryOpcode(EventEntry& e,uint8_t op,const EventMem
     if(op<74 || op>90)return {};
     const auto& s=services.values;const auto& m=services.memory;const uint32_t args=e.arguments;
     if(op==74 || op==75) {const uint32_t value=static_cast<uint32_t>(integer(s,e,raw(s,args)));if(op==74)e.userWork=value;else e.userFlags=value;return 2;}
+    // 0x8041e808 holds primary map-pool root; requested count is4-byte UW words.
     if(op==76) {
         const int32_t count=integer(s,e,raw(s,args)),d=raw(s,args+4);const uint32_t root=word(m,0x8041e808);
         e.userWork=eventMapAllocate(root,4u*static_cast<uint32_t>(count),m);store(s,e,d,signedWord(e.userWork));return 2;
@@ -67,6 +79,8 @@ std::optional<int32_t> eventMemoryOpcode(EventEntry& e,uint8_t op,const EventMem
             const uint32_t lhs=static_cast<uint32_t>(integer(s,e,d)),r=static_cast<uint32_t>(rhs);
             store(s,e,d,signedWord(op<=78?lhs&r:lhs|r));
         } else {
+            // Conversion constants60 ticks/sec and1000 ms/sec. Wrapped32-bit
+            // product precedes signed truncating division; no saturation.
             const int32_t product=signedWord(static_cast<uint32_t>(rhs)*(op==81?60u:1000u));
             store(s,e,d,product/(op==81?1000:60));
         }

@@ -3,6 +3,10 @@
 #include <cstring>
 #include <limits>
 
+// PMEVT001 pack:8-byte magic, big-endian count at8, then12-byte
+// (original address,size,file offset) rows from12 and contiguous payload.
+// Alignment4 is script word alignment; address ceiling is exclusive2^32.
+// Validate into candidates and publish only after exact EOF/nonoverlap checks.
 namespace ttyd {
 namespace {
 uint32_t word(const std::vector<uint8_t>& bytes,size_t offset) {
@@ -29,6 +33,8 @@ bool EventScriptAssets::load(const char* path) {
     if(nextOffset!=bytes.size())return false;
     data_=std::move(bytes);segments_=std::move(segments);return true;
 }
+// Upper-bound search chooses the last segment starting at/before address.
+// Cross-segment word reads fall back to bytes, retaining big-endian assembly.
 const EventScriptSegment* EventScriptAssets::find(uint32_t address,uint32_t bytes) const {
     size_t low=0,high=segments_.size();
     while(low<high) {const size_t mid=low+(high-low)/2;if(segments_[mid].address<=address)low=mid+1;else high=mid;}

@@ -1,6 +1,9 @@
 #include "event_if_opcodes.hpp"
 #include <cassert>
 
+// IF opcodes12..17 string,18..23 float,24..29 integer: EQ,NE,LT,GT,LE,GE.
+// 30/31 mask set/clear,32 ELSE,33 END_IF. Nested scans inspect command
+// headers (low16 opcode/high16 signed operand count), not resolved operands.
 namespace ttyd {
 namespace {
 int32_t signedWord(uint32_t v) {return v<=0x7fffffff?static_cast<int32_t>(v):static_cast<int32_t>(int64_t(v)-0x100000000LL);}
@@ -43,6 +46,9 @@ int32_t eventCompareStrings(uint32_t l,uint32_t r,const EventIfOpcodeServices& s
     }
     for(;;) {
         const uint32_t lw=word(s.values,l),rw=word(s.values,r);
+        // Source word-at-a-time string path:0x01010101 subtracts1 per byte;
+        // 0x80808080 tests high bits and falls back to ordered byte reads.
+        // Preserve this test and original big-endian word comparison order.
         if(((lw-0x01010101u)&0x80808080u)!=0) {
             lb=byte(s,l);rb=byte(s,r);return byteLoop(l,r,lb,rb,s);
         }
@@ -58,6 +64,8 @@ std::optional<int32_t> eventIfOpcode(EventEntry& e,uint8_t op,const EventIfOpcod
     bool accepted;
     if(op<=17) {
         const uint32_t l=static_cast<uint32_t>(integer(s,e,args)),r=static_cast<uint32_t>(integer(s,e,args+4));
+        // Source null string arguments use the original empty-string token
+        // 0x8041fa2c; memory provider must map it, not dereference it on the host.
         const int32_t result=eventCompareStrings(l==0?0x8041fa2cu:l,r==0?0x8041fa2cu:r,services);
         accepted=comparison(op-12,result,0);
     } else if(op<=23) {

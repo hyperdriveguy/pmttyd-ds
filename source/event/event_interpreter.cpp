@@ -9,6 +9,9 @@ namespace {
 const EventInterpreterServices& owner(void* p) {assert(p);return *static_cast<const EventInterpreterServices*>(p);}
 uint32_t scriptWord(void* p,uint32_t a) {const auto& s=owner(p);assert(s.creation.word);return s.creation.word(s.creation.user,a);}
 EventDispatchServices values(const EventInterpreterServices& s);
+// Opcode families:4..8 loop/goto,12..33 IF,34..49 SWITCH,50..73 data,
+// 74..90 memory,92..112 event control; fetch/waits/USER_FUNC live in dispatch.
+// Tail owns1/3/11/113..118. Missing required services are domain failures.
 int32_t handler(void* p,EventEntry& e,uint8_t op) {
     const auto& s=owner(p);const auto v=values(s);
     if(op>=4 && op<=8)return *eventLoopOpcode(e,op,v);

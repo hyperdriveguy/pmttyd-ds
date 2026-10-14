@@ -2,6 +2,9 @@
 #include "event_heap_allocation.hpp"
 #include <cassert>
 
+// Bridge original heap bytes to stable semantic EventEntry arrays. Allocation
+// byte counts use packed stride0x1b0, never sizeof(EventEntry). Retirement
+// restores RAM bytes and detaches links; it does not itself free the SDK heap.
 namespace ttyd {
 EventEntryStorage::~EventEntryStorage() {retireAll();}
 EventEntry* EventEntryStorage::allocate(int32_t heap,uint32_t bytes) {

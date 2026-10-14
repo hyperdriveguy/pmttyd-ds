@@ -1,6 +1,9 @@
 #include "event_tail_opcodes.hpp"
 #include <cassert>
 
+// Remaining opcode bodies/debug register formatting. Tag/offset tables match
+// event_operands.cpp; numeric diagnostic format offsets identify ORIGINAL
+// strings under base0x802bffb0, not host printf pointers. See event-vm guide.
 namespace ttyd {
 namespace {
 int32_t signedWord(uint32_t v) {return v<=0x7fffffff?static_cast<int32_t>(v):static_cast<int32_t>(int64_t(v)-0x100000000LL);}
@@ -48,6 +51,9 @@ int32_t eventDebugRegister(EventEntry& e,const EventTailOpcodeServices& services
     else {templateAt(call,0x180);call.integers[0]=x;}
     assert(services.format);services.format(services.formatUser,call);return 2;
 }
+// END1/LABEL3 and debug113/114/117 return2; WAIT_WHILE11 retries on
+// nonzero,115 formats,116 stores raw field1a4.118 scans256 entries then
+// returns handler1 (clear/yield), not manager abort code1.
 std::optional<int32_t> eventTailOpcode(EventEntry& e,uint8_t op,const EventTailOpcodeServices& s) {
     switch(op) {
     case 1:case 3:case 113:case 114:case 117:return 2;

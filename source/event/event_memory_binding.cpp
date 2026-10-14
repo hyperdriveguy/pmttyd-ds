@@ -1,6 +1,9 @@
 #include "event_memory_binding.hpp"
 #include <cassert>
 
+// Adapt mapped memory to recovered service ABI. Missing mappings/providers
+// violate required domains (assert); cache flush/system call stay platform-owned.
+// Returning zeros for unsupported memory would falsely certify original behavior.
 namespace ttyd {
 EventMemoryServices EventMemoryBinding::services() {
     EventMemoryServices s;s.user=this;

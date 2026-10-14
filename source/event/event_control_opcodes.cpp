@@ -1,6 +1,9 @@
 #include "event_control_opcodes.hpp"
 #include <cassert>
 
+// Control opcode names/results: docs/code/event-vm.md. Four-byte argument
+// strides and16/3 local-bank sizes are the source script/entry ABI.
+// Read destination operands RAW so output writes do not resolve their old values.
 namespace ttyd {
 namespace {
 int32_t signedWord(uint32_t v) {return v<=0x7fffffff?static_cast<int32_t>(v):static_cast<int32_t>(int64_t(v)-0x100000000LL);}
@@ -37,6 +40,8 @@ std::optional<int32_t> eventControlOpcode(EventEntry& e,uint8_t opcode,const Eve
         if(opcode==93)output(e,values,destination,newEntry.id);
         return 2;
     }
+    // RUN_CHILD suspends the parent and returns handler255 (dispatcher -1).
+    // This stops its visit without deleting it; child deletion later wakes it.
     case 94: {
         const uint32_t script=static_cast<uint32_t>(resolve(e,values,args));assert(s.schedule);
         createChildEvent(*s.schedule,e,script,0,creation);e.opcode=0;return 255;
@@ -60,6 +65,8 @@ std::optional<int32_t> eventControlOpcode(EventEntry& e,uint8_t opcode,const Eve
         const int32_t result=checkEventId(id,creation);assert(values.store);values.store(values.user,e,destination,result);return 2;
     }
     case 107:assert(s.schedule);return startIndependentInlineBlock(*s.schedule,e,creation);
+    // ID-returning inline/brother variants skip to109/112, construct with
+    // source flags0x60, then publish the new generation ID to raw destination.
     case 108:case 111: {
         const int32_t destination=raw(values,args,0);const uint32_t start=e.nextCommand;
         e.nextCommand=afterBlock(start,opcode==108?109:112,creation);assert(s.schedule);
@@ -70,6 +77,8 @@ std::optional<int32_t> eventControlOpcode(EventEntry& e,uint8_t opcode,const Eve
         if(opcode==108) {metadata(newEntry,e);locals(newEntry,e);}
         output(e,values,destination,newEntry.id);return 2;
     }
+    // Independent end109 deletes/returns255; brother end112 deletes/returns0.
+    // These distinct result paths are intentional source behavior.
     case 109:deleteEvent(e,creation);return 255;
     case 110:assert(s.schedule);return startAttachedBrotherBlock(*s.schedule,e,creation);
     case 112:deleteEvent(e,creation);return 0;

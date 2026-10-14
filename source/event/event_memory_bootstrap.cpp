@@ -1,6 +1,11 @@
 #include "event_memory_bootstrap.hpp"
 #include <cassert>
 
+// Original allocator globals/addresses are memory tokens, not native pointers.
+// Descriptor base/count/end/start:0x8041f070/74/7c/78; current heap0x8041e428.
+// Game arena low/high:0x8041e430/0x8041f080; five heap starts/ends/handles:
+// 0x8041e830/0x8041e81c/0x8041e844. Descriptor stride12; alignment/header32.
+// Primary map root/length:0x8041e808/0x8041e818, backed by game heap1.
 namespace ttyd {
 namespace {
 int32_t sw(uint32_t v) {return v<=0x7fffffff?static_cast<int32_t>(v):static_cast<int32_t>(int64_t(v)-0x100000000LL);}
@@ -47,9 +52,13 @@ void initializeEventMemoryPools(const EventMemoryServices& s) {
     const uint32_t low=read(s,0x8041e430),high=read(s,0x8041f080);
     uint32_t p=eventSdkInitializeAllocator(low,high,5,s);write(s,0x8041e430,p);
     p=(p+31)&0xffffffe0u;const uint32_t end=high&0xffffffe0u;
+    // Five8-byte pool configuration rows at0x804151b8: mode1 uses KiB
+    // (size<<10); mode0 receives a percentage of the same remaining arena.
     for(uint32_t i=0;i<5;++i)if(read(s,0x804151b8+8*i)==1) {
         const uint32_t span=read(s,0x804151bc+8*i)<<10;write(s,0x8041e830+4*i,p);write(s,0x8041e81c+4*i,p+span);p+=span;
     }
+    // All percentage allocations use this captured remainder, not a successively
+    // shrinking remainder. /100 and32-byte truncation match original order.
     const uint32_t remaining=end-p;
     for(uint32_t i=0;i<5;++i)if(read(s,0x804151b8+8*i)==0) {
         const int32_t percent=sw(read(s,0x804151bc+8*i));

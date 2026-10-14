@@ -1,6 +1,9 @@
 #include "event_heap_allocation.hpp"
 #include <cassert>
 
+// Source SDK heap: descriptor12 bytes (size/free head/allocated head).
+// Nodes use +0 previous,+4 next,+8 total span, with32-byte payload offset.
+// Globals0x8041f070=descriptor base;0x8041e844=game heap-handle array.
 namespace ttyd {
 namespace {
 int32_t signedWord(uint32_t v) {return v<=0x7fffffff?static_cast<int32_t>(v):static_cast<int32_t>(int64_t(v)-0x100000000LL);}
@@ -9,6 +12,8 @@ void write(const EventMemoryServices& s,uint32_t a,uint32_t v) {assert(s.storeWo
 }
 uint32_t eventSdkAllocate(int32_t handle,uint32_t bytes,const EventMemoryServices& s) {
     const uint32_t d=read(s,0x8041f070)+12u*static_cast<uint32_t>(handle);
+    // (bytes+63)&~31 = aligned payload plus32-byte header. First fit uses
+    // signed span comparison; remainder<64 cannot hold header+minimum payload.
     const uint32_t span=(bytes+63)&0xffffffe0u;uint32_t n=read(s,d+4);
     while(n!=0) {if(signedWord(span)<=signedWord(read(s,n+8)))break;n=read(s,n+4);}
     if(n==0)return 0;
@@ -29,6 +34,8 @@ uint32_t eventSdkAllocate(int32_t handle,uint32_t bytes,const EventMemoryService
     if(allocated!=0)write(s,allocated,n);
     write(s,d+8,n);return n+32;
 }
+// Game heap wrapper clears/flushes exactly requested bytes, not the rounded
+// span. Caller-visible provider operations must retain that distinction.
 uint32_t eventHeapAllocate(int32_t heapIndex,uint32_t bytes,const EventMemoryServices& s) {
     const int32_t handle=signedWord(read(s,0x8041e844+4u*static_cast<uint32_t>(heapIndex)));
     const uint32_t address=eventSdkAllocate(handle,bytes,s);

@@ -1,6 +1,10 @@
 #include "event_switch_opcodes.hpp"
 #include <cassert>
 
+// SWITCH34 resolves selector;35 uses raw selector. Cases36..41 are
+// EQ/NE/LT/GT/LE/GE,42 default,43/44 grouped OR/AND,45 flag mask,46 group
+// end,47 inclusive range,48 break,49 end. Handler2 continues dispatch.
+// Eight stack slots; signed state1=searching,0=done,255=-1,254=-2 group state.
 namespace ttyd {
 namespace {
 int32_t signedWord(uint32_t v) {return v<=0x7fffffff?static_cast<int32_t>(v):static_cast<int32_t>(int64_t(v)-0x100000000LL);}
@@ -9,6 +13,8 @@ int32_t signedHalf(uint32_t v) {v&=0xffff;return v<0x8000?int32_t(v):int32_t(v)-
 uint32_t word(const EventDispatchServices& s,uint32_t a) {assert(s.word);return s.word(s.user,a);}
 int32_t resolve(const EventDispatchServices& s,EventEntry& e,uint32_t a) {const int32_t op=signedWord(word(s,a));assert(s.resolve);return s.resolve(s.user,e,op);}
 unsigned stackIndex(uint8_t v) {const int32_t i=signedByte(v);assert(i>=0 && i<8);return unsigned(i);}
+// Source scan nests SWITCH34 (and END1), not raw SWITCH35. Preserve this
+// asymmetry; replacing it with a generic structured parser changes script flow.
 void scan(EventEntry& e,const EventDispatchServices& s,bool nextCase) {
     uint32_t p=e.nextCommand;int32_t depth=1;
     for(;;) {

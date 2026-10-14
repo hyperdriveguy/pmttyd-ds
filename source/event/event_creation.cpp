@@ -1,6 +1,9 @@
 #include "event_creation.hpp"
 #include <cassert>
 
+// Source constructors retain entry identities, relationship pointers and append
+// order. Root/child/brother are different lifetimes, not interchangeable tasks.
+// Constants and constructor graph: docs/code/event-vm.md.
 namespace ttyd {
 namespace {
 EventRuntimeGlobals& runtime(const EventCreationServices& s) {assert(s.runtime);auto* g=s.runtime(s.user);assert(g);return *g;}
@@ -29,6 +32,7 @@ void metadata(EventEntry& target,const EventEntry& source) {
     target.messageFields[3]=a;target.messageFields[4]=b;
     target.messageFields[5]=source.messageFields[5];target.messageFields[6]=source.messageFields[6];
 }
+// Original local bank sizes:16 signed work words and3 flag words (96 flags).
 void locals(EventEntry& target,const EventEntry& source) {
     for(unsigned i=0;i<16;++i)target.locals[i]=source.locals[i];
     for(unsigned i=0;i<3;++i)target.localFlags[i]=source.localFlags[i];
@@ -42,6 +46,8 @@ uint32_t blockEnd(uint32_t script,uint16_t endOpcode,const EventCreationServices
 }
 
 }
+// Flat command scan ends at opcode1; opcode3 defines a low8 label ID whose
+// address is the NEXT command. Capacity16 and unused ID0xff are source layout.
 void scanEventLabels(EventEntry& e,const EventCreationServices& s) {
     uint32_t address=e.nextCommand;unsigned labels=0;
     for(;;) {
@@ -55,6 +61,8 @@ void scanEventLabels(EventEntry& e,const EventCreationServices& s) {
         }
     }
 }
+// Requested levels1/2/3/4 stop type masks1/2/0x10/0xef respectively.
+// These are event groups, not the entry flags of the same numeric values.
 void checkEventEntryRun(const EventCreationServices& s) {
     const int32_t level=runtime(s).systemLevel;uint32_t mask;
     switch(level) {
@@ -66,6 +74,9 @@ void checkEventEntryRun(const EventCreationServices& s) {
     }
     assert(s.stopAll);s.stopAll(s.user,mask);
 }
+// First free slot gets a fresh generation; byte priority/type/flags truncate
+// like source stores. Empty loop/switch index0xff is signed -1; owner -1 means
+// unassigned. fields16c/170/1a4 retain recovered raw identities, not guessed roles.
 EventEntry& createTypedRootEvent(EventSchedule& schedule,uint32_t script,int32_t priority,uint32_t flags,
                                  int32_t type,const EventCreationServices& s) {
     const auto allocated=allocate(s);auto& e=*allocated.entry;e={};
@@ -88,6 +99,9 @@ EventEntry& createRootEvent(EventSchedule& schedule,uint32_t script,int32_t prio
 }
 
 namespace {
+// Child suspends parent(flag0x10), inherits locals/metadata and priority+1.
+// Brother retains an owner link and same priority, but not child metadata.
+// Both append during a live pass; root append additionally requires flag0x20.
 EventEntry& related(EventSchedule& schedule,EventEntry& source,uint32_t script,uint32_t flags,bool child,const EventCreationServices& s) {
     const auto allocated=allocate(s);auto& e=*allocated.entry;
     if(child) {source.waitingChild=&e;source.unresolvedLinkMask&=~uint8_t(2);source.flags|=0x10;}
@@ -113,6 +127,8 @@ EventEntry& createChildEvent(EventSchedule& schedule,EventEntry& parent,uint32_t
 EventEntry& createBrotherEvent(EventSchedule& schedule,EventEntry& owner,uint32_t script,uint32_t flags,const EventCreationServices& s) {
     return related(schedule,owner,script,flags,false,s);
 }
+// Inline block terminators:109 independent event,112 attached brother.
+// Flags0x60 are source constructor bits; scans are flat, not nested block parsers.
 int startAttachedBrotherBlock(EventSchedule& schedule,EventEntry& owner,const EventCreationServices& s) {
     const uint32_t start=owner.nextCommand;owner.nextCommand=blockEnd(start,112,s);
     auto& e=createBrotherEvent(schedule,owner,start,0x60,s);

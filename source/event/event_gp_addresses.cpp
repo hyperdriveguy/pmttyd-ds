@@ -1,5 +1,9 @@
 #include "event_gp_addresses.hpp"
 
+// Live GP aliases: +4 refresh rate,+14 battle-context selector,+38/3c event
+// timestamp high/low; all other bytes remain retained packed storage.
+// Root pointer0x80415fd0..d3 is separately mapped big-endian state and may
+// change via byte writes. GP retirement keeps that original word unresolved.
 namespace ttyd {
 namespace {
 int32_t sw(uint32_t v) {return v<=0x7fffffff?static_cast<int32_t>(v):static_cast<int32_t>(int64_t(v)-0x100000000LL);}

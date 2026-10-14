@@ -1,6 +1,10 @@
 #include "event_native_runtime.hpp"
 #include <cassert>
 
+// Compose semantic managers with original-address memory, not a second VM.
+// Original field/battle context bases0x803d8d30/0x803d8dd0; GP pointer word
+// 0x80415fd0 points at the supplied GP base. Required numeric/cache/callback
+// services remain explicit platform boundaries; no Gekko instruction parity implied.
 namespace ttyd {
 namespace {
 EventNativeRuntime& owner(void* p) {return *static_cast<EventNativeRuntime*>(p);}

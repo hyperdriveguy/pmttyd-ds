@@ -1,6 +1,8 @@
 #include "event_loop_opcodes.hpp"
 #include <cassert>
 
+// Opcodes4=GOTO,5=DO,6=WHILE,7=DO_BREAK,8=DO_CONTINUE. All complete
+// with handler2. Eight-level stack and sixteen-label table follow source layout.
 namespace ttyd {
 namespace {
 int32_t signedWord(uint32_t v) {return v<=0x7fffffff?static_cast<int32_t>(v):static_cast<int32_t>(int64_t(v)-0x100000000LL);}
@@ -16,6 +18,8 @@ std::optional<int32_t> eventLoopOpcode(EventEntry& e,uint8_t op,const EventDispa
     if(op==4) {
         const int32_t target=resolve(s,e,signedWord(word(s,e.arguments)));
         uint32_t next=e.arguments;
+        // Strictly below -270M denotes raw address GOTO; other values scan
+        // signed label bytes. A missing label leaves next at the argument address.
         if(target<-270000000)next=static_cast<uint32_t>(target);
         else for(unsigned i=0;i<16;++i)if(signedByte(e.labelIds[i])==target) {next=e.labelAddresses[i];break;}
         e.nextCommand=next;return 2;
@@ -26,6 +30,8 @@ std::optional<int32_t> eventLoopOpcode(EventEntry& e,uint8_t op,const EventDispa
     }
     if(op==6) {
         const unsigned i=stackIndex(e.loopIndex);const int32_t raw=e.loopCounts[i];
+        // Raw zero loops forever. Raw >=-10M decrements retained count; more
+        // negative operands resolve/store their variable on each WHILE invocation.
         if(raw==0) {e.nextCommand=e.loopBodies[i];return 2;}
         int32_t n;
         if(raw>=-10000000) {n=signedWord(static_cast<uint32_t>(raw)-1);e.loopCounts[i]=n;}
@@ -36,6 +42,8 @@ std::optional<int32_t> eventLoopOpcode(EventEntry& e,uint8_t op,const EventDispa
         if(n!=0)e.nextCommand=e.loopBodies[i];else pop(e);
         return 2;
     }
+    // Scan nesting of DO5/WHILE6 (or END1); break advances after terminator
+    // and pops, continue points at its header so WHILE performs the decrement.
     uint32_t p=e.nextCommand;int32_t depth=0;
     for(;;) {
         const uint32_t header=p,w=word(s,p),opcode=w&0xffff;

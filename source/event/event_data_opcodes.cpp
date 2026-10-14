@@ -2,6 +2,10 @@
 #include <cassert>
 #include <cstring>
 
+// Data opcodes50/51=resolved/raw SET,52=float SET;53..57 integer
+// ADD/SUB/MUL/DIV/MOD,58..61 float arithmetic.62/68 install the data cursor;
+// 63..66/69..72 read1..4 integer/IEEE-float lanes;67/73 indexed reads.
+// All return handler2. Cursor word150 is an original address, not host storage.
 namespace ttyd {
 namespace {
 int32_t signedWord(uint32_t v) {return v<=0x7fffffff?static_cast<int32_t>(v):static_cast<int32_t>(int64_t(v)-0x100000000LL);}
@@ -52,6 +56,8 @@ std::optional<int32_t> eventDataOpcode(EventEntry& e,uint8_t op,const EventDataO
         storeFloat(s,e,d,result);return 2;
     }
     int32_t rhs=integer(s,e,raw(s,args+4));
+    // Source MOD adds binary32 .5 then uses supplied fctiwz on BOTH operands
+    // before quotient/remainder. This is not ordinary C++ % or symmetric rounding.
     if(op==57) {assert(services.truncate);const float rounded=static_cast<float>(rhs)+.5f;rhs=services.truncate(services.numericUser,rounded);}
     int32_t lhs=integer(s,e,d);
     if(op==57) {const float rounded=static_cast<float>(lhs)+.5f;lhs=services.truncate(services.numericUser,rounded);}

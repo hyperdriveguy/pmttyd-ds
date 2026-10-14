@@ -1,6 +1,10 @@
 #include "event_time_publication.hpp"
 #include <cassert>
 
+// Original retrace clocks in GP: +20 total,+28 delta,+30 previous raw,
+// +38 event time,+40 nonbattle time,+48/50/58/60 gated banks.64-bit words
+// are big-endian at4-byte stride; store64 publishes low then high.
+// GP pointer0x80415fd0 and bus clock0x800000f8 are original address tokens.
 namespace ttyd {
 namespace {
 int32_t sw(uint32_t v) {return v<=0x7fffffff?static_cast<int32_t>(v):static_cast<int32_t>(int64_t(v)-0x100000000LL);}
@@ -13,10 +17,13 @@ void addLiveDelta(const EventMemoryServices& s,uint32_t g,uint32_t bank) {
     store64(s,g+bank,((uint64_t(high)<<32)|low)+((uint64_t(deltaHigh)<<32)|deltaLow));
 }
 }
+// Retry upper/lower/upper until upper agrees across potential low-word wrap.
 uint64_t readEventRawTime(const EventTimeServices& s) {
     assert(s.upper && s.lower);
     for(;;) {const uint32_t high=s.upper(s.user),low=s.lower(s.user),again=s.upper(s.user);if(high==again)return (uint64_t(high)<<32)|low;}
 }
+// Window pointer0x8041ec30: flag0x1000 bypasses freeze; nonzero state
+// at+0x20 below200 freezes clock banks. Retain signed comparison.
 int32_t eventWindowFreeze(const EventMemoryServices& s) {
     const uint32_t window=read(s,0x8041ec30);if(window==0)return 0;
     assert(s.half);if(s.half(s.user,window)&0x1000)return 0;
@@ -28,11 +35,15 @@ void publishEventRetraceTime(uint32_t argument,const EventTimeServices& services
     store64(s,g+0x28,sample-((uint64_t(previousHigh)<<32)|previousLow));
     g=gp(s);addLiveDelta(s,g,0x20);
     const uint32_t clock=read(s,0x800000f8);g=gp(s);
+    // Source total-time cap uses timebase clock/4 times0x157529ff ticks
+    // (359999999 seconds). XOR sign bits below implements signed64 comparison.
     const uint64_t limit=uint64_t(clock>>2)*0x157529ffu;
     const uint32_t totalHigh=read(s,g+0x20),totalLow=read(s,g+0x24);const uint64_t total=(uint64_t(totalHigh)<<32)|totalLow;
     if((total^0x8000000000000000ULL)>(limit^0x8000000000000000ULL))store64(s,g+0x20,limit);
     g=gp(s);
     if(read(s,g+0x10)==0 && eventWindowFreeze(s)==0) {
+        // Inhibit bit8/4/2/1 gates bank+60/58/50/48 respectively. GP+10
+        // global pause and window freeze gate all; GP+14 gates nonbattle bank.
         constexpr uint32_t banks[]{0x60,0x58,0x50,0x48},masks[]{8,4,2,1};
         for(unsigned i=0;i<4;++i) {g=gp(s);if((read(s,g+0x18)&masks[i])==0)addLiveDelta(s,g,banks[i]);}
         g=gp(s);addLiveDelta(s,g,0x38);

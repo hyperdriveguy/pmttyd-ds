@@ -1,6 +1,10 @@
 #include "event_runtime_addresses.hpp"
 #include <cstring>
 
+// Original globals:256 schedule IDs at0x803d8530,256 slots at0x803d8930;
+// 0x8041e858/5c/60=active/count/allocations,0x804151e8/ec=next ID/speed,
+// 0x8041e940=requested system level. Arrays have4-byte stride.
+// Big-endian byte lanes alias words; speed transfers binary32 bits via memcpy.
 namespace ttyd {
 namespace {
 int32_t sw(uint32_t v) {return v<=0x7fffffff?static_cast<int32_t>(v):static_cast<int32_t>(int64_t(v)-0x100000000LL);}

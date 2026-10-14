@@ -15,6 +15,8 @@ struct EventDispatchServices {
     void (*store)(void*,EventEntry&,int32_t rawDestination,int32_t)=nullptr;
     void (*storeFloat)(void*,EventEntry&,int32_t rawDestination,float)=nullptr;
 };
+// Handler-level outcomes: 0=retry,1=complete/yield,2=complete/continue,
+// 3=redispatch,255=end entry,negative=abort manager pass. See event-vm guide.
 int32_t eventWaitFrame(EventEntry&,const EventDispatchServices&);
 int32_t eventWaitMilliseconds(EventEntry&,const EventDispatchServices&);
 // Returns the original dispatcher codes0(yield),-1(entry end),1(manager abort).

@@ -1,6 +1,9 @@
 #include "event_system_level.hpp"
 #include <cassert>
 
+// Requested scalar level0..4 at0x8041e940 differs from live GP+0x18
+// low-nibble inhibit bits0/1/3/7/15. Event type stop masks are1/2/0x10/0xef.
+// GP pointer token is stored at0x80415fd0; reloads preserve source alias order.
 namespace ttyd {
 namespace {
 int32_t sw(uint32_t v) {return v<=0x7fffffff?static_cast<int32_t>(v):static_cast<int32_t>(int64_t(v)-0x100000000LL);}

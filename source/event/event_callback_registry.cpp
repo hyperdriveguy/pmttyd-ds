@@ -1,6 +1,9 @@
 #include "event_callback_registry.hpp"
 #include <cstdlib>
 
+// Bind original USER_FUNC address tokens to native callbacks. Duplicate/null
+// registrations reject; an unbound dispatch aborts rather than fabricating success.
+// Callback integer results follow the dispatcher handler protocol, not bool.
 namespace ttyd {
 bool EventCallbackRegistry::bind(uint32_t address,void* user,Callback callback) {
     if(!address || !callback || contains(address))return false;

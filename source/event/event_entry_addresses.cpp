@@ -1,6 +1,10 @@
 #include "event_entry_addresses.hpp"
 #include <cstring>
 
+// Packed entry alias map, stride0x1b0. Known offset-to-field cases below
+// follow docs/behavior/event/EVENT_ENTRY_PACKED_LAYOUT.md; unknown spans
+// round-trip44 raw bytes. No C++ object layout is exposed as original memory.
+// Links at0x6c/70/74 are parent/child/brother; unresolved bits0/1/2 retain tokens.
 namespace ttyd {
 namespace {
 int32_t sw(uint32_t v) {return v<=0x7fffffff?static_cast<int32_t>(v):static_cast<int32_t>(int64_t(v)-0x100000000LL);}
@@ -29,6 +33,8 @@ EventEntryAddresses::Position EventEntryAddresses::find(uint32_t address) const 
     }
     return {};
 }
+// Region overlap AND duplicate host entries reject. New regions may resolve
+// previously unmapped link tokens in other entries; registration repairs aliases.
 bool EventEntryAddresses::registerEntries(uint32_t base,EventEntry* entries,uint32_t count) {
     const uint64_t end=uint64_t(base)+uint64_t(count)*stride;if(!base || !entries || !count || end>0x100000000ULL)return false;
     for(const auto& r:regions_) {
@@ -46,6 +52,8 @@ bool EventEntryAddresses::addressOf(const EventEntry* e,uint32_t& address) const
     for(const auto& r:regions_)for(uint32_t i=0;i<r.count;++i)if(e==r.entries+i) {address=r.base+i*stride;return true;}
     return false;
 }
+// Before detaching, convert borrowed host links back to original addresses.
+// A null host link with an unresolved bit is not equivalent to original null.
 bool EventEntryAddresses::unregisterEntries(uint32_t base,std::vector<uint8_t>* bytes) {
     size_t index=0;while(index<regions_.size() && regions_[index].base!=base)++index;
     if(index==regions_.size())return false;
@@ -109,6 +117,8 @@ bool EventEntryAddresses::writeFieldWord(EventEntry& e,uint32_t off,uint32_t v) 
     }
     return true;
 }
+// Big-endian lane shift24-8*(offset&3); ~3 aligns to a4-byte word.
+// Partial writes merge the selected lane into the same semantic word.
 bool EventEntryAddresses::readByte(uint32_t address,uint8_t& v) const {
     auto p=find(address);if(!p.entry)return false;if(auto* b=byteField(*p.entry,p.offset)) {v=*b;return true;}
     uint32_t word;if(!readFieldWord(*p.entry,p.offset&~3u,word))return false;v=uint8_t(word>>(24-8*(p.offset&3)));return true;

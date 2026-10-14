@@ -11,6 +11,8 @@ Selected selected(const EventCreationServices& s) {
     assert(s.manager.globals);auto* gp=s.manager.globals(s.manager.user);assert(gp);
     const bool battle=gp->battleContext!=0;return {battle,&context(s,battle)};
 }
+// Stop/start mutates entry flag2 only when type intersects the requested mask.
+// By-ID operations use type mask0xef; entry flag1 selects live records.
 void mutate(EventEntry& e,uint32_t mask,bool stop) {
     if(e.type&mask) {if(stop)e.flags|=2;else e.flags&=~uint8_t(2);}
 }
@@ -25,6 +27,9 @@ void body(EventEntry& e,EventContext& c,uint32_t mask,bool stop,const EventCreat
     if(e.waitingChild)visit(*e.waitingChild,mask,stop,s);
     brothers(c,e,[&](EventEntry& b) {visit(b,mask,stop,s);});mutate(e,mask,stop);
 }
+// Match compiler-inlined traversal and repeated context/global reads. Children
+// and brothers are visited before their owner; providers may change selected
+// context, so hoisting reads or flattening traversal changes alias behavior.
 void visit(EventEntry& e,uint32_t mask,bool stop,const EventCreationServices& s) {
     const auto outer=selected(s);
     assert(!(e.unresolvedLinkMask&2));
