@@ -1,6 +1,8 @@
 #include "battle_action_help.hpp"
 #include "battle_command_input.hpp"
+#include "battle_command_pose.hpp"
 #include "battle_packed_sampling.hpp"
+#include "battle_packed_status.hpp"
 #include "battle_target_selection.hpp"
 #include "battle_weapon_menu_main.hpp"
 #include "harbor_tutorial_packed.hpp"
@@ -20,12 +22,6 @@ HarborTutorialPacked::commandInput(HarborTutorial &scene, void *messageUser,
   scene.commandInputPending = commandUnbound;
   if (commandUnbound)
     return std::nullopt;
-  // Cancel's complete command-pose provider is still missing. Admission keeps
-  // the target UI/source work intact rather than executing a partial cancel.
-  if (word(Battle + 0x171c) == 11 && (word(Battle + 0xf44) & 0x200)) {
-    scene.commandInputPending = uint32_t(F::CommandPose);
-    return std::nullopt;
-  }
   BattleCommandInputServices s;
   s.memory = nativeBattleActorServices(vm);
   s.user = &c;
@@ -76,6 +72,8 @@ HarborTutorialPacked::commandInput(HarborTutorial &scene, void *messageUser,
       }
       return 0;
     }
+    case F::CommandPose:
+      return p.commandPose(a[0], *c.scene) ? std::optional<uint32_t>(0) : missing();
     case F::HelpKey:
       packedBattleActionHelpSetKey(a[0], nativeBattleActorServices(p.vm));
       return 0;
@@ -154,9 +152,11 @@ HarborTutorialPacked::commandInput(HarborTutorial &scene, void *messageUser,
       packedBattleActionHelpSetDisplay(
           mode, nativeBattleActorServices(static_cast<Context *>(self)->p->vm));
     };
-    t.commandPose = [](void *self, uint32_t) {
-      static_cast<Context *>(self)->scene->commandInputPending =
-          uint32_t(F::CommandPose);
+    t.commandPose = [](void *self, uint32_t unit) {
+      auto &c = *static_cast<Context *>(self);
+      if (c.p->commandPose(unit, *c.scene))
+        return true;
+      c.scene->commandInputPending = uint32_t(F::CommandPose);
       return false;
     };
     t.offEnemyLight = [](void *) {};
@@ -195,5 +195,53 @@ HarborTutorialPacked::commandInput(HarborTutorial &scene, void *messageUser,
     commandFinalized =
         true; // Native source29 admission latch; no root/HP/result synthesis.
   return result;
+}
+} // namespace ttyd
+
+namespace ttyd {
+bool HarborTutorialPacked::commandPose(uint32_t unit, HarborTutorial &scene) {
+  BattleCommandPoseServices s;
+  s.memory = nativeBattleActorServices(vm);
+  s.user = this;
+
+  struct Context {
+    HarborTutorialPacked *p;
+    HarborTutorial *scene;
+  };
+  Context c{this, &scene};
+  s.user = &c;
+  s.status = [](void *self, uint32_t u, int32_t id) -> std::optional<bool> {
+    auto &p = *static_cast<Context *>(self)->p;
+    return checkPackedBattleStatus(u, id, nativeBattleActorServices(p.vm));
+  };
+  s.copyName = [](void *self, uint32_t part, uint32_t name) {
+    auto &c = *static_cast<Context *>(self);
+    auto &p = *c.p;
+    if (!name)
+      return false;
+    std::string text;
+    for (unsigned i = 0; i < 64; ++i) {
+      const auto b = p.byte(name + i);
+      if (!b)
+        break;
+      text.push_back(char(b));
+    }
+    if (text.empty() || text.size() >= 64)
+      return false;
+    const auto unit = p.word(part + 0x4ec);
+    auto *actor = c.scene->actorById(int32_t(p.word(unit)));
+    if (!actor)
+      return false;
+    for (unsigned i = 0; i <= text.size(); ++i)
+      p.byte(part + 0x1c4 + i, i == text.size() ? 0 : uint8_t(text[i]));
+    // Command type67 requests force0; repeated identical pose publication does
+    // not restart the native view's animation clock.
+    if (actor->pose != text) {
+      actor->pose = text;
+      actor->poseAt = c.scene->now;
+    }
+    return true;
+  };
+  return packedBattleCommandPose(unit, s);
 }
 } // namespace ttyd

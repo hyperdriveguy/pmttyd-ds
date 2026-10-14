@@ -146,9 +146,9 @@ UI setup/end are still explicit native presentation adapters, not recovered
 constructor/animation playback. Nonzero operation payment and populated audience
 entity production remain unbound, rather than substituting zero cost/item-1.
 
-Target cancellation needs complete CommandAnimPose. Native admission reports
-801264cc before parent/cancel effects, retaining the target UI for another
-physical input. Missing providers encountered inside Input freeze the native
+Target cancellation now binds the complete CommandAnimPose provider described
+below; physical B has priority over simultaneous A and returns to state6/help0.
+Missing providers encountered inside Input freeze the native
 command context with its diagnostic until a new explicit menu context is built.
 A future call cannot reinterpret a partial state store as source completion or
 replay an abandoned SP08/P stack. The legacy root-registration bridge also
@@ -159,9 +159,52 @@ that frontier. These are native readiness policies, not original return values.
 The native fixture drives physical weapon A, target A, deferred finalization and
 single root registration, then completes the actual failed Jump with HP4/7,
 failure declaration1/dealt1 and result0. It checks target A/B simultaneous input
-is rejected at the missing cancel provider before effects, and partial weapon
-cancellation does not advance on retries. Original field pouch, dialogue/IDs,
+runs cancellation, and partial weapon-to-class cancellation does not advance
+on retries. Original field pouch, dialogue/IDs,
 HUD assets and action timing are reused; no generated payload was added. Visible
-class/weapon/target activation in Game, complete B cancellation providers,
+class/weapon/target activation in Game, class-level cancellation providers,
 post-action/turn/phase ownership and original voice remain separate unfinished
 requirements, along with second-screen scene/audience controls.
+
+## Command pose, status priority and native B cancellation (2026-10-14)
+
+[Shared command-pose helpers](../../../source/battle/battle_command_pose.cpp)
+close complete local CommandAnimPose801264cc/8c, status-selector80103084/74,
+body-part getter80128c98/40, PoseAnime801010f4/38 and SetAnimType801276ac/80,
+with the existing whole part/pose-name getters and original SetPose flag tail.
+[Verifier](../../../tools/verify_command_pose.py) pins eight complete bodies,
+original status priority27,2,9,1,4,5,3,-1 and the actual Mario type67 lookup
+selecting M_C_3. The source table determines the name; do not guess M_C_1.
+
+CommandPose captures the body part before flags/status providers. It bypasses
+status selection when U138&30000000 is set. Otherwise U104&20000 forces27;
+the first active status in the original table wins (query takes sign-extended
+low8 of the full table word), and its original full word is returned. End-1
+returns28. Exactly28 selects animation67 then freshly ORs part204 bit80.
+Other outcomes invoke PoseAnime: four fresh read/write pairs clear12, OR1,
+clear80 and clear4. The retained part never changes after status callbacks.
+
+SetAnimType uses the original first-match exact/range-fallback pose lookup,
+then original strcpy semantics into part1c4. SetPose freshly ORs2, ORs1,
+clears80, clears200, clears10, then sets/clears8 for force. Types29..39 force;
+29/30 additionally freshly OR10 after the SetPose tail. Command type67 uses
+force0 then its separate OR80. No statuses, wait handle, input history, help,
+HP/result or animation-clock completion are synthesized by these helpers.
+
+Native copy admission requires a nonempty original name fitting the64-byte
+part buffer and an actual registered owner; it preserves raw source bytes and
+publishes that name/pose timestamp to existing presentation. This is a native
+string/view adapter; absent data remains a provider frontier. Status-active
+PoseAnime publishes source work for the ordinary display owner, whose complete
+status clip/render consumption remains separate. No new art or pose is invented.
+
+Native fixture now presses simultaneous B/A in target state11: only cancel
+runs, ends the target view, clears battle bit4, sets help0/state6 and selects
+original M_C_3 with part flag80. Repeated force0 publication of that same native
+pose preserves its animation timestamp. Next invocation executes resumed weapon setup
+and stores7. After actual UI-presentation admission, weapon A, target A and
+finalization still register one original failed Jump with unchanged damage,
+payment count, declaration and story result. Cancelling from the weapon list
+still reaches the unbound class-menu Setup and freezes that context. Game class/
+turn/menu activation, visual playback comparison and other battle providers
+remain incomplete; static/function and host evidence is not original execution.

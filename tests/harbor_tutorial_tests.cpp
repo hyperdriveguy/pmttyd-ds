@@ -163,9 +163,17 @@ void nativeCommandFlow(){
  scene.tick(scene.now+17,0,&a);assert(scene.inputCommand(a)==0 && !scene.commandInputPending);
  assert(!scene.weaponMenuOpen && scene.weaponTargetMenuOpen && word(0x8400171c)==11 && word(0x8401900c)==1 && word(0x84019008)!=0);
  assert(!scene.attackActive && word(0x841012a8)==0 && word(0x841012ac)==0 && word(0x84016f4c)==0);
- scene.tick(scene.now+17,0,&b);assert(!scene.inputCommand(b) && scene.commandInputPending==0x801264cc);
- assert(scene.weaponTargetMenuOpen && word(0x8400171c)==11 && word(0x8401900c)==1); // Explicit cancel provider admission; no half-cancel.
- scene.tick(scene.now+17,0,&quiet);assert(scene.inputCommand(quiet)==0 && !scene.commandInputPending);
+ scene.tick(scene.now+17,0,&b);assert(scene.inputCommand(b)==0 && !scene.commandInputPending);
+ assert(!scene.weaponTargetMenuOpen && word(0x8400171c)==6 && word(0x8401900c)==0 && !(word(0x84000ef4)&4) && (word(0x84201204)&0x80));
+ assert(scene.actors[1].pose=="M_C_3"); // Actual original Mario lookup for type67.
+ ActorAnimationPack commandArt;assert(commandArt.load("romfs/harbor-tutorial-mario.pmanim"));ActorAnimationSample commandSample;
+ const auto* commandPose=commandArt.pose(scene.actors[1].pose.c_str());assert(commandPose && commandPose->evaluate(0,commandSample) && !commandSample.vertices.empty() && commandSample.vertices.size()<12000);
+ scene.tick(scene.now+17,0,&quiet);assert(scene.inputCommand(quiet)==0 && !scene.commandInputPending && scene.weaponMenuOpen && word(0x8400171c)==7);
+ scene.weaponMenuPresented();scene.tick(scene.now+17,0,&a);assert(scene.inputCommand(a)==0 && scene.weaponTargetMenuOpen && word(0x8400171c)==11);
+ const auto commandAt=scene.actors[1].poseAt;scene.tick(scene.now+17,0,&b);assert(scene.inputCommand(b)==0 && scene.actors[1].poseAt==commandAt && word(0x8400171c)==6);
+ scene.tick(scene.now+17,0,&quiet);assert(scene.inputCommand(quiet)==0 && scene.weaponMenuOpen);scene.weaponMenuPresented();
+ scene.tick(scene.now+17,0,&a);assert(scene.inputCommand(a)==0 && scene.weaponTargetMenuOpen);
+ scene.tick(scene.now+17,0,&quiet);assert(scene.inputCommand(quiet)==0);
  scene.tick(scene.now+17,0,&a);assert(scene.inputCommand(a)==0 && !scene.commandInputPending);
  assert(!scene.weaponTargetMenuOpen && word(0x8400171c)==29 && word(0x8401900c)==2 && (word(0x84000ef4)&4) && !scene.attackActive && word(0x841012ac)==0);
  scene.tick(scene.now+17,0,&quiet);assert(scene.inputCommand(quiet)==1 && !scene.commandInputPending);

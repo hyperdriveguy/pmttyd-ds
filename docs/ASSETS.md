@@ -256,3 +256,18 @@ artifacts/source-checks/quest13-field/. No generated replacement or ISO mutation
 Nintendo/Intelligent Systems original assets have no redistribution license;
 extracted streams, PCM packs and embedded binaries stay outside source history.
 [Provider and validation limits](behavior/audio/NATIVE_COIN_FANFARE_ROW219_PROVIDER.md).
+
+## 2026-10-14 — Original Mario command pose for physical target cancellation
+
+The actual original Mario pose-table lookup for type67 selects M_C_3. Added
+that unchanged animation from read-only ISO a/b_mario and textures a/a_mario-
+to the tutorial actor converter, alongside M_S_1/M_N_2/M_D_1. Private outputs
+remain local-assets/harbor-tutorial/ and romfs/harbor-tutorial-mario.{pmmesh,
+pmanim,t3x,bin,json}. Existing mesh/animation conversion and1024 atlas crop to
+512 via LANCZOS are retained; no new geometry reduction, lighting override,
+generated art, dialogue or invented pose name. Original animation is sampled
+by the existing tutorial renderer; host validation checks real vertex output
+under its12000-vertex budget. Nintendo/Intelligent Systems copyright applies;
+no redistribution rights. Original ISO and converted payloads stay outside
+source history. Native source command-pose helpers copy the selected original
+name; physical B remains the cancellation input.

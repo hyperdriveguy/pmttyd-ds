@@ -59,6 +59,7 @@ private:
  uint32_t commandUnbound=0;
  uint32_t menuTextAt=MenuRam+0x1000;std::unordered_map<uint32_t,uint32_t> menuText;
 
+ bool commandPose(uint32_t unit,HarborTutorial&);
  bool aftereffectEvent(EventEntry&,int32_t&);
  bool inviteApReport();
  bool actionEvent(EventEntry&,uint32_t,int32_t&);
