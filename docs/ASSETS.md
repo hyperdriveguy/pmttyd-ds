@@ -1922,3 +1922,21 @@ in tools/verify_battle_hit_code_events.py. Earlier /fc annotations excluded
 that final instruction. Inspection-only ELF remains in ignored artifacts; no
 new game art, audio, dialogue, or distributable asset was extracted. Source
 content retains its existing Nintendo/Intelligent Systems licensing status.
+
+## 2026-10-14 — Opening feedback resource ownership
+
+Reused existing original `romfs:/npc-angle.bin`, Peach/merchant/chest animation
+packs, `demo-crystal-109.t3x`/`demo-crystal-110.t3x`, Title images and the two
+Title curtain packs. No raster, geometry, pose or dialogue conversions changed.
+Retained Title textures now reside in GPU VRAM; chest masks load at market
+admission. Both are memory/lifetime changes to existing original assets.
+
+Opening book BGM selects the existing original ISO
+`sound/stream/sys_demo1_32k.stm` conversion, `romfs:/demo-book.wav` and
+`romfs:/demo-book.wav.loop` (32000Hz stereo PCM16; original loop0..3683330),
+including with the optional Switch soundtrack. The shorter nonlooped Switch
+book cue is not assigned invented loop points. Original Nintendo/Intelligent
+Systems music/art remain private local assets; no redistribution rights are
+conferred and no extracted payload is committed. Final emulator DSP firmware
+copies reside only in ignored isolated profiles, read from the user's existing
+firmware file; firmware is not a game asset or committed/distributed here.

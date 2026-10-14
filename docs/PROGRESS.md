@@ -11994,3 +11994,77 @@ save-worker integration, preload first-use house PCM, transactional music
 admission outside the refill mutex, conservative dynamic-aware batch cutaway
 bounds and complete-input actor sample caches. Do not add a second VBlank wait
 or reorder translucent draws. Full remake remains unfinished.
+
+## 2026-10-14 — Opening feedback: facing, automatic Title and PCM continuity
+
+Corrected Peach/merchant presentation to use the recovered NPC camera-relative
+matrix, original angle lookup, retained rotation and side-dependent Z reflection
+once per simulation tick. The former binary yaw transform selected the wrong
+paper side. Kept authored actor poses, scene requests and all37 original US
+message IDs/control tokens. Original input guard remains documented as source
+evidence; the user's requested automatic chest→Title behavior now starts after
+all final requests/waits and still requires the completed opaque GPU frame.
+A/START continues to skip earlier. The completed-demo button prompt is removed.
+
+Native PCM refill now runs on a separate worker; NDSP's callback only wakes it.
+Track admission/retirement and refill share a lock, initial queued buffers use
+published envelope gain, and shutdown joins before releasing stream owners.
+Three4096-frame buffers per owner are native choices, not original measurements.
+Chest effect textures admit with the market instead of at first chest draw.
+Title images/curtains admit before the frontend clock/music start, survive the
+Demo/Title/Files phases and final book adjustment, and retire for New Game.
+The initial linear-memory preload failed Peach admission (1285KB free,1–2FPS
+retry); final Title textures use GPU VRAM, preserving the overlap's linear arena.
+No original pose or asset was dropped. Native fidelity/hardware timing remain
+bounded adapters rather than full original-runtime parity.
+
+Audio-active isolated recording also found the optional Switch book cue ends
+before the original US scene's Off request:2.262s digital silence. Book track5
+now uses the original ISO's looping sys_demo1_32k even when that optional
+soundtrack is selected; no fabricated Switch loop points. Final242.0467s PCM
+capture has only11.2595s initial boot silence and3.689s after emulator shutdown;
+no >50ms digital silence inside active playback. This detects gaps, not pitch,
+stretching, musical/perceptual fidelity or physical2DS output.
+
+Validation: frozen source base52bfd21 plus the opening VRAM/book-policy patches,
+with private copies of the existing RomFS packs (no hardlinks), passes native
+`make -C artifacts/opening-feedback-build -o assets-ready all` and the same
+command with DEBUG_SHORT_BOOT=1 BUILD=build-debug-short
+TARGET=ttyd-2ds-debug-short. The -o option reuses the already converted private
+packs without re-extraction. `make -C artifacts/opening-feedback-build test`
+passes209/209 CTest and133/133 Python (opening-feedback-verified-tests.log).
+Final debug log:opening-feedback-verified-debug-short.log; normal log:
+opening-feedback-verified-all.log. The immutable normal/debug3DSX and exact
+source/artifact hashes live in artifacts/opening-feedback-build with
+opening-feedback-manifest.json. No claim that this older coherent battle
+baseline incorporates every concurrent battle/render change.
+
+Shared-checkout checks were run first: final initial make test210/211 CTest,
+with an unrelated trio_attack_original defended-reaction assertion; standalone
+Python134/134 passed. Earlier native builds encountered concurrent added-source
+link misses and a renderer header mid-edit. A consistent snapshot avoided
+accepting a stale binary. Scoped opening/frontend/message/NPC30/30 passed.
+Snapshot's first Python run needed the ignored message-icon/item-effect source
+fixtures copied; subsequent complete runs pass. All are retained in
+artifacts/opening-feedback-*.log. Final doc link check1104 Markdown files/0
+broken links, and scoped git diff checks pass.
+
+Final native artifacts/azahar-opening-feedback-verified unskipped run shows
+book/market60FPS, source merchant/Peach poses, chest effects, automatic white
+exit and opened real Title60FPS, with no end-of-demo input. Final t206 effects
+sample36FPS/6.29ms (other late samples60FPS), so no claim of an entirely hitch-free
+sequence. The failed linear-preload run and OCR fixture failure are retained;
+missing local Tesseract language data stopped that harness after its real
+no-input Title capture. Final harness uses captured timing instead. Its2s
+post-A capture was still the authored curtain; the separate corrected6s wait
+artifacts/azahar-opening-feedback-files reaches actual four-file selection60FPS.
+No native exception in the successful runs. DSP firmware was copied read-only
+into isolated test profiles; a temporary audio sink recorded only test output.
+User emulator profile/saves and ISO were not modified.
+
+Remaining: physical New2DS XL audio/performance; profile the transient chest
+sample and other cold scene admissions; complete original renderer/TEV/shadow
+and sound-engine parity. This correction does not revalidate the entire fresh
+New Game route or extend story beyond the previously tested story3 Rogueport
+arrival. Crump/joining/full-game progression remain separate work. The opening
+flow still supports normal boot and compile-time short debug boot.
