@@ -78,8 +78,68 @@
       "address": 2148389600,
       "size": 1592,
       "sha256": "93f13bd7f43bcc570277a16e59963012648c2e2ed631754e6a3105feed04e88c"
+    },
+    {
+      "name": "fadeEntry",
+      "address": 2147562344,
+      "size": 1852,
+      "sha256": "34375b105173c33a535a1d3057bc51f8f7ef1a0b677970e5576df7ff495878ff"
+    },
+    {
+      "name": "fadeMain",
+      "address": 2147557464,
+      "size": 4552,
+      "sha256": "369db5633483e4b397234036dae4080d6e8849d68ea747daec990b41fd891437"
+    },
+    {
+      "name": "imgDisp",
+      "address": 2147951028,
+      "size": 1964,
+      "sha256": "b450bdf747bf3c2e14a7df2b93d4b740a2bd03beec00a6ef3575349cd1a09e99"
+    },
+    {
+      "name": "evt_img_alloc_capture",
+      "address": 2147944288,
+      "size": 756,
+      "sha256": "72eb5a1776a61e0e37ac66a64d00d83b68cb7e158488ef4c6c4b2e5cdf18157f"
+    },
+    {
+      "name": "imgCapture_Prim",
+      "address": 2147949088,
+      "size": 1280,
+      "sha256": "cd3657b67edeaa30754caa563dd9b9024e2c0043ddcf4bc0ad6b6c4fce41325d"
+    },
+    {
+      "name": "animSetPaperTexObj",
+      "address": 2147726436,
+      "size": 116,
+      "sha256": "80b2ca45b362b394f5b65c1a84272eb01384ac62f01769fafb054dc64aadb013"
+    },
+    {
+      "name": "renderProc",
+      "address": 2147731588,
+      "size": 3464,
+      "sha256": "7baffc246c77e795af059e7af55d8dea59e9781c74d9b5f18b052d025517cc46"
+    },
+    {
+      "name": "animPoseMain",
+      "address": 2147740972,
+      "size": 6464,
+      "sha256": "9083ebe5e58f3c2bd56914adfa318296291b5ca0ddc779d2bca7e6e3cbeebd26"
     }
   ],
   "event_count": 53,
-  "event_sha256": "6a8878ef482a27ca82943e8f359e35d0264dd2515978900935aaa64f26bd042f"
+  "event_sha256": "6a8878ef482a27ca82943e8f359e35d0264dd2515978900935aaa64f26bd042f",
+  "voyage_events": [
+    {
+      "name": "evt_prologue",
+      "count": 78,
+      "sha256": "f3ba8a3667a705bc6875d19ade724d0dbb934b47a466f2642c660c7f7d3f6024"
+    },
+    {
+      "name": "muj_20_init_evt",
+      "count": 102,
+      "sha256": "131ac2bc41c846b6d8ea0c57d026eccde545dd4d80927307109c0bf4f03b31b2"
+    }
+  ]
 }

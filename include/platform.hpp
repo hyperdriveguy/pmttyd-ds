@@ -33,7 +33,7 @@ public:
     bool changeRoom(uint32_t room);
     void beginFrontend();
     void advanceTutorialAnimations(Game&);
-    void releaseFrontend();
+    void releaseFrontend(bool preserveMapTurn=false);
     void render(const Game&, const Metrics&, const char* notice, bool audioAvailable);
     void renderFrontend(Frontend&, OpeningDemo&, OpeningSequence&, const char* notice);
     void shutdown();
@@ -176,6 +176,12 @@ private:
     uint8_t* bookCapturePixels=nullptr;
     bool captureBookPage(OpeningDemo&,unsigned);
     void freeBookCaptures();
+    ActorAnimationPack mapTurnAnimations;ActorAnimationSample mapTurnSample;
+    C3D_Tex mapTurnCapture{};C3D_RenderTarget* mapTurnTarget=nullptr;
+    bool mapTurnReady=false;Vertex* mapTurnVertices=nullptr;
+    bool prepareMapTurn(OpeningMapTransition&);
+    bool frontMapTurn(OpeningMapTransition&,unsigned,float&);
+    void freeMapTurn();
     C3D_Tex wakeCaptureTexture{};
     bool wakeCaptureReady=false;
     C3D_RenderTarget* wakeWorldTarget=nullptr;
@@ -190,6 +196,7 @@ private:
     bool loadDemoPaper();
     bool frontBookCover(const OpeningDemo&);
     bool frontBookPaper(OpeningDemo&,std::array<float,4>&);
+    bool prepareFrontWorld(const char*,const OpeningSequence*,const OpeningDemo&);
     bool frontWorld(const char*,CameraPoint,CameraPoint,const OpeningSequence*,const OpeningDemo&);
     struct FrontTexture {std::string name;Texture image;std::array<uint32_t,4> size{};};
     std::vector<FrontTexture> frontTextures;

@@ -8,8 +8,10 @@ At aaa:1a7c, GF0 is cleared. The persistent inline `mapdraw` callback allocates 
 
 The native map is the existing original608x480 raster reflowed to304x240 in the centered source viewport. It fades over the retained original house scene rather than replacing the backdrop before alpha becomes opaque. Simulation60Hz owns the finite source waits and alpha counter. Native texture admission starts the first callback; a missing resource cannot advance this producer. The native GF0 bridge additionally requires an actual alpha255 draw followed by `C3D_FrameEnd` and `C3D_FrameSync`. This presentation barrier is a native adaptation: the original callback publishes GF0 before registering its draw in the same callback. It prevents native resource or GPU delay from fabricating successful display.
 
-After the native GF0 publication, the event waits1000ms, requests BGMoff_f(group512,2000ms), turns off environment group512, selects source mapchange49/50, stores GSW0=2 and changes to muj_20/prologue. This slice binds the story state and Voyage admission; the environment off and geometric49/50 transition remain precise unbound services, not a claim of original transition parity.
+After the native GF0 publication, the event waits1000ms, requests BGMoff_f(group512,2000ms), turns off environment group512, selects source mapchange49/50, stores GSW0=2 and changes to muj_20/prologue. This slice binds the story state, the source49/50 geometric transfer and Voyage admission. `mapDisplay.environmentOffRequested` retains the actual envOff512 request for the root house-sound owner; this bounded worktree does not invent environment-sound acknowledgment.
 
 The used group512 music adapter is described in the [audio contract](../audio/OPENING_MAP_BGM.md).
 
 Validation uses host stalled-resource/final-frame tests, source hashes/operands and native isolated emulator captures. It does not claim Dolphin raster or audible parity.
+
+The [display contract](../display/OPENING_MAP_TURN_CAPTURE.md) owns the original49/50 geometry, dynamic material inheritance, GPU capture and resource lifetime. Voyage runs concurrently with50, matching its used init/event prefix; presentation completion does not introduce an event wait.

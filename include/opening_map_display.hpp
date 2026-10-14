@@ -7,7 +7,7 @@ class OpeningMapDisplay {
 public:
     uint8_t alpha=0;
     bool drawRequested=false,resourceReady=false,opaqueRequested=false,opaquePresented=false;
-    bool flag0=false,musicOffRequested=false,complete=false;
+    bool flag0=false,musicOffRequested=false,environmentOffRequested=false,complete=false;
     unsigned poseStage=0;
     void begin(uint64_t tick){*this={};now=start=tick;}
     void admitted(){if(drawRequested && !resourceReady){resourceReady=true;alpha=2;lastDraw=now;}}
@@ -22,7 +22,7 @@ public:
             if(value>255){alpha=255;opaqueRequested=true;}else alpha=uint8_t(value);
             if(opaquePresented){flag0=true;flagTick=now;}
         }
-        if(flag0 && now-flagTick>=60){musicOffRequested=true;complete=true;}
+        if(flag0 && now-flagTick>=60){musicOffRequested=true;environmentOffRequested=true;complete=true;}
     }
 private:
     uint64_t now=0,start=0,lastDraw=0,flagTick=0;

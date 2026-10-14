@@ -7,6 +7,7 @@
 #include "opening_wake.hpp"
 #include "opening_map_display.hpp"
 #include "opening_map_bgm.hpp"
+#include "opening_map_transition.hpp"
 #include "camera_road_assets.hpp"
 #include "opening_harbor_scene.hpp"
 #include "opening_voyage_scene.hpp"
@@ -24,6 +25,7 @@ public:
     OpeningWake wake;
     OpeningMapDisplay mapDisplay;
     OpeningMapBgm mapBgm;
+    OpeningMapTransition mapTransition;
     CameraPoint wakeEye{},wakeAt{};
     mutable OpeningHarborScene harbor;
     mutable OpeningVoyageScene voyage;
@@ -43,6 +45,9 @@ public:
     bool complete() const{return part==OpeningPart::Complete;}
     const char* map() const;
     int music() const;
+    void requestBgmOn(int track){mapBgm.on(track,true);}
+    void requestBgmOff(uint32_t milliseconds){mapBgm.off(milliseconds);}
+    bool openingMusicOwned()const{return mapBgm.snapshot().tracks[0]>=0;}
 private:
     CameraRoadAsset wakeCamera;
     MessageResource global;

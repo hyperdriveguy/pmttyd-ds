@@ -1638,3 +1638,12 @@ multiply255/truncate-to-byte; intensity1.5. These source-derived completed
 parameters were independently observed in isolated original MEM1; no exposure
 or substitute palette is applied. Light-color parsing remains explicit opt-in
 for the used static opening sky.
+
+Original map transition resources `a/OFF_d_meku` and its `-` descriptor bank
+supply Z_1 (span0/key1) and A_1 (span80/key45). Ignored
+`romfs/opening-map-turn.pmanim/.bin/.json` preserve source sparse geometry and
+88-triangle material order. Dynamic kinds1/2 retain their source identities;
+actual captured map pixels come from a native GPU target. No fallback TPL raster
+or new image substitutes for those dynamic materials. The exporter is
+`tools/opening_map_transition_assets.py`, invoked by assets-ready; original
+licensing/local-only restrictions above apply.

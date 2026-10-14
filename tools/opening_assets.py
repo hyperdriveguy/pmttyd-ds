@@ -70,6 +70,7 @@ def main():
             subprocess.run([tex3ds,'-f','rgba8','-z','auto','-o',str(out/f'{prefix}-{index}.t3x'),str(png)],check=True,stdout=subprocess.DEVNULL)
     extract(a.iso,'m/gor_10/c',work/'gor_10.c');shutil.copyfile(work/'gor_10.c',out/'opening-gor_10.camera')
     records.append(json.loads((work/'gor_10.c.provenance.json').read_text()))
+    build_ship(a.iso,out)
     scene_poses={'c_luigi':['L_5','L_6','L_7','L_8','L_9','L_11','I_1','S_1'],
                  'c_paretta':['S_1'],
                  'c_peach':['P_Z_1','P_S_1','P_T_1','P_W_1','P_S_7','P_T_13','P_W_7','P_S_4','P_T_4','P_W_4','P_S_8','P_T_14','P_W_8','P_B_1','P_B_2','P_T_7','P_H_1','P_B_3','P_B_4'],

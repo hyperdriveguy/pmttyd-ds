@@ -14,8 +14,8 @@ void Renderer::beginFrontend(){
     for(auto* room:{&plaza,&stage,&trioBackground,&trioStage})freeRoom(*room);
     frontActive=true;
 }
-void Renderer::releaseFrontend(){
-    C3D_FrameSync();freeHeading();freeTitleCurtains();freeBookCaptures();freeWakeEffects();freeShipCapture();freeDemoEffects();freeRoom(frontRoom);frontMapName.clear();frontHouseObjects.clear();frontShipObjects.clear();frontDrawSnapshot.reset();
+void Renderer::releaseFrontend(bool preserveMapTurn){
+    C3D_FrameSync();if(!preserveMapTurn)freeMapTurn();freeHeading();freeTitleCurtains();freeBookCaptures();freeWakeEffects();freeShipCapture();freeDemoEffects();freeRoom(frontRoom);frontMapName.clear();frontHouseObjects.clear();frontShipObjects.clear();frontDrawSnapshot.reset();
     for(auto& t:frontTextures)if(t.image.imported){Tex3DS_TextureFree(t.image.imported);C3D_TexDelete(&t.image.texture);}
     frontTextures.clear();
     for(auto& a:cineActors)if(a.image.imported){Tex3DS_TextureFree(a.image.imported);C3D_TexDelete(&a.image.texture);}
@@ -62,8 +62,7 @@ void Renderer::frontMessage(const MessagePlayback& message,uint64_t ticks) {
         messageAdvanceIndicator(plan,ticks,true);
     }
 }
-bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const OpeningSequence* opening,const OpeningDemo& demo) {
-    if(opening && opening->part==OpeningPart::Wake && !wakeWorldTarget)return false;
+bool Renderer::prepareFrontWorld(const char* map,const OpeningSequence* opening,const OpeningDemo& demo) {
     if(frontMapName!=map) {
         // A cutscene owns one map. Release the preceding scene before staging
         // its successor; retaining both can exhaust the native linear arena.
@@ -92,6 +91,11 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
         if((std::string(map)=="opening-gor_00" || std::string(map)=="opening-muj_20") && !frontShipObjects.load((std::string("romfs:/")+map+".shipobj").c_str(),frontRoom.vertexCount)){freeRoom(frontRoom);frontFailure="Original harbor ship bindings unavailable";return false;}
         frontMapName=map;frontFailure.clear();
     }
+    return true;
+}
+bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const OpeningSequence* opening,const OpeningDemo& demo) {
+    if(opening && opening->part==OpeningPart::Wake && !wakeWorldTarget)return false;
+    if(!prepareFrontWorld(map,opening,demo))return false;
     // bgDisp owns a textured background before map geometry. The source
     // requested dmo_00 keeps its own backdrop despite the gor_01 geometry alias.
     const char* background=std::string(map)=="opening-demo-market"?"dmo_00":
@@ -252,7 +256,11 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,OpeningSequence& ope
     // also bounds a natural (unskipped) storybook run and letter/map overlays.
     const uint32_t phase=f.screen==FrontScreen::Demo?100:
         f.screen==FrontScreen::Opening?200+uint32_t(opening.part==OpeningPart::MapDisplay?OpeningPart::HouseReturn:opening.part):0;
-    if(phase!=frontPhase){releaseFrontend();frontPhase=phase;}
+    if(phase!=frontPhase){releaseFrontend(f.screen==FrontScreen::Opening && opening.part==OpeningPart::Voyage && opening.mapTransition.entryRequested && !opening.mapTransition.entryComplete);frontPhase=phase;}
+    if(opening.mapTransition.entryComplete && mapTurnReady){C3D_FrameSync();freeMapTurn();}
+    const bool mapWorldReady=!(f.screen==FrontScreen::Opening && opening.part==OpeningPart::Voyage && opening.mapTransition.entryRequested && !opening.mapTransition.entryComplete) || prepareFrontWorld("opening-muj_20",&opening,demo);
+    const bool mapCapture=f.screen==FrontScreen::Opening && opening.part==OpeningPart::MapDisplay && opening.mapTransition.requested && !opening.mapTransition.captureReady;
+    const bool mapCaptureReady=!mapCapture || prepareMapTurn(opening.mapTransition);
     if(f.screen==FrontScreen::Demo && demo.bookComplete && !demo.book.adjusting && !frontTextures.empty()) {
         // Final adjust retires the book alone. The already admitted market,
         // actor samples and map animation clocks continue across this boundary.
@@ -267,16 +275,17 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,OpeningSequence& ope
     messageIndicatorCount=0;
     const bool wakeWorld=f.screen==FrontScreen::Opening && opening.part==OpeningPart::Wake;
     const bool wakeReady=!wakeWorld || prepareWakeWorld();
-    auto* worldTarget=wakeWorld && wakeReady?wakeWorldTarget:top;
+    auto* worldTarget=mapCapture && mapCaptureReady?mapTurnTarget:wakeWorld && wakeReady?wakeWorldTarget:top;
     C3D_RenderTargetClear(worldTarget,C3D_CLEAR_ALL,0,0);C3D_FrameDrawOn(worldTarget);C2D_Prepare();C2D_SceneBegin(worldTarget);
-    if(wakeWorld && wakeReady){C2D_SceneSize(400,240,false);C3D_SetViewport(0,0,400,240);}
+    if((wakeWorld && wakeReady) || (mapCapture && mapCaptureReady)){C2D_SceneSize(400,240,false);C3D_SetViewport(0,0,400,240);}
     uint8_t titleBlackPresented=0;uint32_t titlePresentedType=0;float titlePresentedFrame=-1,titlePresentedScale=0;
     int entryPresented=-1;uint8_t exitPresented=0;
     bool headingEntryPresented=false,headingOpenPresented=false,headingStartedPresented=false,headingExitPresented=false;
     float shipPresented=-1;bool shipCaptureRequested=false;
     uint8_t voyageWhitePresented=0;
     int mapPresented=-1;
-    bool ok=wakeReady;std::array<float,4> paperPresented{{-1,-1,-1,-1}};
+    float mapTurnPresented=-1;unsigned mapTurnType=0;
+    bool ok=wakeReady && mapCaptureReady && mapWorldReady;std::array<float,4> paperPresented{{-1,-1,-1,-1}};
     std::array<bool,4> captureRequested{};
     if(f.screen==FrontScreen::Demo && demo.bookComplete) {
         const auto& scene=demo.market;
@@ -294,8 +303,9 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,OpeningSequence& ope
         if(opening.part==OpeningPart::Wake){eye=opening.wakeEye;at=opening.wakeAt;}
         if(opening.part==OpeningPart::Arrival){eye=opening.harbor.eye;at=opening.harbor.at;}
         if(opening.part==OpeningPart::MapDisplay){
-            ok=frontWorld("opening-aaa_00-interior",eye,at,&opening,demo);
-            if(opening.mapDisplay.drawRequested){
+            if(mapCapture)ok=frontImage("opening-map",48,0,304,240) && ok;
+            else ok=frontWorld("opening-aaa_00-interior",eye,at,&opening,demo);
+            if(!mapCapture && opening.mapDisplay.drawRequested){
                 const bool admitted=frontImage("opening-map",0,0,0,0);
                 if(admitted)opening.mapDisplay.admitted();
                 ok=admitted && ok;
@@ -352,6 +362,17 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,OpeningSequence& ope
         }
     }
     if(f.screen==FrontScreen::Opening && opening.part==OpeningPart::Wake)ok=frontWakeEffects(opening.wake) && ok;
+    if(mapCapture){
+        C2D_Flush();C3D_RenderTargetClear(top,C3D_CLEAR_ALL,0,0);C3D_FrameDrawOn(top);C2D_Prepare();C2D_SceneBegin(top);
+        ok=frontImage("opening-map",48,0,304,240) && ok;
+    }
+    if(f.screen==FrontScreen::Opening && opening.mapTransition.captureReady){
+        if(opening.part==OpeningPart::MapDisplay && opening.mapTransition.requested){mapTurnType=49;ok=frontMapTurn(opening.mapTransition,49,mapTurnPresented) && ok;}
+        else if(opening.part==OpeningPart::Voyage && opening.mapTransition.entryRequested && !opening.mapTransition.entryComplete){
+            if(ok)opening.mapTransition.admitEntry(opening.now*60/1000);
+            mapTurnType=50;ok=frontMapTurn(opening.mapTransition,50,mapTurnPresented) && ok;
+        }
+    }
     if(f.screen==FrontScreen::Opening && opening.message.active()) {
         if(!frontDrawSnapshot)frontDrawSnapshot=std::make_unique<Game>();
         auto& snapshot=*frontDrawSnapshot;snapshot.ticks=opening.now*60/1000;
@@ -400,7 +421,7 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,OpeningSequence& ope
     if(!ok){text("Original front-end texture unavailable",10,216,.4f,Red);if(!frontFailure.empty())text(frontFailure.c_str(),10,203,.35f,Red);}
     if(notice && *notice)text(notice,10,229,.35f,Ink);
     C2D_Flush();C3D_FrameEnd(0);
-    if((mapPresented==255 && !opening.mapDisplay.opaquePresented) || voyageWhitePresented==255 || shipCaptureRequested || shipPresented>=60 || entryPresented==0 || exitPresented==255 || titlePresentedType || titleBlackPresented==255)C3D_FrameSync();
+    if(mapCapture || mapTurnPresented>=0 || (mapPresented==255 && !opening.mapDisplay.opaquePresented) || voyageWhitePresented==255 || shipCaptureRequested || shipPresented>=60 || entryPresented==0 || exitPresented==255 || titlePresentedType || titleBlackPresented==255)C3D_FrameSync();
     if(ok && shipCaptureRequested && !captureOpeningShip(opening)){
         frontFailure="Original opening ship capture failed";ok=false;
     }
@@ -417,6 +438,8 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,OpeningSequence& ope
         if(headingStartedPresented)opening.heading.started=true;
         if(headingExitPresented)opening.heading.exitComplete=true;
     }
+    if(ok && mapCapture)opening.mapTransition.captured();
+    if(ok && mapTurnPresented>=0)opening.mapTransition.presented(mapTurnType,mapTurnPresented);
     if(ok && mapPresented>=0)opening.mapDisplay.presented(uint8_t(mapPresented));
     if(ok)f.title.presentedBlack(titleBlackPresented);
     if(ok && titlePresentedType)f.title.presented(titlePresentedType,titlePresentedFrame,titlePresentedScale);

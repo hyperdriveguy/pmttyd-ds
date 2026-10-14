@@ -10012,3 +10012,58 @@ sky-day-light-verification.json. Targeted source unittest/py_compile/diffcheck
 pass. Documentation check964files retains the same one preexisting missing
 house-audio contract. No native visual change or parity claim in this source-only
 increment; boat owner integrates and validates original completed-light sampling.
+
+### Map49/50 source geometry and retained music tail follow-up
+
+Bound the used original OFF_d_meku/Z_1/context2 static exit49 and A_1/context2
+finite80-frame entry50. The original88-triangle geometry/sparse poses/material
+kinds/order are exported read-only. A real VRAM render target captures the
+opaque full map; capture completion and source final poses0/80 publish only
+after actual frame submission and synchronization. Capture/pose ownership
+survives MapDisplay→Voyage and retires after the entry's final presented pose.
+Voyage event/ship clocks remain concurrent with50, with no invented fadeEndwait.
+The used materialkind2 has no second capture: source absent-pointer branch
+inherits capture0 sampler/UV after44kind1 triangles, followed by44kind2; native
+bridge preserves this exact order and actual sampler rather than inventing art.
+
+The music producer now accepts source duration6000ms, retains its existing
+ordinary group through phases without a new On, and retires the native stream
+on zero volume. Root merged boat owner must call `requestBgmOff(6000)` once at
+its source acceptedTick+240 command33c58. `environmentOffRequested` retains
+actual map envOff512 for the root house sound owner. The isolated worktree's
+older Voyage fixture does not fabricate newer boat callbacks. Source verifier
+now pins46 anchors, including actual model/bank/dispatch, dynamic texture owner
+bodies, full used Voyage event/init hashes and original6000/17/16 operands.
+
+Validation pending final native fixture below; earlier this follow-up's
+`make test` passed172/172 CTest and110 Python checks. No ISO or asset payload
+committed. Native image-plane projection is a presentation adaptation, with
+original geometry/material ownership retained; no measured Dolphin raster or
+DSP parity assertion. Root integration owns the later boat callsite and house
+environment request consumer.
+
+Final follow-up validation: `make test` passes172/172 CTest and110 Python checks
+in `artifacts/map-turn-test-reviewed.log`; full `make all` passes in
+`artifacts/map-turn-native-reviewed.log`. The read-only map verifier passes46
+anchors and `git diff --check` passes. Reviewed isolated fresh-save captures in
+`artifacts/azahar-map-turn-staged/` show actual retained captured map, original
+corner fold/diagonal peel over Voyage and clear Voyage after original pose80.
+Native capture/resource gates did not invent elapsed-only acknowledgment.
+The fixture bootstrap was restored and is absent from source history.
+
+New-world map resource staging now runs before FrameBegin/target clearing for
+this used transfer. Capture00 shows the old map during this interval, but
+capture03/05 still show a whole Qt/frameview black desktop snapshot, including
+UI/bottom; no native exception is logged. This evidence does not prove the
+cold-admission/capture artifact is eliminated. Parent integrated runtime review
+must resolve whether those transient desktop captures reflect emulator/X capture
+or native presentation before claiming uninterrupted hardware display. Other
+reviewed frames show the correctly oriented retained-map geometry and actual
+page deformation. No Dolphin raster observation or audibleDSP parity claim.
+
+Parent merge must invoke the portable6000ms Off at boat acceptedTick+240,
+consume `environmentOffRequested` in its real house/environment sound owner,
+and retain the source sailing track after late acceptance rather than inventing
+an opening-track On. The isolated older Voyage producer is deliberately not
+substituted for the parent boat implementation. New GPU display ownership lives
+in display/OPENING_MAP_TURN_CAPTURE.md, with links from the story contract.

@@ -12,7 +12,7 @@ struct OpeningVoyageScene {
  mutable bool whitePresented=false;
  void begin(uint64_t tick){*this={};started=now=tick;}
  void presentedWhite(uint8_t alpha) const{if(headingRequested && alpha==255)whitePresented=true;}
- int music() const{const uint64_t t=now-started;if(t<30)return -1;return acceptedTick==UINT64_MAX && t>=1141?9:8;}
+ int music() const{const uint64_t t=now-started;if(t<30)return -1;return (acceptedTick==UINT64_MAX?t>=1141:acceptedTick-started>=1141)?9:8;}
  void advance(uint64_t tick,uint32_t keys=0){
   while(now<tick){++now;const uint64_t t=now-started;const float old=shipX;
    if(t==240)logo.begin(now);

@@ -745,3 +745,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Opening map display](story/OPENING_MAP_DISPLAY.md): original item/pose prelude, alpha callback, native presentation admission and group512 music handoff.
 
 - [Opening map BGM](audio/OPENING_MAP_BGM.md): group512 integer off and original same-group replacement tail.
+
+- [Opening map turn capture](display/OPENING_MAP_TURN_CAPTURE.md): original49/50 sparse geometry, dynamic material inheritance, GPU ownership and final-pose acknowledgment.

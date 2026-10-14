@@ -33,6 +33,7 @@ int main(){
         opening.heading.entryComplete=opening.heading.displayReady=opening.heading.startFadeComplete=opening.heading.started=opening.heading.exitComplete=true;
         opening.tick(now,keys);assert(!opening.failed);
         opening.mapDisplay.admitted();opening.mapDisplay.presented(opening.mapDisplay.alpha);
+        opening.mapTransition.admitted(0,80);opening.mapTransition.captured();opening.mapTransition.presented(49,0);
         if(opening.part==OpeningPart::Voyage)voyageGate=true;
         if(opening.voyage.logo.active)opening.voyage.logo.admitResources();
         if(opening.voyage.headingRequested)opening.voyage.presentedWhite(uint8_t(opening.voyage.white*255));
@@ -48,7 +49,7 @@ int main(){
     assert(noInput.part==OpeningPart::House && noInput.message.id()=="pro_00" && noInput.message.waiting());
     assert(noInput.house.messageReady(0) && noInput.message.requireTerminalInput);
     OpeningSequence gate;assert(gate.load("romfs"));gate.begin(0);
-    for(now=0;now<200000 && gate.part!=OpeningPart::Voyage;now+=17){gate.tick(now,0x100);gate.mapDisplay.admitted();gate.mapDisplay.presented(gate.mapDisplay.alpha);}
+    for(now=0;now<200000 && gate.part!=OpeningPart::Voyage;now+=17){{gate.tick(now,0x100);gate.mapDisplay.admitted();gate.mapDisplay.presented(gate.mapDisplay.alpha);}gate.mapDisplay.admitted();gate.mapDisplay.presented(gate.mapDisplay.alpha);}
     assert(gate.part==OpeningPart::Voyage);for(unsigned i=0;i<3000;++i){now+=17;gate.tick(now,0);if(gate.voyage.logo.active)gate.voyage.logo.admitResources();}assert(gate.part==OpeningPart::Voyage);
     gate.tick(now+17,0x1000);assert(gate.part==OpeningPart::Voyage && gate.voyage.logo.accepted);
     for(unsigned i=0;i<300;++i){now+=17;gate.tick(now,0);if(gate.voyage.headingRequested)gate.voyage.presentedWhite(uint8_t(gate.voyage.white*255));}
