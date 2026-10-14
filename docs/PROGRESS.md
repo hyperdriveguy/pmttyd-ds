@@ -1,3 +1,33 @@
+## 2026-10-14 — Original command attack selection and records
+
+Committed `1e3d142`: complete shared _btlcmd_SetAttackEvent selector, weapon attack
+classifier and borrowed unit-data lookup. All14 command modes/all9 subcommands
+publish original event/category/byte stores and source selection counts, with
+captured battle ownership, fresh audience-helper ownership, null-event Wait
+fallback, exact special-pointer exemption and signed normalization. Native
+trio confirmed commands call this selector before creating their source root;
+Jump now publishes80355cf0/category0 and counts16f38 before execution. The
+selector does not choose a menu row, run an event, fabricate damage or spend a
+turn. Physical menu navigation/cancellation and optional touch remain intact.
+
+Validation: shared make test passed218/218 C++ and137/137 Python tests; final
+focused selector/trio rerun passed2/2 after adding the pre-execution native
+record assertion. Existing read-only ISO verifier passed11 body identities,
+301 instruction anchors,8 data spans and7 scoped DOL call sites. Initial native
+link saw concurrent break-slot references before that new source was available
+in the build. Once its object existed, rebuilding battle_attack_selection.o
+and TMPDIR=artifacts/tutorial-admission-tmp make all -o assets-ready passed and
+rebuilt 3DSX; full asset preparation had already run. No Azahar/Dolphin trace or
+new game payload. Shared-index overlap was confined to a launch hunk explicitly
+left staged by the concurrent author; scoped commit/index handling retained it.
+
+Next: original tutorial weapon-table/menu/input ownership and player action
+admission; use source state6 root registration and full action/turn controller;
+connect camera, effect, audio and audience consumers, including optional lower
+screen audience taps and physical alternatives. Guard/lethal/general status/
+counter dependencies remain. Full tutorial/battle goal stays active; this
+selection primitive is not a complete native tutorial or menu replacement.
+
 ## 2026-10-14 — Ordinary tutorial attack/reaction return
 
 Committed bb063b1: shared original horizontal camera-shake request wrapper
