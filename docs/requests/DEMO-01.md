@@ -264,6 +264,32 @@ now pins captured record/flag/conclusion priority and no-write path. Source
 checks passed; field nonzero wait is not exact victory. Full battle ending,
 scene joins, story advance/save-unblock and original execution remain OPEN.
 
+## 2026-10-13 — Native session verification: GSW[0] gate and write order
+
+Independently re-read the `aaa` REL events from the read-only US ISO
+(`tools/rel_event_inventory.py --iso ... --module aaa`, artifacts under `/tmp`,
+`aaa.rel` sha256 `c418e4ba5d83baa7c8ee84fa788c0163b560fc13b378ec481c1556374dfc61d2`),
+confirming the D1-critical claims above:
+
+- `aaa/aaa_00_init_evt` cmd 19 is `opcode 24` (`==`) with operands `0xf5de0180`
+  (the GSW[0] operand) and the literal `402`. The "admits only when
+  `GSW[0]==402`" gate is real at the stated command.
+- `GSW[0]` (`0xf5de0180`) is written by `opcode 50` in `evt_prologue2` cmd 49 and
+  `epilogue_evt2` cmd 117.
+- The write precedes the transition: in `evt_prologue2` cmd 49 sits between the
+  mapchange-fade request cmd 48 and `evt_bero_mapchange` cmd 50; in
+  `epilogue_evt2` cmd 117 precedes fade request 118 and mapchange 119. The
+  precise statement is "committed before the map change"; in `evt_prologue2` the
+  write is *after* the fade-type request, so "before the fade" is not exact.
+- Observed raw write operands are `...0180,2` (`evt_prologue2`) and `...0180,403`
+  (`epilogue_evt2`); whether `opcode 50` stores a literal or
+  `evtGetValue(operand1)` is unchanged from the delivery, so the written chapter
+  **values** stay OPEN.
+
+Not re-run: the full `dmo`/`sys` scan behind "`GSW[0]` is the only saved story
+value" and the 402 distinct-value census; only the cited `aaa` spans were read.
+Verified bytes only; no original execution, no source change.
+
 ## 2026-10-13 — ID 3: `GSW[0]` write set (closes the transition gap)
 
 [Chapter value table, new "write set" section](../behavior/story/OPENING_GSW0_CHAPTER_VALUE_TABLE.md).
