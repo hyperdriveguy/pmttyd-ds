@@ -120,7 +120,8 @@ void sampledPlayerResult(bool success){
  assert(word(0x84001ce8)==(success?3u:2u) && word(0x8401900c)==0);
  assert(scene.actors[1].hp==7 && scene.actors[0].hp==(success?5:4));
  if(!success){
-  assert(scene.pendingService==0x8010436c && scene.failureDeclarations==1 && scene.successDeclarations==0 && word(0x84101284)==1 && word(0x841022b4)!=0);
+  assert(scene.pendingService==0x801054e8 && scene.failureDeclarations==1 && scene.successDeclarations==0 && word(0x84101284)==1 && word(0x841022b4)!=0);
+  assert(word(0x84016020)!=0 && word(0x8401601c)==0 && word(0x84018ffc)==0 && word(0x84019000)==0 && word(0x84019004)==0);
   bool sound=false;for(const auto& request:scene.soundRequests)if(request.owner==2 && request.operation==HarborTutorialSoundRequest::Operation::Trigger){assert(request.key && !request.name.empty());sound=true;}assert(sound);
   const auto hp=scene.actors[0].hp;for(unsigned n=0;n<5;++n)scene.tick(scene.now+17,0,&quiet);assert(scene.actors[0].hp==hp && word(0x84101284)==1 && scene.failureDeclarations==1);
  }

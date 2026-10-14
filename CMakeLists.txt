@@ -1196,3 +1196,8 @@ add_executable(goomba_reward_tests tests/goomba_reward_tests.cpp)
 target_link_libraries(goomba_reward_tests PRIVATE ttyd_core)
 add_test(NAME goomba_reward_original COMMAND goomba_reward_tests)
 set_tests_properties(goomba_reward_original PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+target_sources(ttyd_core PRIVATE source/battle/battle_ap_report.cpp source/battle/harbor_tutorial_ap_report.cpp)
+add_executable(battle_ap_report_tests tests/battle_ap_report_tests.cpp)
+target_link_libraries(battle_ap_report_tests PRIVATE ttyd_core)
+add_test(NAME battle_ap_report COMMAND battle_ap_report_tests)

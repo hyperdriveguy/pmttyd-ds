@@ -50,6 +50,7 @@ private:
  static constexpr uint32_t MenuRam=0x84600000;
  uint32_t menuTextAt=MenuRam+0x1000;std::unordered_map<uint32_t,uint32_t> menuText;
 
+ bool inviteApReport();
  bool actionEvent(EventEntry&,uint32_t,int32_t&);
  uint32_t damageSoundUnit=Units+0x1000;
  bool checkDamageCore(uint32_t attacker,uint32_t defender,uint32_t part,uint32_t weapon,uint32_t flags,int32_t& result);

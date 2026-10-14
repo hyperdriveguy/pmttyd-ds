@@ -53,6 +53,16 @@ SPANS.extend([
  (0x80139af4,0x8,'8286a529f25a748db551e16c92ccf02567e092085eb2f9c47fed829693da3b13'),
 ])
 
+# Complete AP report/caller, kind/presence and slot-work requests.
+SPANS.extend([
+ (0x8010436c,0x4c,'8b24fb2c40947642dbe860a327c4e7ae829d5f95caa353938a427cc648f54f52'),
+ (0x801a1d0c,0x294,'7b6f8d494015a1b525c9edae4026f5b0f4a961f2219ea7b522d03b905f763d24'),
+ (0x801a20d8,0x6c,'d9017167cf38f853affe735e5e14d74e83648e90b3ca2eb7eeacd14be62b36c0'),
+ (0x801a1fa0,0x7c,'a025411304a9eb0c7244a2a237530021609b7f931cd67de7e6e8353f7252c0b4'),
+ (0x80203370,0x24,'179deb1e6e16d83c96ae590e53cdc9ca62a913a787e5aa982bb776cd17f76f7b'),
+ (0x8020524c,0x10,'78c442cd3a8d835c51e54e160ee702bd26547edbe06c69fad9a80202fcc65231'),
+])
+
 def verify(iso=DEFAULT_ISO):
  with Path(iso).open('rb') as disc:
   header=disc.read(0x440)

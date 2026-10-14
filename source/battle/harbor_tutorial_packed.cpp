@@ -156,6 +156,7 @@ bool HarborTutorialPacked::invoke(EventEntry& e,uint32_t function,int32_t first,
  if(function==0x801093a8)marioJumpUnit=actor(e); // Native sound metadata captures the actual caller unit.
  if(registry.invoke(e,function,first,result))return true;
  switch(function){
+ case 0x8010436c:if(!inviteApReport())return false;result=2;return true;
  case 0x80139af4:result=2;return true; // Complete original li2/blr AP-recovery stub.
  case 0x80139898:packedBattleAudienceAcrobatNoTry(nativeBattleActorServices(vm));result=2;return true;
  case 0x8010749c:{
