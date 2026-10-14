@@ -1,3 +1,21 @@
+## 2026-10-13 — ID 3 — NOTE: shared-index commit hazard (recurrence)
+
+The game-wide GSW census and child-entry nesting contracts in the entry above
+were staged with `git add` on the seven documentation paths only, and
+`git diff --cached --name-only` confirmed exactly those seven. A concurrent
+agent then committed (`d144b75`, "verify RESULT-01 mask2 arm WaitEventEnd
+ordering against US ISO") and **swept the staged ID 3 files into their
+commit**. The content is intact in HEAD and attributed through
+`docs/requests/DELIVERY_LOG.md` (row "Game-wide GSW census, all29 REL
+modules", agent ID 3), but the commit *message* does not mention it.
+
+This is the third occurrence of the shared-index hazard. It is not avoidable
+while the working tree is shared, so the mitigation is procedural: always
+`git diff --cached --name-only` immediately before committing, and treat
+`DELIVERY_LOG.md` as the authoritative attribution record rather than the
+commit message. No files were lost and no other agent's staged work was
+altered.
+
 ## 2026-10-13 — ID 3 — game-wide GSW census; 402/404 origins closed
 
 Widened the event sweep from six modules to all 29 shipped `rel/*.rel`:
