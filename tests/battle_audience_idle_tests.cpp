@@ -112,11 +112,15 @@ int main(){
     // A marked item suppresses random decisions after the breathing update.
     Idle item;item.half(item.member(20)+0x1c,0);assert(run(item));assert(item.draws==0 && item.word(item.member(20)+0x30)==1);
     // Damage flag wins over suppression, clears both bits and resets status.
-    for(int kind:{235,236,239,240}){Idle f;f.word(0x80010,kind);f.word(f.member(20),0x61);assert(run(f));
+    for(int kind:{235,236,239,240}){Idle f;f.word(Fixture::A+0xf25c+0x10,kind);
+        f.word(0x80010,kind>=236 && kind<240?222:236); // Opposite bait in battle-unit storage.
+        f.word(f.member(20),0x61);assert(run(f));
         assert(f.word(f.member(20))==1 && f.byte(f.member(20)+0x19)==10 && f.word(f.member(20)+0x30)==0 && f.draws==0);
         assert(f.targets==unsigned(kind<236 || kind>=240));
         if(f.targets)assert(f.delta==f.real(0x80424570)*100 && f.bias==0);
     }
+    Idle noUnit;noUnit.word(Fixture::B+0x20,0);noUnit.word(noUnit.member(20),0x41);
+    assert(run(noUnit) && noUnit.targets==1); // Audience item0 never dereferences unit0.
     Idle missingTarget;missingTarget.word(missingTarget.member(20),0x41);missingTarget.targetReady=false;
     assert(!run(missingTarget));assert(missingTarget.byte(missingTarget.member(20)+0x19)==10 && missingTarget.targets==1);
     // Actual random cutoffs, break-turn override and type11 exclusion.

@@ -82,11 +82,10 @@ bool controlPackedBattleAudienceIdle(int32_t slot,int32_t front,const BattleAudi
     const auto flags=m.word(m.user,r);
     if(flags&0x40){
         m.storeWord(m.user,r,flags&~0x60u);packedBattleAudienceChangeStatus(slot,10,a);
-        auto unit=battleRegistryUnit(currentBattleAddress(a),0,a);
-        if(!unit)return false;
-        if(integer(m.word(m.user,unit+0x10))>=236){
-            unit=battleRegistryUnit(currentBattleAddress(a),0,a);if(!unit)return false;
-            if(integer(m.word(m.user,unit+0x10))<240)return true;
+        auto item=base(a)+0xf25c; // BattleAudienceItemGetPtr(0), not a battle unit.
+        if(integer(m.word(m.user,item+0x10))>=236){
+            item=base(a)+0xf25c;
+            if(integer(m.word(m.user,item+0x10))<240)return true;
         }
         const auto fresh=base(a);const auto delta=multiply(c(-11984),scalar(fresh+0x13778,a));if(!delta)return false;
         return s.addTarget && s.addTarget(s.user,*delta,c(-12120));

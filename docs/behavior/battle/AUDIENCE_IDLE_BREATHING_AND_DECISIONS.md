@@ -65,13 +65,18 @@ labels above are descriptions, not replacement literals or measurements.
 
 ## Decisions after breathing
 
-Flag40 takes priority: clear60, call whole ChangeStatus10, then read unit0's
-kind10. Values236..239 suppress the target adjustment; the upper comparison
-requeries unit0 as in the original. Otherwise fresh audience base supplies
-baseline13778, multiplied by original80424570 (-.14999999105930328), and whole
-AddTargetNum(delta,0) is called. Missing/invalid unit or unavailable target/math
-service preserves earlier stores and stops. The native AddTarget helper's
-existing finite conversion domain remains in force.
+Flag40 takes priority: clear60, call whole ChangeStatus10, then read audience
+item0's kind10 through BattleAudienceItemGetPtr801a8624. Its address is
+fresh A+f25c+0*48; it does not query battle unit0. Values236..239 suppress the
+target adjustment; the upper comparison requeries item0 as in the original.
+Otherwise fresh audience base supplies baseline13778, multiplied by original
+80424570 (-.14999999105930328), and whole AddTargetNum(delta,0) is called.
+Unavailable target/math services preserve earlier stores and stop. The native
+AddTarget helper's existing finite conversion domain remains in force.
+
+The initial port incorrectly used battle-unit storage for this helper. The
+regression test now places opposing kinds in the audience-item and battle-unit
+tables and also leaves unit0 absent, proving the audience item owns this branch.
 
 Otherwise flag20 or signed item half1c!=-1 returns without RNG. All other cases
 make one bound360000 original RNG call:
