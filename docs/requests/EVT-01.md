@@ -4113,3 +4113,17 @@ preceding camera4 audience801a38f8. Uncommitted audience world adapter is not it
 callback; bind retained current-record/camera queries and producer history,
 correct scalar grouping, genuine GX state and cursor before claiming closure.
 Full EVT-01 remains open.
+
+
+## 2026-10-14 — House05 installer correction and retained NPC flags
+
+[Fresh source contract](../behavior/field/HOUSE05_ORIGINAL_INSTALLER_GW11_AND_NPC_LIST_CONSUMERS.md)
+pins actual inline house05 installation, GW11 output and case snapshots. It
+corrects the earlier overly broad hide-consumer assumption: source record0=0
+skips generic main800 operations, while unguarded lists affect animPose material
+1800. Do not substitute generic evt_door_entry or hide actors on parameter write.
+[Native retained flag/lookup work](../behavior/field/NATIVE_RETAINED_NPC_FLAGS_AND_DRAW_SUPPRESSION.md)
+now supports persistent main writes and the actual late800 draw gate; it is
+not bound speculatively to house05. Next actual copied-record/GW11/map lifetime,
+inline case geometry and separate material-list ownership. Full original event
+ABI, registered lifetime across coverage and original runtime comparison remain OPEN.

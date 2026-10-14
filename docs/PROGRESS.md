@@ -3583,3 +3583,51 @@ across provider holds after emitted geometry. Cube/bounds, nonzero image suffix,
 full battle draw completion/field return and original raster comparison remain
 open. Broad prologue goal remains active and incomplete.
 [Provider scope](behavior/display/NATIVE_CYLINDER_SHADOW_PROVIDER.md).
+
+
+## 2026-10-14 — Retained NPC flags and corrected house05 consumers
+
+Named lookup now uses retained initialized active1 instances independently of
+main800/draw visibility. NPC main-flag OR/AND writes persist through static
+catalog publication and wandering-driver updates. Hidden actors retain named
+position service, collision and candidacy; native drawing skips800 geometry.
+Inactive slots cease to be name-addressable; map/catalog reset discards runtime
+overrides. Scripted Professor setters and full coverage/registration lifetime
+remain outside this bounded domain. Codebbbc106d.
+
+Original-source research corrected the house05 plan: manual installer snapshots
+closeLW15=0/openLW15=4 and omits the generic initial NPC-hide tail. Its record
+word0=0 skips all generic mask1 main800 consumers. The actual unguarded copied
+NPC-list consumer changes animPose material1800 via actor+104 instead. No
+main800 action was speculatively bound to house05; GW11 and actual72-byte copy,
+case/list lifetime and material consumers remain the next world-owner work.
+
+Validation: frozen tree77be2517f8c79a29e5b217f273628d04d183e9db,3224 tracked
+files,0 mismatches (artifacts/npc-flags-audit-final.json). Sequential
+make assets-ready SOUNDTRACK=gamecube passed; make test passed285 C++/168 Python;
+normal make all passed. Isolated diagnostic short-boot build also passed;
+normal source/boot restored and normal3DSX hash reproduced. Logs:
+artifacts/npc-flags-assets.log,npc-flags-test-final.log,npc-flags-build.log,
+npc-flags-probe-build.log,npc-flags-build-restored.log. Initial test compile
+required copying a const body before calling the state-mutating collision
+admission helper; fixed, with earlier failure archived in npc-flags-test.log.
+
+Isolated artifacts/azahar-npc-flags has inspected Garf visible/hidden/visible
+images at60..61 App FPS/about9.6..10.1ms per frame. The diagnostic-only B hook
+calls the actual retained flags API; it is not an original event binding and is
+absent from committed main/normal build. Diagnostic source and input script are
+archived as npc-flags-main-probe.cpp/npc-flags-smoke-input.py. Copied checkpoint
+is byte-identical to its fixture. No new art/music/text conversion or original
+assets were committed. Emulator readings are not hardware/source raster parity.
+
+Normal3DSX SHA256:31ee6bae37761dcafa4c255ec4102cc95356e77ab0ee36c2aeb7b33bfe5d8807.
+Diagnostic3DSX SHA256:e3e00fa7e70b850080e3ae6e580603e5c431738784c22f3b79f5feb93f725475.
+
+Next create actual house05 mutable record/GW11/map ownership, preserving the
+source inline installer and case-local snapshots. Bind its real material-list
+consumer separately from main flags; parameter writes should complete only
+once their real copied-record mutation occurs. Continue Garf key49/unlock,
+Borodo talk, shared case/GP/field lifetime and further original area packs.
+Broad remake remains active and incomplete.
+[Native scope](behavior/field/NATIVE_RETAINED_NPC_FLAGS_AND_DRAW_SUPPRESSION.md);
+[source installer](behavior/field/HOUSE05_ORIGINAL_INSTALLER_GW11_AND_NPC_LIST_CONSUMERS.md).

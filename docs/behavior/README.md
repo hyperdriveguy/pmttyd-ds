@@ -1004,3 +1004,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Native cylinder shadow provider](display/NATIVE_CYLINDER_SHADOW_PROVIDER.md) — retained per-record matrix/TEV/three-pass/indexed geometry and bounds frontier.
 - [Cylinder native cull, logic, blend and late depth](display/CYLINDER_NATIVE_CULL_LOGIC_BLEND_AND_LATE_DEPTH.md) — installed command semantics, source winding and RGBA6/RGBA8 limits.
+
+- [House05 original installer, GW11 and NPC-list consumers](field/HOUSE05_ORIGINAL_INSTALLER_GW11_AND_NPC_LIST_CONSUMERS.md) — inline case snapshots, false800 guards and actual material1800 writes.
+- [Native retained NPC flags and draw suppression](field/NATIVE_RETAINED_NPC_FLAGS_AND_DRAW_SUPPRESSION.md) — active-name lookup, persistent static/wander flags and diagnostic native verification.

@@ -23,8 +23,9 @@ writes the same native body's previous/current and movement roots, in original
 engine units. Subsequent simulation and drawing retain that position. Pose,
 direction, flags and clocks are preserved. Missing/uninitialized/script-owned
 actors remain pending; there is no synthetic actor or successful no-op. The
-current provider requires actor visibility, so separate registration from
-draw visibility before using it for door-hidden actors. Generic evtGetFloat,
+[retained-name provider](NATIVE_RETAINED_NPC_FLAGS_AND_DRAW_SUPPRESSION.md)
+now uses active1 independently of draw800. Catalog coverage still controls
+registration construction/pruning, so full original registered lifetime is open. Generic evtGetFloat,
 event-me/party lookup, Garf and house05 door-copy ownership remain external.
 Borodo's original talk event is recorded but is not yet executed natively.
 

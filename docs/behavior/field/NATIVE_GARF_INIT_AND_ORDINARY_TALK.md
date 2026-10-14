@@ -39,6 +39,7 @@ This verifies this native view, not source runtime/raster parity or hardware.
 Next: real house05 mutable72-byte record/copy/GW11 lifetime and NPC-list
 consumers, original key49 selection/unlock scene and ordinary-talk runtime
 comparison. Source800 is a draw suppression bit, not actor deletion or a name/
-collision/candidate gate. Retain mutable main flags independently of static
-catalog publication before binding one-shot door hide/show writes; currently
-static collision publication would overwrite those writes each tick.
+collision/candidate gate. [Retained main flags and the late800 draw gate](NATIVE_RETAINED_NPC_FLAGS_AND_DRAW_SUPPRESSION.md)
+are now bound. House05 itself skips the generic800 paths; its real list
+consumer affects animation material1800 instead. Those material/copy owners
+remain unbound; full registered lifetime across native coverage changes is open.
