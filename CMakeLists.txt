@@ -791,3 +791,8 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/romfs/item-presentations.bin")
     add_test(NAME item_presentation_original COMMAND item_presentation_tests original)
     set_tests_properties(item_presentation_original PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 endif()
+
+target_sources(ttyd_core PRIVATE source/window_frame.cpp)
+add_executable(window_frame_tests tests/window_frame_tests.cpp)
+target_link_libraries(window_frame_tests PRIVATE ttyd_core)
+add_test(NAME window_frame COMMAND window_frame_tests)

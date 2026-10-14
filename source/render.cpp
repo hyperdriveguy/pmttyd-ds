@@ -48,8 +48,9 @@ bool Renderer::init() {
     messageSystemVertices=(SystemVertex*)linearAlloc(sizeof(SystemVertex)*24);
     vertices=(Vertex*)linearAlloc(sizeof(Vertex)*MaxVertices);
     messageTailVertices=(Vertex*)linearAlloc(sizeof(Vertex)*12);
+    windowFrameVertices=(Vertex*)linearAlloc(sizeof(Vertex)*54*MaxWindowFrames);
     textBuffer=C2D_TextBufNew(8192);
-    if(!vertices || !messageTailVertices || !messageSystemVertices || !textBuffer) return false;
+    if(!vertices || !messageTailVertices || !windowFrameVertices || !messageSystemVertices || !textBuffer) return false;
     for(unsigned i=0;i<10;++i) {
         std::string name=i==0?"panel":i==1?"system-pattern":std::to_string(40+i);
         auto& texture=i==0?messagePanel:i==1?messageSystemPattern:messageSystemMasks[i-2];
@@ -1009,16 +1010,7 @@ void Renderer::overlay(const Game& g) {
             // Original windowDispGX_Waku_col type0: nine texture0 quads with
             // ten-unit borders and FFFFFF80 modulation, adapted to400x240.
             if(g.trioAttack.rewardIcons()){
-            const auto* original=Tex3DS_GetSubTexture(messagePanel.imported,0);
-            const float x=-76.8999939f,y=21,w=165.7999878f,h=24.1999989f,border=10;
-            const float gridX[]={x,x+border,x+w-border,x+w},gridY[]={y,y-border,y-h+border,y-h};
-            C2D_ImageTint tint;C2D_PlainImageTint(&tint,rgb(255,255,255,128),0);
-            for(unsigned row=0;row<3;++row)for(unsigned col=0;col<3;++col){auto sub=*original;sub.width=24;sub.height=24;
-                const float du=(original->right-original->left)/3,dv=(original->bottom-original->top)/3;
-                sub.left=original->left+col*du;sub.right=sub.left+du;sub.top=original->top+row*dv;sub.bottom=sub.top+dv;
-                C2D_Image image{&messagePanel.texture,&sub};C2D_DrawImageAt(image,200+gridX[col]*MessageWindowScale,120-gridY[row]*.5f,.4f,&tint,
-                    (gridX[col+1]-gridX[col])*MessageWindowScale/24,(gridY[row]-gridY[row+1])*.5f/24);
-            }
+            sourceWindowFrame(type0WindowFrame(-76.8999939f,21,165.7999878f,24.1999989f,10,{255,255,255,128}));
             for(const auto& icon:*g.trioAttack.rewardIcons())if(!icon.hidden)
                 messageIconImage(404,icon.animationTick,200+icon.position[0]*MessageWindowScale,120-icon.position[1]*.5f,icon.scale,icon.alpha);
             }
@@ -1188,6 +1180,7 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
     }
     C2D_TextBufClear(textBuffer);
     C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+    windowFrameCount=0;
     const bool battle=g.scene==Scene::Battle || g.scene==Scene::Victory || g.scene==Scene::Defeat;
     C3D_RenderTargetClear(top,C3D_CLEAR_ALL,battle?0xA6CBD8FF:0,0);
     C3D_FrameDrawOn(top);if(g.harborTutorial.running())worldTutorial(g);else world(g);
@@ -1228,6 +1221,7 @@ void Renderer::shutdown() {
     if(atlasReady) C3D_TexDelete(&atlas);
     if(vertices) linearFree(vertices);
     if(messageTailVertices) linearFree(messageTailVertices);
+    if(windowFrameVertices)linearFree(windowFrameVertices);
     if(messageSystemVertices)linearFree(messageSystemVertices);
     for(auto* texture:{&messagePanel,&messageSystemPattern})if(texture->imported){Tex3DS_TextureFree(texture->imported);C3D_TexDelete(&texture->texture);}
     for(auto& texture:messageSystemMasks)if(texture.imported){Tex3DS_TextureFree(texture.imported);C3D_TexDelete(&texture.texture);}

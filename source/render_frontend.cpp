@@ -187,6 +187,7 @@ void Renderer::renderFrontend(const Frontend& f,OpeningDemo& demo,const OpeningS
         f.screen==FrontScreen::Opening?200+uint32_t(opening.part):0;
     if(phase!=frontPhase){releaseFrontend();frontPhase=phase;}
     C2D_TextBufClear(textBuffer);C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+    windowFrameCount=0;
     C3D_RenderTargetClear(top,C3D_CLEAR_ALL,0,0);C3D_FrameDrawOn(top);C2D_Prepare();C2D_SceneBegin(top);
     bool ok=true;std::array<float,4> paperPresented{{-1,-1,-1,-1}};
     std::array<bool,4> captureRequested{};

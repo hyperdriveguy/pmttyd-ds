@@ -13,6 +13,7 @@
 #include "npc_presentation.hpp"
 #include "battle_curtain_fade.hpp"
 #include "battle_startup_resources.hpp"
+#include "window_frame.hpp"
 #include <memory>
 #include <3ds.h>
 #include <citro2d.h>
@@ -41,6 +42,10 @@ private:
     struct Vertex { float x,y,z,u,v,r,g,b,a; };
     Vertex* vertices=nullptr;
     Vertex* messageTailVertices=nullptr;
+    static constexpr unsigned MaxWindowFrames=64; // Native arena capacity, not an original manager limit.
+    Vertex* windowFrameVertices=nullptr;
+    unsigned windowFrameCount=0;
+    bool sourceWindowFrame(const WindowFrameMesh&);
     int count=0, transformLoc=0, marioPose=0;
     shaderProgram_s program{};
     C3D_Mtx worldTransform{};
