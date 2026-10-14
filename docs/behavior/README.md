@@ -1105,3 +1105,7 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Native map TEV continuation and ordinary combiner](display/NATIVE_MAP_TEV_PROGRAM_AND_ORDINARY_COMBINER.md): fixed original request tables, retained optional boundaries/count publication and actual texture/raster/K0 Citro3D routing.
 - [Original ordinary TEV SDK and shadow source domain](display/ORIGINAL_ORDINARY_TEV_SDK_AND_SHADOW_SOURCE_DOMAIN.md): retail GXSetTevOp table, three original draw-bank domains, corrected shadow getter ownership and stage-local PICA constant constraints.
+
+- [Native ordinary body/rate/background consumers](field/NATIVE_MARIO_BODY_RATES_AND_BACKGROUND_CONSUMERS.md).
+
+- [Previous-party native admission and retained first-call boundary](partner/BERO_PREVIOUS_PARTY_NATIVE_ADMISSION_AND_FIRST_CALL_RETENTION.md).

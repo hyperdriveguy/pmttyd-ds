@@ -30,20 +30,21 @@ reads/writes display+4 mask20000. Background on disables follow; off enables it.
 Standalone cam_y_off performs the same disable helper, without main/dimension
 writes. No camera reset, view/target blend or timing changes are implied.
 
-Game::fieldMarioPreparationWorld admits only key callbacks. It uses the existing
-fieldMarioBattle main/keyDepth owner; fieldPositionWorld gains only the existing
-main-word view. Writes maintain the native fieldKeysOff projection and existing
+Game::fieldMarioPreparationWorld initially admitted only key callbacks; it now
+also admits the source-proven ordinary background/follow domain through
+[live body consumers](NATIVE_MARIO_BODY_RATES_AND_BACKGROUND_CONSUMERS.md).
+It uses the existing fieldMarioBattle main/keyDepth owner. Writes maintain the native fieldKeysOff projection and existing
 acquisition/reward locks. Item acquisition's KeyOff/On now delegates to these same
 memory-order leaves instead of repeating its own flag/counter arithmetic. No
-Bero-only key state is created. Existing unrelated main-word views are outside
-the newly admitted key domain; background cannot use this partial adapter.
+Bero-only key state is created. Transformed/small/paper backgrounds remain
+unadmitted; the ordinary body mapping is a callback-specific native domain.
 
 Tests exercise every256 starting counter byte for both directions, signed wrap,
 exact wrapper/leaf lookup order, resolver actor replacement, retained leaf owner,
 post-store counter reread, every background form/small-flag combination, untouched
 form2 dimensions, camera/display stores and fresh actor after the main write.
 A real Game test interleaves item and direct key requests, proving shared nested
-ownership; native background admission is explicitly refused. An unchanged
+ownership; unsupported native background states are explicitly refused. An unchanged
 original gor02 parent/attached Bero child with a fully supplied synthetic actor
 image advances through key/background to actual set_prev_party800e3058. Its
 zeroed GP/actor fields are explicit fixtures, not certified Game/save state.

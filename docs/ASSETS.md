@@ -1109,3 +1109,12 @@ selected texture objects remain required native inputs. Opaque resource tokens
 are adapter identities, not synthetic textures or ARM casts of source pointers.
 Original Nintendo/Intelligent Systems resources retain existing private-pack
 licensing restrictions. Portable geometry does not establish native pixels.
+
+### Ordinary Mario body integration (2026-10-14)
+
+No original asset payload or conversion changed. Native body defaults use source
+MarioInit20/37 dimensions and1/2.25 base speeds, with form0 from source memset.
+Unit movement multiplier1 is source marioResetGravity8009696c's float80420a74
+store to Mario+228. Original event/prefetch/texture companions remain ignored,
+locally reused and subject to the existing Nintendo/Intelligent Systems license.
+No new geometry, raster art, audio or dialogue was authored.

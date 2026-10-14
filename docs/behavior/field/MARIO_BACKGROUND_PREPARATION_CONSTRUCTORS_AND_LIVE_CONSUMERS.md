@@ -139,3 +139,42 @@ bero-prefix-marioBgmodeOn.txt,bero-prefix-camFollowYOn.txt,
 bero-prefix-camFollowYOff.txt. Original constants/symbols are pinned by
 artifacts/reference/us_symbols.csv. Current native consumers were inspected
 read-only;no source/shared-doc/git/build changes or runtime/raster claims.
+
+## Source correction: distinct +1c0 collision-width update
+
+Fresh complete marioHitCheckWidth800916f0/b0 disassembly corrects the older
+OVERWORLD_SPEED_FALL_LANDING_LEAVES mario_width branch description. At80091704
+it tests main00100000;80091708 branches to80091740 when that paper bit is SET.
+Thus the source paths are:
+
+- Paper bit CLEAR: reference is current +1b8 width when main01000000 is clear,
+  otherwise source18. Read+1c0,add1,store candidate,then ifcandidate>reference
+  overwrite+1c0 with reference. Normal20 therefore remains20 at each visit.
+- Paper bit SET: slew+1c0 toward6 by one per call,with ordered decrement/store/
+  clamp followed by fresh read and increment/store/clamp tests. This is not
+  the ordinary nonpaper branch.
+
+Constants are804208c4=1,80420960=18,8042099c=6. This corrects the prior prose's
+reversed branch and its incorrect ordinary-slew-to6 implication. Background
+02000000 is not tested by this updater. It does not alias+1c0 with+1b8;
+other current states can differ even when ordinary steady state matches.
+
+marioInit writes+1c0=20 at8005b774,using FPRf1 originally loaded with20 at
+8005b714 and not changed by intervening word copies. marioReInit clears2f8
+bytes at8005b2b0 and has no local +1c0 capture/restore/store. Its inspected
+marioSetCharMode callee likewise has no direct +1c0 store. marioMain invokes
+marioHitCheckWidth at8005a9e0 before later motion/movement. Thus source reinit
+cannot be modeled as unconditionally retaining or resetting this word to20;
+its subsequent actual updater visits matter. In the ordinary local-clear path,
+zero progresses1,2,... toward20. Full arbitrary indirect external writers and
+original runtime observation remain separate limits.
+
+The NPC side-response threshold reads this distinct Mario+1c0 at800495a0:
+>4 selects threshold3,otherwise1.5. Native NpcSidePlayer::collisionWidth default20
+is an existing ordinary adapter,not a binding of the source transient updater.
+Removing a new alias to body.width avoids falsely claiming +1c0 ownership.
+A future exact binding needs retained +1c0,source constructor/reset provenance
+and one actual marioMain-ordered update before its NPC consumer.
+Evidence: artifacts/bgmode-marioHitCheckWidth.txt,
+bgmode-marioInit.txt,bgmode-marioReInit.txt,bgmode-marioSetCharMode.txt,
+bgmode-marioMain.txt,bgmode-npcCheckHitMarioSide.txt. No code/build changes.

@@ -4473,3 +4473,18 @@ to PICA2 after independent base RGB/alpha routing. Read-only implementation
 review found no blocker in the admitted ordinary single-blocked-queue domain.
 Enabled projected holders/matrices, other native TEV topologies, geometry,
 original framebuffer parity and field return remain open; EVT-01 stays active.
+
+### Ordinary native background consumers and corrected width branch
+
+Bound Game's ordinary form0/unit-multiplier background requests to actual body,
+ground-rate/raw-threshold/raw-air-cap, collision/talk and camera-follow consumers.
+Genuine parent/Bero child now reaches previous-party800e3058 using Game owners;
+see [native contract](../behavior/field/NATIVE_MARIO_BODY_RATES_AND_BACKGROUND_CONSUMERS.md).
+Small/paper/transformed branches remain refused. Fresh source also corrects the
+older HitWidth branch description: paper SET slews+1c0 toward6; paper CLEAR
+increments/clamps toward source width (or18 for main01000000). Original Init
+writes20; ReInit clears it and subsequent main updates own the transient.
+Do not alias+1c0 to+1b8. Next bind previous-party allocation/art/setup and actual
+attached initial_pos while preserving real GP/world lifetime. Request open.
+
+Next-provider documentation: [previous-party admission](../behavior/partner/BERO_PREVIOUS_PARTY_NATIVE_ADMISSION_AND_FIRST_CALL_RETENTION.md) pins real constructor-kind0 completion, separate raw selectors and Entry/Entry2 resource requirements. Missing allocation must retain source first-call admission rather than resume with allocation skipped.

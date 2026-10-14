@@ -53,12 +53,12 @@ disagrees with both that header and the binary; left for that doc's owner.)
 Adjusts the float at [Mario+448] toward a reference by SDA steps; all
 comparisons are `fcmpo` with LT/GT-bit branches:
 
-- Bit 11 of [Mario+0] set: candidate = [448] + 1.0 (SDA r2−27516, resolved
+- Bit 11 of [Mario+0] clear: candidate = [448] + 1.0 (SDA r2−27516, resolved
   by the register); reference = [Mario+440] if bit 7 is set, else SDA
   constant 18.0 (r2−27360);
   [448] = min(candidate, reference) — the store-then-conditional-overwrite
   sequence keeps the candidate unless it exceeds the reference.
-- Bit 11 clear: slew [448] toward 6.0 (SDA r2−27300) by ±1.0 per call, clamping
+- Bit 11 set: slew [448] toward 6.0 (SDA r2−27300) by ±1.0 per call, clamping
   exactly at 6.0 from either side.
 
 The meaning of [448]/[440] is not established here; the three constants are

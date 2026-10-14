@@ -5855,3 +5855,70 @@ counts. Full TEV/projected/depth/timed/fog backend coverage, original image pari
 battle-to-field return and broader prologue story/event/indoor/visibility work
 remain unfinished. EVT-01 and the full goal stay active; actual New2DSXL hardware
 performance remains unmeasured.
+
+### Native ordinary Mario body and original background consumers (2026-10-14)
+
+Completed the ordinary form0/unit-multiplier background binding with real Game
+owners. FieldMarioBody retains source20/37 dimensions and1/2.25 raw bases;
+multiplier1 has actual marioResetGravity initialization provenance. Game movement,
+jump launch, wall/head/NPC dimensions, talk gates and existing field-camera
+flags now consume these fields. Source callbacks retain actual nested key state.
+Small/paper/transformed backgrounds still refuse admission before side effects.
+
+Preserved three distinct source rates: effective ground rates include background
+half; ceiling/motion classification compares raw walk base; airborne cap uses raw
+dash*multiplier without half. Review confirmed the latter distinction prevents
+incorrectly suppressing air drift. Camera follow updates actual fieldCameraFlags
+U16 projection and MarioCameraTarget display20000 domain without resetting view/
+target/shift/road clocks. No geometry, asset conversion or GPU draw path changed.
+
+Fresh documentation also corrected the older HitWidth branch: paper SET slews
+source+1c0 toward6; nonpaper increments/clamps toward current width (or18 for main
+01000000). Init writes20; ReInit clears it and later main calls own the transient.
++1c0 remains separate from width+1b8. Existing native collisionWidth20 policy and
+ordinary broadphase calibration remain limitations; full ReInit/transformed
+lifecycle is not claimed. Next-party source recovery identifies genuine known
+constructor-kind0 completion and requires retained-first-call admission for
+missing nonzero Entry/Entry2 resources, not an allocation success stub.
+
+Validation used frozen tree b660aa61a050ab920a41745227f4a3a5c3fa5043 in
+artifacts/source-checks/trouble-world with existing original private asset packs.
+Final CMAKE_BUILD_PARALLEL_LEVEL=4 make test -o assets-ready exited0:315/315 C++
+(36.37s),180/180 Python (44.030s), log artifacts/area-body-test-final.log.
+Final make all -j4 -o assets-ready SOUNDTRACK=gamecube exited0, log
+artifacts/area-body-build-final.log; initial full native build also exited0.
+Existing unrelated compiler warnings remain outside the body implementation.
+Normal3DSX SHA256246ee25487b7f8ad50ca4ed41ab995b90c68a1c3316fed31b235169bea938eb8.
+Source audit3384 tracked files,zero mismatches after restoring probe main.
+Exact normal/probe/log/pack/source texture identities:
+artifacts/area-body-validation-manifest.json. Concurrent unrelated edits remain
+preserved; the full merged live tree is not claimed validated as one build.
+
+Host tests exercise actual Game background speed/displacement, raw threshold and
+unhalved air steering, preserved camera bits/timers, direct original base reset,
+unsupported admission, actual object-triangle head contact for changed height,
+and genuine parent/attached-child progression with real Game owners. Isolated
+native probe exited0: a real background-on request precedes original story402/
+w_bero init; original background-off restores20/37/1/2.25 and camera follow while
+retaining depth2/main8/EXEC1 with two live events. It reaches previous-party
+800e3058 after18 simulation calls. Explicit shared item/key releases restore
+counter0/unlocked. GP/story bytes are an explicit source-branch fixture, not a
+certified save state or completed map. Log artifacts/area-body-probe-smoke.log,
+private profile artifacts/azahar-area-body-probe. Temporary main restored and
+probe excluded from history; user profiles/saves untouched.
+
+Normal isolated east→plaza/save-room assertions exited0. Inspected east/plaza
+captures retain original geometry/Mario/NPC art at60 App FPS,100% emulator speed;
+in-app CPU7.6/5.9ms,GPU0.5ms. The normal run followed completed probe/host checks.
+Log artifacts/area-body-smoke.log, profile artifacts/azahar-area-body-normal.
+These are emulator regression results, not New2DSXL hardware timing or original
+raster parity. Implementation commit18afcd97.
+
+Next implement source previous-party wrappers with real constructor bytes and
+Entry/Entry2 admission, then the genuine attached initial_pos length/geometry/
+actor providers in the shared scheduler. Continue real GP/checkpoint/world/NPC
+lifetime and coordinate Game's separate Bero/Trouble runtimes before live area
+loading. House05/cases, remaining NPC/story behavior and full-game fidelity remain
+unfinished. EVT-01 and the complete goal remain active.
+
+tools/check_doc_links.py checked1317 Markdown files with zero broken links.
