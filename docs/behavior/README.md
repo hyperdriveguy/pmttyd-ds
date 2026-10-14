@@ -950,3 +950,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Native finishing draw frame frontier](camera/NATIVE_FINISHING_DRAW_FRAME_BINDING_FRONTIER.md): active-frame binding, GPU library boundaries and original callback inventory.
 - [Native finishing camera GPU adapter](camera/NATIVE_FINISHING_CAMERA_GPU_ADAPTER.md): full matrix/rotated rectangle mapping, actual dummy triangle and retained backend restoration.
+
+- [Native class state and shadow frontier](display/NATIVE_CLASS_STATE_AND_SHADOW_FRONTIER.md): independent write masks, bounded late-depth class mapping, cached restoration and genuine shadow callback wait.

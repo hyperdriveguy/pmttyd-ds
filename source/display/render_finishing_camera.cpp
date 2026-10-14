@@ -31,19 +31,38 @@ bool Renderer::finishingCameraPacket(const NativeCameraPacket& p){
             C3D_ImmSendAttrib(xyz[0],xyz[1],xyz[2],1);
             C3D_ImmSendAttrib(0,0,0,1);C3D_ImmSendAttrib(0,0,0,0);
         }
-        C3D_ImmDrawEnd();
+        C3D_ImmDrawEnd();finishingDisplayState.afterDummy(); // Logical source state is seeded only by the real dummy, never restoration.
     }
     return true;
+}
+bool Renderer::finishingDisplayPipeline(const NativeDisplayPipeline& p){
+    unsigned mask=(p.color?GPU_WRITE_RED|GPU_WRITE_GREEN|GPU_WRITE_BLUE:0)|(p.alpha?GPU_WRITE_ALPHA:0)|(p.depthWrite?GPU_WRITE_DEPTH:0);
+    C3D_DepthTest(p.depth,p.compare==3?GPU_GEQUAL:GPU_ALWAYS,GPU_WRITEMASK(mask));
+    // GX location is retained separately. PICA's constant-reference early test
+    // is not the GX before-alpha control; admitted class pairings use late test.
+    C3D_EarlyDepthTest(false,GPU_EARLYDEPTH_GEQUAL,0);
+    C3D_AlphaTest(p.alphaReject,p.alphaReject?GPU_GEQUAL:GPU_ALWAYS,p.alphaReject?128:0);
+    auto factor=[](int32_t value){return value==0?GPU_ZERO:value==1?GPU_ONE:value==4?GPU_SRC_ALPHA:GPU_ONE_MINUS_SRC_ALPHA;};
+    const auto source=factor(p.sourceBlend),destination=factor(p.destinationBlend);
+    C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,source,destination,source,destination);return true;
 }
 void Renderer::resumeFinishingCamera(const Game& game){
     if(!game.trioBattleActive || !game.trioAttack.finishingDrawPending())return;
     NativeCameraSubmit submit{this,[](void* user,const NativeCameraPacket& p){return static_cast<Renderer*>(user)->finishingCameraPacket(p);}};
     if(!finishingCameraDraw.restore(submit))return;
+    NativeDisplaySubmit pipeline{this,[](void* user,const NativeDisplayPipeline& p){return static_cast<Renderer*>(user)->finishingDisplayPipeline(p);}};
+    if(!finishingDisplayState.restore(pipeline))return;
     CameraDrawServices services;services.user=&submit;
     services.request=[](void* user,const CameraDrawRequest& r){
         const auto& submit=*static_cast<NativeCameraSubmit*>(user);
         return static_cast<Renderer*>(submit.user)->finishingCameraDraw.request(r,submit);
     };
+    services.display.user=&pipeline;
+    services.display.state=[](void* user,const DisplayStateRequest& request){
+        const auto& pipeline=*static_cast<NativeDisplaySubmit*>(user);
+        return static_cast<Renderer*>(pipeline.user)->finishingDisplayState.request(request,pipeline);
+    };
+    // Borrowed shadow/part/material callbacks remain actual provider waits.
     game.trioAttack.resumeFinishingDraw(services);
 }
 }

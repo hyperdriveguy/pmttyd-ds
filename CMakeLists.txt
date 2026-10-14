@@ -1378,3 +1378,9 @@ target_sources(ttyd_core PRIVATE source/battle/battle_class_footer.cpp source/ba
 add_executable(battle_class_footer_tests tests/battle_class_footer_tests.cpp)
 target_link_libraries(battle_class_footer_tests PRIVATE ttyd_core)
 add_test(NAME battle_class_footer COMMAND battle_class_footer_tests)
+
+# Native independent display masks and admitted source class pipeline.
+target_sources(ttyd_core PRIVATE source/display/native_display_state.cpp)
+add_executable(native_display_state_tests tests/native_display_state_tests.cpp)
+target_link_libraries(native_display_state_tests PRIVATE ttyd_core)
+add_test(NAME native_display_state COMMAND native_display_state_tests)

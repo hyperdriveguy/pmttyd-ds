@@ -13664,3 +13664,83 @@ menu/EXP/letterbox callbacks and remaining camera/near-far owners; production
 Bero/get_info history, real source Init/Main/Exit and ordered field return.
 Investigate the independent ending-notice presentation separately from story
 raster fidelity. Full EVT-01 and the original-fidelity prologue goal stay open.
+
+## 2026-10-14 — Native common/class state and captured shadow wait
+
+NativeDisplayState starts unavailable and is seeded only by an acknowledged
+source DummyDraw. It folds color/alpha/depth masks independently, preserves
+viewport depth range for ZScaleOffset(1,0), maps source LEQUAL to native GEQUAL,
+blendNONE to replacement and source blend1(4,5) to source-alpha/inverse-source-
+alpha for RGB and alpha. Original ALWAYS and GEQUAL128 OR NEVER alpha tuples
+are supported; other input domains remain holds. Setter submits commit only on
+success; restore re-emits cached pipeline without reseeding dummy or replaying
+source requests. Original source ZCompLoc is retained; PICA constant-reference
+early depth stays disabled. Ordinary late depth is the explicit recovered-
+pairing adapter; rejecting alpha before enabled depth writes is not raster-
+admitted and future callback backends must honor that boundary.
+
+Actual finishing first shadow on camera1 is class9. It consumes three common
+and four class requests, then captures borrowed shadowDisp8002d3d8 and retains
+21 records. It resumes that exact callback without replaying states, queue
+sort/collection or dummy geometry. Real geometry/material/ray/image/texture
+callback providers remain absent; no zero-record success or direct teardown.
+
+Fresh read-only source inspection confirms shadowDisp first dispGetCurWork,
+then Polygon on cameras1/4/5/7. Polygon captures primary pool, current camera,
+then GXSetNumChans(1) and channel/material/TEV/fog/blend/depth/descriptor state
+BEFORE record admission. Empty type0 domains do not permit skipping setup.
+After Polygon, shadowDisp freshly queries camera and executes its own shared
+state/cylinder/texture paths. Inspection evidence:
+artifacts/reference/display-class-check/shadowDisp.elf and shadowPolygon.elf.
+Independent source/library review confirms mask preservation, blend/depth
+mapping, identity viewport range and bounded late-depth semantics.
+
+Frozen baseline94707d140518015c36f5ebc94299c8926cba4b05 plus exactly owned
+files/hunks is in artifacts/dispatch-source/OWNED_BASE.txt. Other concurrent
+edits were excluded; existing private romfs/gfx/local-assets are reused by
+symlinks and not independent complete-content proof. Immutable normal/harness
+binaries and source hashes: artifacts/dispatch-validated/manifest.json.
+
+- `CMAKE_BUILD_PARALLEL_LEVEL=4 make test`: exit0,272/272 C++ and159/159 Python;
+  artifacts/dispatch-test-final.log. All source classes0..10, inherited6/7/8,
+  mask independence, unsupported inputs, failed submits, cached restores and
+  captured callback resumes are exercised. Actual finishing integration tests
+  class9 requests and no replay on repeated renderer/simulation ticks.
+- Native `make all -o assets-ready -j4 DEBUG_SHORT_BOOT=1 BUILD=build-dispatch
+  TARGET=ttyd-dispatch`: exit0; artifacts/dispatch-build.log. Independent
+  ignored harness build also exit0; dispatch-harness-build.log.
+- Initial host run failed the newly added finishing assertion: it assumed
+  first shadow depth-write1. Rechecked original ShadowMain tuples and corrected
+  the assertion to class9 depth-write0/SRCALPHA/INVSRCALPHA. Implementation was
+  already correct. Initial failure is dispatch-test.log; final required checks
+  above are passing. Correcting only the host assertion changes no native code.
+- Independent read-only review/recovery confirms C3D early depth is a different
+  control, exact finite adapters and genuine shadow callback frontier. No
+  source setup is bypassed due to an empty record domain.
+
+Separate ignored harness source/artifacts/dispatch-harness-source supplies an
+explicit resolved Bero bit1 clear after staged checkpoint and logs actual
+source state submissions/frontier to isolated SD files. Exact patches are
+artifacts/dispatch-validated/harness-patches.json. Production normal binary
+contains neither override nor diagnostic writes. This fixture is not genuine
+room/get_info history, full source Init or original execution timing.
+
+Isolated Azahar uses immutable harness3DSX, original
+artifacts/fixtures/underground-trio-story11.bin, seconds15 and
+ tests/azahar_trio_exp_icons.py: exit0, no detected native exception;
+artifacts/dispatch-emulator.log, profile/captures artifacts/azahar-dispatch-shadow.
+Actual dispatch-states.txt is exactly state0..6 once. dispatch-frontier.txt:
+shadow8002d3d8, camera1,queue21,color1,alpha1,depth1,write0,before1,reject0,
+compare3,blend4/5,rasterAdmitted1. Assertions on exact order/frontier pass.
+Viewed final ending capture: opaque fade and development field-restoration
+notice visible. This proves the scoped native state/wait/continuation path,
+not shadow geometry/images/collision, exact pixels, full GPU history, complete
+battle/field return, original timing or physical performance. User profiles/
+saves were untouched. ISO stayed read-only; no extracted assets, compiled
+packs, overrides or diagnostic payloads committed. Contract local links,
+owned live/snapshot/obsolete-hunk checks and scoped diff-check pass.
+
+Next: complete original shadow Polygon and subsequent ray/geometry/images/
+cylinder/texture providers, then remaining camera/callback/material owners,
+production transition history and ordered source Init/Main/Exit/field return.
+Full EVT-01 and the original-fidelity prologue goal remain open.

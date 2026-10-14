@@ -2756,3 +2756,27 @@ stage/audience/menu/EXP/letterbox callbacks, near/far and remaining cameras;
 production Bero/get_info, full source Init/Main/Exit and ordered field return.
 Original numeric/history, event timing, pixel/audio parity and physical
 performance remain unverified. Full original-fidelity prologue goal stays active.
+
+## 2026-10-14 — Native common/class state and captured shadow wait
+
+Implemented independent RGB/alpha/depth write masks, source blend/alpha/depth
+class requests and identity ZScaleOffset preserving viewport range. Only the
+acknowledged real dummy seeds state; frame restoration preserves later class
+settings without geometry or source-request replay. Explicit late-depth
+adaptation covers recovered class pairings and rejects unsupported raster
+combinations. [Contract and shadow frontier](behavior/display/NATIVE_CLASS_STATE_AND_SHADOW_FRONTIER.md).
+
+Frozen make test passes272/272 C++ and159/159 Python; native make all
+DEBUG_SHORT_BOOT=1 passes. Isolated instrumented Azahar records exactly seven
+source state requests0..6 once and reaches captured shadowDisp8002d3d8 with
+camera1/queue21. Class9 has depth-write0 and SRCALPHA/INVSRCALPHA blending.
+The ending development notice is visible again; no detected native exception.
+The harness supplies an explicit test-only Bero bit1 clear. Exact
+[validation](PROGRESS_ARCHIVE.md#2026-10-14--native-commonclass-state-and-captured-shadow-wait).
+
+Next: actual shadow Polygon setup/geometry/image/ray/cylinder/texture providers,
+remaining camera/part/material/stage/audience/menu/EXP/letterbox callbacks,
+production Bero/get_info and full source Init/Main/Exit/field return. Empty
+eligible shadow domains cannot bypass setup or acknowledge callback success.
+Original timing, numeric/history, raster/audio parity and hardware performance
+remain unverified; full original-fidelity prologue goal stays active.

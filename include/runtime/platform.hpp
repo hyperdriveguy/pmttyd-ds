@@ -27,6 +27,7 @@
 #include "window_font.hpp"
 #include "battle_class_backend.hpp"
 #include "native_camera_draw.hpp"
+#include "native_display_state.hpp"
 #include <memory>
 #include <3ds.h>
 #include <citro2d.h>
@@ -121,6 +122,8 @@ private:
     int count=0, transformLoc=0, marioPose=0;
     shaderProgram_s program{};
     NativeCameraDraw finishingCameraDraw;
+    NativeDisplayState finishingDisplayState;
+    bool finishingDisplayPipeline(const NativeDisplayPipeline&);
     bool finishingCameraPacket(const NativeCameraPacket&);
     void resumeFinishingCamera(const Game&);
     C3D_Mtx worldTransform{};

@@ -3,6 +3,7 @@
 #include "battle_actor_rotation.hpp"
 #include "game.hpp"
 #include "native_camera_draw.hpp"
+#include "native_display_state.hpp"
 #include "battle_dive.hpp"
 #include "battle_ending_fade.hpp"
 #include "battle_pose_pool.hpp"
@@ -515,6 +516,21 @@ int main(){
             assert(frame.packets.size()==restored && queue->count()==21 && charged.trioAttack.pendingFunction()==0x802b9380);
             charged.trioAttack.tick((charged.ticks+7)*1000/60,charged.trioBattleIntro);
             assert(frame.packets.size()==restored && queue->count()==21); // Simulation never emits frame-scoped GPU work.
+            NativeDisplayState pipeline;pipeline.afterDummy(); // Actual preceding dummy in this frame fixture established this state.
+            std::vector<NativeDisplayPipeline> statePackets;
+            struct PipelineFixture {NativeDisplayState* state;std::vector<NativeDisplayPipeline>* packets;} pipelineFixture{&pipeline,&statePackets};
+            frameServices.display.user=&pipelineFixture;
+            frameServices.display.state=[](void* user,const DisplayStateRequest& request){
+                auto& f=*static_cast<PipelineFixture*>(user);
+                NativeDisplaySubmit submit{f.packets,[](void* user,const NativeDisplayPipeline& p){static_cast<std::vector<NativeDisplayPipeline>*>(user)->push_back(p);return true;}};
+                return f.state->request(request,submit);
+            };
+            charged.trioAttack.resumeFinishingDraw(frameServices);
+            assert(charged.trioAttack.pendingFunction()==0x8002d3d8 && charged.cameraManager->currentIndex()==1 && queue->count()==21);
+            assert(statePackets.size()==7 && pipeline.state()->color && pipeline.state()->alpha && !pipeline.state()->depthWrite && pipeline.state()->sourceBlend==4 && pipeline.state()->destinationBlend==5 && pipeline.state()->rasterAdmitted());
+            charged.trioAttack.resumeFinishingDraw(frameServices);
+            assert(statePackets.size()==7 && charged.trioAttack.pendingFunction()==0x8002d3d8); // Captured shadow callback resumes without replaying class states.
+
 
 
             assert(charged.trioAttack.readWord(0x84201204,value) && (value&3)==2); // Source name request consumed; forced path stays active.
