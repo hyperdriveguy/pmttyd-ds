@@ -92,5 +92,6 @@ Host tests check glyph UV/position/outline/RNG order, consumer pen domains,
 measurement/rejection, actual original text/metadata resources, duplicates,
 deferred help publication, closing results and resource retention. Native
 build/capture evidence and exact limitations are recorded in PROGRESS.
-Next: source event/pouch/switch binding, original status/audio services, full
+Next: source event/pouch/switch binding, original status/audio services, native
+C-stick input for source help direction masks100/200, full
 font streams and matched Dolphin/New2DS raster/performance validation.

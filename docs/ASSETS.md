@@ -1594,3 +1594,19 @@ source palette/scale bytes and constants from the read-only DOL. Their hashes
 and paths remain in the ignored heading resource manifest. No Crystal mask or
 replacement particle geometry is used; original copyrighted bytes remain
 private and outside source history.
+
+## 2026-10-13 — Native original item-selector font and icon services
+
+Native selector rendering reuses original `f/papermarioset_US.bfn` via existing
+font.pmfont/font.t3x, original `f/msgWindow.tpl` descriptor0, original `icon.bin`/
+`icon.tpl` ID307/308,504,445/446 and exact `msg/US/global.txt` text/keys. No new
+art, resampling or texture conversion is introduced. Original US startup
+config1 supplies spacing2; patched WID1 widths/offset UV crops, quad height22,
+outline offsets2 and LFpitch28 feed native GPU drawing. Row icon anchoring and
+opaque threshold now follow winIconSet; cursorflags20 mirrorsX. See
+[native services](behavior/message/NATIVE_ITEM_SELECTOR_RENDERING.md).
+Half-size screen reflow and libcitro3d/PICA/raster numerics remain adaptations.
+Nintendo/Intelligent Systems ownership and local-use licensing limitations
+apply. ISO, extracted images, caches, RomFS packs and captures remain outside
+source history. The isolated icon cache regenerates bin/t3x/json byte-identically;
+it is separate from concurrent HUD atlas packing.

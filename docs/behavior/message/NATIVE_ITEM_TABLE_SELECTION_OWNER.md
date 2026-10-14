@@ -64,7 +64,7 @@ before computing that invocation's text matrix.
 
 `tickItemSelectionHelp` checks transition4 first, measures the previous display's
 non-null text and publishes LFcount+1. Null text preserves prior line count.
-For more than two lines, horizontal trigger100 decrements page2 with zero floor
+For more than two lines, direction trigger100 decrements page2 with zero floor
 and precedes trigger200. Forward paging uses the exact signed quotient bound
 `(lines+1)/2-1 > (page+1)/2`; it is not a pixel-height or wrap calculation.
 Help anchors retain fused28*page-144, arrow/page gates and separate icon120.
@@ -86,7 +86,7 @@ duplicate row identity, A-before-B, cancel prohibition, close-before-ready,
 inactive later-slot suppression, unsigned65535 result retention and ready-only
 release. Draw checks cover all-row clipping/easing anchors, negative low16
 heading center, header post-draw mutation/active gate, mutable palette, list
-blink/page gates, help icon120 and source horizontal paging against prior text.
+blink/page gates, help icon120 and source help paging against prior text.
 These are contract-based host checks, not original execution or GPU captures.
 
 Next: bind original window-font scanner/metrics/draw services, native deferred

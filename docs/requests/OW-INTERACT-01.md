@@ -655,3 +655,17 @@ font path can bind while broader font services remain open. Full native
 rendering/manager/input/event/pouch/switch binding and matched raster/hardware
 performance remain OPEN. Read-only US startup now pins GP+16c=1 and spacing2; please finish
 its broader read/write lifetime and live palette/font mutations.
+
+### 2026-10-13 — Native selector rendering and removal-revision dependency
+
+[Native source-font/icon renderer](../behavior/message/NATIVE_ITEM_SELECTOR_RENDERING.md)
+now renders the retained template; private Azahar previews verify actual95/107
+art/text, source clipping, main-stick scrolling/wrap and cursorflags20 mirror.
+[Exact icon recovery](../behavior/display/ITEM_SELECTOR_ICON_ANCHORS_AND_FLAGS.md)
+corrects the earlier camera-number/bottom-anchor misattribution.
+[Parameter revision](../behavior/unit/POUCH_PARAMETER_REVISION.md) recovers both
+required post-removal leaves and source partner HP table. Native quest events,
+keys/pouch/global-switch persistence, status/SFX macros, full manager/GP/RNG/
+camera/font lifetimes and matched raster/hardware performance remain OPEN.
+Source help masks100/200 are C-stickY; native production of those axes remains
+unbound, while the actual95/107 descriptions use only two lines.

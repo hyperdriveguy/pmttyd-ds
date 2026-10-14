@@ -25,7 +25,7 @@ struct ItemSelectionHelpServices {
     void* user=nullptr;
     uint16_t (*lineFeeds)(void*,const char* text)=nullptr;
 };
-// select_main3: prior display text, source LF count, horizontal trigger namespace.
+// select_main3: prior display text, source LF count, direction-trigger namespace.
 void tickItemSelectionHelp(ItemSelectionRuntimeWindow&,const ItemSelectionInput&,
                            const ItemSelectionHelpServices&);
 // Native retained owner for explicit tables with second argument0. This owns

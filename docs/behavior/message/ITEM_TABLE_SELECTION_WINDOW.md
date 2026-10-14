@@ -287,7 +287,7 @@ resolves the selected item record+8 through msgSearch, assigns manager+34 and
 calls winMgrHelpDraw8023e53c. Help clips source608x56 area at screenY384 and draws
 text at centeredX-210,Y=-144+28*helpPage, then restores608x480 scissor. Its main
 callback reads prior description text, computes lineCount+1, and when>2 uses
-keyGetDirTrg100/200 (horizontal directions) to move description page by2 within
+keyGetDirTrg100/200 (source sub-stick Y direction bits) to move description page by2 within
 original bounds. It does not use A/B button triggers; the same numeric masks
 belong to a different key namespace. Full help arrow geometry/clock and text
 service behavior remain dependencies.
