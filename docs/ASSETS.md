@@ -767,3 +767,21 @@ MapObj/HitObj layout. Original Nintendo/Intelligent Systems copyrights and
 existing source-map provenance apply; conversion grants no redistribution
 rights. ISO/extracted/generated resources remain outside history.
 [Native scope](behavior/field/NATIVE_NAMED_MAP_FLAGS_AND_HOUSE05_INIT.md).
+
+
+### 2026-10-14 — Exact original Bero entry tables and query constants
+
+`tools/bero_info_assets.py` reads US G8ME01 ISO read-only, extracts rel/gor.rel
+to ignored local-assets/bero-info/gor.rel and verifies SHA256
+`d4965f21254ecf1a78e5d66ea12a0b000eed3f123032af6ab3cb0f703d3f185a`.
+It selects bero_entry_data by exact gor_01.o/gor_00.o/gor_02.o/gor_03.o/gor_04.o
+namespace, retaining15 original60-byte rows plus source terminators and relevant
+strings with ADDR32 relocation. DOL data includes bero_null8030cd78/60,
+prefix table802c2c28/32,strings804204c0/32 and original default_entevt80416060/20.
+Per-span hashes and table provenance are recorded in ignored romfs/bero-info.json.
+Outputs: romfs/bero-info.pmevt1828 bytes and bero-info.bin144 bytes; no executable
+PPC, new art or music. Referenced other event bodies remain outside this pack.
+Native section addresses/GP string alias are storage adaptations. Original
+Nintendo/Intelligent Systems copyrights apply; conversion grants no distribution
+rights. ISO/extracted/generated resources remain outside source history.
+[Native scope](behavior/field/NATIVE_BERO_TABLES_AND_INCOMING_QUERY.md).

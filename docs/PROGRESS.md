@@ -3962,3 +3962,61 @@ This verifies normal startup, not full fresh-file prologue or hardware parity. N
 32e14011a820bce622af72a8a462c940f799e8803d79b8fbc30e64e2b2964117.
 Runnable artifact: artifacts/audience-aux-source/ttyd-audience-aux-normal.3dsx.
 Source implementation commit0d0eda1c; broad goal stays active and incomplete.
+
+
+## 2026-10-14 — Exact original Bero tables and incoming query publication
+
+Added the actual namespace-qualified Bero tables for all five outdoor maps:
+3/1/2/5/4 entries in source order, including pipe/other entries omitted by the
+cardinal ROADv1 adapter. Retains original60-byte rows, relocated pointers,
+strings, null fallback, direction-prefix data and original default entry EVT.
+The pack is1828 bytes plus144 bytes of room/HitObj bindings; referenced script
+bodies remain unbound. Existing native road selection/placement is unchanged.
+
+FieldBeroInfo now owns a real incoming-name alias and source-correct into_info
+values. Successful Game::finishWarp publishes the original index/count/type/
+direction/position-pointer/entry-script/mask outputs for the actual destination
+entry. Query writes only LW1..8 and preserves other caller words/flags. Empty
+incoming save-load selection and ordinary fallback differ as in source; LW8 is
+ffff0000, not -1. Checkpoint restore alone does not establish an incoming entry,
+and resource/room invalidation clears current publication. No false get_info
+HitObj registration or BeroEXEC reset was introduced.
+
+Source review also recovered the later ordinary initial_pos versus save-load
+case-entry writers; the latter reaches LW13/14. Exact full incoming bank and
+house05 case snapshots still require their real position/case/party/global
+providers. See [native scope](behavior/field/NATIVE_BERO_TABLES_AND_INCOMING_QUERY.md)
+and [complete source query](behavior/event/BERO_SELECTED_ENTRY_AND_INCOMING_LOCAL_BANK.md).
+
+Validation: make assets-ready SOUNDTRACK=gamecube,make test and normal make all
+passed on frozen tree072131578ff71f0c56e87ed5dc25bcb3e9129c6e:3260 tracked
+files,zero checkout mismatches;291 C++/171 Python tests. Tests compare all
+original table rows/relocations and fallback/default/prefix bytes; exercise
+ordinary road/pipe, missing/empty incoming state, save-load arm, pointer reads,
+untouched caller storage, area/resource invalidation, checkpoint unknown state
+and actual Game road-arrival publication. Logs: artifacts/bero-info-assets.log,
+bero-info-test.log,bero-info-build.log. Commit7de92eb0 owned files/CMake block
+match the tested snapshot; concurrent work is preserved. This does not claim
+the entire concurrently merged HEAD was validated together.
+
+Isolated native artifacts/azahar-bero-info-roads exited0 after two plaza↔east
+round trips; all four fixture-only saved-room assertions passed. Early arrival
+captures included rolling load FPS14/25 and an unsettled camera, so these are
+not steady-performance evidence. Follow-up artifacts/azahar-bero-info-steady
+exited0 after another round trip with ten-second settles: inspected east-steady
+and plaza-steady show original art,Mario/Goombella in view,60 App FPS and
+9.68/12.92ms reported emulator frame times. Native capture does not directly
+trace the eight query values; their correctness is covered by source comparison
+and the actual Game host integration. Existing load latency, matched original
+raster/entry timing and hardware performance remain unverified. Both runs used
+isolated profiles/copies of the existing story11 east-road fixture; no user
+profile/saves, production diagnostic hook or startup bypass was changed.
+Normal3DSX SHA256:146b00dd4fecd856a220029f15cbc647d70f4b3c9b7295db4144a09f3e02969a;
+ignored archive artifacts/bero-info-normal.3dsx.
+
+Next bind actual get_info HitObj validation/registration/shared globals,
+get_info_num/current-number and original placement/party services; retain later
+initial_pos and save-load case allocation outputs before constructing exact
+house0516-local snapshots. Continue generic door events/material1800/key49,
+Borodo talk and additional original area packs. Full door gameplay and broader
+remake remain active and incomplete.

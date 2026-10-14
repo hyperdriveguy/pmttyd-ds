@@ -4178,3 +4178,18 @@ shows Bero/attached-child dependencies: preserve incoming LW4..14; do not invent
 zero saved case locals. Remaining request: bind evt_bero_get_into_info and its
 actual transitive incoming-bank producers, then original house05 case snapshots
 and generic open/close services. Parent EVT-01 stays OPEN.
+
+
+### 2026-10-14 — Selected Bero query binding and downstream local writers
+
+[Native Bero catalog/query](../behavior/field/NATIVE_BERO_TABLES_AND_INCOMING_QUERY.md)
+now retains full selected tables and publishes the original LW1..8 outputs on
+actual native road arrival, preserving unknown residual locals and checkpoint
+provenance. The [source contract](../behavior/event/BERO_SELECTED_ENTRY_AND_INCOMING_LOCAL_BANK.md)
+closes into_info selection/fallback/direction/pointer/mask semantics and recovers
+later initial_pos versus save-load case-entry local destinations, including
+save-load LW13/14. Remaining request: actual get_info HitObj registration,
+get_info_num/current-number/party/position callbacks and real case allocation
+state, followed by exact house05 saved16-local banks and generic door events.
+Full raw callback memory alias ordering/global EVT ownership/original trace
+remain open; parent EVT-01 stays OPEN.

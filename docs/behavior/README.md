@@ -1023,3 +1023,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [House05 incoming locals and installer frontier](field/HOUSE05_INCOMING_LOCALS_AND_INSTALLER_FRONTIER.md) — Bero child dependencies, exact known local overwrites and unresolved case bank.
 
 - [Audience in-range triangle emission](display/AUDIENCE_IN_RANGE_TRIANGLE_EMISSION.md)
+
+- [Native Bero tables and incoming query](field/NATIVE_BERO_TABLES_AND_INCOMING_QUERY.md) — exact original tables and real road-arrival LW1..8 publication, with residual bank still unknown.
+- [Bero selected entry and incoming local bank](event/BERO_SELECTED_ENTRY_AND_INCOMING_LOCAL_BANK.md) — complete into_info values and later ordinary/save-load producer boundaries.
