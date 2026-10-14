@@ -20,7 +20,7 @@ bool Renderer::frontBookCover(const OpeningDemo& demo){
     C3D_Mtx projection,view,matrix;Mtx_PerspTilt(&projection,C3D_AngleFromDegrees(25),C3D_AspectRatioTop,100,10000,false);
     Mtx_LookAt(&view,FVec3_New(0,0,openingBookCameraDistance()),FVec3_New(0,0,0),FVec3_New(0,1,0),false);Mtx_Multiply(&matrix,&projection,&view);
     C3D_FVUnifMtx4x4(GPU_VERTEX_SHADER,transformLoc,&matrix);
-    C3D_SetScissor(GPU_SCISSOR_NORMAL,0,48,240,352);
+    C3D_SetScissor(GPU_SCISSOR_NORMAL,0,0,240,400);
     C3D_DepthTest(false,GPU_ALWAYS,GPU_WRITE_COLOR);C3D_AlphaTest(false,GPU_ALWAYS,0);C3D_CullFace(GPU_CULL_NONE);
     for(int n=0;n<6;++n)C3D_TexEnvInit(C3D_GetTexEnv(n));
     auto* env=C3D_GetTexEnv(0);C3D_TexEnvSrc(env,C3D_Both,GPU_TEXTURE0,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR);C3D_TexEnvFunc(env,C3D_Both,GPU_MODULATE);

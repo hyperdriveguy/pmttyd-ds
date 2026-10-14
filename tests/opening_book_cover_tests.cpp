@@ -1,8 +1,18 @@
 #include "opening_book_cover.hpp"
+#include "opening_book_view.hpp"
 #include <cassert>
 #include <cmath>
 using namespace ttyd;
 int main(){
+    const auto left=openingBookPaperPoint(-32,24,0,6),right=openingBookPaperPoint(32,-24,0,6);
+    assert(std::fabs(left[0]-110)<.0001f && left[1]==0);
+    assert(std::fabs(right[0]-303)<.0001f && right[1]==240);
+    // Global image scaling keeps the captured crop registered to screen center,
+    // and image offsets retain the same half-size pixels as the cover's offset.
+    const auto adjusted=openingBookPaperPoint(-32,24,0,6,2,3,-10.5f);
+    assert(std::fabs(adjusted[0]-34.25f)<.001f && adjusted[1]==-67.5f);
+    assert(OpeningBookView::desktop[0]==0 && OpeningBookView::desktop[2]==400);
+    assert(OpeningBookView::desktop[1]<0 && OpeningBookView::desktop[3]>240);
     auto zero=openingBookCover(288,352,1.5f,0);assert(zero);
     assert((*zero)[0].palette==2 && (*zero)[1].palette==1 && (*zero)[2].palette==2);
     assert((*zero)[0].blend && !(*zero)[1].blend && (*zero)[0].cull==2 && (*zero)[2].cull==1);

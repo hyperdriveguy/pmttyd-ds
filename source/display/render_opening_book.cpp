@@ -1,4 +1,5 @@
 #include "platform.hpp"
+#include "opening_book_view.hpp"
 #include <algorithm>
 #include <cstdio>
 #include <cstring>
@@ -25,7 +26,7 @@ bool Renderer::frontBookPaper(OpeningDemo& demo,std::array<float,4>& presented) 
     // Source camera/FOV/depth/image-base services remain a separate dependency.
     C3D_Mtx projection;Mtx_OrthoTilt(&projection,0,400,240,0,-100,100,true);
     C3D_FVUnifMtx4x4(GPU_VERTEX_SHADER,transformLoc,&projection);
-    C3D_SetScissor(GPU_SCISSOR_NORMAL,0,48,240,352);
+    C3D_SetScissor(GPU_SCISSOR_NORMAL,0,0,240,400);
     C3D_DepthTest(true,GPU_GEQUAL,GPU_WRITE_ALL);C3D_AlphaTest(true,GPU_GEQUAL,128);
     C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_ONE,GPU_ZERO,GPU_ONE,GPU_ZERO);
     for(int n=0;n<6;++n)C3D_TexEnvInit(C3D_GetTexEnv(n));
@@ -50,8 +51,9 @@ bool Renderer::frontBookPaper(OpeningDemo& demo,std::array<float,4>& presented) 
             const float texV=surface.capture?1-vv*240/256.f:1-vv*float(back->size[1])/back->size[3];
             const bool final=n==3 && demo.book.adjusting;
             const float scale=final?demo.book.finalPaperScale:1;
-            const float x=point.x*scale+(final?demo.book.finalPaperOffsetX:0),y=point.y*scale+(final?demo.book.finalPaperOffsetY:0),z=point.z*scale;
-            vertex(48+(124+(x+32)*386/64)*.5f,(24-y)*5.f,page.depth-16-z*386/128,texU,texV,0xffffffff);
+            const auto position=openingBookPaperPoint(point.x,point.y,point.z,page.depth,scale,
+                final?demo.book.finalPaperOffsetX:0,final?demo.book.finalPaperOffsetY:0);
+            vertex(position[0],position[1],position[2],texU,texV,0xffffffff);
         }
         GSPGPU_FlushDataCache(vertices+first,372*sizeof(Vertex));
         auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);

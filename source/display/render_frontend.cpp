@@ -1,5 +1,6 @@
 #include "vertex_upload_range.hpp"
 #include "platform.hpp"
+#include "opening_book_view.hpp"
 #include "message_icons.hpp"
 #include <algorithm>
 #include <cstdio>
@@ -312,7 +313,7 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,OpeningSequence& ope
         const auto& scene=demo.market;
         ok=marketReady && frontWorld("opening-demo-market",{scene.eye[0],scene.eye[1],scene.eye[2]},{scene.at[0],scene.at[1],scene.at[2]},nullptr,demo);
         if(demo.book.adjusting){
-            ok=frontImage("demo-0",48,0,304,240,uint8_t(int(255.f*(1-demo.book.fade)))) && ok;
+            ok=frontImage("demo-0",OpeningBookView::desktop[0],OpeningBookView::desktop[1],OpeningBookView::desktop[2],OpeningBookView::desktop[3],uint8_t(int(255.f*(1-demo.book.fade)))) && ok;
             ok=frontBookCover(demo) && ok;
             if(demoPaperReady)ok=frontBookPaper(demo,paperPresented) && ok;
         }
@@ -347,7 +348,7 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,OpeningSequence& ope
         for(unsigned n=0;n<4;++n)if(demo.book.pages[n].active && demo.book.pages[n].capturePending) {
             captureRequested[n]=true;
         }
-        ok=frontImage("demo-0",48,0,304,240) && ok;
+        ok=frontImage("demo-0",OpeningBookView::desktop[0],OpeningBookView::desktop[1],OpeningBookView::desktop[2],OpeningBookView::desktop[3]) && ok;
         count=0;ok=frontBookCover(demo) && ok;
         if(demoPaperReady)ok=frontBookPaper(demo,paperPresented) && ok;
     } else {
