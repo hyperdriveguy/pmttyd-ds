@@ -77,6 +77,8 @@ def read_manifest(path, root):
         names = output_names(entry)
         for name in names:
             contained(root, name)
+            if name == 'asset-pipeline-stamp.json':
+                raise ValueError('Output name is reserved for the build stamp')
             if name in outputs:
                 raise ValueError(f'Duplicate output: {name}')
             outputs.add(name)
@@ -375,6 +377,12 @@ def build(manifest, root, output, work, tex3ds):
             (work / 'installed.json').unlink()
             raise
     write_json(work / 'build.json', {'schema': 1, 'tool_sha256': digest(__file__), 'manifest_sha256': digest(manifest), 'assets': records})
+    # A root-level stamp makes nested RomFS edits visible to the 3DS make rule.
+    stamp = output / 'asset-pipeline-stamp.json'
+    signature = hashlib.sha256(json.dumps([{k: v for k, v in r.items() if k != 'cached'} for r in records], sort_keys=True).encode()).hexdigest()
+    value = {'schema': 1, 'signature': signature, 'tool_sha256': digest(__file__)}
+    if not stamp.exists() or json.loads(stamp.read_text()) != value:
+        write_json(stamp, value)
     print(f'Compiled {len(records)} editable assets')
 
 

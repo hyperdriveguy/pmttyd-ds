@@ -137,7 +137,8 @@ compiles the manifest. Compilation finishes in staging before outputs install.
 Removing an entry restores its original base asset (or removes a newly added
 output). Cache keys include all source contents, atlas dependencies, recipe,
 compiler code, Python/Pillow versions and tex3ds binary. Corrupt cached outputs
-are recompiled. `make clean` retains these caches.
+are recompiled. A root-level content stamp forces RomFS repackaging when a
+nested asset changes. `make clean` retains these caches.
 
 Do not edit `romfs/` directly. If a different tool changes an installed output,
 `prepare` refuses to overwrite that change. Resolve the conflicting output

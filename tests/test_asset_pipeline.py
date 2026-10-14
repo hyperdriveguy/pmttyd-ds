@@ -126,6 +126,22 @@ class AssetPipelineTests(unittest.TestCase):
             self.assertFalse(json.loads((work/'build.json').read_text())['assets'][0]['cached'])
             with wave.open(str(output/'sound.wav'),'rb') as pcm:self.assertEqual(pcm.readframes(8),b'\1\0'*8)
 
+    def test_nested_asset_edit_updates_root_package_stamp(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory); output=root/'romfs'; work=root/'work'
+            source=root/'a.bin'; source.write_bytes(b'first')
+            manifest=root/'manifest.json'; manifest.write_text(json.dumps(dict(schema=1,assets=[
+                dict(id='a',kind='pack',source='a.bin',output='nested/a.bin',license='test')])))
+            pipeline.build(manifest,root,output,work,'unused')
+            first=(output/'asset-pipeline-stamp.json').read_bytes()
+            pipeline.prepare(output,work);source.write_bytes(b'second')
+            pipeline.build(manifest,root,output,work,'unused')
+            self.assertNotEqual((output/'asset-pipeline-stamp.json').read_bytes(),first)
+            pipeline.prepare(output,work)
+            second=(output/'asset-pipeline-stamp.json').read_bytes()
+            pipeline.build(manifest,root,output,work,'unused')
+            self.assertEqual((output/'asset-pipeline-stamp.json').read_bytes(),second)
+
     def test_import_refuses_to_overwrite_authored_sources(self):
         from import_editable_assets import import_assets
         with tempfile.TemporaryDirectory() as directory:
