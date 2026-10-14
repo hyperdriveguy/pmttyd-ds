@@ -94,7 +94,8 @@ void Audio::play(const Game& game) {
 }
 void Audio::stopMusic(unsigned slot) {
     ndspChnWaveBufClear(MusicChannels[slot]);
-    if(keyItemSlot==int(slot))keyItemSlot=-1;
+    if(keyItemSlot==int(slot)){keyItemSlot=-1;keyItemEnvelope.backendVacant();}
+    if(keyItemTailSlot==int(slot)){keyItemTailSlot=-1;keyItemTail.clear();}
     auto& stream=music[slot];
     if(stream.file){std::fclose(stream.file);stream.file=nullptr;}
     stream.track=-1;stream.ended=false;
@@ -217,7 +218,7 @@ void Audio::shutdown() {
         if(clip.data)linearFree(clip.data);
         clip={};
     }
-    keyItemSlot=-1;keyItemResourceAttempted=keyItemResourceReady=false;
+    keyItemSlot=keyItemTailSlot=-1;keyItemEnvelope={};keyItemTail={};keyItemResourceAttempted=keyItemResourceReady=false;
     musicTrack=-1;
 }
 }

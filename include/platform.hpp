@@ -1,6 +1,7 @@
 #pragma once
 #include <atomic>
 #include "item_get_windows.hpp"
+#include "field_bgm_envelope.hpp"
 #include "field_item_get_effect.hpp"
 #include "field_item_registry.hpp"
 #include "game.hpp"
@@ -321,6 +322,8 @@ public:
     bool beginKeyItemFanfare(); // Fresh group1 only; source replacement/fades external.
     int32_t keyItemFanfareCheck(); // Source query shape: -1 vacant, 0 assigned.
     void releaseKeyItemFanfare(); // Backend release, not source Off201 fade.
+    bool fadeKeyItemFanfare(int32_t milliseconds,int32_t gpRate);
+    bool tickKeyItemAudio(int32_t gpRate); // One admitted BGMMain then SoundSSMain invocation.
 
 private:
     bool ready=false,titleResourceAttempted=false,titleResourceReady=false;
@@ -338,7 +341,9 @@ private:
     };
     MusicStream music[3];
     bool keyItemResourceAttempted=false,keyItemResourceReady=false;
-    int keyItemSlot=-1;
+    int keyItemSlot=-1,keyItemTailSlot=-1;
+    FieldBgmEnvelope keyItemEnvelope;
+    FieldStreamFade keyItemTail;
     void retireKeyItemFanfare(); // Caller holds musicMutex.
     unsigned musicSlot=0;
     int musicTrack=-1;

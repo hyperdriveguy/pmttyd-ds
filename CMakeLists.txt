@@ -1073,3 +1073,8 @@ target_sources(ttyd_core PRIVATE source/battle_status_window.cpp)
 add_executable(battle_status_window_tests tests/battle_status_window_tests.cpp)
 target_link_libraries(battle_status_window_tests PRIVATE ttyd_core)
 add_test(NAME battle_status_window COMMAND battle_status_window_tests)
+
+target_sources(ttyd_core PRIVATE source/field_bgm_envelope.cpp)
+add_executable(field_bgm_envelope_tests tests/field_bgm_envelope_tests.cpp)
+target_link_libraries(field_bgm_envelope_tests PRIVATE ttyd_core)
+add_test(NAME field_bgm_envelope COMMAND field_bgm_envelope_tests)

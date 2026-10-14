@@ -24,23 +24,27 @@ bool Audio::keyItemFanfareReady() {
     keyItemResourceReady=ok;return ok;
 }
 void Audio::retireKeyItemFanfare() {
-    if(keyItemSlot<0)return;
-    auto& stream=music[unsigned(keyItemSlot)];
-    if(!stream.file){keyItemSlot=-1;return;}
-    if(!stream.ended)return;
-    for(const auto& buffer:stream.buffers)
-        if(buffer.status==NDSP_WBUF_QUEUED || buffer.status==NDSP_WBUF_PLAYING)return;
-    stopMusic(unsigned(keyItemSlot));
+    const int slots[2]={keyItemSlot,keyItemTailSlot};
+    for(int slot:slots){
+        if(slot<0)continue;
+        auto& stream=music[unsigned(slot)];
+        if(!stream.file){stopMusic(unsigned(slot));continue;}
+        if(!stream.ended)continue;
+        bool retained=false;
+        for(const auto& buffer:stream.buffers)
+            retained|=buffer.status==NDSP_WBUF_QUEUED || buffer.status==NDSP_WBUF_PLAYING;
+        if(!retained)stopMusic(unsigned(slot));
+    }
 }
 bool Audio::beginKeyItemFanfare() {
     if(!keyItemFanfareReady())return false;
     Lock lock(musicMutex);retireKeyItemFanfare();
-    if(keyItemSlot>=0)return false; // Fresh source group; replacement owner unbound.
+    if(keyItemSlot>=0 || keyItemTailSlot>=0)return false; // Fresh group/clean-tail domain; replacement unbound.
     unsigned slot=0;while(slot<3 && music[slot].file)++slot;
     if(slot==3)return false; // Never evict another retained group/tail to fabricate admission.
     startMusic(slot,KeyItemTrack,80);
     if(!music[slot].file)return false;
-    keyItemSlot=int(slot);
+    keyItemSlot=int(slot);keyItemEnvelope.bind(80);
     // Source row217/type2 pan64 publishes80 to each hard-panned channel.
     // sndStreamMix uses original1/127; no native .65 adapter factor here.
     // startMusic publishes this gain before submitting the first buffer.
@@ -52,6 +56,34 @@ int32_t Audio::keyItemFanfareCheck() {
 }
 void Audio::releaseKeyItemFanfare() {
     if(!ready)return;
-    Lock lock(musicMutex);if(keyItemSlot>=0)stopMusic(unsigned(keyItemSlot));
+    Lock lock(musicMutex);
+    if(keyItemSlot>=0)stopMusic(unsigned(keyItemSlot));
+    if(keyItemTailSlot>=0)stopMusic(unsigned(keyItemTailSlot));
+}
+bool Audio::fadeKeyItemFanfare(int32_t milliseconds,int32_t gpRate) {
+    if(!ready)return false;
+    const auto duration=fieldBgmDuration(milliseconds,gpRate);if(!duration)return false;
+    Lock lock(musicMutex);retireKeyItemFanfare();
+    return keyItemSlot<0 || keyItemEnvelope.off201(*duration);
+}
+bool Audio::tickKeyItemAudio(int32_t gpRate) {
+    if(!ready || gpRate<=0)return false;
+    Lock lock(musicMutex);retireKeyItemFanfare();
+    if(keyItemSlot>=0){
+        const auto publication=keyItemEnvelope.main();if(!publication)return false;
+        if(publication->published)musicMix(unsigned(keyItemSlot),publication->volume);
+        if(publication->detach){
+            if(!keyItemTail.begin(float(publication->volume),publication->tailMilliseconds,gpRate))return false;
+            keyItemTailSlot=keyItemSlot;keyItemSlot=-1;
+        }
+    }
+    // Source outer order: BGMMain publishes/detaches, then SoundSSMain.
+    // The first detached subtraction can happen in this same admitted call.
+    if(keyItemTailSlot>=0){
+        const auto publication=keyItemTail.main();
+        if(publication.published)musicMix(unsigned(keyItemTailSlot),publication.volume);
+        if(publication.stop)stopMusic(unsigned(keyItemTailSlot));
+    }
+    return true;
 }
 }
