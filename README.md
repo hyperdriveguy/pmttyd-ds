@@ -118,10 +118,14 @@ azahar ./ttyd-2ds.3dsx
 
 Normal builds start with the original storybook/demo, title and four-file menu.
 A or START skips the demo to the title; another press opens file selection.
-Choose an empty file to play the opening dialogue sequence through Mario's house,
-Peach's letter, voyage, prologue heading and harbor arrival. A/B advances messages;
-the voyage waits for A/START. This is an event-order adapter with original US
-text/art/music; full source choreography, camera moves and effects remain unfinished.
+Choose an empty file to play Mario's house, Peach's letter, the map reveal/page
+turn, voyage, prologue heading, wake-up scene and Rogueport arrival in order.
+Character dialogue waits for A/B; the voyage prompt accepts A/B/START after
+its animation. Original US message IDs, speakers and control tokens are retained.
+The ship approaches the harbor and departs; field control returns while its
+departure continues. Source camera and backdrop adapters replace the opening
+placeholders. Full original rendering/audio parity and hardware performance
+remain unverified.
 
 For brief development boot, `make debug-short` builds the separate
 `ttyd-2ds-debug-short.3dsx` in `build-debug-short/`. It bypasses the front end

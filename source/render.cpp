@@ -1163,7 +1163,7 @@ void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audio
         button("Load save / A",16,107,288,48,true);
     } else if(g.water.active()) {
         char line[64];std::snprintf(line,sizeof(line),"Mario  %d/10 HP",g.progress.hp);
-        text(line,16,64,.72f,Ink);text("Partner: Goombella",16,105,.57f,Ink);
+        text(line,16,64,.72f,Ink);text(g.progress.originalStory && g.fieldPartyState().current(g.fieldMarioBattleState())<0?"Partner: none":"Partner: Goombella",16,105,.57f,Ink);
     } else if(g.scene==Scene::Victory || g.scene==Scene::Defeat) {
         text(g.scene==Scene::Victory?"Battle complete":"Mario needs another try",16,64,.7f,Ink);
         button(g.scene==Scene::Victory?"Return to plaza / A":"Retry / A",16,107,288,48,true);
@@ -1173,8 +1173,8 @@ void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audio
         for(int n=0;n<4;++n) button(tabs[n],8+76*n,44,72,38,int(g.menu)==n);
         if(g.menu==Menu::Status) {
             char line[96];std::snprintf(line,sizeof(line),"Mario  %d/10 HP",g.progress.hp);text(line,16,94,.72f,Ink);
-            text("Partner: Goombella",16,121,.57f,Ink);
-            text(g.progress.crumpDefeated?"Crump encounter complete":"Find Crump east of the plaza",16,147,.46f,Ink);
+            text(g.progress.originalStory && g.fieldPartyState().current(g.fieldMarioBattleState())<0?"Partner: none":"Partner: Goombella",16,121,.57f,Ink);
+            text(g.progress.originalStory && *g.progress.originalStory==3?"Rogueport arrival":g.progress.crumpDefeated?"Crump encounter complete":"Find Crump east of the plaza",16,147,.46f,Ink);
             button("Save progress / Y",16,177,288,39,true);
         } else if(g.menu==Menu::Items) {
             char line[96];std::snprintf(line,sizeof(line),"Mushroom x%d",g.progress.mushrooms);text(line,16,101,.73f,Ink);

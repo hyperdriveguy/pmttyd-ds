@@ -12,11 +12,11 @@ def run(env,capture):
     press('a');time.sleep(5);capture('files')
     press('a');time.sleep(3);capture('opening-house')
     checkpoint=Path(env['XDG_DATA_HOME'])/'azahar-emu/sdmc/3ds/ttyd-2ds/progress.bin'
-    end=time.monotonic()+160
-    for tick in range(800):
+    end=time.monotonic()+240
+    for tick in range(1100):
         if checkpoint.exists():
             b=checkpoint.read_bytes()
-            if len(b)==40 and b[:4]==b'PM2D' and b[26]==1 and b[32]==1 and struct.unpack_from('<i',b,28)[0]==3:
+            if len(b) in (40,0x600) and b[:4]==b'PM2D' and b[26]==1 and b[32]==1 and struct.unpack_from('<i',b,28)[0]==3:
                 time.sleep(2);capture('opening-harbor');return
         if time.monotonic()>end:break
         press('a');time.sleep(.20)
