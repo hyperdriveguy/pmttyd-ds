@@ -2,6 +2,10 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 - Final quest13 integrated pose capture
+
+The corrected HUD-confirmed isolated route passed in artifacts/azahar-goomba13-residency-poses2 (quest13-residency-poses2-smoke.log). Reviewed both original M_N_5B/M_N_C frames in the final b32f82e0 binary, with no generic fallback bubble;60FPS/~8.85ms emulator frames. Original duplicate selector/scroll/cancel/continuing route also completed. This replaces the two mistimed final pose attempts as visual evidence. Source dialogue/quest fixtures remain explicit harness input; no hardware/raster or task-acceptance parity claim. Documentation1039 files/0 broken links and diff check passed. Goal remains active; next bind source Trouble Center/task acquisition.
+
 ## 2026-10-13 — Original Goomba quest13, pouch checkpoints and GPU residency
 
 Bound original Goomba4 quest13 first/continuing event through the extensible
