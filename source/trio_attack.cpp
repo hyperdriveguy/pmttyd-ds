@@ -701,7 +701,10 @@ struct TrioAttackRuntime {
                     if(pose<0){pending=0x8004176c;return;}
                     fieldParties->pointer(slot)->word(0xc,uint32_t(pose));
                     endingRequest(0x800414b0,{pose});fieldParties->poses[unsigned(pose)]->paperOff();
-                    pending=0x800593fc;return; // Actual Mario pose selector/material owners precede HP/pose/init and placement.
+                    endingRequest(0x800593fc);
+                    const auto marioPose=fieldMario->poseHandles[unsigned(fieldMarioAnimationId(*fieldMario))];
+                    endingRequest(0x8004069c,{marioPose});
+                    pending=0x8004069c;return; // Actual Mario resource-backed material owner must precede inheritance, HP/init and placement.
                 } // Real source -1 return: no unlock, kill or constructor side effects.
             }else {
                 endingRequest(0x80141198);

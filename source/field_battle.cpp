@@ -16,6 +16,10 @@ int32_t fieldMarioControlOn(FieldMarioBattleState& mario) {
 }
 void restoreFieldMarioAfterBattle(FieldMarioBattleState& mario) {mario.secondaryFlags&=~1u;}
 int32_t fieldMarioControlOffCheck(const FieldMarioBattleState& mario) {return signedDepth(mario.controlDepth);}
+int32_t fieldMarioAnimationId(const FieldMarioBattleState& mario) {
+    if(mario.secondaryFlags&0x10000000)return 2;
+    return (mario.secondaryFlags&0x80000000)?1:0;
+}
 int32_t startFieldBattle(int32_t name,bool firstCall,const FieldBattleServices& s) {
     auto& work=s.work(s.user);
     const auto npc=s.npc(s.user,name); // Both lookups repeat on resumed calls.

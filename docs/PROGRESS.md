@@ -9338,11 +9338,19 @@ now records the live selector and selected handle before holding at original
 MaterialGet8004069c. No positive Mario handle or material value is fabricated.
 Battle cleanup preserves selector bits and handles while clearing WORD4 bit0.
 
-Validation pending current make test/all; logs artifacts/trio-mario-selector-
-{tests,all}.log. Checks cover effect/rear precedence, unrelated WORD0/WORD4
-bits, retained handles and ending cleanup. Original resource admission and
-joined/unjoined battle regressions remain in the full suite. No new asset
-conversion, native emulator capture or hardware measurement.
+Validation: make all passed; separately invoked Python suite118/118 passed.
+make test initially caught a concurrent item selector signature change; a
+fresh rerun built successfully and passed183/184 CTest, including both field
+protocol/resource checks and trio_attack_original. Its only failure is the
+new uncommitted fractional-position harbor encounter test at line32. The
+committed harbor test compiled against the same current core and passed
+(artifacts/harbor-encounter-committed-check.log); informed the active harbor
+worker without changing that work. Logs: artifacts/trio-mario-selector-tests-
+final.log, trio-mario-selector-python.log and trio-mario-selector-all.log.
+Checks cover effect/rear precedence, unrelated WORD0/WORD4 bits, retained
+handles and ending cleanup. Scoped diff checks passed. No new asset conversion,
+native emulator capture or hardware measurement. Full working-tree suite is
+not reported green while concurrent harbor coverage fails.
 
 Next install actual field Mario resource-backed poses in the shared ownership
 domain, preserve original ReInit/door material producers, then copy material/

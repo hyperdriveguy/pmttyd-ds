@@ -40,6 +40,14 @@ int main(int argc,char**) {
     CHECK(fieldMarioControlOn(mario)==127 && mario.flags==0x80401002);
     restoreFieldMarioAfterBattle(mario);
     CHECK(mario.secondaryFlags==0x12345678 && mario.flags==0x80401002 && mario.controlDepth==127);
+    CHECK((mario.poseHandles==std::array<int32_t,3>{{-1,-1,-1}}));
+    mario.flags=0xffffffff;mario.secondaryFlags=0x08000001;CHECK(fieldMarioAnimationId(mario)==0);
+    mario.secondaryFlags=0x88000001;CHECK(fieldMarioAnimationId(mario)==1);
+    mario.secondaryFlags=0x18000001;CHECK(fieldMarioAnimationId(mario)==2);
+    mario.secondaryFlags=0x98000001;CHECK(fieldMarioAnimationId(mario)==2); // Effect wins with rear also set.
+    mario.poseHandles={{13,7,29}};restoreFieldMarioAfterBattle(mario);
+    CHECK(fieldMarioAnimationId(mario)==2 && mario.poseHandles[unsigned(fieldMarioAnimationId(mario))]==29);
+    CHECK(mario.secondaryFlags==0x98000000); // Ending clears only bit0; it does not select a new pose.
     FieldPartyRegistry registry;FieldMarioBattleState partyOwner;
     CHECK(!registry.pointer(-1) && registry.current(partyOwner)==-1);
     CHECK(registry.allocateFirst()==0 && registry.allocateFirst()==1 && registry.allocateFirst()==-1);

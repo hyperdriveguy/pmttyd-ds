@@ -44,8 +44,9 @@ propagates the Mario80000000 flag into party8000. Ordinary kind1 resolves
 c_pkr or the original d_mario override. Normal c_pkr now admits an owned
 native CPU pose/resource/shape workspace with mode2/archive0, publishes its
 real registry handle and runs PeraOff; missing/unsupported resources retain
-the animPoseEntry barrier. It stops at MarioAnimeId800593fc before material
-inheritance, init callback, appearance, current-index publication or Hello.
+the animPoseEntry barrier. It executes MarioAnimeId800593fc and stops at
+MaterialGet8004069c before material inheritance, init callback, appearance,
+current-index publication or Hello.
 No animation is selected or GPU draw acknowledged by this admission. See
 [constructor animation admission](FIELD_PARTY_ENTRY_ANIMATION_ADMISSION.md).
 Existing primary destruction remains partyKill800be69c; other kind/auxiliary

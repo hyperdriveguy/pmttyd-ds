@@ -11,7 +11,10 @@ struct FieldMarioBattleState {
     std::array<uint8_t,2> partyIndices{{255,255}}; // Source MarioInit245/246 explicit ff stores.
     std::array<uint8_t,2> savedPartyKinds{{0,0}}; // Source constructor memset247/248.
     uint32_t cameraId=4; // Source marioInitCamId writes4 after constructor memset; retained word134 view.
+    std::array<int32_t,3> poseHandles{{-1,-1,-1}}; // MarioInit22c/230/234; actual marioPoseInit must install resource-backed owners.
 };
+// marioAnimeId800593fc: WORD4 effect/rear/front priority, independent of WORD0.
+int32_t fieldMarioAnimationId(const FieldMarioBattleState&);
 int32_t fieldMarioControlOff(FieldMarioBattleState&);
 int32_t fieldMarioControlOn(FieldMarioBattleState&);
 int32_t fieldMarioControlOffCheck(const FieldMarioBattleState&);
