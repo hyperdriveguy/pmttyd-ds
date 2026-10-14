@@ -15,30 +15,18 @@ against the table double at 0x802C3058 (the same constant bero_length's leaf
 uses), and tail-calls `bottomlessBero` (0x80096de4, same-TU `<.text+0x1c168>`
 edge) with the three floats. No destination write, no result test.
 
-## bottomlessBero (80096de4, 48 lines): mixed store triple
+## bottomlessBero (80096de4): recovery-point writes
 
-Float args f1/f2/f3 retained across the `marioGetPtr` call. Stores, by exact
-register/stack traffic:
+Float args f1/f2/f3 are retained across marioGetPtr. The complete register
+traffic establishes Mario+740=X,+744=single(Y+37),+748=Z. FPRf0 loads37
+from80420aa4 (42140000) at80096e1c,then fadds at80096e28 consumes that FPR.
+The intervening lwz writes GPRr0; it does not overwrite FPRf0. The earlier
+zero-table-word interpretation mixed those register namespaces and is corrected.
 
-- [Mario+740] = single(f1) bits (integer load/store path).
-- [Mario+744] = single(floatword([0x802C3EA8]) + f2) — the table word is
-  **live** here, unlike the [speed doc](OVERWORLD_SPEED_FALL_LANDING_LEAVES.md)'s
-  all-dead case: f0 survives from the `fadds` to the `stfs` because only
-  integer ops intervene. The word reads 0x00000000 from the ISO, so this lane
-  is f2 rounded to single (the dead SDA load at r2−27036 reads 37.0 but never
-  reaches a store).
-- [Mario+748] = f3 bits.
-
-The SDA load (`lfs 0, −27036(r2)`) is dead (f0 is overwritten by the `fadds`
-before any store reads it). Table base 0x802C3EA8 comes from
-`lis` 0x802C0000 + 16040; contents unrecovered.
-
-## Contrast with bottomlessPos
-
-Same frame shape and same three destination offsets, but every table/stack
-interaction differs in liveness: `bottomlessPos` overwrites each loaded slot
-with `stfs` before reading (pure arg triple), while `bottomlessBero` mixes
-one live table word into the middle lane. Do not merge the two bodies.
+[Complete fresh producer/actor contract](BERO_INITIAL_POSITION_LOCAL_PUBLICATION_AND_ACTOR_WRITES.md)
+records exact source world side effects and input provenance. bottomlessPos
+stores the plain argument triple; this Bero helper adds37 to its Y lane.
+This is static source evidence, not a measured gameplay recovery trajectory.
 
 ## Not established
 

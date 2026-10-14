@@ -1038,3 +1038,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Bero shared case pool, IDs and switch wrappers](overworld/BERO_CASE_POOL_IDS_AND_SWITCH_WRAPPER_LIFETIME.md) — real first-free allocation, separate BeroID/SW, priorities and wrapper lifetime.
 - [Native case pool and Trouble installer](field/NATIVE_CASE_POOL_AND_TROUBLE_INSTALLER.md) — retained records, actual installed event reentry and remaining field-owner boundaries.
+
+- [Bero initial-position locals and actor writes](overworld/BERO_INITIAL_POSITION_LOCAL_PUBLICATION_AND_ACTOR_WRITES.md) — starting-tuple event quantization, actor/camera side effects and corrected recoveryY+37.

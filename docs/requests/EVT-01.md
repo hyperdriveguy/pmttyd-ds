@@ -4233,3 +4233,10 @@ BeroID/switch callers and real incoming-bank providers. Documentation research
 continues on ordinary initial_pos LW10..12 versus save-load case LW13/14 and
 called Mario/party/camera services. Parent EVT-01 stays OPEN; current isolated
 Installer-root locals do not certify full gor_02 initialization locals.
+
+Bero placement source follow-through2026-10-14: [complete publication contract](../behavior/overworld/BERO_INITIAL_POSITION_LOCAL_PUBLICATION_AND_ACTOR_WRITES.md)
+now pins starting P→READF→encodedLW10..12→Mario/party writes and camera reset,
+plus save-loadLW13/14 last-entry pointers. Recovery uses final F withY+37;
+earlier GPR/FPR and final/start tuple interpretations are corrected. Actual
+world providers, outer-init provenance, exact SDK numerics and native execution
+remain open; no static16-local house05 bank is fabricated.

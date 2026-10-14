@@ -4300,3 +4300,13 @@ start-coordinate float locals and Mario/party/camera effects before constructing
 real house05 case snapshots; do not substitute final arrival coordinates or
 invent missing locals. Continue generic open/close/material1800/key49, original
 NPC events and additional area packs. Goal and full remake remain incomplete.
+
+Case/placement documentation follow-through2026-10-14: source agent delivered
+[complete Bero initial-position contract](behavior/overworld/BERO_INITIAL_POSITION_LOCAL_PUBLICATION_AND_ACTOR_WRITES.md).
+It distinguishes start P encoded intoLW10..12 from final F passed to recovery,
+pins ordered Mario/party/camera effects and save-loadLW13/14 pointers. Corrected
+older placement/bottomless notes: three duplicated XYZ inputs,mode==1 adds180,
+explicit final-coordinate reloads and recoveryY+37 (GPRr0 is separate fromFPRf0).
+No new code/binary or measured original trace accompanies these source findings.
+Next bind those real providers and outer incoming-bank provenance; full field
+case/door gameplay remains unfinished.
