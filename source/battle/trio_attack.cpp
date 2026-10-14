@@ -149,6 +149,10 @@ struct TrioAttackRuntime {
     DisplayQueue displayQueue;
     std::shared_ptr<ShadowWork> shadows;
     ShadowMainCursor shadowMainCursor;
+    std::shared_ptr<BattleCommandPalette> palette;
+    BattleFooterCursor commandDisplayCursor,audienceDisplayCursor,slotDisplayCursor;
+    BattleAudienceAnimationCursor audienceAnimationCursor;
+    bool audienceAnimationStarted=false;uint8_t audienceDisplayPhase=0;uint32_t audienceDisplayFlags=0;
     bool displayActive=false,displayUnitPrefixDone=false;
     int32_t displayIndex=0;uint32_t displayPart=0;
     uint8_t displayFooter=0,stageRegistration=0;bool stockExpMutationDone=false,stageGetterDone=false;
@@ -1261,7 +1265,7 @@ struct TrioAttackRuntime {
     bool displayPrefix() {
         (void)word(0x8041eb90); // Original retained B; footer is still pending.
         const auto actors=nativeBattleActorServices(vm);
-        if(!displayActive){displayActive=true;displayIndex=0;displayUnitPrefixDone=false;displayFooter=0;stockExpMutationDone=false;stageRegistration=0;stageGetterDone=false;}
+        if(!displayActive){displayActive=true;displayIndex=0;displayUnitPrefixDone=false;displayFooter=0;stockExpMutationDone=false;stageRegistration=0;stageGetterDone=false;commandDisplayCursor={};audienceDisplayCursor={};slotDisplayCursor={};audienceAnimationCursor={};audienceAnimationStarted=false;audienceDisplayPhase=0;}
         for(;displayIndex<64;++displayIndex) {
             const auto unit=battleRegistryUnit(word(0x8041eb90),displayIndex,actors);if(!unit)continue;
             if(!displayUnitPrefixDone){
@@ -1462,8 +1466,38 @@ struct TrioAttackRuntime {
             }
             displayFooter=2;
         }
-        endingRequest(0x80122870,{int32_t(Battle)});
-        pending=0x80119e24;endingRequest(pending);return false; // Actual palette cycle owner precedes command queues.
+        if(displayFooter==2){
+            if(!commandDisplayCursor.active){endingRequest(0x80122870,{int32_t(Battle)});endingRequest(0x80119e24);}
+            if(!palette){pending=0x80119e24;return false;}
+            if(!registerBattleCommandDisplay(Battle,*palette,displayQueue,commandDisplayCursor,actors)){pending=0x80010bc4;return false;}
+            displayFooter=3;
+        }
+        if(displayFooter==3){
+            if(audienceDisplayPhase==0){
+                if(!audienceAnimationStarted){
+                    endingRequest(0x801a6c18);endingRequest(0x801a86a0);(void)word(0x8041eb90);
+                    endingRequest(0x801a4224);endingRequest(0x801a86a0);(void)word(0x8041eb90);
+                    endingRequest(0x801a8664,{0});audienceAnimationStarted=true;
+                }
+                BattleAudienceAnimationServices animation;animation.actors=actors;animation.user=this;
+                animation.scriptWord=[](void* p,uint32_t address)->std::optional<uint32_t>{uint32_t value=0;if(!static_cast<TrioAttackRuntime*>(p)->vm.memory.readWord(address,value))return {};return value;};
+                const auto first=word(0x8041eb90)+0x2858+0x1bc;
+                if(!processPackedBattleAudienceAnimations(first,animation,audienceAnimationCursor)){pending=0x801a4224;return false;}
+                endingRequest(0x801a86a0);audienceDisplayFlags=word(word(0x8041eb90)+0x2858);audienceDisplayPhase=1;
+            }
+            BattleAudienceWindowServices window;window.user=this;
+            window.window=[](void* p)->std::optional<bool>{auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x800d5eb0);return uint16_t(r.half(r.word(0x8041eb00)+0x8c))!=0;};
+            if(!registerBattleAudienceDisplay(audienceDisplayFlags,window,displayQueue,audienceDisplayCursor)){pending=0x80010bc4;return false;}
+            displayFooter=4;
+        }
+        if(displayFooter==4){
+            if(!slotDisplayCursor.active)endingRequest(0x80203a68);
+            if(!registerBattleBreakSlotDisplay(displayQueue,slotDisplayCursor)){pending=0x80010bc4;return false;}
+            displayFooter=5;
+        }
+        auto footerFlags=word(Battle+0xef4);if(footerFlags&0x10000)word(Battle+0xef4,footerFlags&~0x10000u);
+        footerFlags=word(Battle+0xef4);if(footerFlags&0x20000)word(Battle+0xef4,footerFlags&~0x20000u);
+        displayActive=false;return true;
     }
     void completionPass(const BattlePadSample& sample) {
         struct Context {TrioAttackRuntime& r;const BattlePadSample& sample;} context{*this,sample};
@@ -1516,7 +1550,13 @@ struct TrioAttackRuntime {
             r.pending=fn;return false; // Real stage/map/render/audio providers remain required.
         };
         pending=0;
-        (void)packedBattleMainWrapper(services);
+        if(packedBattleMainWrapper(services)){pending=0x8000f704;endingRequest(pending);} // Actual next outer provider; no teardown shortcut.
+    }
+    void finishDisplayContinuation(){
+        const auto actors=nativeBattleActorServices(vm);
+        endingRequest(0x800f89a0,{int32_t(Battle),0});
+        publishPackedBattleMainResult(Battle,packedBattleMainAfterRequests(Battle,actors),actors);
+        pending=0x8000f704;endingRequest(pending);
     }
     void updateCamera(uint64_t time) {
         if(cameraClockAt==time)return;cameraClockAt=time;
@@ -1533,7 +1573,10 @@ struct TrioAttackRuntime {
         scene=&s;now=time;
         if(waitingPoseDepth && (waitingPosePriority || cameraDepth)){
             pending=0;
-            if(registerPoseDraw()){displayPart=word(poseDraw->part);displayPrefix();}
+            if(registerPoseDraw()){displayPart=word(poseDraw->part);if(displayPrefix())finishDisplayContinuation();}
+        }
+        if(displayActive && displayIndex==64 && (pending==0x801a4224 || pending==0x80010bc4)){
+            pending=0;if(displayPrefix())finishDisplayContinuation();
         }
         if(pending==0x800f8e28 && sampledAt!=time) {
             sampledAt=time;BattlePadSample sample;
@@ -1547,7 +1590,7 @@ struct TrioAttackRuntime {
     }
     void publish(ProfessorStory& s){for(unsigned id=1;id<7;++id){const uint32_t u=word(Battle+0x20+4*id);if(!u){s.actors[visual[id]].hidden=true;continue;}for(unsigned axis=0;axis<3;++axis)s.actors[visual[id]].position[axis]=real(u+0x3c+4*axis);s.actors[visual[id]].yaw=byte(u+0x189)==1?90:270;s.actors[visual[id]].battleFlags=word(u+0x1c);for(unsigned axis=0;axis<3;++axis){s.actors[visual[id]].battleRotation[axis]=real(u+0x60+4*axis)+real(u+0x6c+4*axis);s.actors[visual[id]].battlePivot[axis]=real(u+0x78+4*axis);s.actors[visual[id]].battleScale[axis]=(axis<2?real(u+0x114):1.f)*real(u+0x9c+4*axis)*real(u+0x90+4*axis);s.actors[visual[id]].battleDisplayOffset[axis]=real(u+0x54+4*axis);}}}
 };
-bool TrioAttack::begin(const TrioBattleCommands& menu,ProfessorStory& scene,int16_t hp,std::shared_ptr<ProloguePouch> entryPouch,uint32_t* fieldNpcBattleFlags,FieldMarioBattleState* fieldMario,FieldPartyRegistry* fieldParties,const FieldPartyAppearanceServices* appearance,std::shared_ptr<BattleSpotlightState> spotlight,std::shared_ptr<BattleRandom> random,std::shared_ptr<PositionalSfxRegistry> sounds,std::shared_ptr<ShadowWork> shadows){if(!assetsReady || !menu.attack || !((menu.actor==1 && (menu.attack->weapon==0x803538a8 || menu.attack->weapon==0x80353de8)) || (menu.actor==2 && menu.attack->weapon==0x80393ea8)))return false;if(runtime_)return runtime_->done && runtime_->readyActor==menu.actor && runtime_->launch(menu);auto r=std::make_shared<TrioAttackRuntime>(random?std::move(random):std::make_shared<BattleRandom>(1));r->shadows=shadows?std::move(shadows):std::make_shared<ShadowWork>();r->publicSfx=sounds?std::move(sounds):std::make_shared<PositionalSfxRegistry>();r->spotlight=spotlight?std::move(spotlight):std::make_shared<BattleSpotlightState>();r->fieldNpcBattleFlags=fieldNpcBattleFlags;r->fieldMario=fieldMario;r->fieldParties=fieldParties;if(appearance)r->fieldAppearance=*appearance;if(!r->initialize(menu,scene,hp,std::move(entryPouch)))return false;runtime_=std::move(r);return true;}
+bool TrioAttack::begin(const TrioBattleCommands& menu,ProfessorStory& scene,int16_t hp,std::shared_ptr<ProloguePouch> entryPouch,uint32_t* fieldNpcBattleFlags,FieldMarioBattleState* fieldMario,FieldPartyRegistry* fieldParties,const FieldPartyAppearanceServices* appearance,std::shared_ptr<BattleSpotlightState> spotlight,std::shared_ptr<BattleRandom> random,std::shared_ptr<PositionalSfxRegistry> sounds,std::shared_ptr<ShadowWork> shadows,std::shared_ptr<BattleCommandPalette> palette){if(!assetsReady || !menu.attack || !((menu.actor==1 && (menu.attack->weapon==0x803538a8 || menu.attack->weapon==0x80353de8)) || (menu.actor==2 && menu.attack->weapon==0x80393ea8)))return false;if(runtime_)return runtime_->done && runtime_->readyActor==menu.actor && runtime_->launch(menu);auto r=std::make_shared<TrioAttackRuntime>(random?std::move(random):std::make_shared<BattleRandom>(1));r->palette=palette?std::move(palette):std::make_shared<BattleCommandPalette>();r->shadows=shadows?std::move(shadows):std::make_shared<ShadowWork>();r->publicSfx=sounds?std::move(sounds):std::make_shared<PositionalSfxRegistry>();r->spotlight=spotlight?std::move(spotlight):std::make_shared<BattleSpotlightState>();r->fieldNpcBattleFlags=fieldNpcBattleFlags;r->fieldMario=fieldMario;r->fieldParties=fieldParties;if(appearance)r->fieldAppearance=*appearance;if(!r->initialize(menu,scene,hp,std::move(entryPouch)))return false;runtime_=std::move(r);return true;}
 void TrioAttack::tick(uint64_t time,ProfessorStory& scene,uint32_t triggers,const BattlePadSample* physical){if(runtime_)runtime_->tick(time,scene,triggers,physical);}
 bool TrioAttack::statusWindowVisible()const{return !runtime_ || runtime_->statusWindowOpen;}
 bool TrioAttack::active()const{return runtime_ && !runtime_->done;}
@@ -1574,6 +1617,7 @@ const CameraDepthSnapshot* TrioAttack::cameraDepthSnapshot()const{return runtime
 const DisplayQueue* TrioAttack::displayQueue()const{return runtime_?&runtime_->displayQueue:nullptr;}
 std::optional<TrioShadowDrawRequest> TrioAttack::shadowDrawRequest()const{return runtime_?runtime_->shadowDraw:std::nullopt;}
 const ShadowWork* TrioAttack::shadowWork()const{return runtime_?runtime_->shadows.get():nullptr;}
+const BattleCommandPalette* TrioAttack::commandPalette()const{return runtime_?runtime_->palette.get():nullptr;}
 const BattleCameraFrame* TrioAttack::cameraFrameState()const{return runtime_?&runtime_->cameraFrame:nullptr;}
 bool TrioAttack::cameraHistoryComplete()const{return runtime_ && runtime_->cameraHistoryComplete;}
 const BattlePose* TrioAttack::battlePose(uint32_t part)const{

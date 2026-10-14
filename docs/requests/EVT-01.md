@@ -3905,3 +3905,17 @@ The [remaining footer contract](../behavior/display/BATTLE_DISPLAY_FOOTER_REGIST
 now pins palette states, audience AnimProcess commands/windows and slot request.
 Bind these retained owners, then original deferred dispatch/GPU and ordered
 teardown/field return; no missing callback or mutation is treated as completion.
+
+
+### Display footer completion follow-up (2026-10-14)
+
+Native finishing footer now retains original boot palette mutation, all command
+gates, the200-record scalar audience interpreter with exact local write order,
+independent audience/window requests and unconditional slot Entry. Main's late
+result and outer end-bit publication complete without prefix replay.
+[Native limits](../behavior/display/NATIVE_DISPLAY_FOOTER_COMPLETION.md).
+Next actual outer service is camMain8000f704, followed by real queued camera
+dispatch/GPU. Exit is separately admitted later through sequence-manager
+BattleEnd and field waiter; completion bit is not scene restoration. Palette
+consumers must resolve the live typed owner; no original alias/history, GPU or
+full-cadence completion is claimed. EVT-01 stays open.

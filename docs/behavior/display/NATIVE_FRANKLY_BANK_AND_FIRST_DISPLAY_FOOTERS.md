@@ -49,3 +49,9 @@ shadow collision/image/cylinder providers, complete original camera4 history,
 remaining footer providers and ordered teardown/field return remain open.
 The existing handheld rendering path still presents actors independently of
 this deferred queue; records alone do not prove raster equivalence.
+
+The subsequent [footer completion step](NATIVE_DISPLAY_FOOTER_COMPLETION.md)
+implements the palette/command, audience animation/window and slot wrappers.
+The earlier80119e24 hold is superseded in the admitted finishing domain; the
+current next outer provider is8000f704. Deferred GPU and field-return limits
+remain open.

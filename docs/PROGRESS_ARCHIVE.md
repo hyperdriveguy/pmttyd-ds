@@ -13242,3 +13242,53 @@ wrappers, enclosing flag clears, sorted camera/GPU consumers, shadow collision/
 images/cylinder, full source camera4 history and ordered teardown/field return
 remain unbound. Azahar captures do not prove battle-loss handling, complete
 prologue parity or physical performance.
+
+
+## 2026-10-14 — Display footer mutations and Main result publication
+
+Isolated source artifacts/display-footer-source: base
+f19f8ed22feb57081e059639ef8d1b3a60053c9d plus eight owned files listed
+in OWNED_BASE.txt, scoped Game/Game-header palette edits and display-footer-cmake
+registration. Other concurrent changes excluded. Existing private assets linked.
+Immutable ELF/3DSX/SMDH and source/binary SHA256 manifests:
+artifacts/display-footer-validated. No new story text or generated artwork.
+
+Validation:
+- Standalone display-footer-test passed palette full cycle/wrap/invalid state,
+  independent command masks, capacity/resumption, audience visibility/window
+  gate order and unconditional slot; zero/populated200-actor scan, all original
+  opcodes, dense backward/label scans, timer load order, frame/backscan missing-
+  read continuation and aliased frame operands.
+- Initial shared make test passed252/252 C++; Python144 checks found one missing
+  coin_fanfare key in stale private field-item-get.json. Initial isolated run
+  passed251/251 C++ and reproduced that same metadata failure. Logs:
+  display-footer-tests.log and display-footer-isolated-tests.log.
+- Existing tools/field_item_get_assets.py refreshed the ignored item-get pack
+  from read-only G8ME01.iso; display-footer-item-assets-refresh.log. No converter
+  code, data schema or source-history asset was changed. Existing original
+  provenance/hash assertions passed after refresh.
+- Final make -C artifacts/display-footer-source test passed251/251 C++ and
+ 144/144 Python; display-footer-isolated-tests-final.log. Source/layout/gates
+  for this change remained unchanged after snapshot; private metadata refreshed.
+- make -C artifacts/display-footer-source -o assets-ready all
+  BUILD=build-display-footer TARGET=ttyd-display-footer DEBUG_SHORT_BOOT=1 -j4
+  passed; display-footer-isolated-native.log. Repack after private asset refresh
+  passed; display-footer-isolated-native-final.log.
+- Finishing regression verifies20 real source records, three unprepared shadows,
+  shared palette193/alpha207, original footer flag clears and Main end-bit, no
+  primary Main/registration replay while the next camera provider is unavailable.
+  Existing Main tests verify extracted late result/publication helper behavior
+  through original full service-order/retained-owner cases.
+- Documentation links and scoped whitespace passed. No emulator/hardware run.
+
+Palette is a typed source-address adapter with boot-lifetime/native session
+retention; future native consumers must read its live owner. Complete indirect
+writer history is not proved. Animation actor memory remains a valid-owned
+provider requirement; invalid script reads return unavailable, not a synthesized
+frame. Actual registered callback GPU execution is still separate from completed
+footer wrappers. Source sequence4 now admits the true completion flag, then
+outer camMain is next: no BattleEnd/field scene shortcut. Full global camera
+matrices/history, ascending-camera sorting/draw/reset cadence, part/material/GPU
+callbacks, shadow collision/images/cylinder, complete actor/update chronology
+and ordered exit/teardown/field return remain unbound. Full prologue parity and
+physical performance remain unverified.

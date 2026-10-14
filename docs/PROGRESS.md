@@ -1498,3 +1498,29 @@ actor/update chronology, shadow preparation, full camera4 history and physical
 performance remain unverified. The current finishing queue retains14 records
 and three unprepared shadows, then holds at the palette provider. Full playable
 original-fidelity prologue goal remains active.
+
+
+## 2026-10-14 — Display footer mutations and Main result publication
+
+Implemented the retained boot-lifetime command palette, all command registration
+gates, full200-record audience scalar animation interpreter, independent
+audience/window queues and unconditional slot registration. Missing script
+reads retain prior stores. The finishing display now clears its original flags
+and completes Main's late result/publication without replaying earlier services.
+Its actual20 records remain queued; bank4 publishes end bit80000000 and waits
+at next outer camMain8000f704.
+[Scope](behavior/display/NATIVE_DISPLAY_FOOTER_COMPLETION.md).
+
+Final isolated make test passed251/251 C++ and144/144 Python checks; native
+make all passed. Shared C++ checks passed252/252; its Python pass exposed stale
+private item-get metadata, refreshed with the existing read-only ISO converter
+before final isolated validation. Exact logs/snapshot/manifests are in the
+[archive](PROGRESS_ARCHIVE.md#2026-10-14--display-footer-mutations-and-main-result-publication).
+No Azahar/hardware run for this step.
+
+Next: global camera publication and real sorted/ascending-camera deferred draw
+with live palette, part/material/GPU and shadow providers. Then bind the separate
+sequence-manager exit, ordered BattleEnd/resource teardown and field waiter.
+End-bit publication alone does not restore the field. Existing rendering/cadence
+adapters and original actor/history/performance limits remain open. Full playable
+original-fidelity prologue goal remains active.

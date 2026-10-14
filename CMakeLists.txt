@@ -1244,3 +1244,8 @@ target_sources(ttyd_core PRIVATE source/battle/battle_command_input.cpp source/b
 add_executable(battle_command_input_tests tests/battle_command_input_tests.cpp)
 target_link_libraries(battle_command_input_tests PRIVATE ttyd_core)
 add_test(NAME battle_command_input COMMAND battle_command_input_tests)
+
+target_sources(ttyd_core PRIVATE source/battle/battle_display_footer.cpp)
+add_executable(battle_display_footer_tests tests/battle_display_footer_tests.cpp)
+target_link_libraries(battle_display_footer_tests PRIVATE ttyd_core)
+add_test(NAME battle_display_footer COMMAND battle_display_footer_tests)

@@ -18,6 +18,8 @@ struct BattleMainServices {
 // Upper BattleMain800f8e28. An incomplete provider never produces an engine
 // result. Each successful invocation executes all eleven services afresh.
 std::optional<int32_t> packedBattleMain(const BattleMainServices&);
+int32_t packedBattleMainAfterRequests(uint32_t retainedBattle,const BattleActorServices&);
+void publishPackedBattleMainResult(uint32_t retainedOuterBattle,int32_t,const BattleActorServices&);
 // Lower battleMain800f904c: null owner succeeds without work. False reports an
 // incomplete provider; completion only ORs the captured owner's end bit.
 bool packedBattleMainWrapper(const BattleMainServices&);

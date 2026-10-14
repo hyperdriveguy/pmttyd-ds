@@ -1087,6 +1087,7 @@ bool Game::beginWater() {
     jumpHeight=0;fieldJump={};fieldJump.motion=31;fieldStep={};fieldVerticalVelocity=0;warpRequest=-1;saveRequested=false;return true;
 }
 void Game::restore(const Progress& saved) {
+    const auto retainedCommandPalette=commandPalette;
     const auto retainedShadows=shadows;
     const auto retainedSpotlight=battleSpotlight;
     const auto retainedTrioRandom=trioRandom;
@@ -1106,6 +1107,7 @@ void Game::restore(const Progress& saved) {
     // validation. Keep the reset work on the heap, then move its owned state.
     auto reset=std::make_unique<Game>(false);
     *this = std::move(*reset);
+    commandPalette=retainedCommandPalette;
     shadows=retainedShadows;
     battleSpotlight=retainedSpotlight;
     trioRandom=retainedTrioRandom;
@@ -2035,7 +2037,7 @@ void Game::tick(const Input& rawInput) {
             }
             if(trioCommands.state==TrioBattleCommands::State::AttackReady && progress.originalPouch && !trioAttack.active() && !trioAttack.finished())progress.originalPouch->half(0x70,int16_t(progress.hp)); // Current field HP enters the original resource snapshot once.
             const auto partyAppearance=fieldPartyAppearanceServices();
-            if(trioCommands.state==TrioBattleCommands::State::AttackReady && trioAttack.begin(trioCommands,trioBattleIntro,progress.hp,progress.originalPouch,&professorStory.actors[3].npcBattleFlags,&fieldMarioBattle,&fieldParties,&partyAppearance,battleSpotlight,trioRandom,publicSfx,shadows)) {
+            if(trioCommands.state==TrioBattleCommands::State::AttackReady && trioAttack.begin(trioCommands,trioBattleIntro,progress.hp,progress.originalPouch,&professorStory.actors[3].npcBattleFlags,&fieldMarioBattle,&fieldParties,&partyAppearance,battleSpotlight,trioRandom,publicSfx,shadows,commandPalette)) {
                 const auto sample=inputProducer.channels[0].battleSample();
                 const uint32_t triggers=i.physicalSnapshot?sample.pressed:(i.confirm?0x100u:0u)|(i.cancel?0x200u:0u);
                 // Native field lens snapshot in engine units. Roll/projection-extra history

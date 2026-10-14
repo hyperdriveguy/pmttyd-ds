@@ -252,6 +252,7 @@ public:
     float cameraZ = 3.5f, cameraHeight = 0;
     float cameraX = 1, jumpHeight = 0, facing = 1, turnScale = 1;
     bool trioBattleActive=false;ProfessorStory trioBattleIntro;TrioBattleCommands trioCommands;TrioAttack trioAttack;size_t trioBattleCameraCursor=0;
+    std::shared_ptr<BattleCommandPalette> commandPalette=std::make_shared<BattleCommandPalette>(); // Source boot lifetime; survives restore and battle entry.
     std::shared_ptr<ShadowWork> shadows=std::make_shared<ShadowWork>(); // Retained native source request owner; GPU preparation remains separate.
     std::shared_ptr<BattleSpotlightState> battleSpotlight=std::make_shared<BattleSpotlightState>();
     std::shared_ptr<PositionalSfxRegistry> publicSfx=std::make_shared<PositionalSfxRegistry>(); // Session owner; original On/backend provisioning remains incomplete.
