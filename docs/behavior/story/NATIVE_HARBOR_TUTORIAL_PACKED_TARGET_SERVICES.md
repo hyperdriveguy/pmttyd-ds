@@ -9,9 +9,12 @@ and [conclusion barriers](../battle/NATIVE_CONCLUSION_AND_EVENT_BARRIERS.md).
 
 `HarborTutorialPacked` provisions one packed battle registry inside the existing
 HarborTutorial EventNativeRuntime. There is no second event interpreter. Native
-addresses are provider policy: Battle84000000, three0x1000 unit slots84100000,
-three0x1000 part banks84200000. Live shared pointer8041eb90 points to that owner.
-Actor IDs remain Crump0, Mario1 and neutral NPC Goombella2. Registry insertion
+addresses are provider policy: Battle84000000, four0x1000 unit slots84100000,
+four0x1000 part banks84200000. Live shared pointer8041eb90 points to that owner.
+Actor IDs now retain system0, Mario1, Crump2 and neutral NPC Goombella3.
+System source kind220/HP999 and init803adf38 own an actual registry record;
+[registry/visual separation](../battle/HARBOR_NATIVE_REGISTRY_AND_VISUAL_PROJECTION.md)
+keeps its null-bank/null-table part outside the three rendered actors. Registry insertion
 precedes each actor's source init event. This remains a scoped entry adapter;
 complete BtlUnit_Entry resource/status/pouch/teardown services are not claimed.
 

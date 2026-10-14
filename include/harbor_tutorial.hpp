@@ -23,8 +23,9 @@ struct HarborTutorialSoundRequest {enum class Operation {Trigger,Position,Off};O
 struct HarborTutorialCameraState {uint32_t flags=0;int32_t priority=0,mode=0,owner=-1,target=-1,ownerPart=-1,targetPart=-1;int16_t speed=0,remaining=0;float zoom=0;std::array<float,3> home{},hit{};};
 struct HarborTutorialRuntime;
 // Source setup2 unit initialization and guarded phase requests. This owner does
-// not infer combat outcomes or advance the field story. Native IDs are an
-// explicit fresh registry policy: Crump0, Mario1, spawned NPC Goombella2.
+// not infer combat outcomes or advance the field story. Native IDs follow the
+// original fresh registry order: system0, Mario1, Crump2, spawned helper3.
+// Three visual slots remain Crump/Mario/helper and must not index registry IDs.
 class HarborTutorial {
 public:
     bool triggered=false,failed=false,initialized=false,phaseActive=false,introComplete=false,attackActive=false;
@@ -32,7 +33,12 @@ public:
     int32_t turn=1,speaker=-1,result=0,chosenUnit=-1,chosenPart=0;uint32_t phaseWord=0x04000001,battleFlags=0,pendingService=0;
     uint8_t successDeclarations=0,failureDeclarations=0;
     uint64_t now=0;
+    static constexpr int32_t SystemId=0,MarioId=1,CrumpId=2,HelperId=3;
+    HarborTutorialActor systemActor; // Actual invisible source owner, excluded from visual slots.
     std::array<HarborTutorialActor,3> actors{};
+    int32_t visualSlot(int32_t registryId) const;
+    HarborTutorialActor* actorById(int32_t registryId);
+    const HarborTutorialActor* actorById(int32_t registryId) const;
     HarborTutorialCameraState camera;
     MessagePlayback message;std::vector<std::string> messageOrder;
     std::vector<HarborTutorialRequest> requests;

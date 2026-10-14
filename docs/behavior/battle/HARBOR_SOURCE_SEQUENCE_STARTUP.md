@@ -69,10 +69,12 @@ the original 308..319 dispatch masks (314 is a no-op).
 The Entry provider must own real BtlUnit_Entry allocation and initialization;
 calling UnitSetup with test fixtures does not install native startup. Original
 first-free allocation yields system0/Mario1/Crump2/helper3 for fresh setup2.
-The existing native projection adapter uses Crump0/Mario1/helper2 and omits
-system. This discrepancy must be resolved by separating three visual slots from
-the complete packed registry before original owner allocation is installed.
-The system actor may be visually absent but cannot be omitted from source state.
+The native adapter now retains that four-owner registry and executes the
+original system init while keeping three visual slots separate; see
+[registry/visual scope](HARBOR_NATIVE_REGISTRY_AND_VISUAL_PROJECTION.md).
+Full source UnitEntry/UnitSetup allocation, display/equipment/resource and
+startup-controller binding still require installation. The invisible system
+is retained in source state without a fabricated model/pose handle.
 
 ## UnitEntry allocation and initialization
 

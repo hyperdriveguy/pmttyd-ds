@@ -14,7 +14,9 @@ story dialogue or manually sorted tutorial message list is authored.
 
 The converter proves setup2 → weight50 → one-unit group60c90 → setup60c60 →
 Crump kind645c8, stage608f8, and helper entry647d8 → kind66d78. Fresh native
-registry policy assigns Crump0, Mario1 and spawned NPC Goombella2. It records
+registry now retains system0, Mario1, Crump2 and spawned NPC Goombella3, with
+separate Crump/Mario/helper visual slots. The original system init7-command
+stream runs in that registry; see [registry scope](../battle/HARBOR_NATIVE_REGISTRY_AND_VISUAL_PROJECTION.md). It records
 source pointers separately from those runtime IDs. Original Crump HP5 and helper
 HP10 are imported from kinds. The source spawn result becomes Crump work0;
 source helper init installs its own hooks and maxMoves0. Its phase remains0;
@@ -31,7 +33,7 @@ success/failure declaration bytes. HP <= integer DIV(maxHP,2) wins priority and
 deletes immediately after t1_003. Independent success and failure branches can
 then print t1_001 and t1_002 during one later eligible invocation. Their unit
 work latches suppress repetition. All prints retain mode2, actual spawned
-speaker ID2 and original msg/US/gor_00 bytes/tokens. Death t1_004/005 is not
+speaker ID3 and original msg/US/gor_00 bytes/tokens. Death t1_004/005 is not
 admitted merely because HP reaches0.
 
 Source interpolation mode0 delegates to the recovered built-in interpolation
@@ -66,7 +68,7 @@ They are source-data execution tests, not Dolphin observations.
 
 ## Installed attack-hook admission foundation
 
-`dispatchInstalledAttack(id)` now admits only source-installed Crump0 or NPC2
+`dispatchInstalledAttack(id)` now admits only source-installed Crump2 or NPC3
 hooks after the intro ends and while no phase/attack root owns execution. This
 is an explicit battle-scheduler bridge, not a gameplay development button.
 The NPC's three-command attack only restarts its wait; maxMoves remains0 and no

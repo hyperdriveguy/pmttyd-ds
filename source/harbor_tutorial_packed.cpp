@@ -21,7 +21,7 @@ int32_t HarborTutorialPacked::value(EventEntry& e,unsigned i){return getEventVal
 void HarborTutorialPacked::output(EventEntry& e,unsigned i,int32_t v){setEventValue(e,raw(e,i),v,vm.interpreterServices().operands);}
 uint32_t HarborTutorialPacked::actor(EventEntry& e){const auto id=translateBattleActor(&e,value(e,0),nativeBattleActorServices(vm));return word(Battle+0x20+4u*uint32_t(id));}
 bool HarborTutorialPacked::provision(){
- for(auto span:std::array<std::pair<uint32_t,unsigned>,4>{{{0x8041eb90,4},{Battle,0x19400},{Units,0x3000},{Parts,0x3000}}})if(!vm.memory.registerRam(span.first,std::vector<uint8_t>(span.second)))return false;
+ for(auto span:std::array<std::pair<uint32_t,unsigned>,4>{{{0x8041eb90,4},{Battle,0x19400},{Units,0x4000},{Parts,0x4000}}})if(!vm.memory.registerRam(span.first,std::vector<uint8_t>(span.second)))return false;
  word(0x8041eb90,Battle);half(Battle+8,2);half(Battle+16,1);half(Battle+24,0);byte(Battle+0xa,1);byte(Battle+0x12,255); // Fresh source group-policy adapter.
  for(unsigned i=0;i<64;++i){word(Battle+0x120+4*i,0xffffffff);word(Battle+0x16f5c+8*i,0xffffffff);}
  BattlePadWork pad;pad.init();writePackedBattlePad(Battle+0x1d1c,pad,nativeBattleActorServices(vm));
@@ -51,7 +51,7 @@ bool HarborTutorialPacked::provisionFreshFieldInformation(uint32_t c,uint32_t gr
 }
 void HarborTutorialPacked::samplePhysical(uint64_t time,const BattlePadSample* sample){physicalCurrent=sample!=nullptr;if(!sample || sampledAt==time)return;sampledAt=time;auto pad=readPackedBattlePad(Battle+0x1d1c,nativeBattleActorServices(vm));pad.update(*sample);writePackedBattlePad(Battle+0x1d1c,pad,nativeBattleActorServices(vm));}
 bool HarborTutorialPacked::registerActor(HarborTutorialActor& a){
- if(a.id<0 || a.id>2 || registered[a.id])return false;
+ if(a.id<0 || a.id>3 || registered[a.id])return false;
  const uint32_t id=uint32_t(a.id),u=Units+id*0x1000,p=Parts+id*0x1000,k=a.id==1?word(0x80416a50):a.sourceKind;
  if(!k || word(k)!=uint32_t(a.kind))return false;
  a.sourceKind=k;const auto source=word(k+0xb8);const auto count=byte(k+0xb4);if(!count || count>3)return false;
@@ -70,7 +70,7 @@ void HarborTutorialPacked::recordPhase(int32_t id,uint32_t event){word(Units+uin
 void HarborTutorialPacked::recordAttack(int32_t id,uint32_t event){const auto u=Units+uint32_t(id)*0x1000;word(u+0x2a8,event);const auto wait=word(u+0x290);if(wait)deleteEventId(wait,vm.creationServices());word(u+0x290,0);}
 void HarborTutorialPacked::publish(const HarborTutorial& scene){
  word(Battle+0xef4,scene.battleFlags);half(Battle,scene.turn);word(Battle+0xf18,scene.phaseWord);byte(Battle+0x16f58,scene.successDeclarations);byte(Battle+0x16f59,scene.failureDeclarations);
- for(const auto& a:scene.actors){if(a.id<0 || a.id>2 || !registered[a.id])continue;const auto u=Units+uint32_t(a.id)*0x1000;
+ for(unsigned slot=0;slot<4;++slot){const auto& a=slot?scene.actors[slot-1]:scene.systemActor;if(a.id<0 || a.id>3 || !registered[a.id])continue;const auto u=Units+uint32_t(a.id)*0x1000;
   half(u+0x108,a.maxHp);half(u+0x10c,a.hp);word(u+0x308,a.heldItem);word(u+0x2c,a.movePhase);byte(u+0x21,a.maxMoves);if(a.maxMoves==0){byte(u+0x22,0);}
   for(unsigned i=0;i<16;++i)word(u+0x218+4*i,a.work[i]);
   for(unsigned axis=0;axis<3;++axis){real(u+0x3c+4*axis,a.position[axis]);real(u+0x30+4*axis,a.home[axis]);}
@@ -78,7 +78,7 @@ void HarborTutorialPacked::publish(const HarborTutorial& scene){
  }
 }
 void HarborTutorialPacked::capture(HarborTutorial& scene){
- for(auto& a:scene.actors){if(a.id<0 || a.id>2 || !registered[a.id])continue;const auto u=Units+uint32_t(a.id)*0x1000;
+ for(unsigned slot=0;slot<4;++slot){auto& a=slot?scene.actors[slot-1]:scene.systemActor;if(a.id<0 || a.id>3 || !registered[a.id])continue;const auto u=Units+uint32_t(a.id)*0x1000;
   uint16_t v=0;required(vm.memory.readHalf(u+0x10c,v));a.hp=int16_t(v);required(vm.memory.readHalf(u+0x108,v));a.maxHp=int16_t(v);
   for(unsigned axis=0;axis<3;++axis){a.position[axis]=real(u+0x3c+4*axis);a.home[axis]=real(u+0x30+4*axis);}
   for(unsigned i=0;i<16;++i)a.work[i]=int32_t(word(u+0x218+4*i));

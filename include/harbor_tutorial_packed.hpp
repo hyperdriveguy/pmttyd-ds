@@ -26,7 +26,7 @@ public:
  bool invoke(EventEntry&,uint32_t function,int32_t first,int32_t& result);
  bool readWord(uint32_t address,uint32_t& value) const{return vm.memory.readWord(address,value);}
 private:
- std::array<bool,3> registered{};
+ std::array<bool,4> registered{};
  bool freshPouch=false;uint32_t nextSoundHandle=1;
  std::vector<HarborTutorialSoundRequest> sounds;
  uint32_t requestSound(uint32_t unit,uint32_t key,const std::array<float,3>&);

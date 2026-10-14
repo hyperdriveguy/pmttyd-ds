@@ -565,8 +565,8 @@ void Renderer::originalMessage(const Game& g,const MessagePlayback* supplied,con
         if(project(messageTalkAnchor,anchorX,anchorY) && suppliedMario && project(*suppliedMario,marioX,marioY))
             mode=message.windowType==1?7:messageSpeakerMode(anchorX,marioX);
     }
-    if(newWindow && !supplied && tutorial && g.harborTutorial.speaker>=0 && g.harborTutorial.speaker<3) {
-        const auto id=unsigned(g.harborTutorial.speaker);const auto& a=g.harborTutorial.actors[id];
+    if(newWindow && !supplied && tutorial && g.harborTutorial.visualSlot(g.harborTutorial.speaker)>=0) {
+        const auto id=unsigned(g.harborTutorial.visualSlot(g.harborTutorial.speaker));const auto& a=g.harborTutorial.actors[id];
         messageTalkAnchor={a.position[0]*.01f,a.position[1]*.01f,a.position[2]*.01f};
         const auto* pose=tutorialActors[id].animations.pose(a.pose.c_str());
         if(pose && pose->evaluate(float(g.harborTutorial.now-a.poseAt)*.06f,actorSample))for(const auto& v:actorSample.vertices)messageTalkAnchor.y=std::max(messageTalkAnchor.y,a.position[1]*.01f+v.y*.02f);

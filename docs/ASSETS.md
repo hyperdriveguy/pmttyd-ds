@@ -1662,3 +1662,18 @@ Systems original data remains local-only with no redistribution rights.
 [Revision contract](behavior/unit/POUCH_PARAMETER_REVISION.md).
 
 The main Mario atlas opts into byte-identical native RGBA raster sharing in character_mesh.py. Every original texture descriptor/state retains its explicit source→cell mapping; original positions/UV domains/pose keys remain. Identical124×124 converted texels and duplicated borders share one cell. Other banks retain their prior allocation by default. This keeps the64-cell native format without dropping the opening M_L_3 pose or other supplied animations. A private read-only original inventory with the concurrently supplied M_N_5B/M_N_C poses had65 logical entries/57 distinct native rasters (eight front/rear aliases). Nintendo/Intelligent Systems source art, local use only; no redistribution rights.
+
+## 2026-10-13 — Original system-owner hook admission
+
+Read-only US DOL definition80416a80/kind803ade74/part803ade28/init803adf38 and
+three system hook streams80419ef8..80419f0c are pinned by
+ tools/verify_harbor_tutorial_registry.py. The bounded tutorial DOL importer now
+admits28 actual bytes at80419ef8: three8-byte scripts plus real final lookahead
+word100 at80419f10, required by the unchanged source label scanner. No dummy
+sentinel, broad mutable-global import, model replacement or texture change was
+made. System part bank/table are null; source kind220 retains HP999/FP0 and
+maxMoves0 initialization in its invisible native record. The private compiled
+harbor-tutorial-events.pmevt is regenerated under ignored romfs/. Original raw
+bodies, ISO and compiled packs remain outside source history. Nintendo/
+Intelligent Systems rights remain unchanged; no redistribution rights granted.
+[Registry scope](behavior/battle/HARBOR_NATIVE_REGISTRY_AND_VISUAL_PROJECTION.md).
