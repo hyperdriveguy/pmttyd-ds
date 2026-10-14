@@ -3075,3 +3075,48 @@ start/reset/nonblocking-child/write1420 order, quest1/4 NPC/door child providers
 source c_monban and original audio. Type7 art and packaged data do not establish
 complete board gameplay or full original raster/event/hardware parity. Broad
 Trouble Center/remake goal remains active.
+
+## 2026-10-14 — Actual original Trouble Center event interpreter adapter
+
+Added TroubleBoardEvent: original installer, board and counter streams execute
+through EventNativeRuntime with0/ef/20 root constructor and immutable pinned
+21-callback program. Explicit known flags/bytes preserve unknown migration;
+Check and Start follow source outputs/resets. Original event words retain
+lecture/help/selection/acceptance/cancellation branches and independent children.
+Root lifetime is exposed separately from remaining child work; absent provider
+preserves firstCall. Live working-bank writers support real cancellation/pouch
+composition. [Scope](behavior/field/ORIGINAL_TROUBLE_CENTER_EVENT_RUNTIME_ADAPTER.md).
+
+Reviewed treeff6f41a850556954892c06f63366cde7aa5c042a passes make assets-ready SOUNDTRACK=gamecube
+(artifacts/trouble-event-assets.log), make test (277/277 C++ and165/165 Python,
+artifacts/trouble-event-test-synchronized.log), and normal make all -o assets-ready
+SOUNDTRACK=gamecube BUILD=build-trouble-event TARGET=ttyd-trouble-event
+(artifacts/trouble-event-build-synchronized.log). All3167 tracked checkout files
+match the tree (artifacts/trouble-event-audit.log). Native artifact SHA256
+b9c27aa3b7a3927572d6ce0e6bee8bcc294776e260df73d5ed69f24fb2b58f81.
+
+Original resource-backed tests exercise installer order and all16 savedLWs;
+lecture No/Yes without immediate menu fallthrough; quest2/13/30 help/confirm/
+append/reset/write1420; menu decline/Continue/reentry without reallocation;
+quest1 parent death/1420/KeyOn while its child remains pending, then completion;
+counter empty/completed-all/30-coin cancellation/29-coin refusal; and late
+provider attachment preserving first delivery. All requested message IDs are
+looked up in unchanged original US resources. Declared callbacks acknowledge
+fixture work; they do not prove actual source world, window or menu execution.
+No new Azahar/Dolphin or hardware run: production Game/case/render binding is
+unchanged by this standalone adapter.
+
+Review found absent-provider polling consumed firstCall; manager admission now
+gates it and the regression verifies later binding. Initial host run crashed
+with a stale object/header ABI during concurrent layout edits; synchronized
+rebuild removes that mismatch. Adding resource checks then found a fixture
+member-name collision; the resource store is now distinct from the message
+trace. Failed logs trouble-event-test.log/test-final.log remain and are not
+counted as passing; only the synchronized source snapshot/checks above qualify.
+
+Next: bind actual Game world/message/menu/pouch and source audio providers,
+install exact case9 board/counter contacts through64-slot ownership/deferred
+EVT scheduling, share original field saved banks and lifetime, then source
+c_monban and nonempty NPC/door children. Standalone callback fixtures do not
+prove interactive board gameplay or physical3DS performance. Broad original
+remake goal remains active.

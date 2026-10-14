@@ -967,3 +967,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native Trouble Center diary and scoped event data](field/NATIVE_TROUBLE_CENTER_DIARY_AND_SCOPED_EVENT_DATA.md), [board provider boundaries](field/TROUBLE_CENTER_NATIVE_BOARD_PROVIDER_BOUNDARIES.md) and [original diary/type7 rendering](display/ORIGINAL_DIARY_TYPE7_WINDOW.md) — original help-window dependency and bounded data-only source closure; board/counter execution remains to bind.
 
 - [Original audience population, seats, entry and animation ownership](battle/AUDIENCE_POPULATION_SEATS_ENTRY_AND_ANIMATION_OWNERS.md)
+
+- [Original Trouble Center event runtime adapter](field/ORIGINAL_TROUBLE_CENTER_EVENT_RUNTIME_ADAPTER.md) — actual installer/board/counter words, immutable callback catalog and known switches; source world/message/menu/case services still require native binding.

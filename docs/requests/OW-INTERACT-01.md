@@ -1033,3 +1033,14 @@ adds exact diary art/direct clip and packages actual board/counter event data,
 with executable sections excluded. Real case9 pool/EVT owner/admission, menu/
 window/switch bindings, nonempty NPC/door children and sound/hardware parity
 remain open; packaged events do not themselves establish gameplay execution.
+
+### 2026-10-14 — Actual Trouble Center event interpreter adapter
+
+[Runtime adapter](../behavior/field/ORIGINAL_TROUBLE_CENTER_EVENT_RUNTIME_ADAPTER.md)
+executes original installer/board/counter words with source0/ef/20 constructor,
+Check/Start helpers, explicit known switches, actual nonblocking children and
+retained callback protocol. Tests cover original lecture, acceptance, menu
+reentry, counter cancellation/coin branches and independently pending NPC child.
+Provider absence no longer consumes the original first request. Native world/
+message/menu/allocator/pouch/case binding and shared field GP/EVT lifecycle
+remain open; fixture completion does not establish actual interaction.

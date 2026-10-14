@@ -585,3 +585,13 @@ art or music was extracted. Nintendo/Intelligent Systems rights remain inherited
 local conversion grants no redistribution license. Original payloads, compiled
 packs and evidence stay ignored. See
 [population/animation ownership](behavior/battle/AUDIENCE_POPULATION_SEATS_ENTRY_AND_ANIMATION_OWNERS.md).
+
+## Trouble Center event callback descriptor (2026-10-14)
+
+trouble_board_event_assets.py now writes ignored romfs/trouble-board-program.bin,
+196-byte PMIRAI01 containing source board/counter/installer/table addresses and
+21 independently relocated callback addresses/tags. Original data-only PMEVT001
+closure stays205objects/5464bytes. Original PPC functions are external service
+identities, never exported/executed code. Existing read-only US gor.rel hash,
+local extraction and Nintendo/Intelligent Systems licensing remain unchanged.
+[Runtime/provenance scope](behavior/field/ORIGINAL_TROUBLE_CENTER_EVENT_RUNTIME_ADAPTER.md).
