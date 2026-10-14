@@ -3,7 +3,7 @@
 #include <array>
 #include <string>
 namespace ttyd {
-// Native v8 header + packed original pouch + checksum; not a card record.
+// Native v8/v9 header + packed original pouch + checksum; not a card record.
 using SaveBytes=std::array<uint8_t,0x600>;
 SaveBytes encodeSave(const Progress& progress);
 // Immutable queued-write/import snapshot; live pouch ownership stays separate.

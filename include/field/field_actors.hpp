@@ -26,7 +26,7 @@ struct FieldActorWander {
 // Partial knowledge of original saved switches. Unknown is distinct from zero.
 struct FieldActorTalkState {
     std::optional<uint8_t> quest1420;
-    std::optional<bool> flag5405,flag5406,flag5407;
+    std::optional<bool> flag5405,flag5406,flag5407,flag5376;
 };
 // Live original inventory observations, not cached/persisted mushroom quantities.
 struct FieldActorTalkInventory {std::optional<int32_t> item95,item107;};

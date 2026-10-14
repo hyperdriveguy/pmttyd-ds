@@ -115,5 +115,51 @@ int main() {
         assert(loadSave(path,out)==LoadResult::Recovered && out.originalPouch->bytes==first);
     }
     std::remove(path.c_str());std::remove((path+".bak").c_str());
-    std::puts("Native v8 packed pouch and5407, source switches/interior state, legacy unknown migration, corruption and recovery passed");
+    // Completion5376 is independent of quest/progress and never inferred from
+    // legacy saves. A new version preserves v8's reserved-bit contract.
+    for(bool pouch:{false,true})for(int completion:{-1,0,1}) {
+        auto state=flags;state.originalPouch=pouch?p.originalPouch:nullptr;
+        state.originalNpcTalkState.quest1420=2;state.originalNpcTalkState.flag5406=true;
+        if(completion>=0)state.originalNpcTalkState.flag5376=completion!=0;
+        const auto saved=encodeSave(state);assert(saved[4]==(completion>=0?9:pouch?8:7));
+        out.originalNpcTalkState.flag5376=true;
+        assert(decodeSave(saved,out) && out.originalNpcTalkState.flag5376==state.originalNpcTalkState.flag5376);
+        assert(out.originalNpcTalkState.quest1420==2 && out.originalNpcTalkState.flag5406==true);
+        assert(bool(out.originalPouch)==pouch);
+        if(pouch)assert(out.originalPouch->bytes==p.originalPouch->bytes);
+        assert(writeSave(path,state) && loadSave(path,out)==LoadResult::Loaded);
+        assert(out.originalNpcTalkState.flag5376==state.originalNpcTalkState.flag5376);
+        {std::ifstream f(path,std::ios::binary|std::ios::ate);assert(f.tellg()==(completion>=0 || pouch?1536:40));}
+    }
+    auto completion=flags;completion.originalNpcTalkState.flag5376=true;
+    const auto v9=encodeSave(completion);assert(v9[4]==9);
+    for(unsigned version=1;version<=8;++version) {
+        auto old=bytes;old[4]=version;old[33]=0;
+        checksum(old,version<3?28:36);if(version==8)checksum(old,1532);
+        out.originalNpcTalkState.flag5376=true;
+        assert(decodeSave(old,out) && !out.originalNpcTalkState.flag5376.has_value());
+    }
+    for(unsigned bit:{24u,25u,26u,31u}) {
+        auto old=onlyFlags;old[20+bit/8]|=uint8_t(1u<<(bit%8));checksum(old);checksum(old,1532);
+        assert(!decodeSave(old,out)); // v8 rejects new bits even with valid checksums.
+    }
+    for(unsigned bit:{26u,27u,28u,29u,30u,31u}) {
+        auto bad=v9;bad[20+bit/8]|=uint8_t(1u<<(bit%8));checksum(bad);checksum(bad,1532);
+        assert(!decodeSave(bad,out));
+    }
+    auto valueOnly=v9;valueOnly[23]&=uint8_t(~1u);checksum(valueOnly);checksum(valueOnly,1532);
+    assert(!decodeSave(valueOnly,out));
+    auto payload=v9;payload[40]=1;checksum(payload,1532);assert(!decodeSave(payload,out));
+    for(unsigned at:{20u,36u,1532u,1535u}) {
+        auto bad=v9;bad[at]^=1;assert(!decodeSave(bad,out));
+    }
+    assert(writeSave(path,completion));completion.originalNpcTalkState.flag5376=false;
+    assert(writeSave(path,completion));
+    for(unsigned size:{40u,1535u,1537u}) {
+        std::ofstream f(path,std::ios::binary|std::ios::trunc);
+        f.write(reinterpret_cast<const char*>(v9.data()),size>1536?1536:size);if(size>1536)f.put(0);f.close();
+        assert(loadSave(path,out)==LoadResult::Recovered && out.originalNpcTalkState.flag5376==true);
+    }
+    std::remove(path.c_str());std::remove((path+".bak").c_str());
+    std::puts("Native v9 completion5376, v8 pouch/5407, legacy unknown migration, corruption and recovery passed");
 }

@@ -12,7 +12,7 @@ bool read(const std::string& path, Progress& p) {
     FILE* f=std::fopen(path.c_str(),"rb"); if(!f) return false;
     SaveBytes b{};const size_t size=std::fread(b.data(),1,b.size(),f);
     bool ok=(size==32 && (get(b,4)==1 || get(b,4)==2)) || (size==40 && get(b,4)>=3 && get(b,4)<=7) ||
-        (size==b.size() && get(b,4)==8);
+        (size==b.size() && (get(b,4)==8 || get(b,4)==9));
     ok=ok && std::fgetc(f)==EOF; std::fclose(f);
     return ok && decodeSave(b,p);
 }
@@ -22,15 +22,17 @@ SaveBytes encodeSave(const Progress& p) {
         (p.interiorMask && !((p.room==0 && p.interiorMask==1) || (p.room==2 && p.interiorMask==2))))return b;
     const auto& talk=p.originalNpcTalkState;
     const bool known=talk.quest1420 || talk.flag5405 || talk.flag5406;
-    const bool extended=p.originalPouch || talk.flag5407.has_value();
-    std::memcpy(b.data(),"PM2D",4); put(b,4,extended?8:known?7:6);
+    const bool completed=talk.flag5376.has_value();
+    const bool extended=p.originalPouch || talk.flag5407.has_value() || completed;
+    std::memcpy(b.data(),"PM2D",4); put(b,4,completed?9:extended?8:known?7:6);
     uint32_t x,z; std::memcpy(&x,&p.position.x,4); std::memcpy(&z,&p.position.z,4);
     put(b,8,x); put(b,12,z); put(b,16,p.hp); put(b,20,p.mushrooms);
     if(known || extended)put(b,20,uint32_t(p.mushrooms) | (uint32_t(talk.quest1420.value_or(0))<<8) |
         (uint32_t(talk.quest1420.has_value())<<16) | (uint32_t(talk.flag5405.has_value())<<17) |
         (uint32_t(talk.flag5406.has_value())<<18) | (uint32_t(talk.flag5405.value_or(false))<<19) |
         (uint32_t(talk.flag5406.value_or(false))<<20) | (uint32_t(talk.flag5407.has_value())<<21) |
-        (uint32_t(talk.flag5407.value_or(false))<<22) | (uint32_t(bool(p.originalPouch))<<23));
+        (uint32_t(talk.flag5407.value_or(false))<<22) | (uint32_t(bool(p.originalPouch))<<23) |
+        (uint32_t(completed)<<24) | (uint32_t(talk.flag5376.value_or(false))<<25));
     b[24]=p.crumpDefeated; b[25]=p.sound;b[26]=p.room;b[27]=int8_t(std::round(p.elevation*10));
     if(p.originalStory){put(b,28,uint32_t(*p.originalStory));b[32]=1;}
     b[33]=p.interiorMask;
@@ -50,28 +52,32 @@ Progress snapshotSaveProgress(const Progress& p) {
 }
 bool decodeSave(const SaveBytes& b, Progress& p) {
     const uint32_t version=get(b,4);
-    if(std::memcmp(b.data(),"PM2D",4) || version<1 || version>8 ||
+    if(std::memcmp(b.data(),"PM2D",4) || version<1 || version>9 ||
        (version>=3?get(b,36)!=checksum(b,36):get(b,28)!=checksum(b,28)))return false;
-    if(version==8 && get(b,1532)!=checksum(b,1532))return false;
+    if(version>=8 && get(b,1532)!=checksum(b,1532))return false;
     if(version>=3 && (b[32]>1 || (version==3 && b[33]) ||
        (version<5?b[34]!=0:version==5?b[34]>1:(b[34]&~7u)!=0) ||
        (version<6 && b[35]) || (!b[32] && get(b,28))))return false;
     Progress out; uint32_t x=get(b,8),z=get(b,12);
     const uint32_t packed=get(b,20),mushrooms=version>=7?packed&255u:packed;
     if(version>=7) {
-        if((packed&(version==8?0xff000000u:0xffe00000u)) || (!(packed&0x10000u) && (packed&0xff00u)) ||
+        if((packed&(version==9?0xfc000000u:version==8?0xff000000u:0xffe00000u)) || (!(packed&0x10000u) && (packed&0xff00u)) ||
            (!(packed&0x20000u) && (packed&0x80000u)) || (!(packed&0x40000u) && (packed&0x100000u)))return false;
         if(packed&0x10000u)out.originalNpcTalkState.quest1420=uint8_t(packed>>8);
         if(packed&0x20000u)out.originalNpcTalkState.flag5405=(packed&0x80000u)!=0;
         if(packed&0x40000u)out.originalNpcTalkState.flag5406=(packed&0x100000u)!=0;
     }
-    if(version==8) {
+    if(version>=8) {
         if(!(packed&0x200000u) && (packed&0x400000u))return false;
         if(packed&0x200000u)out.originalNpcTalkState.flag5407=(packed&0x400000u)!=0;
         if(packed&0x800000u) {
             out.originalPouch=std::make_shared<ProloguePouch>();
             std::memcpy(out.originalPouch->bytes.data(),b.data()+40,out.originalPouch->bytes.size());
         } else for(unsigned i=40;i<1532;++i)if(b[i])return false;
+    }
+    if(version==9) {
+        if(!(packed&0x1000000u) && (packed&0x2000000u))return false;
+        if(packed&0x1000000u)out.originalNpcTalkState.flag5376=(packed&0x2000000u)!=0;
     }
     std::memcpy(&out.position.x,&x,4); std::memcpy(&out.position.z,&z,4);
     if(get(b,16)>(out.originalPouch?32767u:10u) || mushrooms>99 || b[24]>1 || b[25]>1 || (get(b,4)==1 && b[26]) || !roomAsset(b[26]) || (get(b,4)==1 && b[27]) || !std::isfinite(out.position.x) || !std::isfinite(out.position.z) || std::fabs(out.position.x)>100 || std::fabs(out.position.z)>100) return false;
@@ -97,7 +103,7 @@ bool writeSave(const std::string& path,const Progress& p) {
     if(!decodeSave(b,checked)) return false;
     const std::string tmp=path+".tmp",bak=path+".bak";
     FILE* f=std::fopen(tmp.c_str(),"wb"); if(!f) return false;
-    const size_t size=get(b,4)==8?b.size():40;
+    const size_t size=get(b,4)>=8?b.size():40;
     bool ok=std::fwrite(b.data(),1,size,f)==size;
     if(std::fflush(f)!=0) ok=false;
     // libctru's filesystem backend closes/commits files; fsync is used on hosts.

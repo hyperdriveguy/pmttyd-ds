@@ -17,7 +17,7 @@ GoombaRewardServices services(Harness& h) {
    h.firstCalls.push_back(first);
    if(!h.ack)return 0;
    h.pouch.addCoins(amount);return 2;
-  },[](void* p,int32_t flag){auto& h=*static_cast<Harness*>(p);assert(flag==5376 && h.state->quest1420==0);h.flag=true;}};
+  },[](void* p,int32_t flag){auto& h=*static_cast<Harness*>(p);assert(flag==5376 && h.state->quest1420==0);h.flag=true;h.state->flag5376=true;}};
 }
 int main() {
  MessageFont font;assert(font.load("romfs/font.pmfont") && loadFieldActorCatalog("romfs"));
@@ -28,6 +28,8 @@ int main() {
  state.quest1420=2;assert(!goombaQuest2RewardAdmitted(*actor,state));
  state.flag5406=false;assert(!goombaQuest2RewardAdmitted(*actor,state));
  state.flag5406=true;assert(goombaQuest2RewardAdmitted(*actor,state)); //5405 is not read in this source arm.
+ for(bool complete:{false,true}) {state.flag5376=complete;assert(goombaQuest2RewardAdmitted(*actor,state));}
+ state.flag5376=false;
  auto other=*actor;other.room=2;assert(!goombaQuest2RewardAdmitted(other,state));
  MessageAssets original;assert(original.loadGlobal("romfs/messages/global.txt") && original.loadRoom("romfs/messages/gor_01.txt"));
  FieldActorTalk talk;GoombaReward event;Harness h;h.state=&state;h.pouch.half(0x70,3);h.pouch.half(0x74,1);
@@ -40,12 +42,12 @@ int main() {
  GoombaReward snapshot=event;assert(!snapshot.canAdvance());snapshot.eventMain(0);assert(h.firstCalls.empty());
  while(talk.message.active() && tick<3000)talk.message.tick(++tick*1000/60,0x100);
  assert(!talk.message.active());h.available=false;event.eventMain(tick*1000/60);
- assert(h.firstCalls.empty() && state.quest1420==2 && !h.flag);
+ assert(h.firstCalls.empty() && state.quest1420==2 && !h.flag && state.flag5376==false);
  h.available=true;event.eventMain(tick*1000/60);event.eventMain(tick*1000/60);
  assert((h.firstCalls==std::vector<bool>{true,false}) && h.pouch.half(0x78)==100 && state.quest1420==2);
  snapshot=event;snapshot.eventMain(0);assert(h.firstCalls.size()==2);
  h.ack=true;event.eventMain(tick*1000/60);
- assert(state.quest1420==0 && h.flag && h.pouch.half(0x78)==120);
+ assert(state.quest1420==0 && h.flag && state.flag5376==true && h.pouch.half(0x78)==120);
  assert(talk.message.id()=="sys_request_finish" && talk.message.rawText()==original.find("sys_request_finish") && talk.actor.key==0);
  assert(event.active() && !event.complete() && state.flag5406==true && !state.flag5405);
  while(talk.message.active() && tick<6000){talk.message.tick(++tick*1000/60,0x100);event.eventMain(tick*1000/60);}
