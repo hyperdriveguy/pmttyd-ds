@@ -73,11 +73,15 @@ int main() {
     ttyd::Frontend frontend;ttyd::OpeningDemo demo;ttyd::OpeningSequence opening;
     bool frontReady=demo.load("romfs:") && opening.load("romfs:");
     demo.begin(0);ttyd::scanSaveSlots(frontend,saveDirectory);
+    std::string restoreFailure;
     auto restoreProgress=[&](const ttyd::Progress& checkpoint) {
         ttyd::CollisionTransition transaction;float height=checkpoint.elevation;
-        if(!stageRoomCollision(checkpoint.room,transaction))return false;
+        restoreFailure.clear();
+        if(!stageRoomCollision(checkpoint.room,transaction)){restoreFailure="Checkpoint collision unavailable";return false;}
         auto ownedCandidate=std::make_unique<ttyd::Game>();auto& candidate=*ownedCandidate;candidate.restore(ttyd::snapshotSaveProgress(checkpoint));candidate.retainPhysicalInput(game);
-        if(!candidate.checkpointGround(height) || !ttyd::walkable(checkpoint.position,height) || !renderer.changeRoom(checkpoint.room))return false;
+        if(!candidate.checkpointGround(height)){restoreFailure="Checkpoint ground unavailable";return false;}
+        if(!ttyd::walkable(checkpoint.position,height)){restoreFailure="Checkpoint position blocked";return false;}
+        if(!renderer.changeRoom(checkpoint.room)){restoreFailure=renderer.resourceFailure().empty()?"Checkpoint scene unavailable":renderer.resourceFailure();return false;}
         game=std::move(candidate);transaction.commit();return true;
     };
     game.restore(game.progress);
@@ -87,6 +91,7 @@ int main() {
 #ifdef TTYD_DEBUG_SHORT_BOOT
     const auto loaded=ttyd::loadSave(savePath,saved);
     if(loaded==ttyd::LoadResult::Loaded || loaded==ttyd::LoadResult::Recovered)restoreProgress(saved);
+    else restoreFailure=loaded==ttyd::LoadResult::Invalid?"Development checkpoint invalid":"Development checkpoint missing";
     frontend.screen=ttyd::FrontScreen::Playing;
 #endif
     const char* notice=frontReady?"":"Original opening resources unavailable";
@@ -224,8 +229,13 @@ int main() {
         else audio.updateFrontend(4,game.progress.sound);
         audio.updateOpeningHousePcm(frontend.screen==ttyd::FrontScreen::Opening && opening.part==ttyd::OpeningPart::House?&opening.house.sounds:nullptr,game.progress.sound);
         metrics.renderMs=C3D_GetProcessingTime();metrics.gpuMs=C3D_GetDrawingTime();
-        if(frontend.screen==ttyd::FrontScreen::Playing)renderer.render(game,metrics,noticeTicks>0?notice:"",audio.available());
-        else renderer.renderFrontend(frontend,demo,opening,noticeTicks>0?notice:"");
+        const char* displayedNotice=noticeTicks>0?notice:"";
+#ifdef TTYD_DEBUG_SHORT_BOOT
+        // Persistent harness diagnostics, separate from original story dialogue.
+        if(!restoreFailure.empty())displayedNotice=restoreFailure.c_str();
+#endif
+        if(frontend.screen==ttyd::FrontScreen::Playing)renderer.render(game,metrics,displayedNotice,audio.available());
+        else renderer.renderFrontend(frontend,demo,opening,displayedNotice);
         game.fade.presented();
         ++frames;
         if(now-window>=1) {metrics.fps=frames/(now-window);window=now;frames=0;}

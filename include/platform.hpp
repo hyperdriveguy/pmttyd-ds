@@ -31,6 +31,7 @@ class Renderer {
 public:
     bool init();
     bool changeRoom(uint32_t room);
+    const std::string& resourceFailure() const{return frontFailure;}
     void beginFrontend();
     void advanceTutorialAnimations(Game&);
     void releaseFrontend(bool preserveMapTurn=false);
@@ -75,6 +76,7 @@ private:
     C2D_TextBuf textBuffer=nullptr;
     struct MapBatch { uint32_t start,count; int32_t texture; uint32_t layer,wrapS,wrapT; };
     struct Texture { C3D_Tex texture{}; Tex3DS_Texture imported=nullptr; };
+    bool prepareSceneActorTextures(const Game&);
     Texture messageIndicatorTexture;
     std::unique_ptr<BattleStartupResources> tutorialStartupResources;
     std::array<Texture,9> tutorialStartupTextures;

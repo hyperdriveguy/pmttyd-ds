@@ -763,3 +763,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Setup4 stage-object cache and map requests](battle/SETUP4_STAGE_OBJECT_CACHE_AND_NAMED_MAP_REQUESTS.md): selected5 and hidden builtin2, cache999, exact layer pivots and named map matrix latch/recalculation.
 - [Portable stage-object update and bindings](battle/NATIVE_STAGE_OBJECT_UPDATE_AND_BINDINGS.md): full32-record Main, original vertex ownership export and retained native map/renderer frontier.
+
+- [Native scene actor GPU texture lifetime](display/NATIVE_SCENE_ACTOR_GPU_TEXTURE_LIFETIME.md).

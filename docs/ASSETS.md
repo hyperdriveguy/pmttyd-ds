@@ -1694,3 +1694,18 @@ conversion and .01 source additional placements remain; no duplicate offset.
 Actual native dynamic provider still requires matrix/frame/upload binding.
 Assets rebuilt with python3 tools/trio_battle_assets.py. Nintendo/Intelligent
 Systems resources; no redistribution rights granted. No private payload committed.
+
+## 2026-10-13 — Native original combat-atlas residency
+
+No new image payload was extracted or resampled. The existing private original
+quest13 Mario and trio Mario/Goombella `.t3x` banks retain their ISO provenance,
+pixels, UV scales and filtering. Their RGBA8 headers describe1024×512,512×512
+and512×256 respectively:3.5MiB of texture pixels excluding metadata. This is
+a size calculation, not a measured free-memory value. GPU import now occurs at
+the active scene consumer; room changes and inactive consumers release those
+GPU banks after frame synchronization. CPU animation and UV metadata stay loaded.
+The valid original harbor checkpoint previously rejected gor_00 texture32;
+deferred combat GPU admission permits the harbor and original tutorial entry.
+See [native lifetime contract](behavior/display/NATIVE_SCENE_ACTOR_GPU_TEXTURE_LIFETIME.md).
+Nintendo/Intelligent Systems original resources; no redistribution rights granted.
+ISO remains read-only; compiled packs and captures remain private/ignored.
