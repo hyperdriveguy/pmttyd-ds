@@ -4066,3 +4066,22 @@ RGB TEXC+RASC and alpha TEXA*RASA require an audience program, not shadowA0.
 A source-proven setup4 empty bank can finish after actual prefix/scan, but
 unavailable population must not imply empty. Bind the retained native producer
 history before selecting this domain.
+
+
+## 2026-10-14 — Quest world actors and cancellation follow-up
+
+Delivered [quest1/4 actor and house05 door-copy source](../behavior/field/TROUBLE_CENTER_QUEST1_4_WORLD_ACTORS_AND_DOOR_COPY.md).
+The native actor catalog now binds actual Borodo2/c_borodo_n init and retained
+named positions; cancellation consumes all30 original list pointers.
+[Implementation scope](../behavior/field/NATIVE_BORODO_POSITION_AND_ALL_TASK_CANCELLATION.md).
+Garf and house05 still need actual model/registration and72-byte door-copy
+owner, GW11 lifetime and NPC-list consumers. Separate actor registration from
+draw visibility before door-hidden named placement. Original Borodo talk44518,
+shared case/GP lifetime, generic float/name callback ABI and full runtime source
+comparisons remain OPEN. No fabricated story dialogue or missing-provider ack.
+
+Native capture follow-up resolved the apparent wall occlusion as a fixture
+inside house01 camera index4. [Original alley source](../behavior/field/ROGUEPORT_EAST_BORODO_ALLEY_CAMERA_AND_OCCLUSION.md)
+identifies actual road1; valid alley checkpoints show the original Borodo model
+with the existing side camera. No speculative wall-hide rule was added.
+Original-runtime raster comparison remains OPEN.

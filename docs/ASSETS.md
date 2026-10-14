@@ -657,3 +657,26 @@ Native UV-boundary tessellation preserves the source1.075 end-pose coordinates
 without atlas bleed or compressing in-range interpolation. Rights remain original
 Nintendo/Intelligent Systems; no redistribution license is granted and no original
 pixels/compiled packs enter history. [Draw/sampler contract](behavior/battle/AUDIENCE_DRAW_NORMALS_FLIP_AND_NATIVE_ATLAS_CLAMP.md).
+
+
+## Original Borodo2 field actor (2026-10-14)
+
+Read-only G8ME01 paths `a/c_borodo_n` (ISO871076364,21636 bytes, SHA256
+`bdf18b38f90a584a2c4c9712f1720d80f7814f872da7cf284ac16f9e59b27747`) and
+`a/c_borodo_n-` (ISO871098000,59520 bytes, SHA256
+`17be5af817f6cd6f60208dcdb596393407a4f031f98c30a9fa6e2cb80b06664c`).
+The gor_02 source actor is ボロドー２; tribe row80332d20 supplies the original
+resource and S_1/T_1/W_1/R_1 poses. Index0 remains original Z_1.
+
+`tools/field_actor_assets.py` uses the existing original geometry/sparse pose,
+RGBA/pass/cull converter. Twenty used textures become124px cells with original
+wrap-aware gutters in a1024x512 source atlas (UV scale2), reduced to512x256 RGBA8/512KiB
+for the resident native room; normalized UVs remain unchanged. Untextured draws retain
+neutral white. Native T3X/packed meshes use the existing Citro3D actor path.
+No replacement illustration or generated sound is added. PMNPC009 records exact
+original Shift-JIS names and finite init profiles separately from model identity.
+
+Extracted inputs remain under ignored `local-assets/field-actors/`; generated
+`romfs/field-borodo.*`, `field-actors.pmnpc` and metadata remain outside source
+history. Original Nintendo/Intelligent Systems assets; local conversion does
+not grant redistribution rights. See the [native contract](behavior/field/NATIVE_BORODO_POSITION_AND_ALL_TASK_CANCELLATION.md).

@@ -35,7 +35,7 @@ Before an active manager visit, Game imports its known finite story/quest/
 GSF5374..5421/GSW1469..1474 domain. It exports that domain immediately afterward.
 A completed manager never exports a stale snapshot on later field visits.
 Counter CoinRead/Add use the real ProloguePouch signed halfword78 and original
-add/clamp operation. Supported Q2/Q13 cancellation removes every matching
+add/clamp operation. All30 cancellation lists come from the original packed table and remove every matching
 original key item using the real low-level pouch methods and live VM reset
 writers. No legacy fabricated coin total or arbitrary item removal is supplied.
 
@@ -68,8 +68,10 @@ unbound. Fixed NDSP channel reservation and conservative gain are native policy.
 This is exact-node native case admission for this finite area, not the original
 64-case registration owner or a complete shared field GP scheduler. The menu
 retains its portable work surrogate rather than the original Cmap0x416c ABI.
-Actual NPC/door/item-world callbacks (including Q1/Q4 start and some end children)
-stay pending; no fake success or synthetic actor replaces them. They remain in
+Actual Borodo2 now binds Q4 named-position children; see the
+[follow-up](NATIVE_BORODO_POSITION_AND_ALL_TASK_CANCELLATION.md).
+Other NPC/door/item-world callbacks, including Q1/Garf and house05, stay pending;
+no fake success or synthetic actor replaces them. They remain in
 the retained original manager across reentry. Source GW11/door handles, full
 party constructor/current-index writers and live checkpoint event ownership
 remain unresolved. Those quests are not claimed fully implemented.

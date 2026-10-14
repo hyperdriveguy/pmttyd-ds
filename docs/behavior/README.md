@@ -991,3 +991,8 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Audience camera4 class1/class2 callback and empty bank](display/AUDIENCE_CAMERA4_CLASS1_CLASS2_CALLBACK_AND_EMPTY_BANK.md) — actual 17-call GX prefix, 200 fresh record admissions, palette/matrix/quad order.
 
 - [Original audience draw, normals, flip and native atlas clamp](battle/AUDIENCE_DRAW_NORMALS_FLIP_AND_NATIVE_ATLAS_CLAMP.md)
+
+- [Trouble Center actual quest1/4 actors and mutable door copy](field/TROUBLE_CENTER_QUEST1_4_WORLD_ACTORS_AND_DOOR_COPY.md) — original names, init branches, named position writes and house05 copy lifetime.
+- [Native Borodo position and all-task cancellation](field/NATIVE_BORODO_POSITION_AND_ALL_TASK_CANCELLATION.md) — PMNPC009 names, retained collision/render position and original30 item lists.
+
+- [Rogueport east Borodo alley camera/occlusion](field/ROGUEPORT_EAST_BORODO_ALLEY_CAMERA_AND_OCCLUSION.md) — source house-versus-alley zone selection and finite cutaway logic.

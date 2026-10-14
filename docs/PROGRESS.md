@@ -3337,3 +3337,60 @@ is empty. Nonzero shadow image paths, unknown profile/global writers, numeric/
 raster hardware parity, production Bero/sequence lifetime and full ordered
 battle-to-field return remain open. Original dialogue unchanged; prologue goal
 remains active and incomplete.
+
+
+## 2026-10-14 — Original Borodo actor and all-task cancellation tables
+
+Added original gor_02 ボロドー２/c_borodo_n using the source tribe, RGBA art,
+S_1/T_1/W_1/R_1 animations and original init branches. PMNPC009 retains exact
+Shift-JIS event names separately from model identity and validates finite init
+profiles; old versions remain readable. The original Q4 start/end children now
+move the actual retained NPC previous/current/movement roots. Collision and
+rendering use that same owner; switches do not replay init over later positions.
+Missing actors/services remain pending. No replacement story dialogue added.
+
+Cancellation now consumes all30 original irai_item_table pointers from the
+immutable PMEVT program, replacing the Q2/Q13-only adapter. Nine source key
+lists and21 empty lists preserve original order/sentinel semantics. All reset
+the original flags/bytes, repeatedly count/remove listed keys through the live
+pouch, and preserve other resources. Original caller owns the30-coin fee and
+independent end child. Commits49a12f66 and3b855583.
+
+Validation: frozen tree674c5d646308481654143ed0a672c165654b4213;3210 tracked
+files,0 mismatches (artifacts/trouble-world-audit.json). Sequential
+make assets-ready SOUNDTRACK=gamecube passed; make test passed284 C++/168 Python;
+make all and DEBUG_SHORT_BOOT=1 native builds passed, then normal boot restored.
+Logs: artifacts/trouble-world-assets-final.log, trouble-world-test-verified.log,
+trouble-world-build-final.log and trouble-world-short-build-final.log. Checks
+cover all30 real counter paths, actual Q4 acceptance/end reposition, unknown
+source init state, below-map placement and persistent live positions.
+
+Native verification caught a2MiB atlas import failure; the same original RGBA
+atlas now uses512x256/512KiB with normalized UVs unchanged. Valid isolated
+Azahar alley captures show the original blue Bandit and the source completed
+task placement; field readings hold60 App FPS, approximately10..13ms/frame.
+Captures: artifacts/azahar-borodo-clear-normal and azahar-borodo-clear-completed.
+These are emulator readings, not physical New2DSXL or source raster parity.
+Earlier captures are not accepted appearance evidence: -380/-180 was inside
+house01 camera zone; -500/-180 overlapped Mario; -500/-100 was blocked by map
+collision. Actual validated player checkpoint is(-500,0,-270), outside the
+original NPC at(-475,0,-180). No speculative wall-hiding change was added.
+Both final isolated save copies remain byte-identical to their fixtures.
+
+Normal3DSX SHA256:ac2ce1cf1a9e62edcf4af6ac0544384c57b429a0302a8694b9659b4802e82a03.
+Capture3DSX SHA256:e4d9dd017d8fee55cb5eccf597cc7d373d10006195d94c3737b0575e3b75e34a.
+
+Initial host checks exposed two fixtures using old catalog offsets; corrected
+PMNPC009 strides. The new start-child test needed its injected case contact
+restored after its setup simulation tick; corrected and rerun. These failures
+remain archived in trouble-world-test.log/trouble-world-test-final.log.
+
+Limits/next: bind Garf/c_monban and actual house05 mutable72-byte door-copy
+owner/GW11/NPC-list consumers; separate actor registration from draw visibility
+before named movement of door-hidden actors. Borodo's talk44518 remains unbound.
+Full shared GP/case/field event lifetime, generic evtGetFloat/name ABI and
+original runtime/raster comparison remain open. Continue original area packs
+and object/event owners using these data-driven catalog/service boundaries.
+The broad remake goal remains active and incomplete.
+[Native scope](behavior/field/NATIVE_BORODO_POSITION_AND_ALL_TASK_CANCELLATION.md);
+[source alley diagnosis](behavior/field/ROGUEPORT_EAST_BORODO_ALLEY_CAMERA_AND_OCCLUSION.md).
