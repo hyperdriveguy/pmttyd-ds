@@ -34,6 +34,7 @@
 #include "map_material_light.hpp"
 #include "animation_texture.hpp"
 #include "source_icon_resources.hpp"
+#include "native_icon_program.hpp"
 #include <memory>
 #include <3ds.h>
 #include <citro2d.h>
@@ -161,6 +162,9 @@ private:
     // require their own free. Struct copying does not clone either resource.
     struct Texture { C3D_Tex texture{}; Tex3DS_Texture imported=nullptr; };
     SourceIconResources sourceIcons;
+    NativeIconProgram sourceIconProgram;std::optional<NativeIconPlan> sourceIconPlan;
+    bool sourceIconState(const ShadowGXRequest&);
+    bool applySourceIconProgram(const NativeIconPlan&);
     struct SourceIconCell {Texture gpu;uint32_t index=UINT32_MAX;uint64_t stamp=0;};
     std::array<SourceIconCell,101> sourceIconCells{}; // Full100-item bank plus single-frame AP icon442.
     std::optional<uint32_t> pendingSourceIcon,boundSourceIcon;uint64_t sourceIconStamp=0;

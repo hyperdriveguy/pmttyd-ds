@@ -1097,11 +1097,11 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Original matrix-icon services](display/ORIGINAL_MATRIX_ICON_SERVICES.md):
   retained whole iconDispGx2/Col, packed descriptor/GP frame selection and actual
-  audience callback connection; native resource and iconGX binding remain open.
+  audience callback connection; native resources/materials bound, raster open.
 
 - [Original iconGX draw service](display/ORIGINAL_ICON_GX_DRAW_SERVICE.md):
   full local icon matrix, texture, material, fog, alpha and primitive sequence;
-  linked through matrix-icon wrappers, native resource/raster binding open.
+  linked through matrix-icon wrappers and native resources/materials; raster open.
 
 - [Native map TEV continuation and ordinary combiner](display/NATIVE_MAP_TEV_PROGRAM_AND_ORDINARY_COMBINER.md): fixed original request tables, retained optional boundaries/count publication and actual texture/raster/K0 Citro3D routing.
 - [Original ordinary TEV SDK and shadow source domain](display/ORIGINAL_ORDINARY_TEV_SDK_AND_SHADOW_SOURCE_DOMAIN.md): retail GXSetTevOp table, three original draw-bank domains, corrected shadow getter ownership and stage-local PICA constant constraints.
@@ -1119,7 +1119,7 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Native original icon resources](display/NATIVE_ORIGINAL_ICON_RESOURCES.md):
   complete original directory/TPL, lossless cells, registered GP/published camera
-  reads and bounded actual native texture residency; material/raster still open.
+  reads and bounded actual native texture residency; material binding now available, raster open.
 
 - [Original stage dark/light callbacks](display/BATTLE_STAGE_DARK_AND_LIGHT_CALLBACKS.md) — unconditional dark quads, retained stage alpha, light-entry loop and exact shared GX state; native callback binding remains open.
 
@@ -1131,3 +1131,7 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Ordered NPC setup installation and provider frontier](field/NPC_SETUP_ORDERED_INSTALLATION_AND_RETAINED_PROVIDER_FRONTIER.md) — full source read/effect order and suspension boundaries.
 - [gor02 battle index0 and original tribe descriptors](field/GOR02_SETUP_ZERO_BATTLE_INDEX_AND_ORIGINAL_TRIBE_DESCRIPTORS.md) — populated setup RNG,all fifteen actors and actual resource dependencies.
 - [Native retained NPC setup scheduling](field/NATIVE_RETAINED_NPC_SETUP_EVENT_SCHEDULING.md) — independent init/regular roots and retained allocation admission.
+
+- [Native original icon material programs](display/NATIVE_ICON_MATERIAL_PROGRAMS.md):
+  actual flat light/map/fog-off services, canonical TEV registers and PICA plans;
+  isolated pixel validation, retained scene primitive/replay still open.

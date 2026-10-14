@@ -99,10 +99,12 @@ Shutdown also retires any remaining native cells. Source loaded-buffer state is
 not fabricated from population count or an empty item bank.
 
 The native callback now binds SDK matrix math, published position/current matrix,
-resource queries/LOD and actual texture binding. Map lighting, channel/TEV/fog/
-depth consumers and the primitive emitter still retain explicit waits. Ordinary
-loaded icons stop next at mapSetMaterialLight800208c0; flags16 takes its own
-channel path. No native draw or original item presentation/input is skipped.
+resource queries/LOD and actual texture binding. The
+[native icon material programs](NATIVE_ICON_MATERIAL_PROGRAMS.md) also bind actual
+flat map light, map work/blend, channel/TEV, fog-off and display-state services.
+Complete plans publish before Begin. Primitive submission/replay, enabled fog,
+shared effect state and full frame ownership remain open. No native quad or
+original item presentation/input is skipped.
 
 ## Validation scope
 

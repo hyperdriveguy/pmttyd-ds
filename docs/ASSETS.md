@@ -1192,3 +1192,16 @@ actor memory/battle/pose effects occur only in explicit validation fixtures;
 Game receives no fabricated actor registration or resource-success provider.
 Original Nintendo/Intelligent Systems data retain existing private licensing;
 ISO/extracts/packs/probes/binaries stay ignored,with no distribution grant.
+
+### Native icon material program binding (2026-10-14)
+
+[Native original icon material programs](behavior/display/NATIVE_ICON_MATERIAL_PROGRAMS.md)
+now consume the retained original icon cells through actual flat light, map
+blend/fog-off and ordered PICA tint/grayscale/blend programs. Read-only source
+review pins mapGetBlend8001d968 and __GXInitGX's identity swap table0; source
+spans/hashes and original default white are in the contract. No new extraction,
+conversion, resampling or generated artwork. The isolated native fixture uses
+original icon108 (A button); its captured interior pixels match scalar RGBA
+references within1 level. This is separate from original GX hardware parity or
+normal scene composition. Existing original-resource licensing/private-pack
+restrictions remain unchanged; no original bytes, probe main or binary committed.

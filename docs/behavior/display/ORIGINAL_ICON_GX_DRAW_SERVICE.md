@@ -113,8 +113,10 @@ primitive provider; releasing it neither repeats selection nor emits twice.
 
 [Native original resource binding](NATIVE_ORIGINAL_ICON_RESOURCES.md) now supplies
 the directory, all613 TPL images, existing VM GP/published camera reads and actual
-resident native texture binding. Full outer Main GP ownership/cadence, linked
-GX/map consumers and actual raster submission remain open. Tests
+resident native texture binding. The [native material programs](NATIVE_ICON_MATERIAL_PROGRAMS.md) now bind the
+used flat GX/map/display services and publish complete shader plans before Begin.
+Full outer Main GP ownership/cadence, enabled fog/shared effects, primitive
+submission/replay and normal scene-frame composition remain open. Tests
 use explicit service fixtures, not native PICA pixels or hardware. Matrix
 numerics use the supplied adapter; Gekko paired-single/FPSCR parity is unproven.
 Missing mapped source fields/providers retain unavailability after preceding

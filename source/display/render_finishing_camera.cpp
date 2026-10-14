@@ -106,7 +106,9 @@ void Renderer::resumeFinishingCamera(const Game& game){
             struct IconBridge {Renderer* renderer;const Game* game;} iconBridge{&renderer,b.game};
             SourceIconMatrixServices icon;icon.user=&iconBridge;
             icon.word=[](void* u,uint32_t address)->std::optional<uint32_t>{auto& b=*static_cast<IconBridge*>(u);const auto resource=b.renderer->sourceIcons.word(address);return resource?resource:b.game->trioAttack.sourceIconWord(address);};
-            icon.half=[](void* u,uint32_t address){return static_cast<IconBridge*>(u)->renderer->sourceIcons.half(address);};
+            icon.half=[](void* u,uint32_t address)->std::optional<uint16_t>{auto& b=*static_cast<IconBridge*>(u);
+                if(address==0x85000004){const auto* group=b.game->trioAttack.materialGroup();return group?std::optional<uint16_t>(group->flags):std::nullopt;}
+                return b.renderer->sourceIcons.half(address);};
             icon.currentCamera=[](void* u){return static_cast<IconBridge*>(u)->game->trioAttack.sourceIconCamera();};
             icon.matrix=[](void*,BattleAudienceMatrixRequest& r){BattleAudienceAuxServices math;bindAudienceAuxMathAdapter(math);return math.matrix(nullptr,r);};
             SourceIconGXServices gx;gx.user=&iconBridge;gx.word=icon.word;gx.half=icon.half;gx.matrix=icon.matrix;

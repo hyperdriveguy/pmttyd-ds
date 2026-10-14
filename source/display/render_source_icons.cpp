@@ -1,3 +1,4 @@
+#include "map_material_color.hpp"
 #include "platform.hpp"
 #include <algorithm>
 namespace ttyd {
@@ -26,6 +27,7 @@ void Renderer::releaseSourceIcons() {
     finishingShadowProgram.texture.reset();
   pendingSourceIcon.reset();
   boundSourceIcon.reset();
+  sourceIconPlan.reset();
 }
 void Renderer::prepareSourceIcons(const Game &game) {
   if (!game.trioBattleActive) {
@@ -84,7 +86,9 @@ void Renderer::prepareSourceIcons(const Game &game) {
                         ? Tex3DS_GetSubTexture(next->gpu.imported, 0)
                         : nullptr;
   if (!sub || Tex3DS_GetNumSubTextures(next->gpu.imported) != 1 ||
-      Tex3DS_SubTextureRotated(sub) || next->gpu.texture.fmt != GPU_RGBA8 || next->gpu.texture.minLevel || next->gpu.texture.maxLevel || next->gpu.texture.lodBias ||
+      Tex3DS_SubTextureRotated(sub) || next->gpu.texture.fmt != GPU_RGBA8 ||
+      next->gpu.texture.minLevel || next->gpu.texture.maxLevel ||
+      next->gpu.texture.lodBias ||
       next->gpu.texture.width != size(original->width) ||
       next->gpu.texture.height != size(original->height) ||
       sub->width != next->gpu.texture.width ||
@@ -152,8 +156,83 @@ std::optional<uint32_t> Renderer::sourceIconCall(const Game &game,
     return finishingShadowRequest(q) ? std::optional<uint32_t>(0)
                                      : std::nullopt;
   }
-  // These are actual directory/object/LOD and bound texture owners. Map
-  // lighting, TEV/fog/depth and primitive providers still retain their waits.
+  if (r.function == 0x800208c0) {
+    if (r.integers != std::array<uint32_t, 8>{4, 0, 0, 0, 0, 0, 0, 0})
+      return {};
+    struct Bridge {
+      Renderer *renderer;
+      const MapMaterialLightWork *work;
+    } bridge{this, game.trioAttack.materialLights()};
+    if (!bridge.work)
+      return {};
+    MapMaterialLightServices services;
+    services.user = &bridge;
+    services.query = [](void *u, MapLightQuery &q, uint32_t &pending) {
+      return mapLightBankQuery(*static_cast<Bridge *>(u)->work, q, pending);
+    };
+    services.gx = [](void *u, const ShadowGXRequest &q) {
+      return static_cast<Bridge *>(u)->renderer->sourceIconState(q);
+    };
+    uint32_t pending = 0;
+    return game.trioAttack.resumeMaterialLight(
+               4, {r.reals[0], r.reals[1], r.reals[2]}, services, pending)
+               ? std::optional<uint32_t>(0)
+               : std::nullopt;
+  }
+  if (r.function == 0x8002b438) {
+    return game.trioAttack.materialGroup() ? std::optional<uint32_t>(0x85000000)
+                                           : std::nullopt;
+  }
+  if (r.function == 0x8001d968) {
+    const auto *group = game.trioAttack.materialGroup();
+    if (!group)
+      return {};
+    return (group->flags & 2) ? group->colors[0] : 0xffffffffu;
+  }
+  if (r.function == 0x800217c8) {
+    struct Bridge {
+      Renderer *renderer;
+      const Game *game;
+    } bridge{this, &game};
+    MapMaterialColorServices services;
+    services.user = &bridge;
+    services.group = [](void *u) {
+      return static_cast<Bridge *>(u)->game->trioAttack.materialGroup();
+    };
+    services.currentCamera = [](void *u) {
+      const auto *c = static_cast<Bridge *>(u)->game->trioAttack.cameras();
+      return c ? c->current() : nullptr;
+    };
+    services.gx = [](void *u, const ShadowGXRequest &q) {
+      return static_cast<Bridge *>(u)->renderer->sourceIconState(q);
+    };
+    uint32_t pending = 0;
+    return game.trioAttack.resumeMaterialColor(r.function, 0, 0, 0, services,
+                                               pending)
+               ? std::optional<uint32_t>(0)
+               : std::nullopt;
+  }
+  if (r.function == 0x802b5a6c) {
+    if (r.integers != std::array<uint32_t, 8>{128, 0, 4, 0, 0, 0, 0, 0})
+      return {};
+    const auto plan = sourceIconProgram.plan();
+    if (!plan || !applySourceIconProgram(*plan))
+      return {};
+    sourceIconPlan = *plan;
+    return 0;
+  }
+  if (r.function == 0x802b932c || r.function == 0x802b940c ||
+      r.function == 0x802b8d60 || r.function == 0x802b93d8) {
+    ShadowGXRequest q;
+    q.kind = static_cast<ShadowGX>(r.function);
+    for (unsigned i = 0; i < 7; ++i)
+      q.values[i] = int32_t(r.integers[i]);
+    return finishingShadowRequest(q) ? std::optional<uint32_t>(0)
+                                     : std::nullopt;
+  }
+  if (sourceIconProgram.request(r))
+    return 0;
+  // Quad emission retains its own provider wait after complete shader binding.
   return sourceIcons.request(r, this, [](void *u, uint32_t index) {
     return static_cast<Renderer *>(u)->bindSourceIcon(index);
   });

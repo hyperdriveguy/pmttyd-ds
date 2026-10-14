@@ -52,8 +52,9 @@ resumes the remaining record scan only after the wrapper completes.
 RGBA, ID, width, height, texture and delay. Uninitialized source stack fields
 are not filled with guessed values. The nested [original iconGX service](ORIGINAL_ICON_GX_DRAW_SERVICE.md) now
 consumes the initialized fields its source body reads, retaining matrix/texture,
-material/fog and primitive calls across waits. Native linked resource/map/GPU
-owners and actual raster emission remain open; see also
+material/fog and primitive calls across waits. Native resources and [flat material programs](NATIVE_ICON_MATERIAL_PROGRAMS.md)
+are now bound; enabled effects, scene primitive/replay and frame ownership remain
+open. See also
 [icon flags](ITEM_SELECTOR_ICON_ANCHORS_AND_FLAGS.md).
 No request here acknowledges a quad or awards an audience item.
 

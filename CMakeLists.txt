@@ -1707,3 +1707,9 @@ target_sources(ttyd_core PRIVATE source/field/field_npc_setup.cpp)
 add_executable(field_npc_setup_tests tests/field_npc_setup_tests.cpp)
 target_link_libraries(field_npc_setup_tests PRIVATE ttyd_core)
 add_test(NAME field_npc_setup COMMAND field_npc_setup_tests)
+
+# Original icon material programs compiled for native PICA.
+target_sources(ttyd_core PRIVATE source/display/native_icon_program.cpp)
+add_executable(native_icon_program_tests tests/native_icon_program_tests.cpp)
+target_link_libraries(native_icon_program_tests PRIVATE ttyd_core)
+add_test(NAME native_icon_program COMMAND native_icon_program_tests)
