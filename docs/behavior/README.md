@@ -780,3 +780,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Native stage-map owner and GPU updates](battle/NATIVE_STAGE_MAP_OWNER_AND_GPU_UPDATES.md): original complete node hierarchy, seven rank0 records, source flags/matrix latches and live revision-driven 3DS updates.
 - [Spotlight work, init and Main admission](battle/STAGE_SPOTLIGHT_WORK_INIT_AND_MAIN_ADMISSION.md): real SBSS/bank ownership, five spot records, retained inactive/level-up gate, procedural draw and free frontier.
+
+- [Stage work initialization and inactive/counter Main](battle/STAGE_WORK_INITIALIZATION_AND_INACTIVE_COUNTER_PASS.md): original defaults, scratch free order and four interpolation counter ABIs.
+- [Native stage-work storage and counter services](battle/NATIVE_STAGE_WORK_STORAGE_AND_COUNTER_SERVICES.md): exact scalar initialization, retained cleanup owner and explicit active/spotlight/numeric dependencies.

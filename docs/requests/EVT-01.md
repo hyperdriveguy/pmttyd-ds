@@ -3590,3 +3590,7 @@ pins real SBSS/bank/init/liveness/free services and bounded fresh no-level-up
 inactive domain. Next bind that real owner/allocation, remaining stage work,
 audience window/sound/draw, BattleEnd/context and native sequence restoration.
 Original full loader/map ABI/animation/numerics/outer cadence remain open.
+
+### 2026-10-13 — StageWork storage and inactive/counter services
+
+Consumed the [source initializer and Main counter contract](../behavior/battle/STAGE_WORK_INITIALIZATION_AND_INACTIVE_COUNTER_PASS.md). Native now uses complete original scalar storage before named stage-object initialization; portable Main preserves required spotlight-first order, twelve actual flags, mapheap scratch free-before-clear and all four typed interpolation requests. Active entries and positive numeric curves stay provider boundaries. Native spotlight allocation/work owner still blocks before entry processing; no forced field success. [Binding scope](../behavior/battle/NATIVE_STAGE_WORK_STORAGE_AND_COUNTER_SERVICES.md). Next bind persistent spotlight Work/bank Init/Main/Free, active display admission and remaining ordered engine services.

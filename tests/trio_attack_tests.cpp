@@ -58,6 +58,11 @@ int main(){
     TrioBattleCommands menu;assert(menu.begin(scene));menu.input(0x100,0);menu.chooseTarget(2);menu.input(0x100,0);
     TrioAttack jump;assert(jump.begin(menu,scene,10));jump.tick(17,scene);
     uint32_t value=0;assert(jump.readWord(0x8410116c,value) && value==20);
+    assert(jump.readWord(0x84016ee0,value) && value==1); // Original active ambient record.
+    assert(jump.readWord(0x84016f00,value) && value==1); // Separate active background record.
+    assert(jump.readWord(0x84016f04,value) && value==0x8c8c0000);
+    assert(jump.readWord(0x84016f20,value) && value==0x43910000); // 290 source float.
+    assert(jump.readWord(0x84016f24,value) && value==0x43480000); // 200, escape-wall provider.
     assert(jump.readWord(0x84101170,value) && value==0);
     assert(jump.readWord(0x84101174,value) && value==0x3f330000);
     bool approached=false,airborne=false;

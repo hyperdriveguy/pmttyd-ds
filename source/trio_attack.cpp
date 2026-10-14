@@ -20,6 +20,7 @@
 #include "battle_audience_sound.hpp"
 #include "battle_main.hpp"
 #include "battle_stage_objects.hpp"
+#include "battle_stage_work.hpp"
 #include "battle_stage_floor.hpp"
 #include "battle_sequence_startup.hpp"
 #include "battle_drop_material.hpp"
@@ -144,7 +145,6 @@ struct TrioAttackRuntime {
         auto flag=[&](const std::string& name,bool on,uint32_t mask=1){auto* owner=stageMapOwner(name);return owner && owner->flag(name,mask,on);};
         for(const auto* name:{"A1","A2","B","C"})if(auto* owner=stageMapOwner(name)){owner->flag(name,1,true);owner->flag(name,2,false);}
         if(!flag("escape_wall",true))return false;
-        real(Battle+0x16f24,200); // Source StageInit W+b28 scalar, retained by escape-wall entry.
         for(unsigned i=0;i<stageDescriptors.size();++i) {
             const auto r=Battle+0x1715c+0x7c*i,d=stageDescriptors[i];
             word(r,i+1);word(r+0x64,d);word(r+0x6c,0xffffffff);
@@ -167,6 +167,14 @@ struct TrioAttackRuntime {
         s.groupFlags=[](void* p,uint32_t name)->std::optional<uint32_t>{auto& r=*static_cast<TrioAttackRuntime*>(p);auto* m=r.stageMapOwner(r.text(name));return m?m->flags(r.text(name)):std::nullopt;};
         s.groupFlag=[](void* p,uint32_t name,uint32_t mask,bool on){auto& r=*static_cast<TrioAttackRuntime*>(p);auto* m=r.stageMapOwner(r.text(name));return m && m->flag(r.text(name),mask,on);};
         return packedBattleStageObjectMain(s);
+    }
+    bool updateStageWork() {
+        BattleStageWorkServices s;s.actors=nativeBattleActorServices(vm);s.user=this;
+        s.spotlightMain=[](void* p){auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x8013800c);r.pending=0x8013800c;return false;};
+        s.activeEntry=[](void* p,uint32_t){static_cast<TrioAttackRuntime*>(p)->pending=0x80139150;return false;};
+        s.freeScratch=[](void* p,uint32_t allocation){auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x800f8908);eventMapFree(r.word(0x8041e80c),allocation,r.vm.memoryBinding.services());return true;};
+        s.interpolate=[](void* p,int32_t,int32_t,int32_t,float,float)->std::optional<float>{auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x80006c8c);r.pending=0x80006c8c;return std::nullopt;};
+        return packedBattleStageWorkMain(s);
     }
     int32_t raw(EventEntry& e,unsigned i)const{return int32_t(word(e.arguments+4*i));}
     int32_t value(EventEntry& e,unsigned i){return getEventValue(e,raw(e,i),vm.interpreterServices().operands);}
@@ -394,7 +402,7 @@ struct TrioAttackRuntime {
         allocateEventBattleMapPool(m);
         word(0x8041e844,0);vm.gp.refreshRate=60;vm.gp.timestamp=now*eventClockRate(243000000);vm.initializeContexts();vm.gp.battleContext=1;
         half(Battle+8,2);half(Battle+0x10,1);
-        initializePackedBattleStageFloorFields(Battle,nativeBattleActorServices(vm).memory);
+        initializePackedBattleStageWorkStorage(Battle,nativeBattleActorServices(vm).memory);
         for(unsigned i=0;i<64;++i)word(Battle+0x16f5c+8*i,0xffffffff);
         for(unsigned i=0;i<28;++i)byte(Battle+0x18da0+12*i,0xff);
         half(Battle,0);word(Battle+0xf14,0x0300004c);word(Battle+0xf18,0x04000002);word(Battle+0xf1c,0x05000009);word(Battle+0xf20,0x06000007);
@@ -1051,7 +1059,7 @@ struct TrioAttackRuntime {
                 }
                 return true; // Actual live inactive bank; never cleared to pass this gate.
             }
-            if(fn==0x80139150){r.endingRequest(0x8013800c);r.pending=0x8013800c;return false;}
+            if(fn==0x80139150)return r.updateStageWork();
             r.pending=fn;return false; // Real stage/map/render/audio providers remain required.
         };
         pending=0;

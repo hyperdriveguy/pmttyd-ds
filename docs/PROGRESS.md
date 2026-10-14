@@ -10873,3 +10873,39 @@ docs/ASSETS.md. No full prologue or hardware completion claim.
 Next actual spotlight allocation/work and stage idle/tween domains, then
 audience window/sound/slot/display, BattleEnd/map/context/NPC/event release
 and native delayed sequence/field return. Goal remains active and unfinished.
+
+## 2026-10-13 — Original stage-work storage and ordered cleanup/counters
+
+Consumed the recovered complete StageInit and inactive/counter StageMain
+contract from the documentation inbox. Native now initializes the full b3c
+work storage, twelve entry/scratch fields, distinct active ambient/background
+records and original six float fields from unchanged imported DOL constants.
+Replaces the floor-only projection and hardcoded escape-wall Y overwrite.
+Named StageObjectInit follows this storage initialization; spotlight Init
+remains pending, so complete original child initialization is not claimed.
+
+Portable Main retains the captured owner across spotlight/entry callbacks,
+requires spotlight first, checks all twelve real flags, and frees inactive
+nonnull scratch before clearing its field. Native free binds the real map heap.
+Four counters preserve signed admission, decrement-before-interpolation,
+wrapping elapsed, unsigned endpoints, signed mode, fresh duration/remaining
+reads and low-byte fctiwz-provider output. Active entries and positive numeric
+curves remain explicit services. Native still holds at spotlight8013800c;
+no field result/control/end flag is forced to bypass remaining engine work.
+
+Validation: make test207/207 CTest and131/131 Python passed
+(artifacts/native-stage-work-tests.log); make all passed and produced the3DSX
+(artifacts/native-stage-work-all.log). New tests cover prior nonzero storage,
+write bounds/defaults, spotlight-first admission, last active record,
+free-before-clear and owner mutation, failed providers, counter order/modes,
+negative sentinels/wrapping elapsed and byte conversion. Native trio tests
+inspect original mapped ambient/background/position fields and retain ending
+hold assertions. Initial test compilation exposed a missing static qualifier
+on a fixture array used by a callback; corrected before the successful rerun.
+Documentation1055 files/0 broken links and git diff check passed. No new emulator
+capture, physical hardware or performance assertion; previous native route
+coverage is recorded separately above. Private assets and ISO remain unchanged.
+
+Next bind persistent spotlight Work/bank allocation, original Init/Main/Free
+and actual display admission, then remaining engine/teardown/context services
+and delayed native field return. Full playable prologue goal remains active.

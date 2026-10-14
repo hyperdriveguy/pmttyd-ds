@@ -949,6 +949,12 @@ target_link_libraries(goomba3_talk_tests PRIVATE ttyd_core)
 add_test(NAME goomba3_talk_original COMMAND goomba3_talk_tests)
 set_tests_properties(goomba3_talk_original PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 
+# Original stage-work storage and ordered inactive/counter Main pass.
+target_sources(ttyd_core PRIVATE source/battle_stage_work.cpp)
+add_executable(battle_stage_work_tests tests/battle_stage_work_tests.cpp)
+target_link_libraries(battle_stage_work_tests PRIVATE ttyd_core)
+add_test(NAME battle_stage_work COMMAND battle_stage_work_tests)
+
 # Original global stage-floor consumer and event wrapper.
 target_sources(ttyd_core PRIVATE source/battle_stage_floor.cpp)
 add_executable(battle_stage_floor_tests tests/battle_stage_floor_tests.cpp)
