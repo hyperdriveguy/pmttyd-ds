@@ -5,6 +5,11 @@ Filed by the native overworld implementation session, 2026-10-12, as one of the 
 
 ## Open todos
 
+- [x] Complete local compareCamRoad and two scoped camRoadMain argument
+  directions — [road comparison/rate](../behavior/camera/FIELD_CAMERA_ROAD_COMPARISON_AND_TRANSITION_RATE.md).
+  Integer/float progress gates, transition mask, weighted metrics/sqrt,
+  deadband and output-preserving rejection/reciprocal publication pinned.
+
 - [x] Complete local follow-rate/ID get/set/reset/init and shift/rate reset
   leaves — [rate/ID/reset owners](../behavior/camera/FIELD_MARIO_CAMERA_RATE_ID_AND_RESET_OWNERS.md).
   Separate .2 follow and .03/.06/.06 shift reset words, raw templates, channel
@@ -76,3 +81,20 @@ leaf words, exact reset layouts/raw words/capture order/constants and exhaustive
 Docs only; no make test/all rerun. Raw inspection artifacts stay /tmp.
 OW-CAMERA-01 remains OPEN: caller/value/owner domains, other field writers,
 road geometry/limits, original pause/cadence/visual execution and native binding.
+
+## 2026-10-13 — Complete camera-road comparison and transition rate
+
+Delivered [complete compareCamRoad](../behavior/camera/FIELD_CAMERA_ROAD_COMPARISON_AND_TRANSITION_RATE.md).
+B.word0 and same-pointer integer progress rejection leave output unchanged.
+Later floating progress is a separate test; weighted metric/point-distance,
+three frsqrte refinements, joint deadband and reciprocal publication retain
+original FP operation/capture order. Two scoped caller regions establish opposite
+A/B directions; no universal old/new labels or measured duration invented.
+
+Validation: read-only ISO manifest18 spans/306 anchors/one call; independent
+all279 words/17 literal mathematical vectors/mask/FP/global/weight/output/caller
+sites/constants/fresh source pins passed. Markdown links/scoped diff passed.
+Vectors begin with supplied integer or postmetric inputs, not original acos/
+frsqrte observations. Docs only; no make test/all rerun. Raw listings stay /tmp.
+OW-CAMERA-01 stays OPEN: geometry/zone/curve selection, full road transition
+composition, profile/state/value/FP domains, limits and original visual binding.

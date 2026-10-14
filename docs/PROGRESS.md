@@ -2,6 +2,28 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox camera-road comparison and reciprocal rate
+
+Completed local compareCamRoad and two scoped caller directions; OW-CAMERA-01
+portion checked. [Road comparison](behavior/camera/FIELD_CAMERA_ROAD_COMPARISON_AND_TRANSITION_RATE.md)
+pins distinct integer/float progress rejection, transition-mask accumulation,
+fresh profile-weight metrics, point-distance/sqrt branches, joint deadband and
+reciprocal publication. Early rejection preserves output; camRoadMain can
+reverse state arguments. No authored geometry/clamp or measured native timing
+inferred. This supplies a road-transition dependency for 2DS XL framing.
+
+Validation: read-only ISO manifest18 spans/306 anchors/one call; independent
+all279 body words/17 literal vectors/masks/FP/global/weight/output/caller sites/
+constants/fresh source pins passed. Link audit passed963 Markdown files/zero
+broken links; scoped diff check passed. Docs/evidence only, no make test/all
+rerun. Raw ELF/listings/generator stay /tmp; no bodies/assets committed.
+Concurrent native edits excluded. Approved push pending valid GitHub credentials.
+
+Next: calcCamRoad/collisionCurve authored geometry/contact/selection and
+calcHokanCamRoad/calcCurrentCamState/camRoadMain transition composition; actual
+state/profile/FP/alias/value domains, room limits and original visual/pause/
+cadence/native binding. OW-CAMERA-01/other inbox/full-game remain OPEN.
+
 ## 2026-10-13 — Inbox camera defaults, IDs and reset owners
 
 Completed eight local camera rate/ID/reset leaves; OW-CAMERA-01 portion checked.
