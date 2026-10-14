@@ -1,7 +1,9 @@
 # STATUS-01 — Status lifetime, event binding and turn ownership
 
-**Status: OPEN (partially answered).** Part of the [request inbox](../DOCUMENTATION_REQUESTS.md); validated deliveries and locks are registered in the [delivery log](DELIVERY_LOG.md).
-Request text below is preserved verbatim from the inbox; answers and implementation breadcrumbs are append-only history. Updated 2026-10-12.
+**Status: OPEN (partially answered — static analysis complete for recovered items).** Part of the [request inbox](../DOCUMENTATION_REQUESTS.md); validated deliveries and locks are registered in the [delivery log](DELIVERY_LOG.md).
+Request text below is preserved verbatim from the inbox; answers and implementation breadcrumbs are append-only history. Updated 2026-10-13.
+
+**Static analysis complete for recovered items (2026-10-13):** Unit-entry status/badge/move-count initialization (full Entry, pouch/status clear/import, badge/count import), status storage/recovery, move-count helpers, guard/action predicates are recovered. Remaining open items require original execution traces: concrete weapon/unit/event bindings for infliction/recovery/periodic turn controllers; full main/battle event cadence, turn/phase state producers, remaining-count consumption, `+20/+23/+24` writers; end-of-battle cleanup; status effect/message/sound/pose callback bindings; original multi-turn traces (Slow/Fast, negative durations, Charge consumption, wakeup on lethal/live damage); actor save/reload lifetime.
 
 ## Open todos
 

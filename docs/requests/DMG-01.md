@@ -1,7 +1,9 @@
 # DMG-01 — Weapon power, unit stats and damage dispatch binding
 
-**Status: OPEN (partially answered).** Part of the [request inbox](../DOCUMENTATION_REQUESTS.md); validated deliveries and locks are registered in the [delivery log](DELIVERY_LOG.md).
-Request text below is preserved verbatim from the inbox; answers and implementation breadcrumbs are append-only history. Updated 2026-10-12.
+**Status: OPEN (partially answered — static analysis complete).** Part of the [request inbox](../DOCUMENTATION_REQUESTS.md); validated deliveries and locks are registered in the [delivery log](DELIVERY_LOG.md).
+Request text below is preserved verbatim from the inbox; answers and implementation breadcrumbs are append-only history. Updated 2026-10-13.
+
+**Static analysis complete (2026-10-13):** Weapon power callbacks (default/Mario Jump/Hammer), Kanbu1 part defense/attribute tables, unit entry HP/FP allocation-copy/init, HP/FP calculators and resource application, ordinary Jump shared AC count ownership are recovered. Remaining open items require original execution traces: equipment/level/bonus producers, other attack counter owners, complete consumer graph with multi-hit timing, input/RNG traces, global flag `0x1000`/tutorial gate interactions, callback side effects/read order/signed field widths.
 
 ## Open todos
 

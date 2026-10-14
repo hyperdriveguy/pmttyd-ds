@@ -838,10 +838,10 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Native original attack-command selection](battle/NATIVE_ATTACK_COMMAND_SELECTION.md)
 
-- [Original fanfare stereo gain/group fade](audio/FIELD_KEY_ITEM_FANFARE_STEREO_GAIN_AND_GROUP_FADE.md) and [native key-item fanfare provider](audio/NATIVE_KEY_ITEM_FANFARE_PROVIDER.md).
-
 - [Native slot initialization, idle pass and table owners](battle/NATIVE_BREAK_SLOT_INITIALIZATION_IDLE_AND_ARRAY_OWNERS.md): real constructor allocations and next display boundary.
 - [Surviving-unit HP gauge and slot heap lifetime](battle/SURVIVING_UNIT_HP_GAUGE_MAIN_AND_SLOT_HEAP_LIFETIME.md).
+
+- [Original fanfare stereo gain/group fade](audio/FIELD_KEY_ITEM_FANFARE_STEREO_GAIN_AND_GROUP_FADE.md) and [native key-item fanfare provider](audio/NATIVE_KEY_ITEM_FANFARE_PROVIDER.md).
 - [Surviving-unit status effects, icon gates and part frontier](battle/SURVIVING_UNIT_STATUS_EFFECT_ICON_AND_PART_FRONTIER.md).
 
 - [Native action registration and status-window requests](battle/NATIVE_ACTION_REGISTRATION_AND_STATUS_WINDOW.md)
@@ -856,3 +856,9 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Source BGM secondary/tail boundaries](audio/FIELD_BGM_SECONDARY_BOUNDARIES_AND_DETACHED_TAIL.md), [plaza BGM/resume owner](audio/ROGUEPORT_PLAZA_INIT_BGM_AND_ITEMGET_RESUME_OWNER.md), [global percentage initialization/slew](audio/FIELD_BGM_GLOBAL_PERCENTAGE_INITIALIZATION_AND_SLEW.md), and [portable/native item-audio envelopes](audio/PORTABLE_FIELD_BGM_ENVELOPES_AND_NATIVE_ITEM_AUDIO.md).
 
 - [Native item-get audio validation, artifacts and handoff](audio/NATIVE_ITEM_GET_AUDIO_VALIDATION_2026_10_14.md).
+
+- [Native battle part storage and source pose directories](display/NATIVE_BATTLE_PART_STORAGE_AND_POSE_DIRECTORY.md) — distinct Mario/Goombella records, original default art and full descriptor identity.
+- [Battle pose entry, release and offset services](display/BATTLE_PART_POSE_ENTRY_RELEASE_AND_OFFSET_SERVICES.md) — original three-part Mario construction, resource counts and next effect frontier.
+- [Weapon-selection callers and cursor domains](battle/WEAPON_SELECTION_CALLERS_AND_CURSOR_DOMAINS.md) — static callers, type words and unresolved runtime reachability.
+- Event recovery: [Jump Continue](event/BTLEVTCMD_JUMP_CONTINUE.md), [Jump Position](event/BTLEVTCMD_JUMP_POSITION.md), [Jump Setting](event/BTLEVTCMD_JUMP_SETTING.md), and [event-entry construction](event/EVT_ENTRY_TYPE_CONSTRUCTION.md).
+- [Goomba3 item-get field services and event resume order](field/GOOMBA3_ITEMGET_FIELD_SERVICE_AND_EVENT_RESUME_ORDER.md).

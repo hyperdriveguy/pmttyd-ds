@@ -65,12 +65,12 @@ does not answer its full runtime binding request.
 
 | Priority | Request / implementation blocker | State / owner / reserved slice |
 | --- | --- | --- |
-| 0 | EVT-01: complete native event scheduling and continuation | Open; needed to replace provisional Jump timers with the recovered graph; request file specifies remaining complete local contracts |
-| 1 | DMG-01: real weapon power, part defenses and dispatch/application | Local power/part/Entry/UnitSetup and shared Jump count owners delivered;level/equipment/bonus producers,other counters,mutation and application/runtime binding remain open |
-| 2 | AC-03: enemy hit branch and actual defense sampling boundary | Attack graph/target ABI delivered and lock released; pad cadence,global eligibility and execution remain open |
+| 0 | EVT-01: complete native event scheduling and continuation | Static analysis phase complete (2026-10-13); scheduler/constructors/continuations/weapon-selection/audio/DVD/Monosiri/NormalJump static local contracts recovered and verified; original pause/multicredit/creation/deletion/wait traces, Monosiri mutation/alias/runtime, NormalJump menu/global writers remain open |
+| 1 | DMG-01: real weapon power, part defenses and dispatch/application | Static analysis complete (2026-10-13); power callbacks/part defense/unit entry/HP-FP calculators/Jump count static contracts recovered; equipment/level/bonus producers, other counters, complete consumer graph with multi-hit timing, input/RNG traces, callback side effects remain open |
+| 2 | AC-03: enemy hit branch and actual defense sampling boundary | Static analysis complete (2026-10-13); physical producer/snapshot bindings/pad order/attack graph/target ABI static contracts recovered; SDK poll/cadence, full pause/multihit sites, weapon gate/override writers, original input traces remain open |
 | 3 | AC-01: tutorial/ordinary Jump state ownership and impact cadence | Shared enemy-attack graph delivered; next recover pad/update and movement callback composition |
-| 4 | AC-02: Hammer lifecycle, result consumers and original audio binding | Open; ordinary weapon period/base difficulty already answered |
-| 5 | STATUS-01: initialization, infliction and turn lifetime | Open; portable storage alone does not establish turn cadence |
+| 4 | AC-02: Hammer lifecycle, result consumers and original audio binding | Static analysis complete for recovered items (2026-10-13); weapon pointer/period/difficulty/charge sound keys static contracts recovered; suppression/automatic/forced writers, result/damage consumers, display/gauge, start/finish/stop ownership, macro/backend execution, original audio traces remain open |
+| 5 | STATUS-01: initialization, infliction and turn lifetime | Static analysis complete for recovered items (2026-10-13); entry/pouch/badge/move-count initialization/storage/recovery static contracts recovered; infliction/recovery/turn controllers, event cadence, turn producers, +20/23/24 writers, end-of-battle cleanup, callback bindings, multi-turn traces, save/reload lifetime remain open |
 
 The ordering serves the early original encounter's implementation. It does not
 remove the full game's field, partner, story, inventory, save, audio, rendering
