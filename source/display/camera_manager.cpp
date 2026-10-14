@@ -50,7 +50,7 @@ bool CameraManager::main(bool field,const CameraMainServices& s,CameraMainCursor
             const auto view=s.lookAt?s.lookAt(s.user,c):std::nullopt;if(!view)return false;
             // Roll/offset precede the field-only zoom; extra must wait until after it.
             auto transform=c.publication;transform.flags=uint16_t(transform.flags&~8u);
-            c.matrices=publishCameraMatrices({*view,c.matrices.projection},transform);
+            c.matrices=publishCameraMatrices({*view,c.matrices.projection},transform);c.viewPublished=true;
             cursor.stage=2;
         }
         if(cursor.stage==2){

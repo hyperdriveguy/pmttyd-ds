@@ -12,6 +12,7 @@ struct CameraState {
     CameraDepthPoint eye{},at{},up{};
     float nearPlane=0,farPlane=0,fov=0,aspect=0,distance=0,yaw=0;
     CameraDepthSnapshot matrices;
+    bool viewPublished=false; // Native availability metadata; boot matrices contain no view.
     uint32_t projectionKind=0,callback=0,drawCamera=0;
     const char* name=nullptr;
     int16_t letterboxAlpha=0,letterboxTop=0,letterboxBottom=0;

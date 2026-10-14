@@ -605,6 +605,9 @@ struct TrioAttackRuntime {
     }
     bool initialize(const TrioBattleCommands& menu,ProfessorStory& s,int16_t hp,std::shared_ptr<ProloguePouch> supplied) {
         scene=&s;now=s.now;
+        if(const auto* retained=cameras->camera(4);retained && retained->viewPublished){
+            cameraDepth=retained->matrices;cameraHistoryComplete=false; // Native field publication, not proven full original history.
+        }
         const bool suppliedEntry=bool(supplied);
         entryPouch=supplied?std::move(supplied):createProloguePouch();
         if(!entryPouch)return false;

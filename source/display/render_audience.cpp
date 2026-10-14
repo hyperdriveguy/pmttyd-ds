@@ -29,7 +29,11 @@ void Renderer::drawAudienceScene(const Game& game,bool lower){
         context.vectors={0,280,550,0,100,-40};
         if(game.trioBattleActive && game.scene!=Scene::Battle && game.scene!=Scene::Victory && game.scene!=Scene::Defeat){
             auto camera=game.fieldCameraFrame;camera.eye={0,2.8f,5.5f};camera.at={0,1.f,-.4f};
-            if(game.trioAttack.cameraDepthSnapshot())if(const auto* live=game.trioAttack.cameraFrameState()){
+            const auto* owner=game.trioAttack.cameras()?game.trioAttack.cameras():game.cameraManager.get();
+            const auto* published=owner?owner->camera(4):nullptr;
+            if(published && published->viewPublished){
+                camera.eye={published->eye[0]*.01f,published->eye[1]*.01f,published->eye[2]*.01f};camera.at={published->at[0]*.01f,published->at[1]*.01f,published->at[2]*.01f};
+            }else if(game.trioAttack.cameraDepthSnapshot())if(const auto* live=game.trioAttack.cameraFrameState()){
                 camera.eye={live->eye[0]*.01f,live->eye[1]*.01f,live->eye[2]*.01f};camera.at={live->at[0]*.01f,live->at[1]*.01f,live->at[2]*.01f};
             }
             context.vectors={camera.eye.x*100,camera.eye.y*100,camera.eye.z*100,camera.at.x*100,camera.at.y*100,camera.at.z*100};

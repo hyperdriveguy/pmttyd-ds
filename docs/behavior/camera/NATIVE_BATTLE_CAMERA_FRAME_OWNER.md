@@ -53,8 +53,10 @@ differences. It supplies neither missing framing history nor C3D tilted
 projection. Original exceptional/FPSCR/GQR0/NaN-payload bit behavior remains
 unverified even though ordered NaN/clamp branches are retained.
 
-The trio still holds at dispCalcZ8001086c: actual camera4 lens/matrix entry
-history, remaining modes/shakes and queued callback ownership are open.
+The native field producer can now supply an entry depth snapshot through the
+retained camera4 owner; see [field publication and inheritance](NATIVE_FIELD_CAMERA4_PUBLICATION_AND_BATTLE_INHERITANCE.md).
+This removes the unconditional missing-view condition but does not prove full
+original lens/matrix history, remaining modes/shakes or queued callback ownership.
 Source queue admission and its distinct immediate/deferred continuations are
 [documented](../display/ORDINARY_BATTLE_DISPLAY_QUEUE_ADMISSION.md).
 This step does not claim original camera4 restoration or field return.

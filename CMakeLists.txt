@@ -1525,3 +1525,10 @@ target_sources(ttyd_core PRIVATE source/field/field_bero_position.cpp)
 add_executable(field_bero_position_tests tests/field_bero_position_tests.cpp)
 target_link_libraries(field_bero_position_tests PRIVATE ttyd_core)
 add_test(NAME field_bero_position COMMAND field_bero_position_tests)
+
+# Retained native field-to-battle camera publication.
+target_sources(ttyd_core PRIVATE source/display/field_camera_publication.cpp)
+add_executable(field_camera_publication_tests tests/field_camera_publication_tests.cpp)
+target_link_libraries(field_camera_publication_tests PRIVATE ttyd_core)
+add_test(NAME field_camera_publication COMMAND field_camera_publication_tests)
+set_tests_properties(field_camera_publication PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

@@ -3,6 +3,7 @@
 #include "game.hpp"
 #include "wall_geometry.hpp"
 #include "field_camera.hpp"
+#include "field_camera_publication.hpp"
 #include "camera_road_assets.hpp"
 #include "head_collision.hpp"
 #include "floor_contact.hpp"
@@ -1507,6 +1508,7 @@ void Game::rebaseFieldCamera() {
 // target adds1 ENGINE unit to the retained contact Y. Prepare/finish use
 // candidates and commit only admitted camera state; view mode3 bypasses roads.
 void Game::beginFieldCameraTick() {
+    if(cameraManager && cameraManager->camera(4)->mode==2)return; // Battle owns retained camera4.
     if(!fieldCameraInitialized)rebaseFieldCamera();
     if(fieldCameraFlags&2){fieldMovement.headingOffsetDegrees=cameraHeadingSnapshot(fieldCameraFrame.yaw);return;}
     // camMain precedes EVT/Mario: consume LAST MarioCamMain publication.
@@ -1545,6 +1547,7 @@ void Game::beginFieldCameraTick() {
     if(prepared)fieldCameraEvents=events;
     fieldCameraShift.post(now); // All admitted A branches post, including preset view.
     fieldMovement.headingOffsetDegrees=cameraHeadingSnapshot(fieldCameraFrame.yaw);
+    if(cameraManager)publishNativeFieldCamera(*cameraManager,fieldCameraFrame);
 }
 
 bool Game::setCameraTarget(CameraPoint xyz,float percent,int32_t durationMs,uint8_t curve) {
@@ -2334,9 +2337,6 @@ void Game::tick(const Input& rawInput) {
             if(trioAttack.active()) {
                 const uint32_t triggers=i.physicalSnapshot?inputProducer.channels[0].pressed:(i.confirm?0x100u:0u)|(i.cancel?0x200u:0u);
                 const auto sample=inputProducer.channels[0].battleSample();
-                // Native field lens snapshot in engine units. Roll/projection-extra history
-                // remains an explicit adapter gap rather than a boot-value reset.
-                trioAttack.setCameraDepthLensAdapter(fieldCameraFrame.fov,608.f/480.f,fieldCameraFrame.nearPlane*100,fieldCameraFrame.farPlane*100);
                 trioAttack.tick(ticks*1000/60,trioBattleIntro,triggers,i.physicalSnapshot?&sample:nullptr);
                 if(auto exported=trioAttack.exportedPouch()){progress.originalPouch=std::move(exported);progress.hp=progress.originalPouch->half(0x70);}
                 scene=Scene::Dialogue;saveRequested=false;return;
@@ -2344,9 +2344,6 @@ void Game::tick(const Input& rawInput) {
             if(trioAttack.finished()) {
                 const uint32_t triggers=i.physicalSnapshot?inputProducer.channels[0].pressed:(i.confirm?0x100u:0u)|(i.cancel?0x200u:0u);
                 const auto sample=inputProducer.channels[0].battleSample();
-                // Native field lens snapshot in engine units. Roll/projection-extra history
-                // remains an explicit adapter gap rather than a boot-value reset.
-                trioAttack.setCameraDepthLensAdapter(fieldCameraFrame.fov,608.f/480.f,fieldCameraFrame.nearPlane*100,fieldCameraFrame.farPlane*100);
                 trioAttack.tick(ticks*1000/60,trioBattleIntro,triggers,i.physicalSnapshot?&sample:nullptr);
                 if(auto exported=trioAttack.exportedPouch()){progress.originalPouch=std::move(exported);progress.hp=progress.originalPouch->half(0x70);}
                 if(trioAttack.active())trioCommands.state=TrioBattleCommands::State::Closed; // Enemy root now owns the action.
@@ -2361,9 +2358,6 @@ void Game::tick(const Input& rawInput) {
                 trioAttack.setSoundFlags(soundFlags);
                 const auto sample=inputProducer.channels[0].battleSample();
                 const uint32_t triggers=i.physicalSnapshot?sample.pressed:(i.confirm?0x100u:0u)|(i.cancel?0x200u:0u);
-                // Native field lens snapshot in engine units. Roll/projection-extra history
-                // remains an explicit adapter gap rather than a boot-value reset.
-                trioAttack.setCameraDepthLensAdapter(fieldCameraFrame.fov,608.f/480.f,fieldCameraFrame.nearPlane*100,fieldCameraFrame.farPlane*100);
                 trioAttack.tick(ticks*1000/60,trioBattleIntro,triggers,i.physicalSnapshot?&sample:nullptr);
                 if(auto exported=trioAttack.exportedPouch()){progress.originalPouch=std::move(exported);progress.hp=progress.originalPouch->half(0x70);}
                 scene=Scene::Dialogue;saveRequested=false;return;

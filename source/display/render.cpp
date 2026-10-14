@@ -1077,12 +1077,18 @@ void Renderer::world(const Game& g) {
     // Native battle framing until original camera4's producer publishes a view.
     // A suspended field camera must not frame the source-owned battle stage.
     if(g.trioBattleActive){
-        const auto lens=battleSceneLens(g.trioAttack.cameras());if(!lens)return;
+        const auto* owner=g.trioAttack.cameras()?g.trioAttack.cameras():g.cameraManager.get();
+        const auto lens=battleSceneLens(owner);if(!lens)return;
         frame.eye={0,2.8f,5.5f};frame.at={0,1.f,-.4f};
         frame.fov=lens->fov;frame.nearPlane=lens->nearPlane;frame.farPlane=lens->farPlane;
     }
     CameraDepthPoint up{0,1,0};
-    if(g.trioBattleActive && g.trioAttack.cameraDepthSnapshot()) {
+    const auto* retainedOwner=g.trioAttack.cameras()?g.trioAttack.cameras():g.cameraManager.get();
+    const auto* retainedView=retainedOwner?retainedOwner->camera(4):nullptr;
+    if(g.trioBattleActive && retainedView && retainedView->viewPublished){
+        frame.eye={retainedView->eye[0]*.01f,retainedView->eye[1]*.01f,retainedView->eye[2]*.01f};
+        frame.at={retainedView->at[0]*.01f,retainedView->at[1]*.01f,retainedView->at[2]*.01f};up=retainedView->up;
+    }else if(g.trioBattleActive && g.trioAttack.cameraDepthSnapshot()) {
         if(const auto* live=g.trioAttack.cameraFrameState()) {
             frame.eye={live->eye[0]*.01f,live->eye[1]*.01f,live->eye[2]*.01f};
             frame.at={live->at[0]*.01f,live->at[1]*.01f,live->at[2]*.01f};
