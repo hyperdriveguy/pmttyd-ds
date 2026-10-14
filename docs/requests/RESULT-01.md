@@ -139,3 +139,26 @@ writes, which remain OPEN.
 
 Validation: two DOL spans (8 bytes each) disassembled read-only; artifacts in
 `/tmp`. No source change.
+
+## 2026-10-13 — Native session verification: phase0 result priority
+
+Independently disassembled the
+[phase0 publication](../behavior/battle/BATTLE_RESULT_PHASE0_PUBLICATION_AND_PRIORITY.md)
+priority region (`0x802152b0`..`0x80215350`) from the read-only US ISO. Every
+ordered alternative reproduces exactly:
+
+- flags read once as `lwz 5,0xef4(26)`; `rlwinm. 0,5,0,25,25` (mask`0x40`) →
+  else `li 4,4`/`bl 0x80114508` at `802152cc`.
+- `rlwinm. 0,5,0,26,26` (mask`0x20`) → `li 4,5` at `802152e4`.
+- `slwi 0,28,3`+`lwz 0,12(4)` = `B.word(0xc+8*ownBelong)` → `li 4,3` at
+  `80215308` (ownBelong = GPR28 sign-extended Mario byte, `extsb 28,28`).
+- `slwi 0,3,3`+`lwz 0,12(3)` = enemyBelong word → `li 4,1` at `8021532c`.
+- `rlwinm. 0,5,0,27,27` (mask`0x10`) → `li 4,4` at `80215344`.
+
+All five setters pass captured `I` (`mr 3,27`), both side words load only when
+reached, and the reread is `bl 0x80114500` (GetResult) at `8021534c`. This
+confirms the priority order (40→4, 20→5, own→3, enemy→1, 10→4), result4's two
+distinct flag branches and that 5 precedes the side-3 conclusion. It does not
+establish the flag10/20/40 writer domains or the tutorial outcome, which remain
+OPEN. Validation: scoped DOL region disassembled read-only; artifacts in `/tmp`;
+no source change.
