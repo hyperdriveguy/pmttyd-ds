@@ -1,3 +1,48 @@
+## 2026-10-14 — Original class footers and actual no-item audience query
+
+Commited156822 implements complete local party/item cue, cue Sub, pinch order,
+Mario warning and Party warning bodies. Actual partner/HP checks, source timer
+and sound gate, retained projected midpoint, palette/language/color pulse,
+translation/scale/rectangle requests and linked texture/projection/sound services
+are preserved. The whole GetItemOn producer and three base/member/item getters
+scan actual200 packed records, retain source eligibility/cache/live output writes
+and produce actual no-match; no crowd or item is fabricated. See
+[the footer/query contract](behavior/battle/CLASS_MENU_FOOTERS_AND_AUDIENCE_ITEM_QUERY.md).
+
+Class, weapon and target-menu audience checks now admit that whole producer's
+actual no-match path. Physical X no longer freezes the ready class menu at the
+previously unbound getter; the native fixture can still select Jump using A.
+A real item retains produced data/cache effects and the interruption-consumer
+frontier; audience target/end/light handling is not falsely completed. The finite
+native Init2D backend now restores texture*raster color rather than carrying the
+class material register into warning quads. No story/pouch eligibility change,
+new original asset extraction or dialogue rewrite was made.
+
+Validation uses artifacts/class-footer-6vk2_fzv with snapshot base
+7fa5b6462d7e4d7d804e84a80cdb9096e82f9b3e plus the scoped footer/query increment. Final make test
+passes270/270 C++ and159/159 Python checks
+(artifacts/class-footer-test-final.log). Required native make all -o assets-ready
+BUILD=build-class-footer-review TARGET=ttyd-class-footer-review passes with the
+already converted private packs (artifacts/class-footer-native-final.log),
+producing452458424-byte3DSX. Verifier passes10 containing/local body hashes,
+4 source data spans and r2 pin (artifacts/class-footer-source.log). New checks
+cover partner/no-partner cues, counter crossing below0/clamping next call, sound
+edge, healthy early exits, critical palette/color, Sub matrix translation,
+GetItemOn eligibility/cache/outputs and actual physical-X no-match continuation.
+An initial test-only mixed-auto declaration was corrected before final validation.
+The final verifier was run separately and copied into the snapshot after builds.
+No emulator/visible footer or original GPU parity check was performed.
+
+Next: native camera/projection/SDK/RNG/palette/texture/sound bindings and actual
+once-per-simulation-tick ring publication still need connecting to the available
+GPU backend; manual development readiness remains. Warning/cue palette resources
+and btlDispTexPlane2 are linked frontiers, not successful draw stubs. Normal Game
+command/turn scheduling and successful Jump voice remain open. The lower screen
+still needs original scene/audience continuation; bind real audience actors/events
+and target interruption before optional bad-throw taps with a physical equivalent.
+Do not reinterpret no-match admission as full audience or battle completion.
+The active tutorial/real-battle goal remains incomplete.
+
 ## 2026-10-14 — Original disabled-icon material and ring position providers
 
 Commita8c781a7 binds original iconGX flag32 appearance for class icon flags48:
