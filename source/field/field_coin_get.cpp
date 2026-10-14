@@ -25,10 +25,13 @@ FieldCoinPlacement fieldCoinPlacement(ItemGetPoint mario,float heading) {
  const float x=mario.x+10.f*s,z=mario.z-10.f*c;
  return {{x,mario.y+62.f,z},{x,mario.y+52.f,z}};
 }
+bool fieldCoinGetPresentationReady(const FieldCoinGetServices& s) {
+ return s.ready && s.mario && s.heading && s.clock && s.effect && s.effectPayload && s.softDelete &&
+    s.iconEnter && s.iconFlags && s.iconDelete && s.request && s.window && s.windowClose &&
+    s.windowAction && s.addCoins && s.ready(s.user);
+}
 bool FieldCoinGet::bind(const FieldCoinGetServices& s) {
- if(retained_ || !s.ready || !s.mario || !s.heading || !s.clock || !s.effect || !s.effectPayload || !s.softDelete ||
-    !s.iconEnter || !s.iconFlags || !s.iconDelete || !s.request || !s.window || !s.windowClose ||
-    !s.windowAction || !s.addCoins || !s.ready(s.user))return false;
+ if(retained_ || !fieldCoinGetPresentationReady(s))return false;
  services_=s;owner_=this;return true;
 }
 bool FieldCoinGet::retireDeletedWindow() {

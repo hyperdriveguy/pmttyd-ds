@@ -2,6 +2,7 @@
 #include "item_selection_presentation.hpp"
 #include "goomba_hand_in.hpp"
 #include "goomba_acquisition.hpp"
+#include "goomba_reward.hpp"
 #include "field_coin_get.hpp"
 #include "field_item_mario.hpp"
 #include "mario_motion_sfx.hpp"
@@ -303,7 +304,7 @@ public:
     const FieldActorRecord* nearbyFieldActor() const;
     uint32_t fieldNpcContact() const{return fieldNpcHit;}
     const FieldNpcInstance* fieldNpcState(uint32_t key) const;
-    bool fieldNpcTalkActive() const {return goombaAcquisition.active() || goombaHandIn.active() || fieldActorTalk.message.active();}
+    bool fieldNpcTalkActive() const {return goombaAcquisition.active() || goombaReward.active() || goombaHandIn.active() || fieldActorTalk.message.active();}
     // Bind only after native providers are ready; registry/pouch owners remain Game-owned.
     void bindFieldItemGetPresentation(const FieldItemGetServices& services) {fieldItemGetPresentation=services;}
     MarioMotionSfx& fieldMarioSoundHandles() {return marioMotionSounds;}
@@ -315,7 +316,7 @@ public:
     std::shared_ptr<ItemGetWindows> acquisitionWindows;
     std::shared_ptr<CoinGetWindow> coinWindows;
     void bindFieldCoinGetPresentation(const FieldCoinGetServices& services) {fieldCoinPresentation=services;}
-    bool fieldCoinGetReady() const {return !fieldCoinCallback.retained() && fieldCoinPresentation.ready && fieldCoinPresentation.ready(fieldCoinPresentation.user);}
+    bool fieldCoinGetReady() const {return !fieldCoinCallback.retained() && fieldCoinGetPresentationReady(fieldCoinPresentation);}
     std::optional<int32_t> invokeFieldCoinGet(int32_t amount,bool firstCall,uint32_t triggers) {
         if(firstCall && !fieldCoinCallback.bind(fieldCoinPresentation))return {};
         return fieldCoinCallback.invoke(amount,firstCall,triggers);
@@ -332,6 +333,7 @@ public:
     FieldItemRegistry& fieldItems() {return fieldItemRegistry;}
     const FieldItemRegistry& fieldItems() const {return fieldItemRegistry;}
     const GoombaAcquisition& fieldAcquisition() const {return goombaAcquisition;}
+    const GoombaReward& fieldReward() const {return goombaReward;}
     const std::vector<FieldNpcSoundRequest>& fieldNpcSounds() const{return npcSoundRequests;}
 private:
     NpcTalkPlayer fieldNpcTalkPlayer() const;
@@ -339,6 +341,9 @@ private:
     bool fieldNpcTalkBound(const FieldActorRecord&) const;
     GoombaHandIn goombaHandIn;
     GoombaAcquisition goombaAcquisition;
+    GoombaReward goombaReward;
+    uint32_t fieldRewardTriggers=0;
+    GoombaRewardServices fieldRewardServices();
     FieldCoinGet fieldCoinCallback;
     FieldCoinGetServices fieldCoinPresentation{};
     FieldItemRegistry fieldItemRegistry;

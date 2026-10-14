@@ -26,6 +26,7 @@ struct FieldCoinGetServices {
  // deleted slot may retain action1; only the window owner knows it is gone.
  bool (*windowRetained)(void*,int32_t)=nullptr;
 };
+bool fieldCoinGetPresentationReady(const FieldCoinGetServices&);
 struct FieldCoinPlacement {ItemGetPoint effect,icon;};
 FieldCoinPlacement fieldCoinPlacement(ItemGetPoint mario,float cameraHeading);
 // Finite source callback. Stable in-owner parameter storage replaces its map
