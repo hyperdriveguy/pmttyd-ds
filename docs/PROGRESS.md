@@ -2969,3 +2969,47 @@ bounds/image services and remaining source callbacks. Full N64 async/language/
 dummy lifecycle, production Bero/get_info, Init/Main/Exit and ordered field
 return remain open. Original execution/raster/audio parity and hardware
 performance remain unverified; full original-fidelity prologue goal stays active.
+
+## 2026-10-14 — Original Trouble Center diary and scoped event-data prerequisites
+
+Implemented original diary/type7 help-frame art, exact native clip/direct
+placement, unchanged parser speed and source CLAMP sampling gutters. The
+preloaded Citro2D/Citro3D texture adapter shares flat-window rendering with
+kanban, without draw-time conversion/IO/allocation. Exported actual board/
+counter installer/main/lecture and callback table dependencies as5464-byte
+PMEVT001 data-only closure;205 bounded objects/5segments retain source words
+and ADDR32 bindings while excluding executable sections. [Scope](behavior/field/NATIVE_TROUBLE_CENTER_DIARY_AND_SCOPED_EVENT_DATA.md).
+
+Reviewed tree2dffa7c1920d15777ed922a30b8e6f5a84216eaa passes isolated
+make assets-ready SOUNDTRACK=gamecube (artifacts/trouble-board-prereq-assets-private.log),
+make test (275/275 C++ and164/164 Python, artifacts/trouble-board-prereq-test.log),
+and normal make all -o assets-ready SOUNDTRACK=gamecube
+BUILD=build-trouble-board-prereq TARGET=ttyd-trouble-board-prereq
+(artifacts/trouble-board-prereq-build-final.log and post-harness
+trouble-board-prereq-build-restored.log). The restored3152-file checkout has
+zero tracked mismatches (artifacts/trouble-board-prereq-audit-restored.log).
+Normal binary SHA2562568825b3273277d433f0daca4242c85e176bfd8d4f721fdd5c6c5096dda94fe.
+
+An isolated DEBUG_SHORT_BOOT=1 direct-presentation harness opens unchanged
+irai_help_02 over a declared room2/mask4/story23 fixture; it does not dispatch
+the board. Actual capture artifacts/azahar-trouble-diary/original-diary-help02.png
+shows original paper/help text/advance star,60 emulator AppFPS/frame9.66ms.
+The script verifies copied checkpoint bytes unchanged and no detected native
+exception. User emulator profile/saves were not used. Harness main.cpp was
+removed and the normal build recompiled/audited afterward. This proves this
+native diary presentation, not board acceptance or hardware timing.
+
+The first isolated asset preparation failed from misplaced symbol references;
+correct private reference directory fixes it. Initial native helper compile
+failed because Texture is a private nested Renderer type; deduction through
+shared template helpers fixes that without exposing the type. Failed logs
+trouble-board-prereq-assets.log/build.log remain and are not counted as passing.
+Source review confirms normal type7 opacity, exact CLAMP gutters and data-only
+closure; saved-bank/case/EVT/render/audio/hardware parity remains open.
+
+Next: actual native Board/Counter event owner and source case9 lifetime, original
+retained print/selection/append/continue and menu callbacks, explicit saved banks,
+start/reset/nonblocking-child/write1420 order, quest1/4 NPC/door child providers,
+source c_monban and original audio. Type7 art and packaged data do not establish
+complete board gameplay or full original raster/event/hardware parity. Broad
+Trouble Center/remake goal remains active.

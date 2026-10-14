@@ -963,3 +963,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Dummy TEV register0 and shadow inheritance](display/DUMMY_DRAW_TEV_REGISTER0_AND_SHADOW_INHERITANCE.md)
 - [Shadow camera2 class5 ordered suffix](display/SHADOW_CAMERA2_CLASS5_ORDERED_SUFFIX.md)
 - [Native ordered shadow setup and camera2 ray frontier](display/NATIVE_ORDERED_SHADOW_SETUP_AND_CAMERA2_RAY_FRONTIER.md)
+
+- [Native Trouble Center diary and scoped event data](field/NATIVE_TROUBLE_CENTER_DIARY_AND_SCOPED_EVENT_DATA.md), [board provider boundaries](field/TROUBLE_CENTER_NATIVE_BOARD_PROVIDER_BOUNDARIES.md) and [original diary/type7 rendering](display/ORIGINAL_DIARY_TYPE7_WINDOW.md) — original help-window dependency and bounded data-only source closure; board/counter execution remains to bind.

@@ -1021,3 +1021,15 @@ identities corrected: GSF1213 and GW10, not445/local flag10.
   init OR40000000, sourceposition220/0/-185,yaw90, no regular event; separate
   irai_oku_00/01 talk uses GSF1222 and is not the counter event.
 - [ ] Verify original execution/raster and native New2DSXL performance.
+
+### 2026-10-14 — Trouble Center diary dependency and original data closure
+
+[Provider delivery](../behavior/field/TROUBLE_CENTER_NATIVE_BOARD_PROVIDER_BOUNDARIES.md)
+identifies all30 start bindings, including28 null and quests1/4 nonempty children,
+and retained print/selection/Add/Continue lifetimes. [Diary delivery](../behavior/display/ORIGINAL_DIARY_TYPE7_WINDOW.md)
+pins original TPL6/type7 geometry/clip/sampler/opacity and SFX34/35.
+[Native dependency step](../behavior/field/NATIVE_TROUBLE_CENTER_DIARY_AND_SCOPED_EVENT_DATA.md)
+adds exact diary art/direct clip and packages actual board/counter event data,
+with executable sections excluded. Real case9 pool/EVT owner/admission, menu/
+window/switch bindings, nonempty NPC/door children and sound/hardware parity
+remain open; packaged events do not themselves establish gameplay execution.

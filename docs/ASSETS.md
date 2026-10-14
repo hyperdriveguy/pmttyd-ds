@@ -546,3 +546,20 @@ loaded44 resource adapter; original full N64 palette/async/language lifecycle
 and its 1x1 unloaded dummy remain unbound. [Native scope](behavior/display/NATIVE_ORDERED_SHADOW_SETUP_AND_CAMERA2_RAY_FRONTIER.md).
 Original paths/hash/conversion/rights remain those in the prior texture44 entry;
 no new original payload, resampling or redistribution license.
+
+## Original diary/type7 and Trouble Center event data (2026-10-14)
+
+tools/message_diary_assets.py reads original f/msgWindow.tpl index6, actual
+560x176 CMPR; decoded pixels retain size/color/transparency. RGBA8 atlas1024x256
+contains unchanged pixels at(1,1) plus one edge/corner CLAMP texel; native linear
+filtering samples the original edge footprint. Texture costs1MiB; extractor/
+PNGs live in ignored local-assets/message-diary, compiled t3x/json in RomFS.
+No generated art or resampled texture replaces the original diary frame.
+
+trouble_board_event_assets.py reads original rel/gor.rel and uses rel_data_pack.py
+for205 bounded data objects/5segments/5464-byte PMEVT001 closure. Original event
+words/message IDs and actual pointer-table dependencies are retained; executable
+sections excluded, ADDR32 pointers relocated to the explicit native section map.
+Temporary REL/metadata and compiled packs remain ignored. Both resource groups
+are Nintendo/Intelligent Systems original assets with no redistribution rights.
+[Source and native scope](behavior/field/NATIVE_TROUBLE_CENTER_DIARY_AND_SCOPED_EVENT_DATA.md).
