@@ -1,6 +1,7 @@
 #include "platform.hpp"
 #include <algorithm>
 #include <cstring>
+#include <cmath>
 namespace ttyd {
 bool Renderer::prepareOpeningDeparture(const OpeningHarborScene& scene,uint64_t fieldTick) {
  if(departureRoom.vertices)return true;
@@ -54,6 +55,18 @@ void Renderer::drawOpeningDeparture(const Game& game,bool translucent) {
   departureObjects.apply(scene.x,scene.y,scene.wakeX,scene.yaw,scene.rock,scene.parts,[&](uint32_t index,const OpeningShipObjects::Point& p){auto& v=departureRoom.vertices[index];v.x=p[0];v.y=p[1];v.z=p[2];});
   GSPGPU_FlushDataCache(departureRoom.vertices,size_t(departureRoom.vertexCount)*sizeof(Vertex));
  }
+#ifdef TTYD_DEBUG_OPENING_DEPARTURE
+ if(game.ticks%30==0) {
+  float xmin=INFINITY,xmax=-INFINITY,ymin=INFINITY,ymax=-INFINITY;uint32_t batches=0,vertices=0;
+  for(const auto& batch:departureRoom.batches)if(((batch.layer&255)==2)==translucent) {
+   ++batches;vertices+=batch.count;
+   for(uint32_t i=batch.start;i<batch.start+batch.count;++i){const auto& v=departureRoom.vertices[i];const auto p=Mtx_MultiplyFVecH(&worldTransform,FVec3_New(v.x,v.y,v.z));if(p.w<=0)continue;xmin=std::min(xmin,p.x/p.w);xmax=std::max(xmax,p.x/p.w);ymin=std::min(ymin,p.y/p.w);ymax=std::max(ymax,p.y/p.w);}
+  }
+  const auto& s=game.openingDeparture.scene;const auto& c=game.fieldCameraFrame;
+  FILE* log=std::fopen("sdmc:/3ds/ttyd-2ds/opening-departure-trace.csv","a");
+  if(log){std::fprintf(log,"%llu,%llu,%llu,%d,%u,%u,%zu,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f\n",(unsigned long long)game.ticks,(unsigned long long)s.now,(unsigned long long)(s.now-s.departureAt),int(translucent),vertices,batches,departureRoom.textures.size(),s.x,xmin,xmax,ymin,ymax,c.eye.x,c.eye.y,c.eye.z,c.at.x,c.at.y,c.at.z,c.fov);std::fclose(log);}
+ }
+#endif
  // The field world has already published its live projection/view transform.
  drawMap(false,game,translucent,&departureRoom,(1u<<1)|(1u<<13));
 }

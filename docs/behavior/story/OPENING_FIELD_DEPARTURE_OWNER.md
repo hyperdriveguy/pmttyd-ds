@@ -39,6 +39,25 @@ sparse/dense tick agreement, movable Mario while the ship remains active,
 independent child progress during a field dialogue input lock, +479/+480
 retirement and room unload. Actual original ship binding compaction preserves
 all mapped vertex positions exactly and rejects incomplete remaps. The isolated
-fresh input fixture records field release, live Circle Pad Left with the boat,
-continuing child, and final retirement; screenshots are actual evidence, not
-pixel-parity assertions.
+fresh input fixture records field release, live Circle Pad Left while the
+child continues, and final retirement. The hull is already outside the field
+frustum in these photographs, so they do not establish on-screen hull movement
+alongside Mario. A separate compile-time diagnostic records actual compact
+pass submissions and the same field worldTransform clip bounds: source tick180
+starts field control, tick210 hull clip-Y is1.909..4.164 (outside[-1,1]), and
+tick450 still submits11190 opaque vertices/12 batches plus576 translucent
+vertices/2 batches using11 textures. Source X progresses-435→-1177.5. The
+source fixed wake is an eight-unit original trail that can remain in view; no
+ship/wake mesh animation bindings overwrite its event placement. Screenshots
+and diagnostic data are actual evidence, not pixel-parity assertions.
+
+
+To reproduce the optional diagnostic without mixing object flags, use a distinct
+native build directory/target, for example `make all -o assets-ready
+DEBUG_OPENING_DEPARTURE=1 BUILD=build-opening-departure-diagnostic
+TARGET=ttyd-opening-departure-diagnostic`, then tools/emulator_smoke.py with
+`--fresh-save --binary ttyd-opening-departure-diagnostic.3dsx --input-script
+tests/azahar_opening_field_departure.py --output-dir artifacts/<private-profile>`.
+The generated profile alone receives opening-departure-trace.csv; ordinary
+production builds contain no trace writes or extra UI. No user emulator profile
+or save may be used for this fixture.

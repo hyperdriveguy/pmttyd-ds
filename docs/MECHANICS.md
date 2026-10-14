@@ -537,3 +537,18 @@ Original mapMain80027ef4..800280c0 multiplies RGBby255, fctiwz/stb publishes
 writes E4c spot-angle (unused for point9). Native now reads the source light
 track and consumes those completed parameters, matching actual live state.
 The general dynamic-light renderer and non-opening original state remain open.
+
+
+### Native detached field ship projection diagnostic, 2026-10-13
+
+This is native Azahar validation, not original Dolphin/hardware observation.
+The compile-time DEBUG_OPENING_DEPARTURE profile retains compact original ship
+and wake resources only. Its trace confirms source departure tick180 at field
+control release, then210/240/450 with sourceX-435/-517.5/-600/-1177.5. Actual
+GPU pass submissions are11190opaquevertices/12batches and576translucentvertices/
+2batches,11textures. After30fieldticks actual opaque field clip-Y1.909..4.164
+is outside[-1,1]; no hull appears in the Left-input captures because the normal
+field view clips it. The source wake's eight-unit mesh still crosses the field
+view at its original fixedX-475. No source ship/wake mesh animation binding
+conflicts with the event transform. ActualLeft input pans nativecameraX to
+-1.208 while child clocks continue, and source480 retires the compact resource.

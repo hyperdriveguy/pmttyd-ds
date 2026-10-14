@@ -10209,3 +10209,28 @@ The status menu now uses the actual field party registry instead of claiming Goo
 Final combined unskipped book smoke found a real resource-lifetime regression after the newly imported sky/backdrop: final book cleanup erased all frontTextures, including opening-bg-dmo_00. The marketplace then loaded this original backdrop again on every frame. Actual captures market-arrival10FPS/2.57ms and peach-turn0FPS/2.21ms showed frame IO churn despite cheap draw work. This is not accepted as a passing performance run.
 
 Corrected cleanup to find and retire only demo-prefixed book images, preserving the market backdrop and its single admission. GPU synchronization remains before freeing queued book pointers. Native rebuild and a new unskipped run are required to close this correction. No original art, pose, story clock or message IDs were dropped.
+
+
+Field bridge private native validation completed: actual ordinary field appears
+at opening116, Circle Pad Left moves Mario/camera while detached child remains
+active, retirement/finalfield returns60FPS without exception. First cold-load
+rollingmetric was9FPS despite7.79ms latestframe; Leftcapture53FPS/11.26ms,
+continuing60FPS/7.58ms and retired60FPS/5.88ms. These are exact private branch
+observations, not steady cold-transition performance claims; primary lazy field
+resource handling differs. Isolated files under artifacts/azahar-opening-field-
+departure include field-release-with-ship/field-left-with-ship names from the
+fixture, but actual hull is outside the field camera; names are not visualproof.
+
+Separate compile-time diagnostic profile azahar-opening-field-departure-
+diagnostic writes only its generated SDMC opening-departure-trace.csv. Actual
+field tick0 anchors source departure180/X-435; tick30→210/X-517.5; tick60→240/
+X-600; tick270→450/X-1177.5. Opaque submissions11190vertices/12batches plus
+translucent576vertices/2batches use11 transferredoriginaltextures, preserving
+11766originalvertices rather than68766wholeworldvertices. Actualfieldclip-Y at
+tick30 is1.909..4.164, entirelyoutside[-1,1], explaining absent hull without a
+hidden ownership bug. LiveLeft shiftscameraX0→-1.208 while child clocks/movement
+continue. Wake source384vertices spans eightnativeunits and stays at original
+fixedX-475; it can remain visible until original480 retirement. No group1/13
+mesh animation bindings overwrite its event placement. No fabricated geometry
+or camera reveal was added. Source owner/admission/control-order boundary is
+closed for the used branch; fullfield/camera/SDK/hardware parity remains open.

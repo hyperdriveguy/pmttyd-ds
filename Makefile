@@ -67,6 +67,9 @@ ifeq ($(DEBUG_SHORT_BOOT),1)
 CFLAGS += -DTTYD_DEBUG_SHORT_BOOT
 endif
 
+ifeq ($(DEBUG_OPENING_DEPARTURE),1)
+CFLAGS += -DTTYD_DEBUG_OPENING_DEPARTURE
+endif
 CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++17
 
 ASFLAGS	:=	-g $(ARCH)
