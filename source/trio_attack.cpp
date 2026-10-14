@@ -232,7 +232,7 @@ struct TrioAttackRuntime {
         case 0x80055f90:{if(e.locals[11]!=5){if(!pending)pending=fn;return 0;}const auto sample=cameraInterpolation(e.locals[11],e.locals[14],e.locals[15],float(e.locals[12]),float(e.locals[13]));required(sample.has_value());setEventFloat(e,raw(e,0),*sample,vm.interpreterServices().operands);output(e,1,e.locals[14]<e.locals[15]?1:0);e.locals[14]=int32_t(uint32_t(e.locals[14])+1);return 2;}
         case 0x80105020:{const auto u=unit(e);std::array<int32_t,7> a{};for(unsigned i=0;i<7;++i)a[i]=value(e,i+1);const auto record=u+0x18c;word(record,uint32_t(a[0]));word(record+4,uint32_t(a[1]));half(record+0xc,a[2]);half(record+0xe,a[3]);half(record+0x10,a[3]);half(record+0x14,0);half(record+8,a[5]);half(record+0xa,a[6]);word(record+0x18,0xffffffff);return 2;}
         case 0x80107694:{const auto u=unit(e),w=uint32_t(value(e,1));word(Battle+0x1cb0,0);readPad(Battle+0x1d1c,privatePad);DefenseContext context;context.hp=half(u+0x10c);context.simplifiers=byte(u+0x305);context.unsimplifiers=byte(u+0x306);context.automatic=byte(u+0x307);context.weaponGate=byte(w+0x13);DefenseCommand command;command.overrideCounter=half(Battle+0x1d18);command.evaluate(privatePad,context);half(Battle+0x1d18,command.overrideCounter);word(Battle+0x1cb0,command.result);writePad(Battle+0x1d1c,privatePad);return 2;}
-        case 0x80113f1c:{const auto u=unit(e);if(u)half(u+0x1fe,uint16_t(half(u+0x1fe))|1);return 2;}
+        case 0x80113f1c:return battleMarkUnit1feEvent(e,nativeBattleUnitEventServices(vm));
         case 0x80113708:output(e,0,word(Battle+0xf18)==uint32_t(raw(e,1)));return 2;
         case 0x801137b8:output(e,0,half(word(0x8041eb90)));return 2;
         case 0x80104498:{const auto u=unit(e);if(word(u+0x308)){if(!pending)pending=fn;return 0;}output(e,1,0);return 2;}
@@ -342,7 +342,7 @@ struct TrioAttackRuntime {
         case 0x8010f2e8:return battleCheckHitCodeEvent(e,nativeBattleUnitEventServices(vm));
         case 0x8010f0e8:return battleCheckHitPatternEvent(e,nativeBattleUnitEventServices(vm));
         case 0x8010f374:return battleGetHitCodeEvent(e,nativeBattleUnitEventServices(vm));
-        case 0x8010f458:output(e,1,int8_t(byte(unit(e)+0x270)));return 2;
+        case 0x8010f458:return battleGetHitDamageEvent(e,nativeBattleUnitEventServices(vm),nativeBattleActorServices(vm));
         case 0x8010ed8c:output(e,1,int32_t(word(unit(e)+8)));return 2;
         case 0x80105b40:return battleUnitFlagEvent(e,true,nativeBattleUnitEventServices(vm));
         case 0x80105ae0:return battleUnitFlagEvent(e,false,nativeBattleUnitEventServices(vm));

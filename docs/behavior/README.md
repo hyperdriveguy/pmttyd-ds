@@ -815,3 +815,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native audience startup and resource owners](battle/NATIVE_AUDIENCE_STARTUP_AND_ORIGINAL_RESOURCE_OWNERS.md): actual initialized empty domain, original TPL payloads and persistent trio RNG.
 
 - [Native original item-get effect](display/NATIVE_ITEM_GET_EFFECT6.md), [GX state/projected texture](effect/FIELD_ITEM_GET_TYPE6_GX_STATE_AND_PROJECTED_TEXTURE.md), and [source camera5 producer/projection](camera/FIELD_ITEM_GET_CAMERA5_PRODUCER_AND_PROJECTION.md).
+
+- [Tutorial damage amount and reaction marker](battle/TUTORIAL_HIT_DAMAGE_AMOUNT_AND_REACTION_MARKER.md)

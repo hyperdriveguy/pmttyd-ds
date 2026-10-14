@@ -30,14 +30,16 @@ int main(){
  const auto reaction=hit.dispatchHitEvent(2,0x300|23);assert(reaction && hit.damageActive);
  assert(word(hit,0x84102278)==(0x300|23) && word(hit,0x841022b4)==reaction);
  assert(word(hit,0x8410229c)==0 && word(hit,0x841022a8)==0);
- for(unsigned n=0;n<60 && !hit.pendingService;++n)hit.tick(hit.now+17,0);
- assert(!hit.failed && hit.damageActive && hit.pendingService && !hit.introComplete);
+ bool damagePose=false;
+ for(unsigned n=0;n<20;++n){hit.tick(hit.now+17,0);if(hit.actors[0].pose=="D_1")damagePose=true;}
+ assert(!hit.failed && hit.damageActive && !hit.pendingService && damagePose);
+ for(unsigned n=0;n<180 && hit.damageActive;++n)hit.tick(hit.now+17,0);
+ assert(!hit.failed && !hit.damageActive && !hit.pendingService && !hit.introComplete);
  assert(hit.actors[0].hp==hp && hit.result==0);
- bool originalChild=false;for(const auto& request:hit.requests)if(request.owner==2 && request.function==hit.pendingService)originalChild=true;
- assert(originalChild);
- std::cout<<"Original Crump reaction child retained at "<<std::hex<<hit.pendingService<<"; HP/result unchanged\n";
- // Replacement really deletes that live source reaction before creating a new root.
- const auto replacement=hit.dispatchDirectHitEvent(2,0x456,0x80419ef8);assert(replacement && replacement!=reaction && !hit.pendingService);
+ std::cout<<"Original Crump reaction completed its timed D_1 branch without an unsupported service; HP/result unchanged\n";
+ // Replacement deletes a fresh live source reaction before creating a new root.
+ const auto live=hit.dispatchHitEvent(2,0x300|23);assert(live && hit.damageActive);
+ const auto replacement=hit.dispatchDirectHitEvent(2,0x456,0x80419ef8);assert(replacement && replacement!=live && !hit.pendingService);
  assert(word(hit,0x841022b4)==replacement && word(hit,0x84102278)==0x456);
  hit.tick(hit.now+17,0);assert(!hit.damageActive && !hit.failed && !hit.pendingService && hit.actors[0].hp==hp);
 }

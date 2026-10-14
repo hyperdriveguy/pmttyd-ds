@@ -1883,3 +1883,12 @@ normal-element code300|23 retains the real GetDamage8010f458 boundary.
 [Native scope](behavior/battle/NATIVE_REACTION_ATTRIBUTES_FACING_AND_FLAGS.md).
 Nintendo/Intelligent Systems original resources; no redistribution rights. ISO
 remains read-only, compiled packs ignored; no original-runtime/hardware claim.
+
+## Tutorial reaction service evidence (2026-10-13)
+
+Read-only US ISO DOL bodies 8010f458/74, 80127448/c and 80113f1c/6c
+now have complete SHA256 pins in tools/verify_battle_hit_code_events.py.
+The existing private tutorial script pack and original Crump D_1 pose are
+reused; no new texture, dialogue, pose conversion, or distributable game asset
+was added. Inspection ELF files stay in ignored artifacts. Original game
+content retains its existing Nintendo/Intelligent Systems licensing status.
