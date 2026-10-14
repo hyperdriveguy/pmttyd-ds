@@ -5,6 +5,11 @@ Filed by the native overworld implementation session, 2026-10-12, as one of the 
 
 ## Open todos
 
+- [x] Complete local calcHokanCamRoad/calcCurrentCamState —
+  [road interpolation/current construction](../behavior/camera/FIELD_CAMERA_ROAD_INTERPOLATION_AND_CURRENT_STATE.md).
+  Exact easing constants/nearest-angle/ordered writes, mode0 points, prefix/
+  inactive/active geometry and matrix requests pinned; manager/selection open.
+
 - [x] Complete local compareCamRoad and two scoped camRoadMain argument
   directions — [road comparison/rate](../behavior/camera/FIELD_CAMERA_ROAD_COMPARISON_AND_TRANSITION_RATE.md).
   Integer/float progress gates, transition mask, weighted metrics/sqrt,
@@ -98,3 +103,20 @@ Vectors begin with supplied integer or postmetric inputs, not original acos/
 frsqrte observations. Docs only; no make test/all rerun. Raw listings stay /tmp.
 OW-CAMERA-01 stays OPEN: geometry/zone/curve selection, full road transition
 composition, profile/state/value/FP domains, limits and original visual binding.
+
+## 2026-10-13 — Complete road interpolation and current-state construction
+
+Delivered [two complete local functions](../behavior/camera/FIELD_CAMERA_ROAD_INTERPOLATION_AND_CURRENT_STATE.md).
+Exact phase/easing constants differ from mathematical pi/.5; weight has only
+an upper clamp. Direction wraps first angle toward second, with inclusive pi
+boundaries, before sin/cos output. Mode0 copies points while still interpolating
+other fields. Current-state prefix precedes inactive test; active geometry is
+captured before separate cos/sin/cos and matrix requests. Scoped caller pins
+r6 supplied state unused locally and output in r7. No measured framing invented.
+
+Validation: read-only ISO manifest20 spans/294 anchors/twelve calls; independent
+all274 words/14 literal mathematical vectors/write/capture/gate/loop/call/caller
+sites/twelve constants/fresh pins passed. Markdown links/scoped diff passed.
+Docs only; no make test/all rerun. Raw temporary bodies stay /tmp.
+OW-CAMERA-01 remains OPEN: selection/geometry/full manager/timebase, state/FP/
+alias/value domains, math/matrix internals, original camera and native binding.

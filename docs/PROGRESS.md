@@ -2,6 +2,29 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox road interpolation and current camera state
+
+Completed local calcHokanCamRoad/calcCurrentCamState; OW-CAMERA-01 portions
+checked. [Interpolation/current construction](behavior/camera/FIELD_CAMERA_ROAD_INTERPOLATION_AND_CURRENT_STATE.md)
+pins exact phase/easing constants, upper-only weight clamp, nearest-angle wraps,
+ordered field writes/mode0 points, unused r6 argument, prefix-before-inactive
+state and captured active geometry/cos-sin-cos/matrix requests. These supply
+transition construction dependencies for the 2DS XL camera; original room
+selection/limits and measured native framing remain unclosed.
+
+Validation: read-only ISO manifest20 spans/294 anchors/twelve direct calls;
+independent all274 words/14 literal mathematical vectors/ordered writes/capture/
+gate/loop/call/caller sites/twelve constants/fresh pins passed. Link audit
+passed965 Markdown files/zero broken links; scoped diff check passed. Docs only,
+no make test/all rerun. Raw ELF/listings/generator stay /tmp; no binary assets/
+bodies committed. Concurrent native edits excluded. Approved push pending valid
+GitHub credentials after authentication rejection.
+
+Next: full camRoadMain transition timestamp/copy/progress/consumer composition,
+then calcCamRoad/collisionCurve authored selection/contact/geometry and limits.
+State/profile/math/matrix/FP/alias/value domains and original room/control/
+pause/cadence/visual/native binding remain OPEN, as do parent/full-game requests.
+
 ## 2026-10-13 — Inbox camera-road comparison and reciprocal rate
 
 Completed local compareCamRoad and two scoped caller directions; OW-CAMERA-01
