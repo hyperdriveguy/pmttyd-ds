@@ -1238,3 +1238,9 @@ target_sources(ttyd_core PRIVATE source/battle/battle_timing_display.cpp)
 add_executable(battle_timing_display_tests tests/battle_timing_display_tests.cpp)
 target_link_libraries(battle_timing_display_tests PRIVATE ttyd_core)
 add_test(NAME battle_timing_display COMMAND battle_timing_display_tests)
+
+# Complete source command Input owner and explicit native menu-provider bridge.
+target_sources(ttyd_core PRIVATE source/battle/battle_command_input.cpp source/battle/harbor_tutorial_command.cpp)
+add_executable(battle_command_input_tests tests/battle_command_input_tests.cpp)
+target_link_libraries(battle_command_input_tests PRIVATE ttyd_core)
+add_test(NAME battle_command_input COMMAND battle_command_input_tests)

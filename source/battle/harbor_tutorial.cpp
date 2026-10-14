@@ -184,13 +184,14 @@ const DisplayQueue* HarborTutorial::actionDisplayQueue()const{return runtime_?&r
 bool HarborTutorial::dispatchPhase(int32_t sourceTurn,uint32_t sourcePhase){if(!runtime_ || failed || !initialized || phaseActive || attackActive || damageActive || !actors[0].phase)return false;turn=sourceTurn;phaseWord=sourcePhase;runtime_->phaseInterrupted=false;runtime_->phaseRoot=runtime_->root(actors[0].phase,CrumpId,0x20).id;runtime_->packed->recordPhase(CrumpId,runtime_->phaseRoot);phaseActive=true;return true;}
 bool HarborTutorial::dispatchInstalledAttack(int32_t id){const auto slot=visualSlot(id);if(!runtime_ || failed || !initialized || !introComplete || phaseActive || attackActive || damageActive || (id!=CrumpId && id!=HelperId) || slot<0 || !actors[size_t(slot)].attack)return false;pendingService=0;runtime_->attackRoot=runtime_->root(actors[size_t(slot)].attack,id).id;runtime_->packed->recordAttack(id,runtime_->attackRoot);attackActive=true;return true;}
 bool HarborTutorial::dispatchSelectedAttack(){
- if(!runtime_ || failed || !initialized || !introComplete || phaseActive || attackActive || damageActive || weaponMenuOpen || weaponTargets.empty() || !runtime_->packed->weaponDecided)return false;
+ if(!runtime_ || failed || !initialized || !introComplete || phaseActive || attackActive || damageActive || weaponMenuOpen || weaponTargets.empty() || runtime_->packed->commandInputBlocked() || (!runtime_->packed->weaponDecided && !runtime_->packed->commandFinalized))return false;
  auto& r=*runtime_;r.scene=this;r.packed->publish(*this);
  // Explicit confirmed-command scheduler entry, analogous to the trio launch;
  // not an implementation of Input's pending/progress loop or target UI.
  const auto b=HarborTutorialPacked::Battle;
  if(!r.vm.memory.writeWord(b+0x420,MarioId) || !r.vm.memory.writeWord(b+0x171c+0x540,weaponMenuType))return false;
- if(!r.packed->selectAttackEvent())return false;
+ if(!r.packed->commandFinalized && !r.packed->selectAttackEvent())return false;
+ r.packed->commandFinalized=false;
  battleFlags|=4;r.vm.memory.writeWord(b+0xef4,battleFlags);
  r.vm.memory.writeWord(b+0xf20,0x06000006);
  pendingService=0;r.registerSelectedAttack();r.packed->capture(*this);
@@ -222,12 +223,21 @@ bool HarborTutorial::selectWeapon(unsigned row){
 }
 bool HarborTutorial::openWeaponMenu(uint32_t type){
  if(!runtime_ || failed || !initialized || !introComplete || phaseActive || attackActive || damageActive)return false;auto& r=*runtime_;r.scene=this;r.packed->publish(*this);
- return r.packed->openWeaponMenu(type,*this,&r,[](void* self,uint32_t key){auto& r=*static_cast<HarborTutorialRuntime*>(self);const auto id=r.text(key);return r.packed->cacheMenuLabel(key,messages.find(id.c_str()));});
+ const bool opened=r.packed->openWeaponMenu(type,*this,&r,[](void* self,uint32_t key){auto& r=*static_cast<HarborTutorialRuntime*>(self);const auto id=r.text(key);return r.packed->cacheMenuLabel(key,messages.find(id.c_str()));});
+ // Explicit native confirmed-class entry into source Input state7.
+ if(opened)r.vm.memory.writeWord(HarborTutorialPacked::Battle+0x171c,7);
+ return opened;
 }
 void HarborTutorial::weaponMenuPresented(){if(runtime_ && weaponMenuOpen)runtime_->packed->weaponMenuPresented();}
 std::optional<int32_t> HarborTutorial::inputWeaponMenu(const BattlePadSample& sample){
  if(!runtime_ || failed || !weaponMenuOpen || phaseActive || attackActive || damageActive)return std::nullopt;auto& r=*runtime_;r.scene=this;r.packed->samplePhysical(now,&sample);r.packed->publish(*this);
  return r.packed->inputWeaponMenu(*this,&r,[](void* self,uint32_t key){auto& r=*static_cast<HarborTutorialRuntime*>(self);const auto id=r.text(key);return r.packed->cacheMenuLabel(key,messages.find(id.c_str()));});
+}
+std::optional<int32_t> HarborTutorial::inputCommand(const BattlePadSample& sample){
+ if(!runtime_ || failed || !initialized || !introComplete || phaseActive || attackActive || damageActive)return std::nullopt;
+ auto& r=*runtime_;r.scene=this;r.packed->samplePhysical(now,&sample);r.packed->publish(*this);
+ const auto result=r.packed->commandInput(*this,&r,[](void* self,uint32_t key){auto& r=*static_cast<HarborTutorialRuntime*>(self);const auto id=r.text(key);return r.packed->cacheMenuLabel(key,messages.find(id.c_str()));});
+ r.packed->capture(*this);return result;
 }
 bool HarborTutorial::readPackedWord(uint32_t address,uint32_t& value)const{return runtime_ && runtime_->packed && runtime_->packed->readWord(address,value);}
 void HarborTutorial::animationComplete(int32_t id){const auto slot=visualSlot(id);if(!runtime_ || slot<0)return;runtime_->complete[size_t(slot)]=true;runtime_->completeEpoch[size_t(slot)]=actors[size_t(slot)].poseAt;}

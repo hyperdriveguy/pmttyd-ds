@@ -103,3 +103,65 @@ write replaced it, or a subsequently selected supported weapon cursor.
 It is not a default weapon cursor and does not initialize a different function's
 private stack slot. [Target remapping and controls](COMMAND_INPUT_TARGET_REMAP_AND_CONFIRMATION.md)
 complete this state's ordered reads and writes.
+
+## Shared implementation and native provider bridge (2026-10-14)
+
+[Source Input owner](../../../source/battle/battle_command_input.cpp) now implements
+all30 state targets/default through the [typed request interface](../../../include/battle/battle_command_input.hpp).
+Requests carry original callee identities, exact raw argument words/count and
+optional raw scalar results. Missing readiness is nullopt; a source0 result
+remains an admitted scalar0. Retained B/U/M, initial unit lookup before wrapped
+M-zero, one SP08 output, ordinary progress reset and pending re-entry preserving
+P are explicit. No one-state-per-render-frame policy or loop limit is inserted.
+State11 delegates to the existing complete target-selection core with that
+same cursor output; parent progress and tail remain here. State29 calls the
+selector, freshly clears the two live flags, requests OffLight(0,0), and returns1.
+It does not create a root, consume a turn or synthesize a battle/story result.
+
+[Portable fixtures](../../../tests/battle_command_input_tests.cpp) exercise all
+state entries, paired setup flags/fallthroughs, reason-entry ID publication and
+current-ID waits, changed types/actor bytes after providers, retained U despite
+acting-ID changes, unsupported cursor output reuse, cancel/confirm priority,
+state29 fresh flag writes/direct return and pending re-entry retaining P1.
+Read-only verify_command_input.py still pins39 bodies/3 source spans/all526
+instructions of the source owner and linked identities; no runtime timing claim.
+
+Harbor's explicit inputCommand(sample) composes this owner over native source
+memory. Existing confirmed-class openWeaponMenu admits Input state7; the full
+source class/first-act/turn scheduler is still missing in Game. Weapon Main
+confirmation1 progresses within the same call to state10 and publishes the
+actual weapon help key/mode1/state11, then returns0. A later physical A confirms
+the refreshed target, ends target UI, stores29 and help2, then returns0. The
+following invocation dispatches source29 and returns1 with the actual original
+attack script selected. Native dispatchSelectedAttack recognizes that completed
+selection and registers it without repeating the selector; its admission latch
+is consumed once. The legacy direct weapon decision bridge remains supported.
+
+Native _commandRestoreRec is the complete current-global owner. Present-item
+checks admit only source-complete early exits: item>=339; target outside-1..63;
+or actual item0 after the original retained-B unit lookup. Gift/effect domains
+remain missing providers. Complete lights are source blr leaves. Help and cursor
+use existing whole source helpers; target refresh uses actual sampling records.
+UI setup/end are still explicit native presentation adapters, not recovered
+constructor/animation playback. Nonzero operation payment and populated audience
+entity production remain unbound, rather than substituting zero cost/item-1.
+
+Target cancellation needs complete CommandAnimPose. Native admission reports
+801264cc before parent/cancel effects, retaining the target UI for another
+physical input. Missing providers encountered inside Input freeze the native
+command context with its diagnostic until a new explicit menu context is built.
+A future call cannot reinterpret a partial state store as source completion or
+replay an abandoned SP08/P stack. The legacy root-registration bridge also
+refuses a frozen context. The ordinary weapon-menu B path really closes
+its UI/stores1, then reaches the still-unbound ActMenuSetup; the freeze preserves
+that frontier. These are native readiness policies, not original return values.
+
+The native fixture drives physical weapon A, target A, deferred finalization and
+single root registration, then completes the actual failed Jump with HP4/7,
+failure declaration1/dealt1 and result0. It checks target A/B simultaneous input
+is rejected at the missing cancel provider before effects, and partial weapon
+cancellation does not advance on retries. Original field pouch, dialogue/IDs,
+HUD assets and action timing are reused; no generated payload was added. Visible
+class/weapon/target activation in Game, complete B cancellation providers,
+post-action/turn/phase ownership and original voice remain separate unfinished
+requirements, along with second-screen scene/audience controls.

@@ -152,9 +152,37 @@ void sampledPlayerResult(bool success){
   assert(scene.actors[0].work[2]==1 && scene.actors[0].work[1]==0 && scene.result==0);
  }
 }
+void nativeCommandFlow(){
+ auto pouch=initializeProloguePouch("Yoshi");pouch.half(0x70,7);HarborTutorial scene;BattlePadSample quiet,a,b;
+ a.snapshot.buttons=a.pressed=BattleButtonA;b.snapshot.buttons=b.pressed=0x300;
+ assert(scene.beginFromPouch(0,pouch,4));
+ for(unsigned n=0;n<1500 && !scene.introComplete;++n){if(scene.pendingService==0x80106980)scene.animationComplete(1);scene.tick((n+1)*1000/60,n%4==0?0x100:0,&quiet);}
+ assert(scene.introComplete && scene.openWeaponMenu(0));scene.weaponMenuPresented();
+ uint32_t value=0;auto word=[&](uint32_t at){assert(scene.readPackedWord(at,value));return value;};
+ assert(word(0x8400171c)==7);
+ scene.tick(scene.now+17,0,&a);assert(scene.inputCommand(a)==0 && !scene.commandInputPending);
+ assert(!scene.weaponMenuOpen && scene.weaponTargetMenuOpen && word(0x8400171c)==11 && word(0x8401900c)==1 && word(0x84019008)!=0);
+ assert(!scene.attackActive && word(0x841012a8)==0 && word(0x841012ac)==0 && word(0x84016f4c)==0);
+ scene.tick(scene.now+17,0,&b);assert(!scene.inputCommand(b) && scene.commandInputPending==0x801264cc);
+ assert(scene.weaponTargetMenuOpen && word(0x8400171c)==11 && word(0x8401900c)==1); // Explicit cancel provider admission; no half-cancel.
+ scene.tick(scene.now+17,0,&quiet);assert(scene.inputCommand(quiet)==0 && !scene.commandInputPending);
+ scene.tick(scene.now+17,0,&a);assert(scene.inputCommand(a)==0 && !scene.commandInputPending);
+ assert(!scene.weaponTargetMenuOpen && word(0x8400171c)==29 && word(0x8401900c)==2 && (word(0x84000ef4)&4) && !scene.attackActive && word(0x841012ac)==0);
+ scene.tick(scene.now+17,0,&quiet);assert(scene.inputCommand(quiet)==1 && !scene.commandInputPending);
+ assert(scene.actors[1].attack==0x80355cf0 && word(0x841012ac)==0 && word(0x841012a8)==0 && !(word(0x84001720)&0x01000000) && !(word(0x84000ef8)&1));
+ assert(scene.dispatchSelectedAttack() && !scene.dispatchSelectedAttack());
+ for(unsigned n=0;n<200;++n)scene.tick(scene.now+17,0,&quiet);
+ assert(!scene.failed && !scene.attackActive && !scene.damageActive && !scene.pendingService && scene.actors[0].hp==4 && scene.actors[1].hp==7 && scene.failureDeclarations==1 && scene.result==0 && word(0x84101284)==1 && (word(0x84016f4c)>>24)==1);
+ // An in-body provider frontier cannot be retried as a new source stack. A
+ // later call must not turn a partial state write into a completed command.
+ assert(scene.openWeaponMenu(0));scene.weaponMenuPresented();BattlePadSample cancelOnly;cancelOnly.snapshot.buttons=cancelOnly.pressed=0x200;
+ scene.tick(scene.now+17,0,&cancelOnly);assert(!scene.inputCommand(cancelOnly) && scene.commandInputPending==0x80122794 && word(0x8400171c)==1 && !scene.weaponMenuOpen);
+ const auto restore=word(0x84001c70);scene.tick(scene.now+17,0,&quiet);
+ assert(!scene.inputCommand(quiet) && scene.commandInputPending==0x80122794 && word(0x8400171c)==1 && word(0x84001c70)==restore && !scene.dispatchSelectedAttack());
+}
 int main(){
  assert(loadMessageIcons("romfs/message-icons.bin") && messageIcon(108) && messageIcon(109));
- assert(loadHarborTutorialAssets("romfs"));ordinaryCrumpImpact();retainedLethalImpact();nativeWeaponRows();nativePlayerAttack();sampledPlayerResult(false);sampledPlayerResult(true);HarborTutorial t;assert(t.begin(0,7));
+ assert(loadHarborTutorialAssets("romfs"));ordinaryCrumpImpact();retainedLethalImpact();nativeWeaponRows();nativePlayerAttack();nativeCommandFlow();sampledPlayerResult(false);sampledPlayerResult(true);HarborTutorial t;assert(t.begin(0,7));
  for(uint64_t tick=1;tick<300 && !t.message.active();++tick)t.tick(tick*1000/60,0);
  uint32_t packedSystem=0;
  assert(!t.failed);assert(t.initialized);assert(t.actors[0].hp==5 && t.actors[0].maxHp==5);

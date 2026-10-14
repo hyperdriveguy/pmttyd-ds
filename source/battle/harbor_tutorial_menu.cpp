@@ -45,7 +45,7 @@ void HarborTutorialPacked::captureWeaponRows(uint32_t type,HarborTutorial& scene
  scene.weaponRowIndex=int32_t(word(activeCursor));
 }
 bool HarborTutorialPacked::buildWeaponMenu(uint32_t type,HarborTutorial& scene,void* messageUser,uint32_t(*message)(void*,uint32_t)){
- weaponDecided=false;
+ weaponDecided=false;commandFinalized=false;commandUnbound=0;scene.commandInputPending=0;
  if(!freshPouch || (type!=0 && type!=1 && type!=2 && type!=4))return false;
  word(Battle+0x420,1);readDamage(1);
  struct Context{HarborTutorialPacked* p;void* messageUser;uint32_t(*message)(void*,uint32_t);};Context context{this,messageUser,message};

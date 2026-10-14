@@ -3,7 +3,7 @@
 #include "battle_weapon_menu_decision.hpp"
 #include <cassert>
 namespace ttyd {
-bool HarborTutorialPacked::openWeaponMenu(uint32_t type,HarborTutorial& scene,void* messageUser,uint32_t(*message)(void*,uint32_t)){
+bool HarborTutorialPacked::openWeaponMenu(uint32_t type,HarborTutorial& scene,void* messageUser,uint32_t(*message)(void*,uint32_t),uint32_t setupFlag){
  if(type!=0 && type!=1 && type!=2 && type!=4)return false;
  struct Context{HarborTutorialPacked* p;HarborTutorial* scene;void* messageUser;uint32_t(*message)(void*,uint32_t);};Context c{this,&scene,messageUser,message};
  // Native confirmed-class bridge; the original class controller is still separate.
@@ -12,7 +12,7 @@ bool HarborTutorialPacked::openWeaponMenu(uint32_t type,HarborTutorial& scene,vo
  s.build=[](void* self,uint32_t b,uint32_t t){auto& c=*static_cast<Context*>(self);assert(b==Battle);return c.p->buildWeaponMenu(t,*c.scene,c.messageUser,c.message);};
  s.cursor=[](void* self,uint32_t menu,uint32_t t,uint32_t out){auto& p=*static_cast<Context*>(self)->p;uint32_t address=0;if(findPackedCommandCursor(menu,t,address,nativeBattlePackedSelectionServices(p.vm)))p.word(out,address);};
  s.initialize=[](void* self,uint32_t b,uint32_t,uint32_t,uint32_t){auto& c=*static_cast<Context*>(self);assert(b==Battle);c.p->word(Battle+0x1c78,MenuRam+0xc00);c.p->byte(MenuRam+0xc14,0);c.scene->weaponMenuOpen=true;c.scene->weaponTargetMenuOpen=false;return true;};
- return setupPackedBattleWeaponMenu(Battle,type,0,s);
+ return setupPackedBattleWeaponMenu(Battle,type,setupFlag,s);
 }
 void HarborTutorialPacked::weaponMenuPresented(){byte(MenuRam+0xc14,1);}
 std::optional<int32_t> HarborTutorialPacked::inputWeaponMenu(HarborTutorial& scene,void* messageUser,uint32_t(*message)(void*,uint32_t)){

@@ -85,6 +85,9 @@ public:
     bool openWeaponMenu(uint32_t type);
     void weaponMenuPresented();
     std::optional<int32_t> inputWeaponMenu(const BattlePadSample&);
+    // Complete source Input owner with established menu/provider context.
+    std::optional<int32_t> inputCommand(const BattlePadSample&);
+    uint32_t commandInputPending=0;
     bool weaponMenuOpen=false,weaponTargetMenuOpen=false;int32_t weaponRowIndex=0;
     std::vector<uint32_t> weaponMenuSounds;
     bool selectWeapon(unsigned row);
