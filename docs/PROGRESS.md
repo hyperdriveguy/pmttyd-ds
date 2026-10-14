@@ -2,6 +2,31 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox camera defaults, IDs and reset owners
+
+Completed eight local camera rate/ID/reset leaves; OW-CAMERA-01 portion checked.
+[Reset contract](behavior/camera/FIELD_MARIO_CAMERA_RATE_ID_AND_RESET_OWNERS.md)
+separates follow15c reset .2 from shift150/154/158 .03/.06/.06, preserves current
+shift channels, and pins distinct raw ffffffff templates/ordered writes. Forty
+direct DOL callers identify init/reinit, camera, party, motion/EVT/item sources;
+caller admission and other writers remain open. Linked the previously recovered
+camera lifecycle/projection evidence into the request instead of re-recovering
+its bounded ordinary graph. Native .07 smoothing remains provisional.
+
+Validation: read-only ISO manifest16 spans/167 anchors/eight calls; independent
+all116 body words/exact reset layouts/templates/capture sites/constants and
+exhaustive40-site DOL caller census passed. Existing lifecycle verifier passed
+39 spans/72 anchors/five camera files/75 event owners/332 bindings. Link audit
+passed961 Markdown files/zero broken links; scoped diff check passed. Docs only;
+no make test/all rerun. Raw ELFs/listings/generator stay /tmp. Concurrent native
+changes excluded. Approved push still pending valid GitHub credentials.
+
+Next: authored road selection/curve/transition/limits through calcCamRoad,
+collisionCurve, compareCamRoad, calcHokanCamRoad, calcCurrentCamState and
+camRoadMain, using existing pinned room containers. Other callers/writers/
+owner/value/FP domains, pause/cadence/original visuals/native binding and parent
+requests/full-game remain OPEN.
+
 ## 2026-10-13 — Inbox native camera dependency: shifts and update controls
 
 Completed local marioCamMain/marioUpdateCam and four camera-control leaves;

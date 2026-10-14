@@ -1,0 +1,599 @@
+{
+  "schema": 1,
+  "scope": "Complete eight Mario camera follow-rate/id/shift reset leaves and direct DOL caller census; exact writes/raw templates/defaults, providers/REL/indirect/runtime open",
+  "complete_bodies": [
+    "marioGetCamFollowRate",
+    "marioSetCamFollowRate",
+    "marioResetCamFollowRate",
+    "marioSetCamId",
+    "marioGetCamId",
+    "marioInitCamId",
+    "marioResetCamShiftRate",
+    "marioResetCamShift"
+  ],
+  "linked_only": [
+    "marioGetPtr"
+  ],
+  "dol_spans": [
+    {
+      "name": "marioGetCamFollowRate",
+      "address": 2149225524,
+      "size": 36,
+      "sha256": "58661efc0b03f1f0a47567ddcfe8ecffc3b090e007a80e9650b77a45a7399e3e"
+    },
+    {
+      "name": "marioSetCamFollowRate",
+      "address": 2149225560,
+      "size": 48,
+      "sha256": "32f859009daeaf7e7473976fb41fcf2572d4e91f21c5758be9efd6c4bbaa555c"
+    },
+    {
+      "name": "marioResetCamFollowRate",
+      "address": 2149225608,
+      "size": 56,
+      "sha256": "65f264bf8e3ea2750a60552965dbfe582ac0fcc189552b0d4b357ff6ad8f95fe"
+    },
+    {
+      "name": "marioSetCamId",
+      "address": 2149225664,
+      "size": 48,
+      "sha256": "d6d383eddf80be69e4bbc57ec57936634e3aa4b56f0c85a5473e5892a7c981f4"
+    },
+    {
+      "name": "marioGetCamId",
+      "address": 2149225712,
+      "size": 36,
+      "sha256": "44aeb2104e604745f7bdf3e23c9dd7cd80355211832738edde34fde844bafcfd"
+    },
+    {
+      "name": "marioInitCamId",
+      "address": 2149225748,
+      "size": 48,
+      "sha256": "3bb71c8239e37aa8973bef56fa964f5a78ad4354f2b848e5808d35633a385965"
+    },
+    {
+      "name": "marioResetCamShiftRate",
+      "address": 2149225796,
+      "size": 100,
+      "sha256": "3d2142763b6d9f0adba6fbbb64ee5e4198b4a78de4037304fd0875c85e0a0ee5"
+    },
+    {
+      "name": "marioResetCamShift",
+      "address": 2149225896,
+      "size": 92,
+      "sha256": "52ac82ec041e67cecd8d7b0c9dc3e9a0ef6c4236c930256d1f2368f5824fa272"
+    },
+    {
+      "name": "marioGetPtr",
+      "address": 2147868864,
+      "size": 8,
+      "sha256": "3a59459f28ddd5d287c200434ad158a9dfe277f4f6bcaae3eb8698505aa9773d"
+    },
+    {
+      "name": "zero",
+      "address": 2151828132,
+      "size": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+    },
+    {
+      "name": "follow_reset",
+      "address": 2151828188,
+      "size": 4,
+      "sha256": "cea23fc0ff6ff5c3256ac12d2f117ac6077bc1e314894509962f9ec10ea0a269"
+    },
+    {
+      "name": "side_rate_reset",
+      "address": 2151828192,
+      "size": 4,
+      "sha256": "2df805aaa329c6b33c5b7a186c2796dfa37fde678c298567616cdb8f473197ea"
+    },
+    {
+      "name": "vertical_depth_rate_reset",
+      "address": 2151828196,
+      "size": 4,
+      "sha256": "de1e85862e03a5340c415c93fdb154785b403519bca243fbbc8450c8188f2472"
+    },
+    {
+      "name": "field68_reset",
+      "address": 2151828200,
+      "size": 4,
+      "sha256": "c31425b44a7ed682a3356bf6820141e1584a15c43b6d6793f552e5d4621586f7"
+    },
+    {
+      "name": "shift_reset_template",
+      "address": 2150672200,
+      "size": 12,
+      "sha256": "8688d249e9d047b4fc2fb89ce05afe9ec89252ffccdd969de6eef260dd7ffb21"
+    },
+    {
+      "name": "rate_reset_template",
+      "address": 2150672212,
+      "size": 12,
+      "sha256": "3414421b183188342209566fad4e0c0723070b4030630dde685ba70281e92725"
+    }
+  ],
+  "dol_anchors": {
+    "2149225532": "90010014",
+    "2149225536": "4beb4c81",
+    "2149225540": "80010014",
+    "2149225552": "38210010",
+    "2149225568": "90010014",
+    "2149225572": "dbe10008",
+    "2149225580": "4beb4c55",
+    "2149225588": "80010014",
+    "2149225600": "38210010",
+    "2149225616": "90010024",
+    "2149225620": "dbe10010",
+    "2149225632": "4beb4c21",
+    "2149225644": "80010024",
+    "2149225656": "38210020",
+    "2149225672": "90010014",
+    "2149225676": "93e1000c",
+    "2149225684": "4beb4bed",
+    "2149225688": "93e30134",
+    "2149225692": "80010014",
+    "2149225696": "83e1000c",
+    "2149225704": "38210010",
+    "2149225720": "90010014",
+    "2149225724": "4beb4bc5",
+    "2149225728": "80010014",
+    "2149225732": "80630134",
+    "2149225740": "38210010",
+    "2149225756": "90010014",
+    "2149225760": "93e1000c",
+    "2149225764": "3be00004",
+    "2149225768": "4beb4b99",
+    "2149225772": "93e30134",
+    "2149225776": "80010014",
+    "2149225780": "83e1000c",
+    "2149225788": "38210010",
+    "2149225804": "90010014",
+    "2149225808": "4beb4b71",
+    "2149225816": "3c808030",
+    "2149225824": "38a4a754",
+    "2149225856": "80850000",
+    "2149225860": "80050004",
+    "2149225864": "9083006c",
+    "2149225868": "90030070",
+    "2149225872": "80050008",
+    "2149225876": "90030074",
+    "2149225880": "80010014",
+    "2149225888": "38210010",
+    "2149225904": "90010014",
+    "2149225908": "4beb4b0d",
+    "2149225916": "3c808030",
+    "2149225924": "38a4a748",
+    "2149225948": "80850000",
+    "2149225952": "80050004",
+    "2149225956": "9083006c",
+    "2149225960": "90030070",
+    "2149225964": "80050008",
+    "2149225968": "90030074",
+    "2149225972": "80010014",
+    "2149225980": "38210010",
+    "2149225524": "9421fff0",
+    "2149225528": "7c0802a6",
+    "2149225544": "c023015c",
+    "2149225548": "7c0803a6",
+    "2149225556": "4e800020",
+    "2149225560": "9421fff0",
+    "2149225564": "7c0802a6",
+    "2149225576": "ffe00890",
+    "2149225584": "d3e3015c",
+    "2149225592": "cbe10008",
+    "2149225596": "7c0803a6",
+    "2149225604": "4e800020",
+    "2149225608": "9421ffe0",
+    "2149225612": "7c0802a6",
+    "2149225624": "f3e10018",
+    "2149225628": "c3e2d69c",
+    "2149225636": "d3e3015c",
+    "2149225640": "e3e10018",
+    "2149225648": "cbe10010",
+    "2149225652": "7c0803a6",
+    "2149225660": "4e800020",
+    "2149225664": "9421fff0",
+    "2149225668": "7c0802a6",
+    "2149225680": "7c7f1b78",
+    "2149225700": "7c0803a6",
+    "2149225708": "4e800020",
+    "2149225712": "9421fff0",
+    "2149225716": "7c0802a6",
+    "2149225736": "7c0803a6",
+    "2149225744": "4e800020",
+    "2149225748": "9421fff0",
+    "2149225752": "7c0802a6",
+    "2149225784": "7c0803a6",
+    "2149225792": "4e800020",
+    "2149225796": "9421fff0",
+    "2149225800": "7c0802a6",
+    "2149225812": "c002d6a0",
+    "2149225820": "c042d6a4",
+    "2149225828": "d0030150",
+    "2149225832": "c022d664",
+    "2149225836": "d0430154",
+    "2149225840": "c002d6a8",
+    "2149225844": "d0430158",
+    "2149225848": "d0230064",
+    "2149225852": "d0030068",
+    "2149225884": "7c0803a6",
+    "2149225892": "4e800020",
+    "2149225896": "9421fff0",
+    "2149225900": "7c0802a6",
+    "2149225912": "c022d664",
+    "2149225920": "c002d6a8",
+    "2149225928": "d0230138",
+    "2149225932": "d0230140",
+    "2149225936": "d0230148",
+    "2149225940": "d0230064",
+    "2149225944": "d0030068",
+    "2149225976": "7c0803a6",
+    "2149225984": "4e800020",
+    "2151828132": "00000000",
+    "2151828188": "3e4ccccd",
+    "2151828192": "3cf5c28f",
+    "2151828196": "3d75c28f",
+    "2151828200": "40000000",
+    "2150672200": "ffffffff",
+    "2150672204": "ffffffff",
+    "2150672208": "ffffffff",
+    "2150672212": "ffffffff",
+    "2150672216": "00000000",
+    "2150672220": "00000000",
+    "2147515136": "481a1a15",
+    "2147544360": "4819a70d",
+    "2147828124": "48155325",
+    "2147842732": "48151a45",
+    "2147842764": "48151a25",
+    "2147842796": "48151a05",
+    "2147856924": "4814e2d5",
+    "2147857752": "4814e051",
+    "2147857756": "4814dfe9",
+    "2147857760": "4814df29",
+    "2147857960": "4814deed",
+    "2147858956": "4814db9d",
+    "2147858960": "4814db35",
+    "2147858964": "4814da75",
+    "2148038432": "48121d69",
+    "2148039288": "48121a11",
+    "2148118072": "4810e651",
+    "2148118452": "4810e4d5",
+    "2148118812": "4810e319",
+    "2148118844": "4810e31d",
+    "2148119236": "4810e1c5",
+    "2148119748": "4810dfc5",
+    "2148120376": "4810dd51",
+    "2148121436": "4810d92d",
+    "2148167012": "48102725",
+    "2148187756": "480fd655",
+    "2148187812": "480fd61d",
+    "2148189144": "480fd0e9",
+    "2148189608": "480fcf19",
+    "2148237580": "480f13e5",
+    "2148258372": "480ec2ad",
+    "2148259720": "480ebd69",
+    "2148260660": "480eb9bd",
+    "2148261468": "480eb695",
+    "2148262392": "480eb2f9",
+    "2148430552": "480c21e9",
+    "2148430588": "480c2219",
+    "2149573800": "4bfaafe1",
+    "2149679620": "4bf91341",
+    "2149680224": "4bf910e5"
+  },
+  "direct_calls": [
+    {
+      "site": 2149225536,
+      "target": 2147868864,
+      "name": "marioGetPtr"
+    },
+    {
+      "site": 2149225580,
+      "target": 2147868864,
+      "name": "marioGetPtr"
+    },
+    {
+      "site": 2149225632,
+      "target": 2147868864,
+      "name": "marioGetPtr"
+    },
+    {
+      "site": 2149225684,
+      "target": 2147868864,
+      "name": "marioGetPtr"
+    },
+    {
+      "site": 2149225724,
+      "target": 2147868864,
+      "name": "marioGetPtr"
+    },
+    {
+      "site": 2149225768,
+      "target": 2147868864,
+      "name": "marioGetPtr"
+    },
+    {
+      "site": 2149225808,
+      "target": 2147868864,
+      "name": "marioGetPtr"
+    },
+    {
+      "site": 2149225908,
+      "target": 2147868864,
+      "name": "marioGetPtr"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "direct_dol_caller_census": [
+    {
+      "site": 2147515136,
+      "target": 2149225748,
+      "target_name": "marioInitCamId",
+      "caller": "_unload"
+    },
+    {
+      "site": 2147544360,
+      "target": 2149225524,
+      "target_name": "marioGetCamFollowRate",
+      "caller": "cam3dMain"
+    },
+    {
+      "site": 2147828124,
+      "target": 2149225664,
+      "target_name": "marioSetCamId",
+      "caller": "stone_bg"
+    },
+    {
+      "site": 2147842732,
+      "target": 2149225712,
+      "target_name": "marioGetCamId",
+      "caller": "marioPreDisp"
+    },
+    {
+      "site": 2147842764,
+      "target": 2149225712,
+      "target_name": "marioGetCamId",
+      "caller": "marioPreDisp"
+    },
+    {
+      "site": 2147842796,
+      "target": 2149225712,
+      "target_name": "marioGetCamId",
+      "caller": "marioPreDisp"
+    },
+    {
+      "site": 2147856924,
+      "target": 2149225712,
+      "target_name": "marioGetCamId",
+      "caller": "marioReInit"
+    },
+    {
+      "site": 2147857752,
+      "target": 2149225896,
+      "target_name": "marioResetCamShift",
+      "caller": "marioReInit"
+    },
+    {
+      "site": 2147857756,
+      "target": 2149225796,
+      "target_name": "marioResetCamShiftRate",
+      "caller": "marioReInit"
+    },
+    {
+      "site": 2147857760,
+      "target": 2149225608,
+      "target_name": "marioResetCamFollowRate",
+      "caller": "marioReInit"
+    },
+    {
+      "site": 2147857960,
+      "target": 2149225748,
+      "target_name": "marioInitCamId",
+      "caller": "marioInit"
+    },
+    {
+      "site": 2147858956,
+      "target": 2149225896,
+      "target_name": "marioResetCamShift",
+      "caller": "marioInit"
+    },
+    {
+      "site": 2147858960,
+      "target": 2149225796,
+      "target_name": "marioResetCamShiftRate",
+      "caller": "marioInit"
+    },
+    {
+      "site": 2147858964,
+      "target": 2149225608,
+      "target_name": "marioResetCamFollowRate",
+      "caller": "marioInit"
+    },
+    {
+      "site": 2148038432,
+      "target": 2149225608,
+      "target_name": "marioResetCamFollowRate",
+      "caller": "mot_dash"
+    },
+    {
+      "site": 2148039288,
+      "target": 2149225608,
+      "target_name": "marioResetCamFollowRate",
+      "caller": "mot_walk"
+    },
+    {
+      "site": 2148118072,
+      "target": 2149225608,
+      "target_name": "marioResetCamFollowRate",
+      "caller": "mot_land"
+    },
+    {
+      "site": 2148118452,
+      "target": 2149225608,
+      "target_name": "marioResetCamFollowRate",
+      "caller": "mot_fall"
+    },
+    {
+      "site": 2148118812,
+      "target": 2149225524,
+      "target_name": "marioGetCamFollowRate",
+      "caller": "mot_fall"
+    },
+    {
+      "site": 2148118844,
+      "target": 2149225560,
+      "target_name": "marioSetCamFollowRate",
+      "caller": "mot_fall"
+    },
+    {
+      "site": 2148119236,
+      "target": 2149225608,
+      "target_name": "marioResetCamFollowRate",
+      "caller": "mot_jumpSmall"
+    },
+    {
+      "site": 2148119748,
+      "target": 2149225608,
+      "target_name": "marioResetCamFollowRate",
+      "caller": "mot_jump"
+    },
+    {
+      "site": 2148120376,
+      "target": 2149225608,
+      "target_name": "marioResetCamFollowRate",
+      "caller": "mot_jumpNpc"
+    },
+    {
+      "site": 2148121436,
+      "target": 2149225608,
+      "target_name": "marioResetCamFollowRate",
+      "caller": "mot_jumpSw"
+    },
+    {
+      "site": 2148167012,
+      "target": 2149225608,
+      "target_name": "marioResetCamFollowRate",
+      "caller": "mot_stay"
+    },
+    {
+      "site": 2148187756,
+      "target": 2149225664,
+      "target_name": "marioSetCamId",
+      "caller": "itemseq_GetItem"
+    },
+    {
+      "site": 2148187812,
+      "target": 2149225664,
+      "target_name": "marioSetCamId",
+      "caller": "itemseq_GetItem"
+    },
+    {
+      "site": 2148189144,
+      "target": 2149225664,
+      "target_name": "marioSetCamId",
+      "caller": "itemseq_GetItem"
+    },
+    {
+      "site": 2148189608,
+      "target": 2149225664,
+      "target_name": "marioSetCamId",
+      "caller": "itemseq_GetItem"
+    },
+    {
+      "site": 2148237580,
+      "target": 2149225712,
+      "target_name": "marioGetCamId",
+      "caller": "partyInitCamId"
+    },
+    {
+      "site": 2148258372,
+      "target": 2149225712,
+      "target_name": "marioGetCamId",
+      "caller": "partyReInit"
+    },
+    {
+      "site": 2148259720,
+      "target": 2149225712,
+      "target_name": "marioGetCamId",
+      "caller": "partyEntry2Pos"
+    },
+    {
+      "site": 2148260660,
+      "target": 2149225712,
+      "target_name": "marioGetCamId",
+      "caller": "partyEntry2Hello"
+    },
+    {
+      "site": 2148261468,
+      "target": 2149225712,
+      "target_name": "marioGetCamId",
+      "caller": "partyEntry2"
+    },
+    {
+      "site": 2148262392,
+      "target": 2149225712,
+      "target_name": "marioGetCamId",
+      "caller": "partyEntryMain"
+    },
+    {
+      "site": 2148430552,
+      "target": 2149225664,
+      "target_name": "marioSetCamId",
+      "caller": "evt_mario_set_camid"
+    },
+    {
+      "site": 2148430588,
+      "target": 2149225748,
+      "target_name": "marioInitCamId",
+      "caller": "evt_mario_init_camid"
+    },
+    {
+      "site": 2149573800,
+      "target": 2149225608,
+      "target_name": "marioResetCamFollowRate",
+      "caller": "kpa_jumpNpc"
+    },
+    {
+      "site": 2149679620,
+      "target": 2149225796,
+      "target_name": "marioResetCamShiftRate",
+      "caller": "kpa_powdown"
+    },
+    {
+      "site": 2149680224,
+      "target": 2149225796,
+      "target_name": "marioResetCamShiftRate",
+      "caller": "kpa_powup"
+    }
+  ],
+  "reset_writes": {
+    "marioResetCamFollowRate": {
+      "348": "3e4ccccd"
+    },
+    "marioInitCamId": {
+      "308": "00000004"
+    },
+    "marioResetCamShiftRate": {
+      "336": "3cf5c28f",
+      "340": "3d75c28f",
+      "344": "3d75c28f",
+      "100": "00000000",
+      "104": "40000000",
+      "108": "ffffffff",
+      "112": "00000000",
+      "116": "00000000"
+    },
+    "marioResetCamShift": {
+      "312": "00000000",
+      "320": "00000000",
+      "328": "00000000",
+      "100": "00000000",
+      "104": "40000000",
+      "108": "ffffffff",
+      "112": "ffffffff",
+      "116": "ffffffff"
+    }
+  }
+}

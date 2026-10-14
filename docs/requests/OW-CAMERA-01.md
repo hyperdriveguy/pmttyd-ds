@@ -5,6 +5,11 @@ Filed by the native overworld implementation session, 2026-10-12, as one of the 
 
 ## Open todos
 
+- [x] Complete local follow-rate/ID get/set/reset/init and shift/rate reset
+  leaves — [rate/ID/reset owners](../behavior/camera/FIELD_MARIO_CAMERA_RATE_ID_AND_RESET_OWNERS.md).
+  Separate .2 follow and .03/.06/.06 shift reset words, raw templates, channel
+  preservation and40 direct DOL caller sites verified; other writers open.
+
 - [x] Complete local marioCamMain/marioUpdateCam and camFollowYOff/On,
   marioNoUpdateCamPos/marioUpdateCamPos — [shift/target/control contract](../behavior/camera/FIELD_MARIO_CAMERA_SHIFT_TARGETS_AND_CONTROLS.md).
   Three biased shift channels, target/height gates, owner snapshots, expiration
@@ -47,3 +52,27 @@ Markdown links/scoped diff check passed. Raw temporary bodies stay /tmp.
 Docs only; no make test/all rerun. Rates/default producers, room limits,
 camMain/zoom/event/trig consumers, pause/cadence/original visual execution and
 full native camera binding remain OPEN; no .07 smoothing claim was closed.
+
+## 2026-10-13 — Complete camera rate/ID/reset leaves and direct owners
+
+Delivered [eight complete leaves](../behavior/camera/FIELD_MARIO_CAMERA_RATE_ID_AND_RESET_OWNERS.md).
+Reset follow15c is distinct from shift150/154/158. Reset targets/rates leave
+current13c/144/14c untouched. Two original raw three-word templates differ;
+ffffffff words are retained as words. Direct DOL census40 sites records init/
+reinit, camera/party/EVT/item/motion owners; it does not establish branch admission
+or REL/indirect writers. mot_fall's later setter prevents treating reset .2 as
+unconditional. No provisional native smoothing used as original evidence.
+
+Also indexed the existing [lifecycle/projection contract](../behavior/camera/OVERWORLD_CAMERA_LIFECYCLE_AND_PROJECTION.md):
+its verifier re-passed39 DOL spans/72 anchors/five camera files/75 event owners/
+332 camera request bindings. It already documents bounded ordinary target follow,
+yaw/projection and update order; authored road solver/limits remain open. The
+older history statement that no camera contract had arrived is superseded by
+these linked deliveries, without rewriting that historical request text.
+
+Validation: new manifest16 spans/167 anchors/eight calls; independent all116
+leaf words, exact reset layouts/raw words/capture order/constants and exhaustive
+40-site direct DOL census passed. Markdown links/scoped diff checks passed.
+Docs only; no make test/all rerun. Raw inspection artifacts stay /tmp.
+OW-CAMERA-01 remains OPEN: caller/value/owner domains, other field writers,
+road geometry/limits, original pause/cadence/visual execution and native binding.
