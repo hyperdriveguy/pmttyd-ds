@@ -7569,6 +7569,54 @@ Next tasks:
    have dropped rows from it. Worth an owner check before it is treated as
    a reliable index.
 
+## 2026-10-13 — The startup spatial route is dead code (ID 3)
+
+Resolved the item the previous entry left as "not determined": what sets
+bit 15 of `slot+0x06`. **The answer is that nothing can**, so the startup
+`calc3D` route is unreachable.
+
+The four steps are recorded in
+[POSITIONAL_SFX_BACKEND_DISPATCH](behavior/audio/POSITIONAL_SFX_BACKEND_DISPATCH.md)
+and in the EVT-01 reply. In brief:
+
+1. The guard is `(int16)slot+0x06 < 0`, i.e. bit 15 — `lhz` sign-extends and
+   mask `0x40000000` sits in the sign-extension.
+2. `__psndSFXOn` builds the field from `0x101` plus ORs of 2, 4, 16, 32,
+   128, 512, 640, 1024 and 2048. **Maximum `0xFB7`** — below `0x8000`.
+3. A binary-wide scan for the `addi rD, rA, -1656` forming the `pssfx`
+   address (`0x803DF988`) returns **22 sites in 13 functions, all inside
+   `pmario_sound.o`**. A second scan for the alternate global-relative
+   route (`imm = 0x806 + 40*i`) returns 4 candidates, all in unrelated
+   files and all against a different base register. **No external writer
+   exists.**
+4. The only remaining in-file stores to `slot+0x06` are the ten provisioner
+   ORs, the normalisation/clear pair in `psndSFXMain`, and
+   `sth 5, 6(6)` in `psndInit` — none can set bit 15.
+
+So the `calc3D` call at `0x800DA264` and its PAN staging are **dead code**,
+and all positional attenuation in the shipped game flows through the live
+site at `0x800DA3F8`.
+
+**Why this is worth stating rather than leaving open.** A negative result
+like this is easy to re-derive wrongly: a reader who sees a `calc3D` call
+inside the startup path would reasonably implement both spatial paths, or
+assume the startup one is primary. Both would be additions to the
+original's behaviour.
+
+Practical consequence for the port: only the live path needs implementing,
+provided its guard behaviour matches — which per the above means never
+taking the startup branch.
+
+Docs-only; `make test` / `make all` not rerun.
+
+Next tasks:
+
+1. The live `calc3D` site `0x800DA3F8` and its `PAN` consumer chain — the
+   last structural item in the positional-SFX chain.
+2. Remaining EVT-01 todos: `evtmgrCmd` opcode bodies, NormalJump
+   registration writers, `CommandGetWeaponAddress`/`SelectWeapon` cursor
+   modes, `BATTLE_UNIT_QUERY_EVENT_LEAVES` prose reconciliation.
+
 ## 2026-10-13 — `rlwinm` masks and the live `calc3D` site: two corrections (ID 3)
 
 Chasing the bit-30 writer flagged in the previous entry produced two

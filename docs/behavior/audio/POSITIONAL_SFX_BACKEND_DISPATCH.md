@@ -206,15 +206,57 @@ skips `SoundEfxSetVolume`.
 
 ## Remaining gaps
 
-- **Who sets bit 15 of `slot+0x06`** (equivalently, what makes the
-  halfword negative). `__psndSFXOn` builds the field from a `0x101` base
-  plus conditional ORs of 2, 4, 16, 32, 128, 256, 512, 640, 1024 and 2048 —
-  a maximum of `0xBB7` — so bit 15 is never set by the provisioner. No
-  store to `slot+0x06` elsewhere in `pmario_sound.o` supplies it either;
-  the only other writer is `sth 5, 6(6)` in `psndInit`. Either the startup
-  spatial route is dead for provisioner-produced slots, or a writer outside
-  this family exists. **Not determined.**
 - The live `calc3D` site at `0x800DA3F8` and its `PAN` consumer chain.
+
+## The startup spatial route is dead code — resolved
+
+This replaces the earlier "not determined". It **is** determined, and the
+answer is that nothing in the binary can make the guard true.
+
+**Step 1 — the guard needs bit 15.** `lhz` sign-extends, and the mask
+`0x40000000` lies wholly in the sign-extension, so the condition is
+`(int16)slot+0x06 < 0`, i.e. bit 15 (`0x8000`).
+
+**Step 2 — the provisioner cannot set it.** `__psndSFXOn` builds the field
+from a `0x101` base plus conditional ORs of 2, 4, 16, 32, 128, 512, 640,
+1024 and 2048. The maximum reachable value is
+
+```
+0x101 | 16 | 32 | 640 | 512 | 1024 | 2048 | 128 | 2 | 4  ==  0xFB7
+```
+
+`0xFB7 < 0x8000`, so bit 15 is never set there.
+
+**Step 3 — no other writer exists in the whole binary.** Every access to the
+`pssfx` array (`0x803DF988`) is inside `pmario_sound.o`. A binary-wide scan
+for the `addi rD, rA, -1656` that forms the address returns **22 sites in 13
+functions, all in that one file**:
+
+`psndENV_stop` (4), `psndSFX_get_vol`, `psndSFXChk`, `psndSFXOff`,
+`psndSFX_dist`, `psndSFX_pos`, `psndSFX_pit`, `psndSFX_vol`, `__psndSFXOn`
+(2), `psndSFXMain` (4), `L_psndBGM_stop` (2), `psndSFXAllOff`,
+`psndMapChange`, `psndStopAllFadeOut`.
+
+A second scan for the alternate route — an `addi` from the audio global with
+`imm = 0x806 + 40*i`, which would reach `slot+0x06` directly — returns only
+4 candidates, all in unrelated files (`effStageClearMain`, three
+`stg3_20_*` event initialisers) and all using immediates against a
+different base register. No external writer exists.
+
+**Step 4 — the remaining in-file writers do not set bit 15.** Inside
+`pmario_sound.o` the only stores to `slot+0x06` are the ten `__psndSFXOn`
+ORs above, the normalisation/clear pair in `psndSFXMain` (which preserve or
+zero the low 16 and cannot invent bit 15), and `sth 5, 6(6)` in `psndInit`
+during global initialisation.
+
+**Conclusion:** bit 15 is never set, the guard at `0x800DA208` is never
+true, and the `calc3D` call at `0x800DA264` together with the PAN staging
+that follows it is **unreachable dead code**. All positional attenuation in
+the shipped game flows through the live site at `0x800DA3F8`.
+
+A port can therefore implement only the live path without behavioural loss,
+provided it matches the guard's behaviour on the startup path — which, per
+the above, means never taking it.
 - The later half of the function (from `0x800DA330` to the epilogue): the
   per-frame volume/pan/pitch updates for already-playing sounds, which
   account for most of the remaining `SoundSSSetVolCh` /

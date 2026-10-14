@@ -1014,6 +1014,44 @@ found no candidate in `pmario_sound.o`, which is consistent with the
 provisioner never setting it and does not rule out a `stw` of data-derived
 value from elsewhere.
 
+### ID 3, 2026-10-13 — the startup spatial route is dead code (resolved)
+
+The previous entry left one item as "not determined": what sets bit 15 of
+`slot+0x06`. **It is now determined, and the answer is that nothing can.**
+
+Four steps, all from the read-only US binary:
+
+1. **The guard needs bit 15.** `lhz` sign-extends and mask `0x40000000`
+   lies wholly in the sign-extension, so the condition is
+   `(int16)slot+0x06 < 0`.
+2. **The provisioner cannot set it.** `__psndSFXOn` builds the field from
+   `0x101` plus ORs of 2, 4, 16, 32, 128, 512, 640, 1024 and 2048. The
+   maximum is **`0xFB7`**, and `0xFB7 < 0x8000`.
+3. **No external writer exists.** A binary-wide scan for the
+   `addi rD, rA, -1656` that forms the `pssfx` address (`0x803DF988`)
+   returns **22 sites in 13 functions, every one inside
+   `pmario_sound.o`**: `psndENV_stop` (4), `psndSFX_get_vol`,
+   `psndSFXChk`, `psndSFXOff`, `psndSFX_dist`, `psndSFX_pos`,
+   `psndSFX_pit`, `psndSFX_vol`, `__psndSFXOn` (2), `psndSFXMain` (4),
+   `L_psndBGM_stop` (2), `psndSFXAllOff`, `psndMapChange`,
+   `psndStopAllFadeOut`. A second scan for the alternate route — `addi`
+   from the audio global with `imm = 0x806 + 40*i`, which would reach
+   `slot+0x06` directly — returns only 4 candidates, all in unrelated
+   files and all against a different base register.
+4. **The remaining in-file writers cannot invent the bit.** The only
+   stores to `slot+0x06` are the ten provisioner ORs, the
+   normalisation/clear pair in `psndSFXMain`, and `sth 5, 6(6)` in
+   `psndInit`.
+
+**Conclusion:** bit 15 is never set anywhere in the game, so the guard at
+`0x800DA208` is never true and the `calc3D` call at `0x800DA264`, with its
+PAN staging, is **unreachable dead code**. All positional attenuation in
+the shipped US binary flows through the live site at `0x800DA3F8`.
+
+This is a negative result, and it is the kind worth stating plainly: a
+reader would otherwise be tempted to implement both spatial paths, or to
+assume the startup path is the primary one.
+
 ## Answers and delivery notes
 
 ### ID 3, 2026-10-12 — `BtlUnit_snd_se_pos` / `psndSFX_pos` / `psndSFXOff` complete bodies
