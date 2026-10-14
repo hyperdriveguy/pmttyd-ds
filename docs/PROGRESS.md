@@ -2,6 +2,52 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Shared original stage-floor and tutorial jump recovery
+
+Feature `2849043` binds the complete US floor lookup and its three-operand
+TransStageFloorPosition event for tutorial and ordinary trio combat. Signed X/Z
+conversion, raw Y output capture, global stage ownership reload, mutable packed
+threshold/floor fields, NaN comparison and truncation follow original source.
+Fresh provision copies the existing original DOL90.0/-50.0 constants into the
+two floor fields. Tutorial JumpContinue now has an actual source floor provider;
+regular counter recovery uses the shared wrapper. No source dialogue, attack
+selection, damage result or turn transition is fabricated. See the
+[native floor/recovery contract](behavior/battle/NATIVE_STAGE_FLOOR_AND_JUMP_RECOVERY.md)
+and [asset record](ASSETS.md).
+
+Final shared `make test` passed201/201 CTest and130/130 Python, invoked with
+`TMPDIR="$PWD/artifacts/tutorial-admission-tmp" make test`; exact output is
+`artifacts/stage-floor-complete-tests.log`. Tests cover owner changes between
+wrapper capture and lookup, never resolving input Y, output-token ordering,
+mutable fields, both tiers, strict landing equality, NaN and negative fractional
+truncation. Existing generic-jump tests now use the real floor provider. Original
+tutorial fixtures verify both source initialization words. The max-moves fixture
+was updated to supply the original constants required by provision; its initial
+missing-data failure is retained in `artifacts/stage-floor-tests.log`. A later
+full run failed the concurrently added Goomba3 test's old gor_01 collision path;
+the updated roomAsset-based test and jump test passed focused retry, then the
+final full201/130 run passed. No failing attempt is counted as final validation.
+
+Normal `make all` passed (`artifacts/stage-floor-all.log`). Debug build initially
+hit an undefined stageMap symbol during concurrent object updates; the current
+object was inspected and the link retry passed
+(`artifacts/stage-floor-debug-retry.log`). Its immutable private3DSX snapshot is
+`artifacts/stage-floor-native-snapshot/ttyd-stage-floor-debug.3dsx`. Isolated Azahar
+physical Left/Up/Right/A routing in `artifacts/azahar-stage-floor-tutorial/`
+again reaches the original harbor scene and tutorial stage/actors/HUD, stopping
+at the unchanged action-service boundary. This is entry regression evidence,
+not a live attack/recovery, full battle or hardware-parity claim. Source verifier
+pins four complete DOL bodies and two constant spans read-only. No asset payload
+expansion was needed. Final doc links and scoped diff checks pass.
+
+Next: install complete original startup/UnitEntry resource ownership and the
+player command/action services, then connect generic damage orchestration and
+turn scheduling. Keep source waits and original dialogue IDs/tokens intact.
+Complete original rotating menus and lower-screen scene/audience with optional
+hostile-item taps and a physical control path. Full mutable stage initialization
+and later floor writers remain separate owners; only its two floor writes are
+installed here. Full tutorial and real battle completion remain open.
+
 ## 2026-10-13 — Original plaza Goomba3 and task working callbacks
 
 Added original plaza Goomba3 through the per-area catalog: tagged XYZ(-400,0,
