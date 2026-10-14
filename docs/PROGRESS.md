@@ -1,3 +1,80 @@
+## 2026-10-14 — Original crowd cheering/jumps/booing and native stage-fade providers
+
+Previous goal turn made progress by implementing original idle decisions.
+Commit `b0206870` now ports whole JoyRaiseArm80191e18, JoyJump80191cec,
+JoyJump2 at80191bb0 and Booing80191884 bodies and binds actual states4/5/6/9
+through the existing native member provider. No new outer audience call is
+inserted. Main Wait's state4 decision can now execute its ordinary reaction
+and return to idle. Updated both older control contracts' stale unavailable-
+state statements; remaining states7/8/10..20 stay explicit.
+[Reaction contract/source pins](behavior/battle/AUDIENCE_CHEERING_JUMPS_AND_BOOING.md).
+
+Cheering selects animation4 only for front low-byte0; Booing always selects4.
+Their phase0 bound2 RNG sets facing then falls through to existing source mode4
+intplGetValue, stepping0..30 with original float repeat count. Missing curve
+retains phase1 and does not redraw facing on retry. Jumps select animation2/3,
+use one raw rand/32767 plus source3.4 or4, and retain original one/two counts,
+separate single operations, phase fallthrough and later landing observation.
+Jump2 adds source20 to anglea0 each phase2 call without normalization. The same
+runtime RNG and existing original interpolation helper supply native services;
+no replacement curve, seed producer or render clock was introduced.
+
+Focused reaction tests passed before and after adding an actual shared-RNG
+Idle->state4->cheering->idle path. Supplied test seed27120 yields decision20,
+then facing from a second draw; final state equals an independent two-draw RNG
+oracle. This is explicit test seed ownership, not original new-game seed proof.
+Tests also cover low-byte animation rules, all31 curve steps, fractional repeat
+cycles, unordered count, signed timer wrap, partial service stores/retry,
+included raw RNG endpoints, invalid phases, angle370 and complete one/two jumps
+through the actual member motion/landing tail. Pack tests pin32767 and20 bits.
+These are portable control/provider checks, not full native cadence/framing.
+
+While tracing interpolation reuse, found native StageMain still unconditionally
+held at intplGetValue despite an existing source helper, and had no truncate
+provider. After the reaction feature commit, `63b903d3` binds built-in mode
+interpolation and finite signed32 truncation for its four packed byte counters.
+It retains source decrement/elapsed order, low-byte wrapping and callback-pointer
+holds. Invalid conversion reports StageMain80139150 rather than inventing a
+successful byte; unsupported indirect interpolation retains80006c8c. Existing
+spotlight/active-entry/cleanup ordering stays intact. Updated
+[stage-work binding contract](behavior/battle/NATIVE_STAGE_WORK_STORAGE_AND_COUNTER_SERVICES.md).
+Added15-tick four-counter tests with fixed first/middle/final byte oracles for
+modes0/4/11/12 and exactly60 curve calls; completed counters issue no further
+curve. Indirect-mode failure preserves decrement and prior output.
+
+Validation used existing isolated `artifacts/battle-lens-qwwrj2n7`, refreshed
+only changed tracked bytes from frozen base
+`dd16f28eea2784dd13ba5bc94ae9875ce4c51c19` plus owned changes. Concurrent live
+field/material/lighting/shadow work was excluded. Refreshed the private original
+Bero pack with that baseline's extractor (5 tables/15 entries/2496 bytes,
+`artifacts/audience-reactions-assets-refresh.log`), preserving the private packs'
+other validated resources. ISO inspection/extraction remained read-only. No
+original source PPC text, ISO, extracted art or compiled pack was committed.
+
+Reaction increment: `MAKEFLAGS=-j4 make test` exited0,303/303 C++ and174/174
+Python (`artifacts/audience-reactions-test.log`); native `MAKEFLAGS=-j4
+TMPDIR="$PWD/artifacts/tmp" make all -o assets-ready BUILD=build-battle-lens
+TARGET=ttyd-battle-lens` exited0 (`artifacts/audience-reactions-native.log`).
+Stage-fade source-copy preparation initially rejected an incorrect end-marker
+before writing; corrected it, then focused tests on the actual changed source
+passed. Combined final `MAKEFLAGS=-j4 make test` exited0,303/303 C++ and174/174
+Python (`artifacts/stage-fade-test.log`); same native command exited0
+(`artifacts/stage-fade-native.log`). Assets-ready bypass reuses the private
+validated packs. Each running process was observed terminal before its snapshot
+inputs changed; code commits use scoped temporary indexes and preserve other
+threads' work. Owned diff checks passed. No new emulator/visual acceptance or
+hardware-performance claim. Existing UI, HUD assets, controls, dialogue,
+action-command timing, unit/model scale and lower-screen scene replay were
+unchanged.
+
+Next: original Damage/Enter/Escape and ItemOn/Throw controllers; close the
+remaining stage active-entry providers, idle low-ratio caller-register provenance
+and normal Main/outer camMain/camDraw cadence. These are needed before native
+battle framing and sustained positive-crowd gameplay can be accepted. Harmful
+throws with physical X and optional audience taps, original menu/turn flow,
+tutorial followup hits, field return and real voice playback remain open. The
+full tutorial and real battle goal remains active and incomplete.
+
 ## 2026-10-14 — Original audience idle breathing and reaction decisions
 
 Previous goal turn made progress by porting member dispatch/motion and three
