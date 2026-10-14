@@ -2,6 +2,53 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Original item95 name/help window owner and native drawing
+
+Committed `37e7946`: finite original name/help definitions, explicit manager
+update/display phases, source sequence0 reuse, partial Entry/Open initialization,
+AutoDelete retained-parameter lifetime and prior-display help publication.
+Original US title/description remain verbatim with control tokens. Direct font
+color commands compile once at preparation; native drawing reuses cached glyph
+input/color requests, original font/frame textures, C3D batches and PICA clip.
+Name starts black, original Box token is red, /col resets font palette0; frame
+snapshot precedes name rectangle resize, matching the source display order.
+[Native scope](behavior/display/NATIVE_ITEM95_WINDOWS.md),
+[source display review](behavior/message/ITEM95_GET_WINDOW_DISPLAY_ORDER_AND_FONT_COLORS.md).
+
+Exact validation: complete known baseline21eee2a plus owned changes formed
+review tree3d2205ca52da4327b0ce18ebeb2e132b0c8b7459; all tracked review files
+were byte-audited before private preview instrumentation. `make test` passed
+206/206 CTests and132 Python tests; `make -j4 all` passed. Logs
+`artifacts/item-get-windows-reviewed-{test,native}.log`.
+Normal binary `artifacts/ttyd-item-get-windows-reviewed.3dsx`, SHA256
+6691fd2e636702a3e4660c470066e1da1f245bfa06353b90ba9ff76a8e5ef67a.
+Initial latest-shared-HEAD validation hit an unrelated uncommitted battle-header
+dependency; validation moved to the last complete baseline. Native compiler
+then found int32_t/long std::max deduction mismatch; explicit int32_t fixed it.
+The final complete validation above includes the fix and cached color path.
+Other active sessions' staged/uncommitted work remained excluded and preserved.
+
+Isolated Azahar graphics-only harness rebuilt and visibly drew unchanged
+original acquisition title and two-line Box description over Rogueport, with
+original M_I_U pose. Automatic closure returned to ordinary field drawing;
+no native exception. Captures `artifacts/azahar-item-get-windows/` and
+`artifacts/azahar-item-get-windows-steady/`. Settled open and later closed captures
+report60FPS in software Azahar. Settled native metric CPU9.4ms/GPU.5ms is an
+emulator observation, not a hardware measurement. Initial open capture reports9FPS in the native rolling
+metric and includes cold resource admission, not steady-state performance.
+No hardware performance/raster equivalence claim. Private preview source
+instrumentation is removed after checks; isolated generated profile/checkpoint
+only, no item/pouch grant, story/quest flag change or user profile/save mutation.
+
+Limitations/next: this is a native-capable name/help provider, not yet actual
+Goomba3 acquisition. Global manager allocation, failure/discard window, source
+outer cadence, effect two-texture shader/camera/layers, audio/control/name entry
+teardown and native event binding remain pending. The existing receive owner
+must not restore success at an unimplemented discard boundary. Connect the
+remaining original providers, enable quest2 acquisition/5405 only once the
+whole sequence can run, then continue remaining original NPC/event/area content.
+
+
 ## 2026-10-13 — Native original hit/reaction roots and metadata queries
 
 Feature `d852ae4` connects original BattleRunHitEvent/Direct to the tutorial VM:

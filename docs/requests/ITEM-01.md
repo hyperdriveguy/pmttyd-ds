@@ -108,3 +108,15 @@ source state, with indirect/REL writers still unresolved. Native windows,
 GX-to-PICA effect raster, camera/audio/control/name-registry integration and
 failed-receive discard continuation remain open. Do not enable acquisition or
 claim complete item-get fidelity on the strength of these resource providers.
+
+2026-10-13 follow-up: finite original item95 name/help manager, US direct-color
+font consumer and native window renderer implemented; source definitions,
+frame-before-resize ordering, help prior-display publication, button-repeat
+paging and AutoDelete parameter lifetime retain original ownership.
+[Native window scope](../behavior/display/NATIVE_ITEM95_WINDOWS.md) and
+[source display/color review](../behavior/message/ITEM95_GET_WINDOW_DISPLAY_ORDER_AND_FONT_COLORS.md).
+Original color streams compile at preparation, leaving raw tokens retained;
+rendering reuses existing font/frame resources and batches glyphs through C3D.
+Global manager slot sharing, failure/discard window, native item/effect/audio/
+control integration and original outer cadence remain open. This provider alone
+does not enable quest acquisition; the parent request remains open.

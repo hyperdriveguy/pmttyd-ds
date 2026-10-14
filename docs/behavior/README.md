@@ -791,3 +791,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Audience Main inline owners and ordinary empty domains](battle/AUDIENCE_MAIN_INLINE_OWNERS_AND_ORDINARY_EMPTY_DOMAINS.md): complete subservice order, window/throw side effects and corrected WinSetActive ownership.
 
 - [Native harbor hit-reaction ownership](battle/NATIVE_HARBOR_HIT_REACTION_OWNERSHIP.md).
+
+- [Native original item95 windows](display/NATIVE_ITEM95_WINDOWS.md) and [source frame/display/font order](message/ITEM95_GET_WINDOW_DISPLAY_ORDER_AND_FONT_COLORS.md).
