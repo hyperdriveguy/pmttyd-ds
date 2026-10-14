@@ -1118,3 +1118,12 @@ Unit movement multiplier1 is source marioResetGravity8009696c's float80420a74
 store to Mario+228. Original event/prefetch/texture companions remain ignored,
 locally reused and subject to the existing Nintendo/Intelligent Systems license.
 No new geometry, raster art, audio or dialogue was authored.
+
+### Original previous-party and attached position prefix (2026-10-14)
+
+No original asset bytes or conversion changed. Source callback800e3058 and length
+8007a76c use recovered original logic over existing Game storage and the retained
+original gor02/DOL event catalogs. The attached initial_pos runs from unchanged
+private event words. No synthetic partner, pose, dialogue or sound was generated.
+Existing original event/prefetch/texture packs remain private and retain their
+Nintendo/Intelligent Systems licensing and local-only handling.

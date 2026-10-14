@@ -1109,3 +1109,7 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native ordinary body/rate/background consumers](field/NATIVE_MARIO_BODY_RATES_AND_BACKGROUND_CONSUMERS.md).
 
 - [Previous-party native admission and retained first-call boundary](partner/BERO_PREVIOUS_PARTY_NATIVE_ADMISSION_AND_FIRST_CALL_RETENTION.md).
+
+- [Native previous-party admission and shared attached position prefix](partner/NATIVE_PREVIOUS_PARTY_AND_SHARED_INITIAL_POSITION_PREFIX.md).
+
+- [Shared Bero normal-position geometry and party owners](field/SHARED_BERO_NORMAL_POSITION_GEOMETRY_AND_PARTY_OWNERS.md) — actual requested-name/ROAD leaf resolution, collision readiness, mutable globals and distinct party current owner.

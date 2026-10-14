@@ -5922,3 +5922,76 @@ loading. House05/cases, remaining NPC/story behavior and full-game fidelity rema
 unfinished. EVT-01 and the complete goal remain active.
 
 tools/check_doc_links.py checked1317 Markdown files with zero broken links.
+
+### 2026-10-14 — Original previous-party admission and shared initial-position prefix
+
+Implementation commit c81ea0fe4a17cca8af773f95c7e95ec4b787cc0d binds source
+800e3058 over real Game Mario index/kind bytes and actual party registry lookup.
+A retained cursor preserves original first-call admission, captured owner,
+selector and constructor kind while resources are unavailable. Missing typed
+services retain first admission before a pure generic hold. Actual restart
+resets the cursor even when the original event ID survives; retirement clears
+it. Pending world identity cannot be swapped. Native known constructor-kind0
+completes without fabricating a partner. Nonzero Entry/Entry2 remain unbound and
+hold; negative actual constructor return, low-byte store and fresh signed lookup
+have distinct tested source behavior. Fresh Game bytes are constructor facts,
+not evidence for arbitrary restored party history.
+
+The same scheduler now dispatches original info-length8007a76c with same-room
+Bero registration, original length/default and actual evtSetFloat routing.
+Only work destinations require finite signed conversion admission. The unchanged
+gor02 parent runs its genuine Bero child and attached initial_pos grandchild;
+actual GP+11c and encoded LW10=-229969280 represent original length30. Execution
+then waits at actual normal-position80079b74. No second standalone VM, substitute
+parent locals, synthetic actor, new art/audio or dialogue was introduced.
+[Native contract](behavior/partner/NATIVE_PREVIOUS_PARTY_AND_SHARED_INITIAL_POSITION_PREFIX.md).
+
+Validation used frozen tree cf52f3a641b63fe7b9cbefa5c0a78a2e951bdab3 in
+artifacts/source-checks/trouble-world. Final CMAKE_BUILD_PARALLEL_LEVEL=4 make
+test -o assets-ready exited0:318/318 C++ (37.16s),181/181 Python (30.572s),
+log artifacts/area-party-test-final.log. Final make all -j4 -o assets-ready
+SOUNDTRACK=gamecube exited0, log artifacts/area-party-build-final.log; initial
+native build and instrumented probe build also exited0. Existing unrelated
+compiler warnings remain. Normal3DSX SHA256
+95a10f873fd78e3ae062d0fe9cf3989a2721fb35b7f6eacc48f61fc09f082992.
+After restoring temporary probe main,3400 tracked files matched the frozen tree
+with zero mismatches. Exact normal/probe/patch/log and original private pack
+identities: artifacts/area-party-validation-manifest.json. The concurrently
+changed merged live worktree is not claimed tested as one build.
+
+Host coverage includes first/resume source branches, invalid selectors,
+nonnegative index127 early completion without registry lookup, unavailable versus
+actual null lookup, index capture before missing function, retained constructor
+kind/owner, actual constructor result/store ordering, explicit restart and actual
+recursive retirement. Full-parent fixture installs typed services late and
+proves missing nonzero construction still holds; its explicit busy-bit reset and
+source restart select real kind0 and yield three real attached events. Cancelling
+all three does not invent a key release.
+
+Isolated Azahar native probe exited0, log artifacts/area-party-probe-smoke.log,
+profile artifacts/azahar-area-party-probe: pending80079b74,depth2,main8,EXEC1,
+three live events,three prefetched original resources after18 simulation calls;
+actual Bero2/initial3 and encoded length match. Source story402/w_bero is an
+explicit fixture that skips sound. Background/key preparation uses real Game
+owners. Explicit item/key releases verify counter0/unlocked; this is no automatic
+unwind or completed parent. Temporary probe main/binaries remain ignored.
+Normal isolated east→plaza/save-room assertions exited0; inspected captures
+retain original room/Mario/NPC art at60 App FPS and100% emulator speed, CPU7.6/
+6.9ms,GPU0.5ms. Log artifacts/area-party-smoke.log,profile
+artifacts/azahar-area-party-normal. Runs were sequential; user profiles/saves
+untouched. Emulator checks do not establish New2DSXL timing or original raster
+parity. Original private event/prefetch/texture packs were reused unchanged; no
+new asset conversion or distribution rights.
+
+Next bind actual normal-position geometry, six mutable S/E globals, fresh Mario
+recovery and original READF/actor/camera callbacks in this same attached child.
+[Provider research](behavior/field/SHARED_BERO_NORMAL_POSITION_GEOMETRY_AND_PARTY_OWNERS.md)
+identifies real requested-name/static ROAD leaf lookup, same-room collision
+readiness and source raw floor query; future conversion must admit leaf centers
+explicitly. Do not reuse a cached incoming center ignoring the requested name.
+Nonzero Entry/Entry2 still need real allocation/resources/setup. Retire pending
+events before replacing their Game/world backing; live GP/checkpoint/NPC lifetime
+and Game's separate Bero/Trouble area coordination remain unfinished. House05,
+remaining original events/NPCs/objects and full-game fidelity remain active work.
+
+tools/check_doc_links.py checked1322 Markdown files with zero broken links.

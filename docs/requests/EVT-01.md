@@ -4488,3 +4488,17 @@ Do not alias+1c0 to+1b8. Next bind previous-party allocation/art/setup and actua
 attached initial_pos while preserving real GP/world lifetime. Request open.
 
 Next-provider documentation: [previous-party admission](../behavior/partner/BERO_PREVIOUS_PARTY_NATIVE_ADMISSION_AND_FIRST_CALL_RETENTION.md) pins real constructor-kind0 completion, separate raw selectors and Entry/Entry2 resource requirements. Missing allocation must retain source first-call admission rather than resume with allocation skipped.
+
+### Previous-party callback and actual attached position child
+
+Implemented source800e3058 with retained native first admission, exact raw0/1
+branches and existing Game slot/kind/registry owners. Genuine constructor-kind0
+branches complete; nonzero Entry/Entry2 remains pending without a stub. Source
+restart resets the callback cursor; completion/retirement clear it. Bound actual
+same-room registered length routing to evtSetFloat. Unchanged parent/Bero now
+creates its real initial_pos child in the shared VM and reaches80079b74 with
+three live events and encoded length30. See [native contract](../behavior/partner/NATIVE_PREVIOUS_PARTY_AND_SHARED_INITIAL_POSITION_PREFIX.md).
+Next normal-position must read incoming name through actual VM GP+11c, not the
+standalone85000000 alias; bind genuine geometry, S/E globals, fresh recovery
+writes, captured motion25 test and later READF/actor/camera effects. Actual
+nonzero party construction and full Game/GP/world lifetime remain open.

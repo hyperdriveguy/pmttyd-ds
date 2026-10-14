@@ -70,8 +70,10 @@ The native prefix probe also seeds a genuine background-on request then lets the
 unchanged original parent turn it off, retaining its real nested key hold while
 the next party service is pending. Its GP/story image remains an explicit fixture.
 
-Next bind actual previous-party allocation/art/setup, then the original attached
-initial_pos length/geometry/actor providers in this shared scheduler. Live area
+The [previous-party and attached-child prefix](../partner/NATIVE_PREVIOUS_PARTY_AND_SHARED_INITIAL_POSITION_PREFIX.md)
+now admits real constructor-kind0 branches and length routing. Next bind nonzero
+Entry/Entry2 allocation/art/setup and actual normal-position geometry/world
+providers in this same shared scheduler. Live area
 loading still needs real GP/checkpoint/NPC/world lifetime and coordination with
 Game's separate Bero/Trouble runtimes. Original raster parity, full source init/
 ReInit and New2DSXL hardware timing remain unproven.
