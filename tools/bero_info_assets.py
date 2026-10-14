@@ -5,6 +5,14 @@ from pathlib import Path
 from iso_assets import DEFAULT_ISO,extract
 from rel_event_inventory import read_bindings
 
+def road_leaf(nodes,name):
+ """Admit the static transformed-leaf center adaptation, never a hierarchy bbox."""
+ matches=[node for node in nodes if node['name']==name]
+ if len(matches)!=1 or matches[0]['parts']<=0:raise ValueError('Missing/ambiguous original ROAD leaf: '+name)
+ node=matches[0]
+ if any(child.get('parent')==node['source_node'] for child in nodes):raise ValueError('ROAD hierarchy needs live leaf-center traversal: '+name)
+ return node['source_node']
+
 def build(iso=DEFAULT_ISO):
  work=Path('local-assets/bero-info');work.mkdir(parents=True,exist_ok=True);source=work/'gor.rel';extract(iso,'rel/gor.rel',source);raw=source.read_bytes()
  digest=hashlib.sha256(raw).hexdigest()
@@ -46,6 +54,7 @@ def build(iso=DEFAULT_ISO):
      end=raw.index(b'\0',text);relspan(text,end-text+1)
    entryname=raw[pointer:raw.index(b'\0',pointer)].decode('ascii');hits=[v['source_node'] for v in summary['collision_nodes'] if v['name']==entryname]
    if len(hits)>1:raise ValueError('Ambiguous Bero hit identity')
+   if ((u(start+4)>>16)&0xfff)==0:road_leaf(summary['collision_nodes'],entryname)
    entries.append(dict(name=entryname,address=addr(start),file_offset=start,source_node=hits[0] if hits else 0))
   tables.append(dict(room=room,namespace=name+'.o',address=addr(offset),file_offset=offset,size=size,entries=entries))
  with Path(iso).open('rb') as disc:

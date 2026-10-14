@@ -2,6 +2,14 @@ import json,struct,sys,unittest
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
 from rel_event_inventory import read_bindings
+from bero_info_assets import road_leaf
+
+class RoadLeafAdmission(unittest.TestCase):
+ def test_hierarchy_center_requires_a_different_provider(self):
+  leaf=dict(name='n_bero',source_node=10,parts=1,parent=1)
+  self.assertEqual(road_leaf([leaf],'n_bero'),10)
+  for nodes in ([],[leaf,dict(leaf)],[dict(leaf,parts=0)],[leaf,dict(name='child',source_node=11,parts=1,parent=10)]):
+   with self.assertRaises(ValueError):road_leaf(nodes,'n_bero')
 
 @unittest.skipUnless(Path('romfs/bero-info.pmevt').is_file(),'original local Bero pack unavailable')
 class BeroInfoAssets(unittest.TestCase):
@@ -16,7 +24,10 @@ class BeroInfoAssets(unittest.TestCase):
   local,imports,_=read_bindings(raw)
   self.assertEqual([t['namespace'] for t in meta['tables']],['gor_01.o','gor_00.o','gor_02.o','gor_03.o','gor_04.o'])
   self.assertEqual([len(t['entries']) for t in meta['tables']],[3,1,2,5,4])
+  roads=0
   for table in meta['tables']:
+   root='map' if table['room']==0 else table['namespace'].removesuffix('.o')
+   nodes=json.loads((Path('local-assets')/root/'map-summary.json').read_text())['collision_nodes']
    off,size=table['file_offset'],table['size'];expected=bytearray(raw[off:off+size])
    for site,b in local.items():
     if off<=site<off+size:struct.pack_into('>I',expected,site-off,0x90000000+b['section']*0x100000+b['addend'])
@@ -31,6 +42,9 @@ class BeroInfoAssets(unittest.TestCase):
      if byte==0:break
      name.append(byte)
     self.assertEqual(name.decode(),entry['name'])
+    if (struct.unpack('>I',span(entry['address']+4,4))[0]>>16)&0xfff==0:
+     self.assertEqual(road_leaf(nodes,entry['name']),entry['source_node']);roads+=1
+  self.assertEqual(roads,8)
   east=meta['tables'][2];self.assertEqual([e['name'] for e in east['entries']],['w_bero','dokan'])
   self.assertEqual(east['entries'][0]['source_node'],1215808)
   self.assertEqual(struct.unpack('>15I',span(0x8030cd78,60)),(0,0xf000000,20000,100000,0,0,0xffffffff,0,0xffffffff,0,0,0,0x10001,0,0))

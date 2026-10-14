@@ -63,6 +63,7 @@
 #include "field_object_collision.hpp"
 #include "field_save_objects.hpp"
 #include "trouble_board_presentation.hpp"
+#include "field_bero_position.hpp"
 namespace ttyd {
 struct NpcTalkPlayer;
 struct NativeTroubleBoard;
@@ -268,6 +269,8 @@ public:
     FieldDoorDataWorld fieldDoorData;
     FieldMapFlags fieldMapFlags;
     FieldBeroInfo fieldBeroInfo;
+    std::optional<FieldBeroPosition> fieldBeroPosition; // Actual admitted start/end/recovery calculation; not complete EVT world execution.
+    std::optional<FieldBeroStartPublication> fieldBeroStart; // READF words and quantized starting actor values.
     std::shared_ptr<NativeTroubleBoard> troubleBoard;
     std::vector<uint32_t> troubleBoardSounds; // Original low13 sound rows, not generic UI cues.
     std::optional<int32_t> fieldPartyCurrentIndex=0; // Explicit source BSS boot view of8041ead0; separate from Mario party selection.

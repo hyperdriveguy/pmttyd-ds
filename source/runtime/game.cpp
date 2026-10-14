@@ -261,19 +261,46 @@ bool Game::finishWarp() {
     const auto reverse=std::find_if(roads.begin(),roads.end(),[&](const auto& r){return r.source==w.target && r.sourceNode==w.arrivalNode && r.target==w.source;});
     if(reverse==roads.end())return false;
     float dx=0,dz=0;roadDirection(reverse->direction,dx,dz);
-    const Vec2 start{reverse->x+dx*.3f,reverse->z+dz*.3f};
+    Vec2 start{reverse->x+dx*.3f,reverse->z+dz*.3f};
     float entryLength=30.f; // Legacy no-catalog adapter; native boot requires the original catalog.
     FieldBeroInfo destinationInfo;destinationInfo.synchronize(w.target);
     if(destinationInfo.publishRoadIncoming(w.arrivalNode,fieldSystemFlags))
         if(const auto state=destinationInfo.publication())if(const auto length=destinationInfo.length((*state)[0]))entryLength=*length;
     Vec2 arrival{reverse->x-dx*entryLength*.01f,reverse->z-dz*entryLength*.01f};
+    std::optional<FieldBeroPosition> placement;
+    std::optional<FieldBeroStartPublication> starting;
+    if(destinationInfo.length(0)) {
+        if(!destinationInfo.known())return false;
+        const auto state=*destinationInfo.publication();
+        if((uint32_t(state[3])&0xfff)!=0)return false; // This native travel bridge admits original ROAD only.
+        std::array<int32_t,3> xyz;std::string name;
+        for(unsigned n=0;n<3;++n){uint32_t word=0;if(!destinationInfo.readWord(uint32_t(state[5])+4*n,word))return false;xyz[n]=int32_t(word);}
+        for(unsigned n=0;n<64;++n){uint8_t byte=0;if(!destinationInfo.readByte(uint32_t(state[2])+n,byte))return false;if(!byte)break;name.push_back(char(byte));}
+        if(name.size()==64)return false;
+        struct Center {FieldWallVector position;};Center center{{reverse->x*100,reverse->centerY*100,reverse->z*100}};
+        FieldBeroPositionServices services;services.user=&center;
+        // All8 ROADv1 markers are verified static transformed leaf centers.
+        // Hierarchy centers and live event-driven matrix changes remain unbound.
+        services.center=[](void* p,const std::string&,FieldWallVector& out){out=static_cast<Center*>(p)->position;return true;};
+        services.floor=[](void*,FieldWallVector p,FieldWallVector direction,float length){const auto hit=fieldShadowRay(p,direction,length);return FieldBeroFloor{!hit.unresolvedObject,hit.found,hit.point.y};};
+        services.sine=[](void*,float radians){return float(std::sin(double(radians)));};
+        services.cosine=[](void*,float radians){return float(std::cos(double(radians)));};
+        services.negativeMultiplySubtract=[](void*,float a,float b,float c){return -std::fma(a,b,-c);};
+        services.multiplyAdd=[](void*,float a,float b,float c){return std::fma(a,b,c);};
+        placement=fieldBeroNormalPosition(xyz,name,state[4],1,entryLength,services);
+        if(!placement || !std::isfinite(placement->finish.x) || !std::isfinite(placement->finish.y) || !std::isfinite(placement->finish.z))return false;
+        starting=fieldBeroStartPublication(placement->start);if(!starting)return false;
+        start={starting->position.x*.01f,starting->position.z*.01f};
+        arrival={placement->finish.x*.01f,placement->finish.z*.01f};height=starting->position.y*.01f;
+    }
     RoadMotion staged;
     if(!staged.begin({start.x,start.z},{arrival.x,arrival.z}))return false;
-    if(!roadStartGround(start,reverse->centerY,height))return false;
+    if(!placement && !roadStartGround(start,reverse->centerY,height))return false;
     Progress next=progress;next.room=w.target;next.position=arrival;next.elevation=height;next.interiorMask=0;
     const uint32_t systemFlags=fieldSystemFlags;
     const RoadCallback entryCallback=inCallback(w);
     restore(next);groundHeight=height;cameraHeight=height;partner=arrival;partnerHeight=height;partnerContact=groundContact;
+    fieldBeroPosition=placement;fieldBeroStart=starting;
     fieldSystemFlags=entryCallback==RoadCallback::DebugArrival?systemFlags&~0x40u:systemFlags;
     // Actual valid-name get_info and query/set-now prefix for this named road.
     // Remaining Bero child execution and later local writes stay unbound.

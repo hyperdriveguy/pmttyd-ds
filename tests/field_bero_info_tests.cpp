@@ -50,11 +50,14 @@ int main(){
  Game game(false);game.progress.room=0;game.progress.originalStory=23;
  // Existing first road is original plaza east -> east w_bero.
  game.warpRequest=0;assert(game.finishWarp());assert(game.progress.room==2 && game.fieldBeroInfo.known());
+ assert(game.fieldBeroPosition && game.fieldBeroStart);
+ assert(game.fieldBeroPosition->recovery.y==game.fieldBeroPosition->finish.y+37.f);
  assert(game.fieldBeroInfo.registered() && game.beroExec->read()==0 && game.fieldBeroInfo.currentNumber()==0);
  const auto published=game.fieldBeroInfo.publication();assert(published && (*published)[0]==0 && (*published)[1]==2 && (*published)[4]==6);
  assert(uint32_t((*published)[5])==position && uint32_t((*published)[7])==0xffff0000);
- const auto originalEnd=game.progress.position;game.beginRoadArrival();const auto originalStart=game.progress.position;
- const auto save=game.progress;game.restore(save);assert(!game.fieldBeroInfo.known() && !game.fieldBeroInfo.publication() && !game.fieldBeroInfo.registered() && !game.fieldBeroInfo.currentNumber());
+ const auto originalEnd=game.progress.position;const auto startView=*game.fieldBeroStart;game.beginRoadArrival();const auto originalStart=game.progress.position;
+ assert(originalStart.x==startView.position.x*.01f && originalStart.z==startView.position.z*.01f);
+ const auto save=game.progress;game.restore(save);assert(!game.fieldBeroInfo.known() && !game.fieldBeroInfo.publication() && !game.fieldBeroInfo.registered() && !game.fieldBeroInfo.currentNumber() && !game.fieldBeroPosition && !game.fieldBeroStart);
  // Isolated authored-length variant proves the actual road endpoint consumes
  // the table field while preserving the source fixed30-unit start radius.
  char temporary[]="/tmp/ttyd-bero-length-XXXXXX";assert(mkdtemp(temporary));const std::filesystem::path fixture(temporary);
@@ -67,6 +70,6 @@ int main(){
  assert(loadFieldBeroInfoAssets(temporary));Game variant(false);variant.progress.room=0;variant.progress.originalStory=23;variant.warpRequest=0;assert(variant.finishWarp());
  const auto variantEnd=variant.progress.position;variant.beginRoadArrival();
  assert(variant.progress.position.x==originalStart.x && variant.progress.position.z==originalStart.z);
- assert(std::fabs(variantEnd.x-originalEnd.x-.15f)<.00001f && variantEnd.z==originalEnd.z);
+ assert(std::fabs(variantEnd.x-originalEnd.x-.15f)<.00001f && std::fabs(variantEnd.z-originalEnd.z)<.00001f);
  assert(variant.fieldBeroInfo.length(0)==45.f);assert(loadFieldBeroInfoAssets("romfs"));std::filesystem::remove_all(fixture);
 }

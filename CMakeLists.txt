@@ -1519,3 +1519,9 @@ add_executable(battle_pose_inner_tests tests/battle_pose_inner_tests.cpp)
 target_link_libraries(battle_pose_inner_tests PRIVATE ttyd_core)
 add_test(NAME battle_pose_inner COMMAND battle_pose_inner_tests)
 set_tests_properties(battle_pose_inner PROPERTIES WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+
+# Original normal Bero placement and event-float starting-coordinate publication.
+target_sources(ttyd_core PRIVATE source/field/field_bero_position.cpp)
+add_executable(field_bero_position_tests tests/field_bero_position_tests.cpp)
+target_link_libraries(field_bero_position_tests PRIVATE ttyd_core)
+add_test(NAME field_bero_position COMMAND field_bero_position_tests)
