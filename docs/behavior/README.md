@@ -945,3 +945,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Original sound flag owner and ordered set/clear](audio/GAME_SOUND_FLAG_OWNER_AND_ORDERED_SET_CLEAR.md): explicit startup halfword, complete clear leaf and inherited BGM/ENV fade calls.
 - [Native shared sound flag owner](audio/NATIVE_SHARED_SOUND_FLAG_OWNER.md): retained field/battle/letterbox state and real missing-fade/GPU continuation limits.
+
+- [Native Trouble Center state/checkpoint v10](format/NATIVE_TROUBLE_CENTER_STATE_CHECKPOINT_V10.md) — lecture, all30 completion flags, working flags/bytes with legacy unknown migration; [original door/case9 admission](field/TROUBLE_CENTER_DOOR_CASE9_GEOMETRY_AND_LIFETIME.md) — story23 lock, authored collision names and priority/type lifetime.

@@ -428,3 +428,21 @@ menu IDs42/18/19/5/43 are recovered; native playback still needs binding.
 - [ ] Compare original raster/event traces and measure New2DSXL performance.
 
 The parent full runtime request remains open.
+
+### 2026-10-14 — Persistent Trouble Center source state and door recovery
+
+[Native finite state/v10 persistence](../behavior/format/NATIVE_TROUBLE_CENTER_STATE_CHECKPOINT_V10.md)
+retains lecture5374/all30 completion flags/working5405..5421/bytes1469..1474,
+canonical existing NPC aliases and explicit fresh swInit. Legacy absence stays
+unknown; acceptance reset providers preserve lecture/completions/1420.
+[Original door/case9 recovery](../behavior/field/TROUBLE_CENTER_DOOR_CASE9_GEOMETRY_AND_LIFETIME.md)
+establishes story23 front access, locked original gor_02_035 notice, same-map
+cutaway/collision groups and exact forward-contact/A ordering. Board priority0
+is distinct from root typeef; only case priority20 invokes the cited NPC stop.
+
+- [ ] Connect native door/interior/case9 hit owner and real scene contact rays.
+- [ ] Connect original lecture/help/confirmation/acceptance EVT and cue samples.
+- [ ] Compare original execution/raster and measure native hardware performance.
+
+The finite state save is delivered; full runtime Trouble Center request remains
+open. It does not establish native board gameplay or full original GP banks.

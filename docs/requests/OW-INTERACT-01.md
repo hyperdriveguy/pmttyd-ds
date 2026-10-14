@@ -995,3 +995,13 @@ unchanged; no controller/lecture/board/event acceptance is fabricated. All30
 help/confirmation table identities are now recovered. [Evidence and limits](../behavior/display/NATIVE_TROUBLE_CENTER_WINDOW_AND_US_CACHE.md).
 Native icons/full switch banks/case9/door/lecture/confirmation remain next; parent
 stays open. Original numeric/raster/audio/pause/hardware parity remains unverified.
+
+### 2026-10-14 — Trouble Center original door and board/counter cases
+
+[Recovered original door/case contract](../behavior/field/TROUBLE_CENTER_DOOR_CASE9_GEOMETRY_AND_LIFETIME.md)
+pins front/rear record distinctions, story23 lock, collision/cutaway callbacks,
+transformed original hit centers/normals and source case9 scheduling. Native
+owner/contact-ray/projection parity still requires binding. The previously used
+case descriptor+58/+9c label eventtype is corrected to event priority: board0,
+BERO20; evtEntry itself supplies typeef. [Finite quest persistence](../behavior/format/NATIVE_TROUBLE_CENTER_STATE_CHECKPOINT_V10.md)
+is now available; it does not substitute for these original physical owners.

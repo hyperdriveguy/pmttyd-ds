@@ -2653,3 +2653,32 @@ removal. Current frozen GPU/source continuation snapshot, including this fix,
 passes269/269 C++ and159/159 Python through make test and native make all
 DEBUG_SHORT_BOOT=1; logs artifacts/gpu-test-final.log and gpu-build-final.log.
 Those checks include pending GPU feature work; no whole-remake claim.
+
+## 2026-10-14 — Persistent Trouble Center state and original physical admission
+
+Added the source lecture flag, all30 completion flags and full quest working
+flags/six bytes to native checkpoint v10, preserving known/unknown state and
+canonical existing NPC fields. Fresh new-file swInit now initializes this domain;
+load/room/menu entry never clear it. Original reset providers clear only working
+progress. [Layout and scope](behavior/format/NATIVE_TROUBLE_CENTER_STATE_CHECKPOINT_V10.md).
+
+Recovered the original story23 front lock/notice, same-map door/cutaway and
+board/counter case9 contact/lifetime. Board entry uses priority0/typeef;
+priority20 NPC stop is a different registration. Source hit centers/normals
+are recovered without substituting a proximity trigger or professor mask.
+[Original physical owner](behavior/field/TROUBLE_CENTER_DOOR_CASE9_GEOMETRY_AND_LIFETIME.md).
+
+Validation: final isolated make test269/269 C++ and159/159 Python; make
+assets-ready and make all pass. New checks cover all48 flags/six independent
+bytes, reset scope, unknown migration, corruption and exact disk/backup recovery.
+All3110 reviewed files match the snapshot; exact tree/binary/logs are in the
+linked contract. Initial concurrent CMake staging duplicated registrations;
+scoping fixed that. The obsolete sound reset compile error was corrected in
+its owner's separate commit c632bfec and included in validation. No Azahar or
+hardware run for this persistence step; physical gameplay admission stays open.
+
+Next: native Trouble Center original door and interior geometry/contact-ray
+case9, then original lecture/help/confirmation/acceptance EVT, physical input/
+iconMain ordering and original menu PCM. Full original GP/card save, original
+execution/raster and New2DSXL hardware performance remain unverified. These
+state/providers do not constitute native board gameplay; goal remains active.

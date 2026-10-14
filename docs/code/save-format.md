@@ -79,3 +79,13 @@ valid backup. If the final rename fails, `.bak` may be the only valid file.
 files. This is recovery logic, not a guarantee against every filesystem or
 power-loss failure. `snapshotSaveProgress` copies shared pouch bytes so queued
 writes cannot see later live inventory mutations.
+
+## Trouble Center native v10 continuation
+
+The largest SaveBytes buffer is now0x620; actual v8/v9 disk records stay0x600.
+Additional Trouble Center knowledge emits v10 with exact1568-byte length;
+[layout/migration/validation](../behavior/format/NATIVE_TROUBLE_CENTER_STATE_CHECKPOINT_V10.md)
+records six-byte flag masks, independent working-byte knowledge, reserved bytes
+and the third checksum. This supplements the earlier version tables. Native
+new-file swInit initializes the finite domain explicitly; legacy load never
+infers these additional flags from zeros or source progress.
