@@ -1667,7 +1667,7 @@ bool Game::returnFromBattle(int32_t harnessResult) {
 // and trio registries. Zero defense arrays have5 elemental lanes; reserve32 is
 // a native request-vector allocation hint, not a source event queue capacity.
 void Game::startBattle() {
-    fieldPrepareRequested=fieldPostRequested=fieldBgmStopRequested=false;fieldSoundFlags=0;
+    fieldPrepareRequested=fieldPostRequested=fieldBgmStopRequested=false;
     startFieldBattle(0,true,fieldBattleServices());
     scene=Scene::Battle; phase=Phase::Select; phaseTick=0; selection=0;
     enemyHP=BattleRules::CrumpHP; actionSuccess=false; guarded=false;

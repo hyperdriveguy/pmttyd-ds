@@ -2641,3 +2641,15 @@ NPC/partner, remaining battle, message/inventory/story modules and relevant port
 build/tool code. Re-audit concurrent additions and changed checkpoint formats at
 completion; do not claim complete documentation from comment density, file count
 or passing unrelated tests. The full **port-code documentation goal remains active**.
+
+## 2026-10-14 — Correct committed sound reset removal
+
+The next isolated build found commit35db41b had omitted the validated removal
+of the old fieldSoundFlags reset. The scoped commit assembler matched a
+replacement prefix inside the old line. Removed that obsolete reset in the
+committed source and strengthened the owned hunk with complete line boundaries
+and obsolete-hunk rejection. The validated sound owner code already had this
+removal. Current frozen GPU/source continuation snapshot, including this fix,
+passes269/269 C++ and159/159 Python through make test and native make all
+DEBUG_SHORT_BOOT=1; logs artifacts/gpu-test-final.log and gpu-build-final.log.
+Those checks include pending GPU feature work; no whole-remake claim.
