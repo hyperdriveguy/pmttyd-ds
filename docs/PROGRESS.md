@@ -1,3 +1,51 @@
+## 2026-10-14 — Original audience atlas and native frame lookup
+
+Commit728660e0 prepares all224 original audience frames:205 normal and19 Luigi.
+The read-only ISO producer pins both original bank hashes, preserves unchanged
+TPL payloads and packs64x64 decoded frames into1024x1024 RGBA8 without resizing.
+68px cells retain2px transparent padding; native texture allocation is4MiB.
+Catalogs preserve bank handles1/2 and original indices. Optional native frame
+lookup validates the whole fixed layout before publishing, rejects unknown/
+out-of-range indices and retains its previous catalog on failed reload. No
+population, animation table, gameplay input, dialogue or menu style is changed.
+[Asset paths, format and rights](ASSETS.md#2026-10-14--original-audience-frame-atlas).
+
+Validation: frozen source artifacts/audience-atlas-nt50yyto, base
+d6ce4c9be1231d654013aef88813433149fcc09e plus only this increment. Final
+make test passes275/275 C++ and163/163 Python checks
+(artifacts/audience-atlas-test-final.log). Checks compare all224 atlas crops to
+original TPL decoding, verify all bank/index/UV mappings and transparent padding,
+and exercise malformed, truncated, trailing-data and invalid lookup domains.
+Required native make all -o assets-ready BUILD=build-audience-atlas-review
+TARGET=ttyd-audience-atlas-review passes with prepared private packs
+(artifacts/audience-atlas-native-final.log), producing170305752-byte3DSX.
+Byte searches verify actual embedding of the7188-byte catalog and505909-byte
+T3X (artifacts/audience-atlas-native-embedding.json). Atlas PNG was inspected;
+no emulator/GPU draw or hardware performance claim follows.
+
+The first host process terminated with143 without a compiler diagnostic; its
+interrupted link left a zero-byte event_if_opcodes executable. A resumed full
+run also identified the shared stale PMDOOR1/two-door pack, incompatible with
+committed three-door PMDOOR2 source. The frozen original door converter regenerated
+the pack privately; no source/assertion change was made. Initial native packaging
+failed because the shared transient romfs/soundtrack-switch directory disappeared.
+After both processes ended, the snapshot acquired its own copied RomFS, received
+the regenerated door pack, and the empty executable was removed for actual
+relink. Final full checks and native packaging then passed. Shared emulator
+profiles/saves were untouched. Original/compiled assets and evidence remain
+ignored; incremental commit contains source and documentation only.
+
+Next: implement source positive-capacity audience population/Entry and animation
+selection, then bind original audience draw and prepared texture on the continued
+scene. The current fresh setup4 tutorial has source pouch8c=0/capacity0; resource
+availability must not manufacture occupants. Original draw801a38f8, population
+801a60c4 and Entry801a3400 remain the next containing bodies to bind. Actual
+harmful-item telegraphs/target interruption must precede optional bottom-screen
+taps with a physical X equivalent. Live class-ring camera/SDK/palette/footer
+binding and once-per-simulation-tick readiness, normal Game tutorial admission,
+command/turn scheduling and successful Jump voice remain incomplete. The active
+full tutorial/real-battle goal is not complete.
+
 ## 2026-10-14 — Tutorial scene continues onto the lower screen
 
 Commit645042f0 extends the native original harbor tutorial scene into a centered
