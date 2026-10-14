@@ -43,8 +43,9 @@ int main() {
   assert(b.quads.back().texture == BattleClassTexture::ClassIcons);
   assert(b.quads.back().vertices[0].x == -4 &&
          b.quads.back().vertices[0].y == 98);
-  const auto count = b.quads.size();
-  assert(!call(F::Icon, {48, 334}, {}, matrix) && b.quads.size() == count);
+  assert(call(F::Icon, {48, 334}, {}, matrix) &&
+         b.quads.back().sourceFlags == 48);
+  const auto glyphStart = b.quads.size();
   MessageFont font;
   assert(font.load("romfs/font.pmfont"));
   b.font = &font;
@@ -62,8 +63,8 @@ int main() {
   assert(call(F::FontStart));
   assert(call(F::FontColor, {0x808080ff}));
   assert(call(F::FontString, {123}, {}, matrix));
-  assert(rngCalls == 8 && b.quads.size() == count + 4);
-  const auto &glyph = b.quads[count];
+  assert(rngCalls == 8 && b.quads.size() == glyphStart + 4);
+  const auto &glyph = b.quads[glyphStart];
   assert(glyph.texture == BattleClassTexture::Font &&
          glyph.vertices[0].rgba == 0x808080ff);
   assert(std::fabs(glyph.vertices[0].x - (20 - measured.width * .5f)) < .0001f);

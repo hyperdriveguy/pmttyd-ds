@@ -209,7 +209,7 @@ BattleClassBackend::request(const BattleClassRasterRequest &r) {
         n.size() != (r.function == F::Icon ? 2u : 3u))
       return {};
     // Other original icon flags require their own mirroring/clipping semantics.
-    if (n[0] != 16)
+    if (n[0] != 16 && n[0] != 48)
       return {};
     BattleClassRegion region;
     BattleClassTexture texture;

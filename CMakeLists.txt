@@ -1342,3 +1342,9 @@ target_sources(ttyd_core PRIVATE source/runtime/original_sequence.cpp)
 add_executable(original_sequence_tests tests/original_sequence_tests.cpp)
 target_link_libraries(original_sequence_tests PRIVATE ttyd_core)
 add_test(NAME original_sequence COMMAND original_sequence_tests)
+
+# Original disabled class icons: three-stage RGB average and record alpha.
+target_sources(ttyd_core PRIVATE source/display/battle_class_icon_material.cpp)
+add_executable(battle_class_icon_material_tests tests/battle_class_icon_material_tests.cpp)
+target_link_libraries(battle_class_icon_material_tests PRIVATE ttyd_core)
+add_test(NAME battle_class_icon_material COMMAND battle_class_icon_material_tests)

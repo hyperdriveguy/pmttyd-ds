@@ -16,7 +16,7 @@ The GPU owner loads both original atlas t3x files, reuses existing message/font
 textures and releases its own textures/linear arena at Renderer shutdown.
 
 BattleClassBackend synchronously serves only the recovered fixed TEV setup,
-texture0, four-point quad primitives, source quad helper, ordinary flag16 icons
+texture0, four-point quad primitives, source quad helper, ordinary flag16/48 icons
 and finite plain US label queries/draws. It retains ordered quads and transforms
 XYZ through the supplied source matrices before native projection. Loaded matrix
 and texture state are required; overlapping/incomplete primitives reject. The
@@ -28,12 +28,12 @@ for bubble mirroring. No ellipse/panel replacement or render-frame timing is add
 
 Icon flags16 keep source full dimensions, centered X/bottom-anchored Y and frame
 UVs. Dedicated IDs use class atlas; other actually admitted frames, including403,
-use the existing message atlas provider. Source flag48 currently rejects explicitly:
-iconGX800197f8 bit32 enters a separate three-stage TEV path at80019a08, not the
-ordinary modulation backend. Disabled appearance must be bound from that program
-before allowing the complete live class menu; do not silently draw enabled color
-or invent a gray multiply substitute. Broader icon flags also require their own
-source mirroring/clipping semantics.
+use the existing message atlas provider. Source flag48 now uses the original three-stage channel average; see
+[the disabled material contract](CLASS_ICON_DISABLED_MATERIAL.md). Other icon
+flags retain their own mirroring/clipping domains. The native shader resets
+its TEV stages between quads so disabled appearance cannot leak into a later
+bubble, normal icon or glyph. Original GX/PICA stage rounding equivalence still
+needs raster comparison.
 
 FontWidth resolves the retained source label and uses the existing plain US
 WID1 measurement with spacing2. FontString centers by minus half that width,
@@ -55,12 +55,12 @@ original camera framing or a claim of original SDK float bit equality.
 
 Host checks load actual private catalogs, assert transformed mirrored surface
 quads, incomplete primitive gates, source material alpha, original icon anchors,
-disabled-path rejection, actual US glyph UV/color/centering and required RNG
+disabled-path admission, actual US glyph UV/color/centering and required RNG
 requests. Native compilation checks the actual atlas import/submission/release
 code. An emulator-visible class-menu fixture still requires connecting this
 backend to actual packed source memory/camera services and ring producer.
 
-Next: implement original disabled-icon TEV behavior, bind source center/offset
+Next: bind source center/offset
 and actual actor projection, synchronous palette/font queries and renderer-ready
 publication, then drive ring once per simulation tick. Keep physical D-pad/Circle
 Pad/A/B command control and the
