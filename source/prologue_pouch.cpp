@@ -27,6 +27,12 @@ int32_t ProloguePouch::removeKeyItem(int32_t item) {
     m.storeHalf=[](void* p,uint32_t at,uint16_t value){static_cast<ProloguePouch*>(p)->half(at,int16_t(value));};
     return removePackedKeyItem(0,item,m);
 }
+int32_t ProloguePouch::insertKeyItem(int32_t item) {
+    EventMemoryServices m;m.user=this;
+    m.half=[](void* p,uint32_t at){return uint16_t(static_cast<ProloguePouch*>(p)->half(at));};
+    m.storeHalf=[](void* p,uint32_t at,uint16_t value){static_cast<ProloguePouch*>(p)->half(at,int16_t(value));};
+    return insertPackedKeyItem(0,item,m);
+}
 ProloguePouch initializeProloguePouch(const char* name){
     assert(name);Provider provider{{},name};PackedPouchInitializationServices s;s.user=&provider;s.memory.user=&provider;
     s.allocate=[](void* p,int32_t heap,uint32_t size){auto& v=*static_cast<Provider*>(p);assert(!v.allocated && heap==0 && size==v.pouch.bytes.size());v.allocated=true;return Address;};

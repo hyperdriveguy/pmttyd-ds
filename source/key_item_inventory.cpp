@@ -40,4 +40,11 @@ int32_t removePackedKeyItem(uint32_t pouch,int32_t item,const EventMemoryService
     }
     return 0;
 }
+int32_t insertPackedKeyItem(uint32_t pouch,int32_t item,const EventMemoryServices& m) {
+    assert(item>=1 && item<=120 && m.half && m.storeHalf);
+    int slot=120;while(slot>=0 && m.half(m.user,pouch+0xa0+2*unsigned(slot))!=0)--slot;
+    if(slot<0)return 0;
+    for(;slot>0;--slot)m.storeHalf(m.user,pouch+0xa0+2*unsigned(slot),m.half(m.user,pouch+0xa0+2*unsigned(slot-1)));
+    m.storeHalf(m.user,pouch+0xa0,uint16_t(item));return 1;
+}
 }

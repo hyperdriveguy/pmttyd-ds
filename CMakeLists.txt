@@ -965,3 +965,8 @@ target_sources(ttyd_core PRIVATE source/battle_weapon_icons.cpp)
 add_executable(battle_weapon_icons_tests tests/battle_weapon_icons_tests.cpp)
 target_link_libraries(battle_weapon_icons_tests PRIVATE ttyd_core)
 add_test(NAME battle_weapon_icons COMMAND battle_weapon_icons_tests)
+
+target_sources(ttyd_core PRIVATE source/field_item_get.cpp)
+add_executable(field_item_get_tests tests/field_item_get_tests.cpp)
+target_link_libraries(field_item_get_tests PRIVATE ttyd_core)
+add_test(NAME field_item_get COMMAND field_item_get_tests)
