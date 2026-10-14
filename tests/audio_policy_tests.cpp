@@ -28,6 +28,7 @@ int main() {
     assert(soundtrackTrack(Scene::Explore,true,false,-1,2,false,true)==-1);
     assert(soundtrackTrack(Scene::Explore,true,false,0,99,false,true)==0);
     assert(soundtrackTrack(Scene::Defeat,true,false,0,0,true,true)==-1);
+    assert(std::strcmp(musicAssetPath(5,true),"romfs:/demo-book.wav")==0);
     assert(!musicAssetPath(-1,true) && !musicAssetPath(18,true));
     assert(std::strcmp(musicAssetPath(4,true),"romfs:/soundtrack-switch/title.wav")==0);
     assert(std::strcmp(musicAssetPath(14,false),"romfs:/rogueport.wav")==0);

@@ -17,7 +17,7 @@ bool Renderer::loadTitleCurtains(){
         const bool valid=std::fread(magic,8,1,file)==1 && !std::memcmp(magic,"PMTIT001",8) && std::fread(&actor.uvScale,4,1,file)==1 && std::fread(&poses,4,1,file)==1 && std::fread(&textures,4,1,file)==1 && std::fgetc(file)==EOF;
         std::fclose(file);if(!valid || actor.uvScale!=8 || poses!=2 || textures!=(n?1:4))return false;
         std::snprintf(path,sizeof(path),"romfs:/%s.t3x",stem);file=std::fopen(path,"rb");if(!file)return false;
-        actor.image.imported=Tex3DS_TextureImportStdio(file,&actor.image.texture,nullptr,false);std::fclose(file);
+        actor.image.imported=Tex3DS_TextureImportStdio(file,&actor.image.texture,nullptr,true);std::fclose(file);
         if(!actor.image.imported || !a->evaluate(0,actor.sample))return false;
         C3D_TexSetFilter(&actor.image.texture,GPU_LINEAR,GPU_LINEAR);C3D_TexSetWrap(&actor.image.texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
     }

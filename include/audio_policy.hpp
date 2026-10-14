@@ -53,6 +53,10 @@ inline const char* musicAssetPath(int track,bool switchSoundtrack) {
         "romfs:/soundtrack-switch/rogueport-east.wav","romfs:/soundtrack-switch/rogueport-west.wav",
         "romfs:/soundtrack-switch/rogueport-station.wav","romfs:/soundtrack-switch/battle-think.wav"};
     if(track<0 || track>=18)return nullptr;
+    // The original US book waits retain a looping BGM owner until Off. The
+    // Switch arrangement is a shorter nonlooped cue and exhausts before that
+    // fade request. Use the original loop rather than inventing loop points.
+    if(track==5)return original[5];
     if(switchSoundtrack)return remake[track];
     if(track==17)return original[1];
     return original[track<13?track:0];

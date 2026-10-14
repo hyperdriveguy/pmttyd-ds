@@ -38,7 +38,7 @@ bool Renderer::frontImage(const char* name,float x,float y,float w,float h,uint8
         bool ok=std::fread(pending.size.data(),4,4,meta)==4 && std::fgetc(meta)==EOF;std::fclose(meta);
         const auto& z=pending.size;if(!ok || !z[0] || !z[1] || z[0]>z[2] || z[1]>z[3] || z[2]>1024 || z[3]>1024)return false;
         std::snprintf(path,sizeof(path),"romfs:/%s.t3x",name);FILE* f=std::fopen(path,"rb");if(!f)return false;
-        pending.image.imported=Tex3DS_TextureImportStdio(f,&pending.image.texture,nullptr,false);std::fclose(f);
+        pending.image.imported=Tex3DS_TextureImportStdio(f,&pending.image.texture,nullptr,std::strncmp(name,"title-",6)==0);std::fclose(f);
         if(!pending.image.imported)return false;
         C3D_TexSetFilter(&pending.image.texture,GPU_LINEAR,GPU_LINEAR);
         frontTextures.push_back(std::move(pending));found=frontTextures.end()-1;

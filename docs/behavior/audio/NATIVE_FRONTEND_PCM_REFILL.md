@@ -26,7 +26,16 @@ This reduces first-use work; it does not establish complete hardware performance
 or eliminate every synchronous scene load.
 
 Title images and curtain owners are admitted before the frontend simulation
-clock and its first music request start. They survive Demo/Title/Files phase
+clock and its first music request start. They reside in GPU VRAM, leaving the linear arena available for the overlapping
+book, market and Peach atlas. They survive Demo/Title/Files phase
 changes and the final book adjustment, and retire on entering New Game or
 Playing. The white chest exit therefore performs no first-use Title import.
 This shifts that bounded resource work into initial boot admission.
+
+The original US book scene retains a looping BGM owner until its explicit Off
+request. The packaged Switch book arrangement is a shorter nonlooped cue and
+exhausts before that request (a 2.262-second digital silence was recorded in
+the isolated VRAM run). Book track 5 therefore uses original ISO `sys_demo1_32k`,
+`romfs:/demo-book.wav` and its extracted loop sidecar, including when the optional
+Switch soundtrack is selected. No fabricated loop points are assigned to the
+Switch cue. Other soundtrack selection remains governed by the existing policy.
