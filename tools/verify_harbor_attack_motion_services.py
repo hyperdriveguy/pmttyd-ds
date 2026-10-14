@@ -14,6 +14,12 @@ SPANS.extend([
  (0x800fa45c,0x94,'f7d1ca253a87fce21d15f38d32e6c3bc4f755d3a7226a10f71daca2afbadcbe9'),
 ])
 
+# Complete calculated-facing and direction-write wrappers.
+SPANS.extend([
+ (0x8010e684,0x318,'9b55dc157bfebad36a84e0ff70f1f62b551ff23592e6d0f3e130668c4cee361b'),
+ (0x8010e5a8,0x6c,'104e3182211866b072302e8667e05a27c26d20d2865b1237e1132adbc631e4bc'),
+])
+
 def verify(iso=DEFAULT_ISO):
  with Path(iso).open('rb') as disc:
   header=disc.read(0x440)

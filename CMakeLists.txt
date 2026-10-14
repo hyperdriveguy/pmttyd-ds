@@ -1146,3 +1146,8 @@ add_executable(field_sfx_ndsp_tests tests/field_sfx_ndsp_tests.cpp source/audio/
 target_include_directories(field_sfx_ndsp_tests PRIVATE tests/stubs/opening_house_pcm include/audio)
 target_link_libraries(field_sfx_ndsp_tests PRIVATE ttyd_core)
 add_test(NAME field_sfx_ndsp COMMAND field_sfx_ndsp_tests)
+
+target_sources(ttyd_core PRIVATE source/battle/battle_facing.cpp)
+add_executable(battle_facing_tests tests/battle_facing_tests.cpp)
+target_link_libraries(battle_facing_tests PRIVATE ttyd_core)
+add_test(NAME battle_facing COMMAND battle_facing_tests)

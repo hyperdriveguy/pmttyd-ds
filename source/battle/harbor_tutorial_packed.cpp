@@ -15,6 +15,7 @@
 #include "prologue_pouch.hpp"
 #include "battle_unit_resources.hpp"
 #include "battle_weapon_cost.hpp"
+#include "battle_facing.hpp"
 namespace ttyd {
 namespace {void required(bool ok){if(!ok)std::abort();}int32_t signByte(uint8_t b){return b<128?int32_t(b):int32_t(b)-256;}}
 uint32_t HarborTutorialPacked::word(uint32_t a)const{uint32_t v=0;required(vm.memory.readWord(a,v));return v;}
@@ -149,6 +150,8 @@ bool HarborTutorialPacked::invoke(EventEntry& e,uint32_t function,int32_t first,
  }
  if(registry.invoke(e,function,first,result))return true;
  switch(function){
+ case 0x8010e684:{BattleFacingServices s;s.positions=nativeBattlePartPositionServices(vm);s.user=vm.platform.user;s.signedWordFloat=vm.platform.signedWordFloat;s.subtract=vm.platform.subtractFloat;result=battleCalculateFaceDirectionEvent(e,s);return true;}
+ case 0x8010e5a8:result=battleChangeFaceDirectionEvent(e,nativeBattleUnitEventServices(vm));return true;
  case 0x801058e0:output(e,1,byte(uint32_t(value(e,0))+0x6e));result=2;return true;
  case 0x80107b38:{const auto u=actor(e);const auto base=value(e,1);byte(Battle+0x1cbc,uint8_t(base));const auto adjusted=int32_t(uint32_t(base)-byte(u+0x305)+byte(u+0x306));byte(Battle+0x1cbd,uint8_t(std::clamp(adjusted,int32_t(0),int32_t(6))));result=2;return true;}
  case 0x801077ec:{

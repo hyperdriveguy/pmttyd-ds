@@ -181,3 +181,44 @@ clock/facingmatrix publication, protector/hit-event/transitive services, complet
 MarioJumpPosition andothermotion/result/aftereffect/camera/audio providers,
 originalsourcepouch/status/flag writers andused268-command visual/inputtrace
 remain required. No nativecode edits,build/testsororiginalexecution inthis task.
+
+## Complete shared facing wrappers and Harbor admission (2026-10-14)
+
+`battle_facing.cpp` now implements the complete CalculateFaceDirection8010e684/
+318 and ChangeFaceDirection8010e5a8/6c wrappers. Input argument pointer and
+initial battle are retained before actor resolution/translation. Resolve actor
+part, target/literalX and target part; retain RAW mode and output. Only masks1
+or8 skip target translation. Actor/target unit lookups independently use current
+global battle; part lookups retain those fetched units. Target unit/part lookup
+is gated by mask16. Both unit189 and partbd are read in source order for the
+seed; mask4 replaces it with the signed side byte from the initial captured
+battle, and mask8 replaces that with unit188 then optional partbc.
+
+Mask16 compares actual actor/target X after unit-position reads and optional
+part adjustment. Attribute10000000 uses absolute part XYZ; otherwise only X
+adds the part offset with a single add, without a facing factor. Next mask1
+independently compares the retained signed literal X (single conversion) with
+fresh actor/part X. Positive delta selects1, negative selects-1, equal/unordered
+preserves the current result. Mask100 finally negates the word with wrapping
+arithmetic. The event output is written once at the end. Mode0, combined modes,
+part seeds, negative byte values and inversion retain their source meanings;
+there is no normalization to a guessed heading or nearest target.
+
+Direction-write resolves/translates actor, resolves direction, fetches current
+unit and narrows to unit189 only. Facing calculation does not itself mutate
+unit/part facing or rotation. Native Harbor binds both wrappers using its real
+unit/part/event memory and platform single arithmetic providers.
+
+Tests cover mode precedence, both comparisons in combined17, signed seeds,
+unit-before-part read order, offsets versus absolute positions, equality/NaN,
+integer-to-single rounding and low8 direction write preserving188. The selected
+original Jump now passes both facing requests and stops live at StartAC80107788;
+HP/result and the one payment count stay unchanged. No automatic tutorial/menu
+activation, animation request/acknowledgment, action-manager execution, hit or
+visual-fidelity result is fabricated. Source body hashes are pinned by the
+read-only harbor-motion verifier; listings remain in ignored artifacts.
+
+Next provider: complete StartAC wrapper with its real help/audience-window
+setter and original manager cadence, followed by source pose and motion/hit
+services. Preserve simulation tick ownership and physical-button input while
+integrating original menu/HUD and second-screen scene/audience presentation.

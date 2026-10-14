@@ -90,7 +90,7 @@ void nativePlayerAttack(){
  assert(!scene.dispatchSelectedAttack());
  for(unsigned n=0;n<100 && !scene.pendingService;++n)scene.tick(scene.now+17,0);
  std::cout<<"Selected Mario Jump frontier: "<<std::hex<<scene.pendingService<<std::dec<<"\n";
- assert(!scene.failed && scene.attackActive && scene.pendingService==0x8010e684 && scene.actors[0].hp==5 && scene.result==0);
+ assert(!scene.failed && scene.attackActive && scene.pendingService==0x80107788 && scene.actors[0].hp==5 && scene.result==0);
  assert(scene.chosenUnit==2 && scene.chosenPart==1);
  assert(word(0x84001c90)==0x84101000 && word(0x84001c94)==1 && word(0x84001c9c)==0);
  assert(word(0x84001ca0)==0x8012aae0 && word(0x84001ca4)==0x8012a8c4 && word(0x84001ca8)==0x8012a7cc && word(0x84001cac)==0x8012a7c0);
@@ -99,7 +99,7 @@ void nativePlayerAttack(){
 
  assert((word(0x84016f4c)>>24)==1 && uint16_t(word(0x84101110))==5);
  for(unsigned n=0;n<5;++n)scene.tick(scene.now+17,0);
- assert(scene.pendingService==0x8010e684 && (word(0x84016f4c)>>24)==1 && scene.actors[1].hp==7);
+ assert(scene.pendingService==0x80107788 && (word(0x84016f4c)>>24)==1 && scene.actors[1].hp==7);
  bool marioRoot=false;for(const auto& request:scene.requests)if(request.owner==1 && request.function==scene.pendingService)marioRoot=true;assert(marioRoot);
 }
 int main(){
