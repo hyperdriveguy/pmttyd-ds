@@ -1,3 +1,48 @@
+## 2026-10-14 — Native tutorial action-command manager and deferred cleanup
+
+Committed `36aee76a`. Harbor now runs the complete shared original action-command
+manager once per physical simulation sample before its event-manager pass.
+General input samples first; the manager owns the private-pad update, including
+null-Main calls. Repeated timestamps do not shift history or tick Main again.
+Missing physical samples leave pad/command work intact rather than synthesizing
+no input. Native TimingA8012aae0 uses the existing source state machine: Stop's
+1000 sets60 and decrements59 immediately,59 further calls reach1002, then the
+next call clears main/display/result/delete in original write order. The outer
+manager retains its independent zero-return main-only clear and fresh display
+lookup. Unknown main identities remain an explicit provider frontier.
+
+Original camera8/class1/priority15 display requests now enter a runtime-owned
+DisplayQueue, exposed as borrowed read-only requests for the current simulation
+tick. Tests assert the actual callback8012a7cc, retained BattleWork argument and
+sort key399985. The queue is not yet consumed by an action-command draw backend.
+The failed original Jump still completes its attack/recovery root, applies1 HP
+and produces the actual failure count/original mac_0_b_t1_002 feedback through
+explicit phase dispatch; it now also cleans up all four deferred callbacks.
+Repeated-timestamp and absent-input fixtures protect countdown and private pad.
+Success still stops at voice80104508; battle/story result remains0.
+
+Validation: isolated snapshot artifacts/tutorial-manager-9ae6m6zm, based on
+ff9d4b64 plus the scoped changes. Final `make test` passed246/246 C++ and142/142
+Python tests. Final native `make all -o assets-ready BUILD=build-manager-review
+TARGET=ttyd-manager-review` passed using existing prepared private assets;
+artifact: that snapshot's ttyd-manager-review.3dsx (451352076 bytes). Final logs:
+artifacts/tutorial-manager-final-test.log and tutorial-manager-final-native.log.
+The initial full snapshot run also passed; final rerun covers the cleanup-order
+adjustment. Read-only ISO checks passed46 motion/action/facing spans and the
+input-cadence verifier's11 body hashes/154 anchors/28 calls/3 data bindings.
+Original complete TimingA Main listing inspected at
+artifacts/tutorial-manager-timing-main.txt. Diff check passed. No new asset
+conversion, ISO writes, Azahar/Dolphin, measured frame timing or rendered cue
+claim. Independent field/trio/display/shadow edits were preserved by a scoped
+seven-file commit.
+
+Next: original action-command HUD display consumption and source class/target
+menu activation in Game; successful voice/pitch/volume and follow-up hits;
+post-action/turn/phase scheduler and system-window restoration; active stage
+hazards; second-screen scene/audience rendering and optional hostile-item taps
+with a physical-button equivalent. This is native manager admission, not the
+complete original BattleMain or a finished tutorial/remake.
+
 ## 2026-10-14 — Original coin window/effect7 and native camera5 fix
 
 Committed `f82d32cc`. Original coin window80415e84 loads unchanged US title,
