@@ -1,3 +1,48 @@
+## 2026-10-14 — Original tutorial feedback declaration and audience gates
+
+Committed `76a0ed97`. Shared action declaration preserves exactly-1 bad grading,
+200-byte saturation without repairing255, classification, source good-record
+weapon/bytes and fused grade multiplier. Audience bad/good helpers use all200
+actual waiting queries, captured base/fresh flags and original populated-case
+request order. Waiting retains GetExist/GetSysCtrl/halfword/state gates and
+fresh getter ownership. Native Harbor preflights zero waiting actors before
+count publication; required populated-case providers remain unbound.
+
+Capture now retains live declaration bytes across scene publication. The
+original failed Jump itself produces failure1 after its impact, keeps Crump HP4
+and Mario dealt1, and advances to InviteApInfoReport8010436c. Repeated ticks do
+not replay the count/hit. Actual AcrobatNotry80139898 has a base getter-only
+callee; AP-recovery80139af4 is literal li2/blr. Those complete local bodies now
+admit their source routes without fabricated SP recovery. Success remains at
+voice80104508. Story/battle result stays0; no turn/tutorial completion is claimed.
+
+Correction: earlier progress text called pending8010749c AcrobatNotry. Its
+actual identity is AudienceDeclareACResult; AcrobatNotry is80139898. Execution
+and assertions used the actual addresses. Native damage documentation is now
+corrected. InviteApInfoReport calls actual ApRecoveryBuild801a1d0c and clears12
+bytes afterward; its allocation/record/amount/backend services remain the next
+boundary, rather than an invented report or immediate reward.
+
+Validation: isolated snapshot /home/carson/Documents/blender_tests/pm-port/artifacts/tutorial-feedback-a7_ps2h9, based onebf83bc6 plus scoped code/tests,
+passed `make test`:240/240 C++ and142/142 Python tests. Native
+`make all -o assets-ready BUILD=build-feedback-review TARGET=ttyd-feedback-review`
+passed with prepared private assets. Artifact: that review folder's
+ttyd-feedback-review.3dsx. Logs: ignored artifacts/tutorial-feedback-full-test.log
+and tutorial-feedback-native.log. Expanded read-only ISO verifier passed40 whole
+motion/action/audience spans, including full declaration/waiting/bad/good and
+literal stub bodies. Final isolated code/test/verifier matched scoped files;
+diff check passed. No new payload/conversion, Azahar/Dolphin, original-runtime
+measurement, native visuals/audio or playable battle/tutorial claim. Concurrent
+field/camera/display work preserved through scoped commits.
+
+Next: bind AP report construction, original voice/pitch/volume, aftereffect and
+attack finish; compose native private-pad/TimingA main/display and post-action
+control. Bind populated audience reactions and original class/target Input/
+re-entry, consume original poses and render original HUD/menu with physical
+controls. Complete second-screen scene/audience and optional hostile-item taps
+with a physical equivalent, then verify actual play in isolated Azahar. Goal
+remains active; full tutorial/battle systems and full game remain incomplete.
+
 ## 2026-10-14 — Original Mario impact and defender sound attribution
 
 Committed `ecb4226c`. Harbor damage now retains attacker/defender IDs through
