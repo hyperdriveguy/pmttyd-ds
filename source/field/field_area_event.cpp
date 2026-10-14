@@ -19,6 +19,7 @@ struct DoorProgram {uint32_t room,script,record;};
 struct Program {EventScriptAssets scripts;std::vector<DoorProgram> entries;std::vector<std::array<uint32_t,2>> initializers;};
 std::shared_ptr<const Program> assets;
 int32_t signedWord(uint32_t v){return v<=INT32_MAX?int32_t(v):int32_t(int64_t(v)-0x100000000LL);}
+uint32_t bits(float v){uint32_t out;std::memcpy(&out,&v,4);return out;}
 }
 bool loadFieldAreaEventAssets(const char* root) {
  if(!root)return false;
@@ -125,6 +126,43 @@ struct FieldAreaEventRuntime {
    if(work && (!std::isfinite(converted) || double(converted)<INT32_MIN || double(converted)>=2147483648.))return 0;
    setEventFloat(e,destination,*length,operands);return owner->failed?0:2;
   }
+  if(fn==0x80079b74 && services.position.mario) {
+   const auto& world=services.position;if(!world.write || !world.half)return 0;
+   if(services.geometry.admitRoom && !services.geometry.admitRoom(services.geometry.user,room))return 0;
+   const auto args=e.arguments;const auto capturedMario=world.mario(world.user);if(!capturedMario)return 0;
+   const auto op=vm.interpreterServices().operands;
+   const auto mode=getEventValue(e,signedWord(word(args)),op);
+   const auto distance=getEventFloat(e,signedWord(word(args+4)),op);
+   const auto xyzAddress=uint32_t(e.locals[6]);std::array<int32_t,3> xyz;
+   xyz[0]=signedWord(word(xyzAddress));const auto nameAddress=uint32_t(e.locals[3]);const auto direction=e.locals[5];
+   xyz[1]=signedWord(word(xyzAddress+4));xyz[2]=signedWord(word(xyzAddress+8));
+   std::string name;if(xyz[0]==100000 && !text(nameAddress,name))return 0;
+   if(owner->failed)return 0;
+   const auto result=fieldBeroNormalPosition(xyz,name,direction,mode,distance,services.geometry);
+   // Native finite READF admission precedes publication; it is not a source branch.
+   if(!result || !fieldBeroStartPublication(result->start))return 0;
+   const uint32_t addresses[]={0x8041e9f8,0x8041e9f4,0x8041e9f0,0x8041e9ec,0x8041e9e8,0x8041e9e4};
+   const float values[]={result->start.x,result->start.y,result->start.z,result->finish.x,result->finish.y,result->finish.z};
+   uint32_t old=0;for(auto address:addresses)if(!vm.memory.readWord(address,old))return 0;
+   for(unsigned n=0;n<6;++n)if(!vm.memory.writeWord(addresses[n],bits(values[n]))){owner->failed=true;return 0;}
+   const auto recoveryMario=world.mario(world.user);assert(recoveryMario);
+   world.write(world.user,recoveryMario+0x2e4,bits(result->finish.x));
+   world.write(world.user,recoveryMario+0x2e8,bits(result->recovery.y));
+   world.write(world.user,recoveryMario+0x2ec,bits(result->finish.z));
+   if(world.half(world.user,capturedMario+0x2e)==25) {
+    const auto reloadMario=world.mario(world.user);assert(reloadMario);world.write(world.user,reloadMario+0x2e0,1);
+   }
+   return 2;
+  }
+  if(services.position.mario && (fn==0x800e7180 || fn==0x800eb558 || fn==0x800a785c)) {
+   const auto& world=services.position;FieldPositionOperands o;o.user=this;
+   o.word=[](void* p,uint32_t a){return static_cast<FieldAreaEventRuntime*>(p)->word(a);};
+   o.scalar=[](void* p,EventEntry& e,int32_t raw){auto& r=*static_cast<FieldAreaEventRuntime*>(p);return getEventFloat(e,raw,r.vm.interpreterServices().operands);};
+   if(fn==0x800e7180)return world.write?fieldMarioSetPositionEvent(e,o,world):0;
+   if(fn==0x800eb558)return world.party?fieldPartySetPositionEvent(e,o,world):0;
+   if(!world.camera || !world.read || !world.write || !world.roadReset || !world.shiftReset)return 0;
+   return fieldCameraRoadResetEvent(world);
+  }
   if(fn==0x8007a50c){const auto address=uint32_t(e.locals[0]);if(!services.beroInfo || !services.beroExec || !services.map || services.map->room()!=room)return 0;return services.beroInfo->registerOriginal(address,*services.map,*services.beroExec)?2:0;}
   if(fn==0x8007a214){
    if(!services.beroInfo || services.beroInfo->room()!=room || !services.beroInfo->registered())return 0;
@@ -172,7 +210,7 @@ struct FieldAreaEventRuntime {
   return result;
  }
  bool initialize(uint64_t milliseconds) {
-  if(!vm.memory.registerRam(0x82000000,std::vector<uint8_t>(0x80000)) || !vm.memory.registerRam(0x8041f070,std::vector<uint8_t>(16)) || !vm.memory.registerRam(0x8041e428,std::vector<uint8_t>(4)) || !vm.memory.registerRam(0x8041e844,std::vector<uint8_t>(4)) || !vm.memory.importScripts(program->scripts))return false;
+  if(!vm.memory.registerRam(0x82000000,std::vector<uint8_t>(0x80000)) || !vm.memory.registerRam(0x8041f070,std::vector<uint8_t>(16)) || !vm.memory.registerRam(0x8041e428,std::vector<uint8_t>(4)) || !vm.memory.registerRam(0x8041e844,std::vector<uint8_t>(4)) || !vm.memory.registerRam(0x8041e9e4,std::vector<uint8_t>(24)) || !vm.memory.importScripts(program->scripts))return false;
   const auto memory=vm.memoryBinding.services();const auto start=eventSdkInitializeAllocator(0x82000000,0x82080000,1,memory);
   if(eventSdkCreateHeap(start,0x82080000,memory)!=0 || !vm.memory.writeWord(0x8041e844,0) || !vm.memory.writeWord(0x81000004,60))return false;
   vm.gp.timestamp=milliseconds*eventClockRate(243000000);vm.initializeContexts();return true;

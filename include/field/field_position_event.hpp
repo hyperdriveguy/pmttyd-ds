@@ -20,6 +20,8 @@ struct FieldPositionWorld {
  void (*roadReset)(void*)=nullptr;
  void (*shiftReset)(void*)=nullptr;
  uint16_t (*half)(void*,uintptr_t)=nullptr;
+ // Optional native admission before lookup; raw nonzero selects literal slot1.
+ bool (*admitParty)(void*,uint32_t rawSelector)=nullptr;
 };
 int32_t fieldMarioSetPositionEvent(EventEntry&,const FieldPositionOperands&,const FieldPositionWorld&);
 int32_t fieldPartySetPositionEvent(EventEntry&,const FieldPositionOperands&,const FieldPositionWorld&);

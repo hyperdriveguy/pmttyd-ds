@@ -17,9 +17,10 @@ int32_t fieldMarioSetPositionEvent(EventEntry& e,const FieldPositionOperands& o,
 int32_t fieldPartySetPositionEvent(EventEntry& e,const FieldPositionOperands& o,const FieldPositionWorld& w) {
  assert(o.word && w.party);
  const auto args=e.arguments;const auto selector=o.word(o.user,args);
- int32_t index=1;if(!selector){assert(w.currentParty);index=w.currentParty(w.user);}
+ if(w.admitParty && !w.admitParty(w.user,selector))return 0;
+ int32_t index=1;if(!selector){if(!w.currentParty)return 0;index=w.currentParty(w.user);}
  const auto party=w.party(w.user,index);if(!party)return 2;
- assert(o.scalar && w.write);
+ if(!o.scalar || !w.write)return 0;
  for(unsigned n=0;n<3;++n){const auto raw=int32_t(o.word(o.user,args+4+4*n));
   const auto value=o.scalar(o.user,e,raw);w.write(w.user,party+0x58+4*n,bits(value));}
  return 2;

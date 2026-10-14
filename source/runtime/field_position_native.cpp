@@ -13,6 +13,7 @@ bool triple(uintptr_t address,uintptr_t base,unsigned& n){if(address<base || add
 }
 FieldPositionWorld Game::fieldPositionWorld() {
  FieldPositionWorld w;w.user=this;
+ w.admitParty=[](void* p,uint32_t raw){const auto& g=*static_cast<Game*>(p);return raw!=0 || (g.fieldPartyCurrentIndex && *g.fieldPartyCurrentIndex<2);};
  w.mario=[](void*)->uintptr_t{return Mario;};
  w.currentParty=[](void* p){const auto& g=*static_cast<Game*>(p);assert(g.fieldPartyCurrentIndex);return *g.fieldPartyCurrentIndex;};
  w.party=[](void* p,int32_t index)->uintptr_t{return reinterpret_cast<uintptr_t>(static_cast<Game*>(p)->fieldParties.pointer(index));};

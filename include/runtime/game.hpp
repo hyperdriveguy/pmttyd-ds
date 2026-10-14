@@ -279,6 +279,7 @@ public:
     FieldPreviousPartyWorld fieldPreviousPartyWorld(); // Real slot/kind bytes; missing Entry/Entry2 is explicit admission.
     FieldMarioPreparationWorld fieldMarioPreparationWorld(); // Key domain uses the existing live counter/flag owner.
     FieldPositionWorld fieldPositionWorld(); // Live native actor/camera storage adapters.
+    FieldBeroPositionServices fieldBeroGeometry(); // Named static ROAD leaves and certified same-room raw floor query.
     bool applyFieldBeroStart(); // Ordered position setters and camera reset for a known start.
     bool fieldBeroStartApplied=false;
     std::shared_ptr<FieldBeroInitialEvent> fieldBeroInitial;

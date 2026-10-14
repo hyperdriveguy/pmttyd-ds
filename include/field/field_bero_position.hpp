@@ -14,6 +14,7 @@ struct FieldBeroPositionServices {
  float (*cosine)(void*,float radians)=nullptr;
  float (*negativeMultiplySubtract)(void*,float,float,float)=nullptr; // -(a*b-c), fused then negated.
  float (*multiplyAdd)(void*,float,float,float)=nullptr;
+ bool (*admitRoom)(void*,uint32_t requestingRoom)=nullptr; // Optional native owner admission, before effects.
 };
 struct FieldBeroPosition {
  FieldWallVector start,finish,recovery,center;

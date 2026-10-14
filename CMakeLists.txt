@@ -1689,3 +1689,9 @@ add_executable(source_icon_resources_tests tests/source_icon_resources_tests.cpp
 target_link_libraries(source_icon_resources_tests PRIVATE ttyd_core)
 add_test(NAME source_icon_resources COMMAND source_icon_resources_tests)
 set_tests_properties(source_icon_resources PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Original attached Bero position callback and actual native world providers.
+add_executable(field_area_position_tests tests/field_area_position_tests.cpp)
+target_link_libraries(field_area_position_tests PRIVATE ttyd_core)
+add_test(NAME field_area_position COMMAND field_area_position_tests)
+set_tests_properties(field_area_position PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

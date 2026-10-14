@@ -2,6 +2,8 @@
 #include "field_case.hpp"
 #include "field_mario_preparation.hpp"
 #include "field_previous_party.hpp"
+#include "field_bero_position.hpp"
+#include "field_position_event.hpp"
 #include "event_operands.hpp"
 #include "event_gp_addresses.hpp"
 #include <memory>
@@ -38,6 +40,8 @@ struct FieldAreaEventServices {
  AnimationGroupPrefetch* prefetch=nullptr;
  FieldMarioPreparationWorld mario;
  FieldPreviousPartyWorld previousParty;
+ FieldBeroPositionServices geometry;
+ FieldPositionWorld position;
  void* user=nullptr;
  // Exact npc_hide_onoff owner; zero holds,2 completes. Not an empty-list stub.
  int32_t (*hideNpcs)(void*,uint32_t record,bool hide)=nullptr;

@@ -17,16 +17,18 @@ std::optional<FieldBeroPosition> fieldBeroNormalPosition(std::array<int32_t,3> x
   auto heading=single(single(360.f*float(direction))*.125f);
   if(mode==1)heading=single(heading+180.f);
   const auto radians=single(single(0x1.921fb6p+2f*heading)/360.f);
-  const auto sx=s.sine(s.user,radians),cz=s.cosine(s.user,radians);
+  const auto sx=s.sine(s.user,radians);
   out.start.x=s.negativeMultiplySubtract(s.user,30.f,sx,out.start.x);
+  const auto cz=s.cosine(s.user,radians);
   out.start.z=s.negativeMultiplySubtract(s.user,30.f,-cz,out.start.z);
   const auto floor=s.floor(s.user,out.start,{0,-1,0},1000000.f);
   if(!floor.resolved)return std::nullopt;
   if(floor.hit)out.start.y=floor.y;
   out.finish=out.start;
+  const auto nextSine=s.sine(s.user,radians);
   const auto length=single(30.f+distance);
-  const auto nextSine=s.sine(s.user,radians),nextCosine=s.cosine(s.user,radians);
   out.finish.x=s.multiplyAdd(s.user,length,nextSine,out.finish.x);
+  const auto nextCosine=s.cosine(s.user,radians);
   out.finish.z=s.multiplyAdd(s.user,length,-nextCosine,out.finish.z);
  }
  out.recovery={out.finish.x,single(37.f+out.finish.y),out.finish.z};

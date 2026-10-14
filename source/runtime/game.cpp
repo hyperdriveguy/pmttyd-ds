@@ -247,6 +247,32 @@ bool loadWarps(const char* path) {
     if(ok)roads.swap(data);
     return ok;
 }
+FieldBeroPositionServices Game::fieldBeroGeometry() {
+    FieldBeroPositionServices s;s.user=this;
+    s.admitRoom=[](void* p,uint32_t room){const auto& g=*static_cast<Game*>(p);return g.progress.room==room && g.fieldMapFlags.room()==room;};
+    s.center=[](void* p,const std::string& name,FieldWallVector& out) {
+        const auto& g=*static_cast<Game*>(p);
+        if(g.fieldMapFlags.room()!=g.progress.room || !collisionRoomReady(g.progress.room))return false;
+        const auto node=g.fieldMapFlags.hitSourceNode(name);if(!node)return false;
+        const RoadWarp* selected=nullptr;
+        for(const auto& road:roads)if(road.source==g.progress.room && road.sourceNode==*node) {
+            if(selected)return false;
+            selected=&road;
+        }
+        if(!selected)return false;
+        out={selected->x*100.f,selected->centerY*100.f,selected->z*100.f};return true;
+    };
+    s.floor=[](void* p,FieldWallVector origin,FieldWallVector direction,float length) {
+        const auto& g=*static_cast<Game*>(p);
+        if(g.fieldMapFlags.room()!=g.progress.room || !collisionRoomReady(g.progress.room))return FieldBeroFloor{};
+        const auto hit=fieldShadowRay(origin,direction,length);
+        return FieldBeroFloor{!hit.unresolvedObject,hit.found,hit.point.y};
+    };
+    s.sine=[](void*,float a){return float(std::sin(double(a)));};
+    s.cosine=[](void*,float a){return float(std::cos(double(a)));};
+    s.negativeMultiplySubtract=[](void*,float a,float b,float c){return -std::fma(a,b,-c);};
+    s.multiplyAdd=[](void*,float a,float b,float c){return std::fma(a,b,c);};return s;
+}
 void Game::registerRoadCases(bool enabled) {
     roadCasesEnabled=enabled;roadAttributeNodes.clear();
     if(enabled)for(const auto& road:roads)if(road.source==progress.room)roadAttributeNodes.push_back(road.sourceNode);
