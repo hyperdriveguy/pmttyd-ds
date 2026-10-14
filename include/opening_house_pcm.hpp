@@ -14,6 +14,8 @@ private:
     struct Clip {int16_t* data=nullptr;uint32_t rate=0,frames=0;};
     std::array<Clip,4> clips{};
     std::array<ndspWaveBuf,8> voices{};
+    // Retain ownership through DONE until the channel is explicitly retired.
+    uint8_t queuedVoices=0;
     const OpeningHouseSounds* owner=nullptr;
     uint64_t epoch=0;
     size_t cursor=0;

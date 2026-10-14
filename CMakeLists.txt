@@ -1078,3 +1078,8 @@ target_sources(ttyd_core PRIVATE source/field_bgm_envelope.cpp)
 add_executable(field_bgm_envelope_tests tests/field_bgm_envelope_tests.cpp)
 target_link_libraries(field_bgm_envelope_tests PRIVATE ttyd_core)
 add_test(NAME field_bgm_envelope COMMAND field_bgm_envelope_tests)
+
+add_executable(opening_house_pcm_native_stub_tests tests/opening_house_pcm_native_stub_tests.cpp source/opening_house_pcm.cpp)
+target_include_directories(opening_house_pcm_native_stub_tests PRIVATE tests/stubs/opening_house_pcm include)
+target_compile_options(opening_house_pcm_native_stub_tests PRIVATE -UNDEBUG)
+add_test(NAME opening_house_pcm_native_stub COMMAND opening_house_pcm_native_stub_tests)

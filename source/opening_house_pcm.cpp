@@ -16,7 +16,12 @@ bool OpeningHousePcmPlayer::load(){
     }
     ready=true;return true;
 }
-void OpeningHousePcmPlayer::clear(){if(ready)for(unsigned i=0;i<voices.size();++i){ndspChnWaveBufClear(10+i);voices[i]={};}}
+void OpeningHousePcmPlayer::clear(){
+    for(unsigned i=0;i<voices.size();++i)if(queuedVoices&(1u<<i)){
+        ndspChnWaveBufClear(10+i);voices[i]={};
+    }
+    queuedVoices=0;
+}
 void OpeningHousePcmPlayer::shutdown(){clear();for(auto& clip:clips){if(clip.data)linearFree(clip.data);clip={};}voices={};ready=false;owner=nullptr;cursor=0;}
 bool OpeningHousePcmPlayer::play(const OpeningHouseAudioRequest& request){
     if(request.operation!=OpeningHouseAudioRequest::Operation::Sfx3D || request.cue<0 || request.cue>=4 || request.control!=0 || !request.positionResolved)return false;
@@ -29,7 +34,7 @@ bool OpeningHousePcmPlayer::play(const OpeningHouseAudioRequest& request){
         // MusyX pitch/envelope/modulation/priority and ENV RNG remain unbound.
         const float volume=float(meta->parameters[0])/127.f,pan=float(meta->parameters[1])/127.f;
         float mix[12]{};mix[0]=volume*(pan<=.5f?1.f:2*(1-pan));mix[1]=volume*(pan>=.5f?1.f:2*pan);
-        ndspChnSetMix(channel,mix);ndspChnWaveBufAdd(channel,&voice);++queued;return true;
+        ndspChnSetMix(channel,mix);ndspChnWaveBufAdd(channel,&voice);queuedVoices|=uint8_t(1u<<i);++queued;return true;
     }
     return false; // Explicit bounded native voice admission failure, never an acknowledgement.
 }
