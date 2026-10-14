@@ -1019,8 +1019,10 @@ bool Game::setFieldNpcFlags(const std::string& name,uint32_t mask,bool enabled) 
 void Game::synchronizeFieldNpcs() {
     const auto generation=fieldActorCatalogGeneration();
     if(fieldNpcGeneration!=generation || fieldNpcRoom!=progress.room) {
+        fieldDoorData.invalidate();
         fieldNpcs.clear();fieldNpcEventCandidate=0;fieldNpcGeneration=generation;fieldNpcRoom=progress.room;
     }
+    fieldDoorData.synchronize(progress.room);
 }
 // Source wander providers consume the prior pose/contact publications. Native
 // sound-name tokens1/2 select left/right keys; they are not original addresses.
@@ -1219,6 +1221,14 @@ void Game::updateFieldNpcCollision() {
     }
     fieldNpcHit=uint32_t(mario.hitNpc);
     if(mario.hitNpc)progress.position={mario.root.x*.01f,mario.root.z*.01f};
+    bool npcInitReady=true;
+    for(const auto& actor:fieldActorCatalog().actors())if(actor.room==progress.room && actor.initialization!=FieldActorInit::Static) {
+        const auto* state=fieldNpcState(actor.key);
+        if(!state || !state->initialized)npcInitReady=false;
+    }
+    // Original gor_02 installs its copy after NPC setup/init. This finite
+    // native copy/list prefix does not acknowledge later door case providers.
+    if(npcInitReady)fieldDoorData.initialize(progress.room,progress.originalNpcTalkState.quest1420);
 }
 bool Game::recoveryReturn(ReturnPoint& point) const {return groundReturn(returnContact,point);}
 bool Game::beginWater() {

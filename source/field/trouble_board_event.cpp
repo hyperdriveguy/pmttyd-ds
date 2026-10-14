@@ -173,6 +173,10 @@ bool TroubleBoardEvent::synchronizeSavedState(int32_t story,const FieldActorTalk
  for(int32_t b=1469;b<=1474;++b)writeSavedSwitch(SavedSwitchFamily::GlobalByte,b,*troubleQuestByte(state,b),op);
  switches=state;return true;
 }
+bool TroubleBoardEvent::synchronizeWorldWork(uint32_t index,uint32_t address) {
+ if(!runtime_ || !started || failed || index>=runtime_->vm.field.work.size())return false;
+ runtime_->vm.field.work[index]=signedWord(address);return true;
+}
 bool TroubleBoardEvent::appendRoot(TroubleBoardRoot root) {
  if(!runtime_ || !started || failed || rootAlive ||
     (root!=TroubleBoardRoot::Board && root!=TroubleBoardRoot::Counter))return false;

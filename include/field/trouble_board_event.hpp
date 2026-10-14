@@ -45,6 +45,7 @@ public:
  bool begin(uint64_t milliseconds,int32_t story,const FieldActorTalkState&,TroubleBoardRoot=TroubleBoardRoot::Board);
  void tick(uint64_t milliseconds,const TroubleEventServices&);
  bool synchronizeSavedState(int32_t story,const FieldActorTalkState&);
+ bool synchronizeWorldWork(uint32_t index,uint32_t address); // Actual per-area copied-record binding.
  bool appendRoot(TroubleBoardRoot); // Source case reentry shares the retained manager and outstanding children.
  bool active() const{return runtime_ && started && !finished && !failed;}
  FieldActorTalkState switches;

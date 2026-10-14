@@ -56,15 +56,22 @@ int main() {
  assert(*accepted.progress.originalNpcTalkState.quest1420==2);
  assert(!accepted.troubleBoardPresentation()->menu());
  assert((accepted.troubleBoardSounds==std::vector<uint32_t>{42,5,18,43,18}));
- // A nonempty unsupported start child survives its parent. Case reentry
- // appends into the SAME manager, rather than dropping or waiting on that child.
- auto child=initial(true);assert(child.tryTroubleBoardContact(0x100));run(child,0,0);
+ // Q1's actual child writes the per-area copied record through real GW11.
+ // Later case reentry still appends into the SAME retained manager.
+ auto child=initial(true);child.tick({});child.wallContact.sourceNode=0x12d518;
+ std::vector<std::string> doorNames;
+ const auto doorCopy=child.fieldDoorData.workAddress(11);assert(doorCopy);
+ assert(child.fieldDoorData.npcNames(doorCopy,doorNames) && doorNames.size()==3);
+ assert(child.tryTroubleBoardContact(0x100));run(child,0,0);
  assert(*child.progress.originalNpcTalkState.quest1420==1);
  const FieldActorRecord* garf=nullptr;
  for(const auto& actor:fieldActorCatalog().actors())if(actor.initialization==FieldActorInit::Garf)garf=&actor;
  assert(garf);for(int n=0;n<40;++n)child.tick({});
  const auto* startedGarf=child.fieldNpcState(garf->key);
  assert(startedGarf && startedGarf->body.root.x==445 && startedGarf->body.root.z==120);
+ assert(child.fieldDoorData.workAddress(11)==doorCopy);
+ assert(child.fieldDoorData.npcNames(doorCopy,doorNames) && doorNames.size()==2);
+ assert(!(startedGarf->body.flags&0x800)); // Parameter mutation does not hide actors.
  auto* retained=child.troubleBoardPresentation();
  child.wallContact.sourceNode=0x12d3e0;
  assert(child.tryTroubleBoardContact(0x100) && child.troubleBoardLocked());
@@ -122,6 +129,7 @@ int main() {
     const auto* live=task.fieldNpcState(actor.key);assert(live && live->initialized);
     assert(live->body.root.x==(quest==1?10:-475) && live->body.root.y==0 && live->body.root.z==(quest==1?-460:-180));
    }
+   if(quest==1)assert(task.fieldDoorData.npcNames(task.fieldDoorData.workAddress(11),doorNames) && doorNames.size()==3);
   }
  }
  auto start4=initial(true);start4.progress.originalStory=401;start4.tick({});

@@ -26,7 +26,7 @@ bool loadNativeTroubleBoardAssets(const char* root) {
  if(!root)return false;
  MessageAssets probe;
  const std::string path=root;
- if(!loadTroubleBoardEventAssets(root) || !probe.loadGlobal((path+"/messages/global.txt").c_str()) ||
+ if(!loadTroubleBoardEventAssets(root) || !loadFieldDoorDataAssets(root) || !probe.loadGlobal((path+"/messages/global.txt").c_str()) ||
     !probe.loadRoom((path+"/messages/gor_02.txt").c_str()))return false;
  assetRoot=path;return true;
 }
@@ -70,9 +70,11 @@ TroubleBoardPresentation* Game::troubleBoardPresentation() const {
 }
 void Game::troubleBoardEventMain(const Input& i) {
  if(!troubleBoard || troubleBoard->owner!=this)return;
+ synchronizeFieldNpcs(); // Invalidate area data before publishing any GW address.
  auto& s=*troubleBoard;
  const bool running=s.event.active();
  if(running) {
+  s.event.synchronizeWorldWork(11,progress.room==2?fieldDoorData.workAddress(11):0);
   if(!progress.originalStory || !s.event.synchronizeSavedState(*progress.originalStory,progress.originalNpcTalkState))return;
  }
  s.presentation.eventMain(ticks,ticks*1000/60,inputFor(i,inputProducer));
@@ -131,6 +133,9 @@ int32_t Game::troubleBoardCall(TroubleEventRequest& r) {
  }
  case TroubleEventCall::NpcPosition:
   return setFieldNpcPosition(r.text,{float(r.values[1]),float(r.values[2]),float(r.values[3])})?2:0;
+ case TroubleEventCall::DoorParameter:
+  if(progress.room!=2)return 0;
+  return fieldDoorData.setParameter(uint32_t(r.values[0]),r.values[1],uint32_t(r.values[2]))?2:0;
  case TroubleEventCall::CoinRead:
   if(!progress.originalPouch)return 0;
   r.result=progress.originalPouch->half(0x78);return 2;

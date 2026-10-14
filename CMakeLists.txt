@@ -1476,3 +1476,10 @@ target_sources(ttyd_core PRIVATE source/battle/battle_audience_callback.cpp)
 add_executable(battle_audience_callback_tests tests/battle_audience_callback_tests.cpp)
 target_link_libraries(battle_audience_callback_tests PRIVATE ttyd_core)
 add_test(NAME battle_audience_callback COMMAND battle_audience_callback_tests)
+
+# Original per-area mutable door data and GW bindings.
+target_sources(ttyd_core PRIVATE source/field/field_door_data.cpp)
+add_executable(field_door_data_tests tests/field_door_data_tests.cpp)
+target_link_libraries(field_door_data_tests PRIVATE ttyd_core)
+add_test(NAME field_door_data COMMAND field_door_data_tests)
+set_tests_properties(field_door_data PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
