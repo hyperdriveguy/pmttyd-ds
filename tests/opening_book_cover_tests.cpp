@@ -4,7 +4,15 @@
 #include <cmath>
 using namespace ttyd;
 int main(){
-    const auto left=openingBookPaperPoint(-32,24,0,6),right=openingBookPaperPoint(32,-24,0,6);
+    // Internal capture stays half-size; only the visible screen consumes the
+    // original49/44 letterbox crop. No per-page/rune offset is introduced.
+    const auto top=openingBookViewportPoint(200,24.5f),bottom=openingBookViewportPoint(200,218);
+    assert(top[0]==200 && top[1]==0 && std::fabs(bottom[1]-240)<.0001f);
+    const auto picture=openingBookViewportPoint(200,33.75f);
+    assert(std::fabs(picture[1]-11.472868f)<.0001f);
+    const auto pictureRight=openingBookViewportPoint(378,33.75f,1);
+    assert(std::fabs(pictureRight[0]-400)<.0001f);
+    const auto left=openingBookPaperPoint(-32,24,0,6,1,0,0,1,true),right=openingBookPaperPoint(32,-24,0,6,1,0,0,1,true);
     assert(std::fabs(left[0]-212)<.0001f && left[1]==0);
     assert(std::fabs(right[0]-405)<.0001f && right[1]==240);
     assert(openingBookPan(1.5f,0)==0 && openingBookPan(1.5f,180)==102);
@@ -15,16 +23,16 @@ int main(){
     assert(98+openingBookPan(1.5f,180)==200);
     // Global image scaling keeps the captured crop registered to screen center,
     // and image offsets retain the same half-size pixels as the cover's offset.
-    const auto adjusted=openingBookPaperPoint(-32,24,0,6,2,3,-10.5f);
+    const auto adjusted=openingBookPaperPoint(-32,24,0,6,2,3,-10.5f,1,true);
     assert(std::fabs(adjusted[0]-238.25f)<.001f && adjusted[1]==-67.5f);
-    const auto faded=openingBookPaperPoint(-32,24,0,6,2,3,-10.5f,0);
+    const auto faded=openingBookPaperPoint(-32,24,0,6,2,3,-10.5f,0,true);
     assert(std::fabs(faded[0]-34.25f)<.001f && faded[1]==adjusted[1]);
     // The captured front stays193px wide. The source final deformation's
     //39.9395-unit back spans199.6975px at the same5px/unit as its height.
-    const auto turned=openingBookPaperPoint(-71.9395f,24,0,6);
+    const auto turned=openingBookPaperPoint(-71.9395f,24,0,6,1,0,0,1,true);
     assert(std::fabs(turned[0]-12.3025f)<.001f);
-    const auto hingeLeft=openingBookPaperPoint(-32.001f,24,0,6);
-    const auto hingeRight=openingBookPaperPoint(-31.999f,24,0,6);
+    const auto hingeLeft=openingBookPaperPoint(-32.001f,24,0,6,1,0,0,1,true);
+    const auto hingeRight=openingBookPaperPoint(-31.999f,24,0,6,1,0,0,1,true);
     assert(std::fabs(hingeLeft[0]-212)<.006f && std::fabs(hingeRight[0]-212)<.006f);
     assert(OpeningBookView::desktop[0]==0 && OpeningBookView::desktop[2]==400);
     assert(OpeningBookView::desktop[1]<0 && OpeningBookView::desktop[3]>240);

@@ -26,6 +26,11 @@ bool Renderer::frontBookCover(const OpeningDemo& demo,bool capture){
     const float pan=2*openingBookPan(demo.book.scale,demo.book.rotation,demo.book.fade)/OpeningBookView::width;
     if(capture)for(unsigned i=0;i<4;++i)matrix.r[0].c[i]+=pan*matrix.r[3].c[i];
     else for(unsigned i=0;i<4;++i)matrix.r[1].c[i]-=pan*matrix.r[3].c[i];
+    if(!capture)for(unsigned i=0;i<4;++i){
+        matrix.r[0].c[i]=matrix.r[0].c[i]*OpeningBookView::visibleZoom+OpeningBookView::clipOffsetY*matrix.r[3].c[i];
+        const float fit=2*OpeningBookView::pictureOverflow*(demo.book.scale/1.5f)*std::clamp(demo.book.rotation/180.f,0.f,1.f)*(1-demo.book.fade)/OpeningBookView::width;
+        matrix.r[1].c[i]=matrix.r[1].c[i]*OpeningBookView::visibleZoom+fit*matrix.r[3].c[i];
+    }
     if(capture){
         C3D_Mtx crop,result;Mtx_Identity(&crop);
         crop.r[0].x=OpeningBookCapture::scaleX;crop.r[0].w=OpeningBookCapture::offsetX;

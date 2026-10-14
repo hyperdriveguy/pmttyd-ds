@@ -54,7 +54,7 @@ bool Renderer::frontBookPaper(OpeningDemo& demo,std::array<float,4>& presented,b
             const bool final=n==3 && demo.book.adjusting;
             const float scale=final?demo.book.finalPaperScale:1;
             const auto position=openingBookPaperPoint(point.x,point.y,point.z,page.depth,scale,
-                final?demo.book.finalPaperOffsetX:0,final?demo.book.finalPaperOffsetY:0,1-demo.book.fade);
+                final?demo.book.finalPaperOffsetX:0,final?demo.book.finalPaperOffsetY:0,1-demo.book.fade,capture);
             vertex(position[0],position[1],position[2],texU,texV,0xffffffff);
         }
         GSPGPU_FlushDataCache(vertices+first,372*sizeof(Vertex));
