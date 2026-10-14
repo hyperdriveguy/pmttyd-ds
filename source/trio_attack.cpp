@@ -17,6 +17,7 @@
 #include "battle_phase.hpp"
 #include "battle_conclusion.hpp"
 #include "battle_general_rule.hpp"
+#include "battle_audience_sound.hpp"
 #include "battle_drop_material.hpp"
 #include "battle_packed_pouch.hpp"
 #include "battle_dive.hpp"
@@ -80,6 +81,7 @@ struct TrioAttackRuntime {
     uint64_t now=0,sampledAt=UINT64_MAX;uint32_t root=0,pending=0;
     bool done=false;int32_t readyActor=-1;
     std::vector<ProfessorServiceRequest> trace;
+    std::vector<TrioAudienceAudioRequest> audienceAudioTrace;
     std::shared_ptr<ProloguePouch> entryPouch;
     std::array<PartnerBattleSnapshot,7> partySnapshots{};
     std::array<TrioRewardIcon,19> rewardIcons{};
@@ -523,6 +525,29 @@ struct TrioAttackRuntime {
     void endingRequest(uint32_t function,std::initializer_list<int32_t> operands={}) {
         trace.push_back({function,0,now,std::vector<int32_t>(operands)});
     }
+    BattleAudienceSoundServices audienceSoundServices() {
+        BattleAudienceSoundServices s;s.actors=nativeBattleActorServices(vm);s.user=this;
+        s.play=[](void* p,uint32_t key,bool assigned,int32_t right,int32_t left)->std::optional<int32_t> {
+            auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x8019fcec);
+            r.audienceAudioTrace.push_back({assigned?std::optional<uint32_t>{key}:std::nullopt,right,left,std::nullopt});
+            if(assigned){r.pending=0x8019fcec;return std::nullopt;} // Known source key needs an actual positional stream provider.
+            // Explicit native unavailable-key request failure. Original stack
+            // bytes/key lookup are unproven; no name or nonnegative voice minted.
+            r.audienceAudioTrace.back().handle=-1;return int32_t(-1);
+        };
+        s.stop=[](void* p,int32_t handle) {
+            if(handle==-1)return true; // Original Off's no-handle path has no engine request.
+            static_cast<TrioAttackRuntime*>(p)->pending=0x800d95f8;return false;
+        };
+        s.volume=[](void* p,int32_t)->std::optional<uint8_t> {static_cast<TrioAttackRuntime*>(p)->pending=0x800d9558;return std::nullopt;};
+        return s;
+    }
+    bool endingClap() {
+        endingRequest(0x801a0cec,{-1,0});
+        if(clapBattleAudienceSound(-1,0,audienceSoundServices()))return true;
+        if(!pending)pending=0x801a0cec;
+        return false;
+    }
     bool endingAudienceTarget(float delta,float bias) {
         const auto a=(Battle+0x2858);endingRequest(0x801a1a74,{int32_t(bits(delta)),int32_t(bits(bias))});
         const float zero=real(0x80424988);float offset=real(a+0x13780)+bias;real(a+0x13780,offset);
@@ -614,7 +639,7 @@ struct TrioAttackRuntime {
         }
         if(state==0x07000006){
             if(!barrier()){endingDisplay();return;}
-            endingRequest(0x801a0cec,{-1,0}); // Original clap request; native crowd/audio presentation remains an adapter.
+            if(!endingClap())return;
             endingRequest(0x802151c4);
             for(unsigned i=0;i<64;++i){const auto u=word(Battle+0x20+4*i);if(!u)continue;const auto script=battleUnitData(u,0x3f,nativeBattleActorServices(vm).memory);if(script){auto& e=createRootEvent(vm.schedule,script,10,0,vm.creationServices());e.owner=int32_t(word(u));}}
             BattleDropMaterialServices drops;drops.actors=nativeBattleActorServices(vm);drops.user=this;
@@ -638,7 +663,7 @@ struct TrioAttackRuntime {
             if(half(end+8)>0)initializeExpIcons(end);
             word(end+4,120);endingRequest(0x8012b958,{0,2});endingRequest(0x8012c028,{0,(word(Battle+0xef4)&0x100)?18:17});endingRequest(0x8012b198,{0,0,0,0});
             word(Battle+0xf24,0x07000009);state=0x07000009;
-            endingRequest(0x801a0aec,{60,60});endingRequest(0x801a0cec,{-1,0});endingRequest(0x801a08c0);
+            endingRequest(0x801a0aec,{60,60});if(!endingClap())return;endingRequest(0x801a08c0);
             endingRequest(0x800daefc,{0x400});endingRequest(0x800db7a0,{1,int32_t(party && byte(party+0x135)?0x8030ea98:0x8030ea88)}); // Original WIN2/WIN1 keys; complete voice/camera/crowd routing remains an adapter.
         }
         if(state==0x07000009){const auto end=word(Battle+0xf28);word(end+4,word(end+4)-1);if(int32_t(word(end+4))<=0)word(Battle+0xf24,0x0700000a);endingDisplay();return;}
@@ -677,7 +702,7 @@ struct TrioAttackRuntime {
         }
         if(state==0x0700001a){const auto end=word(Battle+0xf28);word(end+4,word(end+4)-1);if(int32_t(word(end+4))<=0){endingBodyType(mario,42);if(party && !(word(party+8)==225 && int8_t(byte(party+0x12b))>=1))endingBodyType(party,42);if(!pending)word(Battle+0xf24,0x0700001b);}endingDisplay();return;}
         if(state==0x0700001b){word(Battle+0xf24,0x0700001c);endingDisplay();return;}
-        if(state==0x0700001c){word(Battle+0xf24,0x0700001d);endingRequest(0x8019fddc,{0,30});endingRequest(0x8004829c);if(fieldNpcBattleFlags)*fieldNpcBattleFlags|=0x100; // Source F8 NPC140 view supplied by the field owner.
+        if(state==0x0700001c){word(Battle+0xf24,0x0700001d);endingRequest(0x8019fddc,{0,30});setAllBattleAudienceVolumes(0,30,nativeBattleActorServices(vm));endingRequest(0x8004829c);if(fieldNpcBattleFlags)*fieldNpcBattleFlags|=0x100; // Source F8 NPC140 view supplied by the field owner.
             endingDisplay();return;}
         if(state==0x0700001d){endingRequest(0x80013368,{10,200,255});endingFade.enter(200);endingFadeClockAt=UINT64_MAX;word(Battle+0xf24,0x0700001e);endingRequest(0x800daefc,{0x201});endingDisplay();return;}
         if(state==0x0700001e){endingRequest(0x80010d94);if(endingFade.finished)word(Battle+0xf24,0x0700001f);endingDisplay();return;}
@@ -761,7 +786,9 @@ struct TrioAttackRuntime {
             endingRequest(0x80141050);const auto index=fieldParties->current(*fieldMario);
             endingRequest(0x800bf1b4,{index});if(auto* actor=fieldParties->pointer(index))actor->word(4,actor->word(4)&~1u);
             endingRequest(0x8018ef8c);judgeBattleGeneralRule(nativeBattleActorServices(vm));
-            pending=0x8019fd68;return; // Audience producer/backend history and exit owners follow actual rule judgment.
+            endingRequest(0x8019fd68,{1});
+            if(!stopBattleAudienceSound(1,audienceSoundServices())){if(!pending)pending=0x8019fd68;return;}
+            pending=0x800f8e28;return; // Uppercase engine's remaining services/completion and sequence/exit owners follow real ending.
         }
         pending=0x80215234;
     }
@@ -947,6 +974,7 @@ int32_t TrioAttack::commandActor()const{if(!runtime_ || runtime_->pending || !ru
 bool TrioAttack::prepareCommands(TrioBattleCommands& menu,const ProfessorStory& scene){if(!runtime_ || !runtime_->done || runtime_->pending || runtime_->word(Battle+0xf18)!=0x04000002 || runtime_->word(Battle+0xf1c)!=0x05000008)return false;runtime_->prepareActor();if(!menu.begin(scene,runtime_->readyActor))return false;std::array<bool,7> present{};for(unsigned id=1;id<7;++id){present[id]=runtime_->word(Battle+0x20+4*id)!=0;runtime_->readDamage(id);}menu.syncUnitState(runtime_->damageUnits,present,&runtime_->damageParts);return true;}
 uint32_t TrioAttack::pendingFunction()const{return runtime_?runtime_->pending:0;}
 const std::vector<ProfessorServiceRequest>& TrioAttack::requests()const{static const std::vector<ProfessorServiceRequest> empty;return runtime_?runtime_->trace:empty;}
+const std::vector<TrioAudienceAudioRequest>& TrioAttack::audienceAudioRequests()const{static const std::vector<TrioAudienceAudioRequest> empty;return runtime_?runtime_->audienceAudioTrace:empty;}
 bool TrioAttack::readWord(uint32_t a,uint32_t& v)const{return runtime_ && runtime_->vm.memory.readWord(a,v);}
 }
 

@@ -3530,3 +3530,18 @@ requests and actual positional SFX backend are the next source documentation/
 implementation request; source population audit delegated while work continues.
 See [binding](../behavior/battle/NATIVE_GENERAL_RULE_AND_AUDIENCE_STORAGE.md).
 Parent remains open; local rule source documentation and native binding closed.
+
+### 2026-10-13 — Audience record producer/stop binding and next engine boundary
+
+Portable actual-record Clap/Stop/SetVolAll and current-record half-count filters
+now bind both original ending requests. Native unassigned-key requests fail
+explicitly with-1 and preserve absent key/result in diagnostic state; no original
+stack content, invented voice or original silence is claimed. Known-key/active
+voice providers still hold if absent. Actual slot1 failed-handle history and
+inactive Stop now complete before upper BattleMain800f8e28.
+Delivered [population contract](../behavior/battle/AUDIENCE_SETUP4_INITIAL_POPULATION_AND_POUCH_GATE.md)
+confirms fresh8c0 desired count0, without closing zero-weight division/stackkey
+input or the full RNG/population/backend graph. See
+[native sound](../behavior/audio/NATIVE_BATTLE_AUDIENCE_SOUND.md). Next original
+engine subsystem tail, wrapper end flag, sequence>30 and exit resource/context
+providers; parent remains open and full original playback unproven.

@@ -752,3 +752,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Opening arrival field departure ownership](story/OPENING_FIELD_DEPARTURE_OWNER.md)
 
 - [Native Goomba4 quest2 hand-in](field/NATIVE_GOOMBA4_QUEST2_HAND_IN.md) and [source talk control/pose admission](field/GOOMBA4_QUEST_TALK_CONTROL_AND_POSE_ADMISSION.md).
+- [Native audience sound record binding](audio/NATIVE_BATTLE_AUDIENCE_SOUND.md): clap/stop/volume metadata, live count filtering and explicit unavailable-key backend failure.
+- [Setup4 initial crowd and pouch gate](battle/AUDIENCE_SETUP4_INITIAL_POPULATION_AND_POUCH_GATE.md): actual setup/rank/capacity/desired count, RNG and zero-weight/key domains.

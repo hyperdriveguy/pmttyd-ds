@@ -338,7 +338,7 @@ int main(){
             for(unsigned n=0;n<59;++n)charged.tick(Input{});assert(charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001a);
             charged.tick(Input{});assert(charged.trioBattleIntro.actors[0].pose=="M_R_1" && charged.trioBattleIntro.actors[1].pose=="PKR_R_1");
             for(unsigned n=0;n<100 && !charged.trioAttack.pendingFunction();++n)charged.tick(Input{});
-            assert(charged.trioAttack.pendingFunction()==0x8019fd68u && charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001f);
+            assert(charged.trioAttack.pendingFunction()==0x800f8e28u && charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001f);
             assert(charged.fieldMarioBattleState().partyIndices[0]==(fastReward?0:255) && charged.fieldMarioBattleState().partyIndices[1]==255);
             if(fastReward) {
                 assert(charged.fieldPartyState().pointer(0) && !charged.fieldPartyState().pointer(1));
@@ -362,6 +362,11 @@ int main(){
                 assert(!(charged.progress.originalPouch->half(14)&1));
             }
             assert(charged.fieldMarioBattleState().secondaryFlags==0 && charged.fieldMarioBattleState().controlDepth==1 && (charged.fieldMarioBattleState().flags&2));
+            const auto& audio=charged.trioAttack.audienceAudioRequests();assert(audio.size()==2);
+            for(const auto& request:audio)assert(!request.key && request.right==0 && request.left==0 && request.handle && *request.handle==-1);
+            assert(charged.trioAttack.readWord(0x84015c78,value) && value==0);
+            assert(charged.trioAttack.readWord(0x84015c7c,value) && value==0xffffffff); // Actual failed native request, not a fabricated silent voice0.
+            assert(charged.trioAttack.readWord(0x84015c90,value) && value==30); // Original SetVolAll duration persists.
             assert(charged.trioAttack.readWord(0x84400018,value) && value==0x00060000); // Actual captured Rule0 descriptor status6.
             assert(charged.trioAttack.readWord(0x84000f28,value) && value==0);
             assert(charged.trioAttack.readWord(0x84000000,value) && value==4);

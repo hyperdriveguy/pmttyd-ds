@@ -910,3 +910,8 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/romfs/pouch-revision.bin")
     add_test(NAME pouch_revision_original COMMAND pouch_revision_tests)
     set_tests_properties(pouch_revision_original PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 endif()
+
+target_sources(ttyd_core PRIVATE source/battle_audience_sound.cpp)
+add_executable(battle_audience_sound_tests tests/battle_audience_sound_tests.cpp)
+target_link_libraries(battle_audience_sound_tests PRIVATE ttyd_core)
+add_test(NAME battle_audience_sound COMMAND battle_audience_sound_tests)

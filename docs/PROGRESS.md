@@ -10234,3 +10234,40 @@ fixedX-475; it can remain visible until original480 retirement. No group1/13
 mesh animation bindings overwrite its event placement. No fabricated geometry
 or camera reveal was added. Source owner/admission/control-order boundary is
 closed for the used branch; fullfield/camera/SDK/hardware parity remains open.
+
+## 2026-10-13 — Real audience sound record history and stop
+
+Added portable Clap/Stop/SetVolAll and live right/left crowd filters against
+actual inline audience/sound records. Counts use200 current getters with
+source existence/state exclusions; original four tier keys only apply to
+positive count. Clap always requests backend, stores actual failure-1 without
+installing voice/lifetime/volume, and admits real handles only through providers.
+Stop reloads flags after backend and clears only1; volume setup touches all24
+records with raw target/duration and no premature stop.
+
+Native ending now executes both Clap requests, actual SetVolAll(0,30) and
+Stop(1). Unassigned-key backend requests explicitly fail-1 and retain absent
+key/count/result diagnostics; no original stack bytes, C string or playing
+voice is invented. This is best-effort native resource failure, not measured
+original silence/lookup. Positive known keys/active voices keep unsupported
+real playback/stop providers. Original population/RNG/zero-weight divide and
+SoundMain/Noise2/NDSP remain open; newly delivered source contract distinguishes
+fresh pouch8c0 desired count0 from universal successful zero population.
+Joined/unjoined ending now reaches upper BattleMain800f8e28, keeping story11,
+field result0/control hold/fade rather than immediate field return.
+
+Validation: make test192/192 CTest +125/125 Python and make all passed
+(artifacts/trio-audience-sound-tests-final.log and trio-audience-sound-all.log).
+Initial shared-build run hit unrelated field_pipe_tests link with missingmain;
+inspection confirmed unchanged source and current object exportedmain, and
+full rerun passed. Logical owned-voice fixture tests cover tier boundaries,
+right/left filtering, count0 request, failed/unavailable provider, flag reload
+and all24 volume records. Actual native battle checks two failed unassigned
+requests, slot1 handleffffffff and retained30 duration. Scoped diff/link checks
+pass. No emulator/audio capture, original stack behavior or hardware assertion.
+No new assets/conversion/private payload.
+
+Next original upper-engine remaining services, lower-wrapper80000000 flag,
+sequence>30 and BattleEnd/map/smart/context/NPC/event/field-wait teardown.
+Actual DSP/crowd/render/lifetime and authored joining remain required for
+original parity; full playable prologue goal stays active and unfinished.
