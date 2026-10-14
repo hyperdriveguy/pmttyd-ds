@@ -1,8 +1,13 @@
 #pragma once
 #include "actor_animation.hpp"
+#include "field_camera_state.hpp"
+#include <optional>
 #include <array>
 #include <cstdint>
 namespace ttyd {
+// Fresh camera5: copied original camera4 vectors, independent lens/clip/depth,
+// zero own roll/view offsets. Input vectors use native units; up is explicit.
+std::optional<FieldCameraFrame> itemGetCamera5Frame(CameraPoint eye,CameraPoint up,CameraPoint target);
 struct ItemGetEffectPass {
  ActorMatrix model;
  uint32_t color=0;
@@ -10,6 +15,7 @@ struct ItemGetEffectPass {
 };
 struct ItemGetEffectDraw {
  std::array<ItemGetEffectPass,2> passes;
+ ActorMatrix textureProjection; // LightOrtho * synthetic LookAt * unshifted WORLD model.
  // Source texmap0/1 and TEV color registers. Texture pixels stay grayscale.
  std::array<uint32_t,2> textures{{44,42}};
  std::array<uint32_t,2> colors{{0xe1e1e1ff,0xeb7d06ff}};
@@ -27,14 +33,14 @@ public:
  int32_t lifetime() const{return lifetime_;}
  uint8_t alpha() const{return alpha_;}
  float scale() const{return scale_;}
- uint32_t layer() const{return layer_;}
- void layer(uint32_t value){layer_=value;}
+ uint32_t camera() const{return camera_;}
+ void camera(uint32_t value){camera_=value;}
 private:
  ActorVector root_{};
  bool active_=false,softDelete_=false;
  int32_t age_=0,lifetime_=1000;
  uint8_t alpha_=255;
  float scale_=0;
- uint32_t layer_=4;
+ uint32_t camera_=4;
 };
 }

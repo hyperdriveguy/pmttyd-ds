@@ -1307,6 +1307,7 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
 }
 void Renderer::shutdown() {
     if(c3dReady) C3D_FrameSync();
+    releaseItemGetEffect();
     releaseTutorialCurtain();
     releaseTutorialStartupResources();
     if(textBuffer) C2D_TextBufDelete(textBuffer);

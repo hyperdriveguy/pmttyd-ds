@@ -1,6 +1,7 @@
 #pragma once
 #include <atomic>
 #include "item_get_windows.hpp"
+#include "field_item_get_effect.hpp"
 #include "game.hpp"
 #include "frontend.hpp"
 #include "opening_house_objects.hpp"
@@ -67,6 +68,10 @@ private:
     void selectorClip(const ItemSelectionClip*);
     bool itemSelector(ItemSelectionPresentation&);
     bool itemGetWindows(ItemGetWindows&,uint32_t sourceFrameCounter);
+    bool itemGetEffect(const FieldItemGetEffect6&,uint32_t cameraID,const C3D_Mtx& nativeWorldToClip,const CameraViewport& sourceViewport,float cameraYaw,uint32_t shadowRGB);
+    bool prepareItemGetEffect();
+    void releaseItemGetEffect();
+
     bool selectorIcon(uint32_t,uint64_t,float,float,float,uint32_t,bool centered=false);
     int count=0, transformLoc=0, marioPose=0;
     shaderProgram_s program{};
@@ -79,6 +84,11 @@ private:
     C2D_TextBuf textBuffer=nullptr;
     struct MapBatch { uint32_t start,count; int32_t texture; uint32_t layer,wrapS,wrapT; };
     struct Texture { C3D_Tex texture{}; Tex3DS_Texture imported=nullptr; };
+    Vertex* itemGetEffectVertices=nullptr;
+    std::array<Texture,2> itemGetEffectTextures;
+    DVLB_s* itemGetEffectShader=nullptr;shaderProgram_s itemGetEffectProgram{};
+    bool itemGetEffectProgramReady=false;
+    int itemGetEffectTransform=0,itemGetEffectProjection=0;
     bool prepareSceneActorTextures(const Game&);
     Texture messageIndicatorTexture;
     std::unique_ptr<BattleStartupResources> tutorialStartupResources;

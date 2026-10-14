@@ -1,0 +1,23 @@
+.fvec transform[4]
+.fvec textureProjection[2]
+.constf constants(0.0, 1.0, 0.0, 0.0)
+.out outpos position
+.out outtc0 texcoord0
+.out outtc1 texcoord1
+.out outcolor color
+.alias position v0
+.alias texcoord v1
+.alias color v2
+.proc main
+    mov r0.xyz, position
+    mov r0.w, constants.y
+    dp4 outpos.x, transform[0], r0
+    dp4 outpos.y, transform[1], r0
+    dp4 outpos.z, transform[2], r0
+    dp4 outpos.w, transform[3], r0
+    dp4 outtc0.x, textureProjection[0], r0
+    dp4 outtc0.y, textureProjection[1], r0
+    mov outtc1, texcoord
+    mov outcolor, color
+    end
+.end
