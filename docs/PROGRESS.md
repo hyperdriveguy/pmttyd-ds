@@ -1,3 +1,49 @@
+## 2026-10-14 — Original class circle/bubble consumers and textures
+
+Commit6a94d338 implements whole DrawMainIconCircle801191a8/0x4a0 and
+DrawMainIconHukidasi80119648/0x474 local bodies. Typed requests preserve original
+GX setup/texture/primitive/icon/font identities, matrix calls, shadows, circle
+depth gray byte and scaling, disabled flags, icon0->403 fallback, bubble
+mirroring and fresh enabled-state checks. Label width uses unsigned low16 bits,
+compressing only X above90 source units. The circle icon's original rotation
+then identity reset is retained. Unwritten source angle-offset cases stop at an
+explicit frontier after prior effects. See
+[the complete consumer contract](behavior/battle/CLASS_CIRCLE_AND_SPEECH_BUBBLE_DRAW.md).
+
+Imported original battle/common/battle_common.tpl indices0(40x40 quadrant)
+and1(128x80 speech bubble) after checking source constructor pathname and draw
+indices. Private256x128 RGBA8 atlas uses2px transparent padding, unchanged pixels
+and no resizing. Dedicated class-icon atlas remains separate. Normal assets-ready
+now invokes this producer. Paths/hash/conversion/licensing are recorded in
+[ASSETS](ASSETS.md); ISO, decoded pixels and compiled packs remain ignored.
+
+Validation: make test in isolated artifacts/tutorial-class-raster-maq_jw1b,
+base517fa8795ab9d58c75d0bff065088aedefbb6ba9 plus only this code increment,
+passes261/261 C++ and146/146 Python checks
+(artifacts/tutorial-class-raster-test.log). New checks cover exact point/quad
+counts, shadow and gray colors, disabled/fallback icons, texture indices,
+mirrored geometry, retained label with fresh text enable state, width truncation
+and compression, atlas pixel equality, UV descriptors and padding. Read-only
+source verifier passes3 body hashes,4 data spans and r2 pin
+(artifacts/tutorial-class-raster-source.log). Native make all -o assets-ready,
+BUILD=build-class-raster-review TARGET=ttyd-class-raster-review passes with the
+prepared private packs (artifacts/tutorial-class-raster-native.log), producing
+452451756-byte3DSX. Exact new bin and t3x payloads are found inside the artifact
+(artifacts/tutorial-class-raster-embedding.json). Final verifier span coverage was
+expanded separately after snapshot builds began, rerun successfully and copied
+into the snapshot; compiled code/test/converter files match the tested copies.
+No Azahar visual check was performed; bundled assets do not prove visible UI.
+
+Next: bind these request consumers to actual native GX/SDK, palette/icon and US
+font providers, load the new atlas in the renderer, and bind center/offset with
+actual actor projection. Connect ring lifecycle once per simulation tick before
+removing manual development class-readiness acknowledgment. Then normal tutorial
+command/turn scheduling and successful Jump voice remain. Preserve upper-screen
+original menus and bottom-screen lower audience continuation from both user
+screenshots and mockup; optional stop-throw taps still require actual audience
+telegraphs/events and a physical equivalent. Full weapon UI, audience logic and
+broader ordinary battles are incomplete. The active goal is not complete.
+
 ## 2026-10-14 — Original class-ring draw lifecycle and icon routing
 
 Commit26a1f8b8 implements complete local DrawMainMenu801160e4/0xb94 and
