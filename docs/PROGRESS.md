@@ -1,3 +1,62 @@
+## 2026-10-14 — Trio world consumes its retained source camera4 lens
+
+Previous turn made progress by wiring Mario's published transform and verifying
+nonidentity fields in an isolated graphics probe. This turn committed `95a4d8b9`:
+the independent trio world reads the retained CameraManager camera4 FOV and
+near/far fields through the existing TrioAttack owner. It no longer reconstructs
+a42-degree lens with near.1/far80. Source boot25/1/32768 becomes native
+25/.01/327.68, using the existing world-distance conversion. The helper rereads
+live fields without modifying the owner; perspective/range/finite checks reject
+unsupported native preparation. Handheld aspect and centered lower continuation
+remain explicit adaptations, and actor/model scale is unchanged. Updated the
+older scene contract so it no longer describes the retired lens.
+[lens contract](behavior/display/TRIO_SOURCE_CAMERA4_LENS_CONSUMPTION.md).
+
+This is live lens consumption, not original cached GX projection or flag0x40
+refresh cadence. View-producer availability and provisional native eye/at fallback
+are unchanged; original published eye/at/up still take precedence. Original
+projection-extra/roll/offset, complete camera framing and raster parity remain
+unproven. No controls, source dialogue or simulation timing were changed.
+
+Exact validation used new frozen snapshot `artifacts/battle-lens-qwwrj2n7`,
+base7351519229ea1481b063104033c125b1a3aaae2c plus owned changes, excluding
+unrelated worktree edits. New tests verify actual source boot lens, subsequent
+owner changes, distance conversion, source-state preservation, unsupported
+projection and invalid values. Existing seam/crop/depth/W tests remain green.
+Initial `make test` passed287/291 C++ checks; copied old private packs lacked
+current door/Bero/map-flag dependencies. Copied the ignored original symbol table
+into the snapshot, then regenerated private packs with its frozen converters:
+`tools/door_data_assets.py`, `tools/bero_info_assets.py`,
+`tools/trouble_board_event_assets.py` (each --iso read-onlyG8ME01 path) and
+`tools/build_assets.py` (same default read-only ISO). The first converter attempt
+lacked that ignored symbol table; retry after providing it succeeded. The next
+host run passed289/291 before map-flag sidecars were rebuilt. No root/user packs
+were changed. Final `make test` exited0:291/291 C++ and171/171 Python
+(`artifacts/battle-lens-test-final.log`).
+`TMPDIR="$PWD/artifacts/tmp" make all -o assets-ready BUILD=build-battle-lens
+TARGET=ttyd-battle-lens` exited0 after normal main was restored and the regenerated
+private RomFS repackaged (`artifacts/battle-lens-native-final.log`).
+`-o assets-ready` reuses those validated packs. Owned `git diff --check` passed.
+
+Isolated50-second Azahar run exited0 without a native exception detected, using
+the explicit source-initialized200-member development pouch and its own generated
+profile. Inspected `artifacts/azahar-battle-lens/audience-source-69.png.png` shows
+the tighter source-lens framing, stage actors at larger projected size, and a
+substantial crowd section on the lower screen with continuing floor/window art.
+The inspected emulator status reports30 FPS. Other captures share that directory.
+This proves that fixture's visible native lens change, not a hardware benchmark,
+normal-story admission or a complete real battle. No fixture main or source
+population grant remains in normal code. No original pixels, compiled packs or
+ISO were committed. Local display access used approved sandbox escalation.
+
+Next: bind original camera4 view production and published projection/refresh
+cadence, then verify normal battle actor/pose-root/part presentation. Bind audience
+type controls and reactions before harmful-item telegraphs, physical X and
+optional audience taps. Continue full-crowd performance work without dropping
+members or simulation visits. Original class/turn/menu choreography, tutorial
+followups/field return and real voice playback remain open. The full requested
+tutorial/real battle goal remains active and incomplete.
+
 ## 2026-10-14 — Mario consumes actual published battle transforms
 
 Previous turn made progress through alias-preserving RAM and quad preparation
