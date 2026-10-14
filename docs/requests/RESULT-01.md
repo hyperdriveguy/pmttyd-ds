@@ -124,3 +124,18 @@ DOL event census checked. ISO pins and existing IF/dispatcher verifiers pass;
 links/scoped diff pass. Docs only; no make rerun. Raw artifacts stay /tmp.
 Full Escape/tutorial admission/other writers/ending/reward/field/story/save and
 original execution stay OPEN; parent stays OPEN.
+
+## 2026-10-13 — Native session verification: result transport setters/getters
+
+Independently re-read the two 8-byte transport functions the field
+[battle-entry](../behavior/field/FIELD_BATTLE_ENTRY_AND_RETURN.md) and result
+deliveries cite, using `tools/inspect_dol_function.py --address` against the
+read-only US ISO. `0x80114508` disassembles to `stw 4,16(3); blr` (store the
+value at `[ptr+0x10]`) and `0x80114500` to `lwz 3,16(3); blr` (load `[ptr+0x10]`).
+This confirms the cited addresses, the 8-byte sizes and the `+0x10` semantics of
+`BattleInformationSetResult`/`BattleInformationGetResult`. It does not establish
+the result-value meanings, the victory/defeat producers, or the story/save
+writes, which remain OPEN.
+
+Validation: two DOL spans (8 bytes each) disassembled read-only; artifacts in
+`/tmp`. No source change.
