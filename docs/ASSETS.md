@@ -408,8 +408,8 @@ native renderer task; imported assets alone do not prove visible menu parity.
 [active recipes](../assets/manifest.json),
 [import selection](../assets/import.json) and
 [original provenance](../assets/original/provenance.json) are source history.
-The first import includes **420** assets:323 original PNG textures/atlases,
-six static model JSONs,21 actor pose JSONs,42 animation JSONs and28 PCM16
+The first import includes **420** assets: 323 original PNG textures/atlases,
+six static model JSONs, 21 actor pose JSONs, 42 animation JSONs and 28 PCM16
 music/effect WAVs. No ISO or compiled runtime pack is included.
 
 Texture sources include `a/a_mario[-]`, `a/a_mario_r[-]`, `a/e_mario`,
@@ -428,7 +428,7 @@ retain loop frame intervals in recipes. Sources include original
 `sound/stream/*.stm` and primary samples from `sound/proj/pmario.samp` plus
 its `sdir/pool/proj` mappings. Original rate, channels, samples and selected
 source loops are unchanged. This does not import the separate Switch music
-library or all1247 GameCube samples; existing extraction targets remain available
+library or all 1247 GameCube samples; existing extraction targets remain available
 for adding them. Every original entry retains Nintendo/Intelligent Systems
 rights with no redistribution license. Custom entries carry their own license.
 
@@ -466,3 +466,11 @@ copy was refreshed. `manifest.json` records refreshed-file and copied-RomFS hash
 Nintendo/Intelligent Systems resources remain copyrighted with no redistribution
 rights granted. ISO, extracted resources, textures and compiled packs stay outside
 source history; this entry records provenance only.
+
+Final frozen validation passed 263/263 CTest and 159/159 Python checks and
+normal `make all`. Regenerating the base pack still produced 454/454 identical
+outputs from tracked sources; exact logs, frozen source/native binary hashes and
+comparison are in `artifacts/asset-pipeline-validation/`. The tracked
+[upstream conversion records](../assets/original/conversion-provenance.json)
+retain detailed original source identities/settings. No emulator/hardware parity
+is asserted for this pipeline change.

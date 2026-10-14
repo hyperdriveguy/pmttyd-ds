@@ -2328,3 +2328,63 @@ runtime additions during the completion audit. Keep original/provisional distinc
 meaningful local comments and incremental commits; do not substitute a file-count
 or comment-density metric for actual semantic review. The user's full **port-code
 documentation goal remains active**.
+
+## 2026-10-14 — Tracked editable originals and custom asset pipeline
+
+The user explicitly replaced the previous extracted-asset history rule: editable
+original and custom sources are now included in Git under `assets/`. `AGENTS.md`
+and the active asset/build guides reflect that decision; the ISO, temporary
+extractions, compiled RomFS packs and binaries remain excluded.
+[Workflow](../assets/README.md) and [provenance](ASSETS.md#2026-10-14--tracked-editable-assets-and-native-source-pipeline).
+
+Included 420 sources: 323 PNG textures/atlases, 6 room/stage model JSONs, 21
+actor pose banks, 42 animation JSON banks and 28 original PCM16 audio clips.
+The source manifest compiles textures, padded atlases, static native JSON/
+triangulated OBJ models, named actor poses, PMANIM3/4 sparse animation streams
+and music/SFX with sample-frame loop intervals. Original converter layouts/
+geometry/scaling/rates/channels are retained. Upstream conversion manifests and
+initial source hashes are tracked, with original rights retained per asset.
+Custom assets can be added with their own author/license and stable output IDs.
+
+Normal `make all` restores the previous base pack, runs remaining original
+converters and compiles the active manifest. Content/dependency/tool hashes
+cache compilation; all sources compile in staging before installation. Removed
+entries restore base originals or delete additions, including stale audio loops.
+Conflicting external output changes or damaged backups stop restoration without
+overwriting them. An output-root content stamp triggers native RomFS packaging
+for nested asset edits. Explicit import refuses nonempty destinations and never
+runs during normal builds.
+
+Final isolated `make test` passed **263/263 CTest checks and 159/159 Python
+tests**, including 13 asset-pipeline tests. Final normal **`make all` passed**
+without bypassing asset conversion. Both the first import and final regenerated
+base comparison found **454/454 generated outputs byte-identical**: textures,
+model/pose/animation bytes, WAVs and loop sidecars. Recipe validation, Python
+syntax and scoped whitespace checks passed. No Azahar or hardware run was needed
+for this source/build workflow; no original-rendering/hardware parity is claimed.
+
+Exact validation lives in ignored `artifacts/asset-pipeline-validation/`: final
+`make-test-final.log`, `make-all-accepted.log`, `roundtrip.json` and
+`manifest.json` with frozen source and native binary SHA256s. Snapshot base was
+`d0f953205c846ae5f687ce4e5b88696323e9fab3` plus this task's final sources,
+recipes and Make rules. An initial shared `make test` stopped at a concurrently
+added missing Trouble Center test source; validation used an isolated committed
+base instead of modifying unrelated work. The first isolated native attempt
+lacked the ignored reference symbol CSV; copied reference inputs enabled the
+full successful build. Initial failure logs are retained and are not passing
+checks. ISO access stayed read-only; emulator profiles/saves were untouched.
+
+Implementation was committed incrementally as `abed7c83`, `cf3e8c44`,
+`b1316b1f` and `29e3d150`. This completes the requested asset-history/workflow
+change, not the full remake. Remaining base converters still require the local
+ISO, and the import is the selected slice rather than the entire disc. New
+resource names need native actor/trigger bindings. Changing geometry requires
+matching collision, road, UV/mesh animation and object-support companions;
+Blender rig export, general collision authoring, full MusyX macros and adaptive
+music remain open. Story messages/IDs/tokens stay original and ISO-backed.
+
+Next: import remaining UI/effect atlas sources and metadata through the same
+reviewed recipes; add geometry/collision and Blender animation interchange;
+expand the source music/sample catalog as content needs it; migrate remaining
+base-converter inputs toward an ISO-independent source checkout. Continue the
+original playable-prologue work separately; no full-game completion claim.
