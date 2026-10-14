@@ -1,4 +1,5 @@
 #include "trio_attack.hpp"
+#include "native_shadow_program.hpp"
 #include "actor_animation.hpp"
 #include "battle_actor_rotation.hpp"
 #include "game.hpp"
@@ -595,6 +596,30 @@ int main(){
             assert(charged.cameraManager->camera(2)->matrices.view==originalCamera2View && frame.backend.viewport()==originalViewport && frame.backend.scissor()==originalScissor);
             charged.trioAttack.resumeFinishingDraw(frameServices);
             assert(projectionBinding.requests==26 && projectionBinding.passes==24 && prepared->record(0)->matrix==savedMatrix);
+            // Actual retained camera4 callback: the original initializer's
+            // zero actor bank completes its genuine prefix/200 admissions.
+            for(unsigned i=0;i<200;++i){
+                assert(charged.trioAttack.readWord(0x84002a14+0x134*i,value) && value==0);
+                assert(charged.trioAttack.readWord(0x84002a58+0x134*i,value) && (value>>24)==0);
+            }
+            struct AudienceBinding {const TrioAttack* attack;DisplayDispatchServices original;NativeShadowProgram program;unsigned requests=0;} audienceBinding{&charged.trioAttack,frameServices.display};
+            audienceBinding.program.afterDummy();
+            frameServices.display.user=&audienceBinding;
+            frameServices.display.state=[](void* user,const DisplayStateRequest& r){auto& b=*static_cast<AudienceBinding*>(user);return b.original.state(b.original.user,r);};
+            frameServices.display.callback=[](void* user,uint32_t camera,uint32_t identity,uint32_t borrowed){
+                auto& b=*static_cast<AudienceBinding*>(user);
+                if(identity!=0x801a38f8)return b.original.callback(b.original.user,camera,identity,borrowed);
+                BattleAudienceCallbackServices source;source.user=&b;
+                source.request=[](void* user,const BattleAudienceGXRequest& r){auto& b=*static_cast<AudienceBinding*>(user);
+                    ShadowGXRequest q;q.kind=static_cast<ShadowGX>(r.function);q.values=r.arguments;
+                    const auto next=b.program.request(q);assert(next);b.program=*next;++b.requests;return true;};
+                return b.attack->resumeAudienceCallback(camera,borrowed,source);
+            };
+            assert(!charged.trioAttack.resumeAudienceCallback(3,0,{})); // Must match the actual borrowed invocation.
+            charged.trioAttack.resumeFinishingDraw(frameServices);
+            assert(audienceBinding.requests==16 && charged.cameraManager->currentIndex()==4 && charged.trioAttack.pendingFunction()==0x80101774);
+            charged.trioAttack.resumeFinishingDraw(frameServices);
+            assert(audienceBinding.requests==16); // Completed prefix never replays at the following actor callback hold.
 
 
 

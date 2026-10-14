@@ -3631,3 +3631,41 @@ Borodo talk, shared case/GP/field lifetime and further original area packs.
 Broad remake remains active and incomplete.
 [Native scope](behavior/field/NATIVE_RETAINED_NPC_FLAGS_AND_DRAW_SUPPRESSION.md);
 [source installer](behavior/field/HOUSE05_ORIGINAL_INSTALLER_GW11_AND_NPC_LIST_CONSUMERS.md).
+
+
+## 2026-10-14 — Actual retained audience callback, empty-admission domain
+
+Bound original801a38f8 to the invoking finishing display record, with retained
+BaseGetPtr/camera4 capture,16 real GX setup requests and200 fresh current-entry
+admissions. Completed requests and skipped records do not replay across holds.
+Any admitted actor remains held at its full unbound body. The native shader
+owner now retains original RGB TEXC+RASC, alpha TEXA*RASA and register material
+selection; the prefix does not invent a material or texture load.
+
+Validation: isolated snapshot based on c71e04291faa8a6815a8de4e3e7f08c2994c697d
+plus exact owned hunks. make test passed287 C++/168 Python; make all passed
+DEBUG_SHORT_BOOT=1,SOUNDTRACK=gamecube. Logs: artifacts/audience-prefix-test-verified.log
+and audience-prefix-build-verified.log. Initial test setup lacked its writable
+artifacts directory/new original NPC catalog, then private Python asset paths;
+fixed the isolated setup and reran. Initial integration expected both audience
+passes before actors; actual source order reached80101774 after the opaque pass.
+Corrected the assertion. Prior failed logs remain archived.
+
+Host real-queue fixture checks the full initializer's200 zero records without
+clearing them, then passes opaque audience and reaches actor80101774. Native
+isolated deterministic physical/menu-input harness reaches the ending, passes
+audience and holds at DispItem801a37f0, camera4/class1,queue21. Exact SD trace:
+artifacts/azahar-audience-prefix-inputs-long/data/azahar-emu/sdmc/3ds/ttyd-2ds/draw-frontier.txt.
+The fixture explicitly clears Bero bit1; it does not acknowledge missing combat
+or render callbacks. Earlier60-second captures stopped in dialogue/Headbonk.
+No cylinder lists, ordered render completion, original raster parity, hardware
+performance or field return are claimed. Production sources/binary contain no
+harness inputs, trace writes or Bero clear. Source/binary hashes are recorded in
+artifacts/audience-prefix-validation-manifest.json.
+
+Next: bind original inactive DispItem/other icon domains and actual borrowed
+part callback80101774, then reach translucent audience/cylinder geometry.
+Nonempty audience palette/pose/quad cursor, physical channel constants with
+unknown owners, persistent framebuffer across holds, cube/bounds and nonzero
+shadow images remain open. Broad prologue goal stays active and incomplete.
+[Native scope](behavior/display/NATIVE_RETAINED_AUDIENCE_EMPTY_ADMISSION.md).

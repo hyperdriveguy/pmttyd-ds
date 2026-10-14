@@ -76,7 +76,16 @@ void Renderer::resumeFinishingCamera(const Game& game){
     };
     services.display.callback=[](void* user,uint32_t camera,uint32_t identity,uint32_t borrowed){
         const auto& b=*static_cast<DisplayBridge*>(user);
-        return static_cast<Renderer*>(b.pipeline->user)->finishingShadowCallback(*b.game,camera,identity,borrowed);
+        auto& renderer=*static_cast<Renderer*>(b.pipeline->user);
+        if(identity==0x801a38f8){
+            BattleAudienceCallbackServices audience;audience.user=&renderer;
+            audience.request=[](void* user,const BattleAudienceGXRequest& r){
+                ShadowGXRequest request;request.kind=static_cast<ShadowGX>(r.function);request.values=r.arguments;
+                return static_cast<Renderer*>(user)->finishingShadowRequest(request);
+            };
+            return b.game->trioAttack.resumeAudienceCallback(camera,borrowed,audience);
+        }
+        return renderer.finishingShadowCallback(*b.game,camera,identity,borrowed);
     };
     // Actual shadow setup; admitted geometry, independent rays and other callbacks retain provider waits.
     game.trioAttack.resumeFinishingDraw(services);

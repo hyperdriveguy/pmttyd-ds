@@ -1471,3 +1471,8 @@ target_sources(ttyd_core PRIVATE source/display/shadow_cylinder.cpp)
 add_executable(shadow_cylinder_tests tests/shadow_cylinder_tests.cpp)
 target_link_libraries(shadow_cylinder_tests PRIVATE ttyd_core)
 add_test(NAME shadow_cylinder COMMAND shadow_cylinder_tests)
+
+target_sources(ttyd_core PRIVATE source/battle/battle_audience_callback.cpp)
+add_executable(battle_audience_callback_tests tests/battle_audience_callback_tests.cpp)
+target_link_libraries(battle_audience_callback_tests PRIVATE ttyd_core)
+add_test(NAME battle_audience_callback COMMAND battle_audience_callback_tests)

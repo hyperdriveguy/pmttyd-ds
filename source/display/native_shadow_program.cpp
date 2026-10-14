@@ -8,7 +8,7 @@ std::optional<NativeShadowProgram> NativeShadowProgram::request(const ShadowGXRe
     switch(r.kind){
     case ShadowGX::NumChans:if(!args({1}))return {};next.chans=1;break;
     case ShadowGX::ChanCtrl:
-        if(!args({4,0,0,0,0,2,2}) && !args({4,0,0,1,0,2,2}))return {};
+        if(!args({4,0,0,0,0,2,2}) && !args({4,0,0,1,0,2,2}) && !args({4,0,1,0,0,2,2}))return {};
         next.materialVertex=r.values[3]==1;break;
     case ShadowGX::TevColor:if(!args({1}))return {};next.registerAlpha=uint8_t(r.color);break;
     case ShadowGX::ChanMaterial:if(!args({4}))return {};next.material=r.color;break;
@@ -16,10 +16,15 @@ std::optional<NativeShadowProgram> NativeShadowProgram::request(const ShadowGXRe
     case ShadowGX::NumTevStages:if(!args({1}))return {};break;
     case ShadowGX::TevOrder:if(!args({0,255,255,4}) && !args({0,0,0,4}))return {};break;
     case ShadowGX::TevColorOp:case ShadowGX::TevAlphaOp:if(!args({0,0,0,0,1,0}))return {};break;
-    case ShadowGX::TevColorIn:if(!args({0,15,15,15,10}) || !next.material)return {};next.rasterRGB=true;break;
+    case ShadowGX::TevColorIn:
+        if(args({0,15,12,8,10})){next.audienceColor=true;next.rasterRGB=true;}
+        else if(args({0,15,15,15,10}) && next.material){next.audienceColor=false;next.rasterRGB=true;}
+        else return {};
+        break;
     case ShadowGX::TevAlphaIn:
         if(args({0,7,1,5,7}))next.alpha=RegisterRaster;
         else if(args({0,7,4,5,7}) && next.texture)next.alpha=TextureRaster;
+        else if(args({0,7,5,4,7}))next.alpha=TextureRaster;
         else return {};
         break;
     case ShadowGX::TextureBind:if(!args({0}))return {};next.texture=r.texture;break;

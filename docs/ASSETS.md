@@ -711,3 +711,14 @@ preserved. Prepared source matrices supply scale/translation. Citro3D consumes
 palette bytes as normalized vertex colors; RGBA8/depth24 remains a declared
 native target adaptation. Original game assets retain their original copyright;
 private packs/ISO are excluded from source history and redistribution.
+
+
+### 2026-10-14 — Retained empty audience callback resources
+
+The native retained callback uses the original initialized actor bank and no
+texture/geometry payload for all-rejected actors. No new art or original asset
+conversion was introduced by this implementation. Isolated validation refreshed
+its existing field-actors.pmnpc and original NPC packs with the committed
+field_actor_assets.py recipe against the read-only US ISO to match its newer
+source base. These private packs remain excluded from history/distribution;
+original copyrights and the existing conversion ledger apply unchanged.

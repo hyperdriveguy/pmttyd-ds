@@ -1007,3 +1007,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [House05 original installer, GW11 and NPC-list consumers](field/HOUSE05_ORIGINAL_INSTALLER_GW11_AND_NPC_LIST_CONSUMERS.md) — inline case snapshots, false800 guards and actual material1800 writes.
 - [Native retained NPC flags and draw suppression](field/NATIVE_RETAINED_NPC_FLAGS_AND_DRAW_SUPPRESSION.md) — active-name lookup, persistent static/wander flags and diagnostic native verification.
+
+- [Native retained audience empty admission](display/NATIVE_RETAINED_AUDIENCE_EMPTY_ADMISSION.md) — actual guarded callback,16 native setup requests and200 fresh current-entry admissions; nonempty body remains held.

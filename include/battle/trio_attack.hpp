@@ -22,6 +22,7 @@
 #include "battle_hit_registry.hpp"
 #include "battle_display_footer.hpp"
 #include "battle_audience_draw.hpp"
+#include "battle_audience_callback.hpp"
 namespace ttyd {
 bool loadTrioAttackAssets(const char* root);
 std::shared_ptr<const ActorAnimationPack> fieldMarioAnimationBank();
@@ -69,6 +70,7 @@ public:
     const std::vector<TrioAudienceAudioRequest>& audienceAudioRequests() const;
     bool readWord(uint32_t address,uint32_t& value) const;
     bool prepareAudienceDrawing(const BattleAudienceDrawServices&) const;
+    bool resumeAudienceCallback(uint32_t camera,uint32_t userdata,const BattleAudienceCallbackServices&) const;
     const BattlePose* battlePose(uint32_t part) const;
     const BattlePosePool* battlePosePool() const;
     const std::array<TrioRewardIcon,19>* rewardIcons() const;

@@ -4127,3 +4127,15 @@ now supports persistent main writes and the actual late800 draw gate; it is
 not bound speculatively to house05. Next actual copied-record/GW11/map lifetime,
 inline case geometry and separate material-list ownership. Full original event
 ABI, registered lifetime across coverage and original runtime comparison remain OPEN.
+
+### 2026-10-14 — Actual retained audience empty-admission binding
+
+[Retained native scope](../behavior/display/NATIVE_RETAINED_AUDIENCE_EMPTY_ADMISSION.md)
+now executes the real801a38f8 prefix/current-record admission scan without
+clearing its producer bank. Opaque/translucent empty domains use genuine GX
+state; any admitted actor holds at its unbound body. Real queue fixture passes
+the opaque callback then reaches actor80101774 before the later translucent
+callback and cylinder geometry. Bind that actor's original parts/pose/render
+continuation next, then the item/icon callbacks and actual nonempty audience
+palette/matrix/quad cursor. Physical channel constants with unknown owners
+cannot support a nonempty source draw. Full EVT-01 stays open.
