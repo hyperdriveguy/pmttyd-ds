@@ -207,3 +207,19 @@ failed a separate battle pose assertion. See
 [owner/validation](../behavior/field/GOOMBA3_PORTABLE_ACQUISITION_OWNER.md).
 Native Game/NPC, deferred Mario motion15, camera/control/window/effect/audio
 binding and full discard UI remain pending. Parent requests remain open.
+
+### 2026-10-14 — Game NPC acquisition and deferred motion contract
+
+Committed `4bd12c2f`: Game owns the item registry/acquisition, admits original
+Goomba3 quest2 through registered providers and advances event/Mario/NPC/item
+visits separately. Dialogue/key hold survives message completion and item
+cleanup; the later event poll writes5405 and releases the talk wait. Active
+copied/moved acquisition snapshots cannot advance retained source pointers.
+Actual Game fixtures cover missing callbacks, print/grant/cleanup/5405 and
+copies in both printing and getting. Isolated225 C++/141 Python tests and
+native build passed. [Game scope](../behavior/field/GOOMBA3_GAME_ACQUISITION_BINDING.md).
+Recovered [motion15/stay](../behavior/field/ITEM95_MARIO_MOTION15_ENTRY_DISPLAY_AND_STAY.md)
+pins pending entry, heading, front M_I_U and control-off dispatch gate.
+Native main/renderer/audio registration, motion/control/camera providers,
+original windows/effect consumers and full discard UI remain pending. Parent
+requests stay open; host callback fixtures do not establish native playability.

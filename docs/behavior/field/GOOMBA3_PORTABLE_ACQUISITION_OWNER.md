@@ -7,7 +7,8 @@ Source basis: [original quest caller](TROUBLE_CENTER_QUEST2_13_WRITERS_AND_ACQUI
 [field service order](GOOMBA3_ITEMGET_FIELD_SERVICE_AND_EVENT_RESUME_ORDER.md).
 
 This is a host-testable acquisition owner, compiled into the native program.
-Normal Game/NPC admission and native presentation services are not yet bound.
+Game/NPC admission now has a [registered-provider binding](GOOMBA3_GAME_ACQUISITION_BINDING.md);
+native main/renderer presentation services are not yet registered.
 It does not establish playable quest2 or change ordinary dialogue selection.
 
 ## Admission and owner boundaries

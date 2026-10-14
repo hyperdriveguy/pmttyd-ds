@@ -1,3 +1,27 @@
+## 2026-10-14 — Game Goomba3 acquisition ownership
+
+Committed `4bd12c2f`. Game now retains the original quest2 acquisition and
+registry, admits it through the actual NPC candidate/talk path when complete
+presentation callbacks are registered, and schedules event before Mario/NPC
+then item. Original printing ends before grant; dialogue/key hold lasts until
+cleanup and the subsequent5405 poll. Copies keep presentation state but cannot
+advance pointers into the live owner. Restore clears registration.
+
+Validation: isolated tree d12eec21 passed `make test`225/225 C++ and141/141
+Python tests and native `make all BUILD=build-goomba-acquisition-review
+TARGET=ttyd-goomba-acquisition-review`. Game tests cover real candidate/talk
+admission, missing callbacks, original message, one grant, delayed5405 and
+snapshot regressions. Independent review confirmed the ownership guard.
+[Exact artifact, logs and limitations](behavior/field/GOOMBA3_GAME_ACQUISITION_BINDING.md).
+
+Next: register native main/renderer/audio providers after each Game restore;
+bind motion15 pending entry and [source control-off gate](behavior/field/ITEM95_MARIO_MOTION15_ENTRY_DISPLAY_AND_STAY.md),
+control/system/camera state, camera5 icon, original M_I_U/effect/windows/audio.
+Preserve sound/window/effect order and closing-window borrowed storage. Capture
+in an isolated Azahar profile, measure rendering and finish full-storage UI.
+Default native acquisition still lacks providers; this is not a playable
+acquisition/render validation or full-game completion. Goal stays active.
+
 ## 2026-10-14 — Original weapon submenu controls and physical tutorial bridge
 
 Committed `012b38b2`: complete shared WeaponSelect Main/End and source key gate,

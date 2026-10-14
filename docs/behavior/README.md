@@ -870,3 +870,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Goomba3 portable parcel acquisition owner](field/GOOMBA3_PORTABLE_ACQUISITION_OWNER.md) — real pouch/registry ownership, delayed quest write and native binding frontier.
 
 - [Original weapon-submenu input and audience gate](battle/NATIVE_WEAPON_SUBMENU_INPUT_AND_AUDIENCE_GATE.md)
+
+- [Game acquisition binding and snapshot ownership](field/GOOMBA3_GAME_ACQUISITION_BINDING.md).
+- [Item95 motion15 entry, display and deferred stay](field/ITEM95_MARIO_MOTION15_ENTRY_DISPLAY_AND_STAY.md).
