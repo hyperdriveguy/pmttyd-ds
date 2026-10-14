@@ -269,6 +269,7 @@ public:
     const BattlePadWork& generalPad(size_t i=0) const {assert(i<4);return generalBattlePads[i];}
     const BattlePadWork& privatePad() const {return actionCommandPad;}
     const FieldBattleWork& fieldBattleState() const {return fieldBattleWork;}
+    const FieldMarioBattleState& fieldMarioBattleState() const {return fieldMarioBattle;}
     bool fieldControlEnabled() const {return marioFieldControl && partnerFieldControl;}
     const char* dialogue() const;
     const char* prompt() const;
@@ -300,6 +301,7 @@ private:
     void updateFieldNpcCollision();
     void checkFieldRoadCases();
     FieldBattleWork fieldBattleWork;
+    FieldMarioBattleState fieldMarioBattle;
     int32_t fieldSequence=2;
     bool marioFieldControl=true,partnerFieldControl=true;
     // Recorded requests: original prepare/post/audio internals remain unbound.

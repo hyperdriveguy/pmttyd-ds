@@ -26,6 +26,20 @@ struct Fixture {
     }
 };
 int main() {
+    // Source control nesting and byte wrapping preserve unrelated flags.
+    FieldMarioBattleState mario;mario.flags=0x80401000;mario.secondaryFlags=0x12345679;
+    CHECK(fieldMarioControlOff(mario)==1 && mario.flags==0x80401002);
+    CHECK(fieldMarioControlOff(mario)==2 && mario.controlDepth==2);
+    CHECK(fieldMarioControlOn(mario)==1 && mario.flags==0x80401002);
+    CHECK(fieldMarioControlOn(mario)==0 && mario.flags==0x80401000);
+    CHECK(fieldMarioControlOn(mario)==-1 && mario.controlDepth==255 && mario.flags==0x80401000);
+    CHECK(fieldMarioControlOff(mario)==0 && mario.controlDepth==0 && mario.flags==0x80401002);
+    CHECK(fieldMarioControlOffCheck(mario)==0); // Source check reads byte38, not word0 bit2.
+    mario.controlDepth=127;CHECK(fieldMarioControlOff(mario)==-128 && mario.flags==0x80401002);
+    CHECK(fieldMarioControlOffCheck(mario)==-128);
+    CHECK(fieldMarioControlOn(mario)==127 && mario.flags==0x80401002);
+    restoreFieldMarioAfterBattle(mario);
+    CHECK(mario.secondaryFlags==0x12345678 && mario.flags==0x80401002 && mario.controlDepth==127);
     for(bool partner:{false,true}) {
         Fixture f;if(!partner)f.partner=0;auto s=f.services();
         CHECK(startFieldBattle(-3,true,s)==0);
@@ -55,5 +69,7 @@ int main() {
     g.scene=Scene::Defeat;Input cancel;cancel.cancel=true;g.tick(cancel);
     CHECK(g.scene==Scene::Explore && g.fieldControlEnabled() && g.fieldBattleState().result==-1);
     g.startBattle();g.scene=Scene::Defeat;g.tick(confirm);CHECK(!g.fieldControlEnabled() && g.scene==Scene::Battle);
+    CHECK(g.fieldMarioBattleState().controlDepth==1);
+    g.scene=Scene::Defeat;g.tick(cancel);CHECK(g.fieldControlEnabled() && g.fieldMarioBattleState().controlDepth==0);
     std::cout<<"Field battle protocol passed\n";
 }

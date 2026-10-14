@@ -2,6 +2,16 @@
 #include <cstdint>
 
 namespace ttyd {
+// Owned views of Mario words0/4 and byte38. Zero is the source constructor's
+// memset point, not a claim to implement the complete MarioInit record.
+struct FieldMarioBattleState {
+    uint32_t flags=0,secondaryFlags=0;
+    uint8_t controlDepth=0;
+};
+int32_t fieldMarioControlOff(FieldMarioBattleState&);
+int32_t fieldMarioControlOn(FieldMarioBattleState&);
+int32_t fieldMarioControlOffCheck(const FieldMarioBattleState&);
+void restoreFieldMarioAfterBattle(FieldMarioBattleState&);
 // Semantic field-battle work; NPC/partner tokens belong to the adapter.
 struct FieldBattleWork {
     uintptr_t npc=0;

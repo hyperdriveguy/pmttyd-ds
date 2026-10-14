@@ -1414,7 +1414,11 @@ FieldBattleServices Game::fieldBattleServices() {
     // Single NPC/partner development fixtures, not original registry IDs.
     s.npc=[](void* p,int32_t name)->uintptr_t {const auto& g=*static_cast<Game*>(p);return name==3 && g.professorStory.underground?3:1;};
     s.prepareMario=[](void* p) {static_cast<Game*>(p)->fieldPrepareRequested=true;};
-    s.marioControl=[](void* p,bool enabled) {static_cast<Game*>(p)->marioFieldControl=enabled;};
+    s.marioControl=[](void* p,bool enabled) {
+        auto& g=*static_cast<Game*>(p);
+        if(enabled)fieldMarioControlOn(g.fieldMarioBattle);else fieldMarioControlOff(g.fieldMarioBattle);
+        g.marioFieldControl=fieldMarioControlOffCheck(g.fieldMarioBattle)==0;
+    };
     s.partyId=[](void*)->int32_t {return 1;};
     s.party=[](void*,int32_t)->uintptr_t {return 1;};
     s.partyControl=[](void* p,uintptr_t,bool enabled) {static_cast<Game*>(p)->partnerFieldControl=enabled;};
@@ -1634,7 +1638,7 @@ void Game::updateMarioPresentation() {
         keys.partyId=[](){return 1;}; // Current follower harness, not original pouch/party ownership.
         keys.party=[this](int){return &fieldKeyPartner;};
         keys.sequence=[this](){return fieldSequence;};
-        keys.inputByte=[this](){return marioFieldControl?0:1;};
+        keys.inputByte=[this](){return fieldMarioControlOffCheck(fieldMarioBattle);};
         keys.shipChanging=[this](){return fieldShipChanging;};
         keys.rollEnabled=[this](){return fieldRollEnabled;};keys.slitEnabled=[this](){return fieldSlitEnabled;};
         keys.christineStatus=[this](){return fieldChristineStatus;};keys.bomheiKeyCheck=[this](){return fieldBomheiKeyCheck;};
@@ -1865,7 +1869,7 @@ void Game::tick(const Input& rawInput) {
                 }
             }
             if(trioCommands.state==TrioBattleCommands::State::AttackReady && progress.originalPouch && !trioAttack.active() && !trioAttack.finished())progress.originalPouch->half(0x70,int16_t(progress.hp)); // Current field HP enters the original resource snapshot once.
-            if(trioCommands.state==TrioBattleCommands::State::AttackReady && trioAttack.begin(trioCommands,trioBattleIntro,progress.hp,progress.originalPouch,&professorStory.actors[3].npcBattleFlags)) {
+            if(trioCommands.state==TrioBattleCommands::State::AttackReady && trioAttack.begin(trioCommands,trioBattleIntro,progress.hp,progress.originalPouch,&professorStory.actors[3].npcBattleFlags,&fieldMarioBattle)) {
                 const auto sample=inputProducer.channels[0].battleSample();
                 const uint32_t triggers=i.physicalSnapshot?sample.pressed:(i.confirm?0x100u:0u)|(i.cancel?0x200u:0u);
                 trioAttack.tick(ticks*1000/60,trioBattleIntro,triggers,i.physicalSnapshot?&sample:nullptr);
@@ -1996,7 +2000,10 @@ void Game::tick(const Input& rawInput) {
         return;
     }
     if (scene==Scene::Defeat) {
-        if (i.confirm || (tap && i.touchY>=107 && i.touchY<155)) { progress.hp=10; startBattle(); }
+        if (i.confirm || (tap && i.touchY>=107 && i.touchY<155)) {
+            if(!returnFromBattle(-1))return; // Release this development battle's control hold before retrying.
+            progress.hp=10;startBattle();
+        }
         else if (i.cancel || tap) {
             if(!returnFromBattle(-1))return;
             progress.hp=10; scene=Scene::Explore;

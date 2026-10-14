@@ -679,3 +679,5 @@ Opening title: [ordinary entry, prompt and idle return](display/NATIVE_OPENING_T
 - [Native original type0 window frame](display/NATIVE_TYPE0_WINDOW_FRAME.md): shared source geometry and citro3d transform/buffer binding; live EXP caller and future selector frames.
 
 Opening movement: [original Parakarry glide](story/NATIVE_OPENING_NPC_GLIDE.md).
+
+- [Field Mario owner, control depth and battle preparation](field/MARIO_OWNER_CONTROL_DEPTH_AND_BATTLE_PREPARE.md): source constructor memset boundary, persistent field pointer, byte-wrapping control operations, ordered preparation, two-slot party controls and ending1f cleanup.

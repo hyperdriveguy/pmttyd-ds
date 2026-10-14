@@ -327,7 +327,8 @@ int main(){
             for(unsigned n=0;n<59;++n)charged.tick(Input{});assert(charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001a);
             charged.tick(Input{});assert(charged.trioBattleIntro.actors[0].pose=="M_R_1" && charged.trioBattleIntro.actors[1].pose=="PKR_R_1");
             for(unsigned n=0;n<100 && !charged.trioAttack.pendingFunction();++n)charged.tick(Input{});
-            assert(charged.trioAttack.pendingFunction()==0x8005e0c0 && charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001f);
+            assert(charged.trioAttack.pendingFunction()==0x801412fc && charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001f);
+            assert(charged.fieldMarioBattleState().secondaryFlags==0 && charged.fieldMarioBattleState().controlDepth==1 && (charged.fieldMarioBattleState().flags&2));
             assert(charged.trioAttack.readWord(0x84000f28,value) && value==0);
             assert(charged.trioAttack.readWord(0x84000000,value) && value==4);
             assert(charged.trioAttack.readWord(0x85600020,value) && value==0);

@@ -139,8 +139,10 @@ bug: deleting the original movement event left its interpolation active.
 Movement now retains its creating eventID and stops when that event is gone,
 preserving the root's postwait placement. Linear movement remains an adapter;
 this does not claim original ease/collision stepping. The test supplies a
-field outcome; native ending remains suspended at field getter8005e0c0, so
-actual native sequence2/result publication is still unfinished.
+field outcome. Native ending now uses a persistent field Mario words0/4/byte38
+owner and clears word4 bit1 before suspending at partyEntry801412fc; see
+[field Mario owner and control depth](../field/MARIO_OWNER_CONTROL_DEPTH_AND_BATTLE_PREPARE.md).
+Actual party/exit/sequence2/result publication remains unfinished.
 
 Validation: read-only complete used bodies/tables, exact original join record,
 current native APIs inspected, `git diff --check`. No native tests/builds/commit;

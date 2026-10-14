@@ -1,6 +1,21 @@
 #include "field_battle.hpp"
 
 namespace ttyd {
+namespace {
+int32_t signedDepth(uint8_t depth) {return depth<128?int32_t(depth):int32_t(depth)-256;}
+}
+int32_t fieldMarioControlOff(FieldMarioBattleState& mario) {
+    mario.flags|=2;
+    mario.controlDepth=uint8_t(unsigned(mario.controlDepth)+1);
+    return signedDepth(mario.controlDepth);
+}
+int32_t fieldMarioControlOn(FieldMarioBattleState& mario) {
+    mario.controlDepth=uint8_t(unsigned(mario.controlDepth)-1);
+    if(mario.controlDepth==0)mario.flags&=~2u;
+    return signedDepth(mario.controlDepth);
+}
+void restoreFieldMarioAfterBattle(FieldMarioBattleState& mario) {mario.secondaryFlags&=~1u;}
+int32_t fieldMarioControlOffCheck(const FieldMarioBattleState& mario) {return signedDepth(mario.controlDepth);}
 int32_t startFieldBattle(int32_t name,bool firstCall,const FieldBattleServices& s) {
     auto& work=s.work(s.user);
     const auto npc=s.npc(s.user,name); // Both lookups repeat on resumed calls.

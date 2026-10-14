@@ -7930,3 +7930,98 @@ Read-only glide evidence verifies four original body hashes and43 anchors
 Next finish prepared original house PCM cues, run the final fresh-file native
 route, and complete this arrival-scoped goal. Broader battle/SDK work remains
 separate; no full-game completion is claimed.
+
+## 2026-10-13 — Persistent field Mario control/ending owner
+
+Game now owns the field Mario word0/word4/byte38 views independently of
+battle units. Zero initialization is the recovered MarioInit memset point,
+not a complete field Mario constructor. Battle services use original
+marioCtrlOff/On wrapping-byte nesting and signed marioCtrlOffChk; field
+input admission reads the same byte. CtrlOn clears word0 bit2 only on the
+transition to zero; unrelated flags survive. The Crump development retry
+releases its old hold before creating another battle, preventing a stuck
+control counter after retry and return.
+
+The original trio ending now obtains this Game-owned field Mario view and
+clears word4 bit1 after export/free/topbank4. Its next suspended provider
+is marioPartyEntry801412fc, while standalone callers without a field owner
+still stop at marioGetPtr8005e0c0. Party construction is not substituted
+with battle actors or an invented unlock. The native ending regression
+checks the retained control hold, current ending bank, cleared/free ending
+work and unchanged story11/result0. Portable checks cover nested holds,
+0/255 and127/128 wrapping, signed checks and preservation of other flags.
+
+Validation: make test passed173/173 CTest and111/111 Python checks
+(artifacts/trio-field-mario-tests-final.log); make all passed
+(artifacts/trio-field-mario-all.log). Targeted field battle/trio checks
+passed (artifacts/trio-field-mario-target.log); scoped git diff --check passed.
+First full run saw an empty concurrently regenerated startup texture; the
+focused asset check and full rerun passed without weakening admission. Read-only
+original CtrlOff/Prepare disassembly retained under ignored
+artifacts/recovered-temp-evidence/native-field-*. No original assets changed.
+
+Remaining: full MarioInit/ReInit, Mario battle preparation/post position and
+mode services, global two-slot party controls/registry, authored Goombella
+join history and actual constructor/appearance/Hello providers. Source
+sequence battle start has its own second control hold and exit releases it;
+those sequence/context owners remain unbound. Next implement them alongside
+party restoration, Rule0, audience stop and original exit/sequence/result
+publication. No native field-return capture or full prologue/hardware parity
+is claimed. Goal remains active.
+
+
+## 2026-10-13 — Original opening house SFX owners and native PCM
+
+Implemented original house flight/postbox/door sound scheduling, raw sound keys,
+source command IDs/control parameters and retained environment/scope requests.
+The independent flight inline waits3000ms after spawn, calls14 times at200ms,
+then400ms with a WW1 stop test AFTER each wait; pro_00 completion writes WW1=1,
+followed by17 final200ms calls. It never stops early on glide completion or
+fabricates a loop tail. Each postbox sequence requests one sound before its
+three shakes; four door sounds precede their original interpolations. Source
+NPC queries retain Q1024 X/Y and literal Z=-100; door/postbox positions come
+from original map-object leaf averages and current additional transforms.
+Original dialogue, message IDs/order and story writes are unchanged.
+
+Original sound identities resolve four primary MusyX samples1176/479/840/851
+with their table/FX/object IDs and parameters preserved. Private read-only
+exporter produces four mono PCM16 WAVs at16000Hz with no resampling or loops
+(~75KB), plus404-byte opening-house-sounds.bin source metadata. Runtime admits
+all four PCM headers/sizes with metadata before opening begins. Extracted/raw/
+compiled assets/provenance stay ignored in local-assets/opening-sounds/romfs;
+no parent mutable pack hardlinks or source payload commits. See
+[source sound contract](behavior/audio/NATIVE_OPENING_HOUSE_SOUNDS.md),
+[house presentation](behavior/story/NATIVE_OPENING_HOUSE_PRESENTATION.md) and
+[asset record](ASSETS.md).
+
+Core/exporter/test commit e7d3a01; separate native presentation commit7cf2de5,
+in isolated /tmp/pm-opening-demo-stage. Native OpeningHousePcmPlayer lazily
+imports original samples, supports overlapping wave buffers, uses source
+sample rate/table volume/pan and reports load/position/voice failures. Its
+NDSP10..17 channels avoid BGM0..1 and primary eight clips2..9. Native patches
+are narrow: Audio declaration/member, one shutdown hook, separate implementation
+files and one main updateOpeningHousePcm call while OpeningPart::House. Parent
+music/fade/field-NPC Audio changes were not overwritten. Parent must integrate
+these hooks and copy the private four WAVs/404-byte metadata, not hardlink them.
+
+ENV_OPN_AAA1 source name index1/five rows refer to birds1/2/3 and leaves1/2.
+Original ENV on0x110, off0x4800, LPF(0,800) and BGM scope(0,1) remain explicit
+unbound records, with no fabricated ambience or successful consumer acknowledgement.
+Native primary-sample PCM is separate from full MusyX macro delay/pitch/RNG/
+envelope/child voices, original positional calc3D/global-volume/priority/handle
+owners, and ENV random/timed services. Those remain incomplete.
+
+Validation: final make test133/133 CTest and106/106 Python; make all builds
+native ttyd-2ds.3dsx without warnings. Read-only verifier pins187-command house
+hash, seven source service hashes and24 sound/loop/WW1/environment anchors.
+Host tests cover loop counts/stop ordering/tail, holding pro_00, original
+postbox/door/env counts/parameters/position availability, full scene progression,
+actual PCM identities/header/rate/frame/hash/nonzero content and original leaf
+metadata. py_compile/git diff --check pass; check_doc_links checks835 Markdown
+files/0 broken links. Logs /tmp/opening-sounds-tests-final.log and
+/tmp/opening-sounds-all-final.log.
+
+No native audible smoke, original-runtime/Dolphin trace or hardware playback
+claim for this isolated branch. Next integrate source SFX/PCM hooks and verify
+actual playback, then implement original listener/spatial/MusyX/ENV/fade
+consumers. Full opening/prologue fidelity and overall goal remain incomplete.
