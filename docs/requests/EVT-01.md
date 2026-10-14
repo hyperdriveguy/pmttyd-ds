@@ -4338,3 +4338,15 @@ shape traversal now reaches mapSetMaterialLight800208c0; the actual ordered
 light-object/channel/PICA backend remains unbound. SDK normalization/numerics,
 mutable light/preset history and original frame validation remain open. No
 external emulator code or reciprocal table was copied. Parent EVT-01 stays OPEN.
+
+### 2026-10-14 — Shared retained door installer continuation
+
+[Source selector/entry closure](../behavior/field/GENERIC_DOOR_ENTRY_AND_GOR02_PRECEDING_CASE_INSTALLERS.md)
+now pins all12 selectors, source direct-output order, derived geometry boundary,
+preceding door02/03/roll and generic04 case snapshots. [Shared owner](../behavior/field/NATIVE_SHARED_FIELD_DOOR_INSTALLERS.md)
+executes actual imported entry words with supplied locals, named map/hit services
+and one retained case pool, preserving returned banks and registration state.
+Game/full parent integration, earlier NPC/world requests, actual case activation,
+house05's distinct inline installer and geometry-derived selectors remain OPEN.
+Do not replace house05 with generic entry or infer complete area slot IDs from
+the otherwise empty seven-case fixture. Parent EVT-01 stays OPEN.

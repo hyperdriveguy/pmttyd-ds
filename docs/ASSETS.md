@@ -952,3 +952,18 @@ asset format, HUD art, texture/geometry conversion, scale or licensing choice.
 Private validation refreshes the original Bero pack with its committed baseline
 extractor; all extracted/compiled material retains its private-use licensing and
 stays outside source history. ISO access remains read-only.
+
+### 2026-10-14 — Original door installer closure
+
+Read-only US ISO rel/gor.rel supplies namespace-qualified gor_02.o door02,
+door03,door03_roll entry scripts/records and door04 record, retaining actual
+ADDR32 imports and script-label prefetch context. The expanded door-data.pmevt
+contains183 original objects/14304 bytes. Unchanged PMDRDT01 remains36 bytes;
+new field-area-events.bin PMFAEV02 is60 bytes of area/script/record metadata.
+US DOL8033156c supplies the unchanged308-byte generic door entry, SHA256
+6269747e7ff14d9effbd84761663f25e880e3ed3c191c842e974db0559e78281,
+plus actual4-byte adjacent scanner context at803316a0. Original executable PPC
+is not linked. No geometry, image, music or dialogue replacement is introduced.
+Outputs remain ignored under artifacts/source-checks/trouble-world. Original
+Nintendo/Intelligent Systems rights apply; no redistribution rights are granted.
+No ISO/extracted payload/compiled pack is committed. [Execution scope](behavior/field/NATIVE_SHARED_FIELD_DOOR_INSTALLERS.md).

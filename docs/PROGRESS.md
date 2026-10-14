@@ -4982,3 +4982,70 @@ this observed flags0 call, then actual texture/TEV and fan GPU submission. Keep
 part history/queue completion behind those real operations, continue ending/
 field return and remaining prologue story/indoor/event fidelity. Full goal is
 active and incomplete.
+
+### 2026-10-14 — Shared scheduler and unchanged door installer roots
+
+Implementation commitd6ec0d47 adds FieldAreaEvent: one retained interpreter and
+case pool per owner, area-tagged original entry catalog, persistent registrations
+and returned16-word banks. The imported source gor02 door02,door03,roll03 and
+generic04 words execute unchanged, using real parameter reads, named map/hit
+hierarchies and source case allocation/snapshots. Door02 close preservesLW15=8;
+roll remains type0; generic04 snapshots precede selector9's finalLW1 overwrite.
+Direct door-param selectors retain captured args/record and fresh destination,
+field-read,setValue ordering. Derived geometry selectors remain held; unsupported
+unsigned selectors>11 have the real no-output return2. A complete72-byte record
+preflight and live free-context-slot check are explicit native admissions.
+Context capacity is256; GP+4=60 is timing, not a60-entry capacity.
+
+Converter roots are namespace-qualified, preserving the original REL address
+bindings and all needed referenced data. New PMFAEV02 metadata selects entry
+programs per area without treating catalog indices as case IDs. Original DOL
+generic entry308 bytes plus actual adjacent scanner context are hash-pinned.
+Expanded private door pack:14304 bytes/183 original objects; existing36-byte
+PMDRDT01 unchanged; new manifest60 bytes. No original payload/PPC or binary is
+committed. Source research closed all12 selector targets, generic tail and
+preceding child/snapshot details through inbox EVT-01.
+
+Validation uses frozen7504d40c56a0a7cc7d7e97de1e9c198fe89e39b1 under
+artifacts/source-checks/trouble-world:3331 tracked files,zero source mismatches.
+The first asset attempt lacked explicit record roots (entry scripts receive
+LW0 rather than reference their records); added those real roots and reran
+`make assets-ready SOUNDTRACK=gamecube`,exit0. Host configuration initially
+captured an unrelated concurrent CMake append; reconstructed only the owned
+registration block from the frozen base before final checks.
+`CMAKE_BUILD_PARALLEL_LEVEL=4 make test -o assets-ready` exited0:305/305 C++ and
+175/175 Python tests, artifacts/area-door-test.log. Coverage includes actual
+four-root execution, all scalar selectors/read order, partial-provider resumption,
+wrong-area rejection, seven source case snapshots/high-local preservation,
+case lifetime/reentry, live-context and64-case exhaustion, malformed replacement
+and byte-for-byte original relocated entry/hash/context comparisons.
+`make all -j4 -o assets-ready SOUNDTRACK=gamecube` exited0; initial full native
+log artifacts/area-door-build.log and unchanged final build log
+artifacts/area-door-build-final.log. Normal artifacts/area-door-normal.3dsx SHA256
+ef64ed89ba1914a7144375b9a4079b9d82474db6cddfb96aac7bc3ebdccdfac6.
+
+Isolated artifacts/azahar-area-door normal round trip exited0 with both saved
+room assertions and original field rendering at60FPS in both captures. Plaza
+frame10.42ms; hardware performance and original full raster parity remain open.
+Because this shared owner is not yet routed through Game, a separate excluded
+native startup probe executed the four real roots directly on ARM over supplied
+fixture locals and actual map/record services. TARGET=ttyd-area-door-probe build
+exited0; isolated artifacts/azahar-area-door-probe exited0 with four retired roots
+and result=PASS cases=7 in data/azahar-emu/sdmc/3ds/ttyd-2ds/door-installer-probe.txt.
+Probe binary SHA25694ba7df2707a5ed0ebcc350145d11663c44ae50add5d6b1f7ed1b064f74ec728;
+source delta artifacts/area-door-native-probe.patch. Temporary main.cpp hook was
+restored exactly; source audit after restoration has zero mismatches. Actual
+native readWord LDR/REV fast path is in artifacts/area-door-native-word.dis.
+Full source/product/probe hashes: artifacts/area-door-validation-manifest.json.
+User profiles/saves were untouched; no probe hook is committed.
+
+Limitations/next: this is a supplied-bank native continuation, not original full
+attached-parent scheduling or acknowledged gor02 area init. Game's Bero/Trouble
+runtimes are still separate; earlier NPC setup/gazigazi and outer case ordering
+remain necessary. Case activation is unexposed until full open/close/helper EVT
+and actual world providers exist. House05's original inline installer is distinct
+(openLW15=4) and must not be replaced by generic04. Next bind the original full
+area parent to the shared owner, carry the genuine Bero returned bank through
+preceding services and house05, coordinate GW/case/event/data unload, and extend
+NPC/object/additional-area bindings. New core adds no display callback; existing
+visibility batching is retained. EVT-01 and full goal remain active/incomplete.
