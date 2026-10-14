@@ -65,3 +65,27 @@ nesting/refusal/SET/pipe/Professor operands/eight vectors/masks/record offsets
 checked. Switch manifest63 spans/205 anchors and writer/restore pins re-passed.
 Links/scoped diff passed. Docs only; no make rerun; source assets outside history.
 GSF-01 remains OPEN: other consumers/flags/admission/lifetime/original traces.
+
+## Verification (native session, 2026-10-13)
+
+Re-checked the [bounded GSF delivery](../behavior/story/OPENING_GSF_NOTICE_PIPE_AND_SAVE_STORAGE.md)
+against the read-only US ISO with `tools/inspect_dol_function.py` (output kept
+under `/tmp`, not source history), independent of its own manifest:
+
+- `swSet`(`0x800858fc`)/`swGet`(`0x800858b4`) disassembly confirms GP=`*(r13-28496)`
+  =`0x80415fd0`, `q=trunc(N/32)`, address=`GP+376(0x178)+4q`, mask=`slw(1,R)`;
+  set loads/or/stores one word, get normalizes nonzero to exactly1. So index233/
+  236 →`GP+0x194` (mask`0x200`/`0x1000`) and index1207 →`GP+0x20c`
+  (mask`0x800000`) match the delivered `gp_word_offset`/mask and
+  [SW_SET](../behavior/memory/SW_SET.md).
+- `swInit`(`0x80085980`) confirms the five extents and the closing `stw 0,372(3)`
+  (word174): memsets at376/`0x400`,1400/`0x800`,3448/`0x40`,3512/`0x400`.
+- The 164-byte system-event span `0x8030b4ec` reproduces the delivered order:
+  `SET GSF233=1` (`f8405c69`,`00000001`) precedes `evt_msg_print`(`800d284c`),
+  and the first `00000021` END_IF closes before the independent `GSW0>=7`
+  (`0002001d f5de0180 00000007`) that sets `f8405c6c` (GSF236) — so 233 alone
+  never suppresses the 236 write.
+
+Not re-run here: the `gor.rel` 1207/east-pipe and Professor-init spans (REL
+extraction was not repeated); they remain the manifest's pinned evidence.
+Verified bytes only; no original runtime execution and no native change made.
