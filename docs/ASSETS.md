@@ -361,3 +361,17 @@ uniform outer viewport transform; captures retain193x240 content in their
 existing256-square textures. Original Nintendo/Intelligent Systems licensing
 and private-local-use restrictions remain. Dolphin/native comparison PNGs and
 playtest binary stay in ignored artifacts; ISO remains read-only.
+
+## Trouble Center retained original paging icons (2026-10-14)
+
+Read-only original icon.bin/icon.tpl descriptors524/134/136 are added to the
+used-icon converter alongside existing504. 524 uses TPL56224x32;134/136 use
+TPL134/13660x48. 504 retains ten40x40 frames533..542 with delays2 for nine and
+28 for the last. The512x512 RGBA8 atlas remains1MiB. Identical decoded pixel
+cells share storage without collapsing descriptor frames/timing; two-pixel
+transparent padding/no resampling remain. Outputs stay in ignored local-assets
+and romfs packs; the ISO and extracted assets never enter history. Nintendo/
+Intelligent Systems resources have no redistribution rights. [Source hashes,
+clock and geometry](behavior/display/TROUBLE_CENTER_RETAINED_2D_ICONS_AND_LOCAL_CLOCK.md).
+Original menu cue samples are documented in the [audio contract](behavior/audio/TROUBLE_CENTER_MENU_SFX_BINDINGS.md);
+no new PCM pack or native audio admission is included in this step.

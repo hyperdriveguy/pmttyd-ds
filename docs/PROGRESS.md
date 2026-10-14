@@ -2123,3 +2123,27 @@ is not original current4 for trio. Sound SetFlag accumulated1/2 gates are now
 correctly documented. Ordered outer Main/sequence exit/BattleEnd/field return,
 original numeric/history parity and hardware performance remain open. Full
 playable original-fidelity prologue goal stays active.
+
+## 2026-10-14 — Retained Trouble Center menu/icons
+
+Implemented finite stable-owner TroubleQuestPresentation and native renderer
+binding: source local animation/hidden aging/deletion/reopen, exact five named
+icons and original paging art, callback source cue IDs and optional state reads.
+Corrected original Up Y-mirror geometry as well as UV reversal. Pixel-identical
+atlas storage retains original descriptor frames/timing and512x5121MiB budget.
+[Scope](behavior/display/NATIVE_TROUBLE_CENTER_RETAINED_PRESENTATION.md).
+
+Validation: final isolated make test261/261 C++ and145/145 Python; restored
+normal make all passes. Azahar original paged-menu preview passes both arrow
+anchor checks and byte-identical copied checkpoint. Asset check verifies77
+original frame entries in73 exact atlas cells. Tree/source audit and exact binary
+hashes/logs are recorded in the linked contract. Initial nonoverlap test rejected
+intentional aliases; regression now verifies every frame and rejects partial
+cell overlap. First10-second preview was still loading;35-second boot passed.
+These failures remain archived. Preview providers/visits are explicit fixtures;
+no live board/acceptance/audio or hardware parity is claimed.
+
+Next: native original gor_02 case9/door/lecture/global bank/save and original
+help/confirmation/acceptance EVT, input/local-clock admission and matching sample
+playback. Hardware/raster/event parity remains open. This step provides a callable
+backend, not native board gameplay or a completed remake. Goal remains active.

@@ -411,3 +411,20 @@ unchanged; no controller/lecture/board/event acceptance is fabricated. All30
 help/confirmation table identities are now recovered. [Evidence and limits](../behavior/display/NATIVE_TROUBLE_CENTER_WINDOW_AND_US_CACHE.md).
 Native icons/full switch banks/case9/door/lecture/confirmation remain next; parent
 stays open. Original numeric/raster/audio/pause/hardware parity remains unverified.
+
+### 2026-10-14 — Retained Trouble Center presentation and original paging art
+
+[Finite menu/window/icon presentation](../behavior/display/NATIVE_TROUBLE_CENTER_RETAINED_PRESENTATION.md)
+now retains source icon phases, hidden aging, source No recreation and explicit
+provider boundaries. Original paging images524/134/136 are imported unchanged;
+identical bitmap storage keeps the atlas1MiB. Original sample identities for
+menu IDs42/18/19/5/43 are recovered; native playback still needs binding.
+
+- [ ] Bind original gor_02 case9 board/counter and Trouble Center door/interior.
+- [ ] Retain lecture5374, all30 completion flags and working5405..5421 plus
+  bytes1469..1474 in the native bank/save owner; known absence is not false.
+- [ ] Connect original help/confirmation/acceptance EVT and same-work No reopen,
+  actual physical menu input and EVT-before-iconMain clock; bind original cues.
+- [ ] Compare original raster/event traces and measure New2DSXL performance.
+
+The parent full runtime request remains open.
