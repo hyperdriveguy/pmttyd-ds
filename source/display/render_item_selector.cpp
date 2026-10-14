@@ -88,13 +88,19 @@ bool Renderer::sourceWindowFont(const char* text,WindowFontConsumer consumer,Ite
     selectorClip(nullptr);return true;
 }
 bool Renderer::selectorIcon(uint32_t id,uint64_t ticks,float x,float y,float scale,uint32_t flags,bool centered) {
-    const auto* icon=messageIcon(id);if(!icon)return false;const auto& frame=icon->frame(ticks);
+    const auto* icon=messageIcon(id);if(!icon)return false;
+    return selectorIconFrame(icon->frame(ticks),x,y,scale,flags,centered);
+}
+bool Renderer::selectorIconFrame(const MessageIconFrame& frame,float x,float y,float scale,uint32_t flags,bool centered) {
     Tex3DS_SubTexture sub{};sub.width=frame.width;sub.height=frame.height;
     sub.left=frame.u0;sub.right=frame.u1;sub.top=frame.v0;sub.bottom=frame.v1;
     if(flags&4)std::swap(sub.left,sub.right);
     if(flags&8)std::swap(sub.top,sub.bottom);
     const float width=frame.width*scale*.5f,height=frame.height*scale*.5f;
-    C2D_Image image{&messageIconTexture.texture,&sub};C2D_DrawParams params={{200+x*.5f-width*.5f,120-y*.5f-height*(centered?.5f:1.f),width,height},{0,0},.6f,0};
+    // Original Y mirroring moves a bottom-anchored quad below its anchor;
+    // swapping UVs alone would leave the paging Up arrow above that anchor.
+    const float top=120-y*.5f-height*(centered?.5f:((flags&8)?0.f:1.f));
+    C2D_Image image{&messageIconTexture.texture,&sub};C2D_DrawParams params={{200+x*.5f-width*.5f,top,width,height},{0,0},.6f,0};
     if(centered) {
         C2D_Flush();C3D_AlphaTest(true,GPU_GEQUAL,128);C3D_ColorLogicOp(GPU_LOGICOP_COPY);
     }

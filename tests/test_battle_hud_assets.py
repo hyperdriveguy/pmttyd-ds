@@ -27,7 +27,7 @@ class BattleHudAssetsTests(unittest.TestCase):
         self.assertEqual(art['hammer_icons'],[164,165,166])
 
     @unittest.skipUnless(Path('romfs/message-icons.json').is_file(),'local icon pack unavailable')
-    def test_hud_frames_have_original_pixels_and_nonoverlapping_uvs(self):
+    def test_hud_frames_have_original_pixels_and_exact_shared_uvs(self):
         from PIL import Image
         meta=json.loads(Path('romfs/message-icons.json').read_text())
         atlas=Image.open('local-assets/message-icons/atlas.png').convert('RGBA')
@@ -47,10 +47,13 @@ class BattleHudAssetsTests(unittest.TestCase):
                 w,h=frame['width'],frame['height']
                 self.assertTrue(0<=x<x+w<=atlas.width and 0<=y<y+h<=atlas.height)
                 for px,py,pw,ph in rectangles:
+                    # Exact aliases are valid only with the source-pixel check
+                    # below; partial overlap still corrupts atlas cells.
+                    if (x,y,w,h)==(px,py,pw,ph):continue
                     self.assertFalse(x<px+pw and px<x+w and y<py+ph and py<y+h)
                 rectangles.append((x,y,w,h))
-                if icon['id'] not in wanted:continue
-                original=Image.open(f"local-assets/message-icons/{frame['tpl']}.png").convert('RGBA')
+                name=f"effect-{icon['source_effect_id']}" if 'source_effect_id' in icon else str(frame['tpl'])
+                original=Image.open(f"local-assets/message-icons/{name}.png").convert('RGBA')
                 self.assertEqual(atlas.crop((x,y,x+w,y+h)).tobytes(),original.tobytes())
 
 if __name__=='__main__':unittest.main()

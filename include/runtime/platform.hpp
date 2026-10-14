@@ -36,6 +36,8 @@
 namespace ttyd {
 struct Metrics { float simulationMs=0, renderMs=0, gpuMs=0, fps=0; int steps=0; uint64_t droppedTicks=0; };
 class Audio;
+struct MessageIconFrame;
+class TroubleQuestPresentation;
 class Renderer {
 public:
     bool init();
@@ -85,6 +87,8 @@ private:
     bool itemSelector(ItemSelectionPresentation&);
     bool itemGetWindows(ItemGetWindows&,uint32_t sourceFrameCounter);
     bool coinGetWindow(CoinGetWindow&,uint32_t sourceFrameCounter);
+    bool troubleQuestMenu(TroubleQuestPresentation&);
+    bool selectorIconFrame(const MessageIconFrame&,float x,float y,float scale,uint32_t flags,bool centered=false);
     bool troubleQuestWindow(TroubleQuestWindowCache&,TroubleQuestMenuWork&,const TroubleWindowServices& state);
     bool drawGetWindow(const ItemGetWindowDisplay&,uint32_t palette0,uint32_t sourceFrameCounter);
     bool itemGetEffect(const FieldItemGetEffect6&,uint32_t cameraID,const C3D_Mtx& nativeWorldToClip,const CameraViewport& sourceViewport,float cameraYaw,uint32_t shadowRGB);

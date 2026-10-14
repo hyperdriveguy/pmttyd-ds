@@ -1310,3 +1310,10 @@ target_sources(ttyd_core PRIVATE source/battle/battle_act_draw.cpp)
 add_executable(battle_act_draw_tests tests/battle_act_draw_tests.cpp)
 target_link_libraries(battle_act_draw_tests PRIVATE ttyd_core)
 add_test(NAME battle_act_draw COMMAND battle_act_draw_tests)
+
+# Retained original Trouble Center menu/icon presentation.
+target_sources(ttyd_core PRIVATE source/field/trouble_quest_presentation.cpp)
+add_executable(trouble_quest_presentation_tests tests/trouble_quest_presentation_tests.cpp)
+target_link_libraries(trouble_quest_presentation_tests PRIVATE ttyd_core)
+add_test(NAME trouble_quest_presentation COMMAND trouble_quest_presentation_tests)
+set_tests_properties(trouble_quest_presentation PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

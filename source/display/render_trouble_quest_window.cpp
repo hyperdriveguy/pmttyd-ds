@@ -1,4 +1,5 @@
 #include "platform.hpp"
+#include "trouble_quest_presentation.hpp"
 namespace ttyd {
 bool Renderer::troubleQuestWindow(TroubleQuestWindowCache& cache,TroubleQuestMenuWork& work,const TroubleWindowServices& state) {
  if(!cache.ready() || !messagePanel.imported || !fontTexture.imported || !windowFrameVertices || !windowFontVertices ||
@@ -38,4 +39,14 @@ bool Renderer::troubleQuestWindow(TroubleQuestWindowCache& cache,TroubleQuestMen
  selectorClip(nullptr); // Native pass owns a full-screen entry/exit scissor.
  return success;
 }
+bool Renderer::troubleQuestMenu(TroubleQuestPresentation& p) {
+ auto* work=p.displayWork();if(!work)return false;
+ const auto& source=p.stateServices();TroubleWindowServices state;
+ state.user=source.user;state.ready=source.ready;state.flag=source.flag;state.activeQuest=source.activeQuest;
+ bool success=troubleQuestWindow(p.cache(),*work,state);
+ for(const auto& icon:p.icons())if(icon.visible())
+  success=selectorIconFrame(icon.resource->frames.at(icon.frame),icon.x,icon.y,icon.scale,icon.flags) && success;
+ return success;
+}
+
 }
