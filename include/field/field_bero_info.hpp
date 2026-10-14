@@ -27,6 +27,7 @@ public:
  bool infoByIndex(EventEntry&,int32_t index) const;
  std::optional<float> length(int32_t index) const; // Original float result before evtSetFloat routing.
  bool registered() const;
+ uint32_t room() const{return room_;}
  void setCurrentNumber(int32_t value){currentNumber_=value;}
  void unknownCurrentNumber(){currentNumber_.reset();}
  std::optional<int32_t> currentNumber() const{return currentNumber_;}

@@ -79,6 +79,18 @@ FieldMarioPreparationWorld Game::fieldMarioPreparationWorld() {
  w.storeHalf=[](void* p,uintptr_t a,uint16_t v){assert(a==Camera);auto& g=*static_cast<Game*>(p);g.fieldCameraFlags=(g.fieldCameraFlags&0xffff0000u)|v;};
  return w;
 }
+FieldPreviousPartyWorld Game::fieldPreviousPartyWorld() {
+ FieldPreviousPartyWorld w;w.user=this;w.mario=[](void*)->uintptr_t{return Mario;};
+ w.byte=[](void* p,uintptr_t a)->uint8_t{auto& g=*static_cast<Game*>(p);
+  assert(a>=Mario+0x245 && a<=Mario+0x248);const auto offset=unsigned(a-Mario-0x245);
+  return offset<2?g.fieldMarioBattle.partyIndices[offset]:g.fieldMarioBattle.savedPartyKinds[offset-2];
+ };
+ w.storeByte=[](void* p,uintptr_t a,uint8_t v){assert(a>=Mario+0x245 && a<Mario+0x247);static_cast<Game*>(p)->fieldMarioBattle.partyIndices[unsigned(a-Mario-0x245)]=v;};
+ w.party=[](void* p,int32_t index)->std::optional<uintptr_t>{if(index>=2)return {};return reinterpret_cast<uintptr_t>(static_cast<Game*>(p)->fieldParties.pointer(index));};
+ // Constructor-kind0/known-index branches need no Entry. Nonzero kinds hold
+ // until genuine synchronous Entry/Entry2 resources and world effects are bound.
+ return w;
+}
 bool Game::applyFieldBeroStart() {
  if(fieldBeroStartApplied)return true;
  if(!fieldBeroStart || !fieldPartyCurrentIndex || *fieldPartyCurrentIndex>=2)return false;

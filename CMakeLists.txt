@@ -1668,3 +1668,10 @@ add_executable(map_material_tev_tests tests/map_material_tev_tests.cpp)
 target_link_libraries(map_material_tev_tests PRIVATE ttyd_core)
 add_test(NAME map_material_tev COMMAND map_material_tev_tests)
 set_tests_properties(map_material_tev PROPERTIES WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+
+# Original previous-party callback, retained first admission and attached-child prefix.
+target_sources(ttyd_core PRIVATE source/field/field_previous_party.cpp)
+add_executable(field_previous_party_tests tests/field_previous_party_tests.cpp)
+target_link_libraries(field_previous_party_tests PRIVATE ttyd_core)
+add_test(NAME field_previous_party COMMAND field_previous_party_tests)
+set_tests_properties(field_previous_party PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

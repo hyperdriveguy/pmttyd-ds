@@ -9,6 +9,7 @@
 #include "event_memory_bootstrap.hpp"
 #include "event_lifecycle.hpp"
 #include <cassert>
+#include <map>
 #include <cmath>
 #include <cstdio>
 #include <cstring>
@@ -52,6 +53,7 @@ struct FieldAreaEventRuntime {
  std::vector<DoorProgram> entries;
  struct Root {uint32_t id,entryIndex;std::optional<std::array<int32_t,16>> bank;bool returned=false;};
  std::vector<Root> roots;
+ std::map<uint32_t,FieldPreviousPartyCursor> previousParty; // Real event IDs; lifetime is source elapsed time, not a generation.
  explicit FieldAreaEventRuntime(FieldAreaEvent* p):owner(p),vm(0x81000000,platform(this)){}
  static EventNativePlatform platform(FieldAreaEventRuntime* r) {
   EventNativePlatform p;p.user=r;p.clock=[](void*)->uint32_t{return 243000000;};
@@ -59,7 +61,7 @@ struct FieldAreaEventRuntime {
   p.divideWord=[](void*,int32_t a,int32_t b){assert(b);return a/b;};
   p.flushBlock=[](void*,uint32_t){};p.systemCall=[](void*){};
   p.format=[](void* p,const EventDiagnosticCall&){static_cast<FieldAreaEventRuntime*>(p)->owner->failed=true;};
-  p.retiring=[](void* p,const EventEntry& e){auto& r=*static_cast<FieldAreaEventRuntime*>(p);for(auto& root:r.roots)if(root.id==e.id){root.bank=e.locals;root.returned=e.opcode==2;}};
+  p.retiring=[](void* p,const EventEntry& e){auto& r=*static_cast<FieldAreaEventRuntime*>(p);r.previousParty.erase(e.id);for(auto& root:r.roots)if(root.id==e.id){root.bank=e.locals;root.returned=e.opcode==2;}};
   p.call=[](void* p,EventEntry& e,uint32_t fn,int32_t first){auto& r=*static_cast<FieldAreaEventRuntime*>(p);const auto result=r.call(e,fn,first!=0);if(result==0){r.owner->pendingFunction=fn;r.owner->pendingEventId=e.id;}return result;};return p;
  }
  uint32_t word(uint32_t a){uint32_t v=0;if(!vm.memory.readWord(a,v))owner->failed=true;return v;}
@@ -103,9 +105,29 @@ struct FieldAreaEventRuntime {
   }
   if((fn==0x800e73ec || fn==0x800e7410) && services.mario.admit)return fieldMarioBackgroundEvent(fn==0x800e7410,services.mario);
   if(fn==0x800e7314 && services.mario.admit)return fieldMarioCameraYOffEvent(services.mario);
+  if(fn==0x800e3058) {
+   if(first)previousParty.erase(e.id); // Source restart preserves ID but starts a new callback invocation.
+   auto& cursor=previousParty[e.id];cursor.firstVisit(first);
+   if(services.previousParty.mario) {
+    const auto result=fieldPreviousPartyEvent(e,first,cursor,this,[](void* p,uint32_t a){return static_cast<FieldAreaEventRuntime*>(p)->word(a);},services.previousParty);
+    if(result==2)previousParty.erase(e.id);
+    return result;
+   }
+  }
+  if(fn==0x8007a76c) {
+   if(!services.beroInfo || services.beroInfo->room()!=room || !services.beroInfo->registered())return 0;
+   const auto args=e.arguments;const auto operands=vm.interpreterServices().operands;
+   const auto index=getEventValue(e,signedWord(word(args)),operands);const auto length=services.beroInfo->length(index);
+   if(!length)return 0;
+   const auto destination=signedWord(word(args+4));
+   const bool work=(destination>-220000000 && destination<=-180000000) || (destination>-60000000 && destination<=-20000000);
+   const float converted=*length*1024.f;
+   if(work && (!std::isfinite(converted) || double(converted)<INT32_MIN || double(converted)>=2147483648.))return 0;
+   setEventFloat(e,destination,*length,operands);return owner->failed?0:2;
+  }
   if(fn==0x8007a50c){const auto address=uint32_t(e.locals[0]);if(!services.beroInfo || !services.beroExec || !services.map || services.map->room()!=room)return 0;return services.beroInfo->registerOriginal(address,*services.map,*services.beroExec)?2:0;}
   if(fn==0x8007a214){
-   if(!services.beroInfo || !services.beroInfo->registered())return 0;
+   if(!services.beroInfo || services.beroInfo->room()!=room || !services.beroInfo->registered())return 0;
    if(!initId)return services.beroInfo->intoInfo(e)?2:0;
    const auto gp=vm.gpAddresses.currentAddress();uint32_t flags=0;if(!vm.memory.readWord(gp,flags))return 0;
    std::string incoming;bool terminated=false;
@@ -113,7 +135,7 @@ struct FieldAreaEventRuntime {
    if(!terminated || !services.beroInfo->publishIncoming(incoming,flags))return 0;
    return services.beroInfo->intoInfo(e,gp+0x11c)?2:0;
   }
-  if(fn==0x8007a63c){const auto number=value(e,0);if(!services.beroInfo)return 0;services.beroInfo->setCurrentNumber(number);return 2;}
+  if(fn==0x8007a63c){const auto number=value(e,0);if(!services.beroInfo || services.beroInfo->room()!=room)return 0;services.beroInfo->setCurrentNumber(number);return 2;}
   if(fn==0x800e81f4) {
    if(!services.doors)return 0;
    FieldDoorParameterServices s;s.user=this;
@@ -146,6 +168,7 @@ struct FieldAreaEventRuntime {
   const auto operands=vm.interpreterServices().operands;
   FieldAreaNativeCall request{e,fn,first,operands,vm.memory,vm.schedule,vm.creationServices()};const auto result=services.call(services.user,request);
   if(result!=0 && result!=1 && result!=2){owner->failed=true;return 0;}
+  if(fn==0x800e3058 && result!=0)previousParty.erase(e.id);
   return result;
  }
  bool initialize(uint64_t milliseconds) {
