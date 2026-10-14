@@ -223,6 +223,7 @@ private:
     Texture harborMarioTexture;
     ActorAnimationPack harborMarioAnimations;
     Texture goombaQuestTexture;ActorAnimationPack goombaQuestAnimations;float goombaQuestUVScale=1;
+    Texture fieldItemGetTexture;ActorAnimationPack fieldItemGetAnimations;float fieldItemGetUVScale=1;
     float harborMarioUVScale=1;
     Texture professorMarioTexture;
     Texture trioMarioTexture;ActorAnimationPack trioMarioAnimations;float trioMarioUVScale=1;

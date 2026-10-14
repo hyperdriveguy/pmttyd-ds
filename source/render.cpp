@@ -86,6 +86,11 @@ bool Renderer::init() {
     char questMagic[8];const bool questValid=std::fread(questMagic,8,1,questUV)==1 && !std::memcmp(questMagic,"PMQ13UV1",8) &&
         std::fread(&goombaQuestUVScale,4,1,questUV)==1 && std::fgetc(questUV)==EOF;std::fclose(questUV);
     if(!questValid || !(goombaQuestUVScale==1 || goombaQuestUVScale==2 || goombaQuestUVScale==4 || goombaQuestUVScale==8))return false;
+    if(!fieldItemGetAnimations.load("romfs:/field-item-get-mario.pmanim") || !fieldItemGetAnimations.pose("M_I_U"))return false;
+    FILE* itemUV=std::fopen("romfs:/field-item-get-mario.bin","rb");if(!itemUV)return false;
+    char itemMagic[8];const bool itemValid=std::fread(itemMagic,8,1,itemUV)==1 && !std::memcmp(itemMagic,"PMIGUV01",8) &&
+        std::fread(&fieldItemGetUVScale,4,1,itemUV)==1 && std::fgetc(itemUV)==EOF;std::fclose(itemUV);
+    if(!itemValid || !(fieldItemGetUVScale==1 || fieldItemGetUVScale==2 || fieldItemGetUVScale==4 || fieldItemGetUVScale==8))return false;
     if(!partnerAnimations.load("romfs:/partner.pmanim"))return false;
     if(!harborMarioAnimations.load("romfs:/harbor-mario.pmanim"))return false;
     FILE* harborUV=std::fopen("romfs:/harbor-mario.bin","rb");if(!harborUV)return false;
@@ -228,7 +233,7 @@ bool Renderer::changeRoom(uint32_t room) {
     // Room entry owns field resources. Unused battle atlases must not consume
     // the linear heap while a second field room/NPC set is staged.
     C3D_FrameSync();for(auto* unused:{&stage,&trioBackground,&trioStage})freeRoom(*unused);
-    for(auto* unused:{&goombaQuestTexture,&trioMarioTexture,&trioPartnerTexture})if(unused->imported){
+    for(auto* unused:{&goombaQuestTexture,&fieldItemGetTexture,&trioMarioTexture,&trioPartnerTexture})if(unused->imported){
         Tex3DS_TextureFree(unused->imported);C3D_TexDelete(&unused->texture);*unused=Texture{};
     }
     const char* name=roomAsset(room);if(!name)return false;
@@ -251,13 +256,15 @@ bool Renderer::prepareSceneActorTextures(const Game& g) {
     const bool trio=g.trioBattleActive;
     const bool quest=!trio && !g.harborEncounter.locked() && !g.storyPresentation().locked() &&
         (!std::strcmp(g.marioPresentation.selected,"M_N_5B") || !std::strcmp(g.marioPresentation.selected,"M_N_C"));
-    const bool retire=(!trio && (trioMarioTexture.imported || trioPartnerTexture.imported)) || (!quest && goombaQuestTexture.imported);
-    const bool admit=(trio && (!trioMarioTexture.imported || !trioPartnerTexture.imported)) || (quest && !goombaQuestTexture.imported);
+    const bool item=!trio && !g.harborEncounter.locked() && !g.storyPresentation().locked() && !std::strcmp(g.marioPresentation.selected,"M_I_U");
+    const bool retire=(!trio && (trioMarioTexture.imported || trioPartnerTexture.imported)) || (!quest && goombaQuestTexture.imported) || (!item && fieldItemGetTexture.imported);
+    const bool admit=(trio && (!trioMarioTexture.imported || !trioPartnerTexture.imported)) || (quest && !goombaQuestTexture.imported) || (item && !fieldItemGetTexture.imported);
     if(!retire && !admit)return true;
     C3D_FrameSync();
     const auto release=[](Texture& slot){if(slot.imported){Tex3DS_TextureFree(slot.imported);C3D_TexDelete(&slot.texture);slot=Texture{};}};
     if(!trio){release(trioMarioTexture);release(trioPartnerTexture);}
     if(!quest)release(goombaQuestTexture);
+    if(!item)release(fieldItemGetTexture);
     const auto load=[&](const char* path,Texture& slot){
         if(slot.imported)return true;
         FILE* f=std::fopen(path,"rb");if(!f){frontFailure=std::string("Scene actor texture missing: ")+path;return false;}
@@ -267,6 +274,7 @@ bool Renderer::prepareSceneActorTextures(const Game& g) {
     };
     if(trio && (!load("romfs:/trio-attack-mario.t3x",trioMarioTexture) || !load("romfs:/trio-attack-goombella.t3x",trioPartnerTexture)))return false;
     if(quest && !load("romfs:/goomba-quest-mario.t3x",goombaQuestTexture))return false;
+    if(item && !load("romfs:/field-item-get-mario.t3x",fieldItemGetTexture))return false;
     return true;
 }
 bool Renderer::prepareBattleMaps(const Game& g) {
@@ -935,6 +943,7 @@ void Renderer::world(const Game& g) {
     }
     const int legacyCount=count;
     const bool questPose=!std::strcmp(g.marioPresentation.selected,"M_N_5B") || !std::strcmp(g.marioPresentation.selected,"M_N_C");
+    const bool itemGetPose=!battle && !std::strcmp(g.marioPresentation.selected,"M_I_U");
     if(!battle && g.harborEncounter.locked()) {
         const auto& a=g.harborEncounter.actors[0];const bool right=a.yaw>0 && a.yaw<180;
         characterModel(a.moving?"M_W_1":a.pose.c_str(),float(g.harborEncounter.now-a.poseAt)*.06f,g.progress.position,g.groundHeight,right?180:0,right,false,&harborMarioAnimations,harborMarioUVScale);
@@ -944,7 +953,7 @@ void Renderer::world(const Game& g) {
                        right?180:0,right,false,g.trioBattleActive?&trioMarioAnimations:&professorMarioAnimations,g.trioBattleActive?trioMarioUVScale:professorMarioUVScale);
     } else if(!battle && g.marioPresentation.supported && !(g.marioPresentation.displayFlags&1))
         characterModel(g.marioPresentation.selected,g.marioPresentation.animationFrame(),g.progress.position,g.water.active()?g.water.position[1]:g.groundHeight+g.jumpHeight,
-                       g.marioPresentation.drawYaw(),g.marioPresentation.reflectZ(),false,questPose?&goombaQuestAnimations:nullptr,questPose?goombaQuestUVScale:1);
+                       g.marioPresentation.drawYaw(),g.marioPresentation.reflectZ(),false,questPose?&goombaQuestAnimations:itemGetPose?&fieldItemGetAnimations:nullptr,questPose?goombaQuestUVScale:itemGetPose?fieldItemGetUVScale:1);
     const int actorEnd=count;
     if(!battle && (g.trioBattleActive || g.storyPresentation().locked())) {
         const auto& a=g.storyPresentation().actors[1];const bool right=a.yaw>0 && a.yaw<180;
@@ -1020,7 +1029,7 @@ void Renderer::world(const Game& g) {
     BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);
     C3D_TexBind(0,&atlas);
     C3D_DrawArrays(GPU_TRIANGLES,6,legacyCount-6);
-    if(actorEnd>legacyCount){C3D_TexBind(0,g.trioBattleActive?&trioMarioTexture.texture:g.harborEncounter.locked()?&harborMarioTexture.texture:g.storyPresentation().locked()?&professorMarioTexture.texture:questPose?&goombaQuestTexture.texture:&characterTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,legacyCount,actorEnd-legacyCount);}
+    if(actorEnd>legacyCount){C3D_TexBind(0,g.trioBattleActive?&trioMarioTexture.texture:g.harborEncounter.locked()?&harborMarioTexture.texture:g.storyPresentation().locked()?&professorMarioTexture.texture:questPose?&goombaQuestTexture.texture:itemGetPose?&fieldItemGetTexture.texture:&characterTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,legacyCount,actorEnd-legacyCount);}
     if(partnerEnd>actorEnd){C3D_TexBind(0,g.trioBattleActive?&trioPartnerTexture.texture:&partnerTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,actorEnd,partnerEnd-actorEnd);}
     if(!battle)drawFieldActors(false);
     if(undergroundEnd>fieldActorEnd){C3D_TexBind(0,&undergroundTexture.texture);C3D_DrawArrays(GPU_TRIANGLES,fieldActorEnd,undergroundEnd-fieldActorEnd);}
@@ -1307,6 +1316,7 @@ void Renderer::shutdown() {
     if(sky.imported) {Tex3DS_TextureFree(sky.imported);C3D_TexDelete(&sky.texture);}
     if(characterTextures.imported) {Tex3DS_TextureFree(characterTextures.imported);C3D_TexDelete(&characterTextures.texture);}
     if(goombaQuestTexture.imported){Tex3DS_TextureFree(goombaQuestTexture.imported);C3D_TexDelete(&goombaQuestTexture.texture);}
+    if(fieldItemGetTexture.imported){Tex3DS_TextureFree(fieldItemGetTexture.imported);C3D_TexDelete(&fieldItemGetTexture.texture);}
     if(partnerTextures.imported) {Tex3DS_TextureFree(partnerTextures.imported);C3D_TexDelete(&partnerTextures.texture);}
     if(trioPartnerTexture.imported){Tex3DS_TextureFree(trioPartnerTexture.imported);C3D_TexDelete(&trioPartnerTexture.texture);}
     if(trioMarioTexture.imported){Tex3DS_TextureFree(trioMarioTexture.imported);C3D_TexDelete(&trioMarioTexture.texture);}
