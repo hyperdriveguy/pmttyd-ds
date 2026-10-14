@@ -1,4 +1,5 @@
 build/
+build-*/
 build-host/
 artifacts/
 romfs/*.t3x
@@ -57,17 +58,15 @@ romfs/*.pmshadow
 /romfs/field-chu.json
 /romfs/field-darkly.json
 /romfs/field-goomba.json
-
+/romfs/field-saveblock.json
 /romfs/professor-events.pmevt
 /romfs/professor-program.bin
 /romfs/professor-mario.bin
 /romfs/professor-scene.json
+/romfs/*.size
 /romfs/professor-map.bin
 
-/romfs/*.size
-
 /romfs/opening-assets.json
-
 /build-debug-short/
 
 /romfs/*.uvscale
@@ -75,32 +74,36 @@ romfs/*.pmshadow
 romfs/professor-fence.*
 local-assets/professor-fence/
 
-/romfs/field-saveblock.json
-
 /romfs/message-icons.*
 /local-assets/message-icons/
+
 /build-lecture-verify/
 
 /romfs/tik_01*
 /romfs/underground-assets.json
 /local-assets/underground/
+
+/romfs/save-block-events.pmevt
+/romfs/save-block-program.bin
+
 /romfs/field-pipes.bin
+
 /build-pipe-verify/
+
 /romfs/underground-music.wav*
 
 /romfs/underground-events.pmevt
 /romfs/underground-program.bin
 /romfs/underground-trio.json
 /romfs/underground-goombas.*
-/build-trio-verify/
 
-/romfs/save-block-events.pmevt
-/romfs/save-block-program.bin
+/build-trio-verify/
 
 /romfs/trio-battle*
 /romfs/bti_01*
 /romfs/stg_00_1*
 /local-assets/trio-battle/
+
 /build-trio-battle/
 
 /romfs/trio-attack*
