@@ -1217,3 +1217,8 @@ target_sources(ttyd_core PRIVATE source/battle/battle_weapon_aftereffect.cpp sou
 add_executable(battle_weapon_aftereffect_tests tests/battle_weapon_aftereffect_tests.cpp)
 target_link_libraries(battle_weapon_aftereffect_tests PRIVATE ttyd_core)
 add_test(NAME battle_weapon_aftereffect COMMAND battle_weapon_aftereffect_tests)
+
+add_executable(coin_get_window_tests tests/coin_get_window_tests.cpp)
+target_link_libraries(coin_get_window_tests PRIVATE ttyd_core)
+add_test(NAME coin_get_window_original COMMAND coin_get_window_tests)
+set_tests_properties(coin_get_window_original PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

@@ -25,6 +25,8 @@ struct ItemGetEffectDraw {
 class FieldItemGetEffect6 {
 public:
  void begin(ActorVector originalRoot);
+ void beginCoin(ActorVector originalRoot); // Original kind7: size10 and paletteE85BD0FF.
+ uint32_t kind() const{return kind_;}
  void softDelete(){if(active_)softDelete_=true;}
  bool tick(); // One admitted source effect-driver invocation, not render time.
  ItemGetEffectDraw draw(float cameraYaw,uint32_t shadowColor) const;
@@ -36,11 +38,13 @@ public:
  uint32_t camera() const{return camera_;}
  void camera(uint32_t value){camera_=value;}
 private:
+ void beginKind(ActorVector,uint32_t kind);
  ActorVector root_{};
  bool active_=false,softDelete_=false;
  int32_t age_=0,lifetime_=1000;
  uint8_t alpha_=255;
  float scale_=0;
  uint32_t camera_=4;
+ uint32_t kind_=6;
 };
 }

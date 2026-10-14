@@ -80,6 +80,8 @@ private:
     void selectorClip(const ItemSelectionClip*);
     bool itemSelector(ItemSelectionPresentation&);
     bool itemGetWindows(ItemGetWindows&,uint32_t sourceFrameCounter);
+    bool coinGetWindow(CoinGetWindow&,uint32_t sourceFrameCounter);
+    bool drawGetWindow(const ItemGetWindowDisplay&,uint32_t palette0,uint32_t sourceFrameCounter);
     bool itemGetEffect(const FieldItemGetEffect6&,uint32_t cameraID,const C3D_Mtx& nativeWorldToClip,const CameraViewport& sourceViewport,float cameraYaw,uint32_t shadowRGB);
     bool prepareItemGetEffect();
     void releaseItemGetEffect();

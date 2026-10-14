@@ -135,4 +135,48 @@ ItemGetWindowDisplay ItemGetWindows::display(unsigned slot) {
  }
  out.content=true;return out;
 }
+bool CoinGetWindow::cacheTitle(int32_t amount) {
+ const auto* source=messages_->find("msg_window_coin_get");if(!source)return false;
+ auto title=expandUsCoinGetText(source,amount);ColorWindowText compiled;WindowFontMeasurement measured;
+ if(!compileColorWindowText(*font_,title.c_str(),compiled) || !measurePlainWindowFont(*font_,compiled.plain.c_str(),2,measured))return false;
+ title_=std::move(title);compiled_=std::move(compiled);measured_=measured;amount_=amount;return true;
+}
+bool CoinGetWindow::prepare(const MessageFont& font,int32_t amount) {
+ if(retained() || !assets)return false;
+ CoinGetWindow next;next.messages_=assets;next.font_=&font;if(!next.cacheTitle(amount))return false;
+ *this=std::move(next);return true;
+}
+int32_t CoinGetWindow::enter(uint32_t definition,const int32_t* parameter) {
+ if(!font_ || title_.empty() || !parameter || retained() || definition!=0x80415e84)return -1;
+ auto& sequence=window_.sequence;
+ sequence.flags=1;sequence.action=1;sequence.clock=0;sequence.sequence=0;
+ window_.rectangle={-175,120,350,42};window_.decoration=0;
+ parameter_=parameter;displayed_=false;return 0;
+}
+void CoinGetWindow::closeAutoDelete(int32_t slot) {
+ if(slot!=0 || !retained())return;
+ window_.sequence.action=2;window_.sequence.clock=0;window_.sequence.flags|=8;
+}
+int32_t CoinGetWindow::action(int32_t slot) const {
+ assert(slot==0);return (window_.sequence.flags>>2)&1;
+}
+void CoinGetWindow::managerTick(const ItemSelectionSequenceServices& services) {
+ displayed_=false;if(!retained())return;
+ tickItemSelectionSequence(window_.sequence,services);
+ displayed_=(window_.sequence.flags&2)!=0;
+ if(!retained())parameter_=nullptr;
+}
+ItemGetWindowDisplay CoinGetWindow::display() {
+ assert(displayed_);ItemGetWindowDisplay out;out.frame=window_;
+ // Source coingetDisp tests this before reading amount or measuring/mutating
+ // geometry. Unlike item95, its text has no sequence transition-bit gate.
+ if(!parameter_ || !parameter_[1])return out;
+ if(parameter_[0]!=amount_ && !cacheTitle(parameter_[0]))return out;
+ const int32_t width=uint16_t(measured_.width);
+ if(width+20>window_.rectangle.width){window_.rectangle.width=width+20;window_.rectangle.x=int32_t(-float(width+20)/2);}
+ window_.rectangle.height=42+24*int32_t(measured_.lineFeeds);
+ out.text=title_.c_str();out.compiled=&compiled_;
+ out.draw={float(int32_t(-float(width)/2)),float(window_.rectangle.y-8),1,1,0,0x000000ff,false};
+ out.content=true;return out;
+}
 }

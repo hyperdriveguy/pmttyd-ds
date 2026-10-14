@@ -41,7 +41,6 @@ void Renderer::fieldItemGetRequest(ItemGetRequest r) {
  if(game.applyFieldItemStateRequest(r))return;
  auto* icon=game.fieldItems().findIcon("irai_item");
  switch(r) {
- case ItemGetRequest::EffectPayload5:break; // Finite effect6 owner already models payload kind5.
  case ItemGetRequest::IconFlag100On:if(icon)icon->flags|=0x100;break;
  case ItemGetRequest::IconFlag100Off:if(icon)icon->flags&=~uint16_t(0x100);break;
  case ItemGetRequest::IconFlag80On:if(icon)icon->flags|=0x80;break;
@@ -74,8 +73,12 @@ void Renderer::drawFieldItemGet(const Game& game) {
   Mtx_PerspTilt(&projection,C3D_AngleFromDegrees(frame.fov),C3D_AspectRatioTop,frame.nearPlane,frame.farPlane,false);
   Mtx_LookAt(&view,FVec3_New(frame.eye.x,frame.eye.y,frame.eye.z),FVec3_New(frame.at.x,frame.at.y,frame.at.z),FVec3_New(0,1,0),false);
   Mtx_Multiply(&out,&projection,&view);return out;};
- if(game.acquisitionEffect.active())itemGetEffect(game.acquisitionEffect,4,matrix(game.fieldCameraFrame),game.fieldCameraFrame.viewport,game.fieldCameraFrame.yaw,0x000000ff);
  const auto frame=itemGetCamera5Frame(game.fieldCameraFrame.eye,{0,1,0},game.fieldCameraFrame.at);
+ if(game.acquisitionEffect.active()) {
+  const auto* camera=game.acquisitionEffect.camera()==5 && frame?&*frame:
+      game.acquisitionEffect.camera()==4?&game.fieldCameraFrame:nullptr;
+  if(camera)itemGetEffect(game.acquisitionEffect,game.acquisitionEffect.camera(),matrix(*camera),camera->viewport,camera->yaw,0x000000ff);
+ }
  if(frame)for(const auto& icon:game.fieldItems().icons())if(icon.flags&1)item95Icon(icon,5,matrix(*frame),frame->viewport,frame->yaw,uint32_t(game.ticks));
 }
 }

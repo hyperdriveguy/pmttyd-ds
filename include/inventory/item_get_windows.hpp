@@ -48,4 +48,31 @@ private:
  ColorWindowText titleFont_,descriptionFont_;
  uint32_t displaySlots_=0;
 };
+// Original coin window80415e84. Parameter remains borrowed until AutoDelete
+// retires the window; the coin event may already have returned2.
+class CoinGetWindow {
+public:
+ bool prepare(const MessageFont&,int32_t amount=20);
+ int32_t enter(uint32_t sourceDefinition,const int32_t* parameter);
+ void closeAutoDelete(int32_t slot);
+ int32_t action(int32_t slot) const;
+ void managerTick(const ItemSelectionSequenceServices&);
+ ItemGetWindowDisplay display();
+ bool displayed() const{return displayed_;}
+ bool retained() const{return (window_.sequence.flags&1)!=0;}
+ const ItemSelectionRuntimeWindow& window() const{return window_;}
+ const std::string& title() const{return title_;}
+ uint32_t palette0=0x1e1414ff;
+private:
+ bool cacheTitle(int32_t amount);
+ ItemSelectionRuntimeWindow window_;
+ std::shared_ptr<const MessageResource> messages_;
+ const MessageFont* font_=nullptr;
+ const int32_t* parameter_=nullptr;
+ std::string title_;
+ ColorWindowText compiled_;
+ WindowFontMeasurement measured_;
+ int32_t amount_=0;
+ bool displayed_=false;
+};
 }

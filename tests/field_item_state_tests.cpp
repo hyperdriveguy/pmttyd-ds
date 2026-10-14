@@ -3,6 +3,9 @@
 using namespace ttyd;
 int main() {
  Game game;game.itemCamera8Flags=0x101;game.fieldCameraFlags=0x40;
+ game.acquisitionEffect.beginCoin({0,62,0});assert(game.acquisitionEffect.camera()==4);
+ assert(game.applyFieldItemStateRequest(ItemGetRequest::EffectPayload5));
+ assert(game.acquisitionEffect.camera()==5 && game.acquisitionEffect.kind()==7);
  assert(game.applyFieldItemStateRequest(ItemGetRequest::Camera8FlagOn));
  assert(game.itemCamera8Flags==0x301 && game.fieldCameraFlags==0x40);
  assert(game.applyFieldItemStateRequest(ItemGetRequest::Camera8FlagOff));assert(game.itemCamera8Flags==0x101);

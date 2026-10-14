@@ -1710,6 +1710,7 @@ void Game::battle(const Input& i) {
 }
 bool Game::applyFieldItemStateRequest(ItemGetRequest r) {
     switch(r) {
+    case ItemGetRequest::EffectPayload5:acquisitionEffect.camera(5);return true;
     case ItemGetRequest::Camera8FlagOn:itemCamera8Flags|=0x200;return true;
     case ItemGetRequest::Camera8FlagOff:itemCamera8Flags&=~uint16_t(0x200);return true;
     case ItemGetRequest::KeyOff:

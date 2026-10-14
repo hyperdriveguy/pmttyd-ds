@@ -18,6 +18,13 @@ std::optional<FieldCameraFrame> itemGetCamera5Frame(CameraPoint eye,CameraPoint 
 }
 
 void FieldItemGetEffect6::begin(ActorVector root) {
+ beginKind(root,6);
+}
+void FieldItemGetEffect6::beginCoin(ActorVector root) {
+ beginKind(root,7);
+}
+void FieldItemGetEffect6::beginKind(ActorVector root,uint32_t kind) {
+ kind_=kind;
  root_=root;active_=true;softDelete_=false;age_=0;lifetime_=1000;alpha_=255;scale_=0;camera_=4;
 }
 bool FieldItemGetEffect6::tick() {
@@ -34,9 +41,10 @@ bool FieldItemGetEffect6::tick() {
 }
 ItemGetEffectDraw FieldItemGetEffect6::draw(float yaw,uint32_t shadow) const {
  ItemGetEffectDraw out;
+ if(kind_==7)out.colors[1]=0xe85bd0ff;
  const float radians=-(yaw*.01745329238474369f),s=std::sin(radians),c=std::cos(radians);
  ActorMatrix rotate;rotate.v[0]=rotate.v[10]=c;rotate.v[2]=s;rotate.v[8]=-s;
- const float size=.75f*(12.f/10.f),scales[]={scale_*size,scale_*size,scale_*size};
+ const float size=.75f*((kind_==7?10.f:12.f)/10.f),scales[]={scale_*size,scale_*size,scale_*size};
  auto model=ActorMatrix::translation(root_.data())*rotate*ActorMatrix::scale(scales);
  const float turn=(yaw*6.2831854820251465f)/360.f;
  const float shift[]={2.f*std::sin(turn),0,-2.f*std::cos(turn)};
