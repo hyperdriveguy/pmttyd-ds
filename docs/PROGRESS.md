@@ -3,6 +3,28 @@
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
 
+## 2026-10-13 — Inbox single-slot read validation and copy selection
+
+Completed local read_main/table; SAVE-01 portion checked.
+[Single-slot reader](behavior/memory/CARD_SINGLE_SLOT_READ_VALIDATION_AND_SELECTION.md)
+pins15 phases,7750-byte header/two8800-byte record validation, signed64 timestamp
+selection/tie-to-secondary, resident-buffer load/invalid flag, cleanup/finish/
+fresh waiting. Header failure latches without abort; validation failure still
+copies raw timestamp. Live GP/pouch/switch namespace restore is absent here,
+so write inclusion plus reader acceptance does not prove original round-trip.
+
+Validation: read-only ISO manifest13 spans/565 anchors/17 calls; independent
+all550 words/15 table entries/13 literal vectors/header+record sums/signed
+selection/call/flag/stamp sites/fresh pins passed. Link audit passed976 Markdown
+files/zero broken links; scoped diff passed. Docs only; no make test/all rerun.
+Raw ELF/listing/generator stay /tmp; no record/assets/body distribution.
+Concurrent native edits excluded. Approved push pending valid GitHub credentials.
+
+Next: live resident-record restore/schema/pointer repair/switch-reset consumers,
+read-all/async write/header/backup repair/SDK/provider domains and original
+save/load/multi-slot/corruption/recovery traces. Native persistence replacement,
+SAVE-01 and other parent/full-game requests remain OPEN.
+
 ## 2026-10-13 — Inbox card dispatcher and completion callbacks
 
 Completed local cardMain/eight callback bodies and operation table; SAVE-01

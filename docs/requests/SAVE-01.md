@@ -17,6 +17,10 @@ any original card/switch persistence requests below.
   eight completion callbacks — [dispatcher contract](../behavior/memory/CARD_DISPATCH_FORMAT_CHECK_AND_COMPLETION.md).
   Nine operation entries, fresh polls/publications and iteration caps pinned;
   delegated read/write/header/create services remain separate.
+- [x] Complete local read_main header/two-copy validation, signed timestamp
+  selection and resident-buffer loading — [single-slot reader](../behavior/memory/CARD_SINGLE_SLOT_READ_VALIDATION_AND_SELECTION.md).
+  Equal valid timestamps select secondary; header failure latches0400 without
+  abort; both invalid mark resident record2. Live namespace restore remains open.
 - [ ] Complete composed original save/load service and record: save-file format/layout, checksum algorithm, corruption detection/repair, backup recovery, error/recovery states, multi-slot management and card-operation timing/coordination.
 - [x] Complete local swdrv access/init/reset and bank word counts; true
   rotate-by-five arithmetic — [corrected switch storage](../behavior/memory/SW_SET.md).
@@ -117,3 +121,20 @@ result/substate/call sites/fresh pins passed. Links/scoped diff passed. Docs
 only; no make test/all rerun; raw artifacts stay /tmp. SAVE-01 remains OPEN:
 async children/SDK/error/read/backup/namespace/lifetime/original traces and
 native round-trip binding not closed by complete dispatcher coverage.
+
+## 2026-10-13 — Complete single-slot reader validation and selection
+
+Delivered [read_main](../behavior/memory/CARD_SINGLE_SLOT_READ_VALIDATION_AND_SELECTION.md):
+15 phases,7750-byte header checksum, two8800-byte record length/version/sum/
+inverse validations, signed64 saved timestamp comparison/tie-to-secondary,
+resident read or invalid flag, cleanup/finish and fresh result polling.
+Header failure alone does not abort; raw timestamps are copied even after
+record validation failure. There is no live namespace memcpy restoration in
+this body. Accepted scratch data is re-read into resident storage without a
+second local validation, so original provider/IO mutation domains remain open.
+
+Validation: manifest13 spans/565 anchors/17 calls; independent all550 words/
+15 table entries/13 literal vectors/header+record sums/signed selection/call/
+flag/stamp sites/fresh ISO pins passed; link/scoped diff passed. Docs only;
+no make test/all rerun; raw artifacts stay /tmp. SAVE-01 remains OPEN: live
+restore/read-all/backup repair/async write/SDK and original round-trip binding.

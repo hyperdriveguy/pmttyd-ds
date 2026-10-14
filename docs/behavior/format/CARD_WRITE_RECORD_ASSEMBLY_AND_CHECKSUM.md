@@ -106,8 +106,9 @@ checksum iteration/length/complement/call sites checked independently. Generic
 verifier checks pins/targets, not complete serialization semantics/runtime.
 Raw ELF/listing/generator stay `/tmp`; no record blobs/assets/code bodies committed.
 
-Next: cardMain/async write/read/header/create/erase/copy/error/backup services,
-record version/reader validation, precise persistent namespace field schemas,
-source pointer/index/extent/alias/IRQ/time domains, and original multi-slot/save/
-load/corruption/recovery traces. Native save replacement and SAVE-01/full-game
-remain OPEN.
+[Single-slot reader validation/selection](../memory/CARD_SINGLE_SLOT_READ_VALIDATION_AND_SELECTION.md)
+now closes that local read service; live namespace restore remains separate.
+Next: async write/read-all/header/create/erase/copy/error/backup and SDK services,
+precise persistent namespace schemas, source pointer/index/extent/alias/IRQ/time
+domains, and original multi-slot/save/load/corruption/recovery traces. Native
+save replacement and SAVE-01/full-game remain OPEN.
