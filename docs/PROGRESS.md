@@ -9024,3 +9024,30 @@ portable heading now correctly waits for the pending real native display owner.
 Skies/ship arrival/departure and the animated heading are still being integrated.
 The user corrections and arrival-scoped goal remain active; no complete opening,
 full-game, original-runtime or hardware parity claim is made.
+
+
+## 2026-10-13 — Bounded fresh-opening GW8 event provenance
+
+Pinned Init's explicit initial GW8 word0 at fieldC0+0x24 versus ReInit's bank
+preservation, and original arrival's incomingGW8→dummy position→getterLW1→
+SETF GW8→resolved nohit jump flow. A conservative local REL reference closure
+from opening roots covers59 events/2701 commands with zero literalGW8 operands;
+gor00 init174 commands and the arrival prefix before25920 also have none.
+[Scope and conditional conclusion](behavior/story/OPENING_FRESH_GW8_PROVENANCE.md).
+No hardcoded zero replaces the callback's resolved Y. The manifest contains
+only source identifiers/extents/hashes, not original bodies/dialogue/assets.
+
+Validation: read-only verifier checks59 original hashes/2701 command operands,
+root/reference closure, two full Init/ReInit body hashes, nohit jump body/−4
+height literal, two original arrival hashes and four operand/getter/SETF/jump anchors
+(artifacts/gw8-prefix-verification.log). py_compile/scoped diff check pass.
+Docs/verifier only; no make test/all rerun or native/Dolphin observation claimed.
+Whole-branch link audit retains the existing parent pending house-sound link.
+
+Remaining exact dependency: opaque C++ Title/load/callback direct or aliased
+bank writes, synthesized operands, imported/dynamic event owners and NPC
+getter/physics/scheduler values are not closed by the event-token census. The
+verifier explicitly reports callback_store_closure=false. Native fresh bank0
+plus retained actual writes/resolved position is an explicit source-based
+bridge; unconditional original-runtime zero/full-flow parity remains unproved.
+Parent owns ship jump/arrival integration and fresh-route validation.

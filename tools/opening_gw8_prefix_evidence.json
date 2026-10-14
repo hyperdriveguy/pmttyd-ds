@@ -1,0 +1,523 @@
+{
+  "schema": 1,
+  "disc": "G8ME01 revision0 disc0",
+  "roots": {
+    "dmo": [
+      "demo_evt@dmo_00.o",
+      "buttonCheck@dmo_00.o",
+      "dmo_00_init_evt@dmo_00.o"
+    ],
+    "aaa": [
+      "aaa_00_init_evt@aaa_00.o",
+      "evt_prologue@aaa_00.o",
+      "evt_prologue2@aaa_00.o"
+    ],
+    "gor": [
+      "gor_10_init_evt@gor_10.o",
+      "tegami_init_evt@gor_10.o",
+      "mezame_init_evt@gor_10.o",
+      "evt_mezame@gor_10.o"
+    ],
+    "sys": [
+      "sys_01_init_evt@sys.o",
+      "evt_start@sys.o"
+    ],
+    "muj": [
+      "muj_20_init_evt@muj_20.o",
+      "evt_prologue@muj_20.o"
+    ]
+  },
+  "events": [
+    {
+      "module": "dmo",
+      "name": "demo_evt",
+      "namespace": "dmo_00.o",
+      "file_offset": 9172,
+      "size": 5956,
+      "sha256": "3e3f3b88dd5e9c8268dfdb58cf0df3120b0548814225041879830c3e637bc6c0"
+    },
+    {
+      "module": "dmo",
+      "name": "buttonCheck",
+      "namespace": "dmo_00.o",
+      "file_offset": 9044,
+      "size": 128,
+      "sha256": "c178ed3cafa4d6bcc0df930a54bec44c1f412b19ce91bbb8903d1de791601e33"
+    },
+    {
+      "module": "dmo",
+      "name": "dmo_00_init_evt",
+      "namespace": "dmo_00.o",
+      "file_offset": 15680,
+      "size": 1072,
+      "sha256": "517da311a31b22dbb73a74189d18fe40d7bcef08de5734b13a44f445a5fbc77a"
+    },
+    {
+      "module": "dmo",
+      "name": "roten_move",
+      "namespace": "dmo_00.o",
+      "file_offset": 15380,
+      "size": 100,
+      "sha256": "f22a4638c3514a89ee7c770055b8a63a8e1b9bb01b50610a3f3efb5fc0331993"
+    },
+    {
+      "module": "dmo",
+      "name": "kuribo_move",
+      "namespace": "dmo_00.o",
+      "file_offset": 15480,
+      "size": 100,
+      "sha256": "1c12f6f0c672d8c71e4e9bbb8b9deeb0a2fd3d36c3f8d1adacf46246b6058c88"
+    },
+    {
+      "module": "dmo",
+      "name": "chusan_move",
+      "namespace": "dmo_00.o",
+      "file_offset": 15580,
+      "size": 100,
+      "sha256": "d877c92382e4806df88e18bb5d643f9b89c9bf16c697596228ae4f45dad2977d"
+    },
+    {
+      "module": "dmo",
+      "name": "koushukei_dai",
+      "namespace": "dmo_00.o",
+      "file_offset": 15128,
+      "size": 252,
+      "sha256": "7209395c0a36f09d6ccff487f3bef5c91a2dbab429a830fca4de2f40f71761a1"
+    },
+    {
+      "module": "aaa",
+      "name": "aaa_00_init_evt",
+      "namespace": "aaa_00.o",
+      "file_offset": 10876,
+      "size": 324,
+      "sha256": "84ea96d4663383773864f42c2a93024f9eb04b2669a2811c4bdb2d6a1d55ac63"
+    },
+    {
+      "module": "aaa",
+      "name": "evt_prologue",
+      "namespace": "aaa_00.o",
+      "file_offset": 3312,
+      "size": 2852,
+      "sha256": "833162e1181ca1e25faef38ecaaa34dfba08de0ad72c95cd6693f87a5461cf5f"
+    },
+    {
+      "module": "aaa",
+      "name": "evt_prologue2",
+      "namespace": "aaa_00.o",
+      "file_offset": 6164,
+      "size": 784,
+      "sha256": "6a8878ef482a27ca82943e8f359e35d0264dd2515978900935aaa64f26bd042f"
+    },
+    {
+      "module": "aaa",
+      "name": "epilogue_npc_entry",
+      "namespace": "aaa_00.o",
+      "file_offset": 8260,
+      "size": 272,
+      "sha256": "fdf327a6d75d9631d4a41668d01b562b3c1948f7edca50b76545c6705300f314"
+    },
+    {
+      "module": "aaa",
+      "name": "epilogue_evt2",
+      "namespace": "aaa_00.o",
+      "file_offset": 8532,
+      "size": 2000,
+      "sha256": "4b778c6fb2ad64fad360af26a2aeb1053eaafaf89fabf48275a012450d25a4f6"
+    },
+    {
+      "module": "aaa",
+      "name": "epilogue_evt",
+      "namespace": "aaa_00.o",
+      "file_offset": 6948,
+      "size": 1312,
+      "sha256": "c06739e3dd529dfd82279c178574a5ef25ab1a84585a1d513b5015bee89b6075"
+    },
+    {
+      "module": "aaa",
+      "name": "evt_door",
+      "namespace": "aaa_00.o",
+      "file_offset": 2932,
+      "size": 60,
+      "sha256": "fb757f201ef61a0482a7bc99a053b5c75daf0dcfb3b6ccb9daea3cee67b25b38"
+    },
+    {
+      "module": "gor",
+      "name": "gor_10_init_evt",
+      "namespace": "gor_10.o",
+      "file_offset": 421044,
+      "size": 116,
+      "sha256": "616620102ba97912afb11f3134931af7bc49ab33507c6fb9d3dfeb6a43c49e6d"
+    },
+    {
+      "module": "gor",
+      "name": "tegami_init_evt",
+      "namespace": "gor_10.o",
+      "file_offset": 419584,
+      "size": 312,
+      "sha256": "7cd583cdea3227b939e69cad0b05e1700812cd053ca6e8ee5c356cf1be6ab7b0"
+    },
+    {
+      "module": "gor",
+      "name": "mezame_init_evt",
+      "namespace": "gor_10.o",
+      "file_offset": 420800,
+      "size": 244,
+      "sha256": "113a5536b690fd6b8629bdf006c44d4b1eed228e41db13f1c3ef5e2fd7bcdbec"
+    },
+    {
+      "module": "gor",
+      "name": "evt_mezame",
+      "namespace": "gor_10.o",
+      "file_offset": 419896,
+      "size": 904,
+      "sha256": "ac0a475fff5cc3b12df03184f5df405b5d9d5aea60130062f0f56581807e7955"
+    },
+    {
+      "module": "sys",
+      "name": "sys_01_init_evt",
+      "namespace": "sys.o",
+      "file_offset": 10496,
+      "size": 540,
+      "sha256": "de944bd9a79ab6a5940f83c6a0af357a99ba07c9341c6405c74f66c581ec6be2"
+    },
+    {
+      "module": "sys",
+      "name": "evt_start",
+      "namespace": "sys.o",
+      "file_offset": 11036,
+      "size": 764,
+      "sha256": "65bf047866322730d1a7e03623b243ce0158e76f7531507bb4941bccb7be349a"
+    },
+    {
+      "module": "muj",
+      "name": "muj_20_init_evt",
+      "namespace": "muj_20.o",
+      "file_offset": 213400,
+      "size": 1448,
+      "sha256": "131ac2bc41c846b6d8ea0c57d026eccde545dd4d80927307109c0bf4f03b31b2"
+    },
+    {
+      "module": "muj",
+      "name": "evt_prologue",
+      "namespace": "muj_20.o",
+      "file_offset": 211640,
+      "size": 728,
+      "sha256": "f3ba8a3667a705bc6875d19ade724d0dbb934b47a466f2642c660c7f7d3f6024"
+    },
+    {
+      "module": "muj",
+      "name": "muj_20_koopa_evt",
+      "namespace": "muj_20.o",
+      "file_offset": 208092,
+      "size": 532,
+      "sha256": "5217333c2f1f953d56fc73019aba1bc81d4cf940fb5f3618d4ea4d86c2c3b5fe"
+    },
+    {
+      "module": "muj",
+      "name": "gor_muj_ship",
+      "namespace": "muj_20.o",
+      "file_offset": 208884,
+      "size": 780,
+      "sha256": "46c04a1b4aeb363bf90acc2865ddde536b398513795fd9f04119301361d5fd50"
+    },
+    {
+      "module": "muj",
+      "name": "muj_gor_ship",
+      "namespace": "muj_20.o",
+      "file_offset": 209664,
+      "size": 780,
+      "sha256": "3bade59abe656c0bb342b837761d789cf8a0e77a879cb013f39a33884e257fc2"
+    },
+    {
+      "module": "muj",
+      "name": "onryo_event",
+      "namespace": "muj_20.o",
+      "file_offset": 199092,
+      "size": 9000,
+      "sha256": "c77ff6d1af48af3948420da860dd0052f4b80fa575a28c40d389a3c24683f310"
+    },
+    {
+      "module": "muj",
+      "name": "anm_kaji",
+      "namespace": "muj_20.o",
+      "file_offset": 210444,
+      "size": 244,
+      "sha256": "ab40a48a12e55db7bf44dda0af91d2c0d2e4bf0094531091cfdc8de8ddf8fc97"
+    },
+    {
+      "module": "muj",
+      "name": "anm_wakka",
+      "namespace": "muj_20.o",
+      "file_offset": 210688,
+      "size": 160,
+      "sha256": "8e51b6d57826701f54931eb4b5de3a2054c7c5180ea74df12c2d22204d9515d8"
+    },
+    {
+      "module": "muj",
+      "name": "anm_entotsu",
+      "namespace": "muj_20.o",
+      "file_offset": 210848,
+      "size": 132,
+      "sha256": "a20837790f1c5c3e33f0926c18975649989d552345105313c4a97bfbcd2daf29"
+    },
+    {
+      "module": "muj",
+      "name": "anm_neji",
+      "namespace": "muj_20.o",
+      "file_offset": 210980,
+      "size": 132,
+      "sha256": "b7589f48361ba47682e878e2b057bd475fd37591acdc32b17e5678f1ec91d0a2"
+    },
+    {
+      "module": "muj",
+      "name": "anm_yure",
+      "namespace": "muj_20.o",
+      "file_offset": 211112,
+      "size": 528,
+      "sha256": "85e56968dc13a7a357ab3a45b13b8f96f95e94debf2c87df5ae790303c3c1b9f"
+    },
+    {
+      "module": "muj",
+      "name": "epilogue_npc_entry",
+      "namespace": "muj_20.o",
+      "file_offset": 212368,
+      "size": 100,
+      "sha256": "36d7a6c5b4eb60ed2205a853155fd90ea5607c578c1c10095104c5e7e62f0712"
+    },
+    {
+      "module": "muj",
+      "name": "epilogue_evt",
+      "namespace": "muj_20.o",
+      "file_offset": 213012,
+      "size": 388,
+      "sha256": "b3a534e2d34b7421362802465ffe849c9fede1a5aa520c9d51329b5bd497773d"
+    },
+    {
+      "module": "muj",
+      "name": "kaizoku_hata",
+      "namespace": "muj_20.o",
+      "file_offset": 208624,
+      "size": 260,
+      "sha256": "70ccff6b60c8b1afe0ae275ddfec6b91dce56b8f4ab44f0c1d190bb4742eed81"
+    },
+    {
+      "module": "muj",
+      "name": "hiru_yoru_event",
+      "namespace": "muj_20.o",
+      "file_offset": 194376,
+      "size": 184,
+      "sha256": "d3e026f027adab5475d17c44eb14da2e410fe028e8cc931ca308163bad74564d"
+    },
+    {
+      "module": "muj",
+      "name": "yoru_hiru_event",
+      "namespace": "muj_20.o",
+      "file_offset": 194560,
+      "size": 184,
+      "sha256": "208bde6dd79ad0577dbe9eaf053d1ac9adea780a42d1b30e2d822c53ad8e5ac1"
+    },
+    {
+      "module": "muj",
+      "name": "muj_ship_puka",
+      "namespace": "muj.o",
+      "file_offset": 84208,
+      "size": 84,
+      "sha256": "152b0343ec00f09abeaa80c6c5d228623d43dfb6d1103c98131c4af4ab186055"
+    },
+    {
+      "module": "muj",
+      "name": "marco_ship_yure",
+      "namespace": "muj_20.o",
+      "file_offset": 195396,
+      "size": 116,
+      "sha256": "e080a2a8d6cd95030f13937bd3629f91ae059092609c5590543c561374aeff94"
+    },
+    {
+      "module": "muj",
+      "name": "nannpc_mode_setup",
+      "namespace": "muj_20.o",
+      "file_offset": 197784,
+      "size": 140,
+      "sha256": "f870ea164b8b3ef749071b72a2a35ec3b34b2883861ca889b08a228648ed91d3"
+    },
+    {
+      "module": "muj",
+      "name": "nami_alpha",
+      "namespace": "muj_20.o",
+      "file_offset": 196552,
+      "size": 164,
+      "sha256": "8ca2a8301153bc47c62159e8cabc3ab55e56d531165a990cf638d4daee4fb9cf"
+    },
+    {
+      "module": "muj",
+      "name": "moya_effect",
+      "namespace": "muj_20.o",
+      "file_offset": 196928,
+      "size": 76,
+      "sha256": "f304715c17353cc9f5c2a45f977e749892f4206e30e0a6015131483e15693b3a"
+    },
+    {
+      "module": "muj",
+      "name": "mist_setup",
+      "namespace": "muj_20.o",
+      "file_offset": 198288,
+      "size": 180,
+      "sha256": "cf3705cd0303381bc5b57c4aac3e2eeea5c0807a16752cb20935788d78cc63a1"
+    },
+    {
+      "module": "muj",
+      "name": "fuwafuwa",
+      "namespace": "muj_20.o",
+      "file_offset": 195220,
+      "size": 60,
+      "sha256": "9ca3f8d0dd0756fdc812813eb2a016485f4be1d9b4e71f0e96ebfbcb90f0c4dc"
+    },
+    {
+      "module": "muj",
+      "name": "urouro_fuwafuwa",
+      "namespace": "muj_20.o",
+      "file_offset": 194988,
+      "size": 140,
+      "sha256": "8cb5977d7500b0dc88370e21b5a3ad8159910368b2a9ef27c48db058c4c1f618"
+    },
+    {
+      "module": "muj",
+      "name": "urouro",
+      "namespace": "muj_20.o",
+      "file_offset": 194744,
+      "size": 244,
+      "sha256": "e6dace17417ceba3da1415f1353b093e336e3d8215136703c45141d0c272f516"
+    },
+    {
+      "module": "muj",
+      "name": "buruburu",
+      "namespace": "muj_20.o",
+      "file_offset": 195128,
+      "size": 92,
+      "sha256": "c34a4036bb862257f35ba824bb4a08c3b8f8b46f4d71b36f9b976db94d278a4b"
+    },
+    {
+      "module": "muj",
+      "name": "elmos_a_kakushuku",
+      "namespace": "muj_20.o",
+      "file_offset": 197132,
+      "size": 252,
+      "sha256": "7770280cae1d8c2c2728b90fc712c2c8b08cc1c749e7cc4846f4a2af55e60833"
+    },
+    {
+      "module": "muj",
+      "name": "elmos_a_shuku",
+      "namespace": "muj_20.o",
+      "file_offset": 197436,
+      "size": 52,
+      "sha256": "c43478cc8b76c98fabfccef8ba63cb50a4bf3e16f793ae00e387ebbc9245d76b"
+    },
+    {
+      "module": "muj",
+      "name": "elmos_a_kaku",
+      "namespace": "muj_20.o",
+      "file_offset": 197384,
+      "size": 52,
+      "sha256": "48ed9ee51bd285dcef7072a775567aa6a7d70a7d628cf7153fb32d6124953f52"
+    },
+    {
+      "module": "muj",
+      "name": "kirimomi",
+      "namespace": "muj_20.o",
+      "file_offset": 195280,
+      "size": 116,
+      "sha256": "863d83695221a9abbf5b8c1703d87443fefdb4e7ea678008ea918c44ef566af0"
+    },
+    {
+      "module": "muj",
+      "name": "marcoship_shizumu",
+      "namespace": "muj_20.o",
+      "file_offset": 198468,
+      "size": 624,
+      "sha256": "f49cacd5a9f8f4bac83aece398fb91ed3590a545172a87faa231093925a24bb9"
+    },
+    {
+      "module": "muj",
+      "name": "fune_move",
+      "namespace": "muj_20.o",
+      "file_offset": 212468,
+      "size": 544,
+      "sha256": "f506e9cc42dc0bf321ec0eb080006797a74318abf1a23621e5375e1eb48eeab3"
+    },
+    {
+      "module": "muj",
+      "name": "moya_effect01",
+      "namespace": "muj_20.o",
+      "file_offset": 195512,
+      "size": 208,
+      "sha256": "cc06fc92ad68066d5bdaf2f69ae842923537ea235c1ef8e89867fe4abb0ac9ca"
+    },
+    {
+      "module": "muj",
+      "name": "moya_effect02",
+      "namespace": "muj_20.o",
+      "file_offset": 195720,
+      "size": 208,
+      "sha256": "cc06fc92ad68066d5bdaf2f69ae842923537ea235c1ef8e89867fe4abb0ac9ca"
+    },
+    {
+      "module": "muj",
+      "name": "moya_effect03",
+      "namespace": "muj_20.o",
+      "file_offset": 195928,
+      "size": 208,
+      "sha256": "cc06fc92ad68066d5bdaf2f69ae842923537ea235c1ef8e89867fe4abb0ac9ca"
+    },
+    {
+      "module": "muj",
+      "name": "moya_effect04",
+      "namespace": "muj_20.o",
+      "file_offset": 196136,
+      "size": 208,
+      "sha256": "cc06fc92ad68066d5bdaf2f69ae842923537ea235c1ef8e89867fe4abb0ac9ca"
+    },
+    {
+      "module": "muj",
+      "name": "moya_effect05",
+      "namespace": "muj_20.o",
+      "file_offset": 196344,
+      "size": 208,
+      "sha256": "cc06fc92ad68066d5bdaf2f69ae842923537ea235c1ef8e89867fe4abb0ac9ca"
+    },
+    {
+      "module": "muj",
+      "name": "moonout_effect",
+      "namespace": "muj_20.o",
+      "file_offset": 196716,
+      "size": 212,
+      "sha256": "adaa34894522823d6d8ea37b217400b8ca0a4cb61891bc5353c0ff4b8300ba09"
+    },
+    {
+      "module": "muj",
+      "name": "_kakushuku",
+      "namespace": "muj_20.o",
+      "file_offset": 197004,
+      "size": 128,
+      "sha256": "8de832c9399a2ca44936a59d93ca7bf6f7b08e2a6eb3c9497c312f9e2b16fdad"
+    }
+  ],
+  "event_count": 59,
+  "command_count": 2701,
+  "arrival_events": [
+    {
+      "name": "enter_gorotsuki_town",
+      "namespace": "gor_00.o",
+      "file_offset": 152768,
+      "size": 2376,
+      "sha256": "6679b66c1735f1f541ff22f8aca1e155282a7463006212d5f353c29606bcce6d"
+    },
+    {
+      "name": "gor_00_init_evt",
+      "namespace": "gor_00.o",
+      "file_offset": 192516,
+      "size": 2160,
+      "sha256": "feca019e68a4b78036ea454dee444be4287f18b1b2f3c322d82b232190a68496"
+    }
+  ],
+  "limitation": "Original selected local REL event closure and literal operand census only. C++ callback/direct-bank/derived alias/title/load/dynamic event owners remain unclosed."
+}

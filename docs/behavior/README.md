@@ -714,3 +714,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native retained explicit-table selector owner](message/NATIVE_ITEM_TABLE_SELECTION_OWNER.md) and [original draw requests](message/ITEM_TABLE_SELECTION_DRAW_REQUESTS.md).
 
 - [Window font string/message consumers](message/WINDOW_FONT_STRING_AND_MESSAGE_CONSUMERS.md): source scanner, edge/icon/reset requests and explicit quest text census.
+
+- [Fresh opening GW8 provenance and resolved ship jump operand](story/OPENING_FRESH_GW8_PROVENANCE.md)
