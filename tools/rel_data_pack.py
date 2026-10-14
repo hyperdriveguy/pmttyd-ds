@@ -31,7 +31,8 @@ def package(raw,symbols,module,roots):
         if len(owners)!=1 or owners[0][3] or row['sec_type']!='data':raise ValueError('Scoped pack cannot include executable code')
         if start not in selected:selected[start]=row;pending.append(row)
     for name in roots:
-        matches=[r for r in rows if r['name']==name]
+        namespace,separator,symbol=name.partition('::')
+        matches=[r for r in rows if r['name']==(symbol if separator else name) and (not separator or r['namespace']==namespace)]
         if len(matches)!=1:raise ValueError('Choose one exact original data root: '+name)
         add(matches[0])
     while pending:

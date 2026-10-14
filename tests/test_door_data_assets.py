@@ -36,3 +36,24 @@ class OriginalDoorData(unittest.TestCase):
    self.assertEqual(actual,expected)
   header=struct.unpack('<8sI6I',Path('romfs/door-data.bin').read_bytes())
   self.assertEqual(header,(b'PMDRDT01',1,2,source['address'],11,objects['door_data_05_npc']['address'],objects['door_data_05_npc_01']['address'],1))
+ def test_original_entry_children_and_generic_context(self):
+  raw=Path('local-assets/door-data/gor.rel').read_bytes();meta=json.loads(Path('romfs/door-data.json').read_text());packed=Path('romfs/door-data.pmevt').read_bytes()
+  objects={o['name']:o for o in meta['objects']};local,imports,_=read_bindings(raw)
+  def span(address,size):
+   for n in range(struct.unpack_from('>I',packed,8)[0]):
+    base,length,offset=struct.unpack_from('>III',packed,12+12*n)
+    if base<=address and address+size<=base+length:return packed[offset+address-base:offset+address-base+size]
+   self.fail('Missing original entry closure')
+  pairs=[('evt_door_02_entry','door_data_02',0x45d10,0x100),('evt_door_03_entry','door_data_03',0x462ac,0x100),('evt_door_03_roll_entry','door_data_03_roll',0x467b8,0x50)]
+  expected=[]
+  for script,record,start,size in pairs:
+   obj=objects[script];self.assertEqual((obj['file_offset'],obj['size']),(start,size));data=bytearray(raw[start:start+size])
+   for site,binding in local.items():
+    if start<=site<start+size:struct.pack_into('>I',data,site-start,meta['sections'][binding['section']]['address']+binding['addend'])
+   for site,value in imports.items():
+    if start<=site<start+size:struct.pack_into('>I',data,site-start,value)
+   self.assertEqual(span(obj['address'],size),data);expected.append((2,obj['address'],objects[record]['address']))
+  expected.append((2,0x8033156c,objects['door_data_04']['address']))
+  data=Path('romfs/field-area-events.bin').read_bytes();self.assertEqual(struct.unpack_from('<8sI',data),(b'PMFAEV02',4));self.assertEqual(list(struct.iter_unpack('<III',data[12:])),expected)
+  self.assertEqual(hashlib.sha256(span(0x8033156c,0x134)).hexdigest(),'6269747e7ff14d9effbd84761663f25e880e3ed3c191c842e974db0559e78281')
+  self.assertEqual(span(0x803316a0,4),struct.pack('>I',0x800e8288))

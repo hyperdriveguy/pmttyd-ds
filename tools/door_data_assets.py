@@ -10,16 +10,37 @@ def build(iso=DEFAULT_ISO):
     source=work/'gor.rel';extract(iso,'rel/gor.rel',source);raw=source.read_bytes()
     digest=hashlib.sha256(raw).hexdigest()
     if digest!='d4965f21254ecf1a78e5d66ea12a0b000eed3f123032af6ab3cb0f703d3f185a':raise ValueError('Unexpected original US REL')
-    packed,meta=package(raw,'artifacts/reference/us_symbols.csv','gor',['door_data_05','door_data_05_npc_01'])
+    packed,meta=package(raw,'artifacts/reference/us_symbols.csv','gor',['door_data_05','door_data_05_npc_01',*[f'gor_02.o::{n}' for n in ['evt_door_02_entry','evt_door_03_entry','evt_door_03_roll_entry','door_data_02','door_data_03','door_data_03_roll','door_data_04']]])
     objects={o['name']:o for o in meta['objects']}
+    # Linked immutable generic entry and actual adjacent dispatch-table prefetch.
+    with Path(iso).open('rb') as disc:
+        if disc.read(8)!=b'G8ME01\0\0':raise ValueError('Original US disc0 revision0 required')
+        disc.seek(0x420);dol=struct.unpack('>I',disc.read(4))[0];disc.seek(dol);header=disc.read(256)
+        spans=[]
+        for n in range(18):
+            off,va,size=(struct.unpack_from('>I',header,b+4*n)[0] for b in (0,0x48,0x90))
+            if va<=0x8033156c and 0x803316a4<=va+size:spans.append(off+0x8033156c-va)
+        if len(spans)!=1:raise ValueError('Invalid generic door entry DOL span')
+        disc.seek(dol+spans[0]);entry=disc.read(0x138)
+    if hashlib.sha256(entry[:0x134]).hexdigest()!='6269747e7ff14d9effbd84761663f25e880e3ed3c191c842e974db0559e78281' or entry[0x134:]!=struct.pack('>I',0x800e8288):raise ValueError('Unexpected original door entry/context')
+    segments=[]
+    for n in range(struct.unpack_from('>I',packed,8)[0]):
+        address,size,offset=struct.unpack_from('>III',packed,12+12*n);segments.append((address,packed[offset:offset+size]))
+    segments.append((0x8033156c,entry));segments.sort()
+    offset=12+12*len(segments);table=bytearray();payload=bytearray()
+    for address,data in segments:table+=struct.pack('>III',address,len(data),offset);payload+=data;offset+=len(data)
+    packed=b'PMEVT001'+struct.pack('>I',len(segments))+table+payload
+    programs=[(objects[a]['address'],objects[b]['address']) for a,b in [('evt_door_02_entry','door_data_02'),('evt_door_03_entry','door_data_03'),('evt_door_03_roll_entry','door_data_03_roll')]]+[(0x8033156c,objects['door_data_04']['address'])]
+
     # Exact gor_02_init_evt4d8e8..4d948: copy into GW11, then select the
     # original list using GSW1420==1. This is a finite native init descriptor.
     row=(2,objects['door_data_05']['address'],11,objects['door_data_05_npc']['address'],objects['door_data_05_npc_01']['address'],1)
     if objects['door_data_05']['size']!=72:raise ValueError('Unexpected source door record')
     out=Path('romfs');out.mkdir(exist_ok=True)
     (out/'door-data.pmevt').write_bytes(packed)
+    (out/'field-area-events.bin').write_bytes(struct.pack('<8sI',b'PMFAEV02',len(programs))+b''.join(struct.pack('<III',2,*p) for p in programs))
     (out/'door-data.bin').write_bytes(struct.pack('<8sI6I',b'PMDRDT01',1,*row))
-    meta.update(source='rel/gor.rel',source_sha256=digest,records=[dict(room=row[0],source=row[1],work=row[2],normal=row[3],alternate=row[4],quest=row[5])],
+    meta.update(door_entry=dict(address=0x8033156c,size=0x134,sha256=hashlib.sha256(entry[:0x134]).hexdigest(),prefetch_address=0x803316a0,prefetch_word=0x800e8288),entry_programs=[dict(script=a,record=b) for a,b in programs],source='rel/gor.rel',source_sha256=digest,records=[dict(room=row[0],source=row[1],work=row[2],normal=row[3],alternate=row[4],quest=row[5])],
         policy='Original data closure; finite copy/list-selection descriptor from gor_02_init_evt4d8e8..4d948; later case/geometry/material providers remain separate',
         license='Original Nintendo/Intelligent Systems resources; local use only, no redistribution rights')
     (out/'door-data.json').write_text(json.dumps(meta,indent=2)+'\n')

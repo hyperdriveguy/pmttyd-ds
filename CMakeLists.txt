@@ -1578,3 +1578,13 @@ add_executable(battle_audience_reaction_tests tests/battle_audience_reaction_tes
 target_link_libraries(battle_audience_reaction_tests PRIVATE ttyd_core)
 add_test(NAME battle_audience_reaction COMMAND battle_audience_reaction_tests)
 set_tests_properties(battle_audience_reaction PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Shared field scheduler/case lifetime and original door installers.
+target_sources(ttyd_core PRIVATE source/field/field_door_parameter.cpp source/field/field_area_event.cpp)
+add_executable(field_door_parameter_tests tests/field_door_parameter_tests.cpp)
+target_link_libraries(field_door_parameter_tests PRIVATE ttyd_core)
+add_test(NAME field_door_parameter COMMAND field_door_parameter_tests)
+add_executable(field_area_event_tests tests/field_area_event_tests.cpp)
+target_link_libraries(field_area_event_tests PRIVATE ttyd_core)
+add_test(NAME field_area_event COMMAND field_area_event_tests)
+set_tests_properties(field_area_event PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
