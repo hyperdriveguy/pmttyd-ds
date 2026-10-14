@@ -12135,3 +12135,39 @@ and sound-engine parity. This correction does not revalidate the entire fresh
 New Game route or extend story beyond the previously tested story3 Rogueport
 arrival. Crump/joining/full-game progression remain separate work. The opening
 flow still supports normal boot and compile-time short debug boot.
+
+### 2026-10-14 — Audience window/sound pass and original public sound registry
+
+Completed the portable original WinCtrlProcess801a4570: captured audience and
+independent window owner, signed count follower with post-store reload/clamp,
+wrapping timer with asymmetric source bounds, and single-rounded mode4
+interpolation using original constants. Completed SoundMain8019f97c record
+pass behind an explicit NoiseMain provider:24 checks regardless of flags,
+source bit1 clearing, stop ordering, ramp then independent lifetime fade,
+shared interpolation fields and actual positive-only lifetime decrement.
+
+Added typed40-slot PositionalSfxRegistry with boot/public-init state, retained
+generation on reinit, actual Chk acceptance, generation-independent volume/
+distance/Off, truncation and descriptor-selected backend stop. Out-of-bank
+handles and unavailable backends remain explicit provider boundaries. This
+is not original On/Main provisioning or NDSP voice equivalence. Contracts
+and next slot/display source evidence are indexed under docs/behavior; see
+[binding limits](behavior/battle/AUDIENCE_WINDOW_SOUND_PASS_AND_PUBLIC_REGISTRY_PORT.md).
+
+Validation: final make test216/216 CTest and134/134 Python pass
+(artifacts/audience-live-tests-final.log), including new audience-live and
+registry suites. Earlier full run also passed before additional boundary
+tests. make all passes (artifacts/audience-live-all.log), building native
+modules and linking ttyd-2ds.3dsx. Doc checker1109 Markdown files/0 broken
+links (artifacts/audience-live-doc-links.log); scoped whitespace check passes.
+Concurrent unrelated source changes were present in the shared full builds;
+this scoped commit includes only this feature and its documentation. No
+emulator run needed for these still-unbound mechanics; no rendering/audio
+or physical2DS correctness/performance claim. Original ISO read-only, private
+asset packs remain ignored; user emulator profiles/saves untouched.
+
+Remaining/next: bind the persistent public registry in the actual audio
+lifetime and source sound provisioning; implement Ctrl/throw, Item/AP and
+NoiseMain and integrate complete AudienceMain. Ending still holds at801a836c;
+then real SlotInit/idleMain and surviving-unit display providers are required.
+No battle result, field return or prologue completion is asserted. Goal active.

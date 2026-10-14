@@ -1044,3 +1044,11 @@ add_test(NAME field_item_registry_original COMMAND field_item_registry_tests)
 set_tests_properties(field_item_registry_original PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 
 target_sources(ttyd_core PRIVATE source/harbor_tutorial_damage.cpp)
+
+target_sources(ttyd_core PRIVATE source/battle_audience_window.cpp source/battle_audience_sound_main.cpp source/positional_sfx_registry.cpp)
+add_executable(battle_audience_live_tests tests/battle_audience_live_tests.cpp)
+target_link_libraries(battle_audience_live_tests PRIVATE ttyd_core)
+add_test(NAME battle_audience_live COMMAND battle_audience_live_tests)
+add_executable(positional_sfx_registry_tests tests/positional_sfx_registry_tests.cpp)
+target_link_libraries(positional_sfx_registry_tests PRIVATE ttyd_core)
+add_test(NAME positional_sfx_registry COMMAND positional_sfx_registry_tests)
