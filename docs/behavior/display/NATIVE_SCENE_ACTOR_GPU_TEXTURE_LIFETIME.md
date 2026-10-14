@@ -34,7 +34,10 @@ native import failed at `romfs:/gor_00-32.t3x`. With the three atlases deferred,
 Azahar admitted the original harbor and the physical Left/Up/Right crate-gap
 route reached setup2's original stage, actors and HUD. Captures are private in
 `artifacts/azahar-tutorial-admission-lazy/` and
-`artifacts/azahar-tutorial-admission-route/`.
+`artifacts/azahar-tutorial-admission-route/`. The exact reviewed final packed
+build repeats the physical route in
+`artifacts/azahar-tutorial-admission-final-packed/`; an earlier incomplete review
+package rendered black and is not successful admission evidence.
 
 The tutorial stops at the existing source action-service boundary after the
 intro. This policy does not implement those services, complete turn scheduling,

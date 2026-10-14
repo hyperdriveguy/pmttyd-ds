@@ -2,6 +2,63 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Native harbor admission and original combat GPU residency
+
+Feature `b36c849` fixes the native harbor admission blocker. A valid story3
+checkpoint passed host decode/collision/ground/walkability checks, but debug
+restore reported `Map texture import failed: romfs:/gor_00-32.t3x`. Renderer
+initialization no longer eagerly imports the quest13 Mario and trio Mario/
+Goombella GPU atlases. Real active consumers acquire them; inactive consumers
+and room entry retire them after GPU synchronization. Animation/UV metadata,
+original pixels, filtering and source story remain unchanged. The three existing
+RGBA8 banks total3.5MiB of texture pixels; this is a size calculation, not measured
+hardware free memory. Debug restore failures now remain visible as harness
+notices instead of silently appearing to admit a fixture. See the
+[lifetime contract](behavior/display/NATIVE_SCENE_ACTOR_GPU_TEXTURE_LIFETIME.md)
+and [asset record](ASSETS.md).
+
+Native validation uses isolated Azahar profiles and physical inputs only.
+`artifacts/azahar-tutorial-admission-diagnostic2/` identifies the failed import.
+`artifacts/azahar-tutorial-admission-lazy/` loads the original harbor message;
+`artifacts/azahar-tutorial-admission-route/` follows Left/Up/Right around the crates
+and reaches setup2. The reviewed final private image
+`artifacts/tutorial-admission-snapshot/ttyd-admission-final-packed.3dsx` repeats
+that route in `artifacts/azahar-tutorial-admission-final-packed/`, showing original
+stage, Crump/Mario/helper actors and HUD. It reaches the explicit original
+tutorial action-service boundary. The earlier lazy build also loads both original
+trio combat atlases and physical menu/target inputs in
+`artifacts/azahar-tutorial-admission-trio/`; capture names do not guarantee the
+active actor/weapon after repeated intro inputs.
+
+Validation details: shared `make all` passed
+(`artifacts/tutorial-admission-final-all.log`). Final scoped debug and normal
+`make all` builds passed from `/tmp/tutorial-admission-review/`, using the
+existing private asset pack with `-o assets-ready`; logs are
+`artifacts/tutorial-admission-review-debug.log` and
+`artifacts/tutorial-admission-review-all.log`. ROMFS was repacked directly from
+the project private directory with `3dsxtool`; the first review package was only
+86MiB and rendered black, and is not success evidence. Final packed images are
+430MiB. Final reviewed `make test` passed195/195 CTest and129/129 Python
+(`artifacts/tutorial-admission-review-final-tests.log`), invoked as
+`TMPDIR="$PWD/artifacts/tutorial-admission-tmp" make -C /tmp/tutorial-admission-review test`.
+Doc links:1038 Markdown files/zero broken; scoped diff checks pass.
+
+The reviewed tree contains HEAD27779ad plus this feature, preserving unrelated
+working and staged changes. Shared `make test` initially could not configure
+because an in-progress stage-map test file was absent; a mixed-source fallback
+later failed the trio original assertion. An initial reviewed host attempt ran
+out of `/tmp` space, and a later Python run lacked two fixture directories.
+Build outputs/compiler temporaries now use project artifacts and the review
+has the original private fixture paths. These failed attempts are distinguished
+from the final reviewed validation, not attributed to this feature.
+
+Next: bind the actual tutorial action services and connect source damage/turn
+scheduling; preserve original dialogue IDs/tokens and tick timing. Complete the
+original rotating command menu. Render the lower-screen scene/audience and add
+optional hostile-item taps with a physical control path. Current lower screen
+is not that audience implementation; tutorial/full battles and hardware parity
+remain incomplete. Never substitute a fabricated result for a source wait.
+
 ## 2026-10-13 — Native original tutorial registry and init readiness
 
 Featuref85edaf replaces the projection-only Crump0/Mario1/helper2 ownership with
