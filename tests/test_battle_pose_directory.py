@@ -78,6 +78,22 @@ class BattlePoseDirectoryTests(unittest.TestCase):
         self.assertEqual((len(partner[2]), partner[2][0]), (32, 'PKR_Z_1'))
         self.assertNotIn('KRN_H_1', mario[2])
 
+    def test_original_frankly_complete_bank(self):
+        root = Path(__file__).resolve().parents[1]
+        source = root / 'local-assets/professor/c_kuri_h'
+        if not source.exists():
+            self.skipTest('Private original Frankly model is unavailable')
+        model, texture, names = source_directory(source.read_bytes())
+        self.assertEqual((model, texture, len(names), names[0], names[-1]),
+                         ('c_kuri_h', 'c_kuri_h', 17, 'Z_1', 'D_2'))
+        directory = root / 'romfs/professor.pose-directory.bin'
+        if directory.exists():
+            data = directory.read_bytes()
+            self.assertEqual(data[:8], b'PMPOSE02')
+            self.assertEqual(struct.unpack_from('<I', data, 136)[0], 17)
+            actual = [data[140+i*64:204+i*64].rstrip(b'\0').decode('ascii') for i in range(17)]
+            self.assertEqual(actual, names)
+
 
 if __name__ == '__main__':
     unittest.main()

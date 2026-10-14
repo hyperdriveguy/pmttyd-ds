@@ -3890,3 +3890,18 @@ Current next provider801011fc belongs to surviving Frankly; its
 pins model c_kuri_h, actual part/table and needed battle metadata sidecar.
 Deferred camera2 collision/image passes, camera4 cylinder/GPU, full update/draw
 cadence, display footer providers and ordered field return remain open.
+
+
+### Frankly constructor and first footer providers (2026-10-14)
+
+Actual lecture Frankly part9353007c/pose table9353004c now admits its genuine
+c_kuri_h mode1 owner. Converted bank includes all17 original poses plus PMPOSE02
+source metadata, preserving original descriptor0 and avoiding D_2 subset loss.
+Finishing traversal now completes original StockExp scalar/EXP queue and
+StageDisp's getter/two queues.
+[Native scope](../behavior/display/NATIVE_FRANKLY_BANK_AND_FIRST_DISPLAY_FOOTERS.md).
+Next actual callee is palette mutation80119e24 before CommandDisplay records.
+The [remaining footer contract](../behavior/display/BATTLE_DISPLAY_FOOTER_REGISTRATION_AND_MUTATION.md)
+now pins palette states, audience AnimProcess commands/windows and slot request.
+Bind these retained owners, then original deferred dispatch/GPU and ordered
+teardown/field return; no missing callback or mutation is treated as completion.

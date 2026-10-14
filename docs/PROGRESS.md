@@ -1291,3 +1291,29 @@ at that pose-constructor provider801011fc. Shadow collision/image/cylinder/GPU
 services, full outer-loop and deferred display cadence, footer providers, complete
 camera4 history and ordered field return remain open. Full prologue goal stays
 active. No rendered parity is claimed by request registration alone.
+
+
+## 2026-10-14 — Original Frankly battle bank and first display footers
+
+Provisioned surviving Frankly from the actual kind/part/pose table and a
+distinct mode1 owner. The Professor converter now imports all17 original
+animations, including D_2, and emits genuine PMPOSE02 metadata. The finishing
+loop registers his part/shadow, then implements original StockExp counter/EXP
+registration and both stage display records. Original display-init bit2 is
+retained. [Scope](behavior/display/NATIVE_FRANKLY_BANK_AND_FIRST_DISPLAY_FOOTERS.md).
+
+Shared make test passed250/250 C++ and143/143 Python checks. Isolated make
+test passed249/249 C++ and143/143 Python checks; native make all passed.
+Isolated Azahar on the immutable build reached original10-Star-Point victory
+and the existing field-restoration hold without a detected native exception.
+Exact logs/manifests/capture limits are in the
+[archive](PROGRESS_ARCHIVE.md#2026-10-14--original-frankly-battle-bank-and-first-display-footers).
+Asset paths/conversion/licensing are in [assets](ASSETS.md#2026-10-14--complete-frankly-animation-bank-and-battle-metadata).
+
+Next: CommandDisplay's retained palette mutation80119e24, audience animation
+interpreter/window gating and slot footer registration; then full borrowed
+display dispatch/current-camera/GPU and ordered teardown/field return. Original
+actor/update chronology, shadow preparation, full camera4 history and physical
+performance remain unverified. The current finishing queue retains14 records
+and three unprepared shadows, then holds at the palette provider. Full playable
+original-fidelity prologue goal remains active.

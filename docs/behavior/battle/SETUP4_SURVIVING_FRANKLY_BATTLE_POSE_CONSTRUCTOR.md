@@ -136,3 +136,9 @@ remaining actor pose history are the next concrete constructor work. Complete
 status-specific effects, original unit-part GX/shadows, resource release/global
 cadence and field-return sequence remain separate providers. No native code,
 shared index/progress/assets changes or commit for this documentation task.
+
+The subsequent [native Frankly/footer step](../display/NATIVE_FRANKLY_BANK_AND_FIRST_DISPLAY_FOOTERS.md)
+now supplies this original part, distinct mode1 owner and a complete17-pose
+PMPOSE02 bank. The earlier missing-sidecar/subset inspection is superseded for
+that native admitted domain; complete original actor chronology and GPU/return
+limits remain open.

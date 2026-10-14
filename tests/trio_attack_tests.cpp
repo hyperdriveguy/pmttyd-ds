@@ -423,13 +423,22 @@ int main(){
             for(unsigned axis=0;axis<4;++axis)explicitCamera.projection[axis][axis]=1;
             charged.trioAttack.setCameraDepthSnapshot(explicitCamera);
             charged.trioAttack.tick((charged.ticks+1)*1000/60,charged.trioBattleIntro);
-            assert(charged.trioAttack.pendingFunction()==0x801011fc && pose->word(0x3c)==history && pose->scalar(0x40)==cacheTime);
+            assert(charged.trioAttack.pendingFunction()==0x80119e24 && pose->word(0x3c)==history && pose->scalar(0x40)==cacheTime);
             assert(std::count_if(charged.trioAttack.requests().begin(),charged.trioAttack.requests().end(),[](const auto& request){return request.function==0x8003ed2c && !request.rawOperands.empty() && request.rawOperands[0]==0;})==prefixCalls);
-            const auto* queue=charged.trioAttack.displayQueue();assert(queue && queue->count()==10);
+            const auto* queue=charged.trioAttack.displayQueue();assert(queue && queue->count()==14);
             const auto* registered=queue->record(8);assert(registered && registered->camera==4 && registered->drawClass==1 && registered->callback==0x80101774 && registered->userdata==draw->part);
             assert(registered->key==400000.f-cameraQueueDepth(explicitCamera,draw->depth));
-            const auto* shadow=charged.trioAttack.shadowWork();assert(shadow==charged.shadows.get() && shadow->count()==2 && shadow->record(0)->position[1]==10 && shadow->record(0)->radius>=8);
+            const auto* shadow=charged.trioAttack.shadowWork();assert(shadow==charged.shadows.get() && shadow->count()==3 && shadow->record(0)->position[1]==10 && shadow->record(0)->radius>=8);
             assert(queue->record(9)->userdata==0x84202000 && queue->record(9)->callback==0x80101774);
+            assert(queue->record(10)->userdata==0x84206000 && queue->record(10)->callback==0x80101774);
+            const auto* frankly=charged.trioAttack.battlePose(0x84206000);assert(frankly && frankly->resource->modelName=="c_kuri_h" && frankly->resource->names.size()==17 && frankly->word(0x14)==0);
+            assert(charged.trioAttack.readWord(0x84206004,value) && value==0x9353007c && charged.trioAttack.readWord(0x842061bc,value) && value==0x9353004c);
+            assert(charged.trioAttack.readWord(0x842061a0,value) && (value&0xffff)==20);
+            assert(queue->record(11)->camera==8 && queue->record(11)->callback==0x80100258 && queue->record(11)->key==399099);
+            assert(queue->record(12)->callback==0x80138da8 && queue->record(12)->key==605000);
+            assert(queue->record(13)->callback==0x801389a0 && queue->record(13)->key==606000);
+            assert(charged.trioAttack.readWord(0x84000f08,value) && value==1); // Original StockExp counter mutation precedes registration.
+
             for(const auto extra:{0x84200000u,0x84200500u}){
                 const auto* extraPose=charged.trioAttack.battlePose(extra);assert(extraPose && extraPose->word(0x14)==0);
                 assert(charged.trioAttack.readWord(extra+0x204,value) && value==0);
@@ -441,7 +450,7 @@ int main(){
             assert(shadow->record(0)->flags==1 && shadow->record(1)->flags==1); // Preparation has not been invented.
 
             charged.trioAttack.tick((charged.ticks+2)*1000/60,charged.trioBattleIntro);
-            assert(queue->count()==10 && shadow->count()==2); // Held constructor does not repeat collection.
+            assert(queue->count()==14 && shadow->count()==3); // Held command palette does not repeat collection.
 
             assert(charged.trioAttack.readWord(0x84201204,value) && (value&3)==2); // Source name request consumed; forced path stays active.
             assert(charged.trioAttack.readWord(0x84000ef4,value) && !(value&0x80000000));

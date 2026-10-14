@@ -65,3 +65,8 @@ Main registration order/reset/gate, capacity continuation and nonfinite input.
 The real finishing-pose regression verifies both player records, the original
 hidden extra descriptors, two unprepared shadow records, no primary Main replay
 and no repeated collection while the next provider is unavailable.
+
+The later [Frankly/footer binding](NATIVE_FRANKLY_BANK_AND_FIRST_DISPLAY_FOOTERS.md)
+closes the constructor hold for the surviving lecture unit and implements
+StockExp/Stage registration. The current exercised next request is80119e24;
+this does not close the deferred shadow/GPU or full-cadence limits above.

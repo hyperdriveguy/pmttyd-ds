@@ -57,6 +57,7 @@ std::string fieldPartnerAnimationPath;
 std::weak_ptr<const ActorAnimationPack> fieldPartnerAnimationCache;
 std::shared_ptr<const ActorAnimationPack> fieldMarioBank;
 std::array<std::shared_ptr<const BattlePoseResource>,2> playerBattleResources;
+std::shared_ptr<const BattlePoseResource> franklyBattleResource;
 std::string stageMapRoot;
 std::array<uint32_t,7> stageDescriptors{};
 uint32_t sourceStage=0;
@@ -97,6 +98,10 @@ bool loadTrioAttackAssets(const char* root) {
         battleResources[i]=loadBattlePoseResource((prefix+".pose-directory.bin").c_str(),(prefix+".pmanim").c_str());
         if(!battleResources[i] || battleResources[i]->modelName!=(i==0?"b_mario":"c_pkr"))return false;
     }
+    const auto professorPrefix=std::string(root)+"/professor";
+    auto professorResource=loadBattlePoseResource((professorPrefix+".pose-directory.bin").c_str(),(professorPrefix+".pmanim").c_str());
+    if(!professorResource || professorResource->modelName!="c_kuri_h")return false;
+    franklyBattleResource=std::move(professorResource);
     fieldPartnerAnimationPath=std::string(root)+"/partner.pmanim";fieldPartnerAnimationCache.reset();
     FILE* stageFile=std::fopen((std::string(root)+"/trio-stage-objects.bin").c_str(),"rb");if(!stageFile)return false;
     std::array<uint32_t,8> stageData{};char stageMagic[8];
@@ -146,6 +151,7 @@ struct TrioAttackRuntime {
     ShadowMainCursor shadowMainCursor;
     bool displayActive=false,displayUnitPrefixDone=false;
     int32_t displayIndex=0;uint32_t displayPart=0;
+    uint8_t displayFooter=0,stageRegistration=0;bool stockExpMutationDone=false,stageGetterDone=false;
     bool waitingPoseDepth=false;
     std::optional<float> waitingPosePriority;
     std::optional<TrioShadowDrawRequest> shadowDraw;
@@ -579,6 +585,7 @@ struct TrioAttackRuntime {
         word(Battle+0x2738,Work);word(Work+0xc,Work+0x100);word(Work+0x118,reactionGroup);
         word(0x8041eb90,Battle);word(0x8041eb00,0x85000000);byte(Battle+0xa,1);byte(Battle+0x12,255);
         BattleCameraRequestServices cameraInit;cameraInit.positions=nativeBattlePartPositionServices(vm);initializeBattleCamera(Battle,cameraInit);
+        word(Battle+0xef8,word(Battle+0xef8)|2u); // Original btlDispInit publication; other Init services stay separate.
         if(!initializePackedSetup4AudienceParameters(audienceSetupConfig,Work+0x100,audienceInitServices()))return false;
         word(Battle+0x420,menu.actor);word(Battle+0x424,6);word(Battle+0x1c5c,0);word(Battle+0x171c+0x4b0,0);word(Battle+0x171c+0x80,menu.attack->weapon);
         for(unsigned i=0;i<7;++i){const auto snapshot=Battle+0x162a0+44*i;partySnapshots[i].value=real(0x80422174);real(snapshot,partySnapshots[i].value);word(snapshot+0x24,0);for(unsigned j=0;j<30;++j)byte(snapshot+4+j,0);half(snapshot+0x28,0);half(snapshot+0x2a,0);}
@@ -591,7 +598,13 @@ struct TrioAttackRuntime {
             for(unsigned axis=0;axis<3;++axis){real(u+0x3c+4*axis,s.actors[visual[id]].position[axis]);real(u+0x30+4*axis,s.actors[visual[id]].position[axis]);}
             if(id>=3) {
                 const auto& spec=trioBattleUnitSpecs()[id-3];
-                if(id==6){const auto kind=word(word(reactionGroup+4)+3*0x30);word(u+0x10,kind);word(u+0x18,word(kind+0xc0));}
+                if(id==6){
+                    const auto kind=word(word(reactionGroup+4)+3*0x30),definition=word(kind+0xb8);
+                    word(u+0x10,kind);word(u+0x18,word(kind+0xc0));word(p+4,definition);
+                    for(unsigned offset:{0x40u,0x44u,0x38u,0x3cu,0x48u})word(p+(offset==0x40?0x1ac:offset==0x44?0x1b0:offset==0x38?0x1b4:offset==0x3c?0x1b8:0x1bc),word(definition+offset));
+                    for(unsigned offset:{0x108u,0x10au,0x10cu})half(u+offset,half(kind+8));
+                    for(unsigned offset:{0x10eu,0x110u,0x112u})half(u+offset,half(kind+0xa));
+                }
                 if(id<=5){const auto kind=reactionUnits[id-3][0],definition=word(kind+0xb8);word(u+0x10,kind);word(u+0x18,word(kind+0xc0));word(u+0x2b0,reactionUnits[id-3][1]);word(u+0x28c,reactionUnits[id-3][2]);word(u+0x2a0,reactionUnits[id-3][3]);word(p+4,definition);word(p+0x1bc,word(definition+0x48));word(p+0x1b4,word(definition+0x38));word(p+0x1b8,word(definition+0x3c));}
                 byte(u+0xd,byte(word(u+0x10)+0xe));half(u+0x108,spec.hp);
                 word(u+0x104,spec.attributes);word(p+0x1ac,spec.partAttributes);word(p+0x1b0,spec.counterAttributes);
@@ -620,16 +633,16 @@ struct TrioAttackRuntime {
         }
         word(Units+6*0x1000+0x298,franklyPhase);
         for(unsigned id=1;id<7;++id){const auto unit=Units+id*0x1000;half(unit+0xcc,half(word(unit+0x10)+0x16));half(unit+0xce,half(word(unit+0x10)+0x18));initializePackedBattleHpGauge(unit,nativeBattleActorServices(vm));byte(unit+0x311,255);byte(unit+0x312,255);for(auto part=word(unit+0x14);part;part=word(part)){half(part+0x1a2,half(word(part+4)+0x30));half(part+0x1a4,half(word(part+4)+0x32));real(part+0x78,1);for(unsigned axis=0;axis<3;++axis){real(part+0x6c+4*axis,1);real(part+0x60+4*axis,1);real(part+0x3c+4*axis,0);real(part+0x48+4*axis,0);real(part+0x54+4*axis,0);}real(part+0x208,1);real(part+0x20c,1);word(part+0x4f0,0xffffffff);word(part+0x1c0,0xffffffff);byte(part+0x1c4,0);byte(part+0x214,0);byte(part+0x215,0);}}
-        // Source per-part EntAnime domain currently admitted for the two player
-        // models. Other unit factories remain explicit providers at display.
-        for(unsigned id=1;id<=2;++id)for(auto part=word(Units+id*0x1000+0x14);part;part=word(part)){
+        // Real player and surviving lecture-Frankly mode1 pose owners.
+        // Enemy factories remain explicit providers when they survive display.
+        for(const unsigned id:{1u,2u,6u})for(auto part=word(Units+id*0x1000+0x14);part;part=word(part)){
             const auto table=word(part+0x1bc),modelName=word(word(part+4)+8);
             if(!table || !modelName){partPoseHandles.emplace(part,-1);continue;}
             const auto name=packedBattlePoseName(part,28,nativeBattleActorServices(vm).memory);
             if(!name)return false;
             const auto initialName=text(name);
             for(unsigned i=0;i<=initialName.size();++i)byte(part+0x1c4+i,i==initialName.size()?0:uint8_t(initialName[i]));
-            const auto& resource=playerBattleResources[id-1];if(text(modelName)!=resource->modelName)return false;
+            const auto& resource=id==6?franklyBattleResource:playerBattleResources[id-1];if(text(modelName)!=resource->modelName)return false;
             const auto handle=poses.enter(resource,1,{now,now});if(!handle)return false;
             word(part+0x1c0,uint32_t(*handle));partPoseHandles.emplace(part,*handle);
         }
@@ -1248,7 +1261,7 @@ struct TrioAttackRuntime {
     bool displayPrefix() {
         (void)word(0x8041eb90); // Original retained B; footer is still pending.
         const auto actors=nativeBattleActorServices(vm);
-        if(!displayActive){displayActive=true;displayIndex=0;displayUnitPrefixDone=false;}
+        if(!displayActive){displayActive=true;displayIndex=0;displayUnitPrefixDone=false;displayFooter=0;stockExpMutationDone=false;stageRegistration=0;stageGetterDone=false;}
         for(;displayIndex<64;++displayIndex) {
             const auto unit=battleRegistryUnit(word(0x8041eb90),displayIndex,actors);if(!unit)continue;
             if(!displayUnitPrefixDone){
@@ -1418,7 +1431,39 @@ struct TrioAttackRuntime {
             }
             displayUnitPrefixDone=false;
         }
-        pending=0x8010045c;return false; // Original display footer providers remain separate.
+        if(displayFooter==0){
+            endingRequest(0x8010045c);
+            const auto current=word(0x8041eb90);
+            if(!stockExpMutationDone){
+                if(int32_t(word(current+0xf00))>int32_t(word(current+0xf04))){
+                    word(current+0xf08,word(current+0xf08)+1u);
+                    if(int32_t(word(current+0xf08))>=4)word(current+0xf04,word(current+0xf04)+1u);
+                }
+                stockExpMutationDone=true;
+            }
+            if(word(current+0xef8)&2){
+                endingRequest(0x80010bc4,{8,1,int32_t(0x80100258),0});
+                if(displayQueue.enter(8,1,0x80100258,0,real(0x80422238))==DisplayAdmission::Unavailable){pending=0x80010bc4;return false;}
+            }
+            displayFooter=1;
+        }
+        if(displayFooter==1){
+            endingRequest(0x80139084);
+            if(!stageGetterDone){
+                const auto current=word(0x8041eb90);const auto id=int32_t(word(current+0x420));
+                endingRequest(0x800f88cc,{int32_t(current),id});
+                (void)battleRegistryUnit(current,id,actors);stageGetterDone=true;
+            }
+            constexpr uint32_t callbacks[]{0x80138da8,0x801389a0};
+            constexpr float priorities[]{5000,6000};
+            for(;stageRegistration<2;++stageRegistration){
+                const auto callback=callbacks[stageRegistration];endingRequest(0x80010bc4,{4,2,int32_t(callback),0});
+                if(displayQueue.enter(4,2,callback,0,priorities[stageRegistration])==DisplayAdmission::Unavailable){pending=0x80010bc4;return false;}
+            }
+            displayFooter=2;
+        }
+        endingRequest(0x80122870,{int32_t(Battle)});
+        pending=0x80119e24;endingRequest(pending);return false; // Actual palette cycle owner precedes command queues.
     }
     void completionPass(const BattlePadSample& sample) {
         struct Context {TrioAttackRuntime& r;const BattlePadSample& sample;} context{*this,sample};

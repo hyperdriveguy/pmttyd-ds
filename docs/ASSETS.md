@@ -223,3 +223,20 @@ Hashes/audit also live in ignored artifacts/coin-icon-pixel-audit.json. Native
 animation/preview evidence: [provider validation](behavior/display/NATIVE_COIN403_ANIMATION_AND_CAMERA_PUBLICATION.md).
 Original Nintendo/Intelligent Systems local-use/no-redistribution restrictions
 remain; extracted/compiled artwork and embedded native binaries are not committed.
+
+
+## 2026-10-14 — Complete Frankly animation bank and battle metadata
+
+Read-only ISO a/c_kuri_h and a/c_kuri_h- remain under ignored
+local-assets/professor/c_kuri_h and c_kuri_h.tpl. tools/professor_assets.py now
+converts all17 original descriptors in source order, retaining Z_1 atindex0
+and including original D_2. It emits ignored romfs/professor.pose-directory.bin
+(PMPOSE02 original model flags/names/discrete timelines) alongside the shared
+professor.pmanim, professor.pmmesh, professor.t3x and professor.bin. Existing
+surface-mesh/texture conversion is reused:15 original textures,128-pixel tiles,
+1024x256 RGBA8 atlas, no additional rescale or invented animation. Native pack
+is211407 bytes; sidecar1436 bytes. Source/conversion and binary hashes are in
+artifacts/frankly-bank-validated/ASSET_SHA256SUMS; private professor.json retains
+provenance and converter fingerprint. Neither extracted assets nor runtime
+packs are committed. Nintendo/Intelligent Systems assets have no redistribution
+license. [Native scope](behavior/display/NATIVE_FRANKLY_BANK_AND_FIRST_DISPLAY_FOOTERS.md).

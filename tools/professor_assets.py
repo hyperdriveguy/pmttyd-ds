@@ -11,6 +11,7 @@ from PIL import Image
 from iso_assets import DEFAULT_ISO, extract
 from character_mesh import compile_mesh
 from character_surface_mesh import compile_surface_mesh
+from battle_pose_directory import source_directory, write_directory
 
 def build(iso):
     work=Path('local-assets/professor');work.mkdir(parents=True,exist_ok=True)
@@ -18,12 +19,13 @@ def build(iso):
     extract(iso,'a/c_kuri_h',model);extract(iso,'a/c_kuri_h-',tpl)
     bank=model.read_bytes()[0x44:0x84].split(b'\0')[0].decode('ascii')
     if bank!='c_kuri_h':raise ValueError('Unexpected Frankly texture bank')
-    helpers=['character_mesh.py','character_surface_mesh.py','character_bake.py','character_node.py','character_animation_pack.py','character_animation_data.py','iso_assets.py']
+    helpers=['character_mesh.py','character_surface_mesh.py','character_bake.py','character_node.py','character_animation_pack.py','character_animation_data.py','iso_assets.py','battle_pose_directory.py']
     fingerprint=hashlib.sha256(Path(__file__).read_bytes()+b''.join(Path('tools',p).read_bytes() for p in helpers)+model.read_bytes()+tpl.read_bytes()).hexdigest()
     manifest=Path('romfs/professor.json')
-    required=[Path('romfs/professor.'+suffix) for suffix in ['pmmesh','pmanim','t3x','bin']]
+    required=[Path('romfs/professor.'+suffix) for suffix in ['pmmesh','pmanim','t3x','bin','pose-directory.bin']]
     if manifest.exists() and all(p.exists() for p in required) and json.loads(manifest.read_text()).get('fingerprint')==fingerprint:return
-    poses=['Z_1','S_1','T_1','W_1','R_1','D_1']
+    poses=source_directory(model.read_bytes())[2]
+    write_directory(model,required[4])
     directory=struct.unpack_from('>I',model.read_bytes(),0x1ac)[0]
     zero=model.read_bytes()[directory:directory+60].split(b'\0')[0].decode('ascii')
     if poses[0]!=zero:raise ValueError('Original descriptor0 must lead the native NPC bank')
@@ -37,6 +39,8 @@ def build(iso):
     subprocess.run([tex3ds,'-f','rgba8','-z','auto','-o',str(required[2]),str(work/'runtime.png')],check=True,stdout=subprocess.DEVNULL)
     result.update(fingerprint=fingerprint,atlas_height=height,uv_scale=1024/height,assets=[json.loads(p.read_text()) for p in [model.with_suffix('.provenance.json'),tpl.with_suffix('.tpl.provenance.json')]],
                   original_index0=zero,
+                  source_descriptor_order=poses,
+                  battle_metadata_format="PMPOSE02",
                   tribe_pose_fallback='Case-sensitive DOL tribe d_1 misses bank D_1 and selects source descriptor0 Z_1',
                   license='Local original Nintendo/Intelligent Systems assets; no redistribution rights')
     manifest.write_text(json.dumps(result,indent=2)+'\n')

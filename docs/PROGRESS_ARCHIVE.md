@@ -13195,3 +13195,50 @@ now documented for the next implementation.
 Source documentation also corrects an earlier unsupported P60 dependency:
 world position uses root/local/side and hit offsets use U114/side. Part scale
 remains genuine draw/shadow state; position code was not changed by this audit.
+
+
+## 2026-10-14 — Original Frankly battle bank and first display footers
+
+Validated source snapshot artifacts/frankly-bank-source, base
+5f82f7e4b4d613221883624408068f6b1c795c38 plus the four owned files listed
+in OWNED_BASE.txt. Private existing assets are linked; tools/professor_assets.py
+read the original ISO assets and regenerated only ignored Professor products.
+Immutable ELF/3DSX/SMDH, binary/source and original/converted asset SHA256
+manifests are in artifacts/frankly-bank-validated. No ISO/raw packs committed.
+
+Validation:
+- Converter imports17 original c_kuri_h names in exact source order, default
+  Z_1 and authentic D_2, original15 textures and PMPOSE02 model flags/timelines;
+  artifacts/frankly-bank-assets.log. Source provenance/conversion in ASSETS.md.
+- Shared make test:250/250 C++ and143/143 Python passed;
+  artifacts/frankly-bank-tests.log.
+- make -C artifacts/frankly-bank-source test:249/249 C++ and143/143 Python
+  passed; artifacts/frankly-bank-isolated-tests.log. Differing test count
+  reflects concurrent shared features/asset-conditioned registration.
+- make -C artifacts/frankly-bank-source -o assets-ready all
+  BUILD=build-frankly-bank TARGET=ttyd-frankly-bank DEBUG_SHORT_BOOT=1 -j4:
+  passed; artifacts/frankly-bank-isolated-native.log.
+- Finishing regression checks real part9353007c/table9353004c, model c_kuri_h
+  default0/full17 names, copied radius, Frankly queue/shadow, actual EXP/stage
+  callback/key values, original stock-counter increment and no replay under
+  the held subsequent palette provider. Python checks original full directory.
+- tools/emulator_smoke.py on immutable3DSX, isolated
+  artifacts/azahar-frankly-bank profile, underground-trio-story11 fixture,
+ 45-second boot and azahar_trio_exp_icons.py inputs completed exit0;
+  artifacts/frankly-bank-emulator.log. Viewed original-exp-and-victory-30.png
+  shows original10-Star-Point reward/victory; viewed
+  original-ending-fade-export-boundary.png shows the existing field-restoration
+  hold. No native exception detected. User emulator profile/saves untouched.
+- Documentation links and scoped whitespace passed. No hardware test.
+
+Native Frankly admission now owns authentic source/default metadata, rather
+than a synthetic descriptor. Complete prior Init/Entry/Wait/update chronology
+and source global resource/cache/release lifetime are separate. Converted
+art and an accepted directory do not prove original raster or gameplay parity.
+Original StockExp scalar+queue and stage getter+queues complete, preserving
+registration progress and bit2 publication. CommandDisplay's real first color
+mutation80119e24 remains unavailable; remaining command/audience/slot footer
+wrappers, enclosing flag clears, sorted camera/GPU consumers, shadow collision/
+images/cylinder, full source camera4 history and ordered teardown/field return
+remain unbound. Azahar captures do not prove battle-loss handling, complete
+prologue parity or physical performance.
