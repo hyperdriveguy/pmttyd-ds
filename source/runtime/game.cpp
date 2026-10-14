@@ -775,7 +775,7 @@ bool Game::near(Vec2 p, float d) const { return length(progress.position,p) < d;
 NpcTalkPlayer Game::fieldNpcTalkPlayer() const {
     NpcTalkPlayer mario;mario.root={progress.position.x*100,(groundHeight+jumpHeight)*100,progress.position.z*100};
     mario.motion=fieldJump.motion;mario.displayTurn=marioPresentation.display;
-    mario.keyDepth=int8_t(goombaHandIn.keyDepth());
+    mario.keyDepth=int8_t(goombaHandIn.keyDepth()+(goombaAcquisition.active()?1:0));
     mario.cameraSnapshot=marioPresentation.offset;
     mario.viewFlags=marioPresentation.displayFlags;mario.flags=uint32_t(fieldIdle.mainFlags);
     mario.viewYaw=fieldNpcAngles().angle(fieldCameraFrame.eye.x,fieldCameraFrame.eye.z,fieldCameraFrame.at.x,fieldCameraFrame.at.z);
@@ -798,7 +798,9 @@ bool Game::fieldNpcTalkCandidateAlive() const {
 bool Game::fieldNpcTalkBound(const FieldActorRecord& actor) const {
     if(!progress.originalStory)return false;
     const auto items=fieldNpcTalkInventory(actor);
-    return fieldActorTalkAvailable(actor,*progress.originalStory,progress.originalNpcTalkState,items) ||
+    return (progress.originalPouch && goombaQuest2AcquisitionAdmitted(actor,progress.originalNpcTalkState) &&
+            goombaAcquisitionPresentationReady(fieldItemGetPresentation)) ||
+        fieldActorTalkAvailable(actor,*progress.originalStory,progress.originalNpcTalkState,items) ||
         (progress.originalPouch && pouchRevisionAvailable(*progress.originalPouch) &&
          (goombaQuest2Admitted(actor,progress.originalNpcTalkState,items) || goombaQuest13Admitted(actor,progress.originalNpcTalkState,items)));
 }
@@ -828,7 +830,7 @@ const FieldActorRecord* Game::nearbyFieldActor() const {
 }
 void Game::updateFieldNpcTalk(const Input& input) {
     if(npcTalkWaiting) {
-        if(!fieldActorTalk.message.active() && !goombaHandIn.active()){npcTalkWaiting=false;npcTalkCandidate=0;}
+        if(!fieldActorTalk.message.active() && !goombaHandIn.active() && !goombaAcquisition.active()){npcTalkWaiting=false;npcTalkCandidate=0;}
         return; // Source wait/return owner does not scan again in this invocation.
     }
     if(npcTalkPending) {
@@ -840,7 +842,11 @@ void Game::updateFieldNpcTalk(const Input& input) {
                 if(live!=fieldNpcs.end())current.position={live->second.body.root.x,live->second.body.root.y,live->second.body.root.z};
                 const auto items=fieldNpcTalkInventory(current);
                 bool started=false;
-                if((goombaQuest2Admitted(current,progress.originalNpcTalkState,items) ||
+                if(progress.originalPouch && goombaQuest2AcquisitionAdmitted(current,progress.originalNpcTalkState)) {
+                    started=goombaAcquisition.begin(current,*progress.originalPouch,progress.originalNpcTalkState,
+                        fieldActorTalk,harborMessageFont(),fieldItemRegistry,fieldItemGetPresentation,ticks*1000/60);
+                    if(started)fieldKeysOff=true;
+                } else if((goombaQuest2Admitted(current,progress.originalNpcTalkState,items) ||
                     goombaQuest13Admitted(current,progress.originalNpcTalkState,items)) && progress.originalPouch) {
                     if(!itemSelection)itemSelection=std::make_shared<ItemSelectionPresentation>();
                     started=goombaHandIn.begin(current,*progress.originalPouch,progress.originalNpcTalkState,
@@ -1763,6 +1769,9 @@ void Game::tick(const Input& rawInput) {
             game.updateFieldNpcCandidates();
             game.updateFieldNpcTalk(talkInput); // NPC owner follows current Mario/object updates.
             game.updateFieldNpcPresentation();
+            const uint32_t itemTriggers=raw.physicalSnapshot?game.inputProducer.channels[0].pressed:
+                (raw.confirm?0x100u:0u)|(raw.cancel?0x200u:0u);
+            game.goombaAcquisition.itemMain(itemTriggers); // Item owner follows this visit's Mario/NPC owners.
             game.checkFieldRoadCases();
             const auto& axes=game.inputProducer.channels[0].analog;
             const int mainX=raw.physicalSnapshot?axes.mainX:std::isfinite(raw.x)?int(std::clamp(raw.x,-1.f,1.f)*70.f):0;
@@ -1777,6 +1786,10 @@ void Game::tick(const Input& rawInput) {
     } presentation{*this,partner,rawInput};
     Input input=rawInput;const Input& i=input;
     ++ticks;++fieldCameraSimulationTicks;openingDeparture.advance(ticks,progress.room); sound=Sound::None;overheadContact=false;headObjectKey=0;headContact={};
+    if(goombaAcquisition.active()) {
+        goombaAcquisition.eventMain(); // Event manager precedes this visit's Mario/NPC/item owners.
+        if(goombaAcquisition.complete()){fieldKeysOff=false;scene=Scene::Explore;}
+    }
     if(scene==Scene::Explore || scene==Scene::Dialogue)beginFieldCameraTick();
     if(arriving || warpRequest>=0)retainedFieldMainX=0; // Source road choreography keys off before Mario input publication.
     if(i.physicalSnapshot) {
@@ -1935,9 +1948,10 @@ void Game::tick(const Input& rawInput) {
             fieldKeysOff=goombaHandIn.keyDepth()!=0;
             if(!goombaHandIn.active())progress.hp=progress.originalPouch->half(0x70);
         }
-        saveRequested=false;if(!fieldActorTalk.message.active() && !goombaHandIn.active())scene=Scene::Explore;
+        saveRequested=false;if(!fieldActorTalk.message.active() && !goombaHandIn.active() && !goombaAcquisition.active())scene=Scene::Explore;
         return;
     }
+    if(goombaAcquisition.active()){saveRequested=false;return;}
     if(goombaHandIn.active()) {
         if(fieldJump.airborne)dispatchFieldAir();
         move(Input{});goombaHandIn.tick(ticks*1000/60);

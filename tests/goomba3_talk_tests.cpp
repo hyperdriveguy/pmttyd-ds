@@ -51,4 +51,45 @@ int main() {
         assert(game.progress.originalNpcTalkState.quest1420==checkpoint.originalNpcTalkState.quest1420);
         assert(game.progress.originalNpcTalkState.flag5405==checkpoint.originalNpcTalkState.flag5405 && game.progress.originalNpcTalkState.flag5406==false);
     }
+    // Actual Game NPC admission delegates quest2 to the acquisition owner.
+    // Presentation is injected here; normal native providers remain unbound.
+    {
+        Progress checkpoint;checkpoint.room=0;checkpoint.originalStory=8;checkpoint.position={-4,-3.55f};
+        checkpoint.originalNpcTalkState.quest1420=2;checkpoint.originalNpcTalkState.flag5405=false;
+        checkpoint.originalNpcTalkState.flag5406=false;checkpoint.originalPouch=std::make_shared<ProloguePouch>(initializeProloguePouch("Yoshi"));
+        Game game;game.restore(checkpoint);game.marioPresentation.display=game.marioPresentation.target=180;
+        for(int n=0;n<360;++n)game.tick({});
+        assert(!game.nearbyFieldActor()); // Unsupported presentation cannot advertise acquisition.
+        FieldItemGetServices services;services.user=&game;
+        services.ready=[](void*){return true;};
+        game.bindFieldItemGetPresentation(services);assert(!game.nearbyFieldActor());
+        services.mario=[](void* p){const auto& g=*static_cast<Game*>(p);return ItemGetPoint{g.progress.position.x*100,0,g.progress.position.z*100};};
+        services.request=[](void*,ItemGetRequest){};
+        services.effect=[](void*,int32_t,ItemGetPoint){return uintptr_t(1);};
+        services.window=[](void*,uint32_t definition,const char*){return definition==0x80313dc8?1:2;};
+        services.windowAction=[](void*,int32_t){return int32_t(0);};
+        services.bgmSilent=[](void*){return false;};services.bgmCheck=[](void*,int32_t){return int32_t(0);};
+        game.bindFieldItemGetPresentation(services);
+        const auto* candidate=game.nearbyFieldActor();assert(candidate && candidate->key==source->key);
+        Input confirm;confirm.confirm=true;game.tick(confirm);game.tick({});
+        assert(game.fieldAcquisition().active() && game.fieldActorTalk.message.id()=="irai_02_00");
+        Game snapshot=game;assert(snapshot.fieldAcquisition().active() && !snapshot.fieldAcquisition().canAdvance());
+        for(int n=0;n<1500;++n)snapshot.tick(confirm);
+        assert(!game.fieldItems().find("irai_item") && !game.progress.originalPouch->keyItemCount(95));
+        assert(game.fieldActorTalk.message.active() && game.fieldAcquisition().canAdvance());
+        assert(!game.fieldItems().find("irai_item") && !game.progress.originalPouch->keyItemCount(95));
+        for(int n=0;n<5000 && game.fieldActorTalk.message.active();++n)game.tick(confirm);
+        assert(!game.fieldActorTalk.message.active() && game.fieldAcquisition().active() && game.scene==Scene::Dialogue);
+        game.tick({});assert(game.progress.originalPouch->keyItemCount(95)==1 && game.fieldAcquisition().get().substate()==2);
+        assert(game.progress.originalNpcTalkState.flag5405==false);
+        Game obtaining=game;assert(!obtaining.fieldAcquisition().canAdvance());
+        for(int n=0;n<5;++n)obtaining.tick(confirm);
+        assert(game.fieldItems().find("irai_item")->flags&1);
+        assert(game.progress.originalNpcTalkState.flag5405==false);
+        game.tick(confirm);assert(game.fieldAcquisition().active() && game.progress.originalNpcTalkState.flag5405==false);
+        game.tick({});assert(game.fieldAcquisition().complete() && game.progress.originalNpcTalkState.flag5405==true);
+        assert(game.scene==Scene::Explore && !game.fieldNpcTalkActive() && !game.fieldKeysOff);
+        game.tick({});assert(game.progress.originalPouch->keyItemCount(95)==1);
+    }
+
 }

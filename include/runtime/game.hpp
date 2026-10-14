@@ -1,6 +1,7 @@
 #pragma once
 #include "item_selection_presentation.hpp"
 #include "goomba_hand_in.hpp"
+#include "goomba_acquisition.hpp"
 #include "field_party.hpp"
 #include <array>
 #include <cstdint>
@@ -294,13 +295,21 @@ public:
     const FieldActorRecord* nearbyFieldActor() const;
     uint32_t fieldNpcContact() const{return fieldNpcHit;}
     const FieldNpcInstance* fieldNpcState(uint32_t key) const;
-    bool fieldNpcTalkActive() const {return goombaHandIn.active() || fieldActorTalk.message.active();}
+    bool fieldNpcTalkActive() const {return goombaAcquisition.active() || goombaHandIn.active() || fieldActorTalk.message.active();}
+    // Bind only after native providers are ready; registry/pouch owners remain Game-owned.
+    void bindFieldItemGetPresentation(const FieldItemGetServices& services) {fieldItemGetPresentation=services;}
+    FieldItemRegistry& fieldItems() {return fieldItemRegistry;}
+    const FieldItemRegistry& fieldItems() const {return fieldItemRegistry;}
+    const GoombaAcquisition& fieldAcquisition() const {return goombaAcquisition;}
     const std::vector<FieldNpcSoundRequest>& fieldNpcSounds() const{return npcSoundRequests;}
 private:
     NpcTalkPlayer fieldNpcTalkPlayer() const;
     FieldActorTalkInventory fieldNpcTalkInventory(const FieldActorRecord&) const;
     bool fieldNpcTalkBound(const FieldActorRecord&) const;
     GoombaHandIn goombaHandIn;
+    GoombaAcquisition goombaAcquisition;
+    FieldItemRegistry fieldItemRegistry;
+    FieldItemGetServices fieldItemGetPresentation{};
     bool fieldNpcTalkCandidateAlive() const;
     uint32_t npcTalkCandidate=0;
     uint32_t npcTalkPending=0;

@@ -1,17 +1,21 @@
 #include "goomba_acquisition.hpp"
 namespace ttyd {
 namespace {constexpr const char* Name="irai_item";}
+bool goombaAcquisitionPresentationReady(const FieldItemGetServices& p) {
+ return p.ready && p.mario && p.request && p.effect && p.window && p.windowAction &&
+        p.bgmSilent && p.bgmCheck && p.ready(p.user);
+}
 bool goombaQuest2AcquisitionAdmitted(const FieldActorRecord& a,const FieldActorTalkState& s) {
  return a.room==0 && a.key==0x42ff5f1f && s.quest1420==2 && s.flag5406==false && s.flag5405==false;
 }
 bool GoombaAcquisition::begin(const FieldActorRecord& actor,ProloguePouch& pouch,FieldActorTalkState& state,
  FieldActorTalk& talk,const MessageFont& font,FieldItemRegistry& registry,const FieldItemGetServices& p,uint64_t now,bool blend) {
  if(active() || talk.message.active() || !goombaQuest2AcquisitionAdmitted(actor,state) ||
-    !p.ready || !p.mario || !p.request || !p.effect || !p.window || !p.windowAction || !p.bgmSilent || !p.bgmCheck || !p.ready(p.user) ||
+    !goombaAcquisitionPresentationReady(p) ||
     !talk.canPrint(actor,"irai_02_00",font,now))return false;
  if(!talk.print(actor,"irai_02_00",font,now))return false;
  talk_=&talk;switches_=&state;pouch_=&pouch;registry_=&registry;presentation_=p;mapBlend_=blend;
- entry_=nullptr;get_=FieldItem95Get{};phase_=Phase::Printing;return true;
+ owner_=this;entry_=nullptr;get_=FieldItem95Get{};phase_=Phase::Printing;return true;
 }
 void GoombaAcquisition::publishEntry() {
  if(!entry_ || !(entry_->flags&1))return;
@@ -33,6 +37,7 @@ FieldItemGetServices GoombaAcquisition::services() {
  return s;
 }
 void GoombaAcquisition::eventMain() {
+ if(!canAdvance())return;
  if(phase_==Phase::Printing){if(talk_->message.active())return;phase_=Phase::EntryPending;}
  if(phase_==Phase::EntryPending) {
   if(!registry_->enter95(Name,{0,-1000,0},true,mapBlend_))return; // Native available-slot frontier, no story write.
@@ -42,6 +47,7 @@ void GoombaAcquisition::eventMain() {
  if(phase_==Phase::Getting && registry_->pollGet(Name)==2){switches_->flag5405=true;phase_=Phase::Complete;}
 }
 void GoombaAcquisition::itemMain(uint32_t triggers) {
+ if(!canAdvance())return;
  if(phase_!=Phase::Getting || !entry_ || !(entry_->flags&1) || entry_->sequence!=2)return;
  if(get_.state()==ItemGetStep::Idle) {
   // Finite original forced-get profile; unsupported live flag mutations remain a frontier.
