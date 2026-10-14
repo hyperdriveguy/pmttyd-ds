@@ -1,3 +1,43 @@
+## 2026-10-13 — Native verification round: event nesting, game-wide GSW census, result escape
+
+Independent ISO-read verification of three documentation deliveries with
+`tools/dol_event_inventory.parse_commands` and `tools/rel_event_inventory.py`
+over `/home/carson/games/roms/G8ME01.iso` (read-only; artifacts in `/tmp`). No
+native/source/test/CMake/asset change.
+
+- **Child-entry nesting** (`docs/behavior/event/EVENT_CHILD_ENTRY_NESTING_AND_FLAT_PARSE.md`):
+  reproduced exactly — 7290 events / 234878 commands over 29 REL modules; pairs
+  107→109 2779, 108→109 120, 110→112 837, 111→112 106 (total 3842); closers 109
+  = 2899, 112 = 943; 0 unbalanced, 0 cross-family; depth distribution
+  5850/1434/6; the six depth-2 events match. The three cited `GSW[0]` stores are
+  opcode 50 at depth 0 (values 2 / 403 / 9).
+- **Game-wide GSW census** (`docs/behavior/story/SAVED_STORY_WORD_CENSUS_GSW.md`):
+  counts reproduce exactly under operand-position-0 counting — 31 words / 2213
+  refs; `GSW[0]` 427/1514; `GSW[1420]` 33/86; `GSW[1469]` 10/6 `{50,53,79}`;
+  `GSW[0]` 394 distinct values 2..405 with gaps 22/36/126/177/186/281/349/351/
+  357/381; the single non-literal store is `tou2/evt_random_battle2` cmd 83;
+  `GSW[1469]` opcode-79 OR bits at `rsh/talk_cook` cmds 42/46/50.
+  **One delivery error flagged:** `GSW[1420]` "exactly 32 distinct literals" is
+  an off-by-one — the set listed (`0..30`) is 31 contiguous values, which is
+  what the bytes give.
+- **RESULT-01 escape mask arm**: `0x8034f038` = WaitEventEnd(LW15), then
+  END_EVENT at 0x8034f044 before END_IF at 0x8034f048 — the mask2 arm ends the
+  event and does not fall through to the terminal `InterruptStop(0)`.
+
+Recorded in `docs/requests/DEMO-01.md` and `RESULT-01.md` (append-only), commits
+`7ca08ef` / `62d7d05` / `d144b75`. Commit method: guarded temp-index
+`commit-tree`/`update-ref` against the current HEAD, never the shared index
+(a concurrent agent's plain commit had swept a staged set; the docs agent
+documented that recurrence in `08861f3`, files intact). The doc-link regression
+the deliveries introduced was already corrected by the docs agent in `fc1f090`
+(checker back to 0 broken at 1103 files).
+
+Limitations: static byte census only, no original execution; the `GSW[1420]`
+off-by-one is flagged in the request file, not edited in the delivery. Next:
+verify remaining open deliveries (STAR-01 fill callers, ITEM-01,
+PARTNER-FULL-01) and file G1 requests for map/transition entrance types and UI
+pause/focus token edges.
+
 ## 2026-10-13 — Tutorial ordinary Crump hit reaction
 
 Implemented and committed `d1b2e99`: shared original GetDamage signed-byte
