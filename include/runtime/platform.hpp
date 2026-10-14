@@ -275,8 +275,8 @@ private:
     FieldShadowGeometry shadowGeometry;
     bool loadMap(const char* name,Room& room);
     bool prepareBattleMaps(const Game&);
-    const StageMapObjects* updateStageMap(const Game&,Room&);
     uint32_t residentFieldRoom=0; // Native GPU residency, separate from simulation area state.
+    const StageMapObjects* updateStageMap(const Game&,Room&);
     bool loadFieldActors(uint32_t roomId,Room& room);
     void fieldActors(const Game&);
     void drawFieldActors(bool translucent);
