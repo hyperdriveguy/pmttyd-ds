@@ -3,6 +3,7 @@
 #include "professor_story.hpp"
 #include <optional>
 namespace ttyd {
+struct ProloguePouch;
 bool loadTrioCommandAssets(const char* root);
 struct TrioAttackRequest {
     int32_t actor=-1,unit=-1,part=-1;
@@ -31,6 +32,7 @@ public:
     std::array<int32_t,2> selected() const;
     std::array<int32_t,2> target(unsigned) const;
     const char* commandName(unsigned) const;
+    std::optional<uint16_t> commandIcon(unsigned,const ProloguePouch*) const;
     const char* targetName(int32_t) const;
 private:
     std::array<uint8_t,7> partCounts{};

@@ -1769,3 +1769,19 @@ and npcMoveG recovery uses read-only ISO DOL spans; hashes and helper identities
 are in the behavior contract. No extracted payload/ISO is committed, and no
 new redistribution rights are granted. Native ray/SDK adapters do not establish
 original renderer/Gekko parity or physical New2DS performance.
+
+## 2026-10-13 — Original native weapon-menu sprites
+
+Imported original icon.bin/icon.tpl cells164..169 (Hammer/boots equipment
+variants) and344 (Headbonk). Original cell dimensions, pixels, descriptor loops
+and frame delays are retained; they fit the existing512×512 RGBA8 atlas1MiB
+without resampling or a new GPU texture bank. Native screen scaling changes
+presentation only. Source metadata records these IDs in message-icons.json.
+The read-only battle_weapon_icon_assets.py pins complete _getHammerIconId
+80124c10/54 and _getJumpIconId80124c64/54 plus complete default weapon records
+803538a8/c0,80353de8/c0,80393ea8/c0. Partner unsigned weapon+4 gives344;
+Jump/Hammer use actual equipment-level helpers rather than class icons334..343.
+Private command metadata PMTCMD2 adds the source icon field; old packs rebuild.
+See [native scope](behavior/display/NATIVE_WEAPON_MENU_ICONS.md). ISO stays
+read-only; extracted images, atlas, compiled packs and captures remain ignored.
+Nintendo/Intelligent Systems original resources; no redistribution rights.

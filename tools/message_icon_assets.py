@@ -5,13 +5,14 @@ from pathlib import Path
 from PIL import Image
 from iso_assets import DEFAULT_ISO,extract,convert_tpl
 from battle_hud_assets import source_art
+from battle_weapon_icon_assets import source_art as weapon_art
 
 def build(iso):
     work=Path('local-assets/message-icons');work.mkdir(parents=True,exist_ok=True)
     directory=work/'icon.bin';tpl=work/'icon.tpl';extract(iso,'icon.bin',directory);extract(iso,'icon.tpl',tpl)
-    raw=directory.read_bytes();hud=source_art(iso);icons=[];bitmaps=[]
+    raw=directory.read_bytes();hud=source_art(iso);weapons=weapon_art(iso);icons=[];bitmaps=[]
     identifiers=list(dict.fromkeys([129,504,115,404,307,308,445,446,447,314]+
-        [row['icon'] for row in hud['rows']]+hud['large_digits']+hud['small_digits']))
+        [row['icon'] for row in hud['rows']]+hud['large_digits']+hud['small_digits']+weapons['icons']))
     for identifier in identifiers:
         offset=struct.unpack_from('>H',raw,2*(identifier+1))[0];loop,_,_,count=struct.unpack_from('>4H',raw,offset)
         frames=[]
@@ -55,7 +56,7 @@ def build(iso):
     atlas.save(work/'atlas.png');Path('romfs/message-icons.bin').write_bytes(struct.pack('<8sI',b'PMICON1',len(icons))+payload)
     tex3ds=shutil.which('tex3ds') or '/opt/devkitpro/tools/bin/tex3ds'
     subprocess.run([tex3ds,'-f','rgba8','-z','auto','-o','romfs/message-icons.t3x',str(work/'atlas.png')],check=True,stdout=subprocess.DEVNULL)
-    Path('romfs/message-icons.json').write_text(json.dumps(dict(source=['icon.bin','icon.tpl','e/us/effect_us.tpl'],icons=icons,battle_hud=hud,
+    Path('romfs/message-icons.json').write_text(json.dumps(dict(source=['icon.bin','icon.tpl','e/us/effect_us.tpl'],icons=icons,battle_hud=hud,battle_weapons=weapons,
         atlas_dimensions=[512,512],conversion='Original pixels; rectangle packing with2px transparent padding; no resampling',license='Nintendo/Intelligent Systems resources; no redistribution rights'),indent=2)+'\n')
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--iso',default=DEFAULT_ISO);build(p.parse_args().iso)

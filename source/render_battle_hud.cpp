@@ -57,7 +57,14 @@ void Renderer::battleMenuRows(const Game& g) {
         const auto* label=target?commands.targetName(commands.target(row)[0]):commands.commandName(row);
         // This plain-label adapter uses the unchanged source atlas, mapping,
         // WID1 glyph widths and spacing2. Tagged story text stays in msgDisp.
-        const auto& font=harborMessageFont();float x=50;
+        float x=50;
+        if(!target)if(const auto icon=commands.commandIcon(unsigned(row),g.progress.originalPouch.get())) {
+            if(const auto* art=messageIcon(*icon)) {
+                const float height=art->frame(g.ticks).height*.5f;
+                messageIconImage(*icon,g.ticks,62,y+9+height*.5f,1,255);x=84;
+            }
+        }
+        const auto& font=harborMessageFont();
         for(const auto* p=reinterpret_cast<const uint8_t*>(label);*p;++p) {
             const auto code=font.mapping[*p];if(code==0xffff || code>=font.glyphs.size())continue;
             const auto& glyph=font.glyphs[code];

@@ -4,6 +4,7 @@ import sys
 import unittest
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
 from battle_hud_assets import source_art
+from battle_weapon_icon_assets import source_art as weapon_art
 from iso_assets import DEFAULT_ISO
 
 class BattleHudAssetsTests(unittest.TestCase):
@@ -17,13 +18,21 @@ class BattleHudAssetsTests(unittest.TestCase):
         self.assertEqual(art['large_digits'],list(range(481,501,2)))
         self.assertEqual(art['small_digits'],list(range(482,502,2)))
 
+    @unittest.skipUnless(Path(DEFAULT_ISO).is_file(),'original local ISO unavailable')
+    def test_original_weapon_icon_bindings(self):
+        art=weapon_art(DEFAULT_ISO)
+        self.assertEqual(art['bodies'],5)
+        self.assertEqual([r['icon'] for r in art['weapons']],[167,164,344])
+        self.assertEqual(art['jump_icons'],[167,168,169])
+        self.assertEqual(art['hammer_icons'],[164,165,166])
+
     @unittest.skipUnless(Path('romfs/message-icons.json').is_file(),'local icon pack unavailable')
     def test_hud_frames_have_original_pixels_and_nonoverlapping_uvs(self):
         from PIL import Image
         meta=json.loads(Path('romfs/message-icons.json').read_text())
         atlas=Image.open('local-assets/message-icons/atlas.png').convert('RGBA')
         art=meta['battle_hud']
-        wanted={r['icon'] for r in art['rows']}|set(art['large_digits'])|set(art['small_digits'])
+        wanted={r['icon'] for r in art['rows']}|set(art['large_digits'])|set(art['small_digits'])|set(meta['battle_weapons']['icons'])
         icons={i['id']:i for i in meta['icons']}
         self.assertTrue(wanted<=icons.keys())
         rectangles=[]

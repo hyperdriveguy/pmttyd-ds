@@ -1,5 +1,6 @@
 #include "battle_menu_layout.hpp"
 #include "trio_battle_commands.hpp"
+#include "prologue_pouch.hpp"
 #include <cassert>
 #include <cstring>
 #include <iostream>
@@ -20,6 +21,14 @@ int main() {
     TrioBattleCommands menu;assert(menu.begin(scene));
     assert(!std::strcmp(menu.commandName(0),"Normal Jump") && !std::strcmp(menu.commandName(1),"Normal Hammer"));
     assert(!std::strcmp(menu.targetName(3),"Goomba"));
+    ProloguePouch icons;icons.bytes[0x98]=1;icons.bytes[0x99]=1;
+    assert(menu.commandIcon(0,&icons)==167 && menu.commandIcon(1,&icons)==164);
+    icons.bytes[0x98]=3;icons.bytes[0x99]=2;
+    assert(menu.commandIcon(0,&icons)==169 && menu.commandIcon(1,&icons)==165);
+    assert(!menu.commandIcon(0,nullptr) && !menu.commandIcon(2,&icons));
+    auto iconPartner=menu;iconPartner.actor=2;
+    assert(iconPartner.commandIcon(0,nullptr)==344 && !iconPartner.commandIcon(1,&icons));
+
     menu.input(0x100,0);assert(menu.state==TrioBattleCommands::State::Target && menu.count()==3);
     assert((menu.selected()==std::array<int32_t,2>{3,1}));
     assert((menu.target(1)==std::array<int32_t,2>{4,1})); // Spike is selectable.

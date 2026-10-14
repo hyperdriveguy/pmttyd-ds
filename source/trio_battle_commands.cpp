@@ -1,10 +1,12 @@
 #include "trio_battle_commands.hpp"
 #include "message_assets.hpp"
+#include "battle_weapon_icons.hpp"
+#include "prologue_pouch.hpp"
 #include <cstdio>
 #include <cstring>
 namespace ttyd {
 namespace {
-struct Command {uint32_t address=0,admission=0,attributes=0;std::array<char,64> key{};};
+struct Command {uint32_t address=0,admission=0,attributes=0,icon=0;std::array<char,64> key{};};
 std::array<Command,3> commands;
 MessageResource labels;
 bool ready=false;
@@ -19,10 +21,10 @@ bool loadTrioCommandAssets(const char* root) {
     const std::string base=root;
     FILE* f=std::fopen((base+"/trio-battle-commands.bin").c_str(),"rb");if(!f)return false;
     char magic[8];uint32_t count=0;std::array<Command,3> next{};
-    bool ok=std::fread(magic,8,1,f)==1 && !std::memcmp(magic,"PMTCMD1",8) &&
+    bool ok=std::fread(magic,8,1,f)==1 && !std::memcmp(magic,"PMTCMD2",8) &&
         std::fread(&count,4,1,f)==1 && count==3;
     for(auto& c:next)ok=ok && std::fread(&c.address,4,1,f)==1 && std::fread(&c.admission,4,1,f)==1 &&
-        std::fread(&c.attributes,4,1,f)==1 && std::fread(c.key.data(),1,64,f)==64 && c.key.back()==0;
+        std::fread(&c.attributes,4,1,f)==1 && std::fread(&c.icon,4,1,f)==1 && c.icon<=65535 && std::fread(c.key.data(),1,64,f)==64 && c.key.back()==0;
     ok=ok && std::fgetc(f)==EOF;std::fclose(f);
     MessageResource text;if(!ok || !text.load((base+"/messages/global.txt").c_str()))return false;
     for(auto& c:next)if(!text.find(c.key.data()))return false;
@@ -38,6 +40,14 @@ std::array<int32_t,2> TrioBattleCommands::selected() const {return target(candid
 const char* TrioBattleCommands::commandName(unsigned i) const {
     if(!ready || i>=(actor==2?1u:2u))return "";
     return labels.find(commands[actor==2?2:i].key.data());
+}
+std::optional<uint16_t> TrioBattleCommands::commandIcon(unsigned row,const ProloguePouch* pouch) const {
+    if(!ready || row>=(actor==2?1u:2u))return std::nullopt;
+    if(actor==2)return uint16_t(commands[2].icon);
+    if(!pouch)return std::nullopt;
+    BattleWeaponIconServices services;services.user=const_cast<ProloguePouch*>(pouch);
+    services.pouch=[](void* p){return static_cast<const ProloguePouch*>(p)->bytes.data();};
+    return row==0?jumpWeaponIcon(services):hammerWeaponIcon(services);
 }
 const char* TrioBattleCommands::targetName(int32_t id) const {
     if(id<3 || id>6)return "";

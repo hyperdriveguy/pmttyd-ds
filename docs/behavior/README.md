@@ -773,3 +773,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native source stage-floor lookup and jump recovery](battle/NATIVE_STAGE_FLOOR_AND_JUMP_RECOVERY.md).
 
 - [Original NPC map-side/Goomba3 zero-vertical path](field/FIELD_NPC_MAP_SIDE_MOVEMENT_AND_GOOMBA3_ZERO_VERTICAL.md) [native map-side/Goomba3 wandering](field/NATIVE_NPC_MAP_SIDE_AND_GOOMBA3_WANDER.md), and [item95 deferred grant sequence](field/GOOMBA3_ITEM95_GET_SEQUENCE_AND_DEFERRED_GRANT.md).
+
+- [Original native weapon-menu icons](display/NATIVE_WEAPON_MENU_ICONS.md).

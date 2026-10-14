@@ -959,3 +959,9 @@ target_sources(ttyd_core PRIVATE source/npc_map_move.cpp)
 add_executable(npc_map_move_tests tests/npc_map_move_tests.cpp)
 target_link_libraries(npc_map_move_tests PRIVATE ttyd_core)
 add_test(NAME npc_map_move COMMAND npc_map_move_tests)
+
+# Original equipment-level weapon icon leaves.
+target_sources(ttyd_core PRIVATE source/battle_weapon_icons.cpp)
+add_executable(battle_weapon_icons_tests tests/battle_weapon_icons_tests.cpp)
+target_link_libraries(battle_weapon_icons_tests PRIVATE ttyd_core)
+add_test(NAME battle_weapon_icons COMMAND battle_weapon_icons_tests)

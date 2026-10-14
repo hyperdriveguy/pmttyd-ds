@@ -61,8 +61,8 @@ def build(iso):
             record=read_dol(address,0xc0);name=struct.unpack_from('>I',record)[0]
             key=read_dol(name,64).split(b'\0',1)[0].decode('ascii')
             admission,attributes=struct.unpack_from('>II',record,0x64)
-            commands.append(dict(address=address,admission=admission,attributes=attributes,nameKey=key,sha256=hashlib.sha256(record).hexdigest()))
-    Path('romfs/trio-battle-commands.bin').write_bytes(struct.pack('<8sI',b'PMTCMD1',3)+b''.join(struct.pack('<3I64s',r['address'],r['admission'],r['attributes'],r['nameKey'].encode('ascii')) for r in commands))
+            commands.append(dict(address=address,admission=admission,attributes=attributes,nameKey=key,icon=struct.unpack_from('>H',record,4)[0],sha256=hashlib.sha256(record).hexdigest()))
+    Path('romfs/trio-battle-commands.bin').write_bytes(struct.pack('<8sI',b'PMTCMD2',3)+b''.join(struct.pack('<4I64s',r['address'],r['admission'],r['attributes'],r['icon'],r['nameKey'].encode('ascii')) for r in commands))
     tex3ds=shutil.which('tex3ds') or '/opt/devkitpro/tools/bin/tex3ds'
     for room in ('bti_01','stg_00_1'):
         d=work/(room+'.d');t=work/(room+'.tpl');extract(iso,'m/'+room+'/d',d);extract(iso,'m/'+room+'/t',t)
