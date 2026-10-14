@@ -133,3 +133,5 @@ romfs/harbor-curtain.*
 /romfs/title-curtain-*
 
 /romfs/title-prompt-pattern.*
+
+/romfs/opening-house-sounds.*

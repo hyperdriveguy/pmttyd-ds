@@ -815,3 +815,13 @@ target_sources(ttyd_core PRIVATE source/opening_npc_glide.cpp)
 add_executable(opening_npc_glide_tests tests/opening_npc_glide_tests.cpp)
 target_link_libraries(opening_npc_glide_tests PRIVATE ttyd_core)
 add_test(NAME opening_npc_glide COMMAND opening_npc_glide_tests)
+
+
+target_sources(ttyd_core PRIVATE source/opening_house_sounds.cpp)
+add_executable(opening_house_sounds_tests tests/opening_house_sounds_tests.cpp)
+target_link_libraries(opening_house_sounds_tests PRIVATE ttyd_core)
+add_test(NAME opening_house_sounds COMMAND opening_house_sounds_tests)
+if(EXISTS "${CMAKE_SOURCE_DIR}/romfs/opening-house-sounds.bin")
+    add_test(NAME opening_house_sounds_original COMMAND opening_house_sounds_tests original)
+    set_tests_properties(opening_house_sounds_original PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+endif()

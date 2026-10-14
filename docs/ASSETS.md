@@ -1368,3 +1368,25 @@ and source pulse alpha. Cached fingerprints include originalTPL and decoder;
 no procedural replacement art is generated. Original BGM_TITLE1 volume88,
 existing original demo PCM streams and loop intervals feed three fixed NDSP
 owners on1/0/18; original copyrighted resources remain excluded from history.
+
+
+## Original opening house SFX PCM and position metadata
+
+Read-only tools/opening_house_sound_assets.py resolves original US sound keys
+SFX_EVT_OPN_PARETTA_MOVE1/SFX_EVT_POST_SHAKE1/SFX_DOOR_OPEN1/SFX_DOOR_SHUT1,
+retaining distinct table/FX/macro/sample IDs and table parameters. Original
+pmario DSP ADPCM samples1176/479/840/851 become ignored
+romfs/opening-house-{flight,postbox,door-open,door-shut}.wav, mono PCM16 at
+16000Hz without resampling or loops (~75KB). Ignored opening-house-sounds.bin
+(PMHSND01,404 bytes) retains four source cue records and original door/postbox
+leaf-average position metadata; opening-house-sounds.json records source paths,
+hashes, macros/parameters, position leaves and ENV_OPN_AAA1's five original
+bird/leaf rows. All raw banks/copies remain private local-assets/opening-sounds;
+no hardlinks to parent mutable packs are used.
+
+Native presentation consumes original samples and source table volume/pan;
+full MusyX macro delay/pitch/RNG/envelope/child voices, positional calc3D and
+ENV scheduler remain unbound. No substitute bird loop, generated art or tone
+is added. See [sound contract](behavior/audio/NATIVE_OPENING_HOUSE_SOUNDS.md).
+Original resources retain Nintendo/Intelligent Systems copyright; local use
+only without redistribution rights. Extracted/compiled assets stay outside history.

@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <vector>
 #include "opening_npc_glide.hpp"
+#include "opening_house_sounds.hpp"
 namespace ttyd {
 struct OpeningSceneActor {
     std::array<float,3> position{};
@@ -27,6 +28,7 @@ public:
     // ki1 -X. This is a finite source translation, not an ambient sway loop.
     float treeX=0;
     OpeningNpcGlide parakarryGlide;
+    OpeningHouseSounds sounds;
     uint64_t tick=0;
     void begin(uint64_t simulationTick);
     void advance(uint64_t simulationTick);
@@ -34,7 +36,7 @@ public:
     void messageComplete(unsigned index);
     const char* actorPose(unsigned actor,bool talking) const;
 private:
-    enum class Kind {Wait,Set,Move,ParallelMove,Glide,Pose,Yaw,Visible,Camera,Interior,Door,Postbox,Message};
+    enum class Kind {Wait,Set,Move,ParallelMove,Glide,FlightDepart,PostboxSound,EnvironmentInterior,Pose,Yaw,Visible,Camera,Interior,Door,Postbox,Message};
     struct Request {
         Kind kind=Kind::Wait;unsigned actor=0;
         std::array<float,3> point{},aim{};

@@ -11,20 +11,20 @@ void OpeningHouseScene::appendProgram() {
     auto glide=[&](std::array<float,3> p,uint32_t command){Request r{Kind::Glide,2,p};r.sourceCommand=command;requests.push_back(r);};
     auto pose=[&](unsigned actor,const char* p,const char* talk=nullptr){Request r{Kind::Pose,actor};r.pose=p;r.talk=talk;requests.push_back(r);};
     auto yaw=[&](unsigned actor,float value){requests.push_back({Kind::Yaw,actor,{value,0,0}});};
-    auto door=[&](float value){requests.push_back({Kind::Door,0,{value,0,0}});};
-    auto shake=[&](){for(unsigned i=0;i<3;++i){requests.push_back({Kind::Postbox,0,{2,0,0}});wait(2);requests.push_back({Kind::Postbox});wait(2);}};
+    auto door=[&](float value,uint32_t command){Request r{Kind::Door,0,{value,0,0}};r.sourceCommand=command;requests.push_back(r);};
+    auto shake=[&](uint32_t command){Request r{Kind::PostboxSound};r.sourceCommand=command;requests.push_back(r);for(unsigned i=0;i<3;++i){requests.push_back({Kind::Postbox,0,{2,0,0}});wait(2);requests.push_back({Kind::Postbox});wait(2);}};
     auto message=[&](unsigned index){requests.push_back({Kind::Message,index});};
     // Original root: camera request followed by WAIT_MSEC4000. The initial
     // BGM WAIT1500 belongs to an independent inline, not this root's deadline.
     Request camera{Kind::Camera};camera.point={145,122,717};camera.aim={145,108,-180};camera.duration=300;requests.push_back(camera);
-    ms(4000);set(2,{500,500,0});glide({210,25,-30},0x1008);yaw(2,180);ms(500);shake();yaw(2,0);ms(500);message(0);
-    glide({0,300,-100},0x1108);requests.push_back({Kind::Visible,2,{0,0,0}});
-    set(1,{20,30,-150});yaw(1,90);door(180);ms(500);move(1,63,-110);door(0);
-    move(1,195,0);move(1,225,-75);ms(500);shake();ms(340);pose(1,"L_5");ms(500);
-    pose(1,"L_11");move(1,195,0);move(1,63,-110);pose(1,"L_5");door(180);ms(500);
+    ms(4000);set(2,{500,500,0});glide({210,25,-30},0x1008);yaw(2,180);ms(500);shake(0x1060);yaw(2,0);ms(500);message(0);
+    requests.push_back({Kind::FlightDepart});glide({0,300,-100},0x1108);requests.push_back({Kind::Visible,2,{0,0,0}});
+    set(1,{20,30,-150});yaw(1,90);door(180,0x118c);ms(500);move(1,63,-110);door(0,0x1228);
+    move(1,195,0);move(1,225,-75);ms(500);shake(0x1308);ms(340);pose(1,"L_5");ms(500);
+    pose(1,"L_11");move(1,195,0);move(1,63,-110);pose(1,"L_5");door(180,0x1438);ms(500);
     pose(1,"L_6");move(1,25,-155,true);ms(500);
     camera.point={-345,154,96};camera.aim={-32,75,-217};camera.duration=0;requests.push_back(camera);wait(1);
-    requests.push_back({Kind::Interior});wait(1);door(0);ms(500);pose(1,"L_5","L_7");message(1);
+    requests.push_back({Kind::Interior});wait(1);requests.push_back({Kind::EnvironmentInterior});door(0,0x15c4);ms(500);pose(1,"L_5","L_7");message(1);
     camera.point={-376,154,65};camera.aim={-63,75,-247};camera.duration=120;requests.push_back(camera);
     pose(1,"L_6");move(1,23,-156);pose(1,"L_5");
     set(0,{-155,30,-320});move(0,-125,-290,true);
@@ -34,7 +34,7 @@ void OpeningHouseScene::appendProgram() {
     ms(300);pose(1,"L_8","L_9");message(3);ms(300);
 }
 void OpeningHouseScene::begin(uint64_t simulationTick) {
-    *this=OpeningHouseScene{};tick=beginTick=simulationTick;
+    *this=OpeningHouseScene{};tick=beginTick=simulationTick;sounds.begin(simulationTick);
     actors[0].position={-150,30,-330};actors[0].pose="M_S_1";actors[0].yaw=180;actors[0].visible=true;
     actors[1].pose="L_5";actors[1].position={20,30,-150};
     actors[2].pose="S_1";actors[2].position={500,500,0};
@@ -84,6 +84,7 @@ void OpeningHouseScene::advance(uint64_t simulationTick) {
     step();
 }
 void OpeningHouseScene::step() {
+    const auto sourceSoundPosition=actors[2].position; // Event queries precede npcMain's delta consumption.
     musicStarted=tick-beginTick>=90;updateMotion();
     const auto elapsed=std::min<uint64_t>(tick-beginTick,240);
     const float treeValue=*cameraInterpolation(11,int32_t(elapsed),240,0,1500);
@@ -95,22 +96,26 @@ void OpeningHouseScene::step() {
         if(!started){started=true;
             switch(r.kind){
             case Kind::Wait:deadline=tick+r.duration;break;
-            case Kind::Set:actors[r.actor].position=r.point;actors[r.actor].visible=true;break;
+            case Kind::Set:actors[r.actor].position=r.point;actors[r.actor].visible=true;if(r.actor==2)sounds.startFlight(tick);break;
             case Kind::Move:case Kind::ParallelMove:startMove(r.actor,r.point);break;
             case Kind::Glide:glideUpdated=glideBegin=tick;glideResume=0;parakarryGlide.begin(actors[2].position,r.point,r.sourceCommand);actors[2].moving=parakarryGlide.active;if(parakarryGlide.result==1)glideResume=tick+1;break;
+            case Kind::FlightDepart:sounds.depart();break;
+            case Kind::PostboxSound:sounds.postbox(tick,r.sourceCommand,postboxX);break;
+            case Kind::EnvironmentInterior:sounds.interior(tick);break;
             case Kind::Pose:actors[r.actor].pose=r.pose;actors[r.actor].talkPose=r.talk;actors[r.actor].poseTick=tick;break;
             case Kind::Yaw:actors[r.actor].yaw=r.point[0];break;
             case Kind::Visible:actors[r.actor].visible=r.point[0]!=0;break;
             case Kind::Camera:if(r.duration){cameraEye={eye,r.point,tick,tick+r.duration,true};cameraAt={at,r.aim,tick,tick+r.duration,true};}else{eye=r.point;at=r.aim;cameraEye.active=cameraAt.active=false;}break;
             case Kind::Interior:interior=true;break;
-            case Kind::Door:doorMotion={{doorAngle,0,0},r.point,tick,tick+30,true};break;
+            case Kind::Door:sounds.door(tick,r.sourceCommand,doorAngle,r.point[0]!=0);doorMotion={{doorAngle,0,0},r.point,tick,tick+30,true};break;
             case Kind::Postbox:postboxX=r.point[0];break;
             case Kind::Message:waitingMessage=true;nextMessage=r.actor;break;
             }
         }
-        if((r.kind==Kind::Wait && tick<deadline) || (r.kind==Kind::Move && motion[r.actor].active) || (r.kind==Kind::Glide && (parakarryGlide.active || tick<glideResume)) || (r.kind==Kind::Message && waitingMessage))return;
+        if((r.kind==Kind::Wait && tick<deadline) || (r.kind==Kind::Move && motion[r.actor].active) || (r.kind==Kind::Glide && (parakarryGlide.active || tick<glideResume)) || (r.kind==Kind::Message && waitingMessage)){sounds.advance(tick,sourceSoundPosition);return;}
         ++cursor;started=false;
     }
+    sounds.advance(tick,sourceSoundPosition);
     complete=true;
 }
 bool OpeningHouseScene::messageReady(unsigned index) const {return waitingMessage && nextMessage==index;}

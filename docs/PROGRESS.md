@@ -8050,3 +8050,87 @@ Next bind actual two-slot field ownership and constructor/appearance/Hello
 services using these gates and original joining history. Documentation-only
 follow-up: scoped diff check passed; prior native validation remains173 CTest,
 111 Python and make all. Full prologue/field return remains unfinished.
+
+
+## 2026-10-13 — Original opening house SFX owners and native PCM
+
+Implemented original house flight/postbox/door sound scheduling, raw sound keys,
+source command IDs/control parameters and retained environment/scope requests.
+The independent flight inline waits3000ms after spawn, calls14 times at200ms,
+then400ms with a WW1 stop test AFTER each wait; pro_00 completion writes WW1=1,
+followed by17 final200ms calls. It never stops early on glide completion or
+fabricates a loop tail. Each postbox sequence requests one sound before its
+three shakes; four door sounds precede their original interpolations. Source
+NPC queries retain Q1024 X/Y and literal Z=-100; door/postbox positions come
+from original map-object leaf averages and current additional transforms.
+Original dialogue, message IDs/order and story writes are unchanged.
+
+Original sound identities resolve four primary MusyX samples1176/479/840/851
+with their table/FX/object IDs and parameters preserved. Private read-only
+exporter produces four mono PCM16 WAVs at16000Hz with no resampling or loops
+(~75KB), plus404-byte opening-house-sounds.bin source metadata. Runtime admits
+all four PCM headers/sizes with metadata before opening begins. Extracted/raw/
+compiled assets/provenance stay ignored in local-assets/opening-sounds/romfs;
+no parent mutable pack hardlinks or source payload commits. See
+[source sound contract](behavior/audio/NATIVE_OPENING_HOUSE_SOUNDS.md),
+[house presentation](behavior/story/NATIVE_OPENING_HOUSE_PRESENTATION.md) and
+[asset record](ASSETS.md).
+
+Core/exporter/test commit e7d3a01; separate native presentation commit7cf2de5,
+in isolated /tmp/pm-opening-demo-stage. Native OpeningHousePcmPlayer lazily
+imports original samples, supports overlapping wave buffers, uses source
+sample rate/table volume/pan and reports load/position/voice failures. Its
+NDSP10..17 channels avoid BGM0..1 and primary eight clips2..9. Native patches
+are narrow: Audio declaration/member, one shutdown hook, separate implementation
+files and one main updateOpeningHousePcm call while OpeningPart::House. Parent
+music/fade/field-NPC Audio changes were not overwritten. Parent must integrate
+these hooks and copy the private four WAVs/404-byte metadata, not hardlink them.
+
+ENV_OPN_AAA1 source name index1/five rows refer to birds1/2/3 and leaves1/2.
+Original ENV on0x110, off0x4800, LPF(0,800) and BGM scope(0,1) remain explicit
+unbound records, with no fabricated ambience or successful consumer acknowledgement.
+Native primary-sample PCM is separate from full MusyX macro delay/pitch/RNG/
+envelope/child voices, original positional calc3D/global-volume/priority/handle
+owners, and ENV random/timed services. Those remain incomplete.
+
+Validation: final make test133/133 CTest and106/106 Python; make all builds
+native ttyd-2ds.3dsx without warnings. Read-only verifier pins187-command house
+hash, seven source service hashes and24 sound/loop/WW1/environment anchors.
+Host tests cover loop counts/stop ordering/tail, holding pro_00, original
+postbox/door/env counts/parameters/position availability, full scene progression,
+actual PCM identities/header/rate/frame/hash/nonzero content and original leaf
+metadata. py_compile/git diff --check pass; check_doc_links checks835 Markdown
+files/0 broken links. Logs /tmp/opening-sounds-tests-final.log and
+/tmp/opening-sounds-all-final.log.
+
+No native audible smoke, original-runtime/Dolphin trace or hardware playback
+claim for this isolated branch. Next integrate source SFX/PCM hooks and verify
+actual playback, then implement original listener/spatial/MusyX/ENV/fade
+consumers. Full opening/prologue fidelity and overall goal remain incomplete.
+
+## 2026-10-13 — Original house sound integration and observed opening corrections
+
+Primary now schedules original Parakarry/postbox/door sound requests and plays
+the four original primary samples through separate NDSP10..17 voices, preserving
+existing eight effects2..9 and three music owners0/1/18. Source ENV requests are
+retained; complete MusyX/spatial/ambient services are not claimed.
+
+Validation: `make all` and `make test`173/173 CTest +111/111 Python pass
+(`artifacts/opening-house-sfx-primary-{all,tests}.log`). Read-only evidence pins
+the187-command event, seven service hashes and24 sound/loop/environment anchors
+(`artifacts/opening-house-sfx-source-evidence.log`). An immutable binary in
+`artifacts/opening-house-sfx-snapshot/` completes the fresh-file route and saved
+story3 in isolated Azahar (`artifacts/azahar-opening-house-sfx/`). The supplied
+local DSP firmware was copied into that isolated profile; Cubeb/HLE audio starts.
+No audible waveform/original-runtime/hardware parity assertion is made.
+
+The user then observed six corrections still required: mail camera oddities,
+missing skies, input-driven character dialogue bubbles, severe book-to-Peach
+slowdown, visible scene stubs, and ship arrival/departure motion. These are part
+of the arrival-scoped opening goal; it remains active. Three explicitly authorized
+isolated agents now own transition allocation/performance, original skies/ship
+and voyage, and dialogue/camera/wake. Root owns used harbor jump and native
+prologue heading display. Findings: Peach4MiB atlas repeatedly exceeds free
+linear memory; renderer lacks original b/<map>.tpl backgrounds; source ship/wake/
+heading timing differs from current simple adapters. Finish and integrate these
+consumers, then verify the complete corrected sequence before completion.

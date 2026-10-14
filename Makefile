@@ -204,6 +204,7 @@ assets-ready:
 	@python3 tools/harbor_event_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
 	@python3 tools/opening_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
 	@python3 tools/opening_title_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
+	@python3 tools/opening_house_sound_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
 	@python3 tools/demo_map_visibility_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
 	@python3 tools/demo_effect_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
 	@python3 tools/build_assets.py

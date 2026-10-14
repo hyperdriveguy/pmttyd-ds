@@ -178,6 +178,7 @@ void Audio::updateFrontend(const OpeningTitle& title,bool enabled){
     const auto snapshot=title.bgm.snapshot();frontendMusic(snapshot.tracks,snapshot.volumes);
 }
 void Audio::shutdown() {
+    openingHousePcm.shutdown();
     if(ready) {
         for(int n=0;n<=9;++n)ndspChnWaveBufClear(n);
         ndspChnWaveBufClear(18);

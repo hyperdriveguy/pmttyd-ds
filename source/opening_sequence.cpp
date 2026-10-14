@@ -1,7 +1,7 @@
 #include "opening_sequence.hpp"
 namespace ttyd {
 bool OpeningSequence::load(const char* base) {
-    if(!base)return false;
+    if(!base || !loadOpeningHouseSoundAssets(base))return false;
     const std::string root=base;MessageResource pendingGlobal;std::array<MessageResource,3> pendingRooms;MessageFont pendingFont;
     const char* names[]={"aaa_00","gor_10","gor_00"};
     if(!pendingGlobal.load((root+"/messages/global.txt").c_str()) || !pendingFont.load((root+"/font.pmfont").c_str()))return false;

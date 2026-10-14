@@ -110,4 +110,8 @@ endpoint/hold and Q1024 publication, sparse/dense progression, opposite roots,
 repeated-application/reset behavior, actual original counts and invalid packs.
 This is static/source/host/build evidence; native screenshots, original-runtime
 comparison, complete flag2/display ownership and hardware profiling remain open.
-Sound/environment/fade requests and original Parakarry glide still need consumers.
+Flight/postbox/door requests now have [source scheduling and original PCM
+presentation](../audio/NATIVE_OPENING_HOUSE_SOUNDS.md). Environment/fade and
+complete original NPC physics/display/audio services still need consumers.
+Parakarry's used glide callback has a portable owner consumed by the existing
+native actor position renderer.

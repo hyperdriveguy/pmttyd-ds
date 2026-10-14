@@ -220,6 +220,7 @@ int main() {
         else if(frontend.screen==ttyd::FrontScreen::Demo)audio.updateFrontend(demo,game.progress.sound);
         else if(frontend.screen==ttyd::FrontScreen::Title)audio.updateFrontend(frontend.title,game.progress.sound);
         else audio.updateFrontend(frontend.screen==ttyd::FrontScreen::Opening?opening.music():4,game.progress.sound);
+        audio.updateOpeningHousePcm(frontend.screen==ttyd::FrontScreen::Opening && opening.part==ttyd::OpeningPart::House?&opening.house.sounds:nullptr,game.progress.sound);
         metrics.renderMs=C3D_GetProcessingTime();metrics.gpuMs=C3D_GetDrawingTime();
         if(frontend.screen==ttyd::FrontScreen::Playing)renderer.render(game,metrics,noticeTicks>0?notice:"",audio.available());
         else renderer.renderFrontend(frontend,demo,opening,noticeTicks>0?notice:"");

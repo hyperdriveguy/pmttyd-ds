@@ -4,6 +4,7 @@
 #include "opening_house_objects.hpp"
 #include "opening_demo.hpp"
 #include "opening_sequence.hpp"
+#include "opening_house_pcm.hpp"
 #include "visibility.hpp"
 #include "uv_animation.hpp"
 #include "actor_mesh.hpp"
@@ -220,11 +221,13 @@ public:
     void updateFrontend(int track,bool enabled);
     void updateFrontend(const OpeningDemo&,bool enabled);
     void updateFrontend(const OpeningTitle&,bool enabled);
+    bool updateOpeningHousePcm(const OpeningHouseSounds*,bool enabled);
     void shutdown();
     bool available() const { return ready; }
     bool frontendTrackReady(int track);
 private:
     bool ready=false,titleResourceAttempted=false,titleResourceReady=false;
+    OpeningHousePcmPlayer openingHousePcm;
     struct Clip { int16_t* data=nullptr; uint32_t samples=0; ndspWaveBuf wave{}; };
     Clip clips[8];
     struct MusicStream {
