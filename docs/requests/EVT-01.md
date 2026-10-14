@@ -4669,3 +4669,41 @@ save/restore completion with alpha255/top49/bottom44; original zero-alpha probe
 remains separate. Temporary settings and telemetry are excluded from production.
 
 Original registry update: raw DOL33-record registry and original gor number table now enter shared VM-owned writable RAM; the native initialization adapter applies the actual gor registration arguments. Candidate profile/number-table admission, fresh GP numeric availability, independent VM copies and failed-candidate retention are tested. [Scope](../behavior/field/NATIVE_VM_BATTLE_MODULE_REGISTRATION.md). Real Game NPC construction/poses, session RNG and complete module/area lifetime remain open; this does not complete original map registration or NPC init effects.
+
+
+### Enemy HP ordered gates and native Tattle checker (2026-10-14)
+
+Implemented callback8011fde0 parent, independent global-B checker8012ee3c,
+actual persistent switch reads and64 live registry slots. Native uses original
+status27 storage and camera4 projection rather than an ending skip. Successful
+prefixes, pointer rereads, per-digit number inputs and inter-unit alpha carry
+remain retained across holds. See
+[native contract](../behavior/battle/ENEMY_HP_DRAW_AND_NATIVE_TATTLE_CHECK.md).
+
+Original active dependencies recovered read-only in
+artifacts/enemy-hp-active-evidence/report.md and
+artifacts/enemy-hp-number-evidence/report.md. PSMTX44MultVec matches existing
+cameraDepthProject paired product/FMA/sum/rounded divide graph; actual camera4
+view/projection are now bound. Full Gekko floating-point parity is not claimed.
+HP textures17/18 are original40x16 CMPR in battle/common/battle_common.tpl,
+accessed through GLOBALB163f8 file owner. Native atlas currently imports0/1 for
+class UI; do not substitute those cells. Bar uses live U210/214 gauge values.
+
+Next active-path work: implement original80019120 number service with mode1 small
+IDs482,484,...500,spacing16,ones first, max5digits and original signed behavior;
+reuse real8001a4bc matrix-icon/GX providers. Caller matrix is reread per digit
+after translation; RGBA reread after concat. Original has no minus-glyph/abs
+branch. Then admit textures17/18 and exact bar/texture-plane child graph and
+resource/current-camera owners. Parent currently holds at these real missing
+providers if a slot is admitted. Documentation recovery is not a native rendering
+completion claim. Full field restoration/story/prologue and EVT-01 remain open.
+
+Actual isolated ending trace now records completed1,B84000000,slot64,phase1,
+pending0. Last real checker completed with B84000000,U84106000,kind180,result0.
+No synthetic Tattle flag, registry clearing, ending skip or GPU acknowledgement
+was introduced. Native sorted queue advances to Stock EXP80100258,camera8,
+class1,userdata0,priority901, admitted by real Bef8 mask2. This is the next
+finishing draw boundary; original registration alone was not used to guess it.
+Native HP active number/bar rendering remains separate unfinished work even
+though these actual ending slots all legitimately skip it. Private trace/source
+restoration details and full validation are recorded in PROGRESS.md.

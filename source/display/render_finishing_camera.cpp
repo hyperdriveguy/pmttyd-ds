@@ -90,6 +90,7 @@ void Renderer::resumeFinishingCamera(const Game& game){
     services.display.callback=[](void* user,uint32_t camera,uint32_t identity,uint32_t borrowed){
         const auto& b=*static_cast<DisplayBridge*>(user);
         auto& renderer=*static_cast<Renderer*>(b.pipeline->user);
+        if(identity==0x8011fde0)return b.game->trioAttack.resumeEnemyHpDraw(camera,borrowed,{});
         if(identity==0x8000e564){
             CameraLetterboxDrawServices letterbox;letterbox.user=&renderer;
             letterbox.pass=[](void* u,LetterboxPassRequest& r){return static_cast<Renderer*>(u)->finishingLetterboxPass(r);};

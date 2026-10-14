@@ -6871,3 +6871,83 @@ ARM probe built and isolated Azahar exited0:fixture=PASS,initRoots15,getters1,mo
 No rendering, art, audio or story text changed; no new raster parity/New2DSXL timing/performance claim. Runtime registration occurs at VM initialization and availability uses stack values without per-frame asset allocation. Next bind actual original tagged-map npcInit/npcEntry/tribe/pose owners, preserve original duplicate/name/flags/lifetimes, and unify admitted consumers behind one explicitly owned session RNG. Actual module lifetime across areas, independent Mario entry and full original story/events/areas/hardware verification remain unfinished. EVT-01/RNG-01 and the full goal remain active.
 
 Documentation links:1338 Markdown files checked,zero broken links.
+
+
+## Original enemy HP callback and live Tattle gate (2026-10-14)
+
+Implemented original BattleDrawEnemyHP8011fde0 parent and
+battleCheckUnitMonosiriFlag8012ee3c checker. Native queue validates actual
+callback/camera/userdata, uses passed BattleWork for64 registry slots and captures
+global BattleWork separately for checker policy/bank. Actual saved-switch storage
+and packed status27 are used. No battle-ending/all-enemies-gone skip was added.
+The active parent preserves world-position override, signed offsets, camera4
+projection, fade carry, registry rereads for width versus number, and retained
+first-unit bar input. Number/bar providers remain held when unbound.
+
+Source-based cameraDepthView/Project arithmetic is reused for actual published
+camera4 matrices,304/240 output scaling and+0Z; no viewport/current-camera8 or
+identity substitute. No zero-W clamp. Original numeric digit and HP texture
+providers recovered in private read-only evidence and documented in EVT-01;
+no new art/assets/audio/dialogue or ISO writes. No native active-bar/source-pixel,
+Gekko FPSCR or hardware timing parity is claimed by portable tests.
+
+Frozen base6d0697dfbc61a255f5589828fa0478ece1b03a15, isolated source
+artifacts/enemy-hp-source, source journal artifacts/enemy-hp-edits.json.
+Focused standalone host test passed. Initial full host link used a stale object
+from before the screen helper was added during compilation; fixed source was
+rebuilt without further changes. Exact final validation/runtime results follow.
+Concurrent foreign worktree changes are preserved; the merged worktree is not
+claimed validated as one production build. Full prologue/story/interiors/events,
+field restoration and the user's complete goal remain active.
+
+The first complete CTest run exposed two isolated-fixture setup issues: no local
+artifacts/ directory for battle-hit-test.bin, and inherited old door-data.pmevt
+missing the base source's already-committed gor setup0 views. Created the test
+artifacts directory and regenerated the pack with the frozen original builder
+from the read-only ISO. Exact existing conversion/licensing already recorded in
+ASSETS.md. Only door-data.pmevt/json changed, matching the committed100800-byte
+pack schema; all other2027 inheritedRomFS files remain byte-identical. No source
+logic/test assertions were weakened. Full validation rerun and native repack
+use the corrected matching pack. Earlier normal boot used the old inherited
+pack; final normal boot/probe are recorded separately below.
+
+Required CMAKE_BUILD_PARALLEL_LEVEL=4 make test -o assets-ready exited0 after
+fixture repair:326/326 C++ in34.92s and189/189 Python in27.410s. Clean native
+make all -j4 -o assets-ready DEBUG_SHORT_BOOT=1 BUILD=build-enemy-hp
+TARGET=ttyd-enemy-hp exited0; rebuilding3DSX with the corrected source pack
+also exited0. Logs artifacts/enemy-hp-test-validated.log,
+artifacts/enemy-hp-build.log and artifacts/enemy-hp-build-validated.log.
+Existing baseline compiler warnings remain; no new helper warning/error.
+Normal isolated15s Azahar on final matching packs exited0, capture inspected:
+original Rogueport/Mario/Goombella,60AppFPS/100%. This is emulator evidence,
+not New2DSXL timing or complete prologue proof. User profiles/saves untouched.
+Log/profile artifacts/enemy-hp-smoke-validated-normal.log and
+artifacts/azahar-enemy-hp-validated-normal. Final normal3DSX SHA256
+ dd57a4f1174f9aab19c011e4de582284865e669ad568fd61422224681a64cdf4.
+
+Independent read-only comparison found no concrete mismatch in the frozen parent,
+checker or native bridge against original complete bodies; this is source review,
+not original execution evidence. tools/check_doc_links.py checked1336 Markdown
+files,zero broken links. Audited3450 source files and2029RomFS files,zero
+mismatches. Final full identities are in
+artifacts/enemy-hp-validation-manifest.json. Private ending instrumentation was
+reversed completely after building; restored native build exited0 and reproduced
+normal3DSX SHA256dd57a4f1174f9aab19c011e4de582284865e669ad568fd61422224681a64cdf4.
+
+Actual ending trace: EnemyHP completed1,B84000000,slot64,phase1,pending0;
+last real checker B84000000,U84106000,kind180,result0,active0,phase7,pending0.
+This proves the original native slot walk completes with actual Tattle/status
+storage; no fixture writes clear registry/Tattle flags or manufacture an ending
+skip. Native sorted queue advances to Stock EXP80100258,camera8,class1,
+userdata0,priority901, admitted by actual Bef8 mask2. Source recovery requested
+for that callback in EVT-01. Active HP number/bar GPU drawing remains unfinished,
+separate from these legitimately skipped ending slots. Probe artifacts:
+artifacts/azahar-enemy-hp-ending/data/azahar-emu/sdmc/3ds/ttyd-2ds/
+enemy-hp-source.txt,draw-frontier.txt and service-frontier.txt.
+
+Ending probe150s exited0. Final screenshot inspected at the still-unfinished
+field-restoration boundary; source framebuffer parity is not claimed. Log
+artifacts/enemy-hp-smoke-ending.log. Native original slot-skip completion is
+separate from unfinished active number/bar rendering. Next Stock EXP callback
+requires live signed Bf04 count gate and actual original icon404 providers; its
+read-only full-body recovery is underway. EVT-01/full prologue goal stay active.

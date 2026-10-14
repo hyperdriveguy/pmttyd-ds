@@ -1724,3 +1724,9 @@ target_sources(ttyd_core PRIVATE source/display/retained_icon_frame.cpp)
 add_executable(retained_icon_frame_tests tests/retained_icon_frame_tests.cpp)
 target_link_libraries(retained_icon_frame_tests PRIVATE ttyd_core)
 add_test(NAME retained_icon_frame COMMAND retained_icon_frame_tests)
+
+# Original enemy HP callback and live Tattle checker.
+target_sources(ttyd_core PRIVATE source/battle/battle_enemy_hp_draw.cpp)
+add_executable(battle_enemy_hp_draw_tests tests/battle_enemy_hp_draw_tests.cpp)
+target_link_libraries(battle_enemy_hp_draw_tests PRIVATE ttyd_core)
+add_test(NAME battle_enemy_hp_draw COMMAND battle_enemy_hp_draw_tests)

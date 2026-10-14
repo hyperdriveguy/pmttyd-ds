@@ -168,6 +168,7 @@ struct TrioAttackRuntime {
     uint64_t iconPassSequence=0;bool iconPassComplete=false;
     CameraLetterboxCursor letterboxCursor;
     CameraLetterboxDrawCursor letterboxDrawCursor;
+    BattleEnemyHpDrawCursor enemyHpDrawCursor;BattleMonosiriCursor enemyHpMonosiriCursor;
     std::optional<CameraLetterboxServices> letterboxServices;
     bool cameraDrawWaiting=false;
     BattleCameraTremorCursor cameraTremorCursor;
@@ -1848,6 +1849,7 @@ struct TrioAttackRuntime {
                     next=cameraDrawCursor.display.callback;
                     if(next==0x8002d3d8 && shadowDisplayCursor.active)next=shadowDisplayCursor.pending;
                     if(next==0x8000e564 && letterboxDrawCursor.active)next=letterboxDrawCursor.pending;
+                    if(next==0x8011fde0 && enemyHpDrawCursor.active){next=enemyHpDrawCursor.pending;if(next==0x8012ee3c && enemyHpMonosiriCursor.active)next=enemyHpMonosiriCursor.pending;}
                     if(next==0x801a38f8 && audienceCallbackCursor.active)next=audienceCallbackCursor.pending;
                     if(next==0x80138da8 && stageDisplayCursors[0].active)next=stageDisplayCursors[0].pending;
                     if(next==0x801389a0 && stageDisplayCursors[1].active)next=stageDisplayCursors[1].pending;
@@ -1933,6 +1935,31 @@ bool TrioAttack::resumeLetterboxDraw(uint32_t camera,uint32_t userdata,const Cam
     s.begin=[](void* u){const auto& s=*static_cast<Bridge*>(u)->source;return s.begin && s.begin(s.user);};
     s.vertex=[](void* u,uint32_t i,const std::array<int16_t,3>& r){const auto& s=*static_cast<Bridge*>(u)->source;return s.vertex && s.vertex(s.user,i,r);};
     return drawCameraLetterbox(s,runtime_->letterboxDrawCursor);
+}
+bool TrioAttack::resumeEnemyHpDraw(uint32_t camera,uint32_t userdata,const BattleEnemyHpDrawServices& source) const{
+    if(!runtime_ || !runtime_->cameras)return false;
+    const auto& call=runtime_->cameraDrawCursor.display;
+    if(!call.invoking || call.callback!=0x8011fde0 || call.camera!=camera || call.userdata!=userdata)return false;
+    struct Bridge {TrioAttackRuntime* runtime;const BattleEnemyHpDrawServices* source;} bridge{runtime_.get(),&source};
+    BattleEnemyHpDrawServices s;s.user=&bridge;
+    s.word=[](void* u,uint32_t a)->std::optional<uint32_t>{uint32_t v;return static_cast<Bridge*>(u)->runtime->vm.memory.readWord(a,v)?std::optional<uint32_t>(v):std::nullopt;};
+    s.half=[](void* u,uint32_t a)->std::optional<uint16_t>{uint16_t v;return static_cast<Bridge*>(u)->runtime->vm.memory.readHalf(a,v)?std::optional<uint16_t>(v):std::nullopt;};
+    s.camera=[](void* u,uint32_t index){return static_cast<Bridge*>(u)->runtime->cameras->camera(index)!=nullptr;};
+    s.status=[](void* u,uint32_t unit,int32_t id)->std::optional<int32_t>{auto& r=*static_cast<Bridge*>(u)->runtime;return checkPackedBattleStatus(unit,id,nativeBattleActorServices(r.vm))?1:0;};
+    s.monosiri=[](void* u,uint32_t unit)->std::optional<int32_t>{auto& r=*static_cast<Bridge*>(u)->runtime;
+        BattleMonosiriServices m;m.user=&r;
+        m.word=[](void* u,uint32_t a)->std::optional<uint32_t>{uint32_t v;return static_cast<TrioAttackRuntime*>(u)->vm.memory.readWord(a,v)?std::optional<uint32_t>(v):std::nullopt;};
+        m.switchFlag=[](void* u,int32_t index)->std::optional<int32_t>{auto& r=*static_cast<TrioAttackRuntime*>(u);return readSavedSwitch(SavedSwitchFamily::GlobalFlag,index,r.vm.interpreterServices().operands);};
+        return checkBattleMonosiri(unit,m,r.enemyHpMonosiriCursor);};
+    s.interpolate=[](void*,int32_t mode,int32_t elapsed,int32_t duration,float start,float end){return cameraInterpolation(mode,elapsed,duration,start,end);};
+    s.truncate=[](void* u,float value)->std::optional<int32_t>{auto& p=static_cast<Bridge*>(u)->runtime->vm.platform;return p.truncate?std::optional<int32_t>(p.truncate(p.user,value)):std::nullopt;};
+    s.screenPoint=[](void* u,const std::array<float,3>& p,std::array<float,3>& out){
+        const auto* camera=static_cast<Bridge*>(u)->runtime->cameras->camera(4);
+        if(!camera || !camera->viewPublished)return false;
+        out=battleEnemyHpScreenPoint(camera->matrices,p);return true;};
+    s.number=[](void* u,const CameraViewMatrix& m,int32_t n,uint32_t mode,uint32_t color){const auto& s=*static_cast<Bridge*>(u)->source;return s.number && s.number(s.user,m,n,mode,color);};
+    s.bar=[](void* u,const std::array<float,3>& p,uint32_t unit,uint32_t color){const auto& s=*static_cast<Bridge*>(u)->source;return s.bar && s.bar(s.user,p,unit,color);};
+    return drawBattleEnemyHp(userdata,s,runtime_->enemyHpDrawCursor);
 }
 bool TrioAttack::resumeStageDisplay(uint32_t camera,uint32_t callback,uint32_t userdata,const BattleStageDisplayServices& source) const{
     if(!runtime_ || !runtime_->cameras || (callback!=0x80138da8 && callback!=0x801389a0))return false;
