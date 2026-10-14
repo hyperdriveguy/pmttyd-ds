@@ -2,6 +2,18 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — STAR-01 storage half: gauge add/set leaves
+
+Delivered behavior/battle/STAR_POWER_GAUGE_STORAGE.md for requests/STAR-01.md
+todo 1 (storage): pouchAddAP/pouchSetAP complete add/floor/cap at +122/+124
+with US rows, 2-link-site count, and an explicit storage-vs-policy boundary.
+Two of my own check-script assertions were wrong (store counts); the doc was
+unaffected and all claims re-verified. Fill sources, thresholds, max writers
+and save mapping stay open.
+
+Validation: store-shape re-checks, link audit, diff --check clean. Docs-only,
+no make rerun. Full-game incomplete.
+
 ## 2026-10-13 — Filed STAR-01 and cross-checked pouch offsets
 
 Filed [STAR-01](requests/STAR-01.md) on the full-game path and added its inbox
@@ -7595,6 +7607,65 @@ Next tasks:
 5. `docs/behavior/README.md` is a contended file: three concurrent commits
    have dropped rows from it. Worth an owner check before it is treated as
    a reliable index.
+
+## 2026-10-13 — DEMO-01: opening scene state and persistence census (ID 3)
+
+Pivoted from EVT-01 — its static items are now essentially exhausted, with
+the concurrent agent closing most of the rest. The inbox front-lines the
+opening demo milestone (DEMO-01 / RESULT-01 / GSF-01 / TRACE-01), so I took
+DEMO-01.
+
+[OPENING_SCENE_STATE_AND_PERSISTENCE](behavior/story/OPENING_SCENE_STATE_AND_PERSISTENCE.md).
+Answers the persistent-write ask and part of the entry-condition ask for
+`dmo` / `aaa` / `sys`.
+
+**Method note.** `tools/rel_event_inventory.py` reads each annotated REL
+event span from the read-only ISO and annotates relocated operands with DOL
+symbol names. Routing each integer operand through the published
+[namespace table](behavior/event/EVENT_INTEGER_OPERAND_NAMESPACES.md)
+(`index = wrap32(operand - base)`, signed32) turns those annotations into
+a concrete state census, and opcode direction comes from the existing
+assignment and IF contracts. Ten event spans scanned, SHA-256s tabulated.
+
+**Headline: the opening's cross-scene persistence is a single word.**
+
+- **`GSW[0]` is the only saved story value** any opening event touches.
+  Written by `aaa/evt_prologue2` cmd 49 and `aaa/epilogue_evt2` cmd 117;
+  **read as a gate** by `aaa/aaa_00_init_evt` cmd 19. It is the documented
+  index-0 exception and must be stored as a **word** at GP+174, not a byte
+  in the GP+578 array.
+- `GSF` is **never used** by these modules. Save-block 233/236 stay with
+  GSF-01; nothing here claims they are unreached.
+- **`GF` (16 uses) and `GW` (4) do not persist** — they belong to the
+  current event context, not BattleWork or the GP save arrays. Every `GF`
+  use is a set-then-test **within one event**: `demo_evt` writes `GF[0]` at
+  cmd 294 and reads it at 324, writes `GF[1]` at 295 and reads it at 330,
+  and writes `GF[10]` at cmd 1 and reads it at cmd 382. That last pair is
+  the one most likely to be mistaken for a persistent flag.
+- `LW` (292 uses) is entry-local and needs no persistence.
+
+**Branch/join graph is still open** and is the biggest remaining piece of
+DEMO-01: `sys/evt_start` carries **9** `evt_bero_mapchange` requests — the
+demo's fan-out — but their target arguments are raw immediates the
+inventory does not decode.
+
+Also flagged rather than guessed: opcode direction for **93, 95 and 108**,
+which carry the four `GW` operands (claimed as neither reads nor writes);
+the `gor` / `muj` / `tik` modules, unscanned this pass; and the **written
+values**, since opcode 50 stores `evtGetValue(operand1)` rather than a
+literal operand.
+
+Docs-only; `make test` / `make all` not rerun.
+
+Next tasks:
+
+1. Decode the nine `evt_bero_mapchange` targets in `sys/evt_start` and
+   the `evt_bero_mapchange` in the other opening events — this is the
+   harbor → professor → underground → lecture join graph DEMO-01 needs.
+2. Scan `gor` / `muj` / `tik` opening events for the same census.
+3. Opcode direction for 93/95/108.
+4. Remaining inbox: RESULT-01, GSF-01, TRACE-01, then the EVT-01 residue
+   (Monosiri mutation, NormalJump menu/global writers).
 
 ## 2026-10-13 — The startup spatial route is dead code (ID 3)
 

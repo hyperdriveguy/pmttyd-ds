@@ -12,10 +12,23 @@ research-agent ownership or completion claim is made.
 
 - [ ] Exact entry conditions for each opening scene (new file through the first
   field re-entry): story values, prior-scene completion, flags, and any input or
-  position gate that admits or skips a scene.
+  position gate that admits or skips a scene — **partly answered**: the one
+  persistent entry predicate located so far is `aaa_00_init_evt`'s opcode-24
+  comparison against `GSW[0]` at command 19 (see the
+  [state contract](../behavior/story/OPENING_SCENE_STATE_AND_PERSISTENCE.md)).
+  *Other scenes' gates are not in these modules or not yet identified.*
 - [ ] The persistent writes each scene makes (global story flags, story values,
   save-block first/post-story flags) and their order relative to message and
-  scene completion.
+  scene completion — **partly answered** by [opening scene state and
+  persistence](../behavior/story/OPENING_SCENE_STATE_AND_PERSISTENCE.md):
+  across `dmo`/`aaa`/`sys` the **only saved story value is `GSW[0]`**, written
+  by `evt_prologue2` and `epilogue_evt2` and read (as a gate) by
+  `aaa_00_init_evt`; `GSF` is never used by those modules; every `GF`/`GW`
+  use is intra-event and context-local, and `LW` is entry-local. Per-command
+  operand positions, opcodes and event SHA-256s are tabulated.
+  *Save-block 233/236 remain with GSF-01, and the written **values** are not
+  recovered — opcode 50 stores `evtGetValue(operand1)`, so the value is not an
+  operand.*
 - [ ] The branch/join graph across harbor → professor → underground → lecture and
   back to the field, including each branch's requirement and where scenes join.
 - [ ] Re-entry behavior: what the field shows after a completed scene, after a
@@ -48,6 +61,56 @@ lock reserved; battle-result publication is filed separately as
 ## Answers and delivery notes (append-only history)
 
 No delivery yet.
+
+## 2026-10-13 — ID 3: opening scene state census (static, ISO-read)
+
+[Opening scene state and persistence](../behavior/story/OPENING_SCENE_STATE_AND_PERSISTENCE.md).
+
+Answers the persistent-write and part of the entry-condition asks for the
+`dmo` / `aaa` / `sys` modules. Method: `tools/rel_event_inventory.py` reads
+each annotated REL event span from the read-only ISO, and each integer
+operand is routed through the published
+[namespace table](../behavior/event/EVENT_INTEGER_OPERAND_NAMESPACES.md)
+(`index = wrap32(operand - base)`, signed32) with opcode direction taken
+from the assignment and IF contracts.
+
+**Headline: the opening's cross-scene persistence is one word.**
+
+- `GSW[0]` is the **only** saved story value any opening event touches.
+  Written by `aaa/evt_prologue2` cmd 49 and `aaa/epilogue_evt2` cmd 117;
+  **read as a gate** by `aaa/aaa_00_init_evt` cmd 19 (opcode 24, the
+  compare family). It is the documented index-0 exception and must be
+  stored as a **word** at GP+174, not a byte in the GP+578+ array.
+- `GSF` (saved flags) is **never** used by these modules. Save-block
+  233/236 stay with GSF-01; nothing here claims they are unreached.
+- **`GF` (16 uses) and `GW` (4) do not persist.** They belong to the
+  current event context, not to BattleWork or the GP save arrays, and the
+  manager selects a context per field/battle. Every `GF` use in the opening
+  is a set-then-test **within one event**: `demo_evt` writes `GF[0]` at cmd
+  294 and reads it at cmd 324; writes `GF[1]` at 295 and reads at 330; writes
+  `GF[10]` at cmd 1 and reads at 382. The last is the one most likely to be
+  mistaken for a persistent flag, and it is not.
+- `LW` (292 uses) is entry-local and needs no persistence.
+
+**Presentation flags are separate** and are not story state: `demo_evt`
+issues 10 `evt_mapobj_flag_onoff`, 8 `evt_npc_flag_onoff`, 1
+`evt_mobj_flag_onoff`; `evt_fade_set_mapchange_type` appears in every
+opening event.
+
+**Branch/join graph is still open.** `sys/evt_start` carries **9**
+`evt_bero_mapchange` requests — that is the demo's fan-out — but their target
+arguments are raw immediates in the inventory and were not decoded.
+Decoding them into harbor → professor → underground → lecture is the next
+step and is most of what DEMO-01 still needs.
+
+Also recorded as gaps: opcode direction for **93, 95 and 108**, which carry
+the four `GW` operands (claimed as neither reads nor writes); the `gor`,
+`muj` and `tik` modules, not scanned in this pass; and the **written
+values**, since opcode 50 stores `evtGetValue(operand1)` rather than a
+literal operand.
+
+Static only — no execution trace. Event SHA-256s for all ten scanned
+spans are tabulated in the contract.
 
 ## 2026-10-13 — Bounded persistent flag prerequisite
 
