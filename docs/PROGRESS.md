@@ -3232,3 +3232,32 @@ and End restoration. Source viewport lies outside current exact integer
 native adapter; do not fake completion for type2/zero-counter domains.
 Other profile writers/pointer replacement, geometry/images, teardown and
 ordered field return remain open. Full prologue goal remains active.
+
+## 2026-10-14 — Original Trouble Center retained presentation
+
+Added a stable noncopyable TroubleBoardPresentation connecting the original EVT
+adapter to retained print/append/continue, independent original selection and
+existing original task-menu/window/icon owners. Event-local toge selects the
+correct mode7 fixed-world lecture anchor; source help02 uses original diary7.
+Explicit simulation ordinals order EVT/icons/windows independently of rendering.
+Decline reuses the same menu work/cursor; delayed message loading does not lose
+first-call mutation. Original cue requests have explicit providers and unavailable
+world services yield.
+
+Validation: frozen reviewed tree2e449fd893822000c2c1319a65296d0e020bb90a,
+3184 tracked files with0 mismatches. Sequential make assets-ready
+SOUNDTRACK=gamecube passed; make test passed280 C++ and167 Python tests;
+make all -o assets-ready SOUNDTRACK=gamecube BUILD=build-trouble-presentation
+TARGET=ttyd-trouble-presentation passed. Logs: artifacts/trouble-presentation-
+{assets,test,build,audit}.log. Native3DSX SHA256
+17b16c13b4bc8a1862d222f7034ba207895bddeb97898031f06a3d147387c6e6.
+Code commita64a081f. Read-only source review found no scoped lifecycle/poll bug.
+No Azahar board interaction was run: native dispatch is still unbound.
+
+Limitation: portable opaque menu work handle; original0x416c Cmap binary allocation
+ABI remains unbound. Host world callbacks are fixtures. This owner is not yet
+installed in actual native board/counter contact or renderer dispatch. Next bind
+case9 contact/deferred lifetime, Game presentation owner/shared banks, actual
+Key/directions, pouch, NPC/door children and original cue execution. No native
+interactive board or physical3DS performance claim; broad remake goal stays active.
+See [contract](behavior/field/TROUBLE_CENTER_RETAINED_PRESENTATION_OWNER.md).

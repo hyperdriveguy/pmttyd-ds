@@ -977,3 +977,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Native retained shadow profile and target tracking](display/NATIVE_SHADOW_PROFILE_TARGET_TRACKING.md) — mutable startup rows, exact camera4 target capture and texture-cache frontier.
 - [Shadow projection prefix and zero-counter admission](display/SHADOW_PROJECTION_PREFIX_AND_ZERO_COUNTER_ADMISSION.md) — unconditional GPU order, live GP color and restoration before counter gates.
+
+- [Trouble Center retained presentation owner](field/TROUBLE_CENTER_RETAINED_PRESENTATION_OWNER.md): original event message/menu lifetimes, explicit simulation visits, fixed-world lecture anchor and remaining native bindings.

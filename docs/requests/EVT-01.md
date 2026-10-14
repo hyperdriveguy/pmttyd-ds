@@ -4019,3 +4019,14 @@ scissor readback/setup, view/projection, Projection and End restoration.
 [Recovered unconditional prefix](../behavior/display/SHADOW_PROJECTION_PREFIX_AND_ZERO_COUNTER_ADMISSION.md)
 confirms counters0 do not remove setup/restoration.400-square native viewport
 needs a declared real GPU adapter. Full EVT-01 remains open.
+
+## 2026-10-14 — Trouble Center presentation consumer
+
+[TroubleBoardPresentation](../behavior/field/TROUBLE_CENTER_RETAINED_PRESENTATION_OWNER.md)
+now consumes original board/counter message/menu callbacks using retained print,
+separate selection, event-local fixed-world toge and explicit EVT/icons/window
+simulation visits. Host integration covers lecture, delayed resources, decline/
+reopen and quest2 acceptance with original packed words and US resources. This
+is a portable work surrogate, not the source Cmap0x416c ABI or native contact/
+world/render/audio closure. Existing runtime-trace and shared GP/case-provider
+requests remain OPEN; no request is closed by the host fixture.
