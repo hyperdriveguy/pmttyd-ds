@@ -53,6 +53,17 @@ Original geometry and textures remain private local ISO derivatives; there is
 no `b/muj_20.tpl`, so original map sky geometry owns this scene. NPC/lighting/
 multilayer GX material services, full environmental/MusyX/spatial sound and
 original BGM six-second fade consumption, generic image projection, exact
-runtime/Dolphin comparison and hardware profiling remain incomplete. These
+runtime parity and hardware profiling remain incomplete. A matched isolated
+Dolphin fresh file now confirms the authored small hull and world cinematic
+crop; [observations](../../MECHANICS.md) record the bright original daytime sky.
+The opt-in native S_hai01 bake consumes original named pointLight9 RGB20/30/87,
+intensity1.5, no distance falloff and original S8/64 normals with normalized
+inverse-transpose directions. The first static-light bake was darker than the matched original. A bounded
+original live-MEM1 observation and original mapMain light-color publication now
+close the missing completed yoru_hiru light-color track: record+28 selects
+104-byte keys, final RGB publishes54/104/202 and intensity1.5. The native
+converter consumes that original track, preserving raw-source provenance rather
+than adding a palette. General dynamic lighting/GX numeric state remains open. The Voyage-only world crop is the measured half-size
+EFB48..432 adaptation, not complete camera8 lifecycle ownership. These
 are explicit remaining services, not claims that the whole scene or remake is
 bit-for-bit equivalent. Actual native resource failures stop progression.

@@ -25,7 +25,7 @@ def build(iso,out):
  for ext in ['d','t']:extract(iso,'m/muj_20/'+ext,work/('muj_20.'+ext))
  hidden=tuple('S_hai_'+side+'_'+str(n).zfill(2) for side in ['l','r'] for n in range(1,6))+('S_a1','S_b')
  voyageObjects=('S_fune_m','S_umi_l_siro_b')+OBJECTS[2:]
- voyageInfo=convert(work/'muj_20.d',work/'voyage',hidden=hidden,ambient=('nami','kumo'),mesh_ambient=('nami','fune_01'),event_groups={'S_fune_m':1,'S_umi_l_siro_b':13},object_bindings=voyageObjects,initial_pose=('yoru_hiru',250),local_offsets={'S_hai03_sun':(0,-26,0)})
+ voyageInfo=convert(work/'muj_20.d',work/'voyage',hidden=hidden,ambient=('nami','kumo'),mesh_ambient=('nami','fune_01'),event_groups={'S_fune_m':1,'S_umi_l_siro_b':13},object_bindings=voyageObjects,initial_pose=('yoru_hiru',250),local_offsets={'S_hai03_sun':(0,-26,0)},named_lighting=('S_hai01',))
  for ext in ['vertices','batches','uvanim','meshanim']:shutil.copyfile(work/'voyage'/('map.'+ext),out/('opening-muj_20.'+ext))
  shutil.copyfile(work/'voyage/map.houseobj',out/'opening-muj_20.shipobj')
  for i in range(len(voyageInfo['textures'])):
@@ -47,6 +47,6 @@ def build(iso,out):
  with (out/'opening-ship-paper.bin').open('wb') as f:
   f.write(struct.pack('<8sI',b'PMSHP001',len(surfaces)))
   for s in surfaces:f.write(struct.pack('<3I',*s))
- (out/'opening-ship-assets.json').write_text(json.dumps(dict(objects=OBJECTS,paper_sha256=hashlib.sha256(raw).hexdigest(),paper_pose='A_1',frames=61,source_capture=[0,0,608,480],virtual_point=[0,0,375],sources=[json.loads(Path(str(work/n)+'.provenance.json').read_text()) for n in ['gor_00.d','gor_00.t','muj_20.d','muj_20.t','OFF_d_kaiten','OFF_d_kaiten.tpl']],voyage_initial_pose=['yoru_hiru',250],voyage_sun_local_offset=[0,-26,0],conversion='Original mesh/local coordinates; map textures bounded128; original61 paper deformation keys and distinct capture-face ownership; original used yoru_hiru completed pose and local sun translation',license='Original Nintendo/Intelligent Systems assets for local use, no redistribution rights'),indent=2)+'\n')
+ (out/'opening-ship-assets.json').write_text(json.dumps(dict(objects=OBJECTS,paper_sha256=hashlib.sha256(raw).hexdigest(),paper_pose='A_1',frames=61,source_capture=[0,0,608,480],virtual_point=[0,0,375],sources=[json.loads(Path(str(work/n)+'.provenance.json').read_text()) for n in ['gor_00.d','gor_00.t','muj_20.d','muj_20.t','OFF_d_kaiten','OFF_d_kaiten.tpl']],voyage_initial_pose=['yoru_hiru',250],voyage_sun_local_offset=[0,-26,0],voyage_named_lighting=['S_hai01:pointLight9:yoru_hiru250'],conversion='Original mesh/local coordinates; map textures bounded128; original61 paper deformation keys and distinct capture-face ownership; original used yoru_hiru completed pose and local sun translation; original completed light-color pose pointLight9 and normalized S8/64 normals baked for S_hai01',license='Original Nintendo/Intelligent Systems assets for local use, no redistribution rights'),indent=2)+'\n')
 if __name__=='__main__':
  p=argparse.ArgumentParser();p.add_argument('--iso',default=DEFAULT_ISO);p.add_argument('--output',default='romfs');a=p.parse_args();build(a.iso,a.output)

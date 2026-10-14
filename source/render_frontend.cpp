@@ -1,4 +1,5 @@
 #include "platform.hpp"
+#include "message_icons.hpp"
 #include <algorithm>
 #include <cstdio>
 #include <cmath>
@@ -141,10 +142,11 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
         C3D_RenderTargetClear(shipCaptureTarget,C3D_CLEAR_ALL,0,0);C3D_FrameDrawOn(shipCaptureTarget);
         drawMap(false,snapshot,false,&frontRoom,2u,true);drawMap(false,snapshot,true,&frontRoom,2u,true);C3D_FrameDrawOn(top);
     }
-    // The original608x480 world occupies304x240 pixels; crop the centered
-    // full400 projection so its effective world aspect remains19/15.
+    // Matched original fresh-file Voyage exposes EFB rows48..431. Keep the
+    // original full-height projection; crop world only before the logo overlay.
+    const bool voyageLetterbox=opening && opening->part==OpeningPart::Voyage;
     if(wakeWorld){C3D_SetViewport(0,0,400,240);C3D_SetScissor(GPU_SCISSOR_NORMAL,48,0,352,240);}
-    else C3D_SetScissor(GPU_SCISSOR_NORMAL,0,48,240,352);
+    else C3D_SetScissor(GPU_SCISSOR_NORMAL,voyageLetterbox?24:0,48,voyageLetterbox?216:240,352);
     drawMap(false,snapshot,false,&frontRoom,visibleGroups);
     count=0; // Each queued actor retains its own range until frame submission.
     if(cineActors.empty())cineActors.reserve(4);
@@ -202,7 +204,7 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
             const bool right=a.yaw>0 && a.yaw<180;
             ok=actor(banks[n],scene.actorPose(n,talking),{a.position[0],a.position[1],a.position[2]},n==2?a.yaw:right?180:0,float(demo.now*60/1000-a.poseTick)) && ok;
         }
-    } else if(opening && (opening->part==OpeningPart::House || opening->part==OpeningPart::HouseReturn)) {
+    } else if(opening && (opening->part==OpeningPart::House || opening->part==OpeningPart::HouseReturn || opening->part==OpeningPart::MapDisplay)) {
         const auto& scene=opening->house;
         constexpr uint32_t keys[]={0,0x474,0x468};
         for(unsigned n=1;n<3;++n)if(scene.actors[n].visible) {
@@ -219,6 +221,25 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
         const int first=count;characterModel("M_S_1",float(snapshot.ticks),{0,2.25f},.15f,180,false);
         auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);if(count>first)GSPGPU_FlushDataCache(vertices+first,size_t(count-first)*sizeof(Vertex));C3D_TexBind(0,&characterTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,first,count-first);
     }
+    if(opening && opening->part==OpeningPart::MapDisplay && opening->mapDisplay.poseStage==1){
+        const auto* icon=messageIcon(314);
+        if(!icon)ok=false;
+        else if(count+6<=MaxVertices){
+            const auto& frame=icon->frame(0);const auto& luigi=opening->house.actors[1];
+            const CameraPoint center{(luigi.position[0]-25)*.01f,(luigi.position[1]+15)*.01f,(luigi.position[2]-3)*.01f};
+            const float dx=eye.x-at.x,dz=eye.z-at.z,length=std::sqrt(dx*dx+dz*dz);
+            const float rx=length>0?dz/length:1,rz=length>0?-dx/length:0;
+            constexpr float scale=.5498046875f*.01f;
+            const float left=-frame.width*.5f*.60000002384f*scale,right=-left;
+            const float high=frame.height*.60000002384f*scale,low=-high;
+            const int first=count;
+            auto put=[&](float x,float y,float u,float v){vertices[count++]={center.x+x*rx,center.y+y,center.z+x*rz,u,v,1,1,1,1};};
+            put(left,low,frame.u0,frame.v1);put(right,low,frame.u1,frame.v1);put(right,high,frame.u1,frame.v0);
+            put(left,low,frame.u0,frame.v1);put(right,high,frame.u1,frame.v0);put(left,high,frame.u0,frame.v0);
+            auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);
+            GSPGPU_FlushDataCache(vertices+first,6*sizeof(Vertex));C3D_TexBind(0,&messageIconTexture.texture);C3D_DrawArrays(GPU_TRIANGLES,first,6);
+        }else ok=false;
+    }
     drawMap(false,snapshot,true,&frontRoom,visibleGroups);
     if(!opening && demo.bookComplete)ok=frontDemoEffects(demo.market.effects,eye,at) && ok;
     C3D_SetScissor(GPU_SCISSOR_DISABLE,0,0,240,400);
@@ -230,7 +251,7 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,OpeningSequence& ope
     // Keep only the current demonstration image/scene family resident. This
     // also bounds a natural (unskipped) storybook run and letter/map overlays.
     const uint32_t phase=f.screen==FrontScreen::Demo?100:
-        f.screen==FrontScreen::Opening?200+uint32_t(opening.part):0;
+        f.screen==FrontScreen::Opening?200+uint32_t(opening.part==OpeningPart::MapDisplay?OpeningPart::HouseReturn:opening.part):0;
     if(phase!=frontPhase){releaseFrontend();frontPhase=phase;}
     if(f.screen==FrontScreen::Demo && demo.bookComplete && !demo.book.adjusting && !frontTextures.empty()) {
         // Final adjust retires the book alone. The already admitted market,
@@ -254,6 +275,7 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,OpeningSequence& ope
     bool headingEntryPresented=false,headingOpenPresented=false,headingStartedPresented=false,headingExitPresented=false;
     float shipPresented=-1;bool shipCaptureRequested=false;
     uint8_t voyageWhitePresented=0;
+    int mapPresented=-1;
     bool ok=wakeReady;std::array<float,4> paperPresented{{-1,-1,-1,-1}};
     std::array<bool,4> captureRequested{};
     if(f.screen==FrontScreen::Demo && demo.bookComplete) {
@@ -271,7 +293,15 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,OpeningSequence& ope
         if(opening.part==OpeningPart::Voyage){eye={0,367,2093};at={0,343,-115};}
         if(opening.part==OpeningPart::Wake){eye=opening.wakeEye;at=opening.wakeAt;}
         if(opening.part==OpeningPart::Arrival){eye=opening.harbor.eye;at=opening.harbor.at;}
-        if(opening.part==OpeningPart::MapDisplay)ok=frontImage("opening-map",48,0,304,240);
+        if(opening.part==OpeningPart::MapDisplay){
+            ok=frontWorld("opening-aaa_00-interior",eye,at,&opening,demo);
+            if(opening.mapDisplay.drawRequested){
+                const bool admitted=frontImage("opening-map",0,0,0,0);
+                if(admitted)opening.mapDisplay.admitted();
+                ok=admitted && ok;
+                if(admitted){const auto alpha=opening.mapDisplay.alpha;ok=frontImage("opening-map",48,0,304,240,alpha) && ok;mapPresented=alpha;}
+            }
+        }
         else if(opening.part==OpeningPart::Letter)ok=frontImage("opening-letter",88,30,224,148);
         else if(opening.part==OpeningPart::Prologue){ok=frontHeading(opening,headingEntryPresented,headingOpenPresented,headingStartedPresented,headingExitPresented);}
         else if(map){const std::string prefix=opening.part==OpeningPart::HouseReturn || (opening.part==OpeningPart::House && opening.house.interior)?"opening-aaa_00-interior":opening.part==OpeningPart::Arrival?"opening-gor_00":"opening-"+std::string(map);ok=frontWorld(prefix.c_str(),eye,at,&opening,demo);}
@@ -370,7 +400,7 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,OpeningSequence& ope
     if(!ok){text("Original front-end texture unavailable",10,216,.4f,Red);if(!frontFailure.empty())text(frontFailure.c_str(),10,203,.35f,Red);}
     if(notice && *notice)text(notice,10,229,.35f,Ink);
     C2D_Flush();C3D_FrameEnd(0);
-    if(voyageWhitePresented==255 || shipCaptureRequested || shipPresented>=60 || entryPresented==0 || exitPresented==255 || titlePresentedType || titleBlackPresented==255)C3D_FrameSync();
+    if((mapPresented==255 && !opening.mapDisplay.opaquePresented) || voyageWhitePresented==255 || shipCaptureRequested || shipPresented>=60 || entryPresented==0 || exitPresented==255 || titlePresentedType || titleBlackPresented==255)C3D_FrameSync();
     if(ok && shipCaptureRequested && !captureOpeningShip(opening)){
         frontFailure="Original opening ship capture failed";ok=false;
     }
@@ -387,6 +417,7 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,OpeningSequence& ope
         if(headingStartedPresented)opening.heading.started=true;
         if(headingExitPresented)opening.heading.exitComplete=true;
     }
+    if(ok && mapPresented>=0)opening.mapDisplay.presented(uint8_t(mapPresented));
     if(ok)f.title.presentedBlack(titleBlackPresented);
     if(ok && titlePresentedType)f.title.presented(titlePresentedType,titlePresentedFrame,titlePresentedScale);
     if(entryPresented>=0 && ok)demo.exit.entryPresented(uint8_t(entryPresented));

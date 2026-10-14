@@ -69,6 +69,7 @@ def main():
             command=['/usr/bin/azahar',str(Path(args.binary).resolve() if args.binary else ROOT/'ttyd-2ds.3dsx')]
             if args.reference_dolphin:
                 profile=OUT/'user';config=profile/'Config';config.mkdir(parents=True,exist_ok=True)
+                (config/'Dolphin.ini').write_text('[Input]\nBackgroundInput = True\n[Core]\nSIDevice0 = 6\nSIDevice1 = 0\nSIDevice2 = 0\nSIDevice3 = 0\n')
                 (config/'GCPadNew.ini').write_text('[GCPad1]\nDevice = XInput2/0/Virtual core pointer\nButtons/A = A\nButtons/B = S\nButtons/Start = Return\nMain Stick/Up = Up\nMain Stick/Down = Down\nMain Stick/Left = Left\nMain Stick/Right = Right\n')
                 command=['/usr/bin/dolphin-emu','-u',str(profile),'-b','-e',os.environ.get('TTYD_ISO','/home/carson/games/roms/G8ME01.iso')]
             app=subprocess.Popen(command,env=env,stdout=elog,stderr=elog)

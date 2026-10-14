@@ -30,6 +30,13 @@ bool OpeningSequence::enter(OpeningPart p,uint64_t time){
     if(p==OpeningPart::Wake)wake.begin(time);
     if(p==OpeningPart::Arrival)harbor.begin(time*60/1000,globalWork8);
     if(p==OpeningPart::Voyage)voyage.begin(time*60/1000);
+    if(p==OpeningPart::MapDisplay)mapDisplay.begin(time*60/1000);
+    if(p==OpeningPart::HouseReturn){
+        house.interior=true;house.eye={-376,154,65};house.at={-63,75,-247};
+        house.actors[0]={{-85,30,-310},90,"M_S_1",nullptr,time*60/1000,true,false};
+        house.actors[1]={{-52,30,-275},270,"L_8","L_9",time*60/1000,true,false};
+        house.actors[2].visible=false;
+    }
     if(p==OpeningPart::Complete)return true;
     if(!ready){failure="Original opening resources unavailable";failed=true;return false;}
     // Native presentation pacing; source service/parallel choreography is not
@@ -37,10 +44,10 @@ bool OpeningSequence::enter(OpeningPart p,uint64_t time){
     deadline=time+(p==OpeningPart::House?0:p==OpeningPart::Prologue || p==OpeningPart::Wake?0:p==OpeningPart::MapDisplay?0:1000);
     return true;
 }
-void OpeningSequence::begin(uint64_t time){failed=false;failure.clear();story=0;globalWork8=0;enter(OpeningPart::House,time);}
+void OpeningSequence::begin(uint64_t time){failed=false;failure.clear();story=0;globalWork8=0;mapBgm.begin(time*60/1000);enter(OpeningPart::House,time);}
 void OpeningSequence::tick(uint64_t time,uint32_t keys){
     if(failed || complete() || time<now)return;
-    now=time;
+    now=time;mapBgm.advance(now*60/1000);
     if(sceneServicesBound){
         if(!sceneFailure.empty()){failed=true;failure=sceneFailure;return;}
         if(!sceneAdmitted){
@@ -57,6 +64,15 @@ void OpeningSequence::tick(uint64_t time,uint32_t keys){
     if(part==OpeningPart::Wake)wake.tick(now);
     if(part==OpeningPart::Voyage)voyage.advance(now*60/1000,keys);
     if(part==OpeningPart::Arrival){harbor.advance(now*60/1000);globalWork8=harbor.work8;if(harbor.storyPublished)story=3;}
+    if(part==OpeningPart::MapDisplay){
+        const auto previous=mapDisplay.poseStage;mapDisplay.tick(now*60/1000);
+        if(previous!=mapDisplay.poseStage){
+            house.actors[1].pose=mapDisplay.poseStage==1?"I_1":"S_1";house.actors[1].talkPose=nullptr;house.actors[1].poseTick=now*60/1000;
+            if(mapDisplay.poseStage==2){house.actors[0].pose="M_L_3";house.actors[0].poseTick=now*60/1000;}
+        }
+    }
+    const int wantedMusic=music();if(wantedMusic>=0)mapBgm.on(wantedMusic);
+    if(part==OpeningPart::MapDisplay && mapDisplay.musicOffRequested)mapBgm.off();
     if(message.active()){message.tick(now,keys);if(message.active())return;deadline=now;if(part==OpeningPart::House){house.messageComplete(index-1);house.advance(now*60/1000);}
         if(part==OpeningPart::Wake)wake.messageComplete(index-1);
         if(part==OpeningPart::Arrival)harbor.messageComplete(index-1);
@@ -66,7 +82,7 @@ void OpeningSequence::tick(uint64_t time,uint32_t keys){
     case OpeningPart::House:{const char* ids[]={"pro_00","pro_01","pro_02","pro_03"};if(index<4 && house.messageReady(index)){print(ids[index],index==0?0x468:0x474);++index;}else if(index==4 && house.complete)enter(OpeningPart::Letter,time);break;}
     case OpeningPart::Letter:if(index==0){print("pro_04",0);++index;}else enter(OpeningPart::HouseReturn,time);break;
     case OpeningPart::HouseReturn:if(index==0){print("pro_05",0x474);++index;}else enter(OpeningPart::MapDisplay,time);break;
-    case OpeningPart::MapDisplay:if(++index==128){story=2;enter(OpeningPart::Voyage,time);}break;
+    case OpeningPart::MapDisplay:if(mapDisplay.complete){story=2;enter(OpeningPart::Voyage,time);}break;
     case OpeningPart::Voyage:if(voyage.headingReady)enter(OpeningPart::Prologue,time);break;
     case OpeningPart::Prologue:if(heading.complete)enter(OpeningPart::Wake,time);break;
     case OpeningPart::Wake:{const char* ids[]={"mac_0_012","mac_0_013","mac_0_013_01"};if(index<3 && wake.messageReady(index)){print(ids[index],0);++index;}else if(index==3 && wake.complete)enter(OpeningPart::Arrival,time);break;}
@@ -75,10 +91,10 @@ void OpeningSequence::tick(uint64_t time,uint32_t keys){
     }
 }
 const char* OpeningSequence::map() const {
-    switch(part){case OpeningPart::House:case OpeningPart::HouseReturn:return "aaa_00";case OpeningPart::Letter:case OpeningPart::Wake:return "gor_10";case OpeningPart::Voyage:return "muj_20";case OpeningPart::Arrival:return "gor_00";default:return nullptr;}
+    switch(part){case OpeningPart::House:case OpeningPart::HouseReturn:case OpeningPart::MapDisplay:return "aaa_00";case OpeningPart::Letter:case OpeningPart::Wake:return "gor_10";case OpeningPart::Voyage:return "muj_20";case OpeningPart::Arrival:return "gor_00";default:return nullptr;}
 }
 int OpeningSequence::music() const {
-    if(part==OpeningPart::House)return house.musicStarted?7:-1;
+    if(part==OpeningPart::House || part==OpeningPart::Letter || part==OpeningPart::HouseReturn || part==OpeningPart::MapDisplay)return house.musicStarted?7:-1;
     if(part==OpeningPart::Voyage)return voyage.music();
     return -1;
 }

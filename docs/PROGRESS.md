@@ -9782,3 +9782,233 @@ scoped opening/frontend/message25/25 and Python122/122 passed. Full CTest
 harbor_encounter_original fixtures failed (full log preserved). Actual isolated
 particle rendering was reviewed by its owner at58–60FPS; the final combined
 map-transition/sky/particle flow still needs its updated native smoke.
+
+### Opening map display correction (isolated dialogue/camera branch)
+
+Replaced the128-render-call MapDisplay exit with aaa's used source producer:
+300ms/I_1/map item96 at Luigi position+(-25,15,-3),1000ms item lifetime,
+S_1/M_L_3,1500ms, then original mariost.tpl3 alpha+2 per simulation tick.
+The original item icon314/image319 and source poses join ignored packs. The
+interior remains resident and visible under the map alpha. Resource admission
+starts this callback; an actual opaque native frame must submit and synchronize
+before the native GF0 bridge admits the source1000ms tail and GSW0=2/Voyage.
+No input gate was added to the map because its original source has none.
+HouseReturn also binds its source actor positions/yaw and camera requests.
+
+Bound house music through Letter/HouseReturn/MapDisplay and the source
+BGMoff512/2000ms. Original group0 table volumes80/86/78 and same-group750ms
+SoundSS replacement tail feed a separate Audio opening overload using existing
+three fixed streaming channels. No existing Audio.cpp/effect channel owner was
+replaced. Source/body/operand contracts are in story/OPENING_MAP_DISPLAY.md and
+audio/OPENING_MAP_BGM.md; read-only verifier passes25 anchors.
+
+Validation: `make test` passes172/172 CTest and110 Python checks in
+`artifacts/map-test-final.log`. Native `make all -o assets-ready` passes in
+`artifacts/map-native-final.log` after bounded original pose/icon repacks.
+An additional full `make all` asset pass is recorded separately in
+`artifacts/map-native-full.log` (completion recorded below). The isolated
+`tools/emulator_smoke.py` map fixture uses its own fresh profile/save and native
+binary. Reviewed `artifacts/azahar-map-reviewed/` captures show the cold-loaded
+original house, item/reading stages, actual map translucency over the house,
+opaque original map and Voyage handoff, with no native exception. House/map
+steady screenshots show60FPS/~5.38–8.18ms; the opaque screenshot reports55FPS/
+7.05ms. Voyage cold admission reports24FPS in this fixture; that old Voyage
+adapter belongs to the concurrent boat correction, not this map claim.
+
+Limits: final-frame GF0 synchronization is an explicit native presentation
+adaptation; source publishes GF0 immediately before registering its final draw.
+No Dolphin raster or audible DSP parity measured. Source envOff512 and geometric
+mapchange49/50 remain unbound here. The later boat BGMoff512/6000ms needs an
+explicit portable request from the boat event owner; this bounded producer binds
+the map's2000ms off and source On replacement, not all sound SDK modes. The
+fixture bootstrap was temporary and restored; no fixture source/art/ISO payload
+is committed. Next: merge narrow source hunks with parent house SFX, heading and
+boat owners, bind those precise transition/environment/later off services, and
+review a natural integrated fresh New Game through Rogueport arrival.
+
+Full `make all` completed successfully with refreshed original asset packs in
+`artifacts/map-native-full.log`; final source includes a single opaque-boundary
+synchronization rather than repeating it during the source1000ms hold. The
+reviewed captures preceded that synchronization-only optimization; presentation
+geometry/alpha/admission are unchanged. `git diff --check` and the25-anchor
+read-only source verifier pass after final changes.
+
+
+### Voyage original named light and matched Dolphin crop, 2026-10-13
+
+The explicit original S_hai01 named-mask0x100 now selects original pointLight9
+from m/muj_20/d. Its original RGB20/30/87, intensity1.5, constant distance
+attenuation and signed-byte XYZ normals (/64) are consumed in the converter,
+with normalized inverse-transpose normals for the portable static lighting bake.
+All126 sky vertices retain original blue ratios/directional gradients. No new
+art/color palette or ship enlargement was introduced. Private original named
+light native capture artifacts/azahar-voyage-named-light/opening060 shows actual
+Day clouds, full-width water, the original small boat and logo at60FPS/6.40ms;
+white arch is removed. Source runtime light colors/TEV remain a limitation:
+this native sky is darker than the matched original scene.
+
+Actual isolated original Dolphin fresh file reached Voyage; fresh265/270/275 in
+artifacts/dolphin-original-voyage-confirm establish authored tiny boat and the
+world's cinematic EFB48..432 crop. Native Voyage adds its measured half-size
+world scissor24..216, leaving the original full-height projection and logo draw
+separate. This removes exposed bottom sun/moon and upper geometry corners;
+source camera8 lifecycle/conditions remain open. MECHANICS records the actual
+observation and private controller-profile correction. No user saves modified.
+
+Validation before the crop: make test175/175CTest and113/113Python; original
+named sky regression checks126vertices/colorbounds/gradient/ratios; private ISO
+ship export and make all -o assets-ready pass. Native full route and post-crop
+validation are recorded below once complete. This is a bounded scene correction,
+not original/hardware pixel parity or completion of the larger remake.
+
+
+The named-light private Azahar full fresh route completed without native
+exception, reaching rendered Rogueport field; its isolated40-bytePM2D save has
+opening marker1/story3/known flag1. This checkpoint is supplementary to actual
+Voyage/harbor/resource screenshots and does not establish pixel parity. The
+original Dolphin matched run completed through fresh345; reference helper now
+writes only its generated profile's BackgroundInput=True/connected port0 so
+its retained original keyboard mapping works. Post-crop make all passed
+(artifacts/voyage-cinematic-crop-all.log); full tests are in
+artifacts/voyage-cinematic-crop-tests.log. A distinct post-crop fresh native
+capture is running under artifacts/azahar-voyage-source-crop.
+
+
+Post-crop verification completed: make test175/175CTest and113/113Python,
+make all -o assets-ready, py_compile and diff check pass. Isolated
+artifacts/azahar-voyage-source-crop opening060 now shows original clouds/water,
+small ship and logo without white arch, exposed upper corners or bottom sun/moon
+silhouette, at60FPS/4.59ms. Final screenshot shows actual Rogueport field at
+60FPS/5.44ms, no native exception, separate isolated40-bytePM2D checkpoint has
+opening1/story3/known1. Screenshots are actual resource/scene evidence; save
+alone is not success evidence. Original selected light bridge remains darker:
+matched sky sample native19/29/83 versus original51/99/195. Source raw point9
+color is unmodified, and opening does not invoke unused moonout alpha callback;
+no invented recolor was applied. Next close the original actual visible sky
+light/material/ambient consumers; hardware and exact raster parity remain open.
+
+
+### Original completed Voyage light-color producer, 2026-10-13
+
+The remaining dark sky was traced to an omitted ORIGINAL light-color animation
+table, not an art substitution. Read-only original Dolphin liveMEM1 sampling
+validated exact ownchild/profile, unique24MiB mapping and64ISO DOLbytes before
+bounded light-bank excerpts; actual fresh095 pointLight9 is54/104/202 RGBA,
+coefficient1.5, noambient. Source yoru_hiru entry+28 light-color track final250
+RGB floats, mapMain's255/fctiwz/stb publication and component3 intensity agree
+exactly. Converter now explicitly samples original completed light-color track
+for used S_hai01, preserving first staticrawlight fallback for other consumers.
+No invented exposure/palette or unused alpha callback was added. MECHANICS
+records actual original conditions and verified source addresses.
+
+Original sky regression now independently checks sourcefinalRGB54/104/202,
+intensity1.5 and all126 vertices' bounded gradients/channel ratios including
+blue saturation. Private exporter and make all pass; full final tests and
+separate completed-light native capture are recorded once finished. Earlier
+failed strictblue ratio assumed no final-light channel saturation; corrected
+expectation verifies exact min(1,sourceRGB×diffuse) behavior.
+
+
+Completed-light validation: make test175/175CTest +113/113Python,
+make all -o assets-ready, py_compile and diff check pass. Separate isolated
+artifacts/azahar-voyage-completed-light full fresh route completed without
+native exception, actual Rogueport field60FPS/8.26ms, separate40-bytePM2D
+opening1/story3/known1. Voyage opening060 is60FPS/4.90ms; original bright Day
+sky/clouds/water/tinyship/logo now appear with source lighting and measured
+cinematic world crop. Sample native sky52/100/194 and54/104/203 versus original
+51/99/195 and54/105/205, supporting the recovered original light producer;
+this comparison is not whole-frame/hardware pixel parity. Whitearch, exposed
+upper corners and bottom moon/sun silhouettes are absent. The earlier dark
+sky blocker is closed by original source data and original live state.
+
+Remaining ownership boundary: story3 publishes after three seconds of original
+departure, but this branch keeps the frontend scene until the eight-second ship
+exit to preserve visible motion. Original detached event continues alongside
+ordinary field control after the parent ends; exact field handoff/input timing
+requires a field render owner for that remaining departure interval. The
+existing harbor contract records this explicitly; no exact earlier handoff
+claim or original Goombella join was made. Root integration owns this boundary.
+
+### 2026-10-13 original Voyage sky light source correction
+
+Read-only closure for the boat renderer owner: original sky S_hai01 white
+vertex color is lit by named pointLight9 RGB20/30/87 with intensity1.5 and
+no distance attenuation, not final white output. _mapLoad/lightEntry map raw
++48/+52 toE4c/E50 and integer+56 to three table coefficientsE54/E58/E5c;
+raw+60 is a marker-gated flag word. Original map normals are S8/64 stride3,
+not S16/16384. The first actual referenced sky normal is(0,0,-1), and source
+map draw publishes inverse-transpose(cameraView*objectModel) to the GX normal
+matrix. Boat owner received these findings before implementing its opt-in
+named-light converter bake. No primary source or assets were modified here.
+
+The new read-only source verifier pins four bodies, source instruction anchors,
+attenuation coefficients and original map/selection/light/normal resource data.
+Dolphin primary shader source supplies an explicitly attributed normalization
+and lighting-equation bridge, with no original GX/hardware execution claim.
+Contract: behavior/display/OPENING_VOYAGE_SKY_LIGHT.md. Native visual correction
+is owned and validated by the boat agent separately.
+
+Validation for this source-only sky increment: read-only verifier confirms
+4 bodies/69 instructions, coefficient table and used original map data; make
+test172/172 CTest and112/112 Python, make -j8 all builds normal native3DSX.
+Logs artifacts/sky-light-tests.log, sky-light-all.log and sky-light-verification.json.
+py_compile/git diff --check pass. Documentation links check964 files with the
+same one preexisting missing house-audio contract in this isolated baseline.
+No native renderer change or visual acceptance is claimed by this increment.
+
+### 2026-10-13 Voyage alpha_tev producer and attachment closure
+
+Read-only muj20 _ap section6+BSS20 is a pointer allocated as one requested byte
+and initialized255 by alpha_init_func; alpha_set_func writes evtGetValue arg0
+lowbyte. Complete self-relocation census has only sixBSS references in the
+three producer/consumer functions and eight function/event bindings. Actual
+alpha callback targets are S_umi_l_siro_b in nami_alpha (255→0/500ms), and
+S_hai02 plus S_hai03_moon in moonout_effect (255→0/1500ms), reached by
+onryo_event and moya_effect. Neither opening prologue initbranch nor its
+evt_prologue binds/calls these functions. Sent the boat owner this negative
+source result; inventing alpha0 for the opening sky would violate original
+conditions. Source day rotation/culling/material ownership remains the next
+visual investigation. Extended the same display contract and read-only sky
+verifier with complete REL identity, nine spans and fourteen references.
+
+Additional original ambient lifecycle recovered for the boat owner: current-bank
+lightReInit zeroes every96-byte record and is called by both normal mapUnLoad
+and bmapUnLoad. Standard same-bank map teardown therefore clears prior ambient
+records before the15point-only muj table is loaded. Extended verifier pins this
+fifth body and both original unload call instructions (71total anchors).
+
+Validation for alpha/ambient source extension: final read-only verifier confirms
+5 DOL bodies/71 instruction anchors, complete two-site light reset direct-call
+census,9 REL spans and14 producer/attachment references. make test172/172 CTest
+and112/112 Python; make -j8 all builds normal native3DSX. Logs artifacts/
+sky-alpha-tests-final.log, sky-alpha-all.log and sky-alpha-verification-final.json.
+Targeted source unittest/py_compile/git diff --check pass. No native renderer
+changes or visual parity claims in this increment. Boat comparison still finds
+day sky brightness different after source light9 bake; rawRGB copying is
+unchanged in lightEntry, so that mismatch needs actual visible-layer/TEV/source
+state investigation, not an invented exposure multiplier.
+
+### 2026-10-13 original completed-day Voyage light animation producer
+
+Original liveRAM from the boat agent showed pointLight9 RGB54/104/202, not its
+static20/30/87. Read-only source closure found yoru_hiru animation entry+24
+light pose tracks and+28 color tracks; +20 is zero in this entry. mapMain
+publishes Hermite-sampled5-component104-byte color keys to runtimeRGBA via
+sourcefmuls255/fctiwz/stb, intensitycomponent3→E50 and component4→E4c.
+Original final250 point9 key quantizes EXACT54/104/202 alpha255,intensity1.5;
+point8 finalwhite,intensity2. Source mode2 backdating permits this completed
+pose. Sent exact field/format/producer mapping to the boat owner for its
+parser/bake integration. This replaces the static-default explanation of day
+sky brightness; no invented color palette or exposure multiplier is needed.
+Extended source verifier pins complete mapMain/mapPlayAnimationLv bodies,
+116 totalinstructionanchors, table layout and original point8/9 key times and
+final byte/intensity publication. No primary or native rendering code changed.
+
+Day-light source validation: verifier7DOLbodies/116instructionanchors, current-bank
+resetcensus,9RELspans/14alpha refs, original point8/9 light endpoint publication
+pass. make test172/172 CTest and112/112 Python; make -j8 all builds normal
+3DSX. Logs artifacts/sky-day-light-tests.log, sky-day-light-all.log and
+sky-day-light-verification.json. Targeted source unittest/py_compile/diffcheck
+pass. Documentation check964files retains the same one preexisting missing
+house-audio contract. No native visual change or parity claim in this source-only
+increment; boat owner integrates and validates original completed-light sampling.

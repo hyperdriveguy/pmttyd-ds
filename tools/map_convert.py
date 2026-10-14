@@ -11,7 +11,7 @@ import struct
 from collections import defaultdict
 import numpy as np
 from character_bake import u,i,f,trans,rotate
-from map_animation import read_animations,sample,sample_material,texture_matrix
+from map_animation import read_animations,sample,sample_values,sample_material,texture_matrix
 
 def topology(command,verts):
     mode=command&0xf8
@@ -52,7 +52,7 @@ def wall_segments(collision,metadata=None,with_triangles=False):
             segments.add((*p,*q,float(a[:,1].min()),float(a[:,1].max()),*tag,*geometry))
     return sorted(segments)
 
-def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mesh_ambient=(),event_groups=None,scene_root=None,scene_offsets=None,object_bindings=(),initial_pose=None,local_offsets=None):
+def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mesh_ambient=(),event_groups=None,scene_root=None,scene_offsets=None,object_bindings=(),initial_pose=None,local_offsets=None,named_lighting=()):
     event_groups=event_groups or {}
     raw=Path(path).read_bytes();base=32
     table=32+u(raw,4)+u(raw,8)*4;names=table+u(raw,12)*8
@@ -77,11 +77,12 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
         animation,frame=initial_pose
     elif animation is not None and (ambient or mesh_ambient):raise ValueError('Preview and runtime animation export are separate')
     local_offsets=local_offsets or {}
-    animations=read_animations(path);selected={}
+    animations=read_animations(path,light_colors=bool(named_lighting));selected={};selected_lights={}
     if animation is not None:
         matches=[a for a in animations if a['name']==animation]
         if len(matches)!=1:raise ValueError(f'Unknown or ambiguous map animation: {animation}')
         selected={t['node']:sample(t,frame) for t in matches[0]['tracks']}
+        selected_lights={t['light']:sample_values(t,frame) for t in matches[0].get('light_color_tracks',[])}
         for track in matches[0]['material_tracks']:
             if track['texgen']!=0:
                 warnings.append({'animation':animation,'material':track['material'],'limitation':'Animated texgen beyond texture zero unsupported'})
@@ -91,6 +92,26 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
                 warnings.append({'animation':animation,'material':track['material'],'limitation':'Animation material absent from this map material table'})
                 continue
             for mat in targets:mat['uv']=sample_material(track,frame)
+    lighting_nodes=set(named_lighting);lighting_records=[]
+    if lighting_nodes:
+        lt=chunks['light_table']
+        for index in range(u(raw,lt)):
+            record=base+u(raw,lt+4+index*4)
+            kind=string(base+u(raw,record+4))
+            attenuation=u(raw,record+56)
+            if kind!='pointLight' or attenuation not in (0,1,2,3):
+                lighting_records.append(None);continue
+            position=np.array(struct.unpack_from('>3f',raw,record+8),float)
+            light_name=string(base+u(raw,record))
+            if light_name in selected:position=(trans(position)@selected[light_name]@np.array([0,0,0,1.]))[:3]
+            color=np.array(list(raw[record+44:record+47]))/255;intensity=f(raw,record+52)
+            if light_name in selected_lights:
+                values=selected_lights[light_name]
+                # mapMain: fmuls255, fctiwz, stb RGB; E50 receives component3.
+                color=np.trunc(np.asarray(values[:3],dtype=np.float32)*np.float32(255)).astype(int)%256/255
+                intensity=values[3]
+            lighting_records.append(dict(name=light_name,position=position,color=color,
+                intensity=intensity,attenuation=((1,0,0),(0,.1,0),(0,0,.01),(0,0,.01))[attenuation]))
     vertices=defaultdict(list);nodes=[];collision=[];collision_meta=[];head_geometry=[];collision_nodes={};markers=[];cutaway_nodes={};cull_counts=defaultdict(int);owners=defaultdict(list);node_info={}
     def walk(o,parent,visible=False,collidable=False,depth=0,exterior=False,exterior_group=0,suppressed=False,parent_node=None,event_group=0,scene_offset=(0,0,0)):
         if depth>100:raise ValueError('Invalid map graph')
@@ -122,6 +143,14 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
                 'center':world_center.tolist(),'parts':u(raw,o+92)}
         cull=raw[base+draw_pointer+1] if draw_pointer else 3
         if u(raw,o+92) and cull>3:raise ValueError(f'Invalid GX cull index for {name}: {cull}')
+        light=None;normal_matrix=None
+        if name in lighting_nodes:
+            if not draw_pointer or raw[base+draw_pointer+2]&8:raise ValueError('Used named lighting requires original named mask')
+            mask=u(raw,base+draw_pointer+4)
+            if mask==0 or mask&(mask-1):raise ValueError('Used lighting bake requires one original point light')
+            index=mask.bit_length()-1
+            if index>=len(lighting_records) or lighting_records[index] is None:raise ValueError('Unsupported used original light')
+            light=lighting_records[index];normal_matrix=np.linalg.inv(m[:3,:3]).T
         marker_points=[]
         for part in range(u(raw,o+92)):
             mo=u(raw,o+96+part*8)
@@ -150,6 +179,21 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
                         uv=mat['uv']@uv
                         color=np.array(mat['color'] if mat['color_source']==0 else [255]*4,float)/255
                         if 2 in indices:color*=np.array(list(raw[arrays[2]+indices[2]*4:arrays[2]+indices[2]*4+4]))/255
+                        if light is not None:
+                            if 1 not in indices:raise ValueError('Original lit geometry needs normals')
+                            # mapSetPolygonVtxDesc: signed bytes, XYZ, frac6, stride3.
+                            normal=normal_matrix@(np.array(struct.unpack_from('>bbb',raw,arrays[1]+indices[1]*3),float)/64)
+                            length=np.linalg.norm(normal)
+                            if length==0:raise ValueError('Zero original lit normal')
+                            normal/=length # portable bake preserves direction across map unit scaling
+                            world=p/scale-node_offset/scale
+                            direction=light['position']-world;distance=np.linalg.norm(direction)
+                            if distance==0:raise ValueError('Coincident original point light')
+                            diffuse=max(0.,float(normal@(direction/distance)))
+                            # Runtime loader scales original light position by10; GX attenuation uses engine units.
+                            distance*=10
+                            a0,a1,a2=light['attenuation'];denom=a0+a1*distance+a2*distance*distance
+                            color[:3]*=np.clip(light['color']*light['intensity']*diffuse/denom,0,1)
                         # Tex3DS uses bottom-origin texture coordinates.
                         local.append([*p,float(uv[0]),1-float(uv[1]),*color])
                     tris=list(topology(cmd,local))
@@ -302,6 +346,7 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
     summary['collision_nodes']=[{'source_node':node,**data} for node,data in sorted(collision_nodes.items())]
     summary['ambient_material_clips']=list(ambient);summary['animated_uv_vertices']=len(used)
     summary['sampled_animation']=animation;summary['sampled_frame']=frame if animation else None
+    summary['named_lighting_nodes']=sorted(lighting_nodes)
     (output/'map-summary.json').write_text(json.dumps(summary,indent=2)+'\n')
     (output/'collision.json').write_text(json.dumps(collision))
     return summary

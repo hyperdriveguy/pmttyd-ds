@@ -1610,3 +1610,31 @@ Nintendo/Intelligent Systems ownership and local-use licensing limitations
 apply. ISO, extracted images, caches, RomFS packs and captures remain outside
 source history. The isolated icon cache regenerates bin/t3x/json byte-identically;
 it is separate from concurrent HUD atlas packing.
+
+Opening map callback admission now binds the original `mariost.tpl` palette3
+raster and alpha producer. The original held map item96 resolves to icon314,
+`icon.bin` descriptor0x1346/image319 (64x64, one static frame). Its original
+`icon.tpl` pixels join the existing message icon atlas without resampling.
+`a/c_luigi` supplies `I_1` and `S_1`; `a/e_mario` supplies `M_L_3` using its
+original `a_mario` texture binding. These packs stay in ignored RomFS/local
+assets; source hashes and requests live in the
+[map display contract](behavior/story/OPENING_MAP_DISPLAY.md). Original Nintendo/
+Intelligent Systems assets remain local-only with no redistribution rights.
+
+
+Voyage S_hai01 now explicitly bakes its original selected named pointLight9,
+original raw RGB20/30/87, intensity1.5, constant-distance attenuation and original
+S8/64 normals through a normalized inverse-transpose transform. This is a native
+lighting adaptation for this one used static sky node, not a global replacement
+palette or a complete GX lighting backend. The original source map provides all
+color/normal/light data; no sky texture was generated. Other map conversion
+outputs remain unchanged unless they explicitly request named_lighting.
+
+
+The completed Voyage Day pose also consumes original yoru_hiru light-color
+tracks (record+28,104-byte keys), not just mesh/material tracks. Its used
+pointLight9 final RGB components publish54/104/202 after original binary32
+multiply255/truncate-to-byte; intensity1.5. These source-derived completed
+parameters were independently observed in isolated original MEM1; no exposure
+or substitute palette is applied. Light-color parsing remains explicit opt-in
+for the used static opening sky.

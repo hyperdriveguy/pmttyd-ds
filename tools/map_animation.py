@@ -7,7 +7,7 @@ from pathlib import Path
 import numpy as np
 from character_bake import trans,rotate
 
-def read_animations(path):
+def read_animations(path,light_colors=False):
     raw=Path(path).read_bytes();base=32
     def unpack(fmt,o):
         try:return struct.unpack_from('>'+fmt,raw,o)
@@ -69,6 +69,24 @@ def read_animations(path):
                 texgen=u(track+4)
                 if texgen>7:raise ValueError('Invalid material texgen')
                 animation['material_tracks'].append({'material':string(base+u(track)), 'texgen':texgen,'center':center,'frames':frames})
+        if light_colors:
+            animation['light_color_tracks']=[]
+            light_table=u(entry+28)
+            if light_table:
+                light_table+=base
+                for j in range(count(light_table)):
+                    track=base+u(light_table+4+j*4);frames=[];previous=-math.inf
+                    for k in range(count(track+4)):
+                        frame=track+8+k*104;time=unpack('f',frame)[0];components=[]
+                        if not math.isfinite(time) or time<=previous:raise ValueError('Unordered light color keyframes')
+                        previous=time
+                        for c in range(5):
+                            point=frame+4+c*20;values=list(unpack('3f',point));step=u(point+16)
+                            if not all(map(math.isfinite,values)) or step not in (0,1):raise ValueError('Invalid light color component')
+                            components.append([*values,bool(step)])
+                        frames.append({'time':time,'components':components})
+                    if not frames:raise ValueError('Empty light color track')
+                    animation['light_color_tracks'].append({'light':string(base+u(track)),'frames':frames})
         result.append(animation)
     return result
 

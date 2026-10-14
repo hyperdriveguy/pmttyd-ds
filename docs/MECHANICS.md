@@ -482,3 +482,58 @@ Mario after a small lateral reveal; a straight-line view can naturally hide her
 behind Mario. No depth-test override, fabricated motion cue or generated art was
 introduced. Original-runtime trajectories, full terrain/placement/state-service
 composition and hardware behavior remain open.
+
+
+### Original fresh-file Voyage visual comparison, 2026-10-13
+
+Read-only original US G8ME01 ISO, Dolphin /usr/bin/dolphin-emu, isolated
+project-owned profile under artifacts/opening-skies-boat-worktree/artifacts/
+dolphin-original-voyage-confirm. Explicit isolated controller port0 type6,
+XInput2/0/Virtual core pointer and BackgroundInput=True allowed actual keyboard
+A/Start/Up input; the keyboard-only device used in the earlier private run did
+not skip the automatic storybook. No user profile or saves were read or modified.
+
+The actual fresh file passed original title/file-name confirmation, Luigi's
+letter, the map, and Voyage. Captures fresh265/270/275 show the authored small
+boat entering from the left, then reaching the center: approximately60 pixels
+wide in the original608-wide viewport (approximately30 in native304). This
+supports original model/camera scaling; enlarging the model would change the
+scene. These captures show bright blue daytime sky, white horizon clouds and
+water across the viewport; visible stars/moon/sun are absent. The world is
+letterboxed to approximately EFB rows48..431, with the logo drawn afterward
+(the logo can cover the upper black bar). The native Voyage world now preserves
+full-height projection and crops rows24..215 at half resolution. This is a
+matched-scene observation/adaptation, not recovered camera8 lifecycle conditions
+or a claim that every original opening scene has the same crop. The native
+S_hai01 named light bake removes white geometry but remains darker than this
+original comparison; original runtime light-color/TEV changes remain open.
+
+
+### Original live Voyage light state and source animation closure, 2026-10-13
+
+A second isolated reference run copied only the project-owned fresh GCI file
+into artifacts/dolphin-original-voyage-ram/user. The read-only memory sampler
+ran inside emulator_smoke's parent process, selected its own direct Dolphin
+child by exact executable and -u profile path, required one24MiB offset0
+GameCube MEM1 shared-memory mapping, and compared64 loaded bytes at8001bf10
+against the read-only ISO DOL before reading only the two bounded32×96-byte
+light arrays. External sibling /proc/PID/mem access was kernel-denied; no
+ptrace attachment, permissions changes or user processes/profiles were used.
+
+Actual fresh065 Luigi-letter image had both banks' light flags inactive.
+Matched fresh095 Voyage image/live state uses activebank8041e650, array80b0b720;
+its pointLight9 is flags0x1001, RGBA3668caff=(54,104,202,255), coefficient1.5,
+distance attenuation(1,0,0). All15 map lights active, secondbank empty, no
+ambient record. PointLight8 is RGBAffffffff/coefficient2. This proves the
+native first static-light bake was missing actual animated light parameters,
+not an original palette/exposure choice or retained House ambient.
+
+The original yoru_hiru record0x887e4 has light-color table pointer+28→0x94c24.
+PointLight9 track0x9564c has five keys0/150/200/230/250, five20-byte components
+per104-byte key, starting header+8. Completed250 RGBvalues are
+(.21180300414562225,.4081819951534271,.7960000038146973), intensity1.5.
+Original mapMain80027ef4..800280c0 multiplies RGBby255, fctiwz/stb publishes
+54/104/202 and forcesalpha255; component3 writes E50 intensity; component4
+writes E4c spot-angle (unused for point9). Native now reads the source light
+track and consumes those completed parameters, matching actual live state.
+The general dynamic-light renderer and non-opening original state remain open.

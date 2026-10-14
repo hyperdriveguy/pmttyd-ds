@@ -881,3 +881,7 @@ target_sources(ttyd_core PRIVATE source/battle_damage_orchestration.cpp)
 add_executable(battle_damage_orchestration_tests tests/battle_damage_orchestration_tests.cpp)
 target_link_libraries(battle_damage_orchestration_tests PRIVATE ttyd_core)
 add_test(NAME battle_damage_orchestration COMMAND battle_damage_orchestration_tests)
+
+add_executable(opening_map_display_tests tests/opening_map_display_tests.cpp)
+target_link_libraries(opening_map_display_tests PRIVATE ttyd_core)
+add_test(NAME opening_map_display COMMAND opening_map_display_tests)

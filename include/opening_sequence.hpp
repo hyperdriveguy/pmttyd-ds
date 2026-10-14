@@ -5,6 +5,8 @@
 #include "opening_heading.hpp"
 #include "opening_heading_display.hpp"
 #include "opening_wake.hpp"
+#include "opening_map_display.hpp"
+#include "opening_map_bgm.hpp"
 #include "camera_road_assets.hpp"
 #include "opening_harbor_scene.hpp"
 #include "opening_voyage_scene.hpp"
@@ -20,6 +22,8 @@ public:
     OpeningHeading heading;
     OpeningHeadingDisplay headingDisplay;
     OpeningWake wake;
+    OpeningMapDisplay mapDisplay;
+    OpeningMapBgm mapBgm;
     CameraPoint wakeEye{},wakeAt{};
     mutable OpeningHarborScene harbor;
     mutable OpeningVoyageScene voyage;

@@ -49,6 +49,7 @@ suffix.
 
 | Document | Concrete coverage | Still incomplete |
 | --- | --- | --- |
+| [Original Voyage sky light](display/OPENING_VOYAGE_SKY_LIGHT.md) | Actual named pointLight9 loader/intensity/no-falloff coefficients, S8/64 normals/inverse transpose, alpha byte producers/actual callback targets and authored day light-track publication | Native consumer validation, original GX/hardware numerical parity |
 | [Native original prologue heading](display/NATIVE_OPENING_HEADING.md) | Original glyph/background palette, subtitle GPU cache/ring, source letter clock, real curtain/exit presentation acknowledgments | Projective rainbow TEV, original RNG/queue continuity, original/hardware raster parity |
 | [Trio field-return handshake](battle/UNDERGROUND_TRIO_FIELD_RETURN_HANDSHAKE.md) | Exact sequence>30/callback teardown/retained fade presets, authored Goombella join, nested controls and original field wait/161-command continuation | Native BattleEnd/context release/appearance/party constructor/sequence/pouch-save lifetimes and original execution |
 | [Ending map-heap free and remaining-unit teardown](battle/ENDING_HEAP_FREE_AND_REMAINING_UNIT_TEARDOWN.md) | Exact BattleFree/_mapFree header/coalescing/null behavior and later ordered BattleEnd64-unit/resources/free/global clear | Native map allocator/bootstrap/field constructors and transitive teardown/context lifetime |
@@ -740,3 +741,7 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Audience sound bank and ending clap](audio/BATTLE_AUDIENCE_SOUND_BANK_AND_ENDING_CLAP.md): exact original bank/init/slot1 producer/stop history and backend dependency.
 
 - [Portable original damage orchestration owner](battle/NATIVE_DAMAGE_ORCHESTRATION_OWNER.md)
+
+- [Opening map display](story/OPENING_MAP_DISPLAY.md): original item/pose prelude, alpha callback, native presentation admission and group512 music handoff.
+
+- [Opening map BGM](audio/OPENING_MAP_BGM.md): group512 integer off and original same-group replacement tail.

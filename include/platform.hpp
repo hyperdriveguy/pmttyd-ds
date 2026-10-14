@@ -274,6 +274,7 @@ public:
     void updateFrontend(const OpeningDemo&,bool enabled);
     void updateFrontend(const OpeningTitle&,bool enabled);
     bool updateOpeningHousePcm(const OpeningHouseSounds*,bool enabled);
+    void updateFrontend(const OpeningSequence&,bool enabled);
     void shutdown();
     bool available() const { return ready; }
     bool frontendTrackReady(int track);

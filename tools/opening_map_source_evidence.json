@@ -1,0 +1,85 @@
+{
+  "schema": 1,
+  "rel": [
+    {
+      "offset": 440,
+      "size": 260,
+      "sha256": "6a1b018e68c222fc5925e2086496414a4623592bd0f3f6fd4f745115fb57172f"
+    },
+    {
+      "offset": 700,
+      "size": 408,
+      "sha256": "5a495ec34501764b7a6ae73d0097514037b2dea3fb669ab737d8a3682af4ef64"
+    }
+  ],
+  "dol": [
+    {
+      "name": "winTexSet",
+      "address": 2149043244,
+      "size": 708,
+      "sha256": "4c3965b4d027abcb658ca935bb1da37bc66078bbc9437d18c4b5568e10b732b1"
+    },
+    {
+      "name": "itemEntry",
+      "address": 2148194288,
+      "size": 2016,
+      "sha256": "795c718e571a1170a921ca72125f8ae202d50f784d1da92cb9f32dae667a026c"
+    },
+    {
+      "name": "itemMain",
+      "address": 2148196320,
+      "size": 1692,
+      "sha256": "34d4426da1007ba83cf342fcd599c3fa1de56b5a51e88e67cfe3cb46acf5ee9c"
+    },
+    {
+      "name": "iconDisp",
+      "address": 2147593200,
+      "size": 184,
+      "sha256": "7fc58698c0be8753cbfba0919d88679f80516a0b37af997a5c8687d176dec8b7"
+    },
+    {
+      "name": "iconDispGx",
+      "address": 2147592472,
+      "size": 36,
+      "sha256": "140c49735d09568fc933f8eca36b6fc8788f0878ac8b5ecf60f19e3079b3041d"
+    },
+    {
+      "name": "evt_item_set_scale",
+      "address": 2148178948,
+      "size": 120,
+      "sha256": "8ac591115ff55711cfd5b844a9e60ca0d287574ffbbf8abcd6f61a84b036b933"
+    },
+    {
+      "name": "psndBGMOn_f_d",
+      "address": 2148380452,
+      "size": 2132,
+      "sha256": "7b3fe9b3bb5a74e1cb174d0a14e460621d4c922d55d95884a27926f01eb3bf0e"
+    },
+    {
+      "name": "psndBGMOff_f_d",
+      "address": 2148379564,
+      "size": 848,
+      "sha256": "38f527b79c239c86be3d5c7f82d3f69213bae597de4b7cb7ae03aca5b5bffc52"
+    },
+    {
+      "name": "psndBGMMain",
+      "address": 2148382668,
+      "size": 1172,
+      "sha256": "8cc019f59869a9d519e40598474d996f1d9ebbb0688ac2f3c5e92c88c32cbdba"
+    },
+    {
+      "name": "SoundSSFadeoutCh",
+      "address": 2148392788,
+      "size": 164,
+      "sha256": "93458b146a157baacf6b66520b935de3a401ed49ae842168c02a8497e860afd2"
+    },
+    {
+      "name": "SoundSSMain",
+      "address": 2148389600,
+      "size": 1592,
+      "sha256": "93f13bd7f43bcc570277a16e59963012648c2e2ed631754e6a3105feed04e88c"
+    }
+  ],
+  "event_count": 53,
+  "event_sha256": "6a8878ef482a27ca82943e8f359e35d0264dd2515978900935aaa64f26bd042f"
+}

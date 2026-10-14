@@ -51,7 +51,7 @@ def main():
         raise ValueError('Idle effect texture source requires explicit original binding')
     character_mesh=compile_mesh([(mario_model,mario,['M_S_1','M_W_1','M_R_1','M_J_1B','M_J_1C','M_S_3','M_I_S','M_I_Y','M_D_2','M_U_3']),
                                 (rear_model,rear_tpl,['M_S_1R','M_W_1R','M_R_1R','M_J_1BR','M_J_1CR']),
-                                (idle_effect_model,mario,['M_I_5','M_N_5A','M_F_1'])],
+                                (idle_effect_model,mario,['M_I_5','M_N_5A','M_F_1','M_L_3'])],
                                OUTPUT/'characters.pmmesh',WORK/'characters-mesh.png',OUTPUT/'characters.pmanim')
     texture(WORK/'characters-mesh.png',OUTPUT/'characters-mesh.t3x')
     atlas=Image.new('RGBA',(512,256))
