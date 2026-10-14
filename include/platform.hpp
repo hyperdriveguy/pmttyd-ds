@@ -1,4 +1,5 @@
 #pragma once
+#include "item_get_windows.hpp"
 #include "game.hpp"
 #include "frontend.hpp"
 #include "opening_house_objects.hpp"
@@ -61,9 +62,10 @@ private:
     Vertex* windowFontVertices=nullptr;
     unsigned windowFontCount=0;
     uint32_t windowFontRng=0x77666e74; // Presentation adapter; original global rand owner remains open.
-    bool sourceWindowFont(const char*,WindowFontConsumer,ItemSelectionTextDraw,const WindowFontStyle&,const ItemSelectionClip* clip=nullptr);
+    bool sourceWindowFont(const char*,WindowFontConsumer,ItemSelectionTextDraw,const WindowFontStyle&,const ItemSelectionClip* clip=nullptr,const ColorWindowText* colorTokens=nullptr);
     void selectorClip(const ItemSelectionClip*);
     bool itemSelector(ItemSelectionPresentation&);
+    bool itemGetWindows(ItemGetWindows&,uint32_t sourceFrameCounter);
     bool selectorIcon(uint32_t,uint64_t,float,float,float,uint32_t,bool centered=false);
     int count=0, transformLoc=0, marioPose=0;
     shaderProgram_s program{};

@@ -23,9 +23,9 @@ void Renderer::selectorClip(const ItemSelectionClip* clip) {
     C3D_SetScissor(GPU_SCISSOR_NORMAL,bound(left,240),bound(topEdge,400),bound(right,240),bound(bottomEdge,400));
 }
 bool Renderer::sourceWindowFont(const char* text,WindowFontConsumer consumer,ItemSelectionTextDraw request,
-    const WindowFontStyle& supplied,const ItemSelectionClip* clip) {
+    const WindowFontStyle& supplied,const ItemSelectionClip* clip,const ColorWindowText* colorTokens) {
     const auto& font=harborMessageFont();WindowFontMeasurement measured;
-    if(!windowFontVertices || !fontTexture.imported || !measurePlainWindowFont(font,text,supplied.spacing,measured))return false;
+    if(!windowFontVertices || !fontTexture.imported || !measurePlainWindowFont(font,colorTokens?colorTokens->plain.c_str():text,supplied.spacing,measured))return false;
     const size_t quads=measured.glyphs*(supplied.edge?5:1);
     if(!quads)return true;
     if(request.widthLimit>0) {
@@ -58,7 +58,9 @@ bool Renderer::sourceWindowFont(const char* text,WindowFontConsumer consumer,Ite
         vertices[0]={x0,y0,0,u0,v0,r,g,b,a};vertices[1]={x1,y0,0,u1,v0,r,g,b,a};vertices[2]={x1,y1,0,u1,v1,r,g,b,a};
         vertices[3]=vertices[0];vertices[4]=vertices[2];vertices[5]={x0,y1,0,u0,v1,r,g,b,a};
     };
-    if(!drawPlainWindowFont(font,text,consumer,supplied,services,int32_t(request.x),int32_t(request.y)))return false;
+    if(colorTokens) {
+        if(consumer!=WindowFontConsumer::MessageDirect || !drawColorWindowFont(font,*colorTokens,supplied,services,int32_t(request.x),int32_t(request.y)))return false;
+    } else if(!drawPlainWindowFont(font,text,consumer,supplied,services,int32_t(request.x),int32_t(request.y)))return false;
     if(context.overflow)return false;
     const unsigned count=windowFontCount*6-start;if(!count)return true;
     C2D_Flush();
