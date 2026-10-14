@@ -1304,3 +1304,9 @@ target_sources(ttyd_core PRIVATE source/display/camera_letterbox.cpp)
 add_executable(camera_letterbox_tests tests/camera_letterbox_tests.cpp)
 target_link_libraries(camera_letterbox_tests PRIVATE ttyd_core)
 add_test(NAME camera_letterbox COMMAND camera_letterbox_tests)
+
+# Original class-ring draw lifecycle; GPU providers retain their own contracts.
+target_sources(ttyd_core PRIVATE source/battle/battle_act_draw.cpp)
+add_executable(battle_act_draw_tests tests/battle_act_draw_tests.cpp)
+target_link_libraries(battle_act_draw_tests PRIVATE ttyd_core)
+add_test(NAME battle_act_draw COMMAND battle_act_draw_tests)

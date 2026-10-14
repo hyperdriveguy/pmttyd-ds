@@ -48,3 +48,8 @@ waits while class readiness is0, acknowledges presentation and selects Jump
 with physical A, releasing the class allocation before weapon setup. Jump is
 explicitly enabled in that fixture's retained pouch; bare-pouch eligibility is
 not changed globally.
+
+Next lifecycle increment: whole DrawMainMenu and DrawMainIcon local controllers
+are implemented in the [ring draw contract](ACT_SELECT_RING_DRAW_AND_ICON_ROUTING.md).
+Their native math/raster/queue providers remain open; this does not yet remove
+the explicit development presentation acknowledgment.
