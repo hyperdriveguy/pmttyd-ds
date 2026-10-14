@@ -105,3 +105,16 @@ generated tone, rewritten label or new game payload was added. Original menu/
 HUD resources remain in existing ignored packs; rendering/animation integration
 is still required. Texture, geometry and lighting conversion are unchanged;
 Nintendo/Intelligent Systems licensing restrictions remain.
+
+## 2026-10-14 — Book GPU capture and 400x240 framing
+
+Reused original demo.tpl0..12, a/OFF_d_meku_right/A_1, companion rune back,
+demo-page.pmanim and demo-page.bin. No extraction, texture scaling, source pose,
+UV/material or dialogue conversion changed. Captured kind1 surfaces now use
+runtime256-square GPU VRAM render textures instead of CPU-read framebuffer
+images. Original386x480 capture rectangle is adapted to193x240; the cover/paper
+viewport exposes the full native400x240 aspect, and the existing desktop raster
+fills it with its original aspect and vertical cropping. All source artwork is
+original Nintendo/Intelligent Systems material for private local use; no new
+redistribution rights or committed ISO/extracted payload. Diagnostic captures
+and native binaries remain ignored project artifacts.

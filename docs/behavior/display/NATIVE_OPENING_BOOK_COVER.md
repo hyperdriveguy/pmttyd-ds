@@ -33,9 +33,11 @@ allow later paper vertices to overwrite cover data before the GPU reads it.
 
 Camera8 initially uses a 25-degree perspective, aspect608/480, near100/far10000,
 and eyeZ240/tan(double0.21816612780094147), looking at the origin. Native uses
-that initial lens/distance, with the 400x240 target aspect and a content scissor
-x48..352. Source 608x480 image dimensions therefore fit the native304x240
-content region at half size. Later camera mutations and original SDK/Gekko numeric parity remain open.
+that initial lens/distance with the full400x240 top-screen aspect and scissor.
+The original vertical scale remains half size; the extra horizontal view reveals
+more of the book without stretching it. The desktop raster fills the screen at
+its original aspect, cropping above/below. Later camera mutations and original
+SDK/Gekko numeric parity remain open.
 Final `adjust` snapshot ownership and native binding limits are described below.
 
 The native page-base consumer retains source .95×coverwidth and .95×coverheight,
@@ -60,14 +62,26 @@ second delay is introduced. Completion of this source clock does not acknowledge
 framebuffer capture or a page animation. Source hashes and exact call operands
 are covered by the read-only verifier.
 
-The native renderer now captures the completed top-screen composition after
-FrameEnd/FrameSync. A same-format RGBA8 display transfer detiles the sideways
-240x400 target; a bounded CPU adapter rotates and crops the original386x480
-rectangle124/0 to193x240 at native110/0, pads edges and writes a256x256 Morton
-texture. The actual copy/flush acknowledges capture; failed old-composition
-drawing cannot acknowledge it. Four independent textures retain the source
-page owners. Original rune backs remain separate. Host tests independently
-cover rotation, crop, every tile address, padding and malformed buffers.
+The native renderer captures the old composition directly into a256x256 VRAM
+render texture. It repeats desktop, original cover/page/illustration and retained
+older paper draws with an untilted projection cropped to the same native
+rectangle110/0/193/240 (source124/0/386/480). There is no CPU framebuffer
+readback, rotation or Morton repack. The temporary render target owns its depth
+buffer; deleting it after FrameEnd waits for GPU completion, then publishes
+captureComplete. The page retains its texture independently until book cleanup.
+Original rune backs remain separate. Source clip-space adaptation is
+`x'=400/256*x-76/256*w`, `y'=240/256*y+16/256*w`.
+Host tests compare this crop with the ordinary screen projection, including
+perspective cover rotations and homogeneous w. See
+[citro3d render-target lifecycle](https://github.com/devkitPro/citro3d/blob/master/source/renderqueue.c).
+
+The turning paper consumes the original capture-rectangle placement before the
+ImageBaseMatrix's global T(offsetX/10,offsetY/10)*S(scale/1.5). Final scaling is
+about the virtual image origin, not the crop's local hinge; offsets are outside
+the crop scale. An isolated frozen-frame0 native test compares the live page and
+its captured replacement: every crop pixel differs by at most2 RGB levels,
+mean absolute channel error0.0003742. This is an Azahar comparison of native
+paths, not an original-runtime or hardware observation.
 
 During final adjustment, the market renders beneath desktop/cover/page layers;
 source fade alpha and final img4 scale/translation consume the portable snapshot.

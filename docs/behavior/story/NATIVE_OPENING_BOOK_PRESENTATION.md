@@ -90,12 +90,17 @@ placement is not recovered by merely using the book's camera pointer.
 The bounded original image capture matrix is documented in
 [paper capture and animation](../display/PROLOGUE_FENCE_PAPER_CAPTURE_AND_ANIMATION.md).
 A native orthographic image-plane projection may adapt original XYZ to the
-304×240 content viewport; it must be labeled as an adapter, retaining source
+full400×240 top-screen viewport; it must be labeled as an adapter, retaining source
 geometry, capture rectangle, source UV/back art, visibility and completion.
 It does not prove original GX outer perspective, source shadows/material state
 or physical3DS performance.
 
 ## Packs and validation
+
+Native captured pages use GPU render-to-texture with a crop projection matching
+the full400x240 book view. Capture completion follows the temporary target's GPU
+completion; the original deformation and its draw acknowledgement stay intact.
+See [native cover/capture ownership](../display/NATIVE_OPENING_BOOK_COVER.md).
 
 Ignored `demo-page.pmanim` retains original A_1 sparse geometry/hierarchy.
 `demo-page.bin` is magicPMDPG001,u32 triangleCount124,then124 records of

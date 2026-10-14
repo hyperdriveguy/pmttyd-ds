@@ -231,3 +231,65 @@ Next: retained real battle pose/resource/texture ownership and per-part entry,
 then original selection/restart/rate/effect/release services. Display remains
 pending at animPoseSetLocalTimeRate8004142c; teardown and field return remain
 unbound. No completed-prologue or hardware-parity claim.
+
+## 2026-10-14 — Book page capture alignment and native aspect
+
+Corrected the observed book-page corruption/shift by replacing CPU framebuffer
+readback/rotation/Morton repack with direct GPU render-to-texture. Each page
+repeats the same old desktop/cover/page/illustration/retained-paper composition
+into a256-square VRAM texture with an untilted crop projection matching native
+110/0/193/240 (original124/0/386/480). Temporary target deletion after FrameEnd
+waits for GPU completion before source captureComplete/background replacement.
+The original372-vertex/124-triangle A_1 deformation, four independent owners,
+source rune backs,180-tick waits and narration order remain intact.
+
+Book cover/papers now use the entire400x240 top screen. Original vertical FOV/
+geometry scale remains; desktop fills at its own aspect with vertical cropping.
+Paper placement applies the original capture-rectangle matrix before global
+ImageBase T(offset)*S(scale), correcting final zoom alignment. No arbitrary
+compensating page shift, new art, dialogue or invented timing was introduced.
+Initial aspect/helper work was retained during the concurrent subsystem move;
+GPU correction commit4f719013 uses the new include/story and source/display
+paths. Original US init was checked read-only; its book offsets remain0.
+
+Validation: isolated frozen frame0 native GPU replacement compares against the
+live original page with all193x240 crop pixels within2 RGB levels, mean absolute
+channel error0.0003742084 (book-alignment-verified/crop-comparison.json).
+Original CPU/RGB/display-readback probes reproduced malformed captured pixels;
+those private diagnostic builds are not deliverables. Direct GPU flat probe
+(azahar-book-rtt-flat) fixes it. Production animation run
+artifacts/azahar-book-four-turns completes all four turns and zoom/Peach handoff;
+reviewed settled pages and transition, typical60FPS. No native exception.
+
+Current reorganized source was then freshly compiled with
+make -o assets-ready all BUILD=build-book-verified TARGET=ttyd-book-verified
+(book-current-clean-all.log), reusing the already converted original packs.
+Its actual normal binary artifacts/book-alignment-current/ttyd-2ds.3dsx passes
+another isolated full four-turn/zoom/market run (azahar-book-current,
+book-current-smoke.log). Reviewed all pages and final transition. Current cold
+market admission samples0FPS at t108 and26FPS at t110, then60FPS market; this is
+still synchronous scene IO/performance work, not accepted as hitch-free. Page
+registration/art remains correct. Coherent prior baseline plus owned book
+changes also builds normal and DEBUG_SHORT_BOOT (book-final-native-all.log,
+book-debug-short.log). Normal deliverable and hashes are project-local ignored
+artifacts; no diagnostic frame0 hold is enabled in production.
+
+Host checks: coherent snapshot make test209/209 CTest and133/133 Python pass
+(book-rtt-tests.log). Current standalone Python141/141 pass
+(book-current-python-tests.log). Required shared make test was attempted:
+first CMake encountered the directory migration mid-edit; existing host cache
+then produced24 failures/225 including stale-layout segfaults. Fresh host build
+artifacts/book-host-clean removes those segfaults, passing227/228 CTest, with
+only unrelated trio_attack_original assertion at tests/trio_attack_tests.cpp:410
+(pose word0x14==74/scalar0x44==1) remaining (book-clean-tests.log). Both book
+geometry/capture tests pass. First shared make all encountered stale shader
+source dependencies after migration; fresh native build above passes. Original
+book/capture/camera8 verifier65 anchors pass read-only (book-original-anchors.log).
+Scoped whitespace and documentation-link checks pass; logs retained.
+
+No user emulator profile/saves or ISO writes. Remaining: physical New2DS XL
+raster/performance comparison; original image-camera/TEV/shadow parity beyond
+this documented adapter; cold market admission stall and separate trio test
+failure. Full remake/prologue battle progression remains separate unfinished
+work. This correction does not revalidate New Game beyond the previous arrival
+route or alter its story endpoint.
