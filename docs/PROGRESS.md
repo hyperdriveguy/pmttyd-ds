@@ -1,3 +1,33 @@
+## 2026-10-14 — Coin callback borrowed-window lifetime
+
+Committed fcbe48db. FieldCoinGet now supports independent retirement after the
+window owner confirms actual deletion in state101. Optional observation leaves
+unbound providers retained; copied callbacks, early states and active closure
+cannot release storage. Original state101/action query remains unchanged.
+The actual CoinGetWindow integration test closes/deletes with action1 retained,
+releases parameters without another grant/callback, and safely reopens the window.
+Native Game/window-provider wiring remains pending; reward is not yet playable.
+
+Reviewed isolated tree5fb57a5b3e6775acf245ffc331298914d218429f passes sequential
+make assets-ready, make test -o assets-ready (250/250 C++,144/144 Python), and
+normal make all -o assets-ready. Logs: artifacts/coin-lifetime-{assets,test,build}.log.
+Reviewed artifact artifacts/ttyd-coin-lifetime-reviewed.3dsx SHA256
+54fda8542d92c85e616fc5a3f71ade0048a9ae1950b2e3b3f9509ffe797c94fa.
+Source audit matches the review tree; concurrent changes preserved. This step
+uses existing assets, adds no payload and makes no Azahar/hardware timing or
+rendering performance claim. Previous native audio tail checks remain unresolved.
+[Lifetime contract](behavior/field/PORTABLE_GOOMBA3_REWARD_AND_COIN_CALLBACK.md).
+
+Read-only parallel source/save review confirms5376 independent GSF GP+418 bit0;
+reward clears1420 then sets5376 after acknowledged coin completion. It is not a
+reward admission guard and quest acceptance does not clear it. Next: append
+optional5376 state and native v9 checkpoint known/value bits24/25 while keeping
+v8 reserved-bit validation and legacy unknown knowledge. Then bind real coin
+window lifetime/audio/clock/motion services and Game reward admission, implement
+original quest acceptance and verify acquisition→Goomfrey→McGoomba full chain.
+Continue original events/NPCs/objects in future areas and hardware profiling;
+full-game goal remains active and incomplete.
+
 ## 2026-10-14 — Complete source command Input and native target confirmation
 
 Committed `a7557ea2`. Shared BattleCommandInput now implements all30 states and

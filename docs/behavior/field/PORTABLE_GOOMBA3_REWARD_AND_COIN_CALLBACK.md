@@ -105,3 +105,26 @@ and prints original finish while its window remains closing. No source VM
 cleanup delay is invented. No Azahar/Dolphin or physical-hardware observation
 was performed for these portable increments; native renderer admission is still
 unbound. Previous parcel captures do not validate this reward presentation.
+
+## Independent native borrowed-window retirement (2026-10-14)
+
+FieldCoinGetServices now optionally supplies windowRetained, an observation of
+actual window ownership, separate from source windowAction. After the window
+manager visit, the native owner may call retireDeletedWindow(). It releases
+stable parameter ownership only for the live original callback instance in
+state101 and only when the bound window owner reports deletion. Missing
+observation, earlier callback states, active closing window and copied instances
+cannot retire it. Repeat retirement is inert. Bind/first invocation still refuse
+to overwrite a retained parameter.
+
+The original state101 callback/action query remains unchanged. This independent
+native lifetime observation runs after EVT already returned2; it does not repeat
+source position queries, grants, audio requests or quest completion, and does
+not add a source VM cleanup wait. The window slot must remain owned by this
+callback until deletion is observed, before admitting a replacement owner.
+
+A composed host test uses the actual CoinGetWindow manager, not an invented
+action0: AutoDelete removes active ownership while action remains1. Storage
+stays retained through closure, retires without another coin callback, then a
+new window borrows the reused amount safely. Native Game/provider wiring remains
+pending alongside reward admission; this API alone does not make reward playable.

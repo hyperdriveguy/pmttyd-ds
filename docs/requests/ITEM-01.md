@@ -346,3 +346,14 @@ both detached-tail assertions fail, including a controlled owner-count burst.
 No physical fade/drain or full reward claim. [Exact scope and evidence](../behavior/audio/NATIVE_COIN_FANFARE_ROW219_PROVIDER.md).
 Native window lifetime,5376/Game reward admission and full quest chain remain
 open; parent requests stay open.
+
+### 2026-10-14 — Coin borrowed parameter deletion observation
+
+Added independent FieldCoinGet retirement via optional actual windowRetained
+provider. The composed real CoinGetWindow test proves action1 can remain after
+deletion, parameter storage stays retained during closure, and retirement then
+allows reuse without a second grant or source callback. Original callback
+state101/action query remains unchanged. [Contract](../behavior/field/PORTABLE_GOOMBA3_REWARD_AND_COIN_CALLBACK.md).
+Native provider wiring and Game reward admission remain pending; parent stays
+open. Reward5376 persistence requires a versioned native save extension with
+legacy unknown-state preservation, as confirmed by read-only review.
