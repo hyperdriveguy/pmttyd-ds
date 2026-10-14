@@ -1049,29 +1049,6 @@ value/extent/alias/lifetime/IRQ/concurrency domains, transitive ARAM/AI/DSP and
 original frequency/dual-stream/IRQ/audio traces. Remaining macro/song/backend,
 lower-priority inbox and full native/game work remain open.
 
-## 2026-10-13 — Inbox priority-zero game stream fade/stop
-
-Completed SoundSSFadeoutCh/StopCh/SoundSetFadeTime/DVDMgrClose; checked EVT-01
-portion. [Fade/stop/close](behavior/audio/GAME_STREAM_FADE_STOP_AND_DEFERRED_CLOSE.md)
-pins signed GP/duration/minimum step, nested counter wrap/fresh decrement,
-flags-before-deferred-DVD/stream-free and global invalidation order. Consumers/
-GP/counter/IO/provider/FP domains/original stop/audio/native binding remain open.
-
-Validation: read-only ISO manifest passed nine spans,117 anchors,six calls.
-Seven finite fade/six counter/five stop/three time-set/four deferred-close vectors
-checked. Link audit passed913 Markdown files/zero broken links; scoped `git diff
---check` passed. Mathematical source deductions are separate from original
-execution. Documentation/metadata only; no `make test`/`make all` rerun. Fresh
-full original ELFs/listings/generator stay `/tmp`; no bodies/binary assets
-committed. Concurrent native edits excluded. Previously approved push remains
-pending invalid GitHub credentials.
-
-Next: priority-zero EVT-01 game stream engines/play/frequency/pan/volume and
-GP/time/counter/marker/base/flags/table/handle/stream-ID/type providers/deferred
-DVD owner and valid value/extent/alias/lifetime/IRQ/concurrency/FP domains,
-original fade/stop/IO/audio traces. Remaining decoder/DVD/DMA/macro/song/backend,
-lower-priority inbox/full native/game work remain open.
-
 ## 2026-10-13 — Original Goomba4 ordinary talk with explicit quest knowledge
 
 Committed91a091e: [native known-state talk](behavior/field/NATIVE_GOOMBA4_ORDINARY_TALK.md)
@@ -1144,6 +1121,29 @@ count/removal/revise owners, both quest graphs and full switch/pouch persistence
 then extend original actor/event/object profiles and additional areas, complete
 scheduler/shared RNG/clock and lifetimes, and measure Dolphin/New2DS rendering/
 performance. The full requested goal remains active; early Rogueport is a slice.
+
+## 2026-10-13 — Inbox priority-zero game stream fade/stop
+
+Completed SoundSSFadeoutCh/StopCh/SoundSetFadeTime/DVDMgrClose; checked EVT-01
+portion. [Fade/stop/close](behavior/audio/GAME_STREAM_FADE_STOP_AND_DEFERRED_CLOSE.md)
+pins signed GP/duration/minimum step, nested counter wrap/fresh decrement,
+flags-before-deferred-DVD/stream-free and global invalidation order. Consumers/
+GP/counter/IO/provider/FP domains/original stop/audio/native binding remain open.
+
+Validation: read-only ISO manifest passed nine spans,117 anchors,six calls.
+Seven finite fade/six counter/five stop/three time-set/four deferred-close vectors
+checked. Link audit passed913 Markdown files/zero broken links; scoped `git diff
+--check` passed. Mathematical source deductions are separate from original
+execution. Documentation/metadata only; no `make test`/`make all` rerun. Fresh
+full original ELFs/listings/generator stay `/tmp`; no bodies/binary assets
+committed. Concurrent native edits excluded. Previously approved push remains
+pending invalid GitHub credentials.
+
+Next: priority-zero EVT-01 game stream engines/play/frequency/pan/volume and
+GP/time/counter/marker/base/flags/table/handle/stream-ID/type providers/deferred
+DVD owner and valid value/extent/alias/lifetime/IRQ/concurrency/FP domains,
+original fade/stop/IO/audio traces. Remaining decoder/DVD/DMA/macro/song/backend,
+lower-priority inbox/full native/game work remain open.
 
 ## 2026-10-13 — Inbox priority-zero game stream leaves
 
@@ -1290,6 +1290,22 @@ writers/acyclicity/ID/state/priority/voice/IRQ/providers and valid index/extent/
 value/alias/lifetime/concurrency/stack/ABI domains, original chained activation/
 failure/audio traces. Remaining macro/song/backend, lower-priority inbox/full game.
 
+## 2026-10-13 — Source trio EXP icons, point-get art and counting
+
+Documentation-only [EXP presentation contract](behavior/battle/UNDERGROUND_TRIO_EXP_PRESENTATION_AND_COUNTING.md)
+pins original08..0b service/order/fallthrough, Fog/StockExp, realnineteenicon
+state/asset/framewindow gates, originalpoint-get phrase/digit texture mappings,
+effect lifetime/easing and actualvictorybank poses. CompleteDispMain does not
+copy Bf24→E0. Goombella type43 category69→PKR_S_1 corrected separatelyfrom
+animation missing-name fallback. Inbox source deliveries/dependencies updated.
+
+Validation: complete read-only local DOL listings/table reads, original
+icon404/effectUS TPL conversion/sourcepixel inspection and git diff --check.
+No native edits, full build rerun or commit. Native precedingDropMaterial
+validation belongs to its implementation entry. Next: sourceEXP icon/effect/
+counting providers and originalpose imports; exactinnerGPU/window/iconclock
+numeric/rasterparity and laterreward/export/field return remain unfinished.
+
 ## 2026-10-13 — Inbox priority-zero stream activation primary
 
 Completed sndStreamActivate primary lookup/voice/state/terminal-return regions
@@ -1428,6 +1444,23 @@ length/flags/source/selector/voice/loop-PS providers and valid value/divisor/ext
 alignment/encoding/address-map/cache/alias/lifetime/IRQ/concurrency/ABI/FP domains,
 transitive ARAM/DSP consumers and original startup/refill/stream/audio traces.
 Remaining macro/song/backend, lower-priority inbox and full native/game open.
+
+## 2026-10-13 — Source trio drop material and entry pouch prerequisites
+
+Documentation-only [drop/entry-pouch contract](behavior/battle/UNDERGROUND_TRIO_DROP_MATERIAL_AND_ENTRY_POUCH.md)
+closes complete source DropMaterial HP/FP/item draws, actual used tables,
+equipment queries, retained fields and field consumer gates. Current unit
+resources own ratios; real import/default FP5 is required, with no divide-zero
+fallback or entry heal. Sourceinitial-stage equipment6/0x32/9 mutation and
+pouchrevision/import pinned; ordinary title/newgame/boots6 lifecycle remains
+unclosed, and native suppliedentrypouch remains a separate adapter. I14 stock
+coin/S14 flower distinction corrected; inbox DMG/EVT/JUMP history updated.
+
+Validation: complete read-only DOL body/data/REL event inspections, source
+hash witnesses and git diff --check. No native code edits, build rerun or commit.
+Next: bind DropMaterial over actual packed unit/setup/pouch and source RNG,
+then original ending/reward/export/field continuation. Persistent Game/save
+pouch owner and scene-specific drop admission/collection remain unfinished.
 
 ## 2026-10-13 — Inbox priority-zero stream nonzero-position refill
 
@@ -1642,6 +1675,24 @@ providers and valid extent/value/alias/lifetime/IRQ/concurrency domains, transit
 DSP/hardware consumers and original stream/audio traces. Remaining macro/song/
 backend, lower-priority inbox and full native/game work remain open.
 
+## 2026-10-13 — Source trio victory controller and field-return ownership
+
+Documentation-only [ending contract](behavior/battle/UNDERGROUND_TRIO_VICTORY_CONTROLLER_AND_FIELD_RETURN.md)
+pins all32 original end-state entries, distinct field/NPC owners, initial
+result/audience/Koura/status/barrier order, complete audience target adjustment
+float ABI and original coefficient addresses, drop/EXP/victory/level/export/
+fade/publication/field continuations. Per-ID status loop retains Charge and
+skips25..27; no blanket clear or invented full-resource recovery. Source
+MarioM_V_2/GoombellaPKR_Y_1 scripts and fresh field callback initialization
+identified; broader callback producers remain bounded requests. JUMP/DMG/EVT
+inbox append deliveries record remaining dependencies.
+
+Validation: read-only DOL/table/REL/event inventory; git diff --check passed.
+No native edits/build rerun/commit. The implementation owner's next increment
+is00→05→06 to actual DropMaterial801141bc; its validation is reported separately.
+Full reward/pouch/display/fade/teardown and original scene continuation remain
+unfinished native work; this does not complete the prologue or remake.
+
 ## 2026-10-13 — Inbox priority-zero low-precision final pitch/composition
 
 Completed LowPrecisionHandler output/requeue/ABI helpers and composed whole
@@ -1855,6 +1906,22 @@ output/requeue and LowPrecisionHandler remainder, actual fader/track/voice/
 controller providers and valid index/extent/value/alias/lifetime/IRQ/concurrency/
 FP domains, original gain/audio traces. Remaining macro/stream/song/backend,
 lower-priority inbox and full native/game work remain open.
+
+## 2026-10-13 — Source Paragoomba wing-fall transition and next victory owner
+
+Documentation-only [used wing-fall contract](behavior/battle/PARAGOOMBA_WING_FALL_USED_TRIO_BINDING.md)
+pins failed-H1 per-hit admission, original tracked damage child, exact timed
+pose/data/part/descent/grounded-init sequence, original c_kuribo PTK→KUR art,
+packed reset/preservation and event/sound setter ABI. ChangeKind preserves U10
+and HP; source model/pose recreation and partattrs9 are required. Inbox JUMP-01
+history/DMG-02 updated. Next last-enemy victory owner is original btlseqEnd bank7,
+with FieldBattleInfo+3c callback or audience-end admission8021290c still requiring
+native binding before source reward/field return can be claimed.
+
+Validation: read-only US DOL leaf disassembly/tik REL inventories; scoped source
+facts, hashes and relocated pointers recorded; git diff --check. No native edits,
+build rerun, native completion claim or commit. Next: execute real fall child and
+recreated grounded art, then close original end/reward/pouch/return graph.
 
 ## 2026-10-13 — Inbox priority-zero zero-offset admission/ramp
 
@@ -4941,6 +5008,76 @@ connected. Original lighting, global translucent sorting, NPC collision/search,
 wandering, area event completeness and New2DS hardware profiling remain open.
 Keep the full user goal active; this is an incremental Rogueport milestone.
 
+## 2026-10-13 — Priority0 synth FX resource and chained control cores
+
+Delivered [complete synth request cores](behavior/audio/MUSYX_SYNTH_EFFECT_RESOURCE_AND_CONTROL_CORES.md):
+loaded-group/shared-scratch lookup, comparator/binary search, default255 and
+all16 sound-start operands, voice-generation checks and fresh chain reloads.
+Controller cores stop at stale identity; active-gated KeyOff skips stale nodes
+and continues. Returns report requests rather than confirmed hardware changes.
+Marked the local EVT-01 portion complete; registry/macro/voice/MIDI/resource/
+source/runtime dependencies remain explicit and open.
+
+Validation: generic musyx_synth_effect_core_evidence.json verifier12 spans
+(8 complete/4 linked identities),192 anchors and independently resolved15 direct
+call sites pass. Fresh new full body inspections remain `/tmp`; existing complete
+voice lookup identity is revalidated. Link audit719 Markdown files/0 broken
+links; whitespace checks pass. Docs/metadata only: no make rerun, native or
+original asset/code-body export. Unrelated staged/worktree edits excluded.
+
+Next/limits: FX registry insertion/removal and project residency, actual
+synthStartSound/MIDI/external-keyoff/voice-chain producers, calc3D/live audio and
+original scheduler/encounter/audio observations remain open. Continue priority0
+producer/source/query binding, then priority1 consumer/counter graph. No original
+executed/hardware/full-game fidelity claim.
+
+## 2026-10-13 — Original house-exit fence event and live lecture entry
+
+[Native fence/lecture entry](behavior/story/NATIVE_PROFESSOR_FENCE_AND_LECTURE_ENTRY.md)
+executes the original63-command wall-removal event through its story9 close-door
+contact+A callback. Door-end wait, temporary-party-to-NPC conversion, original
+083/084 messages, cameras/movement/hops and source GSW0=10 run in the existing
+VM. Expanded original REL catalog preserves318 commands/63 callbacks across
+first-talk, fence and lecture. The source lecture crossing poll remains live
+with field controls enabled, then runs084_01/084_02 through its original pending
+choice service. Added source `<o>`/once_stop retained-window behavior.
+
+Imported actual OFF_d_saku A_1 nonloop140-frame deformation/seven keys. Native
+capture bounds unblock the original integer/aspect commands; original78 fence
+vertices/materials deform in a frozen camera-plane adapter. Original map hide
+and image display ownership remain distinct from actual A_saku_04 collision
+removal. Source story>=10 restores collision removal on reload. Saves/exit
+saves remain suppressed while the live event lacks persistence. Asset paths,
+adaptations and rights are recorded in [assets](ASSETS.md).
+
+Validation: final shared-worktree `make test` passes104 CTest/100 Python tests;
+`make all` builds the3DS binary. Separately exported staged source compiles
+host/native and passes102 CTest tests after regenerating its field actor format
+in `/tmp/professor-fence-stage`; workspace assets are untouched by that rebuild.
+Original-data tests complete first-talk, walk to the close-door contact, wait
+for capture/animation, compare collision before/after, reach story10, walk the
+opened gap and reach the pending original lecture choice. Independent23-paper-
+animation samples pass0.00025 local-unit tolerance, max error0.000213623; the
+initial generic0.0002 check rejected that large-fall sample, and ordinary default
+tolerance remains unchanged. Key/boundary interpolation sampling was expanded.
+
+The first Azahar run overflowed the native checkpoint-restore stack. Main game,
+validation/warp candidates and full reset temporaries now use heap storage;
+retry `artifacts/azahar-professor-fence-heap/` restores the checkpoint and shows
+original083/084, fence gap and restored controls without that exception. Native
+`artifacts/azahar-professor-fence-gap/` replay walks through the gap and reaches
+original084_02 retained text and the pending choice service. Earlier straight
+replays hit the pipe; corrected navigation uses the opened gap. Initial staged-tree
+compile raced the file export and lacked main; rerun after export completes
+passes. No physical3DS or original runtime trace was obtained.
+
+Next/limits: bind original selection/add services, both lesson branches, actual
+lecture battle/return and story10 reload admission. Source offscreen/GX capture,
+rectangle clipping/depth/shadow, image clock and SFX/backend/flag consumers are
+still partial; current map-material deformation is an explicit handheld adapter.
+Earlier harbor/prologue gaps, temporary-party persistence and hardware
+performance still prevent full playable prologue parity.
+
 ## 2026-10-13 — Title/file menu and fresh-file opening order adapter
 
 Normal boot now plays the original storybook/market demonstration, title and
@@ -5006,76 +5143,6 @@ subsequent story progression still need native binding before fresh-file playtes
 can reach all later events in order. Continue with those source graphs and the
 remaining opening choreography; do not call the full opening or remake complete.
 The user's goal remains active.
-
-## 2026-10-13 — Original house-exit fence event and live lecture entry
-
-[Native fence/lecture entry](behavior/story/NATIVE_PROFESSOR_FENCE_AND_LECTURE_ENTRY.md)
-executes the original63-command wall-removal event through its story9 close-door
-contact+A callback. Door-end wait, temporary-party-to-NPC conversion, original
-083/084 messages, cameras/movement/hops and source GSW0=10 run in the existing
-VM. Expanded original REL catalog preserves318 commands/63 callbacks across
-first-talk, fence and lecture. The source lecture crossing poll remains live
-with field controls enabled, then runs084_01/084_02 through its original pending
-choice service. Added source `<o>`/once_stop retained-window behavior.
-
-Imported actual OFF_d_saku A_1 nonloop140-frame deformation/seven keys. Native
-capture bounds unblock the original integer/aspect commands; original78 fence
-vertices/materials deform in a frozen camera-plane adapter. Original map hide
-and image display ownership remain distinct from actual A_saku_04 collision
-removal. Source story>=10 restores collision removal on reload. Saves/exit
-saves remain suppressed while the live event lacks persistence. Asset paths,
-adaptations and rights are recorded in [assets](ASSETS.md).
-
-Validation: final shared-worktree `make test` passes104 CTest/100 Python tests;
-`make all` builds the3DS binary. Separately exported staged source compiles
-host/native and passes102 CTest tests after regenerating its field actor format
-in `/tmp/professor-fence-stage`; workspace assets are untouched by that rebuild.
-Original-data tests complete first-talk, walk to the close-door contact, wait
-for capture/animation, compare collision before/after, reach story10, walk the
-opened gap and reach the pending original lecture choice. Independent23-paper-
-animation samples pass0.00025 local-unit tolerance, max error0.000213623; the
-initial generic0.0002 check rejected that large-fall sample, and ordinary default
-tolerance remains unchanged. Key/boundary interpolation sampling was expanded.
-
-The first Azahar run overflowed the native checkpoint-restore stack. Main game,
-validation/warp candidates and full reset temporaries now use heap storage;
-retry `artifacts/azahar-professor-fence-heap/` restores the checkpoint and shows
-original083/084, fence gap and restored controls without that exception. Native
-`artifacts/azahar-professor-fence-gap/` replay walks through the gap and reaches
-original084_02 retained text and the pending choice service. Earlier straight
-replays hit the pipe; corrected navigation uses the opened gap. Initial staged-tree
-compile raced the file export and lacked main; rerun after export completes
-passes. No physical3DS or original runtime trace was obtained.
-
-Next/limits: bind original selection/add services, both lesson branches, actual
-lecture battle/return and story10 reload admission. Source offscreen/GX capture,
-rectangle clipping/depth/shadow, image clock and SFX/backend/flag consumers are
-still partial; current map-material deformation is an explicit handheld adapter.
-Earlier harbor/prologue gaps, temporary-party persistence and hardware
-performance still prevent full playable prologue parity.
-
-## 2026-10-13 — Priority0 synth FX resource and chained control cores
-
-Delivered [complete synth request cores](behavior/audio/MUSYX_SYNTH_EFFECT_RESOURCE_AND_CONTROL_CORES.md):
-loaded-group/shared-scratch lookup, comparator/binary search, default255 and
-all16 sound-start operands, voice-generation checks and fresh chain reloads.
-Controller cores stop at stale identity; active-gated KeyOff skips stale nodes
-and continues. Returns report requests rather than confirmed hardware changes.
-Marked the local EVT-01 portion complete; registry/macro/voice/MIDI/resource/
-source/runtime dependencies remain explicit and open.
-
-Validation: generic musyx_synth_effect_core_evidence.json verifier12 spans
-(8 complete/4 linked identities),192 anchors and independently resolved15 direct
-call sites pass. Fresh new full body inspections remain `/tmp`; existing complete
-voice lookup identity is revalidated. Link audit719 Markdown files/0 broken
-links; whitespace checks pass. Docs/metadata only: no make rerun, native or
-original asset/code-body export. Unrelated staged/worktree edits excluded.
-
-Next/limits: FX registry insertion/removal and project residency, actual
-synthStartSound/MIDI/external-keyoff/voice-chain producers, calc3D/live audio and
-original scheduler/encounter/audio observations remain open. Continue priority0
-producer/source/query binding, then priority1 consumer/counter graph. No original
-executed/hardware/full-game fidelity claim.
 
 ## 2026-10-13 — Priority0 MusyX effect API and voice/IRQ closure
 
@@ -5266,6 +5333,61 @@ EVT-01 query-specific menu/source/global domains and original scheduler/audio
 traces remain open. AC-02 lifecycle/display/forced/suppression writers and
 original charge playback remain unchecked. Continue by inbox priority; no
 original runtime/hardware/full-game equivalence claim.
+
+## 2026-10-13 — Current opening asset build blocked by empty interior variant
+
+The latest `make all` fails in `tools/opening_assets.py` while `map_convert.py`
+computes bounds for `aaa_00-interior`; the requested hidden-node set produces no
+render vertices, so NumPy rejects the empty minimum. Isolated conversions
+confirm base `aaa_00` has8,542 triangles, hiding `S_ie_door` alone leaves16,739,
+and hiding `S_aaa_00` alone leaves zero. I did not change the visibility set,
+because doing so without source evidence could render the wrong interior view.
+
+Therefore the latest build and Azahar timings below cover the previous
+buildable asset state, not the newest opening/professor source update. No new
+performance optimization was made. Next: resolve the correct original interior
+visibility subset, rebuild, then repeat the gameplay and Voyage timing samples.
+The performance review remains open; this is a scene correctness/build blocker,
+not evidence for a renderer optimization.
+
+## 2026-10-13 — Latest-build harbor performance samples
+
+`make all` succeeds on the latest front-end/field worktree. Reached a current
+story3 harbor state through the native new-game flow and reloaded that generated
+version4 save through the file selector in a separate isolated Azahar profile.
+The settled harbor scene reported60 FPS,1.31ms simulation,5.0ms CPU and0.5ms
+GPU. After a1.2-second movement/camera-follow input over animated water, it
+reported60 FPS, approximately1.1ms simulation,5.3ms CPU and0.5ms GPU. Captures
+are `artifacts/azahar-perf-current-harbor-valid/field-settled.png` and
+`artifacts/azahar-perf-current-harbor-moving/moving-harbor.png`. This verifies a
+current-build gameplay path; it remains a small software-emulator sample, not a
+percentile run or hardware result.
+
+No substantial optimization is justified by these measurements. The isolated
+29–30 FPS Voyage observation remains unconfirmed: a second quiet run did not
+reach the same state and held60 FPS in the letter scene. Next: use a state-aware
+Voyage fixture/input, then gather repeated timings for east-side actors, harbor
+and battle before closing this review. No hardware parity claim.
+
+## 2026-10-13 — Current front-end performance spot check
+
+After matching `Renderer::renderFrontend` to the current four-argument call,
+`make all` succeeds. Latest-build isolated captures show60 FPS on the opening
+House scene and60 FPS on the settled letter scene. One quiet run reached Voyage
+and showed29–30 FPS on the “A / START: continue” interstitial and again five
+seconds later; a repeated quiet run did not reach that same state and stayed at
+60 FPS on its settled letter scene. The apparent Voyage dip is therefore
+unconfirmed. The project opening-flow script's separate5 FPS screenshot was
+captured while its `xdotool key` calls flooded the terminal and is excluded as
+harness interference.
+
+No performance optimization was made. Front-end rendering currently lacks the
+gameplay CPU/GPU timing overlay, and the only29–30 FPS reading lacks a repeat
+in the same state. Next: use a quiet, state-specific Voyage capture and collect
+repeated FPS plus CPU/GPU timing for that scene and the field. The previous
+east-room fixture also failed native restore validation and must be replaced by
+a verified current-format fixture before it can support an actor-load sample.
+No hardware performance claim; review remains open.
 
 ## 2026-10-13 — Priority0 positional-SFX correction and update producers
 
@@ -6242,6 +6364,70 @@ Next tasks:
 5. `docs/behavior/README.md` is a contended file: three concurrent commits
    have dropped rows from it. Worth an owner check before it is treated as
    a reliable index.
+
+## 2026-10-13 — Audio frame driver, plus two corrections to my own ID 3 work
+
+Added [AUDIO_FRAME_DRIVER_AND_SFX_UPDATE](behavior/audio/AUDIO_FRAME_DRIVER_AND_SFX_UPDATE.md)
+as documentation agent ID 3: the complete 84-byte `psndMain` and
+`psndSFXMain` at structure level. `psndMain` is gated on **`init_f`**
+(`0x8041EB08`), decrements the signed-byte cooldown at `0x800DC4AC..4BC`
+**before** a fixed service order — `psndBGMMain`, `psndENVMain`,
+`psndSFXMain`, `SoundMain`. `psndSFXMain` has a literal `cmpwi 31, 40` loop
+bound (independently confirming the 40 slots), reaps slots via
+`SoundSSCheck`, clears `slot+0x06` and counts down `slot+0x0E` per frame,
+writes the live count to `G5B`, and resets the preference cursor `G54` to 0
+every frame. That last fact matters: the `+8` cursor advanced in
+`__psndSFXOn` is a **within-frame** round-robin, not persistent state.
+
+**Two errors of mine, corrected in place and recorded:**
+
+1. **Cooldown owner.** I stated three times that `psndSFXMain` owns the
+   cooldown decrement and that omitting it would wedge all further starts.
+   Wrong — `psndSFXMain` never touches `global+0x5c`. The decrement is in
+   `psndMain`, gated on `init_f`. Corrected in the provisioning contract,
+   the delivery log and here. The real practical dependency is therefore
+   `psndMain`, not `psndSFXMain`.
+
+2. **`clrlwi x, 19` decodes to the LOW 13 bits**, not the top 13. I read it
+   as `key >> 19` throughout, which made the "unresolved `slot+0x00`
+   index-versus-packed-key conflict" I reported as an open item an
+   artifact of my own error. The allocator settles it: `r31 = clrlwi(r18,
+   19)` where `r18` is a plain 0..4241 scan index, then `cmplw 0, 31`.
+   Under the top-13 reading `r31` is always 0 and the slot match is
+   vacuous; under low-13 it is an exact match. Independent work by another
+   agent (`894a5ad`) reached the same conclusion and consolidated the
+   accessors, stop and provisioning contracts, correcting them; I have
+   adopted its corrected readings rather than maintaining a divergent
+   copy.
+
+A third of mine was also wrong and is now corrected: I claimed
+`slot+0x04` and the returned handle diverge when the 16-bit channel
+counter wraps. `0x800D9E50` **reloads** the counter after the store, so
+both always use the same truncated value.
+
+**Note for whoever picks this up:** another agent rewrote three of my
+contracts in `894a5ad`, consolidating ~950 lines into ~350. My strcmp/4242
+name scan, the 517/869 gates, the dead volume clamps and the handle
+packing survived in the consolidation; the detail that did not survive is
+folded into their
+[POSITIONAL_SFX_UPDATE_OWNERS_AND_SOURCE_CORRECTIONS](behavior/audio/POSITIONAL_SFX_UPDATE_OWNERS_AND_SOURCE_CORRECTIONS.md)
+and my new frame-driver contract. `docs/behavior/README.md` has now been
+overwritten by concurrent commits four times; rows must be re-verified
+before the index is trusted.
+
+Docs-only; `make test` / `make all` not rerun.
+
+Next tasks:
+
+1. `calc3D` (1268 bytes) — the distance/pan model behind `slot+0x0E` and
+   `slot+0x10`, and the only remaining positional-SFX consumer.
+2. `psndSFXMain`'s per-channel dispatch conditions (which pssfxlist field
+   or slot flag selects each of the ~20 backend services).
+3. `psndInit` initial global values; `psndENVMain`/`psndBGMMain` touching
+   `pssfx` or the global block.
+4. Remaining EVT-01 todos: `evtmgrCmd` opcode bodies, NormalJump
+   registration writers, `CommandGetWeaponAddress`/`SelectWeapon` cursor
+   modes, `BATTLE_UNIT_QUERY_EVENT_LEAVES` prose reconciliation.
 
 ## 2026-10-12 — `__psndSFXOn` slot provisioning decoded (ID 3)
 
@@ -8078,6 +8264,29 @@ are underway. Source title actors, full original file-menu/card services,
 complete harbor battle/return and original-runtime/hardware parity remain open.
 The goal remains active.
 
+## 2026-10-13 — Opening scene performance checkpoint
+
+Latest native opening build renders the book scene and narration without missing
+resource notices. Isolated Azahar capture reports 60 FPS and 1.68ms frame time
+at the captured opening state (`artifacts/azahar-review-latest/boot.png`). The
+current opening title work is still concurrent/uncommitted; this entry does not
+claim full-scene coverage.
+
+Comparison limitation: isolated Dolphin capture at 20 seconds remains on the
+health and safety notice (`artifacts/dolphin-review-latest/boot.png`), so there
+is no matched original title-scene frame or timing sample yet. Earlier one-off
+quiet-opening 29–30 FPS reading remains unreproduced; no performance change is
+justified from it. Do not resize or otherwise reduce title assets based on the
+current evidence.
+
+Validation: `make all` passed for the current source state; latest Azahar
+opening capture completed at 60 FPS / 1.68ms. Isolated Dolphin startup capture
+completed but did not reach the opening scene. `git diff --check` passed.
+Next: advance the isolated Dolphin profile past its safety notice and capture
+the matching original scene; continue matched sampling in Voyage, field and
+battle states before proposing substantial optimizations. Hardware validation
+remains open.
+
 ## 2026-10-13 — Primary title and fresh-file sequence verification
 
 Primary normal `make all` passes (`artifacts/opening-title-primary-all-final.log`).
@@ -8111,6 +8320,32 @@ postbattle test with its actual event branch, and finish literal native harbor
 battle/field owners before claiming the broader prologue ready. Original title
 actors, full original file/card services, source display projection/reflow and
 all original gameplay/runtime/hardware comparisons remain open. Goal active.
+
+## 2026-10-13 — Isolated Dolphin opening comparison attempt
+
+Retried the original startup with multiple virtual-button sequences in separate
+project-local Dolphin profiles. The initial 20-second capture remained on the
+health and safety notice. A virtual A input produced intermittent black/faded
+frames; subsequent captures alternated between the notice and its continue
+prompt. Repeating with a keyboard-configured controller and a 40-second
+post-input wait again ended on the notice. These captures do not establish a
+Dolphin rendering fault or a native-game performance dip; they are invalid for
+matching the port opening. No source or asset optimization is indicated.
+
+Evidence: `artifacts/dolphin-review-latest/boot.png`,
+`artifacts/dolphin-review-advanced/after-safety.png` and
+`after-startup.png`, `artifacts/dolphin-review-advance2/advance-*.png`,
+`artifacts/dolphin-review-held/after-held-a.png`, and
+`artifacts/dolphin-review-longwait/after-long-wait.png`. The alternate keyboard
+mapping existed only in `/tmp/emulator_smoke_keyboard.py`; every profile and
+capture was isolated under `artifacts/`. No user Dolphin profile or save was
+used.
+
+Next: resolve isolated Dolphin controller focus/mapping or run the original
+manually in its isolated profile, then capture the matching opening. Until then,
+retain the existing Azahar 60 FPS opening result as port-only evidence. Scene
+coverage for Voyage, field and battle, repeatable dip measurements, and hardware
+validation remain open.
 
 ## 2026-10-13 — Preserved underground battle start/wait binding
 
@@ -8203,19 +8438,6 @@ publication. No native field-return capture or full prologue/hardware parity
 is claimed. Goal remains active.
 
 
-## 2026-10-13 — Field party lookup gate before restoration
-
-Completed source lookup/entry audit after Mario owner commit bda11e8:
-primary then auxiliary signed indices require nonnull actors with word0 bit8
-clear; ordinary entry checks the canonical pouch unlock before destroying
-existing primary actors. Added three whole-body hashes and an EVT-01 inbox
-breadcrumb. Native fixed party tokens remain unbound registry adapters.
-Next bind actual two-slot field ownership and constructor/appearance/Hello
-services using these gates and original joining history. Documentation-only
-follow-up: scoped diff check passed; prior native validation remains173 CTest,
-111 Python and make all. Full prologue/field return remains unfinished.
-
-
 ## 2026-10-13 — Original opening house SFX owners and native PCM
 
 Implemented original house flight/postbox/door sound scheduling, raw sound keys,
@@ -8272,32 +8494,17 @@ claim for this isolated branch. Next integrate source SFX/PCM hooks and verify
 actual playback, then implement original listener/spatial/MusyX/ENV/fade
 consumers. Full opening/prologue fidelity and overall goal remain incomplete.
 
-## 2026-10-13 — Original house sound integration and observed opening corrections
+## 2026-10-13 — Field party lookup gate before restoration
 
-Primary now schedules original Parakarry/postbox/door sound requests and plays
-the four original primary samples through separate NDSP10..17 voices, preserving
-existing eight effects2..9 and three music owners0/1/18. Source ENV requests are
-retained; complete MusyX/spatial/ambient services are not claimed.
-
-Validation: `make all` and `make test`173/173 CTest +111/111 Python pass
-(`artifacts/opening-house-sfx-primary-{all,tests}.log`). Read-only evidence pins
-the187-command event, seven service hashes and24 sound/loop/environment anchors
-(`artifacts/opening-house-sfx-source-evidence.log`). An immutable binary in
-`artifacts/opening-house-sfx-snapshot/` completes the fresh-file route and saved
-story3 in isolated Azahar (`artifacts/azahar-opening-house-sfx/`). The supplied
-local DSP firmware was copied into that isolated profile; Cubeb/HLE audio starts.
-No audible waveform/original-runtime/hardware parity assertion is made.
-
-The user then observed six corrections still required: mail camera oddities,
-missing skies, input-driven character dialogue bubbles, severe book-to-Peach
-slowdown, visible scene stubs, and ship arrival/departure motion. These are part
-of the arrival-scoped opening goal; it remains active. Three explicitly authorized
-isolated agents now own transition allocation/performance, original skies/ship
-and voyage, and dialogue/camera/wake. Root owns used harbor jump and native
-prologue heading display. Findings: Peach4MiB atlas repeatedly exceeds free
-linear memory; renderer lacks original b/<map>.tpl backgrounds; source ship/wake/
-heading timing differs from current simple adapters. Finish and integrate these
-consumers, then verify the complete corrected sequence before completion.
+Completed source lookup/entry audit after Mario owner commit bda11e8:
+primary then auxiliary signed indices require nonnull actors with word0 bit8
+clear; ordinary entry checks the canonical pouch unlock before destroying
+existing primary actors. Added three whole-body hashes and an EVT-01 inbox
+breadcrumb. Native fixed party tokens remain unbound registry adapters.
+Next bind actual two-slot field ownership and constructor/appearance/Hello
+services using these gates and original joining history. Documentation-only
+follow-up: scoped diff check passed; prior native validation remains173 CTest,
+111 Python and make all. Full prologue/field return remains unfinished.
 
 ## 2026-10-13 — Owned field party registry and ending entry prelude
 
@@ -8343,3 +8550,30 @@ Next: actual camera/animation/material/kuribo_init, placement2 and Hello,
 source joining graph and persistent party-slot lifetimes; then RuleKeep,
 audience stop and original exit/context/sequence/result publication. Native
 field return/full prologue parity and hardware validation remain unfinished.
+
+## 2026-10-13 — Original house sound integration and observed opening corrections
+
+Primary now schedules original Parakarry/postbox/door sound requests and plays
+the four original primary samples through separate NDSP10..17 voices, preserving
+existing eight effects2..9 and three music owners0/1/18. Source ENV requests are
+retained; complete MusyX/spatial/ambient services are not claimed.
+
+Validation: `make all` and `make test`173/173 CTest +111/111 Python pass
+(`artifacts/opening-house-sfx-primary-{all,tests}.log`). Read-only evidence pins
+the187-command event, seven service hashes and24 sound/loop/environment anchors
+(`artifacts/opening-house-sfx-source-evidence.log`). An immutable binary in
+`artifacts/opening-house-sfx-snapshot/` completes the fresh-file route and saved
+story3 in isolated Azahar (`artifacts/azahar-opening-house-sfx/`). The supplied
+local DSP firmware was copied into that isolated profile; Cubeb/HLE audio starts.
+No audible waveform/original-runtime/hardware parity assertion is made.
+
+The user then observed six corrections still required: mail camera oddities,
+missing skies, input-driven character dialogue bubbles, severe book-to-Peach
+slowdown, visible scene stubs, and ship arrival/departure motion. These are part
+of the arrival-scoped opening goal; it remains active. Three explicitly authorized
+isolated agents now own transition allocation/performance, original skies/ship
+and voyage, and dialogue/camera/wake. Root owns used harbor jump and native
+prologue heading display. Findings: Peach4MiB atlas repeatedly exceeds free
+linear memory; renderer lacks original b/<map>.tpl backgrounds; source ship/wake/
+heading timing differs from current simple adapters. Finish and integrate these
+consumers, then verify the complete corrected sequence before completion.
