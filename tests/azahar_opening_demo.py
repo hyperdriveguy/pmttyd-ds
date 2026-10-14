@@ -13,4 +13,4 @@ def run(env,capture):
         time.sleep(max(0,started+at-time.monotonic()));capture(name)
     def press(key):x('keydown',key);time.sleep(.10);x('keyup',key)
     press('b');time.sleep(1);capture('b-keeps-demo')
-    press('a');time.sleep(1);capture('a-enters-title')
+    press('a');time.sleep(16);capture('a-enters-title')

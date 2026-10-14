@@ -10,18 +10,22 @@ from character_bake import geometry
 from iso_assets import convert_tpl
 
 
-def compile_mesh(models, output, atlas_path, animation_output=None):
+def compile_mesh(models, output, atlas_path, animation_output=None, *, deduplicate=False):
     atlas=Image.new('RGBA',(1024,1024))
-    textures={};poses=[];metadata=[]
+    textures={};rasters={};poses=[];metadata=[]
     def texture_cell(model,tpl,tid):
         key=(str(tpl),tid)
         if key not in textures:
-            cell=len(textures)
-            if cell>=64:raise ValueError('Character texture atlas capacity exceeded')
-            textures[key]=cell
             image_path=Path(atlas_path).parent/f'mesh-{Path(model).name}-{tid}.png'
             convert_tpl(tpl,image_path,tid)
             image=Image.open(image_path).convert('RGBA').resize((124,124),Image.Resampling.LANCZOS)
+            raster=image.tobytes()
+            if deduplicate and raster in rasters:
+                textures[key]=rasters[raster];return textures[key]
+            cell=len(rasters) if deduplicate else len(textures)
+            if cell>=64:raise ValueError('Character texture atlas capacity exceeded')
+            if deduplicate:rasters[raster]=cell
+            textures[key]=cell
             x=(cell%8)*128;y=(cell//8)*128
             # Duplicate edge texels into the2px border; no adjacent-cell
             # sampling when original UV0/1 meets linear filtering.
@@ -57,7 +61,7 @@ def compile_mesh(models, output, atlas_path, animation_output=None):
         from character_animation_pack import compile_animation_pack
         compile_animation_pack(models,animation_output,texture_cell)
     atlas.save(atlas_path)
-    return {'poses':metadata,'textures':len(textures),'units':'unscaled original local model units',
+    return {'poses':metadata,'textures':len(rasters) if deduplicate else len(textures),'units':'unscaled original local model units',
             'texture_cells':[{'source':tpl,'tpl_index':tid,'cell':cell} for (tpl,tid),cell in textures.items()],
             'animation_pack':str(animation_output) if animation_output else None,
-            'conversion':'frame0 fixture plus original base arrays/hierarchy/sparse animation streams; textures resized to124px with2px border'}
+            'conversion':'frame0 fixture plus original base arrays/hierarchy/sparse animation streams; textures resized to124px with2px border'+('; identical native RGBA rasters share a cell, all source aliases retained' if deduplicate else '')}

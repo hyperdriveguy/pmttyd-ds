@@ -10271,3 +10271,9 @@ Next original upper-engine remaining services, lower-wrapper80000000 flag,
 sequence>30 and BattleEnd/map/smart/context/NPC/event/field-wait teardown.
 Actual DSP/crowd/render/lifetime and authored joining remain required for
 original parity; full playable prologue goal stays active and unfinished.
+
+## 2026-10-13 — Book backdrop fix verified; original atlas aliases retained
+
+Corrected unskipped run artifacts/azahar-opening-book-backdrop-fixed completed without admission/native exceptions. Actual market105/110/120 and merchant128 frames are60FPS, respectively10.41/10.54/9.36/10.82ms; final demo input guard60FPS/6.76ms. A enters the original white exit at60FPS/7.31ms. That1-second image is an exit fade, not a fully opened title; the fixture now waits16seconds for the title, as the separate fresh flow already does. The repeated-backdrop0FPS regression is closed by actual native evidence. Cold first resource loading is still synchronous; emulator results do not establish hardware performance.
+
+Current fresh route also succeeded with version8/1536-byte checkpoint, room1/storyKnown1/story3, actual no-partner field menu and input. Afterward a concurrent Mario pose addition exposed65 logical texture cells against the64-cell native limit. Rather than drop original art/poses, the main atlas now opts into exact converted RGBA raster sharing. Original read-only inventory found57 distinct rasters among65 logical entries; all source aliases survive. Other banks default to their previous mapping, preserving fixed curtain descriptors. Two regression checks cover65 aliases with every triangle/raster retained, and rejection of65 distinct rasters. Final coherent pack/build/test validation follows.

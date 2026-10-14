@@ -1660,3 +1660,5 @@ halfwords at80315380 with big-to-little endian conversion only. The ignored
 packs. No ISO or extracted source payload is committed. Nintendo/Intelligent
 Systems original data remains local-only with no redistribution rights.
 [Revision contract](behavior/unit/POUCH_PARAMETER_REVISION.md).
+
+The main Mario atlas opts into byte-identical native RGBA raster sharing in character_mesh.py. Every original texture descriptor/state retains its explicit source→cell mapping; original positions/UV domains/pose keys remain. Identical124×124 converted texels and duplicated borders share one cell. Other banks retain their prior allocation by default. This keeps the64-cell native format without dropping the opening M_L_3 pose or other supplied animations. A private read-only original inventory with the concurrently supplied M_N_5B/M_N_C poses had65 logical entries/57 distinct native rasters (eight front/rear aliases). Nintendo/Intelligent Systems source art, local use only; no redistribution rights.
