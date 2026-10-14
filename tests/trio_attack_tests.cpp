@@ -1,4 +1,5 @@
 #include "trio_attack.hpp"
+#include "battle_pose_inner.hpp"
 #include "native_shadow_program.hpp"
 #include "actor_animation.hpp"
 #include "battle_actor_rotation.hpp"
@@ -630,23 +631,29 @@ int main(){
             assert(!charged.trioAttack.resumeAudienceAux(4,0x801a37f0,0,{})); // Different live borrowed callback cannot be consumed.
             // Run the actual borrowed camera4 part through matrix/material work.
             // No inner geometry service is bound: the queue must retain its owner.
-            struct PartBinding {const TrioAttack* attack;DisplayDispatchServices original;} partBinding{&charged.trioAttack,frameServices.display};
+            struct PartBinding {const TrioAttack* attack;DisplayDispatchServices original;bool enabled=false;unsigned gx=0;} partBinding{&charged.trioAttack,frameServices.display};
             frameServices.display.user=&partBinding;
             frameServices.display.state=[](void* user,const DisplayStateRequest& r){auto& b=*static_cast<PartBinding*>(user);return b.original.state(b.original.user,r);};
             frameServices.display.callback=[](void* user,uint32_t camera,uint32_t identity,uint32_t borrowed){auto& b=*static_cast<PartBinding*>(user);
-                if(identity==0x80101774)return b.attack->resumePartDisplay(camera,borrowed,{});
+                if(identity==0x80101774){BattlePoseInnerServices inner;inner.user=&b;
+                    inner.gx=[](void* user,const BattleAudienceGXRequest&){auto& b=*static_cast<PartBinding*>(user);if(!b.enabled)return false;++b.gx;return true;};
+                    BattlePartDisplayServices part;part.inner=&inner;return b.attack->resumePartDisplay(camera,borrowed,part);}
                 return b.original.callback(b.original.user,camera,identity,borrowed);};
             const auto* actualPose=charged.trioAttack.battlePose(0x84201000);assert(actualPose);
             uint32_t oldHistory=0;assert(charged.trioAttack.readWord(0x84201228,oldHistory));
             assert(!charged.trioAttack.resumePartDisplay(3,0x84201000,{}));
             charged.trioAttack.resumeFinishingDraw(frameServices);
-            assert(charged.trioAttack.pendingFunction()==0x8003bc68 && queue->count()==21);
+            assert((charged.trioAttack.pendingFunction()==0x8001ca2c || charged.trioAttack.pendingFunction()==0x802b93d8) && queue->count()==21);
             assert(charged.trioAttack.readWord(0x84201218,value) && actualPose->word(0xf0)==value);
             assert(actualPose->word(0xe8)&0x40);
             assert(charged.trioAttack.readWord(0x84201228,value) && value==oldHistory);
             const auto material=actualPose->word(0xf0),flags=actualPose->word(0xe8);
             charged.trioAttack.resumeFinishingDraw(frameServices);
-            assert(charged.trioAttack.pendingFunction()==0x8003bc68 && actualPose->word(0xf0)==material && actualPose->word(0xe8)==flags);
+            assert(charged.trioAttack.pendingFunction()==0x802b93d8 && actualPose->word(0xf0)==material && actualPose->word(0xe8)==flags);
+            partBinding.enabled=true;charged.trioAttack.resumeFinishingDraw(frameServices);
+            assert(charged.trioAttack.pendingFunction()==0x80296a54 && partBinding.gx==4 && queue->count()==21);
+            assert(charged.trioAttack.readWord(0x84201228,value) && value==oldHistory);
+            charged.trioAttack.resumeFinishingDraw(frameServices);assert(partBinding.gx==4);
 
 
 

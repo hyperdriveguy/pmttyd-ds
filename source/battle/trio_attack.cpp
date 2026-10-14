@@ -1,4 +1,5 @@
 #include "trio_attack.hpp"
+#include "battle_pose_inner.hpp"
 #include "battle_event_callbacks.hpp"
 #include "event_memory_bootstrap.hpp"
 #include "event_memory_release.hpp"
@@ -166,6 +167,11 @@ struct TrioAttackRuntime {
     BattleAudienceCallbackCursor audienceCallbackCursor;
     std::array<BattleAudienceAuxCursor,2> audienceAuxCursors;
     BattlePartDisplayCursor partDisplayCursor;
+    BattlePoseInnerCursor poseInnerCursor;
+    uint32_t poseDrawMode=1; // Replay battle_init -> animPoseBattleInit W10c=1; retained until autoRelease(1).
+    std::optional<uint32_t> poseDrawPass;
+    std::optional<BattlePoseInnerContext> poseDrawContext;
+    std::optional<BattlePoseMapGroup> poseDrawMapGroup; // Selected battle bank1 material projection.
     ShadowDisplayGlobals shadowDisplayGlobals;
     std::shared_ptr<BattleCommandPalette> palette;
     BattleFooterCursor commandDisplayCursor,audienceDisplayCursor,slotDisplayCursor;
@@ -288,6 +294,10 @@ struct TrioAttackRuntime {
         if(half(0x85000000+0x88)!=0)return false; // Signed rank halfword; following halfword is level.
         if(!stageBackground.load((stageMapRoot+"/bti_01.mapobj").c_str()) || !stageForeground.load((stageMapRoot+"/stg_00_1.mapobj").c_str()))return false;
         if(!battleHits.load((stageMapRoot+"/battle-hit.bin").c_str()))return false; // Declared initial battle context/HitObj snapshot, independent of field geometry.
+        // Replay the preceding seq_battleMain rank0 bmapLoad(bti_01,stg_00_1)
+        // bank1 clear. Map loading does not set material bits2/4; encountered
+        // unbound EVT blend writers suspend, never silently mutate this owner.
+        if(!poseDrawMapGroup)poseDrawMapGroup=BattlePoseMapGroup{0,0,0};
         word(Battle+0x18110,0);word(Battle+0x18114,0x80374c38);byte(Battle+0x182a6,255);word(Battle+0x182b8,0);word(Battle+0x182bc,0);
         // Typed current map root is retained from the original hierarchy pack.
         if(!stageForeground.root() || !stageForeground.flag(stageForeground.root(),2,false))return false;
@@ -1833,8 +1843,23 @@ bool TrioAttack::resumePartDisplay(uint32_t camera,uint32_t part,const BattlePar
         auto& b=*static_cast<Bridge*>(user);const auto* pose=b.runtime->poses.pose(request.handle);
         if(!pose || pose->word(0x90)!=0xffffffff || !pose->resource || !pose->resource->modelFlags){pending=0x8003b4d8;return false;}
         const auto flags=*pose->resource->modelFlags;
-        if(!(request.pass==2 && (flags&1)) && !(flags&(1u<<request.pass)))return true;
-        pending=0x8003bc68;return b.source->draw && b.source->draw(b.source->user,request,pending);
+        const uint32_t shift=(request.pass&32)?0:1u<<(request.pass&31);
+        if(!(request.pass==2 && (flags&1)) && !(flags&shift))return true;
+        pending=0x8003bc68;
+        if(b.source->draw)return b.source->draw(b.source->user,request,pending);
+        BattlePoseInnerServices inner;inner.user=&b;
+        inner.mapGroup=[](void* user)->std::optional<BattlePoseMapGroup>{auto& b=*static_cast<Bridge*>(user);const auto* s=b.source->inner;return s && s->mapGroup?s->mapGroup(s->user):b.runtime->poseDrawMapGroup;};
+        inner.gx=[](void* user,const BattleAudienceGXRequest& r){auto& b=*static_cast<Bridge*>(user);const auto* s=b.source->inner;return s && s->gx && s->gx(s->user,r);};
+        inner.matrix=[](void*,BattleAudienceMatrixRequest& r){BattleAudienceAuxServices math;bindAudienceAuxMathAdapter(math);return math.matrix(nullptr,r);};
+        inner.callback=[](void* user,uint32_t fn,uint32_t pass){auto& b=*static_cast<Bridge*>(user);const auto* s=b.source->inner;return s && s->callback && s->callback(s->user,fn,pass);};
+        inner.main=[](void* user,int32_t handle){auto& r=*static_cast<Bridge*>(user)->runtime;return r.poses.main(handle,{r.now,r.now});};
+        inner.publish=[](void* user,const BattlePoseInnerContext& context){static_cast<Bridge*>(user)->runtime->poseDrawContext=context;return true;};
+        inner.flush=[](void* user,unsigned index,const BattlePoseInnerContext& context){auto& b=*static_cast<Bridge*>(user);const auto* s=b.source->inner;return s && s->flush && s->flush(s->user,index,context);};
+        inner.invalidateVertices=[](void* user){auto& b=*static_cast<Bridge*>(user);const auto* s=b.source->inner;return s && s->invalidateVertices && s->invalidateVertices(s->user);};
+        inner.traverse=[](void* user,const BattlePoseInnerContext& context){auto& b=*static_cast<Bridge*>(user);const auto* s=b.source->inner;return s && s->traverse && s->traverse(s->user,context);};
+        const bool complete=resumeBattlePoseInner(b.runtime->poses,b.runtime->poseDrawMode,b.runtime->poseDrawPass,request,inner,b.runtime->poseInnerCursor);
+        if(!complete && b.runtime->poseInnerCursor.active)pending=b.runtime->poseInnerCursor.pending;
+        return complete;
     };
     return resumePackedBattlePartDisplay(part,services,runtime_->partDisplayCursor);
 }

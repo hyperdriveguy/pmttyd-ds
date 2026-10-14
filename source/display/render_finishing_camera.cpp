@@ -1,4 +1,5 @@
 #include "platform.hpp"
+#include "battle_pose_inner.hpp"
 namespace ttyd {
 bool Renderer::finishingCameraPacket(const NativeCameraPacket& p){
     const auto& r=p.rect;
@@ -95,7 +96,26 @@ void Renderer::resumeFinishingCamera(const Game& game){
             // icon request until metadata/current-camera/geometry are bound.
             return b.game->trioAttack.resumeAudienceAux(camera,identity,borrowed,auxiliary);
         }
-        if(identity==0x80101774)return b.game->trioAttack.resumePartDisplay(camera,borrowed,{});
+        if(identity==0x80101774){
+            struct InnerBridge {Renderer* renderer;const Game* game;} bridge{&renderer,b.game};
+            BattlePoseInnerServices inner;inner.user=&bridge;
+            inner.gx=[](void* user,const BattleAudienceGXRequest& r){ShadowGXRequest q;q.kind=static_cast<ShadowGX>(r.function);q.values=r.arguments;return static_cast<InnerBridge*>(user)->renderer->finishingShadowRequest(q);};
+            inner.flush=[](void* user,unsigned index,const BattlePoseInnerContext& context){
+                const auto* pool=static_cast<InnerBridge*>(user)->game->trioAttack.battlePosePool();
+                if(!pool || pool->outputSelector || index>1)return false;
+                const auto* pose=pool->pose(context.handle);if(!pose || !pose->resource || !pose->resource->bank)return false;
+                const auto selected=pose->word(0x14);if(selected>=pose->resource->names.size())return false;
+                const auto* animation=pose->resource->bank->pose(pose->resource->names[selected].c_str());if(!animation)return false;
+                const auto& output=index?pose->shape.normals:pose->shape.positions;
+                const auto count=index?animation->normals.size():animation->positions.size();
+                if(output.size()!=count)return false;
+                static_assert(sizeof(ActorVector)==12,"Source vector flush stride");
+                return R_SUCCEEDED(GSPGPU_FlushDataCache(output.data(),uint32_t(12*count)));
+            };
+            inner.invalidateVertices=[](void*){GPUCMD_AddWrite(GPUREG_VTX_FUNC,1);return true;};
+            BattlePartDisplayServices part;part.inner=&inner;
+            return b.game->trioAttack.resumePartDisplay(camera,borrowed,part);
+        }
         return renderer.finishingShadowCallback(*b.game,camera,identity,borrowed);
     };
     // Actual shadow setup; admitted geometry, independent rays and other callbacks retain provider waits.

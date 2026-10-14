@@ -14214,3 +14214,65 @@ traversal and actual indexed source geometry. Keep history and queue completion
 behind those real submissions. Linked/pool/special poses, SDK/trig equivalence,
 nonzero hooks, AP active icons and field return remain open. Prologue acceptance
 and original-game parity are unfinished; goal and EVT-01 remain active/open.
+
+
+### 2026-10-14 — Inner pose state, facing and actual cache submission
+
+Implemented ordinary unlinked _animPoseDrawMtx8003bc68 prefix with captured
+resource/descriptor/current/next/fraction, source mode/pass admission,
+mapTestXLU material predicates and fresh independent map reads, effective GX
+pass versus original traversal pass, hook/built-in state publication, ordinary
+angle rotation/uniform scale, held late Main, modeling-base Copy and context,
+two fresh cache flushes, vertex-cache invalidation and real traversal request.
+Held Main admission cannot disappear when it publishes P3c before completion;
+unbound shared-ring/flag8 facing paths remain explicit holds.
+
+Recovered and bound the real upstream lifecycle: battle_init calls
+animPoseBattleInit, superseding cold work mode0 with1 before stage setup. Source
+seq_battleMain calls bmapLoad(bti_01,stg_00_1) before BattleInit; native stage setup
+replays its cleared selected bank1 material projection, with no authored trio
+blend mutation or success fallback for unbound EVT commands. Native evaluated
+position/normal arrays retain original Df0/Df8 counts and feed actual
+GSPGPU_FlushDataCache calls; each call resolves fresh owners. Official Citro3D
+GPUREG_VTX_FUNC=1 command clears the post-vertex cache within the active frame.
+No geometry is fabricated or inferred empty; native queue now reaches real
+dispProc8003c4bc. See
+[inner prefix contract](behavior/display/NATIVE_INNER_POSE_DRAW_STATE_AND_CACHE.md).
+
+Validation uses frozen `artifacts/pose-inner-source/` from0d8836ed plus only
+owned edits, excluding concurrent shared code. Initial suite exposed stale Bero
+pack dependencies and the incorrect cold-mode assumption; both were corrected.
+The snapshot's copied RomFS was refreshed with its baseline Bero converter.
+The live Bero pack was also regenerated using its live converter (ASSETS records
+this); no original/generated asset is committed. Final `CMAKE_BUILD_PARALLEL_LEVEL=4 make -C artifacts/pose-inner-source test`
+exited0:293/293 C++ and171/171 Python tests, including held Main after cache
+publication, unsupported shared-ring hold, pinned GX/matrices, fresh map branch2,
+hook work-pass preservation, original traversal pass and two flush holds.
+`TMPDIR="$PWD/artifacts/native-stage-map-tmp" make -C artifacts/pose-inner-source all -o assets-ready BUILD=build-pose-inner-normal TARGET=ttyd-pose-inner-normal -j4`
+exited0 after review corrections. Logs: `pose-inner-test-verified.log` and
+`pose-inner-build-normal-verified.log` under artifacts. Normal3DSX SHA256
+`b51e544f708c14e6d9a27b626249c287666d96a70a281514c5150792873453fd`.
+`artifacts/pose-inner-validation-manifest.json` records exact source/private-pack
+hashes; harness changes are restored and excluded from source history.
+
+Isolated180s native ending harness records pending8003c4bc,camera4,queue21,
+callback80101774,class1 at tick3103. Preceding Item completes. This first capture
+predates the held-Main/ring/shift review corrections; those are exercised by
+updated host tests and final rebuild. Final120s capture at
+`artifacts/azahar-pose-inner-verified` again records pending8003c4bc,camera4,21
+entries,source callback80101774 at tick3103. Final normal45s fresh-save capture
+`artifacts/azahar-pose-inner-normal/boot.png` shows original storybook and US
+message at60AppFPS; it proves boot only. The ending remains behind its black
+fade/development restoration notice, not a completed field return or geometry
+parity demonstration. Both final smoke commands exited0. Harness uses deterministic
+physical/menu inputs and an explicit fixture Bero bit1 clear, no combat writes,
+no fake geometry/cache success and no user profile/save modifications.
+
+Next import original raw group/shape/draw/fan metadata alongside the existing
+pose banks (PMANIM retains outputs but drops source shape IDs/stream order),
+then bind actual dispProc group pushes, source current-camera shape entry,
+material/texture/light requests and indexed fan streams using existing contracts.
+Only after genuine traversal may source history publish and the queue complete.
+Linked/pool/special facing, map blend/global lifetimes, SDK/trig hardware parity,
+active icons and field return remain unfinished. Full prologue goal stays active;
+EVT-01 remains OPEN.

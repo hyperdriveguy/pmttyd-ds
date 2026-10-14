@@ -820,3 +820,17 @@ listings remain ignored under artifacts/bero-case-*. Native contiguous case
 records are storage adaptation, not extracted executable PPC. Existing original
 Nintendo/Intelligent Systems rights apply; no redistribution rights are granted.
 ISO/extracted packs and compiled native artifacts stay outside history.
+
+
+### 2026-10-14 — Inner pose cache owners and private validation packs
+
+No character art/audio was newly imported. PMANIM3/4 source position/normal
+arrays remain complete unfiltered Df0/Df8 output buffers, now used for native
+cache flushes. Source work/map/flush evidence is private under
+`artifacts/battle-display-queue-evidence/` (documented in the inner prefix
+contract). Validation freezes source at `artifacts/pose-inner-source/`; it copies
+the previous part-display RomFS and refreshes original Bero data with that
+baseline's converter. The live Bero cache was also regenerated from the read-only
+ISO using the live converter during validation setup; no generated data is
+committed. Existing Nintendo/Intelligent Systems copyright/local-use-only
+restrictions apply; no redistribution rights are granted.

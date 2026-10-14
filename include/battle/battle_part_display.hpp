@@ -4,7 +4,9 @@ namespace ttyd {
 struct BattlePartScalarRequest {uint32_t function=0,part=0;float value=0;std::array<float,4> coordinates{};};
 struct BattlePartMaterialRequest {uint32_t function=0;int32_t handle=0;uint32_t value=0;};
 struct BattlePartDrawRequest {int32_t handle=0;uint32_t pass=0;BattleActMatrix matrix{};float angle=0,scale=0;};
+struct BattlePoseInnerServices;
 struct BattlePartDisplayServices {
+    const BattlePoseInnerServices* inner=nullptr;
     BattleActorServices actors;void* user=nullptr;
     bool (*matrix)(void*,BattleAudienceMatrixRequest&)=nullptr;
     std::optional<float> (*scalar)(void*,const BattlePartScalarRequest&)=nullptr;

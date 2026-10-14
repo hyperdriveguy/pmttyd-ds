@@ -4240,3 +4240,16 @@ plus save-loadLW13/14 last-entry pointers. Recovery uses final F withY+37;
 earlier GPR/FPR and final/start tuple interpretations are corrected. Actual
 world providers, outer-init provenance, exact SDK numerics and native execution
 remain open; no static16-local house05 bank is fabricated.
+
+
+### 2026-10-14 — Inner pose state and cache boundary
+
+[Native inner prefix](../behavior/display/NATIVE_INNER_POSE_DRAW_STATE_AND_CACHE.md)
+binds actual mode1 from battle_init→animPoseBattleInit, fresh battle-bank1
+material projection, source mapTestXLU/GX/facing/late-Main/context order and
+retained original traversal arguments. Native evaluated position/normal outputs
+feed real GSP cache flushes, then the official Citro3D post-vertex-cache clear.
+Remaining implementation is actual dispProc8003c4bc group/node/current-camera
+shape/material/indexed geometry, followed by source history and queue completion.
+Existing traversal contracts cover that graph; active linked/special facing and
+map blend/global lifetimes remain explicit dependencies. EVT-01 stays OPEN.

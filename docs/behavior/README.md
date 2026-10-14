@@ -1042,3 +1042,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Bero initial-position locals and actor writes](overworld/BERO_INITIAL_POSITION_LOCAL_PUBLICATION_AND_ACTOR_WRITES.md) — starting-tuple event quantization, actor/camera side effects and corrected recoveryY+37.
 
 - [Native mode2 retained-lens publication](camera/NATIVE_MODE2_RETAINED_LENS_PUBLICATION.md)
+
+- [Native inner pose state and cache submission](display/NATIVE_INNER_POSE_DRAW_STATE_AND_CACHE.md) — retained battle mode/map material state, original/effective pass, facing/context and real cache operations before traversal.
