@@ -357,3 +357,13 @@ contradict original-game evidence.
 2026-10-14: native coin window/effect7 `f82d32cc`, source coin403 lifecycle recovery and actual effect camera5 correction. Final244 C++/142 Python/native build, repeated parcel Azahar persistence and private coin raster preview pass. [Provider evidence](../behavior/display/NATIVE_COIN_WINDOW_AND_EFFECT7_PROVIDERS.md). Native reward admission/audio/icon/persistence/full chain remain open; ITEM-01/OW-INTERACT-01 stay open.
 
 2026-10-14: native coin403 animation/camera publication `200e326d`; isolated247 C++/142 Python/native build, parcel persistence and original coin raster preview passed with unchanged preview checkpoint. [Validation](../behavior/display/NATIVE_COIN403_ANIMATION_AND_CAMERA_PUBLICATION.md). Original native reward/audio/switch/acceptance/full chain remain open; ITEM-01/OW-INTERACT-01 stay open.
+
+### 2026-10-14 — Native original coin fanfare219
+
+Committed c3b72f6d: exact ff_get4 PCM/nonloop metadata, explicit fresh admission
+and shared original group1 envelopes/retained field stream. Isolated249 C++/
+143 Python/native build pass. Azahar observes natural EOS and field retention;
+both detached-tail assertions fail, including a controlled owner-count burst.
+No physical fade/drain or full reward claim. [Exact scope and evidence](../behavior/audio/NATIVE_COIN_FANFARE_ROW219_PROVIDER.md).
+Native window lifetime,5376/Game reward admission and full quest chain remain
+open; parent requests stay open.

@@ -1,3 +1,33 @@
+## 2026-10-14 — Native original coin fanfare219
+
+Committed c3b72f6d. Coin row219 now uses original ff_get4 stereo32000/65352-frame
+PCM and COMMON nonloop metadata through the shared retained group1 provider.
+Exact readiness/profile gain, source envelopes and actual NDSP drain are reused;
+preparation requires a free slot and preserves group0 field music/cursor. Asset
+provenance/licensing recorded in ASSETS; no payload/binary/ISO committed.
+
+Reviewed isolated tree17d43265e3d7d23205b213676c824d2af2128f7f passes sequential
+make assets-ready,249/249 C++ and143/143 Python via make test -o assets-ready,
+and normal make all -o assets-ready. Normal reviewed artifact SHA256
+886742a5c7002bef7fe72e53701183ef3873c77f26f5cf2beba70f16e23714cb.
+Logs: artifacts/coin-audio-{assets,test,build}.log. Read-only review passes
+fresh-admission scope.
+
+Both isolated instrumented Azahar probes FAILED detached-tail assertions.
+Natural EOS/vacancy and retained group0/cursor were observed; independent
+checkpoint comparison is byte-identical. A second probe used60 owner calls in
+a burst and does not prove physical cadence. No source/hardware fidelity,
+physical1000ms fade or tail-drain claim. Private sources restored/audited;
+user emulator profile/saves untouched and concurrent changes preserved.
+[Exact contract and evidence](behavior/audio/NATIVE_COIN_FANFARE_ROW219_PROVIDER.md).
+AUDIO-01 requests matched clock/NDSP traces; best-effort provider remains.
+
+Next: resolve native tail timing check, retire borrowed coin params on actual
+window deletion, persist5376 and bind Game reward admission. Implement original
+quest acceptance and validate complete acquisition→Goomfrey→McGoomba reward.
+Continue original areas/events/objects and actual hardware profiling. Active
+full-game goal remains incomplete.
+
 ## 2026-10-14 — Native original rotating coin and camera publication
 
 Committed `200e326d`. Actual coin403 now retains source frame0/414/delay6,

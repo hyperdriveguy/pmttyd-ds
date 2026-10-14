@@ -913,3 +913,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Original coin403 animation/visibility/camera](display/COIN403_ICON_ANIMATION_VISIBILITY_AND_CAMERA5.md) and [native coin window/effect7 providers](display/NATIVE_COIN_WINDOW_AND_EFFECT7_PROVIDERS.md) — original text gates, cached glyphs, distinct effect kind and corrected camera5 request, with isolated raster/acquisition evidence.
 
 - [Native original coin403 animation and camera publication](display/NATIVE_COIN403_ANIMATION_AND_CAMERA_PUBLICATION.md) — source hidden frame cycles, original four-frame atlas, icon-before-sound simulation and early retained camera5; isolated rendering/checkpoint evidence.
+
+- [Native original coin fanfare219 provider](audio/NATIVE_COIN_FANFARE_ROW219_PROVIDER.md) — shared group1, exact original PCM/nonloop asset and retained field cursor; natural-EOS evidence and failed detached-tail probes explicitly scoped.

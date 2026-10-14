@@ -950,3 +950,13 @@ with preview checkpoint byte-identical. [Scope and exact validation](../behavior
 Native full reward/audio219/parameter retirement/switch5376/acceptance and full
 chain/hardware parity remain open; no preview grant or complete quest claim.
 Parent requests stay open.
+
+### 2026-10-14 — Native original coin fanfare219
+
+Committed c3b72f6d: exact ff_get4 PCM/nonloop metadata, explicit fresh admission
+and shared original group1 envelopes/retained field stream. Isolated249 C++/
+143 Python/native build pass. Azahar observes natural EOS and field retention;
+both detached-tail assertions fail, including a controlled owner-count burst.
+No physical fade/drain or full reward claim. [Exact scope and evidence](../behavior/audio/NATIVE_COIN_FANFARE_ROW219_PROVIDER.md).
+Native window lifetime,5376/Game reward admission and full quest chain remain
+open; parent requests stay open.

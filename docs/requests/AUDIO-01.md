@@ -83,3 +83,17 @@ flow with [RESULT-01](RESULT-01.md). No lock reserved.
 ## Answers and delivery notes (append-only history)
 
 No delivery yet.
+
+### 2026-10-14 — Coin219 provider and unresolved timing check
+
+[Native provider](../behavior/audio/NATIVE_COIN_FANFARE_ROW219_PROVIDER.md) now
+uses documented original row219 PCM/nonloop rules and shares retained group1
+with parcel217. Natural EOS and group0 cursor retention observed in Azahar;
+two detached-tail assertions failed. Parent request remains open.
+
+- [ ] Reconcile original GP/audio-owner cadence and native simulation/NDSP
+  clocks with matched traces around ff_get4 admission→resumeA0→Off201→drain.
+  Document source ordering and clock units before assigning a cause to the
+  native missing-tail observation; neither clip-duration metadata nor a burst
+  of60 owner calls proves physical1000ms fade timing. Best-effort provider stays
+  in place pending documentation and a realistic-cadence native retry.

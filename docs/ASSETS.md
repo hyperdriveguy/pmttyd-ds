@@ -240,3 +240,19 @@ artifacts/frankly-bank-validated/ASSET_SHA256SUMS; private professor.json retain
 provenance and converter fingerprint. Neither extracted assets nor runtime
 packs are committed. Nintendo/Intelligent Systems assets have no redistribution
 license. [Native scope](behavior/display/NATIVE_FRANKLY_BANK_AND_FIRST_DISPLAY_FOOTERS.md).
+
+## Original coin reward fanfare219 (2026-10-14)
+
+Read-only ISO sound/stream/ff_get4_32k.stm at offset1337188296,107744 bytes,
+SHA2569abc00c564a50d6b3dadc5a76ff11ab428a0556152a7d1550502bf03451d38de,
+is extracted under ignored local-assets/field-item-get/. Existing original DSP
+coefficient/history decoding produces stereo32000 PCM,65352 frames without
+resampling. COMMON restartFFFFFFFF overrides DSP loop flags: no.loop is emitted.
+Ignored romfs/field-item-get-coin-fanfare.wav is261452 bytes, SHA256
+abac6f4f04a56bad20ba8f3a5f1621cabcc1aaa8a809f445416a730bcc424467;
+romfs/field-item-get.json retains source provenance and row219 volume80/pan64/
+global-volume bypass. Private reviewed packs also reside under ignored
+artifacts/source-checks/quest13-field/. No generated replacement or ISO mutation.
+Nintendo/Intelligent Systems original assets have no redistribution license;
+extracted streams, PCM packs and embedded binaries stay outside source history.
+[Provider and validation limits](behavior/audio/NATIVE_COIN_FANFARE_ROW219_PROVIDER.md).
