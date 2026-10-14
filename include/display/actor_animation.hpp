@@ -119,6 +119,13 @@ struct ActorAnimationPose {
         const float length=end-start;
         float selected=start;
         if(length!=0 && time>=start)selected=loop?time-std::trunc((time-start)/length)*length:std::min(time,end);
+        return evaluateSelected(selected,out);
+    }
+    // The source Main caller has already normalized and published this time.
+    // Do not fold it a second time using the legacy presentation-clock adapter.
+    bool evaluateSelected(float selected,ActorAnimationSample& out) const {
+        if(!std::isfinite(selected) || keys.empty() || groups.empty())return false;
+        if(selected<keys.front().time)return false; // Source predecessor-1 domain needs its actual provider.
         size_t last=0;while(last+1<keys.size() && keys[last+1].time<=selected)++last;
         size_t next=last+1;if(next==keys.size())next=loop?0:last;
         const float span=last==next?0:(next==0?end-keys[last].time:keys[next].time-keys[last].time);

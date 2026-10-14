@@ -1,4 +1,5 @@
 #include "battle_pose_pool.hpp"
+#include "animation_sample_time.hpp"
 #include <cassert>
 #include <cstring>
 #include <map>
@@ -97,10 +98,17 @@ bool BattlePosePool::evaluate(int32_t handle,BattlePoseClock clock){
     const auto* animation=p->resource->bank->pose(p->resource->names[index].c_str());if(!animation)return false;
     const uint64_t elapsed=clockFor(*p,clock)-p->timestamp();
     const float frames=rounded(rounded(rounded(float(elapsed))*60.f)/1000.f);
-    p->scalar(0x20,rounded(frames*p->scalar(0x44)));
+    p->scalar(0x20,frames);
+    p->scalar(0x20,rounded(p->scalar(0x20)*p->scalar(0x44)));
+    const auto plan=animationSampleTimePlan(p->scalar(0x20),animation->loop,animation->start,animation->end);
+    p->scalar(0x84,plan.ratio);
+    const auto selected=finishAnimationSampleTime(plan,p->scalar(0x84));if(!selected)return false;
+    p->scalar(0x24,*selected);
     // CPU sampler/cache is an explicit ordinary conversion adapter, not source
     // GX/paired-single Main. Repeated calls at one clock do not add elapsed ticks.
-    return animation->evaluate(p->scalar(0x20),p->shape);
+    if(!animation->evaluateSelected(p->scalar(0x24),p->shape))return false;
+    p->word(0x28,uint32_t(p->shape.last));p->word(0x2c,uint32_t(p->shape.next));p->scalar(0x30,p->shape.fraction);
+    return true;
 }
 bool BattlePosePool::clearEffect(int32_t handle){auto* p=pose(handle);if(!p || p->word(0x90)!=0xffffffff)return false;p->word(0x90,0xffffffff);p->word(0xec,p->word(0xec)&~1u);return true;}
 bool BattlePosePool::release(int32_t handle){

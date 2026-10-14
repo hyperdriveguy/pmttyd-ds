@@ -37,8 +37,10 @@ void stateAndTime(){
     assert(pool.selectName(*id,"walk",false,{0,300}) && p->timestamp()==200 && p->word(0x3c)==7 && p->word(0x80)==9);
     assert(pool.selectName(*id,"walk",true,{0,300}) && p->timestamp()==300 && p->word(0x3c)==0xffffffff && p->scalar(0x40)==0 && p->word(0x80)==0 && p->scalar(0x84)==0);
     assert(pool.evaluate(*id,{123,400}) && p->scalar(0x20)==3 && p->shape.selectedTime==3);
+    assert(p->scalar(0x24)==3 && p->scalar(0x84)==.3f && p->word(0x28)==0 && p->word(0x2c)==1 && p->scalar(0x30)==.3f);
     const auto positions=p->shape.positions;assert(pool.evaluate(*id,{0,400}) && p->shape.positions==positions && p->scalar(0x20)==3);
     assert(pool.setRate(*id,2) && p->timestamp()==300 && pool.evaluate(*id,{0,400}) && p->scalar(0x20)==12 && p->shape.selectedTime==2);
+    assert(p->scalar(0x24)==2 && p->scalar(0x84)==1.2f && p->scalar(0x30)==.2f);
     assert(pool.selectName(*id,"unconverted",false,{0,500}) && p->word(0x14)==1 && !pool.evaluate(*id,{0,600}) && p->word(0x14)==1);
     assert(pool.selectName(*id,"missing",false,{0,700}) && p->word(0x14)==0 && pool.evaluate(*id,{0,700}));
     assert(pool.selectIndex(*id,0x7fffffff,true,{0,800}) && p->word(0x14)==0 && p->timestamp()==800);

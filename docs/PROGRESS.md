@@ -595,3 +595,24 @@ consumers and enemy/Frankly factories, remaining queued display and real ordered
 teardown/field/result/save ownership. Original global field/battle allocation
 history, full cadence and physical hardware parity remain unproven; the full
 playable original-fidelity prologue goal stays active.
+
+
+## 2026-10-14 — Source battle animation time publication
+
+Native battle poses now publish original elapsed/rate, ratio, selected time and
+continuous sample fields before using the converted CPU sampler. Source
+zero-span, early-time, nonloop end and fused-loop branches are retained;
+selected time is sampled without a second wrap. Conversion edge domains stay
+explicitly unavailable. The documentation inbox also records the recovered
+[ordinary Mario post-Main draw queue](behavior/battle/ORDINARY_MARIO_POST_POSE_MAIN_ALPHA_AND_DRAW_QUEUE.md).
+
+Isolated make test passed232/232 C++ and141/141 Python checks; isolated and
+shared native make all passed. Shared host run passed234/235, with a concurrent
+battle_facing test failure outside this change. Exact logs/source/binary hashes
+and limits are in the [archive](PROGRESS_ARCHIVE.md#2026-10-14--source-battle-animation-time-publication).
+No Azahar or hardware revalidation for this step.
+
+Next: retain independent source discrete timeline/cache state, complete Main
+publication and bind queued draw depth to original camera4. Enemy/Frankly
+factories and ordered battle teardown/field return remain open; the playable
+original-fidelity prologue goal remains active.

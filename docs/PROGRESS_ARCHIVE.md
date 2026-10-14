@@ -12837,3 +12837,57 @@ enemy/Frankly source factories; global field/battle allocation/cadence; queued
 display and ordered teardown/field/result/save owners. Additional Mario parts
 must retain their real source attributes and ownership. Prologue fidelity and
 physical performance remain an active unfinished goal.
+
+
+## 2026-10-14 — Source battle animation time publication
+
+Added animation_sample_time provider and tests. Native pose evaluation stores
+frame20 before rereading/multiplying local rate; ratio84 is published and
+reloaded before loop integer conversion; selected24 feeds evaluateSelected
+directly. Continuous sample28/2c/30 comes from the actual converted authored
+key sequence. Zero-span precedes loop mode; early frames use positive-zero
+ratio; nonloop end selection preserves an unclamped ratio. Loop selected time
+uses fma(-integer,span,frame), retaining the source fused residual. Tests cover
+nonzero starts, boundaries, ratio reload, zero-span ordering, NaN/conversion
+unavailability, signed truncation bounds and a fused-rounding distinction.
+
+Source discrete34/38/80 is independent and unavailable without its retained
+data; compressed cache3c/40, full Main/GX publication, optional facing producers
+and runtime cadence remain open. The CPU sampler rejects predecessor-1 and
+nonfinite selected domains. Integer conversion accepts finite int32 in-range
+values only; unknown original FPSCR behavior is not guessed. The source
+Main8003ed2c pending boundary remains in place.
+
+Documentation work recovered ordinary Mario post-Main CheckStatus18, integer
+alpha products, TestXLU modelwordc4 and queue admission. Draw suppression is
+P204 mask100. Fresh unlinked pose flags8clear skip the optional Main facing
+tail; actual b_mario wordc4=1 makes TestXLU false. Post-Main dispCalcZ still
+requires actual camera4 view/projection before queued registration.
+Implementation breadcrumbs appended to requests/EVT-01.md; parent remains open.
+
+Validation:
+
+- Shared make test compiled current code and passed234/235 CTest checks. The
+  concurrent battle_facing assertion at tests/battle_facing_tests.cpp:95 failed;
+  Python stage was therefore not reached. Log animation-sample-time-tests.log.
+  A prematurely attempted focused timing executable was not yet built; no
+  stale binary is counted as final validation. Separate direct fresh g++
+  timing test passed; standalone Python141/141 passed.
+- Coherent snapshot artifacts/animation-sample-time-source is HEAD
+  d771b764dab5c511200569d2c24d00f38e7cbb24 plus the six owned code/test files
+  and exact CMake registration. make test passed232/232 C++ and141/141 Python
+  checks, animation-sample-time-isolated-tests.log. Original-pack owner tests
+  passed; private RomFS/gfx/assets were linked without distributing payloads.
+- Shared make all BUILD=build-sample-time TARGET=ttyd-sample-time -j4 passed,
+  animation-sample-time-native.log. Complete isolated make all with
+  -o assets-ready and the same BUILD/TARGET passed,
+  animation-sample-time-isolated-native.log. No performance claim from builds.
+- Immutable isolated ELF/3DSX, SHA256SUMS and source manifests are retained in
+  artifacts/animation-sample-time-validated. Scoped whitespace check passed;
+  documentation link checker1143 files/0 broken links passed.
+
+No ISO writes, new asset format/conversion, user emulator profile/save changes
+or Azahar/hardware run for this step. Next: source discrete timeline/cache
+ownership and full Main, then original camera4 depth/queue and real ordered
+battle teardown/result/field-return ownership. Full prologue parity remains
+unachieved.

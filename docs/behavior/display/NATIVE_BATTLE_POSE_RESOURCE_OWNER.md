@@ -64,8 +64,20 @@ The ordinary CPU evaluator subtracts modulo
 the local rate with explicit intermediate rounding. Repeated calls at one
 clock produce the same elapsed time. Converted sampling retains real CPU
 workspace; it does not claim original paired-single, GX, facing or compressed
-cache publication equivalence. The raw source Main cache/time lanes beyond
-the implemented elapsed lane are not fabricated from native sample fields.
+cache publication equivalence. The native owner now publishes elapsed/rate
+lane20, ratio84, selected time24 and continuous sample lanes28/2c/30.
+The [source time branches](ANIMATION_MAIN_ENTRY_AND_TIME.md) use binary32
+span/offset/division, publish then reload ratio, and use a fused subtraction
+for looping. Zero spans take precedence over loop mode; nonloop ratios remain
+unclamped even after the selected time reaches the end. The converted sampler
+accepts this selected time directly instead of applying a second loop fold.
+
+Finite in-range truncation is the native integer-conversion adapter. NaN,
+infinity and int32 overflow leave that conversion unavailable rather than
+invoking an undefined C++ cast or guessing original FPSCR behavior. A selected
+time below the first converted key also remains unavailable. Independent
+source discrete sample lanes34/38/80 and compressed-cache lanes3c/40 require
+their real retained source data; continuous keys do not fabricate them.
 
 Unlinked SetEffect(handle,0,0) stores linked=-1 and clears only material-light
 bit1. A live linked record requires its detach/release provider. Release retains

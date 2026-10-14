@@ -251,6 +251,7 @@ suffix.
 | [Animation delta cache](display/ANIMATION_COMPRESSED_DELTA_CACHE.md) | Complete base/rebuild/forward/same-key and five compressed relative-index streams | Copy/alias/capacity/resource/FPSCR/consumers |
 | [Animation interpolation](display/ANIMATION_OUTPUT_INTERPOLATION.md) | Complete linear/cubic/tangent guard/end-seam and final cache writes | Renderer/numeric/lifetime/original animation |
 | [Animation facing](display/ANIMATION_MAIN_CAMERA_FACING.md) | Complete camera/atan2/two wraps/sign tail | Camera/libm/flags/renderer/runtime |
+| [Mario post-Main draw queue](battle/ORDINARY_MARIO_POST_POSE_MAIN_ALPHA_AND_DRAW_QUEUE.md) | Original alpha products, model TestXLU, facing admission and draw gates | Camera4 view/projection and queued callback |
 | [Animation initialization](display/ANIMATION_POOL_AND_TANGENT_INITIALIZATION.md) | Complete counts/allocation/partial clear/tan writer/file requests | Heap/file/copy/libm/reentry/lifetime |
 | [Jump takeoff position](battle/BATTLE_JUMP_TAKEOFF_POSITION.md) | Complete mixed coordinate/sample/closest-X/side-offset/output contract and two actual callers | Candidate cores/RNG/domain/source geometry and original position traces |
 | [MoveFrame/MovePosition](battle/BATTLE_MOVE_FRAME_AND_POSITION.md) | Complete count-query versus velocity-adjusted motion,first-call integration,XYZ snap/yield and actual callers | Numeric/source/sound/scheduler composition and original timing |

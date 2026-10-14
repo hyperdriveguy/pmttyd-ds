@@ -3775,3 +3775,23 @@ CPU output at the retained full Main8003ed2c boundary. See the
 Next implementation: full Main/facing/GX publication, automatic parts and pattern
 effects, enemy/Frankly factory resources, original global allocation/cadence,
 remaining queued display and ordered teardown/field/result/save ownership.
+
+
+### 2026-10-14 — Native Main time publication and next draw provider
+
+The native battle pose owner now publishes original elapsed/rate20, ratio84,
+selected24 and continuous sample28/2c/30 fields, using source span branches and
+a fused loop subtraction. The converted CPU sampler consumes selected time
+directly. Nonfinite/out-of-range integer conversion and predecessor-1 domains
+remain explicit unavailable providers. Independent source discrete34/38/80
+and compressed-cache3c/40 are still pending; the full Main8003ed2c boundary
+has not been cleared by this partial adapter. See the
+[owner scope](../behavior/display/NATIVE_BATTLE_POSE_RESOURCE_OWNER.md).
+
+The recovered [ordinary Mario post-Main draw contract](../behavior/battle/ORDINARY_MARIO_POST_POSE_MAIN_ALPHA_AND_DRAW_QUEUE.md)
+identifies CheckStatus18, original integer alpha products, TestXLU using model
+wordc4, draw suppression P204 mask100 and queued depth registration. Fresh
+unlinked pose flags8clear skip optional Main facing; actual b_mario wordc4=1
+makes TestXLU false. The subsequent depth service still needs the original
+camera4 view/projection provider. This is a scoped source delivery, not a
+complete display/runtime trace or closure of EVT-01.

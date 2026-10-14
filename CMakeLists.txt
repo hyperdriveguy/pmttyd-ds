@@ -1151,3 +1151,8 @@ target_sources(ttyd_core PRIVATE source/battle/battle_facing.cpp)
 add_executable(battle_facing_tests tests/battle_facing_tests.cpp)
 target_link_libraries(battle_facing_tests PRIVATE ttyd_core)
 add_test(NAME battle_facing COMMAND battle_facing_tests)
+
+target_sources(ttyd_core PRIVATE source/display/animation_sample_time.cpp)
+add_executable(animation_sample_time_tests tests/animation_sample_time_tests.cpp)
+target_link_libraries(animation_sample_time_tests PRIVATE ttyd_core)
+add_test(NAME animation_sample_time COMMAND animation_sample_time_tests)
