@@ -1260,7 +1260,6 @@ void Renderer::world(const Game& g) {
     }
     // Original stage400000 opaques,500000 shadows,600000 translucent.
     if(!battle){drawFieldActors(true);if(g.trioBattleActive){drawMap(true,g,true,&trioBackground);drawMap(true,g,true,&trioStage);}else drawMap(false,g,true);drawOpeningDeparture(g,true);}
-    if(g.trioBattleActive)drawAudienceScene(g);
 }
 // Native diagnostic/menu reflow. Coordinates,scale and C2D layers below
 // are pixel-layout choices; source dialogue uses originalMessage instead.
@@ -1530,7 +1529,6 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
     C2D_TextBufClear(textBuffer);
     // Frame-local cursors reset to0 AFTER the synchronization boundary;borrowed
     // GPU buffers below persist as allocations,not independent frame copies.
-    if(g.harborTutorial.running() || g.trioBattleActive)prepareAudienceDrawing();
     if(!C3D_FrameBegin(C3D_FRAME_SYNCDRAW))return;
     item95IconCount=0;
     windowFrameCount=0;
@@ -1579,7 +1577,6 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
 // services close. This call is end-of-owner lifecycle,not a per-frame reset.
 void Renderer::shutdown() {
     releaseClassMenuDrawing();
-    releaseAudienceDrawing();
     if(c3dReady) C3D_FrameSync();
     if(shadowTexture44.imported){Tex3DS_TextureFree(shadowTexture44.imported);C3D_TexDelete(&shadowTexture44.texture);shadowTexture44.imported=nullptr;}
     releaseItem95Icons();
