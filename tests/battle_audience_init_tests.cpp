@@ -9,6 +9,10 @@
 #include <cmath>
 #include <cstring>
 #include <map>
+#include <filesystem>
+#include <fstream>
+#include <iterator>
+#include <unistd.h>
 #include <vector>
 using namespace ttyd;
 struct Fixture {
@@ -79,6 +83,33 @@ int main() {
     assert(resources.payload(1)->size()==428896 && resources.payload(2)->size()==39776 && !resources.payload(3));
     assert(resources.handle("battle/audience/audience_normal.tpl")==1 && resources.handle("battle/audience/audience_luigi.tpl")==2);
     assert(!resources.handle("audience_normal.tpl") && !resources.load("/nonexistent-audience-bank"));
+    assert(!resources.frame(1,0) && resources.loadFrames("romfs"));
+    for(unsigned bank=1;bank<=2;++bank) {
+        const unsigned count=bank==1?205:19;
+        for(unsigned i=0;i<count;++i) {
+            const auto* frame=resources.frame(bank,i);assert(frame && frame->width==64 && frame->height==64);
+            assert(frame->uv[2]>frame->uv[0] && frame->uv[1]>frame->uv[3]);
+        }
+        assert(!resources.frame(bank,count) && !resources.frame(bank,~0u));
+    }
+    assert(!resources.frame(0,0) && !resources.frame(3,0));
+    const auto retained=resources.frame(2,18)->uv;
+    std::ifstream catalog("romfs/audience-frames.bin",std::ios::binary);
+    const std::vector<char> original((std::istreambuf_iterator<char>(catalog)),{});
+    char directory[]="/tmp/ttyd-audience-catalog-XXXXXX";assert(mkdtemp(directory));
+    const auto writeCatalog=[&](const std::vector<char>& bytes){
+        std::ofstream out(std::string(directory)+"/audience-frames.bin",std::ios::binary);
+        out.write(bytes.data(),bytes.size());
+    };
+    for(unsigned offset:{0u,8u,16u,20u,24u,28u,36u,20u+205u*32u}) {
+        auto bad=original;bad[offset]^=1;writeCatalog(bad);
+        assert(!resources.loadFrames(directory) && resources.frame(2,18)->uv==retained);
+    }
+    auto shortFile=original;shortFile.pop_back();writeCatalog(shortFile);assert(!resources.loadFrames(directory));
+    auto longFile=original;longFile.push_back(0);writeCatalog(longFile);assert(!resources.loadFrames(directory));
+    writeCatalog(original);assert(resources.loadFrames(directory));
+    std::filesystem::remove_all(directory);
+    assert(!resources.loadFrames(nullptr) && !resources.loadFrames("/nonexistent-audience-catalog"));
     Game game;const auto owner=game.trioRandom;owner->bounded(100);const auto state=owner->state;const auto saved=game.progress;game.restore(saved);
     assert(game.trioRandom==owner && game.trioRandom->state==state);Game separate;assert(separate.trioRandom!=owner && separate.trioRandom->state==1);
     Fixture target;auto actors=target.services().actors;

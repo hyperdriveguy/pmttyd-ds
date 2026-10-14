@@ -505,3 +505,33 @@ RomFS products. No ISO/extracted art/message payload enters history. Nintendo/
 Intelligent Systems resources have no redistribution rights. [Hashes, palette/
 sampling/notice identity](behavior/display/ORIGINAL_KANBAN_TYPE4_WINDOW_AND_LOCK_NOTICE.md)
 and [native scope](behavior/field/NATIVE_TROUBLE_CENTER_FRONT_DOOR_AND_LOCK_NOTICE.md).
+
+## 2026-10-14 — Original audience frame atlas
+
+`tools/audience_assets.py` reads the ISO read-only and preserves the unchanged
+`battle/audience/audience_normal.tpl` (205 images; SHA256
+`16f8cdda26bb3727aeb9c2d7b494d66c1822d2ac94705dbad07b09d319e5e4f2`)
+and `battle/audience/audience_luigi.tpl` (19 images; SHA256
+`3f556a8d9bd7cbfbba33ce3ab1a31531f174273451fe620f54182523533c48ef`).
+Every original64x64 CMPR frame is decoded without resizing and packed into a
+1024x1024 RGBA8 atlas with68px cells and2px transparent padding. Allocated native
+texture storage is4MiB; compression of the T3X changes file size only. Mipmaps
+are not generated. Existing native bank handles1/2 and original image indices
+remain distinct; no type, animation timing or frame-selection table is invented.
+
+Private source banks/PNG: `local-assets/audience/`. Private compiled products:
+`romfs/audience-frames.t3x`, `audience-frames.bin`, `audience-resources.json`,
+and existing unchanged `audience-normal.tpl`/`audience-luigi.tpl`. Metadata records
+per-frame pixel hashes and top-left/bottom-right native UVs. Catalog PMAUD001
+has a20-byte little-endian header (magic, width, height, frame count), followed
+by224 records of32 bytes (bank,index,width,height as4 uint32, UVs as4 float32).
+`BattleAudienceResources::loadFrames` validates the complete fixed layout and
+publishes atomically; failed loads retain the previous valid catalog. `frame`
+rejects unknown banks and out-of-range indices. This is a native adaptation,
+not the original fileAllocf/GX pointer layout.
+
+These assets remain Nintendo/Intelligent Systems resources; local extraction
+and conversion grant no redistribution rights. No ISO, original pixels, compiled
+catalog or texture is committed. Population, animation selection, texture/GPU
+binding, original draw behavior and throw events remain separate work. Current
+source setup4 tutorial capacity is zero; preparing resources does not change it.
