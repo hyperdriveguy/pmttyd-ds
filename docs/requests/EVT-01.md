@@ -1044,13 +1044,60 @@ Four steps, all from the read-only US binary:
    `psndInit`.
 
 **Conclusion:** bit 15 is never set anywhere in the game, so the guard at
-`0x800DA208` is never true and the `calc3D` call at `0x800DA264`, with its
-PAN staging, is **unreachable dead code**. All positional attenuation in
-the shipped US binary flows through the live site at `0x800DA3F8`.
+`0x800DA208` is never true and the `calc3D` call at `0x800DA264` is
+unreachable.
 
-This is a negative result, and it is the kind worth stating plainly: a
-reader would otherwise be tempted to implement both spatial paths, or to
-assume the startup path is the primary one.
+---
+
+### ID 3, 2026-10-13 — correction: BOTH `calc3D` sites are unreachable
+
+The entry above says all positional attenuation flows through the "live
+site" at `0x800DA3F8`. **That is wrong**, and the error is mine.
+
+Re-reading the exact bytes rather than my summary of them:
+
+```asm
+800da38c: lhz     0, 6(25)          ; slot+0x06
+800da390: rlwinm  0, 0, 0, 16, 30  ; mask 0x7FFF0000 -> low 16 zeroed
+800da394: sth     0, 6(25)          ; slot+0x06 = 0     <-- CLEARS it
+800da398: lhz     0, 6(25)          ; re-read: 0
+800da39c: rlwinm. 0, 0, 0, 30, 30  ; bit 30 of 0 -> 0
+800da3a0: bt      2, 0x800DA528     ; ALWAYS taken
+```
+
+`bt 2` branches when the tested bit is **clear**, so control always leaves
+to `0x800DA528`. The block containing `calc3D` at `0x800DA3F8` is skipped
+unconditionally. This needs no cross-file argument — it is straight-line
+within one path, four instructions apart.
+
+I had earlier claimed the *startup* site "preserves" the field because its
+`rlwinm 0, 3, 0, 24, 22` has MB > ME, and then carried that contrast over
+to the live site without checking that the live site uses a *different*
+mask (`0, 16, 30`, MB <= ME) that does clear. Two different masks, two
+different effects, and I conflated them.
+
+**Both `calc3D` call sites in `psndSFXMain` are therefore unreachable.** The
+PAN record is never written by `psndSFXMain`.
+
+**How this does not mean attenuation is missing.** `__psndSFXOn` computes a
+distance at provisioning time and stores it to `slot+0x0E`/`+0x10`, and
+`psndSFXMain` counts `slot+0x0E` down per frame. Attenuation is covered by
+the provisioner's own formula; `calc3D` is the richer per-frame spatial
+model that this build never reaches.
+
+**Recommendation, and it is deliberately conservative:** this is class B
+static analysis with no execution trace. Do **not** delete either path on
+this evidence. Implement both, or reproduce the guards exactly, until a
+trace confirms `calc3D` is never entered in ordinary play. A decompilation
+reading can be defeated by a path not traced here — for instance if
+`0x800DA528` or the reclaim loop can re-enter the startup block with a
+field value set elsewhere. The startup site's unreachability in particular
+rests on the 22-site census, not on control flow alone.
+
+Process note: this is the third error in this area in one session, and all
+three shared a cause — reasoning about masks, sign-extension or branch
+polarity from memory instead of reading the bytes and computing them. Every
+one was caught only by going back to the disassembly.
 
 ## Answers and delivery notes
 

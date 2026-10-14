@@ -145,10 +145,16 @@ conflated:
 | `0x800DA044` | `rlwinm 0,x,0,24,22` | `0xFF7FFFFF` (MB>ME) | low 16 **preserved** — normalisation |
 | `0x800DA390` | `rlwinm 0,0,0,16,30` | `0x7FFF0000` (MB<=ME) | low 16 **zeroed** — a true clear |
 
-Only the second one clears the field, and it sits in the **live** pass at
-`0x800DA390`, after the startup dispatch. That ordering is what lets the
-startup path's own `slot+0x06` test see the pre-clear value; see
-[POSITIONAL_SFX_BACKEND_DISPATCH](POSITIONAL_SFX_BACKEND_DISPATCH.md).
+The clear at `0x800DA390` is in the **live** pass, four instructions before
+that pass's own `slot+0x06` test at `0x800DA39C` — so the live test always
+sees 0. Both `calc3D` call sites turn out to be unreachable; see
+[POSITIONAL_SFX_BACKEND_DISPATCH](POSITIONAL_SFX_BACKEND_DISPATCH.md) for
+the full argument and the (conservative) porting recommendation.
+
+**Correction (ID 3, 2026-10-13):** an earlier version of this note said the
+live clear's ordering "lets the startup path's own test see the pre-clear
+value". That conflated the two sites — the live clear precedes the *live*
+test, not the startup one.
 
 ### Channel dispatch
 

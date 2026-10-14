@@ -156,16 +156,52 @@ low 16 bits. The genuine clear is `rlwinm 0, 0, 0, 16, 30` at `0x800DA390`
 (mask `0x7FFF0000`, MB <= ME, so bits 0..15 fall outside the mask), and it
 sits in the **live** pass at `0x800DA38C`, *after* this startup test.
 
-### Two `calc3D` call sites, only one of them live
+### Both `calc3D` call sites are unreachable
 
-| Site | Guard | Role |
-|------|-------|------|
-| `0x800DA264` | sign of `slot+0x06` (above) | startup / pending-start route |
-| `0x800DA3F8` | none; reached from the live pass after the convergence at `0x800DA36C` | **per-frame spatial update for playing sounds** |
+Both sites in `psndSFXMain` are gated by the same bit-15 test, and in both
+cases the gate is provably false.
 
-The live site is the one that runs every frame. Immediately after it the
-routine re-reads `row.word1` and dispatches on bit 0 to `SoundSSSetPanCh`,
-so the live spatial update serves the stream backend too, not only effects.
+| Site | Gate | Why it is never taken |
+|------|------|------------------------|
+| `0x800DA264` | `lhz`+`rlwinm 0,0,0,30,30` at `0x800DA208` | needs bit 15 of `slot+0x06`; nothing in the binary sets it |
+| `0x800DA3F8` | same test at `0x800DA39C` | the field is **cleared four instructions earlier** |
+
+The second case is straight-line and needs no cross-file argument:
+
+```asm
+800da38c: lhz     0, 6(25)          ; slot+0x06
+800da390: rlwinm  0, 0, 0, 16, 30  ; mask 0x7FFF0000 -> low 16 zeroed
+800da394: sth     0, 6(25)          ; slot+0x06 = 0   <-- CLEARS it
+800da398: lhz     0, 6(25)          ; re-read: 0
+800da39c: rlwinm. 0, 0, 0, 30, 30  ; bit 30 of 0 -> 0
+800da3a0: bt      2, 0x800DA528     ; ALWAYS taken
+```
+
+`bt 2` branches when the tested bit is clear, so control always leaves to
+`0x800DA528` and the block containing `calc3D` at `0x800DA3F8` is skipped
+unconditionally. Contrast the startup path, where the preceding store at
+`0x800DA044` uses `rlwinm 0, 3, 0, 24, 22` (mask `0xFF7FFFFF`, MB > ME,
+bits 0..15 inside the mask) and therefore *preserves* the field — which is
+why that site needs the cross-file argument instead.
+
+### What this does and does not imply
+
+`__psndSFXOn` already computes a distance at provisioning time and stores
+it into `slot+0x0E` and `slot+0x10`, and `psndSFXMain` counts `slot+0x0E`
+down each frame. So attenuation is **not** dependent on `calc3D`; the
+provisioner's own distance formula covers it, and `calc3D` is the richer
+per-frame spatial model that this build never reaches.
+
+That said, this is **class B static analysis with no execution trace**. A
+decompilation-based reading can be defeated by a path I have not traced —
+for instance if `0x800DA528` or the reclaim loop can re-enter the startup
+block with a field value set elsewhere. The startup site in particular
+depends on the claim that nothing sets bit 15, which rests on a 22-site
+census rather than on control flow alone.
+
+**Recommendation for a port:** do not delete either path on this evidence.
+Implement both, or gate them the same way, until an execution trace
+confirms that `calc3D` is never entered in ordinary play.
 
 Both effect follow-ups follow the `-1` handle guard at
 `0x800da28c` (`addis 0,3,1; cmplwi 0,65535`), so a failed `SoundEfxPlayEx`
@@ -249,14 +285,16 @@ ORs above, the normalisation/clear pair in `psndSFXMain` (which preserve or
 zero the low 16 and cannot invent bit 15), and `sth 5, 6(6)` in `psndInit`
 during global initialisation.
 
-**Conclusion:** bit 15 is never set, the guard at `0x800DA208` is never
-true, and the `calc3D` call at `0x800DA264` together with the PAN staging
-that follows it is **unreachable dead code**. All positional attenuation in
-the shipped game flows through the live site at `0x800DA3F8`.
+**Conclusion:** bit 15 is never set, so the guard at `0x800DA208` is never
+true and the `calc3D` call at `0x800DA264` is unreachable. The second site,
+at `0x800DA3F8`, is unreachable for the simpler local reason given above.
 
-A port can therefore implement only the live path without behavioural loss,
-provided it matches the guard's behaviour on the startup path — which, per
-the above, means never taking it.
+**This supersedes an earlier statement in this file that `0x800DA3F8` was
+"the live site" carrying all positional attenuation.** That was wrong: the
+clear at `0x800DA394` precedes its own test at `0x800DA39C` in the same
+straight-line path. The caveat about it being class B without an execution
+trace applies to both sites, and the porting recommendation is to keep both
+paths rather than delete either.
 - The later half of the function (from `0x800DA330` to the epilogue): the
   per-frame volume/pan/pitch updates for already-playing sounds, which
   account for most of the remaining `SoundSSSetVolCh` /

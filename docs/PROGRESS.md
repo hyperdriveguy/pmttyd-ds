@@ -7620,9 +7620,17 @@ and in the EVT-01 reply. In brief:
    ORs, the normalisation/clear pair in `psndSFXMain`, and
    `sth 5, 6(6)` in `psndInit` — none can set bit 15.
 
-So the `calc3D` call at `0x800DA264` and its PAN staging are **dead code**,
-and all positional attenuation in the shipped game flows through the live
-site at `0x800DA3F8`.
+So the `calc3D` call at `0x800DA264` is unreachable.
+
+**Corrected the same day:** my claim that attenuation then "flows through
+the live site at `0x800DA3F8`" was wrong. That site is *also* unreachable —
+`0x800DA394` clears `slot+0x06` four instructions before its own test at
+`0x800DA39C`, so `bt 2` always branches away. The two sites use **different**
+`rlwinm` masks (`0,24,22` preserves the low 16; `0,16,30` clears it) and I
+had conflated them. Both `calc3D` call sites are unreachable; the PAN record
+is never written by `psndSFXMain`. Attenuation still exists because
+`__psndSFXOn` computes a distance at provisioning time into `slot+0x0E`/
+`+0x10` and `psndSFXMain` counts it down.
 
 **Why this is worth stating rather than leaving open.** A negative result
 like this is easy to re-derive wrongly: a reader who sees a `calc3D` call
@@ -7630,9 +7638,17 @@ inside the startup path would reasonably implement both spatial paths, or
 assume the startup one is primary. Both would be additions to the
 original's behaviour.
 
-Practical consequence for the port: only the live path needs implementing,
-provided its guard behaviour matches — which per the above means never
-taking the startup branch.
+Practical consequence for the port: **do not delete either path on this
+evidence.** This is class B static analysis with no execution trace, and a
+decompilation reading can be defeated by an untraced path — for instance if
+`0x800DA528` or the reclaim loop re-enters the startup block with a field
+value set elsewhere. Implement both, or reproduce the guards exactly, until
+a trace confirms `calc3D` is never entered.
+
+Process note: this was the third error in this area in one session, and all
+three had the same cause — reasoning about masks, sign-extension or branch
+polarity from memory instead of reading the bytes and computing them. Each
+was caught only by going back to the disassembly.
 
 Docs-only; `make test` / `make all` not rerun.
 
