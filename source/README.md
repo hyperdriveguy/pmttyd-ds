@@ -28,3 +28,6 @@ headers mirror those groups under `include/`. Module basenames and include names
 stay stable. New modules should use the owning directory and prefix, and
 document recovered behavior in its subsystem folder; do not add contracts at
 the `docs/behavior/` root.
+
+For inline documentation conventions and implementation walkthroughs, see the
+[port code guide](../docs/code/README.md).

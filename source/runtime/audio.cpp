@@ -5,12 +5,18 @@
 #include <cstring>
 namespace ttyd {
 namespace {
+// Native buffering policy: 4096 sample frames per refill, three buffers per
+// stream, three simultaneous streams; stereo PCM16 needs 2 channels * 2 bytes.
 constexpr uint32_t StreamFrames=4096;
 struct MusicLock {LightLock& lock;explicit MusicLock(LightLock& value):lock(value){LightLock_Lock(&lock);}~MusicLock(){LightLock_Unlock(&lock);}};
+// NDSP channel allocation: music slots=1/0/18; eight primary-sample cues=2..9.
+// Opening map uses19; other audio adapters own their separately assigned channels.
 constexpr unsigned MusicChannels[3]={1,0,18};
 constexpr const char* CueNames[]={"confirm","jump","hit","success","guard","save-block","goomba-step-left","goomba-step-right"};
 constexpr const char* OriginalCueNames[]={"SFX_CURSOR_OK1","SFX_MARIO_JUMP1","SFX_MARIO_DAMAGE1","SFX_AC_OK1","SFX_MARIO_GUARD1","SFX_MOBJ_BLOCK_SAVE1","SFX_FLD_NPC_KURI_MOVE1L","SFX_FLD_NPC_KURI_MOVE1R"};
 bool readHeader(FILE* file,PcmHeader& pcm) {
+    // Converter emits the constrained 44-byte RIFF/WAVE PCM header; this reader
+    // is not a general WAV chunk walker. Runtime samples follow that fixed header.
     unsigned char bytes[44]{};
     return std::fread(bytes,1,44,file)==44 && pcmHeader(bytes,pcm);
 }
@@ -36,6 +42,8 @@ bool Audio::init() {
     switchSoundtrack=false;
     if(R_FAILED(ndspInit())) return false;
     ready=true;ndspSetOutputMode(NDSP_OUTPUT_STEREO);
+    // Product: frames * stereo channels * buffers * music slots * bytes/sample.
+    // Linear allocation is DSP-visible; flush writes before queueing each buffer.
     streamData=(int16_t*)linearAlloc(StreamFrames*2*3*3*2);
     if(!streamData) {shutdown();return false;}
     for(unsigned slot=0;slot<3;++slot)for(int n=0;n<3;++n)music[slot].buffers[n].data_pcm16=streamData+(slot*3+n)*StreamFrames*2;
@@ -44,6 +52,8 @@ bool Audio::init() {
         FILE* file=std::fopen(path,"rb");
         if(!file) {shutdown();return false;}
         PcmHeader pcm;
+        // Cue admission is mono only and capped at 512 Ki frames to bound
+        // resident sample memory. Eight cue slots correspond to CueNames above.
         if(!readHeader(file,pcm) || pcm.channels!=1 || pcm.frames>512*1024) {
             std::fclose(file);shutdown();return false;
         }
@@ -69,6 +79,7 @@ bool Audio::init() {
             LightEvent_Wait(&audio->musicWake);
             if(audio->musicWorkerRun.load(std::memory_order_acquire))audio->serviceMusic();
         }
+    // Native refill worker: 16 KiB stack, priority0x28, default core affinity(-2).
     },this,16*1024,0x28,-2,false);
     if(!musicThread){shutdown();return false;}
     // NDSP's sound thread must never block on file IO or a main-thread lock.
@@ -78,6 +89,8 @@ bool Audio::init() {
 }
 void Audio::play(const Game& game) {
     if(!ready || !game.progress.sound)return;
+    // Original save-block cue431 maps to cue index5 / NDSP channel7. The
+    // channel is cleared before retriggering its fixed borrowed wave descriptor.
     if(game.saveObjects)for(auto id:game.saveObjects->sounds)if(id==431) {
         auto& clip=clips[5];ndspChnWaveBufClear(7);clip.wave.status=NDSP_WBUF_FREE;ndspChnWaveBufAdd(7,&clip.wave);
     }
@@ -104,6 +117,8 @@ void Audio::stopMusic(unsigned slot) {
 }
 void Audio::musicMix(unsigned slot,uint8_t volume) {
     music[slot].nativeVolume=volume;
+    // Original volume range is0..127; .007874015718698502 is the binary32
+    // reciprocal127. The ordinary .65 gain is a native harness mix adjustment.
     const float gain=(itemGetFanfareProfile(music[slot].track) || itemGetFieldSlot==int(slot))?float(volume)*.007874015718698502f:.65f*float(volume)/127.f;
     float mix[12]{};mix[0]=mix[1]=fieldItemMuted?0:gain;
     ndspChnSetMix(MusicChannels[slot],mix);
@@ -128,6 +143,8 @@ void Audio::startMusic(unsigned slot,int track,uint8_t volume){
     if(!readHeader(stream.file,pcm)) {std::fclose(stream.file);stream.file=nullptr;return;}
     stream.channels=pcm.channels;stream.rate=pcm.rate;stream.loopStart=0;stream.loopEnd=pcm.frames;
     std::snprintf(path,sizeof(path),"%s.loop",asset);FILE* loop=std::fopen(path,"rb");
+    // Sidecar is two32-bit sample-FRAME indices: inclusive start/exclusive end.
+    // Sample positions are not bytes; multiply by channels and2 for PCM16 seeks.
     if(loop) {
         uint32_t points[2];
         if(std::fread(points,4,2,loop)==2 && points[0]<points[1] && points[1]<=stream.loopEnd) {
@@ -141,6 +158,8 @@ void Audio::startMusic(unsigned slot,int track,uint8_t volume){
     musicMix(slot,volume);
     for(auto& buffer:stream.buffers){buffer.status=NDSP_WBUF_FREE;fill(stream,slot,buffer);}
 }
+// Worker-owned IO under musicMutex. A nonloop tail queues only frames actually
+// read; DSP looping stays false because loop boundaries are handled while filling.
 void Audio::fill(MusicStream& stream,unsigned slot,ndspWaveBuf& buffer) {
     if(!stream.file || stream.ended)return;
     uint32_t filled=0;
@@ -202,6 +221,8 @@ void Audio::updateFrontend(const OpeningTitle& title,bool enabled){
     if(!enabled){updateFrontend(-1,false);return;}
     const auto snapshot=title.bgm.snapshot();frontendMusic(snapshot.tracks,snapshot.volumes);
 }
+// Stop callbacks and join the refill worker before closing streams/freeing
+// DSP-visible buffers. Queued descriptors must never outlive their backing data.
 void Audio::shutdown() {
     fieldSfxBackend.clear();fieldMarioOwner=nullptr;
     if(ready)ndspSetCallback(nullptr,nullptr);

@@ -11,3 +11,6 @@ subsystem contract index.
 rg --files include source tests | rg '/(battle|event|field)_'
 rg -n 'TypeName' include source tests
 ```
+
+For inline documentation conventions and implementation walkthroughs, see the
+[port code guide](../docs/code/README.md).

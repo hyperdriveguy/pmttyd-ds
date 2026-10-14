@@ -7,6 +7,9 @@
 #include <cstdio>
 #include <cstring>
 #include <sys/stat.h>
+// Native service composition. Game advances on fixed simulation ticks; this
+// file owns HID polling, GPU/resource transactions and filesystem workers.
+// See docs/code/runtime.md for input and room/save ownership across a frame.
 namespace {
 double seconds() { return svcGetSystemTick()/double(SYSCLOCK_ARM11); }
 bool stageRoomCollision(uint32_t room,ttyd::CollisionTransition& transaction) {
@@ -19,6 +22,8 @@ bool loadRoomCollision(uint32_t room) {
     if(!stageRoomCollision(room,transaction))return false;
     transaction.commit();return true;
 }
+// Polling can run without a simulation tick. Retain the newest analog/held
+// state but OR edges until one tick consumes them; a touch keeps its coordinates.
 void merge(ttyd::Input& pending,const ttyd::Input& i) {
     pending.x=i.x;pending.z=i.z;pending.jumpHeld=i.jumpHeld;pending.cancelHeld=i.cancelHeld;
     pending.confirm|=i.confirm;pending.cancel|=i.cancel;pending.left|=i.left;pending.right|=i.right;
@@ -27,6 +32,9 @@ void merge(ttyd::Input& pending,const ttyd::Input& i) {
     pending.physicalSnapshot=i.physicalSnapshot;pending.physicalButtons=i.physicalButtons;
     if(i.touchX>=0) {pending.touchX=i.touchX;pending.touchY=i.touchY;}
 }
+// Only one SD write is outstanding. Copy the original pouch as well as the
+// Progress shell: simulation may mutate live inventory while the worker writes.
+// Release/acquire on done publishes success; ticket rejects stale UI completions.
 struct SaveWorker {
     Thread thread=nullptr;
     std::string path;ttyd::Progress checkpoint;
@@ -34,6 +42,8 @@ struct SaveWorker {
     bool start(const std::string& destination,const ttyd::Progress& progress,uint64_t id) {
         if(thread)return false;
         path=destination;checkpoint=ttyd::snapshotSaveProgress(progress);ticket=id;done.store(false,std::memory_order_relaxed);
+        // libctru worker: 16 KiB stack, priority 0x31, core -2 (default affinity),
+        // joinable. These are native service settings, not original game constants.
         thread=threadCreate([](void* p) {
             auto& self=*static_cast<SaveWorker*>(p);self.success=ttyd::writeSave(self.path,self.checkpoint);
             self.done.store(true,std::memory_order_release);
@@ -94,6 +104,9 @@ int main() {
     bool frontReady=demo.load("romfs:") && opening.load("romfs:");
     demo.begin(0);ttyd::scanSaveSlots(frontend,saveDirectory);
     std::string restoreFailure;
+    // Stage collision first, validate a separate Game against that staged room,
+    // then stage rendering. Failure rolls collision back through the transaction
+    // destructor; commit only after every owner accepts the checkpoint.
     auto restoreProgress=[&](const ttyd::Progress& checkpoint) {
         ttyd::CollisionTransition transaction;float height=checkpoint.elevation;
         restoreFailure.clear();
@@ -115,6 +128,8 @@ int main() {
     frontend.screen=ttyd::FrontScreen::Playing;
 #endif
     const char* notice=frontReady?"":"Original opening resources unavailable";
+    // Notice lifetimes are native UI ticks: 240=4 seconds, 180=3 seconds at 60 Hz.
+    // Story/demo clocks below use integer milliseconds (ticks * 1000 / 60).
     int noticeTicks=frontReady?0:240;
     uint64_t frontTicks=0;
     ttyd::Metrics metrics;
@@ -127,11 +142,15 @@ int main() {
             game.saveObjects->presentation.completeWrite(completedTicket,saveSuccess);
         double now=seconds();double delta=std::max(0.,now-previous);previous=now;
         // Resume/menu interruptions must not cause seconds of battle advancement.
+        // Native scheduling policy: >250 ms is an interruption. Discard backlog
+        // and pending edges, then admit one 60 Hz tick instead of fast-forwarding.
         if(delta>.25) {accumulator=0;pending={};delta=1./60;}
         accumulator+=delta;
         hidScanInput();uint32_t down=hidKeysDown(),held=hidKeysHeld(),up=hidKeysUp();
         if((down&KEY_START) && frontend.screen==ttyd::FrontScreen::Playing) break;
         ttyd::Input i;circlePosition circle;hidCircleRead(&circle);
+        // Native Circle Pad adapter: 18-unit dead zone, 156-unit normalization.
+        // The later PAD bridge maps this normalized value to the source +/-70 range.
         i.x=std::abs(circle.dx)>18?circle.dx/156.f:0;
         i.z=std::abs(circle.dy)>18?-circle.dy/156.f:0;
         i.confirm=down&KEY_A;i.cancel=down&KEY_X; // X requests partner dialogue in field.
@@ -140,12 +159,16 @@ int main() {
         i.jumpHeld=held&KEY_A;
         i.cancelHeld=held&KEY_B;i.confirmReleased=up&KEY_A;i.cancelReleased=up&KEY_B;
         i.physicalSnapshot=true;
+        // GameCube PAD ABI: A/B/X/Y=0x100/200/400/800, Start=0x1000,
+        // L/R=0x40/20, D-pad left/right/down/up=1/2/4/8. 3DS key bits differ.
         i.physicalButtons=((held&KEY_A)?0x100:0)|((held&KEY_B)?0x200:0)|((held&KEY_X)?0x400:0)|
             ((held&KEY_Y)?0x800:0)|((held&KEY_START)?0x1000:0)|((held&KEY_L)?0x40:0)|((held&KEY_R)?0x20:0)|
             ((held&KEY_DLEFT)?1:0)|((held&KEY_DRIGHT)?2:0)|((held&KEY_DDOWN)?4:0)|((held&KEY_DUP)?8:0);
         if(down&KEY_TOUCH) {touchPosition touch;hidTouchRead(&touch);i.touchX=touch.px;i.touchY=touch.py;}
         merge(pending,i);pendingStart|=bool(down&KEY_START);
         const double simulationStart=seconds();metrics.steps=0;
+        // Catch-up cap is five SIMULATION ticks per render iteration. Only the
+        // first tick receives accumulated edges; subsequent ticks keep held state.
         while(accumulator>=1./60 && metrics.steps<5) {
             if(frontend.screen==ttyd::FrontScreen::Playing){audio.bindFieldMarioMotion(game);renderer.bindFieldItemGet(game,audio);renderer.advanceTutorialAnimations(game);game.tick(pending);
                 renderer.advanceFieldIcons();audio.tickKeyItemAudio(ttyd::TickRate);renderer.advanceFieldItemPresentation();}
@@ -163,6 +186,8 @@ int main() {
                 ttyd::FrontInput fi;fi.confirm=pending.confirm;fi.cancel=pending.cancel;
                 fi.start=pendingStart;pendingStart=false;
                 fi.previous=pending.left;fi.next=pending.right;
+                // Native four-slot menu hitbox: x [10,310), y [42,190),
+                // rows 37 pixels high. This layout is an adaptation for the 3DS.
                 if(pending.touchX>=10 && pending.touchX<310 && pending.touchY>=42 && pending.touchY<190)
                     fi.touchedSlot=(pending.touchY-42)/37;
                 if(frontend.screen==ttyd::FrontScreen::Title)frontend.title.admitMusic(audio.frontendTrackReady(4));
@@ -194,8 +219,12 @@ int main() {
             if(frontend.screen==ttyd::FrontScreen::Playing && game.progress.sound) audio.play(game);
             if(noticeTicks>0)--noticeTicks;
         }
+        // Native overload policy drops whole remaining ticks (and the fraction),
+        // recording the count rather than changing action-command tick duration.
         if(accumulator>=1./60) {metrics.droppedTicks+=uint64_t(accumulator*60);accumulator=0;}
         metrics.simulationMs=(seconds()-simulationStart)*1000;
+        // Pipe/road/reload work happens outside Game::tick. Loading may block;
+        // reset wall-clock accumulation afterwards so IO time cannot age gameplay.
         if(game.pipeRequest>=0 && game.fade.ready()) {
             ttyd::CollisionTransition transaction;
             auto ownedCandidate=std::make_unique<ttyd::Game>(game);auto& candidate=*ownedCandidate;
@@ -218,6 +247,8 @@ int main() {
             else {game.cancelRoad();notice="Room transition failed";noticeTicks=180;}
             accumulator=0;pending={};previous=seconds();
         }
+        // Save-block writes carry an immutable checkpoint and presentation ticket.
+        // Ordinary save requests below wait for this worker to relinquish the file.
         if(game.saveObjects) {
             uint64_t ticket;ttyd::SaveBlockSwitches switches;
             if(game.saveObjects->presentation.takeWriteRequest(ticket,switches)) {

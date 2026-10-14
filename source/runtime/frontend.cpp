@@ -1,4 +1,6 @@
 #include "frontend.hpp"
+// Native four-file selection and requests. Demo/title/opening own their source
+// timing; this adapter does not tick field gameplay while a frontend owns input.
 namespace ttyd {
 std::string saveSlotPath(const std::string& directory,unsigned slot) {
     if(slot>=4)return {};
@@ -13,6 +15,8 @@ void Frontend::tick(const FrontInput& i) {
     if(screen==FrontScreen::Title){title.tick((i.start?0x1000u:0u)|(i.confirm?0x100u:0u));if(title.complete)screen=title.demoRequested?FrontScreen::Demo:FrontScreen::Files;return;}
     if(screen!=FrontScreen::Files || loadRequested)return;
     if(i.cancel){screen=FrontScreen::Title;title.begin();return;}
+    // Four-slot wrap: adding3 modulo4 steps backwards without unsigned underflow.
+    // Title receives original Start/A bits0x1000/0x100 rather than libctru bits.
     if(i.previous)selected=(selected+3)%4;
     if(i.next)selected=(selected+1)%4;
     const bool touch=i.touchedSlot>=0 && i.touchedSlot<4;

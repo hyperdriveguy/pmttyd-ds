@@ -257,3 +257,6 @@ details. Contracts stay under `docs/behavior/<subsystem>/`; the
 [behavior index](docs/behavior/README.md) is the entry point. Original US
 English dialogue, attribution, order, branches and conditions are mandatory;
 do not author replacement story dialogue.
+
+For inline documentation conventions and implementation walkthroughs, see the
+[port code guide](docs/code/README.md).

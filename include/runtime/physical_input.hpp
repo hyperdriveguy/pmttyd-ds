@@ -1,6 +1,8 @@
 #pragma once
 #include "battle_defense.hpp"
 namespace ttyd {
+// Twelve-byte source PADStatus layout after caller-owned read/clamp. Signed
+// stick/error bytes must not be treated as unsigned native HID coordinates.
 struct RawPad {
     uint16_t buttons=0;
     int8_t mainX=0,mainY=0,subX=0,subY=0;
@@ -30,6 +32,8 @@ struct InputHardwareServices {
     void (*reset)(void*,uint32_t)=nullptr;
     void (*motor)(void*,int,int)=nullptr;
 };
+// Global producer lifetime crosses frontend/field/battle ownership. Restore
+// retains this history so held A cannot become a fresh press after a scene switch.
 struct PhysicalInputProducer {
     std::array<DemoPad,4> demo;
     std::array<GlobalInputChannel,4> channels;
