@@ -666,9 +666,10 @@ Request text below is preserved verbatim from the inbox; answers and implementat
   state11 same-invocation cursor reuse — answered by the [type/reuse contract](../behavior/battle/WEAPON_MENU_TYPE_DOMAINS_AND_CURSOR_REUSE.md),
   [ActMenu publication](../behavior/battle/ACT_MENU_MAIN_SELECTION_AND_TYPE_PUBLICATION.md),
   audience/gift writers and the consolidated service contract.
-- [ ] Query-specific reachable type/input invariants or actual stack residue
+- [x] Query-specific reachable type/input invariants or actual stack residue
   for CommandGetWeaponAddress/SelectWeapon and other private uninitialized
-  cursor slots. Input's initialized slot is not their fallback; unsupported
+  cursor slots — [caller/cursor contract](../behavior/battle/WEAPON_SELECTION_CALLERS_AND_CURSOR_DOMAINS.md).
+  Input's initialized slot is not their fallback; unsupported
   types9/11..13/>14 still leave the helper output unwritten.
 - [x] Reconcile `BATTLE_UNIT_QUERY_EVENT_LEAVES` prose with corrected
   capture-order sites — [reconciled summary](../behavior/battle/BATTLE_UNIT_QUERY_EVENT_LEAVES.md),
@@ -792,6 +793,63 @@ initial credit/state/type/run-check policy for root/child/brother/inline entries
 and WAIT_FRAME/WAIT_MSEC/USER_FUNC continuation semantics with exact first-call
 markers. Keep mathematical event invocations separate from physical pad samples.
 Original pause/multicredit/creation/deletion traces remain necessary verification.
+
+### ID 3, 2026-10-13 — `calc3D` attenuation and pan model
+
+[Positional attenuation and pan](../behavior/audio/POSITIONAL_SFX_ATTENUATION_AND_PAN.md).
+`calc3D` `0x800DC6D4` (1268 bytes) at structure level. This is the model
+behind `slot+0x0E` / `slot+0x10`, and the last positional-SFX consumer I
+set out to close.
+
+**Every numeric constant here is ISO-read and named**, which is a change of
+method from the rest of this session's audio work: instead of asserting
+addresses I resolved each `lfd`/`lfs` through `us_symbols.csv` and then read
+the bytes. The seven resolve to real symbols:
+
+| Access | Symbol | Value |
+| --- | --- | --- |
+| `lfd 30040(r31)` | `double_0p5_802e3c98` | 0.5 |
+| `lfd 30048(r31)` | — | 3.0 |
+| `lfd 30056(r31)` | — | 0.0 |
+| `lfd 30064(r31)` | — | 3.14 |
+| `lfd 29984(r31)` | `double_to_int_802e3c60` | 2^52 + 2^31 |
+| `lfd 29992(r31)` | — | 2^52 |
+| `lfs -7224(r3)` | `__float_nan` | NaN (`7fffffff`) |
+
+Recovered behavior:
+
+- **Flags in `r3`.** Bit 7 adds the listener position at
+  `global+0x30..+0x38` to the row position; bit 6 replaces it outright.
+  Both tests are independent.
+- **Attenuation** is `frsqrte` refined by **three** Newton iterations of
+  `x ← 0.5·x·(3 − d²·x²)` using 0.5 and 3.0, then a final `frsp`. The
+  iteration count and the narrowing are both required for bit-exactness.
+- **`d2 <= 0` deliberately yields `__float_nan`**, not a clamp.
+- **Pan** clamps the distance into the window **[64, 196]** and then
+  subtracts 64, producing 0..127. The 64 is a minimum audible distance. A
+  second occurrence of the same idiom clamps to **1..127** and is scaled by
+  `mulli ..., 90`.
+- **The pi approximation is literally `3.14`**, not `M_PI`.
+- **`2^52 + 2^31` is the double-to-int rounding magic**, negated through the
+  integer bit pattern by `addze` + `xoris`. This also explains the
+  `lis 0, 17200` (= `0x43300000`) literal I had recorded as unresolved in
+  the field-collision session — it is the high half of that constant.
+- **The output is the named symbol `PAN`** (`PAN$4553`) at **`0x8041EB18`**
+  in `.sbss`: bytes `+0` primary (clamped to 127), `+1` pan, `+2` volume,
+  returned as the containing 32-bit word.
+
+**Still open:** the distance helper `0x800DCBC8`; the eight `r2`-relative
+`lfs` scale constants (the `r2` base is still not established — the same
+gap noted in the field-collision session); which IEEE-754 class maps to
+which of classifier cases 1..5 and which of cases 2..5 are reachable; what
+`r5`/`r6` are for, since this function writes nothing through them; the
+`pssfxlist` row fields supplying the source position; and
+`global+0x3C`'s meaning. No original execution traces.
+
+The positional-SFX chain is now closed at contract level: provisioning,
+start wrappers, accessors, stop, position update, frame driver and
+attenuation. What remains is the `psndSFXMain` per-channel dispatch
+conditions and the backend `Sound*` services themselves.
 
 ## Answers and delivery notes
 
@@ -3215,6 +3273,15 @@ Eight route/three raw callback-result models/publication sites checked. Inquiry
 priority, four fresh command reads and equality despite success-clear pinned.
 Error/recovery/low-level/providers/original IO/audio/native binding open; EVT-01 OPEN.
 
+## 2026-10-13 — SDK DVD error/timeout/fatal bridge delivery
+
+Completed [three local error wrappers](../behavior/file/SDK_DVD_ERROR_CALLBACK_TIMEOUT_AND_FATAL_BRIDGE.md).
+Six spans/68 anchors/six calls/three indirect sites verified; five status/six
+cancel/three handler/two post-handler snapshot models and timeout/global/sites
+checked; busy pins reverified. Failed-state target can differ from callback
+record; cancel pointer captured before clearing Canceling. Error/reset/handler/
+providers/original IO/audio/native binding remain open; EVT-01 stays OPEN.
+
 ### 2026-10-13 delivery/request: preservedtrio postwait callbacks/nativegaps
 
 [Returnaudit](../behavior/story/UNDERGROUND_FIRST_ARRIVAL_AND_GOOMBA_TRIO.md#2026-10-13-preserved-native-return-callback-audit)
@@ -3225,15 +3292,6 @@ success,54a_recnotapplied,70BGMon_fwithoutactualfadeowner; originalfield
 MarioWord4/currentindices/partyconstructor/controlcounter/pouchjoinand
 separatefieldVMpausedchildren ownershiprequired. Noforcedunlock orstorywrite.
 Read-onlysource/nativeaudit; docs-only/no nativecode/build/commit;diffcheckpass.
-
-## 2026-10-13 — SDK DVD error/timeout/fatal bridge delivery
-
-Completed [three local error wrappers](../behavior/file/SDK_DVD_ERROR_CALLBACK_TIMEOUT_AND_FATAL_BRIDGE.md).
-Six spans/68 anchors/six calls/three indirect sites verified; five status/six
-cancel/three handler/two post-handler snapshot models and timeout/global/sites
-checked; busy pins reverified. Failed-state target can differ from callback
-record; cancel pointer captured before clearing Canceling. Error/reset/handler/
-providers/original IO/audio/native binding remain open; EVT-01 stays OPEN.
 
 ## 2026-10-13 — SDK DVD error category/recovery dispatch delivery
 
