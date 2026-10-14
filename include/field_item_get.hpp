@@ -22,7 +22,7 @@ struct FieldItemGetServices {
  int32_t (*window)(void*,uint32_t originalDefinition,const char* entryName)=nullptr;
  int32_t (*windowAction)(void*,int32_t mainWindow)=nullptr;
  bool (*bgmSilent)(void*)=nullptr;
- bool (*bgmPlaying)(void*,int32_t)=nullptr;
+ int32_t (*bgmCheck)(void*,int32_t)=nullptr; // Source -1 vacant, 0 assigned.
  int32_t (*receive)(void*,int32_t item)=nullptr; // Low-level pouchGetItem, no revision.
  void (*removeNamedEntries)(void*,const char*)=nullptr;
  uintptr_t (*discardSelection)(void*,int32_t kind,int32_t item,int32_t mode)=nullptr;

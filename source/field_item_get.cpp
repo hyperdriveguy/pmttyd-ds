@@ -3,7 +3,7 @@ namespace ttyd {
 bool FieldItem95Get::begin(const char* name,const FieldItemGetServices& s) {
  if(state_==ItemGetStep::Running || state_==ItemGetStep::DiscardPending || !name || !*name ||
     !s.ready || !s.mario || !s.request || !s.effect || !s.window || !s.windowAction ||
-    !s.bgmSilent || !s.bgmPlaying || !s.receive || !s.removeNamedEntries || !s.ready(s.user))return false;
+    !s.bgmSilent || !s.bgmCheck || !s.receive || !s.removeNamedEntries || !s.ready(s.user))return false;
  services_=s;name_=name;state_=ItemGetStep::Running;substate_=0;flags_=0x1003;
  status_=0;position_={0,-1000,0};effect_=0;discard_=0;for(auto& w:windows_)w=-1;return true;
 }
@@ -33,7 +33,7 @@ ItemGetStep FieldItem95Get::tick(uint32_t buttons) {
   request(ItemGetRequest::ControlOff);status_|=0x01000000u;substate_=3;
  }
  if(substate_==3) {
-  if(!(flags_&0x2000) && services_.bgmPlaying(services_.user,1)) {
+  if(!(flags_&0x2000) && services_.bgmCheck(services_.user,1)!=0) {
    flags_|=0x2000;request(ItemGetRequest::BgmOff201);
    if(!(flags_&8))request(ItemGetRequest::BgmResumeA0);
   }

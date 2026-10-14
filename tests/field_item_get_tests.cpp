@@ -7,7 +7,7 @@
 using namespace ttyd;
 struct Harness {
  std::vector<std::string> calls;
- bool ready=true,silent=false,playing=false,received=true;
+ bool ready=true,silent=false,vacant=false,received=true;
  int action=1,grants=0,deleted=0;
  ItemGetPoint effectPosition{};
  ProloguePouch pouch;
@@ -21,7 +21,7 @@ FieldItemGetServices services(Harness& h) {
  s.window=[](void* p,uint32_t definition,const char* name){auto& h=*static_cast<Harness*>(p);assert(std::string(name)=="irai_item");h.calls.push_back("w"+std::to_string(definition));return definition==0x80313dc8?20:definition==0x80313df0?21:22;};
  s.windowAction=[](void* p,int32_t w){assert(w==20);auto& h=*static_cast<Harness*>(p);h.calls.push_back("action");return h.action;};
  s.bgmSilent=[](void* p){auto& h=*static_cast<Harness*>(p);h.calls.push_back("silent");return h.silent;};
- s.bgmPlaying=[](void* p,int32_t category){assert(category==1);auto& h=*static_cast<Harness*>(p);h.calls.push_back("playing");return h.playing;};
+ s.bgmCheck=[](void* p,int32_t category){assert(category==1);auto& h=*static_cast<Harness*>(p);h.calls.push_back("vacant");return h.vacant?int32_t(-1):int32_t(0);};
  s.receive=[](void* p,int32_t item){auto& h=*static_cast<Harness*>(p);assert(item==95);++h.grants;h.calls.push_back("grant95");return h.received?h.pouch.insertKeyItem(item):0;};
  s.removeNamedEntries=[](void* p,const char* name){auto& h=*static_cast<Harness*>(p);assert(std::string(name)=="irai_item");++h.deleted;h.calls.push_back("delete-all-matching");};
  return s;
@@ -29,8 +29,8 @@ FieldItemGetServices services(Harness& h) {
 std::string request(ItemGetRequest r){return "r"+std::to_string(int(r));}
 size_t at(const Harness& h,const std::string& s){for(size_t i=0;i<h.calls.size();++i)if(h.calls[i]==s)return i;assert(false);return 0;}
 int main() {
- for(bool silent:{false,true})for(bool playing:{false,true}) {
-  Harness h;h.silent=silent;h.playing=playing;FieldItem95Get get;auto s=services(h);
+ for(bool silent:{false,true})for(bool vacant:{false,true}) {
+  Harness h;h.silent=silent;h.vacant=vacant;FieldItem95Get get;auto s=services(h);
   h.pouch.half(0xa0,107);h.pouch.half(0xa4,9);h.pouch.half(0x70,3);h.pouch.half(0x74,1);
   assert(get.begin("irai_item",s) && get.flags()==0x1003 && !get.begin("irai_item",s));assert(h.grants==0);
   assert(get.tick(0x300)==ItemGetStep::Running && get.substate()==2 && h.grants==1 && h.deleted==0);
@@ -53,10 +53,20 @@ int main() {
   assert(at(h,request(ItemGetRequest::Camera8FlagOff))<at(h,"delete-all-matching"));
   assert(std::count(h.calls.begin(),h.calls.end(),request(ItemGetRequest::BgmOff201))==1);
   assert(std::count(h.calls.begin(),h.calls.end(),request(ItemGetRequest::BgmResumeA0))==(silent?0:1));
-  if(playing)assert(at(h,request(ItemGetRequest::BgmOff201))<at(h,request(ItemGetRequest::WindowCloseMain)));
+  if(vacant)assert(at(h,request(ItemGetRequest::BgmOff201))<at(h,request(ItemGetRequest::WindowCloseMain)));
   else assert(at(h,request(ItemGetRequest::WindowCloseSecondary))<at(h,request(ItemGetRequest::BgmOff201)));
   const auto count=h.calls.size();assert(get.tick(0x300)==ItemGetStep::Complete && h.calls.size()==count);
  }
+ // Assigned fanfare group returns0; completion/vacancy changes query to-1.
+ Harness music;music.action=0;FieldItem95Get musicGet;assert(musicGet.begin("irai_item",services(music)));
+ musicGet.tick(0);musicGet.tick(0);assert(!(musicGet.flags()&0x2000));
+ assert(std::count(music.calls.begin(),music.calls.end(),request(ItemGetRequest::BgmOff201))==0);
+ music.vacant=true;assert(musicGet.tick(0)==ItemGetStep::Running && (musicGet.flags()&0x2000));
+ const auto checks=std::count(music.calls.begin(),music.calls.end(),"vacant");musicGet.tick(0);
+ assert(std::count(music.calls.begin(),music.calls.end(),"vacant")==checks);
+ assert(musicGet.tick(0x100)==ItemGetStep::Complete);
+ assert(std::count(music.calls.begin(),music.calls.end(),request(ItemGetRequest::BgmOff201))==1);
+ assert(std::count(music.calls.begin(),music.calls.end(),request(ItemGetRequest::BgmResumeA0))==1);
  Harness failed;failed.received=false;failed.action=0;FieldItem95Get get;
  assert(get.begin("irai_item",services(failed)));assert(get.tick(0)==ItemGetStep::Running && !(get.status()&1));
  assert(at(failed,"grant95")<at(failed,"w"+std::to_string(0x80313e18u)));
