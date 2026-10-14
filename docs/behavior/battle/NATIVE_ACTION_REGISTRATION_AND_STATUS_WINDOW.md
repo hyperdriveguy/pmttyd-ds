@@ -92,3 +92,39 @@ HP/result stay unchanged. This camera request, original Mario walking/running
 pose presentation, action setup/manager/motion/hits and automatic menu/controller
 integration remain follow-up providers. Host evidence is not a GPU/original-
 runtime observation or complete Jump/tutorial verification.
+
+## Harbor Jump camera and action preparation (2026-10-14)
+
+The selected Jump now invokes complete homing-unitparts8012bc70/1c8 through
+`battleCameraHomingPartsEvent`. It resolves all five arguments before capturing
+current battle and checking signed priority. After admission it stores the
+translated actor and explicit part, fetches the unit through retained battle
+and part through current registry, and copies actual unit home XYZ. Target-1
+preserves target ID/part/vector. Other targets use their explicit part and the
+shared original hit-position helper. Unlike three-argument Homing, this route
+has a priority gate and does not substitute bodypart IDs. Request writes are
+not camera Main/framing or renderer completion. The read-only complete listing
+is retained in ignored artifacts/tutorial-player-camera-next.txt.
+
+Native GetWeaponActionLv reads source U8(weapon6e). AcSetDifficulty stores low8
+base then clamps full wrapped base-minus-modifier-plus-modifier to0..6. SetupAC
+performs original ordered resets and registration-table selection at80364348;
+no TimingA initializer/main invocation, history/parameter reset, render delay,
+result synthesis or attack completion is appended. The original actor token
+bit10 controls display-callback installation. The existing complete takeoff,
+move-frame, Mario jump-parameter, fall-acceleration and frames-to-milliseconds
+providers are now registered with runtime-owned service/backend lifetimes.
+
+Host camera fixtures check all five resolutions before a rejected gate,
+priority acceptance, complete home vector, target-1 preservation and an explicit
+second target part carrying distinct absolute XYZ. The native original-script
+test checks source TimingA callbacks/difficulty3, Mario1/part1 and Crump2/part1
+camera fields, exactly one payment and unchanged HP/result. Jump remains live
+at CalculateFaceDirection8010e684 across subsequent ticks. This is a narrower
+provider frontier, not an executed hit or a complete playable tutorial.
+
+Next: complete facing/pose requests, original TimingA manager cadence, motion/
+hits and original menu/controller activation. Preserve physical A/B/directions
+and simulation-tick timing. Extracted HUD/menu presentation and second-screen
+scene/audience controls remain the original goal; these request writers alone
+do not establish those visual requirements or original-runtime equivalence.

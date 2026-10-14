@@ -2,6 +2,7 @@
 #include <cassert>
 #include <cstring>
 #include <cstdlib>
+#include <algorithm>
 #include "event_lifecycle.hpp"
 #include "battle_packed_hit_precheck.hpp"
 #include "battle_packed_pad.hpp"
@@ -35,11 +36,12 @@ bool HarborTutorialPacked::provision(){
  BattleSoundPlaybackServices playback;playback.user=this;playback.trigger=[](void* self,uint32_t u,uint32_t key,int32_t sentinel,int32_t zero,const std::array<float,3>& pos){assert(sentinel==-250000000 && zero==0);return static_cast<HarborTutorialPacked*>(self)->requestSound(u,key,pos);};
  playback.position=[](void* self,uint32_t handle,const std::array<float,3>& pos){HarborTutorialSoundRequest r;r.operation=HarborTutorialSoundRequest::Operation::Position;r.handle=handle;r.position=pos;static_cast<HarborTutorialPacked*>(self)->sounds.push_back(r);};
  playback.off=[](void* self,uint32_t handle){HarborTutorialSoundRequest r;r.operation=HarborTutorialSoundRequest::Operation::Off;r.handle=handle;static_cast<HarborTutorialPacked*>(self)->sounds.push_back(r);};
+ takeoffBackend.runtime=&vm;takeoff=nativeBattleTakeoffServices(vm,nativeBattleTakeoffCoreServices(takeoffBackend));
  movement=nativeBattleMovePositionServices(vm,playback);jump.movement=movement;jump.user=this;jump.floor=[](void* self,uint32_t battle,float x,float y,float z){auto& p=*static_cast<HarborTutorialPacked*>(self);return packedBattleStageFloorHeight(battle,x,y,z,nativeBattleActorServices(p.vm).memory);};jump.play=[](void* self,uint32_t u,uint32_t key,const std::array<float,3>& pos){static_cast<HarborTutorialPacked*>(self)->requestSound(u,key,pos);};camera.positions=nativeBattlePartPositionServices(vm);camera.values=camera.positions.unit.values;
  camera.user=this;camera.signedWordFloat=[](void* self,int32_t v){auto& p=*static_cast<HarborTutorialPacked*>(self);return p.vm.platform.signedWordFloat(p.vm.platform.user,v);};
  camera.rumbleOn=[](void* self,int32_t channel){static_cast<HarborTutorialPacked*>(self)->rumbleRequests.push_back(channel);};
  return registry.bind(0x80113f1c,&vm,[](void* p,EventEntry& e,int32_t){return battleMarkUnit1feEvent(e,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));}) && registry.bind(0x8010f458,&vm,[](void* p,EventEntry& e,int32_t){auto& vm=*static_cast<EventNativeRuntime*>(p);return battleGetHitDamageEvent(e,nativeBattleUnitEventServices(vm),nativeBattleActorServices(vm));}) && registry.bind(0x80105b40,&vm,[](void* p,EventEntry& e,int32_t){return battleUnitFlagEvent(e,true,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));}) && registry.bind(0x80105ae0,&vm,[](void* p,EventEntry& e,int32_t){return battleUnitFlagEvent(e,false,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));}) && registry.bind(0x8010a010,&vm,[](void* p,EventEntry& e,int32_t){return runBattleDataChild(e,nativeBattleDataChildServices(*static_cast<EventNativeRuntime*>(p)));}) && registry.bind(0x8010e4bc,&vm,[](void* p,EventEntry& e,int32_t){auto& vm=*static_cast<EventNativeRuntime*>(p);return battleResetUnitFacingEvent(e,nativeBattleUnitEventServices(vm),nativeBattleActorServices(vm));}) && registry.bind(0x8010e430,&vm,[](void* p,EventEntry& e,int32_t){return battleCheckUnitAttributeEvent(e,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));}) && registry.bind(0x8010f0e8,&vm,[](void* p,EventEntry& e,int32_t){return battleCheckHitPatternEvent(e,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));}) && registry.bind(0x8010f2e8,&vm,[](void* p,EventEntry& e,int32_t){return battleCheckHitCodeEvent(e,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));}) &&
- registry.bind(0x8010f374,&vm,[](void* p,EventEntry& e,int32_t){return battleGetHitCodeEvent(e,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));}) && bindBattleCheckDataCallback(registry,vm) && bindBattleGetBodyIdCallback(registry,vm) && bindBattleSetMoveSpeedCallback(registry,vm) && bindBattleMovePositionCallback(registry,movement) && bindBattleJumpSettingCallback(registry,vm) && bindBattleGetPosCallback(registry,vm) && bindBattleGetHomePosCallback(registry,vm) && bindBattleGetHitPosCallback(registry,vm) && bindBattleGetUnitWorkCallback(registry,vm) && bindBattleSetUnitWorkCallback(registry,vm) && bindBattleGetHpCallback(registry,vm) && bindBattleGetMaxHpCallback(registry,vm) && bindBattleStartWaitCallback(registry,vm) && bindBattleStopWaitCallback(registry,vm) && bindBattleSelectedTargetCallback(registry,vm) && bindBattleCommandWeaponCallback(registry,vm) && bindBattleWaitGuardMoveCallback(registry,vm) && bindBattleMajinaiQueryCallback(registry,vm);
+ registry.bind(0x8010f374,&vm,[](void* p,EventEntry& e,int32_t){return battleGetHitCodeEvent(e,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));}) && bindBattleCheckDataCallback(registry,vm) && bindBattleGetBodyIdCallback(registry,vm) && bindBattleSetMoveSpeedCallback(registry,vm) && bindBattleMovePositionCallback(registry,movement) && bindBattleJumpSettingCallback(registry,vm) && bindBattleGetPosCallback(registry,vm) && bindBattleGetHomePosCallback(registry,vm) && bindBattleGetHitPosCallback(registry,vm) && bindBattleGetUnitWorkCallback(registry,vm) && bindBattleSetUnitWorkCallback(registry,vm) && bindBattleGetHpCallback(registry,vm) && bindBattleGetMaxHpCallback(registry,vm) && bindBattleStartWaitCallback(registry,vm) && bindBattleStopWaitCallback(registry,vm) && bindBattleSelectedTargetCallback(registry,vm) && bindBattleCommandWeaponCallback(registry,vm) && bindBattleWaitGuardMoveCallback(registry,vm) && bindBattleMajinaiQueryCallback(registry,vm) && bindBattleTakeoffCallback(registry,takeoff) && bindBattleGetMoveFrameCallback(registry,vm) && bindBattleMarioJumpParameterCallback(registry,vm) && bindBattleSetFallAccelCallback(registry,vm) && bindBattleFramesToMillisecondsCallback(registry,vm);
 }
 uint32_t HarborTutorialPacked::requestSound(uint32_t u,uint32_t key,const std::array<float,3>& pos){HarborTutorialSoundRequest r;r.handle=nextSoundHandle++;r.key=key;r.owner=int32_t(word(u));r.position=pos;for(unsigned i=0;i<128;++i){const auto c=byte(key+i);if(!c)break;r.name+=char(c);}sounds.push_back(r);return r.handle;}
 bool HarborTutorialPacked::provisionFreshPouch(const char* name,const ProloguePouch* entry){
@@ -147,6 +149,19 @@ bool HarborTutorialPacked::invoke(EventEntry& e,uint32_t function,int32_t first,
  }
  if(registry.invoke(e,function,first,result))return true;
  switch(function){
+ case 0x801058e0:output(e,1,byte(uint32_t(value(e,0))+0x6e));result=2;return true;
+ case 0x80107b38:{const auto u=actor(e);const auto base=value(e,1);byte(Battle+0x1cbc,uint8_t(base));const auto adjusted=int32_t(uint32_t(base)-byte(u+0x305)+byte(u+0x306));byte(Battle+0x1cbd,uint8_t(std::clamp(adjusted,int32_t(0),int32_t(6))));result=2;return true;}
+ case 0x801077ec:{
+  const auto u=actor(e);const auto id=value(e,1),argument=value(e,3);const auto options=uint32_t(raw(e,2));
+  word(Battle+0x1c90,u);word(Battle+0x1c94,options);word(Battle+0x1c9c,0);word(Battle+0x1cb4,0);word(Battle+0x1cb8,1);
+  for(auto offset:{0x1ca0u,0x1ca8u,0x1ca4u,0x1cacu})word(Battle+offset,0);
+  word(Battle+0x1c98,uint32_t(argument));word(Battle+0x1cc0,0);
+  for(uint32_t record=0x80364348;word(record);record+=20)if(word(record)==uint32_t(id)){
+   word(Battle+0x1ca0,word(record+4));if(!(word(u+0x27c)&0x10))word(Battle+0x1ca8,word(record+12));
+   word(Battle+0x1ca4,word(record+8));word(Battle+0x1cac,word(record+16));break;
+  }
+  result=2;return true;
+ }
  case 0x801059a0:{
   const auto u=actor(e),weapon=uint32_t(value(e,1));
   if(word(weapon+8) || byte(weapon+0x11) || byte(weapon+0x12))return false;
@@ -181,6 +196,7 @@ bool HarborTutorialPacked::invoke(EventEntry& e,uint32_t function,int32_t first,
 
  case 0x8012b3d0:result=battleCameraShakeHorizontalEvent(e,camera);return true;
  case 0x8012bfd0:result=battleCameraModeEvent(e,camera);return true;
+ case 0x8012bc70:result=battleCameraHomingPartsEvent(e,camera);return true;
  case 0x8012be38:result=battleCameraHomingEvent(e,camera);return true;
  case 0x8012b8cc:result=battleCameraSpeedEvent(e,camera);return true;
  case 0x8012ba14:result=battleCameraZoomEvent(e,camera);return true;

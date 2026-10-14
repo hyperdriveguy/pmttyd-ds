@@ -12,5 +12,6 @@ int32_t battleCameraShakeHorizontalEvent(EventEntry&,const BattleCameraRequestSe
 int32_t battleCameraModeEvent(EventEntry&,const BattleCameraRequestServices&);
 int32_t battleCameraSpeedEvent(EventEntry&,const BattleCameraRequestServices&);
 int32_t battleCameraZoomEvent(EventEntry&,const BattleCameraRequestServices&);
+int32_t battleCameraHomingPartsEvent(EventEntry&,const BattleCameraRequestServices&);
 int32_t battleCameraHomingEvent(EventEntry&,const BattleCameraRequestServices&);
 }

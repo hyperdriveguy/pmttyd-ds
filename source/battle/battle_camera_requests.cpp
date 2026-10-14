@@ -41,6 +41,24 @@ int32_t battleCameraZoomEvent(EventEntry& e,const BattleCameraRequestServices& s
  if(admitted(s,b,priority))real(s,b+0x2778,float(integer));
  return 2;
 }
+int32_t battleCameraHomingPartsEvent(EventEntry& e,const BattleCameraRequestServices& s){
+ const auto priority=value(s,e,0),owner=value(s,e,1),ownerPart=value(s,e,2),target=value(s,e,3),targetPart=value(s,e,4);
+ const auto b=battle(s);if(!admitted(s,b,priority))return 2;
+ const auto& u=s.positions.unit;assert(u.translate && u.unit);
+ const auto first=u.translate(u.user,e,owner);word(s,b+0x2764,uint32_t(first));word(s,b+0x276c,uint32_t(ownerPart));
+ const auto actor=u.unit(u.user,b,int32_t(word(s,b+0x2764)));
+ (void)packedRegistryPart(int32_t(word(s,b+0x2764)),int32_t(word(s,b+0x276c)),s.positions.memory);
+ // GetHomePos writes stack locals before the camera vector publication.
+ const std::array<uint32_t,3> home{word(s,actor+0x30),word(s,actor+0x34),word(s,actor+0x38)};
+ for(unsigned axis=0;axis<3;++axis)word(s,b+0x2810+4*axis,home[axis]);
+ if(target==-1)return 2;
+ const auto second=u.translate(u.user,e,target);word(s,b+0x2768,uint32_t(second));word(s,b+0x2770,uint32_t(targetPart));
+ const auto other=u.unit(u.user,b,int32_t(word(s,b+0x2768)));
+ const auto part=packedRegistryPart(int32_t(word(s,b+0x2768)),int32_t(word(s,b+0x2770)),s.positions.memory);
+ const auto hit=packedHitPosition(other,part,s.positions);
+ for(unsigned axis=0;axis<3;++axis)real(s,b+0x281c+4*axis,hit[axis]);
+ return 2;
+}
 int32_t battleCameraHomingEvent(EventEntry& e,const BattleCameraRequestServices& s){(void)value(s,e,0);const auto owner=value(s,e,1),target=value(s,e,2);const auto b=battle(s);const auto& u=s.positions.unit;assert(u.translate && u.unit);
  const auto first=u.translate(u.user,e,owner);word(s,b+0x2764,uint32_t(first));const auto actor=u.unit(u.user,b,first);const auto body=packedBodyPartId(actor,u.memory);word(s,b+0x276c,uint32_t(body));(void)packedUnitPart(actor,body,u.memory);
  for(unsigned axis=0;axis<3;++axis)word(s,b+0x2810+4*axis,word(s,actor+0x30+4*axis));

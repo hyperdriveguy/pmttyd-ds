@@ -39,6 +39,21 @@ int main(){
  Fixture capture;auto captured=capture.camera();capture.args({0,3,4,5,6});captured.signedWordFloat=[](void* self,int32_t v){auto& f=*static_cast<Fixture*>(self);if(v==3)f.w(0x1008,99);if(v==4){f.w(0x100c,88);f.w(0x8041eb90,0x3000);}return float(v);};battleCameraShakeHorizontalEvent(capture.entry,captured);assert(capture.f(0x5848)==3 && capture.f(0x584c)==4 && capture.w(0x5834)==5 && capture.w(0x4754)==0); // Raw following operands captured before float service; battle reloaded after arguments.
  Fixture c;auto cs=c.camera();c.w(0x2000+0x275c,1);c.w(0x2000+0x2754,0x3c);c.args({0,8});assert(battleCameraModeEvent(c.entry,cs)==2 && c.w(0x2000+0x2760)==0);c.args({1,8});assert(battleCameraModeEvent(c.entry,cs)==2 && c.w(0x2000+0x2760)==8 && c.w(0x2000+0x2754)==0x1c);c.args({1,6});battleCameraSpeedEvent(c.entry,cs);uint16_t level=0;assert(c.vm.memory.readHalf(0x2000+0x277c,level) && level==1);c.args({1,-230000000+205722});battleCameraZoomEvent(c.entry,cs);assert(c.f(0x2000+0x2778)==200);
  c.w(0x40030,bits(25));c.w(0x2000+0x281c,bits(123));c.args({0,-2,-1});battleCameraHomingEvent(c.entry,cs);assert(c.w(0x2000+0x2764)==0 && c.w(0x2000+0x276c)==1 && c.f(0x2000+0x2810)==25 && c.f(0x2000+0x281c)==123); // Homing ignores priority; -1 preserves second vector.
+ // Explicit-parts homing resolves all arguments, honors priority and retains
+ // the supplied part IDs rather than replacing them with body IDs.
+ Fixture parts;auto ps=parts.camera();parts.w(0x2000+0x275c,2);parts.args({1,-2,1,1,2});
+ assert(battleCameraHomingPartsEvent(parts.entry,ps)==2 && parts.w(0x2000+0x2764)==0 && parts.w(0x2000+0x2810)==0);
+ struct Resolves{EventDispatchServices original;unsigned calls=0;};Resolves resolves{ps.values};auto gated=ps;gated.values.user=&resolves;
+ gated.values.resolve=[](void* self,EventEntry& e,int32_t token){auto& r=*static_cast<Resolves*>(self);++r.calls;return r.original.resolve(r.original.user,e,token);};
+ assert(battleCameraHomingPartsEvent(parts.entry,gated)==2 && resolves.calls==5 && parts.w(0x2000+0x2810)==0);
+ parts.w(0x40030,bits(12));parts.w(0x40034,bits(13));parts.w(0x40038,bits(14));parts.w(0x2000+0x2768,77);parts.w(0x2000+0x2770,88);parts.w(0x2000+0x281c,bits(99));parts.args({2,-2,1,-1,2});
+ assert(battleCameraHomingPartsEvent(parts.entry,ps)==2 && parts.w(0x2000+0x276c)==1 && parts.f(0x2000+0x2810)==12 && parts.f(0x2000+0x2814)==13 && parts.f(0x2000+0x2818)==14);
+ assert(parts.w(0x2000+0x2768)==77 && parts.w(0x2000+0x2770)==88 && parts.f(0x2000+0x281c)==99);
+ // A distinct second part carries an absolute hit position, independent of
+ // the owner's home vector and the target's bodypart ID.
+ parts.w(0x42014,0x44500);parts.w(0x44504,0x44820);parts.w(0x44820,2);parts.w(0x44500+0x1ac,0x10000000);parts.w(0x44500+0x18,bits(40));parts.w(0x44500+0x1c,bits(50));parts.w(0x44500+0x20,bits(60));parts.w(0x44500+0x4ec,0x42000);parts.w(0x42114,bits(1));parts.args({2,-2,1,1,2});
+ assert(battleCameraHomingPartsEvent(parts.entry,ps)==2 && parts.w(0x2000+0x2768)==1 && parts.w(0x2000+0x2770)==2);
+ assert(parts.f(0x2000+0x281c)==40 && parts.f(0x2000+0x2820)==50 && parts.f(0x2000+0x2824)==60);
  Fixture h;h.b(0x44110,100);h.draws={99};assert(packedBattleHitPrecheck(0x40000,0x42000,0x44000,0x44100,0,h.hit())==1 && h.cursor==1);h.cursor=0;h.draws={90};h.b(0x422e1,1);assert(packedBattleHitPrecheck(0x40000,0x42000,0x44000,0x44100,0,h.hit())==3 && h.cursor==1);h.cursor=0;h.draws={89,99};assert(packedBattleHitPrecheck(0x40000,0x42000,0x44000,0x44100,0,h.hit())==1 && h.cursor==2);
  h.b(0x422e1,0);h.b(0x44110,99);h.statuses.insert({0x40000,3});h.w(0x2000+0x182bc,1);h.draws={23};h.cursor=0;assert(packedBattleHitPrecheck(0x40000,0x42000,0x44000,0x44100,0,h.hit())==1);h.draws={24};h.cursor=0;assert(packedBattleHitPrecheck(0x40000,0x42000,0x44000,0x44100,0,h.hit())==2);
  h.w(0x44174,4);h.w(0x441ac,0x4000);h.cursor=0;assert(packedBattleHitPrecheck(0x40000,0x42000,0x44000,0x44100,0,h.hit())==2 && h.w(0x4027c)==8 && h.cursor==0);
