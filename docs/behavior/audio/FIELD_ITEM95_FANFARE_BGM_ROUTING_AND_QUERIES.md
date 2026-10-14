@@ -117,3 +117,7 @@ retainedgroup0secondaryvolume/resume,actualglobal80consumers andhardwareaudio.
 No code/sharedindex/progress,useremulatorprofile/saves orsourceassetcopyedited;
 no originalruntime or nativeaudibleparityclaim. Earlier “bgmPlaying” labels
 must be read through the corrected vacant-query contractabove.
+
+## 2026-10-14 follow-up: original container policy resolved
+
+[Fresh source backend recovery](FIELD_KEY_ITEM_FANFARE_CONTAINER_LOOP_AND_RETIREMENT.md) closes the prior DSP loop ambiguity. COMMON+0c ffffffff selects one-shot playback despite DSP loopflag1. Source producer/stream/BGM owners publish genuine vacancy; no guessed elapsed timer substitutes for them. Converter now uses COMMON restart markers and validates frame/sample extents. Native streaming/routing and hardware cadence remain unbound.

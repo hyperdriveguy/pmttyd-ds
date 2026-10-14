@@ -830,3 +830,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Ending slot/display and public sound owners](battle/ENDING_NEXT_SLOT_DISPLAY_AND_PUBLIC_SOUND_REGISTRY.md).
 
 - [Horizontal battle camera shake request](battle/CAMERA_HORIZONTAL_SHAKE_REQUEST.md)
+
+- [Original key-item fanfare container loop and stream retirement](audio/FIELD_KEY_ITEM_FANFARE_CONTAINER_LOOP_AND_RETIREMENT.md).

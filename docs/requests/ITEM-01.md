@@ -151,3 +151,16 @@ teardown at60FPS; they do not run an actual acquisition or grant95/write5405.
 Native owner dispatch/control/audio, original stream retirement, source camera4
 queues/shadows, deferred icon metadata and map40 material remain open. Parent
 requests remain open; do not substitute a guessed fanfare timer or missing service.
+
+### 2026-10-14 — Fanfare loop and retirement resolved
+
+[Original container-loop/retirement contract](../behavior/audio/FIELD_KEY_ITEM_FANFARE_CONTAINER_LOOP_AND_RETIREMENT.md)
+resolves the prior DSP-header ambiguity: the key-item fanfare plays once from
+COMMON restartffffffff. Producer end publishes stop, stream main clears flags0,
+then BGM main publishes group1 vacancy. All146 original stream headers were
+surveyed (111 loops/35 one-shots); converter now follows these container markers,
+validates frame offsets/extents and removes stale loop sidecars. Original fanfare
+PCM was checked at stereo32000Hz/83888 frames with no loop sidecar.
+No synthetic duration timer is needed. Native original audio routing, retained
+field-music attenuation/resume and actual stream retirement still need binding;
+parent acquisition/service requests remain open.

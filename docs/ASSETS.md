@@ -1987,3 +1987,26 @@ are fully pinned by tools/verify_battle_camera_shake.py. Inspection ELF remains
 in ignored artifacts. No game asset payload, texture scaling, geometry or
 lighting conversion changed. Original source content retains Nintendo/
 Intelligent Systems licensing restrictions; no ISO or extracted asset committed.
+
+## Original STM container loop correction (2026-10-14)
+
+The GameCube PCM converter now uses original STM COMMON+0c restart policy:
+ffffffff exports a one-shot with no `.wav.loop`; other admitted offsets must be
+DSP-frame aligned and export restartByte/8*14 through the actual DSP sample count.
+It validates COMMON encoded extent against ceil(sampleCount/14)*8 and the
+source codec/container restart/end relationships before conversion. Original
+sample rate/channels, DSP coefficients/history and final-frame sample extent are
+preserved. Existing decoder fingerprints invalidate converted-library caches.
+No resampling, generated audio or source edit is introduced. Read-only review of
+all146 original streams established111 container loops/35 one-shots despite all
+DSP loopflags1. See [original backend evidence](behavior/audio/FIELD_KEY_ITEM_FANFARE_CONTAINER_LOOP_AND_RETIREMENT.md).
+
+Original `sound/stream/ff_get2_32k.stm` SHA256
+`847b529744401aa5590b821ff7502a65b1ac59045306dc8792d6d44b4e05f7dc`
+was locally decoded to ignored `artifacts/item95-audio/ff_get2_32k.wav`: stereo
+32000Hz/83888 frames, no loop sidecar. Conversion metadata is beside that file.
+Rights remain Nintendo/Intelligent Systems, local use only; original files and
+PCM are not committed or distributed. Complete ignored-library conversion uses
+`make audio-assets`; native package rebuild converts its selected source tracks.
+This correction does not itself add native item-get playback or measure original
+stream prefetch/IRQ/device timing; backend vacancy must come from stream ownership.

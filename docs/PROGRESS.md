@@ -348,6 +348,64 @@ contracts already in `EVENT_ASSIGNMENT_ARITHMETIC_AND_DATA_CURSOR.md` and
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-14 — Original fanfare retirement and container loop correction
+
+Source review closed the key-item fanfare ambiguity, enabling faithful native
+item-get audio lifetime work. Original SoundSSPlayChEx_main selects looping from
+STM COMMON+0c, not DSP channel loopflags. For `ff_get2_32k.stm`, ffffffff means
+one-shot; producer end sets pending stop, stream main publishes flags0 before
+close/free and BGM main then publishes group1 vacancy. Native acknowledgment
+can stop it earlier. No elapsed2.6215-second timer substitutes for those owners.
+[Source contract](behavior/audio/FIELD_KEY_ITEM_FANFARE_CONTAINER_LOOP_AND_RETIREMENT.md).
+
+`tools/audio_convert.py` now exports original container loop policy and removes
+stale sidecars for one-shots. Non-sentinel offsets must be frame aligned and
+inside the source encoded extent, then map to restartByte/8*14 through actual DSP
+sampleCount. COMMON total must match ceil(sampleCount/14)*8. DSP start/end must agree
+with admitted container restart/extent; independently reviewed malformed bounds
+are refused, with tests. All146 original both-channel DSP ends match2*total+2. Original coefficients,
+initial histories, final-frame sample extent, sample rate and channels are kept.
+This fixes35 streams that the prior converter incorrectly treated as looped.
+Existing converter fingerprints invalidate old converted-library caches; the
+native build rebuilds its selected PCM tracks. Full ignored-library rebuild is
+`make audio-assets`. No original assets enter source history.
+
+Exact validation:
+
+- Independent read-only ISO source review surveyed all146 original stream
+  headers:111 container loops,35 one-shots, every DSP loopflag1. An additional
+  local source-provenance/hash audit checked both channels, restart/DSP relationships
+  and sample/encoded extents for all146 (`artifacts/item95-stm-header-audit.json`).
+- Original `ff_get2_32k.stm` hash847b529744401aa5590b821ff7502a65b1ac59045306dc8792d6d44b4e05f7dc
+  decoded at32000Hz/stereo/83888 frames, with no loop sidecar, in ignored
+  `artifacts/item95-audio/`; metadata `conversion.json`. It is not yet packaged
+  as native item-get playback. Tests include DSPloop1/container sentinel, stale
+  sidecar removal, stereo sample order/extent, intro-loop preservation and invalid
+  container offset/extent refusal.
+- Review tree `44dc9b85101b2cb7baeca24dd7f4a5eb704782ec`, based on prior
+  BGM query review tree6c5ddfbb5f2dafd8c641edfa877080a07137a34f. All2331 tracked
+  sources matched that isolated tree (`artifacts/item95-stm-source-audit.txt`).
+  `make test`:210/210 CTests and134 Python tests passed, log
+  `artifacts/item95-stm-reviewed-test.log`. Native build evidence appended below.
+
+Next: package the original key-item fanfare and bind native streaming/group1
+vacancy, field-group attenuation/retained-cursor resume and early acknowledgment
+cleanup. Then wire the original Goomba3 quest2 event through retained item-main,
+control/motion/camera/window/effect services and once-only pouch grant;5405 follows
+wrapper completion. Source buffering/IRQ/decoder-loop histories, original-device
+cadence, physical3DS profiling and playable acquisition remain unfinished. The
+remake and parent requests remain active. Shared foreign changes are preserved.
+
+Committed implementation `aef09a4b6cb64a2b61b90e9395bffa0db8f638aa`.
+Final `make -j4 all` passed (`artifacts/item95-stm-reviewed-native.log`);
+normal artifact `artifacts/ttyd-item95-stm-reviewed.3dsx` SHA256
+`c62f81d690195c6b1ae04d20b549278ef29b7d4a4e4747bd6dc6317dc0928ba4`.
+This rebuild verifies source conversion/package compatibility; no new emulator
+or hardware audio capture was run. Independent source/admission review caught
+the mismatch checks above; final targeted7 audio tests and full suite passed.
+Documentation link check passed1112 Markdown files/zero broken links before
+index/handoff append; new relative links use the same checked destinations.
+
 ## 2026-10-14 — Original item registry, camera5 parcel icon and BGM query
 
 Committed `c1ce7485dc373c43b5078b56ba456e4fc32da47e` (original field-item
