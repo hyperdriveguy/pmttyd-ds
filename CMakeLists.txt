@@ -1649,3 +1649,9 @@ target_sources(ttyd_core PRIVATE source/display/source_icon_matrix.cpp)
 add_executable(source_icon_matrix_tests tests/source_icon_matrix_tests.cpp)
 target_link_libraries(source_icon_matrix_tests PRIVATE ttyd_core)
 add_test(NAME source_icon_matrix COMMAND source_icon_matrix_tests)
+
+# Live ordinary Mario body/rate/camera owners for original background events.
+add_executable(field_mario_body_tests tests/field_mario_body_tests.cpp)
+target_link_libraries(field_mario_body_tests PRIVATE ttyd_core)
+add_test(NAME field_mario_body COMMAND field_mario_body_tests)
+set_tests_properties(field_mario_body PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

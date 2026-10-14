@@ -49,7 +49,9 @@ int main(){
  assert(fieldMarioKeyOff(native)==2 && game.fieldMarioBattleState().keyDepth==2 && game.fieldKeysOff);
  assert(fieldMarioKeyOn(native)==1 && game.fieldKeysOff);assert(game.applyFieldItemStateRequest(ItemGetRequest::KeyOn));
  assert(!game.fieldKeysOff && !(game.fieldMarioBattleState().flags&8) && game.fieldMarioBattleState().keyDepth==0);
- assert(fieldMarioBackgroundEvent(false,native)==0); // No fake native dimensions/camera ownership.
+ assert(fieldMarioBackgroundEvent(false,native)==2); // Genuine ordinary fields and consumers now bound.
+ native.storage.write(native.storage.user,native.storage.mario(native.storage.user),0x4000000);
+ assert(fieldMarioBackgroundEvent(false,native)==0); // Small/transformed owners remain unsupported.
  // Unchanged original parent/child reaches the next actual party request.
  assert(loadFieldAreaEventAssets("romfs") && loadFieldMapFlagAssets("romfs") && loadFieldBeroInfoAssets("romfs"));
  AnimationGroupPrefetch cache;assert(cache.open("romfs/field-prefetch"));FieldAreaEvent area;assert(area.begin(2,0));FieldAreaGpState state{};

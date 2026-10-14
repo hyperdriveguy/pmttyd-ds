@@ -20,15 +20,15 @@ inline float headContactHeight(float triangleY) {
 }
 // Native velocity -.1 equals original -10: near-apex/falling tolerance
 // precedes checking root+37-engine-unit body height against contact.
-inline bool headContactReached(float rootY,float velocity,float contactY) {
+inline bool headContactReached(float rootY,float velocity,float contactY,float bodyHeight=HeadBodyHeight) {
     return std::isfinite(rootY) && std::isfinite(velocity) && std::isfinite(contactY) &&
-        velocity>=-.1f && rootY+HeadBodyHeight>=contactY;
+        velocity>=-.1f && rootY+bodyHeight>=contactY;
 }
 // Clamp root uses /1000 quantization after +.5, then subtracts one engine
 // unit (.01 native). Positive bias applies even for negative world positions.
-inline float headClampedRoot(float contactY) {
+inline float headClampedRoot(float contactY,float bodyHeight=HeadBodyHeight) {
     // Original fctiwz truncation, including negative world heights.
-    return std::trunc(std::fma(contactY-HeadBodyHeight,1000.f,.5f))/1000.f-.01f;
+    return std::trunc(std::fma(contactY-bodyHeight,1000.f,.5f))/1000.f-.01f;
 }
 // Reject inclusive ordinary angle cone[50,130] degrees; alternate narrow
 // cone[75,105]. These are source response gates, not render-facing cutaways.

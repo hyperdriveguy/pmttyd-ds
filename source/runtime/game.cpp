@@ -539,15 +539,16 @@ bool headCollision(Vec2 p,Vec2 direction,float worldY,float velocity,float& clam
 // Head cull1 excludes upward-facing triangles. Native 1e-6 rejects zero headings,
 // 1e-8 degenerate projected triangles. Bounds are low-inclusive/high-exclusive.
 FieldHeadQuery searchFieldHead(Vec2 p,Vec2 direction,float worldY,float velocity,float rayExtension,
-                              FieldSlope* slopes,bool narrowCone,const std::vector<FieldObjectTriangle>* objects) {
+                              FieldSlope* slopes,bool narrowCone,const std::vector<FieldObjectTriangle>* objects,float bodyHeight,float bodyWidth) {
     FieldHeadQuery result;
     const float length=std::hypot(direction.x,direction.z);
     if(!std::isfinite(p.x) || !std::isfinite(p.z) || std::fabs(p.x)>4096 || std::fabs(p.z)>4096 ||
        !std::isfinite(worldY) || !std::isfinite(velocity) || !std::isfinite(rayExtension) ||
-       !std::isfinite(length) || length<1e-6f)return result;
-    const float x=direction.x*HeadProbeRadius/length,z=direction.z*HeadProbeRadius/length;
+       !std::isfinite(length) || length<1e-6f || !std::isfinite(bodyHeight) || bodyHeight<=0 || !std::isfinite(bodyWidth) || bodyWidth<=.5f)return result;
+    const float radius=(bodyWidth-.5f)*.005f;
+    const float x=direction.x*radius/length,z=direction.z*radius/length;
     const Vec2 offsets[]={{0,0},{x,z},{-z,x},{z,-x},{-x,-z}};
-    const float low=worldY+HeadBodyHeight*.5f,high=low+HeadBodyHeight+rayExtension;
+    const float low=worldY+bodyHeight*.5f,high=low+bodyHeight+rayExtension;
     for(auto offset:offsets) {
         const Vec2 ray{p.x+offset.x,p.z+offset.z};float nearest=high;const float* selected=nullptr;
         GroundContact selectedContact;uint32_t selectedOwner=0;
@@ -587,9 +588,9 @@ FieldHeadQuery searchFieldHead(Vec2 p,Vec2 direction,float worldY,float velocity
         if(slopes){slopes->tiltX=projected.tiltX;slopes->tiltZ=projected.tiltZ;}
         if(!headInclinationAllowed(projected.inclination,narrowCone))continue;
         const float contact=headContactHeight(nearest);
-        result.contact=headContactReached(worldY,velocity,contact);
-        result.clearance=result.contact?0:contact-worldY-HeadBodyHeight;
-        if(result.contact){result.correction=headClampedRoot(contact);result.node=selectedContact;result.objectKey=selectedOwner;}
+        result.contact=headContactReached(worldY,velocity,contact,bodyHeight);
+        result.clearance=result.contact?0:contact-worldY-bodyHeight;
+        if(result.contact){result.correction=headClampedRoot(contact,bodyHeight);result.node=selectedContact;result.objectKey=selectedOwner;}
         // First admitted ray returns even for a near miss. Later feet cannot
         // replace it with a closer contact; rejected inclinations can continue.
         return result;
@@ -821,7 +822,7 @@ void Game::refreshFieldObjects() {
 FieldHeadQuery Game::queryOverhead(float rootY,float velocity,float extension) {
     refreshFieldObjects();
     const auto result=searchFieldHead(progress.position,moveDirection,rootY,velocity,extension,
-                                      &fieldMovement.slope,fieldHeadNarrowCone,&fieldObjectTriangles);
+                                      &fieldMovement.slope,fieldHeadNarrowCone,&fieldObjectTriangles,fieldMarioBody.height/100.f,fieldMarioBody.width);
     headContact=result.node;headObjectKey=result.objectKey;headClearance=result.clearance;
     overheadContact=result.contact || (result.clearance>=0 && result.clearance<=.05f);
     return result;
@@ -850,7 +851,7 @@ bool Game::integrateVertical(bool held,float& previousY,bool update) {
                                  fieldJump.jumping?fieldJump.velocity:.1f);
     if(head.contact) {
         float proposed=head.correction;
-        if(fieldJump.prepareCeiling(proposed,fieldMovement.speed,WalkSpeed)) {
+        if(fieldJump.prepareCeiling(proposed,fieldMovement.speed,fieldMarioBody.walkThreshold())) {
             jumpBase=proposed;fieldJump.ceilingFall();
             jumpHeight=jumpBase-groundHeight;return false;
         }
@@ -908,10 +909,13 @@ const std::vector<Rect>& collisionWalls() {return walls;}
 bool Game::near(Vec2 p, float d) const { return length(progress.position,p) < d; }
 NpcTalkPlayer Game::fieldNpcTalkPlayer() const {
     NpcTalkPlayer mario;mario.root={progress.position.x*100,(groundHeight+jumpHeight)*100,progress.position.z*100};
+    mario.width=fieldMarioBody.width;mario.height=fieldMarioBody.height;
+    mario.backgroundMode=(fieldMarioBattle.flags&0x2000000)?1:0;
     mario.motion=fieldJump.motion;mario.displayTurn=marioPresentation.display;
-    mario.keyDepth=int8_t(goombaHandIn.keyDepth()+((goombaAcquisition.active() || goombaReward.active())?1:0));
+    mario.keyDepth=int8_t(fieldMarioBattle.keyDepth);
+    if(!mario.keyDepth)mario.keyDepth=int8_t(goombaHandIn.keyDepth()+((goombaAcquisition.active() || goombaReward.active())?1:0));
     mario.cameraSnapshot=marioPresentation.offset;
-    mario.viewFlags=marioPresentation.displayFlags;mario.flags=uint32_t(fieldIdle.mainFlags);
+    mario.viewFlags=marioPresentation.displayFlags;mario.flags=uint32_t(fieldIdle.mainFlags)|fieldMarioBattle.flags;
     mario.viewYaw=fieldNpcAngles().angle(fieldCameraFrame.eye.x,fieldCameraFrame.eye.z,fieldCameraFrame.at.x,fieldCameraFrame.at.z);
     return mario;
 }
@@ -1162,7 +1166,8 @@ void Game::updateFieldNpcCollision() {
     fieldNpcHit=0;synchronizeFieldNpcs();
     if((scene!=Scene::Explore && scene!=Scene::Dialogue) || trioBattleActive || water.active() ||
        arriving || fade.active() || warpRequest>=0 || pipeRequest>=0)return;
-    NpcSidePlayer mario;mario.root={progress.position.x*100,(groundHeight+jumpHeight)*100,progress.position.z*100};
+    NpcSidePlayer mario;mario.width=fieldMarioBody.width;mario.height=fieldMarioBody.height;
+    mario.root={progress.position.x*100,(groundHeight+jumpHeight)*100,progress.position.z*100};
     // Walk/dash publish retained travel; staying/air drift do not replace it
     // with the local wall-query or display heading.
     mario.travelHeading=fieldNpcAngles().angle(0,0,fieldMovement.headingX,fieldMovement.headingZ);
@@ -1604,9 +1609,9 @@ void Game::move(const Input& i,bool launched) {
     const bool stepping=fieldStep.active();
     FieldMovement::Displacement grounded;
     if(!fieldJump.airborne && !stepping) {
-        grounded=i.physicalSnapshot?fieldMovement.groundedStick(axes.mainX,int8_t(-axes.mainY)):
-            fieldMovement.grounded(x,z);
-        fieldJump.enterGround(fieldMovement.speed==0?0:fieldMovement.speed==DashSpeed?2:1,groundHeight);
+        grounded=i.physicalSnapshot?fieldMovement.groundedStick(axes.mainX,int8_t(-axes.mainY),fieldMovementRates()):
+            fieldMovement.grounded(x,z,fieldMovementRates());
+        fieldJump.enterGround(fieldMovement.speed==0?0:fieldMovement.speed>fieldMarioBody.walkThreshold()?2:1,groundHeight);
         if(fieldMovement.speed==0)fieldVerticalVelocity=0; // Idle entry clears jump tuple.
     }
     // Ordinary probes use travel1a4 or source toMovedir(display1ac).
@@ -1619,7 +1624,7 @@ void Game::move(const Input& i,bool launched) {
     // Ascent overhead can clear air flags before marioMove. Recompute the cap
     // from the flags after that owner, rather than before the vertical pass.
     const auto combined=fieldJump.airborne?
-        fieldMovement.airborne(x,z,fieldJump.suppressDrift || fieldJump.ticks==0,fieldJump.hasAirFlags()):
+        fieldMovement.airborne(x,z,fieldJump.suppressDrift || fieldJump.ticks==0,fieldJump.hasAirFlags(),fieldMarioBody.airCap()):
         stepping?fieldMovement.retained():fieldMovement.reduceSlope(grounded);
     // Direction gain reads PRE-wrapper retained facing1a0; wrapper metadata
     // publishes the requested combined heading only afterward.
@@ -1634,9 +1639,9 @@ void Game::move(const Input& i,bool launched) {
     Vec2 candidate{p.x+travel.x,p.z+travel.z};
     const bool sourceWalls=collisionReady;
     if(sourceWalls) {
-        FieldWallActor actor;actor.viewFlags=fieldViewFlags;
+        FieldWallActor actor;actor.width=fieldMarioBody.width;actor.height=fieldMarioBody.height;actor.flags=fieldMarioBattle.flags|uint32_t(fieldIdle.mainFlags);actor.viewFlags=fieldViewFlags;
         actor.motion=fieldJump.airborne?fieldJump.motion:stepping?12:
-            fieldMovement.speed==0?0:fieldMovement.speed==DashSpeed?2:1;
+            fieldMovement.speed==0?0:fieldMovement.speed>fieldMarioBody.walkThreshold()?2:1;
         actor.counter=fieldJump.ticks;
         FieldWallServices services;services.user=this;services.ray=[](void* context,FieldWallVector from,FieldWallVector direction,float distance) {
             return fieldWallRay(from,direction,distance,&static_cast<Game*>(context)->fieldObjectTriangles);
@@ -2605,11 +2610,11 @@ void Game::tick(const Input& rawInput) {
     if(launched) {
         if(i.physicalSnapshot) {
             const auto& axes=inputProducer.channels[0].analog;
-            fieldMovement.groundedStick(axes.mainX,int8_t(-axes.mainY));
-        } else fieldMovement.grounded(i.x,i.z);
+            fieldMovement.groundedStick(axes.mainX,int8_t(-axes.mainY),fieldMovementRates());
+        } else fieldMovement.grounded(i.x,i.z,fieldMovementRates());
         // Same-call ground arbitration established this motion before the
         // surviving jump request; +30 must snapshot that final ground owner.
-        fieldJump.enterGround(fieldMovement.speed==0?0:fieldMovement.speed==DashSpeed?2:1,groundHeight);
+        fieldJump.enterGround(fieldMovement.speed==0?0:fieldMovement.speed>fieldMarioBody.walkThreshold()?2:1,groundHeight);
         previousGroundContact=groundContact;
         jumpBase=groundHeight;fieldJump.begin(groundHeight,fieldMovement.speed);saveRequested=false;sound=Sound::Jump;
     }

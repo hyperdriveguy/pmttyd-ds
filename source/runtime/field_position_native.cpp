@@ -20,6 +20,11 @@ FieldPositionWorld Game::fieldPositionWorld() {
  w.read=[](void* p,uintptr_t address)->uint32_t {
   auto& g=*static_cast<Game*>(p);unsigned n=0;
   if(address==Mario)return g.fieldMarioBattle.flags;
+  if(address==Mario+4)return g.fieldCameraDisplayFlags;
+  if(address==Mario+0x184)return bits(g.fieldMarioBody.walkBase);
+  if(address==Mario+0x188)return bits(g.fieldMarioBody.dashBase);
+  if(address==Mario+0x1b8)return bits(g.fieldMarioBody.width);
+  if(address==Mario+0x1bc)return bits(g.fieldMarioBody.height);
   if(triple(address,Mario+0x8c,n))return bits(n==0?g.progress.position.x*100:n==1?(g.groundHeight+g.jumpHeight)*100:g.progress.position.z*100);
   if(triple(address,Mario+0xec,n))return bits(lane(g.marioCamera.retained,n));
   if(triple(address,Mario+0xf8,n))return bits(lane(g.marioCameraCollision,n));
@@ -36,6 +41,11 @@ FieldPositionWorld Game::fieldPositionWorld() {
  w.write=[](void* p,uintptr_t address,uint32_t word) {
   auto& g=*static_cast<Game*>(p);unsigned n=0;const auto value=scalar(word);
   if(address==Mario){g.fieldMarioBattle.flags=word;g.fieldKeysOff=(word&8) || g.goombaAcquisition.active() || g.goombaReward.active();return;}
+  if(address==Mario+4){g.fieldCameraDisplayFlags=word;return;}
+  if(address==Mario+0x184){g.fieldMarioBody.walkBase=value;return;}
+  if(address==Mario+0x188){g.fieldMarioBody.dashBase=value;return;}
+  if(address==Mario+0x1b8){g.fieldMarioBody.width=value;return;}
+  if(address==Mario+0x1bc){g.fieldMarioBody.height=value;return;}
   if(triple(address,Mario+0x8c,n)) {
    if(n==0)g.progress.position.x=value*.01f;
    else if(n==1)g.jumpHeight=value*.01f-g.groundHeight; // Current root only; retain actual floor/ground metadata.
@@ -56,13 +66,17 @@ FieldPositionWorld Game::fieldPositionWorld() {
  };
  w.roadReset=[](void* p){auto& g=*static_cast<Game*>(p);g.cameraRoadWork={};g.fieldCameraCandidateActive=false;g.fieldCameraCandidateShiftRate=0;};
  w.shiftReset=[](void* p){static_cast<Game*>(p)->fieldCameraShift.reset();};
- w.half=[](void* p,uintptr_t address)->uint16_t{assert(address==Mario+0x2e);return uint16_t(static_cast<Game*>(p)->fieldJump.motion);};return w;
+ w.half=[](void* p,uintptr_t address)->uint16_t{if(address==Camera)return uint16_t(static_cast<Game*>(p)->fieldCameraFlags);assert(address==Mario+0x2e);return uint16_t(static_cast<Game*>(p)->fieldJump.motion);};return w;
 }
 FieldMarioPreparationWorld Game::fieldMarioPreparationWorld() {
  FieldMarioPreparationWorld w;w.storage=fieldPositionWorld();
- w.admit=[](void*,uint32_t fn){return fn==0x800e7474;}; // Dimensions/form/camera follow owners remain outside this adapter.
- w.byte=[](void* p,uintptr_t a)->uint8_t{assert(a==Mario+0x39);return static_cast<Game*>(p)->fieldMarioBattle.keyDepth;};
+ w.admit=[](void* p,uint32_t fn){auto& g=*static_cast<Game*>(p);
+  if(fn==0x800e7474)return true;
+  return (fn==0x800e73ec || fn==0x800e7410 || fn==0x800e7314) && g.fieldMarioBody.ordinary(g.fieldMarioBattle.flags|uint32_t(g.fieldIdle.mainFlags));
+ };
+ w.byte=[](void* p,uintptr_t a)->uint8_t{auto& g=*static_cast<Game*>(p);if(a==Mario+0x3c)return g.fieldMarioBody.form;assert(a==Mario+0x39);return g.fieldMarioBattle.keyDepth;};
  w.storeByte=[](void* p,uintptr_t a,uint8_t v){assert(a==Mario+0x39);auto& g=*static_cast<Game*>(p);g.fieldMarioBattle.keyDepth=v;};
+ w.storeHalf=[](void* p,uintptr_t a,uint16_t v){assert(a==Camera);auto& g=*static_cast<Game*>(p);g.fieldCameraFlags=(g.fieldCameraFlags&0xffff0000u)|v;};
  return w;
 }
 bool Game::applyFieldBeroStart() {

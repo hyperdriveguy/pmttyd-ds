@@ -66,6 +66,7 @@
 #include "field_bero_position.hpp"
 #include "field_position_event.hpp"
 #include "field_mario_preparation.hpp"
+#include "field_mario_body.hpp"
 #include "field_bero_initial_event.hpp"
 namespace ttyd {
 struct NpcTalkPlayer;
@@ -353,6 +354,8 @@ public:
     const BattlePadWork& generalPad(size_t i=0) const {assert(i<4);return generalBattlePads[i];}
     const BattlePadWork& privatePad() const {return actionCommandPad;}
     const FieldBattleWork& fieldBattleState() const {return fieldBattleWork;}
+    const FieldMarioBody& fieldMarioBodyState() const{return fieldMarioBody;}
+    FieldMovementRates fieldMovementRates() const{return fieldMarioBody.groundRates(fieldMarioBattle.flags|uint32_t(fieldIdle.mainFlags));}
     const FieldMarioBattleState& fieldMarioBattleState() const {return fieldMarioBattle;}
     void setFieldMarioCameraId(uint32_t id) {fieldMarioBattle.cameraId=id;} // Source raw word134 store; viewport ownership is separate.
     const FieldPartyRegistry& fieldPartyState() const {return fieldParties;}
@@ -443,6 +446,7 @@ private:
     FieldBattleWork fieldBattleWork;
     FieldMarioBattleState fieldMarioBattle;
     FieldPartyRegistry fieldParties;
+    FieldMarioBody fieldMarioBody;
     // Native adapter sequence2; original sequencer current IDs have distinct
     // lifecycle and are not inferred from this field or Scene enumeration.
     int32_t fieldSequence=2;
@@ -539,7 +543,8 @@ bool headCollision(Vec2 p,Vec2 direction,float worldY,float velocity,float& clam
 bool headCollision(Vec2 p,Vec2 direction,float worldY,float velocity,float& clampedRoot,float rayExtension);
 FieldHeadQuery searchFieldHead(Vec2 p,Vec2 direction,float rootY,float velocity,float extension,
                               FieldSlope* slopes=nullptr,bool narrowCone=false,
-                              const std::vector<FieldObjectTriangle>* objects=nullptr);
+                              const std::vector<FieldObjectTriangle>* objects=nullptr,
+                              float bodyHeight=HeadBodyHeight,float bodyWidth=20);
 bool loadGroundReturns(const char* path);
 bool groundReturn(const GroundContact&,ReturnPoint& point);
 bool groundAt(Vec2 p, float reference, float& height,GroundContact* contact=nullptr,float* slope=nullptr,
