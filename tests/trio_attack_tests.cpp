@@ -305,10 +305,10 @@ int main(){
             assert(charged.trioAttack.readWord(0x84000f28,value) && value!=0);
             const auto end=value;
             assert(charged.trioAttack.readWord(0x8041e80c,value) && value==0x85600020);
-            assert(end==0x85600140); // Real retained spotlight allocation precedes EndingWork.
+            assert(end>=0x85600040 && end<0x85664000); // Source spotlight and slot allocations precede EndingWork.
             assert(charged.trioAttack.readWord(end-28,value) && value==0x2c0);
             assert(charged.trioAttack.readWord(end-24,value) && (value>>16)==1);
-            assert(charged.trioAttack.readWord(0x85600404,value) && value==0x63c00);
+            assert(charged.trioAttack.readWord(end+0x2c0+4,value) && value==0x85664000-(end+0x2c0));
             for(unsigned n=0x2ac;n<0x2c0;n+=4)assert(charged.trioAttack.readWord(end+n,value) && value==0); // All704 bytes were cleared.
 
             assert(charged.trioAttack.readWord(end,value) && value==0);
@@ -367,8 +367,21 @@ int main(){
             assert(charged.trioAttack.pendingFunction()==0x800f8e28u);
             const auto engineCursor=charged.trioAttack.requests().size();
             charged.tick(Input{}); // Source audience updates reach the next slot provider.
-            assert(charged.trioAttack.pendingFunction()==0x80203aa0u && charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001f);
+            assert(charged.trioAttack.pendingFunction()==0x801024f0u && charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001f);
             assert(charged.trioAttack.readWord(0x84000ef4,value) && !(value&0x80000000));
+            constexpr uint32_t slotWords[3][8]{{0,1,2,1,2,0,3,4},{3,1,0,1,4,2,0,2},{0,1,2,3,4}};
+            for(unsigned reel=0;reel<3;++reel) {
+                const auto address=0x84016184+0x5c*reel;uint32_t array=0;
+                assert(charged.trioAttack.readWord(address,value) && value==reel);
+                assert(charged.trioAttack.readWord(address+0x14,array) && array>=0x85600000);
+                const auto count=reel==2?5:8;
+                assert(charged.trioAttack.readWord(address+0x18,value) && value==count);
+                assert(charged.trioAttack.readWord(address+4,value) && !(value&1));
+                assert(charged.trioAttack.readWord(address+0x58,value) && value==0xff000000);
+                for(unsigned j=0;j<unsigned(count);++j)assert(charged.trioAttack.readWord(array+4*j,value) && value==slotWords[reel][j]);
+            }
+
+
             const auto& engineRequests=charged.trioAttack.requests();
             constexpr uint32_t enginePrefix[]{0x800f7b28,0x8011a43c,0x8011f1ec,0x800fa5b0,0x80149798,0x801aa168,0x80139150,0x8013800c,0x802168a4,0x801a836c};
             assert(engineRequests.size()>=engineCursor+10);
@@ -416,9 +429,9 @@ int main(){
             assert(charged.trioAttack.readWord(0x85600020,value) && value==0x85600120);
             assert(charged.trioAttack.readWord(0x85600024,value) && value==0xe0);
             assert(charged.trioAttack.readWord(0x85600028,value) && value==0x00010000);
-            assert(charged.trioAttack.readWord(0x85600120,value) && value==0);
-            assert(charged.trioAttack.readWord(0x85600124,value) && value==0x63ee0);
-            assert(charged.trioAttack.readWord(0x85600128,value) && value==0);
+            assert(charged.trioAttack.readWord(end-32,value) && value==0);
+            assert(charged.trioAttack.readWord(end-28,value) && value==0x85664000-(end-32));
+            assert(charged.trioAttack.readWord(end-24,value) && value==0);
             assert(charged.trioAttack.endingFadeAlpha()==255 && charged.professorStory.actors[3].npcBattleFlags==0x100);
             assert(charged.progress.originalPouch && charged.progress.originalPouch->half(0x96)==10);
             assert(charged.trioAttack.readWord(0x8410110c,value) && charged.progress.originalPouch->half(0x70)==int16_t(value>>16));

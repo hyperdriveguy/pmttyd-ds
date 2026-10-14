@@ -839,3 +839,7 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native original attack-command selection](battle/NATIVE_ATTACK_COMMAND_SELECTION.md)
 
 - [Original fanfare stereo gain/group fade](audio/FIELD_KEY_ITEM_FANFARE_STEREO_GAIN_AND_GROUP_FADE.md) and [native key-item fanfare provider](audio/NATIVE_KEY_ITEM_FANFARE_PROVIDER.md).
+
+- [Native slot initialization, idle pass and table owners](battle/NATIVE_BREAK_SLOT_INITIALIZATION_IDLE_AND_ARRAY_OWNERS.md): real constructor allocations and next display boundary.
+- [Surviving-unit HP gauge and slot heap lifetime](battle/SURVIVING_UNIT_HP_GAUGE_MAIN_AND_SLOT_HEAP_LIFETIME.md).
+- [Surviving-unit status effects, icon gates and part frontier](battle/SURVIVING_UNIT_STATUS_EFFECT_ICON_AND_PART_FRONTIER.md).

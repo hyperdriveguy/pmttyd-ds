@@ -12453,3 +12453,53 @@ a development field-restoration hold, not a completed field return. Next:
 real SlotInit/mapheap array owners and idle SlotMain, surviving-unit display
 (HpGaugeMain first), queued draw consumers and original BattleEnd/field
 restoration. Complete playable original-fidelity prologue remains the goal.
+
+### 2026-10-14 — Original slot arrays, constructor and idle engine pass
+
+Bound original BreakSlot_Init after AudienceInit with real controller/reel
+owners, original DOL8/8/5-word tables and three battle-mapheap allocations.
+Each allocator request reads8041e80c freshly; no placeholder tables, false
+pointers or audience/ending resets. Source32-byte alignment makes the three
+requests consume192 bytes including headers/padding. Main preserves actual
+controller/reel state and implements the ordinary idle flag/byte writes and
+two-stopped transition before active-provider admission. Portable Slot_End
+is ready for ordered BattleEnd frees without nulling retained pointer words;
+it is not called as idle cleanup. [Native scope](behavior/battle/NATIVE_BREAK_SLOT_INITIALIZATION_IDLE_AND_ARRAY_OWNERS.md).
+
+Bridge regression reaches btlDispMain801024f0 after audience/slot services,
+without writing forced engine end, result, control or story progression.
+Delivered complete source gauge initialization/Main/damage timer producers
+and next status-effect/icon/part gates; indexed contracts and updated EVT
+inbox. Next display work must retain damage timers and real icon flags;
+no-status alone does not prove an empty icon queue. No new asset conversion;
+existing private original data tables were used, ISO stays read-only.
+
+Validation: verified make test219/219 CTest and137/137 Python pass
+(artifacts/break-slot-tests-verified.log); scoped2/2 pass
+(break-slot-scoped.log). First two full runs exposed prior spotlight-only
+fixed EndingWork/free-header addresses. Tests now follow actual allocation
+owners/free-tail sizes and retain allocated slot tables; no source allocations
+were removed to preserve stale addresses. Failure logs retained. make all
+passes (break-slot-all.log). Coherent prior audience snapshot plus slot-only
+overlay builds native DEBUG_SHORT_BOOT (break-slot-debug.log); baseline objects
+were reused and the Trio object was removed/rebuilt. Immutable3DSX/ELF and
+SHA256 manifest:artifacts/break-slot-native-snapshot.
+
+Isolated artifacts/azahar-break-slot story11 fixture script exits0 through
+actual trio attacks, original10-Star-Point reward/victory and black fade/field
+restoration hold. Reviewed reward30 and final capture; no observed exception.
+Emulator samples30FPS/3.92ms reward and60FPS/4.86ms black are observations,
+not physical New2DS XL parity. User emulator profile/saves untouched.
+Doc checker1120 Markdown files/0 broken links (break-slot-doc-links-final.log)
+and scoped whitespace check pass. Shared checkout contained concurrent work;
+owned commit uses exact slot hunks rather than committing those edits.
+
+A later shared native rebuild hit a concurrent attack-registration callback's
+int versus ARM int32_t function-pointer return type; added an explicit int32_t
+return annotation in the working tree for that feature's owner. This separate
+edit is not part of the slot commit. Final shared make -o assets-ready all
+retry passes (break-slot-all-current-fixed.log).
+Remaining: bind live gauge initialization/direct-damage timers/Main, original
+status/parts/display queue consumers and ordered teardown/field restoration.
+Active slot/controller states still retain source providers. Full playable
+original-fidelity prologue remains incomplete and the goal stays active.

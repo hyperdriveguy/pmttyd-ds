@@ -29,6 +29,7 @@
 #include "battle_audience_resources.hpp"
 #include "battle_audience_target.hpp"
 #include "battle_audience_main.hpp"
+#include "battle_break_slot.hpp"
 #include "battle_audience_window.hpp"
 #include "battle_audience_sound_main.hpp"
 #include "battle_stage_floor.hpp"
@@ -220,6 +221,12 @@ struct TrioAttackRuntime {
         s.texture=[](void* p,const char* path)->std::optional<uint32_t>{auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x801a86ac);return audienceResources.handle(path);};
         s.noise=[](void* p){auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x801a0b88);return noiseAlwaysBattleAudienceSound(r.audienceSoundServices());};
         s.target=[](void* p){auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x801a1c60);if(updatePackedBattleAudienceZeroTarget(nativeBattleActorServices(r.vm)))return true;r.pending=0x801a1708;return false;};
+        return s;
+    }
+    BattleBreakSlotServices slotServices() {
+        BattleBreakSlotServices s;s.actors=nativeBattleActorServices(vm);s.user=this;
+        s.allocate=[](void* p,uint32_t bytes)->std::optional<uint32_t>{auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x800f8934,{int32_t(bytes)});const auto address=eventMapAllocate(r.word(0x8041e80c),bytes,r.vm.memoryBinding.services());if(!address)r.pending=0x800f8934;return address;};
+        s.free=[](void* p,uint32_t address){auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x800f8908,{int32_t(address)});if(address)eventMapFree(r.word(0x8041e80c),address,r.vm.memoryBinding.services());return true;};
         return s;
     }
     bool updateAudience() {
@@ -544,6 +551,7 @@ struct TrioAttackRuntime {
         if(!initializePackedBattleSpotlight(spotlightServices()))return false;
         spotlightInitialized=true;publishSpotlight();
         endingRequest(0x801a83f8);if(!initializePackedBattleAudience(audienceInitServices()))return false;
+        endingRequest(0x8020507c);if(!initializePackedBattleBreakSlot(slotServices()))return false;
         return launch(menu);
 
     }
@@ -1160,6 +1168,7 @@ struct TrioAttackRuntime {
                 return packedBattleActionHelpMain(help);
             }
             if(fn==0x801a836c)return r.updateAudience();
+            if(fn==0x80203aa0){if(packedBattleBreakSlotIdleMain(nativeBattleActorServices(r.vm)))return true;r.pending=fn;return false;}
             r.pending=fn;return false; // Real stage/map/render/audio providers remain required.
         };
         pending=0;
