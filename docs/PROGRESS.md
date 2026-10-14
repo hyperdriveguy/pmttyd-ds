@@ -1,3 +1,37 @@
+## 2026-10-14 — Original ordinary tutorial impact and Mario damage art
+
+Committed `343d692`: tutorial CheckDamage now uses the shared original wrapper,
+portable BattleCheckDamage controller, original default-power callback/tables,
+HP/FP calculators and direct application for the admitted ordinary nonlethal
+Crump-to-Mario impact. Host execution of the installed original Crump attack
+with empty physical input takes HP7 to6, preserves source raw flags100 and
+produces hit code10117, packed before/after/accounting/action records, original
+sound/effect/audience requests and Mario's actual source hit root/M_D_1 pose.
+The next unsupported request is camera8012b3d0; attack/reaction roots stay live.
+Guard feedback and HP1 lethal admission retain CheckDamage without mutation.
+
+Committed `bf1df7b`: dedicated original Mario tutorial pack now includes M_D_1.
+Its host decoder produces visible geometry. Existing conversion uses original
+animation keys,102 triangles per pose and24 texture slots in512x256 RGBA8;
+private extracted/compiled payload remains ignored and licensing/conversion
+choices are recorded in ASSETS. No generated placeholder or rewritten story.
+
+Validation: initial shared make test passed214 C++/134 Python tests. Final
+shared `TMPDIR=artifacts/tutorial-admission-tmp CMAKE_BUILD_PARALLEL_LEVEL=4 make
+test` passed216/216 C++ and134/134 Python tests after the pose/accounting checks.
+Both ordinary-impact native make all and rebuilt damage-pose make all passed.
+The final focused tutorial/reaction run also passed2/2. No Azahar/Dolphin run
+this step; source-script host execution and asset decoding do not prove native
+particle, sound-macro, crowd or damage-pose playback. The Game still lacks full
+original tutorial command/action/turn ownership; no manual battle-start or
+story-completion shortcut was added.
+
+Next: source camera8012b3d0 and original reaction/attack return; connect actual
+presentation/audio/audience consumers; bind guard/lethal and general status/
+counter providers; finish original tutorial player commands and turn flow.
+Keep physical controls throughout, preserve original menu/HUD, and make audience
+taps optional on the lower screen. Full tutorial/battle goal remains active.
+
 ## 2026-10-14 — CheckDamage calling-event ownership
 
 Implemented `924b300`: the shared original CheckDamage event wrapper now owns
