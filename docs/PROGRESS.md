@@ -1,3 +1,33 @@
+## 2026-10-14 — Ordinary tutorial attack/reaction return
+
+Committed bb063b1: shared original horizontal camera-shake request wrapper
+8012b3d0/f0 and helper8012b4c0/60 now bind tutorial and trio. Signed priority,
+integer-to-float coercion, operand captures, late global-battle load, packed
+shake fields and conditional padRumbleOn(0) ordering follow the read-only US
+bodies. Native adapters retain rumble requests. The dedicated tutorial fixture
+now finishes the original ordinary Crump attack and timed Mario reaction:
+HP7 remains6, Mario returns to M_S_1, both roots finish with no pending callback,
+and installed Mario/Crump wait handles are restored. No turn/story advancement
+or combat outcome is inferred. Guard/lethal boundaries remain retained.
+
+Validation: shared make test passed217/217 C++ and136/136 Python tests, including
+source-body SHA256 checks and operand/global-pointer mutation tests. The first
+native make all stopped during NM symbol-list generation after linking; direct
+NM then passed. Rebuilding the camera object and running
+TMPDIR=artifacts/tutorial-admission-tmp make all -o assets-ready passed and rebuilt
+ttyd-2ds.3dsx (asset preparation had already completed). No Azahar/Dolphin run;
+these checks do not prove visible camera shake, hardware rumble, or complete
+native tutorial play. The temporary source snapshot preserved concurrent
+incomplete CMake work; the final full tests ran against the shared tree.
+No new game payload was extracted/committed. Updated the impact contract to
+reflect the now-completed reaction/attack return.
+
+Next: source camera-main/shake consumption; tutorial original player command,
+action and turn ownership; guard/lethal/status/counter services; actual effect,
+audio and audience consumers. Preserve original menus/HUD and physical input;
+optional audience taps belong on the lower screen. Full tutorial/battle goal
+remains active, including complete native scene/audience presentation.
+
 ## 2026-10-14 — Original ordinary tutorial impact and Mario damage art
 
 Committed `343d692`: tutorial CheckDamage now uses the shared original wrapper,

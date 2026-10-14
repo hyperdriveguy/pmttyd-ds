@@ -22,8 +22,10 @@ raw flags are100; the calculator adds10000. Hit and damage-star requests carry
 amount1; GuardBad and MarioBigDamage requests are retained separately from
 source action count/point writes. Original SFX_MARIO_DAMAGE1 uses the kind's
 original key pointer and hit position. Original Mario hit dispatch installs a
-live root and reaches M_D_1. The next unsupported request is8012b3d0, with
-attack and damage roots still live. No victory or field return is inferred.
+live root and reaches M_D_1. The shared horizontal shake request8012b3d0
+is now bound; the original attack and timed reaction return to M_S_1, finish
+both roots and restore Mario/Crump wait handles without another impact.
+No victory or field return is inferred.
 
 The scope gate deliberately retains guard feedback/superguard, lethal impact,
 active status/badge, nondefault power/FP, nonzero weapon status parameters,
@@ -46,6 +48,7 @@ US contracts, not Dolphin observation or measured timing. See
 [CheckDamage wrapper](CHECK_DAMAGE_EVENT_WRAPPER.md),
 [damage orchestration](BATTLE_DAMAGE_ORCHESTRATION.md),
 [calculation](BATTLE_DAMAGE_CALCULATION.md), and
-[application](BATTLE_DAMAGE_APPLICATION.md). Next: source camera8012b3d0,
-reaction/attack return, guard and lethal providers, original command/action
+[application](BATTLE_DAMAGE_APPLICATION.md) and
+[horizontal shake request](CAMERA_HORIZONTAL_SHAKE_REQUEST.md). Next: camera
+main/shake presentation, guard and lethal providers, original command/action
 ownership and complete turn flow.
