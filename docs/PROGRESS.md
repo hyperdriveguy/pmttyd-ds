@@ -1,3 +1,50 @@
+## 2026-10-14 — Tutorial scene continues onto the lower screen
+
+Commit645042f0 extends the native original harbor tutorial scene into a centered
+320x240 lower view beneath the unchanged400x240 upper view. Original stage,
+empty seating/floor and actors share the same camera/simulation snapshot and
+pixel scale; lower width crops40px from each side, vertical view continues240px.
+The lower pass reuses exact top actor vertex ranges without rewriting their
+arena or reevaluating animation. Top HUD/messages/curtain stay on the top screen.
+Both targets have actual depth buffers; top world matrix is restored afterward.
+This is native layout adaptation, not recovered original camera framing. See
+[two-screen contract](behavior/display/NATIVE_BATTLE_TWO_SCREEN_SCENE.md).
+
+Validation: final make test in artifacts/battle-dual-view-lvo3xlzi, base
+94707d140518015c36f5ebc94299c8926cba4b05 plus only this increment, passes272/272 C++ and159/159
+Python checks (artifacts/battle-dual-view-test-final.log). Required native
+make all -o assets-ready BUILD=build-dual-view-review
+TARGET=ttyd-dual-view-review passes with existing private converted packs
+(artifacts/battle-dual-view-native-final.log), normal3DSX452464980 bytes.
+Point/matrix checks assert downward seam, centered crop, equal physical pixel
+scale and preserved homogeneous/depth coordinates. Final build includes cached
+actor ranges, avoiding shared top overlay/curtain vertex overwrite risk.
+
+Two isolated ordinary checkpoint attempts stayed in the field and did not
+exercise the battle view. The legacy checkpoint was already room1; a mistaken
+save-offset adjustment changed only HP in a separate generated test fixture,
+not room or implementation. No normal story-flow claim follows from those runs.
+A separate ignored graphics harness temporarily enters actual original tutorial
+initialization with beginFresh(0,7,10,4), without modifying committed main code.
+Its source entry was restored afterward. Harness native build passes
+(artifacts/battle-dual-view-harness-build.log), and tools/emulator_smoke.py uses
+an isolated Xvfb/profile under the snapshot's artifacts/azahar-dual-view-graphics.
+The run exits0 without native exception; inspected tutorial-two-screen-79.png
+shows original stage/actors/HUD above and original empty seating/floor continuing
+below with the centered seam/crop. This proves graphics in that harness, not
+normal tutorial admission, original raster equality or audience behavior.
+User emulator profile/saves were untouched. All screenshots/binaries/profiles
+and original assets remain ignored; no new art or dialogue was generated.
+
+Next: instantiate original audience actors/animations/throw telegraphs in the
+visible seating, then target interruption and optional taps with physical X
+alternative. Bind live class-menu actor/camera/SDK/RNG/palette/footer services
+and once-per-simulation-tick ring publication; normal Game tutorial admission,
+command/turn scheduling and successful Jump voice remain incomplete. Current
+native stage camera/HUD reflow still needs fidelity refinement, and the former
+lower submenu adapter for independent trio contexts still requires replacement
+when their full original menus are bound. The active goal remains incomplete.
+
 ## 2026-10-14 — Original class footers and actual no-item audience query
 
 Commited156822 implements complete local party/item cue, cue Sub, pinch order,
