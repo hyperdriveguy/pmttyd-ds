@@ -162,3 +162,25 @@ distinct flag branches and that 5 precedes the side-3 conclusion. It does not
 establish the flag10/20/40 writer domains or the tutorial outcome, which remain
 OPEN. Validation: scoped DOL region disassembled read-only; artifacts in `/tmp`;
 no source change.
+
+## 2026-10-13 — Native session verification: InterruptStop and Escape route
+
+Independently disassembled two ISO regions behind the
+[Escape delivery](../behavior/battle/BATTLE_INTERRUPT_STOP_FLAGS_AND_ESCAPE_RESULT_ROUTE.md):
+
+- `btlevtcmd_InterruptStop` `0x80105368` (0x78 hex): `mr 31,4` retains the raw
+  gate; `lwz 5,0x18(3)` then `lwz 4,0(5)` reads operand0 from `WORD(event+0x18)`;
+  `bl 0x80031260` (evtGetValue); `lwz 4,7280(13)` = `*(r13+0x1c70)` = `0x8041eb90`
+  is the post-resolution battle owner. Branch decode (`bt 2`=`beq`, `bf 0`=LT
+  false) yields exactly: gate0→no write; gate!=0 & operand==1→`ori 0,0,0x20` at
+  `B+0xef4`; gate!=0 & operand==0→`ori 0,0,0x10` at `B+0xef4`; else no write;
+  `li 3,2; blr`. No `evtSetValue`/result/sequence write.
+- The Escape script tail at `0x8034f1d4` is `0002005b 80105368 00000000` — the
+  lone `InterruptStop` USER_FUNC(91) with literal operand 0 — followed by
+  `00000002` END_EVENT at8034f1e0 and `00000001` END_SCRIPT at8034f1e4. The
+  mask2 region near8034eba8 shows `0002001f fe363c86 00000002` (LW6 mask2).
+
+Not re-run: the 736-stream "exactly one site" census and the mask-set arm's
+`WaitEventEnd(LW15)`@8034f038/END_EVENT@8034f044 ordering; those remain the
+manifest's pinned evidence. Verified bytes only; no original execution, no source
+change.
