@@ -806,3 +806,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native original item95 windows](display/NATIVE_ITEM95_WINDOWS.md) and [source frame/display/font order](message/ITEM95_GET_WINDOW_DISPLAY_ORDER_AND_FONT_COLORS.md).
 
 - [Native original item-get effect](display/NATIVE_ITEM_GET_EFFECT6.md), [GX state/projected texture](effect/FIELD_ITEM_GET_TYPE6_GX_STATE_AND_PROJECTED_TEXTURE.md), and [source camera5 producer/projection](camera/FIELD_ITEM_GET_CAMERA5_PRODUCER_AND_PROJECTION.md).
+
+- [Native reaction attributes, facing, flags and data children](battle/NATIVE_REACTION_ATTRIBUTES_FACING_AND_FLAGS.md).

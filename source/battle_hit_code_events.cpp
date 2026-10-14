@@ -9,6 +9,30 @@ int32_t actor(EventEntry& e,uint32_t args,const BattleUnitEventServices& s){
     return s.translate(s.user,e,selector);
 }
 }
+int32_t battleUnitFlagEvent(EventEntry& e,bool on,const BattleUnitEventServices& s){
+    const auto args=e.arguments;const auto id=actor(e,args,s);
+    const auto mask=s.memory.word(s.memory.user,args+4);
+    const auto battle=s.memory.word(s.memory.user,0x8041eb90);assert(s.unit && s.memory.storeWord);
+    const auto unit=s.unit(s.user,battle,id),flags=s.memory.word(s.memory.user,unit+0x1c);
+    s.memory.storeWord(s.memory.user,unit+0x1c,on?flags|mask:flags&~mask);return 2;
+}
+int32_t battleResetUnitFacingEvent(EventEntry& e,const BattleUnitEventServices& s,const BattleActorServices& bytes){
+    assert(s.memory.word && s.memory.storeByte && bytes.byte && s.unit);
+    const auto args=e.arguments,battle=s.memory.word(s.memory.user,0x8041eb90);
+    const auto id=actor(e,args,s);const auto unit=s.unit(s.user,battle,id);
+    const auto raw=bytes.byte(bytes.user,unit+0xc);
+    const auto belong=raw<128?int32_t(raw):int32_t(raw)-256;
+    const auto direction=bytes.byte(bytes.user,battle+uint32_t(belong*8)+0xa);
+    s.memory.storeByte(s.memory.user,unit+0x189,direction);return 2;
+}
+int32_t battleCheckUnitAttributeEvent(EventEntry& e,const BattleUnitEventServices& s){
+    const auto args=e.arguments;const auto id=actor(e,args,s);
+    const auto mask=s.memory.word(s.memory.user,args+4);
+    const auto output=signedWord(s.memory.word(s.memory.user,args+8));
+    const auto battle=s.memory.word(s.memory.user,0x8041eb90);assert(s.unit && s.values.store);
+    const auto unit=s.unit(s.user,battle,id);
+    s.values.store(s.values.user,e,output,(s.memory.word(s.memory.user,unit+0x104)&mask)?1:0);return 2;
+}
 int32_t battleCheckHitCodeEvent(EventEntry& e,const BattleUnitEventServices& s){
     const auto args=e.arguments;const auto id=actor(e,args,s);
     const auto mask=s.memory.word(s.memory.user,args+4);

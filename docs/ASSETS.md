@@ -1869,3 +1869,17 @@ bake or distributable asset pack introduced. Image43 stays exported but count1
 has no particle vertices requiring native residency. Original copyrighted
 resources remain local/ignored with existing source and decoded-pixel hashes;
 no redistribution rights created. [Native scope](behavior/display/NATIVE_ITEM_GET_EFFECT6.md).
+
+## 2026-10-13 — Original reaction control callbacks
+
+No original payload, dialogue, texture or pose changes. Existing DOL/REL scripts
+run through the source VM with shared attribute/facing/flag services and the
+existing complete data-child/presence providers. Added complete read-only pins
+for CheckAttribute8010e430/8c, ResetFaceDirection8010e4bc/70,
+OnUnitFlag80105b40/60 and OffUnitFlag80105ae0/60, alongside the three previous
+hit-metadata bodies. Inspection-only artifacts/tutorial-*.elf/.dis remain
+private. Actual code100|18 reaction now completes its original no-damage path;
+normal-element code300|23 retains the real GetDamage8010f458 boundary.
+[Native scope](behavior/battle/NATIVE_REACTION_ATTRIBUTES_FACING_AND_FLAGS.md).
+Nintendo/Intelligent Systems original resources; no redistribution rights. ISO
+remains read-only, compiled packs ignored; no original-runtime/hardware claim.

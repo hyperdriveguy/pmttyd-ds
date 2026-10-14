@@ -267,7 +267,7 @@ struct TrioAttackRuntime {
             return 2;
         }
         case 0x8010e5a8:byte(unit(e)+0x189,value(e,1));return 2;
-        case 0x8010e4bc:{const auto u=unit(e);byte(u+0x189,byte(Battle+0xa+8*byte(u+0xc)));return 2;}
+        case 0x8010e4bc:return battleResetUnitFacingEvent(e,nativeBattleUnitEventServices(vm),nativeBattleActorServices(vm));
         case 0x8010b85c:case 0x8010b7c4:{const auto u=unit(e);const int32_t amount=value(e,2),sign=int8_t(byte(u+0x189));const auto x=value(e,1);output(e,1,int32_t(uint32_t(x)+(fn==0x8010b85c?uint32_t(amount)*uint32_t(sign):0u-uint32_t(amount)*uint32_t(sign))));return 2;}
         case 0x8010e684: {
             const auto u=unit(e);const int32_t actorPart=value(e,1),target=value(e,2),targetPart=value(e,3),mode=raw(e,4);
@@ -344,9 +344,9 @@ struct TrioAttackRuntime {
         case 0x8010f374:return battleGetHitCodeEvent(e,nativeBattleUnitEventServices(vm));
         case 0x8010f458:output(e,1,int8_t(byte(unit(e)+0x270)));return 2;
         case 0x8010ed8c:output(e,1,int32_t(word(unit(e)+8)));return 2;
-        case 0x80105b40:{const auto u=unit(e);word(u+0x1c,word(u+0x1c)|uint32_t(value(e,1)));return 2;}
-        case 0x80105ae0:{const auto u=unit(e);word(u+0x1c,word(u+0x1c)&~uint32_t(value(e,1)));return 2;}
-        case 0x8010e430:output(e,2,(word(unit(e)+0x104)&uint32_t(value(e,1)))?1:0);return 2;
+        case 0x80105b40:return battleUnitFlagEvent(e,true,nativeBattleUnitEventServices(vm));
+        case 0x80105ae0:return battleUnitFlagEvent(e,false,nativeBattleUnitEventServices(vm));
+        case 0x8010e430:return battleCheckUnitAttributeEvent(e,nativeBattleUnitEventServices(vm));
         case 0x8011389c: {
             return eventLive(uint32_t(value(e,0)))?0:2;
         }

@@ -21,9 +21,14 @@ int main(){
  assert(!guarded.dispatchPhase(2,0x04000003));
  guarded.tick(guarded.now+17,0);assert(!guarded.damageActive && !guarded.failed);
  assert(word(guarded,0x841002b4)==system); // No invented completed-handle cleanup.
+ HarborTutorial noDamage;admit(noDamage);const auto noHp=noDamage.actors[0].hp;
+ const auto noReaction=noDamage.dispatchHitEvent(2,0x100|18);assert(noReaction && noDamage.damageActive);
+ for(unsigned n=0;n<60 && noDamage.damageActive;++n)noDamage.tick(noDamage.now+17,0);
+ assert(!noDamage.failed && !noDamage.damageActive && !noDamage.pendingService && !noDamage.introComplete);
+ assert(noDamage.actors[0].hp==noHp && noDamage.result==0 && word(noDamage,0x841022b4)==noReaction);
  HarborTutorial hit;admit(hit);const auto hp=hit.actors[0].hp;
- const auto reaction=hit.dispatchHitEvent(2,0x100|18);assert(reaction && hit.damageActive);
- assert(word(hit,0x84102278)==(0x100|18) && word(hit,0x841022b4)==reaction);
+ const auto reaction=hit.dispatchHitEvent(2,0x300|23);assert(reaction && hit.damageActive);
+ assert(word(hit,0x84102278)==(0x300|23) && word(hit,0x841022b4)==reaction);
  assert(word(hit,0x8410229c)==0 && word(hit,0x841022a8)==0);
  for(unsigned n=0;n<60 && !hit.pendingService;++n)hit.tick(hit.now+17,0);
  assert(!hit.failed && hit.damageActive && hit.pendingService && !hit.introComplete);
