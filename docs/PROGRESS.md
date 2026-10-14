@@ -2465,3 +2465,56 @@ its native adapter while the source Init holds. Native field import/checkpoint
 reset does not certify original startup or full field lifecycle. Original
 numeric/history, event timing, raster parity and physical performance remain
 unverified. The playable original-fidelity prologue goal stays active.
+
+
+## 2026-10-14 — Portable display/camera/animation code documentation
+
+Commit `bea3ba69` adds targeted inline explanations to40 portable display and
+animation C++ files plus [display service](code/display-services.md) and
+[animation data](code/animation-data.md) guides. The pass documents original
+queue class bases/GX tuples, sort branches/tie behavior, borrowed callback/data
+lifetimes and resumable state stages; thirteen-camera boot/update/draw and
+letterbox scalar ownership; shadow request/reset and soft-effect deletion;
+authored camera-road layout/units/offsets/selection/transition masks; converted
+PMCHAR/PMANIM/PMPOSE and UVAN/MSAN formats; literal joint scale gate, cubic/delta
+scales, cumulative-versus-fractional caches and loop-seam output; source paper
+presentation and PointGet layout; atlas clipping, map visibility, pass-local draw
+cache and cache-upload range limits. Unknown original tokens/fields stay raw;
+native limits/math adapters are distinguished from source constants and measured
+behavior. Existing camera-road service comment now correctly says six rooms.
+
+Final frozen baseline `0ac453e0c7ac53e39d7fabc3e81ecf1c44d7a5e6` plus this
+comments-only pass passes **264/264 C++ and159/159 Python** through
+`CMAKE_BUILD_PARALLEL_LEVEL=4 make test`, and normal native
+`make all -o assets-ready -j4` passes. Logs are
+`artifacts/display-code-documentation-validation/host.log` and `native.log`.
+`manifest.json` records baseline, source hashes, executable-token preservation
+for all40 touched C++ files, live/frozen equality and ELF/3DSX hashes. Relative
+code-guide links and scoped whitespace checks pass. Validation reuses the prior
+accepted private RomFS and regenerated matching icon cache from
+`artifacts/game-code-documentation-validation/source/`; other local-asset folders
+remain shared read dependencies, and isolated native asset regeneration was
+skipped. No new extraction/conversion, ISO write, emulator/profile/save change or
+hardware validation occurred. Original numeric/rendering parity remains outside
+what comment-only changes or portable tests establish.
+
+A comments-only index patch excluded unrelated worktree changes from commit and
+frozen validation. The main renderer/platform header and new class-menu backend
+were concurrently under implementation and are not included in this pass. No
+blanket summaries or numerical rewrites were substituted for semantic review;
+source branches and executable tokens remain unchanged. These40 files extend
+the first two batches to96 distinct documented C++ files; file count is progress
+tracking, not proof of overall documentation completeness.
+
+Next: audit `source/display/render.cpp` with `include/runtime/platform.hpp`,
+covering arena sizes, packed layer/group/cull bits, scene resource transactions,
+GPU state/cache synchronization, native framing and original/harness distinctions.
+Then cover every `render_*.cpp` adapter (frontend/opening, message/windows/items,
+battle resources/HUD/classes), including their matched shaders. New class-menu
+modules need separate review once their authoritative implementation settles.
+Continue field/NPC/partner modules, remaining battle helpers, message/inventory/
+story and relevant port tool/build code; re-audit concurrent runtime additions at
+completion. Preserve original assets/dialogue, meaningful local numeric notes,
+exact validation and incremental commits. The full **port-code documentation goal
+remains active**; portable helper coverage does not finish renderer or whole-port
+documentation, and no complete-remake claim is made.
