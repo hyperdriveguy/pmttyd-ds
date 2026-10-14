@@ -4707,3 +4707,5 @@ finishing draw boundary; original registration alone was not used to guess it.
 Native HP active number/bar rendering remains separate unfinished work even
 though these actual ending slots all legitimately skip it. Private trace/source
 restoration details and full validation are recorded in PROGRESS.md.
+
+Packed NPC constructor update: source npcInit/npcEntry/NoAssert/release lookup mechanics now implement exact allocation, fresh-read, duplicate/fallback and initial field semantics. [Contract](../behavior/field/PACKED_NPC_REGISTRY_ALLOCATION_CONSTRUCTOR_AND_LOOKUP.md). Release npcNameToPtr missing-name result is the scan end pointer; native registered-name admission remains mandatory. Original field pose leaves/data gaps recovered [here](../behavior/field/ORIGINAL_FIELD_NPC_POSE_LEAF_SERVICES.md). Game pose/resource factory, tagged-map setup, reinitialization/deletion/query-ready lifecycle and shared session RNG remain open.

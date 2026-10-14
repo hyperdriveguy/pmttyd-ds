@@ -1044,3 +1044,5 @@ reentry, counter cancellation/coin branches and independently pending NPC child.
 Provider absence no longer consumes the original first request. Native world/
 message/menu/allocator/pouch/case binding and shared field GP/EVT lifecycle
 remain open; fixture completion does not establish actual interaction.
+
+NPC constructor source update: [packed registry mechanics](../behavior/field/PACKED_NPC_REGISTRY_ALLOCATION_CONSTRUCTOR_AND_LOOKUP.md) now preserve ordinary/alternate pools, duplicate allocation and exact active-name lookups. Original release npcNameToPtr does not execute a missing-name assertion and returns the exhausted pointer; NoAssert returns0. Native complete name/capacity admission is still required. [Pose leaf services](../behavior/field/ORIGINAL_FIELD_NPC_POSE_LEAF_SERVICES.md) recover actual model dimensions/flags/Vivian state; six original gor02 banks, hoshi and complete field sidecars/readiness remain required. Follow up source npc reinit/delete/flag4→query2 lifecycle and actual tagged-map admission before connecting this to Game.

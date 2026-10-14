@@ -145,3 +145,12 @@ resource failure/fallback, duplicate/full-capacity domains, later queryflag2
 writer, complete parser admission and original runtime traces remain explicit
 dependencies. This contract does not authorize a fabricated actor-registration
 or pose-readiness success path.
+
+The original packed allocator/constructor/name lookup is now implemented; see
+[mechanics and native admission](PACKED_NPC_REGISTRY_ALLOCATION_CONSTRUCTOR_AND_LOOKUP.md).
+Fresh release-body inspection corrects the conventional asserting-name label:
+npcNameToPtr returns the exhausted scan pointer when missing, not0 and not an
+executed assertion. NoAssert alone returns0. Complete registered-name admission
+is mandatory for native unchecked calls. Actual
+[field pose leaf/resource owners](ORIGINAL_FIELD_NPC_POSE_LEAF_SERVICES.md) remain
+separate; this does not complete Game construction or tagged-map registration.

@@ -1151,3 +1151,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Enemy HP draw and native Tattle checker](battle/ENEMY_HP_DRAW_AND_NATIVE_TATTLE_CHECK.md) — live64-slot gates, independent switch/battle bits, camera4 projection and retained active-child holds.
 
 - [Native unused sampler residency](display/NATIVE_UNUSED_SAMPLER_RESIDENCY.md) — original resident font fallback for unused PICA units; command, item, effect and message paths.
+
+- [Packed NPC registry allocation, constructor and lookup](field/PACKED_NPC_REGISTRY_ALLOCATION_CONSTRUCTOR_AND_LOOKUP.md): original36/16 pools, ordered constructor services and exact release lookup semantics.
+- [Original field NPC pose leaf services](field/ORIGINAL_FIELD_NPC_POSE_LEAF_SERVICES.md): pose flags/model dimensions/Vivian mapping, tribe lookup and real field resource requirements.
