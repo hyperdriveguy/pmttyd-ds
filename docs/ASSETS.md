@@ -922,3 +922,19 @@ No texture, geometry, audio or dialogue substitution is introduced. Original
 Nintendo/Intelligent Systems rights apply; no redistribution rights are granted.
 ISO, original extracted resources and compiled packs/binaries are not committed.
 [Native execution scope](behavior/field/NATIVE_RETAINED_BERO_INITIAL_POSITION.md).
+
+### 2026-10-14 — Original indexed shape renderer
+
+The shape continuation consumes the unchanged original MODEL companions recorded
+above, including separate normal/color/UV index streams, shape bases and fan
+counts. No new image/payload is imported or committed. The explicit test fixture
+alters only an in-memory local model copy to exercise two UV selectors and zero
+counts; it is not original evidence and is never shipped. The private validation
+pack refreshes baseline Bero records with its own extraction directory. An initial
+wrong-working-directory setup assertion was followed by a converter invocation
+that re-extracted identical original gor.rel into the existing ignored cache,
+then stopped at missing reference metadata; no root pack/source/saves changed.
+The retry owns a separate cache and copies reference inputs read-only.
+The copied pack also contained door-data, whose paired private REL extraction
+was absent; the baseline door converter supplied it in the isolated tree. All
+pack hashes stayed unchanged. Both private extractors retain original ISO bytes.

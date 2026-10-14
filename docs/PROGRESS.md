@@ -4838,3 +4838,70 @@ Next share actual field EVT/case/area lifetime, execute preceding original door
 children and feed the genuine returned bank through original house05/case init.
 Continue generic doors/material1800/key49 and original NPC/object/additional-area
 bindings. Inbox EVT-01 stays OPEN. Full game/goal remain incomplete.
+
+### 2026-10-14 — Retained original shape rendering and fan streams
+
+Added the retained renderProc continuation after actual group traversal. It
+resolves current-camera view/concat, position/normal/current-matrix operations,
+source effective-pass/alpha admission and cull table before default helpers.
+Default calls retain source world-origin/light/texture/raw-color order, separate
+camera4/fresh-current fog queries and TEV operands. Shape bases, independent
+normal/color streams, reversed multi-UV selectors, low16 indices, original fan
+counts including zero-count Begin and per-attribute setup now have explicit
+provider requests. Completed calls do not replay across a downstream hold.
+Native binds actual current camera, Citro3D position/cull/current state and a
+retained normal-matrix owner. Light/channel, texture/TEV and fan GPU consumers
+remain pending; no shape submission is fabricated. Global resource rebinding,
+kind1/2 overrides, independent flag10 work owners and selector1 remain outside
+this admitted domain. The finite numeric adapter explicitly substitutes1/det
+for PPC fres while preserving cofactor/FMA/refinement order; singular inverse
+leaves output untouched, and unavailable normal output never becomes identity.
+See [native shape scope](behavior/display/NATIVE_SHAPE_RENDER_CONTINUATION.md).
+
+Documentation work recovered actual32-record zeroed battle light banks, reset
+and preset producer history, map load order and primary bti_01 fog-off data;
+see [light lifecycle](behavior/display/BATTLE_MAP_LIGHT_BANK_AND_PRESET_LIFECYCLE.md).
+EVT-01 stays OPEN. No Dolphin GPL algorithm/table was copied.
+
+Validation uses frozen artifacts/shape-render-source fromb2ce440d plus only
+owned hunks, with a copied private RomFS and private Bero/door extractions from
+the read-only ISO. The first new multi-UV fixture failed because its second
+shape base retained the original end sentinel; corrected that test input.
+An initial full rerun then found the copied door pack lacked its paired private
+REL cache. Baseline door extraction regenerated it; all RomFS files and the
+normal binary stayed byte-identical. Final
+`CMAKE_BUILD_PARALLEL_LEVEL=4 make -C artifacts/shape-render-source test`
+exited0:300/300 C++ and174/174 Python tests. Log
+artifacts/shape-render-test-release.log. Tests independently decode all22 real
+Goombella calls and exercise held/fresh operands, normal/position independence,
+pass rejection, singular no-store, reversed two-coordinate selectors, high
+index halves and zero-count Begin. The altered in-memory fixture is not original
+execution evidence. Documentation links:1291 Markdown files,0 broken links.
+
+`TMPDIR="$PWD/artifacts/native-stage-map-tmp" make -C artifacts/shape-render-source all -o assets-ready BUILD=build-shape-render-normal TARGET=ttyd-shape-render-normal -j4`
+exited0 after restoring all temporary harness edits; log
+artifacts/shape-render-build-restored.log. Normal3DSX SHA256
+6535c5a42cbe8ee927365d9719b94d36bd9ce89c67cbfd60ec3f0f46243d8bf8,
+identical before/after harness restoration. Exact2025 implementation/input-file,
+private-pack and binary hashes:artifacts/shape-render-validation-manifest.json;
+source/owned-hunk audit found zero mismatches. Concurrent later shared commits
+are preserved and are not claimed tested together as a merged tree.
+
+Isolated normal45s fresh-save smoke exited0; inspected capture shows original
+storybook/US text at60AppFPS,100% emulator speed. Isolated150s ending harness
+exited0. Actual camera4 queue21/part callback80101774 now holds at material-light
+800208c0 instead of renderProc entry. Private shape-material trace records
+original draw offset21124(0x5284),light flags0,pose flags1,live texture9 delta0,
+normalKnown1,world origin(-134.503067,4.33869886,4.40000057). Actual matrix/GX
+prefix progressed without acknowledging missing lighting or geometry. Harness
+uses deterministic physical/menu input and explicit fixture Bero bit1 clear;
+no combat writes/fake renderer success. All temporary hooks were restored and
+excluded from commit. Ending capture remains black fade/development restoration
+notice, not field-return/raster evidence. Emulator profiles/saves are isolated;
+actual New2DSXL performance and numeric/image parity remain unverified.
+
+Next bind genuine light initialization/map bank ownership and channel state for
+this observed flags0 call, then actual texture/TEV and fan GPU submission. Keep
+part history/queue completion behind those real operations, continue ending/
+field return and remaining prologue story/indoor/event fidelity. Full goal is
+active and incomplete.

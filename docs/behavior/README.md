@@ -1061,3 +1061,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Audience idle breathing and decisions](battle/AUDIENCE_IDLE_BREATHING_AND_DECISIONS.md): whole Wait, distinct FPR0/FPR29 provenance, source reaction RNG and preceding-row helper.
 
 - [Native retained Bero initial-position event](field/NATIVE_RETAINED_BERO_INITIAL_POSITION.md) — unchanged original root, mutable globals, recovery/motion25 stores and held entry ownership.
+
+- [Native shape render continuation](display/NATIVE_SHAPE_RENDER_CONTINUATION.md) — retained defaults, actual indexed fans and bounded native camera/math binding.
+- [Battle map light banks, presets and fog lifecycle](display/BATTLE_MAP_LIGHT_BANK_AND_PRESET_LIFECYCLE.md) — real32-record bank initialization/reset, selected battle-map fog/ambient, preset camera updates and live pose lighting admission.

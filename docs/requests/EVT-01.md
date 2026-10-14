@@ -4309,3 +4309,32 @@ original parent/GP mutation scheduling is not certified. Next feed the real
 returned bank into shared field case/house05 initialization after preceding
 actual door children; bind recovery/reload consumers and additional original
 areas. SDK numeric equivalence, original traces and parent EVT-01 remain OPEN.
+
+### 2026-10-14 — Retained shape render/default/fan implementation
+
+[Native shape continuation](../behavior/display/NATIVE_SHAPE_RENDER_CONTINUATION.md)
+now implements the original current-camera matrix prefix, pass/cull predicates,
+ordinary default helper order and original indexed fan streams. Native camera,
+position/cull and finite normal-matrix ownership are bound; real light/channel,
+texture/TEV and geometry backends remain pending. Original light/fog lifecycle
+research identifies32 inactive battle-bank records and primary bti_01 fog off;
+these require actual initialization/load ownership before a material helper can
+acknowledge them. Exact fres/FPSCR remains a numeric dependency; the declared
+native adapter substitutes binary32 reciprocal, and singular inverse does not
+invent output. Kind1/2 overrides, flag10 work owners, selector1 and global resource
+rebinding remain explicit boundaries. EVT-01 stays OPEN; no field return or image
+parity claim. Next bind actual map/light initialization and material channel
+state, then original texture/TEV setup and fan submission.
+
+### 2026-10-14 — Battle light-bank and preset producer recovery
+
+[Source light/fog lifecycle](../behavior/display/BATTLE_MAP_LIGHT_BANK_AND_PRESET_LIFECYCLE.md)
+now pins lightInit/lightMain/lightReInit, allocator zeroing, both32-record banks,
+rank0 bti_01/stg_00_1 zero authored-light tables, primary disabled fog and
+707070ff preset fallback ambient. Source hashes and private metadata identify
+the recovered bytes. Live poseEC and explicit field inheritance determine
+preset admission; empty map banks do not imply absent preset lighting. Native
+shape traversal now reaches mapSetMaterialLight800208c0; the actual ordered
+light-object/channel/PICA backend remains unbound. SDK normalization/numerics,
+mutable light/preset history and original frame validation remain open. No
+external emulator code or reciprocal table was copied. Parent EVT-01 stays OPEN.

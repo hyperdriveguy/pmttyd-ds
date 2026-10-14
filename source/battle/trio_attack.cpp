@@ -1,6 +1,7 @@
 #include "trio_attack.hpp"
 #include "battle_pose_inner.hpp"
 #include "animation_draw_traversal.hpp"
+#include "animation_shape_render.hpp"
 #include "battle_event_callbacks.hpp"
 #include "event_memory_bootstrap.hpp"
 #include "event_memory_release.hpp"
@@ -172,6 +173,7 @@ struct TrioAttackRuntime {
     BattlePartDisplayCursor partDisplayCursor;
     BattlePoseInnerCursor poseInnerCursor;
     AnimationDrawTraversalCursor poseTraversalCursor;
+    AnimationShapeCursor poseShapeCursor;
     uint32_t poseDrawMode=1; // Replay battle_init -> animPoseBattleInit W10c=1; retained until autoRelease(1).
     std::optional<uint32_t> poseDrawPass;
     std::optional<BattlePoseInnerContext> poseDrawContext;
@@ -1909,8 +1911,21 @@ bool TrioAttack::resumePartDisplay(uint32_t camera,uint32_t part,const BattlePar
             if(s && s->traverse)return s->traverse(s->user,context);
             AnimationDrawTraversalServices traversal;if(s && s->traversal)traversal=*s->traversal;
             if(!traversal.matrix)traversal.matrix=[](void*,BattleAudienceMatrixRequest& r){BattleAudienceAuxServices math;bindAudienceAuxMathAdapter(math);return math.matrix(nullptr,r);};
-            if(!traversal.render)traversal.render=[](void*,const AnimationShapeRequest& r,uint32_t& pending){if(r.shape==-1)return true;pending=0x8003c884;return false;};
-            return resumeAnimationDrawTraversal(b.runtime->poses,context,traversal,b.runtime->poseTraversalCursor);
+            struct ShapeBridge {Bridge* parent;const BattlePoseInnerContext* context;const AnimationDrawTraversalServices* source; } shapeBridge{&b,&context,s?s->traversal:nullptr};
+            // Traversal callbacks keep their original user; only the render
+            // bridge owns the persistent source shape continuation.
+            AnimationDrawTraversalServices wrapped=traversal;wrapped.user=&shapeBridge;
+            wrapped.matrix=[](void* u,BattleAudienceMatrixRequest& r){const auto& b=*static_cast<ShapeBridge*>(u);if(b.source && b.source->matrix)return b.source->matrix(b.source->user,r);BattleAudienceAuxServices math;bindAudienceAuxMathAdapter(math);return math.matrix(nullptr,r);};
+            wrapped.publish=[](void* u,const AnimationGroupPublication& r){const auto* s=static_cast<ShapeBridge*>(u)->source;return s && s->publish && s->publish(s->user,r);};
+            wrapped.callback=[](void* u,uint32_t fn,uint32_t data,uint32_t group,BattleActMatrix& m){const auto* s=static_cast<ShapeBridge*>(u)->source;return s && s->callback && s->callback(s->user,fn,data,group,m);};
+            wrapped.render=[](void* u,const AnimationShapeRequest& request,uint32_t& pending){
+                auto& b=*static_cast<ShapeBridge*>(u);if(b.source && b.source->render)return b.source->render(b.source->user,request,pending);
+                auto& runtime=*b.parent->runtime;const auto* inner=b.parent->source->inner;
+                AnimationShapeServices shape;if(inner && inner->shape)shape=*inner->shape;
+                const bool complete=resumeAnimationShape(runtime.poses,b.context->handle,runtime.poseDrawPass,request,shape,runtime.poseShapeCursor);
+                if(!complete)pending=runtime.poseShapeCursor.pending;return complete;
+            };
+            return resumeAnimationDrawTraversal(b.runtime->poses,context,wrapped,b.runtime->poseTraversalCursor);
         };
         const bool complete=resumeBattlePoseInner(b.runtime->poses,b.runtime->poseDrawMode,b.runtime->poseDrawPass,request,inner,b.runtime->poseInnerCursor);
         if(!complete && b.runtime->poseInnerCursor.active)pending=b.runtime->poseInnerCursor.pending;

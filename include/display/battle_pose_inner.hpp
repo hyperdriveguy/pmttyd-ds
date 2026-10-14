@@ -21,6 +21,7 @@ struct BattlePoseInnerServices {
     bool (*invalidateVertices)(void*)=nullptr;
     bool (*traverse)(void*,const BattlePoseInnerContext&)=nullptr;
     const struct AnimationDrawTraversalServices* traversal=nullptr;
+    const struct AnimationShapeServices* shape=nullptr;
 };
 struct BattlePoseMapCursor {unsigned step=0;};
 struct BattlePoseInnerCursor {

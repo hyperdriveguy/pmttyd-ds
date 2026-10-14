@@ -124,6 +124,7 @@ private:
     int count=0, transformLoc=0, marioPose=0;
     shaderProgram_s program{};
     NativeCameraDraw finishingCameraDraw;
+    std::optional<BattleActMatrix> finishingShapeNormal; // Actual source normal-matrix owner; consumed by future lit-shape backend.
     NativeDisplayState finishingDisplayState;
     NativeShadowProgram finishingShadowProgram;
     bool finishingShadowRequest(const ShadowGXRequest&);

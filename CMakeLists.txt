@@ -1565,3 +1565,10 @@ add_executable(battle_audience_idle_tests tests/battle_audience_idle_tests.cpp)
 target_link_libraries(battle_audience_idle_tests PRIVATE ttyd_core)
 add_test(NAME battle_audience_idle COMMAND battle_audience_idle_tests)
 set_tests_properties(battle_audience_idle PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Original shape-render continuation and indexed fan streams.
+target_sources(ttyd_core PRIVATE source/display/animation_shape_render.cpp)
+add_executable(animation_shape_render_tests tests/animation_shape_render_tests.cpp)
+target_link_libraries(animation_shape_render_tests PRIVATE ttyd_core)
+add_test(NAME animation_shape_render COMMAND animation_shape_render_tests)
+set_tests_properties(animation_shape_render PROPERTIES WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})

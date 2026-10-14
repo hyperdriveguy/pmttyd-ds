@@ -1,5 +1,6 @@
 #include "platform.hpp"
 #include "battle_pose_inner.hpp"
+#include "animation_shape_render.hpp"
 namespace ttyd {
 bool Renderer::finishingCameraPacket(const NativeCameraPacket& p){
     const auto& r=p.rect;
@@ -113,6 +114,23 @@ void Renderer::resumeFinishingCamera(const Game& game){
                 return R_SUCCEEDED(GSPGPU_FlushDataCache(output.data(),uint32_t(12*count)));
             };
             inner.invalidateVertices=[](void*){GPUCMD_AddWrite(GPUREG_VTX_FUNC,1);return true;};
+            AnimationShapeServices shape;shape.user=&bridge;
+            shape.currentCamera=[](void* user){const auto* cameras=static_cast<InnerBridge*>(user)->game->trioAttack.cameras();return cameras?cameras->current():nullptr;};
+            shape.cameraByIndex=[](void* user,uint32_t index){const auto* cameras=static_cast<InnerBridge*>(user)->game->trioAttack.cameras();return cameras?cameras->camera(index):nullptr;};
+            shape.concat=[](void*,BattleAudienceMatrixRequest& r){BattleAudienceAuxServices math;bindAudienceAuxMathAdapter(math);return math.matrix(nullptr,r);};
+            shape.math=[](void*,AnimationShapeMath& r){return animationShapeNativeMath(r);};
+            shape.call=[](void* user,const AnimationShapeCall& r){
+                auto& renderer=*static_cast<InnerBridge*>(user)->renderer;
+                if(r.function==0x802ba34c){if(!r.matrix)return false;renderer.finishingShapeNormal=*r.matrix;return true;}
+                if(r.function==0x802ba2fc){if(!r.matrix)return false;ShadowGXRequest q;q.kind=ShadowGX::PositionMatrix;
+                    for(unsigned row=0;row<3;++row)for(unsigned col=0;col<4;++col)q.matrix[row][col]=(*r.matrix)[4*row+col];
+                    return renderer.finishingShadowRequest(q);}
+                if(r.function==0x802ba39c || r.function==0x802b5c8c){ShadowGXRequest q;q.kind=static_cast<ShadowGX>(r.function);q.values[0]=int32_t(r.arguments[0]);return renderer.finishingShadowRequest(q);}
+                // Material light/texture/TEV and indexed geometry must bind
+                // their actual state owners before this callback can finish.
+                return false;
+            };
+            inner.shape=&shape;
             BattlePartDisplayServices part;part.inner=&inner;
             return b.game->trioAttack.resumePartDisplay(camera,borrowed,part);
         }
