@@ -1916,3 +1916,57 @@ portable tests; camDraw remains the finishing wait. Ordered sequence-manager
 exit/BattleEnd/field return, full field-camera history, source Gekko numerics and
 physical performance remain open. Full playable original-fidelity prologue goal
 stays active.
+
+## 2026-10-14 — Crump opening facing, original animations and airborne Mario
+
+Commits `945cbe10` and `948c0672` replace fixed Crump/X-Naut Z_1 rasters with
+original idle/talk/walk/run geometry and texture clips. Source tribe profiles
+provide Goombella/Crump/X-Naut run thresholds20/50/50. Independent simulation
+pose clocks and camera-relative NPC presentation now drive all four actors.
+Original movement retains event yaw: Goombella retreats facing Crump, while
+beforebattle's explicit270/90 turns remain in order. The old adapter incorrectly
+turned her toward travel. Mario's scripted movement selects walk/run, keeps
+ordinary midair physics and jump/fall poses under key-off, preserves explicit
+source poses, and retains M_I_N during the authored displayflag2 surprised hop.
+Original dialogue/control tokens, speakers, branches and story order are unchanged.
+[Behavior scope](behavior/story/NATIVE_HARBOR_ACTOR_MOTION_AND_FACING.md) and
+[asset provenance](ASSETS.md#2026-10-14--animated-crump-opening-field-actors).
+
+Final frozen source `artifacts/crump-validation` passes **256/256 C++ and
+145/145 Python** through `make test` (`crump-host-accepted.log`). Tests include
+retained Goombella/enemy yaw, source run/walk threshold boundaries, pose clock
+continuity, actual original moving geometry, midjump admission/real dry-floor
+landing, authored hop pose lock and unchanged three-message battle admission.
+Native `make all DEBUG_SHORT_BOOT=1` passes (`crump-native-accepted.log`), as does
+normal `make all BUILD=build-normal TARGET=ttyd-2ds-normal`
+(`crump-native-normal.log`). Native builds reuse verified original packs using
+`-o assets-ready`; source converters ran read-only in this session. Only main.cpp
+uses DEBUG_SHORT_BOOT; normal main was explicitly rebuilt without that define.
+Verified normal binary is also copied to ignored `ttyd-crump-event.3dsx`.
+Exact source/binary hashes are in `artifacts/crump-validation-manifest.json`.
+Behavior-contract verification and scoped whitespace/Python syntax checks pass.
+
+Isolated final Azahar capture `artifacts/azahar-crump-opening-accepted`, using
+story3-entry and `tests/azahar_crump_opening_motion.py`, reaches source beforebattle
+and tutorial entry without detected native exception. Reviewed captures show
+Goombella facing Crump through retreat, enemy animated geometry and beforebattle
+Mario/Goombella facing. Initial cold captures are black/0FPS; field samples later
+reach60FPS, with35FPS at one scene sample and15FPS at tutorial entry. This does
+not establish hardware performance or measured original execution parity.
+
+Earlier shared `make all` hit a stale pre-migration shader dependency; fresh
+native build passed. Shared host tests hit concurrent tutorial provider edits.
+The first isolated /tmp build exhausted the shared tmpfs; final scratch/builds
+use project artifacts. Two airborne test attempts assumed floor support at an
+invalid harbor water fixture; the final test uses validated dry harbor ground
+and verifies actual landing support. The older Azahar story script demanded a
+story4 save despite active-event save suppression; its failing assertion was
+replaced by an explicit capture script and host progression checks. Those initial
+logs remain under `artifacts/crump-*` and are not counted as passing checks.
+No ISO, user emulator profile or user saves were modified; original asset packs
+remain excluded from source history.
+
+Next: source NPC move-position easing/collision, complete force-move tick and
+Mario direction-set timing, original crowd/effect/SFX services, and full tutorial/
+postbattle progression. Existing story3 timing and movement bridges remain
+adapters; no complete original-fidelity opening or full remake claim is made.
