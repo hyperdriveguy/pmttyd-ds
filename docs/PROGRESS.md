@@ -10951,3 +10951,58 @@ coverage is recorded separately above. Private assets and ISO remain unchanged.
 Next bind persistent spotlight Work/bank allocation, original Init/Main/Free
 and actual display admission, then remaining engine/teardown/context services
 and delayed native field return. Full playable prologue goal remains active.
+
+## 2026-10-13 — Real spotlight allocation and native ending stage pass
+
+Implemented original spotlight Entry/Init/Main/Free with source pointer/table,
+real mapheap dc allocation, repeated owner reads, cleared five-record bank,
+original raw default/override writes, single FMA numerical adapter and preserved
+flags/gate/free fields. Source SBSS2 colour804295d4 is mutable boot0, established
+by original __init_data zero-table evidence; Entry copies0 then Init overrides
+white from original immutable literal. No invented texture/ISO colour asset.
+Native maps actual12-byte separate SBSS work and colour, verifies source owner
+pointer, and publishes session history after Init/Main/destruction. Per-Game
+history survives room/checkpoint restore; separate Games boot independently.
+This is live-memory/session ownership, not a new saved-checkpoint field.
+
+StageWork storage→StageObjectInit→spotlight Init now follows source child order.
+Fresh ending completes actual spotlight Main, twelve inactive StageWork entries
+and four zero counters. Bound AcHelp Main's real key/mode/Bef4 predicate and
+original active display request; ending now reaches AudienceMain801a836c.
+Positive spotlight/help gates remain actual display dependencies; no forced
+engine end bit, field result/control release or story advance. Spotlight stays
+allocated while EndingWork frees; native heap tests now inspect this actual
+allocation history. StageEnd/BattleEnd/active cones remain unbound.
+
+Documentation agent delivered complete AudienceMain ordering/inline owners,
+window/throw side effects and corrected prior misnamed801a1cdc to WinSetActive
+(actual low8 window-active write), with true NumToTargetSub801a1bf4 distinct.
+Corrected its owned AcHelp contract before commit; this step binds no setter
+or fabricated crowd-count callback. Source AudienceInit/live actor/resource
+history requested next; do not infer empty original crowd from unbound init.
+
+Validation: make test209/209 CTest and132/132 Python passed
+(artifacts/native-spotlight-tests-final.log), make all passed
+(native-spotlight-all.log), isolated DEBUG_SHORT_BOOT target passed
+(native-spotlight-debug.log). First test run exposed old trace-front expectation
+before the newly real initialization allocation; assertion now checks that
+allocation then original attack callback, and the complete rerun passed.
+Tests cover original records/zero-to-white order, first-free/flags, callback
+owner recapture, actual allocator/free/coalescing, retained gate/history,
+display requests, AcHelp signed nonzero admission and native joined/unjoined
+ordered ending/held field state. Scoped diff and documentation link checks pass
+(native-spotlight-doc-links-final.log;1059 Markdown files/0 broken links).
+
+Immutable artifacts/native-spotlight-snapshot completed isolated Azahar actual
+trio attacks→10EXP/victory→black fade/held-restoration notice
+(artifacts/azahar-native-spotlight; native-spotlight-smoke.log), terminal0 and
+reviewed last target/victory30/final images. Sampled target20FPS/2.87ms,
+EXP30FPS/3.86ms, black60FPS/3.94ms are Azahar samples, not physical hardware or
+a controlled performance comparison. No native exception observed. Legacy
+unjoined fixture; joined branch verified by host tests. User emulator profile/
+saves, ISO and original private asset conversions were unchanged.
+
+Next implement original AudienceInit/live records/resource handles, full ordered
+AudienceMain window/sound/slot/display services, then BattleEnd/StageEnd real
+frees, map/context/NPC/event release and delayed native field return. Full
+playable original-fidelity prologue goal remains active and unfinished.

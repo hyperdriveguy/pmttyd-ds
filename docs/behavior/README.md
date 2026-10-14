@@ -785,3 +785,7 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native stage-work storage and counter services](battle/NATIVE_STAGE_WORK_STORAGE_AND_COUNTER_SERVICES.md): exact scalar initialization, retained cleanup owner and explicit active/spotlight/numeric dependencies.
 
 - [Native original item-get visual resources](display/NATIVE_ITEM_GET_VISUAL_RESOURCES.md), [US title expansion/window gates](message/ITEM95_US_TEMPLATE_EXPANSION_AND_WINDOW_ACKNOWLEDGMENT.md), and [effect startup color/quad verification](effect/FIELD_ITEM_GET_TYPE6_STARTUP_COLOR_AND_QUAD_VERIFICATION.md).
+
+- [Spotlight mutable colour bootstrap and AcHelp admission](battle/SPOTLIGHT_MUTABLE_COLOUR_BOOTSTRAP_AND_AC_HELP_ADMISSION.md): actual BSS clearing, source zero-to-white record colour and help display gates.
+- [Native spotlight allocation and ending stage pass](battle/NATIVE_SPOTLIGHT_ALLOCATION_AND_ENDING_STAGE_PASS.md): real five-record map bank, retained session state and source-predicate progress to AudienceMain.
+- [Audience Main inline owners and ordinary empty domains](battle/AUDIENCE_MAIN_INLINE_OWNERS_AND_ORDINARY_EMPTY_DOMAINS.md): complete subservice order, window/throw side effects and corrected WinSetActive ownership.

@@ -244,6 +244,7 @@ public:
     float cameraZ = 3.5f, cameraHeight = 0;
     float cameraX = 1, jumpHeight = 0, facing = 1, turnScale = 1;
     bool trioBattleActive=false;ProfessorStory trioBattleIntro;TrioBattleCommands trioCommands;TrioAttack trioAttack;size_t trioBattleCameraCursor=0;
+    std::shared_ptr<BattleSpotlightState> battleSpotlight=std::make_shared<BattleSpotlightState>();
     const ProfessorStory& storyPresentation() const {return trioBattleActive?trioBattleIntro:professorStory;}
     Scene scene = Scene::Explore;
     Phase phase = Phase::Select;

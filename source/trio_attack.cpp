@@ -19,8 +19,10 @@
 #include "battle_general_rule.hpp"
 #include "battle_audience_sound.hpp"
 #include "battle_main.hpp"
+#include "battle_hit_code_events.hpp"
 #include "battle_stage_objects.hpp"
 #include "battle_stage_work.hpp"
+#include "battle_action_help.hpp"
 #include "battle_stage_floor.hpp"
 #include "battle_sequence_startup.hpp"
 #include "battle_drop_material.hpp"
@@ -107,7 +109,10 @@ struct TrioAttackRuntime {
     FieldPartyRegistry* fieldParties=nullptr;
     FieldPartyAppearanceServices fieldAppearance;
     StageMapObjects stageBackground,stageForeground;
+    std::shared_ptr<BattleSpotlightState> spotlight;
+    bool spotlightInitialized=false;
     TrioAttackRuntime():vm(0x81000000,platform(this)) {}
+    ~TrioAttackRuntime(){if(spotlightInitialized)publishSpotlight();}
     static EventNativePlatform platform(TrioAttackRuntime* self) {
         EventNativePlatform p;p.user=self;p.clock=[](void*)->uint32_t{return 243000000;};
         p.call=[](void* p,EventEntry& e,uint32_t fn,int32_t first)->int32_t{return static_cast<TrioAttackRuntime*>(p)->call(e,fn,first);};
@@ -131,6 +136,19 @@ struct TrioAttackRuntime {
     void half(uint32_t a,int32_t v){required(vm.memory.writeHalf(a,uint16_t(v)));}
     void real(uint32_t a,float v){word(a,bits(v));}
     float real(uint32_t a)const{const auto v=word(a);float f;std::memcpy(&f,&v,4);return f;}
+    void publishSpotlight() {
+        const auto w=word(0x804175a0);
+        for(unsigned i=0;i<3;++i)spotlight->work[i]=word(w+4*i);
+        spotlight->entryColor=word(0x804295d4);
+    }
+    BattleSpotlightServices spotlightServices() {
+        BattleSpotlightServices s;s.memory=vm.memoryBinding.services();s.user=this;
+        s.allocate=[](void* p,uint32_t size)->std::optional<uint32_t>{auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x800f8934);const auto a=eventMapAllocate(r.word(0x8041e80c),size,r.vm.memoryBinding.services());return a?std::optional<uint32_t>(a):std::nullopt;};
+        s.free=[](void* p,uint32_t a){auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x800f8908);eventMapFree(r.word(0x8041e80c),a,r.vm.memoryBinding.services());return true;};
+        s.fma=[](void*,float a,float b,float c){return std::fma(a,b,c);};
+        s.display=[](void* p,int32_t,int32_t,uint32_t,uint32_t,float){auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x80010bc4);r.pending=0x80010bc4;return false;};
+        return s;
+    }
     StageMapObjects* stageMapOwner(const std::string& name) {
         if(stageForeground.flags(name))return &stageForeground;
         if(stageBackground.flags(name))return &stageBackground;
@@ -170,7 +188,7 @@ struct TrioAttackRuntime {
     }
     bool updateStageWork() {
         BattleStageWorkServices s;s.actors=nativeBattleActorServices(vm);s.user=this;
-        s.spotlightMain=[](void* p){auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x8013800c);r.pending=0x8013800c;return false;};
+        s.spotlightMain=[](void* p){auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x8013800c);const bool ready=packedBattleSpotlightMain(r.spotlightServices());r.publishSpotlight();return ready;};
         s.activeEntry=[](void* p,uint32_t){static_cast<TrioAttackRuntime*>(p)->pending=0x80139150;return false;};
         s.freeScratch=[](void* p,uint32_t allocation){auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x800f8908);eventMapFree(r.word(0x8041e80c),allocation,r.vm.memoryBinding.services());return true;};
         s.interpolate=[](void* p,int32_t,int32_t,int32_t,float,float)->std::optional<float>{auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x80006c8c);r.pending=0x80006c8c;return std::nullopt;};
@@ -321,9 +339,9 @@ struct TrioAttackRuntime {
         case 0x80139898:return 2; // Original no-stylish audience request retained.
         case 0x801075c4:{const int32_t actor=value(e,0),input=value(e,1);int32_t result=std::clamp(input+int32_t(byte(Battle+0x1cbd))-1,int32_t(0),int32_t(6));if(actor!=-1 && actor!=-5 && (word(unit(e)+0x278)&255)==30)result=-1;output(e,2,result);return 2;}
         case 0x80106fa0:return 2; // Original success-effect request retained in trace.
-        case 0x8010f2e8:output(e,2,(word(unit(e)+0x278)&uint32_t(raw(e,1)))?1:0);return 2;
-        case 0x8010f0e8:output(e,2,word(unit(e)+0x274)==uint32_t(value(e,1)));return 2;
-        case 0x8010f374:output(e,1,word(unit(e)+0x278)&255);return 2;
+        case 0x8010f2e8:return battleCheckHitCodeEvent(e,nativeBattleUnitEventServices(vm));
+        case 0x8010f0e8:return battleCheckHitPatternEvent(e,nativeBattleUnitEventServices(vm));
+        case 0x8010f374:return battleGetHitCodeEvent(e,nativeBattleUnitEventServices(vm));
         case 0x8010f458:output(e,1,int8_t(byte(unit(e)+0x270)));return 2;
         case 0x8010ed8c:output(e,1,int32_t(word(unit(e)+8)));return 2;
         case 0x80105b40:{const auto u=unit(e);word(u+0x1c,word(u+0x1c)|uint32_t(value(e,1)));return 2;}
@@ -389,10 +407,13 @@ struct TrioAttackRuntime {
         // remaining original fields use the explicit recovered initial-stage
         // snapshot, not a claim to deserialize an original saved inventory.
         if(!suppliedEntry)entryPouch->half(0x70,hp);
-        for(auto span:std::array<std::pair<uint32_t,unsigned>,13>{{{0x85600000,0x64040},{0x8041e808,16},{0x82000000,0x100000},{0x8041f070,16},{0x8041e428,4},{0x8041e844,4},{0x8041eb90,4},{0x8041eb00,4},{Battle,0x19100},{Units,0x10000},{Parts,0x10000},{Kinds,0x1000},{Work,0x14000}}})
+        for(auto span:std::array<std::pair<uint32_t,unsigned>,15>{{{0x85600000,0x64040},{0x8041e808,16},{0x82000000,0x100000},{0x8041f070,16},{0x8041e428,4},{0x8041e844,4},{0x8041eb90,4},{0x8041eb00,4},{0x8041ebdc,12},{0x804295d4,4},{Battle,0x19100},{Units,0x10000},{Parts,0x10000},{Kinds,0x1000},{Work,0x14000}}})
             if(!vm.memory.registerRam(span.first,std::vector<uint8_t>(span.second)))return false;
         std::vector<uint8_t> packedPouch(0x600);std::copy(entryPouch->bytes.begin(),entryPouch->bytes.end(),packedPouch.begin());
         if(!vm.memory.registerRam(0x85000000,std::move(packedPouch)) || !vm.memory.importScripts(scripts))return false;
+        if(word(0x804175a0)!=0x8041ebdc)return false;
+        for(unsigned i=0;i<3;++i)word(0x8041ebdc+4*i,spotlight->work[i]);
+        word(0x804295d4,spotlight->entryColor);
         auto m=vm.memoryBinding.services();const auto start=eventSdkInitializeAllocator(0x82000000,0x82100000,1,m);
         if(eventSdkCreateHeap(start,0x82100000,m)!=0)return false;
         // Declared E-only primary reservation: room for the original400KiB
@@ -459,6 +480,8 @@ struct TrioAttackRuntime {
         jump=nativeBattleMarioJumpServices(jumpBackend);ok=ok && bindBattleMarioJumpPositionCallback(registry,jump);
         if(!ok)return false;
         if(!initializeStageObjects())return false;
+        if(!initializePackedBattleSpotlight(spotlightServices()))return false;
+        spotlightInitialized=true;publishSpotlight();
         return launch(menu);
 
     }
@@ -1060,6 +1083,11 @@ struct TrioAttackRuntime {
                 return true; // Actual live inactive bank; never cleared to pass this gate.
             }
             if(fn==0x80139150)return r.updateStageWork();
+            if(fn==0x802168a4) {
+                BattleActionHelpServices help;help.actors=nativeBattleActorServices(r.vm);help.user=&r;
+                help.display=[](void* p,int32_t,int32_t,uint32_t,uint32_t,float){auto& runtime=*static_cast<TrioAttackRuntime*>(p);runtime.endingRequest(0x80010bc4);runtime.pending=0x80010bc4;return false;};
+                return packedBattleActionHelpMain(help);
+            }
             r.pending=fn;return false; // Real stage/map/render/audio providers remain required.
         };
         pending=0;
@@ -1076,7 +1104,7 @@ struct TrioAttackRuntime {
     }
     void publish(ProfessorStory& s){for(unsigned id=1;id<7;++id){const uint32_t u=word(Battle+0x20+4*id);if(!u){s.actors[visual[id]].hidden=true;continue;}for(unsigned axis=0;axis<3;++axis)s.actors[visual[id]].position[axis]=real(u+0x3c+4*axis);s.actors[visual[id]].yaw=byte(u+0x189)==1?90:270;s.actors[visual[id]].battleFlags=word(u+0x1c);for(unsigned axis=0;axis<3;++axis){s.actors[visual[id]].battleRotation[axis]=real(u+0x60+4*axis)+real(u+0x6c+4*axis);s.actors[visual[id]].battlePivot[axis]=real(u+0x78+4*axis);s.actors[visual[id]].battleScale[axis]=(axis<2?real(u+0x114):1.f)*real(u+0x9c+4*axis)*real(u+0x90+4*axis);s.actors[visual[id]].battleDisplayOffset[axis]=real(u+0x54+4*axis);}}}
 };
-bool TrioAttack::begin(const TrioBattleCommands& menu,ProfessorStory& scene,int16_t hp,std::shared_ptr<ProloguePouch> entryPouch,uint32_t* fieldNpcBattleFlags,FieldMarioBattleState* fieldMario,FieldPartyRegistry* fieldParties,const FieldPartyAppearanceServices* appearance){if(!assetsReady || !menu.attack || !((menu.actor==1 && (menu.attack->weapon==0x803538a8 || menu.attack->weapon==0x80353de8)) || (menu.actor==2 && menu.attack->weapon==0x80393ea8)))return false;if(runtime_)return runtime_->done && runtime_->readyActor==menu.actor && runtime_->launch(menu);auto r=std::make_shared<TrioAttackRuntime>();r->fieldNpcBattleFlags=fieldNpcBattleFlags;r->fieldMario=fieldMario;r->fieldParties=fieldParties;if(appearance)r->fieldAppearance=*appearance;if(!r->initialize(menu,scene,hp,std::move(entryPouch)))return false;runtime_=std::move(r);return true;}
+bool TrioAttack::begin(const TrioBattleCommands& menu,ProfessorStory& scene,int16_t hp,std::shared_ptr<ProloguePouch> entryPouch,uint32_t* fieldNpcBattleFlags,FieldMarioBattleState* fieldMario,FieldPartyRegistry* fieldParties,const FieldPartyAppearanceServices* appearance,std::shared_ptr<BattleSpotlightState> spotlight){if(!assetsReady || !menu.attack || !((menu.actor==1 && (menu.attack->weapon==0x803538a8 || menu.attack->weapon==0x80353de8)) || (menu.actor==2 && menu.attack->weapon==0x80393ea8)))return false;if(runtime_)return runtime_->done && runtime_->readyActor==menu.actor && runtime_->launch(menu);auto r=std::make_shared<TrioAttackRuntime>();r->spotlight=spotlight?std::move(spotlight):std::make_shared<BattleSpotlightState>();r->fieldNpcBattleFlags=fieldNpcBattleFlags;r->fieldMario=fieldMario;r->fieldParties=fieldParties;if(appearance)r->fieldAppearance=*appearance;if(!r->initialize(menu,scene,hp,std::move(entryPouch)))return false;runtime_=std::move(r);return true;}
 void TrioAttack::tick(uint64_t time,ProfessorStory& scene,uint32_t triggers,const BattlePadSample* physical){if(runtime_)runtime_->tick(time,scene,triggers,physical);}
 bool TrioAttack::active()const{return runtime_ && !runtime_->done;}
 bool TrioAttack::finished()const{return runtime_ && runtime_->done;}

@@ -955,6 +955,13 @@ add_executable(battle_stage_work_tests tests/battle_stage_work_tests.cpp)
 target_link_libraries(battle_stage_work_tests PRIVATE ttyd_core)
 add_test(NAME battle_stage_work COMMAND battle_stage_work_tests)
 
+# Original allocated spotlight work and action-help display admission.
+target_sources(ttyd_core PRIVATE source/battle_spotlight.cpp source/battle_action_help.cpp)
+add_executable(battle_spotlight_tests tests/battle_spotlight_tests.cpp)
+target_link_libraries(battle_spotlight_tests PRIVATE ttyd_core)
+add_test(NAME battle_spotlight COMMAND battle_spotlight_tests)
+set_tests_properties(battle_spotlight PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
 # Original global stage-floor consumer and event wrapper.
 target_sources(ttyd_core PRIVATE source/battle_stage_floor.cpp)
 add_executable(battle_stage_floor_tests tests/battle_stage_floor_tests.cpp)

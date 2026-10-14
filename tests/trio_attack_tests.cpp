@@ -63,6 +63,17 @@ int main(){
     assert(jump.readWord(0x84016f04,value) && value==0x8c8c0000);
     assert(jump.readWord(0x84016f20,value) && value==0x43910000); // 290 source float.
     assert(jump.readWord(0x84016f24,value) && value==0x43480000); // 200, escape-wall provider.
+    assert(jump.readWord(0x8041ebdc,value) && value==5);
+    assert(jump.readWord(0x8041ebe0,value) && value==0x85600040);
+    assert(jump.readWord(0x8041ebe4,value) && value==0);
+    assert(jump.readWord(0x804295d4,value) && value==0);
+    for(unsigned i=0;i<5;++i) {
+        const auto r=0x85600040+0x2c*i;
+        assert(jump.readWord(r,value) && value==0x00010000);
+        assert(jump.readWord(r+0x1c,value) && value==0x41a00000);
+        assert(jump.readWord(r+0x24,value) && value==0x43160000);
+        assert(jump.readWord(r+0x28,value) && value==0xffffffff);
+    }
     assert(jump.readWord(0x84101170,value) && value==0);
     assert(jump.readWord(0x84101174,value) && value==0x3f330000);
     bool approached=false,airborne=false;
@@ -73,7 +84,7 @@ int main(){
     assert(jump.readWord(0x84201204,value) && (value&0xb)==3); // Source pose request force0.
     assert(jump.active() && jump.pendingFunction()==0x8010a78c && approached && airborne && scene.actors[0].pose=="M_J_1D");
     assert(jump.readWord(0x84001cb8,value) && value==0); // No input: failed timing, source per-hit flags100.
-    const auto& requests=jump.requests();assert(requests.front().function==0x8010d6cc && requests.back().function==0x8010a78c);
+    const auto& requests=jump.requests();assert(requests.front().function==0x800f8934 && requests[1].function==0x8010d6cc && requests.back().function==0x8010a78c);
     assert(requests.back().rawOperands[4]==0x100);
     auto count=requests.size();for(unsigned t=6017;t<7000;t+=17)jump.tick(t,scene);
     assert(jump.active() && !jump.finished() && jump.requests().size()==count);
@@ -285,10 +296,10 @@ int main(){
             assert(charged.trioAttack.readWord(0x84000f28,value) && value!=0);
             const auto end=value;
             assert(charged.trioAttack.readWord(0x8041e80c,value) && value==0x85600020);
-            assert(end==0x85600040); // Native E-only mapped arena, not original allocation-history pointer identity.
+            assert(end==0x85600140); // Real retained spotlight allocation precedes EndingWork.
             assert(charged.trioAttack.readWord(end-28,value) && value==0x2c0);
             assert(charged.trioAttack.readWord(end-24,value) && (value>>16)==1);
-            assert(charged.trioAttack.readWord(0x85600304,value) && value==0x63d00);
+            assert(charged.trioAttack.readWord(0x85600404,value) && value==0x63c00);
             for(unsigned n=0x2ac;n<0x2c0;n+=4)assert(charged.trioAttack.readWord(end+n,value) && value==0); // All704 bytes were cleared.
 
             assert(charged.trioAttack.readWord(end,value) && value==0);
@@ -345,13 +356,15 @@ int main(){
             uint32_t retainedBattleHeader=0;assert(charged.trioAttack.readWord(0x84000000,retainedBattleHeader));
             for(unsigned n=0;n<100 && !charged.trioAttack.pendingFunction();++n)charged.tick(Input{});
             assert(charged.trioAttack.pendingFunction()==0x800f8e28u);
-            charged.tick(Input{}); // Next pass binds stage objects/icons and reaches the real spotlight provider.
-            assert(charged.trioAttack.pendingFunction()==0x8013800cu && charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001f);
+            charged.tick(Input{}); // Actual spotlight/stage/help inactive passes reach the audience provider.
+            assert(charged.trioAttack.pendingFunction()==0x801a836cu && charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001f);
             assert(charged.trioAttack.readWord(0x84000ef4,value) && !(value&0x80000000));
             const auto& engineRequests=charged.trioAttack.requests();
-            constexpr uint32_t enginePrefix[]{0x800f7b28,0x8011a43c,0x8011f1ec,0x800fa5b0,0x80149798,0x801aa168,0x80139150,0x8013800c};
-            assert(engineRequests.size()>=8);
-            for(unsigned i=0;i<8;++i)assert(engineRequests[engineRequests.size()-8+i].function==enginePrefix[i]);
+            constexpr uint32_t enginePrefix[]{0x800f7b28,0x8011a43c,0x8011f1ec,0x800fa5b0,0x80149798,0x801aa168,0x80139150,0x8013800c,0x802168a4,0x801a836c};
+            assert(engineRequests.size()>=10);
+            for(unsigned i=0;i<10;++i)assert(engineRequests[engineRequests.size()-10+i].function==enginePrefix[i]);
+            assert(charged.battleSpotlight->work[0]==5 && charged.battleSpotlight->work[1]==0x85600040 && charged.battleSpotlight->work[2]==0);
+            assert(charged.trioAttack.readWord(0x8401900c,value) && value==0);
             const auto* stageMap=charged.trioAttack.stageMap(false);const auto* backMap=charged.trioAttack.stageMap(true);
             assert(stageMap && backMap && stageMap->vertices()==3393 && backMap->vertices()==11721);
             assert(!(*stageMap->flags("isi_1")&1) && !(*stageMap->flags("isi_2")&1) && (*stageMap->flags("B_kabe")&1));
@@ -390,9 +403,12 @@ int main(){
             assert(charged.trioAttack.readWord(0x84000f28,value) && value==0);
             assert(charged.trioAttack.readWord(0x84000004,value) && value==4);
             assert(charged.trioAttack.readWord(0x84000000,value) && value==retainedBattleHeader);
-            assert(charged.trioAttack.readWord(0x85600020,value) && value==0);
-            assert(charged.trioAttack.readWord(0x85600024,value) && value==0x63fe0);
-            assert(charged.trioAttack.readWord(0x85600028,value) && value==0);
+            assert(charged.trioAttack.readWord(0x85600020,value) && value==0x85600120);
+            assert(charged.trioAttack.readWord(0x85600024,value) && value==0xe0);
+            assert(charged.trioAttack.readWord(0x85600028,value) && value==0x00010000);
+            assert(charged.trioAttack.readWord(0x85600120,value) && value==0);
+            assert(charged.trioAttack.readWord(0x85600124,value) && value==0x63ee0);
+            assert(charged.trioAttack.readWord(0x85600128,value) && value==0);
             assert(charged.trioAttack.endingFadeAlpha()==255 && charged.professorStory.actors[3].npcBattleFlags==0x100);
             assert(charged.progress.originalPouch && charged.progress.originalPouch->half(0x96)==10);
             assert(charged.trioAttack.readWord(0x8410110c,value) && charged.progress.originalPouch->half(0x70)==int16_t(value>>16));
