@@ -7,10 +7,12 @@ import math
 from pathlib import Path
 
 def road_hit(nodes,name):
-    """Source hitObjGetPos identity/center for a named road mesh owner."""
+    """Admit a static transformed leaf; hierarchy centers need live traversal."""
     matches=[node for node in nodes if node['name']==name]
     if len(matches)!=1 or matches[0]['parts']<=0:raise ValueError('Missing/ambiguous road hit mesh: '+name)
     node=matches[0]
+    if any(child.get('parent')==node['source_node'] for child in nodes):
+        raise ValueError('Road hierarchy needs live leaf-center traversal: '+name)
     if not all(math.isfinite(v) for v in node['center']):raise ValueError('Invalid road hit center')
     return node
 

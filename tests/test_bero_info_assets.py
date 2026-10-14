@@ -3,8 +3,16 @@ from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
 from rel_event_inventory import read_bindings
 from bero_info_assets import road_leaf
+from room_convert import road_hit
 
 class RoadLeafAdmission(unittest.TestCase):
+ def test_native_road_center_rejects_parent_bbox(self):
+  parent=dict(name='n_bero',source_node=10,parts=1,parent=1,center=[99,99,99])
+  child=dict(name='child',source_node=11,parts=1,parent=10,center=[1,2,3])
+  # A drawable parent can have a finite bounding-box center which differs
+  # from original hitObjGetPos's leaf traversal. Do not export that center.
+  with self.assertRaises(ValueError):road_hit([parent,child],'n_bero')
+  self.assertEqual(road_hit([parent,child],'child')['center'],[1,2,3])
  def test_hierarchy_center_requires_a_different_provider(self):
   leaf=dict(name='n_bero',source_node=10,parts=1,parent=1)
   self.assertEqual(road_leaf([leaf],'n_bero'),10)
@@ -43,7 +51,8 @@ class BeroInfoAssets(unittest.TestCase):
      name.append(byte)
     self.assertEqual(name.decode(),entry['name'])
     if (struct.unpack('>I',span(entry['address']+4,4))[0]>>16)&0xfff==0:
-     self.assertEqual(road_leaf(nodes,entry['name']),entry['source_node']);roads+=1
+     self.assertEqual(road_leaf(nodes,entry['name']),entry['source_node'])
+     self.assertEqual(road_hit(nodes,entry['name'])['source_node'],entry['source_node']);roads+=1
   self.assertEqual(roads,8)
   east=meta['tables'][2];self.assertEqual([e['name'] for e in east['entries']],['w_bero','dokan'])
   self.assertEqual(east['entries'][0]['source_node'],1215808)
