@@ -847,7 +847,7 @@ void Game::updateFieldNpcTalk(const Input& input) {
                     if(fieldItemMarioGetAvailable(fieldJump,uint32_t(fieldIdle.mainFlags)|fieldMarioBattle.flags,fieldItemMarioPost))
                         started=goombaAcquisition.begin(current,*progress.originalPouch,progress.originalNpcTalkState,
                             fieldActorTalk,harborMessageFont(),fieldItemRegistry,fieldItemGetPresentation,ticks*1000/60);
-                    if(started)fieldKeysOff=true;
+                    if(started)applyFieldItemStateRequest(ItemGetRequest::KeyOff); // NPC talk owns an outer hold; itemMain adds its own.
                 } else if((goombaQuest2Admitted(current,progress.originalNpcTalkState,items) ||
                     goombaQuest13Admitted(current,progress.originalNpcTalkState,items)) && progress.originalPouch) {
                     if(!itemSelection)itemSelection=std::make_shared<ItemSelectionPresentation>();
@@ -1825,7 +1825,7 @@ void Game::tick(const Input& rawInput) {
     ++ticks;++fieldCameraSimulationTicks;openingDeparture.advance(ticks,progress.room); sound=Sound::None;overheadContact=false;headObjectKey=0;headContact={};
     if(goombaAcquisition.active()) {
         goombaAcquisition.eventMain(); // Event manager precedes this visit's Mario/NPC/item owners.
-        if(goombaAcquisition.complete()){fieldKeysOff=(fieldMarioBattle.flags&8)!=0;scene=Scene::Explore;}
+        if(goombaAcquisition.complete()){applyFieldItemStateRequest(ItemGetRequest::KeyOn);scene=Scene::Explore;}
     }
     if(scene==Scene::Explore || scene==Scene::Dialogue)beginFieldCameraTick();
     if(arriving || warpRequest>=0)retainedFieldMainX=0; // Source road choreography keys off before Mario input publication.

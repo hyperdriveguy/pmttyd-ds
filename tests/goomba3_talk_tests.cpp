@@ -82,6 +82,7 @@ int main() {
         const auto* candidate=game.nearbyFieldActor();assert(candidate && candidate->key==source->key);
         Input confirm;confirm.confirm=true;game.tick(confirm);game.tick({});
         assert(game.fieldAcquisition().active() && game.fieldActorTalk.message.id()=="irai_02_00");
+        assert(game.fieldMarioBattleState().keyDepth==1 && (game.fieldMarioBattleState().flags&8));
         Game snapshot=game;assert(snapshot.fieldAcquisition().active() && !snapshot.fieldAcquisition().canAdvance());
         for(int n=0;n<1500;++n)snapshot.tick(confirm);
         assert(!game.fieldItems().find("irai_item") && !game.progress.originalPouch->keyItemCount(95));
@@ -90,7 +91,7 @@ int main() {
         for(int n=0;n<5000 && game.fieldActorTalk.message.active();++n)game.tick(confirm);
         assert(!game.fieldActorTalk.message.active() && game.fieldAcquisition().active() && game.scene==Scene::Dialogue);
         game.tick({});assert(game.progress.originalPouch->keyItemCount(95)==1 && game.fieldAcquisition().get().substate()==2);
-        assert(game.fieldAcquisition().stopped() && game.itemSystemMask==3 && game.itemCamera8Flags&0x200 && game.fieldMarioBattleState().keyDepth==1);
+        assert(game.fieldAcquisition().stopped() && game.itemSystemMask==3 && game.itemCamera8Flags&0x200 && game.fieldMarioBattleState().keyDepth==2);
         assert(game.fieldMarioMotion()==15 && game.fieldMarioMotionPending() && std::strcmp(game.marioPresentation.selected,"M_I_U"));
         assert(game.progress.originalNpcTalkState.flag5405==false);
         Game obtaining=game;assert(!obtaining.fieldAcquisition().canAdvance());
@@ -98,6 +99,7 @@ int main() {
         assert(game.fieldItems().find("irai_item")->flags&1);
         assert(game.progress.originalNpcTalkState.flag5405==false);
         game.tick(confirm);assert(game.fieldAcquisition().active() && game.progress.originalNpcTalkState.flag5405==false);
+        assert(game.fieldMarioBattleState().keyDepth==1 && game.fieldKeysOff);
         assert(!std::strcmp(game.marioPresentation.selected,"M_I_U") && game.fieldMarioMotion()==0 && game.fieldMarioMotionPending());
         game.tick({});assert(game.fieldAcquisition().complete() && game.progress.originalNpcTalkState.flag5405==true);
         assert(!game.fieldAcquisition().stopped() && !game.itemSystemMask && !(game.itemCamera8Flags&0x200) && !game.fieldMarioBattleState().keyDepth);
