@@ -49,3 +49,8 @@ trio regression sees two unassigned failed requests, recordhandleffffffff and
 retained30 duration without altered story/result/control. This does not prove
 physical audio, original-runtime stack/numeric behavior or full prologue parity.
 Original source assets remain private/ignored; no new conversion in this change.
+
+The subsequent native [engine completion pass](../battle/NATIVE_ENGINE_COMPLETION_AND_RETURN_SEQUENCE.md)
+now advances through its four-service prefix to StageObjectMain80149798.
+It preserves original source B+4=4 and does not publish the wrapper end flag
+before the remaining real providers complete.

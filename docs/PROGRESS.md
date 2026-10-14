@@ -10277,3 +10277,41 @@ original parity; full playable prologue goal stays active and unfinished.
 Corrected unskipped run artifacts/azahar-opening-book-backdrop-fixed completed without admission/native exceptions. Actual market105/110/120 and merchant128 frames are60FPS, respectively10.41/10.54/9.36/10.82ms; final demo input guard60FPS/6.76ms. A enters the original white exit at60FPS/7.31ms. That1-second image is an exit fade, not a fully opened title; the fixture now waits16seconds for the title, as the separate fresh flow already does. The repeated-backdrop0FPS regression is closed by actual native evidence. Cold first resource loading is still synchronous; emulator results do not establish hardware performance.
 
 Current fresh route also succeeded with version8/1536-byte checkpoint, room1/storyKnown1/story3, actual no-partner field menu and input. Afterward a concurrent Mario pose addition exposed65 logical texture cells against the64-cell native limit. Rather than drop original art/poses, the main atlas now opts into exact converted RGBA raster sharing. Original read-only inventory found57 distinct rasters among65 logical entries; all source aliases survive. Other banks default to their previous mapping, preserving fixed curtain descriptors. Two regression checks cover65 aliases with every triangle/raster retained, and rejection of65 distinct rasters. Final coherent pack/build/test validation follows.
+
+## 2026-10-13 — Ordered engine completion and delayed field return branches
+
+Implemented portable original eleven-service upper Main, independently
+captured lower wrapper/end flag and actual end polling. Completion is checked
+after every required service; unavailable native providers produce no engine
+result. Original GP gate uses a fresh second bank read, flagsOR60 and exact
+selector0/7 writes. Null/later changed owners retain source wrapper semantics.
+
+New native pass exposed a previous ending1f bug: literal B0=4 changed the
+header and left bank0 at3. Read-only source confirms BattleSetSeq(B,0,4), now
+writing B+4 and preserving both header halfwords. Next native tick runs broken
+unit, four general pads with fresh owners, real bank4 default dispatch and
+private pad/action prefix, then holds actual StageObjectMain80149798. Native
+unused channels are explicit inactive input projections. The end flag, field
+result0, story11/control hold and black fade remain while providers are absent.
+
+Portable battle sequence5/6 now preserves readiness-only GP+c override,
+state5-only camera/listener tail and signed wrapping counter>30, including
+alternate(5,1,0). Incoming field state0 fade preserves full32-bit source
+presets, special event-before-fresh-clear order, separately recaptured GP
+preset stores and fresh state increment without fallthrough. These branches
+are not yet a native whole sequence/exit owner; no invented immediate return.
+
+Validation: make test195/195 CTest +127/127 Python and make all passed
+(artifacts/battle-main-return-tests-final.log and battle-main-return-all.log).
+Original Main source verifier passed20 body fingerprints/117 anchors,1data
+span and2direct callers (battle-main-return-source-audit.json/log).
+Scoped diff checks passed. Initial new native test caught its
+one-pass boundary expectation, then revealed the genuine wrong bank write;
+both corrected. No new assets, emulator/original execution/audio/hardware
+assertion. New documentation closes local ordered gates and identifies real
+seven-service owners; audience/spotlight/draw/lifecycle remain explicit.
+
+Next bind original five selected stage objects/transforms, icon/help/slot
+source work, stage spotlight/audience window/sound/display providers, then
+BattleEnd/map/context/NPC/event restoration and the native sequence owner.
+Full playable prologue goal remains active and unfinished.

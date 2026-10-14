@@ -3545,3 +3545,18 @@ input or the full RNG/population/backend graph. See
 [native sound](../behavior/audio/NATIVE_BATTLE_AUDIENCE_SOUND.md). Next original
 engine subsystem tail, wrapper end flag, sequence>30 and exit resource/context
 providers; parent remains open and full original playback unproven.
+
+### 2026-10-13 — Engine completion and delayed return source bindings
+
+[Remaining Main services](../behavior/battle/ENDING_TOP_BANK4_SERVICE_OWNERS_AND_IDLE_DOMAINS.md)
+and [sequence/fade ordering](../behavior/battle/FIELD_RETURN_SEQUENCE_COUNTER_AND_INCOMING_FADE_ORDER.md)
+are documented from complete local bodies. Portable eleven-service engine,
+lower end-flag wrapper, state5/6 delay and incoming field state0 fade are
+implemented. Native ending corrects the source selector0 write to B+4; its
+next pass executes the four-service prefix, then holds actual StageObjectMain
+80149798 without completion/result/control publication. See
+[binding](../behavior/battle/NATIVE_ENGINE_COMPLETION_AND_RETURN_SEQUENCE.md).
+Next actual five selected stage objects/transforms, spotlight/display queues,
+audience window/SoundMain and BattleEnd/context/NPC/event/sequence owner
+providers. Source-local Main/sequence gates are closed; native whole service
+pass, resource lifetimes and original execution remain open.

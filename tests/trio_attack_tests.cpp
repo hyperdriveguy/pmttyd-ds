@@ -337,8 +337,16 @@ int main(){
             charged.tick(Input{});assert(charged.trioBattleIntro.actors[0].pose=="M_V_1" && charged.trioAttack.readWord(end+4,value) && value==60);
             for(unsigned n=0;n<59;++n)charged.tick(Input{});assert(charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001a);
             charged.tick(Input{});assert(charged.trioBattleIntro.actors[0].pose=="M_R_1" && charged.trioBattleIntro.actors[1].pose=="PKR_R_1");
+            uint32_t retainedBattleHeader=0;assert(charged.trioAttack.readWord(0x84000000,retainedBattleHeader));
             for(unsigned n=0;n<100 && !charged.trioAttack.pendingFunction();++n)charged.tick(Input{});
-            assert(charged.trioAttack.pendingFunction()==0x800f8e28u && charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001f);
+            assert(charged.trioAttack.pendingFunction()==0x800f8e28u);
+            charged.tick(Input{}); // Next engine pass runs the original four-service prefix.
+            assert(charged.trioAttack.pendingFunction()==0x80149798u && charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001f);
+            assert(charged.trioAttack.readWord(0x84000ef4,value) && !(value&0x80000000));
+            const auto& engineRequests=charged.trioAttack.requests();
+            constexpr uint32_t enginePrefix[]{0x800f7b28,0x8011a43c,0x8011f1ec,0x800fa5b0,0x80149798};
+            assert(engineRequests.size()>=5);
+            for(unsigned i=0;i<5;++i)assert(engineRequests[engineRequests.size()-5+i].function==enginePrefix[i]);
             assert(charged.fieldMarioBattleState().partyIndices[0]==(fastReward?0:255) && charged.fieldMarioBattleState().partyIndices[1]==255);
             if(fastReward) {
                 assert(charged.fieldPartyState().pointer(0) && !charged.fieldPartyState().pointer(1));
@@ -369,7 +377,8 @@ int main(){
             assert(charged.trioAttack.readWord(0x84015c90,value) && value==30); // Original SetVolAll duration persists.
             assert(charged.trioAttack.readWord(0x84400018,value) && value==0x00060000); // Actual captured Rule0 descriptor status6.
             assert(charged.trioAttack.readWord(0x84000f28,value) && value==0);
-            assert(charged.trioAttack.readWord(0x84000000,value) && value==4);
+            assert(charged.trioAttack.readWord(0x84000004,value) && value==4);
+            assert(charged.trioAttack.readWord(0x84000000,value) && value==retainedBattleHeader);
             assert(charged.trioAttack.readWord(0x85600020,value) && value==0);
             assert(charged.trioAttack.readWord(0x85600024,value) && value==0x63fe0);
             assert(charged.trioAttack.readWord(0x85600028,value) && value==0);

@@ -915,3 +915,12 @@ target_sources(ttyd_core PRIVATE source/battle_audience_sound.cpp)
 add_executable(battle_audience_sound_tests tests/battle_audience_sound_tests.cpp)
 target_link_libraries(battle_audience_sound_tests PRIVATE ttyd_core)
 add_test(NAME battle_audience_sound COMMAND battle_audience_sound_tests)
+
+# Original engine completion and delayed sequence handoff.
+target_sources(ttyd_core PRIVATE source/battle_main.cpp source/battle_return_sequence.cpp)
+add_executable(battle_main_tests tests/battle_main_tests.cpp)
+target_link_libraries(battle_main_tests PRIVATE ttyd_core)
+add_test(NAME battle_main COMMAND battle_main_tests)
+add_executable(battle_return_sequence_tests tests/battle_return_sequence_tests.cpp)
+target_link_libraries(battle_return_sequence_tests PRIVATE ttyd_core)
+add_test(NAME battle_return_sequence COMMAND battle_return_sequence_tests)

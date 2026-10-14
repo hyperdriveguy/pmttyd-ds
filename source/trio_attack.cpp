@@ -18,6 +18,8 @@
 #include "battle_conclusion.hpp"
 #include "battle_general_rule.hpp"
 #include "battle_audience_sound.hpp"
+#include "battle_main.hpp"
+#include "battle_sequence_startup.hpp"
 #include "battle_drop_material.hpp"
 #include "battle_packed_pouch.hpp"
 #include "battle_dive.hpp"
@@ -715,7 +717,7 @@ struct TrioAttackRuntime {
                 const auto pouch=word(0x8041eb00);for(unsigned i=0;i<entryPouch->bytes.size();++i)entryPouch->bytes[i]=byte(pouch+i);
                 endingExported=true;
                 const auto end=word(Battle+0xf28);endingRequest(0x800f8908,{int32_t(end)});if(end)eventMapFree(word(0x8041e80c),end,vm.memoryBinding.services());
-                word(Battle+0xf28,0);word(Battle,4); // Source caller writes, independent of the map free operation.
+                word(Battle+0xf28,0);packedBattleSetSequence(Battle,0,4,nativeBattleActorServices(vm).memory);
             }
             if(!fieldMario){pending=0x8005e0c0;return;}
             endingRequest(0x8005e0c0);restoreFieldMarioAfterBattle(*fieldMario);
@@ -963,7 +965,51 @@ struct TrioAttackRuntime {
             HammerSoundSink sounds;sounds.user=this;sounds.play=[](void* p,const char* key)->int32_t{static_cast<TrioAttackRuntime*>(p)->soundRequests.emplace_back(key);return 0;};const auto result=c.tick(context,random,sounds);if(result<0){if(!pending)pending=0x8012a17c;return;}storeHammer(c);if(result==0)word(Battle+0x1ca0,0);
         }
     }
-    void tick(uint64_t time,ProfessorStory& s,uint32_t triggers,const BattlePadSample* physical){scene=&s;now=time;if(!pending){if(sampledAt!=time){sampledAt=time;checkBrokenUnits();BattlePadSample sample;if(physical)sample=*physical;else {sample.snapshot.buttons=uint16_t(triggers);sample.pressed=triggers;}readPad(Battle+0xf2c,generalPad);generalPad.update(sample);writePad(Battle+0xf2c,generalPad);history=generalPad.triggers;vm.gp.timestamp=time*eventClockRate(243000000);if(word(Battle+4)==3)ending();else if(!done){if(word(Battle+0xf20)<0x06000007)enemyAction();else postAction();}else handoff();readPad(Battle+0x1d1c,privatePad);privatePad.update(sample);writePad(Battle+0x1d1c,privatePad);actionManager();}vm.runManager();if(hasBrokenUnit())done=false;}iconClock(time);if(pointGetClockAt!=time){pointGetClockAt=time;pointGet.tick();}if(endingFadeClockAt!=time){endingFadeClockAt=time;endingFade.tick(60);}publish(s);}
+    void completionPass(const BattlePadSample& sample) {
+        struct Context {TrioAttackRuntime& r;const BattlePadSample& sample;} context{*this,sample};
+        BattleMainServices services;services.actors=nativeBattleActorServices(vm);services.user=&context;
+        services.request=[](void* p,uint32_t fn,uint32_t captured) {
+            auto& c=*static_cast<Context*>(p);auto& r=c.r;r.endingRequest(fn);
+            // This native runtime owns one stable BattleWork. An owner swap
+            // requires its real allocator/lifetime binding, never aliasing B.
+            if(captured!=Battle){r.pending=fn;return false;}
+            if(fn==0x800f7b28){r.checkBrokenUnits();return !r.pending;}
+            if(fn==0x8011a43c) {
+                for(unsigned channel=0;channel<4;++channel) {
+                    const auto b=r.word(0x8041eb90);BattlePadWork pad;
+                    const auto address=b+0xf2c+0x1fc*channel;r.readPad(address,pad);
+                    // Only physical channel0 is bound on the 3DS. Other native
+                    // channels have explicit inactive samples, not GC evidence.
+                    pad.update(channel==0?c.sample:BattlePadSample{});r.writePad(address,pad);
+                    if(channel==0){r.generalPad=pad;r.history=pad.triggers;}
+                }
+                return true;
+            }
+            if(fn==0x8011f1ec) {
+                const auto b=r.word(0x8041eb90);
+                if(r.word(b+4)!=4){r.pending=fn;return false;}
+                BattleSequenceManagerServices manager;manager.memory=nativeBattleActorServices(r.vm).memory;
+                packedBattleSequenceManager(b,manager); // Source bank4 default, no dispatch.
+                return true;
+            }
+            if(fn==0x800fa5b0) {
+                r.readPad(captured+0x1d1c,r.privatePad);r.privatePad.update(c.sample);
+                r.writePad(captured+0x1d1c,r.privatePad);r.actionManager();return !r.pending;
+            }
+            r.pending=fn;return false; // Real stage/map/render/audio providers remain required.
+        };
+        pending=0;
+        (void)packedBattleMainWrapper(services);
+    }
+    void tick(uint64_t time,ProfessorStory& s,uint32_t triggers,const BattlePadSample* physical){
+        scene=&s;now=time;
+        if(pending==0x800f8e28 && sampledAt!=time) {
+            sampledAt=time;BattlePadSample sample;
+            if(physical)sample=*physical;else {sample.snapshot.buttons=uint16_t(triggers);sample.pressed=triggers;}
+            vm.gp.timestamp=time*eventClockRate(243000000);completionPass(sample);
+        }
+        if(!pending){if(sampledAt!=time){sampledAt=time;checkBrokenUnits();BattlePadSample sample;if(physical)sample=*physical;else {sample.snapshot.buttons=uint16_t(triggers);sample.pressed=triggers;}readPad(Battle+0xf2c,generalPad);generalPad.update(sample);writePad(Battle+0xf2c,generalPad);history=generalPad.triggers;vm.gp.timestamp=time*eventClockRate(243000000);if(word(Battle+4)==3)ending();else if(!done){if(word(Battle+0xf20)<0x06000007)enemyAction();else postAction();}else handoff();readPad(Battle+0x1d1c,privatePad);privatePad.update(sample);writePad(Battle+0x1d1c,privatePad);actionManager();}vm.runManager();if(hasBrokenUnit())done=false;}iconClock(time);if(pointGetClockAt!=time){pointGetClockAt=time;pointGet.tick();}if(endingFadeClockAt!=time){endingFadeClockAt=time;endingFade.tick(60);}publish(s);
+    }
     void publish(ProfessorStory& s){for(unsigned id=1;id<7;++id){const uint32_t u=word(Battle+0x20+4*id);if(!u){s.actors[visual[id]].hidden=true;continue;}for(unsigned axis=0;axis<3;++axis)s.actors[visual[id]].position[axis]=real(u+0x3c+4*axis);s.actors[visual[id]].yaw=byte(u+0x189)==1?90:270;s.actors[visual[id]].battleFlags=word(u+0x1c);for(unsigned axis=0;axis<3;++axis){s.actors[visual[id]].battleRotation[axis]=real(u+0x60+4*axis)+real(u+0x6c+4*axis);s.actors[visual[id]].battlePivot[axis]=real(u+0x78+4*axis);s.actors[visual[id]].battleScale[axis]=(axis<2?real(u+0x114):1.f)*real(u+0x9c+4*axis)*real(u+0x90+4*axis);s.actors[visual[id]].battleDisplayOffset[axis]=real(u+0x54+4*axis);}}}
 };
 bool TrioAttack::begin(const TrioBattleCommands& menu,ProfessorStory& scene,int16_t hp,std::shared_ptr<ProloguePouch> entryPouch,uint32_t* fieldNpcBattleFlags,FieldMarioBattleState* fieldMario,FieldPartyRegistry* fieldParties,const FieldPartyAppearanceServices* appearance){if(!assetsReady || !menu.attack || !((menu.actor==1 && (menu.attack->weapon==0x803538a8 || menu.attack->weapon==0x80353de8)) || (menu.actor==2 && menu.attack->weapon==0x80393ea8)))return false;if(runtime_)return runtime_->done && runtime_->readyActor==menu.actor && runtime_->launch(menu);auto r=std::make_shared<TrioAttackRuntime>();r->fieldNpcBattleFlags=fieldNpcBattleFlags;r->fieldMario=fieldMario;r->fieldParties=fieldParties;if(appearance)r->fieldAppearance=*appearance;if(!r->initialize(menu,scene,hp,std::move(entryPouch)))return false;runtime_=std::move(r);return true;}

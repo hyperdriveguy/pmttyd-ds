@@ -756,3 +756,7 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Setup4 initial crowd and pouch gate](battle/AUDIENCE_SETUP4_INITIAL_POPULATION_AND_POUCH_GATE.md): actual setup/rank/capacity/desired count, RNG and zero-weight/key domains.
 
 - [Native setup2 registry and separate visual projection](battle/HARBOR_NATIVE_REGISTRY_AND_VISUAL_PROJECTION.md)
+
+- [Ending top-bank4 service owners](battle/ENDING_TOP_BANK4_SERVICE_OWNERS_AND_IDLE_DOMAINS.md): real seven-service ownership, used idle domains and exact source sequence setter correction.
+- [Field-return counter and fade order](battle/FIELD_RETURN_SEQUENCE_COUNTER_AND_INCOMING_FADE_ORDER.md): signed wrapping delay, state5-only listener tail, fresh GP callbacks/presets and timestamp globals.
+- [Native engine completion and return sequence](battle/NATIVE_ENGINE_COMPLETION_AND_RETURN_SEQUENCE.md): ordered engine/lower flag adapter, corrected native sequence bank and portable delayed return/fade branches; real stage/exit providers remain.
