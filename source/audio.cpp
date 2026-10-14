@@ -179,6 +179,9 @@ void Audio::updateFrontend(const OpeningTitle& title,bool enabled){
 }
 void Audio::shutdown() {
     openingHousePcm.shutdown();
+    if(ready)ndspChnWaveBufClear(19);
+    if(openingMapSound.data)linearFree(openingMapSound.data);
+    openingMapSound={};openingMapSoundRate=0;openingMapSoundAttempted=false;
     if(ready) {
         for(int n=0;n<=9;++n)ndspChnWaveBufClear(n);
         ndspChnWaveBufClear(18);

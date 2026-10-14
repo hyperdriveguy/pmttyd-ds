@@ -10105,3 +10105,7 @@ resource release, map/smart/context/NPC/event restoration and exact ending
 flag/counter/sequence/result publication. Authored join, live field actor draw/
 lifetimes, general FbattlePost placement and full prologue parity remain open.
 Goal remains active; this is not a complete playable field return.
+
+## 2026-10-13 — Primary map turn integration checks
+
+Original49/50 captured page fold and concurrent Voyage admission now bind in primary. Late acceptance retains sailing9 and accepted+240 requests source6000ms Off. Original50 sample869/1235 binds once after real entry admission, with documented primary-sample limits. Corrected the host display provider to acknowledge original49, rather than falsely bypassing the new capture gate. Scoped opening/frontend/message28/28 and Python124/124 passed. Native make all completed before this last small Audio binding; final combined native build/smoke remains next. Full CTest187/190 passed in the earlier run: opening host gate corrected here; changing harbor encounter/tutorial source-service fixtures still failed and require their owner validation.

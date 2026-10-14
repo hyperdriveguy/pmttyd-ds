@@ -6,6 +6,8 @@ from iso_assets import DEFAULT_ISO,extract
 from character_animation_pack import compile_animation_pack
 from character_animation_data import animation
 from character_bake import geometry,u
+from audio_map import gamecube_tables,project_effects,macro_samples
+from audio_convert import sample
 
 def build(iso=DEFAULT_ISO,out='romfs'):
     out=Path(out);out.mkdir(exist_ok=True,parents=True);work=Path('local-assets/opening-map-transition');work.mkdir(exist_ok=True,parents=True)
@@ -29,6 +31,12 @@ def build(iso=DEFAULT_ISO,out='romfs'):
     with (out/'opening-map-turn.bin').open('wb') as f:
         f.write(struct.pack('<8sI',b'PMMAP001',len(records)))
         for row in records:f.write(struct.pack('<3I',*row))
+    for ext in ['proj','pool','sdir','samp']:extract(iso,'sound/proj/pmario.'+ext,work/('pmario.'+ext))
+    rows,_,_=gamecube_tables(iso);row=next(r for r in rows if r['table']=='sfx' and r['table_index']==869)
+    effects=project_effects((work/'pmario.proj').read_bytes());macros=macro_samples((work/'pmario.pool').read_bytes())
+    if row['name']!='SFX_OFF3_MAP_CHANGE1' or row['fx_id']!=1342 or row['parameters']!=[100,64,0,1,0,0,0,0] or [o['object_id']for o in effects[1342]]!=[1503] or macros[1503]['sample_ids']!=[1235]:raise ValueError('Original fade50 sound changed')
+    pcm=sample(work/'pmario.sdir',work/'pmario.samp',1235,out/'opening-map-turn.wav')
+    (out/'opening-map-turn-sound.json').write_text(json.dumps(dict(source='fadeMain type50 psndSFXOn(0x40365)',table=row,macro=macros[1503],pcm=pcm,conversion='Original primary PCM16 sample and table volume/pan; complete MusyX macro playback remains unbound',license='Nintendo/Intelligent Systems original resources; local use only, no redistribution rights'),indent=2)+'\n')
     (out/'opening-map-turn.json').write_text(json.dumps(dict(source='a/OFF_d_meku',texture_descriptor='a/OFF_d_meku-',sha256=digest,poses=['Z_1','A_1'],end=[0,80],keys=[1,45],context=2,capture=[0,0,608,480],materials=kinds,draw_order='44kind1 capture0,44kind2 absent capture1 inherits actual sampler0',conversion='Original sparse hierarchy geometry, UV, RGBA, pass/cull and order; no raster replacement or second capture admission',license='Nintendo/Intelligent Systems resources; local use only, no redistribution rights'),indent=2)+'\n')
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--iso',default=DEFAULT_ISO);p.add_argument('--output',default='romfs');a=p.parse_args();build(a.iso,a.output)

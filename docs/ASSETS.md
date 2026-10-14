@@ -1647,3 +1647,5 @@ actual captured map pixels come from a native GPU target. No fallback TPL raster
 or new image substitutes for those dynamic materials. The exporter is
 `tools/opening_map_transition_assets.py`, invoked by assets-ready; original
 licensing/local-only restrictions above apply.
+
+Original fade50 primary sample: `sound/proj/pmario.{proj,pool,sdir,samp}`, SFX_OFF3_MAP_CHANGE1 index869/fx1342/object1503/sample1235. `opening_map_transition_assets.py` exports `romfs/opening-map-turn.wav` and private source manifest; original rate PCM16, source volume100/pan64, dedicated NDSP19. Complete MusyX macro playback remains unbound. Nintendo/Intelligent Systems original resources, local use only; no redistribution rights.

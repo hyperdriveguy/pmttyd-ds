@@ -45,3 +45,5 @@ world map resources through `prepareFrontWorld` outside `C3D_FrameBegin`. The
 already presented map capture therefore remains on screen during cold resource
 IO; the new frame is cleared only after staging finishes. This changes resource
 service ordering, not source animation clocks or a completion acknowledgment.
+
+Original type50 dispatch calls psndSFXOn(0x40365), index869 SFX_OFF3_MAP_CHANGE1. Native Audio consumes the first actual entry50 admission once on dedicated NDSP19 using original sample1235 and source volume100/pan64. Full source macro pitch/envelope behavior remains unbound.

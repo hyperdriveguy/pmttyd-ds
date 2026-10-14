@@ -290,6 +290,8 @@ private:
     OpeningHousePcmPlayer openingHousePcm;
     struct Clip { int16_t* data=nullptr; uint32_t samples=0; ndspWaveBuf wave{}; };
     Clip clips[8];
+    Clip openingMapSound;uint32_t openingMapSoundRate=0;bool openingMapSoundAttempted=false;
+    void updateOpeningMapTurn(const OpeningSequence&,bool);
     struct MusicStream {
         FILE* file=nullptr;
         int track=-1;
