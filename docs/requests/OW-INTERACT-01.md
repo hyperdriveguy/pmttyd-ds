@@ -764,3 +764,21 @@ consumes original masks with two passes, explicit projection/viewport, no render
 clock or tint bake. Source camera4 prepared-vector supply/display sorting,
 icon307 binding, original audio/control/name teardown and native quest acquisition
 remain open; full-storage discard remains pending. Parent request stays open.
+
+### 2026-10-14 — Original item95 name registry, icon and BGM query
+
+Implemented independent32-slot field-item/icon ownership, source stale-name and
+active-duplicate behavior, force/poll/name-wide deletion and the second active
+check before icon synchronization. The original parcel307/TPL312 now has a
+bounded camera5 PICA consumer with shared textures and source alpha/depth states.
+See [entry/icon contract](../behavior/field/ITEM95_ENTRY_NAME_REGISTRY_AND_ICON_DRAW.md),
+[map blend/shadow admission](../behavior/display/ITEM95_ICON_MAP_BLEND_AND_SHADOW_ADMISSION.md),
+[native consumer](../behavior/display/NATIVE_ITEM95_REGISTRY_AND_ICON.md), and
+[audio routing/query](../behavior/audio/FIELD_ITEM95_FANFARE_BGM_ROUTING_AND_QUERIES.md).
+The portable get owner now accepts the raw source `psndBGMChk` result (-1 vacant,
+0 assigned), with a test for assigned-to-vacant resume and once-only restoration.
+Isolated native graphics captures show original parcel/name/help/effect and
+teardown at60FPS; they do not run an actual acquisition or grant95/write5405.
+Native owner dispatch/control/audio, original stream retirement, source camera4
+queues/shadows, deferred icon metadata and map40 material remain open. Parent
+requests remain open; do not substitute a guessed fanfare timer or missing service.

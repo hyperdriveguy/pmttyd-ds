@@ -33,7 +33,7 @@ Gaps/duplicates survive. Full storage returns0 with no writes. The exposed
 Only the original item95 receive service is bound through this portable owner.
 
 Tests check full service ordering, original window addresses and source offsets,
-exact one grant using actual packed pouch bytes, silence/playing routing,
+exact one grant using actual packed pouch bytes, silence/group-vacancy routing,
 window-action/trigger gates, A/B acknowledgment, once-only restoration/name
 cleanup, failure-frontier ordering, type1 selection arguments and admission.
 Native UI/story acquisition remains unbound until original Mario/window/icon/
@@ -42,3 +42,12 @@ identifies original M_I_U, icon307/TPL312 and base effect textures44/42;
 full effect6 curve/TEV, US template expansion, manager action and lifecycle remain
 provider work. This implementation does not claim acquisition is playable,
 matched source raster or physical New2DS performance.
+
+The raw `bgmCheck(group)` service preserves source `psndBGMChk`: -1 for
+a vacant/unassigned group and0 otherwise. Substate3 resumes retained field
+music when group1 becomes vacant; an assigned group does not resume it.
+A later acknowledgment does not repeat an already completed resume.
+[Original BGM routing and query contract](../audio/FIELD_ITEM95_FANFARE_BGM_ROUTING_AND_QUERIES.md)
+records the retained stream cursor, sound flag80 and unresolved original
+fanfare-loop retirement ownership. These require native services; a guessed
+one-shot timer or inverted “playing” query is not equivalent.

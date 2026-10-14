@@ -822,3 +822,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [CheckDamage event wrapper and calling-event ownership](battle/CHECK_DAMAGE_EVENT_WRAPPER.md)
 
 - [Tutorial ordinary Crump impact](battle/TUTORIAL_ORDINARY_CRUMP_IMPACT.md)
+
+- [Original item95 registry/icon](field/ITEM95_ENTRY_NAME_REGISTRY_AND_ICON_DRAW.md), [map blend/shadow admission](display/ITEM95_ICON_MAP_BLEND_AND_SHADOW_ADMISSION.md), [native parcel icon provider](display/NATIVE_ITEM95_REGISTRY_AND_ICON.md), and [original fanfare/BGM queries](audio/FIELD_ITEM95_FANFARE_BGM_ROUTING_AND_QUERIES.md).

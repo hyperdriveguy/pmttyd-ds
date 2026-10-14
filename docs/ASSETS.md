@@ -1949,3 +1949,19 @@ scripts. No additional game payload was extracted or converted; M_D_1 and
 original HUD art use existing private packs. The new binding retains original
 SFX_MARIO_DAMAGE1 requests but does not claim native sample/effect/crowd
 playback. Existing Nintendo/Intelligent Systems licensing restrictions remain.
+
+## Original item95 registry/icon provider (2026-10-14)
+
+The parcel draw reuses original message icon descriptor307 and its existing
+TPL31240x40 CMPR-derived atlas frame. No new ISO extraction, generated art,
+texture scaling or baked tint was introduced. The source .6 reduction is geometry
+only (24x24 bottom-anchored quad); source color/alpha modulates the original atlas
+at draw time. Native vertices use a lazy6912-byte32-icon arena, with the shared
+texture retained by the existing atlas owner. These original assets retain the
+existing Nintendo rights/provenance restrictions; no original assets are committed.
+See [native consumer](behavior/display/NATIVE_ITEM95_REGISTRY_AND_ICON.md) and
+[source entry/icon contract](behavior/field/ITEM95_ENTRY_NAME_REGISTRY_AND_ICON_DRAW.md).
+The read-only audio review identifies `sound/stream/ff_get2_32k.stm` for the
+key-item fanfare; no audio conversion or playable native routing is claimed here.
+Its source header loops, so original request/retirement semantics remain required:
+[audio contract](behavior/audio/FIELD_ITEM95_FANFARE_BGM_ROUTING_AND_QUERIES.md).

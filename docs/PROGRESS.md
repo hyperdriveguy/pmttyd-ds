@@ -314,6 +314,73 @@ contracts already in `EVENT_ASSIGNMENT_ARITHMETIC_AND_DATA_CURSOR.md` and
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-14 — Original item registry, camera5 parcel icon and BGM query
+
+Committed `c1ce7485dc373c43b5078b56ba456e4fc32da47e` (original field-item
+ownership/native icon) and `1119998a1cd7b7458478f9d383e7f30668faee6a`
+(raw source BGM vacancy query). Host mechanics preserve independent32-slot
+item/icon pools, first-inactive allocation, retained stale item names, active
+duplicate icons, force/poll predicates and name-wide deletion. Item/icon flags
+remain separate; the second active check gates icon synchronization after an
+owner callback. Native short-name/available-pool admission is explicit policy;
+source full-pool eviction/autonaming remain unbound.
+
+The ordinary ready parcel icon uses original descriptor307/TPL31240x40 from
+the existing original atlas, source.6 reduction/24x24 bottom anchor and camera5.
+PICA/C3D projection, source color/alpha/depth states and a lazy6912-byte32-icon
+arena avoid per-frame uploads and vertex overwrite. The map40 grayscale branch
+and metadata2000 pending state are retained/refused rather than guessed. Source
+camera4 queues/prepared vectors, source cylinder shadow and other icon domains
+remain future bindings. See [native provider](behavior/display/NATIVE_ITEM95_REGISTRY_AND_ICON.md),
+[entry/name/icon recovery](behavior/field/ITEM95_ENTRY_NAME_REGISTRY_AND_ICON_DRAW.md),
+and [map blend/shadow admission](behavior/display/ITEM95_ICON_MAP_BLEND_AND_SHADOW_ADMISSION.md).
+
+Audio recovery proves `psndBGMChk(1)` is -1 when vacant and0 when assigned.
+The portable get callback now returns that raw result; tests cover assigned-to-
+vacant field-music resume before acknowledgment and prevent a repeated resume.
+Original group0 resume retains its stream cursor. Original key fanfare binds
+`sound/stream/ff_get2_32k.stm`; its source header loops, so backend request/loop
+retirement must be recovered before claiming automatic one-shot completion.
+[Audio contract](behavior/audio/FIELD_ITEM95_FANFARE_BGM_ROUTING_AND_QUERIES.md)
+records source flags, attenuation, routing and remaining ownership questions.
+
+Exact validation:
+
+- Registry review tree `7bd8694af248a6aee48ac075e53707f7ca43737b` (baseline
+  `71e5c31`) passed `make test` (210/210 CTests,133 Python tests) and
+  `make -j4 all`; logs `artifacts/item95-registry-reviewed-test.log` and
+  `artifacts/item95-registry-reviewed-native.log`. Tracked-source byte audit is
+  `artifacts/item95-registry-source-audit.txt`.
+- BGM correction review tree `6c5ddfbb5f2dafd8c641edfa877080a07137a34f` passed
+  the same210/210 CTests,133 Python tests and native build; logs
+  `artifacts/item95-bgm-reviewed-test.log` and
+  `artifacts/item95-bgm-reviewed-native.log`. All2331 tracked files matched the
+  reviewed tree (`artifacts/item95-bgm-source-audit.txt`). The portable owner has
+  no native service caller yet, so normal artifact remains byte-identical:
+  `artifacts/ttyd-item95-bgm-reviewed.3dsx`, SHA256
+  `5377bf0889932b8b6cb03d9f85be95eec256c4dba8b954d3cadc350da34e3f3e`.
+- Isolated `tools/emulator_smoke.py` ran stable graphics-only artifact
+  `artifacts/ttyd-item95-registry-icon-preview.3dsx`, private profile/save fixture,
+  input `/tmp/item-get-windows-steady-input.py`, output
+  `artifacts/azahar-item95-registry`. Viewed `windows-steady.png`: original Box
+  icon over Mario, original name/help, effect behind it, Azahar60FPS. Viewed
+  `windows-closed.png`: icon/windows/effect retired and field view restored,
+  60FPS. Harness source/build is private; normal artifact was preserved before
+  instrumentation. This does not execute real acknowledgment, grant95, write5405,
+  validate fanfare audio, match source GX pixels or prove physical3DS throughput.
+- Documentation link check passed1108 Markdown files/zero broken links before
+  the final index/handoff append; final check recorded below if count changed.
+
+Next: bind native item-main dispatch and get services to the original Goomba3
+quest2 event, including control/motion/camera/windows/audio and once-only pouch
+mutation; verify actual branch predicates and saves. Resolve stream-loop
+retirement via original sound backend before automatic fanfare vacancy. Preserve
+source item/icon slot order and second active check when wiring dispatch. Then
+verify the playable original acquisition, not merely its graphics preview.
+Extend area objects/NPCs through shared source-derived registries and event
+services. The remake and parent requests remain incomplete. Other sessions'
+working/staged changes were preserved by narrow private-index commits.
+
 ## 2026-10-13 — Original projected item-get effect and camera5 provider
 
 Committed `5b7b910`: portable source projected texture matrix and explicit
