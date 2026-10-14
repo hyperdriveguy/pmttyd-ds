@@ -21,6 +21,10 @@ any original card/switch persistence requests below.
   selection and resident-buffer loading — [single-slot reader](../behavior/memory/CARD_SINGLE_SLOT_READ_VALIDATION_AND_SELECTION.md).
   Equal valid timestamps select secondary; header failure latches0400 without
   abort; both invalid mark resident record2. Live namespace restore remains open.
+- [x] Complete local cardCopy2Main live restore/cardGetFilePtr and scoped
+  continueGame entry — [restore/preserved GP](../behavior/memory/CARD_LIVE_NAMESPACE_RESTORE_AND_PRESERVED_GP.md).
+  Six reverse block copies include switch banks; selected live words/bit8,
+  clock/reset/literal123 and caller overwrite pinned. Admission/lifetime open.
 - [ ] Complete composed original save/load service and record: save-file format/layout, checksum algorithm, corruption detection/repair, backup recovery, error/recovery states, multi-slot management and card-operation timing/coordination.
 - [x] Complete local swdrv access/init/reset and bank word counts; true
   rotate-by-five arithmetic — [corrected switch storage](../behavior/memory/SW_SET.md).
@@ -138,3 +142,19 @@ Validation: manifest13 spans/565 anchors/17 calls; independent all550 words/
 flag/stamp sites/fresh ISO pins passed; link/scoped diff passed. Docs only;
 no make test/all rerun; raw artifacts stay /tmp. SAVE-01 remains OPEN: live
 restore/read-all/backup repair/async write/SDK and original round-trip binding.
+
+## 2026-10-13 — Live namespace restore and preserved GP
+
+Delivered [cardCopy2Main/file-pointer leaf](../behavior/memory/CARD_LIVE_NAMESPACE_RESTORE_AND_PRESERVED_GP.md).
+Six reverse copies restore serialized blocks, including all five switch extents;
+six live GP words/bit8 are captured before copy, with precise early/late repair
+and clock/reset/string123 writes. No validation/transaction in this leaf.
+One direct DOL restore caller continueGame is pinned; its scoped entry supplies
+load-work slot and overwrites GP11d0/11b8 afterward. Full caller remains separate.
+
+Validation: manifest9 spans/117 anchors/ten calls; independent all99 words/
+seven vectors/six reverse copies/preservation/reset/literal/clock/caller sites/
+exhaustive one-site census/fresh ISO pins passed; links/scoped diff passed.
+Docs only; no make test/all rerun; raw artifacts stay /tmp. SAVE-01 remains
+OPEN: full admission/caller/schema/namespace lifetime/async/SDK and original
+round-trip/corruption/recovery/native binding not proved by local restore.

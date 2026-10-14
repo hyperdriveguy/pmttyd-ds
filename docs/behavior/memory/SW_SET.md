@@ -100,3 +100,10 @@ No native PM2D migration or original save round-trip is claimed.
 now proves GP0..13d7 copied at record+8, including all five bank extents above.
 This adds original write-side inclusion, not read/load/reset/lifetime or an
 original round-trip claim. Exact record/checksum and limitations are linked.
+
+## Live restore delivery (2026-10-13)
+
+[Complete restore](CARD_LIVE_NAMESPACE_RESTORE_AND_PRESERVED_GP.md) copies all
+five serialized banks back through GP+8 record mapping. Its explicit subsequent
+repairs/resets do not overlap the banks; no swReInit request occurs locally.
+Full caller admission/later switch lifetime and original round-trip remain open.

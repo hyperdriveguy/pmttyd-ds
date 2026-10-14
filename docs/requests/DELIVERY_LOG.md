@@ -12,6 +12,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| Live namespace restore and GP preservation | SAVE-01 | VALIDATED two complete leaves/scoped caller, 2026-10-13; parent OPEN | Codex inbox fulfillment (no lock claimed) | [Restore](../behavior/memory/CARD_LIVE_NAMESPACE_RESTORE_AND_PRESERVED_GP.md):9 spans/117 anchors/10 calls/1 direct caller; admission/schema/lifetime/original round-trip open |
 | Single-slot reader validation and copy selection | SAVE-01 | VALIDATED complete local read_main/table, 2026-10-13; parent OPEN | Codex inbox fulfillment (no lock claimed) | [Reader](../behavior/memory/CARD_SINGLE_SLOT_READ_VALIDATION_AND_SELECTION.md):13 spans/565 anchors/17 calls; live restore/read-all/repair/SDK/original round-trip open |
 | Card dispatcher and completion callbacks | SAVE-01 | VALIDATED nine complete local bodies/table, 2026-10-13; parent OPEN | Codex inbox fulfillment (no lock claimed) | [Dispatcher](../behavior/memory/CARD_DISPATCH_FORMAT_CHECK_AND_COMPLETION.md):24 spans/480 anchors/23 calls; async/SDK/read/backup/runtime open |
 | Original save record/checksum preparation | SAVE-01 | VALIDATED complete local cardWrite, 2026-10-13; parent OPEN | Codex inbox fulfillment (no lock claimed) | [Record writer](../behavior/format/CARD_WRITE_RECORD_ASSEMBLY_AND_CHECKSUM.md):11 spans/187 anchors/16 calls; five switch extents included; async/read/version/backup/lifetime open |

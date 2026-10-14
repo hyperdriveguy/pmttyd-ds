@@ -2,6 +2,27 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox live save restore and preserved GP fields
+
+Completed cardCopy2Main/cardGetFilePtr and scoped continueGame entry; SAVE-01
+portion checked. [Restore contract](behavior/memory/CARD_LIVE_NAMESPACE_RESTORE_AND_PRESERVED_GP.md)
+pins six reverse copies/all five switch extents, six pre-copy live words/bit8,
+early168 repair/late preserved writes, clocks/resets/literal123 and fresh owners.
+One direct DOL caller supplies slot and overwrites GP11d0/11b8 after return.
+Local read/write/validate/select/restore now documented; full persistence open.
+
+Validation: ISO manifest9 spans/117 anchors/ten calls; independent all99 words/
+seven vectors/six copies/preservation/reset/literal/clock/caller sites/exhaustive
+one-site census/fresh pins passed. Link audit passed982 Markdown files/zero
+broken links; scoped diff passed. Docs only; no make test/all rerun. Raw ELF/
+listings/generator stay /tmp; no record/assets/body distribution. Concurrent
+native edits excluded. Approved push pending valid GitHub credentials.
+
+Next: full continueGame/admission/party/map/pointer repair/namespace schemas and
+later switch lifetime; async/read-all/header/backup/SDK/provider domains and
+original save/load/multi-slot/corruption/recovery/native traces. SAVE-01 and
+other parent/full-game requests remain OPEN.
+
 ## 2026-10-13 — Requests scoped to the first demo milestone
 
 Added [milestones](MILESTONES.md) defining **D1** (the Rogueport opening demo,

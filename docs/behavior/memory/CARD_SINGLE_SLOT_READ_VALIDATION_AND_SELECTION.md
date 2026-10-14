@@ -125,3 +125,10 @@ mathematical vectors, exact header/record scan lengths/call/flag/timestamp/table
 publication sites and fresh ISO pins checked independently. Generic checks do
 not prove semantic/runtime claims. Raw ELF/listing/generator stay `/tmp`; no
 record blobs/assets/body distribution. SAVE-01/native/full-game remain OPEN.
+
+## Live restore child delivery (2026-10-13)
+
+[Complete cardCopy2Main](CARD_LIVE_NAMESPACE_RESTORE_AND_PRESERVED_GP.md) now
+closes local resident-to-live copy/preservation rules. It adds no validation
+guard; full continueGame/admission/schema/lifetime/original round-trip remain
+separate. This reader still performs resident loading only.
