@@ -13424,7 +13424,7 @@ CMake registration. Concurrent tutorial/UI/asset work excluded; scoped commit
 preserves later independent commits. Immutable ELF/3DSX/SMDH and source/binary
 SHA manifests: `artifacts/bero-validated`.
 
-Final isolated `make test` CMAKE_BUILD_PARALLEL_LEVEL4 exit0:258/258 C++ and
+Final isolated `make test` CMAKE_BUILD_PARALLEL_LEVEL4 exit0:261/261 C++ and
 145/145 Python, log `artifacts/bero-test.log`. Native `make all -j4
 DEBUG_SHORT_BOOT=1 BUILD=build-bero TARGET=ttyd-bero` exit0:
 `artifacts/bero-build.log`. Tests prove highbit/nonzero-negative-operation masks,

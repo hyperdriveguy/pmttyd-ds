@@ -2256,7 +2256,7 @@ projection; explicit clear resumes it to the separate current-sequence wait.
 Corrected idle Key input from Ctrl38 to signed Key39.
 [Scope](behavior/overworld/NATIVE_BERO_EXEC_OWNER_AND_ROAD_ADAPTER.md).
 
-Final isolated make test passed258/258 C++ and145/145 Python checks; native
+Final isolated make test passed261/261 C++ and145/145 Python checks; native
 make all DEBUG_SHORT_BOOT=1 passed. Isolated Azahar completed two reciprocal
 plaza/east road round trips with all four saved-room assertions and no detected
 native exception. Exact snapshot/logs/manifests and capture limits are in the
