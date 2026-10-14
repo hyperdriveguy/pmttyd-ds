@@ -54,6 +54,22 @@ void stateAndTime(){
     assert(pool.evaluate(*field,{5,0}) && std::fabs(pool.pose(*field)->scalar(0x20)-.96f)<.00001f);
     const auto mode2=pool.enter(r,2,{11,22});assert(mode2 && pool.pose(*mode2)->timestamp()==22 && pool.pose(*mode2)->archiveType==0);
 }
+void discreteTimeline(){
+    auto r=std::make_shared<BattlePoseResource>(*resource(fixture()));
+    r->modelFlags=9;r->discrete={{{0,0x12345678}},{{0,5}},{{0,7},{2,11},{8,13}}};
+    BattlePosePool pool;auto id=pool.enter(r,1,{});assert(id);
+    assert(pool.testTranslucent(*id)==true && !pool.testTranslucent(-1));
+    assert(pool.evaluate(*id,{0,0}) && pool.pose(*id)->word(0x80)==0x12345678 && pool.pose(*id)->word(0x34)==0 && pool.pose(*id)->word(0x38)==0);
+    assert(pool.selectName(*id,"walk",true,{0,0}));
+    assert(pool.evaluate(*id,{0,50}));auto* p=pool.pose(*id);
+    assert(p->scalar(0x24)==3 && p->word(0x28)==0 && p->word(0x2c)==1);
+    assert(p->word(0x34)==1 && p->word(0x38)==2 && p->word(0x80)==11);
+    assert(pool.evaluate(*id,{0,150}) && p->word(0x34)==2 && p->word(0x38)==3 && p->word(0x80)==13);
+    assert(pool.evaluate(*id,{0,200}) && p->scalar(0x24)==2 && p->word(0x34)==1 && p->word(0x80)==11);
+    auto empty=std::make_shared<BattlePoseResource>(*r);empty->discrete[0].clear();BattlePosePool missing;
+    auto absent=missing.enter(empty,1,{});assert(absent && !missing.evaluate(*absent,{0,0}));
+    assert(missing.pose(*absent)->word(0x28)==0 && missing.pose(*absent)->word(0x34)==0xffffffff && missing.pose(*absent)->word(0x38)==0xffffffff);
+}
 void lifetimeAndCapacity(){
     const auto bank=fixture();BattlePosePool pool;const auto a=resource(bank),b=resource(bank,"other","texture");
     auto first=pool.enter(a,1,{}),second=pool.enter(a,1,{}),third=pool.enter(b,1,{});assert(first && second && third);
@@ -84,13 +100,15 @@ void original(){
     auto mario=loadBattlePoseResource("romfs/trio-attack-mario.pose-directory.bin","romfs/trio-attack-mario.pmanim");
     auto partner=loadBattlePoseResource("romfs/trio-attack-goombella.pose-directory.bin","romfs/trio-attack-goombella.pmanim");
     assert(mario && partner && mario->names.size()==85 && partner->names.size()==32);
+    assert(mario->modelFlags==1 && partner->modelFlags==1 && mario->discrete.size()==85 && partner->discrete.size()==32);
     assert(loadBattlePoseResource("romfs/trio-attack-mario.pose-directory.bin","romfs/trio-attack-mario.pmanim")==mario);
     BattlePosePool pool;
     for(unsigned i=0;i<3;++i){auto id=pool.enter(mario,1,{0,50});assert(id && *id==int32_t(i) && !pool.pose(*id)->shape.vertices.empty());}
     auto id=pool.enter(partner,1,{0,50});assert(id && *id==3 && pool.models()[0].references==3 && pool.models()[1].references==1 && pool.textures()[0].references==1 && pool.textures()[1].references==1);
+    assert(pool.testTranslucent(0)==false && pool.testTranslucent(3)==false);
     assert(pool.selectName(0,"M_J_1D",false,{0,60}) && pool.pose(0)->word(0x14)==7 && pool.evaluate(0,{0,160}));
     assert(pool.selectName(1,"KRN_H_1",true,{0,60}) && pool.pose(1)->word(0x14)==0 && pool.evaluate(1,{0,160}));
     assert(pool.selectName(2,"M_S_3",true,{0,60}) && pool.pose(2)->word(0x14)==2 && !pool.evaluate(2,{0,160}));
 }
 }
-int main(int argc,char**){stateAndTime();lifetimeAndCapacity();if(argc>1)original();std::cout<<"battle pose pool passed\n";}
+int main(int argc,char**){stateAndTime();discreteTimeline();lifetimeAndCapacity();if(argc>1)original();std::cout<<"battle pose pool passed\n";}

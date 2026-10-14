@@ -248,6 +248,7 @@ suffix.
 | [Group traversal](display/ANIMATION_GROUP_TRAVERSAL_AND_REQUESTS.md) | Complete visibility/node push/cache/child/sibling/special/ordinary requests | Node matrix/render/material/Vivian/pool/lifetime/runtime |
 | [Animation Main entry/time](display/ANIMATION_MAIN_ENTRY_AND_TIME.md) | Complete captures,linked recursion/GQR/null gate and time/span/loop stores | Resource/pool/clock/helper/platform/source/runtime |
 | [Animation samples](display/ANIMATION_TIMELINE_SAMPLING.md) | Complete continuous/discrete scans,predecessors/fraction and original M_Z_1 metadata | Loaded-pointer/count/time domains and original traces |
+| [Native pose sidecar](format/NATIVE_BATTLE_POSE_DIRECTORY.md) | Original descriptor identity, model flags and independent discrete timeline conversion | Native format; full Main/cache/backend ownership remains open |
 | [Animation delta cache](display/ANIMATION_COMPRESSED_DELTA_CACHE.md) | Complete base/rebuild/forward/same-key and five compressed relative-index streams | Copy/alias/capacity/resource/FPSCR/consumers |
 | [Animation interpolation](display/ANIMATION_OUTPUT_INTERPOLATION.md) | Complete linear/cubic/tangent guard/end-seam and final cache writes | Renderer/numeric/lifetime/original animation |
 | [Animation facing](display/ANIMATION_MAIN_CAMERA_FACING.md) | Complete camera/atan2/two wraps/sign tail | Camera/libm/flags/renderer/runtime |

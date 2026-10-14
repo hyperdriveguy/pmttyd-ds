@@ -10,14 +10,20 @@ from battle_pose_directory import source_directory, write_directory
 
 class BattlePoseDirectoryTests(unittest.TestCase):
     def model(self):
-        raw = bytearray(0x1b0 + 3 * 64)
+        raw = bytearray(0x400)
         raw[4:11] = b'model\0\0'
         raw[0x44:0x4c] = b'texture\0'
         struct.pack_into('>I', raw, 0x148, 3)
         struct.pack_into('>I', raw, 0x1ac, 0x1b0)
+        struct.pack_into('>I', raw, 0xc4, 9)
         for i, name in enumerate((b'default', b'unconverted', b'walking')):
             start = 0x1b0 + i * 64
             raw[start:start + len(name)] = name
+            animation = 0x270 + i * 0x80
+            struct.pack_into('>I', raw, start + 60, animation)
+            struct.pack_into('>I', raw, animation + 0x20, 1)
+            struct.pack_into('>I', raw, animation + 0x40, 0x50)
+            struct.pack_into('>fI', raw, animation + 0x50, float(i), 0x12345678 + i)
         return raw
 
     def test_preserves_source_order_and_resource_names(self):
@@ -29,9 +35,22 @@ class BattlePoseDirectoryTests(unittest.TestCase):
             source.write_bytes(raw)
             write_directory(source, output)
             result = output.read_bytes()
-            self.assertEqual(result[:8], b'PMPOSE01')
+            self.assertEqual(result[:8], b'PMPOSE02')
             self.assertEqual(struct.unpack_from('<I', result, 136)[0], 3)
             self.assertEqual(result[204:268].rstrip(b'\0'), b'unconverted')
+            self.assertEqual(struct.unpack_from('<I', result, 332)[0], 9)
+            self.assertEqual(struct.unpack_from('<IfI', result, 336), (1, 0., 0x12345678))
+            self.assertEqual(struct.unpack_from('<IfI', result, 360), (1, 2., 0x1234567a))
+
+    def test_rejects_invalid_timeline_extent(self):
+        for field in (0x20, 0x40):
+            raw = self.model()
+            struct.pack_into('>I', raw, 0x270 + field, 0xffffffff)
+            with tempfile.TemporaryDirectory() as folder:
+                source = Path(folder) / 'model'
+                source.write_bytes(raw)
+                with self.assertRaises(ValueError):
+                    write_directory(source, Path(folder) / 'directory')
 
     def test_rejects_invalid_source_extents_and_names(self):
         for change in ('header', 'extent', 'name', 'empty'):

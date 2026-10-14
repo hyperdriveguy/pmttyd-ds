@@ -25,10 +25,27 @@ def source_directory(raw):
 
 
 def write_directory(model, output):
-    model_name, texture_name, names = source_directory(Path(model).read_bytes())
+    raw = Path(model).read_bytes()
+    model_name, texture_name, names = source_directory(raw)
     def field(value):
         return value.encode('ascii').ljust(64, b'\0')
-    Path(output).write_bytes(b'PMPOSE01' + field(model_name) + field(texture_name)
+    metadata = bytearray(struct.pack('<I', struct.unpack_from('>I', raw, 0xc4)[0]))
+    directory = struct.unpack_from('>I', raw, 0x1ac)[0]
+    for i in range(len(names)):
+        offset = struct.unpack_from('>I', raw, directory + i * 64 + 60)[0]
+        if offset < 0x1b0 or offset + 0x44 > len(raw):
+            raise ValueError('Invalid original animation header extent')
+        count = struct.unpack_from('>I', raw, offset + 0x20)[0]
+        timeline = offset + struct.unpack_from('>I', raw, offset + 0x40)[0]
+        if count > 65536 or timeline < offset or timeline + count * 8 > len(raw):
+            raise ValueError('Invalid original discrete timeline extent')
+        metadata += struct.pack('<I', count)
+        for j in range(count):
+            # Reverse each original word independently; preserve float bits,
+            # order and values, including empty/duplicate/unordered timelines.
+            record = raw[timeline + j * 8:timeline + (j + 1) * 8]
+            metadata += record[:4][::-1] + record[4:][::-1]
+    Path(output).write_bytes(b'PMPOSE02' + field(model_name) + field(texture_name)
                             + struct.pack('<I', len(names))
-                            + b''.join(field(value) for value in names))
+                            + b''.join(field(value) for value in names) + metadata)
     return model_name, texture_name, names

@@ -3795,3 +3795,17 @@ unlinked pose flags8clear skip optional Main facing; actual b_mario wordc4=1
 makes TestXLU false. The subsequent depth service still needs the original
 camera4 view/projection provider. This is a scoped source delivery, not a
 complete display/runtime trace or closure of EVT-01.
+
+
+### 2026-10-14 — Native independent discrete timeline owner
+
+PMPOSE02 now retains original MODEL wordc4 and every descriptor's T20/T40
+discrete time/value list. The native owner publishes34/38 independently of
+continuous geometry keys and loads actual source value80, including the
+source nonloop successor clamp. Empty/pre-first domains keep predecessor-1
+publication and return unavailable. Typed TestXLU reads retained model bit8,
+independent of animation selection/pose flags/material alpha. The
+[native format](../behavior/format/NATIVE_BATTLE_POSE_DIRECTORY.md) and
+[owner scope](../behavior/display/NATIVE_BATTLE_POSE_RESOURCE_OWNER.md) record
+admission limits and version1 compatibility. Compressed cache3c/40 and full
+Main remain open; this does not close EVT-01 or clear Main8003ed2c pending.

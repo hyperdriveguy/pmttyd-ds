@@ -118,3 +118,27 @@ fills it with its original aspect and vertical cropping. All source artwork is
 original Nintendo/Intelligent Systems material for private local use; no new
 redistribution rights or committed ISO/extracted payload. Diagnostic captures
 and native binaries remain ignored project artifacts.
+
+
+## 2026-10-14 — Battle discrete state and model flags sidecars
+
+Private romfs/trio-attack-mario.pose-directory.bin and
+romfs/trio-attack-goombella.pose-directory.bin now use PMPOSE02. The
+read-only ISO a/b_mario and a/c_pkr serialized models supply MODEL wordc4 and
+each descriptor's independent T20-count/T40-relative discrete timeline.
+Original order and binary32/uint32 bits are preserved by reversing individual
+words into the little-endian native format. Names retain original directory
+order; the existing converted geometry subset is unchanged.
+
+Local read-only extracts local-assets/trio-battle/b_mario and c_pkr have SHA256
+1f29b8e93280bcccf6a488c99a5f4addc35d5604e80d9afcbf5efcec64df51e4
+and d712df83d7b70b64a90d45551b39ecf7adf277b9572f6931daae7792b52d69e7.
+Their85/32 descriptors each have one time0/value0 state key; both model flags
+are1. Sidecars are6604/2576 bytes, SHA256
+fb67440a029810951f51896c2a3d3a958913ce0bdee44d2a99ce711fb957caf9
+and131914fd21e94436191777c44b1c803336a5b4aee4ba1b42f175c04f0d6c689a.
+Converter: tools/battle_pose_directory.py, invoked by trio_attack_assets.py;
+[native format](behavior/format/NATIVE_BATTLE_POSE_DIRECTORY.md).
+Nintendo/Intelligent Systems original assets; no redistribution rights. ISO,
+raw models and generated sidecars remain outside source history. No geometry,
+texture, lighting or dialogue conversion change in this step.

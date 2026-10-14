@@ -4,10 +4,13 @@
 #include <optional>
 
 namespace ttyd {
+struct BattlePoseDiscreteKey {float time=0;uint32_t value=0;};
 // Original descriptor identity is independent of the converted subset order.
 struct BattlePoseResource {
     std::string modelName,textureName;
     std::vector<std::string> names;
+    std::optional<uint32_t> modelFlags; // Original MODEL+c4, independent of pose flags.
+    std::vector<std::vector<BattlePoseDiscreteKey>> discrete;
     std::shared_ptr<const ActorAnimationPack> bank;
 };
 std::shared_ptr<const BattlePoseResource> loadBattlePoseResource(const char* directory,const char* pack);
@@ -40,6 +43,7 @@ public:
     std::optional<int32_t> enter(std::shared_ptr<const BattlePoseResource>,int32_t mode,BattlePoseClock);
     BattlePose* pose(int32_t handle);
     const BattlePose* pose(int32_t handle) const;
+    std::optional<bool> testTranslucent(int32_t handle) const;
     const BattlePose* slot(unsigned index) const {return index<poses_.size()?poses_[index].get():nullptr;}
     bool setRate(int32_t handle,float rate);
     bool selectName(int32_t handle,const std::string& name,bool force,BattlePoseClock);

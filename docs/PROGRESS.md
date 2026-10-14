@@ -616,3 +616,22 @@ Next: retain independent source discrete timeline/cache state, complete Main
 publication and bind queued draw depth to original camera4. Enemy/Frankly
 factories and ordered battle teardown/field return remain open; the playable
 original-fidelity prologue goal remains active.
+
+
+## 2026-10-14 — Original battle discrete state and model translucency
+
+Private PMPOSE02 sidecars now retain original modelwordc4 and each descriptor's
+independent discrete timeline. Native poses publish34/38 and actual value80
+from that timeline, with original nonloop clamping and explicit predecessor-1
+unavailability. Typed TestXLU reads model bit8; it does not infer translucency
+from animation or part colors. [Native format](behavior/format/NATIVE_BATTLE_POSE_DIRECTORY.md).
+
+Shared make test passed236/236 C++ and142/142 Python checks; isolated source
+passed233/233 C++ and142/142 Python checks. Shared and isolated native make all
+passed. Exact manifests/logs and limits are in the
+[archive](PROGRESS_ARCHIVE.md#2026-10-14--original-battle-discrete-state-and-model-translucency).
+No Azahar/hardware revalidation or complete Main claim for this step.
+
+Next: real compressed cache3c/40/output ownership, full Main and camera4 depth
+queue, then ordered battle teardown/result/field return. The full playable
+original-fidelity prologue goal remains active.

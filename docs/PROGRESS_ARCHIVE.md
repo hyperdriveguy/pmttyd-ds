@@ -12891,3 +12891,54 @@ or Azahar/hardware run for this step. Next: source discrete timeline/cache
 ownership and full Main, then original camera4 depth/queue and real ordered
 battle teardown/result/field-return ownership. Full prologue parity remains
 unachieved.
+
+
+## 2026-10-14 — Original battle discrete state and model translucency
+
+PMPOSE02 extends private complete source-name directories with original
+MODEL wordc4 and every descriptor's independent T20-count/T40-relative
+eight-byte time/value entries. Conversion preserves original order and each
+word's bits; it does not synthesize a discrete list from geometry keys.
+Original header/timeline extents are bounded; native admission limits are
+separate from source semantics. PMPOSE01 remains loadable with metadata
+services unavailable. Asset paths/hashes/license/conversion are in ASSETS.md;
+raw/private packs remain outside source history.
+
+Native BattlePoseResource owns model flags and discrete lists. Evaluation
+publishes continuous28/2c before independently scanning discrete entries,
+publishing34/38 and applying the original nonloop successor clamp. Actual
+selected source value is stored80. Empty/pre-first lists leave predecessor-1
+fields published and return unavailable rather than inventing a value.
+Typed TestXLU uses retained MODEL bit8 with optional unavailable semantics.
+Original b_mario85 and c_pkr32 descriptors each have one time0/value0 entry
+and modelwordc4=1; synthetic tests exercise nonzero values and independent
+three-key discrete state selection, looping, nonloop and empty-list handling.
+
+The existing full Main8003ed2c pending boundary remains: compressed cache
+3c/40 and complete original output/linked/facing/GX/backend behavior are not
+closed by these scalar/native resource additions. Main time publication and
+converted geometry remain the documented partial adapter. Parent EVT-01 stays
+open; implementation breadcrumb appended to its request history.
+
+Validation:
+
+- Shared make test passed236/236 C++ and142/142 Python checks;
+  artifacts/battle-discrete-tests.log.
+- Coherent snapshot artifacts/battle-discrete-source is committed base
+  f90a0c76e25335784b247f712ea8296115d0ab72 plus the five owned source/test
+  files in OWNED_BASE.txt. make test passed233/233 C++ and142/142 Python
+  checks, battle-discrete-isolated-tests.log. Original-pack tests validate
+  actual model flags, complete timeline counts and TestXLUfalse.
+- Shared make all BUILD=build-discrete TARGET=ttyd-discrete -j4 passed,
+  battle-discrete-native.log. Full isolated native build with -o assets-ready
+  and the same BUILD/TARGET passed, battle-discrete-isolated-native.log.
+- Immutable isolated ELF/3DSX, SHA256SUMS and source manifests are retained
+  under artifacts/battle-discrete-validated. Sidecars regenerated from the
+  local read-only original model extracts and then by required asset build.
+  Whitespace check passed; documentation checker1144 files/0 broken links.
+
+No ISO writes, original geometry/texture/dialogue changes, user emulator
+profile/save changes or Azahar/physical hardware run. No measured performance
+claim. Next: actual compressed cache/output ownership, full Main/camera4 draw
+queue and real ordered battle teardown/result/field return. Full prologue
+parity remains incomplete.

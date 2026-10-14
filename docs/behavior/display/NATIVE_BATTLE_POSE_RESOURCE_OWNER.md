@@ -27,7 +27,7 @@ not an implementation of original SDK file handles or global GPU texture-cache
 addressing. Native renderer texture objects retain their existing Tex3DS/
 citro3d lifetime.
 
-The immutable RomFS loader validates complete `PMPOSE01` names/order plus the
+The immutable RomFS loader validates complete `PMPOSE01`/`PMPOSE02` names/order plus the
 converted default geometry. It uses a weak cache keyed by both sidecar and
 pack paths. Renderer and battle owners retain the same validated resource,
 avoiding duplicate bank decoding/storage. The weak cache adds no independent
@@ -76,8 +76,12 @@ Finite in-range truncation is the native integer-conversion adapter. NaN,
 infinity and int32 overflow leave that conversion unavailable rather than
 invoking an undefined C++ cast or guessing original FPSCR behavior. A selected
 time below the first converted key also remains unavailable. Independent
-source discrete sample lanes34/38/80 and compressed-cache lanes3c/40 require
-their real retained source data; continuous keys do not fabricate them.
+source discrete sample lanes34/38/80 now use their independent retained
+`PMPOSE02` timeline. Version1/synthetic resources without that data retain
+their partial adapter domain; continuous keys never fabricate discrete state.
+Compressed-cache lanes3c/40 still require their real retained owner.
+The typed TestXLU query uses retained MODEL wordc4 bit8 and is unavailable
+without model metadata. See the [native sidecar format](../format/NATIVE_BATTLE_POSE_DIRECTORY.md).
 
 Unlinked SetEffect(handle,0,0) stores linked=-1 and clears only material-light
 bit1. A live linked record requires its detach/release provider. Release retains

@@ -14,6 +14,10 @@ bool readName(FILE* file,std::string& out){
     for(size_t i=length;i<bytes.size();++i)if(bytes[i])return false;
     out.assign(bytes.data(),length);return true;
 }
+bool readWord(FILE* file,uint32_t& out){
+    std::array<uint8_t,4> b{};if(std::fread(b.data(),4,1,file)!=1)return false;
+    out=uint32_t(b[0])|uint32_t(b[1])<<8|uint32_t(b[2])<<16|uint32_t(b[3])<<24;return true;
+}
 uint64_t clockFor(const BattlePose& pose,BattlePoseClock clock){return pose.word(0xc)?clock.modeNonzero:clock.modeZero;}
 float rounded(float value){volatile float single=value;return single;}
 }
@@ -26,11 +30,24 @@ std::shared_ptr<const BattlePoseResource> loadBattlePoseResource(const char* dir
     const auto cached=cache.find(key);if(cached!=cache.end())if(auto resource=cached->second.lock())return resource;
     FILE* file=std::fopen(directory,"rb");if(!file)return {};
     auto resource=std::make_shared<BattlePoseResource>();std::array<char,8> magic{};std::array<uint8_t,4> countBytes{};
-    bool ok=std::fread(magic.data(),8,1,file)==1 && !std::memcmp(magic.data(),"PMPOSE01",8) && readName(file,resource->modelName) && readName(file,resource->textureName) && std::fread(countBytes.data(),4,1,file)==1;
+    bool ok=std::fread(magic.data(),8,1,file)==1;
+    const bool metadata=ok && !std::memcmp(magic.data(),"PMPOSE02",8);
+    ok=ok && (metadata || !std::memcmp(magic.data(),"PMPOSE01",8)) && readName(file,resource->modelName) && readName(file,resource->textureName) && std::fread(countBytes.data(),4,1,file)==1;
     const uint32_t count=uint32_t(countBytes[0])|uint32_t(countBytes[1])<<8|uint32_t(countBytes[2])<<16|uint32_t(countBytes[3])<<24;
     // Bounded native sidecar admission; not an original model count restriction.
     ok=ok && count>0 && count<=4096;
     for(uint32_t i=0;ok && i<count;++i){std::string name;ok=readName(file,name);if(ok)resource->names.push_back(std::move(name));}
+    if(ok && metadata){
+        uint32_t flags=0;ok=readWord(file,flags);if(ok)resource->modelFlags=flags;
+        for(uint32_t i=0;ok && i<count;++i){
+            uint32_t keys=0;ok=readWord(file,keys) && keys<=65536;if(!ok)break;
+            resource->discrete.emplace_back();auto& timeline=resource->discrete.back();
+            for(uint32_t j=0;ok && j<keys;++j){
+                uint32_t bits=0,value=0;ok=readWord(file,bits) && readWord(file,value);
+                if(ok){float time;std::memcpy(&time,&bits,4);timeline.push_back({time,value});}
+            }
+        }
+    }
     ok=ok && std::fgetc(file)==EOF;std::fclose(file);if(!ok)return {};
     auto bank=std::make_shared<ActorAnimationPack>();if(!bank->load(pack))return {};
     const auto* initial=bank->pose(resource->names.front().c_str());ActorAnimationSample shape;
@@ -43,6 +60,10 @@ float BattlePose::scalar(unsigned offset) const {const auto bits=word(offset);fl
 void BattlePose::scalar(unsigned offset,float value){uint32_t bits;std::memcpy(&bits,&value,4);word(offset,bits);}
 BattlePose* BattlePosePool::pose(int32_t handle){return handle>=0 && unsigned(handle)<poses_.size() && poses_[unsigned(handle)] && poses_[unsigned(handle)]->word(0)?poses_[unsigned(handle)].get():nullptr;}
 const BattlePose* BattlePosePool::pose(int32_t handle) const {return const_cast<BattlePosePool*>(this)->pose(handle);}
+std::optional<bool> BattlePosePool::testTranslucent(int32_t handle) const {
+    const auto* p=pose(handle);if(!p || !p->resource->modelFlags)return {};
+    return (*p->resource->modelFlags&8)!=0;
+}
 void BattlePosePool::restart(BattlePose& pose,BattlePoseClock clock){
     const auto timestamp=clockFor(pose,clock);pose.word(0x1c,uint32_t(timestamp));pose.word(0x18,uint32_t(timestamp>>32));
     pose.word(0x3c,0xffffffff);pose.scalar(0x40,0);pose.word(0x80,0);pose.scalar(0x84,0);
@@ -104,6 +125,20 @@ bool BattlePosePool::evaluate(int32_t handle,BattlePoseClock clock){
     p->scalar(0x84,plan.ratio);
     const auto selected=finishAnimationSampleTime(plan,p->scalar(0x84));if(!selected)return false;
     p->scalar(0x24,*selected);
+    // Main scans the two independent authored timelines before interpolating.
+    size_t continuous=0;while(continuous<animation->keys.size() && !(animation->keys[continuous].time>p->scalar(0x24)))++continuous;
+    const int32_t current=int32_t(continuous)-1;
+    p->word(0x28,uint32_t(current));p->word(0x2c,uint32_t(current+1));
+    if(!animation->loop && continuous>=animation->keys.size())p->word(0x2c,p->word(0x28));
+    if(!p->resource->discrete.empty()){
+        if(index>=p->resource->discrete.size())return false;
+        const auto& timeline=p->resource->discrete[index];size_t discrete=0;
+        while(discrete<timeline.size() && !(timeline[discrete].time>p->scalar(0x24)))++discrete;
+        p->word(0x34,uint32_t(int32_t(discrete)-1));p->word(0x38,uint32_t(discrete));
+        if(!animation->loop && discrete>=timeline.size())p->word(0x38,p->word(0x34));
+        if(discrete==0)return false; // Actual predecessor-1 provider remains unavailable.
+        p->word(0x80,timeline[discrete-1].value);
+    }
     // CPU sampler/cache is an explicit ordinary conversion adapter, not source
     // GX/paired-single Main. Repeated calls at one clock do not add elapsed ticks.
     if(!animation->evaluateSelected(p->scalar(0x24),p->shape))return false;
