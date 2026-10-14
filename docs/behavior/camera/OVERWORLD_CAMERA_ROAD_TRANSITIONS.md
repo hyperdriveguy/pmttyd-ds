@@ -160,3 +160,14 @@ remain an explicit dependency, not fabricated interpolation inputs. Nonzero
 argument7 correction/inertia and curved/duplicate paths are still separate
 research tasks. Original event camera blends, lenses and SDK numeric services
 are outside this ordinary authored-road transition owner.
+
+## Complete owner/timebase supplement (2026-10-13)
+
+[Complete manager/time helper](FIELD_CAMERA_ROAD_MANAGER_COPY_AND_TIMEBASE.md) closes all local
+camRoadMain/getV60FPS words, fresh/captured copy owners and timestamp order.
+The clock helper requests the signed __div2i entry; its decreasing returned-
+quotient branch uses UINT64_MAX-P+C without adding1. The increasing finite
+model above does not establish that wider domain. No-transition final copy
+uses retained work for source and freshly loaded work for destination. These
+source details supplement the stable-owner reconstruction above; authored
+selection, library/provider domains and original visual execution remain open.

@@ -126,8 +126,9 @@ exact body/field/write/capture/child/caller sites and ISO pins checked independe
 Vectors are bounded deductions, not original cos/atan2/matrix execution traces.
 Raw ELFs/listings/generator remain `/tmp`; no binary assets/raw bodies committed.
 
-OW-CAMERA-01 gains these two complete local services. Remaining: calcCamRoad/
-collisionCurve authored geometry/selection, full camRoadMain timestamp/copy/
-transition composition, pointer/container/profile/angle/alias/lifetime/FP domains,
-math/matrix implementation and original road/room/control/pause/cadence/visual
-binding. Native framing and full-game fidelity remain OPEN.
+OW-CAMERA-01 gains these two complete local services. The
+[complete local manager/time helper](FIELD_CAMERA_ROAD_MANAGER_COPY_AND_TIMEBASE.md)
+now supplies timestamp/copy/transition composition. Remaining: calcCamRoad/
+collisionCurve authored geometry/selection, pointer/container/profile/angle/
+alias/lifetime/FP domains, math/matrix implementation and original road/room/
+control/pause/cadence/visual binding. Native framing/full-game remain OPEN.

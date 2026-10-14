@@ -2,6 +2,30 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Inbox camera-road manager and timebase composition
+
+Completed full local camRoadMain/getV60FPS; OW-CAMERA-01 portion checked.
+[Manager/timebase supplement](behavior/camera/FIELD_CAMERA_ROAD_MANAGER_COPY_AND_TIMEBASE.md)
+strengthens existing finite transition evidence with fresh/captured owners,
+eight ordered pair-copy loops, timestamp/progress/publication/scaling order,
+signed division requests and exact returned-quotient rollover branch without+1.
+Earlier comparison/interpolation contracts now link the completed local owner.
+No new authored geometry/limit or measured camera/pause/cadence claim.
+
+Validation: read-only ISO manifest13 spans/398 anchors/nine calls; independent
+all370 words/17 literal vectors/eight96-byte copy layouts/publication/time/
+divider/call sites/constants/fresh pins passed. Existing finite transition
+verifier passed seven spans/62 anchors/eight admission cases. Link audit
+passed969 Markdown files/zero broken links; scoped diff passed. Docs only; no
+make test/all rerun. Raw ELF/listings/generator stay /tmp; no binary assets/
+bodies committed. Concurrent native edits excluded. Approved push pending
+valid GitHub credentials after authentication rejection.
+
+Next: calcCamRoad/collisionCurve authored selection/contact/geometry and limits,
+using existing road-state/transition evidence before further recovery. Library/
+work/state/record/time/bus/GP/IRQ/alias/FP domains and original room/control/
+pause/cadence/visual/native binding remain OPEN, as do parent/full-game requests.
+
 ## 2026-10-13 — Inbox road interpolation and current camera state
 
 Completed local calcHokanCamRoad/calcCurrentCamState; OW-CAMERA-01 portions

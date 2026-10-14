@@ -5,6 +5,10 @@ Filed by the native overworld implementation session, 2026-10-12, as one of the 
 
 ## Open todos
 
+- [x] Complete local camRoadMain/getV60FPS — [manager/timebase supplement](../behavior/camera/FIELD_CAMERA_ROAD_MANAGER_COPY_AND_TIMEBASE.md).
+  Fresh/captured work, eight pair-copy loops, timestamp/progress/finish order,
+  signed division requests and returned-quotient rollover pinned; selector open.
+
 - [x] Complete local calcHokanCamRoad/calcCurrentCamState —
   [road interpolation/current construction](../behavior/camera/FIELD_CAMERA_ROAD_INTERPOLATION_AND_CURRENT_STATE.md).
   Exact easing constants/nearest-angle/ordered writes, mode0 points, prefix/
@@ -120,3 +124,21 @@ sites/twelve constants/fresh pins passed. Markdown links/scoped diff passed.
 Docs only; no make test/all rerun. Raw temporary bodies stay /tmp.
 OW-CAMERA-01 remains OPEN: selection/geometry/full manager/timebase, state/FP/
 alias/value domains, math/matrix internals, original camera and native binding.
+
+## 2026-10-13 — Complete road manager and timebase supplement
+
+Delivered [complete manager/time helper](../behavior/camera/FIELD_CAMERA_ROAD_MANAGER_COPY_AND_TIMEBASE.md),
+strengthening the existing finite transition contract. Complete fresh/captured
+copy/timestamp/progress order includes the retained-source/fresh-destination
+no-transition copy. getV60FPS requests signed __div2i before unsigned comparison
+of returned quotients; decreasing quotients use UINT64_MAX-P+C without+1.
+No source clock rollover correction or render-frame timing substituted.
+Earlier comparison/interpolation contracts now link this local owner closure.
+
+Validation: manifest13 spans/398 anchors/nine calls; independent all370 words/
+17 literal mathematical vectors/eight96-byte copy layouts/publication/time/
+divider/call sites/constants/fresh ISO pins passed. Existing finite transition
+verifier re-passed seven spans/62 anchors/eight admission cases. Link/scoped
+checks passed. Docs only; no make test/all rerun; raw artifacts stay /tmp.
+Geometry/selection/limits, libraries/state/time/IRQ/alias/FP domains and original
+camera/pause/cadence/visual/native binding remain OPEN; parent stays OPEN.

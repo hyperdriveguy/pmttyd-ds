@@ -141,8 +141,10 @@ Postmetric vectors begin with supplied S/L/weight; they are not original acos/
 frsqrte observations. Generic pin verification does not prove semantic prose.
 Raw ELFs/listings/generator stay `/tmp`; no binary assets/raw bodies committed.
 
+Local transition composition now links
+[interpolation/current construction](FIELD_CAMERA_ROAD_INTERPOLATION_AND_CURRENT_STATE.md)
+and [manager/time helper](FIELD_CAMERA_ROAD_MANAGER_COPY_AND_TIMEBASE.md).
 Remaining: authored geometry/contact/selection via calcCamRoad/collisionCurve,
-transition composition calcHokanCamRoad/calcCurrentCamState/camRoadMain,
 actual road-state layouts/profile weights/pointer/value/alias/lifetime/FP domains,
 room limits and original camera/control/pause/cadence/visual execution. The 2DS XL
 port now has this local comparison service; OW-CAMERA-01/native/full-game remain
