@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "tracks": [
+    ["rogueport", "BGM_FLD_Town_S0_A"],
+    ["battle", "BGM_BTL_Normal_etc"],
+    ["victory", "BGM_BTL_Normal_etc_Win"],
+    ["harbor-danger", "BGM_EVT_Danger_D"],
+    ["title", "BGM_SYS_Title"],
+    ["demo-book", "BGM_SYS_Demo_1"],
+    ["demo-market", "BGM_SYS_Demo_2"],
+    ["opening-house", "BGM_EVT_MariosHome"],
+    ["opening-voyage", "BGM_SYS_Grand_Opening"],
+    ["opening-sailing", "FF_EVT_Ship_Departure"],
+    ["professor-music", "BGM_EVT_Frankly"],
+    ["underground-music", "BGM_FLD_Town_Under_1st"],
+    ["harbor-tutorial-music", "BGM_BTL_SmallBoss"],
+    ["rogueport-harbor", "BGM_FLD_Town_Harbor_S0"],
+    ["rogueport-east", "BGM_FLD_Town_S0_B"],
+    ["rogueport-west", "BGM_FLD_Town_S0_C"],
+    ["rogueport-station", "BGM_FLD_Town_S0_D"],
+    ["battle-think", "BGM_BTL_Normal_etc_Think"]
+  ],
+  "selection_scope": "Native slice adapter; named Switch arrangements, not recovered Switch event conditions or adaptive mixing."
+}
