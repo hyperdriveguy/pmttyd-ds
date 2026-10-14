@@ -1558,3 +1558,10 @@ add_executable(field_bero_initial_event_tests tests/field_bero_initial_event_tes
 target_link_libraries(field_bero_initial_event_tests PRIVATE ttyd_core)
 add_test(NAME field_bero_initial_event COMMAND field_bero_initial_event_tests)
 set_tests_properties(field_bero_initial_event PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Original audience idle decisions and breathing.
+target_sources(ttyd_core PRIVATE source/battle/battle_audience_idle.cpp)
+add_executable(battle_audience_idle_tests tests/battle_audience_idle_tests.cpp)
+target_link_libraries(battle_audience_idle_tests PRIVATE ttyd_core)
+add_test(NAME battle_audience_idle COMMAND battle_audience_idle_tests)
+set_tests_properties(battle_audience_idle PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

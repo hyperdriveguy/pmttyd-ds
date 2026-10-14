@@ -894,3 +894,17 @@ choice changed. Function/data source pins and scope are in
 [the control contract](behavior/battle/AUDIENCE_MEMBER_CONTROL_AND_IDLE_REACTIONS.md).
 Original Nintendo game material remains private under the existing ISO asset
 licensing policy; extracted/compiled material stays outside source history.
+
+## Audience idle decision source inspection (2026-10-14)
+
+Read-only US ISO DOL Wait80192260/7ac, offset-seat801a2768/80 and slot
+BreakTurn80203370/24 were inspected with `tools/inspect_dol_function.py`.
+Ignored inspection files stay under `artifacts/`. Portable source reuses existing
+unchanged PMEVT type table80397af8 and SDATA2 float constants804244e8..804245cc;
+no source PPC text is linked or committed. No new pack format, art conversion,
+HUD asset, scale, or licensing choice. See
+[the source contract](behavior/battle/AUDIENCE_IDLE_BREATHING_AND_DECISIONS.md).
+Private validation also regenerated existing standard pose-directory/model
+companions with the committed extractor for the current source baseline; these
+unchanged original model bytes retain the existing private-use licensing and
+stay outside source history.

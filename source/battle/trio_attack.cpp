@@ -35,6 +35,7 @@
 #include "battle_audience_init.hpp"
 #include "battle_audience_population.hpp"
 #include "battle_audience_actor_control.hpp"
+#include "battle_audience_idle.hpp"
 #include "battle_audience_resources.hpp"
 #include "battle_audience_target.hpp"
 #include "battle_audience_main.hpp"
@@ -386,6 +387,25 @@ struct TrioAttackRuntime {
                     };
                     actor.state=[](void* p,uint32_t fn,int32_t slot,int32_t front){
                         auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(fn,{slot,front});
+                        if(fn==0x80192260){
+                            BattleAudienceIdleServices idle;idle.actors=nativeBattleActorServices(r.vm);idle.user=p;
+                            idle.random=[](void* p,int32_t bound)->std::optional<int32_t>{auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x80005da0,{bound});return r.random.bounded(bound);};
+                            idle.truncate=[](void*,float value)->std::optional<int32_t>{if(std::isfinite(value) && value>=-2147483648.f && value<2147483648.f)return int32_t(value);return {};};
+                            // Known source single-valued inputs use host single
+                            // arithmetic; arbitrary caller FPR29 stays unavailable.
+                            idle.multiplySingle=[](void*,double x,double y)->std::optional<float>{
+                                if(double(float(x))!=x || double(float(y))!=y)return {};
+                                volatile float value=float(x)*float(y);return value;
+                            };
+                            idle.fusedSingle=[](void*,double x,double y,double z)->std::optional<float>{
+                                if(double(float(x))!=x || double(float(y))!=y || double(float(z))!=z)return {};
+                                return std::fma(float(x),float(y),float(z));
+                            };
+                            idle.addTarget=[](void* p,float delta,float bias){auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x801a1a74);if(packedBattleAudienceAddTargetNum(delta,bias,nativeBattleActorServices(r.vm)))return true;r.pending=0x801a1a74;return false;};
+                            if(controlPackedBattleAudienceIdle(slot,front,idle))return true;
+                            if(!r.pending)r.pending=fn;
+                            return false;
+                        }
                         if(controlPackedBattleAudienceIdleReaction(fn,slot,front,nativeBattleActorServices(r.vm)))return true;
                         r.pending=fn;return false;
                     };
