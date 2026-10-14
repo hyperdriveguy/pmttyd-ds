@@ -1,3 +1,49 @@
+## 2026-10-14 — Original class UI ownership and physical command binding
+
+Commit0ae3c80f implements whole original ActSelect Init80116cdc/0x1a4 and
+End80116c78/0x40 with host-testable allocation/free providers, preserved unused
+words, entry/resume arrays, signed source delay arithmetic and ready-byte gate.
+Native harbor ActMenu setup/main/end now bind actual class/cursor/status,
+position, physical pad and camera services. Class work uses tracked SDKheap0
+allocations; legacy weapon projection lifetime is explicitly native. Weapon UI
+End frees its current class owner before zeroing it. Physical B returns from
+weapons to classes; after explicit presentation readiness, physical A selects
+Jump and opens weapons again. The fixture enables Jump in its retained pouch;
+source bare-pouch eligibility is unchanged. An explicit openClassMenu entry is
+available, but normal Game activation is not added in this increment.
+
+The user's two screenshot references are recorded in
+[HUD/menu presentation](behavior/display/NATIVE_BATTLE_HUD_AND_SUBMENU.md):
+compact original top HUD, circular icons beside Mario and a selected-command
+speech bubble. The lower screen must continue the scene into the lower audience;
+the existing lower-screen submenu adapter is interim. Audience stop-throw taps
+remain optional and require a physical alternative plus actual original
+telegraphs/events. No new original asset extraction or payload commit occurred.
+
+Validation uses immutable snapshot artifacts/tutorial-act-ui-ziodkpyd, base
+945cbe10773c328a63d4682fbe6bf86921ffbd71 plus only this code increment.
+Required make test ran:256/257 C++ tests passed, including battle_act_ui and
+harbor_tutorial_original; harbor_encounter_original fails at
+harbor_encounter_tests.cpp:62, groundHeight/landedFloor and jumpHeight assertion,
+in the separate actor-motion work. Log:artifacts/tutorial-act-ui-test.log.
+Since make stops on CTest failure, Python was run separately:145/145 passed
+(artifacts/tutorial-act-ui-python.log). Native make all -o assets-ready with
+existing converted private packs, BUILD=build-act-ui-review and
+TARGET=ttyd-act-ui-review passed (artifacts/tutorial-act-ui-native.log);
+3DSX is452441496 bytes. Existing original act-menu verifier passes24 body pins,
+472 instruction anchors and3 data spans
+(artifacts/tutorial-act-ui-source-verification.json). No Azahar visual check
+was performed for this increment; host/native success does not prove UI parity.
+
+Limits/next: classMenuPresented is an explicit native readiness acknowledgment,
+not recovered original visual cadence. Sound tokens are recorded, playback
+still needs original binding. Connect Game tutorial turn ownership and original
+class icon/bubble renderer, then replace the lower-screen submenu with audience
+scene continuation. Successful Jump voice, full weapon UI lifecycle, Crump
+scheduling, audience actors/throw response and broader ordinary battle providers
+remain incomplete. Continue original US dialogue and simulation-tick action
+commands; do not report the tutorial or full remake complete.
+
 ## 2026-10-14 — Turned book page width
 
 Follow-up user report resolved in commitbc2cfe37. The native crop placement
