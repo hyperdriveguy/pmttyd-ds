@@ -1,3 +1,48 @@
+## 2026-10-14 — StartAC/help, shared manager and Mario motion
+
+Committed `751b81d5`. Complete source StartAC captures battle before resolving
+on, stores state100 and conditionally requests help2 from the retained actor
+token. Help key/display setters preserve current-owner recapture and actual
+inline audience-window active byte; they do not alter crowd target/count.
+Shared ActionCommandManager implements pad→main→fresh display order, null-main
+display skip, exactly-zero clearing ONLY main, and camera8/class1/userB/priority15
+registration. Missing services remain non-resumable provider frontiers after
+prior effects. The obsolete speculative manager reference was replaced with
+these inspected source rules.
+
+Harbor now binds the existing complete MarioJumpPosition service using actual
+eligibility, platform double arithmetic/FMA/fmod, and original sound key/position
+requests with caller-unit metadata. Timing-option raw masks and adjusted
+success-window queries are bound. The original selected Jump demonstrably moves
+Mario and advances to ResultAC80107708; HP/story result and one payment count
+stay unchanged. Native TimingA manager/display cadence is NOT yet automatically
+invoked, and ResultAC is still an explicit frontier. No action success, hit,
+rendered animation/audio playback, turn or tutorial completion is synthesized.
+
+Validation: final isolated snapshot /home/carson/Documents/blender_tests/pm-port/artifacts/tutorial-ac-1ptdwkli, refreshed to8418dfb2 plus scoped
+code/test files, passed `make test`:234/234 C++ and142/142 Python tests. Native
+`make all -o assets-ready BUILD=build-ac-review TARGET=ttyd-ac-review` passed
+with prepared private assets; final rebuilt artifact is that review folder's
+ttyd-ac-review.3dsx. Logs: ignored artifacts/tutorial-ac-full-test.log and
+tutorial-ac-native.log. Read-only ISO verifiers passed23 whole motion/action/
+help/window spans; cadence11 bodies/154 anchors/28 calls; ordinary Jump19 bodies/
+268 commands/57 anchors; Mario motion5 bodies/20 constants/76 anchors. Final
+review source matched scoped code/test/verifier files; diff check passed.
+Initial full validation used a stale pose-directory reader after concurrent
+pack-format advancement; refreshing from committed HEAD fixed all three asset
+loading failures. No new payload/conversion, Azahar/Dolphin, original-runtime
+measurement or complete playable-menu/battle claim. Concurrent changes preserved.
+
+Next: compose complete native private-pad/sequence/action-manager and display
+queue owners; run TimingA callbacks once per simulation tick, bind ResultAC and
+StopAC help/window effects, then original hit services and post-action scheduler.
+Do not double-sample pads, use render frames, or clear remaining callbacks when
+main returns0. Connect original class/target Input and re-entry to player
+registration, consume original poses, render original HUD/menu with physical
+controls and finish second-screen scene/audience plus optional hostile-item taps
+with a physical alternative. Verify in isolated Azahar. Goal remains active;
+full tutorial/battle systems and full-game work remain incomplete.
+
 ## 2026-10-14 — Complete original facing and Harbor Jump continuation
 
 Committed `59317591`. Shared CalculateFaceDirection8010e684/318 implements
