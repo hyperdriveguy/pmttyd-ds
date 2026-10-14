@@ -75,6 +75,8 @@ contradict the recovered contracts.
 | TRACE-01 | D1 + G1 | Matched original execution trace — the validation oracle D1 acceptance needs, and the first of the whole-game trace corpus. |
 | ITEM-01 | D1 + G1 | Field inventory/pouch and field item use (the demo's items; every later chapter's inventory). |
 | PARTNER-FULL-01 | G1 | Field lifecycle and abilities of the six non-Goombella partners. |
+| MENU-01 | G1 | Original field pause menu entries, navigation, pause ownership and saving (the demo only opens it once; every later session uses it). |
+| PROGRESS-01 | G1 | Star points, level-up bonus selection, BP and badges, and their save persistence (the demo's first encounter has no-level-up tail). |
 | AC-01, AC-02, AC-03 | D1 | Jump/Hammer/defense ownership and impact cadence. |
 | DMG-01, DMG-02 | D1 | Weapon power, part defense, damage dispatch/application. |
 | STATUS-01 | D1 | Status lifetime and turn ownership. |

@@ -300,4 +300,3 @@ endif
 .PHONY: debug-short
 debug-short:
 	@$(MAKE) all DEBUG_SHORT_BOOT=1 BUILD=build-debug-short TARGET=ttyd-2ds-debug-short
-
