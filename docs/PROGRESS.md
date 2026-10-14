@@ -1,3 +1,55 @@
+## 2026-10-14 — Native class-menu atlas and transformed quad backend
+
+Commit284390c2 adds strict, atomic loading of original surface/class-icon
+catalogs, synchronous finite GX packet assembly, source-ordered transformed
+quads and native GPU texture/submission/release APIs. The dedicated class atlas
+does not overwrite the global message-icon registry. Quad requests preserve
+bubble mirroring, source material/shadow alpha and full-size flag16 icon anchors.
+Plain US labels use the existing WID1 measurement and StringMatrix glyph
+consumer, centered through the supplied matrix, with explicit two-per-glyph RNG
+requests. Unsupported controls/flags and incomplete primitives reject; no glyph
+or icon substitution is supplied. See
+[the backend contract](behavior/display/NATIVE_CLASS_MENU_PACKET_BACKEND.md).
+
+Native Renderer owns both original atlases and a bounded1024-quad linear arena,
+reset per rendered frame and released at shutdown. Submission uses the existing
+shader and original atlas UVs, source quad order, native upper-screen half-size
+reflow and explicit GPU/Citro2D restoration. UI clocks are not advanced by draw.
+The backend is available for a source presentation owner but has not been called
+from normal tutorial/Game activation yet; no visible menu is claimed.
+
+Validation: final make test in artifacts/tutorial-class-backend-b1d5g17f,
+basecf3e8c442cf12be3207367e72fd961cc535e33df plus this scoped increment,
+passes264/264 C++ and155/155 Python checks
+(artifacts/tutorial-class-backend-test-refreshed.log). Tests load the actual
+private catalogs/font and cover transformed mirrored quads, primitive admission,
+source colors, icon anchors, explicit disabled-path rejection, glyph centering,
+UV/color and required RNG calls. Initial compiler syntax error in the glyph
+failure check was fixed before validation. A subsequent full run exposed stale
+shared atlas data missing original524/134/136; the snapshot's existing committed
+converter regenerated those assets read-only in
+artifacts/class-backend-icon-refresh-87iiehnz and the verified private atlas was
+published. No converter/source expectation was changed to bypass that failure.
+ASSETS already records these original icons and unchanged conversion/licensing.
+
+Native make all -o assets-ready BUILD=build-class-backend-review
+TARGET=ttyd-class-backend-review passes with the prepared private packs
+(artifacts/tutorial-class-backend-native-refreshed.log); final3DSX is452454664
+bytes. An mmap inspection finds the exact refreshed message-icons.bin payload
+at452314696 inside the native artifact. No Azahar/visual GPU check was performed.
+Extracted assets, catalogs and compiled packs remain ignored.
+
+Next: original flag48 disabled icons enter a separate three-stage TEV path at
+iconGX80019a08; that appearance is still unbound, so the backend rejects it.
+Bind it before admitting the complete live class menu. Connect actual packed
+memory, actor projection/GetRingCenter/GetRingOffset, camera/matrix/RNG services
+and once-per-simulation-tick ring publication, then Renderer::drawClassMenu and
+normal tutorial command/turn scheduling. Manual class-readiness acknowledgment
+remains until that owner is complete. Keep physical D-pad/Circle Pad/A/B and
+upper original menus; lower audience continuation and optional physical-equivalent
+stop-throw interaction remain required. Successful Jump voice, broader battle
+scheduling and audience events are unfinished. The active goal remains incomplete.
+
 ## 2026-10-14 — Original class circle/bubble consumers and textures
 
 Commit6a94d338 implements whole DrawMainIconCircle801191a8/0x4a0 and
