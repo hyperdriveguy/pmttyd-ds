@@ -1,3 +1,55 @@
+## 2026-10-14 — Original TimingA display and A-button HUD icons
+
+Committed `17b6bced`. Complete shared original battleAcDisp_TimingA8012a7cc/f8
+and draw helper8012a6b0/110 now preserve source state gates, state99 interpolation
+followed by unconditional30 overwrite, signed entrance/exit counter conditions,
+fresh post-provider reads, separate caller/global owners and32-bit wrap. Draw
+captures global B before camera8 lookup, freshly selects108/109 from B1f50 bit0,
+copies original XYZ templates and requests source offsets(-200,50), scale1 and
+flags16, then increments its retained owner's B1f20. This counter does not alter
+TimingA result/count or Main's finish countdown.
+
+Harbor admits its known borrowed camera8 callbacks after the event pass once per
+physical simulation sample and publishes retained icon requests. Missing art or
+unknown identity/owner reports actionDisplayPending before callback effects;
+render retries do not mutate source display work. Native overlay consumes these
+requests through the existing original-pixel atlas at centered half-size/cropped
+400x240 coordinates. Native C2D rendering adapts original camera/GX; no complete
+iconGX material/matrix or original-runtime visual alignment claim is made.
+Physical A remains the input. Actual native Jump fixtures emit both original A
+icons; failed Jump still completes, deals1 HP and produces original feedback,
+and successful Jump still reaches the existing voice80104508 frontier.
+
+Imported original icon.bin108/109 descriptors2442/2454 and icon.tpl108/109:
+one non-looping48x48 frame each. Original pixels fit the existing512x512 atlas
+with2px transparent padding and no resampling. Updated both ignored local and
+isolated review packs, retaining newly committed coin403. Conversion/provenance
+and copyright restrictions are recorded in ASSETS. No ISO or original payload
+was written into source history; no generated art/tone or dialogue rewrite.
+
+Validation: final isolated artifacts/tutorial-display-0d60usfi, refreshed to
+297ba204 plus scoped changes, passed `make test`:249/249 C++ and142/142 Python
+(no skips). Tests cover source callback state gates/fallthrough, mutable provider
+owners/counters, missing providers, wrap, actual native icon requests, repeated/
+absent input, unchanged failed-Jump feedback and original atlas pixels/UVs. Final
+`make all -o assets-ready BUILD=build-display-review TARGET=ttyd-display-review`
+passed with prepared private assets; artifact is that snapshot's
+ttyd-display-review.3dsx (451596532 bytes).
+Logs: artifacts/tutorial-display-final-test.log, tutorial-display-final-native.log
+and tutorial-display-final-assets.log. Read-only display verifier passed3 whole
+body hashes,5 constants,2 templates and both icon descriptors; startup r2 base
+also pinned. Original listings remain in ignored tutorial-timing-display/draw/
+icon artifacts. Final source/asset converter matched scoped review; diff check
+passed. No Azahar/Dolphin or rendered screenshot/runtime cadence measurement.
+Independent coin, shadow, pose and field edits were preserved.
+
+Next: original class/target menu activation and turn/post-action/phase scheduler
+in Game so these battle requests are reachable through normal play; rendered
+cue/menu smoke fixtures and visual comparison; successful voice/pitch/volume,
+follow-up hits and active stage hazards; second-screen scene/audience rendering
+with optional hostile-item taps and a physical-button equivalent. Tutorial and
+real battle/full-game goals remain incomplete.
+
 ## 2026-10-14 — Native tutorial action-command manager and deferred cleanup
 
 Committed `36aee76a`. Harbor now runs the complete shared original action-command
