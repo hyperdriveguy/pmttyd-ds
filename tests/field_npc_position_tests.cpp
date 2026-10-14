@@ -54,4 +54,34 @@ int main() {
  assert(garfLive->body.root.x==445 && garfLive->body.root.y==0 && garfLive->body.root.z==120);
  quest1.progress.originalNpcTalkState.quest1420=0;quest1.tick({});
  assert(quest1.fieldNpcState(garf->key)->body.root.x==445); // No replay of source init.
+ // Draw suppression leaves the actual registration and position service live.
+ assert(quest1.setFieldNpcFlags(garf->eventName,0x800,true));
+ for(int n=0;n<30;++n)quest1.tick({});
+ garfLive=quest1.fieldNpcNamedState(garf->eventName);assert(garfLive && npcMainDrawSuppressed(garfLive->body.flags));
+ auto admission=garfLive->body;
+ assert(garfLive->presentationReady && npcSideUpdateAdmitted(admission));
+ float sphereDistance=0;assert(npcHitSphere(garfLive->body,garfLive->body.root,0,sphereDistance));
+ assert(quest1.setFieldNpcPosition(garf->eventName,{450,0,125}));
+ quest1.tick({});garfLive=quest1.fieldNpcNamedState(garf->eventName);
+ assert(garfLive && garfLive->body.root.x==450 && npcMainDrawSuppressed(garfLive->body.flags));
+ // The original unlock scene's main40000020 mutation must also survive static publication.
+ assert(quest1.setFieldNpcFlags(garf->eventName,0x40000020,true));quest1.tick({});
+ admission=quest1.fieldNpcNamedState(garf->eventName)->body;assert(!npcSideUpdateAdmitted(admission));
+ assert(quest1.setFieldNpcFlags(garf->eventName,0x20,false));
+ assert(quest1.setFieldNpcFlags(garf->eventName,0x800,false));quest1.tick({});
+ garfLive=quest1.fieldNpcNamedState(garf->eventName);
+ assert(garfLive && garfLive->body.flags==garf->npcFlags && !npcMainDrawSuppressed(garfLive->body.flags));
+ assert(!quest1.setFieldNpcFlags("missing-source-name",0x800,true));
+ const FieldActorRecord* wanderer=nullptr;
+ for(const auto& a:fieldActorCatalog().actors())if(a.room==2 && a.wander.enabled)wanderer=&a;
+ assert(wanderer && quest1.setFieldNpcFlags(wanderer->eventName,0x800,true));
+ for(int n=0;n<90;++n)quest1.tick({});
+ const auto* moving=quest1.fieldNpcNamedState(wanderer->eventName);
+ assert(moving && (moving->body.flags&0x800) && (moving->movement.flags&0x800));
+ // Inactive slots are no longer name-addressable; map teardown discards overrides.
+ assert(quest1.setFieldNpcFlags(garf->eventName,1,false));quest1.tick({});
+ assert(!quest1.fieldNpcNamedState(garf->eventName) && !quest1.setFieldNpcPosition(garf->eventName,{0,0,0}));
+ quest1.progress.room=0;assert(!quest1.setFieldNpcFlags(garf->eventName,0x800,true));
+ quest1.progress.room=2;quest1.tick({});garfLive=quest1.fieldNpcNamedState(garf->eventName);
+ assert(garfLive && garfLive->body.flags==garf->npcFlags && garfLive->body.root.x==10);
 }

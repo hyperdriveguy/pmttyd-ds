@@ -178,7 +178,7 @@ struct FieldNpcInstance {
     std::string pose;
     uint64_t placement=0,seen=0,clock=0,poseAt=0;
     int posePhase=0;
-    uint32_t secondaryFlags=0;
+    uint32_t secondaryFlags=0,mainFlagMask=0,mainFlags=0;
     float savedYaw=0;
     bool scripted=false,initialized=false,paused=false,presentationReady=false,positionOverride=false;
 };
@@ -343,7 +343,9 @@ public:
     const FieldActorRecord* nearbyFieldActor() const;
     uint32_t fieldNpcContact() const{return fieldNpcHit;}
     const FieldNpcInstance* fieldNpcState(uint32_t key) const;
+    const FieldNpcInstance* fieldNpcNamedState(const std::string& originalName) const;
     bool setFieldNpcPosition(const std::string& originalName,FieldWallVector enginePosition);
+    bool setFieldNpcFlags(const std::string& originalName,uint32_t mask,bool enabled);
     bool fieldNpcTalkActive() const {return troubleBoardLocked() || goombaAcquisition.active() || goombaReward.active() || goombaHandIn.active() || fieldActorTalk.message.active();}
     // Bind only after native providers are ready; registry/pouch owners remain Game-owned.
     void bindFieldItemGetPresentation(const FieldItemGetServices& services) {fieldItemGetPresentation=services;}
@@ -405,6 +407,7 @@ private:
     uint32_t fieldNpcEventCandidate=0;
     std::vector<FieldNpcSoundRequest> npcSoundRequests;
     void synchronizeFieldNpcs();
+    uint32_t fieldNpcNamedKey(const std::string&) const;
     void updateFieldNpcEvents();
     void updateFieldNpcCandidates();
     void updateFieldNpcPresentation();

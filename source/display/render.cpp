@@ -413,6 +413,7 @@ void Renderer::fieldActors(const Game& g) {
             if(scripted)npcFlags=(npcFlags&~g.storyPresentation().actors[2].flagMask)|
                 (g.storyPresentation().actors[2].flags&g.storyPresentation().actors[2].flagMask);
             if(actor.kind==0 && npcFlags && (npcFlags&3)!=3)continue;
+            if(actor.kind==0 && npcMainDrawSuppressed(npcFlags))continue;
             float frame=float(g.ticks-plaza.actorStart);
             if(actor.kind==0 && g.fieldActorTalk.message.active() && g.fieldActorTalk.actor.key==actor.key)
                 yaw=g.fieldActorTalk.actor.yaw;

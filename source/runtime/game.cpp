@@ -985,20 +985,36 @@ const FieldNpcInstance* Game::fieldNpcState(uint32_t key) const {
     if(fieldNpcRoom!=progress.room || fieldNpcGeneration!=fieldActorCatalogGeneration())return nullptr;
     const auto found=fieldNpcs.find(key);return found==fieldNpcs.end()?nullptr:&found->second;
 }
-bool Game::setFieldNpcPosition(const std::string& name,FieldWallVector position) {
-    if(name.empty() || !std::isfinite(position.x) || !std::isfinite(position.y) || !std::isfinite(position.z))return false;
-    synchronizeFieldNpcs();
+uint32_t Game::fieldNpcNamedKey(const std::string& name) const {
+    if(name.empty() || fieldNpcRoom!=progress.room || fieldNpcGeneration!=fieldActorCatalogGeneration())return 0;
     for(const auto& actor:fieldActorCatalog().actors()) {
-        if(actor.kind || actor.eventName!=name || !actor.visible(progress.room,progress.originalStory,fieldDoor.interiorMask,fieldSystemFlags))continue;
+        if(actor.kind || actor.room!=progress.room || actor.eventName!=name)continue;
         const auto found=fieldNpcs.find(actor.key);
-        if(found==fieldNpcs.end() || !found->second.initialized || found->second.scripted)return false;
-        auto& state=found->second;
-        // Original evt_npc_set_position writes previous first, then current.
-        // Preserve flags, direction, pose, timers and regular-event anchors.
-        state.body.previous=position;state.body.root=position;state.movement.root=position;
-        state.positionOverride=true;++state.placement;return true;
+        if(found!=fieldNpcs.end() && found->second.initialized && (found->second.body.flags&1))return actor.key;
     }
-    return false;
+    return 0;
+}
+const FieldNpcInstance* Game::fieldNpcNamedState(const std::string& name) const {
+    const auto key=fieldNpcNamedKey(name);return key?fieldNpcState(key):nullptr;
+}
+bool Game::setFieldNpcPosition(const std::string& name,FieldWallVector position) {
+    if(!std::isfinite(position.x) || !std::isfinite(position.y) || !std::isfinite(position.z))return false;
+    synchronizeFieldNpcs();const auto key=fieldNpcNamedKey(name);if(!key)return false;
+    auto& state=fieldNpcs.at(key);if(state.scripted)return false;
+    // Original evt_npc_set_position writes previous first, then current.
+    // Preserve flags, direction, pose, timers and regular-event anchors.
+    state.body.previous=position;state.body.root=position;state.movement.root=position;
+    state.positionOverride=true;++state.placement;return true;
+}
+bool Game::setFieldNpcFlags(const std::string& name,uint32_t mask,bool enabled) {
+    synchronizeFieldNpcs();const auto key=fieldNpcNamedKey(name);if(!key)return false;
+    auto& state=fieldNpcs.at(key);if(state.scripted)return false;
+    state.body.flags=enabled?state.body.flags|mask:state.body.flags&~mask;
+    state.movement.flags=state.body.flags;
+    // Static profiles republish catalog flags each tick. Retain only externally
+    // written bits; wandering profiles already own mutable movement flags.
+    state.mainFlagMask|=mask;state.mainFlags=(state.mainFlags&~mask)|(state.body.flags&mask);
+    return true;
 }
 void Game::synchronizeFieldNpcs() {
     const auto generation=fieldActorCatalogGeneration();
@@ -1154,6 +1170,7 @@ void Game::updateFieldNpcCollision() {
         if(actor.wander.enabled && instance.initialized) {
             root={instance.body.root.x,instance.body.root.y,instance.body.root.z};flags=instance.movement.flags;
         }
+        if(!scripted && !actor.wander.enabled)flags=(flags&~instance.mainFlagMask)|(instance.mainFlags&instance.mainFlagMask);
         const FieldWallVector position{root[0],root[1],root[2]};
         if(inserted.second || instance.scripted!=scripted || instance.placement!=placement)instance.body.previous=position;
         auto& body=instance.body;body.token=actor.key;body.root=position;body.width=actor.npcWidth;

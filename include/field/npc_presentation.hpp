@@ -11,6 +11,8 @@ private:
     std::array<float,91> values{};
 };
 float npcReviseAngle(float);
+// Original late NPC draw skip. Hidden actors remain registered and simulated.
+inline bool npcMainDrawSuppressed(uint32_t mainFlags){return (mainFlags&0x800)!=0;}
 // The local NPC pack must retain the original bank's descriptor0 first.
 const ActorAnimationPose* selectNpcAnimation(const ActorAnimationPack&,const char* name);
 struct NpcCamera {CameraPoint eye,at;};
