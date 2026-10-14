@@ -5,6 +5,7 @@
 #include <memory>
 #include <vector>
 namespace ttyd {
+class AnimationGroupPrefetch;
 class FieldDoorDataWorld;
 class FieldMapFlags;
 class FieldBeroInfo;
@@ -32,6 +33,7 @@ struct FieldAreaEventServices {
  FieldMapFlags* map=nullptr;
  FieldBeroInfo* beroInfo=nullptr;
  FieldBeroExec* beroExec=nullptr;
+ AnimationGroupPrefetch* prefetch=nullptr;
  void* user=nullptr;
  // Exact npc_hide_onoff owner; zero holds,2 completes. Not an empty-list stub.
  int32_t (*hideNpcs)(void*,uint32_t record,bool hide)=nullptr;

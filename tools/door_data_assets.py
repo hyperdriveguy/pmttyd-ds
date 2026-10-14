@@ -46,6 +46,8 @@ def build(iso=DEFAULT_ISO):
         policy='Original full gor02 root/REL data closure and referenced linked DOL EVT objects with actual scanner context; no PPC or arbitrary mutable globals. Full world-service/data binding remains separate.',
         license='Original Nintendo/Intelligent Systems resources; local use only, no redistribution rights')
     (out/'door-data.json').write_text(json.dumps(meta,indent=2)+'\n')
+    from animation_prefetch_assets import build as build_prefetch
+    build_prefetch(iso)
     print('Original mutable door data:',len(packed),'bytes,',len(meta['objects']),'objects')
     return meta
 if __name__=='__main__':

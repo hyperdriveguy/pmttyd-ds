@@ -1622,3 +1622,10 @@ add_executable(battle_audience_item_main_tests tests/battle_audience_item_main_t
 target_link_libraries(battle_audience_item_main_tests PRIVATE ttyd_core)
 add_test(NAME battle_audience_item_main COMMAND battle_audience_item_main_tests)
 set_tests_properties(battle_audience_item_main PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Original two-phase Bero animation prefetch and retained source payload cache.
+target_sources(ttyd_core PRIVATE source/display/animation_group_prefetch.cpp)
+add_executable(animation_group_prefetch_tests tests/animation_group_prefetch_tests.cpp)
+target_link_libraries(animation_group_prefetch_tests PRIVATE ttyd_core)
+add_test(NAME animation_group_prefetch COMMAND animation_group_prefetch_tests)
+set_tests_properties(animation_group_prefetch PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

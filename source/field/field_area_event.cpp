@@ -1,4 +1,5 @@
 #include "field_area_event.hpp"
+#include "animation_group_prefetch.hpp"
 #include "field_door_data.hpp"
 #include "field_door_parameter.hpp"
 #include "field_map_flags.hpp"
@@ -67,6 +68,33 @@ struct FieldAreaEventRuntime {
   out.clear();for(unsigned n=0;n<64;++n){uint8_t b=0;if(!vm.memory.readByte(address+n,b))return false;if(!b)return true;out.push_back(char(b));}return false;
  }
  int32_t call(EventEntry& e,uint32_t fn,bool first) {
+  // The source first-call reset belongs to the event even when a world
+  // provider is not yet installed; USER_FUNC will retain first=false later.
+  if(fn==0x8007a154 && first)e.waitCount=0;
+  if(fn==0x8007a154 && services.prefetch) {
+   AnimationGroupPollServices s;s.user=services.prefetch;s.poll=[](void* p,const char* name){return static_cast<AnimationGroupPrefetch*>(p)->poll(name);};
+   return fieldBeroReadMarioPera(e,false,s);
+  }
+  if(fn==0x80054f3c) {
+   // Capture args and GP before reading the fresh raw destination, then GP word0.
+   const auto args=e.arguments,gp=vm.gpAddresses.currentAddress();uint32_t raw=0,flags=0;
+   if(!vm.memory.readWord(args,raw) || !vm.memory.readWord(gp,flags))return 0;
+   setEventValue(e,signedWord(raw),signedWord(flags),vm.interpreterServices().operands);return 2;
+  }
+  if(fn==0x8007aa04) {
+   const auto args=e.arguments;if(!services.beroExec)return 0;
+   const auto bits=services.beroExec->read();if(!bits)return 0;
+   uint32_t raw=0;if(!vm.memory.readWord(args,raw))return 0;
+   setEventValue(e,signedWord(raw),signedWord(*bits),vm.interpreterServices().operands);return 2;
+  }
+  if(fn==0x8007aa34) {
+   if(!services.beroExec)return 0;
+   FieldBeroExecEventServices s;s.user=this;
+   s.word=[](void* p,uint32_t a){return static_cast<FieldAreaEventRuntime*>(p)->word(a);};
+   s.value=[](void* p,EventEntry& e,int32_t raw){auto& r=*static_cast<FieldAreaEventRuntime*>(p);return getEventValue(e,raw,r.vm.interpreterServices().operands);};
+   s.owner=[](void* p){return static_cast<FieldAreaEventRuntime*>(p)->services.beroExec;};
+   return fieldBeroExecOnOffEvent(e,s);
+  }
   if(fn==0x8007a50c){const auto address=uint32_t(e.locals[0]);if(!services.beroInfo || !services.beroExec || !services.map || services.map->room()!=room)return 0;return services.beroInfo->registerOriginal(address,*services.map,*services.beroExec)?2:0;}
   if(fn==0x8007a214){
    if(!services.beroInfo || !services.beroInfo->registered())return 0;
