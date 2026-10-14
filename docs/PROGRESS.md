@@ -1,3 +1,41 @@
+## 2026-10-14 — Original weapon submenu controls and physical tutorial bridge
+
+Committed `012b38b2`: complete shared WeaponSelect Main/End and source key gate,
+plus complete audience-interruption writer with explicit provider readiness.
+Confirmation/pending/reason order, interior Repeat vs boundary Trigger,
+post-request cursor rereads, forward priority, special Item cancel states,
+UI-before-flags End and result0 audience ownership follow source contracts.
+Native general pad is provisioned/sampled separately from private defense;
+tutorial submenu API confirms with physical A and cancels with B only after
+its explicit menu-presented signal. Actual Crump targets come from the source
+decision; no HP/result/attack root is fabricated. Cursor/target/reason and raw
+sound IDs/keys are exposed for original presentation consumers.
+
+Native open/End/target setup are immediate UI projections, not complete original
+UI constructors/animation. Game still lacks automatic original class/target
+controller activation; the submenu is not yet visible/playable in the complete
+tutorial flow. Host acknowledgements are controlled fixtures, not GPU evidence.
+Audience trigger0 uses its source early return; an admitted X interruption
+retains the unbound item producer instead of synthesizing item0/-1 or success.
+Exact light/UI Main blr leaves remain no-ops; original sounds are queued without
+generated tones. Cost/updater bindings were factored for reuse without rebuilding
+the table in Main.
+
+Validation: shared make test passed229/229 C++ and141/141 Python tests. Final
+focused Main/tutorial rerun passed2/2 after a fixture global-pointer correction
+and cursor-reread check. Native make all BUILD=build-tutorial-menu-layout
+TARGET=ttyd-2ds-menu-layout passed; final rebuild after cleanup passed with
+-o assets-ready (full preparation had completed). Existing source verifiers
+passed menu20 bodies/344 anchors and interruption20 bodies/243 anchors. No
+Azahar/Dolphin run; no native menu rendering or full battle fidelity claim.
+No new game payload/conversion; scoped commits preserve concurrent work.
+
+Next: original class/target controllers and UI activation, selected target/type/
+event ownership, Mario action timing/impact and complete turns; original camera,
+window/effect/audio and crowd item/throw providers. Preserve original menu/HUD
+art and physical routes; audience taps on the lower screen remain optional.
+The full tutorial/battle goal remains active.
+
 ## 2026-10-14 — Goomba3 portable parcel acquisition
 
 Committed `3b71d849`. Original quest2 acquisition now has a host-testable
