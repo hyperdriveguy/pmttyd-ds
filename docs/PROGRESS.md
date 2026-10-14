@@ -1,3 +1,93 @@
+## 2026-10-14 — Native original icon material programs
+
+Previous goal turn made progress with original icon resources and actual native
+texture residency. Commit `74cf0c20` now binds the next material services and
+publishes original flat icon tint/grayscale/map-blend programs for PICA.
+[Source contract and native limitations](behavior/display/NATIVE_ICON_MATERIAL_PROGRAMS.md).
+Production iconGX advances through its actual material/display/Begin requests
+and still waits for the primitive provider. No quad, normal scene composition,
+tutorial completion or playable throw is acknowledged by this increment.
+
+Native map-light calls run the recovered helper with actual selected battle light
+work and flags4, including the ambient lookup. That source path disables lighting
+and sets constant material; missing banks do not become empty-light success.
+Map work/flags and blend use the existing primary material owner. Fresh read-only
+review pins mapGetBlend8001d968/34: flags2 copies raw group+16hex RGBA, otherwise
+original DATA8041f920 white. Actual current-camera/group fog helper is bound;
+fog-off is published, enabled fog remains unavailable. Blend/alpha/depth requests
+use the existing actual display-state owner, preserving its source write masks.
+
+NativeIconProgram retains channels/registers/stages/swaps/descriptors/texture
+coordinates/cull/fog. Setters own partial state across waits; complete supported
+plans publish before Begin. Normal texture/material then C1 RGBA uses two stages;
+actual admitted map blend adds C2 RGBA. Grayscale accumulates three replicated
+texture components through original C1, with texture alpha times C2 alpha;
+C2 RGB does not tint grayscale. Three native RGB/alpha stages retain this dataflow.
+No grayscale bitmap or replacement art. Original GX internal precision remains
+unproven. Source __GXInitGX identity table0 was verified; changed unsupported
+table0 holds normal Begin. Captured plans survive source post-draw swap resets
+and are cleared when residency is retired. Shared effect writers still need
+actual global state ownership.
+
+Host tests drive whole original iconGX through recovered light/fog helpers and
+the new owner: used flags, primary map blend, normal/gray/alpha/cull, successive
+icons, linked waits, post-draw cleanup versus capture, unavailable banks and
+changed table0/fog refusal. Initial focused compilation needed explicit const
+pointer returns in fixture callbacks. First focused execution correctly held on
+the fixture's unavailable field bank; selecting the declared battle bank fixed
+the fixture. Final focused checks and full suites pass. No production logic was
+changed to invent a missing light bank.
+
+Validation froze917e8c30a0f6bdf3f879b6e6685e31e134cf3c93 plus owned source,
+headers/CMake/tests in artifacts/battle-lens-qwwrj2n7. Later concurrent NPC/field
+work and unrelated dirty changes were excluded. Reused private original packs;
+no extraction/conversion/resampling was needed. Initial native build exited0.
+The temporary ignored orthographic render main initially failed with its stack
+below mapped storage; moving large Game/light fixtures to heap allocation,
+matching the normal runtime, resolved that harness issue. No production stack
+limit was weakened. The probe ran original iconGX, original icon108 A-button
+art/resources, recovered helper services and the actual native PICA publisher.
+Camera/map-color/final-quad/depth-disabled submission were explicit fixture
+adapters. It did not run normal battle Main or validate original source framing.
+
+Isolated Azahar final smoke exited0; inspected
+artifacts/azahar-icon-material-heap/boot.png shows six cases: normal, tinted,
+grayscale, map blend, full-size alpha and full-size gray alpha. Scalar RGBA
+references compared824 constant2x2 decoded original patches per case (4944
+comparisons): max channel error0 for normal/tint/blend/alpha,1 for grayscale.
+Check exited0, artifacts/icon-material-pixel-check.json. This is native material
+pixel evidence on that fixture, not a Dolphin/GX parity comparison or hardware
+benchmark. User emulator profile and saves were untouched.
+
+Normal main was restored before final production checks. MAKEFLAGS=-j4 make test
+exited0:321/321 C++ (35.76s),185/185 Python (27.082s),
+artifacts/icon-material-test-final.log. MAKEFLAGS=-j4 TMPDIR="$PWD/artifacts/tmp"
+make all -o assets-ready BUILD=build-battle-lens TARGET=ttyd-battle-lens exited0,
+artifacts/icon-material-native-final.log, using private validated packs. Final
+check-doc-links exited0:1330 Markdown files,zero broken links. Exact source/
+binary/pixel identities are in artifacts/icon-material-validation.json. Every
+build/test/emulator process handle was observed terminal. Authoritative source
+inputs stayed fixed during validation. Scoped temporary-index commit preserved
+other threads' work. No original PPC text, resource bytes, compiled pack, probe
+main or binary was committed. ASSETS records new static source provenance and
+unchanged original-resource licensing.
+
+Current render ordering invokes the queued source pass before the independent
+world adapter. Production item geometry needs retained packets at the proper
+scene stage, with actual source transforms/display state and lower-screen replay;
+a direct immediate quad at that earlier callback would not prove composition.
+Keep accepted geometry across source/provider frame waits and retain captured
+plans through cleanup. Native quad provider remains unavailable until that owner
+is implemented. Menu art/layout, dialogue/story, controls, action timing, unit/
+model scale and lower-screen world replay were unchanged.
+
+Next implement retained primitive emission/composition into both scene views,
+verify held/thrown items, complete original present-item execution and bind
+physical X plus optional audience taps. Full GP/Main/camera cadence, enabled
+fog/shared effects, remaining stage/AP providers, tutorial follow-up hits,
+teardown/field return and real sample playback remain open. The full tutorial
+and real battle goal remains active and incomplete.
+
 ## 2026-10-14 — Native original icon directory, cells and residency
 
 Previous goal turn made progress with whole iconGX and its wrapper connection.
