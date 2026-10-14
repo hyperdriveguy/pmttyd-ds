@@ -17,6 +17,7 @@
 #include "battle_weapon_cost.hpp"
 #include "battle_facing.hpp"
 #include "battle_action_help.hpp"
+#include "battle_action_feedback.hpp"
 namespace ttyd {
 namespace {void required(bool ok){if(!ok)std::abort();}int32_t signByte(uint8_t b){return b<128?int32_t(b):int32_t(b)-256;}}
 uint32_t HarborTutorialPacked::word(uint32_t a)const{uint32_t v=0;required(vm.memory.readWord(a,v));return v;}
@@ -123,6 +124,7 @@ void HarborTutorialPacked::publish(const HarborTutorial& scene){
  }
 }
 void HarborTutorialPacked::capture(HarborTutorial& scene){
+ scene.successDeclarations=byte(Battle+0x16f58);scene.failureDeclarations=byte(Battle+0x16f59);
  scene.battleFlags=word(Battle+0xef4);
  for(unsigned slot=0;slot<4;++slot){auto& a=slot?scene.actors[slot-1]:scene.systemActor;if(a.id<0 || a.id>3 || !registered[a.id])continue;const auto u=Units+uint32_t(a.id)*0x1000;
   uint16_t v=0;required(vm.memory.readHalf(u+0x10c,v));a.hp=int16_t(v);required(vm.memory.readHalf(u+0x108,v));a.maxHp=int16_t(v);
@@ -154,6 +156,17 @@ bool HarborTutorialPacked::invoke(EventEntry& e,uint32_t function,int32_t first,
  if(function==0x801093a8)marioJumpUnit=actor(e); // Native sound metadata captures the actual caller unit.
  if(registry.invoke(e,function,first,result))return true;
  switch(function){
+ case 0x80139af4:result=2;return true; // Complete original li2/blr AP-recovery stub.
+ case 0x80139898:packedBattleAudienceAcrobatNoTry(nativeBattleActorServices(vm));result=2;return true;
+ case 0x8010749c:{
+  const auto memory=nativeBattleActorServices(vm);
+  if(packedBattleAudienceWaitingCount(memory)!=0)return false; // Native preflight; populated-case service providers remain unbound.
+  BattleActionFeedbackServices s;s.memory=memory;s.values=nativeBattleUnitEventServices(vm).values;s.user=this;
+  s.signedWordFloat=[](void* self,int32_t v){auto& p=*static_cast<HarborTutorialPacked*>(self);return p.vm.platform.signedWordFloat(p.vm.platform.user,v);};
+  s.fma=[](void* self,float a,float b,float c){auto& p=*static_cast<HarborTutorialPacked*>(self);return p.vm.platform.fmaFloat(p.vm.platform.user,a,b,c);};
+  s.audience=[](void* self,uint32_t weapon,bool good){auto& p=*static_cast<HarborTutorialPacked*>(self);BattleAudienceFeedbackServices a;a.memory=nativeBattleActorServices(p.vm);return packedBattleAudienceActionFeedback(weapon,good,a);};
+  const auto completion=packedBattleDeclareActionResultEvent(e,s);if(!completion)return false;result=*completion;return true;
+ }
  case 0x80106f40:{const auto on=value(e,0);const auto mask=uint32_t(raw(e,1));const auto flags=word(Battle+0x1f50);word(Battle+0x1f50,on?flags|mask:flags&~mask);result=2;return true;}
  case 0x80106ef0:{TimingACommand timing;const auto window=timing.successWindow(byte(Battle+0x1cbd));if(window<0)return false;output(e,0,window);result=2;return true;}
  case 0x80107788:result=packedBattleStartActionCommandEvent(e,nativeBattleUnitEventServices(vm),nativeBattleActorServices(vm));return true;

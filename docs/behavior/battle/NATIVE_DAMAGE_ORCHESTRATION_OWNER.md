@@ -93,7 +93,7 @@ The native original Jump fixture supplies no action press after aging menu A
 out of general history. TimingA result0 selects source ordinary power1; the
 shared damage/calculation/application path changes Crump HP5→4, records Mario
 U284=1 and registers actual Crump U2b4. The source script then stops live at
-AcrobatNotry8010749c. Additional ticks retain HP4 and dealt1, proving no repeated
+AudienceDeclareACResult8010749c. Additional ticks retain HP4 and dealt1, proving no repeated
 impact while that request waits. Original damage-sound owner2/key are retained.
 The success fixture still stops before damage at original voice80104508; its
 HP stays5. Existing Crump→Mario and retained lethal/guard frontiers remain tests.

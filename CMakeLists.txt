@@ -1185,3 +1185,8 @@ target_sources(ttyd_core PRIVATE source/battle/battle_camera_frame.cpp)
 add_executable(battle_camera_frame_tests tests/battle_camera_frame_tests.cpp)
 target_link_libraries(battle_camera_frame_tests PRIVATE ttyd_core)
 add_test(NAME battle_camera_frame COMMAND battle_camera_frame_tests)
+
+target_sources(ttyd_core PRIVATE source/battle/battle_action_feedback.cpp)
+add_executable(battle_action_feedback_tests tests/battle_action_feedback_tests.cpp)
+target_link_libraries(battle_action_feedback_tests PRIVATE ttyd_core)
+add_test(NAME battle_action_feedback COMMAND battle_action_feedback_tests)

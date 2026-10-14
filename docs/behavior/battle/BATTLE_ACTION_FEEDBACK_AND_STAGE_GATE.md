@@ -130,3 +130,42 @@ complete attack declaration conditions and original phase/input traces. Observe
 counts at0/199/200,classification versus result0/-1,feedback ordering across
 moves and actual stage-fall suppression. This closes local writer/reader links,
 not full tutorial stats,restrictions,rewards,combat or complete-game requirements.
+
+## Shared/native declaration implementation (2026-10-14)
+
+`battle_action_feedback.cpp` implements the complete local wrapper and inner
+record writer with explicit audience providers. Saturation preserves200/255,
+classification is always written, exactly-1 is the bad path, other grades use
+original single conversion/fused quarter-plus-half. Good-record weapon/bytes
+remain source data. Unbound providers can follow prior writes; the API does not
+promise retry-safe replay or imply audience/SP/UI completion.
+
+Shared audience bad/good helpers retain captured inline base, query all200
+waiting actors, invoke their required populated-case service sequence, then OR
+20/10 into fresh flags at the retained base. Waiting uses original fresh getter
+owners: GetExist requires flag1 and excludes100/2; GetSysCtrl additionally
+excludes10; signed pending halfword must be-1 and unsigned state19 must be<=3.
+Getters retain their record before nested existence/control requests. Actor
+addresses/indices and field reads retain source wrap/order rather than a native
+population-size shortcut. Native Harbor preflights actual waiting count0 before
+publishing declaration counts, then runs the full local helper in that domain.
+Populated-case services remain unbound; no count is replayed while they wait.
+This is explicit native admission, not whole audience initialization/control.
+
+Harbor capture now retains live declaration bytes so the next scene publication
+does not erase them. The original failed Jump itself increments failure1 after
+its HP impact; raw ResultAC alone does not. The actual AcrobatNotry wrapper
+80139898 calls its20-byte base getter-only service8019f4d0. AP-recovery event
+80139af4 is exactly li2/blr; those complete local bodies now admit their source
+routes. Jump advances to InviteApInfoReport8010436c without inventing report
+allocation, SP recovery or a reward. Its HP4/dealt1/failure1 remain stable.
+
+Correction: older handoff/native-damage text misnamed pending8010749c as
+AcrobatNotry. It is AudienceDeclareACResult; AcrobatNotry is80139898. The source
+IDs, execution and assertions used the actual addresses; the label is corrected.
+Tests cover count199/200/255, grade-2/2, original multiplier/bytes, waiting gates,
+empty and populated helper requests, missing providers and original script
+counter production. Native success still waits at voice80104508. Full audience
+report/aftereffect/action completion, manager/display cadence, original menus/HUD
+and second-screen crowd/item input remain open; no native visual/runtime or
+Dolphin measurement claim follows from these controlled fixtures.
