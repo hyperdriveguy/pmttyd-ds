@@ -34,6 +34,14 @@ class BattlePoseDirectoryTests(unittest.TestCase):
             write_directory(source, Path(folder) / 'actor.pose-directory.bin')
             self.assertEqual((Path(folder) / 'actor.draw-model.bin').read_bytes(), raw)
 
+    def test_texture_companion_preserves_original_bytes(self):
+        with tempfile.TemporaryDirectory() as folder:
+            source, texture = Path(folder) / 'model', Path(folder) / 'texture'
+            source.write_bytes(self.model())
+            texture.write_bytes(b'original opaque TPL bytes')
+            write_directory(source, Path(folder) / 'actor.pose-directory.bin', texture)
+            self.assertEqual((Path(folder) / 'actor.draw-textures.bin').read_bytes(), texture.read_bytes())
+
     def test_preserves_source_order_and_resource_names(self):
         raw = self.model()
         self.assertEqual(source_directory(raw),

@@ -3,6 +3,7 @@
 #include "animation_draw_traversal.hpp"
 #include "animation_shape_render.hpp"
 #include "map_material_light.hpp"
+#include "animation_texture.hpp"
 #include "battle_event_callbacks.hpp"
 #include "event_memory_bootstrap.hpp"
 #include "event_memory_release.hpp"
@@ -176,6 +177,7 @@ struct TrioAttackRuntime {
     BattlePoseInnerCursor poseInnerCursor;
     AnimationDrawTraversalCursor poseTraversalCursor;
     AnimationShapeCursor poseShapeCursor;
+    AnimationTextureCursor poseTextureCursor;
     uint32_t poseDrawMode=1; // Replay battle_init -> animPoseBattleInit W10c=1; retained until autoRelease(1).
     std::optional<uint32_t> poseDrawPass;
     std::optional<BattlePoseInnerContext> poseDrawContext;
@@ -2011,6 +2013,12 @@ bool TrioAttack::resumeShadowDisplay(uint32_t camera,uint32_t userdata,const Sha
     return shadowDisplay(*runtime_->shadows,camera,userdata,runtime_->shadowDisplayCursor,runtime_->shadowDisplayGlobals,services);
 }
 const CameraManager* TrioAttack::cameras()const{return runtime_?runtime_->cameras.get():nullptr;}
+bool TrioAttack::resumeTexture(const BattlePose& pose,uint32_t draw,const AnimationTextureServices& services,uint32_t& pending)const{
+    if(!runtime_)return false;
+    const bool complete=resumeAnimationTexture(pose,draw,services,runtime_->poseTextureCursor);
+    if(!complete)pending=runtime_->poseTextureCursor.pending;
+    return complete;
+}
 const MapMaterialLightWork* TrioAttack::materialLights()const{return runtime_?&runtime_->materialLights:nullptr;}
 bool TrioAttack::resumeMaterialLight(uint32_t flags,std::array<float,3> origin,const MapMaterialLightServices& services,uint32_t& pending)const{
     if(!runtime_ || !runtime_->materialLights.battleLoaded)return false;

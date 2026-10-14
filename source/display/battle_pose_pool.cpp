@@ -1,4 +1,5 @@
 #include "battle_pose_pool.hpp"
+#include "animation_texture.hpp"
 #include "animation_sample_time.hpp"
 #include <cassert>
 #include <cstring>
@@ -71,6 +72,12 @@ std::shared_ptr<const BattlePoseResource> loadBattlePoseResource(const char* dir
                 }
             }
             resource->draw=std::move(draw);
+        }
+        const auto texturePath=path.substr(0,path.size()-suffix.size())+".draw-textures.bin";
+        if(FILE* raw=std::fopen(texturePath.c_str(),"rb")){
+            auto textures=std::make_shared<AnimationTextureResource>();const bool valid=textures->read(raw);std::fclose(raw);if(!valid)return {};
+            if(resource->draw)for(uint32_t i=0;i<resource->draw->word(0x134);++i){const auto h=resource->draw->word(0x198)+64*i;if(resource->draw->word(h+8)==0 && resource->draw->word(h+4)>=textures->count())return {};}
+            resource->textures=std::move(textures);
         }
     }
     cache[key]=resource;return resource;

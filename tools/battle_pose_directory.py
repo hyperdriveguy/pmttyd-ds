@@ -24,7 +24,7 @@ def source_directory(raw):
             [name(offset + i * 64, 60) for i in range(count)])
 
 
-def write_directory(model, output):
+def write_directory(model, output, texture=None):
     raw = Path(model).read_bytes()
     model_name, texture_name, names = source_directory(raw)
     def field(value):
@@ -53,4 +53,6 @@ def write_directory(model, output):
     suffix = '.pose-directory.bin'
     if str(output).endswith(suffix):
         Path(str(output)[:-len(suffix)] + '.draw-model.bin').write_bytes(raw)
+        if texture is not None:
+            Path(str(output)[:-len(suffix)] + '.draw-textures.bin').write_bytes(Path(texture).read_bytes())
     return model_name, texture_name, names

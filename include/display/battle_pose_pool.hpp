@@ -14,6 +14,7 @@ struct BattlePoseResource {
     std::optional<uint32_t> modelFlags; // Original MODEL+c4, independent of pose flags.
     std::vector<std::vector<BattlePoseDiscreteKey>> discrete;
     std::shared_ptr<const ActorAnimationPack> bank;
+    std::shared_ptr<const class AnimationTextureResource> textures; // Original immutable TPL companion.
     std::shared_ptr<const AnimationDrawResource> draw; // Unchanged original group/shape/draw/index data.
 };
 std::shared_ptr<const BattlePoseResource> loadBattlePoseResource(const char* directory,const char* pack);

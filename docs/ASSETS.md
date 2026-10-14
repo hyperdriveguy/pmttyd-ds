@@ -1022,3 +1022,26 @@ ISO, extracted bytes, compiled packs, fixture profiles and probe binaries stay
 ignored outside history. Nintendo/Intelligent Systems assets retain original
 licensing; this conversion grants no distribution rights. Private validation
 identities are in artifacts/area-parent-validation-manifest.json.
+
+### 2026-10-14 — Unchanged original animation TPL companions
+
+The standard pose-directory writer accepts the matching original texture source
+and emits .draw-textures.bin beside the unchanged MODEL companion. Trio and
+Professor import/cache paths now require/produce these private files:
+
+| Private companion | Original ISO source | Bytes | SHA256 |
+| --- | --- | ---: | --- |
+| trio-attack-mario.draw-textures.bin | a/a_mario- | 731296 | 2ccf4f212340bb9cce33cd8457ac92a24ca3fc0db4fc95237224775e9534845e |
+| trio-attack-goombella.draw-textures.bin | a/c_pkr- | 90432 | 162b5151601b129fc667f51b90ac6124de863ab2dff79b997cd143ed4d5c4b88 |
+| professor.draw-textures.bin | a/c_kuri_h- | 24896 | c4114e4c5991d0cc19fd9c5b97849369cc5eb361b7e723d3f2ee1b69135e12ef |
+
+Bytes are unchanged; native CPU retains only validated header projections after
+import, while resident existing converted atlases supply GPU pixels. No image
+was regenerated for this change. Existing scaling/border/cell conversions remain
+in force: Mario512x512(scale1),Goombella512x256(scale2),Frankly1024x256(scale4).
+Specific package palettes, not original texture names alone, identify cells.
+The ISO stays read-only and all companions/packs/extracts remain ignored. Original
+Nintendo/Intelligent Systems licensing grants no redistribution rights. Tests use
+an in-memory altered model/CI provider only; no synthetic image is shipped.
+Private validation emits the three companions from existing read-only extracts
+and refreshes baseline Bero/door data only in owned private cache directories.

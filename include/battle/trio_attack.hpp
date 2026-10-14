@@ -47,6 +47,7 @@ public:
     const CameraDepthSnapshot* cameraDepthSnapshot() const;
     const DisplayQueue* displayQueue() const;
     const CameraManager* cameras() const;
+    bool resumeTexture(const BattlePose&,uint32_t,const struct AnimationTextureServices&,uint32_t& pending) const;
     const struct MapMaterialLightWork* materialLights() const;
     bool resumeMaterialLight(uint32_t,std::array<float,3>,const struct MapMaterialLightServices&,uint32_t& pending) const;
     void setCameraLetterboxServices(const CameraLetterboxServices&);

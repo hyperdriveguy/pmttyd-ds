@@ -22,10 +22,10 @@ def build(iso):
     helpers=['character_mesh.py','character_surface_mesh.py','character_bake.py','character_node.py','character_animation_pack.py','character_animation_data.py','iso_assets.py','battle_pose_directory.py']
     fingerprint=hashlib.sha256(Path(__file__).read_bytes()+b''.join(Path('tools',p).read_bytes() for p in helpers)+model.read_bytes()+tpl.read_bytes()).hexdigest()
     manifest=Path('romfs/professor.json')
-    required=[Path('romfs/professor.'+suffix) for suffix in ['pmmesh','pmanim','t3x','bin','pose-directory.bin','draw-model.bin']]
+    required=[Path('romfs/professor.'+suffix) for suffix in ['pmmesh','pmanim','t3x','bin','pose-directory.bin','draw-model.bin','draw-textures.bin']]
     if manifest.exists() and all(p.exists() for p in required) and json.loads(manifest.read_text()).get('fingerprint')==fingerprint:return
     poses=source_directory(model.read_bytes())[2]
-    write_directory(model,required[4])
+    write_directory(model,required[4],tpl)
     directory=struct.unpack_from('>I',model.read_bytes(),0x1ac)[0]
     zero=model.read_bytes()[directory:directory+60].split(b'\0')[0].decode('ascii')
     if poses[0]!=zero:raise ValueError('Original descriptor0 must lead the native NPC bank')

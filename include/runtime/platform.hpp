@@ -31,6 +31,7 @@
 #include "native_display_state.hpp"
 #include "native_shadow_program.hpp"
 #include "map_material_light.hpp"
+#include "animation_texture.hpp"
 #include <memory>
 #include <3ds.h>
 #include <citro2d.h>
@@ -125,6 +126,11 @@ private:
     int count=0, transformLoc=0, marioPose=0;
     shaderProgram_s program{};
     NativeCameraDraw finishingCameraDraw;
+    AnimationTextureRequest finishingTextureObject;bool finishingTextureObjectReady=false,finishingTextureLODReady=false;
+    struct FinishingAtlas {std::shared_ptr<const BattlePoseResource> resource;uint16_t cell=0;};
+    std::optional<FinishingAtlas> finishingAtlas;
+    std::optional<BattleActMatrix> finishingTextureMatrix;uint32_t finishingTextureGenerator=60;
+    bool finishingAnimationTexture(const AnimationTextureRequest&);
     std::optional<BattleActMatrix> finishingShapeNormal; // Actual source normal-matrix owner; consumed by future lit-shape backend.
     NativeDisplayState finishingDisplayState;
     NativeShadowProgram finishingShadowProgram;

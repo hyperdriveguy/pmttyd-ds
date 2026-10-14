@@ -15,8 +15,15 @@ bool Renderer::prepareShadowTexture44(){
 bool Renderer::finishingShadowGpu(const NativeShadowProgram& p){
     if(!p.seeded)return false;
     if(p.texture){
-        if(*p.texture!=ShadowTexture::N64Texture44 || !shadowTexture44.imported)return false;
-        C3D_TexBind(0,&shadowTexture44.texture);
+        if(*p.texture==ShadowTexture::CharacterAtlas){
+            if(!finishingAtlas)return false;
+            auto* texture=finishingAtlas->resource==trioPartnerAnimations?&trioPartnerTexture:finishingAtlas->resource==trioMarioAnimations?&trioMarioTexture:nullptr;
+            if(!texture || !texture->imported)return false;
+            C3D_TexBind(0,&texture->texture);
+        }else{
+            if(*p.texture!=ShadowTexture::N64Texture44 || !shadowTexture44.imported)return false;
+            C3D_TexBind(0,&shadowTexture44.texture);
+        }
     }
     C3D_BindProgram(&program);
     auto* attrs=C3D_GetAttrInfo();AttrInfo_Init(attrs);

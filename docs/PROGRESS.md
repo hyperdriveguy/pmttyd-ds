@@ -5254,3 +5254,83 @@ The full-game goal remains active and unfinished.
 
 Implementation commit1acd7448. Documentation link check:1304 Markdown files,
 zero broken links (tools/check_doc_links.py).
+
+### 2026-10-14 — Original TPL texture objects and resident atlas binding
+
+Added unchanged original TPL companions for Mario,Goombella and Frankly through
+the existing directory writer/import/cache paths. Shared pose resources validate
+TPL tables,header/base-image/palette extents and ordinary descriptor indices,
+retaining only metadata after the temporary import buffer is released. Source
+file offsets are provenance, never native pixel/TLUT pointers. Existing resident
+converted atlases remain the GPU pixel owners; no image was regenerated here.
+
+Implemented retained animSetMaterial_Texture object/coordinate request graphs:
+reversed slots, live byte state/base addition and wrap capture, separate first/
+second TEXGet, CI/ordinary/LOD/TLUT ordering, all image passes before coordinate
+passes, kind skipping, fresh5-float lanes and exact original matrix gates/order/
+coefficient. Fixed12-operation storage avoids per-coordinate program allocation.
+Held requests preserve arguments and do not replay completed lookups/math.
+PMANIM3's converter admits identity/no-shift bases; PMANIM4 uses live surfaces.
+Native binds actual matching Mario/Goombella package/palette/resident texture,
+CMPR/clamp/linear/noLOD/noCI/coordinate0, via real Citro3D texture0 state. It retains
+coordinate generator/matrix for the future fan consumer and synchronizes resource
+retirement. CI payloads,other samplers/multitexture,Frankly's distinct GPU owner,
+SDK object/register packing and mutable/reentrant source domains remain open.
+See [native texture scope](behavior/display/NATIVE_ANIMATION_TEXTURE_BINDING.md).
+
+Independent documentation review found no blocker in this admitted path and
+checked ALL converted palette mappings310Mario/129Goombella/201Frankly entries
+against original descriptor/TPL indices and package-global cells. It confirmed
+PMANIM3/4 state semantics, GPU dimensions and single V-height correction; see
+[atlas identity evidence](behavior/display/NATIVE_ANIMATION_TEXTURE_STATE_AND_ATLAS_IDENTITY.md).
+Texture-name equality alone never substitutes for converted package identity.
+
+Validation uses frozen artifacts/texture-render-source from3089a4e4 plus only
+owned changes. Private RomFS copies the prior pack, emits unchanged companions
+from read-only original extracts and refreshes baseline Bero/door packs only in
+owned private directories. Initial two-slot test fixture failed import because
+it retained an unused UV selector with an empty source array. Corrected the
+fixture to select its existing UV stream. Final native-only cleanup also invalidates
+the binding in changeRoom before its second atlas-release path; host-target
+code stayed unchanged after the passing host run. Native checks were repeated.
+Final `CMAKE_BUILD_PARALLEL_LEVEL=4 make -C artifacts/texture-render-source test`
+exited0:307/307 C++ and178/178 Python tests; log
+artifacts/texture-render-test-final.log. Tests cover actual image44/state1 cell10,
+held load capture/nonreplay, CI requests, reverse two-slot/kind skipping, live
+float capture, literal sy gate, source coefficient and R*M*S. Altered fixtures
+are tests, not original execution evidence. Documentation:1304 files,0 broken links.
+
+Headers/layouts were frozen BEFORE native compilation. Normal
+`TMPDIR="$PWD/artifacts/native-stage-map-tmp" make -C artifacts/texture-render-source all -o assets-ready BUILD=build-texture-render-normal TARGET=ttyd-texture-render-normal -j4`
+exited0, log artifacts/texture-render-build-final.log. Restored normal build with-j4
+also exited0, log artifacts/texture-render-build-final-restored.log. Normal3DSX SHA256
+43745cb4f9669fb75363ed040c8c158ff76eeccc0147393ed9b7467cb61c0e86,
+identical before/after temporary harness restoration. Tracked baseline+owned
+implementation/config/assets/tests/tools audit covers2044 files, excludes
+bytecode/build outputs and has zero mismatches. Exact hashes and private-pack/
+binary identities:artifacts/texture-render-validation-manifest.json. Concurrent
+later shared changes are preserved; the merged live tree is not claimed tested
+as one build.
+
+Isolated45s normal fresh-save and150s ending runs exited0; final logs
+artifacts/texture-render-smoke-final-normal.log and
+artifacts/texture-render-smoke-final-ending.log, captures under
+artifacts/azahar-texture-render-final-normal and
+artifacts/azahar-texture-render-final-ending. Inspected normal
+capture shows original storybook/US text at60AppFPS,100% emulator speed. Actual
+ending camera4/queue21/part callback80101774 now reaches last-stage color80021860,
+advancing beyond texture8003dcfc. Private texture-binding.txt records draw0x5284,
+object/LOD ready1,original TPL44/source size40x32,atlas cell0,character texture2,
+generator30,known identity UV matrix and live slot9 delta0. Thus real resident
+texture binding/coordinate ownership completed without acknowledging missing
+blend/TEV/geometry. Harness uses deterministic physical/menu input and explicit
+Bero fixture bit1 clear; no combat writes/fake shape success. All temporary hooks
+were restored and excluded from history. Ending capture remains black fade/
+development field-restoration notice, not raster/field-return parity. Profiles/
+saves are isolated; actual New2DSXL performance remains unmeasured.
+
+Next implement source last-stage color(floor-per-stage byte multiplication and
+C2 red-to-alpha), actual current-map fog, then the source TEV program and original
+indexed fan GPU submission. Keep part history/queue completion behind real draws.
+Full battle teardown/field return and remaining prologue indoor/event/story/image
+requirements remain unfinished. EVT-01 and the full goal stay active.

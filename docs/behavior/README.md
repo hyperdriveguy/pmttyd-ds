@@ -1079,3 +1079,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Bero asynchronous group prefetch and actor preparation](overworld/BERO_INFO_PREFIX_ASYNC_GROUPS_SYSTEM_FLAGS_AND_ACTOR_PREPARATION.md).
 - [Native original area parent and retirement](field/NATIVE_ORIGINAL_AREA_PARENT_AND_RETIREMENT.md).
 - [Native event retirement observation](event/NATIVE_EVENT_RETIREMENT_OBSERVATION.md).
+
+- [Native animation texture binding](display/NATIVE_ANIMATION_TEXTURE_BINDING.md) — original TPL metadata, retained object/UV calls and matching resident atlas ownership.
+- [Native animation texture state and atlas identity](display/NATIVE_ANIMATION_TEXTURE_STATE_AND_ATLAS_IDENTITY.md) — PMANIM3/4 live T24 lanes, cross-pose palette checks, exact package dimensions/UV mapping and real GPU residency boundaries.

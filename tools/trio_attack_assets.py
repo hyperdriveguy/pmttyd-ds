@@ -79,7 +79,7 @@ def build(iso=DEFAULT_ISO):
     Path('romfs/trio-attack.json').write_text(json.dumps(manifest,indent=2)+'\n')
     work=Path('local-assets/trio-battle');work.mkdir(parents=True,exist_ok=True)
     model=work/'b_mario';tpl=work/'a_mario.tpl';extract(iso,'a/b_mario',model);extract(iso,'a/a_mario-',tpl)
-    write_directory(model,'romfs/trio-attack-mario.pose-directory.bin')
+    write_directory(model,'romfs/trio-attack-mario.pose-directory.bin',tpl)
     poses=['M_Z_1','M_S_1','M_R_1','M_W_1','M_J_1B','M_J_1D','M_B_1','M_D_1','M_D_2','M_A_5','M_H_1A','M_H_1B','M_H_1C','M_V_1','M_V_2']
     helpers=['character_mesh.py','character_bake.py','character_node.py','character_animation_pack.py','character_animation_data.py']
     fingerprint=hashlib.sha256(Path(__file__).read_bytes()+model.read_bytes()+tpl.read_bytes()+b''.join(Path('tools',h).read_bytes() for h in helpers)).hexdigest()
@@ -96,7 +96,7 @@ def build(iso=DEFAULT_ISO):
         metrics.write_text(json.dumps(meta,indent=2)+'\n')
 
     model=work/'c_pkr';tpl=work/'c_pkr.tpl';extract(iso,'a/c_pkr',model);extract(iso,'a/c_pkr-',tpl)
-    write_directory(model,'romfs/trio-attack-goombella.pose-directory.bin')
+    write_directory(model,'romfs/trio-attack-goombella.pose-directory.bin',tpl)
     poses=['PKR_Z_1','PKR_S_1','PKR_R_1','PKR_W_1','PKR_J_1A','PKR_A_2B','PKR_D_1','PKR_G_1','PKR_T_1','PKR_Y_1']
     fingerprint=hashlib.sha256(Path(__file__).read_bytes()+model.read_bytes()+tpl.read_bytes()+b''.join(Path('tools',h).read_bytes() for h in helpers)).hexdigest()
     metrics=Path('romfs/trio-attack-goombella.json');products=[Path('romfs/trio-attack-goombella.'+ext) for ext in ('pmmesh','pmanim','t3x','bin')]

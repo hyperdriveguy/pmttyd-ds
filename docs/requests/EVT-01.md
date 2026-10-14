@@ -4389,3 +4389,33 @@ not a Mario field query; see [provider contract](../behavior/overworld/BERO_INFO
 It remains pending until a real resident/prefetch provider exists. Continue with
 system flags, actual Mario bgmode/party services, full parent NPC setup and shared
 world/map heap lifetime. Documentation inbox and EVT-01 remain active.
+
+### 2026-10-14 — Native original texture object and coordinate binding
+
+[Native texture scope](../behavior/display/NATIVE_ANIMATION_TEXTURE_BINDING.md)
+now imports unchanged TPL companions, retains actual object/CI/LOD and coordinate
+request order, and binds the current exact Mario/Goombella package's live palette
+cell to its actual resident atlas. It preserves separate TEXGet calls, reverse
+slot order, kind skipping and original matrix coefficient/gates. Header metadata
+contains source offsets, not native pixel pointers. Current GPU domain is CMPR/
+clamp/linear/noLOD/noCI/coordinate0; CI/TLUT payload/lifetime, other samplers and
+multitexture remain providers. No repeated local-helper documentation request is
+needed: existing object/coordinate contracts suffice. Broader SDK object/register
+packing and cache generations remain open if those domains are bound later.
+Last-stage color/fog/TEV and indexed GPU submission remain next; original ending/
+field return and parent EVT-01 stay OPEN.
+
+### 2026-10-14 — Native texture-state and package-identity binding
+
+[Texture-state/atlas contract](../behavior/display/NATIVE_ANIMATION_TEXTURE_STATE_AND_ATLAS_IDENTITY.md)
+now records original T24-to-PMANIM3/4 storage, discrete UV shifts, all converted
+pose palette checks, original TPL identities and Mario/Goombella/Frankly atlas
+dimensions/UV mapping. Matching texture names alone cannot select an atlas;
+actual converted package and resident GPU owners are required. Independent
+read-only review found the texture driver preserves reverse-slot object then
+coordinate order, distinct TEXGet calls, CI scheduling, live float captures and
+source3c8efa35 angle arithmetic. Native coordinate0 kind0 CMPR clamp/linear
+noLOD/noCI uses the resident Mario/Goombella packages; additional packages and
+samplers retain providers. Parsed TPL offsets are metadata, not owned raw pixel
+pointers. Fan geometry/history/queue completion and original frame validation
+remain open. Parent EVT-01 stays OPEN.

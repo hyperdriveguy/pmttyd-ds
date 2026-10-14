@@ -1608,3 +1608,10 @@ add_executable(field_area_parent_tests tests/field_area_parent_tests.cpp)
 target_link_libraries(field_area_parent_tests PRIVATE ttyd_core)
 add_test(NAME field_area_parent COMMAND field_area_parent_tests)
 set_tests_properties(field_area_parent PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Original TPL ownership and retained texture object/coordinate helper.
+target_sources(ttyd_core PRIVATE source/display/animation_texture.cpp)
+add_executable(animation_texture_tests tests/animation_texture_tests.cpp)
+target_link_libraries(animation_texture_tests PRIVATE ttyd_core)
+add_test(NAME animation_texture COMMAND animation_texture_tests)
+set_tests_properties(animation_texture PROPERTIES WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})

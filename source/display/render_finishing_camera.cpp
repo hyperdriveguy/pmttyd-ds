@@ -120,7 +120,16 @@ void Renderer::resumeFinishingCamera(const Game& game){
             shape.concat=[](void*,BattleAudienceMatrixRequest& r){BattleAudienceAuxServices math;bindAudienceAuxMathAdapter(math);return math.matrix(nullptr,r);};
             shape.math=[](void*,AnimationShapeMath& r){return animationShapeNativeMath(r);};
             shape.material=[](void* user,const AnimationShapeCall& r,uint32_t& pending){
-                auto& bridge=*static_cast<InnerBridge*>(user);const auto* work=bridge.game->trioAttack.materialLights();
+                auto& bridge=*static_cast<InnerBridge*>(user);
+                if(r.function==0x8003dcfc){
+                    if(!r.pose)return false;
+                    AnimationTextureServices texture;texture.user=&bridge;
+                    texture.get=[](void*,const BattlePose& p,uint32_t index,AnimationTPLImage& out){if(!p.resource || !p.resource->textures)return false;const auto image=p.resource->textures->image(index);if(!image)return false;out=*image;return true;};
+                    texture.matrix=[](void*,BattleAudienceMatrixRequest& r){BattleAudienceAuxServices math;bindAudienceAuxMathAdapter(math);return math.matrix(nullptr,r);};
+                    texture.gx=[](void* u,const AnimationTextureRequest& q){return static_cast<InnerBridge*>(u)->renderer->finishingAnimationTexture(q);};
+                    return bridge.game->trioAttack.resumeTexture(*r.pose,r.draw,texture,pending);
+                }
+                const auto* work=bridge.game->trioAttack.materialLights();
                 if(!work || !work->battleLoaded)return false;
                 struct LightBridge {const MapMaterialLightWork* work;Renderer* renderer;} lightBridge{work,bridge.renderer};
                 MapMaterialLightServices services;services.user=&lightBridge;
