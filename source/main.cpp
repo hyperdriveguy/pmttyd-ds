@@ -32,7 +32,7 @@ struct SaveWorker {
     std::atomic<bool> done{false};bool success=false;uint64_t ticket=0;
     bool start(const std::string& destination,const ttyd::Progress& progress,uint64_t id) {
         if(thread)return false;
-        path=destination;checkpoint=progress;ticket=id;done.store(false,std::memory_order_relaxed);
+        path=destination;checkpoint=ttyd::snapshotSaveProgress(progress);ticket=id;done.store(false,std::memory_order_relaxed);
         thread=threadCreate([](void* p) {
             auto& self=*static_cast<SaveWorker*>(p);self.success=ttyd::writeSave(self.path,self.checkpoint);
             self.done.store(true,std::memory_order_release);
@@ -76,7 +76,7 @@ int main() {
     auto restoreProgress=[&](const ttyd::Progress& checkpoint) {
         ttyd::CollisionTransition transaction;float height=checkpoint.elevation;
         if(!stageRoomCollision(checkpoint.room,transaction))return false;
-        auto ownedCandidate=std::make_unique<ttyd::Game>();auto& candidate=*ownedCandidate;candidate.restore(checkpoint);candidate.retainPhysicalInput(game);
+        auto ownedCandidate=std::make_unique<ttyd::Game>();auto& candidate=*ownedCandidate;candidate.restore(ttyd::snapshotSaveProgress(checkpoint));candidate.retainPhysicalInput(game);
         if(!candidate.checkpointGround(height) || !ttyd::walkable(checkpoint.position,height) || !renderer.changeRoom(checkpoint.room))return false;
         game=std::move(candidate);transaction.commit();return true;
     };

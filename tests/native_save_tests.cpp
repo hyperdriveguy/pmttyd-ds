@@ -82,6 +82,10 @@ int main() {
     p.originalPouch=std::make_shared<ProloguePouch>();p.hp=25;
     for(unsigned i=0;i<p.originalPouch->bytes.size();++i)p.originalPouch->bytes[i]=uint8_t(i*73+19);
     p.originalPouch->half(0x70,25);p.originalPouch->half(0x92,-12);
+    auto frozen=snapshotSaveProgress(p);const auto captured=encodeSave(frozen);
+    assert(frozen.originalPouch!=p.originalPouch && frozen.originalPouch->bytes==p.originalPouch->bytes);
+    const auto item=p.originalPouch->half(0xa0);p.originalPouch->half(0xa0,107);
+    assert(encodeSave(frozen)==captured);p.originalPouch->half(0xa0,item);
     for(int flag:{-1,0,1}) {
         p.originalNpcTalkState.flag5407.reset();if(flag>=0)p.originalNpcTalkState.flag5407=flag!=0;
         const auto saved=encodeSave(p);assert(saved[4]==8 && decodeSave(saved,out));

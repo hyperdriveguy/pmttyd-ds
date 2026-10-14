@@ -4,7 +4,10 @@ bool goombaQuest2Admitted(const FieldActorRecord& actor,const FieldActorTalkStat
     return actor.room==2 && actor.key==0x2b0a9f83 && s.quest1420==2 && s.flag5405==true && i.item95 && *i.item95>=1;
 }
 bool GoombaHandIn::begin(const FieldActorRecord& actor,ProloguePouch& pouch,FieldActorTalkState& state,
-                       FieldActorTalk& talk,ItemSelectionPresentation& selector,const MessageFont& font,uint64_t now) {
+                       FieldActorTalk& talk,ItemSelectionPresentation& selector,const MessageFont& font,uint64_t now,MarioPresentation* mario) {
+    if(active())return false;
+    if(mario && goombaQuest13Admitted(actor,state,{{},pouch.keyItemCount(107)}))
+        return quest13_.begin(actor,pouch,state,talk,selector,font,*mario,now);
     if(active() || talk.message.active() || selector.owner.retained() ||
        !goombaQuest2Admitted(actor,state,{pouch.keyItemCount(95),{}}) || !pouchRevisionAvailable(pouch))return false;
     // Admit both original print resources and the selector before event entry.
@@ -15,6 +18,7 @@ bool GoombaHandIn::begin(const FieldActorRecord& actor,ProloguePouch& pouch,Fiel
     actor_=actor;pouch_=&pouch;switches_=&state;talk_=&talk;selector_=&selector;font_=&font;phase_=Phase::FirstPrint;return true;
 }
 void GoombaHandIn::tick(uint64_t now) {
+    if(quest13_.active()){quest13_.tick(now);return;}
     switch(phase_) {
     case Phase::Idle:return;
     case Phase::FirstPrint:

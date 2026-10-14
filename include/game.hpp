@@ -290,6 +290,7 @@ public:
     const FieldActorRecord* nearbyFieldActor() const;
     uint32_t fieldNpcContact() const{return fieldNpcHit;}
     const FieldNpcInstance* fieldNpcState(uint32_t key) const;
+    bool fieldNpcTalkActive() const {return goombaHandIn.active() || fieldActorTalk.message.active();}
     const std::vector<FieldNpcSoundRequest>& fieldNpcSounds() const{return npcSoundRequests;}
 private:
     NpcTalkPlayer fieldNpcTalkPlayer() const;

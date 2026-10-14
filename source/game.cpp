@@ -799,7 +799,7 @@ bool Game::fieldNpcTalkBound(const FieldActorRecord& actor) const {
     const auto items=fieldNpcTalkInventory(actor);
     return fieldActorTalkAvailable(actor,*progress.originalStory,progress.originalNpcTalkState,items) ||
         (progress.originalPouch && pouchRevisionAvailable(*progress.originalPouch) &&
-         goombaQuest2Admitted(actor,progress.originalNpcTalkState,items));
+         (goombaQuest2Admitted(actor,progress.originalNpcTalkState,items) || goombaQuest13Admitted(actor,progress.originalNpcTalkState,items)));
 }
 const FieldActorRecord* Game::nearbyFieldActor() const {
     if(scene!=Scene::Explore || !fieldControlEnabled() || fieldKeysOff || saveLocked() || water.active() ||
@@ -839,10 +839,11 @@ void Game::updateFieldNpcTalk(const Input& input) {
                 if(live!=fieldNpcs.end())current.position={live->second.body.root.x,live->second.body.root.y,live->second.body.root.z};
                 const auto items=fieldNpcTalkInventory(current);
                 bool started=false;
-                if(goombaQuest2Admitted(current,progress.originalNpcTalkState,items) && progress.originalPouch) {
+                if((goombaQuest2Admitted(current,progress.originalNpcTalkState,items) ||
+                    goombaQuest13Admitted(current,progress.originalNpcTalkState,items)) && progress.originalPouch) {
                     if(!itemSelection)itemSelection=std::make_shared<ItemSelectionPresentation>();
                     started=goombaHandIn.begin(current,*progress.originalPouch,progress.originalNpcTalkState,
-                                              fieldActorTalk,*itemSelection,harborMessageFont(),ticks*1000/60);
+                                              fieldActorTalk,*itemSelection,harborMessageFont(),ticks*1000/60,&marioPresentation);
                     if(started)fieldKeysOff=true;
                 } else started=fieldActorTalk.begin(current,*progress.originalStory,harborMessageFont(),ticks*1000/60,progress.originalNpcTalkState,items);
                 if(started) {

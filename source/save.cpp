@@ -43,6 +43,11 @@ SaveBytes encodeSave(const Progress& p) {
     }
     return b;
 }
+Progress snapshotSaveProgress(const Progress& p) {
+    auto out=p;
+    if(p.originalPouch)out.originalPouch=std::make_shared<ProloguePouch>(*p.originalPouch);
+    return out;
+}
 bool decodeSave(const SaveBytes& b, Progress& p) {
     const uint32_t version=get(b,4);
     if(std::memcmp(b.data(),"PM2D",4) || version<1 || version>8 ||

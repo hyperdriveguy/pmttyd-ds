@@ -219,6 +219,7 @@ private:
 
     Texture harborMarioTexture;
     ActorAnimationPack harborMarioAnimations;
+    Texture goombaQuestTexture;ActorAnimationPack goombaQuestAnimations;float goombaQuestUVScale=1;
     float harborMarioUVScale=1;
     Texture professorMarioTexture;
     Texture trioMarioTexture;ActorAnimationPack trioMarioAnimations;float trioMarioUVScale=1;
@@ -249,6 +250,7 @@ private:
     ActorAnimationSample actorSample;
     FieldShadowGeometry shadowGeometry;
     bool loadMap(const char* name,Room& room);
+    bool prepareBattleMaps(const Game&);
     bool loadFieldActors(uint32_t roomId,Room& room);
     void fieldActors(const Game&);
     void drawFieldActors(bool translucent);
