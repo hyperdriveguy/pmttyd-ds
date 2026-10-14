@@ -799,7 +799,8 @@ bool Game::fieldNpcTalkBound(const FieldActorRecord& actor) const {
     if(!progress.originalStory)return false;
     const auto items=fieldNpcTalkInventory(actor);
     return (progress.originalPouch && goombaQuest2AcquisitionAdmitted(actor,progress.originalNpcTalkState) &&
-            goombaAcquisitionPresentationReady(fieldItemGetPresentation)) ||
+            goombaAcquisitionPresentationReady(fieldItemGetPresentation) &&
+            fieldItemMarioGetAvailable(fieldJump,uint32_t(fieldIdle.mainFlags)|fieldMarioBattle.flags,fieldItemMarioPost)) ||
         fieldActorTalkAvailable(actor,*progress.originalStory,progress.originalNpcTalkState,items) ||
         (progress.originalPouch && pouchRevisionAvailable(*progress.originalPouch) &&
          (goombaQuest2Admitted(actor,progress.originalNpcTalkState,items) || goombaQuest13Admitted(actor,progress.originalNpcTalkState,items)));
@@ -843,8 +844,9 @@ void Game::updateFieldNpcTalk(const Input& input) {
                 const auto items=fieldNpcTalkInventory(current);
                 bool started=false;
                 if(progress.originalPouch && goombaQuest2AcquisitionAdmitted(current,progress.originalNpcTalkState)) {
-                    started=goombaAcquisition.begin(current,*progress.originalPouch,progress.originalNpcTalkState,
-                        fieldActorTalk,harborMessageFont(),fieldItemRegistry,fieldItemGetPresentation,ticks*1000/60);
+                    if(fieldItemMarioGetAvailable(fieldJump,uint32_t(fieldIdle.mainFlags)|fieldMarioBattle.flags,fieldItemMarioPost))
+                        started=goombaAcquisition.begin(current,*progress.originalPouch,progress.originalNpcTalkState,
+                            fieldActorTalk,harborMessageFont(),fieldItemRegistry,fieldItemGetPresentation,ticks*1000/60);
                     if(started)fieldKeysOff=true;
                 } else if((goombaQuest2Admitted(current,progress.originalNpcTalkState,items) ||
                     goombaQuest13Admitted(current,progress.originalNpcTalkState,items)) && progress.originalPouch) {
@@ -1706,10 +1708,24 @@ void Game::battle(const Input& i) {
         else { phase=Phase::Select; phaseTick=0; }
     }
 }
+bool Game::applyFieldItemMarioRequest(ItemGetRequest r) {
+    const uint32_t main=uint32_t(fieldIdle.mainFlags)|fieldMarioBattle.flags;
+    switch(r) {
+    case ItemGetRequest::GetItemMotion:case ItemGetRequest::StayMotion:
+        return requestFieldItemMarioMotion(fieldJump,fieldMovement,main,marioPresentation,
+            r==ItemGetRequest::GetItemMotion,fieldItemMarioPost);
+    case ItemGetRequest::ControlOff:
+        fieldMarioControlOff(fieldMarioBattle);marioFieldControl=(fieldMarioBattle.flags&2)==0;return true;
+    case ItemGetRequest::ControlOn:
+        fieldMarioControlOn(fieldMarioBattle);marioFieldControl=(fieldMarioBattle.flags&2)==0;return true;
+    default:return false;
+    }
+}
 void Game::updateMarioPresentation() {
     fieldIdleSounds.clear();
     marioPresentation.offset=fieldMovement.headingOffsetDegrees;
-    const bool active=scene==Scene::Explore && fieldJump.motion==0 && !arriving && warpRequest<0 &&
+    enterFieldItemMarioMotion(fieldJump,fieldMovement,uint32_t(fieldIdle.mainFlags)|fieldMarioBattle.flags,marioPresentation);
+    const bool active=!(fieldMarioBattle.flags&2) && scene==Scene::Explore && fieldJump.motion==0 && !arriving && warpRequest<0 &&
         !water.active() && !fade.active();
     if(active) {
         FieldKeyServices keys;

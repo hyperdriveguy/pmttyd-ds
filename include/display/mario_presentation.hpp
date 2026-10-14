@@ -79,7 +79,7 @@ struct MarioPresentation {
             previousMotion=motion;
         }
         (void)hp;
-        supported=motion<=3 || motion==10 || motion==11 || motion==31 || motion==33;
+        supported=motion<=3 || motion==10 || motion==11 || motion==15 || motion==31 || motion==33;
         const float heading=wrap(facing-offset);const bool rear=heading<=70 || heading>=290;
         const char* next=front;
         if(rear) {
@@ -89,6 +89,8 @@ struct MarioPresentation {
             else if(std::strcmp(front,"M_J_1B")==0)next="M_J_1BR";
             else if(std::strcmp(front,"M_J_1C")==0)next="M_J_1CR";
         }
+        // Original conversion lists have no M_I_U pair; ordinary misses use the front handle.
+        if(std::strcmp(front,"M_I_U")==0 && !(displayFlags&0x70000004))displayFlags&=~0x80000000u;
         if(!poseUploaded || queuedPose || pendingReset || std::strcmp(selected,next)!=0) {
             if(std::strcmp(selected,next)!=0)poseStartFrame=0; // Rear name writer zeros28.
             selected=next;

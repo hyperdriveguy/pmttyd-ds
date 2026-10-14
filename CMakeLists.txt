@@ -1135,3 +1135,8 @@ target_sources(ttyd_core PRIVATE source/battle/battle_target_selection.cpp)
 add_executable(battle_target_selection_tests tests/battle_target_selection_tests.cpp)
 target_link_libraries(battle_target_selection_tests PRIVATE ttyd_core)
 add_test(NAME battle_target_selection COMMAND battle_target_selection_tests)
+
+target_sources(ttyd_core PRIVATE source/field/field_item_mario.cpp)
+add_executable(field_item_mario_tests tests/field_item_mario_tests.cpp)
+target_link_libraries(field_item_mario_tests PRIVATE ttyd_core)
+add_test(NAME field_item_mario COMMAND field_item_mario_tests)

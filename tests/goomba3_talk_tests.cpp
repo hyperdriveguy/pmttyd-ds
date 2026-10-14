@@ -64,12 +64,17 @@ int main() {
         services.ready=[](void*){return true;};
         game.bindFieldItemGetPresentation(services);assert(!game.nearbyFieldActor());
         services.mario=[](void* p){const auto& g=*static_cast<Game*>(p);return ItemGetPoint{g.progress.position.x*100,0,g.progress.position.z*100};};
-        services.request=[](void*,ItemGetRequest){};
+        services.request=[](void* p,ItemGetRequest r){
+            if(r==ItemGetRequest::GetItemMotion || r==ItemGetRequest::StayMotion ||
+               r==ItemGetRequest::ControlOff || r==ItemGetRequest::ControlOn)
+                assert(static_cast<Game*>(p)->applyFieldItemMarioRequest(r));
+        };
         services.effect=[](void*,int32_t,ItemGetPoint){return uintptr_t(1);};
         services.window=[](void*,uint32_t definition,const char*){return definition==0x80313dc8?1:2;};
         services.windowAction=[](void*,int32_t){return int32_t(0);};
         services.bgmSilent=[](void*){return false;};services.bgmCheck=[](void*,int32_t){return int32_t(0);};
-        game.bindFieldItemGetPresentation(services);
+        game.bindFieldItemGetPresentation(services);assert(!game.nearbyFieldActor());
+        game.bindFieldItemMarioPost({&game,[](void* p,unsigned old){assert(old==0 && static_cast<Game*>(p)->fieldMarioMotion()==15);}});
         const auto* candidate=game.nearbyFieldActor();assert(candidate && candidate->key==source->key);
         Input confirm;confirm.confirm=true;game.tick(confirm);game.tick({});
         assert(game.fieldAcquisition().active() && game.fieldActorTalk.message.id()=="irai_02_00");
@@ -81,14 +86,17 @@ int main() {
         for(int n=0;n<5000 && game.fieldActorTalk.message.active();++n)game.tick(confirm);
         assert(!game.fieldActorTalk.message.active() && game.fieldAcquisition().active() && game.scene==Scene::Dialogue);
         game.tick({});assert(game.progress.originalPouch->keyItemCount(95)==1 && game.fieldAcquisition().get().substate()==2);
+        assert(game.fieldMarioMotion()==15 && game.fieldMarioMotionPending() && std::strcmp(game.marioPresentation.selected,"M_I_U"));
         assert(game.progress.originalNpcTalkState.flag5405==false);
         Game obtaining=game;assert(!obtaining.fieldAcquisition().canAdvance());
         for(int n=0;n<5;++n)obtaining.tick(confirm);
         assert(game.fieldItems().find("irai_item")->flags&1);
         assert(game.progress.originalNpcTalkState.flag5405==false);
         game.tick(confirm);assert(game.fieldAcquisition().active() && game.progress.originalNpcTalkState.flag5405==false);
+        assert(!std::strcmp(game.marioPresentation.selected,"M_I_U") && game.fieldMarioMotion()==0 && game.fieldMarioMotionPending());
         game.tick({});assert(game.fieldAcquisition().complete() && game.progress.originalNpcTalkState.flag5405==true);
         assert(game.scene==Scene::Explore && !game.fieldNpcTalkActive() && !game.fieldKeysOff);
+        assert(game.fieldControlEnabled() && !(game.fieldMarioBattleState().flags&2) && std::strcmp(game.marioPresentation.selected,"M_I_U"));
         game.tick({});assert(game.progress.originalPouch->keyItemCount(95)==1);
     }
 
