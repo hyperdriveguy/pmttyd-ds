@@ -81,3 +81,20 @@ make every audience member tappable or invent throw events to fill the lower
 screen. Bind original actors, telegraphs and the throw/response window first.
 The physical command path is documented in the
 [class UI binding](../battle/ACT_SELECT_UI_ALLOCATION_AND_NATIVE_BINDING.md).
+
+### Two-screen rough mockup
+
+The subsequent hand-drawn mockup supplied in conversation clarifies the split:
+the wider upper screen holds the compact HUD and battle actors/stage; the
+narrower lower screen holds the audience rows as a continuation of the same
+scene. Keep both views horizontally centered in scene space and preserve audience
+scale when cropping to the lower screen's width. The physical gap is a display
+separation, not another in-game panel. Exact framing and any gap compensation
+remain native presentation choices to validate visually.
+
+Treat the rough shapes and colors as composition guidance, not replacement
+artwork, exact coordinates or a new HUD resource specification. Use the earlier
+original-game screenshots and original ISO art for final UI shapes and styling.
+Keep original command menus with the upper battle presentation; the lower view
+remains available for audience telegraphs and optional stop-throw interaction,
+with equivalent physical input.

@@ -1,3 +1,18 @@
+## 2026-10-14 — User two-screen battle mockup
+
+Recorded the user's subsequent rough hand-drawn layout in
+[HUD/menu presentation](behavior/display/NATIVE_BATTLE_HUD_AND_SUBMENU.md):
+upper screen holds HUD/stage/battle actors; narrower centered lower screen
+continues into audience rows at consistent scene scale. Rough colors/shapes
+are composition guidance; original ISO art and the earlier game screenshots
+remain the style reference. Audience touch interaction is optional and must
+retain a physical equivalent. Exact framing/gap compensation needs visual
+validation when the scene continuation is implemented.
+
+Documentation-only update; git diff --check passes. No code, original assets
+or test expectations changed. Implementation and validation limitations from
+the class UI handoff below remain open.
+
 ## 2026-10-14 — Original class UI ownership and physical command binding
 
 Commit0ae3c80f implements whole original ActSelect Init80116cdc/0x1a4 and
