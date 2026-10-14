@@ -42,12 +42,23 @@ range/cull/selector/index admission, rather than inventing original runtime
 bounds checks. This is not a complete renderer for arbitrary US resources.
 
 The native math adapter retains source cofactor/FMA/refinement and point-sum
-order for finite inputs. It substitutes binary32 `1/det` for PPC `fres`, with no
-paired-single, FPSCR, exceptional-value or bit-equality claim. Singular inverse
-reports status0 without overwriting output, as source requires. Render entry
-ignores the status but does not invent a normal matrix: an unavailable local is
-passed as unavailable to the GX provider. Native normal upload holds in that
-case; it never substitutes identity. No Dolphin implementation/table is copied.
+order. Inverse-transpose ignores translation words, compares determinant to b-b
+with ordered equality, and returns status1 with stored results even when the
+calculation produces infinity or NaN. Its single-precision estimate square is
+retained; widening or reassociating it would change original behavior. The fused
+subtract is rounded before final negation, matching ps_nmsub operation order.
+The native point-transform admission still requires finite inputs/results.
+
+It substitutes binary32 `1/det` for PPC `fres`: reciprocal-estimate bits, Gekko
+FPSCR, subnormal handling, NaN payloads and full exceptional-value parity remain
+unimplemented. Exceptional inverse outputs are acknowledged source results,
+not a reason to hold the continuation. The native normal upload retains them;
+current admitted unlit fans do not consume transformed normals. Lighting still
+requires its own numeric/backend implementation. Singular inverse reports
+status0 without overwriting output, as source requires. Render entry ignores
+the status but does not invent a normal matrix: an unavailable local is passed
+as unavailable to the GX provider. Native normal upload holds in that case;
+it never substitutes identity. No Dolphin implementation/table is copied.
 
 The native bridge resolves the actual current camera, queues the position matrix
 through the existing Citro3D projection/transform owner, retains the source

@@ -4518,3 +4518,26 @@ and Bero table leaf guard retain their separate output formats. Hierarchical or
 runtime-transformed roads still need actual traversal/live owners, not guessed
 centers. [Provider contract](../behavior/field/SHARED_BERO_NORMAL_POSITION_GEOMETRY_AND_PARTY_OWNERS.md).
 Normal-position world binding and full EVT-01 remain open.
+
+### 2026-10-14 — Native inverse exception admission and next texture wait
+
+Fresh rb ISO reinspection of PSMTXInvXpose8029df28:c8 matches the existing
+[SDK matrix contract](../behavior/display/ANIMATION_SDK_NORMAL_AND_POINT_MATRICES.md)
+SHA c96d218ee09b679c82c6a2fd9867fd5e8e4abb06f1b193c99f7f8aad2e7172d6.
+Original source ignores translations, has no finite guards, rounds estimate² to
+single precision, then executes fused negative-subtract and returns1 with stores
+even for exceptional results. Native isolated ending capture identifies
+b_mario handle0 shape17 with finite determinant about -8e-24; native estimate²
+overflows. This is native execution evidence, not a Dolphin/original trace.
+Private raw input/evidence: artifacts/azahar-inverse-input-probe and
+artifacts/inverse-render-evidence/inverse-source-review.json.
+
+The adapter now acknowledges those original inverse results and preserves
+source operation order. Current unlit GPU geometry does not consume transformed
+normals. The ending advances from8029df28 to GXLoadTexObj802b7880 and actual
+submissions increase from104 fans/404 vertices to122/476. Next identify the
+pending texture's actual pose/image and resident owner before extending native
+binding. Exact fres estimates/FPSCR/subnormals/NaN payloads, lit-normal consumption
+and original execution comparison remain open. No double-precision rescue,
+identity fallback or fabricated draw completion was introduced. Parent EVT-01
+and prologue/full-game goals remain open.

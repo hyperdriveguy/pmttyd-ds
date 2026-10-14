@@ -6202,3 +6202,55 @@ six mutable S/E globals,ordered recovery/actor/camera writes,nonzero Entry/Entry
 and live area lifecycle remain pending. Full remake goal and EVT-01 remain active.
 
 tools/check_doc_links.py checked1322 Markdown files with zero broken links.
+
+### 2026-10-14 — Preserve original exceptional finishing normal matrices
+
+Removed native-only inverse input/determinant/output finite guards. The original
+PSMTXInvXpose8029df28 ignores translations and returns1 with stored exceptional
+results; only ordered determinant==b-b returns0 without stores. Native now keeps
+that behavior and final-negation order of ps_nmsub. Point-transform finite
+admission remains separate. No double-precision rescue, epsilon, identity or
+fabricated renderer acknowledgement was added. Normal uploads retain the result;
+current admitted unlit fans do not consume transformed normals. Native1/det
+still approximates PPC fres; bit/FPSCR/subnormal/NaN-payload parity and lighting
+remain open. Fresh read-only ISO review matches the existing200-byte source SHA.
+
+A private failing-input probe captured b_mario handle0 shape17 with determinant
+about -8e-24 and overflowing estimate². Twelve raw input words are retained in
+artifacts/azahar-inverse-input-probe/data/azahar-emu/sdmc/3ds/ttyd-2ds/inverse-input.txt
+and reproduced exactly in the host regression. Tests also cover unused
+nonfinite translations, exceptional stores/status, singular no-store,
+point admission and passing exceptional normals through the shape continuation.
+This is native runtime evidence plus static original-source evidence, not a
+Dolphin observation or complete GameCube numerical emulation.
+
+Validation used frozen base0ddda540fa85a50a27b3a14ca156c3a1e225d131 plus only
+this change in artifacts/inverse-native-source. CMAKE_BUILD_PARALLEL_LEVEL=4
+make test -o assets-ready exited0:319/319 C++ (36.95s),182/182 Python (31.231s),
+log artifacts/inverse-native-test-rerun.log. Initial run had one fixture-output
+failure because that isolated checkout lacked artifacts/; creating its own
+output directory fixed setup without code or asset changes. Clean make all -j4
+-o assets-ready DEBUG_SHORT_BOOT=1 and restored normal rebuild exited0, logs
+artifacts/inverse-native-build.log and inverse-native-build-restored.log.
+Audit3408 tracked files and1410 RomFS files had zero mismatches; manifest
+artifacts/inverse-native-validation-manifest.json. Restored normal binary equals
+the validated clean binary, SHA256128666ca7be999de0d2bec3735c79f4c2ba3a624ab30c6686e4635ffabe06dae.
+
+Isolated Azahar15s normal and150s ending runs exited0, logs
+artifacts/inverse-native-smoke-normal.log and inverse-native-smoke-ending.log.
+Normal capture shows original Rogueport/Mario/Goombella art at60 App FPS/100%
+emulator speed. Actual ending GPU submissions advance from104 fans/404 vertices
+to122/476, then wait at GXLoadTexObj802b7880 (camera4,queue21,record80101774,
+class1). Last submitted draw28352 b_mario,cell15,count4. Pending frontier and
+submission counters are in artifacts/azahar-inverse-native-ending. Ending capture
+still shows black fade/development field-restoration notice at60 FPS/100%; this
+is not visible original finishing-geometry, restored field or New2DSXL timing
+parity. Harness edits were restored and the normal binary reproduced exactly.
+Existing private original packs were reused; no asset conversion/art/audio
+generation or distribution occurred. User emulator profiles/saves untouched.
+
+Next identify the actual pending texture pose/image/resident owner and bind it
+using original assets; do not assume the model from the last submitted fan is
+the pending owner. Exact reciprocal primitives, lit geometry, remaining queue
+callbacks and field restoration remain open. Request EVT-01 records the boundary;
+full prologue/remake goal remains active. Concurrent foreign edits were preserved.

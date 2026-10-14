@@ -1,6 +1,7 @@
 #include "animation_shape_render.hpp"
 #include <cassert>
 #include <cmath>
+#include <limits>
 #include <vector>
 #include <fstream>
 #include <iterator>
@@ -19,6 +20,32 @@ int main(){
     AnimationShapeMath math;math.function=0x8029df28;math.input={2,0,0,10,0,3,0,20,0,0,4,30};
     assert(animationShapeNativeMath(math) && math.status==1 && std::fabs(math.output[0]-.5f)<1e-6f && std::fabs(math.output[5]-1.f/3)<1e-6f && std::fabs(math.output[10]-.25f)<1e-6f && math.output[3]==0);
     const auto prior=math.output;math.input={};assert(animationShapeNativeMath(math) && math.status==0 && math.output==prior);
+    // The original inverse never reads translation, including nonfinite words.
+    const float inf=std::numeric_limits<float>::infinity(),nan=std::numeric_limits<float>::quiet_NaN();
+    math.input={2,0,0,inf,0,3,0,nan,0,0,4,-inf};
+    assert(animationShapeNativeMath(math) && math.status==1 && math.output==prior);
+    // Retain source single-precision square overflow; do not widen/refactor the
+    // refinement to conceal the resulting exceptional normal matrix.
+    math.input={1e-8f,0,0,0,0,1e-8f,0,0,0,0,1e-8f,0};
+    assert(animationShapeNativeMath(math) && math.status==1);
+    assert(std::isinf(math.output[0]) && std::signbit(math.output[0]) && std::isnan(math.output[1]) && math.output[3]==0);
+    // Native isolated ending capture: Mario shape17, raw view-model words.
+    // Its finite determinant is approximately -8e-24; estimate squared overflows.
+    const uint32_t finishingWords[]{0xac0cbccb,0x9d682054,0xb509063c,0x417c5438,
+        0x1fb1a220,0x2c0b52b0,0xbe90d0be,0xc1c566fb,
+        0xa1150476,0x2a9f39e7,0x3ffd6d55,0xc3b51091};
+    static_assert(sizeof(finishingWords)==sizeof(math.input));
+    std::memcpy(math.input.data(),finishingWords,sizeof(finishingWords));
+    assert(animationShapeNativeMath(math) && math.status==1);
+    for(unsigned row=0;row<3;++row){for(unsigned col=0;col<3;++col)assert(std::isinf(math.output[4*row+col]));assert(math.output[4*row+3]==0);}
+    // Unordered source comparisons proceed with stores; no finite-value gate.
+    math.input={nan,0,0,0,0,1,0,0,0,0,1,0};
+    assert(animationShapeNativeMath(math) && math.status==1 && std::isnan(math.output[0]));
+    math.input={inf,0,0,0,0,1,0,0,0,0,1,0};
+    assert(animationShapeNativeMath(math) && math.status==1 && std::isnan(math.output[0]));
+    // The independent point adapter still admits only finite positions.
+    math.function=0x8029e6a4;math.input={1,0,0,inf,0,1,0,0,0,0,1,0};
+    assert(!animationShapeNativeMath(math));
     math.function=0x8029e6a4;math.input={2,0,0,10,0,3,0,20,0,0,4,30};math.vector={1,2,3};
     assert(animationShapeNativeMath(math) && math.vectorOutput==ActorVector({12,26,42}));
     const auto resource=loadBattlePoseResource("romfs/trio-attack-goombella.pose-directory.bin","romfs/trio-attack-goombella.pmanim");assert(resource && resource->draw);
@@ -74,6 +101,12 @@ int main(){
     t=Trace{};t.camera.viewPublished=true;t.camera.matrices.view={{{1,0,0,0},{0,1,0,0},{0,0,1,0}}};c={};pass=1;
     p->word(0xf0,0xffffffff);p->word(0xf4,0xffffffff);assert(resumeAnimationShape(pool,*h,pass,input,services,c) && t.calls.size()==3);
     input.shape=-1;t.calls.clear();assert(resumeAnimationShape(pool,*h,pass,input,services,c) && t.calls.empty());
+    // Exceptional inverse results reach the normal upload before pass rejection.
+    // They must not leave the shape stuck at the math-service boundary.
+    input.shape=15;input.model={1e-8f,0,0,0,0,1e-8f,0,0,0,0,1e-8f,0};
+    c={};t=Trace{};t.camera.viewPublished=true;t.camera.matrices.view={{{1,0,0,0},{0,1,0,0},{0,0,1,0}}};
+    assert(resumeAnimationShape(pool,*h,pass,input,services,c) && t.calls.size()==3);
+    assert(t.calls[1].function==0x802ba34c && t.calls[1].matrix && std::isinf((*t.calls[1].matrix)[0]));
     // Singular source math succeeds with no normal output; a real backend
     // must retain the unavailable local rather than fabricate an identity.
     input.shape=15;input.model={};c={};t.calls.clear();t.hold=0x802ba34c;

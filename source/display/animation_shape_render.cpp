@@ -2,8 +2,8 @@
 #include <cmath>
 namespace ttyd {
 bool animationShapeNativeMath(AnimationShapeMath& r){
-    for(float v:r.input)if(!std::isfinite(v))return false;
     if(r.function==0x8029e6a4){
+        for(float v:r.input)if(!std::isfinite(v))return false;
         for(float v:r.vector)if(!std::isfinite(v))return false;
         ActorVector out;for(unsigned row=0;row<3;++row){const auto i=4*row;
             const float p0=r.input[i]*r.vector[0],p1=r.input[i+1]*r.vector[1];
@@ -18,11 +18,11 @@ bool animationShapeNativeMath(AnimationShapeMath& r){
         std::fma(b,f,-(e*c)),std::fma(c,d,-(f*a)),std::fma(a,e,-(b*d))};
     const float determinant=std::fma(g,cof[6],std::fma(d,cof[3],a*cof[0])),zero=b-b;
     if(determinant==zero){r.status=0;return true;} // Source leaves output untouched.
-    if(!std::isfinite(determinant))return false;
     const float estimate=1.f/determinant,twice=estimate+estimate,square=estimate*estimate;
-    const float reciprocal=std::fma(-determinant,square,twice);
+    // Source ps_nmsub negates the fused subtract, including its rounded zero.
+    // Exceptional results are source outputs, not an unavailable math service.
+    const float reciprocal=-std::fma(determinant,square,-twice);
     BattleActMatrix out{};for(unsigned row=0;row<3;++row){for(unsigned col=0;col<3;++col)out[4*row+col]=cof[3*row+col]*reciprocal;out[4*row+3]=zero;}
-    for(float v:out)if(!std::isfinite(v))return false;
     r.output=out;r.status=1;return true;
 }
 bool resumeAnimationShape(BattlePosePool& pool,int32_t handle,const std::optional<uint32_t>& pass,const AnimationShapeRequest& input,const AnimationShapeServices& s,AnimationShapeCursor& c){
