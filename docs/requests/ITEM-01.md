@@ -195,3 +195,15 @@ and [source global percentage](../behavior/audio/FIELD_BGM_GLOBAL_PERCENTAGE_INI
 Full source sound flags/arbitration/global slew, source device scheduling and
 physical performance remain unbound/unverified. Native event/Mario/window/item-main
 and once-only pouch/5405 acquisition integration are next; parent requests stay open.
+
+### 2026-10-14 — Portable Goomba3 acquisition event ownership
+
+Committed `3b71d849`: original `irai_02_00` printing now has a separate
+portable event/item owner, actual pouch receive and name-wide registry cleanup.
+The event writes5405 only on a later poll after item cleanup. Duplicate-name
+initial XYZ and full key-storage pending behavior are tested. Isolated snapshot
+passed225 CTests/141 Python tests and native build; shared working-tree test
+failed a separate battle pose assertion. See
+[owner/validation](../behavior/field/GOOMBA3_PORTABLE_ACQUISITION_OWNER.md).
+Native Game/NPC, deferred Mario motion15, camera/control/window/effect/audio
+binding and full discard UI remain pending. Parent requests remain open.

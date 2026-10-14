@@ -1,3 +1,25 @@
+## 2026-10-14 — Goomba3 portable parcel acquisition
+
+Committed `3b71d849`. Original quest2 acquisition now has a host-testable
+print → item entry/force → item service → cleanup → later5405 owner using the
+real pouch and registry. Both windows precede the once-only grant; full key
+storage stays pending. Duplicate source-name lookup retains initial XYZ and
+cleanup deletes all matching entries. The owner is compiled into the native
+program; ordinary Game/NPC acquisition and presentation are still unbound.
+
+Validation: isolated review tree41bc4a45 passed `make test`225/225 C++ and141/141
+Python tests and `make all BUILD=build-goomba-acquisition-review
+TARGET=ttyd-goomba-acquisition-review`. Shared working-tree test failed the
+separate trio_attack_original pose assertion (227/228 passed). No new gameplay
+render capture or physical performance claim. [Exact validation and artifact](behavior/field/GOOMBA3_PORTABLE_ACQUISITION_OWNER.md).
+
+Next: bind stable Game-owned pouch/switch/talk/registry providers; preserve
+source event→Mario→NPC→item→sound→window→effect order and next-Mario-owner
+motion15 initialization; connect original camera5 icon, M_I_U, effect/window
+and existing native audio/control services; capture acquisition in an isolated
+Azahar profile and measure rendering. Full-storage UI and other areas remain
+open. The full-game goal remains active.
+
 ## 2026-10-14 — Original weapon decision and live tutorial targets
 
 Committed `16baaf3d`: complete shared original setup80122068/6c and decision
