@@ -4418,3 +4418,59 @@ Only after genuine traversal may source history publish and the queue complete.
 Linked/pool/special facing, map blend/global lifetimes, SDK/trig hardware parity,
 active icons and field return remain unfinished. Full prologue goal stays active;
 EVT-01 remains OPEN.
+
+### 2026-10-14 — Original normal placement and quantized native road starts
+
+Commit54719a84 replaces the catalog-backed native cardinal-only calculation with
+resolved original bero_get_position_normal semantics: three source integer XYZ
+words, sentinel named center, unwrapped source heading/mode1, fixed30 start,
+source30+length final displacement, fresh trig pairs and fused operations. Actual
+staged destination geometry supplies the indexed NULL-filter raw floor ray;
+miss retains centerY, unknown closer owners hold. Source recovery calculation
+retains finalY+37. Typed start/end/recovery views do not acknowledge original
+Mario recovery RAM/motion25/party/camera services as completed.
+
+Real beginRoadArrival now uses the source event-float quantized starting P,
+retaining exact LW10..12 words separately from unquantized final F. Finite
+conversion admission holds invalid values instead of saturation; checkpoint
+restore clears unsaved publication provenance. The existing native movement/
+follower/camera bridge remains scoped. Standard math/FMA and float-converted
+static geometry are not certified bit-identical to original MSL/SDK/FPSCR.
+Work runs at transitions with the existing spatial index; no per-frame geometry
+upload/rewrite is introduced. Future kind0 hierarchy imports are rejected until
+a real leaf-center traversal provider exists; all8 current original ROAD nodes
+are verified leaves. No art/audio/pack payload changed.
+
+Documentation source audit now proves ordinary root creation via relSetEvtAddr
+and seq_mapChangeMain→evtEntry(script,0,0). Separate NPC init roots do not copy
+locals back. Ordinary house05 LW9/13/14 are source-proven zero; other words retain
+actual Bero/outer-init producer dependencies. This resolves earlier provenance
+uncertainty without fabricating runtime positions, case IDs or completed world
+callbacks. See [source closure](behavior/field/HOUSE05_OUTER_INIT_BANK_CLOSURE_AND_ROAD_LEAF_CENTERS.md)
+and [native scope](behavior/field/NATIVE_BERO_POSITION_AND_START_PUBLICATION.md).
+
+Validation: frozen tree a8faa8c459a38351e80646ccd66a7a7e0d57f470,
+3284 tracked files, zero mismatches (artifacts/bero-position-source-audit.json).
+make assets-ready SOUNDTRACK=gamecube,make test (295 C++/172 Python) and normal
+make all passed. Initial builds failed because an uncommitted concurrent camera
+include was accidentally captured without its header; rebuilt the private Game
+file from base plus only owned finishWarp changes, preserving live foreign work.
+Passing logs: artifacts/bero-position-assets-final.log,
+bero-position-test-final.log,bero-position-build-final.log. Tests include actual
+Game publication/checkpoint invalidation/authored-length data flow, source
+mode/sign/zero-distance/miss/hold/float encoding and original8-leaf admission.
+Only owned CMake registration is in the frozen source; broader concurrent HEAD
+is not claimed fully validated. Normal archive artifacts/bero-position-normal.3dsx
+SHA25675da49b7e7ec4ce71019330c32e6307bfa57cbc8a4505bde9fd11641ad6b99ac.
+
+Isolated native artifacts/azahar-bero-position-steady exited0 after a plaza→east
+→plaza round trip; both fixture-copy saved-room assertions passed. Inspected
+settled captures show original art,Mario/Goombella in view,100% speed,60 App FPS
+and10.03/10.90ms emulator frame times. This does not prove every intermediate
+float value, original pixel/timing equivalence or actual New2DSXL performance.
+User emulator profile/saves were not changed and no production hook was added.
+
+Next bind real ordered Mario/party position callbacks and camera road/shift
+resets, then publish complete house05 saved locals through actual shared field
+EVT/case ownership. Continue generic door open/close/material1800/key49, original
+NPC services and additional area packs. Full game and goal remain incomplete.

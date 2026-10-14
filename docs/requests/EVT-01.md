@@ -4253,3 +4253,16 @@ Remaining implementation is actual dispProc8003c4bc group/node/current-camera
 shape/material/indexed geometry, followed by source history and queue completion.
 Existing traversal contracts cover that graph; active linked/special facing and
 map blend/global lifetimes remain explicit dependencies. EVT-01 stays OPEN.
+
+### 2026-10-14 — Bero normal placement and ordinary root provenance
+
+[Native placement](../behavior/field/NATIVE_BERO_POSITION_AND_START_PUBLICATION.md)
+now consumes actual selected XYZ/direction/length, verified static leaf centers,
+NULL-filter raw floor results and source mode/FMA arithmetic. Real native road
+starts use encoded/decoded P values; final F and recoveryY+37 are retained as
+separate calculation views. Actual actor/camera/global RAM callback effects are
+not acknowledged by these views. [Outer-init audit](../behavior/field/HOUSE05_OUTER_INIT_BANK_CLOSURE_AND_ROAD_LEAF_CENTERS.md)
+now pins real evtEntry(script,0,0) provenance, separate NPC init roots and
+ordinary LW9/13/14 source zeros. Next bind exact Mario/party setters and camera
+resets, then complete actual house05 local snapshots/shared field case lifetime.
+SDK/FPSCR numerical equivalence, full original traces and parent EVT-01 stay OPEN.

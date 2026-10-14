@@ -9,6 +9,12 @@ Addresses, offsets and masks are hexadecimal; local indices/counts decimal.
 This is a source execution frontier, not an original-runtime trace or a claim
 that a native initial16-word local bank is known.
 
+The later [outer-init bank closure](HOUSE05_OUTER_INIT_BANK_CLOSURE_AND_ROAD_LEAF_CENTERS.md)
+now establishes the ordinary root producer and untouched LW9/13/14 as zero,
+while retaining the actual Bero start/world dependencies for other words. It
+supersedes this earlier contract's uncertainty about ordinary root provenance;
+complete native world execution and live case snapshots remain unbound.
+
 ## Incoming bank is not established by the house05 prefix
 
 gor_02_init_evt file4d554/87c reaches house05 copy/list selection at4d8e8

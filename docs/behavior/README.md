@@ -1044,3 +1044,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native mode2 retained-lens publication](camera/NATIVE_MODE2_RETAINED_LENS_PUBLICATION.md)
 
 - [Native inner pose state and cache submission](display/NATIVE_INNER_POSE_DRAW_STATE_AND_CACHE.md) — retained battle mode/map material state, original/effective pass, facing/context and real cache operations before traversal.
+
+- [Native Bero position and start publication](field/NATIVE_BERO_POSITION_AND_START_PUBLICATION.md) — source placement math, raw floor query and encoded native road starts.
+- [House05 outer-init bank and ROAD leaves](field/HOUSE05_OUTER_INIT_BANK_CLOSURE_AND_ROAD_LEAF_CENTERS.md) — actual root producer, source-proven ordinary residual locals and8 original leaf markers.

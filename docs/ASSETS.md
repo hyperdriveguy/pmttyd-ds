@@ -834,3 +834,17 @@ baseline's converter. The live Bero cache was also regenerated from the read-onl
 ISO using the live converter during validation setup; no generated data is
 committed. Existing Nintendo/Intelligent Systems copyright/local-use-only
 restrictions apply; no redistribution rights are granted.
+
+### 2026-10-14 — Original ROAD leaf admission for placement
+
+No pack format, image, audio or original payload change. Existing Bero15-entry
+catalog remains1848 bytes plus148-byte descriptor; existing ROADv1 geometry
+and original node IDs remain unchanged. tools/bero_info_assets.py now rejects
+kind0 entries whose matching original collision owner is missing, ambiguous,
+meshless or has children. All8 current ROAD markers are verified transformed
+leaves; the read-only raw-map check and center comparison are recorded in
+ignored artifacts/outer-bank-road-leaf-centers.json. Future hierarchy owners
+require original leaf-center traversal, not an aggregate bbox substitution.
+Source/converted Nintendo/Intelligent Systems rights apply; no distribution
+rights are granted. ISO/extracted resources and compiled binary remain ignored.
+[Placement scope](behavior/field/NATIVE_BERO_POSITION_AND_START_PUBLICATION.md).
