@@ -67,7 +67,7 @@ int main() {
     char temporary[]="/tmp/pm-door-save-XXXXXX";const int fd=mkstemp(temporary);assert(fd>=0);close(fd);
     const std::string path=temporary;
     {
-        std::ofstream f(path,std::ios::binary);f.write(reinterpret_cast<const char*>(legacy.data()),legacy.size());
+        std::ofstream f(path,std::ios::binary);f.write(reinterpret_cast<const char*>(legacy.data()),40);
     }
     assert(loadSave(path,out)==LoadResult::Loaded && out.interiorMask==0 && out.originalStory==8);
     p.interiorMask=1;assert(writeSave(path,p));
@@ -79,5 +79,37 @@ int main() {
         assert(decodeSave(old,out) && out.interiorMask==0 && !out.originalStory);
     }
     std::remove(path.c_str());std::remove((path+".bak").c_str());
-    std::puts("Native v6 source save switches, original flags/interior state, legacy saves and recovery passed");
+    p.originalPouch=std::make_shared<ProloguePouch>();p.hp=25;
+    for(unsigned i=0;i<p.originalPouch->bytes.size();++i)p.originalPouch->bytes[i]=uint8_t(i*73+19);
+    p.originalPouch->half(0x70,25);p.originalPouch->half(0x92,-12);
+    for(int flag:{-1,0,1}) {
+        p.originalNpcTalkState.flag5407.reset();if(flag>=0)p.originalNpcTalkState.flag5407=flag!=0;
+        const auto saved=encodeSave(p);assert(saved[4]==8 && decodeSave(saved,out));
+        assert(out.hp==25 && out.originalPouch && out.originalPouch!=p.originalPouch && out.originalPouch->bytes==p.originalPouch->bytes);
+        assert(out.originalNpcTalkState.flag5407==p.originalNpcTalkState.flag5407);
+        const auto retained=out.originalPouch;
+        for(unsigned at:{0u,20u,40u,100u,1531u,1535u}) {
+            auto bad=saved;bad[at]^=1;assert(!decodeSave(bad,out) && out.originalPouch==retained);
+        }
+    }
+    auto flags=p;flags.originalPouch.reset();flags.hp=10;
+    flags.originalNpcTalkState.flag5407=false;auto onlyFlags=encodeSave(flags);
+    assert(decodeSave(onlyFlags,out) && !out.originalPouch && out.originalNpcTalkState.flag5407==false);
+    auto bad=onlyFlags;bad[40]=1;checksum(bad,1532);assert(!decodeSave(bad,out));
+    bad=onlyFlags;bad[22]&=uint8_t(~0x20u);bad[22]|=0x40;checksum(bad);checksum(bad,1532);assert(!decodeSave(bad,out));
+    flags.originalNpcTalkState.flag5407.reset();const auto v7legacy=encodeSave(flags);assert(v7legacy[4]==6);
+    out.originalPouch=p.originalPouch;out.originalNpcTalkState.flag5407=true;
+    assert(decodeSave(v7legacy,out) && !out.originalPouch && !out.originalNpcTalkState.flag5407);
+    assert(writeSave(path,p) && loadSave(path,out)==LoadResult::Loaded && out.originalPouch->bytes==p.originalPouch->bytes);
+    {std::ifstream f(path,std::ios::binary|std::ios::ate);assert(f.tellg()==1536);}
+    const auto first=p.originalPouch->bytes;p.originalPouch->half(0xa0,107);p.originalNpcTalkState.flag5407=true;
+    assert(writeSave(path,p) && loadSave(path,out)==LoadResult::Loaded && out.originalNpcTalkState.flag5407==true && out.originalPouch->half(0xa0)==107);
+    const auto extended=encodeSave(p);
+    for(unsigned size:{40u,1535u,1537u}) {
+        std::ofstream f(path,std::ios::binary|std::ios::trunc);
+        f.write(reinterpret_cast<const char*>(extended.data()),size>1536?1536:size);if(size>1536)f.put(0);f.close();
+        assert(loadSave(path,out)==LoadResult::Recovered && out.originalPouch->bytes==first);
+    }
+    std::remove(path.c_str());std::remove((path+".bak").c_str());
+    std::puts("Native v8 packed pouch and5407, source switches/interior state, legacy unknown migration, corruption and recovery passed");
 }

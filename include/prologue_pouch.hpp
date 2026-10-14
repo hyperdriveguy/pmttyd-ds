@@ -4,7 +4,7 @@
 #include <memory>
 namespace ttyd {
 // Original packed player storage, retained across native field-room rebuilds.
-// Native legacy checkpoint files do not yet serialize this original block.
+// Legacy checkpoints omit this block; native v8 preserves its original bytes.
 struct ProloguePouch {
     std::array<uint8_t,0x5d4> bytes{};
     int16_t half(unsigned offset) const;
