@@ -49,4 +49,10 @@ No lock reserved.
 
 ## Answers and delivery notes (append-only history)
 
-No delivery yet.
+Delivered [coin transaction leaves](../behavior/battle/POUCH_COIN_TRANSACTION.md)
+(2026-10-13, no lock, static artifacts only) for the coin half of todo 2:
++120 coin field with complete add/set 0/999 clamps and returns, plus newly
+extracted `coin_chk` (affordability gate with global price-table read, 1/0
+destination write, return 2). The purchase/deduction path has no reference
+body and stays open, as do flows, inns, gating, and presentation. No
+native/test/CMake/asset change by this answer.
