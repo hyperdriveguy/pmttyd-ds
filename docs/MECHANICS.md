@@ -564,3 +564,19 @@ field view clips it. The source wake's eight-unit mesh still crosses the field
 view at its original fixedX-475. No source ship/wake mesh animation binding
 conflicts with the event transform. ActualLeft input pans nativecameraX to
 -1.208 while child clocks continue, and source480 retires the compact resource.
+
+## 2026-10-14 — Book picture vertical reference
+
+Original US disc0/revision0 isolated Dolphin artifact
+artifacts/dolphin-book-width/reference-t110.png places the first illustration's
+dark top border at full-frame Y67. Source settled letterbox bars49/44 expose
+Y49..436. Rescaling this visible interval to240 pixels predicts a native
+border at(67-49)*240/387=11.1628. Azahar book-t46.png in
+artifacts/azahar-book-vertical shows the border at11; the previous native
+artifacts/azahar-book-width/book-t46.png shows34. Threshold-row analysis and
+artifact identifiers are in artifacts/book-vertical-comparison.json. This is
+a scoped rendered picture-edge comparison, not complete original projection,
+font/raster, sound or physical hardware parity. Source US art and printed runes
+are retained; the visible-region crop is shared rather than introducing a rune
+or illustration offset. The native extra horizontal framing/left-width
+adapters remain explicit in the book contract.

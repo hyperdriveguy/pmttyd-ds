@@ -1,3 +1,50 @@
+## 2026-10-14 — Book runes/picture source cinematic crop
+
+Completed the active inside-cover/page-text goal. User clarified the printed
+runes and picture needed comparison against original Dolphin. Prior turns
+corrected the green cover/paper width; this audit exposed the missing settled
+source letterbox crop. Original camLetterBox8000e388 caps top49/bottom44; its
+source quads expose Y49..436 (height387). Direct read-only DOL inspection is in
+artifacts/book-vertical-letterbox.log. Original isolated Dolphin first-picture
+border is at Y67 in reference-t110.png, hence expected native
+(67-49)*240/387=11.1628. Previous native border was34; corrected Azahar border
+is11. Actual-image row analysis is artifacts/book-vertical-comparison.json.
+This proves the reported vertical framing correction without inventing an
+independent rune/picture shift.
+
+Commit996ae109 fills that original cinematic interval in the400x240 view with
+uniform480/387 zoom and the asymmetric vertical offset. Capture textures keep
+their existing193x240 composition/VRAM footprint; normal cover and paper consume
+the same outer transform afterward. A source-illustration-edge fit, weighted
+by opening/scale/fade, keeps the picture in view. About179px of green cover
+remain visible, versus98 before the initial framing fix. Source meshes, UVs,
+art, original dialogue, sequence and simulation/frame presentation gates stay
+intact. Native pan/fit/left-width adaptations are explicitly documented; full
+original image-camera/GX/Gekko equivalence is not implied. The final fade still
+returns focus to the illustrated page.
+
+Validation: final make test passed260/260 C++ and145/145 Python
+(artifacts/book-vertical-final-tests.log); the preceding full run also passed
+260/260 and145/145 (book-vertical-tests.log). Native make all with prepared
+assets passed in the coherent private snapshot (book-vertical-native.log).
+Both book crop/geometry checks cover the source visible bounds, asymmetric
+offset, captured-front layout, hinge continuity and illustration-edge fit.
+Original book/capture/camera8 verifier65 anchors passed again read-only
+(book-vertical-original.log). The shared unrelated harbor regression from the
+prior entry was repaired by its owner before this run; no book-test skips.
+
+Isolated Azahar artifacts/azahar-book-vertical completed four turns and final
+zoom/market/Peach handoff, exit0/no native exception. Reviewed initial green
+cover and picture(t46), turned runes(t64), all subsequent pages, terminal
+Rogueport(t116), final fade/zoom and Peach(t136). Main-screen picture edge11
+matches the source visible crop; page/paper retain that position through turns.
+Final immutable artifact artifacts/book-vertical-current/ttyd-2ds.3dsx has its
+source-scope/binary SHA manifest. No user emulator profiles/saves or ISO writes;
+no new extraction/conversion/source payload entered history. Source/rendered
+comparison and licensing are recorded in MECHANICS/ASSETS and book contract.
+Scoped whitespace/doc links checked. Physical hardware performance, full raster
+parity and existing cold scene IO remain follow-up work. Full remake is open.
+
 ## 2026-10-14 — Original Trouble Center window rendering
 
 Committed bc65e4ac. Portable full display requests and native Waku/font/scissor

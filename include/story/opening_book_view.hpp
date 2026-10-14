@@ -11,7 +11,7 @@ struct OpeningBookView {
     static constexpr float openPan=(288.f/2-8)*1.5f*.5f;
     static constexpr unsigned captureLeft=110+unsigned(openPan),captureWidth=193,captureHeight=240;
     static constexpr float sourceScale=.5f;
-    // camLetterBoxMain's settled source bars are49/44, not symmetric48s.
+    // camLetterBox's settled source bars are49/44, not symmetric48s.
     static constexpr unsigned sourceTopBar=49,sourceBottomBar=44;
     static constexpr float visibleZoom=480.f/(480-sourceTopBar-sourceBottomBar);
     static constexpr float clipOffsetY=float(sourceTopBar-sourceBottomBar)/(480-sourceTopBar-sourceBottomBar);

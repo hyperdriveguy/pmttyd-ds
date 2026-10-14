@@ -34,17 +34,16 @@ allow later paper vertices to overwrite cover data before the GPU reads it.
 Camera8 initially uses a 25-degree perspective, aspect608/480, near100/far10000,
 and eyeZ240/tan(double0.21816612780094147), looking at the origin. Native uses
 that initial lens/distance with the full400x240 top-screen aspect and scissor.
-The original vertical scale remains half size; the extra horizontal view reveals
-more of the book without stretching it. The desktop raster fills the screen at
+The capture composition retains half-size source geometry. The visible screen
+then fills the original settled cinematic interval Y49..436, as described below;
+this retains uniform geometry scale instead of treating the hidden bars as page. The desktop raster fills the screen at
 its original aspect, cropping above/below. Later camera mutations and original
 SDK/Gekko numeric parity remain open.
 The native framing now pans horizontally as the cover opens: half-size
 `(288/2-8)*scale*clamp(rotation/180,0,1)` pixels. At scale1.5/rotation180 this
-is102 pixels, placing the source hinge at screen x200 rather than x98. Each
-inside cover consequently has200 visible pixels instead of clipping the green
-left cover to98. This is an explicit native viewport adaptation, not a recovered
-original camera mutation or a change to source cover dimensions/UVs. The closed
-cover retains its previous position. Final adjustment scales this same pan with
+is102 pixels, placing the source hinge at screen x200 rather than x98. Before the cinematic-crop stage this gives each inside cover200 visible pixels
+instead of clipping the green left cover to98. This is an explicit native viewport adaptation, not a recovered
+original camera mutation or a change to source cover dimensions/UVs. The closed cover retains its pan-free position within the cinematic viewport. Final adjustment scales this same pan with
 the book and multiplies it by1-fade, returning focus to the illustrated right
 page while the cover and captured paper stay registered.
 Final `adjust` snapshot ownership and native binding limits are described below.
@@ -95,6 +94,30 @@ Before this framing change, an isolated frozen-frame0 native test compared the l
 its captured replacement: every crop pixel differs by at most2 RGB levels,
 mean absolute channel error0.0003742. This is an Azahar comparison of native
 paths, not an original-runtime or hardware observation.
+
+Source camLetterBox8000e388 caps the settled top/bottom bars at49/44; its draw
+submits the documented source quads. The visible source interval is consequently
+49..436, height387. Original Dolphin reference-t110 confirms the picture's dark
+border at full-frame Y67, inside the visible region beginning49. The native
+screen fills this cinematic crop with uniform zoom480/387, mapping the previous
+half-size coordinates through X=200+(x-200)*zoom and
+Y=(y-49/2)*zoom. The tilt projection uses the equivalent clip-row scale plus
+Y offset5/387*w. The settled source picture border maps to11.1628 native pixels;
+Azahar now renders it at11, versus34 before this correction. Quantitative
+inspection stays in artifacts/book-vertical-comparison.json. Original artwork
+and its runes receive this same transform, with no per-texture vertical offset.
+
+Filling this crop would overflow the right illustration edge after the opening
+pan. The native fit subtracts the source illustration-edge overflow, weighted
+by opening angle, scale and1-fade; this keeps the picture in view while retaining
+about179 visible pixels of green cover. Capture targets keep their193x240
+half-size composition, including older paper, and the visible cover/paper apply
+the same outer crop transform afterward. This avoids extra VRAM and prevents
+capture insertion from shifting the picture/runes. The independently documented
+left-side width adapter below is also inside this uniform outer transform.
+The bar bounds are source facts; viewport filling, opening pan and picture fit
+are explicit 3DS adaptations. Later camera/TEV/Gekko parity is not established.
+See [source letterbox producer/draw](../camera/CAMERA_LETTERBOX_AND_DUMMY_DRAW_SERVICES.md).
 
 The native left-side width adapter treats the capture hinge x=-32 as a
 continuous boundary. On its right, the captured front retains193/64 pixels per

@@ -351,3 +351,13 @@ apply. Private packs under artifacts/source-checks/quest13-field reuse these
 resources. Existing battle_class_icon_assets.py additionally generated its own
 ignored original icon pack for an independent host validation dependency.
 [Exact source and preview scope](behavior/display/NATIVE_TROUBLE_CENTER_WINDOW_AND_US_CACHE.md).
+
+## 2026-10-14 — Book cinematic visible-region framing
+
+Same original demo.tpl0..12 and OFF_d_meku_right/A_1 assets and existing
+conversions. No raster, UV, source pose, dialogue or music asset changes. Native
+cover/paper consume the original settled49/44 letterbox visible region as a
+uniform outer viewport transform; captures retain193x240 content in their
+existing256-square textures. Original Nintendo/Intelligent Systems licensing
+and private-local-use restrictions remain. Dolphin/native comparison PNGs and
+playtest binary stay in ignored artifacts; ISO remains read-only.
