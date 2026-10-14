@@ -12,6 +12,34 @@ bool normalize(CameraDepthPoint& p){
 }
 CameraDepthPoint cross(CameraDepthPoint a,CameraDepthPoint b){return {a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]};}
 }
+CameraDepthSnapshot publishCameraMatrices(CameraDepthSnapshot c,CameraMatrixPublication& state){
+    const float angle=round32(state.rollDegrees*0.01745329238474369f);
+    const float sine=round32(float(std::sin(double(angle))));
+    const float cosine=round32(float(std::cos(double(angle))));
+    const std::array<std::array<float,4>,3> rotation{{{cosine,-sine,0,0},{sine,cosine,0,0},{0,0,1,0}}};
+    const std::array<std::array<float,4>,3> translation{{{1,0,0,state.translation[0]},{0,1,0,state.translation[1]},{0,0,1,state.translation[2]}}};
+    auto concat=[](const auto& a,const auto& b){
+        std::array<std::array<float,4>,3> out{};
+        for(unsigned i=0;i<3;++i)for(unsigned j=0;j<4;++j){
+            float v=round32(a[i][0]*b[0][j]);
+            v=std::fma(a[i][1],b[1][j],v);v=std::fma(a[i][2],b[2][j],v);
+            if(j>=2)v=std::fma(a[i][3],j==3?1.f:0.f,v);
+            out[i][j]=round32(v);
+        }
+        return out;
+    };
+    c.view=concat(rotation,c.view);c.view=concat(translation,c.view);
+    if(state.flags&8){
+        const auto previous=c.projection;
+        for(unsigned i=0;i<4;++i)for(unsigned j=0;j<4;++j){
+            float v=round32(state.extra[i][0]*previous[0][j]);
+            for(unsigned k=1;k<4;++k)v=std::fma(state.extra[i][k],previous[k][j],v);
+            c.projection[i][j]=round32(v);
+        }
+        state.flags=uint16_t(state.flags&~8u);
+    }
+    return c;
+}
 CameraDepthPoint cameraDepthView(const CameraDepthSnapshot& c,CameraDepthPoint p){return {row(c.view[0],p),row(c.view[1],p),row(c.view[2],p)};}
 CameraDepthPoint cameraDepthProject(const CameraDepthSnapshot& c,CameraDepthPoint p){
     const float inverse=round32(1.f/row(c.projection[3],p));
@@ -30,9 +58,13 @@ std::optional<CameraDepthSnapshot> makeCameraDepthSnapshot(CameraDepthPoint eye,
     auto right=cross(up,back);if(!normalize(right))return {};up=cross(back,right);
     CameraDepthSnapshot c;const std::array<CameraDepthPoint,3> axes{right,up,back};
     for(size_t i=0;i<3;++i){const auto& a=axes[i];c.view[i]={a[0],a[1],a[2],-(a[0]*eye[0]+a[1]*eye[1]+a[2]*eye[2])};}
-    const float cot=1.f/std::tan(fov*.008726646192371845f),inverse=1.f/(farPlane-nearPlane);
-    c.projection[0][0]=cot/aspect;c.projection[1][1]=cot;
-    c.projection[2][2]=-nearPlane*inverse;c.projection[2][3]=-farPlane*nearPlane*inverse;c.projection[3][2]=-1;
-    return c;
+    const float angle=round32(0.01745329238474369f*round32(.5f*fov));
+    const float cot=round32(float(1./std::tan(double(angle))));
+    const float inverse=round32(1.f/round32(farPlane-nearPlane));
+    c.projection[0][0]=round32(cot/aspect);c.projection[1][1]=cot;
+    c.projection[2][2]=round32(-nearPlane*inverse);
+    c.projection[2][3]=round32(inverse*-round32(farPlane*nearPlane));c.projection[3][2]=-1;
+    CameraMatrixPublication nativeUpright; // Explicit adapter; no inherited roll/extra provider.
+    return publishCameraMatrices(c,nativeUpright);
 }
 }

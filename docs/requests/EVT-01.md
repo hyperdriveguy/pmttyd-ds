@@ -3919,3 +3919,9 @@ dispatch/GPU. Exit is separately admitted later through sequence-manager
 BattleEnd and field waiter; completion bit is not scene restoration. Palette
 consumers must resolve the live typed owner; no original alias/history, GPU or
 full-cadence completion is claimed. EVT-01 stays open.
+
+### 2026-10-14 camera publication follow-through
+
+Recovered [all13 boot/update/draw owners](../behavior/camera/CAMERA_MANAGER_BOOT_UPDATE_AND_DRAW_PUBLICATION.md), including callback admission, source LookAt precision boundary, current-camera publication and real dummy GPU work. Implemented source roll/translation/one-use extra and perspective arithmetic with explicit native numeric adapters; trio visible eye/target/up now follow its retained controller. [Native scope](../behavior/camera/NATIVE_CAMERA_MATRIX_PUBLICATION_AND_TRIO_VIEW.md).
+
+Next implementation needs the retained thirteen-camera bank and resumable callback/zoom publication, then letterbox→sort→camera viewport/scissor/projection→actual queue callbacks→dummy GPU setup→reset. Source LookAt Gekko estimate and inherited field history remain fidelity requests. Preserve actual finishing camMain8000f704 wait until providers exist; no source authorization for a teardown shortcut. This does not close full EVT-01.

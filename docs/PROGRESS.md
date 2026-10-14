@@ -1559,3 +1559,26 @@ sequence-manager exit, ordered BattleEnd/resource teardown and field waiter.
 End-bit publication alone does not restore the field. Existing rendering/cadence
 adapters and original actor/history/performance limits remain open. Full playable
 original-fidelity prologue goal remains active.
+
+## 2026-10-14 — Matrix publication and visible trio camera
+
+Added source-ordered roll/translation and one-use extra projection publication,
+including exact perspective float-store ordering with declared native numeric
+adapters. The handheld trio view now follows its retained controller eye/target/up;
+its world actor-facing reads use that same view. Restored the footer host source
+registration missing from latest committed CMake. Recovered all13 original camera
+boot/update/draw records without claiming their native implementation complete.
+[Scope](behavior/camera/NATIVE_CAMERA_MATRIX_PUBLICATION_AND_TRIO_VIEW.md).
+
+Final isolated make test passed252/252 C++ and144/144 Python checks. Native make
+all DEBUG_SHORT_BOOT=1 passed. Isolated Azahar completed actual trio attacks,
+original10-Star-Point victory and the existing field-restoration hold without a
+detected exception; reviewed captures show wide command/close action/victory
+framing. Exact results and immutable build/source manifests are recorded in the [archive](PROGRESS_ARCHIVE.md#2026-10-14--matrix-publication-and-visible-trio-camera).
+
+Next: retain the full13-camera bank and resumable callback/zoom publication;
+bind sorted ascending-camera draw/current index, actual queued part/material/shadow
+and dummy GPU providers, then ordered sequence-manager exit/BattleEnd/field return.
+The finishing camMain8000f704 hold remains. Gekko math, inherited field roll/extra
+history, complete draw cadence and hardware performance remain unverified. Full
+playable original-fidelity prologue goal stays active.

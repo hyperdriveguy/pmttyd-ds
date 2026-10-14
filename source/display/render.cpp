@@ -1,4 +1,5 @@
 #include "battle_actor_rotation.hpp"
+#include "battle_camera_frame.hpp"
 #include "platform.hpp"
 #include "paper_fence_warp.hpp"
 #include "message_icons.hpp"
@@ -909,11 +910,19 @@ void Renderer::world(const Game& g) {
     if(battle && g.phase==Phase::Windup)marioPose=g.selection==0?1:2;
     float cam=battle?0:g.cameraX;
     C3D_Mtx projection,view,transform;
-    const auto& frame=g.fieldCameraFrame;
+    auto frame=g.fieldCameraFrame;
+    CameraDepthPoint up{0,1,0};
+    if(g.trioBattleActive && g.trioAttack.cameraDepthSnapshot()) {
+        if(const auto* live=g.trioAttack.cameraFrameState()) {
+            frame.eye={live->eye[0]*.01f,live->eye[1]*.01f,live->eye[2]*.01f};
+            frame.at={live->at[0]*.01f,live->at[1]*.01f,live->at[2]*.01f};
+            up=live->up;
+        }
+    }
     // The handheld viewport adapts source aspect; camera eye/at/lens and
     // gameplay screen cache retain their original owners.
     Mtx_PerspTilt(&projection,C3D_AngleFromDegrees(battle?FieldFov:frame.fov),C3D_AspectRatioTop,battle?.1f:frame.nearPlane,battle?80:frame.farPlane,false);
-    Mtx_LookAt(&view,FVec3_New(battle?cam:frame.eye.x,battle?2.8f:frame.eye.y,battle?5.5f:frame.eye.z),FVec3_New(battle?cam:frame.at.x,battle?1.f:frame.at.y,battle?-.4f:frame.at.z),FVec3_New(0,1,0),false);
+    Mtx_LookAt(&view,FVec3_New(battle?cam:frame.eye.x,battle?2.8f:frame.eye.y,battle?5.5f:frame.eye.z),FVec3_New(battle?cam:frame.at.x,battle?1.f:frame.at.y,battle?-.4f:frame.at.z),FVec3_New(up[0],up[1],up[2]),false);
     Mtx_Multiply(&transform,&projection,&view);
     worldTransform=transform;
     // Original room backdrop, drawn without depth writes before the room.
@@ -976,7 +985,7 @@ void Renderer::world(const Game& g) {
     if(!battle && (g.trioBattleActive || g.storyPresentation().locked())) {
         const auto& a=g.storyPresentation().actors[1];const bool right=a.yaw>0 && a.yaw<180;
         if(g.trioBattleActive) {
-            const float cameraAngle=npcAngles.angle(g.fieldCameraFrame.eye.x,g.fieldCameraFrame.eye.z,g.fieldCameraFrame.at.x,g.fieldCameraFrame.at.z);
+            const float cameraAngle=npcAngles.angle(frame.eye.x,frame.eye.z,frame.at.x,frame.at.z);
             if(!a.hidden)characterModel(g.storyPresentation().message.talking && g.storyPresentation().speaker==1?"PKR_T_1":a.pose.c_str(),float(g.storyPresentation().now-a.poseAt)*.06f,{a.position[0]*.01f,a.position[2]*.01f},a.position[1]*.01f,right?180:0,battleMirrorZ(right?180:0,a.battleRotation[1],cameraAngle,a.battleFlags),true,trioPartnerAnimations->bank.get(),trioPartnerUVScale,&a);
         } else if(!a.hidden)characterModel(g.storyPresentation().message.talking && g.storyPresentation().speaker==1?"PKR_T_1":a.moving?"PKR_W_1":"PKR_S_1",float(g.ticks),g.partner,g.partnerHeight,right?180:0,right,true);
     } else if(!battle && !g.harborStory.enabled)characterModel(g.partnerPresentation.name(),g.partnerPresentation.frame(),g.partner,g.partnerHeight,
@@ -994,7 +1003,7 @@ void Renderer::world(const Game& g) {
             const auto& a=g.storyPresentation().actors[i];if(a.hidden)continue;
             const bool right=a.yaw>0 && a.yaw<180;std::string pose=a.pose;
             if((a.flags&0x200) && g.storyPresentation().message.talking && g.storyPresentation().speaker==i)pose=std::string(i==3?"KUR":i==4?"PTK":"TGK")+"_T_1";
-            const float cameraAngle=npcAngles.angle(g.fieldCameraFrame.eye.x,g.fieldCameraFrame.eye.z,g.fieldCameraFrame.at.x,g.fieldCameraFrame.at.z);
+            const float cameraAngle=npcAngles.angle(frame.eye.x,frame.eye.z,frame.at.x,frame.at.z);
             const bool mirror=g.trioBattleActive?battleMirrorZ(right?180:0,a.battleRotation[1],cameraAngle,a.battleFlags):right;
             characterModel(pose.c_str(),float(g.storyPresentation().now-a.poseAt)*.06f,{a.position[0]*.01f,a.position[2]*.01f},a.position[1]*.01f,right?180:0,mirror,false,&undergroundAnimations,undergroundUVScale,g.trioBattleActive?&a:nullptr);
         }

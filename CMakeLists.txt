@@ -1266,3 +1266,8 @@ target_sources(ttyd_core PRIVATE source/field/trouble_quest_menu.cpp)
 add_executable(trouble_quest_menu_tests tests/trouble_quest_menu_tests.cpp)
 target_link_libraries(trouble_quest_menu_tests PRIVATE ttyd_core)
 add_test(NAME trouble_quest_menu COMMAND trouble_quest_menu_tests)
+
+target_sources(ttyd_core PRIVATE source/battle/battle_display_footer.cpp)
+add_executable(battle_display_footer_tests tests/battle_display_footer_tests.cpp)
+target_link_libraries(battle_display_footer_tests PRIVATE ttyd_core)
+add_test(NAME battle_display_footer COMMAND battle_display_footer_tests)

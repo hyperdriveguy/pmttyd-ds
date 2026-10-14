@@ -13292,3 +13292,41 @@ matrices/history, ascending-camera sorting/draw/reset cadence, part/material/GPU
 callbacks, shadow collision/images/cylinder, complete actor/update chronology
 and ordered exit/teardown/field return remain unbound. Full prologue parity and
 physical performance remain unverified.
+
+## 2026-10-14 — Matrix publication and visible trio camera
+
+Snapshot `artifacts/camera-publication-source/OWNED_BASE.txt` uses c59eda21 plus
+three owned camera math/test files, exact renderer hunks stored in
+`artifacts/camera-publication-render-edits.json`, and the restored footer CMake
+block. It excludes other pending menu, field and renderer changes. Immutable
+ELF/3DSX/SMDH and SHA/source manifests: `artifacts/camera-publication-validated`.
+
+Final `make test` exit0:252/252 C++,144/144 Python; log
+`artifacts/camera-publication-test-final.log`. `make all DEBUG_SHORT_BOOT=1
+BUILD=build-camera-publication TARGET=ttyd-camera-publication` exit0; log
+`artifacts/camera-publication-build-final.log`. The first host link exposed missing
+committed footer source registration; restored from the previous owned footer
+block. Initial native asset setup lacked the snapshot reference-symbol link and
+then caught a new renderer condition using a nonexistent story member; corrected
+to existing `Game::trioBattleActive` before final validation. Earlier failed logs
+remain `camera-publication-test.log` and `camera-publication-build.log`.
+
+Azahar: immutable3DSX, isolated `artifacts/azahar-camera-publication`, fixture
+`artifacts/fixtures/underground-trio-story11.bin`, seconds45,
+`tests/azahar_trio_exp_icons.py`, exit0 with no detected native exception. Viewed
+`boot.png`, `partner-menu.png`, `original-hammer-13.png`,
+`original-exp-and-victory-30.png` and
+`original-ending-fade-export-boundary.png`. Full-stage command framing changes
+to a close Hammer action and close victory framing. Mario and Goombella are
+visible with the original10-Star-Point presentation. Ending reaches the existing
+black development field-restoration hold. This validates these captures only,
+not pixel/original parity or field return. Emulator log:
+`artifacts/camera-publication-emulator.log`.
+
+No physical New2DS XL or Dolphin original run. Double trig/LookAt and handheld
+projection are explicit adapters; paired-single seeds/FPSCR/GQR parity is open.
+The matrix helper does not execute the full bank/field zoom or queued draw
+providers. Renderer uses live controller vectors, original converted animations
+and its existing citro3d geometry path. Finishing remains8000f704; no teardown
+shortcut or field-return claim. Native assets remain ignored, sourced read-only
+from supplied ISO; no new original payload enters source history.
