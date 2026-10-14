@@ -3,17 +3,26 @@
 #include <cmath>
 namespace ttyd {
 namespace {
+// Distinct source binary32 pi constants serve interpolation,wrap and arc cost.
+// Do not replace them with one higher-precision host pi. Road units are engine/10.
 constexpr float Pi=3.141592025756836f,WrapPi=3.1415927410125732f,TwoPi=6.2831854820251465f;
+// Rate is progress per60Hz source interval; clock supplies integer milliseconds.
+// Preserve multiply60 then divide1000, independent of rendering cadence.
 float elapsed(float rate,uint64_t before,uint64_t now){return rate*60*float(now-before)/1000;}
 float magnitude(float x,float y,float z){return std::sqrt(x*x+y*y+z*z);}
 float mix(float a,float b,float w){return std::fma(w,b-a,a);}
 bool finite(CameraPoint p){return std::isfinite(p.x)&&std::isfinite(p.y)&&std::isfinite(p.z);}
+// Source road+20 enables fixed-Y anchor(+24);+7c supplies horizontal shift
+// rate. Any cap flag/fixed-Y/shift rate admits anchor blending.
 bool blendAdmission(const CameraRoadAsset& asset,const CameraRoadState& a,const CameraRoadState& b) {
     if(a.flags || b.flags)return true;
     for(const auto* s:{&a,&b})if(s->road &&
         ((asset.versionCode()==101 && *asset.roadWord(*s->road,0x20)!=0) || *asset.roadFloat(*s->road,0x7c)!=0))return true;
     return false;
 }
+// Road floats+58 distance,+64 pitch,+70 secondary angle,+7c shift rate;
+// +b4 nonzero requires the missing extra-road provider. No zone can retain
+// previous road while updating anchor X/Z to the player, rather than clearing it.
 bool calculateCandidate(const CameraRoadAsset& asset,CameraRoadWork& work,CameraPoint player,CameraPoint look,float shift,uint64_t now) {
     const auto selected=selectCameraRoadZone(asset,look);
     CameraCurveOutput curve;std::optional<uint32_t> road;
@@ -42,6 +51,9 @@ bool calculateCandidate(const CameraRoadAsset& asset,CameraRoadWork& work,Camera
         if(shift!=0 && previous.active) {
             if(now<previous.milliseconds)return false;
             const float theta=Pi*((*asset.lensMetadata())[0]*.5f/180);
+            // Source lens-derived shift span uses640/480,scale2 then.01;
+            // query Y1000000 is a high authored-unit sentinel. Previous shift
+            // and current shift solve separately before tangent/normal budgeting.
             float k=next.distance*std::sin(theta);k/=std::cos(theta);k=640*k;k/=480;k=2*k;
             const auto query=[&](float value,CameraCurveOutput& out) {
                 const float offset=.01f*(value*k);
@@ -68,11 +80,16 @@ bool calculateCandidate(const CameraRoadAsset& asset,CameraRoadWork& work,Camera
     } else {next.anchor.x=player.x;next.anchor.z=player.z;}
     next.anchor.y=asset.versionCode()==101 && *asset.roadWord(*road,0x20)!=0?*asset.roadFloat(*road,0x24):player.y;
     if(!finite(next.anchor) || !finite(next.direction) || !std::isfinite(next.distance) || !std::isfinite(next.pitch) || !std::isfinite(next.secondary))return false;
+    // Source per-visit recovery weights+.004 tangential /+.008 normal, cap1;
+    // elapsed .005 travel term and cleared cap flags govern earlier budgets.
     work.tangentWeight=std::min(1.f,work.tangentWeight+.004f);
     work.normalWeight=std::min(1.f,work.normalWeight+.008f);
     work.candidate=next;return true;
 }
 }
+// Change masks:1 road,2 leaving zone,4 entering capped endpoint,8 segment
+// jump,0x20 near-wrap,0x10 numeric-only change. Adjacent/wrap-adjacent segments
+// can return0. Near-zero cost<.01/travel<.3 yields no transition.
 uint32_t compareCameraRoad(const CameraRoadAsset& asset,const CameraRoadState& a,const CameraRoadState& b,float& rate) {
     if(!b.active)return 0;
     uint32_t mask=0;
@@ -97,9 +114,14 @@ uint32_t compareCameraRoad(const CameraRoadAsset& asset,const CameraRoadState& a
     cost=std::max(cost,std::fabs(a.distance-b.distance)*3);
     const float travel=magnitude(a.anchor.x-b.anchor.x,a.anchor.y-b.anchor.y,a.anchor.z-b.anchor.z);
     if(cost<.01f && travel<.3f)return 0;
+    // Source rate=1/clamp(max arc/lens/travel cost,20,90); angular direction
+    // cost factor2,pitch/secondary1,distance-change3 are retained source terms.
     cost=std::max(cost,travel);rate=1/std::clamp(cost,20.f,90.f);
     return mask?mask:0x10;
 }
+// Cosine easing .5000010132789612*(1-cos(pi*progress)), cap1. Direction
+// wraps to shortest angular arc using distinct WrapPi/TwoPi; optional anchor
+// blending differs from always-blended orientation/lens values.
 void blendCameraRoad(bool anchorBlend,const CameraRoadState& o,const CameraRoadState& d,CameraRoadState& c,float progress) {
     const float w=std::min(1.f,.5000010132789612f*(1-std::cos(Pi*progress)));
     c.anchor=anchorBlend?CameraPoint{mix(o.anchor.x,d.anchor.x,w),mix(o.anchor.y,d.anchor.y,w),mix(o.anchor.z,d.anchor.z,w)}:d.anchor;
@@ -109,6 +131,9 @@ void blendCameraRoad(bool anchorBlend,const CameraRoadState& o,const CameraRoadS
     const float angle=mix(old,next,w);c.direction={std::sin(angle),mix(o.direction.y,d.direction.y,w),std::cos(angle)};
     c.distance=mix(o.distance,d.distance,w);c.pitch=mix(o.pitch,d.pitch,w);c.secondary=mix(o.secondary,d.secondary,w);c.shiftRate=mix(o.shiftRate,d.shiftRate,w);
 }
+// Inputs are ENGINE units; divide10 to authored camera units. Candidate work
+// is transactional: unsupported math/path domains do not publish partial state.
+// Re-targeting mid-transition starts from current interpolation, not old origin.
 bool CameraRoadWork::update(const CameraRoadAsset& asset,CameraPoint player,CameraPoint look,float shift,uint64_t now) {
     if(!finite(player)||!finite(look)||!std::isfinite(shift)||now<transitionMilliseconds)return false;
     auto work=*this;

@@ -4,6 +4,8 @@
 namespace ttyd {
 // Logical source state. File-relative road index replaces the relocated pointer;
 // clock adapter supplies independently quantized GP40/44 milliseconds.
+// Scalar geometric fields are authored engine/10 units; road is a FILE
+// collection index. Milliseconds drive transition rate, not render frame count.
 struct CameraRoadState {
     bool active=false,zone=false;
     uint32_t flags=0;
@@ -18,6 +20,8 @@ uint32_t compareCameraRoad(const CameraRoadAsset&,const CameraRoadState& a,
                            const CameraRoadState& b,float& rate);
 void blendCameraRoad(bool anchorBlend,const CameraRoadState& origin,
                      const CameraRoadState& destination,CameraRoadState& current,float progress);
+// current (display),candidate (fresh query),destination (retained target),
+// origin (captured transition start) are distinct; merging them loses history.
 struct CameraRoadWork {
     CameraRoadState current,candidate,destination,origin;
     bool transitioning=false,anchorBlend=false;

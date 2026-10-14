@@ -7,6 +7,10 @@ struct Path {
     std::array<CameraPoint,6> points,rows;
     float left=0,right=0;
 };
+// Admitted straight domain:12 vectors =6 points +6 tangent/parameter rows,
+// endpoint indices2/3,source selector+84=1 and no extra+b4 records.
+// Left/right cap floats live at+48/+4c; indices are into collection4.
+// .009999999776482582 is original near-normal collapse tolerance, not clamp.
 std::optional<Path> readPath(const CameraRoadAsset& asset,uint32_t road) {
     const auto start=asset.roadWord(road,0xa0),count=asset.roadWord(road,0xa4);
     if(!start || count!=12 || asset.roadWord(road,0x40)!=2 || asset.roadWord(road,0x44)!=3 ||
@@ -43,6 +47,9 @@ CameraPathStatus solveStraightCameraPath(const CameraRoadAsset& asset,uint32_t r
     const auto path=readPath(asset,road);
     if(!path || !std::isfinite(q.x) || !std::isfinite(q.z))return CameraPathStatus::Unsupported;
     auto result=output;
+    // Authored endpoint rows2/3 set parameter limits; source tolerance~1e-4
+    // collapses a near-zero range.100000000 is the initial distance sentinel.
+    // Result flag1=end cap,2=side cap; five chords span six points.
     float low=path->rows[2].y;const float high=path->rows[3].y;
     if(std::fabs(double(high)-low)<9.999999747e-5)low=high;
     float best=100000000;bool found=false;

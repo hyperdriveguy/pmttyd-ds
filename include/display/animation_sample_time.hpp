@@ -2,6 +2,9 @@
 #include <cstdint>
 #include <optional>
 namespace ttyd {
+// frame/start/end use authored animation-time units, not necessarily a
+// rendering clock. loopConversion distinguishes a required numeric provider
+// from the already-selected zero-span/negative/nonloop outcomes.
 struct AnimationSampleTimePlan {
     float frame=0,span=0,ratio=0,selected=0;
     bool loopConversion=false;

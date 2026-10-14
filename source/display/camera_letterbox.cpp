@@ -2,9 +2,15 @@
 #include <cstring>
 namespace ttyd {
 namespace {
+// Decision/update continuation stages, not original game sequence IDs. Captured
+// party token survives holds while each source query is reissued only at its stage.
 enum Stage {Party,Flags,Bero,Sequence,Key,Ctrl,PartyFlags,Disable,ClearSound,Enable,SetSound,Animate,Rate,Register};
 int16_t half(uint32_t value){const uint16_t bits=uint16_t(value);int16_t result;std::memcpy(&result,&bits,2);return result;}
 }
+// Source camera flags:0x200 bypass automatic decisions,0x100 enables bars,
+//0x400 requests immediate final scalar state. Bero mask1 also bypasses decisions.
+// Sequence2 admits key/control/party checks; sequence3 preserves disabling state.
+// Sound mask0x20 belongs to the sound flag service, not the camera record.
 bool updateCameraLetterbox(CameraState& c,DisplayQueue& queue,const CameraLetterboxServices& s,CameraLetterboxCursor& cursor){
     if(!cursor.active)cursor={true,Party,0,0};cursor.pending=0;
     auto query=[&](LetterboxQuery kind,uint32_t identity){cursor.pending=identity;return s.query?s.query(s.user,kind,cursor.party):std::nullopt;};
@@ -38,6 +44,9 @@ bool updateCameraLetterbox(CameraState& c,DisplayQueue& queue,const CameraLetter
     case SetSound:
         cursor.pending=0x800dc110;if(!s.soundFlag || !s.soundFlag(s.user,true,0x20))return false;
         c.letterboxAlpha=255;c.letterboxTop=c.letterboxBottom=0;c.drawCamera=8;cursor.stage=Animate;break;
+    // Signed16 bar positions grow3 per invocation, cap top49/bottom44;
+    // enabled alpha255. Source drawCamera8 selects UI projection. Narrow before
+    // signed comparisons; these scalar widths are not rendered-frame timing.
     case Animate:
         if(c.publication.flags&0x100){
             c.letterboxAlpha=255;
@@ -49,11 +58,15 @@ bool updateCameraLetterbox(CameraState& c,DisplayQueue& queue,const CameraLetter
         break;
     case Rate:{
         const auto rate=query(LetterboxQuery::Rate,0x8000e388);if(!rate || *rate==0)return false;
+        // Disabled fade step is2*trunc(255/rate), NOT trunc(510/rate).
+        // Wrap/narrow to signed16 before flooring alpha0. Rate0 holds.
         const uint32_t step=uint32_t(255 / *rate)*2u;
         c.letterboxAlpha=half(uint32_t(c.letterboxAlpha)-step);if(c.letterboxAlpha<0)c.letterboxAlpha=0;
         if(c.publication.flags&0x400){c.publication.flags=uint16_t(c.publication.flags&~0x400u);c.letterboxAlpha=0;}
         cursor.stage=Register;break;
     }
+    // Register every completed visit, including invisible alpha0: draw class3,
+    // callback token0x8000e564 via Entry0x80010bc4. Deferred GPU work is separate.
     case Register:
         cursor.pending=0x80010bc4;
         if(queue.enter(c.drawCamera,3,0x8000e564,0,0)!=DisplayAdmission::Registered)return false;

@@ -1,14 +1,21 @@
 #include "shadow_work.hpp"
+// Original request-pool registration/reset only; not collision/image/GPU draw.
+// Units are those supplied by the source owner (ordinary battle engine units).
 namespace ttyd {
 std::optional<uint32_t> ShadowWork::enter(std::array<float,3> position,float radius){
     if(count_>=records_.size())return {};
     const auto slot=count_;auto& record=records_[slot];
     record.flags=collisionEnabled?1:0;record.type=uint8_t(type);record.variant=0;
     record.position=position;record.radius=radius;record.height=height;
+    // Source defaults:collision -1,camera4,scale1,inner/outer .2/.4,alpha255.
+    // Retained matrix bytes are not prepared by Entry and must not be inferred.
     record.collision=-1;record.camera=4;record.scale=1;record.inner=.2f;record.outer=.4f;record.alpha=255;
     ++count_;return slot;
 }
 bool ShadowWork::main(DisplayQueue& queue,ShadowMainCursor& cursor){
+    // Eight ordered source callback registrations, all identity0x8002d3d8.
+    // step4 is the preparation-gated camera2/class5 entry; other steps always
+    // register. Reset count and flag1 only AFTER all registrations succeed.
     static constexpr uint32_t cameras[]{4,1,5,7,2,2,2,2};
     static constexpr int32_t classes[]{9,9,9,9,5,0,2,7};
     if(!cursor.active){cursor.step=0;cursor.active=true;}

@@ -3,6 +3,8 @@
 namespace ttyd {
 enum class CameraPathStatus {Unsupported,NoHit,Found};
 // collisionCurve's actual11-word result; word+4 is not written by this branch.
+// Authored-unit parameter/anchor/tangent; flag masks1 endpoint clamp,2 side
+// clamp. Unsupported/NoHit leave caller output unchanged, including untouchedWord.
 struct CameraCurveOutput {
     float parameter=0;
     uint32_t untouchedWord=0;

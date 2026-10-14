@@ -12,6 +12,8 @@ struct PointGetEffect {
     int32_t amount=0,duration=0,timer=0,phase=0;
     bool active=false,softDelete=false;
     std::array<float,3> depthPosition{};
+    // Original input offset X-2000/Y-30,phase0 incoming,1 hold,2 outgoing.
+    // Coordinates/layout sizes stay in the source effect space, not native world.
     void enter(int32_t count,float inputX,float inputY,float inputZ,int32_t ticks) {
         x=inputX-2000;y=inputY-30;z=inputZ;scale=1;amount=count;duration=ticks;timer=phase=0;active=true;softDelete=false;
     }
@@ -22,6 +24,9 @@ struct PointGetEffect {
         const float product=(end-start)*(1.f-cosine);
         return std::fma(product,.5f,start);
     }
+    // Capture depth BEFORE current motion. Incoming45/outgoing60 invocations
+    // use cosine easing; duration0 holds until softDelete,positive duration
+    // counts from hold entry. Soft request is consumed when exit starts.
     void tick() {
         if(!active)return;
         depthPosition={x,y,z};++timer;
@@ -31,6 +36,10 @@ struct PointGetEffect {
     }
 };
 struct PointGetQuad {uint32_t texture=0;float centerX=0,bottomY=0,width=0,height=0,u0=0,u1=1;bool shadow=false;};
+// Original effect IDs124 phrase,126 ten-digit strip,128 singular/130 plural;
+// shadow is the paired +1 ID. Phrase widths296/328,height48; leading word200,
+// digit advance48 with20/14 glyph scaling,10-unit gaps. Fit half-width to200;
+// shadow shifts(+4,-4),digit UV width.1. Layout emits shadow pass before main.
 inline std::vector<PointGetQuad> pointGetQuads(const PointGetEffect& effect) {
     std::vector<PointGetQuad> out;if(!effect.active)return out;
     const std::string digits=std::to_string(effect.amount);

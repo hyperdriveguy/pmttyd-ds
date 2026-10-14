@@ -7,6 +7,8 @@
 #include <utility>
 namespace ttyd {
 namespace {
+// Native file cap2MiB; six stable room slots. Authored container remains
+// big-endian, unlike the port's converted PMANIM/UVAN/MSAN packs.
 constexpr size_t MaxBytes=2*1024*1024;
 std::array<CameraRoadAsset,6> assets;
 bool loaded=false;
@@ -32,6 +34,10 @@ std::optional<uint32_t> CameraRoadAsset::element(size_t collection,uint32_t inde
     if(collection>=blocks.size() || stride<4 || field%4 || field>stride-4 || index>=blocks[collection].count)return std::nullopt;
     return blocks[collection].offset+index*stride+field;
 }
+// Source v1.01 container minimum0x10c bytes: size at0,three64-byte
+// NUL-terminated strings at4/44/84 hex,9 counts atc4 and9 offsets ate8.
+// Strides correspond to lens/road/zone/polygon/path/zone-vertex/index/extra/
+// unknown collections. Nonempty unknown collection8 is unsupported.
 bool CameraRoadAsset::decode(std::vector<uint8_t> bytes) {
     if(bytes.size()<0x10c || bytes.size()>MaxBytes || beWord(bytes,0)!=bytes.size())return false;
     if(text(bytes,4,64)!="MarioSt_CameraRoadExport" || text(bytes,0x44,64)!="1.01")return false;
@@ -48,6 +54,9 @@ bool CameraRoadAsset::decode(std::vector<uint8_t> bytes) {
     if(parsed[0].count!=1 || parsed[8].count!=0)return false;
     CameraRoadAsset candidate;candidate.data=std::move(bytes);candidate.blocks=parsed;candidate.versionText="1.01";
     auto span=[](uint32_t start,uint32_t count,uint32_t total){return uint64_t(start)+count<=total;};
+    // Road+a0/a4 path start/count,a8/ac zone start/count,b0/b4 extra start/count.
+    // Zone+58 vertex base,+60/64 polygon start/count; polygon words identify
+    // index-array start/count. Every span validates before exposing the asset.
     for(uint32_t n=0;n<parsed[1].count;++n) {
         if(!candidate.roadName(n))return false;
         if(!span(*candidate.roadWord(n,0xa0),*candidate.roadWord(n,0xa4),parsed[4].count) ||
@@ -110,6 +119,8 @@ std::optional<std::array<uint32_t,2>> CameraRoadAsset::polygon(uint32_t index) c
 std::optional<uint32_t> CameraRoadAsset::vertexIndex(uint32_t index) const {
     const auto o=element(6,index,4,0);return o?word(*o):std::nullopt;
 }
+// Replace registry only when ALL six room files load. Unknown room IDs do
+// not become fallback camera data; zero-count source sentinel pointers stay raw.
 bool loadCameraRoadAssets(const char* directory) {
     std::array<CameraRoadAsset,6> next;
     constexpr const char* names[]={"map","gor_00","gor_02","gor_03","gor_04","tik_01"};

@@ -3,6 +3,10 @@
 namespace ttyd {
 // Ordinary room initialization from US gor.rel. Scene-controlled ship motion
 // and wake activation require subsequent event overrides; see behavior contract.
+// Group IDs are converter-assigned event-visibility groups, not room IDs
+// or display classes. Story comparisons below retain exact original GSW0
+// values/exclusions; do not approximate them with chapter names or ranges.
+// Groups0/1 are unconditional visible/hidden; masks1/2 identify native interiors.
 inline bool mapEventGroupVisible(uint32_t group,int32_t story,uint32_t interiorMask=0) {
     switch(group) {
     case 0: return true;

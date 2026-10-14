@@ -3,6 +3,8 @@
 #include <cstdint>
 #include <optional>
 namespace ttyd {
+// Original16-byte record: byte camera/class, half padding,float key, then
+// callback/userdata32-bit identities. Host functions/pointers are not serialized.
 struct DisplayRecord {uint8_t camera=0,drawClass=0;uint16_t padding=0;float key=0;uint32_t callback=0,userdata=0;};
 static_assert(sizeof(DisplayRecord)==16);
 enum class DisplayAdmission {Registered,RejectedNaN,Unavailable};
@@ -13,11 +15,15 @@ struct DisplayDispatchServices {
     bool (*state)(void*,const DisplayStateRequest&)=nullptr;
     bool (*callback)(void*,uint32_t camera,uint32_t identity,uint32_t borrowed)=nullptr;
 };
+// Active holds retain record index, state stage and captured borrowed callback.
+// A cursor cannot resume under a different camera; reset only after completion.
 struct DisplayDispatchCursor {uint32_t index=0,camera=0;uint8_t stage=0;bool active=false,invoking=false;uint32_t callback=0,userdata=0;};
 // Native record references adapt source pointers; userdata remains borrowed.
 class DisplayQueue {
 public:
     DisplayAdmission enter(uint32_t camera,int32_t drawClass,uint32_t callback,uint32_t userdata,float priority);
+    // Source reset clears count only; retained records/current pointer are not
+    // zeroed. ordered() bounds active entries, record() bounds raw pool capacity.
     void reinitialize(){count_=0;}
     void sort();
     bool dispatch(uint32_t camera,const DisplayDispatchServices&,DisplayDispatchCursor&);

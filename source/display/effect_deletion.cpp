@@ -1,6 +1,10 @@
 #include "effect_deletion.hpp"
 #include <cassert>
 
+// Original effect lifecycle: flag word+0,payload pointer+0xc,heap index3.
+// Hard delete frees immediately; soft delete flag2 keeps ownership and ORs
+// pending-delete flag4. Maya payload release frees its supplied pointer directly.
+// Address words are service tokens, not host allocations.
 namespace ttyd {
 namespace {
 uint32_t word(const EffectDeletionServices& s,uint32_t a) {assert(s.memory.word);return s.memory.word(s.memory.user,a);}

@@ -7,6 +7,9 @@ CameraPoint cross(CameraPoint a,CameraPoint b){return {a.y*b.z-a.z*b.y,a.z*b.x-a
 float dot(CameraPoint a,CameraPoint b){return a.x*b.x+a.y*b.y+a.z*b.z;}
 bool finite(CameraPoint p){return std::isfinite(p.x) && std::isfinite(p.y) && std::isfinite(p.z);}
 }
+// Source downward zone ray accepts either winding with its ordered side tests.
+// Equal-height triangles replace best; no epsilon/normalization is invented.
+// Query/triangle coordinates are authored engine/10 units.
 bool cameraZoneTriangle(CameraPoint q,CameraPoint a,CameraPoint b,CameraPoint c,float& best) {
     if(!finite(q) || !finite(a) || !finite(b) || !finite(c) || !std::isfinite(best))return false;
     const auto e0=sub(a,b),e1=sub(c,a),e2=sub(b,c),n=cross(e0,e2);
@@ -22,6 +25,9 @@ bool cameraZoneTriangle(CameraPoint q,CameraPoint a,CameraPoint b,CameraPoint c,
 }
 std::optional<CameraZoneSelection> selectCameraRoadZone(const CameraRoadAsset& asset,CameraPoint look) {
     if(!finite(look))return std::nullopt;
+    // Source no-hit height sentinel. Road+28 disables zone selection in v1.01;
+    // road+a8/ac is zone range,road+8c fallback height when range is empty.
+    // Empty-zone height requires strict >best; triangle equality can replace.
     float best=-100000000;std::optional<CameraZoneSelection> selected;
     for(uint32_t road=0;road<asset.collections()[1].count;++road) {
         if(asset.versionCode()==101 && *asset.roadWord(road,0x28)!=0)continue;

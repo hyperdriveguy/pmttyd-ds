@@ -10,6 +10,8 @@
 namespace ttyd {
 struct ActorMeshVertex {float x,y,z,u,v;};
 // Source ordinary scalar2/unit-scale/zero-pivot model matrix adaptation.
+// Model scale.02 combines original scalar2 and native engine scale.01;
+// yaw is degrees, reflected Z changes handedness without negating root Z.
 struct ActorRootTransform {
     std::array<float,3> root;
     float sine,cosine,scale,zScale;
@@ -35,6 +37,9 @@ public:
         const bool ok=read(file);std::fclose(file);return ok;
     }
     // Generated local little-endian pack on the supported native/host targets.
+    // PMCHAR1:8-byte magic/count then32-byte NUL-terminated names and
+    // vertex counts. Native limits64 poses/8192 vertices; multiples3 mean
+    // triangle-list vertices. Each vertex20 bytes=XYZ/UV binary32.
     bool read(FILE* file) {
         std::array<char,8> magic{};uint32_t count=0;
         if(std::fread(magic.data(),8,1,file)!=1 || std::memcmp(magic.data(),"PMCHAR1",8)!=0 ||

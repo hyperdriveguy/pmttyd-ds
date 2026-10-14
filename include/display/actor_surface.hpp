@@ -7,6 +7,9 @@
 #include <vector>
 namespace ttyd {
 using ActorColor=std::array<float,4>;
+// Transform lanes=(S offset,T offset,S scale,T scale,rotation degrees).
+// Wrap0 clamp,1 repeat,2 mirrored repeat; pass1/2/3 and cull0..3 retain
+// original draw classifications, separate from DisplayQueue class IDs.
 struct ActorSurfaceState {
     std::array<float,5> transform{{0,0,1,1,0}};
     uint32_t wrapS=0,wrapT=0;
@@ -25,6 +28,9 @@ struct ActorTextureTransform {
             sine=std::sin(angle);cosine=std::cos(angle);
         }
     }
+    // Source translation gate checks T SCALE!=0 (not rotation); keep literal
+    // gate. Rotation uses negative angle around normalized half pivots.
+    // Different source degree coefficient here is intentionally retained.
     std::array<float,2> point(float u,float v) const {
         float x=u*t[2],y=v*t[3];
         if(t[0]!=0 || t[1]!=0 || t[3]!=0){x+=t[0];y+=(1-t[1])-t[3];}
@@ -39,6 +45,8 @@ inline std::array<float,2> actorTexturePoint(const std::array<float,5>& t,float 
 }
 namespace actor_surface_detail {
 struct Bin {float low,high;int32_t tile=0;};
+// Native clipped-polygon workspace16 vertices; excessive clipping rejects
+// instead of overflowing. Intersections lerp geometry and all RGBA channels.
 struct Polygon {std::array<ActorSurfaceVertex,16> vertices{};unsigned count=0;};
 inline ActorSurfaceVertex interpolate(const ActorSurfaceVertex& a,const ActorSurfaceVertex& b,float q) {
     ActorSurfaceVertex out{};
@@ -66,6 +74,9 @@ inline bool clip(Polygon& polygon,unsigned axis,float plane,bool lower) {
     }
     polygon=next;return true;
 }
+// Native finite-domain guards: UV magnitude<=2^20,at most34 bins per axis.
+// Clamping partitions below0/[0,1]/above1; repeats use integer tile cells.
+// ceil(high)-1 avoids adding an empty tile at an exact positive boundary.
 inline unsigned bins(float low,float high,uint32_t wrap,std::array<Bin,34>& out) {
     if(!std::isfinite(low) || !std::isfinite(high) || std::fabs(low)>1048576 || std::fabs(high)>1048576 || wrap>2)return 0;
     if(!wrap) {
@@ -80,6 +91,8 @@ inline unsigned bins(float low,float high,uint32_t wrap,std::array<Bin,34>& out)
     for(int32_t i=first;i<=last;++i)out[unsigned(i-first)]={float(i),float(i+1),i};
     return unsigned(last-first+1);
 }
+// Mirrored repeat reverses fractional UV on ODD tiles, including negative
+// odd tiles. Clamp AFTER subtracting the tile so seams retain0/1 endpoints.
 inline float normalized(float value,const Bin& bin,uint32_t wrap) {
     if(!wrap)return std::clamp(value,0.f,1.f);
     const float fraction=std::clamp(value-float(bin.tile),0.f,1.f);
@@ -89,6 +102,10 @@ inline float normalized(float value,const Bin& bin,uint32_t wrap) {
 // Partition source UV planes before atlas remapping. Clamping/wrapping ONLY
 // vertices changes interpolation inside a triangle; this retains that surface.
 // Per-axis34-bin/output limits bound native work; unsupported packs reject.
+// Atlas ABI:64 cells in8x8,128-pixel pitch,2-pixel border,124 usable
+// pixels in1024-square texture. V inversion happens once after remapping.
+// Native output cap65536 vertices; emit complete triangles (three vertices).
+// Failure may follow earlier appends; caller owns candidate/rollback policy.
 inline bool appendActorSurface(const std::array<ActorSurfaceVertex,3>& triangle,const ActorSurfaceState& state,uint16_t cell,
                                std::vector<ActorMeshVertex>& vertices,std::vector<ActorColor>& colors) {
     using namespace actor_surface_detail;

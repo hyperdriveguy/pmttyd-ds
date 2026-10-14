@@ -2,9 +2,13 @@
 #include <optional>
 namespace ttyd {
 namespace {
+// Source binary32 store boundaries; the tangent table uses native double tan,
+// not measured Gekko/libm parity. .0625 is1/16 compressed delta scale.
 float rounded(float v){volatile float result=v;return result;}
 std::optional<float> cubic(const ActorSparseUpdate& r,float t,float h){
     if(r.b<-89 || r.b>88)return {}; // Original adjacent-table domain needs its provider.
+    //178 tangent samples indexed by signed angle+89 cover -89..88 degrees.
+    // c outside(-89,89) is the source no-cubic gate; b must index the table.
     static const auto table=[](){
         std::array<float,178> values{};
         for(int i=0;i<178;++i)values[i]=float(std::tan(double(rounded(float(i-89)*.017453288659453392f))));
@@ -27,6 +31,10 @@ void allocateActorAnimationCache(const ActorAnimationPose& p,ActorAnimationCache
     c.visibility.resize(p.visibility.size());c.nodes.resize(p.nodes.size());
     c.textures.resize(p.textures.size());c.surfaces.resize(p.surfaces.size());
 }
+// Cumulative discrete/current-key cache and fractional output are distinct.
+// previous -1 or backward current rebuilds bases; forward current applies only
+// newly crossed keys; same-key backwards fraction publishes a zero phase first.
+// Validated sparse indices belong to the pack; this is not an untrusted loader.
 bool sampleActorAnimationCache(const ActorAnimationPose& p,ActorAnimationCache& c,ActorAnimationSample& out,
     int32_t current,int32_t next,float fraction,int32_t previous,float previousFraction,ActorAnimationCacheStores stores){
     if(current<0 || next<0 || size_t(current)>=p.keys.size() || size_t(next)>=p.keys.size() || previous<-1)return false;
@@ -51,6 +59,9 @@ bool sampleActorAnimationCache(const ActorAnimationPose& p,ActorAnimationCache& 
             if(j<key.shifts.size()){auto& s=c.surfaces[r.index].transform;s[0]=rounded(s[0]+key.shifts[j].s);s[1]=rounded(s[1]+key.shifts[j].t);}
         }
     }
+    // Across loop seam current>next retains prior continuous output rather
+    // than interpolating key0. Discrete visibility/texture/surface cache still
+    // publishes below. Do not overwrite retained seam output with raw bases.
     if(current<=next){
         out.positions=c.positions;out.normals=c.normals;out.nodes=c.nodes;
         if(current<next){

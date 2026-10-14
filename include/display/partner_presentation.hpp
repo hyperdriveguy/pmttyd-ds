@@ -4,6 +4,9 @@
 namespace ttyd {
 // unk_800cbb10 ordinary pose branch; inputs retain the source speed/owner/input
 // distinction. Sound helper binding remains separate.
+// Pose IDs1 stay,2 walk,3 run,4 jump. Source ownerScale1 threshold1.65
+// and margin.8 feed literal speed<speed+margin (not speed<boundary+margin);
+// preserve that unusual ordered comparison and Mario class1/2 selection.
 inline unsigned partnerMovingPose(float speed,float ownerScale,int marioMovementClass,bool forceRun=false) {
     if(forceRun)return 3;
     const float boundary=ownerScale==1.f?1.649999976158142f:2.f;
@@ -20,6 +23,9 @@ struct PartnerPresentation {
     // Native follower adapter: actual displacement supplies provisional P+104;
     // its source homing/history/turn owners remain unbound. Source ordinary
     // Rogueport owner scale1 and raw-stick class feed the recovered pose helper.
+    // Native displacement*100 converts world distance per tick to engine speed.
+    // Source paper turn uses.125 easing,overshoot goals-40/220,recovery20/170
+    // and latch thresholds-30/210. Pose epoch resets only on actual name changes.
     void update(float dx,float dz,int marioMovementClass,uint64_t tick,float cameraOffset,bool airborne=false) {
         nowTick=tick;offset=cameraOffset;
         const float speed=std::hypot(dx,dz)*100.f;

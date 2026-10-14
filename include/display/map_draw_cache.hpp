@@ -7,6 +7,9 @@ namespace ttyd {
 class MapDrawCache {
 public:
     struct Changes { bool texture, cull, depth; };
+    // Compare texture identity AND wrap modes: one texture can be reused with
+    // different sampler state. Cache lifetime is one pass; another renderer
+    // owner may alter GPU state, so reusing it across owners would hide writes.
     Changes apply(const void* texture, uint32_t wrapS, uint32_t wrapT,
                   uint32_t cull, uint32_t depthMask) {
         const Changes changed{

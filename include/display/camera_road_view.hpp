@@ -1,6 +1,9 @@
 #pragma once
 #include "camera_road_state.hpp"
 namespace ttyd {
+// Finite native upright LookAt/perspective adapter. FOV25deg,near.01/far327.68
+// native units represent source1/32768 engine units;608/480 is source aspect.
+// Packed projection has six coefficients, not a full4x4 host matrix.
 inline std::optional<FieldCameraFrame> fieldCameraFrameFromView(CameraPoint eye,CameraPoint at,
                                                                float fov=25,float near=.01f,float far=327.68f) {
     for(float value:{eye.x,eye.y,eye.z,at.x,at.y,at.z,fov,near,far})if(!std::isfinite(value))return std::nullopt;
@@ -22,6 +25,9 @@ inline std::optional<FieldCameraFrame> fieldCameraFrameFromView(CameraPoint eye,
 
 // Portable calcCurrentCamState / look-at / GX perspective adapter. Authored
 // geometry *10 engine *.01 native. SDK rounding and event/dolly remain separate.
+// Source active distance/pitch and secondary Rodrigues rotation construct eye/at
+// in authored units, then *.1 converts(engine/10)*engine-to-world.01.
+// Inactive native fallback eye(0,10,10) is already world scale, not converted.
 inline std::optional<FieldCameraFrame> cameraRoadFrame(const CameraRoadState& state) {
     CameraPoint eye{0,10,10},at{};
     if(state.active) {

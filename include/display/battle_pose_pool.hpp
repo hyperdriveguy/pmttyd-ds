@@ -16,6 +16,9 @@ struct BattlePoseResource {
 };
 std::shared_ptr<const BattlePoseResource> loadBattlePoseResource(const char* directory,const char* pack);
 struct BattlePoseClock {uint64_t modeZero=0,modeNonzero=0;}; // GP40/44 and GP38/3c millisecond quotients, not rendering frames.
+// Scalar state0x170 bytes preserves source offsets/endianness; native CPU
+// resources/cache/workspace remain separately owned. Linked output sentinel
+//0xffffffff and source handle IDs must not be cast to host pointers.
 struct BattlePose {
     // Offset view of the admitted source scalar state, not mapped SDK pointers.
     std::array<uint8_t,0x170> state{};

@@ -6,6 +6,8 @@
 
 namespace ttyd {
 // Inclusive indices, accumulated from actual writers, not whole map capacity.
+// first=UINT32_MAX,last0 is empty; count includes BOTH endpoints.
+// Inputs are bounded real vertex indices, not byte addresses or max capacity.
 struct VertexUploadRange {
     uint32_t first=std::numeric_limits<uint32_t>::max(),last=0;
     void include(uint32_t index) {
@@ -30,6 +32,9 @@ public:
         if(used==ranges.size()){collapsed=true;return;}
         ranges[used++].include(index);
     }
+    // Sort then merge overlap/adjacency before calling writer(first,count).
+    // This does not reset collection; use a fresh accumulator per update pass.
+    // Capacity64 is native workspace policy; overflow flushes enclosing bounds.
     template<class Flush> void flush(const Flush& writer) {
         if(!bounds.count())return;
         if(collapsed){writer(bounds.first,bounds.count());return;}

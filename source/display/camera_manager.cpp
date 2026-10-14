@@ -1,9 +1,15 @@
 #include "camera_manager.hpp"
 #include <cmath>
 namespace ttyd {
+// Original13-camera bank names/order are retained. Source NTSC projections
+// use608x480 bounds,25deg FOV,near1/far32768 (engine units). Supplied
+// render width/height set viewport/scissor, not those authored lens bounds.
 void CameraManager::initializeBoot(uint16_t width,uint16_t height){
     cameras_={}; // Original full record clears; current draw index is independent.
     constexpr const char* names[]{"off","off2","bg","shadow","3d","3deff_A","3dimg","3deff_B","2d","fade","fade2","dbg","dbg3d"};
+    // .21816612780094147 radians=half25deg FOV. Aspect constants608/480
+    // and4/3 are original binary32 values;400/240 divided by tangent positions
+    // selected image/UI cameras, not native 3DS physical screen dimensions.
     const float angleTangent=float(std::tan(0.21816612780094147));
     for(uint32_t i=0;i<cameras_.size();++i){
         auto& c=cameras_[i];c.name=names[i];c.eye={0,0,1000};c.up={0,1,0};
@@ -14,6 +20,9 @@ void CameraManager::initializeBoot(uint16_t width,uint16_t height){
             c.projectionKind=1;
             c.matrices.projection=i==0?cameraOrthographic(240,-240,-304,304,1,32768):cameraOrthographic(0,480,0,608,1,32768);
         }else{
+            // Lens overrides:effects5/7 and UI8 near100/far10000; depth slices
+            //5/7=[.2,.3],8=[.1,.2],fade9/10=[0,.1]. Others retain[0,1].
+            // Callback tokens:4 battle/field camera,5/7 effect,6 image providers.
             if(i==5 || i==7 || i==8){c.nearPlane=100;c.farPlane=10000;}
             if(i==6 || i==9 || i==10){c.aspect=1.3333333730697632f;c.eye[2]=400.f/angleTangent;}
             if(i==8)c.eye[2]=240.f/angleTangent;
@@ -25,6 +34,9 @@ void CameraManager::initializeBoot(uint16_t width,uint16_t height){
         }
     }
 }
+// Main stages0 callback,1 LookAt+roll/translation,2 field camera4 zoom,
+//3 projection-extra publication. Missing providers retain stage/partial stores;
+// capture callback once so resumed work does not reread a mutated identity.
 bool CameraManager::main(bool field,const CameraMainServices& s,CameraMainCursor& cursor){
     if(!cursor.active)cursor={0,0,true};
     while(cursor.index<cameras_.size()){
@@ -52,6 +64,10 @@ bool CameraManager::main(bool field,const CameraMainServices& s,CameraMainCursor
     }
     cursor.active=false;return true;
 }
+// Draw stages0 letterbox,1 sort,2 camera gate/current index,3 viewport,
+//4 scissor,5 captured near/far branch,6 recompute,7 projection,8 callbacks,
+//9 dummy draw. Cameras dispatch ascending0..12. Flag1 skips drawing but not
+// Main updates; flag0x40+perspective-kind0 admits lens refresh. Reset queue LAST.
 bool CameraManager::draw(DisplayQueue& queue,const CameraDrawServices& s,CameraDrawCursor& cursor){
     if(!cursor.active)cursor={0,0,true,{}};
     if(cursor.stage==0){if(!s.letterbox || !s.letterbox(s.user,queue))return false;cursor.stage=1;}

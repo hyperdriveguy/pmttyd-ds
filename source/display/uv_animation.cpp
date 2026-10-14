@@ -6,6 +6,10 @@
 namespace ttyd {
 namespace {
 template<class Track,class Valid>
+// UVAN/MSAN v1 little-endian native packs:12-byte header, each track
+// frame/binding counts then fixed matrices/bindings. Native caps32 tracks and
+//4096 integer samples; reject duplicate bound vertices ACROSS tracks.
+// Publish only after finite/index/exact-EOF validation of every track.
 bool loadTracks(const char* path,uint32_t vertices,std::vector<Track>& result,const char* expected,Valid valid) {
     FILE* f=std::fopen(path,"rb");if(!f)return false;
     char magic[4];uint32_t version=0,count=0;
@@ -34,10 +38,14 @@ bool loadUVAnimation(const char* path,uint32_t vertices,std::vector<UVTrack>& re
 bool loadMeshAnimation(const char* path,uint32_t vertices,std::vector<MeshTrack>& result) {
     return loadTracks(path,vertices,result,"MSAN",[](MeshBinding b){return std::isfinite(b.x) && std::isfinite(b.y) && std::isfinite(b.z);});
 }
+// Native elapsed simulation tick modulo sampled period. Apply each frame to
+// immutable bind XYZ rather than previous animated output, avoiding drift.
 std::array<float,3> animatedPosition(const MeshTrack& track,const MeshBinding& b,uint64_t ticks) {
     if(track.frames.empty())return {b.x,b.y,b.z};
     return transformedPosition(track.frames[ticks%track.frames.size()],b);
 }
+// Empty tracks still invert original V. Animated matrices consume raw bind
+// UV and invert only the final T result for the Tex3DS convention.
 std::array<float,2> animatedUV(const UVTrack& track,const UVBinding& b,uint64_t ticks) {
     if(track.frames.empty())return {b.u,1-b.v};
     return transformedUV(track.frames[ticks%track.frames.size()],b);

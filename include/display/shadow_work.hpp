@@ -2,6 +2,8 @@
 #include "display_queue.hpp"
 #include <cstddef>
 namespace ttyd {
+// Source0x5c-byte record; alpha at0x28,3x4 matrix at0x2c. Position/radius
+// and retained settings are requests; matrix/texture prep has a separate owner.
 struct ShadowRecord {
     uint16_t flags=0;uint8_t type=0,variant=0;
     std::array<float,3> position{};
@@ -17,6 +19,9 @@ struct ShadowMainCursor {uint8_t step=0;bool active=false;};
 // GPU image allocation, collision preparation and deferred rendering are separate.
 class ShadowWork {
 public:
+    // Source boot settings:enabled1,type2,collision on,height20 engine units;
+    // color0x0000006e is source RGBA black with alpha110, not C2D packed ABGR.
+    // Primary pool64 records; two auxiliary resets are independent settings.
     uint32_t flags=0,counter=0,enabled=1,color=0x0000006e;
     uint32_t preparationGate=1,type=2,collisionEnabled=1;
     float height=20;

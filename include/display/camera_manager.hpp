@@ -2,6 +2,10 @@
 #include "camera_depth.hpp"
 #include "display_queue.hpp"
 namespace ttyd {
+// Semantic retained record, not packed original memory. projectionKind0/1
+// means perspective/orthographic; viewport=(x,y,width,height,minZ,maxZ),
+// scissor=(x,y,width,height). Source draw-camera index defaults8 independently
+// of this record's slot. Letterbox fields are signed16 source scalars.
 struct CameraState {
     CameraMatrixPublication publication;
     uint16_t mode=0;
@@ -14,6 +18,8 @@ struct CameraState {
     std::array<float,6> viewport{};
     std::array<uint16_t,4> scissor{};
 };
+// Cursors survive unavailable providers; starting a fresh cursor replays a
+// whole pass. Keep Main and Draw continuations separate from scene state.
 struct CameraMainCursor {uint8_t index=0,stage=0;bool active=false,callbackCaptured=false;uint32_t callback=0;};
 struct CameraDrawCursor {uint8_t index=0,stage=0;bool active=false;DisplayDispatchCursor display;};
 struct CameraMainServices {

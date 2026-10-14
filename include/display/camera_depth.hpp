@@ -4,6 +4,8 @@
 #include <cstdint>
 namespace ttyd {
 using CameraDepthPoint=std::array<float,3>;
+// Row-major affine view3x4 and homogeneous projection4x4; points use the
+// same coordinate scale as the camera eye/target/lens supplied by their owner.
 using CameraViewMatrix=std::array<std::array<float,4>,3>;
 using CameraProjectionMatrix=std::array<std::array<float,4>,4>;
 struct CameraDepthSnapshot {
@@ -15,6 +17,7 @@ struct CameraDepthSnapshot {
 struct CameraMatrixPublication {
     float rollDegrees=0;
     CameraDepthPoint translation{};
+    // Source mask8 means a pending one-use extra projection multiplication.
     uint16_t flags=0;
     std::array<std::array<float,4>,4> extra{};
 };

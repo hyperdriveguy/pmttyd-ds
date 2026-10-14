@@ -6,6 +6,8 @@
 
 namespace ttyd {
 namespace {
+// Native sidecar names64 bytes:nonempty ASCII<=127,NUL-terminated,zero tail.
+// Directory words little-endian; retained original pose scalar state big-endian.
 bool readName(FILE* file,std::string& out){
     std::array<char,64> bytes{};
     if(std::fread(bytes.data(),bytes.size(),1,file)!=1 || !bytes[0] || !std::memchr(bytes.data(),0,bytes.size()))return false;
@@ -21,6 +23,9 @@ bool readWord(FILE* file,uint32_t& out){
 uint64_t clockFor(const BattlePose& pose,BattlePoseClock clock){return pose.word(0xc)?clock.modeNonzero:clock.modeZero;}
 float rounded(float value){volatile float single=value;return single;}
 }
+// PMPOSE01 directory identities;02 adds model flags and per-descriptor
+// discrete timelines. Native limits4096 descriptors/65536 keys per timeline.
+// Model TestXLU uses original MODEL+c4 mask8, not animation colors or pose flags.
 std::shared_ptr<const BattlePoseResource> loadBattlePoseResource(const char* directory,const char* pack){
     if(!directory || !pack)return {};
     // RomFS packs are immutable during a native run. Renderer and battle owners
@@ -64,10 +69,16 @@ std::optional<bool> BattlePosePool::testTranslucent(int32_t handle) const {
     const auto* p=pose(handle);if(!p || !p->resource->modelFlags)return {};
     return (*p->resource->modelFlags&8)!=0;
 }
+// Timestamp low then high source stores at1c/18;3c=-1 invalidates cumulative
+// key cache,40 clears fraction,80/84 clears discrete value/loop ratio.
 void BattlePosePool::restart(BattlePose& pose,BattlePoseClock clock){
     const auto timestamp=clockFor(pose,clock);pose.word(0x1c,uint32_t(timestamp));pose.word(0x18,uint32_t(timestamp>>32));
     pose.word(0x3c,0xffffffff);pose.scalar(0x40,0);pose.word(0x80,0);pose.scalar(0x84,0);
 }
+// Native source-sized pools256 poses,64 models,64 textures. Models share by
+// original modelName; texture names share independently. Texture references
+// count MODEL owners, model references count POSES. Mode0/1/2 selects archive
+// type1/2/0; any nonzero mode uses the separate event-time clock.
 std::optional<int32_t> BattlePosePool::enter(std::shared_ptr<const BattlePoseResource> supplied,int32_t mode,BattlePoseClock clock){
     if(mode<0 || mode>2)return {};
     archiveType_=mode==1?2:mode==0?1:0;
@@ -96,18 +107,26 @@ std::optional<int32_t> BattlePosePool::enter(std::shared_ptr<const BattlePoseRes
     allocateActorAnimationCache(*initial,pose.cache);
     pose.word(0,1);pose.word(4,0);pose.word(8,0);pose.word(0xc,uint32_t(mode));pose.word(0x10,model);pose.word(0x14,0);restart(pose,clock);
     for(unsigned offset:{0x70u,0x74u,0x7cu})pose.scalar(offset,0);
+    //90=-1 unlinked output/effect sentinel;f0/f4=-1 optional handles. Matrix
+    //124 is3x4 identity at16-byte row/4-byte column stride. f8/fc/44=scale/
+    //scale/rate1 defaults; unidentified scalar/flag words remain explicit offsets.
     pose.word(0x90,0xffffffff);for(unsigned offset:{0xe0u,0xe4u,0xe8u,0xecu,0x154u,0x158u})pose.word(offset,0);
     pose.word(0xf0,0xffffffff);pose.word(0xf4,0xffffffff);pose.scalar(0xf8,1);pose.scalar(0xfc,1);pose.scalar(0x100,0);pose.scalar(0x44,1);
     for(unsigned row=0;row<3;++row)for(unsigned column=0;column<4;++column)pose.scalar(0x124+16*row+4*column,row==column?1:0);
     return int32_t(handle);
 }
 bool BattlePosePool::setRate(int32_t handle,float rate){auto* p=pose(handle);if(!p)return false;p->scalar(0x44,rate);return true;}
+// Ordinary admitted Main requires unlinked90=-1,private outputSelector0,
+// genuine model flags/discrete data. Pose flag8 needs a missing facing provider;
+// evaluating scalar/cache prefix alone does not certify its full Main tail.
 bool BattlePosePool::main(int32_t handle,BattlePoseClock clock){
     auto* p=pose(handle);
     if(!p || p->word(0x90)!=0xffffffff || outputSelector || !p->resource->modelFlags || p->resource->discrete.size()!=p->resource->names.size())return false;
     if(!evaluate(handle,clock))return false;
     return !(p->word(0)&8); // A real optional-facing provider is required when admitted.
 }
+// Missing descriptor names/index overflow fall back to original descriptor0.
+// Nonforced same-index selection preserves epoch; force restarts it.
 bool BattlePosePool::selectName(int32_t handle,const std::string& name,bool force,BattlePoseClock clock){
     auto* p=pose(handle);if(!p)return false;const auto& names=p->resource->names;uint32_t index=0;
     for(size_t i=0;i<names.size();++i)if(names[i]==name){index=uint32_t(i);break;}
@@ -120,6 +139,11 @@ bool BattlePosePool::selectIndex(int32_t handle,uint32_t index,bool force,Battle
     if(p->word(0x90)!=0xffffffff && (p->word(0)&2))p->word(0,p->word(0)|4);
     restart(*p,clock);return true;
 }
+// Timeline publications:20 elapsed frames,24 selected time,28/2c continuous
+// predecessor/next,30 fraction,34/38 independent discrete predecessor/next,
+//3c/40 cumulative cache history,80 discrete value,84 loop ratio,44 rate.
+// Source frame bridge rounds float(elapsed)*60/1000 at each store. Failure can
+// retain earlier source stores; this is a continuation prefix, not atomic sampling.
 bool BattlePosePool::evaluate(int32_t handle,BattlePoseClock clock){
     auto* p=pose(handle);if(!p)return false;
     const auto index=p->word(0x14);if(index>=p->resource->names.size())return false;
@@ -162,6 +186,10 @@ bool BattlePosePool::evaluate(int32_t handle,BattlePoseClock clock){
     return animation->assemble(p->shape);
 }
 bool BattlePosePool::clearEffect(int32_t handle){auto* p=pose(handle);if(!p || p->word(0x90)!=0xffffffff)return false;p->word(0x90,0xffffffff);p->word(0xec,p->word(0xec)&~1u);return true;}
+// Original shared-pose word4 with count8 decrements first; nonnegative
+// result keeps pose alive, underflow retires.0x80000000 tests signed sign bit.
+// Smart-buffer flags0xc0 require a separate provider and hold release. Last
+// model owner releases its texture reference; clear pose ownership last.
 bool BattlePosePool::release(int32_t handle){
     auto* p=pose(handle);if(!p)return false;
     if(p->word(4)==0 && (p->word(0)&0xc0))return false; // Actual smart-buffer providers are required.

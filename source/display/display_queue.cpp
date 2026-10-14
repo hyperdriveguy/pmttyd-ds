@@ -1,10 +1,16 @@
 #include "display_queue.hpp"
 #include <cmath>
 #include <utility>
+// Portable original display registration/sort/deferred dispatch. Numeric class
+// bases/GX tuples are source protocol, not PICA enum values. Layout, result
+// and continuation legends: docs/code/display-services.md.
 namespace ttyd {
 DisplayAdmission DisplayQueue::enter(uint32_t camera,int32_t drawClass,uint32_t callback,uint32_t userdata,float priority){
     if(std::isnan(priority))return DisplayAdmission::RejectedNaN;
     if(count_>=records_.size() || drawClass<0 || drawClass>10)return DisplayAdmission::Unavailable;
+    // Class0..10 sort bands. Classes2/5/9/10 ADD depth; others SUBTRACT.
+    // Camera/class narrow to source bytes;1024 records is source capacity.
+    // NaN priority rejects; infinity is not repaired into a finite key.
     constexpr float offsets[]{400000,400000,600000,100000,100000,300000,900000,1100000,1000000,500000,700000};
     auto& record=records_[count_];record.camera=uint8_t(camera);record.drawClass=uint8_t(drawClass);record.callback=callback;record.userdata=userdata;
     record.key=(drawClass==2 || drawClass==5 || drawClass==9 || drawClass==10)?offsets[drawClass]+priority:offsets[drawClass]-priority;
@@ -33,6 +39,9 @@ void DisplayQueue::sort(){
             const int32_t end=base+count-1;
             if(count==2){if(compare(base,end)>0)swap(base,end);return;}
             int32_t left=base,right=end-1,bound=end,pivot=end;
+            // Source pivot branches:2 direct pair,3 median finish,4 skips median,
+            // <40 median-of-three,>=40 logarithmic sampled pivot. Preserve swaps
+            // and ties rather than replacing this with std::sort/stable_sort.
             if(count<40 && count!=4){
                 const int32_t mid=base+count/2;const auto a=slots[size_t(base)],m=slots[size_t(mid)],z=slots[size_t(end)];
                 if(compare(base,end)>0){
@@ -56,6 +65,9 @@ void DisplayQueue::sort(){
     };
     sortRange(sortRange,0,int32_t(count_));for(uint32_t i=0;i<count_;++i)order_[i]=before[slots[i]];
 }
+// Resume failed state provider at its exact stage; failed callback resumes
+// the SAME captured identity/userdata. Do not replay earlier GX state requests.
+// Callback/userdata are borrowed tokens; their owners must survive dispatch.
 bool DisplayQueue::dispatch(uint32_t camera,const DisplayDispatchServices& services,DisplayDispatchCursor& cursor){
     if(!cursor.active){cursor={0,camera,0,true};}else if(cursor.camera!=camera)return false;
     while(cursor.invoking || cursor.index<count_){
@@ -65,6 +77,10 @@ bool DisplayQueue::dispatch(uint32_t camera,const DisplayDispatchServices& servi
         }
         const auto reference=order_[cursor.index];const auto& record=records_[reference];
         if(record.camera!=camera){++cursor.index;cursor.stage=0;continue;}
+        // Three common GX requests; classes0..5/9/10 add four class requests.
+        // Camera4/5/7 suppress alpha writes. GX tuples: blend1 SRCALPHA4/
+        // INVSRCALPHA5; compare6 GEQUAL(ref128),7 ALWAYS,3 LEQUAL;
+        // alpha-op1 OR; logic-op operand7 is the retained raw GX operation.
         std::array<DisplayStateRequest,7> states{};size_t count=3;
         states[0]={DisplayGXState::ColorUpdate,{1}};states[1]={DisplayGXState::AlphaUpdate,{camera==4 || camera==5 || camera==7?0:1}};
         states[2]={DisplayGXState::ZScaleOffset,{},{{1,0}}};const auto c=record.drawClass;

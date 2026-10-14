@@ -8,6 +8,8 @@ Point3 cross(Point3 a,Point3 b) {return {a.y*b.z-a.z*b.y,a.z*b.x-a.x*b.z,a.x*b.y
 float dot(Point3 a,Point3 b) {return a.x*b.x+a.y*b.y+a.z*b.z;}
 bool finite(Point3 p) {return std::isfinite(p.x) && std::isfinite(p.y) && std::isfinite(p.z);}
 }
+// Native cutaway broad phase: segment parameter[0,1] across three slabs;
+// 1e-8 classifies near-parallel axes. Invalid/reversed bounds reject.
 bool segmentHitsBounds(Point3 from,Point3 to,const Bounds3& b) {
     if(!finite(from) || !finite(to) || !finite(b.min) || !finite(b.max))return false;
     float origin[]={from.x,from.y,from.z},end[]={to.x,to.y,to.z};
@@ -22,6 +24,9 @@ bool segmentHitsBounds(Point3 from,Point3 to,const Bounds3& b) {
     }
     return true;
 }
+// Native cutaway triangle test, separate from original collision rays.
+// 1e-7 determinant tolerance and1e-5 barycentric edge allowance bound float
+// noise; endpoints within1e-4 of camera/actor are excluded from occlusion.
 bool segmentHitsTriangle(Point3 from,Point3 to,Point3 a,Point3 b,Point3 c) {
     if(!finite(from) || !finite(to) || !finite(a) || !finite(b) || !finite(c))return false;
     Point3 direction=sub(to,from),ab=sub(b,a),ac=sub(c,a),p=cross(direction,ac);

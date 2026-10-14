@@ -3,6 +3,9 @@
 #include <cstdint>
 #include <vector>
 namespace ttyd {
+// UV matrix is2x3 affine (6 floats); mesh matrix3x4 (12 floats), row-major.
+// Bindings contain destination vertex index and ORIGINAL UV/XYZ values.
+// Native sample counts/periods are integer ticks; event activation is separate.
 struct UVBinding {uint32_t vertex;float u,v;};
 struct UVTrack {
     std::vector<std::array<float,6>> frames;

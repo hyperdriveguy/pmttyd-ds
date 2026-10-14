@@ -8,6 +8,8 @@ namespace ttyd {
 // Portable ordinary domain. Host/ARM float trig and affine composition adapt
 // the recovered branches; original paired-single/libm bit equality is separate.
 using ActorVector=std::array<float,3>;
+// Row-major4x4 identity with affine top3x4 operations. Bottom row stays
+// (0,0,0,1); translation occupies column3. Host float composition is an adapter.
 struct ActorMatrix {
     std::array<float,16> v{{1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1}};
     static ActorMatrix translation(const float* p) {ActorMatrix m;for(int i=0;i<3;++i)m.v[i*4+3]=p[i];return m;}
@@ -22,7 +24,11 @@ struct ActorMatrix {
     }
 };
 inline bool actorNonzero(const float* v){return v[0]!=0 || v[1]!=0 || v[2]!=0;}
+// Literal source gate: third scale lane==1 (unusual equality) is intentional.
+// Do not repair it to !=1. Zero parent scale skips ALL inverse scale division.
 inline bool actorJointScaleGate(const float* v){return v[0]!=1 || v[1]!=1 || v[2]==1;}
+// Source order Z,Y,X; secondary angles multiplier1 precede primary2.
+// Angles convert degrees via binary32 pi/180; preserve this stored-angle scaling.
 inline ActorMatrix actorRotation(const float* p,const float* secondary=nullptr) {
     ActorMatrix result;
     auto triple=[&](const float* angles,float multiplier){
@@ -36,6 +42,9 @@ inline ActorMatrix actorRotation(const float* p,const float* secondary=nullptr) 
     if(secondary)triple(secondary,1);
     triple(p,2);return result;
 }
+// Node24-float record:0 translation,3 scale,6 rotation,9 joint secondary,
+//12 rotation pivot,15 scale pivot,18/21 pivot offsets. Joint/nonjoint paths
+// differ; nonjoint pivots surround transform with positive/negative translations.
 inline ActorMatrix actorNodeMatrix(const float* n,bool joint,const float* parent) {
     ActorMatrix result;bool have=false;
     auto append=[&](const ActorMatrix& m){if(have)result=result*m;else{result=m;have=true;}};
@@ -66,6 +75,9 @@ inline ActorMatrix actorNodeMatrix(const float* n,bool joint,const float* parent
 }
 struct ActorGroup {int32_t sibling,child;uint32_t node,joint,visible;}; // v1/2 boolean; v3 visibility-buffer index.
 struct ActorVertexBinding {uint32_t group,position,texture;float u,v;};
+// Texture frame byte indexes256 cell mappings; cell0xffff means unavailable.
+// Atlas valid cells0..63 use8x8 grid,128-pixel pitch,2px border,124px content.
+// Sparse records carry signed8 XYZ/node deltas or wrapping unsigned8 selectors.
 struct ActorTextureBinding {uint32_t initial;std::array<uint16_t,256> cells;};
 struct ActorSparseUpdate {uint32_t index;int8_t a,b,c;uint8_t padding;};
 struct ActorTextureUpdate {uint32_t index;uint8_t delta,padding[3];};
@@ -91,6 +103,9 @@ struct ActorAnimationSample {
     // Rebuilt after discrete surface shifts; trig is shared by all bindings.
     std::vector<ActorTextureTransform> textureTransforms;
 };
+// Cubic Hermite node delta:1/16 position scale,tangent table178 entries
+// indexed angle+89. c outside(-89,89) disables cubic; validated b is[-89,88].
+// q is fractional key time; duration scales derivatives, not renderer time.
 inline float actorNodeDelta(const ActorSparseUpdate& record,float q,float duration) {
     if(record.c<=-89 || record.c>=89)return 0;
     const float q2=q*q,q3=q*q2;
@@ -114,6 +129,8 @@ struct ActorAnimationPose {
     std::vector<ActorSurfaceState> surfaces; // PMANIM4 original texture matrices/wraps.
     std::vector<ActorColor> colors; // One original RGBA per binding.
     std::vector<ActorSurfaceTriangle> triangles;
+    // Presentation-clock adapter normalizes time before sampling. Battle Main
+    // instead supplies an already-published selected time via evaluateSelected.
     bool evaluate(float time,ActorAnimationSample& out) const {
         if(!std::isfinite(time) || keys.empty() || groups.empty())return false;
         const float length=end-start;
@@ -148,6 +165,9 @@ struct ActorAnimationPose {
             }
             for(const auto& r:keys[i].visibility)out.visibility[r.index]=uint8_t(out.visibility[r.index]+r.delta);
         }
+        // Only a forward key pair interpolates continuous deltas. Loop seam
+        // next0 is not treated as another ordinary forward segment; discrete
+        // visibility/texture/UV shifts use whole crossed keys with byte wrap.
         if(last<next) {
             for(const auto& r:keys[next].positions) {
                 auto& p=out.positions[r.index];const float factor=q*.0625f;
@@ -164,6 +184,9 @@ struct ActorAnimationPose {
     }
     // Consume already sampled output buffers; shared by presentation and the
     // battle owner, whose cumulative caches have a separate lifetime.
+    // Validate traversal even through hidden ancestors. Root is last group;
+    // -1 ends a child/sibling chain and repeated visits reject malformed graphs.
+    // Adjacent surface batches merge only when pass AND cull match, never reorder.
     bool assemble(ActorAnimationSample& out) const {
         auto& world=out.world;world.assign(groups.size(),ActorMatrix{});
         auto& seen=out.seen;seen.assign(groups.size(),0);
@@ -225,6 +248,10 @@ public:
     const ActorAnimationPose* pose(const char* name) const {for(const auto& p:poses)if(p.name==name)return &p;return nullptr;}
     const ActorAnimationPose* firstPose() const{return poses.empty()?nullptr:&poses.front();}
     bool load(const char* path){FILE* f=std::fopen(path,"rb");if(!f)return false;bool ok=read(f);std::fclose(f);return ok;}
+    // Local little-endian PMANIM1..4:2 adds normals,3 indexed visibility,
+    //4 nonzero start/surface transforms/RGBA/triangle metadata/UV shifts.
+    // Native admission limits and field counts: docs/code/animation-data.md.
+    // Pending poses publish atomically after complete validation and exact EOF.
     bool read(FILE* file) {
         auto scalar=[&](auto& value){return std::fread(&value,sizeof(value),1,file)==1;};
         auto vector=[&](auto& values,uint32_t count){values.resize(count);return count==0 || std::fread(values.data(),sizeof(values[0]),count,file)==count;};
@@ -236,6 +263,8 @@ public:
         if((!version2 && std::memcmp(magic.data(),"PMANIM1",8)) || !scalar(count) || !count || count>64)return false;
         std::vector<ActorAnimationPose> pending;
         for(uint32_t poseIndex=0;poseIndex<count;++poseIndex) {
+            // sizes[0..5]=position vectors,node FLOATS,groups,vertex bindings,
+            // textures,keys. Nodes are24 floats each; bindings are triangle triples.
             ActorAnimationPose p;std::array<char,32> name{};std::array<uint32_t,6> sizes{};uint32_t normalCount=0,visibilityCount=0;
             if(!scalar(name) || !name[0] || !std::memchr(name.data(),0,name.size()) || !scalar(p.loop) ||
                !scalar(p.start) || !scalar(p.end) || !scalar(sizes) || (version2 && !scalar(normalCount)) || (version3 && !scalar(visibilityCount)))return false;
@@ -270,6 +299,9 @@ public:
             for(const auto& b:p.bindings)if(b.group>=sizes[2] || b.position>=sizes[0] || b.texture>=sizes[4] ||
                 !std::isfinite(b.u) || !std::isfinite(b.v) || (version4?(std::fabs(b.u)>128 || std::fabs(b.v)>128):b.u<0 || b.u>1 || b.v<0 || b.v>1))return false;
             for(const auto& t:p.textures){if(t.initial>255)return false;for(auto cell:t.cells)if(cell>=64 && cell!=0xffff)return false;}
+            // Native compressed-work caps:16384 records per channel/key,
+            //1,000,000 total per pose. Limits guard parsing, not original fidelity.
+            // Key times strictly increase, first=start,last=end for multi-key poses.
             uint32_t total=0;
             for(uint32_t key=0;key<sizes[5];++key) {
                 ActorAnimationKey k;std::array<uint32_t,3> records{};uint32_t normalRecords=0,visibilityRecords=0;

@@ -3,6 +3,9 @@
 #include <cstdint>
 #include <cstring>
 namespace ttyd {
+// Retained source paper-facing/pose state. All headings are degrees; stored
+// speed/heading wall history, camera-relative display and target are distinct.
+// Motion/display flag and pose names follow original IDs, not the legacy billboard.
 struct MarioPresentation {
     float facing=0,storedSpeed=0,storedHeading=0;
     int32_t directionCountdown=0;
@@ -17,6 +20,9 @@ struct MarioPresentation {
     uint64_t poseNowMilliseconds=0;
     uint16_t poseStartFrame=0;
     bool supported=true,poseUploaded=false;
+    // Faster travel captures heading immediately with14-invocation countdown;
+    // slower/equal travel replaces it only after countdown. Air counter suppresses
+    // this request; staying clears retained speed without overwriting heading.
     void wallRequest(float speed,float heading,int16_t airCounter) {
         if(speed!=0 && airCounter==0) {
             if(speed>storedSpeed){storedSpeed=speed;storedHeading=heading;directionCountdown=14;}
@@ -25,6 +31,10 @@ struct MarioPresentation {
         } else storedSpeed=0;
     }
     static float wrap(float angle){angle=std::fmod(angle,360.f);return angle<0?angle+360:angle;}
+    // Source hemisphere bands10..170/190..350 choose display180/0. Special
+    // targets250/290 reset across the rear half. Turn flags100 second-phase,
+    //200 toward0,400 toward180 are HEX masks; damping.125 then.3 uses
+    // overshoot goals-30/210 and recovery10/170, threshold-20/200.
     void turn(float baseSpeed) {
         const float h=wrap(facing-offset);target=std::trunc(target+.5f);
         if((target==290 || target==250) && h>=180)target=0;
@@ -52,6 +62,8 @@ struct MarioPresentation {
             }
         }
     }
+    // Display mask2 locks pose requests. Effect requests clear40000000/set
+    //10000000; ordinary requests clear30000000/reset start frame. All masks hex.
     void requestPose(const char* name,bool effect=false) {
         if((displayFlags&2) || std::strcmp(selected,name)==0)return;
         front=selected=name;queuedPose=true;
@@ -62,6 +74,10 @@ struct MarioPresentation {
         display=target=(display>=90 && display<=270)?180:0;
         facing=moveHeading();return facing; // Caller also publishes travel1a4.
     }
+    // Source motion0 stay,1 walk,2 run,3 jump,10 fall;11 keeps earlier pose,
+    //15/31/33 are admitted additional effect/recovery domains. Rear name band
+    //<=70 or>=290 precedes turning. Pose frame epoch uses original~16.666666ms
+    // per60Hz frame; camera/display lock100(hex) suppresses turn update.
     void update(unsigned motion,float speed,float cameraOffset,int hp,uint64_t now,bool idleOwned=false) {
         poseNowMilliseconds=now;
         offset=cameraOffset;
@@ -100,6 +116,8 @@ struct MarioPresentation {
         queuedPose=false;
         if(!(displayFlags&0x100))turn(speed); // Rear selection precedes display-direction update.
     }
+    //270-display+camera offset converts paper facing to travel; Q1000 degree
+    // truncation uses signed half bias before wrap360. Mirror band90..270.
     float moveHeading() const {
         const float a=270-display+offset;
         return wrap(std::trunc(std::fma(1000.f,a,a<0?-.5f:.5f))/1000.f);

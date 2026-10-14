@@ -12,6 +12,8 @@ namespace ttyd {
 class CameraRoadAsset {
 public:
     struct Collection {uint32_t count=0,offset=0;};
+    // Source record byte strides:road0xb8/zone0x68. element() validates
+    // aligned field offsets; words are original big-endian32-bit bit patterns.
     static constexpr uint32_t RoadStride=184,ZoneStride=104;
     bool decode(std::vector<uint8_t> bytes);
     bool load(const char* path);
@@ -36,7 +38,7 @@ private:
     std::optional<float> number(uint32_t offset) const;
     std::optional<uint32_t> element(size_t collection,uint32_t index,uint32_t stride,uint32_t field) const;
 };
-// Native five-room asset service; all-or-nothing reload preserves prior data.
+// Native six-room asset service; all-or-nothing reload preserves prior data.
 bool loadCameraRoadAssets(const char* directory);
 const CameraRoadAsset* cameraRoadAsset(uint32_t room);
 }

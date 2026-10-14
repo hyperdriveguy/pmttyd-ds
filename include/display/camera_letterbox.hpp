@@ -9,6 +9,8 @@ struct CameraLetterboxServices {
     std::optional<int32_t> (*query)(void*,LetterboxQuery,uintptr_t capturedParty)=nullptr;
     bool (*soundFlag)(void*,bool set,uint16_t mask)=nullptr;
 };
+// pending is the ORIGINAL unresolved service address for diagnostics; stage
+// is the native continuation index. party may legitimately be captured token0.
 struct CameraLetterboxCursor {
     bool active=false;uint8_t stage=0;uintptr_t party=0;uint32_t pending=0;
 };

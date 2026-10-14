@@ -2,6 +2,8 @@
 #include <cmath>
 namespace ttyd {
 namespace {
+// Explicit binary32 stores retain recovered arithmetic boundaries. Host double
+// trig/normalization still adapts Gekko numerics; this is not bit-parity proof.
 float round32(float v){volatile float single=v;return single;}
 float row(const std::array<float,4>& m,CameraDepthPoint p){
     return round32(std::fma(m[2],p[2],round32(m[0]*p[0]))+std::fma(m[3],1.f,round32(m[1]*p[1])));
@@ -12,6 +14,8 @@ bool normalize(CameraDepthPoint& p){
 }
 CameraDepthPoint cross(CameraDepthPoint a,CameraDepthPoint b){return {a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]};}
 }
+// Affine view rows3x4: roll degrees*pi/180, then translation. Keep concat
+// order and row-specific FMA/store boundaries before one-use projection extra.
 CameraDepthSnapshot publishCameraMatrices(CameraDepthSnapshot c,CameraMatrixPublication& state){
     const float angle=round32(state.rollDegrees*0.01745329238474369f);
     const float sine=round32(float(std::sin(double(angle))));
@@ -32,6 +36,8 @@ CameraDepthSnapshot publishCameraMatrices(CameraDepthSnapshot c,CameraMatrixPubl
     publishCameraExtra(c.projection,state);
     return c;
 }
+// Flag mask8 consumes extra4x4 * existing projection once, then clears.
+// Copy prior projection so in-place rows do not read already-updated elements.
 void publishCameraExtra(CameraProjectionMatrix& projection,CameraMatrixPublication& state){
     if(state.flags&8){
         const auto previous=projection;
@@ -44,16 +50,22 @@ void publishCameraExtra(CameraProjectionMatrix& projection,CameraMatrixPublicati
     }
 }
 CameraDepthPoint cameraDepthView(const CameraDepthSnapshot& c,CameraDepthPoint p){return {row(c.view[0],p),row(c.view[1],p),row(c.view[2],p)};}
+// Homogeneous divide uses projection row3 W; no guessed W-zero clamp.
+// Caller/domain providers must establish valid projection inputs.
 CameraDepthPoint cameraDepthProject(const CameraDepthSnapshot& c,CameraDepthPoint p){
     const float inverse=round32(1.f/row(c.projection[3],p));
     return {round32(row(c.projection[0],p)*inverse),round32(row(c.projection[1],p)*inverse),round32(row(c.projection[2],p)*inverse)};
 }
+// Source normalized Z becomes5000*z+5000, clamps0..10000, then negates
+// for queue depth. Do not use unprojected view Z or discard perspective divide.
 float cameraQueueDepth(const CameraDepthSnapshot& c,CameraDepthPoint p){
     const auto projected=cameraDepthProject(c,cameraDepthView(c,p));
     float depth=std::fma(5000.f,projected[2],5000.f);
     if(depth<0)depth=0;else if(depth>10000)depth=10000;
     return round32(-1.f*depth);
 }
+// Degrees/2 -> radians; cotangent sets X/Y scale. Source GX depth terms
+// use near/far span and W=-viewZ; do not substitute the usual OpenGL matrix.
 CameraProjectionMatrix cameraPerspective(float fov,float aspect,float nearPlane,float farPlane){
     CameraProjectionMatrix p{};
     const float angle=round32(0.01745329238474369f*round32(.5f*fov));
@@ -64,6 +76,8 @@ CameraProjectionMatrix cameraPerspective(float fov,float aspect,float nearPlane,
     p[2][3]=round32(inverse*-round32(farPlane*nearPlane));p[3][2]=-1;
     return p;
 }
+// Bounds map width/height to normalized[-1,1] via2/span. Source depth
+// is -1/(far-near), translation -far/(far-near), homogeneous W1.
 CameraProjectionMatrix cameraOrthographic(float top,float bottom,float left,float right,float nearPlane,float farPlane){
     CameraProjectionMatrix p{};
     const float width=round32(right-left),height=round32(top-bottom),xSum=round32(right+left);
