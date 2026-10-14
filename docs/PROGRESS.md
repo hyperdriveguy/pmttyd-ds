@@ -1,3 +1,61 @@
+## 2026-10-14 — Full audience reaches about30 FPS without removing members
+
+Previous turn made concrete progress through two-screen scene replay and visible
+original crowd rows; the200-member fixture reported about15 FPS. This turn
+committed `5f648111` (plain-RAM halfword/word access) and `c131e00d` (ordinary-UV
+triangle emission). RAM spans wholly within one region and outside every live
+semantic extent now use direct big-endian byte lanes. Live aliases, sparse lanes,
+cross-region spans, failed-read output preservation and atomic rejected stores
+retain the existing facade. No pointer is cached across mapping changes.
+[RAM contract](behavior/event/NATIVE_PLAIN_RAM_WORD_FAST_PATH.md).
+
+The audience backend now emits ordinary in-range UV quads as the same two
+triangles without temporary clipping polygons. Out-of-range poses retain the
+existing full geometry/UV-boundary tessellation, including original1.075 end
+poses. Texture mapping, RGBA, winding, source member visits/requests and simulation
+ticks are unchanged. Tests cover all four original templates from802fa024,
+retained area1600, atlas bounds and nontrivial RGBA.
+[triangle contract](behavior/display/AUDIENCE_IN_RANGE_TRIANGLE_EMISSION.md).
+
+Exact validation used prior isolated snapshot `artifacts/trio-scene-cgzs5cy_`
+(frozen base0ba9e2c4 plus the committed replay/framing and owned optimizations),
+excluding unrelated concurrent work. First `make test` passed285/285 C++ and
+168/168 Python (`artifacts/audience-ram-test.log`). Added mapped final-address
+coverage, rebuilt/ran `event_address_space_tests` successfully
+(`artifacts/audience-ram-boundary.log`); tests compare byte-visible state with
+unaligned halfword/word reads/stores across adjacent RAM, holes, live aliases and
+the32-bit ceiling, preserving all existing bytes after rejected stores.
+After both optimizations, final normal-source `make test` exited0 with285/285 C++
+and168/168 Python (`artifacts/audience-quad-test.log`).
+`TMPDIR="$PWD/artifacts/tmp" make all -o assets-ready BUILD=build-trio-scene
+TARGET=ttyd-trio-scene` exited0 with normal main restored
+(`artifacts/audience-quad-native-final.log`). `-o assets-ready` uses the already
+validated private original packs. Owned `git diff --check` passed.
+
+Isolated50-second Azahar runs used the same explicit source-initialized200-member
+pouch fixture and generated profiles, never user saves/settings. Both exited0
+without a native exception detected. The RAM-only capture
+`artifacts/azahar-audience-ram/audience-source-99.png.png` reports30 FPS, compared
+with the prior inspected15 FPS capture. The combined optimization capture
+`artifacts/azahar-audience-quad/audience-source-99.png.png` also reports30 FPS,
+retaining the visible original audience across the seam, original dialogue and
+window frames. This is an emulator status observation for this fixture, not a
+native hardware benchmark or original raster parity claim. The polygon shortcut
+has no demonstrated additional FPS gain here. Normal main contains no forced
+pouch/population fixture. Display access used approved sandbox escalation. No
+asset pixels, compiled packs or ISO content were committed.
+
+Actor scale was inspected but not changed: ordinary root transforms already use
+.02 (documented original scalar2 times native unit conversion.01). The small
+actors still need original asset bounds/unit initialization/camera evidence;
+increasing scale without that evidence would not establish fidelity. Next work:
+profile remaining full-crowd cost and original display/animation cadence; verify
+battle actor transforms and recover/bind original camera4 framing. Bind audience
+type controls and reactions before harmful-item telegraphs, physical X and
+optional audience taps. Original class/turn choreography, normal-story battle
+admission, tutorial followups/field return and real voice playback remain open.
+The full tutorial/real battle goal remains active and incomplete.
+
 ## 2026-10-14 — Trio stage and audience continue onto the lower screen
 
 Committed `58d95166`: the independent native trio world now captures the exact
