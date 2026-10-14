@@ -1413,3 +1413,10 @@ add_executable(battle_audience_population_tests tests/battle_audience_population
 target_link_libraries(battle_audience_population_tests PRIVATE ttyd_core)
 add_test(NAME battle_audience_population COMMAND battle_audience_population_tests)
 set_tests_properties(battle_audience_population PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Original Trouble Center board/counter words through the shared interpreter.
+target_sources(ttyd_core PRIVATE source/field/trouble_board_event.cpp)
+add_executable(trouble_board_event_tests tests/trouble_board_event_tests.cpp)
+target_link_libraries(trouble_board_event_tests PRIVATE ttyd_core)
+add_test(NAME trouble_board_event COMMAND trouble_board_event_tests)
+set_tests_properties(trouble_board_event PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
