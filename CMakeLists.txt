@@ -1532,3 +1532,9 @@ add_executable(field_camera_publication_tests tests/field_camera_publication_tes
 target_link_libraries(field_camera_publication_tests PRIVATE ttyd_core)
 add_test(NAME field_camera_publication COMMAND field_camera_publication_tests)
 set_tests_properties(field_camera_publication PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Ordered original field actor position and camera-reset callbacks.
+target_sources(ttyd_core PRIVATE source/field/field_position_event.cpp source/runtime/field_position_native.cpp)
+add_executable(field_position_event_tests tests/field_position_event_tests.cpp)
+target_link_libraries(field_position_event_tests PRIVATE ttyd_core)
+add_test(NAME field_position_event COMMAND field_position_event_tests)

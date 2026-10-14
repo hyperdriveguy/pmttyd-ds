@@ -318,6 +318,7 @@ void Game::beginRoadArrival() {
     if(std::fabs(roadMotion.step[0])>.001f)facing=roadMotion.step[0]>0?1:-1;
     turnScale=1;turnTick=0;
     progress.position=arrivalStart;partner=arrivalStart;arriving=true;saveRequested=false;
+    applyFieldBeroStart();
 }
 void Game::cancelRoad() {
     beroExec->unknown(); // No recovered cancellation clear; preserve missing provenance.
