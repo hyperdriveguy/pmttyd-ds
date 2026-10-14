@@ -1,107 +1,73 @@
-# BATTLE_ACTION_COMMAND_MANAGER.md - Derived Reference
+# Original action-command manager and StartAC owners
 
-Derived contract reference based on disassembly analysis of `BattleActionCommandManager.elf` and `BattleActionCommandManager.disasm`.
+US G8ME01 disc0 revision0. Complete BattleActionCommandManager800fa5b0/7c,
+StartAC80107788/64, ActionCommandStart800fa450/c and help/window setters are
+read-only source evidence. This replaces the older speculative GPU/index
+interpretation: these fields are callback pointers and command state, not an
+inferred GPU context or command-index loop.
 
-## File Pair
+## Complete manager order
 
-- **Binary**: `artifacts/reference/behavior/BattleActionCommandManager.elf`
-- **Disassembly**: `artifacts/reference/behavior/BattleActionCommandManager.disasm`
+[`battle_action_manager.cpp`](../../../source/battle/battle_action_manager.cpp)
+implements the complete local manager against retained input BattleWork B.
 
-## Disassembly Overview
+1. Request BattlePadWorkUpdate(B+1d1c,0), even with a null main callback.
+2. Read current B1ca0. Null returns without querying/registering display.
+3. Invoke that callback with retained B. Exactly result0 stores B1ca0=0.
+   Do not clear result1ca4, display1ca8 or delete1cac at this site.
+4. Reread current B1ca8 after callback/clear. Nonnull requests
+   dispEntry(camera8,class1,callback,userB,priority15.f). Priority comes from
+   original binary32 word41700000 at80422d68. Null skips the request.
 
-The disassembly begins at address `0x800fa5b0` with standard PowerPC prologue:
-- `stwu 1, -16(1)` - Stack frame setup (16 bytes)
-- `mflr 0` - Link register save
-- `stw 0, 20(1)` - Save return address
-- `stw 31, 12(1)` - Save link register
-- `mr 31, 3` - Move register 3 to link register
-- `addi 3, 31, 7452` - Set up GPU context pointer at offset 7452
-- `bl 0x8011a0ac` - Branch to link to a large subroutine at offset 0x1fafc (likely an initialization or setup function)
+The manager does not invoke the display callback directly, tick an event root,
+perform callback deletion, resolve result polling or imply a rendered frame.
+Main can mutate the display pointer; the fresh pointer is passed to the display
+queue. The retained B is never replaced by a new global lookup in this body.
+Shared bool/optional returns signal provider readiness, not original return
+values. Failure can follow prior effects and is not a retry-safe continuation.
+Native unknown callbacks or missing pad/display owners must remain frontiers.
 
-### Command Processing Sequence
+## Complete StartAC and help/window setters
 
-At offset `0x800fa5d0`:
-- `lwz 12, 7328(31)` - Load word from GP workspace offset 7328 (likely a command index or pointer)
-- `cmplwi 12, 0` - Compare word against 0
-- `bt 2, 0x800fa618` - Branch if test: if command index != 0, take branch
-- `mr 3, 31` - Move link register to register 3
-- `mtctr 12` - Move register 12 to count register (CTR) for looping
-- `bctrl` - Branch to subroutine via CTR
+[`battle_action_help.cpp`](../../../source/battle/battle_action_help.cpp)
+provides source key/display setters and the complete StartAC wrapper. Capture
+argument pointer then current B before resolving on. Store100 to retained B1c9c.
+Only nonzero on loads retained B1c90 then actor27c; bit10-clear requests
+HelpSetDispType(2). The wrapper returns2. On0 omits actor/help reads.
 
-This appears to be the main command dispatch loop that processes battle action commands.
+HelpSetDispType recaptures global B, stores raw mode at1900c, then always requests
+WinSetActive(mode==0 ?1:0). That leaf independently resolves the current inline
+window B2858+1375c and stores only its active BYTE0. A setter-induced global
+change therefore separates help and window owners. Every nonzero mode, including
+negative values, passes0. This is not a crowd-count/target adjustment. SetHelp
+stores only raw key19008; it does not assign mode or fabricate text.
 
-### Command Index Based Routing
+See [help bootstrap](SPOTLIGHT_MUTABLE_COLOUR_BOOTSTRAP_AND_AC_HELP_ADMISSION.md),
+[audience inline owners](AUDIENCE_MAIN_INLINE_OWNERS_AND_ORDINARY_EMPTY_DOMAINS.md),
+[action callbacks](BATTLE_ACTION_COMMAND_CALLBACKS.md), and
+[Main order](BATTLE_MAIN_SERVICE_ORDER_AND_FINAL_STATE_CHECK.md).
 
-The `cmplwi 12, 0` / `bt` pattern indicates a dispatch on the command index value:
-- If command index == 0: take one path (likely termination or initialization)
-- If command index != 0: branch to command-specific handler at `0x800fa618`
+## Harbor motion continuation and remaining integration
 
-At offset `0x800fa5f0`:
-- `li 0, 0` - Load immediate 0 (likely a default/fallback result)
-- `stw 0, 7328(31)` - Store word 0 to workspace offset 7328 (likely resetting the command index)
+Harbor binds complete StartAC and actual help/window writes, timing-option
+raw-mask updates and the adjusted success-window query. Its complete existing
+MarioJumpPosition backend now has platform double arithmetic/FMA/fmod and a
+runtime-owned service. Original sound requests retain the actual calling unit
+as native metadata, key and position. Source eligibility and trajectory remain
+the shared providers; no replacement arc or generated sound is supplied.
 
-At offset `0x800fa5f8`:
-- `lwz 5, 7336(31)` - Load word from workspace offset 7336 (likely a sub-command or parameter)
-- `cmplwi 5, 0` - Compare against 0
-- `bt 2, 0x800fa618` - Branch if sub-command != 0
+Host tests check manager pad/main/display order, null-main display skip, fresh
+display publication, zero-return clearing only main, missing providers, captured
+versus current owners, help modes and StartAC token/on gates. The native original
+Jump graph prepares state100/help2, executes Mario motion and stops live at
+ResultAC80107708 with unchanged HP/result and one payment. This is not an action
+success, complete hit, full original scheduling or visual/audio playback proof.
 
-This nested dispatch structure suggests the manager processes a primary command index, then dispatches to sub-commands within each main command.
-
-### Supporting Reference Files
-
-- `files.json` - Provides SHA hash and provenance for this file pair
-- `decomp-tree.json` - Contains function structure reference for battle command management
-- `us_symbols.csv` - May contain symbol information for `BattleActionCommandManager`
-
-### Native Implementation Reference
-
-This disassembly corresponds to the native implementation in:
-- `include/BattleActionCommandManager.hpp` (hypothetical)
-- `source/BattleActionCommandManager.cpp` (hypothetical)
-
-The native implementation handles:
-- Battle action command dispatch and routing
-- Sub-command processing within each main command
-- Command index validation and termination
-- Resource management for command execution
-
-### Battle Command Ecosystem
-
-This manager is part of the broader battle action system documented in related files:
-
-| Related File | Purpose |
-|-------------|---------|
-| `BATTLE_ACTION_COMMAND_CALLBACKS.md` | Command callback registration and invocation |
-| `BATTLE_ACTION_RECORD_BYTE_UPDATES.md` | Byte-level command record updates |
-| `BATTLE_ACTION_RECORD_TURN_RULES.md` | Turn rule processing for commands |
-| `BATTLE_STAGE_AFTEREFFECT_REQUESTS.md` | Aftereffect requests following command execution |
-| `BATTLE_WEAPON_AFTEREFFECT_DISPATCH.md` | Weapon aftereffect dispatch following commands |
-
-### Dispatch Pattern
-
-The `cmplwi`/`bt` dispatch pattern observed here is consistent across the battle action system:
-- Command indices 0 trigger termination/initialization paths
-- Non-zero indices branch to specific command handlers at `0x800fa618`
-- After processing, the command index is often reset to 0
-- Sub-command processing follows the same pattern
-
-### Function Sub-range
-
-Based on the disassembly size and structure, this manager likely handles:
-- Initial command setup and validation
-- Dispatch to sub-commands (attack, defense, item, switch)
-- Cleanup and result recording
-- Integration with the battle phase controller
-
-### Limitations
-
-- Disassembly provides instruction-level detail but does not establish original
-  gameplay behavior or numerical equivalence
-- No emulator or hardware execution claims are made
-- Original execution traces remain required for fidelity verification
-- The `bl 0x8011a0ac` call likely invokes initialization code that may have complex state
-
----
-*Documentation derived from `artifacts/reference/behavior/BattleActionCommandManager.disasm`
-and `artifacts/reference/behavior/BattleActionCommandManager.elf`, verified against
-file contents and supporting reference files.*
+The shared manager is not yet invoked automatically by Harbor. Complete native
+private-pad/sequence/manager cadence, TimingA callback execution and display-queue
+ownership must be composed next; do not substitute another rendering-frame tick
+or silently clear the remaining callbacks. ResultAC/StopAC, pose consumption,
+hits and post-action scheduling remain required. Game still needs the original
+class/target menu activation and physical controls, extracted HUD/menu rendering
+and second-screen scene/audience interaction. Source listings and validation
+logs remain in ignored artifacts; no original-runtime measurement is asserted.

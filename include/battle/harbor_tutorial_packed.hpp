@@ -15,6 +15,7 @@ public:
  static constexpr uint32_t Battle=0x84000000,Units=0x84100000,Parts=0x84200000;
  EventNativeRuntime& vm;EventCallbackRegistry registry;BattleRandom random{0};
  int32_t chosenUnit=-1,chosenPart=0;
+ BattleMarioJumpBackend marioJumpBackend;BattlePackedMarioJumpServices marioJump;uint32_t marioJumpUnit=0;
  BattleTakeoffBackend takeoffBackend;BattlePackedTakeoffServices takeoff;
  BattlePackedMovePositionServices movement;BattlePackedGenericJumpServices jump;
  BattleCameraRequestServices camera;bool physicalCurrent=false;uint64_t sampledAt=UINT64_MAX;

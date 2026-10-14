@@ -20,6 +20,14 @@ SPANS.extend([
  (0x8010e5a8,0x6c,'104e3182211866b072302e8667e05a27c26d20d2865b1237e1132adbc631e4bc'),
 ])
 
+# Complete StartAC/help/current audience-window activation writers.
+SPANS.extend([
+ (0x80107788,0x64,'2762fc5508e747fac02e5d8ef87c40f93788ea9bc57ab616f0e40f4423028833'),
+ (0x8021690c,0x48,'b6278b065afb487c64e45d10397ca1c30d0a05798ef246b1eb8a419de7acc975'),
+ (0x80216954,0x10,'8b8ff3af915b6a64ad1eb827a193facf1c22c28601ad1262a9d33fe05fc53a82'),
+ (0x801a1cdc,0x30,'33a3b7999c1fbf527f0fc10ddaf665d0c21e1bd2d2e43b481d2f59cc8c07896b'),
+])
+
 def verify(iso=DEFAULT_ISO):
  with Path(iso).open('rb') as disc:
   header=disc.read(0x440)
