@@ -11,7 +11,7 @@ from character_surface_mesh import compile_surface_mesh
 
 def cached_maps_complete(out):
     """A vertices file alone cannot admit an original map pack cache hit."""
-    for variant in ['aaa_00','aaa_00-interior','muj_20','gor_10']:
+    for variant in ['aaa_00','aaa_00-interior','muj_20','gor_10','gor_00']:
         prefix='opening-'+variant
         if not all((out/(prefix+'.'+ext)).is_file() for ext in ['vertices','batches','uvanim','meshanim']):return False
         descriptor=(out/(prefix+'.batches')).read_bytes()
@@ -24,17 +24,22 @@ def cached_maps_complete(out):
 def main():
     p=argparse.ArgumentParser();p.add_argument('--iso',default=DEFAULT_ISO);p.add_argument('--output',default='romfs');a=p.parse_args()
     out=Path(a.output);work=Path('local-assets/opening');work.mkdir(parents=True,exist_ok=True);out.mkdir(parents=True,exist_ok=True)
-    helpers=['iso_assets.py','audio_convert.py','map_convert.py','character_mesh.py','character_surface_mesh.py','character_animation_pack.py','character_animation_data.py']
+    helpers=['opening_ship_assets.py','opening_background_assets.py','iso_assets.py','audio_convert.py','map_convert.py','character_mesh.py','character_surface_mesh.py','character_animation_pack.py','character_animation_data.py']
     iso=Path(a.iso);fingerprint=hashlib.sha256(Path(__file__).read_bytes()+b''.join(Path('tools',name).read_bytes() for name in helpers)+str((iso.stat().st_size,iso.stat().st_mtime_ns)).encode()).hexdigest()
     manifest=out/'opening-assets.json'
     images=[('title-background','mariost.tpl',5),('title-logo','mariost.tpl',21),('title-prompt','mariost.tpl',16),('title-copyright','mariost.tpl',9),('opening-letter','mariost.tpl',4),('opening-map','mariost.tpl',3)]
     images += [(f'demo-{i}','demo.tpl',i) for i in [0,1,2,8,9,10,11,12]]
     tracks=[('title','sys_tit1_32k'),('demo-book','sys_demo1_32k'),('demo-market','sys_demo2_32k'),('opening-house','evt_mri1_32k'),('opening-voyage','sys_opn1_32k'),('opening-sailing','evt_kou1_32k')]
     required=[f'opening-{r}.vertices' for r in ['aaa_00','aaa_00-interior','muj_20','gor_10']]+[n+ext for n,_,_ in images for ext in ['.t3x','.size']]+[n+'.wav' for n,_ in tracks]+['prologue.t3x','prologue.size']
+    required += [f'opening-bg-{room}'+ext for room in ['aaa_00','gor_10','gor_00','dmo_00'] for ext in ['.t3x','.size']]
+    required += ['opening-muj_20.shipobj','opening-gor_00.shipobj','opening-ship-paper.pmanim','opening-ship-paper.bin']+[f'opening-gor_00.{ext}' for ext in ['vertices','batches','uvanim','meshanim']]
     required += ['opening-aaa_00.houseobj','opening-gor_10.camera','demo-page.pmanim','demo-page.bin','demo-page.json','demo-page-back.t3x','demo-page-back.size']
     required += [n+ext for n in ['c_luigi','c_paretta','c_peach','c_nazo','demo-chest'] for ext in ['.pmanim','.t3x','.uvscale']]
     if manifest.exists() and json.loads(manifest.read_text()).get('fingerprint')==fingerprint and all((out/n).exists() for n in required) and cached_maps_complete(out):return
-    records=[]
+    from opening_background_assets import build as build_backgrounds
+    records=build_backgrounds(a.iso,out)
+    from opening_ship_assets import build as build_ship
+
     for path in ['mariost.tpl','demo.tpl']:
         extract(a.iso,path,work/path);records.append(json.loads((work/(path+'.provenance.json')).read_text()))
     tex3ds=shutil.which('tex3ds') or '/opt/devkitpro/tools/bin/tex3ds'
@@ -65,6 +70,7 @@ def main():
             subprocess.run([tex3ds,'-f','rgba8','-z','auto','-o',str(out/f'{prefix}-{index}.t3x'),str(png)],check=True,stdout=subprocess.DEVNULL)
     extract(a.iso,'m/gor_10/c',work/'gor_10.c');shutil.copyfile(work/'gor_10.c',out/'opening-gor_10.camera')
     records.append(json.loads((work/'gor_10.c.provenance.json').read_text()))
+    build_ship(a.iso,out)
     scene_poses={'c_luigi':['L_5','L_6','L_7','L_8','L_9','L_11'],
                  'c_paretta':['S_1'],
                  'c_peach':['P_Z_1','P_S_1','P_T_1','P_W_1','P_S_7','P_T_13','P_W_7','P_S_4','P_T_4','P_W_4','P_S_8','P_T_14','P_W_8','P_B_1','P_B_2','P_T_7','P_H_1','P_B_3','P_B_4'],

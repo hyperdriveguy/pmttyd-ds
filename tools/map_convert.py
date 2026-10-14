@@ -52,7 +52,7 @@ def wall_segments(collision,metadata=None,with_triangles=False):
             segments.add((*p,*q,float(a[:,1].min()),float(a[:,1].max()),*tag,*geometry))
     return sorted(segments)
 
-def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mesh_ambient=(),event_groups=None,scene_root=None,scene_offsets=None,object_bindings=()):
+def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mesh_ambient=(),event_groups=None,scene_root=None,scene_offsets=None,object_bindings=(),initial_pose=None,local_offsets=None):
     event_groups=event_groups or {}
     raw=Path(path).read_bytes();base=32
     table=32+u(raw,4)+u(raw,8)*4;names=table+u(raw,12)*8
@@ -72,7 +72,11 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
         if samplers>1:warnings.append({'material':name,'samplers':samplers,'limitation':'Only texture zero currently rendered'})
         materials[o]={'name':name,'color':color,'color_source':raw[o+8],'layer':raw[o+10],'texture':tid,'uv':uvmatrix,'wrap':wrap}
     info=chunks['information'];scene_name=scene_root or string(base+u(raw,info+8));scene_names={scene_name} if isinstance(scene_name,str) else set(scene_name);scene_offsets=scene_offsets or {};collision_name=string(base+u(raw,info+12))
-    if animation is not None and (ambient or mesh_ambient):raise ValueError('Preview and runtime animation export are separate')
+    if initial_pose is not None:
+        if animation is not None or len(initial_pose)!=2:raise ValueError('One explicit initial pose required')
+        animation,frame=initial_pose
+    elif animation is not None and (ambient or mesh_ambient):raise ValueError('Preview and runtime animation export are separate')
+    local_offsets=local_offsets or {}
     animations=read_animations(path);selected={}
     if animation is not None:
         matches=[a for a in animations if a['name']==animation]
@@ -93,8 +97,11 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
         name=string(base+u(raw,o));visible=visible or name in scene_names;collidable=collidable or name==collision_name
         node_offset=np.array(scene_offsets.get(name,scene_offset),float)
         values=struct.unpack_from('>9f',raw,o+24);local_matrix=trans(values[6:9])@rotate(values[3:6])@np.diag([*values[:3],1]);m=parent@local_matrix
+        if visible and name in selected:
+            local_matrix=local_matrix@selected[name];m=parent@local_matrix
+        if visible and name in local_offsets:
+            local_matrix=local_matrix@trans(local_offsets[name]);m=parent@local_matrix
         node_info[o]={'name':name,'parent':parent_node,'local':local_matrix,'world':m.copy()}
-        if visible and name in selected:m=m@selected[name]
         node_exterior=exterior or name.startswith('S_gai_kabe')
         node_group=exterior_group
         if node_exterior and not node_group and u(raw,o+92):
@@ -215,6 +222,7 @@ def convert(path,output,scale=.1,hidden=(),animation=None,frame=0,ambient=(),mes
         entry=matches[0];duration=entry['duration']
         if duration!=int(duration) or not 0<duration<=4096:raise ValueError('Unsupported mesh duration')
         track_names={t['node']:t for t in entry['tracks']}
+        if initial_pose is not None and set(track_names)&set(selected):raise ValueError('Overlapping initial and runtime map pose owners')
         if len(track_names)!=len(entry['tracks']):raise ValueError('Duplicate mesh track target')
         for owner,bound in position_bindings.items():
             chain=[];node=owner

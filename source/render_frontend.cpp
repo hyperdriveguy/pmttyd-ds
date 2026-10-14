@@ -14,7 +14,7 @@ void Renderer::beginFrontend(){
     frontActive=true;
 }
 void Renderer::releaseFrontend(){
-    C3D_FrameSync();freeTitleCurtains();freeBookCaptures();freeWakeEffects();freeDemoEffects();freeRoom(frontRoom);frontMapName.clear();frontHouseObjects.clear();frontDrawSnapshot.reset();
+    C3D_FrameSync();freeTitleCurtains();freeBookCaptures();freeWakeEffects();freeShipCapture();freeDemoEffects();freeRoom(frontRoom);frontMapName.clear();frontHouseObjects.clear();frontShipObjects.clear();frontDrawSnapshot.reset();
     for(auto& t:frontTextures)if(t.image.imported){Tex3DS_TextureFree(t.image.imported);C3D_TexDelete(&t.image.texture);}
     frontTextures.clear();
     for(auto& a:cineActors)if(a.image.imported){Tex3DS_TextureFree(a.image.imported);C3D_TexDelete(&a.image.texture);}
@@ -69,7 +69,7 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
         // renderFrontend already synchronized before starting this frame.
         // A second FrameSync inside the active first map frame can wait for
         // a presentation that this unfinished frame has not submitted.
-        freeRoom(frontRoom);frontMapName.clear();frontHouseObjects.clear();
+        freeRoom(frontRoom);frontMapName.clear();frontHouseObjects.clear();frontShipObjects.clear();
         if(!opening && demo.book.adjusting){
             // The original prior page owners are finished. Keep only the book
             // layers used by final adjust while admitting the marketplace.
@@ -83,15 +83,34 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
         }
         // Phase ownership releases image textures. The source final book
         // adjustment shares its image resources with the newly visible market.
-        Room pending;if(!loadMap(map,pending)){freeRoom(pending);frontFailure=std::string("Scene map load failed: ")+map;return false;}
+        Room pending;if(!loadMap(map,pending)){freeRoom(pending);if(frontFailure.empty())frontFailure=std::string("Scene map load failed: ")+map;return false;}
         frontRoom=std::move(pending);
         if(std::string(map)=="opening-aaa_00" && !frontHouseObjects.load("romfs:/opening-aaa_00.houseobj",frontRoom.vertexCount)) {
             freeRoom(frontRoom);frontFailure="Original house object bindings unavailable";return false;
         }
+        if((std::string(map)=="opening-gor_00" || std::string(map)=="opening-muj_20") && !frontShipObjects.load((std::string("romfs:/")+map+".shipobj").c_str(),frontRoom.vertexCount)){freeRoom(frontRoom);frontFailure="Original harbor ship bindings unavailable";return false;}
         frontMapName=map;frontFailure.clear();
+    }
+    // bgDisp owns a textured background before map geometry. The source
+    // requested dmo_00 keeps its own backdrop despite the gor_01 geometry alias.
+    const char* background=std::string(map)=="opening-demo-market"?"dmo_00":
+        std::string(map)=="opening-gor_00"?"gor_00":
+        std::string(map)=="opening-gor_10"?"gor_10":
+        std::string(map)=="opening-aaa_00" || std::string(map)=="opening-aaa_00-interior"?"aaa_00":nullptr;
+    if(background)C3D_DepthTest(false,GPU_ALWAYS,GPU_WRITE_COLOR);
+    if(background && !frontImage((std::string("opening-bg-")+background).c_str(),48,0,304,240)) {
+        frontFailure=std::string("Original scene background unavailable: ")+background;return false;
     }
     if(opening && frontHouseObjects.size()) {
         frontHouseObjects.apply(opening->house.doorAngle,opening->house.postboxX,opening->house.treeX,[&](uint32_t i,const OpeningHouseObjects::Point& p){frontRoom.vertices[i].x=p[0];frontRoom.vertices[i].y=p[1];frontRoom.vertices[i].z=p[2];});
+        GSPGPU_FlushDataCache(frontRoom.vertices,size_t(frontRoom.vertexCount)*sizeof(Vertex));
+    }
+    if(opening && opening->part==OpeningPart::Arrival){const auto& ship=opening->harbor;
+        frontShipObjects.apply(ship.x,ship.y,ship.wakeX,ship.yaw,ship.rock,ship.parts,[&](uint32_t i,const OpeningShipObjects::Point& p){frontRoom.vertices[i].x=p[0];frontRoom.vertices[i].y=p[1];frontRoom.vertices[i].z=p[2];});
+        GSPGPU_FlushDataCache(frontRoom.vertices,size_t(frontRoom.vertexCount)*sizeof(Vertex));
+    }
+    if(opening && opening->part==OpeningPart::Voyage){const auto& ship=opening->voyage;
+        frontShipObjects.applyVoyage(ship.position,ship.yaw,ship.rotationZ,ship.parts,[&](uint32_t i,const OpeningShipObjects::Point& p){frontRoom.vertices[i].x=p[0];frontRoom.vertices[i].y=p[1];frontRoom.vertices[i].z=p[2];});
         GSPGPU_FlushDataCache(frontRoom.vertices,size_t(frontRoom.vertexCount)*sizeof(Vertex));
     }
     // Original actor hierarchy evaluation needs the native stack; keep the
@@ -103,8 +122,8 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
     // camInit/camLoadRoad retain the original camera4 lens25; native aspect
     // adapts the viewport without changing the authored eye/aim framing.
     const bool wakeWorld=opening && opening->part==OpeningPart::Wake;
-    if(wakeWorld)Mtx_Persp(&projection,C3D_AngleFromDegrees(25),C3D_AspectRatioTop,.1f,80,false);
-    else Mtx_PerspTilt(&projection,C3D_AngleFromDegrees(25),C3D_AspectRatioTop,.1f,80,false);
+    if(wakeWorld)Mtx_Persp(&projection,C3D_AngleFromDegrees(25),C3D_AspectRatioTop,.01f,327.68f,false);
+    else Mtx_PerspTilt(&projection,C3D_AngleFromDegrees(25),C3D_AspectRatioTop,.01f,327.68f,false);
     Mtx_LookAt(&view,FVec3_New(eye.x*.01f,eye.y*.01f,eye.z*.01f),FVec3_New(at.x*.01f,at.y*.01f,at.z*.01f),FVec3_New(0,1,0),false);
     if(opening && opening->part==OpeningPart::Wake)Mtx_Translate(&view,0,opening->wake.viewShiftY*.01f,0,false);
     Mtx_Multiply(&worldTransform,&projection,&view);
@@ -115,7 +134,13 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
     C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_SRC_ALPHA,GPU_ONE_MINUS_SRC_ALPHA,GPU_ONE,GPU_ONE_MINUS_SRC_ALPHA);
     for(int n=0;n<6;++n)C3D_TexEnvInit(C3D_GetTexEnv(n));
     auto* env=C3D_GetTexEnv(0);C3D_TexEnvSrc(env,C3D_Both,GPU_TEXTURE0,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR);C3D_TexEnvFunc(env,C3D_Both,GPU_MODULATE);
-    const uint32_t visibleGroups=!opening && demo.bookComplete?demo.market.visibleMapGroups():UINT32_MAX;
+    const uint32_t visibleGroups=opening && opening->part==OpeningPart::Voyage?3u:opening && opening->part==OpeningPart::Arrival?1u | (opening->harbor.visible && !opening->harbor.paperLive && !opening->harbor.paperCapturePending?2u:0u) | (opening->harbor.visible && !opening->harbor.paperLive && !opening->harbor.paperCapturePending?(1u<<13):0u):!opening && demo.bookComplete?demo.market.visibleMapGroups():UINT32_MAX;
+    if(opening && opening->part==OpeningPart::Arrival && opening->harbor.paperCapturePending){
+        if(!shipCaptureTarget)shipCaptureTarget=C3D_RenderTargetCreate(240,400,GPU_RB_RGBA8,GPU_RB_DEPTH24_STENCIL8);
+        if(!shipCaptureTarget || !loadShipPaper()){frontFailure="Original ship capture unavailable";return false;}
+        C3D_RenderTargetClear(shipCaptureTarget,C3D_CLEAR_ALL,0,0);C3D_FrameDrawOn(shipCaptureTarget);
+        drawMap(false,snapshot,false,&frontRoom,2u,true);drawMap(false,snapshot,true,&frontRoom,2u,true);C3D_FrameDrawOn(top);
+    }
     // The original608x480 world occupies304x240 pixels; crop the centered
     // full400 projection so its effective world aspect remains19/15.
     if(wakeWorld){C3D_SetViewport(0,0,400,240);C3D_SetScissor(GPU_SCISSOR_NORMAL,48,0,352,240);}
@@ -190,7 +215,7 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
             const int first=count;ok=characterModel(scene.actorPose(0,false),float(opening->now*60/1000-a.poseTick),{a.position[0]*.01f,a.position[2]*.01f},a.position[1]*.01f,right?180:0,right) && ok;
             auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);if(count>first)GSPGPU_FlushDataCache(vertices+first,size_t(count-first)*sizeof(Vertex));C3D_TexBind(0,&characterTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,first,count-first);
         }
-    } else if(opening && opening->part==OpeningPart::Arrival) {
+    } else if(opening && opening->part==OpeningPart::Arrival && opening->harbor.marioVisible) {
         const int first=count;characterModel("M_S_1",float(snapshot.ticks),{0,2.25f},.15f,180,false);
         auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);if(count>first)GSPGPU_FlushDataCache(vertices+first,size_t(count-first)*sizeof(Vertex));C3D_TexBind(0,&characterTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,first,count-first);
     }
@@ -217,6 +242,7 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,const OpeningSequenc
     }
     C2D_TextBufClear(textBuffer);C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
     windowFrameCount=0;
+    windowFontCount=0;
     messageIndicatorCount=0;
     const bool wakeWorld=f.screen==FrontScreen::Opening && opening.part==OpeningPart::Wake;
     const bool wakeReady=!wakeWorld || prepareWakeWorld();
@@ -225,6 +251,8 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,const OpeningSequenc
     if(wakeWorld && wakeReady){C2D_SceneSize(400,240,false);C3D_SetViewport(0,0,400,240);}
     uint8_t titleBlackPresented=0;uint32_t titlePresentedType=0;float titlePresentedFrame=-1,titlePresentedScale=0;
     int entryPresented=-1;uint8_t exitPresented=0;
+    float shipPresented=-1;bool shipCaptureRequested=false;
+    uint8_t voyageWhitePresented=0;
     bool ok=wakeReady;std::array<float,4> paperPresented{{-1,-1,-1,-1}};
     std::array<bool,4> captureRequested{};
     if(f.screen==FrontScreen::Demo && demo.bookComplete) {
@@ -239,13 +267,18 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,const OpeningSequenc
         const char* map=opening.map();
         CameraPoint eye{-376,154,65},at{-63,75,-247};
         if(opening.part==OpeningPart::House || opening.part==OpeningPart::HouseReturn){const auto& scene=opening.house;eye={scene.eye[0],scene.eye[1],scene.eye[2]};at={scene.at[0],scene.at[1],scene.at[2]};}
-        if(opening.part==OpeningPart::Voyage){eye={0,500,1400};at={0,0,0};}
+        if(opening.part==OpeningPart::Voyage){eye={0,367,2093};at={0,343,-115};}
         if(opening.part==OpeningPart::Wake){eye=opening.wakeEye;at=opening.wakeAt;}
-        if(opening.part==OpeningPart::Arrival){eye={2,225,1015};at={2,50,243};}
+        if(opening.part==OpeningPart::Arrival){eye=opening.harbor.eye;at=opening.harbor.at;}
         if(opening.part==OpeningPart::MapDisplay)ok=frontImage("opening-map",48,0,304,240);
         else if(opening.part==OpeningPart::Letter)ok=frontImage("opening-letter",88,30,224,148);
         else if(opening.part==OpeningPart::Prologue){ok=frontImage("prologue",48,95,304,55);}
-        else if(map){const std::string prefix=opening.part==OpeningPart::HouseReturn || (opening.part==OpeningPart::House && opening.house.interior)?"opening-aaa_00-interior":opening.part==OpeningPart::Arrival?"gor_00":"opening-"+std::string(map);ok=frontWorld(prefix.c_str(),eye,at,&opening,demo);}
+        else if(map){const std::string prefix=opening.part==OpeningPart::HouseReturn || (opening.part==OpeningPart::House && opening.house.interior)?"opening-aaa_00-interior":opening.part==OpeningPart::Arrival?"opening-gor_00":"opening-"+std::string(map);ok=frontWorld(prefix.c_str(),eye,at,&opening,demo);}
+        if(opening.part==OpeningPart::Voyage){
+            ok=frontVoyageLogo(opening.voyage.logo) && ok;
+            if(opening.voyage.headingRequested){voyageWhitePresented=uint8_t(std::clamp(opening.voyage.white*255.f,0.f,255.f));ok=C2D_DrawRectSolid(48,0,0,304,240,rgb(255,255,255,voyageWhitePresented)) && ok;}
+        }
+        if(opening.part==OpeningPart::Arrival){shipCaptureRequested=opening.harbor.paperCapturePending;ok=frontShipPaper(opening,shipPresented) && ok;}
     } else if(f.screen==FrontScreen::Demo) {
         if(!loadDemoPaper() || !frontImage("demo-page-back",0,0,0,0)){demo.failed=true;ok=false;}
         else demo.paperServicesBound=true;
@@ -330,14 +363,22 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,const OpeningSequenc
         }
         text("D-pad: select   A: play   B: title",16,195,.44f,Ink);
     } else {
-        if(opening.part==OpeningPart::Voyage)text("A / START: continue",16,195,.46f,Ink);
-        else if(opening.message.waiting())text("A / B: next",16,195,.46f,Ink);
+        if(opening.message.waiting())text("A / B: next",16,195,.46f,Ink);
         if(opening.failed)text(opening.failure.c_str(),16,188,.40f,Red);
     }
     if(!ok){text("Original front-end texture unavailable",10,216,.4f,Red);if(!frontFailure.empty())text(frontFailure.c_str(),10,203,.35f,Red);}
     if(notice && *notice)text(notice,10,229,.35f,Ink);
     C2D_Flush();C3D_FrameEnd(0);
-    if(entryPresented==0 || exitPresented==255 || titlePresentedType || titleBlackPresented==255)C3D_FrameSync();
+    if(voyageWhitePresented==255 || shipCaptureRequested || shipPresented>=60 || entryPresented==0 || exitPresented==255 || titlePresentedType || titleBlackPresented==255)C3D_FrameSync();
+    if(ok && shipCaptureRequested && !captureOpeningShip(opening)){
+        frontFailure="Original opening ship capture failed";ok=false;
+    }
+    if(f.screen==FrontScreen::Opening){
+        if(ok)opening.publishSceneAdmission(opening.part);
+        else opening.publishSceneFailure(frontFailure.empty()?"Original opening scene resources unavailable":frontFailure);
+    }
+    if(ok && voyageWhitePresented==255)opening.voyage.presentedWhite(voyageWhitePresented);
+    if(ok && shipPresented>=60)opening.harbor.presented(shipPresented);
     if(ok)f.title.presentedBlack(titleBlackPresented);
     if(ok && titlePresentedType)f.title.presented(titlePresentedType,titlePresentedFrame,titlePresentedScale);
     if(entryPresented>=0 && ok)demo.exit.entryPresented(uint8_t(entryPresented));

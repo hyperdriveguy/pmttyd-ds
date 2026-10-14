@@ -2,6 +2,7 @@
 #include "game.hpp"
 #include "frontend.hpp"
 #include "opening_house_objects.hpp"
+#include "opening_ship_objects.hpp"
 #include "opening_demo.hpp"
 #include "opening_sequence.hpp"
 #include "opening_house_pcm.hpp"
@@ -103,6 +104,7 @@ private:
     uint32_t frontPhase=UINT32_MAX;
     std::string frontFailure;
     OpeningHouseObjects frontHouseObjects;
+    OpeningShipObjects frontShipObjects;
     std::unique_ptr<Game> frontDrawSnapshot;
     struct CineActor {std::string name;ActorAnimationPack animations;Texture image;float uvScale=1;ActorAnimationSample sample;const ActorAnimationPose* sampledPose=nullptr;float sampledTime=-1;};
     std::vector<CineActor> cineActors;
@@ -127,10 +129,22 @@ private:
     void releaseTutorialCurtain();
     bool loadTutorialPresentation();
     void worldTutorial(const Game&);
+    ActorAnimationPack shipPaperAnimations;
+    ActorAnimationSample shipPaperSample;
+    bool shipPaperReady=false,shipPaperAttempted=false,shipCaptureReady=false;
+    C3D_Tex shipCaptureTexture{};
+    C3D_RenderTarget* shipCaptureTarget=nullptr;
+    uint8_t* shipCapturePixels=nullptr;
+    bool loadShipPaper();
+    bool captureOpeningShip(const OpeningSequence&);
+    bool frontVoyageLogo(const OpeningVoyageLogo&);
+    bool frontShipPaper(const OpeningSequence&,float&);
+    void freeShipCapture();
     ActorAnimationPack demoPaperAnimations;
     std::array<ActorAnimationSample,4> demoPaperSamples;
     std::array<float,4> demoPaperFrames{{-1,-1,-1,-1}};
     struct DemoPaperSurface {uint32_t capture,pass,cull;};
+    std::vector<DemoPaperSurface> shipPaperSurfaces;
     std::array<DemoPaperSurface,124> demoPaperSurfaces{};
     bool demoPaperReady=false,demoPaperAttempted=false;
     std::array<C3D_Tex,4> bookCaptureTextures{};
@@ -203,7 +217,7 @@ private:
     void fieldActors(const Game&);
     void drawFieldActors(bool translucent);
     void freeRoom(Room& room);
-    void drawMap(bool battle,const Game& game,bool translucent=false,Room* supplied=nullptr,uint32_t sceneVisibleGroups=UINT32_MAX);
+    void drawMap(bool battle,const Game& game,bool translucent=false,Room* supplied=nullptr,uint32_t sceneVisibleGroups=UINT32_MAX,bool alphaCapture=false);
     void updateCutaways(Room& room,const Game& game);
     bool c3dReady=false,c2dReady=false,programReady=false,atlasReady=false;
     void world(const Game&);

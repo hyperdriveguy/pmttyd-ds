@@ -33,6 +33,10 @@ int main(){
         opening.heading.entryComplete=opening.heading.displayReady=opening.heading.startFadeComplete=opening.heading.started=opening.heading.exitComplete=true;
         opening.tick(now,keys);assert(!opening.failed);
         if(opening.part==OpeningPart::Voyage)voyageGate=true;
+        if(opening.voyage.logo.active)opening.voyage.logo.admitResources();
+        if(opening.voyage.headingRequested)opening.voyage.presentedWhite(uint8_t(opening.voyage.white*255));
+        if(opening.harbor.paperCapturePending)opening.harbor.captureComplete();
+        if(opening.harbor.paperLive)opening.harbor.presented(opening.harbor.paperFrame());
         if(opening.message.active() && (ids.empty() || ids.back()!=opening.message.id())){ids.push_back(opening.message.id());speakers.push_back(opening.speaker);}
     }
     assert(opening.complete() && voyageGate && opening.story==3);
@@ -44,8 +48,17 @@ int main(){
     assert(noInput.house.messageReady(0) && noInput.message.requireTerminalInput);
     OpeningSequence gate;assert(gate.load("romfs"));gate.begin(0);
     for(now=0;now<200000 && gate.part!=OpeningPart::Voyage;now+=17)gate.tick(now,0x100);
-    assert(gate.part==OpeningPart::Voyage);for(unsigned i=0;i<3000;++i){now+=17;gate.tick(now,0);}assert(gate.part==OpeningPart::Voyage);
-    gate.tick(now+17,0x1000);assert(gate.part==OpeningPart::Prologue);
+    assert(gate.part==OpeningPart::Voyage);for(unsigned i=0;i<3000;++i){now+=17;gate.tick(now,0);if(gate.voyage.logo.active)gate.voyage.logo.admitResources();}assert(gate.part==OpeningPart::Voyage);
+    gate.tick(now+17,0x1000);assert(gate.part==OpeningPart::Voyage && gate.voyage.logo.accepted);
+    for(unsigned i=0;i<300;++i){now+=17;gate.tick(now,0);if(gate.voyage.headingRequested)gate.voyage.presentedWhite(uint8_t(gate.voyage.white*255));}
+    assert(gate.part==OpeningPart::Prologue || gate.part==OpeningPart::Wake);
+    // A real native consumer must admit the requested scene. Unavailable
+    // geometry/capture cannot advance messages or create a successful save.
+    OpeningSequence blocked;assert(blocked.load("romfs"));blocked.bindSceneServices();blocked.begin(0);
+    blocked.tick(100000,0x100);assert(!blocked.failed && !blocked.message.active() && blocked.index==0 && blocked.story==0);
+    blocked.publishSceneAdmission(OpeningPart::Arrival);blocked.tick(100017,0);assert(blocked.index==0);
+    blocked.publishSceneAdmission(OpeningPart::House);blocked.tick(100034,0);assert(!blocked.failed && blocked.house.tick==100034*60/1000);
+    blocked.publishSceneFailure("Original map/capture unavailable");blocked.tick(100051,0);assert(blocked.failed && blocked.failure=="Original map/capture unavailable" && blocked.story==0 && !blocked.complete());
     OpeningSequence missing;assert(!missing.load("/missing-original-assets"));
     std::puts("37 original demo + 11 opening messages, source speakers and voyage gate passed");
 }

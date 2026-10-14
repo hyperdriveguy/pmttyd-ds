@@ -666,6 +666,9 @@ Collection-level detail was split out of this index on 2026-10-12; the register 
 
 ## Native opening integration
 
+- [Native opening voyage callbacks](story/NATIVE_OPENING_VOYAGE_CALLBACKS.md)
+- [Native opening voyage scene](story/NATIVE_OPENING_VOYAGE.md)
+- [Native opening harbor ship](story/NATIVE_OPENING_HARBOR_SHIP.md)
 - [Native Opening House Objects](story/NATIVE_OPENING_HOUSE_OBJECTS.md)
 - [Native Opening House Presentation](story/NATIVE_OPENING_HOUSE_PRESENTATION.md)
 - [Native Opening Demo Presentation](story/NATIVE_OPENING_DEMO_PRESENTATION.md)

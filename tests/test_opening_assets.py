@@ -9,7 +9,7 @@ class OpeningCacheTests(unittest.TestCase):
     def test_missing_map_companion_invalidates_complete_cache(self):
         with tempfile.TemporaryDirectory() as directory:
             out=Path(directory)
-            variants=['aaa_00','aaa_00-interior','muj_20','gor_10']
+            variants=['aaa_00','aaa_00-interior','muj_20','gor_10','gor_00']
             for variant in variants:
                 prefix='opening-'+variant
                 for suffix in ['vertices','uvanim','meshanim']:

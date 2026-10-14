@@ -166,29 +166,31 @@ bool Renderer::init() {
     return loadMap("map",plaza) && loadFieldActors(0,plaza) && loadMap("stage",stage);
 }
 bool Renderer::loadMap(const char* name,Room& room) {
+    const auto unavailable=[&](const char* reason){frontFailure=std::string(reason)+": "+name;return false;};
     char path[96];std::snprintf(path,sizeof(path),"romfs:/%s.batches",name);
-    FILE* f=std::fopen(path,"rb");if(!f)return false;
+    FILE* f=std::fopen(path,"rb");if(!f)return unavailable("Map descriptor missing");
     uint32_t batchCount=0,textureCount=0;
     bool ok=std::fread(&batchCount,4,1,f)==1 && std::fread(&textureCount,4,1,f)==1;
-    if(!ok || batchCount>512 || textureCount>256) {std::fclose(f);return false;}
+    if(!ok || batchCount>512 || textureCount>256) {std::fclose(f);return unavailable("Map descriptor invalid");}
     room.batches.resize(batchCount);room.textures.resize(textureCount);
     ok=std::fread(room.batches.data(),sizeof(MapBatch),batchCount,f)==batchCount;
-    std::fclose(f);if(!ok)return false;
+    std::fclose(f);if(!ok)return unavailable("Map batches truncated");
     std::snprintf(path,sizeof(path),"romfs:/%s.vertices",name);
-    f=std::fopen(path,"rb");if(!f)return false;
+    f=std::fopen(path,"rb");if(!f)return unavailable("Map geometry missing");
     std::fseek(f,0,SEEK_END);long bytes=std::ftell(f);std::rewind(f);
-    if(bytes<=0 || bytes>16*1024*1024 || bytes%sizeof(Vertex)) {std::fclose(f);return false;}
+    if(bytes<=0 || bytes>16*1024*1024 || bytes%sizeof(Vertex)) {std::fclose(f);return unavailable("Map geometry size invalid");}
     room.vertexCount=bytes/sizeof(Vertex);room.vertices=(Vertex*)linearAlloc(bytes);
-    ok=room.vertices && std::fread(room.vertices,1,bytes,f)==size_t(bytes);std::fclose(f);if(!ok)return false;
-    for(auto b:room.batches) if(b.start>room.vertexCount || b.count>room.vertexCount-b.start || b.texture<-1 || b.texture>=int32_t(textureCount))return false;
+    ok=room.vertices && std::fread(room.vertices,1,bytes,f)==size_t(bytes);std::fclose(f);if(!ok)return unavailable("Map geometry allocation/read failed");
+    for(auto b:room.batches) if(b.start>room.vertexCount || b.count>room.vertexCount-b.start || b.texture<-1 || b.texture>=int32_t(textureCount))return unavailable("Map binding range invalid");
     for(auto batch:room.batches)if(batch.layer>>26==8)
         for(uint32_t i=0;i<batch.count;++i)room.fenceOriginal.push_back({batch.start+i,room.vertices[batch.start+i]});
+    const uint32_t maxEventGroup=std::strcmp(name,"opening-gor_00")==0?14u:std::strcmp(name,"opening-muj_20")==0?13u:12u;
     uint32_t groups=0;
-    for(auto batch:room.batches) {if(batch.count%3 || ((batch.layer>>8)&65535)>1024 || (batch.layer>>26)>12)return false;groups=std::max(groups,(batch.layer>>8)&65535);}
+    for(auto batch:room.batches) {if(batch.count%3 || ((batch.layer>>8)&65535)>1024 || (batch.layer>>26)>maxEventGroup)return unavailable("Map visibility group invalid");groups=std::max(groups,(batch.layer>>8)&65535);}
     std::snprintf(path,sizeof(path),"romfs:/%s.uvanim",name);
-    if(!loadUVAnimation(path,room.vertexCount,room.uvTracks))return false;
+    if(!loadUVAnimation(path,room.vertexCount,room.uvTracks))return unavailable("Map UV animation invalid");
     std::snprintf(path,sizeof(path),"romfs:/%s.meshanim",name);
-    if(!loadMeshAnimation(path,room.vertexCount,room.meshTracks))return false;
+    if(!loadMeshAnimation(path,room.vertexCount,room.meshTracks))return unavailable("Map mesh animation invalid");
     room.occluders.resize(groups+1);
     for(auto& occluder:room.occluders) {
         float hi=std::numeric_limits<float>::max();occluder.bounds={{hi,hi,hi},{-hi,-hi,-hi}};
@@ -206,9 +208,9 @@ bool Renderer::loadMap(const char* name,Room& room) {
     for(uint32_t n=0;n<textureCount;++n) {
         std::snprintf(path,sizeof(path),"romfs:/%s-%lu.t3x",name,(unsigned long)n);
         auto& slot=room.textures[n];
-        f=std::fopen(path,"rb");if(!f)return false;
+        f=std::fopen(path,"rb");if(!f){frontFailure=std::string("Map texture missing: ")+path;return false;}
         slot.imported=Tex3DS_TextureImportStdio(f,&slot.texture,nullptr,false);std::fclose(f);
-        if(!slot.imported)return false;
+        if(!slot.imported){frontFailure=std::string("Map texture import failed: ")+path;return false;}
         C3D_TexSetFilter(&slot.texture,GPU_LINEAR,GPU_LINEAR);
     }
     GSPGPU_FlushDataCache(room.vertices,size_t(room.vertexCount)*sizeof(Vertex));
@@ -373,7 +375,7 @@ void Renderer::updateCutaways(Room& room,const Game& g) {
         occluder.hidden=blocked || g.ticks<occluder.hiddenUntil;
     }
 }
-void Renderer::drawMap(bool battle,const Game& game,bool translucent,Room* supplied,uint32_t sceneVisibleGroups) {
+void Renderer::drawMap(bool battle,const Game& game,bool translucent,Room* supplied,uint32_t sceneVisibleGroups,bool alphaCapture) {
     auto& room=supplied?*supplied:battle?stage:plaza;
     if(!supplied && !battle && !translucent && game.progress.room==2 && game.professorStory.captureRequested && !room.fenceOriginal.empty()) {
         const auto& scene=game.professorStory;
@@ -461,7 +463,7 @@ void Renderer::drawMap(bool battle,const Game& game,bool translucent,Room* suppl
         // GX winding maps to the opposite PICA enum in this view transform.
         const GPU_CULLMODE culls[]={GPU_CULL_BACK_CCW,GPU_CULL_FRONT_CCW,GPU_CULL_NONE,GPU_CULL_NONE};
         C3D_CullFace(culls[(batch.layer>>24)&3]);
-        C3D_DepthTest(true,GPU_GREATER,(batch.layer&255)==2?(battle?GPU_WRITE_COLOR:FieldRGB):(battle?GPU_WRITE_ALL:FieldRGBDepth));
+        C3D_DepthTest(true,GPU_GREATER,(batch.layer&255)==2?(battle || alphaCapture?GPU_WRITE_COLOR:FieldRGB):(battle || alphaCapture?GPU_WRITE_ALL:FieldRGBDepth));
         C3D_DrawArrays(GPU_TRIANGLES,batch.start,batch.count);
     }
     C3D_CullFace(GPU_CULL_NONE);

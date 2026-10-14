@@ -144,7 +144,7 @@ int main() {
                 frontend.tick(fi);
                 if(previousFrontend==ttyd::FrontScreen::Title && frontend.screen==ttyd::FrontScreen::Demo)demo.begin(frontTicks*1000/60);
                 if(frontend.screen==ttyd::FrontScreen::Demo && frontReady){demo.tick(frontTicks*1000/60,(pending.confirm?0x100u:0u)|(pending.cancel?0x200u:0u)|(fi.start?0x1000u:0u));if(demo.finished){frontend.demoComplete();frontend.title.bgm.begin(demo.bgm.snapshot());}}
-                if(frontend.newRequested){frontend.newRequested=false;savePath=ttyd::saveSlotPath(saveDirectory,frontend.selected);opening.begin(frontTicks*1000/60);}
+                if(frontend.newRequested){frontend.newRequested=false;savePath=ttyd::saveSlotPath(saveDirectory,frontend.selected);opening.bindSceneServices();opening.begin(frontTicks*1000/60);}
                 if(frontend.loadRequested) {
                     savePath=ttyd::saveSlotPath(saveDirectory,frontend.selected);
                     if(restoreProgress(frontend.slots[frontend.selected].progress)){frontend.acceptLoad();notice="";noticeTicks=0;}

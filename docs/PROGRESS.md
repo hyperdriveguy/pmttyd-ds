@@ -9136,6 +9136,50 @@ Next: integrate actual heading display and original skies/ship consumers,
 finish the unresolved Voyage sky appearance, and run the combined fresh-file
 route through actual boat arrival/departure and the saved story3 endpoint.
 
+## 2026-10-13 — Original opening sky, voyage and harbor ship owners
+
+Isolated `artifacts/opening-skies-boat-worktree` retains original four opening
+backdrops and original miniature/harbor steamship geometry. Source voyage seeds,
+logo admission/acceptance, approach/departure, original camera requests, completed
+`yoru_hiru` mode2 pose and local sun translation replace native timer/sky/boat
+snapshots. Harbor approach, speaker0 messages014/015, original nohit dummy jump,
+actual OFF_d_kaiten ship-only framebuffer capture/A_1 final-pose acknowledgment
+and departure are bound. Fresh GW8 is an explicit native word and nonzero values
+are passed/monitored rather than forcing the jump Y to zero. Original dialogue
+bytes/IDs/order are unchanged. [Voyage scope](behavior/story/NATIVE_OPENING_VOYAGE.md),
+[ship scope](behavior/story/NATIVE_OPENING_HARBOR_SHIP.md).
+
+Actual scene/image/capture failures now stop native opening progression and
+cannot generate a successful arrival save. Background raster draws disable
+depth writes; isolated native house geometry/clouds render together. Source
+room13/14 private wake groups have bounded admission without changing ordinary
+room limits. Per-object cached trigonometry/inverse matrices and dense child
+geometry ownership replace tens of thousands of per-vertex trig calls and
+heap allocations; original geometry/art was retained.
+
+Validation: isolated make test175/175 CTest +112/112 Python and cached
+make all -o assets-ready pass (`artifacts/ship-ready-final-{tests,all}.log`).
+Harbor source verifier31 and voyage28 event/body/request anchors pass; companion
+Voyage callback verifier passed (`artifacts/voyage-callback-source.log`).
+Original completed-sky/local-sun regression passes; nonzero dummy jump,
+source timing/message gates, sparse/dense clocks, final actual render/opaque
+acknowledgments, missing scene failure and private original geometry are covered.
+First smoke correctly exposed private visibility-group admission and background
+depth defects; both were fixed. Companion isolated fresh route reached actual
+Rogueport field at60FPS. Latest day-pose/cache/25FOV capture reports Voyage,
+logo and harbor60FPS (`../artifacts/opening-heading-native/artifacts/azahar-boat-day-pose/`);
+its remaining opaque white sky/material and small voyage ship are unresolved
+visual defects, not fidelity/performance completion. No user profile/save or ISO
+was modified; all original products remain private/ignored.
+
+Next: integrate this scoped source/independent private packs with primary's
+newer house SFX, source bubbles/Wake/heading and viewport consumers; inspect
+original used Voyage sky color/TEV and camera/model framing to correct white
+background/horizon scale, then run the final combined fresh-file native route.
+Original BGM six-second fade, spatial/MusyX/ENV, alpha callback, overlapping
+wave channels, generic image projection, exact runtime and hardware parity
+remain open. This is the arrival-scoped opening goal; full remake is unfinished.
+
 ## 2026-10-13 — Native original partner animation admission
 
 Joined ending now admits an actual converted c_pkr animation resource and
@@ -9177,3 +9221,31 @@ then exact HP/pose/kuribo_init, appearance2 and Hello with source assets,
 renderer/lifecycle and original join/map history. RuleKeep/audience and
 exit/context/sequence/result publication remain open. Full native prologue
 parity and field return are unfinished; goal remains active.
+
+## 2026-10-13 — Primary original skies, Voyage and harbor integration
+
+Primary integrates original backdrop assets, used ship hierarchies/clocks,
+Voyage logo/acceptance, source harbor approach/departure, real ship capture/
+paper turn and nohit jump. Fresh GW8 storage is explicit and preserved through
+the actual dummy-position/jump flow; it is not a forced height constant.
+Scene admission now waits for original geometry/capture and successful opaque
+draws; capture failure clears admission and stops progression. Wake clocks
+begin when its scene is admitted. Original camera clipping planes1/32768 are
+adapted by the same.01 world scale as the eye/aim. Original skin/art remains.
+
+Primary validation: native `make all` passed after the shared item-selector
+renderer appeared (`artifacts/opening-boat-primary-all-ready.log`); scoped
+opening/frontend/message tests24/24 and Python118/118 passed. Original harbor/
+Voyage/callback verifiers pass. Initial full host build encountered a concurrent
+item-selector missing-link dependency; after admitting its already present
+source files in working CMake, full CTest179/181 passed: harbor_encounter_original
+expects an obsolete battle request in the current shared field-control state,
+and item_selection_runtime expects a heading width different from its current
+shared implementation. These failures are outside the imported opening files
+and remain recorded, not counted as a green full run. Initial native link
+also preceded that concurrently created renderer and failed; rerun passed.
+
+Actual combined heading/map reveal and complete fresh-file arrival still need
+native integration/verification. Isolated latest Voyage now reaches60FPS, but
+white sky/horizon appearance is being compared with the original before any
+fidelity claim. Goal remains active; full-game/hardware parity is not claimed.

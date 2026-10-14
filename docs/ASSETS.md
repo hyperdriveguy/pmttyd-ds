@@ -1467,6 +1467,48 @@ RGBA8 capture adapts the original RGB565 copy/TEV pipeline. Original Nintendo
 assets remain proprietary, retained for local development; no ISO or original
 payload is committed or distributed.
 
+## Original opening backdrops (2026-10-13)
+
+`tools/opening_background_assets.py` reads original `b/aaa_00.tpl`,
+`b/gor_10.tpl`, `b/gor_00.tpl` and `b/dmo_00.tpl` from the read-only US ISO.
+Palette0 retains every512x480 source pixel as RGBA; transparent512x512 padding
+is excluded by source-size metadata. Private products are
+`romfs/opening-bg-<room>.t3x/.size`, and source hashes/paths stay in
+`romfs/opening-backgrounds.json` and `local-assets/opening-backgrounds/`.
+The dmo background keeps the requested dmo_00 name despite its gor_01 geometry
+alias. The ISO has no `b/muj_20.tpl`; voyage uses its original scene geometry.
+Native viewport adaptation is separate from original background scroll/camera
+services. Original Nintendo/Intelligent Systems artwork: local use only; no
+redistribution rights granted. No original asset payload belongs in Git.
+
+## Original opening harbor ship and captured paper (2026-10-13)
+
+`tools/opening_ship_assets.py` reads `m/gor_00/d`, `m/gor_00/t`,
+`a/OFF_d_kaiten` and `a/OFF_d_kaiten-` directly from the read-only US ISO.
+Private `local-assets/opening-ship/` retains original geometry, coordinate
+bindings and source provenance. `romfs/opening-gor_00.*` and texture packs
+are independent of ordinary field harbor products; original textures are
+bounded to128px, with existing map conversion lighting/material limitations.
+`opening-gor_00.shipobj` stores original seven subtree binding sets including
+child/root overlap for actual original hierarchy composition.
+`opening-ship-paper.pmanim/.bin` retain original Z_1/A_1 and distinct captured
+kind2/kind1 faces; A_1 has61 keys, frames0..60 and120 source triangles.
+The paper source SHA256 is
+`4f23c001b8de518ef437325dc9b09e620525b5a49eb74ad88a82b8eb256558a0`.
+Native paper uses actual ship-only framebuffer pixels, with an explicit native
+viewport adapter; no substitute image is generated. Paths, source hashes,
+conversion choices and local-only Nintendo/Intelligent Systems licensing
+are in `romfs/opening-ship-assets.json`. No distribution rights are granted.
+
+The same original ship exporter reads `m/muj_20/d` and `m/muj_20/t` for the
+used voyage. `opening-muj_20.*` retains original source-hidden other boats and
+ghost background subtrees, original ship/local coordinate bindings and selected
+original wave/cloud data. Source map-play mode2 requests the completed original
+`yoru_hiru` pose250; the sun's original engineY=-260 is a local node translation
+(-26 authored map units) through its rotated parent. No sky raster substitutes
+for the original room's sky geometry. The manifest records both source map
+paths/hashes, the initial pose and local translation choice.
+
 ## 2026-10-13 — Field partner pose admission reuses original c_pkr
 
 Native field animation admission now loads existing ignored
