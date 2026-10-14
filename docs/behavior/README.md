@@ -767,3 +767,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native scene actor GPU texture lifetime](display/NATIVE_SCENE_ACTOR_GPU_TEXTURE_LIFETIME.md).
 
 - [Native Goomba4 quest13](field/NATIVE_GOOMBA4_QUEST13_HAND_IN.md), [native pouch checkpoint v8](format/NATIVE_POUCH_CHECKPOINT_V8.md), and [Trouble Center writers/acquisition](field/TROUBLE_CENTER_QUEST2_13_WRITERS_AND_ACQUISITION.md).
+
+- [Plaza Goomba3 setup/talk](field/GOOMBA3_SOURCE_SETUP_AND_TALK.md), [item/coin frontiers](field/GOOMBA3_ITEM_ENTRY_GET_AND_COIN_SERVICE_FRONTIERS.md), and [native talk/task services](field/NATIVE_GOOMBA3_TALK_AND_TROUBLE_SERVICES.md).

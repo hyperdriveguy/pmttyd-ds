@@ -691,3 +691,14 @@ First/continuing source dialogue, duplicate item selector, original Mario poses,
 5407 write and checkpoint persistence are bound for explicit known state.
 Native Trouble Center acceptance, quest2 item-entry/GetItem presentation and
 quest13 acquisition remain pending; parent request stays open.
+
+### 2026-10-13 — Plaza Goomba3 and original task-service recovery
+
+Delivered [Goomba3 setup/talk](../behavior/field/GOOMBA3_SOURCE_SETUP_AND_TALK.md),
+[item-get/coin frontiers](../behavior/field/GOOMBA3_ITEM_ENTRY_GET_AND_COIN_SERVICE_FRONTIERS.md),
+and [native binding/services](../behavior/field/NATIVE_GOOMBA3_TALK_AND_TROUBLE_SERVICES.md).
+Known nonquest2 ordinary talk and quest2 waiting branch bind unchanged US text.
+Portable task start/cancel preserve source17-flag/six-byte resets and low-level
+all-copy removal for recovered task2/13 tables. Full acquisition/itemseq, coin
+acknowledgment, task menu filtering/callers, switch persistence and Goomba3
+side/gravity wander remain pending. Parent request remains open.

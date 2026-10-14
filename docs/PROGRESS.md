@@ -2,6 +2,53 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Original plaza Goomba3 and task working callbacks
+
+Added original plaza Goomba3 through the per-area catalog: tagged XYZ(-400,0,
+-325),yaw90, shared c_kuribo_n art/tribe dimensions/S_1, flags80603 and source
+registry order. Explicit nonquest2 state binds unchanged ordinary US dialogue;
+known quest2/5406false/5405true binds original irai_02_01, speakerme. Unknown
+state and incomplete acquisition/reward remain unavailable, with no invented
+fallback or quest writes. Availability scans allocate no message strings.
+
+Added portable irai_start_func/irai_cancel_func bodies with provider-owned
+switch/pouch storage: clear5405..5421 then bytes1469..1474, recovered quest2/13
+item tables, count/remove/recount until all copies removed, low-level removal
+without parameter revision, ignored removal result and original return2.
+Unbound tables/missing providers fail native admission before source writes.
+Actual acceptance/menu/cancel caller and full switch persistence remain open.
+
+Documentation recovery establishes actual Goomba3 ordinary/quest branches,
+shared wander radius100/speed30 and the missing side/gravity dependency. The
+native initial-pose presentation is provisional; this NPC lacks east Goomba's
+direct-horizontal flag, so its regular motion is not yet bound. Item acquisition
+must run itemseq_GetItem; direct pouch insertion would skip original services.
+Original coin acknowledgment strict waits/A/input/return ordering and signed16
+truncate-before-clamp leaf are documented for the next reward binding.
+
+Validation: final scoped tree0beb872ec770a3625d525fe42dc1d0a5119ba80b verified
+byte-for-byte across2241 tracked files. make test passed197 CTest/129 Python
+(artifacts/goomba3-final-test.log). Real catalog/Game tests cover proximity,
+ordinary/waiting print attribution, original message bytes, event return and
+unchanged story/quest/flags. Callback tests cover exact reset ordering, items
+behind gaps, multiple copies, other-item/resource preservation, ignored remove
+result, empty inventory and pre-write failed admission. Initial test failed
+because the test requested gor_01 collision filenames rather than the native
+roomAsset(0)=map alias; corrected to the shared room provider and rerun passed.
+make all passed (artifacts/goomba3-native.log). Preserved native binary
+artifacts/ttyd-goomba3-reviewed.3dsx SHA256
+602d1d8196629642a9787291af625d855cf40003849a549bead03aff8b5b668f.
+Independent read-only source review found no guard/table/reset mismatch.
+Native visual evidence is recorded in the follow-up below.
+
+Original tagged map extraction/catalog outputs remain ignored, assets and
+source provenance recorded in docs/ASSETS.md. OW-INTERACT-01/ITEM-01 remain open.
+Next bind original NPC side/gravity+shared wander, source95 get-item presentation,
+coin/window services, full switches and Trouble Center acceptance/cancel menus;
+continue other source actors/objects via existing area catalog/portable events.
+Matched Dolphin raster/material/audio parity and physical New2DS performance
+remain unverified. Full remake goal remains active and unfinished.
+
 ## 2026-10-13 - Final quest13 integrated pose capture
 
 The corrected HUD-confirmed isolated route passed in artifacts/azahar-goomba13-residency-poses2 (quest13-residency-poses2-smoke.log). Reviewed both original M_N_5B/M_N_C frames in the final b32f82e0 binary, with no generic fallback bubble;60FPS/~8.85ms emulator frames. Original duplicate selector/scroll/cancel/continuing route also completed. This replaces the two mistimed final pose attempts as visual evidence. Source dialogue/quest fixtures remain explicit harness input; no hardware/raster or task-acceptance parity claim. Documentation1039 files/0 broken links and diff check passed. Goal remains active; next bind source Trouble Center/task acquisition.

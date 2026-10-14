@@ -1723,3 +1723,22 @@ These remain original copyrighted game assets for the user's local remake;
 conversion does not grant redistribution rights. Native checkpoint v8 is a
 1536-byte local adapter containing the unchanged0x5d4 packed pouch, explicit
 5407 knowledge and checksum; it is not the original memory-card format.
+
+## 2026-10-13 — Original plaza Goomba3 catalog extension
+
+`tools/field_actor_assets.py` extracts `m/gor_01/s` read-only into ignored
+`local-assets/field-actors/gor_01.s`. Tagged クリボー３ supplies position/yaw
+and registry order; original gor.rel setup/init/talk supplies flags80603 and
+message branches. Ignored `romfs/field-actors.pmnpc`/JSON gain one room0 actor.
+Existing c_kuribo_n/S_1/T_1 texture and animation packs are reused: no new
+model conversion, generated art or renderer path. The story0..55 coverage
+envelope and retained initial pose are native limits; the source wander owner
+requires still-unbound side/gravity motion. Original copyrighted assets remain
+local; conversion grants no redistribution rights. No extracted payload/ISO
+committed. Original US messages remain in the existing local message packs.
+
+Exact plaza extraction provenance: `local-assets/field-actors/gor_01.s.provenance.json`,
+ISO offset991157056,size13044,SHA256
+75f6c76940df2609dcfbfcdf42bd6f108a653fd7a8d25154c6f906c24d641eb5.
+The current combined catalog JSON retains its earlier east-setup provenance
+field; this separate record identifies the additional plaza source.

@@ -258,3 +258,5 @@ doors, pipes and story-dependent exits are unfinished. See docs/PROGRESS.md for
 current rendering limitations and isolated reciprocal-road verification.
 
 Goomba4 quest2 and quest13 hand-ins now bind the original US dialogue and item selector for explicit known quest state. Quest13 retains original Mario effect poses and5407 progression. [Native checkpoint v8](docs/behavior/format/NATIVE_POUCH_CHECKPOINT_V8.md) preserves the packed pouch and known5407. Task acceptance/acquisition and full source save services remain pending; see [quest13 scope](docs/behavior/field/NATIVE_GOOMBA4_QUEST13_HAND_IN.md).
+
+Original plaza Goomba3 now uses shared Goomba art and source placement, with ordinary and quest2 waiting dialogue for explicit known state. Its regular movement and full acquisition/reward remain pending; [binding scope](docs/behavior/field/NATIVE_GOOMBA3_TALK_AND_TROUBLE_SERVICES.md) records the source side/gravity and get-item dependencies.
