@@ -1086,3 +1086,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Audience item creation, selection and lifecycle](battle/AUDIENCE_ITEM_CREATION_SELECTION_AND_LIFECYCLE.md): whole creation/100-item Main, player targeting, flight/receipt/bounce/cleanup and original presentation metadata.
 
 - [Native original animation-group prefetch](display/NATIVE_ANIMATION_GROUP_PREFETCH.md).
+
+- [Native last-stage color and fog continuation](display/NATIVE_MAP_MATERIAL_COLOR_AND_FOG.md): source byte arithmetic, retained camera/request order, shared primary map owner and bounded K0/fog GPU state.
+- [Battle primary-map material ownership and fog retention](display/BATTLE_PRIMARY_MAP_MATERIAL_OWNERSHIP.md): primary versus background fog, fresh clear/color flags, exact disabled-table load behavior and retained camera pointer.

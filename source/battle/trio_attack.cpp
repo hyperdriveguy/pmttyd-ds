@@ -3,6 +3,7 @@
 #include "animation_draw_traversal.hpp"
 #include "animation_shape_render.hpp"
 #include "map_material_light.hpp"
+#include "map_material_color.hpp"
 #include "animation_texture.hpp"
 #include "battle_event_callbacks.hpp"
 #include "event_memory_bootstrap.hpp"
@@ -184,7 +185,8 @@ struct TrioAttackRuntime {
     std::optional<BattlePoseInnerContext> poseDrawContext;
     MapMaterialLightWork materialLights;
     MapMaterialLightCursor materialLightCursor;
-    std::optional<BattlePoseMapGroup> poseDrawMapGroup; // Selected battle bank1 material projection.
+    std::optional<MapMaterialGroup> poseDrawMapGroup; // Actual selected primary bank1 material state.
+    MapMaterialColorCursor materialColorCursor;
     ShadowDisplayGlobals shadowDisplayGlobals;
     std::shared_ptr<BattleCommandPalette> palette;
     BattleFooterCursor commandDisplayCursor,audienceDisplayCursor,slotDisplayCursor;
@@ -311,7 +313,12 @@ struct TrioAttackRuntime {
         // bank1 clear. Map loading does not set material bits2/4; encountered
         // unbound EVT blend writers suspend, never silently mutate this owner.
         if(!materialLights.battleLoaded && !materialLights.loadBattle((stageMapRoot+"/material-light.bin").c_str()))return false;
-        if(!poseDrawMapGroup)poseDrawMapGroup=BattlePoseMapGroup{0,0,0};
+        if(!poseDrawMapGroup){
+            poseDrawMapGroup=MapMaterialGroup{}; // bmapLoad clears the entire bank.
+            const auto& fog=materialLights.battleFog[0]; // PRIMARY bti_01, not secondary stg_00_1.
+            poseDrawMapGroup->flags=fog.enabled?1:0;poseDrawMapGroup->fogType=fog.type;
+            poseDrawMapGroup->fogColor=fog.rgba;poseDrawMapGroup->fogStart=fog.start;poseDrawMapGroup->fogEnd=fog.end;
+        }
         word(Battle+0x18110,0);word(Battle+0x18114,0x80374c38);byte(Battle+0x182a6,255);word(Battle+0x182b8,0);word(Battle+0x182bc,0);
         // Typed current map root is retained from the original hierarchy pack.
         if(!stageForeground.root() || !stageForeground.flag(stageForeground.root(),2,false))return false;
@@ -1960,7 +1967,8 @@ bool TrioAttack::resumePartDisplay(uint32_t camera,uint32_t part,const BattlePar
         pending=0x8003bc68;
         if(b.source->draw)return b.source->draw(b.source->user,request,pending);
         BattlePoseInnerServices inner;inner.user=&b;
-        inner.mapGroup=[](void* user)->std::optional<BattlePoseMapGroup>{auto& b=*static_cast<Bridge*>(user);const auto* s=b.source->inner;return s && s->mapGroup?s->mapGroup(s->user):b.runtime->poseDrawMapGroup;};
+        inner.mapGroup=[](void* user)->std::optional<BattlePoseMapGroup>{auto& b=*static_cast<Bridge*>(user);const auto* s=b.source->inner;if(s && s->mapGroup)return s->mapGroup(s->user);
+            const auto& g=b.runtime->poseDrawMapGroup;if(!g)return {};return BattlePoseMapGroup{g->flags,uint8_t(g->colors[0]),uint8_t(g->colors[1])};};
         inner.gx=[](void* user,const BattleAudienceGXRequest& r){auto& b=*static_cast<Bridge*>(user);const auto* s=b.source->inner;return s && s->gx && s->gx(s->user,r);};
         inner.matrix=[](void*,BattleAudienceMatrixRequest& r){BattleAudienceAuxServices math;bindAudienceAuxMathAdapter(math);return math.matrix(nullptr,r);};
         inner.callback=[](void* user,uint32_t fn,uint32_t pass){auto& b=*static_cast<Bridge*>(user);const auto* s=b.source->inner;return s && s->callback && s->callback(s->user,fn,pass);};
@@ -2030,6 +2038,13 @@ bool TrioAttack::resumeTexture(const BattlePose& pose,uint32_t draw,const Animat
     if(!runtime_)return false;
     const bool complete=resumeAnimationTexture(pose,draw,services,runtime_->poseTextureCursor);
     if(!complete)pending=runtime_->poseTextureCursor.pending;
+    return complete;
+}
+const MapMaterialGroup* TrioAttack::materialGroup()const{return runtime_ && runtime_->poseDrawMapGroup?&*runtime_->poseDrawMapGroup:nullptr;}
+bool TrioAttack::resumeMaterialColor(uint32_t fn,uint32_t flags,uint32_t c1,uint32_t c2,const MapMaterialColorServices& services,uint32_t& pending)const{
+    if(!runtime_)return false;
+    const bool complete=resumeMapMaterialColor(fn,flags,c1,c2,services,runtime_->materialColorCursor);
+    if(!complete)pending=runtime_->materialColorCursor.pending;
     return complete;
 }
 const MapMaterialLightWork* TrioAttack::materialLights()const{return runtime_?&runtime_->materialLights:nullptr;}

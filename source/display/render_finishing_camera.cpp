@@ -1,6 +1,7 @@
 #include "platform.hpp"
 #include "battle_pose_inner.hpp"
 #include "animation_shape_render.hpp"
+#include "map_material_color.hpp"
 namespace ttyd {
 bool Renderer::finishingCameraPacket(const NativeCameraPacket& p){
     const auto& r=p.rect;
@@ -128,6 +129,13 @@ void Renderer::resumeFinishingCamera(const Game& game){
                     texture.matrix=[](void*,BattleAudienceMatrixRequest& r){BattleAudienceAuxServices math;bindAudienceAuxMathAdapter(math);return math.matrix(nullptr,r);};
                     texture.gx=[](void* u,const AnimationTextureRequest& q){return static_cast<InnerBridge*>(u)->renderer->finishingAnimationTexture(q);};
                     return bridge.game->trioAttack.resumeTexture(*r.pose,r.draw,texture,pending);
+                }
+                if(r.function==0x80021860 || r.function==0x800217c8){
+                    MapMaterialColorServices material;material.user=&bridge;
+                    material.group=[](void* u){return static_cast<InnerBridge*>(u)->game->trioAttack.materialGroup();};
+                    material.currentCamera=[](void* u){const auto* cameras=static_cast<InnerBridge*>(u)->game->trioAttack.cameras();return cameras?cameras->current():nullptr;};
+                    material.gx=[](void* u,const ShadowGXRequest& q){return static_cast<InnerBridge*>(u)->renderer->finishingShadowRequest(q);};
+                    return bridge.game->trioAttack.resumeMaterialColor(r.function,r.arguments[0],r.arguments[1],r.arguments[2],material,pending);
                 }
                 const auto* work=bridge.game->trioAttack.materialLights();
                 if(!work || !work->battleLoaded)return false;

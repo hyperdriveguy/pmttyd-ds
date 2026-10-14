@@ -17,6 +17,7 @@ std::optional<NativeShadowProgram> NativeShadowProgram::request(const ShadowGXRe
         if(channel==2 || channel==4){next.alphaMaterialVertex=r.values[3]==1;next.channelControl[1]=r.values;}
         break;}
 
+    case ShadowGX::TevKColor:if(!args({0}))return {};next.tevKColor0=r.color;break;
     case ShadowGX::TevColor:if(!args({1}))return {};next.registerAlpha=uint8_t(r.color);break;
     case ShadowGX::ChanMaterial:if(!args({4}))return {};next.material=r.color;break;
     case ShadowGX::NumTexGens:if(!args({0}) && !args({1}))return {};next.texGens=r.values[0];break;

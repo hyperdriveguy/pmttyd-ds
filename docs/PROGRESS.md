@@ -5474,3 +5474,81 @@ EVT-01 and the complete original events/NPCs/objects goal remain active.
 
 Implementation commit79842cd4. Documentation check:1308 Markdown files,zero
 broken links with tools/check_doc_links.py.
+
+### 2026-10-14 — Original last-stage color and primary map fog
+
+Implemented original80021860 byte color arithmetic: admitted C1, C2 RED-to-alpha,
+then map colors in source order, truncating after each product/255. Retained GX
+requests preserve captured values and completed getters. Original800217c8 obtains
+its own current-camera pointer before resolving map state even for fog-off;
+enabled requests read near/far from that retained pointer. Native type bounds
+are resource admission, not claimed original guards. New map_material_color tests
+compare all65536 byte pairs against the recovered multiply-high expression,
+check suppression/truncation/C2 red, held inputs/GX state, all5 fog types and
+camera-before-group identity/retention. Altered records are synthetic fixtures.
+
+Trio now shares one actual primary bank1 map-material owner between translucency,
+color and fog. Fresh bmapLoad zero state plus unchanged PMLTSC01 primary bti_01
+fog initializes it. Enabled background stg_00_1 fog never substitutes for primary
+character fog. Original later mutable writers remain unbound rather than invented.
+Native GXSetTevKColor0 retains/restores its real RGBA constant in reserved PICA
+register5 independently of future TEV routing; existing stages leave that register
+unused. This does not acknowledge pixel multiplication or completed TEV setup.
+Fog-off uses actual Citro3D; enabled fog equations/LUT remain unsupported.
+See [native scope](behavior/display/NATIVE_MAP_MATERIAL_COLOR_AND_FOG.md).
+
+Independent read-only review found no blocker in the current rank0/single-blocked
+queue domain. Original verification checks917 load/color instruction words and
+both map chunks; the existing material verifier checks14 bodies/1189 words and
+65536 arithmetic cases. Documentation corrects present disabled fog-table loads:
+they preserve a preexisting fog bit; fresh bmapLoad clearing proves disabled here.
+See [primary ownership](behavior/display/BATTLE_PRIMARY_MAP_MATERIAL_OWNERSHIP.md).
+
+Validation freezes e51c93b7 plus only owned changes in
+artifacts/material-color-source. Initial make test passed the new material test
+but failed2 area-event tests because the copied prior private pack lacked the
+baseline's newer parent initializer. Regenerated only that private pack with the
+frozen baseline tools/door_data_assets.py:100520 bytes/970 REL objects and the
+20-byte initializer descriptor. No converter implementation changed here; no
+root cache or ISO writes. Private pack/source/binary identities are recorded in
+artifacts/material-color-validation-manifest.json. Later shared-worktree changes
+are preserved and the merged live tree is not claimed tested as one build.
+
+Final `CMAKE_BUILD_PARALLEL_LEVEL=4 make -C artifacts/material-color-source test`
+exited0:310/310 C++ and179/179 Python tests, log artifacts/material-color-test-final.log.
+Headers/layouts were frozen before the clean native build. `make all -o assets-ready`
+with private BUILD=build-material-color, TARGET=ttyd-material-color and-j6 initially,
+then-j4 after the private pack refresh and temporary harness restoration, exited0.
+Logs artifacts/material-color-build.log, material-color-build-final.log,
+material-color-build-final-restored.log and material-color-build-post-probe-restored.log.
+Normal3DSX SHA256 aa994b7646121a037dfc02132d8abfdb6f4b7be10226418b5d43f7ae5f1e766c, unchanged after restoring both temporary probes.
+Source audit2052 tracked/owned files and1401 private-pack files:zero mismatches.
+Documentation link check1310 Markdown files,zero broken links.
+
+The original45s normal capture before the pack refresh showed original storybook
+US text. Two45s refreshed-pack captures exited0 but were visually blank, so they
+were not accepted as rendering proof. A separate temporary normal-startup probe
+reports screen0(Demo),frontReady1 and advancing ticks/frames; source and binary
+were restored afterwards. The55s probe capture shows original storybook art/US text. Final uninstrumented80s
+normal run exited0 and inspected capture shows original storybook/US text at60AppFPS,
+100% emulator speed. Log artifacts/material-color-smoke-normal-80s.log, output
+artifacts/azahar-material-color-normal-80s. The short blank captures are retained
+as inconclusive timing samples, not proof of a renderer failure or its cause.
+
+The final isolated150s ending run exited0, log artifacts/material-color-smoke-final-ending.log,
+output artifacts/azahar-material-color-final-ending. Its inspected capture remains
+black fade/development field-restoration notice at60AppFPS/100% emulator speed,
+not geometry or field-return parity. Actual camera4/queue21 now reaches80021b80
+TEV setup, advancing past80021860 and800217c8. Private material-color.txt reports
+draw0x5284,K0known1,K0ffffffff,source recomputationffffffff,fogOff1/fogColorffffffff,
+mapKnown1/mapFlags0. The temporary harness uses deterministic physical/menu inputs
+and explicit Bero fixture bit1 clear, no combat-state writes or fake draw success.
+All temporary hooks are excluded from source history. Emulator profiles/saves are
+isolated; real hardware timing and original framebuffer equivalence are unproven.
+
+
+Next implement original80021b80 TEV request program and actual PICA routing of
+texture/raster/K0, followed by original indexed fans with source UV transforms,
+atlas crop and one V correction. Geometry, original image parity, battle-to-field
+return and broader prologue requirements remain unfinished. EVT-01 and the full
+goal remain active; actual New2DSXL hardware performance is unmeasured.

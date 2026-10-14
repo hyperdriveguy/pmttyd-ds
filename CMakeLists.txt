@@ -1629,3 +1629,10 @@ add_executable(animation_group_prefetch_tests tests/animation_group_prefetch_tes
 target_link_libraries(animation_group_prefetch_tests PRIVATE ttyd_core)
 add_test(NAME animation_group_prefetch COMMAND animation_group_prefetch_tests)
 set_tests_properties(animation_group_prefetch PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Original last-stage color and map-fog continuation.
+target_sources(ttyd_core PRIVATE source/display/map_material_color.cpp)
+add_executable(map_material_color_tests tests/map_material_color_tests.cpp)
+target_link_libraries(map_material_color_tests PRIVATE ttyd_core)
+add_test(NAME map_material_color COMMAND map_material_color_tests)
+set_tests_properties(map_material_color PROPERTIES WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})

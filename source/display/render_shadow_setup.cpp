@@ -51,6 +51,9 @@ bool Renderer::finishingShadowGpu(const NativeShadowProgram& p){
         C3D_TexEnvSrc(env,C3D_RGB,GPU_PREVIOUS);C3D_TexEnvFunc(env,C3D_RGB,GPU_REPLACE);
         C3D_TexEnvSrc(env,C3D_Alpha,GPU_PREVIOUS,p.alphaMaterialVertex?GPU_PRIMARY_COLOR:GPU_CONSTANT);C3D_TexEnvFunc(env,C3D_Alpha,GPU_MODULATE);
     }
+    // K0 register state is independent of TEV routing. Reserve the last PICA
+    // constant register until the original material TEV consumer binds it.
+    if(p.tevKColor0){const uint32_t k=*p.tevKColor0;C3D_TexEnvColor(C3D_GetTexEnv(5),((k&255)<<24)|((k&0xff00)<<8)|((k>>8)&0xff00)|(k>>24));}
     if(p.cull)C3D_CullFace(*p.cull==0?GPU_CULL_NONE:*p.cull==1?GPU_CULL_BACK_CCW:GPU_CULL_FRONT_CCW);
     if(p.fogOff){C3D_FogGasMode(GPU_NO_FOG,GPU_PLAIN_DENSITY,false);C3D_FogColor(*p.fogColor>>8);}
     return true;
