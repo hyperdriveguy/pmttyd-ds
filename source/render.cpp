@@ -1294,6 +1294,7 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
     }
     C2D_TextBufClear(textBuffer);
     C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+    item95IconCount=0;
     windowFrameCount=0;
     windowFontCount=0;
     messageIndicatorCount=0;
@@ -1317,6 +1318,7 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
 }
 void Renderer::shutdown() {
     if(c3dReady) C3D_FrameSync();
+    releaseItem95Icons();
     releaseItemGetEffect();
     releaseTutorialCurtain();
     releaseTutorialStartupResources();

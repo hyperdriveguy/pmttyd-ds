@@ -1036,3 +1036,9 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/romfs/opening-aaa_00.houseobj" AND EXISTS "${CMAK
     add_test(NAME vertex_upload_original COMMAND vertex_upload_original_tests)
     set_tests_properties(vertex_upload_original PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 endif()
+
+target_sources(ttyd_core PRIVATE source/field_item_registry.cpp)
+add_executable(field_item_registry_tests tests/field_item_registry_tests.cpp)
+target_link_libraries(field_item_registry_tests PRIVATE ttyd_core)
+add_test(NAME field_item_registry_original COMMAND field_item_registry_tests)
+set_tests_properties(field_item_registry_original PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

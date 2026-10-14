@@ -2,6 +2,7 @@
 #include <atomic>
 #include "item_get_windows.hpp"
 #include "field_item_get_effect.hpp"
+#include "field_item_registry.hpp"
 #include "game.hpp"
 #include "frontend.hpp"
 #include "opening_house_objects.hpp"
@@ -71,6 +72,10 @@ private:
     bool itemGetEffect(const FieldItemGetEffect6&,uint32_t cameraID,const C3D_Mtx& nativeWorldToClip,const CameraViewport& sourceViewport,float cameraYaw,uint32_t shadowRGB);
     bool prepareItemGetEffect();
     void releaseItemGetEffect();
+    bool item95Icon(const FieldItemIcon&,uint32_t cameraID,const C3D_Mtx& nativeWorldToClip,const CameraViewport&,float cameraYaw,uint32_t sourceFrameCounter);
+    void releaseItem95Icons();
+    Vertex* item95IconVertices=nullptr;unsigned item95IconCount=0;
+
 
     bool selectorIcon(uint32_t,uint64_t,float,float,float,uint32_t,bool centered=false);
     int count=0, transformLoc=0, marioPose=0;
