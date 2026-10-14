@@ -21,6 +21,11 @@ bool Renderer::frontBookCover(const OpeningDemo& demo,bool capture){
     C3D_Mtx projection,view,matrix;if(capture)Mtx_Persp(&projection,C3D_AngleFromDegrees(25),C3D_AspectRatioTop,100,10000,false);
     else Mtx_PerspTilt(&projection,C3D_AngleFromDegrees(25),C3D_AspectRatioTop,100,10000,false);
     Mtx_LookAt(&view,FVec3_New(0,0,openingBookCameraDistance()),FVec3_New(0,0,0),FVec3_New(0,1,0),false);Mtx_Multiply(&matrix,&projection,&view);
+    // Pan in screen space while opening; both tilted and capture projections
+    // retain the same perspective and vertical framing.
+    const float pan=2*openingBookPan(demo.book.scale,demo.book.rotation)/OpeningBookView::width;
+    if(capture)for(unsigned i=0;i<4;++i)matrix.r[0].c[i]+=pan*matrix.r[3].c[i];
+    else for(unsigned i=0;i<4;++i)matrix.r[1].c[i]-=pan*matrix.r[3].c[i];
     if(capture){
         C3D_Mtx crop,result;Mtx_Identity(&crop);
         crop.r[0].x=OpeningBookCapture::scaleX;crop.r[0].w=OpeningBookCapture::offsetX;

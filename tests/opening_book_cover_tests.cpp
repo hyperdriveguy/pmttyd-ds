@@ -5,12 +5,17 @@
 using namespace ttyd;
 int main(){
     const auto left=openingBookPaperPoint(-32,24,0,6),right=openingBookPaperPoint(32,-24,0,6);
-    assert(std::fabs(left[0]-110)<.0001f && left[1]==0);
-    assert(std::fabs(right[0]-303)<.0001f && right[1]==240);
+    assert(std::fabs(left[0]-212)<.0001f && left[1]==0);
+    assert(std::fabs(right[0]-405)<.0001f && right[1]==240);
+    assert(openingBookPan(1.5f,0)==0 && openingBookPan(1.5f,180)==102);
+    assert(openingBookPan(1.5f,90)==51 && openingBookPan(3,180)==204);
+    // The opened cover hinge is centered, giving each inside cover the same
+    // visible width. Its source dimensions and vertical projection are intact.
+    assert(98+openingBookPan(1.5f,180)==200);
     // Global image scaling keeps the captured crop registered to screen center,
     // and image offsets retain the same half-size pixels as the cover's offset.
     const auto adjusted=openingBookPaperPoint(-32,24,0,6,2,3,-10.5f);
-    assert(std::fabs(adjusted[0]-34.25f)<.001f && adjusted[1]==-67.5f);
+    assert(std::fabs(adjusted[0]-238.25f)<.001f && adjusted[1]==-67.5f);
     assert(OpeningBookView::desktop[0]==0 && OpeningBookView::desktop[2]==400);
     assert(OpeningBookView::desktop[1]<0 && OpeningBookView::desktop[3]>240);
     auto zero=openingBookCover(288,352,1.5f,0);assert(zero);

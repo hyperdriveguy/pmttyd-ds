@@ -24,7 +24,7 @@ bool Renderer::frontBookPaper(OpeningDemo& demo,std::array<float,4>& presented,b
     auto* attrs=C3D_GetAttrInfo();AttrInfo_Init(attrs);AttrInfo_AddLoader(attrs,0,GPU_FLOAT,3);AttrInfo_AddLoader(attrs,1,GPU_FLOAT,2);AttrInfo_AddLoader(attrs,2,GPU_FLOAT,4);
     // Original capture rectangle and mesh, native orthographic outer projection.
     // Source camera/FOV/depth/image-base services remain a separate dependency.
-    C3D_Mtx projection;if(capture)Mtx_Ortho(&projection,110,366,256,0,-100,100,true);
+    C3D_Mtx projection;if(capture)Mtx_Ortho(&projection,OpeningBookView::captureLeft,OpeningBookView::captureLeft+256,256,0,-100,100,true);
     else Mtx_OrthoTilt(&projection,0,400,240,0,-100,100,true);
     C3D_FVUnifMtx4x4(GPU_VERTEX_SHADER,transformLoc,&projection);
     if(capture)C3D_SetScissor(GPU_SCISSOR_NORMAL,0,16,193,256);
