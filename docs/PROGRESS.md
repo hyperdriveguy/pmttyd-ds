@@ -2,6 +2,33 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Filed STAR-01 and cross-checked pouch offsets
+
+Filed [STAR-01](requests/STAR-01.md) on the full-game path and added its inbox
+and milestone-map rows: the Crystal Star / star-power gauge / special-move
+system. Grounded in the absence of any star-power contract (no behavior doc
+mentions star power, crystal star or special moves) and of any native
+star-power/special-move symbol, while the audience pipeline that charges the
+gauge is already recovered
+([battle fortune](behavior/battle/BATTLE_FORTUNE_PRODUCER.md)). The request asks
+for the gauge fill/consume rules, the battle Star menu, per-move action-command
+resolution and effects, the star-to-move mapping and per-chapter story gating,
+and the presentation. Scoped G1 (the prologue grants no star).
+
+Also cross-checked the delivered ITEM-01 pouch contract against the native
+code: `source/prologue_pouch.cpp` initializes key items at offset `0xa0` with
+121 slots, coins at `0x78` to100, and the equipped-badge region at `0x38a` with
+200 slots, matching the recovered
+[pouch remove](../behavior/battle/POUCH_REMOVE_ITEM.md) layout (key `+0xA0`/121,
+equipped `+0x38A`/200). No discrepancy found; the held region (`+0x192`,
+10/20) is not exercised by the prologue init, consistent with the contract.
+
+Validation: doc-link audit 1067 files / 0 broken before this commit; docs only,
+no make rerun. Limitation: the pouch check is a source-consistency check, not an
+original execution trace. Concurrent-session commits continue to build on these
+commits; if `6b4494b`/`997a698`/`d18faf7` leave the log, the content is in the
+worktree and needs re-committing. Full-game incomplete.
+
 ## 2026-10-13 — Filed FIELD-ENEMY-01 (roaming field enemies)
 
 Filed [FIELD-ENEMY-01](requests/FIELD-ENEMY-01.md) on the full-game path and
