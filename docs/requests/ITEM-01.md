@@ -446,3 +446,12 @@ is distinct from root typeef; only case priority20 invokes the cited NPC stop.
 
 The finite state save is delivered; full runtime Trouble Center request remains
 open. It does not establish native board gameplay or full original GP banks.
+
+### 2026-10-14 — Trouble Center native door/sign bridge
+
+[Front door and original lock notice](../behavior/field/NATIVE_TROUBLE_CENTER_FRONT_DOOR_AND_LOCK_NOTICE.md)
+now provide actual authored geometry/contact, distinct completed interior save
+and source story23 gate. Original kanban parser/art/CLAMP sampling are bound;
+ordinary bubble substitution is avoided. The menu/persistent quest providers
+are ready, but board/counter cases and lecture/help/confirmation/acceptance EVT
+are still unbound. Full runtime request stays open.

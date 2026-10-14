@@ -957,3 +957,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Shadow N64 texture44 resource and sampler](display/SHADOW_TEXTURE44_RESOURCE_AND_SAMPLER.md)
 - [Shadow collision preparation captures and store order](display/SHADOW_COLLISION_PREPARATION_CAPTURE_AND_STORE_ORDER.md)
 - [Native shadow collision cursor and original texture import](display/NATIVE_SHADOW_COLLISION_CURSOR_AND_TEXTURE_IMPORT.md)
+
+- [Native Trouble Center front door/lock notice](field/NATIVE_TROUBLE_CENTER_FRONT_DOOR_AND_LOCK_NOTICE.md) and [original type4 kanban art/material](display/ORIGINAL_KANBAN_TYPE4_WINDOW_AND_LOCK_NOTICE.md) — distinct authored interior/collision state, story23 access and original sign message; complete case/board/animation/audio remains open.

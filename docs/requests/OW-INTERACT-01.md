@@ -1005,3 +1005,19 @@ owner/contact-ray/projection parity still requires binding. The previously used
 case descriptor+58/+9c label eventtype is corrected to event priority: board0,
 BERO20; evtEntry itself supplies typeef. [Finite quest persistence](../behavior/format/NATIVE_TROUBLE_CENTER_STATE_CHECKPOINT_V10.md)
 is now available; it does not substitute for these original physical owners.
+
+### 2026-10-14 — Native Trouble Center front-door and lock notice admission
+
+[Native door/sign step](../behavior/field/NATIVE_TROUBLE_CENTER_FRONT_DOOR_AND_LOCK_NOTICE.md)
+imports actual hits/interior/outer collision groups, separate mask4, signedstory23
+entry, original gor_02_035/kanban art and balanced KeyOff/On. Actual case9 forward
+identity/A gates are reused, with retained NPC candidacy veto; full fresh source
+caseMain scheduling/pool/lifetime remains open. Original callback restoration
+identities corrected: GSF1213 and GW10, not445/local flag10.
+
+- [ ] Bind complete board/counter case9, original EVT lecture/acceptance.
+- [ ] Bind original wall/door rotations/material/concurrent callbacks/audio.
+- [ ] Add door-scoped c_monban actor from setup451c0: name盗賊団３, flags80600,
+  init OR40000000, sourceposition220/0/-185,yaw90, no regular event; separate
+  irai_oku_00/01 talk uses GSF1222 and is not the counter event.
+- [ ] Verify original execution/raster and native New2DSXL performance.

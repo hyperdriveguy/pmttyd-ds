@@ -487,3 +487,21 @@ must be applied by the eventual native binding. Full identities and original
 loaded/dummy branch are in [the resource contract](behavior/display/SHADOW_TEXTURE44_RESOURCE_AND_SAMPLER.md).
 Rights remain Nintendo/Intelligent Systems; private local conversion grants no
 redistribution license. No original payloads or compiled packs are committed.
+
+## Original Trouble Center front door and kanban sign (2026-10-14)
+
+The existing original gor_02 map supplies both front hits,18-node A_ie_04C and
+69-node outer cutaway collision scope. Converter group13 tags S_ie_04_soto and the actual animated wall nodes
+S_ie_04_B/S_ie_04_ura_B for the declared binary cutaway;
+no geometry/texture substitution or resampling occurs. Door PMDOOR2 retains
+original EVT integer destinations and source story23 access metadata.
+
+New tools/message_kanban_assets.py reads f/msgWindow.tpl read-only, selecting
+original29/31/30/32 for type4. Actual72x176/416x40 pixels are composed at560x176
+with source upper-middle CLAMP edge extended96 rows; no stretch/resampling.
+Packed1024x256 RGBA8 costs1MiB. Temporary extraction/decoded PNG/atlas remains
+local-assets/message-kanban, compiled message-kanban.t3x/json remain ignored
+RomFS products. No ISO/extracted art/message payload enters history. Nintendo/
+Intelligent Systems resources have no redistribution rights. [Hashes, palette/
+sampling/notice identity](behavior/display/ORIGINAL_KANBAN_TYPE4_WINDOW_AND_LOCK_NOTICE.md)
+and [native scope](behavior/field/NATIVE_TROUBLE_CENTER_FRONT_DOOR_AND_LOCK_NOTICE.md).

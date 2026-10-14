@@ -80,8 +80,8 @@ EnvOff4800,EnvLPF(0,800),return. That independent child disables collision
 A_kabe,A_saku,A_kmn,A_gomi,A_l_ura_gomi in that order.
 Close RUN_EVT3ec8c,enablespolySurface1317,BGMOn(a0,null),EnvOn(a0,null),
 EnvLPF(0,0),return. Its child enables those five groups in the same order,
-then story>=10 disablesA_saku_04; GSF445==1 disablesA_center_kabe_atr;
-localLWflag10==1 independently disables that center group again.
+then story>=10 disablesA_saku_04; GSF1213==1 disablesA_center_kabe_atr;
+GW10==1 independently disables that center group again.
 Child and parent requests are concurrent source events, not flattened instant
 flag mutations with assumed ordering across them.
 

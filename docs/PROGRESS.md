@@ -2849,3 +2849,47 @@ menu/EXP/letterbox callbacks, production Bero and full Init/Main/Exit/field retu
 remain open. No callback-success shortcut or story dialogue change; original
 runtime/raster/audio parity and hardware performance remain unverified. Full
 original-fidelity prologue goal stays active.
+
+## 2026-10-14 — Native Trouble Center front door and original kanban notice
+
+Added original third door destinations/collision groups and separate mask4
+interior/exterior visibility. Source story<23 prints original gor_02_035 with
+speaker0/toge mode0 and balanced key lock. Implemented missing kanban type4
+parser and original TPL29/31/30/32 sign composition: source CLAMP middle rows,
+no stretched pixels or ordinary bubble. Original map/art resources are reused;
+completed mask4 checkpoints use v10 with known story>=23. [Scope](behavior/field/NATIVE_TROUBLE_CENTER_FRONT_DOOR_AND_LOCK_NOTICE.md).
+
+Reviewed source tree8b6bafe53a16393676a219b06ae867f30213806c passed
+make assets-ready (artifacts/trouble-door-assets-validated.log), make test
+(270/270 C++ and161/161 Python, artifacts/trouble-door-test-final.log), and
+normal make all -o assets-ready BUILD=build-goomba-reward-review
+TARGET=ttyd-goomba-reward-review (artifacts/trouble-door-build-final.log).
+All3115 tracked files in the private checkout match that reviewed tree;
+artifacts/trouble-door-audit-final.log records the audit and normal binary SHA256
+5ebdd2c66fbafedecc7ef4640d2807f796b69bb7ed1410f6d0a288a9e0419a92.
+
+Isolated Azahar story22 contact displayed the original wooden sign/red heading/
+unchanged gor_02_035 (artifacts/azahar-trouble-door-locked/original-front-door-result.png;
+pixel check artifacts/trouble-door-sign-pixels.log). Story23 actual entry shows
+original interior floor/walls/board and Mario (artifacts/azahar-trouble-door-loader/
+original-front-door-result.png). Its temporary development overlay confirms
+mask4, completed door and target(2.5,.04), with60 emulator AppFPS/frame12.48ms.
+Both scripts verify copied checkpoints unchanged; profiles/saves are isolated.
+The story23 harness used DEBUG_SHORT_BOOT=1 and a temporary main diagnostic,
+removed before the final normal build/audit. These are emulator observations,
+not physical3DS timings or full original raster/event parity.
+
+Failed early captures exposed overwritten visibility tags from the editable
+pipeline and the native loader's stale12-group limit. The explicit inherited
+visibility handoff and gor_02-only13-group admission fix resolve that case.
+Final pack has156 batches (13:2670 vertices,7:5754), with no draw-time matching
+or extra geometry. S_i04_msk is not forcibly hidden; source flag1000 controls
+its group-darkness gate, not visibility. Earlier failing captures/builds remain
+in artifacts and do not count as passing validation.
+
+Next: real board/counter case9 pool/EVT admission, original lecture/acceptance
+and retained menu clocks/input/audio; add original door-scoped c_monban with
+its separate1222 talk branch, then exact door/wall/material/collision callback
+and original audio ownership. Existing movement/camera/follower and case tick
+adapters do not establish original execution/raster or hardware parity. Full
+Trouble Center/remake goal remains active.
