@@ -1,3 +1,67 @@
+## 2026-10-14 — Original class-menu controls and physical cancellation handoff
+
+Committed `f7b4fba1`. Complete portable ActMenu Main/Setup/End, cursor initializer
+and position-change gate now preserve source request order/retained owners,
+exact nine cursor resets with counts/exclusions intact, fresh flags after UI
+providers, signed Mario/Party move/status gates, live class-count validation,
+reason precedence, timer word wrap, all14 published type routes/default and
+local0/1 result policy. Sound/UI providers can change rows/cursors/reasons;
+source rereads are retained. Navigation keeps forward priority, post-sound wrap
+reads and unchecked source count arithmetic. Audience and late position requests
+remain ordered; the second position query does not reuse the first answer.
+Native class-table/UI constructor binding and Game activation remain incomplete.
+The known Display Main blr is a linked provider boundary, not a rendered menu.
+
+Host build exposed the already committed display-footer implementation missing
+from HEAD CMake. Added its real source declaration to remove unresolved symbols;
+no no-op replacements. Concurrent footer tests/quest-menu/render edits preserved.
+Final isolated artifacts/tutorial-act-menu-xnbc3av2, based onc59eda21 plus
+scoped helpers/link fix, passed `make test`:252/252 C++ and144/144 Python (no skips).
+Native `make all -o assets-ready BUILD=build-act-menu-review
+TARGET=ttyd-act-menu-review` passed with prepared private assets. Artifact:
+that snapshot's ttyd-act-menu-review.3dsx (451924464 bytes). Logs:
+artifacts/tutorial-act-menu-test.log and tutorial-act-menu-native.log.
+Read-only act-menu verifier:24 bodies/3 spans/472 instruction anchors; six complete
+source bodies/18 linked identities. Scoped implementation matched review and
+diff check passed. No new asset conversion, original runtime observation,
+Azahar/Dolphin or playable/visual class-menu claim in this step.
+
+The interrupted previous turn completed commit `bf7a17b7`: full source command-
+pose/status/body/animation helpers and native physical target B cancellation.
+Normal status selects actual original M_C_3 through type67 lookup, not guessed
+M_C_1. B wins over simultaneous A, closes target UI, sets state6/help0 and source
+part flag80; the following invocation rebuilds state7's weapon list. Repeated
+force0 publication preserves native pose timestamp. After UI presentation,
+reselection and finalization still launch one original failed Jump: HP4/7,
+failure/dealt1, one payment and result0. Weapon-to-class cancellation still needs
+the class providers. Native status PoseAnime work remains separate from complete
+status-clip/display consumption; no unproved animation completion is synthesized.
+
+Imported unchanged original M_C_3 from a/b_mario/a/a_mario- into the existing
+private tutorial pack. Existing mesh/animation conversion and half-size LANCZOS
+texture choice retained; provenance/license recorded in ASSETS. Host sampled
+actual command-pose vertices under12000. That step's final isolated
+artifacts/tutorial-command-pose-j1wt02is (basef19f8ed2) passed251/251 C++
+and144/144 Python, and native `make all -o assets-ready
+BUILD=build-command-pose-review TARGET=ttyd-command-pose-review` passed.
+Artifact451902760 bytes; mmap verified the actual updated Mario .pmanim embedded.
+Logs: artifacts/tutorial-command-pose-final-test.log/final-native.log (native log
+basename tutorial-command-pose-final-native.log). Verifier pinned8 complete
+bodies, original priority27,2,9,1,4,5,3,-1 and actual M_C_3 lookup. Initial fixture
+name assumption was corrected from source evidence; an unrelated stale coin-
+fanfare manifest was refreshed with its existing original asset producer before
+final checks. No ISO/source-payload commit, user profile/save mutation or visual
+runtime proof. These validated changes were committed before interruption;
+this entry supplies their previously missing session handoff.
+
+Next: implement original class-table admission/eligibility and UI Init/End,
+register Act-menu providers in Harbor Input, activate source command/first-act/
+turn/post-action/phase scheduler in Game and render/smoke physical menus. Continue
+original successful voice/pitch/volume/follow-up hits, damage/guard/hazards and
+second-screen scene/audience expansion with optional hostile-item taps plus a
+physical-button equivalent. The tutorial/real battle/full remake goal stays
+active and incomplete; these are mechanics/provider advances, not completion.
+
 ## 2026-10-14 — Original Trouble Center selection producer
 
 Committed a1dfd26a. New retained portable menu implements original30-slot story
