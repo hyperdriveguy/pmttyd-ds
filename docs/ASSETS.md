@@ -171,3 +171,16 @@ These increments add portable logic/text expansion; no new PCM/Tex3DS pack,
 texture scaling, geometry reduction or lighting conversion is introduced.
 Native conversion/playback is next. Original Nintendo/Intelligent Systems
 local-use/no-redistribution restrictions remain; no extracted payload committed.
+
+## Native coin window and effect7 (2026-10-14)
+
+`f82d32cc` reuses existing original msg/US/global.txt coin title, original
+window/font packs and effect.tpl42/44. Only source kind7 scale/palette and
+camera selection differ from kind6; no generated texture/color bake, new
+resampling, geometry reduction or lighting conversion. New icon403 research
+confirms original icon.tpl414..417,40x40CMPR/duration6; those frames are not yet
+added to the runtime atlas by this increment. [Source icon evidence](behavior/display/COIN403_ICON_ANIMATION_VISIBILITY_AND_CAMERA5.md).
+[Native rendering validation](behavior/display/NATIVE_COIN_WINDOW_AND_EFFECT7_PROVIDERS.md)
+records ignored private binaries/profiles/captures; no extracted payload is
+committed. Existing Nintendo/Intelligent Systems local-use/no-redistribution
+restrictions and ignored local-assets/,romfs/,artifacts/ remain in effect.

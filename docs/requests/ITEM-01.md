@@ -307,3 +307,18 @@ Existing east quest2 hand-in is bound. Original quest acceptance, native coin
 window/icon403/effect7/fanfare219, flag5376 save owner and full chain validation
 remain open. No fabricated dialogue, instant coin reward or asset substitution.
 Parent requests stay open.
+
+### 2026-10-14 — Native coin window/effect7 and camera5 correction
+
+Committed `f82d32cc`: original coin title/color/frame, parameter-before-geometry
+and transition-independent display, cached text/glyph measurement, original
+kind7 .75/pink effect and shared PICA/Citro3D renderer. Source review corrected
+previous EffectPayload5 no-op: actual Game now selects effect camera5, and
+renderer uses that frame. Final isolated244 C++/142 Python/native build passed;
+parcel Azahar checks passed twice. Private original coin-window/effect raster
+preview succeeds but is not native reward admission/playback. [Exact scope](../behavior/display/NATIVE_COIN_WINDOW_AND_EFFECT7_PROVIDERS.md).
+[Coin403 source recovery](../behavior/display/COIN403_ICON_ANIMATION_VISIBILITY_AND_CAMERA5.md)
+pins hidden frame cycling, six-call durations and camera5; native animation
+binding remains next. Borrowed native cleanup must use actual window deletion,
+as deleted-slot action retains1. Native audio219/switch5376/Game/upstream/full
+chain/hardware parity remain open; parent requests remain open.

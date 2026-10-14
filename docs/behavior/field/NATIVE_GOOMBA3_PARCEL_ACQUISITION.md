@@ -110,3 +110,12 @@ private DSP profile. Evidence: artifacts/item-native-key-final-smoke.log and
 artifacts/azahar-item-native-key-final/acquisition-return.png. The native return
 is Explore, ordinary talk is available again and the source pouch saves one95.
 This validates the finite acquisition, not the upstream quest acceptance.
+
+## Camera5 correction follow-up
+
+`f82d32cc` fixes a native integration error: EffectPayload5 writes effect camera5;
+it is not an already-modeled no-op on an effect initialized to4. Field rendering
+now supplies the selected camera5 view/projection/depth to the retained effect.
+The earlier source/body tests did not verify this adapter write. Repeated isolated
+parcel/save checks and a held-window capture pass with the corrected request.
+[Native correction and exact validation](../display/NATIVE_COIN_WINDOW_AND_EFFECT7_PROVIDERS.md).

@@ -1,3 +1,43 @@
+## 2026-10-14 — Original coin window/effect7 and native camera5 fix
+
+Committed `f82d32cc`. Original coin window80415e84 loads unchanged US title,
+redNUM tokens and single-pane geometry. It gates before amount/measurement,
+allows text during transition4 and caches expanded text/glyphs/measurement.
+Shared native frame/font path serves coin and parcel. Effect kind7 retains
+original .75/pink E85BD0, sharing original42/44 and PICA shader with kind6.
+Source review found previous native EffectPayload5 was incorrectly a no-op;
+actual Game now writes effect camera5 and renderer supplies that selected view.
+Original coin403 documentation now pins four duration6 frames, animation even
+while hidden, source camera5 and bottom-anchored24x24 geometry.
+
+Final scoped tree4dc27d8aaf31a8e55c75e46efce4bdc60194f87f passed make test:
+244/244 C++ and142/142 Python; make all passed. Normal artifact
+artifacts/ttyd-coin-window-reviewed.3dsx SHA256
+1136ad7461f9bc70c5b901a51feea0686a7fca798b73c72fd0062007720bcaba.
+Logs: ignored artifacts/coin-window-scoped-test.log and scoped-build.log.
+An earlier private snapshot included incomplete concurrent camera calls and
+failed; final scope excludes those calls without changing foreign work.
+
+Clean DEBUG_SHORT_BOOT parcel capture/save checks passed twice after camera5
+fix: one95,5405true/5406false,quest2,HP10/FP5 retained. Held original windows/
+effect capture: artifacts/azahar-coin-window-camera5-held/parcel-open-window.png;
+log artifacts/coin-window-camera5-held-smoke.log. Private fixed-pose raster
+preview shows original coin title/red20 and pink effect7 in
+artifacts/azahar-coin-window-raster/boot.png. It supplies no reward/icon/audio/
+switch writes and proves no native reward playability. Private diagnostic code
+was restored; final source audit matches. Only isolated profiles/test saves
+were used. No new asset payload/conversion or matched Dolphin/hardware check.
+Emulator frames are not stable60/hardware performance evidence.
+
+Important cleanup boundary: original AutoDelete clears active1 but retains4,
+so deleted window action can remain1. Native borrowed coin-parameter retirement
+must observe actual deletion separately, not delay reward writes waiting for
+an unmodified state101 action0. Native icon403 playback, row219 PCM/NDSP,
+flag5376 save owner and Game reward admission remain next; complete original
+quest acceptance and verify full acquisition→hand-in→reward chain afterward.
+Continue areas/events/object coverage and real-hardware profiling. Goal active.
+[Exact implementation/validation](behavior/display/NATIVE_COIN_WINDOW_AND_EFFECT7_PROVIDERS.md).
+
 ## 2026-10-14 — Failed original Jump script completion and real feedback
 
 Committed `e2740e06`. Complete shared WeaponAftereffect preserves weighted byte
