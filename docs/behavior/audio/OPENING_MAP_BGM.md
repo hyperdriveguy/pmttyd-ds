@@ -20,3 +20,5 @@ its Off, matching `psndBGMOn_f_d`'s same-ID/state2 branch800db484..4ac. Repeated
 native route polls do not create such a request. This distinction lets the root
 bind later actual source On requests (including any used arrival prefix) without
 turning a finished fade into an implicit On every simulation tick.
+
+The fresh gor_00 init switches GSW0 story2 into its ordinary On512 branch (2f088/2f094), before the arrival event. Native Arrival admission requests track0 BGM_STG0_GOR1 once, preserving original BGM table67 volume70/pan64. This replaces the completed sailing Off; it does not manufacture a Sailing1 restart. The original init event hash and table bytes are pinned by verify_opening_harbor_requests.py. Environment and scope services remain separate retained requests.

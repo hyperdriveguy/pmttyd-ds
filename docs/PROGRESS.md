@@ -10132,3 +10132,7 @@ and113/113Python +make all -o assets-ready pass (artifacts/field-departure-final
 running under artifacts/azahar-opening-field-departure; actual screenshots and
 retirement are recorded after inspection. General event/field/camera/hardware
 parity remains outside this bounded used-branch ownership bridge.
+
+## 2026-10-13 — Primary arrival BGM and final validation pass
+
+Combined primary make all and make test191/191 CTest plus124/124 Python passed (opening-final-primary-all.log / opening-final-primary-tests.log). Then restored the used fresh gor_00 init story2 On512 BGM_STG0_GOR1 at actual Arrival admission, original table67 volume70/pan64. Original init hash/conditional request/table bytes verified read-only; no invented Sailing1 restart. Final rebuild/test and combined emulator capture follow this small adjustment. Documentation1025 links checked with0 broken; git diff check clean.

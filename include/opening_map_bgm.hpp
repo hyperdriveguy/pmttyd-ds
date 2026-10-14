@@ -19,7 +19,7 @@ public:
     void on(int track,bool originalOnRequest=false){
         if(track==primary && !(originalOnRequest && fading))return;
         if(primary>=0 && volume()){tail=primary;tailVolume=volume();tailDecrement=tailVolume/45.f;}
-        primary=track;base=track==7?80:track==8?86:track==9?78:127;fading=false;remaining=0;
+        primary=track;base=track==0?70:track==7?80:track==8?86:track==9?78:127;fading=false;remaining=0;
     }
     void off(uint32_t milliseconds=2000){if(primary>=0 && !fading){base=volume();fading=true;duration=std::max<uint32_t>(1,milliseconds*60/1000);remaining=duration;}}
     Snapshot snapshot()const{

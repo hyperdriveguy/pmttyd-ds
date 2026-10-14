@@ -28,7 +28,7 @@ bool OpeningSequence::enter(OpeningPart p,uint64_t time){
     if(p==OpeningPart::House)house.begin(time*60/1000);
     if(p==OpeningPart::Prologue){heading.begin(time);headingDisplay.begin(time*60/1000);}
     if(p==OpeningPart::Wake)wake.begin(time);
-    if(p==OpeningPart::Arrival)harbor.begin(time*60/1000,globalWork8);
+    if(p==OpeningPart::Arrival){harbor.begin(time*60/1000,globalWork8);if(!sceneServicesBound)requestBgmOn(0);}
     if(p==OpeningPart::Voyage)voyage.begin(time*60/1000);
     if(p==OpeningPart::MapDisplay)mapDisplay.begin(time*60/1000);
     if(p==OpeningPart::Voyage)mapTransition.enter();
@@ -56,7 +56,7 @@ void OpeningSequence::tick(uint64_t time,uint32_t keys){
             sceneReadyNotification=false;sceneAdmitted=true;deadline+=now-enteredAt;enteredAt=now;
             if(part==OpeningPart::House)house.begin(now*60/1000);
             if(part==OpeningPart::Voyage)voyage.begin(now*60/1000);
-            if(part==OpeningPart::Arrival)harbor.begin(now*60/1000,globalWork8);
+            if(part==OpeningPart::Arrival){harbor.begin(now*60/1000,globalWork8);requestBgmOn(0);}
             if(part==OpeningPart::Wake)wake.begin(now);
         }
     }
@@ -97,6 +97,7 @@ const char* OpeningSequence::map() const {
 int OpeningSequence::music() const {
     if(part==OpeningPart::House || part==OpeningPart::Letter || part==OpeningPart::HouseReturn || part==OpeningPart::MapDisplay)return house.musicStarted?7:-1;
     if(part==OpeningPart::Voyage)return voyage.music();
+    if(part==OpeningPart::Arrival)return 0;
     return -1;
 }
 }
