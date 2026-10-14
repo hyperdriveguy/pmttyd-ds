@@ -83,6 +83,17 @@ the corrected mapping is authoritative.
   12-tick window the poses doc observes (11 after immediate decrement).
 - Stage 33: pose-table/cleanup tail (poses doc owns the M_D_2 call).
 
+## Stage-12 counter provenance (closed)
+
+The open "[72] preset" question is answered: inside the travel-setup region,
+a lane float is truncated (`fctiwz`), stored, reloaded, and sign-extended to
+halfword (`extsh`) before `stw 0, 72(31)` (8013b2a4–ac). So stage 12's
+countdown is a computed travel-tick count, not a stale inheritance — the
+earlier "stale from stage 10" hypothesis is withdrawn. Which lane feeds the
+truncate sits among the [140/148]-derived position triple (not reduced
+here), and the [72]==0 bypass (forcing counter 10 with a [704] recompute
+and an r0-stale stage write) is reported as written, not rationalized.
+
 ## Not established
 
 Float-chain interiors of stages 12/14/20 (exact lane roles), the 0x80005de4
