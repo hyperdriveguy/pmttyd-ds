@@ -1170,3 +1170,12 @@ UV correction remain tied to the exact converted professor package, not a model
 name match against another atlas. GPU work synchronizes before retirement.
 Original Nintendo/Intelligent Systems assets remain private; no redistribution
 rights are granted and no raw ISO/derived pack is committed.
+
+### Shared Bero normal-position and collision provenance (2026-10-14)
+
+Original event words, ROAD leaf centers and existing collision packs are reused
+unchanged. Native adapters restore engine units from existing scaled coordinates,
+publish mutable S/E runtime globals and retain complete collision room provenance.
+No pack format, texture/geometry reduction, image, dialogue, music or sound changed.
+Original Nintendo/Intelligent Systems assets retain existing private licensing;
+ISO access stays read-only, and packs/extracts/binaries remain ignored.

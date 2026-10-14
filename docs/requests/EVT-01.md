@@ -4576,3 +4576,13 @@ stage owners, retained direct primitive submission, depth/blend translation and
 active rotation/normalize remain open. Private evidence report is
 artifacts/stage-callback-evidence/report.md; this delivery is static original
 source evidence, not original execution/raster verification.
+
+### 2026-10-14 — Shared normal-position and complete collision owner
+
+Original80079b74 now has typed geometry/position providers in the retained area
+scheduler. Complete collision transaction room identity protects staged/raw floor
+queries; name-specific static ROAD centers replace no requested-name cache.
+Six mutable S/E globals feed original READF and actor/camera callbacks in the
+actual attached child. [Scope and source order](../behavior/field/SHARED_BERO_NORMAL_POSITION_AND_COMPLETE_COLLISION_OWNER.md).
+Nonzero Entry/Entry2,remaining parent/mario_enter/sound/NPC owners and full live
+area coordination remain open. Validation details are in PROGRESS.md.

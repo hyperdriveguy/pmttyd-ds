@@ -64,8 +64,10 @@ and runs the original attached initial_pos as its Bero child's child in the same
 scheduler. Its into_info reads actual GP+11c and its original length request
 publishes30 into LW10 through evtSetFloat. There are three actual live events;
 no standalone replacement VM, fabricated parent bank or success return is used.
-Execution then holds at genuine normal-position80079b74 until its geometry/world
-closure is supplied. The old standalone initial-position adapter remains a
+Without geometry/world providers execution holds at genuine normal-position
+80079b74. The [shared normal-position binding](../field/SHARED_BERO_NORMAL_POSITION_AND_COMPLETE_COLLISION_OWNER.md)
+now supplies the bounded static ROAD closure in this actual child. The old
+standalone initial-position adapter remains a
 separate existing native road path; it is not invoked to satisfy this child.
 
 Tests cover raw branch distinctions and positive out-of-pool early return,
@@ -82,6 +84,7 @@ Native prefix validation uses real Game constructor bytes and original event/
 resource packs, an explicit GP/story402 fixture and the source sound-skipping
 branch. It demonstrates three retained events and the original length publication,
 not full area completion, arbitrary checkpoint history or implemented nonzero
-party construction. Next bind genuine normal-position geometry, S/E globals,
-Mario recovery and subsequent original READF/actor/camera effects in this same
-attached child. Shared live Game/Bero/Trouble area lifecycle remains incomplete.
+party construction. Typed providers now bind normal-position geometry, S/E
+globals, Mario recovery and original READF/actor/camera effects in the same child.
+Actual NPC registration/setup and independent Mario-entry owners remain pending.
+Shared live Game/Bero/Trouble area lifecycle remains incomplete.

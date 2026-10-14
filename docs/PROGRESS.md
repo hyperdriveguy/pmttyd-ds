@@ -6314,3 +6314,113 @@ bound. Remaining callbacks, original traces and field restoration are still open
 the full prologue/remake goal remains active.
 
 tools/check_doc_links.py checked1323 frozen Markdown files with0 broken links.
+
+### 2026-10-14 — Complete collision transaction room provenance
+
+Implementation10da2d61ba00d352b0336c790914b8bdd342d4c4 retains explicitly
+supplied room identity only after all walls/ground/returns/head loads succeed.
+Successful staged candidates are queryable before commit. Snapshot rollback,
+nested staging and clear carry/reset that identity together with geometry and
+filters. Individual successful geometry replacements invalidate it; failed
+atomic imports preserve previous valid data/provenance. Native room staging
+passes its real room. Prefix-only legacy loads do not certify a room. Overlay
+publication/restore cannot certify unrelated geometry. This is native ownership
+admission, not an invented original Mario/HitObj field or asset authenticator.
+
+Frozen tree735cf05ecfe551e58b2ee148c4aa9b7b72332ef9 in
+artifacts/source-checks/trouble-world passed CMAKE_BUILD_PARALLEL_LEVEL=4 make
+test -o assets-ready:318/318 C++ (39.70s),182/182 Python (28.286s),exit0,
+artifacts/area-collision-test.log. make all -j4 -o assets-ready
+SOUNDTRACK=gamecube exited0,artifacts/area-collision-build.log. Audit3400 tracked
+files,zero mismatches. Normal3DSX SHA256
+6fbf6b6d7a4315c7e5590f4dc315f8ae24a4f5668ea66b6838e61ac016446738.
+Exact hashes/logs: artifacts/area-collision-validation-manifest.json.
+
+Core rollback tests cover complete staged ownership before commit, partial-load
+failure, rollback even after source pack removal,nested failure,independent
+restore overlays,failed import preservation,and every individual successful
+loader's invalidation. Isolated normal Azahar east→plaza/save assertions exited0,
+artifacts/area-collision-smoke.log,profile artifacts/azahar-area-collision-normal.
+Inspected captures retain original room/Mario/NPC art at60 App FPS/100% speed,
+CPU7.6/6.9ms,GPU0.5ms. Existing private original packs reused unchanged; no new
+asset conversion or art/audio/dialogue. Concurrent unrelated work is preserved;
+these are isolated snapshot checks,not a merged-live-tree validation claim.
+
+### 2026-10-14 — Original shared normal-position, actor/camera publication and NPC frontier
+
+Implementation2d832a0e2712de6a6c70ed7193bc09911c49c409 binds actual80079b74
+in the retained area's attached initial_pos child. Reusable Game geometry reads
+the actual requested name→source node→unique static ROAD leaf,requires matching
+requesting Game/map room,and admits floor queries only for the certified complete
+collision room. It ignores no requested-name argument and requires no cached
+arrival calculation. Source flag80 excludes name lookup;query-disabled flag1
+does not. Pure numerical adapters retain explicit Gekko parity limits.
+
+The shared VM owns six writable S/E globals, performs exact unquantized global/
+fresh recovery/captured-motion/fresh reload ordering, then executes original
+READF and typed Mario/party/camera requests in that same child. Non-sentinel
+zero-distance never dereferences the name or requires floor/trig; native finite
+READF admission happens before publication. Party raw1 can complete an actual
+null lookup without a known current global or coordinate resolver;unknown/out-
+of-pool raw0 holds before registry assertion. No second standalone VM, invented
+actor, dialogue, sound or asset was added. Existing standalone Game Bero arrival
+continues to be a distinct native path; full live area coordination is unfinished.
+[Contract](behavior/field/SHARED_BERO_NORMAL_POSITION_AND_COMPLETE_COLLISION_OWNER.md).
+
+Frozen source tree09e693bd65ae5f57e514bcc7e485f71d8f440277 in
+artifacts/source-checks/trouble-world passed final CMAKE_BUILD_PARALLEL_LEVEL=4
+make test -o assets-ready:319/319 C++ (41.69s),182/182 Python (28.724s),exit0,
+artifacts/area-position-test-final.log. Final make all -j4 -o assets-ready
+SOUNDTRACK=gamecube exited0,artifacts/area-position-build-final.log. Native normal
+SHA256c984860ab20367e5aa5d5bd409290437c89564399ad23e076c12ee06bcdb8185.
+Instrumented probe build also exited0. After restoring temporary probe main,
+3401 tracked files match the frozen tree with zero mismatches. Exact binaries,
+patch,logs and unchanged asset references:
+artifacts/area-position-validation-manifest.json. These checks cover the frozen
+snapshot,not the concurrently changed full merged worktree. Existing unrelated
+compiler/Pillow warnings remain outside these changes.
+
+Host coverage drives the actual original parent/Bero/initial_pos chain,proves
+unloaded geometry and a Game0/area2 name alias cannot publish,checks flag80/1
+and real named ROAD selection,then proves real child return,READF positions,
+recovery and camera state. A separate explicit continuation-bank fixture uses
+literal XYZ/zero distance with an invalid name pointer,oversized-start refusal
+without publication,and motion25 reload1. Native current-index unknown/127/raw1
+and genuine negative-null lookup are tested without a float resolver. Initial
+fixture assertions incorrectly assumed two live events after return. Source and
+actual trace established three independent survivors with keyDepth1 for story402;
+this is not an automatic key unwind or general Bero live-count invariant.
+
+Isolated Azahar ARM probe exited0 with position=PASS,childAlive0,rootAlive1,
+live3,depth1,pending8005323c after19 simulation calls. Actual S=(-610,0.000004,
+-0.830749),E=(-550,0.000004,-0.830757);Mario native(-6.1,-0.008301),cameraY.01.
+The original child and Bero parent return; source independently starts mario_enter
+and,for explicit story402>=268,dearu_event. The area parent reaches real NPC
+setup. GP/story402 is a deliberate sound-skipping fixture,not a certified save
+or full initialized map. First probe driver read an unflushed log and exited1;
+its finished ARM log already showed PASS. The completion-aware reader passed
+with unchanged probe bytes in a fresh profile. Final log
+artifacts/area-position-probe-smoke-final.log,profile
+artifacts/azahar-area-position-probe-final. Temporary main/patch/binaries remain
+private;source restored exactly,user emulator profiles/saves untouched.
+
+Normal isolated east→plaza/save assertions exited0 after probe completion,
+artifacts/area-position-smoke.log,profile artifacts/azahar-area-position-normal.
+Inspected captures retain original room/Mario/NPC art at60 App FPS/100% emulator
+speed,CPU7.6/6.9ms,GPU0.5ms. These are emulator regression measurements,not
+New2DSXL hardware timing or original raster parity. No original pack payload,
+asset format/conversion,render path,art,music,sound or dialogue changed.
+
+Next implement real evt_npc_setup8005323c against exact-name registered actors,
+actual event metadata/init IDs118/regular IDs11c and shared VM actor context170.
+Original gor02 npcEnt is REL44f98,guest90524f10,fifteen92-byte rows plus sentinel;
+first invocation installs metadata/creates init events,subsequent visits poll
+and launch regular events. Existing catalog initialized bits and preplaced idle
+models do not establish this lifecycle. Preserve first-call admission across
+missing resources;do not skip missing actors and later assert their existence.
+Independent mario_enter begins evt_seq_wait8013ddc0(2),then requires real field
+mode/stop/attached entry owners. Nonzero Entry/Entry2,real GP/checkpoint/world/NPC
+resource lifetimes,live Bero/Trouble coordination,House05 and full game fidelity
+remain unfinished. EVT-01 and the user's full goal remain active.
+
+tools/check_doc_links.py checked1323 Markdown files with zero broken links.
