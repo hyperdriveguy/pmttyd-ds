@@ -1021,3 +1021,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Native named map flags and house05 init](field/NATIVE_NAMED_MAP_FLAGS_AND_HOUSE05_INIT.md) — actual source interior hide/hit disable, cached Citro3D visibility and query filters.
 - [House05 incoming locals and installer frontier](field/HOUSE05_INCOMING_LOCALS_AND_INSTALLER_FRONTIER.md) — Bero child dependencies, exact known local overwrites and unresolved case bank.
+
+- [Audience in-range triangle emission](display/AUDIENCE_IN_RANGE_TRIANGLE_EMISSION.md)

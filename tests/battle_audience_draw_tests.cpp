@@ -42,6 +42,19 @@ struct Fixture {
 int main(){
     Fixture f;f.member(0);f.member(1,10,128);auto s=f.services();
     assert(drawPackedBattleAudience(s) && f.quads.size()==1 && f.backend.vertices.size()==6);
+    // Every original UV template preserves the entire source40x40 quad and
+    // stays within its own atlas cell, including the overshooting end pose.
+    for(unsigned group=0;group<4;++group){
+        auto templateQuad=f.quads[0];templateQuad.matrix={1,0,0,0,0,1,0,0,0,0,1,0};templateQuad.rgba=0x11223377;
+        for(unsigned i=0;i<4;++i){uint32_t u=0,v=0;assert(f.original.readWord(0x802fa024+group*32+i*8,u) && f.original.readWord(0x802fa028+group*32+i*8,v));
+            std::memcpy(&templateQuad.points[i].u,&u,4);std::memcpy(&templateQuad.points[i].v,&v,4);}
+        f.backend.begin();assert(f.backend.emitQuad(templateQuad));float area=0;
+        const auto* region=f.assets.frame(templateQuad.texture.bank,templateQuad.texture.index);assert(region);
+        for(size_t i=0;i<f.backend.vertices.size();i+=3){const auto& a=f.backend.vertices[i];const auto& b=f.backend.vertices[i+1];const auto& c=f.backend.vertices[i+2];
+            area+=std::fabs(a.x*(b.y-c.y)+b.x*(c.y-a.y)+c.x*(a.y-b.y))*.5f;}
+        assert(std::fabs(area-1600)<.01f);
+        for(const auto& vertex:f.backend.vertices){assert(vertex.rgba==templateQuad.rgba && vertex.u>=region->uv[0] && vertex.u<=region->uv[2] && vertex.v<=region->uv[1] && vertex.v>=region->uv[3]);}
+    }
     const auto& q=f.quads[0];assert(q.slot==0 && q.texture.bank==1 && q.texture.index==173 && q.rgba==255);
     assert(q.points[0].x==-20 && q.points[0].y==40 && q.points[2].x==20 && q.points[2].y==0);
     assert(q.matrix[3]==20 && q.matrix[7]==30 && q.matrix[11]==40);

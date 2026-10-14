@@ -58,6 +58,16 @@ bool BattleAudienceBackend::emitQuad(const BattleAudienceQuad& q){
     auto points=q.points;
     for(auto& p:points){for(float value:{p.x,p.y,p.z,p.u,p.v})if(!std::isfinite(value))return false;
         const auto xyz=transform(q.matrix,{p.x,p.y,p.z});p.x=xyz[0];p.y=xyz[1];p.z=xyz[2];}
+    // Most original templates need no clamp boundary split. Preserve the same
+    // two triangles without allocating temporary polygons for every member.
+    const bool inRange=std::all_of(points.begin(),points.end(),[](const Point& p){return p.u>=0 && p.u<=1 && p.v>=0 && p.v<=1;});
+    if(inRange){
+        for(const auto index:{0u,1u,2u,0u,2u,3u}){const auto& p=points[index];
+            vertices.push_back({p.x,p.y,p.z,region->uv[0]+(region->uv[2]-region->uv[0])*p.u,
+                region->uv[1]+(region->uv[3]-region->uv[1])*p.v,q.rgba});
+        }
+        return true;
+    }
     std::vector<BattleAudienceVertex> staged;
     for(const auto indices:{std::array<unsigned,3>{0,1,2},{0,2,3}}){
         std::vector<Polygon> pieces{{points[indices[0]],points[indices[1]],points[indices[2]]}};
