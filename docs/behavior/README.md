@@ -1018,3 +1018,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Retained audience item/AP callbacks](display/RETAINED_AUDIENCE_ITEM_AP_CALLBACKS.md) — real GX init,100-record bank admissions, complete local matrix/icon request cursors and native provider boundaries.
 - [Ordinary battle part callback, matrix/material/history](display/ORDINARY_BATTLE_PART_CALLBACK_MATRIX_MATERIAL_AND_HISTORY.md) — corrected separate draw/history matrices, pose material stores, three draw passes and mandatory history tail.
+
+- [Native named map flags and house05 init](field/NATIVE_NAMED_MAP_FLAGS_AND_HOUSE05_INIT.md) — actual source interior hide/hit disable, cached Citro3D visibility and query filters.
+- [House05 incoming locals and installer frontier](field/HOUSE05_INCOMING_LOCALS_AND_INSTALLER_FRONTIER.md) — Bero child dependencies, exact known local overwrites and unresolved case bank.

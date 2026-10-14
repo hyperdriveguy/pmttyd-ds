@@ -750,3 +750,20 @@ remains unbound. Isolated validation refreshed the newer base's existing
  door-data recipe against the read-only ISO, writing only its private packs.
 All original assets retain their original copyrights and local-only handling;
 ISO, extracted data, compiled packs and binaries remain excluded from history.
+
+
+### 2026-10-14 — Original named field map/hit flag bindings
+
+The existing read-only map conversion now also emits ignored PMFLG001 packs
+from m/gor_01/d,m/gor_00/d,m/gor_02/d,m/gor_03/d,m/gor_04/d in the US ISO.
+Original node names, parent relationships, source-relative node IDs and collision
+membership accompany16-bit converted vertex owners. Existing vertex, batch,
+ground, wall and head resources remain byte-identical; no new art, texture,
+music or geometry reduction was introduced. Local outputs: local-assets/<map>/map.mapflags;
+RomFS map.mapflags,gor_00.mapflags,gor_02.mapflags,gor_03.mapflags,gor_04.mapflags
+and field-map-flags.bin. The five packs total1472942 bytes; PMFLDS01 room index
+adds352 bytes. The semantic overlay is native storage policy, not original
+MapObj/HitObj layout. Original Nintendo/Intelligent Systems copyrights and
+existing source-map provenance apply; conversion grants no redistribution
+rights. ISO/extracted/generated resources remain outside history.
+[Native scope](behavior/field/NATIVE_NAMED_MAP_FLAGS_AND_HOUSE05_INIT.md).

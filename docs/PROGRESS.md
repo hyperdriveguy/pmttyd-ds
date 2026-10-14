@@ -3828,3 +3828,64 @@ persistent target pixels across render holds remain open. Broad prologue goal
 stays active and incomplete.
 [Native item/AP scope](behavior/display/RETAINED_AUDIENCE_ITEM_AP_CALLBACKS.md);
 [part source contract](behavior/display/ORDINARY_BATTLE_PART_CALLBACK_MATRIX_MATERIAL_AND_HISTORY.md).
+
+
+## 2026-10-14 — Original house05 interior map/hit initialization
+
+The retained house05 owner now executes the next recovered inline prefix:
+read record+20/+24, hide the actual S_ie_05_naka subtree and disable actual
+A_ie_05C hit descendants. These sequential requests complete once, preserve
+later event changes and reset with area/resource ownership. This corrects an
+initialization gap: house05 interior had no native visibility group. It removes
+7416 of100332 east-room vertices from submission and disables23 source collision
+identities. Existing ground/wall/head/support queries share the new filter.
+
+A generic named map overlay retains original hierarchy, source identities and
+16-bit vertex owners for five outdoor maps. Per-area metadata can add future
+maps. Native drawing intersects existing Citro3D batches with cached visible
+ranges; no per-frame vertex rewrite/texture upload or callback allocation was
+added. Existing story/interior adapters remain independent. Only map bit1
+visibility and the recovered hit subtree enable/disable effect are consumed;
+full source flag words, transform and lighting ABIs are not claimed.
+
+Source review found that house05's saved LW4..14 depend on earlier attached
+Bero/door child execution and cannot be replaced with a fabricated zero bank.
+New source contract records that frontier. Case9 records and original generic
+door open/close execution remain unfinished; no synthetic mask8/door interaction
+was introduced. See [native scope](behavior/field/NATIVE_NAMED_MAP_FLAGS_AND_HOUSE05_INIT.md)
+and [incoming locals](behavior/field/HOUSE05_INCOMING_LOCALS_AND_INSTALLER_FRONTIER.md).
+
+Validation: frozen final tree ded135326ab842f1719b05de03556ac5aef713c0,
+3246 tracked files,zero checkout mismatches. make assets-ready SOUNDTRACK=gamecube
+passed after the compact owner format update; make test passed289 C++/170 Python;
+normal make all passed and reproduced the native binary. Initial C++ run had
+one new fixture failure: a coplanar outdoor floor wins the original triangle
+scan ahead of the interior floor. Replaced that query with the actual elevated
+house05 box surface12e490; no production change was needed. Final integration
+checks disable/enable/disable through real Game ground queries, nonreplayed
+init, named subtree isolation and held room reentry. Original geometry
+vertices/batches/ground/walls/head are byte-identical to the existing five-map
+resources. New map flag packs total1472942 bytes plus352-byte room descriptor.
+
+Logs: artifacts/field-map-assets-final.log,field-map-test-final.log and
+field-map-build-final.log. Earlier asset/test/build logs and diagnostic query
+probes remain ignored for audit. Feature commit ed125a6f's owned files/CMake
+block match the final tested snapshot. Concurrent work was preserved; validation
+is scoped to that snapshot, not the whole concurrently merged HEAD.
+
+Isolated Azahar artifacts/azahar-field-map-flags exited0 with no application
+exception; normal title/file flow loaded the existing Garf fixture using six
+physical A inputs. Inspected physical-a-5/6.png show original east-room art,
+Garf, Mario and Goombella at60 App FPS,8.03..8.67ms reported emulator frame time.
+The isolated fixture save stayed byte-identical. No user profile/save changes,
+production diagnostic hooks or startup skips. This is a field-render smoke,
+not a matched original door trace or hardware performance result.
+Normal3DSX SHA256:10a11783444b317fc80aee0e32d4f2c47c91b91a59b4ee5f0eb66296b72fbbfd;
+ignored archive artifacts/field-map-normal.3dsx.
+
+Next recover/bind actual incoming Bero/local-bank ownership and house05 inline
+case snapshots, then original open/close events and actual camera/Mario/party,
+map transforms/collision, material1800 and audio consumers. Continue Garf key49
+unlock, Borodo original talk and further original area packs. Full original
+house05 gameplay, raster parity and hardware performance remain unverified;
+broad remake goal remains active and incomplete.

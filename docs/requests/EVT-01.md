@@ -4164,3 +4164,17 @@ Original initialized bank inactivity is inspected rather than inferred from
 empty actors. Correct row scaling,Item radians3c8efa35 and Concat zero-term FMA
 are retained. Continue original borrowed-part80101774 and icon loaded/current
 camera/metadata/geometry owners; full EVT-01 stays open.
+
+
+### 2026-10-14 — Actual house05 map/hit prefix; incoming-bank frontier
+
+[Native named overlay](../behavior/field/NATIVE_NAMED_MAP_FLAGS_AND_HOUSE05_INIT.md)
+now performs actual named interior hide/hit subtree disable after copied-record
+init, binding it to Citro3D submission and real ground/wall/head/support filters.
+Completed initialization does not replay over later events. Full field flag ABI,
+transforms/materials and generic door scripts remain unfinished.
+[Source local-bank recovery](../behavior/field/HOUSE05_INCOMING_LOCALS_AND_INSTALLER_FRONTIER.md)
+shows Bero/attached-child dependencies: preserve incoming LW4..14; do not invent
+zero saved case locals. Remaining request: bind evt_bero_get_into_info and its
+actual transitive incoming-bank producers, then original house05 case snapshots
+and generic open/close services. Parent EVT-01 stays OPEN.
