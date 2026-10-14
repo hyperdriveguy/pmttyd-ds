@@ -1,3 +1,97 @@
+## 2026-10-14 — Native original icon directory, cells and residency
+
+Previous goal turn made progress with whole iconGX and its wrapper connection.
+Commit `9926f2cc` now binds the complete original icon directory/TPL, registered
+battle VM GP and published camera reads, actual source texture objects/LOD and
+native GPU texture residency into that callback path.
+[Source/resource contract and limitations](behavior/display/NATIVE_ORIGINAL_ICON_RESOURCES.md).
+Normal loaded icons now reach their real next material/channel request rather
+than waiting at the unbound icon wrapper. Material/primitive execution remains
+explicitly unavailable; this is not accepted native item raster or battle play.
+
+The read-only source pipeline retains unchanged icon.bin/icon.tpl, original
+DOL constant spans and all572 directory entries/613 images. It generates private
+lossless RGBA8 cells without resizing, with2px source-wrap-aware gutters and
+power-of-two padding. Source dimensions remain original, including source object
+width/height queries; native padding never becomes an icon size. Manifest records
+all source/converted hashes. Normal assets-ready includes the new pipeline, and
+native3DSX dependencies include nested cells so changes repackage ROMFS.
+
+SourceIconResources validates descriptor/frame extents and original TPL metadata,
+retains real object/LOD ownership, and acknowledges binding only for a resident
+native texture. Missing resources do not invent source zero buffers or dummy
+artwork. Adapter directory/palette/camera identities are explicit, not original
+RAM claims or ARM pointer casts. Current camera comes from the active manager
+index and its actual published view. Reads use the existing battle VM GP bank;
+no render clock, GP.1c increment or story/costume override is fabricated. Full
+process GP import and outer Main clock ownership remain upstream.
+
+GPU imports/eviction/retirement run outside submitted frames after synchronization.
+An in-frame miss retains GXLoadTexObj and queues its image for the next preparation.
+The actual bound texture is pinned for state restoration. Initial implementation
+used eight slots; reviewing complete source banks led to101 slots, covering100
+item records plus AP icon442's single source frame. This is native cache policy,
+not measured original residency/latency. It supports the complete draw bank's
+working set rather than imposing an eight-image visibility requirement. Native
+metadata/texture state is retired correctly on leaving trio and at shutdown.
+
+Validation froze baseline1d7cfe7fa59daf60961144ff1415db0147a9ab53 plus owned
+source, headers, CMake/Makefile and tests in artifacts/battle-lens-qwwrj2n7.
+Later concurrent fan/road/party work and unrelated dirty changes were excluded.
+Initial asset generation exited0; after explicit wrong-disc admission was added,
+final snapshot generation also exited0 (source-icon-resources-assets-final.log).
+All613 native files were produced. Reused prior validated packs for other systems.
+Focused C++ resource tests and focused Python tests exited0. Host tests exercise
+all613 tokens/dimensions, object/LOD ownership, failed-bind retries, actual GP/
+published camera reads and original descriptor aliases through the real wrapper.
+Python checks source-wrap gutters/pixel preservation, disc rejection, dimensions
+and every converted file/source hash.
+
+Initial normal native build exited0. A temporary ignored native main called the
+actual production resource/preparation/binding methods through member pointers;
+production renderer/header access was not patched. First probe compilation had
+a hidden-friend lookup error in that temporary harness, corrected before use.
+Isolated Azahar initial617/617 resource checks passed. After resizing for the full
+source bank, the final probe again passed all613 imports plus four revisits,
+observing101 simultaneous resident textures and clean retirement. Both captures
+were inspected. Final artifacts/azahar-source-icon-bank/boot.png shows PASS,
+617/617 and101 slots; source-icon-resources-bank-smoke.log exited0. This proves
+native resource/import/binding ownership, not icon pixels, actual battle/frame
+cadence, source SDK elapsed time, hardware performance or a playable throw.
+Original user emulator profile and saves were untouched.
+
+The normal main was restored before final production validation. Final
+MAKEFLAGS=-j4 make test exited0:318/318 C++ (37.41s),184/184 Python (56.080s),
+artifacts/source-icon-resources-test-final.log. Final MAKEFLAGS=-j4
+TMPDIR="$PWD/artifacts/tmp" make all -o assets-ready BUILD=build-battle-lens
+TARGET=ttyd-battle-lens exited0, source-icon-resources-native-final.log. After
+adding the nested-cell dependency, make all exited0 again
+(source-icon-resources-package-final.log). An initial outer dry run did not
+forward GNU make's -W into its submake; the direct inner dry run exited0 and
+explicitly scheduled3dsxtool with ROMFS when a nested cell was assumed changed
+(source-icon-resources-package-dependency-final.log). No asset timestamps/content
+were changed by that dependency check. Check-doc-links exited0:1322 Markdown
+files,zero broken links. Exact source/binary/manifest identities are in
+artifacts/source-icon-resources-validation.json. All build/test/emulator process
+handles were observed terminal; authoritative input files were not edited during
+their validation runs. Scoped temporary-index commit preserved unrelated work.
+
+No raw ISO, original resource bytes, compiled pack, previews, probe main or binary
+were committed. Extraction/conversion/provenance and licensing are recorded in
+ASSETS and the source contract. Existing menu/HUD style and atlas, controls,
+original dialogue/story, action timing, unit/model scale and lower-screen scene
+replay were unchanged. Native1x1 dummy construction remains unbound; missing
+native assets never become a successful dummy fallback. New renderer binding
+still holds actual map light/channel/TEV/fog/depth and primitive requests.
+
+Next bind the real material/GPU state and retained primitive emission/replay into
+both screens. Source waits must preserve accepted geometry across render frames.
+Verify visible held/thrown items in the scene, complete original present-item
+execution, then physical X and optional lower-screen audience taps. Close shared
+GP/Main/camera cadence, remaining audience/stage/AP providers, tutorial follow-up
+hits, teardown/field return and sample playback. The full tutorial and real
+battle goal remains active and incomplete.
+
 ## 2026-10-14 — Whole original iconGX draw sequence
 
 Previous goal turn made progress by implementing the original matrix-icon
