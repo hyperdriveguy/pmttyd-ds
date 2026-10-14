@@ -4266,3 +4266,18 @@ now pins real evtEntry(script,0,0) provenance, separate NPC init roots and
 ordinary LW9/13/14 source zeros. Next bind exact Mario/party setters and camera
 resets, then complete actual house05 local snapshots/shared field case lifetime.
 SDK/FPSCR numerical equivalence, full original traces and parent EVT-01 stay OPEN.
+
+### 2026-10-14 — Ordered native actor and camera entry callbacks
+
+[Native callback binding](../behavior/field/NATIVE_POSITION_CALLBACKS_AND_ENTRY_CAMERA_RESET.md)
+now supplies sequential captured-owner Mario/party position stores and real
+camera4 retained targets, road work/candidate and shift resets. Original null
+party returns2 without coordinate reads; unknown native index holds admission.
+Live arrival uses getEventFloat over encoded start locals and completion does
+not replay over later state. Floor, view/target blends and clocks remain intact;
+engine/native scale round-trip is an explicit precision adaptation.
+[Initial-pos closure](../behavior/overworld/BERO_RETAINED_INITIAL_POSITION_EVENT_CLOSURE.md)
+now pins exact8030f060/278 original words and six ROAD callback identities, with
+no attached script. Next package/execute that genuine root, bind mutable BeroS/E,
+actual recovery/motion25 stores, then use its real returned bank in shared field
+case/house05 initialization. Parent EVT-01 and original trace requirements OPEN.

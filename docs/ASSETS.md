@@ -848,3 +848,13 @@ require original leaf-center traversal, not an aggregate bbox substitution.
 Source/converted Nintendo/Intelligent Systems rights apply; no distribution
 rights are granted. ISO/extracted resources and compiled binary remain ignored.
 [Placement scope](behavior/field/NATIVE_BERO_POSITION_AND_START_PUBLICATION.md).
+
+### 2026-10-14 — Ordered actor-position and camera callback source use
+
+No original payload, pack format, image or audio conversion changes. Native
+services implement recovered US DOL callbacks800e7180,800eb558,800a785c and the
+semantic camera-road/shift reset owners. Read-only source listings remain ignored
+under artifacts/bero-local-evt_* and bero-camera-camRoadReset.txt. Characters,
+geometry, messages and audio retain existing original resource packs. Original
+Nintendo/Intelligent Systems rights apply; no redistribution rights are granted.
+ISO/extracted/compiled resources remain outside source history.

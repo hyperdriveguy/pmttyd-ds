@@ -4538,3 +4538,57 @@ Next bind real ordered Mario/party position callbacks and camera road/shift
 resets, then publish complete house05 saved locals through actual shared field
 EVT/case ownership. Continue generic door open/close/material1800/key49, original
 NPC services and additional area packs. Full game and goal remain incomplete.
+
+### 2026-10-14 — Live actor position callbacks and entry camera reset
+
+Commit3bd2bc4f binds portable original evt_mario_set_pos/evt_party_set_pos and
+evt_cam_road_reset with captured args/actor owners and original fresh raw reads,
+float resolution/immediate stores. Raw party selector0 reads current index;
+all nonzero words selectslot1. Actual NULL returns2 before coordinate reads.
+Camera callback writes raw follow/rootY+.01, reloads look, copies fresh Mario
+retained/collision roots, then resets road before shift. Caller locals/flags,
+heading, floor/pose and unrelated camera state are not silently reset.
+
+Actual beginRoadArrival now applies those callbacks using getEventFloat over
+the encoded starting locals. Native owners are actual progress/currentroot,
+source-sized party records, fieldCamera.point/CollisionTarget and Mario retained/
+collision targets. Road work and stale candidate cache reset; external road
+assets persist. Shift reset preserves previousMilliseconds. View/target blends,
+frame/lens, flags, global clocks and ground metadata remain unchanged. Per-arrival
+completion prevents replay; unknown/unsupported current-party state holds this
+prefix. Existing native movement remains a separate adapter. No per-frame
+allocation or geometry upload is introduced; callback workspace is stack-local.
+
+Native Mario engine*.01 storage means readback/camera values can gain rounding
+from scaling (and currentY floor arithmetic), while party raw floats retain the
+decoded words directly. This is explicit native representation adaptation, not
+source-bit equality. Generic memory-provider tests verify exact raw store words
+and call order. Full source Bero globals/recovery/motion25 writes and genuine
+initial_pos EVT completion remain unbound; no full house05 scene is claimed.
+
+Validation: frozen tree dbe1ce36ee515f6496c1fe970578cff783b8e64c,
+3294 tracked files, zero mismatches (artifacts/position-events-source-audit.json).
+make assets-ready SOUNDTRACK=gamecube,make test (297 C++/172 Python) and normal
+make all passed. Logs: artifacts/position-events-assets.log,
+position-events-test.log,position-events-build.log. Tests cover ordered raw reads,
+resolver mutation/captured pointers, raw selector/null short circuit, real native
+actor/camera/floor/blend/shift owners, unknown admission/nonreplay and actual
+Game arrival application/checkpoint invalidation. Shared Game/header/CMake files
+were frozen from committed base plus only owned additions; concurrent work is
+preserved and entire merged live HEAD is not claimed validated together.
+
+Normal archive artifacts/position-events-normal.3dsx SHA256
+f6c2c0fa2fbf6e28a2048eae00a61e21dcb3b0e0f863c7cb815c9f9619c1c0e1.
+Isolated artifacts/azahar-position-events-steady exited0 after plaza→east→plaza;
+both fixture-copy saved-room assertions passed. Inspected settled captures show
+original art/Mario/Goombella in view,100% speed,60 App FPS and9.14/9.83ms reported
+emulator frame times. No user profiles/saves or production hooks changed.
+Original raster/timing/SDK agreement and actual New2DSXL performance stay open.
+
+[New original script closure](behavior/overworld/BERO_RETAINED_INITIAL_POSITION_EVENT_CLOSURE.md)
+pins45 immutable commands at8030f060/278, six ROAD callbacks and no attached
+script launches. Next import those original words, bind mutable six BeroS/E
+words and actual recovery/motion25 stores, run the genuine retained entry event,
+then feed its returned bank through shared field case/house05 initialization.
+Continue generic door open/close/material1800/key49 and additional original NPCs,
+objects and areas. Full goal/remake remain incomplete.

@@ -1049,3 +1049,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [House05 outer-init bank and ROAD leaves](field/HOUSE05_OUTER_INIT_BANK_CLOSURE_AND_ROAD_LEAF_CENTERS.md) — actual root producer, source-proven ordinary residual locals and8 original leaf markers.
 
 - [Native field camera4 publication and battle inheritance](camera/NATIVE_FIELD_CAMERA4_PUBLICATION_AND_BATTLE_INHERITANCE.md)
+
+- [Native position callbacks and entry camera reset](field/NATIVE_POSITION_CALLBACKS_AND_ENTRY_CAMERA_RESET.md) — original sequential actor writes, null-party branch and live retained camera/road/shift owners.
+- [Retained Bero initial-position event closure](overworld/BERO_RETAINED_INITIAL_POSITION_EVENT_CLOSURE.md) — exact original script span, six ROAD callbacks, mutable globals/recovery and motion25 gate.

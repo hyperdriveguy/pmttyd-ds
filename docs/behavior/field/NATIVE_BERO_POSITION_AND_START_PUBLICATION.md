@@ -66,3 +66,9 @@ checkpoint invalidation and an isolated length45 fixture. Original pack checks
 verify all8 ROAD leaf bindings. Build/native evidence is in [progress](../../PROGRESS.md).
 Next bind real Mario/party setters, camera resets and shared field EVT/case
 lifetime using the now-established outer root/bank provenance.
+
+Subsequent [position/camera callback binding](NATIVE_POSITION_CALLBACKS_AND_ENTRY_CAMERA_RESET.md)
+now applies ordered Mario/party setters and camera road/shift resets at actual
+native arrival start, with explicit unit-scaling precision limits. The typed
+placement view alone still does not complete original global/recovery/motion25
+writes or genuine retained initial_pos event execution.
