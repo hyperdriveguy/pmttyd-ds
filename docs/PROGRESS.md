@@ -1,3 +1,30 @@
+## 2026-10-13 — ID 3 — GSW census; GSW[1420] resolved
+
+Closed the last named gap in the opening chapter table with a complete `GSW`
+census over the six scanned modules (dmo, aaa, sys, gor, muj, tik). Every
+operand in all sixteen events falling in the `GSW` band resolves to just
+three indices:
+
+- `GSW[0]` x60 - the chapter gate, the WORD exception at GP+174
+- `GSW[1420]` x2 - **resolved**: `== 1` at gor_01 cmd 126 and `!= 1` at
+  gor_02 cmd 63, each gating one opcode-91 call. Never written in scope,
+  like 402 and 404.
+- `GSW[108]` x1 - **not a flag read**: it sits in operand position 1 of
+  opcode 91 at gor_01 cmd 64, a raw service argument.
+
+That last item settles a question left standing from the area-init pass: the
+`GSF` 5300-5600 numeric band seen in opcode-91 operand positions is
+callee arguments, and `GSF[5393]` at gor_03 cmd 23 is a genuine flag read
+only because its opcode is 24 in operand position 0. The opcode decides the
+operand role, not the numeric band. Recorded as a three-row role table in the
+contract, with the six-module scope limitation stated explicitly so it is not
+read as a game-wide GSW layout.
+
+Validation: ISO-read REL spans rescanned; band bases and the wrap32 index rule
+taken from the existing EVENT_INTEGER_OPERAND_NAMESPACES contract rather than
+re-derived. Docs-only change; `make test` / `make all` not rerun. No execution
+trace.
+
 ## 2026-10-13 — ID 3 — opcode-34 SWITCH ladders on GSW[0]
 
 Expanded all eight opcode-34 sites on `GSW[0]` in the opening modules,

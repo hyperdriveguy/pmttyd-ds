@@ -277,6 +277,57 @@ to `GSF[3125]` and `GSF[39]`.
 4. Do not add a `DEFAULT` where the source has none, and do not add an
    `END_SWITCH` body where the ladder falls out with no state change.
 
+## Complete `GSW` census across the six scanned modules
+
+A sweep of **every** operand in all sixteen events that falls in the `GSW`
+band (`-180000000 < operand <= -160000000`, base `-170000000`, index
+`wrap32(operand - base)`) finds exactly **three** distinct indices:
+
+| Index | Uses | Sites |
+|-------|------|-------|
+| `GSW[0]` | 60 | chapter gate; the word exception at `GP+174` |
+| `GSW[1420]` | 2 | `gor/gor_01_init_evt` cmd 126, `gor/gor_02_init_evt` cmd 63 |
+| `GSW[108]` | 1 | `gor/gor_01_init_evt` cmd 64 |
+
+**`GSW[1420]` closes the previous gap.** Both uses are comparisons against
+the literal **1**, and the polarity is opposite:
+
+```
+gor/gor_01_init_evt  cmd[126]  op24  GSW[1420] == 1
+gor/gor_02_init_evt  cmd[63]   op25  GSW[1420] != 1
+```
+
+In each case a false test skips a single `op91` command — cmd 127 in
+`gor_01` (a 9-operand call) and cmd 64 in `gor_02`. There is **no write** to
+`GSW[1420]` anywhere in the six scanned modules, exactly as for 402 and 404.
+Its producer is outside the scanned set; not guessed here.
+
+**`GSW[108]` is a callee argument, not a flag read.** It appears once, at
+`gor_01` cmd 64, in **operand position 1 of opcode 91** — a service call's
+argument slot, not a comparison destination. This is the controlled contrast
+to `GSF[5393]` above, which is the same numeric-band shape in **operand
+position 0 of opcode 24**, where it *is* a flag read.
+
+The generalisable rule, and the answer to the standing question about the
+`GSF` 5300-5600 band: **band membership alone does not decide whether an
+operand names storage.** The opcode decides. Concretely, in the opening:
+
+| Operand position | Role | Example |
+|---|---|---|
+| operand0 of opcodes 24/25/26/28/29/34/36-47 | resolved storage read/write | `GSF[5393]` at `gor_03` cmd 23 |
+| operand0 of opcode 50 | resolved **source** value | literal `2`/`9`/`403` at the three `GSW[0]` stores |
+| any non-zero position of opcode 91 | raw service argument | `GSW[108]` at `gor_01` cmd 64 |
+
+So a scan that classifies operands by numeric band alone will mislabel every
+service argument that happens to look like a tag.
+
+### Census limitation
+
+This is the `GSW` census for **six modules** only (`dmo`, `aaa`, `sys`,
+`gor`, `muj`, `tik`). `GSW[0]` being the dominant story word in the opening
+says nothing about the other ~200 areas, and `GSW[1420]`/`GSW[108]` may well
+be far more widely used elsewhere. No claim of a game-wide `GSW` layout.
+
 ## Per-event tables
 
 ### `aaa/aaa_00_init_evt` (prologue module init, 35 cmds)
@@ -430,6 +481,8 @@ test would change which chapters are admitted.
   runtime effect of each body: the `op91`/`op92`/`op94` service operand
   meanings are decoded elsewhere but were not cross-referenced per body
   here.
-- `GSW[1420]`, seen in `gor_01` cmd 126 and `gor_02` cmd 63, has no
-  extracted comparison literal.
+- `GSW[1420]` is **resolved** — it is tested against `1` with opposite
+  polarity at `gor_01` cmd 126 (`==`) and `gor_02` cmd 63 (`!=`), and is never
+  written in the scanned set. See the `GSW` census section, which also
+  records `GSW[108]` as a single opcode-91 callee argument.
 - No execution trace.

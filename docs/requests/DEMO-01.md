@@ -381,3 +381,43 @@ time reinforces it as the cross-area marker.
 Still open: chapter names, origin of 402/404, the direction of the professor's
 `9`, `GSW[1420]`, and the runtime meaning of each `op91`/`op92`/`op94` body
 call. No execution trace.
+
+## 2026-10-13 — ID 3: complete GSW census; GSW[1420] resolved
+
+[GSW census](../behavior/story/OPENING_GSW0_CHAPTER_VALUE_TABLE.md). Closes
+the last named gap in the chapter table and settles the standing question
+about the `GSF` 5300-5600 band.
+
+**`GSW[1420]` is compared against 1, with opposite polarity:**
+
+```
+gor/gor_01_init_evt  cmd[126]  op24  GSW[1420] == 1   -> skip cmd127 op91 (9 operands)
+gor/gor_02_init_evt  cmd[63]   op25  GSW[1420] != 1   -> skip cmd64  op91
+```
+
+Like 402 and 404, it is **never written** in the six scanned modules.
+
+**Full `GSW` census for the six modules: only three indices exist** —
+
+| Index | Uses | Role |
+|---|---|---|
+| `GSW[0]` | 60 | chapter gate, `WORD` at `GP+174` |
+| `GSW[1420]` | 2 | `== 1` / `!= 1` gate, no writer in scope |
+| `GSW[108]` | 1 | opcode-91 **callee argument** at `gor_01` cmd 64 |
+
+**Settles the band-role question.** `GSW[108]` and `GSF[5393]` are the same
+numeric-band shape in *different* operand positions and are *different*
+things: `GSF[5393]` sits in operand0 of `op24` (a real flag read) while
+`GSW[108]` sits in operand position 1 of `op91` (a raw service argument).
+**The opcode decides the role, not the numeric band.** A scan that classifies
+operands by band alone will mislabel every service argument that happens to
+look like a tag — which is the correct explanation for the 5300-5600 band in
+opcode-91 operand positions.
+
+Limitation stated in the contract: this is a six-module census, not a
+game-wide `GSW` layout. The other ~200 areas are unscanned and `GSW[1420]` /
+`GSW[108]` may be far more widely used there.
+
+Remaining on this contract: chapter names, origin of 402/404/`GSW[1420]`,
+direction of the professor's `9`, and the runtime meaning of each ladder
+body's `op91`/`op92`/`op94` calls. No execution trace.
