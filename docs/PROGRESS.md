@@ -10991,7 +10991,7 @@ Tests cover original records/zero-to-white order, first-free/flags, callback
 owner recapture, actual allocator/free/coalescing, retained gate/history,
 display requests, AcHelp signed nonzero admission and native joined/unjoined
 ordered ending/held field state. Scoped diff and documentation link checks pass
-(native-spotlight-doc-links-final.log;1059 Markdown files/0 broken links).
+(native-spotlight-doc-links-final.log;1060 Markdown files/0 broken links).
 
 Immutable artifacts/native-spotlight-snapshot completed isolated Azahar actual
 trio attacks→10EXP/victory→black fade/held-restoration notice
