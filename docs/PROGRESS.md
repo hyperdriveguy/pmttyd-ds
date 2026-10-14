@@ -1,3 +1,50 @@
+## 2026-10-14 — Actual mode2 camera publication no longer needs a manual lens hook
+
+Previous turn made progress by consuming the retained camera4 lens in the native
+world and validating visible framing. This turn traced the actual retained-camera
+Main provider. Commit `800e16ef` removes its false requirement that the optional
+native `setCameraDepthLensAdapter` diagnostic hook be present. The real retained
+camera already owns FOV, near/far and projection type. Admitted mode2 can now run
+the existing battle-frame producer, copy eye/at/up, calculate distance/yaw and
+publish projection/View through the original ordered CameraManager continuation.
+No new camera calls are inserted into another cadence. Flag2/unsupported-mode/
+unavailable-frame gates and the separate camDraw boundary remain intact.
+[mode2 contract](behavior/camera/NATIVE_MODE2_RETAINED_LENS_PUBLICATION.md).
+
+Updated the existing real ending integration path to change retained camera4
+fields directly (FOV31, near2/far20000, member aspect1.7), with no manual lens
+hook. Its actual callback publishes `cameraPerspective(31,1.2666666507720947,2,
+20000)`, preserving the member aspect as required by the source fixed-aspect
+mode2 rebuild. Tests verify shared camera identity, unchanged queue20/shadow3
+collection, published view/depth, effect-camera copies, subsequent original
+provider holds and preserved published projection after a later explicit
+diagnostic lens change. This replaces the obsolete expected artificial hold at
+cam3dMain8000ea68; the real next hold is camDraw8000f454.
+
+Exact validation used prior isolated `artifacts/battle-lens-qwwrj2n7`, frozen
+base7351519229ea1481b063104033c125b1a3aaae2c plus committed lens work and this
+owned increment. Unrelated concurrent trio/test edits remain in the live tree;
+only exact owned hunks were committed with a temporary index. `make test` exited0:
+291/291 C++ and171/171 Python (`artifacts/camera-producer-test.log`), including
+`trio_attack_original`'s actual ending/camera continuation. Native
+`TMPDIR="$PWD/artifacts/tmp" make all -o assets-ready BUILD=build-battle-lens
+TARGET=ttyd-battle-lens` exited0 (`artifacts/camera-producer-native.log`).
+`-o assets-ready` uses the snapshot's previously validated private original packs.
+Owned `git diff --check` passed. No new graphics fixture or emulator acceptance
+claim was made for this producer-only increment; prior captures do not prove its
+normal gameplay route. No assets, compiled packs, controls, dialogue, timing,
+unit values or original controller math were changed.
+
+Limitations/next: this closes an actual ending-path publication gate, not initial
+pre-display field-matrix history. `dispCalcZ` needs the preceding real field
+camera4 publication before the first battle display queue can be collected.
+Bind that retained field/view ownership and the normal camMain/camDraw cadence,
+then validate source pose-root/part presentation and normal battle admission.
+Complete audience type controls/reactions before harmful-item telegraphs,
+physical X and optional audience taps. Original class/turn/menu choreography,
+tutorial followups/field return, full-crowd performance and real voice playback
+remain open. The full tutorial/real battle goal stays active and incomplete.
+
 ## 2026-10-14 — Trio world consumes its retained source camera4 lens
 
 Previous turn made progress by wiring Mario's published transform and verifying
