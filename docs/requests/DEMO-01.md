@@ -500,3 +500,35 @@ that was verified, not assumed.
 Still open: chapter titles, reachability (a writable chapter is not a
 reachable chapter), `GSW[1420]`'s nonzero producer, `GSW[665]`'s absent
 writer, and save-block serialisation of these 30 words. No execution trace.
+
+## 2026-10-13 — Native session verification: game-wide GSW census and child-entry nesting
+
+Independently reproduced the census from the read-only US ISO with an explicit
+opener/closer stack (`tools/dol_event_inventory.parse_commands` over every
+annotated `type=evt` row; DOL `_main` events excluded). Every number the two
+deliveries cite reproduces exactly:
+
+- events **7290**, commands **234878** — i.e. 8026 annotated `evt` rows minus
+  736 DOL `_main` events, over 29 `rel/*.rel` modules.
+- opener→closer pairs: `107→109` **2779**, `108→109` **120**, `110→112`
+  **837**, `111→112` **106**, total **3842**; closer totals `109` **2899**,
+  `112` **943** — matching the opener totals.
+- **0** events ended at non-zero residual depth, **0** drove depth negative,
+  **0** cross-family pairings.
+- max-depth distribution `0:5850 / 1:1434 / 2:6`; the six depth-2 events match
+  the names listed (`bom/minnnanokoe_evt`, `gon/negotiation_event`,
+  `kpa/kpa_01_syuppatu_evt`, `las/switch_1_evt`, `las/switch_2_evt`,
+  `mri/minnnanokoe_evt`).
+- depth-0 check on the three cited `GSW[0]` stores: `aaa/evt_prologue2` cmd 49
+  = opcode 50 operand1 **2**; `aaa/epilogue_evt2` cmd 117 = opcode 50 operand1
+  **403**; `gor/kurihakase_first_talk` cmd 176 = opcode 50 operand1 **9** —
+  all at depth 0.
+- `gor/gor_00_init_evt` (174 commands) has depth>0 spans only at head cmds
+  1–2, 4–5, 7–8, 10–11 and tail 170–171, agreeing with the "0–11 / 169–171"
+  bounding description; the cited ladders at 12–48 and 98–146 sit entirely at
+  depth 0.
+
+Method parity: same flat parser, same `us_symbols.csv` symbol table, same ISO
+(bytes only). Limit: static byte census, no original execution and no
+native/source change; the delivery's own remaining gaps (chapter titles,
+reachability, `GSW[1420]`/`GSW[665]` producers, save serialisation) stay open.
