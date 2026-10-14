@@ -2,6 +2,23 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Requests scoped to the first demo milestone
+
+Added [milestones](MILESTONES.md) defining **D1** (the Rogueport opening demo,
+the next step), its acceptance criteria and a request map, with **G1**
+(full-game playability) as the end goal. Filed three demo-critical provenance
+requests the existing set does not cover: [DEMO-01](requests/DEMO-01.md)
+(opening entry conditions, persistent writes, branch/join and re-entry — the
+integration contract the completion assessment calls missing),
+[RESULT-01](requests/RESULT-01.md) (battle-result publication, victory, story
+advance and the save-unblock producer) and [GSF-01](requests/GSF-01.md) (opening
+story-flag map and save-block story switches). Grounded in
+`Game::returnFromBattle`/`Scene::Victory`, `originalFlag1207`/`233`/`236` and the
+opening playtest chain. Docs-agent concurrent edits were left untouched.
+
+Validation: doc-link check 980 files/0 broken; index diff additive only. No
+`make` rerun (docs only). Full-game incomplete.
+
 
 ## 2026-10-13 — Inbox single-slot read validation and copy selection
 
