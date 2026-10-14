@@ -979,3 +979,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Shadow projection prefix and zero-counter admission](display/SHADOW_PROJECTION_PREFIX_AND_ZERO_COUNTER_ADMISSION.md) — unconditional GPU order, live GP color and restoration before counter gates.
 
 - [Trouble Center retained presentation owner](field/TROUBLE_CENTER_RETAINED_PRESENTATION_OWNER.md): original event message/menu lifetimes, explicit simulation visits, fixed-world lecture anchor and remaining native bindings.
+
+- [Native Trouble Center contact/presentation](field/NATIVE_TROUBLE_CENTER_CONTACT_AND_PRESENTATION.md): exact-node case admission, retained manager reentry, real pouch and native drawing/audio.
+- [Trouble Center direction source correction](event/TROUBLE_CENTER_DIRECTION_CALLBACK_SOURCE_CORRECTION.md): fresh270-degree constants, handler1 endpoint, raw party selector and boot global evidence.

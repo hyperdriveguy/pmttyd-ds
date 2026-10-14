@@ -4030,3 +4030,14 @@ reopen and quest2 acceptance with original packed words and US resources. This
 is a portable work surrogate, not the source Cmap0x416c ABI or native contact/
 world/render/audio closure. Existing runtime-trace and shared GP/case-provider
 requests remain OPEN; no request is closed by the host fixture.
+
+## 2026-10-14 — Native Trouble Center binding and turn correction
+
+[Native binding](../behavior/field/NATIVE_TROUBLE_CENTER_CONTACT_AND_PRESENTATION.md)
+now composes actual case9 nodes, Game saved/pouch owners and retained rendering.
+[Fresh source direction correction](../behavior/event/TROUBLE_CENTER_DIRECTION_CALLBACK_SOURCE_CORRECTION.md)
+replaces earlier incorrect360/180 bases/threshold with270, preserves handler1
+and13 callbacks at60Hz, and pins raw party selection/BSS current0. Reentry shares
+the retained original manager and outstanding children; finite slot admission
+prevents allocator exhaustion. Full global GP/64-case ownership, actual world
+children/current-index writers and runtime source comparisons remain OPEN.

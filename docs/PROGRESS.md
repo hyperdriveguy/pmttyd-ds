@@ -3261,3 +3261,46 @@ case9 contact/deferred lifetime, Game presentation owner/shared banks, actual
 Key/directions, pouch, NPC/door children and original cue execution. No native
 interactive board or physical3DS performance claim; broad remake goal stays active.
 See [contract](behavior/field/TROUBLE_CENTER_RETAINED_PRESENTATION_OWNER.md).
+
+## 2026-10-14 — Native Trouble Center board and counter
+
+Connected exact original board/counter contacts to the retained original EVT,
+message/selection/menu, renderer and native audio paths. Case9 accepts A+B and
+consumes unavailable recognized contacts without replaying a jump. Source turns
+now use freshly verified270-degree bases and the handler1 endpoint over13
+simulation calls. Fresh BSS party current0 is separate from Mario party lookup.
+Actual pouch coins/items support Q2/Q13 cancellation. Finite source banks import/
+export each active visit; finished managers cannot overwrite later field state.
+Reentry appends roots into the same manager and retains pending world children,
+with a tested slot-capacity guard. Original UI PCM uses resident NDSP buffers.
+
+Validation: reviewed tree6af150ebfa2e546c3e8c05d1e503051bed478fe9,
+3199 tracked files,0 mismatches. Sequential make assets-ready SOUNDTRACK=gamecube
+passed; make test passed282 C++/167 Python tests after the capacity guard.
+Normal make all and DEBUG_SHORT_BOOT=1 build passed; the normal build was restored
+and rechecked after scoped-render cleanup. Logs: artifacts/trouble-native-assets.log,
+trouble-native-test-final.log, trouble-native-short-build-final.log,
+trouble-native-build-corrected.log and trouble-native-audit.log. All five runtime
+UI cues match the independent original PCM library (trouble-native-pcm-audit.json).
+
+Isolated Azahar: artifacts/azahar-trouble-native-mcgoomba verifies the original
+list, all three help02 diary pages, irai44 confirmation and decline/reopen at the
+same McGoomba cursor. artifacts/azahar-trouble-native-lecture verifies first
+lecture and separate choice with original mode7/world tail. Stable captures show
+60 App FPS and about9.5..11.9ms/frame. Both isolated save copies were unchanged.
+These are emulator readings, not physical3DS/source raster parity. Early scripts
+sent input before readiness, held Up into the live list or assumed one diary
+page; those attempts are not counted as target-flow completion. Corrected
+readiness/page-aware scripts passed. Code92806b4f plus scoped cleanup eb3dd161.
+
+Native normal SHA256:86c83526513ce9defdc9d90b3acd94e83ea5cf876d99af2118d184d53a49603e.
+Short-boot capture SHA256:259de7f1e0bc3cc832039b38c0a6eeb0ab6d5392f88c65364d9a58f8bbc694ae.
+
+Limits: exact-node native case adapter, portable menu work surrogate, private
+field manager/finite GP domain and primary PCM fallback. Actual Q1/Q4 NPC/door
+children and other world callbacks remain pending, while later roots can still
+run; no fake success. Full party/global-index writers, shared64-case/GP ownership,
+MusyX and original runtime/raster comparisons remain open. Next bind actual
+source actor/door/item-world providers and shared field lifecycle, then extend
+additional areas with original event/resource packs. Broad remake goal stays active.
+See [contract](behavior/field/NATIVE_TROUBLE_CENTER_CONTACT_AND_PRESENTATION.md).

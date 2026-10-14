@@ -611,3 +611,17 @@ Initial flags0 snapshot and later unknown-history invalidation are separate
 from original live bmapLoad/hitMain. [Native scope](behavior/battle/NATIVE_BATTLE_HIT_REGISTRY_AND_SHADOW_PREPARATION.md).
 Rights remain Nintendo/Intelligent Systems; private local conversion grants no
 redistribution license. No original payload or compiled pack is committed.
+
+### 2026-10-14 — Original Trouble Center native UI primary samples
+
+tools/trouble_board_audio_assets.py opens the supplied US ISO read-only and
+converts sound/proj/pmario.sdir plus pmario.samp entries1041/1040/1064/1063
+(original rows5/19/42/43) to ignored romfs/trouble-sfx-{row}.wav. Original mono
+22050Hz DSP ADPCM becomes PCM16 with original sample IDs, counts and nonloop
+metadata; romfs/trouble-sfx.json records bank/sample hashes and provenance.
+Additional resident PCM is43314 bytes across four cues. Existing confirm.wav
+is bit-identical to sample1043 (row18) and is borrowed without another copy.
+Native NDSP20..23 use linearAlloc/cache flush and a conservative primary-sample
+mix; full MusyX macro/envelope/voice/mix parity is not claimed. Original Nintendo/
+Intelligent Systems assets are local-only; no redistribution rights are granted.
+No extracted PCM, bank, ISO, pack or 3DSX enters these source commits.

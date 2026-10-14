@@ -86,7 +86,7 @@ source derivation, not a universal fixed12-frame observed duration.
 ID to event+78, snapshots current direction partner+10c to event+7c and zeros
 counter event+80. Missing partner returns2. Each invocation resolves angleFLOAT
 and durationINT; nonnegative duration goes through sysMsec2Frame, negative is
-retained. For N>0 target=revise360(360-requestedYaw). It computes
+retained. For N>0 target=revise360(270-requestedYaw). It computes
 single(initial+(target-initial)*single(counter/N)), wraps through revise360,
 writes partner+10c and+110, and toMovedirSimple(result) into+100. It increments
 counter, returns0 while counter<=N and returns1 when counter>N. Thus calls
@@ -100,8 +100,8 @@ derived+100,returns2. Do not collapse-1 and0 into the same snap operation.
 
 `evt_mario_set_dir` 0x800e6de8/0x1e0 resolves angleFLOAT,durationINT then
 sysMsec2Frame,third modeINT. First call zeros event counter+78/finish+80,
-snapshots current Mario+1ac to event+7c; if requestedYaw>180 subtract360.
-Positive-duration target=revise360(360-requestedYaw), then if target>180
+snapshots current Mario+1ac to event+7c; if requestedYaw>270 subtract360.
+Positive-duration target=revise360(270-requestedYaw), then if target>270
 subtract360. It linearly interpolates raw target-initial at counter/N, wraps
 result and writes Mario+1ac/+1b0 and derived toMovedirSimple into+1a4/+1a0.
 Do not substitute shortest-arc interpolation: source target wrapping differs
@@ -125,3 +125,7 @@ Source numeric parity, event clock/frame scheduling, icon GPU projection,
 NPC motion-pose ownership and original runtime image/audio comparison remain
 dependencies. This contract supplies bindings for retained requests; it does
 not establish full prologue presentation correctness.
+
+
+2026-10-14 correction: fresh constant reads establish270 for both turn bases
+and the Mario recenter threshold. See the [source correction](../event/TROUBLE_CENTER_DIRECTION_CALLBACK_SOURCE_CORRECTION.md); earlier360/180 prose was incorrect.
