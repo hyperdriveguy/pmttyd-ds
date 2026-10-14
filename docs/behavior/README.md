@@ -1055,3 +1055,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Native original model group traversal](display/NATIVE_ORIGINAL_MODEL_GROUP_TRAVERSAL.md) — unchanged raw-model companions, source node SDK graph and retained ordinary traversal to real shape rendering.
 - [SDK inverse-transpose and point matrix arithmetic](display/ANIMATION_SDK_NORMAL_AND_POINT_MATRICES.md) — singular/no-store behavior, reciprocal-estimate boundary and used seed alias grouping.
+
+- [Audience member control and idle reactions](battle/AUDIENCE_MEMBER_CONTROL_AND_IDLE_REACTIONS.md): original21-state dispatcher, motion tail and whole idle turn/tilt/jump; explicit remaining state providers.

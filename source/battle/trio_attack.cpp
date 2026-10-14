@@ -34,6 +34,7 @@
 #include "battle_action_help.hpp"
 #include "battle_audience_init.hpp"
 #include "battle_audience_population.hpp"
+#include "battle_audience_actor_control.hpp"
 #include "battle_audience_resources.hpp"
 #include "battle_audience_target.hpp"
 #include "battle_audience_main.hpp"
@@ -369,7 +370,30 @@ struct TrioAttackRuntime {
             if(fn==0x801a1cdc){r.byte(r.word(0x8041eb90)+0x2858+0x1375c,1);return true;}
             if(fn==0x801a5ca8) {
                 BattleAudienceControlServices control;control.actors=actors;control.user=&r;
-                control.actor=[](void* p,uint32_t,int32_t index,bool){auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x80192a0c,{index});r.pending=0x80192a0c;return false;};
+                control.actor=[](void* p,uint32_t,int32_t index,bool){
+                    auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x80192a0c,{index});
+                    BattleAudienceActorControlServices actor;actor.actors=nativeBattleActorServices(r.vm);actor.user=p;
+                    actor.front=[](void* p,int32_t slot)->std::optional<int32_t>{
+                        auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x801a2b28,{slot});
+                        BattleAudienceDrawServices draw;draw.actors=nativeBattleActorServices(r.vm);draw.user=p;
+                        draw.camera=[](void* p,uint32_t i)->std::optional<uint32_t>{return static_cast<TrioAttackRuntime*>(p)->cameras->camera(i)?std::optional<uint32_t>(i):std::nullopt;};
+                        draw.vectors=[](void* p,uint32_t i)->std::optional<std::array<float,6>>{
+                            const auto* c=static_cast<TrioAttackRuntime*>(p)->cameras->camera(i);if(!c)return {};
+                            return std::array<float,6>{c->eye[0],c->eye[1],c->eye[2],c->at[0],c->at[1],c->at[2]};
+                        };
+                        draw.fma=[](void*,float a,float b,float c){return std::fma(a,b,c);};
+                        return packedBattleAudienceFront(slot,draw);
+                    };
+                    actor.state=[](void* p,uint32_t fn,int32_t slot,int32_t front){
+                        auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(fn,{slot,front});
+                        if(controlPackedBattleAudienceIdleReaction(fn,slot,front,nativeBattleActorServices(r.vm)))return true;
+                        r.pending=fn;return false;
+                    };
+                    actor.sine=[](void*,double phase)->std::optional<double>{return std::sin(phase);};
+                    if(controlPackedBattleAudienceActor(index,actor))return true;
+                    if(!r.pending)r.pending=0x80192a0c;
+                    return false;
+                };
                 control.random=[](void* p,int32_t bound){auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x80005da0,{bound});return r.random.bounded(bound);};
                 control.itemOn=[](void* p,int32_t index){auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x801a5aac,{index,0,1});auto result=packedBattleAudienceEmptyItemOn(index,nativeBattleActorServices(r.vm));if(!result)r.pending=0x801a5aac;return result;};
                 if(packedBattleAudienceControl(control))return true;

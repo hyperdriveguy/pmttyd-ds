@@ -881,3 +881,16 @@ redistribution rights granted. No payload/compiled pack/ISO is committed.
 Private RomFS was copied from the prior pose-inner snapshot; Bero data was
 refreshed only there using its frozen baseline converter. User profiles and
 source-root asset caches were not modified by validation in this change.
+
+## Audience member control source inspection (2026-10-14)
+
+Read `/home/carson/games/roms/G8ME01.iso` read-only with
+`tools/inspect_dol_function.py`; ignored `artifacts/BattleAudienceCtrlProcessKinopio*.elf/.txt`
+contain inspection-only source bytes/disassembly. No original executable code
+is linked or committed. The portable source consumes existing unchanged
+`romfs/trio-attack-events.pmevt` data: dispatch table80397b20 and motion/reaction
+constants804244e0..804245d0. No pack format, texture, HUD, scaling or licensing
+choice changed. Function/data source pins and scope are in
+[the control contract](behavior/battle/AUDIENCE_MEMBER_CONTROL_AND_IDLE_REACTIONS.md).
+Original Nintendo game material remains private under the existing ISO asset
+licensing policy; extracted/compiled material stays outside source history.

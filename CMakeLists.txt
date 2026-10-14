@@ -1544,3 +1544,10 @@ add_executable(animation_draw_traversal_tests tests/animation_draw_traversal_tes
 target_link_libraries(animation_draw_traversal_tests PRIVATE ttyd_core)
 add_test(NAME animation_draw_traversal COMMAND animation_draw_traversal_tests)
 set_tests_properties(animation_draw_traversal PROPERTIES WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+
+# Original audience member dispatch, motion and idle reactions.
+target_sources(ttyd_core PRIVATE source/battle/battle_audience_actor_control.cpp)
+add_executable(battle_audience_actor_control_tests tests/battle_audience_actor_control_tests.cpp)
+target_link_libraries(battle_audience_actor_control_tests PRIVATE ttyd_core)
+add_test(NAME battle_audience_actor_control COMMAND battle_audience_actor_control_tests)
+set_tests_properties(battle_audience_actor_control PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
