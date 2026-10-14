@@ -13107,3 +13107,41 @@ GX/PICA binding remain unimplemented. The camera homing paths use original
 unit dimensions. Part scale/radius stores restore initializer state; position
 getter offsets must be assessed from their own source logic. Full prologue
 fidelity and ordered field restoration remain unfinished.
+
+
+## 2026-10-14 — Trio pose depth and borrowed display registration
+
+Isolated source: artifacts/depth-binding-source, base
+56e612ac1400b7ab64a6c89b321ea2acf3c4f20a, three owned files in OWNED_BASE.txt
+plus the scoped Game lens-adapter insertions. Other concurrent Game edits were
+excluded. Private assets are linked from the existing ignored asset workspace.
+Immutable ELF/3DSX/SMDH and SHA256SUMS/SOURCE_SHA256SUMS are in
+artifacts/depth-binding-validated.
+
+Validation:
+- Shared make test:247/247 C++ and142/142 Python passed;
+  artifacts/depth-binding-tests-final.log.
+- make -C artifacts/depth-binding-source test:244/244 C++ and142/142 Python
+  passed; artifacts/depth-binding-isolated-tests.log. The differing count
+  reflects concurrent shared features and asset-conditioned tests.
+- make -C artifacts/depth-binding-source -o assets-ready all
+  BUILD=build-depth-binding TARGET=ttyd-depth-binding -j4:passed;
+  artifacts/depth-binding-isolated-native.log.
+- Source finishing-pose regression removes the matrix provider, resumes with
+  explicit matrices and verifies borrowed callback/part/key, unchanged pose
+  cache history and Main call count, shadowY/radius and no repeated Entry.
+- Initial shared compile caught mixed uint32/float auto deduction in a new
+  assertion; corrected before final shared/isolated validation.
+- Documentation links and scoped whitespace passed; no emulator/hardware run.
+
+Depth binding uses retained source controller eye/at/up with explicitly supplied
+native field lens values and the existing numerical SDK adapter. It does not
+claim complete source field lens/roll/extra history, controller trace or paired
+SDK exceptional parity. Renderer retains its current handheld battle view.
+Source floor and ordinary shadow calculations execute, while actual global
+shadow registration, borrowed queue dispatch/sort/reset cadence, matrix/material
+GPU callbacks and teardown/field restoration remain incomplete.
+
+Read-only source documentation also recovers original camera matrix concat,
+roll/translation and perspective/orthographic arithmetic for the forthcoming
+persistent publication owner; this documentation is not a new native owner.

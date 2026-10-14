@@ -37,9 +37,10 @@ and count-only reset. Repeated completed draw calls restart traversal normally.
 This module does not map GX enums to PICA, supply original camera/reset/draw
 cadence, acquire userdata lifetime, implement queued part/shadow/message
 callbacks or complete the trio display footer. It is a real queue service
-ready for those owners; the current trio still waits on inherited camera4
-matrix ownership before its first ordinary pose registration. Deferred callback
-execution remains distinct from immediate source continuation.
+ready for those owners; the trio now uses an explicit native camera adapter
+for its first ordinary pose registration; [binding limits](NATIVE_TRIO_POSE_QUEUE_BINDING.md) retain
+actual inherited camera4 history and GPU/shadow ownership as remaining work.
+Deferred callback execution remains distinct from immediate source continuation.
 
 Tests cover all ternary key inputs through length7, repeated/all-equal keys at
 small/large/sample thresholds through1024, the source three-entry tie reversal,

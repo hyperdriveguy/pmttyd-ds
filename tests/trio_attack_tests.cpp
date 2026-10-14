@@ -405,7 +405,10 @@ int main(){
             for(unsigned n=0;n<100 && !charged.trioAttack.pendingFunction();++n)charged.tick(Input{});
             assert(charged.trioAttack.pendingFunction()==0x800f8e28u);
             const auto engineCursor=charged.trioAttack.requests().size();
-            charged.tick(Input{}); // Source audience updates reach the next slot provider.
+            // A missing matrix holds after Main; supplying it resumes the exact
+            // depth/entry continuation without replaying the source prefix.
+            charged.trioAttack.setCameraDepthSnapshot(std::nullopt);
+            charged.trioAttack.tick((charged.ticks+1)*1000/60,charged.trioBattleIntro);
             assert(charged.trioAttack.pendingFunction()==0x8001086cu && charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001f);
             const auto* pose=charged.trioAttack.battlePose(0x84201000);assert(pose && pose->word(0x14)==4 && pose->resource->names[4]=="M_R_1" && pose->scalar(0x44)==1 && !pose->shape.vertices.empty()); // Finishing run: original index4, not pack ordinal2.
             assert(pose->word(0x3c)==pose->word(0x28) && pose->scalar(0x40)==pose->scalar(0x30));
@@ -413,6 +416,23 @@ int main(){
             assert(charged.trioAttack.readWord(0x84002760,value) && value==17 && charged.trioAttack.cameraFrameState());
             assert(charged.trioAttack.readWord(0x84201060,value) && value==0x3f800000 && charged.trioAttack.readWord(0x842011a0,value) && (value&0xffff)==20);
             assert(charged.trioAttack.readWord(0x842014f4,value) && value==0xffffffff);
+            const auto history=pose->word(0x3c);const auto cacheTime=pose->scalar(0x40);
+            const auto prefixCalls=std::count_if(charged.trioAttack.requests().begin(),charged.trioAttack.requests().end(),[](const auto& request){return request.function==0x8003ed2c;});
+            CameraDepthSnapshot explicitCamera;
+            for(unsigned axis=0;axis<3;++axis)explicitCamera.view[axis][axis]=1;
+            for(unsigned axis=0;axis<4;++axis)explicitCamera.projection[axis][axis]=1;
+            charged.trioAttack.setCameraDepthSnapshot(explicitCamera);
+            charged.trioAttack.tick((charged.ticks+1)*1000/60,charged.trioBattleIntro);
+            assert(charged.trioAttack.pendingFunction()==0x8002be98 && pose->word(0x3c)==history && pose->scalar(0x40)==cacheTime);
+            assert(std::count_if(charged.trioAttack.requests().begin(),charged.trioAttack.requests().end(),[](const auto& request){return request.function==0x8003ed2c;})==prefixCalls);
+            const auto* queue=charged.trioAttack.displayQueue();assert(queue && queue->count()==1);
+            const auto* registered=queue->record(0);assert(registered && registered->camera==4 && registered->drawClass==1 && registered->callback==0x80101774 && registered->userdata==draw->part);
+            assert(registered->key==400000.f-cameraQueueDepth(explicitCamera,draw->depth));
+            const auto shadow=charged.trioAttack.shadowDrawRequest();assert(shadow && shadow->position[1]==10 && shadow->radius>=8);
+
+            charged.trioAttack.tick((charged.ticks+2)*1000/60,charged.trioBattleIntro);
+            assert(queue->count()==1); // Held shadow provider does not duplicate entry.
+
             assert(charged.trioAttack.readWord(0x84201204,value) && (value&3)==2); // Source name request consumed; forced path stays active.
             assert(charged.trioAttack.readWord(0x84000ef4,value) && !(value&0x80000000));
             constexpr uint32_t slotWords[3][8]{{0,1,2,1,2,0,3,4},{3,1,0,1,4,2,0,2},{0,1,2,3,4}};

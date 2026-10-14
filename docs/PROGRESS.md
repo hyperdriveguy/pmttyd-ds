@@ -1068,3 +1068,26 @@ the queue to original draw callbacks and native GPU services, and implement
 ordered teardown/field return. The trio still holds at dispCalcZ8001086c;
 the queue is not yet connected to rendered battle parts. Remaining controller
 modes/shakes and full prologue parity stay open; the goal remains active.
+
+
+## 2026-10-14 — Trio pose depth and borrowed display registration
+
+Bound the finishing display prefix to the native queue using explicit camera
+snapshots. Game supplies a declared field-lens numerical adapter in engine
+units; original camera4 roll/offset/extra history remains open. A retained
+depth continuation resumes missing-provider waits without repeating pose Main
+or duplicating Entry. The ordinary immediate continuation now computes the
+original stage floor and shadow position/radius, holding at shadowEntry8002be98.
+[Scope and limits](behavior/display/NATIVE_TRIO_POSE_QUEUE_BINDING.md).
+
+Shared make test passed247/247 C++ and142/142 Python checks. Final isolated
+make test passed244/244 C++ and142/142 Python checks, and native make all
+passed. Exact snapshot/logs/manifests are in the
+[archive](PROGRESS_ARCHIVE.md#2026-10-14--trio-pose-depth-and-borrowed-display-registration).
+No Azahar or hardware run for this step.
+
+Next: shared original shadow pool and preparation/draw/reset cadence, remaining
+part/unit display tails, and actual deferred part matrices/material/GPU draw.
+Keep full inherited camera4 publication and ordered battle teardown/field return
+open. Existing handheld battle view is unchanged; queue registration alone is
+not rendered parity. Full original-fidelity prologue goal remains active.

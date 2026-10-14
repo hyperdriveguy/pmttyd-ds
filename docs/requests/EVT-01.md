@@ -3862,3 +3862,17 @@ dimensions and part defaults are retained. The
 [inherited camera4 contract](../behavior/camera/UNDERGROUND_BATTLE_CAMERA4_ENTRY_AND_INHERITED_LENS.md)
 identifies field/event history still needed before actual matrix binding.
 Queue/GPU callbacks, shadow continuation and ordered field return remain open.
+
+
+### Trio pose queue binding follow-up (2026-10-14)
+
+Finishing display now calculates source queue depth with supplied matrices and
+registers80101774/borrowedpart in the real native queue. Missing matrices resume
+after Main without replay, and original stage floor/shadow parameters are
+computed; next unbound provider is shadowEntry8002be98.
+[Native scope](../behavior/display/NATIVE_TRIO_POSE_QUEUE_BINDING.md).
+Game uses a declared numerical field-lens adapter, so actual inherited camera4
+publication still needs the [producer arithmetic](../behavior/display/BATTLE_CAMERA4_MATRIX_PUBLICATION_ARITHMETIC.md)
+and complete field history. Recover shared shadow pool/lifetime/cadence and
+801261f8/part-unit tail before claiming enclosing display completion; then bind
+deferred draw callbacks and ordered teardown/field return. EVT-01 remains open.

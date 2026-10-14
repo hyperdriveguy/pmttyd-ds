@@ -261,6 +261,8 @@ suffix.
 | [Inherited battle camera4 lens](camera/UNDERGROUND_BATTLE_CAMERA4_ENTRY_AND_INHERITED_LENS.md) | Boot Entry and mode2-only battle transition with retained lens/offset | Reachable field/event writer continuity and actual matrices |
 | [Part Entry defaults](battle/TRIO_PART_ENTRY_SCALE_RADIUS_AND_ROTATION_DEFAULTS.md) | Original descriptor radius/height, unit scales and zero rotation/pivot stores | Complete unit/part factories and draw/shadow consumers |
 | [Native display queue](display/NATIVE_DISPLAY_QUEUE_OWNER.md) | Actual borrowed records, source sort and resumable deferred dispatch | GX/PICA, camera/cadence, callback and userdata lifetime owners |
+| [Native trio pose queue binding](display/NATIVE_TRIO_POSE_QUEUE_BINDING.md) | Explicit camera adapter, retained depth continuation, live part registration and shadow values | Actual camera4 history, shadow owner and deferred GPU draw/cadence |
+| [Camera4 matrix producer arithmetic](display/BATTLE_CAMERA4_MATRIX_PUBLICATION_ARITHMETIC.md) | Original concat, roll, translation and perspective/orthographic instruction order | Full LookAt/libm/platform and persistent matrix publication |
 | [Ordinary battle queue admission](display/ORDINARY_BATTLE_DISPLAY_QUEUE_ADMISSION.md) | Borrowed queue registration and distinct immediate/deferred providers | Actual native queue/GX/callback/cadence and userdata lifetime |
 | [Animation interpolation](display/ANIMATION_OUTPUT_INTERPOLATION.md) | Complete linear/cubic/tangent guard/end-seam and final cache writes | Renderer/numeric/lifetime/original animation |
 | [Animation facing](display/ANIMATION_MAIN_CAMERA_FACING.md) | Complete camera/atan2/two wraps/sign tail | Camera/libm/flags/renderer/runtime |

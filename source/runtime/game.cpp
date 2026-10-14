@@ -2008,6 +2008,9 @@ void Game::tick(const Input& rawInput) {
             if(trioAttack.active()) {
                 const uint32_t triggers=i.physicalSnapshot?inputProducer.channels[0].pressed:(i.confirm?0x100u:0u)|(i.cancel?0x200u:0u);
                 const auto sample=inputProducer.channels[0].battleSample();
+                // Native field lens snapshot in engine units. Roll/projection-extra history
+                // remains an explicit adapter gap rather than a boot-value reset.
+                trioAttack.setCameraDepthLensAdapter(fieldCameraFrame.fov,608.f/480.f,fieldCameraFrame.nearPlane*100,fieldCameraFrame.farPlane*100);
                 trioAttack.tick(ticks*1000/60,trioBattleIntro,triggers,i.physicalSnapshot?&sample:nullptr);
                 if(auto exported=trioAttack.exportedPouch()){progress.originalPouch=std::move(exported);progress.hp=progress.originalPouch->half(0x70);}
                 scene=Scene::Dialogue;saveRequested=false;return;
@@ -2015,6 +2018,9 @@ void Game::tick(const Input& rawInput) {
             if(trioAttack.finished()) {
                 const uint32_t triggers=i.physicalSnapshot?inputProducer.channels[0].pressed:(i.confirm?0x100u:0u)|(i.cancel?0x200u:0u);
                 const auto sample=inputProducer.channels[0].battleSample();
+                // Native field lens snapshot in engine units. Roll/projection-extra history
+                // remains an explicit adapter gap rather than a boot-value reset.
+                trioAttack.setCameraDepthLensAdapter(fieldCameraFrame.fov,608.f/480.f,fieldCameraFrame.nearPlane*100,fieldCameraFrame.farPlane*100);
                 trioAttack.tick(ticks*1000/60,trioBattleIntro,triggers,i.physicalSnapshot?&sample:nullptr);
                 if(auto exported=trioAttack.exportedPouch()){progress.originalPouch=std::move(exported);progress.hp=progress.originalPouch->half(0x70);}
                 if(trioAttack.active())trioCommands.state=TrioBattleCommands::State::Closed; // Enemy root now owns the action.
@@ -2027,6 +2033,9 @@ void Game::tick(const Input& rawInput) {
             if(trioCommands.state==TrioBattleCommands::State::AttackReady && trioAttack.begin(trioCommands,trioBattleIntro,progress.hp,progress.originalPouch,&professorStory.actors[3].npcBattleFlags,&fieldMarioBattle,&fieldParties,&partyAppearance,battleSpotlight,trioRandom,publicSfx)) {
                 const auto sample=inputProducer.channels[0].battleSample();
                 const uint32_t triggers=i.physicalSnapshot?sample.pressed:(i.confirm?0x100u:0u)|(i.cancel?0x200u:0u);
+                // Native field lens snapshot in engine units. Roll/projection-extra history
+                // remains an explicit adapter gap rather than a boot-value reset.
+                trioAttack.setCameraDepthLensAdapter(fieldCameraFrame.fov,608.f/480.f,fieldCameraFrame.nearPlane*100,fieldCameraFrame.farPlane*100);
                 trioAttack.tick(ticks*1000/60,trioBattleIntro,triggers,i.physicalSnapshot?&sample:nullptr);
                 if(auto exported=trioAttack.exportedPouch()){progress.originalPouch=std::move(exported);progress.hp=progress.originalPouch->half(0x70);}
                 scene=Scene::Dialogue;saveRequested=false;return;
