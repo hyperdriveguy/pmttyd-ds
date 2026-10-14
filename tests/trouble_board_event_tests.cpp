@@ -34,12 +34,7 @@ struct Backend {
     if(b.blockNpc)return 0;
     ++b.appliedNpc;
    }
-   if(r.kind==TroubleEventCall::RegisterCase) {
-    assert(r.argumentCount==6 && r.values[0]==9 && r.values[1]==1 && r.values[3]==0 && r.values[5]==0);
-    assert(r.values[4]==int32_t(b.cases.empty()?0x90546018:0x90546210));
-    assert(std::all_of(r.locals.begin(),r.locals.end(),[](int32_t v){return v==0;}));
-    b.cases.push_back(r.text);
-   }
+   assert(r.kind!=TroubleEventCall::RegisterCase); // Owned by the VM, never acknowledged by a stub.
    if(r.kind==TroubleEventCall::CoinRead)r.result=b.coins;
    if(r.kind==TroubleEventCall::CoinAdd)b.coins+=r.values[0];
    if(r.kind==TroubleEventCall::Cancel) {
@@ -72,7 +67,25 @@ void run(TroubleBoardEvent& event,Backend& backend,uint64_t start=0) {
 int main() {
  assert(loadTroubleBoardEventAssets("romfs"));
  TroubleBoardEvent installer;Backend registration;assert(installer.begin(0,23,initial(),TroubleBoardRoot::Installer));run(installer,registration);
- assert((registration.cases==std::vector<std::string>{"A_i04_keizi","A_i04_kunter"}));
+ assert(registration.cases.empty()); // Actual wrapper is owned by the retained VM.
+ assert(installer.cases() && installer.cases()->active(0) && installer.cases()->active(1) && !installer.cases()->active(2));
+ const auto board=*installer.cases()->active(0),counterCase=*installer.cases()->active(1);
+ assert(std::string(board.name.data())=="A_i04_keizi" && std::string(counterCase.name.data())=="A_i04_kunter");
+ assert(board.type==9 && board.flags==5 && board.priority==0 && board.script==0x90546018 && !board.eventId);
+ assert(counterCase.script==0x90546210 && counterCase.index==1);
+ assert(std::all_of(board.locals.begin(),board.locals.end(),[](int32_t v){return v==0;}));
+ // Real installed script/locals, same retained manager. Dispatch is after the
+ // mark pass and does not execute until the next EVT visit.
+ assert(installer.markCase(0) && installer.dispatchCases() && installer.active() && registration.messages.empty());
+ const auto firstCaseEvent=installer.cases()->active(0)->eventId;assert(firstCaseEvent);
+ assert(installer.markCase(0) && installer.dispatchCases() && installer.cases()->active(0)->eventId==firstCaseEvent);
+ run(installer,registration,100);assert(*troubleQuestFlag(installer.switches,5374));
+ assert(installer.cases()->active(0) && !(installer.cases()->active(0)->flags&2));
+ Backend repeat;repeat.quests={-1};assert(installer.markCase(0) && installer.dispatchCases());
+ assert(installer.cases()->active(0)->eventId!=firstCaseEvent);run(installer,repeat,10000);
+ assert(std::find(repeat.messages.begin(),repeat.messages.end(),"irai_00")==repeat.messages.end());
+ Backend counterVisit;assert(installer.markCase(1) && installer.dispatchCases());run(installer,counterVisit,20000);
+ assert((counterVisit.messages==std::vector<std::string>{"irai_06"}));
  TroubleBoardEvent unknown;FieldActorTalkState legacy;
  assert(!unknown.begin(0,23,legacy));
  auto missing=initial();missing.trouble.known&=~uint64_t(1);assert(!unknown.begin(0,23,missing));

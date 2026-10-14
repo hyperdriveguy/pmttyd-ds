@@ -1507,3 +1507,9 @@ target_sources(ttyd_core PRIVATE source/battle/battle_part_display.cpp)
 add_executable(battle_part_display_tests tests/battle_part_display_tests.cpp)
 target_link_libraries(battle_part_display_tests PRIVATE ttyd_core)
 add_test(NAME battle_part_display COMMAND battle_part_display_tests)
+
+# Shared original case allocation, saved locals and retained event dispatch.
+target_sources(ttyd_core PRIVATE source/field/field_case.cpp)
+add_executable(field_case_tests tests/field_case_tests.cpp)
+target_link_libraries(field_case_tests PRIVATE ttyd_core)
+add_test(NAME field_case COMMAND field_case_tests)

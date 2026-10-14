@@ -1,6 +1,7 @@
 #pragma once
 #include "field_actors.hpp"
 #include "trouble_quest_services.hpp"
+#include "field_case.hpp"
 #include <array>
 #include <memory>
 namespace ttyd {
@@ -16,7 +17,6 @@ struct TroubleEventRequest {
  bool first=false;
  uint8_t argumentCount=0;
  std::array<int32_t,6> operands{},values{};
- std::array<int32_t,16> locals{}; // Installer case wrapper saves all16 LW words.
  int32_t selection=0,quest=0,work=0,result=0,story=0,activeQuest=0;
  TroubleQuestServices switches; // Actual VM working-flag/byte writers for cancellation.
  const std::vector<int32_t>* cancellationItems=nullptr; // Immutable original table list, borrowed from this runtime.
@@ -30,6 +30,7 @@ struct TroubleEventServices {
  // MenuInit publishes a retained nonzero work pointer; MenuMain/Select publish
  // LW0. Providers must retain their first request before yielding for resources
  // or a later world service; subsequent polls keep original first=false.
+ // RegisterCase is handled internally by the actual retained case pool.
  // Unbound callbacks must yield, never acknowledge synthetic success.
  int32_t (*call)(void*,TroubleEventRequest&)=nullptr;
 };
@@ -47,6 +48,9 @@ public:
  bool synchronizeSavedState(int32_t story,const FieldActorTalkState&);
  bool synchronizeWorldWork(uint32_t index,uint32_t address); // Actual per-area copied-record binding.
  bool appendRoot(TroubleBoardRoot); // Source case reentry shares the retained manager and outstanding children.
+ const FieldCasePool* cases() const;
+ bool markCase(int32_t); // Admission/contact mark pass belongs to the field owner.
+ bool dispatchCases(); // Ordinary priority0 cases; source second pass, before next EVT visit.
  bool active() const{return runtime_ && started && !finished && !failed;}
  FieldActorTalkState switches;
  bool started=false,finished=false,failed=false,waitingForProvider=false,rootAlive=false;

@@ -5,6 +5,7 @@
 #include "event_controls.hpp"
 #include "event_script_assets.hpp"
 #include <cassert>
+#include <algorithm>
 #include <cmath>
 #include <cstring>
 #include <unordered_map>
@@ -59,6 +60,8 @@ struct TroubleBoardEventRuntime {
  TroubleBoardEvent* owner=nullptr;TroubleEventServices services;
  const std::shared_ptr<const TroubleBoardProgram> program=assets;
  EventNativeRuntime vm;
+ FieldCasePool cases;
+ std::vector<uint32_t> rootIds; // Event lifetimes survive caseDelete/slot reuse.
  explicit TroubleBoardEventRuntime():vm(0x81000000,platform(this)){}
  static EventNativePlatform platform(TroubleBoardEventRuntime* r) {
   EventNativePlatform p;p.user=r;p.clock=[](void*)->uint32_t{return 243000000;};
@@ -86,6 +89,17 @@ struct TroubleBoardEventRuntime {
   const auto found=program->callbacks.find(fn);
   if(found==program->callbacks.end() || e.argumentCount>6){owner->failed=true;return 0;}
   const auto kind=found->second;const auto op=vm.interpreterServices().operands;
+  if(kind==TroubleEventCall::RegisterCase) {
+   FieldCaseEventServices s;s.user=this;
+   s.word=[](void* p,uint32_t address){auto& r=*static_cast<TroubleBoardEventRuntime*>(p);uint32_t word=0;
+    if(!r.vm.memory.readWord(address,word))r.owner->failed=true;
+    return word;};
+   s.value=[](void* p,EventEntry& e,int32_t raw){auto& r=*static_cast<TroubleBoardEventRuntime*>(p);return getEventValue(e,raw,r.vm.interpreterServices().operands);};
+   s.setValue=[](void* p,EventEntry& e,int32_t raw,int32_t value){auto& r=*static_cast<TroubleBoardEventRuntime*>(p);setEventValue(e,raw,value,r.vm.interpreterServices().operands);};
+   s.text=[](void* p,uint32_t address,std::string& out){auto& r=*static_cast<TroubleBoardEventRuntime*>(p);out=r.text(address);return !r.owner->failed;};
+   s.owner=[](void* p){return &static_cast<TroubleBoardEventRuntime*>(p)->cases;};
+   return fieldRunCaseEvent(e,false,s);
+  }
   if(kind==TroubleEventCall::Check) {
    const auto quest=local(e,0);uint32_t pointer=0;
    if(quest!=-1 && (quest<1 || quest>30 || !vm.memory.readWord(Confirmation+4*(quest-1),pointer))){owner->failed=true;return 0;}
@@ -105,9 +119,6 @@ struct TroubleBoardEventRuntime {
    request.text=text(uint32_t(request.values[1]));
   if(kind==TroubleEventCall::NpcPosition || kind==TroubleEventCall::ItemDelete || kind==TroubleEventCall::ItemDeleteCheck)
    request.text=text(uint32_t(request.values[0]));
-  if(kind==TroubleEventCall::RegisterCase) {request.text=text(uint32_t(request.values[2]));
-   for(int n=0;n<16;++n)request.locals[n]=local(e,n);
-  }
   request.switches.user=this;
   request.switches.clearFlag=[](void* p,int32_t flag){auto& r=*static_cast<TroubleBoardEventRuntime*>(p);
    assert(flag>=5405 && flag<=5421);writeSavedSwitch(SavedSwitchFamily::GlobalFlag,flag,0,r.vm.interpreterServices().operands);};
@@ -145,7 +156,7 @@ struct TroubleBoardEventRuntime {
   for(int32_t f=5374;f<=5421;++f)writeSavedSwitch(SavedSwitchFamily::GlobalFlag,f,*troubleQuestFlag(owner->switches,f),op);
   for(int32_t b=1469;b<=1474;++b)writeSavedSwitch(SavedSwitchFamily::GlobalByte,b,*troubleQuestByte(owner->switches,b),op);
   auto creation=vm.creationServices();auto& entry=createRootEvent(vm.schedule,root==TroubleBoardRoot::Installer?Installer:root==TroubleBoardRoot::Counter?Counter:Board,0,0x20,creation);
-  owner->rootEventId=entry.id;owner->rootAlive=true;return true;
+  rootIds.push_back(entry.id);owner->rootEventId=entry.id;owner->rootAlive=true;return true;
  }
  void publish() {
   const auto op=vm.interpreterServices().operands;
@@ -189,7 +200,24 @@ bool TroubleBoardEvent::appendRoot(TroubleBoardRoot root) {
  runtime_->owner=this;
  auto creation=runtime_->vm.creationServices();
  auto& entry=createRootEvent(runtime_->vm.schedule,root==TroubleBoardRoot::Counter?Counter:Board,0,0x20,creation);
- rootEventId=entry.id;rootAlive=true;finished=false;return true;
+ runtime_->rootIds.push_back(entry.id);rootEventId=entry.id;rootAlive=true;finished=false;return true;
+}
+const FieldCasePool* TroubleBoardEvent::cases() const{return runtime_?&runtime_->cases:nullptr;}
+bool TroubleBoardEvent::markCase(int32_t index) {return runtime_ && started && !failed && runtime_->cases.mark(index);}
+bool TroubleBoardEvent::dispatchCases() {
+ if(!runtime_ || !started || failed)return false;
+ runtime_->owner=this;FieldCaseDispatchServices s;s.schedule=&runtime_->vm.schedule;s.creation=runtime_->vm.creationServices();
+ // This closure registers ordinary priority0 cases only; priority20 NPC stop
+ // remains unbound, and the shared pool holds rather than skip that request.
+ if(!runtime_->cases.dispatch(s))return false;
+ bool live=false;
+ for(unsigned n=0;n<FieldCasePool::Capacity;++n)if(const auto* r=runtime_->cases.active(int32_t(n)))
+  if(checkEventId(r->eventId,s.creation)){
+   if(std::find(runtime_->rootIds.begin(),runtime_->rootIds.end(),r->eventId)==runtime_->rootIds.end())runtime_->rootIds.push_back(r->eventId);
+   live=true;rootEventId=r->eventId;
+  }
+ if(live){rootAlive=true;finished=false;}
+ return true;
 }
 void TroubleBoardEvent::tick(uint64_t time,const TroubleEventServices& services) {
  if(!active())return;
@@ -197,7 +225,9 @@ void TroubleBoardEvent::tick(uint64_t time,const TroubleEventServices& services)
  if(waitingForProvider)return; // Do not consume original firstCall before any provider exists.
  runtime_->owner=this;runtime_->services=services;pendingFunction=0;runtime_->vm.gp.timestamp=time*eventClockRate(243000000);
  runtime_->vm.runManager();runtime_->publish();
- auto creation=runtime_->vm.creationServices();rootAlive=checkEventId(rootEventId,creation)!=0;
+ auto creation=runtime_->vm.creationServices();auto& ids=runtime_->rootIds;
+ ids.erase(std::remove_if(ids.begin(),ids.end(),[&](uint32_t id){return !checkEventId(id,creation);}),ids.end());
+ rootAlive=!ids.empty();
  finished=runtime_->vm.runtime.allocationCount==0;
 }
 }
