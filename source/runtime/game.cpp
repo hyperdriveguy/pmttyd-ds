@@ -98,6 +98,7 @@ RoadCallback inCallback(const RoadWarp& road) {
 }
 std::vector<Rect> walls;
 bool collisionReady=false;
+uint32_t completeCollisionRoom=UINT32_MAX;
 std::vector<Vec2> wallLevels;
 std::vector<GroundContact> wallContacts;
 std::vector<WallTriangle> wallTriangles;
@@ -167,6 +168,7 @@ struct CollisionSnapshot {
     SpatialIndex savedWallIndex,savedGroundIndex,savedHeadIndex;
     Rect savedBounds{-9,-4.5f,9,4};
     bool ready=false;
+    uint32_t savedCompleteRoom=UINT32_MAX;
     void swapActive() {
         savedWalls.swap(walls);savedLevels.swap(wallLevels);savedGround.swap(ground);
         savedWallContacts.swap(wallContacts);
@@ -179,6 +181,7 @@ struct CollisionSnapshot {
         savedReturns.swap(groundReturns);
         savedWallIndex.swap(wallIndex);savedGroundIndex.swap(groundIndex);
         std::swap(savedBounds,roomBounds);std::swap(ready,collisionReady);
+        std::swap(savedCompleteRoom,completeCollisionRoom);
     }
 };
 // Construction removes current collision into previous; load stages destination
@@ -186,14 +189,16 @@ struct CollisionSnapshot {
 // Nested Game validation queries the staged cache, not its own collision copy.
 CollisionTransition::CollisionTransition():previous(std::make_unique<CollisionSnapshot>()) {previous->swapActive();}
 CollisionTransition::~CollisionTransition() {if(!committed)previous->swapActive();}
-bool CollisionTransition::load(const char* prefix) {
+bool CollisionTransition::load(const char* prefix,uint32_t room) {
     if(committed || !prefix)return false;
     clearCollision();staged=false;
     const std::string path(prefix);
     staged=loadCollision((path+".walls").c_str()) && loadGround((path+".ground").c_str()) && loadGroundReturns((path+".returns").c_str()) && loadHead((path+".head").c_str());
+    if(staged)completeCollisionRoom=room;
     return staged;
 }
 void CollisionTransition::commit() {if(staged)committed=true;}
+bool collisionRoomReady(uint32_t room) {return room!=UINT32_MAX && completeCollisionRoom==room;}
 // Save and room-pack ABI: keep these IDs stable when adding packaged areas.
 // Unknown IDs return null so import/save/transition validation can reject them.
 const char* roomAsset(uint32_t room) {
@@ -399,7 +404,7 @@ bool loadCollision(const char* path) {
         ok=indexBounds(next,n,std::min(w.x0,w.x1)-BodyRadius,std::min(w.z0,w.z1)-BodyRadius,
                        std::max(w.x0,w.x1)+BodyRadius,std::max(w.z0,w.z1)+BodyRadius,references);
     }
-    if(ok) {wallLevels.swap(heights);wallContacts.swap(contacts);wallTriangles.swap(geometry);walls.swap(data);wallIndex.swap(next);collisionReady=true;}
+    if(ok) {completeCollisionRoom=UINT32_MAX;wallLevels.swap(heights);wallContacts.swap(contacts);wallTriangles.swap(geometry);walls.swap(data);wallIndex.swap(next);collisionReady=true;}
     return ok;
 }
 // HEAD:magic/count plus48-byte prefixes (positions,contact,cull). Bounds are
@@ -423,7 +428,7 @@ bool loadHead(const char* path) {
         ok=indexBounds(next,n,std::min({v[0],v[3],v[6]}),std::min({v[2],v[5],v[8]}),
             std::max({v[0],v[3],v[6]}),std::max({v[2],v[5],v[8]}),references);
     }
-    if(ok){head.swap(data);headIndex.swap(next);}return ok;
+    if(ok){completeCollisionRoom=UINT32_MAX;head.swap(data);headIndex.swap(next);}return ok;
 }
 FieldShadowHit fieldShadowRay(FieldWallVector origin,FieldWallVector direction,float maximum) {
     // Bounded original downward query; geometry service normal is retained raw
@@ -626,7 +631,7 @@ bool loadGround(const char* path) {
             bounds.x0=std::min(bounds.x0,tri.v[n]);bounds.x1=std::max(bounds.x1,tri.v[n]);
             bounds.z0=std::min(bounds.z0,tri.v[n+2]);bounds.z1=std::max(bounds.z1,tri.v[n+2]);
         }
-        ground.swap(data);groundIndex.swap(next);groundReturns.clear();roomBounds=bounds;
+        completeCollisionRoom=UINT32_MAX;ground.swap(data);groundIndex.swap(next);groundReturns.clear();roomBounds=bounds;
     }
     return ok;
 }
@@ -646,7 +651,7 @@ bool loadGroundReturns(const char* path) {
             std::max({std::fabs(point.x),std::fabs(point.y),std::fabs(point.z)})<=4096 && next.emplace(node,point).second;
     }
     ok=ok && std::fgetc(file)==EOF;std::fclose(file);
-    if(ok)groundReturns.swap(next);
+    if(ok){completeCollisionRoom=UINT32_MAX;groundReturns.swap(next);}
     return ok;
 }
 bool groundReturn(const GroundContact& contact,ReturnPoint& point) {
@@ -904,7 +909,7 @@ bool Game::beginVoid() {
     fieldJump={};fieldJump.motion=33;fieldStep={};fieldVerticalVelocity=0;jumpHeight=0;warpRequest=-1;saveRequested=false;
     return true;
 }
-void clearCollision() {doorCollisionRoom=UINT32_MAX;doorCollisionMask=UINT32_MAX;disabledDoorNodes.clear();disabledEventNodes.clear();fenceCollisionDisabled=false;roadAttributeNodes.clear();walls.clear();wallLevels.clear();wallContacts.clear();wallTriangles.clear();ground.clear();head.clear();headIndex.clear();groundReturns.clear();wallIndex.clear();groundIndex.clear();collisionReady=false;roomBounds={-9,-4.5f,9,4};}
+void clearCollision() {completeCollisionRoom=UINT32_MAX;doorCollisionRoom=UINT32_MAX;doorCollisionMask=UINT32_MAX;disabledDoorNodes.clear();disabledEventNodes.clear();fenceCollisionDisabled=false;roadAttributeNodes.clear();walls.clear();wallLevels.clear();wallContacts.clear();wallTriangles.clear();ground.clear();head.clear();headIndex.clear();groundReturns.clear();wallIndex.clear();groundIndex.clear();collisionReady=false;roomBounds={-9,-4.5f,9,4};}
 const std::vector<Rect>& collisionWalls() {return walls;}
 bool Game::near(Vec2 p, float d) const { return length(progress.position,p) < d; }
 NpcTalkPlayer Game::fieldNpcTalkPlayer() const {

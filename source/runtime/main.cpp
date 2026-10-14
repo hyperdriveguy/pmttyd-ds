@@ -15,7 +15,7 @@ double seconds() { return svcGetSystemTick()/double(SYSCLOCK_ARM11); }
 bool stageRoomCollision(uint32_t room,ttyd::CollisionTransition& transaction) {
     const char* name=ttyd::roomAsset(room);if(!name)return false;
     char path[96];std::snprintf(path,sizeof(path),"romfs:/%s",name);
-    return transaction.load(path);
+    return transaction.load(path,room);
 }
 bool loadRoomCollision(uint32_t room) {
     ttyd::CollisionTransition transaction;

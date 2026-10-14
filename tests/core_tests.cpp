@@ -808,17 +808,25 @@ void collisionRollback() {
         }
     };
     writeWalls(source,0);writeFloor(source,0x200);writeWalls(target,2);
-    {CollisionTransition tx;CHECK(tx.load(source.c_str()));tx.commit();}
+    clearCollision();CHECK(!collisionRoomReady(0));CHECK(!collisionRoomReady(UINT32_MAX));
+    {CollisionTransition tx;CHECK(tx.load(source.c_str(),0));CHECK(collisionRoomReady(0));tx.commit();}
+    CHECK(collisionRoomReady(0));CHECK(!collisionRoomReady(2));
+    // Overlay publication through restore cannot certify another geometry room.
+    Game other;Progress p=other.progress;p.room=2;other.restore(p);
+    CHECK(collisionRoomReady(0));CHECK(!collisionRoomReady(2));
+    CHECK(!loadHead("/does/not/exist"));CHECK(collisionRoomReady(0));
     const Rect originalBounds=collisionBounds();float h=99;
+    CHECK(collisionRoomReady(0));
     CHECK(!walkable({0,2}));CHECK(walkable({2,2}));CHECK(groundAt({1,2},0,h));CHECK(h==0);
     GroundContact contact;CHECK(groundAt({1,2},0,h,&contact));CHECK(contact.attributes==0x40000200);
     ReturnPoint point;CHECK(groundReturn(contact,point));CHECK(point.x==1);
     {std::ofstream bad(target+".ground");bad<<"truncated";}
     {
-        CollisionTransition tx;CHECK(!tx.load(target.c_str()));tx.commit();
+        CollisionTransition tx;CHECK(!tx.load(target.c_str(),2));CHECK(!collisionRoomReady(0));CHECK(!collisionRoomReady(2));tx.commit();
         // Rollback must work even if the previous room cannot be read again.
         std::remove((source+".walls").c_str());std::remove((source+".ground").c_str());
     }
+    CHECK(collisionRoomReady(0));
     CHECK(!walkable({0,2}));CHECK(walkable({2,2}));CHECK(groundAt({1,2},0,h));CHECK(h==0);
     CHECK(groundAt({1,2},0,h,&contact));CHECK(contact.attributes==0x40000200);
     CHECK(groundReturn(contact,point));CHECK(point.x==1);
@@ -829,19 +837,30 @@ void collisionRollback() {
     CHECK(groundAt({1,2},0,h,&contact));CHECK(groundReturn(contact,point));CHECK(point.x==1);
     writeFloor(target,0x400);
     {
-        CollisionTransition tx;CHECK(tx.load(target.c_str()));CHECK(walkable({0,2}));CHECK(!walkable({2,2}));
+        CollisionTransition tx;CHECK(tx.load(target.c_str(),2));CHECK(collisionRoomReady(2));CHECK(!collisionRoomReady(0));CHECK(walkable({0,2}));CHECK(!walkable({2,2}));
         // Model a rejected arrival or graphics load after collision staging succeeds.
         CHECK(!groundAt({20,2},0,h));
-        {CollisionTransition nested;CHECK(!nested.load((source+"-missing").c_str()));}
-        CHECK(!walkable({2,2}));
+        {CollisionTransition nested;CHECK(!nested.load((source+"-missing").c_str(),3));CHECK(!collisionRoomReady(2));}
+        CHECK(collisionRoomReady(2));CHECK(!walkable({2,2}));
     }
     CHECK(!walkable({0,2}));CHECK(walkable({2,2}));
     CHECK(groundAt({1,2},0,h,&contact));CHECK(groundReturn(contact,point));CHECK(point.x==1);
-    {CollisionTransition tx;CHECK(tx.load(target.c_str()));tx.commit();}
+    {CollisionTransition tx;CHECK(tx.load(target.c_str(),2));tx.commit();}
+    CHECK(collisionRoomReady(2));
     CHECK(walkable({0,2}));CHECK(!walkable({2,2}));CHECK(groundAt({1,2},0,h));
     CHECK(groundAt({1,2},0,h,&contact));CHECK(contact.attributes==0x40000400);
     CHECK(groundReturn(contact,point));CHECK(point.x==2);
-    clearCollision();std::remove((target+".walls").c_str());std::remove((target+".ground").c_str());std::remove((source+".returns").c_str());std::remove((target+".returns").c_str());std::remove((source+".head").c_str());std::remove((target+".head").c_str());rmdir(directory);
+    // A successful individual reload invalidates complete-load provenance.
+    CHECK(loadHead((target+".head").c_str()));CHECK(!collisionRoomReady(2));
+    {CollisionTransition tx;CHECK(tx.load(target.c_str(),2));tx.commit();}
+    CHECK(loadGroundReturns((target+".returns").c_str()));CHECK(!collisionRoomReady(2));
+    {CollisionTransition tx;CHECK(tx.load(target.c_str(),2));tx.commit();}
+    CHECK(loadGround((target+".ground").c_str()));CHECK(!collisionRoomReady(2));
+    {CollisionTransition tx;CHECK(tx.load(target.c_str(),2));tx.commit();}
+    CHECK(loadCollision((target+".walls").c_str()));CHECK(!collisionRoomReady(2));
+    {CollisionTransition tx;CHECK(tx.load(target.c_str()));tx.commit();}
+    CHECK(!collisionRoomReady(2));CHECK(!collisionRoomReady(UINT32_MAX));
+    clearCollision();CHECK(!collisionRoomReady(2));std::remove((target+".walls").c_str());std::remove((target+".ground").c_str());std::remove((source+".returns").c_str());std::remove((target+".returns").c_str());std::remove((source+".head").c_str());std::remove((target+".head").c_str());rmdir(directory);
 }
 void uvAnimation() {
     UVTrack track;track.frames={{{1,0,0,0,1,0}},{{1,0,.5f,0,1,.25f}},{{2,0,0,0,3,0}}};

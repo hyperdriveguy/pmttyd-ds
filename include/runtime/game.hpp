@@ -531,7 +531,7 @@ public:
     ~CollisionTransition();
     CollisionTransition(const CollisionTransition&)=delete;
     CollisionTransition& operator=(const CollisionTransition&)=delete;
-    bool load(const char* prefix);
+    bool load(const char* prefix,uint32_t room=UINT32_MAX);
     void commit();
 private:
     std::unique_ptr<CollisionSnapshot> previous;
@@ -541,6 +541,9 @@ bool walkable(Vec2 p,float elevation=0);
 bool loadCollision(const char* path);
 bool loadGround(const char* path);
 bool loadHead(const char* path);
+// Complete transaction-loaded geometry, including a successful staged candidate.
+// Unknown legacy/individual loads do not certify a room; overlays are separate.
+bool collisionRoomReady(uint32_t room);
 bool headCollision(Vec2 p,Vec2 direction,float worldY,float velocity,float& clampedRoot);
 bool headCollision(Vec2 p,Vec2 direction,float worldY,float velocity,float& clampedRoot,float rayExtension);
 FieldHeadQuery searchFieldHead(Vec2 p,Vec2 direction,float rootY,float velocity,float extension,
