@@ -12,6 +12,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| Ending admission and conclusion caller census | RESULT-01 | VALIDATED three scoped gates/entry/table/return, 2026-10-13; parent OPEN | Codex inbox fulfillment (no lock claimed) | [Admission](../behavior/battle/BATTLE_END_ADMISSION_GATES_AND_CONCLUSION_CALLERS.md):18 spans/215 anchors/17 calls/10-site census; full controllers/tutorial/ending/runtime open |
 | Conclusion group publisher/fresh reads | RESULT-01 | VALIDATED complete local body, 2026-10-13; parent OPEN | Codex inbox fulfillment (no lock claimed) | [Conclusion](../behavior/battle/BATTLE_CONCLUSION_GROUP_PUBLICATION_AND_FRESH_READS.md):3 spans/96 words/4 calls; actual config/death/end/runtime open |
 | Battle result phase0 publisher and direct census | RESULT-01 / DEMO-01 | VALIDATED scoped producer/three complete leaves, 2026-10-13; parents OPEN | Codex inbox fulfillment (no lock claimed) | [Result priority](../behavior/battle/BATTLE_RESULT_PHASE0_PUBLICATION_AND_PRIORITY.md):10 spans/91 anchors/12 calls/9 setter sites; full ending/story/save/runtime open |
 | Opening notice/pipe/save flag mapping | GSF-01 / DEMO-01 | VALIDATED bounded flag ownership/storage delivery, 2026-10-13; parents OPEN | Codex inbox fulfillment (no lock claimed) | [GSF contract](../behavior/story/OPENING_GSF_NOTICE_PIPE_AND_SAVE_STORAGE.md):3 DOL spans/112 words/2 REL spans/5 imports; full census/admission/runtime open |

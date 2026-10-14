@@ -2,6 +2,27 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — First-demo result ending admission gates
+
+RESULT-01 scoped admission portion checked; [ending gates](behavior/battle/BATTLE_END_ADMISSION_GATES_AND_CONCLUSION_CALLERS.md)
+connect two turn event barriers and first-act index3 to ordered ending banks.
+First-act audience service precedes writes; zero-result continuation differs.
+Exact table bindings and ten direct DOL conclusion callers distinguish query
+from ending admission. Complete controllers/tutorial configuration stay open.
+
+Validation:18 spans/215 anchors/17 scoped direct calls; literal instructions/
+branches/owners/returns,93 table words/35 bindings,ten mathematical models and
+exhaustive ten-site direct DOL census checked; read-only ISO pins pass. Link audit
+passed1004 Markdown files/zero broken links; scoped diff passed. Docs only;
+no make test/all rerun. Raw ELF/listing/generator remain /tmp; concurrent native
+changes excluded. User explicitly approved all-commit push; git push origin
+HEAD:master failed with GitHub Invalid username or token/authentication failed.
+Push remains pending valid credentials, not additional authorization.
+
+Next: tutorial config/status/death/override writers and complete ending/reward/
+field/story/save composition; DEMO-01 joins/reentry and original TRACE-01.
+RESULT-01/demo/full-game remain OPEN.
+
 ## 2026-10-13 — First-demo result conclusion group publisher
 
 Completed BattleCheckConcluded; RESULT-01 portion checked. [Conclusion contract](behavior/battle/BATTLE_CONCLUSION_GROUP_PUBLICATION_AND_FRESH_READS.md)

@@ -9,6 +9,11 @@ requested; no independent research-agent ownership or completion claim is made.
 
 ## Open todos
 
+- [x] Scoped ordinary ending admission from two turn wait gates and first-act
+  index3 — [ending gates](../behavior/battle/BATTLE_END_ADMISSION_GATES_AND_CONCLUSION_CALLERS.md).
+  Event barrier, ordered bank writes, audience request, dispatch bindings and
+  ten-site direct DOL conclusion-query census pinned; full controllers open.
+
 - [x] Complete local BattleCheckConcluded group publisher —
   [fresh conclusion reads](../behavior/battle/BATTLE_CONCLUSION_GROUP_PUBLICATION_AND_FRESH_READS.md).
   Two ordered scans/config reread/status27/attribute snapshots, group result
@@ -83,3 +88,18 @@ fresh config/attributes/return-mask/call sites checked; read-only ISO pins pass.
 Links/scoped diff pass. Docs only; no make rerun; raw artifacts stay /tmp.
 Actual tutorial config/status/death/override/end-bank admission and original
 execution/native result binding remain OPEN; parent stays OPEN.
+
+## 2026-10-13 — Scoped ending admission and conclusion caller census
+
+[Ending gates](../behavior/battle/BATTLE_END_ADMISSION_GATES_AND_CONCLUSION_CALLERS.md)
+bridge scoped conclusion callers to bank0=3/bank7=07000000. Two turn gates wait
+first; first-act index3 calls audience before ending writes and has a different
+zero-result continuation. No immediate end redispatch or result/story/save write.
+The ten-site direct census distinguishes other queries from proven admission.
+
+Validation:18 spans/215 anchors/17 scoped direct calls; literal instructions,
+branches, retained owners, returns,93 table words,35 relevant dispatch bindings,
+ten mathematical models and exhaustive ten-site DOL census checked; read-only
+ISO pins pass. Links/scoped diff pass. Docs only; no make rerun. Full controller/
+tutorial/death/override/ending/rewards/field/story/save/original execution remain
+OPEN. Raw listings/ELFs/generator stay /tmp.
