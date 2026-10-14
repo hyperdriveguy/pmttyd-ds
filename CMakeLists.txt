@@ -1427,3 +1427,10 @@ add_executable(battle_hit_registry_tests tests/battle_hit_registry_tests.cpp)
 target_link_libraries(battle_hit_registry_tests PRIVATE ttyd_core)
 add_test(NAME battle_hit_registry COMMAND battle_hit_registry_tests)
 set_tests_properties(battle_hit_registry PROPERTIES WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
+
+# Original public positional pending allocation and audience Sound1/2 wrappers.
+target_sources(ttyd_core PRIVATE source/audio/positional_sfx_start.cpp source/battle/battle_audience_sound_start.cpp)
+add_executable(audience_sound_start_tests tests/audience_sound_start_tests.cpp)
+target_link_libraries(audience_sound_start_tests PRIVATE ttyd_core)
+add_test(NAME audience_sound_start COMMAND audience_sound_start_tests)
+set_tests_properties(audience_sound_start PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

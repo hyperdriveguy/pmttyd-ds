@@ -136,13 +136,16 @@ int main(){
         return noiseAlwaysBattleAudienceSound(sound);};
     assert(!initializePackedBattleAudience(initialization));
     assert(full.word(Fixture::A+0x13784)==8 && full.real(Fixture::A+0x1375c+0x18)==8 && full.word(Fixture::A+0xc)==1);
-    // Native supplied positive pouch preserves the existing unavailable audio frontier.
-    // Do not substitute a -1 known-key sound result to make positive startup succeed.
+    // Native positive startup now owns a real pending public slot, not an invented voice.
     assert(loadProfessorStoryAssets("romfs") && loadUndergroundStoryAssets("romfs") && loadTrioBattleAssets("romfs") && loadTrioAttackAssets("romfs"));
     ProfessorStory scene;assert(scene.beginTrioBattleIntro(0));
     TrioBattleCommands menu;assert(menu.begin(scene,1));menu.input(0x100,0);menu.input(0x100,0);
     assert(loadProloguePouchAssets("romfs"));auto pouch=createProloguePouch();assert(pouch);pouch->half(0x8c,1);
     pouch->bytes[0x84]=0x41;pouch->bytes[0x85]=pouch->bytes[0x86]=pouch->bytes[0x87]=0;
-    auto rng=std::make_shared<BattleRandom>(1);TrioAttack native;
-    assert(!native.begin(menu,scene,10,pouch,nullptr,nullptr,nullptr,nullptr,{},rng));assert(rng->state!=1);
+    auto rng=std::make_shared<BattleRandom>(1);auto registry=std::make_shared<PositionalSfxRegistry>();TrioAttack native;
+    assert(native.begin(menu,scene,10,pouch,nullptr,nullptr,nullptr,nullptr,{},rng,registry));assert(rng->state!=1);
+    uint32_t total=0;assert(native.readWord(0x84002858+0x13784,total) && total==8);
+    const auto& slot=registry->slots[39];assert(slot.key==3925 && slot.engine==-1 && (slot.flags&1));
+    assert(slot.volume==101 && slot.rowVolume==107 && slot.generation==1);
+    assert(native.audienceAudioRequests().size()==1 && native.audienceAudioRequests()[0].handle==int32_t(0x127));
 }

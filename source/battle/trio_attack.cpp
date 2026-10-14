@@ -18,6 +18,8 @@
 #include "battle_conclusion.hpp"
 #include "battle_general_rule.hpp"
 #include "battle_audience_sound.hpp"
+#include "battle_audience_sound_start.hpp"
+#include "positional_sfx_start.hpp"
 #include "battle_main.hpp"
 #include "battle_hit_code_events.hpp"
 #include "battle_attack_selection.hpp"
@@ -841,7 +843,28 @@ struct TrioAttackRuntime {
         s.play=[](void* p,uint32_t key,bool assigned,int32_t right,int32_t left)->std::optional<int32_t> {
             auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x8019fcec);
             r.audienceAudioTrace.push_back({assigned?std::optional<uint32_t>{key}:std::nullopt,right,left,std::nullopt});
-            if(assigned){r.pending=0x8019fcec;return std::nullopt;} // Known source key needs an actual positional stream provider.
+            if(assigned){
+                BattleAudienceSoundStartServices start;start.actors=nativeBattleActorServices(r.vm);start.user=p;
+                start.truncate=[](void*,float value)->std::optional<int32_t>{if(std::isfinite(value) && value>=-2147483648.f && value<2147483648.f)return int32_t(value);return {};};
+                start.on=[](void* self,uint32_t key,const std::array<float,3>& position)->std::optional<int32_t>{
+                    auto& owner=*static_cast<TrioAttackRuntime*>(self);owner.endingRequest(0x800d9848,{int32_t(key)});owner.endingRequest(0x800d9934);
+                    PositionalSfxStartServices services;services.user=self;
+                    services.row=[](void* q,uint32_t index)->std::optional<PositionalSfxRow>{auto& runtime=*static_cast<TrioAttackRuntime*>(q);PositionalSfxRow row;
+                        for(unsigned i=0;i<20;++i)if(!runtime.vm.memory.readByte(0x80316b28+index*20+i,row.bytes[i]))return {};return row;};
+                    services.compareName=[](void* q,uint32_t original,uint32_t wanted)->std::optional<int32_t>{auto& runtime=*static_cast<TrioAttackRuntime*>(q);return (original==0x804218c8?std::string{}:runtime.text(original)).compare(runtime.text(wanted));};
+                    services.story=[](void* q)->std::optional<int32_t>{auto& runtime=*static_cast<TrioAttackRuntime*>(q);runtime.endingRequest(0x80031260,{0,int32_t(0xf5de0180)});return runtime.scene->story;};
+                    services.rate=[](void* q)->std::optional<int32_t>{auto& runtime=*static_cast<TrioAttackRuntime*>(q);return int32_t(runtime.word(runtime.vm.gpAddresses.currentAddress()+4));};
+                    services.truncate=[](void*,float value)->std::optional<int32_t>{if(std::isfinite(value) && value>=-2147483648.f && value<2147483648.f)return int32_t(value);return {};};
+                    services.milliseconds=owner.real(0x804218cc);
+                    services.stop.descriptor=[](void* q,uint32_t index)->std::optional<uint32_t>{auto& runtime=*static_cast<TrioAttackRuntime*>(q);uint32_t value;if(!runtime.vm.memory.readWord(0x80316b2c+index*20,value))return {};return value;};services.stop.user=self;
+                    PositionalSfxStartRequest request;request.key=int32_t(key);request.position=position;
+                    return startPositionalSfx(*owner.publicSfx,request,services);
+                };
+                start.volume=[](void* self,int32_t handle,uint8_t volume){auto& owner=*static_cast<TrioAttackRuntime*>(self);owner.endingRequest(0x800d97d0,{handle,volume});return owner.publicSfx->setVolume(handle,volume);};
+                const auto handle=startPackedBattleAudienceSound1(key,right,left,start);
+                if(!handle){r.pending=0x8019fcec;return {};}
+                r.audienceAudioTrace.back().handle=*handle;return handle;
+            }
             // Explicit native unavailable-key request failure. Original stack
             // bytes/key lookup are unproven; no name or nonnegative voice minted.
             r.audienceAudioTrace.back().handle=-1;return int32_t(-1);

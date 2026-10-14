@@ -972,3 +972,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Shadow downward ray, active battle maps and finite acceptance](field/SHADOW_DOWNWARD_RAY_ACTIVE_BATTLE_MAP_AND_FINITE_ACCEPTANCE.md)
 - [Native battle HitObj registry and shadow preparation](battle/NATIVE_BATTLE_HIT_REGISTRY_AND_SHADOW_PREPARATION.md)
+
+- [Audience Sound1/2 and original public pending allocation](audio/AUDIENCE_SOUND_START_AND_PUBLIC_PENDING_ALLOCATION.md)
