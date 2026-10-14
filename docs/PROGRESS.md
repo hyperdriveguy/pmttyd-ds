@@ -1,3 +1,31 @@
+## 2026-10-14 — Original reward5376 persistence
+
+Committed b9310091. Appended optional completion5376 and native checkpoint v9
+known/value bits24/25. Knownfalse and knowntrue write exactly1536 bytes using
+existing dual checksums/pouch layout. Unknown state keeps previous version
+selection. Versions1..8 import unknown, v8 retains strict reserved24..31 mask,
+invalid value-only/reserved/payload records are rejected. Fresh swInit setsfalse.
+Atomic backup flow and independent queued snapshots remain unchanged.
+
+Source reward tests set5376 only after blocking coin return2, after quest1420
+clear, and verify5376 does not become an invented admission guard. Read-only
+parallel format/source review found no blockers. Final isolated tree
+d810dfe0b19a7d7bab864417b809df6069b8d93d passes sequential make assets-ready,
+make test -o assets-ready (250/250 C++,144/144 Python) and normal make all
+-o assets-ready. Logs artifacts/reward-save-{assets,test,build}.log. Reviewed
+normal artifacts/ttyd-reward-save-reviewed.3dsx SHA256
+53ce6e34aa6fe0d65214bef9c9b054c7313a5c48181f86afafa6f7a429467842.
+Source audit matches; concurrent changes preserved. No new assets or native
+emulator/hardware evidence in this increment; previous audio-tail checks remain
+unresolved. [Exact format/source contract](behavior/format/NATIVE_REWARD5376_CHECKPOINT_V9.md).
+
+Next: wire Game reward coin/window/effect/icon/clock/audio/Mario services and
+independent window deletion retirement to the new persistent5376 owner. Preserve
+original reward admission/order and actual early camera5 publication. Implement
+original quest acceptance, then verify acquisition→Goomfrey→McGoomba reward in
+isolated Azahar. Continue original area events/NPCs/objects and hardware/render
+profiling. Full-game goal remains active and incomplete.
+
 ## 2026-10-14 — Coin callback borrowed-window lifetime
 
 Committed fcbe48db. FieldCoinGet now supports independent retirement after the

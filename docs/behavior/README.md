@@ -915,3 +915,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native original coin403 animation and camera publication](display/NATIVE_COIN403_ANIMATION_AND_CAMERA_PUBLICATION.md) — source hidden frame cycles, original four-frame atlas, icon-before-sound simulation and early retained camera5; isolated rendering/checkpoint evidence.
 
 - [Native original coin fanfare219 provider](audio/NATIVE_COIN_FANFARE_ROW219_PROVIDER.md) — shared group1, exact original PCM/nonloop asset and retained field cursor; natural-EOS evidence and failed detached-tail probes explicitly scoped.
+
+- [Native completion5376 checkpoint v9](format/NATIVE_REWARD5376_CHECKPOINT_V9.md) — independent optional completion, unchanged legacy masks/unknown migration and exact-size atomic recovery; native reward admission remains pending.

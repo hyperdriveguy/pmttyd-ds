@@ -357,3 +357,12 @@ state101/action query remains unchanged. [Contract](../behavior/field/PORTABLE_G
 Native provider wiring and Game reward admission remain pending; parent stays
 open. Reward5376 persistence requires a versioned native save extension with
 legacy unknown-state preservation, as confirmed by read-only review.
+
+### 2026-10-14 — Original reward completion5376 persistence
+
+Appended independent optional5376 and native checkpoint v9 known/value bits24/25.
+Fresh swInit establishesfalse; older files load unknown; v8 reserved masks remain
+strict. Original reward tests write the field only after coin return2 and retain
+5376-independent admission. [Format contract](../behavior/format/NATIVE_REWARD5376_CHECKPOINT_V9.md).
+Original acceptance/cancellation excludes5376. Native reward/window/audio/clock
+service wiring and complete quest validation remain open; parent stays open.
