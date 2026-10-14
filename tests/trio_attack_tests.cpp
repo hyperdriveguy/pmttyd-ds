@@ -554,8 +554,12 @@ int main(){
                 return static_cast<NativeRayBinding*>(user)->attack->resumeShadowDisplay(camera,borrowed,{}); // Retained runtime registry, no field/B.floor substitute.
             };
             charged.trioAttack.resumeFinishingDraw(frameServices);
-            assert(charged.trioAttack.pendingFunction()==0x8002d3d8 && charged.cameraManager->currentIndex()==2 && charged.trioAttack.battleHitRegistry()->known());
+            assert(charged.trioAttack.pendingFunction()==0x802b7b54 && charged.cameraManager->currentIndex()==2 && charged.trioAttack.battleHitRegistry()->known());
             const auto* prepared=charged.trioAttack.shadowWork();assert(prepared->count()==3);
+            const auto& shadowProfile=prepared->profiles[1];const auto* camera4=charged.cameraManager->camera(4);
+            assert(prepared->profileIndex==1 && shadowProfile.at==camera4->at);
+            assert(shadowProfile.eye[0]==camera4->at[0] && shadowProfile.eye[1]==float(1000.f+camera4->at[1]) && shadowProfile.eye[2]==camera4->at[2]);
+            assert((shadowProfile.up==std::array<float,3>{0,0,-1}));
             for(unsigned i=0;i<3;++i){const auto& r=*prepared->record(i);assert(r.flags==3 && std::fabs(r.matrix[7]-1.f)<.000001f && r.matrix[3]==r.position[0] && r.matrix[11]==r.position[2]);}
             const auto savedMatrix=prepared->record(0)->matrix;charged.trioAttack.invalidateBattleHitRegistry();
             charged.trioAttack.resumeFinishingDraw(frameServices);

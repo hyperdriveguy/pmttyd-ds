@@ -13,16 +13,32 @@ struct ShadowRecord {
 };
 static_assert(sizeof(ShadowRecord)==0x5c);
 static_assert(offsetof(ShadowRecord,matrix)==0x2c && offsetof(ShadowRecord,alpha)==0x28);
+// Mutable source shadowConfig rows. These scalar boot settings are recovered
+// logic, not an image/asset pack; words3c/44 remain opaque retained metadata.
+struct ShadowProfile {
+    uint32_t followCamera4=0;
+    std::array<float,3> eye{},up{},at{};
+    float left=0,top=0,nearPlane=0,farPlane=0;
+    uint32_t projectionKind=0,word3c=0,sizeIndex=0,word44=0;
+};
+static_assert(sizeof(ShadowProfile)==72);
+static_assert(offsetof(ShadowProfile,projectionKind)==0x38);
 struct ShadowAuxiliaryState {uint32_t flags=0,counter=0;};
 struct ShadowMainCursor {uint8_t step=0;bool active=false;};
 // Native owner for the source primary pool and retained request settings.
 // GPU image allocation, collision preparation and deferred rendering are separate.
 class ShadowWork {
 public:
-    // Source boot settings:enabled1,type2,collision on,height20 engine units;
+    // Source boot settings:profileIndex1,type2,collision on,height20 engine units;
     // color0x0000006e is source RGBA black with alpha110, not C2D packed ABGR.
     // Primary pool64 records; two auxiliary resets are independent settings.
-    uint32_t flags=0,counter=0,enabled=1,color=0x0000006e;
+    uint32_t flags=0,counter=0,profileIndex=1,color=0x0000006e;
+    std::array<ShadowProfile,2> profiles{{
+        {0,{-100,256,335},{0,1,0},{0,0,0},-20,20,356,741,0,3,0,3230599741u},
+        {1,{135,40,41},{0,1,0},{0,0,0},-240,240,80,10000,1,3,0,0}
+    }};
+    std::array<uint16_t,4> profileSizes{{400,256,128,64}};
+    ShadowProfile* selectedProfile(){return profileIndex<profiles.size()?&profiles[profileIndex]:nullptr;}
     uint32_t preparationGate=1,type=2,collisionEnabled=1;
     float height=20;
     std::array<ShadowAuxiliaryState,2> auxiliary{};

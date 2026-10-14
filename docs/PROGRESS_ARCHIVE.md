@@ -13936,3 +13936,40 @@ Next: original mutable camera2 shadow profiles and exact view/viewport/scissor/
 projection/image continuation, GPU geometry/bounds/cylinder and remaining source
 callbacks; complete map/context/writer lifecycle and original numeric/history
 observations. Full original-fidelity prologue remains active.
+
+## 2026-10-14 — Retained shadow profile target tracking
+
+Frozen artifacts/shadow-profile-source starts at93388a913750f0cd1a591f13d74d154adc653905
+plus only owned source/header/test hunks and delivered shadow documentation.
+Foreign live CMake/audio/trouble-center changes were excluded. Existing
+private RomFS/GFX/reference assets were symlinked; no original payload imports
+or commits. Scalar startup values are recovered engine logic, with opaque
+float44 bits retained rather than assigned an invented meaning.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits0:279/279 C++ and167/167 Python,
+artifacts/shadow-profile-test-final.log. env TMPDIR=<repo>/artifacts/native-stage-map-tmp
+make all -o assets-ready -j4 DEBUG_SHORT_BOOT=1 SOUNDTRACK=gamecube
+BUILD=build-shadow-profile TARGET=ttyd-shadow-profile exits0,
+artifacts/shadow-profile-build-final.log. Initial test/build logs record the
+new cameraByIndex lambda returning inferred CameraState* where callback
+requires const CameraState*; explicit return type fixes both builds. Only final
+logs count as passing. artifacts/shadow-profile-validated/manifest.json hashes
+frozen touched code/tests, ELF/3DSX and relevant private packs; shared-edits.json
+records exact validated hunks.
+
+Regressions distinguish target from eye; preserve captured row and tracking
+condition while profileIndex/word0 change during query wait; skip query for
+row0; hold invalid selector without clamp; retain profile through ShadowMain;
+preserve completed target update during GPU retry; and check actual TrioAttack
+CameraManager camera4 against profile1 after original-asset finishing draw.
+The owned native frontier is GXInvalidateTexAll802b7b54 after target update.
+No actual GPU invalidation/readback/setup, shadow image, callback completion,
+new emulator run, original execution comparison or physical hardware check.
+Source GP color, unconditional Projection prefix and restore-before-counter
+contracts were recovered and indexed for the next implementation.
+
+Remaining: unsupported table/global writers and primary pointer replacement;
+cache/readback/view/matrix/GX suffix, real400-square native viewport adaptation;
+projection/depth passes, geometry/images, all remaining callbacks, original
+Bero/get_info and sequence lifetime/Init/Main/Exit, ordered field return.
+Full original-fidelity prologue deliverable remains incomplete.

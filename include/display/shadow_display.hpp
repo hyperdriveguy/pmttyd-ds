@@ -30,6 +30,7 @@ struct ShadowDisplayServices {
     // Provider owns complete source per-record matrix/GX/bounding continuation.
     bool (*geometry)(void*,ShadowGeometry,uint32_t,const CameraState&,ShadowRecord&)=nullptr;
     ShadowCollisionServices collision;
+    const CameraState* (*cameraByIndex)(void*,uint32_t)=nullptr;
 };
 struct ShadowDisplayCursor {
     bool active=false,requestPending=false,geometryPending=false;
@@ -41,6 +42,8 @@ struct ShadowDisplayCursor {
     ShadowGXRequest request;
     ShadowTexture texture=ShadowTexture::N64Texture44;
     ShadowCollisionCursor collision;
+    ShadowProfile* profile=nullptr;
+    bool profileTracking=false;
 };
 // Typed cold-start fog words; later source writers must update these owners.
 struct ShadowDisplayGlobals {uint32_t polygonFog=0,textureFog=0;};

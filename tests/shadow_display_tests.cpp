@@ -73,5 +73,29 @@ int main(){
     assert(preparation.cursor.pending==0x800158a4 && preparation.work.record(0)->flags==1);
     ss.collision.ray=[](void*,const ShadowCollisionRay&,ShadowCollisionHit&){return ShadowRayResult::Miss;};
     assert(!shadowDisplay(preparation.work,2,0,preparation.cursor,preparation.globals,ss));
-    assert(preparation.cursor.pending==0x8002d3d8 && preparation.work.record(0)->flags==1);
+    assert(preparation.cursor.pending==0x8000f2fc && preparation.work.record(0)->flags==1);
+    // A failed camera4 query pins the selected row even if the index changes.
+    const auto initialOther=preparation.work.profiles[0].eye;
+    preparation.work.profileIndex=0;preparation.work.profiles[1].followCamera4=0;
+    preparation.camera.eye={91,92,93};preparation.camera.at={10,-25,30};
+    ss.cameraByIndex=[](void* user,uint32_t index)->const CameraState*{
+        auto& f=*static_cast<Fixture*>(user);assert(index==4);++f.cameras;return &f.camera;
+    };
+    assert(!shadowDisplay(preparation.work,2,0,preparation.cursor,preparation.globals,ss));
+    const auto& profile=preparation.work.profiles[1];
+    assert((profile.eye==std::array<float,3>{10,975,30}) && profile.at==preparation.camera.at);
+    assert((profile.up==std::array<float,3>{0,0,-1}) && preparation.work.profiles[0].eye==initialOther);
+    assert(preparation.cursor.pending==0x802b7b54 && preparation.cursor.phase==3 && preparation.requests.empty());
+    const auto queries=preparation.cameras;preparation.camera.at={40,50,60};
+    assert(!shadowDisplay(preparation.work,2,0,preparation.cursor,preparation.globals,ss));
+    assert(preparation.cameras==queries && profile.at[0]==10); // No replay during GPU hold.
+    Fixture fixed;fixed.record.camera=2;fixed.record.drawClass=5;fixed.work.profileIndex=0;
+    auto fs=fixed.services();fs.collision.currentCamera=[](void*){return true;};
+    fs.cameraByIndex=[](void*,uint32_t)->const CameraState*{assert(false);return nullptr;};
+    assert(!shadowDisplay(fixed.work,2,0,fixed.cursor,fixed.globals,fs));
+    assert(fixed.cursor.pending==0x802b7b54 && fixed.work.profiles[0].eye==initialOther);
+    Fixture outside;outside.record.camera=2;outside.record.drawClass=5;outside.work.profileIndex=2;
+    auto os=outside.services();os.collision.currentCamera=[](void*){return true;};
+    assert(!shadowDisplay(outside.work,2,0,outside.cursor,outside.globals,os));
+    assert(outside.cursor.pending==0x8002d3d8 && !outside.cursor.profile); // No invented range repair.
 }

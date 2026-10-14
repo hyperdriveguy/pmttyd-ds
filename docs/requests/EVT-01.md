@@ -4007,3 +4007,15 @@ type2/camera4 records before the unbound camera2 profile/image suffix. No
 field floor or B.floor substitution. Original full map/context/publication/
 binding lifecycle, camera2 suffix, geometry and field return remain open;
 EVT-01 and full prologue are not closed.
+
+### 2026-10-14 — Retained shadow profile target tracking
+
+[Native profile binding](../behavior/display/NATIVE_SHADOW_PROFILE_TARGET_TRACKING.md)
+consumes the corrected class5 camera4.at capture contract. Both startup rows
+and size table retain mutable owners; primary word8 is profileIndex, not enabled.
+Held camera query pins row/decision; successful update survives GPU waits.
+Next actual provider is GXInvalidateTexAll802b7b54, then ordered viewport/
+scissor readback/setup, view/projection, Projection and End restoration.
+[Recovered unconditional prefix](../behavior/display/SHADOW_PROJECTION_PREFIX_AND_ZERO_COUNTER_ADMISSION.md)
+confirms counters0 do not remove setup/restoration.400-square native viewport
+needs a declared real GPU adapter. Full EVT-01 remains open.

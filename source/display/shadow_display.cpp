@@ -101,10 +101,34 @@ bool shadowDisplay(ShadowWork& work,uint32_t camera,uint32_t userdata,ShadowDisp
                 }
                 c.phase=2;
             }
-            // The source next selects a mutable projection profile, then
-            // conditionally queries camera4. That owner/image continuation is
-            // unbound; never report an unconditional camera query/completion.
-            c.pending=0x8002d3d8;return false;
+            if(c.phase==2){
+                // Pin the selected mutable row across a held camGetPtr(4).
+                // Source has no clamp; outside the owned two-row domain hold.
+                if(!c.profile){
+                    c.profile=work.selectedProfile();
+                    c.profileTracking=c.profile && c.profile->followCamera4==1;
+                }
+                if(!c.profile){c.pending=0x8002d3d8;return false;}
+                if(c.profileTracking){
+                    c.pending=0x8000f2fc;
+                    const auto* camera4=s.cameraByIndex?s.cameraByIndex(s.user,4):nullptr;
+                    if(!camera4)return false;
+                    // Offsets18/1c/20 are camera4.at, NOT camera4.eye.
+                    // Preserve float addition/store and reread target after
+                    // the eye/up stores, matching the source capture order.
+                    c.profile->eye[0]=camera4->at[0];
+                    c.profile->eye[1]=float(1000.f+camera4->at[1]);
+                    c.profile->eye[2]=camera4->at[2];
+                    c.profile->up={0.f,0.f,-1.f};
+                    c.profile->at[0]=camera4->at[0];
+                    c.profile->at[1]=camera4->at[1];
+                    c.profile->at[2]=camera4->at[2];
+                }
+                c.phase=3;
+            }
+            // First actual GPU service after the profile update. Image/state
+            // setup is still unavailable; no callback success or pool reset.
+            c.pending=0x802b7b54;return false;
         }
         if(camera!=1 && camera!=4 && camera!=5 && camera!=7){c.pending=0x8002d3d8;return false;}
         // phase1/6/8 capture helper pool/view; phase4 unused outer camera query.

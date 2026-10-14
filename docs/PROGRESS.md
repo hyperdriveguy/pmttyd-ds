@@ -3150,3 +3150,26 @@ unsupported registry writers with invalidation/restoration; compare original
 rsqrt/math/history against source execution. Full N64 lifecycle, production
 Bero/get_info, Init/Main/Exit and ordered field return remain open. Full
 original-fidelity prologue goal stays active; original story dialogue unchanged.
+
+## 2026-10-14 — Retained shadow profile target tracking
+
+Bound both mutable original shadowConfig startup rows and size table; primary
+word8 is now profileIndex. Camera2 class5 follows camera4.at (target), with
+original eye/up/target store order and rounded1000+targetY. Held camera query
+pins row/decision; later GPU waits preserve completed updates and collision
+matrices. Native TrioAttack supplies its actual retained indexed camera.
+[Contract](behavior/display/NATIVE_SHADOW_PROFILE_TARGET_TRACKING.md).
+
+Frozen make test passes279/279 C++ and167/167 Python; make all
+DEBUG_SHORT_BOOT=1 SOUNDTRACK=gamecube passes. Original-asset trio integration
+asserts actual retained profile/camera equality. No new emulator/hardware
+check. Initial builds found an inferred mutable-pointer callback return type;
+fixed it to the declared const-camera pointer before passing final validation.
+[Exact validation](PROGRESS_ARCHIVE.md#2026-10-14--retained-shadow-profile-target-tracking).
+
+Next: real GXInvalidateTexAll802b7b54, then viewport/scissor readback and
+400-square setup, matrix/view save/replace, unconditional Projection setup
+and End restoration. Source viewport lies outside current exact integer
+native adapter; do not fake completion for type2/zero-counter domains.
+Other profile writers/pointer replacement, geometry/images, teardown and
+ordered field return remain open. Full prologue goal remains active.
