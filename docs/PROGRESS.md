@@ -120,3 +120,22 @@ cover the opening-book layout (`b97fa9c6`), battle-part/pose identity
 behavior contracts (`9390b332`), generated-build ignores (`b43651bf`), and the
 renderer notice (`de2dd009`). Earlier independent agent changes are preserved
 in their own commits.
+
+## 2026-10-14 — Battle part isolation and original pose defaults
+
+Feature commit `83402d8a` preserves three distinct original Mario battle parts
+and Goombella's separate primary record. Original `M_Z_1`/`PKR_Z_1` defaults are
+converted; private sidecars retain all85/32 source descriptor names and original
+model/texture identity. See the [storage/directory contract](behavior/display/NATIVE_BATTLE_PART_STORAGE_AND_POSE_DIRECTORY.md).
+
+Final combined `make test`:224/224 C++ and141/141 Python passed. Native
+`make -o assets-ready all BUILD=build-pose-constructor TARGET=ttyd-pose-constructor -j4`
+passed after the migration/menu fixes. Isolated immutable Azahar check reached
+the original10 Star Point reward/victory and existing field-restoration hold;
+no detected exception. Exact baseline, logs and limitations are recorded in
+the [archive](PROGRESS_ARCHIVE.md#2026-10-14--battle-part-isolation-and-original-pose-defaults).
+
+Next: retained real battle pose/resource/texture ownership and per-part entry,
+then original selection/restart/rate/effect/release services. Display remains
+pending at animPoseSetLocalTimeRate8004142c; teardown and field return remain
+unbound. No completed-prologue or hardware-parity claim.

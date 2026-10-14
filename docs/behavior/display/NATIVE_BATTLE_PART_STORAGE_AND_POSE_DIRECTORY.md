@@ -14,6 +14,9 @@ unit0 partition at `84200000` and `84200500`. Live next pointers retain source
 part order; source-definition and unit-owner pointers remain distinct. These
 are native projected addresses, not original allocator results. Existing
 linked-part gauge/color initialization reaches all three parts.
+The native address-space owner retains the whole mapped parts region. This
+projection does not reproduce the original contiguous BattleAlloc block or its
+BattleFree operation; source unit teardown still needs its own real provider.
 
 `tools/battle_pose_directory.py` retains original model/texture header names
 and every descriptor name in original order. The private `PMPOSE01` sidecar

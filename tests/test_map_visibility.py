@@ -44,7 +44,7 @@ int main() {
 }
 '''.replace('#include <cassert>', '#include <cassert>\n#include <initializer_list>'))
             binary = Path(directory) / 'visibility'
-            subprocess.run([shutil.which('c++') or 'g++', '-std=c++17', '-I', str(ROOT/'include'), str(source), '-o', str(binary)], check=True)
+            subprocess.run([shutil.which('c++') or 'g++', '-std=c++17', '-I', str(ROOT/'include'/'display'), str(source), '-o', str(binary)], check=True)
             subprocess.run([str(binary)], check=True)
 
     def test_source_subtrees_partition_without_losing_geometry(self):

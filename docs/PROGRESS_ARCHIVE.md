@@ -12704,3 +12704,63 @@ Next: real source table/party/cost/sampling/message providers in native runtime;
 original tutorial class/submenu/input/selection, player action and turn ownership;
 source camera, window/effect/audio/audience consumers and physical alternatives
 to optional lower-screen audience taps. Full tutorial/battle goal stays active.
+
+## 2026-10-14 — Battle part isolation and original pose defaults
+
+Feature commit `83402d8a` includes the native part-storage fix, genuine default
+pose conversion, full original descriptor sidecars and their regression checks.
+Original Mario has three source parts, not two. The former third record at
+84202000 overlapped Goombella's primary; additional Mario parts now occupy the
+unused native unit0 partition, preserving primary addresses and live linked
+source order. Original definition/owner pointers and per-part gauge/color
+defaults are tested. This address projection does not implement the original
+contiguous BattleAlloc/BattleFree lifetime.
+
+Read-only ISO assets supply M_Z_1/PKR_Z_1 and original85/32 descriptor directories;
+no extracted model, texture, animation pack or ISO is committed. Unknown source
+names must resolve to descriptor0; known but unconverted source poses remain
+an evaluation boundary. Original additional Mario request KRN_H_1 is absent
+from b_mario and therefore uses source default0. The documentation worker
+recovered per-part entry, separate model/texture reference counts, release order
+and the next zero-effect/status/offset services. Current display still stops
+at animPoseSetLocalTimeRate8004142c: no fabricated registered handle, pose-owner
+completion, battle-return or prologue parity is claimed.
+
+Validation:
+
+- Final combined make test passed224/224 CTest and141/141 Python checks;
+  `artifacts/battle-pose-combined-tests-final.log`. Earlier shared runs exposed
+  concurrent tutorial callback type/ABI issues, an unfinished menu fixture and
+  the visibility fixture's migrated include path. Those were resolved before
+  this final pass; do not treat earlier failed logs as final results.
+- Combined native build passed with assets-ready already completed by the
+  preceding full make all asset phase:
+  `make -o assets-ready all BUILD=build-pose-constructor TARGET=ttyd-pose-constructor -j4`;
+  `artifacts/battle-pose-combined-native.log`. The original reused build first
+  failed on stale pre-migration shader dependencies; a fresh build was used.
+- Reproducible baseline deadc793419e0eb335e0e6ca80357a12d50dcc25 plus the owned
+  patch passed223/223 CTest and141/141 Python tests in
+  `artifacts/battle-pose-clean-tests.log`, and a full DEBUG_SHORT_BOOT native
+  source build in `artifacts/battle-pose-clean-native.log`. This older flat
+  baseline excludes concurrent migration/menu work and is distinct from the
+  final combined checkout.
+- Immutable binary/ELF and SHA256 manifest:
+  `artifacts/battle-pose-constructor-snapshot/`. The manifest's baseline was
+  corrected to the actual archived base after concurrent commits advanced HEAD;
+  exact source equality against that base plus the owned storage hunk was checked.
+- Isolated Azahar script returned0 using the story11 fixture and original trio
+  EXP input script; output `artifacts/azahar-battle-pose-constructor`, log
+  `artifacts/battle-pose-constructor-smoke.log`. Reviewed reward30 and final
+  boundary captures: original10 Star Points/victory poses, then the existing
+  black development field-restoration hold. No detected exception. User profile
+  and saves were untouched. Observed20FPS/3.39ms at reward and60FPS/4.60ms at
+  hold; these are emulator samples, not physical hardware measurements.
+- Documentation links:1130 Markdown files,0 broken links in
+  `artifacts/battle-pose-doc-links-validated.log`; scoped diff check passed.
+
+Next: retained256-pose/64-resource/64-texture native ownership with real converted
+CPU workspaces; source mode1 part entry/publication; exact source directory
+selection/restarts, local rates, effects and release counts. Preserve additional
+Mario parts and their authored pose names. Bind the remaining original display
+consumers and ordered teardown/field/result/save owners afterward. Full playable
+original-fidelity prologue remains an active goal.
