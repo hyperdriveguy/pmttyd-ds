@@ -2,6 +2,28 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Goomba3 native rendering and original talk captures
+
+Final immutable602d1d81 native binary passed isolated Azahar runs
+artifacts/azahar-goomba3-waiting4 and artifacts/azahar-goomba3-ordinary
+(goomba3-waiting4-smoke.log/goomba3-ordinary-smoke.log). Reviewed original
+plaza Goomba3 drawing, attributed irai_02_01 waiting bubble/pages and unchanged
+gor_01_028_00 ordinary bubble/pages. Explicit40-byte fixture checkpoints stayed
+byte-identical after each run. Sampled field/late-talk60FPS/~10–13ms, onset54–55FPS;
+these are emulator observations, not physical hardware or matched original raster.
+Both use normal frontend load and physical camera-relative input; the successful
+approach is Right0.04seconds from the fixture, a harness input, not measured game
+behavior. The three earlier attempts missed proximity/facing and do not establish
+dialogue success. Fixed-count confirm presses can reopen talk; final capture names
+alone do not prove native return. Host/Game tests prove event return and unchanged
+story/flags; native captures prove the original drawing and print branches.
+
+Documentation1043 Markdown files/0 broken links and git diff check passed.
+User profile/saves and read-only ISO unchanged. Source Goomba3 map-side movement
+recovery is in progress with the documentation agent. Next bind that original
+wander domain, full get-item acquisition and coin/window/working-switch services,
+then actual Trouble Center menus. Broader remake goal remains active/unfinished.
+
 ## 2026-10-13 — Shared original stage-floor and tutorial jump recovery
 
 Feature `2849043` binds the complete US floor lookup and its three-operand
