@@ -2,6 +2,57 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Native original hit/reaction roots and metadata queries
+
+Feature `d852ae4` connects original BattleRunHitEvent/Direct to the tutorial VM:
+installed or explicit source roots, original code40/data46 guard, ordered
+wait/phase/attack/reaction cancellation, actual owner IDs, full code278 and
+tracked damage handle2b4. Source main-body IDs and the complete body getter are
+bound. Live reaction observation gates scheduler bridges, preserves finished
+handles for their original cleanup owner and distinguishes hit-canceled intro
+from natural completion. Replacing a pending child clears its event-owned
+service diagnostic. No HP/result/turn completion is invented.
+[Native reaction contract](behavior/battle/NATIVE_HARBOR_HIT_REACTION_OWNERSHIP.md).
+
+Shared CheckDamageCode/GetDamageCode/CheckDamagePattern wrappers preserve raw
+mask/pattern/output tokens, post-translation global reload, current unit words,
+any-bit code overlap, unsigned low-byte getter and exact pattern equality.
+The former trio pattern operand resolution is corrected. Trio call sites were
+incorporated into concurrent `934236d`; this feature commits their shared library
+and build dependency alongside native tutorial bindings. Three complete bodies
+are pinned read-only. Existing HitEvent/Direct source fingerprints remain valid;
+no imported payload/texture/dialogue expansion is needed. [Assets](ASSETS.md).
+
+Original-data tests execute actual Crump/common-child and invisible system hooks,
+check cancellation/replacement/owner2, null direct script and skipped code40,
+preserve HP/result, and retain a live reaction at CheckUnitAttribute8010e430.
+That is the next source-service boundary, not complete damage playback. Original
+intro/physical defense tests still pass. Full `make test` passed209/209 CTest and
+132/132 Python (`artifacts/tutorial-hit-final-tests.log`), invoked with
+`TMPDIR="$PWD/artifacts/tutorial-admission-tmp" make test`. The newly added source
+verifier test then passed separately, and final full Python discovery passed
+133/133 (`artifacts/tutorial-hit-final-python.log`). An earlier shared test build
+failed while stage-work dependencies were being added; its unresolved symbols
+are retained in `artifacts/tutorial-hit-tests.log`, not counted as final success.
+
+Normal full `make all` passed (`artifacts/tutorial-hit-final-all.log`); debug build
+with `-o assets-ready` passed (`artifacts/tutorial-hit-debug.log`). Immutable private
+snapshot: `artifacts/tutorial-hit-native-snapshot/ttyd-tutorial-hit.3dsx`.
+Isolated Azahar physical harbor route/introduction regression passed in
+`artifacts/azahar-tutorial-hit-regression/`, showing original actors/stage/HUD and
+the unchanged action-service notice. Native hit dispatch remains an original
+producer bridge, not a new development input action; reaction execution evidence
+comes from the real host VM with original private scripts. No live original
+runtime, complete attack or hardware-parity claim. Doc links/diff checks pass.
+
+Next: bind the common damage child's remaining attribute/animation/status/effect
+services and complete original damage orchestration, startup/UnitEntry, player
+commands and turn scheduling. Native command and damage producer ownership is
+still incomplete. Preserve original US dialogue/tokens and tick-based input.
+Complete rotating menus and lower-screen scene/audience with optional hostile
+item taps and physical controls. Full requested battle/tutorial end state remains
+open; pending callbacks must keep their actual source roots alive.
+
 ## 2026-10-13 — Original item-get resource providers and native pose bank
 
 Committed `fb4bd41`: read-only original M_I_U static pose importer, actual
