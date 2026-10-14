@@ -82,10 +82,13 @@ part rotate/pivot zero setter history, though newly cleared bytes numerically
 match their supplied zero values. This must remain distinct from proven source
 calls or initialized reused records.
 
-GetPartsWorldPos uses the real part-local/owner/facing/scale fields; existing
-packed service may be reused after source fields are installed. Current players'
-zero local offsets can conceal a missing scale in one position query; they
-do not prove full rendering initialization. Shadow radius should read the
+Correction to an earlier informal claim: GetPartsWorldPos composes U3c/40/44
+with P24/28/2c and signed U189 for X; it does not read P60. GetHitPos adds
+P170/P17c triplets using U114 and side, also without directly reading P60.
+Missing part scale therefore does not suppress these authored world/hit offsets.
+Part scales remain real draw/shadow-radius state; unit Ucc/Uce supply camera
+dimensions. Existing packed position services can be reused without inventing
+a new P60 dependency. Shadow radius should read the
 actual copied signed halfword. Binding its draw consumer remains a separate
 source/render step; this document does not invent a shadow size/opacity or
 claim the queued original part drawing is complete.

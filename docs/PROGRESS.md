@@ -1176,3 +1176,27 @@ part/unit display tails, and actual deferred part matrices/material/GPU draw.
 Keep full inherited camera4 publication and ordered battle teardown/field return
 open. Existing handheld battle view is unchanged; queue registration alone is
 not rendered parity. Full original-fidelity prologue goal remains active.
+
+
+## 2026-10-14 — Shared shadow requests and live player display traversal
+
+Added the original-layout64-record native shadow request owner, retained settings
+and Main registration/reset order. Game shares it with the trio and preserves
+it across restores. Finishing display now follows live part links with retained
+unit/part continuation, automatic status/name/rate processing and source unit-
+tail gates. Mario's extra parts run descriptor0 Main, then original attributes
+suppress their drawing/shadows; Mario and Goombella submit two pose and two
+shadow records. [Scope](behavior/display/NATIVE_SHADOW_WORK_AND_TRIO_LIVE_DISPLAY.md).
+
+Final isolated make test passed247/247 C++ and142/142 Python checks; native
+make all passed. Exact snapshot, logs, failed intermediate checks and immutable
+manifests are in the [archive](PROGRESS_ARCHIVE.md#2026-10-14--shared-shadow-requests-and-live-player-display-traversal).
+No Azahar/hardware run for this step.
+
+Next: replace the surviving Frankly synthetic part with the
+[original constructor](behavior/battle/SETUP4_SURVIVING_FRANKLY_BATTLE_POSE_CONSTRUCTOR.md)
+and produce its genuine battle metadata sidecar. Current finishing pass holds
+at that pose-constructor provider801011fc. Shadow collision/image/cylinder/GPU
+services, full outer-loop and deferred display cadence, footer providers, complete
+camera4 history and ordered field return remain open. Full prologue goal stays
+active. No rendered parity is claimed by request registration alone.

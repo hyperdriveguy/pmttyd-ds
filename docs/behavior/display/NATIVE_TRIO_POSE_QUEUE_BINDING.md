@@ -49,3 +49,9 @@ cache history/Main count do not replay. A later held tick preserves one record.
 The native Game adapter also runs in ordinary regression playthroughs. No actual
 sort/draw/reset cadence, shadow pool, deferred matrix/material/GPU callback,
 complete display footer or ordered battle teardown/field return is established.
+
+The subsequent [shadow/live-display step](NATIVE_SHADOW_WORK_AND_TRIO_LIVE_DISPLAY.md)
+now completes ordinary shadow Entry and the no-table tail, follows linked parts
+and registers Goombella too. The earlier8002be98 hold described above is
+superseded for that admitted domain; actual shadow preparation/GPU work remains
+open. The next exercised constructor provider is801011fc.

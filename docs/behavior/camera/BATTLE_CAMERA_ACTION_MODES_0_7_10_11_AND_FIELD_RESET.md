@@ -62,8 +62,10 @@ homing IDs; B2768/2770 second. Position dependencies are existing typed services
   source hit-offset triplets with U114/side factor. Its existing
   [packed hit contract](../battle/BATTLE_PACKED_HIT_POSITION_CAPTURE_ORDER.md)
   supplies live read/capture/rounding order.
-- BtlUnit_GetPartsWorldPos80128b10 uses part's retained U owner and scalar
-  offset/facing/scale composition; it is not a GetPos synonym.
+- BtlUnit_GetPartsWorldPos80128b10 uses part's retained U owner, root U3c/40/44,
+  local P24/28/2c and signed U189 for X; it does not read P60 part scale.
+  It is not a GetPos synonym. Subsequent GetHitPos offset scaling uses U114,
+  rather than inventing a dependency on P60.
 
 Construction producer: BtlUnit_Entry reloads kind pointer U10 at80129298;
 loads signed HALF(kind+16) at801292a0 and stores Ucc at801292a4; reloads U10

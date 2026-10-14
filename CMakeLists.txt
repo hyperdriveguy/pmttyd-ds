@@ -1227,3 +1227,8 @@ add_executable(coin_icon_tests tests/coin_icon_tests.cpp)
 target_link_libraries(coin_icon_tests PRIVATE ttyd_core)
 add_test(NAME coin_icon_original COMMAND coin_icon_tests)
 set_tests_properties(coin_icon_original PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+target_sources(ttyd_core PRIVATE source/display/shadow_work.cpp)
+add_executable(shadow_work_tests tests/shadow_work_tests.cpp)
+target_link_libraries(shadow_work_tests PRIVATE ttyd_core)
+add_test(NAME shadow_work COMMAND shadow_work_tests)

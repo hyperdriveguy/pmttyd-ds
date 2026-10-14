@@ -3876,3 +3876,17 @@ publication still needs the [producer arithmetic](../behavior/display/BATTLE_CAM
 and complete field history. Recover shared shadow pool/lifetime/cadence and
 801261f8/part-unit tail before claiming enclosing display completion; then bind
 deferred draw callbacks and ordered teardown/field return. EVT-01 remains open.
+
+
+### Shared shadow and live player display follow-up (2026-10-14)
+
+Native request pool now closes ordinary shadowEntry8002be98. Source ShadowMain
+registers the eight deferred passes before live finishing requests are collected.
+Mario's linked extra parts execute automatic/Main and source draw/shadow bypass,
+then Goombella submits too.
+[Native limits](../behavior/display/NATIVE_SHADOW_WORK_AND_TRIO_LIVE_DISPLAY.md).
+Current next provider801011fc belongs to surviving Frankly; its
+[original constructor/asset contract](../behavior/battle/SETUP4_SURVIVING_FRANKLY_BATTLE_POSE_CONSTRUCTOR.md)
+pins model c_kuri_h, actual part/table and needed battle metadata sidecar.
+Deferred camera2 collision/image passes, camera4 cylinder/GPU, full update/draw
+cadence, display footer providers and ordered field return remain open.

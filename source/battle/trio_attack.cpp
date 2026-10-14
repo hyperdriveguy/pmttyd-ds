@@ -142,6 +142,10 @@ struct TrioAttackRuntime {
     std::optional<CameraDepthSnapshot> cameraDepth;
     std::optional<std::array<float,4>> cameraDepthLensAdapter;
     DisplayQueue displayQueue;
+    std::shared_ptr<ShadowWork> shadows;
+    ShadowMainCursor shadowMainCursor;
+    bool displayActive=false,displayUnitPrefixDone=false;
+    int32_t displayIndex=0;uint32_t displayPart=0;
     bool waitingPoseDepth=false;
     std::optional<float> waitingPosePriority;
     std::optional<TrioShadowDrawRequest> shadowDraw;
@@ -154,10 +158,18 @@ struct TrioAttackRuntime {
         const auto admitted=displayQueue.enter(uint32_t(draw.camera),draw.drawClass,0x80101774,draw.part,priority);
         if(admitted==DisplayAdmission::Unavailable){pending=0x80010bc4;waitingPoseDepth=true;return false;}
         waitingPoseDepth=false;
-        const auto part=draw.part,unit=word(part+0x4ec);
-        if((word(part+0x1ac)&0x04000000) || (word(unit+0x104)&0x20000000) || (word(part+0x1ac)&0x02000000)){
-            pending=0x801024f0;return false; // Separate secondary/other branches.
-        }
+        const auto part=draw.part;
+        if(word(part+0x1ac)&0x04000000){pending=0x80010bc4;return false;}
+        return completePartShadow(part);
+    }
+    bool completePartSoundTail(uint32_t part){
+        endingRequest(0x801261f8,{int32_t(part)});
+        if(word(part+0x4d0) && word(part+0x1c0)!=0xffffffff){pending=0x80039cf8;return false;}
+        return true;
+    }
+    bool completePartShadow(uint32_t part){
+        const auto unit=word(part+0x4ec);
+        if((word(unit+0x104)&0x20000000) || (word(part+0x1ac)&0x02000000))return completePartSoundTail(part);
         endingRequest(0x80128b10,{int32_t(part)});
         BattlePartPositionServices position;position.memory=nativeBattleActorServices(vm);
         position.fma=[](void*,float a,float b,float c){return std::fma(a,b,c);};
@@ -177,8 +189,9 @@ struct TrioAttackRuntime {
         if((word(unit+0x1c)&0x10000) && radius<real(0x80422230))radius=real(0x80422230);
         if(radius<real(0x80422228))radius=real(0x80422278);
         shadowDraw=TrioShadowDrawRequest{shadowPosition,radius};
-        pending=0x8002be98;endingRequest(pending);
-        return false;
+        endingRequest(0x8002be98);
+        if(!shadows || !shadows->enter(shadowPosition,radius)){pending=0x8002be98;return false;}
+        return completePartSoundTail(part);
     }
     std::map<uint32_t,int32_t> partPoseHandles;
     std::array<TrioRewardIcon,19> rewardIcons{};
@@ -1235,8 +1248,10 @@ struct TrioAttackRuntime {
     bool displayPrefix() {
         (void)word(0x8041eb90); // Original retained B; footer is still pending.
         const auto actors=nativeBattleActorServices(vm);
-        for(int32_t index=0;index<64;++index) {
-            const auto unit=battleRegistryUnit(word(0x8041eb90),index,actors);if(!unit)continue;
+        if(!displayActive){displayActive=true;displayIndex=0;displayUnitPrefixDone=false;}
+        for(;displayIndex<64;++displayIndex) {
+            const auto unit=battleRegistryUnit(word(0x8041eb90),displayIndex,actors);if(!unit)continue;
+            if(!displayUnitPrefixDone){
             if(word(unit+8)==223){pending=0x801024f0;return false;}
             const auto old=byte(unit+0x312);endingRequest(0x801277ac,{int32_t(unit),2});word(unit+0x1c,word(unit+0x1c)&~2u);
             const auto target=byte(unit+0x311);
@@ -1267,18 +1282,66 @@ struct TrioAttackRuntime {
             endingRequest(0x80253ca8,{int32_t(unit)});half(unit+0xadc,0);
             const auto current=word(0x8041eb90);
             if((word(current+0xef4)&0x10000) || (word(current+0xef8)&1)){pending=0x80253ca8;return false;}
-            for(auto part=word(unit+0x14);part;part=word(part)) {
+            displayPart=word(unit+0x14);displayUnitPrefixDone=true;
+            }
+            for(auto part=displayPart;part;part=word(part)) {
+                displayPart=part;
                 const auto binding=partPoseHandles.find(part);
                 if(binding==partPoseHandles.end()){pending=0x801011fc;endingRequest(pending,{int32_t(unit)});return false;}
                 if(word(part+0x1c0)==0xffffffff)continue;
-                if(word(part+0x204)&2){
-                    endingRequest(0x80100a4c,{int32_t(part)});real(part+0x208,1);
+                {
+                    uint32_t selectedName=part+0x1c4;
+                    float rate=real(0x8042224c);
+                    if(!(word(part+0x204)&2)){
+                        endingRequest(0x80103084,{int32_t(unit)});
+                        int32_t type=27;
+                        if(!(word(unit+0x104)&0x20000)){
+                            type=28;
+                            for(uint32_t address=0x80416ab0;;address+=4){
+                                const auto candidate=int32_t(word(address));if(candidate==-1)break;
+                                endingRequest(0x80127814,{int32_t(unit),int8_t(candidate)});
+                                if(checkPackedBattleStatus(unit,int8_t(candidate),actors)){type=candidate;break;}
+                            }
+                        }
+                        const auto search=[&](int32_t requested){
+                            endingRequest(0x80103cd0,{int32_t(word(part+0x1bc)),requested});
+                            auto table=word(part+0x1bc);
+                            if(table)for(unsigned index=0;index<28;++index,table+=8){const auto tag=int32_t(word(table));if(tag==requested || tag==28)return word(table+4);}
+                            return uint32_t(0);
+                        };
+                        const auto kind=int32_t(word(unit+8));
+                        if(kind>=1 && kind<216)selectedName=search(type);
+                        else{
+                            bool specialized=false;
+                            for(const auto choice:{std::pair<uint32_t,int32_t>{0x20000000,57},{0x10000000,56}}){
+                                if(type!=28)break;
+                                endingRequest(0x80127814,{int32_t(unit),22});
+                                if(!checkPackedBattleStatus(unit,22,actors) && (word(unit+0x138)&choice.first)){
+                                    endingRequest(0x8012772c,{int32_t(part),choice.second});
+                                    selectedName=packedBattlePoseName(part,choice.second,actors.memory);
+                                    if(!selectedName)selectedName=search(28);specialized=true;break;
+                                }
+                            }
+                            if(!specialized)selectedName=search(type);
+                            endingRequest(0x801277f8,{int32_t(unit),0x01000000});
+                            if(word(unit+0x138)&0x01000000){
+                                endingRequest(0x8012724c,{int32_t(unit)});
+                                if(packedCanAct(unit,actors)){
+                                    endingRequest(0x8012772c,{int32_t(part),45});selectedName=packedBattlePoseName(part,45,actors.memory);
+                                }
+                            }
+                        }
+                        endingRequest(0x80127814,{int32_t(unit),19});
+                        if(checkPackedBattleStatus(unit,19,actors))rate=real(0x80422250);
+                        else{endingRequest(0x80127814,{int32_t(unit),20});if(checkPackedBattleStatus(unit,20,actors))rate=real(0x80422234);}
+                    }
+                    endingRequest(0x80100a4c,{int32_t(part)});real(part+0x208,rate);
                     const auto handle=int32_t(word(part+0x1c0));endingRequest(0x8004142c,{handle});
                     if(handle!=binding->second || !poses.setRate(handle,real(part+0x208)*real(part+0x20c))){pending=0x8004142c;return false;}
                     if(word(part+0x204)&1){
                         word(part+0x204,word(part+0x204)&~1u);word(part+0x204,word(part+0x204)&~0x200u);
-                        const bool force=word(part+0x204)!=0;endingRequest(0x80041170,{handle,int32_t(part+0x1c4),force?1:0});
-                        if(!poses.selectName(handle,text(part+0x1c4),force,{now,now})){pending=0x80041170;return false;}
+                        const bool force=word(part+0x204)!=0;endingRequest(0x80041170,{handle,int32_t(selectedName),force?1:0});
+                        if(!selectedName || !poses.selectName(handle,text(selectedName),force,{now,now})){pending=0x80041170;return false;}
                         byte(part+0x214,0);bool effect=false;
                         const auto transparent=[&](){endingRequest(0x80127814,{int32_t(unit),18});return checkPackedBattleStatus(unit,18,actors) || byte(part+0x4f3)!=255;};
                         if(word(part+0x204)&4)byte(part+0x215,0);else{byte(part+0x215,1);if(transparent()){byte(part+0x215,7);effect=true;}}
@@ -1330,21 +1393,32 @@ struct TrioAttackRuntime {
                     if(checkPackedBattleStatus(unit,18,actors) || (word(unit+0x104)&8))byte(part+0x4f7,uint8_t((int32_t(byte(part+0x4f7))*128)/255));
                     byte(part+0x4f7,uint8_t((int32_t(byte(part+0x4f7))*int32_t(byte(part+0x4f3)))/255));
                     for(unsigned channel=0;channel<3;++channel)byte(part+0x4f4+channel,byte(part+0x4f0+channel));
-                    if((word(unit+0x104)&0x01000000) || (word(part+0x1ac)&0x01000000) || ((word(part+0x1ac)&1) && (word(unit+0x104)&0x10))){pending=0x801024f0;return false;}
+                    if((word(unit+0x104)&0x01000000) || (word(part+0x1ac)&0x01000000) || ((word(part+0x1ac)&1) && (word(unit+0x104)&0x10))){if(!completePartShadow(part))return false;continue;}
                     int32_t drawClass=2;
                     if(byte(part+0x4f7)==255){
                         endingRequest(0x80039c0c,{handle});const auto translucent=poses.testTranslucent(handle);
                         if(!translucent){pending=0x80039c0c;return false;}drawClass=*translucent?2:1;
                     }
-                    if(word(part+0x204)&0x100){pending=0x801024f0;return false;}
+                    if(word(part+0x204)&0x100){if(!completePartShadow(part))return false;continue;}
                     waitingPosePriority.reset();
                     poseDraw=TrioPoseDrawRequest{part,4,drawClass,depth};
-                    endingRequest(0x8001086c);return registerPoseDraw();
+                    endingRequest(0x8001086c);if(!registerPoseDraw())return false;continue;
                 }
-                pending=0x80103084;endingRequest(pending,{int32_t(unit)});return false;
             }
+            displayPart=0;
+            uint32_t callback=0;
+            if(word(unit+0x308)){
+                const auto flags=word(unit+0x1c);
+                if((flags&0x40000000) && !(flags&0x08000000))callback=0x80101548;
+                else if(!((flags&0x04000000) && !(flags&0x02000000)) && !(flags&0x08000000))callback=0x80101678;
+            }else if(word(Battle+0xef4)&0x20000)callback=0x801015ec;
+            if(callback){
+                endingRequest(0x80010bc4,{4,2,int32_t(callback),int32_t(unit)});
+                if(displayQueue.enter(4,2,callback,unit,real(0x80422240))==DisplayAdmission::Unavailable){pending=0x80010bc4;return false;}
+            }
+            displayUnitPrefixDone=false;
         }
-        pending=0x8010045c;return false; // Original display footer awaits real queued consumers.
+        pending=0x8010045c;return false; // Original display footer providers remain separate.
     }
     void completionPass(const BattlePadSample& sample) {
         struct Context {TrioAttackRuntime& r;const BattlePadSample& sample;} context{*this,sample};
@@ -1412,17 +1486,23 @@ struct TrioAttackRuntime {
     }
     void tick(uint64_t time,ProfessorStory& s,uint32_t triggers,const BattlePadSample* physical){
         scene=&s;now=time;
-        if(waitingPoseDepth && (waitingPosePriority || cameraDepth)){pending=0;registerPoseDraw();}
+        if(waitingPoseDepth && (waitingPosePriority || cameraDepth)){
+            pending=0;
+            if(registerPoseDraw()){displayPart=word(poseDraw->part);displayPrefix();}
+        }
         if(pending==0x800f8e28 && sampledAt!=time) {
             sampledAt=time;BattlePadSample sample;
             if(physical)sample=*physical;else {sample.snapshot.buttons=uint16_t(triggers);sample.pressed=triggers;}
-            vm.gp.timestamp=time*eventClockRate(243000000);completionPass(sample);
+            vm.gp.timestamp=time*eventClockRate(243000000);
+            endingRequest(0x8002db8c);
+            if(!shadows || !shadows->main(displayQueue,shadowMainCursor)){pending=0x8002db8c;return;}
+            completionPass(sample);
         }
         if(!pending){if(sampledAt!=time){sampledAt=time;checkBrokenUnits();BattlePadSample sample;if(physical)sample=*physical;else {sample.snapshot.buttons=uint16_t(triggers);sample.pressed=triggers;}readPad(Battle+0xf2c,generalPad);generalPad.update(sample);writePad(Battle+0xf2c,generalPad);history=generalPad.triggers;vm.gp.timestamp=time*eventClockRate(243000000);if(word(Battle+4)==3)ending();else if(!done){if(word(Battle+0xf20)<0x06000007)enemyAction();else postAction();}else handoff();readPad(Battle+0x1d1c,privatePad);privatePad.update(sample);writePad(Battle+0x1d1c,privatePad);actionManager();if(!updateStageObjects() && !pending)pending=0x80149798;}updateCamera(time);vm.runManager();if(!pending && gaugeClockAt!=time){gaugeClockAt=time;BattleHpGaugeServices gauge;gauge.actors=nativeBattleActorServices(vm);gauge.interpolate=[](void*,int32_t mode,int32_t step,int32_t duration,float start,float end)->std::optional<float>{return battleHpGaugeCurve(mode,step,duration,start,end);};for(int32_t id=0;id<64;++id){const auto u=battleRegistryUnit(word(0x8041eb90),id,gauge.actors);if(u)packedBattleHpGaugeMain(u,gauge);}}if(hasBrokenUnit())done=false;}iconClock(time);if(pointGetClockAt!=time){pointGetClockAt=time;pointGet.tick();}if(endingFadeClockAt!=time){endingFadeClockAt=time;endingFade.tick(60);}stageBackground.recalculate();stageForeground.recalculate();publish(s);
     }
     void publish(ProfessorStory& s){for(unsigned id=1;id<7;++id){const uint32_t u=word(Battle+0x20+4*id);if(!u){s.actors[visual[id]].hidden=true;continue;}for(unsigned axis=0;axis<3;++axis)s.actors[visual[id]].position[axis]=real(u+0x3c+4*axis);s.actors[visual[id]].yaw=byte(u+0x189)==1?90:270;s.actors[visual[id]].battleFlags=word(u+0x1c);for(unsigned axis=0;axis<3;++axis){s.actors[visual[id]].battleRotation[axis]=real(u+0x60+4*axis)+real(u+0x6c+4*axis);s.actors[visual[id]].battlePivot[axis]=real(u+0x78+4*axis);s.actors[visual[id]].battleScale[axis]=(axis<2?real(u+0x114):1.f)*real(u+0x9c+4*axis)*real(u+0x90+4*axis);s.actors[visual[id]].battleDisplayOffset[axis]=real(u+0x54+4*axis);}}}
 };
-bool TrioAttack::begin(const TrioBattleCommands& menu,ProfessorStory& scene,int16_t hp,std::shared_ptr<ProloguePouch> entryPouch,uint32_t* fieldNpcBattleFlags,FieldMarioBattleState* fieldMario,FieldPartyRegistry* fieldParties,const FieldPartyAppearanceServices* appearance,std::shared_ptr<BattleSpotlightState> spotlight,std::shared_ptr<BattleRandom> random,std::shared_ptr<PositionalSfxRegistry> sounds){if(!assetsReady || !menu.attack || !((menu.actor==1 && (menu.attack->weapon==0x803538a8 || menu.attack->weapon==0x80353de8)) || (menu.actor==2 && menu.attack->weapon==0x80393ea8)))return false;if(runtime_)return runtime_->done && runtime_->readyActor==menu.actor && runtime_->launch(menu);auto r=std::make_shared<TrioAttackRuntime>(random?std::move(random):std::make_shared<BattleRandom>(1));r->publicSfx=sounds?std::move(sounds):std::make_shared<PositionalSfxRegistry>();r->spotlight=spotlight?std::move(spotlight):std::make_shared<BattleSpotlightState>();r->fieldNpcBattleFlags=fieldNpcBattleFlags;r->fieldMario=fieldMario;r->fieldParties=fieldParties;if(appearance)r->fieldAppearance=*appearance;if(!r->initialize(menu,scene,hp,std::move(entryPouch)))return false;runtime_=std::move(r);return true;}
+bool TrioAttack::begin(const TrioBattleCommands& menu,ProfessorStory& scene,int16_t hp,std::shared_ptr<ProloguePouch> entryPouch,uint32_t* fieldNpcBattleFlags,FieldMarioBattleState* fieldMario,FieldPartyRegistry* fieldParties,const FieldPartyAppearanceServices* appearance,std::shared_ptr<BattleSpotlightState> spotlight,std::shared_ptr<BattleRandom> random,std::shared_ptr<PositionalSfxRegistry> sounds,std::shared_ptr<ShadowWork> shadows){if(!assetsReady || !menu.attack || !((menu.actor==1 && (menu.attack->weapon==0x803538a8 || menu.attack->weapon==0x80353de8)) || (menu.actor==2 && menu.attack->weapon==0x80393ea8)))return false;if(runtime_)return runtime_->done && runtime_->readyActor==menu.actor && runtime_->launch(menu);auto r=std::make_shared<TrioAttackRuntime>(random?std::move(random):std::make_shared<BattleRandom>(1));r->shadows=shadows?std::move(shadows):std::make_shared<ShadowWork>();r->publicSfx=sounds?std::move(sounds):std::make_shared<PositionalSfxRegistry>();r->spotlight=spotlight?std::move(spotlight):std::make_shared<BattleSpotlightState>();r->fieldNpcBattleFlags=fieldNpcBattleFlags;r->fieldMario=fieldMario;r->fieldParties=fieldParties;if(appearance)r->fieldAppearance=*appearance;if(!r->initialize(menu,scene,hp,std::move(entryPouch)))return false;runtime_=std::move(r);return true;}
 void TrioAttack::tick(uint64_t time,ProfessorStory& scene,uint32_t triggers,const BattlePadSample* physical){if(runtime_)runtime_->tick(time,scene,triggers,physical);}
 bool TrioAttack::statusWindowVisible()const{return !runtime_ || runtime_->statusWindowOpen;}
 bool TrioAttack::active()const{return runtime_ && !runtime_->done;}
@@ -1448,6 +1528,7 @@ void TrioAttack::setCameraDepthSnapshot(std::optional<CameraDepthSnapshot> snaps
 const CameraDepthSnapshot* TrioAttack::cameraDepthSnapshot()const{return runtime_ && runtime_->cameraDepth?&*runtime_->cameraDepth:nullptr;}
 const DisplayQueue* TrioAttack::displayQueue()const{return runtime_?&runtime_->displayQueue:nullptr;}
 std::optional<TrioShadowDrawRequest> TrioAttack::shadowDrawRequest()const{return runtime_?runtime_->shadowDraw:std::nullopt;}
+const ShadowWork* TrioAttack::shadowWork()const{return runtime_?runtime_->shadows.get():nullptr;}
 const BattleCameraFrame* TrioAttack::cameraFrameState()const{return runtime_?&runtime_->cameraFrame:nullptr;}
 bool TrioAttack::cameraHistoryComplete()const{return runtime_ && runtime_->cameraHistoryComplete;}
 const BattlePose* TrioAttack::battlePose(uint32_t part)const{

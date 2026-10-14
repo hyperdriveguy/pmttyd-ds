@@ -13145,3 +13145,53 @@ GPU callbacks and teardown/field restoration remain incomplete.
 Read-only source documentation also recovers original camera matrix concat,
 roll/translation and perspective/orthographic arithmetic for the forthcoming
 persistent publication owner; this documentation is not a new native owner.
+
+
+## 2026-10-14 — Shared shadow requests and live player display traversal
+
+Isolated source artifacts/shadow-work-source: base
+0866cdfc1d445de83c65b197036afe70af696b70 plus the six owned files in
+OWNED_BASE.txt, scoped Game/Game-header owner edits and shadow-work-cmake.txt.
+Other concurrent edits were excluded. Existing private asset directories are
+linked; no new ISO assets were extracted by implementation. Immutable ELF/3DSX/
+SMDH and source/binary SHA256 manifests: artifacts/shadow-work-validated.
+
+Validation:
+- Standalone shadow_work_tests passed source record layout/defaults, Entry
+  copying/preserved matrix+padding, Main camera/class registration order, live
+  gate, retained-setting/reset behavior, native capacity continuation and
+  nonfinite float admission.
+- make -C artifacts/shadow-work-source test:247/247 C++ and142/142 Python
+  passed; artifacts/shadow-work-isolated-tests-final.log.
+- make -C artifacts/shadow-work-source -o assets-ready all
+  BUILD=build-shadow-work TARGET=ttyd-shadow-work -j4:passed;
+  artifacts/shadow-work-isolated-native.log.
+- Real finishing traversal verifies Mario/Goombella borrowed records, both real
+  unprepared shadow requests, automatic extra-part descriptor0+source exclusion
+  flags, no duplicate primary Main or collection across a held later provider.
+- First shared run failed at the old unimplemented automatic-part branch and
+  several other checks while the checkout was changing; shadow-work-tests.log.
+  Source analysis closed the automatic/suppressed-extra branch. Focused run
+  then reached the actual next constructor (shadow-work-focused-test.log).
+- First coherent run exposed a wrong test assumption that hidden extra parts
+  must have empty CPU vertex buffers. Source hides them through attributes;
+  corrected assertions verify those attributes and absence from the queue.
+  shadow-work-isolated-tests.log is that intermediate failure. The native code
+  was unchanged after its successful build; final fixture checks all passed.
+- Documentation links and scoped whitespace passed. No emulator/hardware run.
+
+Game owns one native session request pool; admitted finishing ShadowMain occurs
+before its battle completion pass and subsequent request collection. This is
+source ordering, not a complete original outer-loop/camera dispatch cadence.
+Fresh request initialization does not implement GPU image allocations or prove
+all original field setting writers. Neither collision matrices nor prepared2
+are invented. The current renderer retains its handheld battle view. Remaining
+unit resource constructors, nonempty pose-sound domains, shadow collision/image/
+cylinder, actual borrowed GPU callbacks and complete display footer/teardown/
+field return remain unbound. Surviving setup4 Frankly is real kind180/model
+c_kuri_h; original part9353007c/table9353004c and private asset availability are
+now documented for the next implementation.
+
+Source documentation also corrects an earlier unsupported P60 dependency:
+world position uses root/local/side and hit offsets use U114/side. Part scale
+remains genuine draw/shadow state; position code was not changed by this audit.
