@@ -1841,3 +1841,18 @@ Generated manifest retains ISO source paths/hashes and conversion limitations.
 See [native resource scope](behavior/display/NATIVE_ITEM_GET_VISUAL_RESOURCES.md).
 Original Nintendo/Intelligent Systems resources; local use does not confer
 redistribution rights. No ISO/extracted payload/packs committed.
+
+## 2026-10-13 — Native original hit/reaction services
+
+No original asset payload expansion, dialogue, texture or pose conversion changes.
+The native bridge dispatches actual installed source damage hooks and their
+existing imported DOL common child through the real event VM. Existing source
+HitEvent/Direct bodies8012984c/84 and801298d0/c4 remain pinned by
+verify_harbor_counter_services.py. New read-only fingerprints cover complete
+CheckDamageCode8010f2e8/8c, GetDamageCode8010f374/70 and
+CheckDamagePattern8010f0e8/8c. Original inspection ELFs remain private under
+artifacts/tutorial-*.elf; compiled event packs remain ignored. Source main-body
+ID is copied from the actual flagged part definition.
+See [native scope](behavior/battle/NATIVE_HARBOR_HIT_REACTION_OWNERSHIP.md).
+Nintendo/Intelligent Systems resources; no redistribution rights granted. ISO
+is read-only; live-source/hardware equivalence is not established by static pins.

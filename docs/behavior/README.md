@@ -789,3 +789,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Spotlight mutable colour bootstrap and AcHelp admission](battle/SPOTLIGHT_MUTABLE_COLOUR_BOOTSTRAP_AND_AC_HELP_ADMISSION.md): actual BSS clearing, source zero-to-white record colour and help display gates.
 - [Native spotlight allocation and ending stage pass](battle/NATIVE_SPOTLIGHT_ALLOCATION_AND_ENDING_STAGE_PASS.md): real five-record map bank, retained session state and source-predicate progress to AudienceMain.
 - [Audience Main inline owners and ordinary empty domains](battle/AUDIENCE_MAIN_INLINE_OWNERS_AND_ORDINARY_EMPTY_DOMAINS.md): complete subservice order, window/throw side effects and corrected WinSetActive ownership.
+
+- [Native harbor hit-reaction ownership](battle/NATIVE_HARBOR_HIT_REACTION_OWNERSHIP.md).

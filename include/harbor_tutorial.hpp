@@ -28,7 +28,7 @@ struct HarborTutorialRuntime;
 // Three visual slots remain Crump/Mario/helper and must not index registry IDs.
 class HarborTutorial {
 public:
-    bool triggered=false,failed=false,initialized=false,phaseActive=false,introComplete=false,attackActive=false;
+    bool triggered=false,failed=false,initialized=false,phaseActive=false,introComplete=false,attackActive=false,damageActive=false;
     bool statusVisible=true;
     int32_t turn=1,speaker=-1,result=0,chosenUnit=-1,chosenPart=0;uint32_t phaseWord=0x04000001,battleFlags=0,pendingService=0;
     uint8_t successDeclarations=0,failureDeclarations=0;
@@ -59,9 +59,13 @@ public:
     // Called by an original battle scheduler, never automatically from HP or a
     // development button. Only already installed Crump/NPC attack hooks exist.
     bool dispatchInstalledAttack(int32_t actorId);
+    // Source damage producer bridge: original reaction roots, no HP/result synthesis.
+    uint32_t dispatchHitEvent(int32_t actorId,uint32_t code);
+    uint32_t dispatchDirectHitEvent(int32_t actorId,uint32_t code,uint32_t script);
     bool readPackedWord(uint32_t address,uint32_t& value) const;
     bool running() const{return triggered;}
 private:
+    uint32_t dispatchHit(int32_t,uint32_t,uint32_t,bool direct);
     bool beginWithContext(uint64_t,int32_t,int32_t,bool freshPouch,int32_t originalStory);
     std::shared_ptr<HarborTutorialRuntime> runtime_;
 };

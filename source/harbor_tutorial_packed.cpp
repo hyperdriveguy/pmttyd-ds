@@ -9,6 +9,8 @@
 #include "field_battle_information.hpp"
 #include "battle_sequence_startup.hpp"
 #include "battle_stage_floor.hpp"
+#include "battle_packed_hit_event.hpp"
+#include "battle_hit_code_events.hpp"
 namespace ttyd {
 namespace {void required(bool ok){if(!ok)std::abort();}int32_t signByte(uint8_t b){return b<128?int32_t(b):int32_t(b)-256;}}
 uint32_t HarborTutorialPacked::word(uint32_t a)const{uint32_t v=0;required(vm.memory.readWord(a,v));return v;}
@@ -31,7 +33,8 @@ bool HarborTutorialPacked::provision(){
  playback.position=[](void* self,uint32_t handle,const std::array<float,3>& pos){HarborTutorialSoundRequest r;r.operation=HarborTutorialSoundRequest::Operation::Position;r.handle=handle;r.position=pos;static_cast<HarborTutorialPacked*>(self)->sounds.push_back(r);};
  playback.off=[](void* self,uint32_t handle){HarborTutorialSoundRequest r;r.operation=HarborTutorialSoundRequest::Operation::Off;r.handle=handle;static_cast<HarborTutorialPacked*>(self)->sounds.push_back(r);};
  movement=nativeBattleMovePositionServices(vm,playback);jump.movement=movement;jump.user=this;jump.floor=[](void* self,uint32_t battle,float x,float y,float z){auto& p=*static_cast<HarborTutorialPacked*>(self);return packedBattleStageFloorHeight(battle,x,y,z,nativeBattleActorServices(p.vm).memory);};jump.play=[](void* self,uint32_t u,uint32_t key,const std::array<float,3>& pos){static_cast<HarborTutorialPacked*>(self)->requestSound(u,key,pos);};camera.positions=nativeBattlePartPositionServices(vm);camera.values=camera.positions.unit.values;
- return bindBattleSetMoveSpeedCallback(registry,vm) && bindBattleMovePositionCallback(registry,movement) && bindBattleJumpSettingCallback(registry,vm) && bindBattleGetPosCallback(registry,vm) && bindBattleGetHomePosCallback(registry,vm) && bindBattleGetHitPosCallback(registry,vm) && bindBattleGetUnitWorkCallback(registry,vm) && bindBattleSetUnitWorkCallback(registry,vm) && bindBattleGetHpCallback(registry,vm) && bindBattleGetMaxHpCallback(registry,vm) && bindBattleStartWaitCallback(registry,vm) && bindBattleStopWaitCallback(registry,vm);
+ return registry.bind(0x8010f0e8,&vm,[](void* p,EventEntry& e,int32_t){return battleCheckHitPatternEvent(e,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));}) && registry.bind(0x8010f2e8,&vm,[](void* p,EventEntry& e,int32_t){return battleCheckHitCodeEvent(e,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));}) &&
+ registry.bind(0x8010f374,&vm,[](void* p,EventEntry& e,int32_t){return battleGetHitCodeEvent(e,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));}) && bindBattleGetBodyIdCallback(registry,vm) && bindBattleSetMoveSpeedCallback(registry,vm) && bindBattleMovePositionCallback(registry,movement) && bindBattleJumpSettingCallback(registry,vm) && bindBattleGetPosCallback(registry,vm) && bindBattleGetHomePosCallback(registry,vm) && bindBattleGetHitPosCallback(registry,vm) && bindBattleGetUnitWorkCallback(registry,vm) && bindBattleSetUnitWorkCallback(registry,vm) && bindBattleGetHpCallback(registry,vm) && bindBattleGetMaxHpCallback(registry,vm) && bindBattleStartWaitCallback(registry,vm) && bindBattleStopWaitCallback(registry,vm);
 }
 uint32_t HarborTutorialPacked::requestSound(uint32_t u,uint32_t key,const std::array<float,3>& pos){HarborTutorialSoundRequest r;r.handle=nextSoundHandle++;r.key=key;r.owner=int32_t(word(u));r.position=pos;for(unsigned i=0;i<128;++i){const auto c=byte(key+i);if(!c)break;r.name+=char(c);}sounds.push_back(r);return r.handle;}
 bool HarborTutorialPacked::provisionFreshPouch(const char* name){
@@ -62,6 +65,7 @@ bool HarborTutorialPacked::registerActor(HarborTutorialActor& a){
  half(u+0x108,a.maxHp);half(u+0x10c,a.hp);half(u+0x10e,int16_t(word(k+8)));half(u+0x112,int16_t(word(k+8))); // Source FP kind halfword.
  byte(u+0x189,a.belong==1?255:1);
  for(unsigned j=0;j<count;++j){const auto definition=source+0x4c*j,part=p+0x500*j;word(part,j+1<count?part+0x500:0);word(part+4,definition);word(part+0x4ec,u);byte(part+0xbd,a.belong==1?255:1);word(part+0x1c0,0xffffffff);
+  if(word(definition+0x40)&1)word(u+0x2d4,word(definition));
   for(unsigned axis=0;axis<3;++axis){real(part+0x24+4*axis,real(definition+0xc+4*axis));real(part+0x170+4*axis,real(definition+0x18+4*axis));real(part+0x188+4*axis,real(definition+0x24+4*axis));}
   for(auto pair:std::array<std::pair<uint32_t,uint32_t>,5>{{{0x1ac,0x40},{0x1b0,0x44},{0x1b4,0x38},{0x1b8,0x3c},{0x1bc,0x48}}})word(part+pair.first,word(definition+pair.second));
  }
@@ -73,6 +77,21 @@ bool HarborTutorialPacked::unitInitReady(){
   for(int32_t slot=0;slot<runtime.battle.capacity;++slot)if((runtime.battle.entries[slot].flags&1) && runtime.battle.entries[slot].id==id)return true;
   return false;};
  return packedBattleUnitInitReady(Battle,services);
+}
+uint32_t HarborTutorialPacked::runHitEvent(int32_t id,uint32_t code){
+ if(id<0 || id>=4 || !registered[size_t(id)])return 0;
+ return packedBattleRunHitEvent(word(Battle+0x20+4u*uint32_t(id)),code,nativeBattleUnitEventServices(vm));
+}
+uint32_t HarborTutorialPacked::runHitEventDirect(int32_t id,uint32_t code,uint32_t script){
+ if(id<0 || id>=4 || !registered[size_t(id)])return 0;
+ return packedBattleRunHitEventDirect(word(Battle+0x20+4u*uint32_t(id)),code,script,nativeBattleUnitEventServices(vm));
+}
+bool HarborTutorialPacked::hitEventsActive(){
+ for(unsigned id=0;id<4;++id)if(registered[id]){
+  const auto handle=word(word(Battle+0x20+4*id)+0x2b4);
+  if(handle)for(int32_t slot=0;slot<vm.battle.capacity;++slot)if((vm.battle.entries[slot].flags&1) && vm.battle.entries[slot].id==handle)return true;
+ }
+ return false; // Observation only: original cleanup ownership remains separate.
 }
 void HarborTutorialPacked::recordInit(int32_t id,uint32_t event){word(Units+uint32_t(id)*0x1000+0x288,event);}
 void HarborTutorialPacked::recordPhase(int32_t id,uint32_t event){word(Units+uint32_t(id)*0x1000+0x29c,event);}

@@ -999,3 +999,16 @@ add_executable(field_item_get_visual_tests tests/field_item_get_visual_tests.cpp
 target_link_libraries(field_item_get_visual_tests PRIVATE ttyd_core)
 add_test(NAME field_item_get_visual_original COMMAND field_item_get_visual_tests)
 set_tests_properties(field_item_get_visual_original PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+add_executable(harbor_tutorial_hit_tests tests/harbor_tutorial_hit_tests.cpp)
+target_link_libraries(harbor_tutorial_hit_tests PRIVATE ttyd_core)
+if(EXISTS "${CMAKE_SOURCE_DIR}/romfs/harbor-tutorial-events.pmevt")
+    add_test(NAME harbor_tutorial_hit_original COMMAND harbor_tutorial_hit_tests)
+    set_tests_properties(harbor_tutorial_hit_original PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+endif()
+
+# Complete source hit-code query wrappers.
+target_sources(ttyd_core PRIVATE source/battle_hit_code_events.cpp)
+add_executable(battle_hit_code_events_tests tests/battle_hit_code_events_tests.cpp)
+target_link_libraries(battle_hit_code_events_tests PRIVATE ttyd_core)
+add_test(NAME battle_hit_code_events COMMAND battle_hit_code_events_tests)

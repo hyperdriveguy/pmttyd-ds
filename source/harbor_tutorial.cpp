@@ -35,7 +35,7 @@ struct HarborTutorialRuntime {
  HarborTutorial* scene=nullptr;EventNativeRuntime vm;std::unique_ptr<HarborTutorialPacked> packed;
  void* resourceUser=nullptr;bool(*paperReady)(void*,uint32_t,int32_t)=nullptr;bool(*niceReady)(void*,int32_t)=nullptr;
  void* fadeUser=nullptr;void(*fadeEntry)(void*,int32_t,int32_t,uint32_t)=nullptr;bool(*fadeFinished)(void*)=nullptr;
- uint32_t initRoot=0,phaseRoot=0,attackRoot=0;uint64_t messagePoseSerial=0;bool openingDispatched=false;
+ uint32_t initRoot=0,phaseRoot=0,attackRoot=0,executingEvent=0,pendingEvent=0;uint64_t messagePoseSerial=0;bool openingDispatched=false,phaseInterrupted=false;
  std::array<uint64_t,3> completeEpoch{};std::array<bool,3> complete{};
  struct Interpolation{int32_t mode=0,start=0,end=0,limit=0,step=0;};
  std::unordered_map<uint32_t,Interpolation> interpolations;
@@ -58,10 +58,11 @@ struct HarborTutorialRuntime {
  bool exists(uint32_t id){for(int32_t i=0;i<vm.battle.capacity;++i)if(vm.battle.entries[i].id==id && (vm.battle.entries[i].flags&1))return true;return false;}
  bool tablePose(HarborTutorialActor& a,int32_t type){uint32_t table=a.id==1?source[11]:word(word(a.sourceKind+0xb8)+0x48);
  for(unsigned i=0;i<80;++i){const auto name=word(table+i*8+4);if(!name)break;if(word(table+i*8)==uint32_t(type)){a.pose=text(name);a.poseAt=scene->now;const auto slot=scene->visualSlot(a.id);if(slot>=0)complete[size_t(slot)]=false;return true;}}return false;}
- int pending(uint32_t function){if(!scene->pendingService)scene->pendingService=function;return 0;}
+ int pending(uint32_t function){if(!scene->pendingService){scene->pendingService=function;pendingEvent=executingEvent;}return 0;}
  int call(EventEntry& e,uint32_t function,bool first){
+ executingEvent=e.id;
  if(first){HarborTutorialRequest r{function,e.currentCommand,scene->now,e.owner,{}};for(unsigned i=0;i<e.argumentCount;++i)r.rawOperands.push_back(raw(e,i));scene->requests.push_back(std::move(r));}
- if(packed){packed->publish(*scene);int32_t result=0;if(packed->invoke(e,function,first?1:0,result)){packed->capture(*scene);if(result!=0 && scene->pendingService==function)scene->pendingService=0;return result;}}
+ if(packed){packed->publish(*scene);int32_t result=0;if(packed->invoke(e,function,first?1:0,result)){packed->capture(*scene);if(result!=0 && scene->pendingService==function){scene->pendingService=0;pendingEvent=0;}return result;}}
  if(function==0x80104498){const auto& a=scene->actors[actor(e)];if(a.heldItem!=0)return pending(function);if(scene->pendingService==function)scene->pendingService=0;output(e,1,0);return 2;}
  if(function==0x8011384c){output(e,0,(scene->battleFlags&uint32_t(raw(e,1)))!=0?1:0);return 2;}
  auto found=callbacks.find(function);if(found==callbacks.end())return pending(function);
@@ -139,12 +140,26 @@ void HarborTutorial::tick(uint64_t time,uint32_t keys,const BattlePadSample* phy
  const auto speakerSlot=visualSlot(speaker);
  if(message.poseRequestSerial!=r.messagePoseSerial && speakerSlot>=0){r.messagePoseSerial=message.poseRequestSerial;auto& a=actors[size_t(speakerSlot)];const auto& pose=message.poseRequest==MessagePlayback::PoseRequest::Talk?a.talkPose:a.stayPose;if(!pose.empty()){a.pose=pose;a.poseAt=message.poseRequestedAt;}}
  r.packed->samplePhysical(time,physical);r.packed->publish(*this);r.vm.gp.timestamp=now*eventClockRate(243000000);r.vm.runManager();r.packed->publish(*this);r.packed->capture(*this);
- if(!initialized && r.packed->unitInitReady()){initialized=true;dispatchPhase(1,0x04000001);r.openingDispatched=true;}
+ damageActive=r.packed->hitEventsActive();
+ if(!initialized && r.packed->unitInitReady())initialized=true;
+ if(initialized && !r.openingDispatched && dispatchPhase(1,0x04000001))r.openingDispatched=true;
  if(attackActive && !r.exists(r.attackRoot))attackActive=false;
- if(phaseActive && !r.exists(r.phaseRoot)){phaseActive=false;if(r.openingDispatched && phaseWord==0x04000001)introComplete=true;}
+ if(phaseActive && !r.exists(r.phaseRoot)){phaseActive=false;if(r.openingDispatched && !r.phaseInterrupted && phaseWord==0x04000001)introComplete=true;}
 }
-bool HarborTutorial::dispatchPhase(int32_t sourceTurn,uint32_t sourcePhase){if(!runtime_ || failed || !initialized || phaseActive || attackActive || !actors[0].phase)return false;turn=sourceTurn;phaseWord=sourcePhase;runtime_->phaseRoot=runtime_->root(actors[0].phase,CrumpId,0x20).id;runtime_->packed->recordPhase(CrumpId,runtime_->phaseRoot);phaseActive=true;return true;}
-bool HarborTutorial::dispatchInstalledAttack(int32_t id){const auto slot=visualSlot(id);if(!runtime_ || failed || !initialized || !introComplete || phaseActive || attackActive || (id!=CrumpId && id!=HelperId) || slot<0 || !actors[size_t(slot)].attack)return false;pendingService=0;runtime_->attackRoot=runtime_->root(actors[size_t(slot)].attack,id).id;runtime_->packed->recordAttack(id,runtime_->attackRoot);attackActive=true;return true;}
+bool HarborTutorial::dispatchPhase(int32_t sourceTurn,uint32_t sourcePhase){if(!runtime_ || failed || !initialized || phaseActive || attackActive || damageActive || !actors[0].phase)return false;turn=sourceTurn;phaseWord=sourcePhase;runtime_->phaseInterrupted=false;runtime_->phaseRoot=runtime_->root(actors[0].phase,CrumpId,0x20).id;runtime_->packed->recordPhase(CrumpId,runtime_->phaseRoot);phaseActive=true;return true;}
+bool HarborTutorial::dispatchInstalledAttack(int32_t id){const auto slot=visualSlot(id);if(!runtime_ || failed || !initialized || !introComplete || phaseActive || attackActive || damageActive || (id!=CrumpId && id!=HelperId) || slot<0 || !actors[size_t(slot)].attack)return false;pendingService=0;runtime_->attackRoot=runtime_->root(actors[size_t(slot)].attack,id).id;runtime_->packed->recordAttack(id,runtime_->attackRoot);attackActive=true;return true;}
+uint32_t HarborTutorial::dispatchHit(int32_t id,uint32_t code,uint32_t script,bool direct){
+ if(!runtime_ || failed || !actorById(id))return 0;
+ auto& r=*runtime_;r.scene=this;r.packed->publish(*this);
+ const auto root=direct?r.packed->runHitEventDirect(id,code,script):r.packed->runHitEvent(id,code);
+ bool interrupted=false;
+ if(phaseActive && !r.exists(r.phaseRoot)){r.phaseInterrupted=true;interrupted=true;}
+ if(attackActive && !r.exists(r.attackRoot)){attackActive=false;interrupted=true;}
+ if(interrupted || (r.pendingEvent && !r.exists(r.pendingEvent))){pendingService=0;r.pendingEvent=0;}
+ damageActive=r.packed->hitEventsActive();r.packed->capture(*this);return root;
+}
+uint32_t HarborTutorial::dispatchHitEvent(int32_t id,uint32_t code){return dispatchHit(id,code,0,false);}
+uint32_t HarborTutorial::dispatchDirectHitEvent(int32_t id,uint32_t code,uint32_t script){return dispatchHit(id,code,script,true);}
 bool HarborTutorial::readPackedWord(uint32_t address,uint32_t& value)const{return runtime_ && runtime_->packed && runtime_->packed->readWord(address,value);}
 void HarborTutorial::animationComplete(int32_t id){const auto slot=visualSlot(id);if(!runtime_ || slot<0)return;runtime_->complete[size_t(slot)]=true;runtime_->completeEpoch[size_t(slot)]=actors[size_t(slot)].poseAt;}
 }

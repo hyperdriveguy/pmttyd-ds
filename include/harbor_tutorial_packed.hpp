@@ -22,6 +22,9 @@ public:
  bool provisionFreshFieldInformation(uint32_t configuration,uint32_t expectedGroup,uint32_t expectedStage);
  bool registerActor(HarborTutorialActor&);
  bool unitInitReady();
+ uint32_t runHitEvent(int32_t id,uint32_t code);
+ uint32_t runHitEventDirect(int32_t id,uint32_t code,uint32_t script);
+ bool hitEventsActive();
  void recordInit(int32_t id,uint32_t event);void recordPhase(int32_t id,uint32_t event);void recordAttack(int32_t id,uint32_t event);
  void publish(const HarborTutorial&);void capture(HarborTutorial&);
  bool invoke(EventEntry&,uint32_t function,int32_t first,int32_t& result);
