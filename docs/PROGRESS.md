@@ -1,3 +1,91 @@
+## 2026-10-14 — Retained original icon geometry and two-screen composition
+
+Previous goal turn made progress on original icon materials/resources. Commit
+`36cdaa6c70380c77e4b5675184178ab68519e797` now binds the actual iconGX four-vertex
+provider to retained draw packets and replays completed passes after scene/HUD
+composition. [Contract](behavior/display/RETAINED_ICON_SCENE_REPLAY.md).
+The full user goal remains active; this is not playable tutorial/battle acceptance.
+
+Each runtime has a distinct retained identity token and draw-pass sequence, used
+only for native admission. They do not advance GP1c or simulation ticks. Actual
+CameraManager draw completion alone publishes the building pass. Waits preserve
+the previous completed pass; empty completion clears it; owner changes retire
+both. Quads copy XYZ/ST, material, raster/depth/viewport/scissor, image and actual
+position transform. Missing camera metadata holds scene quads. Stale sequences
+and unavailable/invalid state cannot acknowledge geometry. Both passes pin their
+GPU images;202 on-demand cache slots cover two100-item-plus-AP working sets.
+
+Camera4 replay follows the scene and audience on both screens; camera8 AP stays
+on top before fades. The independent scene uses the same published projection/
+view as its icons, retaining source roll/translation, with explicit source-unit,
+viewport and handheld aspect adapters. A held next pass cannot invalidate the
+lens needed by the previous published pass. Lower replay uses the existing
+centered320x240 audience continuation with a full lower raster domain. These are
+handheld presentation choices, not measured original second-screen behavior.
+Replays do not mutate canonical source GX state, bindings/cursors, clocks or RNG.
+No menu art/layout, input, original dialogue or audio was replaced.
+
+Validation used frozen `artifacts/battle-lens-qwwrj2n7`, baseline
+`6d0697dfbc61a255f5589828fa0478ece1b03a15` plus this feature's owned hunks/files.
+Audited1683 source/include/test/tool/build inputs with zero mismatches; manifest
+`artifacts/retained-icon-source-manifest.json`. Concurrent area-registry and
+other workspace edits were preserved. The entire merged working tree/current
+HEAD is not claimed tested as one source tree.
+
+Required `CMAKE_BUILD_PARALLEL_LEVEL=4 make test -o assets-ready` passed326/326
+C++ in35.40s and189/189 Python in27.036s, exit0. Log
+`artifacts/retained-icon-test-final-normal.log`. Required native `MAKEFLAGS=-j4
+TMPDIR=artifacts/tmp make all -o assets-ready BUILD=build-battle-lens
+TARGET=ttyd-battle-lens` exited0, normal main restored exactly; final log
+`artifacts/retained-icon-native-final-safe.log`. The last native-only sampler
+repair was checked by native rebuild/probe; host targets do not compile that
+renderer file. Normal3DSX SHA256
+`76b2aa798353a9000b839b762f4f7e9e3e494937de6b3d7b39f5857404eefedf`.
+Existing source warnings remain; no new production warning from this increment.
+Documentation checker passed1338 Markdown files, zero broken links.
+
+Initial full host run caught a missing private Frankly draw-textures sidecar;
+ASan located the test's null texture owner. Restored that sidecar byte-for-byte
+from the existing original c_kuri_h.tpl extraction. Integrating the newer camera
+commit also exposed the older door-data pack: refreshed it with the committed
+read-only ISO converter to include the original setup0 graph. Its100800-byte
+pack contains970 objects. Both dependency failures are resolved in the final
+suite. No test was disabled and no original asset bytes entered source history.
+See [ASSETS](ASSETS.md) for provenance and unchanged original rights restrictions.
+
+Excluded native fixture runs the real original iconGX/material/resource path,
+then supplies explicit test-owned completed/held passes and an orthographic
+placement. It uses original icon108 (teal A-button), not a fabricated HUD image.
+The final isolated Azahar probe exited0; inspected captures under
+`artifacts/azahar-retained-icons-safe`. Pixel assertions see436 non-background
+pixels above the seam and206 below for the same icon,642 each for two lower-only
+scene icons and the top AP icon, zero for a lower AP trap. Publishing the next
+held pass replaces the old icons; an empty completed pass clears both screens.
+Checker/output: `artifacts/retained-icon-pixel-check.py` and the profile's
+`pixel-check.json`. It does not certify normal source frame completion, original
+raster parity or New2DSXL performance. Screenshot60 App FPS is emulator evidence
+only. User emulator profiles/saves were untouched.
+
+The probe found actual native unmapped reads at0xc in the previous icon shader's
+C3D_TexBind(1/2,nullptr). Symbolization pins installed Citro3D1.7.1 TexGetType;
+null is not a supported disable operation there. The icon program now binds its
+same live image to unused samplers; its TEV program reads only TEX0. Final
+pre-termination log has zero unmapped accesses/native exceptions, with unchanged
+pixel assertions. First4-second capture was too early (0 App FPS); subsequent
+ready captures used15 seconds. Temporary fixture main was restored. Earlier
+probe logs with null-bind reads are retained as failure evidence, not acceptance.
+
+Next repair the other existing null texture binds in battle-class, item95,
+item-get and text renderer paths before claiming native hardware safety for
+those paths. Then close actual Main/camera cadence and all queued draw providers,
+GP counter ownership and original item present/receipt execution; connect the
+recovered harmful-item query/selection to physical X and optional lower-audience
+taps. Preserve the original command menu/HUD and physical alternatives. Whole
+original-frame actor/pose admission, source AP/HUD ordering, enabled fog/lit icon
+programs, original1x1 dummy resource, tutorial follow-ups, full command/turn/damage
+flow, actual SFX voices and finishing field restoration remain unfinished. No
+story success or battle completion is inferred from this rendering fixture.
+
 ## 2026-10-14 — Native original icon material programs
 
 Previous goal turn made progress with original icon resources and actual native
