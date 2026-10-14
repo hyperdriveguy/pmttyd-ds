@@ -1,5 +1,6 @@
 #include "message_playback.hpp"
 #include "message_assets.hpp"
+#include "actor_animation.hpp"
 #include <cassert>
 #include <cstdio>
 #include <iostream>
@@ -7,6 +8,12 @@ using namespace ttyd;
 int main(int argc,char**) {
     MessageFont font;
     if(argc>1){assert(font.load("romfs/font.pmfont"));MessageResource messages;assert(messages.load("romfs/messages/gor_00.txt"));
+        ActorAnimationPack indicator;assert(indicator.load("romfs/message-indicator.pmanim"));
+        const auto* pose=indicator.pose("HOS_C_1");assert(pose);
+        ActorAnimationSample start,middle,loop;assert(pose->evaluate(0,start) && pose->evaluate(10,middle) && pose->evaluate(80,loop));
+        assert(!start.vertices.empty() && start.vertices.size()==middle.vertices.size());
+        bool changed=false;for(size_t n=0;n<start.vertices.size();++n)changed|=start.vertices[n].x!=middle.vertices[n].x || start.vertices[n].y!=middle.vertices[n].y || start.vertices[n].u!=middle.vertices[n].u;
+        assert(changed);
         for(int i=14;i<=33;++i){char key[20];std::snprintf(key,sizeof(key),"mac_0_%03d",i);MessagePlayback p;
             assert(p.open(key,messages.find(key),font,0));unsigned waits=0;
             for(uint64_t ms=0;ms<120000 && p.active();ms+=17){if(p.waiting())++waits;p.tick(ms,0x100);}
@@ -23,6 +30,16 @@ int main(int argc,char**) {
         std::cout<<"20 harbor and 29 professor original payloads parse/play with original font and preserved bytes\n";return 0;
     }
     font.glyphs.resize(256,{0,0,10,22,{0,0}});for(unsigned i=0;i<256;++i)font.mapping[i]=i;
+    MessagePlayback indicatorGate;assert(indicatorGate.open("indicator","A<k>",font,0));
+    assert(!indicatorGate.canAdvanceText());
+    for(uint64_t ms=0;ms<1000 && !indicatorGate.waiting();ms+=17)indicatorGate.tick(ms,0);
+    assert(indicatorGate.canAdvanceText());
+    indicatorGate.windowType=5;assert(!indicatorGate.canAdvanceText());
+    indicatorGate.windowType=3;assert(indicatorGate.canAdvanceText());
+    indicatorGate.alpha=128;assert(!indicatorGate.canAdvanceText());indicatorGate.alpha=255;
+    indicatorGate.tick(1100,0x100);assert(!indicatorGate.canAdvanceText());
+    for(uint64_t ms=1101;ms<2000 && indicatorGate.active();ms+=17)indicatorGate.tick(ms,0);
+    assert(indicatorGate.complete() && !indicatorGate.canAdvanceText());
     MessagePlayback gated;assert(gated.open("gate","<dkey><wait 350>A</dkey>B",font,0));
     assert(gated.records[0].code==0xfff5 && gated.records[0].flags==1 && gated.records[0].schedule==0);
     assert(gated.records[2].code==0xfff5 && gated.records[2].flags==0 && gated.records[2].schedule==375);

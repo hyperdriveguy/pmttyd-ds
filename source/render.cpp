@@ -48,6 +48,13 @@ bool Renderer::init() {
     messageSystemVertices=(SystemVertex*)linearAlloc(sizeof(SystemVertex)*24);
     vertices=(Vertex*)linearAlloc(sizeof(Vertex)*MaxVertices);
     messageTailVertices=(Vertex*)linearAlloc(sizeof(Vertex)*12);
+    messageIndicatorVertices=(Vertex*)linearAlloc(sizeof(Vertex)*256);
+    if(!messageIndicatorVertices || !messageIndicatorAnimations.load("romfs:/message-indicator.pmanim"))return false;
+    FILE* indicatorFile=std::fopen("romfs:/message-indicator.t3x","rb");if(!indicatorFile)return false;
+    messageIndicatorTexture.imported=Tex3DS_TextureImportStdio(indicatorFile,&messageIndicatorTexture.texture,nullptr,false);std::fclose(indicatorFile);
+    if(!messageIndicatorTexture.imported)return false;
+    C3D_TexSetFilter(&messageIndicatorTexture.texture,GPU_LINEAR,GPU_LINEAR);
+    C3D_TexSetWrap(&messageIndicatorTexture.texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
     windowFrameVertices=(Vertex*)linearAlloc(sizeof(Vertex)*54*MaxWindowFrames);
     textBuffer=C2D_TextBufNew(8192);
     if(!vertices || !messageTailVertices || !windowFrameVertices || !messageSystemVertices || !textBuffer) return false;
@@ -663,6 +670,32 @@ void Renderer::originalMessage(const Game& g,const MessagePlayback* supplied) {
         const C2D_DrawParams params={{crop.x,crop.y,crop.width,crop.height},{0,0},.5f,0};
         C2D_DrawImage(image,&params,&tint);
     }
+    if(message.canAdvanceText())messageAdvanceIndicator(plan,g.ticks);
+}
+void Renderer::messageAdvanceIndicator(const MessageWindowPlan& plan,uint64_t ticks,bool onBottom) {
+    const auto* pose=messageIndicatorAnimations.pose("HOS_C_1");
+    if(!pose || !pose->evaluate(float(ticks),messageIndicatorSample) ||
+       messageIndicatorSample.vertices.size()>256-messageIndicatorCount)return;
+    const unsigned first=messageIndicatorCount;
+    const float rootX=plan.box.x+plan.box.width-52,rootY=plan.box.y-plan.box.height+31;
+    for(const auto& v:messageIndicatorSample.vertices) {
+        // Original animPoseDraw: yaw180, scale5; original model Y is up.
+        messageIndicatorVertices[messageIndicatorCount++]={200+(rootX-v.x*5)*MessageWindowScale,120-(rootY+v.y*5)*.5f,0,v.u,1-(1-v.v)*8,1,1,1,1};
+    }
+    C2D_Flush();C3D_BindProgram(&program);
+    auto* attrs=C3D_GetAttrInfo();AttrInfo_Init(attrs);
+    AttrInfo_AddLoader(attrs,0,GPU_FLOAT,3);AttrInfo_AddLoader(attrs,1,GPU_FLOAT,2);AttrInfo_AddLoader(attrs,2,GPU_FLOAT,4);
+    auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,messageIndicatorVertices,sizeof(Vertex),3,0x210);
+    GSPGPU_FlushDataCache(messageIndicatorVertices+first,sizeof(Vertex)*(messageIndicatorCount-first));
+    C3D_Mtx projection;Mtx_OrthoTilt(&projection,0,onBottom?320:400,240,0,-1,1,true);
+    C3D_FVUnifMtx4x4(GPU_VERTEX_SHADER,transformLoc,&projection);
+    C3D_CullFace(GPU_CULL_NONE);C3D_DepthTest(false,GPU_ALWAYS,GPU_WRITE_COLOR);
+    C3D_AlphaTest(true,GPU_GEQUAL,128);
+    C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_SRC_ALPHA,GPU_ONE_MINUS_SRC_ALPHA,GPU_ONE,GPU_ONE_MINUS_SRC_ALPHA);
+    for(int n=0;n<6;++n)C3D_TexEnvInit(C3D_GetTexEnv(n));
+    auto* env=C3D_GetTexEnv(0);C3D_TexEnvSrc(env,C3D_Both,GPU_TEXTURE0,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR);C3D_TexEnvFunc(env,C3D_Both,GPU_MODULATE);
+    C3D_TexBind(0,&messageIndicatorTexture.texture);C3D_DrawArrays(GPU_TRIANGLES,first,messageIndicatorCount-first);
+    C2D_Prepare();C2D_SceneBegin(onBottom?bottom:top);
 }
 void Renderer::messageIconImage(uint32_t id,uint64_t ticks,float centerX,float bottomY,float scale,uint8_t alpha) {
     const auto* icon=messageIcon(id);if(!icon)return;const auto& frame=icon->frame(ticks);
@@ -1035,7 +1068,7 @@ void Renderer::overlay(const Game& g) {
     }
     if(g.scene==Scene::Dialogue) {
         const auto plan=messageWindowPlan({},0,0,0,255);messageBorder(plan,255);
-        text(g.dialogue(),64,28,.5f,Ink);return;
+        text(g.dialogue(),64,28,.5f,Ink);messageAdvanceIndicator(plan,g.ticks);return;
     }
     panel(8,7,174,28,Paper);
     char line[128];std::snprintf(line,sizeof(line),"Mario  HP %d/10",g.progress.hp);text(line,16,12,.54f,Ink);
@@ -1181,6 +1214,7 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
     C2D_TextBufClear(textBuffer);
     C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
     windowFrameCount=0;
+    messageIndicatorCount=0;
     const bool battle=g.scene==Scene::Battle || g.scene==Scene::Victory || g.scene==Scene::Defeat;
     C3D_RenderTargetClear(top,C3D_CLEAR_ALL,battle?0xA6CBD8FF:0,0);
     C3D_FrameDrawOn(top);if(g.harborTutorial.running())worldTutorial(g);else world(g);
@@ -1221,6 +1255,8 @@ void Renderer::shutdown() {
     if(atlasReady) C3D_TexDelete(&atlas);
     if(vertices) linearFree(vertices);
     if(messageTailVertices) linearFree(messageTailVertices);
+    if(messageIndicatorVertices)linearFree(messageIndicatorVertices);
+    if(messageIndicatorTexture.imported){Tex3DS_TextureFree(messageIndicatorTexture.imported);C3D_TexDelete(&messageIndicatorTexture.texture);}
     if(windowFrameVertices)linearFree(windowFrameVertices);
     if(messageSystemVertices)linearFree(messageSystemVertices);
     for(auto* texture:{&messagePanel,&messageSystemPattern})if(texture->imported){Tex3DS_TextureFree(texture->imported);C3D_TexDelete(&texture->texture);}

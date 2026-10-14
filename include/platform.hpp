@@ -43,6 +43,10 @@ private:
     struct Vertex { float x,y,z,u,v,r,g,b,a; };
     Vertex* vertices=nullptr;
     Vertex* messageTailVertices=nullptr;
+    Vertex* messageIndicatorVertices=nullptr;
+    unsigned messageIndicatorCount=0;
+    ActorAnimationPack messageIndicatorAnimations;
+    ActorAnimationSample messageIndicatorSample;
     static constexpr unsigned MaxWindowFrames=64; // Native arena capacity, not an original manager limit.
     Vertex* windowFrameVertices=nullptr;
     unsigned windowFrameCount=0;
@@ -58,6 +62,7 @@ private:
     C2D_TextBuf textBuffer=nullptr;
     struct MapBatch { uint32_t start,count; int32_t texture; uint32_t layer,wrapS,wrapT; };
     struct Texture { C3D_Tex texture{}; Tex3DS_Texture imported=nullptr; };
+    Texture messageIndicatorTexture;
     std::unique_ptr<BattleStartupResources> tutorialStartupResources;
     std::array<Texture,9> tutorialStartupTextures;
     HarborTutorial* tutorialStartupOwner=nullptr;
@@ -144,7 +149,7 @@ private:
     struct FrontTexture {std::string name;Texture image;std::array<uint32_t,4> size{};};
     std::vector<FrontTexture> frontTextures;
     bool frontImage(const char*,float,float,float,float,uint8_t alpha=255);
-    void frontMessage(const MessagePlayback&);
+    void frontMessage(const MessagePlayback&,uint64_t ticks);
     Texture sky,characterTextures,partnerTextures,fontTexture,harborTexture,messageWindowTexture;
     Texture messagePanel,messageSystemPattern;
     std::array<Texture,8> messageSystemMasks;

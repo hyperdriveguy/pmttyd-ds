@@ -581,6 +581,22 @@ art or substituted sound is introduced. Source extraction stays read-only and
 all converted packs remain outside source history. Nintendo/Intelligent Systems
 assets carry no redistribution permission; no original files are committed.
 
+## Original textbox advance star (2026-10-13)
+
+`tools/message_indicator_assets.py` extracts original `a/hoshi_2` (offset904983748,
+size5908,SHA-25685b382b8a76cce944c20f8387c5b3d10b8d65a41b77f35e7dda60ca58eb9bfb1)
+and `a/hoshi_2-` from the read-only US ISO. It preserves `HOS_C_1` in ignored
+`romfs/message-indicator.pmanim`; original geometry and texture/node animation
+supply the advance star. The existing character converter resamples source
+textures into124px atlas cells with2px edge padding. Unused rows are removed
+from the ignored1024x128 `message-indicator.t3x`; native UV height scale is8.
+Ignored `local-assets/message-indicator/` contains extraction/atlas intermediates;
+`romfs/message-indicator.json` records both original resource paths/hashes,
+converter fingerprint and conversion. Original Nintendo/Intelligent Systems
+assets carry no redistribution permission and remain outside source history.
+Position/yaw/scale follow the original window indicator requests; animation phase
+uses native simulation ticks. See[native indicator](behavior/message/NATIVE_MESSAGE_ADVANCE_INDICATOR.md).
+
 ## Original dialogue bubble masks (2026-10-13)
 
 `tools/message_window_assets.py` reads `f/msgWindow.tpl` from the US ISO opened

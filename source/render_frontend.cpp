@@ -40,7 +40,7 @@ bool Renderer::frontImage(const char* name,float x,float y,float w,float h,uint8
     if(w>0 && h>0){C2D_ImageTint tint;C2D_PlainImageTint(&tint,rgb(255,255,255,alpha),0);C2D_DrawImageAt({&found->image.texture,&sub},x,y,0,&tint,w/z[0],h/z[1]);}
     return true;
 }
-void Renderer::frontMessage(const MessagePlayback& message) {
+void Renderer::frontMessage(const MessagePlayback& message,uint64_t ticks) {
     if(!message.active())return;
     const auto& font=harborMessageFont();
     uint32_t color=0x000000ff;
@@ -54,6 +54,10 @@ void Renderer::frontMessage(const MessagePlayback& message) {
         sub.top=1-glyph.y/256.f;sub.bottom=1-(glyph.y+glyph.height)/256.f;
         C2D_ImageTint tint;C2D_PlainImageTint(&tint,rgb(color>>24,(color>>16)&255,(color>>8)&255,message.alpha),1);
         C2D_DrawImageAt({&fontTexture.texture,&sub},x,y,0,&tint,scale,scale);
+    }
+    if(message.canAdvanceText()) {
+        MessageWindowPlan plan;plan.box={-368,132,576,244}; // Current bottom text area:16,54..304,176.
+        messageAdvanceIndicator(plan,ticks,true);
     }
 }
 bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const OpeningSequence* opening,const OpeningDemo& demo) {
@@ -188,6 +192,7 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,const OpeningSequenc
     if(phase!=frontPhase){releaseFrontend();frontPhase=phase;}
     C2D_TextBufClear(textBuffer);C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
     windowFrameCount=0;
+    messageIndicatorCount=0;
     C3D_RenderTargetClear(top,C3D_CLEAR_ALL,0,0);C3D_FrameDrawOn(top);C2D_Prepare();C2D_SceneBegin(top);
     uint8_t titleBlackPresented=0;uint32_t titlePresentedType=0;float titlePresentedFrame=-1,titlePresentedScale=0;
     int entryPresented=-1;uint8_t exitPresented=0;
@@ -256,7 +261,7 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,const OpeningSequenc
     C2D_Flush();C2D_TargetClear(bottom,Paper);C2D_Prepare();C2D_SceneBegin(bottom);
     if(f.screen==FrontScreen::Demo) {
         if(demo.message.active() && demo.speaker)text(demo.speaker==0x2040?"Peach":"Merchant",16,22,.5f,Ink);
-        frontMessage(demo.message);text(demo.waitingForTitle?"Demo ended: A / START":"A / START: title",16,211,.46f,Ink);
+        frontMessage(demo.message,demo.now*60/1000);text(demo.waitingForTitle?"Demo ended: A / START":"A / START: title",16,211,.46f,Ink);
         if(demo.failed)text("Opening resource unavailable",16,188,.46f,Red);
     } else if(f.screen==FrontScreen::Title)text("A / START: select a file",47,108,.6f,Ink);
     else if(f.screen==FrontScreen::Files) {
@@ -270,7 +275,7 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,const OpeningSequenc
         text("D-pad: select   A: play   B: title",16,195,.44f,Ink);
     } else {
         if(opening.message.active() && opening.speaker)text(opening.speaker==0x468?"Parakarry":"Luigi",16,22,.5f,Ink);
-        frontMessage(opening.message);
+        frontMessage(opening.message,opening.now*60/1000);
         if(opening.part==OpeningPart::Voyage)text("A / START: continue",16,195,.46f,Ink);
         else if(opening.message.waiting())text("A / B: next",16,195,.46f,Ink);
         if(opening.failed)text(opening.failure.c_str(),16,188,.40f,Red);

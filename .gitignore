@@ -44,6 +44,8 @@ romfs/*.pmshadow
 /romfs/font.pmfont
 /romfs/font.json
 /romfs/message-window.json
+/romfs/message-indicator.json
+/build-message-star-short/
 /romfs/harbor-actors.bin
 /romfs/harbor-actors.json
 /build-harbor-verify/

@@ -26,6 +26,7 @@ public:
     void tick(uint64_t now,uint32_t triggers);
     bool active() const{return state!=0;}
     bool waiting() const{return state==3;}
+    bool canAdvanceText() const{return waiting() && wait==1 && alpha==255 && windowType!=5;}
     bool complete() const{return state==0;}
     bool stopped() const{return state==2;} // Retained window after source once_stop.
     const std::string& id() const{return identity;}
