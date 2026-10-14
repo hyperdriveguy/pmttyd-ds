@@ -36,8 +36,10 @@ Effect, sound and audience requests are exposed to the scene. Full native
 particle/audio/audience playback remains unfinished; preserving requests is
 not evidence of visual playback or crowd state updates. The existing original
 HUD already reads live packed Mario resources. Physical pad sampling remains
-separate from dialogue A/B edges. This step adds no touch-only control, menu
-replacement, new game art, music, sound sample or dialogue.
+separate from dialogue A/B edges. The dedicated tutorial
+Mario pack now includes original M_D_1 alongside M_S_1/M_N_2; host decoding
+checks its visible geometry. This step adds no touch-only control, menu
+replacement, music, sound sample or dialogue.
 
 Evidence is host execution of source scripts and the existing static original
 US contracts, not Dolphin observation or measured timing. See

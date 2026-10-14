@@ -1965,3 +1965,17 @@ The read-only audio review identifies `sound/stream/ff_get2_32k.stm` for the
 key-item fanfare; no audio conversion or playable native routing is claimed here.
 Its source header loops, so original request/retirement semantics remain required:
 [audio contract](behavior/audio/FIELD_ITEM95_FANFARE_BGM_ROUTING_AND_QUERIES.md).
+
+## Original tutorial Mario damage pose (2026-10-14)
+
+Added M_D_1 to the dedicated tutorial pose selection in
+tools/harbor_tutorial_assets.py. Read-only ISO paths a/b_mario and a/a_mario-
+remain the source; extracted local-assets/harbor-tutorial/b_mario and
+a_mario.tpl and compiled romfs/harbor-tutorial-mario.{pmmesh,pmanim,t3x,bin,json}
+remain outside source history. Existing conversion retains original animation
+keys, node transforms, colors and UVs; atlas slots use128 pixels, then the
+power-of-two atlas is resized by Lanczos to512x256 and encoded RGBA8 with
+tex3ds automatic compression. The resulting three-pose pack uses24 textures
+and102 triangles per pose; this step adds no geometry reduction or lighting
+change. Native GPU admission/playback of M_D_1 has not been observed. Original
+Nintendo/Intelligent Systems resources retain no redistribution rights.

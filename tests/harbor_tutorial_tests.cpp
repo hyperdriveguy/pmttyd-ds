@@ -1,4 +1,5 @@
 #include "harbor_tutorial.hpp"
+#include "actor_animation.hpp"
 #include <cassert>
 #include <iostream>
 using namespace ttyd;
@@ -12,12 +13,16 @@ uint64_t prepareCrumpAttack(HarborTutorial& scene,int32_t hp){
  return tick;
 }
 void ordinaryCrumpImpact(){
+ ActorAnimationPack art;assert(art.load("romfs/harbor-tutorial-mario.pmanim"));
+ const auto* damagePose=art.pose("M_D_1");ActorAnimationSample damageSample;
+ assert(damagePose && damagePose->evaluate(0,damageSample) && !damageSample.vertices.empty());
  HarborTutorial scene;auto tick=prepareCrumpAttack(scene,7);
  BattlePadSample noInput;
  for(unsigned n=0;n<600 && scene.actors[1].hp==7 && !scene.failed;++n)scene.tick((++tick)*1000/60,0,&noInput);
  assert(!scene.failed && scene.actors[1].hp==6 && scene.result==0 && scene.damageActive);
  auto word=[&](uint32_t at){uint32_t value=0;assert(scene.readPackedWord(at,value));return value;};
  assert(word(0x84101208)==7 && word(0x8410120c)==6 && word(0x84101264)==1);
+ assert(word(0x84016f3c)==0x01000100);
  assert(word(0x84102284)==1 && word(0x84102280)==1 && (word(0x84101270)>>24)==1);
  assert(word(0x841012b4)!=0 && word(0x84101278)==0x10117);
  bool sourceFlags=false;for(const auto& request:scene.requests)if(request.function==0x8010a78c && request.owner==2){assert(request.rawOperands[4]==0x100);sourceFlags=true;}assert(sourceFlags);
