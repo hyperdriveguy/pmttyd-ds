@@ -9,6 +9,11 @@ requested; no independent research-agent ownership or completion claim is made.
 
 ## Open todos
 
+- [x] Complete InterruptStop flag10/20 callback and bounded original Escape
+  flag10 route — [escape publication](../behavior/battle/BATTLE_INTERRUPT_STOP_FLAGS_AND_ESCAPE_RESULT_ROUTE.md).
+  Raw gate/resolution/fresh owner, AC result-bit2 exclusion and terminal0 call
+  pinned;736 annotated DOL streams contain one call. Other4/5 domains open.
+
 - [x] Scoped ordinary ending admission from two turn wait gates and first-act
   index3 — [ending gates](../behavior/battle/BATTLE_END_ADMISSION_GATES_AND_CONCLUSION_CALLERS.md).
   Event barrier, ordered bank writes, audience request, dispatch bindings and
@@ -103,3 +108,19 @@ ten mathematical models and exhaustive ten-site DOL census checked; read-only
 ISO pins pass. Links/scoped diff pass. Docs only; no make rerun. Full controller/
 tutorial/death/override/ending/rewards/field/story/save/original execution remain
 OPEN. Raw listings/ELFs/generator stay /tmp.
+
+## 2026-10-13 — Escape-domain override publication
+
+[InterruptStop/Escape](../behavior/battle/BATTLE_INTERRUPT_STOP_FLAGS_AND_ESCAPE_RESULT_ROUTE.md)
+proves literal0 publishes flag10 with a nonzero raw call gate; operand1 publishes
+20 but its gameplay domain is not established. Escape's mask2-set AC result arm
+ends before publication; mask-clear continuation retains presentation/child
+waits before the terminal request. Result4 is reached only if higher-priority
+result branches do not override10. This does not label every4 escape or5 timeout.
+
+Validation:7 spans/80 anchors/one callback service; all30 callback words, scoped
+script boundaries/order,16 mathematical vectors and736-stream/one-call original
+DOL event census checked. ISO pins and existing IF/dispatcher verifiers pass;
+links/scoped diff pass. Docs only; no make rerun. Raw artifacts stay /tmp.
+Full Escape/tutorial admission/other writers/ending/reward/field/story/save and
+original execution stay OPEN; parent stays OPEN.

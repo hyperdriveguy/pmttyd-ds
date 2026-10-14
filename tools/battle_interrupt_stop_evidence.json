@@ -1,0 +1,265 @@
+{
+  "schema": 1,
+  "scope": "Complete InterruptStop and scoped Escape result-bit gate/terminal publication; annotated DOL event-stream census. Full escape helpers/controller/runtime and operand1 meaning open.",
+  "complete_bodies": [
+    "btlevtcmd_InterruptStop"
+  ],
+  "linked_only": [
+    "evtGetValue"
+  ],
+  "dol_spans": [
+    {
+      "name": "btlevtcmd_InterruptStop",
+      "address": 2148553576,
+      "size": 120,
+      "sha256": "25ca1dae2b0d61137f56593b1288d68270ad5237d121c5fbe1ca1d2453554d60"
+    },
+    {
+      "name": "evtGetValue",
+      "address": 2147684960,
+      "size": 1112,
+      "sha256": "ad7dce301c927dbc422a143f3ffb023aa32af8d4f3bb81c752fddc1b9e21bd7a"
+    },
+    {
+      "name": "btldefaultevt_Escape",
+      "address": 2150950820,
+      "size": 2628,
+      "sha256": "e23db21fd5323e55ed15b9e72e59a391d565ba605d4694cec2220aa965c6513c"
+    },
+    {
+      "name": "escape_result_bit_gate",
+      "address": 2150951836,
+      "size": 24,
+      "sha256": "49c80ca17c33b087e8f62eeeccaabbb0a7a890ae31fbc7f4a5007e44b9728348"
+    },
+    {
+      "name": "escape_failure_terminal",
+      "address": 2150953016,
+      "size": 24,
+      "sha256": "545b636c44d0a26d506dc25666bb1320fe74e5fc2d355f2eaff317ef09fea424"
+    },
+    {
+      "name": "escape_success_requests",
+      "address": 2150953216,
+      "size": 40,
+      "sha256": "938908eabc3cfdf76f620fbfa497ec0860b7a8e2bf494c9fab37990af8fbf188"
+    },
+    {
+      "name": "escape_interrupt_tail",
+      "address": 2150953336,
+      "size": 112,
+      "sha256": "e59d6c151bc06be9e28bf300ffec9ed12f66bebf9a0b1595b9b6152abc53405a"
+    }
+  ],
+  "dol_anchors": {
+    "2148553584": "90010014",
+    "2148553588": "93e1000c",
+    "2148553596": "80a30018",
+    "2148553600": "80850000",
+    "2148553604": "4bf2bedd",
+    "2148553612": "808d1c70",
+    "2148553616": "41820038",
+    "2148553624": "41820024",
+    "2148553628": "4080002c",
+    "2148553636": "40800008",
+    "2148553640": "48000020",
+    "2148553644": "80040ef4",
+    "2148553652": "90040ef4",
+    "2148553656": "48000010",
+    "2148553660": "80040ef4",
+    "2148553668": "90040ef4",
+    "2148553672": "80010014",
+    "2148553676": "38600002",
+    "2148553680": "83e1000c",
+    "2148553688": "38210010",
+    "2148553576": "9421fff0",
+    "2148553580": "7c0802a6",
+    "2148553592": "7c9f2378",
+    "2148553608": "2c1f0000",
+    "2148553620": "2c030001",
+    "2148553632": "2c030000",
+    "2148553648": "60000010",
+    "2148553664": "60000020",
+    "2148553684": "7c0803a6",
+    "2148553692": "4e800020",
+    "2150951836": "0002005b",
+    "2150951840": "80107660",
+    "2150951844": "fe363c86",
+    "2150951848": "0002001f",
+    "2150951852": "fe363c86",
+    "2150951856": "00000002",
+    "2150953016": "0002005b",
+    "2150953020": "8011389c",
+    "2150953024": "fe363c8f",
+    "2150953028": "00000002",
+    "2150953032": "00000021",
+    "2150953036": "0000006e",
+    "2150953216": "0001005b",
+    "2150953220": "80113abc",
+    "2150953224": "0003005b",
+    "2150953228": "8015235c",
+    "2150953232": "802ee8cc",
+    "2150953236": "00000000",
+    "2150953240": "0003005b",
+    "2150953244": "8010d860",
+    "2150953248": "fffffffe",
+    "2150953252": "f24aa280",
+    "2150953336": "00020032",
+    "2150953340": "fe363c8f",
+    "2150953344": "00000000",
+    "2150953348": "0003005b",
+    "2150953352": "8011384c",
+    "2150953356": "fe363c80",
+    "2150953360": "00400000",
+    "2150953364": "00020019",
+    "2150953368": "fe363c80",
+    "2150953372": "00000000",
+    "2150953376": "0001006f",
+    "2150953380": "fe363c8f",
+    "2150953384": "0001005e",
+    "2150953388": "8041b8c0",
+    "2150953392": "00000070",
+    "2150953396": "00000021",
+    "2150953400": "00020019",
+    "2150953404": "fe363c8f",
+    "2150953408": "00000000",
+    "2150953412": "0002005b",
+    "2150953416": "8011389c",
+    "2150953420": "fe363c8f",
+    "2150953424": "00000021",
+    "2150953428": "0002005b",
+    "2150953432": "80105368",
+    "2150953436": "00000000",
+    "2150953440": "00000002",
+    "2150953444": "00000001"
+  },
+  "direct_calls": [
+    {
+      "site": 2148553604,
+      "target": 2147684960,
+      "name": "evtGetValue"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "annotated_dol_event_census": {
+    "streams": 736,
+    "sites": [
+      {
+        "name": "btldefaultevt_Escape",
+        "address": 2150950820,
+        "size": 2628,
+        "site": 2150953428,
+        "operands": [
+          0
+        ],
+        "sha256": "e23db21fd5323e55ed15b9e72e59a391d565ba605d4694cec2220aa965c6513c"
+      }
+    ]
+  },
+  "callback_vectors": [
+    {
+      "gate": 0,
+      "operand": 0,
+      "before": 0,
+      "after": 0,
+      "return_value": 2
+    },
+    {
+      "gate": 0,
+      "operand": 1,
+      "before": 0,
+      "after": 0,
+      "return_value": 2
+    },
+    {
+      "gate": 1,
+      "operand": 0,
+      "before": 0,
+      "after": 16,
+      "return_value": 2
+    },
+    {
+      "gate": 1,
+      "operand": 1,
+      "before": 0,
+      "after": 32,
+      "return_value": 2
+    },
+    {
+      "gate": 1,
+      "operand": -1,
+      "before": 0,
+      "after": 0,
+      "return_value": 2
+    },
+    {
+      "gate": 1,
+      "operand": 2,
+      "before": 0,
+      "after": 0,
+      "return_value": 2
+    },
+    {
+      "gate": -1,
+      "operand": 0,
+      "before": 32,
+      "after": 48,
+      "return_value": 2
+    },
+    {
+      "gate": 2,
+      "operand": 1,
+      "before": 16,
+      "after": 48,
+      "return_value": 2
+    },
+    {
+      "gate": 1,
+      "operand": 0,
+      "before": 64,
+      "after": 80,
+      "return_value": 2
+    },
+    {
+      "gate": 1,
+      "operand": 1,
+      "before": 4294967295,
+      "after": 4294967295,
+      "return_value": 2
+    }
+  ],
+  "escape_bit_vectors": [
+    {
+      "result": 0,
+      "takes_failure_end": false,
+      "can_reach_interrupt_tail": true
+    },
+    {
+      "result": 1,
+      "takes_failure_end": false,
+      "can_reach_interrupt_tail": true
+    },
+    {
+      "result": 2,
+      "takes_failure_end": true,
+      "can_reach_interrupt_tail": false
+    },
+    {
+      "result": 3,
+      "takes_failure_end": true,
+      "can_reach_interrupt_tail": false
+    },
+    {
+      "result": 4,
+      "takes_failure_end": false,
+      "can_reach_interrupt_tail": true
+    },
+    {
+      "result": 4294967295,
+      "takes_failure_end": true,
+      "can_reach_interrupt_tail": false
+    }
+  ]
+}

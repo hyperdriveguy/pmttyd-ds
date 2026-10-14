@@ -2,6 +2,28 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — First-demo result Escape-domain override producer
+
+RESULT-01 portion checked; [InterruptStop/Escape](behavior/battle/BATTLE_INTERRUPT_STOP_FLAGS_AND_ESCAPE_RESULT_ROUTE.md)
+completes the raw-gated flag10/20 publisher and pins Escape's literal0 terminal
+request. AC result mask2-set arm ends before it; mask-clear continuation retains
+presentation/child waits. Fresh battle capture follows mandatory operand
+resolution. This proves an Escape-domain route to4 subject to higher priorities,
+not universal4/5 meanings or actual tutorial admission.
+
+Validation:7 spans/80 anchors/one service; all30 callback instructions, scoped
+Escape control/publication order,16 mathematical vectors and736 annotated DOL
+streams/one call checked read-only. ISO pins pass; existing IF predicates
+(22 bodies/416 anchors) and dispatcher tail (nine bodies/164 anchors) pass.
+Link audit passed1005 Markdown files/zero broken links; scoped diff passed.
+Docs only; no make test/all rerun. Raw ELF/listing/generator stay /tmp;
+concurrent native changes excluded. Approved push still awaits valid GitHub
+credentials; no retry after unchanged authentication failure.
+
+Next: other override/timer/tutorial restrictions, full ending/reward/field/story/
+save composition and original TRACE-01; DEMO-01 joins/reentry remain open.
+RESULT-01/demo/full-game remain OPEN.
+
 ## 2026-10-13 — First-demo result ending admission gates
 
 RESULT-01 scoped admission portion checked; [ending gates](behavior/battle/BATTLE_END_ADMISSION_GATES_AND_CONCLUSION_CALLERS.md)
