@@ -3751,3 +3751,14 @@ Consumed actual SlotInit/Main/End and mapheap ownership contracts. Native now al
 ### 2026-10-14 — Live gauge history and surviving-unit display prefix
 
 Bound source gauge initialization/Main and existing direct-damage timer/latch import/export. Restored alpha and part speed/color defaults, retaining live producers. Ending display now traverses actual alpha/gauge/size/status-effect/icon gates. Actual part204bit2 selects local-rate8004142c rather than the guessed status-pose selector. [Binding scope](../behavior/battle/NATIVE_HP_GAUGE_HISTORY_AND_DISPLAY_PREFIX.md). Next bind the recovered pose bank/entry/local-rate/SetAnim/Main and full display consumers/teardown; retain icon admission and old effect owners. Ordinary per-simulation gauge progression is a declared native harness ordering until full original manager cadence is bound.
+
+## 2026-10-14 — Battle part storage and source animation identities
+
+Closed the native overlapping Mario/Goombella part allocation. Imported genuine
+source descriptor0 defaults and retained complete original model directories.
+The documentation worker recovered
+[part entry, release and offset consumers](../behavior/display/BATTLE_PART_POSE_ENTRY_RELEASE_AND_OFFSET_SERVICES.md).
+Implementation still needs the retained256-pose,64-resource,64-texture owner,
+per-part source mode1 entry and exact SetAnim/rate/restart/release services;
+source lookup must distinguish unknown names from known unconverted poses.
+The existing animPoseSetLocalTimeRate8004142c display boundary stays pending.

@@ -40,6 +40,14 @@ int main(){
     const auto pivoted=BattleActorRotation({0,90,0},{100,0,0}).point({2,0,0});
     assert(std::fabs(pivoted[0]-1)<.00001f && std::fabs(pivoted[2]+1)<.00001f);
     assert(loadProfessorStoryAssets("romfs") && loadUndergroundStoryAssets("romfs") && loadTrioBattleAssets("romfs") && loadTrioAttackAssets("romfs"));
+    for(const auto& resource:std::array<std::pair<const char*,const char*>,2>{{
+        {"romfs/trio-attack-mario.pmanim","M_Z_1"},
+        {"romfs/trio-attack-goombella.pmanim","PKR_Z_1"}}}){
+        ActorAnimationPack bank;ActorAnimationSample sample;
+        assert(bank.load(resource.first));
+        const auto* fallback=bank.pose(resource.second);
+        assert(fallback && fallback->evaluate(0,sample) && !sample.vertices.empty());
+    }
     {
         auto pouch=createProloguePouch();assert(pouch);pouch->half(0x70,7);pouch->half(0x74,2);pouch->half(20,6);
         ProfessorStory entryScene;assert(entryScene.beginTrioBattleIntro(0));TrioBattleCommands entryMenu;assert(entryMenu.begin(entryScene));entryMenu.input(0x100,0);entryMenu.input(0x100,0);
@@ -64,6 +72,22 @@ int main(){
     assert(jump.readWord(0x841012a0,selectedRecord) && selectedRecord==0x80355cf0); // Selection precedes source event execution.
     jump.tick(17,scene);
     uint32_t value=0;assert(jump.readWord(0x8410116c,value) && value==20);
+    // Read the original three Mario definitions through their live links.
+    // Extra Mario parts must never overwrite Goombella's primary record.
+    const uint32_t marioParts[]{0x84201000,0x84200000,0x84200500};
+    assert(jump.readWord(0x84101014,value) && value==marioParts[0]);
+    for(unsigned i=0;i<3;++i){
+        const auto part=marioParts[i];
+        assert(jump.readWord(part,value) && value==(i<2?marioParts[i+1]:0));
+        assert(jump.readWord(part+4,value) && value==0x80372a18+0x4c*i);
+        assert(jump.readWord(part+0x4ec,value) && value==0x84101000);
+        assert(jump.readWord(part+0x208,value) && value==0x3f800000);
+        assert(jump.readWord(part+0x4f0,value) && value==0xffffffff);
+    }
+    assert(jump.readWord(0x84102014,value) && value==0x84202000);
+    assert(jump.readWord(0x84202000,value) && value==0);
+    assert(jump.readWord(0x84202004,value) && value==0x80393ba0);
+    assert(jump.readWord(0x842024ec,value) && value==0x84102000);
     assert(jump.readWord(0x84016ee0,value) && value==1); // Original active ambient record.
     assert(jump.readWord(0x84016f00,value) && value==1); // Separate active background record.
     assert(jump.readWord(0x84016f04,value) && value==0x8c8c0000);
@@ -386,7 +410,6 @@ int main(){
                 assert(charged.trioAttack.readWord(address+0x58,value) && value==0xff000000);
                 for(unsigned j=0;j<unsigned(count);++j)assert(charged.trioAttack.readWord(array+4*j,value) && value==slotWords[reel][j]);
             }
-
 
             const auto& engineRequests=charged.trioAttack.requests();
             constexpr uint32_t enginePrefix[]{0x800f7b28,0x8011a43c,0x8011f1ec,0x800fa5b0,0x80149798,0x801aa168,0x80139150,0x8013800c,0x802168a4,0x801a836c};

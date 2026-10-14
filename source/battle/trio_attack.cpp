@@ -524,8 +524,12 @@ struct TrioAttackRuntime {
                     word(u+0x28c,id==1?0x80417c38:0x80418480);word(u+0x2b0,id==1?0x80417c08:0x80393e68);
                     word(u+0x10,kind);byte(u+0xd,uint8_t(half(0x85000000+0x8a)));word(u+0x104,word(kind+0xac));word(u+0x18,word(kind+0xc0));
                     const uint32_t source=word(kind+0xb8);const unsigned count=byte(kind+0xb4);
+                    // Mario has three authored parts. Keep primary addresses
+                    // stable and place his extra parts in the unused unit0
+                    // partition; a third 0x500 record in unit1 overlaps unit2.
+                    const auto partAddress=[&](unsigned j){return id==1 && j?Parts+0x500*(j-1):p+0x500*j;};
                     for(unsigned j=0;j<count;++j) {
-                        const uint32_t record=source+0x4c*j,part=p+0x500*j;word(part,j+1<count?part+0x500:0);word(part+4,record);word(part+0x4ec,u);byte(part+0xbd,1);
+                        const uint32_t record=source+0x4c*j,part=partAddress(j);word(part,j+1<count?partAddress(j+1):0);word(part+4,record);word(part+0x4ec,u);byte(part+0xbd,1);
                         for(unsigned axis=0;axis<3;++axis){real(part+0x24+axis*4,real(record+0xc+axis*4));real(part+0x170+axis*4,real(record+0x18+axis*4));real(part+0x188+axis*4,real(record+0x24+axis*4));}
                         for(unsigned offset:{0x40u,0x44u,0x38u,0x3cu,0x48u})word(part+(offset==0x40?0x1ac:offset==0x44?0x1b0:offset==0x38?0x1b4:offset==0x3c?0x1b8:0x1bc),word(record+offset));
                     }
