@@ -1,3 +1,48 @@
+## 2026-10-14 — Opened book inside-cover framing
+
+Commits4dfec42d and2b62bdf3. User clarified that the green inside cover immediately after opening looked
+small. Source cover geometry/UV dimensions were intact; the closed-cover camera
+center left the opened spine at x98, clipping the left green cover to98 visible
+pixels while the right side occupied216. Commit4dfec42d adds an explicit native
+horizontal pan during opening, proportional to source angle/scale and hinge.
+At scale1.5/rotation180 the pan is102 pixels and spine x200; each inside cover
+has200 visible pixels. Closed cover/vertical FOV, original geometry, source
+artwork, narration order and simulation timing remain intact. This is a native
+framing adaptation, not a recovered original camera mutation.
+
+Turning-paper placement receives the same pan. Final zoom scales the pan and
+weights it by1-fade to return focus to the illustrated right page.
+GPU capture moves from110/0/193/240 to212/0/193/240; it still contains the entire
+193x240 crop, including five pixels beyond the visible screen for deformation.
+Untilting/crop projection and previous retained pages stay registered. Existing
+original assets/texture conversions/licensing remain as recorded in ASSETS.md;
+no source art, extracted payload or ISO writes were introduced.
+
+Validation: shared make test passed256/258 C++ checks, including both book tests.
+Unrelated trio_attack_original failed its cameraHistoryComplete/pendingFunction
+assertion at tests/trio_attack_tests.cpp:464; concurrent battle_action_class_table
+failed missing original romfs/battle-class-icons.bin at line74. Standalone Python
+passed145/145. Shared make all hit the concurrent uncommitted trouble-quest
+renderer compile error. Isolated committed snapshot artifacts/book-inside-review
+then passed make -o assets-ready all, reusing prepared private assets. Read-only
+US book/capture/camera8 verifier passed65 anchors. Logs are artifacts/book-inside-
+test.log, python.log, build.log, review-build.log and original.log respectively
+(the shared log basename prefixes are book-inside-). Binary source commit/SHA
+is retained in the snapshot manifest. No user profile/save mutations.
+
+Final book geometry/capture tests passed2/2 after the fade adjustment; native
+incremental make all passed (book-inside-final-tests.log/final-build.log).
+Isolated Azahar normal runs artifacts/azahar-book-inside and
+azahar-book-inside-final both completed all four turns and market/Peach handoff
+with exit0/no native exception. Reviewed green cover filling200px to the spine
+at native x200 (t46), turned paper and final Rogueport page, final zoom and Peach.
+Native snapshots/captures are private ignored artifacts. Physical hardware and
+original full raster parity remain unmeasured; existing cold IO stalls remain.
+The subsequent user report about turned-page width is under investigation;
+source A_1 frame180 bounds are x[-71.9395,-32] versus initial[-32,32], and the
+current capture-crop scale reduces its screen width further. Compare original
+runtime/projection before altering that deformation. Full remake stays open.
+
 ## 2026-10-14 — Original action-class descriptors and class-menu icon pack
 
 Committed `9a8a9d32`. Complete shared _btlcmd_MakeActClassTable now preserves

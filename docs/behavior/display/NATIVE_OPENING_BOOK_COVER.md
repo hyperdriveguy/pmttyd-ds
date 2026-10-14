@@ -38,6 +38,15 @@ The original vertical scale remains half size; the extra horizontal view reveals
 more of the book without stretching it. The desktop raster fills the screen at
 its original aspect, cropping above/below. Later camera mutations and original
 SDK/Gekko numeric parity remain open.
+The native framing now pans horizontally as the cover opens: half-size
+`(288/2-8)*scale*clamp(rotation/180,0,1)` pixels. At scale1.5/rotation180 this
+is102 pixels, placing the source hinge at screen x200 rather than x98. Each
+inside cover consequently has200 visible pixels instead of clipping the green
+left cover to98. This is an explicit native viewport adaptation, not a recovered
+original camera mutation or a change to source cover dimensions/UVs. The closed
+cover retains its previous position. Final adjustment scales this same pan with
+the book and multiplies it by1-fade, returning focus to the illustrated right
+page while the cover and captured paper stay registered.
 Final `adjust` snapshot ownership and native binding limits are described below.
 
 The native page-base consumer retains source .95×coverwidth and .95×coverheight,
@@ -65,12 +74,15 @@ are covered by the read-only verifier.
 The native renderer captures the old composition directly into a256x256 VRAM
 render texture. It repeats desktop, original cover/page/illustration and retained
 older paper draws with an untilted projection cropped to the same native
-rectangle110/0/193/240 (source124/0/386/480). There is no CPU framebuffer
+rectangle212/0/193/240 after the102-pixel opening pan (source124/0/386/480).
+The capture can include the five pixels beyond the visible right edge; the
+render target still contains the full source crop for subsequent deformation.
+There is no CPU framebuffer
 readback, rotation or Morton repack. The temporary render target owns its depth
 buffer; deleting it after FrameEnd waits for GPU completion, then publishes
 captureComplete. The page retains its texture independently until book cleanup.
 Original rune backs remain separate. Source clip-space adaptation is
-`x'=400/256*x-76/256*w`, `y'=240/256*y+16/256*w`.
+`x'=400/256*x-280/256*w`, `y'=240/256*y+16/256*w`, applied after the pan.
 Host tests compare this crop with the ordinary screen projection, including
 perspective cover rotations and homogeneous w. See
 [citro3d render-target lifecycle](https://github.com/devkitPro/citro3d/blob/master/source/renderqueue.c).
@@ -78,7 +90,8 @@ perspective cover rotations and homogeneous w. See
 The turning paper consumes the original capture-rectangle placement before the
 ImageBaseMatrix's global T(offsetX/10,offsetY/10)*S(scale/1.5). Final scaling is
 about the virtual image origin, not the crop's local hinge; offsets are outside
-the crop scale. An isolated frozen-frame0 native test compares the live page and
+the crop scale. The native opening pan is applied to both cover and paper.
+Before this framing change, an isolated frozen-frame0 native test compared the live page and
 its captured replacement: every crop pixel differs by at most2 RGB levels,
 mean absolute channel error0.0003742. This is an Azahar comparison of native
 paths, not an original-runtime or hardware observation.
