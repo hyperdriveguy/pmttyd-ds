@@ -2,6 +2,31 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Filed MENU-01 and PROGRESS-01 (full-game path)
+
+Filed two full-game requests on the G1 path, each grounded in native source, and
+added both rows to the [inbox](DOCUMENTATION_REQUESTS.md) and the
+[milestone request map](MILESTONES.md). [MENU-01](requests/MENU-01.md) — the
+original field pause menu: native `Menu` is only Status/Settings/Items
+(`source/game.cpp` handles those three; `README.md` maps Y to "save, item,
+sound"), so it asks for the entry table/order, per-entry enable conditions and
+the state each reads, navigation and pause ownership, input mapping, and whether
+the menu saves versus the save block. [PROGRESS-01](requests/PROGRESS-01.md) —
+character progression: native `struct Progress` has only `hp`/`mushrooms` and
+`jumpLevelFixture`/`hammerLevelFixture` are unbound, so it asks for the
+star-point producer, level-up curve and HP/FP/BP bonus selection, BP accounting
+and badge equipping, partner rank, presentation order and save round-trip.
+PROGRESS-01 is G1-only past D1 because the opening trio has a no-level-up tail.
+
+Validation: doc-link audit 1011 files / 0 broken; `git diff --check` clean; docs
+only, no make rerun. Limitation: commit `03e44c4` also carried a stray staged
+`Makefile` hunk (a trailing blank-line removal the docs agent had staged) because
+that commit wrote the whole index; the content is preserved and the docs agent's
+worktree was not touched. Next: await the
+DEMO-01/RESULT-01/GSF-01/TRACE-01/ITEM-01/PARTNER-FULL-01 answers (DEMO-01 and
+GSF-01 already have bounded deliveries) and verify any candidate fix against the
+ISO before applying it. Full-game incomplete.
+
 ## 2026-10-13 — First-demo result Escape-domain override producer
 
 RESULT-01 portion checked; [InterruptStop/Escape](behavior/battle/BATTLE_INTERRUPT_STOP_FLAGS_AND_ESCAPE_RESULT_ROUTE.md)
