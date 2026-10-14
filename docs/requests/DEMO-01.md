@@ -56,3 +56,10 @@ now pins233/236 save-notice order,1207 departure/story11 reload predicate and
 live/save-copy mapping. Source hashes/operands verified; original execution
 not claimed. This supplies part of persistent writes/reentry but does not close
 all scenes, joins or the complete playable-demo contract. DEMO-01 stays OPEN.
+
+## 2026-10-13 — Bounded battle-result producer prerequisite
+
+[Original result phase0](../behavior/battle/BATTLE_RESULT_PHASE0_PUBLICATION_AND_PRIORITY.md)
+now pins captured record/flag/conclusion priority and no-write path. Source
+checks passed; field nonzero wait is not exact victory. Full battle ending,
+scene joins, story advance/save-unblock and original execution remain OPEN.

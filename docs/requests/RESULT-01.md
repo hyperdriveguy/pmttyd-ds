@@ -9,6 +9,11 @@ requested; no independent research-agent ownership or completion claim is made.
 
 ## Open todos
 
+- [x] Exact local ending phase0 result publisher and complete set/get/
+  enemy-belong leaves — [result priority](../behavior/battle/BATTLE_RESULT_PHASE0_PUBLICATION_AND_PRIORITY.md).
+  Flag40→4,20→5,own conclusion→3,opponent→1,10→4/no-write priority and
+  captured record/getter order pinned; full ending and4/5 meanings open.
+
 - [ ] The original battle-end result record producer: which owner writes the
   result, in what order relative to unit death/end, and which values mean win,
   loss, flee and timeout.
@@ -42,3 +47,20 @@ flag/save-block map is [GSF-01](GSF-01.md).
 ## Answers and delivery notes (append-only history)
 
 No delivery yet.
+
+## 2026-10-13 — Verified common result publisher and priority
+
+[Phase0 publication](../behavior/battle/BATTLE_RESULT_PHASE0_PUBLICATION_AND_PRIORITY.md)
+registers the common producer already identified by underground recovery under
+RESULT-01, with fresh complete leaf/scoped source verification. Result1 requires
+opponent conclusion after override/own-loss priority; nonzero field-wait result
+is not victory proof. No-write retains prior record. Ready bit/sequence/field/
+story/save-unblock remain separate. Flag10/20/40 providers must establish flee/
+timeout semantics before4/5 receive those labels.
+
+Validation:10 spans/91 anchors/12 scoped calls;15 leaf+71 prefix words,
+16 mathematical vectors/masks/capture/five setter/get/table sites and exhaustive
+nine-site direct DOL census/fresh pins checked. Links/scoped diff passed.
+Docs only; no make rerun; raw artifacts stay /tmp. RESULT-01 stays OPEN:
+full conclusion/death/ending/override/reward/tutorial field/story/save and
+original-runtime/native real-result binding remain unproved.

@@ -1,0 +1,376 @@
+{
+  "schema": 1,
+  "scope": "Complete result set/get/enemy-belong leaves and scoped ending phase0 publication; pointer/flag/conclusion priority and direct setter census, death/meaning/teardown/story/runtime open",
+  "complete_bodies": [
+    "BattleInformationSetResult",
+    "BattleInformationGetResult",
+    "BtlUnit_GetEnemyBelong"
+  ],
+  "linked_only": [],
+  "dol_spans": [
+    {
+      "name": "BattleInformationSetResult",
+      "address": 2148615432,
+      "size": 8,
+      "sha256": "14eeca565fd73e7b238d88308f37562230345085ad6c2bf08fb3451accc5a98d"
+    },
+    {
+      "name": "BattleInformationGetResult",
+      "address": 2148615424,
+      "size": 8,
+      "sha256": "5ebd29690e1079ddfb16e1adf73e6b41f587953790b46035605cbc0d7484dba2"
+    },
+    {
+      "name": "BtlUnit_GetEnemyBelong",
+      "address": 2148693076,
+      "size": 44,
+      "sha256": "b53539b262b9fd2fbbb85efa7c5412e0459911ca5d3ac8015e96c1166b9a46ba"
+    },
+    {
+      "name": "btlseqEnd",
+      "address": 2149667380,
+      "size": 5232,
+      "sha256": "ea77420a93d18acc970cb2ad2402cea39b6fa7b3e72953ebc9bf5759113e0cb0"
+    },
+    {
+      "name": "pouchGetPtr",
+      "address": 2148359856,
+      "size": 8,
+      "sha256": "dbcd2f415efe4aa4e5684ee546cf73d97cc641b5a0290f1b46b14ab606786537"
+    },
+    {
+      "name": "_audience_Whistle_control",
+      "address": 2149656720,
+      "size": 124,
+      "sha256": "1b778194e6d6226a676c583463eecc29d2681940eab2e86376b7e0512d6dcb60"
+    },
+    {
+      "name": "BattleGetSeq",
+      "address": 2148501920,
+      "size": 104,
+      "sha256": "00dd741e83176881d659d4201d6c68033d217de3a408dce9965d23774520ab60"
+    },
+    {
+      "name": "btlsubResetMoveColorLvAll",
+      "address": 2148684696,
+      "size": 84,
+      "sha256": "e3663d0ba945f2d20724ae3eb4f97bcaad67260cbbe9300c8babb4c4b0303c23"
+    },
+    {
+      "name": "BattleGetMarioPtr",
+      "address": 2148501416,
+      "size": 108,
+      "sha256": "26840147b00e408e2cd371d8c23ddd7057de2da195881a7ab014b758fa28f869"
+    },
+    {
+      "name": "btlseqEnd dispatch table",
+      "address": 2151353480,
+      "size": 128,
+      "sha256": "507b55a359872ec1869869fdc284b0cfb39f5a04210b83a9682a3193cc90c665"
+    }
+  ],
+  "dol_anchors": {
+    "2148615432": "90830010",
+    "2148615424": "80630010",
+    "2148693076": "8863000c",
+    "2148693088": "41820018",
+    "2148693104": "38600001",
+    "2148693112": "38600000",
+    "2148615436": "4e800020",
+    "2148615428": "4e800020",
+    "2148693080": "7c630774",
+    "2148693084": "2c030001",
+    "2148693092": "4c800020",
+    "2148693096": "2c030000",
+    "2148693100": "4d800020",
+    "2148693108": "4e800020",
+    "2148693116": "4e800020",
+    "2149667380": "9421ffd0",
+    "2149667384": "7c0802a6",
+    "2149667388": "3c80803b",
+    "2149667392": "90010034",
+    "2149667396": "bf410018",
+    "2149667400": "7c7a1b78",
+    "2149667404": "3c608030",
+    "2149667408": "3ba4fbd0",
+    "2149667412": "3bc3e738",
+    "2149667416": "839a0f28",
+    "2149667420": "837a2738",
+    "2149667424": "4bec0c51",
+    "2149667428": "7c7f1b78",
+    "2149667432": "4bffd629",
+    "2149667436": "7f43d378",
+    "2149667440": "38800007",
+    "2149667444": "4bee372d",
+    "2149667448": "3c03f900",
+    "2149667452": "2800001f",
+    "2149667456": "41811404",
+    "2149667460": "3c60803b",
+    "2149667464": "5400103a",
+    "2149667468": "38630c88",
+    "2149667472": "7c03002e",
+    "2149667476": "7c0903a6",
+    "2149667480": "4e800420",
+    "2149667484": "7f43d378",
+    "2149667488": "4bf100f9",
+    "2149667492": "7f43d378",
+    "2149667496": "4bee3501",
+    "2149667500": "8b83000c",
+    "2149667504": "7f9c0774",
+    "2149667508": "4bf121a1",
+    "2149667512": "80ba0ef4",
+    "2149667516": "54a00673",
+    "2149667520": "41820014",
+    "2149667524": "7f63db78",
+    "2149667528": "38800004",
+    "2149667532": "4beff23d",
+    "2149667536": "48000078",
+    "2149667540": "54a006b5",
+    "2149667544": "41820014",
+    "2149667548": "7f63db78",
+    "2149667552": "38800005",
+    "2149667556": "4beff225",
+    "2149667560": "48000060",
+    "2149667564": "57801838",
+    "2149667568": "7c9a0214",
+    "2149667572": "8004000c",
+    "2149667576": "2c000000",
+    "2149667580": "41820014",
+    "2149667584": "7f63db78",
+    "2149667588": "38800003",
+    "2149667592": "4beff201",
+    "2149667596": "4800003c",
+    "2149667600": "54601838",
+    "2149667604": "7c7a0214",
+    "2149667608": "8003000c",
+    "2149667612": "2c000000",
+    "2149667616": "41820014",
+    "2149667620": "7f63db78",
+    "2149667624": "38800001",
+    "2149667628": "4beff1dd",
+    "2149667632": "48000018",
+    "2149667636": "54a006f7",
+    "2149667640": "41820010",
+    "2149667644": "7f63db78",
+    "2149667648": "38800004",
+    "2149667652": "4beff1c5",
+    "2149667656": "7f63db78",
+    "2149667660": "4beff1b5",
+    "2151353480": "8021529c",
+    "2147773548": "480cd89d",
+    "2147773564": "480cd88d",
+    "2147807184": "480c5539",
+    "2148615508": "4bffffb5"
+  },
+  "direct_calls": [
+    {
+      "site": 2149667424,
+      "target": 2148359856,
+      "name": "pouchGetPtr"
+    },
+    {
+      "site": 2149667432,
+      "target": 2149656720,
+      "name": "_audience_Whistle_control"
+    },
+    {
+      "site": 2149667444,
+      "target": 2148501920,
+      "name": "BattleGetSeq"
+    },
+    {
+      "site": 2149667488,
+      "target": 2148684696,
+      "name": "btlsubResetMoveColorLvAll"
+    },
+    {
+      "site": 2149667496,
+      "target": 2148501416,
+      "name": "BattleGetMarioPtr"
+    },
+    {
+      "site": 2149667508,
+      "target": 2148693076,
+      "name": "BtlUnit_GetEnemyBelong"
+    },
+    {
+      "site": 2149667532,
+      "target": 2148615432,
+      "name": "BattleInformationSetResult"
+    },
+    {
+      "site": 2149667556,
+      "target": 2148615432,
+      "name": "BattleInformationSetResult"
+    },
+    {
+      "site": 2149667592,
+      "target": 2148615432,
+      "name": "BattleInformationSetResult"
+    },
+    {
+      "site": 2149667628,
+      "target": 2148615432,
+      "name": "BattleInformationSetResult"
+    },
+    {
+      "site": 2149667652,
+      "target": 2148615432,
+      "name": "BattleInformationSetResult"
+    },
+    {
+      "site": 2149667660,
+      "target": 2148615424,
+      "name": "BattleInformationGetResult"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "direct_setter_census": [
+    {
+      "site": 2147773548,
+      "caller": "fbatBattleMode"
+    },
+    {
+      "site": 2147773564,
+      "caller": "fbatBattleMode"
+    },
+    {
+      "site": 2147807184,
+      "caller": "evt_npc_battle_start"
+    },
+    {
+      "site": 2148615508,
+      "caller": "BattleInformationInit"
+    },
+    {
+      "site": 2149667532,
+      "caller": "btlseqEnd"
+    },
+    {
+      "site": 2149667556,
+      "caller": "btlseqEnd"
+    },
+    {
+      "site": 2149667592,
+      "caller": "btlseqEnd"
+    },
+    {
+      "site": 2149667628,
+      "caller": "btlseqEnd"
+    },
+    {
+      "site": 2149667652,
+      "caller": "btlseqEnd"
+    }
+  ],
+  "derived_enemy_vectors": [
+    {
+      "belong": -128,
+      "enemy": -128
+    },
+    {
+      "belong": -1,
+      "enemy": -1
+    },
+    {
+      "belong": 0,
+      "enemy": 1
+    },
+    {
+      "belong": 1,
+      "enemy": 0
+    },
+    {
+      "belong": 2,
+      "enemy": 2
+    },
+    {
+      "belong": 127,
+      "enemy": 127
+    }
+  ],
+  "derived_result_vectors": [
+    {
+      "flags": 0,
+      "own_concluded": 0,
+      "enemy_concluded": 0,
+      "prior": 0,
+      "next": 0,
+      "writes": false
+    },
+    {
+      "flags": 0,
+      "own_concluded": 0,
+      "enemy_concluded": 0,
+      "prior": 7,
+      "next": 7,
+      "writes": false
+    },
+    {
+      "flags": 64,
+      "own_concluded": 1,
+      "enemy_concluded": 1,
+      "prior": 0,
+      "next": 4,
+      "writes": true
+    },
+    {
+      "flags": 32,
+      "own_concluded": 1,
+      "enemy_concluded": 1,
+      "prior": 0,
+      "next": 5,
+      "writes": true
+    },
+    {
+      "flags": 96,
+      "own_concluded": 0,
+      "enemy_concluded": 0,
+      "prior": 0,
+      "next": 4,
+      "writes": true
+    },
+    {
+      "flags": 0,
+      "own_concluded": 1,
+      "enemy_concluded": 1,
+      "prior": 0,
+      "next": 3,
+      "writes": true
+    },
+    {
+      "flags": 0,
+      "own_concluded": 0,
+      "enemy_concluded": 1,
+      "prior": 0,
+      "next": 1,
+      "writes": true
+    },
+    {
+      "flags": 16,
+      "own_concluded": 0,
+      "enemy_concluded": 0,
+      "prior": 0,
+      "next": 4,
+      "writes": true
+    },
+    {
+      "flags": 16,
+      "own_concluded": 1,
+      "enemy_concluded": 1,
+      "prior": 0,
+      "next": 3,
+      "writes": true
+    },
+    {
+      "flags": 16,
+      "own_concluded": 0,
+      "enemy_concluded": 1,
+      "prior": 0,
+      "next": 1,
+      "writes": true
+    }
+  ]
+}

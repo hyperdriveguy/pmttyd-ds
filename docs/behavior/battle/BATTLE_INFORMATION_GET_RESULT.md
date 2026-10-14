@@ -36,3 +36,10 @@ battle information structure tracks the outcome of a battle encounter
 - Full structure layout of the battle information record
 - Caller graph (who reads the result and when)
 - Relationship to `BattleInformationSetResult`
+
+## Verified producer/caller delivery (2026-10-13)
+
+[Ending phase0 priority](BATTLE_RESULT_PHASE0_PUBLICATION_AND_PRIORITY.md)
+now pins the common producer and all nine direct DOL setter requests. Complete
+leaf/scoped ending interpretation does not close every record writer, ending
+phase, override meaning or original tutorial execution.

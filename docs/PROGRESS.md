@@ -2,6 +2,26 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — First-demo inbox: battle result phase0 producer
+
+Completed result set/get/enemy-belong leaves and scoped initial end-phase
+publisher; RESULT-01 portion checked/DEMO-01 linked. [Result contract](behavior/battle/BATTLE_RESULT_PHASE0_PUBLICATION_AND_PRIORITY.md)
+registers existing common producer with fresh proof: captured I, flag40/20,
+own-loss before opponent-result1, fallback10/no-write and getter order. Field
+nonzero wait, ending ready bit, story and save-unblock remain distinct owners.
+No4/5 flee/timeout meaning or native outcome synthesized.
+
+Validation:10 spans/91 anchors/12 scoped calls; independent15 leaf+71 prefix
+words/16 vectors/masks/capture/five setter/get/table sites/exhaustive9-site DOL
+census/fresh pins passed. Link audit passed996 Markdown files/zero broken
+links; scoped diff passed. Docs only; no make test/all rerun; raw ELF/listings/
+generator stay /tmp. Concurrent native edits excluded. Approved push pending
+valid GitHub credentials.
+
+Next: ending-bank admission/conclusion/death/override writers and reward/ready/
+sequence/tutorial story/save-unblock composition; DEMO-01 cross-scene joins/
+reentry and original TRACE-01 execution. RESULT-01/demo/full-game remain OPEN.
+
 ## 2026-10-13 — Retained original three-window item selector owner
 
 Feature4cc7402 binds explicit-table template0 lifecycle in an area-independent
