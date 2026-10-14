@@ -25,7 +25,7 @@ uint32_t rgb(unsigned r,unsigned g,unsigned b,unsigned a=255) { return C2D_Color
 uint32_t shade(uint32_t c,float factor) { return rgb((c&255)*factor,((c>>8)&255)*factor,((c>>16)&255)*factor); }
 }
 bool Renderer::init() {
-    if(!loadItemPresentations("romfs:/item-presentations.bin"))return false;
+    if(!loadItemPresentations("romfs:/item-presentations.bin") || !loadItemSelectorAssets("romfs:"))return false;
     if(!C3D_Init(C3D_DEFAULT_CMDBUF_SIZE)) return false;
     c3dReady=true;
     if(!C2D_Init(2048)) return false;
@@ -56,8 +56,9 @@ bool Renderer::init() {
     C3D_TexSetFilter(&messageIndicatorTexture.texture,GPU_LINEAR,GPU_LINEAR);
     C3D_TexSetWrap(&messageIndicatorTexture.texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
     windowFrameVertices=(Vertex*)linearAlloc(sizeof(Vertex)*54*MaxWindowFrames);
+    windowFontVertices=(Vertex*)linearAlloc(sizeof(Vertex)*6*MaxWindowFontQuads);
     textBuffer=C2D_TextBufNew(8192);
-    if(!vertices || !messageTailVertices || !windowFrameVertices || !messageSystemVertices || !textBuffer) return false;
+    if(!vertices || !messageTailVertices || !windowFrameVertices || !windowFontVertices || !messageSystemVertices || !textBuffer) return false;
     for(unsigned i=0;i<10;++i) {
         std::string name=i==0?"panel":i==1?"system-pattern":std::to_string(40+i);
         auto& texture=i==0?messagePanel:i==1?messageSystemPattern:messageSystemMasks[i-2];
@@ -1017,6 +1018,10 @@ void Renderer::button(const char* label,float x,float y,float w,float h,bool act
     text(label,x+7,y+8,.48f,disabled?rgb(135,129,116):Ink);
 }
 void Renderer::overlay(const Game& g) {
+    if(g.itemSelection && g.itemSelection->owner.retained()) {
+        if(!itemSelector(*g.itemSelection))text("Development notice: item selector presentation unavailable",16,220,.42f,Ink);
+        return;
+    }
     if(g.harborTutorial.running()){battleHud(g);originalMessage(g);if(!tutorialReady || g.harborTutorial.failed || g.harborTutorial.introComplete)text(!tutorialReady?"Development notice: tutorial presentation unavailable":g.prompt(),25,112,.43f,Ink);return;}
     if(g.harborEncounter.locked()){originalMessage(g);if(g.harborEncounter.failed || g.harborEncounter.pendingService)text(g.prompt(),25,112,.43f,Ink);return;}
     if(g.saveObjects && (g.saveLocked() || g.saveObjects->presentation.message.active())) {
@@ -1210,6 +1215,7 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
     C2D_TextBufClear(textBuffer);
     C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
     windowFrameCount=0;
+    windowFontCount=0;
     messageIndicatorCount=0;
     const bool battle=g.scene==Scene::Battle || g.scene==Scene::Victory || g.scene==Scene::Defeat;
     C3D_RenderTargetClear(top,C3D_CLEAR_ALL,battle?0xA6CBD8FF:0,0);
@@ -1254,6 +1260,7 @@ void Renderer::shutdown() {
     if(messageIndicatorVertices)linearFree(messageIndicatorVertices);
     if(messageIndicatorTexture.imported){Tex3DS_TextureFree(messageIndicatorTexture.imported);C3D_TexDelete(&messageIndicatorTexture.texture);}
     if(windowFrameVertices)linearFree(windowFrameVertices);
+    if(windowFontVertices)linearFree(windowFontVertices);
     if(messageSystemVertices)linearFree(messageSystemVertices);
     for(auto* texture:{&messagePanel,&messageSystemPattern})if(texture->imported){Tex3DS_TextureFree(texture->imported);C3D_TexDelete(&texture->texture);}
     for(auto& texture:messageSystemMasks)if(texture.imported){Tex3DS_TextureFree(texture.imported);C3D_TexDelete(&texture.texture);}

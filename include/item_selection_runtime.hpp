@@ -55,7 +55,7 @@ struct ItemSelectionRowDraw {
     uint32_t nameColor=0x000000ff; // Item icons remain white; flags1 uses their gray service.
 };
 struct ItemSelectionClip {int32_t x=0,y=0,width=0,height=0;};
-struct ItemSelectionIconDraw {uint32_t icon=0;float x=0,y=0,z=1,scale=1;uint32_t camera=0;};
+struct ItemSelectionIconDraw {uint32_t icon=0;float x=0,y=0,z=1,scale=1;uint32_t flags=0;};
 // Pure source-space requests: retain all rows for the original scissor, rather
 // than throwing away easing rows outside an inferred eight-row visible range.
 bool itemSelectionListContents(const ItemSelectionRuntimeWindow&);
@@ -66,7 +66,7 @@ struct ItemSelectionArrows {std::array<ItemSelectionIconDraw,2> icons{};unsigned
 ItemSelectionArrows itemSelectionArrowDraws(const ItemSelectionMain&,
     const ItemSelectionRuntimeWindow&,uint32_t sourceFrameCounter);
 struct ItemSelectionTextDraw {
-    int32_t x=0,y=0;
+    float x=0,y=0;
     float scaleX=1,scaleY=1,widthLimit=0;
     uint32_t color=0;
     bool outlined=false;

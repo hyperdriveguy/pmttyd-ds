@@ -18,7 +18,7 @@ icon descriptors; see [item-table contract](ITEM_TABLE_SELECTION_WINDOW.md).
 
 | Request | Original arguments |
 | --- | --- |
-| Item icon | XYZ=(listX+35,listY-44-24*i+D,0), scale=(.5,.5,.5), RGBAffffffff |
+| Item icon | winIconSet, centered X/Y; XYZ=(listX+35,listY-44-24*i+D,0), scale=(.5,.5,.5), RGBAffffffff |
 | Name | XYZ=(listX+60,listY-32-24*i+D,0), scale=(1,1,1), width limit185, RGBA000000ff |
 | Disabled flag1 | Icon gray service; name RGBAa0a0a0ff |
 
@@ -55,18 +55,25 @@ requests; its post-command LF suppression still has the R-prefixed exception.
 ## Cursor and list arrows
 
 Cursor request at8023c894..c8cc copies a vector with Z=1, replaces X/Y with
-context cursor floats, and calls iconDispGx(vector,camera20,icon504,scale1).
+context cursor floats, and calls iconDispGx(vector,flags20decimal,icon504,scale1).
 This is not a window-manager transform applied to cursor coordinates.
+The second argument is packed flags20decimal, not a camera index (the earlier
+camera attribution is corrected). General iconDispGx uses current camera and
+a bottom-Y anchor; cursor flags14hex include X mirror4 and full-size16.
+See [exact icon services](../display/ITEM_SELECTOR_ICON_ANCHORS_AND_FLAGS.md).
 
 Only when rowCount>8 and (GP.word[1c]&31)<20:
 
-| Icon | Gate | XYZ | Scale / camera |
+| Icon | Gate | XYZ | Scale / flags |
 | --- | --- | --- | --- |
-| 445 above | firstVisible!=0 | (fusedSingle(float(listWidth)*.5+float(listX)),listY-36,1) | .6 /16 |
-| 446 below | firstVisible!=rowCount-8 | (sameX,listY-listHeight-12,1) | .6 /16 |
+| 445 above | firstVisible!=0 | (fusedSingle(float(listWidth)*.5+float(listX)),listY-36,1) | .6 /16decimal |
+| 446 below | firstVisible!=rowCount-8 | (sameX,listY-listHeight-12,1) | .6 /16decimal |
 
 Scale .6 is binary32 bits3f19999a. These draws follow heading after scissor
-restoration. The clock owner/cadence and icon animation producer remain separate.
+restoration. Flags16 skips source geometry reduction and applies an additional
+Y flip only when current camera differs from camera8. Window rows instead use
+explicit camera8 and centered unit quads; their20px top is anchorY+10.
+The clock owner/cadence and icon animation producer remain separate.
 
 ## Header requests and rectangle mutation
 
@@ -109,7 +116,7 @@ not apply to the two quest descriptions. Restore scissor(0,0,608,480), rather
 than restoring the previous rectangle.
 
 When manager lineCount+3c>2, help icons use X=helpX+helpWidth-12, Z=0,
-uniform scale .6 and camera16. Define topY=helpY-helpHeight+44,
+uniform scale .6 and packed flags16decimal (not camera16). Define topY=helpY-helpHeight+44,
 bottomY=helpY-helpHeight-4. Under (GP.word[1c]&31)<20:
 
 - page0: draw446 at bottomY only.
@@ -117,7 +124,7 @@ bottomY=helpY-helpHeight-4. Under (GP.word[1c]&31)<20:
 - otherwise: draw445 at topY then446 at bottomY.
 
 After those blink branches, always draw icon120 at Y=helpY-helpHeight+10
-when lineCount>2; it has the same X/Z/scale/camera. Icon120 is a separate
+when lineCount>2; it has the same X/Z/scale/flags. Icon120 is a separate
 original resource requirement, not an inferred controller substitute.
 
 ## Window-font wrapper and independent text services

@@ -16,6 +16,7 @@
 #include "battle_curtain_fade.hpp"
 #include "battle_startup_resources.hpp"
 #include "window_frame.hpp"
+#include "window_font.hpp"
 #include <memory>
 #include <3ds.h>
 #include <citro2d.h>
@@ -54,6 +55,14 @@ private:
     bool sourceWindowFrame(const WindowFrameMesh&,bool onBottom=false);
     void battleHud(const Game&);
     void battleMenuRows(const Game&);
+    static constexpr unsigned MaxWindowFontQuads=1024; // Native arena capacity.
+    Vertex* windowFontVertices=nullptr;
+    unsigned windowFontCount=0;
+    uint32_t windowFontRng=0x77666e74; // Presentation adapter; original global rand owner remains open.
+    bool sourceWindowFont(const char*,WindowFontConsumer,ItemSelectionTextDraw,const WindowFontStyle&,const ItemSelectionClip* clip=nullptr);
+    void selectorClip(const ItemSelectionClip*);
+    bool itemSelector(ItemSelectionPresentation&);
+    bool selectorIcon(uint32_t,uint64_t,float,float,float,uint32_t,bool centered=false);
     int count=0, transformLoc=0, marioPose=0;
     shaderProgram_s program{};
     C3D_Mtx worldTransform{};
@@ -247,6 +256,7 @@ private:
     void harborActors(const Game&);
     void originalMessage(const Game&,const MessagePlayback* supplied=nullptr,
                          const CameraPoint* speakerAnchor=nullptr,const CameraPoint* marioAnchor=nullptr);
+    void messageAdvanceIndicator(const MessageWindowPlan&,uint64_t ticks,bool onBottom=false);
     void messageBorder(const MessageWindowPlan&,uint8_t alpha,int type=0);
     int marioAirShadow(const FieldShadowRecord&);
     void shadow(Vec2 p,float radius,float floor=0);

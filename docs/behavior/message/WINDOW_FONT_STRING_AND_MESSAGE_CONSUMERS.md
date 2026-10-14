@@ -185,8 +185,14 @@ iconZ = +0
 
 The matrix variant calls PSMTXMultVec(inputMatrix,&position,&position) before
 iconDispGxAlpha. Direct-coordinate variant uses the formed position directly.
-Request iconDispGxAlpha(position,camera16,low16(ID),Q,currentDrawAlpha). Q is
-passed unchanged as icon scale, even for a scaled caller matrix; transformed
+Request iconDispGxAlpha(position,flags16decimal,low16(ID),Q,currentDrawAlpha). Q is
+passed unchanged as icon scale, even for a scaled caller matrix. This second
+argument is a packed flags word, not a camera index (earlier attribution
+corrected by [icon service recovery](../display/ITEM_SELECTOR_ICON_ANCHORS_AND_FLAGS.md)).
+General icon uses current camera and a bottom-Y anchor. Flags16 uses full
+descriptor dimensions and applies an additional Y flip when current camera
+differs from camera8. Selector rows separately call winIconSet centered in X/Y
+with explicit camera8; their scale.5 gives20px art at anchorY±10. Transformed
 position is not proof of a uniformly scaled icon sprite. Source service/matrix
 numerics and icon animation/material ownership are distinct dependencies.
 

@@ -1,4 +1,5 @@
 #pragma once
+#include "item_selection_presentation.hpp"
 #include "field_party.hpp"
 #include <array>
 #include <cstdint>
@@ -195,6 +196,7 @@ public:
     void updateTemporaryProfessor();
     size_t professorCameraCursor=0;
     FieldActorTalk fieldActorTalk;
+    std::shared_ptr<ItemSelectionPresentation> itemSelection;
     std::shared_ptr<FieldSaveObjects> saveObjects; // Stable key-service lifetime; replaced on room transactions.
     bool saveLocked() const{return saveObjects && saveObjects->locked();}
     void updateSaveObjects();

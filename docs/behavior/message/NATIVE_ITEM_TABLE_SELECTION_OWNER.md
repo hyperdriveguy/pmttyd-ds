@@ -51,8 +51,8 @@ allocation/lifetimes and effectful reentrant callbacks remain integration work.
 Plans retain every row for the source scissor, rather than dropping rows based
 on the selected eight-row range while displacement eases. Item icon anchors,
 name anchors/width and name black/disabled-gray colors remain separate from
-the icon's white/gray service. Cursor504 uses retained floats and camera20;
-list arrows use source fused X, original blink bits, camera16 and scale.6.
+the icon's white/gray service. Cursor504 uses retained floats and draw flags20 (including X mirror);
+list arrows use source fused X, original blink bits, draw flags16 and scale.6.
 Second argument0 does not request stripe447.
 
 Heading retains capped metric centering, the source low16 zero-extension,

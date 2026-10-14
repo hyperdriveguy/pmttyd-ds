@@ -69,10 +69,10 @@ int main() {
     const auto clip=itemSelectionRowsClip(selector.windows()[0]);
     assert(clip.x==280 && clip.y==158 && clip.width==300 && clip.height==190);
     const auto cursor=itemSelectionCursorDraw(main);
-    assert(cursor.icon==504 && cursor.x==-20 && cursor.y==-43 && cursor.z==1 && cursor.scale==1 && cursor.camera==20);
+    assert(cursor.icon==504 && cursor.x==-20 && cursor.y==-43 && cursor.z==1 && cursor.scale==1 && cursor.flags==20);
     auto arrows=itemSelectionArrowDraws(main,selector.windows()[0],19);
     assert(arrows.count==2 && arrows.icons[0].icon==445 && arrows.icons[0].x==126 && arrows.icons[0].y==80);
-    assert(arrows.icons[1].icon==446 && arrows.icons[1].y==-136 && arrows.icons[1].camera==16);
+    assert(arrows.icons[1].icon==446 && arrows.icons[1].y==-136 && arrows.icons[1].flags==16);
     assert(itemSelectionArrowDraws(main,selector.windows()[0],20).count==0);
     assert(itemSelectionArrowDraws(main,selector.windows()[0],31).count==0);
     assert(itemSelectionArrowDraws(main,selector.windows()[0],32).count==2);

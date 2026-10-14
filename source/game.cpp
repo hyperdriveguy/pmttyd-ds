@@ -1846,6 +1846,19 @@ void Game::tick(const Input& rawInput) {
         }
         return;
     }
+    if(itemSelection && itemSelection->owner.retained()) {
+        ItemSelectionInput selection;
+        if(i.physicalSnapshot) {
+            const auto& pad=inputProducer.channels[0];selection={pad.directionRepeat,pad.directionPressed,pad.pressed};
+        } else {
+            selection.buttons=(i.confirm?0x100u:0u)|(i.cancel?0x200u:0u);
+            selection.directionRepeat=selection.directionTrigger=i.z>.5f?0x2000u:i.z<-.5f?0x1000u:0;
+        }
+        if(tap)selection.buttons|=0x100;
+        itemSelection->tick(selection,TickRate,uint32_t(ticks));
+        if(fieldJump.airborne)dispatchFieldAir();
+        move(Input{});saveRequested=false;return;
+    }
     if(fieldActorTalk.message.active()) {
         if(fieldJump.airborne)dispatchFieldAir();
         move(Input{});

@@ -92,13 +92,13 @@ ItemSelectionTextDraw itemSelectionHeadingDraw(const ItemSelectionRuntimeWindow&
     const auto& r=window.rectangle;
     const float width=std::min(float(uint16_t(measured)),120.f);
     const int32_t center=int32_t((float(r.width)-width)*.5f);
-    return {r.x+int32_t(uint16_t(center)),r.y+14,1,1,120,0xffffffff,true};
+    return {float(r.x+int32_t(uint16_t(center))),float(r.y+14),1,1,120,0xffffffff,true};
 }
 ItemSelectionTextDraw itemSelectionHeaderDraw(const ItemSelectionRuntimeWindow& window,uint32_t measured,uint16_t lines,uint32_t palette) {
     const auto& r=window.rectangle;float width=float(uint16_t(measured)),scale=1;
     if(width>float(r.width-30)){scale=float(r.width-30)/width;width=float(r.width-30);}
     const int32_t center=int32_t((float(r.width)-width)*.5f);
-    return {r.x+int32_t(uint16_t(center)),r.y-(r.height-24*(int32_t(lines)+1))/2,
+    return {float(r.x+int32_t(uint16_t(center))),float(r.y-(r.height-24*(int32_t(lines)+1))/2),
         scale,1,0,palette,false};
 }
 void itemSelectionHeaderAfterDraw(ItemSelectionRuntimeWindow& window,uint16_t lines) {
@@ -107,7 +107,7 @@ void itemSelectionHeaderAfterDraw(ItemSelectionRuntimeWindow& window,uint16_t li
     window.rectangle.y=120+increase/2;window.rectangle.height=45+increase;
 }
 ItemSelectionTextDraw itemSelectionHelpDraw(const ItemSelectionRuntimeWindow& window,uint32_t palette) {
-    return {-210,int32_t(std::fma(28.f,float(window.helpPage),-144.f)),1,1,0,palette,false};
+    return {-210.f,float(int32_t(std::fma(28.f,float(window.helpPage),-144.f))),1,1,0,palette,false};
 }
 ItemSelectionHelpIcons itemSelectionHelpIconDraws(const ItemSelectionRuntimeWindow& window,uint32_t counter) {
     ItemSelectionHelpIcons result;if(window.helpLines<=2)return result;

@@ -274,7 +274,9 @@ Item records are itemDataTable803108a8 +40*U16(itemID); name key pointer+4,
 description key pointer+8, iconU16+20hex. Row flag1 requests gray icon/text;
 flag8 requests an extra icon154 before item icon. Explicit quest rows have0,
 so neither applies. Item icon scale vector is(0.5,0.5,0.5), producing20px
-art from the40px source textures. Name lookup uses msgSearch, not the debug
+art from the40px source textures. Rows call winIconSet, whose quad is centered
+in both X/Y, not the general iconDispGx bottom anchor; see
+[icon anchors and flags](../display/ITEM_SELECTOR_ICON_ANCHORS_AND_FLAGS.md). Name lookup uses msgSearch, not the debug
 Japanese item-name pointer+0. Numbered selector price/count columns are separate
 branches and do not apply to negative-address table selectors.
 
@@ -291,8 +293,13 @@ belong to a different key namespace. Full help arrow geometry/clock and text
 service behavior remain dependencies.
 
 Cursor icon504 draws at retained smooth cursor with scale1. Its source static
-request uses camera20. When rowCount>8, arrow blink admits GP.word[1c]&31<20,
-with icon445 for rows above and446 for rows below, source scale0.6. List stripe
+request uses packed flags20decimal (14hex), not camera20: it includes
+X mirroring and flags16 full geometry. General iconDispGx uses current camera;
+its quad is bottom anchored in Y. The earlier camera attribution is corrected
+by direct service recovery in the icon-anchor contract. When rowCount>8, arrow blink admits GP.word[1c]&31<20,
+with icon445 for rows above and446 for rows below, source scale0.6 and packed flags16decimal. The flags16 path uses full descriptor
+dimensions, and adds a Y flip only when current camera differs from camera8.
+List stripe
 icon447 and full header/border primitives are original additional draws;
 complete matched pixels still require the callback/backend parity audit.
 
