@@ -5334,3 +5334,58 @@ C2 red-to-alpha), actual current-map fog, then the source TEV program and origin
 indexed fan GPU submission. Keep part history/queue completion behind real draws.
 Full battle teardown/field return and remaining prologue indoor/event/story/image
 requirements remain unfinished. EVT-01 and the full goal stay active.
+
+### Original Bero pipe prefetch and flags/EXEC prefix (2026-10-14)
+
+Added the genuine two-phase8007a154 callback using actual event waitCount+78,
+including first-call reset before delayed provider admission. The mode0 helper
+preserves archive selection, unconditional group then texture requests, original
+32-byte-step ag2tg lookup and -1/0/positive readiness ordering. Both source pipe
+groups resolve actual shared p_slit. Added a reusable retained native cache with
+bounded cooperative ROMFS reads and explicit pending/error/complete ownership;
+missing resources never become invented source -1 success. No pose or GPU draw
+is acknowledged by raw file residency.
+
+The private source pipeline now extracts and validates unchanged a/ag2tg.bin,
+a/p_dokan_x,a/p_dokan_y,a/p_slit-:124908 bytes total,82924 requested payload bytes.
+Original hashes are pinned. Exact GP system-flag publication, EXEC-get and existing
+EXEC-onoff now advance genuine ordinary parent/child execution to pending Mario
+key_onoff800e7474. Read-only review caught and resolved delayed-first-call reset
+and previously unbound EXEC-get. Remaining actor callbacks hold honestly.
+
+Validation used frozen tree be14f8b5adf75ea366c666bec60432eb460164f2 in
+artifacts/source-checks/trouble-world. Original asset conversion exited0. Final
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test -o assets-ready exited0:309/309 C++ tests
+(53.52s) and179/179 Python tests (38.869s), log artifacts/area-prefetch-test-final.log.
+Final make all -j4 -o assets-ready SOUNDTRACK=gamecube exited0, log
+artifacts/area-prefetch-build-final.log; no compiler warnings in that log.
+Normal3DSX SHA256478acf19b6db11d1249facf1962e85edac2c90dc99482518cd7bf9ee02b791a3.
+Restored-source audit3355 tracked files, zero mismatches. Exact binary/log/pack/
+prefetch identities:artifacts/area-prefetch-validation-manifest.json. Concurrent
+unrelated shared edits are preserved and not claimed tested as one merged build.
+
+Isolated native probe exited0: original story402 sound-skip with explicit synthetic
+GP image; real parent/child reaches800e7474 after18 simulation calls, GP40000000,
+EXEC1,two live events,three unique resident files of41756/18576/22592 bytes.
+Log artifacts/area-prefetch-probe-smoke.log and private profile
+artifacts/azahar-area-prefetch-probe. Probe patch excluded; temporary main restored.
+This proves actual original-prefix progression and native file residency, not full
+area completion or exact original request latency. Default4096-byte chunks and
+native size limits are adaptation policy, not measured source constants.
+
+Normal isolated east→plaza/save assertions passed. Inspected captures retain the
+original field geometry, Mario/NPC sprites and UI. During concurrent validation,
+Azahar displays52 FPS/86% speed east and58 FPS/98% plaza; in-app counters show60
+simulation FPS with CPU7.3/5.5ms and GPU0.5ms respectively. No hardware performance
+or raster parity is established. No draw path changed; Game does not yet invoke
+the new shared-parent/prefetch path. User emulator profile/saves remain untouched.
+
+Next bind actual Mario key nesting, bgmode/camera flags and previous-party owners,
+then original attached initial_pos and full parent NPC setup. Connect real GP/
+checkpoint/world lifetimes and Game's separate Bero/Trouble VMs to the shared
+owner; finish house05, shared map heap/GW records and case activation. Raw group
+prefetch does not replace future model/texture pose binding. Documentation inbox,
+EVT-01 and the complete original events/NPCs/objects goal remain active.
+
+Implementation commit79842cd4. Documentation check:1308 Markdown files,zero
+broken links with tools/check_doc_links.py.

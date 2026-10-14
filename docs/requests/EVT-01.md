@@ -4419,3 +4419,14 @@ noLOD/noCI uses the resident Mario/Goombella packages; additional packages and
 samplers retain providers. Parsed TPL offsets are metadata, not owned raw pixel
 pointers. Fan geometry/history/queue completion and original frame validation
 remain open. Parent EVT-01 stays OPEN.
+
+### Original resource prefetch bound (2026-10-14)
+
+Implemented the documented two-phase8007a154 callback with actual waitCount,
+mode0 request ordering, original ag2tg lookup and real private group/shared-texture
+residency. The native adaptation uses bounded cooperative ROMFS reads, not DVD
+latency emulation. Exact system flags/EXEC get/onoff now advance ordinary original
+parent/child execution to800e7474 Mario key_onoff. See the
+[native prefetch contract](../behavior/display/NATIVE_ANIMATION_GROUP_PREFETCH.md).
+Next bind real Mario key nesting, bgmode/camera flags, previous party ownership
+and remaining parent NPC services; live Game/shared-area integration stays open.

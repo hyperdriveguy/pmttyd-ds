@@ -51,9 +51,11 @@ child locals to the parent: LW5=6 and LW3=8100011c; the retirement observation
 reports returned=false and zero live entries. This demonstrates prefix execution
 and cancellation, not successful completion of the full map initializer.
 
-The next callback8007a154 is asynchronous original p_dokan_x/y file prefetch,
-not a Mario field query. It remains unbound. Game still runs separate Bero and
-Trouble runtimes. Real GP/checkpoint ownership, native sound/prefetch, subsequent
+The originally unbound callback8007a154 now has a bounded
+[original-resource prefetch provider](../display/NATIVE_ANIMATION_GROUP_PREFETCH.md).
+The original flags/EXEC requests are also bound; ordinary arrival now stops at
+Mario key_onoff800e7474. Game still runs separate Bero and Trouble runtimes.
+Real GP/checkpoint ownership, native sound, subsequent
 Mario/party services, NPC setup/gazigazi, original house05 inline installer,
 shared map heap/GW lifetime and complete case activation remain required before
 using the full parent for live area loading. No story or dialogue is fabricated.

@@ -1061,3 +1061,17 @@ No source PPC text, ISO, generated pack or extracted asset is committed. No new
 art/HUD conversion, asset format, scaling or licensing choice. Validation reuses
 the prior isolated original packs; all generated material remains private under
 the existing asset provenance policy. ISO access remains read-only.
+
+### Original animation prefetch source payloads (2026-10-14)
+
+The door-data pipeline now invokes tools/animation_prefetch_assets.py. It reads
+only the supplied ISO and emits unchanged private romfs/field-prefetch/a files:
+a/ag2tg.bin41984 bytes, a/p_dokan_x41756, a/p_dokan_y18576, a/p_slit-22592.
+The fixed SHA256/FST provenance is recorded in the Bero prefix contract and
+romfs/field-prefetch/sources.json. Both groups resolve the actual shared p_slit
+alias from original table rows; no authored alias table or pixels are substituted.
+Native cooperative prefetch retains actual raw bytes; it performs no decode,
+pose registration, texture conversion or GPU upload. Payload residency82924 bytes
+plus table41984. ROMFS staging, source extracts, binaries and probe profiles stay
+ignored. Original Nintendo/Intelligent Systems assets remain locally licensed
+with no redistribution grant. No original asset bytes are committed.
