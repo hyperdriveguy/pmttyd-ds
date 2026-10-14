@@ -8,6 +8,10 @@
 #include <cstring>
 #include <map>
 #include <set>
+#include <filesystem>
+#include <fstream>
+#include <iterator>
+#include <cstdlib>
 using namespace ttyd;
 namespace {
 float scalar(uint32_t v){float f;std::memcpy(&f,&v,4);return f;}
@@ -17,6 +21,7 @@ struct Harness {
  EventCreationServices creation;uint32_t child=0,root=0;unsigned time=0;
  Harness(){game.progress.room=2;game.fieldMapFlags.synchronize(2);game.fieldBeroInfo.synchronize(2);
   assert(cache.open("romfs/field-prefetch") && area.begin(2,0));FieldAreaGpState image{};
+  std::memcpy(image.bytes.data()+0x12c-FieldAreaGpState::Begin,"gor_02",7);
   std::memcpy(image.bytes.data()+0x11c-FieldAreaGpState::Begin,"w_bero",7);
   image.bytes[0x176-FieldAreaGpState::Begin]=1;image.bytes[0x177-FieldAreaGpState::Begin]=146;
   const auto id=area.appendAreaInit(image);assert(id);root=*id;
@@ -37,6 +42,32 @@ struct Harness {
  }
  ~Harness(){deleteEventId(root,creation);}
 };
+// Raw source registry is independently copied into each VM, then registered.
+void battleRegistry(){
+ Harness a,b;assert(a.word(0x8030536c)==0x90540da8 && a.word(0x80305370)==0x90540f84);
+ assert(a.area.battleSetupConfiguration(0)==0x90540da8 && a.area.battleSetupConfiguration(-2)==0x90540da8 && a.area.battleSetupConfiguration(-1)==0);
+ assert(!a.area.battleSetupConfiguration(1) && !a.area.battleSetupConfiguration(5));
+ EventScriptAssets original;uint32_t v=1;assert(original.load("romfs/door-data.pmevt") && original.readWord(0x8030536c,v) && v==0);
+ assert(a.memory->writeWord(0x8030536c,0));assert(!a.area.battleSetupConfiguration(0) && b.area.battleSetupConfiguration(0)==0x90540da8);
+ assert(a.memory->writeWord(0x8030536c,0x90540da8));
+ assert(a.memory->writeByte(0x8100012c,'x'));assert(!a.area.battleSetupConfiguration(0) && a.area.battleSetupConfiguration(-1)==0);assert(a.memory->writeByte(0x8100012c,'g'));
+ // Admission safely rejects malformed live registry pointers before source calls.
+ const auto first=a.word(0x803057ec);assert(a.memory->writeWord(0x803057ec,0xdead0000));assert(!a.area.battleSetupConfiguration(0));assert(a.memory->writeWord(0x803057ec,first));
+ assert(a.memory->writeWord(0x80415fd0,0x82070000));for(unsigned i=0;i<3;++i)assert(a.memory->writeByte(0x8207012c+i,uint8_t("gor"[i])));assert(a.area.battleSetupConfiguration(0)==0x90540da8);assert(a.memory->writeWord(0x80415fd0,0x81000000));
+ char temporary[]="/tmp/pm-area-battle-XXXXXX";const auto* made=mkdtemp(temporary);assert(made);const std::filesystem::path dir=made;
+ for(const char* file:{"door-data.pmevt","field-area-init.bin","field-area-events.bin","field-area-battle.bin"})std::filesystem::copy_file(std::filesystem::path("romfs")/file,dir/file);
+ // Unsupported row1 in candidate metadata cannot replace the valid global pack.
+ {std::fstream f(dir/"field-area-battle.bin",std::ios::in|std::ios::out|std::ios::binary);f.seekp(12+16);const char one[4]={1,0,0,0};f.write(one,4);assert(f);}
+ assert(!loadFieldAreaEventAssets(dir.c_str()));
+ {std::fstream f(dir/"field-area-battle.bin",std::ios::in|std::ios::out|std::ios::binary);f.seekp(12+16);const char zero[4]={};f.write(zero,4);assert(f);}
+ std::ifstream input(dir/"door-data.pmevt",std::ios::binary);std::vector<char> bytes{std::istreambuf_iterator<char>(input),std::istreambuf_iterator<char>()};input.close();
+ auto u=[&](size_t a){return uint32_t(uint8_t(bytes[a]))<<24|uint32_t(uint8_t(bytes[a+1]))<<16|uint32_t(uint8_t(bytes[a+2]))<<8|uint8_t(bytes[a+3]);};
+ auto patch=[&](uint32_t address,uint32_t value){bool found=false;for(unsigned i=0;i<u(8);++i){const auto at=12+12*i,base=u(at),size=u(at+4),offset=u(at+8);if(base<=address && uint64_t(address)+4<=uint64_t(base)+size){for(unsigned j=0;j<4;++j)bytes[offset+address-base+j]=char(value>>(24-8*j));found=true;break;}}assert(found);std::ofstream out(dir/"door-data.pmevt",std::ios::binary);out.write(bytes.data(),bytes.size());assert(out);};
+ patch(0x90540fb4,0x9040a180);assert(!loadFieldAreaEventAssets(dir.c_str())); // Missing number-list terminator.
+ patch(0x90540fb4,0);patch(0x90540f84,0xdead0000);assert(!loadFieldAreaEventAssets(dir.c_str())); // Unreadable number name.
+ Harness retained;assert(retained.area.battleSetupConfiguration(0)==0x90540da8 && !a.area.failed && !b.area.failed);
+ std::filesystem::remove_all(dir);
+}
 // Deliberate host-only world fixture. It proves real setup scheduling/metadata;
 // it supplies no native Game registration, battle RNG, pose or resource service.
 void sharedNpcSetup() {
@@ -70,7 +101,7 @@ void sharedNpcSetup() {
 
 }
 int main(){assert(loadFieldAreaEventAssets("romfs") && loadFieldMapFlagAssets("romfs") && loadFieldBeroInfoAssets("romfs") && loadWarps("romfs/rooms.bin"));
- sharedNpcSetup();
+ battleRegistry();sharedNpcSetup();
  clearCollision();Harness h;h.bind();h.tick();assert(h.area.pendingFunction==0x80079b74 && !h.game.fieldRecoveryWords[0]);
  {CollisionTransition wrong;assert(wrong.load("romfs/map",0));Game other(false);other.fieldMapFlags.synchronize(0);h.s.geometry=other.fieldBeroGeometry();h.tick();assert(h.area.pendingFunction==0x80079b74 && !h.game.fieldRecoveryWords[0]);}h.s.geometry=h.game.fieldBeroGeometry();
  {CollisionTransition room;assert(room.load("romfs/gor_02",2));

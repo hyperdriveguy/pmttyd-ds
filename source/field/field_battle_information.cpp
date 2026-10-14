@@ -48,6 +48,13 @@ void registerPackedBattleArea(const char* name,uint32_t table,uint32_t numbers,c
  const auto record=packedBattleAreaData(name,s,registry);if(!record)return;
  assert(s.memory.storeWord);s.memory.storeWord(s.memory.user,record+8,table);s.memory.storeWord(s.memory.user,record+0xc,numbers);
 }
+int32_t packedBattleSetupNumber(uint32_t table,const char* name,const BattleActorServices& s){
+ const auto& m=s.memory;assert(name && m.word && s.byte);
+ for(auto entry=table;;entry+=8){auto text=m.word(m.user,entry);if(!text)return 0;
+  const auto* expected=reinterpret_cast<const uint8_t*>(name);
+  for(;;++text,++expected){const auto actual=s.byte(s.user,text);if(actual!=*expected)break;if(!actual)return signedWord(m.word(m.user,entry+4));}
+ }
+}
 void setPackedNpcBattleInformation(uint32_t npc,int32_t index,const PackedNpcBattleSetupServices& s,uint32_t registry){
  const auto& m=s.memory.memory;assert(m.word && m.storeWord && s.memory.byte);
  uint32_t configuration=0;

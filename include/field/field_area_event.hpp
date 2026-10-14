@@ -67,6 +67,10 @@ public:
  std::optional<uint32_t> areaInitEventId() const;
  bool eventAlive(uint32_t) const;
  uint32_t liveEventCount() const;
+ // Registered module's supported numeric row, using fresh GP prefix/registry.
+ // -1 returns an engaged null configuration; other negatives select row0.
+ // This proves module/row availability only, not actor/pose/RNG admission.
+ std::optional<uint32_t> battleSetupConfiguration(int32_t index) const;
  std::optional<uint32_t> appendDoorEntry(uint32_t entryIndex,const std::array<int32_t,16>&);
  void tick(uint64_t milliseconds,const FieldAreaEventServices&);
  uint32_t doorEntryCount() const;

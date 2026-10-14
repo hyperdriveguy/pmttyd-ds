@@ -6,6 +6,8 @@
 #include "field_bero_info.hpp"
 #include "field_bero_exec.hpp"
 #include "event_native_runtime.hpp"
+#include "battle_event_callbacks.hpp"
+#include "field_battle_information.hpp"
 #include "event_memory_bootstrap.hpp"
 #include "event_lifecycle.hpp"
 #include <cassert>
@@ -16,9 +18,19 @@
 namespace ttyd {
 namespace {
 struct DoorProgram {uint32_t room,script,record;};
-struct Program {EventScriptAssets scripts;std::vector<DoorProgram> entries;std::vector<std::array<uint32_t,2>> initializers;};
+struct BattleRegistration {uint32_t room,name,setup,numbers,first,count;};
+struct Program {EventScriptAssets scripts;std::vector<BattleRegistration> battles;std::vector<DoorProgram> entries;std::vector<std::array<uint32_t,2>> initializers;};
 std::shared_ptr<const Program> assets;
 int32_t signedWord(uint32_t v){return v<=INT32_MAX?int32_t(v):int32_t(int64_t(v)-0x100000000LL);}
+bool battleNumbersReadable(const EventScriptAssets& scripts,uint32_t table){
+ for(unsigned i=0;i<256;++i){const uint64_t entry=uint64_t(table)+8*i;uint32_t name=0,value=0;
+  if(entry+8>0x100000000ULL || !scripts.readWord(uint32_t(entry),name) || !scripts.readWord(uint32_t(entry)+4,value))return false;
+  if(!name)return true;
+  bool ended=false;for(unsigned j=0;j<64;++j){uint8_t byte=0;if(uint64_t(name)+j>=0x100000000ULL || !scripts.readByte(name+j,byte))return false;if(!byte){ended=true;break;}}
+  if(!ended)return false;
+ }
+ return false;
+}
 uint32_t bits(float v){uint32_t out;std::memcpy(&out,&v,4);return out;}
 }
 bool loadFieldAreaEventAssets(const char* root) {
@@ -39,6 +51,31 @@ bool loadFieldAreaEventAssets(const char* root) {
  for(unsigned n=0;ok && n<count;++n){std::array<uint32_t,2> e{};uint32_t word=0;ok=std::fread(e.data(),sizeof(e),1,f)==1 && e[0]<=65535 && !(e[1]&3) && next->scripts.readWord(e[1],word) && word==0x00010022;
   for(const auto& prior:next->initializers)if(prior[0]==e[0])ok=false;
   if(ok)next->initializers.push_back(e);
+ }
+ ok=ok && std::fgetc(f)==EOF;std::fclose(f);if(!ok)return false;
+ // Validate the original registry before publishing the candidate assets.
+ for(unsigned i=0;i<=33;++i){uint32_t record=0,name=0,a=0,b=0;uint8_t c=0;
+  if(!next->scripts.readWord(0x803057ec+4*i,record))return false;
+  if(i==33){if(record)return false;break;}
+  if(!record || !next->scripts.readWord(record,name) || !name || !next->scripts.readWord(record+8,a) || !next->scripts.readWord(record+12,b) || a || b)return false;
+  for(unsigned j=0;j<4;++j)if(!next->scripts.readByte(name+j,c) || (j<3 ? c<'a' || c>'z' : c!=0))return false;
+ }
+ f=std::fopen((base+"/field-area-battle.bin").c_str(),"rb");if(!f)return false;
+ ok=std::fread(magic,8,1,f)==1 && !std::memcmp(magic,"PMFABT01",8) && std::fread(&count,4,1,f)==1 && count && count<=256;
+ for(unsigned i=0;ok && i<count;++i){BattleRegistration e{};uint32_t word=0;uint8_t byte=0;char name[4]{};
+  ok=std::fread(&e,sizeof(e),1,f)==1 && e.room<=65535 && !(e.name&3) && !(e.setup&3) && !(e.numbers&3) && e.count && uint64_t(e.first)+e.count<=0x80000000ULL;
+  for(unsigned j=0;ok && j<4;++j){ok=next->scripts.readByte(e.name+j,byte) && (j<3 ? byte>='a' && byte<='z' : byte==0);name[j]=char(byte);}
+  bool found=false;
+  for(unsigned j=0;ok && j<33;++j){uint32_t record=0,text=0;ok=next->scripts.readWord(0x803057ec+4*j,record) && next->scripts.readWord(record,text);bool equal=true;
+   for(unsigned k=0;ok && k<4;++k){ok=next->scripts.readByte(text+k,byte);equal=equal && byte==uint8_t(name[k]);}if(equal)found=true;
+  }
+  ok=ok && found && battleNumbersReadable(next->scripts,e.numbers);
+  // Native finite-profile admission; count does not assert the source table's full size.
+  for(uint64_t j=0;ok && j<e.count;++j){const uint64_t row=uint64_t(e.setup)+0x44*(e.first+j);ok=row+0x44<=0x100000000ULL && next->scripts.readWord(uint32_t(row),word) && word;
+   for(unsigned k=4;ok && k<0x44;k+=4)ok=next->scripts.readWord(uint32_t(row)+k,word);
+  }
+  for(const auto& prior:next->battles)if(prior.room==e.room)ok=false;
+  if(ok)next->battles.push_back(e);
  }
  ok=ok && std::fgetc(f)==EOF;std::fclose(f);if(!ok)return false;
  assets=std::move(next);return true;
@@ -234,6 +271,10 @@ struct FieldAreaEventRuntime {
  }
  bool initialize(uint64_t milliseconds) {
   if(!vm.memory.registerRam(0x82000000,std::vector<uint8_t>(0x80000)) || !vm.memory.registerRam(0x8041f070,std::vector<uint8_t>(16)) || !vm.memory.registerRam(0x8041e428,std::vector<uint8_t>(4)) || !vm.memory.registerRam(0x8041e844,std::vector<uint8_t>(4)) || !vm.memory.registerRam(0x8041e9e4,std::vector<uint8_t>(24)) || !vm.memory.importScripts(program->scripts))return false;
+  for(const auto& b:program->battles)if(b.room==room){char name[4]{};
+   for(unsigned i=0;i<4;++i){uint8_t byte=0;if(!vm.memory.readByte(b.name+i,byte))return false;name[i]=char(byte);}
+   registerPackedBattleArea(name,b.setup,b.numbers,nativeBattleActorServices(vm));
+  }
   const auto memory=vm.memoryBinding.services();const auto start=eventSdkInitializeAllocator(0x82000000,0x82080000,1,memory);
   if(eventSdkCreateHeap(start,0x82080000,memory)!=0 || !vm.memory.writeWord(0x8041e844,0) || !vm.memory.writeWord(0x81000004,60))return false;
   vm.gp.timestamp=milliseconds*eventClockRate(243000000);vm.initializeContexts();return true;
@@ -258,6 +299,28 @@ std::optional<uint32_t> FieldAreaEvent::appendAreaInit(const FieldAreaGpState& s
 std::optional<uint32_t> FieldAreaEvent::areaInitEventId() const{return runtime_?runtime_->initId:std::nullopt;}
 bool FieldAreaEvent::eventAlive(uint32_t id) const{return runtime_ && checkEventId(id,runtime_->vm.creationServices());}
 uint32_t FieldAreaEvent::liveEventCount() const{return runtime_?runtime_->vm.runtime.allocationCount:0;}
+std::optional<uint32_t> FieldAreaEvent::battleSetupConfiguration(int32_t index) const {
+ if(!runtime_ || failed)return {};
+ if(index==-1)return uint32_t(0);
+ auto& r=*runtime_;uint32_t gp=0;if(!r.vm.memory.readWord(0x80415fd0,gp))return {};char prefix[4]{};
+ for(unsigned i=0;i<3;++i){uint8_t byte=0;if(!r.vm.memory.readByte(gp+0x12c+i,byte))return {};prefix[i]=char(byte);}
+ for(const auto& b:r.program->battles)if(b.room==r.room){char name[4]{};
+  for(unsigned i=0;i<4;++i){uint8_t byte=0;if(!r.vm.memory.readByte(b.name+i,byte))return {};name[i]=char(byte);}
+  if(std::memcmp(prefix,name,4))continue;
+  uint32_t record=0,setup=0,numbers=0;
+  for(unsigned j=0;j<=33;++j){uint32_t candidate=0,text=0;if(!r.vm.memory.readWord(0x803057ec+4*j,candidate))return {};if(!candidate)break;
+   if(j==33 || !r.vm.memory.readWord(candidate,text))return {};
+   bool equal=true;
+   for(unsigned k=0;k<4;++k){uint8_t byte=0;if(!r.vm.memory.readByte(text+k,byte))return {};equal=equal && byte==uint8_t(prefix[k]);}
+   if(equal){record=candidate;break;}
+  }
+  if(!record || !r.vm.memory.readWord(record+8,setup) || !r.vm.memory.readWord(record+12,numbers) || setup!=b.setup || numbers!=b.numbers)return {};
+  const auto row=index>0?uint32_t(index):0u;
+  if(row<b.first || uint64_t(row)>=uint64_t(b.first)+b.count)return {};
+  return setup+0x44u*row;
+ }
+ return {};
+}
 std::optional<uint32_t> FieldAreaEvent::appendDoorEntry(uint32_t entryIndex,const std::array<int32_t,16>& bank) {
  if(!runtime_ || failed || runtime_->initId || entryIndex>=runtime_->entries.size())return {};
  const auto creation=runtime_->vm.creationServices();

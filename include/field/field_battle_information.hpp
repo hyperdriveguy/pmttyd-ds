@@ -17,6 +17,8 @@ uint32_t packedBattleAreaData(const char* name,const BattleActorServices&,
  uint32_t registry=0x803057e4);
 void registerPackedBattleArea(const char* name,uint32_t setupTable,uint32_t numberTable,
  const BattleActorServices&,uint32_t registry=0x803057e4);
+// Original dbGetDefData: first exact name match, missing name returns0.
+int32_t packedBattleSetupNumber(uint32_t table,const char* name,const BattleActorServices&);
 // Original npcSetBattleInfo. Reads the current GP from 0x80415fd0 for each
 // non--1 request. Caller must admit registry/configuration/actor memory first;
 // missing area/table and invalid indices have no invented fallback.
