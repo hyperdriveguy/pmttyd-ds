@@ -2,6 +2,68 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Original Goomba quest13, pouch checkpoints and GPU residency
+
+Bound original Goomba4 quest13 first/continuing event through the extensible
+field NPC owner. Retained source US message IDs/tokens, numeric speaker0,
+M_N_5B/500ms/M_N_C/500ms/M_S_1 sequence, one duplicate107/-1 table allocation,
+ready-only selector deletion, source removal/revision ordering and first-exit
+5407 write. Known-state source arbitration/control remains authoritative.
+Original effect poses use a separate21-cell1024x512 RGBA8 atlas (2MiB), not
+placeholders. Fixed the generic harness bubble appearing during authored waits.
+
+Native v8 checkpoints now preserve the unchanged0x5d4 packed pouch and explicit
+5407 knowledge in1536 bytes with a full checksum. Legacy32/40-byte saves retain
+unknown state; no source flags or pouch manufactured. Deep snapshots keep save
+workers and imported file slots independent of mutable gameplay pouch state.
+This is a local adapter, not the source card driver/full switch banks.
+
+Retired unused battle maps at field entry, then field map/NPC textures before
+battle allocation; field return reloads its original room. Area changes retire
+old graphics before staging and restore them on failure. GPU retirement occurs
+before frame submission with Citro3D synchronization. Admission ordering also
+retires field resources before scene actor texture requests. Rendering reuses
+native texture/linear vertex resources, with no per-frame conversion.
+
+Validation: checkpoint tree b195314cc0157b28ca7812c9f53c21c93b787733 passed
+make all and190 CTest/124 Python tests (quest13-save-isolated logs). Quest13
+tree25379f81d22bdb31a82cb31194705396377597ca passed make all and194 CTest/127
+Python tests (quest13-reviewed logs). Isolated Azahar original-pose,12-row
+selector/scroll/cancel/continuing005 captures reviewed in
+artifacts/azahar-goomba13-reviewed; preserved binary
+artifacts/ttyd-goomba13-reviewed.3dsx SHA256
+4f04664a5fd379fd048601993df8dc59ec473f6fb1d3ba37ad1fa35a59fadb3a.
+Observed59–60FPS/~9–13ms emulator performance; no hardware parity claim.
+
+Resource-provider probe artifacts/azahar-goomba13-residency-probe3 succeeded:
+linear baseline985728, legacy admission1/free9471104, return1/free985728;
+trio admission1/free9724672, return1/free985728. Final original field/NPC frame
+reviewed. Before field retirement both admissions failed. Probe substitutes
+scene ownership only for map allocation; it does not test battle logic/raster.
+First two frontend probe attempts did not reach the saved field and establish
+no admission result. Initial parallel private build collision was rerun cleanly;
+no failed build is counted as validation. Final tree45fc1488ce93897a618012fd658a2be4aa059ce9 (2234 tracked files
+verified byte-for-byte) passed make all and195 CTest/129 Python tests
+(artifacts/quest13-residency-native.log, quest13-residency-final-test.log).
+Preserved normal binary artifacts/ttyd-goomba13-residency.3dsx SHA256
+b32f82e0c5395fee1f4affbbac3bb1e2cb76f75b609ae7b38f1e0f0aa4992ead.
+Final selector/scroll/continuing capture run succeeded; early pose frames in
+that run preceded field entry and are not pose validation. A first retake
+misidentified the title as field; its early pose images also establish no
+pose admission result. Reviewed earlier quest13 pose frames remain valid.
+
+Recovered original Trouble Center acceptance/cancel reset tables, Goomba3
+quest2 item-entry/reward writers, and Glitzville quest13 acquisition/completion
+in the subsystem contract. OW-INTERACT-01 and ITEM-01 remain open.
+
+Next bind these upstream acceptance/item-entry/GetItem services and actual
+quest acquisition, expand original NPC/event coverage through the same area
+catalog/portable owners, and finish battle field restoration/ordered engine
+services. Matched Dolphin raster, original material/lighting/audio/window/RNG
+parity and physical New2DS performance remain unverified. User saves/profile
+and read-only ISO untouched. Documentation link check1039 Markdown files/0 broken links and scoped diff
+check passed. Full remake goal remains active and unfinished.
+
 ## 2026-10-13 — Native harbor admission and original combat GPU residency
 
 Feature `b36c849` fixes the native harbor admission blocker. A valid story3

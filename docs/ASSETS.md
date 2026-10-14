@@ -1709,3 +1709,17 @@ deferred combat GPU admission permits the harbor and original tutorial entry.
 See [native lifetime contract](behavior/display/NATIVE_SCENE_ACTOR_GPU_TEXTURE_LIFETIME.md).
 Nintendo/Intelligent Systems original resources; no redistribution rights granted.
 ISO remains read-only; compiled packs and captures remain private/ignored.
+
+## 2026-10-13 — Goomba quest13 original Mario effect poses
+
+`tools/goomba_quest_assets.py` reads the original ISO read-only: `a/e_mario`
+with its `a/a_mario` texture binding and original stay pose. Ignored outputs
+`romfs/goomba-quest-mario.{pmanim,t3x,bin,json}` and
+`local-assets/goomba-quest/`
+retain M_N_5B/M_N_C and source pose geometry. The separate21-cell atlas uses
+124px cells and2px duplicated borders; unused lowerhalf crop gives1024x512
+RGBA8 and UVscale2 (2MiB GPU texture). No ISO or extracted payload committed.
+These remain original copyrighted game assets for the user's local remake;
+conversion does not grant redistribution rights. Native checkpoint v8 is a
+1536-byte local adapter containing the unchanged0x5d4 packed pouch, explicit
+5407 knowledge and checksum; it is not the original memory-card format.

@@ -681,3 +681,13 @@ original Mario poses; full pouch/switch-bank checkpoint round-trip, task
 acceptance, status/SFX/global ownership and matched raster/hardware performance
 remain unbound. This is a native implementation delivery, not an original
 execution trace.
+
+### 2026-10-13 — Goomba quest13 native binding and upstream recovery
+
+Delivered [native quest13 hand-in](../behavior/field/NATIVE_GOOMBA4_QUEST13_HAND_IN.md),
+[native pouch checkpoint v8](../behavior/format/NATIVE_POUCH_CHECKPOINT_V8.md),
+and [Trouble Center writers/acquisition](../behavior/field/TROUBLE_CENTER_QUEST2_13_WRITERS_AND_ACQUISITION.md).
+First/continuing source dialogue, duplicate item selector, original Mario poses,
+5407 write and checkpoint persistence are bound for explicit known state.
+Native Trouble Center acceptance, quest2 item-entry/GetItem presentation and
+quest13 acquisition remain pending; parent request stays open.

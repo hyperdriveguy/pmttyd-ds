@@ -106,3 +106,5 @@ Evidence files /tmp/quest-fbatTalkMode.elf/.asm,
 /tmp/quest-partyKeyOff.elf,/tmp/quest-partyKeyOn.elf remain outside history.
 Only this contract was added; no implementation,index,PROGRESS,asset pack,
 original dialogue or emulator state was edited by this worker.
+
+Native follow-up: [checkpoint v8](../format/NATIVE_POUCH_CHECKPOINT_V8.md) now persists explicit5407 and the packed pouch. The v7 limitation above describes the recovery baseline. [Quest13 binding](NATIVE_GOOMBA4_QUEST13_HAND_IN.md) uses the recovered control/pose graph.

@@ -64,7 +64,7 @@ map-wall correction. Original east Goomba4 now wanders from his source init
 position using retained movement/pose state and source candidate pause/resume.
 His ordinary talk now uses unchanged US messages when explicit saved quest
 state excludes the original quest arms; legacy unknown state stays unavailable.
-Quest item-selection dialogue remains unbound; see
+Original quest2 and quest13 item-selection dialogue now binds explicit known state; see
 [known-state talk binding](docs/behavior/field/NATIVE_GOOMBA4_ORDINARY_TALK.md).
 Movement sounds use original left/right
 primary samples through NDSP, with full macro/spatial routing still unbound. Live wandering paper facing advances in simulation, with rendering
@@ -256,3 +256,5 @@ Outdoor road exits link the plaza with harbor, east and west rooms. Walk toward
 the original road openings to change rooms; arrival progress is saved. The west-side road also connects to the station. Interior
 doors, pipes and story-dependent exits are unfinished. See docs/PROGRESS.md for
 current rendering limitations and isolated reciprocal-road verification.
+
+Goomba4 quest2 and quest13 hand-ins now bind the original US dialogue and item selector for explicit known quest state. Quest13 retains original Mario effect poses and5407 progression. [Native checkpoint v8](docs/behavior/format/NATIVE_POUCH_CHECKPOINT_V8.md) preserves the packed pouch and known5407. Task acceptance/acquisition and full source save services remain pending; see [quest13 scope](docs/behavior/field/NATIVE_GOOMBA4_QUEST13_HAND_IN.md).

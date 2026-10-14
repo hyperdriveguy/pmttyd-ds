@@ -54,3 +54,5 @@ still do not serialize the full original pouch, so a completed quest2 hand-in is
 not yet a faithful persistent inventory round-trip. Original task acceptance,
 other quest stages, full switch banks, global event ownership/status/SFX/RNG and
 matched Dolphin/3DS rendering/performance remain separate work.
+
+Follow-up: [quest13 is now bound](NATIVE_GOOMBA4_QUEST13_HAND_IN.md) for explicit known state, with [native v8 persistence](../format/NATIVE_POUCH_CHECKPOINT_V8.md); the earlier unavailable-state limitation above describes the initial quest2 binding.

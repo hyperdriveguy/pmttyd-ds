@@ -765,3 +765,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Portable stage-object update and bindings](battle/NATIVE_STAGE_OBJECT_UPDATE_AND_BINDINGS.md): full32-record Main, original vertex ownership export and retained native map/renderer frontier.
 
 - [Native scene actor GPU texture lifetime](display/NATIVE_SCENE_ACTOR_GPU_TEXTURE_LIFETIME.md).
+
+- [Native Goomba4 quest13](field/NATIVE_GOOMBA4_QUEST13_HAND_IN.md), [native pouch checkpoint v8](format/NATIVE_POUCH_CHECKPOINT_V8.md), and [Trouble Center writers/acquisition](field/TROUBLE_CENTER_QUEST2_13_WRITERS_AND_ACQUISITION.md).
