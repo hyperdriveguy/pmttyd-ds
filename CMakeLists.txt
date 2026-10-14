@@ -876,3 +876,8 @@ endif()
 add_executable(field_party_appearance_tests tests/field_party_appearance_tests.cpp)
 target_include_directories(field_party_appearance_tests PRIVATE include)
 add_test(NAME field_party_appearance COMMAND field_party_appearance_tests)
+
+target_sources(ttyd_core PRIVATE source/battle_damage_orchestration.cpp)
+add_executable(battle_damage_orchestration_tests tests/battle_damage_orchestration_tests.cpp)
+target_link_libraries(battle_damage_orchestration_tests PRIVATE ttyd_core)
+add_test(NAME battle_damage_orchestration COMMAND battle_damage_orchestration_tests)

@@ -1,3 +1,8 @@
+> Superseded preliminary overview: 800fb9cc lies inside the counter tail,
+> not at this function's entry. Use the verified complete
+> [800fb01c orchestration contract](BATTLE_DAMAGE_ORCHESTRATION.md) and
+> [portable owner](NATIVE_DAMAGE_ORCHESTRATION_OWNER.md) for implementation.
+
 # BattleCheckDamage
 
 **Address:** `0x800fb9cc`  

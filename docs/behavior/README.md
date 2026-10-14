@@ -738,3 +738,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native explicit item selector rendering](message/NATIVE_ITEM_SELECTOR_RENDERING.md), [source icon anchors/flags](display/ITEM_SELECTOR_ICON_ANCHORS_AND_FLAGS.md), and [pouch parameter revision](unit/POUCH_PARAMETER_REVISION.md).
 - [Native ordinary partner appearance and Hello](partner/NATIVE_FIELD_PARTY_APPEARANCE.md): live owner/heading/ray services, original single/dual placement policy and delayed current-index publication.
 - [Audience sound bank and ending clap](audio/BATTLE_AUDIENCE_SOUND_BANK_AND_ENDING_CLAP.md): exact original bank/init/slot1 producer/stop history and backend dependency.
+
+- [Portable original damage orchestration owner](battle/NATIVE_DAMAGE_ORCHESTRATION_OWNER.md)
