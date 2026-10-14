@@ -1,0 +1,273 @@
+{
+  "schema": 1,
+  "scope": "Complete BattleCheckConcluded group publication/two ordered scans/fresh configuration+attribute reads/count-or-mask return; actual config/status/death/admission/runtime open",
+  "complete_bodies": [
+    "BattleCheckConcluded"
+  ],
+  "linked_only": [
+    "BattleGetUnitPtr",
+    "BtlUnit_CheckStatus"
+  ],
+  "dol_spans": [
+    {
+      "name": "BattleCheckConcluded",
+      "address": 2148641332,
+      "size": 384,
+      "sha256": "aeaf27e4689a224325f4ba55a69b83eaf9c6039b7b056a4f68f9bca4dce5d9f7"
+    },
+    {
+      "name": "BattleGetUnitPtr",
+      "address": 2148501708,
+      "size": 60,
+      "sha256": "6a40e068a63873b3f93f3cf0bdc72c59323e60ff5b961ac740b22eddb58276fa"
+    },
+    {
+      "name": "BtlUnit_CheckStatus",
+      "address": 2148694036,
+      "size": 124,
+      "sha256": "55635675e06c5fe3840551f6b46808ad814e2bafc47ff3f64442fd7310a09ebe"
+    }
+  ],
+  "dol_anchors": {
+    "2148641340": "90010034",
+    "2148641352": "3bc00000",
+    "2148641356": "3ba00000",
+    "2148641360": "3b600000",
+    "2148641368": "38000000",
+    "2148641372": "901f000c",
+    "2148641384": "40820014",
+    "2148641388": "38000001",
+    "2148641392": "3bde0001",
+    "2148641396": "901f000c",
+    "2148641400": "480000f8",
+    "2148641408": "41820074",
+    "2148641412": "3b200000",
+    "2148641424": "4bfdde3d",
+    "2148641432": "41820038",
+    "2148641436": "881a000c",
+    "2148641448": "40820028",
+    "2148641452": "3880001b",
+    "2148641456": "4800cd65",
+    "2148641464": "40820018",
+    "2148641468": "807a0104",
+    "2148641476": "4082000c",
+    "2148641484": "41820010",
+    "2148641488": "3b390001",
+    "2148641496": "4180ffb0",
+    "2148641504": "41800014",
+    "2148641508": "38000001",
+    "2148641512": "3bde0001",
+    "2148641516": "901f000c",
+    "2148641520": "48000080",
+    "2148641532": "41820074",
+    "2148641536": "3b200000",
+    "2148641548": "4bfdddc1",
+    "2148641556": "4182003c",
+    "2148641560": "881a000c",
+    "2148641572": "4082002c",
+    "2148641576": "801a0104",
+    "2148641584": "41820020",
+    "2148641588": "3880001b",
+    "2148641592": "4800ccdd",
+    "2148641600": "40820010",
+    "2148641604": "801a0104",
+    "2148641612": "41820010",
+    "2148641616": "3b390001",
+    "2148641624": "4180ffac",
+    "2148641632": "41800010",
+    "2148641636": "38000001",
+    "2148641640": "3bde0001",
+    "2148641644": "901f000c",
+    "2148641648": "3bbd0001",
+    "2148641652": "3b7b0008",
+    "2148641660": "4180fed8",
+    "2148641668": "4180000c",
+    "2148641672": "38600001",
+    "2148641676": "48000014",
+    "2148641680": "801c0ef4",
+    "2148641700": "80010034",
+    "2148641708": "38210030",
+    "2148641332": "9421ffd0",
+    "2148641336": "7c0802a6",
+    "2148641344": "bf210014",
+    "2148641348": "7c7c1b78",
+    "2148641364": "7ffcda14",
+    "2148641376": "a01f0008",
+    "2148641380": "28000000",
+    "2148641404": "540007ff",
+    "2148641416": "7f83e378",
+    "2148641420": "7f24cb78",
+    "2148641428": "7c7a1b79",
+    "2148641440": "7c000774",
+    "2148641444": "7c00e800",
+    "2148641460": "2c030000",
+    "2148641472": "5460039d",
+    "2148641480": "546000c7",
+    "2148641492": "2c190040",
+    "2148641500": "2c190040",
+    "2148641524": "a01f0008",
+    "2148641528": "540007bd",
+    "2148641540": "7f83e378",
+    "2148641544": "7f24cb78",
+    "2148641552": "7c7a1b79",
+    "2148641564": "7c000774",
+    "2148641568": "7c00e800",
+    "2148641580": "5400035b",
+    "2148641596": "2c030000",
+    "2148641608": "540000c7",
+    "2148641620": "2c190040",
+    "2148641628": "2c190040",
+    "2148641656": "2c1d0003",
+    "2148641664": "2c1e0002",
+    "2148641684": "540306b6",
+    "2148641688": "3003ffff",
+    "2148641692": "7c601910",
+    "2148641696": "bb210014",
+    "2148641704": "7c0803a6",
+    "2148641712": "4e800020"
+  },
+  "direct_calls": [
+    {
+      "site": 2148641424,
+      "target": 2148501708,
+      "name": "BattleGetUnitPtr"
+    },
+    {
+      "site": 2148641456,
+      "target": 2148694036,
+      "name": "BtlUnit_CheckStatus"
+    },
+    {
+      "site": 2148641548,
+      "target": 2148501708,
+      "name": "BattleGetUnitPtr"
+    },
+    {
+      "site": 2148641592,
+      "target": 2148694036,
+      "name": "BtlUnit_CheckStatus"
+    }
+  ],
+  "rel_spans": [],
+  "rel_bindings": {},
+  "maps": [],
+  "derived_group_vectors": [
+    {
+      "config": 0,
+      "first_exists": false,
+      "second_exists": false,
+      "concluded": true
+    },
+    {
+      "config": 1,
+      "first_exists": false,
+      "second_exists": false,
+      "concluded": true
+    },
+    {
+      "config": 1,
+      "first_exists": true,
+      "second_exists": false,
+      "concluded": false
+    },
+    {
+      "config": 2,
+      "first_exists": false,
+      "second_exists": false,
+      "concluded": true
+    },
+    {
+      "config": 2,
+      "first_exists": false,
+      "second_exists": true,
+      "concluded": false
+    },
+    {
+      "config": 3,
+      "first_exists": true,
+      "second_exists": false,
+      "concluded": true
+    },
+    {
+      "config": 3,
+      "first_exists": false,
+      "second_exists": true,
+      "concluded": true
+    },
+    {
+      "config": 3,
+      "first_exists": true,
+      "second_exists": true,
+      "concluded": false
+    },
+    {
+      "config": 4,
+      "first_exists": false,
+      "second_exists": false,
+      "concluded": false
+    }
+  ],
+  "derived_return_vectors": [
+    {
+      "count": 0,
+      "flags": 0,
+      "result": 0
+    },
+    {
+      "count": 1,
+      "flags": 0,
+      "result": 0
+    },
+    {
+      "count": 2,
+      "flags": 0,
+      "result": 1
+    },
+    {
+      "count": 3,
+      "flags": 0,
+      "result": 1
+    },
+    {
+      "count": 0,
+      "flags": 16,
+      "result": 1
+    },
+    {
+      "count": 0,
+      "flags": 32,
+      "result": 1
+    },
+    {
+      "count": 0,
+      "flags": 64,
+      "result": 0
+    }
+  ],
+  "derived_second_scan_vectors": [
+    {
+      "before": 262144,
+      "status": 0,
+      "after": 0,
+      "eligible": true
+    },
+    {
+      "before": 262144,
+      "status": 0,
+      "after": 268435456,
+      "eligible": false
+    },
+    {
+      "before": 0,
+      "status": 0,
+      "after": 262144,
+      "eligible": false
+    },
+    {
+      "before": 262144,
+      "status": 1,
+      "after": 0,
+      "eligible": false
+    }
+  ]
+}

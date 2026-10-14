@@ -2,6 +2,23 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — First-demo result conclusion group publisher
+
+Completed BattleCheckConcluded; RESULT-01 portion checked. [Conclusion contract](behavior/battle/BATTLE_CONCLUSION_GROUP_PUBLICATION_AND_FRESH_READS.md)
+strengthens existing evidence with ordered group publications, two64-slot scans,
+fresh config bit2 and before/after-status attribute reads. Return count>=2 or
+flags10/20 is distinct from result publication;40 alone does not force it.
+
+Validation:3 spans/all96 words/four calls;20 literal vectors/group writes/fresh
+config+attribute/return mask/call sites checked; ISO pins pass. Link audit
+passed999 Markdown files/zero broken links; scoped diff passed. Docs only; no
+make test/all rerun. Raw ELF/listing/generator stay /tmp. Concurrent native
+edits excluded. Approved push pending valid GitHub credentials.
+
+Next: actual tutorial configurations/status/death/override/end admission and
+result/ending/reward/field/story/save composition plus DEMO-01 joins/reentry and
+original TRACE-01. RESULT-01/demo/full-game remain OPEN.
+
 ## 2026-10-13 — First-demo inbox: battle result phase0 producer
 
 Completed result set/get/enemy-belong leaves and scoped initial end-phase

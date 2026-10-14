@@ -9,6 +9,11 @@ requested; no independent research-agent ownership or completion claim is made.
 
 ## Open todos
 
+- [x] Complete local BattleCheckConcluded group publisher —
+  [fresh conclusion reads](../behavior/battle/BATTLE_CONCLUSION_GROUP_PUBLICATION_AND_FRESH_READS.md).
+  Two ordered scans/config reread/status27/attribute snapshots, group result
+  writes and count>=2 OR flags10/20 return pinned; actual producers remain open.
+
 - [x] Exact local ending phase0 result publisher and complete set/get/
   enemy-belong leaves — [result priority](../behavior/battle/BATTLE_RESULT_PHASE0_PUBLICATION_AND_PRIORITY.md).
   Flag40→4,20→5,own conclusion→3,opponent→1,10→4/no-write priority and
@@ -64,3 +69,17 @@ nine-site direct DOL census/fresh pins checked. Links/scoped diff passed.
 Docs only; no make rerun; raw artifacts stay /tmp. RESULT-01 stays OPEN:
 full conclusion/death/ending/override/reward/tutorial field/story/save and
 original-runtime/native real-result binding remain unproved.
+
+## 2026-10-13 — Complete conclusion group publication/fresh reads
+
+[Conclusion contract](../behavior/battle/BATTLE_CONCLUSION_GROUP_PUBLICATION_AND_FRESH_READS.md)
+strengthens existing barrier/conclusion evidence for RESULT-01. Second scan
+requires40000 before status, then rereads10000000 after; no40000 retest or20000
+exclusion there. Config bit2 rereads after first scan. Count>=2 or fresh10/20
+forces Boolean1;40 alone does not. No HP-sum/result/ready/story write here.
+
+Validation:3 spans/all96 words/four calls;20 literal vectors/group writes/
+fresh config/attributes/return-mask/call sites checked; read-only ISO pins pass.
+Links/scoped diff pass. Docs only; no make rerun; raw artifacts stay /tmp.
+Actual tutorial config/status/death/override/end-bank admission and original
+execution/native result binding remain OPEN; parent stays OPEN.
