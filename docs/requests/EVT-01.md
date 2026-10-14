@@ -3501,3 +3501,19 @@ ordering is being checked by the documentation agent; no pose draw/current-slot
 publication, authored join or complete ending is claimed. Parent stays open.
 See [constructor](../behavior/partner/FIELD_PARTY_POSITION_CONSTRUCTORS.md) and
 [native registry](../behavior/partner/NATIVE_FIELD_PARTY_REGISTRY.md).
+
+### 2026-10-13 — Ordinary appearance2 and fresh Hello bound
+
+Native joined ending now completes the original partyEntry scalar prefix,
+two raw current-display captures, original appearance2 single/dual ray policy,
+position copies, repeated canonical HP/known-name selection and mode. Mario245
+publishes after first placement; fresh Hello then performs its separate second
+placement/HP read. Real current lookup/word4 cleanup reaches RuleKeep8018ef8c
+for joined and unjoined paths. Native math/ray numerical and pointer-alias ABI
+limitations remain explicit; no sequence/result/control/story publication yet.
+See [native placement](../behavior/partner/NATIVE_FIELD_PARTY_APPEARANCE.md).
+Following audience slot1 ownership/clap source audit is delivered in
+[audio contract](../behavior/audio/BATTLE_AUDIENCE_SOUND_BANK_AND_ENDING_CLAP.md);
+actual crowd/backend provider is still unbound. Fresh initialization alone
+cannot prove silence at ending, because EXP/victory request applause twice.
+Parent remains open.

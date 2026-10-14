@@ -406,6 +406,21 @@ static FieldWallHit fieldMapRay(FieldWallVector origin,FieldWallVector direction
 FieldWallHit fieldWallRay(FieldWallVector origin,FieldWallVector direction,float maximum,const std::vector<FieldObjectTriangle>* objects) {
     return fieldMapRay(origin,direction,maximum,objects,true);
 }
+FieldPartyAppearanceServices Game::fieldPartyAppearanceServices() {
+    FieldPartyAppearanceServices s;s.user=this;
+    s.root=[](void* p){const auto& g=*static_cast<Game*>(p);return FieldWallVector{g.progress.position.x*100,(g.groundHeight+g.jumpHeight)*100,g.progress.position.z*100};};
+    s.display=[](void* p){return static_cast<Game*>(p)->marioPresentation.display;};
+    s.auxiliary=[](void* p){const auto raw=static_cast<Game*>(p)->fieldMarioBattle.partyIndices[1];return raw<128?int32_t(raw):int32_t(raw)-256;};
+    s.revise=[](void*,float angle){return fieldPartyWrap(angle);};
+    s.heading=[](void* p,float display,float offset,bool second){const auto& g=*static_cast<Game*>(p);return fieldPartyHeading(display,g.fieldMovement.headingOffsetDegrees,g.fieldMarioBattle.flags,g.marioPresentation.display,offset,second);};
+    s.sincos=[](void*,float angle){return fieldPartySinCos(angle);};
+    s.move=[](void*,FieldWallVector& root,float distance,float angle){fieldPartyMove(root,distance,angle);};
+    s.ray=[](void* p,FieldWallVector root,FieldWallVector direction,float length){
+        const auto hit=fieldMapRay(root,direction,length,&static_cast<Game*>(p)->fieldObjectTriangles,false);
+        return FieldPartyAppearanceHit{hit.token!=0,root.y+direction.y*hit.distance};
+    };
+    return s;
+}
 bool headCollision(Vec2 p,Vec2 direction,float worldY,float velocity,float& clampedRoot) {
     return headCollision(p,direction,worldY,velocity,clampedRoot,velocity);
 }
@@ -1892,7 +1907,8 @@ void Game::tick(const Input& rawInput) {
                 }
             }
             if(trioCommands.state==TrioBattleCommands::State::AttackReady && progress.originalPouch && !trioAttack.active() && !trioAttack.finished())progress.originalPouch->half(0x70,int16_t(progress.hp)); // Current field HP enters the original resource snapshot once.
-            if(trioCommands.state==TrioBattleCommands::State::AttackReady && trioAttack.begin(trioCommands,trioBattleIntro,progress.hp,progress.originalPouch,&professorStory.actors[3].npcBattleFlags,&fieldMarioBattle,&fieldParties)) {
+            const auto partyAppearance=fieldPartyAppearanceServices();
+            if(trioCommands.state==TrioBattleCommands::State::AttackReady && trioAttack.begin(trioCommands,trioBattleIntro,progress.hp,progress.originalPouch,&professorStory.actors[3].npcBattleFlags,&fieldMarioBattle,&fieldParties,&partyAppearance)) {
                 const auto sample=inputProducer.channels[0].battleSample();
                 const uint32_t triggers=i.physicalSnapshot?sample.pressed:(i.confirm?0x100u:0u)|(i.cancel?0x200u:0u);
                 trioAttack.tick(ticks*1000/60,trioBattleIntro,triggers,i.physicalSnapshot?&sample:nullptr);

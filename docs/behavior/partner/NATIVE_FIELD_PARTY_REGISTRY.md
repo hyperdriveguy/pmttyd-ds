@@ -44,10 +44,11 @@ propagates the Mario80000000 flag into party8000. Ordinary kind1 resolves
 c_pkr or the original d_mario override. Normal c_pkr now admits an owned
 native CPU pose/resource/shape workspace with mode2/archive0, publishes its
 real registry handle and runs PeraOff; missing/unsupported resources retain
-the animPoseEntry barrier. It executes both MarioAnimeId800593fc selections and stops at
-partyEntry800bea68 after HP-dependent pose request and kuribo_init, before
-wrapper scale/facing, appearance, current-index publication or Hello.
-No animation is selected or GPU draw acknowledged by this admission. See
+the animPoseEntry barrier. Both live Mario selectors/material reads, original
+HP-dependent pose request and kuribo_init now execute. The ordinary wrapper
+and fresh Hello complete both original appearance2 queries and delayed index
+publication before holding at RuleKeep8018ef8c.
+No animation playback or GPU draw is acknowledged by this admission. See
 [constructor animation admission](FIELD_PARTY_ENTRY_ANIMATION_ADMISSION.md).
 Existing primary destruction remains partyKill800be69c; other kind/auxiliary
 constructor domains remain separate providers. If no free slot exists, the
@@ -59,12 +60,13 @@ fallback, negative/null, independence from word8, global controls, slot
 reuse and independent simulation copies. Actual native Game ending is tested
 with unjoined storage and an explicitly joined checkpoint fixture. The latter
 represents supplied authored history, not an implemented joining event.
-It allocates and initializes one actor through the pose request but keeps Mario indicesff/ff until constructor
-completion. Both retain story11, result0 and the control hold.
+It allocates and initializes one actor through two placement/HP requests,
+publishes primary index0 after the first, and retains auxiliaryff. Unjoined
+storage keeps both indicesff. Both retain story11, result0 and the control hold.
 
 Remaining: authored Goombella joining graph/pouch mutation, complete ordinary
-constructor and animation/material providers, distinct appearance2/Hello and
-general postbattle placement, actual field actor rendering/mode integration,
+animation/display providers and general postbattle placement,
+actual field actor rendering/mode integration,
 RuleKeep/audience, original resource/context/sequence/result publication and
 original execution/hardware verification. This is not a playable native return.
 
@@ -99,7 +101,8 @@ retain their own constructor provider. No animation is drawn by this request.
 
 The current kind1 record binds kuribo_init: P33=1, P32=0, dimensions P f0=24
 and f4=26, and owned global8041eae0=0. No HP/FP/unlock mutation or current-slot
-publication occurs. Main completes before the partyEntry wrapper, which still
-needs scales/P38 and two owner-facing reads before requesting appearance2. Native entry milliseconds remain simulation-clock
+publication occurs. Main completes before the partyEntry wrapper, which copies scale1/P38=10
+and two current raw owner-display reads before requesting appearance2. See
+[native appearance binding](NATIVE_FIELD_PARTY_APPEARANCE.md). Native entry milliseconds remain simulation-clock
 metadata; the renderer still owns separate imported bank/texture projections.
 Connecting these owners to actual drawing and all lifecycles remains required.

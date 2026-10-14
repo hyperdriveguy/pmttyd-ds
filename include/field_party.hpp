@@ -4,6 +4,7 @@
 #include <array>
 #include <cassert>
 #include <memory>
+#include <cstring>
 
 namespace ttyd {
 // Encoded native field-owner identity, distinct from an original heap address.
@@ -21,6 +22,8 @@ struct FieldPartyActor {
         assert(offset+4<=bytes.size());
         for(unsigned i=0;i<4;++i)bytes[offset+i]=uint8_t(value>>(24-8*i));
     }
+    float scalar(unsigned offset) const {const auto bits=word(offset);float value;std::memcpy(&value,&bits,4);return value;}
+    void scalar(unsigned offset,float value) {uint32_t bits;std::memcpy(&bits,&value,4);word(offset,bits);}
 };
 // Converted original Mario/partner resources and native CPU shape ownership. These
 // handles belong to this field registry; GPU/time/ABI equivalence is separate.
@@ -132,6 +135,17 @@ struct FieldPartyRegistry {
         actor->bytes[0x20]=actor->bytes[0x21]=0;
         actor->word(8,actor->word(8)|0x2000);actor->word(0x1c,0);
         return true; // Borrowed source string/pending request, not animation playback.
+    }
+    bool requestGoombellaPose(int32_t index,int16_t hp) {
+        auto* actor=pointer(index);if(!actor || actor->bytes[0x31]!=1 || (actor->word(4)&0x8000))return false;
+        if(actor->word(4)&2)return true;
+        const uint32_t old=actor->word(0x18),selected=hp<=5?0x802cb52cu:0x802cb4dcu;
+        if(old && old!=0x802cb52c && old!=0x802cb4dc)return false; // Unknown borrowed string requires its comparison provider.
+        if(old!=selected) {
+            actor->word(0x18,selected);actor->bytes[0x20]=actor->bytes[0x21]=0;
+            actor->word(8,actor->word(8)|0x2000);
+        }
+        return true;
     }
     void kuriboInit(int32_t index) {
         auto* actor=pointer(index);assert(actor);

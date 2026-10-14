@@ -278,6 +278,7 @@ public:
     const FieldMarioBattleState& fieldMarioBattleState() const {return fieldMarioBattle;}
     void setFieldMarioCameraId(uint32_t id) {fieldMarioBattle.cameraId=id;} // Source raw word134 store; viewport ownership is separate.
     const FieldPartyRegistry& fieldPartyState() const {return fieldParties;}
+    FieldPartyAppearanceServices fieldPartyAppearanceServices();
     bool fieldControlEnabled() const {return marioFieldControl && partnerFieldControl;}
     const char* dialogue() const;
     const char* prompt() const;

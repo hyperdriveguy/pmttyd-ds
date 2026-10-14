@@ -9580,3 +9580,46 @@ mode, then delayed Mario245 publication and fresh Hello's second placement.
 Field draw/lifetimes, authored join/map materials, RuleKeep/audience and
 ending exit/sequence/result publication still need binding. Full playable
 prologue/original parity remain unfinished; goal remains active.
+
+## 2026-10-13 — Original partner placement, publication and fresh Hello
+
+Joined ending now completes the used ordinary partyEntry and Hello path.
+Wrapper copies scale1/P38=10 and two live raw Mario display reads. Appearance2
+retains exact single/dual path, current versus retained headings, length56,
+Y+37/down38, side retry only after horizontal hit, failure output preservation
+and unconditional raw downward pointY admission. Both callers ignore success,
+copy position into58..60/b8..c0, reread canonical HP and preserve unchanged
+name frame markers, then mode1. Mario245 publishes only after first placement;
+fresh Hello repeats placement/HP and keeps substate10, with no invented entry
+jump. Current registry lookup now returns the real new partner and clears
+word4 bit1. Joined/unjoined paths both reach RuleKeep8018ef8c.
+
+Native providers read actual persistent Game display/root/current auxiliary
+index and camera offset/field flags, use original heading policies with explicit
+host/ARM libm arithmetic adaptation, and raycast original current map/object
+triangles through the existing generic backend without wall-attribute gates.
+Real hit distance reconstructs raw pointY, with no floor quantization/search
+substitute. Complete original hit-record/filter/Gekko numeric/alias domains
+and full field drawing/lifetimes remain separate. Existing original assets
+reused; no conversions/private payload or new visual playback claim.
+
+Validation: make test built and passed184/185 CTest including new portable
+field_party_appearance and trio_attack_original (artifacts/trio-partner-
+appearance-tests.log). Only concurrent harbor approach test at line58 failed.
+Python121/121 passed (trio-partner-appearance-python.log). Initial make all
+correctly rejected mixed auto declarations because ARM uint32_t is unsigned
+long while selected literals are unsigned int; explicit uint32_t fixes this.
+Final make all passed (trio-partner-appearance-all-final.log), and affected
+host targets rebuilt with4/4 field protocol/real animation/placement/trio tests
+passing (trio-partner-appearance-host-final.log). Scoped diff/link checks pass.
+Tests cover obstruction/retry/down failure, rawY, live versus retained angles,
+slot offsets, original math conventions, two placement calls, position copies,
+scale/mode/substate/current index and unchanged story11/result0/control hold.
+No new emulator/original-runtime/hardware capture; full suite is not claimed green.
+
+Next bind original Rule0 prefix/status and actual audience record/clap/backend
+history, then BattleEnd/resource/context/NPC/event/sequence/result teardown.
+Documentation confirms slot1 applause has real producers during ending; fresh
+zero initialization does not prove silence. Authored joining, shared actor
+render/lifetime, general FbattlePost placement and full original prologue
+performance/parity remain unfinished; goal remains active.

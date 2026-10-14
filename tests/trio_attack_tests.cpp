@@ -338,8 +338,8 @@ int main(){
             for(unsigned n=0;n<59;++n)charged.tick(Input{});assert(charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001a);
             charged.tick(Input{});assert(charged.trioBattleIntro.actors[0].pose=="M_R_1" && charged.trioBattleIntro.actors[1].pose=="PKR_R_1");
             for(unsigned n=0;n<100 && !charged.trioAttack.pendingFunction();++n)charged.tick(Input{});
-            assert(charged.trioAttack.pendingFunction()==(fastReward?0x800bea68u:0x8018ef8cu) && charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001f);
-            assert(charged.fieldMarioBattleState().partyIndices[0]==255 && charged.fieldMarioBattleState().partyIndices[1]==255);
+            assert(charged.trioAttack.pendingFunction()==0x8018ef8cu && charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001f);
+            assert(charged.fieldMarioBattleState().partyIndices[0]==(fastReward?0:255) && charged.fieldMarioBattleState().partyIndices[1]==255);
             if(fastReward) {
                 assert(charged.fieldPartyState().pointer(0) && !charged.fieldPartyState().pointer(1));
                 const auto* actor=charged.fieldPartyState().pointer(0);
@@ -351,6 +351,10 @@ int main(){
                 assert(charged.fieldMarioBattleState().cameraId==4);
                 assert(actor->bytes[0x31]==1 && actor->bytes[0x2f]==0 && actor->word(0x18)==(charged.progress.originalPouch->half(20)<=5?0x802cb52cu:0x802cb4dcu) && actor->word(8)==0x2000);
                 assert(actor->bytes[0x32]==0 && actor->bytes[0x33]==1 && actor->word(0xf0)==0x41c00000 && actor->word(0xf4)==0x41d00000);
+                assert(actor->bytes[0x34]==1 && actor->bytes[0x38]==10 && actor->word(0x70)==0x3f800000 && actor->word(0x74)==0x3f800000 && actor->word(0x78)==0x3f800000);
+                assert(actor->word(0x58)==actor->word(0xb8) && actor->word(0x5c)==actor->word(0xbc) && actor->word(0x60)==actor->word(0xc0));
+                assert(charged.fieldPartyState().current(charged.fieldMarioBattleState())==0);
+                assert(std::count_if(charged.trioAttack.requests().begin(),charged.trioAttack.requests().end(),[](const ProfessorServiceRequest& r){return r.function==0x800c6718;})==2);
                 assert(charged.fieldMarioBattleState().savedPartyKinds[0]==1 && charged.fieldPartyState().currentDefinition==0x80314410);
                 assert(charged.progress.originalPouch->half(14)==1);
             }else {

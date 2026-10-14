@@ -872,3 +872,7 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/romfs/font.pmfont" AND EXISTS "${CMAKE_SOURCE_DIR
     add_test(NAME item_selection_presentation_original COMMAND item_selection_presentation_tests)
     set_tests_properties(item_selection_presentation_original PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 endif()
+
+add_executable(field_party_appearance_tests tests/field_party_appearance_tests.cpp)
+target_include_directories(field_party_appearance_tests PRIVATE include)
+add_test(NAME field_party_appearance COMMAND field_party_appearance_tests)

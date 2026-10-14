@@ -736,3 +736,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Ordinary party entry first appearance order](partner/FIELD_PARTY_ENTRY_FIRST_APPEARANCE_ORDER.md): exact wrapper scale/display captures, placement-before-index publication and fresh Hello's second placement.
 
 - [Native explicit item selector rendering](message/NATIVE_ITEM_SELECTOR_RENDERING.md), [source icon anchors/flags](display/ITEM_SELECTOR_ICON_ANCHORS_AND_FLAGS.md), and [pouch parameter revision](unit/POUCH_PARAMETER_REVISION.md).
+- [Native ordinary partner appearance and Hello](partner/NATIVE_FIELD_PARTY_APPEARANCE.md): live owner/heading/ray services, original single/dual placement policy and delayed current-index publication.
+- [Audience sound bank and ending clap](audio/BATTLE_AUDIENCE_SOUND_BANK_AND_ENDING_CLAP.md): exact original bank/init/slot1 producer/stop history and backend dependency.

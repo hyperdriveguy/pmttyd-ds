@@ -87,6 +87,7 @@ struct TrioAttackRuntime {
     BattleEndingFade endingFade;uint64_t endingFadeClockAt=UINT64_MAX;bool endingExported=false;uint32_t* fieldNpcBattleFlags=nullptr;
     FieldMarioBattleState* fieldMario=nullptr;
     FieldPartyRegistry* fieldParties=nullptr;
+    FieldPartyAppearanceServices fieldAppearance;
     TrioAttackRuntime():vm(0x81000000,platform(this)) {}
     static EventNativePlatform platform(TrioAttackRuntime* self) {
         EventNativePlatform p;p.user=self;p.clock=[](void*)->uint32_t{return 243000000;};
@@ -729,7 +730,28 @@ struct TrioAttackRuntime {
                     if(!fieldParties->requestFreshGoombellaPose(slot,hp)){pending=0x800be144;return;}
                     if(fieldParties->currentDefinition!=0x80314410){pending=0x800be144;return;}
                     endingRequest(0x800c4fa0,{slot});fieldParties->kuriboInit(slot);
-                    pending=0x800bea68;return; // Main is initialized; wrapper scales/owner angles precede appearance2 and Hello.
+                    if(!fieldAppearance.ready()){pending=0x800bea68;return;}
+                    auto* actor=fieldParties->pointer(slot);
+                    actor->word(0x70,0x3f800000);actor->word(0x74,0x3f800000);actor->word(0x78,0x3f800000);actor->bytes[0x38]=10;
+                    actor->scalar(0x110,fieldAppearance.display(fieldAppearance.user));
+                    actor->scalar(0x10c,fieldAppearance.display(fieldAppearance.user));
+                    auto appearance=[&]() {
+                        endingRequest(0x800c6718,{slot});FieldWallVector position;
+                        fieldPartyAppearPosition2(actor->scalar(0xf4),slot,position,fieldAppearance); // Original caller ignores success/failure.
+                        actor->scalar(0x58,position.x);actor->scalar(0x5c,position.y);actor->scalar(0x60,position.z);
+                        actor->word(0xb8,actor->word(0x58));actor->word(0xbc,actor->word(0x5c));actor->word(0xc0,actor->word(0x60));
+                        if(!(actor->word(4)&2)) {
+                            endingRequest(0x80140ea4,{kind});
+                            if(!fieldParties->requestGoombellaPose(slot,entryPouch->half(unsigned(14*kind+6))))return false;
+                        }
+                        actor->bytes[0x34]=1;return true;
+                    };
+                    if(!appearance()){pending=0x800bea68;return;}
+                    fieldMario->partyIndices[0]=uint8_t(slot); // Source publishes only after first placement/pose/mode.
+                    endingRequest(0x800bf1b4,{slot});endingRequest(0x800bbc48,{slot});
+                    if((actor->word(8)&8) || actor->bytes[0x38]!=10){pending=0x800bbc48;return;}
+                    endingRequest(0x800bb544,{slot});
+                    if(!appearance()){pending=0x800bb544;return;} // Fresh Hello repeats placement and HP, never the16-count jump path.
                 } // Real source -1 return: no unlock, kill or constructor side effects.
             }else {
                 endingRequest(0x80141198);
@@ -915,7 +937,7 @@ struct TrioAttackRuntime {
     void tick(uint64_t time,ProfessorStory& s,uint32_t triggers,const BattlePadSample* physical){scene=&s;now=time;if(!pending){if(sampledAt!=time){sampledAt=time;checkBrokenUnits();BattlePadSample sample;if(physical)sample=*physical;else {sample.snapshot.buttons=uint16_t(triggers);sample.pressed=triggers;}readPad(Battle+0xf2c,generalPad);generalPad.update(sample);writePad(Battle+0xf2c,generalPad);history=generalPad.triggers;vm.gp.timestamp=time*eventClockRate(243000000);if(word(Battle+4)==3)ending();else if(!done){if(word(Battle+0xf20)<0x06000007)enemyAction();else postAction();}else handoff();readPad(Battle+0x1d1c,privatePad);privatePad.update(sample);writePad(Battle+0x1d1c,privatePad);actionManager();}vm.runManager();if(hasBrokenUnit())done=false;}iconClock(time);if(pointGetClockAt!=time){pointGetClockAt=time;pointGet.tick();}if(endingFadeClockAt!=time){endingFadeClockAt=time;endingFade.tick(60);}publish(s);}
     void publish(ProfessorStory& s){for(unsigned id=1;id<7;++id){const uint32_t u=word(Battle+0x20+4*id);if(!u){s.actors[visual[id]].hidden=true;continue;}for(unsigned axis=0;axis<3;++axis)s.actors[visual[id]].position[axis]=real(u+0x3c+4*axis);s.actors[visual[id]].yaw=byte(u+0x189)==1?90:270;s.actors[visual[id]].battleFlags=word(u+0x1c);for(unsigned axis=0;axis<3;++axis){s.actors[visual[id]].battleRotation[axis]=real(u+0x60+4*axis)+real(u+0x6c+4*axis);s.actors[visual[id]].battlePivot[axis]=real(u+0x78+4*axis);s.actors[visual[id]].battleScale[axis]=(axis<2?real(u+0x114):1.f)*real(u+0x9c+4*axis)*real(u+0x90+4*axis);s.actors[visual[id]].battleDisplayOffset[axis]=real(u+0x54+4*axis);}}}
 };
-bool TrioAttack::begin(const TrioBattleCommands& menu,ProfessorStory& scene,int16_t hp,std::shared_ptr<ProloguePouch> entryPouch,uint32_t* fieldNpcBattleFlags,FieldMarioBattleState* fieldMario,FieldPartyRegistry* fieldParties){if(!assetsReady || !menu.attack || !((menu.actor==1 && (menu.attack->weapon==0x803538a8 || menu.attack->weapon==0x80353de8)) || (menu.actor==2 && menu.attack->weapon==0x80393ea8)))return false;if(runtime_)return runtime_->done && runtime_->readyActor==menu.actor && runtime_->launch(menu);auto r=std::make_shared<TrioAttackRuntime>();r->fieldNpcBattleFlags=fieldNpcBattleFlags;r->fieldMario=fieldMario;r->fieldParties=fieldParties;if(!r->initialize(menu,scene,hp,std::move(entryPouch)))return false;runtime_=std::move(r);return true;}
+bool TrioAttack::begin(const TrioBattleCommands& menu,ProfessorStory& scene,int16_t hp,std::shared_ptr<ProloguePouch> entryPouch,uint32_t* fieldNpcBattleFlags,FieldMarioBattleState* fieldMario,FieldPartyRegistry* fieldParties,const FieldPartyAppearanceServices* appearance){if(!assetsReady || !menu.attack || !((menu.actor==1 && (menu.attack->weapon==0x803538a8 || menu.attack->weapon==0x80353de8)) || (menu.actor==2 && menu.attack->weapon==0x80393ea8)))return false;if(runtime_)return runtime_->done && runtime_->readyActor==menu.actor && runtime_->launch(menu);auto r=std::make_shared<TrioAttackRuntime>();r->fieldNpcBattleFlags=fieldNpcBattleFlags;r->fieldMario=fieldMario;r->fieldParties=fieldParties;if(appearance)r->fieldAppearance=*appearance;if(!r->initialize(menu,scene,hp,std::move(entryPouch)))return false;runtime_=std::move(r);return true;}
 void TrioAttack::tick(uint64_t time,ProfessorStory& scene,uint32_t triggers,const BattlePadSample* physical){if(runtime_)runtime_->tick(time,scene,triggers,physical);}
 bool TrioAttack::active()const{return runtime_ && !runtime_->done;}
 bool TrioAttack::finished()const{return runtime_ && runtime_->done;}
