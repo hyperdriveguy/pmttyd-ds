@@ -1419,9 +1419,11 @@ FieldBattleServices Game::fieldBattleServices() {
         if(enabled)fieldMarioControlOn(g.fieldMarioBattle);else fieldMarioControlOff(g.fieldMarioBattle);
         g.marioFieldControl=fieldMarioControlOffCheck(g.fieldMarioBattle)==0;
     };
-    s.partyId=[](void*)->int32_t {return 1;};
-    s.party=[](void*,int32_t)->uintptr_t {return 1;};
-    s.partyControl=[](void* p,uintptr_t,bool enabled) {static_cast<Game*>(p)->partnerFieldControl=enabled;};
+    s.partyId=[](void* p)->int32_t {const auto& g=*static_cast<Game*>(p);return g.fieldParties.current(g.fieldMarioBattle);};
+    s.party=[](void* p,int32_t index)->uintptr_t {return reinterpret_cast<uintptr_t>(static_cast<Game*>(p)->fieldParties.pointer(index));};
+    s.partyControl=[](void* p,uintptr_t,bool enabled) {
+        auto& g=*static_cast<Game*>(p);g.fieldParties.control(enabled);g.partnerFieldControl=g.fieldParties.controlsEnabled();
+    };
     s.soundFlag=[](void* p,uint32_t mask) {static_cast<Game*>(p)->fieldSoundFlags|=mask;};
     s.setSequence=[](void* p,int32_t sequence) {static_cast<Game*>(p)->fieldSequence=sequence;};
     s.sequence=[](void* p)->int32_t {return static_cast<Game*>(p)->fieldSequence;};
@@ -1869,7 +1871,7 @@ void Game::tick(const Input& rawInput) {
                 }
             }
             if(trioCommands.state==TrioBattleCommands::State::AttackReady && progress.originalPouch && !trioAttack.active() && !trioAttack.finished())progress.originalPouch->half(0x70,int16_t(progress.hp)); // Current field HP enters the original resource snapshot once.
-            if(trioCommands.state==TrioBattleCommands::State::AttackReady && trioAttack.begin(trioCommands,trioBattleIntro,progress.hp,progress.originalPouch,&professorStory.actors[3].npcBattleFlags,&fieldMarioBattle)) {
+            if(trioCommands.state==TrioBattleCommands::State::AttackReady && trioAttack.begin(trioCommands,trioBattleIntro,progress.hp,progress.originalPouch,&professorStory.actors[3].npcBattleFlags,&fieldMarioBattle,&fieldParties)) {
                 const auto sample=inputProducer.channels[0].battleSample();
                 const uint32_t triggers=i.physicalSnapshot?sample.pressed:(i.confirm?0x100u:0u)|(i.cancel?0x200u:0u);
                 trioAttack.tick(ticks*1000/60,trioBattleIntro,triggers,i.physicalSnapshot?&sample:nullptr);

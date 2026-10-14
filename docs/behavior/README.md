@@ -694,3 +694,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 The [native Switch soundtrack adapter](audio/NATIVE_SWITCH_SOUNDTRACK.md) is
 an explicit asset/presentation adaptation, outside recovered US behavior.
+
+- [Native field party registry and ending entry prelude](partner/NATIVE_FIELD_PARTY_REGISTRY.md): owned slots, current-index/control binding and source pouch admission before constructor waits.
+- [Original partner appearance position2](partner/FIELD_PARTNER_APPEAR_POSITION2.md): distinct single/dual ray order, raw down-hit admission, retained/live headings and constructor initialization evidence.

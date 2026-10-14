@@ -140,7 +140,10 @@ Movement now retains its creating eventID and stops when that event is gone,
 preserving the root's postwait placement. Linear movement remains an adapter;
 this does not claim original ease/collision stepping. The test supplies a
 field outcome. Native ending now uses a persistent field Mario words0/4/byte38
-owner and clears word4 bit1 before suspending at partyEntry801412fc; see
+owner and clears word4 bit1. Its owned two-slot registry now admits the
+source unlock gate: joined storage reaches allocation then camera query;
+unjoined storage retains the source failure return and waits at RuleKeep. See
+[native registry and constructor frontier](../partner/NATIVE_FIELD_PARTY_REGISTRY.md) and
 [field Mario owner and control depth](../field/MARIO_OWNER_CONTROL_DEPTH_AND_BATTLE_PREPARE.md).
 Actual party/exit/sequence2/result publication remains unfinished.
 

@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include <array>
 
 namespace ttyd {
 // Owned views of Mario words0/4 and byte38. Zero is the source constructor's
@@ -7,6 +8,7 @@ namespace ttyd {
 struct FieldMarioBattleState {
     uint32_t flags=0,secondaryFlags=0;
     uint8_t controlDepth=0;
+    std::array<uint8_t,2> partyIndices{{255,255}}; // Source MarioInit245/246 explicit ff stores.
 };
 int32_t fieldMarioControlOff(FieldMarioBattleState&);
 int32_t fieldMarioControlOn(FieldMarioBattleState&);

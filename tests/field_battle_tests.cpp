@@ -40,6 +40,25 @@ int main() {
     CHECK(fieldMarioControlOn(mario)==127 && mario.flags==0x80401002);
     restoreFieldMarioAfterBattle(mario);
     CHECK(mario.secondaryFlags==0x12345678 && mario.flags==0x80401002 && mario.controlDepth==127);
+    FieldPartyRegistry registry;FieldMarioBattleState partyOwner;
+    CHECK(!registry.pointer(-1) && registry.current(partyOwner)==-1);
+    CHECK(registry.allocateFirst()==0 && registry.allocateFirst()==1 && registry.allocateFirst()==-1);
+    for(unsigned i=0;i<2;++i)for(auto byte:registry.pointer(int32_t(i))->bytes)CHECK(byte==0);
+    partyOwner.partyIndices={{1,0}};
+    registry.pointer(1)->word(0,0x80000005);registry.pointer(0)->word(0,1);
+    CHECK(registry.current(partyOwner)==1);
+    registry.pointer(1)->word(0,0x8000000d);CHECK(registry.current(partyOwner)==0);
+    registry.pointer(0)->word(0,9);CHECK(registry.current(partyOwner)==-1);
+    registry.pointer(0)->word(0,1);registry.pointer(0)->word(8,8);
+    CHECK(registry.current(partyOwner)==0); // The pending-mode word8 bit is independent.
+    registry.control(false);CHECK(!registry.controlsEnabled());
+    CHECK(registry.pointer(0)->word(0)==0x20000001 && registry.pointer(1)->word(0)==0xa000000d);
+    registry.control(true);CHECK(registry.controlsEnabled());
+    CHECK(registry.pointer(0)->word(0)==1 && registry.pointer(1)->word(0)==0x8000000d);
+    FieldPartyRegistry fork=registry;fork.pointer(0)->word(0,9);
+    CHECK(registry.pointer(0)->word(0)==1 && fork.current(partyOwner)==-1);
+    partyOwner.partyIndices={{255,0}};CHECK(registry.current(partyOwner)==0);
+    registry.actors[0].reset();CHECK(registry.current(partyOwner)==-1 && registry.allocateFirst()==0);
     for(bool partner:{false,true}) {
         Fixture f;if(!partner)f.partner=0;auto s=f.services();
         CHECK(startFieldBattle(-3,true,s)==0);

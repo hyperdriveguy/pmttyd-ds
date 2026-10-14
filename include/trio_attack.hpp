@@ -4,6 +4,7 @@
 #include "battle_defense.hpp"
 #include "prologue_pouch.hpp"
 #include "point_get.hpp"
+#include "field_party.hpp"
 namespace ttyd {
 bool loadTrioAttackAssets(const char* root);
 struct TrioAttackRuntime;
@@ -11,7 +12,7 @@ struct TrioRewardIcon {std::array<float,3> position{};float scale=1;uint8_t alph
 // Executes original event data; unsupported callbacks keep their event waiting.
 class TrioAttack {
 public:
-    bool begin(const TrioBattleCommands&,ProfessorStory&,int16_t marioHp,std::shared_ptr<ProloguePouch> entryPouch={},uint32_t* fieldNpcBattleFlags=nullptr,FieldMarioBattleState* fieldMario=nullptr);
+    bool begin(const TrioBattleCommands&,ProfessorStory&,int16_t marioHp,std::shared_ptr<ProloguePouch> entryPouch={},uint32_t* fieldNpcBattleFlags=nullptr,FieldMarioBattleState* fieldMario=nullptr,FieldPartyRegistry* fieldParties=nullptr);
     void tick(uint64_t milliseconds,ProfessorStory&,uint32_t triggers=0,const BattlePadSample* physical=nullptr);
     bool active() const;
     bool finished() const;

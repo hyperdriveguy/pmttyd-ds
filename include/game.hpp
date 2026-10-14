@@ -1,4 +1,5 @@
 #pragma once
+#include "field_party.hpp"
 #include <array>
 #include <cstdint>
 #include <cstddef>
@@ -270,6 +271,7 @@ public:
     const BattlePadWork& privatePad() const {return actionCommandPad;}
     const FieldBattleWork& fieldBattleState() const {return fieldBattleWork;}
     const FieldMarioBattleState& fieldMarioBattleState() const {return fieldMarioBattle;}
+    const FieldPartyRegistry& fieldPartyState() const {return fieldParties;}
     bool fieldControlEnabled() const {return marioFieldControl && partnerFieldControl;}
     const char* dialogue() const;
     const char* prompt() const;
@@ -302,6 +304,7 @@ private:
     void checkFieldRoadCases();
     FieldBattleWork fieldBattleWork;
     FieldMarioBattleState fieldMarioBattle;
+    FieldPartyRegistry fieldParties;
     int32_t fieldSequence=2;
     bool marioFieldControl=true,partnerFieldControl=true;
     // Recorded requests: original prepare/post/audio internals remain unbound.

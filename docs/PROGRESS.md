@@ -8298,3 +8298,48 @@ prologue heading display. Findings: Peach4MiB atlas repeatedly exceeds free
 linear memory; renderer lacks original b/<map>.tpl backgrounds; source ship/wake/
 heading timing differs from current simple adapters. Finish and integrate these
 consumers, then verify the complete corrected sequence before completion.
+
+## 2026-10-13 — Owned field party registry and ending entry prelude
+
+Replaced fixed field-battle partner token1 with Game-owned two-slot field
+actor storage, source primary/auxiliary current-index selection and global
+controls for both registered actors. Records are188hex bytes with explicit
+big-endian words; fresh pointers are null and Mario indicesff/ff. Slot
+allocation follows first-null selection and source-sized clearing; simulation
+copy fixtures copy independently. Original field rendering/join history is
+not inferred from the existing Goombella billboard.
+
+Ending now checks the canonical source pouch unlock before party creation.
+Unjoined storage executes the original failure return without slot/unlock
+changes, performs live current-party lookup/flag cleanup and stops at RuleKeep.
+An explicitly joined checkpoint reaches EntryMain allocation and stops at
+marioGetCamId before inventing a pose, owner, placement or constructor result.
+Original existing-party destruction and other kind domains remain providers.
+Both branches keep story11/result0 and the Mario control hold.
+
+Recovered complete appearance2 with the documentation agent: source accepts
+any nonnull down hit, uses38-unit down length and distinct single/dual query
+order; general placement's floor classifications do not apply. Confirmed
+source empty registry and current-slot constructor stores. Added subsystem
+contracts with original body/constant/template hashes; no raw assets changed.
+
+Validation: make test passed173/173 CTest and115/115 Python checks
+(artifacts/trio-field-registry-tests-final.log); make all and debug-short
+passed (artifacts/trio-field-registry-all.log and
+artifacts/trio-field-registry-debug-final.log). Targeted field battle/trio
+tests and scoped diff/link checks passed. First full build saw a transient
+partner-follow-test link failure (missing main); debug packaging saw a
+concurrently regenerated soundtrack directory disappear. Both reruns passed
+without source/test changes. Isolated Azahar completed using immutable
+artifacts/trio-field-registry-snapshot binary/ELF and legacy story11 fixture
+(artifacts/azahar-trio-field-registry-ready). Reviewed actual battle target
+selection, final Headbonk, original10 Star Points/poses and opaque ending
+fade/development field-restoration notice. The initial8-second startup input
+missed battle entry (artifacts/azahar-trio-field-registry);45-second startup
+reached the intended battle. Capture does not prove joined constructor
+completion, runtime control words, native return or hardware behavior.
+
+Next: actual camera/animation/material/kuribo_init, placement2 and Hello,
+source joining graph and persistent party-slot lifetimes; then RuleKeep,
+audience stop and original exit/context/sequence/result publication. Native
+field return/full prologue parity and hardware validation remain unfinished.

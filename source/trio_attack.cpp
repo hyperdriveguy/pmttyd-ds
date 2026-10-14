@@ -68,6 +68,7 @@ struct TrioAttackRuntime {
     PointGetEffect pointGet;uint64_t pointGetClockAt=UINT64_MAX;
     BattleEndingFade endingFade;uint64_t endingFadeClockAt=UINT64_MAX;bool endingExported=false;uint32_t* fieldNpcBattleFlags=nullptr;
     FieldMarioBattleState* fieldMario=nullptr;
+    FieldPartyRegistry* fieldParties=nullptr;
     TrioAttackRuntime():vm(0x81000000,platform(this)) {}
     static EventNativePlatform platform(TrioAttackRuntime* self) {
         EventNativePlatform p;p.user=self;p.clock=[](void*)->uint32_t{return 243000000;};
@@ -673,7 +674,24 @@ struct TrioAttackRuntime {
             }
             if(!fieldMario){pending=0x8005e0c0;return;}
             endingRequest(0x8005e0c0);restoreFieldMarioAfterBattle(*fieldMario);
-            pending=party?0x801412fc:0x80141198;return; // Actual field party constructor/destructor precedes Rule0/context restoration.
+            if(!fieldParties){pending=party?0x801412fc:0x80141198;return;}
+            if(party) {
+                const auto kind=battlePartyIndex(int32_t(word(party+8)));
+                endingRequest(0x801412fc,{kind});
+                if(kind<0 || kind>=8){pending=0x801412fc;return;} // Other constructor domains remain their own providers.
+                if(entryPouch->half(unsigned(14*kind))&1) {
+                    if(fieldMario->partyIndices[0]<128){pending=0x800be69c;return;}
+                    endingRequest(0x800bea68,{kind});endingRequest(0x800be144,{kind});
+                    if(fieldParties->allocateFirst()<0){pending=0x800bea68;return;} // Entry wrapper requires a free slot.
+                    pending=0x801a94f0;return; // Source camera query precedes actor fields/animation/placement initialization.
+                } // Real source -1 return: no unlock, kill or constructor side effects.
+            }else {
+                endingRequest(0x80141198);
+                for(const auto index:fieldMario->partyIndices)if(index<128){pending=0x800be69c;return;}
+            }
+            endingRequest(0x80141050);const auto index=fieldParties->current(*fieldMario);
+            endingRequest(0x800bf1b4,{index});if(auto* actor=fieldParties->pointer(index))actor->word(4,actor->word(4)&~1u);
+            pending=0x8018ef8c;return; // Rule/accounting and audience/exit/sequence owners follow actual field restoration.
         }
         pending=0x80215234;
     }
@@ -851,7 +869,7 @@ struct TrioAttackRuntime {
     void tick(uint64_t time,ProfessorStory& s,uint32_t triggers,const BattlePadSample* physical){scene=&s;now=time;if(!pending){if(sampledAt!=time){sampledAt=time;checkBrokenUnits();BattlePadSample sample;if(physical)sample=*physical;else {sample.snapshot.buttons=uint16_t(triggers);sample.pressed=triggers;}readPad(Battle+0xf2c,generalPad);generalPad.update(sample);writePad(Battle+0xf2c,generalPad);history=generalPad.triggers;vm.gp.timestamp=time*eventClockRate(243000000);if(word(Battle+4)==3)ending();else if(!done){if(word(Battle+0xf20)<0x06000007)enemyAction();else postAction();}else handoff();readPad(Battle+0x1d1c,privatePad);privatePad.update(sample);writePad(Battle+0x1d1c,privatePad);actionManager();}vm.runManager();if(hasBrokenUnit())done=false;}iconClock(time);if(pointGetClockAt!=time){pointGetClockAt=time;pointGet.tick();}if(endingFadeClockAt!=time){endingFadeClockAt=time;endingFade.tick(60);}publish(s);}
     void publish(ProfessorStory& s){for(unsigned id=1;id<7;++id){const uint32_t u=word(Battle+0x20+4*id);if(!u){s.actors[visual[id]].hidden=true;continue;}for(unsigned axis=0;axis<3;++axis)s.actors[visual[id]].position[axis]=real(u+0x3c+4*axis);s.actors[visual[id]].yaw=byte(u+0x189)==1?90:270;s.actors[visual[id]].battleFlags=word(u+0x1c);for(unsigned axis=0;axis<3;++axis){s.actors[visual[id]].battleRotation[axis]=real(u+0x60+4*axis)+real(u+0x6c+4*axis);s.actors[visual[id]].battlePivot[axis]=real(u+0x78+4*axis);s.actors[visual[id]].battleScale[axis]=(axis<2?real(u+0x114):1.f)*real(u+0x9c+4*axis)*real(u+0x90+4*axis);s.actors[visual[id]].battleDisplayOffset[axis]=real(u+0x54+4*axis);}}}
 };
-bool TrioAttack::begin(const TrioBattleCommands& menu,ProfessorStory& scene,int16_t hp,std::shared_ptr<ProloguePouch> entryPouch,uint32_t* fieldNpcBattleFlags,FieldMarioBattleState* fieldMario){if(!assetsReady || !menu.attack || !((menu.actor==1 && (menu.attack->weapon==0x803538a8 || menu.attack->weapon==0x80353de8)) || (menu.actor==2 && menu.attack->weapon==0x80393ea8)))return false;if(runtime_)return runtime_->done && runtime_->readyActor==menu.actor && runtime_->launch(menu);auto r=std::make_shared<TrioAttackRuntime>();r->fieldNpcBattleFlags=fieldNpcBattleFlags;r->fieldMario=fieldMario;if(!r->initialize(menu,scene,hp,std::move(entryPouch)))return false;runtime_=std::move(r);return true;}
+bool TrioAttack::begin(const TrioBattleCommands& menu,ProfessorStory& scene,int16_t hp,std::shared_ptr<ProloguePouch> entryPouch,uint32_t* fieldNpcBattleFlags,FieldMarioBattleState* fieldMario,FieldPartyRegistry* fieldParties){if(!assetsReady || !menu.attack || !((menu.actor==1 && (menu.attack->weapon==0x803538a8 || menu.attack->weapon==0x80353de8)) || (menu.actor==2 && menu.attack->weapon==0x80393ea8)))return false;if(runtime_)return runtime_->done && runtime_->readyActor==menu.actor && runtime_->launch(menu);auto r=std::make_shared<TrioAttackRuntime>();r->fieldNpcBattleFlags=fieldNpcBattleFlags;r->fieldMario=fieldMario;r->fieldParties=fieldParties;if(!r->initialize(menu,scene,hp,std::move(entryPouch)))return false;runtime_=std::move(r);return true;}
 void TrioAttack::tick(uint64_t time,ProfessorStory& scene,uint32_t triggers,const BattlePadSample* physical){if(runtime_)runtime_->tick(time,scene,triggers,physical);}
 bool TrioAttack::active()const{return runtime_ && !runtime_->done;}
 bool TrioAttack::finished()const{return runtime_ && runtime_->done;}

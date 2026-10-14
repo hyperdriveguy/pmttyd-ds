@@ -206,6 +206,11 @@ int main(){
     for(unsigned scenario=0;scenario<3;++scenario) {
         const bool successful=scenario!=0,fastReward=scenario==2;
         Game charged;charged.restore(checkpoint);
+        if(fastReward) {
+            // Explicit checkpoint history of the authored Goombella join.
+            charged.progress.originalPouch=createProloguePouch();assert(charged.progress.originalPouch);
+            charged.progress.originalPouch->half(14,1);
+        }
         for(unsigned n=0;n<3600 && !charged.trioBattleActive;++n)charged.tick(advance);
         for(unsigned n=0;n<3600 && !charged.trioBattleIntro.finished;++n)charged.tick(advance);
         for(unsigned n=0;n<3000 && !charged.trioAttack.pendingFunction();++n){
@@ -327,7 +332,16 @@ int main(){
             for(unsigned n=0;n<59;++n)charged.tick(Input{});assert(charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001a);
             charged.tick(Input{});assert(charged.trioBattleIntro.actors[0].pose=="M_R_1" && charged.trioBattleIntro.actors[1].pose=="PKR_R_1");
             for(unsigned n=0;n<100 && !charged.trioAttack.pendingFunction();++n)charged.tick(Input{});
-            assert(charged.trioAttack.pendingFunction()==0x801412fc && charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001f);
+            assert(charged.trioAttack.pendingFunction()==(fastReward?0x801a94f0u:0x8018ef8cu) && charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001f);
+            assert(charged.fieldMarioBattleState().partyIndices[0]==255 && charged.fieldMarioBattleState().partyIndices[1]==255);
+            if(fastReward) {
+                assert(charged.fieldPartyState().pointer(0) && !charged.fieldPartyState().pointer(1));
+                for(const auto byte:charged.fieldPartyState().pointer(0)->bytes)assert(byte==0);
+                assert(charged.progress.originalPouch->half(14)==1);
+            }else {
+                assert(!charged.fieldPartyState().pointer(0) && !charged.fieldPartyState().pointer(1));
+                assert(!(charged.progress.originalPouch->half(14)&1));
+            }
             assert(charged.fieldMarioBattleState().secondaryFlags==0 && charged.fieldMarioBattleState().controlDepth==1 && (charged.fieldMarioBattleState().flags&2));
             assert(charged.trioAttack.readWord(0x84000f28,value) && value==0);
             assert(charged.trioAttack.readWord(0x84000000,value) && value==4);

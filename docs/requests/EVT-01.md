@@ -3257,3 +3257,16 @@ Three whole body hashes pin this delivery; no native registry or source
 execution claim. Remaining request stays open: slot/actor initialization,
 original join history, allocation/animation/appearance/Hello, complete
 ending/exit/context/sequence/result publication and original execution checks.
+
+### 2026-10-13 — Native registry/entry prelude and appearance2 delivery
+
+Native two-slot registry/current-index/global controls and ending entry gate
+now replace the fixed field partner token. Joined checkpoint constructor
+prelude stops at marioGetCamId; unjoined source-1 return stops at RuleKeep.
+See [native registry](../behavior/partner/NATIVE_FIELD_PARTY_REGISTRY.md) and
+[complete appearance2](../behavior/partner/FIELD_PARTNER_APPEAR_POSITION2.md).
+Source original join root/pouch mutation still requires native binding;
+do not grant unlock during battle ending or infer actor ownership from a
+billboard. Next providers: camera/animation/material/kuribo_init, appearance2/
+Hello, source party destruction/lifetimes, RuleKeep/audience, original resource
+exit/context/sequence/result publication. Parent request remains open.
