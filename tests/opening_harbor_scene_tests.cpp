@@ -3,6 +3,7 @@
 #include <cassert>
 #include <cmath>
 #include <cstdio>
+#include <map>
 using namespace ttyd;
 int main(int argc,char** argv){
  OpeningHarborScene s;s.begin(100);s.advance(280);assert(s.x==-600 && !s.marioVisible);s.advance(400);assert(s.x==-270);s.advance(460);assert(std::fabs(s.x+123.75f)<.001f);s.advance(520);assert(s.x==-75 && s.marioVisible && s.eye.x==2 && s.at.z==243);
@@ -12,6 +13,14 @@ int main(int argc,char** argv){
  OpeningHarborScene resolved;resolved.begin(0,1.75f);resolved.advance(480);resolved.messageComplete(0);resolved.advance(600);resolved.messageComplete(1);resolved.advance(660);assert(resolved.jump.start[1]==1.75f && resolved.jump.target[1]==1);
  resolved.advance(714);assert(resolved.work8>100);resolved.advance(768);assert(resolved.work8==1 && resolved.jump.result==2);
  OpeningHarborScene dense,sparse;dense.begin(0);sparse.begin(0);for(unsigned tick=0;tick<=600;++tick)dense.advance(tick);sparse.advance(600);assert(dense.x==sparse.x && dense.parts==sparse.parts && dense.rock==sparse.rock);
- if(argc==3){FILE* f=std::fopen(argv[2],"rb");assert(f);assert(!std::fseek(f,0,SEEK_END));const long size=std::ftell(f);std::fclose(f);OpeningShipObjects objects;assert(objects.load(argv[1],size/36));unsigned writes=0;objects.apply(-75,0,-75,180,0,{},[&](uint32_t i,const OpeningShipObjects::Point& p){assert(i<unsigned(size/36));for(float v:p)assert(std::isfinite(v));++writes;});assert(writes>1000);}
+ if(argc==3){FILE* f=std::fopen(argv[2],"rb");assert(f);assert(!std::fseek(f,0,SEEK_END));const long size=std::ftell(f);std::fclose(f);OpeningShipObjects objects;assert(objects.load(argv[1],size/36));unsigned writes=0;objects.apply(-75,0,-75,180,0,{},[&](uint32_t i,const OpeningShipObjects::Point& p){assert(i<unsigned(size/36));for(float v:p)assert(std::isfinite(v));++writes;});assert(writes>1000);
+  std::map<uint32_t,OpeningShipObjects::Point> original;
+  objects.apply(-435,0,-475,0,2,{3,17,20,9},[&](uint32_t index,const OpeningShipObjects::Point& p){assert(original.emplace(index,p).second);});
+  std::vector<uint32_t> compactIndices(size/36,UINT32_MAX);uint32_t local=0;
+  for(const auto& entry:original)compactIndices[entry.first]=local++;
+  auto compact=objects;assert(compact.remapVertices(compactIndices,local));unsigned copied=0;
+  compact.apply(-435,0,-475,0,2,{3,17,20,9},[&](uint32_t index,const OpeningShipObjects::Point& p){auto entry=original.begin();std::advance(entry,index);assert(index<local && p==entry->second);++copied;});
+  assert(copied==local);auto invalid=compactIndices;invalid[original.begin()->first]=UINT32_MAX;assert(!objects.remapVertices(invalid,local));
+ }
  std::puts("Original harbor approach, message gates, actual paper presentation, departure and dense/sparse clock passed");
 }

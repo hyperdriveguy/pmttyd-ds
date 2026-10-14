@@ -1729,7 +1729,7 @@ void Game::tick(const Input& rawInput) {
         }
     } presentation{*this,partner,rawInput};
     Input input=rawInput;const Input& i=input;
-    ++ticks;++fieldCameraSimulationTicks; sound=Sound::None;overheadContact=false;headObjectKey=0;headContact={};
+    ++ticks;++fieldCameraSimulationTicks;openingDeparture.advance(ticks,progress.room); sound=Sound::None;overheadContact=false;headObjectKey=0;headContact={};
     if(scene==Scene::Explore || scene==Scene::Dialogue)beginFieldCameraTick();
     if(arriving || warpRequest>=0)retainedFieldMainX=0; // Source road choreography keys off before Mario input publication.
     if(i.physicalSnapshot) {

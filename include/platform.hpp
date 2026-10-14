@@ -34,6 +34,7 @@ public:
     void beginFrontend();
     void advanceTutorialAnimations(Game&);
     void releaseFrontend(bool preserveMapTurn=false);
+    bool prepareOpeningDeparture(const OpeningHarborScene&,uint64_t fieldTick);
     void render(const Game&, const Metrics&, const char* notice, bool audioAvailable);
     void renderFrontend(Frontend&, OpeningDemo&, OpeningSequence&, const char* notice);
     void shutdown();
@@ -116,6 +117,10 @@ private:
     std::string frontFailure;
     OpeningHouseObjects frontHouseObjects;
     OpeningShipObjects frontShipObjects;
+    Room departureRoom;
+    OpeningShipObjects departureObjects;
+    void drawOpeningDeparture(const Game&,bool translucent);
+    void freeOpeningDeparture();
     std::unique_ptr<Game> frontDrawSnapshot;
     struct CineActor {std::string name;ActorAnimationPack animations;Texture image;float uvScale=1;ActorAnimationSample sample;const ActorAnimationPose* sampledPose=nullptr;float sampledTime=-1;};
     std::vector<CineActor> cineActors;

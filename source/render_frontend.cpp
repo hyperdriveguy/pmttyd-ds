@@ -10,7 +10,7 @@ constexpr auto FieldRGBDepth=GPU_WRITEMASK(FieldRGB|GPU_WRITE_DEPTH);
 constexpr uint32_t Ink=0xff352d29,Paper=0xffdff2fb,Red=0xff4966d8;
 uint32_t rgb(unsigned r,unsigned g,unsigned b,unsigned a=255){return C2D_Color32(r,g,b,a);}}
 void Renderer::beginFrontend(){
-    C3D_FrameSync();
+    C3D_FrameSync();freeOpeningDeparture();
     for(auto* room:{&plaza,&stage,&trioBackground,&trioStage})freeRoom(*room);
     frontActive=true;
 }

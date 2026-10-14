@@ -36,6 +36,14 @@ bool OpeningShipObjects::load(const char* path,uint32_t vertexCount){
  ok=ok && std::fgetc(f)==EOF;std::fclose(f);if(ok){objects=std::move(pending);childPositions.resize(vertices);hasChild.assign(vertices,0);for(unsigned n=2;n<7;++n)for(const auto& b:objects[n].bindings)hasChild[b.index]=1;}
  return ok;
 }
+bool OpeningShipObjects::remapVertices(const std::vector<uint32_t>& indices,uint32_t count) {
+ if(objects.size()!=7 || !count)return false;
+ for(const auto& o:objects)for(const auto& b:o.bindings)if(b.index>=indices.size() || indices[b.index]>=count)return false;
+ for(auto& o:objects)for(auto& b:o.bindings)b.index=indices[b.index];
+ childPositions=std::vector<Point>(count);hasChild=std::vector<uint8_t>(count,0);
+ for(unsigned n=2;n<7;++n)for(const auto& b:objects[n].bindings)hasChild[b.index]=1;
+ return true;
+}
 void OpeningShipObjects::apply(float x,float y,float wakeX,float yaw,float rock,const std::array<float,4>& parts,const Writer& write) const {
  applyMatrices(x,y,wakeX,yaw,rock,parts,write,0,0,yaw);
 }

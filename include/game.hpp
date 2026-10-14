@@ -39,6 +39,7 @@
 #include "partner_presentation.hpp"
 #include "partner_follow.hpp"
 #include "harbor_story.hpp"
+#include "opening_field_departure.hpp"
 #include "harbor_encounter.hpp"
 #include "harbor_tutorial.hpp"
 #include "professor_story.hpp"
@@ -160,6 +161,8 @@ public:
         if(initializeAnimation)if(auto bank=fieldMarioAnimationBank())fieldParties.initializeMario(fieldMarioBattle,std::move(bank),0);
     }
     Progress progress;
+    OpeningFieldDeparture openingDeparture;
+    bool retainOpeningDeparture(const OpeningHarborScene&);
     Vec2 partner{1.4f,2.5f};
     float groundHeight = 0, partnerHeight = 0;
     float groundMetadataHeight=0; // Source +1c4; distinct from actual rootY.

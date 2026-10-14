@@ -33,9 +33,11 @@ Dolphin timings:
 Original014/015 retain literal speaker0 and unchanged msg/US control tokens.
 The scene now gates their publication on the ship/camera requests, rather
 than exposing both messages immediately on arrival. Story3 publishes at the
-original main-stream three-second departure wait. The native frontend retains
-the still-running ship scene until its eight-second departure ends; handing
-that detached source event to ordinary field rendering remains separate.
+original main-stream three-second departure wait. The native frontend transfers
+the still-running ship child to a compact field resource owner when the
+parent releases control at three seconds; the child retires at eight seconds.
+[Field handoff](OPENING_FIELD_DEPARTURE_OWNER.md) records its independent clock
+and GPU resource transfer.
 
 Private original harbor conversion keeps the full `S_fune_a` and
 `S_a_hikinami` subtrees plus their local/world vertex bindings. Only those

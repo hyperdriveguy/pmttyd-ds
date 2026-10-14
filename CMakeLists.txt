@@ -890,3 +890,8 @@ target_sources(ttyd_core PRIVATE source/battle_general_rule.cpp)
 add_executable(battle_general_rule_tests tests/battle_general_rule_tests.cpp)
 target_link_libraries(battle_general_rule_tests PRIVATE ttyd_core)
 add_test(NAME battle_general_rule COMMAND battle_general_rule_tests)
+
+target_sources(ttyd_core PRIVATE source/game_opening_departure.cpp)
+add_executable(opening_field_departure_tests tests/opening_field_departure_tests.cpp)
+target_link_libraries(opening_field_departure_tests PRIVATE ttyd_core)
+add_test(NAME opening_field_departure COMMAND opening_field_departure_tests)

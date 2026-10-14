@@ -748,3 +748,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Opening map turn capture](display/OPENING_MAP_TURN_CAPTURE.md): original49/50 sparse geometry, dynamic material inheritance, GPU ownership and final-pose acknowledgment.
 - [Native general rule and audience storage](battle/NATIVE_GENERAL_RULE_AND_AUDIENCE_STORAGE.md): all68 selectors, retained unit/helper ownership and corrected inline audience bank.
+
+- [Opening arrival field departure ownership](story/OPENING_FIELD_DEPARTURE_OWNER.md)

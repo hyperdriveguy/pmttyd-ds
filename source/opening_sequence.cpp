@@ -87,7 +87,7 @@ void OpeningSequence::tick(uint64_t time,uint32_t keys){
     case OpeningPart::Voyage:if(voyage.headingReady)enter(OpeningPart::Prologue,time);break;
     case OpeningPart::Prologue:if(heading.complete)enter(OpeningPart::Wake,time);break;
     case OpeningPart::Wake:{const char* ids[]={"mac_0_012","mac_0_013","mac_0_013_01"};if(index<3 && wake.messageReady(index)){print(ids[index],0);++index;}else if(index==3 && wake.complete)enter(OpeningPart::Arrival,time);break;}
-    case OpeningPart::Arrival:{const char* ids[]={"mac_0_014","mac_0_015"};if(index<2 && harbor.messageReady(index)){print(ids[index],0);++index;}else if(index==2 && harbor.complete){story=3;enter(OpeningPart::Complete,time);}break;}
+    case OpeningPart::Arrival:{const char* ids[]={"mac_0_014","mac_0_015"};if(index<2 && harbor.messageReady(index)){print(ids[index],0);++index;}else if(index==2 && harbor.storyPublished){story=3;enter(OpeningPart::Complete,time);}break;}
     case OpeningPart::Complete:break;
     }
 }

@@ -224,6 +224,7 @@ void Renderer::freeRoom(Room& room) {
     room=Room{};
 }
 bool Renderer::changeRoom(uint32_t room) {
+    if(room!=1)freeOpeningDeparture();
     releaseFrontend();
     if(frontActive) {
         Room pendingStage,pendingBackground,pendingTrio;
@@ -960,6 +961,7 @@ void Renderer::world(const Game& g) {
     C3D_TexBind(0,&sky.texture);C3D_DrawArrays(GPU_TRIANGLES,0,6);
     C3D_DepthTest(true,GPU_GREATER,battle?GPU_WRITE_ALL:FieldRGBDepth);
     if(g.trioBattleActive){drawMap(true,g,false,&trioBackground);drawMap(true,g,false,&trioStage);}else drawMap(battle,g);
+    if(!battle)drawOpeningDeparture(g,false);
     buffers=C3D_GetBufInfo();
     BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);
     C3D_TexBind(0,&atlas);
@@ -1002,7 +1004,7 @@ void Renderer::world(const Game& g) {
         C3D_TexEnvFunc(env,C3D_Both,GPU_MODULATE);
     }
     // Original stage400000 opaques,500000 shadows,600000 translucent.
-    if(!battle){drawFieldActors(true);if(g.trioBattleActive){drawMap(true,g,true,&trioBackground);drawMap(true,g,true,&trioStage);}else drawMap(false,g,true);}
+    if(!battle){drawFieldActors(true);if(g.trioBattleActive){drawMap(true,g,true,&trioBackground);drawMap(true,g,true,&trioStage);}else drawMap(false,g,true);drawOpeningDeparture(g,true);}
 }
 void Renderer::text(const char* str,float x,float y,float scale,uint32_t color) {
     C2D_Text t;C2D_TextParse(&t,textBuffer,str);C2D_TextOptimize(&t);
@@ -1206,6 +1208,7 @@ void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audio
     }
 }
 void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool audioAvailable) {
+    if(departureRoom.vertices && !g.openingDeparture.active)freeOpeningDeparture();
     for(auto i=messageDynamicWindows.begin();i!=messageDynamicWindows.end();) {
         const auto id=i->first;const auto& story=g.storyPresentation();
         const bool keep=id==story.message.serial || id==story.selection.message.serial || id==g.harborStory.message.serial ||
@@ -1239,7 +1242,7 @@ void Renderer::shutdown() {
     releaseTutorialCurtain();
     releaseTutorialStartupResources();
     if(textBuffer) C2D_TextBufDelete(textBuffer);
-    releaseFrontend();
+    releaseFrontend();freeOpeningDeparture();
     for(Room* room : {&plaza,&stage,&trioBackground,&trioStage,&harborBattleBackground,&harborBattleStage})freeRoom(*room);
     for(auto& actor:tutorialActors)if(actor.image.imported){Tex3DS_TextureFree(actor.image.imported);C3D_TexDelete(&actor.image.texture);}
     if(sky.imported) {Tex3DS_TextureFree(sky.imported);C3D_TexDelete(&sky.texture);}

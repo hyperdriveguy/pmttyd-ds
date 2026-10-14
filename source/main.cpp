@@ -157,7 +157,7 @@ int main() {
                         ttyd::Progress fresh;fresh.room=1;fresh.position={0,2.25f};fresh.elevation=.15f;fresh.originalStory=opening.story;
                         fresh.originalNpcTalkState={uint8_t(0),false,false}; // Original explicit swInit clears these saved switches.
                         fresh.originalPouch=ttyd::createProloguePouch(); // Explicit native new-file handoff using the recovered initial-stage pouch snapshot.
-                        if(restoreProgress(fresh)){frontend.openingComplete();game.saveRequested=true;notice="";noticeTicks=0;}
+                        if(renderer.prepareOpeningDeparture(opening.harbor,0) && restoreProgress(fresh) && game.retainOpeningDeparture(opening.harbor)){frontend.openingComplete();game.saveRequested=true;notice="";noticeTicks=0;}
                         else {notice="Original harbor could not load";noticeTicks=240;}
                     }
                 }

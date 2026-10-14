@@ -10109,3 +10109,26 @@ Goal remains active; this is not a complete playable field return.
 ## 2026-10-13 — Primary map turn integration checks
 
 Original49/50 captured page fold and concurrent Voyage admission now bind in primary. Late acceptance retains sailing9 and accepted+240 requests source6000ms Off. Original50 sample869/1235 binds once after real entry admission, with documented primary-sample limits. Corrected the host display provider to acknowledge original49, rather than falsely bypassing the new capture gate. Scoped opening/frontend/message28/28 and Python124/124 passed. Native make all completed before this last small Audio binding; final combined native build/smoke remains next. Full CTest187/190 passed in the earlier run: opening host gate corrected here; changing harbor encounter/tutorial source-service fixtures still failed and require their owner validation.
+
+
+### Original +3s field release with detached +8s ship owner, 2026-10-13
+
+The known extra five-second frontend input hold is removed: Arrival parent now
+ends on its actual180-tick story3 publication, Game retains the still-running
+original harbor scene with an explicit field/source clock anchor, and the child
+continues to480ticks independently of field input/control locks. Native renderer
+frame-syncs then compacts original ship/wake groups1/13, remaps their source
+vertex IDs/cached transforms and transfers only used GPU textures before freeing
+whole frontend world/capture/actors. Live field worldTransform draws the original
+remaining boat motion alongside Mario. Resource preparation and field restore
+must succeed before successful handoff/checkpoint request; no fake save success.
+
+Host coverage checks actual179/180 release, continuous source clock, source479/480
+retirement, sparse/dense equivalence, actual Game input moving Mario while ship
+continues, dialogue input lock with still-advancing child, original exact vertex
+positions after compaction and rejected incomplete remap. make test176/176CTest
+and113/113Python +make all -o assets-ready pass (artifacts/field-departure-final-
+{tests,all}.log); diff check passes. Native fresh input-while-departure fixture is
+running under artifacts/azahar-opening-field-departure; actual screenshots and
+retirement are recorded after inspection. General event/field/camera/hardware
+parity remains outside this bounded used-branch ownership bridge.

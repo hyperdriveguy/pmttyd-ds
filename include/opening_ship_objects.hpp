@@ -5,6 +5,7 @@ class OpeningShipObjects {
 public:
  using Point=OpeningHouseObjects::Point;using Writer=OpeningHouseObjects::Writer;
  bool load(const char*,uint32_t);
+ bool remapVertices(const std::vector<uint32_t>& originalToLocal,uint32_t localCount);
  void clear(){objects.clear();childPositions.clear();hasChild.clear();}
  void applyVoyage(const Point&,float yaw,float rock,const std::array<float,4>& parts,const Writer&) const;
  void apply(float x,float y,float wakeX,float yaw,float rock,const std::array<float,4>& parts,const Writer&) const;
