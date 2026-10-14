@@ -32,7 +32,10 @@ bool resumeAnimationShape(BattlePosePool& pool,int32_t handle,const std::optiona
         c=AnimationShapeCursor{};c.active=true;c.handle=handle;c.input=input;c.resource=p->resource;
     }
     if(handle!=c.handle)return false;
-    auto emit=[&](uint32_t fn){c.pending=fn;return s.call && s.call(s.user,c.request);};
+    auto emit=[&](uint32_t fn){c.pending=fn;
+        if(fn==0x800208c0 && s.material)return s.material(s.user,c.request,c.pending);
+        return s.call && s.call(s.user,c.request);
+    };
     auto queue=[&](uint32_t fn){if(!c.queued){c.request={};c.request.function=fn;c.request.resource=c.resource->draw;c.request.draw=c.draw;c.request.pose=pool.pose(handle);c.queued=true;return true;}return false;};
     auto done=[&](uint32_t phase){c.queued=false;c.phase=phase;};
     const auto& d=*c.resource->draw;

@@ -1588,3 +1588,10 @@ add_executable(field_area_event_tests tests/field_area_event_tests.cpp)
 target_link_libraries(field_area_event_tests PRIVATE ttyd_core)
 add_test(NAME field_area_event COMMAND field_area_event_tests)
 set_tests_properties(field_area_event PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Original map material-light selection and channel requests.
+target_sources(ttyd_core PRIVATE source/display/map_material_light.cpp)
+add_executable(map_material_light_tests tests/map_material_light_tests.cpp)
+target_link_libraries(map_material_light_tests PRIVATE ttyd_core)
+add_test(NAME map_material_light COMMAND map_material_light_tests)
+set_tests_properties(map_material_light PROPERTIES WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})

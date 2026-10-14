@@ -2,6 +2,7 @@
 #include "battle_pose_inner.hpp"
 #include "animation_draw_traversal.hpp"
 #include "animation_shape_render.hpp"
+#include "map_material_light.hpp"
 #include "battle_event_callbacks.hpp"
 #include "event_memory_bootstrap.hpp"
 #include "event_memory_release.hpp"
@@ -177,6 +178,8 @@ struct TrioAttackRuntime {
     uint32_t poseDrawMode=1; // Replay battle_init -> animPoseBattleInit W10c=1; retained until autoRelease(1).
     std::optional<uint32_t> poseDrawPass;
     std::optional<BattlePoseInnerContext> poseDrawContext;
+    MapMaterialLightWork materialLights;
+    MapMaterialLightCursor materialLightCursor;
     std::optional<BattlePoseMapGroup> poseDrawMapGroup; // Selected battle bank1 material projection.
     ShadowDisplayGlobals shadowDisplayGlobals;
     std::shared_ptr<BattleCommandPalette> palette;
@@ -303,6 +306,7 @@ struct TrioAttackRuntime {
         // Replay the preceding seq_battleMain rank0 bmapLoad(bti_01,stg_00_1)
         // bank1 clear. Map loading does not set material bits2/4; encountered
         // unbound EVT blend writers suspend, never silently mutate this owner.
+        if(!materialLights.battleLoaded && !materialLights.loadBattle((stageMapRoot+"/material-light.bin").c_str()))return false;
         if(!poseDrawMapGroup)poseDrawMapGroup=BattlePoseMapGroup{0,0,0};
         word(Battle+0x18110,0);word(Battle+0x18114,0x80374c38);byte(Battle+0x182a6,255);word(Battle+0x182b8,0);word(Battle+0x182bc,0);
         // Typed current map root is retained from the original hierarchy pack.
@@ -1983,6 +1987,13 @@ bool TrioAttack::resumeShadowDisplay(uint32_t camera,uint32_t userdata,const Sha
     return shadowDisplay(*runtime_->shadows,camera,userdata,runtime_->shadowDisplayCursor,runtime_->shadowDisplayGlobals,services);
 }
 const CameraManager* TrioAttack::cameras()const{return runtime_?runtime_->cameras.get():nullptr;}
+const MapMaterialLightWork* TrioAttack::materialLights()const{return runtime_?&runtime_->materialLights:nullptr;}
+bool TrioAttack::resumeMaterialLight(uint32_t flags,std::array<float,3> origin,const MapMaterialLightServices& services,uint32_t& pending)const{
+    if(!runtime_ || !runtime_->materialLights.battleLoaded)return false;
+    const bool complete=resumeMapMaterialLight(runtime_->materialLights,flags,origin,services,runtime_->materialLightCursor);
+    if(!complete)pending=runtime_->materialLightCursor.pending;
+    return complete;
+}
 const DisplayQueue* TrioAttack::displayQueue()const{return runtime_?&runtime_->displayQueue:nullptr;}
 std::optional<TrioShadowDrawRequest> TrioAttack::shadowDrawRequest()const{return runtime_?runtime_->shadowDraw:std::nullopt;}
 const ShadowWork* TrioAttack::shadowWork()const{return runtime_?runtime_->shadows.get():nullptr;}

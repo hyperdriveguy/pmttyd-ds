@@ -4350,3 +4350,30 @@ Game/full parent integration, earlier NPC/world requests, actual case activation
 house05's distinct inline installer and geometry-derived selectors remain OPEN.
 Do not replace house05 with generic entry or infer complete area slot IDs from
 the otherwise empty seven-case fixture. Parent EVT-01 stays OPEN.
+
+### 2026-10-14 — Native map material-light continuation
+
+[Native lighting scope](../behavior/display/NATIVE_MAP_MATERIAL_LIGHT_BINDING.md)
+now binds original rank0 battle map count/fog/fallback-ambient bytes, a real
+32-record bank1 owner, ordered material-light selection/ambient/final GX requests
+and separate disabled RGB0/alpha0 source controls. Pending helper identities now
+propagate through the retained shape request. Preset main/SDK light objects,
+more-than8 active-record sorter, field bank history and actual lit PICA backend
+remain explicit provider boundaries. The observed flags0 call is the admitted
+native path; texture/TEV and indexed GPU submission remain next. Existing texture
+helper contracts suffice for current slot9/descriptor44; its remaining gap is
+binding the actual resident atlas/live palette state and retaining resource
+lifetime. Full ending/field return and parent EVT-01 remain OPEN.
+
+### 2026-10-14 — Original SDK channel dispatch and disabled material sources
+
+[GX channel/color contract](../behavior/display/GX_CHANNEL_CONTROL_AND_COLOR_REGISTER_SEMANTICS.md)
+now pins complete GXSetChanCtrl/AmbColor/MatColor/NumChans bodies and hashes,
+separate RGB0/alpha0 controls, combined4 duplication, retained partial RGBA
+register updates and primary GX disabled-material-source semantics. The native
+flags0 material-light path now follows the real final GX request order, ambient4
+owner and separate RGB/alpha vertex-material state; original map light-count/fog
+and fallback-ambient bytes supply the finite owner projection. Per-light SDK
+bodies, presets, greater-than8 sorting, actual texture binding and original
+frame comparisons remain providers. Existing shadow combined4 register-material
+state does not establish this vertex-source state. Parent EVT-01 remains OPEN.

@@ -967,3 +967,20 @@ is not linked. No geometry, image, music or dialogue replacement is introduced.
 Outputs remain ignored under artifacts/source-checks/trouble-world. Original
 Nintendo/Intelligent Systems rights apply; no redistribution rights are granted.
 No ISO/extracted payload/compiled pack is committed. [Execution scope](behavior/field/NATIVE_SHARED_FIELD_DOOR_INSTALLERS.md).
+
+### 2026-10-14 — Original battle material-light scene bytes
+
+`tools/material_light_assets.py` reads the ISO read-only and emits ignored
+romfs/material-light.bin(PMLTSC01,64 bytes) plus provenance JSON. It retains
+unchanged zero light-count words and20-byte fog records from m/bti_01/d and
+m/stg_00_1/d, with exact map SHA256 pins inherited from battle_hit_assets.py.
+The final8 bytes are original DOL8041f90c/8, two707070ff fallback ambient words.
+Original chunk offsets/hashes and ambient-span SHA256 are recorded in the JSON.
+32 zero96-byte native light records are replayed allocation/init state, never
+imported BSS. The pack supports only the actual two admitted no-authored-light
+maps and rejects a different revision/count rather than dropping light entries.
+No ISO, extracted payload or compiled pack is committed. Original Nintendo/
+Intelligent Systems licensing remains local-use-only, with no redistribution
+rights granted. Normal asset builds invoke the importer after battle-hit assets.
+Validation uses its own material-light cache and private RomFS; source maps and
+constants are unchanged. No new image conversion or external code was used.

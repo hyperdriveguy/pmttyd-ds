@@ -47,6 +47,8 @@ public:
     const CameraDepthSnapshot* cameraDepthSnapshot() const;
     const DisplayQueue* displayQueue() const;
     const CameraManager* cameras() const;
+    const struct MapMaterialLightWork* materialLights() const;
+    bool resumeMaterialLight(uint32_t,std::array<float,3>,const struct MapMaterialLightServices&,uint32_t& pending) const;
     void setCameraLetterboxServices(const CameraLetterboxServices&);
     void setOriginalSequence(std::shared_ptr<OriginalSequence>);
     void setSoundFlags(std::shared_ptr<SourceSoundFlags>);

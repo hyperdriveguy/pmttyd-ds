@@ -26,6 +26,7 @@ struct AnimationShapeServices {
     bool (*concat)(void*,BattleAudienceMatrixRequest&)=nullptr;
     bool (*math)(void*,AnimationShapeMath&)=nullptr;
     bool (*call)(void*,const AnimationShapeCall&)=nullptr;
+    bool (*material)(void*,const AnimationShapeCall&,uint32_t& pending)=nullptr;
 };
 struct AnimationShapeCursor {
     bool active=false,queued=false;uint32_t phase=0,pending=0,draw=0,drawCount=0,drawIndex=0;

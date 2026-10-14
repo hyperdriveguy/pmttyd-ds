@@ -30,6 +30,7 @@
 #include "native_camera_draw.hpp"
 #include "native_display_state.hpp"
 #include "native_shadow_program.hpp"
+#include "map_material_light.hpp"
 #include <memory>
 #include <3ds.h>
 #include <citro2d.h>

@@ -119,6 +119,15 @@ void Renderer::resumeFinishingCamera(const Game& game){
             shape.cameraByIndex=[](void* user,uint32_t index){const auto* cameras=static_cast<InnerBridge*>(user)->game->trioAttack.cameras();return cameras?cameras->camera(index):nullptr;};
             shape.concat=[](void*,BattleAudienceMatrixRequest& r){BattleAudienceAuxServices math;bindAudienceAuxMathAdapter(math);return math.matrix(nullptr,r);};
             shape.math=[](void*,AnimationShapeMath& r){return animationShapeNativeMath(r);};
+            shape.material=[](void* user,const AnimationShapeCall& r,uint32_t& pending){
+                auto& bridge=*static_cast<InnerBridge*>(user);const auto* work=bridge.game->trioAttack.materialLights();
+                if(!work || !work->battleLoaded)return false;
+                struct LightBridge {const MapMaterialLightWork* work;Renderer* renderer;} lightBridge{work,bridge.renderer};
+                MapMaterialLightServices services;services.user=&lightBridge;
+                services.query=[](void* u,MapLightQuery& q,uint32_t& pending){return mapLightBankQuery(*static_cast<LightBridge*>(u)->work,q,pending);};
+                services.gx=[](void* u,const ShadowGXRequest& q){return static_cast<LightBridge*>(u)->renderer->finishingShadowRequest(q);};
+                return bridge.game->trioAttack.resumeMaterialLight(r.arguments[0],r.origin,services,pending);
+            };
             shape.call=[](void* user,const AnimationShapeCall& r){
                 auto& renderer=*static_cast<InnerBridge*>(user)->renderer;
                 if(r.function==0x802ba34c){if(!r.matrix)return false;renderer.finishingShapeNormal=*r.matrix;return true;}

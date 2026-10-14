@@ -230,6 +230,7 @@ assets-base:
 	@python3 tools/demo_effect_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
 	@python3 tools/shadow_texture_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
 	@python3 tools/battle_hit_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
+	@python3 tools/material_light_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
 	@python3 tools/build_assets.py
 	@python3 tools/door_assets.py
 	@python3 tools/door_data_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"

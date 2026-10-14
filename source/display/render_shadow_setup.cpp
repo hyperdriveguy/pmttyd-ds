@@ -39,10 +39,10 @@ bool Renderer::finishingShadowGpu(const NativeShadowProgram& p){
     C3D_TexEnvSrc(env,C3D_Alpha,p.alpha==NativeShadowProgram::TextureRaster?GPU_TEXTURE0:GPU_CONSTANT);
     C3D_TexEnvFunc(env,C3D_Alpha,GPU_REPLACE);
     if(p.alpha!=NativeShadowProgram::Register){
-        if(!p.material && !p.audienceColor && !p.materialVertex)return false;
+        if(!p.material && !p.audienceColor && !p.alphaMaterialVertex)return false;
         env=C3D_GetTexEnv(1);C3D_TexEnvColor(env,p.material?uint32_t(uint8_t(*p.material))<<24:inheritedAlpha);
         C3D_TexEnvSrc(env,C3D_RGB,GPU_PREVIOUS);C3D_TexEnvFunc(env,C3D_RGB,GPU_REPLACE);
-        C3D_TexEnvSrc(env,C3D_Alpha,GPU_PREVIOUS,p.materialVertex?GPU_PRIMARY_COLOR:GPU_CONSTANT);C3D_TexEnvFunc(env,C3D_Alpha,GPU_MODULATE);
+        C3D_TexEnvSrc(env,C3D_Alpha,GPU_PREVIOUS,p.alphaMaterialVertex?GPU_PRIMARY_COLOR:GPU_CONSTANT);C3D_TexEnvFunc(env,C3D_Alpha,GPU_MODULATE);
     }
     if(p.cull)C3D_CullFace(*p.cull==0?GPU_CULL_NONE:*p.cull==1?GPU_CULL_BACK_CCW:GPU_CULL_FRONT_CCW);
     if(p.fogOff){C3D_FogGasMode(GPU_NO_FOG,GPU_PLAIN_DENSITY,false);C3D_FogColor(*p.fogColor>>8);}

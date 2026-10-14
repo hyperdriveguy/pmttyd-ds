@@ -5049,3 +5049,76 @@ area parent to the shared owner, carry the genuine Bero returned bank through
 preceding services and house05, coordinate GW/case/event/data unload, and extend
 NPC/object/additional-area bindings. New core adds no display callback; existing
 visibility batching is retained. EVT-01 and full goal remain active/incomplete.
+
+### 2026-10-14 — Native original battle material-light state and channels
+
+Imported unchanged count/fog records from both selected original battle maps
+and the original fallback-ambient words into a64-byte private PMLTSC01 pack.
+Normal asset builds now run its importer. The battle runtime owns32 zero96-byte
+bank1 records from the source allocation/init contract; map load preserves them,
+sets the actual selected bank and captures both map fog records/ambient globals.
+Explicit reset preserves count and clears only its covered records. Field bank
+history and later light-entry writers remain unavailable rather than assumed.
+
+Implemented retained source preset/character query order, fallback priority,
+whole-list replacement, duplicate selections, per-light mask/sticky attenuation,
+final ambient query and final ordered GX requests. Native bank scans retain
+source-order filtering/ambient exclusion and M<=0 first-write semantics; actual
+preset and light-object providers and more-than8 active-record sort remain
+pending. The observed flags0 path now performs Fog0 white, NumChans1, ambient4
+black, then separate RGB0 and alpha0 disabled vertex-material controls. Source
+SDK documentation confirms vertex RGBA passthrough, without black-ambient
+multiplication. The native shader state now tracks independent RGB/alpha sources;
+combined channel4 writes both, and unsupported lit controls stay unavailable.
+Nested helper pending identities reach the actual shape/part/camera owner.
+The continuation is battle-owned, not retained across discarded games in Renderer.
+See [native scope](behavior/display/NATIVE_MAP_MATERIAL_LIGHT_BINDING.md) and
+[SDK channels](behavior/display/GX_CHANNEL_CONTROL_AND_COLOR_REGISTER_SEMANTICS.md).
+
+Validation uses frozen artifacts/material-light-source fromdd16f28e plus only
+owned changes, with a copied private RomFS, baseline Bero refresh and private
+material-light extraction. Final `CMAKE_BUILD_PARALLEL_LEVEL=4 make -C artifacts/material-light-source test`
+exited0:303/303 C++ and176/176 Python tests. Log
+artifacts/material-light-test-final.log. Tests check original pack bytes, held
+alpha-write nonreplay, explicit map load versus reset, near-query order/filter/
+capacity, ambient override, presets/replacement, SDK/sorter holds, and separate
+RGB/alpha state. Fixtures are not original execution evidence. Final doc check:
+1297 Markdown files,0 broken links.
+
+An initial native compilation overlapped a renderer-layout header edit and
+reported duplicate-header definitions. Its incremental retry built, but the
+ending capture showed Azahar's library screen after the guest stopped; runner
+liveness/exit0 was not accepted as gameplay evidence. Discarded that object
+cache and performed a complete clean build after freezing the final headers.
+`TMPDIR="$PWD/artifacts/native-stage-map-tmp" make -C artifacts/material-light-source all -o assets-ready BUILD=build-material-light-clean TARGET=ttyd-material-light-clean -j6`
+exited0; log artifacts/material-light-build-clean.log. After harness restoration,
+normal `make all` with the same clean build/target and-j4 also exited0, log
+artifacts/material-light-build-clean-restored.log. Clean normal SHA256
+5842fa6c24c7f50ac3daed4451d150402a58343a7502e6c4146e6fc802416e6f,
+identical before/after restoring temporary hooks. Source audit:2138 implementation/
+input files,zero mismatches. Exact source/private-pack/clean-binary and discarded
+initial-binary hashes:artifacts/material-light-validation-manifest.json.
+Concurrent later shared commits are preserved and not claimed validated as a
+single merged tree.
+
+Clean isolated45s normal fresh-save smoke exited0; inspected capture shows the
+original storybook/US text at60AppFPS,100% emulator speed. Clean isolated150s
+ending run exited0 and reaches actual camera4/queue21/part callback80101774 and texture helper
+8003dcfc at tick3103, advancing beyond material-light800208c0. Actual private
+material-channels.txt records original draw0x5284,RGB vertex1,alpha vertex1,
+separate channel IDs0/2,ambient000000ff,NumChans1,FogOff1/FogColorffffffff and
+live slot9 texture delta0. Thus lighting completed real backend operations before
+texture setup held; no texture/fan/queue completion was fabricated. Harness uses
+deterministic physical/menu inputs and explicit fixture Bero bit1 clear, with no
+combat-state writes. All temporary inputs/trace hooks were restored and excluded
+from source history. Capture paths:artifacts/azahar-material-light-clean-normal/
+and artifacts/azahar-material-light-clean-ending/. User profiles/saves are
+untouched. Ending remains a black fade/development restoration notice, not
+field-return or original image parity. Actual New2DSXL performance stays open.
+
+Next bind animSetMaterial_Texture to the actual resident Goombella atlas and
+live slot/palette state, retain original object/coordinate request order, then
+last-stage blend/fog/TEV and original indexed fan GPU submission. SDK active-light
+objects/preset updates, field history, complete battle teardown/field return and
+remaining prologue indoor/event/story parity remain unfinished. EVT-01 and the
+full goal remain active.

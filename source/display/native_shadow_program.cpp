@@ -7,9 +7,16 @@ std::optional<NativeShadowProgram> NativeShadowProgram::request(const ShadowGXRe
     auto slot=[](int32_t attribute){return attribute==9?0:attribute==11?1:attribute==13?2:-1;};
     switch(r.kind){
     case ShadowGX::NumChans:if(!args({1}))return {};next.chans=1;break;
-    case ShadowGX::ChanCtrl:
-        if(!args({4,0,0,0,0,2,2}) && !args({4,0,0,1,0,2,2}) && !args({4,0,1,0,0,2,2}) && !args({4,0,1,1,0,2,2}))return {};
-        next.materialVertex=r.values[3]==1;break;
+    case ShadowGX::ChanAmbient:if(!args({4}))return {};next.ambient=r.color;break;
+    case ShadowGX::ChanCtrl:{
+        const auto channel=r.values[0];if(channel!=0 && channel!=2 && channel!=4)return {};
+        auto expected=r.values;expected[0]=4;
+        if(expected!=std::array<int32_t,7>{4,0,0,0,0,2,2} && expected!=std::array<int32_t,7>{4,0,0,1,0,2,2} &&
+           expected!=std::array<int32_t,7>{4,0,1,0,0,2,2} && expected!=std::array<int32_t,7>{4,0,1,1,0,2,2})return {};
+        if(channel==0 || channel==4){next.materialVertex=r.values[3]==1;next.channelControl[0]=r.values;}
+        if(channel==2 || channel==4){next.alphaMaterialVertex=r.values[3]==1;next.channelControl[1]=r.values;}
+        break;}
+
     case ShadowGX::TevColor:if(!args({1}))return {};next.registerAlpha=uint8_t(r.color);break;
     case ShadowGX::ChanMaterial:if(!args({4}))return {};next.material=r.color;break;
     case ShadowGX::NumTexGens:if(!args({0}) && !args({1}))return {};next.texGens=r.values[0];break;

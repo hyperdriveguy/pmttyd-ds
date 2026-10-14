@@ -1069,3 +1069,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Generic door entry and preceding gor02 installers](field/GENERIC_DOOR_ENTRY_AND_GOR02_PRECEDING_CASE_INSTALLERS.md) — exact original selectors, snapshots and activation dependencies.
 - [Shared field door installer runtime](field/NATIVE_SHARED_FIELD_DOOR_INSTALLERS.md) — area-tagged original roots, retained cases and explicit supplied-bank continuation boundaries.
+
+- [Native battle material-light binding](display/NATIVE_MAP_MATERIAL_LIGHT_BINDING.md) — original map bytes, bank owner, retained light selection and separate RGB/alpha channels.
+- [GX channel control and color-register semantics](display/GX_CHANNEL_CONTROL_AND_COLOR_REGISTER_SEMANTICS.md) — original separate RGB/alpha versus combined dispatch, partial register writes and disabled vertex-material passthrough.
