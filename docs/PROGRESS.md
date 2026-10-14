@@ -11507,3 +11507,39 @@ Next implement original AudienceInit/live records/resource handles, full ordered
 AudienceMain window/sound/slot/display services, then BattleEnd/StageEnd real
 frees, map/context/NPC/event release and delayed native field return. Full
 playable original-fidelity prologue goal remains active and unfinished.
+
+
+Documentation-request session (native implementation, 2026-10-13): filed two
+grounded provenance requests and verified two delivered bounded contracts against
+the read-only US ISO; docs only, no native source change, no make rerun.
+
+Filed: AUDIO-01 (original BGM sequence/event binding and SFX cue selection) and
+RNG-01 (original seed lifecycle and random-consumer census), both D1+G1, each with
+a request file, an inbox row and a milestone-map row. AUDIO-01 is grounded in
+include/audio_policy.hpp, whose audioTrack/soundtrackTrack/musicAssetPath invent
+track indices, .wav names and a Switch variant (self-described native adapter),
+plus source/audio.cpp's sidecar .loop lookup, fixed 0.65 mix and overridden Jump
+table entry; RNG-01 is grounded in the open items of behavior/meta/RANDOMNESS.md
+and the many native platform.irand/BattleRandom consumers.
+
+Verified with tools/inspect_dol_function.py (artifacts under /tmp, outside
+history): (1) GSF-01's bounded delivery, [OPENING_GSF_NOTICE_PIPE_AND_SAVE_STORAGE]
+-- swSet 0x800858fc/swGet 0x800858b4 confirm GP=*(r13-28496)=0x80415fd0,
+addr=GP+0x178+4*trunc(N/32), mask=1<<(N&31); swInit 0x80085980 confirms the five
+extents and word174 store; the 164-byte event span 0x8030b4ec reproduces SET
+GSF233=1 before evt_msg_print and the independent GSW0>=7 -> GSF236 write after
+the first END_IF. (2) RESULT-01's phase0 priority region 0x802152b0..0x80215350
+reproduces every ordered alternative (40->4 at802152cc, 20->5 at802152e4,
+own->3 at80215308, enemy->1 at8021532c, 10->4 at80215344, SetResult 0x80114508)
+using captured I and the reread GetResult 0x80114500 at8021534c. Neither
+verification establishes runtime execution; the flag10/20/40 writer domains and
+the tutorial outcome/field-return/save-unblock remain OPEN.
+
+Commits: c2730fb (AUDIO-01/RNG-01), abf37bc (GSF-01 verification), de3fa39
+(RESULT-01 verification). The concurrent docs agent's uncommitted edits in
+docs/DOCUMENTATION_REQUESTS.md (priority table), docs/PROGRESS.md and other files
+were not swept; only the four own paths were staged per commit.
+
+Next: continue the D1/G1 request loop; verify remaining deliveries (DEMO-01
+story-state maps, STAR-01 fill callers) before applying; keep original story and
+audio provenance as the acceptance gate.
