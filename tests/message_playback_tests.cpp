@@ -140,6 +140,16 @@ int main(int argc,char**) {
     // Left/right, equality, offscreen and missing-speaker placement routes.
     assert(messageSpeakerMode(-100,0)==3 && messageSpeakerMode(100,0)==7);
     assert(messageSpeakerMode(0,0)==7 && messageSpeakerMode(300,0)==2 && messageSpeakerMode(-300,0)==2);
+    const auto diaryPlan=messageWindowPlan({},0,0,0,128,7);
+    const auto diaryClip=messageTextClip(diaryPlan,7);
+    assert(diaryPlan.textVisible && !diaryPlan.tail);
+    assert(diaryPlan.textX==-218 && diaryPlan.textY==189);
+    assert(diaryClip.top==21.5f && diaryClip.bottom==84.5f);
+    assert(messageTextClip(diaryPlan,4).top==24.5f);
+    assert(messageTextClip(diaryPlan,4).bottom==76.5f);
+    assert(messageTextClip(diaryPlan,0).top==25.5f);
+    assert(messageTextClip(diaryPlan,0).bottom==75.5f);
+    assert(messageTextClip(diaryPlan,5).top==0 && messageTextClip(diaryPlan,5).bottom==240);
     const auto direct=messageWindowPlan({},0,0,0,128);
     assert(direct.textVisible && !direct.tail && direct.box.x==-280 && direct.box.y==225);
     const auto left=messageWindowPlan({},3,-100,-60,255),right=messageWindowPlan({},7,100,-60,255);

@@ -303,7 +303,9 @@ private:
     bool frontImage(const char*,float,float,float,float,uint8_t alpha=255);
     void frontMessage(const MessagePlayback&,uint64_t ticks);
     Texture sky,characterTextures,partnerTextures,fontTexture,harborTexture,messageWindowTexture;
-    Texture messageKanban;
+    Texture messageKanban,messageDiary;
+    bool prepareDiary();
+    void diaryBorder(const MessageWindowPlan&,uint8_t);
     bool prepareKanban();
     void kanbanBorder(const MessageWindowPlan&,uint8_t);
     Texture messagePanel,messageSystemPattern;

@@ -192,7 +192,7 @@ bool Renderer::init() {
     if(!partnerTextures.imported)return false;
     C3D_TexSetFilter(&partnerTextures.texture,GPU_LINEAR,GPU_LINEAR);
     C3D_TexSetWrap(&partnerTextures.texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
-    if(!prepareKanban())return false;
+    if(!prepareKanban() || !prepareDiary())return false;
     for(auto entry:{std::pair<const char*,Texture*>{"romfs:/font.t3x",&fontTexture},{"romfs:/harbor-actors.t3x",&harborTexture},{"romfs:/message-window.t3x",&messageWindowTexture}}) {
         FILE* file=std::fopen(entry.first,"rb");if(!file)return false;
         entry.second->imported=Tex3DS_TextureImportStdio(file,&entry.second->texture,nullptr,false);std::fclose(file);
@@ -828,7 +828,7 @@ void Renderer::originalMessage(const Game& g,const MessagePlayback* supplied,con
     else mode=supplied && !suppliedAnchor?0:messagePlacement;
     // Types3 system,5 panel,11 borderless suppress speaker placement;
     // source placementOverride wins last. Type1 uses its distinct bubble geometry.
-    if(message.windowType==11 || message.windowType==5 || message.windowType==3 || message.windowType==4)mode=0;
+    if(message.windowType==11 || message.windowType==5 || message.windowType==3 || message.windowType==4 || message.windowType==7)mode=0;
     if(message.placementOverride>=0)mode=unsigned(message.placementOverride);
     auto plan=messageWindowPlan(message.geometry,mode,anchorX,anchorY,message.alpha,message.windowType);
     stretchMessageTail(plan,anchorX,anchorY);
@@ -868,9 +868,9 @@ void Renderer::originalMessage(const Game& g,const MessagePlayback* supplied,con
         // Original window-local crop bands:system inset4/height-50,ordinary
         // type1 height126/others100;native panel5 can span all240 pixels.
         // Font atlas512x256 normalized UVs crop both geometry and source texels.
-        const bool system=message.windowType==3 || message.windowType==11;
-        const float clipTop=message.windowType==5?0:120-plan.textY*.5f-(system?4:message.windowType==4?1:0);
-        const float clipBottom=message.windowType==5?240:clipTop+(system?message.geometry.height-50:message.windowType==1?126:message.windowType==4?104:100)*.5f;
+        const auto band=messageTextClip(plan,message.windowType);
+        const float clipTop=band.top;
+        const float clipBottom=band.bottom;
         // Relax admitted dynamic records even when the window clips the image.
         if(r.flags&1)messageDynamic[i]=std::fma(.5f,dynamic-1,1.f);
         const auto crop=messageGlyphCrop(x,y,glyph.width*scaleX,glyph.height*scaleY,clipTop,clipBottom);
@@ -928,6 +928,7 @@ void Renderer::messageIconImage(uint32_t id,uint64_t ticks,float centerX,float b
 // C2D depth.4/.5/.6/.7 is layer ordering,not simulation or original queue time.
 void Renderer::messageBorder(const MessageWindowPlan& plan,uint8_t alpha,int type) {
     const auto& b=plan.box;
+    if(type==7){diaryBorder(plan,alpha);return;}
     if(type==4){kanbanBorder(plan,alpha);return;}
     if(type==5) {
         const auto* original=Tex3DS_GetSubTexture(messagePanel.imported,0);
@@ -1593,7 +1594,7 @@ void Renderer::shutdown() {
     if(windowFrameVertices)linearFree(windowFrameVertices);
     if(windowFontVertices)linearFree(windowFontVertices);
     if(messageSystemVertices)linearFree(messageSystemVertices);
-    for(auto* texture:{&messagePanel,&messageSystemPattern,&messageKanban})if(texture->imported){Tex3DS_TextureFree(texture->imported);C3D_TexDelete(&texture->texture);}
+    for(auto* texture:{&messagePanel,&messageSystemPattern,&messageKanban,&messageDiary})if(texture->imported){Tex3DS_TextureFree(texture->imported);C3D_TexDelete(&texture->texture);}
     for(auto& texture:messageSystemMasks)if(texture.imported){Tex3DS_TextureFree(texture.imported);C3D_TexDelete(&texture.texture);}
     if(messageSystemProgramReady)shaderProgramFree(&messageSystemProgram);
     if(messageSystemShader)DVLB_Free(messageSystemShader);

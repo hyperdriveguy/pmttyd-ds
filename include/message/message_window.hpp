@@ -11,6 +11,15 @@ struct MessageWindowPlan {
     float textX=0,textY=0,tailX=0,tailY=0,tipX=0,tipY=0,tailWidth=0;
     bool tail=false,textVisible=false,tailStretched=false;
 };
+struct MessageTextClip {float top=0,bottom=240;};
+// Original centered480-high scissor bands, adapted at half scale.
+inline MessageTextClip messageTextClip(const MessageWindowPlan& plan,int type) {
+    if(type==5)return {};
+    const bool system=type==3 || type==11;
+    const float top=120-plan.textY*.5f-((system || type==7)?4:type==4?1:0);
+    const float height=system?plan.box.height-50:type==1 || type==7?126:type==4?104:100;
+    return {top,top+height*.5f};
+}
 struct MessageTailPoint {float x=0,y=0;};
 // Preserve horizontal quad edges; shear toward the speaker instead of rotating.
 inline MessageTailPoint messageTailPoint(const MessageWindowPlan& plan,float u,float v) {
