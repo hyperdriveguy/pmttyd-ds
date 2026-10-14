@@ -858,3 +858,26 @@ under artifacts/bero-local-evt_* and bero-camera-camRoadReset.txt. Characters,
 geometry, messages and audio retain existing original resource packs. Original
 Nintendo/Intelligent Systems rights apply; no redistribution rights are granted.
 ISO/extracted/compiled resources remain outside source history.
+
+
+### 2026-10-14 — Unchanged ordinary MODEL draw companions
+
+Original read-only ISO data resources `a/b_mario`, `a/c_pkr` and `a/c_kuri_h` are
+retained unchanged beside their converted pose directories as
+`trio-attack-mario.draw-model.bin`, `trio-attack-goombella.draw-model.bin` and
+`professor.draw-model.bin`. Validation outputs are private under
+`artifacts/draw-traversal-source/romfs/`; local original input paths remain
+`local-assets/trio-battle/b_mario`, `local-assets/trio-battle/c_pkr` and
+`local-assets/professor/c_kuri_h`. No art/audio is redrawn or newly synthesized.
+The standard pose-directory writer emits these companions on future asset builds;
+Professor's required-product list now checks its companion. They preserve full
+file-relative group/shape/draw/fan/index tables dropped by the animation subset.
+Payload sizes are285640/120932/24372 bytes. SHA256 respectively:
+`1f29b8e93280bcccf6a488c99a5f4addc35d5604e80d9afcbf5efcec64df51e4`,
+`d712df83d7b70b64a90d45551b39ecf7adf277b9572f6931daae7792b52d69e7`,
+`5ca1795ce8a9729e661da14742178fe7264674861a4e7101506238cc0ba46247`.
+Nintendo/Intelligent Systems copyrighted resources, local use only; no
+redistribution rights granted. No payload/compiled pack/ISO is committed.
+Private RomFS was copied from the prior pose-inner snapshot; Bero data was
+refreshed only there using its frozen baseline converter. User profiles and
+source-root asset caches were not modified by validation in this change.

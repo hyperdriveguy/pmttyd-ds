@@ -26,6 +26,14 @@ class BattlePoseDirectoryTests(unittest.TestCase):
             struct.pack_into('>fI', raw, animation + 0x50, float(i), 0x12345678 + i)
         return raw
 
+    def test_draw_companion_preserves_original_bytes(self):
+        with tempfile.TemporaryDirectory() as folder:
+            source = Path(folder) / 'model'
+            raw = self.model()
+            source.write_bytes(raw)
+            write_directory(source, Path(folder) / 'actor.pose-directory.bin')
+            self.assertEqual((Path(folder) / 'actor.draw-model.bin').read_bytes(), raw)
+
     def test_preserves_source_order_and_resource_names(self):
         raw = self.model()
         self.assertEqual(source_directory(raw),

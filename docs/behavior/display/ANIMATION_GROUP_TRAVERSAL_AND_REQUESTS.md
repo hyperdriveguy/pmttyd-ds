@@ -82,7 +82,9 @@ Original a/a_mario has42 groups,serialized base0x88cc,root41. Root metadata:
 sibling35,child40,shape−1,visibilityIndex41,nodeFloatIndex984,jointFlag0.
 `verify_animation_draw.py` checks this original metadata/hash;root data proves
 why a shape−1 node can still traverse children/siblings,not a visual runtime trace.
-No serialized group payload is exported. Full source graph/visibility/node/link/
+The static verifier exports no serialized group payload. The
+[native companion](NATIVE_ORIGINAL_MODEL_GROUP_TRAVERSAL.md) now retains original
+model data and binds ordinary node/traversal requests to the first real renderer. Full source graph/visibility/node/link/
 stack/callback lifetime,SDK push matrices,render/material/GX/Vivian and original
 geometry remain open. The current native idle bake is not full original traversal
 or fractional animation;these contracts must guide those implementations.

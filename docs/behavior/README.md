@@ -1052,3 +1052,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Native position callbacks and entry camera reset](field/NATIVE_POSITION_CALLBACKS_AND_ENTRY_CAMERA_RESET.md) — original sequential actor writes, null-party branch and live retained camera/road/shift owners.
 - [Retained Bero initial-position event closure](overworld/BERO_RETAINED_INITIAL_POSITION_EVENT_CLOSURE.md) — exact original script span, six ROAD callbacks, mutable globals/recovery and motion25 gate.
+
+- [Native original model group traversal](display/NATIVE_ORIGINAL_MODEL_GROUP_TRAVERSAL.md) — unchanged raw-model companions, source node SDK graph and retained ordinary traversal to real shape rendering.
+- [SDK inverse-transpose and point matrix arithmetic](display/ANIMATION_SDK_NORMAL_AND_POINT_MATRICES.md) — singular/no-store behavior, reciprocal-estimate boundary and used seed alias grouping.

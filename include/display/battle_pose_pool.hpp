@@ -1,5 +1,6 @@
 #pragma once
 #include "actor_animation.hpp"
+#include "animation_draw_resource.hpp"
 #include "actor_animation_cache.hpp"
 #include <memory>
 #include <optional>
@@ -13,6 +14,7 @@ struct BattlePoseResource {
     std::optional<uint32_t> modelFlags; // Original MODEL+c4, independent of pose flags.
     std::vector<std::vector<BattlePoseDiscreteKey>> discrete;
     std::shared_ptr<const ActorAnimationPack> bank;
+    std::shared_ptr<const AnimationDrawResource> draw; // Unchanged original group/shape/draw/index data.
 };
 std::shared_ptr<const BattlePoseResource> loadBattlePoseResource(const char* directory,const char* pack);
 struct BattlePoseClock {uint64_t modeZero=0,modeNonzero=0;}; // GP40/44 and GP38/3c millisecond quotients, not rendering frames.

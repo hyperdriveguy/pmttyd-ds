@@ -48,4 +48,9 @@ def write_directory(model, output):
     Path(output).write_bytes(b'PMPOSE02' + field(model_name) + field(texture_name)
                             + struct.pack('<I', len(names))
                             + b''.join(field(value) for value in names) + metadata)
+    # Original data-only MODEL companion preserves group shape IDs and fan
+    # streams omitted by the evaluated animation subset. Never source-controlled.
+    suffix = '.pose-directory.bin'
+    if str(output).endswith(suffix):
+        Path(str(output)[:-len(suffix)] + '.draw-model.bin').write_bytes(raw)
     return model_name, texture_name, names

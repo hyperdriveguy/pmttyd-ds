@@ -57,8 +57,9 @@ and [ImmDrawEnd](https://github.com/devkitPro/citro3d/blob/master/source/immedia
 This adapts cache services; hardware cache organization and SDK/trig bit equality
 are not asserted.
 
-Native traversal remains unavailable: the queue holds at dispProc8003c4bc after
-real state/matrix/cache work. No idle bake, empty-resource assumption, queue
+[Native ordinary traversal](NATIVE_ORIGINAL_MODEL_GROUP_TRAVERSAL.md) now advances
+from dispProc8003c4bc through source node SDK operations and shape−1 returns to
+an actual nonempty renderProc8003c884 hold after real state/matrix/cache work. No idle bake, empty-resource assumption, queue
 acknowledgement or history publication replaces its indexed model/material graph.
 Continue [group traversal](ANIMATION_GROUP_TRAVERSAL_AND_REQUESTS.md), node pushes,
 current-camera shape entry, texture/light/material requests and indexed streams.

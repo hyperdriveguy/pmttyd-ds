@@ -1538,3 +1538,9 @@ target_sources(ttyd_core PRIVATE source/field/field_position_event.cpp source/ru
 add_executable(field_position_event_tests tests/field_position_event_tests.cpp)
 target_link_libraries(field_position_event_tests PRIVATE ttyd_core)
 add_test(NAME field_position_event COMMAND field_position_event_tests)
+
+target_sources(ttyd_core PRIVATE source/display/animation_draw_resource.cpp source/display/animation_node_draw.cpp source/display/animation_draw_traversal.cpp)
+add_executable(animation_draw_traversal_tests tests/animation_draw_traversal_tests.cpp)
+target_link_libraries(animation_draw_traversal_tests PRIVATE ttyd_core)
+add_test(NAME animation_draw_traversal COMMAND animation_draw_traversal_tests)
+set_tests_properties(animation_draw_traversal PROPERTIES WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})

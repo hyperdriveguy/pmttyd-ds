@@ -14276,3 +14276,65 @@ Only after genuine traversal may source history publish and the queue complete.
 Linked/pool/special facing, map blend/global lifetimes, SDK/trig hardware parity,
 active icons and field return remain unfinished. Full prologue goal stays active;
 EVT-01 remains OPEN.
+
+
+### 2026-10-14 — Original model records and retained SDK group traversal
+
+Imported unchanged original MODEL companions for b_mario,c_pkr,c_kuri_h beside
+existing pose directories; the standard asset writer and Professor cache
+requirements now retain them. Native shared resources validate original table
+extents, links/node spans/visibility, draw/run/index/UV ranges, cull selectors,
+source-stack depth and ordered descriptor/output-count coherence. Normal arrays
+remain independent from position arrays. No ISO or payload is committed.
+
+Implemented retained joint/transform node SDK graphs, literal scale gates,
+ordered six rotations/pivots/component dispatch, stack publication and final
+world composition. Group traversal follows actual visibility, live node/parent
+scale, separate output publication requests, mutable callback matrix aliases,
+render/child/pop/sibling order and current-group sibling parentage even for an
+invisible predecessor. Held requests never replay a completed push. Native
+shape−1 returns are genuine source finite paths; nonempty shapes retain their
+real renderProc8003c884 request. Fixed32-operation programs remove per-node
+command/component allocations; ARMv6 REV word loads are confirmed in private
+`artifacts/draw-traversal-native-word.dis`.
+
+Documentation inbox work recovered exact local InvXpose/MultVec graphs, including
+singular no-store behavior, reciprocal-estimate refinement, vector aliasing and
+store/arithmetic order. New contracts and source dependency updates are indexed
+under display; fres/FPSCR and renderer/material/GPU bindings remain open.
+
+Validation uses frozen `artifacts/draw-traversal-source/` frombfc62a4b plus only
+owned changes, excluding concurrent shared code. Private RomFS copied the prior
+pose-inner pack, refreshed baseline Bero data and emitted unchanged model
+companions only there. The strengthened history test initially assumed a fixed
+part/current queue record; corrected it to snapshot all17 history words from
+the actual borrowed callback. Source mode/pass rejections can legitimately
+complete preceding parts. Final `CMAKE_BUILD_PARALLEL_LEVEL=4 make -C artifacts/draw-traversal-source test`
+exited0:296/296 C++ and173/173 Python tests. Coverage includes original models,
+cycles/ranges, SDK holds, maximum node program, mixed pivots/six rotations,
+literal gates, invisible sibling-parent behavior, held mutable callback and full
+held-part history. Log `artifacts/draw-traversal-test-release-checked.log`.
+`TMPDIR="$PWD/artifacts/native-stage-map-tmp" make -C artifacts/draw-traversal-source all -o assets-ready BUILD=build-draw-traversal-normal TARGET=ttyd-draw-traversal-normal -j4`
+exited0; log `artifacts/draw-traversal-build-normal.log`. Final normal3DSX SHA256
+`031543d81e6f0b683e34d99c3a00ad5079f1c230ad6e19fb2c84845bf4cd73a2`.
+Exact source/private-pack/binary hashes: `artifacts/draw-traversal-validation-manifest.json`.
+
+Isolated150s ending harness exited0. Actual camera4 queue21/callback80101774
+now holds at8003c884. `artifacts/azahar-draw-traversal/.../pose-traversal.txt`
+records Goombella handle3,original pass2,groups22,group20,parent21,shape15,
+frames2,stack3,positions128,normals308. Thus original model/node traversal and
+source cache work reached an admitted nonempty shape; no geometry was falsely
+acknowledged. Harness uses deterministic physical/menu input and explicit Bero
+fixture bit1 clear, with no combat writes or fake draw success. Its temporary
+traces/inputs are restored and excluded from source history. Final normal45s
+fresh-save smoke exited0 with original storybook/US text at60AppFPS in
+`artifacts/azahar-draw-traversal-normal/boot.png` (boot evidence only). Ending
+capture remains black fade/development restoration notice, not field return or
+raster parity. User emulator profiles/saves were untouched.
+
+Next bind actual renderProc current-camera/view/normal matrices, defaults and
+texture/light/material requests, then original indexed fans using the imported
+streams. Keep admitted-part history and queue completion behind real submissions.
+Global pose/resource rebinding, special matched groups/Vivian, native callback
+and output-slot providers, active icons, hardware numeric equivalence and field
+return remain unfinished. Full prologue goal remains active; EVT-01 stays OPEN.

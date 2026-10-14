@@ -4281,3 +4281,18 @@ now pins exact8030f060/278 original words and six ROAD callback identities, with
 no attached script. Next package/execute that genuine root, bind mutable BeroS/E,
 actual recovery/motion25 stores, then use its real returned bank in shared field
 case/house05 initialization. Parent EVT-01 and original trace requirements OPEN.
+
+
+### 2026-10-14 — Raw model graph and ordinary node/traversal binding
+
+[Native raw resource/traversal](../behavior/display/NATIVE_ORIGINAL_MODEL_GROUP_TRAVERSAL.md)
+now retains original shape IDs, draw/call/index tables and descriptor identity,
+builds source joint/transform SDK operations and advances actual dispProc through
+shape−1 nodes toward the first nonempty renderProc8003c884. Original sibling
+parentage and invisible-node behavior are retained. Next implement actual
+current-camera render entry, material/texture/light and fan emission; keep history
+and queue completion behind those submissions. The newly recovered
+[normal/point SDK contract](../behavior/display/ANIMATION_SDK_NORMAL_AND_POINT_MATRICES.md)
+closes local InvXpose/MultVec graphs; exact fres/FPSCR remains a numeric provider.
+Shared context rebinding, native callbacks/special groups and full geometry/parity
+remain open. Parent EVT-01 stays OPEN.

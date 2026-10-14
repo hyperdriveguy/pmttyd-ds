@@ -57,7 +57,23 @@ std::shared_ptr<const BattlePoseResource> loadBattlePoseResource(const char* dir
     auto bank=std::make_shared<ActorAnimationPack>();if(!bank->load(pack))return {};
     const auto* initial=bank->pose(resource->names.front().c_str());ActorAnimationSample shape;
     if(!initial || !initial->evaluate(0,shape) || shape.positions.empty() || shape.nodes.empty() || shape.world.empty())return {};
-    resource->bank=std::move(bank);cache[key]=resource;return resource;
+    resource->bank=std::move(bank);
+    const std::string suffix=".pose-directory.bin",path=directory;
+    if(path.size()>=suffix.size() && path.compare(path.size()-suffix.size(),suffix.size(),suffix)==0){
+        const auto rawPath=path.substr(0,path.size()-suffix.size())+".draw-model.bin";
+        if(FILE* raw=std::fopen(rawPath.c_str(),"rb")){
+            auto draw=std::make_shared<AnimationDrawResource>();const bool valid=draw->read(raw);std::fclose(raw);
+            if(!valid || draw->modelName()!=resource->modelName || draw->textureName()!=resource->textureName || draw->word(0xc4)!=resource->modelFlags || draw->word(0x148)!=resource->names.size())return {};
+            for(uint32_t i=0;i<resource->names.size();++i){
+                if(draw->descriptor(i)!=resource->names[i])return {};
+                if(const auto* converted=resource->bank->pose(resource->names[i].c_str())){
+                    if(converted->positions.size()!=draw->word(0xf0) || converted->normals.size()!=draw->word(0xf8) || converted->nodes.size()!=draw->word(0x140) || converted->visibility.size()!=draw->word(0x13c) || converted->groups.size()!=draw->groups())return {};
+                }
+            }
+            resource->draw=std::move(draw);
+        }
+    }
+    cache[key]=resource;return resource;
 }
 uint32_t BattlePose::word(unsigned offset) const {assert(offset+4<=state.size());return uint32_t(state[offset])<<24|uint32_t(state[offset+1])<<16|uint32_t(state[offset+2])<<8|state[offset+3];}
 void BattlePose::word(unsigned offset,uint32_t value){assert(offset+4<=state.size());for(unsigned i=0;i<4;++i)state[offset+i]=uint8_t(value>>(24-8*i));}

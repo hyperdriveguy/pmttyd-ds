@@ -18,7 +18,8 @@ Request camGetCurPtr0x8000f2e4;Concat(camera+11c,current modeling matrix through
 0x8041e8a0,local ViewModel). GXLoadPosMtxImm(ViewModel,0).
 Request PSMTXInvXpose(ViewModel,localNormal)0x8029df28,ignore returned status;
 GXLoadNrmMtxImm(localNormal,0),GXSetCurrentMtx(0). No local singular/identity
-fallback. Normal-matrix helper body/numerics remain open. This uses CURRENT
+fallback. The [normal-matrix local graph](ANIMATION_SDK_NORMAL_AND_POINT_MATRICES.md) is
+recovered; its reciprocal-estimate/numeric provider remains open. This uses CURRENT
 camera,not an unconditional camGetPtr(4) or projection matrix+15c.
 
 W through0x80415dc0;capture D=word[W+20]. Shape H=word[D+14c]+168*ID;
