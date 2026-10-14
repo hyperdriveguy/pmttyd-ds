@@ -64,7 +64,7 @@ int main() {
     bool newModel=false;
     if(R_SUCCEEDED(APT_CheckNew3DS(&newModel)) && newModel) osSetSpeedupEnable(true);
     const Result romfs=romfsInit();
-    ttyd::Renderer renderer;
+    auto ownedRenderer=std::make_unique<ttyd::Renderer>();auto& renderer=*ownedRenderer;
     if(R_FAILED(romfs) || !renderer.init()) {
         renderer.shutdown();consoleInit(GFX_TOP,nullptr);
         std::printf("TT YD prototype could not initialize.\nCheck packaged RomFS and available memory.\nPress START to exit.\n");
