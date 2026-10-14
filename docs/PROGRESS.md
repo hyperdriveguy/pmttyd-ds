@@ -2268,3 +2268,63 @@ GPU/part/material/shadow/letterbox/dummy and ordered field return. Known bit1
 does not certify the whole global word or original event timing. Native current
 sequence remains unbound; full playable original-fidelity prologue goal stays
 active. Original numeric/history and physical performance verification remain.
+
+
+## 2026-10-14 — Game code documentation and portable runtime helpers
+
+Commit `40649ee3` documents the large Game composition and seven companion
+source/header files (eight C++ files total). The new
+[Game implementation guide](code/game-composition.md) explains native/engine
+units and identity namespaces, wall/ground/head/return/road pack layouts,
+spatial-index bounds, filtering/quantization/probe selection, camera/input/NPC
+publication order, scope-exit simulation work, restore lifetimes, original versus
+harness story/battle gates, and native follower policies. Inline comments give
+meaning to nearby masks/state IDs/size limits/timing/geometry constants and retain
+unidentified source IDs without invented semantic names. Portable follower math,
+head response, fade presentation gating, frontend requests and opening-departure
+handoff now have corresponding numeric/ownership explanations. Executable tokens
+are unchanged in all eight C++ files relative to that commit's parent. This
+extends the first pass to56 distinct C++ files; coverage of the whole port remains
+unfinished. No behavior, story text or action timing was changed by this pass.
+
+Accepted frozen baseline `38f9f3de7825fab73c4049a5db9f6e5dd661ea4a` plus exactly
+the comment additions passes **263/263 C++ and155/155 Python** via
+`CMAKE_BUILD_PARALLEL_LEVEL=4 make test`; normal native
+`make all -o assets-ready -j4` passes. Logs are
+`artifacts/game-code-documentation-validation/host-complete.log` and
+`native-accepted.log`. `manifest.json` records frozen source hashes, baseline,
+comments-only commit token checks, private RomFS file hashes, refreshed icon
+hashes and ELF/3DSX hashes. Code-guide relative links and scoped whitespace checks
+pass. Native validation uses existing converted packs with asset regeneration
+skipped except the isolated icon refresh described below; other local-asset
+folders remain shared read dependencies. No emulator/hardware run was needed
+for these executable-token-preserving edits. No user profile/save or ISO write
+occurred. Existing compiler warnings are not resolved by documentation.
+
+Initial frozen host runs (`host.log`, `host-final.log`) exposed a stale shared
+icon pack missing committed Trouble Center resources524/134/136. The existing
+frozen converter regenerated original icon pixels/delays into a private
+validation directory from the read-only ISO. Shared packs were not overwritten.
+A private RomFS copy then passed all263 C++ checks; Python tests in
+`host-accepted.log` exposed the mismatched old shared atlas cache. Copying the
+matching regenerated icon extraction/atlas cache into the validation snapshot
+resolved both three-test HUD/selector groups, followed by the complete accepted
+suite above. The failed runs remain archived and are not counted as passing.
+[Asset paths/conversion/licensing](ASSETS.md#2026-10-14--private-icon-refresh-for-code-documentation-validation)
+are recorded in commit `7a6868fc`. Native intermediate `native.log` and
+`native-final.log` passed before that isolated asset refresh.
+
+Game/header road-owner changes already in the worktree were preserved. A separate
+comments-only index patch was generated against committed source to avoid
+including those concurrent implementation edits; frozen validation likewise
+excluded them. Subsequent unrelated source/asset work remains outside this pass.
+
+Next: audit `include/runtime/platform.hpp` with renderer resources and
+`source/display/` plus paired headers, including packed batch bits, GPU cache/
+resource lifetime, animation clocks, queue/depth and camera continuation numerics.
+Then audit field/NPC/partner subsystem modules, remaining battle packed/event/
+menu/display helpers, message/inventory/story code and shaders. Recheck later
+runtime additions during the completion audit. Keep original/provisional distinctions,
+meaningful local comments and incremental commits; do not substitute a file-count
+or comment-density metric for actual semantic review. The user's full **port-code
+documentation goal remains active**.
