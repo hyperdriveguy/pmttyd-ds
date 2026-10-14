@@ -126,8 +126,21 @@ flags/escapes, camera-off, party_run0/1, story12, hit-offa_rec, keys-on and
 original underground music occur. See
 [complete graph/dialogue](../story/UNDERGROUND_FIRST_ARRIVAL_AND_GOOMBA_TRIO.md).
 Do not publish story12 or finish the field scene at battle export. Native
-ProfessorRuntime cases60..62 currently retain pending original services;
-bind the actual start/wait/result protocol to this same preserved VM.
+ProfessorRuntime cases60/61 now use the supplied FieldBattleServices owner
+for the original start/wait protocol. Unbound standalone scenes retain their
+service barrier; case62 previous-party placement remains independent. The
+native Game supplies the owner only for the underground scene and launches
+the trio on the exact start callback8004ef54, without a second initialization.
+
+The host scene regression reaches the original093 print only after sequence2
+and nonzero result. It checks the original NPC1 speaker, story11, PTK_D_1
+and field Para-Goomba XYZ(-55,20,35). This exposed a movement adapter lifetime
+bug: deleting the original movement event left its interpolation active.
+Movement now retains its creating eventID and stops when that event is gone,
+preserving the root's postwait placement. Linear movement remains an adapter;
+this does not claim original ease/collision stepping. The test supplies a
+field outcome; native ending remains suspended at field getter8005e0c0, so
+actual native sequence2/result publication is still unfinished.
 
 Validation: read-only complete used bodies/tables, exact original join record,
 current native APIs inspected, `git diff --check`. No native tests/builds/commit;

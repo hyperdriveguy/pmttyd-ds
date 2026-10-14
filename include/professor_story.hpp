@@ -1,6 +1,7 @@
 #pragma once
 #include "message_playback.hpp"
 #include "message_selection.hpp"
+#include "field_battle.hpp"
 #include <array>
 #include <memory>
 #include <string>
@@ -48,6 +49,7 @@ public:
     bool goombellaNpc=false;
     bool professorDeparted=false,professorControlEnabled=true;
     int battleSetup=-1;
+    FieldBattleServices fieldBattle; // Supplied current field owner; standalone scenes retain their service barrier.
     MessageSelection selection;
     std::vector<std::string> selectionOrder;
     std::vector<int> selectionResults;

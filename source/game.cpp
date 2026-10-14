@@ -1906,6 +1906,7 @@ void Game::tick(const Input& rawInput) {
         } else {
             choice.buttons=keys|(i.z<-.5f?8u:0u)|(i.z>.5f?4u:0u);
         }
+        professorStory.fieldBattle=professorStory.underground?fieldBattleServices():FieldBattleServices{};
         professorStory.tick(ticks*1000/60,keys,false,choice);
         const auto& m=professorStory.actors[0].position;
         const auto& p=professorStory.actors[1].position;
@@ -1918,10 +1919,8 @@ void Game::tick(const Input& rawInput) {
             if(c.off)releaseCameraView(c.duration,uint8_t(c.curve));
             else setCameraView({c.eye[0],c.eye[1],c.eye[2]},{c.at[0],c.at[1],c.at[2]},c.duration,uint8_t(c.curve));
         }
-        if(professorStory.underground && professorStory.battleSetup==4 && professorStory.pendingService) {
+        if(professorStory.underground && professorStory.battleSetup==4 && professorStory.pendingService==0x8004ef54) {
             if(trioBattleIntro.beginTrioBattleIntro(ticks*1000/60)) {
-                fieldPrepareRequested=fieldPostRequested=fieldBgmStopRequested=false;fieldSoundFlags=0;
-                startFieldBattle(3,true,fieldBattleServices());
                 trioBattleActive=true;setCameraView({0,100,450},{0,50,0},0,11);scene=Scene::Dialogue;saveRequested=false;return;
             }
         }

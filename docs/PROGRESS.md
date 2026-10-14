@@ -7829,3 +7829,36 @@ postbattle test with its actual event branch, and finish literal native harbor
 battle/field owners before claiming the broader prologue ready. Original title
 actors, full original file/card services, source display projection/reflow and
 all original gameplay/runtime/hardware comparisons remain open. Goal active.
+
+## 2026-10-13 — Preserved underground battle start/wait binding
+
+The preserved underground VM now dispatches original callbacks8004ef54 and
+8004eed8 through its supplied FieldBattleServices owner. Game supplies that
+owner only for the underground scene and starts the trio on the exact original
+start callback, removing duplicate battle initialization. Unbound standalone
+scenes and previous-party placement retain their service barriers.
+
+The host regression verifies first-call initialization, repeated NPC lookup,
+sequence4 rejection even with a result, and sequence2 rejection with result0.
+Only sequence2 plus a nonzero result resumes original mac_0_093, attributed
+to NPC1, with story11 and the original PTK_D_1 field pose/placement. This
+revealed that deleted movement events kept interpolating after the root placed
+the NPCs. Movement now retains its eventID and stops when that event is deleted.
+The regression failed before this fix and passes afterward. Linear movement,
+native field controls/registry tokens and party placement remain adapters.
+
+Validation: make test passed170/170 CTest and110/110 Python checks
+(artifacts/trio-fieldwait-tests-final.log); make all passed
+(artifacts/trio-fieldwait-all.log). Scoped git diff --check passed. No new
+Azahar or hardware return capture; the native return is still unbound.
+Initial integrated build encountered
+a transient unrelated collision-test link failure; rerun reached the new
+placement assertion and exposed the movement bug above.
+
+Native ending still stops at field Mario getter8005e0c0 before field party
+construction, Rule0, resource/context teardown and sequence2 publication.
+The host test supplies its result; it does not establish a native playable
+field return. Next: bind actual field Mario/party storage, authored join
+history and constructor/appearance providers, then original exit/sequence
+publication and the remaining original postbattle party/collision/music
+callbacks. Full prologue parity and hardware validation remain unfinished.

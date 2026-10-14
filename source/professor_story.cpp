@@ -3,6 +3,7 @@
 #include "message_assets.hpp"
 #include "event_native_runtime.hpp"
 #include "event_memory_bootstrap.hpp"
+#include "event_controls.hpp"
 #include "actor_animation.hpp"
 #include "message_icons.hpp"
 #include <algorithm>
@@ -87,7 +88,7 @@ bool loadTrioBattleAssets(const char* root) {
 }
 struct ProfessorRuntime {
     ProfessorStory* scene=nullptr;bool doorBusy=true;uint32_t keys=0,rootId=0;
-    struct Move {std::array<float,3> start{},target{};uint64_t begin=0,end=0;bool active=false,jump=false;float apex=0;};
+    struct Move {std::array<float,3> start{},target{};uint64_t begin=0,end=0;uint32_t owner=0;bool active=false,jump=false;float apex=0;};
     std::array<Move,6> moves{};
     struct BattleMove {std::array<float,3> target{},step{};int32_t count=0;unsigned actor=2;};
     std::unordered_map<uint32_t,BattleMove> battleMoves;
@@ -136,6 +137,7 @@ struct ProfessorRuntime {
     int move(EventEntry& e,bool first,unsigned actor,unsigned x,unsigned z,unsigned speed) {
         auto& m=moves[actor];auto& a=scene->actors[actor];
         if(first) {
+            m.owner=e.id;
             m.start=a.position;m.target={number(e,x),a.position[1],number(e,z)};
             const float heading=std::atan2(m.target[0]-m.start[0],m.start[2]-m.target[2])*57.29577951308232f;
             const float travel=heading<0?heading+360:heading;
@@ -151,7 +153,11 @@ struct ProfessorRuntime {
     }
     void advance() {
         for(unsigned i=0;i<moves.size();++i)if(moves[i].active) {
-            auto& m=moves[i];const float t=std::min(1.f,float(scene->now-m.begin)/float(m.end-m.begin));
+            auto& m=moves[i];
+            if(!checkEventId(m.owner,vm.creationServices())) {
+                m.active=false;scene->actors[i].moving=false;scene->actors[i].jumping=false;continue;
+            }
+            const float t=std::min(1.f,float(scene->now-m.begin)/float(m.end-m.begin));
             for(unsigned k=0;k<3;++k)scene->actors[i].position[k]=m.start[k]+(m.target[k]-m.start[k])*t;
             if(m.jump){const float c=-4*m.apex,b=(m.target[1]-m.start[1])-c;scene->actors[i].position[1]=m.start[1]+t*(b+c*t);}
             if(t==1){m.active=false;scene->actors[i].moving=false;scene->actors[i].jumping=false;}
@@ -224,6 +230,7 @@ struct ProfessorRuntime {
         case 21: {
             const unsigned actor=npc(e,0);auto& m=moves[actor];
             if(first) {
+                m.owner=e.id;
                 m.start=scene->actors[actor].position;
                 for(unsigned i=0;i<3;++i)m.target[i]=number(e,1+i);
                 m.begin=scene->now;m.end=m.begin+uint64_t(std::max<int32_t>(0,value(e,4)));
@@ -325,8 +332,17 @@ struct ProfessorRuntime {
         case 57:return append(e,first);
         case 58:scene->goombellaNpc=true;return 2;
         case 59:scene->battleSetup=value(e,1);return 2;
-        case 60:case 61:case 62:
-            scene->pendingService=function;return 0; // Original continuation waits for its native owner.
+        case 60:{
+            if(!scene->fieldBattle.work){scene->pendingService=function;return 0;}
+            const auto result=startFieldBattle(int32_t(npc(e,0)),first,scene->fieldBattle);
+            scene->pendingService=result==0?function:0;return result;
+        }
+        case 61:{
+            if(!scene->fieldBattle.work){scene->pendingService=function;return 0;}
+            const auto result=waitFieldBattleEnd(scene->fieldBattle);
+            scene->pendingService=result==0?function:0;return result;
+        }
+        case 62:scene->pendingService=function;return 0; // Previous-party placement retains its independent owner.
         // Source music,effects,item/paper/display/party-flag requests are retained
         // above for native consumers. They do not fabricate story/dialogue.
         default:return 2;
