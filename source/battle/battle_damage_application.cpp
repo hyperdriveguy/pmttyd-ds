@@ -3,6 +3,10 @@
 #include <cmath>
 #include <cassert>
 
+// Direct-damage ordering and raw code/pattern tables:
+// docs/behavior/battle/BATTLE_DAMAGE_APPLICATION.md. Numeric effect arguments
+// are original call parameters; unidentified parameters remain raw. Coordinates
+// here use ORIGINAL engine units, unlike Game field world units scaled by .01.
 namespace ttyd {
 namespace {
 int32_t word(uint32_t x) {return x<=0x7fffffff?int32_t(x):int32_t(int64_t(x)-0x100000000LL);}
@@ -10,6 +14,8 @@ int32_t add(int32_t a,int32_t b) {return word(uint32_t(a)+uint32_t(b));}
 int32_t sub(int32_t a,int32_t b) {return word(uint32_t(a)-uint32_t(b));}
 int16_t half(int32_t x) {const uint16_t v=uint16_t(x);return v<32768?int16_t(v):int16_t(int(v)-65536);}
 int byte(uint8_t x) {return x<128?int(x):int(x)-256;}
+// Kinds224..230 share Mario(kind222,belong0) FP. Search64 battle slots;
+// missing owner violates this service domain, not a separate partner FP pool.
 DamageUnit& fpOwner(DamageUnit& unit,const DamageApplicationServices& s) {
     if(unit.kind<224 || unit.kind>230)return unit;
     auto* owner=findMarioResourceOwner(s);assert(owner);return *owner;
@@ -33,6 +39,8 @@ DamageUnit* findMarioResourceOwner(const DamageApplicationServices& s) {
 int32_t getUnitFp(DamageUnit& unit,const DamageApplicationServices& s) {return fpOwner(unit,s).fp;}
 int32_t getUnitMaxFp(DamageUnit& unit,const DamageApplicationServices& s) {return fpOwner(unit,s).maxFp;}
 void setUnitFp(DamageUnit& unit,int32_t value,const DamageApplicationServices& s) {fpOwner(unit,s).fp=half(value);}
+// Recovery adds with word wrap, narrows to signed16, then upper-caps.
+// No lower clamp. The two Mario lookups are separate source service requests.
 void recoverUnitFp(DamageUnit& unit,int32_t amount,const DamageApplicationServices& s) {
     const bool partner=unit.kind>=224 && unit.kind<=230;
     auto* maximumOwner=partner?findMarioResourceOwner(s):&unit;assert(maximumOwner);
@@ -47,6 +55,8 @@ void recoverUnitHp(DamageUnit& unit,int32_t amount) {
 void applyDirectDamage(int32_t attackerId,DamageUnit& d,DamagePart* part,int32_t hp,int32_t fp,
                        uint32_t code,int32_t pattern,int32_t sleepRecovery,BattleRandom& random,
                        const DamageApplicationServices& s) {
+    // Attacker -5 means none. HP amount clamps to[-99,99]; FP does not.
+    // Attacker dealtHp records requested clamped amount before defender gates.
     DamageUnit* attacker=nullptr;
     if(attackerId!=-5) {assert(s.getUnit);attacker=s.getUnit(s.user,attackerId);}
     hp=std::clamp<int32_t>(hp,-99,99);
@@ -55,6 +65,9 @@ void applyDirectDamage(int32_t attackerId,DamageUnit& d,DamagePart* part,int32_t
     assert(part && s.hitPosition);d.lastPart=part;d.pattern=pattern;
     if((d.attributes&0x200000) && pattern>=21 && pattern<=24)d.pattern=0;
     const auto initial=s.hitPosition(s.user,d,*part);
+    // Code0x2000 selects recovery presentation; it does not invert HP damage.
+    // Low-byte24/25 smoke,26 ice,27 hit variant. Hit parameters(type,3,scale1)
+    // and stars(HP type0/FP type1;size10;direction +/-30 or60) are source calls.
     if(code&0x2000) {
         emit(s,DamageEffectKind::Recovery,s.hitPosition(s.user,d,*part),{0,std::abs(hp)});
     } else if(hp!=0 || fp!=0) {
@@ -76,6 +89,8 @@ void applyDirectDamage(int32_t attackerId,DamageUnit& d,DamagePart* part,int32_t
             pattern==21 || pattern==22 || pattern==27 || (code&255)==22;
         if(!skip)emit(s,DamageEffectKind::MissStar,position,{(code&0x20000)?1:0,1,d.belong==0?-1:1});
     }
+    // Pity Flower rolls each copy independently: bounded100 draw<30. This
+    // recovery precedes resource subtraction and can occur despite later HP gates.
     if(!(code&0x2000) && hp>0) {
         int successes=0;const int copies=d.badges.pityFlower;
         for(int i=0;i<copies;++i)if(random.bounded(100)<30)++successes;
@@ -86,6 +101,8 @@ void applyDirectDamage(int32_t attackerId,DamageUnit& d,DamagePart* part,int32_t
             emit(s,DamageEffectKind::Recovery,position,{1,successes});
         }
     }
+    // Sound bits24..28 select the first colored-hammer override in source
+    // order;0x40000 selects Mario guard. Patterns19/27 suppress this sound path.
     if(pattern!=19 && pattern!=27) {
         constexpr uint32_t masks[]={0x01000000,0x02000000,0x04000000,0x08000000,0x10000000};
         constexpr const char* keys[]={"SFX_MARIO_HAMMER_PIKKYO_R1","SFX_MARIO_HAMMER_PIKKYO_Y1",
@@ -102,8 +119,13 @@ void applyDirectDamage(int32_t attackerId,DamageUnit& d,DamagePart* part,int32_t
             if(fp>0 && d.belong==0)sound(s,"SFX_MARIO_DAMAGE_FP1",initial);
         }
     }
+    // Accounting narrows requested amounts to signed8 via stored bytes.
+    // Do not merge requestedHp/Fp with actual resource loss or consumedFp.
     d.lastHp=uint8_t(hp);d.requestedHp=add(d.requestedHp,byte(d.lastHp));
     d.lastFp=d.lastConsumedFp=uint8_t(fp);d.requestedFp=add(d.requestedFp,byte(d.lastFp));
+    // Unit attr0x40000000 / part attr0x800000 suppress HP writes, not prior
+    // effects/accounting. HP store narrows signed16, then caps to max and floors0.
+    // Code0x100 maps damageFlags bit0; resource and event flags stay distinct.
     if(!(d.attributes&0x40000000) && !(part->attributes&0x800000)) {
         d.hpBefore=d.hp;d.hp=half(sub(d.hp,byte(d.lastHp)));
         if(d.hp>d.maxHp)d.hp=d.maxHp;
@@ -118,11 +140,15 @@ void applyDirectDamage(int32_t attackerId,DamageUnit& d,DamagePart* part,int32_t
         setUnitFp(d,std::max<int32_t>(sub(current,fp),0),s);
         d.consumedFp=add(d.consumedFp,byte(d.lastConsumedFp));
     }
+    // Original action-record offsets: Mario count/amount16f3e/16f3c;
+    // partner16f3f/16f3d. Positive requested HP drives them, not measured loss.
     if(hp>0 && (d.kind==222 || (d.kind>=224 && d.kind<=230))) {
         const bool mario=d.kind==222;
         notice(s,d,DamageNoticeKind::ActionCount,0,mario?0x16f3e:0x16f3f);
         notice(s,d,DamageNoticeKind::ActionPoint,uint8_t(hp),mario?0x16f3c:0x16f3d);
     }
+    // Sleep1 wake roll: bounded100<50 on positive HP/FP request. Byte118
+    // becomes1 and119=100 before recovery; the auxiliary value survives decrement.
     if(sleepRecovery && (hp>0 || fp>0) && checkStatus(&d,1) && random.bounded(100)<50) {
         d.statusByte(0x118)=1;d.statusByte(0x119)=100;checkRecoveryStatus(&d,1);
         assert(s.unitPosition && s.height);auto position=s.unitPosition(s.user,d);
@@ -133,6 +159,9 @@ void applyDirectDamage(int32_t attackerId,DamageUnit& d,DamagePart* part,int32_t
     if(d.hp>0) {if(d.pattern==25)d.pattern=0;}
     else {
         d.hp=0;
+        // Lethal path adds0x200;0x400 admits down/kill/revival handling.
+        // Attribute0x10000 gates the special low-byte set24/25/46/49/50/54.
+        // Preserve raw code IDs rather than inventing names for unbound reactions.
         if(code&0x100) {
             code|=0x200;
             if(d.attributes&0x10000) {
@@ -148,6 +177,8 @@ void applyDirectDamage(int32_t attackerId,DamageUnit& d,DamagePart* part,int32_t
             }
         }
     }
+    // Mark unit flag1 and dispatch hit event LAST with locally updated code.
+    // Effect, audio, audience and hit-event providers remain distinct owners.
     d.flags|=1;assert(s.hitEvent);s.hitEvent(s.user,d,code);
 }
 }

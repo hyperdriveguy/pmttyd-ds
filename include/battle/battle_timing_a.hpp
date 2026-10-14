@@ -8,6 +8,7 @@ constexpr uint32_t BattleButtonA = 0x100;
 // General battle trigger history (+0x0f44), not the private AC/defense pad.
 // The caller supplies one already sampled press-edge word per simulation tick.
 struct BattleTriggerHistory {
+    // Thirty newest-first source words; index0 is the current sampled tick.
     std::array<uint32_t, 30> entries{};
     void push(uint32_t triggers);
 };
@@ -33,6 +34,8 @@ struct TimingAContext {
 // Local US ID1 callback contract; presentation, script cadence and impact
 // alignment belong to callers. See docs/behavior/battle/BATTLE_TIMING_A_COMMAND.md.
 struct TimingACommand {
+    // Result bit1 success; classification0 unset,1 mash/press failure,2 no
+    // press,3 ordinary success. Main return1 keeps callback,0 retires it.
     int32_t state = 0, count = 0, classification = 0, finishCountdown = 0;
     uint32_t result = 0, flags = 0;
     std::array<uint32_t, 11> scratch{};

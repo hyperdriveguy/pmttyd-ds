@@ -3,6 +3,8 @@
 
 namespace ttyd {
 namespace {
+// Private battle stick threshold is inclusive +/-30 (global DemoPad uses
+// strict +/-48). Main up/down/left/right=bits16..19, substick=bits20..23.
 uint32_t virtualButtons(const BattlePadSnapshot& pad) {
     uint32_t mask=0;
     if(pad.mainY>=30)mask|=0x10000;
@@ -16,6 +18,8 @@ uint32_t virtualButtons(const BattlePadSnapshot& pad) {
     return mask;
 }
 int signedByte(uint8_t value) {return value<128 ? int(value) : int(value)-256;}
+// Fifteen private trigger samples. Count A and B separately even when both
+// share one word; two total presses reject ordinary timing as mashing.
 int pressCount(const BattlePadWork& pad) {
     int count=0;
     for(size_t i=0;i<15;++i) {
@@ -52,6 +56,8 @@ void BattlePadWork::update(const BattlePadSample& input) {
         repeats.entries[0]=(input.repeat|(now&0xffff0000u))&
             ((triggers.entries[0]&0xffff0000u)|0xffffu);
         repeatPhase=1;repeatCounter=0;
+    // Changed masks enter phase1; virtual repeats wait16 updates initially,
+    // then8 in phase2. Counter and phase comparisons interpret wrapped bytes signed.
     } else {
         repeatCounter=uint8_t(repeatCounter+1);
         if(signedByte(repeatCounter)>=(signedByte(repeatPhase)==1?16:8)) {
@@ -60,9 +66,14 @@ void BattlePadWork::update(const BattlePadSample& input) {
         }
     }
 }
+// Results:0 initial,1 mash/pressed failure,2 no press,4 guard,5 superguard.
+// Superguard evaluates first when weaponGate and positive HP admit it; failed
+// superguard falls through to guard using the same retained private history.
 int DefenseCommand::evaluate(BattlePadWork& pad,const DefenseContext& context) {
     result=0;
     const int difficulty=std::clamp(3+int(context.unsimplifiers)-int(context.simplifiers),0,6);
+    // Source difficulty baseline3 +/- badge counts clamped0..6. Tables count
+    // newest trigger samples (A guard / B superguard), not rendering frames.
     constexpr int aWindows[]={10,9,8,8,7,6,5},bWindows[]={5,4,3,3,2,1,1};
     if(context.weaponGate!=0 && context.hp>0) {
         if(overrideCounter>0) {--overrideCounter;result=5;}

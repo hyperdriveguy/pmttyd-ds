@@ -3,6 +3,9 @@
 
 namespace ttyd {
 namespace {
+// Original threshold/sample pairs indexed by difficulty0..6. A count equal
+// to threshold still uses that row;99999 is the last-row threshold,100000
+// the explicit exhausted-window cutoff. Samples mean newest history entries.
 struct Window { int threshold, samples; };
 constexpr Window windows0[]={{4,10},{5,9},{6,8},{7,7},{8,6},{9,5},{99999,1}};
 constexpr Window windows1[]={{0,10},{1,9},{2,8},{3,7},{4,6},{5,5},{6,4},{7,4},{8,3},{9,2},{99999,1}};
@@ -23,6 +26,8 @@ void BattleTriggerHistory::push(uint32_t triggers) {
     for(size_t i=entries.size()-1;i>0;--i)entries[i]=entries[i-1];
     entries[0]=triggers;
 }
+// Source LCG modulo2^32: multiplier1103515245, increment12345. Output
+// bits16..30 produce0..32767; seed/lifetime is caller-owned, not inferred.
 int32_t BattleRandom::next() {
     state=state*1103515245u+12345u;
     return int32_t((state>>16)&32767);
@@ -33,6 +38,8 @@ int32_t BattleRandom::bounded(int32_t bound) {
 int TimingACommand::successWindow(int difficulty) const {
     if(difficulty<0 || difficulty>6)return -1;
     const Window* entry=windows[difficulty];
+    // Flag bit1 chooses count-dependent windows; otherwise first row applies
+    // regardless of prior successes. Invalid difficulty is a native boundary.
     if(!(flags&2))return entry->samples;
     if(count>=100000)return 0;
     while(count>entry->threshold)++entry;
@@ -52,9 +59,13 @@ uint32_t TimingACommand::evaluate(const BattleTriggerHistory& history,
         result=2;increment(count);return result;
     }
     result=0;
+    // Source battle bit0x01000000 forces ordinary success. Result bit1=success;
+    // classification1=mash/pressed failure,2=no press,3=ordinary success.
     if(context.battleFlags&0x01000000) {
         classification=3;result=2;increment(count);return result;
     }
+    // Scan20 general trigger samples for mash rejection before testing the
+    // shorter success window. This is separate from private defense history.
     int presses=0;
     for(size_t i=0;i<20;++i)if(history.entries[i]&BattleButtonA)++presses;
     if(presses>=2) { classification=1;return result; }
@@ -66,6 +77,9 @@ uint32_t TimingACommand::evaluate(const BattleTriggerHistory& history,
     classification=presses ? 1 : 2;
     return result;
 }
+// Source main states:0 init,99 idle,1000 start finish,1001 countdown,
+// 1002 retire callbacks.60 means callback invocations, not rendered frames.
+// Scratch lanes5/8 correspond to original display float-300 and scalar20.
 int TimingACommand::tick() {
     switch(state) {
     case 0:

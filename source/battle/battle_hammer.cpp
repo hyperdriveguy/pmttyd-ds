@@ -9,6 +9,8 @@ int32_t signedWord(uint32_t value) {
 void decrement(int32_t& value) {value=signedWord(uint32_t(value)-1);}
 void increment(int32_t& value) {value=signedWord(uint32_t(value)+1);}
 }
+// Original weapon address overrides give25/30 invocation periods;40 is
+// the source default. These are original tokens, not native object addresses.
 int ordinaryHammerPeriod(uint32_t originalWeaponAddress) {
     switch(originalWeaponAddress) {
     case 0x80353de8:return 25;
@@ -20,10 +22,16 @@ int attackDifficulty(int base,uint8_t simplifiers,uint8_t unsimplifiers) {
     const auto adjusted=signedWord(uint32_t(base)-uint32_t(simplifiers)+uint32_t(unsimplifiers));
     return int(std::clamp<int32_t>(adjusted,0,6));
 }
+// Source allowance table by difficulty0..6. Compare period-countdown to
+// this invocation window only at the final charge stage (N+1).
 int HammerCommand::releaseAllowance(int difficulty) {
     constexpr int windows[]={80,70,60,40,20,10,5};
     return difficulty<0 || difficulty>6 ? -1 : windows[difficulty];
 }
+// Main states:0 init,99 idle,100 start,1000 wait-left,1001 charge,
+// 1003 completion bridge,1004 idle,1005 stop request,1006 finish countdown,
+// 1007 callback retirement. Result bits0/1=pending/success; classification
+// 1 failed release,2 overrun,3 successful release. Numeric order is source ABI.
 int HammerCommand::tick(const HammerContext& context,BattleRandom& random,HammerSoundSink sounds) {
     if(chargeSteps<1 || chargeSteps>12 || period<0 || releaseAllowance(context.difficulty)<0)return -1;
     soundRequest=nullptr;
@@ -36,11 +44,15 @@ int HammerCommand::tick(const HammerContext& context,BattleRandom& random,Hammer
         repeat=false;
         if(suppressionLatch)break;
         switch(state) {
+        // Scratch11 words are the original44-byte display block: lane5 holds
+        // float bits0xc3960000 (-300), lane8 scalar20. Voice handle -1=unallocated.
         case 0:
             result=1;stage=0;scratch.fill(0);scratch[5]=0xc3960000;scratch[8]=20;
             enteredCharge=false;suppression=suppressionLatch=0;finalSound=false;
             classification=0;handles.fill(-1);state=99;
             break;
+        //120 callback polls to acquire held-left; fallthrough processes the
+        // newly installed countdown on this same invocation.
         case 100:
             countdown=120;state=1000;
             [[fallthrough]];

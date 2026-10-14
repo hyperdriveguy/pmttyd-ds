@@ -2,6 +2,9 @@
 #include <cassert>
 #include <algorithm>
 
+// Source event wrappers return handler2(complete/continue), except ResultAC
+// pending returns0(retry). Result bit0 pending/bit1 success differ from help
+// modes0 hide/2 show and StartAC main state100. Callback ownership stays external.
 namespace ttyd {
 namespace {
 int32_t resolve(const ActionValueServices& s,int32_t value) {assert(s.resolve);return s.resolve(s.user,value);}
@@ -15,6 +18,8 @@ void help(ActionCommandView& w,int32_t type) {assert(w.help);w.help(w.user,type)
 }
 int setActionParameters(ActionCommandView& w,const std::array<int32_t,8>& operands,const ActionValueServices& s) {
     assert(w.parameters);
+    // Eight original parameter lanes; sentinel -250000000 keeps an existing
+    // lane AFTER operand resolution, rather than installing a new zero value.
     for(unsigned i=0;i<8;++i) {
         const int32_t value=resolve(s,operands[i]);
         if(value!=-250000000)(*w.parameters)[i]=value;
@@ -54,6 +59,8 @@ int stopActionCommandEvent(ActionCommandView& w) {
     if(w.remove)w.remove(w.user);
     help(w,0);return 2;
 }
+// Low hit-code30 forces prize -1. Otherwise wrapped input+prizeByte-1
+// clamps to0..6. Prize production is a provider, not inferred from success bit.
 int32_t actionPrizeLevel(void* work,const ActionPrizeActor* actor,int32_t input,const ActionPrizeServices& s) {
     if(actor && (actor->lastHitCode&0xff)==30)return -1;
     assert(s.prizeByte);
@@ -64,6 +71,8 @@ int readActionPrize(const std::array<int32_t,3>& operands,const ActionPrizeServi
     assert(s.captureWork && s.resolve && s.store);
     void* work=s.captureWork(s.user);
     const int32_t actorId=s.resolve(s.user,operands[0]);ActionPrizeActor* actor=nullptr;
+    // Actor sentinels -1/-5 bypass unit resolution. Capture work BEFORE resolving
+    // operands; callbacks can change shared owners between those service calls.
     if(actorId!=-1 && actorId!=-5) {
         assert(s.translate && s.unit);actor=s.unit(s.user,s.translate(s.user,actorId));
     }

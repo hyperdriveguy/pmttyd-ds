@@ -31,6 +31,8 @@ struct DefenseContext {
 };
 struct DefenseCommand {
     int16_t overrideCounter = 0;
+    // Original result classification:1 mash/pressed failure,2 no press,
+    // 4 guard,5 superguard. Terminal evaluation resets private pad history.
     int result = 0;
     int evaluate(BattlePadWork& privatePad, const DefenseContext&);
 };

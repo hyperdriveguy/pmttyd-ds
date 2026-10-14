@@ -1,6 +1,10 @@
 #include "battle_unit_resources.hpp"
 #include <cassert>
 
+// Big-endian signed16 pouch fields: Mario current HP/FP at70/74, base
+// maxima8e/90 (hex). Partners use14-byte records at translatedIndex*14,
+// base HP+4/current HP+6. Kinds222=Mario,224..230=partners.
+// Full mapping/order: docs/behavior/unit/UNIT_STATUS_CLEAR_AND_POUCH_IMPORT.md.
 namespace ttyd {
 namespace {
 int16_t half(int32_t value) {
@@ -20,6 +24,8 @@ uint8_t* pouch(const UnitResourceServices& s) {
 bool partner(int32_t kind) {return kind>=224 && kind<=230;}
 void cap(int16_t& current,int16_t maximum) {if(current>maximum)current=maximum;}
 }
+// Source aliases are nonsequential: kind229 maps3, kind228 maps6.
+// Unsupported kinds map0; never replace this table with kind-223 arithmetic.
 int32_t battlePartyIndex(int32_t kind) {
     switch(kind) {
     case 80:case 137:case 224:return 1;
@@ -32,16 +38,22 @@ int32_t battlePartyIndex(int32_t kind) {
     default:return 0;
     }
 }
+// Six records: type0xff means unused; clear bytes1..3/word4 while retaining
+// word8. This is field initialization, not a memset of the whole record.
 void initializeStatusChangeInfo(BattleStatusUnit& u) {
     for(auto& record:u.statusChangeInfo) {
         record.type=0xff;record.duration=record.strength=record.extra=0;
         record.value=0;
     }
 }
+// Thirty status bytes clear, then original Charge16 setter receives -99
+// to reset its additive byte. It does not leave a -99 strength or duration1.
 void clearUnitStatus(BattleStatusUnit& u) {
     u.statusBytes.fill(0);setStatus(u,16,1,-99);
     initializeStatusChangeInfo(u);
 }
+// HP/FP Plus count contributes5 per copy. Narrow to signed16 BEFORE upper
+// cap; this routine does not lower-clamp or heal to a newly increased maximum.
 void reviseUnitResources(DamageUnit& u,const UnitResourceServices& s) {
     auto* p=pouch(s);const int32_t kind=u.kind;
     if(kind==222) {
@@ -59,6 +71,8 @@ void reviseUnitResources(DamageUnit& u,const UnitResourceServices& s) {
         u.maxFp=half(u.baseFp+5*u.fpPlusCount);cap(u.fp,u.maxFp);
     }
 }
+// Partner snapshots use kind-224, distinct from pouch party-index mapping.
+// Partner HP<=0 sets status27. Mario does not import this status snapshot.
 void importUnitResources(DamageUnit& u,const UnitResourceServices& s) {
     auto* snapshots=s.snapshots;auto* p=pouch(s);const int32_t kind=u.kind;
     if(kind==222) {
