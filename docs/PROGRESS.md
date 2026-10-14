@@ -1,3 +1,88 @@
+## 2026-10-14 — Original item creation and whole100-record lifecycle
+
+Previous goal turn made progress with audience item ownership and actor states
+7/8/10/12. Commit `0b80976e` now implements whole BattleAudienceItemOn801a5aac,
+ItemCtrlProcess801a4f0c, DetectTargetPlayer801a5864 and
+pouchGetEmptyHaveItemCnt800d5614, reusing existing packed body/part/status/key
+inventory helpers. Native Ctrl replaces its type0-only rejection-prefix call
+with real creation(index,0,1). Native item processing replaces the flags-clear-
+only provider with all eight local lifecycle states. No new outer Main call or
+skipped earlier provider is introduced.
+[Source contract and hashes](behavior/battle/AUDIENCE_ITEM_CREATION_SELECTION_AND_LIFECYCLE.md).
+
+Creation preserves explicit low16 item ID, swGet235's original position before
+seat validation, species/seat/existence/state/flag guards and exactly the caller's
+signed allocation limit. It sets only original allocation fields and returns1
+for the caller's throw-count increment. Native saved-switch lookup uses the
+existing VM global-flag view, not a hardcoded permissive story value. Complete
+original/legacy saved-flag ownership remains upstream.
+
+Item Main preserves the original100-record scan, invalid-owner clear/unlink,
+unsigned state admission and all source state transitions: weighted choice,
+held telegraph/lift, player targeting, flight, receipt metadata, fall/bounce,
+visibility blink and cleanup. Held countdown remains in actor7, while item Main
+tracks its original source derived position. Targeting uses the original body
+ID/head fallback, signed belong/HP, flags10000 and captured explicit battle
+owner after RNG. It uses a fixed64-entry stack array rather than a heap list.
+Launch retains float duration30+abs(dx)/15, truncated timer stored later and
+original fused vertical acceleration; no clamped/ceiled trajectory substitutes.
+Timer20/zero-count ordering, kind239 rotation, status/shadow/inventory gates,
+consecutive-item counter and cleanup sound/actor/halfword ordering remain intact.
+
+Receipt publishes the original type/target/item fields and harmful-item c0-byte
+weapon descriptor, rather than awarding inventory or applying player damage in
+this controller. Verified signed lis/addi address resolution for dispatch
+8039cd34 and presets8039c880; pack tests pin the table/constants and the contract
+pins the four descriptors. Source present-item execution still owns the actual
+presentation/resource transaction. Native callbacks bind shared RNG, existing
+packed hit positions, original interpolation, finite conversion/fused arithmetic
+and real stop-sound provider. Gekko FPSCR/GQR parity remains unproven. Invalid
+mapped-pointer/table/RNG/numeric domains retain explicit unavailable outcomes,
+not synthetic items, targets or missing-data choices.
+
+Validation used prior isolated `artifacts/battle-lens-qwwrj2n7`, updating only
+changed tracked bytes from frozen baseline
+`38155ccbc5ff222311f96ecc7fe8b0a3c1dabd27` plus owned source/CMake/tests.
+Concurrent live texture/parent/prefetch/color work and later commits were excluded
+from that frozen validation. Reused its previously validated private original
+packs; no new conversion/asset generation was necessary. All DOL inspection used
+the ISO read-only. No source PPC text, ISO, extracted asset or compiled pack was
+committed. Asset provenance records reused constants, weights and descriptor
+hashes; original art/HUD scale and licensing choices did not change.
+
+Initial focused build/test exited0. After using a fixed target array and adding
+empty-table cleanup, failed-stop and captured-battle RNG cases, focused final
+build/test exited0. Tests cover creation guards/all256 actor states, low16 IDs,
+first-free record and caller limits, weighted kind/telegraph, negative lift
+step, body/head target filters, no target, launch partial stores, flight counter
+and update order, all four descriptors, presentation metadata/counter cap,
+status/shadow/full-bag rejection, extra-bag count, signed status byte, bounce/
+blink cleanup, invalid owner and unsigned item-state skip. A coupled created
+item runs existing actor7/8 plus ItemMain through holding, launch and complete
+cleanup under500 calls; the one real target RNG draw matches its independent
+oracle. Hit point and sound callback are explicit fixtures, not a full native
+BattleMain or rendered-throw proof. Existing original combat tests still pass.
+
+Final `MAKEFLAGS=-j4 make test` exited0:308/308 C++ and177/177 Python
+(`artifacts/audience-item-main-test.log`). Native `MAKEFLAGS=-j4
+TMPDIR="$PWD/artifacts/tmp" make all -o assets-ready BUILD=build-battle-lens
+TARGET=ttyd-battle-lens` exited0 (`artifacts/audience-item-main-native.log`),
+reusing the private validated packs through assets-ready bypass. Both processes
+were observed terminal before commit. Owned diff checks passed; scoped temporary
+index commit preserves other threads' changes. Updated current native audience
+and held-item contracts to remove stale empty-only/creation-unavailable claims.
+No new emulator/visual acceptance or hardware-performance claim. Original menu,
+HUD assets, controls, dialogue/story, action-command timing, unit/model scale
+and lower-screen scene replay were unchanged.
+
+Next: bind actual item drawing/telegraphs and original present-item execution,
+then physical X and optional lower-screen audience taps through recovered input/
+selection. Close normal Main/camMain/camDraw cadence, actor Enter11/special
+states, idle low-ratio register provenance, stage active entries, full tutorial
+followup hits, field return and actual voice playback. The item simulation
+chain does not establish playable throws or accepted two-screen battle framing.
+The full tutorial and real battle goal remains active and incomplete.
+
 ## 2026-10-14 — Correct audience-item ownership and hold/throw/damage/escape controllers
 
 Previous goal turn made progress with cheering/jumps/booing and stage-fade
