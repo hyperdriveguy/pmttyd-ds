@@ -1655,3 +1655,9 @@ add_executable(field_mario_body_tests tests/field_mario_body_tests.cpp)
 target_link_libraries(field_mario_body_tests PRIVATE ttyd_core)
 add_test(NAME field_mario_body COMMAND field_mario_body_tests)
 set_tests_properties(field_mario_body PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Whole original audience iconGX local draw service.
+target_sources(ttyd_core PRIVATE source/display/source_icon_gx.cpp)
+add_executable(source_icon_gx_tests tests/source_icon_gx_tests.cpp)
+target_link_libraries(source_icon_gx_tests PRIVATE ttyd_core)
+add_test(NAME source_icon_gx COMMAND source_icon_gx_tests)

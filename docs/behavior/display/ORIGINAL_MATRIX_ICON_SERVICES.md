@@ -50,10 +50,11 @@ resumes the remaining record scan only after the wrapper completes.
 
 `SourceMatrixIcon` represents only fields these wrappers initialize: flags,
 RGBA, ID, width, height, texture and delay. Uninitialized source stack fields
-are not filled with guessed values. Native iconGX should consume the initialized
-fields that its source body actually reads. Its ordinary geometry reduction,
-current/camera8 flip, texture/material/fog, channel state and raster emission
-remain independent owners; see [icon flags](ITEM_SELECTOR_ICON_ANCHORS_AND_FLAGS.md).
+are not filled with guessed values. The nested [original iconGX service](ORIGINAL_ICON_GX_DRAW_SERVICE.md) now
+consumes the initialized fields its source body reads, retaining matrix/texture,
+material/fog and primitive calls across waits. Native linked resource/map/GPU
+owners and actual raster emission remain open; see also
+[icon flags](ITEM_SELECTOR_ICON_ANCHORS_AND_FLAGS.md).
 No request here acknowledges a quad or awards an audience item.
 
 Unavailable mapped words/halves, absent matrix/draw services and invalid animated

@@ -1098,3 +1098,14 @@ were needed. Original icon.bin/icon.tpl resources and their native loaded-buffer
 owners remain required; this service does not synthesize replacements or claim
 new native icon emission. Original Nintendo/Intelligent Systems resources retain
 their existing licensing and private ignored-asset restrictions.
+
+### Original audience iconGX recovery (2026-10-14)
+
+Whole local iconGX800197f8/9a4 is reconstructed from the read-only US ISO.
+[Source hash, original numeric/color constants and texture/material requests](behavior/display/ORIGINAL_ICON_GX_DRAW_SERVICE.md)
+record provenance. No original resources were converted, rescaled or committed.
+Actual icon.bin/icon.tpl loaded ownership, original dummy image80415080 and
+selected texture objects remain required native inputs. Opaque resource tokens
+are adapter identities, not synthetic textures or ARM casts of source pointers.
+Original Nintendo/Intelligent Systems resources retain existing private-pack
+licensing restrictions. Portable geometry does not establish native pixels.

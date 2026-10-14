@@ -1098,3 +1098,7 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Original matrix-icon services](display/ORIGINAL_MATRIX_ICON_SERVICES.md):
   retained whole iconDispGx2/Col, packed descriptor/GP frame selection and actual
   audience callback connection; native resource and iconGX binding remain open.
+
+- [Original iconGX draw service](display/ORIGINAL_ICON_GX_DRAW_SERVICE.md):
+  full local icon matrix, texture, material, fog, alpha and primitive sequence;
+  linked through matrix-icon wrappers, native resource/raster binding open.

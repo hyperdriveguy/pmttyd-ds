@@ -76,7 +76,12 @@ bool resumeSourceIconMatrix(const BattleAudienceIconRequest& request,const Sourc
         c.phase=6;
     }
     if(c.phase==6){
-        c.pending=0x800197f8;if(!s.draw || !s.draw(s.user,c.matrix.output,c.icon))return false;
+        c.pending=0x800197f8;
+        if(s.draw){if(!s.draw(s.user,c.matrix.output,c.icon))return false;}
+        else if(!s.gx || !resumeSourceIconGX(c.matrix.output,c.icon,*s.gx,c.gxCursor)){
+            if(c.gxCursor.active)c.pending=c.gxCursor.pending;
+            return false;
+        }
         c.active=false;c.pending=0;return true;
     }
     return false;

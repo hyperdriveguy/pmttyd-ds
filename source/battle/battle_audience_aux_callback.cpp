@@ -97,7 +97,8 @@ bool resumePackedBattleAudienceAux(uint32_t callback,const BattleAudienceAuxServ
         if(c.phase==8){c.pending=c.icon.function;
             if(s.icon){if(!s.icon(s.user,c.icon))return false;}
             else {if(!s.sourceIcon || !resumeSourceIconMatrix(c.icon,*s.sourceIcon,c.iconCursor)){
-                if(c.iconCursor.active)c.pending=c.iconCursor.pending;return false;}}
+                if(c.iconCursor.active)c.pending=c.iconCursor.pending;
+                return false;}}
             ++c.index;c.record+=ap?0x60:0x48;c.phase=6;}
     }
     c.active=false;c.pending=0;return true;
