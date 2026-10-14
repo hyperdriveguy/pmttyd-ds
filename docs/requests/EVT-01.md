@@ -3762,3 +3762,16 @@ Implementation still needs the retained256-pose,64-resource,64-texture owner,
 per-part source mode1 entry and exact SetAnim/rate/restart/release services;
 source lookup must distinguish unknown names from known unconverted poses.
 The existing animPoseSetLocalTimeRate8004142c display boundary stays pending.
+
+## 2026-10-14 — Real player battle pose ownership
+
+Closed native player mode1 admission, four real linked-part pose handles, rate
+storage and forced source name selection/restart with complete descriptor identity.
+The native forced consumer now executes source pending-mode gates, gravity/float
+counters and unlinked zero-effect/material-light services, and evaluates ordinary
+CPU output at the retained full Main8003ed2c boundary. See the
+[owner contract](../behavior/display/NATIVE_BATTLE_POSE_RESOURCE_OWNER.md) and
+[pending/automatic source contract](../behavior/battle/PART_PENDING_POSE_MODES_AND_AUTOMATIC_STATUS_SELECTION.md).
+Next implementation: full Main/facing/GX publication, automatic parts and pattern
+effects, enemy/Frankly factory resources, original global allocation/cadence,
+remaining queued display and ordered teardown/field/result/save ownership.

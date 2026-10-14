@@ -1121,3 +1121,12 @@ target_link_libraries(battle_weapon_menu_main_tests PRIVATE ttyd_core)
 add_test(NAME battle_weapon_menu_main COMMAND battle_weapon_menu_main_tests)
 
 target_sources(ttyd_core PRIVATE source/battle/harbor_tutorial_menu_input.cpp)
+
+target_sources(ttyd_core PRIVATE source/display/battle_pose_pool.cpp)
+add_executable(battle_pose_pool_tests tests/battle_pose_pool_tests.cpp)
+target_link_libraries(battle_pose_pool_tests PRIVATE ttyd_core)
+add_test(NAME battle_pose_pool COMMAND battle_pose_pool_tests)
+if(EXISTS "${CMAKE_SOURCE_DIR}/romfs/trio-attack-mario.pose-directory.bin")
+    add_test(NAME battle_pose_pool_original COMMAND battle_pose_pool_tests original)
+    set_tests_properties(battle_pose_pool_original PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+endif()

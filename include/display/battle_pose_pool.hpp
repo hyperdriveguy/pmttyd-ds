@@ -1,0 +1,60 @@
+#pragma once
+#include "actor_animation.hpp"
+#include <memory>
+#include <optional>
+
+namespace ttyd {
+// Original descriptor identity is independent of the converted subset order.
+struct BattlePoseResource {
+    std::string modelName,textureName;
+    std::vector<std::string> names;
+    std::shared_ptr<const ActorAnimationPack> bank;
+};
+std::shared_ptr<const BattlePoseResource> loadBattlePoseResource(const char* directory,const char* pack);
+struct BattlePoseClock {uint64_t field=0,battle=0;}; // Millisecond quotients, not rendering frames.
+struct BattlePose {
+    // Offset view of the admitted source scalar state, not mapped SDK pointers.
+    std::array<uint8_t,0x170> state{};
+    std::shared_ptr<const BattlePoseResource> resource;
+    ActorAnimationSample shape; // Real per-pose CPU output and retained hierarchy workspace.
+    int32_t archiveType=0;
+    uint32_t word(unsigned offset) const;
+    void word(unsigned offset,uint32_t value);
+    float scalar(unsigned offset) const;
+    void scalar(unsigned offset,float value);
+    uint64_t timestamp() const {return uint64_t(word(0x18))<<32|word(0x1c);}
+};
+struct BattlePoseModelCache {
+    uint32_t flags=0,references=0,texture=0;
+    std::shared_ptr<const BattlePoseResource> resource;
+};
+struct BattlePoseTextureCache {
+    uint32_t flags=0,references=0;
+    std::string name;
+    std::shared_ptr<const BattlePoseResource> resource; // Owns converted texture descriptors/palettes.
+};
+// Scoped native battle handle namespace. Field handles belong to their own owner;
+// these numbers do not assert the original global animation allocation history.
+class BattlePosePool {
+public:
+    std::optional<int32_t> enter(std::shared_ptr<const BattlePoseResource>,int32_t mode,BattlePoseClock);
+    BattlePose* pose(int32_t handle);
+    const BattlePose* pose(int32_t handle) const;
+    const BattlePose* slot(unsigned index) const {return index<poses_.size()?poses_[index].get():nullptr;}
+    bool setRate(int32_t handle,float rate);
+    bool selectName(int32_t handle,const std::string& name,bool force,BattlePoseClock);
+    bool selectIndex(int32_t handle,uint32_t index,bool force,BattlePoseClock);
+    bool evaluate(int32_t handle,BattlePoseClock);
+    bool clearEffect(int32_t handle); // Real unlinked SetEffect(handle,0,0) domain only.
+    bool release(int32_t handle); // Ordinary owned records; unsupported smart buffers stay pending.
+    const std::array<BattlePoseModelCache,64>& models() const {return models_;}
+    const std::array<BattlePoseTextureCache,64>& textures() const {return textures_;}
+    int32_t archiveType() const {return archiveType_;}
+private:
+    void restart(BattlePose&,BattlePoseClock);
+    std::array<std::unique_ptr<BattlePose>,256> poses_{};
+    std::array<BattlePoseModelCache,64> models_{};
+    std::array<BattlePoseTextureCache,64> textures_{};
+    int32_t archiveType_=0;
+};
+}

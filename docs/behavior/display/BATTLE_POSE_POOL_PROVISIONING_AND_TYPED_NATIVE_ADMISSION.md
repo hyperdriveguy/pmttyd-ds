@@ -107,12 +107,13 @@ Converted packs are selected subsets in converter order, not the complete
 original descriptor directory. Read-only original local model verification:
 `a/b_mario`: headernameb_mario,85 descriptors, descriptor0 **M_Z_1**;
 `a/c_pkr`: headernamec_pkr,32 descriptors, descriptor0 **PKR_Z_1**.
-Current trio converter starts its selected lists with M_S_1/PKR_S_1 and does
-not include these Z1 entries. ActorAnimationPack::firstPose therefore cannot
-implement source Entry's index0 or SetAnim unknown-name fallback. Bind actual
-source descriptor order/default metadata and those original assets, or retain
-that specific selector/resource frontier rather than inventing idle fallback.
-Exact supported requested names can still map to the existing validated pack.
+The earlier converter inspection found selected lists beginning M_S_1/PKR_S_1
+without Z1. That gap is now closed by the genuine defaults and complete private
+[source directory sidecars](NATIVE_BATTLE_PART_STORAGE_AND_POSE_DIRECTORY.md).
+The [typed native owner](NATIVE_BATTLE_POSE_RESOURCE_OWNER.md) uses that complete
+directory for selection, rather than treating converted subset order as source
+order. Original global allocation history, SDK/GX services and full Main remain
+separate from this native scoped admission.
 
 ## Forced selection and Main clock dependencies stay distinct
 

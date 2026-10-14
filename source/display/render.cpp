@@ -134,11 +134,13 @@ bool Renderer::init() {
     undergroundTexture.imported=Tex3DS_TextureImportStdio(undergroundAtlas,&undergroundTexture.texture,nullptr,false);std::fclose(undergroundAtlas);
     if(!undergroundTexture.imported)return false;
     C3D_TexSetFilter(&undergroundTexture.texture,GPU_LINEAR,GPU_LINEAR);C3D_TexSetWrap(&undergroundTexture.texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
-    if(!trioMarioAnimations.load("romfs:/trio-attack-mario.pmanim"))return false;
+    trioMarioAnimations=loadBattlePoseResource("romfs:/trio-attack-mario.pose-directory.bin","romfs:/trio-attack-mario.pmanim");
+    if(!trioMarioAnimations)return false;
     FILE* trioUV=std::fopen("romfs:/trio-attack-mario.bin","rb");if(!trioUV)return false;
     char trioMagic[8];const bool validTrio=std::fread(trioMagic,8,1,trioUV)==1 && !std::memcmp(trioMagic,"PMSUV1",8) && std::fread(&trioMarioUVScale,4,1,trioUV)==1 && std::fgetc(trioUV)==EOF;
     std::fclose(trioUV);if(!validTrio)return false;
-    if(!trioPartnerAnimations.load("romfs:/trio-attack-goombella.pmanim"))return false;
+    trioPartnerAnimations=loadBattlePoseResource("romfs:/trio-attack-goombella.pose-directory.bin","romfs:/trio-attack-goombella.pmanim");
+    if(!trioPartnerAnimations)return false;
     FILE* trioPartnerUV=std::fopen("romfs:/trio-attack-goombella.bin","rb");if(!trioPartnerUV)return false;
     const bool validPartner=std::fread(trioMagic,8,1,trioPartnerUV)==1 && !std::memcmp(trioMagic,"PMSUV1",8) && std::fread(&trioPartnerUVScale,4,1,trioPartnerUV)==1 && std::fgetc(trioPartnerUV)==EOF;
     std::fclose(trioPartnerUV);if(!validPartner)return false;
@@ -964,7 +966,7 @@ void Renderer::world(const Game& g) {
     } else if(!battle && (g.trioBattleActive || g.storyPresentation().locked())) {
         const auto& a=g.storyPresentation().actors[0];const bool right=a.yaw>0 && a.yaw<180;
         characterModel(a.moving?"M_W_1":a.pose.c_str(),float(g.storyPresentation().now-a.poseAt)*.06f,g.trioBattleActive?Vec2{a.position[0]*.01f,a.position[2]*.01f}:g.progress.position,g.trioBattleActive?a.position[1]*.01f:g.groundHeight,
-                       right?180:0,right,false,g.trioBattleActive?&trioMarioAnimations:&professorMarioAnimations,g.trioBattleActive?trioMarioUVScale:professorMarioUVScale);
+                       right?180:0,right,false,g.trioBattleActive?trioMarioAnimations->bank.get():&professorMarioAnimations,g.trioBattleActive?trioMarioUVScale:professorMarioUVScale);
     } else if(!battle && g.marioPresentation.supported && !(g.marioPresentation.displayFlags&1))
         characterModel(g.marioPresentation.selected,g.marioPresentation.animationFrame(),g.progress.position,g.water.active()?g.water.position[1]:g.groundHeight+g.jumpHeight,
                        g.marioPresentation.drawYaw(),g.marioPresentation.reflectZ(),false,questPose?&goombaQuestAnimations:itemGetPose?&fieldItemGetAnimations:nullptr,questPose?goombaQuestUVScale:itemGetPose?fieldItemGetUVScale:1);
@@ -973,7 +975,7 @@ void Renderer::world(const Game& g) {
         const auto& a=g.storyPresentation().actors[1];const bool right=a.yaw>0 && a.yaw<180;
         if(g.trioBattleActive) {
             const float cameraAngle=npcAngles.angle(g.fieldCameraFrame.eye.x,g.fieldCameraFrame.eye.z,g.fieldCameraFrame.at.x,g.fieldCameraFrame.at.z);
-            if(!a.hidden)characterModel(g.storyPresentation().message.talking && g.storyPresentation().speaker==1?"PKR_T_1":a.pose.c_str(),float(g.storyPresentation().now-a.poseAt)*.06f,{a.position[0]*.01f,a.position[2]*.01f},a.position[1]*.01f,right?180:0,battleMirrorZ(right?180:0,a.battleRotation[1],cameraAngle,a.battleFlags),true,&trioPartnerAnimations,trioPartnerUVScale,&a);
+            if(!a.hidden)characterModel(g.storyPresentation().message.talking && g.storyPresentation().speaker==1?"PKR_T_1":a.pose.c_str(),float(g.storyPresentation().now-a.poseAt)*.06f,{a.position[0]*.01f,a.position[2]*.01f},a.position[1]*.01f,right?180:0,battleMirrorZ(right?180:0,a.battleRotation[1],cameraAngle,a.battleFlags),true,trioPartnerAnimations->bank.get(),trioPartnerUVScale,&a);
         } else if(!a.hidden)characterModel(g.storyPresentation().message.talking && g.storyPresentation().speaker==1?"PKR_T_1":a.moving?"PKR_W_1":"PKR_S_1",float(g.ticks),g.partner,g.partnerHeight,right?180:0,right,true);
     } else if(!battle && !g.harborStory.enabled)characterModel(g.partnerPresentation.name(),g.partnerPresentation.frame(),g.partner,g.partnerHeight,
                              g.partnerPresentation.yaw(),g.partnerPresentation.reflectZ(),true);

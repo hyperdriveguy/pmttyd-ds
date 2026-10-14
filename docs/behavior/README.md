@@ -873,3 +873,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Game acquisition binding and snapshot ownership](field/GOOMBA3_GAME_ACQUISITION_BINDING.md).
 - [Item95 motion15 entry, display and deferred stay](field/ITEM95_MARIO_MOTION15_ENTRY_DISPLAY_AND_STAY.md).
+
+- [Native battle pose resource owner](display/NATIVE_BATTLE_POSE_RESOURCE_OWNER.md) — real player-part handles, complete source indices, shared CPU banks and the Main boundary.
+- [Part pending modes and automatic status selection](battle/PART_PENDING_POSE_MODES_AND_AUTOMATIC_STATUS_SELECTION.md) — original effect gates, status priority and unchanged extra-part descriptor0.

@@ -83,13 +83,19 @@ in that producer. Exact name changes reach the display consumer above.
 Read-only current source/battle/trio_attack.cpp changePose copies exact name bytes
 and approximates these final flag values, updating native scene pose/poseAt
 immediately. That scene projection is separate from original registered pose
-record/time history. Its custom part constructor currently starts mapped bytes0
-and does not set source P208/P20c/P4f0 or obtain mode1 pose registry handles.
+record/time history. Its earlier custom part constructor started mapped bytes0
+without source P208/P20c/P4f0 or mode1 pose registry handles.
 Consequently first source speed request would multiply1*0 and freeze a pose
 if the missing P20c were accepted as source; color BYTE4f3=0 would admit the
 later nonopaque mode path. Bind the original once-only constructor defaults
 and genuine typed converted pose owner rather than fabricating runtime handle0
 as success or erasing flags to skip this used branch.
+
+Native integration update: constructor defaults and genuine player-part mode1
+ownership are now bound by the [typed pose owner](../display/NATIVE_BATTLE_POSE_RESOURCE_OWNER.md).
+That owner executes rate, forced selection, mode/counter/zero-effect services
+and best-effort CPU output. The complete source Main8003ed2c remains pending;
+unregistered enemy factories and automatic/effect-pattern services stay explicit.
 
 ## Evidence and validation
 

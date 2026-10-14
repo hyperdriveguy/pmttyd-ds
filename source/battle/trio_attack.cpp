@@ -46,12 +46,16 @@
 #include "battle_ending_fade.hpp"
 #include "battle_packed_pose_lookup.hpp"
 #include "battle_packed_unit_resources.hpp"
+#include "battle_pose_pool.hpp"
+#include "battle_packed_part.hpp"
+#include <map>
 namespace ttyd {
 namespace {
 EventScriptAssets scripts;NpcAngleTable sourceAngles;bool assetsReady=false;
 std::string fieldPartnerAnimationPath;
 std::weak_ptr<const ActorAnimationPack> fieldPartnerAnimationCache;
 std::shared_ptr<const ActorAnimationPack> fieldMarioBank;
+std::array<std::shared_ptr<const BattlePoseResource>,2> playerBattleResources;
 std::string stageMapRoot;
 std::array<uint32_t,7> stageDescriptors{};
 uint32_t sourceStage=0;
@@ -86,6 +90,12 @@ bool loadTrioAttackAssets(const char* root) {
         if(!base || !base->evaluate(base->start,sample) || sample.vertices.empty())return false;
     }
     fieldMarioBank=std::move(marioBank);
+    std::array<std::shared_ptr<const BattlePoseResource>,2> battleResources;
+    for(unsigned i=0;i<battleResources.size();++i){
+        const auto prefix=std::string(root)+(i==0?"/trio-attack-mario":"/trio-attack-goombella");
+        battleResources[i]=loadBattlePoseResource((prefix+".pose-directory.bin").c_str(),(prefix+".pmanim").c_str());
+        if(!battleResources[i] || battleResources[i]->modelName!=(i==0?"b_mario":"c_pkr"))return false;
+    }
     fieldPartnerAnimationPath=std::string(root)+"/partner.pmanim";fieldPartnerAnimationCache.reset();
     FILE* stageFile=std::fopen((std::string(root)+"/trio-stage-objects.bin").c_str(),"rb");if(!stageFile)return false;
     std::array<uint32_t,8> stageData{};char stageMagic[8];
@@ -99,7 +109,7 @@ bool loadTrioAttackAssets(const char* root) {
     const bool configValid=std::fread(configMagic,8,1,configFile)==1 && !std::memcmp(configMagic,"PMAUCFG1",8) && std::fread(&config,4,1,configFile)==1 && std::fgetc(configFile)==EOF;
     std::fclose(configFile);if(!configValid || !next.readWord(config+0x1c,descriptorWord) || descriptorWord)return false;
     audienceSetupConfig=config;
-    scripts=std::move(next);reactionUnits=units;reactionGroup=group;franklyPhase=phase;assetsReady=true;return true;
+    scripts=std::move(next);reactionUnits=units;reactionGroup=group;franklyPhase=phase;playerBattleResources=std::move(battleResources);assetsReady=true;return true;
 }
 struct TrioAttackRuntime {
     EventNativeRuntime vm;
@@ -123,6 +133,8 @@ struct TrioAttackRuntime {
     std::vector<TrioAudienceAudioRequest> audienceAudioTrace;
     std::shared_ptr<ProloguePouch> entryPouch;
     std::array<PartnerBattleSnapshot,7> partySnapshots{};
+    BattlePosePool poses;
+    std::map<uint32_t,int32_t> partPoseHandles;
     std::array<TrioRewardIcon,19> rewardIcons{};
     uint64_t rewardIconClockAt=UINT64_MAX,gaugeClockAt=UINT64_MAX;
     PointGetEffect pointGet;uint64_t pointGetClockAt=UINT64_MAX;
@@ -539,7 +551,20 @@ struct TrioAttackRuntime {
             }
         }
         word(Units+6*0x1000+0x298,franklyPhase);
-        for(unsigned id=1;id<7;++id){const auto unit=Units+id*0x1000;initializePackedBattleHpGauge(unit,nativeBattleActorServices(vm));byte(unit+0x311,255);byte(unit+0x312,255);for(auto part=word(unit+0x14);part;part=word(part)){real(part+0x208,1);real(part+0x20c,1);word(part+0x4f0,0xffffffff);}}
+        for(unsigned id=1;id<7;++id){const auto unit=Units+id*0x1000;initializePackedBattleHpGauge(unit,nativeBattleActorServices(vm));byte(unit+0x311,255);byte(unit+0x312,255);for(auto part=word(unit+0x14);part;part=word(part)){real(part+0x208,1);real(part+0x20c,1);word(part+0x4f0,0xffffffff);word(part+0x1c0,0xffffffff);byte(part+0x1c4,0);byte(part+0x214,0);byte(part+0x215,0);}}
+        // Source per-part EntAnime domain currently admitted for the two player
+        // models. Other unit factories remain explicit providers at display.
+        for(unsigned id=1;id<=2;++id)for(auto part=word(Units+id*0x1000+0x14);part;part=word(part)){
+            const auto table=word(part+0x1bc),modelName=word(word(part+4)+8);
+            if(!table || !modelName){partPoseHandles.emplace(part,-1);continue;}
+            const auto name=packedBattlePoseName(part,28,nativeBattleActorServices(vm).memory);
+            if(!name)return false;
+            const auto initialName=text(name);
+            for(unsigned i=0;i<=initialName.size();++i)byte(part+0x1c4+i,i==initialName.size()?0:uint8_t(initialName[i]));
+            const auto& resource=playerBattleResources[id-1];if(text(modelName)!=resource->modelName)return false;
+            const auto handle=poses.enter(resource,1,{now,now});if(!handle)return false;
+            word(part+0x1c0,uint32_t(*handle));partPoseHandles.emplace(part,*handle);
+        }
         for(unsigned id=1;id<7;++id)clearStatus(Units+id*0x1000);
         UnitResourceServices resources;resources.user=entryPouch.get();resources.pouch=[](void* p){return static_cast<ProloguePouch*>(p)->bytes.data();};resources.snapshots=&partySnapshots;
         for(unsigned id=1;id<=2;++id){const auto u=Units+id*0x1000;readDamage(id);auto& d=damageUnits[id];d.baseHp=half(u+0x10a);d.baseFp=half(u+0x110);d.hpPlusCount=byte(u+0x2f1);d.fpPlusCount=byte(u+0x2f2);importUnitResources(d,resources);
@@ -1184,8 +1209,64 @@ struct TrioAttackRuntime {
             const auto current=word(0x8041eb90);
             if((word(current+0xef4)&0x10000) || (word(current+0xef8)&1)){pending=0x80253ca8;return false;}
             for(auto part=word(unit+0x14);part;part=word(part)) {
+                const auto binding=partPoseHandles.find(part);
+                if(binding==partPoseHandles.end()){pending=0x801011fc;endingRequest(pending,{int32_t(unit)});return false;}
                 if(word(part+0x1c0)==0xffffffff)continue;
-                if(word(part+0x204)&2){endingRequest(0x80100a4c,{int32_t(part)});real(part+0x208,1);pending=0x8004142c;endingRequest(pending,{int32_t(word(part+0x1c0))});return false;}
+                if(word(part+0x204)&2){
+                    endingRequest(0x80100a4c,{int32_t(part)});real(part+0x208,1);
+                    const auto handle=int32_t(word(part+0x1c0));endingRequest(0x8004142c,{handle});
+                    if(handle!=binding->second || !poses.setRate(handle,real(part+0x208)*real(part+0x20c))){pending=0x8004142c;return false;}
+                    if(word(part+0x204)&1){
+                        word(part+0x204,word(part+0x204)&~1u);word(part+0x204,word(part+0x204)&~0x200u);
+                        const bool force=word(part+0x204)!=0;endingRequest(0x80041170,{handle,int32_t(part+0x1c4),force?1:0});
+                        if(!poses.selectName(handle,text(part+0x1c4),force,{now,now})){pending=0x80041170;return false;}
+                        byte(part+0x214,0);bool effect=false;
+                        const auto transparent=[&](){endingRequest(0x80127814,{int32_t(unit),18});return checkPackedBattleStatus(unit,18,actors) || byte(part+0x4f3)!=255;};
+                        if(word(part+0x204)&4)byte(part+0x215,0);else{byte(part+0x215,1);if(transparent()){byte(part+0x215,7);effect=true;}}
+                        const auto flags=word(part+0x204);
+                        if(!(flags&2) || (flags&8) || (flags&0x80)){
+                            byte(part+0x215,1);if(transparent()){byte(part+0x215,7);effect=true;}
+                            endingRequest(0x80127814,{int32_t(unit),7});if(checkPackedBattleStatus(unit,7,actors)){byte(part+0x215,4);effect=true;}
+                        }
+                        if(effect && (word(part+0x1ac)&0x8000)){effect=false;byte(part+0x215,0);}
+                        if(!(word(part+0x204)&4)){
+                            const auto old=word(part+0x204);if(effect && !(old&0x40))word(part+0x204,old|0x40);else if(!effect && (old&0x40))word(part+0x204,old&~0x40u);
+                        }
+                    }
+                    endingRequest(0x80101060,{int32_t(part)});
+                    const auto owner=word(part+0x4ec);
+                    const bool gravity=(word(word(0x8041eb90)+0xef4)&0x40000000) && !(word(owner+0x104)&0x1004);
+                    const auto settle=[&](unsigned offset,unsigned period,bool active){
+                        auto value=uint16_t(half(part+offset));if(active){half(part+offset,uint16_t(value+1));return;}
+                        if(!value)return;
+                        half(part+offset,uint16_t(value%period));value=uint16_t(half(part+offset));
+                        if(value>=period/2)half(part+offset,uint16_t(value+1));else if(value)half(part+offset,uint16_t(value-1));
+                    };
+                    settle(0x1a6,120,gravity);
+                    endingRequest(0x80100f34,{int32_t(part)});
+                    bool floating=(word(owner+0x1c)&0x100000) && (word(owner+0x1c)&0x200000);
+                    if(floating){endingRequest(0x80127814,{int32_t(owner),27});floating=!checkPackedBattleStatus(owner,27,actors);}
+                    settle(0x1a8,90,floating);
+                    endingRequest(0x80100e6c,{int32_t(part)});
+                    const auto mode=byte(part+0x215);
+                    if(mode==2 || mode==3 || mode==7){pending=0x80100d28;endingRequest(pending,{int32_t(part)});return false;}
+                    if(mode==4 || mode==5 || mode==6){pending=0x80100a80;endingRequest(pending,{int32_t(part)});return false;}
+                    if(mode){
+                        endingRequest(0x80100e00,{int32_t(part)});
+                        if(!byte(part+0x214)){
+                            byte(part+0x214,1);endingRequest(0x80040a28,{handle,0,0});
+                            if(!poses.clearEffect(handle)){pending=0x80040a28;return false;}
+                            if(word(word(part+0x4ec)+0x1c)&0x01000000){endingRequest(0x800406f0,{handle,8});poses.pose(handle)->word(0xec,poses.pose(handle)->word(0xec)|8);}
+                        }
+                    }
+                    endingRequest(0x80128b10,{int32_t(part)});
+                    BattlePartPositionServices position;position.memory=actors;
+                    position.fma=[](void*,float a,float b,float c){return std::fma(a,b,c);};position.add=[](void*,float a,float b){return a+b;};
+                    (void)packedPartWorldPosition(part,position);
+                    // Best-effort ordinary CPU output is real; the complete
+                    // source Main/facing/GX publication remains an explicit gate.
+                    endingRequest(0x8003ed2c,{handle});poses.evaluate(handle,{now,now});pending=0x8003ed2c;return false;
+                }
                 pending=0x80103084;endingRequest(pending,{int32_t(unit)});return false;
             }
         }
@@ -1266,6 +1347,13 @@ uint32_t TrioAttack::pendingFunction()const{return runtime_?runtime_->pending:0;
 const std::vector<ProfessorServiceRequest>& TrioAttack::requests()const{static const std::vector<ProfessorServiceRequest> empty;return runtime_?runtime_->trace:empty;}
 const std::vector<TrioAudienceAudioRequest>& TrioAttack::audienceAudioRequests()const{static const std::vector<TrioAudienceAudioRequest> empty;return runtime_?runtime_->audienceAudioTrace:empty;}
 bool TrioAttack::readWord(uint32_t a,uint32_t& v)const{return runtime_ && runtime_->vm.memory.readWord(a,v);}
+const BattlePosePool* TrioAttack::battlePosePool()const{return runtime_?&runtime_->poses:nullptr;}
+const BattlePose* TrioAttack::battlePose(uint32_t part)const{
+    if(!runtime_)return nullptr;
+    const auto binding=runtime_->partPoseHandles.find(part);
+    if(binding==runtime_->partPoseHandles.end() || runtime_->word(part+0x1c0)!=uint32_t(binding->second))return nullptr;
+    return runtime_->poses.pose(binding->second);
+}
 }
 
 namespace ttyd {

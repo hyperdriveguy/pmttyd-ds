@@ -15,6 +15,7 @@
 #include "uv_animation.hpp"
 #include "actor_mesh.hpp"
 #include "actor_animation.hpp"
+#include "battle_pose_pool.hpp"
 #include "field_air_shadow.hpp"
 #include "field_actors.hpp"
 #include "npc_presentation.hpp"
@@ -245,8 +246,8 @@ private:
     Texture fieldItemGetTexture;ActorAnimationPack fieldItemGetAnimations;float fieldItemGetUVScale=1;
     float harborMarioUVScale=1;
     Texture professorMarioTexture;
-    Texture trioMarioTexture;ActorAnimationPack trioMarioAnimations;float trioMarioUVScale=1;
-    Texture trioPartnerTexture;ActorAnimationPack trioPartnerAnimations;float trioPartnerUVScale=1;
+    Texture trioMarioTexture;std::shared_ptr<const BattlePoseResource> trioMarioAnimations;float trioMarioUVScale=1;
+    Texture trioPartnerTexture;std::shared_ptr<const BattlePoseResource> trioPartnerAnimations;float trioPartnerUVScale=1;
     Texture professorMapTexture;
     Texture messageIconTexture;
     void messageIconImage(uint32_t id,uint64_t ticks,float centerX,float bottomY,float scale,uint8_t alpha);

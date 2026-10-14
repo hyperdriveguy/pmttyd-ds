@@ -4,6 +4,7 @@
 #include "game.hpp"
 #include "battle_dive.hpp"
 #include "battle_ending_fade.hpp"
+#include "battle_pose_pool.hpp"
 #include <cassert>
 #include <iostream>
 #include <algorithm>
@@ -88,6 +89,14 @@ int main(){
     assert(jump.readWord(0x84202000,value) && value==0);
     assert(jump.readWord(0x84202004,value) && value==0x80393ba0);
     assert(jump.readWord(0x842024ec,value) && value==0x84102000);
+    assert(jump.battlePosePool() && jump.battlePosePool()->models()[0].references==3 && jump.battlePosePool()->models()[1].references==1);
+    for(unsigned i=0;i<3;++i){
+        const auto part=marioParts[i];assert(jump.readWord(part+0x1c0,value) && value==i);
+        const auto* pose=jump.battlePose(part);assert(pose && pose->word(0xc)==1 && pose->word(0x14)==0 && pose->resource->modelName=="b_mario" && !pose->shape.vertices.empty());
+    }
+    assert(jump.readWord(0x84202000+0x1c0,value) && value==3 && jump.battlePose(0x84202000));
+    assert(jump.readWord(0x84200000+0x1c4,value) && value==0x4b524e5f); // Authored KRN_H_1 is copied, not selected.
+    assert(!jump.battlePose(0x84203000)); // No enemy raw handle aliases Mario's slot0.
     assert(jump.readWord(0x84016ee0,value) && value==1); // Original active ambient record.
     assert(jump.readWord(0x84016f00,value) && value==1); // Separate active background record.
     assert(jump.readWord(0x84016f04,value) && value==0x8c8c0000);
@@ -397,7 +406,9 @@ int main(){
             assert(charged.trioAttack.pendingFunction()==0x800f8e28u);
             const auto engineCursor=charged.trioAttack.requests().size();
             charged.tick(Input{}); // Source audience updates reach the next slot provider.
-            assert(charged.trioAttack.pendingFunction()==0x8004142cu && charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001f);
+            assert(charged.trioAttack.pendingFunction()==0x8003ed2cu && charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001f);
+            const auto* pose=charged.trioAttack.battlePose(0x84201000);assert(pose && pose->word(0x14)==4 && pose->resource->names[4]=="M_R_1" && pose->scalar(0x44)==1 && !pose->shape.vertices.empty()); // Finishing run: original index4, not pack ordinal2.
+            assert(charged.trioAttack.readWord(0x84201204,value) && (value&3)==2); // Source name request consumed; forced path stays active.
             assert(charged.trioAttack.readWord(0x84000ef4,value) && !(value&0x80000000));
             constexpr uint32_t slotWords[3][8]{{0,1,2,1,2,0,3,4},{3,1,0,1,4,2,0,2},{0,1,2,3,4}};
             for(unsigned reel=0;reel<3;++reel) {
