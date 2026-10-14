@@ -1979,3 +1979,11 @@ tex3ds automatic compression. The resulting three-pose pack uses24 textures
 and102 triangles per pose; this step adds no geometry reduction or lighting
 change. Native GPU admission/playback of M_D_1 has not been observed. Original
 Nintendo/Intelligent Systems resources retain no redistribution rights.
+
+## Original horizontal camera shake evidence (2026-10-14)
+
+Read-only US DOL evt_btl_camera_shake_h8012b3d0/f0 and helper8012b4c0/60
+are fully pinned by tools/verify_battle_camera_shake.py. Inspection ELF remains
+in ignored artifacts. No game asset payload, texture scaling, geometry or
+lighting conversion changed. Original source content retains Nintendo/
+Intelligent Systems licensing restrictions; no ISO or extracted asset committed.

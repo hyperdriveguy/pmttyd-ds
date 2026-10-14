@@ -828,3 +828,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Audience window, sound pass and public registry port](battle/AUDIENCE_WINDOW_SOUND_PASS_AND_PUBLIC_REGISTRY_PORT.md): source state updates, persistent registry contract and pending native integration.
 - [Live audience sound/window/throw/display admission](battle/AUDIENCE_LIVE_SOUND_WINDOW_THROW_AND_DISPLAY_ADMISSION.md).
 - [Ending slot/display and public sound owners](battle/ENDING_NEXT_SLOT_DISPLAY_AND_PUBLIC_SOUND_REGISTRY.md).
+
+- [Horizontal battle camera shake request](battle/CAMERA_HORIZONTAL_SHAKE_REQUEST.md)

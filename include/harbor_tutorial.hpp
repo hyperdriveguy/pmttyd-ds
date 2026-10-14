@@ -44,6 +44,7 @@ public:
     MessagePlayback message;std::vector<std::string> messageOrder;
     std::vector<HarborTutorialRequest> requests;
     std::vector<HarborTutorialSoundRequest> soundRequests;
+    std::vector<int32_t> rumbleRequests;
     std::vector<DamageEffect> damageEffects;
     std::vector<DamageNotice> damageNotices;
     std::vector<std::pair<DamageAudienceRequest,int32_t>> damageAudienceRequests;

@@ -20,6 +20,7 @@
 #include "battle_audience_sound.hpp"
 #include "battle_main.hpp"
 #include "battle_hit_code_events.hpp"
+#include "battle_camera_requests.hpp"
 #include "battle_stage_objects.hpp"
 #include "battle_stage_work.hpp"
 #include "battle_action_help.hpp"
@@ -104,6 +105,7 @@ struct TrioAttackRuntime {
     BattlePadWork generalPad,privatePad;BattleTriggerHistory history;
     std::array<DamageUnit,7> damageUnits{};std::array<DamagePart,7> damageParts{};
     std::array<std::array<int8_t,5>,7> defenses{},defenseAttributes{};
+    std::vector<int32_t> rumbleRequests;
     std::vector<DamageEffect> damageEffects;std::vector<std::string> soundRequests;std::vector<DamageNotice> notices;
     ProfessorStory* scene=nullptr;
     uint64_t now=0,sampledAt=UINT64_MAX;uint32_t root=0,pending=0;
@@ -398,7 +400,13 @@ struct TrioAttackRuntime {
         }
         // Camera provider requests retain their original operands in the trace.
         // Native stage camera stays at the existing source-scene adapter view.
-        case 0x8012b994:case 0x8012b3d0:case 0x8012b254:case 0x8012be38:case 0x8012bfd0:case 0x8012bc70:case 0x8012ba14:case 0x8012b8cc:
+        case 0x8012b3d0:{
+            BattleCameraRequestServices s;s.positions=nativeBattlePartPositionServices(vm);s.values=s.positions.unit.values;s.user=this;
+            s.signedWordFloat=[](void* self,int32_t v){auto& r=*static_cast<TrioAttackRuntime*>(self);return r.vm.platform.signedWordFloat(r.vm.platform.user,v);};
+            s.rumbleOn=[](void* self,int32_t channel){static_cast<TrioAttackRuntime*>(self)->rumbleRequests.push_back(channel);};
+            return battleCameraShakeHorizontalEvent(e,s);
+        }
+        case 0x8012b994:case 0x8012b254:case 0x8012be38:case 0x8012bfd0:case 0x8012bc70:case 0x8012ba14:case 0x8012b8cc:
         case 0x80104700:case 0x80104508:return 2; // Retained original camera/SE/voice requests; presentation providers remain open.
         default:break;
         }

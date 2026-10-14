@@ -37,6 +37,7 @@ private:
  std::array<DamageUnit,4> damageUnits{};std::array<DamagePart,4> damageParts{};
  std::array<std::array<int8_t,5>,4> defenses{},defenseAttributes{};
  std::array<std::array<std::string,4>,4> damageSounds{};
+ std::vector<int32_t> rumbleRequests;
  std::vector<DamageEffect> damageEffects;std::vector<DamageNotice> damageNotices;
  std::vector<std::pair<DamageAudienceRequest,int32_t>> damageAudienceRequests;
  bool freshPouch=false;uint32_t nextSoundHandle=1;

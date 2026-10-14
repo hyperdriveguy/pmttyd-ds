@@ -12,6 +12,22 @@ void real(const BattleCameraRequestServices& s,uint32_t a,float v){uint32_t b;st
 void half(const BattleCameraRequestServices& s,uint32_t a,uint16_t v){s.positions.memory.memory.storeHalf(s.positions.memory.memory.user,a,v);}
 bool admitted(const BattleCameraRequestServices& s,uint32_t b,int32_t priority){return priority>=int32_t(word(s,b+0x275c));}
 }
+int32_t battleCameraShakeHorizontalEvent(EventEntry& e,const BattleCameraRequestServices& s){
+ const auto args=e.arguments;assert(s.values.resolve && s.signedWordFloat);
+ auto resolve=[&](uint32_t token){return s.values.resolve(s.values.user,e,int32_t(token));};
+ const auto priority=resolve(word(s,args));
+ const auto x=resolve(word(s,args+4));const auto rawY=word(s,args+8);
+ const auto amplitudeX=s.signedWordFloat(s.user,x);
+ const auto y=resolve(rawY);const auto rawDuration=word(s,args+12);
+ const auto amplitudeY=s.signedWordFloat(s.user,y);
+ const auto duration=resolve(rawDuration),cycles=resolve(word(s,args+16));
+ const auto b=battle(s);if(!admitted(s,b,priority))return 2;
+ word(s,b+0x2754,word(s,b+0x2754)|2);
+ real(s,b+0x2848,amplitudeX);real(s,b+0x284c,amplitudeY);
+ word(s,b+0x282c,uint32_t(cycles));word(s,b+0x2834,uint32_t(duration));word(s,b+0x283c,uint32_t(duration));
+ if(!(word(s,b+0x2754)&0x40)){assert(s.rumbleOn);s.rumbleOn(s.user,0);}
+ return 2;
+}
 int32_t battleCameraModeEvent(EventEntry& e,const BattleCameraRequestServices& s){const auto priority=value(s,e,0),mode=value(s,e,1);const auto b=battle(s);if(!admitted(s,b,priority))return 2;
  word(s,b+0x2760,uint32_t(mode));real(s,b+0x2778,0);half(s,b+0x277c,1);half(s,b+0x277e,1);word(s,b+0x2758,0);
  // Each source internal axis request has its own priority0 admission gate.

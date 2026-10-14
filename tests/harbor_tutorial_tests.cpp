@@ -30,7 +30,10 @@ void ordinaryCrumpImpact(){
  assert(scene.damageAudienceRequests.size()==1 && scene.damageAudienceRequests[0].first==DamageAudienceRequest::GuardBad);
  assert(scene.damageNotices.size()==3 && scene.damageNotices[0].kind==DamageNoticeKind::ActionCount && scene.damageNotices[1].kind==DamageNoticeKind::ActionPoint && scene.damageNotices[2].kind==DamageNoticeKind::MarioBigDamage);
  for(unsigned n=0;n<400 && !scene.pendingService && (scene.attackActive || scene.damageActive);++n)scene.tick((++tick)*1000/60,0,&noInput);
- assert(scene.pendingService==0x8012b3d0 && scene.actors[1].pose=="M_D_1" && scene.damageActive && scene.attackActive);
+ assert(!scene.pendingService && !scene.damageActive && !scene.attackActive && scene.actors[1].pose=="M_S_1");
+ assert(word(0x84101290)!=0 && word(0x84102290)!=0);
+ bool shakeRequest=false;for(const auto& request:scene.requests)if(request.function==0x8012b3d0){assert(request.rawOperands.size()==5);assert(word(0x84002834)==uint32_t(request.rawOperands[3]) && word(0x8400283c)==uint32_t(request.rawOperands[3]) && word(0x8400282c)==uint32_t(request.rawOperands[4]));shakeRequest=true;}assert(shakeRequest && (word(0x84002754)&2));
+ assert(!scene.rumbleRequests.empty());for(auto channel:scene.rumbleRequests)assert(channel==0);
  bool damageSound=false;for(const auto& request:scene.soundRequests)if(request.owner==1 && request.name=="SFX_MARIO_DAMAGE1"){assert(request.key && request.handle);damageSound=true;}assert(damageSound);
  assert(!scene.failed && scene.actors[1].hp==6 && scene.result==0);
 
