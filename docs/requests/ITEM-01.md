@@ -40,4 +40,13 @@ and field item-use contract. No lock reserved.
 
 ## Answers and delivery notes (append-only history)
 
-No delivery yet.
+Delivered [pouch item dispatch](../behavior/battle/POUCH_GET_ITEM_DISPATCH.md)
+(2026-10-12, no lock, static artifacts only): central receive entry with
+verified type-id routing (coins cap 999, capped global counter, HP-ish and
+flag-byte leaves, badge subroutine for 240–338, key insert over 121 slots),
+slot bases +0xA0/+0x192 and 10/20 capacity cross-checked against the snapshot
+`PouchData` layout, single shared pouch pointer (no separate battle pouch at
+this layer), and 1/0 store/miss returns with memmove compaction. Effects,
+consumption, save format, shop/chest/pickup callers, and the 0x800858fc +
+0x800d4ed4 + 0x801410e8 callees remain open. No native/test/CMake/asset
+change by this answer.
