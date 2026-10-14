@@ -1317,3 +1317,9 @@ add_executable(trouble_quest_presentation_tests tests/trouble_quest_presentation
 target_link_libraries(trouble_quest_presentation_tests PRIVATE ttyd_core)
 add_test(NAME trouble_quest_presentation COMMAND trouble_quest_presentation_tests)
 set_tests_properties(trouble_quest_presentation PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Complete original circle/bubble consumers with linked GX/font providers.
+target_sources(ttyd_core PRIVATE source/battle/battle_class_raster.cpp)
+add_executable(battle_class_raster_tests tests/battle_class_raster_tests.cpp)
+target_link_libraries(battle_class_raster_tests PRIVATE ttyd_core)
+add_test(NAME battle_class_raster COMMAND battle_class_raster_tests)

@@ -77,3 +77,7 @@ presentation owner. The
 [two-screen requirement](../display/NATIVE_BATTLE_HUD_AND_SUBMENU.md)
 continues to place the original menu on the upper battle scene and audience
 continuation on the lower screen.
+
+The circle/bubble linked consumer bodies and private original surfaces now have
+[their own complete local contract](CLASS_CIRCLE_AND_SPEECH_BUBBLE_DRAW.md).
+Native GX/SDK/icon/font providers and renderer activation remain open.

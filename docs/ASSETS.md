@@ -375,3 +375,24 @@ Intelligent Systems resources have no redistribution rights. [Source hashes,
 clock and geometry](behavior/display/TROUBLE_CENTER_RETAINED_2D_ICONS_AND_LOCAL_CLOCK.md).
 Original menu cue samples are documented in the [audio contract](behavior/audio/TROUBLE_CENTER_MENU_SFX_BINDINGS.md);
 no new PCM pack or native audio admission is included in this step.
+
+## 2026-10-14 — Original class circle and speech-bubble surfaces
+
+Read-only `/home/carson/games/roms/G8ME01.iso` resource
+`battle/common/battle_common.tpl` (SHA256
+`8eb685317056f42b3ef73138eaad85d16fa4943d830b44a149f09971a5959bb1`)
+provides original palette indices0(40x40 circle quadrant) and1(128x80 bubble).
+The original battleMenuDispInit pathname and DrawMainIconCircle/Hukidasi indices
+are pinned by tools/verify_battle_class_raster.py. The separate
+battle/win/menuwin.tpl was inspected privately and is not selected.
+
+`tools/battle_class_surface_assets.py` emits ignored
+`romfs/battle-class-surfaces.{bin,t3x,json}` and original decoded images/atlas
+under ignored `local-assets/battle-class-ui/`. Packing uses256x128 RGBA8,
+131072 texture bytes,2px transparent padding and no resampling. The existing
+class icon atlas remains separate. Geometry/UV quadrant mirroring, source
+shadow/dimming and label scaling are consumer behavior, not painted into the
+textures. No generated art or rewritten labels were added. Nintendo/Intelligent
+Systems assets have no granted redistribution rights; do not commit or distribute
+original ISO, extracted images or compiled packs. GPU texture binding remains a
+native renderer task; imported assets alone do not prove visible menu parity.
