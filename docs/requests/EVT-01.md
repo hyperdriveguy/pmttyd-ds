@@ -3829,3 +3829,24 @@ dispCalcZ8001086c. The recovered [depth contract](../behavior/display/BATTLE_POS
 requires actual battle-camera framing and view/projection writers, homogeneous
 divide and source priority math. Native fixed renderer framing is not original
 camera4 ownership. Parent request and full prologue remain open.
+
+
+### 2026-10-14 — Native camera requests, retained controller and depth math
+
+Camera callbacks now execute recovered packed mode/speed/set-zoom/add-zoom/
+homing/offset/MoveTo/Y-freeze writes instead of returning2 as placeholders.
+Ending08 executes source speed→mode17/18→offset order. Exact camera Init,
+default14..16, mode3 timeline and victory17/18 have a native frame owner,
+called once per native time after battle control and before event execution.
+Source home positions, counter/interpolation order, speed277c-only restore,
+axis freezes and baseline fields are retained. Unsupported mode/shake history
+is tracked and is not reset at victory. The SDK view/homogeneous depth math
+is implemented on explicit supplied matrices.
+[Native scope](../behavior/camera/NATIVE_BATTLE_CAMERA_FRAME_OWNER.md).
+
+Actual camera4 entry/lens/roll/translation/projection history, remaining modes
+and shakes still need providers; the trio continues to hold at8001086c. Source
+queue admission and distinct immediate/deferred continuations are in the new
+[queue contract](../behavior/display/ORDINARY_BATTLE_DISPLAY_QUEUE_ADMISSION.md).
+No original cadence, full camera restoration, queue callback or field return
+claim; EVT-01 and prologue goals remain open.

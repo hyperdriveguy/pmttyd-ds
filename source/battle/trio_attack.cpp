@@ -24,6 +24,7 @@
 #include "battle_attack_registration.hpp"
 #include "battle_status_window.hpp"
 #include "battle_camera_requests.hpp"
+#include "battle_camera_frame.hpp"
 #include "battle_stage_objects.hpp"
 #include "battle_stage_work.hpp"
 #include "battle_action_help.hpp"
@@ -134,6 +135,9 @@ struct TrioAttackRuntime {
     std::shared_ptr<ProloguePouch> entryPouch;
     std::array<PartnerBattleSnapshot,7> partySnapshots{};
     BattlePosePool poses;
+    BattleCameraFrame cameraFrame;
+    uint64_t cameraClockAt=UINT64_MAX;
+    bool cameraHistoryComplete=true;
     std::optional<TrioPoseDrawRequest> poseDraw;
     std::map<uint32_t,int32_t> partPoseHandles;
     std::array<TrioRewardIcon,19> rewardIcons{};
@@ -458,15 +462,23 @@ struct TrioAttackRuntime {
             ActionValueServices values;values.user=&e;values.resolve=[](void*,int32_t v){return v;};
             startActionCommand(view,value(e,0),values);word(Battle+0x1c9c,state);return 2;
         }
-        // Camera provider requests retain their original operands in the trace.
-        // Native stage camera stays at the existing source-scene adapter view.
-        case 0x8012b3d0:{
+        // Requests mutate the actual packed camera owner; Main remains a
+        // separate frame service rather than an event-side smoothing step.
+        case 0x8012b3d0:case 0x8012bfd0:case 0x8012b8cc:case 0x8012ba14:case 0x8012be38:case 0x8012bc70:case 0x8012b108:case 0x8012b670:case 0x8012b994:case 0x8012b254:{
             BattleCameraRequestServices s;s.positions=nativeBattlePartPositionServices(vm);s.values=s.positions.unit.values;s.user=this;
             s.signedWordFloat=[](void* self,int32_t v){auto& r=*static_cast<TrioAttackRuntime*>(self);return r.vm.platform.signedWordFloat(r.vm.platform.user,v);};
             s.rumbleOn=[](void* self,int32_t channel){static_cast<TrioAttackRuntime*>(self)->rumbleRequests.push_back(channel);};
+            if(fn==0x8012bfd0)return battleCameraModeEvent(e,s);
+            if(fn==0x8012b8cc)return battleCameraSpeedEvent(e,s);
+            if(fn==0x8012ba14)return battleCameraZoomEvent(e,s);
+            if(fn==0x8012be38)return battleCameraHomingEvent(e,s);
+            if(fn==0x8012bc70)return battleCameraHomingPartsEvent(e,s);
+            if(fn==0x8012b108)return battleCameraOffsetEvent(e,s);
+            if(fn==0x8012b670)return battleCameraMoveToEvent(e,cameraFrame,s);
+            if(fn==0x8012b994)return battleCameraAddZoomEvent(e,s);
+            if(fn==0x8012b254)return battleCameraAxisEvent(e,8,s);
             return battleCameraShakeHorizontalEvent(e,s);
         }
-        case 0x8012b994:case 0x8012b254:case 0x8012be38:case 0x8012bfd0:case 0x8012bc70:case 0x8012ba14:case 0x8012b8cc:
         case 0x80104700:case 0x80104508:return 2; // Retained original camera/SE/voice requests; presentation providers remain open.
         default:break;
         }
@@ -512,6 +524,7 @@ struct TrioAttackRuntime {
         half(Battle,0);word(Battle+0xf14,0x0300004c);word(Battle+0xf18,0x04000002);word(Battle+0xf1c,0x05000009);word(Battle+0xf20,0x06000007);
         word(Battle+0x2738,Work);word(Work+0xc,Work+0x100);word(Work+0x118,reactionGroup);
         word(0x8041eb90,Battle);word(0x8041eb00,0x85000000);byte(Battle+0xa,1);byte(Battle+0x12,255);
+        BattleCameraRequestServices cameraInit;cameraInit.positions=nativeBattlePartPositionServices(vm);initializeBattleCamera(Battle,cameraInit);
         if(!initializePackedSetup4AudienceParameters(audienceSetupConfig,Work+0x100,audienceInitServices()))return false;
         word(Battle+0x420,menu.actor);word(Battle+0x424,6);word(Battle+0x1c5c,0);word(Battle+0x171c+0x4b0,0);word(Battle+0x171c+0x80,menu.attack->weapon);
         for(unsigned i=0;i<7;++i){const auto snapshot=Battle+0x162a0+44*i;partySnapshots[i].value=real(0x80422174);real(snapshot,partySnapshots[i].value);word(snapshot+0x24,0);for(unsigned j=0;j<30;++j)byte(snapshot+4+j,0);half(snapshot+0x28,0);half(snapshot+0x2a,0);}
@@ -858,7 +871,11 @@ struct TrioAttackRuntime {
             if(half(end+8)>100)half(end+8,100);
             half(end+0xa,half(end+8));word(Battle+0xef8,word(Battle+0xef8)&~1u);
             if(half(end+8)>0)initializeExpIcons(end);
-            word(end+4,120);endingRequest(0x8012b958,{0,2});endingRequest(0x8012c028,{0,(word(Battle+0xef4)&0x100)?18:17});endingRequest(0x8012b198,{0,0,0,0});
+            word(end+4,120);BattleCameraRequestServices camera;camera.positions=nativeBattlePartPositionServices(vm);
+            endingRequest(0x8012b958,{0,2});setBattleCameraSpeed(Battle,0,2,camera);
+            const int32_t cameraMode=(word(Battle+0xef4)&0x100)?18:17;
+            endingRequest(0x8012c028,{0,cameraMode});setBattleCameraMode(Battle,0,cameraMode,camera);
+            endingRequest(0x8012b198,{0,0,0,0});setBattleCameraOffset(Battle,0,0,0,0,camera);
             word(Battle+0xf24,0x07000009);state=0x07000009;
             endingRequest(0x801a0aec,{60,60});if(!endingClap())return;endingRequest(0x801a08c0);
             endingRequest(0x800daefc,{0x400});endingRequest(0x800db7a0,{1,int32_t(party && byte(party+0x135)?0x8030ea98:0x8030ea88)}); // Original WIN2/WIN1 keys; complete voice/camera/crowd routing remains an adapter.
@@ -1340,6 +1357,13 @@ struct TrioAttackRuntime {
         pending=0;
         (void)packedBattleMainWrapper(services);
     }
+    void updateCamera(uint64_t time) {
+        if(cameraClockAt==time)return;cameraClockAt=time;
+        BattleCameraFrameServices camera;camera.requests.positions=nativeBattlePartPositionServices(vm);camera.user=this;
+        camera.interpolate=[](void*,int32_t curve,int32_t step,int32_t duration,float start,float end){return cameraInterpolation(curve,step,duration,start,end);};
+        camera.rumbleOff=[](void*,int32_t){}; // New2DS XL has no rumble motor; native hardware adapter.
+        if(!updateBattleCameraFrame(Battle,cameraFrame,camera))cameraHistoryComplete=false;
+    }
     void tick(uint64_t time,ProfessorStory& s,uint32_t triggers,const BattlePadSample* physical){
         scene=&s;now=time;
         if(pending==0x800f8e28 && sampledAt!=time) {
@@ -1347,7 +1371,7 @@ struct TrioAttackRuntime {
             if(physical)sample=*physical;else {sample.snapshot.buttons=uint16_t(triggers);sample.pressed=triggers;}
             vm.gp.timestamp=time*eventClockRate(243000000);completionPass(sample);
         }
-        if(!pending){if(sampledAt!=time){sampledAt=time;checkBrokenUnits();BattlePadSample sample;if(physical)sample=*physical;else {sample.snapshot.buttons=uint16_t(triggers);sample.pressed=triggers;}readPad(Battle+0xf2c,generalPad);generalPad.update(sample);writePad(Battle+0xf2c,generalPad);history=generalPad.triggers;vm.gp.timestamp=time*eventClockRate(243000000);if(word(Battle+4)==3)ending();else if(!done){if(word(Battle+0xf20)<0x06000007)enemyAction();else postAction();}else handoff();readPad(Battle+0x1d1c,privatePad);privatePad.update(sample);writePad(Battle+0x1d1c,privatePad);actionManager();if(!updateStageObjects() && !pending)pending=0x80149798;}vm.runManager();if(!pending && gaugeClockAt!=time){gaugeClockAt=time;BattleHpGaugeServices gauge;gauge.actors=nativeBattleActorServices(vm);gauge.interpolate=[](void*,int32_t mode,int32_t step,int32_t duration,float start,float end)->std::optional<float>{return battleHpGaugeCurve(mode,step,duration,start,end);};for(int32_t id=0;id<64;++id){const auto u=battleRegistryUnit(word(0x8041eb90),id,gauge.actors);if(u)packedBattleHpGaugeMain(u,gauge);}}if(hasBrokenUnit())done=false;}iconClock(time);if(pointGetClockAt!=time){pointGetClockAt=time;pointGet.tick();}if(endingFadeClockAt!=time){endingFadeClockAt=time;endingFade.tick(60);}stageBackground.recalculate();stageForeground.recalculate();publish(s);
+        if(!pending){if(sampledAt!=time){sampledAt=time;checkBrokenUnits();BattlePadSample sample;if(physical)sample=*physical;else {sample.snapshot.buttons=uint16_t(triggers);sample.pressed=triggers;}readPad(Battle+0xf2c,generalPad);generalPad.update(sample);writePad(Battle+0xf2c,generalPad);history=generalPad.triggers;vm.gp.timestamp=time*eventClockRate(243000000);if(word(Battle+4)==3)ending();else if(!done){if(word(Battle+0xf20)<0x06000007)enemyAction();else postAction();}else handoff();readPad(Battle+0x1d1c,privatePad);privatePad.update(sample);writePad(Battle+0x1d1c,privatePad);actionManager();if(!updateStageObjects() && !pending)pending=0x80149798;}updateCamera(time);vm.runManager();if(!pending && gaugeClockAt!=time){gaugeClockAt=time;BattleHpGaugeServices gauge;gauge.actors=nativeBattleActorServices(vm);gauge.interpolate=[](void*,int32_t mode,int32_t step,int32_t duration,float start,float end)->std::optional<float>{return battleHpGaugeCurve(mode,step,duration,start,end);};for(int32_t id=0;id<64;++id){const auto u=battleRegistryUnit(word(0x8041eb90),id,gauge.actors);if(u)packedBattleHpGaugeMain(u,gauge);}}if(hasBrokenUnit())done=false;}iconClock(time);if(pointGetClockAt!=time){pointGetClockAt=time;pointGet.tick();}if(endingFadeClockAt!=time){endingFadeClockAt=time;endingFade.tick(60);}stageBackground.recalculate();stageForeground.recalculate();publish(s);
     }
     void publish(ProfessorStory& s){for(unsigned id=1;id<7;++id){const uint32_t u=word(Battle+0x20+4*id);if(!u){s.actors[visual[id]].hidden=true;continue;}for(unsigned axis=0;axis<3;++axis)s.actors[visual[id]].position[axis]=real(u+0x3c+4*axis);s.actors[visual[id]].yaw=byte(u+0x189)==1?90:270;s.actors[visual[id]].battleFlags=word(u+0x1c);for(unsigned axis=0;axis<3;++axis){s.actors[visual[id]].battleRotation[axis]=real(u+0x60+4*axis)+real(u+0x6c+4*axis);s.actors[visual[id]].battlePivot[axis]=real(u+0x78+4*axis);s.actors[visual[id]].battleScale[axis]=(axis<2?real(u+0x114):1.f)*real(u+0x9c+4*axis)*real(u+0x90+4*axis);s.actors[visual[id]].battleDisplayOffset[axis]=real(u+0x54+4*axis);}}}
 };
@@ -1364,6 +1388,8 @@ const std::vector<TrioAudienceAudioRequest>& TrioAttack::audienceAudioRequests()
 bool TrioAttack::readWord(uint32_t a,uint32_t& v)const{return runtime_ && runtime_->vm.memory.readWord(a,v);}
 const BattlePosePool* TrioAttack::battlePosePool()const{return runtime_?&runtime_->poses:nullptr;}
 std::optional<TrioPoseDrawRequest> TrioAttack::poseDrawRequest()const{return runtime_?runtime_->poseDraw:std::nullopt;}
+const BattleCameraFrame* TrioAttack::cameraFrameState()const{return runtime_?&runtime_->cameraFrame:nullptr;}
+bool TrioAttack::cameraHistoryComplete()const{return runtime_ && runtime_->cameraHistoryComplete;}
 const BattlePose* TrioAttack::battlePose(uint32_t part)const{
     if(!runtime_)return nullptr;
     const auto binding=runtime_->partPoseHandles.find(part);

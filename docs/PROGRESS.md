@@ -805,3 +805,28 @@ depth/queue callbacks, remaining pose factories/parts and real ordered battle
 teardown/result/field return. General linked/paper/facing, exceptional numeric
 domains, original libm bit parity and hardware performance remain unverified.
 The full original-fidelity playable prologue goal stays active.
+
+
+## 2026-10-14 — Original battle camera request and frame ownership
+
+Native camera callbacks now apply original packed writes, including homing,
+zoom, offset, MoveTo and Y freezes. Victory requests execute in source order.
+A retained camera owner implements Init/default14..16, mode3 timeline and
+victory17/18 using actual unit home positions, source interpolation order and
+axis/delta history. Camera updates occur once per native time before events;
+unsupported prior mode/shake history remains recorded. Explicit-matrix SDK
+view/project/depth helpers now preserve homogeneous divide and source clamps.
+[Scope](behavior/camera/NATIVE_BATTLE_CAMERA_FRAME_OWNER.md).
+
+Final isolated make test passed238/238 C++ and142/142 Python checks and native
+make all passed. Earlier shared builds passed240/240 C++ and142/142 Python
+checks plus native compilation before the final event-wrapper additions.
+Exact logs/manifests and limits are in the
+[archive](PROGRESS_ARCHIVE.md#2026-10-14--original-battle-camera-request-and-frame-ownership).
+No Azahar/hardware run for this step.
+
+Next: original camera4 entry/lens/matrix lifecycle, remaining controller modes
+and shakes, real display queue/part callbacks, then ordered battle teardown
+and field return. The trio still holds at dispCalcZ8001086c; fixed renderer
+framing has not been relabeled as original camera4. Full prologue parity
+remains unfinished and the goal stays active.

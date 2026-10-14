@@ -13010,3 +13010,70 @@ No ISO writes, asset conversion change, user emulator profile/save edits or
 physical hardware test. Next: actual battle-camera framing/matrix ownership,
 homogeneous depth/queue callbacks, remaining factories/parts and real ordered
 battle teardown/result/field return. Full prologue parity is incomplete.
+
+
+## 2026-10-14 — Original battle camera request and frame ownership
+
+Replaced camera callback placeholders with actual packed request services for
+mode/speed/zoom/homing plus offset/MoveTo/add-zoom/Y-axis callbacks. Native
+ending08 now executes speed2→mode17/18→zero-offset writes, preserving mode
+reset effects and offset flag20. Leaf services expose direct request writes
+without synthesizing events; event wrapper coercion/admission stays separate.
+No camera request calls Main or advances a smoothing frame.
+
+Exact Init clears only2754..2857, reads native Work+8 type, writes original
+mode/default fields and copies original offset vector802f0240 from the existing
+DOL bank. The native frame owner implements supported14/15/16/3/17/18 and the
+source unsigned>20 no-handler tail. Victory uses Mario/party HOME coordinates,
+not current positions; modes17/18 preserve old vectors and speed1 divide5
+updates. Default14 reaches the real mode3 capture/timeline with step1 first;
+mode3 samples six axes before forcing speed3 and restores only277c. Source
+axis order, mirrored relative offsets, X bounds, EyeZ cap, old freezes and
+baseline/delta publication are implemented. Unsupported modes/shakes keep
+actual missing ownership recorded; history is not reinitialized at victory.
+New2DS XL rumble-off is a declared hardware adapter with no physical motor.
+
+Native camera callback order is after battle-controller updates and before
+event-manager execution, once per native time. This is an explicit simulation
+cadence adapter, not measured original frequency. Source setup/global camera
+entry/lens/roll/translation/projection history remains independent and open.
+The fixed renderer is unchanged. The source camera frame accessor and support
+history flag are not proof of original camera4 restoration.
+
+SDK depth helpers implement original row grouping, homogeneous reciprocal
+then multiply, source FMA5000 and ordered0/10000 clamps followed by negation.
+The bounded finite LookAt/perspective constructor consumes supplied state; it
+is a numeric adapter, not a producer of missing source framing history.
+Actual camera4 matrices and queued callback ownership remain the depth frontier.
+New source contracts recover Init/default/victory, mode3, add-zoom/Y-axis and
+queue registration versus immediate/deferred calls. EVT-01 has breadcrumbs.
+
+Validation:
+
+- Earlier shared make test runs each passed240/240 C++ and142/142 Python,
+  battle-camera-frame-tests.log and battle-camera-frame-tests-final.log.
+  Native make all BUILD=build-camera-frame TARGET=ttyd-camera-frame -j4 passed,
+  battle-camera-frame-native.log. These precede final MoveTo/offset/add-zoom/
+  Y-wrapper and request regression refinements; no stale result proves them.
+- Final coherent artifacts/battle-camera-frame-source snapshot is base
+  ecb4226c463e50f36bfd07cff48837dd0ff1495c plus12 owned code/test files and
+  exact CMake registrations. make test passed238/238 C++ and142/142 Python,
+  battle-camera-frame-isolated-tests.log. Full isolated make all with
+  -o assets-ready and the same BUILD/TARGET passed,
+  battle-camera-frame-isolated-native.log.
+- Tests exercise exact Init extent, home/current distinction, recurrence,
+  freezes, default14→3 chronology, six-axis step order, speed restoration,
+  source request gates/coercions and actual trio ending mode17 publication.
+  Depth tests exercise homogeneous divide, normal source-space projection,
+  clamps/negative zero and ordered NaN handling. SDK bit parity and full camera
+  history are not established by those tests.
+- Immutable isolated ELF/3DSX plus binary/source SHA256 manifests are under
+  artifacts/battle-camera-frame-validated. Scoped whitespace and documentation
+  links1152 files/0 broken links passed. Original source hashes/anchors are in
+  the dedicated camera/display contracts.
+
+No ISO writes, new asset conversion, user emulator profile/save changes or
+Azahar/hardware run. Next: complete camera4 entry/lens/matrix and remaining
+controller/shake ownership, real queued part draw callbacks, then battle
+teardown/result/field return. The native trio still holds at dispCalcZ8001086c;
+full original-fidelity prologue remains incomplete.

@@ -1175,3 +1175,13 @@ add_test(NAME battle_action_events COMMAND battle_action_events_tests)
 add_executable(field_item_state_tests tests/field_item_state_tests.cpp)
 target_link_libraries(field_item_state_tests PRIVATE ttyd_core)
 add_test(NAME field_item_state COMMAND field_item_state_tests)
+
+target_sources(ttyd_core PRIVATE source/display/camera_depth.cpp)
+add_executable(camera_depth_tests tests/camera_depth_tests.cpp)
+target_link_libraries(camera_depth_tests PRIVATE ttyd_core)
+add_test(NAME camera_depth COMMAND camera_depth_tests)
+
+target_sources(ttyd_core PRIVATE source/battle/battle_camera_frame.cpp)
+add_executable(battle_camera_frame_tests tests/battle_camera_frame_tests.cpp)
+target_link_libraries(battle_camera_frame_tests PRIVATE ttyd_core)
+add_test(NAME battle_camera_frame COMMAND battle_camera_frame_tests)
