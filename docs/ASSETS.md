@@ -2010,3 +2010,12 @@ PCM are not committed or distributed. Complete ignored-library conversion uses
 `make audio-assets`; native package rebuild converts its selected source tracks.
 This correction does not itself add native item-get playback or measure original
 stream prefetch/IRQ/device timing; backend vacancy must come from stream ownership.
+
+## Native attack selection source evidence (2026-10-14)
+
+The new shared attack selector/classifier/data lookup uses the original DOL
+tables and source scripts already present in private packs. Existing read-only
+ISO verifier tools/verify_battle_attack_selection.py pins the full selector/
+classifier and called leaves. No additional game payload or conversion changed;
+Nintendo/Intelligent Systems licensing restrictions and ignored private asset
+paths remain unchanged. Source inspection ELF stays in ignored artifacts.

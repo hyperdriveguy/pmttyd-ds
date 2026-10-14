@@ -56,7 +56,10 @@ int main(){
     }
     ProfessorStory scene;assert(scene.beginTrioBattleIntro(0));
     TrioBattleCommands menu;assert(menu.begin(scene));menu.input(0x100,0);menu.chooseTarget(2);menu.input(0x100,0);
-    TrioAttack jump;assert(jump.begin(menu,scene,10));jump.tick(17,scene);
+    TrioAttack jump;assert(jump.begin(menu,scene,10));
+    uint32_t selectedRecord=0;assert(jump.readWord(0x84016f38,selectedRecord) && (selectedRecord>>24)==1);
+    assert(jump.readWord(0x841012a0,selectedRecord) && selectedRecord==0x80355cf0); // Selection precedes source event execution.
+    jump.tick(17,scene);
     uint32_t value=0;assert(jump.readWord(0x8410116c,value) && value==20);
     assert(jump.readWord(0x84016ee0,value) && value==1); // Original active ambient record.
     assert(jump.readWord(0x84016f00,value) && value==1); // Separate active background record.
