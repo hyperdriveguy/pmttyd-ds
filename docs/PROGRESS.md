@@ -1,3 +1,43 @@
+## 2026-10-14 — Original class-ring draw lifecycle and icon routing
+
+Commit26a1f8b8 implements complete local DrawMainMenu801160e4/0xb94 and
+DrawMainIcon80119abc/0x1c0 bodies with host-testable typed providers. Entry,
+stable selection, both rotation directions, wrap bookkeeping, resume translation
+and growth update original work arrays and readiness bytes. Source arithmetic
+uses the retained angle table, wrap32 integer products/signed division and
+float/fused operations. Icon routing resolves the actual acting unit/cursor,
+sorts positions through the original descending swap loop, checks visibility
+and routes actual flag2 to speech-bubble rather than circle providers. Unwritten
+source scratch values are explicit optionals; no invented transforms or count
+clamping is supplied. See
+[the draw contract](behavior/battle/ACT_SELECT_RING_DRAW_AND_ICON_ROUTING.md).
+
+Validation: final make test in artifacts/tutorial-class-draw-7stb2j28 passes
+259/259 C++ and145/145 Python checks
+(artifacts/tutorial-class-draw-test-final.log). Snapshot base is
+996ae10930d2f72124981347fa9aab0b4363860e plus this scoped increment; it preserves
+committed concurrent fixes and excludes unrelated working edits. Final native
+make all -o assets-ready BUILD=build-class-draw-review
+TARGET=ttyd-class-draw-review passes using existing private converted packs
+(artifacts/tutorial-class-draw-native-final.log), producing452443020-byte3DSX.
+The read-only source verifier passes4 body hashes,3 data spans and r2 base pin
+(artifacts/tutorial-class-draw-source.log). Earlier initial build also passed;
+final run includes added sorting/routing cases and final source read ordering.
+No emulator/visual run or new original asset extraction was performed.
+
+Limitations/next: these are complete local controllers with linked providers,
+not complete native rendering. Camera/projection, GetRingCenter/GetRingOffset,
+SDK matrix/interpolation, DrawMainIconCircle/DrawMainIconHukidasi raster, party
+button and pinch-mark bindings retain their own frontiers. The explicit native
+classMenuPresented acknowledgment remains until a full presentation owner
+invokes this lifecycle once per simulation tick. Bind original circle/bubble
+resources and actual upper-screen rendering next, then normal tutorial command
+and turn scheduling. Lower-screen audience scene continuation and optional
+physical-equivalent stop-throw interaction remain required by both user
+screenshots and the rough two-screen mockup. Successful Jump voice, full weapon
+UI, audience events and ordinary battle scheduling are still incomplete.
+The goal remains active; neither tutorial nor full remake completion is claimed.
+
 ## 2026-10-14 — Book runes/picture source cinematic crop
 
 Completed the active inside-cover/page-text goal. User clarified the printed
