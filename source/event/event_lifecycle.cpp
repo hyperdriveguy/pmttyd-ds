@@ -35,6 +35,7 @@ void deleteEvent(EventEntry& e,const EventCreationServices& s) {
     if(e.waitingParent) {
         auto& parent=*e.waitingParent;parent.flags&=~uint8_t(0x10);parent.waitingChild=nullptr;parent.unresolvedLinkMask&=~uint8_t(2);copyBack(parent,e);
     }
+    if(s.retiring)s.retiring(s.user,e);
     e.flags&=~uint8_t(1);e={};--runtime(s).allocationCount;
 }
 void deleteEventId(uint32_t id,const EventCreationServices& s) {

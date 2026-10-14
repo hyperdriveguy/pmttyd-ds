@@ -13,6 +13,9 @@ struct EventCreationServices {
     EventRuntimeGlobals* (*runtime)(void*)=nullptr;
     uint32_t (*word)(void*,uint32_t scriptAddress)=nullptr;
     void (*stopAll)(void*,uint32_t typeMask)=nullptr;
+    // Optional read-only native observation after recursive deletion/copy-back,
+    // before storage reset. This is not an original world callback.
+    void (*retiring)(void*,const EventEntry&)=nullptr;
 };
 void scanEventLabels(EventEntry&,const EventCreationServices&);
 void checkEventEntryRun(const EventCreationServices&);

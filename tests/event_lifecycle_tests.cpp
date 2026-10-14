@@ -12,6 +12,7 @@ struct Fixture {
     EventContext field{8,entries.data(),0},other{8,battle.data(),0};
     EventRuntimeGlobals globals{8,100,.25f,0};EventSchedule schedule;
     std::map<uint32_t,uint32_t> memory{{0x1000,command(1,3)},{0x1004,8},{0x1008,command(0,1)},{0x100c,0}};
+    std::vector<std::pair<uint32_t,int32_t>> retired;bool observe=false;
     std::vector<int> clears;int captures=0,runtimeReads=0;bool observeRestart=false;
     Fixture() {for(int i=0;i<8;++i) {entries[i].flags=1;entries[i].id=100+i;entries[i].locals[0]=i;}}
     EventCreationServices services() {
@@ -27,6 +28,7 @@ struct Fixture {
             return &f.globals;
         };
         s.word=[](void* p,uint32_t address) {auto& f=*static_cast<Fixture*>(p);assert(f.memory.count(address));return f.memory[address];};
+        if(observe)s.retiring=[](void* p,const EventEntry& e){auto& f=*static_cast<Fixture*>(p);assert(e.flags&1);if(e.waitingParent)assert(e.waitingParent->locals==e.locals && !(e.waitingParent->flags&0x10));f.retired.push_back({e.id,e.locals[0]});};
         s.stopAll=[](void* p,uint32_t mask) {auto& f=*static_cast<Fixture*>(p);for(auto& e:f.entries)if((e.flags&1)&&(e.type&mask))e.flags|=2;};return s;
     }
 };
@@ -34,13 +36,14 @@ struct Fixture {
 int main() {
     Fixture inactive;inactive.entries[0].flags=0x92;inactive.entries[0].locals[0]=77;inactive.entries[0].waitingChild=&inactive.entries[1];
     deleteEvent(inactive.entries[0],inactive.services());assert(inactive.entries[0].flags==0x92 && inactive.entries[0].locals[0]==77 && inactive.entries[1].flags==1 && inactive.globals.allocationCount==8 && inactive.runtimeReads==0 && inactive.captures==1);
-    Fixture tree;auto& root=tree.entries[0];auto& child=tree.entries[3];auto& grandchild=tree.entries[7];
+    Fixture tree;tree.observe=true;auto& root=tree.entries[0];auto& child=tree.entries[3];auto& grandchild=tree.entries[7];
     root.waitingChild=&child;root.flags|=0x10;child.waitingParent=&root;child.waitingChild=&grandchild;child.flags|=0x10;grandchild.waitingParent=&child;
     tree.entries[1].brotherOwner=&root;tree.entries[6].brotherOwner=&tree.entries[1];
     tree.entries[2].brotherOwner=&root; // Ascending live scan,regardless of priority/ID.
     tree.entries[4].locals[0]=444; // Independent inline-style entry: no owner link.
     deleteEvent(root,tree.services());
     assert(tree.clears==std::vector<int>({7,3,6,1,2,0}) && tree.globals.allocationCount==2);
+    assert((tree.retired==std::vector<std::pair<uint32_t,int32_t>>{{107,7},{103,7},{106,6},{101,1},{102,2},{100,7}}));
     assert(tree.entries[4].flags==1 && tree.entries[4].locals[0]==444 && tree.entries[5].flags==1);
     Fixture copy;auto& parent=copy.entries[0];auto& c=copy.entries[1];auto& gc=copy.entries[2];
     parent.flags=0x93;parent.waitingChild=&copy.entries[7];parent.userWork=55;parent.owner=66;parent.timescale=3;parent.id=100;

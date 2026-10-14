@@ -56,8 +56,15 @@ void FieldBeroInfo::synchronize(uint32_t room) {
 }
 bool FieldBeroInfo::registered() const{return program_ && generation_==generation && registered_;}
 bool FieldBeroInfo::initialize(const FieldMapFlags& map,FieldBeroExec& exec) {
- if(!program_ || generation_!=generation || map.room()!=room_)return false;
- if(registered_)return true;
+ if(registered())return true;
+ const auto address=tableAddress();return address && registerOriginal(*address,map,exec);
+}
+std::optional<uint32_t> FieldBeroInfo::tableAddress() const {
+ if(!program_ || generation_!=generation)return {};
+ return program_->tables.at(room_).address;
+}
+bool FieldBeroInfo::registerOriginal(uint32_t address,const FieldMapFlags& map,FieldBeroExec& exec) {
+ if(tableAddress()!=std::optional<uint32_t>(address) || map.room()!=room_)return false;
  const auto& table=program_->tables.at(room_);
  // Missing/flag80 names would invoke the still-unbound original map-error ring.
  // Hold that diagnostic domain; ordinary validated names perform the real stores.
@@ -102,7 +109,7 @@ bool FieldBeroInfo::publishRoadIncoming(uint32_t sourceNode,uint32_t flags) {
  for(unsigned n=0;n<t.nodes.size();++n)if(t.nodes[n]==sourceNode){uint32_t pointer=0;std::string name;return program_->data.readWord(t.address+n*60,pointer) && program_->text(pointer,name) && publishIncoming(name,flags);}
  return false;
 }
-bool FieldBeroInfo::intoInfo(EventEntry& event) const {
+bool FieldBeroInfo::intoInfo(EventEntry& event,uint32_t incomingAddress) const {
  if(!known())return false;
  const auto& t=program_->tables.at(room_);uint32_t selected=program_->fallback,index=0;
  if(!incoming_.empty())for(unsigned n=0;n<t.nodes.size();++n){uint32_t pointer=0;std::string name;if(!program_->data.readWord(t.address+n*60,pointer) || !program_->text(pointer,name))return false;if(name==incoming_){selected=t.address+n*60;index=n;break;}}
@@ -116,7 +123,7 @@ bool FieldBeroInfo::intoInfo(EventEntry& event) const {
    for(unsigned n=0;n<8;++n){uint32_t pointer=0;std::string prefix;if(!program_->data.readWord(program_->prefixes+4*n,pointer) || !program_->text(pointer,prefix))return false;if(text.compare(0,prefix.size(),prefix)==0){direction=n;break;}}
   }
  }
- const uint32_t values[]={index,uint32_t(t.nodes.size()),special?name:IncomingAddress,kind,direction,selected+12,callback?callback:program_->defaultEvent,0xffff0000};
+ const uint32_t values[]={index,uint32_t(t.nodes.size()),special?name:incomingAddress,kind,direction,selected+12,callback?callback:program_->defaultEvent,0xffff0000};
  for(unsigned n=0;n<8;++n)event.locals[n+1]=signedWord(values[n]);
  return true;
 }

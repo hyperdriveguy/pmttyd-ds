@@ -7,13 +7,14 @@ using namespace ttyd;
 struct Platform {
     EventNativeRuntime* runtime=nullptr;
     unsigned flushes=0,barriers=0,calls=0,truncations=0,divisions=0;
-    std::vector<int32_t> firstCalls;
+    std::vector<int32_t> firstCalls;std::vector<uint32_t> retired;
     EventNativePlatform services() {
         EventNativePlatform p;p.user=this;
         p.clock=[](void*)->uint32_t {return 243000000;};
         p.truncate=[](void* p,float v) {++static_cast<Platform*>(p)->truncations;assert(std::isfinite(v) && double(v)>=-2147483648. && double(v)<2147483648.);return int32_t(v);};
         p.divideWord=[](void* p,int32_t a,int32_t b) {++static_cast<Platform*>(p)->divisions;assert(b!=0);return a/b;};
         p.call=[](void* p,EventEntry& e,uint32_t function,int32_t first) {auto& f=*static_cast<Platform*>(p);assert(function==0x80001200);++f.calls;f.firstCalls.push_back(first);assert(e.locals[0]==7);return first?0:2;};
+        p.retiring=[](void* p,const EventEntry& e){static_cast<Platform*>(p)->retired.push_back(e.id);};
         p.flushBlock=[](void* p,uint32_t) {++static_cast<Platform*>(p)->flushes;};p.systemCall=[](void* p) {++static_cast<Platform*>(p)->barriers;};return p;
     }
 };
@@ -42,6 +43,7 @@ int main(int argc,char** argv) {
     tick(1);assert(battle.opcode==91 && r.battle.work[0]==9 && platform.firstCalls==std::vector<int32_t>({1,1}));
     tick(1);assert(battle.flags==1 && battle.opcode==0 && battle.waitCount==0);tick(1);assert(battle.flags==0 && field.flags==1);
     tick(0);tick(0);assert(field.flags==0 && r.runtime.allocationCount==0 && platform.firstCalls==std::vector<int32_t>({1,1,0,0}));
+    assert(platform.retired==std::vector<uint32_t>({2,1}));
     // Numeric and namespace services retain independent platform owners and
     // reload current GP for EACH query,including a swapped GP root.
     auto services=r.interpreterServices();assert(services.operands.truncate(services.operands.user,3.9f)==3 && services.divideWord(services.numericUser,7,2)==3 && platform.truncations==1 && platform.divisions==1);

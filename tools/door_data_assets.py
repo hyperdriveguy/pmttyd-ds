@@ -4,13 +4,14 @@ import argparse,hashlib,json,struct
 from pathlib import Path
 from iso_assets import DEFAULT_ISO,extract
 from rel_data_pack import package
+from dol_event_closure import linked_events,merge_segments
 
 def build(iso=DEFAULT_ISO):
     work=Path('local-assets/door-data');work.mkdir(parents=True,exist_ok=True)
     source=work/'gor.rel';extract(iso,'rel/gor.rel',source);raw=source.read_bytes()
     digest=hashlib.sha256(raw).hexdigest()
     if digest!='d4965f21254ecf1a78e5d66ea12a0b000eed3f123032af6ab3cb0f703d3f185a':raise ValueError('Unexpected original US REL')
-    packed,meta=package(raw,'artifacts/reference/us_symbols.csv','gor',['door_data_05','door_data_05_npc_01',*[f'gor_02.o::{n}' for n in ['evt_door_02_entry','evt_door_03_entry','evt_door_03_roll_entry','door_data_02','door_data_03','door_data_03_roll','door_data_04']]])
+    packed,meta=package(raw,'artifacts/reference/us_symbols.csv','gor',['door_data_05','door_data_05_npc_01',*[f'gor_02.o::{n}' for n in ['evt_door_02_entry','evt_door_03_entry','evt_door_03_roll_entry','door_data_02','door_data_03','door_data_03_roll','door_data_04','gor_02_init_evt']]])
     objects={o['name']:o for o in meta['objects']}
     # Linked immutable generic entry and actual adjacent dispatch-table prefetch.
     with Path(iso).open('rb') as disc:
@@ -26,10 +27,10 @@ def build(iso=DEFAULT_ISO):
     segments=[]
     for n in range(struct.unpack_from('>I',packed,8)[0]):
         address,size,offset=struct.unpack_from('>III',packed,12+12*n);segments.append((address,packed[offset:offset+size]))
-    segments.append((0x8033156c,entry));segments.sort()
-    offset=12+12*len(segments);table=bytearray();payload=bytearray()
-    for address,data in segments:table+=struct.pack('>III',address,len(data),offset);payload+=data;offset+=len(data)
-    packed=b'PMEVT001'+struct.pack('>I',len(segments))+table+payload
+    segments.append((0x8033156c,entry))
+    linked,linked_meta=linked_events(iso,raw,meta['objects'],'artifacts/reference/us_symbols.csv')
+    segments.extend(linked)
+    packed=merge_segments(segments)
     programs=[(objects[a]['address'],objects[b]['address']) for a,b in [('evt_door_02_entry','door_data_02'),('evt_door_03_entry','door_data_03'),('evt_door_03_roll_entry','door_data_03_roll')]]+[(0x8033156c,objects['door_data_04']['address'])]
 
     # Exact gor_02_init_evt4d8e8..4d948: copy into GW11, then select the
@@ -38,10 +39,11 @@ def build(iso=DEFAULT_ISO):
     if objects['door_data_05']['size']!=72:raise ValueError('Unexpected source door record')
     out=Path('romfs');out.mkdir(exist_ok=True)
     (out/'door-data.pmevt').write_bytes(packed)
+    (out/'field-area-init.bin').write_bytes(struct.pack('<8sIII',b'PMFAIN01',1,2,objects['gor_02_init_evt']['address']))
     (out/'field-area-events.bin').write_bytes(struct.pack('<8sI',b'PMFAEV02',len(programs))+b''.join(struct.pack('<III',2,*p) for p in programs))
     (out/'door-data.bin').write_bytes(struct.pack('<8sI6I',b'PMDRDT01',1,*row))
-    meta.update(door_entry=dict(address=0x8033156c,size=0x134,sha256=hashlib.sha256(entry[:0x134]).hexdigest(),prefetch_address=0x803316a0,prefetch_word=0x800e8288),entry_programs=[dict(script=a,record=b) for a,b in programs],source='rel/gor.rel',source_sha256=digest,records=[dict(room=row[0],source=row[1],work=row[2],normal=row[3],alternate=row[4],quest=row[5])],
-        policy='Original data closure; finite copy/list-selection descriptor from gor_02_init_evt4d8e8..4d948; later case/geometry/material providers remain separate',
+    meta.update(area_initializers=[dict(room=2,address=objects['gor_02_init_evt']['address'])],linked_dol_events=linked_meta,door_entry=dict(address=0x8033156c,size=0x134,sha256=hashlib.sha256(entry[:0x134]).hexdigest(),prefetch_address=0x803316a0,prefetch_word=0x800e8288),entry_programs=[dict(script=a,record=b) for a,b in programs],source='rel/gor.rel',source_sha256=digest,records=[dict(room=row[0],source=row[1],work=row[2],normal=row[3],alternate=row[4],quest=row[5])],
+        policy='Original full gor02 root/REL data closure and referenced linked DOL EVT objects with actual scanner context; no PPC or arbitrary mutable globals. Full world-service/data binding remains separate.',
         license='Original Nintendo/Intelligent Systems resources; local use only, no redistribution rights')
     (out/'door-data.json').write_text(json.dumps(meta,indent=2)+'\n')
     print('Original mutable door data:',len(packed),'bytes,',len(meta['objects']),'objects')

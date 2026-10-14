@@ -57,3 +57,23 @@ class OriginalDoorData(unittest.TestCase):
   data=Path('romfs/field-area-events.bin').read_bytes();self.assertEqual(struct.unpack_from('<8sI',data),(b'PMFAEV02',4));self.assertEqual(list(struct.iter_unpack('<III',data[12:])),expected)
   self.assertEqual(hashlib.sha256(span(0x8033156c,0x134)).hexdigest(),'6269747e7ff14d9effbd84761663f25e880e3ed3c191c842e974db0559e78281')
   self.assertEqual(span(0x803316a0,4),struct.pack('>I',0x800e8288))
+ def test_original_full_parent_and_linked_events(self):
+  raw=Path('local-assets/door-data/gor.rel').read_bytes();meta=json.loads(Path('romfs/door-data.json').read_text());packed=Path('romfs/door-data.pmevt').read_bytes()
+  def span(address,size):
+   for n in range(struct.unpack_from('>I',packed,8)[0]):
+    base,length,offset=struct.unpack_from('>III',packed,12+12*n)
+    if base<=address and address+size<=base+length:return packed[offset+address-base:offset+address-base+size]
+   self.fail('Missing original parent/script bytes')
+  root=next(o for o in meta['objects'] if o['name']=='gor_02_init_evt');self.assertEqual((root['file_offset'],root['size']),(0x4d554,0x87c))
+  self.assertEqual(hashlib.sha256(raw[0x4d554:0x4ddd0]).hexdigest(),'649d12889da97f2b7b29aa59f59f58671dfb916195160127f594df927e84109e')
+  data=bytearray(raw[0x4d554:0x4ddd0]);local,imports,_=read_bindings(raw)
+  for site,binding in local.items():
+   if 0x4d554<=site<0x4ddd0:struct.pack_into('>I',data,site-0x4d554,meta['sections'][binding['section']]['address']+binding['addend'])
+  for site,value in imports.items():
+   if 0x4d554<=site<0x4ddd0:struct.pack_into('>I',data,site-0x4d554,value)
+  self.assertEqual(span(root['address'],root['size']),data)
+  self.assertEqual(struct.unpack('<8sIII',Path('romfs/field-area-init.bin').read_bytes()),(b'PMFAIN01',1,2,root['address']))
+  linked={o['address']:o for o in meta['linked_dol_events']}
+  for address,size,digest in [(0x8030ec7c,0x3e4,'bb92a499be0384713a44616f99f5e3f725f2cf507b3132126bb1e71b521f4a59'),(0x8030f060,0x278,'214cdff31534df948655149d8ba53441124be40ce6b980d353dee0b48952c519')]:
+   self.assertIn(address,linked);self.assertEqual(linked[address]['size'],size);self.assertEqual(hashlib.sha256(span(address,size)).hexdigest(),digest)
+  self.assertIn(0x8030f2d8,linked)

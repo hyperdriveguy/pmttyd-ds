@@ -22,13 +22,15 @@ public:
  bool publishRoadIncoming(uint32_t sourceNode,uint32_t gpFlags);
  bool publishIncoming(const std::string& name,uint32_t gpFlags);
  bool initialize(const FieldMapFlags&,FieldBeroExec&); // Actual valid-domain get_info publication, once per area.
+ std::optional<uint32_t> tableAddress() const;
+ bool registerOriginal(uint32_t table,const FieldMapFlags&,FieldBeroExec&); // Each real get_info request, not once-only admission.
  bool infoByIndex(EventEntry&,int32_t index) const;
  std::optional<float> length(int32_t index) const; // Original float result before evtSetFloat routing.
  bool registered() const;
  void setCurrentNumber(int32_t value){currentNumber_=value;}
  void unknownCurrentNumber(){currentNumber_.reset();}
  std::optional<int32_t> currentNumber() const{return currentNumber_;}
- bool intoInfo(EventEntry&) const; // Writes only original LW1..8; unavailable holds.
+ bool intoInfo(EventEntry&,uint32_t incomingAddress=IncomingAddress) const; // Writes only original LW1..8; unavailable holds.
  bool readWord(uint32_t address,uint32_t&) const;
  bool readByte(uint32_t address,uint8_t&) const;
  bool importScripts(EventAddressSpace&) const;

@@ -1602,3 +1602,9 @@ add_executable(battle_audience_item_control_tests tests/battle_audience_item_con
 target_link_libraries(battle_audience_item_control_tests PRIVATE ttyd_core)
 add_test(NAME battle_audience_item_control COMMAND battle_audience_item_control_tests)
 set_tests_properties(battle_audience_item_control PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Actual original area parent and attached Bero child prefix.
+add_executable(field_area_parent_tests tests/field_area_parent_tests.cpp)
+target_link_libraries(field_area_parent_tests PRIVATE ttyd_core)
+add_test(NAME field_area_parent COMMAND field_area_parent_tests)
+set_tests_properties(field_area_parent PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

@@ -31,6 +31,7 @@ struct EventNativePlatform {
     double (*divideDouble)(void*,double,double)=nullptr;
     double (*fmaDouble)(void*,double,double,double)=nullptr;
     double (*fmodDouble)(void*,double,double)=nullptr;
+    void (*retiring)(void*,const EventEntry&)=nullptr; // Read-only snapshot boundary, not source world work.
 };
 // Shared native storage/service owner. GP address and RAM/arena provisioning are
 // explicit port policy. Platform callbacks are required at their call boundaries;

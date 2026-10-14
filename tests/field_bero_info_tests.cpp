@@ -44,6 +44,9 @@ int main(){
  assert(info.length(0)==30.f && info.length(1)==60.f && !info.length(-1) && !info.length(2));
  assert(!info.infoByIndex(event,-1) && !info.infoByIndex(event,2));
  exec.onOff(0,8);assert(info.initialize(map,exec) && exec.read()==8); // No replay over later real Bero writers.
+ const auto table=info.tableAddress();assert(table && !info.registerOriginal(*table+60,map,exec) && exec.read()==8);
+ info.setCurrentNumber(1);assert(info.registerOriginal(*table,map,exec) && exec.read()==0 && info.currentNumber()==1); // Real callback reinitializes each request, preserving NOW.
+
  // Native successful room arrival now publishes the actual original into_info
  // outputs; checkpoint restoration alone has no incoming-entry provenance.
  assert(loadWarps("romfs/rooms.bin") && loadGround("romfs/gor_02.ground") && loadCollision("romfs/gor_02.walls") && loadHead("romfs/gor_02.head"));

@@ -31,7 +31,9 @@ EventCreationServices EventNativeRuntime::creationServices() {
     EventCreationServices s;s.user=this;s.manager=managerServices();
     s.runtime=[](void* p) {return &owner(p).runtime;};
     s.word=[](void* p,uint32_t a) {auto memory=owner(p).memoryBinding.services();return memory.word(memory.user,a);};
-    s.stopAll=[](void* p,uint32_t mask) {stopAllEvents(mask,owner(p).creationServices());};return s;
+    s.stopAll=[](void* p,uint32_t mask) {stopAllEvents(mask,owner(p).creationServices());};
+    if(platform.retiring)s.retiring=[](void* p,const EventEntry& e) {auto& f=owner(p);if(f.platform.retiring)f.platform.retiring(f.platform.user,e);};
+    return s;
 }
 EventInterpreterServices EventNativeRuntime::interpreterServices() {
     EventInterpreterServices s;s.user=this;s.schedule=&schedule;s.creation=creationServices();s.memory=memoryBinding.services();

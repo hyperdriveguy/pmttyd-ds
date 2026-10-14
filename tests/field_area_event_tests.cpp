@@ -15,7 +15,7 @@ int main(){
  const auto first=area.appendDoorEntry(0,bank);assert(first);
  area.tick(17,services);assert(!area.failed && area.completed().empty() && area.pendingFunction==0x80038468);
  assert(!area.cases()->active(0));services.map=&map;area.tick(34,services);
- assert(!area.failed && area.completed().size()==1 && area.completed()[0].eventId==*first);
+ assert(!area.failed && area.completed().size()==1 && area.completed()[0].eventId==*first && area.completed()[0].returned);
  assert(map.mapFlags("S_ie_02_naka")==1 && map.hitEnabled("A_ie_02C")==false);
  const auto* close=area.cases()->active(0);const auto* open=area.cases()->active(1);assert(close && open);
  assert(close->type==9 && close->flags==5 && close->priority==0 && close->locals[15]==8 && close->script==0x80330724);
