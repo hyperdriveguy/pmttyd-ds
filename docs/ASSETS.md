@@ -1086,3 +1086,15 @@ Existing read-only original groups/texture and event packs are reused. Conversio
 validation refreshed only ignored private door/Bero-prefetch outputs. The native
 key adapter uses existing Game state; it does not create a substitute actor asset.
 Original Nintendo/Intelligent Systems licensing and local-only handling remain.
+
+### Original audience matrix-icon service recovery (2026-10-14)
+
+Read-only US ISO DOL bodies iconDispGxCol8001a4bc/224 and
+iconDispGx2 8001a6e0/238 now supply portable retained matrix-icon services.
+[Source spans, hashes and original globals](behavior/display/ORIGINAL_MATRIX_ICON_SERVICES.md)
+record descriptor/frame/GP ownership and the exact original white RGBA constant.
+No asset extraction, conversion, resampling, atlas changes or new generated art
+were needed. Original icon.bin/icon.tpl resources and their native loaded-buffer
+owners remain required; this service does not synthesize replacements or claim
+new native icon emission. Original Nintendo/Intelligent Systems resources retain
+their existing licensing and private ignored-asset restrictions.

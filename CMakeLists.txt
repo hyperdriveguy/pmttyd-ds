@@ -1643,3 +1643,9 @@ add_executable(field_mario_preparation_tests tests/field_mario_preparation_tests
 target_link_libraries(field_mario_preparation_tests PRIVATE ttyd_core)
 add_test(NAME field_mario_preparation COMMAND field_mario_preparation_tests)
 set_tests_properties(field_mario_preparation PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Original audience matrix-icon wrapper services.
+target_sources(ttyd_core PRIVATE source/display/source_icon_matrix.cpp)
+add_executable(source_icon_matrix_tests tests/source_icon_matrix_tests.cpp)
+target_link_libraries(source_icon_matrix_tests PRIVATE ttyd_core)
+add_test(NAME source_icon_matrix COMMAND source_icon_matrix_tests)

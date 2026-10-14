@@ -1094,3 +1094,7 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native shared Mario keys and background preparation](field/NATIVE_MARIO_KEY_AND_BACKGROUND_PREPARATION.md).
 
 - [Mario background constructors and actual native consumers](field/MARIO_BACKGROUND_PREPARATION_CONSTRUCTORS_AND_LIVE_CONSUMERS.md).
+
+- [Original matrix-icon services](display/ORIGINAL_MATRIX_ICON_SERVICES.md):
+  retained whole iconDispGx2/Col, packed descriptor/GP frame selection and actual
+  audience callback connection; native resource and iconGX binding remain open.

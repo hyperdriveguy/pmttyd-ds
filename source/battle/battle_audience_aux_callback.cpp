@@ -94,7 +94,10 @@ bool resumePackedBattleAudienceAux(uint32_t callback,const BattleAudienceAuxServ
         if(c.phase==9){c.pending=0x8001a4bc;if(!a.byte)return false;
             c.icon.rgba=(c.icon.rgba&0xffffff00u)|a.byte(a.user,c.record+0x5c);c.phase=8;
         }
-        if(c.phase==8){c.pending=c.icon.function;if(!s.icon || !s.icon(s.user,c.icon))return false;
+        if(c.phase==8){c.pending=c.icon.function;
+            if(s.icon){if(!s.icon(s.user,c.icon))return false;}
+            else {if(!s.sourceIcon || !resumeSourceIconMatrix(c.icon,*s.sourceIcon,c.iconCursor)){
+                if(c.iconCursor.active)c.pending=c.iconCursor.pending;return false;}}
             ++c.index;c.record+=ap?0x60:0x48;c.phase=6;}
     }
     c.active=false;c.pending=0;return true;

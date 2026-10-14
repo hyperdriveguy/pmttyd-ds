@@ -58,8 +58,11 @@ memory writes, queue reset or counter changes occur in these local bodies.
 
 The real native dispatcher guards callback/camera/userdata against the actual
 invocation, binds matrix numerical adapters, and runs genuine setup/scan.
-Active icon requests remain unavailable until their source owners are bound.
-IconMtx and IconColor first ask current camera8000f2e4, check loaded globals
+The portable sourceIcon service now runs the whole retained
+[IconMtx/IconColor wrappers](ORIGINAL_MATRIX_ICON_SERVICES.md) when supplied.
+Native loaded-resource/GP owners and iconGX emission remain unbound, so active
+native icon requests still wait. IconMtx and IconColor first ask current
+camera8000f2e4, check loaded globals
 8041e638/63c, then use source metadata8041e634, low16 iconID, frame clocks,
 current-camera concat and iconGX800197f8. A native cached quad is not this full
 service. Source icon geometry requirements are in
