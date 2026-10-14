@@ -1,57 +1,17 @@
 # cardMain
 
-**Address:** `0x800b2508`  
-**Size:** 1692 bytes (423 instructions)  
-**Evidence class:** B (inspected bytes/control flow in US binary)
+Address800b2508, size678hex (1656 bytes/414 instructions).
 
-## Overview
+Read the [complete dispatcher/callback contract](CARD_DISPATCH_FORMAT_CHECK_AND_COMPLETION.md),
+recovered2026-10-13 for [SAVE-01](../../requests/SAVE-01.md). It supersedes the
+former provisional sketch's incorrect size/work-field/target descriptions.
 
-`cardMain` is the save/load state machine for the GameCube memory card. It
-manages save file operations including reading, writing, verifying, and
-recovering save data. This is the persistent state management system.
+The local dispatcher monitors card probe changes, dispatches operations0..8,
+delegates write/header/read/read-all/create, and owns format/check-delete phases,
+result polling and busy/error/completion publications. The eight completion
+callbacks have complete source contracts. Original record construction/checksum
+is a [separate writer](../format/CARD_WRITE_RECORD_ASSEMBLY_AND_CHECKSUM.md).
 
-## Key behavior summary
-
-- Manages memory card slot state and file operations
-- Handles save file creation, reading, writing, and deletion
-- Manages backup save files for recovery
-- Handles card errors, corruption, and recovery
-- Coordinates with the sequence system for save/load transitions
-- Manages checksum validation for save integrity
-
-## Critical offsets (card work structure)
-
-| Offset | Size | Purpose |
-|--------|------|---------|
-| +0x00 | 4 | Current state |
-| +0x04 | 4 | Slot ID |
-| +0x08 | 4 | File handle |
-| +0x0c | 4 | Operation result |
-| +0x10 | 4 | Checksum |
-
-## Called functions
-
-| Address | Purpose |
-|---------|---------|
-| `0x802ac744` | Memory card operation |
-| `0x800d3d30` | pouchAddHP (HP check) |
-| `0x80094020` | State integration |
-
-## Porting notes
-
-This function is critical for persistent state. For porting:
-1. Preserve save file format and structure
-2. Preserve checksum validation algorithm
-3. Preserve backup file recovery mechanism
-4. Preserve error handling and recovery paths
-5. Preserve card operation state machine
-6. Preserve slot management and file handles
-
-## Remaining gaps
-
-- Full save file format and layout
-- Checksum algorithm details
-- Error recovery state machine
-- Card operation timing and coordination
-- Multi-slot management
-- Save file corruption detection and repair
+Async child/SDK internals, read validation/corruption/backup/namespace round-trip,
+original timing/execution and native binding remain open. Caller coverage alone
+does not establish complete persistence or a successfully saved/loaded record.

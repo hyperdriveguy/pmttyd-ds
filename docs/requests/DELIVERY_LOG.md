@@ -12,6 +12,7 @@ without an assigned ID must identify themselves before their locks are reassigne
 
 | Subtask | Parent | Status | Owner | Deliverable / boundary |
 | --- | --- | --- | --- | --- |
+| Card dispatcher and completion callbacks | SAVE-01 | VALIDATED nine complete local bodies/table, 2026-10-13; parent OPEN | Codex inbox fulfillment (no lock claimed) | [Dispatcher](../behavior/memory/CARD_DISPATCH_FORMAT_CHECK_AND_COMPLETION.md):24 spans/480 anchors/23 calls; async/SDK/read/backup/runtime open |
 | Original save record/checksum preparation | SAVE-01 | VALIDATED complete local cardWrite, 2026-10-13; parent OPEN | Codex inbox fulfillment (no lock claimed) | [Record writer](../behavior/format/CARD_WRITE_RECORD_ASSEMBLY_AND_CHECKSUM.md):11 spans/187 anchors/16 calls; five switch extents included; async/read/version/backup/lifetime open |
 | Rogueport camera porting coverage reconciliation | OW-CAMERA-01 | VALIDATED bounded deliveries/metadata, 2026-10-13; parent OPEN | Codex inbox fulfillment (no lock claimed) | [Coverage](../behavior/camera/ROGUEPORT_CAMERA_PORTING_COVERAGE_AND_REMAINING_BINDINGS.md):nine verifiers/44 records/494 triangles/220 pairs; native/runtime domains open; f7 correction pinned |
 | Camera road manager/timebase composition | OW-CAMERA-01 | VALIDATED two complete local bodies/scoped divider ABI, 2026-10-13; parent OPEN | Codex inbox fulfillment (no lock claimed) | [Manager/time helper](../behavior/camera/FIELD_CAMERA_ROAD_MANAGER_COPY_AND_TIMEBASE.md):13 spans/398 anchors/9 calls; geometry/library/provider/original visual binding open |

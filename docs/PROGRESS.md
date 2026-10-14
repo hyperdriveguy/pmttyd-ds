@@ -3,6 +3,28 @@
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
 
+## 2026-10-13 — Inbox card dispatcher and completion callbacks
+
+Completed local cardMain/eight callback bodies and operation table; SAVE-01
+portion checked. [Dispatcher contract](behavior/memory/CARD_DISPATCH_FORMAT_CHECK_AND_COMPLETION.md)
+supersedes inaccurate CARD_MAIN sketch. Optional probe/change/countdown,
+format/check-delete phases, three fresh result polls, iteration caps and
+busy/result/error/completion order pinned. Local write/header/read/read-all/
+create dispatch is complete; delegated child services remain separate.
+
+Validation: read-only ISO manifest24 spans/480 anchors/23 calls; independent
+all471 words/nine table entries/19 literal vectors/eight callbacks/cap/probe/
+result/substate/call sites/fresh pins passed. Link audit passed973 Markdown
+files/zero broken links; scoped diff passed. Docs/evidence only; no make
+test/all rerun. Raw ELF/listings/generator stay /tmp; no save blobs/assets/body
+distribution. Concurrent native edits excluded. Approved push pending valid
+GitHub credentials after authentication rejection.
+
+Next: read_main/read_all_main/write_main/header/create/card buffers/copy/erase/
+SDK validation/backup/error services and exact persistent namespace/lifetime
+mapping; original save/load/multi-slot/corruption/recovery traces. SAVE-01/native
+persistence replacement and other parent/full-game requests remain OPEN.
+
 ## 2026-10-13 — Inbox original save record and checksum preparation
 
 Completed local cardWrite; SAVE-01 record/checksum/write-side bank inclusion

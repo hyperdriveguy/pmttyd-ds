@@ -13,7 +13,11 @@ any original card/switch persistence requests below.
   write-side switch-bank inclusion — [record contract](../behavior/format/CARD_WRITE_RECORD_ASSEMBLY_AND_CHECKSUM.md).
   All187 words/six copied blocks/five bank extents pinned; read/load validation,
   field schemas and persistence lifetime remain open.
-- [ ] Complete original `cardMain` save/load state machine and record: save-file format/layout, checksum algorithm, corruption detection/repair, backup recovery, error/recovery states, multi-slot management and card-operation timing/coordination.
+- [x] Complete local cardMain dispatcher/format/check-delete phases and
+  eight completion callbacks — [dispatcher contract](../behavior/memory/CARD_DISPATCH_FORMAT_CHECK_AND_COMPLETION.md).
+  Nine operation entries, fresh polls/publications and iteration caps pinned;
+  delegated read/write/header/create services remain separate.
+- [ ] Complete composed original save/load service and record: save-file format/layout, checksum algorithm, corruption detection/repair, backup recovery, error/recovery states, multi-slot management and card-operation timing/coordination.
 - [x] Complete local swdrv access/init/reset and bank word counts; true
   rotate-by-five arithmetic — [corrected switch storage](../behavior/memory/SW_SET.md).
   Global256-word8192-bit and local16-word512-bit banks are proven; global byte0
@@ -97,3 +101,19 @@ masks/time/call sites/fresh pins passed. Link/scoped diff checks passed. Docs
 only; no make test/all rerun; raw artifacts stay /tmp. SAVE-01 stays OPEN:
 cardMain/async/read/version/corruption/backup/load and namespace/lifetime/native
 binding need recovery and original execution; this child does not perform IO.
+
+## 2026-10-13 — Complete card dispatcher and completion callbacks
+
+Delivered [cardMain/eight callbacks](../behavior/memory/CARD_DISPATCH_FORMAT_CHECK_AND_COMPLETION.md).
+Replaced inaccurate CARD_MAIN sketch with corrected size/source summary/link.
+Optional probe/change/countdown, nine-entry operation dispatch, format/check/
+delete substates, exact fresh result polls, bounded synchronous retries and
+callback clear/store order are pinned. Busy1 differs from operation2; callbacks
+clear1. No callback admission or physical timing assumed from caller bytes.
+
+Validation: read-only ISO manifest24 spans/480 anchors/23 calls; independent
+all471 words/nine table entries/19 literal vectors/eight callbacks/cap/probe/
+result/substate/call sites/fresh pins passed. Links/scoped diff passed. Docs
+only; no make test/all rerun; raw artifacts stay /tmp. SAVE-01 remains OPEN:
+async children/SDK/error/read/backup/namespace/lifetime/original traces and
+native round-trip binding not closed by complete dispatcher coverage.
