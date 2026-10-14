@@ -4139,3 +4139,16 @@ callback and cylinder geometry. Bind that actor's original parts/pose/render
 continuation next, then the item/icon callbacks and actual nonempty audience
 palette/matrix/quad cursor. Physical channel constants with unknown owners
 cannot support a nonempty source draw. Full EVT-01 stays open.
+
+
+### 2026-10-14 — Actual house05 copied record and GW11 parameter service
+
+[Native copy binding](../behavior/field/NATIVE_AREA_DOOR_DATA_AND_GW11.md)
+now owns the actual18-word original record and its immutable data bank, publishes
+its native guest address through GW11 and performs record+34 writes from original
+Q1 children. This completes the local parameter service when its real mutation
+occurs; later door/material consumers are separate unfinished services. Tests
+cover exact source bytes/lists and start/end mutations, room/catalog cleanup and
+nonreplayed initialization. Next bind the manual installer's case snapshots and
+actual geometry/collision/material1800 owners. Full shared global EVT/map lifetime,
+Garf key49 interaction and original runtime comparison remain OPEN.

@@ -3733,3 +3733,55 @@ Nonempty audience palette/pose/quad cursor, physical channel constants with
 unknown owners, persistent framebuffer across holds, cube/bounds and nonzero
 shadow images remain open. Broad prologue goal stays active and incomplete.
 [Native scope](behavior/display/NATIVE_RETAINED_AUDIENCE_EMPTY_ADMISSION.md).
+
+
+## 2026-10-14 — Original house05 copied record and actual GW11 writes
+
+Implemented the finite original gor_02 copy/list-selection prefix after retained
+NPC initialization. Original18-word/72-byte data is copied without embedded
+pointer rebasing into map-owned native storage; GW11 receives its actual guest
+address. Original Q1 start/end children now mutate record+34 through the real
+DoorParameter service, selecting the original two/three-name lists after their
+actual Garf position calls. Source records stay immutable. Parameter changes
+alone do not hide actors or change main800/material1800.
+
+The descriptor/owner supports more room records later. Room/catalog/data reload
+invalidates copied addresses before held-NPC early returns; event death alone
+does not free map storage. Unknown initialization inputs or missing copied data
+hold their actual unfinished work. The bounded native guest arena is an explicit
+adaptation, not a recovered original allocator/shared global EVT address space.
+
+Validation: make assets-ready SOUNDTRACK=gamecube passed; frozen source tree
+`d3e0a7e2bc4f9bd7ec433eab55c4f1828838fc30`,3235 tracked files,zero checkout
+mismatches. make test passed287 C++/169 Python; make all passed with normal
+startup and SOUNDTRACK=gamecube. Host tests independently compare original raw
+record bytes/relocations and both SJIS lists; check actual mutable copies,
+initialization once, stale addresses, malformed replacement and held-simulation
+room/catalog changes. Native-board host integration runs original Q1 start/end
+children against the actual Game-owned record. Logs: artifacts/door-data-assets.log,
+door-data-test.log and door-data-build.log. Feature commit2a2cc97d; its owned
+files/owned CMake block match the tested tree. Concurrent audience work was
+preserved; this does not claim the whole merged HEAD was tested together.
+
+Native isolated Azahar run exited0 with unchanged fixture save and no application
+exception. The first45-second normal-startup capture stayed in the opening demo;
+four physical A inputs in a second run reached file selection. Six physical A
+inputs in artifacts/azahar-door-data-restored loaded the valid Garf fixture.
+Inspected physical-a-5/6.png: original Rogueport east art, Mario/Goombella and
+Garf visible,60 App FPS,7.89..8.47ms reported emulator frame time. This checks
+restored field rendering only, not native execution of the Q1 parameter write
+or complete original door behavior. User profile/saves were not touched; no
+production diagnostic hook or startup change was introduced.
+
+Normal3DSX SHA256:5535e4a845b72bc195c421f92e6e5b647c0705179358de7908fe21501dd735d8.
+Ignored archive: artifacts/door-data-normal.3dsx. No original data or generated
+pack/binary was committed.
+
+Next bind source house05 inline case registrations with exact close/open LW15
+snapshots, geometry/collision owners and separate animPose material1800 lists.
+Continue Garf key49/unlock, Borodo original talk, shared case/GP/field lifetime
+and additional original area packs. Full original house05 interaction, native
+Q1 mutation capture, raster parity and hardware performance remain unverified.
+Broad remake goal remains active and incomplete.
+[Native scope](behavior/field/NATIVE_AREA_DOOR_DATA_AND_GW11.md);
+[source installer](behavior/field/HOUSE05_ORIGINAL_INSTALLER_GW11_AND_NPC_LIST_CONSUMERS.md).

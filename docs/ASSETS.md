@@ -722,3 +722,18 @@ its existing field-actors.pmnpc and original NPC packs with the committed
 field_actor_assets.py recipe against the read-only US ISO to match its newer
 source base. These private packs remain excluded from history/distribution;
 original copyrights and the existing conversion ledger apply unchanged.
+
+
+### 2026-10-14 — Original house05 mutable door-data closure
+
+`tools/door_data_assets.py` opens the US G8ME01 ISO read-only and extracts
+`rel/gor.rel` to ignored `local-assets/door-data/gor.rel` (SHA256
+`d4965f21254ecf1a78e5d66ea12a0b000eed3f123032af6ab3cb0f703d3f185a`).
+The existing REL data packer follows original relocations from door_data_05 and
+door_data_05_npc_01, retaining18 record words and exact SJIS name pointers:
+27 objects/1048 packed bytes. Ignored outputs: romfs/door-data.pmevt, .json and
+.bin. PMDRDT01 is native room/work/quest metadata for the source copy/list init
+prefix; no executable PPC or replacement art/music is generated. Original
+Nintendo/Intelligent Systems resources retain original copyright; local
+conversion grants no redistribution rights. ISO/extracted data/packs remain
+outside source history. [Native scope](behavior/field/NATIVE_AREA_DOOR_DATA_AND_GW11.md).

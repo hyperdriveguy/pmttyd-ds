@@ -1011,3 +1011,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native retained audience empty admission](display/NATIVE_RETAINED_AUDIENCE_EMPTY_ADMISSION.md) — actual guarded callback,16 native setup requests and200 fresh current-entry admissions; nonempty body remains held.
 
 - [Trio lower scene prepared draw replay](display/TRIO_LOWER_SCENE_PREPARED_DRAW_REPLAY.md)
+
+- [Native area door data and GW11](field/NATIVE_AREA_DOOR_DATA_AND_GW11.md) — original72-byte map-owned copy, once-only init and real Q1 parameter writes; cases/material consumers remain separate.
