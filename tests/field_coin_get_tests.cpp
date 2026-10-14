@@ -2,6 +2,8 @@
 #include "prologue_pouch.hpp"
 #include "item_get_text.hpp"
 #include "goomba_reward.hpp"
+#include "item_get_windows.hpp"
+#include "field_camera_events.hpp"
 #include <cassert>
 #include <cmath>
 #include <string>
@@ -110,4 +112,31 @@ int main() {
  while(talk.message.active() && tick<6000){talk.message.tick(++tick*1000/60,0x100);reward.eventMain(tick*1000/60);}
  assert(reward.complete() && actual.retained());live.action=0;
  assert(actual.invoke(20,false,0)==2 && !actual.retained() && live.pouch.half(0x78)==120);
+ // Native lifetime retirement uses actual manager deletion, not a fabricated
+ // action0 or another invocation of the completed source callback.
+ struct WindowHarness:Harness {CoinGetWindow window;unsigned observations=0;} native;
+ assert(loadItemGetWindowAssets("romfs") && native.window.prepare(font));
+ auto ns=services(native);
+ ns.window=[](void* p,uint32_t definition,const int32_t* parameter){
+  auto& h=*static_cast<WindowHarness*>(p);h.parameter=parameter;return h.window.enter(definition,parameter);};
+ ns.windowClose=[](void* p,int32_t id){static_cast<WindowHarness*>(p)->window.closeAutoDelete(id);};
+ ns.windowRetained=[](void* p,int32_t id){auto& h=*static_cast<WindowHarness*>(p);assert(id==0);++h.observations;return h.window.retained();};
+ FieldCoinGet owned;assert(owned.bind(ns));
+ assert(!owned.retireDeletedWindow() && native.observations==0);
+ assert(owned.invoke(20,true,0)==0 && !owned.retireDeletedWindow());
+ int32_t rate=60;ItemSelectionSequenceServices sequence{&rate,[](void* p){return *static_cast<int32_t*>(p);},
+  [](void*,int32_t mode,int32_t step,int32_t count,float a,float b){return cameraInterpolation(mode,step,count,a,b).value_or(a);}};
+ for(unsigned i=0;i<20;++i)native.window.managerTick(sequence);
+ native.clock.low+=201;assert(owned.invoke(20,false,0)==0);
+ native.clock.low+=501;assert(owned.invoke(20,false,0)==0);
+ assert(owned.invoke(20,false,0x100)==0 && owned.invoke(20,false,0)==2);
+ assert(owned.retained() && !owned.retireDeletedWindow() && !owned.bind(ns));
+ FieldCoinGet borrowedCopy=owned;assert(!borrowedCopy.retireDeletedWindow());
+ const unsigned reads=native.positionReads;
+ for(unsigned i=0;i<9;++i)native.window.managerTick(sequence);
+ assert(!native.window.retained() && native.window.action(0)==1);
+ assert(owned.retireDeletedWindow() && !owned.retained());
+ assert(native.positionReads==reads && native.pouch.half(0x78)==20);
+ assert(!owned.retireDeletedWindow() && owned.bind(ns));
+ assert(owned.invoke(7,true,0)==0 && native.window.retained() && native.parameter[0]==7);
 }

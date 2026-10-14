@@ -31,6 +31,12 @@ bool FieldCoinGet::bind(const FieldCoinGetServices& s) {
     !s.windowAction || !s.addCoins || !s.ready(s.user))return false;
  services_=s;owner_=this;return true;
 }
+bool FieldCoinGet::retireDeletedWindow() {
+ if(!canAdvance() || !retained_ || state_!=101 || !services_.windowRetained ||
+    services_.windowRetained(services_.user,window_))return false;
+ retained_=false;
+ return true;
+}
 std::optional<int32_t> FieldCoinGet::invoke(int32_t amount,bool firstCall,uint32_t triggers) {
  if(!canAdvance())return {};
  // Source resolves amount and recomputes placement even on cleanup polls.

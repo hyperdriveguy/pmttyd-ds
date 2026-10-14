@@ -22,6 +22,9 @@ struct FieldCoinGetServices {
  void (*windowClose)(void*,int32_t)=nullptr;
  int32_t (*windowAction)(void*,int32_t)=nullptr;
  int32_t (*addCoins)(void*,int32_t)=nullptr;
+ // Native lifetime observation, separate from the source action query. A
+ // deleted slot may retain action1; only the window owner knows it is gone.
+ bool (*windowRetained)(void*,int32_t)=nullptr;
 };
 struct FieldCoinPlacement {ItemGetPoint effect,icon;};
 FieldCoinPlacement fieldCoinPlacement(ItemGetPoint mario,float cameraHeading);
@@ -31,6 +34,8 @@ class FieldCoinGet {
 public:
  bool bind(const FieldCoinGetServices&);
  std::optional<int32_t> invoke(int32_t resolvedAmount,bool firstCall,uint32_t triggers);
+ // Called by the window owner after managerTick, independently of EVT return2.
+ bool retireDeletedWindow();
  bool retained() const{return retained_;}
  bool canAdvance() const{return owner_==this;}
  int32_t state() const{return state_;}
