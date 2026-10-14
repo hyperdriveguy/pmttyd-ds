@@ -13,7 +13,7 @@ void Renderer::beginFrontend(){
     frontActive=true;
 }
 void Renderer::releaseFrontend(){
-    C3D_FrameSync();freeBookCaptures();freeDemoEffects();freeRoom(frontRoom);frontMapName.clear();frontHouseObjects.clear();frontDrawSnapshot.reset();
+    C3D_FrameSync();freeTitleCurtains();freeBookCaptures();freeDemoEffects();freeRoom(frontRoom);frontMapName.clear();frontHouseObjects.clear();frontDrawSnapshot.reset();
     for(auto& t:frontTextures)if(t.image.imported){Tex3DS_TextureFree(t.image.imported);C3D_TexDelete(&t.image.texture);}
     frontTextures.clear();
     for(auto& a:cineActors)if(a.image.imported){Tex3DS_TextureFree(a.image.imported);C3D_TexDelete(&a.image.texture);}
@@ -180,7 +180,7 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
     if(!opening && demo.bookComplete)ok=frontDemoEffects(demo.market.effects,eye,at) && ok;
     C2D_Prepare();C2D_SceneBegin(top);return ok;
 }
-void Renderer::renderFrontend(const Frontend& f,OpeningDemo& demo,const OpeningSequence& opening,const char* notice) {
+void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,const OpeningSequence& opening,const char* notice) {
     // Keep only the current demonstration image/scene family resident. This
     // also bounds a natural (unskipped) storybook run and letter/map overlays.
     const uint32_t phase=f.screen==FrontScreen::Demo?(demo.bookComplete && !demo.book.adjusting?199:100):
@@ -189,6 +189,8 @@ void Renderer::renderFrontend(const Frontend& f,OpeningDemo& demo,const OpeningS
     C2D_TextBufClear(textBuffer);C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
     windowFrameCount=0;
     C3D_RenderTargetClear(top,C3D_CLEAR_ALL,0,0);C3D_FrameDrawOn(top);C2D_Prepare();C2D_SceneBegin(top);
+    uint8_t titleBlackPresented=0;uint32_t titlePresentedType=0;float titlePresentedFrame=-1,titlePresentedScale=0;
+    int entryPresented=-1;uint8_t exitPresented=0;
     bool ok=true;std::array<float,4> paperPresented{{-1,-1,-1,-1}};
     std::array<bool,4> captureRequested{};
     if(f.screen==FrontScreen::Demo && demo.bookComplete) {
@@ -221,11 +223,35 @@ void Renderer::renderFrontend(const Frontend& f,OpeningDemo& demo,const OpeningS
         if(demoPaperReady)ok=frontBookPaper(demo,paperPresented) && ok;
     } else {
         ok=frontImage("title-background",48,0,304,240);
-        ok=frontImage("title-logo",90,24,220,119) && ok;
-        if(f.screen==FrontScreen::Title)ok=frontImage("title-prompt",128,159,144,16) && ok;
-        // Native reflow: keep the full half-size original copyright inside
-        // the240-line viewport rather than clipping its last7 lines.
-        ok=frontImage("title-copyright",132,208,136,32) && ok;
+        const bool title=f.screen==FrontScreen::Title;
+        if(title)count=0; // One vertex range owner for this title frame.
+        const float logoY=title?120-(f.title.logoY-20)*.5f-59.5f:24;
+        const float copyrightY=title?120-f.title.copyrightY*.5f-16:208;
+        ok=frontImage("title-logo",90,logoY,220,119) && ok;
+        if(title){
+            // Original two-texture prompt retains source UV scroll and alpha.
+            ok=frontTitlePrompt(f.title) && ok;
+        }
+        ok=frontImage("title-copyright",132,copyrightY,136,32) && ok;
+        if(title){
+            if(ok && loadTitleCurtains())f.title.admitResources();else ok=false;
+            ok=frontTitleCurtain(f.title,titlePresentedType,titlePresentedFrame,titlePresentedScale) && ok;
+            if(f.title.whiteProgress>0)ok=C2D_DrawRectSolid(48,0,0,304,240,rgb(240,240,240,f.title.whiteAlpha())) && ok;
+            if(f.title.state==21){const auto alpha=f.title.blackAlpha();if(C2D_DrawRectSolid(48,0,0,304,240,rgb(0,0,0,alpha)))titleBlackPresented=alpha;else ok=false;}
+        }
+    }
+    if(f.screen==FrontScreen::Demo){
+        // Source demo_init admits demo.tpl before seq_gameMain type9/500.
+        // frontImage has imported the actual cover/desk original textures.
+        if(ok && !demo.exit.entryFinished){
+            demo.exit.admitEntry();
+            const auto alpha=demo.exit.entryAlpha();
+            if(C2D_DrawRectSolid(48,0,0,304,240,rgb(0,0,0,alpha)))entryPresented=alpha;else ok=false;
+        }
+        if(demo.exit.requested){
+            const auto alpha=demo.exit.alpha();
+            if(C2D_DrawRectSolid(48,0,0,304,240,rgb(240,240,240,alpha)))exitPresented=alpha;else ok=false;
+        }
     }
     C2D_Flush();C2D_TargetClear(bottom,Paper);C2D_Prepare();C2D_SceneBegin(bottom);
     if(f.screen==FrontScreen::Demo) {
@@ -253,6 +279,11 @@ void Renderer::renderFrontend(const Frontend& f,OpeningDemo& demo,const OpeningS
     if(!ok){text("Original front-end texture unavailable",10,216,.4f,Red);if(!frontFailure.empty())text(frontFailure.c_str(),10,203,.35f,Red);}
     if(notice && *notice)text(notice,10,229,.35f,Ink);
     C2D_Flush();C3D_FrameEnd(0);
+    if(entryPresented==0 || exitPresented==255 || titlePresentedType || titleBlackPresented==255)C3D_FrameSync();
+    if(ok)f.title.presentedBlack(titleBlackPresented);
+    if(ok && titlePresentedType)f.title.presented(titlePresentedType,titlePresentedFrame,titlePresentedScale);
+    if(entryPresented>=0 && ok)demo.exit.entryPresented(uint8_t(entryPresented));
+    if(ok)demo.exit.presented(exitPresented);
     if(std::any_of(captureRequested.begin(),captureRequested.end(),[](bool value){return value;})){
         if(!ok){demo.failed=true;return;}
         C3D_FrameSync();

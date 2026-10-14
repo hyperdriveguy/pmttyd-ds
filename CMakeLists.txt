@@ -792,6 +792,20 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/romfs/item-presentations.bin")
     set_tests_properties(item_presentation_original PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 endif()
 
+
+add_executable(opening_demo_exit_tests tests/opening_demo_exit_tests.cpp)
+target_include_directories(opening_demo_exit_tests PRIVATE include)
+add_test(NAME source_opening_demo_exit COMMAND opening_demo_exit_tests)
+
+add_executable(opening_title_tests tests/opening_title_tests.cpp)
+target_link_libraries(opening_title_tests PRIVATE ttyd_core)
+add_test(NAME source_opening_title COMMAND opening_title_tests)
+set_tests_properties(source_opening_title PROPERTIES WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+
+add_executable(opening_title_bgm_tests tests/opening_title_bgm_tests.cpp)
+target_include_directories(opening_title_bgm_tests PRIVATE include)
+add_test(NAME original_title_bgm_owners COMMAND opening_title_bgm_tests)
+
 target_sources(ttyd_core PRIVATE source/window_frame.cpp)
 add_executable(window_frame_tests tests/window_frame_tests.cpp)
 target_link_libraries(window_frame_tests PRIVATE ttyd_core)

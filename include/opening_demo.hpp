@@ -4,6 +4,7 @@
 #include "opening_demo_scene.hpp"
 #include "opening_book_scene.hpp"
 #include "opening_bgm_scene.hpp"
+#include "opening_demo_exit.hpp"
 namespace ttyd {
 // Original book narration before the title. Market continuation is separate.
 class OpeningDemo {
@@ -12,6 +13,7 @@ public:
     OpeningDemoScene market;
     OpeningBookScene book;
     OpeningBgmScene bgm;
+    OpeningDemoExit exit;
     unsigned narration=0;
     uint32_t speaker=0;
     uint64_t now=0;

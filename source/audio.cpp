@@ -6,6 +6,7 @@
 namespace ttyd {
 namespace {
 constexpr uint32_t StreamFrames=2048;
+constexpr unsigned MusicChannels[3]={1,0,18};
 constexpr const char* CueNames[]={"confirm","jump","hit","success","guard","save-block","goomba-step-left","goomba-step-right"};
 constexpr const char* OriginalCueNames[]={"SFX_CURSOR_OK1","SFX_MARIO_JUMP1","SFX_MARIO_DAMAGE1","SFX_AC_OK1","SFX_MARIO_GUARD1","SFX_MOBJ_BLOCK_SAVE1","SFX_FLD_NPC_KURI_MOVE1L","SFX_FLD_NPC_KURI_MOVE1R"};
 bool readHeader(FILE* file,PcmHeader& pcm) {
@@ -13,12 +14,27 @@ bool readHeader(FILE* file,PcmHeader& pcm) {
     return std::fread(bytes,1,44,file)==44 && pcmHeader(bytes,pcm);
 }
 }
+bool Audio::frontendTrackReady(int track) {
+    // Source title waits BGM resource admission. Playback availability and the
+    // user's mute setting do not determine whether the original asset exists.
+    if(track!=4)return ready && music[musicSlot].file && music[musicSlot].track==track;
+    if(titleResourceAttempted)return titleResourceReady;
+    titleResourceAttempted=true;
+    FILE* file=std::fopen("romfs:/title.wav","rb");
+    if(!file)return false;
+    PcmHeader pcm;
+    if(readHeader(file,pcm) && pcm.frames && std::fseek(file,0,SEEK_END)==0){
+        const long length=std::ftell(file);
+        titleResourceReady=length>=0 && uint64_t(length)>=44ull+uint64_t(pcm.frames)*pcm.channels*2;
+    }
+    std::fclose(file);return titleResourceReady;
+}
 bool Audio::init() {
     if(R_FAILED(ndspInit())) return false;
     ready=true;ndspSetOutputMode(NDSP_OUTPUT_STEREO);
-    streamData=(int16_t*)linearAlloc(StreamFrames*2*2*3*2);
+    streamData=(int16_t*)linearAlloc(StreamFrames*2*3*3*2);
     if(!streamData) {shutdown();return false;}
-    for(unsigned slot=0;slot<2;++slot)for(int n=0;n<3;++n)music[slot].buffers[n].data_pcm16=streamData+(slot*3+n)*StreamFrames*2;
+    for(unsigned slot=0;slot<3;++slot)for(int n=0;n<3;++n)music[slot].buffers[n].data_pcm16=streamData+(slot*3+n)*StreamFrames*2;
     for(int n=0;n<8;++n) {
         char path[96];std::snprintf(path,sizeof(path),"romfs:/%s.wav",CueNames[n]);
         FILE* file=std::fopen(path,"rb");
@@ -61,7 +77,7 @@ void Audio::play(const Game& game) {
     ndspChnWaveBufAdd(cue+2,&clip.wave);
 }
 void Audio::stopMusic(unsigned slot) {
-    ndspChnWaveBufClear(slot?0:1);
+    ndspChnWaveBufClear(MusicChannels[slot]);
     auto& stream=music[slot];
     if(stream.file){std::fclose(stream.file);stream.file=nullptr;}
     stream.track=-1;stream.ended=false;
@@ -69,13 +85,19 @@ void Audio::stopMusic(unsigned slot) {
 }
 void Audio::musicMix(unsigned slot,uint8_t volume) {
     float mix[12]{};mix[0]=mix[1]=.65f*float(volume)/127.f;
-    ndspChnSetMix(slot?0:1,mix);
+    ndspChnSetMix(MusicChannels[slot],mix);
 }
 void Audio::switchTrack(int track,bool preservePrevious) {
-    if(preservePrevious){musicSlot=1-musicSlot;stopMusic(musicSlot);}
-    else {stopMusic(0);stopMusic(1);}
-    auto& stream=music[musicSlot];
-    musicTrack=stream.track=track;stream.position=0;stream.ended=false;stream.loop=false;
+    if(preservePrevious){
+        unsigned candidate=0;while(candidate<3 && music[candidate].file)++candidate;
+        if(candidate==3)return;
+        musicSlot=candidate;
+    } else for(unsigned n=0;n<3;++n)stopMusic(n);
+    startMusic(musicSlot,track);musicTrack=track;
+}
+void Audio::startMusic(unsigned slot,int track){
+    auto& stream=music[slot];
+    stream.track=track;stream.position=0;stream.ended=false;stream.loop=false;
     const char* names[]={"rogueport","battle","victory","harbor-danger","title","demo-book","demo-market","opening-house","opening-voyage","opening-sailing","professor-music","underground-music","harbor-tutorial-music"};
     if(track<0 || track>=int(sizeof(names)/sizeof(names[0])))return;
     char path[96];std::snprintf(path,sizeof(path),"romfs:/%s.wav",names[track]);stream.file=std::fopen(path,"rb");
@@ -91,11 +113,11 @@ void Audio::switchTrack(int track,bool preservePrevious) {
         }
         std::fclose(loop);
     }
-    const unsigned channel=musicSlot?0:1;
+    const unsigned channel=MusicChannels[slot];
     ndspChnSetInterp(channel,NDSP_INTERP_LINEAR);ndspChnSetRate(channel,stream.rate);
     ndspChnSetFormat(channel,stream.channels==2?NDSP_FORMAT_STEREO_PCM16:NDSP_FORMAT_MONO_PCM16);
-    musicMix(musicSlot,127);
-    for(auto& buffer:stream.buffers){buffer.status=NDSP_WBUF_FREE;fill(stream,musicSlot,buffer);}
+    musicMix(slot,127);
+    for(auto& buffer:stream.buffers){buffer.status=NDSP_WBUF_FREE;fill(stream,slot,buffer);}
 }
 void Audio::fill(MusicStream& stream,unsigned slot,ndspWaveBuf& buffer) {
     if(!stream.file || stream.ended)return;
@@ -113,9 +135,9 @@ void Audio::fill(MusicStream& stream,unsigned slot,ndspWaveBuf& buffer) {
     }
     if(!filled)return;
     buffer.nsamples=filled;buffer.looping=false;
-    DSP_FlushDataCache(buffer.data_pcm16,filled*stream.channels*2);ndspChnWaveBufAdd(slot?0:1,&buffer);
+    DSP_FlushDataCache(buffer.data_pcm16,filled*stream.channels*2);ndspChnWaveBufAdd(MusicChannels[slot],&buffer);
 }
-void Audio::serviceMusic(){for(unsigned slot=0;slot<2;++slot)for(auto& buffer:music[slot].buffers)if(buffer.status==NDSP_WBUF_DONE)fill(music[slot],slot,buffer);}
+void Audio::serviceMusic(){for(unsigned slot=0;slot<3;++slot)for(auto& buffer:music[slot].buffers)if(buffer.status==NDSP_WBUF_DONE)fill(music[slot],slot,buffer);}
 void Audio::update(Scene scene,bool enabled,bool harborDanger,int professorMusic,uint32_t room) {
     if(!ready)return;
     int wanted=enabled && harborDanger && (scene==Scene::Explore || scene==Scene::Dialogue)?3:audioTrack(scene,enabled);
@@ -132,23 +154,33 @@ void Audio::updateFrontend(int track,bool enabled) {
     if(!enabled)for(int n=0;n<8;++n)ndspChnWaveBufClear(n+2);
     serviceMusic();
 }
-void Audio::updateFrontend(const OpeningDemo& demo,bool enabled) {
+void Audio::frontendMusic(const std::array<int,3>& tracks,const std::array<uint8_t,3>& volumes){
+    // Keep each admitted PCM owner at its fixed address until its own source
+    // publication retires it. No queued ndspWaveBuf is copied or reassigned.
+    for(unsigned n=0;n<3;++n)if(music[n].file && std::find(tracks.begin(),tracks.end(),music[n].track)==tracks.end())stopMusic(n);
+    for(unsigned wanted=0;wanted<3;++wanted){
+        if(tracks[wanted]<0)continue;
+        unsigned slot=0;while(slot<3 && !(music[slot].file && music[slot].track==tracks[wanted]))++slot;
+        if(slot==3){slot=0;while(slot<3 && music[slot].file)++slot;if(slot==3)continue;startMusic(slot,tracks[wanted]);}
+        musicMix(slot,volumes[wanted]);if(wanted==0){musicSlot=slot;musicTrack=tracks[0];}
+    }
+    serviceMusic();
+}
+void Audio::updateFrontend(const OpeningDemo& demo,bool enabled){
     if(!ready)return;
     if(!enabled){updateFrontend(-1,false);return;}
     const auto snapshot=demo.bgm.snapshot();
-    if(snapshot.primaryTrack!=musicTrack){
-        const bool retain=snapshot.tailActive && music[musicSlot].file && musicTrack==snapshot.tailTrack;
-        switchTrack(snapshot.primaryTrack,retain);
-    }
-    musicMix(musicSlot,snapshot.primaryVolume);
-    const unsigned tail=1-musicSlot;
-    if(snapshot.tailActive && music[tail].track==snapshot.tailTrack)musicMix(tail,snapshot.tailVolume);
-    else if(music[tail].file)stopMusic(tail);
-    serviceMusic();
+    frontendMusic({{snapshot.primaryTrack,snapshot.tailActive?snapshot.tailTrack:-1,-1}},{{snapshot.primaryVolume,snapshot.tailVolume,0}});
+}
+void Audio::updateFrontend(const OpeningTitle& title,bool enabled){
+    if(!ready)return;
+    if(!enabled){updateFrontend(-1,false);return;}
+    const auto snapshot=title.bgm.snapshot();frontendMusic(snapshot.tracks,snapshot.volumes);
 }
 void Audio::shutdown() {
     if(ready) {
         for(int n=0;n<=9;++n)ndspChnWaveBufClear(n);
+        ndspChnWaveBufClear(18);
         ndspExit();ready=false;
     }
     for(auto& stream:music)if(stream.file){std::fclose(stream.file);stream.file=nullptr;}

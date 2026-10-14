@@ -12,7 +12,7 @@ def build(iso=DEFAULT_ISO,out='romfs'):
     work=Path('local-assets/harbor-curtain');work.mkdir(parents=True,exist_ok=True)
     model=work/'OFF_d_maku_left_right';tpl=model.with_suffix('.tpl')
     extract(iso,'a/OFF_d_maku_left_right',model);extract(iso,'a/OFF_d_maku_left_right-',tpl)
-    helpers=['character_surface_mesh.py','character_animation_pack.py','character_animation_data.py','character_bake.py']
+    helpers=['iso_assets.py','character_surface_mesh.py','character_animation_pack.py','character_animation_data.py','character_bake.py']
     fingerprint=hashlib.sha256(Path(__file__).read_bytes()+model.read_bytes()+tpl.read_bytes()+b''.join(Path('tools',n).read_bytes()for n in helpers)).hexdigest()
     meta=out/'harbor-curtain.json'
     if meta.exists() and json.loads(meta.read_text()).get('fingerprint')==fingerprint and all((out/('harbor-curtain'+e)).is_file()for e in ['.pmanim','.t3x','.bin']):return

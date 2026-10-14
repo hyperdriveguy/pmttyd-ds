@@ -128,3 +128,8 @@ romfs/harbor-curtain.*
 
 # Generated original-asset packs and metadata stay outside source history.
 /romfs/
+
+
+/romfs/title-curtain-*
+
+/romfs/title-prompt-pattern.*

@@ -8,8 +8,8 @@ def run(env,capture):
     x('windowfocus',x('search','--onlyvisible','--class','azahar').splitlines()[-1])
     def press(key):
         x('keydown',key);time.sleep(.08);x('keyup',key)
-    press('a');time.sleep(1);capture('title')
-    press('a');time.sleep(1);capture('files')
+    press('a');time.sleep(16);capture('title')
+    press('a');time.sleep(5);capture('files')
     press('a');time.sleep(3);capture('opening-house')
     checkpoint=Path(env['XDG_DATA_HOME'])/'azahar-emu/sdmc/3ds/ttyd-2ds/progress.bin'
     end=time.monotonic()+160

@@ -7692,3 +7692,140 @@ field player/party owners and preserved parent wait61, then source postwait
 run/stop/hitobj/music callbacks. Source Goombella unlock belongs its authored
 joining event; full control/resource/save/raster/hardware parity and remaining
 prologue owners remain incomplete. Goal remains active.
+
+
+## Original fresh-demo entry / title exit fade ownership (2026-10-13)
+
+Replaced immediate demo A/START switching with source buttonCheck and mapChange
+ownership. Original demo.tpl GPU admission starts source type9 black500ms; final
+rendered alpha0/frame completion gates input. A|START publishes original17/500
+(or final-main17/2000) and the source dmo mapChange override17/2000 produces
+F0 white alpha. Original repeated f32 simulation timing and strict inequalities
+finish entry on31 and exit on121 ticks. Actual opaque final GPU presentation
+owns title publication; B remains in Demo and triggers cannot dispatch twice.
+Native adapter adds only original flat fade quads; no authored curtain geometry.
+Corrected the previous next-task assumption: fade28 is a conditional restored
+entry branch, while fresh-demo uses demo_init gp+108/+10c and seq_gameMain9/500.
+
+Validation in /tmp/pm-frontend-source-fades:13 original source anchors verified
+read-only; make test156/156 CTest and105/105 Python passed
+(/tmp/frontend-source-exit-test.log); cached make all -o assets-ready passed
+(/tmp/frontend-source-exit-all.log), compiling native renderer/main and .3dsx
+with private original fixture assets and corrected fade23 pack. No emulator
+run claimed for this increment; parent owns integrated visual validation.
+Source contract:
+[entry/exit fades](behavior/display/NATIVE_OPENING_DEMO_FADES.md).
+Remaining: integrate narrow main/frontend renderer diffs into parent newer
+native composition; original title curtain/logo/input services remain unbound.
+
+## Ordinary original title ownership (2026-10-13)
+
+Implemented portable OpeningTitle and source-linked native original curtain
+consumer, bounded exporter and original-pack regressions. Demo→title waits
+actual title PCM owner and original GPU center/sides resources. Source34 enables
+narrowFast: first animated sample1.5→1 over90ticks (3 initial field; ordinary
+non-fast alternative3→1/180 retained). Actual final geometry presentation owns
+completion. Original20/500 white-in overlaps logo300→120 curve10 and copyright
+-300→-170 curve11. After strict source second60-tick input gate, original
+A|START accepts; B does not. Files publication waits genuine source63 A_1
+0..80 then26 Z_1 0..60 and actual final-pose/frame sync for each. Unique GPU
+ranges, original pass/cull/wrap/RGBA and original textures are retained.
+
+Validation:21 source anchors verified read-only; make test157/157 CTest and
+105/105 Python passed (/tmp/frontend-title-test.log); bounded private original
+packs exported and host evaluated (center1416 bindings/4 textures; sides648
+bindings/one texture); native make all -o assets-ready passed .3dsx
+(/tmp/frontend-title-all-final.log), no native compiler warnings/errors.
+No integrated emulator claim; root owns newer composition/native smoke.
+[Source boundaries](behavior/display/NATIVE_OPENING_TITLE.md).
+
+Next: import narrow frontend/main/header/helper diffs preserving parent native
+palette/residency changes. Actual muted BGM admission, original title audio
+fade, dual-texture prompt TEV/scroll, title actors, original19-second idle
+return, seq6 return and full original file menu remain unbound. Current prompt
+mask/file menu are explicit native adapters; the ordered playable route is
+still being integrated and the full remake is not complete.
+
+## Original title idle / prompt / BGM consumers (2026-10-13)
+
+Bound original eligible-counter idle return (strict1141 ticks, A/START wins),
+source33 center/A_2 actual0..160/161keys, source10/1000 black and actual final
+rendered black/frame completion before fresh dmo clock. Original idle logo/
+copyright curve11 endpoints and prompt amplitude fade remain. The genuine
+US16 mask + TPL6 RGB pattern now use recovered two-TEV-stage math and source
+scroll-counter/200; original unit288x32 quad0,-122 maps through the explicit
+native viewport adapter. Separate six-vertex queue ownership avoids overwriting
+message/curtain geometry; private cached original pattern64x4 is repeated into
+native64x8 minimum storage and sampled inversely.
+
+Source title audio now starts original volume88, publishes3000ms group0/1 off
+and1000ms idle off, preserves already-running book6000 fade and detached750ms
+float tail. A reachable market-on-during-exit scenario requires three source
+streams. Native fixed PCM owners now use NDSP1/0/18 and72KiB buffer storage;
+no queued wave buffers move and no live tail is dropped. Original PCM/loops
+remain; fake resource readiness and generated audio are absent.
+
+Validation:31 read-only source anchors; explicit original bounded packs exported;
+make test158/158 CTest and105/105 Python passed
+(/tmp/frontend-title-remaining-test.log); cached make all -o assets-ready built
+.3dsx without warnings/errors (/tmp/frontend-title-remaining-all-final.log).
+Parent owns integrated emulator visual/audio validation; none is claimed here.
+[Title source boundaries](behavior/display/NATIVE_OPENING_TITLE.md) and
+[BGM owners](behavior/audio/OPENING_TITLE_BGM_OWNERS.md).
+
+Next: import narrow audio/header/main/title-helper diffs preserving parent NPC
+and house-audio additions; regenerate private center pack nowtwo original poses.
+Remaining original title actors, seq6 return branch, muted audio resource
+admission and full original file menu/SFX are separate. Fresh empty-slot menu
+adapter remains the authorized playtest target; full remake is unfinished.
+
+## 2026-10-13 — Combined opening title validation
+
+The combined isolated opening build now keeps demo events running during the
+white map-change fade, rather than freezing them as soon as A/START is accepted.
+A regression asserts that the original message owner continues until the final
+opaque frame has actually been acknowledged. Title resource admission validates
+the original PCM header/payload independently of mute or unavailable NDSP.
+
+Validation: combined parent `make test`164/164 CTest +107/107 Python and
+`make all` pass (`/tmp/opening-title-parent-tests-ready.log`,
+`/tmp/opening-title-parent-all-final.log`). Initial title test correctly failed
+before its newly required original asset packs were generated; the ready rerun
+passes. Isolated native fresh-flow validation and primary integration validation
+are underway. Source title actors, full original file-menu/card services,
+complete harbor battle/return and original-runtime/hardware parity remain open.
+The goal remains active.
+
+## 2026-10-13 — Primary title and fresh-file sequence verification
+
+Primary normal `make all` passes (`artifacts/opening-title-primary-all-final.log`).
+The immutable integration binary is
+`artifacts/opening-title-integration-snapshot/ttyd-2ds.3dsx`; it includes concurrent
+window-rendering work and is not asserted to be a clean single-commit artifact.
+Isolated native fresh flow passes through original demo exit, title input/curtain
+transitions, four empty files, house, letter, voyage/prologue and saved harbor
+story3 (`artifacts/azahar-title-primary-fresh-chain/`). Reviewed title/files/house
+and arrival captures; exact original raster/audio and hardware parity are not
+claimed. No ISO, original user emulator profile or existing saves were modified.
+
+Primary `make test` was run twice. The stable rerun passes169/170 CTest;
+`underground_story_original` still fails its unchanged postbattle position
+assertion (expected X=-55, diagnostic actual X=-80,Y=20,Z=35 at time7123).
+The first run also lacked a field-object test executable during concurrent
+asset/build activity; that test passes in the stable rerun. The full suite is
+therefore not reported green. Opening/frontend scoped CTest passes15/15 and
+separately run Python passes110/110
+(`artifacts/opening-title-primary-{tests-ready,scoped-tests,python}.log`).
+Combined isolated parent checks pass164/164 CTest +107/107 Python.
+
+The source final-pose GPU acknowledgment is now issued once per title curtain
+request; the retained pose remains available without requesting repeated
+frame waits. Smoke input now waits for source title input eligibility and both
+file-selection curtains, so one early press is not mistaken for New Game.
+
+Next: integrate preserved Parakarry glide and house original sample requests,
+correct the harbor fade23 bank in primary, reconcile the untouched underground
+postbattle test with its actual event branch, and finish literal native harbor
+battle/field owners before claiming the broader prologue ready. Original title
+actors, full original file/card services, source display projection/reflow and
+all original gameplay/runtime/hardware comparisons remain open. Goal active.

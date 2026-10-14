@@ -1333,3 +1333,38 @@ and compiled packs remain ignored `romfs/`. Original icon source hashes are in
 Nintendo/Intelligent Systems resources have no redistribution grant; local
 extraction/conversion only. Nothing here authorizes distributing original art,
 messages, assets or ISO. Complete selector drawing/runtime fidelity remains open.
+
+
+Original fresh-demo fade ownership uses existing local demo.tpl textures and
+procedural flat source fade quads, with no additional texture extraction.
+The native entry gate admits only after actual original front-end images load
+successfully. Source type9 uses000000ff/500ms; dmo title exit17 normalizes to
+10/f0f0f0ff/2000ms. Original source viewport608x480 is adapted to304x240 atx48;
+alpha is original truncation of255 times the repeated f32 simulation ratio.
+Rendered final frame completion is a separate gate from clock completion.
+[Behavior and evidence](behavior/display/NATIVE_OPENING_DEMO_FADES.md).
+The harbor-curtain exporter fingerprint now includes iso_assets.py so corrected
+original intensity-alpha decoding invalidates older converted curtain atlases.
+
+Original US title source consumers additionally retain local
+`a/OFF_d_maku_center` + `a/OFF_d_maku_center-` Z_2 and
+`a/OFF_d_maku_left_right` + `a/OFF_d_maku_left_right-` A_1/Z_1 via
+`tools/opening_title_assets.py`. Ignored `romfs/title-curtain-center.*` and
+`romfs/title-curtain-sides.*` contain PMANIM sparse original geometry/materials,
+PMTIT001 UV/pose/texture descriptors and original-art GPU atlases. Source center
+has4 texture cells; sides1. Shared original sampler gutters/124px textures,
+half-size Lanczos atlas and explicit native image-plane projection adapt the
+source asset. Fingerprints include original ISO model/TPL and decoder/converter
+helpers. All remain original Nintendo/Intelligent Systems assets for local use;
+no distribution rights or original bytes enter history.
+[Title behavior](behavior/display/NATIVE_OPENING_TITLE.md).
+
+Title idle return extends the ignored center pack with original A_2 span0..160,
+161 keys alongside Z_2. The title exporter retains actual `mariost.tpl` index6
+64x4/RGBA8/repeatS/T as ignored `romfs/title-prompt-pattern.*`; native64x8
+minimum storage repeats the original four rows with inverseV sampling. Original
+US mask16 and two source TEV stages combine mask RGB/A, scrolling pattern RGB
+and source pulse alpha. Cached fingerprints include originalTPL and decoder;
+no procedural replacement art is generated. Original BGM_TITLE1 volume88,
+existing original demo PCM streams and loop intervals feed three fixed NDSP
+owners on1/0/18; original copyrighted resources remain excluded from history.

@@ -139,8 +139,11 @@ int main() {
                 fi.previous=pending.left;fi.next=pending.right;
                 if(pending.touchX>=10 && pending.touchX<310 && pending.touchY>=42 && pending.touchY<190)
                     fi.touchedSlot=(pending.touchY-42)/37;
+                if(frontend.screen==ttyd::FrontScreen::Title)frontend.title.admitMusic(audio.frontendTrackReady(4));
+                const auto previousFrontend=frontend.screen;
                 frontend.tick(fi);
-                if(frontend.screen==ttyd::FrontScreen::Demo && frontReady){demo.tick(frontTicks*1000/60,(pending.confirm?0x100u:0u)|(pending.cancel?0x200u:0u));if(demo.finished)frontend.demoComplete();}
+                if(previousFrontend==ttyd::FrontScreen::Title && frontend.screen==ttyd::FrontScreen::Demo)demo.begin(frontTicks*1000/60);
+                if(frontend.screen==ttyd::FrontScreen::Demo && frontReady){demo.tick(frontTicks*1000/60,(pending.confirm?0x100u:0u)|(pending.cancel?0x200u:0u)|(fi.start?0x1000u:0u));if(demo.finished){frontend.demoComplete();frontend.title.bgm.begin(demo.bgm.snapshot());}}
                 if(frontend.newRequested){frontend.newRequested=false;savePath=ttyd::saveSlotPath(saveDirectory,frontend.selected);opening.begin(frontTicks*1000/60);}
                 if(frontend.loadRequested) {
                     savePath=ttyd::saveSlotPath(saveDirectory,frontend.selected);
@@ -215,6 +218,7 @@ int main() {
         else if(frontend.screen==ttyd::FrontScreen::Playing)audio.update(game.trioBattleActive?(game.trioAttack.rewardPresentationActive()?ttyd::Scene::Victory:ttyd::Scene::Battle):game.scene,game.progress.sound,game.harborStory.enabled && game.harborStory.triggered,
                      game.professorStory.locked() && !game.trioBattleActive?game.professorStory.music:0,game.progress.room);
         else if(frontend.screen==ttyd::FrontScreen::Demo)audio.updateFrontend(demo,game.progress.sound);
+        else if(frontend.screen==ttyd::FrontScreen::Title)audio.updateFrontend(frontend.title,game.progress.sound);
         else audio.updateFrontend(frontend.screen==ttyd::FrontScreen::Opening?opening.music():4,game.progress.sound);
         metrics.renderMs=C3D_GetProcessingTime();metrics.gpuMs=C3D_GetDrawingTime();
         if(frontend.screen==ttyd::FrontScreen::Playing)renderer.render(game,metrics,noticeTicks>0?notice:"",audio.available());

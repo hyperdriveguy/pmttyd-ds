@@ -4,15 +4,31 @@
 #include <filesystem>
 #include <unistd.h>
 using namespace ttyd;
+static void titleReady(Frontend& f){
+    f.title.admitMusic(true);f.title.admitResources();
+    for(unsigned n=0;n<300 && !f.title.inputReady();++n){
+        f.title.admitCurtain(f.title.curtainType);f.tick({});
+        f.title.presented(f.title.curtainType,f.title.curtainFrame(),f.title.paperScale);
+    }
+    assert(f.title.inputReady());
+}
+static void chooseFiles(Frontend& f,const FrontInput& a){
+    titleReady(f);f.tick(a);assert(f.screen==FrontScreen::Title);
+    for(unsigned n=0;n<200 && f.screen==FrontScreen::Title;++n){
+        f.title.admitCurtain(f.title.curtainType);f.tick({});
+        f.title.presented(f.title.curtainType,f.title.curtainFrame(),f.title.paperScale);
+    }
+    assert(f.screen==FrontScreen::Files);
+}
 int main(){
     Frontend f;FrontInput a;a.confirm=true;
-    f.tick(a);assert(f.screen==FrontScreen::Title);f.tick(a);assert(f.screen==FrontScreen::Files);
+    f.tick(a);assert(f.screen==FrontScreen::Demo);f.demoComplete();assert(f.screen==FrontScreen::Title);chooseFiles(f,a);
     f.tick(a);assert(f.newRequested && f.screen==FrontScreen::Opening);f.openingComplete();assert(f.screen==FrontScreen::Playing);
-    Frontend load;load.demoComplete();load.tick(a);load.slots[0].result=LoadResult::Recovered;load.tick(a);
+    Frontend load;load.demoComplete();chooseFiles(load,a);load.slots[0].result=LoadResult::Recovered;load.tick(a);
     assert(load.loadRequested && !load.newRequested);load.rejectLoad();assert(load.screen==FrontScreen::Files);
     load.slots[0].result=LoadResult::Invalid;load.tick(a);assert(!load.loadRequested && !load.newRequested);
     FrontInput b;b.cancel=true;load.tick(b);assert(load.screen==FrontScreen::Title);
-    load.tick(a);FrontInput left;left.previous=true;load.tick(left);assert(load.selected==3);
+    chooseFiles(load,a);FrontInput left;left.previous=true;load.tick(left);assert(load.selected==3);
     FrontInput touch;touch.touchedSlot=1;load.tick(touch);assert(load.selected==1 && load.newRequested);
     assert(saveSlotPath("/x",0)=="/x/progress.bin" && saveSlotPath("/x",3)=="/x/progress4.bin" && saveSlotPath("/x",4).empty());
     // The same physical press must not be replayed by a fresh field owner.

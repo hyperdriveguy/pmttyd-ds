@@ -6,13 +6,24 @@
 #include <string>
 using namespace ttyd;
 int main(){
-    OpeningDemo demo;assert(demo.load("romfs"));demo.begin(0);
+    OpeningDemo demo;assert(demo.load("romfs"));demo.begin(0);demo.exit.admitEntry();
     std::vector<std::string> ids;uint64_t now=0;bool bookOpening=false;
     for(;now<500000 && !demo.waitingForTitle;now+=17){demo.tick(now);bookOpening|=demo.bookOpening;if(demo.message.active() && (ids.empty() || ids.back()!=demo.message.id()))ids.push_back(demo.message.id());assert(!demo.failed);}
     assert(demo.waitingForTitle && !demo.finished && ids.size()==37 && bookOpening && demo.bookRotation==180);
     demo.tick(now+10000,0x200);assert(!demo.finished);
-    demo.tick(now+10017,0x1000);assert(demo.finished);
+    demo.exit.entryPresented(0);assert(demo.exit.entryFinished);
+    demo.tick(now+10017,0x1000);assert(!demo.finished && demo.exit.requested);
+    demo.tick(now+13017);assert(!demo.finished && demo.exit.driverFinished);
+    demo.exit.presented(255);demo.tick(now+13034);assert(demo.finished);
     for(unsigned i=0;i<37;++i){char key[24];if(i<24)std::snprintf(key,sizeof(key),"op_book_%02u",i+1);else std::snprintf(key,sizeof(key),"op_%02u",i-24);assert(ids[i]==key);}
+    // mapChange keeps the old scene event alive until the opaque frame is
+    // actually presented. A requested exit must not freeze its message owner.
+    OpeningDemo exiting;assert(exiting.load("romfs"));exiting.begin(0);exiting.exit.admitEntry();
+    exiting.tick(1000);exiting.exit.entryPresented(0);
+    exiting.tick(1100,0x100);assert(exiting.exit.requested && exiting.narration==0);
+    exiting.tick(4100);assert(!exiting.finished && exiting.exit.driverFinished);
+    assert(exiting.narration==1 && exiting.message.active());
+    exiting.exit.presented(255);exiting.tick(4117);assert(exiting.finished);
     OpeningSequence opening;assert(opening.load("romfs"));opening.begin(0);ids.clear();std::vector<uint32_t> speakers;
     bool voyageGate=false;
     for(now=0;now<300000 && !opening.complete();now+=17){

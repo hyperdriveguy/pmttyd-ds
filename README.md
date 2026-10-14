@@ -126,7 +126,7 @@ For brief development boot, `make debug-short` builds the separate
 and uses the prior checkpoint/plaza harness. Normal builds retain the opening.
 Use `--binary ttyd-2ds-debug-short.3dsx` with the older emulator fixtures.
 
-Fresh-file flow validation: `python3 tools/emulator_smoke.py --fresh-save --seconds 12
+Fresh-file flow validation: `python3 tools/emulator_smoke.py --fresh-save --seconds 35
 --input-script tests/azahar_opening_flow.py --output-dir artifacts/azahar-opening-flow`
 (as one shell command).
 

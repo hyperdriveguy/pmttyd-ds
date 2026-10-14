@@ -32,7 +32,7 @@ public:
     void advanceTutorialAnimations(Game&);
     void releaseFrontend();
     void render(const Game&, const Metrics&, const char* notice, bool audioAvailable);
-    void renderFrontend(const Frontend&, OpeningDemo&, const OpeningSequence&, const char* notice);
+    void renderFrontend(Frontend&, OpeningDemo&, const OpeningSequence&, const char* notice);
     void shutdown();
     bool bindTutorialStartupResources(HarborTutorial&);
     void releaseTutorialStartupResources();
@@ -100,6 +100,12 @@ private:
     std::unique_ptr<Game> frontDrawSnapshot;
     struct CineActor {std::string name;ActorAnimationPack animations;Texture image;float uvScale=1;ActorAnimationSample sample;const ActorAnimationPose* sampledPose=nullptr;float sampledTime=-1;};
     std::vector<CineActor> cineActors;
+    std::array<CineActor,2> titleCurtains;
+    bool titleCurtainsReady=false,titleCurtainsAttempted=false;
+    bool frontTitlePrompt(const OpeningTitle&);
+    bool loadTitleCurtains();
+    bool frontTitleCurtain(OpeningTitle&,uint32_t&,float&,float&);
+    void freeTitleCurtains();
     std::array<CineActor,3> tutorialActors;
     bool tutorialReady=false;
     BattleCurtainFade tutorialFade;
@@ -142,6 +148,7 @@ private:
     Texture messagePanel,messageSystemPattern;
     std::array<Texture,8> messageSystemMasks;
     struct SystemVertex {float x,y,z,u,v,s,t,r,g,b,a;};
+    SystemVertex* titlePromptVertices=nullptr;
     SystemVertex* messageSystemVertices=nullptr;
     DVLB_s* messageSystemShader=nullptr;shaderProgram_s messageSystemProgram{};
     bool messageSystemProgramReady=false;
@@ -212,10 +219,12 @@ public:
     void update(Scene scene, bool enabled,bool harborDanger=false,int professorMusic=0,uint32_t room=0);
     void updateFrontend(int track,bool enabled);
     void updateFrontend(const OpeningDemo&,bool enabled);
+    void updateFrontend(const OpeningTitle&,bool enabled);
     void shutdown();
     bool available() const { return ready; }
+    bool frontendTrackReady(int track);
 private:
-    bool ready=false;
+    bool ready=false,titleResourceAttempted=false,titleResourceReady=false;
     struct Clip { int16_t* data=nullptr; uint32_t samples=0; ndspWaveBuf wave{}; };
     Clip clips[8];
     struct MusicStream {
@@ -225,12 +234,14 @@ private:
         uint32_t rate=32000,channels=2,position=0,loopStart=0,loopEnd=0;
         ndspWaveBuf buffers[3]{};
     };
-    MusicStream music[2];
+    MusicStream music[3];
     unsigned musicSlot=0;
     int musicTrack=-1;
     int16_t* streamData=nullptr;
     void stopMusic(unsigned slot);
     void switchTrack(int track,bool preservePrevious=false);
+    void startMusic(unsigned slot,int track);
+    void frontendMusic(const std::array<int,3>& tracks,const std::array<uint8_t,3>& volumes);
     void fill(MusicStream&,unsigned slot,ndspWaveBuf&);
     void musicMix(unsigned slot,uint8_t volume);
     void serviceMusic();
