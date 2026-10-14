@@ -932,3 +932,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Original window display/US cache](display/TROUBLE_CENTER_ORIGINAL_WINDOW_DISPLAY_AND_US_CACHE.md) — original frames, clipping, colors/width scales and64 US resources; native backend pending.
 - [Original Trouble Center board selection/acceptance](field/TROUBLE_CENTER_BOARD_SELECTION_AND_ACCEPTANCE.md) and [portable menu producer](field/PORTABLE_TROUBLE_CENTER_MENU_PRODUCER.md) — original30-slot unlock order, one-based outputs/debug115 correction, exact input/icon requests; native case/window bindings remain pending.
+
+- [Native original Trouble Center window and US cache](display/NATIVE_TROUBLE_CENTER_WINDOW_AND_US_CACHE.md) — four frames, original64-resource cache, proportional row pen, fresh source state reads and isolated drawing evidence; board admission remains pending.

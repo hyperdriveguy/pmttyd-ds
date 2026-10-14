@@ -985,3 +985,13 @@ confirmation/acceptance event are still required. Parent stays open.
   Frame/text/style and all64 title/client/content resources are now documented;
   all30 help/confirmation table bindings remain to be consolidated. No fabricated
   native menu while source window/case bindings are pending.
+
+### 2026-10-14 — Original Trouble Center display backend
+
+Committed bc65e4ac: exact frame/title/all-row/clip requests and64-message US cache,
+source matrix headings and proportional per-glyph row pen.256 C++/145 Python and
+native build pass. Isolated private source-based raster preview passes, checkpoint
+unchanged; no controller/lecture/board/event acceptance is fabricated. All30
+help/confirmation table identities are now recovered. [Evidence and limits](../behavior/display/NATIVE_TROUBLE_CENTER_WINDOW_AND_US_CACHE.md).
+Native icons/full switch banks/case9/door/lecture/confirmation remain next; parent
+stays open. Original numeric/raster/audio/pause/hardware parity remains unverified.

@@ -159,3 +159,18 @@ assets; exact Font/GX/SDK numeric behavior and global state restoration;
 original case9/board/door integration; matched original screenshot/execution;
 3DS scissor/shape/text behavior and performance/hardware validation. This
 contract establishes the original draw requests, not native visual completion.
+
+## Direct font callee and fresh row identity follow-up
+
+Direct DOL inspection confirms FontDrawStringMtx80076cdc ignores shared FontScale:
+camera×caller matrix feeds raw _JUTFont_DrawPos; no JUTFontDrawStart/PSMTXScale.
+Header geometry therefore uses only cap/width matrixX and Y1; prior.85 scale is
+geometrically unused. Rows use FontDrawString→VecPitch proportional pen FMA.
+
+ID0 precedes completion lookup; freshID1 follows active1420 lookup for comparison;
+freshID2 after optional red color publication supplies both cached strings.
+Client scroll is captured before width; contents rereads scroll after client draw,
+before contents width. All30 help bindings are irai_help_01..30; confirmation
+bindings irai_43..72 (Q+42), indexed ID-1. All60 exist in the original US gor_02
+resource; table recovery was independently checked without inventing IDs.
+[Native requests/cache and validation](NATIVE_TROUBLE_CENTER_WINDOW_AND_US_CACHE.md).

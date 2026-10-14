@@ -336,3 +336,18 @@ Extraction/conversion stays in ignored `local-assets/harbor-actors/`,
 `local-assets/harbor-event/` and `romfs/`. Original Nintendo/Intelligent Systems
 copyrighted assets: local use only; no redistribution rights granted. No ISO,
 extracted originals or compiled packs enter source history.
+
+## Trouble Center original cached window backend (2026-10-14)
+
+Existing ignored romfs/messages/gor_02.txt, font.pmfont/font.t3x and original
+message-window-panel.t3x are reused. All30 original client/contents strings copy
+verbatim including NUL into21/31-byte caches; four header pointers retain the
+original message bank. No text/art replacement, resampling, new atlas or payload
+conversion. Original f/msgWindow.tpl descriptor0 centerRGBA(216,219,216,255)
+modulates source white/cyan primitive colors; the native preview matches that
+texture color, rather than generated purewhite. All original asset/binary outputs
+remain ignored and Nintendo/Intelligent Systems no-redistribution restrictions
+apply. Private packs under artifacts/source-checks/quest13-field reuse these
+resources. Existing battle_class_icon_assets.py additionally generated its own
+ignored original icon pack for an independent host validation dependency.
+[Exact source and preview scope](behavior/display/NATIVE_TROUBLE_CENTER_WINDOW_AND_US_CACHE.md).

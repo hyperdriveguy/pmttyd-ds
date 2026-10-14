@@ -1,3 +1,43 @@
+## 2026-10-14 — Original Trouble Center window rendering
+
+Committed bc65e4ac. Portable full display requests and native Waku/font/scissor
+backend now render original four frames/headings/all-count rows with completed
+gray/active red styling, three fresh row-ID reads and independent scroll samples.
+64 original US resources retained; client/contents copy verbatim21/31-byte caches,
+widths prepared for immutablefont/spacing2. Matrix titles correctly ignore shared
+.85; rows use proportional per-glyph scaled-pen FMA, existing shaders/arenas and
+GPU clipping. No new texture/placeholder, source94 animation or acceptance write.
+
+Reviewed tree35421e0b7b4d768ecc3ae9f40fb2423fadb704e1 passes256/256 C++ and
+145/145 Python via make test -o assets-ready and normal make all -o assets-ready.
+Sequential assets-ready and existing original class-icon dependency converter
+passed. Logs artifacts/trouble-window-{final-assets,class-assets,final-test,
+final-build}.log. Normal reviewed artifact SHA256
+5c3224471812fddd35608bc63ac8bea3ee44c577503722e78eafb9662caa0a95.
+Native fog enum/type and missing independent class-icon test pack failures fixed;
+initial failed logs retained. Verified owned changes committed atop concurrent
+work; unrelated edits preserved.
+
+Private DEBUG_SHORT_BOOT preview renders original story8 headings/six rows using
+explicit test completion/active colors; checkpoint byte-identical. Inspected
+artifacts/azahar-trouble-window-preview-checked/original-trouble-window-preview.png;
+smoke log trouble-window-preview-checked-smoke.log passes. Initial purewhite check
+was corrected against original panelRGBA216/219/216/255; transient missing/tmp
+script failure retained, final input script workspace-local. Preview SHA256
+8bef578dd92e64696398060bba5f3888aa4c57cdb4940ee4ee468f40f42da388.
+Private preview source restored/audited all2600 tracked files and normal-main
+recompile timestamp restored. Unintended shared-root preview build artifact
+unused; isolated artifact supplies evidence. User profile/saves untouched.
+[Exact implementation/limitations](behavior/display/NATIVE_TROUBLE_CENTER_WINDOW_AND_US_CACHE.md).
+
+Next: original menu icons and controller→display binding, complete saved switch
+providers, case9/door/cutaway admission for the actual east board, first lecture
+and confirmation/acceptance event. All30 help/confirmation table IDs are now
+recovered. Then validate acceptedquest2→parcel→Goomfrey→McGoomba full chain.
+Font-global/SDK/GX/matched-original pixels, GP38/pad/NDSP parity and hardware
+performance remain open. Backend preview is not native board gameplay; full-game
+goal remains active/incomplete and future original areas remain to be added.
+
 ## 2026-10-14 — User two-screen battle mockup
 
 Recorded the user's subsequent rough hand-drawn layout in
