@@ -4377,3 +4377,15 @@ and fallback-ambient bytes supply the finite owner projection. Per-light SDK
 bodies, presets, greater-than8 sorting, actual texture binding and original
 frame comparisons remain providers. Existing shadow combined4 register-material
 state does not establish this vertex-source state. Parent EVT-01 remains OPEN.
+
+### Original parent prefix and next provider (2026-10-14)
+
+Resolved original gor02 parent extent/constructor/GP+164 ownership and late child
+copy-back; see [source contract](../behavior/field/GOR02_ORIGINAL_PARENT_PREFIX_CLOSURE_AND_MAP_COPY.md).
+Native shared owner executes the genuine parent and attached Bero child with
+explicit GP state. Full-parent completion and Game wiring remain open.
+Next8007a154 is actual two-phase asynchronous p_dokan_x/y prefetch via fileAsyncf,
+not a Mario field query; see [provider contract](../behavior/overworld/BERO_INFO_PREFIX_ASYNC_GROUPS_SYSTEM_FLAGS_AND_ACTOR_PREPARATION.md).
+It remains pending until a real resident/prefetch provider exists. Continue with
+system flags, actual Mario bgmode/party services, full parent NPC setup and shared
+world/map heap lifetime. Documentation inbox and EVT-01 remain active.

@@ -1074,3 +1074,8 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [GX channel control and color-register semantics](display/GX_CHANNEL_CONTROL_AND_COLOR_REGISTER_SEMANTICS.md) — original separate RGB/alpha versus combined dispatch, partial register writes and disabled vertex-material passthrough.
 
 - [Audience item hold/throw, damage and escape](battle/AUDIENCE_ITEM_HOLD_THROW_DAMAGE_AND_ESCAPE.md): whole states7/8/10/12, correct item pointers/penalty, escape eligibility and throw-sound registry records.
+
+- [Original gor02 parent, prefix closure and map-copy ordering](field/GOR02_ORIGINAL_PARENT_PREFIX_CLOSURE_AND_MAP_COPY.md).
+- [Bero asynchronous group prefetch and actor preparation](overworld/BERO_INFO_PREFIX_ASYNC_GROUPS_SYSTEM_FLAGS_AND_ACTOR_PREPARATION.md).
+- [Native original area parent and retirement](field/NATIVE_ORIGINAL_AREA_PARENT_AND_RETIREMENT.md).
+- [Native event retirement observation](event/NATIVE_EVENT_RETIREMENT_OBSERVATION.md).

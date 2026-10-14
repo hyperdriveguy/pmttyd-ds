@@ -1001,3 +1001,24 @@ reuse existing original public SFX metadata; real voice playback remains open.
 Private validation refreshes original door/Bero/Trouble/material-light packs
 using the committed baseline's extractors, with the ISO read-only. Generated
 material retains the existing private-use licensing and stays outside history.
+
+### Original area parent and immutable DOL EVT closure (2026-10-14)
+
+Read-only G8ME01 disc0/rev0 gor.rel source gor_02_init_evt (2172 bytes,
+SHA256649d12889da97f2b7b29aa59f59f58671dfb916195160127f594df927e84109e)
+now roots the private door event bank. The converter also reads original main.dol
+section-backed EVT bodies reachable through known EVT address references:
+61 objects/23436 body bytes, unchanged with real adjacent scanner words.
+The bank includes970 relocated original REL data objects and totals100520 bytes.
+New field-area-init.bin uses PMFAIN01, room2/root,20 bytes. Existing door-data.bin
+and field-area-events.bin formats remain36/60 bytes. This is finite EVT closure,
+not all native callbacks/constants/resources or mutable GP state.
+
+No art/audio was regenerated. The next source prefetch needs original a/p_dokan_x
+(41756 bytes), a/p_dokan_y (18576 bytes) and shared texture alias a/p_slit-
+(22592 bytes); this phase does not bind or claim readiness for those resources.
+Exact source offsets/hashes and ordering are in the Bero prefix contract.
+ISO, extracted bytes, compiled packs, fixture profiles and probe binaries stay
+ignored outside history. Nintendo/Intelligent Systems assets retain original
+licensing; this conversion grants no distribution rights. Private validation
+identities are in artifacts/area-parent-validation-manifest.json.

@@ -5202,3 +5202,55 @@ last-stage blend/fog/TEV and original indexed fan GPU submission. SDK active-lig
 objects/preset updates, field history, complete battle teardown/field return and
 remaining prologue indoor/event/story parity remain unfinished. EVT-01 and the
 full goal remain active.
+
+### Original area parent and actual retirement (2026-10-14)
+
+Completed a reusable full-parent entry mode in FieldAreaEvent. The unchanged
+original gor02 initializer now starts with actual cleared constructor locals,
+priority0/flags0, true attached Bero child, explicit caller-supplied GP state and
+actual root ID at GP+164. PMFAIN01 admits room/root separately from supplied-bank
+door continuations; the two modes cannot be mixed. Actual get_info has no user
+arguments and reads LW0. Per-call registration resets SW/EXEC while preserving
+NOW; into_info reads live VM GP flags/name rather than stale external caches.
+
+Imported970 original REL data objects and61 immutable DOL EVT objects with real
+scanner context; private pack100520 bytes, area-init manifest20 bytes. EVT address
+closure does not certify dynamic/native/resource closure. Added optional read-only
+retirement observation after actual child deletion/copy-back and before clearing,
+with RETURN distinguished from cancellation. This fixes final banks for the
+parent's late monosiri child and preserves diagnostics for independent live roots.
+Source/provider contracts and EVT-01 now document original parent branches,
+map-copy ordering and the real next callback: two-phase p_dokan_x/y file prefetch.
+
+Validation used frozen tree fba098e7f2ff7ea4df4c020083941808eca43ceb in
+artifacts/source-checks/trouble-world. Assets build exited0. Final
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test -o assets-ready exited0:308/308 C++ and
+178/178 Python tests; log artifacts/area-parent-test-final.log. Native
+make all -j4 -o assets-ready SOUNDTRACK=gamecube exited0, including final repeat;
+logs artifacts/area-parent-build.log and area-parent-build-final.log. Normal
+3DSX SHA256473c0bbaa5287fde79fee2fa419d06d5706263af0eacca47b3e4bc8c35a2bd39.
+Frozen tracked-source audit3346 files, zero mismatches after restoring the
+instrumented main; manifest artifacts/area-parent-validation-manifest.json.
+Concurrent unrelated shared edits are preserved and are not claimed validated
+as one merged build.
+
+Normal isolated Azahar east→plaza travel/save-room assertions passed; inspected
+original-asset east/plaza captures show60 App FPS and100% emulator speed.
+Native instrumented probe follows original story402 sound-skipping branch,
+executes parent1/child2 and holds at8007a154 with two live events. Actual
+cancellation copies LW5=6 and LW3=8100011c, reports returned=false and live0.
+Both probe assertions pass. Logs artifacts/area-parent-smoke.log and
+area-parent-probe-smoke.log; isolated profile output artifacts/azahar-area-parent-probe.
+Probe patch is ignored, temporary main restored, user emulator profile/saves untouched.
+Synthetic GP/test sound traces do not certify Game save state or native audio.
+
+Next implement actual original asynchronous pipe group/texture prefetch, then
+remaining original Mario/party/NPC callbacks. Wire Game's separate Bero/Trouble
+VMs into the shared owner only with real GP/checkpoint/world ownership. Complete
+house05 inline installer, shared map heap/GW lifetime and case activation before
+claiming original area initialization. No rendering algorithm changed this phase;
+original raster parity and actual New2DSXL performance remain unverified.
+The full-game goal remains active and unfinished.
+
+Implementation commit1acd7448. Documentation link check:1304 Markdown files,
+zero broken links (tools/check_doc_links.py).
