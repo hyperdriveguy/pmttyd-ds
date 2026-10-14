@@ -32,6 +32,7 @@
 #include "battle_audience_target.hpp"
 #include "battle_audience_main.hpp"
 #include "battle_break_slot.hpp"
+#include "battle_hp_gauge.hpp"
 #include "battle_audience_window.hpp"
 #include "battle_audience_sound_main.hpp"
 #include "battle_stage_floor.hpp"
@@ -123,7 +124,7 @@ struct TrioAttackRuntime {
     std::shared_ptr<ProloguePouch> entryPouch;
     std::array<PartnerBattleSnapshot,7> partySnapshots{};
     std::array<TrioRewardIcon,19> rewardIcons{};
-    uint64_t rewardIconClockAt=UINT64_MAX;
+    uint64_t rewardIconClockAt=UINT64_MAX,gaugeClockAt=UINT64_MAX;
     PointGetEffect pointGet;uint64_t pointGetClockAt=UINT64_MAX;
     BattleEndingFade endingFade;uint64_t endingFadeClockAt=UINT64_MAX;bool endingExported=false;uint32_t* fieldNpcBattleFlags=nullptr;
     FieldMarioBattleState* fieldMario=nullptr;
@@ -534,6 +535,7 @@ struct TrioAttackRuntime {
             }
         }
         word(Units+6*0x1000+0x298,franklyPhase);
+        for(unsigned id=1;id<7;++id){const auto unit=Units+id*0x1000;initializePackedBattleHpGauge(unit,nativeBattleActorServices(vm));byte(unit+0x311,255);byte(unit+0x312,255);for(auto part=word(unit+0x14);part;part=word(part)){real(part+0x208,1);real(part+0x20c,1);word(part+0x4f0,0xffffffff);}}
         for(unsigned id=1;id<7;++id)clearStatus(Units+id*0x1000);
         UnitResourceServices resources;resources.user=entryPouch.get();resources.pouch=[](void* p){return static_cast<ProloguePouch*>(p)->bytes.data();};resources.snapshots=&partySnapshots;
         for(unsigned id=1;id<=2;++id){const auto u=Units+id*0x1000;readDamage(id);auto& d=damageUnits[id];d.baseHp=half(u+0x10a);d.baseFp=half(u+0x110);d.hpPlusCount=byte(u+0x2f1);d.fpPlusCount=byte(u+0x2f2);importUnitResources(d,resources);
@@ -568,6 +570,8 @@ struct TrioAttackRuntime {
         d.flags=word(u+0x27c);d.statusFlags=word(u+0x138);d.attributes=word(u+0x104);d.damageSequence=half(u+0x260);d.attackSequence=int32_t(word(u+0x280));
         d.jumpPowerBonus=byte(u+0x2ff);d.hammerPowerBonus=byte(u+0x300);
         for(unsigned i=0;i<30;++i)d.statusBytes[i]=byte(u+0x118+i);
+        d.hpBefore=int32_t(word(u+0x208));d.hpAfter=int32_t(word(u+0x20c));
+        d.damageFlags=half(u+0x1fe);d.field200=half(u+0x200);d.field202=half(u+0x202);d.field204=half(u+0x204);d.field206=half(u+0x206);
         damageParts[id].attributes=word(p+0x1ac);
         if(id>=3 && id<=5){defenses[id]=trioBattleUnitSpecs()[id-3].defense;for(unsigned i=0;i<5;++i)defenseAttributes[id][i]=int8_t(trioBattleUnitSpecs()[id-3].defenseAttributes[i]);}
         damageParts[id].defense=defenses[id].data();damageParts[id].defenseAttributes=defenseAttributes[id].data();
@@ -575,6 +579,7 @@ struct TrioAttackRuntime {
     void writeDamage(unsigned id) {
         const auto& d=damageUnits[id];const auto u=Units+id*0x1000;
         half(u+0x10c,d.hp);word(u+0x27c,d.flags);word(u+0x208,d.hpBefore);word(u+0x20c,d.hpAfter);word(u+0x264,d.requestedHp);word(u+0x268,d.requestedFp);word(u+0x26c,d.consumedFp);
+        half(u+0x200,d.field200);half(u+0x204,d.field204);
         byte(u+0x270,d.lastHp);byte(u+0x271,d.lastFp);byte(u+0x272,d.lastConsumedFp);word(u+0x274,d.pattern);half(u+0x1fe,d.damageFlags);
     }
     DamageApplicationServices application() {
@@ -1139,6 +1144,49 @@ struct TrioAttackRuntime {
             HammerSoundSink sounds;sounds.user=this;sounds.play=[](void* p,const char* key)->int32_t{static_cast<TrioAttackRuntime*>(p)->soundRequests.emplace_back(key);return -1;};const auto result=c.tick(context,random,sounds);if(result<0){if(!pending)pending=0x8012a17c;return;}storeHammer(c);if(result==0)word(Battle+0x1ca0,0);
         }
     }
+    bool displayPrefix() {
+        (void)word(0x8041eb90); // Original retained B; footer is still pending.
+        const auto actors=nativeBattleActorServices(vm);
+        for(int32_t index=0;index<64;++index) {
+            const auto unit=battleRegistryUnit(word(0x8041eb90),index,actors);if(!unit)continue;
+            if(word(unit+8)==223){pending=0x801024f0;return false;}
+            const auto old=byte(unit+0x312);endingRequest(0x801277ac,{int32_t(unit),2});word(unit+0x1c,word(unit+0x1c)&~2u);
+            const auto target=byte(unit+0x311);
+            if(target!=old){endingRequest(0x801277bc,{int32_t(unit),2});word(unit+0x1c,word(unit+0x1c)|2);byte(unit+0x312,uint8_t(target>old?std::min<int>(old+12,target):std::max<int>(old-2,target)));}
+            endingRequest(0x80125d88,{int32_t(unit)});
+            BattleHpGaugeServices gauge;gauge.actors=actors;gauge.user=this;
+            gauge.interpolate=[](void* p,int32_t mode,int32_t step,int32_t duration,float start,float end)->std::optional<float>{auto& r=*static_cast<TrioAttackRuntime*>(p);r.endingRequest(0x80006c8c,{mode,step,duration});return battleHpGaugeCurve(mode,step,duration,start,end);};
+            if(!packedBattleHpGaugeMain(unit,gauge)){pending=0x80125d88;return false;}
+            word(unit+0x114,word(0x8042224c));
+            for(const auto id:{11,10}) {
+                endingRequest(0x80127f34,{int32_t(unit),id});const auto value=getPackedBattleStatus(unit,id,actors);const auto strength=int8_t(value.strength);
+                if(int8_t(value.duration)>0 && (id==11?strength<0:strength>0)) {
+                    const auto factor=id==11?std::max(real(0x80422234),std::fma(real(0x80422234),float(strength),real(0x8042224c))):std::min(real(0x80422250),real(0x8042224c)+float(strength));
+                    real(unit+0x114,real(unit+0x114)*factor);
+                }
+            }
+            endingRequest(0x801966f0,{int32_t(unit)});
+            constexpr unsigned status[]{1,6,8,9,0},handle[]{0x324,0x330,0x328,0x32c,0x334};
+            constexpr uint32_t leaf[]{0x80196538,0x801963ac,0x80196240,0x801960ac,0x80195f8c};
+            constexpr uint32_t remove[]{0x801964f8,0x8019636c,0x80196200,0x8019606c,0x80195f48};
+            for(unsigned i=0;i<5;++i) {
+                endingRequest(leaf[i],{int32_t(unit)});
+                const bool active=i==4?((word(word(0x8041eb90)+0xef8)&1) && (word(unit+0x104)&0x10)):checkPackedBattleStatus(unit,status[i],actors);
+                if(active){pending=leaf[i];return false;}
+                endingRequest(remove[i],{int32_t(unit)});
+                if(const auto oldHandle=word(unit+handle[i])){pending=i==4?0x8001ae08:i==3?0x8005e9c0:0x8005ea30;endingRequest(pending,{int32_t(oldHandle+(i==4?0x18:0))});return false;}
+            }
+            endingRequest(0x80253ca8,{int32_t(unit)});half(unit+0xadc,0);
+            const auto current=word(0x8041eb90);
+            if((word(current+0xef4)&0x10000) || (word(current+0xef8)&1)){pending=0x80253ca8;return false;}
+            for(auto part=word(unit+0x14);part;part=word(part)) {
+                if(word(part+0x1c0)==0xffffffff)continue;
+                if(word(part+0x204)&2){endingRequest(0x80100a4c,{int32_t(part)});real(part+0x208,1);pending=0x8004142c;endingRequest(pending,{int32_t(word(part+0x1c0))});return false;}
+                pending=0x80103084;endingRequest(pending,{int32_t(unit)});return false;
+            }
+        }
+        pending=0x8010045c;return false; // Original display footer awaits real queued consumers.
+    }
     void completionPass(const BattlePadSample& sample) {
         struct Context {TrioAttackRuntime& r;const BattlePadSample& sample;} context{*this,sample};
         BattleMainServices services;services.actors=nativeBattleActorServices(vm);services.user=&context;
@@ -1186,6 +1234,7 @@ struct TrioAttackRuntime {
             }
             if(fn==0x801a836c)return r.updateAudience();
             if(fn==0x80203aa0){if(packedBattleBreakSlotIdleMain(nativeBattleActorServices(r.vm)))return true;r.pending=fn;return false;}
+            if(fn==0x801024f0)return r.displayPrefix();
             r.pending=fn;return false; // Real stage/map/render/audio providers remain required.
         };
         pending=0;
@@ -1198,7 +1247,7 @@ struct TrioAttackRuntime {
             if(physical)sample=*physical;else {sample.snapshot.buttons=uint16_t(triggers);sample.pressed=triggers;}
             vm.gp.timestamp=time*eventClockRate(243000000);completionPass(sample);
         }
-        if(!pending){if(sampledAt!=time){sampledAt=time;checkBrokenUnits();BattlePadSample sample;if(physical)sample=*physical;else {sample.snapshot.buttons=uint16_t(triggers);sample.pressed=triggers;}readPad(Battle+0xf2c,generalPad);generalPad.update(sample);writePad(Battle+0xf2c,generalPad);history=generalPad.triggers;vm.gp.timestamp=time*eventClockRate(243000000);if(word(Battle+4)==3)ending();else if(!done){if(word(Battle+0xf20)<0x06000007)enemyAction();else postAction();}else handoff();readPad(Battle+0x1d1c,privatePad);privatePad.update(sample);writePad(Battle+0x1d1c,privatePad);actionManager();if(!updateStageObjects() && !pending)pending=0x80149798;}vm.runManager();if(hasBrokenUnit())done=false;}iconClock(time);if(pointGetClockAt!=time){pointGetClockAt=time;pointGet.tick();}if(endingFadeClockAt!=time){endingFadeClockAt=time;endingFade.tick(60);}stageBackground.recalculate();stageForeground.recalculate();publish(s);
+        if(!pending){if(sampledAt!=time){sampledAt=time;checkBrokenUnits();BattlePadSample sample;if(physical)sample=*physical;else {sample.snapshot.buttons=uint16_t(triggers);sample.pressed=triggers;}readPad(Battle+0xf2c,generalPad);generalPad.update(sample);writePad(Battle+0xf2c,generalPad);history=generalPad.triggers;vm.gp.timestamp=time*eventClockRate(243000000);if(word(Battle+4)==3)ending();else if(!done){if(word(Battle+0xf20)<0x06000007)enemyAction();else postAction();}else handoff();readPad(Battle+0x1d1c,privatePad);privatePad.update(sample);writePad(Battle+0x1d1c,privatePad);actionManager();if(!updateStageObjects() && !pending)pending=0x80149798;}vm.runManager();if(!pending && gaugeClockAt!=time){gaugeClockAt=time;BattleHpGaugeServices gauge;gauge.actors=nativeBattleActorServices(vm);gauge.interpolate=[](void*,int32_t mode,int32_t step,int32_t duration,float start,float end)->std::optional<float>{return battleHpGaugeCurve(mode,step,duration,start,end);};for(int32_t id=0;id<64;++id){const auto u=battleRegistryUnit(word(0x8041eb90),id,gauge.actors);if(u)packedBattleHpGaugeMain(u,gauge);}}if(hasBrokenUnit())done=false;}iconClock(time);if(pointGetClockAt!=time){pointGetClockAt=time;pointGet.tick();}if(endingFadeClockAt!=time){endingFadeClockAt=time;endingFade.tick(60);}stageBackground.recalculate();stageForeground.recalculate();publish(s);
     }
     void publish(ProfessorStory& s){for(unsigned id=1;id<7;++id){const uint32_t u=word(Battle+0x20+4*id);if(!u){s.actors[visual[id]].hidden=true;continue;}for(unsigned axis=0;axis<3;++axis)s.actors[visual[id]].position[axis]=real(u+0x3c+4*axis);s.actors[visual[id]].yaw=byte(u+0x189)==1?90:270;s.actors[visual[id]].battleFlags=word(u+0x1c);for(unsigned axis=0;axis<3;++axis){s.actors[visual[id]].battleRotation[axis]=real(u+0x60+4*axis)+real(u+0x6c+4*axis);s.actors[visual[id]].battlePivot[axis]=real(u+0x78+4*axis);s.actors[visual[id]].battleScale[axis]=(axis<2?real(u+0x114):1.f)*real(u+0x9c+4*axis)*real(u+0x90+4*axis);s.actors[visual[id]].battleDisplayOffset[axis]=real(u+0x54+4*axis);}}}
 };

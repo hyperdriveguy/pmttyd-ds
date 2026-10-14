@@ -1083,3 +1083,8 @@ add_executable(opening_house_pcm_native_stub_tests tests/opening_house_pcm_nativ
 target_include_directories(opening_house_pcm_native_stub_tests PRIVATE tests/stubs/opening_house_pcm include)
 target_compile_options(opening_house_pcm_native_stub_tests PRIVATE -UNDEBUG)
 add_test(NAME opening_house_pcm_native_stub COMMAND opening_house_pcm_native_stub_tests)
+
+target_sources(ttyd_core PRIVATE source/battle_hp_gauge.cpp)
+add_executable(battle_hp_gauge_tests tests/battle_hp_gauge_tests.cpp)
+target_link_libraries(battle_hp_gauge_tests PRIVATE ttyd_core)
+add_test(NAME battle_hp_gauge COMMAND battle_hp_gauge_tests)

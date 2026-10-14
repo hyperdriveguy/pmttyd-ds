@@ -845,3 +845,8 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Surviving-unit status effects, icon gates and part frontier](battle/SURVIVING_UNIT_STATUS_EFFECT_ICON_AND_PART_FRONTIER.md).
 
 - [Native action registration and status-window requests](battle/NATIVE_ACTION_REGISTRATION_AND_STATUS_WINDOW.md)
+
+- [Native HP gauge history and display prefix](battle/NATIVE_HP_GAUGE_HISTORY_AND_DISPLAY_PREFIX.md): original timer producers, gauge math, status gates and pose frontier.
+- [Unit alpha construction and display size lanes](battle/UNIT_ALPHA_CONSTRUCTION_AND_DISPLAY_SIZE_STATUS_LANES.md).
+- [Forced part-pose display rate and animation frontier](battle/FORCED_PART_POSE_DISPLAY_RATE_AND_ANIMATION_FRONTIER.md).
+- [Battle pose pool provisioning and native admission](display/BATTLE_POSE_POOL_PROVISIONING_AND_TYPED_NATIVE_ADMISSION.md).

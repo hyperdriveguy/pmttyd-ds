@@ -12613,3 +12613,57 @@ and boundaries. Next profile hardware whole-loop percentiles, allocation and
 audio mutex waits; then separately address ordinary save worker ownership,
 cold PCM staging, exact actor-time caching and collision scratch reuse. These
 selected optimizations are complete; full remake remains unfinished.
+
+### 2026-10-14 — Live gauge history and surviving-unit display prefix
+
+Bound portable original HpGaugeInit/Main with signed timers,20/50 source
+durations, single-rounded linear/cubic remaining-clock curves, ratio ownership/
+completion stores and independent visibility/latch tail. Native constructor
+initializes before resource import, restores255/255 alpha and part speed1/1/
+colorffffffff defaults, and retains later writers. Existing portable direct
+damage already produces correct timers/latch; native now imports/exports
+them and before/after HP rather than losing that history. Gauges advance once
+per distinct unblocked simulation timestamp after the harness's event pass;
+this integration order is declared, not whole original manager cadence proof.
+See [native scope](behavior/battle/NATIVE_HP_GAUGE_HISTORY_AND_DISPLAY_PREFIX.md).
+
+Ending display now runs actual ordinary alpha/gauge/size11-then10/inactive
+effects/icon gates, preserving live statuses and old handles. Actual first
+part204bit2 selects btlDispAnimeSpeed and local-rate8004142c, not the initially
+guessed status-pose selector. Its source208=1 store precedes the held pose
+provider. Original field/battle pose pool registration remains absent; legacy
+raw0 is not a successful allocation. No forced sentinel-1, erased status/icon
+flag, fake pose write or engine/field success was supplied.
+
+Source alpha/status-lane, forced-pose and true256-slot/64-resource/64-texture
+pool ownership contracts delivered/indexed; EVT inbox updated. Allocation
+zeroing is source-proven. Original descriptor0 M_Z_1/PKR_Z_1 is missing from
+converted battle subsets, so next native owner must import actual defaults
+and use retained shared-history or an explicitly typed handle projection.
+First converted idle pose is not original descriptor0. Existing native
+original-asset animations remain in the presentation adapter.
+
+Validation: final make test222/222 CTest and138/138 Python pass
+(artifacts/hp-gauge-tests-final.log); prior scoped2/2 pass
+(hp-gauge-scoped-final.log). Failure/diagnostic logs retained: an early
+regression expected the wrong part branch; source inspection confirmed the
+actual bit2 flag, which remained intact. Gauge numerical checks cover provider
+aliases, exceptional ratios and source timer/flag stores. make all passes
+(hp-gauge-all.log); final make -o assets-ready all passes
+(hp-gauge-all-final.log), reusing private packs. Coherent native short-boot
+source snapshot base32b7379 plus owned overlay builds from all sources
+(hp-gauge-debug.log). Immutable3DSX/ELF+SHA256:hp-gauge-native-snapshot.
+Shared checkout contained concurrent work; commit uses only owned changes.
+
+Isolated artifacts/azahar-hp-gauge story11 script exits0 through actual trio
+attacks, original10-Star-Point reward/victory and black fade/export hold.
+Reviewed reward30/final captures with no observed exception. Emulator samples
+20FPS/4.47ms reward and60FPS/7.21ms black are observations, not physical2DS
+parity. Source ISO read-only, packs ignored; user emulator profiles/saves
+untouched. Final doc link checker output is retained in
+artifacts/hp-gauge-doc-links-final.log; scoped whitespace checks pass.
+
+Remaining: real mode1/archive2 pose registration/default resources/local-rate/
+SetAnim/Main, full per-unit/queued display and ordered teardown/field return.
+Main's elapsed-clock*rate dependency must not become per-call phase accumulation.
+Full playable original-fidelity prologue remains incomplete; goal active.

@@ -3747,3 +3747,7 @@ Consumed the source live-count/AP/motion audit and original type0 item table. Bo
 ### 2026-10-14 — Original slot constructor and idle engine pass
 
 Consumed actual SlotInit/Main/End and mapheap ownership contracts. Native now allocates/copies original three reel tables after AudienceInit, retains them through the ordinary idle pass, and reaches btlDispMain801024f0. Portable Slot_End is ready for ordered BattleEnd teardown rather than idle cleanup. [Binding scope](../behavior/battle/NATIVE_BREAK_SLOT_INITIALIZATION_IDLE_AND_ARRAY_OWNERS.md). Next bind actual surviving-unit gauge initialization/damage timers/Main and status/parts/display, then ordered draw consumers and original teardown/field restoration. Active slot states remain their source providers.
+
+### 2026-10-14 — Live gauge history and surviving-unit display prefix
+
+Bound source gauge initialization/Main and existing direct-damage timer/latch import/export. Restored alpha and part speed/color defaults, retaining live producers. Ending display now traverses actual alpha/gauge/size/status-effect/icon gates. Actual part204bit2 selects local-rate8004142c rather than the guessed status-pose selector. [Binding scope](../behavior/battle/NATIVE_HP_GAUGE_HISTORY_AND_DISPLAY_PREFIX.md). Next bind the recovered pose bank/entry/local-rate/SetAnim/Main and full display consumers/teardown; retain icon admission and old effect owners. Ordinary per-simulation gauge progression is a declared native harness ordering until full original manager cadence is bound.

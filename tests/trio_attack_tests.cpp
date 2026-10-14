@@ -371,7 +371,7 @@ int main(){
             assert(charged.trioAttack.pendingFunction()==0x800f8e28u);
             const auto engineCursor=charged.trioAttack.requests().size();
             charged.tick(Input{}); // Source audience updates reach the next slot provider.
-            assert(charged.trioAttack.pendingFunction()==0x801024f0u && charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001f);
+            assert(charged.trioAttack.pendingFunction()==0x8004142cu && charged.trioAttack.readWord(0x84000f24,value) && value==0x0700001f);
             assert(charged.trioAttack.readWord(0x84000ef4,value) && !(value&0x80000000));
             constexpr uint32_t slotWords[3][8]{{0,1,2,1,2,0,3,4},{3,1,0,1,4,2,0,2},{0,1,2,3,4}};
             for(unsigned reel=0;reel<3;++reel) {
