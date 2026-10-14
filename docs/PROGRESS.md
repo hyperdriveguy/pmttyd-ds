@@ -1,3 +1,59 @@
+## 2026-10-14 — Native trio startup reaches visible original audience
+
+The previous turn made progress through audience rendering, tests and a stack
+correction; its black-screen fixture remained unresolved. This turn narrowed the
+stall to `TrioAttackRuntime::initialize` before its RAM-registration completion
+marker. Original pouch creation, intro, command setup and two physical confirm
+operations had returned. Native address-space admission was enumerating every
+byte through all semantic providers for large unmapped RAM spans.
+
+The native adapter now rejects existing RAM intersections with 64-bit half-open
+intervals and asks conservative interval probes of the four live mapping owners.
+If any live extent intersects, it retains the old readable-byte admission scan,
+including sparse/unreadable aliases. Otherwise no byte enumeration is necessary.
+Read/write ordering, packed bytes, allocation contents, script import transactions,
+original story and controls are unchanged. This is native storage policy, not a
+new recovered original VM check. See
+[admission contract](behavior/event/NATIVE_RAM_ADMISSION_INTERVAL_PREFILTER.md).
+
+Evidence: the ignored positive-pouch/source eight-member fixture now reaches RAM,
+script, allocator, camera, unit, gauge, pose, resource, callback, spotlight,
+audience, slot and attack completion markers. Its isolated50-second Azahar run
+exited0 with no native exception detected. Inspected capture
+`artifacts/azahar-audience-range/audience-source-39.png.png` shows the actual
+source-created audience with original frame assets on the upper stage; emulator
+status reports58 FPS at that capture. Later captures and trace live under the
+same isolated artifact directory. This establishes visible native audience
+output for that fixture; it does not prove normal-story admission, original
+camera/raster parity or a complete battle. The visible trio lower screen is
+still the plain native menu and upper camera framing remains wrong.
+
+Exact validation used `artifacts/audience-draw-3v804l5x`, the prior isolated source
+snapshot with committed audience/heap changes plus this owned increment.
+Regression tests compare registration with the previous readable-byte oracle
+at unaligned entry/context/GP/RAM boundaries, runtime holes and the32-bit ceiling,
+and test an unreadable context pointer lane alongside readable adjacent bytes.
+The trace-enabled first `make test` run passed283 C++ and167 Python tests.
+After removing all ignored startup/init trace code and restoring normal main,
+final `make test` exited0 with283/283 C++ and167/167 Python tests
+(`artifacts/audience-range-test-normal.log`).
+`TMPDIR="$PWD/artifacts/tmp" make all -o assets-ready
+BUILD=build-audience-draw-review TARGET=ttyd-audience-draw-review` exited0
+(`artifacts/audience-range-native-normal.log`), using already generated private
+original packs. The normal source contains no forced pouch/population/story
+fixture. `git diff --check` passed on owned changes. Scoped incremental commit
+preserves unrelated concurrent work; no extracted pixels or compiled assets are
+committed. Emulator runs use generated project-local profiles, never user saves
+or settings. Local display socket access required approved sandbox escalation.
+
+Next: extend the trio lower screen with a replay of the continuing stage/audience
+scene and original menu presentation, without another source animation/simulation
+visit. Recover/bind original camera4 framing and verify the normal battle route.
+Bind audience actor/type controls and reactions before harmful-item telegraphs,
+physical X interruption and optional audience taps. Original class/turn cadence,
+tutorial followups/field return and actual sound voice playback remain open.
+The full tutorial/real battle objective remains active and incomplete.
+
 ## 2026-10-14 — Original audience draw and native stack correction
 
 Implemented and committed `a4c2fc37`: whole original audience draw/GetFront
