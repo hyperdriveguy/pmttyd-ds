@@ -1336,3 +1336,9 @@ add_executable(battle_class_backend_tests tests/battle_class_backend_tests.cpp)
 target_link_libraries(battle_class_backend_tests PRIVATE ttyd_core)
 add_test(NAME battle_class_backend COMMAND battle_class_backend_tests)
 set_tests_properties(battle_class_backend PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Original current/requested sequence owner and source callback ordering.
+target_sources(ttyd_core PRIVATE source/runtime/original_sequence.cpp)
+add_executable(original_sequence_tests tests/original_sequence_tests.cpp)
+target_link_libraries(original_sequence_tests PRIVATE ttyd_core)
+add_test(NAME original_sequence COMMAND original_sequence_tests)

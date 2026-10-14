@@ -2440,3 +2440,28 @@ reviewed recipes; add geometry/collision and Blender animation interchange;
 expand the source music/sample catalog as content needs it; migrate remaining
 base-converter inputs toward an ISO-independent source checkout. Continue the
 original playable-prologue work separately; no full-game completion claim.
+
+## 2026-10-14 — Original sequence owner and native field Exit
+
+Implemented retained current/requested/previous IDs,32-byte work, all eight
+source callback rows and resumable original sync/Exit/publication/Init/Main
+ordering. Field battle-start requests(4,0,0) without changing current. The
+native adapter imports an explicit field snapshot, waits the prior GX queue
+through blocking Citro3D FrameBegin/empty FrameEnd, runs the complete field
+Exit leaf and publishes current4 before holding at actual battle Init80073f20.
+Finishing letterbox reads that shared current and reaches the separate sound
+clear800dc0f8. [Source](behavior/platform/ORIGINAL_SEQUENCE_TABLE_AND_FIELD_BATTLE_LIFECYCLE.md)
+and [native limits](behavior/platform/NATIVE_ORIGINAL_SEQUENCE_OWNER.md).
+
+Isolated make test passed264/264 C++ and159/159 Python; native make all
+DEBUG_SHORT_BOOT=1 passed. Isolated Azahar reached the trio battle without a
+detected native exception. Review corrected an initial VBlank-only fence to
+an actual GX queue wait. [Exact validation](PROGRESS_ARCHIVE.md#2026-10-14--original-sequence-owner-and-native-field-exit).
+
+Next: bind ordered battle Init sound/event/control/data providers, source
+Main/Exit and field return; finish letterbox sound/Key/Ctrl and real deferred
+GPU/part/material/shadow/dummy callbacks. Existing gameplay still runs through
+its native adapter while the source Init holds. Native field import/checkpoint
+reset does not certify original startup or full field lifecycle. Original
+numeric/history, event timing, raster parity and physical performance remain
+unverified. The playable original-fidelity prologue goal stays active.

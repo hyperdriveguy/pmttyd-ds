@@ -1207,6 +1207,7 @@ void Game::restore(const Progress& saved) {
     const auto retainedShadows=shadows;
     const auto retainedCameras=cameraManager;
     const auto retainedBero=beroExec;
+    const auto retainedSequence=originalSequence;
     const auto retainedSpotlight=battleSpotlight;
     const auto retainedTrioRandom=trioRandom;
     const auto retainedPublicSfx=publicSfx;
@@ -1228,6 +1229,7 @@ void Game::restore(const Progress& saved) {
     commandPalette=retainedCommandPalette;
     shadows=retainedShadows;
     cameraManager=retainedCameras;
+    originalSequence=retainedSequence;originalSequence->importNativeField(); // Native checkpoint admission resets unsaved callback history.
     beroExec=retainedBero;beroExec->unknown(); // Restore is not original get_info; unsaved transition history is unavailable.
     battleSpotlight=retainedSpotlight;
     trioRandom=retainedTrioRandom;
@@ -1646,7 +1648,7 @@ FieldBattleServices Game::fieldBattleServices() {
         auto& g=*static_cast<Game*>(p);g.fieldParties.control(enabled);g.partnerFieldControl=g.fieldParties.controlsEnabled();
     };
     s.soundFlag=[](void* p,uint32_t mask) {static_cast<Game*>(p)->fieldSoundFlags|=mask;};
-    s.setSequence=[](void* p,int32_t sequence) {static_cast<Game*>(p)->fieldSequence=sequence;};
+    s.setSequence=[](void* p,int32_t sequence) {auto& g=*static_cast<Game*>(p);g.fieldSequence=sequence;g.originalSequence->request(sequence,0,0);};
     s.sequence=[](void* p)->int32_t {return static_cast<Game*>(p)->fieldSequence;};
     s.stopBattleBgm=[](void* p) {static_cast<Game*>(p)->fieldBgmStopRequested=true;};
     s.postMario=[](void* p) {static_cast<Game*>(p)->fieldPostRequested=true;};
@@ -2240,6 +2242,7 @@ void Game::tick(const Input& rawInput) {
             if(trioCommands.state==TrioBattleCommands::State::AttackReady && progress.originalPouch && !trioAttack.active() && !trioAttack.finished())progress.originalPouch->half(0x70,int16_t(progress.hp)); // Current field HP enters the original resource snapshot once.
             const auto partyAppearance=fieldPartyAppearanceServices();
             if(trioCommands.state==TrioBattleCommands::State::AttackReady && trioAttack.begin(trioCommands,trioBattleIntro,progress.hp,progress.originalPouch,&professorStory.actors[3].npcBattleFlags,&fieldMarioBattle,&fieldParties,&partyAppearance,battleSpotlight,trioRandom,publicSfx,shadows,commandPalette,cameraManager,beroExec)) {
+                trioAttack.setOriginalSequence(originalSequence);
                 const auto sample=inputProducer.channels[0].battleSample();
                 const uint32_t triggers=i.physicalSnapshot?sample.pressed:(i.confirm?0x100u:0u)|(i.cancel?0x200u:0u);
                 // Native field lens snapshot in engine units. Roll/projection-extra history

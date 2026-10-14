@@ -939,3 +939,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native original Trouble Center window and US cache](display/NATIVE_TROUBLE_CENTER_WINDOW_AND_US_CACHE.md) — four frames, original64-resource cache, proportional row pen, fresh source state reads and isolated drawing evidence; board admission remains pending.
 
 - [Native retained Trouble Center presentation](display/NATIVE_TROUBLE_CENTER_RETAINED_PRESENTATION.md), [original local icon clock](display/TROUBLE_CENTER_RETAINED_2D_ICONS_AND_LOCAL_CLOCK.md) and [menu SFX bindings](audio/TROUBLE_CENTER_MENU_SFX_BINDINGS.md) — finite menu/icon bridge and original atlas imports; native case/acceptance/audio admission remains open.
+
+- [Original sequence table and field/battle lifecycle](platform/ORIGINAL_SEQUENCE_TABLE_AND_FIELD_BATTLE_LIFECYCLE.md): recovered callback rows, fresh reads and ordered source Init/Main/Exit.
+- [Native original sequence owner](platform/NATIVE_ORIGINAL_SEQUENCE_OWNER.md): separate current/requested ownership, genuine native synchronization, field Exit and truthful battle Init hold.

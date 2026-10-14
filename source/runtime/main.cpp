@@ -170,7 +170,25 @@ int main() {
         // Catch-up cap is five SIMULATION ticks per render iteration. Only the
         // first tick receives accumulated edges; subsequent ticks keep held state.
         while(accumulator>=1./60 && metrics.steps<5) {
-            if(frontend.screen==ttyd::FrontScreen::Playing){audio.bindFieldMarioMotion(game);renderer.bindFieldItemGet(game,audio);renderer.advanceTutorialAnimations(game);game.tick(pending);
+            if(frontend.screen==ttyd::FrontScreen::Playing){
+                // Scoped native sequence transition: genuine GPU synchronization and
+                // complete field Exit; battle Init remains a separate provider wait.
+                // Existing demo gameplay is still an adapter, not full source seqMain.
+                if(game.originalSequence->state.requested!=game.originalSequence->state.current || game.originalSequence->pending()){
+                    ttyd::OriginalSequenceServices sequence;sequence.user=&game;
+                    sequence.drawSync=[](void*){
+                        // Blocking FrameBegin waits the previous GX command queue.
+                        // Close this empty frame before the ordinary renderer begins.
+                        if(!C3D_FrameBegin(0))return false;
+                        C3D_FrameEnd(0);return true;
+                    };
+                    sequence.callback=[](void* user,uint32_t identity,ttyd::OriginalSequenceWork&){
+                        if(identity!=0x80007390)return false;
+                        ttyd::originalFieldSequenceExit(static_cast<ttyd::Game*>(user)->fieldSystemFlags);return true;
+                    };
+                    game.originalSequence->main(sequence);
+                }
+                audio.bindFieldMarioMotion(game);renderer.bindFieldItemGet(game,audio);renderer.advanceTutorialAnimations(game);game.tick(pending);
                 renderer.advanceFieldIcons();audio.tickKeyItemAudio(ttyd::TickRate);renderer.advanceFieldItemPresentation();}
             else {
                 ++frontTicks;

@@ -13448,3 +13448,68 @@ restore is deliberately not a false get_info reset. Native letterbox queries
 only proven bit1, not an invented whole word or Scene-derived value. The other
 sequence/Key/ability/audio globals and deferred GPU/ordered field return still
 need actual providers. No new ISO payload/assets committed.
+
+## 2026-10-14 — Original sequence owner and native field Exit
+
+`OriginalSequence` separates next/current/previous and source arguments/work,
+retains captured callback identities and completed prefixes, and uses all
+original table80304400 rows. Missing sync prevents Exit/publication; missing
+Exit prevents publication; missing Init retains new current and reset work;
+missing Main retains the selected callback. Tests cover fresh reads after
+callback mutations, new requests during a held Init, startup-1, invalid table
+memory, equal-sequence Main, all eight rows and native restore owner identity.
+No row clamp, whole-callback no-op, Scene-derived current or direct teardown.
+
+Game preserves shared owner identity across restore but explicitly imports a
+native field snapshot2 and discards unsaved callback history. The original
+field battle-start adapter requests(4,0,0). Native main's blocking
+`C3D_FrameBegin(0)` waits the preceding GX queue; empty `C3D_FrameEnd(0)` closes
+that frame before normal rendering. Complete field Exit clears GP.word0 bit2
+in the retained native GP adapter. Source current4 publication happens before
+missing battle Init80073f20. Existing demo gameplay still follows its separate
+adapter, so this is not a completed original outer sequence lifecycle.
+
+The finishing integration test uses its actual field battle-start request,
+injected synchronization and the real field Exit leaf. Known Bero bit1 clear
+then reads the shared current4 and suspends at sound-clear800dc0f8. Supplying
+sound resumes to GX viewport802ba56c with21 records, no repeated sequence
+reads and no duplicated sync/Exit/camera collection. Actual sound and GPU
+providers remain absent; arbitrary fields/sequence callbacks remain waits.
+
+Validation snapshot `artifacts/sequence-source/OWNED_BASE.txt` pins baseline
+728e58eb3b715143128dbc30c6d78d33f940f61e plus owned source hunks and three new
+portable files. Other pending working-tree changes were excluded. Snapshot
+reuses existing private romfs/gfx/local-assets via symlinks; private packs are
+not an independently frozen or certified original asset baseline.
+
+- `CMAKE_BUILD_PARALLEL_LEVEL=4 make test`: exit0,264/264 C++ and159/159 Python;
+  `artifacts/sequence-test.log`.
+- `make all -o assets-ready -j4 DEBUG_SHORT_BOOT=1 BUILD=build-sequence
+  TARGET=ttyd-sequence`: exit0; final `artifacts/sequence-build-final.log`.
+  The final fence correction changes only native main.cpp, excluded from the
+  host core build. A later missing-provider comment correction changes no
+  executable tokens. Immutable binaries/source hashes:
+  `artifacts/sequence-validated/manifest.json`.
+- Independent source review found `C3D_FrameSync()` waits display/VBlank
+  counters, not GPU completion. Corrected before final native validation;
+  reviewer checked installed Citro3D disassembly and confirmed blocking
+  FrameBegin waits `gxCmdQueueWait(-1)` and empty FrameEnd closes the frame
+  without target transfers. Portable captures/order passed review.
+- Isolated Azahar, immutable3DSX, fixture
+  `artifacts/fixtures/underground-trio-story11.bin`, seconds15,
+  `tests/azahar_trio_battle_intro.py`: exit0, no detected native exception.
+  `artifacts/sequence-emulator-final.log`; captures in
+  `artifacts/azahar-sequence-trio`. Viewed `battle-intro-60.png`: original
+  underground stage, Mario/Goombella and three enemy actors are visible;
+  the existing attack-provider notice remains. This verifies native entry
+  continuity, not private sequence stores, Init completion, original timing,
+  battle exit, pixels or physical performance. Initial sandbox Xvfb socket
+  failure is recorded in `artifacts/sequence-emulator.log`; isolated retry
+  with display access succeeded. User profiles/saves were untouched.
+- Contract local links and scoped diff-check pass. ISO remained read-only;
+  no new asset payloads or extracted/compiled packs are committed.
+
+Next: complete actual battle Init/Main/Exit services and source outer-loop
+admission; sound/Key/Ctrl, full original transition histories, deferred GPU/
+material/part/shadow/dummy, then ordered field return. Full EVT-01 and the
+original-fidelity prologue goal remain open.

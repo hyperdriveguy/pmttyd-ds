@@ -473,25 +473,37 @@ int main(){
             assert(std::count_if(charged.trioAttack.requests().begin(),charged.trioAttack.requests().end(),[](const auto& request){return request.function==0x8003ed2c && !request.rawOperands.empty() && request.rawOperands[0]==0;})==callsBeforeCameraResume);
             charged.trioAttack.tick((charged.ticks+4)*1000/60,charged.trioBattleIntro);
             assert(charged.trioAttack.pendingFunction()==0x8007ac40 && queue->count()==20 && !charged.cameraManager->currentIndex());
+            assert(charged.originalSequence->state.current==2 && charged.originalSequence->state.requested==4);
+            unsigned sequenceSyncs=0;
+            struct SequenceFixture {Game* game;unsigned* syncs;} sequenceFixture{&charged,&sequenceSyncs};
+            OriginalSequenceServices sequenceServices;sequenceServices.user=&sequenceFixture;
+            sequenceServices.drawSync=[](void* user){++*static_cast<SequenceFixture*>(user)->syncs;return true;};
+            sequenceServices.callback=[](void* user,uint32_t identity,OriginalSequenceWork&){
+                if(identity!=0x80007390)return false;
+                originalFieldSequenceExit(static_cast<SequenceFixture*>(user)->game->fieldSystemFlags);return true;
+            };
+            assert(!charged.originalSequence->main(sequenceServices) && sequenceSyncs==1);
+            assert(charged.originalSequence->state.current==4 && charged.originalSequence->pending()==0x80073f20);
+            assert(!charged.originalSequence->main(sequenceServices) && sequenceSyncs==1); // No replay of sync/Exit/publication.
             charged.beroExec->onOff(1,1); // Explicit original resolved clear request restores knowledge of consumer bit1.
             charged.trioAttack.tick((charged.ticks+4)*1000/60,charged.trioBattleIntro);
-            assert(charged.trioAttack.pendingFunction()==0x8002e210 && queue->count()==20); // Current sequence remains an independent owner.
+            assert(charged.trioAttack.pendingFunction()==0x800dc0f8 && queue->count()==20); // Retained current4 reaches the separate sound-clear provider.
             struct LetterboxFixture {Game* game;uint32_t sequenceReads=0,soundClears=0;} fixture{&charged};
             CameraLetterboxServices supplied;supplied.user=&fixture;
             supplied.partySlot0=[](void* user)->std::optional<uintptr_t>{return reinterpret_cast<uintptr_t>(static_cast<LetterboxFixture*>(user)->game->fieldPartyState().pointer(0));};
             supplied.query=[](void* user,LetterboxQuery query,uintptr_t)->std::optional<int32_t>{
                 auto& fixture=*static_cast<LetterboxFixture*>(user);
                 if(query==LetterboxQuery::BeroExec)return 0; // Explicit fixture value, never inferred from native scene.
-                if(query==LetterboxQuery::Sequence){++fixture.sequenceReads;return 4;}
+                if(query==LetterboxQuery::Sequence){++fixture.sequenceReads;return fixture.game->originalSequence->state.current;}
                 if(query==LetterboxQuery::Rate)return 60;return {};
             };
             supplied.soundFlag=[](void* user,bool set,uint16_t mask){assert(!set && mask==0x20);++static_cast<LetterboxFixture*>(user)->soundClears;return true;};
             charged.trioAttack.setCameraLetterboxServices(supplied);
             charged.trioAttack.tick((charged.ticks+5)*1000/60,charged.trioBattleIntro);
             assert(charged.trioAttack.pendingFunction()==0x802ba56c && queue->count()==21 && charged.cameraManager->currentIndex()==0);
-            assert(fixture.sequenceReads==2 && fixture.soundClears==1);
+            assert(fixture.sequenceReads==0 && fixture.soundClears==1);
             charged.trioAttack.tick((charged.ticks+6)*1000/60,charged.trioBattleIntro);
-            assert(queue->count()==21 && fixture.sequenceReads==2 && fixture.soundClears==1); // No replay while actual GX viewport is missing.
+            assert(queue->count()==21 && fixture.sequenceReads==0 && fixture.soundClears==1); // No replay while actual GX viewport is missing.
 
             assert(charged.trioAttack.readWord(0x84201204,value) && (value&3)==2); // Source name request consumed; forced path stays active.
             assert(charged.trioAttack.readWord(0x84000ef4,value) && (value&0x80000000));

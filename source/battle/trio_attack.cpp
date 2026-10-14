@@ -145,6 +145,7 @@ struct TrioAttackRuntime {
     bool cameraHistoryComplete=true,cameraUpdateAvailable=false,cameraMainWaiting=false;
     std::shared_ptr<CameraManager> cameras;
     std::shared_ptr<FieldBeroExec> bero;
+    std::shared_ptr<OriginalSequence> sequence;
     CameraMainCursor cameraMainCursor;
     CameraDrawCursor cameraDrawCursor;
     CameraLetterboxCursor letterboxCursor;
@@ -1629,9 +1630,10 @@ struct TrioAttackRuntime {
                 provider.query=[](void* user,LetterboxQuery query,uintptr_t party)->std::optional<int32_t>{
                     const auto& r=*static_cast<TrioAttackRuntime*>(user);
                     if(query==LetterboxQuery::BeroExec && r.bero){const auto bit=r.bero->read(1);if(bit)return int32_t(*bit);return {};}
+                    if(query==LetterboxQuery::Sequence && r.sequence)return r.sequence->state.current;
                     if(query==LetterboxQuery::PartyFlags && party)return int32_t(reinterpret_cast<const FieldPartyActor*>(party)->word(0));
                     if(query==LetterboxQuery::Rate)return 60; // Explicit native NTSC simulation adapter.
-                    return {}; // Actual BeroEXEC/current sequence/Key/Ctrl producers must be supplied.
+                    return {}; // Actual Key39/Ctrl38 producers remain separate.
                 };
             }
             return updateCameraLetterbox(*r.cameras->camera(8),queue,provider,r.letterboxCursor);
@@ -1695,6 +1697,7 @@ void TrioAttack::setCameraDepthSnapshot(std::optional<CameraDepthSnapshot> snaps
 }
 const CameraDepthSnapshot* TrioAttack::cameraDepthSnapshot()const{if(runtime_ && (runtime_->pending==0x8000f454 || runtime_->cameraDrawWaiting))return &runtime_->cameras->camera(4)->matrices;return runtime_ && runtime_->cameraDepth?&*runtime_->cameraDepth:nullptr;}
 void TrioAttack::setCameraLetterboxServices(const CameraLetterboxServices& services){if(runtime_)runtime_->letterboxServices=services;}
+void TrioAttack::setOriginalSequence(std::shared_ptr<OriginalSequence> sequence){if(runtime_)runtime_->sequence=std::move(sequence);}
 const CameraManager* TrioAttack::cameras()const{return runtime_?runtime_->cameras.get():nullptr;}
 const DisplayQueue* TrioAttack::displayQueue()const{return runtime_?&runtime_->displayQueue:nullptr;}
 std::optional<TrioShadowDrawRequest> TrioAttack::shadowDrawRequest()const{return runtime_?runtime_->shadowDraw:std::nullopt;}
