@@ -143,6 +143,7 @@ void HarborTutorialPacked::capture(HarborTutorial& scene){
  auto& c=scene.camera;c.flags=word(Battle+0x2754);c.priority=int32_t(word(Battle+0x275c));c.mode=int32_t(word(Battle+0x2760));c.owner=int32_t(word(Battle+0x2764));c.target=int32_t(word(Battle+0x2768));c.ownerPart=int32_t(word(Battle+0x276c));c.targetPart=int32_t(word(Battle+0x2770));c.zoom=real(Battle+0x2778);uint16_t halfword=0;required(vm.memory.readHalf(Battle+0x277c,halfword));c.speed=int16_t(halfword);required(vm.memory.readHalf(Battle+0x277e,halfword));c.remaining=int16_t(halfword);for(unsigned i=0;i<3;++i){c.home[i]=real(Battle+0x2810+4*i);c.hit[i]=real(Battle+0x281c+4*i);}
 }
 bool HarborTutorialPacked::invoke(EventEntry& e,uint32_t function,int32_t first,int32_t& result){
+ if(function==0x80107708 || function==0x80107758 || function==0x80107660 || function==0x80107548)return actionEvent(e,function,result);
  if(function==0x8010a78c){
   BattleCheckDamageEventServices services;services.units=nativeBattleUnitEventServices(vm);services.user=this;
   services.part=[](void* self,uint32_t u,int32_t id){auto& p=*static_cast<HarborTutorialPacked*>(self);return packedUnitPart(u,id,nativeBattleActorServices(p.vm).memory);};

@@ -104,8 +104,24 @@ void nativePlayerAttack(){
  assert(scene.pendingService==0x80107708 && (word(0x84016f4c)>>24)==1 && scene.actors[1].hp==7);
  bool marioRoot=false;for(const auto& request:scene.requests)if(request.owner==1 && request.function==scene.pendingService)marioRoot=true;assert(marioRoot);
 }
+void sampledPlayerResult(bool success){
+ auto pouch=initializeProloguePouch("Yoshi");pouch.half(0x70,7);HarborTutorial scene;BattlePadSample quiet;
+ assert(scene.beginFromPouch(0,pouch,4));
+ for(unsigned n=0;n<1500 && !scene.introComplete;++n){if(scene.pendingService==0x80106980)scene.animationComplete(1);scene.tick((n+1)*1000/60,n%4==0?0x100:0,&quiet);}
+ assert(scene.introComplete && scene.openWeaponMenu(0));scene.weaponMenuPresented();BattlePadSample a;a.snapshot.buttons=BattleButtonA;a.pressed=BattleButtonA;scene.tick(scene.now+17,0,&a);assert(scene.inputWeaponMenu(a)==1);
+ // Target selection can remain open while the actual general history ages;
+ // the menu confirmation must not become an action-command press fixture.
+ for(unsigned n=0;n<30;++n)scene.tick(scene.now+17,0,&quiet);
+ assert(scene.dispatchSelectedAttack());bool pressed=false;uint32_t v=0;auto word=[&](uint32_t at){assert(scene.readPackedWord(at,v));return v;};
+ for(unsigned n=0;n<200;++n){const bool nowPress=success && !pressed && (word(0x84001f50)&1);scene.tick(scene.now+17,0,nowPress?&a:&quiet);pressed=pressed || nowPress;if(scene.pendingService && scene.pendingService!=0x80107708)break;}
+ std::cout<<"Sampled Jump "<<(success?"success":"failure")<<" frontier: "<<std::hex<<scene.pendingService<<std::dec<<"\n";
+ assert(!scene.failed && scene.attackActive && scene.pendingService && scene.pendingService!=0x80107708 && scene.result==0);
+ assert(word(0x84001cb8)==(success?2u:0u) && word(0x84001cb4)==(success?1u:0u));
+ assert(word(0x84001ce8)==(success?3u:2u) && word(0x8401900c)==0);
+ assert(scene.actors[1].hp==7 && scene.actors[0].hp==5);
+}
 int main(){
- assert(loadHarborTutorialAssets("romfs"));ordinaryCrumpImpact();retainedLethalImpact();nativeWeaponRows();nativePlayerAttack();HarborTutorial t;assert(t.begin(0,7));
+ assert(loadHarborTutorialAssets("romfs"));ordinaryCrumpImpact();retainedLethalImpact();nativeWeaponRows();nativePlayerAttack();sampledPlayerResult(false);sampledPlayerResult(true);HarborTutorial t;assert(t.begin(0,7));
  for(uint64_t tick=1;tick<300 && !t.message.active();++tick)t.tick(tick*1000/60,0);
  uint32_t packedSystem=0;
  assert(!t.failed);assert(t.initialized);assert(t.actors[0].hp==5 && t.actors[0].maxHp==5);

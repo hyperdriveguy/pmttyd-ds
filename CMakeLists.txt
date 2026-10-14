@@ -1166,3 +1166,8 @@ target_sources(ttyd_core PRIVATE source/display/actor_animation_cache.cpp)
 add_executable(actor_animation_cache_tests tests/actor_animation_cache_tests.cpp)
 target_link_libraries(actor_animation_cache_tests PRIVATE ttyd_core)
 add_test(NAME actor_animation_cache COMMAND actor_animation_cache_tests)
+
+target_sources(ttyd_core PRIVATE source/battle/battle_action_events.cpp source/battle/harbor_tutorial_action.cpp)
+add_executable(battle_action_events_tests tests/battle_action_events_tests.cpp)
+target_link_libraries(battle_action_events_tests PRIVATE ttyd_core)
+add_test(NAME battle_action_events COMMAND battle_action_events_tests)

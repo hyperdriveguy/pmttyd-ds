@@ -109,3 +109,41 @@ original executed observations. UI help,grade-byte/result-code producers,
 unit lookup/translation/global state mutation,pause and actual command-main
 credits remain open. Original code/resources/inspection artifacts are kept
 outside source history;ISO reads are read-only.
+
+## Shared wrappers and native Harbor TimingA evaluator (2026-10-14)
+
+[`battle_action_events.cpp`](../../../source/battle/battle_action_events.cpp)
+implements the complete ResultAC, StopAC and result/count reader wrappers with
+explicit provider readiness. ResultAC captures B, loads its callback, invokes
+it when present or reads the null-callback result&2 fallback, then independently
+rereads retained B's pending bit. Scalar returns are ignored; help0 recaptures
+its own current battle/window. Unbound callbacks return no completion after
+preceding effects; they must not be blindly replayed as retry-safe transactions.
+StopAC invokes the retained delete pointer before help0 without clearing fields.
+Readers retain raw destinations, narrow signed words and never evaluate/reset.
+
+The native Harbor adapter admits the actual TimingA result8012a8c4 using source
+flags/count/result/classification, setup options, actor flags/automatic byte,
+battle flags, general30-entry trigger history and retained RNG. Unsupported
+callback/difficulty domains stay unbound. The ordinary history route requires
+an admitted current physical producer; missing input is not treated as zero
+presses. Source confusion, automatic and forced-result routes do not acquire a
+pad dependency they did not have. The native delete8012a7c0 stores state1000;
+other callbacks remain installed for the original deferred finish owner.
+
+Tests cover ignored scalar return versus fresh pending word, null-result
+fallback and separate reread, current help/window after global mutation,
+unknown providers, deferred stop preserving callbacks/count, and raw signed
+readers. Native fixtures age weapon-menu A out of the actual history, supply
+one physical sample per simulation visit, and drive either no action press or
+one press while the source option window is active. They establish result0/
+count0/class2 versus result2/count1/class3 and help0. They are controlled native
+fixtures, not measured original impact/window timing or a playable Game flow.
+
+Without ordinary physical input the actual Jump remains at ResultAC. With
+samples, its failure path advances to CheckDamage8010a78c and its success path
+to original voice request80104508. Both retain HP and story result at these
+frontiers. Complete TimingA main/private-pad/display-queue scheduling, voice,
+hits, StopAC execution in the whole graph, post-action control and original
+menu/HUD/second-screen integration remain required. No action result reader
+alone substitutes for the actual callback manager or establishes visual fidelity.

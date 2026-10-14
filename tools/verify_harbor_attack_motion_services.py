@@ -28,6 +28,17 @@ SPANS.extend([
  (0x801a1cdc,0x30,'33a3b7999c1fbf527f0fc10ddaf665d0c21e1bd2d2e43b481d2f59cc8c07896b'),
 ])
 
+# Complete result/stop/delete and stored-result/count protocol.
+SPANS.extend([
+ (0x80107708,0x50,'98b506c4515be425bda40a46dc11da265d2e8db8ddbf8fb3efb9217380207ead'),
+ (0x800fa574,0x3c,'e06ae1fbd6366bc9d95f673730e5da5f2307cf57e22b172e0c1f8f9e5d8e6cac'),
+ (0x80107758,0x30,'4d7b1e106bdb24f69e8bc557bc99d0c6c23b1f501fc01e222d70b177330724ef'),
+ (0x800fa420,0x30,'827ac29f800c2815b5866d21a5b16ced663d678704089b88efc4e8654a4e0dc4'),
+ (0x8012a7c0,0xc,'b5bed9c540056780e1b5d2a5431edf510767f94f3c7f58a08087fd321ebb3343'),
+ (0x80107548,0x34,'d22d7c93efd083c0ab04d4d0bd352908851b7b038d88851104548913da542cf4'),
+ (0x80107660,0x34,'3a2c76926cdefc97a4eef4118bbab2912529502dc8f4824e41f59ba139a299dc'),
+])
+
 def verify(iso=DEFAULT_ISO):
  with Path(iso).open('rb') as disc:
   header=disc.read(0x440)
