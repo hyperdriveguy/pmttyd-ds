@@ -1212,3 +1212,8 @@ target_sources(ttyd_core PRIVATE source/display/display_queue.cpp)
 add_executable(display_queue_tests tests/display_queue_tests.cpp)
 target_link_libraries(display_queue_tests PRIVATE ttyd_core)
 add_test(NAME display_queue COMMAND display_queue_tests)
+
+target_sources(ttyd_core PRIVATE source/battle/battle_weapon_aftereffect.cpp source/battle/harbor_tutorial_aftereffect.cpp)
+add_executable(battle_weapon_aftereffect_tests tests/battle_weapon_aftereffect_tests.cpp)
+target_link_libraries(battle_weapon_aftereffect_tests PRIVATE ttyd_core)
+add_test(NAME battle_weapon_aftereffect COMMAND battle_weapon_aftereffect_tests)

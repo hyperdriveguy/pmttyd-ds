@@ -145,6 +145,7 @@ void HarborTutorialPacked::capture(HarborTutorial& scene){
  auto& c=scene.camera;c.flags=word(Battle+0x2754);c.priority=int32_t(word(Battle+0x275c));c.mode=int32_t(word(Battle+0x2760));c.owner=int32_t(word(Battle+0x2764));c.target=int32_t(word(Battle+0x2768));c.ownerPart=int32_t(word(Battle+0x276c));c.targetPart=int32_t(word(Battle+0x2770));c.zoom=real(Battle+0x2778);uint16_t halfword=0;required(vm.memory.readHalf(Battle+0x277c,halfword));c.speed=int16_t(halfword);required(vm.memory.readHalf(Battle+0x277e,halfword));c.remaining=int16_t(halfword);for(unsigned i=0;i<3;++i){c.home[i]=real(Battle+0x2810+4*i);c.hit[i]=real(Battle+0x281c+4*i);}
 }
 bool HarborTutorialPacked::invoke(EventEntry& e,uint32_t function,int32_t first,int32_t& result){
+ if(function==0x801054e8)return aftereffectEvent(e,result);
  if(function==0x80107708 || function==0x80107758 || function==0x80107660 || function==0x80107548)return actionEvent(e,function,result);
  if(function==0x8010a78c){
   BattleCheckDamageEventServices services;services.units=nativeBattleUnitEventServices(vm);services.user=this;
@@ -156,6 +157,12 @@ bool HarborTutorialPacked::invoke(EventEntry& e,uint32_t function,int32_t first,
  if(function==0x801093a8)marioJumpUnit=actor(e); // Native sound metadata captures the actual caller unit.
  if(registry.invoke(e,function,first,result))return true;
  switch(function){
+ case 0x80113950:case 0x801138d8:{
+  const auto units=nativeBattleUnitEventServices(vm);const auto args=e.arguments,b=word(0x8041eb90);const auto rawActor=int32_t(word(args)),destination=int32_t(word(args+4));
+  const auto id=units.translate(units.user,e,rawActor);const auto u=units.unit(units.user,b,id);int32_t amount=0;
+  if(u){amount=byte(u+(function==0x80113950?0x2f9:0x2fa));const auto dealt=int32_t(word(u+0x284));if(amount>dealt)amount=dealt;}
+  units.values.store(units.values.user,e,destination,amount);result=2;return true;
+ }
  case 0x8010436c:if(!inviteApReport())return false;result=2;return true;
  case 0x80139af4:result=2;return true; // Complete original li2/blr AP-recovery stub.
  case 0x80139898:packedBattleAudienceAcrobatNoTry(nativeBattleActorServices(vm));result=2;return true;

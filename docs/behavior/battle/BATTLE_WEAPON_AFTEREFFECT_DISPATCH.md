@@ -90,3 +90,45 @@ mandatory draws with chance0/forced requests; force short-circuit reads; chance
 Stage setup/flag writers, target event bodies, actual hazard effects, seed/call
 interleaving and original traces remain open. This is not a complete stage,
 audience, status, resource or save implementation.
+
+## Shared dispatch and Harbor completion (2026-10-14)
+
+[`battle_weapon_aftereffect.cpp`](../../../source/battle/battle_weapon_aftereffect.cpp)
+implements the complete local dispatch against retained source work and live
+weapon metadata. It preserves ordered weight loads, signed subtraction/rereads,
+force capture after the initial draw, retained inhibition, conditional B draw,
+fresh restoration, ordered destruction, three mandatory chance draws, force
+short-circuiting and fresh object gate/forced no-draw. All stage requests require
+an explicit complete provider; missing services return no completion after prior
+effects. The shared API is not a retry-safe continuation.
+
+Native Harbor uses an RNG-copy admission preview and only the exact source leaf
+exits already supported: null nozzle-direction table, nonpositive nozzle pouch
+halfword, already-falling frame flags and the original boss object-fall mask1000.
+The preview performs no live draws or source field writes, searches no alternate
+roll and never converts a selected hazard into no hazard. Unsupported spawning/
+replacement paths remain pending before live dispatch. After successful preview,
+the same dispatch consumes the actual retained RNG exactly once. This is native
+provider-admission policy, not an original extra invocation or RNG rewind.
+
+The amount wrappers for HP/FP Drain now translate the RAW actor, retain work and
+output, fetch that unit and return signed min(U8(badge),S32(dealt HP)), including
+null-unit/negative values. They do not fabricate zero, reset damage, recover
+resources or resolve the raw actor first. Native fresh zero badges therefore
+follow the original recovery-tail skips naturally.
+
+The original failed Jump now runs aftereffect, bounce/return and recovery child
+through its actual DELETE. Native fixture checks no live attack/damage root,
+Mario's original M_S_1/home position and restored wait handle, Crump HP4, dealt1,
+failure1 and battle/story result0. Deferred TimingA state1000/main callback remain;
+root deletion does not imply command-manager cleanup or turn consumption.
+An explicit controlled phase dispatch then runs original mac_0_b_t1_002 with
+its actual once-latch from that produced failure count, retaining speaker/helper
+and US dialogue. The Game does not automatically schedule these phases/menus yet.
+
+Tests cover weighted boundaries, sum0, force/inhibition, conditional B restoration,
+request order, mandatory/optional draw counts, changed stage/object force and
+unbound providers. Success still waits at original voice80104508. Native active
+hazards, complete RNG/backend interleaving, main/display/turn ownership, original
+menu/HUD and second-screen audience/item input remain open. No Azahar/Dolphin
+or complete playable battle/visual/audio fidelity claim is made from host fixtures.

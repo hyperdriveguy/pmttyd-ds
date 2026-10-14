@@ -115,15 +115,21 @@ void sampledPlayerResult(bool success){
  assert(scene.dispatchSelectedAttack());bool pressed=false;uint32_t v=0;auto word=[&](uint32_t at){assert(scene.readPackedWord(at,v));return v;};
  for(unsigned n=0;n<200;++n){const bool nowPress=success && !pressed && (word(0x84001f50)&1);scene.tick(scene.now+17,0,nowPress?&a:&quiet);pressed=pressed || nowPress;if(scene.pendingService && scene.pendingService!=0x80107708)break;}
  std::cout<<"Sampled Jump "<<(success?"success":"failure")<<" frontier: "<<std::hex<<scene.pendingService<<std::dec<<"\n";
- assert(!scene.failed && scene.attackActive && scene.pendingService && scene.pendingService!=0x80107708 && scene.result==0);
+ assert(!scene.failed && scene.result==0 && (success?(scene.attackActive && scene.pendingService==0x80104508):(!scene.attackActive && !scene.pendingService)));
  assert(word(0x84001cb8)==(success?2u:0u) && word(0x84001cb4)==(success?1u:0u));
  assert(word(0x84001ce8)==(success?3u:2u) && word(0x8401900c)==0);
  assert(scene.actors[1].hp==7 && scene.actors[0].hp==(success?5:4));
  if(!success){
-  assert(scene.pendingService==0x801054e8 && scene.failureDeclarations==1 && scene.successDeclarations==0 && word(0x84101284)==1 && word(0x841022b4)!=0);
+  assert(!scene.pendingService && !scene.attackActive && scene.failureDeclarations==1 && scene.successDeclarations==0 && word(0x84101284)==1 && word(0x841022b4)!=0);
   assert(word(0x84016020)!=0 && word(0x8401601c)==0 && word(0x84018ffc)==0 && word(0x84019000)==0 && word(0x84019004)==0);
   bool sound=false;for(const auto& request:scene.soundRequests)if(request.owner==2 && request.operation==HarborTutorialSoundRequest::Operation::Trigger){assert(request.key && !request.name.empty());sound=true;}assert(sound);
+  assert(scene.actors[1].position==scene.actors[1].home && scene.actors[1].pose=="M_S_1" && !scene.damageActive && word(0x84101290)!=0);
+  assert(word(0x84001c9c)==1000 && word(0x84001ca0)==0x8012aae0); // Main finish scheduling remains separate.
   const auto hp=scene.actors[0].hp;for(unsigned n=0;n<5;++n)scene.tick(scene.now+17,0,&quiet);assert(scene.actors[0].hp==hp && word(0x84101284)==1 && scene.failureDeclarations==1);
+  assert(scene.dispatchPhase(2,0x04000003));
+  for(unsigned n=0;n<1500 && scene.phaseActive;++n)scene.tick(scene.now+17,n%4==0?0x100:0,&quiet);
+  assert(!scene.failed && !scene.phaseActive && scene.messageOrder==std::vector<std::string>({"mac_0_b_t1_000","mac_0_b_t1_002"}));
+  assert(scene.actors[0].work[2]==1 && scene.actors[0].work[1]==0 && scene.result==0);
  }
 }
 int main(){

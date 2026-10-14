@@ -50,6 +50,7 @@ private:
  static constexpr uint32_t MenuRam=0x84600000;
  uint32_t menuTextAt=MenuRam+0x1000;std::unordered_map<uint32_t,uint32_t> menuText;
 
+ bool aftereffectEvent(EventEntry&,int32_t&);
  bool inviteApReport();
  bool actionEvent(EventEntry&,uint32_t,int32_t&);
  uint32_t damageSoundUnit=Units+0x1000;
