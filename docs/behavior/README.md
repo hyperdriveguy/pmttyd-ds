@@ -710,3 +710,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [New Game dialogue input and house framing](story/NATIVE_OPENING_INPUT_AND_FRAMING.md)
 
 - [Used awakening and prologue event owners](story/NATIVE_OPENING_AWAKENING.md)
+
+- [Native retained explicit-table selector owner](message/NATIVE_ITEM_TABLE_SELECTION_OWNER.md) and [original draw requests](message/ITEM_TABLE_SELECTION_DRAW_REQUESTS.md).

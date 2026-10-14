@@ -829,3 +829,8 @@ endif()
 add_executable(opening_wake_tests tests/opening_wake_tests.cpp)
 target_link_libraries(opening_wake_tests PRIVATE ttyd_core)
 add_test(NAME opening_wake COMMAND opening_wake_tests)
+
+target_sources(ttyd_core PRIVATE source/item_selection_runtime.cpp)
+add_executable(item_selection_runtime_tests tests/item_selection_runtime_tests.cpp)
+target_link_libraries(item_selection_runtime_tests PRIVATE ttyd_core)
+add_test(NAME item_selection_runtime COMMAND item_selection_runtime_tests)
