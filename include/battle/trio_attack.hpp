@@ -23,6 +23,7 @@
 #include "battle_display_footer.hpp"
 #include "battle_audience_draw.hpp"
 #include "battle_audience_callback.hpp"
+#include "battle_stage_display.hpp"
 #include "battle_audience_aux_callback.hpp"
 #include "battle_part_display.hpp"
 namespace ttyd {
@@ -81,6 +82,7 @@ public:
     std::optional<uint32_t> sourceIconCamera(std::optional<uint32_t> index={}) const;
     bool prepareAudienceDrawing(const BattleAudienceDrawServices&) const;
     bool resumeAudienceCallback(uint32_t camera,uint32_t userdata,const BattleAudienceCallbackServices&) const;
+    bool resumeStageDisplay(uint32_t camera,uint32_t callback,uint32_t userdata,const BattleStageDisplayServices&) const;
     bool resumeAudienceAux(uint32_t camera,uint32_t callback,uint32_t userdata,const BattleAudienceAuxServices&) const;
     bool resumePartDisplay(uint32_t camera,uint32_t part,const BattlePartDisplayServices&) const;
     const BattlePose* battlePose(uint32_t part) const;

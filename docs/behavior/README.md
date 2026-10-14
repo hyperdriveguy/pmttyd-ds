@@ -1124,3 +1124,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Original stage dark/light callbacks](display/BATTLE_STAGE_DARK_AND_LIGHT_CALLBACKS.md) — unconditional dark quads, retained stage alpha, light-entry loop and exact shared GX state; native callback binding remains open.
 
 - [Shared normal-position and complete collision owner](field/SHARED_BERO_NORMAL_POSITION_AND_COMPLETE_COLLISION_OWNER.md) — staged room provenance, actual named ROAD geometry and same-VM actor/camera publication.
+
+- [Stage-light SDK axis rotation/normalize](display/STAGE_LIGHT_AXIS_ROTATION_AND_NORMALIZE.md) — exact original arithmetic graph and explicit native estimate/libm boundary.
+- [Native stage dark/light continuations](display/NATIVE_STAGE_DARK_AND_LIGHT_CONTINUATIONS.md) — retained live stage owners, actual direct quads/triangles and shared depth/blend/channel state.

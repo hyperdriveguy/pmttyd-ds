@@ -49,15 +49,16 @@ bool Renderer::finishingCameraPacket(const NativeCameraPacket& p){
 }
 bool Renderer::finishingDisplayPipeline(const NativeDisplayPipeline& p){
     unsigned mask=(p.color?GPU_WRITE_RED|GPU_WRITE_GREEN|GPU_WRITE_BLUE:0)|(p.alpha?GPU_WRITE_ALPHA:0)|(p.depthWrite?GPU_WRITE_DEPTH:0);
-    C3D_DepthTest(p.depth,p.compare==3?GPU_GEQUAL:GPU_ALWAYS,GPU_WRITEMASK(mask));
+    const auto compare=p.compare==1?GPU_GREATER:p.compare==3?GPU_GEQUAL:p.compare==6?GPU_LEQUAL:GPU_ALWAYS;
+    C3D_DepthTest(p.depth,compare,GPU_WRITEMASK(mask));
     // GX location is retained separately. PICA's constant-reference early test
     // is not the GX before-alpha control; admitted class pairings use late test.
     C3D_EarlyDepthTest(false,GPU_EARLYDEPTH_GEQUAL,0);
     C3D_AlphaTest(p.alphaReject,p.alphaReject?GPU_GEQUAL:GPU_ALWAYS,p.alphaReject?128:0);
-    auto factor=[](int32_t value){return value==0?GPU_ZERO:value==1?GPU_ONE:value==4?GPU_SRC_ALPHA:value==5?GPU_ONE_MINUS_SRC_ALPHA:value==6?GPU_DST_ALPHA:GPU_ONE_MINUS_DST_ALPHA;};
+    auto factor=[](int32_t value){return value==0?GPU_ZERO:value==1?GPU_ONE:value==2?GPU_SRC_COLOR:value==4?GPU_SRC_ALPHA:value==5?GPU_ONE_MINUS_SRC_ALPHA:value==6?GPU_DST_ALPHA:GPU_ONE_MINUS_DST_ALPHA;};
     const auto source=factor(p.sourceBlend),destination=factor(p.destinationBlend);
     if(p.logicOr)C3D_ColorLogicOp(GPU_LOGICOP_OR);
-    else C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,source,destination,source,destination);
+    else C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,source,destination,p.sourceBlend==2?GPU_SRC_ALPHA:source,destination);
     return true;
 }
 void Renderer::resumeFinishingCamera(const Game& game){
@@ -81,6 +82,13 @@ void Renderer::resumeFinishingCamera(const Game& game){
     services.display.callback=[](void* user,uint32_t camera,uint32_t identity,uint32_t borrowed){
         const auto& b=*static_cast<DisplayBridge*>(user);
         auto& renderer=*static_cast<Renderer*>(b.pipeline->user);
+        if(identity==0x80138da8 || identity==0x801389a0){
+            BattleStageDisplayServices stage;stage.user=&renderer;
+            stage.gx=[](void* u,const ShadowGXRequest& r){return static_cast<Renderer*>(u)->finishingShadowRequest(r);};
+            stage.primitive=[](void* u,const BattleStagePrimitive& r){return static_cast<Renderer*>(u)->finishingStagePrimitive(r);};
+            stage.math=[](void*,BattleStageMath& r){return nativeBattleStageMath(r);};
+            return b.game->trioAttack.resumeStageDisplay(camera,identity,borrowed,stage);
+        }
         if(identity==0x801a38f8){
             BattleAudienceCallbackServices audience;audience.user=&renderer;
             audience.request=[](void* user,const BattleAudienceGXRequest& r){

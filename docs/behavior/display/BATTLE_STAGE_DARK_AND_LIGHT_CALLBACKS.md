@@ -46,10 +46,10 @@ Capture B once, retain W=B+163fc. camGetPtr(4) and GPU prefix ALWAYS execute eve
 - Axis[R+88..90]-[R+58..60], component single subtractions. Temporary literal vector copied from802f37a8 (threezero words) is overwritten by those3differences before use.
 - Read widthFLOAT[R+40]. Copy original vectorFLOAT[R+b8..c0].
 - Center=singleFMA(2, end-start, start) per component, where start=[R+58..60],end=[R+88..90]. Source2 literal80422b20.
-- Previous=center+originalVector*width (singleFMA each component).
+- At the start of EACH segment, previous=center+currentVector*width (singleFMA each component), using that segment's freshly reread center and the unrotated local vector. It is recomputed, not simply the preceding triangle's endpoint when center changes.
 - For each18segments: recompute start/end/differences and center from live retained R; call PSMTXRotAxisRad8029e1c0(localMatrix,axis,.3490658402442932f literal80422b24), then PSMTXMultVec8029e6a4(localMatrix,vector,vector), then PSVECNormalize8029ebe4(vector,vector).
 - Current=center+normalizedRotatedVector*width via source singleFMA. Read RGB U8[R+28..2a] for this segment, alpha0.
-- GXBegin(0x90,0,3), FIFO vertices start,previous,current with same RGBA(RGB,0) each. Retain current as previous for next segment. Exactly18 triangles/54vertices per active entry.
+- GXBegin(0x90,0,3), FIFO vertices start,previous,current with same RGBA(RGB,0) each. The normalized rotated vector becomes next segment's local vector; previous is recomputed with fresh center before the next rotation. Exactly18 triangles/54vertices per active entry.
 - The axis and width are initialized once per active entry before segment loop; start/end/center are reread per segment, as disassembly shows. Only local scratch vector evolves. Calls may expose external mutations, so do not snapshot every R field once as a claimed exact continuation.
 
 Source R offsets above avoid inventing unknown semantic field names; for E-relative offsets subtract4 (flagE0,widthE3c,startE54,endE84,vectorEb4,RGBE24). No persistent Work stores in callback. Native current original initializer clears all12 Eflags; proving they remain inactive requires actual live storage/writer evidence, not guessed emptiness. Even proven inactive only removes triangle loop, not GPU setup. Full active numeric rotation/normalize and raster behavior remain explicit provider work.

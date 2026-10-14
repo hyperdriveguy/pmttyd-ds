@@ -176,6 +176,7 @@ struct TrioAttackRuntime {
     ShadowMainCursor shadowMainCursor;
     ShadowDisplayCursor shadowDisplayCursor;
     BattleAudienceCallbackCursor audienceCallbackCursor;
+    std::array<BattleStageDisplayCursor,2> stageDisplayCursors;
     std::array<BattleAudienceAuxCursor,2> audienceAuxCursors;
     BattlePartDisplayCursor partDisplayCursor;
     BattlePoseInnerCursor poseInnerCursor;
@@ -1843,6 +1844,8 @@ struct TrioAttackRuntime {
                     next=cameraDrawCursor.display.callback;
                     if(next==0x8002d3d8 && shadowDisplayCursor.active)next=shadowDisplayCursor.pending;
                     if(next==0x801a38f8 && audienceCallbackCursor.active)next=audienceCallbackCursor.pending;
+                    if(next==0x80138da8 && stageDisplayCursors[0].active)next=stageDisplayCursors[0].pending;
+                    if(next==0x801389a0 && stageDisplayCursors[1].active)next=stageDisplayCursors[1].pending;
                     if(next==0x801a37f0 && audienceAuxCursors[0].active)next=audienceAuxCursors[0].pending;
                     if(next==0x801a36c8 && audienceAuxCursors[1].active)next=audienceAuxCursors[1].pending;
                     if(next==0x80101774 && partDisplayCursor.active)next=partDisplayCursor.pending;
@@ -1908,6 +1911,18 @@ void TrioAttack::setOriginalSequence(std::shared_ptr<OriginalSequence> sequence)
 void TrioAttack::setSoundFlags(std::shared_ptr<SourceSoundFlags> flags){if(runtime_)runtime_->soundFlags=std::move(flags);}
 bool TrioAttack::finishingDrawPending() const{return runtime_ && (runtime_->cameraDrawWaiting || runtime_->pending==0x8000f454);}
 void TrioAttack::resumeFinishingDraw(const CameraDrawServices& services) const{if(finishingDrawPending())runtime_->continueFinishingDraw(&services);}
+bool TrioAttack::resumeStageDisplay(uint32_t camera,uint32_t callback,uint32_t userdata,const BattleStageDisplayServices& source) const{
+    if(!runtime_ || !runtime_->cameras || (callback!=0x80138da8 && callback!=0x801389a0))return false;
+    const auto& call=runtime_->cameraDrawCursor.display;
+    if(!call.invoking || call.callback!=callback || call.camera!=camera || call.userdata!=userdata)return false;
+    struct Bridge {TrioAttackRuntime* runtime;const BattleStageDisplayServices* source;} bridge{runtime_.get(),&source};
+    BattleStageDisplayServices services;services.actors=nativeBattleActorServices(runtime_->vm);services.user=&bridge;
+    services.camera=[](void* u,uint32_t i)->const CameraState*{return static_cast<Bridge*>(u)->runtime->cameras->camera(i);};
+    services.gx=[](void* u,const ShadowGXRequest& r){const auto& s=*static_cast<Bridge*>(u)->source;return s.gx && s.gx(s.user,r);};
+    services.primitive=[](void* u,const BattleStagePrimitive& r){const auto& s=*static_cast<Bridge*>(u)->source;return s.primitive && s.primitive(s.user,r);};
+    services.math=[](void* u,BattleStageMath& r){const auto& s=*static_cast<Bridge*>(u)->source;return s.math && s.math(s.user,r);};
+    return resumePackedBattleStageDisplay(callback,services,runtime_->stageDisplayCursors[callback==0x801389a0]);
+}
 bool TrioAttack::resumeAudienceCallback(uint32_t camera,uint32_t userdata,const BattleAudienceCallbackServices& source) const{
     if(!runtime_ || !runtime_->cameras)return false;
     const auto& call=runtime_->cameraDrawCursor.display;

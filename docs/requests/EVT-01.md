@@ -4586,3 +4586,36 @@ Six mutable S/E globals feed original READF and actor/camera callbacks in the
 actual attached child. [Scope and source order](../behavior/field/SHARED_BERO_NORMAL_POSITION_AND_COMPLETE_COLLISION_OWNER.md).
 Nonzero Entry/Entry2,remaining parent/mario_enter/sound/NPC owners and full live
 area coordination remain open. Validation details are in PROGRESS.md.
+
+### 2026-10-14 — Native stage quads and light continuation; letterbox next
+
+Implemented both original stage display callbacks against actual packed stage
+storage, captured BattleWork/camera owners, acknowledged shared GPU setters and
+real direct colored primitives. Dark emits all three source quads, preserving
+fresh alpha reads, opposite winding and depth6/1/1. Light performs its complete
+prefix even when inactive, scans12 live flags and supports the18triangle active
+loop through retained RotAxis/MultVec/Normalize calls. The finite native adapter
+uses recovered single/FMA grouping with native sin/cos and1/sqrt substitutes;
+exact original libm/frsqrte/FPSCR/subnormal/exceptional domains remain open.
+Review corrected the previous-vertex recomputation around each freshly read
+center; host tests now cover the center changing while a triangle is held.
+
+Contracts: [native continuation](../behavior/display/NATIVE_STAGE_DARK_AND_LIGHT_CONTINUATIONS.md)
+and [SDK graph/body pins](../behavior/display/STAGE_LIGHT_AXIS_ROTATION_AND_NORMALIZE.md).
+Read-only ISO evidence/review stays under artifacts/stage-callback-evidence.
+Native isolated150s ending proof: three actual C3D quads/12vertices, all12 actual
+stage entry flags0, packed b08 word8c8c0000 and ae8 word00000000. Both stage
+callbacks complete; queue now holds at camera8,class3,letterbox8000e564, count21.
+Original actor fans remain133/520vertices including11 Frankly fans.
+Telemetry: artifacts/azahar-stage-render-ending. This is native command/source-
+state evidence; ending capture still shows black/development field-restoration
+notice, so original raster and field-return parity remain unfinished.
+
+Next bind the actual queued letterbox callback using its
+[existing original contract](../behavior/camera/CAMERA_LETTERBOX_AND_DUMMY_DRAW_SERVICES.md).
+It independently fetches camera8 and may source-early-return on GP bit8000 or
+signed alpha0; registration alone does not prove either condition. For admitted
+bars it requires ordered viewport/projection/scissor reads/restoration and live
+signed16 vertices/material state. Do not equate queued camera with its retained
+camera or skip bars on an unverified emptiness assumption. Parent EVT-01 and the
+prologue/remake goal remain open.

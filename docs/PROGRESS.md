@@ -6424,3 +6424,68 @@ resource lifetimes,live Bero/Trouble coordination,House05 and full game fidelity
 remain unfinished. EVT-01 and the user's full goal remain active.
 
 tools/check_doc_links.py checked1323 Markdown files with zero broken links.
+
+### 2026-10-14 — Execute original stage dark/light finishing callbacks
+
+Implemented retained source callbacks80138da8/801389a0 and the actual native
+finishing-camera bridge. They capture packed BattleWork/W and camera4 once,
+acknowledge19/20 GPU prefix setters independently, and preserve source state
+across waits. Dark submits all three direct quads, including alpha0, with original
+opposite winding, fresh live alpha bytes and depth compares6/1/1. Light always
+sets GPU state, scans12 actual live flags, and for active entries runs18rotated
+triangles with separately retained rotation/point/normalize requests. It rereads
+center/RGB at original boundaries and captures each pending primitive once.
+Source review corrected a stale-endpoint assumption: previous is recomputed from
+current vector and NEW center before each segment rotation. No identity/no-op,
+constant-initialized darkness or presumed inactive bank substitutes for work.
+
+Native source-color/one blend, zero TEV alpha and reversed depth1/6 mappings now
+join the existing shared program/display owners. Direct colored packets submit
+actual Citro3D immediate fans/triangles after restoring acknowledged GPU state;
+there is no allocation or open Begin across holds. Position is under the real
+source camera view/projection without actor scaling twice. Stage light math keeps
+recovered single/FMA order with native sin/cos and float1/sqrt estimate adapters.
+Exact original libm/frsqrte/FPSCR/subnormal/exceptional and quad raster/culling
+parity remain open. Degenerate finite normalization holds; it never creates an
+identity/direction fallback. Active18triangle fixtures are host coverage, not a
+claim of original execution or native active-light raster verification.
+
+Added [native contract](behavior/display/NATIVE_STAGE_DARK_AND_LIGHT_CONTINUATIONS.md)
+and [original SDK graph/body pins](behavior/display/STAGE_LIGHT_AXIS_ROTATION_AND_NORMALIZE.md),
+and corrected the original stage contract's per-segment previous-vertex wording.
+Private read-only ISO disassemblies, constants and review:
+artifacts/stage-callback-evidence. No extraction/conversion/art/audio/dialogue
+changes were needed; all private original packs were reused unchanged.
+
+Validation used frozen ba5ddc1ca7d14ed831db4bc5f5b5e037dfc81fe3 plus only owned
+changes in artifacts/stage-render-source. CMAKE_BUILD_PARALLEL_LEVEL=4 make test
+-o assets-ready exited0:322/322 C++ (34.92s),185/185 Python (29.097s), log
+artifacts/stage-render-test.log. Clean make all -j4 -o assets-ready
+DEBUG_SHORT_BOOT=1 and restored normal rebuild exited0, logs
+artifacts/stage-render-build.log and stage-render-build-restored.log. Audit3424
+tracked/owned files and2029 RomFS files had zero mismatches; manifest
+artifacts/stage-render-validation-manifest.json. After removing private harness
+edits, the normal binary reproduced exactly:
+SHA256aeeab5e189fcb571dd8a5373d57140b01ff93b1f3c8388e0fdb370333c7dbb7a.
+Concurrent foreign source edits remain preserved and outside this frozen check.
+
+Isolated Azahar15s normal and150s ending runs exited0, logs
+artifacts/stage-render-smoke-normal.log and stage-render-smoke-ending.log.
+Inspected normal capture retains original Rogueport/Mario/Goombella art at60App
+FPS/100% speed. Actual ending telemetry records3C3D quads/12vertices, lastalpha0,
+compare1,blend4/5; live stage words are b08=8c8c0000,ae8=00000000,all12entry
+flags0. Both stage callbacks complete and queue advances to camera8,class3,
+letterbox8000e564,count21. Actor submission remains133fans/520vertices including
+11Frankly fans. Logs/captures/telemetry: artifacts/azahar-stage-render-ending.
+The ending remains black fade/development field-restoration notice at60FPS/100%
+speed. This proves command/queue progress, not visible original geometry, restored
+field, original trace/raster parity or New2DSXL performance. User emulator
+profiles/saves untouched. No compiled assets/binaries entered source history.
+
+Next implement letterbox8000e564 from the existing camera contract, preserving
+independent camera8 lookup, real GP/alpha gates and its ordered GPU save/restore
+and signed16 vertex path. Remaining callbacks, original numerical/raster traces,
+field restoration and full prologue fidelity remain unfinished. EVT-01 records
+the exact boundary; full user goal remains active.
+
+tools/check_doc_links.py checked1326 frozen Markdown files with0 broken links.

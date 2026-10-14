@@ -57,6 +57,7 @@ std::optional<NativeShadowProgram> NativeShadowProgram::request(const ShadowGXRe
         break;
     case ShadowGX::TevAlphaIn:
         if(args({0,7,7,7,5}))next.alpha=Raster;
+        else if(args({0,7,7,7,7}))next.alpha=Zero;
         else if(args({0,7,1,5,7}))next.alpha=RegisterRaster;
         else if(args({0,7,4,5,7}) && next.texture)next.alpha=TextureRaster;
         else if(args({0,7,5,4,7}))next.alpha=TextureRaster;

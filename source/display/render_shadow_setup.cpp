@@ -47,7 +47,8 @@ bool Renderer::finishingShadowGpu(const NativeShadowProgram& p){
     else {C3D_TexEnvSrc(env,C3D_RGB,p.rasterRGB && p.materialVertex?GPU_PRIMARY_COLOR:GPU_CONSTANT);C3D_TexEnvFunc(env,C3D_RGB,GPU_REPLACE);}
     C3D_TexEnvSrc(env,C3D_Alpha,p.alpha==NativeShadowProgram::TextureRaster?GPU_TEXTURE0:GPU_CONSTANT);
     C3D_TexEnvFunc(env,C3D_Alpha,GPU_REPLACE);
-    if(p.alpha==NativeShadowProgram::Raster){
+    if(p.alpha==NativeShadowProgram::Zero){C3D_TexEnvColor(env,env->color&0xffffff);}
+    else if(p.alpha==NativeShadowProgram::Raster){
         if(!p.alphaMaterialVertex && !p.material)return false;
         C3D_TexEnvColor(env,(env->color&0xffffff)|(p.material?uint32_t(uint8_t(*p.material))<<24:0));
         C3D_TexEnvSrc(env,C3D_Alpha,p.alphaMaterialVertex?GPU_PRIMARY_COLOR:GPU_CONSTANT);

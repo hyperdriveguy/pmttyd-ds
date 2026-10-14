@@ -135,6 +135,7 @@ private:
     bool finishingAnimationTexture(const AnimationTextureRequest&);
     AnimationFanStream finishingAnimationFans;
     bool finishingAnimationGeometry(const AnimationShapeCall&);
+    bool finishingStagePrimitive(const BattleStagePrimitive&);
     std::optional<BattleActMatrix> finishingShapeNormal; // Actual source normal-matrix owner; consumed by future lit-shape backend.
     NativeDisplayState finishingDisplayState;
     NativeShadowProgram finishingShadowProgram;

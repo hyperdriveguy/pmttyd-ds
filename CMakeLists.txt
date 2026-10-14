@@ -1695,3 +1695,9 @@ add_executable(field_area_position_tests tests/field_area_position_tests.cpp)
 target_link_libraries(field_area_position_tests PRIVATE ttyd_core)
 add_test(NAME field_area_position COMMAND field_area_position_tests)
 set_tests_properties(field_area_position PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Original stage dark/light display continuations and native numeric adapter.
+target_sources(ttyd_core PRIVATE source/display/battle_stage_display.cpp)
+add_executable(battle_stage_display_tests tests/battle_stage_display_tests.cpp)
+target_link_libraries(battle_stage_display_tests PRIVATE ttyd_core)
+add_test(NAME battle_stage_display COMMAND battle_stage_display_tests)
