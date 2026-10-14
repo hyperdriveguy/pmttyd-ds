@@ -760,3 +760,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Ending top-bank4 service owners](battle/ENDING_TOP_BANK4_SERVICE_OWNERS_AND_IDLE_DOMAINS.md): real seven-service ownership, used idle domains and exact source sequence setter correction.
 - [Field-return counter and fade order](battle/FIELD_RETURN_SEQUENCE_COUNTER_AND_INCOMING_FADE_ORDER.md): signed wrapping delay, state5-only listener tail, fresh GP callbacks/presets and timestamp globals.
 - [Native engine completion and return sequence](battle/NATIVE_ENGINE_COMPLETION_AND_RETURN_SEQUENCE.md): ordered engine/lower flag adapter, corrected native sequence bank and portable delayed return/fade branches; real stage/exit providers remain.
+
+- [Setup4 stage-object cache and map requests](battle/SETUP4_STAGE_OBJECT_CACHE_AND_NAMED_MAP_REQUESTS.md): selected5 and hidden builtin2, cache999, exact layer pivots and named map matrix latch/recalculation.
+- [Portable stage-object update and bindings](battle/NATIVE_STAGE_OBJECT_UPDATE_AND_BINDINGS.md): full32-record Main, original vertex ownership export and retained native map/renderer frontier.

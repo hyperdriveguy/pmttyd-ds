@@ -10384,3 +10384,34 @@ Final exact validation: make all passed with the coherent pack (artifacts/openin
 Final immutable scene/asset build artifacts/opening-completion-snapshot/ttyd-2ds.3dsx passed the isolated fresh Title→Files→opening→arrival route (artifacts/azahar-opening-completion, opening-completion-smoke.log), with actual1536-byte version8 checkpoint room1/storyKnown1/story3. Native final harbor frame59FPS/7.16ms, no scene admission failure or native exception. The no-partner arrival label was reviewed in the preceding version8 run. The unskipped fixed-book run completed through its source input guard: sampled market/Peach/merchant frames60FPS and final guard60FPS; original A white exit was captured. Complete opened Title was reviewed separately in the fresh route; no claim that its1-second white-exit image already shows Title. Earlier isolated8-second character hold/A resume and actual boat approach/departure captures remain valid. The optional draw diagnostic proves ship/wake submissions and continued clock even when the hull leaves the field frustum. User emulator profile/saves and ISO were untouched.
 
 The opening goal is complete at the user-selected arrival endpoint. The full remake remains unfinished. Next tasks: physical New2DS XL performance/audio playtest; remaining full original TEV/shadow/cinematic raster and MusyX/ENV/global RNG parity; then separately complete Crump tutorial/battle integration and authored Goombella joining before extending story progression. Cold scene loading remains synchronous and full field/battle UI/services remain under separate development. Existing-save migration was not part of this goal.
+
+## 2026-10-13 — Original named stage-object update and geometry ownership
+
+Implemented complete portable StageObjectMain:32 slots, signed ordinal gate,
+ordered fourvector raw cache writes, forcebit2 clear, shared layer2 orientation
+cache, two-step floattranslation, layer-specific rotations/Ypivots, fresh
+descriptor/name reads and independent mask1 visibility. Missing providers
+retain actual early cache writes and produce explicit suspension. Source Main
+uses no scale or animationplayer request; these remain upstream owners.
+
+Imported original named geometry bindings via existing converter:3393 selected
+stage vertices partitioned exactly456/360/1488/1083/6 for isi_1,isi_2,A1,B_mati,C.
+Retains authored B/C transforms and current placement bake. Original hidden
+escape_wall/spotlight owners exported as zero draw-vertex groups; spotlight
+now explicitly excluded according to source Init. No private payload committed.
+Source contract closes cache999, real rank0 builtin record6/7 (not fabricated
+curtain), offsetY200 override and right-side additional-matrix/latch rules.
+
+Validation: make test196/196 CTest +129/129 Python and make all passed
+(artifacts/stage-object-tests.log and stage-object-all.log). Scoped diff
+checks passed; both new private metadata paths confirmed ignored. Asset command python3
+tools/trio_battle_assets.py passed; ignored PMHOBJ hashes/paths/licensing in
+docs/ASSETS.md. Tests cover entire Main graph/cache/provider ordering and
+original metadata exact vertex coverage/reconstruction/authored hierarchy.
+No emulator/GPU/original execution/hardware assertion; native ending still
+holds at StageObjectMain pending actual map/renderer providers.
+
+Next consume named bindings with real additional matrices and native vertex
+uploads, source frame-latch/recalculation, actual seven-record initializer and
+upstream writers, then remaining ordered engine/teardown/sequence services.
+Full playable prologue goal remains active and unfinished.

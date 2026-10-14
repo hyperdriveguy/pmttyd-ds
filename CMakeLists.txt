@@ -932,3 +932,9 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/romfs/goomba-quest-mario.pmanim" AND EXISTS "${CM
     add_test(NAME goomba_quest13_original COMMAND goomba_quest13_tests)
     set_tests_properties(goomba_quest13_original PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 endif()
+
+# Source named stage-object transforms and visibility.
+target_sources(ttyd_core PRIVATE source/battle_stage_objects.cpp)
+add_executable(battle_stage_objects_tests tests/battle_stage_objects_tests.cpp)
+target_link_libraries(battle_stage_objects_tests PRIVATE ttyd_core)
+add_test(NAME battle_stage_objects COMMAND battle_stage_objects_tests)

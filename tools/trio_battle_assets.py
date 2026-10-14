@@ -68,8 +68,8 @@ def build(iso):
         d=work/(room+'.d');t=work/(room+'.tpl');extract(iso,'m/'+room+'/d',d);extract(iso,'m/'+room+'/t',t)
         manifest=Path('romfs/'+room+'-battle.json');fingerprint=hashlib.sha256(d.read_bytes()+t.read_bytes()+Path(__file__).read_bytes()+Path('tools/map_convert.py').read_bytes()).hexdigest()
         if manifest.exists() and json.loads(manifest.read_text()).get('fingerprint')==fingerprint:continue
-        info=convert(d,work/room,hidden=('escape_wall','if_body','if_wire')) if room=='bti_01' else convert(d,work/room,scene_root=('A1','isi_1','isi_2','B_mati','C'),scene_offsets={'A1':(0,0,-.5),'isi_1':(-2.02,0,-.17),'isi_2':(2,0,-.3)})
-        for ext in ('vertices','batches','uvanim','meshanim'):shutil.copyfile(work/room/('map.'+ext),Path('romfs')/(room+'.'+ext))
+        info=convert(d,work/room,hidden=('escape_wall','spotlight','if_body','if_wire'),object_bindings=('escape_wall','spotlight')) if room=='bti_01' else convert(d,work/room,scene_root=('A1','isi_1','isi_2','B_mati','C'),scene_offsets={'A1':(0,0,-.5),'isi_1':(-2.02,0,-.17),'isi_2':(2,0,-.3)},object_bindings=('isi_1','isi_2','A1','B_mati','C'))
+        for ext in ('vertices','batches','uvanim','meshanim','houseobj'):shutil.copyfile(work/room/('map.'+ext),Path('romfs')/(room+'.'+ext))
         for index,_ in enumerate(info['textures']):
             image=work/f'{room}-{index}.png';convert_tpl(t,image,index);bitmap=Image.open(image).convert('RGBA');w,h=bitmap.size
             bitmap.resize((min(128,1<<(w-1).bit_length()),min(128,1<<(h-1).bit_length())),Image.Resampling.LANCZOS).save(image)

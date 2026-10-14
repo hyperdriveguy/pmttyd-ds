@@ -1677,3 +1677,20 @@ harbor-tutorial-events.pmevt is regenerated under ignored romfs/. Original raw
 bodies, ISO and compiled packs remain outside source history. Nintendo/
 Intelligent Systems rights remain unchanged; no redistribution rights granted.
 [Registry scope](behavior/battle/HARBOR_NATIVE_REGISTRY_AND_VISUAL_PROJECTION.md).
+
+## 2026-10-13 — Original trio named stage-object bindings
+
+Read-only ISO sources remain m/stg_00_1/d,t and m/bti_01/d,t; unchanged original
+selected geometry/texture scaling in tools/trio_battle_assets.py. Added converter
+object_bindings and copied ignored PMHOBJ02 metadata to romfs/stg_00_1.houseobj
+(95300bytes,SHA256 f1b47dd275306406e0d9fff4ee2bdec54d51dabfa25003a0e7fb15097646afad)
+and romfs/bti_01.houseobj (128bytes,SHA256
+0491ba0f69e80f58711c6fade4ac12d6a68571e6d652d53b895cf3ef511793d6).
+Stage tags isi_1/isi_2/A1/B_mati/C retain3393 original vertices with local/world
+matrices and source placement bake; builtin escape_wall/spotlight tags retain
+zero draw vertices after original hidden admission. Added spotlight to hidden
+groups because source StageObjectInit marks it hidden. Existing .1 model
+conversion and .01 source additional placements remain; no duplicate offset.
+Actual native dynamic provider still requires matrix/frame/upload binding.
+Assets rebuilt with python3 tools/trio_battle_assets.py. Nintendo/Intelligent
+Systems resources; no redistribution rights granted. No private payload committed.

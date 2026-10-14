@@ -3560,3 +3560,17 @@ Next actual five selected stage objects/transforms, spotlight/display queues,
 audience window/SoundMain and BattleEnd/context/NPC/event/sequence owner
 providers. Source-local Main/sequence gates are closed; native whole service
 pass, resource lifetimes and original execution remain open.
+
+### 2026-10-13 — Complete stage-object Main and original named geometry
+
+Delivered [used source contract](../behavior/battle/SETUP4_STAGE_OBJECT_CACHE_AND_NAMED_MAP_REQUESTS.md)
+closes selected5 default/cache, two actual hidden builtin records, whole Main
+transform/visibility ordering and local map additional-matrix/recalculation
+flags. Portable Main now implements all32 records; original converter exports
+actual pernamedvertex/local/world metadata for five selected stage groups and
+two hidden background owners. See
+[binding](../behavior/battle/NATIVE_STAGE_OBJECT_UPDATE_AND_BINDINGS.md).
+Native StageObjectMain still needs real map-object/frame/GPU owners, complete
+used initializer and upstream writers before completion acknowledgement. Next
+spotlight/audience window/sound/display and BattleEnd resource/context/sequence
+providers; parent remains open, no original-runtime equivalence assertion.
