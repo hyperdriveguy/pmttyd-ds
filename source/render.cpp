@@ -231,11 +231,21 @@ bool Renderer::changeRoom(uint32_t room) {
     for(auto* unused:{&goombaQuestTexture,&trioMarioTexture,&trioPartnerTexture})if(unused->imported){
         Tex3DS_TextureFree(unused->imported);C3D_TexDelete(&unused->texture);*unused=Texture{};
     }
-    frontActive=false;
     const char* name=roomAsset(room);if(!name)return false;
+    const auto previous=residentFieldRoom;const bool restorePrevious=plaza.vertices!=nullptr;
+    freeRoom(plaza);residentFieldRoom=UINT32_MAX;
     Room next;
-    if(!loadMap(name,next) || !loadFieldActors(room,next)) {C3D_FrameSync();freeRoom(next);return false;}
-    C3D_FrameSync();freeRoom(plaza);plaza=std::move(next);return true;
+    if(!loadMap(name,next) || !loadFieldActors(room,next)) {
+        const auto failure=frontFailure;freeRoom(next);
+        if(restorePrevious) {
+            Room restored;
+            if(loadMap(roomAsset(previous),restored) && loadFieldActors(previous,restored)) {
+                plaza=std::move(restored);residentFieldRoom=previous;
+            } else freeRoom(restored);
+        }
+        frontFailure=failure;return false;
+    }
+    plaza=std::move(next);residentFieldRoom=room;frontActive=false;return true;
 }
 bool Renderer::prepareSceneActorTextures(const Game& g) {
     const bool trio=g.trioBattleActive;
@@ -260,20 +270,25 @@ bool Renderer::prepareSceneActorTextures(const Game& g) {
     return true;
 }
 bool Renderer::prepareBattleMaps(const Game& g) {
+    if(g.harborTutorial.running())return true; // Dedicated startup owns its field retirement/battle maps.
     const bool legacy=!g.harborTutorial.running() && (g.scene==Scene::Battle || g.scene==Scene::Victory || g.scene==Scene::Defeat);
     const bool trio=g.trioBattleActive;
-    if((trio && trioBackground.vertices && trioStage.vertices) || (!trio && legacy && stage.vertices) ||
-       (!trio && !legacy && !stage.vertices && !trioBackground.vertices && !trioStage.vertices))return true;
+    if((trio && trioBackground.vertices && trioStage.vertices && !plaza.vertices) ||
+       (!trio && legacy && stage.vertices && !plaza.vertices) ||
+       (!trio && !legacy && !stage.vertices && !trioBackground.vertices && !trioStage.vertices &&
+        plaza.vertices && residentFieldRoom==g.progress.room))return true;
     C3D_FrameSync();
     const auto ensure=[&](const char* name,Room& room) {
         if(room.vertices)return true;
         Room pending;if(!loadMap(name,pending)){freeRoom(pending);return false;}
         room=std::move(pending);return true;
     };
+    if(trio || legacy){freeRoom(plaza);residentFieldRoom=UINT32_MAX;}
     if(trio){freeRoom(stage);return ensure("bti_01",trioBackground) && ensure("stg_00_1",trioStage);}
     freeRoom(trioBackground);freeRoom(trioStage);
     if(legacy)return ensure("stage",stage);
-    freeRoom(stage);return true;
+    freeRoom(stage);
+    return plaza.vertices && residentFieldRoom==g.progress.room?true:changeRoom(g.progress.room);
 }
 bool Renderer::loadFieldActors(uint32_t roomId,Room& room) {
     for(uint32_t index=0;index<fieldActorAssets.models().size();++index) {
@@ -1245,8 +1260,10 @@ void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audio
     }
 }
 void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool audioAvailable) {
-    const bool actorTexturesReady=prepareSceneActorTextures(g);
-    const bool battleMapsReady=actorTexturesReady && prepareBattleMaps(g);
+    const bool battleOwner=g.trioBattleActive || g.scene==Scene::Battle || g.scene==Scene::Victory || g.scene==Scene::Defeat;
+    const bool mapsFirst=!battleOwner || prepareBattleMaps(g);
+    const bool actorTexturesReady=mapsFirst && prepareSceneActorTextures(g);
+    const bool battleMapsReady=actorTexturesReady && (battleOwner || prepareBattleMaps(g));
     if(departureRoom.vertices && !g.openingDeparture.active)freeOpeningDeparture();
     for(auto i=messageDynamicWindows.begin();i!=messageDynamicWindows.end();) {
         const auto id=i->first;const auto& story=g.storyPresentation();
@@ -1263,7 +1280,7 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
     C3D_RenderTargetClear(top,C3D_CLEAR_ALL,battle?0xA6CBD8FF:0,0);
     C3D_FrameDrawOn(top);if(g.harborTutorial.running())worldTutorial(g);else if(battleMapsReady)world(g);
     C2D_Prepare();C2D_SceneBegin(top);overlay(g);
-    if(!battleMapsReady)text(actorTexturesReady?"Development notice: battle map unavailable":"Development notice: scene actor texture unavailable",16,220,.42f,Ink);
+    if(!battleMapsReady)text(actorTexturesReady?"Development notice: scene map unavailable":"Development notice: scene actor texture unavailable",16,220,.42f,Ink);
     if(g.trioBattleActive && g.trioAttack.endingFadeAlpha())C2D_DrawRectSolid(0,0,.99f,400,240,C2D_Color32(0,0,0,g.trioAttack.endingFadeAlpha()));
     if(g.fade.alpha())C2D_DrawRectSolid(0,0,.99f,400,240,C2D_Color32(0,0,0,g.fade.alpha()));
     C2D_Flush();
