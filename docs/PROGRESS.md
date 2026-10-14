@@ -11711,3 +11711,15 @@ Next implement original AudienceInit/live records/resource handles, full ordered
 AudienceMain window/sound/slot/display services, then BattleEnd/StageEnd real
 frees, map/context/NPC/event release and delayed native field return. Full
 playable original-fidelity prologue goal remains active and unfinished.
+
+
+Follow-up (same 2026-10-13 request session): filed CONTENT-01 (reachable
+chapter/interlude/minigame/optional-content census -- the still-uncovered G1
+register row) committed 669924e. Verified two more deliveries against the US
+ISO: DEMO-01's GSW[0] gate (aaa_00_init_evt cmd19 op24 GSW0==402; evt_prologue2
+cmd49 and epilogue_evt2 cmd117 write GSW0 just before evt_bero_mapchange) commit
+13397dc; RESULT-01's Escape route (btlevtcmd_InterruptStop 0x80105368 OR10/OR20
+at B+0xef4 with fresh B=*(r13+0x1c70)=0x8041eb90; lone InterruptStop(0) USER_FUNC
+at 0x8034f1d4) commit efa1783. New commits this follow-up: 669924e, efa1783,
+13397dc. Docs-only; no make rerun; artifacts in /tmp. All own commits are
+ancestors of HEAD; docs-agent worktree edits not swept.
