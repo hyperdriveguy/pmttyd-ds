@@ -1756,3 +1756,16 @@ and mutable packed fields for tutorial and ordinary combat.
 See [native scope](behavior/battle/NATIVE_STAGE_FLOOR_AND_JUMP_RECOVERY.md).
 Nintendo/Intelligent Systems original resources; no redistribution rights.
 ISO remains read-only; private packs remain ignored.
+
+## 2026-10-13 — Original Goomba3 wander metadata and map collision binding
+
+The ignored field actor catalog enables the original shared regular event for
+plaza Goomba3, radius100/speed30, source flags80603 then00480603. Existing
+c_kuribo_n idle/walk/run/talk geometry, texture and source footstep names remain
+shared; no generated or additional art pack. Its original m/gor_01/s provenance
+now appears as plaza_setup in ignored romfs/field-actors.json as well as the
+separate extraction record already documented above. Source npcHitCheckSide
+and npcMoveG recovery uses read-only ISO DOL spans; hashes and helper identities
+are in the behavior contract. No extracted payload/ISO is committed, and no
+new redistribution rights are granted. Native ray/SDK adapters do not establish
+original renderer/Gekko parity or physical New2DS performance.

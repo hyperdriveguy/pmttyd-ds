@@ -702,3 +702,15 @@ Portable task start/cancel preserve source17-flag/six-byte resets and low-level
 all-copy removal for recovered task2/13 tables. Full acquisition/itemseq, coin
 acknowledgment, task menu filtering/callers, switch persistence and Goomba3
 side/gravity wander remain pending. Parent request remains open.
+
+### 2026-10-13 — Goomba3 source map-side movement delivered and bound
+
+Delivered [original NPC map-side/zero-vertical contract](../behavior/field/FIELD_NPC_MAP_SIDE_MOVEMENT_AND_GOOMBA3_ZERO_VERTICAL.md)
+and [native map-side/wander binding](../behavior/field/NATIVE_NPC_MAP_SIDE_AND_GOOMBA3_WANDER.md).
+Goomba3 now uses original100/30 shared wander, three ordered null-filter rays,
+half slide, first-contact publication before second pass and source zero-vertical
+no-op. No invented40000000, floor snap or gravity. Original SDK/ray traversal,
+global scheduler/RNG and later vertical/reflection/filter domains remain open.
+Full item95 get-item sequence recovery continues; parent request remains open.
+
+Delivered [item95 normal get sequence](../behavior/field/GOOMBA3_ITEM95_GET_SEQUENCE_AND_DEFERRED_GRANT.md), including entry mode16/runtime flag distinction, deferred grant, original windows and acknowledgment/cleanup. Native acquisition/presentation and full-storage UI remain pending.

@@ -89,7 +89,7 @@ it does not itself grant coins, mark5376 complete or clear the active quest.
 Otherwise check count107 into LW0, set LW1=20 then subtract count. Allocate
 position-table work through `make_tbl`; loop until LW1==0, obtaining position
 and indexed name through `get_pos` and `iri_13_make_name`. Enter original
-item107 with that name/position, flags16, secondary-1. Entry index0 receives
+item107 with that name/position, entry-mode16, secondary-1. Entry index0 receives
 callback `iri_13_pants_00_evt` only while GSF5408==0; other entries have no
 callback. Each entry enables map-object gor_hae flag1. Increment index and
 decrement remaining count, then free position-table work. If any entries were

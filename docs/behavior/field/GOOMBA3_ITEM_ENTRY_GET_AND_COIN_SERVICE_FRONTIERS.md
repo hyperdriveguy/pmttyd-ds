@@ -9,9 +9,9 @@ inventory insertion for the complete item-get sequence.
 
 `evt_item_entry`800aa400/fc resolves operands0..5 and7 through evtGetValue.
 Operand6 is passed raw as the secondary entry argument. XYZ operands2..4
-are signed integers converted to binary32; flags operand5 truncates to16bits.
-Calls itemEntry(name,kind,flags,rawSecondary,resolvedFinal,X,Y,Z), returns2.
-For irai_item the source arguments are kind95,XYZ(0,-1000,0),flags16,
+are signed integers converted to binary32; entry-mode operand5 truncates to16bits.
+Calls itemEntry(name,kind,mode,rawSecondary,resolvedFinal,X,Y,Z), returns2.
+For irai_item the source arguments are kind95,XYZ(0,-1000,0),mode16,
 secondary-1,final0. This callback does not itself call pouchGetItem.
 
 `evt_item_flag_on`800aa30c/54 resolves name only, looks up itemNameToPtr;
@@ -37,11 +37,10 @@ presentation branch, source800abc88..abccc installs camera8 flag200,
 marioKeyOff, marioStSystemLevel(2),psndSetFlag(80), and clears Mario motion
 floats174/17c/180/18c before later Mario get-item motion, effect/icon/window
 work. Actual pouchGetItem(kind) occurs later at800ac134; a distinct shortcut
-branch calls it at800ab9e4 when entryflag4 is set. Neither Goomba3's original
-16|2 flags nor forced1000 establish that shortcut. Failed pouchGetItem and
-callback/switch ownership, nine-way substate progression, discard UI and
-exact get-item-window/icon/effect/audio timings remain to be recovered before
-claiming a finite95 acquisition implementation. No inferred parameter-revision
+branch calls it at800ab9e4 when entryflag4 is set. Goomba3's original
+mode16 is separate from mainflag2; forced1000 does not establish shortcut4. The [finite95 sequence follow-up](GOOMBA3_ITEM95_GET_SEQUENCE_AND_DEFERRED_GRANT.md)
+now pins the normal graph/grant/acknowledgment order; full discard UI and
+exact get-item-window/icon/effect/audio providers remain separate frontiers. No inferred parameter-revision
 wrapper is supplied here.
 
 ## Coin20 is an acknowledged presentation service

@@ -2,6 +2,64 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Original NPC map-side movement and plaza Goomba3 wander
+
+Bound portable source npcHitCheckSide finite null-filter/no-reflection body:
+ordered min(.2height,10)/.4height/.75height rays, extentL+.75width, middle45degree
+gate, exact fused half slide and ignored hit distance. npcMain publishes first
+contact before a second tentative-delta query; preserves that first contact
+through second miss/hit/zero. Native source culled map/object cache supplies
+queries without the optional Mario wall-attribute filter. No per-query texture
+work or heap allocation is added by this portable body.
+
+Enabled original Goomba3 shared radius100/speed30 wander via area metadata,
+80603->00480603, source pose/sound names and existing talk pause/resume. Added
+no direct-horizontal bypass, floor snap, gravity or Y/contact300 write: recovered
+source flags establish zero-vertical npcMoveG. Actual movement after map/Mario
+responses owns idle/walk/run pose. Original model/texture/vertex batching reused.
+Catalog JSON now includes additional plaza tagged-setup extraction provenance.
+
+Final source tree59eb97ba321f4ee1fd3ebcc3e62eeb60cdaae6fc verified2253 tracked
+files byte-for-byte. make test passed199 CTest/130 Python and make all passed
+(artifacts/goomba3-wander-reviewed-test.log and goomba3-wander-reviewed-native.log).
+Tests cover zero/no-hit, all heights, middle boundary/rejected contact, source
+half slide, two-pass first-contact publication/retention, ignored hit distance
+and missing/unbound domains. Real original-plaza Game test observes movement,
+map contacts, W_1, exact flags and no Y writes over2000 simulation ticks, then
+checks unchanged original ordinary/waiting dialogue and event return. Independent
+source review identified publication and normal-product ordering improvements;
+both corrected before final validation. Earlier pre-review builds/test runs
+passed, but final source evidence refers to the reviewed tree above.
+
+Preserved native artifacts/ttyd-goomba3-wander-reviewed.3dsx SHA256
+ d00107026713bb60fafc8131fc63fc76aba6092fd9d5a4f0549946997f2b0810.
+Isolated artifacts/azahar-goomba3-wander observation passed (goomba3-wander-smoke.log).
+Reviewed original NPC position/facing/activity and renewed A-talk candidacy in
+0/4/9second captures, sampled60FPS/~10.2–10.6ms emulator frames. These are harness
+sampling times, not source timing measurements; map-contact semantics are proven
+by source/portable/original-geometry tests, not inferred from screenshots.
+Native artifacts/azahar-goomba3-wander-talk also passed the original
+quest2 waiting-dialogue route after enabling wandering; attributed bubble/pages
+reviewed, onset55FPS/~11.2ms and later60FPS/~10ms. Fixed repeated A presses
+can reopen the event; final capture name does not establish native return.
+The40-byte fixture stayed byte-identical.
+
+New item95 source recovery pins mode16 separately from mainflags, the actual
+deferred pouch grant, both original windows, acknowledgment and control/entry
+cleanup. Corrected prior mode-vs-flag terminology in source contracts. This
+is documentation delivery, not an implemented acquisition or manufactured grant.
+Documentation1046 Markdown files/0 broken links and scoped diff check passed.
+
+Limits: standard-library sin/cos/norm adapters and converted geometric backend
+remain short of full original SDK/Gekko/polygon-registry parity. No matched
+Dolphin raster, global scheduler/RNG/audio-owner or physical New2DS assertion.
+Native admission still excludes vertical/attribute/reflection domains requiring
+other providers. Original item95 get-item service recovery continues; next bind
+its actual deferred grant/windows/control, coin acknowledgment and full switches,
+then Trouble Center acceptance/cancel menus and additional source NPC/object
+profiles. User emulator profile/saves and read-only ISO untouched. Goal remains
+active and unfinished; OW-INTERACT-01/ITEM-01 remain open.
+
 ## 2026-10-13 — Goomba3 native rendering and original talk captures
 
 Final immutable602d1d81 native binary passed isolated Azahar runs
