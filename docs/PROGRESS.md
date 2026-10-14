@@ -1,3 +1,62 @@
+## 2026-10-14 — Mario consumes actual published battle transforms
+
+Previous turn made progress through alias-preserving RAM and quad preparation
+optimizations with an inspected full-crowd capture near30 FPS. This turn traced
+actor geometry and found a concrete native consumer omission. Commit `63dd401f`
+passes Mario's published battle actor record to `characterModel`, as already done
+for Goombella/enemies, and applies the existing recovered camera/flag-dependent
+battle reflection policy. Mario now consumes published unit scale, rotation,
+pivot and display offset. Field/story rendering retains its ordinary path and
+the lower view replays the same prepared vertices. No default scale, model data,
+input, dialogue or simulation timing was changed.
+[transform contract](behavior/display/MARIO_TRIO_PUBLISHED_TRANSFORM_CONSUMPTION.md).
+
+A host diagnostic (`artifacts/actor_bounds.cpp`/`artifacts/actor_bounds`) loaded the
+existing original compiled idle packs. Mario M_S_1 has306 vertices and bounds
+(-10.7977,-1.6582,-1)..(7.34854,21.8018,1); Goombella PKR_S_1 has390 vertices and
+bounds(-5.32982,-.197732,-.3)..(9.60646,14.5269,.5). The ordinary native root
+adapter already uses.02 (documented scalar2 times unit conversion.01). No
+arbitrary enlargement was introduced; original battle pose-root/camera parity
+still requires evidence. Read current `CameraManager::initializeBoot`: its
+recovered source camera4 lens is25 degrees, near1/far32768 engine units. The
+independent renderer's provisional42-degree fallback still does not consume that
+actual lens owner; bind it next rather than treating actor size as established.
+
+Exact validation used the prior isolated `artifacts/trio-scene-cgzs5cy_` snapshot
+with committed replay/performance changes plus this owned renderer hunk, excluding
+unrelated concurrent work. `make test` exited0:285/285 C++ and168/168 Python
+(`artifacts/mario-transform-test.log`). Normal native
+`TMPDIR="$PWD/artifacts/tmp" make all -o assets-ready BUILD=build-trio-scene
+TARGET=ttyd-trio-scene` exited0 after all fixture/trace sources were restored
+(`artifacts/mario-transform-native-final-clean.log`). `-o assets-ready` reuses
+validated private original packs. Owned `git diff --check` passed. A restore
+attempt used the wrong working-directory path; waited for that build to finish,
+restored all three files with absolute paths and rebuilt the clean normal target.
+
+Two isolated50-second Azahar probe runs exited0 without native exceptions. The
+first pre-launch override did not visibly establish transform consumption and
+is not counted as a positive result. The second ignored fixture applies actual
+packed Mario fields after launch and explicitly publishes them. Its trace
+`artifacts/azahar-mario-transform-published/data/azahar-emu/sdmc/mario-transform.txt`
+records scale2,2,1; rotation0,0,25; offset30,0,0; actual unit84101000 and packed
+words40000000/41c80000/41f00000. Inspected
+`artifacts/azahar-mario-transform-published/audience-source-39.png.png` visibly
+shows Mario enlarged, tilted and shifted versus the baseline. This proves
+consumption of that published fixture, not normal publication cadence or a real
+attack/turn. It uses an explicit8-member development pouch and a generated
+emulator profile, never user saves/settings. All packed overrides, manual
+publication and trace code were removed before the final native build. No
+original asset or compiled pack was committed. Display access used approved
+sandbox escalation.
+
+Next: consume the actual source camera4 lens and recover/bind its view producer;
+validate normal battle actor publication, pose roots/parts and source transforms.
+Profile remaining full-crowd cost and original animation/display cadence. Bind
+audience type controls/reactions and harmful-item telegraphs with physical X
+plus optional tapping. Complete original class/turn/menu choreography, tutorial
+followups/field return and real sound voice playback. Normal-story admission and
+complete tutorial/real battles remain unproven; the full goal stays active.
+
 ## 2026-10-14 — Full audience reaches about30 FPS without removing members
 
 Previous turn made concrete progress through two-screen scene replay and visible
