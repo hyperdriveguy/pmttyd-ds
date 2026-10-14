@@ -727,3 +727,15 @@ at actual discard sub5. No task completion or native presentation is fabricated.
 Corrected the legacy pouchGetItem pointer-lookup stub. Native window/text/effect/
 audio/registry/control bindings, discard continuation and upstream quest callers
 remain open; parent request stays open.
+
+2026-10-13 follow-up: original US first-byte article/template expansion and
+window acknowledgment/close gates recovered in
+[message contract](../behavior/message/ITEM95_US_TEMPLATE_EXPANSION_AND_WINDOW_ACKNOWLEDGMENT.md).
+Portable text expansion and source effect6 clock/two-pass draw plan implemented;
+original M_I_U and actual base-bank42/43/44 packs prepared with native lazy pose
+bank binding. [Native scope](../behavior/display/NATIVE_ITEM_GET_VISUAL_RESOURCES.md).
+Quad correction is64x32; startup SDA2 color is zero within the bounded fresh
+source state, with indirect/REL writers still unresolved. Native windows,
+GX-to-PICA effect raster, camera/audio/control/name-registry integration and
+failed-receive discard continuation remain open. Do not enable acquisition or
+claim complete item-get fidelity on the strength of these resource providers.

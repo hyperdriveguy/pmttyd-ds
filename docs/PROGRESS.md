@@ -2,6 +2,48 @@
 
 Newest entries first under this single heading. Keep entries dated, write link paths relative to `docs/`, and record exact validation, limitations and next tasks in each entry. Append-only: do not rewrite earlier entries.
 
+## 2026-10-13 — Original item-get resource providers and native pose bank
+
+Committed `fb4bd41`: read-only original M_I_U static pose importer, actual
+base effect bank42/43/44 conversion, portable US item-title expansion and source
+item-get effect6 update/draw plan. Native renderer selects the authored pose
+from its separate2MiB bank, admitting it only when requested and synchronizing
+retirement on ordinary-pose return, room change and shutdown. Exported pixels,
+packs and source provenance remain ignored; no generated replacement artwork.
+Corrected earlier effect quad documentation from±2 to original±32/y0..32.
+[Native scope](behavior/display/NATIVE_ITEM_GET_VISUAL_RESOURCES.md),
+[US expansion/window gates](behavior/message/ITEM95_US_TEMPLATE_EXPANSION_AND_WINDOW_ACKNOWLEDGMENT.md),
+[startup color/quad verification](behavior/effect/FIELD_ITEM_GET_TYPE6_STARTUP_COLOR_AND_QUAD_VERIFICATION.md).
+
+Exact validation: isolated review tree23374b766394f561723e650d96e97a98236f8422
+(all tracked files byte-audited before preview instrumentation) passed
+`make test`:205/205 CTests and132 Python tests; `make -j4 all` succeeded.
+Logs `artifacts/item-get-visual-reviewed-{test,native}.log`.
+Normal binary `artifacts/ttyd-item-get-visual-reviewed.3dsx`, SHA256
+57f5b0282a776d3e04488d7a2541d475a5b2a5dfdc3fe9927dd1f764ece81440.
+Initial isolated retry missed local PNG pixel fixtures; copying the three
+original conversion fixtures resolved it, with final complete checks above.
+Other active sessions' uncommitted/staged work was excluded and preserved.
+
+Isolated graphics-only Main harness rebuilt and ran via emulator_smoke.py
+using a project-local40-byte test checkpoint/profile. Captures
+`artifacts/azahar-item-get-visual/original-item-get-pose.png` and
+`ordinary-pose-return.png` visibly show authored raised-hands pose and return
+to ordinary Mario drawing; no native exception. Later capture reports60FPS in
+software Azahar, not New2DS hardware performance. Cold initial capture reports
+10FPS and is insufficient for a steady-state or allocation-cost conclusion.
+Private Main instrumentation was removed after capture; no quest/pouch grant,
+story event, flag write or user emulator profile/save change was part of this
+preview. Full GPU/window fidelity is not established by a pose smoke check.
+
+Next: connect original window action/open/AutoDelete gates and source item95
+receive services; implement two-texture GX-to-PICA effect shading/camera/layer
+ordering and audio/control/name teardown; then enable and check actual Goomba3
+quest2 acquisition/5405 progression. Keep full-storage discard continuation
+explicitly pending. Continue remaining NPC/event/area bindings using source
+contracts and shared resource lifecycle; the remake remains an early slice.
+
+
 ## 2026-10-13 — Original portable item95 receive owner and packed insertion
 
 Implemented finite fresh mode16/main1003 itemseq_GetItem owner with typed

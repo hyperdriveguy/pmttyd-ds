@@ -783,3 +783,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Stage work initialization and inactive/counter Main](battle/STAGE_WORK_INITIALIZATION_AND_INACTIVE_COUNTER_PASS.md): original defaults, scratch free order and four interpolation counter ABIs.
 - [Native stage-work storage and counter services](battle/NATIVE_STAGE_WORK_STORAGE_AND_COUNTER_SERVICES.md): exact scalar initialization, retained cleanup owner and explicit active/spotlight/numeric dependencies.
+
+- [Native original item-get visual resources](display/NATIVE_ITEM_GET_VISUAL_RESOURCES.md), [US title expansion/window gates](message/ITEM95_US_TEMPLATE_EXPANSION_AND_WINDOW_ACKNOWLEDGMENT.md), and [effect startup color/quad verification](effect/FIELD_ITEM_GET_TYPE6_STARTUP_COLOR_AND_QUAD_VERIFICATION.md).

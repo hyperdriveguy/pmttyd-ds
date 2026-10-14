@@ -79,11 +79,17 @@ Mario/NPC paper yaw. Source viewmatrix camera+11c left-concats the model.
 Projection/texture matrices are separately source-owned requests.
 
 Two passes draw the same direct four-vertex quad:
-XYZ/UV=(-2,2,0)/(0,0),(2,2,0)/(1,0),(2,0,0)/(1,1),(-2,0,0)/(0,1).
+XYZ/UV=(-32,32,0)/(0,0),(32,32,0)/(1,0),
+(32,0,0)/(1,1),(-32,0,0)/(0,1). These are width64/height32 localunits,
+not width4/height2: 80211d00 loads float64, negates and multiplies by .5
+to form f30=-32; 80211d24 loads float32 into f31. Direct FIFO writes
+80211e04..80211e88 retain those actual values. The earlier ±2/2 recovery
+confused the separate pass offset constants with the vertex dimensions.
 Pass0 further right-concats T(2,-2,0),uses alphatrunc(128*alpha/255),
 retains sourcecolorword[r2+2458] RGB with replacedalpha. Pass1 uses unshifted
-base,RGBffffff with alpha unchanged. Source positive-SDA2 colorword producer
-must be recovered before claiming a guessed RGB equals pass0.
+base,RGBffffff with alpha unchanged. The positive-SDA2 source resolves to zero-initialized .sbss2 at80429898;
+see the [startup-color check](FIELD_ITEM_GET_TYPE6_STARTUP_COLOR_AND_QUAD_VERIFICATION.md).
+Its startup RGB is000000; this is not a sampled Dolphin runtime value.
 Quad dimensions/offsets are original localunits; scale and camera/model bridge
 must be applied exactly once. No eight-star ring is drawn for count1.
 
@@ -122,5 +128,5 @@ constants and actual e/us/effect.tpl metadata freshlyread readonly ISO.
 No sourceassets copied into history; no sourcecode/sharedindex/progress,
 emulatorprofile or saves changed. Documentation-only; no runtime observation,
 complete GX/PICAparity, hardwaretiming or resourcefailure-admission claim.
-Next close pass0positiveSDA2colorproducer, complete effectdraw state/texgen/
+Next complete effectdraw state/texgen/
 projection equation and native originalimage export/typedrequest consumption.

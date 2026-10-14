@@ -1819,3 +1819,25 @@ Existing .1 model/.01 engine native coordinate bridge and texture scaling
 remain. Native CPU matrices and3DS revision-driven vertex cache uploads now
 consume these original bindings. Nintendo/Intelligent Systems assets; no
 redistribution rights granted; no private payload committed.
+
+## 2026-10-13 — Original item-get native resource pack
+
+`tools/field_item_get_assets.py` reads `a/a_mario`, `a/a_mario-` and
+`e/us/effect.tpl` from the unchanged original ISO. Local extracted inputs and
+PNG conversions live under `local-assets/field-item-get/`; compiled packs and
+manifest under `romfs/field-item-get*` stay ignored. Original M_I_U uses18
+124px cells with2px borders, cropped1024x512 atlas, UV scale2 and2MiB decoded
+RGBA8 native texture. Original mesh/sparse animation is retained, using the
+existing actor compiler's texture scaling rather than generated artwork.
+
+Effect images42(128x128),43(16x128),44(16x16) retain original dimensions and
+I4 grayscale intensity in equal RGBA components. No resampling/tint bake.
+Decoded-pixel SHA256 respectively:
+4ee98887533b7f25110cf1d0ca4b77cea18cbb52a8ec65b7c729d82acda17040,
+7001f7a71bbf9ce3b6567c638afbe05c1d3f0eaa727b1359c3db9ae85190adaf,
+c94116e7a4d6e5e8c6add7aa0f921ea9933adef7ca634c5a199f3e37420e9641.
+Bank SHA2563b62850fe75afb95eebb9fc240e20204d5ed320fba0fc956729f28405c2c789b.
+Generated manifest retains ISO source paths/hashes and conversion limitations.
+See [native resource scope](behavior/display/NATIVE_ITEM_GET_VISUAL_RESOURCES.md).
+Original Nintendo/Intelligent Systems resources; local use does not confer
+redistribution rights. No ISO/extracted payload/packs committed.
