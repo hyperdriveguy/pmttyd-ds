@@ -2174,3 +2174,8 @@ target_sources(ttyd_core PRIVATE source/battle/battle_action_manager_continuatio
 add_executable(battle_action_manager_continuation_tests tests/battle_action_manager_continuation_tests.cpp)
 target_link_libraries(battle_action_manager_continuation_tests PRIVATE ttyd_core)
 add_test(NAME battle_action_manager_continuation COMMAND battle_action_manager_continuation_tests)
+# Original late NPC history and complete actor scan before the field tail.
+target_sources(ttyd_core PRIVATE source/field/field_npc_main_history.cpp)
+add_executable(field_npc_main_history_tests tests/field_npc_main_history_tests.cpp)
+target_link_libraries(field_npc_main_history_tests PRIVATE ttyd_core)
+add_test(NAME field_npc_main_history COMMAND field_npc_main_history_tests)

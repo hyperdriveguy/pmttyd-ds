@@ -5,6 +5,7 @@
 #include "field_npc_main_entry.hpp"
 #include "field_npc_main_display.hpp"
 #include "field_npc_main_shadow.hpp"
+#include "field_npc_main_history.hpp"
 #include "field_npc_main_movement.hpp"
 #include "field_npc_mario_detection.hpp"
 namespace ttyd {
@@ -36,6 +37,21 @@ struct FieldNpcMainEntryNativeServices {
   bool (*sound)(void *, EventAddressSpace &,
                 const FieldNpcMainEntryRequest &) = nullptr;
 };
+// One suspended full actor scan. Every child belongs to the current actor;
+// retire child metadata only after history and the parent final clear finish.
+struct FieldNpcMainActorsCursor {
+  const void *binding = nullptr;
+  uint8_t phase = 0;
+  FieldNpcMainEntryCursor entry;
+  FieldNpcMainMoveCursor movement;
+  FieldNpcAutoPoseCursor pose;
+  FieldNpcDetectionCursor detection;
+  FieldNpcMarioCursor mario;
+  FieldNpcDisplayCursor display;
+  FieldNpcShadowCursor shadow;
+  FieldNpcHistoryCursor history;
+};
+enum class FieldNpcActorsFrontier { Pending, FieldTail };
 // Retains actual NPC owner; borrows VM, registry mapping and animation alias.
 // Keep all mappings/owners alive through every parent cursor/frontier.
 class FieldNpcMainEntryBinding {
@@ -71,6 +87,9 @@ public:
       FieldNpcMainMoveCursor &, FieldNpcAutoPoseCursor &,
       FieldNpcDetectionCursor &, FieldNpcMarioCursor &, FieldNpcDisplayCursor &,
       FieldNpcShadowCursor &);
+
+  // Complete actor traversal only; returned FieldTail is still unfinished Main.
+  FieldNpcActorsFrontier advanceActors(FieldNpcMainActorsCursor &);
 
 private:
   FieldNpcMainEntryBinding(std::shared_ptr<FieldNpcRegistryOwner>,

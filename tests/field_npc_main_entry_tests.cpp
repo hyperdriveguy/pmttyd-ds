@@ -344,6 +344,8 @@ struct NativeWorld {
   uint32_t next = 0x8a000000, actor = 0, pose = 0;
   bool marioReady = false, movementReady = false;
   unsigned movementCalls = 0, poseClockCalls = 0;
+  bool scanning = false, clockReady = true, pauseClockAfterGravity = false;
+  uint32_t movementHoldActor = 0;
   bool poseClockReady = false, cloudReady = false, interruptReady = false;
   unsigned cloudCalls = 0, interruptCalls = 0, vivianCalls = 0;
   bool marioServicesReady = false;
@@ -476,8 +478,15 @@ struct NativeWorld {
                                   q.depth) != DisplayAdmission::Unavailable;
     }; // Explicit camera/matrix fixtures; actual shared native queue.
 
-    n.numbers.divide = nativeFieldNpcClockDivide;
-    n.numbers.convert = nativeFieldNpcClockConvert;
+    n.numbers.user = this;
+    n.numbers.divide = [](void *p, uint64_t v, uint32_t d, uint64_t &out) {
+      return static_cast<NativeWorld *>(p)->clockReady &&
+             nativeFieldNpcClockDivide(nullptr, v, d, out);
+    };
+    n.numbers.convert = [](void *p, uint64_t v, float &out) {
+      return static_cast<NativeWorld *>(p)->clockReady &&
+             nativeFieldNpcClockConvert(nullptr, v, out);
+    };
     n.marioDetection = [](void *p, EventAddressSpace &memory,
                           const FieldNpcMarioRequest &q,
                           FieldNpcMarioResponse &out) {
@@ -528,11 +537,13 @@ struct NativeWorld {
                     const FieldNpcMainMoveRequest &q,
                     FieldNpcMainMoveResponse &) {
       auto &f = *static_cast<NativeWorld *>(p);
-      if (!f.movementReady)
+      if (!f.movementReady || q.args[0] == f.movementHoldActor)
         return false;
-      assert(&memory == &f.vm->memory && q.args[0] == f.actor &&
+      assert(&memory == &f.vm->memory &&
+             (q.args[0] == f.actor || (f.scanning && q.args[0] == f.actor + 2*0x340)) &&
              q.function == 0x80048d9c);
       ++f.movementCalls;
+      if (f.pauseClockAfterGravity) f.clockReady = false;
       return memory.writeWord(q.args[0] + 0x90, bits(9));
     }; // Explicit gravity fixture, not a replacement production child.
     n.admitMario = [](void *p, EventAddressSpace &, uint32_t m) {
@@ -866,6 +877,61 @@ void actualAliases() {
          f.word(0x8041e8ac) ==
              before); // Refuse positive out-of-bank domain; never clamp.
 }
+void actorScan() {
+  NativeWorld f;
+  f.marioReady = true; f.movementReady = true; f.scanning = true;
+  f.vm->gp.timestamp = 1032750;
+  const auto first = f.actor, second = first + 2*0x340;
+  // Actual owned raw bank, two live slots separated by inactive slots.
+  for (unsigned o=0; o<0x340; o+=4) f.store(second+o, f.word(first+o));
+  f.store(0x8041e8b8, 4); f.store(0x8041e8ac, 1);
+  for (auto a : {first, second}) {
+    f.store(a, 3 | 0x800 | 0x100 | 0x40000008);
+    f.store(a+0x1d4, 0); f.store(a+0x11c, 0);
+    f.store(a+0x8c, bits(a==first?10:20));
+    f.store(a+0x90, bits(0)); f.store(a+0x94, bits(30));
+    f.store(a+0xa4, 111); f.store(a+0xc8, 222);
+  }
+  for (auto a : {first+0x340, first+3*0x340}) {
+    f.store(a, 0); f.store(a+0x98, 333); f.store(a+0x1d4, 0x10);
+  }
+  FieldNpcMainActorsCursor scan;
+  f.movementHoldActor = second;
+  f.pauseClockAfterGravity = true;
+  assert(f.entry->advanceActors(scan) == FieldNpcActorsFrontier::Pending);
+  assert(scan.phase==3 && scan.entry.phase==23 && scan.entry.actor==second &&
+         scan.entry.clock.active && scan.history.actor==first &&
+         scan.history.phase==3 && f.word(first+0x98)==bits(10));
+  // Retired body captures remain intact while the next actor's entry suspends.
+  f.store(first+0x8c, bits(42));
+  assert(f.entry->advanceActors(scan)==FieldNpcActorsFrontier::Pending &&
+         f.movementCalls==1 && f.word(first+0x98)==bits(10));
+  f.pauseClockAfterGravity = false; f.clockReady = true;
+  assert(f.entry->advanceActors(scan)==FieldNpcActorsFrontier::Pending);
+  assert(scan.phase==1 && scan.entry.actor==second && scan.entry.index==2 &&
+         !scan.entry.clock.active && f.word(second+0x19c)==1032750 && scan.movement.phase==29 &&
+         f.movementCalls==1 && f.word(0x8041e8ac)==2 &&
+         f.word(first+0x98)==bits(10) && f.word(first+0x9c)==bits(9) &&
+         f.word(first+0xa4)==bits(10) && f.word(first+0xd4)==222 &&
+         !(f.word(first+0x1d4)&0x10) && f.word(second+0x98)!=bits(20));
+  // Captured bank/count/array must survive this later mutation. Late query loss
+  // does not cancel an already admitted body or its late history/final clear.
+  f.store(0x8041e8b8, 1); f.store(0x8041e8c0, 0);
+  f.store(second, f.word(second)&~3u); f.store(0x8041e8ac, 3);
+  f.movementHoldActor = 0;
+  assert(f.entry->advanceActors(scan) == FieldNpcActorsFrontier::FieldTail);
+  assert(scan.entry.phase==90 && scan.entry.index==4 &&
+         scan.entry.actor==first+4*0x340 && f.movementCalls==2 &&
+         f.word(0x8041e8ac)==3 && f.word(second+0x98)==bits(20) &&
+         f.word(second+0x9c)==bits(9) && f.word(second+0xa4)==111 &&
+         !(f.word(second+0x1d4)&0x10) && !scan.history.active && !scan.movement.active);
+  for (auto a : {first+0x340, first+3*0x340})
+    assert(f.word(a+0x98)==333 && f.word(a+0x1d4)==0x10);
+  assert(f.entry->advanceActors(scan)==FieldNpcActorsFrontier::FieldTail &&
+         f.movementCalls==2 && f.word(0x8041e8ac)==3);
+  NativeWorld other;
+  assert(other.entry->advanceActors(scan)==FieldNpcActorsFrontier::Pending);
+}
 } // namespace
 int main() {
   ordinary();
@@ -873,4 +939,5 @@ int main() {
   special();
   holds();
   actualAliases();
+  actorScan();
 }

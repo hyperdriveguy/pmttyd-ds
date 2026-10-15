@@ -431,4 +431,41 @@ FieldNpcDisplayFrontier FieldNpcMainEntryBinding::advanceShadow(
              ? FieldNpcDisplayFrontier::History
              : FieldNpcDisplayFrontier::Pending;
 }
+FieldNpcActorsFrontier
+FieldNpcMainEntryBinding::advanceActors(FieldNpcMainActorsCursor &c) {
+  using Result = FieldNpcActorsFrontier;
+  if ((c.binding && c.binding != this) ||
+      !poses_.aliases(*owner_->poses().sharedPool(), vm_.memory))
+    return Result::Pending;
+  c.binding = this;
+  for (;;) switch (c.phase) {
+  case 0: {
+    const auto frontier = advance(c.entry);
+    if (frontier == FieldNpcMainFrontier::Pending) return Result::Pending;
+    if (frontier == FieldNpcMainFrontier::FieldTail) { c.phase = 4; break; }
+    c.phase = 1; break;
+  }
+  case 1:
+    if (advanceShadow(c.entry, c.movement, c.pose, c.detection, c.mario,
+                       c.display, c.shadow) != FieldNpcDisplayFrontier::History)
+      return Result::Pending;
+    c.phase = 2; break;
+  case 2:
+    if (!advanceFieldNpcMainHistory(c.entry.actor, services().clock, c.history))
+      return Result::Pending;
+    // Only a completely executed body can release the parent movement frontier.
+    c.entry.phase = 78;
+    c.phase = 3; break;
+  case 3: {
+    const auto frontier = advance(c.entry);
+    if (frontier == FieldNpcMainFrontier::Pending) return Result::Pending;
+    c.movement = {}; c.pose = {}; c.detection = {}; c.mario = {};
+    c.display = {}; c.shadow = {}; c.history = {};
+    c.phase = frontier == FieldNpcMainFrontier::FieldTail ? 4 : 1;
+    break;
+  }
+  case 4: return Result::FieldTail;
+  default: return Result::Pending;
+  }
+}
 } // namespace ttyd
