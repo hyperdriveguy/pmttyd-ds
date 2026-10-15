@@ -1286,3 +1286,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native Trio HP renderer binding](display/NATIVE_TRIO_ENEMY_HP_RENDERER_BINDING.md): original glyph/bar GPU resources, ordered replay and precise finishing-versus-active scheduling limits.
 
 - [Retained original NPC draw matrix](display/RETAINED_NPC_DRAW_MATRIX.md): complete shared mtx_setup with source reads, SDK operations and retry boundaries; queued callbacks/runtime activation remain open.
+
+- [Retained original ordinary NPC callbacks](display/RETAINED_NPC_ORDINARY_DRAW_CALLBACKS.md): complete ordinary/xlu source graphs, facing table and native pose/material/descriptor aliases; field rendering owners and activation remain open.

@@ -1,3 +1,59 @@
+### Original ordinary NPC queued callbacks and native pose aliases (2026-10-14)
+
+Code commit 7ed671a6d9f873c318a5a3409ead7b05c8caba8b implements the complete local ordinary npcDisp8004c50c
+and translucent npcDisp_xlu8004c7e0 graphs. Both now use the retained original
+matrix helper, copied RGB darkening, exact facing-name table search, source
+Main and per-pass draw ordering. Ordinary classes1/2 skip Main; translucent runs
+Main then passes1/2/3. The discarded first current-name getter, actual pointer
+identities, asymmetric/NaN facing gates, double→float-before-factor rounding,
+fresh handles/scales and first-match setter force0 are preserved. Fixed cursor
+storage has no per-call allocation. Unsupported callbacks and unavailable real
+providers never acknowledge empty work.
+
+FieldNpcMainEntryBinding::advanceDraw aliases the actual registry/VM/shared
+animation pool. Material writes/get-pose have no invented active/resource gate.
+CurrentAnim follows the exact W/pool/modelcache/file/holder/MODEL/descriptor
+pointer chain; native resource strings are not substituted for original source
+pointers. Actual field camera/SDK/current queue/Main/SetAnim/draw providers remain
+explicit. Typed pool Main is not the full paper-facing NPC graph, and typed
+force0 selection currently queries a clock before the original no-op gate;
+therefore those effects remain delegated rather than falsely acknowledged.
+
+[Callback contract](behavior/display/RETAINED_NPC_ORDINARY_DRAW_CALLBACKS.md)
+records exact source and owner limits. Read-only inbox research pinned the
+14-pair luigi_pose table,28 original strings and missing constants; original
+J_1A→J_1RR is preserved. Three unchanged/hash-verified DOL views add304 source
+bytes to private door-data; segment header changes add12. Only two of2131 RomFS
+products changed. Removing precisely those new bytes recovers the prior pack
+hash. No art/music/dialogue/geometry/lighting changes or original asset commits.
+EVT-01 remains open. Unrelated shared code/document edits are preserved.
+
+Exact accepted frozen tree 09796445fd21bfa5a6361e8465affa864e52fd7d has3740 tracked files audited with zero
+mismatches. Final `CMAKE_BUILD_PARALLEL_LEVEL=4 make test` passed391 C++ tests
+(40.6 seconds) and203 Python tests (31.534 seconds), zero skipped.
+Normal `make all -j4 -o assets-ready SOUNDTRACK=gamecube` passed, after scoped
+read-only door-data regeneration; unchanged asset pipelines were skipped.
+Independent source review and standalone tests found no substantive defects.
+Existing fixture indentation/Pillow warnings remain; new callback code builds.
+
+Isolated ARM probe passed entry/draw/sourceTable/facing/holds/nativeAliases/
+descriptor/inactive/mapping/publication, including actual VM/pool aliases and
+explicit delegated fixture Main/draw effects. These fixtures are not normal
+field renderer or story acceptance. Normal source was restored and rebuilt;
+pre/post SHA256 626b00798cccd868c9890c81ed9bd2f14c83181aafeeaa485518187fd1695ee8. Forty-second normal startup capture was visually
+inspected: original storybook, App60FPS/100%, no visible asset-error
+console. Startup is not field/hardware performance proof. Logs, source/product
+hashes, native marker and captures are in ignored
+`artifacts/npc-draw-validation-manifest.json`. Code and docs committed separately.
+
+Next: implement complete offscreen synchronization/GPU bounding-box callbacks
+and blur history/material restoration. Compose actual field Main/SetAnim/draw,
+source buffers, camera and queue ownership, then activate retained NPC logic and
+callbacks in normal Game. Normal Game still uses the older NPC presentation
+path. Original runtime/numeric/visual comparison, live field smoke admission/
+occlusion and New 2DS XL performance remain required. The goal, Rogueport slice,
+playable prologue and full remake remain active/incomplete.
+
 ### Original shared NPC draw matrix (2026-10-14)
 
 Code commit 6765d7b542f5ff979b902338450d00509f96907a delivers the complete retained original `mtx_setup`

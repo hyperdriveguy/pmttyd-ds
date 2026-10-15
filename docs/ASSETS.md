@@ -2476,3 +2476,32 @@ shared pack writes. Python fixtures independently read ISO read-only into empty
 temporary outputs; native full asset regeneration skipped. Nintendo/Intelligent
 Systems rights remain reserved; private tracking/copying grants no new license.
 No ISO/original extracted asset/compiled binary committed.
+### Original ordinary NPC callback table and strings (2026-10-14)
+
+Read-only US G8ME01 disc0 revision0 `/home/carson/games/roms/G8ME01.iso`
+provides three unchanged DOL views, verified by `field_npc_actor_assets.py`:
+
+- 803066f8+70 source luigi_pose pointer table, SHA256
+8852534105c3a34d4502e358073ddb34badadbe8f1cabc9e78b6247e3af5df0f.
+- 8041fbb8+b0 source facing-name strings and original alignment padding, SHA256
+7bbfc161f7c122cf76249066d996595b892fdd8f1f588eb48f05944a9302343c.
+- 8041fcb8+14 source -90/radians-to-degrees/360/270/-270 constants, SHA256
+e60211f64c283101dcfedbcd2c23ed918c1d02ebefcf037602e8f15d75e9993d.
+
+The original table is .data; the strings are .sdata2. These are source-backed
+input views, copied into actual VM-owned memory at import, with fresh source
+pointer reads retained. No names, pointers or numeric values are synthesized or
+normalized. The original unusual J_1A→J_1RR pair is preserved. Existing270 bytes
+overlap consistently. Net new source bytes304; segment header changes add12.
+Private `romfs/door-data.pmevt` is152804 bytes, SHA256
+e9e85d212180b28087c7c8c4d904f82417c1a0ea30f1271ab10c2a3d0c9a78ab.
+Removing exactly the newly covered304 source bytes and remerging recovers the
+prior152488-byte pack and SHA256
+62929efd5f0115a23ec550bc5c6bd7ffe886b0a332fc02c1df8384688ecfca8a.
+Only door-data.json/pmevt changed among2131 RomFS products. Local gor_02.s and
+all other product hashes remain unchanged. No art/audio resampling, geometry
+reduction or lighting changes were made. Nintendo/Intelligent Systems rights
+remain reserved; local extraction grants no redistribution rights. ISO, raw
+original assets/listings and compiled packs/binaries remain ignored/private.
+Exact source/product/native validation is journaled in
+`artifacts/npc-draw-validation-manifest.json`.

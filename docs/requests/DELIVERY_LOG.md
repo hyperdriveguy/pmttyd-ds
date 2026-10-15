@@ -438,3 +438,5 @@ normal Area activation and original runtime/story acceptance remain open.
 Partial delivery only; this is not remake or EVT-01 completion.
 
 | Original NPC queued matrix and callback dependency audit | EVT-01 | VALIDATED local mtx_setup implementation/source graph, 2026-10-14; parent OPEN | Codex inbox fulfillment (no lock claimed) | [Retained matrix](../behavior/display/RETAINED_NPC_DRAW_MATRIX.md): complete scalar/read/SDK ordering and exhaustive retry fixtures; ordinary pose swaps, offscreen/blur callbacks, native field producers, runtime/visual/numeric/hardware parity remain OPEN |
+
+| Original ordinary NPC queued callbacks and facing table closure | EVT-01 | VALIDATED local ordinary/xlu graphs/native aliases, 2026-10-14; parent OPEN | Codex inbox fulfillment (no lock claimed) | [Retained callbacks](../behavior/display/RETAINED_NPC_ORDINARY_DRAW_CALLBACKS.md): exact table/data/numeric/order/retry graph and native descriptor/material/pose aliases; real field Main/SetAnim/draw/queue/camera producers, offscreen/blur, runtime/visual/numeric/hardware parity remain OPEN |

@@ -5104,3 +5104,12 @@ history addressing and per-primitive holds. Independent read-only callback audit
 identifies full facing-name swap, offscreen bounds and blur restoration graphs.
 Native field pose/camera/render owners, whole callbacks, normal runtime activation,
 original visual/numeric parity and hardware performance remain OPEN. EVT-01 is not closed.
+
+### 2026-10-14 Original ordinary/translucent NPC draw callbacks
+
+[Retained callbacks](../behavior/display/RETAINED_NPC_ORDINARY_DRAW_CALLBACKS.md)
+deliver complete local npcDisp/xlu control flow, original facing-table closure,
+actual VM descriptor-pointer getter and shared material/pose aliases. Source
+Main/SetAnim/draw/camera/current queue providers remain explicit. Original
+offscreen/blur callbacks, field owner composition, normal activation, runtime/
+visual/numeric/hardware parity remain OPEN. EVT-01 is not closed.

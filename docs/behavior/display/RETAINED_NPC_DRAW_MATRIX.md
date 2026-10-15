@@ -67,3 +67,9 @@ Ignored read-only evidence is under `artifacts/npc-main-parent-evidence/`:
 `*-callback-review.txt`, `callback-review-notes.txt` and
 `callback-review-hashes-constants.txt`. No original executable bytes are copied
 into source history. The request [EVT-01](../../requests/EVT-01.md) remains open.
+
+The complete local ordinary/xlu callback graphs and native VM/shared-pose
+alias binding are now delivered in [retained callbacks](RETAINED_NPC_ORDINARY_DRAW_CALLBACKS.md).
+This supersedes their implementation task above; actual field Main/SetAnim/draw
+producers, offscreen/blur variants, normal Game activation and measured parity
+remain open.
