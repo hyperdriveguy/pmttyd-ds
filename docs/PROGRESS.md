@@ -1,3 +1,91 @@
+### Original footer GPU composition and selected audience interruption (2026-10-14)
+
+This goal turn made concrete progress in two scoped commits:
+0e4ce270528a5b32c95ecafefd2e8a9fdc362f85 binds the shared command palette and
+actual tutorial CommandDisplay registration;
+496b4df94b41a85e2ff191ef546ca74ea4fd6483 adds retained original texture-plane
+helpers, footer GPU ownership/ordered rendering, and selected harmful-holder
+interruption. The tutorial/real-battle goal remains active and incomplete.
+
+The tutorial VM now aliases Game's process palette at actual source DATA/BSS
+addresses, preserving color history across battle facades. Registration uses
+actual BattleWork/VM services and the retained source cursor, queues the
+unconditional HP and independently gated menus, and does not draw/acknowledge
+menus or sample input. Queue holds do not repeat the palette step. Normal native
+harbor entry attaches the existing process owner; display scheduling remains
+caller-owned rather than being run from a rendering frame.
+
+Original common-bank4..16 footer art now has a real512x256 RGBA8 native texture
+owner and a new generation per import. Source TexturePlane2 retains whole
+Init/matrix/current-camera/texture/material/FIFO ordering and each completed
+provider prefix. Pinch/danger/critical uses its distinct original Quad path.
+Both append copied packets into the existing class quad order. Combined routing
+tracks the active texture owner; a later footer request cannot draw an old ring
+surface. Whole-batch preflight rejects missing/stale footer resources before GPU
+or arena effects. Imports occur before FrameBegin and release while C3D is live.
+Actual executing VM palette/FileEntry/relocated descriptor metadata supplies
+format and dimensions; no nonzero pointer or atlas index substitutes for it.
+
+The selected audience adapter performs a read-only chosen-slot inspection,
+rechecks before original cache publication, and retains actual SetTarget/UI-End/
+previous-type/type11/state29/light/flags operations without replay. It requires
+real current allocation/incarnation/visibility/eligibility evidence. Harmful
+source kinds are236..239; signed item-state/source flags retain original rules.
+Physical X's original first-eligible path is unchanged, including good holders;
+no tap is converted into synthetic X. This helper is not yet a normal-game tap
+binding, input-readiness producer, crowd population or attack-root scheduler.
+
+Validation uses isolated frozen sources, preserving concurrent foreign edits:
+
+- Palette snapshot artifacts/command-display-validation: make test passed
+  388/388 C++ (39.88s) and204/204 Python (30.611s), make all passed, and isolated
+  25-second normal Azahar boot was visually inspected. Initial cache setup
+  omitted a test output directory and original NPC clock data. A newer data
+  pack then exposed a10-vs12-view Python mismatch. Final validation uses the
+  exact hash-matched npc-clock-assets-after.json pair, not a modified test or
+  a gameplay workaround. Source audit:1892 inputs,2134 RomFS hashes, zero extra
+  inputs/mismatches; artifacts/command-display-source-manifest.json. Final native
+  SHA256 a9161bc6b8846af9bada660131b583b2f7a8927f62f5693f04ac41d88a8d0005.
+- Footer snapshot artifacts/footer-ui-validation, base0e4ce270 plus owned journal:
+  CMAKE_BUILD_PARALLEL_LEVEL=6 make test -o assets-ready passed395/395 C++
+  (42.00s) and204/204 Python (30.603s), artifacts/footer-ui-test.log. Native
+  make all -j6 -o assets-ready SOUNDTRACK=gamecube TARGET=ttyd-footer-ui
+  BUILD=build-footer-ui passed, including the final restored build. Existing
+  compiler warnings/GCC ABI notes remain. Source/ARM focused checks cover the
+  retained helpers, GPU providers, selected interruption and actual-VM fixture.
+- Actual-VM host tests write actual Mario HP5 then HP1, verify maxHP/readback,
+  compare cue index against actual language tables and exact original RGBA, and
+  reject a copied batch after real resource retirement. Portable tests cover
+  provider waits, selected/good-holder separation, source tail store traces,
+  texture failure/reload, FIFO final-lane hold and ordered immutable publication.
+- Private native fixture artifacts/footer-ui-probe.3dsx SHA256
+  903ea7f929dfe86f2082654ddf0354004d4a4d7197f305836a76e844bfee7ff4:
+  isolated35-second Azahar capture artifacts/azahar-footer-ui-probe/boot.png was
+  visually inspected. Original class menu/HUD and critical cue appear above
+  the stage; lower screen continues the stage seating/floor. Status in that
+  profile's sdmc/footer-ui-status.txt reads PASS:sourceHP5danger;sourceHP1critical;
+  bothGPUadmitted;realTpl97;passes101;quads35. This is an explicit fixture
+  scheduler/native fallback-camera proof, not normal scheduling, HID or hardware.
+- Private Main/Renderer hooks were restored byte for byte and recompiled.
+  Normal native SHA25608e8fdd166699f1465b59ad999c98beeb2c7ea3e99908b7324987277ec382f21
+  equals saved pre-fixture binary. Isolated25-second restored normal boot at
+  artifacts/azahar-footer-ui-normal/boot.png was visually inspected. No user
+  emulator settings/saves were touched. Independent base+owned-journal audit:
+  1914 inputs,2134 RomFS hashes, zero extras/mismatches, recorded in
+  artifacts/footer-ui-source-manifest.json. Behavior links:7679 checked, zero
+  broken. Original ISO/extracted art/packs and all probes remain ignored.
+
+Next: bind whole ordinary BattleInit/End and btlDispMain/camera dispatch to the
+normal tutorial/real command sequence, including required HP/weapon/target
+callbacks rather than skipping registrations; retain the original physical
+command/attack/exit lifecycle and actual alert audio. Connect audience Entry/
+Delete/item ownership generations, genuine completed camera4 world geometry and
+actual lower-screen visibility/occlusion to displayed-frame tap consumption and
+its real interruption call site, with an independent physical alternative.
+Do not fabricate crowd state, source readiness, lifecycle tokens or visibility.
+Validate ordinary end-to-end battle flow and target hardware performance before
+claiming tutorial or real battles complete.
+
 ### Whole original cold class frames over the actual tutorial VM (2026-10-14)
 
 Previous goal turn made concrete progress: d32daf31 bound real common-menu
