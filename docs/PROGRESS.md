@@ -8012,3 +8012,42 @@ Normal isolated40s boot smoke exited0; inspected original storybook town/text
 capture artifacts/azahar-area-map-npc-normal/boot.png,60AppFPS/100% in that
 single sample. Log artifacts/area-map-npc-normal-smoke.log. This is normal boot
 evidence, not new visible NPC registration, GPU/raster parity or hardware timing.
+
+## 2026-10-14 — Animation/material/shadow draw helpers documented
+
+Added inline numeric/ownership/behavior notes to 36 C++ implementation/header
+files covering original MODEL/TPL readers, group/node/shape traversal, texture
+setup, fan staging, cooperative prefetch, inner pose display, material color/light/
+TEV, shadow collision/cylinder/projection/display and stage/audience/class batch
+helpers. The [draw-pipeline guide](code/draw-pipeline.md) ties record offsets,
+INDEX16/FIFO narrowing, source flags, GX table values, capture/retry ordering and
+native admission bounds together. Explained asymmetric joint gate, early stack
+publication, raw-read partial failure, C2 RED alpha, signed/low-bit domains and
+per-pass recapture. Removed a misleading finite-only math description; singular/
+exceptional native math policy remains explicit without parity claims. Code/docs
+commit e3048c37; all 36 C++ files preserve executable tokens.
+
+Validation froze baseline 8d21daa8b202bbc720d8119b2aaacd2eab1d061c plus documentation in
+artifacts/draw-pipeline-code-documentation-validation/source. Audited 3523
+tracked files: zero unexpected changes; 38 documented files match live/frozen
+hashes. CMAKE_BUILD_PARALLEL_LEVEL=4 make test passes 338/338 C++ in 35.86s
+and 196/196 Python in 27.156s, zero skipped. make all -o assets-ready -j4
+SOUNDTRACK=gamecube exits 0. Logs host.log/native.log and source/binary hashes in
+manifest.json. Tests cover the recorded snapshot; they do not establish complete
+original rendering or whole-worktree validation.
+
+Private assembly reused accepted display-state documentation caches, then overlaid
+87 NPC products only after checking every byte count/SHA256 against
+artifacts/area-map-npc-assets-after.json. Copied matching field-map-npc parser
+source evidence so new committed fixtures run without skips. No new conversion,
+extraction, editable-asset import or shared pack write. Other large local-assets
+dependencies remain shared read inputs. See [asset notes](ASSETS.md). Existing
+compiler/Pillow warnings remain; no emulator/profile/save changes or new measured
+hardware/timing/pixel/floating-point fidelity claims. Concurrent implementation
+work is preserved and excluded from this frozen validation.
+
+Next: field/NPC/partner mechanics and service boundaries, remaining battle,
+message/inventory/story, effect/audio and relevant port tooling. Re-audit newly
+added or changed code in already covered runtime/event/save/display modules.
+Port-wide documentation and the remake remain incomplete; the documentation goal
+stays active.

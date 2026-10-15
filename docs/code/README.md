@@ -45,7 +45,8 @@ platform resource ownership and current scene-specific render adapters.
 Retained camera/display/icon/letterbox helpers are also covered. Audio/frontend
 service notes are included in the runtime guide. Animation/material/shadow and
 display batch helpers now have inline numeric/behavior notes. Field/NPC/partner
-modules, remaining battle, message, inventory, story, audio and port tooling still
+modules, remaining battle, message, inventory, story, effect/audio and port tooling
+still
 require a systematic inline numeric/behavior audit. Concurrent additions to
 already covered modules also need review;
 existing comments and contracts in those areas do not imply complete coverage.

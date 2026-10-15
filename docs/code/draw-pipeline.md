@@ -100,6 +100,9 @@ service; caller-capacity 8 cannot justify silently dropping lights. The source
 list writes an eligible pointer before checking its limit, so maximum<=0 may
 still return one. Preset and attenuation requests need their real providers.
 
+The fixed TEV tables also use color-input 1 APREV (previous alpha) and 9 TEXA
+(texture alpha); these are color-input selectors, not the alpha-input numbering.
+
 TEV fixed bases cover modes 1..7 and12; modes 8/9 have separate source blocks.
 Unless flag 0x10000000 suppresses it, eight setters append the K0 stage. Optional
 branches run in source order:

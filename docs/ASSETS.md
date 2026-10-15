@@ -1472,3 +1472,18 @@ No extracted source/compiled pack is committed here. Nintendo/Intelligent System
 own the original resources; local use only, no redistribution rights. Native
 Maya curve evaluation, original textures18–21/108, sound playback, effect driver,
 displays and terminal N64 stardust32 remain separately owned integration work.
+
+## Draw-pipeline documentation validation cache (2026-10-14)
+
+artifacts/draw-pipeline-code-documentation-validation/source starts from the
+accepted display-state-code-documentation-validation/source RomFS and matching
+message-icons/material-light/field-native evidence caches. It privately overlays
+87 NPC products from artifacts/source-checks/trouble-world only after every
+length/SHA256 matches artifacts/area-map-npc-assets-after.json; the new manifest
+records each output. Matching local-assets/field-map-npc parser source evidence
+was copied for the newly committed fixtures. This includes the already validated
+expanded door-data/parsed-map products documented above, not a new conversion.
+Other large local-assets inputs remain shared read dependencies. No extraction,
+conversion, editable import or shared pack write occurred. Original Nintendo/
+Intelligent Systems rights remain reserved; ignored private copies grant no new
+license or redistribution rights. No original pack/ISO bytes were committed.
