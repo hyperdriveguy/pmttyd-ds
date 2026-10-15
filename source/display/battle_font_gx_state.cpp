@@ -27,8 +27,8 @@ bool BattleFontGxState::source()const{
  return true;
 }
 // Missing initial source-static-object proof may hold and later become ready.
-// Once Texture was admitted, losing that proof permanently stales this binding;
-// texture-address reuse must not revive an old source object/atlas generation.
+// An observed failure while Texture is set permanently stales this binding;
+// first DrawStart clears coverage. Address reuse cannot revive a stale binding.
 bool BattleFontGxState::texture()const{
  if(!source())return false;
  const bool current=binding_.staticTextureCurrent(0x8041e97c,binding_.font);

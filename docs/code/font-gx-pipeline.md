@@ -61,9 +61,12 @@ The important consequences for native replay are:
 Matrix/color setters invoke the real sink before completing; coverage alone is
 insufficient. Static-object proof must connect actual source Setup/GX object,
 font allocation and the same resident atlas generation. Missing initial proof
-may hold and later become available. After a successful texture load, loss of
-that proof permanently invalidates this binding. A reused texture address cannot
-restore it. Source/publication loss or a dead font lease also stays stale.
+may hold and later become available. An observed proof failure while
+the Texture coverage bit is set permanently invalidates this binding. The first
+DrawStart setter clears that bit with the rest of coverage; a fresh setup can
+therefore wait for proof again if no failure was observed while it was set.
+A reused texture address cannot restore a stale binding. Source/publication loss
+or a dead font lease also stays stale.
 
 Malformed or unknown tuples mark the profile unsupported. A genuine first
 DrawStart indirect-mask setter clears coverage and begins a new complete build;
