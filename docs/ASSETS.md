@@ -3719,3 +3719,38 @@ and count-aware empty-UV sentinel admission belong to that frozen baseline.
 Original Nintendo/Intelligent Systems rights retained; local provenance grants
 no new license or redistribution rights. No ISO/extracted original/compiled
 product committed. Editable assets/manifest.json overlay remains authoritative.
+
+## Trio cadence/draw documentation validation inputs (2026-10-15)
+
+artifacts/trio-cadence-draw-code-documentation-validation/source freezes baseline
+656cff1165204169122f83246308ed4693dfb61b. Relative to sequence-binding validation,
+committed CMake adds actual font startup/string-width/cost/icon owners/tests;
+Makefile adds tools/source_ui_startup_assets.py. Three new source verifiers do
+not produce asset replacements. Exact frozen startup converter reads original
+G8ME01 revision0 ISO read-only into NEW empty private destination
+artifacts/trio-cadence-draw-code-documentation-validation/private-conversion/source-ui-startup.
+Only private romfs/source-ui-startup/memory.pmevt and memory.json are added.
+
+PMEVT001 pack SHA256:
+7577bb75184fd6e6fe81d5e291fccd76919ef25b62a454b21523232a5053a9fe.
+Ten spans preserve actual DOL initialized data and source loader BSS with explicit
+initialized-data priority; font names/literals/pointers/object state,SDK format/
+filter/scalars,fog/selected color and original root string retain source addresses.
+Converter pins FST,all span digests and original US GP instruction bytes; it
+records the actual three f/*.bfn files and empty font/ directory census,without
+invented aliases or ready pointers. This is cold process input,not a per-menu reset.
+
+114 accepted products now pinned; all112 previous products unchanged. Full harbor/
+Goombella fixtures and727 earlier private converter-work/atlas/provenance evidence
+paths rechecked,including absolute paths still referenced by generated manifests.
+Surface/footer/HP/enemy/HitN64/party/Professor/Harbor battle fixtures also checked;
+actual inherited HitN64 metadata PNG read path pinned. Small mutable evidence
+copied privately,large unchanged inputs reused read-only. No editable import,
+shared-cache write or full regeneration. Native skips assets-ready; Python tests
+independently read source ISO read-only into temporary outputs.
+
+Comments/guides alter no code tokens,asset conversion policy,dialogue/story/music/
+effects or source numeric behavior. Existing assets/manifest.json remains editable
+overlay. Nintendo/Intelligent Systems original rights retained; provenance grants
+no new license/distribution rights. No ISO/extracted original/compiled product
+committed. Manifest records converter command/hash,source and product evidence.

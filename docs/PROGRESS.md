@@ -16050,3 +16050,63 @@ changed battle code and newer animation/field/party/font/window/resource/raster/
 startup integrations and tools. Inventory tracks only source/include C++/header/
 PICA hashes: tools/untracked additions need separate audit; matching hashes do
 not prove semantic completeness. Broad documentation/remake goals stay active.
+
+## 2026-10-15 — Trio retained cadence and menu draw-binding documentation
+
+Expanded comments in source/battle/trio_attack.cpp and its public header:
+66 source lines added/relocated,7 source lines removed,7
+header lines added. The7-line native HP ownership block was moved from above
+the class factory back to its actual HP overload. Added [Trio cadence](code/trio-cadence.md)
+and [menu frame bindings](code/trio-menu-frame-bindings.md),linked from code index.
+Code/docs commit ad684529. Executable tokens/string literals unchanged; no
+mechanics/dialogue/story/asset or test changes for this documentation pass.
+
+Notes explain actual pinch allocation/mode/truncate/sound frontier, private
+versus general pads and TimingA-only retained Main, callback clear ownership,
+input sample retention, diagnostic dedup versus actual child execution, current
+Sequence bindings (Turn/pinch only), ActionHelp's real no-display/pending paths,
+once-only display acknowledgment and separate camMain/camDraw/marioStMain owners.
+Tick notes distinguish sampledAt from VM visits and independent gauge/icon/
+PointGet/fade/map/scene gates; nominal243MHz is an explicit timestamp adapter.
+Draw notes explain class/weapon allocation tokens,current pointer/resource chains,
+facade-address lifetime, camera Main generation/pass, native synthetic reservations,
+original label whitelist/stable borrows/RNG, VM-before-GP reads and exact invoking
+camera8 callbacks. Fresh message mapping and original enemy/player/Professor pose/
+audience callback ownership documented. Runtime remains partial: newer field
+return/lifetime and remaining changes since prior reviews still need inspection.
+
+Frozen baseline 656cff1165204169122f83246308ed4693dfb61b plus owned docs is at
+artifacts/trio-cadence-draw-code-documentation-validation/source. Full git-blob
+audit covers 4372 baseline tracked files with zero unexpected changes;five owned
+frozen/live docs/source files match and115 local guide/index links resolve.
+All source/prose finalized before gates. Concurrent GP/class/Window/inner-draw/
+NPC/raster/field/resource integrations preserved/excluded; no moving-worktree
+validation claim. Original host/native handles observed terminal0,exit markers agree.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits0: 512/512 C++ (89.98s),
+231/231 Python (36.152s),zero skipped. Original enemy45-descriptor,HitN64,
+party-position,Professor/fence,conditional Harbor battle,full harbor144-pose/
+Goombella32-pose and actual Game UI startup/process retention fixtures ran.
+New font/startup/text-width/cost/icon tests registered; unfiltered suites.
+Native make all -o assets-ready -j4 SOUNDTRACK=gamecube exits0. Manifest pins
+source,accepted products/evidence/fixtures/logs and ELF/3DSX. Existing compiler/
+Pillow warnings remain. No emulator/profile/save changes or original CPU/GPU/
+pixel/audio/performance/hardware parity claims.
+
+Committed dependency diff adds cold source UI converter/Makefile invocation,
+source cost/width/string verifiers and CMake startup/text/cost/icon code/tests.
+Exact frozen converter read ISO read-only into a NEW empty private destination;
+only source-ui-startup/memory.pmevt and memory.json added privately.114 accepted
+products now pinned; prior112 unchanged. All727 previous conversion work/atlas/
+provenance paths rechecked plus inherited surface/footer/HP/enemy/HitN64/party/
+Professor/Harbor fixtures,including actual HitN64 external PNG read path.
+No import over editable assets or live shared-cache write. Native full regeneration
+skipped; Python fixtures independently read ISO read-only into temporary outputs.
+See [asset ledger](ASSETS.md). Original rights retained; no ISO/extracted original
+or compiled product committed.
+
+Next: finish unreviewed newer Trio changes (including field return/lifetime),
+changed battle code,newer animation/field/party/font/window/resource/raster/startup
+integrations and tools. Hash inventory is only a tracked source/include C++/
+header/PICA review aid; tools/untracked additions need separate audit and matching
+hashes do not prove semantic completeness. Broad documentation/remake goals active.
