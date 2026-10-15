@@ -3,6 +3,7 @@
 #include "animation_tangent_memory.hpp"
 #include "event_native_runtime.hpp"
 #include "field_npc_main_entry_binding.hpp"
+#include "display_queue.hpp"
 #include <cassert>
 #include <cmath>
 #include <cstring>
@@ -345,6 +346,8 @@ struct NativeWorld {
   bool poseClockReady = false, cloudReady = false, interruptReady = false;
   unsigned cloudCalls = 0, interruptCalls = 0, vivianCalls = 0;
   bool marioServicesReady = false;
+  bool displayReady = false, queueReady = false;
+  std::unique_ptr<DisplayQueue> displayQueue = std::make_unique<DisplayQueue>();
   BattlePoseClock selectedClock{1234, 5678};
   static constexpr uint32_t Work = 0x803d9470, M = 0x8d000000;
   uint32_t word(uint32_t a) {
@@ -432,6 +435,28 @@ struct NativeWorld {
     store(M + 0x1dc, 0x87654321);
     FieldNpcMainEntryNativeServices n;
     n.user = this;
+    n.display = [](void *p, EventAddressSpace &memory,
+                   const FieldNpcDisplayRequest &q, FieldNpcDisplayResponse &out) {
+      auto &f = *static_cast<NativeWorld *>(p);
+      assert(&memory == &f.vm->memory);
+      if (!f.displayReady) return false;
+      if (q.function == 0x8000f2fc) {
+        assert(q.args[0] == 4); out.word = 0x8e000000; return true;
+      }
+      if (q.function == 0x8029e6a4) {
+        assert(q.args[0] == 0x8e00011c && q.args[1] == f.actor + 0x8c);
+        out.point = {1,2,3}; return true;
+      }
+      if (q.function == 0x8029eb08) {
+        assert(q.args[0] == 0x8e00015c);
+        out.point = {0,0,-.5f}; return true;
+      }
+      assert(q.function == 0x80010bc4);
+      if (!f.queueReady) return false;
+      return f.displayQueue->enter(q.args[0], q.args[1], q.args[2], q.args[3],
+                                  q.depth) != DisplayAdmission::Unavailable;
+    }; // Explicit camera/matrix fixtures; actual shared native queue.
+
     n.numbers.divide = nativeFieldNpcClockDivide;
     n.numbers.convert = nativeFieldNpcClockConvert;
     n.marioDetection = [](void *p, EventAddressSpace &memory,
@@ -729,6 +754,37 @@ void actualAliases() {
                                         proximity) ==
              FieldNpcDetectionFrontier::Display &&
          f.interruptCalls == 6 && f.word(0x8041e8ac) == 1 && c.phase == 60);
+  // Display material leaves must mutate an inactive actual shared pose row.
+  const auto beforeDisplayFlags = f.word(f.actor);
+  f.store(f.actor, 0x40);
+  f.store(f.actor + 0x104, 255);
+  f.store(f.actor + 0x114, 0x123456ff);
+  f.store(f.actor + 0x1f4, 4);
+  f.store(f.view->poseAddress(255) + 0xe8, 0x200);
+  FieldNpcDisplayCursor display;
+  assert(f.entry->advanceDisplay(c, move, automatic, proximityPrefix, proximity,
+                                 display) == FieldNpcDisplayFrontier::Pending);
+  assert(display.phase == 2 && f.pool->slot(255)->word(0xe8) == 0x200);
+  f.displayReady = true;
+  assert(f.entry->advanceDisplay(c, move, automatic, proximityPrefix, proximity,
+                                 display) == FieldNpcDisplayFrontier::Pending);
+  assert(display.phase == 39 && f.displayQueue->count() == 0 &&
+         f.pool->slot(255)->word(0xe8) == 0x240 &&
+         f.pool->slot(255)->word(0xf0) == 0x123456ff);
+  f.store(f.view->poseAddress(255) + 0xe8, 0x400);
+  f.store(f.actor + 0x114, 0xffffffff);
+  f.queueReady = true;
+  assert(f.entry->advanceDisplay(c, move, automatic, proximityPrefix, proximity,
+                                 display) == FieldNpcDisplayFrontier::Shadow);
+  assert(f.displayQueue->count() == 3 && f.pool->slot(255)->word(0xe8) == 0x400 &&
+         f.pool->slot(255)->word(0xf0) == 0x123456ff);
+  for (unsigned i = 0; i < 3; ++i) {
+    auto record = f.displayQueue->record(i);
+    assert(record && record->camera == 4 && record->drawClass == i &&
+           record->callback == 0x8004c50c && record->userdata == f.actor);
+  }
+  assert(c.phase == 60 && f.word(0x8041e8ac) == 1);
+  f.store(f.actor, beforeDisplayFlags);
   // Source getter is address arithmetic, not active/clip readiness. An explicit
   // cold-slot handle input must mutate the SAME inactive row without a new
   // gate.

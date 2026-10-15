@@ -337,4 +337,48 @@ FieldNpcDetectionFrontier FieldNpcMainEntryBinding::advanceMarioDetection(
              ? FieldNpcDetectionFrontier::Display
              : FieldNpcDetectionFrontier::Pending;
 }
+FieldNpcDisplayFrontier FieldNpcMainEntryBinding::advanceDisplay(
+    FieldNpcMainEntryCursor &entry, FieldNpcMainMoveCursor &movement,
+    FieldNpcAutoPoseCursor &pose, FieldNpcDetectionCursor &detection,
+    FieldNpcMarioCursor &mario, FieldNpcDisplayCursor &display) {
+  if (advanceMarioDetection(entry, movement, pose, detection, mario) !=
+      FieldNpcDetectionFrontier::Display)
+    return FieldNpcDisplayFrontier::Pending;
+  FieldNpcDisplayServices s;
+  s.memory = services().clock;
+  s.byte = [](void *p, uint32_t a) -> std::optional<uint8_t> {
+    uint8_t v;
+    if (!static_cast<FieldNpcMainEntryBinding *>(p)->vm_.memory.readByte(a, v))
+      return {};
+    return v;
+  };
+  s.half = [](void *p, uint32_t a) -> std::optional<uint16_t> {
+    uint16_t v;
+    if (!static_cast<FieldNpcMainEntryBinding *>(p)->vm_.memory.readHalf(a, v))
+      return {};
+    return v;
+  };
+  s.request = [](void *p, const FieldNpcDisplayRequest &q,
+                 FieldNpcDisplayResponse &out) {
+    auto &b = *static_cast<FieldNpcMainEntryBinding *>(p);
+    auto &m = b.vm_.memory;
+    if (q.function == 0x80040730 || q.function == 0x80040710 ||
+        q.function == 0x800406b4) {
+      // Source getter is arithmetic: do not add active/resource admission.
+      if (q.args[0] >= 256 || !b.poses_.aliases(*b.owner_->poses().sharedPool(), m))
+        return false;
+      auto a = b.poses_.poseAddress(q.args[0]);
+      if (!a)
+        return false;
+      if (q.function == 0x800406b4)
+        return m.writeWord(a + 0xf0, q.color);
+      uint32_t v;
+      return m.readWord(a + 0xe8, v) &&
+             m.writeWord(a + 0xe8, q.function == 0x80040730
+                                          ? v | q.args[1] : v & ~q.args[1]);
+    }
+    return b.native_.display && b.native_.display(b.native_.user, m, q, out);
+  };
+  return advanceFieldNpcMainDisplay(entry.actor, s, display);
+}
 } // namespace ttyd

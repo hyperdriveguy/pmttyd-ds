@@ -3,6 +3,7 @@
 #include "field_npc_main_auto_pose.hpp"
 #include "field_npc_main_detection.hpp"
 #include "field_npc_main_entry.hpp"
+#include "field_npc_main_display.hpp"
 #include "field_npc_main_movement.hpp"
 #include "field_npc_mario_detection.hpp"
 namespace ttyd {
@@ -23,6 +24,11 @@ struct FieldNpcMainEntryNativeServices {
   bool (*marioDetection)(void *, EventAddressSpace &,
                          const FieldNpcMarioRequest &,
                          FieldNpcMarioResponse &) = nullptr;
+  // Camera, SDK matrix and dispEntry provider. Own the same camera/queue pass
+  // through holds and deferred dispatch; false is atomic/no-effect. A queue
+  // NaN rejection is acknowledged success. No fallback camera or registration.
+  bool (*display)(void *, EventAddressSpace &, const FieldNpcDisplayRequest &,
+                  FieldNpcDisplayResponse &) = nullptr;
   bool (*sound)(void *, EventAddressSpace &,
                 const FieldNpcMainEntryRequest &) = nullptr;
 };
@@ -52,6 +58,10 @@ public:
                                                   FieldNpcAutoPoseCursor &,
                                                   FieldNpcDetectionCursor &,
                                                   FieldNpcMarioCursor &);
+
+  FieldNpcDisplayFrontier advanceDisplay(FieldNpcMainEntryCursor &,
+      FieldNpcMainMoveCursor &, FieldNpcAutoPoseCursor &,
+      FieldNpcDetectionCursor &, FieldNpcMarioCursor &, FieldNpcDisplayCursor &);
 
 private:
   FieldNpcMainEntryBinding(std::shared_ptr<FieldNpcRegistryOwner>,

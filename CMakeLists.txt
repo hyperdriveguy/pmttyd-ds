@@ -2158,3 +2158,8 @@ add_executable(battle_enemy_hp_publication_tests tests/battle_enemy_hp_publicati
 target_link_libraries(battle_enemy_hp_publication_tests PRIVATE ttyd_core)
 add_test(NAME battle_enemy_hp_publication COMMAND battle_enemy_hp_publication_tests)
 set_tests_properties(battle_enemy_hp_frame battle_enemy_hp_publication PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+# Original NPC display prefix; shadow/separate-pose/history remain frontiers.
+target_sources(ttyd_core PRIVATE source/field/field_npc_main_display.cpp)
+add_executable(field_npc_main_display_tests tests/field_npc_main_display_tests.cpp)
+target_link_libraries(field_npc_main_display_tests PRIVATE ttyd_core)
+add_test(NAME field_npc_main_display COMMAND field_npc_main_display_tests)
