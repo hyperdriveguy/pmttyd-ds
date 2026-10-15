@@ -16437,3 +16437,62 @@ Next tasks:
    compare original visuals and profile physical hardware. Read-only next-boundary
    evidence is in npc-node-push-ordered-evidence.txt, npc-node-push-boundary-evidence.txt
    and npc-actual-traversal-next-evidence.txt.
+
+## 2026-10-15 — Packed UI cost, source text and cold startup documentation
+
+Added 121 inline comment lines,replacing 1 ambiguous header line across
+eight C++/header files. Added [UI text/cost](code/battle-ui-text-cost.md) and
+[cold UI startup](code/native-ui-startup.md),linked from code index.
+Code/docs commit5269ae1b. All executable tokens/string literals unchanged;
+no mechanics/dialogue/story/asset or test changes for this documentation pass.
+
+Cost notes explain exact stacked-copy ID groups,captured base/original count
+versus post-child item reload, source signed-double construction,bias reload
+around actual pow,fctiwz and wrapped/signed reduction/clamps. Header distinguishes
+item0 pouch skip from resulting-cost0 unit-read skip. Width notes explain real
+EOF/lead/LHZ/single reads,unknown BE private bytes/aliases,command output reuse,
+scanf zero versus known cells,unused camera child,icon ID/dimensions/FMA/source
+bias order,raw16 widths/fresh spacing and reached-newline count/actual guest STH.
+Centered notes distinguish raw byte drawing from width's command parser,late
+base/camera concat capture,outline/main coordinate domains and separate truncation,
+fresh alpha/color restore and per-glyph metrics. Startup notes explain exact
+cold spans/FNV pins,real cold slot test,GP/font-current policy,retained RAM,
+finite native DVD record/address/path admission,actual heap0 capture/transfer,
+one fread across delivery holds,coherent flags/fields,phase/language history and
+retirement without a guest free/reset. Source DVD layout checked directly;
+field84 is offset,8c callback,and delivered88 is finite-adapter bookkeeping.
+
+Frozen baseline e3646132e8f10a4dc4a8bcffe88e24691e2a0065 plus owned docs is at
+artifacts/battle-ui-text-startup-code-documentation-validation/source. Full git-
+blob audit covers 4382 baseline tracked files with zero unexpected changes;all11
+owned frozen/live docs/source files match and122 local guide/index links resolve.
+All source/prose finalized before gates. Concurrent field/NPC/GP/class/Window/
+inner/raster/resource integrations preserved/excluded; no moving-worktree claim.
+Original host/native handles observed terminal0 and exit markers agree.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits0: 514/514 C++ (84.84s),
+231/231 Python (33.958s),zero skipped. All five scoped cost/width/centered/
+startup/Game tests registered and ran. Original enemy45-descriptor,HitN64,
+party-position,Professor/fence,conditional Harbor battle and actual Game UI
+process-retention fixtures ran. Native make all -o assets-ready -j4
+SOUNDTRACK=gamecube exits0. Three existing source verifiers independently exit0
+against ISO read-only:cost bodies/calls/double spans,width and centered bodies/
+calls/constants and original US BFN. These are static pins,not executed-PPC or
+native production provider parity. Manifest records tool/log hashes and results.
+Manifest also pins source/products/evidence/fixtures/logs and ELF/3DSX. Existing
+compiler/Pillow warnings remain. No emulator/profile/save changes or original
+CPU/GPU/pixel/audio/performance/hardware parity claims.
+
+No committed tools/assets/converters/Makefile/CMake dependency changes.114 accepted
+products,729 prior generated work/provenance evidence paths and all inherited
+surface/footer/HP/enemy/HitN64/party/Professor/Harbor fixtures rechecked,including
+actual external HitN64 PNG read path. No conversion/import/overlay/shared-cache
+write. Native full regeneration skipped; existing Python fixtures independently
+read ISO read-only into temporary outputs. See [asset ledger](ASSETS.md). No ISO/
+extracted original/compiled product committed; original rights retained.
+
+Next: newer field/NPC/animation/GP/Window/class/raster/resource integration,
+remaining changed battle code and tools; whole-file Trio numeric coverage still
+needs synthesis. Hash inventory covers only tracked source/include C++/header/
+PICA and is a review aid,not semantic completeness; untracked additions and tools
+need their own audit. Broad documentation/remake goals remain active.

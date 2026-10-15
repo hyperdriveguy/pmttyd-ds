@@ -3815,3 +3815,32 @@ literal and table reads require their actual source backing; missing data holds.
 All 2,152 prior private RomFS products remain unchanged. No ISO, extracted payload
 or compiled product is committed; Nintendo/Intelligent Systems rights and prior
 local-use-only licensing limitations remain unchanged.
+
+## Battle UI text/startup documentation validation inputs (2026-10-15)
+
+artifacts/battle-ui-text-startup-code-documentation-validation/source freezes
+baselinee3646132e8f10a4dc4a8bcffe88e24691e2a0065. Relative to return/resource
+validation,no committed tools/assets/converters/Makefile/CMake changes.114 accepted
+private products and729 prior conversion-work/atlas/provenance paths rechecked,
+including absolute resource-manifest read paths. Original full harbor/Goombella/
+Mario/Professor/source-UI and surface/footer/HP/enemy/HitN64/party/Harbor-battle
+fixtures/evidence unchanged. Actual HitN64 metadata PNG read path remains pinned
+and identical to the current private copy. Small mutable/default evidence copied
+privately,large unchanged inputs reused read-only.
+
+No new conversion/import/overlay or shared-cache write; native full assets-ready
+regeneration skipped. Python fixtures independently read the original ISO
+read-only into temporary outputs. Existing verify_packed_weapon_cost.py,
+verify_source_font_width.py and verify_source_string_font.py additionally run
+from this exact frozen source against the read-only ISO; all exit0. They pin
+original bodies/calls/constants/BFN,produce only private text logs and provide
+static source evidence rather than executed CPU/GPU parity. Manifest records
+exact tool/result/log hashes. No extracted binary committed for these checks.
+
+Comments/guides change no code tokens,conversion policy,original dialogue/story/
+music/SFX or numeric behavior. Native startup uses actual original cold source
+spans,raw US BFN,source heap allocation and finite read delivery under existing
+owners. CPU setup completion still does not admit Window/queue/GPU readiness.
+Original Nintendo/Intelligent Systems rights retained; provenance grants no new
+license/distribution rights. No ISO/extracted original/compiled product committed.
+Editable assets/manifest.json overlay remains preserved.
