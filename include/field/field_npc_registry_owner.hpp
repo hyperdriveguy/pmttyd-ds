@@ -30,6 +30,7 @@ public:
  const FieldPosePool& poses() const{return poses_;}
 private:
  friend class FieldNpcRegistryBinding;
+ friend class FieldNpcSetupBinding;
  explicit FieldNpcRegistryOwner(uint32_t);
  uint8_t* span(uint32_t,uint32_t);
  std::array<uint8_t,0x30> registry_{}; // Source startup BSS8041e8ac..e8db.
@@ -58,6 +59,7 @@ public:
  std::optional<uint32_t> lookup(uint32_t name,PackedNpcLookup=PackedNpcLookup::NoAssert);
  std::optional<std::vector<uint32_t>> activeActors() const; // Active1, not query/display readiness.
 private:
+ friend class FieldNpcSetupBinding;
  FieldNpcRegistryBinding(std::shared_ptr<FieldNpcRegistryOwner>,EventAddressSpace&);
  struct Call;
  PackedNpcRegistryServices services(Call&);

@@ -5,6 +5,7 @@
 #include "field_bero_position.hpp"
 #include "field_position_event.hpp"
 #include "field_npc_setup.hpp"
+#include "field_npc_setup_binding.hpp"
 #include "field_map_npc_bootstrap.hpp"
 #include "event_operands.hpp"
 #include "event_gp_addresses.hpp"
@@ -85,6 +86,7 @@ public:
  bool prepareMapNpcs(Game&,const FieldAreaGpState&,const FieldMapNpcAssets&,uint32_t inputBase,uint32_t area,uint32_t map,uint32_t allocationBase);
  bool advanceMapNpcs(BattlePoseClock,const FieldMapNpcBattleAdmission& = {});
  bool mapNpcsReady() const;
+ bool bindNpcSetup(const FieldNpcSetupNativeServices&); // Stable real registry world; explicit shared RNG/clock.
  // Retains teardown across holds, suppressing scheduler passes/new roots.
  // Success clears event/case/native cursors; begin may then select another
  // supported room in this same VM, retaining context banks and event IDs.

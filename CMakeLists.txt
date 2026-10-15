@@ -1879,3 +1879,8 @@ add_executable(battle_class_publication_tests tests/battle_class_publication_tes
 target_link_libraries(battle_class_publication_tests PRIVATE ttyd_core)
 add_test(NAME battle_class_publication COMMAND battle_class_publication_tests)
 set_tests_properties(battle_class_publication PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+target_sources(ttyd_core PRIVATE source/field/field_npc_setup_binding.cpp)
+add_executable(field_npc_setup_binding_tests tests/field_npc_setup_binding_tests.cpp)
+target_link_libraries(field_npc_setup_binding_tests PRIVATE ttyd_core)
+add_test(NAME field_npc_setup_binding COMMAND field_npc_setup_binding_tests)
+set_tests_properties(field_npc_setup_binding PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

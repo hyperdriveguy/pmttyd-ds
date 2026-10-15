@@ -100,6 +100,7 @@ struct FieldAreaEventRuntime {
  std::shared_ptr<FieldNpcRegistryOwner> mapNpcOwner;
  std::unique_ptr<FieldNpcRegistryBinding> mapNpcBinding;
  std::unique_ptr<FieldMapNpcBootstrap> mapNpcs;
+ std::unique_ptr<FieldNpcSetupBinding> npcSetupBinding;
  std::optional<FieldAreaGpState> mapGpState;
  bool releasingNpcs=false,ticking=false,retiredNpcs=false,releaseInvocation=false;
  unsigned releaseStep=0;
@@ -186,7 +187,7 @@ struct FieldAreaEventRuntime {
   if(fn==0x8005323c) {
    if(first)npcSetup.erase(e.id);
    auto& cursor=npcSetup[e.id];cursor.firstVisit(first);
-   if(services.npcSetup.fieldPointer) {
+   if(npcSetupBinding || services.npcSetup.fieldPointer) {
     FieldNpcSetupOperands o;o.user=this;
     o.word=[](void* p,uint32_t a){return static_cast<FieldAreaEventRuntime*>(p)->word(a);};
     o.value=[](void* p,EventEntry& e,int32_t raw){auto& r=*static_cast<FieldAreaEventRuntime*>(p);return getEventValue(e,raw,r.vm.interpreterServices().operands);};
@@ -195,11 +196,12 @@ struct FieldAreaEventRuntime {
     events.alive=[](void* p,uint32_t id){return checkEventId(id,static_cast<FieldAreaEventRuntime*>(p)->vm.creationServices())!=0;};
     events.create=[](void* p,uint32_t script,uint8_t priority,uint8_t flags)->EventEntry* {
      auto& r=*static_cast<FieldAreaEventRuntime*>(p);const auto creation=r.vm.creationServices();
+     if(r.vm.schedule.count<0 || r.vm.schedule.count>=256)return nullptr;
      auto* gp=creation.manager.globals(creation.manager.user);auto* context=creation.manager.context(creation.manager.user,gp->battleContext!=0);
      for(int n=0;n<context->capacity;++n)if(!(context->entries[n].flags&1))return &createRootEvent(r.vm.schedule,script,priority,flags,creation);
      return nullptr;
     };
-    const auto result=fieldNpcSetupEvent(e,first,cursor,o,services.npcSetup,events);
+    const auto result=npcSetupBinding?npcSetupBinding->invoke(e,first,cursor,o,events):fieldNpcSetupEvent(e,first,cursor,o,services.npcSetup,events);
     if(result==2)npcSetup.erase(e.id);
     return result;
    }
@@ -374,6 +376,14 @@ bool FieldAreaEvent::prepareMapNpcs(Game& game,const FieldAreaGpState& state,con
 }
 bool FieldAreaEvent::advanceMapNpcs(BattlePoseClock clock,const FieldMapNpcBattleAdmission& battle){return started && runtime_ && !failed && !runtime_->releasingNpcs && runtime_->mapNpcs && runtime_->mapNpcs->advance(clock,battle);}
 bool FieldAreaEvent::mapNpcsReady() const{return runtime_ && !runtime_->releasingNpcs && runtime_->mapNpcs && runtime_->mapNpcs->ready();}
+bool FieldAreaEvent::bindNpcSetup(const FieldNpcSetupNativeServices& services){
+ if(!started || !runtime_ || failed || runtime_->releasingNpcs || !mapNpcsReady())return false;
+ auto& r=*runtime_;if(r.npcSetupBinding)return false;
+ for(const auto& entry:r.npcSetup)if(entry.second.stage!=FieldNpcSetupCursor::Stage::Start)return false;
+ auto source=std::shared_ptr<const EventScriptAssets>(r.program,&r.program->scripts);
+ r.npcSetupBinding=FieldNpcSetupBinding::bind(r.mapNpcOwner,*r.mapNpcBinding,r.vm,std::move(source),services);
+ return bool(r.npcSetupBinding);
+}
 // No manager pass/reentry or live unselected battle bank may overlap unload.
 // Retain provider identity and completed-step ordinal across holds; only reset
 // once, then resume the first unfinished external release request.
@@ -402,7 +412,7 @@ bool FieldAreaEvent::retireMapNpcs(const FieldAreaNpcReleaseServices& services){
  // Discard native cursors/diagnostics without publishing child return banks.
  r.previousParty.clear();r.npcSetup.clear();r.roots.clear();r.initId.reset();
  completed_.clear();pendingFunction=pendingEventId=0;
- r.mapNpcs.reset();r.mapGpState.reset();r.services={};r.releaseServices={};
+ r.npcSetupBinding.reset();r.mapNpcs.reset();r.mapGpState.reset();r.services={};r.releaseServices={};
  r.releaseStep=0;r.releasingNpcs=false;r.retiredNpcs=true;started=false;return true;
 }
 // A prepared map requires exact same caller GP bytes and all NPC rows ready.
