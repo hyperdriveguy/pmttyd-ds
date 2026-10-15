@@ -48,11 +48,11 @@ bool resumeAnimationSourceNode(const AnimationGroupNode& input,const AnimationSo
  case 20:c.phase=any(0,c.zero)?21:30;break;
  case 21:if(!xyz(0x8029e230,4,0))return false;c.mask|=1;c.phase=30;break;
  case 30:if(!read(0x8041fb24,c.literal))return false;c.phase=c.input.joint?31:50;break;
- case 31:c.phase=input.parent[0]!=real(c.literal) || input.parent[1]!=real(c.literal) || input.parent[2]==real(c.literal)?32:40;break;
- case 32:if(!read(0x8041fb28,c.literal))return false;c.phase=input.parent[0]==real(c.literal) || input.parent[1]==real(c.literal) || input.parent[2]==real(c.literal)?33:34;break;
+ case 31:c.phase=c.input.parent[0]!=real(c.literal) || c.input.parent[1]!=real(c.literal) || c.input.parent[2]==real(c.literal)?32:40;break;
+ case 32:if(!read(0x8041fb28,c.literal))return false;c.phase=c.input.parent[0]==real(c.literal) || c.input.parent[1]==real(c.literal) || c.input.parent[2]==real(c.literal)?33:34;break;
  case 33:if(!read(0x8041fb24,c.literal))return false;c.compensation.fill(c.literal);c.phase=38;break;
  case 34:if(!read(0x8041fb24,c.literal))return false;++c.phase;break;
- case 35:case 36:case 37:if(!num(AnimationNodeNumber::Divide,c.literal,bits(input.parent[c.phase-35]),c.compensation[c.phase-35]))return false;++c.phase;break;
+ case 35:case 36:case 37:if(!num(AnimationNodeNumber::Divide,c.literal,bits(c.input.parent[c.phase-35]),c.compensation[c.phase-35]))return false;++c.phase;break;
  case 38:{auto q=op(0x8029e2b0,2);q.xyz={real(c.compensation[0]),real(c.compensation[1]),real(c.compensation[2])};if(!call(q))return false;c.mask|=2;c.phase=40;break;}
  case 40:if(!read(0x8041fb24,c.literal))return false;++c.phase;break;
  case 41:c.phase=real(c.node[3])!=real(c.literal) || real(c.node[4])!=real(c.literal) || real(c.node[5])==real(c.literal)?42:63;break;
