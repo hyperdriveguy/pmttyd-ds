@@ -62,6 +62,7 @@ public:
  std::optional<std::vector<uint32_t>> activeActors() const; // Active1, not query/display readiness.
 private:
  friend class FieldNpcSetupBinding;
+ friend class FieldNpcClockBinding;
  FieldNpcRegistryBinding(std::shared_ptr<FieldNpcRegistryOwner>,EventAddressSpace&);
  struct Call;
  PackedNpcRegistryServices services(Call&);

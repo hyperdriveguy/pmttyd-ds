@@ -1992,3 +1992,9 @@ add_executable(animation_pool_memory_tests tests/animation_pool_memory_tests.cpp
 target_link_libraries(animation_pool_memory_tests PRIVATE ttyd_core)
 add_test(NAME animation_pool_memory COMMAND animation_pool_memory_tests)
 set_tests_properties(animation_pool_memory PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+# Source npcMain clock section and actual retained actor/GP aliases.
+target_sources(ttyd_core PRIVATE source/field/field_npc_clock.cpp source/field/field_npc_clock_binding.cpp)
+add_executable(field_npc_clock_tests tests/field_npc_clock_tests.cpp)
+target_link_libraries(field_npc_clock_tests PRIVATE ttyd_core)
+add_test(NAME field_npc_clock COMMAND field_npc_clock_tests)
+set_tests_properties(field_npc_clock PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
