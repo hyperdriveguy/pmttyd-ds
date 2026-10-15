@@ -92,6 +92,16 @@ void runAnimationScratchMemoryFixture(const char* root){
   assert(pool->main(4,{117,117}) && real(m,p->word(0x64)+4*target)!=before);assert(m.writeWord(address,saved) && pool->main(4,{117,117}));close(real(m,p->word(0x64)+4*target),before);cubic=true;break;
  }
  assert(cubic);
+ // Distinct guest scratch and MODEL spans may alias host storage after an
+ // explicit remap. Scratch writes then invalidate an earlier MODEL check;
+ // retain the final owner/View revalidation before publishing native output.
+ FILE* modelFile=std::fopen((std::string(root)+"/field-player-c_pkr.draw-model.bin").c_str(),"rb");assert(modelFile && !std::fseek(modelFile,0,SEEK_END));const auto modelSize=std::ftell(modelFile);assert(modelSize>0x1b0);std::fclose(modelFile);
+ std::vector<uint8_t> remappedModel(size_t(modelSize),0);for(size_t i=0;i<remappedModel.size();++i)assert(m.readByte(model+uint32_t(i),remappedModel[i]));const auto validModel=remappedModel;
+ assert(m.unregisterExternalRam(model) && m.registerExternalRam(model,remappedModel.data(),uint32_t(remappedModel.size())));
+ const uint32_t nodeBytes=4*p->resource->draw->word(0x140),nodeCount=word(m,model+0x140);std::vector<uint8_t> savedNodeBacking;
+ assert(nodeBytes && 0x140+uint64_t(nodeBytes)<=remappedModel.size() && m.extractRam(nodeOut,nodeBytes,savedNodeBacking) && m.registerExternalRam(nodeOut,remappedModel.data()+0x140,nodeBytes));
+ const auto beforeAlias=p->shape.positions;assert(pool->selectName(4,"PKR_W_1",true,{}) && !pool->main(4,{117,117}));assert(word(m,model+0x140)!=nodeCount && p->word(0x3c)!=0xffffffff && p->shape.positions==beforeAlias);
+ assert(m.unregisterExternalRam(nodeOut) && m.registerRam(nodeOut,std::move(savedNodeBacking)));std::copy(validModel.begin(),validModel.end(),remappedModel.begin());assert(pool->main(4,{117,117}));
  // File ownership alone is insufficient when actual VM backing disappears.
  const uint32_t work=word(m,0x80415dc0),auxEntry=word(m,work+0x100),aux=word(m,word(m,auxEntry+0xa0));
  const uint32_t base=word(m,model+0x154),oldCache=word(m,posCache);assert(files->ownsPayload(aux,12*uint32_t(p->shape.positions.size())) && m.unregisterExternalRam(aux));

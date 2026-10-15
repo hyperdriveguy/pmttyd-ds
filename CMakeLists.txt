@@ -2259,3 +2259,9 @@ add_executable(battle_audience_turn_end_continuation_tests tests/battle_audience
 target_link_libraries(battle_audience_turn_end_continuation_tests PRIVATE ttyd_core)
 add_test(NAME battle_audience_turn_end_continuation COMMAND battle_audience_turn_end_continuation_tests)
 set_tests_properties(battle_audience_turn_end_continuation PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Callback-scoped raw animation RAM access and semantic/alias boundaries.
+add_executable(event_ram_access_tests tests/event_ram_access_tests.cpp)
+target_link_libraries(event_ram_access_tests PRIVATE ttyd_core)
+add_test(NAME event_ram_access COMMAND event_ram_access_tests)
+set_tests_properties(event_ram_access PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

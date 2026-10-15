@@ -26,6 +26,8 @@ public:
     // One complete raw RAM span, excluding semantic providers. No pointer
     // escapes and callers must recheck after any mapping mutation.
     bool contiguousRam(uint32_t a,uint32_t n) const{return n && rawRamSpan(a,n);}
+    class RawRamAccess;
+    template<typename Callback> bool withRawRamAccess(Callback&&);
     // Pure current mapping admission, using the same interval/semantic checks
     // as registration. No storage is reserved; recheck after mapping changes.
     bool unmappedRange(uint32_t base,uint64_t size) const{return available(base,size);}
@@ -36,6 +38,7 @@ public:
     bool writeHalf(uint32_t,uint16_t);
     bool writeWord(uint32_t,uint32_t);
 private:
+    bool rawRamBorrowed_=false;
     struct Region {uint32_t base;std::vector<uint8_t> bytes;};
     bool available(uint32_t,uint64_t) const;
     const uint8_t* rawRamSpan(uint32_t,unsigned) const;
@@ -51,3 +54,4 @@ private:
     std::vector<ExternalRegion> external_;
 };
 }
+#include "event_ram_access.hpp"

@@ -12399,3 +12399,67 @@ before optional taps, using completed source camera/projection/incarnation
 publication. Complete original tutorial control/story flow, battle end and real
 field return; do not skip80073f20 or infer completion from fade/empty HP output.
 The tutorial/real-battle goal and full remake remain active/incomplete.
+
+## 2026-10-15 — Native source animation RAM access accelerated
+
+Ordinary native Mario source sampling now binds raw BE RAM spans for one
+synchronous callback, replacing repeated VM region/provider lookups with a
+32-entry stack cache and physically disjoint native memcpy. Semantic/unbound
+access and full-cache overflow retain the old facade. All six storage mutators
+reject during the callback; nested callbacks reject and RAII clears the guard.
+The interface exposes no raw pointers. Source scalars, sparse arithmetic,
+clock/tick order and authoritative cache/output storage are unchanged.
+Independent held node/vector/material readers still revalidate at capture.
+
+Kept fresh owner/MODEL validation after source writes: distinct guest external
+spans can physically alias. A real MODEL/node-output remap regression now checks
+late failure without invalid native publication and successful recovery after
+restoration. Overlapping native copy backing keeps the old forward word/byte
+loop. Callback domains prohibit yielding, external children, semantic-provider
+remapping and facade copy/move. This is native policy, not a new original opcode.
+See [contract](behavior/event/CALLBACK_SCOPED_RAW_RAM_ACCESS.md) and
+[optimization evidence](optimization/SOURCE_ANIMATION_RAM_ACCESS.md).
+
+Frozen source: artifacts/animation-ram-borrow-source, base
+652dded02f1472ea2b56666e6caa8392a0ee55e6 plus owned changes. Full make test:
+428/428 C++ (46.95s), 207/207 Python (34.093s), exit0. Full native
+make all -j6 -o assets-ready SOUNDTRACK=gamecube TARGET=ttyd-animation-ram-borrow:
+exit0. Both handles polled to terminal; existing compiler/Pillow warnings remain.
+The initial run exposed a missing test working directory and stale inherited
+battle fixture packs; explicit source-root CTest cwd and hash-verified accepted
+packs fixed them without weakening assertions. The four RomFS differences from
+the prior field-source tree are door-data JSON/PMEVT, trio-attack-events PMEVT
+and recovery-effect BIN. No original content/conversion policy changed here.
+
+Before/after benchmark hashes match source state, every authoritative buffer byte
+and vertex/color output for 960 host samples and 160 ARM samples over front,
+rear, effect and partner walk clips. The before sampler is byte-identical to the
+frozen base. ARM Main-only means under isolated Azahar fall from
+25.065/15.869/20.701/18.042ms to 3.928/2.633/3.059/2.811ms; ratios 6.03..6.77.
+These are emulated sampler microbenchmarks, not whole-field or hardware results.
+Host timings varied with concurrent load; no hardware/FPS claim derives from them.
+A matching ARM stack-usage compile reports individual frames 776 bytes for
+sampler evaluate and 576 for snapshot wrapper, not whole-chain stack bounds.
+
+Private ARM fixtures pass raw/semantic/alias guards, actual source scratch,
+late alias rejection/recovery, ordered Entry, source clock/bank selection,
+copy/retirement, native Game movement and candidate/checkpoint lifetime.
+Isolated before/after plaza input scripts pass. Reviewed after captures show
+front/rear source walk/run and jump, Mario/Goombella and original Rogueport art.
+The normal native binary is separate from all probe/SD instrumentation:
+artifacts/animation-ram-borrow-source/ttyd-animation-ram-borrow.3dsx,
+SHA256 dbf401c971d5bbf049f6104a7784c2248c46bdeb40b06274626d59130f616622.
+Probe binary SHA256 4c0df256b00d88b588301a1b19be937ef604619f41c15bd33b1624bdaca27345.
+Source/product/log/comparison/probe hashes and exact audit scope live in
+artifacts/animation-ram-borrow-validation-manifest.json. The audit covers 3906 source/documentation inputs and 2146 RomFS products,
+with zero unexpected input changes. Concurrent unrelated battle/NPC/render/
+documentation edits remain excluded from this frozen validation.
+The normal fresh-profile 45-second capture reaches the original storybook;
+the earlier 16-second capture was still loading and was not accepted as startup
+validation. No user emulator profile/save was touched. No ISO/pack/binary committed.
+
+Next: bind the original NPC flag8 facing/Main/inner path and complete Goombella's
+actual harbor NPC→auxiliary kind13→canonical kind1 event chronology without an
+early join; finish release/GC, full frame/window/event ownership, camera/occlusion,
+interior/triggers/story fidelity and measure fixed routes on physical New 2DS XL.
+EVT-01 and the playable prologue/full-game goal remain active; no parity claim.

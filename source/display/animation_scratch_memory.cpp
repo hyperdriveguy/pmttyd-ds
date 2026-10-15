@@ -8,15 +8,15 @@ namespace {
 float rounded(float v){volatile float f=v;return f;}
 int32_t signedWord(uint32_t v){return v<=0x7fffffffu?int32_t(v):int32_t(int64_t(v)-0x100000000LL);}
 struct Memory {
- EventAddressSpace& m;bool ok=true;
- uint32_t word(uint32_t a){uint32_t v=0;ok=m.readWord(a,v)&&ok;return v;}
- uint8_t byte(uint32_t a){uint8_t v=0;ok=m.readByte(a,v)&&ok;return v;}
+ EventAddressSpace& m;EventAddressSpace::RawRamAccess* ram=nullptr;bool ok=true;
+ uint32_t word(uint32_t a){uint32_t v=0;ok=(ram?ram->readWord(a,v):m.readWord(a,v))&&ok;return v;}
+ uint8_t byte(uint32_t a){uint8_t v=0;ok=(ram?ram->readByte(a,v):m.readByte(a,v))&&ok;return v;}
  float real(uint32_t a){const uint32_t v=word(a);float f;std::memcpy(&f,&v,4);return f;}
- void word(uint32_t a,uint32_t v){const bool done=m.writeWord(a,v);assert(done);ok=done&&ok;}
- void byte(uint32_t a,uint8_t v){const bool done=m.writeByte(a,v);assert(done);ok=done&&ok;}
+ void word(uint32_t a,uint32_t v){const bool done=ram?ram->writeWord(a,v):m.writeWord(a,v);assert(done);ok=done&&ok;}
+ void byte(uint32_t a,uint8_t v){const bool done=ram?ram->writeByte(a,v):m.writeByte(a,v);assert(done);ok=done&&ok;}
  void real(uint32_t a,float f){uint32_t v;std::memcpy(&v,&f,4);word(a,v);}
- bool backed(uint32_t a,uint32_t n){ok=m.contiguousRam(a,n)&&ok;return ok;}
- void copy(uint32_t dst,uint32_t src,uint32_t n){uint32_t o=0;for(;o+4<=n;o+=4)word(dst+o,word(src+o));for(;o<n;++o)byte(dst+o,byte(src+o));}
+ bool backed(uint32_t a,uint32_t n){ok=(ram?ram->bind(a,n):m.contiguousRam(a,n))&&ok;return ok;}
+ void copy(uint32_t dst,uint32_t src,uint32_t n){if(ram && ram->copy(dst,src,n))return;uint32_t o=0;for(;o+4<=n;o+=4)word(dst+o,word(src+o));for(;o<n;++o)byte(dst+o,byte(src+o));}
 };
 // Ordinary private/nonalias domain. Checks are native admission policy; original
 // Main has no malformed-resource guards. Zero-size source pointers are ignored.
@@ -32,7 +32,7 @@ struct View {
  static constexpr uint32_t streamOffsets[5]={0x2c,0x30,0x38,0x3c,0x34};
  static constexpr uint32_t capacityOffsets[5]={0xc,0x10,0x18,0x1c,0x14};
  static constexpr uint32_t strides[5]={4,4,2,4,12};
- bool file(uint32_t a,uint64_t n){return n==0 || (n<=0xffffffff && uint64_t(a)+n<=0x100000000ULL && files.ownsPayload(a,uint32_t(n)) && mem.m.contiguousRam(a,uint32_t(n)));}
+ bool file(uint32_t a,uint64_t n){return n==0 || (n<=0xffffffff && uint64_t(a)+n<=0x100000000ULL && files.ownsPayload(a,uint32_t(n)) && mem.backed(a,uint32_t(n)));}
  bool init(){
   if(!p.resource || !p.resource->draw || !p.resource->bank || p.word(0x10)>=64 || p.word(0x14)>=p.resource->names.size())return false;
   work=mem.word(0x80415dc0);const uint32_t models=mem.word(work),record=models+16*p.word(0x10);
@@ -61,6 +61,20 @@ struct View {
    }
   }
   return mem.ok;
+ }
+ bool snapshot(BattlePose& target,bool includeCache){
+  const auto& p=target;
+ auto decode=[&](auto& s,const std::array<uint32_t,5>& pointers){
+  s.positions.resize(counts[0]);s.normals.resize(counts[1]);s.visibility.resize(counts[2]);s.nodes.resize(counts[3]);s.textures.resize(counts[4]);
+  // Wrap metadata belongs to the static material sidecar, never scratch RAM.
+  const auto* a=p.resource->bank->pose(p.resource->names[p.word(0x14)].c_str());if(!a)return false;s.surfaces=a->surfaces;
+  for(unsigned c=0;c<2;++c){auto& values=c?s.normals:s.positions;for(uint32_t i=0;i<counts[c];++i)for(unsigned lane=0;lane<3;++lane)values[i][lane]=mem.real(pointers[c]+12*i+4*lane);}
+  for(uint32_t i=0;i<counts[2];++i)s.visibility[i]=mem.byte(pointers[2]+i);
+  for(uint32_t i=0;i<counts[3];++i)s.nodes[i]=mem.real(pointers[3]+4*i);
+  for(uint32_t i=0;i<counts[4];++i){s.textures[i]=mem.byte(pointers[4]+24*i);if(!s.surfaces.empty()){if(i>=s.surfaces.size())return false;for(unsigned lane=0;lane<5;++lane)s.surfaces[i].transform[lane]=mem.real(pointers[4]+24*i+4+4*lane);}}
+  return mem.ok;
+ };
+ return decode(target.shape,output) && (!includeCache || decode(target.cache,cache));
  }
  bool key(uint32_t key,unsigned c,bool cubic=false){
   const uint32_t offset=mem.word(key+pairOffsets[c]),n=mem.word(key+pairOffsets[c]+4);
@@ -124,7 +138,8 @@ std::shared_ptr<AnimationScratchMemory> AnimationScratchPose::owner(const Battle
 }
 bool AnimationScratchPose::evaluate(BattlePose& p,BattlePoseClock clock) const{
  auto o=owner(p);if(!o)return false;auto pool=o->pool_.lock();const auto* tangents=pool->animationTangents();if(!tangents || !pool->tangentSamplingAvailable())return false;
- View v{{o->memory_},*o->files_,p};if(!v.init())return false;auto& m=v.mem;
+ return o->memory_.withRawRamAccess([&](EventAddressSpace::RawRamAccess& ram){
+ View v{{o->memory_,&ram},*o->files_,p};if(!v.init())return false;auto& m=v.mem;
  const uint32_t t=v.timeline,control=m.word(t+0x24),keys=m.word(t+0x28),discrete=m.word(t+0x40);
  const uint32_t nk=m.word(t+8),nv=m.word(t+0x20);
  if(!nk || nk>1024 || !nv || nv>65536 || !v.file(control,12) || !v.file(keys,44ull*nk) || !v.file(discrete,8ull*nv))return false;
@@ -163,9 +178,13 @@ bool AnimationScratchPose::evaluate(BattlePose& p,BattlePoseClock clock) const{
   if(current<next)v.apply(keys+44*next,c,p.word(View::outputOffsets[c]),rounded(.0625f*fraction),true,fraction,rounded(m.real(keys+44*next)-time),tangents);
  }
  p.word(0x3c,current);p.scalar(0x40,fraction);
- if(!m.ok || !snapshot(p))return false;
+ // Recheck ownership/layout after source writes. Remapped external backing
+ // can physically alias a MODEL field despite distinct guest addresses.
+ if(!m.ok || !owner(p))return false;
+ View result{{o->memory_,&ram},*o->files_,p};if(!result.init() || !result.snapshot(p,false))return false;
  p.shape.last=current;p.shape.next=next;p.shape.fraction=fraction;p.shape.selectedTime=p.scalar(0x24);
  const auto* animation=p.resource->bank->pose(p.resource->names[p.word(0x14)].c_str());return animation && animation->assemble(p.shape);
+ });
 }
 // Readers validate the same lifetime/layout and decode BE source bytes at their
 // own usepoint. They never write native floats back over original RAM.
@@ -187,18 +206,9 @@ bool AnimationScratchPose::snapshot(BattlePose& p,bool includeCache) const{
 }
 bool AnimationScratchMemory::snapshot(BattlePose& p,bool includeCache) const{
  if(!current())return false;
- View v{{memory_},*files_,p};if(!v.init())return false;
- auto decode=[&](auto& s,const std::array<uint32_t,5>& pointers){
-  s.positions.resize(v.counts[0]);s.normals.resize(v.counts[1]);s.visibility.resize(v.counts[2]);s.nodes.resize(v.counts[3]);s.textures.resize(v.counts[4]);
-  // Wrap metadata belongs to the static material sidecar, never scratch RAM.
-  const auto* a=p.resource->bank->pose(p.resource->names[p.word(0x14)].c_str());if(!a)return false;s.surfaces=a->surfaces;
-  for(unsigned c=0;c<2;++c){auto& values=c?s.normals:s.positions;for(uint32_t i=0;i<v.counts[c];++i)for(unsigned lane=0;lane<3;++lane)values[i][lane]=v.mem.real(pointers[c]+12*i+4*lane);}
-  for(uint32_t i=0;i<v.counts[2];++i)s.visibility[i]=v.mem.byte(pointers[2]+i);
-  for(uint32_t i=0;i<v.counts[3];++i)s.nodes[i]=v.mem.real(pointers[3]+4*i);
-  for(uint32_t i=0;i<v.counts[4];++i){s.textures[i]=v.mem.byte(pointers[4]+24*i);if(!s.surfaces.empty()){if(i>=s.surfaces.size())return false;for(unsigned lane=0;lane<5;++lane)s.surfaces[i].transform[lane]=v.mem.real(pointers[4]+24*i+4+4*lane);}}
-  return v.mem.ok;
- };
- return decode(p.shape,v.output) && (!includeCache || decode(p.cache,v.cache));
+ return memory_.withRawRamAccess([&](EventAddressSpace::RawRamAccess& ram){
+  View v{{memory_,&ram},*files_,p};return v.init() && v.snapshot(p,includeCache);
+ });
 }
 std::optional<ActorVector> animationOutputVector(const BattlePose& p,bool normal,uint32_t index){if(p.sourceBuffers)return p.sourceBuffers->vector(p,normal,index);const auto& v=normal?p.shape.normals:p.shape.positions;return index<v.size()?std::optional<ActorVector>(v[index]):std::nullopt;}
 std::optional<float> animationOutputNode(const BattlePose& p,uint32_t index){if(p.sourceBuffers)return p.sourceBuffers->node(p,index);return index<p.shape.nodes.size()?std::optional<float>(p.shape.nodes[index]):std::nullopt;}

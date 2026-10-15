@@ -1301,3 +1301,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Retained event/reaction barriers](battle/RETAINED_EVENT_BARRIERS.md)
 - [Retained audience TurnEnd](battle/RETAINED_AUDIENCE_TURN_END.md)
+
+- [Callback-scoped source animation RAM access](event/CALLBACK_SCOPED_RAW_RAM_ACCESS.md): native raw-span acceleration, live BE aliases and retained late validation; no original timing or arithmetic changes.

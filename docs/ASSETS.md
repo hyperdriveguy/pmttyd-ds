@@ -2622,3 +2622,21 @@ runtime proof. Original HUD/common-menu/HP17/18 asset rights and conversions are
 unchanged. Nintendo/Intelligent Systems retain original rights; extraction grants
 no redistribution license. ISO, extracted originals, atlas and compiled packs
 remain outside source history. See [enemy resource contract](behavior/display/TRIO_ENEMY_ORIGINAL_POSE_RESOURCES.md).
+
+## 2026-10-15 — Source animation RAM acceleration validation cache
+
+The callback-scoped RAM optimization changes no original asset, source clip,
+texture, dialogue or conversion policy. Validation uses original read-only
+`/home/carson/games/roms/G8ME01.iso` products in ignored private trees. Baseline
+652dded0 required its door converter output (152804-byte `door-data.pmevt`,
+SHA256 e9e85d212180b28087c7c8c4d904f82417c1a0ea30f1271ab10c2a3d0c9a78ab)
+and JSON, regenerated privately. Stale inherited battle packs were replaced
+with hash-verified accepted `trio-attack-events.pmevt` (SHA256
+0a737b207a9321678398c12c0d7b0bef8ad123ed97cc748f5e7d68b9ffb2123d)
+and `recovery-effect.bin` (SHA256
+553c3a347e1f88c4206fd3a26a0531c5a6ba673ca3bb63183846dd2ba1d7138f)
+from the matching Trio scheduler validation authority. This repairs the private
+baseline cache; it does not alter original content. The full product inventory
+and provenance hashes are in the ignored animation-ram-borrow validation
+manifest. Native probe binaries, extracts and packs remain uncommitted.
+Original Nintendo rights/licensing restrictions and existing provenance apply.

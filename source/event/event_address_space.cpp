@@ -28,18 +28,22 @@ bool EventAddressSpace::available(uint32_t base,uint64_t size) const {
     return true;
 }
 bool EventAddressSpace::registerExternalRam(uint32_t base,uint8_t* bytes,uint32_t size){
+    if(rawRamBorrowed_)return false;
     if(!bytes || !available(base,size))return false;
     external_.push_back({base,size,bytes});return true;
 }
 bool EventAddressSpace::unregisterExternalRam(uint32_t base){
+    if(rawRamBorrowed_)return false;
     for(size_t i=0;i<external_.size();++i)if(external_[i].base==base){external_.erase(external_.begin()+i);return true;}
     return false;
 }
 bool EventAddressSpace::registerRam(uint32_t base,std::vector<uint8_t> bytes) {
+    if(rawRamBorrowed_)return false;
     if(!available(base,bytes.size()))return false;
     ram_.push_back({base,std::move(bytes)});return true;
 }
 bool EventAddressSpace::unregisterRam(uint32_t base,std::vector<uint8_t>* bytes) {
+    if(rawRamBorrowed_)return false;
     for(size_t i=0;i<ram_.size();++i)if(ram_[i].base==base) {
         if(bytes)*bytes=std::move(ram_[i].bytes);
         ram_.erase(ram_.begin()+i);return true;
@@ -49,6 +53,7 @@ bool EventAddressSpace::unregisterRam(uint32_t base,std::vector<uint8_t>* bytes)
 // Replace an allocated subspan with semantic entry storage while retaining
 // left/right RAM fragments. Failure leaves regions/output unchanged.
 bool EventAddressSpace::extractRam(uint32_t base,uint32_t size,std::vector<uint8_t>& bytes) {
+    if(rawRamBorrowed_)return false;
     const uint64_t end=uint64_t(base)+size;
     if(!size || end>0x100000000ULL)return false;
     for(size_t i=0;i<ram_.size();++i) {
@@ -71,6 +76,7 @@ bool EventAddressSpace::extractRam(uint32_t base,uint32_t size,std::vector<uint8
 // Prepare all segment bytes before publication; validated script assets
 // already guarantee sorted/nonoverlapping segments. Existing mappings reject import.
 bool EventAddressSpace::importScripts(const EventScriptAssets& scripts) {
+    if(rawRamBorrowed_)return false;
     std::vector<Region> imported;
     for(const auto& segment:scripts.segments()) {
         if(!available(segment.address,segment.size))return false;

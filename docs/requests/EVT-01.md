@@ -5139,3 +5139,18 @@ queries, history4..1, twelve passes and clear-then-OR material restore are
 retained. Actual GPU synchronization/coverage/offscreen texture lifecycle and
 field Main/SetAnim/draw/camera/queue owners remain explicit/unbound; normal
 activation and runtime/visual/numeric/hardware parity remain OPEN. EVT-01 is not closed.
+
+### 2026-10-15 — Callback-local source-animation RAM acceleration
+
+The ordinary native source sampler now retains validated raw spans only during
+one synchronous callback; semantic and independent held readers stay live.
+Physical external aliases require the original forward copy loop and fresh
+owner/MODEL validation after writes. Host 960-frame and ARM 160-frame hashes
+match the prior sampler; actual ARM raw/alias/source/native-field fixtures and
+field movement pass. This is native acceleration policy, not a recovered source
+VM primitive or an original execution trace. See
+[contract](../behavior/event/CALLBACK_SCOPED_RAW_RAM_ACCESS.md) and
+[evidence](../optimization/SOURCE_ANIMATION_RAM_ACCESS.md). Original field NPC
+flag8/Goombella event chronology, release/GC, linked/paper paths, full native
+frame/window/event owners and physical hardware parity remain OPEN. EVT-01 is
+not closed by this performance change.
