@@ -13246,3 +13246,72 @@ Then complete auxiliary Entry2Pos(kind13) and authored harbor/plaza Goombella
 conversion without an early canonical join. Full battle field return, source
 animation/NPC scheduling, interiors/triggers/visibility and physical hardware
 validation remain open. EVT-01 and the prologue/full-game goal stay active.
+
+## 2026-10-15 — Platform file and save-block services documented
+
+Added 180 inline comment lines across 18 C++/header files. Added
+[file services](code/file-services.md), [native cache](code/native-file-cache.md)
+and [save-block services](code/save-block-services.md), linked from code index.
+Code/docs commit 1e8e687b; native clock-label refinement 63c48eaf. All executable tokens/string literals unchanged. No
+original ISO/text/token/story/art/audio or gameplay changes; no new tests for
+this comment-only work.
+
+File notes explain native readiness versus engaged source0, public cursor
+serialization/reset effects, actual source pool count/stride/link order, manager
+reloads, filename-only hits, state2/3/count wrap, pending yield and garbage retry
+boundaries, source missing-null guards, archive probe counts, disc alignment/
+ignored read result, holder versus entry identity and fresh list publication.
+Release changes refs/state without freeing payload. TPL notes explain signature
+panic resume, live-count/low16 looping, image/palette markers and alias-sensitive
+reloads; MODEL notes explain 25 root/eight child words, pointer-order sentinels,
+signed count, nested stride and different Set/Clear capture order.
+
+Native cache notes distinguish backed tokens/arenas, admission from raw handler
+semantics, unchanged original products from PMANIM/GPU data, whole-batch catalog
+publication, name/type domains, freeze on bind or admitted held acquisition,
+borrowing VM mapping rollback/lifetime, absent GC/move/DVD worker and actual
+reference reuse. Presence/range queries alone do not prove content readiness.
+Common-menu facade retains exact original TPL path/type/header and finite VM
+format/root reading, sharing the same process owner.
+
+Save notes describe original event addresses/14 callback ordinals, explicit VM/
+heap/clock context, saved switch namespaces, raw operands versus resolved outputs,
+LW0 identity, runtime move/copy ownership, original0/2 callback protocol and source
+switch publication. Presentation retains original text/windows; key owner and
+asynchronous ticket/snapshot/completion boundaries are explicit. Generic SD-1
+and unsupported card-operation faults are native policy, not original card-error
+parity. Compound asset load is not globally transactional: successful icon
+publication can survive a later dependency failure. No I/O moved into tick.
+
+Frozen baseline 31e2146095fca91dd8b9acbff1c37aa6c5027451 plus owned docs is at
+artifacts/file-save-code-documentation-validation/source. Full audit covers 3997
+baseline tracked files, zero unexpected changes; all 22 owned frozen/live snapshots
+match and all 100 local guide/index links resolve. Both initial gates passed/terminal before one prose label refinement: 243 MHz is
+explicit native clock-adapter input, not unproved original hardware frequency.
+Initial logs/markers retained; both full gates rerun after correction. No executable
+change or test change. Concurrent/later battle menu/action/effect/field/animation/render additions
+preserved/excluded; this is not combined moving-worktree validation.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits 0: 445/445 C++ (48.87s),
+212/212 Python (32.947s), zero skipped. Actual original 45-descriptor enemy-bank
+fixture ran. Native make all -o assets-ready -j4 SOUNDTRACK=gamecube exits 0.
+Both original async handles observed terminal; exit markers agree. Manifest
+records frozen source, dependency/verifier, all accepted product/evidence/log and
+ELF/3DSX hashes. Existing compiler/Pillow warnings remain. No emulator/profile/save
+changes or hardware/pixel/performance/Gekko parity claim.
+
+Cache inherits 63 accepted products and original footer/HP/enemy evidence/default
+Python fixture paths unchanged; all checked after gates. Preflight detects only
+new read-only Act and Phase/Move source verifiers since parent baseline; assets,
+existing converters and Makefile unchanged. No conversion, overlay, editable
+import/shared pack write or provenance/license change. Python fixtures
+independently use read-only ISO/empty temporary destinations; native full
+regeneration skipped. No ISO, original extracted asset or binary committed.
+
+Next: audit remaining event bridges/callback/binding helpers, then story/opening
+controllers, field/runtime/effect code and port tools. Recent battle Act/menu/
+weapon/pose/Phase/Turn/audience integration, animation/release/texture/party
+additions still need separate inline review. Current tracked platform/save
+header/CPP hashes match annotations, but inventory is only a review aid and not
+proof of every live concurrent change or full semantic/game coverage. Full
+documentation/remake goal remains active.
