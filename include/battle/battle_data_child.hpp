@@ -3,6 +3,8 @@
 #include "event_creation.hpp"
 #include "event_memory_opcodes.hpp"
 
+// Optional data scripts belong to unit definitions, not native callables.
+// Caller must admit a terminating key table and actual schedule/creation owners.
 namespace ttyd {
 struct BattleDataChildServices {
     EventDispatchServices values;

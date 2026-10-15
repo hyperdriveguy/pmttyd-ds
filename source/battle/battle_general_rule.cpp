@@ -8,6 +8,9 @@ uint32_t word(const BattleActorServices& s,uint32_t a){return s.memory.word(s.me
 uint8_t byte(const BattleActorServices& s,uint32_t a){return s.byte(s.user,a);}
 void store(const BattleActorServices& s,uint32_t a,uint8_t v){s.memory.storeByte(s.memory.user,a,v);}
 struct Fields {bool use;std::array<uint32_t,4> offsets;};
+// Exact rules0..57: use selects U versus N threshold helper, offset0 is an
+// unused table entry. Repeated/nonmonotonic field lists preserve source order;
+// do not deduplicate or clamp the completed sum to100/one byte.
 constexpr Fields scalar[]{
  {false,{0}}, {false,{0x16f38}}, {true,{0x16f38}}, {false,{0x16f39}}, {true,{0x16f39}},
  {false,{0x16f3a,0x16f3b}}, {true,{0x16f3a,0x16f3b}},
@@ -31,6 +34,9 @@ constexpr Fields scalar[]{
 };
 static_assert(std::size(scalar)==58);
 }
+// Helpers independently reacquire current B/descriptor2738. N compares
+// threshold1b then1a ->1/2/6; U compares1a then1b ->6/2/1. Equality counts.
+// Those are source outcome codes, not invented labels for successful rules.
 int32_t checkBattleRuleNoUse(int32_t input,const BattleActorServices& s) {
     const auto descriptor=word(s,currentBattleAddress(s)+0x2738);
     if(input>=byte(s,descriptor+0x1b))return 1;
@@ -41,6 +47,10 @@ int32_t checkBattleRuleUse(int32_t input,const BattleActorServices& s) {
     if(input>=byte(s,descriptor+0x1a))return 6;
     return input>=byte(s,descriptor+0x1b)?2:1;
 }
+// Capture B/P, query Mario AND unused party before reading rule18. Rule0
+// stores6;>67 leaves status19 untouched. Rules19/20 use signed current Mario
+// HP10c (missing Mario ->1). Other scalar rows sum source U8 records.
+// Scalar results write captured P even if helper read a different current P2.
 void judgeBattleGeneralRule(const BattleActorServices& s) {
     assert(s.memory.word && s.byte && s.memory.storeByte);
     const auto battle=currentBattleAddress(s),descriptor=word(s,battle+0x2738);
@@ -58,12 +68,17 @@ void judgeBattleGeneralRule(const BattleActorServices& s) {
         const auto result=scalar[rule].use?checkBattleRuleUse(input,s):checkBattleRuleNoUse(input,s);
         store(s,descriptor+0x19,uint8_t(result));return; // Write captured P, not helper's independently captured P2.
     }
+    // Rules58/59 compare unsigned turn16f57 against thresholds1a/1b with
+    // strict greater / inclusive <= respectively. No sentinel255 shortcut here.
     if(rule<60) {
         const auto turn=byte(s,battle+0x16f57),first=byte(s,descriptor+0x1a);
         if(rule==58?turn>first:turn<=first){store(s,descriptor+0x19,6);return;}
         const auto second=byte(s,descriptor+0x1b);
         store(s,descriptor+0x19,(rule==58?turn>second:turn<=second)?2:1);return;
     }
+    //60..65 delegate zero-turn helper writes to its independently captured
+    // P2, with NO copy-back to P. Rules66/67 directly sum their listed bytes
+    // plus16f39/16f38 and publish6 ifzero, else1, through original captured P.
     static constexpr uint32_t zero60[]{0x16f3a,0x16f39,0x16f3b,0x16f41,0x16f42,0x16f45,0x16f4f,0x16f51,0x16f53,0x16f38};
     static constexpr uint32_t zero61[]{0x16f43,0x16f56,0x16f44,0x16f46,0x16f50,0x16f52,0x16f54,0x16f55};
     static constexpr uint32_t zero62[]{0x16f3a,0x16f39,0x16f3b,0x16f41,0x16f42,0x16f45,0x16f4f,0x16f51,0x16f53,0x16f55,0x16f56,0x16f43,0x16f44,0x16f46,0x16f50,0x16f52,0x16f54,0x16f38};

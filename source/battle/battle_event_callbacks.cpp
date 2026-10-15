@@ -5,6 +5,10 @@
 #include "event_memory_release.hpp"
 
 namespace ttyd {
+// Separate userdata domains: play/eligibility use backend; motion numericUser
+// uses runtime. Numeric callbacks require actual platform operations (asserted),
+// preserving source float/double/rounding/FMA boundaries instead of replacing
+// them with guessed host arithmetic or successful unavailable services.
 BattlePackedMarioJumpServices nativeBattleMarioJumpServices(BattleMarioJumpBackend& backend) {
     assert(backend.runtime);BattlePackedMarioJumpServices s;s.motion=nativeBattleMovePositionServices(*backend.runtime,{});s.user=&backend;
     s.eligible=[](void* p,uint32_t u)->int32_t {auto& b=*static_cast<BattleMarioJumpBackend*>(p);if(b.eligible)return b.eligible(b.user,u);return packedACPossibility(u,nativeBattleActorServices(*b.runtime));};
@@ -46,6 +50,9 @@ BattlePackedChoiceServices nativeBattleChoiceServices(EventNativeRuntime& runtim
     s.negativeMultiplySubtract=[](void* p,float a,float b,float c) {auto& r=*static_cast<EventNativeRuntime*>(p);assert(r.platform.negativeMultiplySubtractFloat);return r.platform.negativeMultiplySubtractFloat(r.platform.user,a,b,c);};return s;
 }
 BattlePackedSamplingServices nativeBattleSamplingServices(EventNativeRuntime& runtime,void* user,uint32_t (*monosiri)(void*,int32_t)) {BattlePackedSamplingServices s;s.common=nativeBattleChoiceServices(runtime);s.user=user;s.monosiri=monosiri;return s;}
+// Private candidate records retain actual sampler/chooser order. Default
+// chooser writes native caller outputs through callbacks; its adapter0 scalar
+// is ignored, not an original target-selection success code.
 BattleTakeoffCoreServices nativeBattleTakeoffCoreServices(BattleTakeoffBackend& backend) {
     assert(backend.runtime);BattleTakeoffCoreServices s;s.user=&backend;
     s.sample=[](void* p,BattleCandidateBuffer& b,uint32_t w,int32_t a,int32_t side,uint32_t flags,uint32_t attrs,int32_t bias) {auto& backend=*static_cast<BattleTakeoffBackend*>(p);if(backend.sample)return backend.sample(backend.user,b,w,a,side,flags,attrs,bias);return samplePackedBattleCandidates(privateBattleCandidateRecords(b),w,a,side,flags,attrs,bias,nativeBattleSamplingServices(*backend.runtime,backend.user,backend.monosiri));};
@@ -84,6 +91,9 @@ bool bindBattleSetFallAccelCallback(EventCallbackRegistry& registry,EventNativeR
 bool bindBattleGetPosCallback(EventCallbackRegistry& registry,EventNativeRuntime& runtime) {return registry.bind(0x80113620,&runtime,[](void* p,EventEntry& e,int32_t) {return packedUnitPositionEvent(e,false,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));});}
 bool bindBattleGetHomePosCallback(EventCallbackRegistry& registry,EventNativeRuntime& runtime) {return registry.bind(0x801124f8,&runtime,[](void* p,EventEntry& e,int32_t) {return packedUnitPositionEvent(e,true,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));});}
 bool bindBattleSelectedTargetCallback(EventCallbackRegistry& registry,EventNativeRuntime& runtime) {return registry.bind(0x8010b540,&runtime,[](void* p,EventEntry& e,int32_t) {return packedSelectedTargetEvent(e,nativeBattlePackedSelectionServices(*static_cast<EventNativeRuntime*>(p)));});}
+// This immediate binding admits only an available command-weapon branch;
+// unsupported optional result aborts instead of silently completing the EVT.
+// Narrow parent dispatch/admission must prevent reaching it without support.
 bool bindBattleCommandWeaponCallback(EventCallbackRegistry& registry,EventNativeRuntime& runtime) {return registry.bind(0x801057e8,&runtime,[](void* p,EventEntry& e,int32_t) {const auto result=packedCommandWeaponEvent(e,nativeBattlePackedSelectionServices(*static_cast<EventNativeRuntime*>(p)));if(!result)std::abort();return *result;});}
 BattleUnitEventServices nativeBattleUnitEventServices(EventNativeRuntime& runtime) {
     BattleUnitEventServices s;s.memory=runtime.memoryBinding.services();s.user=&runtime;
@@ -109,6 +119,9 @@ EffectDeletionServices nativeEffectDeletionServices(EventNativeRuntime& runtime)
     EffectDeletionServices s;s.memory=runtime.memoryBinding.services();s.user=&runtime;
     s.freeHeap=[](void* p,int32_t heap,uint32_t payload) {eventHeapFree(heap,payload,static_cast<EventNativeRuntime*>(p)->memoryBinding.services());};return s;
 }
+// Optional overrides select real implementations, not success fallbacks:
+// packed rule judgment, move-byte reset and effect record/heap3 deletion. RNG
+// and numeric providers remain shared runtime state, not per-call fresh seeds.
 BattleTurnFirstServices nativeBattleTurnFirstServices(BattleTurnFirstBackend& backend) {
     assert(backend.runtime);BattleTurnFirstServices s;s.user=&backend;s.memory=backend.runtime->memoryBinding.services();
     s.byte=[](void* p,uint32_t a) {auto& b=*static_cast<BattleTurnFirstBackend*>(p);auto actors=nativeBattleActorServices(*b.runtime);return actors.byte(actors.user,a);};
@@ -118,6 +131,8 @@ BattleTurnFirstServices nativeBattleTurnFirstServices(BattleTurnFirstBackend& ba
     s.resetMove=[](void* p,uint32_t unit) {auto& b=*static_cast<BattleTurnFirstBackend*>(p);if(b.resetMove)b.resetMove(b.user,unit);else resetPackedBattleMoveStatus(unit,nativeBattleActorServices(*b.runtime));};
     s.softDelete=[](void* p,uint32_t effect) {auto& b=*static_cast<BattleTurnFirstBackend*>(p);if(b.softDelete)b.softDelete(b.user,effect);else softDeleteEffect(effect,nativeEffectDeletionServices(*b.runtime));};return s;
 }
+// Actor byte reads require mapped memory; assertion is an admitted-domain
+// invariant, not a zero-on-unmapped fallback. Word/half/store share same facade.
 BattleActorServices nativeBattleActorServices(EventNativeRuntime& runtime) {
     BattleActorServices s;s.memory=runtime.memoryBinding.services();s.user=&runtime;
     s.byte=[](void* p,uint32_t a) {uint8_t v=0;const bool mapped=static_cast<EventNativeRuntime*>(p)->memory.readByte(a,v);assert(mapped);(void)mapped;return v;};return s;
@@ -129,6 +144,8 @@ BattleDataChildServices nativeBattleDataChildServices(EventNativeRuntime& runtim
     backend.unit=[](void* p,uint32_t b,int32_t id) {return battleRegistryUnit(b,id,nativeBattleActorServices(*static_cast<EventNativeRuntime*>(p)));};
     return nativeBattleDataChildServices(runtime,backend);
 }
+// Backend callbacks/user are copied; the temporary descriptor itself need not
+// survive. VM creation/schedule/operand owners still reference retained runtime.
 BattleDataChildServices nativeBattleDataChildServices(EventNativeRuntime& runtime,const BattleDataChildBackend& backend) {
     BattleDataChildServices s;s.creation=runtime.creationServices();s.memory=runtime.memoryBinding.services();s.schedule=&runtime.schedule;
     s.values.user=&runtime;s.values.word=s.creation.word;
@@ -159,6 +176,9 @@ bool bindBattleMajinaiQueryCallback(EventCallbackRegistry& registry,EventNativeR
 bool bindPouchMajinaiSetCallback(EventCallbackRegistry& registry,EventNativeRuntime& runtime) {
     return registry.bind(0x800f08ac,&runtime,[](void* p,EventEntry& e,int32_t) {return pouchMajinaiSetEvent(e,nativeBattleMajinaiQueryServices(*static_cast<EventNativeRuntime*>(p)));});
 }
+// EVT JumpSetting resolves actor, count, speed, gravity in order then obtains
+// current battle. Store count16c and raw IEEE speed170/gravity174; units stay
+// source motion units, not renderer coordinates. Return2 completes the opcode.
 int32_t nativeBattleJumpSetting(EventEntry& e,EventNativeRuntime& runtime) {
     const uint32_t args=e.arguments;
     auto operands=runtime.interpreterServices().operands;auto memory=runtime.memoryBinding.services();

@@ -7,6 +7,11 @@ void word(const BattleConclusionServices& s,uint32_t a,uint32_t v){assert(s.acto
 int32_t belong(const BattleConclusionServices& s,uint32_t u){assert(s.actors.byte);const auto b=s.actors.byte(s.actors.user,u+0xc);return b<128?int32_t(b):int32_t(b)-256;}
 int32_t status(const BattleConclusionServices& s,uint32_t u){assert(s.checkStatus);return s.checkStatus(s.user,u,27);}
 }
+// Three alliance rows at battle+8, stride8: config half0, result word4.
+// Refresh every result even when battle ef4 masks30 force conclusion. Config0
+// concludes; mask1 requires a non-status27 unit excluding attrs20000/10000000;
+// mask2 (if still unconcluded) requires attr40000 and excludes10000000.
+// Two concluded groups suffice. Do not short-circuit publication on forced flags.
 int32_t battleCheckConcluded(uint32_t b,const BattleConclusionServices& s){
  assert(s.actors.memory.half);unsigned count=0;
  for(unsigned group=0;group<3;++group){word(s,b+12+group*8,0);const auto config=s.actors.memory.half(s.actors.memory.user,b+8+group*8);
@@ -25,6 +30,10 @@ int32_t battleCheckConcluded(uint32_t b,const BattleConclusionServices& s){
  }
  return count>=2 || (word(s,b+0xef4)&0x30)?1:0;
 }
+// All64 units scan IDs29c/2a8/2b4/2bc, clearing stale IDs even after live
+// work. Only all-ready invokes afterReaction; nonzero reaction holds. Battle
+// barrier then scans182b4/182c4/180fc/182c8/182c0, stopping at FIRST live
+// ID, so later stale IDs intentionally remain until a subsequent invocation.
 int32_t battleUnitEventBarrier(uint32_t b,const BattleConclusionServices& s){assert(s.eventExists && s.afterReaction);int32_t ready=1;
  for(int32_t id=0;id<64;++id){const auto u=battleRegistryUnit(b,id,s.actors);if(!u)continue;
   for(unsigned offset:{0x29cu,0x2a8u,0x2b4u,0x2bcu}){const auto event=word(s,u+offset);if(!event)continue;if(s.eventExists(s.user,event))ready=0;else word(s,u+offset,0);}}
@@ -34,6 +43,9 @@ int32_t battleUnitEventBarrier(uint32_t b,const BattleConclusionServices& s){ass
 int32_t battleAllEventBarrier(uint32_t b,const BattleConclusionServices& s){if(!battleUnitEventBarrier(b,s))return 0;
  for(unsigned offset:{0x182b4u,0x182c4u,0x180fcu,0x182c8u,0x182c0u}){const auto event=word(s,b+offset);if(!event)continue;if(s.eventExists(s.user,event))return 0;word(s,b+offset,0);}return 1;
 }
+// Priority: ef4 mask40 ->4, mask20 ->5, own alliance result ->3, enemy result
+// ->1, mask10 ->4, otherwise no selected result. Always query Mario/alliance/enemy
+// before flags. Numeric result selection is not end-state/field-return admission.
 std::optional<int32_t> battleInitialEndResult(uint32_t b,const BattleConclusionServices& s){
  const auto mario=battleMarioUnit(b,s.actors);const int32_t own=belong(s,mario);assert(s.enemyBelong);const auto enemy=s.enemyBelong(s.user,mario);const auto flags=word(s,b+0xef4);
  if(flags&0x40)return 4;

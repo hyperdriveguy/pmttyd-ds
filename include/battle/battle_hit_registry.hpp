@@ -2,6 +2,10 @@
 #include "shadow_collision.hpp"
 #include <string>
 #include <vector>
+// Explicit imported snapshot plus separately published active order. Changes
+// to flags/parts admission need publish before query; ray never rebuilds it.
+// Attribute/mobj updates are read live. invalidate holds queries but retains
+// storage; object pointers expire on a successful replacement/load/destruction.
 namespace ttyd {
 struct BattleHitTriangle {
     std::array<std::array<float,3>,3> vertices{},edges{};

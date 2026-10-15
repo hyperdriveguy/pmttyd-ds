@@ -7,6 +7,10 @@ uint32_t word(const BattleActorServices& s,uint32_t a) {assert(s.memory.word);re
 uint8_t byte(const BattleActorServices& s,uint32_t a) {assert(s.byte);return s.byte(s.user,a);}
 void store(const BattleActorServices& s,uint32_t a,uint8_t v) {assert(s.memory.storeByte);s.memory.storeByte(s.memory.user,a,v);}
 }
+// Reacquire global B/descriptor2738. Turn byte16f57 compares inclusive
+// descriptor limits1b then1a; 255 disables a limit. First writes2(zero)/1;
+// second writes6(zero), or1 only if current status19 lacks mask2. Fresh reads
+// and second write can override the first; return current status19.
 uint8_t checkBattleZeroTurnCount(uint32_t sum,const BattleActorServices& s) {
     const uint32_t battle=currentBattleAddress(s),descriptor=word(s,battle+0x2738);
     const uint8_t firstTurn=byte(s,battle+0x16f57),firstLimit=byte(s,descriptor+0x1b);
@@ -21,6 +25,9 @@ uint8_t checkBattleZeroTurnCount(uint32_t sum,const BattleActorServices& s) {
 void judgeBattleTurnRule(const BattleActorServices& s) {
     const uint32_t battle=currentBattleAddress(s),descriptor=word(s,battle+0x2738);
     const uint8_t rule=byte(s,descriptor+0x18);
+    // Rules60..65 sum these exact unsigned action-record bytes in listed
+    // order. Offsets/counts are source table selections, not a contiguous range.
+    // Unknown rules leave status untouched; helper reacquires global ownership.
     static constexpr uint32_t r60[]{0x16f3a,0x16f39,0x16f3b,0x16f41,0x16f42,0x16f45,0x16f4f,0x16f51,0x16f53,0x16f38};
     static constexpr uint32_t r61[]{0x16f43,0x16f56,0x16f44,0x16f46,0x16f50,0x16f52,0x16f54,0x16f55};
     static constexpr uint32_t r62[]{0x16f3a,0x16f39,0x16f3b,0x16f41,0x16f42,0x16f45,0x16f4f,0x16f51,0x16f53,0x16f55,0x16f56,0x16f43,0x16f44,0x16f46,0x16f50,0x16f52,0x16f54,0x16f38};

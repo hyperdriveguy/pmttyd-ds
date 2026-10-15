@@ -25,6 +25,9 @@
 #include "battle_mario_jump_parameter_event.hpp"
 #include "battle_packed_mario_jump.hpp"
 
+// Registry bindings retain references to runtime/service/backend objects;
+// these must outlive registration and every pending event. Guest function
+// addresses are US identities, never native function pointers or generic stubs.
 namespace ttyd {
 struct BattleMarioJumpBackend {
     EventNativeRuntime* runtime=nullptr;

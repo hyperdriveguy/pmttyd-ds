@@ -1,6 +1,8 @@
 #pragma once
 #include "battle_actor.hpp"
 #include <optional>
+// Conclusion, unit-event barrier, all-event barrier and end-result selection
+// are separate predicates. None alone deletes units or returns to the field.
 namespace ttyd {
 struct BattleConclusionServices {
     BattleActorServices actors;

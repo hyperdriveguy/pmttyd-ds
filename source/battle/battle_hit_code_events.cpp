@@ -9,6 +9,11 @@ int32_t actor(EventEntry& e,uint32_t args,const BattleUnitEventServices& s){
     return s.translate(s.user,e,selector);
 }
 }
+// Resolve attacker, defender, part, weapon in order; capture raw flags/output.
+// Providerfalse returns0 without output/ID probe. Negative result returns255;
+// nonnegative writes output THEN checks parent ID existence (2 iflive, else255).
+// Damage callbacks may remove the parent; no successful end acknowledgement exists
+// before those source effects. This wrapper itself has no retry cursor.
 int32_t battleCheckDamageEvent(EventEntry& e,const BattleCheckDamageEventServices& s){
     const auto& u=s.units;assert(u.memory.word && u.values.resolve && u.translate && u.unit && s.part && s.checkDamage);
     const auto args=e.arguments,battle=u.memory.word(u.memory.user,0x8041eb90);
@@ -24,6 +29,8 @@ int32_t battleCheckDamageEvent(EventEntry& e,const BattleCheckDamageEventService
     assert(u.values.store && s.eventExists);u.values.store(u.values.user,e,output,result);
     return s.eventExists(s.user,e.id)?2:255;
 }
+// Mark ORs half1fe mask1 ifunit. GetHitDamage writes signed byte270 ifunit;
+// missing unit leaves output untouched. Other getters require admitted actors.
 int32_t battleMarkUnit1feEvent(EventEntry& e,const BattleUnitEventServices& s){
     const auto args=e.arguments,battle=s.memory.word(s.memory.user,0x8041eb90);
     const auto id=actor(e,args,s);assert(s.unit);const auto unit=s.unit(s.user,battle,id);
@@ -46,6 +53,9 @@ int32_t battleUnitFlagEvent(EventEntry& e,bool on,const BattleUnitEventServices&
     const auto unit=s.unit(s.user,battle,id),flags=s.memory.word(s.memory.user,unit+0x1c);
     s.memory.storeWord(s.memory.user,unit+0x1c,on?flags|mask:flags&~mask);return 2;
 }
+// Signed alliance byte+c selects battle8-byte row direction+a; copy to189.
+// Flags use word1c, attributes104, hit pattern274 equality, hit code278 masks.
+// GetHitCode returns LOW8 of278, not the entire mask or a signed byte.
 int32_t battleResetUnitFacingEvent(EventEntry& e,const BattleUnitEventServices& s,const BattleActorServices& bytes){
     assert(s.memory.word && s.memory.storeByte && bytes.byte && s.unit);
     const auto args=e.arguments,battle=s.memory.word(s.memory.user,0x8041eb90);

@@ -9,11 +9,16 @@ struct Operations {
     std::optional<uint32_t> word(uint32_t a){return s.word?s.word(s.user,a):std::nullopt;}
     bool load(uint32_t a,uint32_t& v){auto n=word(a);if(!n)return false;v=*n;return true;}
     bool store(uint32_t a,uint32_t v){return s.store && s.store(s.user,a,v);}
+    // Capture child arguments once while queued; successful children never
+    // replay during a held invocation. Caller must keep the same continuation.
+    // rgba/position/yaw represent source stack contents, not fake stack pointers.
     bool call(uint32_t fn,std::array<uint32_t,5> args={}){
         if(!c.queued){c.call.function=fn;c.call.args=args;c.call.result=0;c.queued=true;}
         c.pending=fn;if(!s.call || !s.call(s.user,c.call))return false;c.queued=false;return true;
     }
     bool gp(){return load(0x80415fd0,c.gp);}
+    // _npcGetWork: GP cell80415fd0 then GP+168. Retain a successfully read GP
+    // if its field-pointer load holds; do not recapture mid-getter.
     bool field(){
         if(!c.getterCaptured){if(!gp())return false;c.getterCaptured=true;}
         if(!load(c.gp+0x168,c.field))return false;
@@ -22,6 +27,11 @@ struct Operations {
     bool done(){c.active=false;c.pending=0;return true;}
 };
 }
+// seq_battleInit captures GP+c into8041e968, then field+8 NPC owner.
+// Separate GSW0(operand f5de0180) reads preserve109..110/402 music exclusion.
+// Otherwise BGMOff1024 then BGMOn(group1, NPC2f0). ENVOff1024, rumbleOff0,
+// evtStopAll4 and sound flag80 follow. Only first-attack field types800000/
+//1000000 with captured debug flag0 perform early Mario/party CtrlOff.
 bool initializeBattleSequenceEntry(const BattleSequenceEntryServices& s,BattleSequenceEntryCursor& c){
     if(!c.active){c={};c.active=true;c.pending=0x80073f20;}Operations m{s,c};
     for(;;)switch(c.phase){
@@ -52,7 +62,13 @@ bool initializeBattleSequenceEntry(const BattleSequenceEntryServices& s,BattleSe
 bool updateBattleSequenceEntry(OriginalSequenceWork& w,const BattleSequenceEntryServices& s,BattleSequenceEntryCursor& c){
     if(!c.active){c={};c.active=true;c.pending=0x80073b24;}Operations m{s,c};
     for(;;)switch(c.phase){
+    // Source states0/10 fade; 1 file readiness; 2 control; 3 map; 4 battle_init;
+    //5 engine-end/listener; 6 delayed field return; 11 debug fade return.
+    // Routes7..9/outside genuinely do nothing. w[4] is source visit counter.
     case 0:c.state=w[1];switch(c.state){case 0:case 10:c.phase=1;break;case 1:c.phase=10;break;case 2:c.phase=20;break;case 3:c.phase=30;break;case 4:c.phase=50;break;case 5:c.phase=60;break;case 6:c.phase=80;break;case 11:c.phase=90;break;default:return m.done();}break;
+    // Fade22, source RGBA804203b0/b4, raw1000/200ms. State0 resets counter.
+    // State1 separately reloads DVD root for common TPL/menu data async reads;
+    // source false result ends the visit, provider false retains this child.
     case 1:if(!m.load(c.state==0?0x804203b0:0x804203b4,c.call.rgba))return false;++c.phase;break;
     case 2:if(!m.call(0x80013368,{22,c.state==0?1000u:200u}))return false;++w[1];if(c.state==0)w[4]=0;return m.done();
     case 10:if(!m.call(0x80007388))return false;c.root=c.call.result;++c.phase;break;
@@ -60,6 +76,9 @@ bool updateBattleSequenceEntry(OriginalSequenceWork& w,const BattleSequenceEntry
     case 12:if(!m.call(0x80007388))return false;c.root=c.call.result;++c.phase;break;
     case 13:if(!m.call(0x8018a0e8,{4,0,0x804203bc,c.root,0x802c2b08}))return false;if(!c.call.result)return m.done();++w[4];++c.phase;break;
     case 14:if(!m.call(0x80010d94))return false;if(c.call.result)++w[1];return m.done();
+    // State2 reads pouch even though result unused. Control-off calls depend
+    // on debug/first-attack type; clear Mario flag1 and reset field570 counter.
+    // Same-call2->3 fallthrough is intentional; other states yield as shown.
     case 20:if(!m.call(0x800d5eb0))return false;++c.phase;break;
     case 21:c.pending=0x8004829c;if(!m.field())return false;++c.phase;break;
     case 22:if(!m.load(c.field+0x10,c.type))return false;++c.phase;break;
@@ -72,6 +91,10 @@ bool updateBattleSequenceEntry(OriginalSequenceWork& w,const BattleSequenceEntry
     case 27:if(!m.call(0x80005f28,{0}))return false;++c.phase;break;
     case 28:c.pending=0x8004829c;if(!m.field())return false;++c.phase;break;
     case 29:if(!m.store(c.field+0x570,0))return false;++w[1];c.phase=30;break;
+    // State3 reacquires field/NPC descriptor230/pouch. Gate550, 558 in1..2,
+    //554 nonzero delays until signed counter570 reaches200; no wall-clock claim.
+    // Rank pouch88<=2 selects primary name802c2ac4+8*rank, else802c2adc;
+    // secondary descriptor+4. Ignore bmapLoad scalar; 3->4->5 may fall through.
     case 30:c.pending=0x8004829c;if(!m.field())return false;++c.phase;break;
     case 31:if(!m.load(c.field+8,c.npc))return false;++c.phase;break;
     case 32:if(!m.load(c.npc+0x230,c.descriptor))return false;++c.phase;break;
@@ -85,10 +108,16 @@ bool updateBattleSequenceEntry(OriginalSequenceWork& w,const BattleSequenceEntry
     case 40:{const auto rank=s.half?s.half(s.user,c.pouch+0x88):std::nullopt;if(!rank)return false;c.root=0x802c2adc;if(*rank<=2)c.root=0x802c2ac4+8*uint32_t(*rank);++c.phase;break;}
     case 41:if(!m.load(c.descriptor+4,c.value))return false;++c.phase;break;
     case 42:if(!m.call(0x8002892c,{c.root,c.value}))return false;++w[1];c.phase=50;break;
+    // battle_init returns0 for success; nonzero source result yields at4.
+    // State5 end-check may set6/debug11 but ALWAYS runs its listener tail;
+    // it does not execute state6 counter logic in this invocation.
     case 50:if(!m.call(0x800738ac))return false;if(c.call.result)return m.done();++w[1];c.phase=60;break;
     case 60:if(!m.call(0x800f903c))return false;if(!c.call.result){c.phase=64;break;}w[4]=0;++w[1];++c.phase;break;
     case 61:if(!m.gp())return false;++c.phase;break;
     case 62:if(!m.load(c.gp+0xc,c.value))return false;if(c.value)w[1]=11;c.phase=64;break;
+    // Tail's Mario/camera4 getters still run. Listener X/Y source804203c4,
+    // Z804203c8; current B+ef4 mask100 adds804203cc before a fresh camera4
+    // yaw114 read. Float addition rounds before psndSetPosDirListener.
     case 64:if(!m.call(0x8005e0c0))return false;++c.phase;break;
     case 65:if(!m.call(0x8000f2fc,{4}))return false;++c.phase;break;
     case 66:if(!m.load(0x804203c4,c.value))return false;c.call.position[0]=c.call.position[1]=real(c.value);++c.phase;break;
@@ -99,6 +128,10 @@ bool updateBattleSequenceEntry(OriginalSequenceWork& w,const BattleSequenceEntry
     case 71:if(!m.call(0x8000f2fc,{4}))return false;c.value=c.call.result;++c.phase;break;
     case 72:if(!m.load(c.value+0x114,c.value))return false;c.call.yaw=real(c.value);++c.phase;break;
     case 73:if(!m.call(0x800dc380))return false;return m.done();
+    // State6 increments U32 counter then signed-compares>30. Only afterward
+    // GP masks3000 select seq5(debug) versus2(field), parameter1, data0.
+    // No listener tail or GP+c polling belongs to state6; 11 waits for fade,
+    // clears fresh GP+c and requests seq5. No teardown is inferred here.
     case 80:++w[4];if(signedWord(w[4])<=30)return m.done();++c.phase;break;
     case 81:if(!m.gp())return false;++c.phase;break;
     case 82:if(!m.load(c.gp,c.flags))return false;++c.phase;break;

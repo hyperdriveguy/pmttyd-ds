@@ -1,5 +1,10 @@
 #pragma once
 #include <cstdint>
+// duration/elapsed are milliseconds; tick uses live source simulation refresh
+// rate, not display FPS. No zero/negative-rate guard exists. Duration0 completes
+// immediately without texture scroll; ordinary tick scrolls-10 source texels.
+// ratio==1 does not finish until a later tick makes it>1; alpha truncates255*ratio.
+// enter resets scalar history but performs no camera/event/field-return work.
 namespace ttyd {
 // Used original fade10 scalar owner. Source GP refresh rate is supplied; the
 // native black overlay adapts the original embedded white1px texture to3DS.

@@ -1,6 +1,8 @@
 #pragma once
 #include "battle_damage_application.hpp"
 
+// Typed resource adapters preserve EVT operand evaluation and raw output
+// destinations. Missing unit and opcode completion2 are distinct domains.
 namespace ttyd {
 enum class BadgeRecoveryResource {Hp,Fp};
 struct BadgeRecoveryEventServices {

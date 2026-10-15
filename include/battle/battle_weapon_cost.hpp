@@ -1,6 +1,9 @@
 #pragma once
 #include "battle_damage.hpp"
 
+// Cost queries and payment have separate source order; payment performs no
+// affordability recheck. Admitted services own shared FP/AP and record writes.
+// AP uses hundredths of one displayed SP; source wrapped fields stay signed.
 namespace ttyd {
 struct WeaponCostServices {
     void* user=nullptr;

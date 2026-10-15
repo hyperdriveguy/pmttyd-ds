@@ -6,12 +6,19 @@ namespace {
 int32_t signedWord(uint32_t v) {return v<=0x7fffffff?static_cast<int32_t>(v):static_cast<int32_t>(int64_t(v)-0x100000000LL);}
 int32_t half(const uint8_t* p) {const uint16_t v=uint16_t(p[0])<<8|p[1];return v<0x8000?v:int32_t(v)-0x10000;}
 void half(uint8_t* p,int32_t value) {const uint16_t v=static_cast<uint16_t>(value);p[0]=v>>8;p[1]=v;}
+// Original badge item-ID groups select cost scaling: these exponential IDs
+// use base*2^(copies-1); linear IDs below use base*copies. No item-name guesses
+// or broad contiguous range substitutes for the exact source memberships.
 bool exponential(int32_t id) {
     return (id>=240 && id<=243)||(id>=247 && id<=249)||id==252||id==256||id==257||
            (id>=332 && id<=334)||id==337||id==338;
 }
 bool linear(int32_t id) {return (id>=244 && id<=246)||id==251||id==253;}
 }
+// Capture base before equippedCount, then re-read item ID afterward (provider
+// may mutate weapon). Preserve pow/fctiwz services, including copies0 exponent-1.
+// Nonzero cost subtracts reduction with U32 wrap then minimum1; zero stays free.
+// Costs>=1000 cap999. Do not replace this with unsigned saturating subtraction.
 int32_t weaponFpCost(DamageUnit& u,DamageWeapon& v,const WeaponCostServices& s) {
     const int32_t item=v.itemId;const uint8_t base=v.fpCost;int32_t cost=base;
     if(item!=0) {
@@ -31,6 +38,9 @@ int32_t weaponFpCost(DamageUnit& u,DamageWeapon& v,const WeaponCostServices& s) 
     if(cost>=1000)cost=999;
     return cost;
 }
+// Capture available FP BEFORE cost callbacks; query AP only if FP sufficient.
+// AP requirement=100*weapon apCost. Payment below captures work before FP,
+// sets FP before re-reading unit kind, and reads AP cost after record callbacks.
 bool checkWeaponCost(DamageUnit& u,DamageWeapon& v,const WeaponCostServices& s) {
     assert(s.getFp);const int32_t available=s.getFp(s.user,u);
     const int32_t cost=weaponFpCost(u,v,s);if(available<cost)return false;
@@ -42,6 +52,9 @@ void payWeaponCost(DamageUnit& u,DamageWeapon& v,const WeaponCostServices& s) {
     const int32_t fp=s.getFp(s.user,u);const int32_t cost=weaponFpCost(u,v,s);
     s.setFp(s.user,u,signedWord(static_cast<uint32_t>(fp)-static_cast<uint32_t>(cost)));
     const int32_t kind=u.kind;
+    // Mario222/partners224..230 record LOW8(cost) at16f4b/16f4d, then count
+    // field+1. Source byte additions wrap BEFORE upper cap100; count saturates.
+    // These counters do not necessarily equal the full signed resource debit.
     if(kind==222 || (kind>=224 && kind<=230)) {
         assert(s.point && s.count);const uint32_t field=kind==222?0x16f4b:0x16f4d;
         s.point(s.user,work,field,static_cast<uint8_t>(cost));s.count(s.user,work,field+1);
@@ -53,6 +66,8 @@ int32_t countEquippedBadge(const uint8_t* pouch,int32_t item) {
     for(unsigned i=0;i<200;++i)if(half(pouch+0x38a+2*i)==item)++count;
     return count;
 }
+// Pouch AP current7a/max7c are signed BE halfwords. Add with word wrap,
+// narrow16, then clamp negative0 and above maximum; do not clamp before narrowing.
 void addPouchAp(uint8_t* pouch,int32_t delta) {
     assert(pouch);half(pouch+0x7a,signedWord(static_cast<uint32_t>(half(pouch+0x7a))+static_cast<uint32_t>(delta)));
     if(half(pouch+0x7a)<0)half(pouch+0x7a,0);
@@ -63,6 +78,8 @@ void addActionPoint(uint8_t& field,int32_t delta) {
     if(field>100)field=100;
 }
 void addActionCount(uint8_t& field) {if(field<100)++field;}
+// Resolve actor operand then weapon operand BEFORE translating actor. The
+// event completes2 only after admitted resource services execute real payment.
 int payWeaponCostEvent(const std::array<int32_t,2>& operands,const WeaponPaymentEventServices& event,const WeaponCostServices& cost) {
     assert(event.resolve && event.translate && event.unit && event.weapon);
     const int32_t actor=event.resolve(event.user,operands[0]);

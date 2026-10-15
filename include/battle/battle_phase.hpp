@@ -1,5 +1,8 @@
 #pragma once
 #include "battle_actor.hpp"
+// Caller admits source memory/status/numerics and a valid selectable actor.
+// Table IDs are registry slots, not pointers or event actor selectors. Native
+// abort preserves the lack of a normal source no-actor selection route.
 namespace ttyd {
 struct BattlePhaseServices {
     BattleActorServices actors;

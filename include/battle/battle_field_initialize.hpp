@@ -1,5 +1,8 @@
 #pragma once
 #include "battle_sequence_entry.hpp"
+// Native completion true represents original battle_init integer0. Child
+// services retain their own source result and ownership. The cursor captures
+// each successful read/call until completion, with no rollback on a later hold.
 namespace ttyd {
 struct BattleFieldInitializeCursor {
  bool active=false,queued=false;

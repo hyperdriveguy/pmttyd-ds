@@ -5,6 +5,10 @@ int32_t sw(uint32_t v) {
   return v < 0x80000000u ? int32_t(v) : int32_t(int64_t(v) - 0x100000000LL);
 }
 } // namespace
+// Weapon operand resolves; current B is captured first. Initial weights load
+// b6, b5, b7, b4 for irand(sum), then fresh b4/b5/b6 cumulative subtraction picks
+// A1+A2/A1/A2/none. AFTER the draw,force wordB19078 masks10/20 seed A1/A2
+// before cumulative selection;RNG callbacks may mutate those source fields.
 std::optional<int32_t>
 packedBattleWeaponAftereffectEvent(EventEntry &e,
                                    const BattleWeaponAftereffectServices &s) {
@@ -37,6 +41,9 @@ packedBattleWeaponAftereffectEvent(EventEntry &e,
         a2 = true;
     }
   }
+  // Stage byte180f8 masks4/2 suppress A2/A1. Existing A1(mask2) with
+  // mask8 clear draws100 for weapon b8 or fresh force40: DestroyB, plus A2
+  // unless stage mask4 now set. Dispatch A1, A2, B in that order.
   const auto stage = byte(b + 0x180f8);
   if (stage & 4)
     a2 = false;
@@ -56,6 +63,10 @@ packedBattleWeaponAftereffectEvent(EventEntry &e,
     return std::nullopt;
   if (destructionB && !request(0x801495e0))
     return std::nullopt;
+  // Always draw each100 roll before fresh threshold b9/ba/bb and force
+  //200/100/80: NozzleDirChange, NozzleWork(mode1), IronFrameFall. Final stage
+  //mask20 admits ObjectFall: force1 skips its RNG, otherwise draw vs weapon bc.
+  // Original request addresses select actual stage services, not visual guesses.
   for (unsigned i = 0; i < 3; ++i) {
     const auto roll = s.random(s.user, 100);
     const uint32_t masks[]{0x200, 0x100, 0x80},

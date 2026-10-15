@@ -3,6 +3,9 @@
 #include <array>
 #include <optional>
 
+// Upper engine return0 means manager channel4; lower wrapper publishes an end
+// bit. Neither is field return. Immediate API has no retry cursor: admit all
+// eleven services before entering so an unavailable suffix cannot replay work.
 namespace ttyd {
 inline constexpr std::array<uint32_t,11> battleMainRequests{{
     0x800f7b28,0x8011a43c,0x8011f1ec,0x800fa5b0,0x80149798,

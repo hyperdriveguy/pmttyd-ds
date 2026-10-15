@@ -1,6 +1,9 @@
 #pragma once
 #include "event_memory_binding.hpp"
 #include "prologue_pouch.hpp"
+// Shared native retained byte owner. VM facade attachment must preserve the
+// arena and pointer-cell history; destroying a binding must not cold-reset them.
+// canAllocate is no-effects admission, not the source allocator implementation.
 namespace ttyd {
 // Native guest allocation policy, not a claim about original heap addresses.
 // One primary arena owns every allocation and paired free, including the nested

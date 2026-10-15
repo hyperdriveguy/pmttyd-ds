@@ -1,6 +1,9 @@
 #pragma once
 #include "battle_unit_event.hpp"
 #include "battle_actor.hpp"
+// Actor operands resolve/translate; flag/pattern masks and output destinations
+// stay raw. Different leaves have different null-unit branches; do not introduce
+// a shared zero-valued fallback or resolve every argument by convenience.
 namespace ttyd {
 struct BattleCheckDamageEventServices {
     BattleUnitEventServices units;

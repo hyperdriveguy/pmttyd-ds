@@ -2,6 +2,9 @@
 #include "battle_sequence_startup.hpp"
 #include <cassert>
 
+// Request order: unit-broken, pad, sequence, AC, stage objects, icons, stage,
+// AC-help, audience, break-slot, display. Addresses in battleMainRequests are US
+// function tokens; captured battle is owner context, not each source ABI argument.
 namespace ttyd {
 std::optional<int32_t> packedBattleMain(const BattleMainServices& s) {
     const auto b=currentBattleAddress(s.actors);
@@ -11,6 +14,9 @@ std::optional<int32_t> packedBattleMain(const BattleMainServices& s) {
         if(!s.request(s.user,fn,b))return std::nullopt;
     return packedBattleMainAfterRequests(b,s.actors);
 }
+// Channel0==4 returns0 before GP read. Otherwise captured GP flags3000
+// both set while channel0==2 force battle ef4 masks60, manager3, end channel7
+//07000000. Forced conclusion still returns1 until actual channel4 is seen.
 int32_t packedBattleMainAfterRequests(uint32_t b,const BattleActorServices& actors) {
     const auto& m=actors.memory;assert(m.word && m.storeWord);
     if(packedBattleGetSequence(b,0,m)==4)return 0;
@@ -22,6 +28,9 @@ int32_t packedBattleMainAfterRequests(uint32_t b,const BattleActorServices& acto
     }
     return 1;
 }
+// Outer captures B, then upper independently reads current B again. Callback
+// mutation can separate these owners; result publication ORs80000000 into
+// OUTER B+ef4 only on upper0. Null outer B is a no-work completion.
 bool packedBattleMainWrapper(const BattleMainServices& s) {
     const auto b=currentBattleAddress(s.actors);
     if(!b)return true;

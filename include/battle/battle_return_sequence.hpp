@@ -1,6 +1,9 @@
 #pragma once
 #include "battle_actor.hpp"
 
+// Narrow source state adapters. true means the selected local route ran,
+// not that field control resumed. Tail services must preserve their own source
+// order/resources; this API supplies no continuation for an unavailable tail.
 namespace ttyd {
 struct BattleReturnSequenceServices {
     BattleActorServices actors;

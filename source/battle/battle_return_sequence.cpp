@@ -3,6 +3,9 @@
 #include <cassert>
 
 namespace ttyd {
+// Guest work+4 state,+10 counter. State5 checks live global battle end bit;
+// on success reset counter, increment freshly read state, then GP+c may select11.
+// Always run state5 tail, even on ready0; state6 never falls through same call.
 bool packedBattleReturnSequence(uint32_t w,const BattleReturnSequenceServices& s) {
     const auto& m=s.actors.memory;
     assert(m.word && m.storeWord);
@@ -17,6 +20,8 @@ bool packedBattleReturnSequence(uint32_t w,const BattleReturnSequenceServices& s
             if(m.word(m.user,gp+0xc))m.storeWord(m.user,w+4,11);
         }
         s.tail(s.user);
+    // U32 increment then signed>30. GP flags1000+2000 BOTH set select
+    // seq5, otherwise2; parameter1, data0. Do not replace with >=30 or milliseconds.
     } else {
         const auto counter=m.word(m.user,w+0x10)+uint32_t(1);
         m.storeWord(m.user,w+0x10,counter);
@@ -29,6 +34,11 @@ bool packedBattleReturnSequence(uint32_t w,const BattleReturnSequenceServices& s
     }
     return true;
 }
+// Field state0 only: GP mask10 requests fade18/900ms/000000ff and source
+// event80414f28, then clears mask through a fresh GP. Otherwise GP118 selects
+// fade type/duration at108/10c instead of f8/fc. Fresh GP per default store
+// resets BOTH pairs to type9/duration300, then increments fresh state word.
+// Calls may mutate GP/work; no state1 listener executes by fallthrough.
 bool packedFieldSequenceIncomingFade(uint32_t w,const FieldSequenceFadeServices& s) {
     const auto& m=s.memory;
     assert(m.word && m.storeWord);

@@ -7,10 +7,16 @@ int32_t sw(uint32_t v) {return v<=0x7fffffff?static_cast<int32_t>(v):static_cast
 uint32_t word(const EventMemoryServices& s,uint32_t a) {assert(s.word);return s.word(s.user,a);}
 int32_t resolve(const EventDispatchServices& s,EventEntry& e,uint32_t a) {assert(s.word && s.resolve);const int32_t raw=sw(s.word(s.user,a));return s.resolve(s.user,e,raw);}
 }
+// Unit18 points to8-byte key/value rows, key0 terminates; first exact match
+// returns script word4. Null table/miss0 is a real no-script result.
 uint32_t battleUnitData(uint32_t unit,int32_t key,const EventMemoryServices& s) {
     uint32_t p=word(s,unit+0x18);if(p==0)return 0;
     for(;;p+=8) {const uint32_t candidate=word(s,p);if(candidate==0)return 0;if(candidate==static_cast<uint32_t>(key))return word(s,p+4);}
 }
+// Resolve selector, translate, capture current B/unit, then resolve key. Zero
+// script completes2. Otherwise create waiting child flags0, set child owner to
+// translated actor, clear parent opcode and return255 WITHOUT parent deletion.
+// firstCall is unused; source child links/scheduler prevent replay, not this helper.
 int32_t runBattleDataChild(EventEntry& e,const BattleDataChildServices& s) {
     const uint32_t args=e.arguments;const int32_t selector=resolve(s.values,e,args);
     assert(s.translate && s.currentBattle && s.unit);

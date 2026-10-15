@@ -2,6 +2,9 @@
 #include "battle_actor.hpp"
 #include "event_dispatch.hpp"
 #include <optional>
+// Whole dispatch has no continuation/rollback. nullopt after RNG or a
+// completed request retains those effects; native caller must admit the full
+// provider set before entry instead of replaying a successful prefix.
 namespace ttyd {
 struct BattleWeaponAftereffectServices {
   BattleActorServices memory;

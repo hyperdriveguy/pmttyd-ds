@@ -6,6 +6,8 @@ namespace {
 int32_t sw(uint32_t v) {return v<=0x7fffffff?int32_t(v):int32_t(int64_t(v)-0x100000000LL);}
 uint32_t word(const BattleEventUtilityServices& s,uint32_t a) {assert(s.memory.word);return s.memory.word(s.memory.user,a);}
 }
+// Current B8041eb90, flags ef4 mask1 holds guard-move; clear completes2.
+// FlagQuery uses a RAW mask and RAW output slot, stores Boolean0/1.
 int32_t battleWaitGuardMove(const BattleEventUtilityServices& s) {
     const uint32_t battle=word(s,0x8041eb90);return (word(s,battle+0xef4)&1)!=0?0:2;
 }
@@ -15,6 +17,9 @@ int32_t battleFlagQueryEvent(EventEntry& e,const BattleEventUtilityServices& s) 
     const int32_t output=sw(word(s,args));assert(s.values.store);
     s.values.store(s.values.user,e,output,(flags&mask)!=0?1:0);return 2;
 }
+// Original fixed60 conversion, not live GP rate/render FPS: resolve frames,
+// multiply1000 with U32 wrap, reinterpret signed, divide60 toward zero, then raw
+// output store. Do not widen/saturate or substitute simulation refresh rate.
 int32_t battleFramesToMillisecondsEvent(EventEntry& e,const BattleEventUtilityServices& s) {
     const uint32_t args=e.arguments;const int32_t input=sw(word(s,args));assert(s.values.resolve && s.values.store);
     const int32_t frames=s.values.resolve(s.values.user,e,input);

@@ -1,6 +1,9 @@
 #pragma once
 #include "original_sequence.hpp"
 #include <optional>
+// Native cursor phases differ from OriginalSequenceWork state w[1]. Boolean
+// completion means this parent invocation finished; integer call.result retains
+// the original callee return. Keep services/guest owners alive across holds.
 namespace ttyd {
 // Integer arguments retain original address tokens. Stack color/vector contents
 // have semantic payloads; they are never invented guest stack addresses.

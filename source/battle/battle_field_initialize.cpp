@@ -1,5 +1,9 @@
 #include "battle_field_initialize.hpp"
 namespace ttyd {
+// GP80415fd0 -> field168 -> NPC8; information is captured field+20.
+// Set camera4 mode2; debug GP+c may load selected message or original fallback.
+// Then N_battleMapAlloc, global battle8041eb90=0, animPoseBattleInit,
+// npcReleaseFiledNpc, fresh GP14=1, evtmgrReInit, sound flag10, in source order.
 bool initializeFieldBattle(const BattleSequenceEntryServices& s,BattleFieldInitializeCursor& c){
  if(!c.active){c={};c.active=true;c.pending=0x800738ac;}
  auto load=[&](uint32_t a,uint32_t& out){auto n=s.word?s.word(s.user,a):std::nullopt;if(!n)return false;out=*n;return true;};
@@ -24,6 +28,10 @@ bool initializeFieldBattle(const BattleSequenceEntryServices& s,BattleFieldIniti
  case 14:if(!store(c.gp+0x14,1))return false;++c.phase;break;
  case 15:if(!call(0x800377b0))return false;++c.phase;break;
  case 16:if(!call(0x800dc110,{0x10}))return false;++c.phase;break;
+ // InformationInit then SetMode0. Current party kind is SIGNED byte31;
+ // translate to battle unit kind, then inspect pouch kind*14 flags mask2.
+ // Suppressed/absent party leaves initialized party0; do not invent Mario-only
+ // setup until these original queries have actually completed.
  case 17:if(!call(0x80114518,{c.information}))return false;++c.phase;break;
  case 18:if(!call(0x80114598,{c.information,0}))return false;++c.phase;break;
  case 19:if(!call(0x80141050))return false;c.value=c.call.result;++c.phase;break;
@@ -32,11 +40,17 @@ bool initializeFieldBattle(const BattleSequenceEntryServices& s,BattleFieldIniti
  case 22:if(!call(0x800f83e4,{c.kind}))return false;c.value=c.call.result;++c.phase;break;
  case 23:{auto n=s.half?s.half(s.user,c.pouch+14*c.kind):std::nullopt;if(!n)return false;c.phase=(*n&2)?25:24;break;}
  case 24:if(!call(0x80114590,{c.information,c.value}))return false;++c.phase;break;
+ // Field1c mask1 suppresses first attack. Otherwise field10 single-bit
+ // types20000..1000000 map modes1..8; 10000000 reads explicit field14 mode;
+ // other types0. Types are exact source equality cases, not bit-priority tests.
  case 25:if(!load(c.field+0x1c,c.value))return false;c.phase=(c.value&1)?28:26;if(c.value&1)c.value=0;break;
  case 26:if(!load(c.field+0x10,c.value))return false;
   switch(c.value){case 0x20000:c.value=1;break;case 0x40000:c.value=2;break;case 0x80000:c.value=3;break;case 0x100000:c.value=4;break;case 0x200000:c.value=5;break;case 0x400000:c.value=6;break;case 0x800000:c.value=7;break;case 0x1000000:c.value=8;break;case 0x10000000:c.phase=27;continue;default:c.value=0;break;}c.phase=28;break;
  case 27:if(!load(c.field+0x14,c.value))return false;++c.phase;break;
  case 28:if(!call(0x80114588,{c.information,c.value}))return false;++c.phase;break;
+ // Setup pointer NPC+230. Copy NPC bytes2f4/2f5/2f6 to information
+ //18/1a/1b separately(rule/limits); do not bulk-copy across callbacks. Last
+ // child is actual BattleInit800f8f04, not a successful placeholder prefix.
  case 29:if(!call(0x80114510,{c.information,c.npc+0x230}))return false;++c.phase;break;
  case 30:case 32:case 34:if(!byte(c.npc+0x2f4+(c.phase-30)/2,c.value))return false;++c.phase;break;
  case 31:case 33:case 35:if(!s.storeByte || !s.storeByte(s.user,c.information+(c.phase==31?0x18:c.phase==33?0x1a:0x1b),uint8_t(c.value)))return false;++c.phase;break;
