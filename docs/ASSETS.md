@@ -3642,3 +3642,24 @@ bounded. Original relocation stores still cover these untouched sentinel words.
 Resource import does not create actors, acknowledge async/pose/GPU work or
 change original story/visibility. See the
 [harbor resource contract](behavior/field/HARBOR_NATIVE_RESOURCES.md).
+
+## Trio menu-binding documentation validation inputs (2026-10-15)
+
+artifacts/trio-menu-bindings-code-documentation-validation/source freezes
+baseline 02fbcb49fe7c502ce327758dd95979f2f6d75f9b. Relative to native menu-helper
+documentation, only CMake changes for same-VM field battle binding and original
+unlinked native NPC Draw-wrapper code/test. Tools/assets/converters/Makefile
+unchanged. All 82 private accepted products and surface/footer/HP/enemy/HitN64/
+party/Professor/Harbor fixtures/evidence inherited and checked by SHA-256.
+Small mutable/default evidence copied privately; large unchanged inputs reused
+read-only. Actual HitN64 metadata decoded-PNG read path pinned to earlier frozen
+private evidence and checked equal to current copy. No conversion/import or
+shared-cache update; native full regeneration skipped. Existing Python converter
+fixtures independently read original ISO read-only into empty temporary outputs.
+
+This pass changes comments/guides only. No numeric source claims newly measured,
+asset paths/formats/pixels/geometry/dialogue/story/music/effects changed or new
+asset license asserted. Existing assets/manifest.json remains editable overlay;
+no import over source assets. Original Nintendo/Intelligent Systems rights
+retained; no distribution rights follow. No ISO/extracted original/compiled
+product committed. Manifest records cache/evidence dependencies and hashes.

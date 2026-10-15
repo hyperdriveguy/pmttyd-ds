@@ -15883,3 +15883,55 @@ RESULT-01/DEMO-01 control/audio/battle teardown/field return and postbattle
 story integration. No playable full prologue, hardware/performance or original
 visual/audio parity claim. Extracts/products remain ignored, ISO read-only,
 local-use-only original Nintendo/Intelligent Systems licensing unchanged.
+
+## 2026-10-15 — Trio runtime menu-provider documentation
+
+Added 54 inline comment lines (replacing 6 stale lines) in
+source/battle/trio_attack.cpp plus [Trio menu bindings](code/trio-menu-bindings.md),
+linked from the code index. Code/docs commit 5e3d3d27. Executable tokens and
+string literals unchanged; no mechanics/dialogue/story/asset or test changes.
+
+Reviewed originalActMenuUiServices through resumeOriginalCommandInput plus
+shared allocation metadata. Notes explain completed zero versus absent waits,
+unknown private cursor outputs, independent parent/child cursors, deeper pending
+symbol priority, original heap/pouch globals, class-message resource retention,
+MapFree request/address/allocation identity across holds and address reuse,
+preallocation flush admission, registry retirement versus real free, metadata-only
+reset, current input words, camera rejection, distinct saved Input/pending/type
+fields, guest event address versus scheduler ID, actual allocation versus draw
+readiness and retained PresentItem math/recovery/effect barriers. Corrected stale
+comments listing now-wired ClassTable and weapon UI Init/End as missing owners.
+Trio remains explicitly partial: newer Turn/Phase/Act, pinch, sequence, pose/public
+draw bindings and later changes need review. No whole-file completeness claim.
+
+Frozen baseline 02fbcb49fe7c502ce327758dd95979f2f6d75f9b plus owned documentation is at
+artifacts/trio-menu-bindings-code-documentation-validation/source. Full git-blob
+audit covers 4340 baseline tracked files with no unexpected changes; three owned
+frozen/live files match and all 114 local guide/index links resolve. All source/
+prose finalized before gates. Concurrent startup/field/NPC/font/window/raster/
+resource/tool changes preserved/excluded; no combined moving-worktree claim.
+Original host/native process handles observed terminal0, exit markers agree.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits0: 506/506 C++ (113.52s),
+228/228 Python (49.383s), zero skipped. Actual original45-descriptor enemy,
+HitN64, party-position, temporary-Professor/fence and conditional original Harbor
+battle fixtures ran. Native NPC animation and unlinked Draw-wrapper tests were
+registered. Native make all -o assets-ready -j4 SOUNDTRACK=gamecube exits0.
+Manifest pins source/products/evidence/fixtures/logs and ELF/3DSX hashes.
+Existing compiler/Pillow warnings remain. No emulator/profile/save changes or
+original CPU/GPU/pixel/audio/performance/hardware parity claims.
+
+Dependency diff only changes CMake for same-VM field battle binding and actual
+unlinked native NPC Draw-wrapper code/test; tools/assets/converters/Makefile
+unchanged. All 82 accepted products and inherited surface/footer/HP/enemy/HitN64/
+party/Professor/Harbor fixtures/evidence rechecked, including actual external
+HitN64 PNG read path. No conversion/import/overlay/shared-cache write. Native
+full regeneration skipped; existing Python fixtures independently read ISO
+read-only into empty temporary outputs. See [asset ledger](ASSETS.md).
+No ISO/extracted original or compiled product committed; original rights retained.
+
+Next: remaining newer Trio integration, changed battle code and newer animation/
+field/party/font/window/resource/raster/startup integrations and tools. Inventory
+only tracks source/include C++/header/PICA hashes; tooling and untracked additions
+need separate audit. Matching hashes are a review aid,not semantic completeness.
+The broad documentation/remake goals remain active.
