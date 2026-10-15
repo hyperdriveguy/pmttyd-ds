@@ -5,6 +5,9 @@ namespace ttyd {
 bool item95IconDraw(const FieldItemIcon& icon,float yaw,uint32_t width,uint32_t height,FieldItemIconDraw& out) {
  return icon.id==307 && fieldItemIconDraw(icon,yaw,width,height,out);
 }
+// Finite source IDs307(item95)/403(coin), 40x40 textures only. Refuse other
+// flags including map-blend40(hex). Original .6000000238 scales quad size;
+// billboard rotates -camera yaw, RGBA alpha255 alone enables depth writes.
 bool fieldItemIconDraw(const FieldItemIcon& icon,float yaw,uint32_t width,uint32_t height,FieldItemIconDraw& out) {
  const uint16_t allowed=icon.id==307?uint16_t(1|0x80|0x100):icon.id==403?uint16_t(1|0x100|0x1000):0;
  if(!allowed || !icon.visible(true) || (icon.flags&~allowed) || width!=40 || height!=40)return false;
@@ -18,6 +21,9 @@ bool fieldItemIconDraw(const FieldItemIcon& icon,float yaw,uint32_t width,uint32
  draw.color=icon.color;draw.depthWrite=(icon.color&255)==255;draw.blend=!draw.depthWrite;
  out=draw;return true;
 }
+// Native explicit names<=15 bytes/free slot. Coin403 animation uses texture
+//414..417, four frames, delay6 iconMain visits; deferred flag2000 awaits buffers,
+//1000 marks animation. Constructor still allocates on duplicate names.
 FieldItemIcon* FieldItemRegistry::enterCoin403(const char* name,ItemGetPoint position,bool ready,bool mapBlend) {
  if(!name || !*name || std::strlen(name)>15)return nullptr;
  FieldItemIcon* icon=nullptr;for(auto& i:icons_)if(!(i.flags&1)){icon=&i;break;}
@@ -29,6 +35,8 @@ FieldItemIcon* FieldItemRegistry::enterCoin403(const char* name,ItemGetPoint pos
  // updates the first active match, which may differ from the new record.
  findIcon(name)->position=position;return icon;
 }
+// Hidden active coins still animate. Deferred initialization and delay decrement
+// happen in the SAME admitted visit; buffer unavailability advances nothing.
 void FieldItemRegistry::advanceIcons(bool ready) {
  if(!ready)return;
  for(auto& icon:icons_)if((icon.flags&1) && icon.id==403) {
@@ -41,6 +49,8 @@ void FieldItemRegistry::advanceIcons(bool ready) {
 }
 void FieldItemRegistry::iconFlags(const char* name,uint16_t on,uint16_t off) {if(auto* icon=findIcon(name))icon->flags=uint16_t((icon->flags|on)&~off);}
 void FieldItemRegistry::deleteIcon(const char* name) {if(auto* icon=findIcon(name))icon->flags&=~uint16_t(1);}
+// Item lookup includes inactive names; icon lookup requires active bit1.
+// Keep these distinct when slots/names are reused.
 FieldItemEntry* FieldItemRegistry::find(const char* name) {
  if(!name)return nullptr;
  for(auto& e:items_)if(e.name==name)return &e;
@@ -71,17 +81,25 @@ FieldItemEntry* FieldItemRegistry::enter95(const char* name,ItemGetPoint positio
  item->sequence=7;item->substate=0;return item;
 }
 void FieldItemRegistry::flagOn(const char* name,uint16_t flags) {if(auto* e=find(name))e->flags|=flags;}
+// Force only publishes state: clear78/7c counters, sequence2/substate0,
+// set1000 and clear status10000(hex). Actual receive/UI belongs to itemMain.
 bool FieldItemRegistry::forceGet(const char* name) {
  auto* e=find(name);if(!e)return false; // Native safety refusal for source null dereference.
  e->counter78=e->counter7c=0;e->sequence=2;e->substate=0;e->flags|=0x1000;e->status&=~0x10000u;return true;
 }
+// EVT2 if missing/inactive or status2/10000(hex), else hold0. This tests
+// completion flags, not whether pouch receive succeeded.
 int32_t FieldItemRegistry::pollGet(const char* name) const {
  const auto* e=find(name);return !e || !(e->flags&1) || (e->status&(2|0x10000))?2:0;
 }
+// Clear every matching item name, including inactive entries. Each iteration
+// separately deletes first active matching icon; duplicates must not collapse.
 void FieldItemRegistry::deleteNamed(const char* name) {
  if(!name)return;
  for(auto& e:items_)if(e.name==name){if(auto* icon=findIcon(name))icon->flags&=~1u;e.flags&=~1u;}
 }
+// Second active-item check prevents a just-deleted entry resubmitting its icon.
+// Preserve RGB when replacing alpha; named setter may target an older duplicate.
 void FieldItemRegistry::synchronizeIcon(const FieldItemEntry& e) {
  if(e.flags&1)if(auto* i=findIcon(e.name.c_str())) {
   i->position=e.position;i->scale=e.scale;i->color=(i->color&0xffffff00u)|e.alpha;

@@ -1,5 +1,7 @@
 #include "goomba_hand_in.hpp"
 namespace ttyd {
+// Exact east Goomba4 key2b0a9f83, quest2, known5405 true and observed
+// item95 count>=1. No admission by model name or cached mushroom quantity.
 bool goombaQuest2Admitted(const FieldActorRecord& actor,const FieldActorTalkState& s,const FieldActorTalkInventory& i) {
     return actor.room==2 && actor.key==0x2b0a9f83 && s.quest1420==2 && s.flag5405==true && i.item95 && *i.item95>=1;
 }
@@ -17,6 +19,9 @@ bool GoombaHandIn::begin(const FieldActorRecord& actor,ProloguePouch& pouch,Fiel
     if(!talk.print(actor,"irai_02_03",font,now))return false;
     actor_=actor;pouch_=&pouch;switches_=&state;talk_=&talk;selector_=&selector;font_=&font;phase_=Phase::FirstPrint;return true;
 }
+// Release selector only after reading result;-1 cancels without removal.
+// Revised remove returns optional: unknown holds, known0 is still a real source
+// failure whose result the event ignores before setting5406.
 void GoombaHandIn::tick(uint64_t now) {
     if(quest13_.active()){quest13_.tick(now);return;}
     switch(phase_) {

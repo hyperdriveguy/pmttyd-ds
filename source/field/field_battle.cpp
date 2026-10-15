@@ -4,6 +4,8 @@ namespace ttyd {
 namespace {
 int32_t signedDepth(uint8_t depth) {return depth<128?int32_t(depth):int32_t(depth)-256;}
 }
+// Main2 and wrapping U8 depth are separate from key flag8/depth. On clears
+// main2 only after exact zero; returned depth is signed, including wrap/underflow.
 int32_t fieldMarioControlOff(FieldMarioBattleState& mario) {
     mario.flags|=2;
     mario.controlDepth=uint8_t(unsigned(mario.controlDepth)+1);
@@ -16,10 +18,15 @@ int32_t fieldMarioControlOn(FieldMarioBattleState& mario) {
 }
 void restoreFieldMarioAfterBattle(FieldMarioBattleState& mario) {mario.secondaryFlags&=~1u;}
 int32_t fieldMarioControlOffCheck(const FieldMarioBattleState& mario) {return signedDepth(mario.controlDepth);}
+// Word4 priority: 10000000 ->2 before80000000 ->1, otherwise0 (hex masks).
+// Battle post clears only word4 bit1, not either animation-selector bit.
 int32_t fieldMarioAnimationId(const FieldMarioBattleState& mario) {
     if(mario.secondaryFlags&0x10000000)return 2;
     return (mario.secondaryFlags&0x80000000)?1:0;
 }
+// Both lookups run on every visit; first visit mutates source owners in
+// order and yields0, next visit returns2 after lookup only. Sound mask10(hex),
+// sequence4 request. Missing/full original providers are caller admission.
 int32_t startFieldBattle(int32_t name,bool firstCall,const FieldBattleServices& s) {
     auto& work=s.work(s.user);
     const auto npc=s.npc(s.user,name); // Both lookups repeat on resumed calls.
@@ -35,6 +42,9 @@ int32_t startFieldBattle(int32_t name,bool firstCall,const FieldBattleServices& 
     s.setSequence(s.user,4);
     return 0;
 }
+// Any nonzero result includes defeat/other outcomes; do not gate on victory.
+// Restore Mario/current party, stop BGM, post Mario, then consume. Caller must
+// stop invoking after status2 rather than adding a new internal debounce.
 int32_t waitFieldBattleEnd(const FieldBattleServices& s) {
     auto& work=s.work(s.user);
     if(s.sequence(s.user)!=2 || work.result==0)return 0;

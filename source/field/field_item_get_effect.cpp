@@ -2,6 +2,9 @@
 #include <cmath>
 #include "camera_road_view.hpp"
 namespace ttyd {
+// Native camera5 helper: lens25deg/near1/far100, depth range0.2..0.3.
+// Rebuild LookAt using explicit up; reject parallel/invalid bases instead of
+// silently using camera4 roll/up. Inputs already use native coordinates.
 std::optional<FieldCameraFrame> itemGetCamera5Frame(CameraPoint eye,CameraPoint up,CameraPoint target) {
  auto frame=fieldCameraFrameFromView(eye,target,25,1,100);if(!frame)return std::nullopt;
  for(float value:{up.x,up.y,up.z})if(!std::isfinite(value))return std::nullopt;
@@ -27,6 +30,9 @@ void FieldItemGetEffect6::beginKind(ActorVector root,uint32_t kind) {
  kind_=kind;
  root_=root;active_=true;softDelete_=false;age_=0;lifetime_=1000;alpha_=255;scale_=0;camera_=4;
 }
+// Soft-delete sets16 then immediately decrements15; alpha=lifetime<<4
+// below16. Check terminal after alpha conversion, then advance age. Source
+//12-entry percent scale curve applies only ages<12; age caps1000, scale retains.
 bool FieldItemGetEffect6::tick() {
  if(!active_)return false;
  if(softDelete_){softDelete_=false;lifetime_=16;}
@@ -44,6 +50,8 @@ ItemGetEffectDraw FieldItemGetEffect6::draw(float yaw,uint32_t shadow) const {
  if(kind_==7)out.colors[1]=0xe85bd0ff;
  const float radians=-(yaw*.01745329238474369f),s=std::sin(radians),c=std::cos(radians);
  ActorMatrix rotate;rotate.v[0]=rotate.v[10]=c;rotate.v[2]=s;rotate.v[8]=-s;
+ // Source size factor .75*(kind size/10), camera-facing shift2 engine units.
+ // Separate shadow local offset(2,-2, 0) must NOT enter texture projection.
  const float size=.75f*((kind_==7?10.f:12.f)/10.f),scales[]={scale_*size,scale_*size,scale_*size};
  auto model=ActorMatrix::translation(root_.data())*rotate*ActorMatrix::scale(scales);
  const float turn=(yaw*6.2831854820251465f)/360.f;
@@ -58,6 +66,8 @@ ItemGetEffectDraw FieldItemGetEffect6::draw(float yaw,uint32_t shadow) const {
  out.textureProjection=light*textureView*model;
 
  const float offset[]={2,-2,0};
+ // Shadow alpha truncates128*alpha/255; main alpha is full value. Preserve
+ // RRGGBBAA RGB words while replacing low byte; do not use native ABGR here.
  out.passes[0].model=model*ActorMatrix::translation(offset);
  out.passes[0].alpha=uint8_t((128u*alpha_)/255u);out.passes[0].color=(shadow&0xffffff00u)|out.passes[0].alpha;
  out.passes[1].model=model;out.passes[1].alpha=alpha_;out.passes[1].color=0xffffff00u|alpha_;

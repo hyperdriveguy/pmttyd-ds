@@ -3,15 +3,23 @@
 #include <cmath>
 namespace ttyd {
 namespace {
+// Original named icon iraiCoin; polynomial sine degree5/cosine degree4 and
+// explicit quadrant boundaries preserve source placement rather than libm trig.
 constexpr const char* Name="iraiCoin";
 float sine(float x) {const float u=x*x;return std::fma(std::fma(.00761000020429492f,u,-.1660500019788742f),u,1.f)*x;}
 float cosine(float x) {const float u=x*x;return std::fma(std::fma(.037050001323223114f,u,-.4966999888420105f),u,1.f);}
+// divisor=(hardwareFrequency>>2)/1000; zero means unavailable clock.
+// Unsigned low delta/divisor narrows signed32 before strict>200/500ms tests.
+// Do not replace with high/low64 timing or >= endpoint admission.
 std::optional<bool> elapsed(const FieldCoinClock& now,const FieldCoinClock& saved,int32_t threshold) {
  const uint32_t divisor=(now.hardwareFrequency>>2)/1000;
  if(!divisor)return {}; // Unbound native clock, not an invented timeout.
  return int32_t(uint32_t(now.low-saved.low)/divisor)>threshold;
 }
 }
+// Heading=(heading*100+5)/100 then revise, not integer rounding.
+// Engine offset10 along heading; effectY+62, iconY+52. Source pi/half/
+// three-half literals and asymmetric quadrant comparisons remain explicit.
 FieldCoinPlacement fieldCoinPlacement(ItemGetPoint mario,float heading) {
  const float normalized=npcReviseAngle(std::fma(100.f,heading,5.f)/100.f);
  const float angle=normalized>=360.f?0.f:normalized;
@@ -40,6 +48,9 @@ bool FieldCoinGet::retireDeletedWindow() {
  retained_=false;
  return true;
 }
+// Every visit resolves live amount/placement, including cleanup. State0 uses
+// amount for borrowed window words; state100 credits THAT visit's amount.
+// Native nullopt is unavailable admission; source status0/2 is known.
 std::optional<int32_t> FieldCoinGet::invoke(int32_t amount,bool firstCall,uint32_t triggers) {
  if(!canAdvance())return {};
  // Source resolves amount and recomputes placement even on cleanup polls.
@@ -53,6 +64,9 @@ std::optional<int32_t> FieldCoinGet::invoke(int32_t amount,bool firstCall,uint32
   parameter_={0,0};window_=-1;retained_=true;
  } else if(!retained_)return {};
  switch(state_) {
+ // Window80415e84 borrows stable{amount, mode}; constructor sees initial
+ // zeros before the later stores. Icon403 starts hidden2+camera100(hex),
+ // effect7/payload5. State1 waits>200ms, state2 >500ms, state10 A100(hex).
  case 0:
   services_.iconEnter(services_.user,Name,403,xyz.icon);
   services_.iconFlags(services_.user,Name,0x102,0);
@@ -75,6 +89,9 @@ std::optional<int32_t> FieldCoinGet::invoke(int32_t amount,bool firstCall,uint32
   return 0;
  }
  case 10:if(triggers&0x100)state_=100;return 0;
+ // Credit then effect/icon/audio/window cleanup and return2 at state101.
+ // Do not free borrowed parameters here; window may still retain action1.
+ // Explicit window-owner retirement is separate from source cleanup polling.
  case 100:
   services_.addCoins(services_.user,amount);
   services_.softDelete(services_.user,effect_);

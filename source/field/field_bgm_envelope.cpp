@@ -1,6 +1,8 @@
 #include "field_bgm_envelope.hpp"
 #include <cmath>
 namespace ttyd {
+// ms/(1000/GP-rate), truncate signed32, then source low16 wrapping. Reject
+// resulting nonpositive duration; do not saturate large values to guessed ticks.
 std::optional<int16_t> fieldBgmDuration(int32_t ms,int32_t rate) {
  if(ms<=0 || rate<=0)return {};
  const float interval=1000.f/float(rate),count=float(ms)/interval;
@@ -13,6 +15,8 @@ std::optional<int16_t> fieldBgmDuration(int32_t ms,int32_t rate) {
 void FieldBgmEnvelope::bind(uint8_t base,int8_t global,bool bypass) {
  *this={};assigned_=true;base_=base;global_=global;bypassGlobal_=bypass;primaryDuration_=primaryRemaining_=1;
 }
+// Primary and secondary owners are mutually admitted here. Already-selected
+// off/mute returns success before duration checks; not a new envelope restart.
 bool FieldBgmEnvelope::off201(int16_t d) {
  if(!assigned_ || secondary_)return false;
  if(primary_==2)return true;
@@ -25,6 +29,8 @@ bool FieldBgmEnvelope::mute3800(int16_t d,bool fast) {
  if(d<=0)return false;
  secondary_=8;secondaryDuration_=secondaryRemaining_=d;fast_=fast;return true;
 }
+// Resume starts at truncated40% duration, then climbs. Without muted state
+// it only resets primary duration1; it does not invent an assignment/backend.
 bool FieldBgmEnvelope::resumeA0(int16_t d,bool fast) {
  if(!assigned_ || primary_)return false;
  if(secondary_==8 && d<=0)return false;
@@ -32,6 +38,10 @@ bool FieldBgmEnvelope::resumeA0(int16_t d,bool fast) {
  if(secondary_!=8)return true;
  secondary_=16;secondaryDuration_=d;secondaryRemaining_=int16_t(int32_t(d)*40/100);fast_=fast;return true;
 }
+// Publish BEFORE updating counters: integer primary * secondary(0..127)/127,
+// then signed global percent unless bypassed, U8 narrowing without saturation.
+// Detach at primary countdown0 requests100ms stream tail. Secondary fast
+// step5/ordinary1 clamps to40% floor or full target; full resume clears NEXT visit.
 std::optional<FieldBgmPublication> FieldBgmEnvelope::main() {
  FieldBgmPublication out;if(!assigned_)return out;
  if((primary_ && primaryDuration_<=0) || (secondary_ && secondaryDuration_<=0))return {};
@@ -57,12 +67,16 @@ std::optional<FieldBgmPublication> FieldBgmEnvelope::main() {
  }
  return out;
 }
+// Native finite volume0..255 and positive rate; float duration denominator
+// at least1. Source IRQ/device and combined fade flags remain external.
 bool FieldStreamFade::begin(float volume,uint16_t ms,int32_t rate) {
  if(!std::isfinite(volume) || volume<0 || volume>255 || rate<=0)return false;
  const float interval=1000.f/float(rate),count=float(ms)/interval;
  const float denominator=count<1.f?1.f:count;
  volume_=volume;decrement_=volume/denominator;active_=true;return true;
 }
+// Gate false leaves all state untouched. Subtraction can publish volume0;
+// stop occurs only on a LATER gated call that observes preexisting exact0.
 FieldStreamFadePublication FieldStreamFade::main(bool gate) {
  FieldStreamFadePublication out;if(!active_ || !gate)return out;
  if(volume_==0){active_=false;out.stop=true;return out;}

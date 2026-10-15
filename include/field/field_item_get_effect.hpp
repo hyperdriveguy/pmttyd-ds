@@ -13,6 +13,8 @@ struct ItemGetEffectPass {
  uint32_t color=0;
  uint8_t alpha=0;
 };
+// Source engine-space quad64x32, textures44/42, TEV gray/orange colors
+// RRGGBBAA. Kind7 substitutes original pink TEV palette E85BD0FF.
 struct ItemGetEffectDraw {
  std::array<ItemGetEffectPass,2> passes;
  ActorMatrix textureProjection; // LightOrtho * synthetic LookAt * unshifted WORLD model.
@@ -22,6 +24,8 @@ struct ItemGetEffectDraw {
  std::array<ActorVector,4> vertices{{{{-32,32,0}},{{32,32,0}},{{32,0,0}},{{-32,0,0}}}};
  std::array<std::array<float,2>,4> uv{{{{0,0}},{{1,0}},{{1,1}},{{0,1}}}};
 };
+// Kind6 key item, size12; kind7 coin, size10. Lifetime1000 is retained sentinel,
+// not an automatic1000-visit expiry. Soft deletion starts the16-visit tail.
 class FieldItemGetEffect6 {
 public:
  void begin(ActorVector originalRoot);

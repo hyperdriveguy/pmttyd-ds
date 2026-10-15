@@ -8,6 +8,8 @@ bool goombaQuest2AcquisitionAdmitted(const FieldActorRecord&,const FieldActorTal
 // Original Goomba3 quest2 print -> entry/force -> blocking poll ->5405.
 // eventMain and itemMain are independent scheduler visits. Presentation services
 // remain injected; this owner supplies actual pouch receive and named deletion.
+// Self-owner blocks advancement after copying Game. stop mask6 pauses
+// eventMain only; itemMain retains its independent item-driver ownership.
 class GoombaAcquisition {
 public:
  bool begin(const FieldActorRecord&,ProloguePouch&,FieldActorTalkState&,

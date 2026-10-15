@@ -3,6 +3,8 @@
 #include <array>
 #include <optional>
 namespace ttyd {
+// Source elapsed test uses LOW tick subtraction only (U32 wrap), then bus/4
+// ticks per ms. High word is retained input but not used by this callback.
 struct FieldCoinClock {uint32_t high=0,low=0,hardwareFrequency=0;};
 enum class FieldCoinRequest {GetMotion,BgmOff3800,FanfareOn201,StayMotion,BgmResumeA0,BgmOff201};
 struct FieldCoinGetServices {
@@ -31,6 +33,9 @@ struct FieldCoinPlacement {ItemGetPoint effect,icon;};
 FieldCoinPlacement fieldCoinPlacement(ItemGetPoint mario,float cameraHeading);
 // Finite source callback. Stable in-owner parameter storage replaces its map
 // allocation; return2 at100 does not retire the window's borrowed parameter.
+// Self-owner identity prevents copied presentation state advancing borrowed
+// pointers. Two-word parameter remains alive beyond EVT return2 until real
+// window retirement; source action alone cannot prove its slot was deleted.
 class FieldCoinGet {
 public:
  bool bind(const FieldCoinGetServices&);

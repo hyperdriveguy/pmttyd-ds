@@ -5,6 +5,8 @@
 #include "goomba_quest13.hpp"
 namespace ttyd {
 // Original Goomba4 quest2/13 owners. Simulation advances the graphs.
+// Quest2 hands in item95; quest13 item107 uses its own graph. Key depth is
+// semantic1 during talk/2 during selector, not an independently ticking counter.
 class GoombaHandIn {
 public:
     bool begin(const FieldActorRecord&,ProloguePouch&,FieldActorTalkState&,

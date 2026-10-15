@@ -1,5 +1,7 @@
 #include "field_item_get.hpp"
 namespace ttyd {
+// Admit whole finite forced profile before requests; initial offscreen Y=-1000
+// is source placement. Windows use-1 as vacant; effect/discard tokens use0.
 bool FieldItem95Get::begin(const char* name,const FieldItemGetServices& s,ItemGetPoint initial) {
  if(state_==ItemGetStep::Running || state_==ItemGetStep::DiscardPending || !name || !*name ||
     !s.ready || !s.mario || !s.request || !s.effect || !s.window || !s.windowAction ||
@@ -15,6 +17,9 @@ ItemGetStep FieldItem95Get::tick(uint32_t buttons) {
   request(ItemGetRequest::SystemLevel2);request(ItemGetRequest::SoundFlag80On);request(ItemGetRequest::ClearMarioMotion);
   // Source substate0 falls through to1; forced1000 bypasses motion polling.
   substate_=2;request(ItemGetRequest::GetItemMotion);
+  // Engine offsets: item atMarioY+50, effect kind6 atY+62, payload selector5.
+  // Original window definitions80313dc8/df0/e18 are main/secondary/failure;
+  // they receive the retained item name, not fabricated message text.
   const auto mario=services_.mario(services_.user);position_=mario;position_.y+=50.f;
   auto effectPosition=mario;effectPosition.y+=62.f;
   effect_=services_.effect(services_.user,6,effectPosition);request(ItemGetRequest::EffectPayload5);
@@ -29,6 +34,8 @@ ItemGetStep FieldItem95Get::tick(uint32_t buttons) {
   else windows_[2]=services_.window(services_.user,0x80313e18,name_.c_str());
   request(ItemGetRequest::IconFlag80On);return state_;
  }
+ // Entry0->1->2 falls through only on first visit; next visit2->3 disables
+ // controls then can poll fanfare/window. Keep this yield boundary.
  if(substate_==2) {
   request(ItemGetRequest::ControlOff);status_|=0x01000000u;substate_=3;
  }
@@ -37,11 +44,16 @@ ItemGetStep FieldItem95Get::tick(uint32_t buttons) {
    flags_|=0x2000;request(ItemGetRequest::BgmOff201);
    if(!(flags_&8))request(ItemGetRequest::BgmResumeA0);
   }
+  // Source A/B mask300(hex), only after main window action==0. This is
+  // separate from fanfare completion, which is remembered by flag2000.
   if(services_.windowAction(services_.user,windows_[0])!=0 || !(buttons&0x300))return state_;
   request(ItemGetRequest::WindowCloseMain);request(ItemGetRequest::WindowCloseSecondary);
   if(!(flags_&0x2000)) {request(ItemGetRequest::BgmOff201);if(!(flags_&8))request(ItemGetRequest::BgmResumeA0);}
   request(ItemGetRequest::EffectSoftDelete);request(ItemGetRequest::Camera4);
   request(ItemGetRequest::IconFlag100Off);request(ItemGetRequest::IconFlag80Off);
+  // Real pouch failure enters substate5/discard ownership with(kind1, item95,
+  // mode1). DiscardPending is a frontier, not a successful grant or teardown.
+  // Success restores controls/audio/camera before named deletion.
   if(!(status_&1)) {
    substate_=5;request(ItemGetRequest::WindowCloseFailure);request(ItemGetRequest::StayMotion);request(ItemGetRequest::IconFlag2On);
    if(services_.discardSelection)discard_=services_.discardSelection(services_.user,1,95,1);

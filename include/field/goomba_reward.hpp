@@ -11,6 +11,8 @@ struct GoombaRewardServices {
  void (*setFlag)(void*,int32_t flag)=nullptr;
 };
 bool goombaQuest2RewardAdmitted(const FieldActorRecord&,const FieldActorTalkState&);
+// Coin service status2 precedes quest reset/flag5376/final unchanged print.
+// nullopt retains first-call state; known0/1 means later calls are resumed.
 class GoombaReward {
 public:
  bool begin(const FieldActorRecord&,FieldActorTalkState&,FieldActorTalk&,

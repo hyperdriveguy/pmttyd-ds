@@ -1,6 +1,8 @@
 #pragma once
 #include "battle_actor.hpp"
 namespace ttyd {
+// Configuration rows44(hex) bytes; all addresses are guest words. RNG uses
+// one caller-owned source sequence; even bound1 draws are not omitted.
 struct PackedNpcBattleSetupServices {
  BattleActorServices memory;
  void* user=nullptr;
@@ -24,6 +26,8 @@ int32_t packedBattleSetupNumber(uint32_t table,const char* name,const BattleActo
 // missing area/table and invalid indices have no invented fallback.
 void setPackedNpcBattleInformation(uint32_t npc,int32_t index,
  const PackedNpcBattleSetupServices&,uint32_t registry=0x803057e4);
+// Original information lives F+20(hex): mode0, party4, first8, NPC data+c,
+// followed by remaining words/bytes. Preserve Set* store order, not memset.
 void initializePackedBattleInformation(uint32_t information,const EventMemoryServices&);
 struct PackedFieldBattleInformationServices {
  BattleActorServices memory;

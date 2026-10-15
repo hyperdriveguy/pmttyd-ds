@@ -5,6 +5,8 @@ bool goombaAcquisitionPresentationReady(const FieldItemGetServices& p) {
  return p.ready && p.mario && p.request && p.effect && p.window && p.windowAction &&
         p.bgmSilent && p.bgmCheck && p.ready(p.user);
 }
+// Exact plaza Goomba3 native key42ff5f1f, quest1420=2, known5406/5405
+// false. Shared art or unknown switches cannot select this source event arm.
 bool goombaQuest2AcquisitionAdmitted(const FieldActorRecord& a,const FieldActorTalkState& s) {
  return a.room==0 && a.key==0x42ff5f1f && s.quest1420==2 && s.flag5406==false && s.flag5405==false;
 }
@@ -21,6 +23,9 @@ void GoombaAcquisition::publishEntry() {
  if(!entry_ || !(entry_->flags&1))return;
  entry_->flags=get_.flags();entry_->substate=get_.substate();entry_->status=get_.status();entry_->position=get_.itemPosition();
 }
+// Publish source item fields BEFORE each external presentation request.
+// Real pouch insertion/named deletion live here; presentation readiness alone
+// is not an inventory grant or a completed acquisition.
 FieldItemGetServices GoombaAcquisition::services() {
  FieldItemGetServices s;s.user=this;
  s.ready=[](void* p){auto& a=*static_cast<GoombaAcquisition*>(p);return a.presentation_.ready(a.presentation_.user);};
@@ -36,6 +41,9 @@ FieldItemGetServices GoombaAcquisition::services() {
  if(presentation_.discardSelection)s.discardSelection=[](void* p,int32_t kind,int32_t item,int32_t mode){auto& a=*static_cast<GoombaAcquisition*>(p);a.publishEntry();return a.presentation_.discardSelection(a.presentation_.user,kind,item,mode);};
  return s;
 }
+// Print -> entry at(0,-1000, 0) -> explicit flag2/force -> later poll ->5405.
+// Available-slot hold writes no story state. First force call always yields;
+// a later source poll, not the item receive callback, finishes the event.
 void GoombaAcquisition::eventMain() {
  if(!canAdvance() || stopped_)return;
  if(phase_==Phase::Printing){if(talk_->message.active())return;phase_=Phase::EntryPending;}
@@ -46,6 +54,8 @@ void GoombaAcquisition::eventMain() {
  }
  if(phase_==Phase::Getting && registry_->pollGet(Name)==2){switches_->flag5405=true;phase_=Phase::Complete;}
 }
+// Admit exact item95/mode16/flags1003/sequence2 profile before receive.
+// Unsupported live mutations hold; do not clear fields to force admission.
 void GoombaAcquisition::itemMain(uint32_t triggers) {
  if(!canAdvance())return;
  if(phase_!=Phase::Getting || !entry_ || !(entry_->flags&1) || entry_->sequence!=2)return;

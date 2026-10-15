@@ -9,6 +9,9 @@ std::optional<int16_t> fieldBgmDuration(int32_t milliseconds,int32_t gpRate);
 struct FieldBgmPublication {bool published=false,detach=false;uint8_t volume=0;uint16_t tailMilliseconds=0;};
 // Finite original fresh primary Off201 OR field secondary3800/a0 envelopes.
 // Each main() is an admitted psndBGMMain call, not a rendering frame.
+// Source state numbers: primary2 detach fade, secondary8 retained mute, 16
+// resume. silent() tests assigned+state8; retained floor40% need not be zero.
+// check returns0 assigned/-1 vacant, not bool ready.
 class FieldBgmEnvelope {
 public:
  void bind(uint8_t base,int8_t globalPercentage=100,bool bypassGlobal=true);

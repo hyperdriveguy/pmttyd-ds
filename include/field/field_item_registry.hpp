@@ -4,6 +4,8 @@
 #include <array>
 #include <string>
 namespace ttyd {
+// Color is RRGGBBAA (alpha low8). Camera flag priority10->8, 100->5,
+//200->7, else4 (masks hex); active1 and hidden2 remain independent.
 struct FieldItemIcon {
  uint16_t flags=0,id=0;std::string name;
  ItemGetPoint position;float scale=1;uint32_t color=0xffffffff;
@@ -22,6 +24,9 @@ struct FieldItemIconDraw {
 // False refuses an unbound material instead of returning invented geometry.
 bool item95IconDraw(const FieldItemIcon&,float cameraYaw,uint32_t width,uint32_t height,FieldItemIconDraw&);
 bool fieldItemIconDraw(const FieldItemIcon&,float cameraYaw,uint32_t width,uint32_t height,FieldItemIconDraw&);
+// Source semantic fields, not packed item RAM. Forced item95 profile uses
+// flags1003(hex), mode16, sequence2 get/7 initial, secondary-1. Counters retain
+// their source offset names; unknown live mode domains are not inferred.
 struct FieldItemEntry {
  uint16_t flags=0,mode=0,sequence=0,substate=0;
  int32_t item=0,secondary=0;uint32_t callback=0,status=0;

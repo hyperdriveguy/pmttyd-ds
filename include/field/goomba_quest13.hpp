@@ -7,6 +7,9 @@ namespace ttyd {
 class ActorAnimationPack;
 bool bindGoombaQuest13Poses(const ActorAnimationPack&);
 bool goombaQuest13Admitted(const FieldActorRecord&,const FieldActorTalkState&,const FieldActorTalkInventory&);
+// One original-capacity selection table persists across loops; refresh with
+// count0 leaves old bytes intact. Native admission rejects later growth past
+// initial capacity instead of resizing source allocation.
 class GoombaQuest13 {
 public:
     bool begin(const FieldActorRecord&,ProloguePouch&,FieldActorTalkState&,FieldActorTalk&,

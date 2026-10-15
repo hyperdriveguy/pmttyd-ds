@@ -24,6 +24,8 @@ struct FieldBattleWork {
     uintptr_t npc=0;
     int32_t result=0;
 };
+// Start uses field sequence4, wait completes only at sequence2 and ANY nonzero
+// result. These are source sequence IDs, not native battle result ordinals.
 struct FieldBattleServices {
     void* user=nullptr;
     FieldBattleWork& (*work)(void*)=nullptr;

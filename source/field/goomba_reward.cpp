@@ -1,5 +1,7 @@
 #include "goomba_reward.hpp"
 namespace ttyd {
+// Exact plaza Goomba3 quest2 arm with known5406 true; reward20 coins,
+// completion saved flag5376. Original speaker0 final print remains separate.
 bool goombaQuest2RewardAdmitted(const FieldActorRecord& actor,const FieldActorTalkState& state) {
  return actor.room==0 && actor.key==0x42ff5f1f && state.quest1420==2 && state.flag5406==true;
 }
@@ -12,6 +14,9 @@ bool GoombaReward::begin(const FieldActorRecord& actor,FieldActorTalkState& stat
  owner_=this;switches_=&state;talk_=&talk;font_=&font;actor_=actor;services_=services;
  firstCoinCall_=true;phase_=Phase::Printing;return true;
 }
+// Nonblocking phases may continue in one visit; only text/coin provider waits
+// yield. Coin completion is not a direct addCoins shortcut. Reset quest only
+// after known status2, then open final message with numeric speaker0.
 void GoombaReward::eventMain(uint64_t now) {
  if(!canAdvance())return;
  if(phase_==Phase::Printing) {

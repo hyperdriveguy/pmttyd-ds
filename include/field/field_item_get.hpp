@@ -5,6 +5,9 @@ namespace ttyd {
 struct ItemGetPoint {float x=0,y=0,z=0;};
 // Typed requests preserve source service order. Render/control/audio providers
 // own the actual original resources; these are not story message substitutes.
+// Enum names encode original service requests: camera slots4/8, sound flag80,
+// icon masks2/80/100 and BGM command3800/201/a0 (hex). Providers own
+// their actual effects; enum ordinal values are native dispatch identities.
 enum class ItemGetRequest {
  Camera8FlagOn,KeyOff,SystemLevel2,SoundFlag80On,ClearMarioMotion,
  GetItemMotion,EffectPayload5,IconFlag100On,BgmOff3800,KeyItemFanfare,
@@ -30,6 +33,9 @@ struct FieldItemGetServices {
 enum class ItemGetStep {Idle,Running,Complete,DiscardPending};
 // Original finite forced item95/mainflags1003 path; itemMain cadence is supplied
 // by the caller. Full discard selection/other modes need their own providers.
+// Per-source itemMain visits, not rendering frames. flags8 remembers original
+// BGM silent state; 2000 remembers fanfare cleanup. Status1 receive success,
+//01000000 control ownership, 10000 source completion bit (masks hex).
 class FieldItem95Get {
 public:
  bool begin(const char* sourceName,const FieldItemGetServices&,ItemGetPoint sourceInitial={0,-1000,0});

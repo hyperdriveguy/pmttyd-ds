@@ -1,11 +1,16 @@
 #include "field_item_mario.hpp"
 namespace ttyd {
+// Idle0/fall10 have nonnull source post hooks; require their real provider
+// before transition. Other admitted ordinary rows have no such post callback.
 bool fieldItemMarioGetAvailable(const FieldJump& w,uint32_t main,const FieldItemMarioPost& post) {
  if(w.motion==22 || (main&0x00100000))return false;
  if(w.motion==21 || w.motion==25 || w.motion==26 || (main&0x10000000))return true;
  return (w.motion==0 || w.motion==1 || w.motion==2 || w.motion==3 || w.motion==10 || w.motion==11 || w.motion==15) &&
         ((w.motion!=0 && w.motion!=10) || post.call);
 }
+// Previous16/17 clears display08000000 and4. Set old/motion before post,
+// then pendingEntry; post may observe transition state. Special21/25 get
+// zeros speed, 26 preserves it; stay request in21/22/25/26 completes unchanged.
 bool requestFieldItemMarioMotion(FieldJump& w,FieldMovement& move,uint32_t main,
  MarioPresentation& display,bool get,const FieldItemMarioPost& post) {
  if(get) {
@@ -25,6 +30,9 @@ bool requestFieldItemMarioMotion(FieldJump& w,FieldMovement& move,uint32_t main,
  if(needsPost)post.call(post.user,old);
  w.pendingEntry=true;return true;
 }
+// Source item-get entry resets counters/phase/speed and requests M_I_U.
+// Main2 blocks entry; heading-derived direction is engine-space motion state,
+// not a fresh animation/frame clock or a generic idle-pose substitution.
 bool enterFieldItemMarioMotion(FieldJump& w,FieldMovement& move,uint32_t main,MarioPresentation& display) {
  if(w.motion!=15 || !w.pendingEntry || (main&2))return false;
  if(main&0x00100000)return false; // Alternate heading aliases need their source provider.

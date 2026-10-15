@@ -8,6 +8,10 @@ int32_t signedByte(uint8_t v){return v<128?v:int32_t(v)-256;}
 int32_t add(int32_t a,int32_t b){return signedWord(uint32_t(a)+uint32_t(b));}
 int32_t subtract(int32_t a,int32_t b){return signedWord(uint32_t(a)-uint32_t(b));}
 }
+// NPC battle payload+230(hex), 200 decimal bytes. The additional32-byte
+// clear at payload+7c is intentionally retained before null/empty config exit.
+// Audience mode<=0 or>=3 makes16 inclusive signed-byte range RNG draws,
+// re-reading each first endpoint AFTER its draw before byte narrowing.
 void setupPackedNpcBattleInformation(uint32_t npc,uint32_t c,const PackedNpcBattleSetupServices& s){
  const auto& m=s.memory.memory;assert(m.word && m.half && m.storeWord && m.storeByte && s.memory.byte);
  auto word=[&](uint32_t a){return m.word(m.user,a);};auto byte=[&](uint32_t a){return s.memory.byte(s.memory.user,a);};
@@ -18,24 +22,35 @@ void setupPackedNpcBattleInformation(uint32_t npc,uint32_t c,const PackedNpcBatt
  store(b+0xac,word(c+0x1c));const auto audience=signedWord(word(b+0xac));
  if(audience<=0 || audience>=3)for(unsigned i=0;i<16;++i){const auto first=byte(c+0x20+2*i),last=byte(c+0x21+2*i);const auto draw=random(signedByte(last)-signedByte(first)+1);m.storeByte(m.user,b+0xb0+i,uint8_t(uint32_t(byte(c+0x20+2*i))+uint32_t(draw)));}
  store(b+4,word(c+0x18));store(b+8,word(c+8));store(b+0xc,0);store(b+0x10,0);store(b+0x14,0);store(b+0xc0,word(c+0x40));
+ // Source signed flag-selector range[-130000000,-120000000] selects saved
+ // flag index+130000000: c+10 if set, c+14 otherwise. Other values use c+14(hex).
  const auto selector=signedWord(word(c+0xc));uint32_t list;
  if(selector>=signedWord(0xf8405b80) && selector<=signedWord(0xf8d9f200)){assert(s.savedFlag);list=word(c+(s.savedFlag(s.user,add(selector,130000000))?0x10:0x14));}else list=word(c+0x14);
  store(b+0x18,0);
+ // Weighted group rows12 bytes: positive signed32 weight/group/setup words.
+ // Totals/subtractions wrap32; positive total consumes one RNG draw.
  if(list){int32_t total=0;for(auto p=list;;p+=12){const auto weight=signedWord(word(p));if(weight<=0)break;total=add(total,weight);}
   if(total>0){auto draw=random(total);for(auto p=list;;p+=12){draw=subtract(draw,signedWord(word(p)));if(draw<0){store(b+0x18,word(p+4));store(b,word(p+8));break;}}}
  }
  const auto group=word(b+0x18);
+ // Group units stride30(hex); unit+2c points to8-byte item/weight rows.
+ // Signed16 weights terminate only when weight<=0 AND item0. Publish selected
+ // item and original table pointers into payload+1c/+3c; do not normalize weights.
  if(group){const auto count=signedWord(word(group));const auto units=word(group+4);clear(b+0x1c,32);
   for(int32_t i=0;i<count;++i){const auto unit=units+0x30u*uint32_t(i),table=word(unit+0x2c);if(!table)continue;int32_t total=0;
    for(auto p=table;;p+=8){const auto weight=signedHalf(m.half(m.user,p+4));if(weight<=0 && word(p)==0)break;total=add(total,weight);}
    if(total>0){auto draw=random(total);for(auto p=table;;p+=8){draw=subtract(draw,signedHalf(m.half(m.user,p+4)));if(draw<0){store(b+0x1c+4u*uint32_t(i),word(p));store(b+0x3c+4u*uint32_t(i),word(unit+0x2c));break;}}}
   }
  }
+ // Publish byte316 from first group unit+12 (or0),then main10000000(hex).
+ // These late reads follow weighted selection;do not infer other NPC flags.
  m.storeByte(m.user,npc+0x316,0);
  const auto finalGroup=word(b+0x18);
  if(finalGroup)m.storeByte(m.user,npc+0x316,byte(word(word(finalGroup+4))+0x12));
  store(npc,word(npc)|0x10000000);
 }
+// Original registry803057e4: module pointer array begins+8. Names compare
+// exact bytes; missing area0 does not authorize a fabricated setup table.
 uint32_t packedBattleAreaData(const char* name,const BattleActorServices& s,uint32_t registry){
  const auto& m=s.memory;assert(name && m.word && s.byte);
  for(auto entry=registry+8;;entry+=4){
@@ -55,6 +70,9 @@ int32_t packedBattleSetupNumber(uint32_t table,const char* name,const BattleActo
   for(;;++text,++expected){const auto actual=s.byte(s.user,text);if(actual!=*expected)break;if(!actual)return signedWord(m.word(m.user,entry+4));}
  }
 }
+// Index-1 selects null; other negative/zero use row0; positive adds index*44
+// (hex). Every non--1 request reads current GP+12c area prefix. Four child
+// pointers at NPC+330 receive pairwise200-byte payload copies afterwards.
 void setPackedNpcBattleInformation(uint32_t npc,int32_t index,const PackedNpcBattleSetupServices& s,uint32_t registry){
  const auto& m=s.memory.memory;assert(m.word && m.storeWord && s.memory.byte);
  uint32_t configuration=0;
@@ -79,6 +97,11 @@ void initializePackedBattleInformation(uint32_t i,const EventMemoryServices& m){
  for(unsigned offset:{0u,4u,8u,0x10u,0xcu,0x14u})m.storeWord(m.user,i+offset,0);
  for(unsigned offset:{0x18u,0x19u,0x1au,0x1bu})m.storeByte(m.user,i+offset,0);
 }
+// F+20 information captures current party kind unless pouch halfword
+//14*ID mask2 forbids it. Byte31 is source kind ID, not current actor slot.
+// F+1c bit1 suppresses first attack; otherwise exact selector words20000..
+//1000000 map1..8, 10000000 reads F+14 (hex). Multiple bits are not ORed.
+// NPC payload pointer and bytes2f4/2f5/2f6 publish in original order.
 uint32_t preparePackedFieldBattleInformation(uint32_t f,uint32_t npc,uint32_t pouch,const PackedFieldBattleInformationServices& s){
  const auto& m=s.memory.memory;assert(m.word && m.half && m.storeWord && m.storeByte && s.memory.byte && s.marioPartyId && s.party && s.partyKind);
  const auto info=f+0x20;initializePackedBattleInformation(info,m);m.storeWord(m.user,info,0);
