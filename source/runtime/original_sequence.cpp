@@ -3,6 +3,8 @@
 namespace ttyd {
 namespace {
 // Original table80304400: Init/Main/Exit, indexed by current, never native Scene.
+// Eight rows,columns0 Init/1 Main/2 Exit. Out-of-table access is unavailable,
+// not an inferred fallback sequence or permission to skip lifecycle children.
 constexpr uint32_t callbacks[8][3]={
     {0x800874b0,0x80086d6c,0x8008746c},
     {0x80009d30,0x80009cd8,0x80009cf8},
@@ -19,14 +21,21 @@ bool select(int32_t id,unsigned column,uint32_t& identity){
     identity=callbacks[id][column];return true;
 }
 }
+// Store next request and arguments only. Main reloads them at its original
+// post-Exit point,so an Exit/sync callback can change the upcoming transition.
 void OriginalSequence::request(int32_t id,uint32_t p0,uint32_t p1){
     state.requested=id;state.p0=p0;state.p1=p1;
 }
+// Native checkpoint snapshot:current/next2,previous-1,work0=2. Clears held
+// callback history without executing original Init;caller retires old owners.
 void OriginalSequence::importNativeField(){
     state={};state.current=state.requested=2;state.work[0]=2;
     stage_=0;callback_=pending_=0;
 }
 void originalFieldSequenceExit(uint32_t& flags){flags&=~2u;}
+// Changed current syncs before Exit(unless current-1),then clears work and
+// captures requested/current/Init args. Init/Exit/Main are separate resumable
+// children. Unchanged request still runs actual Main,not a fabricated success.
 bool OriginalSequence::main(const OriginalSequenceServices& s){
     for(;;)switch(stage_){
     case 0:{
@@ -47,6 +56,9 @@ bool OriginalSequence::main(const OriginalSequenceServices& s){
         stage_=4;break;
     case 4:
         state.previous=state.current;state.work.fill(0);stage_=5;break;
+    // Publish current BEFORE table admission;unmapped captured Init enters
+    // sticky stage10. A later request cannot silently retarget that failed
+    // invocation. Successful lookup publishes work[id,0,p0,p1,0,0,0,0].
     case 5:{
         const int32_t requested=state.requested;
         const uint32_t p0=state.p0,p1=state.p1;

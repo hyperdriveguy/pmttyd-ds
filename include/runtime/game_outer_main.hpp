@@ -3,6 +3,9 @@
 #include <cstdint>
 #include <optional>
 namespace ttyd {
+// Original marioStMain callee order;addresses are identities,not host calls.
+// Includes makeKey first,seqMain second,NPC/effect and other subsystems later.
+// Parent completion certifies only acknowledgments supplied by those owners.
 inline constexpr std::array<uint32_t,33> gameOuterMainCalls{{
     0x80005ff8,0x8002e228,0x800b2508,0x8000a274,0x8002db8c,0x8004281c,
     0x800f904c,0x8000f704,0x8007f9ec,0x80026bb8,0x80018264,0x800368d0,
@@ -21,6 +24,9 @@ struct GameOuterMainServices {
     std::optional<int64_t> (*divide)(void*,int64_t,uint32_t)=nullptr;
     std::optional<int32_t> (*sequence)(void*)=nullptr;
 };
+// One retained invocation. Caller preserves service/user/mappings identity;
+// this cursor does not enforce a provider-table match. phase/index retain the
+// acknowledged prefix;done clears active and next call resets all fields.
 struct GameOuterMainCursor {
     bool active=false;
     uint32_t phase=0,index=0,gp=0,pending=0,channel=0,field=0,low=0,clock=0,high=0,flags=0;

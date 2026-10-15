@@ -2,6 +2,9 @@
 #include <cstring>
 namespace ttyd {
 namespace {
+// GP1324 ready;1328..13b7 nine16-byte arrays(each four channels):buttons,
+// pressed,repeat,button countdown,released,direction,dir pressed,dir repeat,
+// dir countdown. (offset&15)/4 chooses channel;division16 chooses the array.
 uint32_t readWord(const PhysicalInputProducer& p,uint32_t offset){
     if(offset==0x1324)return p.ready;
     const auto& c=p.channels[((offset-0x1328)&15)/4];
@@ -23,6 +26,9 @@ void writeWord(PhysicalInputProducer& p,uint32_t offset,uint32_t value){
     }
 }
 }
+// Aligned word slice uses BE shift24/16/8/0;byte writes RMW same word.
+// Force motor1310..1313 is separate(profiling1314 is not mapped).13b8..13d7
+// are eight four-byte arrays:mainXY,subXY,triggersLR,motor/previous motor.
 bool readPhysicalInputGpByte(const PhysicalInputProducer& p,uint32_t offset,uint8_t& value){
     if(offset>=0x1324 && offset<0x13b8){value=uint8_t(readWord(p,offset&~3u)>>(24-8*(offset&3)));return true;}
     if(offset>=0x1310 && offset<0x1314){value=p.channels[offset-0x1310].forceMotor;return true;}
@@ -35,6 +41,9 @@ bool readPhysicalInputGpByte(const PhysicalInputProducer& p,uint32_t offset,uint
     case 6:value=c.motorMode;break;default:value=c.previousMotorMode;break;
     }return true;
 }
+// Main/sub axes explicitly sign-extend byte128..255 to-128..-1. Trigger and
+// motor arrays retain unsigned bytes. No clamp,snapshot copy or repeat-tick
+// update occurs:reads through another GP facade see these writes immediately.
 bool writePhysicalInputGpByte(PhysicalInputProducer& p,uint32_t offset,uint8_t value){
     if(offset>=0x1324 && offset<0x13b8){const unsigned shift=24-8*(offset&3);const auto at=offset&~3u;writeWord(p,at,(readWord(p,at)&~(0xffu<<shift))|(uint32_t(value)<<shift));return true;}
     if(offset>=0x1310 && offset<0x1314){p.channels[offset-0x1310].forceMotor=value;return true;}

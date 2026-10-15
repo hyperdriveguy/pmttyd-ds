@@ -5,12 +5,20 @@
 #include <cstring>
 namespace ttyd {
 namespace {
+// Native bridge tokens(Mario and camera+1000hex)are semantic aliases,not
+// original heap addresses. Party aliases instead use actual retained native
+// actor addresses;do not serialize or export those as original guest pointers.
 constexpr uintptr_t Mario=FieldMarioOwnerAddress,Camera=FieldMarioOwnerAddress+0x1000;
 uint32_t bits(float value){uint32_t out;std::memcpy(&out,&value,4);return out;}
 float scalar(uint32_t value){float out;std::memcpy(&out,&value,4);return out;}
 float& lane(CameraPoint& p,unsigned n){assert(n<3);return n==0?p.x:n==1?p.y:p.z;}
 bool triple(uintptr_t address,uintptr_t base,unsigned& n){if(address<base || address>=base+12 || ((address-base)&3))return false;n=unsigned((address-base)/4);return true;}
 }
+// Supported source fields only;unknown access asserts. XYZ Mario8c units
+// convert native world*100,write*.01. Y=(ground+jump),so a root write changes
+// jump height while retaining floor metadata. Camera/party values stay source units.
+// ec camera-retained,f8 collision,2e0/2e4 recovery words require known storage;
+// body184/188 walk/dash,1b8/1bc dimensions;camera94/ac targets stay distinct.
 FieldPositionWorld Game::fieldPositionWorld() {
  FieldPositionWorld w;w.user=this;
  w.admitParty=[](void* p,uint32_t raw){const auto& g=*static_cast<Game*>(p);return raw!=0 || (g.fieldPartyCurrentIndex && *g.fieldPartyCurrentIndex<2);};
@@ -39,6 +47,9 @@ FieldPositionWorld Game::fieldPositionWorld() {
   }
   assert(false);return 0;
  };
+ // Main flags write recomputes native key lock from mask8 OR active Goomba
+ // acquisition/reward. It does not discard those independent lock owners.
+ // Recovery optional words are actual supplied snapshots,never guessed zeros.
  w.write=[](void* p,uintptr_t address,uint32_t word) {
   auto& g=*static_cast<Game*>(p);unsigned n=0;const auto value=scalar(word);
   if(address==Mario){g.fieldMarioBattle.flags=word;g.fieldKeysOff=(word&8) || g.goombaAcquisition.active() || g.goombaReward.active();return;}
@@ -69,6 +80,9 @@ FieldPositionWorld Game::fieldPositionWorld() {
  w.shiftReset=[](void* p){static_cast<Game*>(p)->fieldCameraShift.reset();};
  w.half=[](void* p,uintptr_t address)->uint16_t{if(address==Camera)return uint16_t(static_cast<Game*>(p)->fieldCameraFlags);assert(address==Mario+0x2e);return uint16_t(static_cast<Game*>(p)->fieldJump.motion);};return w;
 }
+// Scoped preparation identities:e7474 always admitted;others require actual
+// ordinary body flags/form. Mario39 key-depth/3c form and camera low-half writes
+// alias their owners;preserve camera high16 flags. No general form provider.
 FieldMarioPreparationWorld Game::fieldMarioPreparationWorld() {
  FieldMarioPreparationWorld w;w.storage=fieldPositionWorld();
  w.admit=[](void* p,uint32_t fn){auto& g=*static_cast<Game*>(p);
@@ -80,6 +94,9 @@ FieldMarioPreparationWorld Game::fieldMarioPreparationWorld() {
  w.storeHalf=[](void* p,uintptr_t a,uint16_t v){assert(a==Camera);auto& g=*static_cast<Game*>(p);g.fieldCameraFlags=(g.fieldCameraFlags&0xffff0000u)|v;};
  return w;
 }
+// Current245/246 and saved247/248 alias typed signed-index/kind bytes.
+// Existing/no-kind branches work;nonzero constructor dependency stays absent
+// in THIS legacy world even though separate native constructors now exist.
 FieldPreviousPartyWorld Game::fieldPreviousPartyWorld() {
  FieldPreviousPartyWorld w;w.user=this;w.mario=[](void*)->uintptr_t{return Mario;};
  w.byte=[](void* p,uintptr_t a)->uint8_t{auto& g=*static_cast<Game*>(p);
@@ -92,6 +109,10 @@ FieldPreviousPartyWorld Game::fieldPreviousPartyWorld() {
  // until genuine synchronous Entry/Entry2 resources and world effects are bound.
  return w;
 }
+// One-shot admitted local start bank:synthetic argument ranges100/200 and
+// entry1000 map only to this bounded EventEntry. LW10..12 use original tag
+// -30000000+index and shared getEventFloat(Q1024),not a new position decoder.
+// Apply Mario,both party selectors,then road reset;no original event rewritten.
 bool Game::applyFieldBeroStart() {
  if(fieldBeroStartApplied)return true;
  if(!fieldBeroStart || !fieldPartyCurrentIndex || *fieldPartyCurrentIndex>=2)return false;
@@ -117,6 +138,11 @@ bool Game::applyFieldBeroStart() {
  fieldCameraRoadResetEvent(world);
  fieldBeroStartApplied=true;return true;
 }
+// Shared pending VM cannot advance through copied Game;finished state may
+// be observed. Original registered Bero/position/current-party admission precedes
+// begin. Public Game ticks convert to ms by*1000/60;geometry keeps explicit
+// unresolved-floor result and native trig/FMA numeric-adapter limits.
+// Publish start/finish to native*.01 road motion only AFTER actual event finish.
 bool Game::executeFieldBeroInitial() {
  // A copied Game may observe completion, but cannot advance a shared pending VM.
  if(fieldBeroInitial && !fieldBeroInitial->finished && fieldBeroInitial.use_count()!=1)return false;

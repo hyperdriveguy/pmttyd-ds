@@ -1,6 +1,9 @@
 #include "game_outer_main.hpp"
 #include <cstring>
 namespace ttyd {
+// GP15fd0->word10 nonzero yields and RELOADS before subsystem calls. False
+// request may retain a nested child cursor;pending reports that child's actual
+// frontier. Do not restart makeKey/HID or later owners while a child is held.
 bool updateGameOuterMain(const GameOuterMainServices& s,GameOuterMainCursor& c){
     if(!c.active){c={};c.active=true;}
     auto word=[&](uint32_t a){return s.word?s.word(s.user,a):std::nullopt;};
@@ -13,6 +16,9 @@ bool updateGameOuterMain(const GameOuterMainServices& s,GameOuterMainCursor& c){
     case 3:if(c.index==gameOuterMainCalls.size()){c.phase=4;break;}
         if(!call(gameOuterMainCalls[c.index]))return false;
         ++c.index;break;
+    // Idle tail after33 calls:fresh GP main1000 gates scan. Four channels,
+    // held-direction1378 and buttons1328 WORDS,then six analog BYTE arrays
+    //13b8..13cc. First nonzero refreshes time baseline lowe94c then highe948.
     case 4:{c.pending=0x8006f904;const auto gp=word(0x80415fd0);if(!gp)return false;c.gp=*gp;c.phase=5;break;}
     case 5:{const auto flags=word(c.gp);if(!flags)return false;if(!(*flags&0x1000))return done();c.phase=6;break;}
     case 6:{
@@ -23,6 +29,10 @@ bool updateGameOuterMain(const GameOuterMainServices& s,GameOuterMainCursor& c){
         else {const auto v=s.byte?s.byte(s.user,c.gp+offsets[c.field]+c.channel):std::nullopt;if(!v)return false;value=*v;}
         if(value){c.phase=20;break;}
         if(++c.field==8){c.field=0;++c.channel;}break;}
+    // All idle:GetTime29d84c,baselineLOW,hardwareclock f8,baselineHIGH.
+    // Wrapped64 delta interpreted signed;divide by bus>>2,strict quotient>120.
+    // No zero-clock fallback. Fresh sequence2 OR fresh second sequence4 permits
+    // fresh GP flags OR2000;time/operands/stores retain source order on holds.
     case 7:{c.pending=0x8029d84c;const auto t=s.time?s.time(s.user):std::nullopt;if(!t)return false;c.time=*t;c.phase=8;break;}
     case 8:{const auto v=word(0x8041e94c);if(!v)return false;c.low=*v;c.phase=9;break;}
     case 9:{const auto v=word(0x800000f8);if(!v)return false;c.clock=*v;c.phase=10;break;}

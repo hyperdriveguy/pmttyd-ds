@@ -168,3 +168,6 @@ source draw requests, texture ownership and ordered GPU publication/submission.
 
 [Recovery effects](recovery-effects.md) explains constructor normalization,
 catch-up/state ordering, source callbacks, atomic geometry and immutable resources.
+
+[Runtime bridges](runtime-bridges.md) explains retained outer Main/sequence state,
+shared GP input bytes, native field-position/quest providers and HitN64 shader units.

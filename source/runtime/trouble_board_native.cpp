@@ -5,6 +5,9 @@ namespace ttyd {
 namespace {
 std::string assetRoot;
 struct Turn {float initial=0;int counter=0;int32_t party=-1;};
+// Physical channel0 uses source press/direction/repeat lanes independently.
+// Legacy confirm/cancel0x100/200 and stick Z±.5 map up/down1000/2000;touch
+// contributes confirm. This adapter does not replace original dialog payloads.
 TroubleBoardInput inputFor(const Input& i,const PhysicalInputProducer& producer) {
  TroubleBoardInput input;
  if(i.physicalSnapshot) {
@@ -22,6 +25,8 @@ TroubleBoardInput inputFor(const Input& i,const PhysicalInputProducer& producer)
  return input;
 }
 }
+// Publish root only after all scoped original event/door/map/Bero/message
+// loads succeed;individual underlying asset banks keep their own load policies.
 bool loadNativeTroubleBoardAssets(const char* root) {
  if(!root)return false;
  MessageAssets probe;
@@ -37,6 +42,10 @@ struct NativeTroubleBoard {
  MessageAssets messages;
  std::map<uint32_t,Turn> turns;
 };
+// Native room2 east/Trouble Center interior mask4,original story>=23;
+// board/counter source nodes12d518/12d3e0 require real door-contact admission.
+// A true return CONSUMES contact even if assets/presentation cannot start;it
+// does not certify event completion. Shared sessions only advance on owner Game.
 bool Game::tryTroubleBoardContact(uint32_t keys) {
  if(progress.room!=2 || !(fieldDoor.interiorMask&4) || !progress.originalStory || *progress.originalStory<23 ||
     fieldDoor.active() || fieldNpcTalkActive() || saveLocked())return false;
@@ -68,6 +77,9 @@ bool Game::troubleBoardLocked() const {
 TroubleBoardPresentation* Game::troubleBoardPresentation() const {
  return troubleBoard && troubleBoard->owner==this?&troubleBoard->presentation:nullptr;
 }
+// Synchronize NPC area before exposing GW11 door-work alias. Import saved
+// state before EVT;export ONLY quest1420,flags5374..5421,bytes1469..1474 after
+// a nonfailed visit. Other quest state remains outside this finite ownership.
 void Game::troubleBoardEventMain(const Input& i) {
  if(!troubleBoard || troubleBoard->owner!=this)return;
  synchronizeFieldNpcs(); // Invalidate area data before publishing any GW address.
@@ -89,6 +101,10 @@ void Game::troubleBoardEventMain(const Input& i) {
 void Game::troubleBoardPresentationMain(const Input& i) {
  if(auto* p=troubleBoardPresentation())p->presentationMain(inputFor(i,inputProducer));
 }
+// Return0 holds,2 completes immediately,1 advances+yield. Scoped270deg/200ms
+// turn requests retain initial display and selector by event ID;count=12 at60Hz,
+// visits include endpoints and finish when ++counter>count. This is a native
+// turn adapter,not general original turn/easing or reentrant lifetime support.
 int32_t Game::troubleBoardCall(TroubleEventRequest& r) {
  if(!troubleBoard || troubleBoard->owner!=this)return 0;
  auto& s=*troubleBoard;
@@ -136,6 +152,9 @@ int32_t Game::troubleBoardCall(TroubleEventRequest& r) {
  case TroubleEventCall::DoorParameter:
   if(progress.room!=2)return 0;
   return fieldDoorData.setParameter(uint32_t(r.values[0]),r.values[1],uint32_t(r.values[2]))?2:0;
+ // Pouch signed half78hex is coin storage;no fabricated coins when absent.
+ // Cancel retains original item removal/quest writers through supplied services;
+ // unknown NPC/door/item/world requests stay pending in the default branch.
  case TroubleEventCall::CoinRead:
   if(!progress.originalPouch)return 0;
   r.result=progress.originalPouch->half(0x78);return 2;

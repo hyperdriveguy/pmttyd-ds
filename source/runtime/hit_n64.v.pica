@@ -1,5 +1,9 @@
 ; HitN64 original two independently transformed UV sets, whole-image repeat.
 ; v0 source-view XYZ; v1 native-oriented UV0; v2 UV1; v3 GX register0 RGBA.
+; Four row uniforms map ALREADY source-view XYZ to native clip. r0.w=1
+; supplies translation/perspective; model/view conversion belongs to CPU packets.
+; UV0/UV1 already contain source transforms plus one native T flip; do not flip
+; or clamp here. v3 is GX register0,not ignored original indexed vertex color.
 .fvec transform[4]
 .constf constants(0.0, 1.0, 0.0, 0.0)
 .out outpos position
