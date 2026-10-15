@@ -14751,3 +14751,60 @@ force-0 already-selected return before clock access), then bind same-process NPC
 Main/draw services and additional original actor/area data while preserving
 source offscreen/blur frontiers. Physical hardware performance and full-game
 fidelity validation remain required. The full-remake goal remains active.
+
+## 2026-10-15 — Runtime sequence, input and field bridge documentation
+
+Added 100 inline comment lines across ten runtime C++/header/PICA files and
+[runtime bridge guide](code/runtime-bridges.md), linked from index.
+Code/docs commit 22001012. All executable tokens/string literals unchanged;
+original dialogue/story/numeric/simulation behavior unchanged. No new tests for
+this documentation-only work.
+
+Notes explain 33-call outer Main traversal, holds and idle scan/time read/store
+ordering; original sequence versus native scene/checkpoint ownership, fresh
+request reloads and sticky invalid Init; shared big-endian physical GP byte
+layout and signed axes/countdowns; NPC registry publication; Mario/camera typed
+aliases versus actual party pointers, units/rounding, known fields, preparation
+and retained Bero VM admission; Trouble board contact consumption versus event
+completion, finite saved-state/turn/coin providers; and HitN64 source-view/clip,
+UV and register-0 shader boundaries. Provider limitations and native adapters
+are explicit. Guide corrections to GW11 publication timing and endpoint-return
+wording were completed before both gates launched.
+
+Frozen baseline 7ce245e9653440e613346bc2eaa2a69066c9b4f8 plus owned docs is at
+artifacts/runtime-bridges-code-documentation-validation/source. Full git-blob
+audit covers 4232 baseline tracked files with zero unexpected changes; all 12
+frozen/live documentation snapshots match and 107 local guide/index links
+resolve. Concurrent animation/font/display/GPU/event/runtime/battle edits were
+preserved/excluded; this is not a combined moving-worktree validation claim.
+Original host/native handles observed terminal0; exit markers agree.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits0: 488/488 C++ (72.40s),
+223/223 Python (33.410s), zero skipped. Actual original 45-descriptor enemy,
+private HitN64 and original party-position fixtures ran. Native
+make all -o assets-ready -j4 SOUNDTRACK=gamecube exits0. Manifest pins source,
+product/evidence/fixture/log and ELF/3DSX hashes. Existing compiler/Pillow warnings
+remain. No emulator/profile/save changes or hardware/Gekko numeric/pixel/audio/
+performance parity claims.
+
+Dependency review found changed surface/footer converters plus new submenu/font
+products and CMake tests. Four frozen converters read the ISO read-only into
+new empty private outputs. Twelve targeted products were copied only to the
+private frozen build: surface/footer atlas edge padding changes without source
+interior/image/catalog changes, three new submenu products, two exact raw-font
+products. Source font is 66560 bytes, original SHA256
+bb9cf410e5d916a1268ff503fc4f1ad7e8630b381cd781958eb0be32abb56b45;
+byte77 decimal remains1. Accepted inventory now pins 78 products (71 inherited
+entries, five new build paths and two previously present surface products newly
+hash-pinned). Footer evidence/default fixture hashes updated for new atlas;
+other HP/enemy/HitN64/party fixtures inherited and rechecked, including actual
+HitN64 external private PNG read path. No editable import/shared-cache writes.
+Native full regeneration skipped; Python fixtures independently read the ISO
+read-only into empty temporary outputs. See [asset ledger](ASSETS.md).
+Original rights retained; no ISO, extracted original or compiled binary committed.
+
+Next: remaining runtime helpers/tooling and newer display/battle/party/font/Mario/
+animation/event integrations. Inventory reports hash agreement only for tracked
+source/include C++/headers/PICA; tooling/untracked additions need separate review.
+Hash agreement is not semantic coverage or proof later edits are documented.
+The broader documentation/remake goal remains active.

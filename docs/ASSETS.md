@@ -3368,3 +3368,29 @@ products and gor_02.s shader source remain byte-identical to the accepted baseli
 Original rights/licensing are unchanged. ISO, extracted originals, converted packs,
 private fixtures and validation binaries remain outside source history. Exact
 validation snapshot and hashes are in progress and the ignored artifact manifest.
+
+## Runtime bridge documentation validation inputs (2026-10-15)
+
+artifacts/runtime-bridges-code-documentation-validation/source freezes baseline
+7ce245e9653440e613346bc2eaa2a69066c9b4f8. Relative to recovery validation,
+Makefile adds submenu and unchanged-original BFN staging; surface/footer
+converters add two-pixel clamp-edge atlas padding with source image pixels and
+catalog bins unchanged. Four frozen converters read the original ISO read-only
+into new empty private product/cache destinations; twelve targeted products
+copied only into frozen build outputs/default fixture copies. No shared cache
+or checked-in editable asset was overwritten. Original per-product licensing
+remains in metadata. Footer atlas evidence hashes updated; other inherited
+HP/enemy/HitN64/party fixtures and actual HitN64 external PNG path rechecked.
+
+Accepted map now pins 78 products: 71 prior entries, three new submenu products,
+two new exact raw-font products and two previously present surface bin/t3x paths
+newly included in hash inventory. Font source f/papermarioset_US.bfn is66560
+bytes, SHA256bb9cf410e5d916a1268ff503fc4f1ad7e8630b381cd781958eb0be32abb56b45;
+conversion none, byte77 decimal stays1 (runtime width patches are separate).
+Submenu atlas32x32 RGBA8/4096 decoded bytes; surface256x128/131072 and
+footer512x256/524288 retain original image interiors/UV coordinates, with
+clamp-edge gutters and no resampling. Manifest records converter/product and
+original PNG/atlas evidence hashes. Native full regeneration skipped; existing
+Python fixtures independently use read-only ISO and empty temporary outputs.
+No ISO, extracted original asset or compiled binary committed; Nintendo/
+Intelligent Systems rights retained, no new license or redistribution rights.
