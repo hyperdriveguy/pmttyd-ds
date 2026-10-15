@@ -1310,3 +1310,7 @@ asset hashes: artifacts/area-field-resources-products.json and validation
 manifest. ISO opened rb and not modified. Nintendo/Intelligent Systems original
 copyrighted resources remain private; no redistribution permission asserted.
 No raw assets, extracted source or compiled packs are committed.
+
+### Original reel display constants
+
+The private source-icons constants pack grows124 to188 bytes with original DOL spans80426884+28 and80419f30+18 (hex). Existing124-byte prefix and613 image cells are unchanged. Added RGBA/f32 values and small65,67,69,68,66 / big70,72,74,73,71 U16 tables support original802036d4. These indices refer to battle_common.tpl; no substitute texture is exported. Read-only source `/home/carson/games/roms/G8ME01.iso`; Nintendo/Intelligent Systems ownership, local use only and no redistribution rights. Generated constants.bin/sources.json remain ignored.

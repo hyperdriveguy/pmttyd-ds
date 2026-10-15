@@ -1758,3 +1758,9 @@ target_sources(ttyd_core PRIVATE source/battle/battle_audience_set_target.cpp so
 add_executable(battle_audience_selection_tests tests/battle_audience_selection_tests.cpp)
 target_link_libraries(battle_audience_selection_tests PRIVATE ttyd_core)
 add_test(NAME battle_audience_selection COMMAND battle_audience_selection_tests)
+
+# Complete original queued reel parent; real missing Plane2 remains held.
+target_sources(ttyd_core PRIVATE source/battle/battle_break_slot_draw.cpp)
+add_executable(battle_break_slot_draw_tests tests/battle_break_slot_draw_tests.cpp)
+target_link_libraries(battle_break_slot_draw_tests PRIVATE ttyd_core)
+add_test(NAME battle_break_slot_draw COMMAND battle_break_slot_draw_tests)

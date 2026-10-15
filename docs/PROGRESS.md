@@ -7342,3 +7342,68 @@ exited0 and showed the original storybook town/text scene at60AppFPS/100% in
 that one sample. Image inspected: artifacts/azahar-area-field-resources-normal-v2/
 boot.png; log artifacts/area-field-resources-normal-smoke-v2.log. This is normal
 boot evidence only, not field-NPC GPU/raster parity or hardware performance.
+
+### Original reel display and persistent GP render dimensions
+
+Implemented complete source BattleBreakSlotDispReel802036d4 parent with
+retained three-getter/three-reel walks, background icon476, original GX/math
+order, independently reread pivots/state/category/alpha and real scissor calls.
+Active Plane2 remains pending8010323c until the genuine texture-plane backend
+is supplied. State0 alone is not an empty gate. Native ordinary ending confirms
+all three live flags0/state0 and completion phase39/index3/pending0; two native
+scissors acknowledged, final0,0,608,480. Whole camera draw now completes and
+reaches actual next outer Main8006f904, without teardown/story/result shortcuts.
+[Contract](behavior/battle/NATIVE_BREAK_SLOT_REEL_DRAW.md).
+
+GP170/172 share CameraManager-owned mutable bytes through byte/half/word
+aliases and GP retirement snapshots. Verified original NTSC descriptor608x480
+is admitted once at native boot; repeated cameraInit/battle entry does not
+reset live writes, and committed checkpoint handoff copies retained backing.
+This explicit boot adapter does not execute all of original marioStInit.
+Private source-icons constants124→188 bytes add original40-byte color/math and
+24-byte texture tables; original124-byte prefix and613 image cells unchanged.
+Matching frozen-base door/field/prefetch packs regenerated from read-only ISO.
+No original assets or executable payloads committed or redistribution claimed.
+
+Frozen base1f24fe6d plus owned journal/new files, isolated from concurrent work.
+Initial make test passed333/333 C++ in37.22s and191/191 Python in30.641s.
+Restored make all -j4 -o assets-ready DEBUG_SHORT_BOOT=1 SOUNDTRACK=gamecube
+BUILD=build-break-reel TARGET=ttyd-break-reel exits0. Existing baseline compiler
+and Pillow warnings remain; private instrumentation format warnings are excluded
+from final source. No new helper warning. Initial sandbox Xvfb socket launch
+failed; isolated display-enabled normal retry exits0 and capture was inspected.
+User emulator settings/saves untouched. Full prologue/remake goal stays active.
+
+Final restored make test exits0:333/333 C++ in42.86s and191/191 Python
+in55.061s (break-reel-test-final.log). Restored native all exits0
+(break-reel-all-final.log);3DSX SHA256
+20455bd811c279d7fc78a9d6d24153658531e2d89b8e2ccfb1dc47f4f4455609.
+Private ending150s exits0, original trio attacks/rewards/fade observed, final
+capture inspected at existing field-restoration hold. Source hashes audit3488
+files and2030RomFS files without mismatches; previous private pack comparison
+changes only door-data.pmevt/door-data.json and source-icons constants/sources.
+Native evidence artifacts/azahar-break-reel-ending; normal retry profile
+artifacts/azahar-break-reel-normal-retry. All private source edits reversed.
+Next: original outer Main/sequence ownership and ordered battle exit/field
+restoration, active Plane2 rendering, active HP bars/numbers and full original
+prologue story/events/interiors/visibility. Do not skip outer scheduling order.
+
+Positive150s isolated probe also exits0. Explicit temporary count23 completes
+small3/big2, captures5actual camera8 iconGX quads/20vertices with original
+texture418, restores originalBf04=0 and reaches outerMain8006f904. Actual
+C3D_ImmDrawEnd replay observed live: submitted810 image418 camera8 vertices4
+at2026-10-15 00:26:37UTC. Shutdown interrupted the repeated trace writer during
+truncation, leaving final stock-exp-gpu.txt empty; successful live-read provenance
+is preserved in artifacts/break-reel-positive-live-observation.json. This is
+GPU submission evidence, not source-pixel parity or ordinary positive rewards.
+The final black-fade capture remains a field-restoration hold. No forced render
+publication, source callback skip or production fixture edits remain.
+
+Read-only next-frontier recovery saved11complete bodies, call order/hashes and
+passing existing source verifiers in artifacts/outer-main-after-camera-evidence.
+Immediate next boundary is GP10/yield→makeKey→sharedseqMain; current native
+finishing continuation already publishes the result before camMain/draw, so
+next sequence pass may observe readiness immediately. Preserve actual sequence
+work history/state5/6 and original resource/field-root teardown order. No full
+prologue completion claim. Final source manifest and doc-link count follow
+artifacts/break-reel-validation-manifest.json and break-reel-doc-links-final.log.

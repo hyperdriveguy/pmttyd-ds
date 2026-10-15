@@ -170,6 +170,7 @@ struct TrioAttackRuntime {
     CameraLetterboxDrawCursor letterboxDrawCursor;
     BattleEnemyHpDrawCursor enemyHpDrawCursor;BattleMonosiriCursor enemyHpMonosiriCursor;
     BattleStockExpDrawCursor stockExpDrawCursor;SourceIconPositionCursor stockExpIconCursor;
+    BattleBreakSlotDrawCursor breakSlotDrawCursor;
     std::optional<CameraLetterboxServices> letterboxServices;
     bool cameraDrawWaiting=false;
     BattleCameraTremorCursor cameraTremorCursor;
@@ -739,7 +740,8 @@ struct TrioAttackRuntime {
         for(auto span:std::array<std::pair<uint32_t,unsigned>,15>{{{0x85600000,0x64040},{0x8041e808,16},{0x82000000,0x100000},{0x8041f070,16},{0x8041e428,4},{0x8041e844,4},{0x8041eb90,4},{0x8041eb00,4},{0x8041ebdc,12},{0x804295d4,4},{Battle,0x19100},{Units,0x10000},{Parts,0x10000},{Kinds,0x1000},{Work,0x14000}}})
             if(!vm.memory.registerRam(span.first,std::vector<uint8_t>(span.second)))return false;
         std::vector<uint8_t> packedPouch(0x600);std::copy(entryPouch->bytes.begin(),entryPouch->bytes.end(),packedPouch.begin());
-        if(!cameras || !vm.memory.registerExternalRam(0x8041eb98,cameras->stockExpPosition.data(),8))return false;
+        if(!cameras || !vm.gpAddresses.bindRenderDimensions(vm.gpAddresses.currentAddress(),cameras->sourceRenderDimensions))return false;
+        if(!vm.memory.registerExternalRam(0x8041eb98,cameras->stockExpPosition.data(),8))return false;
         if(!vm.memory.registerRam(0x85000000,std::move(packedPouch)) || !vm.memory.importScripts(scripts))return false;
         if(word(0x804175a0)!=0x8041ebdc)return false;
         for(unsigned i=0;i<3;++i)word(0x8041ebdc+4*i,spotlight->work[i]);
@@ -1851,6 +1853,7 @@ struct TrioAttackRuntime {
                     next=cameraDrawCursor.display.callback;
                     if(next==0x8002d3d8 && shadowDisplayCursor.active)next=shadowDisplayCursor.pending;
                     if(next==0x8000e564 && letterboxDrawCursor.active)next=letterboxDrawCursor.pending;
+                    if(next==0x802036d4 && breakSlotDrawCursor.active)next=breakSlotDrawCursor.pending;
                     if(next==0x80100258 && stockExpDrawCursor.active){next=stockExpDrawCursor.pending;if(next==0x8001a918 && stockExpIconCursor.active)next=stockExpIconCursor.pending;}
                     if(next==0x8011fde0 && enemyHpDrawCursor.active){next=enemyHpDrawCursor.pending;if(next==0x8012ee3c && enemyHpMonosiriCursor.active)next=enemyHpMonosiriCursor.pending;}
                     if(next==0x801a38f8 && audienceCallbackCursor.active)next=audienceCallbackCursor.pending;
@@ -1973,6 +1976,22 @@ bool TrioAttack::resumeStockExpDraw(uint32_t camera,uint32_t userdata,const Sour
     s.word=[](void* u,uint32_t a)->std::optional<uint32_t>{uint32_t value;return static_cast<Bridge*>(u)->runtime->vm.memory.readWord(a,value)?std::optional<uint32_t>(value):std::nullopt;};
     s.icon=[](void* u,const SourceIconPositionRequest& r){auto& b=*static_cast<Bridge*>(u);return resumeSourceIconPosition(r,*b.icon,b.runtime->stockExpIconCursor);};
     return drawBattleStockExp(s,runtime_->stockExpDrawCursor);
+}
+bool TrioAttack::resumeBreakSlotDraw(uint32_t camera,uint32_t userdata,const BattleBreakSlotDrawServices& source) const{
+    if(!runtime_)return false;
+    const auto& call=runtime_->cameraDrawCursor.display;
+    if(!call.invoking || call.callback!=0x802036d4 || call.camera!=camera || call.userdata!=userdata)return false;
+    struct Bridge {TrioAttackRuntime* runtime;const BattleBreakSlotDrawServices* source;} bridge{runtime_.get(),&source};
+    auto s=source;s.user=&bridge;
+    s.word=[](void* u,uint32_t a)->std::optional<uint32_t>{auto& b=*static_cast<Bridge*>(u);uint32_t v;if(b.runtime->vm.memory.readWord(a,v))return v;return b.source->word?b.source->word(b.source->user,a):std::nullopt;};
+    s.half=[](void* u,uint32_t a)->std::optional<uint16_t>{auto& b=*static_cast<Bridge*>(u);uint16_t v;if(b.runtime->vm.memory.readHalf(a,v))return v;return b.source->half?b.source->half(b.source->user,a):std::nullopt;};
+    s.byte=[](void* u,uint32_t a)->std::optional<uint8_t>{uint8_t v;return static_cast<Bridge*>(u)->runtime->vm.memory.readByte(a,v)?std::optional<uint8_t>(v):std::nullopt;};
+    s.scissor=[](void* u,const std::array<uint32_t,4>& r){const auto& s=*static_cast<Bridge*>(u)->source;return s.scissor && s.scissor(s.user,r);};
+    s.gx=[](void* u,const ShadowGXRequest& r){const auto& s=*static_cast<Bridge*>(u)->source;return s.gx && s.gx(s.user,r);};
+    s.matrix=[](void*,BattleAudienceMatrixRequest& r){BattleAudienceAuxServices math;bindAudienceAuxMathAdapter(math);return math.matrix(nullptr,r);};
+    s.icon=nullptr; // Real sourceIcon service retains its own original user and GX providers.
+    s.plane=[](void* u,const BattleBreakSlotPlaneRequest& r){const auto& s=*static_cast<Bridge*>(u)->source;return s.plane && s.plane(s.user,r);};
+    return drawBattleBreakSlot(s,runtime_->breakSlotDrawCursor);
 }
 bool TrioAttack::resumeStageDisplay(uint32_t camera,uint32_t callback,uint32_t userdata,const BattleStageDisplayServices& source) const{
     if(!runtime_ || !runtime_->cameras || (callback!=0x80138da8 && callback!=0x801389a0))return false;

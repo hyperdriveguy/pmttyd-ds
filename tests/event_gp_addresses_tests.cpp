@@ -25,5 +25,13 @@ int main() {
     // Current root may contain an unregistered address;it is preserved as a
     // word and cannot silently select another registered GP object.
     assert(map.writeByte(0x80415fd3,1) && map.currentAddress()==other+1 && map.currentGlobals()==nullptr);
+    std::array<uint8_t,4> dimensions{2,0x60,1,0xe0};EventGpAddresses linked;EventGlobals linkedState;
+    assert(map.bindRenderDimensions(base,dimensions) && !map.bindRenderDimensions(base,dimensions));
+    assert(linked.registerGp(base,linkedState) && linked.bindRenderDimensions(base,dimensions));
+    assert(map.readWord(base+0x170,value) && value==0x026001e0);
+    assert(linked.writeByte(base+0x171,0x80) && map.readWord(base+0x170,value) && value==0x028001e0);
+    assert(map.writeWord(base+0x170,0x025801c0) && linked.readWord(base+0x170,value) && value==0x025801c0);
+    std::vector<uint8_t> retired;assert(map.unregisterGp(base,&retired) && retired[0x170]==2 && retired[0x171]==0x58);
+    assert(linked.readWord(base+0x170,value) && value==0x025801c0);
     std::cout<<"event GP address tests passed\n";
 }

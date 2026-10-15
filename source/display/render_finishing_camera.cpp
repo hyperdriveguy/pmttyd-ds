@@ -114,7 +114,7 @@ void Renderer::resumeFinishingCamera(const Game& game){
             };
             return b.game->trioAttack.resumeAudienceCallback(camera,borrowed,audience);
         }
-        if(identity==0x80100258 || identity==0x801a37f0 || identity==0x801a36c8){
+        if(identity==0x802036d4 || identity==0x80100258 || identity==0x801a37f0 || identity==0x801a36c8){
             BattleAudienceAuxServices auxiliary;auxiliary.common.user=&renderer;bindAudienceAuxMathAdapter(auxiliary);
             auxiliary.common.request=[](void* user,const BattleAudienceGXRequest& r){
                 ShadowGXRequest request;request.kind=static_cast<ShadowGX>(r.function);request.values=r.arguments;
@@ -132,6 +132,16 @@ void Renderer::resumeFinishingCamera(const Game& game){
             gx.call=[](void* u,const SourceIconGXCall& r){auto& b=*static_cast<IconBridge*>(u);return b.renderer->sourceIconCall(*b.game,r);};
             gx.quad=[](void* u,const SourceIconGXQuad& q){auto& b=*static_cast<IconBridge*>(u);return b.renderer->captureSourceIcon(*b.game,q);};
             icon.gx=&gx;auxiliary.sourceIcon=&icon;
+            if(identity==0x802036d4){
+                BattleBreakSlotDrawServices slot;slot.user=&renderer;slot.sourceIcon=&icon;
+                slot.word=[](void* u,uint32_t a){return static_cast<Renderer*>(u)->sourceIcons.word(a);};
+                slot.half=[](void* u,uint32_t a){return static_cast<Renderer*>(u)->sourceIcons.half(a);};
+                slot.gx=[](void* u,const ShadowGXRequest& r){return static_cast<Renderer*>(u)->finishingShadowRequest(r);};
+                slot.scissor=[](void* u,const std::array<uint32_t,4>& r){auto& renderer=*static_cast<Renderer*>(u);
+                    NativeCameraSubmit submit{&renderer,[](void* u,const NativeCameraPacket& p){return static_cast<Renderer*>(u)->finishingCameraPacket(p);}};
+                    return renderer.finishingCameraDraw.scissor(r,submit,true);};
+                return b.game->trioAttack.resumeBreakSlotDraw(camera,borrowed,slot);
+            }
             if(identity==0x80100258)return b.game->trioAttack.resumeStockExpDraw(camera,borrowed,icon);
             return b.game->trioAttack.resumeAudienceAux(camera,identity,borrowed,auxiliary);
         }

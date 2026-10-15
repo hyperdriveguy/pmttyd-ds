@@ -63,10 +63,10 @@ bool SourceIconResources::load(const char *root) {
     return false;
   const std::string base = root;
   const auto dir = read(base + "/icon.bin", 65536),
-             constants = read(base + "/constants.bin", 124);
+             constants = read(base + "/constants.bin", 188);
   const auto textures =
       AnimationTextureResource::load((base + "/icon.tpl").c_str());
-  if (!dir || !constants || constants->size() != 124 || !textures ||
+  if (!dir || !constants || constants->size() != 188 || !textures ||
       dir->size() < 4)
     return false;
   const auto count = be16(*dir, 0);
@@ -102,8 +102,8 @@ std::optional<uint16_t> SourceIconResources::half(uint32_t a) const {
   struct Span {
     uint32_t base, size, offset;
   };
-  for (const auto &s : std::array<Span, 5>{
-           {{0x80415040,24,0},{0x80415080,32,24},{0x8041f864,60,56},{0x8041f860,4,116},{0x8041f8a0,4,120}}})
+  for (const auto &s : std::array<Span, 7>{
+           {{0x80415040,24,0},{0x80415080,32,24},{0x8041f864,60,56},{0x8041f860,4,116},{0x8041f8a0,4,120},{0x80426884,40,124},{0x80419f30,24,164}}})
     if (a >= s.base && uint64_t(a) - s.base + 2 <= s.size)
       return be16(constants_, s.offset + a - s.base);
   return {};

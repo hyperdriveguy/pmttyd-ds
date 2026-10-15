@@ -41,6 +41,7 @@ struct CameraDrawServices {
 // Retained source bank; callback and GPU availability are explicit providers.
 class CameraManager {
 public:
+    std::array<uint8_t,4> sourceRenderDimensions{}; // Original marioStInit GP170/172 boot producer; shared mutable bytes across native GP facades.
     std::array<uint8_t,8> stockExpPosition{}; // Native shared process backing of source startup-zero floats8041eb98/9c; cameraInit never resets it.
     uint32_t letterboxColor=0; // Original startup-cleared camdrv sbss2 word80429510, live across room/battle ownership.
 
@@ -54,6 +55,7 @@ public:
     bool main(bool fieldContext,const CameraMainServices&,CameraMainCursor&);
     bool draw(DisplayQueue&,const CameraDrawServices&,CameraDrawCursor&);
 private:
+    bool renderDimensionsPublished_=false;
     std::array<CameraState,13> cameras_{};
     std::optional<uint32_t> current_;
 };

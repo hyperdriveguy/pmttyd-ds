@@ -104,4 +104,8 @@ int main(){
     assert(h.letters==3); // All disabled still register, sort and reset; keep last current index.
     // All13 published matrices remain distinct: overlays are never coerced to camera4.
     assert(bank.camera(2)->matrices.projection!=bank.camera(4)->matrices.projection);
+    CameraManager process;process.initializeBoot(608,480);
+    assert((process.sourceRenderDimensions==std::array<uint8_t,4>{2,0x60,1,0xe0}));
+    process.sourceRenderDimensions[1]=0x80;process.initializeBoot(320,240);
+    assert((process.sourceRenderDimensions==std::array<uint8_t,4>{2,0x80,1,0xe0}));
 }

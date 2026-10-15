@@ -5,6 +5,7 @@ namespace ttyd {
 // use608x480 bounds,25deg FOV,near1/far32768 (engine units). Supplied
 // render width/height set viewport/scissor, not those authored lens bounds.
 void CameraManager::initializeBoot(uint16_t width,uint16_t height){
+    if(!renderDimensionsPublished_){sourceRenderDimensions={uint8_t(width>>8),uint8_t(width),uint8_t(height>>8),uint8_t(height)};renderDimensionsPublished_=true;} // Native admission of original marioStInit render-descriptor fields.
     cameras_={}; // Original full record clears; current draw index is independent.
     constexpr const char* names[]{"off","off2","bg","shadow","3d","3deff_A","3dimg","3deff_B","2d","fade","fade2","dbg","dbg3d"};
     // .21816612780094147 radians=half25deg FOV. Aspect constants608/480

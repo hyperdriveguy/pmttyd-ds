@@ -4759,3 +4759,9 @@ full PMPOSE02 identities and unchanged MODEL/TPL. Read-only source census and
 host/ARM loading validate resources only. Game's stable actor memory/registry,
 tagged-map stores, actual setup/init/regular event lifetime and facing/Main/GPU
 providers remain open. No fabricated source allocation or readiness is added.
+
+Original802036d4 reel parent is now implemented with three fresh global-B getters, ordered background/icon/GX/matrix work and live GP-dimension final scissor. Active records hold at real missing8010323c Plane2; state0 alone never acknowledges active records. [Native contract](../behavior/battle/NATIVE_BREAK_SLOT_REEL_DRAW.md). GP170/172 now share persistent mutable boot-owned bytes across battle facades/checkpoint handoff. Full Plane2, teardown, field restoration and original prologue remain open.
+
+Ordinary150s native probe exits0: callbackphase39/index3/pending0, flags0/state0 for all3reels, two actual native scissors and final608x480. Camera draw completes; next actual pending8006f904 requires the original [outer-loop order](../behavior/platform/GAME_OUTER_LOOP_AND_EVENT_UPDATE_ORDER.md), especially seqMain before lowercasebattleMain and later events. Do not force bank4 teardown or skip directly to field restoration.
+
+Separate positive23 fixture now captures5original camera8 icon packets/20vertices usingtexture418 and actual retained GPU replay after the camera pass completes. Forced count restores original0. This resolves the prior publication hold; it is an explicit fixture, not an ordinary observed reward or source-pixel parity proof.

@@ -5,7 +5,7 @@ from pathlib import Path
 from PIL import Image
 from iso_assets import DEFAULT_ISO, extract, convert_tpl
 
-SPANS=((0x80415040,24),(0x80415080,32),(0x8041f864,0x3c),(0x8041f860,4),(0x8041f8a0,4))
+SPANS=((0x80415040,24),(0x80415080,32),(0x8041f864,0x3c),(0x8041f860,4),(0x8041f8a0,4),(0x80426884,0x28),(0x80419f30,0x18))
 
 def padded(bitmap, wrap_s, wrap_t):
     width,height=bitmap.size
