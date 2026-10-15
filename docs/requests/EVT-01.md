@@ -5280,3 +5280,20 @@ See [native binding](../behavior/partner/NATIVE_ORDINARY_PARTY_ENTRY.md).
   output aliases outside the current production value-output appearance adapter.
 - [ ] Bind remaining upper engine/sequence/exit owner800f8e28 and story field return;
   constructor completion is not battle/prologue completion.
+
+### 2026-10-15 positioned ordinary/auxiliary party event binding
+
+Fresh complete EntryPos800be84c/21c, Entry2Pos800bd6d8/3d0, explicit setter
+800e3120/158, previous setter800e2f00/158 and both mode bodies were recovered
+read-only under artifacts/field-party-aux-evidence. Actual gor sites distinguish
+harbor275b4 auxiliary13, plaza374bc ordinary1 after separate join, Professor4905c
+kind11 and lecture498e8 previous0. Native shared construction and the retained
+EVT bridge now implement ordinary1/auxiliary13 with real pool/file ownership,
+integer operand resolution and publication after successful construction.
+See [position binding](../behavior/partner/NATIVE_PARTY_POSITION_EVENTS.md).
+
+- [ ] Connect these services to the actual harbor-afterbattle/plaza-join/lecture
+  dispatch owners; original operands tested in a native VM do not prove full streams.
+- [ ] Bind separate pouch join, dir/run and temporary kind11 resource/lifetime.
+- [ ] Bind other mode cleanup, source-visible output aliases and full engine/field
+  return; do not infer prologue completion from constructor fixtures.

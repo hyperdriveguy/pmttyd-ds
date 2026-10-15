@@ -14275,3 +14275,62 @@ Next: document queued NPC draw/callback helpers and binding, then remaining part
 effect/runtime implementations and tooling. Newer concurrent battle/display/font/
 party/file/Mario work needs separate inline audit. Snapshot inventory is a review
 aid, not semantic coverage proof. Full code documentation/remake goal remains active.
+
+## Positioned ordinary/auxiliary party constructors (2026-10-15)
+
+Shared retained construction now covers actual ordinary EntryPos kind1 and
+auxiliary Entry2Pos kind13. Auxiliary uses only table1, returns genuine -1 if
+occupied, preserves saved-kind/Mario flag ownership, skips HP and performs the
+source fresh0-to2 mode tail, XYZ/previousXYZ and scalar1 writes. Ordinary position
+construction has no join gate or Kill; it retains both original vector passes,
+XYZ, captured owner/two display reads, fresh pose selection and mode0 without
+ordinary appearance/Hello or previousXYZ copy.
+
+New explicit/previous EVT bridge captures real Entry/args/Mario/selector, resolves
+integer coordinates using original operand services and retains a synchronous
+source first invocation through native loading waits. Initial first=false and
+existing-index gates preserve source no-op behavior. Success publishes Mario's
+low-byte slot only after full construction; previous saved-kind0 completes after
+its three coordinate resolutions. EventEntry pointer/id and memory identity
+prevent retargeting to a reused entry.
+
+Fresh original gor operand bytes at275b4/374bc/498e8 exercise harbor auxiliary13,
+plaza ordinary1 and lecture previous0 in actual native animation VM fixtures.
+The source pouch join remains a separate event call. Production story controllers
+still need their real dispatch connections; no full event/prologue completion is
+claimed. Source pack expands to488 bytes with six additional unchanged DOL spans.
+
+CMAKE_BUILD_PARALLEL_LEVEL=6 make test exits 0: 474/474 C++ (91.94s),
+218/218 Python (71.823s), zero skipped. Actual default original HitN64 fixture ran.
+Native make all -j6 -o assets-ready SOUNDTRACK=gamecube
+TARGET=ttyd-field-party-position exits 0. Private ARM fixture build exits 0.
+All focused/full host/native/emulator handles observed terminal; existing compiler/
+Pillow warnings remain. No post-gate executable/source-fixture changes.
+
+Both isolated 45-second Azahar jobs exit 0. Production capture visually shows the
+original storybook. Private ARM probe executes the prior ordinary regression plus
+new position fixtures, writes all 11 strict markers: ordinaryRegression, auxiliary13,
+slot1Only, originalOperands, integerCoordinates, heldEntry, latePublication,
+actualClear, previousSavedKind, capturedMode, entryIdentity. Probe completes before
+renderer startup; black/App 0 FPS capture proves fixture completion only, while
+production normal startup is independently verified. User profiles/saves unchanged.
+
+Frozen baseline 40427a709036cd5b1ce6966ab23492f4a9235949 plus owned changes: 4148 audited
+source inputs, 2161 runtime products and 778 private inputs. All 770 prior private
+input hashes unchanged; 8 prerequisite HitN64 fixture files added. Two party data
+products updated to the 488-byte, 12-span pack/provenance; 4 upstream HitN64 products
+added. The three binary products match accepted upstream bytes; JSON differs only in
+relative decoded_png fixture path. All other accepted products unchanged.
+Private ARM source differs only in main.cpp plus one extra original gor.rel RomFS
+fixture; source/include and every production RomFS byte verified. Exact current
+production objects reused after terminal build with main.o/main.d removed.
+Source/product/fixture/evidence/binary/log/capture hashes and scoped journals are
+in artifacts/field-party-position-validation-manifest.json. Concurrent later work
+is preserved/excluded; no combined moving-worktree validation claim.
+
+Remaining: wire authored story dispatch and separate join/dir/run services, bind
+Professor kind11 c_kuri_h and other mode cleanup, then upper engine/sequence/exit
+owner800f8e28 and complete field return. Constant spans are admitted complete;
+grouped vector/seed loads do not promise arbitrary partial-RAM fault replay parity.
+Source GPU/math/FPSCR parity and hardware performance remain unverified. Full
+prologue/remake goal stays active.

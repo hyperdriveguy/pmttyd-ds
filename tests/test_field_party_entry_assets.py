@@ -8,7 +8,7 @@ class PartyEntryAssets(unittest.TestCase):
  def test_original_data_and_pack(self):
   with tempfile.TemporaryDirectory() as tmp:
    meta=build(DEFAULT_ISO,tmp);data=(Path(tmp)/'field-party-entry.pmevt').read_bytes()
-   self.assertEqual(struct.unpack_from('>8sI',data),(b'PMEVT001',6));self.assertEqual(len(data),304)
+   self.assertEqual(struct.unpack_from('>8sI',data),(b'PMEVT001',12));self.assertEqual(len(data),488)
    self.assertEqual(hashlib.sha256(data).hexdigest(),meta['pack_sha256'])
    for i,(address,size,digest) in enumerate(SPANS):
     a,n,offset=struct.unpack_from('>III',data,12+12*i);self.assertEqual((a,n),(address,size));self.assertEqual(hashlib.sha256(data[offset:offset+n]).hexdigest(),digest)

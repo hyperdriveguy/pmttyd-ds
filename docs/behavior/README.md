@@ -1363,3 +1363,5 @@ Original retained battle UI text controllers:
 - [Matrix font](display/RETAINED_MATRIX_FONT_RASTER.md).
 - [Scalar font](display/RETAINED_SCALAR_FONT.md).
 - [Shared font state](display/RETAINED_SHARED_FONT_STATE.md).
+
+- [Native party position constructors and EVT publication](partner/NATIVE_PARTY_POSITION_EVENTS.md): actual ordinary1/auxiliary13 data, explicit/previous integer-coordinate resolution and late Mario slot publication.

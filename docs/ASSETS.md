@@ -3195,3 +3195,28 @@ fixtures independently read ISO read-only into empty temporary destinations.
 No editable import/shared-pack write or ISO, extracted original/compiled product
 commit. Nintendo/Intelligent Systems rights retained; local conversion grants
 no new license.
+
+## Party position constructor source data (2026-10-15)
+
+The ordinary/auxiliary position binding extends field-party-entry.pmevt from
+304 to488 bytes (12 unchanged DOL spans). Added exact spans: normal kind13
+row80314a14/3c, first/final ordinary vectors802cb184/0c and802cb19c/0c,
+overwritten stack seeds802cb190/0c and802cb220/0c, and unit scalar80421200/4.
+The converter verifies each original SHA256 and keeps independent source addresses
+for equal-valued rows/vectors. The three original definition records remain
+unchanged. No image, animation, dialogue or event operand is fabricated.
+
+The default host fixture reads original gor.rel operands at275b4,374bc and498e8
+from the accepted ignored local-assets/door-data fixture. Private ARM verification
+stages only that same full hash-matched original REL as an extra private RomFS
+fixture; production RomFS does not add it. The frozen native build also imports
+four prerequisite HitN64 products using its current original-data converter and
+creates its default private test fixture. These are separate accepted upstream
+requirements, not new party visuals. Three binary products match the accepted upstream bytes; JSON differs only
+in its decoded_png path, now relative to the private fixture. All other accepted
+products/fixture inputs remain pinned in the position validation manifest.
+
+Original Nintendo/Intelligent Systems rights and local-only provenance remain.
+No ISO/extracted source/compiled pack is committed; no redistribution rights
+are implied. Complete story dispatch, kind11/other source resources, source GPU
+parity and hardware performance remain separate implementation work.
