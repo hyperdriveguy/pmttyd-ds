@@ -383,3 +383,6 @@ Code65d1b669: [native retained setup bridge](../behavior/field/NATIVE_REGISTERED
 ### Original NPC actor callback integration
 
 Codeb385793a: [native five-leaf binding](../behavior/field/NATIVE_NPC_ACTOR_EVENT_LEAVES.md), corrected original DOL name/constant closure, genuine default-init completion, checked aliased outputs and camera4 source arithmetic. Final330C++/194Python/native builds and isolated ARM fixture pass. Full area parent/world/wander/Game/render/lifetime providers remain open under EVT-01; normal storybook smoke is not NPC raster/hardware validation.
+
+
+Read-only delivery: [original wander packed binding frontier](../behavior/field/ORIGINAL_WANDER_EVENT_PACKED_BINDING_FRONTIER.md). Actual wrapper radius70/Borodo story guard, LW10 map heap, init/main side-effect ordering and regular scheduling/candidate/replacement lifetime recovered; no code/runtime completion claim. EVT-01 remains open.

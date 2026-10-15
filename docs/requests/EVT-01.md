@@ -4849,3 +4849,6 @@ Do not publish an empty W or certify full entry based on this ownership bridge.
 ### Original NPC actor leaves and default init completion
 
 Codeb385793a binds [five source actor callbacks](../behavior/field/NATIVE_NPC_ACTOR_EVENT_LEAVES.md) to the actual retained registry/VM, checked operand output routing and published camera4. Original default npc_init_evt now genuinely completes after correcting its missing `me` asset literal.330C++/194Python/native and isolated ARM checks pass, including aliased GP output holds. Actual Area case registration/scoped map-hit-door adapters already exist; remaining full parent/owner integration and packed wander work/event lifetimes stay open. No full original initialization, normal Game, Main/query/facing/render, shared-session RNG/pose namespace or physical-performance completion claim.
+
+
+Source follow-up: [packed wander frontier](../behavior/field/ORIGINAL_WANDER_EVENT_PACKED_BINDING_FRONTIER.md) supplies original actual-wrapper radius/story conditions, LW10 map allocation and observable init/main service order plus regular scheduler and stop/start/replacement owners. Static read-only DOL/REL evidence only; actual retained wander/Mario/pose/audio/Main bindings and lifetime remain open. Existing semantic snapshot helper cannot establish these alias/order contracts.

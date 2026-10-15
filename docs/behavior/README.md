@@ -1205,3 +1205,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Fresh shared field and battle poses](display/NATIVE_SHARED_FIELD_AND_BATTLE_POSES.md): original player defaults, live record aliases, shared NPC/battle handles and native resource lifetime.
 
 - [Native NPC actor event leaves](field/NATIVE_NPC_ACTOR_EVENT_LEAVES.md): five original flag/position/yaw callbacks, actual retained actors/operands/camera4, ordered stores and hold-safe aliased outputs.
+
+
+- [Original wander packed binding frontier](field/ORIGINAL_WANDER_EVENT_PACKED_BINDING_FRONTIER.md): actual regular wrappers/story guard, LW10/map-heap ownership, ordered requests and regular stop/start/replacement lifetime.

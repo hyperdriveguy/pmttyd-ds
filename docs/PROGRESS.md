@@ -9062,3 +9062,13 @@ do not wrap the existing snapshot helper as if it supplied those lifetimes.
 Then normal Game activation, shared pose namespace/session RNG, NPC Main/query/
 facing/render/collision and genuine room resources. Full remake/goal remains
 active and incomplete.
+
+
+Read-only follow-up: [packed wander binding frontier](behavior/field/ORIGINAL_WANDER_EVENT_PACKED_BINDING_FRONTIER.md)
+now records actual radius70 Goomba4/Borodo1 wrappers, Borodo story215..261
+exclusion, event LW10/map-heap allocation, exact init/main request boundaries,
+regular scheduler credit and StopID/StartID/replacement lifetimes. Fresh DOL/
+REL hashes/listings live under ignored artifacts/npc-wander-bridge-evidence/.
+No further code/assets/build/profile/save changes. Scoped relative-link and
+whitespace checks pass. This is static source delivery for the next retained
+bridge, not proof of native wandering or original runtime observations.
