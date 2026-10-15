@@ -6,6 +6,7 @@ namespace ttyd {
 Renderer::Texture* Renderer::finishingAnimationTextureOwner(const std::shared_ptr<const BattlePoseResource>& resource,float& uvScale){
     if(!resource)return nullptr;
     if(resource==trioMarioAnimations){uvScale=trioMarioUVScale;return &trioMarioTexture;}
+    if(resource==trioEnemyAnimations){uvScale=trioEnemyUVScale;return &trioEnemyTexture;}
     if(resource==trioPartnerAnimations){uvScale=trioPartnerUVScale;return &trioPartnerTexture;}
     if(resource==sharedPartnerAnimations){uvScale=sharedPartnerUVScale;return &sharedPartnerTexture;}
     if(resource==sharedFranklyAnimations){uvScale=sharedFranklyUVScale;return &sharedFranklyTexture;}

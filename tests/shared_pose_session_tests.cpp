@@ -22,10 +22,14 @@ void runSharedPoseSessionFixture(){
  assert(!parties.configureOriginalPool(resources));int32_t partnerPose=parties.enterPose(0x804213e0,2,{},1111);assert(partnerPose==4 && parties.pose(partnerPose)->original()==pool->pose(4) && pool->pose(4)->resource->names[0]==defaults[3]);
  ProfessorStory scene;assert(scene.beginTrioBattleIntro(0));TrioBattleCommands menu;assert(menu.begin(scene));menu.input(0x100,0);menu.input(0x100,0);
  assert(game->trioAttack.begin(menu,scene,10,{},nullptr,nullptr,&parties));assert(game->trioAttack.battlePosePool()==pool.get());
- assert(pool->pose(5) && pool->pose(6) && pool->pose(7) && pool->pose(8)->resource==resources[3] && pool->pose(9)->resource==npcResource);
+ assert(pool->pose(5) && pool->pose(6) && pool->pose(7) && pool->pose(8)->resource==resources[3] && pool->pose(12)->resource==npcResource);
+ auto enemies=pool->pose(9)->resource;assert(enemies && enemies->modelName=="c_kuribo" && enemies->names.size()==45);
+ for(unsigned handle=9;handle<=11;++handle)assert(pool->pose(handle) && pool->pose(handle)->word(0xc)==1 && pool->pose(handle)->resource==enemies);
  const auto generation=pool->pose(5)->nativeGeneration;assert(pool->release(5));
  auto replacement=game->originalFieldNpcs->poses().enter("c_kuri_h",0,{1200,1200});assert(replacement && *replacement==5 && pool->pose(5)->nativeGeneration!=generation);
- game->trioAttack=TrioAttack{};assert(pool->pose(5) && !pool->pose(6) && !pool->pose(7) && !pool->pose(8) && !pool->pose(9) && pool->pose(0) && pool->pose(3) && pool->pose(4));assert(pool->release(5));
+ game->trioAttack=TrioAttack{};assert(pool->pose(5) && pool->pose(0) && pool->pose(3) && pool->pose(4));
+ for(unsigned handle=6;handle<=12;++handle)assert(!pool->pose(handle)); // Every battle owner, including three enemies, retires.
+ assert(pool->release(5));
  auto fork=std::make_unique<Game>(*game);assert(fork->fieldPartyState().originalPool!=pool && fork->fieldPartyState().pose(1)->original()!=mario->original());fork->fieldPartyState().pose(1)->materialFlags=0x456;assert(uint32_t(mario->materialFlags)==0x123);
  assert(vm->memory.unregisterExternalRam(0x87000000));registry.reset();vm.reset(); // Facades retire before Game::restore.
  auto* partnerBefore=parties.pose(partnerPose);game->restore(Progress{});assert(game->fieldPartyState().originalPool==pool && game->fieldPartyState().pose(1)==mario && game->fieldPartyState().pose(partnerPose)==partnerBefore && game->originalFieldNpcs);

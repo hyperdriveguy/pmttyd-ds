@@ -100,7 +100,16 @@ int main(){
     }
     assert(jump.readWord(0x84202000+0x1c0,value) && value==3 && jump.battlePose(0x84202000));
     assert(jump.readWord(0x84200000+0x1c4,value) && value==0x4b524e5f); // Authored KRN_H_1 is copied, not selected.
-    assert(!jump.battlePose(0x84203000)); // No enemy raw handle aliases Mario's slot0.
+    std::shared_ptr<const BattlePoseResource> enemyResource;
+    constexpr const char* enemyNames[]{"KUR_S_1","TGK_S_1","PTK_S_1"};
+    for(unsigned i=0;i<3;++i){
+        const auto part=0x84203000+0x1000*i;const auto* pose=jump.battlePose(part);
+        assert(pose && pose->word(0xc)==1 && pose->resource->modelName=="c_kuribo" && !pose->shape.vertices.empty());
+        assert(jump.readWord(part+0x1c0,value) && value==4+i); // Separate source handles, never Mario's slot0.
+        assert(pose->resource->names.size()==45 && pose->resource->bank->pose(enemyNames[i]));
+        if(enemyResource)assert(pose->resource==enemyResource);else enemyResource=pose->resource;
+    }
+    assert(jump.battlePosePool()->models()[2].resource==enemyResource && jump.battlePosePool()->models()[2].references()==3);
     assert(jump.readWord(0x84016ee0,value) && value==1); // Original active ambient record.
     assert(jump.readWord(0x84016f00,value) && value==1); // Separate active background record.
     assert(jump.readWord(0x84016f04,value) && value==0x8c8c0000);

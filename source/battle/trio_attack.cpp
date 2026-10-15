@@ -1,5 +1,13 @@
 #include "trio_attack.hpp"
+#include "trio_enemy_pose_resources.hpp"
 #include "battle_main_continuation.hpp"
+#include "battle_turn_continuation.hpp"
+#include "battle_event_barrier_continuation.hpp"
+#include "battle_audience_turn_end_continuation.hpp"
+#include "battle_packed_status_recovery.hpp"
+#include "battle_packed_recovery.hpp"
+#include "battle_packed_move.hpp"
+#include "battle_pinch_continuation.hpp"
 #include "battle_enemy_hp_camera_bridge.hpp"
 #include "battle_menu_file_cache.hpp"
 #include "battle_stage_main_continuation.hpp"
@@ -12,6 +20,7 @@
 #include "animation_texture.hpp"
 #include "source_icon_resources.hpp"
 #include "battle_event_callbacks.hpp"
+#include "battle_audience_attack_events.hpp"
 #include "event_memory_bootstrap.hpp"
 #include "event_memory_release.hpp"
 #include <cmath>
@@ -81,6 +90,7 @@ std::weak_ptr<const ActorAnimationPack> fieldPartnerAnimationCache;
 std::shared_ptr<const ActorAnimationPack> fieldMarioBank;
 std::array<std::shared_ptr<const BattlePoseResource>,2> playerBattleResources;
 std::shared_ptr<const BattlePoseResource> franklyBattleResource;
+std::shared_ptr<const TrioEnemyPoseResources> enemyBattleResources;
 std::string stageMapRoot;
 std::array<uint32_t,7> stageDescriptors{};
 uint32_t sourceStage=0;
@@ -133,6 +143,10 @@ bool loadTrioAttackAssets(const char* root) {
     const auto professorPrefix=std::string(root)+"/professor";
     auto professorResource=loadBattlePoseResource((professorPrefix+".pose-directory.bin").c_str(),(professorPrefix+".pmanim").c_str());
     if(!professorResource || professorResource->modelName!="c_kuri_h")return false;
+    const auto enemyPrefix=std::string(root)+"/trio-enemy-kuribo";
+    auto enemyResources=TrioEnemyPoseResources::load((enemyPrefix+".pose-directory.bin").c_str(),(enemyPrefix+".pmanim").c_str());
+    if(!enemyResources)return false;
+    enemyBattleResources=std::move(enemyResources);
     franklyBattleResource=std::move(professorResource);
     fieldPartnerAnimationPath=std::string(root)+"/partner.pmanim";fieldPartnerAnimationCache.reset();
     // PMSTOBJ1: source stage pointer plus seven descriptor pointers. All seven
@@ -159,6 +173,7 @@ struct TrioAttackRuntime {
     // The source file owner precedes the VM so external byte views die first.
     std::shared_ptr<BattleMenuFileCache> menuFiles=trioMenuFiles;
     EventNativeRuntime vm;
+    BattleAudienceAttackEvents audienceAttackEvents{vm};
     std::unique_ptr<BattleMenuFileBinding> menuBinding;
     BattleMenuResourceCursor menuResourceCursor;bool menuResourceInitialized=false;
     // Native token owner separates reuse of identical guest Battle RAM across
@@ -318,6 +333,9 @@ struct TrioAttackRuntime {
     CameraLetterboxCursor letterboxCursor;
     CameraLetterboxDrawCursor letterboxDrawCursor;
     BattleEnemyHpDrawCursor enemyHpDrawCursor;BattleMonosiriCursor enemyHpMonosiriCursor;
+    BattleTurnCursor turnCursor;
+    BattleEventBarrierCursor turnEventBarrierCursor;
+    BattleAudienceTurnEndCursor sourceAudienceTurnEndCursor;
     BattleStockExpDrawCursor stockExpDrawCursor;SourceIconPositionCursor stockExpIconCursor;
     BattleBreakSlotDrawCursor breakSlotDrawCursor;
     std::optional<CameraLetterboxServices> letterboxServices;
@@ -1150,16 +1168,15 @@ struct TrioAttackRuntime {
         // source ff bytes, not native actor indices. Pose factories require
         // actual source definitions/resources; no placeholder pose is fabricated.
         for(unsigned id=1;id<7;++id){const auto unit=Units+id*0x1000;half(unit+0xcc,half(word(unit+0x10)+0x16));half(unit+0xce,half(word(unit+0x10)+0x18));initializePackedBattleHpGauge(unit,nativeBattleActorServices(vm));byte(unit+0x311,255);byte(unit+0x312,255);for(auto part=word(unit+0x14);part;part=word(part)){half(part+0x1a2,half(word(part+4)+0x30));half(part+0x1a4,half(word(part+4)+0x32));real(part+0x78,1);for(unsigned axis=0;axis<3;++axis){real(part+0x6c+4*axis,1);real(part+0x60+4*axis,1);real(part+0x3c+4*axis,0);real(part+0x48+4*axis,0);real(part+0x54+4*axis,0);}real(part+0x208,1);real(part+0x20c,1);word(part+0x4f0,0xffffffff);word(part+0x1c0,0xffffffff);byte(part+0x1c4,0);byte(part+0x214,0);byte(part+0x215,0);}}
-        // Real player and surviving lecture-Frankly mode1 pose owners.
-        // Enemy factories remain explicit providers when they survive display.
-        for(const unsigned id:{1u,2u,6u})for(auto part=word(Units+id*0x1000+0x14);part;part=word(part)){
+        // Actual model/type28 names select the original mode1 resource.
+        for(const unsigned id:{1u,2u,3u,4u,5u,6u})for(auto part=word(Units+id*0x1000+0x14);part;part=word(part)){
             const auto table=word(part+0x1bc),modelName=word(word(part+4)+8);
             if(!table || !modelName){partPoseHandles.emplace(part,-1);continue;}
             const auto name=packedBattlePoseName(part,28,nativeBattleActorServices(vm).memory);
             if(!name)return false;
             const auto initialName=text(name);
             for(unsigned i=0;i<=initialName.size();++i)byte(part+0x1c4+i,i==initialName.size()?0:uint8_t(initialName[i]));
-            const auto& resource=id==6?franklyBattleResource:id==2 && fieldParties && fieldParties->originalPool?fieldParties->originalResources[3]:playerBattleResources[id-1];if(text(modelName)!=resource->modelName)return false;
+            const auto resource=id>=3 && id<=5?(enemyBattleResources?enemyBattleResources->find(text(modelName),initialName):nullptr):id==6?franklyBattleResource:id==2 && fieldParties && fieldParties->originalPool?fieldParties->originalResources[3]:playerBattleResources[id-1];if(!resource || text(modelName)!=resource->modelName)return false;
             const auto handle=poses.enter(resource,1,{now,now});if(!handle)return false;ownedPoseHandles.emplace_back(*handle,poses.pose(*handle)->nativeGeneration);
             word(part+0x1c0,uint32_t(*handle));partPoseHandles.emplace(part,*handle);
         }
@@ -1185,6 +1202,20 @@ struct TrioAttackRuntime {
             bindBattleMovePositionCallback(registry,movement) && bindBattleGetMoveFrameCallback(registry,vm) && bindBattleGetHitPosCallback(registry,vm) && bindBattleMarioJumpParameterCallback(registry,vm) && bindBattleStartWaitCallback(registry,vm) && bindBattleCheckStatusCallback(registry,vm) && bindBattleCheckDataCallback(registry,vm) && bindBattleSetFallAccelCallback(registry,vm) && bindBattleFramesToMillisecondsCallback(registry,vm);
         jumpBackend.runtime=&vm;jumpBackend.user=this;jumpBackend.play=[](void*,uint32_t,const std::array<float,3>&)->uint32_t{return 0;};
         jump=nativeBattleMarioJumpServices(jumpBackend);ok=ok && bindBattleMarioJumpPositionCallback(registry,jump);
+        audienceAttackEvents.user=this;
+        // effHitEntry is a genuine missing HitN64 provider, not a vector notice.
+        // Mode1 bypasses it in the original script callback; mode0 holds there.
+        audienceAttackEvents.sound=[](void* self,uint32_t key,const std::array<float,3>& position)->std::optional<int32_t>{
+            auto& r=*static_cast<TrioAttackRuntime*>(self);const auto s=r.audienceSoundStartServices();
+            return s.on?s.on(s.user,key,position):std::nullopt;
+        };
+        audienceAttackEvents.pitch=[](void* self,int32_t handle,int32_t value){
+            auto& r=*static_cast<TrioAttackRuntime*>(self);r.endingRequest(0x800d9744,{handle,value});
+            if(!r.publicSfx)return false;
+            const auto done=setQueuedBattleAudienceAttackPitch(*r.publicSfx,handle,value);
+            return done && *done;
+        };
+        ok=ok && audienceAttackEvents.bind(registry);
         if(!ok)return false;
         if(!initializeStageObjects())return false;
         if(!initializePackedBattleSpotlight(spotlightServices()))return false;
@@ -1826,6 +1857,106 @@ struct TrioAttackRuntime {
         }
         return true;
     }
+    // Real source Turn parent; child requests retain operands across holds.
+    // Unbound side-effect owners remain unavailable, never vector acknowledgments.
+    BattleTurnServices turnServices() {
+        BattleTurnServices s;s.actors=nativeBattleActorServices(vm);s.user=this;
+        s.call=[](void* self,const BattleTurnRequest& q)->std::optional<BattleTurnOutput>{
+            auto& r=*static_cast<TrioAttackRuntime*>(self);const auto actors=nativeBattleActorServices(r.vm);
+            BattleTurnOutput out;const auto unit=q.integers[0];
+            switch(q.function){
+            case 0x8011b1ec:{
+                BattleTurnFirstBackend backend;backend.runtime=&r.vm;
+                battleTurnFirstProcess(q.integers[0],nativeBattleTurnFirstServices(backend));break;}
+            case 0x8011a06c:
+                out.value=r.word(r.word(0x8041eb90)+0xf44)&q.integers[0];break;
+            case 0x80127814:
+                out.value=checkPackedBattleStatus(unit,int32_t(q.integers[1]),actors);break;
+            case 0x80127f34:{
+                const auto status=getPackedBattleStatus(unit,int32_t(q.integers[1]),actors);
+                out.duration=status.duration;out.strength=status.strength;break;}
+            case 0x80127890:
+                out.value=uint32_t(checkPackedBattleRecoveryStatus(unit,int32_t(q.integers[1]),actors));break;
+            case 0x801266d4:resetPackedBattleMoveStatus(unit,actors);break;
+            case 0x80126bec:recoverPackedBattleHp(unit,int32_t(q.integers[1]),actors);break;
+            case 0x80126b58:recoverPackedBattleFp(unit,int32_t(q.integers[1]),actors);break;
+            case 0x80125d08:
+                out.value=(r.word(unit+0x104)&0x10)?1:
+                    r.word(unit+8)==228 && int32_t(r.word(unit+0x228))>0;break;
+            case 0x80128c7c:
+                for(unsigned axis=0;axis<3;++axis)out.position[axis]=r.real(unit+0x3c+4*axis);
+                break;
+            case 0x80128414:{
+                // Original GetHeight is lha U+ce, not a guessed body offset.
+                const auto height=r.half(unit+0xce);
+                out.value=uint32_t(int32_t(height));break;}
+            case 0x80128c98:out.value=uint32_t(packedBodyPartId(unit,actors.memory));break;
+            case 0x80128cd8:out.value=packedUnitPart(unit,int32_t(q.integers[1]),actors.memory);break;
+            case 0x80128b10:
+                out.position=packedPartWorldPosition(unit,nativeBattlePartPositionServices(r.vm));break;
+            case 0x80005da0:out.value=r.random.bounded(int32_t(q.integers[0]));break;
+            case 0x800374ac:{
+                // The actual VM constructor owns this mapped source entry.
+                auto& entry=createRootEvent(r.vm.schedule,q.integers[0],int32_t(q.integers[1]),q.integers[2],r.vm.creationServices());
+                required(r.vm.entryAddresses.addressOf(&entry,out.value));break;}
+            case 0x8011aa34:{
+                BattleConclusionServices concluded;concluded.actors=actors;concluded.user=&r;
+                concluded.checkStatus=[](void* p,uint32_t u,int32_t id){auto& owner=*static_cast<TrioAttackRuntime*>(p);return int32_t(checkPackedBattleStatus(u,id,nativeBattleActorServices(owner.vm)));};
+                out.value=uint32_t(battleCheckConcluded(q.integers[0],concluded));break;}
+            case 0x8011ace8:{
+                BattleEventBarrierServices barrier;barrier.actors=actors;barrier.user=&r;
+                barrier.eventExists=[](void* p,uint32_t id)->std::optional<int32_t>{
+                    auto& owner=*static_cast<TrioAttackRuntime*>(p);
+                    return checkEventId(id,owner.vm.creationServices());};
+                barrier.concluded=[](void* p,uint32_t battle)->std::optional<int32_t>{
+                    auto& owner=*static_cast<TrioAttackRuntime*>(p);
+                    BattleConclusionServices result;result.actors=nativeBattleActorServices(owner.vm);result.user=p;
+                    result.checkStatus=[](void* p,uint32_t u,int32_t id){auto& owner=*static_cast<TrioAttackRuntime*>(p);return int32_t(checkPackedBattleStatus(u,id,nativeBattleActorServices(owner.vm)));};
+                    return battleCheckConcluded(battle,result);};
+                barrier.create=[](void* p,uint32_t script,int32_t priority,uint32_t flags)->std::optional<uint32_t>{
+                    auto& owner=*static_cast<TrioAttackRuntime*>(p);
+                    auto& entry=createRootEvent(owner.vm.schedule,script,priority,flags,owner.vm.creationServices());
+                    uint32_t address=0;required(owner.vm.entryAddresses.addressOf(&entry,address));return address;};
+                // A real nonzero reserved item requires its removal owner.
+                // Null removeItem holds that source request without replaying
+                // earlier unit/event cleanup or acknowledged reaction children.
+                const auto ready=resumeBattleAllEventBarrier(q.integers[0],barrier,r.turnEventBarrierCursor);
+                if(!ready){r.pending=r.turnEventBarrierCursor.pending()?r.turnEventBarrierCursor.pending():q.function;return {};}
+                out.value=uint32_t(*ready);break;}
+            case 0x8019f298:{
+                BattleAudienceTurnEndServices audience;audience.actors=actors;audience.user=&r;
+                audience.divide=[](void* p,int32_t numerator,int32_t denominator)->std::optional<int32_t>{
+                    auto& owner=*static_cast<TrioAttackRuntime*>(p);
+                    if(!denominator || (numerator==(-2147483647-1) && denominator==-1) || !owner.vm.platform.divideWord)return {};
+                    return owner.vm.platform.divideWord(owner.vm.platform.user,numerator,denominator);};
+                audience.truncate=[](void* p,float value)->std::optional<int32_t>{
+                    auto& owner=*static_cast<TrioAttackRuntime*>(p);
+                    if(!std::isfinite(value) || value<-2147483648.f || value>=2147483648.f || !owner.vm.platform.truncate)return {};
+                    return owner.vm.platform.truncate(owner.vm.platform.user,value);};
+                audience.random=[](void* p,int32_t bound)->std::optional<int32_t>{return static_cast<TrioAttackRuntime*>(p)->random.bounded(bound);};
+                // Exact source capacity0/delta0/Bef4bit100 early returns are
+                // internal to the retained child. A remaining population suffix
+                // needs its real allocation/removal owner; null never means0.
+                if(!resumePackedBattleAudienceTurnEnd(audience,r.sourceAudienceTurnEndCursor)){
+                    r.pending=r.sourceAudienceTurnEndCursor.pending()?r.sourceAudienceTurnEndCursor.pending():q.function;return {};}
+                break;}
+            // Legacy handoff conflates Phase/Move and cannot acknowledge this
+            // original source child. Actual source8011c2b4 remains unavailable.
+            case 0x8011c2b4:
+            // Original warning callback/display, direct damage, Burn lifetime,
+            // Freeze/regen effects and genuine sound publication need owners.
+            case 0x80010bc4:case 0x800fdfd4:case 0x80195f38:case 0x80195d7c:
+            case 0x801c3690:case 0x8014335c:case 0x800d9848:case 0x800d98bc:
+            default:r.pending=q.function;return {};
+            }
+            return out;
+        };return s;
+    }
+    bool resumeSourceTurn(uint32_t battle) {
+        const bool complete=resumePackedBattleTurn(battle,turnServices(),turnCursor);
+        if(!complete && !pending)pending=turnCursor.pending()?turnCursor.pending():0x8011c510;
+        return complete;
+    }
     // Admit only EMPTY effect/recovery branches of the legacy Turn graph.
     // Positive HP and status27 exclusion precede states 0x6/0x8/0xa/0xc statuses 4/8/
     // 23/24; 0xe/0x10 use badge+0x2ee/0x2ef after turn 1; 0x12..0x3e index original 23-ID order.
@@ -2300,6 +2431,27 @@ struct TrioAttackRuntime {
         footerFlags=word(Battle+0xef4);if(footerFlags&0x20000)word(Battle+0xef4,footerFlags&~0x20000u);
         displayActive=false;return true;
     }
+    BattlePinchCursor sourcePinch;
+    bool resumeSourcePinch(uint32_t battle,int32_t mode) {
+        if(battle!=Battle){pending=0x8011efd8;return false;}
+        if(!sourcePinch.active())endingRequest(0x8011efd8,{int32_t(battle),mode});
+        BattlePinchServices s;s.actors=nativeBattleActorServices(vm);s.user=this;
+        s.status=[](void* p,uint32_t unit,int32_t id)->std::optional<int32_t>{
+            auto& r=*static_cast<TrioAttackRuntime*>(p);
+            return checkPackedBattleStatus(unit,id,nativeBattleActorServices(r.vm))?1:0;
+        };
+        s.truncate=[](void* p,float value)->std::optional<int32_t>{
+            auto& r=*static_cast<TrioAttackRuntime*>(p);
+            if(!std::isfinite(value) || value<-2147483648.f || value>=2147483648.f || !r.vm.platform.truncate)return {};
+            return r.vm.platform.truncate(r.vm.platform.user,value);
+        };
+        // Actual gate-clear source path completes. A requested warning retains
+        // its reset timer until a real retained psndSFXOn owner is bound; the
+        // synchronous allocation helper may partly mutate before unavailable.
+        if(resumePackedBattleCheckAllPinch(battle,mode,s,sourcePinch))return true;
+        pending=sourcePinch.pending()?sourcePinch.pending():0x8011efd8;return false;
+    }
+    BattleSequenceDispatchCursor sourceSequence;
     BattleMainCursor completionMain;
     BattlePadSample completionSample;
     uint32_t completionFunction=0;
@@ -2335,11 +2487,17 @@ struct TrioAttackRuntime {
                 return true;
             }
             if(fn==0x8011f1ec) {
-                const auto b=r.word(0x8041eb90);
-                if(r.word(b+4)!=4){r.pending=fn;return false;}
-                BattleSequenceManagerServices manager;manager.memory=nativeBattleActorServices(r.vm).memory;
-                packedBattleSequenceManager(b,manager); // Source bank4 default, no dispatch.
-                return true;
+                BattleSequenceDispatchServices manager;manager.actors=nativeBattleActorServices(r.vm);manager.user=&r;
+                manager.request=[](void* self,const BattleSequenceDispatchRequest& q){
+                    auto& runtime=*static_cast<TrioAttackRuntime*>(self);
+                    if(q.battle!=Battle){runtime.pending=q.function;return false;}
+                    if(q.function==0x8011efd8)return runtime.resumeSourcePinch(q.battle,q.mode);
+                    if(q.function==0x8011c510)return runtime.resumeSourceTurn(q.battle);
+                    runtime.pending=q.function;return false;
+                };
+                if(resumePackedBattleSequenceManager(manager,r.sourceSequence))return true;
+                if(!r.pending)r.pending=r.sourceSequence.pending()?r.sourceSequence.pending():fn;
+                return false;
             }
             if(fn==0x800fa5b0) {
                 r.readPad(captured+0x1d1c,r.privatePad);r.privatePad.update(r.completionSample);

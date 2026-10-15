@@ -406,6 +406,7 @@ private:
     Texture sharedPartnerTexture;std::shared_ptr<const BattlePoseResource> sharedPartnerAnimations;float sharedPartnerUVScale=1;
     Texture sharedFranklyTexture;std::shared_ptr<const BattlePoseResource> sharedFranklyAnimations;float sharedFranklyUVScale=1;
     Texture trioFranklyTexture;std::shared_ptr<const BattlePoseResource> trioFranklyAnimations;float trioFranklyUVScale=1;
+    Texture trioEnemyTexture;std::shared_ptr<const BattlePoseResource> trioEnemyAnimations;float trioEnemyUVScale=1;
     Texture* finishingAnimationTextureOwner(const std::shared_ptr<const BattlePoseResource>&,float& uvScale);
     Texture professorMapTexture;
     Texture messageIconTexture;
