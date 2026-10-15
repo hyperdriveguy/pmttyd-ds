@@ -12984,3 +12984,75 @@ Newer Trio Turn/audience/pinch/sequence/action integration, enemy/recovery/HitN6
 resources and field/NPC/animation/render/raw-RAM/release additions still need
 their own inline audit. Inventory hashes are review aids, not semantic coverage
 or full-game proof. The full documentation/remake goal remains active.
+
+
+## 2026-10-15 — complete retained Phase/Move/Act source parents
+
+Commits0dc921d0 and d7294cb0 add the complete original Phase8011c2b4/9c,
+Move8011bc24/690 and Act8011b2dc/8ac parents and compose them in Trio's source
+Turn→Phase→Move→Act path. Parent scans, captures, ordered mutations, immediate
+redispatch and actual source returns survive unavailable original children.
+State8 selects/initializes the action and returns; Act starts on the NEXT Move
+invocation. Older Move/phase-table contracts now reflect that original branch.
+Both15-state dispatch tables and all original child sites are source-pinned.
+
+Native providers bind actual VM unit/status/data/flag reads, source phase-table
+builder/Majinai helpers, real event constructors/IDs/readiness/conclusion and
+retained reservation/reaction barriers. Phase/Move shares real common Turn
+providers with a stable adapted request identity; Act owns separate barriers.
+Complete command-init80125380/18 writes supplied B171c=0 before the fresh
+Bef4|80 store, without inventing UI allocation. Its six original instructions
+are independently pinned. Root correction adds full audience-lifecycle observer
+identity checks to held Phase/Move, with replacement/reentry/no-replay tests.
+
+This composes genuine parents; it does not activate ordinary source Main ticks.
+Legacy active cadence remains until original entry/scheduling and required
+children are admitted. Missing Nice, audience, camera-speed, menu/window/message,
+status-infliction, BreakSlot and nonzero inventory-removal owners hold at their
+real calls. No legacy handoff, scene bool or vector stands in for their completion.
+Physical controls/original menu style/lower scene are preserved; optional audience
+tapping remains unbound to a completed current camera/visibility/lifetime pass.
+No original dialogue, source asset or story event was rewritten.
+
+Exact validation: artifacts/battle-phase-act-validation/source, fixed committed
+fd372e63 plus15 owned paths;6129 source/asset/license hashes match after gates.
+Prior accepted UI/facing cache remains unchanged; modified converter preflight
+matches its source authority. Full make test exits0:441/441 C++ in50.19s,
+212/212 Python in38.436s, zero skipped. Full
+make all -o assets-ready -j4 SOUNDTRACK=gamecube exits0. Existing compiler/Pillow
+warnings remain. Independent read-only ISO verifiers pass: Act9 whole bodies,
+555 instructions/84 calls/64 retained child sites/15 table entries/3 physical-X
+callers; Phase/Move10 whole bodies/60 linked calls/15 entries/17 boundary pins.
+Frozen doc check1483 Markdown files, zero broken links.
+
+A separate minimal ARMv6k CPU binary executes BOTH full controller test bodies,
+including all source states, child holds and owner replacement. Actual isolated
+SD marker records PASS Phase/Move and PASS Act. Production7 source units and
+test inputs are hash-pinned. Private adaptation renames the two test mains,
+adds explicit return0 to renamed Phase main, and uses128KiB test stack; no
+assertion is removed. Initial probe-only build used obsolete SDK SD names;
+using installed archiveMountSdmc/archiveUnmount fixes that fixture. Normal source,
+main and build remain unchanged; no probe instrumentation installed in the game.
+Probe hash d35135f950ea8e15e26197fc558d96d5f9ff9acc1655cd3fc5260f95927191f4.
+
+Copied normal artifacts/ttyd-battle-phase-act-normal.3dsx SHA256
+0d60697e628bd888a7d6ebb6c9e438d649d25e5e5483a6e1fc143cfd4ac2f6e5.
+Separate isolated Azahar CPU60s and normal35s checks exit0; reviewed CPU capture
+shows PASS and normal capture shows original storybook/no asset-error screen.
+These are CPU/source-contract and startup checks, not executed-PPC comparison,
+active battle/HUD/effect GPU/tap acceptance or hardware/normal-stack evidence.
+No user's emulator profile/save touched. Every build/test/smoke handle is terminal.
+Manifest records input/cache/commands/log/marker/capture hashes. Thirteen owned
+postimages, including Trio, match tested source exactly; CMake and behavior index
+also preserve independent concurrent additions as recorded exact diffs. Newer
+concurrent source/working edits are excluded; no joint moving-HEAD gate claim.
+No ISO/extracted pack/binary committed.
+
+Next integrate the frozen complete ActMenu/UI, CommandInput/target and typed
+PresentItem batches, plus original Hit draw/texture resources, under full native
+gates. Workers continue actual ClassTable/US label ownership, atomic command-pose
+and retained weapon menu, and genuine ordered Hit GPU replay. Then bind original
+battle entry/active source cadence, actual effects/frame/camera owners and physical
+X; optional harmful-holder taps require the independent completed lower-screen
+publication and one-shot consumption. Full tutorial/real battle/return and hardware
+verification remain unfinished; goal stays active.
