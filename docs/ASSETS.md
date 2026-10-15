@@ -1576,3 +1576,16 @@ teardown and RNG lifecycle remains ignored under artifacts/npc-room-teardown/
 and artifacts/field-rng-lifecycle/; the ISO is read-only. No original assets,
 inspection ELF/listings or compiled packs are committed. Existing Nintendo/
 Intelligent Systems local-use/no-redistribution provenance remains unchanged.
+
+## NPC/object documentation validation cache (2026-10-14)
+
+artifacts/npc-object-code-documentation-validation/source privately copies the
+accepted field-entry documentation RomFS/evidence. Door-data.pmevt/json,
+battle-sequence-entry.pmevt/json and recovery-effect.bin matched parent manifest
+SHA256 values before copying; the new manifest records parent provenance and
+accepted hashes. Mutable message-icons/material-light/field-native/field-map-npc/
+door-data evidence directories are private copies; other large local-assets
+inputs are shared read dependencies. No new ISO read, extraction, conversion,
+editable import or shared pack write occurred. Original Nintendo/Intelligent
+Systems rights remain reserved; these private validation copies confer no new
+license or redistribution rights. No original binary/ISO bytes were committed.

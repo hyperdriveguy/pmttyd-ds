@@ -135,7 +135,7 @@ Vertex bindings/visibility ranges retain the converted original hierarchy.
 
 Partner storage is a big endian 0x188-byte source-sized record. The registry
 admits two actor owners and five CPU pose owners for the current slice. Signed
-Mario index bytes select the first live non-hidden partner. Control mask
+Mario index bytes select the first live partner without main flag 8. Control mask
 0x20000000 is distinct from Mario's wrapping key depth. Entry stores camera,
 owner, kind and original definition-table identity before later pose/placement
 work; zero allocation alone does not initialize a partner.

@@ -62,7 +62,7 @@ int32_t enterPackedNpc(uint32_t name,uint32_t model,const PackedNpcRegistryServi
  store(actor+0xe0,x);store(actor+0xe4,y);store(actor+0xe8,word(0x802c120c));
  store(actor+0x154,one);store(actor+0x108,0);store(actor+0x10c,0x8041fd74);
  // GP timestamp words+38/+3c publish to actor+198/+19c in source order.
- // Event IDs+188/+18c start0; pose-related defaults+110=-1,+1f4=4,+317=1.
+ // Fields+188/+18c start0; source defaults+110/+114=-1,+1f4=4,+317=1.
  const auto gp=word(GpPointer);x=word(gp+0x38);y=word(gp+0x3c);store(actor+0x19c,y);store(actor+0x198,x);
  store(actor+0x18c,0);store(actor+0x188,0);store(actor+0x1cc,one);store(actor+0x1d0,zero);store(actor+0x1c8,one);
  store(actor+0x110,0xffffffff);store(actor+0x114,word(0x8041fc6c));store(actor+0x1f4,4);store(actor+0x2f8,0);m.storeByte(m.user,actor+0x317,1);

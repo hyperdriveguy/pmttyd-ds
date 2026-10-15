@@ -8525,3 +8525,43 @@ the normal Game room transition. Build the real retained npcEnt setup world with
 one session RNG and source init/regular events. Original field Main/facing/query/
 collision/display, full events/objects/areas/story and hardware acceptance remain
 required; this is still the early Rogueport slice, not a complete remake.
+
+## 2026-10-14 — NPC, partner and map-object ownership documented
+
+Added inline comments to 20 C++ implementation/header files covering packed NPC
+Init/Entry/lookup and setup cursors, CPU pose resources, actor catalog/talk,
+interaction/paper facing, save-object callbacks/clock publication, stage map
+matrices and typed partner storage/appearance. The [NPC/object guide](code/npc-objects.md)
+explains guest layouts/source sentinels/native admission, first versus retry
+phases, captured script/owner order, duplicate-name allocation, candidate versus
+nearby actor publication, semantic contact caching and distinct unit boundaries.
+Unknown NPC fields stay identified by offsets rather than invented meanings;
+partner word0 mask8 is documented by its exact exclusion test. All 20 files
+preserve executable tokens. Main documentation commit 75e8e076; final wording
+clarifications accompany these validation notes.
+
+Validation freezes baseline 1bef7be3b1dcf345db5bdf995055a1200bac8832 plus documentation in
+artifacts/npc-object-code-documentation-validation/source. Audited 3585 tracked
+files: zero unexpected changes; 22 documented files match live/frozen hashes.
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test passes 354/354 C++ in 52.38s and
+199/199 Python in 43.491s, zero skipped. make all -o assets-ready -j4
+SOUNDTRACK=gamecube exits 0. A late comments-only registry clarification was
+rebuilt with field_npc_registry_tests and field_npc_registry_owner_tests; both
+fixtures pass (registry-final.log). Native final incremental build also exits 0
+(native-final.log). Source/binary/log hashes and exact checks are in manifest.json.
+These checks cover this snapshot, not concurrent implementation changes.
+
+Reused accepted field-entry documentation RomFS/evidence inputs. Door/sequence/
+recovery products matched recorded parent hashes before private copying; mutable
+evidence directories were copied privately. Other large local-assets inputs
+remain shared read dependencies. No extraction, conversion, editable import or
+shared pack write; native regeneration deliberately skipped. Existing compiler/
+Pillow warnings remain. No emulator/profile/save changes or new measured
+hardware/timing/floating-point/pixel fidelity claims. See [asset notes](ASSETS.md).
+
+Next: field_map_npc assets/parser/history/bootstrap, field_npc_registry_owner
+and field_area_event lifecycle; field items/quests/encounter services, remaining
+battle, message/
+inventory/story, effect/audio and port tooling. Re-audit concurrent additions to
+already covered code. Port-wide documentation and the remake remain incomplete;
+the documentation goal stays active.
