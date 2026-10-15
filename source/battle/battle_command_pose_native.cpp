@@ -5,6 +5,8 @@
 #include "event_native_runtime.hpp"
 #include <array>
 #include <cstdlib>
+// Source field offsets/masks in these notes are hex; counts/item IDs and
+// byte sizes are decimal unless prefixed. Addresses are original source tokens.
 namespace ttyd {
 bool nativeBattleCommandPose(EventNativeRuntime& runtime,uint32_t unit){
  BattleCommandPoseServices s;s.memory=nativeBattleActorServices(runtime);s.user=&runtime;
@@ -12,13 +14,22 @@ bool nativeBattleCommandPose(EventNativeRuntime& runtime,uint32_t unit){
  s.copyName=[](void* p,uint32_t part,uint32_t name){
   auto& memory=static_cast<EventNativeRuntime*>(p)->memory;
   if(!name||uint64_t(part)+0x208>0x100000000ULL)return false;
+  // Part1c4 is64-byte name storage; contiguous44hex bytes also includes
+  // the following flags through208. Reject32-bit wrap before any mutation.
   const uint32_t destination=part+0x1c4;
+  // Native preflight accepts1..63 non-NUL bytes plus terminator; empty,
+  // missing or unterminated names hold without guest writes. Original names
+  // remain borrowed immutable source bytes,not invented pose strings.
   std::array<uint8_t,64> admitted{};unsigned size=0;
   for(;size<admitted.size();++size){
    if(uint64_t(name)+size>0xffffffffu||!memory.readByte(name+size,admitted[size]))return false;
    if(!admitted[size])break;
   }
   if(!size||size==admitted.size())return false;
+  // Exclude overlap of ACTUAL copied spans including NUL. Full writable
+  // destination+flags must be one admitted RAM span; caller keeps mappings
+  // fixed for subsequent original reread/write pairs. Losing that invariant
+  // aborts instead of exposing a retry-safe partially copied source name.
   const uint64_t end=uint64_t(name)+size+1,outputEnd=uint64_t(destination)+size+1;
   if(uint64_t(name)<outputEnd&&uint64_t(destination)<end)return false;
   if(!memory.contiguousRam(destination,0x44))return false;

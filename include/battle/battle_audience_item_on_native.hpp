@@ -3,6 +3,8 @@
 #include <array>
 #include <optional>
 namespace ttyd {
+// Actual original signatures: index only,or index plus XYZ. Private native
+// output cells are disjoint; this admits no arbitrary guest-output alias domain.
 enum class BattleAudiencePrivateOutputs { Index, IndexAndPosition };
 struct BattleAudienceNativeItemOn {
   int32_t index=-1;

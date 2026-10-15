@@ -3,7 +3,11 @@
 #include <cstring>
 #include <limits>
 #include <map>
+// Source field offsets/masks in these notes are hex; counts/item IDs and
+// byte sizes are decimal unless prefixed. Addresses are original source tokens.
 namespace ttyd {
+// All seven source class keys remain original; list order is mapping metadata,
+// not ClassTable row order. MessageAssets supplies actual room/global lookup.
 const std::array<BattleClassMenuMessageKey, 7> &
 originalBattleClassMenuMessageKeys() {
   static constexpr std::array<BattleClassMenuMessageKey, 7> keys{
@@ -16,6 +20,9 @@ originalBattleClassMenuMessageKeys() {
        {0x802f008c, "btl_cmd_act_lecture_end"}}};
   return keys;
 }
+// Nonzero guest base,complete immutable snapshot and nonwrapping32-bit bank
+// are native admission. Copy original bytes/NUL/control tokens,not rewritten
+// prose. Only actual source-pointer aliases share a mapped guest address.
 std::shared_ptr<BattleClassMenuMessages>
 BattleClassMenuMessages::map(EventAddressSpace &memory, uint32_t base,
                              std::shared_ptr<const MessageAssets> resources) {
@@ -51,6 +58,8 @@ BattleClassMenuMessages::map(EventAddressSpace &memory, uint32_t base,
     const auto *first = reinterpret_cast<const uint8_t *>(text);
     bytes.insert(bytes.end(), first, first + length);
   }
+  // Exact end2^32 is allowed by wider arithmetic; no pointer beyond the bank
+  // is published. All missing-key/size checks precede the single registration.
   if (bytes.empty() || bytes.size() > std::numeric_limits<uint32_t>::max())
     return {};
   owner->size_ = uint32_t(bytes.size());
@@ -72,6 +81,8 @@ BattleClassMenuMessages::lookup(const EventAddressSpace &memory,
       return pointers_[i];
   return {};
 }
+// Strong wrapper pin keeps lookup context/resources alive; VM owns registered
+// RAM separately until teardown. Destruction here deliberately never unmaps it.
 std::shared_ptr<const BattleActionClassMessageBinding>
 BattleClassMenuMessages::binding(const EventAddressSpace &memory) const {
   if (&memory != memory_)

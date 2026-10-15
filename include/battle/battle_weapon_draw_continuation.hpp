@@ -8,6 +8,9 @@ struct BattleWeaponDrawSlot {
  std::optional<uint32_t> label,enabled,cost,bp;
  std::optional<uint16_t> icon;
 };
+// Five class cells are the original private-array domain; seven weapon cells
+// include the scrolling buffer row. Unknown outputs stay absent,including
+// class state1's unwritten position. Borrowers copy before invocation ends.
 struct BattleWeaponDrawOutput {
  std::optional<float> helpX,helpY;
  std::vector<BattleActDrawSlot> classes;
@@ -36,6 +39,9 @@ struct BattleWeaponDrawServices {
  std::optional<float> (*fma)(void*,float,float,float)=nullptr;
  std::optional<BattleActMatrix> (*identity)(void*)=nullptr;
 };
+// Pins wrapper camera/B and all providers,but the source Win/Common bodies
+// capture actual globals separately. current proves the real queued pass/UI;
+// observed loss stales until reset. Reset does not undo source prefix writes.
 class BattleWeaponDrawCursor {
 public:
  BattleWeaponDrawCursor();~BattleWeaponDrawCursor();

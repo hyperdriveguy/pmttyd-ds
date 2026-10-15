@@ -1,6 +1,8 @@
 #include "battle_menu_audience_native.hpp"
 #include "battle_audience_item_on.hpp"
 #include "battle_audience_item_on_native.hpp"
+// Source field offsets/masks in these notes are hex; counts/item IDs and
+// byte sizes are decimal unless prefixed. Addresses are original source tokens.
 namespace ttyd {
 namespace {
 bool same(const BattleMenuAudienceNativeServices& a,const BattleMenuAudienceNativeServices& b){
@@ -37,6 +39,9 @@ std::optional<bool> resumeNativeBattleMenuAudience(const BattleMenuAudienceNativ
  for(;;){
   if(!c.valid())return {};
   switch(c.phase){
+  // B captured BEFORE Trigger400. Block Bef4 mask40000000,then actual
+  // Mario U104 mask10. Engaged trigger/Mario0 are real source values; no
+  // absent-unit fallback or synthetic X selection replaces original accesses.
   case 0:c.battle=currentBattleAddress(s.actors);c.phase=1;break;
   case 1:{
    c.pending=0x8011a06c;if(!s.trigger)return {};
@@ -55,6 +60,8 @@ std::optional<bool> resumeNativeBattleMenuAudience(const BattleMenuAudienceNativ
    // GetItemOn just published the original selected slot. Preserve the native
    // private result independently of any later cache/global changes.
    c.phase=4;break;
+  // Retain chosen private index across fresh-global SetTarget and held End.
+  // Query/cache writes and target effects are not replayed when End waits.
   case 4:
    c.pending=0x801a2bec;packedBattleAudienceSetTarget(c.selected,s.actors);
    c.phase=5;break;
@@ -63,6 +70,9 @@ std::optional<bool> resumeNativeBattleMenuAudience(const BattleMenuAudienceNativ
    const auto complete=s.endActMenu(s.user,c.battle);
    if(!c.valid() || !complete)return {};
    c.phase=6;break;}
+  // After actual End, fresh retained-B previous type ->1c60,type1c5c=11,
+  // Input171c=29,then Bef4 OR4. OffLight is original return-only leaf,
+  // not proof of a GPU change. A completed true is source interruption only.
   case 6:{
    const auto previous=m.word(m.user,c.battle+0x1c5c);
    m.storeWord(m.user,c.battle+0x1c60,previous);

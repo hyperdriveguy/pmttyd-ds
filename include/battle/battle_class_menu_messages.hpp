@@ -6,6 +6,8 @@
 #include <optional>
 namespace ttyd {
 class EventAddressSpace;
+// Original msgSearch DOL key pointer paired with exact US message ID.
+// These addresses are source identities,not host C strings or English labels.
 struct BattleClassMenuMessageKey {
   uint32_t source;
   const char *id;
@@ -18,6 +20,9 @@ originalBattleClassMenuMessageKeys();
 class BattleClassMenuMessages
     : public std::enable_shared_from_this<BattleClassMenuMessages> {
 public:
+  // Build all seven original NUL-terminated entries before one RAM mapping.
+  // Binding pins wrapper/resources; actual VM must outlive calls and retain
+  // this immutable registration. Same VM pointer is not an ABA detector.
   static std::shared_ptr<BattleClassMenuMessages>
   map(EventAddressSpace &, uint32_t guestBase,
       std::shared_ptr<const MessageAssets>);

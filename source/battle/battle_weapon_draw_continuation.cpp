@@ -18,6 +18,9 @@ bool same(const BattleWeaponDrawServices& a,const BattleWeaponDrawServices& b){
 }
 struct MathInput{uint32_t fn=0;int32_t mode=0,step=0,duration=0;float a=0,b=0,c=0;uint32_t axis=0;std::array<float,3> xyz{};BattleActMatrix left{},right{};};
 }
+// Offsets/masks in notes are hex; row counts/states/durations are decimal.
+// Win captures battle/work/cursor/U/selected weapon; Common separately captures
+// commonB/w/cursor/class cursor. Preserve both sets when source globals change.
 struct BattleWeaponDrawCursor::State {
  BattleWeaponDrawServices services;uint32_t camera=0,passedBattle=0,pc=0,battle=0,work=0,weaponCursor=0,unit=0,selectedWeapon=0;
  uint32_t commonB=0,w=0,cursor=0,classCursor=0,index=0,row=0,rowState=0,visible=0,oldTop=0,count=0,pending=0;
@@ -34,6 +37,9 @@ struct BattleWeaponDrawCursor::State {
  float real(uint32_t a)const{return scalar(word(a));}
  float constant(int32_t n)const{return real(0x80427440u+uint32_t(n));}
  double bias()const{const auto hi=word(0x802ef780),lo=word(0x802ef784);const uint64_t n=(uint64_t(hi)<<32)|lo;double d;std::memcpy(&d,&n,8);return d;}
+ // Fresh GP->word4 rate: wrap32(rate*n),then signed /60. This is source
+ // arithmetic,not a measured native frame duration. SDK prepare captures once
+ // per child,including state1 translation prepared before its later source PC.
  int32_t duration(uint32_t n)const{return sw(word(word(0x80415fd0)+4)*n)/60;}
  template<class Build>void prepare(uint32_t fn,Build build){pending=fn;if(!math){math=MathInput{};math->fn=fn;build(*math);}}
  template<class Build>std::optional<float> interpolate(Build build){prepare(0x80006c8c,build);const auto& q=*math;const auto& p=services.math;if(!p.interpolate)return {};auto v=p.interpolate(p.user,q.mode,q.step,q.duration,q.a,q.b);if(!valid()||!v)return {};
@@ -54,6 +60,10 @@ struct BattleWeaponDrawCursor::State {
  std::optional<int32_t> truncate(uint32_t site){prepare(site,[&](auto&q){q.a=real(work+0x98);metadataCount=word(weaponCursor+8);});if(!services.truncate)return {};const auto v=services.truncate(services.user,math->a);if(!valid()||!v)return {};
   math.reset();return v;}
  void subStates(uint32_t state){for(uint32_t i=0;i<7;++i){store(w+0xc0+4*i,state);store(w+0xdc+4*i,0);}}
+ // CommonSub1: with six visible rows,wraps use modes30/40 and endpoints
+ // count-6<->0; adjacent top +/-1 uses10/20. Selection exceptions1/5 and
+ // all fresh count/top reads are source gates,not a generic scroll delta.
+ // Every transition resets all seven submenu state/timer pairs.
  void sub1(){
   if(visible==6){const auto n=word(cursor+8);
    if(sw(n)>6&&oldTop==n-6&&word(cursor+4)==0&&word(cursor)!=1){
@@ -92,6 +102,10 @@ bool resumePackedBattleWeaponQueuedDraw(uint32_t camera,uint32_t battle,const Ba
   c.unit=battleRegistryUnit(c.battle,sw(actor),s.math.memory);
   const auto selection=c.word(c.weaponCursor),rows=c.word(c.work+8);c.selectedWeapon=c.word(rows+28*selection);c.pc=0x80116e98;continue;
  }
+ // Common signed visible=min(count,6),then ordered top corrections; negative
+ // counts retain source arithmetic. Mode table803636e8:0 opening,2 steady,
+ // 10/20 adjacent and30/40 wrap. Real branches publish W14=1 EARLY; that
+ // input-ready prefix never acknowledges the complete queued/raster callback.
  case 0x80116e98:{
   c.commonB=currentBattleAddress(s.math.memory);c.w=c.word(c.commonB+0x1c78);const auto actor=c.word(c.commonB+0x420);c.cursor=c.word(c.w);
   const auto u=battleRegistryUnit(c.commonB,sw(actor),s.math.memory);
@@ -120,6 +134,9 @@ bool resumePackedBattleWeaponQueuedDraw(uint32_t camera,uint32_t battle,const Ba
   }
   c.store(c.w+0x1c,0);c.index=0;c.pc=0x8011741c;continue;
  }
+ // Class arrays:W20 flags,W34 state,W48 timer,W84 ordinal,all stride4.
+ // State0 enters,1 steady,10 shrinks ring,11 hides. Five private class slots
+ // are native admission,not a new source count clamp or a sixth fabricated cell.
  case 0x8011741c:
   c.count=c.word(c.classCursor+8);if(sw(c.index)>=sw(c.count)){c.subIndex=0;c.pc=0x801175f4;continue;}
   // Original parent private arrays contain five class entries. An invalid
@@ -135,6 +152,9 @@ bool resumePackedBattleWeaponQueuedDraw(uint32_t camera,uint32_t battle,const Ba
   if(c.rowState==11)c.store(c.row+0x20,c.word(c.row+0x20)&~1u);
   c.nextClass();continue;
  case 0x80117194:{const auto v=c.center();if(!v)return false;c.vector=*v;c.pc=0x801171bc;continue;}
+ // Entry uses source mode4 interpolation to X-60/Y55 with fresh rate*12/60
+ // durations,translation X offset20,then mode0 phase0..360 (one subtraction
+ // only). Timer>=3 exposes W1c; incremented timer STRICTLY>duration selects1.
  case 0x801171bc:{const auto v=c.interpolate([&](auto&q){q.mode=4;const auto gp=c.word(0x80415fd0);q.a=c.vector[0];q.duration=sw(c.word(gp+4)*12)/60;q.b=c.constant(-20464);q.step=sw(c.word(c.row+0x48));});if(!v)return false;c.vector[0]=*v;c.pc=0x801171e8;continue;}
  case 0x801171e8:{const auto v=c.interpolate([&](auto&q){q.mode=4;q.b=c.constant(-20460);q.a=c.vector[1];q.duration=c.duration(12);q.step=sw(c.word(c.row+0x48));});if(!v)return false;c.vector[1]=*v;c.pc=0x80117208;continue;}
  case 0x80117208:{const auto v=c.matrix(0x8029e230,[&](auto&q){q.xyz={sourceAdd(c.constant(-20468),c.vector[0]),c.vector[1],c.vector[2]};});if(!v)return false;c.output.classes[c.index].matrix=*v;c.pc=0x80117230;continue;}
@@ -147,6 +167,9 @@ bool resumePackedBattleWeaponQueuedDraw(uint32_t camera,uint32_t battle,const Ba
  }
  case 0x801172c4:{const auto v=c.matrix(0x8029e230,[&](auto&q){q.xyz={c.constant(-20440),c.constant(-20460),c.constant(-20500)};});if(!v)return false;c.output.classes[c.index].matrix=*v;c.output.classes[c.index].parameter=c.constant(-20476);c.store(c.w+0x1c,1);c.nextClass();continue;}
  case 0x80117330:{const auto v=c.center();if(!v)return false;c.vector=*v;c.pc=0x80117340;continue;}
+ // Ring uses original PI*angleDegrees/180 and offsetY as source Z. Shrink
+ // is -fma(.1,timer,-1),not a preclamped scale: factor<=0 marks state11
+ // but this invocation still computes scale/translation/concat for that row.
  case 0x80117340:{const auto v=c.ringOffset();if(!v)return false;c.offset=*v;
   c.vector[0]=sourceAdd(c.vector[0],c.offset[0]);const auto d=c.bias();const auto slope=c.constant(-20456),one=c.constant(-20452);c.zero=c.constant(-20500);
   c.vector[1]=sourceAdd(c.vector[1],c.offset[1]);c.vector[2]=c.offset[1];
@@ -157,6 +180,11 @@ bool resumePackedBattleWeaponQueuedDraw(uint32_t camera,uint32_t battle,const Ba
  case 0x801173c0:{const auto v=c.matrix(0x8029e2b0,[&](auto&q){q.a=c.factor;q.b=c.factor;q.c=c.constant(-20452);});if(!v)return false;c.scale=*v;c.pc=0x801173d4;continue;}
  case 0x801173d4:{const auto v=c.matrix(0x8029e230,[&](auto&q){q.xyz=c.vector;});if(!v)return false;c.translation=*v;c.pc=0x801173e4;continue;}
  case 0x801173e4:{const auto v=c.matrix(0x8029dd64,[&](auto&q){q.left=c.translation;q.right=c.scale;});if(!v)return false;c.output.classes[c.index].matrix=*v;c.output.classes[c.index].position=c.vector;c.output.classes[c.index].parameter=c.constant(-20500);c.store(c.row+0x48,c.word(c.row+0x48)+1);c.nextClass();continue;}
+ // Seven physical submenu slots:state0 hidden,1 staggered entry,2 stable
+ // (buffer slot6 hidden),10/20/30/40 scrolling (buffer enabled). Alpha bytes
+ // W114+i=255; state1 negative timers delay rotation,axis121 is ASCII y.
+ // Wrap duration=12+signed(count-6)/2; adjacent duration12. Source scroll W98
+ // is written by EACH reached row interpolation,not once per native frame.
  case 0x801175f4:
   if(c.subIndex>=7){c.rowOrdinal=0;c.pc=0x80115e1c;continue;}
   c.subRow=c.w+4*c.subIndex;c.subState=c.word(c.subRow+0xc0);
@@ -183,6 +211,10 @@ bool resumePackedBattleWeaponQueuedDraw(uint32_t camera,uint32_t battle,const Ba
  case 0x801175bc:{const auto v=c.interpolate([&](auto&q){q.a=c.real(c.w+0x9c);q.b=c.real(c.w+0xa0);q.mode=4;q.duration=sw(c.slotDuration);q.step=sw(c.word(c.subRow+0xdc));});if(!v)return false;
   c.store(c.w+0x98,bits(*v));c.store(c.subRow+0xdc,c.word(c.subRow+0xdc)+1);if(sw(c.word(c.subRow+0xdc))>sw(c.slotDuration)){c.store(c.subRow+0xc0,2);c.store(c.subRow+0xdc,0);}c.nextSub();continue;
  }
+ // Metadata independently captures live Win W98 AND cursor count before each
+ // fctiwz. Signed wrapped rank selects28-byte records; skipped cells stay
+ // unknown. Label/enabled/cost use fresh W8 rows; icon uses captured B menu.
+ // Cost gets captured Win U/weapon; BP reloads row weapon AFTER cost child.
  case 0x80115e1c:{
   if(c.rowOrdinal>=7){c.pc=0x80115ef4;continue;}
   const auto scroll=c.truncate(0x80115e1c);if(!scroll)return false;
@@ -196,9 +228,16 @@ bool resumePackedBattleWeaponQueuedDraw(uint32_t camera,uint32_t battle,const Ba
  case 0x80115e84:{const auto v=c.request(0x80126968,[&](auto&q){q.arguments[q.count++]=c.unit;q.arguments[q.count++]=c.costWeapon;});if(!v)return false;c.output.weapons[c.rowOrdinal].cost=*v;c.pc=0x80115ea0;continue;}
  case 0x80115e94:c.output.weapons[c.rowOrdinal].cost=0;c.pc=0x80115ea0;continue;
  case 0x80115ea0:{const auto weapon=c.word(c.word(c.work+8)+c.rowOffset);c.output.weapons[c.rowOrdinal].bp=weapon?c.byte(weapon+0x12):0;++c.rowOrdinal;c.pc=0x80115e1c;continue;}
+ // Actual child order:MainIcon,SubIcon,cursor-window,help. Same owned private
+ // output object is borrowed through holds; children own complete partial work.
+ // Cursor window retains three raw original words at802ef750/754/758.
  case 0x80115ef4:{const auto v=c.request(0x80119abc,[&](auto&q){q.arguments[q.count++]=c.work;q.arguments[q.count++]=c.battle+0x1724;q.output=&c.output;});if(!v)return false;c.pc=0x80115f20;continue;}
  case 0x80115f20:{const auto v=c.request(0x80119024,[&](auto&q){q.arguments[q.count++]=c.work;q.arguments[q.count++]=0;q.arguments[q.count++]=0;q.output=&c.output;});if(!v)return false;c.pc=0x80115f48;continue;}
  case 0x80115f48:{const auto v=c.request(0x80117a6c,[&](auto&q){q.cursorWindow=std::array<uint32_t,3>{c.word(0x802ef750),c.word(0x802ef754),c.word(0x802ef758)};});if(!v)return false;c.pc=0x80115f4c;continue;}
+ // Help uses earlier captured selected weapon. Nonzero item field indexes
+ //40-byte itemData at803108a8; null/special80365488 instead reloads cursor
+ // and row item ID. Other weapons use their own+c help. Zero key skips help.
+ // Help XY source constants are -200/-100,not native screen reflow policy.
  case 0x80115f4c:{
   if(c.selectedWeapon){const auto item=c.word(c.selectedWeapon+8);
    if(item)c.helpKey=c.word(0x803108a8+40*item+8);

@@ -1,6 +1,8 @@
 #include "battle_present_item_native.hpp"
 #include "battle_packed_recovery.hpp"
 #include <cstring>
+// Source field offsets/masks in these notes are hex; counts/item IDs and
+// byte sizes are decimal unless prefixed. Addresses are original source tokens.
 namespace ttyd {
 namespace {
 int32_t integer(uint32_t n){int32_t v;std::memcpy(&v,&n,4);return v;}
@@ -46,6 +48,9 @@ std::optional<int32_t> resumeNativeBattlePresentItem(const BattlePresentItemNati
  for(;;){
   if(!c.valid())return {};
   switch(c.step){
+  // B captured before separate fresh-global item/target queries. Signed item
+  //>=339 or target outside[-1,63] excludes; actual unit lookup still precedes
+  // item0/negative rejection. Only123/124 take HP/FP recovery,not generic menu.
   case Step::Entry:{
    c.battle=currentBattleAddress(s.actors);
    c.item=integer(c.word(currentBattleAddress(s.actors)+0x1603c));
@@ -54,6 +59,9 @@ std::optional<int32_t> resumeNativeBattlePresentItem(const BattlePresentItemNati
    if(target< -1||target>=64)return finish(0);
    c.unit=battleRegistryUnit(c.battle,target,s.actors);
    if(c.item==0)return finish(0);
+   // Generic item:pending1 (2 for Input12/13),M4 maskffeeeeee,previous
+   // type1c5c->1c60,type12/Input29. Return1 without clearing present item;
+   // later source execution owns it. No recovery/effect is fabricated here.
    if(c.item!=123&&c.item!=124){
     if(c.item<0)return finish(0);
     m.storeByte(m.user,c.battle+0x1c74,1);
@@ -66,6 +74,8 @@ std::optional<int32_t> resumeNativeBattlePresentItem(const BattlePresentItemNati
    }
    c.step=Step::Recovery;continue;
   }
+  // Original HP/FP +1 runs once BEFORE later math/effect holds. FP preserves
+  // actual partner/Mario resource ownership through the shared source helper.
   case Step::Recovery:
    if(c.item==123)recoverPackedBattleHp(c.unit,1,s.actors);else recoverPackedBattleFp(c.unit,1,s.actors);
    c.step=Step::Position;continue;
@@ -79,6 +89,9 @@ std::optional<int32_t> resumeNativeBattlePresentItem(const BattlePresentItemNati
    c.scale=scalar(c.word(c.unit+0x114));c.constant=scalar(c.word(0x804225f8));
    c.step=Step::Convert;continue;
   }
+  // Signed heightce encoded43300000:(height XOR80000000),bias802efe78/7c.
+  // Actual subtract-double/single rounding precedes decoding private XYZ;
+  // source scale U114 and constant225f8=5 were captured before this hold.
   case Step::Convert:{
    c.pending=c.item==123?0x801200f8:0x80120178;
    if(!s.subtractDoubleSingle)return {};
@@ -100,6 +113,9 @@ std::optional<int32_t> resumeNativeBattlePresentItem(const BattlePresentItemNati
    const auto value=s.add(s.user,c.y,c.offset);if(!c.valid()||!value)return {};
    c.effectPosition[1]=*value;c.position[1]=bits(*value);c.step=Step::Effect;continue;
   }
+  // Whole effRecoveryEntry(kind0 HP/1 FP,amount1,same owned XYZ). Missing
+  // child holds after recovery; acknowledgment alone enables fresh-global
+  // present-item1603c=0 and completed return0. Never replay recovery on wait.
   case Step::Effect:
    c.pending=0x8014335c;
    if(!s.effect)return {};

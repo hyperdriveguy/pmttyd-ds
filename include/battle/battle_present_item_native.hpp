@@ -17,6 +17,9 @@ struct BattlePresentItemNativeServices {
  // source return value. The same owned position survives every held call.
  bool (*effect)(void*,uint32_t,int32_t,const std::array<float,3>&)=nullptr;
 };
+// Captures actual recovery and private XYZ/math/effect prefixes exactly once.
+// Stable callbacks do not suffice without the real allocation lease; observed
+// loss poisons until reset. Reset cannot undo HP/FP or prior source stores.
 class BattlePresentItemNativeCursor {
 public:
  BattlePresentItemNativeCursor();~BattlePresentItemNativeCursor();

@@ -190,3 +190,8 @@ private-output knowledge, invocation cadence and precise child/read frontiers.
 [Act sequence](battle-act-sequence.md) and [ActMenu/class UI](battle-act-menu-continuation.md)
 explain retained source PCs, event/status/count paths, menu subroutines, distinct
 allocation layouts and audience admission.
+
+[Queued weapon drawing](queued-weapon-draw.md) explains private slots, source
+scroll/state/math and ordered child frontiers. [Native menu support](native-menu-support.md)
+explains audience queries, physical X, immutable original labels, pose-copy admission
+and retained PresentItem recovery/effect ownership.

@@ -13,6 +13,9 @@ struct BattleMenuAudienceNativeServices {
   std::optional<uint32_t> (*mario)(void*,uint32_t battle)=nullptr;
   bool (*endActMenu)(void*,uint32_t battle)=nullptr;
 };
+// One actual physical-X invocation. Pins provider identities and native index
+// independently of query cache. Reset abandons metadata,not prior target/cache
+// effects. Allocation proof guards groups; caller freezes their synchronous RAM.
 class BattleMenuAudienceNativeCursor {
 public:
   BattleMenuAudienceNativeCursor();~BattleMenuAudienceNativeCursor();
