@@ -16184,3 +16184,46 @@ Next tasks:
 3. Activate ordinary Game NPC camera/queue/offscreen scheduling and drain whole
    callbacks before ending leases. Continue original area/event/object/story
    resources, then compare matched original images and profile physical hardware.
+
+
+## 2026-10-15 — Class/language gate diagnosis and native counter correction
+
+The next exact committed-HEAD plus class6/language4 snapshot has6,620 inputs:
+`artifacts/class-ui-head-validation/manifest.json`, SHA256
+`0b01447e9fbbac7f92c507ea33a3c15b8e532f3654a111baba62b320a93ffbce`.
+Its native build exited0. Host gate exited2:492/514 C++ tests passed,22 failed
+in69.03s; Python was not reached. All22 fail before their native/UI work at the
+actual animation startup image admission. Current committed code requires31
+original boot spans while the inherited ignored pack contains28. The original
+class and shared-language tests passed. No code was bypassed or test disabled.
+The failed snapshot/logs remain unchanged, all consumers observed terminal.
+
+Regenerated only `romfs/animation-boot/memory.pmevt`/`memory.json` using the
+current exact converter and read-only ISO in a new source snapshot. New pack
+SHA256 `aa06fab33e43734314a99f0aa864bdb99041b144e720b4b7b8563419f11cfd62`;
+metadata `87fd5c255d0939e0f88599417fbf0c588fa7f8a1e94c716fc9e55e86686c60fd`.
+All source/header inputs remain identical. Corrected authority:
+`artifacts/class-ui-boot31-validation/manifest.json`, SHA256
+`bc60405d1343d93acba32528a92a74b08a756dfc748330d48001475828f501a2`.
+Full host/native gates are running; their success is not yet claimed. Matching
+native objects were offered with source/header/dependency proof; make rebuilds
+as its flags/dependencies require. No newer live source was imported wholesale.
+
+Counter erratum for the earlier mixed Window/font/submenu native probe: the
+actual enlarged first console capture reads **Queries10**, not14. Root viewed
+`artifacts/weapon-mixed-native-probe/source/artifacts/azahar-submenu/console-first.png`
+and confirmed10. Its pixel hashes,214 packets,360/72 FIFO,420 RNG,7,799 reads,
+634 requests and success statuses are unchanged. The prior immutable manifest
+is retained with this explicit reporting correction; no probe source changed.
+The new four-type actual icon probe passes separately; final evidence is being
+frozen before its detailed acceptance is recorded.
+
+Root also completed focused NEW5 retained statusGetValue8013c9ac/178 work:
+`artifacts/source-status-values-validation/frozen.json`. Strict host, ASan/UBSan,
+ARM syntax, original whole-body/20-child pins and documentation checks exit0.
+It preserves original mode/partner/AP getters, actual output STH order and all
+reached source boundaries across holds; child results are explicit test fixtures.
+These new files are not yet registered/committed or bound to normal HUD drawing.
+Next bind actual getter children and source runtime owners, then the original
+partner/AP presentation. Window startup and actual queued weapon runtime remain
+parallel work. Full tutorial/battle/audience/control objective stays active.
