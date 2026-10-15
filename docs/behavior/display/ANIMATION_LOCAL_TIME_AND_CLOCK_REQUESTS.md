@@ -86,3 +86,11 @@ ID1 evaluation dependency update (2026-10-12):
 shared timestamp,original unsigned64 conversion,60/1000 single conversion and
 rate multiplication,then links complete local sampling/replay/interpolation.
 Clock/helper numeric/source and resource/draw/runtime composition remain open.
+
+## Ordinary selector load-order clarification (2026-10-15)
+
+The ordinary SetAnim body reads mode, bus word800000f8, GP pointer80415fd0,
+then captured GP HIGH/LOW before division. LOW timestamp is stored, the zero
+literal8041fb28 is loaded once, then HIGH and the four cache/reset stores follow.
+This clarification is specific to that setter; do not impose one textual order
+on all clock callers. See [retained selection](NATIVE_RETAINED_ANIMATION_SELECTION.md).

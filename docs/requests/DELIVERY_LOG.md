@@ -466,3 +466,11 @@ producer barrier. Native scheduling/admission constants are explicitly port poli
 Full NPC source Draw/Inner/queue/material/light/shadow ownership stays open. Next
 source dependency is complete SetAnim80041170. Exact gates and limitations are in
 [progress](../PROGRESS.md).
+
+## 2026-10-15 — Retained ordinary animation selector
+
+[Native contract](../behavior/display/NATIVE_RETAINED_ANIMATION_SELECTION.md),
+[source ordering correction](../behavior/display/ANIMATION_SELECTOR_AND_RESTART.md)
+and [EVT-01](EVT-01.md) delivered. Actual Mario setup now uses the source parent;
+force0 equality and partial clock/strcmp/reset frontiers are retained. This does
+not close paper/local-time setters, full NPC draw services or rendering performance.

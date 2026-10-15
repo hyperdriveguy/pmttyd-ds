@@ -5333,3 +5333,16 @@ complete animPoseSetAnim80041170, especially force0 already-selected early retur
 before clock admission, and bind it into actual NPC draw services. Keep original
 offscreen/blur frontiers explicit. No guessed story or new asset conversion.
 EVT-01 remains OPEN. Exact validation and performance limits are in progress.
+
+## 2026-10-15 — Original ordinary animation selector now native
+
+Delivered [retained SetAnim](../behavior/display/NATIVE_RETAINED_ANIMATION_SELECTION.md)
+for the complete80041170/17c parent and normal Mario setup. The independent
+read-only audit clarified three missing order details: per-comparison directory
+reload, bus before GP, and one zero-literal load between LOW/HIGH timestamp
+stores. Source contracts now record them. Force0 equality precedes clock access;
+forceful selection, linked flags and every reset frontier retain partial work.
+The native raw-selector API is available for future NPC services. Typed legacy
+pool selector routing, full source SetLocalTime/paper setters, NPC draw/queue/GPU
+integration and source scheduling are still open. No invented story/asset changes.
+Exact gates and limitations are in progress. EVT-01 remains OPEN.

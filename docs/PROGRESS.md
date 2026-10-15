@@ -14915,3 +14915,83 @@ animation integrations, plus port tooling. Inventory only maps hashes of tracked
 source/include C++/headers/PICA; it excludes untracked additions/tooling and is
 not semantic completeness proof. Broad documentation and remake goals remain
 active; no whole-runtime or all-current-font coverage claim.
+
+## 2026-10-15 — Complete original ordinary animation selector and native setup
+
+Implemented [retained ordinary SetAnim](behavior/display/NATIVE_RETAINED_ANIMATION_SELECTION.md)
+for the complete 80041170/17c parent and activated it in normal Mario setup.
+Signed raw selector/count handling, string scan and row0 fallback, force0 equality,
+linked flag publication, selected clock/division and every reset store now use
+retained source frontiers. Force0 equality succeeds before clock admission;
+forceful selection never reads current R14. A native process owner pins lifetime,
+resource, scratch and alias identity; native strcmp preserves a captured left
+byte across a missing right byte. Pending selection excludes Entry/Main/
+publication/tick/release overlap through the existing caller and Game barriers.
+A same-handle reserved phase0 can run its own setup; direct raw callers still
+must retain exclusive producer ownership because the setter API has no pass token.
+
+Independent read-only instruction review found and corrected three source-doc
+omissions: reload MODEL+1ac for each reached comparison; read bus before GP;
+load the zero literal once BETWEEN timestamp LOW and HIGH stores. Tests pin the
+complete acknowledged trace, including those boundaries and the captured count.
+Mario retains completed selection across the separate local-time adapter's holds.
+It revalidates the fresh scale after asynchronous selection before integer
+conversion; corrupt/repair and no-selection-replay are tested. Original NPC
+callers can use the raw selector API; routing the legacy typed selector and full
+NPC draw services remains future work. Full source paper/SetLocalTime and physical
+hardware/FPSCR/SDK strcmp load-order fidelity are not claimed.
+
+Accepted BASE/TREE: `94dad66b5a737e56736cf21d2be48b49ee203bc7` /
+`8f168c555d7688965b63cd7ecb96598259f82a1c`, at `artifacts/source-checks/npc-wander`.
+All 3991 tracked blobs match; all 2152 inherited RomFS products
+are unchanged. The private snapshot excludes concurrent root CMake/party/font/
+render work, including the pending c_kuri_h Entry mapping. Validation applies to
+this exact accepted-source composition, not the combined moving root. Code commit: `5699eb7cb4efbf66b3aa3a9a64630dd717142de5`. Documentation
+is a separate incremental commit.
+
+Final validation:
+
+- `TRIO_ENEMY_POSE_PACK=romfs CMAKE_BUILD_PARALLEL_LEVEL=4 make test`: exit0;
+  445/445 C++ (58.97s), 212/212 Python (45.156s), zero skipped.
+  The new test covers every primitive hold, signed/empty/missing domains, forced
+  and unforced selection, fresh directory/literal and captured-count behavior,
+  both clock branches, raw wrap, wrong input/service identities, actual original
+  Mario name lookup, partial native strcmp, absent-clock equality/repair, stale
+  generation, lifecycle barriers and asynchronous setup repair/no replay.
+- `make all -j4 -o assets-ready SOUNDTRACK=gamecube`: exit0; normal SHA256
+  `bc77e5b4a6398272aff5377eebcf5cc17d1af89347050ffbc4c7f49072959936`. Removing the private probe and rebuilding reproduces it.
+- `python3 tools/verify_animation_selection_time.py`: pass, 5 containing bodies,
+  423 instructions, 2 constants, 2 spans, 2 imports and 299 direct caller sites
+  checked against the read-only ISO. Exact new-body instruction audit is in
+  `artifacts/npc-main-parent-evidence/animPoseSetAnim-exact-notes.txt` and listing.
+- Fresh isolated `artifacts/azahar-animation-selection-probe`: selector, actual
+  mesh, atomicity, holds, global outputs, linked/null paths, producer/Game barrier,
+  reuse, no replay and RAM cache assertions all PASS. Assertions run before
+  production Game allocation to retain the established probe memory envelope.
+- Clean field `artifacts/azahar-animation-selection-field`: isolated original
+  fixture, 70-second warmup, right/left movement and exception checks pass.
+  Viewed captures show original Mario/Rogueport/NPC art and changing position.
+  Final displayed rate is about 15 FPS (simulation 58.93 ms/loop, CPU render 6.4 ms,
+  GPU 0.5 ms); no performance improvement or physical-hardware result is claimed.
+  Normal fresh boot `artifacts/azahar-animation-selection-normal` passes the
+  40-second isolated smoke with no native exceptions.
+
+Probe compilation exposed an ARM test initializer-list type mismatch (uint32_t
+is unsigned long there); the test now declares its array type explicitly. A
+concurrent CMake append reached the initial snapshot helper's open-ended suffix;
+that helper now freezes only its immutable six-line registration. The final full
+gate above ran after both corrections. Existing unrelated compiler/Pillow warnings
+remain. No changes were made to the user's emulator profile or saves.
+
+No asset extraction/conversion, dialogue/story, audio or shader changes. Original
+rights are unchanged; ISO, original assets, compiled packs, fixtures and binaries
+stay outside source history. Scheduling/string-work budgets and valid-native-ID
+admission are explicit port policy. This change does not resolve the previously
+measured roughly 15 FPS field-rendering limit; publication decode/geometry/assembly
+cost remains a performance priority. Emulator checks do not establish physical
+New 2DS XL performance or original pixel parity.
+
+Next: reduce publication cost; route original NPC SetAnim/Main/DrawMtx/Inner/queue
+services through retained process owners with original pass/lifetime scheduling.
+Implement full source SetLocalTime/paper setters and preserve offscreen/blur
+frontiers. EVT-01 and the full-remake goal remain OPEN/active.

@@ -101,9 +101,9 @@ still requires their original lifecycle, selection and draw-service bindings.
 ## Mario and Game ownership
 
 A stable Mario request captures selection/upload identity, bank/handle, source
-start time, root, yaw and reflection. Native setup runs once. The existing
-selectName/epoch bridge remains an admitted Mario subset; complete original
-SetAnim/SetLocalTime semantics are not claimed. The pass predicate borrows its uniquely owning NativeFieldAnimation. Explicit
+start time, root, yaw and reflection. Native setup runs once. Mario now uses the
+[complete retained SetAnim parent](NATIVE_RETAINED_ANIMATION_SELECTION.md), with
+a native name-to-index request bridge. Full source SetLocalTime remains open. The pass predicate borrows its uniquely owning NativeFieldAnimation. Explicit
 process retirement in the owner destructor keeps request state alive throughout
 teardown and avoids per-primitive weak-pointer synchronization. The semantic
 camera remains shared, and a monotonic Main configuration generation detects
@@ -139,8 +139,8 @@ capacity/frame reuse and no source replay after completion. The same assertions
 run as an isolated ARM probe. Exact suite/build/capture evidence and limitations
 are recorded in [progress](../../PROGRESS.md).
 
-The next source dependency is complete `animPoseSetAnim` 80041170, including its
-force-0 already-selected return before clock admission, then the same-process NPC
-Main/DrawMtx/Inner/queue integration. Keep offscreen/blur and source child
+The source SetAnim dependency is now [implemented](NATIVE_RETAINED_ANIMATION_SELECTION.md),
+including force0 equality before clock admission. Remaining dependencies include
+source SetLocalTime and same-process NPC Main/DrawMtx/Inner/queue integration. Keep offscreen/blur and source child
 frontiers explicit. EVT-01 remains open; this delivery does not add story scenes,
 claim all NPCs rendered correctly or complete the full remake.

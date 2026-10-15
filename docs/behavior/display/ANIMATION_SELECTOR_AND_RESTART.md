@@ -16,7 +16,8 @@ For ordinary selection,resource index is R+10. Resource lookup is:
 
 Load J=word[W+0],E=word[J+16*index+8],H=word[E+a0],D=word[H].
 D+148 supplies signed animation count N;D+1ac supplies the name array base.
-Each name slot is64 bytes and strcmp consumes its address directly.
+Each name slot is64 bytes and strcmp consumes its address directly. The count
+is captured once, but D+1ac is reloaded for EACH reached strcmp iteration.
 These offsets describe the original loaded layout,not a replacement file format.
 
 Selector S is the raw second integer argument. The `mr.` instruction makes a
@@ -40,8 +41,14 @@ Otherwise:
    This does not validate R+90 or inspect the linked record.
 3. Obtain the timestamp quotient described in
    [local-time contract](ANIMATION_LOCAL_TIME_AND_CLOCK_REQUESTS.md).
-4. Store quotient LOW word R+1c BEFORE HIGH word R+18.
-5. Store signed−1 R+3c;positive float0 R+40;word0 R+80;float0 R+84.
+4. Store quotient LOW word R+1c; load the zero literal at0x8041fb28 ONCE;
+   store quotient HIGH word R+18.
+5. Store signed−1 R+3c; captured literal R+40; word0 R+80; the SAME
+   captured literal R+84. The original literal is positive float0; it is a
+   live load, not an invented hardcoded reset value.
+
+The ordinary setter clock loads CURRENT mode, hardware bus word, GP pointer,
+then the captured GP HIGH/LOW pair before division. Force!=0 never reads R+14.
 
 The used partner path passes force1 whenever either pending name/paper marker
 is admitted. Thus an equal animation name can restart even if only the paper
@@ -89,3 +96,7 @@ ID1 Main dependency update (2026-10-12):
 sampling/cache/interpolation/facing coverage. The paper setter's admitted linked
 Main request follows that local graph;pool/resource/clock/helper/copy/draw/source/
 lifetime/original visual composition remains open.
+
+The [retained native setter](NATIVE_RETAINED_ANIMATION_SELECTION.md) now executes
+this complete local parent and is used by Mario setup. Full source paper/local-time
+setters and NPC draw/service activation remain open.

@@ -3411,3 +3411,14 @@ temporary outputs. Original BFN remains exact; comments explain mutable runtime
 width patches without editing packaged input. Nintendo/Intelligent Systems rights
 retained; no new license/redistribution rights, no ISO/extracted original or compiled
 binary committed.
+
+## 2026-10-15 — Original animation selection (no conversion)
+
+The retained selector reads the existing relocated original a/ MODEL+148 count
+and MODEL+1ac 64-byte name directory through the actual file/VM mappings. Native
+Mario supplies its existing name-to-index bridge; raw original string-pointer
+selectors are also tested against the cold original Mario model. No extraction,
+texture scaling, geometry/lighting, audio, dialogue or shader conversion changed.
+All 2152 inherited RomFS products remain byte-identical to the accepted baseline.
+Original rights/licensing are unchanged; ISO, extracted originals, compiled packs,
+fixtures and validation binaries stay outside source history.
