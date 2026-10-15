@@ -66,6 +66,9 @@ struct TrioPoseDrawRequest {uint32_t part=0;int32_t camera=4,drawClass=1;std::ar
 // Executes original event data; unsupported callbacks keep their event waiting.
 class TrioAttack {
 public:
+    // Returned views/pointers borrow runtime-owned work unless the return type
+    // explicitly shares ownership. Keep scene/runtime and real providers stable
+    // across held draws; a queued request is not current callback admission.
     std::optional<TrioPoseDrawRequest> poseDrawRequest() const;
     // Explicit native numerical/lens adapter; does not assert inherited camera4
     // roll, projection-extra or complete original field history.
@@ -74,6 +77,9 @@ public:
     const CameraDepthSnapshot* cameraDepthSnapshot() const;
     const DisplayQueue* displayQueue() const;
     const CameraManager* cameras() const;
+    // Material/texture entry points resume their own native cursors. Caller
+    // owns provider identity and any linked partial effects; false with a pending
+    // function token is unavailable, not a successful empty material.
     bool resumeTexture(const BattlePose&,uint32_t,const struct AnimationTextureServices&,uint32_t& pending) const;
     bool resumeMaterialTev(const struct MapTevInput&,const struct MapTevServices&,uint32_t& pending) const;
     const struct MapMaterialGroup* materialGroup() const;
@@ -99,9 +105,15 @@ public:
     const BattleAudienceIncarnationOwner* audienceIncarnations() const;
     const BattleCameraFrame* cameraFrameState() const;
     bool cameraHistoryComplete() const;
+    // Fresh creation admits only original Mario Jump/Hammer or Goombella
+    // default weapon. Calling begin again reuses only the ready same-actor owner;
+    // fresh-only shared/borrowed resource arguments do not rebind that runtime.
     bool begin(const TrioBattleCommands&,ProfessorStory&,int16_t marioHp,std::shared_ptr<ProloguePouch> entryPouch={},uint32_t* fieldNpcBattleFlags=nullptr,FieldMarioBattleState* fieldMario=nullptr,FieldPartyRegistry* fieldParties=nullptr,const FieldPartyAppearanceServices* appearance=nullptr,std::shared_ptr<BattleSpotlightState> spotlight={},std::shared_ptr<BattleRandom> random={},std::shared_ptr<PositionalSfxRegistry> sounds={},std::shared_ptr<ShadowWork> shadows={},std::shared_ptr<BattleCommandPalette> palette={},std::shared_ptr<CameraManager> cameras={},std::shared_ptr<FieldBeroExec> bero={});
     void tick(uint64_t milliseconds,ProfessorStory&,uint32_t triggers=0,const BattlePadSample* physical=nullptr);
     bool statusWindowVisible() const;
+    // active/finished describe native action readiness (!done/done), NOT whole
+    // battle teardown. commandActor/prepareCommands additionally require actual
+    // pending/phase/actor context before exposing another command.
     bool active() const;
     bool finished() const;
     int32_t commandActor() const;
@@ -110,10 +122,16 @@ public:
     const std::vector<ProfessorServiceRequest>& requests() const;
     const std::vector<TrioAudienceAudioRequest>& audienceAudioRequests() const;
     bool readWord(uint32_t address,uint32_t& value) const;
+    // Icon pass combines native owner token, sequence and completed draw bit.
+    // Audience incarnation metadata is a separate lifecycle proof, not visibility
+    // or a complete touch hit-test. Shared allocation alone cannot admit a draw.
     SourceIconPass sourceIconPass() const;
     std::optional<uint32_t> sourceIconWord(uint32_t) const;
     std::optional<uint32_t> sourceIconCamera(std::optional<uint32_t> index={}) const;
     bool prepareAudienceDrawing(const BattleAudienceDrawServices&) const;
+    // Draw wrappers admit only the exact currently INVOKING source callback,
+    // camera and userdata/part. Most bridges borrow this runtime for the call;
+    // the modern HP overload additionally pins/rechecks its explicit owners.
     bool resumeAudienceCallback(uint32_t camera,uint32_t userdata,const BattleAudienceCallbackServices&) const;
     bool resumeStageDisplay(uint32_t camera,uint32_t callback,uint32_t userdata,const BattleStageDisplayServices&) const;
     bool resumeLetterboxDraw(uint32_t camera,uint32_t userdata,const CameraLetterboxDrawServices&) const;
@@ -130,12 +148,18 @@ public:
     bool resumeBreakSlotDraw(uint32_t camera,uint32_t userdata,const BattleBreakSlotDrawServices&) const;
     bool resumeAudienceAux(uint32_t camera,uint32_t callback,uint32_t userdata,const BattleAudienceAuxServices&) const;
     bool resumePartDisplay(uint32_t camera,uint32_t part,const BattlePartDisplayServices&) const;
+    // Pose accessor verifies guest part handle still equals native binding.
+    // Other getters are borrowed projections, not permission to mutate source
+    // resources or conclude the pending battle/field handoff.
     const BattlePose* battlePose(uint32_t part) const;
     const BattlePosePool* battlePosePool() const;
     const std::array<TrioRewardIcon,19>* rewardIcons() const;
     const PointGetEffect* rewardEffect() const;
     bool rewardPresentationActive() const;
     uint8_t endingFadeAlpha() const;
+    // Published canonical pouch requires the ending export latch. Reward/fade
+    // accessors expose presentation only; neither a visible icon nor exported
+    // EXP proves completed sequence/field return.
     std::shared_ptr<ProloguePouch> exportedPouch() const;
     const StageMapObjects* stageMap(bool background) const;
 private:

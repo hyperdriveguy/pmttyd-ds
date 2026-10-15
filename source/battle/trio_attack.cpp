@@ -111,6 +111,9 @@ constexpr std::array<unsigned,7> visual{{0,0,1,3,5,4,2}};
 void required(bool ok){if(!ok)std::abort();}
 uint32_t bits(float v){uint32_t b;std::memcpy(&b,&v,4);return b;}
 }
+// Process catalog getters may refer to a newer loaded file owner than an
+// existing runtime's pinned cache. Sharing these resources preserves storage;
+// it does not prove admission against that runtime's source allocation/pass.
 std::shared_ptr<const ActorAnimationPack> fieldMarioAnimationBank() {return fieldMarioBank;}
 std::shared_ptr<NativeFileCache> fieldAnimationFileCache(){return trioMenuFiles?trioMenuFiles->files():nullptr;}
 // Validate source EVT signature 0x80355cf0=0x0005005b, PMTHIT3 three 4-word reaction
@@ -2714,20 +2717,44 @@ struct TrioAttackRuntime {
     // 0x114 applies X/Y only. Signed-facing+0x189 maps native yaw 90/270.
     void publish(ProfessorStory& s){for(unsigned id=1;id<7;++id){const uint32_t u=word(Battle+0x20+4*id);if(!u){s.actors[visual[id]].hidden=true;continue;}for(unsigned axis=0;axis<3;++axis)s.actors[visual[id]].position[axis]=real(u+0x3c+4*axis);s.actors[visual[id]].yaw=byte(u+0x189)==1?90:270;s.actors[visual[id]].battleFlags=word(u+0x1c);for(unsigned axis=0;axis<3;++axis){s.actors[visual[id]].battleRotation[axis]=real(u+0x60+4*axis)+real(u+0x6c+4*axis);s.actors[visual[id]].battlePivot[axis]=real(u+0x78+4*axis);s.actors[visual[id]].battleScale[axis]=(axis<2?real(u+0x114):1.f)*real(u+0x9c+4*axis)*real(u+0x90+4*axis);s.actors[visual[id]].battleDisplayOffset[axis]=real(u+0x54+4*axis);}}}
 };
+// Native entry accepts actor 1 Jump 0x803538a8/Hammer 0x80353de8 or actor 2 default
+// 0x80393ea8. Existing runtime reuses only done+same readyActor and launch; new
+// pouch/camera/field/pose owner arguments belong ONLY to fresh construction.
+// Fresh defaults(seed1, 608x480 camera, mode 2) are explicit native context, not
+// recovered process history. Publish runtime_/HP token only after initialize.
 bool TrioAttack::begin(const TrioBattleCommands& menu,ProfessorStory& scene,int16_t hp,std::shared_ptr<ProloguePouch> entryPouch,uint32_t* fieldNpcBattleFlags,FieldMarioBattleState* fieldMario,FieldPartyRegistry* fieldParties,const FieldPartyAppearanceServices* appearance,std::shared_ptr<BattleSpotlightState> spotlight,std::shared_ptr<BattleRandom> random,std::shared_ptr<PositionalSfxRegistry> sounds,std::shared_ptr<ShadowWork> shadows,std::shared_ptr<BattleCommandPalette> palette,std::shared_ptr<CameraManager> cameras,std::shared_ptr<FieldBeroExec> bero){if(!assetsReady || !menu.attack || !((menu.actor==1 && (menu.attack->weapon==0x803538a8 || menu.attack->weapon==0x80353de8)) || (menu.actor==2 && menu.attack->weapon==0x80393ea8)))return false;if(runtime_)return runtime_->done && runtime_->readyActor==menu.actor && runtime_->launch(menu);auto r=std::make_shared<TrioAttackRuntime>(random?std::move(random):std::make_shared<BattleRandom>(1),fieldParties?fieldParties->originalPool:nullptr);r->bero=std::move(bero);r->cameras=std::move(cameras);if(!r->cameras){r->cameras=std::make_shared<CameraManager>();r->cameras->initializeBoot(608,480);}r->cameras->camera(4)->mode=2;r->palette=palette?std::move(palette):std::make_shared<BattleCommandPalette>();r->shadows=shadows?std::move(shadows):std::make_shared<ShadowWork>();r->publicSfx=sounds?std::move(sounds):std::make_shared<PositionalSfxRegistry>();r->spotlight=spotlight?std::move(spotlight):std::make_shared<BattleSpotlightState>();r->fieldNpcBattleFlags=fieldNpcBattleFlags;r->fieldMario=fieldMario;r->fieldParties=fieldParties;if(appearance)r->fieldAppearance=*appearance;if(!r->initialize(menu,scene,hp,std::move(entryPouch)))return false;r->hpAllocation=std::make_shared<const uint8_t>(0);runtime_=std::move(r);return true;}
 void TrioAttack::tick(uint64_t time,ProfessorStory& scene,uint32_t triggers,const BattlePadSample* physical){if(runtime_)runtime_->tick(time,scene,triggers,physical);}
+// No runtime =>visible status window, false active/finished. With runtime,
+// active=!done/finished=done describe this native action boundary, not completion
+// of reward presentation, source ending or real field/sequence teardown.
 bool TrioAttack::statusWindowVisible()const{return !runtime_ || runtime_->statusWindowOpen;}
 bool TrioAttack::active()const{return runtime_ && !runtime_->done;}
 bool TrioAttack::finished()const{return runtime_ && runtime_->done;}
+// Command requires done, no pending and source phase 0x04000002. Prefer retained
+// readyActor; otherwise require actor bank 0x05000008 and scan 64 phase-table IDs.
+// Current signed move count22, mode 20 and status+0x135/attribute 0x10000 retain source
+// eligibility. Native sentinel -1 means no admitted actor, not source defeat.
 int32_t TrioAttack::commandActor()const{if(!runtime_ || runtime_->pending || !runtime_->done || runtime_->word(Battle+0xf18)!=0x04000002)return -1;if(runtime_->readyActor>=0)return runtime_->readyActor;if(runtime_->word(Battle+0xf1c)!=0x05000008)return -1;for(unsigned i=0;i<64;++i){const int32_t id=int32_t(runtime_->word(Battle+0x120+4*i));if(id<0 || id>=64)continue;const auto u=runtime_->word(Battle+0x20+4*id);if(u && int8_t(runtime_->byte(u+0x22))>0 && runtime_->byte(u+0x20)!=10 && runtime_->byte(u+0x20)!=1 && (!runtime_->byte(u+0x135) || (runtime_->word(u+0x104)&0x10000)))return id;}return -1;}
+// Actor preparation mutates real packed state BEFORE native menu.begin can
+// fail. Sync actual registry presence/damage/part state after success; do not
+// assume a false menu result rolled back the preceding source selector work.
 bool TrioAttack::prepareCommands(TrioBattleCommands& menu,const ProfessorStory& scene){if(!runtime_ || !runtime_->done || runtime_->pending || runtime_->word(Battle+0xf18)!=0x04000002 || runtime_->word(Battle+0xf1c)!=0x05000008)return false;runtime_->prepareActor();if(!menu.begin(scene,runtime_->readyActor))return false;std::array<bool,7> present{};for(unsigned id=1;id<7;++id){present[id]=runtime_->word(Battle+0x20+4*id)!=0;runtime_->readDamage(id);}menu.syncUnitState(runtime_->damageUnits,present,&runtime_->damageParts);return true;}
 uint32_t TrioAttack::pendingFunction()const{return runtime_?runtime_->pending:0;}
+// Trace/audio getters return stable empty sentinels before entry, otherwise
+// borrowed runtime vectors. A recorded request or pendingFunction 0 does not
+// prove completed audio, GPU work or full original scheduler integration.
 const std::vector<ProfessorServiceRequest>& TrioAttack::requests()const{static const std::vector<ProfessorServiceRequest> empty;return runtime_?runtime_->trace:empty;}
 const std::vector<TrioAudienceAudioRequest>& TrioAttack::audienceAudioRequests()const{static const std::vector<TrioAudienceAudioRequest> empty;return runtime_?runtime_->audienceAudioTrace:empty;}
 bool TrioAttack::readWord(uint32_t a,uint32_t& v)const{return runtime_ && runtime_->vm.memory.readWord(a,v);}
+// Ensure actual source animation visit first, then replace ONLY actor-memory
+// provider with this VM. Caller retains linked draw/GX/math providers and their
+// original users; this call alone does not publish source touch/visibility proof.
 bool TrioAttack::prepareAudienceDrawing(const BattleAudienceDrawServices& supplied)const{if(!runtime_ || !runtime_->prepareAudienceAnimationData())return false;auto services=supplied;services.actors=nativeBattleActorServices(runtime_->vm);return drawPackedBattleAudience(services);}
 const BattlePosePool* TrioAttack::battlePosePool()const{return runtime_?&runtime_->poses:nullptr;}
 std::optional<TrioPoseDrawRequest> TrioAttack::poseDrawRequest()const{return runtime_?runtime_->poseDraw:std::nullopt;}
+// Explicit fov/aspect/near/far override also mutates actual camera 4 lens and
+// marks history incomplete. Snapshot derives current source eye/at/up. Do not
+// pass off this numeric native adapter as recovered original camera history.
 void TrioAttack::setCameraDepthLensAdapter(float fov,float aspect,float nearPlane,float farPlane){
     if(!runtime_)return;
     runtime_->cameraDepthLensAdapter=std::array<float,4>{fov,aspect,nearPlane,farPlane};
@@ -2737,6 +2764,9 @@ void TrioAttack::setCameraDepthLensAdapter(float fov,float aspect,float nearPlan
     const auto& frame=runtime_->cameraFrame;
     runtime_->cameraDepth=makeCameraDepthSnapshot(frame.eye,frame.at,frame.up,fov,aspect,nearPlane,farPlane);
 }
+// A direct snapshot disables the live lens adapter; it does not edit camera
+// lens or restore source-history completeness. During finishing Draw the getter
+// deliberately prefers actual published camera 4 matrices over this override.
 void TrioAttack::setCameraDepthSnapshot(std::optional<CameraDepthSnapshot> snapshot){
     if(!runtime_)return;
     runtime_->cameraDepthLensAdapter.reset();runtime_->cameraDepth=std::move(snapshot);
@@ -2746,10 +2776,16 @@ void TrioAttack::setCameraLetterboxServices(const CameraLetterboxServices& servi
 void TrioAttack::setOriginalSequence(std::shared_ptr<OriginalSequence> sequence){if(runtime_)runtime_->sequence=std::move(sequence);}
 void TrioAttack::setSoundFlags(std::shared_ptr<SourceSoundFlags> flags){if(runtime_)runtime_->soundFlags=std::move(flags);}
 bool TrioAttack::finishingDrawPending() const{return runtime_ && (runtime_->cameraDrawWaiting || runtime_->pending==0x8000f454);}
+// Borrow a stable actual input producer and map it through this VM's current
+// GP owner. This is not a copied pad snapshot; producer must outlive its mapping.
 bool TrioAttack::setPhysicalInputOwner(PhysicalInputProducer* input){
     if(!runtime_ || !input || !runtime_->vm.gpAddresses.bindPhysicalInput(runtime_->vm.gpAddresses.currentAddress(),*input))return false;
     runtime_->outerInput=input;return true;
 }
+// Only the held outer Main index 0/phase 3 key producer is admitted. Reload
+// source GP pointer 0x80415fd0, rate GP+4, motor gate+0x1294, then update all four raw
+// pads through bound producer. Repeated calls are caller-owned; no implicit read
+// or extra guard is added here. New2DSXL motor output remains a hardware no-op.
 bool TrioAttack::makeOuterKey(const std::array<RawPad,4>& pads) const{
     if(!runtime_ || !runtime_->outerInput || !runtime_->outerMainCursor.active || runtime_->outerMainCursor.index!=0 || runtime_->outerMainCursor.phase!=3)return false;
     auto& r=*runtime_;uint32_t gp,rate,motors;
@@ -2758,7 +2794,13 @@ bool TrioAttack::makeOuterKey(const std::array<RawPad,4>& pads) const{
     r.outerInput->update(pads,signedRate,motors!=0); // Native PADRead/clamp adapter; New2DS XL has no motor hardware.
     return true;
 }
+// Completed Main keeps its latch visible as pending outer profiling/end-render
+// work. resumeOuterMain refuses a second completed invocation; callers must not
+// treat this getter as a loop that can drive all remaining outer services.
 bool TrioAttack::outerMainPending() const{return runtime_ && (runtime_->pending==0x8006f904 || runtime_->outerMainCursor.active || runtime_->outerMainCompleted);}
+// VM supplies word/byte/store services; linked request/time/divide/sequence keep their
+// ORIGINAL external user through stack Bridge. Cursor survives calls, Bridge
+// does not. Completed Main waits 0x8029d864 rather than resetting battle lifetime.
 bool TrioAttack::resumeOuterMain(const GameOuterMainServices& source) const{
     if(!outerMainPending() || runtime_->outerMainCompleted)return false;
     struct Bridge {TrioAttackRuntime& r;const GameOuterMainServices& source;} b{*runtime_,source};
@@ -2776,6 +2818,10 @@ bool TrioAttack::resumeOuterMain(const GameOuterMainServices& source) const{
     return complete;
 }
 void TrioAttack::resumeFinishingDraw(const CameraDrawServices& services) const{if(finishingDrawPending())runtime_->continueFinishingDraw(&services);}
+// Exact source 0x8000e564 invocation is required. Color 0x80429510 comes from shared
+// startup owner; readonly DOL fog word 0x8041f6b0 is ffffffff. GP-address view takes
+// precedence over general VM. Camera signed half fields+0x1e0/0x1e2/0x1e4 are alpha/
+// top/bottom; actual pass/GX/begin/vertices remain external provider work.
 bool TrioAttack::resumeLetterboxDraw(uint32_t camera,uint32_t userdata,const CameraLetterboxDrawServices& source) const{
     if(!runtime_ || !runtime_->cameras)return false;const auto& call=runtime_->cameraDrawCursor.display;
     if(!call.invoking || call.callback!=0x8000e564 || call.camera!=camera || call.userdata!=userdata)return false;
@@ -2811,6 +2857,9 @@ bool TrioAttack::enemyHpAllocationCurrent(uint64_t key) const {
 bool TrioAttack::enemyHpFrameComplete(uint64_t pass) const {
     return runtime_ && runtime_->hpFrame.complete(pass);
 }
+// Allocation admission first; camera-owned synthetic words then actual VM then
+// GP view. This differs from letterbox's GP-first policy. Resource access alone
+// does not start/complete a camera pass or authorize rendering on another owner.
 std::optional<uint32_t> TrioAttack::enemyHpResourceWord(uint32_t a) const {
     if(!enemyHpAllocation())return {};
     auto& r=*runtime_;
@@ -2874,6 +2923,10 @@ bool TrioAttack::resumeEnemyHpDraw(uint32_t camera,uint32_t userdata,const TrioE
     if(!r.hpCamera.finish(epoch))return false;
     r.hpBegun=false;return true;
 }
+// Legacy HP wrapper admits the exact source callback/camera/userdata, then uses
+// live VM/status/switch data and actually published camera 4 screen projection.
+// Number/bar providers remain external. This overload has no modern allocation/
+// epoch/begin/publish binding; do not infer those guarantees from its bool result.
 bool TrioAttack::resumeEnemyHpDraw(uint32_t camera,uint32_t userdata,const BattleEnemyHpDrawServices& source) const{
     if(!runtime_ || !runtime_->cameras)return false;
     const auto& call=runtime_->cameraDrawCursor.display;
@@ -2899,6 +2952,9 @@ bool TrioAttack::resumeEnemyHpDraw(uint32_t camera,uint32_t userdata,const Battl
     s.bar=[](void* u,const std::array<float,3>& p,uint32_t unit,uint32_t color){const auto& s=*static_cast<Bridge*>(u)->source;return s.bar && s.bar(s.user,p,unit,color);};
     return drawBattleEnemyHp(userdata,s,runtime_->enemyHpDrawCursor);
 }
+// Exact stock-EXP callback 0x80100258 owns parent cursor; each source icon also
+// has a separate retained position cursor. Preserve caller's icon/math/GX user
+// across nested waits; registration or a copied icon request is not draw success.
 bool TrioAttack::resumeStockExpDraw(uint32_t camera,uint32_t userdata,const SourceIconMatrixServices& source) const{
     if(!runtime_)return false;
     const auto& call=runtime_->cameraDrawCursor.display;
@@ -2909,6 +2965,9 @@ bool TrioAttack::resumeStockExpDraw(uint32_t camera,uint32_t userdata,const Sour
     s.icon=[](void* u,const SourceIconPositionRequest& r){auto& b=*static_cast<Bridge*>(u);return resumeSourceIconPosition(r,*b.icon,b.runtime->stockExpIconCursor);};
     return drawBattleStockExp(s,runtime_->stockExpDrawCursor);
 }
+// Source reel callback 0x802036d4 reads VM word/half first, then external fallback;
+// byte reads are VM-only. SourceIcon retains its own user/GX service. Legacy
+// icon callback is intentionally null; matrix uses declared native math adapter.
 bool TrioAttack::resumeBreakSlotDraw(uint32_t camera,uint32_t userdata,const BattleBreakSlotDrawServices& source) const{
     if(!runtime_)return false;
     const auto& call=runtime_->cameraDrawCursor.display;
@@ -2925,6 +2984,9 @@ bool TrioAttack::resumeBreakSlotDraw(uint32_t camera,uint32_t userdata,const Bat
     s.plane=[](void* u,const BattleBreakSlotPlaneRequest& r){const auto& s=*static_cast<Bridge*>(u)->source;return s.plane && s.plane(s.user,r);};
     return drawBattleBreakSlot(s,runtime_->breakSlotDrawCursor);
 }
+// Original stage callbacks 0x80138da8/0x801389a0 map cursor slots 0/1. Require the
+// exact active callback/camera/userdata; VM supplies actors/camera, external source
+// supplies actual GX/primitive/math. Missing provider returns unavailable.
 bool TrioAttack::resumeStageDisplay(uint32_t camera,uint32_t callback,uint32_t userdata,const BattleStageDisplayServices& source) const{
     if(!runtime_ || !runtime_->cameras || (callback!=0x80138da8 && callback!=0x801389a0))return false;
     const auto& call=runtime_->cameraDrawCursor.display;
@@ -2937,6 +2999,9 @@ bool TrioAttack::resumeStageDisplay(uint32_t camera,uint32_t callback,uint32_t u
     services.math=[](void* u,BattleStageMath& r){const auto& s=*static_cast<Bridge*>(u)->source;return s.math && s.math(s.user,r);};
     return resumePackedBattleStageDisplay(callback,services,runtime_->stageDisplayCursors[callback==0x801389a0]);
 }
+// Current actual DisplayQueue record is part of source audience admission.
+// Camera/actor memory comes from runtime; request forwarding preserves external
+// user. Cursor owns partial callback state, not arbitrary new scene visibility.
 bool TrioAttack::resumeAudienceCallback(uint32_t camera,uint32_t userdata,const BattleAudienceCallbackServices& source) const{
     if(!runtime_ || !runtime_->cameras)return false;
     const auto& call=runtime_->cameraDrawCursor.display;
@@ -2948,6 +3013,9 @@ bool TrioAttack::resumeAudienceCallback(uint32_t camera,uint32_t userdata,const 
     services.request=[](void* user,const BattleAudienceGXRequest& r){const auto* s=static_cast<Bridge*>(user)->source;return s->request && s->request(s->user,r);};
     return resumePackedBattleAudienceCallback(services,runtime_->audienceCallbackCursor);
 }
+// Owner token + sequence + whole-camera-draw completion are separate evidence.
+// Default pass before entry grants nothing. Camera/word getters route real
+// CameraManager/GP views; they do not mint original heap pointers or visibility.
 SourceIconPass TrioAttack::sourceIconPass() const{
     return runtime_?SourceIconPass{runtime_->iconPassOwner,runtime_->iconPassSequence,runtime_->iconPassComplete}:SourceIconPass{};
 }
@@ -2957,6 +3025,9 @@ std::optional<uint32_t> TrioAttack::sourceIconCamera(std::optional<uint32_t> ind
 std::optional<uint32_t> TrioAttack::sourceIconWord(uint32_t address) const{
     return runtime_?sourceIconRuntimeWord(runtime_->cameras.get(),runtime_->vm.gpAddresses,address):std::nullopt;
 }
+// Auxiliary source callbacks 0x801a37f0/0x801a36c8 use independent cursor slots.
+// Replace only common VM/camera/request bridge; copied nested numeric/icon
+// providers retain their original user rather than inheriting stack Bridge.
 bool TrioAttack::resumeAudienceAux(uint32_t camera,uint32_t callback,uint32_t userdata,const BattleAudienceAuxServices& source) const{
     if(!runtime_ || !runtime_->cameras || (callback!=0x801a37f0 && callback!=0x801a36c8))return false;
     const auto& call=runtime_->cameraDrawCursor.display;
@@ -2967,6 +3038,9 @@ bool TrioAttack::resumeAudienceAux(uint32_t camera,uint32_t callback,uint32_t us
     services.common.request=[](void* user,const BattleAudienceGXRequest& r){const auto& s=static_cast<Bridge*>(user)->source->common;return s.request && s.request(s.user,r);};
     return resumePackedBattleAudienceAux(callback,services,runtime_->audienceAuxCursors[callback==0x801a36c8]);
 }
+// Only actively invoking 0x80101774 on matching camera/source part may resume.
+// Keep part cursor, inner pass, group traversal and shape cursor as distinct
+// owners: an outer bool does not replace their actual pending resource/provider.
 bool TrioAttack::resumePartDisplay(uint32_t camera,uint32_t part,const BattlePartDisplayServices& source) const{
     if(!runtime_ || !runtime_->cameras)return false;
     const auto& call=runtime_->cameraDrawCursor.display;
@@ -2975,6 +3049,9 @@ bool TrioAttack::resumePartDisplay(uint32_t camera,uint32_t part,const BattlePar
     BattlePartDisplayServices services;services.actors=nativeBattleActorServices(runtime_->vm);services.user=&bridge;
     services.currentCamera=[](void* user){return static_cast<Bridge*>(user)->runtime->cameras->current();};
     services.matrix=[](void*,BattleAudienceMatrixRequest& r){BattleAudienceAuxServices math;bindAudienceAuxMathAdapter(math);return math.matrix(nullptr,r);};
+    // Selected scalar adapters admit finite inputs only: source angle/heading
+    // and gravity/floating phase offsets(0x1a6/0x1a8). Status reads 30 original bytes;
+    // material setters update actual pose+0xf0/color and +0xe8 flag OR/AND domains.
     services.scalar=[](void* user,const BattlePartScalarRequest& request)->std::optional<float>{
         auto& r=*static_cast<Bridge*>(user)->runtime;
         if(request.function==0x80007328){if(!std::isfinite(request.value))return {};return r.angle(request.value);}
@@ -2999,6 +3076,10 @@ bool TrioAttack::resumePartDisplay(uint32_t camera,uint32_t part,const BattlePar
         return true;
     };
     services.callback=[](void* user,uint32_t identity,uint32_t part,uint32_t mode){const auto* s=static_cast<Bridge*>(user)->source;return s->callback && s->callback(s->user,identity,part,mode);};
+    // Require live pose, pose field+0x90==0xffffffff, real resource
+    // flags. Pass bit 5 suppresses the ordinary shift; pass 2 also admits flags 1.
+    // Excluded model pass completes without drawing. Missing resource differs
+    // from an intentional empty pass and reports original function token.
     services.draw=[](void* user,const BattlePartDrawRequest& request,uint32_t& pending){
         auto& b=*static_cast<Bridge*>(user);const auto* pose=b.runtime->poses.pose(request.handle);
         if(!pose || pose->word(0x90)!=0xffffffff || !pose->resource || !pose->resource->modelFlags){pending=0x8003b4d8;return false;}
@@ -3006,8 +3087,14 @@ bool TrioAttack::resumePartDisplay(uint32_t camera,uint32_t part,const BattlePar
         const uint32_t shift=(request.pass&32)?0:1u<<(request.pass&31);
         if(!(request.pass==2 && (flags&1)) && !(flags&shift))return true;
         pending=0x8003bc68;
+        // Explicit outer draw provider takes precedence. Otherwise compose
+        // recovered inner graph, with real linked GX/callback/flush/invalidate
+        // providers; defaulting numeric matrices does not invent GPU completion.
         if(b.source->draw)return b.source->draw(b.source->user,request,pending);
         BattlePoseInnerServices inner;inner.user=&b;
+        // External group query wins, else actual retained primary bank. Native
+        // source group flags/color bytes remain distinct from a default material.
+        // Inner publish retains captured context for later texture/shape owners.
         inner.mapGroup=[](void* user)->std::optional<BattlePoseMapGroup>{auto& b=*static_cast<Bridge*>(user);const auto* s=b.source->inner;if(s && s->mapGroup)return s->mapGroup(s->user);
             const auto& g=b.runtime->poseDrawMapGroup;if(!g)return {};return BattlePoseMapGroup{g->flags,uint8_t(g->colors[0]),uint8_t(g->colors[1])};};
         inner.gx=[](void* user,const BattleAudienceGXRequest& r){auto& b=*static_cast<Bridge*>(user);const auto* s=b.source->inner;return s && s->gx && s->gx(s->user,r);};
@@ -3017,6 +3104,9 @@ bool TrioAttack::resumePartDisplay(uint32_t camera,uint32_t part,const BattlePar
         inner.publish=[](void* user,const BattlePoseInnerContext& context){static_cast<Bridge*>(user)->runtime->poseDrawContext=context;return true;};
         inner.flush=[](void* user,unsigned index,const BattlePoseInnerContext& context){auto& b=*static_cast<Bridge*>(user);const auto* s=b.source->inner;return s && s->flush && s->flush(s->user,index,context);};
         inner.invalidateVertices=[](void* user){auto& b=*static_cast<Bridge*>(user);const auto* s=b.source->inner;return s && s->invalidateVertices && s->invalidateVertices(s->user);};
+        // External whole traversal wins. Otherwise preserve its numeric/
+        // publication/callback users and wrap only source shape dispatch. An
+        // external shape renderer wins before native retained shape fallback.
         inner.traverse=[](void* user,const BattlePoseInnerContext& context){auto& b=*static_cast<Bridge*>(user);const auto* s=b.source->inner;
             if(s && s->traverse)return s->traverse(s->user,context);
             AnimationDrawTraversalServices traversal;if(s && s->traversal)traversal=*s->traversal;
@@ -3037,6 +3127,9 @@ bool TrioAttack::resumePartDisplay(uint32_t camera,uint32_t part,const BattlePar
             };
             return resumeAnimationDrawTraversal(b.runtime->poses,context,wrapped,b.runtime->poseTraversalCursor);
         };
+        // Deep diagnostics prefer inner pending, then actual traversal pending
+        // for source 0x8003c4bc. Shape holds propagate through traversal; do not
+        // acknowledge a model merely because outer part matrices were built.
         const bool complete=resumeBattlePoseInner(b.runtime->poses,b.runtime->poseDrawMode,b.runtime->poseDrawPass,request,inner,b.runtime->poseInnerCursor);
         if(!complete && b.runtime->poseInnerCursor.active)pending=b.runtime->poseInnerCursor.pending;
         if(!complete && pending==0x8003c4bc && b.runtime->poseTraversalCursor.active)pending=b.runtime->poseTraversalCursor.pending;
@@ -3044,6 +3137,10 @@ bool TrioAttack::resumePartDisplay(uint32_t camera,uint32_t part,const BattlePar
     };
     return resumePackedBattlePartDisplay(part,services,runtime_->partDisplayCursor);
 }
+// Admit actual source 0x8002d3d8 invocation with shared shadow/camera owners.
+// Mutable current camera is resolved by actual index. GP+14 is live runtime work;
+// pass/GX/texture/geometry remain real external services. Collision uses external
+// ray if supplied, else current BattleHitRegistry; its invalidation remains required.
 bool TrioAttack::resumeShadowDisplay(uint32_t camera,uint32_t userdata,const ShadowDisplayServices& source) const{
     if(!runtime_ || !runtime_->shadows || !runtime_->cameras)return false;
     const auto& invocation=runtime_->cameraDrawCursor.display;
@@ -3075,12 +3172,19 @@ bool TrioAttack::resumeShadowDisplay(uint32_t camera,uint32_t userdata,const Sha
     return shadowDisplay(*runtime_->shadows,camera,userdata,runtime_->shadowDisplayCursor,runtime_->shadowDisplayGlobals,services);
 }
 const CameraManager* TrioAttack::cameras()const{return runtime_?runtime_->cameras.get():nullptr;}
+// Texture/color/light helpers own separate runtime cursors. On unavailable,
+// publish their actual pending token; success does not reset the caller's pending
+// variable here. Keep providers stable across the whole retained invocation.
 bool TrioAttack::resumeTexture(const BattlePose& pose,uint32_t draw,const AnimationTextureServices& services,uint32_t& pending)const{
     if(!runtime_)return false;
     const bool complete=resumeAnimationTexture(pose,draw,services,runtime_->poseTextureCursor);
     if(!complete)pending=runtime_->poseTextureCursor.pending;
     return complete;
 }
+// Whole external TEV branch has priority. Native shadow branch 0x8002bc7c
+// latches preparation gate once; enabled shadow texture waits 0x8002bca0 for actual
+// embedded object/projection. Null map callback branch 0x800248a8 still publishes
+// indirect count 0; nonnull callback stays pending instead of being silently skipped.
 bool TrioAttack::resumeMaterialTev(const MapTevInput& input,const MapTevServices& source,uint32_t& pending)const{
     if(!runtime_)return false;
     if(!runtime_->materialTevCursor.active)runtime_->materialShadowPhase=0;
@@ -3106,6 +3210,9 @@ bool TrioAttack::resumeMaterialTev(const MapTevInput& input,const MapTevServices
     if(!complete)pending=runtime_->materialTevCursor.pending;
     return complete;
 }
+// Group/light getters borrow retained original battle-bank work. A loaded
+// bank is required before material-light processing; no field-bank substitution
+// or fabricated empty lighting makes an unavailable source branch complete.
 const MapMaterialGroup* TrioAttack::materialGroup()const{return runtime_ && runtime_->poseDrawMapGroup?&*runtime_->poseDrawMapGroup:nullptr;}
 bool TrioAttack::resumeMaterialColor(uint32_t fn,uint32_t flags,uint32_t c1,uint32_t c2,const MapMaterialColorServices& services,uint32_t& pending)const{
     if(!runtime_)return false;
@@ -3120,6 +3227,9 @@ bool TrioAttack::resumeMaterialLight(uint32_t flags,std::array<float,3> origin,c
     if(!complete)pending=runtime_->materialLightCursor.pending;
     return complete;
 }
+// Borrowed current runtime projections. Hit registry invalidation explicitly
+// reopens unknown context/collision writers; getting the pointer is not proof
+// a later source query remains admitted. Audience lifecycle !=visible/touch pass.
 const DisplayQueue* TrioAttack::displayQueue()const{return runtime_?&runtime_->displayQueue:nullptr;}
 std::optional<TrioShadowDrawRequest> TrioAttack::shadowDrawRequest()const{return runtime_?runtime_->shadowDraw:std::nullopt;}
 const ShadowWork* TrioAttack::shadowWork()const{return runtime_?runtime_->shadows.get():nullptr;}
@@ -3129,6 +3239,9 @@ const BattleCommandPalette* TrioAttack::commandPalette()const{return runtime_?ru
 const BattleAudienceIncarnationOwner* TrioAttack::audienceIncarnations()const{return runtime_?runtime_->vm.audienceIncarnations.get():nullptr;}
 const BattleCameraFrame* TrioAttack::cameraFrameState()const{return runtime_?&runtime_->cameraFrame:nullptr;}
 bool TrioAttack::cameraHistoryComplete()const{return runtime_ && runtime_->cameraHistoryComplete;}
+// Native part binding must still match the live source+0x1c0 handle. Lookup
+// does not itself pin a generation, retire a resource or prove display admission;
+// caller keeps actual pose/runtime owner valid while consuming the pointer.
 const BattlePose* TrioAttack::battlePose(uint32_t part)const{
     if(!runtime_)return nullptr;
     const auto binding=runtime_->partPoseHandles.find(part);
@@ -3138,6 +3251,9 @@ const BattlePose* TrioAttack::battlePose(uint32_t part)const{
 }
 
 namespace ttyd {
+// Accessors expose current presentation and canonical export separately.
+// PointGet needs active; reward icons need live ending pointer/bit 2. A fade alpha
+// or reward state>=0x07000008 is not full ending, teardown or field return proof.
 const PointGetEffect* TrioAttack::rewardEffect() const {return runtime_ && runtime_->pointGet.active?&runtime_->pointGet:nullptr;}
 std::shared_ptr<ProloguePouch> TrioAttack::exportedPouch() const {return runtime_ && runtime_->endingExported?runtime_->entryPouch:nullptr;}
 const StageMapObjects* TrioAttack::stageMap(bool background)const{return runtime_?(background?&runtime_->stageBackground:&runtime_->stageForeground):nullptr;}

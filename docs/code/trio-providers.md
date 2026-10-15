@@ -4,8 +4,8 @@ This guide covers selected sections of [TrioAttack](../../include/battle/trio_at
 and [its runtime](../../source/battle/trio_attack.cpp): process assets, HP-provider
 binding, pose/shadow registration, stage and audience composition. The [event/entry/damage](trio-events.md) and [ending](trio-ending.md) sections
 have a separate audit. See [scheduling](trio-scheduling.md) and [display prefix](trio-display-prefix.md)
-for the next runtime sections. Public draw/material adapters and newer source
-continuations still need complete review. See [commands](trio-commands.md),
+for the next runtime sections. [Public API](trio-api.md) and [draw bindings](trio-draw-bindings.md) cover the
+recorded facade; newer source continuations still need complete review. See [commands](trio-commands.md),
 [audience control](battle-audience.md), [audience sound](battle-audience-sound.md),
 [part/HP presentation](battle-part-presentation.md), [stage](battle-stage.md) and
 [retained owners](battle-retained-owners.md) for linked mechanics.

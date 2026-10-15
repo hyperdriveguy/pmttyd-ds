@@ -4,8 +4,8 @@ This covers the committed legacy handoff, action/retained-Main composition and
 camera pipeline in [TrioAttackRuntime](../../source/battle/trio_attack.cpp).
 See [events/entry](trio-events.md), [ending](trio-ending.md),
 [display prefix](trio-display-prefix.md), [retained battle owners](battle-retained-owners.md)
-and [camera](battle-camera.md). Public draw/material wrappers and newer concurrent
-Turn/pinch/sequence bindings still need a separate complete audit.
+and [camera](battle-camera.md). See [public API](trio-api.md) and [draw bindings](trio-draw-bindings.md) for
+the facade. Newer concurrent Turn/pinch/sequence bindings still need a separate audit.
 
 ## Action and legacy phase ownership
 
