@@ -33,6 +33,9 @@ SPANS += [('draw-radians',0x8041fb2c,4,'7388adb66bc2fb8cdd730d8148adcae18abd8bb4
 # Original Main clock/frame literals.
 SPANS += [('main-frame-clock',0x8041fba4,8,'ddc0adc8aa32f0760b2cecfb24f4467cc09eff8318c59d91bfb09c2ba30e2057')]
 
+# Original Main cumulative replay scale.
+SPANS += [('main-replay-scale',0x8041fbac,4,'2625276c57610c65a55868a40c431d1fd6651984b8ee92c081b49a98a0e9d884')]
+
 def build(iso=DEFAULT_ISO,output='romfs/animation-boot'):
  root=Path(output);root.mkdir(parents=True,exist_ok=True)
  with Path(iso).open('rb') as disc:
