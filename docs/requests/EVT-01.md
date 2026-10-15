@@ -5129,3 +5129,13 @@ flag is not an acceptable shortcut. Source release/GC, linked/paper paths,
 whole Mario/frame/window owners and full event chronology remain open.
 Evidence:ignored artifacts/animation-field-activation-evidence/report.md and
 source listings/REL event inventories. No new dialogue or story writes here.
+
+### 2026-10-15 Original NPC offscreen and blur callbacks
+
+[Retained variants](../behavior/display/RETAINED_NPC_OFFSCREEN_AND_BLUR_CALLBACKS.md)
+deliver complete local offscreen ordinary/xlu and blur bodies, joining all five
+NPC callback identities. Original literal-load/FMA graphs, two explicit camera
+queries, history4..1, twelve passes and clear-then-OR material restore are
+retained. Actual GPU synchronization/coverage/offscreen texture lifecycle and
+field Main/SetAnim/draw/camera/queue owners remain explicit/unbound; normal
+activation and runtime/visual/numeric/hardware parity remain OPEN. EVT-01 is not closed.

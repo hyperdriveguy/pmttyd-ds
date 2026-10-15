@@ -1,3 +1,61 @@
+### Original offscreen and blur NPC callbacks (2026-10-15)
+
+Code commit b2ee7653b1b697d0fe99de54008a6483d7cde501 implements complete local offscreen ordinary/xlu
+and blur callback bodies, joining ordinary/xlu to cover all five identities
+registered by retained NPC Main display/shadow. Offscreen preserves wait/clear,
+full primary104 draw body, wait/read GPU bounds, fresh alternate110 and exact
+unsigned L/T/R/B forwarding. Every ordinary class exit reaches the footer.
+Genuine synchronization/raster/offscreen texture owners remain explicit native
+services; no model-space bounds or no-op GPU acknowledgement were substituted.
+
+Blur retains actual dispatched camera ID, queries it twice independently and
+loads original polynomial literals in source instruction order. Retained sine/
+cosine reductions preserve original SP/FMA/NaN/signed-zero graphs. It runs Main
+once, renders history4..1 with twelve fresh-handle/scale draw requests, applies
+alpha28/53/78/103, then clears40 and ORs saved flags. It preserves flags added
+while drawing and leaves the final color. Native material getter/clear/set use
+actual raw shared pose aliases, including inactive mapped slot255. Storage stays
+fixed-size with no per-call allocation; Gekko numeric/hardware parity is unproven.
+
+[Source contract](behavior/display/RETAINED_NPC_OFFSCREEN_AND_BLUR_CALLBACKS.md)
+records exact order, ownership, holds and next tasks. Inbox read-only research
+also recovered AddBoundingBox’s actual bank/record/dirty-edge/render-mode and
+texture-copy ownership. Those backend services remain unbound. Two hash-verified
+unchanged color/trig views add36 source bytes to private door-data. Only
+JSON/pmevt changed among2131 RomFS products; removing those36 bytes recovers the
+previous pack hash. Local gor_02.s, art/music/dialogue/geometry/lighting and all
+other products remain unchanged. No original assets/PPC/binaries were committed;
+EVT-01 and the overall goal remain open.
+
+Accepted isolated tree dfc05e233ba99dd3d1c0f95933b7e3b0b9777a8b has3743 tracked files, all audited exact.
+`CMAKE_BUILD_PARALLEL_LEVEL=4 make test`:392 C++ tests (39.66 seconds),
+203 Python tests (30.955 seconds), zero skipped. Normal
+`make all -j4 -o assets-ready SOUNDTRACK=gamecube` passed after scoped read-only
+door-data regeneration, with unchanged pipelines skipped. Independent source
+review and warning-enabled standalone effect tests passed without substantive
+findings. Existing fixture indentation/Pillow warnings remain.
+
+Isolated ARM probe passed entry/ordinary/offscreen/blur/trig/holds/camera/
+nativeAliases/gpuHolds/material. Tests cover every primitive hold in six
+offscreen/four blur graphs, distinct explicit cameras and four additional
+current-camera matrix queries, all history passes, source literal order,
+nonfinite/signed-zero polynomials, raw bounds and material mutation/restoration.
+Native fixtures use actual VM/pool aliases plus explicit camera/GPU/Main/draw
+fixture services, not normal field renderer/story acceptance. Normal runtime
+source restored and rebuilt; pre/post SHA256 02081dee417cd5e2b7cfa956e1d0d5cd8d0b5ab28d3330ffb41ab2396f42e31e. Forty-second startup
+capture visually inspected: original storybook, App47FPS/79%, no visible
+asset-error console. Startup is not field/hardware performance validation.
+Exact source/product/native logs, hashes and captures are in ignored
+`artifacts/npc-effects-validation-manifest.json`. Code/docs were committed
+separately; unrelated shared work was preserved.
+
+Next: compose actual field animation Main/SetAnim/draw, original source buffers,
+camera/queue dispatch and real offscreen coverage/texture owners. Then activate
+retained NPC Main/callbacks in normal Game and compare original visuals/runtime/
+numerics, fix live field smoke admission/occlusion and measure New 2DS XL speed.
+Normal Game still uses the older NPC presentation path. The Rogueport slice,
+playable prologue and full remake remain incomplete.
+
 ### Original ordinary NPC queued callbacks and native pose aliases (2026-10-14)
 
 Code commit 7ed671a6d9f873c318a5a3409ead7b05c8caba8b implements the complete local ordinary npcDisp8004c50c

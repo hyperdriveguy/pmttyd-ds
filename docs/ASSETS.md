@@ -2555,3 +2555,24 @@ No editable import/shared pack write, texture/geometry/lighting/audio/message
 conversion change or new license. Python fixtures independently read ISO into
 empty temporary outputs; native full regeneration skipped. Nintendo/Intelligent
 Systems rights reserved. No ISO/original extracted asset/compiled binary committed.
+### Original NPC blur color and polynomial literals (2026-10-15)
+
+Read-only US G8ME01 disc0 revision0 `/home/carson/games/roms/G8ME01.iso`
+provides unchanged DOL8041fc68+4 color bytesffffff00, SHA256
+6fc6f4524161c3ae0d316812d7088e3fcd372023edaea2d7821093be40ae1060,
+and DOL8041fd10+20 original polynomial/quadrant constants, SHA256
+4ddafcc41cea1d3c6c6b18c0945cf7e58cb2ad26c03e662e8803c708bad73157.
+`field_npc_actor_assets.py` verifies both views before private packing. Exactly
+36 source bytes were added. Private `romfs/door-data.pmevt` is152840 bytes,
+SHA256cf1404103dc9ab8a6c5325aaa0f1a72f72e8b9778b130677d7072766bbca3369.
+Removing only those36 bytes and remerging recovers the prior152804-byte pack
+and SHA256e9e85d212180b28087c7c8c4d904f82417c1a0ea30f1271ab10c2a3d0c9a78ab.
+Only door-data.json/pmevt changed among2131 private RomFS products. Local
+gor_02.s and all other product hashes remain unchanged. No art/audio resampling,
+geometry reduction, lighting or dialogue changes were made. Source constant
+loads, single-precision/FMA graph and original color/alpha behavior are retained;
+no generic sin/cos or generated replacement assets were introduced.
+Nintendo/Intelligent Systems rights remain reserved; local extraction grants
+no redistribution rights. ISO, raw original assets/listings and compiled packs/
+binaries remain ignored/private. Exact source/product/native validation is
+journaled in `artifacts/npc-effects-validation-manifest.json`.

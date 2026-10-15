@@ -103,3 +103,8 @@ open. Next implement complete offscreen synchronization/GPU bounding boxes and
 blur history/material restoration, then compose actual field producers before
 activating this path in normal Game. Original runtime traces, field visual
 comparison, smoke occlusion/admission and New 2DS XL performance remain open.
+
+The complete local [offscreen and blur callbacks](RETAINED_NPC_OFFSCREEN_AND_BLUR_CALLBACKS.md)
+now join ordinary/xlu, superseding those implementation tasks above. Real
+field Main/SetAnim/draw, camera/queue and GPU offscreen owners, normal activation
+and original runtime/visual/numeric/hardware parity remain open.
