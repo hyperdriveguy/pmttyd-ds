@@ -1408,3 +1408,8 @@ Original battle menu native resource/queue owners:
 
 
 - [Prepared native weapon UI raster](display/PREPARED_NATIVE_WEAPON_RASTER.md).
+
+
+- [Same-process native NPC animation pass](display/NATIVE_NPC_ANIMATION_PASS.md):
+  exclusive retained original SetAnim/Main services for deferred draws and
+  automatic-pose selection; actual GPU and normal Game activation remain open.

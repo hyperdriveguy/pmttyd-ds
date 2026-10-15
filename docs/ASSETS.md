@@ -3573,3 +3573,13 @@ native full regeneration skipped. Python fixtures independently use read-only
 ISO and empty temporary outputs. Nintendo/Intelligent Systems rights retained;
 no new license/redistribution rights, no ISO/extracted original or compiled
 binary committed.
+
+## 2026-10-15 — Same-process native NPC animation services
+
+The NPC animation pass binds retained original SetAnim/Main to the existing
+cold VM, source pose namespace, files and scratch. No ISO payload, extraction,
+conversion, atlas, music, SFX or licensing terms change. Original resources stay
+outside source history. Regression fixtures use the existing Mario resource
+and original missing literals from `romfs/door-data.pmevt`; raw actor/GPU/gravity
+fixtures are explicitly test setup, not new game assets or original behavior
+measurements. See [contract](behavior/display/NATIVE_NPC_ANIMATION_PASS.md).

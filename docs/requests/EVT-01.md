@@ -5376,3 +5376,21 @@ generic callers remain scalar by default. Original-resource host/ARM parity,
 alias fallback, missing/nonfinite repair and lifecycle tests pass. Phase evidence
 is in progress. Full source NPC Draw/Inner/queue/GPU/service activation and physical
 performance remain open; no new story or asset conversion. EVT-01 stays OPEN.
+
+
+## 2026-10-15 — Same-process retained NPC animation children
+
+Delivered [native NPC animation pass](../behavior/display/NATIVE_NPC_ANIMATION_PASS.md).
+An exclusive retained pass shares Mario's cold VM/files/pose/scratch/executor,
+routes raw SetAnim/Main from NPC deferred draws and automatic-pose selection,
+and preserves partial source effects through false responses. Missing GPU work
+continues to hold after Main; provider installation never acknowledges Draw.
+Actual cold-resource regression covers selection clock repair, automatic actor
+phase ordering, Main/no-replay, exclusivity and reuse. Normal Game scheduling,
+complete source Draw/Inner, actual camera/queue/offscreen GPU ownership and full
+opening story progression remain open. EVT-01 stays OPEN.
+
+- [ ] Bind field Draw/Inner to the actual same-pass post-Main output owners and
+  original captured draw context; raw Main does not refresh the typed mesh. Use
+  the existing wrapper/Inner/group/shape contracts, keeping linked/ring/material/
+  queue/GPU lifetime gaps explicit and requesting source evidence where missing.

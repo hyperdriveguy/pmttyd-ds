@@ -15520,3 +15520,83 @@ newer animation/field/party/font/window/resource/raster integrations and tooling
 Tracked C++/header/PICA hash inventory is a review aid,not semantic completeness;
 untracked additions and tools require separate audit. Broad documentation and
 remake goals remain active.
+
+## 2026-10-15 — Same-process retained NPC animation services
+
+Completed finite native service binding, code `11a129559c432530d7222f893cc0881152f9dfd5`.
+[Contract](behavior/display/NATIVE_NPC_ANIMATION_PASS.md). NPC automatic-pose
+selection and deferred callbacks can now use the complete original retained
+SetAnim80041170 and Main8003ed2c in Mario's existing cold VM/files/pose/scratch
+namespace. A separate animation context preserves every other provider's user.
+Installed animation providers own these calls exclusively, including holds.
+
+An exclusive NPC producer lease retains owner/pass/camera/current identity across
+children and blocks native tick, Entry, Release, Mario, root changes and executor
+reconfiguration. Matching cameras reuse the existing configured executor and
+warm Main frames. Callers must finish the complete parent/callback/queue before
+ending the lease; the end API checks child quiescence only. Source stores can
+precede a false child response; the same retained child resumes without replay.
+
+The real binding regression covers clock-unavailable force0 equality, forced
+selection partial stores/repair, raw request identity, current/VM guards, Main
+holds, blocked competing work, executor reuse, return to Mario, automatic
+phase108 ordering and missing-GPU hold after Main without replay. Actor bytes,
+gravity and GPU receipts are explicitly bounded test fixtures. The automatic
+fixture traverses real Main-entry/movement prefixes and stops at Detection;
+it does not acknowledge the rest of NPC Main or supply production GPU work.
+
+Exact validation used `artifacts/source-checks/npc-wander`, accepted
+`b338072d1db7475daa7606ed04b9781d0e57b3d2` plus only this scope, final source tree
+`f4858034da6825d7ce4be4e724060fff6479c473`. All 3,993 tracked files match this
+snapshot; all 2,152 private RomFS products match the previous asset manifest.
+Independent concurrent source/comment/doc work was preserved and excluded from
+this scoped validation/commit. Normal binary SHA256 is
+`a2682bcdefbc73c27610f92bf198fe10f9270dee40b6ed7b9c1183589acaf084`.
+
+- `CMAKE_BUILD_PARALLEL_LEVEL=4 TRIO_ENEMY_POSE_PACK=romfs make --jobserver-style=pipe test`:
+  exit0; 446 C++ tests pass, 89.77s; 212 Python tests pass, 43.933s; zero skipped.
+  The first run had two private-asset skips due to a wrong environment variable;
+  the corrected complete final gate includes those checks. Existing Pillow
+  deprecation warnings remain.
+- `make --jobserver-style=pipe all -j4 -o assets-ready SOUNDTRACK=gamecube`:
+  exit0, native 3DSX built; unchanged already-audited products were reused.
+  Pipe jobserver avoids shared /tmp GNU make FIFO collisions with other work.
+- Fresh isolated ARM assertion profile `artifacts/azahar-npc-animation-pass-probe`:
+  exit0, exact marker `lease=PASS sourceHolds=PASS exclusive=PASS reuse=PASS mario=PASS drawNoReplay=PASS automaticPose=PASS`.
+  Assertions run before production Game construction. The probe patch was
+  removed and normal rebuilt; its SHA256 matches the saved normal binary.
+- Fresh isolated uninstrumented 40s boot profile
+  `artifacts/azahar-npc-animation-pass-normal`: exit0; original storybook renders.
+- Normal isolated checkpoint profile `artifacts/azahar-npc-animation-pass-field-ready`:
+  exit0 after 70s warmup, image-confirmed file-menu selection and 20s field load;
+  idle/right/left/idle screenshots show Rogueport and returning player movement.
+  Earlier fixed-navigation runs stopped at the demo/file menu; an OCR attempt
+  could not load local English language data. The final script recognizes all
+  four menu borders in the fixed smoke layout and confirms leaving the menu;
+  final field images were manually inspected. Those earlier runs are diagnostic
+  evidence, not successful field checks. User emulator profiles/saves untouched.
+- `python tools/check_doc_links.py`: 1,583 Markdown files, zero broken links.
+  Asset/source/normal-restoration audit passes. Evidence manifest:
+  `artifacts/npc-animation-pass-validation-manifest.json`.
+
+No source assets, conversions, music, SFX, dialogue, story conditions or licensing
+terms changed. Original ISO remains read-only. No new Dolphin observation or
+measured original timing constant is claimed. Executor reuse is tested on host
+and ARM; these visual checks do not establish an FPS gain or physical New2DS XL
+performance. Complete rendering fidelity and the overall remake remain open.
+
+Next tasks:
+
+1. Bind original field Draw/Inner to the same actual source pose/output owners
+   and captured original draw context, using existing wrapper/Inner/group/shape
+   contracts. Raw NPC Main does not refresh the typed mesh: do not read a stale
+   Mario/typed shape or acknowledge GPU work from Main completion alone.
+2. Supply real field camera/display queue/material/linked/ring and GPU owners,
+   retaining the complete callback/queue through holds; offscreen bounds/sync
+   still need actual GPU services. Do not replace them with fixture receipts.
+3. Integrate normal Game NPC scheduling and drain its owning parent explicitly.
+   Game's current native-animation drain only resumes Mario. Preserve original
+   actor/event/story order and extend area resources through the shared owners.
+4. Continue EVT-01/DEMO-01/RESULT-01 and end-to-end original opening progression;
+   compare matched original visuals and profile physical hardware before any
+   correctness/performance completion claim. Keep scoped incremental commits.

@@ -108,3 +108,13 @@ The complete local [offscreen and blur callbacks](RETAINED_NPC_OFFSCREEN_AND_BLU
 now join ordinary/xlu, superseding those implementation tasks above. Real
 field Main/SetAnim/draw, camera/queue and GPU offscreen owners, normal activation
 and original runtime/visual/numeric/hardware parity remain open.
+
+
+## Native animation service availability
+
+The [native NPC animation pass](NATIVE_NPC_ANIMATION_PASS.md) now supplies
+retained original SetAnim/Main using the same cold process as Mario. This
+optional provider has a separate context, owns these calls exclusively and may
+return false after source stores. The callback retains its pending request and
+resumes without replay. Camera, queue, original Draw/Inner and GPU owners remain
+required; the service is not yet ordinary Game NPC rendering activation.
