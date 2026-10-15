@@ -11251,3 +11251,91 @@ state10 clear and parent actor traversal; then field tail. Bind the actual
 collision/math/shadow/camera/pass/callback and earlier owners before normal
 Area activation; repair visual/asset-error smoke admission, profile actual field
 and hardware, and retain exact original story/event conditions.
+
+## 2026-10-14 — Whole HP source frame, actual camera admission and ordered native publication
+
+Committedd2a01e3eabae83cb5ca7d8ead44eb6ed4a9e8de9; ARM test include-order
+fixc70dc31a9119c4d4a9104c54c643f22b888b5436. New retained frame composes
+the actual queued HP parent→original numeral helper/iconGX→bar/raster children.
+Each number invocation owns its copied by-value RGBA and retains its actual
+parent matrix across waits. Multi-unit traces preserve numeral/17/solid/18
+interleaving. Reentrant retirement is deferred safely and actual allocation
+loss invalidates held native state. Services still require real source
+status/Tattle/projection/memory/icons/resources; no successful stubs are installed.
+
+HP camera companion admits only actual8011fde0/camera8 callbacks on actual
+CameraManager Main/Draw ownership. Existing class binding remains fixed to
+8012210c. Typed ScreenPoint captures actual camera4 before copying borrowed XYZ,
+then shares the original SDK/fresh-constant path with the unchanged guest API.
+Actual DisplayQueue reinitialize advances native resetEpoch, poisoning0 at
+saturation. Held frame/camera owners reject reset→identical-record reuse. This
+is native borrowed-lifetime metadata; original count/current/captured dispatcher
+semantics stay unchanged, including its count0 retained callback continuation.
+
+One immutable ordered publication carries actual numeral icon GPU generations
+and HP17/solid/18 packets with their actual projection-only/viewport/scissor/
+depth snapshots. Native imports assign tokens only after success; eviction/
+release retires them. Building/published packets pin real cells. Combined
+preflight checks both actual native resource owners, shader/transform/parked
+texture availability and all packets before C2D flush or GPU mutation. Existing
+legacy icon API remains available. Explicit renderer capture/bind APIs require
+a real outer owner and source pass; none activates the normal scheduler.
+
+Final normal-source graph: frozen8abc76fdf2518da365abbf45226ac8d7e6713c96
+plus36 owned files (including previous stage/GPU increment and test-only fix).
+make test passes411/411 C++ (56.95s),207/207 Python (32.944s), zero skipped.
+make all -j6 -o assets-ready SOUNDTRACK=gamecube exits0; existing compiler/Pillow
+warnings remain, plus a nonfatal concurrent GNU make FIFO-name warning on the
+restoration build. Independent1970 source/build inputs and2139 accepted RomFS
+products match exactly, no extras. Frozen documentation checks1434 Markdown
+files with zero broken links. This scope excludes concurrent newer NPC/
+animation source in shared HEAD; it is not a claim that all current shared
+uncommitted work has passed these checks. No new original data conversion in
+this increment; accepted original HP atlas remains byte-identical.
+
+Native ARM whole-source probe PASS: sourceFrameAllWaits;
+actualCameraMainDrawHpDispatch; resetRepopulateReject;
+orderedMetadataFixtures; noNormalActivation. Actual source pack/icon resources
+and original retained iconGX/bar/raster run; metadata proof fixtures remain
+explicit, distinct from the previous actual GPU pixel fixture. Initial private
+probe builds needed an entry-function rename limited to the test function
+(instead of a main macro that also renamed CameraManager::main). The SDK quad
+macro required the persistent test-only include order fix. Initial ARM runtime
+probe overflowed the32KiB application stack: host Frame/Camera tests had
+189204/132924-byte local frames holding multiple queues. Private harness
+fixtures/extra queue moved to heap, keeping all cases/assertions, then passed.
+No production stack size or gameplay logic was changed for the harness.
+
+Isolated25s ordinary and35s final ARM probe captures visually inspected: original
+storybook, no visible asset failure/native exception on final runs. Initial
+stack-failure capture/log is retained separately and is not counted as a pass.
+These are startup/source-fixture checks, not full HP battle activation, normal
+combined GPU visual admission, original numeric/raster parity or physical
+New2DSXL performance. Previous actual HP GPU nine-quad fixture remains separate.
+Only isolated emulator profiles/saves touched.
+
+Private source restored byte-for-byte; all three temporary translation units
+removed and ordinary native output forcibly rebuilt. Normal SHA256
+df7c8d8142378302b331ef1b19cab6b1dbb9a041631260cc31b645b4efa6467f
+equals pre-probe normal. Passing heap-backed ARM probe SHA256
+20ac2814d3b7a7fa86e04e4e52be137c14d2ccd55058741cb4c15ef7c3c51855.
+No instrumentation or original binaries/packs committed. Evidence:
+artifacts/hp-ordered-{validation-owned,root-owned,source-manifest}.json,
+hp-frame-arm-test-owned.json, worker exact journals/manifests,
+host-restored/native/native-restored logs and azahar-hp-ordered-normal/
+probe-heap status/captures. Failed/initial probe evidence remains labeled.
+
+Next: bind the real Trio runtime/allocation owner, actual successful camera Main
+producer epoch, actual HP queue dispatch, real status/Tattle/readers, source icon
+imports and NativeBattleEnemyHpGpu to the retained frame and ordered owner.
+Load outside FrameBegin, capture only the actual HP invocation, publish only
+when that source frame completes, then replay one interleaved batch. Keep
+allocation lifetime independent of short camera admission so copied publication
+survives callback finish. Do not borrow class callback identity, development
+fixture cameras/readiness or stale last-numeral model/view for HP projection.
+Retain remaining action/audience children before generic Main retries; finish
+normal BattleInit/turn/end and original command/tutorial/story scheduling. Bind
+completed original lower-screen audience visibility to actual incarnation
+selection, preserving physical X and optional harmful-item taps. Original HUD/
+menu style, original assets/audio/story and fixed simulation timing remain
+requirements. Full tutorial/real-battle goal remains active/incomplete.
