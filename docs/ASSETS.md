@@ -3977,3 +3977,25 @@ Manifest kind `event`, compiled by `tools/asset_event.py`, adds
 extraction caches are ignored. Normal builds preserve editable sources.
 Nintendo/Intelligent Systems retain original rights; no redistribution license
 is granted. Importing or tracking these bytes grants no new license.
+
+### 2026-10-15 — Raw renderProc initialized data
+
+Read-only `/home/carson/games/roms/G8ME01.iso`, US disc0 revision0.
+`tools/animation_boot_image.py` adds unchanged initialized DOL spans:
+
+| Data | Guest address | ISO offset (decimal) | Bytes | SHA256 |
+| --- | --- | --- | --- | --- |
+| Cull table2/1/3/0 |80415dc8|4076808|16|c18ceb647eba232a898446a1e9f49062cb65a114a2b5736db1f26c53bdc859ed|
+| Render light seed |802c103c|3007292|12|15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b|
+| Texture-index warning incl aligned tail |802c1078|3007352|76|a9a703d116f0da2933c3853744550afb966f34c72c8a106587fa2f22fa5fb971|
+
+No transformation, image scaling, geometry or audio conversion. The compiled
+ignored products remain `romfs/animation-boot/memory.pmevt` and `memory.json`
+in the isolated validation checkout. PMEVT5032→5172 bytes:104 original data
+bytes plus36 directory bytes,38 total spans. Pack SHA256
+`3127e3b50061b264805b9c194a849f4dcfd7da066d15ed36edf638a472b16353`.
+JSON records exact provenance. The other2,150 compiled products are unchanged.
+No editable checked-in asset was reimported or overwritten. The extraction is
+compiled boot data; no ISO or compiled product enters source history. Nintendo/
+Intelligent Systems retain original rights; local extraction/tracking grants no
+new license or redistribution rights.

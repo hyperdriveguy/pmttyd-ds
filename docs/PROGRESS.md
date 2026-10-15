@@ -16901,3 +16901,85 @@ before animation clock gates, complete original area/tag/setup and RNG services,
 then scene dialogue/battle/result/return, indoor/event/object coverage and
 matched original visual/hardware performance checks. This milestone does not
 establish full prologue playability or Goombella walk visual parity.
+
+## 2026-10-15 — Complete original raw renderProc parent
+
+Implemented original renderProc8003c884 local parent and same-VM producer lease
+binding, code `8dfc912fd0ff61340fb5c4c8e0e7ccbcffcff8aa`. [Contract](behavior/display/NATIVE_ACTUAL_VM_RENDER_PARENT.md).
+The actual group now selects this owned raw controller when no explicit render
+provider exists. Its current camera, SDK, material, GX, texture and FIFO children
+remain explicit retained services; their absence holds at the original call.
+Normal Game activation and production camera/shape SDK/material/GPU remain open.
+
+The controller preserves complete matrix-before-admission behavior, exact raw
+shape metadata/pass/alpha/UV capture order, full default material ABI, kind1/2
+priority including null matches, alpha/extra/current-object and independent10
+rebind paths, live array selection and both indexed emission paths. Original
+printf r4 is the captured unsigned frame-extension byte. Multi-UV retains W
+captured after Begin, including count0, and preserves different bulk-lane D/
+selector order. Each FIFO halfword retains its loaded value across holds. Fixed
+cursor/local storage is reused without per-vertex heap allocation. Escaped UV
+local-table indices retain an explicit implementation frontier after their byte
+capture; the original has no index bound. No SDK numeric or hardware performance
+parity is claimed.
+
+Read-only boot extraction adds104 unchanged initialized DOL bytes: cull table,
+light seed and warning format/alignment. PMEVT5032→5172 bytes including36 extra
+directory bytes,38 spans. Exactly two compiled products change; the other2,150
+are unchanged. [Asset ledger](ASSETS.md) records paths, exact ISO offsets, hashes,
+conversion and retained original rights. No editable checked-in asset was
+reimported/overwritten, no compiled product or ISO was committed, and no dialogue,
+story, texture, geometry, music or SFX changed.
+
+Validation froze accepted `d04dd916b3fab5b6ccd1ce801e7a87ecd2179ef3` plus twelve owned paths as
+`8607348b24757fec4559d1467db205774e1bfbc7` in `artifacts/source-checks/npc-wander`.
+All 4,022 source files match that tree; all 2,152
+RomFS files match the new two-product audit. Concurrent source/assets/docs and
+public staging were preserved. Normal SHA256 `d9bea1601060bfa593dd85a4be14bc78153259cf69c8e6101d7d88f5bf92edf6`.
+
+- `CMAKE_BUILD_PARALLEL_LEVEL=4 TRIO_ENEMY_POSE_PACK=romfs make --jobserver-style=pipe test`:
+  exit0,455 C++ tests pass,81.48s;212 Python tests pass,
+  37.834s;zero skips. Existing Pillow deprecation warnings remain.
+- `make --jobserver-style=pipe all -j4 -o assets-ready SOUNDTRACK=gamecube`:
+  exit0 with audited existing products plus rebuilt boot pair. Private ARM
+  assertion patch removed; normal rebuild reproduces saved SHA256 exactly.
+- Fresh isolated ARM `artifacts/azahar-npc-render-probe`: exit0, marker
+  `render=PASS holds=PASS defaults=PASS overrides=PASS fifo=PASS graph=PASS lease=PASS`. Probe build is warning-clean. Host/ARM cases cover
+  every primitive hold across seven signed slot counts and fifteen material/
+  control scenarios; independent source call/ABI/FIFO goldens, source mutation,
+  camera/pass/alpha/UV ordering, null-match/warning/extra/rebind paths, captured
+  slots, multiple draws/runs, zero/truncated counts and halfword repair pass.
+- Original Mario graph runs actual CPU nodes and raw render-controller RAM/
+  table/output/index reads through its last FIFO under retained leases. Holding
+  FIFO blocks pass end/reconfigure/tick; current-guard rejection has no child
+  effects; repair finishes without replaying node/camera/material work. Camera,
+  shape SDK, GPU/cache/material effects in this test are explicit receipts,
+  not original complete native rendering or GPU success evidence.
+- Normal40s boot `artifacts/azahar-npc-render-normal`: exit0; original storybook
+  manually inspected. Fresh isolated checkpoint field profile
+  `artifacts/azahar-npc-render-field`: exit0;70s warmup, image-confirmed occupied
+  file selection,20s load, idle/right/left/final-idle captures inspected. Existing
+  Rogueport/Mario rendering and returning movement remain correct in these
+  captures. This does not establish new GPU activation or measured hardware FPS.
+- Independent complete original source/ABI/binding review and warning checks
+  pass. Markdown link check has zero broken links; exact count in log.
+  Evidence: `artifacts/npc-render-validation-manifest.json`.
+
+No new Dolphin execution observation or matched original GPU/physical hardware
+profile was collected. EVT-01 and the overall events/NPCs/objects/area goal remain
+OPEN; this controller is an original rendering prerequisite, not full NPC or
+full-game completion.
+
+Next tasks:
+
+1. Bind real current-camera/view semantic tokens and reusable same-VM SDK matrix
+   children, reusing Node's exact Concat captures and shape inverse/MultVec math;
+   preserve singular no-store/unknown normal behavior and current owner proof.
+   Concrete read-only bridge/capture/validation map:
+   `artifacts/npc-render-sdk-next-evidence.txt`.
+2. Bind source map material/texture/GX/FIFO operations to field-owned Citro3D
+   indexed fan/texture/cache storage. Preserve genuine material/light/multi-UV
+   limitations and complete materialProc/Vivian/linked/callback services.
+3. Wire ordinary Game camera/queue/offscreen/callback/pass draining, expand
+   original area/events/objects/story coverage, then matched original image
+   comparisons and physical New2DS XL performance profiling.

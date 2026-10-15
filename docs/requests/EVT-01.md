@@ -5543,3 +5543,26 @@ incomplete or quarantined mutation consumers. See
 EVT-01 remains OPEN: ordinary Game must compose this owner before animation
 clock/presentation gates; the full original area parent, tags/setup/RNG,
 scene dialogue, GPU/audio/battle/result/return and complete prologue remain.
+
+### 2026-10-15 — Complete raw renderProc parent and same-VM binding
+
+[Retained original render parent](../behavior/display/NATIVE_ACTUAL_VM_RENDER_PARENT.md)
+now implements complete8003c884 local control: current camera/matrix prelude,
+raw shape admission and source UV capture order, full default material ABI,
+primary/extra/independent texture branches, live array selection and every
+individual FIFO halfword. Multi-UV retains post-Begin W; bulk lanes retain the
+source-asymmetric D/selector load order. The warning's r4 is proven to be its
+loaded unsigned frame byte. Missing original child services remain explicit
+frontiers. Same-VM group ownership selects this parent when no explicit render
+provider exists and retains the producer lease through its last FIFO write.
+
+Original Mario tests traverse real CPU nodes and raw source table/index/RAM
+reads; camera/shape SDK/GPU/cache/material receipts are explicit fixture effects.
+They do not prove complete rendered NPCs, normal Game scheduling, original
+numeric/GPU parity or physical hardware performance. No story dialogue changed.
+
+- [ ] Bind real current-camera/view tokens and reusable raw SDK matrix children.
+- [ ] Bind real material/texture/GX/FIFO Citro3D owners, with retained indexed fans.
+- [ ] Complete materialProc/Vivian/callback/linked services and normal Game
+  queue/camera/lease scheduling; then original-area/story coverage and images/
+  physical hardware performance. EVT-01 and the full goal remain OPEN.

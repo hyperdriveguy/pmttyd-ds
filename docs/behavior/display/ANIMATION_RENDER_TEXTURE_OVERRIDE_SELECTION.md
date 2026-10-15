@@ -18,7 +18,9 @@ For ascending coordinate slot j while signed j<N,read material slot ID
 S=word[B+10+4*(N−j−1)] (REVERSED draw slot order). Compute32-bit
 I=word[A+8*S]+UNSIGNED byte[T+24*S]. If signed I<0 OR I>=captured signed C,
 replace I0 and request printf at8026a2a8 with original format802c1078.
-No explicit frame argument is prepared locally. It continues using descriptor0,
+The r4 argument is the retained UNSIGNED frame-extension byte from the preceding
+lbzx4 (cb98/ccc4/cfa8 in renderProc); it is not traversal-current or the summed
+descriptor index. It continues using descriptor0,
 without proving C>0;S/T/A dereferences happened BEFORE this bounds fallback.
 There is no slot count/index/pointer validation. Texture kind=word[F+64*I+8].
 

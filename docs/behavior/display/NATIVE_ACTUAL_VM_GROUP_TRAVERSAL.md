@@ -112,3 +112,11 @@ with source captures, live constants, exact component/dispatch requests and real
 modeling-stack output. An explicitly installed backend node provider remains
 exclusive, including on false. Material/Vivian/callback/render GPU work remains
 unfinished; the original typed node24/C++ stack is not substituted.
+
+## Owned raw render parent
+
+Absent an explicit backend render provider, the group now owns the
+[raw renderProc controller](NATIVE_ACTUAL_VM_RENDER_PARENT.md). Its primitive
+reads use the same VM/current guard, and its renderChildren retain all camera/SDK/
+material/GX/FIFO effects. Missing children hold; complete raw parent support does
+not establish production GPU rendering or normal Game scheduling.
