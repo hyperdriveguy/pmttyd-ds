@@ -1,3 +1,64 @@
+## 2026-10-14 — Parallel UI work: upper Trio menus and retained input geometry
+
+User requested additional UI workers. Three workers handled menu placement,
+original-HUD/runtime audit and optional audience touch geometry. Scoped code
+commit1791882b7f304f710e9fc5347332f127c61474a4 moves existing Trio command/target
+lists to the upper display, retaining original type0 frame, font, icons and hand
+at their existing scale with40px horizontal translation. Lower Trio command and
+attack panels are removed. Game no longer consumes their invisible lower tap
+hitboxes; D-pad/Circle Pad and physical A/B retain navigation and cancellation.
+The Game regression now rejects a tap on the former Hammer row, then selects
+Hammer through actual physical input. This remains the native submenu adapter,
+not a completed original rotating class menu.
+
+BattleAudienceTouchFrame projects copied actual source-world quads through the
+retained source camera and lower continuation once. Selection requires completed
+pass identity, current actor/item incarnations and explicit visible/dangerous/
+interruptible evidence. Missing/stale/duplicate overlapping identities reject;
+only an exact explicitly hidden actor permits pass-through. It is not wired to
+native audience emission/input: those live owners remain missing. Physical X
+keeps its original independent path; synthesizing X from a chosen tap could
+select a different holder. BattleClassPublication copies complete original
+backend geometry without stack callbacks, rejects stale allocation/lifetime
+admission and consumes successful draw notification once. It also remains
+unbound to normal source display scheduling. The new display audit records
+these gaps, original ISO HUD table identity and native acceptance scenarios.
+No new artwork/import/conversion was required for this UI increment.
+
+Validation freezes base75e8e07658735397215370e9cc28c595a92cd78c plus scoped edits
+in artifacts/battle-ui-validation. CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits0:
+356/356 C++ in37.21s and199/199 Python in29.773s. Initial host run failed the
+obsolete lower-touch confirmation assertion; corrected it to assert the new
+no-invisible-command behavior plus physical selection, then reran all checks.
+make all -j4 -o assets-ready SOUNDTRACK=gamecube TARGET=ttyd-battle-ui
+BUILD=build-battle-ui exits0. Original private asset dependencies were reused;
+asset regeneration was deliberately skipped. Existing baseline compiler/Pillow
+warnings remain. Source audit covers1790 compiler/test/tool inputs with zero
+mismatches/extras; all private RomFS file hashes are recorded in
+artifacts/battle-ui-source-manifest.json. Other roots' moving edits are excluded.
+
+Isolated Azahar fixture exits0 after18s startup plus physical directional/A/B
+input. Inspected upper-command.png and upper-target.png in
+artifacts/azahar-battle-ui: original two-row command/one-row Hammer target art
+is upper; the lower scene/seat geometry remains unobscured. Status records
+physicalFlags=7,state=1,command=1; log has zero exception/unmapped lines. Fixture
+explicitly enters original-data Trio state and directly adapts HID edges to the
+existing command controller. It does not execute normal story entry/Game tick,
+prove live audience population/throws, full source UI scheduling or hardware
+performance. Normal main was restored byte-for-byte and recompiled/relinked;
+normal3DSX matches the saved pre-fixture binary exactly, SHA256
+9737271ba6f2d844fe16251707b96886877c3d65bc8111210b9c0092d51fac70.
+No user emulator profile/save was touched. Final documentation check covers1374
+Markdown files, zero broken links. Logs are artifacts/battle-ui-*.log.
+
+Next: connect actual source class-menu draw callbacks/assets and simulation-side
+acknowledgement; publish real audience incarnations/visibility/eligibility and
+chosen-slot interruption cache before enabling taps. Complete original partner
+HP/AP/coin/SP HUD from real owners and verify normal tutorial/trio flow. Earlier
+recovery work still needs actual native GPU/effNumberGX/SFX and normal gift
+integration. Private recovery texture export drafts remain outside this commit;
+no live recovery rendering is claimed. The remake/goal remain incomplete.
+
 ## 2026-10-14 — Original Maya curves, effect pool and recovery draw callbacks
 
 Previous goal turn made progress on recovery/Maya lifecycle ownership. Commit
