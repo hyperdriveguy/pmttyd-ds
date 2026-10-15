@@ -10081,3 +10081,74 @@ artifacts/azahar-animation-files-normal/boot.png inspected. Sample60AppFPS/100%
 speed is startup evidence only, not field/physical3DS timing or pixel parity.
 User emulator profiles/saves were untouched. Final link check1409Markdown files,
 zero broken links.
+### Retained NPC Main entry and actual pose/clock composition (2026-10-14)
+
+Codee5e05306 implements original Main entry/controller through80049e8c exclusive;
+[contract](behavior/field/NATIVE_NPC_MAIN_ENTRY_AND_CLOCK_COMPOSITION.md).
+It captures original bank/count/array/initial flags, clears actual Mario collision
++1dc while preserving radial+1d8, increments shared MainCount and traverses raw
+340-stride records in source order. Actual shared pose word0 bit100, source
+state/timer, complete retained clocks and Kpa setup now compose in that order.
+The actual pose getter has no active/clip gate; its source20-byte body was checked
+read-only. Native positive bank/handle admission refuses invalid domains without
+clamping or copying records. No per-actor allocation/new scan/GPU submission.
+ARM compile inspection shows VFP ordered comparison; no physical timing claim.
+
+Explicit Movement49e8c and FieldTail4b1d0 results remain unfinished/active on
+repeated calls. There is no body-skipped acknowledgment or full Main success.
+This prevents clock-only all-actor traversal and premature history publication.
+Normal Game still uses its separate legacy field path; actual Area activation,
+complete Main, actual Mario/cold file/resource startup and hardware/render
+fidelity remain open. The native test's Mario/allocation/null-file owners are
+explicit fixtures, not production startup completion.
+
+Independent read-only review found no source-order defect. Source correction:
+Kpa height rejects only Y>365, so NaN enters; prior Y<=365 shorthand was wrong.
+Tests cover independent ordinary trace, every-primitive holds over ordinary,
+full-clock Kpa, post-clock query loss and initial rejection; captured flags/bank
+across provider mutation; signed counts/counter wrap; unsigned timer; special
+boundaries/prior state/factor bypass/audio holds. Native shared storage checks
+actual actor Entry, typed/VM pose aliasing, inactive slot, alternate16-bank,
+missing Mario and positive oversized-bank refusal.
+
+Frozen91702519694dfea6e1eee092a051ea4ee08df704 on baseline426b13fb:
+3707 tracked files audited, zero mismatches. Concurrent moving-worktree changes
+are excluded; no combined-HEAD validation claim. Final make test passes381/381
+C++ (50.36s),203/203 Python (50.955s), zero skipped. make all -j4 -o assets-ready
+SOUNDTRACK=gamecube exits0. Existing compiler/Pillow warnings remain.
+
+An initial targeted load rejected the unaligned34-byte source-string span;
+corrected to36 original bytes including original padding. The first full gate
+then found five newer menu-loader tests missing the old cache's raw common TPL.
+Restored217920 source bytes after matching the accepted manifest/producer hash;
+the five tests plus NPC entry passed, followed by the entire final gate. No
+source/test weakening. The initial normal capture shows the asset-load failure;
+the corrected normal capture was visually inspected and reaches original
+storybook at App60FPS/100% speed. The smoke tool's process/exception check alone
+would not reject the asset-error console, so visual inspection remains required.
+
+Strict isolated ARM fixture:mainEntry/holds/sharedPose/alternateBank/nanGate/
+unfinishedFrontier PASS. Normal source restored/touched/rebuilt; hash
+SHA256d690b62ac066cc96f240189cbd2429728cb5999ddf52377a85b5ffdba959212e
+matches the verified pre-probe copy. New isolated profiles only; no user profile
+or saves touched. Startup sample does not prove field/hardware performance.
+Prior15FPS llvmpipe field sample and occluded visual-assertion failure remain open.
+
+Private assets:2130 accepted animation-live products plus one accepted original
+menu TPL; all2131 current file hashes checked, with only door-data.json/pmevt
+regenerated for unchanged Main constants/strings. Accepted local fixture matches.
+Original ISO read-only, source helper ELFs/data/compiled packs ignored, original
+rights unchanged. [Assets](ASSETS.md). Evidence:
+artifacts/npc-main-entry-validation-manifest.json, assets-after/extra-cache JSON,
+original getter listing and native/probe/normal captures. No original binary/ISO
+is committed or distributed.
+
+Next: extend from fresh state load49e8c into source movement, gravity, side and
+automatic pose before event detection/interrupt, display/material/shadow and late
+history. Preserve captured factor and actual pointers, freshly read late
+MainCount, then source final state10 clear/next actor. Implement actual field tail
+from4b1d0 and complete Main only after all its reached children complete. Bind
+real Mario radial/audio/numeric/cold resources before normal Area activation;
+do not enable fixtures in ordinary Game. Fix visual harness frontend/occlusion
+admission and add explicit asset-error detection; profile actual field/hardware.
+Full-game goal and EVT-01 remain active/incomplete.

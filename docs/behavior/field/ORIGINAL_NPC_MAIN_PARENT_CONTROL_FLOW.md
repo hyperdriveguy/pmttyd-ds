@@ -38,7 +38,8 @@ For each record at80049b00:
    at8004b1b4; this differs from initial rejection, which skips that clear.
 7. Copy prior special state100000 into state200000: set200000 iff100000,
    otherwise clear200000. Clear state100000. Compare fresh GP+12c with source
-   string kpa_03 at802c1394. For this match and A.Y<=365, set100000;
+   string kpa_03 at802c1394. For this match and not(A.Y>365), set100000;
+   unordered/NaN Y enters because the original branch rejects only greater.
    if prior200000 clear and this new100000 set, request psndSFXOn_3D with
    source name SFX_KUPPA_3RD_WATER_FALL1 at802c139c and pointer A+8c.
 8. If state100000 and not10000000, set A+1d0=100 and retain f31=.5;

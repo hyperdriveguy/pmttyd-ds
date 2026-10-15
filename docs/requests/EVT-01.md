@@ -4942,3 +4942,6 @@ heap/format/copy fixture providers still explicit. Normal menu uses this owner;
 normal source animation startup and Entry→typed file metadata are not activated.
 Next bind source heap/W/tangent/output and real formatted/shared-filename owners,
 then cold bootstrap before Mario entries. Full EVT-01/prologue remains open.
+### Actual NPC Main entry and pose/clock composition
+
+[Retained entry controller](../behavior/field/NATIVE_NPC_MAIN_ENTRY_AND_CLOCK_COMPOSITION.md) now composes original entry/raw bank traversal, shared pose bit100, source state/timer, complete clocks and special-room setup. Missing Mario/audio holds preserve completed source work. Source correction: the Kpa Y gate is not(Y>365), including unordered/NaN, rather than Y<=365. Movement49e8c and field tail4b1d0 remain explicit unfinished frontiers; no parent success, all-actor clock prepass or body-skipping callback is provided. Keep full movement/query/interrupt/display/history/tail, actual startup/Mario/resources, normal Area activation and original/hardware/render validation open.

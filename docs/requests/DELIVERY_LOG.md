@@ -399,3 +399,7 @@ Read-only [complete npcMain parent](../behavior/field/ORIGINAL_NPC_MAIN_PARENT_C
 ### NPC clock section and source child ABI follow-up
 
 [Retained clock](../behavior/field/NATIVE_PACKED_NPC_CLOCK_SECTION.md): actual owner/facade/GP aliases, source64-bit stores/conversions and independent source trace with primitive holds. [Direct child ABI audit](../behavior/field/ORIGINAL_NPC_MAIN_CHILD_ABI_AND_NUMERIC_FRONTIER.md):39 callees, scratch reference domains, source helper rounding and fresh-read corrections. Complete Main/native provider/render/cadence integration remains open under EVT-01; no documentation lock claimed.
+
+### NPC Main entry, shared pose and clock ordering
+
+[Entry composition](../behavior/field/NATIVE_NPC_MAIN_ENTRY_AND_CLOCK_COMPOSITION.md): original retained bank/count/flags, actual shared pose bytes, source timers/clocks/special-room stores and held requests. Read-only audit confirms signed traversal, captured initial8000, inactive source getter slots and unordered height admission. No documentation lock claimed; EVT-01 remains open for remaining Main movement/display/tail and real normal world/startup/performance fidelity.

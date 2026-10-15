@@ -1956,3 +1956,34 @@ padding is zero policy, not original DVD-byte provenance. Of2131private RomFS pr
 frozen base converter for its newly committed NPC clock constant; all2129other
 products retain the accepted model-relocation hashes. ISO remains
 read-only; no original bytes committed/distributed and no rights change.
+### Original NPC Main special-room data (2026-10-14)
+
+The existing unchanged-data closure in tools/field_npc_actor_assets.py adds
+US revision0 DOL802c1394 length24(hex): exact kpa_03 and
+SFX_KUPPA_3RD_WATER_FALL1 strings plus original padding, SHA256
+ff015cac7de04f35d881bd70a7ff41f26ec3f63aabfe7f07757e1a7be56a4b49.
+DOL8041fcf0 length4 retains original float100 bits42c80000, SHA256
+9dc1b62d60acff118f222dc22cb76a1c7e9f2fcc1ae7d16c56861eb0301bd59a.
+Existing constructor spans already cover365/.5/1. Extraction opens
+/home/carson/games/roms/G8ME01.iso read-only. PMEVT segments retain source
+word alignment; no fabricated padding, executable PPC, new format, art/audio/
+dialogue conversion or rights change. Original Nintendo/Intelligent Systems
+rights remain reserved; original data/ISO/compiled packs remain outside history.
+
+Private outputs:artifacts/source-checks/npc-wander/romfs/door-data.pmevt and
+door-data.json, with mutable extraction in that checkout's local-assets/door-data.
+The private cache first verifies the accepted animation-live2130 RomFS product
+hashes, then regenerates only this source closure. Native builds skip subsequent
+regeneration. Python converter fixtures read the ISO and write temporary outputs.
+Read-only getter listing/ELF and hashes remain ignored under
+artifacts/npc-main-entry-evidence/; no original binaries are committed.
+
+The first full validation run exposed the newer committed menu loader's additional
+raw romfs/battle-class-common.tpl dependency, absent from the older animation
+cache. Added its217920 unchanged bytes from artifacts/menu-resource-validation,
+verified against artifacts/menu-resource-source-manifest.json and the producer's
+original SHA2568eb685317056f42b3ef73138eaad85d16fa4943d830b44a149f09971a5959bb1.
+No re-extraction or relocation was performed by this cache repair. The completed
+private cache has2131 RomFS products; its two regenerated source-data products
+and one accepted supplemental TPL are recorded separately in
+artifacts/npc-main-entry-assets-after.json and npc-main-entry-extra-cache.json.
