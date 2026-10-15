@@ -14387,3 +14387,58 @@ Next: remaining party constructors/event bridges and effect/runtime/tooling.
 Newer concurrent party/font/Mario/battle/display/file/animation changes require
 separate inline review. Snapshot inventory is a review aid, not semantic coverage
 proof. Full code documentation/remake goal remains active.
+
+## 2026-10-15 — Party constructors/events and Maya code documentation
+
+Added 157 inline comment lines across ten field/effect C++/header files plus
+[party construction/events](code/party-construction-events.md) and
+[Maya animation/matrices](code/effect-maya-animation.md), linked from index.
+Code/docs commit aa040c50. All executable tokens/string literals unchanged;
+no original dialogue/story/assets, numeric or simulation behavior changed.
+No new tests for this prose-only work.
+
+Party notes map native stage/trace latches, source span import, join/removal
+admission, ordinary versus positioned/auxiliary forms, resource/definition/init
+capture, pose release/wrapper lifetime, two owner/material/display queries,
+HP/name selection and distinct comparisons, mode/position/previousXYZ rules,
+first appearance versus Hello, raw selector/integer operand resolution,
+first-call retention and final low-byte publication. Maya notes map operation
+identity, synchronous memory versus retained services, unsigned clock/frame
+arithmetic, Play preserving ended2, fresh channel reloads, signed16/64 curves,
+unused/hold reads, exact Hermite/FMA boundaries, SDK scratch/concat order,
+matrix-before-scalar publication and explicit native math-adapter limits.
+Guides distinguish local completion from production story/effect/render ownership.
+
+Frozen baseline eab1ff36c212f9dec0625f2b5a21aea5faecf611 plus owned docs is at
+artifacts/party-maya-code-documentation-validation/source. Full git-blob audit
+covers 4171 baseline tracked files, zero unexpected
+changes; all thirteen frozen/live documentation snapshots match and 102 local
+code guide/index links resolve. Source/guide prose finalized before gates.
+Concurrent font/animation/Mario/file/GPU/runtime work preserved/excluded; no
+combined moving-worktree validation claim. Original host/native handles observed
+terminal0; exit markers agree.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits 0: 478/478 C++ (70.11s),
+218/218 Python (36.470s), zero skipped. Actual original 45-descriptor enemy,
+private HitN64 and original-party-position event fixtures ran. Native
+make all -o assets-ready -j4 SOUNDTRACK=gamecube exits 0. Manifest pins source,
+converter/product/original fixture/evidence/log and ELF/3DSX hashes.
+Existing compiler/Pillow warnings remain. No emulator/profile/save changes or
+hardware/Gekko numeric/pixel/audio/performance parity claims.
+
+Private cache inherits 71 accepted products/evidence/default fixtures. Dependency
+preflight finds only party-entry converter's six-to-twelve span expansion plus
+CMake position-event test. Frozen converter reads original ISO read-only, verifies
+all span hashes and writes empty private output; its two products replace prior
+six-span versions without increasing product count. All 71 product/evidence hashes,
+actual HitN64 PNG read path and actual gor REL fixture pinned/checked after gates.
+Original Maya1000 literal8042019c additionally read/verified directly, hash journaled.
+No editable import/shared-cache write. Native full regeneration skipped; Python
+fixtures independently read ISO read-only into empty temporary outputs.
+See [asset ledger](ASSETS.md). Original rights retained; no ISO, extracted original
+or compiled binary committed.
+
+Next: remaining effect pool/HitN64/recovery/resource/draw code, runtime helpers,
+tooling and newer concurrent changes. Field snapshot coverage does not prove
+all later party/Mario/registry integrations reviewed; hash inventory is only a
+review aid. Full code documentation/remake goal remains active.

@@ -3233,3 +3233,28 @@ No conversion, editable import, overlay or shared-pack write. Native full
 regeneration skipped; Python fixtures independently read ISO read-only into empty
 temporary outputs. No ISO, original extracted asset or compiled product committed;
 Nintendo/Intelligent Systems rights retained and no new license granted.
+
+## Party/Maya documentation validation inputs (2026-10-15)
+
+artifacts/party-maya-code-documentation-validation/source inherits the previous
+private 71-product cache and original enemy/footer/HP/HitN64/default fixtures.
+Only party-entry converter changes: six-to-twelve source DOL span expansion.
+Frozen tools/field_party_entry_assets.py SHA256
+8ec447095262f1f601197ad5ebe26c24c0ee22729310568a659fc40438c41667
+ran with original ISO read-only into empty private cache-rebuild output. Each
+original span hash checked; two outputs replace prior six-span products:
+
+- romfs/field-party-entry.json: 2076 bytes, SHA256 5e36581af231c023d6117deeee32320e957f855b68c037d688ab65b7b71fadd1 (previous 89629e1c1f56d1fa23428b4b7f31655a4771328865913ad28410a69619250a11)
+
+- romfs/field-party-entry.pmevt: 488 bytes, SHA256 9c844b997e0aa4ddfa907132278908f2db0b3e454619d97e32b6b74e0cfd6086 (previous 54af6a7381c0fd763e340f387b38ac0af4b2eabc5f3665c4f02c1846267d07d0)
+
+All 71 products and original evidence/default fixture hashes checked after gates.
+Actual party-position fixture local-assets/door-data/gor.rel SHA256
+d4965f21254ecf1a78e5d66ea12a0b000eed3f123032af6ab3cb0f703d3f185a.
+Original Maya float1000 at8042019c read directly; four-byte SHA256
+2412b43a42f11c1cb3ef7956d3e293016e671a9061fbb76a4282c8b15139cc48. No source bytes committed.
+Actual inherited HitN64 decoded-PNG read path independently pinned. Native full
+regeneration skipped; Python fixtures independently use read-only ISO and empty
+temporary destinations. No editable import/shared-pack write or ISO, extracted
+original/compiled product commit. Nintendo/Intelligent Systems rights retained;
+local conversion grants no new license.
