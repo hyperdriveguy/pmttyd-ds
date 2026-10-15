@@ -19,6 +19,9 @@ struct BattleActMenuContinuationServices {
   std::optional<uint32_t> (*request)(
       void *, const BattleActMenuContinuationRequest &) = nullptr;
 };
+// Main/Setup/End/Position entry,B/flag and provider identities stay fixed.
+// Native SP08 is independently unknown until written; actual memory/resource
+// lifetimes remain caller-owned. Reset abandons metadata,not prior source work.
 class BattleActMenuContinuationCursor {
 public:
   BattleActMenuContinuationCursor();
@@ -52,6 +55,9 @@ resumePackedBattleChangePosition(uint32_t,
                                  const BattleActMenuContinuationServices &,
                                  BattleActMenuContinuationCursor &);
 // Actual UI Init/End children, separately retained from their parent menu.
+// Class UI has its own retained free/allocate phases and layout (rows W4,
+// unlike weapon W8). Callers serialize actual VM/maps through synchronous
+// groups and retain allocation owners; this cursor has no live lease predicate.
 class BattleActUiContinuationCursor {
 public:
   BattleActUiContinuationCursor();
@@ -77,6 +83,9 @@ bool resumePackedBattleActUiEnd(uint32_t battle, const BattleActUiServices &,
                                 BattleActUiContinuationCursor &);
 // Admission guard around the existing original audience-check continuation;
 // it does not reimplement target/query/type publication source logic.
+// Pins the existing source audience cursor and provider table. Admission is
+// required even if an early source branch might not need a later callback;
+// it supplies no fallback target,item or successful missing child.
 class BattleActMenuAudienceAdmissionCursor {
 public:
   BattleActMenuAudienceAdmissionCursor();

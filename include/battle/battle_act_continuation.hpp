@@ -42,6 +42,8 @@ struct BattleActSequenceRequest {
   uint32_t function = 0, callsite = 0;
   std::array<uint32_t, 4> arguments{};
 };
+// value is a raw source scalar/guest address; real is CameraSpeed's float
+// result. They are separate ABI lanes, not interchangeable readiness flags.
 struct BattleActOutput {
   uint32_t value = 0;
   float real = 0;
@@ -54,6 +56,9 @@ struct BattleActServices {
   std::optional<BattleActOutput> (*call)(void *,
                                          const BattleActSequenceRequest &) = nullptr;
 };
+// One invocation pins B and all provider identities, retaining source PC,
+// pointers and operands across holds. Caller pins real allocations/child owners;
+// callback equality alone does not prevent address reuse. Reset has no rollback.
 class BattleActCursor {
 public:
   BattleActCursor();

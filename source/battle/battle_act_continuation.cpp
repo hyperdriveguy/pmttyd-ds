@@ -30,6 +30,9 @@ struct Running {
   ~Running() { v = false; }
 };
 } // namespace
+// Source offsets/masks in notes are hex; states/status IDs/counts are decimal.
+// pc is source instruction identity. Channel6 encodes Act as06000000+state;
+// native continuation state must not be restarted from a changed channel word.
 struct BattleActCursor::State {
   BattleActServices services;
   uint32_t battle = 0, pc = 0x8011b2f4, unit = 0, event = 0, aggregate = 0,
@@ -54,6 +57,9 @@ struct BattleActCursor::State {
   void inc(uint32_t channel = 6) {
     packedBattleIncrementSequence(battle, channel, services.actors.memory);
   }
+  // Capture operands once per exact child/site. Engaged zero acknowledges
+  // original work; only nullopt holds. Earlier successful RNG/events/pumps/
+  // stores remain committed while a later child owns its partial suffix.
   template <class Build>
   std::optional<BattleActOutput> call(BattleActChild child, uint32_t fn,
                                       Build build) {
@@ -120,6 +126,8 @@ bool resumePackedBattleAct(uint32_t battle, const BattleActServices &s,
   using Child = BattleActChild;
   for (;;)
     switch (c.pc) {
+    // Original15-entry Act table; unsigned indices outside0..14 complete
+    // locally. This dispatch runs once per invocation, not on every retry.
     case 0x8011b2f4: {
       const auto index = packedBattleGetSequence(battle, 6, m) - 0x06000000u;
       static constexpr uint32_t targets[]{
@@ -146,6 +154,10 @@ bool resumePackedBattleAct(uint32_t battle, const BattleActServices &s,
       c.put(c.unit + 0x2d0, 0);
       c.pc = 0x8011b344;
       break;
+    // State0: after Nice/AudienceInit, kinds222 and224..230 get ordered
+    // blocking-status queries1/2/9/27. Other kinds or any blocker select3.
+    // Later U104 mask10 selects4; kind228 checks a FRESH Mario U104 too;
+    // signed U12b nonzero selects5; otherwise CommandInit then state1.
     case 0x8011b344: {
       if (!c.call(Child::AudienceInit, 0x801a82d4))
         return false;
@@ -208,6 +220,10 @@ bool resumePackedBattleAct(uint32_t battle, const BattleActServices &s,
         return false;
       c.set(1);
       return finish();
+    // State1 camera-speed float > source2.0 returns; equality AND unordered
+    // NaN comparison fall into state2 after publication. No guessed timeout.
+    // State2 Input scalar0 completes this invocation; nonzero clears Bef4
+    // mask80 and selects6,without directly executing attack/event children.
     case 0x8011b4d8: {
       auto out = c.call(Child::CameraSpeed, 0x8012c0e8);
       if (!out)
@@ -228,6 +244,9 @@ bool resumePackedBattleAct(uint32_t battle, const BattleActServices &s,
       c.set(6);
       return finish();
     }
+    // Direct states5/4 query actual UnitData keys2/3 and publish U2ac=1/0x1b.
+    // State3 instead sets U2ac=1 and U1c mask04000000. These source routes
+    // return at state6 rather than consuming the action in one native step.
     case 0x8011b538:
     case 0x8011b5ac: {
       auto out = c.actor(c.pc);
@@ -270,6 +289,10 @@ bool resumePackedBattleAct(uint32_t battle, const BattleActServices &s,
         return false;
       c.pc = 0x8011b604;
       break;
+    // State6 looks actor up AGAIN after optional WindowOff; retain this U.
+    // Zero-gravity Bef4 mask40000000 has priority unless U104 mask2000 or
+    // U2ac masks8/10 suppress it. Flag10 script U2a0 has a null guard;
+    // flag2/default source paths retain their different unchecked domains.
     case 0x8011b604: {
       auto out = c.actor(c.pc);
       if (!out)
@@ -300,6 +323,10 @@ bool resumePackedBattleAct(uint32_t battle, const BattleActServices &s,
         c.pc = (flags & 2) ? 0x8011b698 : 0x8011b6ac;
       break;
     }
+    // Default status1/2/9/27 gates run in order; status27 can be bypassed
+    // by fresh U104 mask10000. Electric status6 still draws RNG(100) and
+    // tests signed result<0; do not remove that draw as supposedly impossible.
+    // Confuse status5 separately tests signed RNG<50 and may set U27c mask10.
     case 0x8011b6ac:
     case 0x8011b6c0:
     case 0x8011b6d4:
@@ -347,6 +374,9 @@ bool resumePackedBattleAct(uint32_t battle, const BattleActServices &s,
         c.pc = 0x8011b794;
       break;
     }
+    // Actual evtEntry(script,priority10,flags0): zero-gravity8034f234,
+    // Electric8034e0cc,captured flag10 operand,or live U2a4/U2a0. The
+    // whole captured request survives a hold; scalar pointer0 is real failure.
     case 0x8011b64c:
     case 0x8011b678:
     case 0x8011b698:
@@ -369,6 +399,9 @@ bool resumePackedBattleAct(uint32_t battle, const BattleActServices &s,
       c.pc = 0x8011b79c;
       break;
     }
+    // Nonzero E publishes U2a8=E15c,then E160=fresh U0 owner. Only then
+    // capture U290 wait-ID,delete it and clear its word after acknowledgment.
+    // Null E skips those accesses and increments Act,not a fabricated event.
     case 0x8011b79c:
       if (!c.event) {
         c.inc();
@@ -393,6 +426,9 @@ bool resumePackedBattleAct(uint32_t battle, const BattleActServices &s,
       c.put(c.unit + 0x290, 0);
       c.inc();
       return finish();
+    // State7 barrier0 returns; ready increments to8 and adjusts messages
+    // BEFORE a second independent barrier. Direct state8 skips adjustment.
+    // Both Msg/Announce pumps always execute; retain first full word for OR.
     case 0x8011b7e0: {
       auto out = c.call(Child::WaitEvents, 0x8011ace8, {battle});
       if (!out)
@@ -437,6 +473,9 @@ bool resumePackedBattleAct(uint32_t battle, const BattleActServices &s,
       c.pc = c.pc == 0x8011b820 ? 0x8011b838 : 0x8011ba9c;
       break;
     }
+    // State9 WindowOn unless Bef4 mask30; fresh actor may be NULL yet
+    // reserve consumption/flag clear/AudiencePerAct still run. Nonnull clears
+    // U1c04000000; U27c mask8 requests status(16,1,-99) before a fresh clear.
     case 0x8011b838:
       c.pc = c.word(battle + 0xef4) & 0x30 ? 0x8011b850 : 0x8011b844;
       break;
@@ -464,6 +503,9 @@ bool resumePackedBattleAct(uint32_t battle, const BattleActServices &s,
       c.put(c.unit + 0x27c, c.word(c.unit + 0x27c) & ~8u);
       c.pc = 0x8011b890;
       break;
+    // Normalize signed mode20:5->6,6->7,7/9->0,8->9; read it again.
+    // Modes3/4 clear but skip count consumption on this pass. Keep the
+    // otherwise-unused Bef4 read on mode0: source read ordering is observable.
     case 0x8011b890: {
       if (c.byte(battle + 0x18ff9) == 1)
         c.putByte(battle + 0x18ff9, 0);
@@ -506,6 +548,10 @@ bool resumePackedBattleAct(uint32_t battle, const BattleActServices &s,
         return false;
       c.pc = 0x8011b968;
       break;
+    // CheckStatusFlag02000000 bypasses decrement via real Clear; otherwise
+    // byte22 wraps on decrement. Bef4 mask2000 forces0; signed<=0 selects
+    // mode10. U27c mask2000 preserves turn byte24 once,otherwise clear24.
+    // Belong LOW signed byte0 + phase04000002 may publish marker311=96.
     case 0x8011b968: {
       if (c.word(battle + 0xef4) & 0x2000)
         c.putByte(c.unit + 0x22, 0);
@@ -553,6 +599,9 @@ bool resumePackedBattleAct(uint32_t battle, const BattleActServices &s,
       c.inc();
       c.pc = 0x8011ba3c;
       break;
+    // States10/11: audience and BreakSlot use LOWBYTE results, conclusion
+    // can skip BreakSlot. The second full-word Msg/Announce drain is separate;
+    // no absent callback or zero root handle stands in for actual readiness.
     case 0x8011ba3c: {
       auto out = c.call(Child::AudienceReaction, 0x801a7e30);
       if (!out)
@@ -583,6 +632,10 @@ bool resumePackedBattleAct(uint32_t battle, const BattleActServices &s,
       c.pc = 0x8011ba74;
       break;
     }
+    // States12..14: barrier, fresh actor, independent post-event U2c8/U2cc.
+    // Clear2cc before creation,guard null return,publish ID/owner,then delete
+    // captured U290 if present. Next state looks actor up again for EventExists;
+    // final barrier advances MOVE channel5 only when its actual result is ready.
     case 0x8011ba9c: {
       auto out = c.call(Child::WaitEvents, 0x8011ace8, {battle});
       if (!out)

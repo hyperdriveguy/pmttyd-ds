@@ -26,6 +26,9 @@ struct Running {
   ~Running() { v = false; }
 };
 } // namespace
+// Field offsets/masks in notes are hex; strides/states/counts are decimal.
+// M=B171c; class anchor=M+20*index (record starts anchor+8). cursor is
+// private SP08 knowledge,not a guest address or a sibling owner default.
 struct BattleActMenuContinuationCursor::State {
   BattleActMenuContinuationServices owner;
   Entry entry = Entry::Main;
@@ -79,6 +82,8 @@ struct BattleActMenuContinuationCursor::State {
         r.arguments[r.count++] = a;
     });
   }
+  // Whole source End/position subroutines run inside this invocation with
+  // explicit return PCs. Holds cannot skip UI End or cache a repeated gate.
   void end(uint32_t next) {
     endReturn = next;
     pc = 0x801220e8;
@@ -162,6 +167,9 @@ struct BattleActMenuContinuationRunner {
           return {};
         c.pc = 0x801227d4;
         break;
+      // Setup waits for ClassTable,Cursor,UI Init before timer560=0 and
+      // fresh M4 OR01000001. F0/M558=0 resets exactly nine cursor pairs;
+      // preserve counts and omit498/4a4/510. No contiguous menu memset.
       case 0x801227d4:
         if (!c.call(F::Init, [&](BattleActMenuContinuationRequest &r) {
               r.arguments = {b, *c.cursor, c.m + 8, c.flag};
@@ -177,6 +185,8 @@ struct BattleActMenuContinuationRunner {
             c.put(c.m + off + 4, 0);
           }
         return finish(0);
+      // Actual class UI End completes BEFORE fresh B1720 mask1
+      // clear. Type/state/timer and other live bits survive this leaf.
       case 0x801220e8:
         if (!c.call(F::End, {b}))
           return {};
@@ -185,6 +195,10 @@ struct BattleActMenuContinuationRunner {
           return finish(0);
         c.pc = c.endReturn;
         break;
+      // Position gate captures Bef4 once (00800000/40000000 blockers),
+      // then Mario and Party separately: signed mode20=0,max23>0,moves22
+      // equal captured max,short-circuit status1/2/9/27. Only Mario gets
+      // U104 mask10 restriction; Party ends with signed U12b zero predicate.
       case 0x80122160: {
         const auto flags = c.word(b + 0xef4);
         if (flags & 0x00800000 || flags & 0x40000000) {
@@ -267,6 +281,9 @@ struct BattleActMenuContinuationRunner {
         c.pc = 0x80122344;
         break;
       }
+      // Entry Trigger800/position has priority over KeyOK/class handling.
+      // A later no-direction/no-audience path performs BOTH queries again;
+      // different answers are source-visible,not redundant cached requests.
       case 0x8012234c:
       case 0x80122720: {
         auto out = c.call(F::Trigger, {0x800});
@@ -308,6 +325,10 @@ struct BattleActMenuContinuationRunner {
           c.pc = 0x80122778;
         break;
       }
+      // Live signed class count each loop. Retain row/type through weapon
+      // builder and target-count child: only type0+mask200/type1+mask400.
+      // Target count<=0 disables; fill reason4/5 only if current reason0,
+      // never reenable or overwrite an existing denial. Next count stays fresh.
       case 0x80122440:
         if (!c.known())
           return {};
@@ -349,6 +370,9 @@ struct BattleActMenuContinuationRunner {
         c.offset += 20;
         c.pc = 0x80122440;
         break;
+      // Now(-1) resets timer and camera(0,0); otherwise wrap32 timer+1,
+      // signed>=900 requests mode6/speed5 on EVERY qualifying invocation.
+      // This is an invocation threshold,not a measured15-second/frame timer.
       case 0x80122454: {
         auto out = c.call(F::Now, {0xffffffff});
         if (!out)
@@ -374,6 +398,9 @@ struct BattleActMenuContinuationRunner {
           return {};
         c.pc = 0x801224a4;
         break;
+      // Fresh pending byte AFTER camera services: selected direct-Jump/
+      // Hammer flags200/400 clear byte1c74 BEFORE word1c70. Confirmation
+      // then checks Trigger100 or a freshly republished pending byte.
       case 0x801224a4:
         if (!c.byte(b + 0x1c74)) {
           c.pc = 0x801224fc;
@@ -410,6 +437,10 @@ struct BattleActMenuContinuationRunner {
           return {};
         c.pc = 0x80122538;
         break;
+      // Sound occurs BEFORE fresh row/type copy to M540. Type0/1/4/6/7/8
+      // ->state5/result1;5->19/1;13->29/1. Type2 can store5 yet return0,
+      // or mode0 + badge2f3/2f4 selects14/1. Unsigned defaults still End.
+      // A type/state mutation is not equivalent to Main returning1.
       case 0x80122538: {
         if (!c.known())
           return {};
@@ -461,6 +492,9 @@ struct BattleActMenuContinuationRunner {
         c.pb(b + 0x1c74, 0);
         c.pc = 0x80122610;
         break;
+      // Disabled reason0 falls through to navigation; nonzero waits for
+      // End,then state3/result1 and a NEW row/reason read into M564. The
+      // post-End reason can be0 or belong to a changed cursor selection.
       case 0x80122610:
         if (!c.known())
           return {};
@@ -480,6 +514,9 @@ struct BattleActMenuContinuationRunner {
         c.put(c.m + 0x564, c.word(c.selectedRow() + 24));
         c.pc = 0x80122778;
         break;
+      // Repeat80000 forward precedes40000 reverse. In-bounds mutation
+      // precedes sound; wrap sound precedes fresh cursor/count mutation.
+      // Both return0 through display; no zero/negative-count clamp is added.
       case 0x80122660: {
         auto out = c.call(F::Repeat, {0x80000});
         if (!out)
@@ -549,6 +586,9 @@ struct BattleActMenuContinuationRunner {
         c.put(*c.cursor, c.word(*c.cursor + 8) - 1);
         c.pc = 0x80122778;
         break;
+      // Audience true may mutate source state while local result stays0.
+      // False reaches the second Trigger800/position sequence. Neither
+      // route fabricates a touch-only X event or invents menu readiness.
       case 0x80122710: {
         auto out = c.call(F::Audience);
         if (!out)
@@ -588,6 +628,9 @@ resumePackedBattleChangePosition(uint32_t b,
 } // namespace ttyd
 
 namespace ttyd {
+// Separate class UI owner: phase0 captures old B1c78,phase1 real release,
+// phase2 real allocation124hex=292 bytes,phase3 publishes source fields.
+// Engaged allocation0 stays real; no implicit memset or rollback is supplied.
 struct BattleActUiContinuationCursor::State {
   BattleActUiServices owner;
   uint32_t b = 0, cursor = 0, rows = 0, flag = 0, old = 0, pending = 0;
@@ -656,6 +699,9 @@ struct BattleActUiContinuationRunner {
       hold.state_.reset();
       return true;
     }
+    // Init Free does not clear B1c78; End clears it only after release.
+    // Publish actual allocation before reloading W,so observers can redirect
+    // the owner word. Class fields0/4/c/14/18 differ from weapon constructor.
     if (c.phase == 2) {
       c.pending = 0x800f8934;
       if (!s.allocate)
@@ -674,6 +720,9 @@ struct BattleActUiContinuationRunner {
     put(w + 12, (flag & 1) ? 10 : 0);
     m.storeByte(m.user, w + 20, 0);
     put(w + 24, word(cursor));
+    // Resume starts SELECTED FIRST: states34=10/11,delay48=0,order84
+    // =count+ordinal-1 with ONE signed correction,flags20=0. Repeated live
+    // cursor/count reads are source effects,not a fixed seven-row snapshot.
     if (flag & 1) {
       uint32_t selected = word(cursor), ordinal = 0;
       while (sw(ordinal) < sw(word(cursor + 8))) {
@@ -691,6 +740,9 @@ struct BattleActUiContinuationRunner {
           selected = 0;
         ++ordinal;
       }
+    // Entry starts NEXT row: fresh GP->word4 rate per row; wrap32(rate*10),
+    // signed /60,then wrap32(ordinal*step),signed /2. Preserve both truncations
+    // and wrap order; no float duration or constant native FPS replaces rate.
     } else {
       uint32_t selected = word(cursor), ordinal = 0;
       for (;;) {
@@ -750,6 +802,9 @@ bool BattleActMenuAudienceAdmissionCursor::reset() {
   state_.reset();
   return true;
 }
+// Validate all nonoptional source services BEFORE entering the existing
+// retained checker. Stable identities include private-item/lifecycle and both
+// End variants. Engaged false completes; nullopt retains actual child work.
 std::optional<bool> resumeAdmittedBattleActMenuAudience(
     const BattleMenuAudienceServices &s,
     BattleActMenuAudienceAdmissionCursor &cursor) {

@@ -186,3 +186,7 @@ explains short camera epochs, long submission ownership, source FIFO and atlas l
 [Phase/Move](battle-phase-move-continuation.md) and
 [weapon subicons](weapon-subicon-continuation.md) explain source row layouts,
 private-output knowledge, invocation cadence and precise child/read frontiers.
+
+[Act sequence](battle-act-sequence.md) and [ActMenu/class UI](battle-act-menu-continuation.md)
+explain retained source PCs, event/status/count paths, menu subroutines, distinct
+allocation layouts and audience admission.
