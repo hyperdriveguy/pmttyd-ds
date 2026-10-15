@@ -6,6 +6,8 @@
 // 0x8041e940=requested system level. Arrays have4-byte stride.
 // Big-endian byte lanes alias words; speed transfers binary32 bits via memcpy.
 namespace ttyd {
+// Conservative fixed intervals support fast RAM exclusion. A hit is not an
+// allocation/generation check or permission to treat gaps as live readable fields.
 bool EventRuntimeAddresses::mayMapRange(uint32_t base,uint64_t size) const {
     if(!size)return false;
     const auto overlaps=[&](uint32_t at,uint32_t count){return uint64_t(base)<uint64_t(at)+count && uint64_t(at)<uint64_t(base)+size;};
@@ -30,6 +32,9 @@ bool EventRuntimeAddresses::readField(uint32_t a,uint32_t& v) const {
     }
     return true;
 }
+// Guest stores mutate actual schedule IDs/slots/count/active/global speed.
+// Keep raw values and BE aliases; these views do not normalize invalid source
+// domains or rebuild a consistent priority table after arbitrary writes.
 bool EventRuntimeAddresses::writeField(uint32_t a,uint32_t v) {
     if(a>=0x803d8530 && a<0x803d8930)schedule_.ids[(a-0x803d8530)/4]=v;
     else if(a>=0x803d8930 && a<0x803d8d30)schedule_.slots[(a-0x803d8930)/4]=sw(v);

@@ -5,6 +5,8 @@ namespace ttyd {
 class EventContextAddresses {
 public:
     explicit EventContextAddresses(EventEntryAddresses& entries):entries_(entries) {}
+    // Original0xa0-byte context view, borrowed from caller. Entry-array+0x90
+    // can retain an unresolved guest word; registration does not allocate entries.
     bool registerContext(uint32_t originalBase,EventContext&);
     // Conservative interval probe; readable-byte checks retain sparse alias semantics.
     bool mayMapRange(uint32_t base,uint64_t size) const;
@@ -12,6 +14,9 @@ public:
     bool readWord(uint32_t,uint32_t&) const;
     bool writeByte(uint32_t,uint8_t);
     bool writeWord(uint32_t,uint32_t);
+    // Resolve only after entry mapping exists. Detach while addressOf still
+    // works, BEFORE unregister/free; preserve original tokens rather than nulling
+    // guest relationships when native backing is retired.
     void resolveEntryArrays();
     // Owner calls this BEFORE entry unregister/free;array address bits survive.
     void detachEntryArrays(uint32_t base,uint32_t count);

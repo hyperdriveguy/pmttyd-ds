@@ -2,6 +2,9 @@
 #include "event_creation.hpp"
 
 namespace ttyd {
+// Sparse fixed original globals and256 ID/slot schedule words, not a copied
+// RAM image. Direct guest writes mutate the actual manager/global state. Float
+// speed is transferred by bits; unsupported gaps remain unmapped.
 class EventRuntimeAddresses {
 public:
     EventRuntimeAddresses(EventRuntimeGlobals& globals,EventSchedule& schedule):globals_(globals),schedule_(schedule) {}

@@ -2,6 +2,8 @@
 #include "event_manager.hpp"
 
 namespace ttyd {
+// Saved GP byte/flag namespaces differ from context GW/GF and entry LW/LF.
+// GlobalByte index0 is the full story word; other byte slots narrow to low8.
 enum class SavedSwitchFamily {GlobalByte,LocalByte,GlobalFlag,LocalFlag};
 struct EventOperandServices {
     void* user=nullptr;
@@ -14,6 +16,9 @@ struct EventOperandServices {
     void (*writeByte)(void*,uint32_t,uint8_t)=nullptr;
     int32_t (*truncate)(void*,float)=nullptr; // Original fctiwz/FPSCR boundary.
 };
+// PowerPC low6 shift semantics:32..63 yield0, rather than undefined C++
+// shifts. Tagged signed operand bands and float/int read/store asymmetries are
+// documented in docs/code/event-vm.md; do not normalize them into one lookup.
 uint32_t eventShiftMask(int32_t count);
 int32_t readSavedSwitch(SavedSwitchFamily,int32_t index,const EventOperandServices&);
 void writeSavedSwitch(SavedSwitchFamily,int32_t index,int32_t value,const EventOperandServices&);

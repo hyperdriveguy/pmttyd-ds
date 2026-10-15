@@ -5,6 +5,8 @@
 namespace ttyd {
 class EventEntryAddresses {
 public:
+    // Original packed extent, independent of sizeof(EventEntry). Live objects
+    // stay caller-owned/stable; semantic offsets are explicit in the implementation.
     static constexpr uint32_t stride=0x1b0;
     // Registration is native provider policy:nonzero,nonoverlapping original
     // extents and unique live host entries. It is not an original VM bounds check.
@@ -13,6 +15,9 @@ public:
     // retain raw addresses;optional bytes let the address-space owner preserve
     // memory contents independently of the old host objects.
     bool unregisterEntries(uint32_t originalBase,std::vector<uint8_t>* bytes=nullptr);
+    // Null host pointer maps successfully to guest0. entryAt requires an
+    // exact slot start; interior/nonzero unmapped link tokens remain unresolved.
+    // linksResolved checks mapping, not event allocation flags or ID generation.
     bool addressOf(const EventEntry*,uint32_t& address) const;
     EventEntry* entryAt(uint32_t originalAddress) const;
     // Conservative interval probe; readable-byte checks retain sparse alias semantics.

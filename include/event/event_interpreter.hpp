@@ -5,6 +5,9 @@
 #include "event_tail_opcodes.hpp"
 
 namespace ttyd {
+// Composition owns no platform storage: schedule, entry contexts and every
+// service user must outlive reached operations. numericUser is deliberately
+// separate from call/format user; do not substitute one bridge user for both.
 struct EventInterpreterServices {
     EventSchedule* schedule=nullptr;
     EventCreationServices creation;

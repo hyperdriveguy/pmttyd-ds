@@ -2,6 +2,9 @@
 #include "event_manager.hpp"
 
 namespace ttyd {
+// Callbacks operate on actual entry/operand state. USER_FUNC caches its
+// function and argument-list shift on first call; later polls reuse them.
+// firstCall is source callback admission, not the first renderer frame.
 struct EventDispatchServices {
     void* user=nullptr;
     uint32_t (*word)(void*,uint32_t originalAddress)=nullptr;

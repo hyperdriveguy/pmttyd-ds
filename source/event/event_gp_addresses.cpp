@@ -2,7 +2,8 @@
 #include "physical_input_gp.hpp"
 
 // Live GP aliases: +4 refresh rate,+14 battle-context selector,+38/3c event
-// timestamp high/low; all other bytes remain retained packed storage.
+// timestamp high/low; other bytes use retained packed storage except explicit
+// borrowed render-dimension and physical-input bindings.
 // Root pointer0x80415fd0..d3 is separately mapped big-endian state and may
 // change via byte writes. GP retirement keeps that original word unresolved.
 namespace ttyd {
@@ -19,11 +20,17 @@ EventGpAddresses::Position EventGpAddresses::find(uint32_t a) const {
     for(size_t i=0;i<regions_.size();++i)if(a>=regions_[i].base && uint64_t(a)<uint64_t(regions_[i].base)+size)return {i,a-regions_[i].base,true};
     return {};
 }
+// New GP starts with zero packed bytes but does not select current_. The
+// root pointer is an independent writable original word and may stay unresolved
+// after retirement; do not silently retarget to another registered GP.
 bool EventGpAddresses::registerGp(uint32_t base,EventGlobals& globals) {
     if(!base || uint64_t(base)+size>0x100000000ULL || (uint64_t(base)<0x80415fd4ULL && 0x80415fd0ULL<uint64_t(base)+size))return false;
     for(const auto& r:regions_)if(r.globals==&globals || (uint64_t(base)<uint64_t(r.base)+size && uint64_t(r.base)<uint64_t(base)+size))return false;
     regions_.push_back({base,&globals,std::vector<uint8_t>(size,0)});return true;
 }
+// Dimensions allow one binding, input allows idempotent same-owner binding.
+// Both borrow live backing; reads/writes share actual process state, not a
+// per-battle snapshot. Retirement removes views without freeing their owners.
 bool EventGpAddresses::bindRenderDimensions(uint32_t base,std::array<uint8_t,4>& bytes){
     for(auto& r:regions_)if(r.base==base){if(r.renderDimensions)return false;r.renderDimensions=bytes.data();return true;}
     return false;
@@ -38,6 +45,9 @@ bool EventGpAddresses::unregisterGp(uint32_t base,std::vector<uint8_t>* bytes) {
     regions_.erase(regions_.begin()+i);return true; // Current ORIGINAL word is preserved.
 }
 EventGlobals* EventGpAddresses::currentGlobals() const {for(const auto& r:regions_)if(r.base==current_)return r.globals;return nullptr;}
+// Precedence: root cell; bound dimensions0x170..173; physical-input lanes;
+// semantic refresh/context/timestamp; retained other bytes. Whole-word paths
+// use live semantic words where possible, otherwise these exact byte lanes.
 bool EventGpAddresses::readByte(uint32_t a,uint8_t& value) const {
     if(a>=0x80415fd0 && a<0x80415fd4) {value=uint8_t(current_>>(24-8*(a&3)));return true;}
     auto p=find(a);if(!p.valid)return false;const auto& r=regions_[p.region];

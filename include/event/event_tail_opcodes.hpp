@@ -7,6 +7,8 @@ namespace ttyd {
 // Arguments for the original sprintf call; the formatter owns its documented
 // varargs/string sink. This request does not itself display or emit debug text.
 struct EventDiagnosticCall {
+    // Original shared sprintf scratch0x803d8430, not an on-screen message
+    // or host buffer. Formatter owns varargs/write behavior at the reached call.
     uint32_t destination=0x803d8430,format=0;
     std::array<int32_t,2> integers{};
     float floating=0;

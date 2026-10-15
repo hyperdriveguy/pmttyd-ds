@@ -5,6 +5,10 @@
 
 namespace ttyd {
 class BattleAudienceIncarnationOwner;
+// Callback users remain platform-owned. clock is source timebase input, not
+// a chosen refresh rate; numeric functions preserve reached domains/rounding.
+// Declared adapters are forwarded only by the consumers that actually use them;
+// the interpreter bridge below does not implicitly execute every numeric hook.
 struct EventNativePlatform {
     void* user=nullptr;
     uint32_t (*clock)(void*)=nullptr;
@@ -43,6 +47,9 @@ public:
     EventNativeRuntime(uint32_t gpBase,const EventNativePlatform&);
     EventNativeRuntime(const EventNativeRuntime&)=delete;
     EventNativeRuntime& operator=(const EventNativeRuntime&)=delete;
+    // Returned closures borrow this runtime and consult its current platform
+    // callbacks at invocation. Context selection follows current mapped GP;
+    // provider replacement/cancellation and outer scheduling remain caller-owned.
     EventManagerServices managerServices();
     EventCreationServices creationServices();
     EventInterpreterServices interpreterServices();
@@ -50,6 +57,9 @@ public:
     void reinitializeContext();
     void runManager();
 
+    // Member order supports borrowing/destruction: entryStorage retires views
+    // before the address facade/providers disappear. Public mappings must stay
+    // coherent; direct semantic registry mutation is not guarded by RAM borrows.
     EventGlobals gp;
     EventContext field,battle;
     EventRuntimeGlobals runtime{0,1,1,0}; // Original initialized ID/speed words.

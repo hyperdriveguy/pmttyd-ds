@@ -16,6 +16,9 @@ bool EventAddressSpace::writeByte(uint32_t a,uint8_t v) {
     for(auto& r:external_)if(a>=r.base && uint64_t(a)-r.base<r.size){r.bytes[a-r.base]=v;return true;}
     return false;
 }
+// Registration rejects overlaps using readable-byte semantics for sparse
+// live providers. Raw acceleration uses broader mayMapRange extents, so a RAM
+// region admitted in a sparse hole may still correctly miss the direct lane.
 bool EventAddressSpace::available(uint32_t base,uint64_t size) const {
     if(!size || uint64_t(base)+size>0x100000000ULL)return false;
     for(const auto& r:external_)if(uint64_t(base)<uint64_t(r.base)+r.size && uint64_t(r.base)<uint64_t(base)+size)return false;
@@ -52,6 +55,9 @@ bool EventAddressSpace::unregisterRam(uint32_t base,std::vector<uint8_t>* bytes)
 }
 // Replace an allocated subspan with semantic entry storage while retaining
 // left/right RAM fragments. Failure leaves regions/output unchanged.
+// Only owned RAM can split/extract, not borrowed external backing. Direct
+// RAM borrow blocks extraction/import/register/unregister, but caller must also
+// avoid independent semantic-registry mutations during that borrowed session.
 bool EventAddressSpace::extractRam(uint32_t base,uint32_t size,std::vector<uint8_t>& bytes) {
     if(rawRamBorrowed_)return false;
     const uint64_t end=uint64_t(base)+size;
@@ -89,7 +95,11 @@ bool EventAddressSpace::importScripts(const EventScriptAssets& scripts) {
     return true;
 }
 // Direct lanes apply only to one complete RAM region outside every live
-// semantic extent. Unaligned and cross-provider accesses keep the old facade.
+// semantic extent. Unaligned raw words are supported; cross-provider or
+// semantic accesses retain the ordinary facade.
+// Require one complete owned/external region and no semantic extent, even
+// if its current fields are sparse/unreadable. This check admits unaligned raw
+// words too; byte assembly keeps BE semantics without typed host-pointer casts.
 const uint8_t* EventAddressSpace::rawRamSpan(uint32_t a,unsigned size) const {
     if(uint64_t(a)+size>0x100000000ULL || entries_.mayMapRange(a,size) || contexts_.mayMapRange(a,size) || runtime_.mayMapRange(a,size) || gp_.mayMapRange(a,size))return nullptr;
     for(const auto& r:ram_)if(a>=r.base && uint64_t(a)-r.base+size<=r.bytes.size())return r.bytes.data()+(a-r.base);
@@ -106,6 +116,9 @@ bool EventAddressSpace::readSpan(uint32_t a,unsigned size,uint32_t& value) const
     for(unsigned i=0;i<size;++i) {uint8_t b;if(!readByte(a+i,b))return false;result=result<<8|b;}
     value=result;return true;
 }
+// Preflight fallback byte readability before source byte writes. This avoids
+// partial writes caused by an unmapped suffix; it does not promise rollback if
+// later semantic writes fail/change mappings through unsupported mutation.
 bool EventAddressSpace::writeSpan(uint32_t a,unsigned size,uint32_t value) {
     if(uint64_t(a)+size>0x100000000ULL)return false;
     if(auto* bytes=rawRamSpan(a,size)){for(unsigned i=0;i<size;++i)bytes[i]=uint8_t(value>>(8*(size-1-i)));return true;}

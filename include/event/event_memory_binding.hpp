@@ -11,6 +11,9 @@ struct EventMemoryBinding {
     void* platformUser=nullptr;
     void (*flushBlock)(void*,uint32_t originalAddress)=nullptr;
     void (*systemCall)(void*)=nullptr;
+    // Returned closures borrow this binding and facade. Accesses require
+    // mapped domains (assert policy), not optional retries; callers must not treat
+    // disabled assertions as a supported missing-memory fallback.
     EventMemoryServices services();
 };
 }

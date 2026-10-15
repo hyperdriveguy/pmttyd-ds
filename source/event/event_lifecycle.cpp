@@ -35,6 +35,9 @@ void deleteEvent(EventEntry& e,const EventCreationServices& s) {
     if(e.waitingParent) {
         auto& parent=*e.waitingParent;parent.flags&=~uint8_t(0x10);parent.waitingChild=nullptr;parent.unresolvedLinkMask&=~uint8_t(2);copyBack(parent,e);
     }
+    // Read-only native observation AFTER descendants and parent copy-back,
+    // BEFORE allocation flag/storage reset. This hook is not source world work,
+    // resource cancellation or a substitute for actual original event deletion.
     if(s.retiring)s.retiring(s.user,e);
     e.flags&=~uint8_t(1);e={};--runtime(s).allocationCount;
 }
@@ -42,7 +45,7 @@ void deleteEventId(uint32_t id,const EventCreationServices& s) {
     auto& c=currentContext(s);auto* entries=c.entries;assert(entries || c.capacity<=0);
     for(int32_t slot=0;slot<c.capacity;++slot)if((entries[slot].flags&1) && entries[slot].id==id)deleteEvent(entries[slot],s);
 }
-// Restart resets instruction/timer/stack/label progress but preserves identity,
+// Restart resets instruction/lifetime/stack/label progress but preserves identity,
 // links and local storage. 0xff means empty loop/switch stack; it is not index255.
 EventEntry& restartEvent(EventEntry& e,const EventCreationServices& s) {
     const uint32_t script=e.restartScript;e.nextCommand=script;e.currentCommand=script;e.opcode=0;

@@ -2,6 +2,10 @@
 #include "event_lifecycle.hpp"
 
 namespace ttyd {
+// Descendant child/brothers precede owner; repeated context/global captures
+// preserve source traversal. Stop/start changes flag2 only on type-mask overlap;
+// by-ID uses mask0xef. Priority/type setters narrow low8; speed multiplies the
+// current global speed. None of these APIs frees native storage.
 void stopEvent(EventEntry&,uint32_t mask,const EventCreationServices&);
 void startEvent(EventEntry&,uint32_t mask,const EventCreationServices&);
 void stopAllEvents(uint32_t mask,const EventCreationServices&);

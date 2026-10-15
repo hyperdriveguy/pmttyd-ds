@@ -3,6 +3,9 @@
 #include <optional>
 
 namespace ttyd {
+// Operand/value services and numeric helpers retain separate user contexts.
+// Division/truncation are reached source domains; zero divisor/FPSCR behavior
+// must not become fabricated numeric success from this routing interface.
 struct EventDataOpcodeServices {
     EventDispatchServices values;
     void* numericUser=nullptr;

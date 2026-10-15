@@ -4,6 +4,9 @@
 #include <optional>
 
 namespace ttyd {
+// Scheduler/creation plus real EVT value services compose lifecycle/control
+// instructions. Result optional is routing membership, not provider readiness;
+// engaged0 retains the original handler retry meaning.
 struct EventControlOpcodeServices {
     EventSchedule* schedule=nullptr;
     EventCreationServices creation;

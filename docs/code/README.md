@@ -129,3 +129,7 @@ formats, original token retention, finite consumer domains and presentation adap
 [Source file services](file-services.md), [native file backing](native-file-cache.md)
 and [save-block services](save-block-services.md) explain reference/relocation
 semantics, borrowed VM views and ticketed SD handoff for original event data.
+
+[Event addressing](event-addressing.md) and [event service APIs](event-service-api.md)
+cover live packed aliases, scoped raw RAM, header contracts, result protocols and
+separate event/storage/heap lifetimes.

@@ -6,7 +6,7 @@ namespace ttyd {
 // A noncopyable, callback-local accelerator over explicitly admitted raw RAM.
 // No host pointers escape. Callers must not remap semantic providers, invoke
 // external children or yield while using it. Unbound/semantic accesses retain
-// the ordinary facade. Storage mutation and nested sessions are rejected.
+// the ordinary facade. Storage mapping mutation and nested sessions are rejected.
 class EventAddressSpace::RawRamAccess {
 public:
  RawRamAccess(const RawRamAccess&)=delete;
@@ -52,8 +52,13 @@ private:
  uint8_t* at(uint32_t address,uint32_t size) const {
   for(unsigned i=0;i<count_;++i){const auto& s=spans_[i];if(address>=s.address && uint64_t(address-s.address)+size<=s.size)return s.bytes+(address-s.address);}return nullptr;
  }
+ // Thirty-two spans is an accelerator cache size, not a guest memory limit.
+ // bind may succeed without caching at capacity; uncached reads/writes still
+ // use the facade. Same-start stream prefixes may extend an existing binding.
  EventAddressSpace& owner_;std::array<Span,32> spans_{};unsigned count_=0;
 };
+// RAII releases borrow even on exception; returned bool is callback result,
+// not an allocation or independent async lifetime. No cached spans survive it.
 template<typename Callback> bool EventAddressSpace::withRawRamAccess(Callback&& callback){
  if(rawRamBorrowed_)return false;
  rawRamBorrowed_=true;

@@ -8,6 +8,9 @@ struct EventTimeServices {
     uint32_t (*upper)(void*)=nullptr;
     uint32_t (*lower)(void*)=nullptr;
 };
+// Sample upper/lower/upper until stable across low-word wrap. Publication
+// retains source GP reloads, low-then-high stores, pause/window/system gates
+// and total-time cap; it is a clock prefix, not a frame advance or hardware tail.
 uint64_t readEventRawTime(const EventTimeServices&);
 int32_t eventWindowFreeze(const EventMemoryServices&);
 // Complete viPostCallback CLOCK PREFIX only. Hardware/reset/rumble/audio tail

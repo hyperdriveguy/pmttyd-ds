@@ -16,6 +16,8 @@ int32_t sw(uint32_t v) {return v<=0x7fffffff?static_cast<int32_t>(v):static_cast
 uint32_t floatWord(const float& f) {uint32_t v;std::memcpy(&v,&f,4);return v;}
 void floatStore(float& f,uint32_t v) {std::memcpy(&f,&v,4);}
 EventEntry*& link(EventEntry& e,unsigned i) {return i==0?e.waitingParent:i==1?e.waitingChild:e.brotherOwner;}
+// Unknown storage spans remain raw:0x10..13,0x84..97,0x174..177,
+// 0x194..19f,0x1ac..1af. Their44 bytes round-trip without inventing field roles.
 bool rawIndex(uint32_t off,unsigned& index) {
     if(off>=0x10 && off<0x14)index=off-0x10;
     else if(off>=0x84 && off<0x98)index=4+off-0x84;
@@ -76,10 +78,16 @@ bool EventEntryAddresses::unregisterEntries(uint32_t base,std::vector<uint8_t>* 
     regions_.erase(regions_.begin()+index);if(bytes)*bytes=std::move(snapshot);return true;
 }
 EventEntry* EventEntryAddresses::entryAt(uint32_t address) const {auto p=find(address);return p.offset==0?p.entry:nullptr;}
+// Resolved means every nonnull native link has a mapped address and no null
+// link hides an unresolved token. It says nothing about allocated/live flags,
+// matching event IDs, object incarnation or whether the target can run.
 bool EventEntryAddresses::linksResolved(const EventEntry& e) const {
     for(unsigned i=0;i<3;++i) {auto* p=i==0?e.waitingParent:i==1?e.waitingChild:e.brotherOwner;uint32_t word;if(p) {if(!addressOf(p,word))return false;}else if(e.unresolvedLinkMask&(1u<<i))return false;}
     return true;
 }
+// Packed lifetime at0/4 is source elapsed time; ID at0x15c is separate.
+// Float timescale/credit0x164/168 transfer bits, not numeric integer conversion.
+// Message slots0x178..190 and unknown spans retain original values verbatim.
 bool EventEntryAddresses::readFieldWord(EventEntry& e,uint32_t off,uint32_t& v) const {
     if(off>=0x2c && off<0x6c)v=e.labelAddresses[(off-0x2c)/4];
     else if(off>=0x6c && off<0x78) {const unsigned i=(off-0x6c)/4;if(link(e,i))return addressOf(link(e,i),v);v=e.unresolvedLinkMask&(1u<<i)?e.unresolvedLinkWords[i]:0;}
@@ -141,6 +149,9 @@ bool EventEntryAddresses::readWord(uint32_t address,uint32_t& v) const {
     for(unsigned i=0;i<4;++i) {uint8_t b;if(!readByte(address+i,b))return false;result=result<<8|b;}
     v=result;return true;
 }
+// Aligned semantic words update in one operation; fallback prechecks all
+// four readable lanes, then merges byte stores. A partially written link word
+// may become a different unresolved guest token at each source byte boundary.
 bool EventEntryAddresses::writeWord(uint32_t address,uint32_t v) {
     if(uint64_t(address)+4>0x100000000ULL)return false;
     auto p=find(address);

@@ -22,6 +22,9 @@ EventNativeRuntime::EventNativeRuntime(uint32_t gpBase,const EventNativePlatform
     assert(fieldMapped && battleMapped && gpMapped && rootStored);
     (void)fieldMapped;(void)battleMapped;(void)gpMapped;(void)rootStored;
 }
+// Resolve current GP on each reached service call. Supplied gp member is
+// initial backing, not an unconditional replacement for a later selected GP.
+// Returned closures borrow this runtime; source manager controls capture order.
 EventManagerServices EventNativeRuntime::managerServices() {
     EventManagerServices s;s.user=this;
     s.globals=[](void* p) {return owner(p).gpAddresses.currentGlobals();};
@@ -34,9 +37,15 @@ EventCreationServices EventNativeRuntime::creationServices() {
     s.runtime=[](void* p) {return &owner(p).runtime;};
     s.word=[](void* p,uint32_t a) {auto memory=owner(p).memoryBinding.services();return memory.word(memory.user,a);};
     s.stopAll=[](void* p,uint32_t mask) {stopAllEvents(mask,owner(p).creationServices());};
+    // Install observer bridge only when configured as services are built;
+    // invocation still reads current platform hook. Observation must not mutate
+    // source world state or invalidate the live entry while deletion consumes it.
     if(platform.retiring)s.retiring=[](void* p,const EventEntry& e) {auto& f=owner(p);if(f.platform.retiring)f.platform.retiring(f.platform.user,e);};
     return s;
 }
+// Explicit user bridges keep memory/operands/numeric/USER_FUNC/format owners
+// separate. Unbound required adapters violate native domains; declarations of
+// extra platform math functions do not imply interpreter forwarding or defaults.
 EventInterpreterServices EventNativeRuntime::interpreterServices() {
     EventInterpreterServices s;s.user=this;s.schedule=&schedule;s.creation=creationServices();s.memory=memoryBinding.services();
     s.operands.user=this;

@@ -6,6 +6,9 @@ namespace ttyd {
 // Semantic fields used by the recovered manager. Caller-owned entry storage and
 // IDs remain separate from schedule slots; this is not the original packed ABI.
 struct EventEntry {
+    // Accumulated eligible source time, NOT an immutable allocation identity.
+    // Manager adds delta once per eligible visit; multiple credit dispatches may
+    // share it. Use source ID/slot and owner lifetimes for their own admission.
     uint64_t lifetime=0;
     // Source bits:1 allocated,2 stopped,0x10 waiting child,0x20 append root
     // during a live manager pass,0x80 inhibited. Unknown bits stay raw.
@@ -62,6 +65,8 @@ struct EventSchedule {
     int32_t count=0;
     uint32_t managerActive=0; // Original shared word;retain nonzero/raw byte aliases.
 };
+// Services may observe/change live owners. Source context/GP capture order
+// is part of each routine; do not hoist providers across child/callback boundaries.
 struct EventManagerServices {
     void* user=nullptr;
     EventGlobals* (*globals)(void*)=nullptr;
@@ -69,6 +74,9 @@ struct EventManagerServices {
     uint32_t (*clock)(void*)=nullptr;
     int32_t (*dispatch)(void*,EventEntry&)=nullptr;
 };
+// clock/4 -> ticks per millisecond via original reciprocal multiply. Negative
+// elapsed clamps0; interruptions >500ms become one integer refresh interval.
+// Caller supplies real clock/refresh domains; no hardware cadence is measured here.
 uint32_t eventClockRate(uint32_t clock);
 uint64_t eventLifetimeDelta(uint64_t timestamp,uint64_t previous,uint32_t clock,int32_t refreshRate);
 void buildEventPriorityTable(EventSchedule&,const EventManagerServices&);

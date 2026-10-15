@@ -13,8 +13,13 @@ public:
     ~EventEntryStorage();
     EventEntryStorage(const EventEntryStorage&)=delete;
     EventEntryStorage& operator=(const EventEntryStorage&)=delete;
+    // Bytes are multiples of packed0x1b0, never host sizeof(EventEntry).
+    // Allocate source heap first, extract raw RAM, then import its actual cleared/
+    // provider-written bytes into semantic entries and resolve pending arrays.
     EventEntry* allocate(int32_t heap,uint32_t bytes);
     void clear(EventEntry*,uint32_t bytes);
+    // Detach contexts, snapshot/unregister entries, restore raw RAM, then drop
+    // host storage. Original heap allocation remains live until its separate free.
     bool retire(uint32_t originalBase);
     void retireAll();
     EventContextInitializationServices initializationServices(const EventManagerServices&,

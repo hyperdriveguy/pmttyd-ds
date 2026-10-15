@@ -17,6 +17,8 @@ EventContextAddresses::Position EventContextAddresses::find(uint32_t a) const {
     for(const auto& r:regions_)if(a>=r.base && uint64_t(a)<uint64_t(r.base)+0xa0)return {r.context,a-r.base};
     return {};
 }
+// Borrow one stable semantic context; duplicate host object or original
+// extent rejects. No entry-array allocation or current-context selection occurs.
 bool EventContextAddresses::registerContext(uint32_t base,EventContext& c) {
     if(!base || uint64_t(base)+0xa0>0x100000000ULL)return false;
     for(const auto& r:regions_)if(r.context==&c || (uint64_t(base)<uint64_t(r.base)+0xa0 && uint64_t(r.base)<uint64_t(base)+0xa0))return false;
@@ -63,6 +65,9 @@ bool EventContextAddresses::writeWord(uint32_t a,uint32_t v) {
     for(unsigned i=0;i<4;++i)if(!writeByte(a+i,uint8_t(v>>(24-8*i))))return false;
     return true;
 }
+// Late mapping resolves retained nonzero array tokens; detach performs the
+// inverse while addressOf is still valid. Registration alone is not proof that
+// context.capacity fits the mapped array or that entry IDs are live.
 void EventContextAddresses::resolveEntryArrays() {
     for(const auto& r:regions_)if(r.context->entriesUnresolved) {
         if(r.context->entries) {uint32_t address;if(entries_.addressOf(r.context->entries,address))r.context->entriesUnresolved=false;}

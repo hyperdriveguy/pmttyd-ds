@@ -11,6 +11,9 @@ class EventAddressSpace {
 public:
     EventAddressSpace(EventEntryAddresses& e,EventContextAddresses& c,
                       EventRuntimeAddresses& r,EventGpAddresses& g):entries_(e),contexts_(c),runtime_(r),gp_(g) {}
+    // Owned/external mappings reject zero size, 32-bit wrap and readable
+    // live aliases. Extent probes are conservative for raw acceleration; sparse
+    // semantic holes may still admit RAM through registration's byte checks.
     bool registerRam(uint32_t base,std::vector<uint8_t> bytes);
     // Caller retains stable backing storage until unregister or facade destruction.
     // Big-endian byte aliases share one process owner across separate VM lifetimes.
@@ -26,11 +29,17 @@ public:
     // One complete raw RAM span, excluding semantic providers. No pointer
     // escapes and callers must recheck after any mapping mutation.
     bool contiguousRam(uint32_t a,uint32_t n) const{return n && rawRamSpan(a,n);}
+    // Synchronous borrow only: blocks this facade's storage mapping changes
+    // and nested borrows. Independent semantic registries are NOT locked; caller
+    // must keep them unchanged and must not call children/yield in the callback.
     class RawRamAccess;
     template<typename Callback> bool withRawRamAccess(Callback&&);
     // Pure current mapping admission, using the same interval/semantic checks
     // as registration. No storage is reserved; recheck after mapping changes.
     bool unmappedRange(uint32_t base,uint64_t size) const{return available(base,size);}
+    // BE widths alias the same live fields. A fallback store first checks
+    // byte readability to avoid unmapped-prefix writes; this is not a transaction
+    // against arbitrary semantic/provider side effects or concurrent mutation.
     bool readByte(uint32_t,uint8_t&) const;
     bool readHalf(uint32_t,uint16_t&) const;
     bool readWord(uint32_t,uint32_t&) const;

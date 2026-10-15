@@ -2,6 +2,8 @@
 #include "event_manager.hpp"
 
 namespace ttyd {
+// Shared source globals, separate from GP/context and per-entry counters.
+// nextId can wrap/reset in its source domain; it is not a permanent host UUID.
 struct EventRuntimeGlobals {
     uint32_t allocationCount=0,nextId=0;
     float speed=0;
@@ -17,6 +19,9 @@ struct EventCreationServices {
     // before storage reset. This is not an original world callback.
     void (*retiring)(void*,const EventEntry&)=nullptr;
 };
+// Label storage is16 IDs/addresses; creation retains source scan/order and
+// live-manager append rules. Child/brother links are semantic borrowed pointers
+// with guest-token aliases, not ownership of host allocations.
 void scanEventLabels(EventEntry&,const EventCreationServices&);
 void checkEventEntryRun(const EventCreationServices&);
 // Available entry storage and at most16 labels are native domain invariants.

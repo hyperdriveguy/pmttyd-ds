@@ -164,3 +164,8 @@ previous raw time,+0x20 total,+0x38 event time,+0x40 nonbattle time. Inhibit
 bits8/4/2/1 gate banks+0x60/58/50/48. Requested system level0..4 is separate
 from the live low-nibble clock masks0/1/3/7/15 and event type stop masks.
 See [time publication](../behavior/platform/EVENT_RETRACE_TIME_PUBLICATION.md).
+
+Public-header ownership/result domains are detailed in [event service APIs](event-service-api.md).
+See [event addressing](event-addressing.md) for mapping retirement, late link
+resolution and scoped RAM acceleration. `EventEntry::lifetime` is accumulated
+source time, distinct from event ID or an allocation-incarnation proof.

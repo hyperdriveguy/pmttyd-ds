@@ -3,6 +3,9 @@
 #include <vector>
 
 namespace ttyd {
+// Native PMEVT001 container uses BE address/size/file-offset triples; all
+// extents are word-aligned/sorted/nonoverlapping. Original payload bytes remain
+// intact; segments() is borrowed until successful reload/destruction.
 struct EventScriptSegment {uint32_t address,size,offset;};
 class EventScriptAssets {
 public:

@@ -11,6 +11,9 @@ public:
     bool bind(uint32_t originalAddress,void* user,Callback);
     bool unbind(uint32_t originalAddress);
     bool contains(uint32_t originalAddress) const;
+    // Copies callback/user before invocation so registry mutation cannot
+    // invalidate this lookup. False leaves result untouched; unbind does not
+    // cancel an already executing callback or retire provider-owned partial work.
     bool invoke(EventEntry&,uint32_t originalAddress,int32_t firstCall,int32_t& result) const;
     // For EventNativePlatform.call. An unbound callback terminates as an explicit
     // unsupported native domain,including release builds;it never returns success.
