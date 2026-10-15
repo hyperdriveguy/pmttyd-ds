@@ -93,3 +93,10 @@ all64 updates, future registry mutation, shadowing, warning-group order, signed
 byte cases0/128/129, 60-qualifying-call cadence, sound/status holds and Mario reset.
 Host captured callbacks are service tests, not original execution observations
 or native sound/pixel/performance proof.
+
+## Native integration status
+
+Commit e78d2325 binds actual VM status/numeric services and routes the retained
+sequence manager to this child. Genuine warning requests still retain their
+frontier until a retained sound owner is available. Source Main activation and
+active battle presentation remain open; see [progress](../../PROGRESS.md).

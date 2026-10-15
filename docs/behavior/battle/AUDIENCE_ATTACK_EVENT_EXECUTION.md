@@ -95,3 +95,11 @@ registry/local-value stores. Original Jump/Hammer event hashes were independentl
 recovered from the read-only ISO; no dialogue, story conditions, or assets change.
 Related: [selected interruption](NATIVE_SELECTED_AUDIENCE_INTERRUPTION.md),
 [type11 selection](RETAINED_ATTACK_SELECTION_AND_AUDIENCE_ADMISSION.md).
+
+## Native integration status
+
+Commit e78d2325 registers these callbacks with the real Trio VM registry and
+binds genuine positional sound/queued pitch. HitN64 remains unavailable, so
+mode0 does not publish flag40 prematurely; mode1 retains its source no-effect
+route. Original X/command callsites and touch visibility ownership remain open.
+See [validation](../../PROGRESS.md).

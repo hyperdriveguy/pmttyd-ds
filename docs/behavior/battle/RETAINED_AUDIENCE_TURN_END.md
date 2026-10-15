@@ -92,3 +92,10 @@ cases distinguish captured versus fresh turns/chance/globals, source GetExist
 and GetPtr ownership, record flags/state and all three true early population
 gates. These are source-derived host checks, not original execution, active
 battle scheduling, native pixels, audio, hardware timing or performance proof.
+
+## Native integration status
+
+Commit e78d2325 binds actual VM numeric conversion/division and runtime RNG.
+Only the original AddAudienceNum early gates bypass its still-unbound nonempty
+population suffix. Legacy audienceTurnEnd is not retried as this source child.
+See [validation and cadence limits](../../PROGRESS.md).

@@ -12308,3 +12308,94 @@ Next: finish public Trio facade/camera/outer-main/draw/material wrappers and hea
 ownership notes, then re-audit new retained Turn/audience/pose/recovery bindings and
 new field animation/NPC/render code. Remaining event/message/story/effect/platform/
 file/save helpers and tools need systematic inline audit; goal stays active.
+
+## 2026-10-15 — UI workers: original enemy resources and retained battle services
+
+Three UI workers delivered enemy resources/native atlas binding, audience attack
+callbacks and retained battle/pinch dependencies. Root integrated their work,
+implemented the complete Turn parent and coordinated recovery, event barriers
+and audience TurnEnd. Incremental commits:b0330b76 (services/assets/tests) and
+e78d2325 (native resource/provider/sequence bindings). Original menu style,
+US story/IDs/tokens, soundtrack and lower scene remain preserved; physical
+controls remain available. Audience taps are not yet a completed feature.
+
+The Turn parent covers all78 original dispatch entries,1974 instructions,
+source recursion/yields, Poison/Burn, HP/FP/Happy recovery,23 status passes,
+countdowns and event/conclusion boundaries. New retained children preserve
+original global captures, acknowledged mutations, arguments and private outputs
+across unavailable providers. Packed status recovery uses actual guest bytes,
+including reached move-reset children. Pinch composes complete retained target
+arithmetic; corrected the earlier guide's signed-low bias address to802fa328.
+Source startup proves r2=80427440; unrelated older inferred r2 data was rejected
+before validation. No timing constant is claimed measured.
+
+Actual source SequenceDispatch now routes pinch/Turn to these runtime owners;
+its finishing bank4 path remains source-default. Legacy native handoff is
+preserved. Its conflated Phase/Move/Act flow cannot acknowledge source8011c2b4,
+which remains explicitly unavailable in the new owner. Ordinary source Main is
+not activated. Retained event barriers bind actual VM ID/entry/conclusion
+services; nonzero reserved inventory still needs its removal owner. Audience
+TurnEnd binds actual numeric/RNG services and genuine early population gates;
+nonempty allocation/removal remains unavailable. Warning sounds, direct/Burn/
+Freeze/regeneration effects and original introductory display still need owners.
+
+Original tik units3/4/5 now receive separate mode1 poses backed by shared original
+c_kuribo/KUR/TGK/PTK resources: all45 descriptors, unchanged MODEL125524 bytes
+and TPL23680 bytes, dedicated1024x256 RGBA8 atlas/UVscale4. Native residency,
+resource-identity routing and synchronized retirement include this atlas. Tests
+verify three shared enemy resources, independent handles, real model reference
+counts and release without retiring an ABA replacement. CPU/resource admission
+is not source Shape/GPU completion or active enemy HP evidence. Original common
+HUD/HP17/18 art remains unchanged. See [assets](ASSETS.md) and
+[enemy resources](behavior/display/TRIO_ENEMY_ORIGINAL_POSE_RESOURCES.md).
+
+Actual audience event registry binding retains cached selected slot/XYZ, fresh
+position reads, original pitch semantics and final flag40 ordering. Mode1's
+original no-effect route completes; mode0 correctly waits for real HitN64 behind
+8013f1b4. Neither an unconsumed effect-request vector nor a sound failure is
+fabricated into success. Trio's original X/menu callsite and completed audience
+visibility/projection/incarnation publication remain necessary before optional
+lower-screen taps or physicalAlternativeBound can be enabled.
+
+Final frozen validation: committed652dded0 plus46 owned integration files;
+6088 input hashes,2034 source/build inputs and2153 RomFS products, zero
+mismatches/extra source inputs. Concurrent later NPC/RAM/documentation changes
+are preserved/excluded. A later annotation-only Trio merge retains both new
+methods and legacy comments; its66472 executable tokens match the tested source.
+Final CMAKE_BUILD_PARALLEL_LEVEL=4 make test passes434/434 C++ in46.26s and
+212/212 Python in32.853s, zero skipped. Native make all -o assets-ready -j4
+SOUNDTRACK=gamecube and restored normal build exit0.1469 Markdown files have
+zero broken links. Existing compiler/Pillow warnings remain.
+
+Earlier gates/logs remain recorded: two tests initially expected missing enemy
+poses/old allocation slots; replaced with affirmative resource/handle/lifetime
+checks. Advancing the frozen baseline for the committed field-Mario renderer
+also admitted ordinary NPC code; its older cached door pair then failed two
+unchanged NPC assertions. Exact helper-matched ordinary-NPC door products fixed
+that mismatch; no assertion was weakened. Final door152804-byte pack SHA256
+e9e85d212180b28087c7c8c4d904f82417c1a0ea30f1271ab10c2a3d0c9a78ab.
+Fifteen separately hash-verified field-Mario/boot dependencies and seven new
+enemy products accompany the accepted cache. Full asset regeneration was
+intentionally skipped; the original enemy producer read the ISO read-only.
+No ISO, extracted original, atlas or compiled pack/binary enters history.
+
+Isolated Azahar ARM checks pass all seven new components, including original
+45-descriptor enemy CPU resources, held-child/source mutation cases and actual
+VM registry adaptation. These use explicit service fixtures, not original
+PPC/FPSCR/Dolphin execution or active battle pixels. Component45s and restored
+normal25s smokes exit0; both inspected captures show the original storybook,
+without an asset-error notice. Only isolated profiles were used; no user save
+or profile was touched. No hardware/performance claim. All eight private probe
+translation units were removed and ordinary main restored; final native binary
+is byte-identical to pre-probe SHA256
+b313a93bea70263a50147c3f88ef082dbeb9c9ac11dc0201ec451cd5a0c791f2.
+Exact journals, source/asset/log hashes, failures and native markers are in
+artifacts/turn-ui-validation/manifest.json.
+
+Next: actual retained Phase8011c2b4/9c, Move8011bc24/690 and Act8011b2dc/8ac,
+then original command/event/Main cadence and surviving-enemy source Shape before
+active camera4→HP8 scheduling. Bind genuine HitN64/audio and original X selection
+before optional taps, using completed source camera/projection/incarnation
+publication. Complete original tutorial control/story flow, battle end and real
+field return; do not skip80073f20 or infer completion from fade/empty HP output.
+The tutorial/real-battle goal and full remake remain active/incomplete.

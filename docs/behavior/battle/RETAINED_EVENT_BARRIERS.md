@@ -101,3 +101,10 @@ admit unsupported queued scripts, establish allocation lifetime, or activate the
 complete original Main scheduler. Native integration and full build registration
 are owned by the parent change; this batch adds only the reusable source owner,
 focused test and this contract.
+
+## Native integration status
+
+Commit e78d2325 binds the Turn child to actual VM checkEventId/entry allocation
+and original conclusion services. A genuine nonzero reserved item holds for
+its still-unbound removal owner. Source readiness0 completes normally; absence
+of a provider remains distinct. See [validation](../../PROGRESS.md).

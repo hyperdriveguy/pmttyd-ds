@@ -100,3 +100,13 @@ resource lookup, original45 descriptors, missing/wrong metadata rejection and
 three independent CPU pose owners. CPU evaluation is explicitly detached proof.
 ARMv6k syntax passes for the new resource module. ASan/UBSan also passes the focused native-resource CPU test (leak scanning disabled). Root owns full make test,
 make all, actual source callback traversal and native pixel/lifetime validation.
+
+## Applied integration and validation
+
+Root applied the proposed journal in e78d2325: actual source model/pose lookup,
+three separate mode1 handles, shared validated resource, dedicated native atlas
+residency/identity/retirement and Make conversion. Host and ARM checks verify
+all45 original descriptors and separate CPU poses; existing allocation/lifetime
+tests now require all enemy owners and their retirement. This does not establish
+source Shape completion, active camera4→HP8 or visible battle pixels. Exact full
+gates, provenance and isolated captures are in [progress](../../PROGRESS.md).

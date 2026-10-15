@@ -61,3 +61,12 @@ Happy draws/yield, Freeze-only presentation, countdown widths, conclusion order,
 and changed-service/battle refusal. Actual children, native source Main cadence,
 active camera4→HP8 and field return require their runtime integration; this
 parent alone is not proof of a playable original battle or tutorial.
+
+## Native integration status
+
+Commit e78d2325 routes actual retained SequenceDispatch to the VM-backed Turn
+owner, including real packed recovery, event barriers and audience TurnEnd.
+Original Phase remains unavailable; the legacy harness is preserved and ordinary
+source Main is not activated. Full validation and remaining providers are in
+[progress](../../PROGRESS.md). ARM component fixtures pass without claiming
+active battle rendering or original execution equivalence.
