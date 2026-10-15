@@ -2012,3 +2012,41 @@ read ISO read-only and generate only in empty temporary destinations; native
 regeneration is skipped. Original Nintendo/Intelligent Systems rights remain
 reserved; private copies grant no redistribution license. No original ISO/
 extraction/binary bytes were committed.
+
+### NPC Main movement subsection (2026-10-14)
+
+Movement49e8c..49fbc reuses the existing source zero/.5 words and admitted
+NPC/pose/map assets. No new asset conversion, geometry, sound or story text.
+Original PSVECSubtract8029eba4 (36 bytes) was inspected read-only from the US
+ISO; ignored evidence resides in artifacts/npc-main-parent-evidence/.
+SHA2565997a5a32c7df8eb2a03901039345f35a84f00b017545800218ef21bdbfaf81a.
+Only its semantic implementation/contract is committed. Extracted helper ELF,
+listing, ISO and compiled packs remain outside source history. Existing rights
+and private local-use restrictions are unchanged; this grants no redistribution
+license. Current private2131-product baseline is recorded in
+artifacts/npc-main-entry-assets-after.json; see PROGRESS for hash verification.
+
+## Typed battle-support documentation validation inputs (2026-10-14)
+
+artifacts/battle-support-code-documentation-validation/source reuses accepted
+packed-battle documentation RomFS/evidence. Cache assembly verifies 41 accepted
+product hashes plus relocated Frankly/common-menu source evidence and 14 private
+footer PNG/atlas hashes. It copies only 5 additional/changed cache products:
+
+- door-data.pmevt/json match artifacts/npc-main-entry-assets-after.json, whose
+  own SHA256 matches artifacts/npc-main-entry-validation-manifest.json.
+  Pack 152308 bytes retains the committed original NPC-entry data closure.
+- battle-class-footers.bin/t3x/json match dependencies recorded in
+  artifacts/class-frame-source-manifest.json, from artifacts/class-frame-validation.
+  Metadata pins all 13 source image pixel hashes; private common-4..16.png images
+  and atlas crops are independently checked against them before building.
+
+Manifest journals exact sources, old/new product hashes and authority hashes.
+Source bank remains original battle/common/battle_common.tpl; footer products
+retain prior conversion choices. Mutable evidence is private; other large local-
+assets inputs remain shared reads. No new conversion, resampling, geometry/lighting
+change, editable import or shared pack write occurs. Existing Python fixtures
+read ISO read-only and generate only in empty temporary destinations; native
+regeneration is skipped. Original Nintendo/Intelligent Systems rights remain
+reserved; private copies grant no redistribution license. No original ISO/
+extraction/binary bytes were committed.

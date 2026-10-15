@@ -10200,3 +10200,66 @@ message/story/effect, platform/file and uncovered event/runtime/save modules and
 port tools. Re-audit committed shared animation/NPC entry/file/menu integration
 and concurrent additions against earlier snapshots. Full code documentation
 and remake remain incomplete; goal stays active.
+
+## 2026-10-14 — Retained original NPC Main movement and actual collision aliases
+
+Implemented complete source region80049e8c..49fbc, including the original
+PSVECSubtract operation, in an allocation-free retained controller. The same
+entry binding composes it with actual owner/VM/actor and shared pose aliases.
+Captured special state, mainflags, direct X-store/fresh-Z ordering, two-pass
+hit output aliases, contact store/reload, discarded second return, pending
+component clears, gravity and freshly gated Mario side response are retained.
+Paired XY loads capture both words or neither; Z loads follow local XY result.
+Missing original children hold without effects; no fake guest stack pointers,
+replacement catalog actor storage or fixture-enabled ordinary Game path.
+
+[Contract](behavior/field/NATIVE_NPC_MAIN_MOVEMENT_SECTION.md),
+[request update](requests/EVT-01.md). Source audit independently rechecked final
+core/binding/tests: no actionable source-order/hold defect. Warning-enabled
+independent test compile/run passed. Tests include an independently specified
+source trace, every-primitive suspension, direct/onehit/twohit paths, actual
+second-pass outputs versus discarded return, special-state bypass, all side
+bypass bits, postgravity flag reload, zero/negative/NaN dt, shared native alias
+composition and stable unfinished frontiers. Initial test-only issues (missing
+float helper and a gravity fixture that set a bypass bit while expecting the
+side child) were corrected before final validation; production logic unchanged.
+
+Frozen b39db50f2fccc1b80cf2f934289b52a9fc578997 on accepted91702519 baseline:
+3710 tracked source files audited without mismatch. Full make test:382/382 C++
+(39.78s), 203/203 Python (30.703s); zero skipped. make all -j4 -o assets-ready
+SOUNDTRACK=gamecube exits0. Existing compiler/Pillow warnings remain. This
+validates the frozen tree; concurrent worktree/combined HEAD is not covered.
+All2131 private RomFS products match npc-main-entry-assets-after.json unchanged.
+No new asset conversion; ISO inspected read-only, helper/data/packs ignored.
+Original helper36-byte hash and unchanged rights recorded in ASSETS.md.
+
+Strict isolated ARM fixture marker:entry/movement/holds/sharedAliases/
+pairedLoads/frontiers PASS. Restored normal source/touched/rebuilt; SHA256
+ d690b62ac066cc96f240189cbd2429728cb5999ddf52377a85b5ffdba959212e
+matches the pre-probe normal binary (also identical to previous normal build,
+as the new controller remains unactivated and unused sections are stripped).
+Normal40-second isolated screenshot visually inspected: original storybook,
+App60FPS/100% speed, no asset-error console. This is startup evidence only.
+ARM object inspection shows VFP add/subtract/multiply/ordered comparison;
+no physical performance claim. Only isolated profiles/saves were touched.
+
+AutomaticPose49fbc and Detection4a160 are active unfinished frontiers, never
+Main success or permission to advance the actor loop/publish history. Entry
+remains atphase60 with its captured factor. Normal Game uses its existing field
+path; real collision/gravity/Mario services, automatic pose, event interrupt,
+display/material/shadow, late history and field tail remain open. Native
+subtraction is a binary32 adaptation, not proven Gekko GQR/FPSCR parity.
+No physical hardware or complete field rendering/performance claim. Previous
+15FPS llvmpipe field capture/occluded assertion and asset-error smoke admission
+remain unresolved. Full-game goal and EVT-01 stay active/incomplete.
+
+Next: resume at fresh mainflags load49fbc. Implement auto-pose norm as separate
+SP squares/add, explicit source reciprocal-square-root estimate plus three
+binary64 Newton steps, source canonical NaN/zero branches and fresh dt divide;
+retain descriptor/factor and publish phase only after animPoseSetAnim completes.
+Then continue original event detection/interrupt, display/late history and tail;
+finish actual child/cold resource owners before ordinary Area activation.
+Keep asset-error and occlusion checks separate from process-only smoke success,
+and profile the actual field on hardware. Evidence: artifacts/npc-main-movement-
+validation-manifest.json, asset-check.json, test/build/probe logs and isolated
+normal/probe captures. No generated original asset or executable is committed.

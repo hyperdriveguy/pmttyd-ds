@@ -4945,3 +4945,16 @@ then cold bootstrap before Mario entries. Full EVT-01/prologue remains open.
 ### Actual NPC Main entry and pose/clock composition
 
 [Retained entry controller](../behavior/field/NATIVE_NPC_MAIN_ENTRY_AND_CLOCK_COMPOSITION.md) now composes original entry/raw bank traversal, shared pose bit100, source state/timer, complete clocks and special-room setup. Missing Mario/audio holds preserve completed source work. Source correction: the Kpa Y gate is not(Y>365), including unordered/NaN, rather than Y<=365. Movement49e8c and field tail4b1d0 remain explicit unfinished frontiers; no parent success, all-actor clock prepass or body-skipping callback is provided. Keep full movement/query/interrupt/display/history/tail, actual startup/Mario/resources, normal Area activation and original/hardware/render validation open.
+
+### 2026-10-14 NPC Main movement implementation update
+
+The [retained movement section](../behavior/field/NATIVE_NPC_MAIN_MOVEMENT_SECTION.md)
+now covers80049e8c..49fbc, composed with actual retained actor/VM ownership.
+Original contact publication/reload, two-pass hit aliases, gravity and fresh
+side gates are retained. PSVECSubtract uses paired XY capture then fresh Z.
+Automatic-pose and Detection remain unfinished frontiers; no all-actor history
+or complete Main claim. Local source analysis for this subsection is delivered;
+real child providers, Gekko numeric/runtime traces, automatic pose49fbc..a160,
+remaining parent/tail and ordinary Area activation stay open. The source audit
+also recovered the automatic-pose seed/Newton/NaN ordering for follow-up;
+no std::sqrt replacement or fabricated guest stack pointer has been enabled.
