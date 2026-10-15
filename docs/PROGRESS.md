@@ -15260,3 +15260,42 @@ Next: inspect residual decode access/dispatch cost using the admitted raw spans,
 then continue binding original NPC selection/Main/DrawMtx/Inner/queue services to
 retained process owners. Preserve fallback and exclusive pass/lifetime contracts;
 complete source SetLocalTime/paper setters and validate physical hardware speed.
+
+
+## Original UI process memory and root helper (2026-10-15)
+
+Committed `1adbd36bcecd0286b767ce3f00de38c088dda01a`: exact original
+getMarioStDvdRoot pointer leaf, private immutable original window TPL loading and
+shared process window state. First-bound VM known/unknown bytes remain process
+history across later VM bindings; actual source stores transactionally publish
+new known bytes, stale bindings retire, and VM originals restore. Actual
+heap-backed allocations retain owners and unknown tails. Real original palette
+Unpack runs against a private mutable TPL copy shared across two VMs; immutable
+file bytes and source readiness remain unchanged. Root getter does not depend
+on native cache/import readiness. Make/ASSETS record exact raw extraction.
+
+Frozen authority `artifacts/window-resource-integration-validation/manifest.json`
+SHA256 `2fea13f5493d570ea5da454269c1b25f36d8b846a507c2ecf91991a63c52465a`:
+6448 source/header/private-RomFS/fixture inputs rehashed unchanged after gates.
+`make test`: 491/491 C++ (56.89s), 226/226 Python (33.829s), zero skips.
+`make all -o assets-ready -j4 SOUNDTRACK=gamecube`: exit0; native artifact
+`artifacts/ttyd-original-window-process-memory.3dsx`, SHA256
+`8f5016afc24f211c921f250f1aa26d7b40cb73c38335d3cb23dfffa6b9704d7c`.
+Original root/window source verifiers exit0; 1539 frozen Markdown files checked,
+zero broken links. Worker strict-host/ASan+UBSan/ARM and actual raw-export tests
+are pinned in package manifests. No native smoke repeated for these unbound
+CPU-side services; the parent original Window/font native rendering probe is
+recorded above. All owned code/new files match validation; shared registrations
+and asset notes preserve independent accepted baselines. All handles terminal.
+
+Limitations/next: actual source startup currently omits seq_logoExit; native
+packed GP language starts zero, so real US language initialization is required
+before source font selection. Reuse genuine process heap and bind actual DVD
+open/read delivery, source callback and process lifetimes. Three UI workers are
+continuing mixed native raster submission, finite original resource-path
+formatting, and production startup integration audit. Their new-only drafts are
+not part of this accepted6448 graph. Whole normal weapon callback/camera queue,
+tutorial battle activation and visible audience interruption remain open. No
+source-ready flags are inferred; no dialogue/story changes or hardware/PPC
+parity claim. Original payloads, packs, binaries and ISO stay outside history.
+The full remake goal remains active.
