@@ -9715,3 +9715,53 @@ this subsection as full npcMain success. Integrate genuine Mario radial,
 numeric/audio/resource owners before normal Area VM activation. Correct the
 visual harness's frontend/occlusion admission and profile the actual field
 render path/hardware. EVT-01 and the full-game goal remain active/incomplete.
+
+## 2026-10-14 — Battle controllers, event rules and side effects documented
+
+Added inline numeric/ownership/behavior notes to 37 C++ implementation/header
+files: outer BattleMain, phase tables, sequence entry/storage, field initialization,
+return/fade, first attack, conclusion/barriers, general/turn rules, recovery/cost,
+weapon aftereffects, callback composition, data children, utility/hit-code events
+and battle hit snapshots. Added [battle controllers](code/battle-control.md) and
+[events/rules](code/battle-events-rules.md), plus index entries. Main commit
+ceb77439; final review clarifies stage-mask conditions without guessing A1 state,
+and explains that the retained fade28 scalar does not scroll used type10 texture.
+All 37 preserve executable tokens, including literal strings.
+
+Explained upper engine return versus outer end bit and field return, retained
+child/source result domains, owner recapture and same-visit fallthrough, stable
+sort ties and distinct actor/phase-event tables, barrier cleanup short-circuit
+asymmetry, rule threshold/write ownership, raw/resolved EVT operands, waiting-child
+255 without parent deletion, cost callback order and narrowing before clamp,
+aftereffect RNG/force-read ordering, and active-hit publication/query admission.
+Unknown fields keep offsets; source visit counters are not measured timing and
+native numeric/admission limits are not original hardware maxima/parity.
+
+Frozen validation uses baseline 7b23991f48673c32c50955207f9f155235aaa5f3 plus owned documentation in
+artifacts/battle-control-code-documentation-validation/source. Audited all 3693
+baseline tracked files: zero unexpected changes; 40 documented files match frozen
+and recorded live hashes. All 56 local guide/index links resolve. Unrelated
+moving-checkout work was preserved/excluded; no combined-moving-tree validation
+is claimed.
+
+Final CMAKE_BUILD_PARALLEL_LEVEL=4 make test passes 381/381 C++ (39.72s)
+and 203/203 Python (32.734s), zero skipped. make all -o assets-ready -j4
+SOUNDTRACK=gamecube exits0. Initial full gates passed; final incremental host/
+native gates followed the comment-only stage-mask/unused fade-scalar review. Manifest records
+source, dependency, log and native binary hashes. Existing compiler/Pillow warnings
+remain; no emulator run/profile/save changes or new measured hardware, timing,
+pixel or SDK/Gekko numerical fidelity claim.
+
+Private cache reuses accepted actor/audio documentation RomFS/evidence, verifies
+all 38 accepted product hashes plus relocated Frankly/common-menu source evidence,
+and privately copies mutable evidence. Cache assembly makes no new original
+conversion/import/shared write; existing Python fixtures independently read the
+ISO read-only and generate in empty temporary directories. Native regeneration
+is deliberately skipped. No original binaries/ISO were committed; rights and
+conversion choices remain unchanged in [asset notes](ASSETS.md).
+
+Next: remaining packed battle status/part/position/motion/selection/hit helpers,
+action controllers, stage/audience/menu owners, message/story/effect, platform/file,
+uncovered event/runtime/save modules and port tooling. Re-audit concurrent shared
+animation-pool/NPC-main/menu integration and drift in previously documented files.
+Full port documentation and the remake remain incomplete; goal stays active.

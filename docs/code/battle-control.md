@@ -188,7 +188,9 @@ work state. It does not enter state 1 in that pass.
 [battle_ending_fade.hpp](../../include/battle/battle_ending_fade.hpp) adapts fade
 10 to a native black overlay. Duration/elapsed are milliseconds; the supplied
 simulation refresh rate is used directly without a zero/negative guard. Zero
-duration completes immediately without texture scroll; ordinary ticks scroll
--10 source texture units. Ratio exactly 1 does not finish until a later tick
+duration completes immediately without changing retained source slot `28`;
+ordinary ticks subtract 10 from it. The field is named `textureOffset` in the
+adapter, but the used type-10 GPU path has an identity texture matrix, so this
+scalar does not drive texture scrolling on that path. Ratio exactly 1 does not finish until a later tick
 makes it greater than 1. Alpha truncates `255*ratio`. These scalar updates do
 not perform camera/event/field-return work or prove original GPU fidelity.

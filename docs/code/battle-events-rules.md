@@ -136,7 +136,7 @@ Weights initially load `b6/b5/b7/b4` for the shared draw, then fresh cumulative
 `b4/b5/b6` subtraction selects A1+A2 / A1 / A2 / none. After the initial draw, force word `19078` masks
 `10/20` seed those choices before cumulative selection; RNG callbacks may change
 these fields. Stage byte `180f8` masks `4/2` suppress A2/A1.
-Existing A1 with mask 8 clear allows a 100-roll against weapon `b8` or fresh force
+Stage mask 2 with mask 8 clear allows a 100-roll against weapon `b8` or fresh force
 `40` for DestroyB, possibly restoring A2. Dispatch order remains A1, A2, B.
 
 Three subsequent 100-rolls occur even when force masks will select the effect:

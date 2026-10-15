@@ -1873,3 +1873,18 @@ the native pack. Native validation skips asset regeneration after this private
 conversion; Python converter fixtures separately read the ISO and use temporary
 outputs. Original Nintendo/Intelligent Systems rights/licensing remain unchanged.
 No ISO, extracted original binary or compiled asset pack enters source history.
+
+## Battle-controller documentation validation inputs (2026-10-14)
+
+artifacts/battle-control-code-documentation-validation/source reuses accepted
+actor/audio documentation RomFS/evidence. Cache assembly verifies all 38 accepted
+product hashes, relocated Frankly PNG and the private common-menu raw TPL against
+the packaged original hash. Mutable icon/material/field/map/door/player/menu
+evidence is privately copied; other large local-assets directories remain shared
+read inputs. No additional pack overlay, conversion, resampling, geometry/lighting
+adjustment, editable import or shared cache write is needed. Existing Python
+fixtures independently read the original ISO read-only and generate into empty
+temporary destinations. Native validation deliberately skips asset regeneration.
+Accepted provenance/conversion/licensing metadata is unchanged. Original
+Nintendo/Intelligent Systems rights remain reserved; private copies grant no
+redistribution rights. No ISO/extraction/original binary bytes were committed.

@@ -41,7 +41,7 @@ packedBattleWeaponAftereffectEvent(EventEntry &e,
         a2 = true;
     }
   }
-  // Stage byte180f8 masks4/2 suppress A2/A1. Existing A1(mask2) with
+  // Stage byte180f8 masks4/2 suppress A2/A1. Stage mask2 with
   // mask8 clear draws100 for weapon b8 or fresh force40: DestroyB, plus A2
   // unless stage mask4 now set. Dispatch A1, A2, B in that order.
   const auto stage = byte(b + 0x180f8);

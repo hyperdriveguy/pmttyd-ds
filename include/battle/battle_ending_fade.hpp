@@ -2,7 +2,9 @@
 #include <cstdint>
 // duration/elapsed are milliseconds; tick uses live source simulation refresh
 // rate, not display FPS. No zero/negative-rate guard exists. Duration0 completes
-// immediately without texture scroll; ordinary tick scrolls-10 source texels.
+// immediately without changing slot28;ordinary tick subtracts10 from it.
+// textureOffset retains source slot28;used fade10 GPU path has an identity
+// texture matrix,so this scalar does not drive texture scrolling on that path.
 // ratio==1 does not finish until a later tick makes it>1; alpha truncates255*ratio.
 // enter resets scalar history but performs no camera/event/field-return work.
 namespace ttyd {
