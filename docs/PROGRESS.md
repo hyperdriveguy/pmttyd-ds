@@ -10008,3 +10008,76 @@ controllers, message/story/effect, platform/file and uncovered event/runtime/sav
 modules and port tools. Re-audit newly committed shared animation/NPC-clock/MODEL
 relocation and concurrent cold menu integration, plus drift in earlier snapshots.
 Full port documentation and the remake remain incomplete; goal stays active.
+
+### Shared native animation/menu file ownership (2026-10-14)
+
+Previous goal turn made progress in c955f692 by implementing original type5
+pointer handlers. This increment gives them a real file owner: NativeFileCache
+now owns one actual BE source manager,1024-entryB0 pool and stable per-file
+holder/payload backing across menu and animation consumers. BattleMenuFileCache
+preserves its prior narrow API and delegates to this shared implementation;
+normal menu loading uses it. Exact source fileInit/acquisition/type0/4/5 Set/
+fileFree execute against those same bytes, with filename-only cached reuse,
+S16 refs, state2 reactivation and archive/list publications. No second overlapping
+manager or fake nonzero file/holder is introduced.
+[Contract](behavior/file/NATIVE_SHARED_ANIMATION_FILE_CACHE.md).
+
+stagePrologueAnimationFiles atomically stages12 complete original files beside
+common-menu:6models,4deduplicated TPLs and Vivian/ag2tg raw auxiliaries. Source/
+ISO review verified exact filenames, types and8raw MODEL/TPL pairs; e_mario and
+b_mario share a/a_mario-. Evidence:artifacts/animation-file-path-evidence/.
+Models preserve original wrapped unused pointer words, including ffbc8fc0 in
+actual e_mario/b_mario. Immutable-byte admission proves actual relocation accesses
+and rejects incompatible alias domains without rewriting source handlers.
+TPL count>65535 is explicitly rejected before effects: source low16 loop index
+would not terminate. Admission interval checks sort once rather than quadratic
+pair scanning. Catalog freezes before VM views/requests; partial stage/bind
+failure leaves existing owners intact. Pending acquisition needs an explicitly
+configured yield provider and retains the actual Yield child until acknowledged.
+
+Actual integration fixture uses2VMs, all original models/TPLs, shared Mario TPL
+file references and the complete cold animation parent. Vivian copies/free and
+ag2tg retained file/holder/payload use the real shared production cache. Fixture
+W/heap returns, original constants, literal formatting and aligned sequential
+word-copy services remain explicitly supplied; they are not normal SDK/formatter
+startup. Source memcpy_as4 was independently checked: positive cold lengths c00/
+10 execute word pairs; zero is NOT a no-op and is outside the fixture domain.
+
+Final frozen base c955f692fb30cbb4e7e810cff5e9c9115e7c6d48 plus scoped own changes:
+TMPDIR=artifacts/native-stage-map-tmp CMAKE_BUILD_PARALLEL_LEVEL=4 make -C
+artifacts/animation-files-source test -o assets-ready exits0:382/382 C++ in49.25s,
+203/203 Python in55.512s. Focused -Wall/-Wextra host fixture also passes. Native
+make all -j4 -o assets-ready SOUNDTRACK=gamecube TARGET=ttyd-animation-files
+BUILD=build-animation-files exits0, including normal restore. Existing unrelated
+compiler/Pillow warnings remain. Initial frozen run retained the earlier model
+sentinel admission failure and exposed a missing newer-base NPC clock constant;
+the corrected full run passes. Failed logs remain; no check bypassed. Frozen
+converter regenerated only door-data.pmevt/json from read-only ISO. Other2129of
+2131RomFS products match prior accepted hashes; no new art/audio conversion,
+asset commit, ISO write or licensing change. See ASSETS.
+
+Strict isolated ARM fixture passes oneManager/originalModels/originalTextures/
+sharedMarioTpl/coldAuxiliary/realHolders/twoVmRefs/pendingYield/atomicStage/
+sentinelWrap/tplCountGate/rollback. Snapshot:
+artifacts/azahar-animation-files-probe/animation-files-probe.snapshot. Exact probe
+source/binary hashes:artifacts/animation-files-probe-validation.json. Probe main
+restored; normal binary matches its pre-probe hash, SHA256
+ d5ea23ea463b89696d71ba541438b09ba11c80ac643d2bbd23ada24ef820ecb5.
+Audit3710source files/2131RomFS products, zero mismatches:
+artifacts/animation-files-validation-manifest.json. Moving combined checkout is
+not claimed validated as a whole.
+
+Next: source heap/W/tangent/output owner and original Entry→typed model/file
+metadata synchronization, then normal cold bootstrap before Game's existing
+Mario entries. Catalog staging is explicit before VM binding; normal animation
+startup is not acknowledged here. Stable backed tokens/ROMFS reads/zero tail
+padding are native policy, not original SDK/smart heap/DVD workers or full file
+movement/collector/thread/formatter semantics. Authored story/field/battle/
+interiors/visibility and complete prologue fidelity remain unfinished. Goal and
+documentation inbox stay active; continue incremental source-backed integration.
+
+Normal isolated40s Azahar boot exits0; original storybook art/US text in
+artifacts/azahar-animation-files-normal/boot.png inspected. Sample60AppFPS/100%
+speed is startup evidence only, not field/physical3DS timing or pixel parity.
+User emulator profiles/saves were untouched. Final link check1409Markdown files,
+zero broken links.

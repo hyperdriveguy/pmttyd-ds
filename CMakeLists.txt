@@ -2032,3 +2032,10 @@ add_executable(field_npc_main_entry_tests tests/field_npc_main_entry_tests.cpp)
 target_link_libraries(field_npc_main_entry_tests PRIVATE ttyd_core)
 add_test(NAME field_npc_main_entry COMMAND field_npc_main_entry_tests)
 set_tests_properties(field_npc_main_entry PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Shared process file manager for original menu/model/texture/auxiliary payloads.
+target_sources(ttyd_core PRIVATE source/platform/native_file_cache.cpp)
+add_executable(native_file_cache_tests tests/native_file_cache_tests.cpp)
+target_link_libraries(native_file_cache_tests PRIVATE ttyd_core)
+add_test(NAME native_file_cache COMMAND native_file_cache_tests)
+set_tests_properties(native_file_cache PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

@@ -1232,3 +1232,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native type5 model relocation](file/NATIVE_TYPE5_MODEL_RELOCATION.md): complete nested Set/Clear through shared memory, original model round trips and remaining loaded-file ownership.
 
 - [Cold original class frame pipeline](display/NATIVE_COLD_CLASS_FRAME_PIPELINE.md): actual UI allocation identity, retained queued drawing, observable cold-entry adaptation and original footer resources.
+
+- [Shared native animation/menu file cache](file/NATIVE_SHARED_ANIMATION_FILE_CACHE.md): one source manager and real model/TPL/auxiliary holders, acquisition/reference reuse, staging and startup boundary.

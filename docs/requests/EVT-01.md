@@ -4926,3 +4926,19 @@ and exact full-byte roundtrip, separately from authored alias/order cases.
 This closes the local type5 handler implementation gap; source acquisition/type
 dispatch/file manager/holder/model ownership and cold startup remain unbound.
 Keep those providers and overall EVT-01/prologue obligations open.
+
+
+### Shared original menu/animation file ownership (2026-10-14)
+
+Generalized common-menu backing into one shared process source manager/pool,
+actual acquisition/type0/4/5 relocation/fileFree and stable per-file holders/
+payloads. Original prologue model/texture names and shared Mario TPL identities
+are ISO-verified;12animation files stage atomically before binding. Explicit
+pending-yield service preserves the actual child boundary. Native entry/type/
+count/extent admission stays separate from original local algorithms.
+[Contract](../behavior/file/NATIVE_SHARED_ANIMATION_FILE_CACHE.md).
+Actual cold-parent test uses real Vivian/ag2tg cache files/copies/refs, with W/
+heap/format/copy fixture providers still explicit. Normal menu uses this owner;
+normal source animation startup and Entry→typed file metadata are not activated.
+Next bind source heap/W/tangent/output and real formatted/shared-filename owners,
+then cold bootstrap before Mario entries. Full EVT-01/prologue remains open.
