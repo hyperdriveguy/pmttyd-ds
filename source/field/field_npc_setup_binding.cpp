@@ -7,6 +7,10 @@
 #include <cassert>
 namespace ttyd {
 namespace {int32_t signedWord(uint32_t v){return v<=0x7fffffff?int32_t(v):int32_t(int64_t(v)-0x100000000LL);}}
+// Compare every live word with immutable source, including unconditional
+// address+4 scanner prefetch even at END. Native65536-word/16-label bounds
+// and signed16 argc admission exclude unsafe scanner domains; unknown runtime
+// functions can still hold later. Never append a fabricated END/context word.
 bool admitOriginalNpcSetupScript(const EventScriptAssets& source,EventAddressSpace& memory,uint32_t address){
  if(address&3)return false;
  unsigned labels=0;
@@ -24,6 +28,9 @@ bool admitOriginalNpcSetupScript(const EventScriptAssets& source,EventAddressSpa
  return false;
 }
 FieldNpcSetupBinding::FieldNpcSetupBinding(std::shared_ptr<FieldNpcRegistryOwner> owner,FieldNpcRegistryBinding& binding,EventNativeRuntime& vm,std::shared_ptr<const EventScriptAssets> source,const FieldNpcSetupNativeServices& services,uint32_t mode):owner_(std::move(owner)),binding_(binding),vm_(vm),source_(std::move(source)),services_(services),mode_(mode){}
+// Must alias same initialized owner, binding facade and VM; GP+168 must be
+// exact retained F. Captured GP+14 raw word stays fixed across invocations.
+// This creates no actors, events or pose readiness by itself.
 std::unique_ptr<FieldNpcSetupBinding> FieldNpcSetupBinding::bind(std::shared_ptr<FieldNpcRegistryOwner> owner,FieldNpcRegistryBinding& binding,EventNativeRuntime& vm,std::shared_ptr<const EventScriptAssets> source,const FieldNpcSetupNativeServices& services){
  if(!owner || !owner->initialized() || binding.owner_!=owner || &binding.memory_!=&vm.memory || !source || !services.clock || !services.admitBattle || !services.random)return {};
  uint32_t gp=0,mode=0,field=0;
@@ -33,6 +40,10 @@ std::unique_ptr<FieldNpcSetupBinding> FieldNpcSetupBinding::bind(std::shared_ptr
 uint32_t FieldNpcSetupBinding::word(uint32_t a) const{uint32_t v=0;const bool ok=vm_.memory.readWord(a,v);assert(ok);(void)ok;return v;}
 bool FieldNpcSetupBinding::readable(uint32_t a,unsigned size) const{if(uint64_t(a)+size>0x100000000ULL)return false;uint8_t v=0;for(unsigned n=0;n<size;++n)if(!vm_.memory.readByte(a+n,v))return false;return true;}
 bool FieldNpcSetupBinding::text(uint32_t a,std::string& out,unsigned limit) const{out.clear();for(unsigned n=0;n<limit;++n){uint8_t v=0;if(uint64_t(a)+n>UINT32_MAX || !vm_.memory.readByte(a+n,v))return false;if(!v)return true;out.push_back(char(v));}return false;}
+// Native no-effects graph admission: ID0/stale ID allowed; reject caller,
+// unresolved links, out-of-context pointers and cyclic/duplicated paths. Visit
+// waiting child and active brothers; validate parent storage without deleting it.
+// At most256 context entries. This does not perform the actual source deletion.
 bool FieldNpcSetupBinding::safeDelete(uint32_t id,const EventEntry& caller) const{
  if(!id)return true;
  const auto& context=mode_?vm_.battle:vm_.field;
@@ -50,6 +61,10 @@ bool FieldNpcSetupBinding::safeDelete(uint32_t id,const EventEntry& caller) cons
  }
  return true;
 }
+// Complete current invocation frontier before effects: immutable5c(hex) rows
+// (<=4096), 32-byte names, owned0x340-byte actors, descriptor0x18 bytes, pose<256.
+// First pass may skip missing actors; poll phase requires them. Admit init/
+// regular script scans/deletion and real battle providers only where reached.
 bool FieldNpcSetupBinding::admit(const EventEntry& caller,uint32_t table,bool first){
  uint32_t gp=0,mode=0,field=0;if(!vm_.memory.readWord(0x80415fd0,gp) || uint64_t(gp)+0x16b>UINT32_MAX || !vm_.memory.readWord(gp+0x14,mode) || mode!=mode_ || !vm_.memory.readWord(gp+0x168,field) || field!=owner_->fieldWorkAddress())return false;
  uint16_t fieldMode=0;if(!vm_.memory.readHalf(field,fieldMode) || !binding_.activeActors())return false;
@@ -77,6 +92,9 @@ bool FieldNpcSetupBinding::admit(const EventEntry& caller,uint32_t table,bool fi
  }
  return false;
 }
+// Bridge preserves fresh field-pointer/mode lookups, source strcpy, pose mode1
+// and numeric battle setup with shared RNG. Assertions rely on prior admission,
+// not fallback/no-op providers. Resources remain stable across native holds.
 FieldNpcSetupWorld FieldNpcSetupBinding::world(){
  FieldNpcSetupWorld w;w.user=this;
  w.fieldPointer=[](void* p){auto& b=*static_cast<FieldNpcSetupBinding*>(p);return b.word(b.word(0x80415fd0)+0x168);};
@@ -95,6 +113,8 @@ FieldNpcSetupWorld FieldNpcSetupBinding::world(){
   s.memory.user=&b.vm_.memory;s.memory.byte=[](void* p,uint32_t a){uint8_t v=0;const bool ok=static_cast<EventAddressSpace*>(p)->readByte(a,v);assert(ok);(void)ok;return v;};s.user=b.services_.user;s.random=b.services_.random;s.savedFlag=b.services_.savedFlag;setPackedNpcBattleInformation(actor,signedWord(setup),s);
  };return w;
 }
+// Preserve source first-visit marker across native holds, then recheck captured
+// context/F on every invocation before calling the shared staged setup body.
 int32_t FieldNpcSetupBinding::invoke(EventEntry& e,bool first,FieldNpcSetupCursor& c,const FieldNpcSetupOperands& o,const FieldNpcSetupEvents& events){
  if(first)c={};
  c.firstVisit(first);
@@ -108,6 +128,9 @@ namespace {
 // Execute the existing operand router once with checked reads and a deferred
 // output word. A failed request publishes nothing; successful outputs retain
 // the source setter's quantization and namespace asymmetry.
+// Field/battle context aliases803d8d30/803d8dd0, entry and GP routes stay
+// original. A setter may produce one deferred word; invalid reads/conversion
+// discard that word. No write is also a valid original destination outcome.
 struct ActorOperands {
  EventNativeRuntime& vm;bool valid=true;
  bool hasWrite=false;uint32_t destination=0,value=0;
@@ -126,6 +149,10 @@ struct ActorOperands {
  bool publish(){if(!valid)return false;return !hasWrite || vm.memory.writeWord(destination,value);}
 };
 }
+// Recheck captured context and live active event before actor callback.
+// Resolve exact me/master/slave names through retained ownership, not art IDs.
+// Party/mario sentinels ffffffff/fe/fd are NOT dereferenceable NPC records;
+// nonaccessing flag-selector path alone can return them without a fake actor.
 int32_t FieldNpcSetupBinding::invokeActorEvent(uint32_t fn,EventEntry& e,bool first,FieldNpcActorEventCursor& cursor){
  if(first)cursor={};
  uint32_t gp=0,mode=0;if(!vm_.memory.readWord(0x80415fd0,gp) || uint64_t(gp)+0x17>UINT32_MAX || !vm_.memory.readWord(gp+0x14,mode) || mode!=mode_)return 0;
@@ -152,6 +179,8 @@ int32_t FieldNpcSetupBinding::invokeActorEvent(uint32_t fn,EventEntry& e,bool fi
   return actor;
  };
  s.store=[](void* p,uint32_t a,uint32_t v){const bool ok=static_cast<FieldNpcSetupBinding*>(p)->vm_.memory.writeWord(a,v);assert(ok);(void)ok;};
+ // Left/right admits only published camera4 view yaw. An existing but
+ // unpublished camera cannot supply a guessed facing value.
  s.cameraHeading=[](void* p,uint32_t index)->std::optional<float>{auto& b=*static_cast<FieldNpcSetupBinding*>(p);const auto* camera=b.services_.cameras?b.services_.cameras->camera(index):nullptr;if(!camera || !camera->viewPublished)return {};return camera->yaw;};
  return fieldNpcActorEvent(fn,e,first,cursor,s);
 }

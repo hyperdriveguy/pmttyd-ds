@@ -9,6 +9,8 @@
 namespace ttyd {
 namespace {
 std::string originalYoshiName;bool assetsReady=false;
+// Temporary constructor-provider guest token, not a runtime RAM alias. The
+// original pointer-cell8041eb00 store is captured as publication in Provider.
 constexpr uint32_t Address=0x85000000;
 struct Provider {ProloguePouch pouch;const char* name;bool allocated=false;uint32_t published=0;};
 }
@@ -16,6 +18,8 @@ int16_t ProloguePouch::half(unsigned at) const {
     assert(at+1<bytes.size());const auto value=uint16_t(uint16_t(bytes[at])<<8|bytes[at+1]);return value<0x8000?int16_t(value):int16_t(int32_t(value)-65536);
 }
 void ProloguePouch::half(unsigned at,int16_t value){assert(at+1<bytes.size());const auto bits=uint16_t(value);bytes[at]=bits>>8;bytes[at+1]=bits;}
+// Source sum narrows low16 BEFORE signed re-read and0..999 clamp. A huge
+// positive addition may therefore become negative and clamp0, not999.
 int32_t ProloguePouch::addCoins(int32_t amount) {
     const uint16_t bits=uint16_t(uint32_t(int32_t(half(0x78)))+uint32_t(amount));
     half(0x78,int16_t(bits));
@@ -41,6 +45,9 @@ int32_t ProloguePouch::insertKeyItem(int32_t item) {
     m.storeHalf=[](void* p,uint32_t at,uint16_t value){static_cast<ProloguePouch*>(p)->half(at,int16_t(value));};
     return insertPackedKeyItem(0,item,m);
 }
+// Actual initializer callback order with one heap0/5d4 allocation. Grants
+//6, 32(hex), 9 insert at front in that order; bytes98/99 become1 before
+//6/9 insertion. New-game100 coins is not a restore/checkpoint default.
 ProloguePouch initializeProloguePouch(const char* name){
     assert(name);Provider provider{{},name};PackedPouchInitializationServices s;s.user=&provider;s.memory.user=&provider;
     s.allocate=[](void* p,int32_t heap,uint32_t size){auto& v=*static_cast<Provider*>(p);assert(!v.allocated && heap==0 && size==v.pouch.bytes.size());v.allocated=true;return Address;};
@@ -61,12 +68,16 @@ ProloguePouch initializeProloguePouch(const char* name){
     pouch.half(0x78,100);
     // Only the source fresh zero-equipment domain is admitted here. This runs
     // once at explicit new-game creation, never as a general revision/heal.
+    // Fresh200-slot empty equipment domain only: base HP/FP rebuild max,
+    // upper-clamp currents, then reset freeBP. This is not general healing.
     for(unsigned i=0;i<200;++i)assert(pouch.half(0x38a+2*i)==0);
     pouch.half(0x72,pouch.half(0x8e));pouch.half(0x76,pouch.half(0x90));
     if(pouch.half(0x70)>pouch.half(0x72))pouch.half(0x70,pouch.half(0x72));
     if(pouch.half(0x74)>pouch.half(0x76))pouch.half(0x74,pouch.half(0x76));
     pouch.half(0x92,pouch.half(0x94));return pouch;
 }
+// Retain original US name_party3,<=19 bytes plus NUL. Missing assets hold
+// fresh construction; do not invent/localize the partner name in code.
 bool loadProloguePouchAssets(const char* root){
     if(!root)return false;
     MessageResource next;if(!next.load((std::string(root)+"/messages/global.txt").c_str()))return false;

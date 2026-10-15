@@ -5,6 +5,9 @@
 namespace ttyd {
 // Original packed player storage, retained across native field-room rebuilds.
 // Legacy checkpoints omit this block; native v8 preserves its original bytes.
+// Source5d4(hex) bytes, BE signed halfwords. Offsets70/72 current/maxHP,
+//74/76 current/maxFP, 78 coins, 8e/90 baseHP/FP, 92/94 free/totalBP.
+// Key array starts a0, equipped badges38a; these are packed offsets, not pointers.
 struct ProloguePouch {
     std::array<uint8_t,0x5d4> bytes{};
     int16_t half(unsigned offset) const;

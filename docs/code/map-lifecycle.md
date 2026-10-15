@@ -69,7 +69,9 @@ replay. Retirement unregisters only the parsed mapping; it is not NPC teardown.
 `FieldNpcRegistryOwner` creates four stable buffers for ordinary actors, release
 work, alternate actors and F, plus the original registry BSS view. Native guest
 base admission requires alignment, a non-low address and no 32-bit overflow.
-These identities are not original allocator results. Zero-initialized host
+These identities are not original allocator results. The owner may receive the
+existing shared player/battle pose namespace while its RAM buffers remain new;
+see [field session](field-session.md). Zero-initialized host
 vectors do not imply original `npcInit` cleared every buffer.
 
 Each binding journals its external aliases. Partial binding failure unregisters

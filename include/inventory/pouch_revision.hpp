@@ -3,6 +3,8 @@
 #include <optional>
 namespace ttyd {
 bool loadPouchRevisionAssets(const char* root);
+// Admission requires all200 equipment IDs0..339 and partner1..7 ranks0..3,
+// plus loaded original tables. Availability does not alter resources or inventory.
 bool pouchRevisionAvailable(const ProloguePouch&);
 // Source Mario then party writes; finite original item/rank memory domain.
 bool revisePouchParameters(ProloguePouch&);

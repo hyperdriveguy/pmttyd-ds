@@ -185,6 +185,9 @@ struct FieldAreaEventRuntime {
     return result;
    }
   }
+  // Five actor leaves share the stable setup world. Retain cursor by real
+  // event ID only while held; source first resets it, success2 erases it.
+  // Retirement/ReInit also clear cursors without replaying completed effects.
   if(fieldNpcActorEventFunction(fn) && npcSetupBinding){
    if(first)npcActors.erase(e.id);
    auto found=npcActors.find(e.id);FieldNpcActorEventCursor fresh;
@@ -386,6 +389,9 @@ bool FieldAreaEvent::prepareMapNpcs(Game& game,const FieldAreaGpState& state,con
 }
 bool FieldAreaEvent::advanceMapNpcs(BattlePoseClock clock,const FieldMapNpcBattleAdmission& battle){return started && runtime_ && !failed && !runtime_->releasingNpcs && runtime_->mapNpcs && runtime_->mapNpcs->advance(clock,battle);}
 bool FieldAreaEvent::mapNpcsReady() const{return runtime_ && !runtime_->releasingNpcs && runtime_->mapNpcs && runtime_->mapNpcs->ready();}
+// One admitted world per map stage; no replacement while setup retains state.
+// Aliasing shared_ptr keeps Program alive while returning its scripts member,
+// not an independently deleted subobject or a copied mutable script bank.
 bool FieldAreaEvent::bindNpcSetup(const FieldNpcSetupNativeServices& services){
  if(!started || !runtime_ || failed || runtime_->releasingNpcs || !mapNpcsReady())return false;
  auto& r=*runtime_;if(r.npcSetupBinding)return false;

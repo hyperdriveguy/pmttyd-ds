@@ -7,6 +7,8 @@
 namespace ttyd {
 // Finite valid US direct-message col/red consumers. Unknown/malformed commands
 // are refused before any glyph/RNG requests; original tokens remain retained.
+// Per-glyph U64 marker: high32=1 original style, 2 palette0 reset, 0 literal
+// low32 RGBA. Commands do not form a nested color stack.
 struct ColorWindowText {std::string plain;std::vector<uint64_t> glyphColors;};
 bool compileColorWindowText(const MessageFont&,const char*,ColorWindowText&);
 bool drawColorWindowFont(const MessageFont&,const ColorWindowText&,const WindowFontStyle&,
@@ -24,6 +26,9 @@ struct ItemGetWindowDisplay {
 };
 // Retains item95 parameters/text through AutoDelete closure, even after the
 // item event restores control. Shared global slot allocation remains external.
+// Two supported definitions80313dc8(main)/80313df0(help); failure80313e18
+// and full discard selection remain outside this finite owner. Slots retain
+// old transform/alpha on reuse while constructor resets only specified fields.
 class ItemGetWindows {
 public:
  bool prepare(const MessageFont&);
@@ -50,6 +55,8 @@ private:
 };
 // Original coin window80415e84. Parameter remains borrowed until AutoDelete
 // retires the window; the coin event may already have returned2.
+// action() exposes busy flag4, not action enum. AutoDelete can leave this
+// bit set in an inactive slot; retained() independently proves pointer lifetime.
 class CoinGetWindow {
 public:
  bool prepare(const MessageFont&,int32_t amount=20);

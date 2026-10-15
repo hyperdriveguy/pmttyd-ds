@@ -30,6 +30,9 @@ void tickItemSelectionHelp(ItemSelectionRuntimeWindow&,const ItemSelectionInput&
                            const ItemSelectionHelpServices&);
 // Native retained owner for explicit tables with second argument0. This owns
 // one three-window template; shared manager-slot allocation remains external.
+// Finite positive/nonempty second-argument0 owner. Three slots share one
+// main; sequence then own-main then display-registration runs per slot.
+// Ready poll and retained allocation are distinct until explicit release.
 class ItemSelectionRuntime {
 public:
     bool enter(const std::vector<uint16_t>& items,bool allowCancel=true);

@@ -4,6 +4,8 @@
 namespace ttyd {
 // Legacy standalone views retain local values. Fresh original sessions alias
 // actual source scalar words, never a periodically synchronized duplicate.
+// bind changes only the target; it does not publish local defaults. Assignment
+// copies VALUE into the destination owner, not another wrapper's binding.
 class FieldPoseWord {
 public:
  FieldPoseWord(uint32_t value=0):local_(value){}
@@ -15,6 +17,8 @@ public:
 private:
  uint32_t local_;BattlePose* pose_=nullptr;unsigned offset_=0;
 };
+// Source words18(high)/1c(low), BE accessor. Assignment writes low then high
+// in that explicit order. Legacy local storage is used only without backing.
 class FieldPoseTimestamp {
 public:
  operator uint64_t() const{return pose_?pose_->timestamp():local_;}
@@ -24,6 +28,9 @@ public:
 private:
  uint64_t local_=0;BattlePose* pose_=nullptr;
 };
+// Typed flags0/materiale8/lightec/timestamp/shape directly alias one live
+// BattlePose. Resource stays immutable. Manual release of this handle must
+// retire views first; wrapper destruction is not original pose AutoRelease.
 struct FieldPartyPose {
 private:
  std::shared_ptr<BattlePosePool> backing_;
@@ -39,6 +46,9 @@ public:
  ActorAnimationSample& shape;
  FieldPartyPose():shape(localShape_){}
  FieldPartyPose(std::shared_ptr<BattlePosePool> pool,int32_t handle,uint32_t source):backing_(std::move(pool)),handle_(handle),sourceResource(source),resource(backing_->pose(handle)->resource->bank),shape(backing_->pose(handle)->shape){bind();archiveType=backing_->pose(handle)->archiveType;}
+ // Individual copy clones its backing namespace; registry copies instead clone
+ // once and rebind all role views to that ONE clone. Shape reference must
+ // target copied storage, not original Game's CPU workspace.
  FieldPartyPose(const FieldPartyPose& other):backing_(other.backing_?std::make_shared<BattlePosePool>(*other.backing_):nullptr),handle_(other.handle_),sourceResource(other.sourceResource),mode(other.mode),archiveType(other.archiveType),resource(other.resource),shape(backing_?backing_->pose(handle_)->shape:localShape_){bind();flags=uint32_t(other.flags);materialFlags=uint32_t(other.materialFlags);materialLightFlags=uint32_t(other.materialLightFlags);enteredMilliseconds=uint64_t(other.enteredMilliseconds);if(!backing_)shape=other.shape;}
  void paperOff(){flags=uint32_t(flags)&~8u;}
  BattlePose* original() const{return backing_?backing_->pose(handle_):nullptr;}

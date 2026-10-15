@@ -12,6 +12,9 @@ bool loadItemSelectorAssets(const char* root) {
     if(!next.find("msg_window_title_1") || !next.find("msg_window_select_1"))return false;
     messages=std::make_shared<MessageResource>(std::move(next));return true;
 }
+// Preflight original heading/header, item names/help, fonts and every icon
+// before owner entry. Lists>8 need arrows445/446; help>2 lines also needs120.
+// Resource admission cannot replace source text with a placeholder.
 bool ItemSelectionPresentation::begin(const std::vector<uint16_t>& items,const MessageFont& font) {
     if(!messages || owner.retained() || items.empty() || !messageIcon(504))return false;
     if(items.size()>8 && (!messageIcon(445) || !messageIcon(446)))return false;
@@ -31,6 +34,9 @@ bool ItemSelectionPresentation::begin(const std::vector<uint16_t>& items,const M
     names_=std::move(names);descriptions_=std::move(descriptions);font_=&font;
     messages_=bank;heading_=heading;header_=header;displaySlots_=0;iconTick=0;soundRequests.clear();statusOpen=false;return true;
 }
+// Clear display/sound publications each visit. Interpolation is source mode12
+// through the camera curve service; GP refresh rate and frame counter remain
+// explicit inputs, not renderer FPS or time since selector creation.
 void ItemSelectionPresentation::tick(const ItemSelectionInput& input,int32_t refresh,uint32_t counter) {
     displaySlots_=0;soundRequests.clear();if(!owner.retained())return;
     refreshRate_=refresh;

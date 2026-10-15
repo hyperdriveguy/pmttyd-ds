@@ -86,6 +86,8 @@ public:
  bool prepareMapNpcs(Game&,const FieldAreaGpState&,const FieldMapNpcAssets&,uint32_t inputBase,uint32_t area,uint32_t map,uint32_t allocationBase);
  bool advanceMapNpcs(BattlePoseClock,const FieldMapNpcBattleAdmission& = {});
  bool mapNpcsReady() const;
+ // Bind only after parsed map rows are ready and no setup cursor is mid-call.
+ // Alias shared_ptr retains entire immutable Program while exposing scripts.
  bool bindNpcSetup(const FieldNpcSetupNativeServices&); // Stable real registry world; explicit shared RNG/clock.
  // Retains teardown across holds, suppressing scheduler passes/new roots.
  // Success clears event/case/native cursors; begin may then select another

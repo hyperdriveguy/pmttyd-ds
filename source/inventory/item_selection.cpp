@@ -2,6 +2,10 @@
 #include <cassert>
 #include <cmath>
 namespace ttyd {
+// Flag4 sets before action work, clears on a later no-action visit. Sequence2
+// instant completion still retains busy this visit. Sequence0 uses mode12,
+// duration(signed32(GP-rate<<3))/60, rotation30<->0, scale0<->1.
+// Preserve repeated rate/clock reads and strict incrementedClock>count end.
 void tickItemSelectionSequence(ItemSelectionWindow& window,const ItemSelectionSequenceServices& s) {
     assert(window.sequence==0 || window.sequence==2);
     window.flags|=4;
@@ -27,6 +31,10 @@ void tickItemSelectionSequence(ItemSelectionWindow& window,const ItemSelectionSe
     const int32_t completionStep=window.clock,completionCount=count();
     if(completionStep>completionCount){window.action=0;if(!opening){window.flags&=~2u;if(window.flags&8)window.flags&=~1u;}}
 }
+// High address bit selects explicit-table source branch. Count includes-1
+// terminator, then allocate(count+1)*4: forN items N+2 four-byte rows.
+// Optional second item prepends a row; halfword+2 stores item, flags stay0.
+// Keep condition read and subsequent item read separate, with fresh row pointers.
 void fillPackedExplicitItemRows(uint32_t context,uint32_t table,int32_t second,
                                const ItemSelectionRowsServices& s) {
     const auto& m=s.memory;assert((table&0x80000000u) && m.word && m.storeWord && m.storeHalf && s.allocate && s.clear);
@@ -48,6 +56,9 @@ void fillPackedExplicitItemRows(uint32_t context,uint32_t table,int32_t second,
         m.storeWord(m.user,context+0x34,old+1);m.storeHalf(m.user,rows+4*old+2,uint16_t(item));
     }
 }
+// States0 open, 1 input, 2 close, 3 wait-for-main-busy-clear, 4 ready. Source
+// sound IDs2002a/2b open/close, 20005 move, 20014 blocked, 20012 accept,
+//20013 cancel (hex). Slot2 help reset occurs again after the per-window loop.
 void tickItemSelectionMain(ItemSelectionMain& s,const ItemSelectionInput& input,
                            const ItemSelectionMainServices& v) {
     assert(v.windowFlags && v.action && v.resetHelp && v.deactivate && v.sound && v.status);
@@ -67,6 +78,9 @@ void tickItemSelectionMain(ItemSelectionMain& s,const ItemSelectionInput& input,
     if(s.state!=1 || (v.windowFlags(v.user,s.windows[0])&4))return;
     // Positive, addressable authored tables are the current native domain.
     assert(!s.rows.empty() && s.rows.size()<=0x7fffffff && s.selected>=0 && size_t(s.selected)<s.rows.size());
+    // Down2000/up1000 repeats; only trigger permits wrap. Eight-row list
+    // down-scroll uses absolute selected>5, up relative<3; spacing24, easing1/6. A100 before B200 (hex); gray row
+    // can still select unless its separate unselectable bit2 is set.
     const int32_t count=int32_t(s.rows.size()),previous=s.selected;
     if(input.directionRepeat&0x2000)++s.selected;
     if(input.directionRepeat&0x1000)--s.selected;
@@ -86,6 +100,9 @@ void tickItemSelectionMain(ItemSelectionMain& s,const ItemSelectionInput& input,
     const float target=-std::fma(24.f,float(s.selected-s.firstVisible),-float(s.listY-54));
     s.cursorY+=(target-s.cursorY)/6.f;
 }
+// Ready1000 gates poll; cancel2000 ->-1. Original optional-leading-row
+// case context38!=0/index0/cancel100 also returns-1. Otherwise read U16
+// item at rows+4*index+2, not quantity or selected index.
 int32_t packedItemSelectionResult(uint32_t context,const EventMemoryServices& m) {
     assert(m.word && m.half);
     const uint16_t flags=m.half(m.user,context);
@@ -96,6 +113,9 @@ int32_t packedItemSelectionResult(uint32_t context,const EventMemoryServices& m)
     const uint32_t rows=m.word(m.user,context+0x30);
     return m.half(m.user,rows+4*index+2);
 }
+// Resolve mode/table on EVERY visit. First creates( table, 0, 1 ), stores
+// context at entry+78, then keyOff. Poll result/index precede deletion/keyOn;
+// fetch raw result/index destinations afterwards. Mode0 skips index output.
 int32_t itemSelectionEvent(EventEntry& e,uint32_t address,bool first,const ItemSelectionEventServices& s) {
     const auto& o=s.operands;
     assert(o.word && o.resolve && o.store && s.memory.word && s.memory.storeWord &&

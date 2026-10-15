@@ -16,6 +16,10 @@ bool key(const std::vector<uint8_t>& b,size_t& p,uint16_t length,uint32_t addres
     out.assign(reinterpret_cast<const char*>(b.data()+p),length-1);p+=length;return true;
 }
 }
+// PMITEM01 LE header20 bytes: 340 records, source table803108a8, stride40.
+// Private record16 bytes: name/description pointers, iconU16, key lengthsU16,
+// reserved0, then NUL keys. Null pointer requires zero length; keys<=256 bytes.
+// Publish only after exact consumption; name strings are msgSearch IDs, not text.
 bool ItemPresentationCatalog::assign(const std::vector<uint8_t>& b) {
     if(b.size()<20 || std::memcmp(b.data(),"PMITEM01",8) || word(b,8)!=340 ||
        word(b,12)!=0x803108a8 || word(b,16)!=40)return false;

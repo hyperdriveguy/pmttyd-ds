@@ -37,6 +37,8 @@ bool FieldPosePool::canEnter(const std::string& model,int32_t mode) const {
  for(const auto& t:poses_->textures())if(!t.flags || t.name==resource.textureName)return true;
  return false;
 }
+// Returned handle belongs to injected global namespace when supplied. Other
+// roles consume its256 slots too; do not treat it as field-local actor index.
 std::optional<int32_t> FieldPosePool::enter(const std::string& model,int32_t mode,BattlePoseClock clock){
  if(!canEnter(model,mode))return {};
  return poses_->enter(resources_.at(model),mode,clock,model.c_str());

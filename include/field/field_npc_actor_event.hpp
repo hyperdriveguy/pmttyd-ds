@@ -17,6 +17,9 @@ struct FieldNpcActorEventServices {
  bool (*setReal)(void*,EventEntry&,int32_t,float)=nullptr;
  std::optional<float> (*cameraHeading)(void*,uint32_t)=nullptr;
 };
+// Cursor binds owner, event address+ID, function and argument base. Completed
+// argument reads, actor resolution and per-axis outputs survive native holds;
+// caller discards it after2 or actual event retirement.
 struct FieldNpcActorEventCursor {
  enum class Stage {Arguments,Resolve,Camera,Effects,Output};
  Stage stage=Stage::Arguments;

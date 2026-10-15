@@ -12,6 +12,8 @@ struct ItemPresentation {
     const char* name() const {return nameAddress?nameKey.c_str():nullptr;}
     const char* description() const {return descriptionAddress?descriptionKey.c_str():nullptr;}
 };
+//340 direct source IDs, including null metadata rows. Original table identity
+//803108a8/stride40 survives in private header; no debug-name substitution.
 class ItemPresentationCatalog {
 public:
     bool load(const char* path);

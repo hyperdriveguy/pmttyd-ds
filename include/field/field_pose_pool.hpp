@@ -2,11 +2,13 @@
 #include "battle_pose_pool.hpp"
 #include <map>
 namespace ttyd {
-// Retained field-owned CPU pose/resource namespace. Installation requires real
+// Retained field resource wrapper over standalone or shared CPU poses. Requires real
 // original MODEL/TPL data and descriptor0; it does not acknowledge GPU/facing
 // Main readiness or a missing source file. Unavailable native data stays pending.
 class FieldPosePool {
 public:
+ // Caller pool shares global handles/model/texture caches with field roles
+ // and battle. Null creates standalone legacy namespace; no live migration.
  explicit FieldPosePool(std::shared_ptr<BattlePosePool> pool={}):poses_(pool?std::move(pool):std::make_shared<BattlePosePool>()){}
  bool install(std::shared_ptr<const BattlePoseResource>);
  bool load(const char* directory,const char* pack);
@@ -25,6 +27,8 @@ public:
  bool evaluate(int32_t handle,BattlePoseClock clock){return poses_->evaluate(handle,clock);}
  bool main(int32_t handle,BattlePoseClock clock){return poses_->main(handle,clock);}
  const BattlePosePool& poses() const{return *poses_;}
+ // Exposes the SAME pool identity; resource catalog remains this wrapper's
+ // immutable bank map. No periodically synchronized duplicate pose records.
  std::shared_ptr<BattlePosePool> sharedPool() const{return poses_;}
 private:
  std::map<std::string,std::shared_ptr<const BattlePoseResource>> resources_;

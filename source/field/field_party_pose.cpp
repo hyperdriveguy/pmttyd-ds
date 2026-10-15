@@ -1,6 +1,9 @@
 #include "field_party_pose.hpp"
 namespace ttyd {
 namespace {std::array<std::shared_ptr<const BattlePoseResource>,4> resources;}
+// Four original MODEL/TPL banks in token order: a_mario, a_mario_r, e_mario,
+// c_pkr. Pin matching model names and real draw/textures; publish all together.
+// Descriptor0 is M_Z_1/M_Z_1R/M_S_5/PKR_Z_1, not legacy visible seeds.
 bool loadFieldPlayerPoseAssets(const char* root){
  if(!root)return false;
  std::array<std::shared_ptr<const BattlePoseResource>,4> next;

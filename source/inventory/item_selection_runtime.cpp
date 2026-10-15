@@ -5,6 +5,8 @@
 #include <limits>
 #include <utility>
 namespace ttyd {
+// Use prior display text to count LF+1. Page in two-line steps with source
+// direction-trigger100/200 (hex), not the main list repeat namespace.
 void tickItemSelectionHelp(ItemSelectionRuntimeWindow& window,const ItemSelectionInput& input,
                           const ItemSelectionHelpServices& font) {
     if(window.sequence.flags&4)return;
@@ -14,6 +16,9 @@ void tickItemSelectionHelp(ItemSelectionRuntimeWindow& window,const ItemSelectio
     else if((input.directionTrigger&0x200) &&
             (window.helpLines+1)/2-1>(window.helpPage+1)/2)window.helpPage+=2;
 }
+// Native slots: list(-24, 116, 300, 240), instant header(-280, 120, 240, 45),
+// help(-240,-130, 500, 80). Under8 rows shorten list by24 per missing row.
+// Reject empty/overlapping ownership rather than inventing a cancel row.
 bool ItemSelectionRuntime::enter(const std::vector<uint16_t>& items,bool cancel) {
     // Native admission policy; source authored quest tables are positive. Do
     // not invent source empty-list selection or permit overlapping ownership.
@@ -30,6 +35,8 @@ bool ItemSelectionRuntime::enter(const std::vector<uint16_t>& items,bool cancel)
     for(auto& window:windows)window.sequence.flags=1;
     main_=std::move(main);windows_=windows;retained_=true;return true;
 }
+// Slot0 changes sibling actions before their sequence visits; slot2 help
+// reads prior display publication. Invoke main once per list, not per window.
 void ItemSelectionRuntime::tick(const ItemSelectionInput& input,const ItemSelectionRuntimeServices& services) {
     if(!retained_)return;
     assert(services.sound && services.status);
@@ -65,6 +72,8 @@ ItemSelectionRuntimeWindow& ItemSelectionRuntime::displayWindow(unsigned slot) {
 bool itemSelectionListContents(const ItemSelectionRuntimeWindow& window) {
     return (window.sequence.flags&2) && !(window.sequence.flags&4);
 }
+// Source centered->top-left scissor: X+304, Y=274-rectY, list height-50.
+// Keep all easing rows; clip rather than discard an inferred eight-row subset.
 ItemSelectionClip itemSelectionRowsClip(const ItemSelectionRuntimeWindow& window) {
     const auto& r=window.rectangle;return {r.x+304,274-r.y,r.width,r.height-50};
 }
@@ -75,6 +84,8 @@ ItemSelectionRowDraw itemSelectionRowDraw(const ItemSelectionMain& main,size_t r
         float(main.listX+60),float(main.listY-32)-offset+main.displacement,.5f,185,
         item.flags&1?0xa0a0a0ffu:0x000000ffu};
 }
+// Original pointer504 flags20 decimal=14(hex)=camera8+flipX; arrows445/446 flags16
+// camera8. Blink low5 frame bits<20, scale.6000000238; not entry elapsed time.
 ItemSelectionIconDraw itemSelectionCursorDraw(const ItemSelectionMain& main) {
     return {504,main.cursorX,main.cursorY,1,1,20};
 }
@@ -88,6 +99,8 @@ ItemSelectionArrows itemSelectionArrowDraws(const ItemSelectionMain& main,
         result.icons[result.count++]={446,x,float(r.y-r.height-12),1,.6000000238418579f,16};
     return result;
 }
+// Measured width narrowsU16, cap120, center truncates then narrowsU16 again.
+// Header uses same center conversion; do not replace with signed/native centering.
 ItemSelectionTextDraw itemSelectionHeadingDraw(const ItemSelectionRuntimeWindow& window,uint32_t measured) {
     const auto& r=window.rectangle;
     const float width=std::min(float(uint16_t(measured)),120.f);
@@ -101,11 +114,16 @@ ItemSelectionTextDraw itemSelectionHeaderDraw(const ItemSelectionRuntimeWindow& 
     return {float(r.x+int32_t(uint16_t(center))),float(r.y-(r.height-24*(int32_t(lines)+1))/2),
         scale,1,0,palette,false};
 }
+// After display, active header grows22*LF and shiftsY by half that increase.
+// Frame snapshot already used old rectangle; do not update it before drawing.
 void itemSelectionHeaderAfterDraw(ItemSelectionRuntimeWindow& window,uint16_t lines) {
     if(!(window.sequence.flags&1))return;
     const int32_t increase=22*int32_t(lines);
     window.rectangle.y=120+increase/2;window.rectangle.height=45+increase;
 }
+// Source help baseline truncates FMA(28, page,-144); arrows blink low5bits,
+// navigation icon120 remains even during off phase. Two-line pages use28
+// offset per line rather than list spacing24.
 ItemSelectionTextDraw itemSelectionHelpDraw(const ItemSelectionRuntimeWindow& window,uint32_t palette) {
     return {-210.f,float(int32_t(std::fma(28.f,float(window.helpPage),-144.f))),1,1,0,palette,false};
 }

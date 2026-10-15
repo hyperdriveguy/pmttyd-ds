@@ -30,11 +30,14 @@ struct FieldPartyActor {
 };
 struct FieldPartyRegistry {
     std::array<std::unique_ptr<FieldPartyActor>,2> actors;
-    std::array<std::unique_ptr<FieldPartyPose>,256> poses; // Used native domain: three Mario owners and two partner owners.
+    std::array<std::unique_ptr<FieldPartyPose>,256> poses; // Role views index global handles; legacy workspace uses first5.
     uint32_t currentDefinition=0; // Original global kind-record pointer view.
     uint32_t goombellaInitWork=0; // Owned view of8041eae0, cleared by the used kuribo_init callback.
     std::shared_ptr<BattlePosePool> originalPool;
     std::array<std::shared_ptr<const BattlePoseResource>,4> originalResources{};
+    // Configure once before any role view exists. Four resources retain token
+    // order a_mario/a_mario_r/e_mario/c_pkr; full identity validation is loader
+    // ownership. Fresh namespace is shared by NPC/battle consumers afterwards.
     bool configureOriginalPool(std::array<std::shared_ptr<const BattlePoseResource>,4> resources){
         if(originalPool)return false;
         for(const auto& pose:poses)if(pose)return false;
@@ -42,6 +45,8 @@ struct FieldPartyRegistry {
         originalPool=std::make_shared<BattlePosePool>();originalResources=std::move(resources);return true;
     }
     FieldPartyRegistry()=default;
+    // Clone namespace once, then retarget every typed role view. Immutable
+    // resources stay shared; existing external NPC/VM aliases are NOT rebuilt.
     FieldPartyRegistry(const FieldPartyRegistry& other):currentDefinition(other.currentDefinition),goombellaInitWork(other.goombellaInitWork) {
         for(unsigned i=0;i<actors.size();++i)if(other.actors[i])actors[i]=std::make_unique<FieldPartyActor>(*other.actors[i]);
         originalResources=other.originalResources;
@@ -99,9 +104,9 @@ struct FieldPartyRegistry {
         currentDefinition=0x803143e8+uint32_t(kind)*0x28;
         if(mario.flags&0x80000000)actor->word(4,actor->word(4)|0x8000);
     }
-    // Resource tokens: c_pkr804213e0 -> PKR_S_1; Mario802c18a0/a8/b4
-    // -> M_S_1/M_S_1R/M_I_5. Native mode2 only; validate real shape workspace
-    // without selecting an authored animation before its original request.
+    // Source resource tokens map to a_mario/a_mario_r/e_mario/c_pkr.
+    // Shared mode2 entry uses actual descriptor0; legacy workspace seeds below
+    // remain M_S_1/M_S_1R/M_I_5/PKR_S_1. Authored requests remain separate.
     int32_t enterPose(uint32_t sourceResource,int32_t mode,std::shared_ptr<const ActorAnimationPack> bank,uint64_t milliseconds) {
         const char* shape=nullptr;
         switch(sourceResource) {
@@ -112,6 +117,9 @@ struct FieldPartyRegistry {
         default:return -1;
         }
         if(mode!=2)return -1;
+        // Shared path uses original descriptor0 and global handle allocation.
+        // The shape string above is only the legacy fallback workspace seed;
+        // new sessions do not select M_S_1/M_I_5 in place of source defaults.
         if(originalPool){
             const unsigned resourceIndex=sourceResource==0x802c18a0?0:sourceResource==0x802c18a8?1:sourceResource==0x802c18b4?2:3;
             auto handle=originalPool->enter(originalResources[resourceIndex],mode,{milliseconds,milliseconds});if(!handle)return -1;

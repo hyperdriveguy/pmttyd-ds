@@ -3,6 +3,8 @@
 #include "event_dispatch.hpp"
 namespace ttyd {
 // Original key-item1..120 branch,121 signed halfwords; all slots including gaps.
+// Slots at pouch+a0, 121 signed16 words. Zero gaps do not end count.
+// Count returns quantity; remove/insert use0/1, remove EVT wrapper0/-1.
 int32_t packedKeyItemCount(uint32_t pouch,int32_t item,const EventMemoryServices&);
 int32_t removePackedKeyItem(uint32_t pouch,int32_t item,const EventMemoryServices&);
 // Array-insertion body only; special-resource/upgrade dispatcher writes are

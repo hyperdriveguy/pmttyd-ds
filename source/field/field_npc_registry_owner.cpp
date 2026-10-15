@@ -10,6 +10,8 @@ namespace {
 constexpr uint32_t Registry=0x8041e8ac,Sizes[]={36*0x340,36*0x94,16*0x340,0x580};
 uint32_t bits(float f){uint32_t v;std::memcpy(&v,&f,4);return v;}
 }
+// Pose injection does not clear/recreate an existing session namespace. Only
+// this owner's registry/RAM buffers are new; other roles' handles remain live.
 FieldNpcRegistryOwner::FieldNpcRegistryOwner(uint32_t base,std::shared_ptr<BattlePosePool> pool):poses_(std::move(pool)){
  for(unsigned i=0;i<4;++i){addresses_[i]=base;allocations_[i].resize(Sizes[i]);base+=Sizes[i];}
 }

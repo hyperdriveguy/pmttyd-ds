@@ -32,6 +32,8 @@ struct ItemSelectionEventServices {
 int32_t itemSelectionEvent(EventEntry&,uint32_t entryAddress,bool firstCall,
                            const ItemSelectionEventServices&);
 struct ItemSelectionRow {uint16_t flags=0,item=0;};
+// Flags1 active, 2 drawable, 4 busy, 8 AutoDelete; action0 idle/1 open/2 close.
+// sequence0 animates, 2 instant. Busy can survive the call that clears active.
 struct ItemSelectionWindow {
     uint32_t flags=0;
     int32_t action=0,clock=0,sequence=0;
@@ -47,6 +49,9 @@ struct ItemSelectionSequenceServices {
 // require their own original branches, not a linear/no-op fallback.
 void tickItemSelectionSequence(ItemSelectionWindow&,const ItemSelectionSequenceServices&);
 struct ItemSelectionInput {uint32_t directionRepeat=0,directionTrigger=0,buttons=0;};
+// Context flags100 allow cancel, 1000 ready, 2000 canceled (hex). Row flags
+//1 gray/2 unselectable are independent. Native window tokens0/1/2 are list,
+// header, description; all coordinates are centered source608x480 UI units.
 struct ItemSelectionMain {
     uint16_t flags=0x100;
     int32_t state=0,selected=0,firstVisible=0;

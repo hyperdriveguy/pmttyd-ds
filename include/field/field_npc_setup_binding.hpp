@@ -8,7 +8,11 @@ class EventScriptAssets;
 class CameraManager;
 // Validates the original constructor scanner's entire immutable input span;
 // world primitives reached later remain separately admitted at execution.
+// Native scanner bound65536 words/16 labels, source opcode1 END/3 LABEL.
+// It admits immutable constructor input, not execution readiness of every callback.
 bool admitOriginalNpcSetupScript(const EventScriptAssets&,EventAddressSpace&,uint32_t);
+// Clock and session RNG are real owners. admitBattle must cover the exact
+// requested configuration, including any savedFlag/RNG domain, without effects.
 struct FieldNpcSetupNativeServices {
  void* user=nullptr;
  BattlePoseClock (*clock)(void*)=nullptr;
@@ -19,9 +23,13 @@ struct FieldNpcSetupNativeServices {
 };
 // Stable real actor/descriptor/pose bridge for evt_npc_setup. Bindings, facade,
 // and synchronous providers outlive all referencing event cursors.
+// Binding captures raw GP context word and retained F identity. Every invoke
+// rechecks those exact owners; it must not silently normalize/rebind a context.
 class FieldNpcSetupBinding {
 public:
  static std::unique_ptr<FieldNpcSetupBinding> bind(std::shared_ptr<FieldNpcRegistryOwner>,FieldNpcRegistryBinding&,EventNativeRuntime&,std::shared_ptr<const EventScriptAssets>,const FieldNpcSetupNativeServices&);
+ // Checked actor operands defer at most one setter word, then publish only on
+ // full per-output admission. Actor-name sentinels require separate handling.
  int32_t invokeActorEvent(uint32_t function,EventEntry&,bool first,FieldNpcActorEventCursor&);
  int32_t invoke(EventEntry&,bool first,FieldNpcSetupCursor&,const FieldNpcSetupOperands&,const FieldNpcSetupEvents&);
 private:

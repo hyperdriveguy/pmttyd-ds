@@ -8,6 +8,9 @@
 namespace ttyd {
 namespace {
 std::shared_ptr<const MessageResource> assets;
+// Finite direct-message col/red parser: tag<=128 bytes, hex1..8 digits.
+// Closing either tag selects palette0, not previous color. Suppress ONE LF
+// after a command; unmapped glyphffff does not consume a color entry.
 bool decode(const MessageFont& font,const char* text,ColorWindowText& out) {
  if(!text)return false;
  uint64_t color=uint64_t(1)<<32;
@@ -39,6 +42,8 @@ bool decode(const MessageFont& font,const char* text,ColorWindowText& out) {
  return true;
 }
 }
+// Validate entire string before glyph/RNG requests; failed candidate leaves
+// previous compiled output intact. No partial malformed command rendering.
 bool compileColorWindowText(const MessageFont& font,const char* text,ColorWindowText& out) {
  ColorWindowText next;if(!decode(font,text,next))return false;
  out=std::move(next);return true;
@@ -57,6 +62,8 @@ bool drawColorWindowFont(const MessageFont& font,const ColorWindowText& decoded,
  WindowFontMeasurement checked;if(!measurePlainWindowFont(font,decoded.plain.c_str(),style.spacing,checked))return false;
  assert(services.emitQuad && services.random);
  struct Context {const ColorWindowText* decoded;const WindowFontStyle* style;const WindowFontDrawServices* services;size_t quad=0;} c{&decoded,&style,&services};
+ // Outlined glyph emits4 edge quads then main; replace color only on last
+ // of5 (or sole unoutlined quad). Low-byte alpha truncates colorAlpha*style/255.
  WindowFontDrawServices adapter{&c,[](void* user,const WindowFontQuad& source){
   auto& c=*static_cast<Context*>(user);auto q=source;const size_t count=c.style->edge?5:1;
   if(c.quad%count==count-1){const uint64_t value=c.decoded->glyphColors.at(c.quad/count);const uint32_t color=value>>32==1?c.style->color:value>>32==2?c.style->palette0:uint32_t(value);q.rgba=(color&0xffffff00u)|((color&255)*c.style->alpha/255);}
@@ -84,6 +91,8 @@ bool ItemGetWindows::prepare(const MessageFont& font) {
  messages_=assets;font_=&font;title_=std::move(title);description_=description;displaySlots_=0;windows_={};entries_={};return true;
 }
 bool ItemGetWindows::retained() const {for(const auto& w:windows_)if(w.sequence.flags&1)return true;return false;}
+// Slot entry must preserve prior scale/rotation/alpha. Source rectangles
+// main(-175, 120, 350, 42), help(-240,-130, 500, 80); Seq later sets busy/visible.
 int32_t ItemGetWindows::enter(uint32_t definition,const char* name) {
  if(!font_ || !name || !*name || (definition!=0x80313dc8 && definition!=0x80313df0))return -1;
  for(unsigned slot=0;slot<2;++slot)if(!(windows_[slot].sequence.flags&1)) {
@@ -102,9 +111,13 @@ void ItemGetWindows::closeAutoDelete(int32_t slot) {
  auto& w=windows_[size_t(slot)];if(!(w.sequence.flags&1))return;
  w.sequence.action=2;w.sequence.clock=0;w.sequence.flags|=8;
 }
+// Original getter is(bit2), not sequence.action. Deleted slots may report1
+// until reuse; never use this alone to acknowledge a borrowed buffer release.
 int32_t ItemGetWindows::action(int32_t slot) const {
  assert(slot>=0 && slot<2);return (windows_[size_t(slot)].sequence.flags>>2)&1;
 }
+// Sequence precedes help main; help reads prior display text. Here paging
+// uses repeat100/200, unlike selector-help's direction-trigger namespace.
 void ItemGetWindows::managerTick(uint32_t repeat,const ItemSelectionSequenceServices& services) {
  displaySlots_=0;
  for(unsigned slot=0;slot<2;++slot) {
@@ -120,6 +133,9 @@ void ItemGetWindows::managerTick(uint32_t repeat,const ItemSelectionSequenceServ
   if(w.sequence.flags&2)displaySlots_|=1u<<slot;
  }
 }
+// Capture frame BEFORE text resizes manager geometry. Main title grows
+// width+20/height42+24*LF even while busy; help text waits until not busy.
+// New geometry affects a later frame, not the already-captured snapshot.
 ItemGetWindowDisplay ItemGetWindows::display(unsigned slot) {
  assert(slot<2 && (displaySlots_&(1u<<slot)));auto& w=windows_[slot];ItemGetWindowDisplay out;
  out.frame=w;out.help=help_[slot];
@@ -146,6 +162,8 @@ bool CoinGetWindow::prepare(const MessageFont& font,int32_t amount) {
  CoinGetWindow next;next.messages_=assets;next.font_=&font;if(!next.cacheTitle(amount))return false;
  *this=std::move(next);return true;
 }
+// Only original80415e84 and one slot. Borrow parameter[amount, showText];
+// do not copy/free it at event completion. Owner clears pointer on AutoDelete.
 int32_t CoinGetWindow::enter(uint32_t definition,const int32_t* parameter) {
  if(!font_ || title_.empty() || !parameter || retained() || definition!=0x80415e84)return -1;
  auto& sequence=window_.sequence;
@@ -166,6 +184,9 @@ void CoinGetWindow::managerTick(const ItemSelectionSequenceServices& services) {
  displayed_=(window_.sequence.flags&2)!=0;
  if(!retained())parameter_=nullptr;
 }
+// Capture frame, then test showText BEFORE amount/measurement/resize. Coin
+// text intentionally lacks item95's busy gate. Changed amount recompiles exact
+// original NUM/S expansion; new rectangle publishes only after frame snapshot.
 ItemGetWindowDisplay CoinGetWindow::display() {
  assert(displayed_);ItemGetWindowDisplay out;out.frame=window_;
  // Source coingetDisp tests this before reading amount or measuring/mutating

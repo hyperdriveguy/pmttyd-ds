@@ -7,6 +7,9 @@ namespace ttyd {
 bool loadItemSelectorAssets(const char* root);
 // Retained source IDs/US resource pointers; source table order is not inventory
 // sorting or quantity collapsing. Window draw publication remains deferred.
+// Retains immutable US bank and font pointer through release. Names/descriptions
+// are per original table row, not deduplicated quantities. displaySlots is only
+// this manager visit's registration mask; iconTick is supplied source GP counter.
 class ItemSelectionPresentation {
 public:
     bool begin(const std::vector<uint16_t>& items,const MessageFont&);

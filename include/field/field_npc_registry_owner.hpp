@@ -20,6 +20,8 @@ class FieldNpcRegistryOwner {
 public:
  // allocationBase is a native16-byte-aligned guest arena, not source heap
  // identity. Four stable buffers back field actors/release/battle actors/F.
+ // Optional pose pool is injected unchanged, sharing Game's original global
+ // namespace. Native RAM/BSS allocation remains a separate cold owner.
  static std::shared_ptr<FieldNpcRegistryOwner> cold(uint32_t allocationBase,std::shared_ptr<BattlePosePool> pool={});
  FieldNpcRegistryOwner(const FieldNpcRegistryOwner&)=delete;
  FieldNpcRegistryOwner& operator=(const FieldNpcRegistryOwner&)=delete;

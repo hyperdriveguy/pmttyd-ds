@@ -54,6 +54,8 @@ texture indices must refer to the retained TPL. Reinstallation by model name is
 accepted only for the same shared owner. Unknown animation names intentionally
 fall back to descriptor zero; readiness does not prove the requested name exists.
 Capacity admission checks 256 pose slots and shared model/texture ownership.
+An injected pool shares that namespace with player/battle roles; standalone callers
+retain their independent legacy path. See [field session](field-session.md).
 Successful CPU entry does not prove GPU residency or original NPC Main readiness.
 
 PMNPC001..009 are private little endian catalog versions, not source NPC RAM.
@@ -134,15 +136,17 @@ Vertex bindings/visibility ranges retain the converted original hierarchy.
 ## Typed native partner registry and placement
 
 Partner storage is a big endian 0x188-byte source-sized record. The registry
-admits two actor owners and five CPU pose owners for the current slice. Signed
+admits two actor owners. Fresh original sessions index a shared 256-handle pose
+namespace; the legacy independent workspace uses five role slots. Signed
 Mario index bytes select the first live partner without main flag 8. Control mask
 0x20000000 is distinct from Mario's wrapping key depth. Entry stores camera,
 owner, kind and original definition-table identity before later pose/placement
 work; zero allocation alone does not initialize a partner.
 
 Supported source resource tokens retain original Mario/Goombella identities.
-Validation prepares real shape workspace without claiming an animation request
-has already played. Goombella's HP<=5 selects original `PKR_D_2`, otherwise
+Shared entry uses the actual descriptor-zero source pose; the legacy path
+prepares its older visible workspace seeds. [Field session](field-session.md)
+explains their different resource and copy ownership. Goombella's HP<=5 selects original `PKR_D_2`, otherwise
 `PKR_S_1`; a pending name request is distinct from evaluated playback.
 
 Appearance queries use engine units and retain every root/display/provider call.

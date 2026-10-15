@@ -5,9 +5,13 @@
 #include <string>
 namespace ttyd {
 namespace {
+// Original340 signed8 badge costs, 32 signed16 partner HP cells (kind*4+rank).
+// Arithmetic narrowing is low16 wrap, not saturation or a native balance policy.
 std::array<int8_t,340> costs{};std::array<int16_t,32> hp{};bool ready=false;
 int16_t narrow(int32_t value){const auto bits=uint32_t(value)&65535;return bits<32768?int16_t(bits):int16_t(int32_t(bits)-65536);}
 }
+// PMPRV001 private LE: count bytes54/01/00/00(hex) =340, then340 cost bytes
+// and64 HP bytes. Exact EOF and complete candidate precede publication.
 bool loadPouchRevisionAssets(const char* root) {
     if(!root)return false;FILE* f=std::fopen((std::string(root)+"/pouch-revision.bin").c_str(),"rb");if(!f)return false;
     char magic[8];uint8_t count[4];std::array<int8_t,340> c{};std::array<uint8_t,64> h{};
@@ -23,6 +27,10 @@ bool pouchRevisionAvailable(const ProloguePouch& p) {
     for(unsigned id=1;id<=7;++id){const auto rank=p.half(14*id+8);if(rank<0 || rank>3)return false;}
     return true;
 }
+// Source order: Mario maxHP/FP from base, each278 HP+5/280 FP+5, upper
+// clamp current, freeBP=totalBP minus EVERY equipment slot's signed cost.
+//279 counts partnerHP+5; kind1..7 base table rank then max/current clamp.
+// Preserve signed narrowing after each update; do not add lower clamps/heals.
 bool revisePouchParameters(ProloguePouch& p) {
     if(!pouchRevisionAvailable(p))return false;
     p.half(0x72,p.half(0x8e));p.half(0x76,p.half(0x90));
@@ -40,6 +48,9 @@ bool revisePouchParameters(ProloguePouch& p) {
         if(p.half(base+6)>p.half(base+2))p.half(base+6,p.half(base+2));}
     return true;
 }
+// Preflight before removal. nullopt means unknown native domain, contained-1
+// actual missing item, contained0 successful remove+Mario/party revision.
+// A contained zero is not a missing optional.
 std::optional<int32_t> removeRevisedKeyItem(ProloguePouch& p,int32_t item) {
     if(!pouchRevisionAvailable(p) || item<1 || item>120)return std::nullopt;
     if(p.removeKeyItem(item)!=1)return -1;
