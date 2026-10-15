@@ -1749,3 +1749,26 @@ the already retained prefetch bytes by identity; it does not create a new table.
 Original Nintendo/Intelligent Systems data, local use only, no redistribution
 rights granted. Availability does not certify original file-handle/lifetime
 or cold startup. Existing packs remain unchanged.
+
+## Packed NPC wander validation cache (2026-10-14)
+
+Code3342657e uses original existing gor regular scripts and registered NPC
+resources. New isolated artifacts/source-checks/npc-wander starts from
+committed sourcea3a0a5d9 and hash-verified2125 products from the accepted
+shared-pose validation cache, plus private local evidence/accepted read-only
+large dependencies. Source actor pose handles are resolved through real+104
+records; no synthetic pose0-based numbering or substitute models are used.
+
+Canonical python3 tools/door_data_assets.py ran only in this private checkout
+against read-only /home/carson/games/roms/G8ME01.iso. It restores the already
+delivered nine actor-leaf DOL string/numeric views to that older cache. Only
+romfs/door-data.pmevt and romfs/door-data.json differ from the2125 parent hashes;
+all other products and parsed gor_02.s hash match. No new art, texture/geometry,
+animation/music/SFX conversion or shared pack write. Ignored private extracted
+REL/prefetch bytes and compiled packs/binaries stay outside source history.
+Exact source/asset/log/capture/normal/ARM hashes are recorded in
+artifacts/area-npc-wander-validation-manifest.json. Source body evidence for
+Mario pointer/radial hint/material getters remains ignored separately.
+Original Nintendo/Intelligent Systems rights remain reserved; local extraction
+provides no redistribution license. ISO unchanged/uncommitted. This validates
+scoped script/memory use, not full NPC GPU raster or hardware performance.

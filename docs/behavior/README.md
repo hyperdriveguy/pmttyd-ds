@@ -1212,3 +1212,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Retained pose-buffer allocation](display/NATIVE_POSE_BUFFER_ALLOCATION_AND_RECURSIVE_RECOVERY.md): exact inlined reservations, recursive Restore and distinct overflow recovery.
 
 - [Cold animation initialization](display/NATIVE_COLD_ANIMATION_INITIALIZATION.md): complete retained animInit, typed tangent/bias services, original auxiliary copies and cold-before-pose boundary.
+
+- [Native packed NPC wander events](field/NATIVE_PACKED_NPC_WANDER_EVENTS.md): original init/four-phase main through actual actors/LW10/map arena, held requests versus genuine main0, original regular wrappers and remaining world owners.

@@ -126,7 +126,8 @@ proxy or initialize sign as if measured source behavior.
 
 Root order is camMain,evtMain,MarioMain,mobjMain,npcMain,caseMain: the regular
 user function consumes the previously published NPC dt/map-contact and Mario
-touch actor. npcMain initially clears Mario touch+1dc, scans source actor order,
+radial-hint actor+1d8. This differs from collision pointer+1dc cleared by
+npcMain before its source actor-order scan. The ordinary NPC loop
 requires mainflags1 and2, and sets state+1d4 mask10 when mainflags100000 clear.
 Under state10 it publishes elapsed seconds+1a4 at0x80049d6c from source clock
 milliseconds/1000; an elapsed interval>500ms is capped to the source16ms clock
@@ -320,18 +321,29 @@ program-counter reset occurs in those stop/start bodies. See
 restart/delete/setup is separate from pause/resume and may destroy/recreate
 work; no native teleport-distance heuristic can substitute that lifecycle.
 
-### Mario touch actor spans exactly the following source field interval
+### Mario touch getter consumes the prior radial hint, not side collision
 
-`marioGetTouchNpcPtr`0x80096948 reads Mario+1dc. `npcMain` clears that pointer
-at0x80049adc before its ascending pool scan. Each admitted Mario/NPC side
-collision can publish the colliding NPC there; later source actors can replace
-it, with no nearest arbitration. The next field evtMain precedes MarioMain
-and npcMain, so urouro sees the previous NPC scan's retained pointer. Current
-NPCmain then clears it and republishes after current Mario movement. A native
-driver invoked after clearing or after current collisions would consume a
-different interval. See [source side publication](FIELD_NPC_SPHERE_AND_MARIO_SIDE_COLLISION.md).
-Other field sequence/pause and foreign writes remain separate owners; a native
-current-frame touch boolean must not silently replace this retained pointer.
+Fresh read-only source correction2026-10-14: `marioGetTouchNpcPtr`80096948/24
+calls marioGetPtr8005e0c0, then at8009695c reads **Mario+1d8** (lwz472).
+marioGetPtr reads retained pointer8041e900 (r13+19e0). The older assertion that
+this getter consumed collision+1dc was incorrect. npcMain still clears+1dc at
+80049adc and side collision publishes+1dc; these are distinct source fields.
+
+The ordinary fbatEncountCheck scan publishes its separate r25 radial-hint
+pointer to Mario+1d8. This hint updates before facing/occlusion when radial
+admission beats the current full-candidate distance bound; it is not itself
+a nearest reduction, the final selected talk work+10, or the side-collision
+pointer. See [three distinct query outputs](FIELD_ORDINARY_NPC_TALK_CANDIDATE.md).
+The next field evtMain precedes MarioMain/npcMain and thus ordinarily consumes
+the preceding admitted encounter scan's retained hint. Skipped global scan
+gates and other field sequence/pause/foreign writers remain separate owners;
+do not infer a new zero publication from a skipped scan.
+
+Native Game::fieldNpcHit/fieldNpcContact represents side collision, while
+NpcTalkScan::nearActor is currently discarded by updateFieldNpcCandidates.
+Neither substituting collision nor final talk winner supplies original+1d8.
+Actual retained Mario/radial ownership must be provided or native admission
+must hold. The getter's misleading name does not change its actual offset.
 
 All follow-up bodies extracted read-only with inspect_dol_function.py; mask/
 load-owner checks pin the00400000 candidate branch separately from draw state

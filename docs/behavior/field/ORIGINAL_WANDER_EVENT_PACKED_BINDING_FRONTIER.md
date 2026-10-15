@@ -125,10 +125,16 @@ visits, not render frames or an unconditional60Hz counter.
 
 The retained FieldPosePool/BattlePosePool has actual per-handle scalar state:
 paper readiness uses pose flags+0, retained+74 and target+7c. The material
-flag producer and normal facing Main must remain actual services; an active
-CPU pose or animation clip-end does not prove paper readiness. Actual Mario
-owner must supply Mario pointer, current root, travel heading and the previous
-NPC scan's retained touch actor. No current-frame geometric touch guess.
+getter8004069c reads pose+e8, initialized0 by native BattlePosePool::enter;
+original On80040730/Off80040710 operate this same word. This differs from
+material-light flags+ec. Read actual retained+e8 rather than synthesizing0 or
+using+ec. Subsequent material writes and normal facing Main remain actual
+services; an active CPU pose or animation clip-end does not prove paper readiness. Actual Mario
+owner must supply Mario pointer8041e900, current root, travel heading and the
+previous admitted encounter scan's radial-hint actor atMario+1d8. Fresh
+marioGetTouchNpcPtr80096948 reads+1d8 at8009695c, distinct from the side-collision
+pointer+1dc cleared by npcMain. Neither current-frame collision nor final talk
+winner substitutes for this hint; see the corrected driver contract.
 
 System angleABf/distABf/compAngle/reviseAngle, sine/cosine and instruction
 rounding remain explicit numerical services. Existing npc_wander helpers and

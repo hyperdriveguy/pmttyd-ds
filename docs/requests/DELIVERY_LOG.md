@@ -386,3 +386,8 @@ Codeb385793a: [native five-leaf binding](../behavior/field/NATIVE_NPC_ACTOR_EVEN
 
 
 Read-only delivery: [original wander packed binding frontier](../behavior/field/ORIGINAL_WANDER_EVENT_PACKED_BINDING_FRONTIER.md). Actual wrapper radius70/Borodo story guard, LW10 map heap, init/main side-effect ordering and regular scheduling/candidate/replacement lifetime recovered; no code/runtime completion claim. EVT-01 remains open.
+
+
+### Original packed wander integration and source-owner correction
+
+Code3342657e: [native original init/four-phase main](../behavior/field/NATIVE_PACKED_NPC_WANDER_EVENTS.md), actual LW10/map work, original Goomba4/Borodo wrapper guards, retained stop/start and held request ordering. Final366C++/201Python/native and scoped ARM fixtures pass. Corrected source touch+1d8 radial-hint and material+e8 ownership. Genuine packed Mario/Main/math/audio/world/render/lifecycle providers stay open under EVT-01; no full original runtime or hardware completion claim.

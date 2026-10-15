@@ -9271,3 +9271,72 @@ artifacts/azahar-animation-cold-normal/boot.png was inspected (sample60AppFPS/10
 Only generated isolated profile/saves used; user settings/saves untouched. No
 original GPU/pixel/Gekko numeric or physical3DS performance parity claim. Full
 prologue remains unfinished; genuine source startup ownership is the next step.
+
+## 2026-10-14 — Original packed NPC wander events and real map work
+
+Code3342657e implements complete original init80237878/main802372a8 through
+actual retained NPC/VM memory, all four phases and ordered service requests.
+Init uses actual event+c4/LW10 and the shared retained primary map allocator;
+source44 bytes produce64 zeroed/flushed payload bytes. New facade-checked map
+allocation/ownership APIs admit the actual BattleSequenceBinding storage rather
+than the separate SDK entry heap. Native bridge supplies real pose paper/
+material scalar state, live GP frame budgets, shared setup/wander RNG and
+SourceSoundFlags. Unknown Mario/math/audio owners hold. Event/room retirement
+clears continuations; completed main0 clears its cursor for the next genuine
+source visit. No root movement or per-entry map free is invented.
+See [native contract](behavior/field/NATIVE_PACKED_NPC_WANDER_EVENTS.md).
+
+Actual Goomba4 regular script now performs original get-position/init and
+holds at the missing packed Mario owner. Explicit admitted Mario fixture
+then executes phase0 and component production; root XYZ stay unchanged until
+NPC Main consumes components. Source StopID/StartID retains work/count; entry
+deletion leaves map allocation live. Actual Borodo wrapper at story215 retires
+without allocation; outside the inclusive guard (262) it initializes a distinct
+work block with original radius70/speed30. Fixture uses real15-row setup/
+registered actors/poses/root constructors/scheduler/map heap and explicit test
+RNG state. Earlier still-unbound init roots are explicitly retired, not claimed
+executed. Math/Mario/audio mutation fixtures test ordered requests, not full
+original-world owners or numeric/runtime parity. Shared-pose fixture lookup
+now uses actual actor+104 handles, never guessed pose0..14.
+
+Read-only source correction: marioGetTouchNpcPtr80096948 loads Mario+1d8
+radial hint through fresh8041e900, distinct from collision+1dc cleared by
+npcMain. Prior wander contract incorrectly conflated these. Native Game's
+side contact/final talk winner cannot substitute for the discarded nearActor
+producer. Corrected source contracts also distinguish pose material flags+e8
+from material-light+ec. Fresh body evidence/hashes remain ignored under
+artifacts/npc-wander-bridge-evidence/.
+
+Final frozen tree4199575fccc2b284a24a93be0cb0d0566f62027a against committed
+basea3a0a5d9:3643 tracked files audited, zero mismatches.
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test -o assets-ready exits0:366/366 C++
+(45.36s),201/201 Python (32.405s). Native
+make all -j4 -o assets-ready SOUNDTRACK=gamecube exits0, including strict ARM
+fixture and final normal restore. ARM marker packedWander4/originalRegularRoots2/
+mapHeap/stopStart/storyGuard passes. New final production/probe builds have no
+compiler warnings; existing Python Pillow deprecation remains. Initial targeted
+fixture lacked its actual pouch prerequisite; fixed using original pouch assets.
+Initial formatting warnings/failures are retained and are not final passes.
+
+Both fresh isolated40s Azahar normal boots exit0. First sample during host
+compilation showed50AppFPS/84%; repeated idle sample showed60AppFPS/100%.
+Inspected original book/town/English captures; this is not new NPC raster or
+physical3DS performance proof. Restored normal SHA256
+172498f91e544b3b36a1d38d8b692b6de97c0917f2afd91334309f65384fb0e2
+matches the tested normal binary. Probe edits restored; user profiles/saves
+untouched. Manifest artifacts/area-npc-wander-validation-manifest.json records
+source/binary/log/capture/evidence hashes. Moving concurrent work is preserved
+and is not claimed validated as a whole.
+
+Accepted shared-pose validation2125 RomFS products were privately copied after
+hash verification, with private local evidence and accepted large read-only
+dependencies. Only door-data.pmevt/json change: canonical exporter reinstates
+the previously delivered actor-leaf DOL name/numeric closure absent in that
+cache. No new art/audio conversion or shared product writes; ISO read-only.
+
+Next: bind genuine packed Mario/root/travel/radial hint, source numeric/audio
+services and actual NPC Main dt/history/component consumption. Preserve
+query/candidate/interrupt stop/start/replacement, facing/automatic pose,
+collision/gravity, shared world/bootstrap/resource lifetime and normal Game
+activation. Then validate actual NPC draw pixels and physical3DS performance.
+Complete area/prologue and full remake remain unfinished; goal stays active.

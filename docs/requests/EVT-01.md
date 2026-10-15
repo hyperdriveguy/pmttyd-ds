@@ -4884,3 +4884,7 @@ texture/pose/aux/scratch/file/holder/relocated MODEL and live tangent/output
 ownership before source Entry. Keep missing providers pending and full original
 startup/field/battle/prologue obligations open; static native numeric adapter
 is not an alias of the future VM table or Gekko/libm parity evidence.
+
+### Packed original wander event bridge
+
+Code3342657e supplies [complete packed init/main callbacks](../behavior/field/NATIVE_PACKED_NPC_WANDER_EVENTS.md) with actual retained actors, event LW10, shared map arena, pose paper/material state, frame budgets and setup/wander RNG. Actual original regular-wrapper/story-guard/map-work/stop-start fixtures pass366C++/201Python/native and isolated ARM. Source correction: touch getter reads Mario+1d8 radial hint, not collision+1dc; native collision cannot substitute. Packed Mario, numeric/audio, NPC Main/query/facing/collision/render and normal world/resource activation remain open. Fixtures explicitly provide Mario/math and retire still-unbound earlier init roots; neither fixture nor book smoke proves full original area completion.
