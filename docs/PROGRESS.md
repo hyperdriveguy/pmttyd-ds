@@ -1,3 +1,100 @@
+### Original menu file ownership, retained UI and HUD counters (2026-10-14)
+
+Previous goal turn made progress by assigning the requested additional UI
+workers; this increment integrates their completed first batch. Code commit
+`d32daf316465d5acdaf98223de93bc31844a4b5d` adds real native common-menu ownership,
+retained source class drawing and original coin/Star Point HUD groups. The full
+tutorial/battle/UI goal remains active and incomplete.
+
+The original217920-byte battle/common/battle_common.tpl is now packaged exactly
+as ignored romfs/battle-class-common.tpl, SHA256
+8eb685317056f42b3ef73138eaad85d16fa4943d830b44a149f09971a5959bb1.
+Existing circle/bubble .bin/.t3x remain byte-identical. The shared native cache
+executes actual retained source fileInit/acquisition/type4 Set/fileFree over real
+BE manager/pool/holder/payload storage. The tutorial's actual VMs borrow that
+stable backing and expose explicit source menu Init/End boundaries. Multiple VMs
+share source refcounts; exact-zero End retains state2 payload, and reacquisition
+does not reload/re-relocate. Reloading assets gives future VMs a new catalog
+without invalidating existing owners. DVD root bytes come from original DOL
+import, not an overlapping substitute mapping. Native fixed token addresses,
+one supported bank, sequential use and ROMFS-backed disc policy are explicit
+port adaptations, not a complete original file system or source heap placement.
+
+Retained queued class callback/wrapper, outer icon order and complete circle/
+bubble children now compose without replaying acknowledged SDK/GX operations.
+FontString requires an explicit retained glyph/RNG owner. Focused tests cover170
+external waits, including a partially emitted label. The lower-screen audience
+publication layer copies completed actual camera/quads/eligibility, requires a
+physical-X binding and actual displayed-frame admission, then queues a one-shot
+request revalidated by simulation. It never fabricates a crowd/held item or
+turns a targeted tap into synthetic X. Those helpers still need normal native
+queue/camera/visibility/interruption bindings.
+
+The top HUD now draws original green475/SP443/coin444/x478 and numeral sprites
+from the existing atlas. Coin/Star Point counters read the executing VM's live
+pouch via8041eb00, with actual retained field-pouch fallback only before that
+owner exists. Missing/negative live values are omitted. Original getter bodies
+and full statusGetValue are pinned; no new image conversion/allocation, AP
+producer, partner HP, audience count or status choreography is invented.
+Contracts: behavior/display/NATIVE_CLASS_MENU_FILE_OWNERSHIP.md,
+RETAINED_CLASS_AND_AUDIENCE_UI_ADMISSION.md, BATTLE_CLASS_COMMON_TPL_PACKAGING.md
+and NATIVE_BATTLE_HUD_STATUS_ELEMENTS.md. Asset provenance is in ASSETS.md.
+
+Validation used frozen base3e84f471896564449804ab39b8ff0dd538a6b55f plus scoped
+owned files/edits under artifacts/menu-resource-validation. Initial native build
+found ARM uint32_t/unsigned initializer-list deduction; fixed with typed spans.
+Initial integration found DVD-root overlap with imported DOL data; removed the
+shadow mapping. Focused actual-VM tests then passed two simultaneous VMs,
+reference reuse and asset reload. First complete C++ run exposed that overlap;
+corrected run passed375/375. Its Python errors were four missing private cache
+dependencies, fixed by using the previously validated pose-buffer local-assets
+cache. Failed logs are retained; no source service was bypassed.
+
+Final CMAKE_BUILD_PARALLEL_LEVEL=4 make -C artifacts/menu-resource-validation
+test -o assets-ready exits0:375/375 C++ in39.02s and202/202 Python in48.688s.
+Log: artifacts/menu-resource-test-final2.log. Native make all -j4 -o assets-ready
+SOUNDTRACK=gamecube TARGET=ttyd-menu-resource BUILD=build-menu-resource exits0,
+including normal-entry restoration. Original acquisition/collection/type4
+verifiers pass16/11/3 bodies and281/189/165 anchors. Focused cache and UI tests
+pass strict host compilation; worker ARM syntax checks pass. Existing compiler/
+Pillow warnings remain.
+
+Isolated25s Azahar fixture exits0, reports PASS realTpl;images=97;twoVmRefs;
+sourceEnd;state2Reuse;entry=87000000;payload=87100000. Inspected
+artifacts/azahar-menu-resource-probe/boot.png: original HUD green counters render
+on top and lower view continues into stage/audience seating. No guest exception/
+unmapped log diagnostic found. This fixture explicitly invokes Init/End and
+prepares/fixes tutorial presentation; it does not prove ordinary scheduler
+entry/teardown, rotating-menu availability, audience population/taps, original
+camera parity, physical hardware performance or full battle completion.
+Only isolated profile/saves were used; user emulator state is untouched.
+
+Private Main edits were restored byte-for-byte and recompiled; restored normal
+3DSX equals its pre-fixture binary. SHA256
+a5b75bc85532fac7fec7e42a30a1fb75040bf7e6a51292e47f04a4e675574d31.
+Audit1855 source/test/tool/build inputs: zero mismatches/extras. RomFS2126
+products: only common-menu metadata changed and raw TPL was added relative to
+the2125-product parent. Manifest:artifacts/menu-resource-source-manifest.json.
+Documentation link check1393 files, zero broken links. The moving merged
+checkout/concurrent foreign edits are not claimed validated as a whole. No ISO,
+original art/audio, private caches or compiled packs were committed.
+
+Next: integrate frozen next-batch battle_class_observable_draw.hpp/.cpp/tests
+(currently untracked, owned by UI worker). Read-only source review proved cold
+flag0 Init leaves stack positions unwritten at state0, while source DrawMainIcon
+reads all Ys before flags. The worker's explicit native observable-raster policy
+advances genuine zero/one-active cold passes and uniquely ordered finite distinct
+active Ys, while holding ambiguous ties/missing operands and retaining exact
+source sorting for fully produced inputs. Strict host/ARM/ASan+UBSan and104 wait
+boundaries pass; root full build/docs/native integration remain. Do not force
+flag1 cancellation reentry or supply dummy positions. Then bind actual queued
+class display with same-scene camera, retained font/resources and real footer
+providers; install Init/End in whole source lifecycle order. Audience taps still
+need real actor/item incarnations, harmful/interruptible/visibility producers,
+complete lower draw admission and selected-slot interruption. Continue original
+tutorial/real-battle scheduling and physical-control coverage; partner/AP/status
+presentation and complete battle exit remain open.
+
 ## 2026-10-14 — Retained original class drawing and native bubble/circle proof
 
 Previous goal turn was concrete progress (upper Trio menus and UI ownership).
