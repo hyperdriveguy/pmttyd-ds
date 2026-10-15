@@ -11804,3 +11804,80 @@ then remaining event/message/story/effect/platform/file/save helpers and tools.
 Audit committed retained-action/NPC/HP/animation integrations separately as they
 land; earlier annotation hash agreement is only a review aid. Full code
 documentation and remake remain unfinished; goal stays active.
+
+## 2026-10-14 — UI workers: retained tutorial input and native HP callback binding
+
+Three UI workers implemented/reviewed runtime ownership, native rendering and
+retained tutorial input. Commits8b8e77e3 (retained source action-command manager)
+and4ae0c81e (tutorial/HP integration). The tutorial now retains its original
+physical sample/time, private pad and display queue across unavailable children;
+held ticks do not resample, overwrite guest state or advance VM/events. Supported
+TimingA remains synchronous; message presentation can still advance while held.
+This does not establish the complete original Main/turn scheduler.
+
+The actual queued HP8011fde0/camera8 invocation now composes the retained parent,
+original numeral/Matrix/GX and bar/plane/raster graph with actual VM/status/Tattle
+readers, real successful CameraMain epochs, allocation-token ownership and one
+ordered immutable glyph/bar publication. Native GPU/icon resources load outside
+FrameBegin and retire safely through their existing synchronized release owners.
+Copied publication survives legitimate camera-lease completion. Original
+menu style/art and lower scene remain preserved; no touch-only action was added.
+See [runtime](behavior/display/TRIO_ENEMY_HP_RUNTIME_BINDING.md),
+[renderer](behavior/display/NATIVE_TRIO_ENEMY_HP_RENDERER_BINDING.md) and
+[tutorial input](behavior/battle/RETAINED_ACTION_COMMAND_MANAGER.md).
+
+Actual common-menu source Init/End now acquires/releases B163f8 through the
+original FileEntry/a0/relocated-TPL chain. A private read-only ISO pack rebuild
+removes only the copied live file-manager global80418498 from the immutable
+Goombella span (76→72 bytes); every other payload and unit definition is
+unchanged. Original HP17/18 conversions/rights remain unchanged; no ISO, raw
+original asset or compiled pack enters history. See [asset notes](ASSETS.md).
+
+Frozen validation uses committed90c75318 plus the24 owned integration files,
+not the concurrently changing checkout. Final audit:3872 tracked/owned files,
+1992 source/build inputs and2140 RomFS products; zero mismatches/extra inputs.
+Final CMAKE_BUILD_PARALLEL_LEVEL=4 make test passes422/422 C++ in45.28s and
+207/207 Python in34.108s. make all -o assets-ready -j4 SOUNDTRACK=gamecube
+exits0;1450 Markdown files have zero broken links. Existing warnings remain.
+Initial failures came from inheriting an older NPC-display door pack. Advancing
+code did not repair that data mismatch. Replaced only door-data.pmevt/json with
+verified NPC-shadow products matching the frozen converter/authority; no source
+assertion was weakened. Forced native repack after old product mtimes caused a
+no-op. Earlier failure/no-op logs are retained with the final successful gates.
+
+ARM native checks pass actual Trio allocation/common-file ownership and source
+Number→real camera Main/Draw/HP bridge→original icon metadata/GX, including holds
+and stale/reset rejection. The latter uses an explicit recorded GPU sink/boot
+camera fixture, not native pixel proof. GNU17's newlib quad macro required a
+direct memory include before test service declarations. Private large fixtures
+use heap copies for the native32KiB stack, preserving all assertions.
+
+The first normal-front-end route stayed in the field: the existing input script
+assumes gameplay startup and an admitted source entry context. A separate
+isolated entry fixture uses the existing story11 checkpoint, explicit short
+startup and resolved Bero bit1 clear. Physical input then reaches the genuine
+finishing HP callback: sourcePass1/sourceComplete1/publishedPass1 with zero
+packets, followed by frontier80073f20. This is a legitimate empty post-defeat
+publication, not visible active-enemy HP proof. No HP, Tattle or registry state
+was changed to make that proof pass. Entry fixture and restored normal25-second
+smokes exit0; inspected final source-entry capture shows the existing field-
+restoration notice and normal capture shows the original storybook. A32FPS/54%
+startup sample under parallel emulators is uncontrolled, not performance proof.
+
+All probe/entry changes were removed from the frozen source, private translation
+units deleted and ordinary main restored. Final native build exits0 and matches
+pre-probe3DSX SHA256 c62757ccf4c052a7a3dc683b0e283e43e3328b80aa6f8a103c66cbe5b79c719c.
+Only isolated emulator profiles/checkpoint copies were touched. Exact manifests,
+logs, hashes and proof markers:artifacts/hp-runtime-validation-manifest.json.
+Concurrent animation/NPC/documentation work and public index were preserved;
+the merged moving HEAD is not claimed jointly validated.
+
+Next: ordinary source Main's actual pinch/Turn/event cadence and surviving enemy
+pose resources for ids3/4/5 before active camera4→HP8 scheduling; complete battle
+end/field return and original tutorial/command flow. Lower-audience taps still
+need actual completed visibility/projection/incarnation publication and the real
+selection/punch owner. Trio currently ignores X, so physicalAlternativeBound must
+remain false until that real alternative is connected; Harbor has its original X
+path. Do not create duplicate isolated helpers or fabricate cameras/readiness/
+visible rectangles. Preserve original US story/IDs/tokens, original audio/art
+and simulation-tick timing. Full tutorial/real-battle goal stays active/incomplete.
