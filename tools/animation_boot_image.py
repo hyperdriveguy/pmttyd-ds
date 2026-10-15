@@ -38,6 +38,11 @@ SPANS += [('main-replay-scale',0x8041fbac,4,'2625276c57610c65a55868a40c431d1fd66
 
 # Original Main cubic interpolation literals.
 SPANS += [('main-cubic-two',0x8041fb64,4,'c31425b44a7ed682a3356bf6820141e1584a15c43b6d6793f552e5d4621586f7'), ('main-cubic-negative-two',0x8041fb98,4,'60f2e332c71bcda81951ea38d3c52d4a9b1a2056b334f99001f41c588afd0892'), ('main-cubic-three',0x8041fbb0,4,'638354a0b185ec05318029e52610c8de48d33523e2b4854e71154187583d1037') ]
+# Original Joint/Transform dispatch and SDK matrix data, unchanged initialized DOL.
+SPANS += [('node-joint-dispatch',0x80306698,0x40,'7fc767c67ceb21b2e9e387c2e0c57d770d4d0776145da74cb1a69f2d89ea3336'),
+ ('node-transform-dispatch',0x803066d8,0x20,'d65cde7d516cdb7f9ac16448eda5613a094158af46c9011aca138ba56bd53942'),
+ ('sdk-concat-tail',0x8041e458,8,'35a329e9a766e1a60f366cf4599a0ecc21be601e310be696c25bb91f31cb475b'),
+ ('sdk-matrix-one-zero',0x80429358,8,'e416065dd951359ab79d557107324f0f8fb0142494f2523ca9fdac35f1ac3d18')]
 
 def build(iso=DEFAULT_ISO,output='romfs/animation-boot'):
  root=Path(output);root.mkdir(parents=True,exist_ok=True)

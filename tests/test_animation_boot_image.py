@@ -17,4 +17,8 @@ class AnimationBootImage(unittest.TestCase):
    self.assertTrue(any(spans[0x80305900])) # It is initialized DATA, never fabricated BSS zeros.
    self.assertEqual(spans[0x803d9470],bytes(0x110));self.assertEqual(spans[0x803d9580],bytes(712))
    self.assertEqual(meta['pack_sha256'],hashlib.sha256(raw).hexdigest())
+   self.assertEqual(spans[0x80429358],bytes.fromhex('3f80000000000000'))
+   self.assertEqual(spans[0x8041e458],bytes.fromhex('000000003f800000'))
+   self.assertEqual(struct.unpack_from('>I',spans[0x80306698])[0],0x8003e5b8)
+   self.assertEqual(struct.unpack_from('>I',spans[0x803066d8],28)[0],0x8003ec38)
    self.assertNotIn(0x803e6e78,spans) # Shared filename belongs to the real file cache.

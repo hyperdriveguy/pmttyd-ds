@@ -2775,3 +2775,13 @@ target_link_libraries(native_ui_gx_startup_tests PRIVATE ttyd_core)
 add_test(NAME native_ui_gx_startup COMMAND native_ui_gx_startup_tests)
 
 set_tests_properties(native_ui_window_startup native_ui_gx_startup PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+# Original raw NodePush and same-VM SDK affine CPU binding.
+target_sources(ttyd_core PRIVATE source/display/animation_source_node.cpp source/display/animation_node_binding.cpp)
+add_executable(animation_source_node_tests tests/animation_source_node_tests.cpp)
+target_link_libraries(animation_source_node_tests PRIVATE ttyd_core)
+add_test(NAME animation_source_node COMMAND animation_source_node_tests)
+set_tests_properties(animation_source_node PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+add_executable(native_npc_node_tests tests/native_npc_node_tests.cpp)
+target_link_libraries(native_npc_node_tests PRIVATE ttyd_core)
+add_test(NAME native_npc_node COMMAND native_npc_node_tests)
+set_tests_properties(native_npc_node PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

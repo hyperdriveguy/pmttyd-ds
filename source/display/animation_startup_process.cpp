@@ -9,9 +9,9 @@ constexpr uint32_t Work=0x803d9470;
 struct Span{uint32_t address,size;};
 // Exact source data/BSS image layout; no executable segments or arena buffers.
 constexpr Span ImageSpans[]={{0x802c1068,8},{0x802c1070,8},{0x802c11a8,48},{0x802c11d8,16},{0x802c11e8,16},{0x802c18a0,28},
- {0x80305900,0xc00},{Work,0x110},{0x803d9580,178*4},{0x804151b8,40},
- {0x80415da0,16},{0x80415db4,4},{0x80415dc0,4},{0x80415dc4,4},{0x80415eb0,12},{0x8041e428,12},
- {0x8041e808,80},{0x8041f070,20},{0x8041fb0c,8},{0x8041fb24,8},{0x8041fb2c,4},{0x8041fb34,12},{0x8041fb40,4},{0x8041fb64,4},{0x8041fb6c,0x2c},{0x8041fb98,4},{0x8041fba4,8},{0x8041fbac,4},{0x8041fbb0,4},{0x8041fbb4,4},{0x804213e0,8}};
+ {0x80305900,0xc00},{0x80306698,0x40},{0x803066d8,0x20},{Work,0x110},{0x803d9580,178*4},{0x804151b8,40},
+ {0x80415da0,16},{0x80415db4,4},{0x80415dc0,4},{0x80415dc4,4},{0x80415eb0,12},{0x8041e428,12},{0x8041e458,8},
+ {0x8041e808,80},{0x8041f070,20},{0x8041fb0c,8},{0x8041fb24,8},{0x8041fb2c,4},{0x8041fb34,12},{0x8041fb40,4},{0x8041fb64,4},{0x8041fb6c,0x2c},{0x8041fb98,4},{0x8041fba4,8},{0x8041fbac,4},{0x8041fbb0,4},{0x8041fbb4,4},{0x804213e0,8},{0x80429358,8}};
 // Build-time extraction pins every span hash; runtime checks layout and critical fields.
 bool admittedImage(const EventScriptAssets& image){
  if(image.segments().size()!=sizeof(ImageSpans)/sizeof(*ImageSpans))return false;

@@ -4,7 +4,7 @@
 #include <cstring>
 namespace ttyd {
 namespace {float real(uint32_t w){float f;std::memcpy(&f,&w,4);return f;}uint32_t bits(float f){uint32_t w;std::memcpy(&w,&f,4);return w;}}
-AnimationGroupBinding::AnimationGroupBinding(EventAddressSpace& m,const NativeNpcGroupBackend& b,std::function<bool()> current):memory_(m),backend_(b),current_(std::move(current)){}
+AnimationGroupBinding::AnimationGroupBinding(EventAddressSpace& m,const NativeNpcGroupBackend& b,std::function<bool()> current):memory_(m),backend_(b),current_(std::move(current)),node_(m,current_){}
 bool AnimationGroupBinding::copy(uint32_t from,uint32_t to){
  if(!current_ || !current_())return false;
  if(!copying_){copying_=true;copySource_=from;copyDestination_=to;pair_=0;pairLoaded_=false;}
@@ -25,7 +25,7 @@ AnimationGroupServices AnimationGroupBinding::source(){
  s.word=[](void* u,uint32_t a)->std::optional<uint32_t>{auto& b=*static_cast<AnimationGroupBinding*>(u);uint32_t w;return b.current_ && b.current_() && b.memory_.readWord(a,w)?std::optional<uint32_t>(w):std::nullopt;};
  s.byte=[](void* u,uint32_t a)->std::optional<uint8_t>{auto& b=*static_cast<AnimationGroupBinding*>(u);uint8_t w;return b.current_ && b.current_() && b.memory_.readByte(a,w)?std::optional<uint8_t>(w):std::nullopt;};
  s.store=[](void* u,uint32_t a,uint32_t w){auto& b=*static_cast<AnimationGroupBinding*>(u);return b.current_ && b.current_() && b.memory_.writeWord(a,w);};
- s.node=[](void* u,const AnimationGroupNode& q){auto& b=*static_cast<AnimationGroupBinding*>(u);return b.current_ && b.current_() && b.backend_.node && b.backend_.node(b.backend_.user,b.memory_,q);};
+ s.node=[](void* u,const AnimationGroupNode& q){auto& b=*static_cast<AnimationGroupBinding*>(u);return b.current_ && b.current_() && (b.backend_.node?b.backend_.node(b.backend_.user,b.memory_,q):b.node_.advance(q));};
  s.copy=[](void* u,uint32_t from,uint32_t to){return static_cast<AnimationGroupBinding*>(u)->copy(from,to);};
  s.material=[](void* u,uint32_t shape,uint32_t current){auto& b=*static_cast<AnimationGroupBinding*>(u);return b.current_ && b.current_() && b.backend_.material && b.backend_.material(b.backend_.user,b.memory_,shape,current);};
  s.vivian=[](void* u,const AnimationGroupVivian& q){auto& b=*static_cast<AnimationGroupBinding*>(u);return b.current_ && b.current_() && b.backend_.vivian && b.backend_.vivian(b.backend_.user,b.memory_,q);};
