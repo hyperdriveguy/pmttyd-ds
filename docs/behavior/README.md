@@ -1334,3 +1334,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native original class-menu messages](battle/NATIVE_CLASS_MENU_MESSAGES.md): actual US resource snapshots and permanent private-VM label mapping.
 
 - [Retained original weapon UI work](battle/RETAINED_WEAPON_UI_WORK.md): original common work allocation, subtype initialization and exact retirement.
+
+- [Retained Main full output interpolation](display/RETAINED_ANIMATION_MAIN_INTERPOLATION.md): original vectors/cubic nodes and final cache publications through40540, scalar/replay/geometry continuation; native Main/pass/shape integration and normal NPC activation remain open.

@@ -1,3 +1,68 @@
+### Full original Main output interpolation and retained geometry (2026-10-15)
+
+Code commit c725107a1cbd00ad2f1db8c5ad37ece49332fa46 implements complete Main80040084..80040540:
+equal-key output copies, signed current>next skip path, increasing-key position/
+auxiliary triples and cubic nodes, then final R3c/current and R40/fraction
+publications. It preserves captured outputs/counts/indices/fraction, retained
+next-key headers versus fresh duration table, opposite equal/forward node
+pointer reads, all-three-deltas-before-X, FMA operand order, fresh per-node
+constants/tangents, rejected-node destination advance and actual tangent
+adjacency. Shared exact word-copy continuation retains overlap and shifted-zero
+counter behavior. Source FNMSUBS uses the established scalar instruction helper.
+
+The geometry owner now composes original time/scans/replay/interpolation through
+40540 with fixed-size cursors and no per-invocation allocation. Interpolation
+holds never repeat completed scalar/cache work. Existing guarded VM/pool/GQR
+services are reused. It remains an evaluation child, not full native Main or
+normal Game NPC activation. [Contract](behavior/display/RETAINED_ANIMATION_MAIN_INTERPOLATION.md)
+and inbox EVT-01 record source hash and all local ordering/ownership boundaries.
+Independent read-only controller/helper/test review found no substantive defect
+after the FNMSUBS convention fix; warning-enabled syntax check passed clean.
+
+Trace/hold fixtures cover all signed index routes, exact empty/cubic accesses,
+every primitive suspension, retained pointer mutation, zero MODEL counts with
+streams, bulk/remainder sizes, tangent gate boundaries and destination advance,
+a=-128 actual Work-neighbor address, missing adjacent-memory hold/resume,
+dynamic constants/tangents, finalstore holds and fraction NaN/signed-zero identity.
+Actual cold original MarioM_W/17-tick VM/pool fixture matches all five caches
+and all three outputs with the admitted source-backed sampler. It holds GQR,
+then holds finalR40 after successful R3c, changes epoch/index and resumes exactly
+one store; no earlier clock/cache/output work repeats. Native ARM probe passed
+branches/copies/vectors/cubic/aliases/holds/adjacent/constants/identity/
+actualGeometry/finalStore/noReplay assertions.
+
+Accepted isolated source tree eeee7ce233970b0ae6eff60d108a225975736d35 based on
+bbb0083142fe15c8fde95b407a174e73b07c831a: all3974 tracked files and2152
+RomFS products audited exact. `TRIO_ENEMY_POSE_PACK=romfs
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test` passed440 C++ tests (51.88 seconds)
+and212 Python tests (34.352 seconds), zero skipped. `make all -j4 -o
+assets-ready SOUNDTRACK=gamecube` passed normal/probe/restored builds. ISO
+verifier passed2 bodies/1773 instructions/17 constants/5 spans/2 imports/
+65 callers/one serialized example. Only4 private products change to admit
+original cubic literals: cold image12 sourcebytes, actor data8 newbytes because
+TWO was already present. Removing those spans reconstructs prior packs. No
+art/music/SFX/story/US dialogue/geometry/lighting changes; gor_02.s unchanged.
+See [assets](ASSETS.md) for exact addresses/hashes/licensing. Original
+ISO/extractions/PPC/packs/binaries remain outside source history.
+
+Restored normal executable matches pre-probe SHA256 5040fceb87b6c43479b7c219249f2bafe7516a499052c376a9c50f5d52dbe174.
+Forty-second normal startup capture inspected: original storybook and opening US text, App60 FPS / speed100%, no visible asset-error console. This is startup-only evidence, not field/physical-device performance proof. Private source/product/test/native logs, harness patch, hashes
+and captures are in ignored artifacts/animation-interpolation-validation-manifest.json.
+Scoped code/docs commits preserve the shared index and unrelated concurrent work.
+
+Limitations: source operation graph and admitted sampler comparison are local
+evidence; general Gekko NaN payload/exception/alignment parity, original field
+visual/numeric parity and physical New 2DS XL performance remain unmeasured.
+Complete retained Main/platform/linked/facing/GPU ownership and normal NPC
+activation remain open. Same producer pass must survive cooperative yields;
+no arbitrary total cap or fallback evaluation is introduced. Future synchronous
+raw-RAM admission can accelerate nonalias bulk work after full integration and
+hardware measurement. Next connect COMPLETE Main prelude/geometry/optionaltail
+with actual GQR and linked owners, then activate the Game producer/GPU path and
+validate original field actors/events/objects. Read-only integration audit lives
+in ignored artifacts/npc-main-parent-evidence/animation-main-native-integration-notes.txt.
+The full original-area/event/object goal remains active; this is an early slice.
+
 ### Full retained original Main cache replay (2026-10-15)
 
 Code commit 9dea7a5aa515e39b5f03f98456510dd39b2f5441 implements the complete

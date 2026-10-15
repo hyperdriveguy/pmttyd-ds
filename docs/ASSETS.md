@@ -2900,3 +2900,31 @@ and lifetime contract:
 Intelligent Systems rights remain reserved; local provenance tracking grants
 no new license. ISO, original extracted resources, and compiled packs remain
 private and are not committed or distributed by this change.
+
+### 2026-10-15 Main cubic interpolation literals
+
+Read-only original US ISO DOL constants TWO8041fb64+4, NEGATIVE_TWO8041fb98+4,
+THREE8041fbb0+4 are pinned by hashes
+c31425b44a7ed682a3356bf6820141e1584a15c43b6d6793f552e5d4621586f7,
+60f2e332c71bcda81951ea38d3c52d4a9b1a2056b334f99001f41c588afd0892,
+638354a0b185ec05318029e52610c8de48d33523e2b4854e71154187583d1037.
+Original bits40000000/c0000000/40400000 are admitted to the cold image;
+actor executable data adds only NEGATIVE_TWO/THREE because TWO already exists
+through NPC constructor extraction. Original scale/tangent aliases are reused.
+No generated tangent substitute is introduced. Exact source addresses matter.
+
+Exactly four products change among2152: romfs/door-data.json (482214bytes,
+63b84412756ea43faf1a3ec0e2e05a9d2deaa1c3f00101b08934cea9f7a0f1e1),
+romfs/door-data.pmevt (152972,
+90992f21cca1bdcc34c2a0e4cfbb0913c1bba59aadb5e221ef58ba82dc0e26dd),
+romfs/animation-boot/memory.json (10810,
+87fd5c255d0939e0f88599417fbf0c588fa7f8a1e94c716fc9e55e86686c60fd),
+romfs/animation-boot/memory.pmevt (4872,
+aa06fab33e43734314a99f0aa864bdb99041b144e720b4b7b8563419f11cfd62).
+Removing only these new spans reconstructs both prior packs byte-for-byte;
+see ignored animation-interpolation-products.py/assets-after.json. Original
+local-assets/field-map-npc/gor_02.s remains unchanged. No texture scaling,
+geometry reduction, lighting, original US dialogue/story, art/music/SFX change.
+Nintendo/Intelligent Systems original proprietary data remain local development
+only under the existing licensing restrictions. No ISO, extracted PPC/assets,
+compiled packs or binaries are committed.
