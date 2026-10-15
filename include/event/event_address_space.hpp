@@ -42,6 +42,9 @@ public:
     // against arbitrary semantic/provider side effects or concurrent mutation.
     // Fresh native ownership proof; no value cache or pointer escapes.
     bool matchesBytes(uint32_t,const uint8_t*,uint32_t) const;
+    // Closed native data-copy admission, only inside a raw borrow. False has
+    // no stores; owned destination must not physically alias external views.
+    bool copyOwnedRam(uint32_t destination,uint32_t source,uint32_t bytes);
     bool readByte(uint32_t,uint8_t&) const;
     bool readHalf(uint32_t,uint16_t&) const;
     bool readWord(uint32_t,uint32_t&) const;

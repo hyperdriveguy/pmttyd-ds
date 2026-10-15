@@ -80,6 +80,23 @@ void runEventRamAccessFixture(const char* root){
  // A subsequent remap cannot hit a cached pointer from the ended scope.
  assert(m.unregisterRam(Base) && m.registerRam(Base,std::vector<uint8_t>(1024,0x6a)));
  assert(m.withRawRamAccess([&](auto&){uint32_t v=0;return m.readWord(Base,v) && v==0x6a6a6a6a;}));
+ // Whole-copy fast path requires an active borrow and an owned destination.
+ assert(!m.copyOwnedRam(Base+64,Base,16));
+ std::vector<uint8_t> aliasStorage(64,0xa5);auto* aliasBytes=aliasStorage.data();
+ assert(m.registerRam(0x8a000000,std::move(aliasStorage)) && m.registerExternalRam(0x8b000000,aliasBytes+8,16));
+ assert(m.withRawRamAccess([&](auto&){
+  uint8_t v=0;
+  assert(m.copyOwnedRam(Base+64,External,16));
+  for(unsigned i=0;i<16;++i){assert(m.readByte(Base+64+i,v) && v==aliased[i]);}
+  assert(!m.copyOwnedRam(Base+65,Base+64,16) && !m.copyOwnedRam(Base,Base,4));
+  assert(!m.copyOwnedRam(External,Base,16) && !m.copyOwnedRam(Base,External,0));
+  assert(!m.copyOwnedRam(0xfffffffe,Base,4) && !m.copyOwnedRam(Base,0xfffffffe,4));
+  assert(!m.copyOwnedRam(Base,0x8c000000,4) && !m.copyOwnedRam(0x81000038,Base,4));
+  assert(!m.copyOwnedRam(0x8a000000,Base,16) && !m.copyOwnedRam(0x8a000008,0x8b000000,8));
+  for(unsigned i=0;i<64;++i)assert(aliasBytes[i]==0xa5);
+  return true;
+ }));
+ assert(m.unregisterExternalRam(0x8b000000) && m.unregisterRam(0x8a000000));
  assert(m.importScripts(scripts) && m.unregisterExternalRam(External));
 }
 int main(){runEventRamAccessFixture("romfs");}

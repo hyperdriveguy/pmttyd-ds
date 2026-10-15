@@ -88,6 +88,34 @@ void actualCache(){
  for(unsigned c=0;c<5;++c)for(unsigned i=0;i<expected[c].size();++i){uint8_t value;assert(memory.readByte(pose->word(PO[c])+i,value) && value==expected[c][i]);}
  for(unsigned off:{0x20u,0x24u,0x84u,0x28u,0x2cu,0x34u,0x38u,0x80u,0x30u})for(unsigned b=0;b<4;++b)assert(pose->state[off+b]==scalar[off+b]);
  pose->word(0x18,uint32_t(epoch>>32));pose->word(0x1c,uint32_t(epoch));
+ // Native admission accelerates only complete, disjoint owned data copies.
+ constexpr uint32_t from=0x83300000,to=0x83400000;
+ std::vector<uint8_t> original(32);for(unsigned i=0;i<32;++i)original[i]=uint8_t(i+1);
+ assert(memory.registerRam(from,original) && memory.registerRam(to,std::vector<uint8_t>(32,0xa5)));
+ auto fast=AnimationMainReplayBinding::bind(pool,memory,*aliases,[&](){return current;},[&](){return gqr;},true);assert(fast && fast->services().copy && !binding->services().copy);
+ auto fs=fast->services();assert(!fs.copy(fs.user,0x80005634,to,from,8));
+ assert(memory.withRawRamAccess([&](auto&){
+  for(unsigned n:{4u,5u,7u,8u}){
+   for(unsigned i=0;i<32;++i)assert(memory.writeByte(to+i,0xa5));
+   AnimationReplayCopy c;c.function=0x80005634;c.source=from;c.destination=to;c.bytes=n;
+   assert(advanceAnimationReplayCopy(fs,c) && !c.active);
+   for(unsigned i=0;i<32;++i){uint8_t v;assert(memory.readByte(to+i,v) && v==(i<(n/4)*4?original[i]:0xa5));}
+  }
+  assert(fs.copy(fs.user,0x8000519c,to,from,13));
+  for(unsigned n:{0u,1u,2u,3u})assert(!fs.copy(fs.user,0x80005634,to,from,n));
+  uint32_t before;assert(memory.readWord(to,before));
+  assert(!fs.copy(fs.user,0,to,from,4) && !fs.copy(fs.user,0x8000519c,to,from,0));
+  assert(!fs.copy(fs.user,0x80005634,to+1,to,4) && !fs.copy(fs.user,0x80005634,work,from,4));
+  assert(!fs.copy(fs.user,0x80005634,0x80415dc0,from,4) && !fs.copy(fs.user,0x80005634,to,0x8f000000,4));
+  assert(read(to)==before);
+  AnimationReplayCopy zero;zero.function=0x80005634;zero.source=from;zero.destination=to;zero.bytes=3;
+  assert(!advanceAnimationReplayCopy(fs,zero) && zero.active && zero.remaining==0xffffffff);
+  return true;
+ }));assert(fast->bulkCopies()==5);
+ // Changing the optional callback cannot resume an existing parent cursor.
+ AnimationMainReplayCursor identity;AnimationMainReplayResult unchanged{99,99,99,{}};auto ordinary=binding->services();auto blocked=ordinary;blocked.word=nullptr;
+ assert(!advanceAnimationMainReplay(input,blocked,identity,unchanged));const auto calls=identity.phase;blocked.copy=fs.copy;
+ assert(!advanceAnimationMainReplay(input,blocked,identity,unchanged) && identity.phase==calls && unchanged.current==99);
  current=false;AnimationMainReplayCursor wait;assert(!advanceAnimationMainReplay(input,binding->services(),wait,result) && wait.phase==0);assert(!AnimationMainReplayBinding::bind(pool,memory,*aliases,[](){return true;},{}));
 }
 }

@@ -46,6 +46,17 @@ public:
   if((a>=b?a-b:b-a)<size)return false;
   std::memcpy(to,from,size);return true;
  }
+ // A stricter lane for native interpreter data copies: destination belongs to
+ // owned RAM and cannot alias any external owner/record/file backing.
+ bool copyOwned(uint32_t destination,uint32_t source,uint32_t size){
+  if(!size || uint64_t(destination)+size>0x100000000ull || uint64_t(source)+size>0x100000000ull || (destination>=source?uint64_t(destination)-source:uint64_t(source)-destination)<size)return false;
+  bool owned=false;for(const auto& r:owner_.ram_)if(destination>=r.base && uint64_t(destination-r.base)+size<=r.bytes.size()){owned=true;break;}if(!owned)return false;
+  auto* to=owner_.rawRamSpan(destination,size);const auto* from=owner_.rawRamSpan(source,size);if(!to || !from)return false;
+  const uintptr_t a=reinterpret_cast<uintptr_t>(to),b=reinterpret_cast<uintptr_t>(from);if((a>=b?a-b:b-a)<size)return false;
+  for(const auto& r:owner_.external_){const uintptr_t p=reinterpret_cast<uintptr_t>(r.bytes);if(a>=p?uint64_t(a-p)<r.size:uint64_t(p-a)<size)return false;}
+  std::memcpy(to,from,size);return true;
+ }
+
 private:
  friend class EventAddressSpace;
  explicit RawRamAccess(EventAddressSpace& owner):owner_(owner){}

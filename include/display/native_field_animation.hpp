@@ -6,7 +6,7 @@ namespace ttyd {
 // Native simulation service over the real cold VM, source files and one pose
 // namespace. Creation precedes Mario's three Entries. Copies of the typed pool
 // deliberately do not inherit these borrowing services.
-class NativeFieldAnimation:public std::enable_shared_from_this<NativeFieldAnimation> {
+class NativeFieldAnimation {
 public:
  static std::shared_ptr<NativeFieldAnimation> create(const char* root,std::shared_ptr<NativeFileCache>,const EventNativePlatform&);
  ~NativeFieldAnimation();

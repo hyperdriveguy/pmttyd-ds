@@ -7,14 +7,16 @@ namespace ttyd {
 // All must outlive suspended cursors. current and gqr4 are pure/non-reentrant.
 class AnimationMainReplayBinding {
 public:
- static std::unique_ptr<AnimationMainReplayBinding> bind(std::shared_ptr<BattlePosePool>,EventAddressSpace&,const AnimationPoolMemory&,std::function<bool()> current,std::function<std::optional<uint32_t>()> gqr4);
+ static std::unique_ptr<AnimationMainReplayBinding> bind(std::shared_ptr<BattlePosePool>,EventAddressSpace&,const AnimationPoolMemory&,std::function<bool()> current,std::function<std::optional<uint32_t>()> gqr4,bool nativeCopies=false);
+ uint64_t bulkCopies() const{return bulkCopies_;}
  bool available() const;
  AnimationMainReplayServices services();
  AnimationMainReplayBinding(const AnimationMainReplayBinding&)=delete;
  AnimationMainReplayBinding& operator=(const AnimationMainReplayBinding&)=delete;
 private:
- AnimationMainReplayBinding(std::shared_ptr<BattlePosePool>,EventAddressSpace&,const AnimationPoolMemory&,std::function<bool()>,std::function<std::optional<uint32_t>()>);
+ AnimationMainReplayBinding(std::shared_ptr<BattlePosePool>,EventAddressSpace&,const AnimationPoolMemory&,std::function<bool()>,std::function<std::optional<uint32_t>()>,bool);
  std::shared_ptr<BattlePosePool> pool_;EventAddressSpace& memory_;const AnimationPoolMemory& aliases_;
+ bool nativeCopies_=false;uint64_t bulkCopies_=0;
  std::function<bool()> current_;std::function<std::optional<uint32_t>()> gqr4_;
 };
 }

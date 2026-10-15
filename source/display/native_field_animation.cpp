@@ -23,7 +23,7 @@ std::shared_ptr<NativeFieldAnimation> NativeFieldAnimation::create(const char* r
  n->pool_->nativeRelease_=[](void* u,int32_t h){return static_cast<NativeFieldAnimation*>(u)->release(h);};
  n->pool_->nativeClock_=[](const void* u,BattlePoseClock& c){return static_cast<const NativeFieldAnimation*>(u)->clock(c);};if(!n->configurePresentation({}))return {};return n;
 }
-NativeFieldAnimation::~NativeFieldAnimation(){if(pool_ && pool_->nativeProvider_==this){pool_->nativeEntry_=nullptr;pool_->nativeClock_=nullptr;pool_->nativeRelease_=nullptr;pool_->nativeProvider_=nullptr;}}
+NativeFieldAnimation::~NativeFieldAnimation(){if(pool_ && pool_->nativeProvider_==this){pool_->nativeEntry_=nullptr;pool_->nativeClock_=nullptr;pool_->nativeRelease_=nullptr;pool_->nativeProvider_=nullptr;}process_.reset();}
 bool NativeFieldAnimation::ready() const{return process_ && process_->ready();}
 bool NativeFieldAnimation::clock(BattlePoseClock& out) const{
  if(!ready())return false;
@@ -63,8 +63,10 @@ bool NativeFieldAnimation::configurePresentation(std::shared_ptr<const CameraMan
  if(producerPending())return false;
  if(process_->mainConfiguration()==configuredMain_ && configuredMain_ && cameras_==cameras)return true;
  AnimationFacingAddressPolicy addresses;addresses.base=0x81900000;addresses.unmapped=[this](uint32_t a,uint32_t n){return process_->vm().memory.unmappedRange(a,n);};
- std::weak_ptr<NativeFieldAnimation> weak=shared_from_this();
- if(!process_->configureMain(cameras,addresses,[weak](uint64_t pass){auto n=weak.lock();return n && n->marioActive_ && n->marioPass_==pass;}))return false;
+ // The uniquely owned process retires in our destructor body while request
+ // state is still live. Its copied pass predicates borrow this owner; no cycle
+ // or per-primitive weak-control-block synchronization is needed.
+ if(!process_->configureMain(cameras,addresses,[this](uint64_t pass){return marioActive_ && marioPass_==pass;}))return false;
  cameras_=std::move(cameras);configuredMain_=process_->mainConfiguration();return true;
 }
 bool NativeFieldAnimation::mario(const MarioPresentation& mario,const std::array<int32_t,3>& handles,unsigned budget){

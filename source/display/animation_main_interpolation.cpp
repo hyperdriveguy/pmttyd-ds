@@ -11,7 +11,7 @@ bool less(uint32_t a,uint32_t b){return (a^0x80000000u)<(b^0x80000000u);}
 int signedByte(uint32_t v){return v<128?int(v):int(v)-256;}
 bool same(const AnimationMainEvaluation& a,const AnimationMainEvaluation& b){return a.work==b.work && a.pool==b.pool && a.pose==b.pose && a.model==b.model && a.timeline==b.timeline && a.positions==b.positions && a.normals==b.normals;}
 bool same(const AnimationMainReplayResult& a,const AnimationMainReplayResult& b){return a.current==b.current && a.next==b.next && bits(a.fraction)==bits(b.fraction) && a.counts==b.counts;}
-bool same(const AnimationMainReplayServices& a,const AnimationMainReplayServices& b){return a.user==b.user && a.word==b.word && a.store==b.store && a.byte==b.byte && a.storeByte==b.storeByte && a.quantized==b.quantized;}
+bool same(const AnimationMainReplayServices& a,const AnimationMainReplayServices& b){return a.user==b.user && a.word==b.word && a.store==b.store && a.byte==b.byte && a.storeByte==b.storeByte && a.quantized==b.quantized && a.copy==b.copy;}
 bool same(const AnimationMainTimeServices& a,const AnimationMainTimeServices& b){return a.user==b.user && a.word==b.word && a.store==b.store && a.doubleWord==b.doubleWord && a.divide==b.divide && a.convertUnsigned==b.convertUnsigned && a.truncate==b.truncate;}
 }
 bool advanceAnimationMainInterpolation(const AnimationMainEvaluation& input,const AnimationMainReplayResult& captured,const AnimationMainReplayServices& s,AnimationMainInterpolationCursor& c){

@@ -7,7 +7,7 @@ namespace ttyd {
 namespace {constexpr uint32_t Counts[]={0xf0,0xf8,0x13c,0x140,0x12c},Outputs[]={0x4c,0x54,0x5c,0x64,0x6c},Widths[]={12,12,1,4,24};}
 AnimationMeshPublication::AnimationMeshPublication(AnimationStartupProcess& p,std::function<bool(uint64_t)> current):process_(p),pool_(p.pool_),aliases_(*p.animationMemory()),current_(std::move(current)){}
 AnimationMeshPublication::~AnimationMeshPublication()=default;
-bool AnimationMeshPublication::available() const{const auto* p=pool_->slot(handle_);return active_ && current_(pass_) && process_.ready() && process_.animationMemory()==&aliases_ && aliases_.aliases(*pool_,process_.vm().memory) && p && p->nativeGeneration==generation_ && p->resource==resource_ && p->sourceBuffers==buffers_;}
+bool AnimationMeshPublication::available() const{const auto* p=pool_->slot(handle_);return active_ && current_(pass_) && (captureReady_ || process_.ready()) && process_.animationMemory()==&aliases_ && aliases_.aliases(*pool_,process_.vm().memory) && p && p->nativeGeneration==generation_ && p->resource==resource_ && p->sourceBuffers==buffers_;}
 bool AnimationMeshPublication::reserve(uint32_t handle,uint64_t pass){
  if(active_)return handle==handle_ && pass==pass_ && available();
  if(!current_(pass) || !process_.ready() || handle>=256)return false;
@@ -34,9 +34,13 @@ bool AnimationMeshPublication::capture(unsigned& visits,unsigned budget){
  // Only reads/current checks run here. Never hold this lease through static
  // geometry admission, assembly, source evaluation or a caller-visible yield.
  return process_.vm().memory.withRawRamAccess([&](auto&){
+ if(!process_.ready())return false;
+ captureReady_=true;
+ struct ResetReady {bool& value;~ResetReady(){value=false;}} resetReady{captureReady_};
  for(;visits<budget;++visits){
   if(phase_==15 || phase_==30 || phase_==31)return true;
-  if(!available())return false;
+  // Each word/byte primitive checks fresh ownership. Pure cursor transitions
+  // have no external effects and need no duplicate check in this read slice.
   switch(phase_){
  case 1:if(!word(0x80415dc0,work_))return false;++phase_;break;
  case 2:if(!word(work_,models_))return false;++phase_;break;

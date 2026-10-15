@@ -9,11 +9,12 @@ uint32_t bits(float f){uint32_t b;std::memcpy(&b,&f,4);return b;}
 float single(float f){volatile float x=f;return x;}
 bool less(uint32_t a,uint32_t b){return (a^0x80000000u)<(b^0x80000000u);}
 bool same(const AnimationMainEvaluation& a,const AnimationMainEvaluation& b){return a.work==b.work && a.pool==b.pool && a.pose==b.pose && a.model==b.model && a.timeline==b.timeline && a.positions==b.positions && a.normals==b.normals;}
-bool same(const AnimationMainReplayServices& a,const AnimationMainReplayServices& b){return a.user==b.user && a.word==b.word && a.store==b.store && a.byte==b.byte && a.storeByte==b.storeByte && a.quantized==b.quantized;}
+bool same(const AnimationMainReplayServices& a,const AnimationMainReplayServices& b){return a.user==b.user && a.word==b.word && a.store==b.store && a.byte==b.byte && a.storeByte==b.storeByte && a.quantized==b.quantized && a.copy==b.copy;}
 // One original copy load/store iteration per visit. remaining0 after setup is
 // intentional for memcpy_as4: its first body executes before CTR decrements.
 }
 bool advanceAnimationReplayCopy(const AnimationMainReplayServices& s,AnimationReplayCopy& c){
+ if(!c.active && s.copy && s.copy(s.user,c.function,c.destination,c.source,c.bytes)){c={};return true;}
  if(!c.active){c.active=true;c.remaining=c.function==0x80005634?c.bytes>>2:c.bytes;if(c.function==0x8000519c){if(!c.bytes){c={};return true;}c.backward=c.source<c.destination;if(c.backward){c.source+=c.bytes-1;c.destination+=c.bytes-1;}}}
  if(!c.loaded){
   if(c.function==0x80005634){if(!s.word)return false;auto v=s.word(s.user,c.source);if(!v)return false;c.value=*v;}

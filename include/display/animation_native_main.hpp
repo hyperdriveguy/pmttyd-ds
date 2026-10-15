@@ -32,6 +32,7 @@ public:
  uint64_t pass() const{return pass_;}
  uint32_t handle() const{return handle_;}
  uint64_t frameAllocations() const{return allocations_;}
+ uint64_t bulkCopies() const{return replay_?replay_->bulkCopies():0;}
  uint32_t phase() const;
  AnimationNativeMainProgress progress() const;
  AnimationNativeMain(const AnimationNativeMain&)=delete;

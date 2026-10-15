@@ -4,6 +4,7 @@
 // fields precede RAM. 0x100000000 is the exclusive32-bit address ceiling.
 // Byte/half/word aliases update the same semantic state; this is not host RAM.
 namespace ttyd {
+bool EventAddressSpace::copyOwnedRam(uint32_t destination,uint32_t source,uint32_t bytes){return rawRamCache_ && rawRamCache_->copyOwned(destination,source,bytes);}
 bool EventAddressSpace::matchesBytes(uint32_t a,const uint8_t* expected,uint32_t n) const {
     if(!expected || !n || uint64_t(a)+n>0x100000000ULL)return false;
     if(const auto* p=rawRamSpan(a,n))return !std::memcmp(p,expected,n);

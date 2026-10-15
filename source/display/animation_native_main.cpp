@@ -74,7 +74,7 @@ bool AnimationNativeMain::advance(uint32_t handle,uint64_t pass,unsigned visits)
  }else if(handle_!=handle || pass_!=pass)return false;
  if(!available())return false;
  if(!time_)time_=AnimationMainTimeBinding::bind(pool_,process_.vm().memory,aliases_,[this](){return stable();});
- if(!replay_)replay_=AnimationMainReplayBinding::bind(pool_,process_.vm().memory,aliases_,[this](){return stable();},[this](){return process_.quantization().read(4);});
+ if(!replay_)replay_=AnimationMainReplayBinding::bind(pool_,process_.vm().memory,aliases_,[this](){return stable();},[this](){return process_.quantization().read(4);},true);
  if(!time_ || !replay_)return false;
  for(unsigned i=0;i<visits;++i){
   if(!available())return false;

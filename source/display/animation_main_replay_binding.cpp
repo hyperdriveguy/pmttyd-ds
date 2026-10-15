@@ -1,10 +1,10 @@
 #include "animation_main_replay_binding.hpp"
 #include "event_address_space.hpp"
 namespace ttyd {
-AnimationMainReplayBinding::AnimationMainReplayBinding(std::shared_ptr<BattlePosePool> p,EventAddressSpace& m,const AnimationPoolMemory& a,std::function<bool()> current,std::function<std::optional<uint32_t>()> gqr):pool_(std::move(p)),memory_(m),aliases_(a),current_(std::move(current)),gqr4_(std::move(gqr)){}
-std::unique_ptr<AnimationMainReplayBinding> AnimationMainReplayBinding::bind(std::shared_ptr<BattlePosePool> p,EventAddressSpace& m,const AnimationPoolMemory& a,std::function<bool()> current,std::function<std::optional<uint32_t>()> gqr){
+AnimationMainReplayBinding::AnimationMainReplayBinding(std::shared_ptr<BattlePosePool> p,EventAddressSpace& m,const AnimationPoolMemory& a,std::function<bool()> current,std::function<std::optional<uint32_t>()> gqr,bool nativeCopies):pool_(std::move(p)),memory_(m),aliases_(a),current_(std::move(current)),gqr4_(std::move(gqr)){nativeCopies_=nativeCopies;}
+std::unique_ptr<AnimationMainReplayBinding> AnimationMainReplayBinding::bind(std::shared_ptr<BattlePosePool> p,EventAddressSpace& m,const AnimationPoolMemory& a,std::function<bool()> current,std::function<std::optional<uint32_t>()> gqr,bool nativeCopies){
  if(!p || !current || !gqr)return {};
- auto result=std::unique_ptr<AnimationMainReplayBinding>(new AnimationMainReplayBinding(std::move(p),m,a,std::move(current),std::move(gqr)));return result->available()?std::move(result):nullptr;
+ auto result=std::unique_ptr<AnimationMainReplayBinding>(new AnimationMainReplayBinding(std::move(p),m,a,std::move(current),std::move(gqr),nativeCopies));return result->available()?std::move(result):nullptr;
 }
 bool AnimationMainReplayBinding::available() const{return current_() && aliases_.aliases(*pool_,memory_);}
 AnimationMainReplayServices AnimationMainReplayBinding::services(){
@@ -13,6 +13,15 @@ AnimationMainReplayServices AnimationMainReplayBinding::services(){
  s.store=[](void* u,uint32_t a,uint32_t v){auto& b=*static_cast<AnimationMainReplayBinding*>(u);return b.available() && b.memory_.writeWord(a,v);};
  s.byte=[](void* u,uint32_t a)->std::optional<uint8_t>{auto& b=*static_cast<AnimationMainReplayBinding*>(u);uint8_t v;return b.available() && b.memory_.readByte(a,v)?std::optional<uint8_t>(v):std::nullopt;};
  s.storeByte=[](void* u,uint32_t a,uint8_t v){auto& b=*static_cast<AnimationMainReplayBinding*>(u);return b.available() && b.memory_.writeByte(a,v);};
+ if(nativeCopies_)s.copy=[](void* u,uint32_t function,uint32_t destination,uint32_t source,uint32_t bytes){
+  auto& b=*static_cast<AnimationMainReplayBinding*>(u);if(!b.available())return false;
+  if(function==0x80005634){bytes=(bytes>>2)*4u;if(!bytes)return false;}else if(function!=0x8000519c || !bytes)return false;
+  // Owned scratch excludes external W/R/file/owner storage. The original W
+  // root is owned RAM too, so exclude its guest range explicitly.
+  if(uint64_t(destination)<0x80415dc4ull && 0x80415dc0ull<uint64_t(destination)+bytes)return false;
+  if(!b.memory_.copyOwnedRam(destination,source,bytes))return false;
+  ++b.bulkCopies_;return true;
+ };
  s.quantized=[](void* u,uint32_t a)->std::optional<float>{auto& b=*static_cast<AnimationMainReplayBinding*>(u);if(!b.available())return {};auto q=b.gqr4_();if(!q || *q!=0x00060006)return {};uint8_t v;if(!b.memory_.readByte(a,v))return {};const int value=v<128?int(v):int(v)-256;return float(value);};return s;
 }
 }

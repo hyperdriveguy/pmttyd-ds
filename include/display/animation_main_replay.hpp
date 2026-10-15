@@ -10,6 +10,10 @@ struct AnimationMainReplayServices {
  // Actual GQR4 W1 source load. A native decoder must prove its platform state;
  // a missing/wrong quantization owner is unavailable, never assumed signed8.
  std::optional<float> (*quantized)(void*,uint32_t)=nullptr;
+ // Optional closed native copy child. True completes all effects; false has
+ // NO effects and admits the original scalar continuation. Producer guards
+ // must remain invariant under the admitted raw data copy. Default absent.
+ bool (*copy)(void*,uint32_t function,uint32_t destination,uint32_t source,uint32_t bytes)=nullptr;
 };
 struct AnimationReplayCopy {
  bool active=false,backward=false,loaded=false;uint32_t function=0,destination=0,source=0,bytes=0,remaining=0,value=0;
