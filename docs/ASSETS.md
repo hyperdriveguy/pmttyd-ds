@@ -1705,3 +1705,31 @@ to the previous shared-pose manifest. Original allocator fixture reads actual
 MODEL counts and same typed pose bytes; test W/file/holder/scratch views do not
 certify file loading or original startup. ISO remains read-only; no generated
 assets committed.
+
+## Pouch/field-session documentation validation inputs (2026-10-14)
+
+artifacts/pouch-selection-code-documentation-validation/source starts from
+accepted Trouble Center documentation RomFS/evidence. It overlays 25 new original
+player products and updated Frankly metadata only after SHA256 matches
+artifacts/shared-pose-validation-manifest.json and artifacts/shared-pose-source.
+This retains a_mario/a_mario_r/e_mario/c_pkr complete MODEL/TPL/descriptors,
+bounded CPU clips plus true descriptor0, and matching canonical Goombella/Frankly
+GPU atlases. Conversion choices are unchanged from the shared-pose asset entry.
+
+It also copies door-data.pmevt/json from artifacts/source-checks/trouble-world
+only after length/SHA256 matches artifacts/area-npc-leaves-assets-after.json.
+The 152228-byte pack retains nine original hash-pinned DOL actor-event string/
+numeric views (128 payload bytes), including actual me/default-init dependencies.
+No PPC/BSS or invented success records were added. The new manifest journals all
+28 product overlays and accepted hashes. Initial Python fixture failure exposed
+the metadata's relocated PNG path; private atlas evidence was copied after matching
+226126 bytes/SHA256 9fb226b8d49f4a8ce80301a75f96eba44728e782de0454f660e6aabd71c96bf3.
+
+Cache assembly needed no ISO read, new original conversion, editable import or
+shared cache write. Existing Python player-converter validation independently
+reads the original ISO read-only and rebuilds four banks into empty temporary
+directories, then discards them. Other large local-assets dependencies remain
+shared read inputs; mutable evidence directories are private copies. Original
+Nintendo/Intelligent Systems rights remain reserved; private validation copies
+confer no new license or redistribution rights. No original binary/ISO bytes
+were committed.

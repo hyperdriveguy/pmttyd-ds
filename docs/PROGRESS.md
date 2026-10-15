@@ -9146,3 +9146,52 @@ Normal isolated40s Azahar boot exits0. Inspected original storybook/US English
 capture artifacts/azahar-pose-buffer-normal/boot.png (sample60AppFPS/100%).
 Only generated isolated profile/saves used; user settings/saves untouched. No
 original GPU/pixel/Gekko numeric or physical3DS performance parity claim.
+
+## 2026-10-14 — Pouch, selection, actor/setup and shared poses documented
+
+Added/reviewed inline notes in 31 C++ implementation/header files: 18 inventory
+files plus 13 field files covering setup admission, actor leaves/cursors, injected
+pose pools, typed scalar/timestamp/shape aliases, registry copying and area cursor
+lifetime. Added [pouch/selection](code/pouch-selection.md) and [field-session](code/field-session.md)
+guides; corrected older NPC/map guides and comments that described legacy visible
+workspace seeds as fresh source descriptor-zero defaults. Explained narrowing
+before coin clamp, highest-gap insertion, remove/revision result domains, source
+window sequence/order and stale busy bits, per-output deferred writes, negative
+left/right remainders and true shared pose identity. All 31 preserve executable
+tokens. Main code/docs commit 3e84f471.
+
+Validation freezes baseline 31aa8acd99a9ab895abbf579fb1a6fbd0654d34d plus documentation in
+artifacts/pouch-selection-code-documentation-validation/source. Audited 3635
+tracked files: zero unexpected changes; 36 documented files match frozen hashes.
+Recorded live annotation snapshots are separately checked. A preexisting header
+reorder and later pending wander integration in setup header/source and area
+source were preserved/excluded. Two actor comments were relocated beside their
+actor declarations in the moving worktree without changing executable tokens;
+reviewed live versions/hashes are retained. Only owned annotations were staged.
+No combined-moving-tree or pending-wander validation is claimed.
+
+Final CMAKE_BUILD_PARALLEL_LEVEL=4 make test passes 366/366 C++ in 39.93s
+and 201/201 Python in 30.819s, zero skipped. make all -o assets-ready -j4
+SOUNDTRACK=gamecube exits 0. host.log/native.log, initial failed host log and binary/
+source hashes are recorded in manifest.json. Initial host gate passed366 C++ but
+had one Python missing-atlas-evidence error; restored the hash-matched private
+Frankly PNG at metadata's new path and reran the complete host gate. No tests
+were disabled. All 42 local guide/index links resolve. Existing compiler/
+Pillow warnings remain; no emulator/profile/save changes or new measured
+hardware/timing/pixel/Gekko numerical fidelity claims.
+
+Private cache starts from accepted Trouble Center documentation inputs. It
+hash-verifies and overlays 25 new player products plus Frankly metadata from
+shared-pose validation, and 2 original actor-data products from actor-leaf validation.
+The latter pack is 152228bytes and adds original nine DOL views (128 payload bytes).
+Relocated atlas evidence is 226126 bytes with recorded SHA256. Cache assembly makes
+no new original-asset conversion/import/shared write. Python's existing player
+converter fixture does rebuild the four original banks in empty temporary dirs
+from the read-only ISO; its unchanged choices/licensing remain in generated
+metadata and [asset notes](ASSETS.md). Native regeneration was deliberately skipped.
+
+Next: pending packed wander integration and any subsequent field changes; remaining
+battle, message/inventory integrations, story, effect/audio, platform and port tooling.
+Re-audit current code against recorded snapshots rather than treating a file-count
+inventory as semantic completion. Full documentation and the remake remain
+incomplete; documentation goal stays active.
