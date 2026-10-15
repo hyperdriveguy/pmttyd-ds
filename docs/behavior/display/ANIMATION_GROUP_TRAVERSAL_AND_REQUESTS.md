@@ -71,9 +71,11 @@ If special branch not selected,read CURRENT global pose+154 callback. Nonnull
 calls(callbackData=pose+158,groupIndex,currentModelingMatrix);no prepared pass/
 fraction args. Then call renderProc(word[G+48],currentKey)0x8003c884.
 No local shape−1 guard:the render service owns that domain. Recursively call
-Disp(parent=CURRENT group,child=G+44,currentKey,nextKey,ORIGINALpass,fraction).
+Disp(parent=CURRENT group,child=G+44,currentKey,nextKey,fraction).
 Then pop level/pointer exactly as Eval. ALWAYS call sibling with parent=CURRENT
-group and unchanged retained sample/pass/fraction,including invisible nodes.
+group and unchanged retained sample/fraction,including invisible nodes.
+No original-pass argument is prepared at either recursive call. Material pass
+belongs to work/callback state; typed adapter metadata is separate.
 Callbacks may change globals;captured G remains the source of child/sibling IDs.
 
 ## Concrete resource and fidelity boundaries

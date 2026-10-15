@@ -1428,3 +1428,7 @@ Original battle menu native resource/queue owners:
 - [Retained packed weapon cost](battle/RETAINED_PACKED_WEAPON_COST.md).
 - [Original process font startup](display/NATIVE_UI_STARTUP_FONT_PREFIX.md).
 - [Native weapon icon residency](display/NATIVE_WEAPON_SOURCE_ICON_RESIDENCY.md).
+
+- [Actual-VM NPC Inner parent and CPU binding](display/NATIVE_ACTUAL_VM_NPC_INNER.md):
+  complete retained local parent/map/ring, actual Main/modeling state and exact
+  traversal ABI; GPU/material/cache/traversal backends remain explicit.

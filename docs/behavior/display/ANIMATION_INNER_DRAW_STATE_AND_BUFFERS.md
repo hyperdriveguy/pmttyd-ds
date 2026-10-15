@@ -10,8 +10,8 @@ No original instructions executed;GX calls are requests,not validated images.
 
 Capture current resource D,animation descriptor T,current sample index c=P+28,
 next n=P+2c and fraction t=P+30 before callbacks/cache-miss evaluation.
-T==null returns immediately. Then CURRENT W+10c nonzero and P+c==0 returns;
-CURRENT W+10c zero and P+c==1 returns. Other pose modes are not rejected by
+T==null returns immediately. Capture mode from INITIAL W+10c once, then read P+c once. Nonzero mode
+and P+c==0 returns; zero mode and P+c==1 returns. Other pose modes are not rejected by
 these two exact tests. Apply ORIGINAL pass/resource admission exactly as in
 wrapper,including V2/resource mask1 exception. Rejection skips all later work.
 
@@ -28,7 +28,8 @@ condition succeeds:
 4. Flags mask0x1000 CLEAR AND freshly loaded current map-group halfword+4 mask4
    SET AND unsigned byte group+1d !=255.
 
-Otherwise0. Map base through0x8041e660,index0x8041e664,record stride0x2f4.
+Otherwise0. Each group query loads index0x8041e664 BEFORE base0x8041e660;
+record stride0x2f4.
 No map/index/null validation,no color mutation,no float conversion or callback.
 It reloads group state separately for the last two predicates. Return nonzero
 forces effective GX pass E=3;zero retains original V. Resource admission is NOT
@@ -53,16 +54,19 @@ Then perform [inner facing/matrix](ANIMATION_INNER_DRAW_FACING.md) and late
 
 Set modeling level0 and pointer0x803d8e70;Copy(effective M,modelingBase).
 Publish CURRENT W+18=P,W+1c=captured T,W+20=captured D,separate W reloads.
-If CURRENT W+e8!=0:flush W+f8 for12*CURRENT resource positionCount,
-then W+fc for12*CURRENT resource auxiliaryCount. Otherwise flush P+4c then
-P+54 for those CURRENT resource lengths. Calls DCFlushRange0x80296a54 are
+Capture selector from CURRENT W+e8 once for both flushes. Nonzero selects
+W+f8 then freshly resolved W+fc; zero selects P+4c then P+54. Each call reads
+resource index and model table before the output pointer, then resolves the
+remaining file/holder/MODEL and its current position/auxiliary count. Calls DCFlushRange0x80296a54 are
 unconditional with respect to count;there is no local zero/null/negative guard.
 Re-resolve resource after first flush;do not assume captured D counts for both.
 Call GXInvalidateVtxCache0x802b4df4 after both flushes.
 
-Finally request dispProc(parent=−1,group=word[CAPTURED D+144]−1,
-current=captured c,next=captured n,pass=ORIGINAL V,f1=captured t) at8003c420.
-Effective GX pass E is not substituted for traversal's original V. A preceding
+Finally reload word[CAPTURED D+144] after invalidation and request
+dispProc8003c4bc at call site8003c420: r3=−1 parent, r4=groupCount−1,
+r5=captured c, r6=captured n, f1=captured t. No original-pass argument is
+prepared. Effective pass belongs to callback/work state; typed adapter pass
+metadata is not this source ABI. A preceding
 Main cache miss does not refresh these captured sample/resource values.
 Group/node/render/material scheduling is specified in
 [group traversal](ANIMATION_GROUP_TRAVERSAL_AND_REQUESTS.md);render/material

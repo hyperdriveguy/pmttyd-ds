@@ -16110,3 +16110,77 @@ changed battle code,newer animation/field/party/font/window/resource/raster/star
 integrations and tools. Hash inventory is only a tracked source/include C++/
 header/PICA review aid; tools/untracked additions need separate audit and matching
 hashes do not prove semantic completeness. Broad documentation/remake goals active.
+
+## 2026-10-15 — Original actual-VM NPC Inner parent and CPU ownership
+
+Completed finite parent increment, code `78265b16fba5f8a227fbc6f63c4a676c386c522b`.
+[Contract](behavior/display/NATIVE_ACTUAL_VM_NPC_INNER.md). Original unlinked
+Draw can install an owned actual-VM Inner binding. The complete local parent
+captures source descriptor/resource/sample values, applies exact mode/pass/map
+admission, retains material/GX/facing effects, performs inline shared-ring work,
+resumes real late Main, copies modeling state and issues ordered flush/cache/
+traversal requests. Missing GPU/material/cache/group/shape implementations remain
+explicit backend holds. This does not activate normal Game NPC GPU scheduling.
+
+Independent read-only source review corrected a contract error: call site8003c420
+calls dispProc8003c4bc with parent/group/current/next/fraction and no original-pass
+argument. Corrected Inner/group contracts and qualified existing typed battle
+metadata. Initial work mode and flush selector are captured once at their own
+source boundaries; independent fresh resource/pointer/count queries retain their
+original ordering. Ring totals/end wrap32 with signed compares; exact capacity
+and oversize Main/cleanup paths are covered. Pre-Main descriptor/MODEL/sample
+captures survive Main; traversal group count is freshly read after invalidation.
+
+Native owner supplies original cold modeling BSS once, actual BE stores, retained
+six-pair CPU matrix Copy and real same-pass Main. Completed pairs survive a later
+missing pair; incomplete raw RAM or nonfinite input holds at the native adapter.
+This finite-domain adaptation is not an original source guard or proof of SDK
+GQR0/FPSCR/subnormal/NaN equivalence. Facing camera bindings now follow camera
+owner/configuration changes between passes. Native Draw/Main/provider exclusion,
+source lifetime and current-owner guards stay pinned. Fixed state avoids per-draw
+VM/mesh construction; no physical hardware/FPS gain is asserted.
+
+Validation froze accepted `2d2badf5239fcf1dba216f53565a6feb8306d40e` plus ten owned paths in
+`artifacts/source-checks/npc-wander`; source tree `5b40c94ec84baf67888dcd4bbf504c096d881898`.
+All 4,004 tracked files match and all 2,152
+private RomFS products are unchanged. Concurrent work/index were preserved.
+Normal SHA256 `c2ca0fd1850bbfa9b1cefa3671d334c2943b502637cf546a5f11d8877366c788`.
+
+- `CMAKE_BUILD_PARALLEL_LEVEL=4 TRIO_ENEMY_POSE_PACK=romfs make --jobserver-style=pipe test`:
+  exit0; 449 C++ tests pass,60.56s; 212 Python tests pass,
+  34.55s; zero skips. Existing Pillow deprecation warnings remain.
+- `make --jobserver-style=pipe all -j4 -o assets-ready SOUNDTRACK=gamecube`:
+  exit0. Native assertion patch removed; normal rebuild reproduces saved SHA256.
+- Fresh isolated ARM profile `artifacts/azahar-npc-inner-probe`: exit0, exact marker
+  `inner=PASS ring=PASS map=PASS captures=PASS copy=PASS cameraOwners=PASS lateMain=PASS lifecycle=PASS`. Includes parent/map/ring hold traces, magic handles,
+  signed boundary cases, exact captured traversal ABI, actual late Main, partial
+  modeling-pair repair, current-owner rejection, camera changes and native lease
+  regression. GPU/cache/traversal receipts are explicit test fixtures.
+- Uninstrumented fresh-save40s boot `artifacts/azahar-npc-inner-normal`: exit0;
+  original storybook manually inspected. Normal checkpoint field profile
+  `artifacts/azahar-npc-inner-field`: exit0;70s warmup, image-confirmed occupied
+  file selection,20s load and idle/right/left/final idle captures. Rogueport/Mario
+  rendering and returning movement manually inspected. These are existing
+  renderer regression checks, not new NPC pipeline activation or measured FPS.
+- Independent source/ownership review and focused tests pass. Markdown link
+  check passes with zero broken links; exact count in validation log.
+  Evidence: `artifacts/npc-inner-validation-manifest.json`.
+
+No assets, conversions, dialogue, story conditions, music, SFX or licensing terms
+changed. ISO remained read-only; no extracted payload/compiled product committed.
+No new Dolphin observation or physical New2DS XL profile. Full original event,
+NPC, object and additional-area coverage remains incomplete; EVT-01 stays open.
+
+Next tasks:
+
+1. Bind actual-VM dispProc/group/shape/material/texture and Citro3D GPU/cache
+   owners to mutable source outputs, preserving pre-Main captures and exact ABI.
+   Do not substitute stale typed shapes, invented pass arguments, empty groups
+   or fixture acknowledgements. Native CPU Copy's full numeric domain remains
+   a separate measured-parity task.
+2. Complete linked Draw wrapper's retained prepass/ring/inline paper selector/
+   Main/material/matrix/cleanup, including incoming-GPR30 frontier only with real
+   caller register context. Exported SetAnim is not the inline selector.
+3. Activate ordinary Game NPC camera/queue/offscreen scheduling and drain whole
+   callbacks before ending leases. Continue original area/event/object/story
+   resources, then compare matched original images and profile physical hardware.

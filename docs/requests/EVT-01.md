@@ -5422,3 +5422,23 @@ to32. Actual process cache stages exact Crump/subordinate/sailor MODEL/TPL
 paths. This supplies missing bytes without claiming native Entry/SetTribe,
 async readiness, registration, Main/Draw, battle or postbattle completion.
 [Resource contract](../behavior/field/HARBOR_NATIVE_RESOURCES.md). EVT-01 remains open.
+
+
+## 2026-10-15 — Actual-VM NPC Inner parent
+
+Delivered [retained actual-VM Inner](../behavior/display/NATIVE_ACTUAL_VM_NPC_INNER.md):
+complete local parent/map classifier/inline ring, real late Main, modeling stores
+and native CPU matrix copy. Independent read-only audit corrected the documented
+traversal ABI: call site8003c420 targets dispProc8003c4bc and prepares no original
+pass argument. Mode is captured once; flush selector is retained across both
+fresh resource queries. GPU/material/cache/traversal are explicit backend holds.
+
+- [ ] Bind actual-VM dispProc/group/shape/material/texture and Citro3D cache/GPU
+  owners to mutable source outputs, preserving captured samples across Main.
+- [ ] Complete linked wrapper and ordinary Game NPC queue/camera/offscreen
+  scheduling; drain whole callbacks before lease retirement. Full event/story/
+  area/object fidelity and physical hardware profiling remain open.
+
+The local parent source gap is closed by the pinned audit above; additional
+unresolved child functionality stays in this inbox. No fake renderer completion
+or undocumented empty-group assumption is authorized by the delivered parent.

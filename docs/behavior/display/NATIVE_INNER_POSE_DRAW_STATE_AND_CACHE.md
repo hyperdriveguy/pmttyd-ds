@@ -14,8 +14,10 @@ first. Captured colors and call arguments stay pinned while their source service
 is unavailable. An unavailable converted descriptor is a provider hold, not
 proof of a source null descriptor or empty model.
 
-Effective translucent pass3 changes GX state only. It never replaces the
-original traversal pass. A nonzero material hook skips built-in GX and work-pass
+Effective translucent pass3 changes GX/callback/work state. The typed traversal
+context also carries adapter pass metadata; the original dispProc8003c4bc call
+prepares parent/group/current/next/fraction only, with no original-pass argument.
+Do not treat the typed metadata as a source ABI field. A nonzero material hook skips built-in GX and work-pass
 publication. Otherwise depth/blend/location/alpha requests execute in original
 order and only then publish the work pass. Ordinary incoming angle rotation
 precedes uniform scale. Late Main follows these matrices and cannot refresh the

@@ -3754,3 +3754,15 @@ effects or source numeric behavior. Existing assets/manifest.json remains editab
 overlay. Nintendo/Intelligent Systems original rights retained; provenance grants
 no new license/distribution rights. No ISO/extracted original/compiled product
 committed. Manifest records converter command/hash,source and product evidence.
+
+## 2026-10-15 — Actual-VM NPC Inner CPU state
+
+The [Inner binding](behavior/display/NATIVE_ACTUAL_VM_NPC_INNER.md) consumes the
+existing native MODEL graph and mutable pose outputs; no asset extraction,
+conversion or pack change. Cold runtime VM storage now supplies original
+modeling BSS803d8e70/600 and level/pointer globals8041e89c/8. These are zeroed
+runtime allocations, not extracted assets or synthesized original dialogue.
+Read-only ISO audit pins complete Inner/map code in ignored local evidence.
+All 2,152 accepted private RomFS files retain prior conversions and paths;
+no ISO, extracted payload or compiled product is committed. Original Nintendo/
+Intelligent Systems rights and prior local-only licensing limitations remain.
