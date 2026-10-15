@@ -195,3 +195,7 @@ allocation layouts and audience admission.
 scroll/state/math and ordered child frontiers. [Native menu support](native-menu-support.md)
 explains audience queries, physical X, immutable original labels, pose-copy admission
 and retained PresentItem recovery/effect ownership.
+
+[Trio menu bindings](trio-menu-bindings.md) explains runtime provider composition,
+zero versus pending, shared map identities, original message ownership and
+separate Input-state/event domains. The newer Trio integration audit stays partial.

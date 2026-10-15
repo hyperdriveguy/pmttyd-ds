@@ -360,6 +360,8 @@ struct TrioAttackRuntime {
     BattleActCursor actCursor;
     BattleCommandInputContinuationCursor sourceCommandInputCursor;
     BattleWeaponMenuContinuationCursor sourceWeaponMainCursor,sourceWeaponSetupCursor,sourceWeaponEndCursor;
+    // One retained UI invocation owns its exact MapFree request/address/token.
+    // Tokens distinguish a recycled guest address from the allocation it replaced.
     BattleWeaponUiCursor sourceWeaponUiCursor;
     const BattleWeaponUiRequest* sourceWeaponUiMapRequest=nullptr;
     std::shared_ptr<const uint8_t> sourceWeaponUiFreeOwner;
@@ -370,6 +372,8 @@ struct TrioAttackRuntime {
     std::shared_ptr<const BattleActionClassMessageBinding> originalClassMessages,heldClassMessages;
     BattleActUiContinuationCursor actMenuUiCursor;
     BattleMenuAudienceNativeCursor actMenuAudienceCursor;
+    // Shared class/weapon VM-map allocation registry; byte value is immaterial.
+    // shared_ptr identity supplies native lifetime evidence,not guest storage.
     std::map<uint32_t,std::shared_ptr<const uint8_t>> actMenuUiAllocations;
     std::map<uint32_t,std::string> originalClassLabelBytes;
     BattleEventBarrierCursor actWaitCursor,actConsumeCursor;
@@ -1942,8 +1946,10 @@ struct TrioAttackRuntime {
             return out;
         };return s;
     }
-    // Retained original Act parent. Unsupported children hold at their actual
-    // source call; no legacy command/action state is acknowledged here.
+    // Allocation services for retained original class UI Init/End children.
+    // Class UI callbacks use current heap global8041e80c; allocate needs both
+    // real clear/flush owners before eventMapAllocate can mutate VM memory.
+    // Engaged address0 is source allocation failure,not a pending callback.
     BattleActUiServices originalActMenuUiServices() {
         BattleActUiServices s;s.memory=nativeBattleActorServices(vm);s.user=this;
         s.allocate=[](void* p,uint32_t bytes)->std::optional<uint32_t>{
@@ -1968,6 +1974,8 @@ struct TrioAttackRuntime {
         if(originalClassMessages || actClassTableCursor.active() || !owner || !owner->allocation || !owner->lookup)return false;
         originalClassMessages=std::move(owner);return true;
     }
+    // Source global8041eb00 is the actual pouch pointer. msgSearch returns a
+    // guest text address from the held immutable US bank,not a host C string.
     BattleActionClassServices originalClassTableServices() {
         BattleActionClassServices s;s.memory=nativeBattleActorServices(vm);s.user=this;
         s.unit=[](void* p,uint32_t battle,int32_t id)->std::optional<uint32_t>{
@@ -1990,6 +1998,9 @@ struct TrioAttackRuntime {
         if(!result){pending=actClassTableCursor.pending()?actClassTableCursor.pending():0x80124dc8;return {};}
         heldClassMessages.reset();return result;
     }
+    // Child dispatch preserves three outcomes:absent waits,engaged0 completes,
+    // nonzero completes with that source value. Branches must test optional
+    // engagement rather than discard a legitimate zero result.
     BattleActMenuContinuationServices originalActMenuServices() {
         BattleActMenuContinuationServices s;s.memory=nativeBattleActorServices(vm);s.user=this;
         s.request=[](void* p,const BattleActMenuContinuationRequest& q)->std::optional<uint32_t>{
@@ -2004,6 +2015,8 @@ struct TrioAttackRuntime {
             case F::Mario:return battleMarioUnit(a[0],actors);
             case F::Party:return battlePartyUnit(a[0],actors);
             case F::Status:return checkPackedBattleStatus(a[0],int32_t(a[1]),actors)?1:0;
+            // GetCursorPtr may leave its private output unwritten. Complete
+            // the call without inventing cursor 0 when lookup has no write.
             case F::Cursor:{
                 if(!q.privateCursorOutput){r.pending=uint32_t(q.function);return {};}
                 uint32_t cursor=0;
@@ -2012,6 +2025,8 @@ struct TrioAttackRuntime {
                 return 0;
             }
             case F::Allowed:return packedBattleMenuKeyAllowed(a[0],actors)?1:0;
+            // Current channel0 input words:trigger f44,repeat fbc,held1034.
+            // Each query reloads global B; no edge consumption or private latch.
             case F::Trigger:return r.word(currentBattleAddress(actors)+0xf44)&a[0];
             case F::Repeat:return r.word(currentBattleAddress(actors)+0xfbc)&a[0];
             case F::Now:return r.word(currentBattleAddress(actors)+0x1034)&a[0];
@@ -2036,13 +2051,16 @@ struct TrioAttackRuntime {
             }
             case F::Display:return 0; // Exact original80116cd8/4 is blr.
             default:
-                // Actual ClassTable/WeaponTable/TargetCount and retained sound
-                // providers must be supplied; no legacy menu case or vector
+                // WeaponTable/TargetCount and retained sound providers remain
+                // unavailable; no legacy menu case or vector
                 // append acknowledges these original children.
                 r.pending=uint32_t(q.function);return {};
             }
         };return s;
     }
+    // Main/Setup/End have independent parent cursors; UI and class-table
+    // children retain their own partial effects. Preserve an already-published
+    // deeper pending symbol; fallback addresses identify the source parent.
     std::optional<int32_t> resumeOriginalActMenuMain(uint32_t battle) {
         const auto result=resumePackedBattleActMenuMain(battle,originalActMenuServices(),actMenuMainCursor);
         if(!result && !pending)pending=actMenuMainCursor.pending()?actMenuMainCursor.pending():0x8012230c;
@@ -2058,6 +2076,9 @@ struct TrioAttackRuntime {
         if(!ready && !pending)pending=actMenuEndCursor.pending()?actMenuEndCursor.pending():0x801220d4;
         return ready;
     }
+    // This uses the battle-allocation token also used by HP,not HP draw/camera
+    // readiness. The predicate proves the actual VM battle span is still owned.
+    // Physical X queries the current trigger word; false is completed no-interrupt.
     std::optional<bool> resumeOriginalAudienceCheck() {
         BattleMenuAudienceNativeServices services;
         services.actors=nativeBattleActorServices(vm);services.user=this;
@@ -2080,6 +2101,9 @@ struct TrioAttackRuntime {
         if(!result&&!pending)pending=actMenuAudienceCursor.pending()?actMenuAudienceCursor.pending():0x8011f524;
         return result;
     }
+    // Preserve original double subtraction -> single rounding as separate ops,
+    // then fused multiply-add and addition. A missing math callback holds at
+    // that child; a host algebraic substitute would change observable rounding.
     std::optional<int32_t> resumeOriginalPresentItem() {
         BattlePresentItemNativeServices services;
         services.actors=nativeBattleActorServices(vm);services.user=this;
@@ -2106,6 +2130,9 @@ struct TrioAttackRuntime {
         if(!result&&!pending)pending=sourcePresentItemCursor.pending()?sourcePresentItemCursor.pending():0x80120024;
         return result;
     }
+    // Unlike class UI,this retained child asks for a live allocation predicate.
+    // Freeze actual maps during each synchronous group; token checks between
+    // groups cannot make a concurrent erase/rebind safe.
     BattleWeaponUiServices originalWeaponUiServices() {
         BattleWeaponUiServices services;services.actors=nativeBattleActorServices(vm);services.user=this;
         services.allocationCurrent=[](void* p){
@@ -2119,6 +2146,9 @@ struct TrioAttackRuntime {
         };
         services.request=[](void* p,const BattleWeaponUiRequest& q)->std::optional<uint32_t>{
             auto& r=*static_cast<TrioAttackRuntime*>(p);const auto& a=q.arguments;
+            // MapFree(heap,pointer): capture ONCE even if no token exists.
+            // Repeated holds must name the same cursor-owned request and
+            // allocation identity; later address reuse cannot repair it.
             if(q.function==0x8002fdc4){
                 if(!r.sourceWeaponUiFreeCaptured){
                     r.sourceWeaponUiFreeCaptured=true;r.sourceWeaponUiMapRequest=&q;r.sourceWeaponUiFreePointer=a[1];
@@ -2155,11 +2185,17 @@ struct TrioAttackRuntime {
         if(!ready&&!pending)pending=sourceWeaponUiCursor.pending()?sourceWeaponUiCursor.pending():0x8011600c;
         return ready;
     }
+    // Reset abandons only cursor/borrow metadata; it is not source End or a
+    // map-free operation and never erases the shared allocation registry.
+    // Failed reset leaves every captured identity intact for the active caller.
     bool retireOriginalWeaponUi() {
         if(!sourceWeaponUiCursor.reset())return false;
         sourceWeaponUiFreeCaptured=false;sourceWeaponUiMapRequest=nullptr;
         sourceWeaponUiFreePointer=0;sourceWeaponUiFreeOwner.reset();return true;
     }
+    // Original function addresses are dispatch identities. UI Init80116070/
+    // End8011600c share the retained UI child; unit800f88cc uses the packed
+    // registry,not a visual actor vector. Unwired service IDs stay pending.
     BattleWeaponMenuContinuationServices originalWeaponMenuServices() {
         BattleWeaponMenuContinuationServices services;services.actors=nativeBattleActorServices(vm);services.user=this;
         services.call=[](void* p,const BattleWeaponMenuContinuationRequest& q)->std::optional<uint32_t>{
@@ -2183,12 +2219,14 @@ struct TrioAttackRuntime {
                 const auto result=r.resumeOriginalAudienceCheck();
                 return result?std::optional<uint32_t>(*result?1:0):std::nullopt;}
             default:
-                // Whole source table/update/decision/target, retained sound,
-                // Weapon UI80116070/8011600c owners are still required.
+                // Whole source table/update/decision/target and retained sound
+                // owners remain unavailable; UI Init/End are wired above.
                 r.pending=q.function;return {};
             }
         };return services;
     }
+    // Type/flags remain original operands; these wrappers do not choose a
+    // default menu. A held child keeps the parent source PC and private output.
     std::optional<int32_t> resumeOriginalWeaponMenuMain(uint32_t battle,uint32_t type) {
         const auto result=resumePackedBattleWeaponMenuMain(battle,type,originalWeaponMenuServices(),sourceWeaponMainCursor);
         if(!result&&!pending)pending=sourceWeaponMainCursor.pending()?sourceWeaponMainCursor.pending():0x80121d0c;
@@ -2204,6 +2242,9 @@ struct TrioAttackRuntime {
         if(!ready&&!pending)pending=sourceWeaponEndCursor.pending()?sourceWeaponEndCursor.pending():0x80121cb0;
         return ready;
     }
+    // Compose actual retained menus/audience/PresentItem children with packed
+    // leaves. Input completion alone proves neither source Action completion
+    // nor renderer readiness; missing sound/target/menu providers still hold.
     BattleCommandInputContinuationServices originalCommandInputServices() {
         BattleCommandInputContinuationServices services;
         services.actors=nativeBattleActorServices(vm);services.user=this;
@@ -2228,6 +2269,9 @@ struct TrioAttackRuntime {
                 if(findPackedCommandCursor(a[0],a[1],cursor,nativeBattlePackedSelectionServices(r.vm)))
                     *q.privateCursorOutput=cursor;
                 return 0;}
+            // _commandRestoreRec: pending byte1c74==0 snapshots Input171c
+            // into saved word1c70. Otherwise only exact state equality clears
+            // saved THEN pending. Previous menu TYPE1c60 is a different field.
             case 0x8011f5f0:{
                 const auto battle=currentBattleAddress(actors);
                 if(!r.byte(battle+0x1c74))r.word(battle+0x1c70,r.word(battle+0x171c));
@@ -2241,6 +2285,8 @@ struct TrioAttackRuntime {
             case 0x800374ac:{
                 auto& event=createRootEvent(r.vm.schedule,a[0],int32_t(a[1]),a[2],r.vm.creationServices());
                 uint32_t address=0;required(r.vm.entryAddresses.addressOf(&event,address));return address;}
+            // Event constructor above returns mapped guest ENTRY ADDRESS;
+            // checkEventId here consumes scheduler EVENT ID. Keep domains distinct.
             case 0x80036604:return uint32_t(checkEventId(a[0],r.vm.creationServices()));
             case 0x8011a06c:return r.word(currentBattleAddress(actors)+0xf44)&a[0];
             case 0x80119f60:return r.word(currentBattleAddress(actors)+0xfbc)&a[0];
@@ -2251,6 +2297,8 @@ struct TrioAttackRuntime {
             }
         };return services;
     }
+    // Pending fallback801229d8 identifies this source Input adapter; preserve
+    // any deeper child symbol already selected. Resume does not restart children.
     std::optional<int32_t> resumeOriginalCommandInput(uint32_t battle) {
         const auto result=resumePackedBattleCommandInput(battle,originalCommandInputServices(),sourceCommandInputCursor);
         if(!result&&!pending)pending=sourceCommandInputCursor.pending()?sourceCommandInputCursor.pending():0x801229d8;
