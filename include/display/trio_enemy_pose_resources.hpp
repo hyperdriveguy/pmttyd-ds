@@ -6,6 +6,9 @@ namespace ttyd {
 class TrioEnemyPoseResources {
 public:
     static std::shared_ptr<const TrioEnemyPoseResources> load(const char* directory,const char* pack);
+    // Checks the complete supplied source directory and CPU/raw backing once.
+    // The runtime still owns actual pose generations and draw admission; this
+    // catalog performs no live allocation/resource-generation revalidation.
     static std::shared_ptr<const TrioEnemyPoseResources> admit(std::shared_ptr<const BattlePoseResource>);
     // Call with model/initialName read from the actual kind/part/type28 table.
     // Unknown names remain unavailable; never choose by flattened visual index.

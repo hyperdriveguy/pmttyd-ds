@@ -5,6 +5,9 @@ namespace ttyd {
 // Distinct Professor data does not canonicalize its model or kind to Goombella.
 // Validate exact address/size; import only absent complete spans into actual VM.
 // Loader layout admission is separate from converter's original-byte hashes.
+// Numeric notes below use hex offsets/masks and decimal kinds/counts.
+// Segment lengths are bytes:12-byte XYZ,60-byte15-word pose rows and124-byte
+//31-word Hello table; strings/scalars keep their exact source extents.
 std::unique_ptr<NativeFieldPartyEntry> NativeFieldPartyEntry::create(const char* root,FieldPartyRegistry& p,FieldMarioBattleState& m,std::shared_ptr<ProloguePouch> q,Trace t){
  if(!root)return {};
  auto n=std::unique_ptr<NativeFieldPartyEntry>(new NativeFieldPartyEntry(p,m,std::move(q),std::move(t)));
@@ -121,7 +124,7 @@ bool NativeFieldPartyEntry::advance(int32_t kind,std::shared_ptr<const ActorAnim
   mario_.partyIndices[0]=255;next(Phase::Allocate);break;
  // First-free ordinary record188hex is published once,then entry lease
  // excludes competing allocation/removal. Aux tests ONLY slot1:occupied returns
- // genuine-1,never substitutes free0. Source flags9 OR4,kind13,slot byte2f,
+ // genuine-1,never substitutes free0. Source flags9 OR4,kind11/13,slot byte2f,
  // owner160,camera164 and absent pose IDs c/10/14 remain distinct fields.
  case Phase::Allocate:
   if(!issued_){
@@ -168,6 +171,9 @@ bool NativeFieldPartyEntry::advance(int32_t kind,std::shared_ptr<const ActorAnim
   next(Phase::Enter);break;
  case Phase::Enter:
   request(0x8004176c,{int32_t(resource_),2});
+  // Source model token802cb4bc is Professor c_kuri_h. Prefer an actual
+  // live same-pool resource,then load its full original bank from retained root.
+  // Enter mode2 and wrap that exact handle; never borrow Goombella's model.
   if(resource_==0x802cb4bc){
    if(!native_ || !pool_){pending_=0x8004176c;return false;}
    if(!professor_){
@@ -338,6 +344,8 @@ bool NativeFieldPartyEntry::advance(int32_t kind,std::shared_ptr<const ActorAnim
   request(0x800bb544,{slot_});const uint8_t state=actor_->bytes[0x38];const auto owner=actor_->word(0x160);(void)owner;
   uint32_t dispatch=0;if(state!=10 || !word(0x803141c4+4*state,dispatch) || dispatch!=0x800bb9ec){pending_=0x800bb544;return false;}
   hello_=true;next(Phase::Place);break;}
+ // Terminal result can be-1 (join denied/occupied auxiliary slot). Done
+ // stays completed without checking a newly reused actor or replaying writes.
  case Phase::Done:result=result_;return true;
  }
 }

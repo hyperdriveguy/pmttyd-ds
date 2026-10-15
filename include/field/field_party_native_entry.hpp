@@ -23,6 +23,8 @@ public:
  // Direct APIs do not publish Mario slot bytes; the EVT wrapper owns that.
  bool position(int32_t kind,bool secondary,const std::array<float,3>&,std::shared_ptr<const ActorAnimationPack>,uint64_t,const FieldPartyAppearanceServices&,int32_t& result);
  static std::unique_ptr<NativeFieldPartyEntry> create(const char*,FieldPartyRegistry&,FieldMarioBattleState&,std::shared_ptr<ProloguePouch>,Trace={});
+ // bool reports whole constructor completion; result is meaningful only on
+ // true and can be the original-1. A completed object is not a reusable factory.
  bool step(int32_t kind,std::shared_ptr<const ActorAnimationPack>,uint64_t,const FieldPartyAppearanceServices&,int32_t& result);
  uint32_t pending() const{return pending_;}
  bool complete() const{return phase_==Phase::Done;}

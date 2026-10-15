@@ -78,6 +78,8 @@ and scene projection also run after the branch. None of these independent visits
 acknowledges a missing source event/Main child or invents elapsed-time catch-up.
 They must not be described as a single global once-per-frame scheduler.
 
-This focused audit leaves the large runtime partial. Newer field return/lifetime
-work and any unreviewed changes since earlier snapshots still require inspection;
-no complete original battle, story return, hardware timing or GPU parity follows.
+This focused audit leaves the large runtime partial. The later
+[field-return/resource guide](trio-field-return-resources.md) covers its retained
+restoration/entry/removal suffix. Whole-file numeric coverage and later changes
+still require audit; no complete original battle, story return, hardware timing
+or GPU parity follows.

@@ -58,11 +58,13 @@ unassigned key records explicit native failure -1; optional zero remains a known
 value, distinct from unavailable. Trace entries accompany these effects and do
 not replace them. Original source constants and clamping boundaries remain intact.
 
-`endingExported` protects only the completed prefix: unit resource export,
-canonical pouch byte publication, ending-work free and sequence change. It does
-not protect all later party constructor/appearance effects against replay after
-an unavailable callback. Pouch publication preserves exact EXP/HP/FP writes;
-it does not heal or rebuild inventory.
+`endingExported` protects unit resource export, canonical pouch byte publication,
+ending-work free and sequence change. Independent `endingMarioRestored` and
+`endingPartyReady` latches now protect later completed restoration/construction
+prefixes; retained Entry/RemoveAll owners keep their partial work across holds.
+Pouch publication preserves exact EXP/HP/FP writes without rebuilding inventory.
+See [field return and resource ownership](trio-field-return-resources.md) for the
+current suffix, original -1 constructor result and independently replayed stop tail.
 
 Field Mario and partner registries are borrowed real owners. The admitted fresh
 Goombella path requires actual free slot, original resource/pose/definition and

@@ -208,3 +208,7 @@ admission. Newer runtime integrations still need separate review.
 input snapshots and distinct native clock gates. [Trio menu frame bindings](trio-menu-frame-bindings.md)
 documents actual allocation/resource/camera proofs, facade lifetime and exact
 queue callback admission. Remaining runtime changes still require review.
+
+[Trio field return and resources](trio-field-return-resources.md) explains the
+three completed prefixes, retained party construction/removal and exact original
+enemy MODEL/TPL/CPU admission. Whole-runtime numeric coverage remains under audit.

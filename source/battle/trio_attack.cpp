@@ -502,6 +502,9 @@ struct TrioAttackRuntime {
     FieldMarioBattleState* fieldMario=nullptr;
     FieldPartyRegistry* fieldParties=nullptr;
     FieldPartyAppearanceServices fieldAppearance;
+    // Separate completed-prefix latches: export, Mario restore, party entry/
+    // removal. Entry/lifetime owners below retain their own partial source PCs;
+    // destroying this runtime is not a source cleanup or successful field return.
     bool endingMarioRestored=false,endingPartyReady=false;
     std::string partyAssetRoot=fieldPartyAssetRoot;
     std::unique_ptr<NativeFieldPartyLifetime> fieldPartyLifetime;
@@ -1747,6 +1750,8 @@ struct TrioAttackRuntime {
                 word(Battle+0xf28,0);packedBattleSetSequence(Battle,0,4,nativeBattleActorServices(vm).memory);
             }
             if(!fieldMario){pending=0x8005e0c0;return;}
+            // Restore once BEFORE party availability. A later held constructor
+            // or audience stop must not repeat Mario restoration or pouch export.
             if(!endingMarioRestored){endingRequest(0x8005e0c0);restoreFieldMarioAfterBattle(*fieldMario);endingMarioRestored=true;}
             if(!fieldParties){pending=party?0x801412fc:0x80141198;return;}
             if(!endingPartyReady){
@@ -1755,16 +1760,25 @@ struct TrioAttackRuntime {
                 if(!fieldPartyEntry)fieldPartyEntry=NativeFieldPartyEntry::create(partyAssetRoot.c_str(),*fieldParties,*fieldMario,entryPouch,
                     [this](uint32_t fn,std::initializer_list<int32_t> args){endingRequest(fn,args);});
                 if(!fieldPartyEntry){pending=0x801412fc;return;}
+                // step bool is whole-call completion; scalar-1 is a legitimate
+                // source no-entry result and is deliberately not tested here.
+                // Reuse this retained constructor through placement/Hello holds.
                 int32_t entryResult=-1;
                 if(!fieldPartyEntry->step(kind,fieldPartnerAnimationBank(),now,fieldAppearance,entryResult)){
                     pending=fieldPartyEntry->pending();return;
                 }
             }else {
                 endingRequest(0x80141198);
+                // No battle partner follows actual marioPartyKill80141198,
+                // not a scan that treats occupied slots as an unavailable leaf.
+                // Same lifetime owner retains removals across file/pose waits.
                 if(!fieldPartyLifetime)fieldPartyLifetime=NativeFieldPartyLifetime::create(partyAssetRoot.c_str(),*fieldParties,*fieldMario);
                 if(!fieldPartyLifetime){pending=0x80141198;return;}
                 if(!fieldPartyLifetime->removeAll()){pending=fieldPartyLifetime->pending();if(!pending)pending=0x80141198;return;}
             }
+            // Latch only whole Entry/RemoveAll completion. Current-party clear,
+            // rule judgment and audience stop below are a separate suffix; a
+            // held stop can revisit that suffix but never reconstruct the party.
             endingPartyReady=true;
             }
             endingRequest(0x80141050);const auto index=fieldParties->current(*fieldMario);

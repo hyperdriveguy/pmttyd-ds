@@ -29,6 +29,8 @@ std::unique_ptr<NativeFieldPartyLifetime> NativeFieldPartyLifetime::create(const
  }
  return n;
 }
+// Pin BOTH process and pool identities. A ready replacement process or reused
+// numeric pose handle cannot resume an old actor's release in a new namespace.
 bool NativeFieldPartyLifetime::nativeOwner() const{return native_ && native_->ready() && parties_.nativeAnimation==native_ && pool_ && parties_.originalPool==pool_ && native_->pool()==pool_;}
 // Two native actor tokens with offset+width bounded by188hex. After source
 // table publication,retiring_ supplies captured bytes although public slot is
@@ -137,6 +139,9 @@ bool NativeFieldPartyLifetime::killImpl(int32_t index,bool forget){
  if(!removeFieldParty(index,forget,services(),removal_))return false;
  parties_.nativeRemovalOwner.reset();captured_=nullptr;capturedAddress_=0;return true;
 }
+// Whole two-slot Mario removal owns outer_; it can invoke this same object
+// recursively through source Kill children. Reject unrelated public Kill/event
+// interleaving while preserving the legitimate outer->killImpl nesting.
 bool NativeFieldPartyLifetime::removeAll(){
  if(!parties_.nativeEntryOwner.expired())return false;
  if(event_.active || (removal_.active && !outer_.active) || (!parties_.nativeRemovalOwner.expired() && parties_.nativeRemovalOwner.lock().get()!=removalLease_.get()))return false;
