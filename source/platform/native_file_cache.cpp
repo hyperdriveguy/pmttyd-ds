@@ -12,6 +12,9 @@ uint32_t rawWord(const std::vector<uint8_t>& b,uint32_t a){return uint32_t(b[a])
 // relocation accesses stay inside stable backing, before any VM sees the file.
 // It deliberately does not replace source handlers with validated rewrites.
 bool admitted(const std::vector<uint8_t>& b,uint32_t type){
+ // 0xafffff bounds the later native payload arena, not original file size.
+ // Type0 raw has no relocation. Type4 TPL admission below validates the writable
+ // descriptor graph; it does not certify texture pixel semantics/GPU ownership.
  if(b.empty() || b.size()>0xafffff)return false;
  if(type==0)return true;
  if(type==4){
@@ -23,6 +26,9 @@ bool admitted(const std::vector<uint8_t>& b,uint32_t type){
   std::vector<std::pair<uint32_t,unsigned>> descriptors;
   for(uint32_t i=0;i<count;++i)for(unsigned palette=0;palette<2;++palette){
    const auto d=rawWord(b,table+i*8+palette*4);if(!d)continue;
+   // Image descriptor36 bytes/marker35, palette12 bytes/marker2. Relative
+   // data starts must lie inside original bytes; already-set markers are refused.
+   // Shared identical descriptors are allowed, conflicting partial overlaps not.
    const unsigned n=palette?12:36;
    if(d<uint64_t(table)+uint64_t(count)*8 || uint64_t(d)+n>b.size())return false;
    descriptors.emplace_back(d,n);
@@ -32,6 +38,9 @@ bool admitted(const std::vector<uint8_t>& b,uint32_t type){
   for(size_t i=1;i<descriptors.size();++i)if(descriptors[i]!=descriptors[i-1] && descriptors[i].first<uint64_t(descriptors[i-1].first)+descriptors[i-1].second)return false;
   return true;
  }
+ // Type5 MODEL has root through0x1ac. Validate only reached writable table/
+ // child extents, not every converted unused pointer word. High-bit count is
+ // source nonpositive and skips children; ordinary records stride64/child+0x3c.
  if(type!=5 || b.size()<0x1b0)return false;
  // Only actually dereferenced table/child addresses must be contained.
  // Other converted words include original unused sentinels and wrap freely.
@@ -65,6 +74,10 @@ std::shared_ptr<NativeFileCache> NativeFileCache::create(){
 bool NativeFileCache::stage(const std::string& path,uint32_t type,std::vector<uint8_t> bytes){
  std::vector<Source> sources;sources.push_back({path,type,std::move(bytes)});return stage(std::move(sources));
 }
+// Validate/prepare whole catalog batch before publishing any file/address.
+// Exact paths are identity (no canonicalization), path length<128 plus NUL,
+// no duplicates; at most1024 files. First payload has a separate1MiB
+// window, later ones use the native arena. Payloads round to32 with zero padding.
 bool NativeFileCache::stage(std::vector<Source> sources){
  if(frozen_ || sources.empty() || sources.size()>1024-files_.size())return false;
  std::vector<std::unique_ptr<File>> prepared;uint32_t next=nextPayload_;
@@ -83,6 +96,9 @@ bool NativeFileCache::stage(std::vector<Source> sources){
  }
  files_.reserve(files_.size()+prepared.size());for(auto& f:prepared)files_.push_back(std::move(f));nextPayload_=next;return true;
 }
+// All views alias the same actual BE byte backing. U64 extent arithmetic
+// avoids wrapped admission; byte/half/word access asserts unmapped requests
+// instead of supplying fabricated zeros. Staging cannot move backing once frozen.
 uint8_t* NativeFileCache::span(uint32_t a,unsigned n){
  const auto at=[&](uint32_t base,uint8_t* data,size_t size)->uint8_t*{return a>=base && uint64_t(a)+n<=uint64_t(base)+size?data+(a-base):nullptr;};
  for(auto r:{std::make_pair(Global,std::make_pair(global_.data(),global_.size())),std::make_pair(Manager,std::make_pair(manager_.data(),manager_.size())),std::make_pair(Name,std::make_pair(name_.data(),name_.size())),std::make_pair(Pool,std::make_pair(pool_.data(),pool_.size()))})if(auto* p=at(r.first,r.second.first,r.second.second))return p;
@@ -103,6 +119,10 @@ bool NativeFileCache::yieldProvider(void* user,bool (*yield)(void*)){
  if(frozen_)return false;
  yieldUser_=user;yield_=yield;return true;
 }
+// Map manager/pool/name and every stable holder/payload into a borrowing VM.
+// Failure unregisters only this call's successful prefix. Owner must outlive
+// all VM views; mapping does not reset shared refs or relocation. Success freezes
+// catalog/yield configuration; caller owns later view retirement.
 bool NativeFileCache::bind(EventAddressSpace& vm){
  struct View{uint32_t a;uint8_t* data;uint32_t n;};
  std::vector<View> views={{Global,global_.data(),4},{Manager,manager_.data(),24},{Pool,pool_.data(),uint32_t(pool_.size())},{Name,name_.data(),uint32_t(name_.size())}};
@@ -110,11 +130,17 @@ bool NativeFileCache::bind(EventAddressSpace& vm){
  unsigned mapped=0;for(auto v:views){if(!vm.registerExternalRam(v.a,v.data,v.n)){for(unsigned i=0;i<mapped;++i)vm.unregisterExternalRam(views[i].a);return false;}++mapped;}
  frozen_=true;return true;
 }
+// Serialized staged-ROMFS adapter: real source pool/acquisition/relocation/
+// release operate on backed bytes; archives explicitly empty. Disc tokens,
+// rounded zero padding and simplified smart headers are native policy. No GC,
+// eviction, file movement, original SDK heap or DVD worker is fabricated.
 FileAcquisitionServices NativeFileCache::services(){
  FileAcquisitionServices s;s.memory=memory();s.user=this;
  s.byte=[](void* p,uint32_t a){return static_cast<NativeFileCache*>(p)->byte(a);};
  s.compare=[](void* p,uint32_t a,uint32_t b)->std::optional<int32_t>{auto& c=*static_cast<NativeFileCache*>(p);for(;;++a,++b){const auto x=c.byte(a),y=c.byte(b);if(x!=y)return int32_t(x)-int32_t(y);if(!x)return 0;}};
  s.copy=[](void* p,uint32_t a,uint32_t b){auto& c=*static_cast<NativeFileCache*>(p);for(;;++a,++b){auto v=c.byte(b);c.byte(a,v);if(!v)return true;}};
+ // Pending reuse needs the explicit configured yield provider. Missing
+ // yield or garbage collection remains unavailable; it is not a default success.
  s.yield=[](void* p){auto& c=*static_cast<NativeFileCache*>(p);return c.yield_ && c.yield_(c.yieldUser_);};
  // Explicit native catalog: archives are empty, staged ROMFS replaces disc.
  s.archive=[](void*,uint32_t,uint32_t,uint32_t)->std::optional<uint32_t>{return 0;};
@@ -130,6 +156,9 @@ FileAcquisitionServices NativeFileCache::services(){
   FileTextureRelocationServices r;r.memory=c.memory();r.byte=[](void* p,uint32_t a){return static_cast<NativeFileCache*>(p)->byte(a);};return resumePackedFileTextureRelocation(payload,r,c.current_->relocation);};
  return s;
 }
+// One held path owns current_ and acquisition_ until completion. Freeze even
+// if the first admitted acquisition holds. Initial staged type guards only new
+// loads; source reuse ignores requested type. c.type still pins held requests.
 std::optional<uint32_t> NativeFileCache::acquire(const std::string& path,uint32_t type){
  if(word(Global)!=Manager)return {};
  if(!acquisition_.phase){
@@ -142,13 +171,22 @@ std::optional<uint32_t> NativeFileCache::acquire(const std::string& path,uint32_
  if(result)current_->entry=result;
  current_=nullptr;return result;
 }
+// Native entry-range/alignment admission precedes actual fileFree. A true
+// return acknowledges the leaf (including its no-op cases), not destruction or
+// payload reclamation; state2 retains payload/holder identity for reuse.
 bool NativeFileCache::release(uint32_t entry){
  if(word(Global)!=Manager || (entry && (entry<Pool || entry>=Pool+0x2c000 || (entry-Pool)%0xb0)))return false;
  FileHandleReleaseServices s;s.memory=memory();s.byte=[](void* p,uint32_t a){return static_cast<NativeFileCache*>(p)->byte(a);};releasePackedFileHandle(entry,s);return true;
 }
 bool NativeFileCache::archiveType(uint32_t type){if(word(Global)!=Manager)return false;setPackedFileArchiveType(type,memory());return true;}
+// Catalog presence and original-byte extent only (padding excluded): these
+// queries do not prove acquired entry state, current content or animation readiness.
 bool NativeFileCache::contains(const std::string& path,uint32_t type) const{for(const auto& f:files_)if(f->path==path && f->type==type)return true;return false;}
 bool NativeFileCache::ownsPayload(uint32_t address,uint32_t bytes) const{for(const auto& f:files_)if(address>=f->address && uint64_t(address)+bytes<=uint64_t(f->address)+f->original.size())return true;return false;}
+// Stage unchanged raw MODEL/TPL/auxiliary products, not PMANIM, pose metadata
+// or GPU atlases. Exact source names matter: e_mario/b_mario share a/a_mario-,
+// MODEL texture names use trailing hyphen; enemy c_kuribo has its own bank.
+// Batch reads/validation finish before publication; no source acquisition occurs.
 bool stagePrologueAnimationFiles(NativeFileCache& cache,const char* root){
  if(!root)return false;
  struct Entry{const char* path;uint32_t type;const char* product;};

@@ -125,3 +125,7 @@ continuation notes. Newer Trio integration still requires its separate audit.
 [Message resources](message-resources.md), [parser/playback and selection](message-playback.md)
 and [message window/font/frame drawing](message-window-drawing.md) explain native
 formats, original token retention, finite consumer domains and presentation adapters.
+
+[Source file services](file-services.md), [native file backing](native-file-cache.md)
+and [save-block services](save-block-services.md) explain reference/relocation
+semantics, borrowed VM views and ticketed SD handoff for original event data.

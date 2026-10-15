@@ -9,6 +9,9 @@ bool initializePackedFilePool(const FilePoolServices& s,FilePoolCursor& c){
   const auto put=[&](uint32_t a,uint32_t n){m.storeWord(m.user,a,n);};
   const auto manager=[&](){return word(0x80418498);};
   if(!c.phase){c={};c.owner=s;c.phase=1;}
+  // Heap0 requests0x2c000 =1024 entries *0xb0 bytes. Allocation0 is engaged
+  // completion, not nullopt. Manager pool/mode/used head/tail publish before
+  // clear can hold; retry must not repeat allocation or those stores.
   if(c.phase==1){
     if(!s.allocate)return false;
     const auto pool=s.allocate(s.user,0,0x2c000);if(!pool)return false;
@@ -17,6 +20,9 @@ bool initializePackedFilePool(const FilePoolServices& s,FilePoolCursor& c){
   }
   if(!s.clear || !s.clear(s.user,c.destination,0,0x2c000))return false;
   auto cursor=word(manager());
+  // Link128 groups of8 entries, stride0xb0/group0x580, next word+0xa4.
+  // Source briefly stores a one-past-pool final next, then clears it after
+  // publishing available head/tail (last entry offset0x2bf50). Keep that order.
   for(unsigned group=0;group<128;++group){
     for(unsigned j=0;j<8;++j)put(cursor+j*0xb0+0xa4,cursor+(j+1)*0xb0);
     cursor+=0x580;

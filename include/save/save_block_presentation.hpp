@@ -16,6 +16,9 @@ public:
     bool begin(uint64_t milliseconds,const SaveBlockSwitches&,uint32_t owner,MapObjectKeyControl&);
     void tick(uint64_t milliseconds,const MessageSelectionInput&);
     bool active() const{return event.active() && !failed;}
+    // Two-phase I/O handoff: take queued ticket/snapshot once outside tick,
+    // then acknowledge that exact ticket. Duplicate/stale/untaken completions
+    // reject; this protocol does not itself serialize any SD bytes.
     bool takeWriteRequest(uint64_t& ticket,SaveBlockSwitches& snapshot);
     bool completeWrite(uint64_t ticket,bool success);
     MessagePlayback message;

@@ -5,6 +5,9 @@
 #include <cassert>
 #include <cstdio>
 namespace ttyd {
+// One-shot common TPL admission: exact217920 bytes, original TPL magic,
+// count97/table12. Candidate pool/file publication succeeds before facade binds;
+// this is raw original texture backing, not a converted GPU atlas.
 bool BattleMenuFileCache::load(const char* path){
   if(ready() || !path)return false;
   FILE* f=std::fopen(path,"rb");if(!f)return false;
@@ -27,6 +30,9 @@ BattleMenuFileBinding::BattleMenuFileBinding(std::shared_ptr<BattleMenuFileCache
 BattleMenuResourceServices BattleMenuFileBinding::services(){
   BattleMenuResourceServices s;s.memory=actors_;s.user=this;
   s.dvdRoot=[](void* p)->std::optional<uint32_t>{return static_cast<BattleMenuFileBinding*>(p)->cache_->ready()?std::optional<uint32_t>(BattleMenuFileCache::Root):std::nullopt;};
+  // Read actual VM strings, bounded256 bytes as native admission. Accept
+  // only original %s/battle/common/battle_common.tpl; do not invent a general
+  // printf/path-normalization service. Cache/actor owners outlive these closures.
   s.format=[](void* p,uint32_t format,uint32_t root)->std::optional<std::string>{auto& b=*static_cast<BattleMenuFileBinding*>(p);
     const auto text=[&](uint32_t a)->std::optional<std::string>{std::string t;for(unsigned i=0;i<256;++i){const auto v=b.actors_.byte(b.actors_.user,a+i);if(!v)return t;t+=char(v);}return {};};
     const auto f=text(format),r=text(root);if(!f || !r || *f!="%s/battle/common/battle_common.tpl")return {};

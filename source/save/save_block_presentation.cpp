@@ -3,6 +3,9 @@
 #include "message_icons.hpp"
 namespace ttyd {
 namespace {MessageAssets messages;MessageFont font;bool ready=false;}
+// Messages/font publish at the end, but process-global icon/event catalogs
+// have their own earlier successful publication points. This compound load is
+// not a transaction across all catalogs if a later dependency fails.
 bool loadSaveBlockPresentationAssets(const char* root) {
     if(!root)return false;
     const std::string base=root;MessageAssets m;MessageFont f;
@@ -12,6 +15,9 @@ bool loadSaveBlockPresentationAssets(const char* root) {
        !loadSaveBlockEventAssets(root))return false;
     messages=std::move(m);font=std::move(f);ready=true;return true;
 }
+// Retain the actual key-control owner through the whole presentation. Refuse
+// replacement while event/window/selection/write is live; moving transfers the
+// event runtime, while moved-from completion fails its active() admission.
 bool SaveBlockPresentation::begin(uint64_t milliseconds,const SaveBlockSwitches& switches,uint32_t owner,MapObjectKeyControl& control) {
     if(!ready || active() || message.active() || selection.active() || writeWaiting)return false;
     SaveBlockEvent next;if(!next.begin(milliseconds,switches,owner))return false;
@@ -34,6 +40,9 @@ void SaveBlockPresentation::tick(uint64_t milliseconds,const MessageSelectionInp
 int32_t SaveBlockPresentation::call(SaveEventRequest& request) {
     if(failed)return 0;
     auto fault=[&](){failed=true;return 0;};
+    // Flag1 is literal original source text; otherwise resolve unchanged US
+    // ID. Missing/unsupported text faults and yields, never substitutes dialogue.
+    // Only first callback opens/appends/resumes; later calls poll window flags.
     auto text=[&](){return (request.flags&1)?request.text.c_str():messages.find(request.text.c_str());};
     switch(request.kind) {
     case SaveEventCall::Print:
@@ -55,6 +64,10 @@ int32_t SaveBlockPresentation::call(SaveEventRequest& request) {
         // Native SD serialization combines header/data in one atomic write;
         // retain the original yielding boundary without emulating GC hardware.
         return request.first?0:2;
+    // First source Write yields with a unique monotonic ticket. The end-of-tick
+    // refresh captures switches written later in the SAME manager
+    // invocation. Platform takes the snapshot once and owns I/O outside simulation.
+    // Write completion is consumed on a later callback; Code reports0/-1.
     case SaveEventCall::Write:
         if(request.first) {
             writeTicket=++nextTicket;writeSnapshot=event.switches;
@@ -71,10 +84,15 @@ int32_t SaveBlockPresentation::call(SaveEventRequest& request) {
     }
     return fault();
 }
+// Taking consumes queue admission only; writeWaiting remains live. Caller
+// captures other progress and performs the actual write without running it here.
 bool SaveBlockPresentation::takeWriteRequest(uint64_t& ticket,SaveBlockSwitches& snapshot) {
     if(!active() || !writeQueued)return false;
     ticket=writeTicket;snapshot=writeSnapshot;writeQueued=false;return true;
 }
+// Ack only an active taken request with exact ticket and no prior completion.
+// Generic error-1 is native SD policy, not proof of original card damage/error
+// classification. Failure/recovery/key release remain field-owner responsibilities.
 bool SaveBlockPresentation::completeWrite(uint64_t ticket,bool success) {
     if(!active() || !writeWaiting || writeQueued || writeDone || ticket!=writeTicket)return false;
     writeCode=success?0:-1;writeDone=true;return true;

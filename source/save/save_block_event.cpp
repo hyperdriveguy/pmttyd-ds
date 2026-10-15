@@ -10,6 +10,9 @@
 namespace ttyd {
 namespace {
 EventScriptAssets scripts;bool ready=false;
+// Source USER_FUNC identities in SaveEventCall ordinal order. They keep
+// original selection/message/key/card request domains; unsupported targets fault
+// instead of executing guest CPU code or manufacturing dialogue/results.
 constexpr uint32_t functions[]={0x800d2090,0x800d21fc,0x800d23c4,0x800d284c,0x800e7474,0x8025c0b8,0x8025c188,
                                0x8025c19c,0x8025c2bc,0x8025c2fc,0x8025c380,0x8025c3a4,0x8025c40c,0x8025c454};
 int32_t signedWord(uint32_t v){return v<=0x7fffffff?int32_t(v):int32_t(int64_t(v)-0x100000000LL);}
@@ -20,6 +23,9 @@ bool loadSaveBlockEventAssets(const char* root) {
     EventScriptAssets next;if(!next.load((base+"/save-block-events.pmevt").c_str()))return false;
     FILE* f=std::fopen((base+"/save-block-program.bin").c_str(),"rb");if(!f)return false;
     char magic[8];std::array<uint32_t,4> header{};
+    // PMSAVE01 native metadata pins system root0x8030b4ec, wrapper0x803bac3c,
+    // common event0x803ba444 and14 ordinal/function rows. Require exact EOF and
+    // mapped source words; commit script catalog only after both files validate.
     bool ok=std::fread(magic,8,1,f)==1 && !std::memcmp(magic,"PMSAVE01",8) && std::fread(header.data(),4,4,f)==4 &&
         header==std::array<uint32_t,4>{0x8030b4ec,0x803bac3c,0x803ba444,14};
     for(unsigned i=0;ok && i<14;++i){std::array<uint32_t,2> row{};ok=std::fread(row.data(),4,2,f)==2 && row[0]==functions[i] && row[1]==i;}
@@ -31,6 +37,9 @@ bool loadSaveBlockEventAssets(const char* root) {
 struct SaveBlockEventRuntime {
     SaveBlockEvent* owner=nullptr;SaveEventServices services;
     EventNativeRuntime vm;
+    // Explicit native VM context: GP0x81000000, source243MHz bus-clock input,
+    // finite integer numeric adapters. Platform cache-flush/syscall are no-ops;
+    // this VM runs source data/opcodes, not original CPU or card hardware.
     SaveBlockEventRuntime():vm(0x81000000,platform(this)){}
     static EventNativePlatform platform(SaveBlockEventRuntime* r) {
         EventNativePlatform p;p.user=r;p.clock=[](void*)->uint32_t{return 243000000;};
@@ -44,6 +53,8 @@ struct SaveBlockEventRuntime {
         return signedWord(value);
     }
     int32_t value(EventEntry& e,unsigned n){return getEventValue(e,operand(e,n),vm.interpreterServices().operands);}
+    // Bound original NUL text/key read to256 bytes; invalid mapping/length
+    // fails this event. Source flag1 distinguishes literal controls from IDs.
     std::string text(uint32_t address) {
         std::string result;
         for(unsigned i=0;i<256;++i){uint8_t c=0;if(!vm.memory.readByte(address+i,c)){owner->failed=true;return {};}
@@ -54,18 +65,27 @@ struct SaveBlockEventRuntime {
     int32_t call(EventEntry& e,uint32_t fn,bool first) {
         unsigned tag=0;while(tag<14 && functions[tag]!=fn)++tag;
         if(tag==14 || !services.call || e.argumentCount>4){owner->failed=true;return 0;}
+        // Capture both raw operands and resolved values on each USER_FUNC
+        // invocation. first belongs to EVT callback scheduling, not renderer
+        // frames. Only complete2 writes outputs; busy0 preserves the source call.
         SaveEventRequest request{};request.kind=SaveEventCall(tag);request.function=fn;request.first=first;
         request.argumentCount=e.argumentCount;
         for(unsigned i=0;i<e.argumentCount;++i){request.originalOperands[i]=operand(e,i);request.values[i]=value(e,i);}
         if(tag<=4 && tag!=1){request.flags=value(e,0);if(tag!=1 && tag!=4)request.text=text(uint32_t(value(e,1)));}
         if(owner->failed)return 0;
         const int32_t status=services.call(services.user,request);
+        // Selection result uses LW0 sentinel-30000000. Guard/Code write
+        // through operand0; do not confuse original destination with its value.
         if(status==2) {
             if(tag==0)setEventValue(e,-30000000,request.result,vm.interpreterServices().operands); // LW0 result.
             if(tag==11 || tag==13)setEventValue(e,operand(e,0),request.result,vm.interpreterServices().operands);
         }
         return status;
     }
+    // Native1MiB SDK heap [0x82000000,0x82100000), separate from GP and
+    // small imported source globals. Source60 refresh config and clock conversion
+    // use milliseconds from caller. This is explicit VM provisioning, not a
+    // recovered GameCube allocation/layout or complete source startup claim.
     bool initialize(uint64_t now,const SaveBlockSwitches& initial,uint32_t ownerKey) {
         if(!vm.memory.registerRam(0x82000000,std::vector<uint8_t>(1024*1024)) ||
            !vm.memory.registerRam(0x8041f070,std::vector<uint8_t>(16)) ||
@@ -75,6 +95,8 @@ struct SaveBlockEventRuntime {
         if(eventSdkCreateHeap(start,0x82100000,memory)!=0)return false;
         if(!vm.memory.writeWord(0x8041e844,0) || !vm.memory.writeWord(0x81000004,60))return false;
         vm.gp.timestamp=now*eventClockRate(243000000);vm.initializeContexts();const auto op=vm.interpreterServices().operands;
+        // Seed original saved namespaces; root priority30/flags0/type26.
+        // Source EventEntry+0x174 carries opaque object owner, not a host pointer.
         writeSavedSwitch(SavedSwitchFamily::GlobalByte,0,initial.story,op);
         writeSavedSwitch(SavedSwitchFamily::GlobalByte,4,initial.mode,op);
         writeSavedSwitch(SavedSwitchFamily::GlobalFlag,233,initial.firstHit,op);
@@ -91,6 +113,9 @@ bool SaveBlockEvent::begin(uint64_t time,const SaveBlockSwitches& initial,uint32
     if(!next.runtime->initialize(time,initial,owner))return false;
     next.started=true;*this=std::move(next);runtime->owner=this;return true;
 }
+// Run manager once, then publish source switches after all reached event work.
+// Finished means VM allocationCount0, not completed disk I/O or restored field
+// ownership. Services and owner are rebound each tick; caller retains providers.
 void SaveBlockEvent::tick(uint64_t time,const SaveEventServices& service) {
     if(!active())return;
     runtime->owner=this;runtime->services=service;runtime->vm.gp.timestamp=time*eventClockRate(243000000);

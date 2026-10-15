@@ -2,6 +2,9 @@
 #include "event_memory_opcodes.hpp"
 #include <optional>
 namespace ttyd {
+// nullopt means provider hold; an engaged zero is an original result (even
+// when ignored, as for read). Boolean children acknowledge their source void
+// operation. Providers own partial child work and caller serializes this cursor.
 struct FileAcquisitionServices {
   EventMemoryServices memory;
   uint8_t (*byte)(void*,uint32_t)=nullptr; // memory.user
@@ -18,6 +21,9 @@ struct FileAcquisitionServices {
   std::optional<uint32_t> (*read)(void*,uint32_t,uint32_t,uint32_t,uint32_t)=nullptr;
   bool (*close)(void*,uint32_t)=nullptr;
 };
+// Native phase0 is idle. Path/type and used memory/provider identities pin
+// a held invocation; reset/overwrite does not roll back guest or child effects.
+// This public cursor has no reentry guard; caller must not recursively drive it.
 struct FileAcquisitionCursor {
   uint32_t phase=0,path=0,type=0,entry=0,next=0,payload=0,attempt=0,trials=0;
   uint32_t disc=0,rounded=0,header=0,destination=0;

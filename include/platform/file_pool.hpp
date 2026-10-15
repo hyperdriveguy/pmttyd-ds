@@ -8,6 +8,8 @@ struct FilePoolServices {
   std::optional<uint32_t> (*allocate)(void*,int32_t,uint32_t)=nullptr;
   bool (*clear)(void*,uint32_t,int32_t,uint32_t)=nullptr;
 };
+// phase1 waits allocation; phase2 retains clear destination after manager
+// initialization writes. Caller serializes access and keeps providers stable.
 struct FilePoolCursor {
   uint32_t phase=0,destination=0;
   FilePoolServices owner;

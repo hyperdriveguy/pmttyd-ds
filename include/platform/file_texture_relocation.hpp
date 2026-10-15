@@ -7,6 +7,8 @@ struct FileTextureRelocationServices {
   void* user = nullptr;
   bool (*panic)(void*, uint32_t filename, uint32_t line, uint32_t format) = nullptr;
 };
+// active retains only the failed-signature panic path. After acknowledged
+// panic, continue after the check rather than rereading/repairing signature.
 struct FileTextureRelocationCursor {
   bool active = false;
   uint32_t base = 0;

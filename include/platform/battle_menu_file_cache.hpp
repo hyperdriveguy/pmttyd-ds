@@ -20,6 +20,9 @@ public:
   bool release(uint32_t entry);
   bool ready() const {return bool(files_);}
   std::shared_ptr<NativeFileCache> files() const {return files_;}
+  // Original manager/global/root identities, not native payload storage.
+  // The facade intentionally admits only the common TPL path/type4; files()
+  // exposes the shared wider process owner rather than another same-address pool.
   static constexpr uint32_t Manager=0x8041ec68,Global=0x80418498,Root=0x8041f494;
 private:
   std::shared_ptr<NativeFileCache> files_;

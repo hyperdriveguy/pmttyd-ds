@@ -23,6 +23,9 @@ public:
  bool stage(std::vector<Source>); // Atomic catalog addition, including validation.
  bool yieldProvider(void*,bool (*)(void*)); // Configure before first bind/acquire.
  bool bind(EventAddressSpace&); // Owner outlives every borrowing VM.
+ // One serialized retained acquisition; nullopt means unavailable, engaged0
+ // completed source failure. New-file type must match staged bytes, but actual
+ // source filename-only hits may reuse them for a different requested type.
  std::optional<uint32_t> acquire(const std::string&,uint32_t type);
  bool release(uint32_t entry);
  bool archiveType(uint32_t);
@@ -37,6 +40,10 @@ private:
   std::vector<uint8_t> original,payload;
   FileTextureRelocationCursor relocation;
  };
+ // Explicit native backed tokens, not recovered heap placement: pool at
+ // 0x87000000; first payload has1MiB before headers; later payloads use
+ // [0x87500000,0x88000000). Holders reserve32-byte slots with12 backed bytes.
+ // Name/Manager/Global retain original guest identities; Disc is a backend token.
  static constexpr uint32_t Pool=0x87000000,FirstPayload=0x87100000,
   Headers=0x87200000,Name=0x803e6e78,Disc=0x87400000,MorePayloads=0x87500000,PayloadLimit=0x88000000;
  std::array<uint8_t,4> global_{};
