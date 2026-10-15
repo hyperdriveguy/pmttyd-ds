@@ -1549,3 +1549,17 @@ local-assets/field-map-npc/gor_02.s, original m/gor_02/s, SHA256
 dd1dd8400fa0b94dbd6d266155dd1e9caba82176e7eec38e46acf0f3328ef2ec. It was
 copied from matching prior evidence and verified against parsed-product metadata;
 no new ISO extraction or redistribution.
+
+## Field-entry documentation validation cache (2026-10-14)
+
+artifacts/field-entry-code-documentation-validation/source privately copies the
+accepted field-motion documentation RomFS and matching evidence inputs. Before
+copying, door-data.pmevt/json, battle-sequence-entry.pmevt/json and recovery-effect.bin
+were SHA256-checked against that validation manifest. The new manifest records
+parent provenance and the accepted hashes. Mutable message-icons/material-light/
+field-native/field-map-npc/door-data evidence directories are private copies;
+remaining large local-assets dependencies are shared read inputs. No new ISO
+read, extraction, conversion, editable import or shared pack write occurred.
+Original Nintendo/Intelligent Systems rights remain reserved; private validation
+copies confer no new license or redistribution rights. No original binary/ISO
+bytes were committed.

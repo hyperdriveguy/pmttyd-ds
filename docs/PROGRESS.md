@@ -8420,3 +8420,40 @@ artifacts/battle-init-validation-manifest.json; logs and source snapshot are
 artifacts/battle-init-*. Documentation-link validation covers1360 Markdown
 files with zero broken links. Other roots' work remains preserved; the moving
 merged worktree is not claimed validated as a whole.
+
+## 2026-10-14 — Field entry metadata and ordered event services documented
+
+Added inline comments to 22 C++ implementation/header files covering Bero info,
+normal position, retained initial-position event and execution flags; Mario/
+partner position callbacks; cases, map flags, mutable door data, story position,
+Mario background/control preparation and previous-party restoration. The
+[field-entry guide](code/field-entry.md) explains guest/native ownership, record
+layouts, source sentinels, provider/constructor holds, known-bit masks, captured
+versus reacquired owners, wrapping depth and ordered side effects. Described
+acknowledged-null partner lookup, per-axis operand routing, case local-bank
+capture and original script retirement. All 22 files preserve executable tokens;
+code/docs commit 124a414f.
+
+Validation freezes baseline 579df15e9595460efcc28be34ce7c22372b04ede plus documentation in
+artifacts/field-entry-code-documentation-validation/source. Audited 3556 tracked
+files: zero unexpected changes; 24 documented files match live/frozen hashes.
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test passes 347/347 C++ in 35.77s and
+199/199 Python in 27.669s, zero skipped. make all -o assets-ready -j4
+SOUNDTRACK=gamecube exits 0. host.log/native.log and source/binary/log hashes are
+recorded in manifest.json. Checks cover this snapshot, not concurrent work. Final case event-flag wording
+was corrected after compilation started; rebuilt field_case_tests and reran its
+one fixture successfully (field-case-final.log). Native final incremental build
+exits 0/no-op (native-final.log); both logs are hashed in the manifest.
+
+Reused accepted field-motion documentation RomFS/evidence inputs. Door/sequence/
+recovery products matched their prior recorded hashes before copying privately;
+mutable evidence directories were privately copied. Other large local-assets
+inputs remain shared read dependencies. No new extraction, conversion, editable
+import or shared cache write; native regeneration deliberately skipped. Existing
+compiler/Pillow warnings remain. No emulator/profile/save changes or new measured
+hardware/timing/floating-point fidelity claims. See [asset notes](ASSETS.md).
+
+Next: NPC registry/pose/placement/talk and room/area lifecycle, partner services,
+remaining battle, message/inventory/story, effect/audio and relevant port tooling.
+Re-audit concurrent additions/changes to already covered modules. Port-wide
+documentation and the remake remain incomplete; documentation goal stays active.

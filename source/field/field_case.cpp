@@ -27,7 +27,7 @@ void FieldCasePool::reinitialize(){for(auto& r:records_)r.flags&=uint16_t(~1u);}
 bool FieldCasePool::mark(int32_t n){if(!active(n))return false;records_[unsigned(n)].flags|=2;return true;}
 // Second pass consumes active+marked records in slot order. Check stale IDs
 // before construction; a provider/capacity hold preserves the current mark.
-// Child flag20(hex) and field16c carry original case ownership, not execution.
+// Event flag20(hex) and field16c carry original case ownership, not execution.
 bool FieldCasePool::dispatch(const FieldCaseDispatchServices& s) {
  assert(s.schedule);
  for(auto& r:records_)if((r.flags&3)==3) {
