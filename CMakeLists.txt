@@ -1753,3 +1753,8 @@ add_executable(field_pose_pool_tests tests/field_pose_pool_tests.cpp)
 target_link_libraries(field_pose_pool_tests PRIVATE ttyd_core)
 add_test(NAME field_pose_pool COMMAND field_pose_pool_tests)
 set_tests_properties(field_pose_pool PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+target_sources(ttyd_core PRIVATE source/battle/battle_audience_set_target.cpp source/battle/battle_menu_audience.cpp source/battle/harbor_tutorial_audience.cpp)
+add_executable(battle_audience_selection_tests tests/battle_audience_selection_tests.cpp)
+target_link_libraries(battle_audience_selection_tests PRIVATE ttyd_core)
+add_test(NAME battle_audience_selection COMMAND battle_audience_selection_tests)

@@ -1158,3 +1158,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native Stock EXP draw](battle/NATIVE_STOCK_EXP_DRAW.md) — original signed count gate, live process coordinates and small/big star loops.
 - [Original positional icon services](display/ORIGINAL_POSITION_ICON_SERVICES.md) — current-camera billboard/scale graph, late resource-null domain and retained original GX submission.
 - [Native field pose resource bridge](field/NATIVE_FIELD_POSE_RESOURCE_BRIDGE.md): real MODEL/TPL/descriptor0 catalog, original constructor leaves and pending field-facing/map owners.
+
+- [Audience SetTarget and retained native interruption](battle/AUDIENCE_TARGET_SELECTION_AND_NATIVE_INTERRUPTION.md) — original holder cleanup, physical-X query and real UI End owner.

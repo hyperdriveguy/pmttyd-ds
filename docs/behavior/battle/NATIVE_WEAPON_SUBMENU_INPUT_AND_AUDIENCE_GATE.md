@@ -32,10 +32,11 @@ projections, not proof of original UI lifecycle or full player execution.
 The shared complete audience interruption8011f524/cc preserves captured battle,
 X-mask400 early return, gravity/Mario blockers, actual item-output provider,
 previous type after ActMenuEnd, type11/state29, light request and live flags OR4.
-No item value is fabricated. Tutorial's item producer remains explicitly unbound;
-trigger0 takes its source early return, while an admitted interruption retains
-service unavailability. This is groundwork for lower-screen audience taps and
-physical alternatives, not completed crowd selection/throw prevention.
+No item value is fabricated. The tutorial now binds whole GetItemOn, complete
+[SetTarget and retained native UI interruption](AUDIENCE_TARGET_SELECTION_AND_NATIVE_INTERRUPTION.md).
+Trigger0 takes its source early return; an unknown UI owner holds without
+repeating acknowledged target work. This does not close whole outer command
+scheduling, actual AudienceAttack/throw prevention or lower-screen taps.
 
 Host fixtures cover admission/display, simultaneous confirmation/cancel,
 reason reread after End, pending republish/sound omission, navigation boundaries/

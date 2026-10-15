@@ -2,6 +2,8 @@
 #include "battle_actor.hpp"
 #include <array>
 namespace ttyd {
+// Whole source SetTarget: mark the selected actor and cancel other holders.
+void packedBattleAudienceSetTarget(int32_t,const BattleActorServices&);
 // Whole original GetItemOn and linked base/member/item getters. Arguments are
 // original output addresses(index,X,Y,Z,item); zero XYZ/item outputs are
 // optional. The no-match path unconditionally writes index=-1, matching the

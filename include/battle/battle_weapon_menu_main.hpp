@@ -25,7 +25,14 @@ struct BattleMenuAudienceServices {
  void (*setTarget)(void*,int32_t)=nullptr;
  void (*endActMenu)(void*,uint32_t battle)=nullptr;
  void (*lightOff)(void*,int32_t,int32_t)=nullptr;
+ // Native availability of the original void UI service, without fake completion.
+ bool (*endActMenuReady)(void*,uint32_t battle)=nullptr;
 };
+struct BattleMenuAudienceCursor {
+ bool active=false;uint8_t phase=0;uint32_t battle=0,output=0;int32_t item=0;
+ EventMemoryServices owner;
+};
+std::optional<bool> resumePackedBattleMenuAudienceCheck(const BattleMenuAudienceServices&,BattleMenuAudienceCursor&);
 std::optional<bool> packedBattleMenuAudienceCheck(const BattleMenuAudienceServices&);
 bool endPackedBattleWeaponMenu(uint32_t battle,const BattleWeaponMenuMainServices&);
 std::optional<int32_t> mainPackedBattleWeaponMenu(uint32_t battle,uint32_t type,const BattleWeaponMenuMainServices&);

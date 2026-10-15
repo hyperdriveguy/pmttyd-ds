@@ -4,13 +4,7 @@ namespace ttyd {
 namespace {int32_t sw(uint32_t v){return v<=0x7fffffffu?int32_t(v):int32_t(int64_t(v)-0x100000000LL);}int32_t sb(uint8_t v){return v<128?int32_t(v):int32_t(v)-256;}}
 bool packedBattleMenuKeyAllowed(uint32_t b,const BattleActorServices& m){assert(m.byte && m.memory.word);if(m.byte(m.user,b+0x1c74))return true;return m.byte(m.user,m.memory.word(m.memory.user,b+0x1c78)+0x14)!=0;}
 std::optional<bool> packedBattleMenuAudienceCheck(const BattleMenuAudienceServices& s){
- const auto& m=s.memory;assert(m.memory.word && m.memory.storeWord && s.trigger);auto word=[&](uint32_t at){return m.memory.word(m.memory.user,at);};auto store=[&](uint32_t at,uint32_t v){m.memory.storeWord(m.memory.user,at,v);};
- const auto b=word(0x8041eb90);if(!s.trigger(s.user,0x400))return false;if(word(b+0xef4)&0x40000000)return false;
- assert(s.mario);const auto u=s.mario(s.user,b);if(word(u+0x104)&0x10)return false;
- assert(s.itemOn && s.privateItem);if(!s.itemOn(s.user,s.privateItem,0,0,0,0))return std::nullopt;
- const auto item=sw(word(s.privateItem));if(item==-1)return false;
- assert(s.setTarget && s.endActMenu && s.lightOff);s.setTarget(s.user,item);s.endActMenu(s.user,b);
- const auto previous=word(b+0x1c5c);store(b+0x1c60,previous);store(b+0x1c5c,11);store(b+0x171c,29);s.lightOff(s.user,0,1);store(b+0xef4,word(b+0xef4)|4);return true;
+ BattleMenuAudienceCursor cursor;return resumePackedBattleMenuAudienceCheck(s,cursor);
 }
 bool endPackedBattleWeaponMenu(uint32_t b,const BattleWeaponMenuMainServices& s){assert(s.endUI && s.memory.memory.word && s.memory.memory.storeWord);if(!s.endUI(s.user,b))return false;const auto at=b+0x1720;const auto flags=s.memory.memory.word(s.memory.memory.user,at);s.memory.memory.storeWord(s.memory.memory.user,at,flags&~0x10u);return true;}
 std::optional<int32_t> mainPackedBattleWeaponMenu(uint32_t b,uint32_t type,const BattleWeaponMenuMainServices& s){

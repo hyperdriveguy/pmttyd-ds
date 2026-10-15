@@ -18,9 +18,7 @@ bool HarborTutorialPacked::classUiRelease(uint32_t address) {
 }
 bool HarborTutorialPacked::menuAudienceItemOn(uint32_t output){
  packedBattleAudienceItemOn({output,0,0,0,0},nativeBattleActorServices(vm));
- // The complete producer is bound. A real item still requires the original
- // target/end/light interruption providers; retain the produced value/effects.
- return word(output)==uint32_t(-1);
+ return true;
 }
 std::optional<int32_t>
 HarborTutorialPacked::actMenu(HarborTutorial &scene, void *messageUser,
@@ -148,19 +146,7 @@ HarborTutorialPacked::actMenu(HarborTutorial &scene, void *messageUser,
       setBattleCameraSpeed(Battle, int32_t(a[0]), int32_t(a[1]), p.camera);
       return 0;
     case F::Audience: {
-      BattleMenuAudienceServices q;
-      q.memory = nativeBattleActorServices(p.vm);
-      q.user = &c;
-      q.privateItem = MenuRam + 0x14;
-      q.trigger = [](void *self, uint32_t mask) {
-        return static_cast<Context *>(self)->p->word(Battle + 0xf44) & mask;
-      };
-      q.mario = [](void *self, uint32_t b) {
-        return battleMarioUnit(
-            b, nativeBattleActorServices(static_cast<Context *>(self)->p->vm));
-      };
-      q.itemOn = [](void* self,uint32_t output,int32_t,int32_t,int32_t,int32_t){return static_cast<Context*>(self)->p->menuAudienceItemOn(output);};
-      const auto result = packedBattleMenuAudienceCheck(q);
+      const auto result = p.attackAudienceMenu(*c.scene);
       return result ? std::optional<uint32_t>(*result ? 1 : 0) : missing();
     }
     case F::Display:

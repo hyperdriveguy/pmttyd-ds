@@ -69,9 +69,10 @@ No explicit original status scalar is substituted by this void implementation.
 
 Native class, weapon and target-menu audience checks now call this complete
 producer. Actual no-match returns ready and leaves physical X harmless, rather
-than freezing at the formerly unbound getter. A real match retains its produced
-value/cache effects and reports the interruption-consumer frontier; target
-selection, menu end and lights are not falsely completed. This does not admit
+than freezing at the formerly unbound getter. A real match now reaches the complete
+[SetTarget and retained native interruption](AUDIENCE_TARGET_SELECTION_AND_NATIVE_INTERRUPTION.md),
+with original cleanup and the existing real UI End owner. Unknown UI owners
+hold; no attack event or receipt is synthesized. This does not admit
 throwing actors or implement optional audience taps. The backend Init2D finite
 binding restores ordinary texture*raster color, so warning quads do not inherit
 the previous class material tint. Original audience-event construction remains

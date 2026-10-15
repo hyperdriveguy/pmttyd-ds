@@ -178,19 +178,9 @@ HarborTutorialPacked::commandInput(HarborTutorial &scene, void *messageUser,
     };
     t.audience = [](void *self) -> std::optional<bool> {
       auto &c = *static_cast<Context *>(self);
-      BattleMenuAudienceServices a;
-      a.memory = nativeBattleActorServices(c.p->vm);
-      a.user = &c;
-      a.privateItem = MenuRam + 0x14;
-      a.trigger = [](void *self, uint32_t mask) {
-        return static_cast<Context *>(self)->p->word(Battle + 0xf44) & mask;
-      };
-      a.mario = [](void *self, uint32_t b) {
-        return battleMarioUnit(
-            b, nativeBattleActorServices(static_cast<Context *>(self)->p->vm));
-      };
-      a.itemOn=[](void* self,uint32_t output,int32_t,int32_t,int32_t,int32_t){auto& c=*static_cast<Context*>(self);const bool ready=c.p->menuAudienceItemOn(output);if(!ready)c.scene->commandInputPending=0x801a2bec;return ready;};
-      return packedBattleMenuAudienceCheck(a);
+      const auto ready=c.p->attackAudienceMenu(*c.scene);
+      if(!ready)c.scene->commandInputPending=0x801220d4;
+      return ready;
     };
     return processPackedBattleTargetSelection(b, u, t);
   };

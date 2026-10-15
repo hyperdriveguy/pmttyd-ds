@@ -1270,3 +1270,7 @@ packs/binaries remain outside source history. ISO opened rb and not modified.
 Paths/hashes in artifacts/area-field-pose-assets-after.json and validation
 manifest. Missing six gor02 banks/hoshi and complete field-facing/GPU owners
 remain unavailable; this bridge does not claim rendered NPC registration.
+
+## Audience target/status data admission (2026-10-14)
+
+Reuses the existing private original `harbor-tutorial-events.pmevt` without conversion changes. Read-only ISO comparison confirmed exact vectors802fa104/0x30, zero80424988/4 and query Z offset804249cc/4 in that pack. Addresses identify original source data, not native pointers. No new art, dialogue or original bytes enter source history; existing original licensing restrictions apply. Checks are recorded in `artifacts/audience-interrupt-original-data.json`.
