@@ -14855,3 +14855,63 @@ animation/event integrations. Inventory reports hash agreement only for tracked
 source/include C++/headers/PICA; tooling/untracked additions need separate review.
 Hash agreement is not semantic coverage or proof later edits are documented.
 The broader documentation/remake goal remains active.
+
+## 2026-10-15 — Native field admission and source font loading documentation
+
+Added 118 inline comment lines across ten C++/header files plus
+[native field admission](code/native-field-admission.md) and
+[source font loading](code/source-font-loading.md), linked from index.
+Code/docs commit 03f789d0. Executable tokens/string literals unchanged; no numeric,
+simulation, original dialogue/story or asset behavior changed. No new tests for
+this documentation-only work.
+
+Notes explain partial bootstrap versus transaction rollback, pending animation
+barriers, simulation clock/root units, Mario flag projection and scene/lock
+gates, exact candidate versus checkpoint pose adoption, reinit bytes e8..ef,
+party leases and Goombella bank3. Static MODEL notes map immutable weak identity,
+actual raw backing, relocated header roots, table/count/stride closure, UV indices,
+directory names versus timeline pointers, and separately owned dynamic channels.
+Retained key notes explain real null versus absent party capture, incarnation
+pins/ABA, cached results, provider mismatch versus poison, reentry/reset, ordered
+source decisions and held flags/byte decisions. Font notes map selector/guard,
+captured children/real zero returns, actual sprintf paths, seven signed-length
+probes, wrapping32-byte rounding, publish-before-read, live block counts/last
+INF1/GLY1, source GX requests and ordered width7/9 aliasing. Native memory notes
+explain exact original BFN/FNV versus converter SHA, captured source spans,
+transactional VM bind/rollback, capacity versus known prefix, guest/physical
+alias exclusion, strong storage lifetimes, BE/atomic stores and detach semantics.
+These service checks do not establish complete source field/draw/GPU ownership.
+
+Frozen baseline 18c4f9de839539bb2b6d4893f5d4d4a483ed49da plus owned docs is at
+artifacts/native-admission-code-documentation-validation/source. Full git-blob
+audit covers 4243 baseline tracked files with zero unexpected changes; all 13
+frozen/live documentation snapshots match and 106 local guide/index links resolve.
+All source/prose finalized before gates. Concurrent animation/event/party/font/
+battle/UI/renderer/tool edits preserved/excluded; no combined moving-worktree
+validation claim. Original host/native handles observed terminal0, agreeing with
+exit markers. No test changes or additional test selection.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits 0: 489/489 C++ (77.09s),
+223/223 Python (34.478s), zero skipped. Actual original 45-descriptor enemy,
+private HitN64 and original party-position fixtures ran. Native
+make all -o assets-ready -j4 SOUNDTRACK=gamecube exits 0. Manifest pins source,
+products/evidence/fixtures/logs and native ELF/3DSX. Existing compiler/Pillow
+warnings remain. No emulator/profile/save changes or original CPU/GPU/pixel/
+audio/performance/hardware parity claims.
+
+Dependency preflight identifies CMake registration of existing party-script/bridge
+host code plus unavailable-host native graphics service, and a new read-only SDK
+identity verifier. Asset converters/assets/Makefile unchanged. All 78 accepted
+products inherited by hash, as are surface/footer conversion evidence and actual
+HP/enemy/HitN64/party fixtures (including HitN64 metadata's external frozen PNG
+read path). Small mutable/default evidence copied privately. No conversion,
+import, overlay or shared-cache write. Native full regeneration skipped; Python
+fixtures independently read ISO read-only into empty temporary outputs. See
+[asset ledger](ASSETS.md). Original rights retained; no ISO/extracted original or
+compiled binary committed.
+
+Next: remaining runtime/platform changes and newer display/battle/party/font/
+animation integrations, plus port tooling. Inventory only maps hashes of tracked
+source/include C++/headers/PICA; it excludes untracked additions/tooling and is
+not semantic completeness proof. Broad documentation and remake goals remain
+active; no whole-runtime or all-current-font coverage claim.

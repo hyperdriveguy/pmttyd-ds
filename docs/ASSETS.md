@@ -3394,3 +3394,20 @@ original PNG/atlas evidence hashes. Native full regeneration skipped; existing
 Python fixtures independently use read-only ISO and empty temporary outputs.
 No ISO, extracted original asset or compiled binary committed; Nintendo/
 Intelligent Systems rights retained, no new license or redistribution rights.
+
+## Native admission documentation validation inputs (2026-10-15)
+
+artifacts/native-admission-code-documentation-validation/source freezes baseline
+18c4f9de839539bb2b6d4893f5d4d4a483ed49da. Compared with runtime-bridge validation,
+only CMake adds existing host party-script/bridge/native-graphics sources and a
+new read-only tool pins installed SDK archives. Converters/assets/Makefile unchanged.
+All 78 accepted products and original surface/footer/HP/enemy/HitN64/party evidence
+and test fixtures inherited by hash; small mutable/default evidence copied
+privately. Actual HitN64 metadata PNG path remains a hash-pinned earlier private
+fixture identical to current copy. All evidence rechecked after gates. No new
+conversion/import/overlay/shared-cache writes; native full asset regeneration
+skipped. Python fixtures independently read original ISO read-only into empty
+temporary outputs. Original BFN remains exact; comments explain mutable runtime
+width patches without editing packaged input. Nintendo/Intelligent Systems rights
+retained; no new license/redistribution rights, no ISO/extracted original or compiled
+binary committed.
