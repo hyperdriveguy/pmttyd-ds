@@ -48,7 +48,7 @@ leaves Y with the jump/field support owner; NPC movement interpolates all axes.
 The `(distance+1)/speed` duration and Mario run threshold are adapter policy.
 The jump admits only its own exact Q1024 position round trip, supported roll
 and height parameters; unsupported domains hold at the service boundary.
-Bit2 suppresses automatic jump pose changes. Milliseconds convert to 60 Hz
+Flag mask0x2 suppresses automatic jump pose changes. Milliseconds convert to 60 Hz
 simulation ticks, with support supplied by the native floor query.
 
 `admitted` reflects nonzero current key-depth. `locked()` also checks source

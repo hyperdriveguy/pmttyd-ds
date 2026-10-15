@@ -59,7 +59,7 @@ bool loadProfessorStoryAssets(const char* root) {
 }
 // PMTRIO1 reuses professor service indices0..63 plus underground64..70.
 // Three relocated trio names map slots3..5. tik_01 room messages precede
-// tik_04 fallback; global text/font come from professor loading. Bounds here
+// tik_04 fallback; font comes from professor loading, without global text. Bounds here
 // admit count<72 and tags<71; these are metadata guards, not story counters.
 bool loadUndergroundStoryAssets(const char* root) {
     const std::string base=root;

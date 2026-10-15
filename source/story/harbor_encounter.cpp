@@ -124,7 +124,7 @@ struct HarborEncounterRuntime {
         case 14:if(first){HarborEncounterCamera r;for(unsigned i=0;i<3;++i){r.eye[i]=number(e,i);r.at[i]=number(e,i+3);}r.duration=value(e,6);r.curve=value(e,7);scene->cameras.push_back(r);}return 2;
         case 15:{auto& a=scene->actors[0];const auto mask=uint32_t(value(e,1));if(value(e,0)==1)a.flags|=mask;else a.flags&=~mask;return 2;}
         // Scoped stationary jump only: roll operand4 must0, duration ms*.06
-        // truncates to60Hz ticks. Bit2 suppresses automatic jump poses; phase2
+        // truncates to60Hz ticks. Mask0x2 suppresses automatic jump poses; phase2
         // selects landing pose. Unsupported domain holds at pendingService.
         case 17:{auto& a=scene->actors[0];if(first){const float x=number(e,0),y=number(e,1),z=number(e,2);
             // The preceding source get-position callback stores Q1024 event

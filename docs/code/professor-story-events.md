@@ -27,7 +27,7 @@ mention older pack versions. Loading checks the first-talk/fence/lecture entry
 words; it retains the pipe entry without that same word probe. Fence resources
 must include nonlooping A_1 frames0..140, sorted collision nodes and message
 icons before publishing the new bank. Underground text searches tik_01 before
-tik_04, using the professor font/global setup. The battle-unit loader reads
+tik_04, sharing the professor font without its global message bank. The battle-unit loader reads
 individual packed fields, avoiding C++ structure padding; unit order differs
 from scene slots and is explicitly remapped on battle-intro entry.
 
