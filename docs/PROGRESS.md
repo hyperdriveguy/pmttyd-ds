@@ -10612,3 +10612,65 @@ ordinary Area Main. Repair asset-error and visual occlusion admission, profile
 actual field/hardware. Evidence:artifacts/npc-detection-validation-manifest.json,
 asset-check.json, source/helper listings, full/target/native logs and isolated
 normal/probe captures. No original binaries or generated assets are committed.
+
+### Original pose Entry backed by actual animation process (2026-10-14)
+
+Implemented complete animPoseEntry8004176c/4ec as306 explicit original
+instruction continuations, retaining original loads/stores, signed comparisons,
+CTR scans, child arguments and partial publications across holds. Stack filename
+has real semantic backing, no fabricated guest stack token. Mode/archive
+selection, loaded MODEL-name reuse, texture filename reuse, ref increments,
+model-null/payload-null failure-2, texture-null continuation, signed64 clock
+quotient/LOW-before-HIGH stores, actual AllocBuffer, defaults/identity and live
+sort pointers preserve source order. No whole-pose memset or source exhaustion
+repair. [Contract](behavior/display/NATIVE_SOURCE_ANIMATION_POSE_ENTRY.md).
+
+AnimationStartupProcess::enter now uses its real shared file manager/holders,
+source SDK arena and scratch buffer machine, then validates loaded MODEL/TPL
+identity/counts and adopts native descriptor0 CPU resources/workspace as
+sidecars only. It never calls typed enter/restart over completed source rows.
+Completed parent is retained across metadata-admission holds. Native fixed
+identity leaf uses source paired-store order and constant0/1 domain. Original
+SDA2=80427440 and six additional hashed source default/format/sort ranges
+extend boot image to20 spans. Original data extraction remains read-only.
+
+Validated isolated frozen base ee35c9c37502d339ccf0a47327a60c3eeba90cb0 plus
+scoped edits, preserving concurrent work. Final make test -o assets-ready:
+399/399 C++ tests in46.71s,205 Python tests in42.191s; no skipped tests.
+Initial full run exposed stale accepted door-data for committed NPC auto-pose
+constants; regenerating with the frozen committed converter made that fixture
+pass, then the entire make test passed. Final make all -j4 -o assets-ready
+SOUNDTRACK=gamecube and restored ordinary make all passed. Existing unrelated
+compiler/Pillow warnings remain. Documentation links pass.
+
+Strict isolated Azahar marker:sourceEntry/sixModels/actualFiles/sharedTpl/
+sourceBuffers/signedClocks/pendingYield/capturedName/sidecars/staleFields/
+modelFailures/textureNullContinuation PASS. Fixture covers all six actual staged
+models/four textures, real model warm-file/Yield with name mutation, actual
+scratch addresses and Goombella CPU evaluation. Fault fixtures use real cold
+arrays and inject null model handle or null actual holder payload with real
+fileFree; texture-null holds at the real AllocBuffer boundary without a dummy
+buffer-success provider. No positive synthetic file identity supplies proof.
+
+Restored ordinary executable matches pre-probe SHA256:
+2c2b810356b6b4f685c005cf44b06dd0cf5d33ec078399962f2738e8355d2aef.
+Ordinary40-second isolated smoke visually inspected: original storybook and
+dialogue, no asset-error console. Capture shows App41FPS/68% emulator speed;
+this is boot evidence, not field or performance parity. ARM object uses native
+umull/shift operations for the original high-product clock divisor.
+Asset audit:2136 private products, only boot memory.pmevt/json and regenerated
+door-data.pmevt/json changed; other2132 accepted products byte-identical.
+No original bytes or compiled packs committed/distributed; rights unchanged.
+Only isolated emulator profiles/saves touched. Evidence:
+artifacts/animation-live-entry-validation-manifest.json, asset diff, final
+host/native logs, ARM object and isolated probe/ordinary captures.
+
+Normal Game remains on its existing field path. New Entry is genuinely backed
+by source files/heap/buffers but CPU vectors still do not alias guest scratch;
+live tangent/output ownership and actual native source clock publication remain
+required before ordinary Mario/partner activation. Native arena/clock/divide/
+identity/file policies are explicit, not original hardware parity or measured
+performance. Release/GC/cancellation/thread scheduling, broader renderer/field/
+event parents, occluded/asset-error field smoke concerns and complete prologue
+remain open. Next bind live CPU outputs/tangents, then integrate this retained
+owner before original field Mario/partner pose creation. EVT-01/goal incomplete.

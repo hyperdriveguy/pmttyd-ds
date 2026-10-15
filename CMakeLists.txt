@@ -2093,3 +2093,10 @@ add_executable(field_npc_main_detection_tests tests/field_npc_main_detection_tes
 target_link_libraries(field_npc_main_detection_tests PRIVATE ttyd_core)
 add_test(NAME field_npc_main_detection COMMAND field_npc_main_detection_tests)
 set_tests_properties(field_npc_main_detection PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Original retained Entry, real file/buffer children and native resource adoption.
+target_sources(ttyd_core PRIVATE source/display/animation_pose_entry.cpp)
+add_executable(animation_source_entry_tests tests/animation_source_entry_tests.cpp)
+target_link_libraries(animation_source_entry_tests PRIVATE ttyd_core)
+add_test(NAME animation_source_entry COMMAND animation_source_entry_tests)
+set_tests_properties(animation_source_entry PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

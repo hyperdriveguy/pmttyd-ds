@@ -7,7 +7,8 @@ pool. It is a startup prerequisite, not complete Game activation.
 
 ## Original memory and operations
 
-The read-only US revision0 DOL supplies14 data/BSS ranges, packed privately as
+The read-only US revision0 DOL supplies20 data/BSS ranges (including Entry
+defaults/formats), packed privately as
 animation-boot/memory.pmevt. Extraction checks every range SHA256 and gives real
 initialized sections precedence over the broad overlapping BSS interval. In
 particular Vivian's initial0xc00 bytes are initialized data, not zeros. Runtime
@@ -59,7 +60,7 @@ allocate/free/reuse after alias splitting. All arrays, refs and heap headers are
 actual production owner bytes. See [shared files](../file/NATIVE_SHARED_ANIMATION_FILE_CACHE.md)
 and [work aliases](NATIVE_ANIMATION_POOL_MEMORY.md).
 
-Normal Game still uses its existing startup/rendering path. Real source pose
-Entry to typed model/file metadata synchronization, CPU tangent/output consumers,
+Normal Game still uses its existing startup/rendering path. [Original pose Entry and typed metadata adoption](NATIVE_SOURCE_ANIMATION_POSE_ENTRY.md)
+now use this owner. CPU tangent/output consumers,
 ordinary Mario/partner activation, complete renderer/field providers and process
 teardown remain open. This owner alone is not a playable-prologue parity claim.

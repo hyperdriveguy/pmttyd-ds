@@ -4997,3 +4997,17 @@ are retained. Real cloud/interrupt children remain explicit pending providers.
 Local static analysis is delivered. Mario avoidance/proximity, display/history/
 tail, real child/cold resource owners, original numeric/runtime parity and
 ordinary Area activation stay open; no whole-Main completion is acknowledged.
+
+
+### Original pose Entry with actual process files and buffers (2026-10-14)
+
+Complete retained animPoseEntry8004176c/4ec now runs over the cold process SDK
+arena/shared manager. Real MODEL/TPL acquisition, refs, scratch buffers, signed
+source clock quotient, ordered defaults and live sort pointers precede native
+CPU metadata adoption. Six additional hashed original data spans extend the
+boot pack to20. Read-only instruction/SDK identity review corrected the identity
+store order; model failure-2 and texture-null continuation stay distinct.
+[Contract](../behavior/display/NATIVE_SOURCE_ANIMATION_POSE_ENTRY.md).
+CPU/source scratch aliasing and tangent consumers, normal Game Mario/partner
+activation, full rendering/release/field/event closure and original runtime
+traces remain open. EVT-01 and playable-prologue goal are incomplete.

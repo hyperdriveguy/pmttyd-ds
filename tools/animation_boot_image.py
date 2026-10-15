@@ -21,6 +21,9 @@ SPANS = [('animation-work', 2151519344, 272, 'e4d879a3407de578f579dfab4366fcea75
  ('heap-map-globals', 2151802888, 80, '5b6fb58e61fa475939767d68a446f97f1bff02c0e5935a3ea8bb51e6515783d8'),
  ('heap-current-arena', 2151801896, 12, '9d4b936a67c21ab14da09aa480239b43ea122c9c933d876013ee3012e464c16b'),
  ('sdk-arena-globals', 2151805040, 20, 'de47c9b27eb8d300dbb5f2c353e632c393262cf06340c4fa7f1b40c4cbd36f90')]
+# Additional original Entry defaults, formats and live sort storage.
+SPANS += [('entry-colors', 2151807756, 8, '12a3ae445661ce5dee78d0650d33362dec29c4f82af05e7e57fb595bbbacf0ca'), ('entry-one-zero', 2151807780, 8, 'e416065dd951359ab79d557107324f0f8fb0142494f2523ca9fdac35f1ac3d18'), ('entry-model-format-prefix', 2151807796, 12, 'd4e6d20a3d26563a68bab4cbc39c7f01d80e9490444a91696460f6271d8f4556'), ('entry-texture-format', 2150371432, 8, 'bda93144bb3a69b5bd1541dc0a8975bcced82e3b7399a2b532c9e043dd6d864d'), ('entry-sort-strings', 2150371752, 48, '009683c1ef3a549e20527d41aea567922b1f26b0dc59d972001f444f44efa094'), ('entry-default-sort', 2151767492, 4, 'ad95131bc0b799c0b1af477fb14fcf26a6a9f76079e48bf090acb7e8367bfd0e')]
+
 def build(iso=DEFAULT_ISO,output='romfs/animation-boot'):
  root=Path(output);root.mkdir(parents=True,exist_ok=True)
  with Path(iso).open('rb') as disc:

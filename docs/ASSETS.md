@@ -2096,3 +2096,17 @@ changing caller-specific arithmetic graphs. No fabricated event pointers,
 script/dialogue replacements, art/audio/geometry edits or compiled original
 assets enter Git. Existing Nintendo/Intelligent Systems rights and private
 local-use restrictions remain unchanged; no redistribution license is granted.
+
+
+### Original animation Entry defaults and formats (2026-10-14)
+
+Extended private animation-boot/memory.pmevt/json from14 to20 original US
+revision0 data/BSS ranges. New spans are colors8041fb0c/8, one/zero8041fb24/8,
+model format/prefix8041fb34/c, texture format802c1068/8, sortstrings802c11a8/30
+and defaultsort80415dc4/4. Exact source offsets/range hashes and register-base
+proof live in ignored artifacts/animation-entry-evidence/. The extractor pins
+every SHA256, reads ISO only, and reuses existing live Vivian-tail storage.
+Animation changes only the two private boot products. Validation also
+regenerates door-data.pmevt/json for already committed NPC automatic-pose
+constants; all other2132 accepted products remain byte-identical. No new art conversion, redistribution or rights change;
+Nintendo/Intelligent Systems originals remain private and uncommitted.
