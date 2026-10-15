@@ -15407,3 +15407,49 @@ window/resource integrations, runtime changes and tooling. Inventory covers only
 tracked source/include C++/header/PICA hashes; untracked additions/tools need
 separate audit and matching hashes do not establish semantic completeness.
 Broader documentation/remake goals remain active.
+
+
+## Prepared original weapon UI raster and resource formatter (2026-10-15)
+
+Committed `658e9af746c23910f58a47c505f4616adca75d74`: prepared immutable
+Window/font/submenu/icon geometry in original packet order; actual Renderer
+preflights resources and every composed vertex before any GPU effects. Submission
+uses copied geometry and concrete nonallocating setters only after C2D_Flush.
+Actual font generation/Renderer identity reject address reuse; guarded native
+entry prevents callback reentry submitting a prefix. Ordinary font, textured
+panel and icon shader/depth profiles stay distinct. Real ordered source owner,
+queued callback and serialized target/resource lifetime are still mandatory.
+
+The finite C-runtime formatter admits only the three actual Font/Window path
+request shapes and source bytes; unknown/null/alias/overflow/budget cases hold
+without target writes. Original parent-private cell maps retain suffix/unknown
+history. This does not implement general original printf/varargs/alias traces.
+Actual Font/Window parent tests reach missing DVD Open without replaying root
+or formatting, using the actual root leaf and read-only original strings.
+
+Validation authority `artifacts/mixed-ui-raster-validation/manifest.json` SHA256
+`caa6570c5e261ec13a3c061a4ce4f47579e552c5110e54657107992cab688e9d`:
+6458 frozen inputs rehashed unchanged. `make --jobserver-style=pipe test` with
+CMAKE_BUILD_PARALLEL_LEVEL=4:493/493 C++ (52.45s),226/226 Python (33.930s),zero
+skips. `make --jobserver-style=pipe all -o assets-ready -j4 SOUNDTRACK=gamecube`:
+exit0. Binary `artifacts/ttyd-prepared-original-weapon-ui.3dsx` SHA256
+`5f1c1deadd5290213d1aad9df998ec0e17bc1b0d4827b81433edaa5fe0b195d8`.
+Formatter/root/window/installedSDK source checks exit0;1541 frozen Markdown files,
+zero broken links. Focused worker strict-host, ASan+UBSan and GNU ARM checks are
+pinned in package manifests. Static loop audit pins the actual icon/pipeline/
+sampler setters; no allocation/query/source/RNG occurs after the GPU prefix.
+No new native mixed-pixel proof yet; worker probe is separate from accepted
+source. Root reviewed the actual loops/materials and resolved no outstanding
+finding. CMake/index preserve independent baseline registrations; owned code
+matches validation. Parent native Window/font leaf evidence remains valid.
+
+Next: executable startup owner reuses actual process GP/heap/DVD/font state
+before Mario initialization, without acknowledging whole LogoExit. Bind the
+actual queued weapon callback using existing Trio W/common-bank/CameraMain
+proofs and Frame/ordered/plan owners. Source MainIcon also needs distinct original
+class0/1 packets (not submenu2/3) and its centered FontDrawString80076a10 (not
+Matrix80076cdc); actual packed weapon cost remains a separate required provider.
+Workers are implementing these concrete dependencies and native mixed proof.
+Physical alternatives and original US story/dialogue remain preserved. Native
+art import never grants source readiness. No hardware/PPC parity, normal battle
+or tutorial completion is claimed; full goal stays active.
