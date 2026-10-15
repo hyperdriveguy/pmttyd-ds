@@ -349,6 +349,9 @@ struct NativeWorld {
   bool poseClockReady = false, cloudReady = false, interruptReady = false;
   unsigned cloudCalls = 0, interruptCalls = 0, vivianCalls = 0;
   bool marioServicesReady = false;
+  bool tailReady = false, scoreReady = false;
+  uint32_t tailSecondField = 0, tailOtherMario = 0;
+  unsigned encounters = 0, scores = 0;
   bool displayReady = false, queueReady = false, shadowReady = false;
   std::unique_ptr<ShadowWork> shadows = std::make_unique<ShadowWork>();
   std::unique_ptr<DisplayQueue> displayQueue = std::make_unique<DisplayQueue>();
@@ -439,6 +442,23 @@ struct NativeWorld {
     store(M + 0x1dc, 0x87654321);
     FieldNpcMainEntryNativeServices n;
     n.user = this;
+    n.tail = [](void *p, EventAddressSpace &memory,
+                const FieldNpcTailRequest &q, FieldNpcTailResponse &) {
+      auto &f = *static_cast<NativeWorld *>(p);
+      assert(&memory == &f.vm->memory);
+      if (!f.tailReady) return false;
+      if (q.function == 0x8004727c) {
+        ++f.encounters;
+        return memory.writeWord(f.vm->gpAddresses.currentAddress()+0x168,
+                                 f.tailSecondField);
+      }
+      assert(q.function == 0x80216994);
+      if (!f.scoreReady) return false;
+      const std::array<uint32_t,3> expected{{bits(3),bits(64),bits(5)}};
+      assert(q.args[0]==5 && q.point==expected);
+      ++f.scores;return true;
+    }; // Explicit encounter/score fixtures; interpolation/Kpa leaves are real.
+
     n.shadow = [](void *p, EventAddressSpace &memory,
                   const FieldNpcShadowRequest &q, FieldNpcShadowResponse &out) {
       auto &f = *static_cast<NativeWorld *>(p);
@@ -547,7 +567,8 @@ struct NativeWorld {
       return memory.writeWord(q.args[0] + 0x90, bits(9));
     }; // Explicit gravity fixture, not a replacement production child.
     n.admitMario = [](void *p, EventAddressSpace &, uint32_t m) {
-      return static_cast<NativeWorld *>(p)->marioReady && m == M;
+      const auto &f = *static_cast<NativeWorld *>(p);
+      return f.marioReady && (m == M || (f.tailOtherMario && m == f.tailOtherMario));
     };
     entry = FieldNpcMainEntryBinding::bind(owner, *registry, *vm, *view, n);
     assert(entry);
@@ -878,7 +899,8 @@ void actualAliases() {
              before); // Refuse positive out-of-bank domain; never clamp.
 }
 void actorScan() {
-  NativeWorld f;
+  auto firstWorld=std::make_unique<NativeWorld>();
+  auto &f=*firstWorld;
   f.marioReady = true; f.movementReady = true; f.scanning = true;
   f.vm->gp.timestamp = 1032750;
   const auto first = f.actor, second = first + 2*0x340;
@@ -895,7 +917,8 @@ void actorScan() {
   for (auto a : {first+0x340, first+3*0x340}) {
     f.store(a, 0); f.store(a+0x98, 333); f.store(a+0x1d4, 0x10);
   }
-  FieldNpcMainActorsCursor scan;
+  auto scanOwner=std::make_unique<FieldNpcMainActorsCursor>();
+  auto &scan=*scanOwner;
   f.movementHoldActor = second;
   f.pauseClockAfterGravity = true;
   assert(f.entry->advanceActors(scan) == FieldNpcActorsFrontier::Pending);
@@ -929,8 +952,91 @@ void actorScan() {
     assert(f.word(a+0x98)==333 && f.word(a+0x1d4)==0x10);
   assert(f.entry->advanceActors(scan)==FieldNpcActorsFrontier::FieldTail &&
          f.movementCalls==2 && f.word(0x8041e8ac)==3);
-  NativeWorld other;
+  auto otherWorld=std::make_unique<NativeWorld>();
+  auto &other=*otherWorld;
   assert(other.entry->advanceActors(scan)==FieldNpcActorsFrontier::Pending);
+  // Continue the SAME already-retired actor pass into its original field tail.
+  const auto TailF=f.owner->fieldWorkAddress();
+  constexpr uint32_t TailF2=0x8e010000,
+                     OtherPlayer=0x8d020000, BadWork=0x8f300000, FireWork=0x8f400000;
+  assert(f.word(f.vm->gpAddresses.currentAddress()+0x168)==TailF &&
+         f.vm->memory.registerRam(TailF2,std::vector<uint8_t>(0x580)));
+  f.tailSecondField=TailF2;
+  f.store(f.vm->gpAddresses.currentAddress()+0x168,TailF);
+  f.store(TailF+0x550,1);f.store(TailF+0x554,99);f.store(TailF+0x558,2);
+  assert(f.vm->memory.writeHalf(TailF,1));
+  assert(f.vm->memory.writeByte(TailF+0x54c,0xbb) &&
+         f.vm->memory.writeByte(TailF+0x54d,0xaa) &&
+         f.vm->memory.writeByte(TailF+0x54e,0xcc) &&
+         f.vm->memory.writeByte(TailF2+0x54d,0xdd));
+  f.store(TailF2+0x57c,5);f.store(TailF2+0x578,2);f.store(TailF2+0x574,9);
+  f.store(NativeWorld::M,1);f.store(NativeWorld::M+0x298,BadWork);
+  assert(f.vm->memory.writeHalf(NativeWorld::M+0x50,0xffff) &&
+         f.vm->memory.writeByte(NativeWorld::M+0x3c,2));
+  f.store(NativeWorld::M+0x8c,bits(3));f.store(NativeWorld::M+0x90,bits(4));
+  f.store(NativeWorld::M+0x94,bits(5));
+  auto main=std::make_unique<FieldNpcMainCursor>();main->actors=std::move(scan);
+  f.displayReady=true;f.queueReady=false;
+  assert(!f.entry->advanceMain(*main) && main->phase==1 && main->tail.phase==27 &&
+         f.word(TailF+0x55c)==1 && f.word(TailF+0x560)==0xc4009b33 &&
+         f.encounters==0 && f.movementCalls==2 && f.word(0x8041e8ac)==3);
+  f.queueReady=true;
+  assert(!f.entry->advanceMain(*main) && main->tail.phase==41 &&
+         f.displayQueue->count()==1 && f.encounters==0);
+  f.tailReady=true;
+  assert(!f.entry->advanceMain(*main) && main->tail.phase==48 &&
+         f.encounters==1 && main->tail.mario==NativeWorld::M && main->tail.jump==1);
+  // Fire helper fetches fresh Mario inside its atomic read-only admission;
+  // score still uses the parent's retained original Mario.
+  assert(f.vm->memory.registerRam(OtherPlayer,std::vector<uint8_t>(0x300)) &&
+         f.vm->memory.registerRam(FireWork,std::vector<uint8_t>(0x140)));
+  f.tailOtherMario=OtherPlayer;f.store(OtherPlayer,1);
+  f.store(OtherPlayer+0x298,FireWork);f.store(FireWork+0x13c,20);
+  f.store(0x8041e900,OtherPlayer);
+  assert(!f.entry->advanceMain(*main) && main->tail.phase==56 &&
+         main->tail.fire==1 && f.encounters==1 && f.scores==0);
+  f.store(NativeWorld::M+0x90,bits(100));f.store(TailF2+0x57c,99);
+  f.store(f.vm->gpAddresses.currentAddress()+0x168,0);
+  f.scoreReady=true;
+  assert(f.entry->advanceMain(*main) && main->phase==2 && f.scores==1 &&
+         f.encounters==1 && f.word(TailF2+0x578)==0 && f.word(TailF2+0x57c)==0 &&
+         f.word(TailF2+0x574)==9 && f.word(TailF+0x54c)==0xbb00cc00 &&
+         f.word(TailF2+0x54c)==0x00dd0000 && f.word(TailF+0x55c)==1);
+  assert(f.entry->advanceMain(*main) && f.scores==1 && f.encounters==1 &&
+         f.displayQueue->count()==1 && f.word(0x8041e8ac)==3);
+  assert(!other.entry->advanceMain(*main));
+  // Fresh whole invocation with zero actors reaches an ordinary mode0 tail.
+  other.marioReady=true;other.store(0x8041e8b8,0);
+  const auto OtherF=other.owner->fieldWorkAddress();
+  assert(other.word(other.vm->gpAddresses.currentAddress()+0x168)==OtherF);
+  other.store(other.vm->gpAddresses.currentAddress()+0x168,OtherF);
+  assert(other.vm->memory.writeByte(OtherF+0x54d,0xaa));
+  auto empty=std::make_unique<FieldNpcMainCursor>();
+  assert(other.entry->advanceMain(*empty) && empty->phase==2 &&
+         other.word(0x8041e8ac)==1 && other.word(OtherF+0x54c)==0);
+  // Real Kpa query leaves: signed nonzero jump half and both positive fire
+  // windows, including gaps/negative values and the prerequisite flags bit.
+  assert(other.vm->memory.registerRam(TailF2,std::vector<uint8_t>(0x600)) &&
+         other.vm->memory.registerRam(FireWork,std::vector<uint8_t>(0x140)));
+  other.tailReady=true;other.tailSecondField=TailF2;
+  assert(other.vm->memory.writeHalf(OtherF,1) &&
+         other.vm->memory.writeByte(NativeWorld::M+0x3c,2));
+  other.store(NativeWorld::M+0x298,FireWork);
+  for(uint32_t kind : {19u,20u,23u,24u,39u,40u,43u,44u,0xffffffffu})
+    for(uint32_t flags : {0u,1u}) for(uint16_t jumpHalf : {0,0xffff}) {
+      other.store(other.vm->gpAddresses.currentAddress()+0x168,OtherF);
+      other.store(FireWork+0x13c,kind);other.store(NativeWorld::M,flags);
+      assert(other.vm->memory.writeHalf(NativeWorld::M+0x50,jumpHalf));
+      other.store(TailF2+0x574,9);other.store(TailF2+0x578,1);other.store(TailF2+0x57c,5);
+      auto query=std::make_unique<FieldNpcMainCursor>();
+      assert(other.entry->advanceMain(*query));
+      const bool fire=flags && (kind==20 || kind==23 || kind==40 || kind==43);
+      assert(other.word(TailF2+0x574)==(fire?9u:0u) &&
+             other.word(TailF2+0x578)==(jumpHalf?0u:1u) &&
+             other.word(TailF2+0x57c)==(jumpHalf?0u:5u) && other.scores==0);
+    }
+
+
 }
 } // namespace
 int main() {

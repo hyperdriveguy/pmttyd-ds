@@ -6,6 +6,7 @@
 #include "field_npc_main_display.hpp"
 #include "field_npc_main_shadow.hpp"
 #include "field_npc_main_history.hpp"
+#include "field_npc_main_tail.hpp"
 #include "field_npc_main_movement.hpp"
 #include "field_npc_mario_detection.hpp"
 namespace ttyd {
@@ -34,6 +35,9 @@ struct FieldNpcMainEntryNativeServices {
   // Same shadow pool/frame through holds; actual zero slot is valid.
   bool (*shadow)(void *, EventAddressSpace &, const FieldNpcShadowRequest &,
                  FieldNpcShadowResponse &) = nullptr;
+  // Real field encounter/talk/battle and Kpa score providers; false no effects.
+  bool (*tail)(void *, EventAddressSpace &, const FieldNpcTailRequest &,
+               FieldNpcTailResponse &) = nullptr;
   bool (*sound)(void *, EventAddressSpace &,
                 const FieldNpcMainEntryRequest &) = nullptr;
 };
@@ -52,6 +56,12 @@ struct FieldNpcMainActorsCursor {
   FieldNpcHistoryCursor history;
 };
 enum class FieldNpcActorsFrontier { Pending, FieldTail };
+struct FieldNpcMainCursor {
+  const void *binding = nullptr;
+  uint8_t phase = 0;
+  FieldNpcMainActorsCursor actors;
+  FieldNpcTailCursor tail;
+};
 // Retains actual NPC owner; borrows VM, registry mapping and animation alias.
 // Keep all mappings/owners alive through every parent cursor/frontier.
 class FieldNpcMainEntryBinding {
@@ -90,6 +100,10 @@ public:
 
   // Complete actor traversal only; returned FieldTail is still unfinished Main.
   FieldNpcActorsFrontier advanceActors(FieldNpcMainActorsCursor &);
+
+  // One complete source invocation only after all real child effects and final
+  // retained-F byte clear. Reset after completion/pass retirement, not on hold.
+  bool advanceMain(FieldNpcMainCursor &);
 
 private:
   FieldNpcMainEntryBinding(std::shared_ptr<FieldNpcRegistryOwner>,

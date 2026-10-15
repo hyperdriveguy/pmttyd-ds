@@ -1,6 +1,7 @@
 #include "field_npc_main_entry_binding.hpp"
 #include "animation_pool_memory.hpp"
 #include "event_native_runtime.hpp"
+#include "field_camera_events.hpp"
 #include <cstring>
 namespace ttyd {
 FieldNpcMainEntryBinding::FieldNpcMainEntryBinding(
@@ -467,5 +468,74 @@ FieldNpcMainEntryBinding::advanceActors(FieldNpcMainActorsCursor &c) {
   case 4: return Result::FieldTail;
   default: return Result::Pending;
   }
+}
+bool FieldNpcMainEntryBinding::advanceMain(FieldNpcMainCursor &c) {
+  if ((c.binding && c.binding != this) ||
+      !poses_.aliases(*owner_->poses().sharedPool(), vm_.memory))
+    return false;
+  c.binding = this;
+  if (c.phase == 0) {
+    if (advanceActors(c.actors) != FieldNpcActorsFrontier::FieldTail) return false;
+    c.phase = 1;
+  }
+  if (c.phase == 2) return true;
+  if (c.phase != 1) return false;
+  FieldNpcTailServices s;
+  s.memory = services().clock;
+  s.byte = [](void *p, uint32_t a) -> std::optional<uint8_t> {
+    uint8_t v;
+    if (!static_cast<FieldNpcMainEntryBinding *>(p)->vm_.memory.readByte(a, v)) return {};
+    return v;
+  };
+  s.half = [](void *p, uint32_t a) -> std::optional<uint16_t> {
+    uint16_t v;
+    if (!static_cast<FieldNpcMainEntryBinding *>(p)->vm_.memory.readHalf(a, v)) return {};
+    return v;
+  };
+  s.storeByte = [](void *p, uint32_t a, uint8_t v) {
+    return static_cast<FieldNpcMainEntryBinding *>(p)->vm_.memory.writeByte(a, v);
+  };
+  s.queue = [](void *p, const FieldNpcDisplayRequest &q, FieldNpcDisplayResponse &out) {
+    auto &b = *static_cast<FieldNpcMainEntryBinding *>(p);
+    return b.native_.display && b.native_.display(b.native_.user, b.vm_.memory, q, out);
+  };
+  s.request = [](void *p, const FieldNpcTailRequest &q, FieldNpcTailResponse &out) {
+    auto &b = *static_cast<FieldNpcMainEntryBinding *>(p);
+    auto &m = b.vm_.memory;
+    auto mario = [&](uint32_t &v) {
+      const auto entry = b.services();
+      return entry.request(p, {0x8005e0c0, {}}, v);
+    };
+    if (q.function == 0x8005e0c0) return mario(out.word);
+    if (q.function == 0x80006c8c) {
+      auto sw = [](uint32_t v) {return v <= 0x7fffffff ? int32_t(v) : int32_t(int64_t(v)-0x100000000LL);};
+      if (q.args[0] != 1 && q.args[0] != 5) return false;
+      auto value = cameraInterpolation(sw(q.args[0]), sw(q.args[1]), sw(q.args[2]),
+                                        q.scalars[0], q.scalars[1]);
+      if (!value) return false;
+      out.scalar = *value; return true;
+    }
+    // Atomic read-only source leaves. Each child gets FRESH Mario itself;
+    // never substitute the parent's retained pointer or outer mode gate.
+    if (q.function == 0x801fcc98 || q.function == 0x801fe1b0) {
+      uint32_t player=0;
+      if (!mario(player)) return false;
+      if (q.function == 0x801fcc98) {
+        uint16_t state;
+        if (!m.readHalf(player+0x50, state)) return false;
+        out.word = state != 0; return true;
+      }
+      uint32_t flags=0, work=0, kind=0;
+      if (!m.readWord(player, flags)) return false;
+      if (!(flags & 1)) {out.word=0;return true;}
+      if (!m.readWord(player+0x298, work) || !m.readWord(work+0x13c, kind)) return false;
+      out.word = (kind>=20 && kind<=23) || (kind>=40 && kind<=43);
+      return true;
+    }
+    return b.native_.tail && b.native_.tail(b.native_.user, m, q, out);
+  };
+  if (!advanceFieldNpcMainTail(s, c.tail)) return false;
+  c.phase = 2;
+  return true;
 }
 } // namespace ttyd

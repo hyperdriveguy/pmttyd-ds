@@ -2186,3 +2186,8 @@ add_executable(animation_scratch_memory_tests tests/animation_scratch_memory_tes
 target_link_libraries(animation_scratch_memory_tests PRIVATE ttyd_core)
 add_test(NAME animation_scratch_memory COMMAND animation_scratch_memory_tests)
 set_tests_properties(animation_scratch_memory PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+# Original post-pool field tail and complete retained source npcMain invocation.
+target_sources(ttyd_core PRIVATE source/field/field_npc_main_tail.cpp)
+add_executable(field_npc_main_tail_tests tests/field_npc_main_tail_tests.cpp)
+target_link_libraries(field_npc_main_tail_tests PRIVATE ttyd_core)
+add_test(NAME field_npc_main_tail COMMAND field_npc_main_tail_tests)
