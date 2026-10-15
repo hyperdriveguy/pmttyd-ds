@@ -1,4 +1,5 @@
 #include "field_area_event.hpp"
+#include "game.hpp"
 #include "animation_group_prefetch.hpp"
 #include "field_door_data.hpp"
 #include "field_door_parameter.hpp"
@@ -85,6 +86,10 @@ struct FieldAreaEventRuntime {
  std::shared_ptr<const Program> program=assets;
  FieldAreaEventServices services;
  EventNativeRuntime vm;
+ // Destruction order is cursor, binding, then the facade they reference.
+ std::unique_ptr<FieldNpcRegistryBinding> mapNpcBinding;
+ std::unique_ptr<FieldMapNpcBootstrap> mapNpcs;
+ std::optional<FieldAreaGpState> mapGpState;
  FieldCasePool cases;
  uint32_t room=UINT32_MAX,initializer=0;
  std::optional<uint32_t> initId;
@@ -287,11 +292,35 @@ bool FieldAreaEvent::begin(uint32_t room,uint64_t milliseconds) {
  if((next->entries.empty() && !next->initializer) || !next->initialize(milliseconds))return false;
  runtime_=std::move(next);started=true;failed=false;completed_.clear();return true;
 }
+bool FieldAreaEvent::prepareMapNpcs(Game& game,const FieldAreaGpState& state,const FieldMapNpcAssets& tags,uint32_t inputBase,uint32_t area,uint32_t map,uint32_t allocationBase){
+ if(!runtime_ || failed)return false;
+ auto& r=*runtime_;
+ if(r.mapGpState || r.initId || !r.roots.empty() || !completed_.empty())return false;
+ for(unsigned n=0;n<FieldCasePool::Capacity;++n)if(r.cases.active(n))return false;
+ r.mapGpState=state;
+ if(!r.vm.memory.writeWord(0x81000000,state.systemFlags))return false;
+ for(unsigned n=0;n<state.bytes.size();++n)if(!r.vm.memory.writeByte(0x81000000+FieldAreaGpState::Begin+n,state.bytes[n]))return false;
+ if(game.originalFieldNpcs)r.mapNpcBinding=FieldNpcRegistryBinding::bind(game.originalFieldNpcs,r.vm.memory);
+ else r.mapNpcBinding=game.initializeOriginalFieldNpcs(r.vm.memory,allocationBase);
+ if(!r.mapNpcBinding)return false;
+ // Map construction must follow actual room cleanup, never reset retained NPCs
+ // or seed an existing owner's GP field pointer merely to satisfy admission.
+ const auto active=r.mapNpcBinding->activeActors();uint32_t field=0;
+ if(!active || !active->empty() || !r.vm.memory.readWord(0x81000168,field) || field!=game.originalFieldNpcs->fieldWorkAddress())return false;
+ r.mapNpcs=FieldMapNpcBootstrap::prepare(r.vm.memory,*r.mapNpcBinding,tags,inputBase,area,map,field);
+ return bool(r.mapNpcs);
+}
+bool FieldAreaEvent::advanceMapNpcs(BattlePoseClock clock,const FieldMapNpcBattleAdmission& battle){return runtime_ && !failed && runtime_->mapNpcs && runtime_->mapNpcs->advance(clock,battle);}
+bool FieldAreaEvent::mapNpcsReady() const{return runtime_ && runtime_->mapNpcs && runtime_->mapNpcs->ready();}
 std::optional<uint32_t> FieldAreaEvent::appendAreaInit(const FieldAreaGpState& state) {
  if(!runtime_ || failed || !runtime_->initializer || runtime_->initId || !runtime_->roots.empty() || !completed_.empty())return {};
  auto& r=*runtime_;for(unsigned n=0;n<FieldCasePool::Capacity;++n)if(r.cases.active(n))return {};
- if(!r.vm.memory.writeWord(0x81000000,state.systemFlags))return {};
- for(unsigned n=0;n<state.bytes.size();++n)if(!r.vm.memory.writeByte(0x81000000+FieldAreaGpState::Begin+n,state.bytes[n]))return {};
+ if(r.mapGpState){
+  if(!r.mapNpcs || !r.mapNpcs->ready() || state.systemFlags!=r.mapGpState->systemFlags || state.bytes!=r.mapGpState->bytes)return {};
+ }else{
+  if(!r.vm.memory.writeWord(0x81000000,state.systemFlags))return {};
+  for(unsigned n=0;n<state.bytes.size();++n)if(!r.vm.memory.writeByte(0x81000000+FieldAreaGpState::Begin+n,state.bytes[n]))return {};
+ }
  auto& e=createRootEvent(r.vm.schedule,r.initializer,0,0,r.vm.creationServices());
  if(!r.vm.memory.writeWord(0x81000164,e.id)){failed=true;return {};}
  r.initId=e.id;r.roots.push_back({e.id,UINT32_MAX,{}});return e.id;
@@ -322,7 +351,7 @@ std::optional<uint32_t> FieldAreaEvent::battleSetupConfiguration(int32_t index) 
  return {};
 }
 std::optional<uint32_t> FieldAreaEvent::appendDoorEntry(uint32_t entryIndex,const std::array<int32_t,16>& bank) {
- if(!runtime_ || failed || runtime_->initId || entryIndex>=runtime_->entries.size())return {};
+ if(!runtime_ || failed || runtime_->mapGpState || runtime_->initId || entryIndex>=runtime_->entries.size())return {};
  const auto creation=runtime_->vm.creationServices();
  auto* gp=creation.manager.globals(creation.manager.user);
  auto* context=creation.manager.context(creation.manager.user,gp->battleContext!=0);

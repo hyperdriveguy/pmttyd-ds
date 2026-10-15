@@ -24,4 +24,6 @@ class FieldMapNpcAssets(unittest.TestCase):
   for j in range(struct.unpack_from('>I',raw,8)[0]):
    address,size,_=struct.unpack_from('>III',raw,12+12*j);self.assertEqual((address&3,size&3),(0,0))
   for view in meta['views']:self.assertEqual(hashlib.sha256(span(view['address'],view['size'])).hexdigest(),view['sha256'])
-  self.assertEqual(span(0x802c3b10,len(b'BTLNO_INVALID\0')),b'BTLNO_INVALID\0');self.assertEqual(span(0x804207b4,4),bytes(4));self.assertEqual(span(0x80338274,32),bytes(32));self.assertEqual([t['address'] for t in meta['tables']],[0x803316d0,0x80338270,0x80416580])
+  self.assertEqual(span(0x802c3b10,len(b'BTLNO_INVALID\0')),b'BTLNO_INVALID\0');self.assertEqual(span(0x804207b4,4),bytes(4));self.assertEqual(span(0x80338274,32),bytes(32));self.assertEqual([t['address'] for t in meta['tables']],[0x803316d0,0x80338270,0x80416580,0x8030f668])
+
+  table=span(0x8030f668,0x954);self.assertEqual(hashlib.sha256(table).hexdigest(),'5c76b1a7b2073b6ddbfbeac319e786c9b44b77330e9bd7c062e0f5b8661dd4cc');self.assertEqual(struct.unpack_from('>III',table,198*12),(0,0xffffffff,0));self.assertEqual(span(0x804207a8,1),b'\0')

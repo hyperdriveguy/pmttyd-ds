@@ -5,11 +5,13 @@
 #include "field_bero_position.hpp"
 #include "field_position_event.hpp"
 #include "field_npc_setup.hpp"
+#include "field_map_npc_bootstrap.hpp"
 #include "event_operands.hpp"
 #include "event_gp_addresses.hpp"
 #include <memory>
 #include <vector>
 namespace ttyd {
+class Game;
 class AnimationGroupPrefetch;
 class FieldDoorDataWorld;
 class FieldMapFlags;
@@ -63,6 +65,14 @@ public:
  FieldAreaEvent(FieldAreaEvent&&)=delete;
  FieldAreaEvent& operator=(FieldAreaEvent&&)=delete;
  bool begin(uint32_t room,uint64_t milliseconds);
+ // Optional original map-NPC stage before the root. Caller supplies actual GP,
+ // area/map string addresses and native allocation identities. Existing owners
+ // require source room cleanup and a GP+168 snapshot that aliases retained F.
+ // Failed preparation keeps the binding/snapshot and blocks root creation;
+ // discard this area facade before retrying with corrected inputs.
+ bool prepareMapNpcs(Game&,const FieldAreaGpState&,const FieldMapNpcAssets&,uint32_t inputBase,uint32_t area,uint32_t map,uint32_t allocationBase);
+ bool advanceMapNpcs(BattlePoseClock,const FieldMapNpcBattleAdmission& = {});
+ bool mapNpcsReady() const;
  std::optional<uint32_t> appendAreaInit(const FieldAreaGpState&); // Actual cleared-root constructor, once before other roots/cases.
  std::optional<uint32_t> areaInitEventId() const;
  bool eventAlive(uint32_t) const;

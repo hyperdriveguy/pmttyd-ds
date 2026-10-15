@@ -34,14 +34,14 @@ def source_segments(iso):
   start=address&~3;length=((address+size+3)&~3)-start
   if len(segments.get(start,b''))<length:segments[start]=dol.read(start,length)
  try:
-  for name,address,size,stride,fields in [('npcTribe',0x803316d0,0x6ba0,0x54,(0,4,8,12,16,20,24,28,32,36,64,68)),('npc_ai_type_table',0x80338270,0x804,0x24,(0,)),('npc_define_territory_type',0x80416580,0x20,8,(0,))]:
+  for name,address,size,stride,fields in [('npcTribe',0x803316d0,0x6ba0,0x54,(0,4,8,12,16,20,24,28,32,36,64,68)),('npc_ai_type_table',0x80338270,0x804,0x24,(0,)),('npc_define_territory_type',0x80416580,0x20,8,(0,)),('_map_attr_data',0x8030f668,0x954,12,(0,))]:
    raw=dol.read(address,size);add(address,size);tables.append(dict(name=name,address=address,size=size,sha256=hashlib.sha256(raw).hexdigest()))
    for row in range(0,size,stride):
     if not struct.unpack_from('>I',raw,row)[0]:break
     for field in fields:
      pointer=struct.unpack_from('>I',raw,row+field)[0]
      if pointer:add(pointer,len(dol.string(pointer)))
-  for address,size in [(0x802c3b10,len(b'BTLNO_INVALID\0')),(0x804207b4,4)]:add(address,size)
+  for address,size in [(0x802c3b10,len(b'BTLNO_INVALID\0')),(0x804207b4,4),(0x804207a8,1)]:add(address,size)
   if dol.read(0x802c3b10,len(b'BTLNO_INVALID\0'))!=b'BTLNO_INVALID\0' or dol.read(0x804207b4,4)!=bytes(4):raise ValueError('Unexpected original map NPC constants')
   metadata=dict(tables=tables,views=[dict(address=a,size=len(b),sha256=hashlib.sha256(b).hexdigest()) for a,b in sorted(segments.items())],policy='Unchanged original DOL data/strings only; no function bodies or fabricated BSS. Native parsed tag input uses a separate adapter.')
   return sorted(segments.items()),metadata

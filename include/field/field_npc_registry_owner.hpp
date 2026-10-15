@@ -22,6 +22,7 @@ public:
  FieldNpcRegistryOwner(const FieldNpcRegistryOwner&)=delete;
  FieldNpcRegistryOwner& operator=(const FieldNpcRegistryOwner&)=delete;
  bool initialized() const{return initialized_;}
+ uint32_t fieldWorkAddress() const{return addresses_[3];}
  FieldPosePool& poses(){return poses_;}
  const FieldPosePool& poses() const{return poses_;}
 private:
