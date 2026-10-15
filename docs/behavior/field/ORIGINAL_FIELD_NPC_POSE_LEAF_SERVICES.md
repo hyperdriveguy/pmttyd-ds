@@ -95,10 +95,12 @@ BattlePosePool retains source-sized0x170 scalar records and real CPU animation
 resources. Its word0 and wordec can back paper/material changes once an
 actual field-owned pose is admitted. BattlePoseResource.draw, when present,
 can supply unchanged MODEL+c8/+cc. modelFlags alone cannot supply dimensions.
-The current pool Entry does not initialize+11c/+120 according to the source
-mapping above; default new zero storage is insufficient for reused slots or
-the four special models. Its battle-local handle namespace also does not
-represent the source global field/battle allocation history.
+Pool Entry now initializes+11c/+120 from captured request identity on every
+entry/reused slot; paper/material/Vivian and signed metadata leaves exist.
+[The native field resource bridge](NATIVE_FIELD_POSE_RESOURCE_BRIDGE.md) owns
+its own catalog/pool and requires real MODEL/TPL/descriptor0 data. This separate
+namespace still does not represent original global field/battle allocation
+history; field-facing/Main/GPU and Game map registration remain pending.
 
 Current tools/field_actor_assets.py provides these six ordinary field banks:
 c_tyusan, c_kuri_h, c_f_mura, c_kuribo_n, c_borodo_n, c_monban. Original

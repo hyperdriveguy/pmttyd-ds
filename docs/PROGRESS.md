@@ -7147,3 +7147,49 @@ and16.20ms on the host emulator; earlier normal snapshot was60/100%. These
 samples are not a hardware timing comparison or source-pixel parity proof.
 Log artifacts/stock-exp-smoke-final-normal.log. User emulator profiles/saves
 unchanged. All recorded hashes refer to the final restored production source.
+
+### Resource-backed field NPC pose bridge
+
+Implemented original pose paper/material/Vivian/dimension leaves and a retained
+FieldPosePool catalog separated from battle handles. Every Entry uses captured
+request identity for+11c/+120, including reused slots. Signed MODEL+c8/+cc use
+f32(2*f32(s32)) in original engine units. Original Frankly MODEL/TPL, full
+PMPOSE02 directory and descriptor0 back real CPU allocation/animation; unavailable
+resources stay pending. The field pool exposes const inspection only. Its
+paper flag stays set: missing facing/Main/GPU ownership is not acknowledged.
+
+The actual packed NPC constructor now has a host/ARM composition with genuine
+Frankly resources and unchanged original constants/name bytes. Allocator and
+guest RAM in that fixture are explicitly test-owned. This does not install
+Game's factory, allocate all gor02 actors or execute map setup/init events.
+Original initial/stay/talk are S_1/S_1/T_1; lowercase d_1 is a separate tribe
+role and case-sensitive descriptor0 fallback, not initial NPC setup.
+
+Code commit88b70d60. Frozen source822adfa3cc07b0e9a069f56f984b0e1172bff612:
+3416 tracked files audited, zero mismatches. Required make test -o assets-ready
+(CMAKE_BUILD_PARALLEL_LEVEL=4) exited0:322/322 C++ in37.09s,188/188 Python
+in27.253s. make all -j4 -o assets-ready SOUNDTRACK=gamecube exited0.
+Normal3DSX SHA256bb4e8ffd53418add1d083a88f810edb9e80819827982b68be68ea77e91c5169f.
+Separate strict native ARM fixture passed signed-dimension bit patterns,
+resource-backed constructor and pending paper-facing boundary in isolated
+artifacts/azahar-area-field-pose-probe-v2; smoke exited0. The first private
+fixture timed out with host-style resource paths; corrected only harness paths
+to romfs:/ and reran in a fresh profile. Its unused-fixture-function warning is
+excluded from production. Existing baseline compiler/Pillow warnings remain.
+All private probe edits were restored; no user emulator profile/saves touched.
+Manifest artifacts/area-field-pose-validation-manifest.json, test/build/probe
+logs under artifacts/area-field-pose-*. Whole concurrent worktree is not claimed
+validated: CMake append was rebased onto current HEAD preserving other work.
+
+Next: export complete original field MODEL/TPL/directory/descriptor0 companions
+for existing ordinary banks, missing c_deale/c_joho_b/c_luigi/c_binbo/c_roten_g/
+c_bomt_n and hoshi; implement retained field-facing/Main/clock and GPU admission;
+compose actual Game-owned registry, tagged-map producer, init/regular events and
+room/deletion lifetime. Continue EVT-01/OW-INTERACT-01 documentation inbox. No
+new dialogue, art/audio replacements, performance measurements or complete
+map/prologue/remake claims.
+
+Normal isolated15s boot smoke exited0; inspected original opening book/table
+capture artifacts/azahar-area-field-pose-normal/boot.png (57AppFPS/98% in that
+single emulator sample). This is a boot check, not a field-NPC rendering or
+hardware performance benchmark. Logs artifacts/area-field-pose-normal-smoke.log.

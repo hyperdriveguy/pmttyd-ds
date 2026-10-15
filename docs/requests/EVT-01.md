@@ -4745,3 +4745,10 @@ scissor(0,0,U16GP170,U16GP172), not restoring the previous saved rectangle.
 Three independent ReelGetPtr(0) calls capture fresh globalB and source ordering;
 state0 alone only skips initial backgrounds, not all active-flag work. This is
 next implementation work; full prologue/field-return goal stays open.
+
+Native progress: [field resource bridge](../behavior/field/NATIVE_FIELD_POSE_RESOURCE_BRIDGE.md)
+now composes the actual NPC constructor with original Frankly CPU resources in
+explicit host/ARM allocator/RAM fixtures. Pose paper/material/Vivian/dimensions
+are implemented; full Game factory/tagged map/events and paper-facing/GPU/room
+lifetime remain pending. Complete gor02 banks/hoshi are still needed. The
+initial/stay/talk tribe roles use S_1/S_1/T_1; lowercase d_1 is +20/+24 only.

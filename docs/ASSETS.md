@@ -1244,3 +1244,29 @@ Original stock icon ID404 and actual camera/frame/GX providers are used; visual
 parity and whole-scene publication are separate from resource admission. Frozen
 source's committed door-data builder was also run to match its existing area
 registry schema; that is a prerequisite pack refresh, not a new Stock EXP asset.
+
+### Original NPC constructor constants and field CPU pose bridge
+
+Read-only G8ME01.iso DOL export tools/field_npc_constructor_assets.py adds five
+unchanged spans:802c11f8/18,802c1468/8,8041fc6c/2c,8041fd6c/10,8041fb64/4.
+These96 payload bytes retain zero/unit vectors, c_luigi, source scalar/gap bytes,
+hoshi/M_I_2 and float2; each span is SHA256 pinned. The shared private
+romfs/door-data.pmevt grows103308→103464bytes including segment headers;
+romfs/door-data.json records field_npc_constructor.dol_views and source hashes.
+Only those two pack/metadata files changed; door-data.bin, field-area-init/events/
+battle.bin and field-prefetch products remain byte-identical. No synthetic BSS
+registry or pose handle is packaged.
+
+No new art conversion this step. Real field bridge uses existing original
+professor.pose-directory.bin/.pmanim/.draw-model.bin/.draw-textures.bin from
+a/c_kuri_h and a/c_kuri_h-. Raw MODEL/TPL remain unchanged, full descriptor
+identity/order retained, descriptor0 Z_1 evaluated on CPU; signed metadata is
+read from original+c8/+cc rather than inferred bounds. Synthetic metadata
+rounding variants exist only in explicitly test-owned fixtures, never packs.
+
+Nintendo/Intelligent Systems copyrighted game data is retained privately for
+local development; no redistribution license is asserted. Extracts/compiled
+packs/binaries remain outside source history. ISO opened rb and not modified.
+Paths/hashes in artifacts/area-field-pose-assets-after.json and validation
+manifest. Missing six gor02 banks/hoshi and complete field-facing/GPU owners
+remain unavailable; this bridge does not claim rendered NPC registration.
