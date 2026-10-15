@@ -11339,3 +11339,61 @@ completed original lower-screen audience visibility to actual incarnation
 selection, preserving physical X and optional harmful-item taps. Original HUD/
 menu style, original assets/audio/story and fixed simulation timing remain
 requirements. Full tutorial/real-battle goal remains active/incomplete.
+
+## 2026-10-14 — Battle presentation leaves documented
+
+Added inline ownership/layout/numeric/behavior notes to 32 C++ files: audience
+immediate draw/callback/aux/touch, AP report, present/drop/Majinai helpers, menu
+resources/curtain/status window and part/HP/gauge/screen/stock-EXP presentation.
+Added [audience draw/touch](code/battle-audience-draw.md),
+[part/HP presentation](code/battle-part-presentation.md),
+[reports/resources](code/battle-reports-resources.md) and index entries.
+Code/docs commit c9e8a347. All 32 preserve executable tokens/string literals;
+no behavior changes or new tests for this prose-only work.
+
+Explained immediate source mutations versus retained callback limits, inherited
+texture/unwritten flip registers, independent camera/owner captures, source SDK
+numeric domains and source versus native screen units. Obscure cases include
+partial actor-callback completion, poisoned touch passes/ambiguous overlaps,
+HP captured versus reloaded units/color carry, sequential red->blue tint,
+rotation selector/history shift, AP credit before point child, recovery before
+held effects, stale freed menu pointer, pose-driven curtain, drop badge fallback
+and U8 Majinai wrap. Providers/unsupported frontiers remain explicit; no guessed
+source geometry, rendering completeness, SDK/Gekko parity or measured cadence.
+
+Frozen validation baseline c70dc31a9119c4d4a9104c54c643f22b888b5436 plus owned documentation lives at
+artifacts/battle-presentation-code-documentation-validation/source. Full audit of
+3849 baseline tracked files reports zero unexpected changes. All 36 documented
+files match recorded frozen/live snapshots; all 56 local guide/index links resolve.
+Concurrent animation/NPC/display/runtime work was preserved/excluded; no combined-
+moving-checkout validation. No code/guide refinements after build launch.
+
+Final CMAKE_BUILD_PARALLEL_LEVEL=4 make test passes 416/416 C++ (73.62s),
+207/207 Python (44.457s), zero skipped. make all -o assets-ready -j4
+SOUNDTRACK=gamecube exits0. Manifest records source/dependency/authority/log and
+ELF/3DSX hashes plus initial/final process results. Existing compiler/Pillow
+warnings remain. No emulator/profile/save changes or hardware/pixel/performance
+claims. Source phase counts are not measured render timing.
+
+Cache inherits 46 accepted product hashes plus common-menu/Frankly evidence,
+14 footer PNG/atlas and 3 HP PNG evidence hashes. New baseline needs NPC-display
+numeric data. Recorded products were absent among 126 cached candidate paths;
+preflight assertion prevented copying, but initial builds had already launched.
+Regenerated only the targeted frozen door converter into an EMPTY private
+cache-rebuild directory from ISO read-only. Both door-data.pmevt/json match
+artifacts/npc-display-assets-after.json exactly; its own hash matches recorded
+npc-display-validation-manifest. Pack 152492 bytes SHA256
+98cba3c1443f1c23a7ca3bb9b38f7a06c9b705262e6b974c7b11824bc72f7fe4.
+Only those two products update validation cache; ancillary original field/
+animation-prefetch outputs remain unused private rebuild artifacts. No editable
+imports or shared pack writes. Initial processes/logs retained; both full gates
+reran incrementally after they ended to validate final cache. Native full asset
+regeneration deliberately skipped. Existing Python fixtures independently read
+ISO read-only and write empty temporary outputs. No ISO/original asset binaries
+committed; provenance/rights unchanged; see [asset notes](ASSETS.md).
+
+Next: remaining damage/orchestration/movement and runtime composition, retained
+Main/stage/sequence bindings, message/story/effect/platform/file/event helpers
+and tools. Re-audit concurrent animation/tangent/NPC/HP/display code against its
+committed versions; matching old snapshots is not a completeness proof.
+Full code documentation and remake remain unfinished; goal stays active.

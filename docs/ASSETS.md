@@ -2288,3 +2288,30 @@ the behavior contract and ignored source audit; original body/ISO/pack/binary
 are not committed. Nintendo/Intelligent Systems rights remain reserved. Local
 use grants no redistribution rights. Exact private product hashes are recorded
 in artifacts/npc-shadow-assets-after.json and the validation manifest.
+
+## Battle presentation-code validation inputs (2026-10-14)
+
+artifacts/battle-presentation-code-documentation-validation/source inherits 46
+accepted products and original common-menu/Frankly evidence,14 private footer
+PNG/atlas hashes and 3 private HP PNG hashes. Recorded NPC-display door products
+were absent from 126 existing cache candidates. A failed preflight copied nothing;
+initial compilation was already launched. Targeted regeneration runs the FROZEN
+source/tools/door_data_assets.py with ISO /home/carson/games/roms/G8ME01.iso
+read-only in empty artifacts/battle-presentation-code-documentation-validation/
+cache-rebuild. It uses the frozen symbol catalog and converters; it imports no
+editable assets or shared output. Original rel/gor.rel and linked US DOL data
+retain raw source words/provenance/licenses. No texture/geometry/lighting edits.
+
+Generated door-data.pmevt/json exactly match artifacts/npc-display-assets-after.json,
+whose own SHA256 matches artifacts/npc-display-validation-manifest.json. Frozen
+actor-data converter also matches the source code commit recorded there. Pack
+152492 bytes SHA256 98cba3c1443f1c23a7ca3bb9b38f7a06c9b705262e6b974c7b11824bc72f7fe4;
+metadata 479622 bytes SHA256 7ff8bed4b1c1cc61de7432a8af65bdfb8b08c83f0dc24ab8335a8e2c6c5464b2.
+Only these two replace private validation inputs; generated ancillary original
+field/animation-prefetch outputs stay unused in the empty private rebuild tree.
+Manifest records command, source/authority/product hashes and all generated outputs.
+Initial/final gate logs are retained; both gates rerun after initial completion.
+Native asset regeneration remains skipped; existing Python fixtures independently
+read ISO read-only and use empty temporary outputs. Nintendo/Intelligent Systems
+rights remain reserved; private tracking/copying grants no new license. No ISO,
+extracted original asset or compiled binary was committed.
