@@ -2780,3 +2780,29 @@ Other products inherit the preceding animation-ram-borrow accepted snapshot.
 Full product/overlay/converter authority hashes are retained under ignored
 artifacts/field-source-release-*.json. Shared runtime source and isolated probe
 binaries remain separate; no user emulator profile/save is touched.
+### Original Main clock and sample-time literals (2026-10-15)
+
+The read-only US G8ME01 disc0 revision0 at
+`/home/carson/games/roms/G8ME01.iso` supplies unchanged original rate literals
+8041fba4+8 (42700000/447a0000), SHA256
+`ddc0adc8aa32f0760b2cecfb24f4467cc09eff8318c59d91bfb09c2ba30e2057`,
+and original double bias802c1070+8 (4330000080000000), SHA256
+`07af8387624cf8f36152797d2f561246f21237d1d22b5c13006eacfa6f475e43`.
+Actor extraction adds these exact source-address views to private door-data;
+the cold animation image already owns the bias and adds only the missing rates.
+Its exact runtime layout and critical-word checks include those new literals.
+Equal NPC/effect constants at other addresses are not substituted.
+
+Private door-data.pmevt is 152960 bytes, SHA256
+`ea3f9a6aaf9ad351a43afcc06cd8442c13eb47e20d486fdd842e81bc15dde292`;
+private animation-boot/memory.pmevt is 4808 bytes, SHA256
+`6f1ec8abd7fefc0ae22aed3b1e87330049d48dd73d480f43f22d8780eac5ed3a`.
+Among 2152 RomFS products only the two packs and their JSON provenance changed.
+Removing exactly the new source ranges/row reproduces both prior byte/hash
+identities. All other product bytes and local gor_02.s are unchanged; no new
+prerequisite refresh, art/audio resampling, geometry/lighting or US story/
+dialogue changes. Original Nintendo/Intelligent Systems rights remain reserved;
+local extraction grants no redistribution rights. ISO, extracted resources,
+original source listings and compiled packs/executables remain ignored/private.
+Exact source/product/native logs and hashes are in
+`artifacts/animation-time-validation-manifest.json`.

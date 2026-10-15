@@ -5198,3 +5198,14 @@ Entry2Pos(kind13) plus the authored harbor/plaza conversion; a null hook does no
 permit skipping saved-kind/current-slot/table/release/free order. Keep actual
 source flag8 Main/facing/field scheduling and original story/message conditions
 separate. Evidence:ignored artifacts/animation-field-release-evidence/.
+
+### 2026-10-15 Retained animation Main clock and selected sample time
+
+[Time continuation](../behavior/display/RETAINED_ANIMATION_MAIN_TIME.md)
+implements source8003ee08..ef80 with actual VM/pool aliases, initial selector/
+ZERO capture, fresh control/rate/ratio reloads, atomic original bias and signed
+clock/unsigned elapsed conversion. It also corrects fnmsubs exact-cancellation
+zero sign in both retained and existing sampler paths. Retained evaluation
+continues to require original timeline/cache/interpolation owners; full Main,
+normal NPC activation and original field visual/numeric/hardware parity remain
+OPEN. No synchronous partial evaluator is relabeled atomic. EVT-01 is not closed.

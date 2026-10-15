@@ -1311,3 +1311,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Retained animation Main entry](display/RETAINED_ANIMATION_MAIN_ENTRY.md): exact resource/output captures, GQR/linked/null ordering and retained evaluation-to-facing boundary; production evaluation and NPC activation remain open.
 
 - [Native original source pose retirement](display/NATIVE_SOURCE_POSE_RELEASE.md): complete retained Release, actual shared file references, warm reuse and production battle retirement; broader party/scene lifetimes remain open.
+
+- [Retained animation Main clock/sample time](display/RETAINED_ANIMATION_MAIN_TIME.md): exact source bank/time/control/ratio/bias continuation, live VM/shared-pose binding and fnmsubs signed-zero correction; later evaluation/normal NPC activation remain open.

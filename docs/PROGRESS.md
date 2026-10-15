@@ -1,3 +1,80 @@
+### Original retained Main clock and selected sample time (2026-10-15)
+
+Code commit c8447353781a76a8d6ed2e412d681797c856cca2 implements complete nonnull Main8003ee08..8003ef80
+through selected-time publication. The retained child preserves initial mode/
+loop selector, GP-before-hardware reads, both GP banks, signed clock division,
+low-before-high modulo timestamp subtraction and unsigned64 conversion through
+double then float. Original literal/reload/store order remains explicit: two
+R20 publications with an intervening fresh R20/rate read, fresh control and
+END-before-START loads, captured ZERO, atomic bias before ratio publication,
+fresh ratio before fctiwz and actual captured-bias integer reconstruction.
+
+The native binding uses actual VM/shared-pose aliases with a producer/lifetime
+guard at every primitive, including mapped inactive slot255; wrong VM cannot
+fall back to detached state. A real held-write fixture stops after the first
+pose store, mutates epoch, and resumes only the remaining three stores. Cursor
+storage is bounded with no per-invocation allocation. Remaining timeline/cache/
+output evaluation is still separate; no partial provider is falsely certified
+as complete Main, and normal Game NPC activation remains open.
+
+Independent review found and corrected a signed-zero error in the earlier
+sample-time helper: original fnmsubs negates the fused subtraction, producing
+-0 on exact cancellation. Shared animationFnmsubs now serves both retained
+and existing sampler paths, with bit-level assertions. This is a static source/
+instruction correction corroborated by Dolphin's interpreter, not original
+execution measurement. FPSCR/exceptions/denormals/NaN-payload parity and finite
+fctiwz overflow/NaN domains remain explicit limitations.
+
+[Contract](behavior/display/RETAINED_ANIMATION_MAIN_TIME.md) and EVT-01 document
+source order, ownership, numeric scope and next tasks. Read-only ISO extraction
+adds 16 source bytes (clock literals and exact original bias) to door-data and
+only missing 8 literal bytes to the cold image; strict cold-image admission was
+updated too. Among 2152 RomFS products only those packs and their JSON files
+changed. Removing just the new ranges/row reproduces exact previous packs;
+all other hashes and local gor_02.s remain unchanged. No new prerequisite
+refresh, art/music/SFX/geometry/lighting or original US story/dialogue changes.
+Original assets/PPC/listings/packs/binaries remain private/ignored.
+
+Accepted isolated tree 179bfa0bdcf66a8eee269a1d2a068a657ecea89a uses prior accepted source tree
+391e7a9b361633c1c7a8d4524f8d24fd5f43238c as its base, preserving unrelated
+concurrent work outside validation. 3963 tracked files audited exact.
+`TRIO_ENEMY_POSE_PACK=romfs CMAKE_BUILD_PARALLEL_LEVEL=4 make test` passed 437
+C++ tests (51.16 seconds), 212 Python tests (34.393 seconds), zero
+skipped. `make all -j4 -o assets-ready SOUNDTRACK=gamecube` passed after scoped
+original constant-pack regeneration. Source verifier passed 2 bodies/1773
+instructions/17 constants/5 spans/2 imports/65 callers/one serialized example.
+Initial full validation found two older fixtures mapping a synthetic bias before
+importing the now expanded pack. They now retire that mapping and verify the
+original imported words; strict importer overlap rejection remains intact.
+The final native probe also executes both affected fixture suites.
+Independent final source/controller/native binding/tests/docs review and
+warning-enabled syntax checks found no remaining substantive issues.
+
+Isolated ARM probe passed clock/selectedTime/holds/reloads/bias/signedZero/
+numeric/actualAliases/heldWrites/importedBias assertions. Tests cover 14 complete branch/bank
+variants with every primitive unavailable in turn, fresh/retained captures,
+changed ratio/bias/control/zero, underflow, signed negative clock, zero divisor
+and nonfinite holds. Normal runtime source restored/rebuilt with identical
+pre/post SHA256 a5a12d9be5b639c33993203e98c5369b5a67fb2a8b3ce8e6966ad814c6689950. Forty-second startup capture inspected:
+original storybook and US opening text, App60 FPS / speed100%, no visible asset-error console. Startup does not prove field or New 2DS XL performance.
+Exact source/product/native logs, hashes and captures live in ignored
+`artifacts/animation-time-validation-manifest.json`. Code/docs committed
+separately; shared index and unrelated work preserved.
+
+Next: retain original8003ef80..8003f0f4 timeline scans/indices/clamps/discrete
+state/fraction (source SHA2560eb7dfa91876015ebcb4bb1b3da1b803e35569bf86951c0dd7b15e08a7b244f4).
+Read-only exact-load/mutation notes are in ignored
+artifacts/npc-main-parent-evidence/animation-main-timeline-notes.txt. Its
+independent R24 scan captures, fresh predecessor/count rereads, pre-table
+discrete reads and loop fraction reload graph must be retained; fresh ZERO
+there is independent of this time child. Then retain cumulative cache replay and interpolation
+with the captured Main resource/output owners. Compose the full evaluation child
+through Main/Inner, bind quantized platform/linked/queue/GPU owners, activate
+source NPC rendering in normal Game, then compare original field appearance,
+event/dialogue chronology, numeric behavior and physical New 2DS XL speed.
+EVT-01 and the full goal remain active; the Rogueport/prologue/full remake are
+not complete.
+
 ### Original animation Main entry and paper sampling (2026-10-15)
 
 Code commit 240f19d7bfb4faa5a29ceeac9cbd256357bf94a0 adds the retained original Main prelude, an explicit
