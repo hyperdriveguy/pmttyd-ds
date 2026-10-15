@@ -45,6 +45,7 @@ public:
  FieldNpcRegistryBinding(const FieldNpcRegistryBinding&)=delete;
  FieldNpcRegistryBinding& operator=(const FieldNpcRegistryBinding&)=delete;
  bool initialize(); // Once, actual npcInit. Never a room reset.
+ bool reset(int32_t selector); // Actual npcReset only; pose/event teardown stays separate.
  bool canEnter(uint32_t name,uint32_t model) const;
  // Caller supplies an already parsed, history-gate-admitted row. All row
  // services are admitted before Entry; no partial row is repeated on a hold.

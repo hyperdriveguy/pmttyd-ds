@@ -53,6 +53,14 @@ struct FieldAreaEventServices {
  //0 retains,1 clears/yields,2 clears/continues. Unknown functions hold by default.
  int32_t (*call)(void*,FieldAreaNativeCall&)=nullptr;
 };
+// Source _unload interval npcReset0..caseReInit. Caller has already completed
+// mario/map teardown. Providers own ext/mobj/offscreen/image/effect/pose work;
+// a false step retains its own progress and is never treated as completion.
+struct FieldAreaNpcReleaseServices {
+ void* user=nullptr;
+ bool (*admit)(void*,EventAddressSpace&)=nullptr; // No effects; stable lifetime through holds.
+ bool (*step)(void*,uint32_t function,EventAddressSpace&)=nullptr;
+};
 struct FieldAreaEntryResult {uint32_t eventId=0;uint32_t entryIndex=0;std::array<int32_t,16> locals;bool returned=false;};
 struct FieldAreaEventRuntime;
 // One retained scheduler and case pool for an area. Supplied-bank roots are an
@@ -73,6 +81,10 @@ public:
  bool prepareMapNpcs(Game&,const FieldAreaGpState&,const FieldMapNpcAssets&,uint32_t inputBase,uint32_t area,uint32_t map,uint32_t allocationBase);
  bool advanceMapNpcs(BattlePoseClock,const FieldMapNpcBattleAdmission& = {});
  bool mapNpcsReady() const;
+ // Retains teardown across holds, suppressing scheduler passes/new roots.
+ // Success clears event/case/native cursors; begin may then select another
+ // supported room in this same VM, retaining context banks and event IDs.
+ bool retireMapNpcs(const FieldAreaNpcReleaseServices&);
  std::optional<uint32_t> appendAreaInit(const FieldAreaGpState&); // Actual cleared-root constructor, once before other roots/cases.
  std::optional<uint32_t> areaInitEventId() const;
  bool eventAlive(uint32_t) const;

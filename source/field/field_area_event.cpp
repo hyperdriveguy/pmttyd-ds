@@ -87,9 +87,13 @@ struct FieldAreaEventRuntime {
  FieldAreaEventServices services;
  EventNativeRuntime vm;
  // Destruction order is cursor, binding, then the facade they reference.
+ std::shared_ptr<FieldNpcRegistryOwner> mapNpcOwner;
  std::unique_ptr<FieldNpcRegistryBinding> mapNpcBinding;
  std::unique_ptr<FieldMapNpcBootstrap> mapNpcs;
  std::optional<FieldAreaGpState> mapGpState;
+ bool releasingNpcs=false,ticking=false,retiredNpcs=false,releaseInvocation=false;
+ unsigned releaseStep=0;
+ FieldAreaNpcReleaseServices releaseServices;
  FieldCasePool cases;
  uint32_t room=UINT32_MAX,initializer=0;
  std::optional<uint32_t> initId;
@@ -274,12 +278,23 @@ struct FieldAreaEventRuntime {
   if(fn==0x8005323c && result!=0)npcSetup.erase(e.id);
   return result;
  }
- bool initialize(uint64_t milliseconds) {
-  if(!vm.memory.registerRam(0x82000000,std::vector<uint8_t>(0x80000)) || !vm.memory.registerRam(0x8041f070,std::vector<uint8_t>(16)) || !vm.memory.registerRam(0x8041e428,std::vector<uint8_t>(4)) || !vm.memory.registerRam(0x8041e844,std::vector<uint8_t>(4)) || !vm.memory.registerRam(0x8041e9e4,std::vector<uint8_t>(24)) || !vm.memory.importScripts(program->scripts))return false;
+ bool selectRoom(uint32_t nextRoom){
+  std::vector<DoorProgram> nextEntries;uint32_t nextInitializer=0;
+  for(const auto& e:program->entries)if(e.room==nextRoom)nextEntries.push_back(e);
+  for(const auto& e:program->initializers)if(e[0]==nextRoom)nextInitializer=e[1];
+  if(nextEntries.empty() && !nextInitializer)return false;
+  room=nextRoom;entries=std::move(nextEntries);initializer=nextInitializer;return true;
+ }
+ bool registerBattles(){
   for(const auto& b:program->battles)if(b.room==room){char name[4]{};
    for(unsigned i=0;i<4;++i){uint8_t byte=0;if(!vm.memory.readByte(b.name+i,byte))return false;name[i]=char(byte);}
    registerPackedBattleArea(name,b.setup,b.numbers,nativeBattleActorServices(vm));
   }
+  return true;
+ }
+ bool initialize(uint64_t milliseconds) {
+  if(!vm.memory.registerRam(0x82000000,std::vector<uint8_t>(0x80000)) || !vm.memory.registerRam(0x8041f070,std::vector<uint8_t>(16)) || !vm.memory.registerRam(0x8041e428,std::vector<uint8_t>(4)) || !vm.memory.registerRam(0x8041e844,std::vector<uint8_t>(4)) || !vm.memory.registerRam(0x8041e9e4,std::vector<uint8_t>(24)) || !vm.memory.importScripts(program->scripts))return false;
+  if(!registerBattles())return false;
   const auto memory=vm.memoryBinding.services();const auto start=eventSdkInitializeAllocator(0x82000000,0x82080000,1,memory);
   if(eventSdkCreateHeap(start,0x82080000,memory)!=0 || !vm.memory.writeWord(0x8041e844,0) || !vm.memory.writeWord(0x81000004,60))return false;
   vm.gp.timestamp=milliseconds*eventClockRate(243000000);vm.initializeContexts();return true;
@@ -287,22 +302,34 @@ struct FieldAreaEventRuntime {
 };
 bool FieldAreaEvent::begin(uint32_t room,uint64_t milliseconds) {
  if(started || !assets)return false;
- auto next=std::make_shared<FieldAreaEventRuntime>(this);next->room=room;for(const auto& e:next->program->entries)if(e.room==room)next->entries.push_back(e);
- for(const auto& e:next->program->initializers)if(e[0]==room)next->initializer=e[1];
- if((next->entries.empty() && !next->initializer) || !next->initialize(milliseconds))return false;
- runtime_=std::move(next);started=true;failed=false;completed_.clear();return true;
+ if(runtime_){
+  auto& r=*runtime_;
+  // Preserve original context banks, allocation identities, allocator and next
+  // event ID across ReInit. A replaced program needs its own REL/load owner.
+  if(!r.retiredNpcs || r.program!=assets || !r.selectRoom(room) || !r.registerBattles())return false;
+  r.vm.gp.timestamp=milliseconds*eventClockRate(243000000);r.retiredNpcs=false;
+ }else{
+  auto next=std::make_shared<FieldAreaEventRuntime>(this);
+  if(!next->selectRoom(room) || !next->initialize(milliseconds))return false;
+  runtime_=std::move(next);
+ }
+ started=true;failed=false;completed_.clear();return true;
 }
 bool FieldAreaEvent::prepareMapNpcs(Game& game,const FieldAreaGpState& state,const FieldMapNpcAssets& tags,uint32_t inputBase,uint32_t area,uint32_t map,uint32_t allocationBase){
- if(!runtime_ || failed)return false;
+ if(!started || !runtime_ || failed)return false;
  auto& r=*runtime_;
  if(r.mapGpState || r.initId || !r.roots.empty() || !completed_.empty())return false;
  for(unsigned n=0;n<FieldCasePool::Capacity;++n)if(r.cases.active(n))return false;
  r.mapGpState=state;
  if(!r.vm.memory.writeWord(0x81000000,state.systemFlags))return false;
  for(unsigned n=0;n<state.bytes.size();++n)if(!r.vm.memory.writeByte(0x81000000+FieldAreaGpState::Begin+n,state.bytes[n]))return false;
- if(game.originalFieldNpcs)r.mapNpcBinding=FieldNpcRegistryBinding::bind(game.originalFieldNpcs,r.vm.memory);
- else r.mapNpcBinding=game.initializeOriginalFieldNpcs(r.vm.memory,allocationBase);
- if(!r.mapNpcBinding)return false;
+ if(r.mapNpcBinding){if(r.mapNpcOwner!=game.originalFieldNpcs)return false;}
+ else{
+  if(game.originalFieldNpcs)r.mapNpcBinding=FieldNpcRegistryBinding::bind(game.originalFieldNpcs,r.vm.memory);
+  else r.mapNpcBinding=game.initializeOriginalFieldNpcs(r.vm.memory,allocationBase);
+  if(!r.mapNpcBinding)return false;
+  r.mapNpcOwner=game.originalFieldNpcs;
+ }
  // Map construction must follow actual room cleanup, never reset retained NPCs
  // or seed an existing owner's GP field pointer merely to satisfy admission.
  const auto active=r.mapNpcBinding->activeActors();uint32_t field=0;
@@ -310,10 +337,36 @@ bool FieldAreaEvent::prepareMapNpcs(Game& game,const FieldAreaGpState& state,con
  r.mapNpcs=FieldMapNpcBootstrap::prepare(r.vm.memory,*r.mapNpcBinding,tags,inputBase,area,map,field);
  return bool(r.mapNpcs);
 }
-bool FieldAreaEvent::advanceMapNpcs(BattlePoseClock clock,const FieldMapNpcBattleAdmission& battle){return runtime_ && !failed && runtime_->mapNpcs && runtime_->mapNpcs->advance(clock,battle);}
-bool FieldAreaEvent::mapNpcsReady() const{return runtime_ && runtime_->mapNpcs && runtime_->mapNpcs->ready();}
+bool FieldAreaEvent::advanceMapNpcs(BattlePoseClock clock,const FieldMapNpcBattleAdmission& battle){return started && runtime_ && !failed && !runtime_->releasingNpcs && runtime_->mapNpcs && runtime_->mapNpcs->advance(clock,battle);}
+bool FieldAreaEvent::mapNpcsReady() const{return runtime_ && !runtime_->releasingNpcs && runtime_->mapNpcs && runtime_->mapNpcs->ready();}
+bool FieldAreaEvent::retireMapNpcs(const FieldAreaNpcReleaseServices& services){
+ if(!started || !runtime_ || failed || !services.admit || !services.step)return false;
+ auto& r=*runtime_;
+ if(!r.mapNpcBinding || !r.mapGpState || r.vm.gp.battleContext || r.ticking || r.releaseInvocation)return false;
+ struct Invocation {bool& busy;explicit Invocation(bool& b):busy(b){busy=true;}~Invocation(){busy=false;}} invocation(r.releaseInvocation);
+ // A retiring ordinary facade must not discard a live unselected context.
+ for(int n=0;n<r.vm.battle.capacity;++n)if(r.vm.battle.entries[n].flags&1)return false;
+ if(!r.releasingNpcs){
+  if(!services.admit(services.user,r.vm.memory) || !r.mapNpcBinding->reset(0))return false;
+  r.releaseServices=services;r.releasingNpcs=true;
+ }else if(services.user!=r.releaseServices.user || services.admit!=r.releaseServices.admit || services.step!=r.releaseServices.step)return false;
+ // Exact source request order between npcReset0 and event/case ReInit.
+ constexpr uint32_t functions[]={0x800d6b7c,0x800612f0,0x80073394,0x80071828,0x8005ecd0,0x8003b028};
+ while(r.releaseStep<6){pendingFunction=functions[r.releaseStep];pendingEventId=0;
+  if(!services.step(services.user,pendingFunction,r.vm.memory))return false;
+  ++r.releaseStep;
+ }
+ if(r.vm.gp.battleContext)return false;
+ r.vm.reinitializeContext();r.cases.reinitialize();
+ // Source ReInit byte-clears entries without evtDelete or retirement hooks.
+ // Discard native cursors/diagnostics without publishing child return banks.
+ r.previousParty.clear();r.npcSetup.clear();r.roots.clear();r.initId.reset();
+ completed_.clear();pendingFunction=pendingEventId=0;
+ r.mapNpcs.reset();r.mapGpState.reset();r.services={};r.releaseServices={};
+ r.releaseStep=0;r.releasingNpcs=false;r.retiredNpcs=true;started=false;return true;
+}
 std::optional<uint32_t> FieldAreaEvent::appendAreaInit(const FieldAreaGpState& state) {
- if(!runtime_ || failed || !runtime_->initializer || runtime_->initId || !runtime_->roots.empty() || !completed_.empty())return {};
+ if(!started || !runtime_ || failed || runtime_->releasingNpcs || !runtime_->initializer || runtime_->initId || !runtime_->roots.empty() || !completed_.empty())return {};
  auto& r=*runtime_;for(unsigned n=0;n<FieldCasePool::Capacity;++n)if(r.cases.active(n))return {};
  if(r.mapGpState){
   if(!r.mapNpcs || !r.mapNpcs->ready() || state.systemFlags!=r.mapGpState->systemFlags || state.bytes!=r.mapGpState->bytes)return {};
@@ -351,7 +404,7 @@ std::optional<uint32_t> FieldAreaEvent::battleSetupConfiguration(int32_t index) 
  return {};
 }
 std::optional<uint32_t> FieldAreaEvent::appendDoorEntry(uint32_t entryIndex,const std::array<int32_t,16>& bank) {
- if(!runtime_ || failed || runtime_->mapGpState || runtime_->initId || entryIndex>=runtime_->entries.size())return {};
+ if(!started || !runtime_ || failed || runtime_->mapGpState || runtime_->initId || entryIndex>=runtime_->entries.size())return {};
  const auto creation=runtime_->vm.creationServices();
  auto* gp=creation.manager.globals(creation.manager.user);
  auto* context=creation.manager.context(creation.manager.user,gp->battleContext!=0);
@@ -362,8 +415,8 @@ std::optional<uint32_t> FieldAreaEvent::appendDoorEntry(uint32_t entryIndex,cons
  runtime_->roots.push_back({e.id,entryIndex,{}});return e.id;
 }
 void FieldAreaEvent::tick(uint64_t milliseconds,const FieldAreaEventServices& s) {
- if(!runtime_ || failed)return;
- auto& r=*runtime_;r.services=s;pendingFunction=pendingEventId=0;r.vm.gp.timestamp=milliseconds*eventClockRate(243000000);r.vm.runManager();
+ if(!started || !runtime_ || failed || runtime_->releasingNpcs)return;
+ auto& r=*runtime_;r.services=s;pendingFunction=pendingEventId=0;r.vm.gp.timestamp=milliseconds*eventClockRate(243000000);r.ticking=true;r.vm.runManager();r.ticking=false;
  for(auto i=r.roots.begin();i!=r.roots.end();)if(!checkEventId(i->id,r.vm.creationServices())){if(!i->bank){failed=true;return;}completed_.push_back({i->id,i->entryIndex,*i->bank,i->returned});i=r.roots.erase(i);}else ++i;
 }
 uint32_t FieldAreaEvent::doorEntryCount() const{return runtime_?uint32_t(runtime_->entries.size()):0;}
