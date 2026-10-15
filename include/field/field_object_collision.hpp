@@ -2,6 +2,8 @@
 #include "field_actors.hpp"
 #include <array>
 namespace ttyd {
+// Native XYZ triangle floats; attribute 80000000(hex) is dynamic-object domain,
+// cull1 source back-face policy. owner is catalog key, not geometry pointer.
 struct FieldObjectTriangle {
     std::array<float,9> vertices{};
     uint32_t owner=0,attributes=0x80000000,cull=1;

@@ -4,6 +4,9 @@
 #include "head_collision.hpp"
 namespace ttyd {
 // Ordinary Mario's original jumpData, at native engine-unit scale0.01.
+// Native lengths=engine*.01; tuple is velocity, acceleration, jerk, jerkRate
+// per simulation integration. Motion 0/1/2 idle/walk/dash, 3 jump, 10 fall,
+// 11 known-lower-floor fall. phase 10 enables ordinary jump integration.
 struct FieldJump {
     float height=0,velocity=0,acceleration=0,jerk=0,jerkRate=0;
     float takeoffY=0,takeoffSpeed=0;
@@ -14,6 +17,8 @@ struct FieldJump {
     bool knownLowerFloor=false,suppressDrift=false;
     bool hasAirFlags() const{return jumping || falling;}
     void clearTuple(){velocity=acceleration=jerk=jerkRate=0;}
+    // Original fall tuple(-.1,-.2,+.024,-.004) scaled*.01. Jump entry
+    // below uses(8,-.84,+.08,-.02); these are source data, not measured tuning.
     void fallTuple(){velocity=-.001f;acceleration=-.002f;jerk=.00024f;jerkRate=-.00004f;}
     void begin(float rootY=0,float baseSpeed=0) {
         height=0;takeoffY=rootY;takeoffSpeed=baseSpeed;
@@ -42,6 +47,9 @@ struct FieldJump {
         }
         return headMotionResponds(motion);
     }
+    // Entry/decrement/counter update is independent of vertical integration.
+    // begin calls this immediately; countdown2 includes that entry visit.
+    // Signed16 tick wrap is explicit, not host signed-overflow behavior.
     void dispatch(float rootY=0) {
         if(!airborne)return;
         if(pendingEntry && motion<3)return; // Common ground dispatcher owns this request.
@@ -69,6 +77,9 @@ struct FieldJump {
         }
         airborne=jumping=falling=pendingEntry=knownLowerFloor=suppressDrift=false;
     }
+    // Release shortening begins at tick 4; terminal fall velocity-.18 is native
+    // distance/visit. On apex transition, the new fall tuple integrates AGAIN
+    // this visit as the source does; do not remove that as duplicate work.
     void integrate(bool held) {
         if(!airborne || (!falling && (!jumping || phase<10)))return;
         const bool previouslyRising=velocity>0;

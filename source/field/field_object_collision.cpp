@@ -1,6 +1,9 @@
 #include "field_object_collision.hpp"
 #include <cmath>
 namespace ttyd {
+// Kind1 map objects/hitMode1 use original bbox geometry, not animated draw
+// bounds. Source factor 10 precedes engine->native*.01. Unit box has8 points,
+// six four-index strips producing12 triangles with preserved winding.
 void buildFieldObjectCollision(const FieldActorAssets& assets,uint32_t room,std::optional<int32_t> story,
                               uint32_t interior,uint32_t system,std::vector<FieldObjectTriangle>& output) {
     output.clear();
@@ -12,6 +15,8 @@ void buildFieldObjectCollision(const FieldActorAssets& assets,uint32_t room,std:
         const auto& model=assets.models()[actor.model];if(model.hitMode!=1)continue;
         const auto& b=model.hitBounds;
         const float dimensions[3]={10*std::fabs(b[0]-b[3]),10*std::fabs(b[4]),10*std::fabs(b[2]-b[5])};
+        // Original bbox center offsets are added after Y rotation, not rotated
+        // with the unit box. Height uses abs(maxY) rather than Y span.
         const float offsetX=(b[0]+b[3])*.5f*10,offsetZ=(b[2]+b[5])*.5f*10;
         const float angle=actor.yaw*.017453292519943295f,c=std::cos(angle),s=std::sin(angle);
         std::array<std::array<float,3>,8> vertices;
@@ -24,6 +29,8 @@ void buildFieldObjectCollision(const FieldActorAssets& assets,uint32_t room,std:
         for(const auto& strip:strips)for(unsigned j=0;j<2;++j) {
             FieldObjectTriangle triangle;triangle.owner=actor.key;
             const auto& name=model.originalName;
+            // Hidden block models retain geometry identity but fail ordinary
+            // solid-name admission; their activation/event owner is separate.
             triangle.ordinarySolid=!name.empty() && name!="MOBJ_HiddenHatenaBlock" &&
                 name!="MOBJ_HiddenBadgeBlock" && name!="MOBJ_Hidden10CountBlock";
             const unsigned indices[3]={strip[j],strip[j+(j%2?1:2)],strip[j+(j%2?2:1)]};

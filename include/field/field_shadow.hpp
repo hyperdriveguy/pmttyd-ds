@@ -3,15 +3,20 @@
 #include <array>
 #include <cstdint>
 namespace ttyd {
+// This adapter uses native packed ABGR (alpha high 8), unlike source
+// ShadowWork RRGGBBAA. Matrix/root/size use original engine units.
 struct FieldShadowRecord {
     uint8_t type=0,camera=4;
-    uint32_t flags=1,color=0x6e000000u; // Native packed RGBA: black,alpha110.
+    uint32_t flags=1,color=0x6e000000u; // Native packed ABGR: black,alpha110.
     FieldWallVector root;
     float size=0,height=20;
     float opacity=1,innerOpacity=.2f,decay=.4f;
     uint8_t alpha=255;
     std::array<float,12> matrix{};
 };
+// Display1001(hex)/main 02000000 suppress request. Ground radius 13.333333
+// is source geometry; air size subtracts height/radius, with minimum.1 and
+// lower-height rejection-2. Radius zero is an inactive request, not a draw.
 inline FieldShadowRecord marioShadowRequest(FieldWallVector root,float retainedGround,bool support,
                                            uint32_t displayFlags=0,uint32_t mainFlags=0) {
     FieldShadowRecord r;r.root=root;
@@ -32,6 +37,9 @@ struct FieldShadowServices {
     void* user=nullptr;
     FieldShadowHit (*ray)(void*,FieldWallVector,FieldWallVector,float)=nullptr;
 };
+// Flag 2 means prepared; flag 1 selects independent downward ray unless type 3.
+// Ray from rootY+1, length 150 uses raw hit normal. Direct path offsetsY+1.5.
+// A miss returns false without setting prepared; caller owns hit lifetime.
 inline bool prepareFieldShadow(FieldShadowRecord& r,const FieldShadowServices& services) {
     if(r.size==0)return false;
     if(r.flags&2)return true;

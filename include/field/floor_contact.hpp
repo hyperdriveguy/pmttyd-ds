@@ -1,12 +1,16 @@
 #pragma once
 #include <cmath>
 namespace ttyd {
+// Native lengths: 11-engine-unit rise,.02 native near-drop=2 engine units,
+// front probe5.3 engine units. These policies differ from step minimum 5 units.
 constexpr float GroundedMaxRise=.11f,GroundedNearDrop=.02f;
 constexpr float FrontStepDistance=.053f;
 // Native representations of the separately owned +218/+21c/+224 angles.
 // Host atan2/cos are adaptations, not the original SDK numerical service.
 struct FieldSlope {
     float inclination=0,tiltZ=0,tiltX=0;
+    // Inclination and projected axis tilts are distinct source caches. The
+    // projected angle wraps then rounds to.01 degree; atan2 is a native adapter.
     void normal(float nx,float ny,float nz) {
         constexpr float degrees=57.295779513f;
         auto projected=[&](float component) {
@@ -18,10 +22,14 @@ struct FieldSlope {
         tiltZ=projected(nz);tiltX=projected(nx);
     }
 };
+// Deliberate double scale: round source height at.01 engine unit, then
+// return native height at.0001. A single native hundredth rounding is wrong.
 inline float supportMetadataHeight(float height) {
     // +1c4 rounds in original engine units before conversion to native units.
     return std::trunc(std::fma(100.f,height*100.f,.5f))*.0001f;
 }
+// Step rise5..11 engine units is inclusive; slope<=30 differs from ordinary
+// floor admissibility's strict<50. Invalid/degenerate normals reject as90deg.
 inline bool stairRiseAllowed(float rootY,float floorY,float slope) {
     const float rise=floorY-rootY;
     return std::isfinite(rise) && std::isfinite(slope) && rise>=.05f && rise<=GroundedMaxRise && slope<=30;

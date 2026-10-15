@@ -4,6 +4,8 @@
 namespace ttyd {
 // cam3dMain logical state; all points are engine units. Native time is a
 // simulation-millisecond bridge, not the source OS tick/timebase service.
+// Source state 0 inactive, 1 reverse/off, 2/3 forward. Strict overshoot clears
+// state; progress exactly0/1 remains active. Times are integer milliseconds.
 struct CameraBlendTimer {
     uint16_t state=0;
     float progress=0;
@@ -21,6 +23,10 @@ struct CameraBlendTimer {
         return true;
     }
 };
+// Original interpolation modes0..13: linear, power in/out, oscillation, then
+// cosine/sine eases. Keep authored pi approximations and operation grouping;
+// do not clamp step or substitute a generic easing library. count 0 returns B
+// before mode validation, matching the source leaf branch.
 inline std::optional<float> cameraInterpolation(int32_t mode,int32_t step,int32_t count,float a,float b) {
     if(count==0)return b;
     if(mode<0 || mode>13)return std::nullopt; // Source callback-pointer domain remains separate.
@@ -45,6 +51,8 @@ inline std::optional<float> cameraInterpolation(int32_t mode,int32_t step,int32_
     }
     return std::nullopt;
 }
+// Convert progress to truncated100000-step source interpolation. Bounds
+// guard float->signed32 conversion only; they do not clamp valid progress.
 inline std::optional<float> cameraEventCurve(uint8_t curve,float progress) {
     if(!std::isfinite(progress))return std::nullopt;
     const double steps=std::trunc(double(100000.f*progress));
@@ -52,6 +60,8 @@ inline std::optional<float> cameraEventCurve(uint8_t curve,float progress) {
     return cameraInterpolation(curve,int32_t(steps),100000,0,1);
 }
 
+// All points/lens distances here are ENGINE units. Default FOV25, near1,
+// far32768 differ from the native FieldCameraFrame fallback lens.
 struct FieldCameraEvents {
     CameraBlendTimer view,target;
     CameraPoint storedEye,storedAt,presetEye,presetAt;
@@ -62,6 +72,9 @@ struct FieldCameraEvents {
         const float inverse=1-t;
         return {a.x*inverse+b.x*t,a.y*inverse+b.y*t,a.z*inverse+b.z*t};
     }
+    // Candidate-copy transaction: timer/curve failure publishes nothing.
+    // Target state 3 blends prior/current anchors; other states blend raw input.
+    // View finish later uses1-view.progress, not the target curve progress.
     bool prepare(CameraPoint rawFollow,CameraPoint rawLook,uint64_t now) {
         auto next=*this;
         if(!next.view.update(now)||!next.target.update(now))return false;
@@ -110,6 +123,8 @@ struct FieldCameraEvents {
         presetEye=actualEye;presetAt=actualAt;
         view.state=1;view.start=now;view.duration=duration;view.curve=curve;return true;
     }
+    // Partial source reset: do not clear retained target state/timestamps or
+    // stored/preset views just because a new camera-road resource was admitted.
     void roomLoad() {
         // camLoadRoad resets these fields, retaining Bstate/times, anchors,
         // dollyEnd/previousPercent and stored/preset views.

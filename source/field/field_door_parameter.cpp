@@ -2,6 +2,11 @@
 #include <cassert>
 namespace ttyd {
 namespace {int32_t signedWord(uint32_t v){return v<=INT32_MAX?int32_t(v):int32_t(int64_t(v)-0x100000000LL);}}
+// Resolve record/selector EVT operands first; copy direct fields as signed
+// bit-preserving words. Selectors map(offset, count): 0(4, 1), 1(c, 3), 2(18, 2),
+// 3(20, 2), 6(28, 3), 7(40, 2), 8(8, 1), 9(0, 1), offsets hex.
+// Geometry selectors 4/5/10/11 return0 hold; unsigned selector>11 returns2
+// without record access. Each output reads destination BEFORE record word.
 int32_t fieldDoorParameterEvent(EventEntry& e,const FieldDoorParameterServices& s) {
  assert(s.word && s.value && s.setValue);
  const auto args=e.arguments;

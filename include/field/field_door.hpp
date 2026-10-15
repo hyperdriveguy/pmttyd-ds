@@ -6,6 +6,8 @@
 #include <optional>
 #include <vector>
 namespace ttyd {
+// Native XYZ endpoints; mask selects retained interior/cutaway ownership.
+// storyMinimum INT32_MIN means unconditional, not unknown story.
 struct FieldDoorRecord {
     uint32_t room=0,mask=0,openNode=0,closeNode=0;
     std::array<float,3> outside{},inside{}; // EVT integer XYZ, native scale.
@@ -23,6 +25,8 @@ inline bool fieldDoorAdmitted(uint32_t contact,uint32_t registeredNode,
     return gate.permits() && !npcTalk && (keys&0x100) &&
         ((motion>=0 && motion<=2) || mounted) && contact && contact==registeredNode;
 }
+// Fixed-tick movement/wait bridge, not full original door choreography.
+// Interior mask changes at distinct enter/exit phases; selected-1 is inactive.
 struct FieldDoorState {
     uint32_t interiorMask=0;
     int selected=-1,phase=0,wait=0;
@@ -30,6 +34,8 @@ struct FieldDoorState {
     std::array<float,2> position{},target{},step{};
     int remaining=0;
     bool active() const{return selected>=0;}
+    // Native per-visit135 engine units/sec /60 *.01. Count truncates
+    // (distance+.01)/speed; final movement visit snaps to stored target.
     void movement(std::array<float,2> start,const std::array<float,3>& end) {
         position=start;target={end[0],end[2]};
         const float x=target[0]-start[0],z=target[1]-start[1],d=std::hypot(x,z);
@@ -46,6 +52,8 @@ struct FieldDoorState {
     }
     // Returns true only on completion. Door rotation/light/NPC/backend services
     // remain separate from this portable movement/wait bridge.
+    // Wait 30/2 are simulation visits. Movement completion yields before
+    // advancing phase; source rotation/light/NPC services have separate owners.
     bool tick(const FieldDoorRecord& door) {
         if(!active())return false;
         if(remaining){position[0]+=step[0];position[1]+=step[1];if(--remaining==0)position=target;return false;}

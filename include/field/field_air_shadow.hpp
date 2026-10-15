@@ -7,6 +7,8 @@
 #include <vector>
 namespace ttyd {
 struct FieldShadowList {uint32_t primitive=0;std::vector<std::array<uint8_t,2>> pairs;};
+// PMSHDW1 is native LE geometry: 60 XYZ float3, 24 palette bytes(two banks
+// of3 RGBA colors), five lists. Load validates candidate/EOF before publication.
 class FieldShadowGeometry {
 public:
     std::array<FieldWallVector,60> positions{};
@@ -21,6 +23,9 @@ public:
         if(std::fread(next.positions.data(),sizeof(FieldWallVector),60,file)!=60 ||
            std::fread(next.palettes.data(),24,1,file)!=1)return false;
         for(const auto& p:next.positions)if(!std::isfinite(p.x) || !std::isfinite(p.y) || !std::isfinite(p.z))return false;
+        // Source fana0/strip98(hex), INDEX8 position/color pairs. Top/bottom/
+        // inside fans16 points; side/outside strips30. These are resource IDs,
+        // not adaptive tessellation counts.
         const char* names[]={"top","bottom","side","top_inside","top_outside"};
         constexpr uint32_t primitives[]={0xa0,0xa0,0x98,0xa0,0x98};
         constexpr uint32_t sizes[]={16,16,30,16,30};
@@ -37,6 +42,9 @@ public:
     }
 };
 struct FieldAirShadowPlan {std::vector<uint8_t> lists;bool noDecay=false;};
+// Native ABGR high byte supplies opacity. Flag 4 selects no-decay lists0/1/2;
+// otherwise inner/outside list3/4 admission follows clamped decay and truncated
+// alpha. The original palette owns colors; do not bake this into vertex alpha.
 inline FieldAirShadowPlan fieldAirShadowPlan(const FieldShadowRecord& r,uint8_t camera=4) {
     FieldAirShadowPlan plan;
     if(r.type!=2 || !(r.flags&2) || r.size==0 || r.camera!=camera)return plan;
@@ -56,6 +64,8 @@ inline FieldWallVector fieldShadowPoint(const FieldShadowRecord& r,FieldWallVect
     const auto& m=r.matrix;
     return {m[0]*p.x+m[1]*p.y+m[2]*p.z+m[3],m[4]*p.x+m[5]*p.y+m[6]*p.z+m[7],m[8]*p.x+m[9]*p.y+m[10]*p.z+m[11]};
 }
+// Preserve fan and alternating strip winding while triangulating into native
+// CPU vertices. This expands geometry only; simulation/source requests stay put.
 inline std::vector<FieldAirShadowVertex> fieldAirShadowVertices(const FieldShadowGeometry& geometry,
                                                               const FieldShadowRecord& r,const FieldAirShadowPlan& plan) {
     std::vector<FieldAirShadowVertex> out;

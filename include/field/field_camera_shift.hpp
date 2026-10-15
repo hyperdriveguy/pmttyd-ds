@@ -6,6 +6,9 @@
 namespace ttyd {
 // camShiftMain's separate work; source timestamps are already quantized to
 // integer milliseconds by the supplied clock adapter. Wrap remains unsupported.
+// Source shift work uses engine units/quantized milliseconds: limit300,
+// direction+/-25, increment cap 3, blend rate.002 per60Hz-equivalent delta.
+// Cap applies before dt scaling; it is not an absolute per-call displacement cap.
 struct FieldCameraShift {
     float current=0,desired=0,blend=0,accumulation=0;
     uint32_t enabled=0;
@@ -17,6 +20,9 @@ struct FieldCameraShift {
         limit=300;incrementCap=3;blendRate=.002f;previousRootX=previousRootZ=0;
         // Source init/reset does not write its retained timestamp pair.
     }
+    // Flag 20(hex) forces neutral return. With no root XZ movement the stick
+    // does not accumulate shift. Clock regression/wrap is an unsupported domain.
+    // update does not publish timestamp; post is its separate ordered owner.
     bool update(int8_t mainX,CameraPoint root,uint32_t flags,float retainedCandidateRate,uint64_t nowMilliseconds) {
         if(nowMilliseconds<previousMilliseconds)return false;
         const auto dt=[&](float rate){return rate*60.f*float(nowMilliseconds-previousMilliseconds)/1000.f;};
@@ -58,6 +64,8 @@ struct FieldCameraShift {
     void post(uint64_t nowMilliseconds){previousMilliseconds=nowMilliseconds;}
 };
 // Native simulation clock bridge, independent of rendering frames.
+// Quotient/remainder conversion preserves truncation without tick*1000
+// intermediate overflow. This is a60Hz simulation bridge, not render FPS.
 inline uint64_t fieldCameraTickMilliseconds(uint64_t tick) {
     return tick/60*1000+(tick%60)*1000/60;
 }

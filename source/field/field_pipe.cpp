@@ -6,6 +6,9 @@
 #include <vector>
 namespace ttyd {
 static std::vector<FieldPipe> pipes;
+// PMPIPE1 private LE catalog has exactly2 records, 48 bytes each. Validate
+// source/target rooms, nonzero node IDs, case6/10 and finite endpoints before
+// replacing the retained table; direction is source metadata, not an enum ordinal.
 bool loadFieldPipes(const char* path) {
     FILE* f=std::fopen(path,"rb");if(!f)return false;
     char magic[8];uint32_t count=0;
@@ -20,6 +23,9 @@ bool loadFieldPipes(const char* path) {
     return ok;
 }
 uint32_t Game::pipeTarget() const {return pipeRequest>=0 && size_t(pipeRequest)<pipes.size()?pipes[pipeRequest].target:UINT32_MAX;}
+// Exact contact admission and known story precede the fade/room request.
+// Target5 early underground envelope excludes story>=20; source 2 departure
+// delegates unchanged professor state and flag 1207 rather than inventing a scene.
 bool Game::tryFieldPipe(int8_t mainY) {
     if(pipeRequest>=0 || warpRequest>=0 || !progress.originalStory || airborne() || professorStory.running() || fieldDoor.active())return false;
     for(size_t n=0;n<pipes.size();++n) {
@@ -34,6 +40,9 @@ bool Game::tryFieldPipe(int8_t mainY) {
     }
     return false;
 }
+// Stage a Progress copy and target arrival probe before restore. Native
+// horizontal offsets+.20/-.40 are source+20/-40 units; this is not the full
+// mot_dokan animation/entry-clock or GPU room-residency transaction.
 bool Game::finishPipeWarp() {
     if(pipeRequest<0 || size_t(pipeRequest)>=pipes.size())return false;
     const auto p=pipes[pipeRequest];Progress next=progress;next.room=p.target;next.interiorMask=0;

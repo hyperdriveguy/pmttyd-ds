@@ -10,6 +10,8 @@ struct NpcWanderWork {
     float radius=0;
 };
 static_assert(sizeof(NpcWanderWork)==44,"Original wander work fields");
+// Engine-space root/components, speed per second, dt seconds. Sound elapsed
+// milliseconds is independent of simulation visit count and pose frame time.
 struct NpcWanderActor {
     uintptr_t token=0;
     FieldWallVector root,components;
@@ -20,6 +22,8 @@ struct NpcWanderActor {
     int16_t stepToggle=0;
 };
 struct NpcWanderMario {FieldWallVector root;float travelHeading=0;uintptr_t contact=0;};
+// Call order, including repeated readiness/RNG queries, is observable source
+// behavior. USER_FUNC produces components; NPC-main consumes them separately.
 struct NpcWanderServices {
     void* user=nullptr;
     int32_t (*frames)(void*,int32_t milliseconds)=nullptr;

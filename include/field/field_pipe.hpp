@@ -1,6 +1,8 @@
 #pragma once
 #include "field_road.hpp"
 namespace ttyd {
+// Private48-byte record: five U32 identities, six native float coordinates,
+// original direction word. case6 ground+signedY>30; case10 front contact.
 struct FieldPipe {
     uint32_t source=0,target=0,node=0,arrivalNode=0,caseType=0;
     float x=0,y=0,z=0,arrivalX=0,arrivalY=0,arrivalZ=0;

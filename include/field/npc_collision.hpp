@@ -2,6 +2,8 @@
 #include "npc_presentation.hpp"
 #include "field_wall.hpp"
 namespace ttyd {
+// Engine dimensions/root with borrowed actor token. previous XZ is a retained
+// rollback owner, not necessarily the previous rendered position.
 struct NpcSideBody {
     uintptr_t token=0;
     FieldWallVector root,previous;
@@ -14,6 +16,7 @@ struct NpcSidePlayer {
     uintptr_t hitNpc=0;
 };
 struct NpcSideWallRequest {int32_t mode=0;float speed=0,heading=0,width=20,height=37;};
+// A valid collision must call wall correction; no silent optional no-op.
 struct NpcSideServices {
     void* user=nullptr;
     void (*wall)(void*,FieldWallVector&,const NpcSideWallRequest&)=nullptr;

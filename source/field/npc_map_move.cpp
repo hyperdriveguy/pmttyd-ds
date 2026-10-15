@@ -2,6 +2,9 @@
 #include <cmath>
 #include <algorithm>
 namespace ttyd {
+// Engine-space probes at min(.2*height, 10),.4*height,.75*height. First
+// admitted hit wins; middle probe alone requires slope angle>=45. Extent is
+// travel length+.75*width; flags 2000/10000(hex) need unbound other paths.
 std::optional<NpcMapMove> checkNpcMapSide(FieldWallVector root,float width,float height,
     float dx,float dz,uint32_t flags,const NpcMapMoveServices& s) {
     NpcMapMove result{root,{}};
@@ -22,6 +25,9 @@ std::optional<NpcMapMove> checkNpcMapSide(FieldWallVector root,float width,float
     }
     result.root.x+=dx;result.root.z+=dz;return result;
 }
+// Publish FIRST contact before re-querying tentative displacement. Second
+// geometry changes root only; returned contact deliberately stays the first hit.
+// nullopt is unsupported/unavailable, not an acknowledged null-contact miss.
 std::optional<NpcMapMove> advanceNpcMapSide(FieldWallVector root,float width,float height,
     float dx,float dz,uint32_t flags,const NpcMapMoveServices& s) {
     auto first=checkNpcMapSide(root,width,height,dx,dz,flags,s);

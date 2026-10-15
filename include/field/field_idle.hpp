@@ -12,6 +12,8 @@ struct FieldIdleServices {
     std::function<void(int)> sound;
     std::function<void()> adjustMoveDirection;
 };
+// Signed16 breath/refresh counters wrap explicitly. Early HP/breath work
+// precedes ground command dispatch; late sleep work runs only if idle survives.
 struct FieldIdleWork {
     int32_t phase=0,count=0,displayFlags=0,mainFlags=0;
     int16_t breathe=0,refresh=0,startFrame=0;
@@ -23,6 +25,9 @@ struct FieldIdleWork {
     void ordinary(const FieldIdleServices& s,const char* name) {
         s.requestPose(name,false);
     }
+    // HP<=5 uses M_S_3 breathing; HP0 M_I_S and cue 371. Main 80000000
+    // special branch retains ordinary pose; main 2000 selects M_U_2/frame 10.
+    // IDs are original sound-service tokens, not native PCM slot indices.
     void enter(const FieldIdleServices& s) {
         phase=count=0;refresh=0;
         if(uint32_t(mainFlags)&0x80000000u){ordinary(s,"M_S_1");return;}
@@ -32,6 +37,8 @@ struct FieldIdleWork {
         else if(std::strcmp(s.currentPose(),"M_I_Y"))ordinary(s,"M_S_1");
     }
     // Early HP/counter owner, before source ground commands can leave idle.
+    // Refresh threshold 1000ms, breath cycle4*rate with cues225/226 at
+    // phase 0/2*rate. Refreshing a pose must not queue an animation restart.
     void early(const FieldIdleServices& s) {
         if(uint32_t(mainFlags)&0x80000000u)return;
         const int threshold=s.millisecondsToFrames(1000);
@@ -52,6 +59,9 @@ struct FieldIdleWork {
         }
     }
     // Late owner only for callbacks that survive source command/motion gates.
+    // Idle phases: 0 waits50000ms, 1 requests M_I_5, 2 holds50 visits,
+    // 3 holds100, 4 sleeps with10000ms elapsed cap/cue 228 every2*rate.
+    // Phase1 falls through and decrements50 immediately; do not add a tick.
     void late(const FieldIdleServices& s) {
         if((uint32_t(mainFlags)&0x80000000u) || (mainFlags&0x2000))return;
         if((mainFlags&8) || (uint32_t(displayFlags)&0x40000000u)) {

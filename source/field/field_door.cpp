@@ -4,6 +4,10 @@
 namespace ttyd {
 namespace {std::vector<FieldDoorRecord> records;}
 const std::vector<FieldDoorRecord>& fieldDoors(){return records;}
+// Private LE PMDOOR1/2 catalog: version1<=2/version2<=3 bounded records.
+// Room/mask domain 0: 1 and2: 2/4; v2 mask 4 requires story 23 and both visibility
+// lists. Node IDs are original identities; 1024-list and +/-100 native position
+// bounds are importer admission. Publish all records only after exact EOF.
 bool loadFieldDoors(const char* path) {
     FILE* f=std::fopen(path,"rb");if(!f)return false;
     char magic[8];uint32_t count=0;

@@ -8,6 +8,8 @@ namespace ttyd {
 // Ordinary Mario, scale1, without movement badges/transformation overrides.
 // Native units are original engine units * .01. The heading/trig service is
 // represented by unit XZ vectors; this is not original numerical ABI emulation.
+// Rates are native distance per simulation visit: walk1/dash2.25 source units
+// times.01. Stick domain 70 and dash threshold 55 are separate input units.
 struct FieldMovementRates {float walk=.01f,dash=.0225f;};
 struct FieldMovement {
     float speed=0,headingX=0,headingZ=-1;
@@ -22,6 +24,8 @@ struct FieldMovement {
         const float sine=std::sin(radians),cosine=std::cos(radians);
         return {x*cosine-z*sine,x*sine+z*cosine};
     }
+    // Original heading-dependent multiplier1+.190000057*abs(cos). Compare
+    // facing, not travel direction, against the retained camera heading offset.
     float movementRate() const {
         const float radians=(facingDegrees-headingOffsetDegrees)*3.14159265358979323846f/180.f;
         return std::fma(.190000057220459f,std::fabs(std::cos(radians)),1.f);
@@ -51,11 +55,16 @@ struct FieldMovement {
         return out;
     }
     Displacement retained() const {return reduceSlope({headingX*speed,headingZ*speed});}
+    // Offscreen subtracts10% regardless of controlsOff; onscreen uses the
+    // source .01*(-.005-speed) FMA only with controls enabled. No render clock.
     void dampFallBase(bool onScreen,bool controlsOff=false,bool bypass=false) {
         if(bypass)return;
         if(!onScreen)speed=std::fma(.10000000149011612f,-speed,speed);
         else if(!controlsOff)speed=std::max(0.f,std::fma(.009999999776482582f,-.005f-speed,speed));
     }
+    // Native drift=.0000375 per source stick unit, after mapping full70.
+    // Previous slope attenuation precedes combined-vector cap; do not cap the
+    // retained speed first or overwrite its heading with current air input.
     Displacement airborne(float x,float z,bool suppressDrift=false,bool cap=true,float airCap=Dash) const {
         const float magnitude=std::hypot(x,z);
         const float drift=std::min(magnitude,1.f)*70.f*.0000375f;

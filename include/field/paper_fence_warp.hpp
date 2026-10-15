@@ -4,6 +4,9 @@
 namespace ttyd {
 // Handheld capture adapter: deform original material geometry in the frozen
 // capture camera plane. Source OFF_d_saku supplies the four animated corners.
+// Bounds=(min viewX, min viewY, width, height), nonzero by caller contract.
+// Two source triangles split at u+v=1. Canonical64x48 paper corners(-32,-24)
+// define deformation delta; map it back through the retained view basis once.
 inline ActorVector paperFenceWarp(ActorVector p,const CameraView& view,
                                   const std::array<float,4>& bounds,const std::array<ActorVector,4>& corners) {
     const float x=view[0][0]*p[0]+view[0][1]*p[1]+view[0][2]*p[2]+view[0][3];

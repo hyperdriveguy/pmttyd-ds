@@ -10,5 +10,7 @@ struct FieldDoorParameterServices {
  bool (*admit)(void*,uint32_t record,uint32_t selector)=nullptr; // Native bound-memory preflight.
  void (*setValue)(void*,EventEntry&,int32_t,int32_t)=nullptr;
 };
+// EVT0 retains USER_FUNC, 2 consumes it. Native admit preflight does not
+// replace the ordered original memory reads with invented default values.
 int32_t fieldDoorParameterEvent(EventEntry&,const FieldDoorParameterServices&);
 }

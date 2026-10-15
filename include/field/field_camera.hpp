@@ -4,9 +4,13 @@
 #include "field_camera_state.hpp"
 namespace ttyd {
 // No-asset fallback framing; original road assets use the authored pipeline.
+// Native fallback lens 42deg, eye offsets 4.8Y/6.5Z, aim 1Y/-1.4Z. These
+// are handheld framing defaults, not recovered original road-camera constants.
 constexpr float FieldFov=42,FieldEyeY=4.8f,FieldEyeZ=6.5f,FieldAimY=1,FieldAimZ=-1.4f;
 // Existing fixed-view fallback, explicitly separate from original camera-road
 // state. Its matrix/root are in native units; source cache uses 608x480 viewport.
+// Orthogonal view/perspective stay in native world units. Near.1/far80 and
+// 608/480 source aspect are presentation inputs, distinct from source engine lens.
 inline FieldCameraFrame adaptedFieldCameraFrame(float x,float y,float z) {
     const float by=FieldEyeY-FieldAimY,bz=FieldEyeZ-FieldAimZ;
     const float length=std::hypot(by,bz),uy=bz/length,uz=-by/length;
@@ -21,6 +25,9 @@ inline FieldCameraFrame adaptedFieldCameraFrame(float x,float y,float z) {
 // Ordinary mot_bottomless entry. Native engine scale=.01; this uses the
 // current frame, not Mario's cached screen words. Invalid/nonterminating
 // adapter domains are unsupported instead of inventing a top height.
+// Probe starts at returnY+1 then rises.1 native units until source screen
+// cache exits its bounds. -20 is native adapter admission; do not manufacture
+// a result for invalid projection or a nonadvancing float increment.
 inline std::optional<float> bottomlessProbeHeight(CameraPoint retainedReturn,const FieldCameraFrame& frame) {
     if(!std::isfinite(retainedReturn.y) || retainedReturn.y<-20)return std::nullopt;
     CameraPoint point=retainedReturn;point.y+=1;

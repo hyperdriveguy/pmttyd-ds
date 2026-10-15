@@ -4,6 +4,8 @@
 namespace ttyd {
 // Scoped ordinary, stationary/near-equal-height evt_mario_jump_pos path. Original
 // roll, nonzero travel/height and 30Hz flags require their own source services.
+// Native bounded domain: vertical/near-equal-height difference<1, frames>=4.
+// Parameter<=-1000 uses original default20; other travel/roll/30Hz domains hold.
 struct FieldScriptedJump {
     float y=0,velocity=0,acceleration=0,targetY=0,halfFrames=0;
     int phase=0,count=0;
@@ -17,6 +19,9 @@ struct FieldScriptedJump {
     }
     // The caller supplies the original landing service's admitted support.
     // Return1 consumes the command and yields;0 retains the USER_FUNC.
+    // Two half-flight stages preserve update order: ascent updates Y before
+    // velocity, descent velocity before Y. count rounds halfFrames+.5; landing
+    // support must come from the caller, not an invented target-floor clamp.
     int tick(std::optional<float> support={}) {
         if(phase==1) {
             y+=velocity;velocity+=acceleration;

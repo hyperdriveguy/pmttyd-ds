@@ -3,9 +3,13 @@
 #include <cmath>
 
 namespace ttyd {
+// Original engine-space wall values round to.001 with signed half bias.
+// Hit distance and forward normal components quantize at distinct read points.
 float quantizeFieldWall(float value) {
     return std::trunc(std::fma(1000.f,value,value>=0?.5f:-.5f))/1000.f;
 }
+// Attr 80000(hex) needs actor1000000 flag before other pass-through tests.
+// Attr 80 requires motion 25; otherwise attr800000 controls pass-through.
 bool fieldWallPassThrough(uint32_t attributes,const FieldWallActor& actor) {
     if((attributes&0x00080000) && !(actor.flags&0x01000000))return false;
     if(!(attributes&0x80))return (attributes&0x00800000)!=0;
@@ -31,6 +35,8 @@ FieldWallMove searchFieldFrontWall(FieldWallVector position,FieldWallVector d,
     FieldWallMove result;result.position=position;
     if(speed==0)return result; // Zero-speed staying has a separate native owner.
     const FieldWallVector heading{d.x/speed,0,d.z/speed};
+    // Original ray offsets 26.640001/11/.1 engine units. Counter!=0 admits
+    // all3; otherwise first2. Forward chooses nearest, side guards do NOT.
     const float heights[]={26.64000129699707f,11,.1f};
     const int count=actor.counter!=0?3:2;
     for(int n=0;n<count;++n) {
@@ -71,6 +77,10 @@ FieldWallMove searchFieldFrontWall(FieldWallVector position,FieldWallVector d,
     }
     return result;
 }
+// View flag 1 uses2 directions, otherwise8; two full surrounding passes.
+// Push cap=max(1, width*.25) for mode0 falls10/11, otherwise width*.125.
+// Retain uncapped first push for the second-pass dot test; only an opposing
+// (or unordered/NaN) second vector gets its half correction.
 bool correctFieldWallsAround(FieldWallVector& position,FieldWallVector heading,int32_t mode,
                             const FieldWallActor& actor,const FieldWallServices& s) {
     const float norm=std::hypot(heading.x,heading.z);

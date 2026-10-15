@@ -8,6 +8,8 @@
 namespace ttyd {
 // Native acceleration only. Retain the original narrow-phase request/order.
 struct FieldRayBounds {FieldWallVector low,high;};
+// XYZ3 triangle stride9 floats. Margin .01 +64*float epsilon*magnitude
+// is conservative native acceleration policy,not original hit-check behavior.
 inline FieldRayBounds fieldRayBounds(const float* v) {
     float magnitude=1;
     for(unsigned i=0;i<9;++i)magnitude=std::max(magnitude,std::fabs(v[i]));
@@ -26,6 +28,8 @@ inline FieldRaySegment fieldRaySegment(FieldWallVector origin,FieldWallVector di
     return {{{std::min(origin.x,end.x),std::min(origin.y,end.y),std::min(origin.z,end.z)},
              {std::max(origin.x,end.x),std::max(origin.y,end.y),std::max(origin.z,end.z)}},finite};
 }
+// Invalid/nonfinite broad phase MUST admit the narrow-phase attempt;rejecting
+// it here would turn an unsupported query into a fabricated collision miss.
 inline bool fieldRayMayReach(const FieldRayBounds& b,const FieldRaySegment& ray) {
     if(!ray.finite)return true; // Leave unsupported requests to the existing narrow phase.
     return !(ray.bounds.low.x>b.high.x || ray.bounds.high.x<b.low.x ||
@@ -38,6 +42,10 @@ inline bool fieldRayMayReach(const FieldRayBounds& b,FieldWallVector origin,
 }
 // Native finite-triangle geometry service for the source wall policy. This is
 // an explicit numerical adaptation, not original hitCheckVecFilter emulation.
+// Caller supplies a consistent coordinate space. Returned distance is ray
+// parameter t (geometric distance only for unit direction);cull1 rejects
+// normal dot direction>=0. On success this helper writes distance/normal,
+// while caller attaches original token/attributes/object identity.
 inline bool intersectFieldRay(const std::array<float,9>& v,uint32_t cull,
                               FieldWallVector origin,FieldWallVector direction,
                               float maximum,FieldWallHit& hit) {
@@ -67,6 +75,8 @@ inline bool intersectFieldRay(const std::array<float,9>& v,uint32_t cull,
     hit.normal={normal.x/orientedLength,normal.y/orientedLength,normal.z/orientedLength};
     return true;
 }
+// Ordinary predicate:bits80000/80(hex) or800000 admit later wall policy;
+// bit4 without those exceptions rejects. High-bit named owners stay separate.
 inline bool ordinaryWallAttributes(uint32_t flags) {
     // High-bit named NPC owners need a provider; static Rogueport packs have no
     // such records. This helper implements the preceding ordinary bit branches.

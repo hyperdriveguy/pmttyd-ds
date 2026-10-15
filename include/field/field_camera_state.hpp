@@ -9,6 +9,8 @@ namespace ttyd {
 // Source camera/Mario values below are engine units, unless a projection's
 // caller supplies another consistent matrix/root space. No 3DS services here.
 struct CameraPoint {float x=0,y=0,z=0;};
+// Retained axis easing uses target+/-1 bias before clamping; rate is not
+// simply a conventional lerp coefficient. Caller controls simulation cadence.
 struct CameraShift {
     float current=0,target=0,rate=0;
     void tick() {
@@ -16,6 +18,9 @@ struct CameraShift {
         else if(current<target)current=std::min(target,current+rate*(target+1-current));
     }
 };
+// Source engine-space offsets. Rates.03/.06/.06 own side/vertical/depth.
+// Motion 29 rejects before easing; motion 25/display10000(hex) reject after it.
+// Display20000 adds depth in XZ and intentionally leaves retained Y unchanged.
 struct MarioCameraTarget {
     CameraPoint retained;
     CameraShift side{0,0,.03f},vertical{0,0,.06f},depth{0,0,.06f};
@@ -37,6 +42,8 @@ struct MarioCameraTarget {
         depthValue=depth.current;return true;
     }
 };
+// Camera flag 10(hex) freezes Y only. Source follow adds1 Y and.01 X;
+// these are engine offsets, not another conversion to native render units.
 struct FieldCameraTarget {
     CameraPoint point;
     float followRate=.20000000298023224f;
@@ -45,10 +52,14 @@ struct FieldCameraTarget {
         point.x=mario.retained.x+.01f;point.z=mario.retained.z;
     }
 };
+// Source heading quantizes to.001 degree with signed half bias, then wraps
+// once through fmod360. Do not reuse positional wall quantization units.
 inline float cameraHeadingSnapshot(float yaw) {
     const float rounded=std::trunc(std::fma(yaw,1000.f,yaw<0?-.5f:.5f))/1000.f;
     float wrapped=std::fmod(rounded,360.f);return wrapped<0?wrapped+360:wrapped;
 }
+// Original inclusive in-screen bounds 600x535 differ from viewport 608x480.
+// This cache owns signed truncated screen words, not a native LCD rectangle.
 struct CameraScreenCache {
     int32_t x=0,y=0,z=0;
     bool valid=true;
@@ -66,6 +77,9 @@ struct FieldCameraFrame {
     CameraPoint eye,at; // Native units for the rendering backend.
     float fov=42,nearPlane=.1f,farPlane=80;
 };
+// Six GX coefficients plus affine view/root must share a consistent unit
+// space. W=-viewZ; screen depth follows source near/far. Invalid int32 fctiwz
+// domains yield valid=false rather than undefined host conversion.
 inline CameraScreenCache projectCameraRoot(CameraPoint root,const CameraView& view,
                                           const CameraProjection& p,const CameraViewport& viewport={}) {
     const auto transform=[&](const auto& row){return row[0]*root.x+row[1]*root.y+row[2]*root.z+row[3];};

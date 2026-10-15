@@ -10,6 +10,10 @@ struct FieldKeyServices {
     std::function<int()> sequence,inputByte,shipChanging,rollEnabled,slitEnabled;
     std::function<int()> christineStatus,bomheiKeyCheck,yoshiStatus,holdItem;
 };
+// Source sequence 2 gameplay, input byte0, ship states1/2 and explicit party
+// ability gates preserve query order. Partner100(hex)/motions 5..7 veto input.
+// A null resolved partner is admitted before later ability/item queries;
+// do not reinterpret missing service callbacks as a null partner result.
 inline bool fieldKeyAdmitted(const FieldKeyServices& s) {
     const auto* partner=s.party(s.partyId());
     if(s.sequence()!=2 || s.inputByte()!=0)return false;

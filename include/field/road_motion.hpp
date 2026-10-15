@@ -8,6 +8,8 @@ struct RoadMotion {
     std::array<float,2> position{},target{},step{};
     int remaining=0;
     bool active() const {return remaining>0;}
+    // Native step.025 =150 engine units/sec /60Hz *.01;+.01 is original
+    // +1-unit count bias.8192 native distance is a safety bound, not source data.
     bool begin(std::array<float,2> start,std::array<float,2> end) {
         for(float value:{start[0],start[1],end[0],end[1]})if(!std::isfinite(value))return false;
         float x=end[0]-start[0],z=end[1]-start[1],d=std::hypot(x,z);
@@ -17,6 +19,8 @@ struct RoadMotion {
         if(remaining==0)position=target;
         return true;
     }
+    // Consume one movement count, then snap exactly to target on the final
+    // visit. Zero-count begin already publishes target; draws do not advance it.
     bool tick() {
         if(remaining>0) {position[0]+=step[0];position[1]+=step[1];if(--remaining==0)position=target;}
         return remaining==0;

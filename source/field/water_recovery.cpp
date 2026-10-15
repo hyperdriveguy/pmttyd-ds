@@ -2,9 +2,15 @@
 #include <algorithm>
 #include <cmath>
 namespace ttyd {
+// Water entry fall-.06, depth thresholdroot-1.6, pause40, launch.2 then
+// min.1 ascent: source-derived native constants, not measured frame timings.
 void WaterRecovery::begin(std::array<float,3> start,std::array<float,3> destination) {
     *this=WaterRecovery{};position=start;target=destination;root=start[1];state=0;velocity=-.06f;
 }
+// Phases0/1 sink/wait, 10/11 launch, 12/14 travel-or-pause, 13 hold,
+// 20 return fall, 30/31 damage wait, 32 get-up, 33 dead. Void enters15.
+// Return derivative tuple(.34,-.002,-.01, 0) integrates before positional
+// step max(-.1, velocity), distinct from derivative terminal cap-.18.
 WaterEvent WaterRecovery::tick(int& hp) {
     if(state==15) {
         position[0]+=travelX;position[2]+=travelZ;
@@ -46,12 +52,16 @@ WaterEvent WaterRecovery::tick(int& hp) {
             hp=std::max(0,hp-1);
             if(hp==0){state=33;return WaterEvent::Dead;}
             state=32;counter=12;
+            // Source transition32 begins this same call; counter 12 becomes11.
+            // Landed31 already starts 49, whereas external30 sets50 then decrements.
             --counter; // Original falls through into state32 on this tick.
             return WaterEvent::GetUp;
         }
     } else if(state==32 && --counter<=0) {state=-1;return WaterEvent::Complete;}
     return WaterEvent::None;
 }
+// Travel count truncates distance/.08. Coincident roots still move one-.08
+// Z step before the countdown finishes, following original heading0(-Z).
 void WaterRecovery::beginVoid(std::array<float,3> start,std::array<float,3> destination) {
     *this=WaterRecovery{};kind=RecoveryKind::Void;position=start;target=destination;root=start[1];state=15;
     const float x=target[0]-position[0],z=target[2]-position[2],distance=std::hypot(x,z);

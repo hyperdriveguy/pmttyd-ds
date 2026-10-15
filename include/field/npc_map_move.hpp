@@ -3,6 +3,8 @@
 #include <optional>
 namespace ttyd {
 struct NpcMapMove {FieldWallVector root;FieldWallHit contact;};
+// Providers use original engine units and independent source math calls.
+// publishContact belongs between the two queries, including a first-query miss.
 struct NpcMapMoveServices {
     void* user=nullptr;
     FieldWallVector (*direction)(void*,float dx,float dz)=nullptr; // angleABf then sincosf.

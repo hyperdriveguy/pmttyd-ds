@@ -6,6 +6,9 @@ namespace ttyd {
 using WallTriangle=std::array<float,9>;
 // Intersect the original triangle with a horizontal ray-height plane, then
 // measure clearance against its actual XZ intersection rather than a bbox.
+// Native geometry adapter tolerances1e-6 plane contact/1e-12 segment
+// degeneracy. Six candidate points bound the three triangle edges. Strict
+// distance<radius excludes tangency; this is not original hit-record ABI.
 inline bool wallSliceBlocks(const WallTriangle& triangle,float y,float x,float z,float radius) {
     std::array<std::array<float,2>,6> points{};int count=0;
     for(int edge=0;edge<3;++edge) {

@@ -12,6 +12,7 @@ Recovered original behavior and its evidence remain in
 | [Game composition](game-composition.md) | Room collision, units, tick order, restore and follower ownership |
 | [Checkpoint bytes](save-format.md) | Native save encoder, decoder and file replacement |
 | [Battle core](battle-core.md) | Action commands, private input, status, resources and damage accounting |
+| [Field motion/contact](field-motion.md) | Units, jump/idle timing, wall/NPC query order, camera clocks and entry bridges |
 | [Draw pipeline](draw-pipeline.md) | MODEL/TPL records, suspended traversal, material/shadow ordering and batch construction |
 | [Retained display state](display-state.md) | Logical publication, GX numeric domains, icon/letterbox continuation and replay |
 | [Battle/item/window adapters](render-adapters.md) | Provider holds, icon residency, GPU declarations, UI transforms and second views |
@@ -44,9 +45,9 @@ helper composition, portable display/camera/animation helpers, and main renderer
 platform resource ownership and current scene-specific render adapters.
 Retained camera/display/icon/letterbox helpers are also covered. Audio/frontend
 service notes are included in the runtime guide. Animation/material/shadow and
-display batch helpers now have inline numeric/behavior notes. Field/NPC/partner
-modules, remaining battle, message, inventory, story, effect/audio and port tooling
-still
+display batch and ordinary field motion/contact helpers now have inline notes.
+Remaining field/NPC/partner modules, battle, message, inventory, story, effect/audio
+and port tooling still
 require a systematic inline numeric/behavior audit. Concurrent additions to
 already covered modules also need review;
 existing comments and contracts in those areas do not imply complete coverage.

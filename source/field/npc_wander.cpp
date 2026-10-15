@@ -5,6 +5,7 @@
 #include <cmath>
 namespace ttyd {
 namespace {
+// Random duration=frames/2+rand(frames/2+1), not a uniform0..frames draw.
 uint32_t duration(int32_t frames,const NpcWanderServices& s) {
     const int32_t half=frames/2;
     return uint32_t(half)+uint32_t(s.random(s.user,half+1));
@@ -16,14 +17,20 @@ void turn(NpcWanderActor& actor,float heading) {
 bool npcWanderTurnReady(uint32_t flags,float retained,float target) {
     return !(flags&8) || std::fabs(target-retained)<10.f;
 }
+// Unsigned32 product then signed interpretation/division preserves source
+// wrapping shape. rate comes from live simulation; not rendering FPS.
 int32_t npcWanderFrames(int32_t ms,int32_t rate) {
     return int32_t(uint32_t(ms)*uint32_t(rate))/1000;
 }
+// Shared32-bit LCG41c64e6d*seed+12345, then high 15 bits modulo bound.
+// upper0 returns0 WITHOUT advancing seed; native caller owns this RNG history.
 int32_t npcWanderRandom(uint32_t& seed,int32_t upper) {
     if(upper==0)return 0;
     seed=seed*0x41c64e6du+12345u;
     return int32_t((seed>>16)&0x7fff)%upper;
 }
+// Original6000/9000/1500ms move/idle/flip requests pass through frame
+// provider. Actor flag 400000(hex) selects component movement ownership.
 void initializeNpcWander(NpcWanderWork& work,NpcWanderActor& actor,float x,float z,
                          float radius,float speed,uint32_t flags,const NpcWanderServices& s) {
     assert(s.frames);work={};work.flags=flags;
@@ -56,6 +63,9 @@ int tickNpcWander(NpcWanderWork& w,NpcWanderActor& a,const NpcWanderMario& mario
         if(ready() && a.wall){turn(a,s.angle(s.user,a.root,w.anchor));w.flags&=~3u;}
         --w.count;if(w.count==0){w.phase=2;break;}
         if(!ready())break;
+        // Source speed*dt caps at20ms worth of motion; dt is seconds.
+        // stepElapsed uses milliseconds and alternates original two sound names.
+        // Do not cache repeated turnReady calls earlier in this source branch.
         const float cap=(20.f*a.speed)/1000.f;
         float step=a.speed*a.dt;if(step>=cap)step=cap;
         const float radians=(6.2831854820251465f*a.moveHeading)/360.f;
@@ -76,6 +86,8 @@ int tickNpcWander(NpcWanderWork& w,NpcWanderActor& a,const NpcWanderMario& mario
         w.count=duration(w.idleFrames,s);turn(a,(a.yaw+float(s.random(s.user,60)))-30.f);w.flips=0;
         if(w.flags&0x10000)w.flips=2+uint32_t(s.random(s.user,1000))%3;
         w.phase=3;break;
+    // Idle flips change visual yaw only; moveHeading intentionally survives.
+    // Count/flips are source unsigned counters, not native display frames.
     case 3:
         --w.count;
         if(w.count==0) {

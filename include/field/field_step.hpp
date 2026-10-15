@@ -2,6 +2,8 @@
 #include <cmath>
 namespace ttyd {
 // mot_upstairs8009b158: three equal vertical updates to stored targetY.
+// remaining 3 counts simulation visits; begin does not advance one. Stored
+// target differs from accumulated height so repeated additions retain rounding.
 struct FieldStep {
     float start=0,target=0,height=0,velocity=0;
     int remaining=0;
