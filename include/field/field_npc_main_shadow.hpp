@@ -24,6 +24,9 @@ struct FieldNpcShadowServices {
   bool (*queue)(void *, const FieldNpcDisplayRequest &,
                 FieldNpcDisplayResponse &) = nullptr;
 };
+// Incoming prefix frontier and exact depth BITS are part of retry identity.
+// Terminal200 remains active; copied root may differ from later live actor root.
+// Returned shadow token is an index(including valid0), never a nullable pointer.
 struct FieldNpcShadowCursor {
   bool active = false;
   FieldNpcShadowServices owner;

@@ -2,6 +2,8 @@
 #include "field_npc_inline_norm.hpp"
 #include <array>
 namespace ttyd {
+// Function/args are original identities/raw words; scalars are semantic source
+// local values. Mario lookup and eligibility lookup are separate child requests.
 struct FieldNpcMarioRequest {
   uint32_t function = 0;
   std::array<uint32_t, 2> args{};
@@ -19,6 +21,9 @@ struct FieldNpcMarioServices {
   bool (*request)(void *, const FieldNpcMarioRequest &,
                   FieldNpcMarioResponse &) = nullptr;
 };
+// One actor/class visit. mario retains position-source pointer; admissionMario
+// separately retains eligibility pointer. Reset normCursor only between distinct
+// norm graphs; terminal912 stays active. Input/provider identity must match.
 struct FieldNpcMarioCursor {
   bool active = false;
   FieldNpcMarioServices owner;
@@ -35,7 +40,7 @@ struct FieldNpcMarioCursor {
   FieldNpcMarioRequest call;
   FieldNpcMarioResponse response;
 };
-// Complete source8004a4e4..8004accc. True reaches unfinished Display only;
+// Complete source8004a4e4..8004accc. True reaches caller-owned Display only;
 // never completes Main, advances the actor or publishes history.
 // Empty/false primitives have no effects; retain owner/mappings/actor/class.
 bool advanceFieldNpcMarioDetection(uint32_t actor, uint8_t capturedEventClass,

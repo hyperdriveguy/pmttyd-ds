@@ -3,6 +3,8 @@
 #include <cstring>
 namespace ttyd {
 namespace {
+// Preserve float/double word bits and SP/DP rounding boundaries. Exceptional
+// comparisons follow source branches; no generic finite or epsilon gate here.
 float real(uint32_t w) {
   float f;
   std::memcpy(&f, &w, 4);
@@ -22,6 +24,10 @@ double wide(double f) {
   return v;
 }
 } // namespace
+// Class2 avoidance; classes1/4 proximity; other classes still interrupt.
+// Packed actor:state1d4,yaw144,heading1ac,root8c/90/94,previous98/9c/a0,
+// upper/lower bounds20c/218,proximity range/angle220/224,avoidance228/22c.
+// All successful primitives survive holds; no history or actor advance here.
 bool advanceFieldNpcMarioDetection(uint32_t actor, uint8_t cls,
                                    const FieldNpcMarioServices &s,
                                    FieldNpcMarioCursor &c) {
@@ -60,6 +66,8 @@ bool advanceFieldNpcMarioDetection(uint32_t actor, uint8_t cls,
   auto request = [&] {
     return s.request && s.request(m.user, c.call, c.response);
   };
+  // Avoidance failure posts trigger2; failed proximity suppresses trigger1.
+  // Both still reach common interrupt. Source success is not an invented event.
   auto fail = [&] {
     if (cls == 2) {
       c.trigger = 2;
@@ -84,6 +92,10 @@ bool advanceFieldNpcMarioDetection(uint32_t actor, uint8_t cls,
     case 0:
       c.phase = cls == 2 ? 10 : (cls == 1 || cls == 4 ? 200 : 910);
       break;
+    // Position lookup captures MX,AX,MY,AY,MZ,AZ, then previous-current delta
+    // with paired previousXY/currentXY and fresh Z. State mask2 considers motion
+    // facing:only length>.05(fd54) replaces yaw144 with heading1ac.
+    // This local norm uses separate squares/add, unlike later fused norms.
     case 10:
       c.call = {0x8005e0c0};
       ++c.phase;
@@ -184,6 +196,10 @@ bool advanceFieldNpcMarioDetection(uint32_t actor, uint8_t cls,
       c.phase = 100;
       break;
     // Two distinct source copies of Mario admission, at their original points.
+    // Fresh SECOND Mario lookup for eligibility, retained separately. Reject
+    // flags82000000|a, fresh GP164!=0,seqGetSeq8002e210!=2,half2e==25.
+    // Vivian status801865b8: first0 admits, otherwise distinct second must1.
+    // These calls/reads cannot be merged with initial position capture.
     case 100:
       c.call = {0x8005e0c0};
       ++c.phase;
@@ -258,6 +274,9 @@ bool advanceFieldNpcMarioDetection(uint32_t actor, uint8_t cls,
       else
         fail();
       break;
+    // Avoidance eligibility precedes fused horizontal norm. Quarter(fd58=.25)
+    // times CAPTURED range228:only strict distance>quarter runs height/range/
+    // angle checks. Unordered skips all extras, including vertical bounds.
     case 120:
       if (!load(0x8041fc7c, c.zero))
         return false;
@@ -302,6 +321,8 @@ bool advanceFieldNpcMarioDetection(uint32_t actor, uint8_t cls,
       else
         ++c.phase;
       break;
+    // angleABf8000703c(0,0,dx,dz),compAngle800071f0(facing,angle), then
+    // abs and source.5*anglewidth22c. Only strict greater fails; NaN does not.
     case 127:
       if (!load(0x8041fc7c, c.zero))
         return false;
@@ -335,6 +356,8 @@ bool advanceFieldNpcMarioDetection(uint32_t actor, uint8_t cls,
         c.phase = 910;
       break;
     // Proximity captures Z before X and computes its norm BEFORE eligibility.
+    // Proximity captures MZ,AZ,MX,AX,MY,AY and fused horizontal norm BEFORE
+    // eligibility. This ordering deliberately differs from class2 avoidance.
     case 200:
       c.call = {0x8005e0c0};
       ++c.phase;
@@ -395,6 +418,9 @@ bool advanceFieldNpcMarioDetection(uint32_t actor, uint8_t cls,
         return false;
       c.phase = c.value & 0x08000000 ? 211 : 220;
       break;
+    // Main08000000 captures FOUR radius words802c1210..121c(0,0,30,100)
+    // before kpaGetLevel801ff028. Native index outside0..3 holds, never clamps.
+    // Fresh ZERO after lookup; subtract radius then clamp only adjusted<zero.
     case 211:
     case 212:
     case 213:
@@ -423,6 +449,9 @@ bool advanceFieldNpcMarioDetection(uint32_t actor, uint8_t cls,
         c.distance = c.zero;
       c.phase = 220;
       break;
+    // Retain even otherwise-unused previous-current vector reads. Revise yaw
+    //80007328 then strict <180 chooses fresh90,otherwise270(including NaN),
+    // followed by the independent Mario/sequence/Vivian eligibility graph.
     case 220:
       if (!vectorXY(actor + 0x98, c.previous))
         return false;
@@ -473,6 +502,9 @@ bool advanceFieldNpcMarioDetection(uint32_t actor, uint8_t cls,
         return false;
       c.phase = 100;
       break;
+    // Proximity quarter-range gate bypasses ONLY range/angle, not heights.
+    // All admitted distances test dy20c and -dy218. Class1 posts1; class4 must
+    // also pass inner territory, with its distinct double-versus-float.75 graph.
     case 300:
       if (!load(0x8041fd58, c.threshold))
         return false;
@@ -528,6 +560,10 @@ bool advanceFieldNpcMarioDetection(uint32_t actor, uint8_t cls,
         return false;
       c.phase = -c.dy > c.threshold ? 910 : (cls == 4 ? 320 : 890);
       break;
+    // Inner kind1 computes center-distance then reads DOUBLE.75 at802c1460
+    // before fresh radius214; compare promoted distance to DOUBLE product.
+    // All other kinds(including0/unknown) use FLOAT.75(fcd4) scaled rectangle.
+    // X rejection skips Z; retain same float scale for the later Z multiply.
     case 320:
       if (!read(actor + 0x1f8, c.value))
         return false;
@@ -626,6 +662,9 @@ bool advanceFieldNpcMarioDetection(uint32_t actor, uint8_t cls,
                     ? 910
                     : 890;
       break;
+    // Post fresh trigger140 OR1/2 once, then interrupt800440f8 once(result
+    // ignored). Prefix paths already at Display never enter/repeat this child.
+    // Terminal912 remains effect-free until parent retires this actor cursor.
     case 890:
       c.trigger = 1;
       c.phase = 900;
@@ -650,7 +689,7 @@ bool advanceFieldNpcMarioDetection(uint32_t actor, uint8_t cls,
       ++c.phase;
       break;
     case 912:
-      return true; // next fresh source mainflags8004accc, Display unfinished
+      return true; // next fresh source mainflags8004accc, Display remains caller-owned
     default:
       return false;
     }

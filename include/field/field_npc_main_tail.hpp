@@ -17,6 +17,9 @@ struct FieldNpcTailServices {
   bool (*request)(void *, const FieldNpcTailRequest &, FieldNpcTailResponse &) = nullptr;
   bool (*queue)(void *, const FieldNpcDisplayRequest &, FieldNpcDisplayResponse &) = nullptr;
 };
+// field is ORIGINAL F used for final54d clear; secondField is a later GP168
+// capture used for Kpa bookkeeping. Do not merge them. Counter/score words are
+// interpreted signed at source comparisons. Terminal91 stays active/effect-free.
 struct FieldNpcTailCursor {
   bool active = false;
   FieldNpcTailServices owner;

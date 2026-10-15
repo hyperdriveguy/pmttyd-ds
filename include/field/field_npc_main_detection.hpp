@@ -2,6 +2,8 @@
 #include "field_npc_inline_norm.hpp"
 #include <array>
 namespace ttyd {
+// Callee identity is a32-bit original address; point carries copied XYZ
+// WORDS so cloud sampling preserves source bits/rounding, not a live root alias.
 struct FieldNpcDetectionRequest {
   uint32_t function = 0;
   uint32_t argument = 0; // event ID for GetPtrID, actor for Interrupt
@@ -21,7 +23,10 @@ struct FieldNpcDetectionServices {
 };
 enum class FieldNpcDetectionFrontier { Pending, Mario, Display };
 // Source8004a160..8004a4e4 and reached common interrupt8004acc4..accc.
-// Mario and Display are unfinished frontiers, NEVER full Main completion.
+// Mario and Display are caller-owned boundaries, NEVER full Main completion.
+// eventClass is event byte10(rawBytes[0]), not scheduler type+c. Captured
+// actor/services/class/sample survive holds; terminal frontiers stay active and
+// effect-free. No helper completion retires history or advances the actor.
 struct FieldNpcDetectionCursor {
   bool active = false;
   FieldNpcDetectionServices owner;

@@ -1,5 +1,8 @@
 #include "field_npc_main_history.hpp"
 namespace ttyd {
+// Unconditional current8c->previous98, then optional oldest-first five-vector
+// shift c8->d4,bc->c8,b0->bc,a4->b0,current8c->a4. Stride12 is XYZ WORDS;
+// +4/+8 are Y/Z. Preserve payloads and fresh scalar Z; no bulk vector snapshot.
 bool advanceFieldNpcMainHistory(uint32_t actor, const FieldNpcClockServices &s,
                                  FieldNpcHistoryCursor &c) {
   if (!s.word || !s.store) return false;
@@ -31,6 +34,9 @@ bool advanceFieldNpcMainHistory(uint32_t actor, const FieldNpcClockServices &s,
       else if (++c.copy == 6) c.phase = 3;
     }
     break;
+  // Fresh main100 gates motion history; only then read live MainCount8041e8ac.
+  // Odd skips the five-vector shift; even performs it. Final current X/Y are
+  // reread, not reused from initial previous-position copy. No active/query test.
   case 1:
     if (!read(actor, c.flags)) return false;
     c.phase = c.flags & 0x100 ? 2 : 3;

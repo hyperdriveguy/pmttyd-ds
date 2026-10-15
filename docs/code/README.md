@@ -151,3 +151,6 @@ clock fields, retained draw transforms, blur polynomials and scalar length graph
 
 [NPC Main entry/movement](npc-main-entry-movement.md) explains source traversal,
 movement/pose ordering, shared VM binding and composed cursor retirement.
+
+[NPC detection/display/tail](npc-main-detection-display-tail.md) covers trigger
+priority, eligibility, deferred registrations, raw history and original field ownership.

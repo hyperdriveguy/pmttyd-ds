@@ -2,11 +2,16 @@
 #include <cstring>
 namespace ttyd {
 namespace {
+// Word bits preserve copied positions/literals; signedWord avoids an
+// out-of-range unsigned cast. single() retains source float rounding boundaries.
 float real(uint32_t w) { float f;std::memcpy(&f,&w,4);return f; }
 uint32_t bits(float f) { uint32_t w;std::memcpy(&w,&f,4);return w; }
 int32_t signedWord(uint32_t w) { return w<=0x7fffffff?int32_t(w):int32_t(int64_t(w)-0x100000000LL); }
 float single(float f) { volatile float v=f;return v; }
 }
+// Runs only AFTER actor traversal. GP80415fd0->F168->E=F550:effect word0
+// alone gates state8/counterc; E4 is NOT the gate. Retain ORIGINAL F throughout
+// callbacks, plus later distinct F2 for bookkeeping. Providers stable across holds.
 bool advanceFieldNpcMainTail(const FieldNpcTailServices &s, FieldNpcTailCursor &c) {
   const auto &m=s.memory;
   if(!m.word || !m.store)return false;
@@ -31,6 +36,10 @@ bool advanceFieldNpcMainTail(const FieldNpcTailServices &s, FieldNpcTailCursor &
   case 3:
     if(!read(c.effect+8,c.value))return false;
     c.phase=c.value==2?4:(c.value==1?20:40);break;
+  // Increment wrapping32 counter,store,then RELOAD before signed branches.
+  // State2:<20 curve5(-600->0),20..79 zeroX,80..99 curve1(0->+600),>=100
+  // clearE4. State1:>60 clearE4,otherwise one zero feeds X/Y/queue depth.
+  // Negative wrapped counters follow signed tests; no clamp or timer rewrite.
   case 4:case 20:
     if(!read(c.effect+0xc,c.count))return false;
     ++c.count;++c.phase;break;
@@ -68,6 +77,9 @@ bool advanceFieldNpcMainTail(const FieldNpcTailServices &s, FieldNpcTailCursor &
   case 15:
     if(!store(c.effect+0x10,c.value))return false;
     ++c.phase;break;
+  // State2 loads a DISTINCT fresh ZERO for Y/queue after X publication;
+  // plateauX has its own earlier zero. State1 shares one zero across both.
+  // dispEntry camera9,class2,callback80047dfc,actualE; no callback dispatch here.
   case 16:
     if(!load(0x8041fc7c,c.zero))return false;
     ++c.phase;break;
@@ -92,6 +104,8 @@ bool advanceFieldNpcMainTail(const FieldNpcTailServices &s, FieldNpcTailCursor &
   case 30:
     if(!store(c.effect+4,0))return false;
     c.phase=40;break;
+  // Fresh field mode half:1 encounter4727c,2/3 talk470dc,5 battle46a78;
+  // all others skip. Only encounter continues into Kpa queries/bookkeeping.
   case 40:{
     auto v=s.half?s.half(m.user,c.field):std::nullopt;if(!v)return false;
     c.call={};
@@ -104,6 +118,9 @@ bool advanceFieldNpcMainTail(const FieldNpcTailServices &s, FieldNpcTailCursor &
   case 41:
     if(!request())return false;
     ++c.phase;break;
+  // Capture F2 BEFORE fresh parent Mario lookup. Two independent Mario3c==2
+  // gates surround jump801fcc98/fire801fe1b0; jump may change the second gate.
+  // Each child itself fetches Mario again; preserve parent pointer for score copy.
   case 42:
     if(!read(0x80415fd0,c.gp))return false;
     ++c.phase;break;
@@ -129,6 +146,9 @@ bool advanceFieldNpcMainTail(const FieldNpcTailServices &s, FieldNpcTailCursor &
     c.fire=c.response.word;++c.phase;break;
   case 49:
     c.phase=c.jump?50:70;break;
+  // Jump true: signed scoreF2+57c>0 then signed578>=2 admits score80216994.
+  // Copy parent X/Y words,load original60(fc84),SP Y+60,then fresh Z word.
+  // Child receives retained score and copied XYZ, never fabricated stack pointers.
   case 50:
     if(!read(c.secondField+0x57c,c.score))return false;
     c.phase=signedWord(c.score)>0?51:60;break;
@@ -152,6 +172,9 @@ bool advanceFieldNpcMainTail(const FieldNpcTailServices &s, FieldNpcTailCursor &
   case 56:
     if(!request())return false;
     c.phase=60;break;
+  // Jump true clears578 THEN57c regardless of score eligibility; jump false
+  // preserves both. Fire false clears574; true preserves. Final byte54d clears
+  // through ORIGINAL F even after callbacks change GP/F2/Mario; neighbors intact.
   case 60:
     if(!store(c.secondField+0x578,0))return false;
     ++c.phase;break;

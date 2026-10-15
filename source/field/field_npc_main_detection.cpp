@@ -3,6 +3,8 @@
 #include <cstring>
 namespace ttyd {
 namespace {
+// Float words retain payloads; single() preserves source SP rounding.
+// This norm uses rounded dz*dz plus fused dx*dx, unlike auto-pose's two squares.
 float real(uint32_t w) {
   float f;
   std::memcpy(&f, &w, 4);
@@ -19,6 +21,9 @@ float single(float f) {
 }
 } // namespace
 FieldNpcDetectionFrontier
+// Packed identity:regular event ID11c,script13c,trigger140,root8c/90/94,
+// width14c,height150,territory kind1f8,center1fc/204. Phases retain individual
+// primitives; changing actor/provider during a hold cannot replace the visit.
 advanceFieldNpcMainDetection(uint32_t actor, const FieldNpcDetectionServices &s,
                              FieldNpcDetectionCursor &c) {
   using R = FieldNpcDetectionFrontier;
@@ -57,6 +62,9 @@ advanceFieldNpcMainDetection(uint32_t actor, const FieldNpcDetectionServices &s,
   };
   for (;;)
     switch (c.phase) {
+    // ID0 skips lookup AND interrupt. Otherwise evtGetPtrID80035a28 supplies
+    // actual entry address; null/stopped(byte8 mask2) interrupts. Capture script
+    // THEN raw class byte10, even when script0. Cloud excludes classes5/8.
     case 0:
       if (!read(actor + 0x11c, c.value))
         return R::Pending;
@@ -90,6 +98,10 @@ advanceFieldNpcMainDetection(uint32_t actor, const FieldNpcDetectionServices &s,
       c.phase = c.script && c.eventClass != 5 && c.eventClass != 8 ? 6 : 40;
       break;
     }
+    // Captured main20000000/20 bypasses cloud. Samples top(X,Y,Z), then
+    // middle/bottom(FRESH Y,X,Z,height); each reloads width before the child.
+    // cloudGetBreathPower80187f10 consumes semantic copied point, not pointer.
+    // Fresh ZERO after each result:strict power>0 posts8 and skips later tests.
     case 6:
       if (!read(actor, c.value))
         return R::Pending;
@@ -150,6 +162,8 @@ advanceFieldNpcMainDetection(uint32_t actor, const FieldNpcDetectionServices &s,
         c.phase = 13;
       }
       break;
+    // Source fnmsubs sign boundary:NEGATE(fused(height*.5-Y)), not separately
+    // rounded subtraction. Bottom uses single(Y-height) without half literal.
     case 24:
       if (!load(0x8041fc80, c.half))
         return R::Pending;
@@ -158,6 +172,9 @@ advanceFieldNpcMainDetection(uint32_t actor, const FieldNpcDetectionServices &s,
           bits(-std::fma(c.height, c.half, -real(c.call.point[1])));
       c.phase = 13;
       break;
+    // Territory only kind1/2 and captured class1/2. Kind1 loads Z-center/root
+    // before X-center/root, computes fused norm, then freshly reads radius214.
+    // Strict outside posts4; equality/unordered do not trigger.
     case 40:
       if (!read(actor + 0x1f8, c.kind))
         return R::Pending;
@@ -209,6 +226,9 @@ advanceFieldNpcMainDetection(uint32_t actor, const FieldNpcDetectionServices &s,
       } else
         c.phase = 100;
       break;
+    // Kind2 rectangle:class2 extents214/21c, class1 extents208/210.
+    // Per axis center->extent->current, strict rounded outside comparisons.
+    // X rejection skips Z; NaN on one axis continues; negative extents unchanged.
     case 80:
       c.xExtent = c.eventClass == 2 ? 0x214 : 0x208;
       c.zExtent = c.eventClass == 2 ? 0x21c : 0x210;
@@ -256,6 +276,9 @@ advanceFieldNpcMainDetection(uint32_t actor, const FieldNpcDetectionServices &s,
       break;
     case 100:
       return R::Mario; // next source comparison8004a4e4; retained eventClass
+    // Fresh trigger140 read/OR/store, then npcCheckInterrupt800440f8 once.
+    // Its result is discarded. Reaching Display never implies callback dispatch
+    // or history; reaching Mario preserves captured raw event class.
     case 120:
       if (!read(actor + 0x140, c.value))
         return R::Pending;

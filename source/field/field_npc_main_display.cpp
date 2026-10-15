@@ -3,6 +3,8 @@
 #include <cstring>
 namespace ttyd {
 namespace {
+// Raw float words and explicit SP rounding; ordered culling/clamping retains
+// source NaN and signed-zero behavior rather than normalizing projection data.
 float real(uint32_t w) {
   float f;
   std::memcpy(&f, &w, 4);
@@ -13,6 +15,9 @@ float single(float f) {
   return v;
 }
 } // namespace
+// Actor main800 skips to History. Otherwise camera4 queried TWICE: view11c
+// via PSMTXMultVec8029e6a4 then fresh projection15c via8029eb08, using semantic
+// local point. Actual camera/SDK grouping and queue pass are provider-owned.
 FieldNpcDisplayFrontier advanceFieldNpcMainDisplay(
     uint32_t actor, const FieldNpcDisplayServices &s, FieldNpcDisplayCursor &c) {
   const auto &m = s.memory;
@@ -81,6 +86,9 @@ FieldNpcDisplayFrontier advanceFieldNpcMainDisplay(
       c.projected = c.response.point;
       ++c.phase;
       break;
+    // Ordered cull:Z>-1(fcd8),Z<0(fc7c),X/Y within inclusive-2(fd5c)..2(fd34).
+    // Any failed/NaN test freshly reads force mask40; success skips that read.
+    // Literal loads short-circuit in source order; no generic frustum fallback.
     case 6:
       if (!load(0x8041fcd8, c.low))
         return FieldNpcDisplayFrontier::Pending;
@@ -108,6 +116,9 @@ FieldNpcDisplayFrontier advanceFieldNpcMainDisplay(
         return FieldNpcDisplayFrontier::Pending;
       c.phase = c.value & 0x40 ? 20 : 102;
       break;
+    // Sequential RGBA bytes114..117 stop on first non-ff. White clears pose
+    // material40(FlagOff40710); nonwhite sets40(FlagOn40730), THEN copies word114,
+    // reloads handle104 and publishes copied color via406b4. No color pointer.
     case 20: {
       auto v = s.byte ? s.byte(m.user, actor + 0x114 + c.colorIndex)
                       : std::nullopt;
@@ -150,6 +161,10 @@ FieldNpcDisplayFrontier advanceFieldNpcMainDisplay(
         return FieldNpcDisplayFrontier::Pending;
       c.phase = 30;
       break;
+    // Depth=fma(5000(fd60),projectedZ,5000); negative clamps to0 without
+    // loading10000(fd64), otherwise clamp only >10000. NaN survives. Fresh main
+    // flags, fresh-1, SP multiply precede main80->SeparatePose. Half320 mask2
+    // also selects SeparatePose unless fresh state1d4 has10000.
     case 30:
       if (!load(0x8041fd60, c.scale))
         return FieldNpcDisplayFrontier::Pending;
@@ -195,6 +210,9 @@ FieldNpcDisplayFrontier advanceFieldNpcMainDisplay(
         return FieldNpcDisplayFrontier::Pending;
       c.phase = c.value & 0x10000 ? 37 : 101;
       break;
+    // Alpha117==ff chooses ordinary8004c50c classes0/1/2; otherwise xlu
+    //8004c7e0 class2 only. dispEntry80010bc4 reloads camera1f4 for EACH record,
+    // retaining callback/actor/depth. Completion goes to Shadow, not draw dispatch.
     case 37: {
       auto v = s.byte ? s.byte(m.user, actor + 0x117) : std::nullopt;
       if (!v)

@@ -3,10 +3,15 @@
 #include <cstring>
 namespace ttyd {
 namespace {
+// Bit copies and explicit SP arithmetic preserve source reads/rounding; depth
+// retry identity includes signed-zero/NaN payloads. No native frame delta here.
 uint32_t bits(float f) { uint32_t w; std::memcpy(&w, &f, 4); return w; }
 float real(uint32_t w) { float f; std::memcpy(&f, &w, 4); return f; }
 float single(float f) { volatile float v = f; return v; }
 } // namespace
+// Prefix route:Shadow->ordinary/Vivian/blur; SeparatePose bypasses all three;
+// History starts terminal. Shadow fields:descriptor28,root8c,yaw144,scalee0,
+// width14c,factor154,primary handle104,alternate110,camera1f4,alpha117.
 bool advanceFieldNpcMainShadow(uint32_t actor, FieldNpcDisplayFrontier start,
     float depth, const FieldNpcShadowServices &s, FieldNpcShadowCursor &c) {
   const auto &m = s.memory;
@@ -32,6 +37,10 @@ bool advanceFieldNpcMainShadow(uint32_t actor, FieldNpcDisplayFrontier start,
   auto request = [&] { return s.request && s.request(m.user, c.call, c.response); };
   auto queue = [&] { return s.queue && s.queue(m.user, c.draw, c.drawResponse); };
   for (;;) switch (c.phase) {
+  // Captured04000000 selects Vivian even when40000 is also set. Otherwise
+  //40000 skips ordinary shadow to blur. Copy root before numeric children;
+  // nonnull descriptor uses revised yaw<180->90,otherwise270,then sinfd125cd4.
+  // Reload descriptor AFTER sine; do not reuse the earlier null-test pointer.
   case 0:
     if (!read(actor, c.flags)) return false;
     c.phase = c.flags & 0x04000000 ? 50 : (c.flags & 0x40000 ? 90 : 1);
@@ -61,6 +70,9 @@ bool advanceFieldNpcMainShadow(uint32_t actor, FieldNpcDisplayFrontier start,
   case 9:
     if (!request()) return false;
     c.sign = c.response.scalar; ++c.phase; break;
+  // Descriptor30/34/38 offsets: X*scaleX rounded then FMA(sine,rootX);
+  // Y/Z offset*scale+copiedRoot each fused. Ordinary radius is SP(width/3),
+  // times scaleX, factor154, then source1.3300000429(fd68), in that order.
   case 10:
     if (!read(actor + 0x28, c.pointer)) return false;
     ++c.phase; break;
@@ -105,6 +117,9 @@ bool advanceFieldNpcMainShadow(uint32_t actor, FieldNpcDisplayFrontier start,
     c.radius = single(c.factor * c.radius);
     c.radius = single(c.divisor * c.radius);
     c.phase = 80; break;
+  // Vivian ray filter0:copy X/Y,load0/1/100,copy freshZ,load-1; originY=1+Y,
+  // direction(0,-1,0),length100. Seven optional outputs preserve uninitialized
+  // scratch identities; nonzero result requires ACTUALLY written pointY only.
   case 50: case 51:
     if (!load(actor + 0x8c + (c.phase-50)*4, c.root[c.phase-50])) return false;
     ++c.phase; break;
@@ -135,6 +150,8 @@ bool advanceFieldNpcMainShadow(uint32_t actor, FieldNpcDisplayFrontier start,
     if (c.response.word && !c.response.hit[1]) return false;
     if (c.response.word) c.root[1] = *c.response.hit[1];
     c.phase = 58; break;
+  // Vivian pose39824 uses COPIED hit point. Then width/3*scaleX*factor
+  // omits ordinary1.33 and shadowEntry uses FRESH rootXYZ, not copied hit Y.
   case 58:
     if (!read(actor + 0x104, c.handle)) return false;
     c.call = {0x80039824, {c.handle}}; c.call.point = c.root;
@@ -150,6 +167,9 @@ bool advanceFieldNpcMainShadow(uint32_t actor, FieldNpcDisplayFrontier start,
       c.phase = 80;
     }
     break;
+  // shadowEntry8002be98 gets XYZ/radius only; retain index0 as valid. Fresh
+  // main80000 requests SetCollision8002bcfc(index,0), clearing shadow flag1,
+  // not the collision halfword. Completed child cannot replay on later hold.
   case 80:
     c.call = {0x8002be98};
     c.call.scalars = {c.root[0], c.root[1], c.root[2], c.radius};
@@ -165,6 +185,10 @@ bool advanceFieldNpcMainShadow(uint32_t actor, FieldNpcDisplayFrontier start,
   case 84:
     if (!request()) return false;
     c.phase = 90; break;
+  // Fresh main100 registers blur8004bc3c,class2,camera1f4,retained depth.
+  // Alternate110==-1 skips separate pose; otherwise fresh alpha selects opaque
+  //8004bf28 classes0/1/2 or xlu8004c234 class2, always literal camera1.
+  // Queue acknowledges source NaN rejection but missing/capacity holds.
   case 90:
     if (!read(actor, c.flags)) return false;
     c.phase = c.flags & 0x100 ? 91 : 100; break;

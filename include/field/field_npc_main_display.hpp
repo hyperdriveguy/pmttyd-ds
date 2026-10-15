@@ -26,6 +26,9 @@ struct FieldNpcDisplayServices {
                   FieldNpcDisplayResponse &) = nullptr;
 };
 enum class FieldNpcDisplayFrontier { Pending, Shadow, SeparatePose, History };
+// One prefix:projected point/depth and chosen callback/class survive holds.
+// Actor/providers must match; terminal Shadow/SeparatePose/History retains
+// captures for the suffix. Queue registration is separate from draw execution.
 struct FieldNpcDisplayCursor {
   bool active = false;
   FieldNpcDisplayServices owner;
@@ -36,8 +39,8 @@ struct FieldNpcDisplayCursor {
   FieldNpcDisplayRequest call;
   FieldNpcDisplayResponse response;
 };
-// Source8004accc..8004aeac only. All three non-Pending results are unfinished
-// frontiers. No Main completion, actor advance, history or callback dispatch.
+// Source8004accc..8004aeac only. All three non-Pending results are caller-owned
+// boundaries. No Main completion, actor advance, history or callback dispatch.
 FieldNpcDisplayFrontier advanceFieldNpcMainDisplay(
     uint32_t actor, const FieldNpcDisplayServices &, FieldNpcDisplayCursor &);
 } // namespace ttyd

@@ -1,6 +1,9 @@
 #pragma once
 #include "field_npc_clock.hpp"
 namespace ttyd {
+// copy selects six possible vectors;step selects scalar readX/readY/storeX/
+// storeY/readZ/storeZ. Terminal3 remains active. Reset only after parent final
+// clear/next-entry boundary, preserving partial word stores through holds.
 struct FieldNpcHistoryCursor {
   bool active = false;
   FieldNpcClockServices owner;
