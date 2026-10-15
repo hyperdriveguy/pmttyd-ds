@@ -8,6 +8,10 @@ float convert(int32_t n,uint64_t bias){const uint64_t bits=0x4330000000000000ULL
 bool same(const HitN64DrawServices& a,const HitN64DrawServices& b){return a.user==b.user && a.memory.user==b.memory.user && a.memory.word==b.memory.word && a.byte==b.byte && a.multiply==b.multiply && a.truncate==b.truncate && a.matrix==b.matrix && a.call==b.call && a.indices==b.indices;}
 struct Guard{bool& flag;explicit Guard(bool& f):flag(f){flag=true;}~Guard(){flag=false;}};
 struct Op{uint32_t function;std::array<uint32_t,8> args{};};
+// Ordered original GX ABI:NumChans0,two TEV stages,stage color/alpha order,
+// ops and selectors. Register IDs1/2 mean GX C0/C1. TexGen matrices30/33,
+// position9/color11/UV13 INDEX16(3),S16/RGBA8 formats;Cull5c8c is mode0.
+// Keep literal setter order/arguments rather than inferred host material flags.
 constexpr Op material[]={
  {0x802b6f3c,{0}},{0x802b8fcc,{2}},{0x802b8e30,{0,0,0,255}},
  {0x802b89e8,{0,0,0,0,1,0}},{0x802b8a50,{0,0,0,0,1,0}},
@@ -22,8 +26,13 @@ constexpr Op descriptors[]={
  {0x802b4520,{}},{0x802b3c08,{9,3}},{0x802b3c08,{11,3}},{0x802b3c08,{13,3}},
  {0x802b4558,{0,9,1,3,0}},{0x802b4558,{0,11,1,5,0}},
  {0x802b4558,{0,13,1,3,5}}};
+// Whole tri2 FIFO:six(position,color,UV)U16 triples for triangles012 and023.
+// A false FIFO consumer consumes none;partial triangles cannot be acknowledged.
 constexpr std::array<uint16_t,18> triangles={0,0,0,1,1,1,2,2,2,0,0,0,2,2,2,3,3,3};
 }
+// Raw reads are synchronous;callReady/mathReady pin complete external request
+// payloads across holds. Child cursor owns each pass;no successful setter/SDK
+// stage replays. Copied matrices replace incidental original stack addresses.
 struct HitN64DrawCursor::State {
     HitN64DrawServices owner;uint32_t operation=0,effect=0,cameraId=0,phase=0,pending=0,step=0;
     uint32_t payload=0,camera=0,age=0,kind=0,rootAlpha=0,texture=0,pass=0,index=1,particle=0,vertices=0,result=0;
@@ -49,6 +58,10 @@ struct HitN64DrawCursor::State {
 HitN64DrawCursor::HitN64DrawCursor()=default;HitN64DrawCursor::~HitN64DrawCursor()=default;
 bool HitN64DrawCursor::active()const{return bool(state_);}uint32_t HitN64DrawCursor::pending()const{return state_?state_->pending:0;}
 bool HitN64DrawCursor::reset(){if(invoking_)return false;state_.reset();return true;}
+// Required initial camera query(result unused) precedes progress*source5.
+// fctiwz provider result>4 exits;negative frames retain source addressing.
+// Billboard base=T(root)*Ry(-camera4 yaw)*S(scale);angle literals are source.
+// Fractional frame*256 supplies low8 alpha;root2c is read without invented255.
 bool resumeHitN64Draw(int32_t camera,uint32_t effect,const HitN64DrawServices& s,HitN64DrawCursor& cursor){
     if(cursor.invoking_ || !s.memory.word || !s.byte || !s.multiply)return false;
     if(cursor.state_ && (cursor.state_->operation!=1 || cursor.state_->cameraId!=uint32_t(camera) || cursor.state_->effect!=effect || !same(cursor.state_->owner,s)))return false;
@@ -71,6 +84,9 @@ bool resumeHitN64Draw(int32_t camera,uint32_t effect,const HitN64DrawServices& s
         c.bias=c.wide(0x802fb0b8);const auto multiplier=c.real(0x80425474);c.rootAlpha=c.word(c.payload+0x2c);
         const auto whole=convert(c.frame,c.bias);volatile float fraction=c.progress-whole;c.scaleX=s.multiply(s.user,multiplier,fraction);next();break;}
     case 10:{c.pending=0x801c5e64;if(!s.truncate)return false;const auto n=s.truncate(s.user,c.scaleX);if(!n)return false;c.alpha=*n;c.pending=0;next();break;}
+    // Kind1 fire table scales five channels by >>8,leaving first red unscaled.
+    // Kind2 even-age swaps first RGB to black and copies original first RGB to
+    // second;other branches copy six bytes. BSS e0/e4 reads below remain required.
     case 11:{
         if(c.kind==1){const auto fire=sign(c.age-1)<13?c.byte(0x804198ac+c.age-1):0;
             c.colors[1]=uint8_t((uint32_t(c.byte(c.payload+0x3d))*fire)>>8);c.colors[2]=uint8_t((uint32_t(c.byte(c.payload+0x3e))*fire)>>8);
@@ -83,6 +99,9 @@ bool resumeHitN64Draw(int32_t camera,uint32_t effect,const HitN64DrawServices& s
         if(!c.callReady){(void)c.word(0x804296e0);const auto color=uint32_t(c.colors[0])<<24|uint32_t(c.colors[1])<<16|uint32_t(c.colors[2])<<8|uint8_t(c.rootAlpha);c.request={};c.request.function=0x802b8ab8;c.request.integers={1,color};c.callReady=true;}if(!c.call())return false;next();break;
     case 14:
         if(!c.callReady){(void)c.word(0x804296e4);const auto color=uint32_t(c.colors[3])<<24|uint32_t(c.colors[4])<<16|uint32_t(c.colors[5])<<8|uint8_t(c.alpha);c.request={};c.request.function=0x802b8ab8;c.request.integers={2,color};c.callReady=true;}if(!c.call())return false;next();break;
+    // Actual GetTexObjN64 image74 object binds BOTH slots0/1. Three axis-vector
+    // passes0/120/240 each invoke full particle child with stable borrowed base.
+    // Capture preparation alone is not queued display/GPU completion.
     case 15:if(!c.call(0x801d78b0,{74}))return false;c.texture=c.result;next();break;
     case 16:if(!c.call(0x802b7880,{c.texture,0}))return false;next();break;
     case 17:if(!c.call(0x802b7880,{c.texture,1}))return false;next();break;
@@ -96,6 +115,11 @@ bool resumeHitN64Draw(int32_t camera,uint32_t effect,const HitN64DrawServices& s
     default:return false;
     }
 }
+// Build both original UV matrices30/33;frame>=4 collapses second to zero.
+// Vertex block803a0458+frame*56 has four stride14 rows:XYZ S16 at0,UV S16
+// fraction5 at6,RGBA8 at10. Loop particles1..signed count-1,reloading count.
+// Per particle Ry*Rz*T then borrowed base,then FRESH camera4 view11c.
+// GXBegin144=triangles,count6;whole18-halfword FIFO follows exact descriptors.
 bool resumeHitN64ParticleDraw(uint32_t effect,const BattleActMatrix& base,const HitN64DrawServices& s,HitN64DrawCursor& cursor){
     if(cursor.invoking_ || !s.memory.word || !s.byte || !s.multiply)return false;
     if(cursor.state_ && (cursor.state_->operation!=2 || cursor.state_->effect!=effect || cursor.state_->borrowed!=&base || !same(cursor.state_->owner,s)))return false;

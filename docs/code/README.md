@@ -162,3 +162,6 @@ material/GPU state, source removal requests and native retirement leases.
 [Party construction/events](party-construction-events.md) and
 [Maya effect animation](effect-maya-animation.md) explain constructor forms,
 publication gates, source clocks, quantized curves and transform ordering.
+
+[Effect pool/HitN64](effect-pool-hit-n64.md) explains record predicates, simulation,
+source draw requests, texture ownership and ordered GPU publication/submission.

@@ -2,6 +2,9 @@
 #include <cstring>
 namespace ttyd {
 namespace {
+// Original byte tables:kind lifetime(count table),age animation/radius. Root
+// and each particle stride44hex;root kind0,XYZ4,scale28,life30,age34,progress38,
+// colors3c..41. Root alpha2c is deliberately UNINITIALIZED by source Entry.
 constexpr uint32_t CountTable=0x80419888,Anim=0x8041988c,Radius=0x8041989c;
 constexpr uint32_t Zero=0x80425468,One=0x8042547c,Factor=0x80425478;
 int32_t signedWord(uint32_t n){return n<0x80000000?int32_t(n):int32_t(int64_t(n)-0x100000000LL);}
@@ -20,6 +23,9 @@ struct Memory {
     void real(uint32_t a,float f)const{put(a,bits(f));}
     uint64_t wide(uint32_t a)const{const auto high=word(a),low=word(a+4);return uint64_t(high)<<32|low;}
 };
+// Source4330 signed/unsigned bias conversion rounds double difference to SP.
+// RNG signed remainder360 and wrapped direction numerator are preserved;no
+// arbitrary nonnegative RNG normalization or guessed radian input here.
 float convert(uint32_t n,bool sign,uint64_t bias){const uint64_t pattern=0x4330000000000000ULL|(sign?n^0x80000000u:n);double d,b;std::memcpy(&d,&pattern,8);std::memcpy(&b,&bias,8);return float(d-b);}
 bool valid(const HitN64Services& s,bool entry){return s.pool.memory.word && s.pool.memory.storeWord && (!entry || s.pool.memory.storeByte) && s.byte;}
 }
@@ -31,6 +37,9 @@ struct HitN64EntryCursor::State:Memory {
 HitN64EntryCursor::HitN64EntryCursor()=default;HitN64EntryCursor::~HitN64EntryCursor()=default;
 bool HitN64EntryCursor::active()const{return bool(state_);}uint32_t HitN64EntryCursor::pending()const{return state_?state_->pending:0;}
 bool HitN64EntryCursor::reset(){if(invoking_)return false;state_.reset();return true;}
+// Reserve real pool record BEFORE heap3 payload:count=trunc_signed(wrap32
+//(amount*5+20)/3)+1,bytes=wrap32(count*44hex). No clamp/null-allocation repair.
+// Root name2fb0c8/callback1c61bc are original identities,not native handles.
 std::optional<uint32_t> resumeHitN64Entry(int32_t kind,int32_t amount,const std::array<float,3>& pos,float scale,const HitN64Services& s,HitN64EntryCursor& cursor){
     if(cursor.invoking_ || !valid(s,true))return {};
     if(cursor.state_ && (!same(cursor.state_->services,s) || cursor.state_->kind!=kind || cursor.state_->amount!=amount || std::memcmp(cursor.state_->position.data(),pos.data(),12) || bits(cursor.state_->scale)!=bits(scale)))return {};
@@ -58,6 +67,9 @@ std::optional<uint32_t> resumeHitN64Entry(int32_t kind,int32_t amount,const std:
         for(unsigned i=0;i<6;++i)c.putByte(c.payload+0x3c+i,colors[i]);
         c.real(c.payload+0x28,scale);c.particle=c.payload+0x44;
         c.bias=c.wide(0x802fb0b8);c.zero=c.real(Zero);c.phase=2;break;}
+    // Particle slots1..count-1 only,one raw RNG call per slot. Successive360
+    // numerators divide by count-1;loop skip for count<=1 avoids that divide.
+    // Preserve source duplicate zero stores and child alpha255;do not fill root2c.
     case 2:{
         if(int32_t(c.index)>=c.count){const auto effect=c.effect;cursor.state_.reset();return effect;}
         c.pending=0x8026c324;if(!s.randomRaw)return {};
@@ -78,6 +90,10 @@ struct HitN64MainCursor::State:Memory {uint32_t phase=0,pending=0,effect=0,paylo
 HitN64MainCursor::HitN64MainCursor()=default;HitN64MainCursor::~HitN64MainCursor()=default;
 bool HitN64MainCursor::active()const{return bool(state_);}uint32_t HitN64MainCursor::pending()const{return state_?state_->pending:0;}
 bool HitN64MainCursor::reset(){if(invoking_)return false;state_.reset();return true;}
+// Copy root XYZ,then decrement life/increment age before expiry test. Negative
+// life holds at real Delete5ea30. Otherwise source byte animation*1/256 and
+// radius update particles with fresh record count;no render-driven second tick.
+// Depth1086c uses captured XYZ,then queue camera4/class2/callback1c5d6c.
 bool resumeHitN64Main(uint32_t effect,const HitN64Services& s,HitN64MainCursor& cursor){
     if(cursor.invoking_ || !valid(s,false))return false;
     if(cursor.state_ && (cursor.state_->effect!=effect || !same(cursor.state_->services,s)))return false;

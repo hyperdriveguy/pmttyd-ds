@@ -11,6 +11,10 @@ using Args=std::array<uint32_t,8>;
 bool args(const SourceIconGXCall&q,std::initializer_list<uint32_t> a){Args v{};size_t i=0;for(auto n:a)v[i++]=n;return q.integers==v;}
 bool finite(const BattleActMatrix&m){for(auto x:m)if(!std::isfinite(x))return false;return true;}
 struct Op{uint32_t f;Args a;};
+// Exact source GX request admission table,not a material approximation.
+// Twelve TEV setters then register1/2 colors,image74 object,two binds and two
+// TexGens. Unknown/out-of-order requests hold. IDs/arguments mirror draw source;
+// selectors C0=2,C1=4,CPREV=0;alpha APREV=0,TEXA=4,A1=2.
 constexpr Op material[]={
  {0x802b6f3c,{0}},{0x802b8fcc,{2}},{0x802b8e30,{0,0,0,255}},
  {0x802b89e8,{0,0,0,0,1,0}},{0x802b8a50,{0,0,0,0,1,0}},
@@ -24,6 +28,8 @@ constexpr Op desc[]={ {0x802b4520,{}},{0x802b3c08,{9,3}},{0x802b3c08,{11,3}},{0x
 bool same(const HitN64DrawServices&a,const HitN64DrawServices&b){return a.user==b.user&&a.memory.user==b.memory.user&&a.memory.word==b.memory.word&&a.byte==b.byte&&a.multiply==b.multiply&&a.truncate==b.truncate&&a.matrix==b.matrix&&a.call==b.call&&a.indices==b.indices;}
 float signedHalf(uint8_t a,uint8_t b){uint32_t v=uint32_t(a)<<8|b;return float(v<32768?int32_t(v):int32_t(v)-65536);}
 }
+// First failure latches retired_ permanently. Shared resource ownership alone
+// cannot validate effect allocation,camera/frame/inherited state or texture epoch.
 bool HitN64GpuBatch::current()const{
     if(retired_)return false;
     const bool valid=resource_&&resource_->ready()&&generation_&&lifetime_.owner&&lifetime_.current&&lifetime_.textureCurrent&&lifetime_.current(lifetime_.user)&&lifetime_.textureCurrent(lifetime_.user,resource_,generation_);
@@ -47,6 +53,9 @@ struct HitN64GpuCapture::State {
     static bool math(void*p,BattleAudienceMatrixRequest&q){auto&s=self(p);return s.live()&&s.source.matrix&&s.source.matrix(s.source.user,q)&&s.live();}
     static std::optional<uint32_t> call(void*p,const SourceIconGXCall&q){return self(p).call(q);}
     static bool indices(void*p,const std::array<uint16_t,18>&q){return self(p).indices(q);}
+    // Stages0 material,1 colors,2 actual texture query,3 binds,4 coordinates,
+    //5 indexed draws. Only real camera/GetTexObj calls delegate;all other exact
+    // GX requests are consumed into retained CPU state,not acknowledged GPU work.
     std::optional<uint32_t> call(const SourceIconGXCall&q){
         if(!live()||awaiting)return {};
         if(q.function==0x8000f2fc){if(!args(q,{q.integers[0]})||!source.call)return {};auto r=source.call(source.user,q);return live()?r:std::optional<uint32_t>{};}
@@ -55,6 +64,9 @@ struct HitN64GpuCapture::State {
         if(stage==2){if(q.function!=0x801d78b0||!args(q,{74})||!source.call)return {};auto t=source.call(source.user,q);if(!t||!live())return {};object=*t;stage=3;return t;}
         if(stage==3){if(q.function!=0x802b7880||!args(q,{object,step}))return {};if(++step==2){stage=4;step=0;}return 0;}
         if(stage==4){if(q.function!=coordinates[step].f||q.integers!=coordinates[step].a)return {};if(++step==4){stage=5;step=0;}return 0;}
+        // Original2x4 UV inputs have only two components. Matrix coupling to
+        // unknown third coordinate(index2/6)holds;do not invent that component.
+        // Texture matrix tokens30/33 map to independent native UV0/UV1.
         if(q.function==0x802ba3d0){
             if(!finite(q.matrix))return {};
             const unsigned slot=q.integers[0]==30?0:q.integers[0]==33?1:2;
@@ -77,6 +89,10 @@ struct HitN64GpuCapture::State {
         if(q.function!=0x802b5a6c||!args(q,{144,0,6})||!matrixReady||!texReady[0]||!texReady[1])return {};
         awaiting=true;return 0;
     }
+    // Admit original vertex aliases AGAIN at FIFO read against immutable bank.
+    // Decode signed BE16 positions/UV(/32),retain RGBA despite NumChans0.
+    // Apply each UV matrix then flip Tex3DS T ONCE,without clamping. Append only
+    // after full six-vertex validation/current epoch;no partial publication.
     bool indices(const std::array<uint16_t,18>&q){
         static constexpr std::array<uint16_t,18> expected={0,0,0,1,1,1,2,2,2,0,0,0,2,2,2,3,3,3};
         if(!live()||!awaiting||q!=expected)return false;
@@ -96,12 +112,17 @@ struct HitN64GpuCapture::State {
     }
 };
 HitN64GpuCapture::HitN64GpuCapture()=default;HitN64GpuCapture::~HitN64GpuCapture()=default;
+// A fresh capture cannot replace a bound unfinished source cursor. Explicit
+// discard owns cancellation;it does not delete effect or retire external GPU use.
 bool HitN64GpuCapture::begin(std::shared_ptr<const HitN64TextureResources>r,uint64_t g,const HitN64GpuLifetime&l){
     if(state_&&(state_->invoking||(!state_->complete&&state_->bound)))return false;
     auto s=std::make_unique<State>();s->batch->resource_=std::move(r);s->batch->generation_=g;s->batch->lifetime_=l;
     if(!s->live())return false;
     state_=std::move(s);return true;
 }
+// Pin effect/camera/full provider table on first resume. Whole source callback
+// prepares all particles of pass0,then1,then2. Completion publishes while live;
+// outer retained display still must submit successfully before callback ack.
 bool HitN64GpuCapture::resume(int32_t camera,uint32_t effect,const HitN64DrawServices&s){
     if(!state_||state_->invoking||!state_->live())return false;
     auto&c=*state_;if(c.complete)return camera==c.camera&&effect==c.effect&&same(s,c.source);
@@ -123,6 +144,9 @@ struct NativeHitN64Gpu::State {
 };
 NativeHitN64Gpu::NativeHitN64Gpu():state_(std::make_unique<State>()){}
 NativeHitN64Gpu::~NativeHitN64Gpu(){release();}
+// Outside FrameBegin:one vertex shader with distinct position/color/UV0/UV1
+// outputs(mask1|2|4|8=15),transform uniform and overflow-safe capacity*6 arena.
+// Output ABI checks do not authenticate arbitrary supplied shader machine code.
 bool NativeHitN64Gpu::prepare(const uint32_t* shader,uint32_t bytes,size_t maximumPackets){
 #ifdef __3DS__
     if(!shader||!bytes||!maximumPackets||maximumPackets>std::numeric_limits<size_t>::max()/6/sizeof(State::Vertex))return false;
@@ -155,6 +179,9 @@ bool NativeHitN64Gpu::beginFrame(){
     return false;
 #endif
 }
+// Validate WHOLE batch/capacity/finite data,actual imported texture generation
+// and inherited raster owner before GPU effects. Recheck epochs after provider.
+// Viewport/projection/blend/depth/alpha/sampler2 are inherited owner duties.
 bool NativeHitN64Gpu::preflight(const HitN64GpuBatch&b,const NativeHitN64Texture&t,const HitN64NativeRaster&r)const{
 #ifdef __3DS__
     const auto&s=*state_;
@@ -169,6 +196,9 @@ bool NativeHitN64Gpu::preflight(const HitN64GpuBatch&b,const NativeHitN64Texture
     (void)b;(void)t;(void)r;return false;
 #endif
 }
+// Convert all CPU positions and validate before C2D flush/raster apply.
+// Single-threaded owner lifetime must survive apply;it cannot fail or retire data.
+// Arena used advances only after submissions;no overwrite of earlier frame draws.
 bool NativeHitN64Gpu::draw(const HitN64GpuBatch&b,NativeHitN64Texture&t,const HitN64NativeRaster&r){
 #ifdef __3DS__
     auto&s=*state_;if(s.submitting)return false;
@@ -189,6 +219,9 @@ bool NativeHitN64Gpu::draw(const HitN64GpuBatch&b,NativeHitN64Texture&t,const Hi
     C2D_Flush();r.apply(r.user);
     C3D_CullFace(GPU_CULL_NONE); // Original GXSetCullMode(0), not inherited.
     C3D_BindProgram(&s.program);
+    // Shader input ABI:XYZ3,UV0/UV1 each2,RGBA4;four loader slots3210hex.
+    // Source indexed colors retained in packets but NumChans0 means register0
+    // is native primary color;register1 is per-packet TEV constant.
     auto*attrs=C3D_GetAttrInfo();AttrInfo_Init(attrs);
     AttrInfo_AddLoader(attrs,0,GPU_FLOAT,3);AttrInfo_AddLoader(attrs,1,GPU_FLOAT,2);AttrInfo_AddLoader(attrs,2,GPU_FLOAT,2);AttrInfo_AddLoader(attrs,3,GPU_FLOAT,4);
     auto*buf=C3D_GetBufInfo();BufInfo_Init(buf);BufInfo_Add(buf,s.vertices,sizeof(State::Vertex),4,0x3210);
@@ -197,6 +230,9 @@ bool NativeHitN64Gpu::draw(const HitN64GpuBatch&b,NativeHitN64Texture&t,const Hi
     // Preflight pins both aliases to the same actual imported image74 owner.
     t.bind(0,b.resource(),b.generation());t.bind(1,b.resource(),b.generation());
     GSPGPU_FlushDataCache(s.vertices+first*6,(at-first*6)*sizeof(State::Vertex));
+    // Reset six PICA stages;use two. RGB=C1*(1-PREV)+C0*PREV;
+    // alpha=PREV*(1-A1)+TEX1*A1. Original register0 alpha is NOT A1.
+    // PICA interpolation maps equations;fixed-point/framebuffer parity unproved.
     for(unsigned n=0;n<6;++n)C3D_TexEnvInit(C3D_GetTexEnv(n));
     auto*env=C3D_GetTexEnv(0);C3D_TexEnvSrc(env,C3D_Both,GPU_TEXTURE0);C3D_TexEnvFunc(env,C3D_Both,GPU_REPLACE);
     env=C3D_GetTexEnv(1);

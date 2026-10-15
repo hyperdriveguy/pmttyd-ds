@@ -16,6 +16,9 @@ struct HitN64DrawServices {
     // Atomic original tri2 FIFO: six vertices, three U16 array indices each.
     bool (*indices)(void*,const std::array<uint16_t,18>&)=nullptr;
 };
+// operation1 whole callback/2 particle child share one cursor type. Reject
+// changed camera/effect/providers or borrowed-base ADDRESS on hold;read base
+// only at reached concat. Successful invocation resets;GPU lifetime is separate.
 class HitN64DrawCursor {
 public:
     HitN64DrawCursor();~HitN64DrawCursor();

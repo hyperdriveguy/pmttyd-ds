@@ -8,6 +8,8 @@ struct HitN64GpuVertex {
     std::array<float,2> uv0{},uv1{};
     uint32_t sourceColor=0; // Retained although source NumChans(0) ignores it.
 };
+// One six-vertex source triangle pair,with actual reached view/model matrix,
+// both independent UV transforms and GX register colors. Preserve callback order.
 struct HitN64GpuPacket {
     BattleActMatrix matrix{};
     std::array<HitN64GpuVertex,6> vertices{};
@@ -21,6 +23,8 @@ struct HitN64GpuLifetime {
     bool (*current)(void*)=nullptr;
     bool (*textureCurrent)(void*,const std::shared_ptr<const HitN64TextureResources>&,uint64_t)=nullptr;
 };
+// current() permanently retires on first lifetime/texture loss;restored flags
+// or reused allocation cannot revive it. Owner/resource pins are not epoch proof.
 class HitN64GpuBatch {
 public:
     bool current()const;
@@ -59,6 +63,9 @@ struct HitN64NativeRaster {
     void (*apply)(void*)=nullptr;
     std::array<float,16> projection{}; // Actual source-view to native clip.
 };
+// Fixed linear arena capacity is native admission,not a source particle cap.
+// Same-frame draws consume distinct ranges;beginFrame syncs before reuse.
+// CPU preparation/publication,preflight and actual submission remain distinct.
 class NativeHitN64Gpu {
 public:
     NativeHitN64Gpu();~NativeHitN64Gpu();

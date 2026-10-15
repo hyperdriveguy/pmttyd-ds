@@ -6,6 +6,9 @@
 #include <optional>
 namespace ttyd {
 // Private native metadata; descriptor/vertices remain original BE bytes.
+// PMHITX01 companion stores LE metadata but BE original immutable spans.
+// read() invalidates old contents first;static load() admits a new shared bank.
+// No mutable effect/camera/BSS/texture state can be supplied by this reader.
 class HitN64TextureResources {
 public:
     static std::shared_ptr<const HitN64TextureResources> load(const char*);
@@ -23,6 +26,9 @@ private:
 };
 // Real 3DS texture ownership only. Host load remains unavailable. Import and
 // retirement occur outside FrameBegin; release requires C3D still alive.
+// Resource POINTER plus monotonically unique generation identify import.
+// Reload/release invalidates old captures;generation exhaustion blocks reuse.
+// Import failure preserves current image;host GPU ownership stays unavailable.
 class NativeHitN64Texture {
 public:
     NativeHitN64Texture();~NativeHitN64Texture();

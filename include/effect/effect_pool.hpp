@@ -19,6 +19,9 @@ struct EffectPoolServices {
   std::optional<uint32_t> (*fileAllocate)(void *, int32_t, uint32_t, uint32_t,
                                        uint32_t, uint32_t) = nullptr;
 };
+// Raw memory callbacks are synchronous mapped-domain preconditions. Cursor
+// pins their used identities and service user;caller keeps other service callbacks
+// stable. Completion resets for a new source invocation,not a new render frame.
 struct EffectPoolCursorOwner {
   bool active = false;
   uint32_t phase = 0;
@@ -38,6 +41,9 @@ struct EffectReleaseCursor : EffectPoolCursorOwner {
 // Whole effEntry8005ec68. Exact-zero free predicate, partial initialization;
 // exhaustion intentionally requests the original one-past record. Mapped pool
 // capacity/valid guest storage remain the provider's explicit preconditions.
+// Source predicates differ:Entry requires flags EXACT0;Main/AutoRelease use
+// active mask1;name-visible occupied records may use other flags. No single
+// native exists/visible boolean can replace these conditions.
 std::optional<uint32_t> effectPoolEntry(const EffectPoolServices &);
 bool resumeEffectMain(const EffectPoolServices &, EffectMainCursor &);
 // Whole effInit8005ef20 including effInit64801d7a20.

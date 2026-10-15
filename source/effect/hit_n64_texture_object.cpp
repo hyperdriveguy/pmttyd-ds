@@ -8,6 +8,10 @@ HitN64TextureObjectCursor::~HitN64TextureObjectCursor()=default;
 bool HitN64TextureObjectCursor::active()const{return bool(state_);}
 uint32_t HitN64TextureObjectCursor::pending()const{return state_?state_->pending:0;}
 bool HitN64TextureObjectCursor::reset(){if(invoking_)return false;state_.reset();return true;}
+// Global419a40 points to real N64 state:word+4 chooses palette word0 path.
+// Unloaded source branch initializes1x1 I4(no mip,clamp)from actual419a60 pixels;
+// loaded branch Unpack37a80 uses retained palette/index. Missing state is not
+// permission to fabricate0. construct returns owned output token,not void r3.
 std::optional<uint32_t> resumeHitN64TextureObject(uint32_t index,const HitN64TextureObjectServices& s,HitN64TextureObjectCursor& cursor){
     if(cursor.invoking_ || !s.memory.word)return {};
     if(cursor.state_ && (cursor.state_->index!=index || cursor.state_->owner.user!=s.user || cursor.state_->owner.memory.user!=s.memory.user || cursor.state_->owner.memory.word!=s.memory.word || cursor.state_->owner.construct!=s.construct))return {};

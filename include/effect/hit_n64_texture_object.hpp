@@ -11,6 +11,9 @@ struct HitN64TextureObjectServices {
     // token; this is not the original function's incidental r3 return.
     std::optional<uint32_t> (*construct)(void*,const SourceIconGXCall&)=nullptr;
 };
+// Captures real state/palette decision once;globals changing while construct
+// holds cannot redirect it. Identity/reentry guards pin request/index/owner.
+// Result optional0 is executed ownership token;nullopt is unavailable.
 class HitN64TextureObjectCursor {
 public:
     HitN64TextureObjectCursor();~HitN64TextureObjectCursor();

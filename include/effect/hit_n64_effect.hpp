@@ -12,6 +12,9 @@ struct HitN64Services {
     std::optional<float> (*depth)(void*,const std::array<float,3>&)=nullptr;
     bool (*display)(void*,int32_t,int32_t,uint32_t,uint32_t,float)=nullptr;
 };
+// One source invocation with exact input FLOAT BITS/provider identity. Reentry
+// and reset while invoking are refused. Reset/disposal drops continuation only;
+// actual parent owns partial-record allocation/cancellation/deletion lifetime.
 class HitN64EntryCursor {
 public:
     HitN64EntryCursor();~HitN64EntryCursor();
@@ -22,6 +25,8 @@ private:
     struct State;std::unique_ptr<State> state_;bool invoking_=false;
     friend std::optional<uint32_t> resumeHitN64Entry(int32_t,int32_t,const std::array<float,3>&,float,const HitN64Services&,HitN64EntryCursor&);
 };
+// One completed Main call advances simulation once. A held queue/delete child
+// resumes without repeating age/lifetime writes;success resets for next visit.
 class HitN64MainCursor {
 public:
     HitN64MainCursor();~HitN64MainCursor();

@@ -2,6 +2,9 @@
 
 namespace ttyd {
 namespace {
+// Original global tokens:manager15ee0,GP15fd0,prefix table15ee4,DVD root
+//1f494,format2c1f20,N64 state-pointer419a40. Manager count0/array4,cache10/
+// selector14;record stride40 decimal(28hex),flags0/context4/payloadc/callback10.
 constexpr uint32_t Manager = 0x80415ee0, GP = 0x80415fd0;
 constexpr uint32_t Prefixes = 0x80415ee4, Root = 0x8041f494,
                    Format = 0x802c1f20, State64 = 0x80419a40;
@@ -10,6 +13,8 @@ bool same(const EventMemoryServices &a, const EventMemoryServices &b) {
   return a.user == b.user && a.word == b.word &&
          a.storeWord == b.storeWord && a.storeByte == b.storeByte;
 }
+// Validate memory primitive/user identity on resume;external callback stability
+// is caller-owned. No raw read/store failure channel or rollback is invented.
 bool begin(const EffectPoolServices &s, EffectPoolCursorOwner &c) {
   if (!s.memory.word || !s.memory.storeWord)
     return false;
@@ -21,6 +26,9 @@ bool begin(const EffectPoolServices &s, EffectPoolCursorOwner &c) {
   return true;
 }
 } // namespace
+// Ascending EXACT-zero search. Signed nonpositive count writes base;full pool
+// writes one-past source record. Valid mapped storage/capacity is provider policy.
+// Stamp normalized GP context AFTER flags1;clear only14/8/c/10/byte18,not row.
 std::optional<uint32_t> effectPoolEntry(const EffectPoolServices &s) {
   const auto &m = s.memory;
   if (!m.word || !m.storeWord || !m.storeByte)
@@ -44,6 +52,9 @@ std::optional<uint32_t> effectPoolEntry(const EffectPoolServices &s) {
   m.storeByte(m.user, record + 0x18, 0);
   return record;
 }
+// Capture signed count/array once. Each reached slot freshly reads GP context,
+// exact record0/1 context,active1,callback. A later-slot allocation may run in
+// this same scan;earlier-slot allocation waits. Callback return is ignored.
 bool resumeEffectMain(const EffectPoolServices &s, EffectMainCursor &c) {
   if (!begin(s, c))
     return false;
@@ -86,6 +97,9 @@ bool resumeEffectMain(const EffectPoolServices &s, EffectMainCursor &c) {
         return false;
       next();
       break;
+    // Cache tail uses fresh manager/GP after traversal. Free old handle first,
+    // then clear CURRENT manager cache. Async and sync independently reload
+    // selector/prefix;wrapping selector<<2 is not a checked language enum.
     case 3: {
       const auto manager = get(Manager);
       const auto gp = get(GP);
@@ -109,6 +123,9 @@ bool resumeEffectMain(const EffectPoolServices &s, EffectMainCursor &c) {
       c.phase = 6;
       break;
     }
+    // fileAsync type4:NULLopt is unavailable;executed0 finishes without tag.
+    // ANY nonzero(including-1) proceeds to sync allocate. Sync handle0 is also
+    // an executed result and publishes before fresh manager/GP selector tag.
     case 6: {
       if (!s.fileAsync)
         return false;
@@ -143,6 +160,10 @@ bool resumeEffectMain(const EffectPoolServices &s, EffectMainCursor &c) {
       return false;
     }
 }
+// Publish count512,heap0 allocate count*40,then recapture manager/count/base
+// for clear. Reset cache10=0/selector14=ffffffff and unresolved words8/c=0.
+// N64 state clear8 captures pointer before child;final +4 zero reloads pointer.
+// No allocation-null repair or implicit per-effect initialization added.
 bool resumeEffectInit(const EffectPoolServices &s, EffectInitCursor &c) {
   if (!begin(s, c))
     return false;
@@ -189,6 +210,10 @@ bool resumeEffectInit(const EffectPoolServices &s, EffectInitCursor &c) {
       return false;
     }
 }
+// Raw context word is exact,not normalized. Capture signed count/array once;
+// active1/context-match frees payload on heap3 then clears ONLY record flags.
+// No effect callback,pose/map/audio cleanup,queue cancellation or cache free:
+// those remain separate owners,not an inferred per-effect destructor.
 bool resumeEffectAutoRelease(uint32_t context, const EffectPoolServices &s,
                              EffectReleaseCursor &c) {
   if (c.active && c.context != context)
