@@ -16629,3 +16629,64 @@ remaining changed battle code and tools. Whole-file Trio numeric coverage still
 needs synthesis. Inventory tracks only source/include C++/header/PICA hashes;
 matching snapshots are a review aid,not semantic completeness. Untracked additions
 and tools require separate audit. Broad documentation/remake goals stay active.
+
+
+## 2026-10-15 — Original shared-cache async animation preload
+
+Ported complete retained fileAsync80189d44, literal DVDMgrReadAsync request
+stores and dvdReadDoneCallBack8018a1a0. Source cache hits acquire no references;
+new DVD preloads publish state3/count0/pending and source0, with original list,
+rounding, close/allocation/open/submit and completion ordering. Actual native
+cache now owns distinct backed pending DVD records and a cooperative ROMFS
+completion pump over unchanged original bytes. Holder H04 size metadata makes
+actual AG2TG scan possible; ordinary pending acquisition holds without spinning
+and can resume after the same worker finishes. Actual references are acquired
+separately by later original Entry, not by preload.
+
+Added full retained animGroupBaseAsync parent and same-VM/cache binding. Mode,
+actual W100 holder/table32-byte lanes, first match, unconditional MODEL/TPL
+requests and raw return precedence follow source. Exact backing admission
+rejects foreign cache identity. Original empty SDA2 literal is mapped from its
+verified four zero bytes; original formats/prefix are read from cold image.
+Native bounded string adapters/cooperative IO policy remain explicit.
+
+Validation uses accepted field-npc-creation source plus this exact scope;
+concurrent unrelated source/staging/commits are preserved and excluded.
+make test exits0: 496/496 C++ (122.47s), 224/224 Python (50.943s), zero skipped.
+Focused final 3/3 tests pass. The ARM build exposed a fixture declaration using
+one auto declaration for uint32_t and unsigned, distinct ARM types; splitting
+the declarations fixes compilation with unchanged assertions. The corrected
+host fixture was rebuilt before its full-suite visit and passed focused checks.
+Final native make all -j6 -o assets-ready SOUNDTRACK=gamecube and private ARM
+build exit0. Source/header dependency paths are normalized to frozen inputs;
+86 changed-dependency native objects rebuilt, preventing stale layout reuse.
+Existing compiler/Pillow warnings remain. Source verifier reopens ISO read-only
+and matches 13 complete bodies, 294 instruction anchors and 2 data spans.
+
+Fresh isolated normal50s, ARM70s and checkpoint70s-warmup Azahar runs exit0.
+Eight strict ARM markers pass:request/completion/sourceZero/queue/sameOwner/
+ag2tg/allHarbor/poseRefs. Actual original Crump pending MODEL/TPL are separate
+backed requests; synchronous acquisition safely holds while the worker finishes.
+Five original harbor models preload from real AG2TG and take original pose
+Entries over the same holders, with first references acquired only by Entry.
+Private probe compiles the three exact tracked fixtures with explicit romfs:
+roots; 528 final production objects reused except main. All other source/include
+and ROMFS match. Normal opening and Rogueport idle/right/left/idle captures
+pass; checkpoint has no active partner, so no Goombella walk-parity claim.
+Final production binary unchanged throughout captures; user profiles/saves
+untouched. Earlier ARM compile log is diagnostic, not an accepted pass.
+
+Audited 4261 source files, 2192 runtime products, 1474 private
+inputs and 1 reference input. Products/private bytes are unchanged;
+no conversion/import/ISO write. Asset preparation skipped after unchanged
+accepted-product checks. Frozen doc links: 1557 Markdown, zero broken. Exact source
+journals, source evidence, failed/final logs, dependency/object hashes, binaries
+and captures: artifacts/npc-async-cache-validation-manifest.json.
+
+Next: original EVT Entry/SetTribe binding with actual shared argument/name/tribe
+storage and forced source SetAnim; retained invocation and IO scheduling before
+Game's animation clock gate; exact four-actor child, complete GOR00 tagged setup
+and original RNG. Continue full field/battle/result/teardown/return/postbattle
+and original story/dialogue. This prerequisite is not a playable prologue,
+original DVD/thread timing, Main/GPU/visibility completion, physical hardware,
+performance or matched visual/audio parity claim.

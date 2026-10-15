@@ -5484,3 +5484,21 @@ capture/publication audits are in ignored npc-node-push-boundary-evidence.txt
 and complete ordered SDK/literal/dispatch mapping npc-node-push-ordered-evidence.txt;
 these static deductions are not original execution/timing measurements. EVT-01
 remains OPEN until its complete runtime contract is fulfilled.
+
+
+## 2026-10-15 — Native shared-cache async prerequisite
+
+Added complete retained fileAsync, DVDMgrReadAsync request stores and original
+completion cursor; actual NativeFileCache queues distinct backed requests over
+its existing pool/holders/MODEL/TPL bytes. New preload source0/state3/count0,
+completion relocation and separate later acquisition references are preserved.
+Original animGroupBaseAsync now has a retained source parent and actual-VM
+binding reading W100 holder H04/AG2TG32-byte lanes, with unconditional texture
+request and source-result precedence. Native worker budget is explicit ROMFS
+policy, not DVD timing. [Contract](../behavior/file/NATIVE_SHARED_CACHE_ASYNC_PRELOAD.md).
+
+This closes the native shared-cache prerequisite, not the EVT integration.
+Next bind evt_npc_entry/evt_npc_set_tribe, forced source SetAnim, same-VM source
+arguments/names/tribes and actual original four-actor child; integrate IO pump
+and retained invocation resumption before Game's animation clock gate. Complete
+GOR00 tags/setup and source RNG, GPU/audio/battle/result/return remain open.

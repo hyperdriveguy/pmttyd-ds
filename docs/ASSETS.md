@@ -3904,3 +3904,18 @@ Comments/guides alter no executable tokens,source numeric policy,assets/dialogue
 story/music/SFX or licensing. Original Nintendo/Intelligent Systems rights
 retained; provenance grants no new license/distribution rights. No ISO/extracted
 original/compiled product committed. Editable assets/manifest.json preserved.
+
+
+## 2026-10-15 — Original shared-cache animation preload
+
+No new extraction/conversion/runtime product. Existing original MODEL/TPL/AG2TG
+bytes from read-only G8ME01.iso are shared by native async preload and later
+pose acquisition; compiled/private products stay ignored and byte-identical.
+Native smart holder H04 supplies rounded backed payload size. Exact original
+US SDA2 literal8041fb30 is four zero bytes (verified direct-entry data.json);
+the binding maps that source constant in previously unmapped VM storage or
+validates an existing zero word. No detached AG2TG lookup or generated art.
+Per-file DVD request addresses/backing and cooperative ROMFS byte budget are
+native platform policy, not original DVD scheduling/latency. Original asset
+rights remain with their respective holders; no ISO/assets redistributed.
+See [shared-cache preload](behavior/file/NATIVE_SHARED_CACHE_ASYNC_PRELOAD.md).

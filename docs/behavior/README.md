@@ -1441,3 +1441,5 @@ Original battle menu native resource/queue owners:
 
 
 - [Shared process GP language alias](event/SHARED_PROCESS_GP_LANGUAGE_ALIAS.md).
+
+- [Native shared-cache async preload](file/NATIVE_SHARED_CACHE_ASYNC_PRELOAD.md): original async request/completion and AG2TG parent over actual file holders, native queued ROMFS completion and remaining event integration.

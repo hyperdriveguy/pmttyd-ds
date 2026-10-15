@@ -1,6 +1,7 @@
 #pragma once
 #include "event_address_space.hpp"
 #include "file_acquisition.hpp"
+#include "file_async.hpp"
 #include "file_texture_relocation.hpp"
 #include <array>
 #include <memory>
@@ -28,6 +29,16 @@ public:
  // completed source failure. New-file type must match staged bytes, but actual
  // source filename-only hits may reuse them for a different requested type.
  std::optional<uint32_t> acquire(const std::string&,uint32_t type);
+ // Original async request over this same file pool. Empty means native hold;
+ // engaged0 is source polling, not acquisition. Completion callbacks currently
+ // admit only0; unknown function providers must be bound before broader use.
+ std::optional<uint32_t> request(const std::string&,uint32_t type,uint32_t completion=0);
+ // Cooperative staged-ROMFS worker policy. Copies at most byteBudget actual
+ // bytes across queued files, then runs original completion/relocation/close.
+ // This is an explicit IO boundary, not GameCube DVD/thread timing.
+ bool advanceAsync(uint32_t byteBudget=4096);
+ bool asyncPending() const;
+ bool aliases(EventAddressSpace&) const; // Exact backed owner identity, not equal bytes.
  bool release(uint32_t entry);
  bool archiveType(uint32_t);
  bool contains(const std::string&,uint32_t) const;
@@ -46,6 +57,8 @@ private:
   std::array<uint8_t,12> header{};
   std::vector<uint8_t> original,payload;
   FileTextureRelocationCursor relocation;
+  uint32_t disc=0,loaded=0;std::array<uint8_t,0xa0> discState{};
+  bool queued=false,readDone=false;FileAsyncCompletionCursor completion;
   // Exact original-byte equality was proved for this immutable draw identity.
   // Weak ownership avoids extending resource life or caching live geometry state.
   mutable std::weak_ptr<const class AnimationDrawResource> geometryIdentity;
@@ -66,13 +79,14 @@ private:
  uint16_t discFlags_=0;
  bool frozen_=false;
  void* yieldUser_=nullptr;bool (*yield_)(void*)=nullptr;
- FileAcquisitionCursor acquisition_;
+ FileAcquisitionCursor acquisition_;FileAsyncCursor async_;bool servicing_=false;
  uint8_t* span(uint32_t,unsigned);
  uint8_t byte(uint32_t);void byte(uint32_t,uint8_t);
  uint16_t half(uint32_t);void half(uint32_t,uint16_t);
  uint32_t word(uint32_t);void word(uint32_t,uint32_t);
  EventMemoryServices memory();
  FileAcquisitionServices services();
+ FileAsyncServices asyncServices();
 };// Stages complete unchanged original model/TPL/auxiliary files from accepted
 // local packs, deduplicated by exact source filename. No acquisition/startup
 // acknowledgement; call before binding this same process cache to any VM.

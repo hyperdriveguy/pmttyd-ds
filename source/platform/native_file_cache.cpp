@@ -89,8 +89,8 @@ bool NativeFileCache::stage(std::vector<Source> sources){
   const auto index=files_.size()+prepared.size();const uint32_t rounded=(uint32_t(bytes.size())+31)&~31u;
   const uint32_t address=index?next:FirstPayload,limit=index?PayloadLimit:Headers;
   if(uint64_t(address)+rounded>limit)return false;
-  auto f=std::make_unique<File>();f->path=path;f->type=source.type;f->address=address;f->headerAddress=Headers+uint32_t(index)*32;
-  f->original=std::move(source.original);f->payload.resize(rounded);for(unsigned i=0;i<4;++i)f->header[i]=uint8_t(address>>(24-8*i));
+  auto f=std::make_unique<File>();f->path=path;f->type=source.type;f->address=address;f->headerAddress=Headers+uint32_t(index)*32;f->disc=Disc+uint32_t(index)*0xa0;
+  f->original=std::move(source.original);f->payload.resize(rounded);for(unsigned i=0;i<4;++i){f->header[i]=uint8_t(address>>(24-8*i));f->header[4+i]=uint8_t(rounded>>(24-8*i));}
   if(index)next=address+rounded;
   prepared.push_back(std::move(f));
  }
@@ -102,7 +102,7 @@ bool NativeFileCache::stage(std::vector<Source> sources){
 uint8_t* NativeFileCache::span(uint32_t a,unsigned n){
  const auto at=[&](uint32_t base,uint8_t* data,size_t size)->uint8_t*{return a>=base && uint64_t(a)+n<=uint64_t(base)+size?data+(a-base):nullptr;};
  for(auto r:{std::make_pair(Global,std::make_pair(global_.data(),global_.size())),std::make_pair(Manager,std::make_pair(manager_.data(),manager_.size())),std::make_pair(Name,std::make_pair(name_.data(),name_.size())),std::make_pair(Pool,std::make_pair(pool_.data(),pool_.size()))})if(auto* p=at(r.first,r.second.first,r.second.second))return p;
- for(auto& f:files_){if(auto* p=at(f->headerAddress,f->header.data(),f->header.size()))return p;if(auto* p=at(f->address,f->payload.data(),f->payload.size()))return p;}return nullptr;
+ for(auto& f:files_){if(auto* p=at(f->disc,f->discState.data(),f->discState.size()))return p;if(auto* p=at(f->headerAddress,f->header.data(),f->header.size()))return p;if(auto* p=at(f->address,f->payload.data(),f->payload.size()))return p;}return nullptr;
 }
 uint8_t NativeFileCache::byte(uint32_t a){auto* p=span(a,1);assert(p);return *p;}
 void NativeFileCache::byte(uint32_t a,uint8_t v){auto* p=span(a,1);assert(p);*p=v;}
@@ -126,7 +126,7 @@ bool NativeFileCache::yieldProvider(void* user,bool (*yield)(void*)){
 bool NativeFileCache::bind(EventAddressSpace& vm){
  struct View{uint32_t a;uint8_t* data;uint32_t n;};
  std::vector<View> views={{Global,global_.data(),4},{Manager,manager_.data(),24},{Pool,pool_.data(),uint32_t(pool_.size())},{Name,name_.data(),uint32_t(name_.size())}};
- for(auto& f:files_){views.push_back({f->headerAddress,f->header.data(),12});views.push_back({f->address,f->payload.data(),uint32_t(f->payload.size())});}
+ for(auto& f:files_){views.push_back({f->disc,f->discState.data(),uint32_t(f->discState.size())});views.push_back({f->headerAddress,f->header.data(),12});views.push_back({f->address,f->payload.data(),uint32_t(f->payload.size())});}
  unsigned mapped=0;for(auto v:views){if(!vm.registerExternalRam(v.a,v.data,v.n)){for(unsigned i=0;i<mapped;++i)vm.unregisterExternalRam(views[i].a);return false;}++mapped;}
  frozen_=true;return true;
 }
@@ -141,14 +141,14 @@ FileAcquisitionServices NativeFileCache::services(){
  s.copy=[](void* p,uint32_t a,uint32_t b){auto& c=*static_cast<NativeFileCache*>(p);for(;;++a,++b){auto v=c.byte(b);c.byte(a,v);if(!v)return true;}};
  // Pending reuse needs the explicit configured yield provider. Missing
  // yield or garbage collection remains unavailable; it is not a default success.
- s.yield=[](void* p){auto& c=*static_cast<NativeFileCache*>(p);return c.yield_ && c.yield_(c.yieldUser_);};
+ s.yield=[](void* p){auto& c=*static_cast<NativeFileCache*>(p);return c.yield_ && c.yield_(c.yieldUser_) && (!c.current_ || !c.current_->entry || !c.word(c.current_->entry+0xac));};
  // Explicit native catalog: archives are empty, staged ROMFS replaces disc.
  s.archive=[](void*,uint32_t,uint32_t,uint32_t)->std::optional<uint32_t>{return 0;};
- s.open=[](void* p,uint32_t,int32_t mode,uint32_t flags)->std::optional<uint32_t>{auto& c=*static_cast<NativeFileCache*>(p);if(mode!=2 || flags || !c.current_ || c.current_->entry)return {};c.discFlags_=0;return Disc;};
- s.length=[](void* p,uint32_t d)->std::optional<uint32_t>{auto& c=*static_cast<NativeFileCache*>(p);return d==Disc && c.current_?std::optional<uint32_t>(uint32_t(c.current_->original.size())):std::nullopt;};
+ s.open=[](void* p,uint32_t,int32_t mode,uint32_t flags)->std::optional<uint32_t>{auto& c=*static_cast<NativeFileCache*>(p);if(mode!=2 || flags || !c.current_ || c.current_->entry)return {};c.discFlags_=0;c.half(c.current_->disc+0x90,0);return c.current_->disc;};
+ s.length=[](void* p,uint32_t d)->std::optional<uint32_t>{auto& c=*static_cast<NativeFileCache*>(p);return c.current_ && d==c.current_->disc?std::optional<uint32_t>(uint32_t(c.current_->original.size())):std::nullopt;};
  s.allocate=[](void* p,uint32_t n,uint32_t flags)->std::optional<uint32_t>{auto& c=*static_cast<NativeFileCache*>(p);return c.current_ && n==c.current_->payload.size() && !flags?std::optional<uint32_t>(c.current_->headerAddress):std::nullopt;};
- s.read=[](void* p,uint32_t d,uint32_t to,uint32_t n,uint32_t offset)->std::optional<uint32_t>{auto& c=*static_cast<NativeFileCache*>(p);auto* f=c.current_;if(d!=Disc || !f || to!=f->address || n!=f->payload.size() || offset)return {};std::copy(f->original.begin(),f->original.end(),f->payload.begin());return uint32_t(f->original.size());};
- s.close=[](void* p,uint32_t d){auto& c=*static_cast<NativeFileCache*>(p);if(d!=Disc)return false;c.discFlags_|=8;return true;};
+ s.read=[](void* p,uint32_t d,uint32_t to,uint32_t n,uint32_t offset)->std::optional<uint32_t>{auto& c=*static_cast<NativeFileCache*>(p);auto* f=c.current_;if(!f || d!=f->disc || to!=f->address || n!=f->payload.size() || offset)return {};std::copy(f->original.begin(),f->original.end(),f->payload.begin());return uint32_t(f->original.size());};
+ s.close=[](void* p,uint32_t d){auto& c=*static_cast<NativeFileCache*>(p);if(!c.current_ || d!=c.current_->disc)return false;c.discFlags_|=8;c.half(d+0x90,uint16_t(c.half(d+0x90)|8));return true;};
  s.relocate=[](void* p,uint32_t payload,uint32_t type){auto& c=*static_cast<NativeFileCache*>(p);if(!c.current_ || payload!=c.current_->address || type!=c.current_->type)return false;
   if(type==0)return true;
   if(type==5){setPackedFileModelPointers(payload,c.memory());return true;}
@@ -160,7 +160,7 @@ FileAcquisitionServices NativeFileCache::services(){
 // if the first admitted acquisition holds. Initial staged type guards only new
 // loads; source reuse ignores requested type. c.type still pins held requests.
 std::optional<uint32_t> NativeFileCache::acquire(const std::string& path,uint32_t type){
- if(word(Global)!=Manager)return {};
+ if(servicing_ || async_.phase || word(Global)!=Manager)return {};
  if(!acquisition_.phase){
   File* file=nullptr;for(auto& f:files_)if(f->path==path){file=f.get();break;}
   // Bound native new-file domain. Cached source reuse still ignores type.
@@ -170,6 +170,55 @@ std::optional<uint32_t> NativeFileCache::acquire(const std::string& path,uint32_
  uint32_t result=0;if(!acquirePackedFile(Name,type,services(),acquisition_,result))return {};
  if(result)current_->entry=result;
  current_=nullptr;return result;
+}
+bool NativeFileCache::aliases(EventAddressSpace& memory) const{
+ return memory.withRawRamAccess([&](EventAddressSpace::RawRamAccess& raw){
+  if(!raw.aliases(Global,global_.data(),4) || !raw.aliases(Manager,manager_.data(),24) || !raw.aliases(Name,name_.data(),uint32_t(name_.size())) || !raw.aliases(Pool,pool_.data(),uint32_t(pool_.size())))return false;
+  for(const auto& f:files_)if(!raw.aliases(f->disc,f->discState.data(),uint32_t(f->discState.size())) || !raw.aliases(f->headerAddress,f->header.data(),12) || !raw.aliases(f->address,f->payload.data(),uint32_t(f->payload.size())))return false;
+  return true;
+ });
+}
+FileAsyncServices NativeFileCache::asyncServices(){
+ FileAsyncServices s;s.file=services();
+ s.submit=[](void* p,uint32_t d,uint32_t to,uint32_t n,uint32_t off,uint32_t callback){
+  auto& c=*static_cast<NativeFileCache*>(p);auto* f=c.current_;
+  if(!f || d!=f->disc || to!=f->address || n!=f->payload.size() || off || callback!=0x8018a1a0 || f->queued)return false;
+  submitPackedDvdRead(d,to,n,off,callback,c.memory());
+  f->entry=c.async_.entry;f->loaded=0;f->readDone=false;f->queued=true;return true;
+ };
+ return s;
+}
+std::optional<uint32_t> NativeFileCache::request(const std::string& path,uint32_t type,uint32_t completion){
+ if(servicing_ || acquisition_.phase || word(Global)!=Manager || completion)return {};
+ if(!async_.phase){
+  File* file=nullptr;for(auto& f:files_)if(f->path==path){file=f.get();break;}
+  // Missing native catalog entries are unsupported; never fabricate source-1.
+  if(!file || (!file->entry && file->type!=type))return {};
+  current_=file;std::copy(path.begin(),path.end(),name_.begin());name_[path.size()]=0;frozen_=true;
+ }else if(!current_ || current_->path!=path)return {};
+ uint32_t result=0;if(!requestPackedFile(Name,type,completion,asyncServices(),async_,result))return {};
+ if(result && result!=0xffffffff)current_->entry=result;
+ current_=nullptr;return result;
+}
+bool NativeFileCache::asyncPending() const{for(const auto& f:files_)if(f->queued)return true;return false;}
+bool NativeFileCache::advanceAsync(uint32_t budget){
+ if(servicing_ || async_.phase || word(Global)!=Manager)return false;
+ // One native call serializes worker effects with request/acquisition visits.
+ // An _fileAlloc pending hold may coexist: its current_ is restored unchanged.
+ struct Borrow {NativeFileCache& c;File* previous;Borrow(NativeFileCache& c):c(c),previous(c.current_){c.servicing_=true;}~Borrow(){c.current_=previous;c.servicing_=false;}} borrow(*this);
+ for(auto& owned:files_){auto& f=*owned;if(!f.queued)continue;current_=&f;
+  if(!f.readDone){
+   const uint32_t n=std::min<uint32_t>(budget,uint32_t(f.original.size())-f.loaded);
+   std::copy_n(f.original.begin()+f.loaded,n,f.payload.begin()+f.loaded);f.loaded+=n;budget-=n;
+   if(f.loaded!=f.original.size())continue;
+   f.readDone=true;
+  }
+  // Actual source callback scans the same used list, clears pending, relocates
+  // the actual holder payload, closes retained D and checks live user callback.
+  if(!completePackedFile(uint32_t(f.original.size()),f.disc+0x40,asyncServices(),f.completion))return false;
+  f.queued=false;
+ }
+ return !asyncPending();
 }
 // Native entry-range/alignment admission precedes actual fileFree. A true
 // return acknowledges the leaf (including its no-op cases), not destruction or

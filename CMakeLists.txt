@@ -2744,3 +2744,17 @@ add_executable(event_gp_language_alias_tests tests/event_gp_language_alias_tests
 target_link_libraries(event_gp_language_alias_tests PRIVATE ttyd_core)
 add_test(NAME event_gp_language_alias COMMAND event_gp_language_alias_tests)
 set_tests_properties(event_gp_language_alias PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Original async file request/completion and native shared-cache preload.
+target_sources(ttyd_core PRIVATE source/platform/file_async.cpp)
+add_executable(file_async_tests tests/file_async_tests.cpp)
+target_link_libraries(file_async_tests PRIVATE ttyd_core)
+add_test(NAME file_async COMMAND file_async_tests)
+add_executable(native_file_async_tests tests/native_file_async_tests.cpp)
+target_link_libraries(native_file_async_tests PRIVATE ttyd_core)
+add_test(NAME native_file_async COMMAND native_file_async_tests)
+set_tests_properties(native_file_async PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+target_sources(ttyd_core PRIVATE source/display/animation_group_request.cpp source/display/animation_group_request_binding.cpp)
+add_executable(animation_group_request_tests tests/animation_group_request_tests.cpp)
+target_link_libraries(animation_group_request_tests PRIVATE ttyd_core)
+add_test(NAME animation_group_request COMMAND animation_group_request_tests)
