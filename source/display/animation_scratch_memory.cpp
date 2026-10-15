@@ -23,6 +23,10 @@ struct Memory {
 struct View {
  Memory mem;NativeFileCache& files;const BattlePose& p;uint32_t model=0,timeline=0,work=0;
  std::array<uint32_t,5> counts{},cache{},output{};
+ // Five channel ordinals:positions,normals,visibility,nodes,texture rows.
+ // Widths are output bytes; compressed strides differ. All offsets below are
+ // hex except pairOffsets/strides values,which are decimal byte counts.
+ // Visibility/texture cache=output by source design; other channels separate.
  static constexpr uint32_t widths[5]={12,12,1,4,24};
  static constexpr uint32_t countOffsets[5]={0xf0,0xf8,0x13c,0x140,0x12c};
  static constexpr uint32_t baseOffsets[5]={0x154,0x15c,0x1a0,0x1a4,0x190};
@@ -33,6 +37,9 @@ struct View {
  static constexpr uint32_t capacityOffsets[5]={0xc,0x10,0x18,0x1c,0x14};
  static constexpr uint32_t strides[5]={4,4,2,4,12};
  bool file(uint32_t a,uint64_t n){return n==0 || (n<=0xffffffff && uint64_t(a)+n<=0x100000000ULL && files.ownsPayload(a,uint32_t(n)) && mem.backed(a,uint32_t(n)));}
+ // Finite native admission:source MODEL/descriptor/timeline and owned file
+ // extents must match original static geometry. W.e8 ring output and linked
+ // P90!=-1 are excluded. This is not an original Main malformed-data guard.
  bool init(){
   if(!p.resource || !p.resource->draw || !p.resource->bank || p.word(0x10)>=64 || p.word(0x14)>=p.resource->names.size())return false;
   work=mem.word(0x80415dc0);const uint32_t models=mem.word(work),record=models+16*p.word(0x10);
@@ -41,6 +48,9 @@ struct View {
   const uint32_t directory=mem.word(model+0x1ac);if(!file(directory+64*p.word(0x14),64))return false;
   timeline=mem.word(directory+64*p.word(0x14)+0x3c);
   if(!timeline || !file(timeline,0x44))return false;
+  // W104 scratch base/W108 allocated end within180000hex bytes. Up to8
+  // guest ranges admit two position/normal/node buffers plus one each for
+  // visibility/texture; nonempty non-visibility buffers require4-byte alignment.
   const uint32_t scratch=mem.word(work+0x104),end=mem.word(work+0x108);
   if(uint64_t(scratch)+0x180000>0xffffffff || end<scratch || end>scratch+0x180000)return false;
   struct Range{uint32_t begin,end;};std::array<Range,8> ranges{};unsigned rangeCount=0;
@@ -76,6 +86,9 @@ struct View {
  };
  return decode(target.shape,output) && (!includeCache || decode(target.cache,cache));
  }
+ // Sparse record byte0 is an unsigned relative index delta. Preflight all
+ // accessed rows/targets. Cubic outgoing angle outside(-89,89) skips; when
+ // reached,incoming must be-89..88 so live tangent indices stay0..177.
  bool key(uint32_t key,unsigned c,bool cubic=false){
   const uint32_t offset=mem.word(key+pairOffsets[c]),n=mem.word(key+pairOffsets[c]+4);
   if(!n)return mem.ok;
@@ -88,6 +101,10 @@ struct View {
   }
   return mem.ok;
  }
+ // Source delta units are1/16. XYZ uses signed8 FMA; visibility/texture
+ // selector additions wrap8. Texture changes byte0 and floats4/8 only;
+ // remaining padding/scale/rotation fields survive. Node cubic uses retained
+ // live tangent bytes and explicit float rounding/FMA boundaries.
  void apply(uint32_t key,unsigned c,uint32_t target,float scale,bool fractional,float fraction,float duration,const AnimationTangentTable* tangents){
   const uint32_t offset=mem.word(key+pairOffsets[c]),n=mem.word(key+pairOffsets[c]+4);
   if(!n)return;
@@ -121,6 +138,9 @@ std::shared_ptr<AnimationScratchMemory> AnimationScratchMemory::bind(std::shared
 }
 AnimationScratchMemory::~AnimationScratchMemory(){retire();}
 bool AnimationScratchMemory::current() const{auto pool=pool_.lock();return active_ && pool && arrays_.aliases(*pool,memory_);}
+// Snapshot only this exact weak control block,pose generation and live layout.
+// Failure leaves an unavailable weak source view; never silently sample the
+// converted bank instead. Last-owner destruction cannot lock its own weak_ptr.
 void AnimationScratchMemory::retire(){
  if(!active_)return;
  const auto identity=weak_from_this(); // Control-block identity survives last-owner destruction and prevents address reuse.
@@ -136,6 +156,9 @@ std::shared_ptr<AnimationScratchMemory> AnimationScratchPose::owner(const Battle
  auto pool=o->pool_.lock();const auto* live=pool?pool->pose(int32_t(handle_)):nullptr;
  return live && live->nativeGeneration==generation_ && live->resource==p.resource?o:nullptr;
 }
+// One synchronous raw-RAM borrow; no yielding source child occurs inside.
+// Pose time/index publications can precede failure. Scratch mutation waits
+// for dereference preflight; later checks do not roll back earlier source writes.
 bool AnimationScratchPose::evaluate(BattlePose& p,BattlePoseClock clock) const{
  auto o=owner(p);if(!o)return false;auto pool=o->pool_.lock();const auto* tangents=pool->animationTangents();if(!tangents || !pool->tangentSamplingAvailable())return false;
  return o->memory_.withRawRamAccess([&](EventAddressSpace::RawRamAccess& ram){
@@ -143,6 +166,9 @@ bool AnimationScratchPose::evaluate(BattlePose& p,BattlePoseClock clock) const{
  const uint32_t t=v.timeline,control=m.word(t+0x24),keys=m.word(t+0x28),discrete=m.word(t+0x40);
  const uint32_t nk=m.word(t+8),nv=m.word(t+0x20);
  if(!nk || nk>1024 || !nv || nv>65536 || !v.file(control,12) || !v.file(keys,44ull*nk) || !v.file(discrete,8ull*nv))return false;
+ // Native control domain:continuous keys1..1024,discrete1..65536,loop0/1
+ // and finite ordered start/end. Current caller supplies source-domain ms;
+ // elapsed converts through explicit float rounds,60Hz,/1000 and pose rate.
  const uint32_t loop=m.word(control);const float start=m.real(control+4),end=m.real(control+8);
  if(loop>1 || !std::isfinite(start) || !std::isfinite(end) || end<start || !m.ok)return false;
  // Caller supplies the same millisecond quotient domain as the source clock
@@ -161,6 +187,9 @@ bool AnimationScratchPose::evaluate(BattlePose& p,BattlePoseClock clock) const{
  float span=0;if(loop && next>=nk){next=0;p.word(0x2c,0);span=rounded(end-time);}else span=rounded(m.real(keys+44*next)-time);
  const float fraction=span==0?0:rounded(rounded(p.scalar(0x24)-time)/span);p.scalar(0x30,fraction);
  const int32_t previous=signedWord(p.word(0x3c));if(previous<-1 || !m.ok)return false;
+ // Cache predecessor-1 or backward key resets bases and replays0..current;
+ // otherwise replay crossed keys only. Same-key reversed fraction resets0.
+ // These are source cache states,not rendered frames or an elapsed catch-up cap.
  const bool reset=previous==-1 || previous>int32_t(current);const uint32_t first=reset?0:uint32_t(previous+1);
  // Preflight all dereferences before scratch writes. No waits/callbacks occur
  // inside the admitted nonalias phase, so source per-use reloads stay equivalent.
@@ -173,6 +202,9 @@ bool AnimationScratchPose::evaluate(BattlePose& p,BattlePoseClock clock) const{
   if(p.word(0x3c)==0xffffffff)p.word(0x3c,0);
  }else if(previous==int32_t(current) && p.scalar(0x40)>fraction)p.scalar(0x40,0);
  for(uint32_t i=first;i<=current;++i)for(unsigned c=0;c<5;++c)v.apply(keys+44*i,c,p.word(View::cacheOffsets[c]),.0625f,false,0,0,tangents);
+ // Continuous output channels0/1/3 copy cache then interpolate next key.
+ // Equal keys copy only; loop seam current>next deliberately retains old
+ // output. Visibility/texture already share their cumulative cache storage.
  if(current<=next)for(unsigned c:{0u,1u,3u}){
   if(v.counts[c])m.copy(p.word(View::outputOffsets[c]),p.word(View::cacheOffsets[c]),v.counts[c]*View::widths[c]);
   if(current<next)v.apply(keys+44*next,c,p.word(View::outputOffsets[c]),rounded(.0625f*fraction),true,fraction,rounded(m.real(keys+44*next)-time),tangents);
@@ -210,6 +242,9 @@ bool AnimationScratchMemory::snapshot(BattlePose& p,bool includeCache) const{
   View v{{memory_,&ram},*files_,p};return v.init() && v.snapshot(p,includeCache);
  });
 }
+// Presence of a source view is first refusal:if that view is dead/unavailable,
+// do not fall back to detached shape vectors. Fallback is only for poses that
+// have no source view at all; consumers capture current BE data at usepoint.
 std::optional<ActorVector> animationOutputVector(const BattlePose& p,bool normal,uint32_t index){if(p.sourceBuffers)return p.sourceBuffers->vector(p,normal,index);const auto& v=normal?p.shape.normals:p.shape.positions;return index<v.size()?std::optional<ActorVector>(v[index]):std::nullopt;}
 std::optional<float> animationOutputNode(const BattlePose& p,uint32_t index){if(p.sourceBuffers)return p.sourceBuffers->node(p,index);return index<p.shape.nodes.size()?std::optional<float>(p.shape.nodes[index]):std::nullopt;}
 std::optional<uint8_t> animationOutputByte(const BattlePose& p,bool texture,uint32_t index){if(p.sourceBuffers)return p.sourceBuffers->byte(p,texture,index);const auto& v=texture?p.shape.textures:p.shape.visibility;return index<v.size()?std::optional<uint8_t>(v[index]):std::nullopt;}

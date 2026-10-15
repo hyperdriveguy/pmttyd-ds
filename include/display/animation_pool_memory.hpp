@@ -9,6 +9,8 @@ class EventAddressSpace;
 // pools with a reduced count, or a substitute cold-start history.
 class AnimationPoolMemory {
 public:
+ // VM and mapping ownership outlive this scoped attachment. A second active
+ // attachment refuses; stable inactive pose backing does not imply Entry.
  static std::unique_ptr<AnimationPoolMemory> bind(std::shared_ptr<BattlePosePool>,EventAddressSpace&);
  ~AnimationPoolMemory();
  AnimationPoolMemory(const AnimationPoolMemory&)=delete;

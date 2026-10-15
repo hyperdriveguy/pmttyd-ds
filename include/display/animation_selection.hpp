@@ -11,6 +11,8 @@ struct AnimationSelectionServices {
  bool (*compare)(void*,uint32_t,uint32_t,int32_t&)=nullptr;
  bool (*divide)(void*,uint64_t,uint32_t,uint64_t&)=nullptr;
 };
+// Raw retained invocation state,not an ownership token or reentry lock.
+// Do not clear/retarget it after a false that already committed source stores.
 struct AnimationSelectionCursor {
  bool active=false;uint32_t phase=0,handle=0,selector=0,force=0;
  uint32_t work=0,pool=0,models=0,pose=0,index=0,entry=0,holder=0,model=0,count=0,selected=0,directory=0,linked=0,flags=0,mode=0,bus=0,gp=0,hi=0,lo=0,zero=0;

@@ -4,14 +4,22 @@
 #include <cassert>
 namespace ttyd {
 AnimationPoolMemory::AnimationPoolMemory(std::shared_ptr<BattlePosePool> p,EventAddressSpace& m):pool_(std::move(p)),memory_(m){}
+// Transfer the four EXISTING source RAM allocations into aliases of the same
+// typed pool bytes. Caller keeps VM/maps quiescent through bind/detach; this
+// owns neither original heap allocation nor source Entry/resource publication.
 std::unique_ptr<AnimationPoolMemory> AnimationPoolMemory::bind(std::shared_ptr<BattlePosePool> pool,EventAddressSpace& memory){
  if(!pool || pool->sourceGuard_ || !pool->cacheMetadataReady())return {};
  auto result=std::unique_ptr<AnimationPoolMemory>(new AnimationPoolMemory(std::move(pool),memory));auto& b=*result;
  auto word=[&](uint32_t a,uint32_t& v){return memory.readWord(a,v);};uint32_t count=0;
  if(!word(0x80415dc0,b.work_) || !b.work_ || !word(b.work_,b.models_) || !word(b.work_+4,count) || count!=64 || !word(b.work_+8,b.textures_) || !word(b.work_+0xc,count) || count!=64 || !word(b.work_+0x10,b.poses_) || !word(b.work_+0x14,count) || count!=256)return {};
+ // Original capacities/strides:64 models*16,64 textures*12,256 poses*170hex;
+ // W is110hex bytes. Six BE pointer/count words form the24-byte guard header.
  const uint32_t header[]={b.models_,64,b.textures_,64,b.poses_,256};
  for(unsigned i=0;i<6;++i)for(unsigned lane=0;lane<4;++lane)b.header_[4*i+lane]=uint8_t(header[i]>>(24-8*lane));
  b.spans_={{b.work_,0x110,{}},{b.models_,64*16,{}},{b.textures_,64*12,{}},{b.poses_,256*0x170,{}}};
+ // Admit nonzero nonwrapping mutually disjoint guest ranges,excluding root
+ // cell80415dc0..c4. Exact end2^32 is valid; readable aliases alone cannot
+ // satisfy the later extractRam requirement for actual owned RAM.
  for(unsigned i=0;i<b.spans_.size();++i){auto& span=b.spans_[i];const uint64_t end=uint64_t(span.address)+span.size;
   if(!span.address || end>0x100000000ULL || (span.address<0x80415dc4 && end>0x80415dc0))return {};
   for(unsigned j=0;j<i;++j)if(span.address<uint64_t(b.spans_[j].address)+b.spans_[j].size && b.spans_[j].address<end)return {};
@@ -27,6 +35,9 @@ std::unique_ptr<AnimationPoolMemory> AnimationPoolMemory::bind(std::shared_ptr<B
   if(!std::equal(b.pool_->textures_[i].state.begin(),b.pool_->textures_[i].state.end(),b.spans_[2].saved.begin()+12*i))return {};
  }
  for(unsigned i=0;i<256;++i)for(unsigned n=0;n<0x170;++n)if(b.spans_[3].saved[i*0x170+n]!=(b.pool_->poses_[i]?b.pool_->poses_[i]->state[n]:0))return {};
+ // All content equality checks precede extraction. Failure restores captured
+ // RAM without creating missing native pose objects. New object identities
+ // are prepared only after all four real RAM extractions succeed.
  unsigned extracted=0;
  for(auto& span:b.spans_){std::vector<uint8_t> bytes;if(!memory.extractRam(span.address,span.size,bytes)){
    for(unsigned i=0;i<extracted;++i){const bool restored=memory.registerRam(b.spans_[i].address,std::move(b.spans_[i].saved));assert(restored);(void)restored;}return {};}
@@ -42,6 +53,8 @@ std::unique_ptr<AnimationPoolMemory> AnimationPoolMemory::bind(std::shared_ptr<B
  for(unsigned i=0;i<64;++i)b.rows_.push_back({b.models_+16*i,16,b.pool_->models_[i].state.data()});
  for(unsigned i=0;i<64;++i)b.rows_.push_back({b.textures_+12*i,12,b.pool_->textures_[i].state.data()});
  for(unsigned i=0;i<256;++i)b.rows_.push_back({b.poses_+0x170*i,0x170,b.pool_->poses_[i]->state.data()});
+ // Commit every external row before publishing sourceGuard. Registration
+ // failure restores RAM/work and removes only newly prepared pose objects.
  unsigned mapped=0;for(const auto& row:b.rows_){if(!memory.registerExternalRam(row.address,row.bytes,row.size)){
    for(unsigned i=0;i<mapped;++i)memory.unregisterExternalRam(b.rows_[i].address);
    for(auto& span:b.spans_){const bool restored=memory.registerRam(span.address,std::move(span.saved));assert(restored);(void)restored;}
@@ -50,10 +63,16 @@ std::unique_ptr<AnimationPoolMemory> AnimationPoolMemory::bind(std::shared_ptr<B
  b.pool_->workEstablished_=true;b.active_=true;b.pool_->sourceGuardUser_=&b;b.pool_->sourceMemory_=&memory;
  b.pool_->sourceGuard_=[](const void* p){return static_cast<const AnimationPoolMemory*>(p)->matchesWork();};return result;
 }
+// Root and six pointer/count words prove layout here. Caller must still keep
+// this owner's actual external rows installed; this is not a mapping-generation
+// detector for arbitrary external unregister/replacement.
 bool AnimationPoolMemory::matchesWork() const{
  uint32_t root=0;
  return active_ && memory_.readWord(0x80415dc0,root) && root==work_ && memory_.matchesBytes(work_,header_.data(),uint32_t(header_.size()));
 }
+// Detach freezes current BE pool/work bytes into owned RAM. saved[] is NOT
+// a rewind image after successful attachment. Release the source guard before
+// replacing aliases; teardown requires the same exclusive mapping ownership.
 bool AnimationPoolMemory::detach(){
  if(!active_)return true;
  // Capture from the authoritative backing, including all changes performed

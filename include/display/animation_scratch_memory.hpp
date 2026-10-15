@@ -13,6 +13,8 @@ public:
  ~AnimationScratchMemory();
  void retire();
  bool current() const;
+ // A view pins native handle/generation and checks exact resource/owner on use.
+ // Holding this descriptor does not keep the scratch context or VM alive.
  std::shared_ptr<AnimationScratchPose> pose(unsigned handle,uint64_t generation);
 private:
  friend class AnimationScratchPose;
@@ -23,6 +25,8 @@ private:
 };
 class AnimationScratchPose {
 public:
+ // Native finite private/unlinked sampler. False may retain pose metadata
+ // stores; success still is not whole original Main/GQR/facing/ring completion.
  bool evaluate(BattlePose&,BattlePoseClock) const;
  bool snapshot(BattlePose&,bool cache=false) const;
  std::optional<ActorVector> vector(const BattlePose&,bool normal,uint32_t index) const;

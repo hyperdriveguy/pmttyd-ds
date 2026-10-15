@@ -8,6 +8,8 @@ class AnimationStartupProcess;
 class AnimationNativeSelection {
 public:
  explicit AnimationNativeSelection(AnimationStartupProcess&);
+ // Same inputs and producer ownership across calls. This sets source selection/
+ // timestamp/cache words only; it neither evaluates geometry nor publishes a draw.
  bool advance(uint32_t handle,uint32_t selector,uint32_t force,unsigned visits);
  bool pending() const{return active_;}
  uint32_t phase() const{return cursor_.phase;}

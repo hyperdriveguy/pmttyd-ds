@@ -221,3 +221,8 @@ explains cold source mappings,actual heap/FILE delivery and retained process own
 palette/header captures and the distinct Window setup/callback paths.
 [Shared font state](shared-font-state.md) explains actual color aliases, source
 start ordering and the different noise/rainbow GX reset scopes.
+
+[Animation memory ownership](animation-memory-ownership.md) explains current-byte
+pool/tangent aliases, scratch channel layouts and native sampling limits.
+[Animation selection ownership](animation-selection-ownership.md) explains signed
+selectors, source clock/reset order, visit budgets and exclusive native producers.

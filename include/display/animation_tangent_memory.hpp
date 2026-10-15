@@ -13,6 +13,8 @@ public:
  AnimationTangentMemory& operator=(const AnimationTangentMemory&)=delete;
  bool current() const;
  bool detach(); // Preserve current bytes in VM RAM and retained CPU table.
+ // Original runtime table address,not an asset pointer or newly generated
+ // fallback. Its178 words share one mutable BE backing with CPU consumers.
  static constexpr uint32_t Address=0x803d9580;
 private:
  AnimationTangentMemory(std::shared_ptr<BattlePosePool>,EventAddressSpace&);
