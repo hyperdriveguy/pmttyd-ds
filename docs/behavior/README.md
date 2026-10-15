@@ -1266,3 +1266,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Retained enemy HP source frame](display/RETAINED_ENEMY_HP_SOURCE_FRAME.md): actual queued parent→number→bar lifetimes, held frontiers and copied number colors.
 - [Native enemy HP camera bridge](display/NATIVE_ENEMY_HP_CAMERA_BRIDGE.md): actual HP callback8 admission, typed original projection and native queue-reset epochs.
 - [Ordered enemy HP publication](display/ORDERED_ENEMY_HP_PUBLICATION_AND_NATIVE_ICON_GENERATIONS.md): one immutable glyph/bar sequence, real GPU generations and whole combined native preflight. Normal scheduler activation remains separate.
+
+- [Retained original NPC display prefix](field/NATIVE_NPC_MAIN_DISPLAY_PREFIX.md): ordered camera/cull/material/depth/queue requests; shadow/separate/history remain unfinished.

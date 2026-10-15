@@ -403,3 +403,11 @@ Read-only [complete npcMain parent](../behavior/field/ORIGINAL_NPC_MAIN_PARENT_C
 ### NPC Main entry, shared pose and clock ordering
 
 [Entry composition](../behavior/field/NATIVE_NPC_MAIN_ENTRY_AND_CLOCK_COMPOSITION.md): original retained bank/count/flags, actual shared pose bytes, source timers/clocks/special-room stores and held requests. Read-only audit confirms signed traversal, captured initial8000, inactive source getter slots and unordered height admission. No documentation lock claimed; EVT-01 remains open for remaining Main movement/display/tail and real normal world/startup/performance fidelity.
+
+### 2026-10-14 — Partial EVT-01 NPC display consumer
+
+Validated [NPC display prefix](../behavior/field/NATIVE_NPC_MAIN_DISPLAY_PREFIX.md)
+source8004accc..aeac and ordered retained native material/queue composition.
+Two SDK helper identities and four unchanged constant spans pinned read-only.
+Partial delivery only: real field camera/pass/callback wiring, shadow/separate
+pose/history and whole parent completion remain open; EVT-01/OW-CAMERA-01 stay open.

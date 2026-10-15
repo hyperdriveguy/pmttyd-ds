@@ -2253,3 +2253,19 @@ fixtures independently read ISO read-only and generate into empty temporary
 destinations; native asset regeneration is deliberately skipped. Original
 Nintendo/Intelligent Systems rights remain reserved; tracking/copying grants no
 new license. No ISO, extracted original asset or compiled binary was committed.
+
+### NPC display cull/depth constants (2026-10-14)
+
+`tools/field_npc_actor_assets.py` reads G8ME01.iso read-only and pins unchanged
+DOL spans8041fcd8/4 (-1),8041fd5c/4 (-2),8041fd34/4 (2),8041fd60/8
+(5000,10000). SHA256 values are recorded in SPANS and independently matched by
+the display source audit. Existing zero8041fc7c is reused. No numeric replacement,
+resampling, geometry/lighting conversion or asset substitution. Private frozen
+RomFS contains2131 products; only door-data.json/pmevt differ from the accepted
+Mario baseline; pack152492 bytes SHA256
+98cba3c1443f1c23a7ca3bb9b38f7a06c9b705262e6b974c7b11824bc72f7fe4.
+Source helper identities are recorded in the behavior contract; no executable
+PPC is added to the pack. Nintendo/Intelligent Systems rights remain reserved;
+local extraction grants no redistribution rights. No ISO, original extracted
+asset, compiled pack or binary is committed. Exact hashes/evidence remain in
+artifacts/npc-display-assets-after.json and the validation manifest.

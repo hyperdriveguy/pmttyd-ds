@@ -11108,3 +11108,67 @@ helpers, message/story/effect, platform/file/event/runtime helpers and tools.
 Re-audit concurrent Main/stage/HP, animation/tangent and NPC integration against
 committed versions. Matching annotation hashes are not complete subsystem proof.
 Full code documentation and remake remain unfinished; goal stays active.
+
+### 2026-10-14 Original NPC display camera/cull/material/queue prefix
+
+Implemented source8004accc..8004aeac after retained Mario detection. Source-order
+fresh camera4 view/projection calls, ordered strict Z/inclusiveXY cull, force40
+reread, short-circuit color bytes, late copied color/fresh handles, single fused
+depth/clamps/negativezero, flags80/half2/state10000 bypass and opaque/xlu queue
+registration are retained across holds. Allocation-free core exposes explicit
+Shadow/SeparatePose/History frontiers, never whole Main/history/actor advancement.
+Native material leaves use actual shared AnimationPoolMemory e8/f0 including
+inactive slot255, without a source-incompatible active/resource gate. Camera,
+SDK transform and queue services require a stable producer pass/generation and
+actual lifetimes. Missing providers hold. Tests bind explicit camera/matrix
+fixtures and actual shared DisplayQueue; source NaN priority rejection is
+acknowledged without records. Normal Game wiring remains open.
+
+[Contract](behavior/field/NATIVE_NPC_MAIN_DISPLAY_PREFIX.md),
+[request](requests/EVT-01.md) and [camera boundary](requests/OW-CAMERA-01.md).
+Independent read-only source/native/test review found no actionable defect.
+Standalone warning-enabled core/queue tests pass; only existing queue formatting
+warnings remain. Four unchanged original cull/depth spans matched read-only ISO
+hashes; all2131 products audited, only door-data.json/pmevt change from accepted
+Mario baseline. Pack152492 bytes; local gor_02.s unchanged. Asset/helper rights
+and identities recorded in ASSETS/contract; no ISO/body/pack/binary committed.
+
+Validation tree b1c49f6af78d2b383826654daa6e80cc0e28c2e1 on acceptedcc0ddd2a:3724 tracked source files exact,
+zero mismatch. Full make test passes386/386 C++ (39.87s) and203/203 Python
+(31.137s), zero skipped. make all -j4 -o assets-ready SOUNDTRACK=gamecube
+passes. Existing compiler/Pillow warnings remain. Validation targets this frozen
+tree; unrelated concurrent HEAD changes were preserved and not adopted.
+Code commit 5684e780e742ae5c1d5be04992b26aaca6abddaf.
+
+Strict isolated ARM fixture PASS: entry/movement/autoPose/detection/Mario/display,
+holds/sharedMaterials/queue/frontiers. Native probe instrumentation uncommitted.
+Initial fixture compile exposed const slot writes; changed the test to actual
+VM writes. An adjacent old test needed actor flags restored after the new case.
+An initial ARM probe crashed before marker; heap-owned fixture queues resolved
+it. Host stack analysis reduced38–57KB frames to1–1.5KB, consistent with stack
+pressure but not proof of the original PC0 cause. The interrupted host build
+left one truncated, non-executable animation_pool_memory_tests binary; removed
+that generated product and reran full make test successfully. Initial/failure
+logs retained; production behavior/assertions were not weakened.
+Normal source restored/touched/rebuilt; SHA256
+f321ce264aa4e28e4fb3236dd87a4761690ce2b46c715a478bb7c6ab7087aa2b
+matches pre-probe normal. Normal40-second isolated startup capture inspected:
+original storybook, App60FPS/100%, no asset-error console. This is startup only.
+ARM disassembly retains VFP comparisons/multiply and explicit fused libm helper;
+no physical or complete field performance claim. Only isolated profiles/saves
+used. Artifacts:npc-display-validation-manifest.json, audit/assets hashes, source
+review/helper listings, full build/test logs, strict marker and captures.
+
+Still open: Shadow8004aeac, separate pose8004b080, late history8004b10c,
+final state10 clear/next actor, field tail8004b1d0 and whole Main completion.
+Actual field VM camera/pass/callback owner, Mario/sequence/Vivian/interrupt/
+collision/gravity/audio/resource/numeric producers must precede ordinary Area
+activation. Original FPSCR/GQR/seed/NaN-payload and runtime/visual parity remain
+unproven. Previous15FPS llvmpipe field/occluded-pixel assertion and asset-error
+smoke-admission gaps remain. No physical New2DSXL acceptance. Goal and requests
+remain active; this prefix is not completion of the requested remake.
+
+Next: implement source shadow and separate registrations, then late history/
+parent/tail. Bind the actual camera/pass/callback and earlier resource/interrupt
+owners before normal Area activation; repair visual/asset-error smoke admission
+and profile the actual field and hardware while retaining exact original story.

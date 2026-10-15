@@ -5037,3 +5037,12 @@ texture rows. Next migrate actual BE scratch replay/output/traversal/texture/
 fan/flush as one ownership path, including padding and captured aliases; do not
 write detached CPU buffers over source storage. Ordinary Game/provider wiring,
 source clock, renderer/release/ring/facing/link and complete prologue stay open.
+
+### 2026-10-14 NPC display prefix implementation update
+
+[Retained display prefix](../behavior/field/NATIVE_NPC_MAIN_DISPLAY_PREFIX.md)
+implements8004accc..aeac with ordered camera/view/projection, cull, shared actual
+pose material/color, depth and ordinary display registrations. Static SDK and
+callee review is delivered; native camera/pass/callback composition remains
+open. Shadow, separate pose, late history, parent/tail completion and normal
+Area activation are still mandatory. No whole-Main or rendering closure.

@@ -193,3 +193,13 @@ is f7, captured as f22 at8000b798, distinct from integer r7. Added original
 capture pin; manager manifest now399 anchors. Nine source checks, metadata
 assertions, capture pin, link audit/scoped diff passed. Docs only; no make
 rerun or raw assets committed. Parent remains OPEN.
+
+### 2026-10-14 NPC camera consumer boundary
+
+The [NPC display prefix](../behavior/field/NATIVE_NPC_MAIN_DISPLAY_PREFIX.md)
+requests camera4 separately for view and projection, retaining the SDK local
+point and homogeneous depth. Actual field VM camera aliases and a producer pass
+that retains queue generation/lifetimes through holds remain open. Existing
+battle callback camera admission cannot substitute for ordinary field Main.
+Static source/helper audit is complete; native consumer fixtures do not answer
+room framing or original visual/runtime tracing.
