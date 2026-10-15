@@ -1,0 +1,24 @@
+; HitN64 original two independently transformed UV sets, whole-image repeat.
+; v0 source-view XYZ; v1 native-oriented UV0; v2 UV1; v3 GX register0 RGBA.
+.fvec transform[4]
+.constf constants(0.0, 1.0, 0.0, 0.0)
+.out outpos position
+.out outtc0 texcoord0
+.out outtc1 texcoord1
+.out outcolor color
+.alias position v0
+.alias texcoord0 v1
+.alias texcoord1 v2
+.alias color v3
+.proc main
+    mov r0.xyz, position
+    mov r0.w, constants.y
+    dp4 outpos.x, transform[0], r0
+    dp4 outpos.y, transform[1], r0
+    dp4 outpos.z, transform[2], r0
+    dp4 outpos.w, transform[3], r0
+    mov outtc0, texcoord0
+    mov outtc1, texcoord1
+    mov outcolor, color
+    end
+.end

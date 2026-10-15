@@ -1,5 +1,6 @@
 #include "battle_menu_audience_native.hpp"
 #include "battle_audience_item_on.hpp"
+#include "battle_audience_item_on_native.hpp"
 #include "battle_weapon_menu_main.hpp"
 #include <cassert>
 #include <functional>
@@ -22,8 +23,8 @@ struct Fixture {
  uint32_t raw(uint32_t a)const{uint32_t n=0;for(unsigned j=0;j<4;++j)n=n<<8|byte(a+j);return n;}
  void seed(uint32_t a,uint32_t n){for(unsigned j=0;j<4;++j)bytes[a+j]=uint8_t(n>>(24-8*j));}
  void half(uint32_t a,uint16_t n){bytes[a]=uint8_t(n>>8);bytes[a+1]=uint8_t(n);}
- uint32_t word(uint32_t a){auto n=raw(a);if(a!=Private)trace.push_back({0,a,n});return n;}
- void store(uint32_t a,uint32_t n){seed(a,n);if(a!=Private)trace.push_back({1,a,n});if(onStore)onStore(*this,a);}
+ uint32_t word(uint32_t a){auto n=raw(a);if(a<Private||a>=Private+16)trace.push_back({0,a,n});return n;}
+ void store(uint32_t a,uint32_t n){seed(a,n);if(a<Private||a>=Private+16)trace.push_back({1,a,n});if(onStore)onStore(*this,a);}
  uint32_t member(unsigned i,uint32_t b=B)const{return b+0x2858+0x1bc+i*0x134;}
  uint32_t item(unsigned i,uint32_t b=B)const{return b+0x2858+0xf25c+i*0x48;}
  void holder(unsigned i,int state=3,uint32_t flags=1,uint32_t b=B){auto r=member(i,b);seed(r,flags);half(r+0x1c,uint16_t(i));seed(item(i,b)+4,uint32_t(state));seed(item(i,b)+0x10,236);seed(r+0x48,0x41200000);seed(r+0x4c,0x41a00000);seed(r+0x50,0x41f00000);}
@@ -54,9 +55,19 @@ struct Fixture {
   s.lightOff=[](void*,int32_t a,int32_t b){assert(a==0&&b==1);};
   BattleMenuAudienceCursor c;auto result=resumePackedBattleMenuAudienceCheck(s,c);assert(result);return *result;
  }
- auto visibleBytes()const{auto result=bytes;for(unsigned j=0;j<4;++j)result.erase(Private+j);return result;}
+ auto visibleBytes()const{auto result=bytes;for(unsigned j=0;j<16;++j)result.erase(Private+j);return result;}
 };
 void compare(Fixture baseline){
+ // Four-output footer signature retains the actual extra cache reads even
+ // though the original footer consumes only the disjoint private index.
+ Fixture query=baseline,reference=baseline;
+ packedBattleAudienceItemOn({Fixture::Private,Fixture::Private+4,Fixture::Private+8,Fixture::Private+12,0},reference.actors());
+ const auto selected=nativeBattleAudienceItemOn(query.actors(),BattleAudiencePrivateOutputs::IndexAndPosition);
+ assert(uint32_t(selected.index)==reference.raw(Fixture::Private));
+ assert(query.visibleBytes()==reference.visibleBytes()&&query.trace==reference.trace);
+ if(selected.index!=-1){assert(selected.position);for(unsigned j=0;j<3;++j)assert((*selected.position)[j]==reference.raw(Fixture::Private+4+4*j));}
+ else assert(!selected.position);
+
  Fixture actual=baseline;const bool expected=baseline.reference();BattleMenuAudienceNativeCursor c;
  auto result=resumeNativeBattleMenuAudience(actual.services(),c);assert(result&&*result==expected&&!c.active());
  assert(actual.visibleBytes()==baseline.visibleBytes()&&actual.trace==baseline.trace);

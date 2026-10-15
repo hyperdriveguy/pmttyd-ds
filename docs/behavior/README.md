@@ -1340,3 +1340,17 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native retained source Main executor](display/NATIVE_RETAINED_MAIN.md): complete actual-VM Main, shared GQR state, retained linked frames and reached facing; raw completion/producer guards validated, native shape/Game/Draw/Inner/GPU activation remains open.
 
 - [Native party removal ownership](partner/NATIVE_PARTY_REMOVAL.md): real actor/proxy/file retirement, original definition records, held EVT/Mario callers and ending completion latches; constructors/authored conversion remain open.
+- [Original HitN64 draw and texture owner](effect/HIT_N64_SOURCE_DRAW_AND_NATIVE_TEXTURE_OWNER.md): complete indexed original drawing and genuine original texture import.
+- [Ordered native HitN64 GPU](effect/HIT_N64_ORDERED_NATIVE_GPU.md): immutable queued packets, three ordered passes and synchronized native lifetime.
+- [Native queued original class frame](battle/NATIVE_CLASS_MENU_FRAME.md): actual VM allocation, successful camera pass and complete existing class pipeline composition.
+
+- [Original class surface/icon GPU ownership](display/ORIGINAL_CLASS_SURFACE_GPU_OWNERSHIP.md): original atlas import admission, immutable generation leases and stale publication rejection.
+
+- [Native original class numeric providers](display/NATIVE_CLASS_NUMERIC_PROVIDERS.md): actual CameraMain/Draw camera views, original ring/interpolation and SDK matrix services.
+- [Retained original weapon drawing](battle/RETAINED_QUEUED_WEAPON_DRAW.md): complete queued window/common/submenu controller with original private unknownness.
+
+- [Actual queued class renderer](display/NATIVE_CLASS_QUEUED_RENDERER.md): real original footer/TexturePlane2 providers and ordered source-to-GPU completion in the exact callback.
+- [Retained submenu icon parent](battle/RETAINED_SUBMENU_ICON_PARENT.md): source row gates before consumption of original private operands.
+
+- [Retained submenu icon raster](display/RETAINED_SUBMENU_ICON_RASTER.md): whole original color/surface/font/icon/cost flow, with genuine runtime memory and raster frontiers.
+- [Retained original weapon cursor](display/RETAINED_WEAPON_CURSOR.md): original timer/interpolation and real icon-position children with retained admission.

@@ -402,6 +402,28 @@ Systems assets have no granted redistribution rights; do not commit or distribut
 original ISO, extracted images or compiled packs. GPU texture binding remains a
 native renderer task; imported assets alone do not prove visible menu parity.
 
+Original class surface/icon GPU lifetime admission now has a dedicated owner
+(`battle_class_surface_gpu.hpp/.cpp`). It reuses the exact unchanged
+battle-class-surfaces.{bin,t3x} (256x128 RGBA8) and
+battle-class-icons.{bin,t3x} (256x256 RGBA8, IDs334..343) products. Both Tex3DS
+imports must describe one unrotated whole image with exact native dimensions,
+format and UV orientation; exact existing atlas-region metadata is checked.
+Native sampling remains linear and clamp-to-edge for these padded atlases.
+One atomic pair generation owns both imports and immutable catalog; copied
+menu publications reject retired/replaced generations before GPU effects.
+No new pixels, scaling, atlases, source TPL identity or licensing are introduced.
+The original battle/common/battle_common.tpl source hash above and original
+icon.bin/icon.tpl descriptor/image indices remain authoritative. Their read-only
+ISO hashes are icon.bin8174 bytes SHA256
+0be6b95a7e45e5d932641f24f8240a289a852889f1906d32be839046a680532b and
+icon.tpl677792 bytes SHA256
+fb8e99398fd5ef3c36cc518077748405949c004fcc5c515cc8828a64340b74f9. Lifecycle
+admission does not initialize original battle file resources, schedule a class
+callback or establish an original camera. See
+[GPU ownership contract](behavior/display/ORIGINAL_CLASS_SURFACE_GPU_OWNERSHIP.md).
+Original Nintendo/Intelligent Systems rights remain; these private packs grant
+no redistribution rights and are not committed.
+
 ## 2026-10-14 — Tracked editable assets and native source pipeline
 
 [Asset editing/build guide](../assets/README.md),
@@ -3000,3 +3022,38 @@ phase generates it; existing accepted2153 products/768 private fixtures are
 inherited with hashes for isolated checks. Originals remain Nintendo/Intelligent
 Systems material for local use, without redistribution rights. ISO, original
 extracts, packs, provenance products and compiled binaries remain uncommitted.
+
+## Original HitN64 drawing resources (2026-10-15)
+
+Read-only source `/home/carson/games/roms/G8ME01.iso`: original
+`e/us/effect_n64.tpl`, image74, original32x128 I4.
+`tools/hit_n64_texture_assets.py` preserves the complete raw TPL as private
+`romfs/hit-n64-bank.tpl` and converts image74 into unscaled RGBA8
+`romfs/hit-n64-texture74.t3x`, with original REPEAT S/T and LINEAR min/mag.
+No texture resize, authored replacement, padding, atlas or mip generation.
+Private `local-assets/hit-n64/` retains source evidence/PNG/conversion scratch.
+
+`romfs/hit-n64-texture74.bin` is native PMHITX01 metadata: original36-byte
+descriptor,280-byte indexed vertex bank at803a0458, and immutable original
+spans802fb0a0/48,80419888/52 and80425458/40. Total476bytes. Actual VM
+reads take precedence; this companion supplies no mutable BSS, source pool,
+State64 global/palette, camera or synthetic allocation. Provenance and hashes
+are in private `hit-n64-texture74.json` and the converter's read-only ISO
+checks. Original Nintendo/Intelligent Systems rights remain reserved; these
+local conversions grant no license. ISO, extracts, private packs and compiled
+products are excluded from source history and are not distributed by this change.
+
+Separate isolated native import/render evidence is recorded in
+`artifacts/hit-n64-native-probe/manifest.json`; it tests real texture/shader/
+ordered submission and retirement, without claiming original framebuffer
+parity, normal battle activation or hardware performance.
+
+Validation dependency refresh for this drawing integration uses the frozen
+committed animation-boot and NPC actor converters. Their original Main replay
+scale at8041fbac/4 (SHA256
+2625276c57610c65a55868a40c431d1fd6651984b8ee92c081b49a98a0e9d884)
+postdates the preceding accepted cache. Four door/boot PMEVT/JSON products are
+regenerated privately from the read-only ISO with those exact converters;
+other inherited products remain hash-matched. This is source-data closure,
+not new authored art or a measured animation constant. Original rights above
+remain unchanged.

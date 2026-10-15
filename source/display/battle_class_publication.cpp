@@ -21,18 +21,22 @@ void BattleClassPublication::retire() {
 }
 bool BattleClassPublication::matches(const BattleClassPublicationKey &key) const {
   return batch_ && key.owner && key.owner == owner_ &&
-         key.allocation == allocation_ && key.sequence == key_.sequence;
+         key.allocation == allocation_ && key.sequence == key_.sequence &&
+         (!batch_->surfaceLease.generation || batch_->surfaceLease.current());
 }
 bool BattleClassPublication::publish(const BattleClassPublicationKey &key,
                                      const BattleClassBackend &source) {
   if (!owner_ || key.owner != owner_ || key.allocation != allocation_ ||
       !key.sequence || key.sequence <= key_.sequence || !source.complete() ||
-      !source.assets || !source.assets->ready())
+      !source.assets || !source.assets->ready() ||
+      (source.surfaceLease.generation && (!source.surfaceLease.current() ||
+       source.assets != source.surfaceLease.assets.get())))
     return false;
   // Do not copy label/random/icon callbacks: their contexts may belong to a
   // completed stack-local source pass. Rendering needs only assets and quads.
   auto copy = std::make_shared<BattleClassBackend>();
   copy->assets = source.assets;
+  copy->surfaceLease = source.surfaceLease;
   copy->quads = source.quads;
   batch_ = std::move(copy);
   key_ = key;
@@ -47,7 +51,8 @@ bool BattleClassPublication::admit(const BattleClassPublicationKey &key) {
 }
 std::optional<BattleClassPublicationKey>
 BattleClassPublication::consumeAdmission() {
-  if (!batch_ || !admitted_ || consumed_)
+  if (!batch_ || !admitted_ || consumed_ ||
+      (batch_->surfaceLease.generation && !batch_->surfaceLease.current()))
     return {};
   consumed_ = true;
   return key_;

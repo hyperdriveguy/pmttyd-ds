@@ -1,6 +1,6 @@
 #include "battle_menu_audience_native.hpp"
 #include "battle_audience_item_on.hpp"
-#include <cstring>
+#include "battle_audience_item_on_native.hpp"
 namespace ttyd {
 namespace {
 bool same(const BattleMenuAudienceNativeServices& a,const BattleMenuAudienceNativeServices& b){
@@ -12,35 +12,8 @@ bool same(const BattleMenuAudienceNativeServices& a,const BattleMenuAudienceNati
  x.user==y.user && x.word==y.word && x.half==y.half && x.storeWord==y.storeWord &&
  x.storeHalf==y.storeHalf && x.storeByte==y.storeByte && x.flushBlock==y.flushBlock && x.systemCall==y.systemCall;
 }
-int32_t signedWord(uint32_t n){return n<0x80000000u?int32_t(n):int32_t(int64_t(n)-0x100000000LL);}
-float scalar(uint32_t n){float f;std::memcpy(&f,&n,4);return f;}
-uint32_t bits(float f){uint32_t n;std::memcpy(&n,&f,4);return n;}
 struct Running {bool& v;explicit Running(bool& f):v(f){v=true;}~Running(){v=false;}};
-// Whole GetItemOn801a2d58 specialized ONLY for its checker's original output
-// signature (&privateIndex,0,0,0,0). Source cache stores remain guest operations;
-// the private index cannot alias them. No output address is manufactured.
-int32_t firstEligible(const BattleActorServices& a){
- const auto& m=a.memory;auto word=[&](uint32_t p){return m.word(m.user,p);};
- const auto base=currentBattleAddress(a)+0x2858;
- auto member=currentBattleAddress(a)+0x2858+0x1bc;
- for(uint32_t i=0;i<200;++i,member+=0x134){
-  const auto flags=word(member);if(!(flags&1) || (flags&0x100) || (flags&2))continue;
-  const auto raw=m.half(m.user,member+0x1c);
-  const auto held=raw<0x8000?int32_t(raw):int32_t(raw)-65536;
-  if(held==-1)continue;
-  const auto item=currentBattleAddress(a)+0x2858+uint32_t(held)*0x48+0xf25c;
-  const auto state=signedWord(word(item+4));if(state>4 && state!=7)continue;
-  m.storeWord(m.user,base+0x138bc,i);
-  // The original next operation writes i to private SP08. Native return holds
-  // that private value; subsequent source reads cannot observe this local.
-  m.storeWord(m.user,base+0x138c0,word(member+0x48));
-  m.storeWord(m.user,base+0x138c4,word(member+0x4c));
-  const auto z=scalar(word(member+0x50)),offset=scalar(word(0x804249cc));
-  m.storeWord(m.user,base+0x138c8,bits(z+offset));
-  return int32_t(i);
- }
- return -1;
-}
+
 }
 struct BattleMenuAudienceNativeCursor::State {
  BattleMenuAudienceNativeServices services;
@@ -77,7 +50,7 @@ std::optional<bool> resumeNativeBattleMenuAudience(const BattleMenuAudienceNativ
    c.unit=*unit;c.phase=3;break;}
   case 3:
    if(m.word(m.user,c.unit+0x104)&0x10)return finish(false);
-   c.selected=firstEligible(s.actors);
+   c.selected=nativeBattleAudienceItemOn(s.actors,BattleAudiencePrivateOutputs::Index).index;
    if(c.selected==-1)return finish(false);
    // GetItemOn just published the original selected slot. Preserve the native
    // private result independently of any later cache/global changes.
