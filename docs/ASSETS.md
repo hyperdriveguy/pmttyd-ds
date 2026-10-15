@@ -2699,3 +2699,22 @@ product/authority/evidence hashes are journaled. Python fixtures independently r
 ISO into empty temporary outputs; native full regeneration deliberately skipped.
 Nintendo/Intelligent Systems rights retained; private tracking/copying grants no
 new license. No ISO/original extracted asset/compiled binary committed.
+
+## Original HitN64 texture evidence, 2026-10-15
+
+The read-only `tools/hit_n64_source_evidence.py` verifies the original US
+`effHitEntry` wrapper, HitN64 constructor/Main and the still separate Display/
+main_dl bodies. It extracts `e/us/effect_n64.tpl` into private verification
+output; SHA256 `3202ac8f437a2a7664d791ec5d9ee1988504f51b912c1211429708fac0a268ef`.
+Index74 is original I4,32x128,no palette,repeat/linear. Pixels decode without
+resizing; no atlas/native texture import is admitted by this batch.
+
+The independent verification output is
+`artifacts/battle-action-native-validation/hit-source/texture74.png`, SHA256
+`c80e1cca9619ca95b6758b2d4778f2722b63705d1f512b97f919e09552be22be`;
+its report is `artifacts/battle-action-native-validation/hit-source-proof.json`.
+Original vertex bank `803a0458/118` has280 bytes, SHA256
+`8778157212c6fd114b2746aefd029272202764db44511a746d3d168530feef9b`.
+Constructor/Main CPU ownership does not establish queued display or GPU use.
+Original Nintendo/Intelligent Systems rights remain; private extraction grants
+no redistribution rights. No original pixels, ISO, packs or binaries are committed.
