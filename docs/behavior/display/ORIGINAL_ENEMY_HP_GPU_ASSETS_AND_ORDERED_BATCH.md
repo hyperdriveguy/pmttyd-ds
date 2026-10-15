@@ -63,7 +63,7 @@ a raw17 or18 cannot be loaded/queried before its TextureObject call succeeds.
 The actual source current-camera provider remains mandatory.
 
 The provider retains canonical original GX state, including whole InitSub's
-color-update/alpha-compare/blend/depth setters, descriptors/attribute formats,
+depth-location/alpha-compare/blend/depth setters, descriptors/attribute formats,
 channels, texgens and exact TEV operations. Begin requires the complete proper
 textured or untextured state, real matrix and ordered sink. TexPlane requests
 use36 FIFO lanes; QuadRasta uses28 lanes without ST. A complete candidate quad

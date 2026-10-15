@@ -4,7 +4,7 @@
 namespace ttyd {
 enum class BattleTexturePlaneKind {Call,FifoFloat,FifoByte};
 enum class BattleTexturePlaneCall : uint32_t {
-  ColorUpdate=0x802b940c,AlphaCompare=0x802b8d60,BlendMode=0x802b932c,
+  DepthLocation=0x802b940c,AlphaCompare=0x802b8d60,BlendMode=0x802b932c,
   DepthMode=0x802b93d8,Cull=0x802b5c8c,ClearDescriptors=0x802b4520,Descriptor=0x802b3c08,
   AttributeFormat=0x802b4558,Channels=0x802b6f3c,ChannelControl=0x802b6f78,
   TextureGenerators=0x802b5084,TextureGenerator=0x802b4e04,

@@ -16,6 +16,7 @@
 #include "camera_letterbox.hpp"
 #include "camera_letterbox_draw.hpp"
 #include "battle_enemy_hp_draw.hpp"
+#include "battle_enemy_hp_frame.hpp"
 #include "battle_stock_exp_draw.hpp"
 #include "battle_break_slot_draw.hpp"
 #include "field_bero_exec.hpp"
@@ -34,6 +35,16 @@
 #include "battle_audience_aux_callback.hpp"
 #include "battle_part_display.hpp"
 namespace ttyd {
+// Native providers retain this owner through every held source callback. Every
+// external callback must become unavailable before its GPU/Game owner retires.
+struct TrioEnemyHpNativeServices {
+    std::shared_ptr<const void> lifetime;
+    void* user=nullptr;
+    SourceIconNumberServices number;
+    BattleTexturePlaneServices raster;
+    bool (*begin)(void*,uint64_t allocation,uint64_t pass)=nullptr;
+    bool (*publish)(void*,uint64_t allocation,uint64_t pass)=nullptr;
+};
 class BattleAudienceIncarnationOwner;
 bool loadTrioAttackAssets(const char* root);
 std::shared_ptr<const ActorAnimationPack> fieldMarioAnimationBank();
@@ -100,6 +111,14 @@ public:
     bool resumeStageDisplay(uint32_t camera,uint32_t callback,uint32_t userdata,const BattleStageDisplayServices&) const;
     bool resumeLetterboxDraw(uint32_t camera,uint32_t userdata,const CameraLetterboxDrawServices&) const;
     bool resumeEnemyHpDraw(uint32_t camera,uint32_t userdata,const BattleEnemyHpDrawServices&) const;
+    bool resumeEnemyHpDraw(uint32_t camera,uint32_t userdata,const TrioEnemyHpNativeServices&) const;
+    std::optional<uint64_t> enemyHpAllocation() const;
+    std::shared_ptr<const uint8_t> enemyHpAllocationOwner() const;
+    bool enemyHpAllocationCurrent(uint64_t) const;
+    bool enemyHpFrameComplete(uint64_t pass) const;
+    std::optional<uint32_t> enemyHpResourceWord(uint32_t) const;
+    std::optional<uint32_t> enemyHpCamera(std::optional<uint32_t> index={}) const;
+    bool enemyHpMatrix(BattleAudienceMatrixRequest&) const;
     bool resumeStockExpDraw(uint32_t camera,uint32_t userdata,const SourceIconMatrixServices&) const;
     bool resumeBreakSlotDraw(uint32_t camera,uint32_t userdata,const BattleBreakSlotDrawServices&) const;
     bool resumeAudienceAux(uint32_t camera,uint32_t callback,uint32_t userdata,const BattleAudienceAuxServices&) const;

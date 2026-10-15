@@ -58,3 +58,26 @@ that scheduler into ordinary active ticks requires those actual child owners,
 proper once-per-simulation-pass input/event cadence, and genuine camera/queue
 lifetime admission. This module neither activates that path nor bypasses a
 missing handler, queue, sequence bank, population, or numeric provider.
+
+## Native Harbor tutorial admission
+
+The Packed tutorial now owns this retained manager, its original physical sample
+and admitted simulation timestamp. It resets the display queue only when a new
+physical sample starts an invocation, marks that sample completed only after all
+children complete, and exposes no action icons while the manager is held. Same-
+time retries preserve private-pad history and the queue reset epoch. Unknown
+callbacks remain unavailable even if their live callback slot subsequently changes;
+they are not acknowledged or replaced by a different action.
+
+While held, the tutorial tick skips resampling, scene-to-VM publication and VM/
+event advancement. Completion runs that event pass at the original admitted
+timestamp. Message presentation may still advance while held; explicit external
+menu/input APIs have separate admission. The supported TimingA child remains
+synchronous. This does not establish complete original Main scheduling or make
+other partially mutating action children resumable.
+
+The added `harbor_tutorial_action_continuation_tests` uses the real native Packed/
+VM/pad/queue owners with explicit provisioner constants and an unavailable callback
+fixture. It verifies TimingA once per sample, repeated calls, missing physical
+samples, retained unknown callbacks and suppression of incomplete icons. These
+are integration fixtures, not observed original console timing.

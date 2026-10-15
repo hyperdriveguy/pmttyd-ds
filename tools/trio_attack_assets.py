@@ -43,7 +43,9 @@ def build(iso=DEFAULT_ISO):
         # Immutable Goombella defense/status/default attack/wait data, beyond
         # the mutable-tail cutoff. Import only its exact admitted source span.
         off,va=(struct.unpack_from('>I',header,b+11*4)[0] for b in (0,0x48))
-        disc.seek(base+off+0x80418450-va);segments.append((0x80418450,disc.read(0x4c)))
+        # The following word80418498 is the live file-manager global,
+        # bound by NativeFileCache rather than copied as immutable partner data.
+        disc.seek(base+off+0x80418450-va);segments.append((0x80418450,disc.read(0x48)))
     # Import relocated tik data definitions/scripts; executable REL sections are
     # excluded. These share the existing source-address bank with the intro.
     from rel_event_inventory import read_bindings,inventory_events

@@ -1563,6 +1563,7 @@ void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audio
 // before admitting battle atlases;field return reverses that dependency.
 // SYNCDRAW permits CPU arenas to be reused only after previous GPU work finishes.
 void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool audioAvailable) {
+    prepareEnemyHp(g);
     prepareSourceIcons(g);
     const bool battleOwner=g.trioBattleActive || g.scene==Scene::Battle || g.scene==Scene::Victory || g.scene==Scene::Defeat;
     const bool mapsFirst=!battleOwner || prepareBattleMaps(g);
@@ -1596,6 +1597,7 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
     C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_SRC_ALPHA,GPU_ONE_MINUS_SRC_ALPHA,GPU_ONE,GPU_ONE_MINUS_SRC_ALPHA);
     if(g.harborTutorial.running())worldTutorial(g);else if(battleMapsReady)world(g);
     if(g.trioBattleActive && trioScenePrepared)drawSourceIcons(4);
+    if(g.trioBattleActive)drawEnemyHp(g); // Original HP902 precedes other camera8 UI901/499/490.
     if(!g.trioBattleActive)drawFieldItemGet(g);
     classVertexCount=0;C2D_Prepare();C2D_SceneBegin(top);overlay(g);
     if(!battleMapsReady)text(actorTexturesReady?"Development notice: battle map unavailable":"Development notice: scene actor texture unavailable",16,220,.42f,Ink);
@@ -1638,6 +1640,7 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
 // before deleting borrowed linear buffers/textures/shaders/targets;then C2D/C3D
 // services close. This call is end-of-owner lifecycle,not a per-frame reset.
 void Renderer::shutdown() {
+    releaseEnemyHp();
     releaseSourceIcons();
     releaseClassMenuDrawing();
     releaseAudienceDrawing();

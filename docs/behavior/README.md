@@ -1280,3 +1280,7 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native original animation scratch ownership](display/NATIVE_SOURCE_ANIMATION_SCRATCH.md) — actual loaded timelines, BE cache/output sampling, consumer capture points and scoped lifetime.
 
 - [Original NPC field tail and whole-Main composition](field/NATIVE_NPC_MAIN_FIELD_TAIL_AND_COMPLETION.md): retained effect/encounter/Kpa flow through the final original-F byte clear; real providers remain required.
+## Native queued HP and retained tutorial input
+
+- [Trio HP runtime binding](display/TRIO_ENEMY_HP_RUNTIME_BINDING.md): real allocation, CameraMain epoch, source common-bank Init/End and retained full callback.
+- [Native Trio HP renderer binding](display/NATIVE_TRIO_ENEMY_HP_RENDERER_BINDING.md): original glyph/bar GPU resources, ordered replay and precise finishing-versus-active scheduling limits.

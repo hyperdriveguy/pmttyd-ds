@@ -2416,3 +2416,19 @@ Nintendo/Intelligent Systems rights remain reserved; private tracking/copying
 grants no new license. No ISO, original extracted asset or compiled binary was
 committed. Exact dependency/log/native hashes and source baseline are journaled
 in the ignored validation manifest.
+## Trio common-menu file-owner binding (2026-10-14)
+
+The native Trio now acquires `battle/common/battle_common.tpl` through the original
+menu Init/End and the real process file cache, using the unchanged US format at
+`802ef810` and original root at `8041f494`. The existing original common-bank
+extract and HP17/18 atlas retain their conversion and rights terms above.
+`tools/trio_attack_assets.py` now imports only72 immutable bytes at `80418450`;
+the next four bytes at `80418498` belong to the live file-manager global and
+must be supplied by that owner. This removes a copied-data/live-owner overlap.
+A private pack-only rebuild from the read-only ISO confirms all other segment
+payloads and the68-byte unit definitions are unchanged. New event pack size
+1357332 bytes; SHA256 `0a737b207a9321678398c12c0d7b0bef8ad123ed97cc748f5e7d68b9ffb2123d`.
+Evidence: `artifacts/hp-runtime-assets-proof.json`; private outputs remain ignored.
+No actor texture/geometry conversion changed and no ISO or extracted/compiled
+asset bytes enter source history. Original Nintendo/Intelligent Systems rights
+remain unchanged; this project gains no redistribution rights.

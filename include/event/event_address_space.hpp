@@ -26,6 +26,9 @@ public:
     // One complete raw RAM span, excluding semantic providers. No pointer
     // escapes and callers must recheck after any mapping mutation.
     bool contiguousRam(uint32_t a,uint32_t n) const{return n && rawRamSpan(a,n);}
+    // Pure current mapping admission, using the same interval/semantic checks
+    // as registration. No storage is reserved; recheck after mapping changes.
+    bool unmappedRange(uint32_t base,uint64_t size) const{return available(base,size);}
     bool readByte(uint32_t,uint8_t&) const;
     bool readHalf(uint32_t,uint16_t&) const;
     bool readWord(uint32_t,uint32_t&) const;

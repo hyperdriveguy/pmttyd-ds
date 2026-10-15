@@ -113,7 +113,7 @@ std::optional<uint32_t> BattleEnemyHpGpuProvider::request(const BattleTexturePla
  }
  bool valid=false;
  switch(q.function){
- case F::ColorUpdate:valid=n==std::vector<uint32_t>{1};if(valid)fixed_|=1;break;
+ case F::DepthLocation:valid=n==std::vector<uint32_t>{1};if(valid)fixed_|=1;break;
  case F::AlphaCompare:valid=n==std::vector<uint32_t>({7,0,0,7,0});if(valid)fixed_|=2;break;
  case F::BlendMode:valid=n==std::vector<uint32_t>({1,4,5,5});if(valid)fixed_|=4;break;
  case F::DepthMode:valid=n==std::vector<uint32_t>({1,7,0});if(valid)fixed_|=8;break;

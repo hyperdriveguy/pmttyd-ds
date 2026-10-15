@@ -1,5 +1,7 @@
 #include "trio_attack.hpp"
 #include "battle_main_continuation.hpp"
+#include "battle_enemy_hp_camera_bridge.hpp"
+#include "battle_menu_file_cache.hpp"
 #include "battle_stage_main_continuation.hpp"
 #include "battle_pose_inner.hpp"
 #include "animation_draw_traversal.hpp"
@@ -70,6 +72,7 @@
 namespace ttyd {
 namespace {
 EventScriptAssets scripts;NpcAngleTable sourceAngles;bool assetsReady=false;
+std::shared_ptr<BattleMenuFileCache> trioMenuFiles;
 std::string fieldPartnerAnimationPath;
 std::weak_ptr<const ActorAnimationPack> fieldPartnerAnimationCache;
 std::shared_ptr<const ActorAnimationPack> fieldMarioBank;
@@ -132,10 +135,108 @@ bool loadTrioAttackAssets(const char* root) {
     const bool configValid=std::fread(configMagic,8,1,configFile)==1 && !std::memcmp(configMagic,"PMAUCFG1",8) && std::fread(&config,4,1,configFile)==1 && std::fgetc(configFile)==EOF;
     std::fclose(configFile);if(!configValid || !next.readWord(config+0x1c,descriptorWord) || descriptorWord)return false;
     audienceSetupConfig=config;
+    auto files=std::make_shared<BattleMenuFileCache>();
+    if(!files->load((std::string(root)+"/battle-class-common.tpl").c_str()))return false;
+    trioMenuFiles=std::move(files);
     scripts=std::move(next);reactionUnits=units;reactionGroup=group;franklyPhase=phase;playerBattleResources=std::move(battleResources);assetsReady=true;return true;
 }
 struct TrioAttackRuntime {
+    // The source file owner precedes the VM so external byte views die first.
+    std::shared_ptr<BattleMenuFileCache> menuFiles=trioMenuFiles;
     EventNativeRuntime vm;
+    std::unique_ptr<BattleMenuFileBinding> menuBinding;
+    BattleMenuResourceCursor menuResourceCursor;bool menuResourceInitialized=false;
+    std::shared_ptr<const uint8_t> hpAllocation;
+    uint64_t cameraMainPublication=0;bool cameraMainPoisoned=false;
+    BattleEnemyHpFrame hpFrame;
+    BattleEnemyHpCameraBridge hpCamera;
+    TrioEnemyHpNativeServices hpNative;
+    SourceIconGXServices hpActualGx,hpGx;
+    const SourceIconGXServices* hpBorrowedGx=nullptr;
+    bool hpBound=false,hpBegun=false,hpRunning=false;
+    uint64_t hpPass=0;
+    bool hpAllocationCurrent(uint64_t key) const {
+        uint32_t current=0;
+        return hpAllocation && uint64_t(reinterpret_cast<uintptr_t>(hpAllocation.get()))==key &&
+            vm.memory.contiguousRam(Battle,0x19100) && vm.memory.readWord(0x8041eb90,current) && current==Battle;
+    }
+    std::optional<uint32_t> hpVmWord(uint32_t a) const {
+        uint32_t v;return vm.memory.readWord(a,v)?std::optional<uint32_t>(v):std::nullopt;
+    }
+    std::optional<uint32_t> hpIconWord(uint32_t a) {
+        if(!hpCamera.available())return {};
+        if(hpCamera.owns(a))return hpCamera.word(a);
+        const auto& s=hpNative.number.icons;
+        if(s.word)if(auto v=s.word(s.user,a))return hpCamera.available()?v:std::nullopt;
+        return hpVmWord(a);
+    }
+    std::optional<uint16_t> hpIconHalf(uint32_t a) {
+        if(!hpCamera.available() || hpCamera.owns(a))return {};
+        const auto& s=hpNative.number.icons;
+        if(s.half)if(auto v=s.half(s.user,a))return hpCamera.available()?v:std::nullopt;
+        uint16_t v;return vm.memory.readHalf(a,v)?std::optional<uint16_t>(v):std::nullopt;
+    }
+    BattleActorServices hpActors() {
+        auto s=nativeBattleActorServices(vm);s.memory.user=this;
+        s.memory.word=[](void* u,uint32_t a){auto& r=*static_cast<TrioAttackRuntime*>(u);
+            const auto v=r.hpCamera.owns(a)?r.hpCamera.word(a):r.hpVmWord(a);
+            required(bool(v));return *v;};
+        s.memory.half=[](void* u,uint32_t a){auto& r=*static_cast<TrioAttackRuntime*>(u);uint16_t v;
+            required(!r.hpCamera.owns(a) && r.vm.memory.readHalf(a,v));return v;};
+        // HP source graph reads only. Do not redirect VM store callbacks to a
+        // differently typed context or grant invented camera writes.
+        s.memory.storeWord=nullptr;s.memory.storeHalf=nullptr;s.memory.storeByte=nullptr;
+        s.memory.flushBlock=nullptr;s.memory.systemCall=nullptr;return s;
+    }
+    bool hpSame(const TrioEnemyHpNativeServices& s) const {
+        const auto& a=hpNative.number.icons;const auto& b=s.number.icons;
+        if(hpNative.lifetime!=s.lifetime || hpNative.user!=s.user || hpNative.begin!=s.begin || hpNative.publish!=s.publish ||
+            a.user!=b.user || a.word!=b.word || a.half!=b.half || a.currentCamera!=b.currentCamera || a.matrix!=b.matrix ||
+            a.draw!=b.draw || hpBorrowedGx!=b.gx || hpNative.raster.user!=s.raster.user ||
+            hpNative.raster.request!=s.raster.request || hpNative.raster.matrix!=s.raster.matrix || !b.gx)return false;
+        const auto& x=hpActualGx;const auto& y=*b.gx;
+        return x.user==y.user && x.word==y.word && x.half==y.half && x.matrix==y.matrix && x.call==y.call && x.quad==y.quad;
+    }
+    BattleEnemyHpFrameServices hpServices() {
+        BattleEnemyHpFrameServices s;s.parent.user=this;
+        s.parent.word=[](void* u,uint32_t a){return static_cast<TrioAttackRuntime*>(u)->hpVmWord(a);};
+        s.parent.half=[](void* u,uint32_t a)->std::optional<uint16_t>{uint16_t v;auto& r=*static_cast<TrioAttackRuntime*>(u);return r.vm.memory.readHalf(a,v)?std::optional<uint16_t>(v):std::nullopt;};
+        s.parent.camera=[](void* u,uint32_t i){return bool(static_cast<TrioAttackRuntime*>(u)->hpCamera.camera(i));};
+        s.parent.status=[](void* u,uint32_t unit,int32_t id)->std::optional<int32_t>{auto& r=*static_cast<TrioAttackRuntime*>(u);return checkPackedBattleStatus(unit,id,nativeBattleActorServices(r.vm))?1:0;};
+        s.parent.monosiri=[](void* u,uint32_t unit)->std::optional<int32_t>{auto& r=*static_cast<TrioAttackRuntime*>(u);
+            BattleMonosiriServices m;m.user=&r;
+            m.word=[](void* u,uint32_t a){return static_cast<TrioAttackRuntime*>(u)->hpVmWord(a);};
+            m.switchFlag=[](void* u,int32_t i)->std::optional<int32_t>{auto& r=*static_cast<TrioAttackRuntime*>(u);return readSavedSwitch(SavedSwitchFamily::GlobalFlag,i,r.vm.interpreterServices().operands);};
+            return checkBattleMonosiri(unit,m,r.enemyHpMonosiriCursor);};
+        s.parent.screenPoint=[](void* u,const std::array<float,3>& p,std::array<float,3>& out){auto v=static_cast<TrioAttackRuntime*>(u)->hpCamera.project(p);if(!v)return false;out=*v;return true;};
+        s.parent.interpolate=[](void*,int32_t mode,int32_t elapsed,int32_t duration,float start,float end){return cameraInterpolation(mode,elapsed,duration,start,end);};
+        s.parent.truncate=[](void* u,float f)->std::optional<int32_t>{auto& p=static_cast<TrioAttackRuntime*>(u)->vm.platform;return p.truncate?std::optional<int32_t>(p.truncate(p.user,f)):std::nullopt;};
+        s.bar.actors=hpActors();s.bar.user=this;
+        s.bar.camera=[](void* u,uint32_t i){return static_cast<TrioAttackRuntime*>(u)->hpCamera.camera(i);};
+        auto& n=s.number.icons;n.user=this;
+        n.word=[](void* u,uint32_t a){return static_cast<TrioAttackRuntime*>(u)->hpIconWord(a);};
+        n.half=[](void* u,uint32_t a){return static_cast<TrioAttackRuntime*>(u)->hpIconHalf(a);};
+        n.currentCamera=[](void* u){return static_cast<TrioAttackRuntime*>(u)->hpCamera.camera();};
+        n.matrix=[](void* u,BattleAudienceMatrixRequest& q){return static_cast<TrioAttackRuntime*>(u)->hpCamera.matrix(q);};
+        hpGx.user=this;hpGx.word=n.word;hpGx.half=n.half;hpGx.matrix=n.matrix;
+        hpGx.call=[](void* u,const SourceIconGXCall& q)->std::optional<uint32_t>{auto& r=*static_cast<TrioAttackRuntime*>(u);
+            if(!r.hpCamera.available())return {};
+            if(q.function==0x8000f2fc)return r.hpCamera.camera(q.integers[0]);
+            if(q.function==0x8000f2e4)return r.hpCamera.camera();
+            const auto v=r.hpActualGx.call?r.hpActualGx.call(r.hpActualGx.user,q):std::nullopt;
+            return r.hpCamera.available()?v:std::nullopt;};
+        hpGx.quad=[](void* u,const SourceIconGXQuad& q){auto& r=*static_cast<TrioAttackRuntime*>(u);return r.hpCamera.available() && r.hpActualGx.quad && r.hpActualGx.quad(r.hpActualGx.user,q);};
+        n.gx=&hpGx;
+        s.raster.actors=hpActors();s.raster.user=this;s.raster.matrix=n.matrix;
+        s.raster.request=[](void* u,const BattleTexturePlaneRequest& q)->std::optional<uint32_t>{auto& r=*static_cast<TrioAttackRuntime*>(u);
+            if(!r.hpCamera.available())return {};
+            // Forward actual current-camera queries to the renderer owner; it
+            // obtains this bridge's real admitted camera token through getter.
+            const auto& s=r.hpNative.raster;const auto v=s.request?s.request(s.user,q):std::nullopt;
+            return r.hpCamera.available()?v:std::nullopt;};
+        return s;
+    }
+
     EventCallbackRegistry registry;
     BattleDataChildServices child;
     BattleTakeoffBackend takeoffBackend;
@@ -278,7 +379,7 @@ struct TrioAttackRuntime {
     std::shared_ptr<BattleSpotlightState> spotlight;
     bool spotlightInitialized=false;
     explicit TrioAttackRuntime(std::shared_ptr<BattleRandom> rng,std::shared_ptr<BattlePosePool> pool={}):vm(0x81000000,platform(this)),randomOwner(std::move(rng)),random(*randomOwner),poseOwner(pool?std::move(pool):std::make_shared<BattlePosePool>()),poses(*poseOwner) {}
-    ~TrioAttackRuntime(){if(spotlightInitialized)publishSpotlight();for(auto h:ownedPoseHandles)if(auto* p=poses.pose(h.first))if(p->nativeGeneration==h.second)poses.release(h.first);}
+    ~TrioAttackRuntime(){hpFrame.retire();hpCamera.retire();hpAllocation.reset();if(menuResourceInitialized)endPackedBattleMenuResources(menuBinding->services(),menuResourceCursor);if(spotlightInitialized)publishSpotlight();for(auto h:ownedPoseHandles)if(auto* p=poses.pose(h.first))if(p->nativeGeneration==h.second)poses.release(h.first);}
     static EventNativePlatform platform(TrioAttackRuntime* self) {
         EventNativePlatform p;p.user=self;p.clock=[](void*)->uint32_t{return 243000000;};
         p.call=[](void* p,EventEntry& e,uint32_t fn,int32_t first)->int32_t{return static_cast<TrioAttackRuntime*>(p)->call(e,fn,first);};
@@ -746,6 +847,8 @@ struct TrioAttackRuntime {
         if(!suppliedEntry)entryPouch->half(0x70,hp);
         for(auto span:std::array<std::pair<uint32_t,unsigned>,15>{{{0x85600000,0x64040},{0x8041e808,16},{0x82000000,0x100000},{0x8041f070,16},{0x8041e428,4},{0x8041e844,4},{0x8041eb90,4},{0x8041eb00,4},{0x8041ebdc,12},{0x804295d4,4},{Battle,0x19100},{Units,0x10000},{Parts,0x10000},{Kinds,0x1000},{Work,0x14000}}})
             if(!vm.memory.registerRam(span.first,std::vector<uint8_t>(span.second)))return false;
+        if(!menuFiles || !menuFiles->bind(vm.memory))return false;
+        menuBinding=std::make_unique<BattleMenuFileBinding>(menuFiles,nativeBattleActorServices(vm));
         std::vector<uint8_t> packedPouch(0x600);std::copy(entryPouch->bytes.begin(),entryPouch->bytes.end(),packedPouch.begin());
         if(!cameras || !vm.gpAddresses.bindRenderDimensions(vm.gpAddresses.currentAddress(),cameras->sourceRenderDimensions))return false;
         if(!vm.memory.registerExternalRam(0x8041eb98,cameras->stockExpPosition.data(),8))return false;
@@ -768,6 +871,8 @@ struct TrioAttackRuntime {
         half(Battle,0);word(Battle+0xf14,0x0300004c);word(Battle+0xf18,0x04000002);word(Battle+0xf1c,0x05000009);word(Battle+0xf20,0x06000007);
         word(Battle+0x2738,Work);word(Work+0xc,Work+0x100);word(Work+0x118,reactionGroup);
         word(0x8041eb90,Battle);word(0x8041eb00,0x85000000);byte(Battle+0xa,1);byte(Battle+0x12,255);
+        if(!initializePackedBattleMenuResources(menuBinding->services(),menuResourceCursor))return false;
+        menuResourceInitialized=true;
         BattleCameraRequestServices cameraInit;cameraInit.positions=nativeBattlePartPositionServices(vm);initializeBattleCamera(Battle,cameraInit);
         word(Battle+0xef8,word(Battle+0xef8)|2u); // Original btlDispInit publication; other Init services stay separate.
         if(!initializePackedSetup4AudienceParameters(audienceSetupConfig,Work+0x100,audienceInitServices()))return false;
@@ -1786,6 +1891,7 @@ struct TrioAttackRuntime {
         return cameraUpdateAvailable;
     }
     void publishFinishingCameras(){
+        if(cameraMainPoisoned)return;
         cameraMainWaiting=true;
         CameraMainServices services;services.user=this;
         services.lookAt=[](void*,const CameraState& c){return cameraLookAtAdapter(c.eye,c.at,c.up);};
@@ -1816,6 +1922,8 @@ struct TrioAttackRuntime {
             c.matrices.projection=cameraPerspective(c.fov,c.aspect,c.nearPlane,c.farPlane);return true;
         };
         if(cameras->main(false,services,cameraMainCursor)){
+            if(cameraMainPublication==UINT64_MAX){cameraMainPoisoned=true;cameraMainPublication=0;return;}
+            ++cameraMainPublication;
             cameraMainWaiting=false;cameraDepth=cameras->camera(4)->matrices;
             pending=0x8000f454;endingRequest(pending); // Actual camDraw remains a separate GPU/letterbox owner.
         }else {
@@ -1910,7 +2018,7 @@ struct TrioAttackRuntime {
     }
     void publish(ProfessorStory& s){for(unsigned id=1;id<7;++id){const uint32_t u=word(Battle+0x20+4*id);if(!u){s.actors[visual[id]].hidden=true;continue;}for(unsigned axis=0;axis<3;++axis)s.actors[visual[id]].position[axis]=real(u+0x3c+4*axis);s.actors[visual[id]].yaw=byte(u+0x189)==1?90:270;s.actors[visual[id]].battleFlags=word(u+0x1c);for(unsigned axis=0;axis<3;++axis){s.actors[visual[id]].battleRotation[axis]=real(u+0x60+4*axis)+real(u+0x6c+4*axis);s.actors[visual[id]].battlePivot[axis]=real(u+0x78+4*axis);s.actors[visual[id]].battleScale[axis]=(axis<2?real(u+0x114):1.f)*real(u+0x9c+4*axis)*real(u+0x90+4*axis);s.actors[visual[id]].battleDisplayOffset[axis]=real(u+0x54+4*axis);}}}
 };
-bool TrioAttack::begin(const TrioBattleCommands& menu,ProfessorStory& scene,int16_t hp,std::shared_ptr<ProloguePouch> entryPouch,uint32_t* fieldNpcBattleFlags,FieldMarioBattleState* fieldMario,FieldPartyRegistry* fieldParties,const FieldPartyAppearanceServices* appearance,std::shared_ptr<BattleSpotlightState> spotlight,std::shared_ptr<BattleRandom> random,std::shared_ptr<PositionalSfxRegistry> sounds,std::shared_ptr<ShadowWork> shadows,std::shared_ptr<BattleCommandPalette> palette,std::shared_ptr<CameraManager> cameras,std::shared_ptr<FieldBeroExec> bero){if(!assetsReady || !menu.attack || !((menu.actor==1 && (menu.attack->weapon==0x803538a8 || menu.attack->weapon==0x80353de8)) || (menu.actor==2 && menu.attack->weapon==0x80393ea8)))return false;if(runtime_)return runtime_->done && runtime_->readyActor==menu.actor && runtime_->launch(menu);auto r=std::make_shared<TrioAttackRuntime>(random?std::move(random):std::make_shared<BattleRandom>(1),fieldParties?fieldParties->originalPool:nullptr);r->bero=std::move(bero);r->cameras=std::move(cameras);if(!r->cameras){r->cameras=std::make_shared<CameraManager>();r->cameras->initializeBoot(608,480);}r->cameras->camera(4)->mode=2;r->palette=palette?std::move(palette):std::make_shared<BattleCommandPalette>();r->shadows=shadows?std::move(shadows):std::make_shared<ShadowWork>();r->publicSfx=sounds?std::move(sounds):std::make_shared<PositionalSfxRegistry>();r->spotlight=spotlight?std::move(spotlight):std::make_shared<BattleSpotlightState>();r->fieldNpcBattleFlags=fieldNpcBattleFlags;r->fieldMario=fieldMario;r->fieldParties=fieldParties;if(appearance)r->fieldAppearance=*appearance;if(!r->initialize(menu,scene,hp,std::move(entryPouch)))return false;runtime_=std::move(r);return true;}
+bool TrioAttack::begin(const TrioBattleCommands& menu,ProfessorStory& scene,int16_t hp,std::shared_ptr<ProloguePouch> entryPouch,uint32_t* fieldNpcBattleFlags,FieldMarioBattleState* fieldMario,FieldPartyRegistry* fieldParties,const FieldPartyAppearanceServices* appearance,std::shared_ptr<BattleSpotlightState> spotlight,std::shared_ptr<BattleRandom> random,std::shared_ptr<PositionalSfxRegistry> sounds,std::shared_ptr<ShadowWork> shadows,std::shared_ptr<BattleCommandPalette> palette,std::shared_ptr<CameraManager> cameras,std::shared_ptr<FieldBeroExec> bero){if(!assetsReady || !menu.attack || !((menu.actor==1 && (menu.attack->weapon==0x803538a8 || menu.attack->weapon==0x80353de8)) || (menu.actor==2 && menu.attack->weapon==0x80393ea8)))return false;if(runtime_)return runtime_->done && runtime_->readyActor==menu.actor && runtime_->launch(menu);auto r=std::make_shared<TrioAttackRuntime>(random?std::move(random):std::make_shared<BattleRandom>(1),fieldParties?fieldParties->originalPool:nullptr);r->bero=std::move(bero);r->cameras=std::move(cameras);if(!r->cameras){r->cameras=std::make_shared<CameraManager>();r->cameras->initializeBoot(608,480);}r->cameras->camera(4)->mode=2;r->palette=palette?std::move(palette):std::make_shared<BattleCommandPalette>();r->shadows=shadows?std::move(shadows):std::make_shared<ShadowWork>();r->publicSfx=sounds?std::move(sounds):std::make_shared<PositionalSfxRegistry>();r->spotlight=spotlight?std::move(spotlight):std::make_shared<BattleSpotlightState>();r->fieldNpcBattleFlags=fieldNpcBattleFlags;r->fieldMario=fieldMario;r->fieldParties=fieldParties;if(appearance)r->fieldAppearance=*appearance;if(!r->initialize(menu,scene,hp,std::move(entryPouch)))return false;r->hpAllocation=std::make_shared<const uint8_t>(0);runtime_=std::move(r);return true;}
 void TrioAttack::tick(uint64_t time,ProfessorStory& scene,uint32_t triggers,const BattlePadSample* physical){if(runtime_)runtime_->tick(time,scene,triggers,physical);}
 bool TrioAttack::statusWindowVisible()const{return !runtime_ || runtime_->statusWindowOpen;}
 bool TrioAttack::active()const{return runtime_ && !runtime_->done;}
@@ -1989,6 +2097,76 @@ bool TrioAttack::resumeLetterboxDraw(uint32_t camera,uint32_t userdata,const Cam
     s.begin=[](void* u){const auto& s=*static_cast<Bridge*>(u)->source;return s.begin && s.begin(s.user);};
     s.vertex=[](void* u,uint32_t i,const std::array<int16_t,3>& r){const auto& s=*static_cast<Bridge*>(u)->source;return s.vertex && s.vertex(s.user,i,r);};
     return drawCameraLetterbox(s,runtime_->letterboxDrawCursor);
+}
+std::optional<uint64_t> TrioAttack::enemyHpAllocation() const {
+    if(!runtime_ || !runtime_->hpAllocation)return {};
+    const auto key=uint64_t(reinterpret_cast<uintptr_t>(runtime_->hpAllocation.get()));
+    return runtime_->hpAllocationCurrent(key)?std::optional<uint64_t>(key):std::nullopt;
+}
+std::shared_ptr<const uint8_t> TrioAttack::enemyHpAllocationOwner() const {
+    return enemyHpAllocation()?runtime_->hpAllocation:nullptr;
+}
+bool TrioAttack::enemyHpAllocationCurrent(uint64_t key) const {
+    return runtime_ && runtime_->hpAllocationCurrent(key);
+}
+bool TrioAttack::enemyHpFrameComplete(uint64_t pass) const {
+    return runtime_ && runtime_->hpFrame.complete(pass);
+}
+std::optional<uint32_t> TrioAttack::enemyHpResourceWord(uint32_t a) const {
+    if(!enemyHpAllocation())return {};
+    auto& r=*runtime_;
+    if(r.hpCamera.owns(a))return r.hpCamera.word(a);
+    if(auto v=r.hpVmWord(a))return v;
+    uint32_t v;return r.vm.gpAddresses.readWord(a,v)?std::optional<uint32_t>(v):std::nullopt;
+}
+std::optional<uint32_t> TrioAttack::enemyHpCamera(std::optional<uint32_t> index) const {
+    return runtime_?runtime_->hpCamera.camera(index):std::nullopt;
+}
+bool TrioAttack::enemyHpMatrix(BattleAudienceMatrixRequest& q) const {
+    return runtime_ && runtime_->hpCamera.matrix(q);
+}
+bool TrioAttack::resumeEnemyHpDraw(uint32_t camera,uint32_t userdata,const TrioEnemyHpNativeServices& source) const {
+    const auto allocation=enemyHpAllocation();
+    const auto owner=runtime_; // External hooks may replace the public owner.
+    if(!allocation || !owner || !owner->cameras)return false;
+    auto& r=*owner;const auto& call=r.cameraDrawCursor.display;
+    if(r.hpRunning || !call.active || !call.invoking || call.callback!=0x8011fde0 ||
+        call.camera!=camera || camera!=8 || call.userdata!=userdata || userdata!=Battle || !r.cameraMainPublication)return false;
+    struct Running {bool& flag;explicit Running(bool& f):flag(f){flag=true;}~Running(){flag=false;}} running(r.hpRunning);
+    // Renderer/native providers are retained by their stable explicit owner.
+    // Missing owners do not bind a cursor that could never draw real geometry.
+    if(!source.lifetime || !source.begin || !source.publish || !source.number.icons.gx ||
+        !source.number.icons.gx->call || !source.number.icons.gx->quad || !source.raster.request)return false;
+    if(r.hpBound){if(!r.hpSame(source))return false;}
+    else {
+        r.hpNative=source;r.hpBorrowedGx=source.number.icons.gx;r.hpActualGx=*source.number.icons.gx;
+        const std::weak_ptr<TrioAttackRuntime> weak=runtime_;
+        BattleClassCameraAddressPolicy address;address.base=0x60000000;
+        address.unmapped=[weak](uint32_t base,uint32_t bytes){auto p=weak.lock();if(!p)return false;
+            // Explicit native address-view policy, never an original camera
+            // pointer. Prove no actual storage including file-cache views.
+            return p->vm.memory.unmappedRange(base,bytes);};
+        if(!r.hpCamera.bind(r.cameras,*allocation,nativeBattleActorServices(r.vm),std::move(address),
+            [weak,key=*allocation](BattleClassCameraEpoch e){auto p=weak.lock();return p && p->hpAllocationCurrent(key) &&
+                e.generation==key && e.pass && e.pass==p->cameraMainPublication;}))return false;
+        if(!r.hpFrame.bind(*allocation,r.hpServices(),[weak,key=*allocation](){auto p=weak.lock();return p && p->hpAllocationCurrent(key);})){r.hpCamera.retire();return false;}
+        r.hpBound=true;
+    }
+    const BattleClassCameraEpoch epoch{*allocation,r.cameraMainPublication};
+    if(!r.hpCamera.begin(epoch,r.cameraMainCursor,r.cameraDrawCursor,r.displayQueue,userdata))return false;
+    if(!r.hpBegun){
+        if(r.hpPass>=epoch.pass)return false;
+        // Hold admission is external/atomic: false may retain its own effects.
+        if(!r.hpNative.begin(r.hpNative.user,*allocation,epoch.pass))return false;
+        if(!r.hpCamera.available())return false;
+        r.hpPass=epoch.pass;r.hpBegun=true;
+    }
+    if(r.hpPass!=epoch.pass)return false;
+    const bool complete=r.hpFrame.resume(epoch.pass,call,r.displayQueue);
+    if(!complete || !r.hpCamera.available())return false;
+    if(!r.hpNative.publish(r.hpNative.user,*allocation,epoch.pass) || !r.hpCamera.available())return false;
+    if(!r.hpCamera.finish(epoch))return false;
+    r.hpBegun=false;return true;
 }
 bool TrioAttack::resumeEnemyHpDraw(uint32_t camera,uint32_t userdata,const BattleEnemyHpDrawServices& source) const{
     if(!runtime_ || !runtime_->cameras)return false;

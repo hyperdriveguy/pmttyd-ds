@@ -9,6 +9,7 @@
 #include "battle_weapon_menu_main.hpp"
 #include "battle_present_item.hpp"
 #include "battle_attack_selection.hpp"
+#include "battle_action_manager_continuation.hpp"
 #include <unordered_map>
 #include <unordered_set>
 #include <optional>
@@ -29,6 +30,8 @@ public:
  BattleCameraRequestServices camera;bool physicalCurrent=false;uint64_t sampledAt=UINT64_MAX;
  void samplePhysical(uint64_t milliseconds,const BattlePadSample*);
  bool actionManager(uint64_t milliseconds);
+ bool actionManagerPending()const{return actionManagerCursor.active();}
+ uint64_t actionManagerSampleTime()const{return actionInvocationAt;}
  bool actionDisplay(uint64_t milliseconds,HarborTutorial&);
  DisplayQueue actionDisplays;
  explicit HarborTutorialPacked(EventNativeRuntime& r):vm(r){}
@@ -79,6 +82,9 @@ public:
 private:
  BattlePadSample sampledPhysical{};
  uint64_t actionManagedAt=UINT64_MAX,actionDisplayedAt=UINT64_MAX;
+ BattleActionManagerCursor actionManagerCursor;
+ BattlePadSample actionPhysical{};uint64_t actionInvocationAt=UINT64_MAX;
+ bool actionDisplayReady=false;
  std::array<bool,4> registered{};
  // Native 16KiB private arena. Low words are service scratch; 0xc00 legacy
  // weapon UI; 0x1000..0x3fff cached original text. Source tables remain in Battle.

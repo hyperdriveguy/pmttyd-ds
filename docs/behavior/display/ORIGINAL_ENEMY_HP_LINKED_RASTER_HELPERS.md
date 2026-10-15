@@ -45,7 +45,7 @@ across suspension and must complete the actual requested SDK function.
 ## Untextured raster bodies
 
 Whole InitRasta80103b48/f4 includes whole InitSub80103c3c/94:
-Cull0, ColorUpdate1, AlphaCompare(7,0,0,7,0), BlendMode(1,4,5,5),
+Cull0, DepthLocation1, AlphaCompare(7,0,0,7,0), BlendMode(1,4,5,5),
 DepthMode(1,7,0), ClearDescriptors, Channels1,
 ChannelControl(4,0,1,1,0,2,2), followed by original position/color descriptors
 and attribute formats, TextureGenerators0, one TEV stage and exact raster

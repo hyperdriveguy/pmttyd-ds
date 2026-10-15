@@ -70,6 +70,12 @@ public:
     std::optional<BattleEnemyHpRasterView> enemyHpRasterView(const Game&) const;
     bool canDrawEnemyHpIcon(const BattleEnemyHpIconPacket&) const;
     bool drawEnemyHpOrdered(BattleEnemyHpOrderedPresentation&,NativeBattleEnemyHpGpu&);
+    struct EnemyHpMetrics {
+        bool prepared=false,allocationCurrent=false,sourceComplete=false;
+        uint64_t allocation=0,sourcePass=0,publishedPass=0;
+        size_t packets=0,glyphs=0,barQuads=0;
+    };
+    EnemyHpMetrics enemyHpMetrics(const Game&) const;
     bool drawClassMenu(const BattleClassBackend&);
     const BattleClassAssets* classMenuAssets();
     const BattleClassFooterGpuResource* classFooterResources();
@@ -190,6 +196,12 @@ private:
     BattleEnemyHpOrderedPresentation* orderedHpPresentation=nullptr;
     uint64_t orderedHpCapturePass=0;
     bool drawEnemyHpIcon(const BattleEnemyHpIconPacket&);
+    struct EnemyHpBinding;
+    std::shared_ptr<EnemyHpBinding> enemyHpBinding;
+    bool prepareEnemyHp(const Game&);
+    void releaseEnemyHp();
+    bool resumeEnemyHp(const Game&,uint32_t camera,uint32_t userdata);
+    bool drawEnemyHp(const Game&);
     struct SourceIconCell {Texture gpu;uint32_t index=UINT32_MAX;uint64_t stamp=0;std::shared_ptr<const uint8_t> generation;};
     std::array<SourceIconCell,202> sourceIconCells{}; // Published + building: each100 items plus AP icon442.
     std::optional<uint32_t> pendingSourceIcon,boundSourceIcon;uint64_t sourceIconStamp=0;

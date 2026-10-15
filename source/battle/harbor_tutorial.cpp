@@ -232,11 +232,18 @@ void HarborTutorial::setStartupFade(void* user,void(*entry)(void*,int32_t,int32_
 void HarborTutorial::tick(uint64_t time,uint32_t keys,const BattlePadSample* physical){if(!runtime_ || failed || time<now)return;now=time;auto& r=*runtime_;r.scene=this;if(message.active())message.tick(now,keys);
  const auto speakerSlot=visualSlot(speaker);
  if(message.poseRequestSerial!=r.messagePoseSerial && speakerSlot>=0){r.messagePoseSerial=message.poseRequestSerial;auto& a=actors[size_t(speakerSlot)];const auto& pose=message.poseRequest==MessagePlayback::PoseRequest::Talk?a.talkPose:a.stayPose;if(!pose.empty()){a.pose=pose;a.poseAt=message.poseRequestedAt;}}
- r.packed->samplePhysical(time,physical);r.packed->publish(*this);
- // Native scheduler admission: one physical simulation sample owns pad/Main/
- // queue registration. Full source sequence/stage/audience Main remains open.
- if(!r.packed->actionManager(time) && !pendingService)pendingService=0x800fa5b0;
- r.vm.gp.timestamp=now*eventClockRate(243000000);r.vm.runManager();r.packed->publish(*this);r.packed->capture(*this);
+ const bool heldActionManager=r.packed->actionManagerPending();
+ if(!heldActionManager){r.packed->samplePhysical(time,physical);r.packed->publish(*this);}
+ // A held source manager owns its original sample and command work. Do not
+ // overwrite general history/guest fields or advance events around its wait.
+ // This is scoped native admission, not the complete original Main scheduler.
+ if(!r.packed->actionManager(time)){
+  if(!pendingService)pendingService=0x800fa5b0;
+  actionDisplayPending=!r.packed->actionDisplay(time,*this);return;
+ }
+ if(heldActionManager && pendingService==0x800fa5b0)pendingService=0;
+ const auto admittedTime=heldActionManager?r.packed->actionManagerSampleTime():now;
+ r.vm.gp.timestamp=admittedTime*eventClockRate(243000000);r.vm.runManager();r.packed->publish(*this);r.packed->capture(*this);
  actionDisplayPending=!r.packed->actionDisplay(time,*this);
  damageActive=r.packed->hitEventsActive();
  if(!initialized && r.packed->unitInitReady())initialized=true;

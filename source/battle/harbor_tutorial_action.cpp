@@ -9,15 +9,18 @@ namespace ttyd {
 // redraws are not source command ticks. Only channel 0/private pad B+0x1d1c is
 // admitted; general history at B+0xf2c is sampled separately by samplePhysical.
 bool HarborTutorialPacked::actionManager(uint64_t time) {
-  if (actionManagedAt == time)
-    return true;
-  // Missing platform sample does not fabricate an empty pad update or advance
-  // source callbacks. Render retries also do not consume another simulation
-  // tick.
-  actionDisplays.reinitialize();
-  if (!physicalCurrent || sampledAt != time)
-    return true;
-  actionManagedAt = time;
+  if (!actionManagerCursor.active()) {
+    if (actionManagedAt == time)
+      return true;
+    // An admitted sample owns this whole manager call, including any wait.
+    // Queue reset belongs only to the next invocation, never a held child.
+    actionDisplays.reinitialize();
+    actionDisplayReady = false;
+    if (!physicalCurrent || sampledAt != time)
+      return true;
+    actionPhysical = sampledPhysical;
+    actionInvocationAt = time;
+  }
   BattleActionManagerServices s;
   s.memory = nativeBattleActorServices(vm);
   s.user = this;
@@ -26,7 +29,7 @@ bool HarborTutorialPacked::actionManager(uint64_t time) {
     if (channel != 0 || address != Battle + 0x1d1c)
       return false;
     auto pad = readPackedBattlePad(address, nativeBattleActorServices(p.vm));
-    pad.update(p.sampledPhysical);
+    pad.update(p.actionPhysical);
     writePackedBattlePad(address, pad, nativeBattleActorServices(p.vm));
     return true;
   };
@@ -66,17 +69,26 @@ bool HarborTutorialPacked::actionManager(uint64_t time) {
                                   argument,
                                   priority) == DisplayAdmission::Registered;
   };
-  return packedBattleActionCommandManager(Battle, s);
+  if (!resumePackedBattleActionCommandManager(Battle, s, actionManagerCursor))
+    return false;
+  actionManagedAt = actionInvocationAt;
+  actionDisplayReady = true;
+  return true;
 }
 
 // Only camera 8/original TimingA Display 0x8012a7cc with native Battle userdata
 // is admitted. Icons 108/109 must both exist before callback effects. Icon
 // requests feed the scene projection; this helper does not submit GPU work.
 bool HarborTutorialPacked::actionDisplay(uint64_t time, HarborTutorial &scene) {
-  if (actionDisplayedAt == time)
+  (void)time;
+  if (actionManagerCursor.active()) {
+    scene.actionCommandIcons.clear();
+    return false;
+  }
+  if (actionDisplayReady && actionDisplayedAt == actionManagedAt)
     return true;
   scene.actionCommandIcons.clear();
-  if (actionManagedAt != time)
+  if (!actionDisplayReady)
     return true;
   // Admission precedes callback effects. Borrowed queue records are consumed
   // once per native simulation sample, never by a repeated screen draw.
@@ -86,7 +98,7 @@ bool HarborTutorialPacked::actionDisplay(uint64_t time, HarborTutorial &scene) {
         r->userdata != Battle || !messageIcon(108) || !messageIcon(109))
       return false;
   }
-  actionDisplayedAt = time;
+  actionDisplayedAt = actionManagedAt;
   BattleTimingDisplayServices s;
   s.memory = nativeBattleActorServices(vm);
   s.user = &scene;
