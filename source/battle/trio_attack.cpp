@@ -353,6 +353,9 @@ struct TrioAttackRuntime {
     CameraLetterboxCursor letterboxCursor;
     CameraLetterboxDrawCursor letterboxDrawCursor;
     BattleEnemyHpDrawCursor enemyHpDrawCursor;BattleMonosiriCursor enemyHpMonosiriCursor;
+    // Source Turn -> Phase/Move -> Act each owns one retained invocation.
+    // The linked Move-to-Turn request below is an owned ABI bridge,not a
+    // temporary stack request that can change identity while a child waits.
     BattleTurnCursor turnCursor;
     BattlePhaseCursor sourcePhaseCursor;
     BattleTurnRequest sourceMoveLinkedRequest;
@@ -376,6 +379,8 @@ struct TrioAttackRuntime {
     // shared_ptr identity supplies native lifetime evidence,not guest storage.
     std::map<uint32_t,std::shared_ptr<const uint8_t>> actMenuUiAllocations;
     std::map<uint32_t,std::string> originalClassLabelBytes;
+    // Distinct callers retain distinct barrier/consume progress. Earlier
+    // cleanup and acknowledged reaction children survive a later provider hold.
     BattleEventBarrierCursor actWaitCursor,actConsumeCursor;
     BattleEventBarrierCursor turnEventBarrierCursor;
     BattleAudienceTurnEndCursor sourceAudienceTurnEndCursor;
@@ -1853,17 +1858,28 @@ struct TrioAttackRuntime {
     }
     // Real source Turn parent; child requests retain operands across holds.
     // Unbound side-effect owners remain unavailable, never vector acknowledgments.
+    // Notes use hex offsets/masks and decimal kinds/counts. Case labels are
+    // original US function identities. Output value/position/
+    // duration/strength are separate output lanes; no native guest-stack alias.
+    // An engaged all-zero output is complete,while nullopt keeps the exact child.
     BattleTurnServices turnServices() {
         BattleTurnServices s;s.actors=nativeBattleActorServices(vm);s.user=this;
         s.call=[](void* self,const BattleTurnRequest& q)->std::optional<BattleTurnOutput>{
             auto& r=*static_cast<TrioAttackRuntime*>(self);const auto actors=nativeBattleActorServices(r.vm);
             BattleTurnOutput out;const auto unit=q.integers[0];
             switch(q.function){
+            // btlseqTurnFirstProcess uses the same VM and packed actor owners;
+            // this synchronous child is not the legacy emptyTurnPass adapter.
             case 0x8011b1ec:{
                 BattleTurnFirstBackend backend;backend.runtime=&r.vm;
                 battleTurnFirstProcess(q.integers[0],nativeBattleTurnFirstServices(backend));break;}
+            // Trigger reads current-B global8041eb90,channel0 word f44.
+            // Preserve the raw masked bits rather than consuming an input edge.
             case 0x8011a06c:
                 out.value=r.word(r.word(0x8041eb90)+0xf44)&q.integers[0];break;
+            // CheckStatus/GetStatus/Recovery/ResetMove and HP/FP helpers share
+            // the actual packed registry. Duration/strength remain byte lanes,
+            // including their source signed interpretation in the parent.
             case 0x80127814:
                 out.value=checkPackedBattleStatus(unit,int32_t(q.integers[1]),actors);break;
             case 0x80127f34:{
@@ -1874,9 +1890,13 @@ struct TrioAttackRuntime {
             case 0x801266d4:resetPackedBattleMoveStatus(unit,actors);break;
             case 0x80126bec:recoverPackedBattleHp(unit,int32_t(q.integers[1]),actors);break;
             case 0x80126b58:recoverPackedBattleFp(unit,int32_t(q.integers[1]),actors);break;
+            // ShadowGuard: attribute U104 bit10 wins; otherwise exact kind228
+            // requires signed word U228>0. This is not a general HP/guard check.
             case 0x80125d08:
                 out.value=(r.word(unit+0x104)&0x10)?1:
                     r.word(unit+8)==228 && int32_t(r.word(unit+0x228))>0;break;
+            // Unit XYZ starts U3c,stride4; BodyPartId/UnitPart/PartPos below
+            // are distinct queries. Height is signed half Uce,not float Y.
             case 0x80128c7c:
                 for(unsigned axis=0;axis<3;++axis)out.position[axis]=r.real(unit+0x3c+4*axis);
                 break;
@@ -1888,11 +1908,15 @@ struct TrioAttackRuntime {
             case 0x80128cd8:out.value=packedUnitPart(unit,int32_t(q.integers[1]),actors.memory);break;
             case 0x80128b10:
                 out.position=packedPartWorldPosition(unit,nativeBattlePartPositionServices(r.vm));break;
+            // irand receives the actual captured signed bound. RNG belongs
+            // to this child and must not be rerun after a later effect/event hold.
             case 0x80005da0:out.value=r.random.bounded(int32_t(q.integers[0]));break;
             case 0x800374ac:{
                 // The actual VM constructor owns this mapped source entry.
                 auto& entry=createRootEvent(r.vm.schedule,q.integers[0],int32_t(q.integers[1]),q.integers[2],r.vm.creationServices());
                 required(r.vm.entryAddresses.addressOf(&entry,out.value));break;}
+            // Conclusion and AllEventBarrier query real packed units/status and
+            // the actual scheduler. No native visual/alive-enemy count substitutes.
             case 0x8011aa34:{
                 BattleConclusionServices concluded;concluded.actors=actors;concluded.user=&r;
                 concluded.checkStatus=[](void* p,uint32_t u,int32_t id){auto& owner=*static_cast<TrioAttackRuntime*>(p);return int32_t(checkPackedBattleStatus(u,id,nativeBattleActorServices(owner.vm)));};
@@ -1917,6 +1941,9 @@ struct TrioAttackRuntime {
                 const auto ready=resumeBattleAllEventBarrier(q.integers[0],barrier,r.turnEventBarrierCursor);
                 if(!ready){r.pending=r.turnEventBarrierCursor.pending()?r.turnEventBarrierCursor.pending():q.function;return {};}
                 out.value=uint32_t(*ready);break;}
+            // Retained audience TurnEnd,not audienceTurnEnd() legacy prefix.
+            // Native signed division admits no zero divisor or INT_MIN/-1;
+            // fctiwz admission is finite [-2^31,2^31),before platform dispatch.
             case 0x8019f298:{
                 BattleAudienceTurnEndServices audience;audience.actors=actors;audience.user=&r;
                 audience.divide=[](void* p,int32_t numerator,int32_t denominator)->std::optional<int32_t>{
@@ -1934,6 +1961,8 @@ struct TrioAttackRuntime {
                 if(!resumePackedBattleAudienceTurnEnd(audience,r.sourceAudienceTurnEndCursor)){
                     r.pending=r.sourceAudienceTurnEndCursor.pending()?r.sourceAudienceTurnEndCursor.pending():q.function;return {};}
                 break;}
+            // Phase8011c2b4 owns retained Move/Act descendants; completion is
+            // one original invocation,not a completed turn or render delay.
             case 0x8011c2b4:
                 if(!r.resumeOriginalPhase(q.integers[0]))return {};
                 break;
@@ -2304,6 +2333,9 @@ struct TrioAttackRuntime {
         if(!result&&!pending)pending=sourceCommandInputCursor.pending()?sourceCommandInputCursor.pending():0x801229d8;
         return result;
     }
+    // Enum child selects the original ABI. Unit-data keys,flags and raw
+    // return words stay source values; omitted enum children deliberately hold.
+    // A completed CommandInput zero still reaches the Act parent as zero.
     BattleActServices originalActServices() {
         BattleActServices services;services.actors=nativeBattleActorServices(vm);services.user=this;
         services.call=[](void* p,const BattleActSequenceRequest& q)->std::optional<BattleActOutput>{
@@ -2312,7 +2344,8 @@ struct TrioAttackRuntime {
             const auto& a=q.arguments;BattleActOutput out;
             switch(q.child){
             case BattleActChild::CommandInit:
-                // Whole80125380/18: actual ordered stores, no UI allocation.
+                // Whole CommandInit80125380: Input state B171c=0 FIRST,then
+                // Bef4 OR80 (command-active bit). No menu allocation here.
                 r.word(a[0]+0x171c,0);r.word(a[0]+0xef4,r.word(a[0]+0xef4)|0x80u);break;
             case BattleActChild::CommandInput:{
                 const auto result=r.resumeOriginalCommandInput(a[0]);if(!result)return {};
@@ -2327,17 +2360,25 @@ struct TrioAttackRuntime {
                 out.value=packedUnitData(a[0],a[1],actors);break;
             case BattleActChild::Random:
                 out.value=r.random.bounded(int32_t(a[0]));break;
+            // Unit status flags at138 are distinct from attributes104 and
+            // action flags27c. Only Check has the source null-unit early zero;
+            // Clear uses actual admitted storage. Belong is raw byte Uc.
             case BattleActChild::CheckStatusFlag:
                 out.value=a[0]?(r.word(a[0]+0x138)&a[1]):0;break;
             case BattleActChild::ClearStatusFlag:
                 r.word(a[0]+0x138,r.word(a[0]+0x138)&~a[1]);break;
             case BattleActChild::Belong:
                 out.value=r.byte(a[0]+0xc);break;
+            // battlePhaseEnded passes actors.user (the VM) to status,not this
+            // outer Trio owner. Only memory/status are needed for this query;
+            // table sorting would additionally require real(),bound elsewhere.
             case BattleActChild::PhaseEnd:{
                 BattlePhaseServices phase;phase.actors=actors;
                 phase.status=[](void* p,uint32_t u,int32_t status){
                     return checkPackedBattleStatus(u,status,nativeBattleActorServices(*static_cast<EventNativeRuntime*>(p)));};
                 out.value=battlePhaseEnded(currentBattleAddress(actors),phase);break;}
+            // Delete/Exists consume scheduler IDs; Create returns mapped guest
+            // EventEntry address. Owner/ID publication belongs to the parent.
             case BattleActChild::DeleteEvent:
                 deleteEventId(a[0],r.vm.creationServices());break;
             case BattleActChild::EventExists:
@@ -2351,6 +2392,9 @@ struct TrioAttackRuntime {
                     auto& owner=*static_cast<TrioAttackRuntime*>(p);
                     return int32_t(checkPackedBattleStatus(u,status,nativeBattleActorServices(owner.vm)));};
                 out.value=uint32_t(battleCheckConcluded(a[0],conclusion));break;}
+            // Separate retained barrier and reserve-consumption cursors avoid
+            // treating a completed barrier scalar0 as unavailable. No removeItem
+            // callback is bound here: real reservations can remain pending.
             case BattleActChild::WaitEvents:
             case BattleActChild::ConsumeItems:{
                 BattleEventBarrierServices barrier;barrier.actors=actors;barrier.user=p;
@@ -2382,11 +2426,16 @@ struct TrioAttackRuntime {
             return out;
         };return services;
     }
+    // Act fallback8011b2dc is diagnostic only; completion lets the actual source
+    // parent decide the next sequence transition. Do not advance it from drawing.
     bool resumeOriginalAct(uint32_t battle) {
         const bool complete=resumePackedBattleAct(battle,originalActServices(),actCursor);
         if(!complete && !pending)pending=actCursor.pending()?actCursor.pending():0x8011b2dc;
         return complete;
     }
+    // Original Move children use actual packed memory and VM event creation.
+    // Remaining shared Turn ABI calls pass through the owned bridge below;
+    // unsupported effects/audio stay pending rather than completing empty.
     BattleMoveServices originalMoveServices() {
         BattleMoveServices services;services.actors=nativeBattleActorServices(vm);services.user=this;
         services.call=[](void* p,const BattleMoveRequest& q)->std::optional<uint32_t>{
@@ -2396,11 +2445,17 @@ struct TrioAttackRuntime {
                 // Existing actual-VM source table builder has no unavailable
                 // provider: numeric/status reads are admitted synchronously.
                 buildBattlePhaseTables(q.integers[0],r.phaseServices());return 0;
+            // Majinai Done/EndCheck are separate source leaves. Native void
+            // completion is acknowledged as0; no new scalar result is inferred.
             case 0x800f7718:case 0x800f76d4:{
                 BattleMajinaiQueryServices majinai;majinai.memory=actors.memory;majinai.user=actors.user;majinai.byte=actors.byte;
                 if(q.function==0x800f7718)battleMajinaiDone(majinai);else battleMajinaiEndCheck(majinai);
                 return 0;}
+            // Original memset returns its destination; fill uses low8 bits.
+            // Preserve actual store widths/order through eventFillMemory.
             case 0x800050b4:return eventFillMemory(q.integers[0],int32_t(q.integers[1]),q.integers[2],actors.memory);
+            // SetTotalHitDamage sign-extends the LOW16 operand (8000 sign bit,
+            // 65536 modulus) into word U264; no saturating damage conversion.
             case 0x80127434:{
                 const auto low=uint16_t(q.integers[1]);const auto amount=low<0x8000?int32_t(low):int32_t(low)-65536;
                 actors.memory.storeWord(actors.memory.user,q.integers[0]+0x264,uint32_t(amount));return 0;}
@@ -2408,6 +2463,9 @@ struct TrioAttackRuntime {
             case 0x801297bc:{
                 // Whole source leaf, not legacy runPhaseEvent's unconditional
                 // allocation. Fresh script read and original null-script path.
+                // Selector nonzero chooses phase script294,zero script298.
+                // Root priority10/flags20 are source operands. U0 owns the event;
+                // U29c receives scheduler ID,while constructor maps an entry too.
                 const auto unit=q.integers[0],script=r.word(unit+(q.integers[1]?0x294:0x298));
                 if(!script)return 0;
                 auto& event=createRootEvent(r.vm.schedule,script,10,0x20,r.vm.creationServices());
@@ -2419,6 +2477,9 @@ struct TrioAttackRuntime {
             }
             // Actual common original children reuse the real Turn providers.
             // The converted request has stable owned identity across holds.
+            // Capture request identity,function and all eight integer operands.
+            // A changed held request is refused,not recaptured. Output value is
+            // consumed only on engagement; then release the original borrow.
             if(!r.sourceMoveOriginalRequest){
                 r.sourceMoveOriginalRequest=&q;r.sourceMoveLinkedRequest={};
                 r.sourceMoveLinkedRequest.function=q.function;r.sourceMoveLinkedRequest.integers=q.integers;
@@ -2430,6 +2491,9 @@ struct TrioAttackRuntime {
             r.sourceMoveOriginalRequest=nullptr;return value->value;
         };return services;
     }
+    // Phase fallback8011c2b4 and Turn8011c510 identify source parents. Their
+    // cursors retain dispatch/captured operands across waits; neither wrapper
+    // invokes the separate legacy handoff or starts a fresh rendering frame.
     bool resumeOriginalPhase(uint32_t battle) {
         if(resumePackedBattlePhase(battle,originalMoveServices(),sourcePhaseCursor))return true;
         if(!pending)pending=sourcePhaseCursor.pending()?sourcePhaseCursor.pending():0x8011c2b4;

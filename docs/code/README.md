@@ -107,7 +107,7 @@ Typed damage and synchronous orchestration, Dive, retained Main/stage and sequen
 Harbor entry/catalog, packed actor/menu/command composition and action/display adapters are covered.
 Selected Harbor damage/aftereffect/AP/audience/item/weapon-input adapters are covered.
 Trio native command selection and retained action-manager helper are covered.
-Trio established runtime/header/facade/draw/material bindings are annotated on their recorded committed baseline. Newer concurrent source Turn/audience/pinch/sequence/pose integrations still need review; the live runtime remains partial.
+Trio established runtime/header/facade/draw/material bindings are annotated on their recorded baselines. Focused guides below cover subsequent menu and Turn/Phase/Move/Act provider composition; newer cadence/pinch/sequence/pose/public draw changes still need review. The runtime remains partial.
 Remaining field/NPC/partner modules, battle, message, inventory, story, effect
 and port tooling still
 require a systematic inline numeric/behavior audit. Concurrent additions to
@@ -199,3 +199,7 @@ and retained PresentItem recovery/effect ownership.
 [Trio menu bindings](trio-menu-bindings.md) explains runtime provider composition,
 zero versus pending, shared map identities, original message ownership and
 separate Input-state/event domains. The newer Trio integration audit stays partial.
+
+[Trio sequence bindings](trio-sequence-bindings.md) explains retained Turn/Phase/
+Move/Act composition, typed returns, packed offsets, event domains and numeric
+admission. Newer runtime integrations still need separate review.
