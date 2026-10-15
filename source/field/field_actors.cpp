@@ -5,6 +5,7 @@
 namespace ttyd {
 namespace {
 FieldActorAssets catalog;NpcAngleTable npcAngles;std::string assetRoot;uint64_t generation=0;
+// First source-order arm wins, including unconditional arms before later rules.
 const FieldActorTalkRule* talkRule(const FieldActorRecord& actor,int32_t story) {
     for(const auto& rule:actor.talkRules)if(rule.comparison==3 ||
         (rule.comparison==0 && story<rule.story) || (rule.comparison==1 && story==rule.story) ||
@@ -24,6 +25,8 @@ bool ordinaryTalkGuard(const FieldActorRecord& actor,const FieldActorTalkState& 
     return excludes(2,state.flag5405,items.item95) && excludes(13,state.flag5406,items.item107);
 }
 }
+// Stage catalog AND original angle table before publishing generation/root.
+// A failure must not combine new actor rows with old numerical table data.
 bool loadFieldActorCatalog(const char* root) {
     if(!root)return false;
     FieldActorAssets next;if(!next.load((std::string(root)+"/field-actors.pmnpc").c_str()))return false;
@@ -47,6 +50,9 @@ std::string fieldActorTalkKey(const FieldActorRecord& actor,int32_t story,const 
         const auto* rule=talkRule(actor,story);return rule?rule->message:std::string{};
     }
     if(actor.talkPrefix.empty())return {};
+    // Legacy simple chapter CASE_LESS family: >=threshold advances branch.
+    // Source thresholds56/112/164/215/261/339/373/401 are story values,
+    // not chapter ordinals or a replacement for bound per-actor source rules.
     constexpr int32_t limits[]={56,112,164,215,261,339,373,401};
     unsigned branch=0;while(branch<8 && story>=limits[branch])++branch;
     return actor.talkPrefix+"0"+char('0'+branch);
@@ -63,6 +69,8 @@ bool FieldActorTalk::begin(const FieldActorRecord& source,int32_t story,const Me
     const auto key=fieldActorTalkKey(source,story,state,items);if(key.empty())return false;
     return print(source,key.c_str(),font,now);
 }
+// Six-byte area prefix selects its unchanged US message bank. Probe owns
+// temporary text/playback only; print separately retains the successful bank.
 bool FieldActorTalk::canPrint(const FieldActorRecord& source,const char* id,const MessageFont& font,uint64_t now) const {
     if(!id || assetRoot.empty() || source.talkPrefix.size()<6)return false;
     MessageAssets probe;
@@ -79,6 +87,9 @@ bool FieldActorTalk::print(const FieldActorRecord& source,const char* id,const M
     if(!message.open(id,text,font,now))return false;
     messages=std::move(next);actor=source;return true;
 }
+// Original conditional init positions, engine units: Garf quest1 at445/0/120,
+// ordinary10/0/-460; Borodo2 ordinary-475/0/-180, quest4+flag5406 at
+// 0/-1000/0 (hidden placement, not deletion). Unknown required state holds.
 std::optional<std::array<float,3>> fieldActorInitialPosition(const FieldActorRecord& actor,const FieldActorTalkState& state) {
  if(actor.initialization==FieldActorInit::Static)return actor.position;
  if(!state.quest1420)return {};
@@ -95,6 +106,10 @@ bool FieldActorAssets::load(const char* path) {
     FILE* f=std::fopen(path,"rb");if(!f)return false;
     const bool ok=read(f);std::fclose(f);return ok;
 }
+// Private LE PMNPC001..009 are versioned native containers, not US NPC RAM.
+// Native bounds64 models/1024 actors, 32-byte ASCII asset names, room<=65535,
+// scale<=100, dimensions<=10000, XYZ magnitude<=100000 guard imported scope.
+// Candidate vectors publish only after every row and exact EOF validate.
 bool FieldActorAssets::read(FILE* f) {
     if(!f)return false;
     auto scalar=[&](auto& v){return std::fread(&v,sizeof(v),1,f)==1;};
@@ -106,6 +121,9 @@ bool FieldActorAssets::read(FILE* f) {
     };
     std::array<char,8> magic{};uint32_t modelCount=0,actorCount=0;
     if(!scalar(magic))return false;
+    // Additions: v2 system/exclusion gates, v3 hit bounds/source object name,
+    // v4 original model name, v5 draw/dimensions/talk pose, v6 NPC flags,
+    // v7 ordered talk rules, v8 wander/sound metadata, v9 Shift-JIS event/init.
     const bool version9=!std::memcmp(magic.data(),"PMNPC009",8);
     const bool version8=version9 || !std::memcmp(magic.data(),"PMNPC008",8);
     const bool version7=version8 || !std::memcmp(magic.data(),"PMNPC007",8);
@@ -146,6 +164,8 @@ bool FieldActorAssets::read(FILE* f) {
         }
         if(models[a.model].hitMode && a.kind!=1)return false;
         if(version6 && (!scalar(a.npcFlags) || (a.kind==1 && a.npcFlags)))return false;
+        // Up to64 source arms, comparison0/1/2/3 = less/equal/>=/always.
+        // Message area prefix and underscore positions must match talk bank.
         if(version7) {
             uint32_t count=0;if(!scalar(count) || count>64 || (a.kind==1 && count))return false;
             a.talkRulesBound=true;a.talkRules.resize(count);
@@ -153,6 +173,10 @@ bool FieldActorAssets::read(FILE* f) {
                 !scalar(rule.story) || !string(rule.message) || rule.message.size()<7 ||
                 rule.message[6]!='_' || a.talkPrefix.empty() || rule.message.substr(0,6)!=a.talkPrefix.substr(0,6))return false;
         }
+        // Wander admits only supported ordinary NPC flags: reject100000,
+        // 20000, 08000000, 10; without40000000 also reject2000/10000(hex).
+        // Disabled metadata must be empty/zero; enabled rates/radius positive.
+        // stepPeriod<=65535 is stored milliseconds, not rendering frames.
         if(version8) {
             auto& w=a.wander;
             if(!scalar(a.sourceTalkPresent) || a.sourceTalkPresent>1 || !scalar(w.enabled) || w.enabled>1 || !scalar(w.flags) ||
@@ -166,6 +190,9 @@ bool FieldActorAssets::read(FILE* f) {
                (!w.enabled && (w.flags || w.radius || w.speed || w.runThreshold || w.stepPeriod || !w.idle.empty() || !w.walk.empty() || !w.run.empty() || !w.soundLeft.empty() || !w.soundRight.empty())) ||
                (a.kind && a.sourceTalkPresent) || (!a.sourceTalkPresent && !a.talkRules.empty()))return false;
         } else a.sourceTalkPresent=!a.talkPrefix.empty();
+        // Event names are original Shift-JIS bytes: ASCII/kana or valid
+        // lead/trail pairs, no7f trail; NUL padding must be zero. Init selectors
+        // bind exact original model+event identities, not reusable art alone.
         if(version9) {
             std::array<unsigned char,32> name{};uint32_t init=0;
             if(!scalar(name) || !scalar(init) || init>uint32_t(FieldActorInit::Garf))return false;
@@ -189,6 +216,9 @@ bool FieldActorAssets::read(FILE* f) {
            (version7?a.talkPrefix[3]!='_':a.talkPrefix.substr(0,4)!="gor_") ||
            a.talkPrefix[6]!='_' || a.talkPrefix.back()!='_'))return false;
         for(float v:a.position)if(!std::isfinite(v) || std::fabs(v)>100000)return false;
+        // Same room/key or original name may repeat only when admitted
+        // interior/story conditions are mutually exclusive. Catalog overlap
+        // rejection is native validation, not original event branch execution.
         for(uint32_t j=0;j<i;++j) {
             const auto& b=actors[j];if(a.room!=b.room || (a.key!=b.key && (!version9 || a.eventName.empty() || a.eventName!=b.eventName)))continue;
             const bool distinctInterior=(a.interiorRequired&b.interiorForbidden) || (b.interiorRequired&a.interiorForbidden);

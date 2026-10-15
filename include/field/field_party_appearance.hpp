@@ -26,6 +26,10 @@ inline float fieldPartyWrap(float angle) {
 }
 // Ordinary finite/signed-conversion domain of toMovedir and toMovedir2.
 // Host/ARM libm and fused rounding do not claim original Gekko bit equality.
+// Source display->travel bridge: 270-display+camera, quantize .001deg with
+// signed half bias, then wrap. Flag100000(hex) handles retained special headings
+// 280/460 and260/440 before half-plane fallback. Second form mirrors offset
+// by camera-relative half-plane; it is not simply heading+offset.
 inline float fieldPartyHeading(float display,float camera,uint32_t flags,float current,float offset=0,bool second=false) {
     if(flags&0x100000) {
         if(current==280 || current==460)display=0;
@@ -48,6 +52,11 @@ inline void fieldPartyMove(FieldWallVector& output,float distance,float degrees)
     output.x=std::fma(distance,sine,output.x);
     output.z=-std::fma(distance,cosine,-output.z);
 }
+// Engine-space original query order: length30+height, horizontal rays atY+37,
+// move back30, down ray38. Revise/display/root calls may change retained owners.
+// With auxiliary<0 use rear path; otherwise try -90 side then +90 only on
+// obstruction. A down-ray miss never retries opposite side. slot0/other uses
+// opposite20deg offsets; output may retain the last attempted point on false.
 inline bool fieldPartyAppearPosition2(float height,int32_t slot,FieldWallVector& output,const FieldPartyAppearanceServices& s) {
     const float length=30.f+height;
     s.revise(s.user,180.f+s.display(s.user)); // Original request precedes retained facing and output seed.

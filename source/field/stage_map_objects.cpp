@@ -20,6 +20,9 @@ M rotation(unsigned axis,float degrees) {
     m[4*a+a]=c;m[4*a+b]=-s;m[4*b+a]=s;m[4*b+b]=c;return m;
 }
 }
+// PMMAP001 private LE:<=1M vertices,<=4096 nodes, 64-byte names, 12-float
+// local matrices, unique vertex bindings. Parent precedes child; all vertices
+// must be owned. Publish only after finite data and exact EOF validate.
 bool StageMapObjects::load(const char* path) {
     FILE* f=path?std::fopen(path,"rb"):nullptr;if(!f)return false;
     char magic[8];uint32_t vertices=0,count=0;
@@ -45,10 +48,14 @@ bool StageMapObjects::load(const char* path) {
 }
 StageMapObjects::Object* StageMapObjects::find(const std::string& name){for(auto& o:objects)if(o.name==name)return &o;return nullptr;}
 const StageMapObjects::Object* StageMapObjects::find(const std::string& name)const{for(const auto& o:objects)if(o.name==name)return &o;return nullptr;}
+// First mutation in a series resets additional unless200(hex) is set.
+// Postmultiply additions; 200000 enables use, 200 marks this series as started.
 void StageMapObjects::concatenate(Object& o,const Matrix& matrix) {
     if(!(o.flags&0x200))o.additional=identity();
     o.additional=product(o.additional,matrix);o.flags|=0x200000;o.flags|=0x200;dirty=true;
 }
+// Source translation/10 adapts engine inputs to converted map coordinates;
+// recalculate separately contributes root*.1. These are distinct boundaries.
 bool StageMapObjects::translate(const std::string& name,const Point& p) {
     auto* o=find(name);if(!o)return false;auto t=identity();for(unsigned a=0;a<3;++a)t[4*a+3]=p[a]/10.f;concatenate(*o,t);return true;
 }
@@ -59,6 +66,8 @@ bool StageMapObjects::rotate(const std::string& name,const Point& angles) {
     for(int axis=2;axis>=0;--axis)o->additional=product(o->additional,rotation(unsigned(axis),angles[unsigned(axis)]));
     o->flags|=0x200000;o->flags|=0x200;dirty=true;return true;
 }
+// Apply flags to target+descendants by ancestry, not all subsequent rows.
+// Bit1 dirties visibility; other changed flags still dirty world matrices.
 bool StageMapObjects::flag(const std::string& name,uint32_t mask,bool on) {
     const auto* target=find(name);if(!target)return false;const auto index=uint32_t(target-objects.data());
     for(uint32_t i=index;i<objects.size();++i) {
@@ -72,6 +81,9 @@ bool StageMapObjects::flag(const std::string& name,uint32_t mask,bool on) {
 std::optional<uint32_t> StageMapObjects::flags(const std::string& name)const{const auto* o=find(name);return o?std::optional<uint32_t>(o->flags):std::nullopt;}
 const char* StageMapObjects::root()const{return objects.empty()?nullptr:objects.front().name.c_str();}
 const StageMapObjects::Matrix* StageMapObjects::world(const std::string& name)const{const auto* o=find(name);return o?&o->world:nullptr;}
+// Parent-before-child world composition, then optional additional matrix.
+// Clear200(hex) per object AFTER composing so next series resets once; retain
+// 200000 and its matrix. apply() reads this publication without advancing it.
 void StageMapObjects::recalculate() {
     if(!dirty)return;
     M root=identity();root[0]=root[5]=root[10]=.1f; // Source model*.1 native coordinate bridge.

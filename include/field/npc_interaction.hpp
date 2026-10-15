@@ -10,6 +10,8 @@ struct NpcTalkBody {
     uint32_t flags=0;
     bool talkEvent=false;
 };
+// Engine-space dimensions20/37 default Mario width/height; motion0..2 is
+// idle/walk/dash. Signed keyDepth blocks talk even when negative.
 struct NpcTalkPlayer {
     FieldWallVector root;
     float width=20,height=37,displayTurn=0,cameraSnapshot=0,viewYaw=0;
@@ -20,6 +22,8 @@ struct NpcTalkPlayer {
     bool talkable() const;
     float displayDirection() const;
 };
+// Initial nearest bound1000 engine units; candidate and nearActor have
+// different publication rules. Caller starts a fresh scan, then visits actors.
 struct NpcTalkScan {
     uintptr_t candidate=0,nearActor=0;
     float distance=1000;

@@ -12,6 +12,8 @@ namespace ttyd {
 constexpr uint32_t FieldMarioOwnerAddress=0x85700000;
 // Source-sized, big-endian field actor storage. Allocation/zeroing is only the
 // EntryMain prelude; it does not initialize animation, mode or placement.
+// Guest actor188(hex) bytes; word access is BE and scalars retain IEEE bits.
+// Native bounds assertions do not imply original getters checked their indices.
 struct FieldPartyActor {
     std::array<uint8_t,0x188> bytes{};
     uint32_t word(unsigned offset) const {
@@ -56,6 +58,8 @@ struct FieldPartyRegistry {
         assert(index<2); // Native supported domain; the original getter has no upper bound check.
         return actors[unsigned(index)].get();
     }
+    // Mario index bytes are signed: negative means no slot. Pick first live
+    // actor without main bit8; two indices do not imply two active followers.
     int32_t current(const FieldMarioBattleState& mario) const {
         for(const auto raw:mario.partyIndices) {
             const int32_t index=raw<128?int32_t(raw):int32_t(raw)-256;
@@ -64,6 +68,8 @@ struct FieldPartyRegistry {
         }
         return -1;
     }
+    // Registry control uses main20000000 per actor, not Mario's byte depth.
+    // It neither allocates missing actors nor rewrites saved party indices.
     void control(bool enabled) {
         for(auto& actor:actors)if(actor)actor->word(0,enabled?actor->word(0)&~0x20000000u:actor->word(0)|0x20000000u);
     }
@@ -79,6 +85,9 @@ struct FieldPartyRegistry {
         }
         return -1;
     }
+    // Entry prelude: camera+164, event IDs+c/10/14=-1, owner+160, kind byte31.
+    // Slot1 sets main4; definition=partyDataTbl803143e8+kind*28(hex).
+    // Mario80000000 propagates secondary8000; placement/pose remains later work.
     void initializeBeforePose(int32_t index,uint8_t kind,FieldMarioBattleState& mario) {
         auto* actor=pointer(index);assert(actor);
         actor->word(0x164,mario.cameraId);
@@ -90,6 +99,9 @@ struct FieldPartyRegistry {
         currentDefinition=0x803143e8+uint32_t(kind)*0x28;
         if(mario.flags&0x80000000)actor->word(4,actor->word(4)|0x8000);
     }
+    // Resource tokens: c_pkr804213e0 -> PKR_S_1; Mario802c18a0/a8/b4
+    // -> M_S_1/M_S_1R/M_I_5. Native mode2 only; validate real shape workspace
+    // without selecting an authored animation before its original request.
     int32_t enterPose(uint32_t sourceResource,int32_t mode,std::shared_ptr<const ActorAnimationPack> bank,uint64_t milliseconds) {
         const char* shape=nullptr;
         switch(sourceResource) {
@@ -126,6 +138,9 @@ struct FieldPartyRegistry {
         for(auto handle:mario.poseHandles)if(auto* owner=pose(handle))owner->materialFlags=0;
         for(auto handle:mario.poseHandles)if(auto* owner=pose(handle))owner->materialLightFlags|=2;
     }
+    // Kind1 only. HP<=5 selects PKR_D_2(802cb52c), otherwise
+    // PKR_S_1(802cb4dc). Secondary8000/2 guard requests; word8 bit2000
+    // marks a pending animation name, not completed playback.
     bool requestFreshGoombellaPose(int32_t index,int16_t hp) {
         auto* actor=pointer(index);
         if(!actor || actor->bytes[0x31]!=1 || (actor->word(4)&0x8002) || actor->word(0x18))return false;

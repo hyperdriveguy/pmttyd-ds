@@ -5,6 +5,9 @@ namespace ttyd {
 namespace {
 int32_t signedWord(uint32_t v){return v<=INT32_MAX?int32_t(v):int32_t(int64_t(v)-0x100000000LL);}
 }
+// Original table stride5c(hex): name,+4/+8 flag masks,+c init,+10 regular,
+// remaining event/geometry/animation metadata,+58 battle setup; null name ends.
+// A genuine return0 starts a fresh invocation next time; native hold does not.
 int32_t fieldNpcSetupEvent(EventEntry& e,bool first,FieldNpcSetupCursor& c,
  const FieldNpcSetupOperands& o,const FieldNpcSetupWorld& w,const FieldNpcSetupEvents& events) {
  if(first)c={};
@@ -21,6 +24,8 @@ int32_t fieldNpcSetupEvent(EventEntry& e,bool first,FieldNpcSetupCursor& c,
   c.row=c.table;c.stage=c.sourceFirst?FieldNpcSetupCursor::Stage::FirstRow:FieldNpcSetupCursor::Stage::PollRow;
  }
  for(;;) {
+  // Missing actor is skipped on first pass. Capture descriptor+28 before
+  // flag stores. Delete old init+118 BEFORE re-reading its replacement script.
   if(c.stage==FieldNpcSetupCursor::Stage::FirstRow) {
    const auto name=o.word(o.user,c.row);
    if(!name){w.mode(w.user,1);c={};return 0;} // Genuine first-phase return, not a resource hold.
@@ -35,12 +40,16 @@ int32_t fieldNpcSetupEvent(EventEntry& e,bool first,FieldNpcSetupCursor& c,
     c.script=o.word(o.user,c.row+0xc);c.stage=FieldNpcSetupCursor::Stage::InitCreate;
    } else {w.store(w.user,c.actor+0x118,0);c.stage=FieldNpcSetupCursor::Stage::Metadata;}
   }
+  // New init event priority0/flags0: rawBytes[0]=0, field170 actor token.
+  // Null native allocation has no constructor effects; deletion is not replayed.
   if(c.stage==FieldNpcSetupCursor::Stage::InitCreate) {
    auto* child=events.create(events.user,c.script,0,0);if(!child)return 0;
    child->rawBytes[0]=0;child->field170=c.actor;w.store(w.user,c.actor+0x118,child->id);c.stage=FieldNpcSetupCursor::Stage::Metadata;
   }
   if(c.stage==FieldNpcSetupCursor::Stage::Metadata) {
    const auto copy=[&](uint32_t from,uint32_t to){w.store(w.user,c.actor+to,o.word(o.user,c.row+from));};
+   // Paired loads both precede either store; scalar copies stay interleaved.
+   // Row+3c/+44 deliberately populates BOTH actor+208 and+214 families.
    const auto pair=[&](uint32_t from,uint32_t to){const auto a=o.word(o.user,c.row+from),b=o.word(o.user,c.row+from+4);w.store(w.user,c.actor+to,a);w.store(w.user,c.actor+to+4,b);};
    copy(0x14,0x128);copy(0x18,0x12c);copy(0x10,0x124);
    for(unsigned n=0;n<4;++n)copy(0x1c+4*n,0x130+4*n);
@@ -49,12 +58,17 @@ int32_t fieldNpcSetupEvent(EventEntry& e,bool first,FieldNpcSetupCursor& c,
    // Admitted finite source float words retain their IEEE representation.
    for(unsigned n=0;n<4;++n)copy(0x48+4*n,0x220+4*n);
    w.battle(w.user,c.actor,o.word(o.user,c.row+0x58));
+   // Descriptor+10/+14 copy stay/talk names;+8 copies selected animation
+   // and invokes pose+104 mode1. Do not prefetch across string/animation services.
    auto pose=w.word(w.user,c.descriptor+0x10);if(pose)w.copyString(w.user,c.actor+0x4c,pose);
    pose=w.word(w.user,c.descriptor+0x14);if(pose)w.copyString(w.user,c.actor+0x6c,pose);
    pose=w.word(w.user,c.descriptor+8);
    if(pose){w.copyString(w.user,c.actor+0x2c,pose);w.setAnimation(w.user,w.word(w.user,c.actor+0x104),c.actor+0x2c,1);}
    c.row+=0x5c;c.stage=FieldNpcSetupCursor::Stage::FirstRow;
   }
+  // First phase completed with mode1 but source return0. Later calls poll
+  // init IDs for all rows before installing ANY regular events. A live init
+  // resets the invocation cursor; it is not a retained constructor wait.
   if(c.stage==FieldNpcSetupCursor::Stage::PollRow) {
    const auto name=o.word(o.user,c.row);
    if(!name){c.row=c.table;c.stage=FieldNpcSetupCursor::Stage::RegularRow;continue;}
@@ -71,6 +85,8 @@ int32_t fieldNpcSetupEvent(EventEntry& e,bool first,FieldNpcSetupCursor& c,
    const auto old=w.word(w.user,c.actor+0x11c);if(old)events.erase(events.user,old);
    c.script=w.word(w.user,c.actor+0x124);c.stage=FieldNpcSetupCursor::Stage::RegularCreate;
   }
+  // Regular event flags20(hex), rawBytes[0]=1, field170 actor,+11c event ID.
+  // Replacement script was captured after old event deletion and survives hold.
   if(c.stage==FieldNpcSetupCursor::Stage::RegularCreate) {
    auto* regular=events.create(events.user,c.script,0,0x20);if(!regular)return 0;
    regular->rawBytes[0]=1;regular->field170=c.actor;w.store(w.user,c.actor+0x11c,regular->id);

@@ -3,6 +3,8 @@
 #include "field_camera_state.hpp"
 #include "message_playback.hpp"
 namespace ttyd {
+// 91 original correction samples for half-step ratio indices0..90. This
+// source angle approximation is separate from SDK/libm matrix rotation.
 class NpcAngleTable {
 public:
     bool load(const char*);
@@ -22,6 +24,8 @@ struct NpcMatrixInput {
     uint32_t flags=0;
     float yaw=0,drawScale=2;
 };
+// Pose requests carry message+request serial and millisecond timestamp.
+// Elapsed time converts to60 source animation frames/sec, not render count.
 class NpcPoseClock {
 public:
     std::string pose,basePose;
@@ -31,6 +35,8 @@ public:
 class NpcPresentation {
 public:
     // Fresh entry initializes angles0; sign is published only by Main.
+    // Pose flags1 active, 8 paper-facing Main, 100(hex) snap rather than ease.
+    // incoming/retained/target are degrees; sign is retained reflection state.
     uint32_t flags=9;
     float incoming=0,retained=0,target=0,sign=0;
     ActorMatrix matrix;

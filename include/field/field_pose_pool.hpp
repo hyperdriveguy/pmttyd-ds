@@ -9,6 +9,8 @@ class FieldPosePool {
 public:
  bool install(std::shared_ptr<const BattlePoseResource>);
  bool load(const char* directory,const char* pack);
+ // Admission checks CPU pose/model/texture capacity only; successful entry
+ // does not establish original NPC Main, world placement or GPU residency.
  bool canEnter(const std::string& model,int32_t mode) const;
  bool animationReady(const std::string& model,const std::string& animation) const;
  std::optional<int32_t> enter(const std::string& model,int32_t mode,BattlePoseClock);

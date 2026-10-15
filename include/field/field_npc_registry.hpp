@@ -18,6 +18,8 @@ struct PackedNpcRegistryServices {
  int32_t (*vivianType)(void*,int32_t pose)=nullptr;
  void (*lightFlagOn)(void*,int32_t pose,uint32_t flags)=nullptr;
 };
+// NoAssert returns0 on a missing name; Release retains source end-pointer
+// behavior. Registry selection reads live GP battleContext, not an area ID.
 enum class PackedNpcLookup {NoAssert,Release};
 void initializePackedNpcRegistry(const PackedNpcRegistryServices&);
 // Release matches npcNameToPtr's unchecked missing-name result (end pointer),

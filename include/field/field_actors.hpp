@@ -15,6 +15,8 @@ struct FieldActorModel {
     uint32_t hitMode=0; // 0 unbound, 1 original mobjHitEntry mode0/default object scale.
     std::array<float,6> hitBounds{}; // Original model minXYZ,maxXYZ.
 };
+// Rules retain original source order: first matching comparison wins.
+// Do not sort by story threshold or replace complex quest branches with prose.
 struct FieldActorTalkRule {
     uint32_t comparison=0; // 0 less, 1 equal, 2 greater/equal, 3 unconditional.
     int32_t story=0;
@@ -49,6 +51,8 @@ struct FieldActorRecord {
     uint32_t sourceTalkPresent=0;
     FieldActorWander wander;
     bool talkRulesBound=false; // PMNPC007 source-order rules; empty means event not bound.
+    // Gate0 unconditional, 1 inclusive story interval, 2 excludes one value.
+    // Unknown story fails any nonzero gate; interior masks use all/none tests.
     bool visible(uint32_t currentRoom,std::optional<int32_t> story,uint32_t interior,uint32_t system=0) const {
         return room==currentRoom && (interior&interiorRequired)==interiorRequired && !(interior&interiorForbidden) &&
             !(system&systemForbidden) && (!storyGate || (story && (storyGate==2?*story!=storyLow:*story>=storyLow && *story<=storyHigh)));
@@ -76,6 +80,8 @@ class NpcAngleTable;
 const NpcAngleTable& fieldNpcAngles();
 // Source simple CASE_LESS talk family only. Native admission/proximity and
 // rendering are adapters; complex event graphs need their own service owners.
+// Message text storage is retained beside MessagePlayback; moving a successful
+// candidate preserves its backing buffers. Source IDs/control tokens stay intact.
 class FieldActorTalk {
 public:
     MessagePlayback message;

@@ -31,6 +31,9 @@ struct FieldNpcSetupWorld {
  void (*setAnimation)(void*,uint32_t pose,uint32_t name,int32_t mode)=nullptr;
  void (*mode)(void*,int32_t)=nullptr; // Fresh mode owner; not the earlier getter's cached pointer.
 };
+// Native hold cursor is bound to event address+ID and three provider owners.
+// It cannot migrate to another entry or repeat completed row effects. Source
+// first/poll returns reset it; resource allocation holds retain it.
 struct FieldNpcSetupCursor {
  enum class Stage {Start,Admission,FirstRow,InitCreate,Metadata,PollRow,RegularRow,RegularCreate};
  Stage stage=Stage::Start;

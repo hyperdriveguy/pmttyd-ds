@@ -12,6 +12,7 @@ Recovered original behavior and its evidence remain in
 | [Game composition](game-composition.md) | Room collision, units, tick order, restore and follower ownership |
 | [Checkpoint bytes](save-format.md) | Native save encoder, decoder and file replacement |
 | [Battle core](battle-core.md) | Action commands, private input, status, resources and damage accounting |
+| [NPC/partner/object owners](npc-objects.md) | Packed registration/setup, CPU poses, talk/paper state, save blocks and map matrices |
 | [Field entry/event leaves](field-entry.md) | Bero metadata, position/control callbacks, cases, map flags and door-record ownership |
 | [Field motion/contact](field-motion.md) | Units, jump/idle timing, wall/NPC query order, camera clocks and entry bridges |
 | [Draw pipeline](draw-pipeline.md) | MODEL/TPL records, suspended traversal, material/shadow ordering and batch construction |
@@ -48,6 +49,7 @@ Retained camera/display/icon/letterbox helpers are also covered. Audio/frontend
 service notes are included in the runtime guide. Animation/material/shadow and
 display batch and ordinary field motion/contact helpers now have inline notes.
 Bero entry metadata, case/map overlays and position/preparation leaves are covered.
+Packed NPC entry/setup, catalog/talk/paper and typed partner/object helpers are covered.
 Remaining field/NPC/partner modules, battle, message, inventory, story, effect/audio
 and port tooling still
 require a systematic inline numeric/behavior audit. Concurrent additions to

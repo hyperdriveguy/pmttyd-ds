@@ -1,6 +1,8 @@
 #include "map_object_lifecycle.hpp"
 #include <cassert>
 namespace ttyd {
+// Original priority30, type26 event with object owner. Existing nonzero
+// eventCheck refuses replacement; source event allocation must be admitted.
 bool runMapObjectEvent(MapObjectState& object,uint32_t script,const MapObjectServices& s) {
     if(!script)return false;
     assert(s.eventCheck && s.eventEntry);
@@ -9,6 +11,10 @@ bool runMapObjectEvent(MapObjectState& object,uint32_t script,const MapObjectSer
     object.eventId=s.eventEntry(s.user,script,object.owner,30,26);
     return true;
 }
+// Stages0 hit, 1 animation, 2 optional event, 3 system event, 4 restore.
+// Each invocation returns after one stage. Stage0 sound431, A_1, camera8
+// mask200; stage1 requests S_1 when previous loopRatio is not <1. Event wait accepts
+// only check==1 as still running (different from entry check!=0).
 void advanceSaveBlock(MapObjectState& object,const MapObjectServices& s) {
     switch(object.stage) {
     case 0:

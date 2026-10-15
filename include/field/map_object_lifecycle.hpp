@@ -13,12 +13,16 @@ struct MapObjectHeadCache {
         previous=name;return true;
     }
 };
+// Main bit8 and wrapping U8 depth mirror source key nesting: only exact zero
+// after on() clears control suppression; do not clamp or repair underflow.
 struct MapObjectKeyControl {
     uint8_t depth=0;
     uint32_t marioFlags=0;
     void off(){marioFlags|=8;depth=uint8_t(depth+1);}
     void on(){depth=uint8_t(depth-1);if(depth==0)marioFlags&=~8u;}
 };
+// Save constructor flags400085(hex): active1 plus source4/80/400000.
+// Bit8 latches pending hit; cause400000 identifies this head producer.
 struct MapObjectState {
     uint32_t owner=0,flags=0x400085,cause=0;
     int32_t stage=0,eventId=0;
@@ -30,6 +34,8 @@ struct MapObjectHeadInput {
 };
 // This is the recovered save constructor's head producer, not a universal
 // attack/partner producer. Other object flags/constructors need their owners.
+// Character2 cannot produce this head hit. Flag100/system-level/motion31/32
+// cancels the latch AFTER production; do not short-circuit before owner checks.
 inline void produceSaveBlockHead(MapObjectState& object,const MapObjectHeadInput& input) {
     if(!(object.flags&1))return;
     if((object.flags&0x400000) && !(object.flags&8) && input.character!=2 && input.newOwner==object.owner && object.owner) {

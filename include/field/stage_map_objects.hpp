@@ -11,6 +11,7 @@ namespace ttyd {
 class StageMapObjects {
 public:
     using Point=std::array<float,3>;
+    // Row-major affine3x4; converted map units, translation column indices3/7/11.
     using Matrix=std::array<float,12>;
     using Writer=std::function<void(uint32_t,const Point&)>;
     bool load(const char*);
@@ -19,6 +20,9 @@ public:
     bool flag(const std::string&,uint32_t mask,bool on);
     std::optional<uint32_t> flags(const std::string&) const;
     const char* root() const;
+    // Flags200(hex) resets accumulation per map-frame series; 200000 retains
+    // additional matrix across frames; 1 hides geometry. Revision advances only
+    // on dirty recalculate, not on renderer traversal.
     void recalculate(); // Explicit native map-frame owner, never a renderer latch reset.
     void apply(const Writer&) const;
     void visibleRanges(uint32_t first,uint32_t count,const std::function<void(uint32_t,uint32_t)>&) const;

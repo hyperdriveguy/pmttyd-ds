@@ -1,6 +1,10 @@
 #include "field_pose_pool.hpp"
 #include "animation_texture.hpp"
 namespace ttyd {
+// MODEL header span1b0(hex):+c4 flags,+148 descriptor count,+134 texture
+// record count,+198 table of64-byte records. Type0 texture records use TPL
+// indices. Descriptor0 must actually evaluate with positions/nodes/world data.
+// A repeated model name is accepted only for the same shared resource owner.
 bool FieldPosePool::install(std::shared_ptr<const BattlePoseResource> r){
  if(!r || r->modelName.empty() || r->textureName.empty() || !r->bank || !r->draw || !r->textures || !r->modelFlags || r->names.empty() || r->discrete.size()!=r->names.size())return false;
  if(!r->draw->span(0,1,0x1b0))return false;
@@ -13,12 +17,16 @@ bool FieldPosePool::install(std::shared_ptr<const BattlePoseResource> r){
  const auto name=r->modelName;resources_.emplace(name,std::move(r));return true;
 }
 bool FieldPosePool::load(const char* directory,const char* pack){return install(loadBattlePoseResource(directory,pack));}
+// Unknown animation falls back to descriptor0, matching selection; readiness
+// is not proof that the requested name was present in the original bank.
 bool FieldPosePool::animationReady(const std::string& model,const std::string& animation) const {
  const auto found=resources_.find(model);if(found==resources_.end())return false;
  const auto& r=*found->second;const char* selected=r.names.front().c_str();
  for(const auto& name:r.names)if(name==animation){selected=name.c_str();break;}
  return r.bank->pose(selected)!=nullptr;
 }
+// Modes0..2 only; shared BattlePosePool has256 pose slots. Existing model
+// already owns its texture, so its free-pose path needs no new model/TPL slot.
 bool FieldPosePool::canEnter(const std::string& model,int32_t mode) const {
  if(mode<0 || mode>2)return false;
  const auto found=resources_.find(model);if(found==resources_.end())return false;

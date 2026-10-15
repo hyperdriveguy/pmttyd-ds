@@ -2,9 +2,14 @@
 #include <cassert>
 #include <cmath>
 namespace ttyd {
+// Preserve only secondary bits8..11; clear state1000(hex). This leaf is
+// admitted only after all six interrupt script slots are proven null.
 void consumeNpcNullInterrupts(uint32_t& secondaryFlags,uint32_t& state) {
     secondaryFlags&=0x00000f00u;state&=~0x1000u;
 }
+// State20000000 latches candidacy once and saves yaw. Main01000000 skips
+// turn-to-Mario. Losing candidacy restores yaw/restarts only with00400000;
+// otherwise secondary10000000 requests the source deferred continuation.
 void updateNpcTalkTurn(NpcTalkTurn& turn,bool admitted,uint32_t flags,
                       FieldWallVector npc,FieldWallVector mario,
                       const NpcAngleTable& angles,const NpcTalkTurnServices& services) {
@@ -21,6 +26,8 @@ void updateNpcTalkTurn(NpcTalkTurn& turn,bool admitted,uint32_t flags,
         } else turn.secondaryFlags|=0x10000000u;
     }
 }
+// Party type4 + flag100, view bit1, background1, main01000000 and control
+// mode suppress scanning. Key depth is checked separately per actor.
 bool NpcTalkPlayer::talkable() const {
     return !(partyType==4 && (partyFlags&0x100)) && motion<=2 && !(viewFlags&1) &&
         backgroundMode!=1 && !(flags&0x01000000) && !controlMode;
@@ -32,6 +39,10 @@ float NpcTalkPlayer::displayDirection() const {
     while(angle>=360.f)angle-=360.f;
     return angle;
 }
+// NPC flag2 admits interaction, flag8 excludes it; vertical overlap inclusive.
+// Radius=(MarioWidth+NPCWidth)/2+10. Test center and both width edges against
+// camera-relative facing half-plane, then cast at75% Mario height to NPC XZ.
+// These are source engine distances; no generic proximity-circle replacement.
 bool NpcTalkScan::consider(const NpcTalkBody& npc,const NpcTalkPlayer& mario,
                           const NpcAngleTable& angles,const FieldWallServices& rays) {
     if(!mario.talkable() || mario.keyDepth || !npc.token || !(npc.flags&2) ||
@@ -41,6 +52,8 @@ bool NpcTalkScan::consider(const NpcTalkBody& npc,const NpcTalkPlayer& mario,
     const float norm=std::sqrt(std::fma(dx,dx,dz*dz)); // Host/ARM SDK norm adapter.
     const float radius=std::fma(.5f,mario.width+npc.width,10.f);
     if(norm>radius)return false;
+    // nearActor may publish BEFORE facing/obstruction failure and does not
+    // tighten distance. Strict< on successful candidates preserves first ties.
     if(norm<distance)nearActor=npc.token; // Separate r25; the bound changes only on full admission.
     const float facing=npcReviseAngle(mario.displayDirection()-mario.viewYaw);
     bool admitted=false;

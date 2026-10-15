@@ -3,6 +3,8 @@
 #include "save_block_presentation.hpp"
 namespace ttyd {
 bool loadFieldSaveObjectAssets(const char* root);
+// frame/ratio are last animation Main publication; callback reads them before
+// this visit updates them. restartedAt is milliseconds, frame is source60Hz.
 struct FieldSaveObject {
     MapObjectState state;
     FieldActorRecord actor;
@@ -32,6 +34,8 @@ private:
     MapObjectHeadCache headCache;
     uint32_t room=UINT32_MAX;
     uint64_t generation=UINT64_MAX,now=0;
+    // Native facade IDs are positive/nonzero, wrap INT32_MAX->1; not original
+    // event manager allocation IDs. Only the bound save script is admitted.
     int32_t eventId=0,nextEventId=0;
     FieldSaveObject* mutableFind(uint32_t);
     MapObjectServices services();

@@ -7,6 +7,8 @@ struct Clips {float idleStart,idleEnd,hitStart,hitEnd;};
 std::unordered_map<uint32_t,Clips> clips;
 bool ready=false;
 }
+// Select by original MOBJ_SaveBlock identity. Pin S_1 loop[1, 119],
+// A_1 nonloop[0, 15]; do not synthesize timing for an absent/mismatched clip.
 bool loadFieldSaveObjectAssets(const char* root) {
     if(!root)return false;
     std::unordered_map<uint32_t,Clips> next;
@@ -29,6 +31,8 @@ const FieldSaveObject* FieldSaveObjects::find(uint32_t owner) const {
     for(const auto& object:objects)if(object.state.owner==owner)return &object;
     return nullptr;
 }
+// Catalog/room change while locked triggers native recovery and returns;
+// it does not install new instances in the same call or emulate source teardown.
 void FieldSaveObjects::configure(uint32_t nextRoom,std::optional<int32_t> story,uint32_t interior,uint32_t system,uint64_t time) {
     if(!ready)return;
     now=time;const auto g=fieldActorCatalogGeneration();
@@ -37,6 +41,7 @@ void FieldSaveObjects::configure(uint32_t nextRoom,std::optional<int32_t> story,
         objects.clear();headCache.previous.clear();room=nextRoom;generation=g;
         for(const auto& actor:fieldActorCatalog().actors())if(actor.room==room && actor.kind==1 && clips.count(actor.model)) {
             FieldSaveObject object;object.actor=actor;object.state.owner=actor.key;
+            // 8030b4ec is original save system event; owner key stays catalog identity.
             object.state.systemEvent=0x8030b4ec;object.restartedAt=now;
             objects.push_back(std::move(object));
         }
@@ -46,11 +51,15 @@ void FieldSaveObjects::configure(uint32_t nextRoom,std::optional<int32_t> story,
         else object.state.flags&=~1u;
     }
 }
+// Failure recovery releases native controls/camera200 and presentation;
+// it is not original card error handling or a successful story/save result.
 void FieldSaveObjects::recover() {
     failed=true;keys={};systemLevel=0;camera8Flags&=~0x200u;
     presentation.message={};presentation.selection={};
     for(auto& object:objects){object.state.stage=0;object.state.flags&=~8u;}
 }
+// Presentation/window runs before object callbacks. Copy switches only if
+// it was active on entry; clear this visit's sound queue before new producers.
 void FieldSaveObjects::tickEvents(uint64_t time,const MessageSelectionInput& input) {
     now=time;sounds.clear();
     const bool running=presentation.active();presentation.tick(now,input);
@@ -76,6 +85,8 @@ MapObjectServices FieldSaveObjects::services() {
     s.eventCheck=[](void* p,int32_t id)->int32_t {
         auto& self=*static_cast<FieldSaveObjects*>(p);return id && id==self.eventId && self.presentation.active()?1:0;
     };
+    // Only original8030b4ec priority30/type26. A failed presentation marks
+    // native failure; caller later recovers rather than acknowledging a save.
     s.eventEntry=[](void* p,uint32_t script,uint32_t owner,uint8_t priority,uint8_t type) {
         auto& self=*static_cast<FieldSaveObjects*>(p);
         if(script!=0x8030b4ec || priority!=30 || type!=26 || !self.presentation.begin(self.now,self.switches,owner,self.keys)) {
@@ -86,6 +97,10 @@ MapObjectServices FieldSaveObjects::services() {
     };
     return s;
 }
+// Head-name cache deduplicates semantic HOBJ name, not pointer/owner changes.
+// Static head contact replaces cache without triggering a save object.
+// Produce hit -> callback -> animation Main is required per-object order;
+// ratio is unbounded beyond clip end and uses raw elapsed60Hz frame, not start+X.
 void FieldSaveObjects::tickObjects(uint64_t time,uint32_t headOwner,uint32_t staticHead,int32_t motion) {
     if(!ready || failed)return;
     now=time;uint32_t newOwner=0;
