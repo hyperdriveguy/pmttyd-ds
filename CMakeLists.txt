@@ -2202,3 +2202,8 @@ add_executable(harbor_tutorial_action_continuation_tests tests/harbor_tutorial_a
 target_link_libraries(harbor_tutorial_action_continuation_tests PRIVATE ttyd_core)
 add_test(NAME harbor_tutorial_action_continuation COMMAND harbor_tutorial_action_continuation_tests)
 set_tests_properties(battle_enemy_hp_number_bridge trio_enemy_hp_allocation PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+# Original retained NPC matrix setup shared by queued draw callbacks.
+target_sources(ttyd_core PRIVATE source/field/field_npc_matrix.cpp)
+add_executable(field_npc_matrix_tests tests/field_npc_matrix_tests.cpp)
+target_link_libraries(field_npc_matrix_tests PRIVATE ttyd_core)
+add_test(NAME field_npc_matrix COMMAND field_npc_matrix_tests)
