@@ -3130,3 +3130,29 @@ new. Detailed source/product/fixture hashes live in the ignored entry validation
 manifest. Original c_pkr mode2 animation uses the shared native factory; legacy
 host checkpoints keep the pre-existing CPU workspace fallback. Neither supplies
 the separate d_mario resource or full original rendering/field return.
+
+## Original battle menu font readers (2026-10-15)
+
+Retained matrix/scalar menu-font tests read the US ISO read-only at the source
+extent recorded in existing ignored romfs/font.json: f/papermarioset_US.bfn,
+SHA256 bb9cf410e5d916a1268ff503fc4f1ad7e8630b381cd781958eb0be32abb56b45.
+They reuse existing romfs/font.pmfont/font.t3x and original DOL/event constants;
+this change performs no new production font conversion, resizing, atlas packing
+or authored replacement. Runtime plain-US glyph admission compares live source
+WID/GLY metadata against the same original native atlas before consuming RNG.
+
+The raw BFN hash is checked against untouched ISO bytes. A private host fixture
+then reproduces original setup's two ordered glyph0 width writes7followed9;
+all256 mapping comparisons use original MAP data, and all162 width comparisons
+use the post-setup private BFN matching the existing font pack. This is not a
+claim that raw on-disc widths already contain those mutations or that the
+original constructor was executed. Matrix and scalar string layouts retain
+separate original pen/camera/outline/control-token policies. Missing multibyte,
+raw memory, material or GPU owners are not replaced with invented font data.
+
+See the [retained matrix font](behavior/display/RETAINED_MATRIX_FONT_RASTER.md),
+[scalar font](behavior/display/RETAINED_SCALAR_FONT.md) and
+[shared font-state helpers](behavior/display/RETAINED_SHARED_FONT_STATE.md).
+Original Nintendo/Intelligent Systems rights remain reserved. Raw ISO resources,
+private patched fixtures, metadata, packs and compiled binaries remain ignored;
+this note grants no redistribution license and adds no extracted asset to git.
