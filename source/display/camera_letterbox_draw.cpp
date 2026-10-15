@@ -1,7 +1,12 @@
 #include "camera_letterbox_draw.hpp"
 #include <cstring>
 namespace ttyd {
+// Preserve low16 bits and reinterpret signed, matching source FIFO narrowing.
+// Overflow is not saturation; negative/inverted authored bar edges stay visible.
 namespace {int16_t half(int32_t n){const auto bits=uint16_t(uint32_t(n));int16_t out;std::memcpy(&out,&bits,2);return out;}}
+// Buffer exactly8 signed16 vertices for two quads. If final submission holds,
+// retry must repeat identical vertex7; do not append or allow earlier indices.
+// No physical Begin stays open while the source continuation is suspended.
 bool CameraLetterboxVertexStream::vertex(uint32_t index,const std::array<int16_t,3>& point,const LetterboxVertexSubmit& s){
     if(!active_ || index>=8)return false;
     if(count_<8){if(index!=count_)return false;vertices_[index]=point;++count_;}
@@ -10,6 +15,9 @@ bool CameraLetterboxVertexStream::vertex(uint32_t index,const std::array<int16_t
     if(!s.submit || !s.submit(s.user,vertices_))return false;
     active_=false;return true;
 }
+// Camera 8 UI, GP flag 8000(hex) suppression, halfword+1e0 alpha,+1e2 top
+// and+1e4 bottom extent. Save viewport/projection/scissor before temporary
+// source setup; restore in that order after all eight vertices acknowledge.
 bool drawCameraLetterbox(const CameraLetterboxDrawServices& s,CameraLetterboxDrawCursor& c){
     if(!c.active){c={};c.active=true;}
     auto done=[&](uint32_t phase){c.queued=false;c.phase=phase;};
@@ -57,6 +65,9 @@ bool drawCameraLetterbox(const CameraLetterboxDrawServices& s,CameraLetterboxDra
             c.pending=uint32_t(c.gx.kind);if(!s.gx || !s.gx(s.user,c.gx))return false;c.queued=false;++c.step;}
         done(14);break;}
     case 14:c.pending=0x802b5a6c;if(!s.begin || !s.begin(s.user))return false;done(15);break;
+    // Original centered608x480 quad edges: X +/-304, Y +/-240. Top/bottom
+    // extent halfwords are reread for each source vertex that consumes them.
+    // cc008000(hex) is source FIFO identity, never a writable host address.
     case 15:while(c.vertex<8){
             c.pending=0xcc008000;
             if(!c.queued){int32_t y=c.vertex<4?240:-240;

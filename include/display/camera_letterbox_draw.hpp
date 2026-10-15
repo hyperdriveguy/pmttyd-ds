@@ -1,8 +1,11 @@
 #pragma once
 #include "shadow_display.hpp"
 namespace ttyd {
+// Enum values are original GX get/set function identities, not ordinal phases.
 enum class LetterboxPass : uint32_t {ReadViewport=0x802ba5b4,ReadProjection=0x802ba2b4,ReadScissor=0x802ba6bc,
     Projection=0x802ba184,Viewport=0x802ba56c,ProjectionVector=0x802ba228,Scissor=0x802ba644};
+// viewport6=x/y/w/h/near/far; projection vector7=GX compact projection;
+// scissor4=x/y/width/height. Source units differ from native physical packets.
 struct LetterboxPassRequest {
     LetterboxPass kind=LetterboxPass::ReadViewport;std::array<float,6> viewport{};
     std::array<float,7> vector{};std::array<uint32_t,4> scissor{};CameraProjectionMatrix projection{};uint32_t projectionKind=0;
@@ -25,6 +28,8 @@ struct CameraLetterboxDrawCursor {
 };
 using CameraLetterboxVertices=std::array<std::array<int16_t,3>,8>;
 struct LetterboxVertexSubmit {void* user=nullptr;bool (*submit)(void*,const CameraLetterboxVertices&)=nullptr;};
+// CPU staging owns two four-vertex quads; final failed submit retains all8
+// points so the identical final source vertex can retry whole submission.
 class CameraLetterboxVertexStream {
 public:
     void begin(){active_=true;count_=0;}

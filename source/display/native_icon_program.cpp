@@ -2,6 +2,8 @@
 namespace ttyd {
 namespace {
 using Args = std::array<uint32_t, 8>;
+// Trailing argument lanes are zero padding and participate in exact matching.
+// They are not unspecified C++ stack bytes or additional inferred GX defaults.
 Args args(std::initializer_list<uint32_t> values) {
   Args out{};
   unsigned i = 0;
@@ -16,6 +18,9 @@ bool equals(const std::optional<Args> &a,
 } // namespace
 // Original __GXInitGX802b30bc..30d0 establishes identity table0.
 NativeIconProgram::NativeIconProgram() { swaps_[0] = Args{0, 0, 1, 2, 3}; }
+// Stage setters retain independent source register history. Success accepts
+// this setter, not a complete drawable program; plan() validates the combination.
+// Function tokens are US GX addresses; see docs/code/display-state.md.
 bool NativeIconProgram::request(const SourceIconGXCall &r) {
   const auto &a = r.integers;
   const auto stage = a[0];
@@ -38,6 +43,8 @@ bool NativeIconProgram::request(const SourceIconGXCall &r) {
       return false;
     (r.function == 0x802b6d6c ? ambient_ : material_) = a[1];
     return true;
+  // Channel IDs0 RGB, 2 alpha, 4 combined; unlit register material source.
+  // Separate optional channels preserve a color-only versus alpha-only write.
   case 0x802b6f78: {
     if ((stage != 0 && stage != 2 && stage != 4) || a[1] != 0 || a[2] != 0 ||
         a[3] != 0 || a[4] != 0 || a[5] > 2 || a[6] > 2 || a[7])
@@ -72,6 +79,8 @@ bool NativeIconProgram::request(const SourceIconGXCall &r) {
     return setter(&Stage::colorIn);
   case 0x802b89a4:
     return setter(&Stage::alphaIn);
+  // Per-stage raster/texture swap selectors0..3 reference four swap tables.
+  // Table components below are R/G/B/A IDs0/1/2/3, not packed colors.
   case 0x802b8c98:
     if (a != args({stage, a[1], a[2]}) || a[1] > 3 || a[2] > 3)
       return false;
@@ -82,6 +91,8 @@ bool NativeIconProgram::request(const SourceIconGXCall &r) {
       return false;
     swaps_[stage] = a;
     return true;
+  // GXSetTevOp(MODULATE) expands into original color/alpha inputs and ops
+  // for stage 0; other previously acknowledged stage registers stay retained.
   case 0x802b88d4:
     if (!exact({0, 0}))
       return false;
@@ -116,6 +127,8 @@ bool NativeIconProgram::request(const SourceIconGXCall &r) {
       return false;
     descriptors_ = {};
     return true;
+  // GX attributes9 position, 11 color 0, 13 texcoord0; descriptor 1 DIRECT.
+  // This icon path emits position/UV directly with no per-vertex color array.
   case 0x802b3c08: {
     int i = stage == 9 ? 0 : stage == 11 ? 1 : stage == 13 ? 2 : -1;
     if (i < 0 || !exact({stage, 1}))
@@ -134,6 +147,10 @@ bool NativeIconProgram::request(const SourceIconGXCall &r) {
     return false;
   }
 }
+// Recognize exact original programs, not arbitrary TEV approximation. Optional
+// zero-valued colors/cull are valid writes; absence is distinct from zero.
+// Color inputs: 0 PREV, 2 C0, 4 C1, 8 TEXC, 10 RASC, 15 ZERO.
+// Alpha inputs: 0 APREV, 1 A0, 2 A1, 4 TEXA, 5 RASA, 7 ZERO.
 std::optional<NativeIconPlan> NativeIconProgram::plan() const {
   if (chans_ != 1 || !material_ || !channels_[0] || !channels_[1] || !count_ ||
       !fogOff_ || !fog_ || !cull_ || generators_ != 1 || !coord_ ||
@@ -148,6 +165,9 @@ std::optional<NativeIconPlan> NativeIconProgram::plan() const {
     return equals(stages_[i].colorOp, {i, 0, 0, 0, 1, 0}) &&
            equals(stages_[i].alphaOp, {i, 0, 0, 0, 1, 0});
   };
+  // Three grayscale stages use texture swap tables1/2/3 to replicate R/G/B
+  // into RGB respectively while preserving alpha component3. Stage 0 starts
+  // accumulation; later stages add PREV. Last alpha stage uses record alpha.
   bool gray = *count_ == 3 && colors_[1] && colors_[2];
   for (unsigned i = 0; i < 3 && gray; ++i) {
     const auto &s = stages_[i];
@@ -165,6 +185,8 @@ std::optional<NativeIconPlan> NativeIconProgram::plan() const {
     p.blend = *colors_[2];
     return p;
   }
+  // Normal/blended programs require identity swap table0. Two stages combine
+  // texture, material and tint; optional third stage applies retained blend color.
   if (!equals(swaps_[0], {0, 0, 1, 2, 3}))
     return {};
   const auto &a = stages_[0];

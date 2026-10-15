@@ -1,6 +1,10 @@
 #include "field_camera_publication.hpp"
 #include <cmath>
 namespace ttyd {
+// Only source camera 4 perspective mode before battle-mode 2 is adapted.
+// Candidate-copy validation keeps old camera intact on nonfinite/singular input.
+// Engine units=native world*100: convert eye/aim, near/far, view translation and
+// projection Z translation; do not rescale view orientation or projection lens.
 bool publishNativeFieldCamera(CameraManager& bank,const FieldCameraFrame& frame){
     auto* camera=bank.camera(4);if(!camera || camera->mode==2 || camera->projectionKind!=0)return false;
     for(const auto& row:frame.view)for(float value:row)if(!std::isfinite(value))return false;

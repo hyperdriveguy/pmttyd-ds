@@ -2,6 +2,8 @@
 #include "source_icon_gx.hpp"
 #include <optional>
 namespace ttyd {
+// Providers borrow user/gx only during the synchronous resume call. The
+// cursor retains values and nested progress, not the stack callback context.
 struct SourceIconMatrixServices {
     void* user=nullptr;
     std::optional<uint32_t> (*word)(void*,uint32_t)=nullptr;
@@ -11,6 +13,8 @@ struct SourceIconMatrixServices {
     bool (*draw)(void*,const BattleActMatrix&,const SourceMatrixIcon&)=nullptr;
     const SourceIconGXServices* gx=nullptr;
 };
+// phase/pending identify exact retry boundary; matrix result survives a later
+// geometry hold. Completion clears active and pending, not source register state.
 struct SourceIconMatrixCursor {
     bool active=false;uint32_t phase=0,pending=0,camera=0,metadata=0,descriptor=0;
     BattleAudienceIconRequest request;SourceMatrixIcon icon;

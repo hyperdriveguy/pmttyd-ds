@@ -1,5 +1,8 @@
 #include "native_shadow_program.hpp"
 namespace ttyd {
+// Return a validated candidate; caller publishes only after backend admission.
+// GX numeric arguments remain source identities, not PICA enum values. Slot
+// mapping9/11/13 is position/color 0/texcoord0 throughout the declarations.
 std::optional<NativeShadowProgram> NativeShadowProgram::request(const ShadowGXRequest& r) const{
     if(!seeded)return {};
     auto next=*this;
@@ -7,6 +10,9 @@ std::optional<NativeShadowProgram> NativeShadowProgram::request(const ShadowGXRe
     auto slot=[](int32_t attribute){return attribute==9?0:attribute==11?1:attribute==13?2:-1;};
     // The admitted second GX stage multiplies PREV by retained K0. Each
     // setter retains its own completed state; publication requires all fields.
+    // Eight setters contribute bits 1..128: order, color op, alpha op, color in,
+    // alpha in, swap, K-color select, K-alpha select. Mask 255 requires all;
+    // register selectors12/28 pick K0 color/alpha for the second GX stage.
     if(r.values[0]==1){
         uint32_t bit=0;
         switch(r.kind){
@@ -25,6 +31,9 @@ std::optional<NativeShadowProgram> NativeShadowProgram::request(const ShadowGXRe
     switch(r.kind){
     case ShadowGX::NumChans:if(!args({1}))return {};next.chans=1;break;
     case ShadowGX::ChanAmbient:if(!args({4}))return {};next.ambient=r.color;break;
+    // Channel 0 color, 2 alpha, 4 both. Argument3 selects material source
+    // (0 register, 1 vertex); argument1 retains source lighting-enable.
+    // Color/alpha material ownership is independent.
     case ShadowGX::ChanCtrl:{
         const auto channel=r.values[0];if(channel!=0 && channel!=2 && channel!=4)return {};
         auto expected=r.values;expected[0]=4;
@@ -52,6 +61,9 @@ std::optional<NativeShadowProgram> NativeShadowProgram::request(const ShadowGXRe
     case ShadowGX::TevSwapMode:if(!args({0,0,0}))return {};break;
     case ShadowGX::TevOrder:if(!args({0,255,255,4}) && !args({0,0,0,4}))return {};break;
     case ShadowGX::TevColorOp:case ShadowGX::TevAlphaOp:if(!args({0,0,0,0,1,0}))return {};break;
+    // Original color input IDs: 15 ZERO, 14 KONST, 12 ONE, 10 RASC, 8 TEXC,
+    // 0 PREV. Alpha IDs below: 7 ZERO, 6 KONST, 5 RASA, 4 TEXA, 1 A0.
+    // Retain register/raster/texture alpha sources separately from RGB.
     case ShadowGX::TevColorIn:
         if(args({0,15,12,8,10})){next.audienceColor=true;next.textureRGB=false;next.rasterRGB=true;}
         else if(args({0,15,10,8,15})){next.textureRGB=true;next.audienceColor=false;next.rasterRGB=true;}
@@ -73,6 +85,9 @@ std::optional<NativeShadowProgram> NativeShadowProgram::request(const ShadowGXRe
         next.fogOff=true;next.fogColor=r.color;break;
     case ShadowGX::CurrentMatrix:if(!args({0}))return {};break; // Slot0; actual matrix upload belongs to geometry.
     case ShadowGX::Cull:if(!args({0}) && !args({1}) && !args({2}))return {};next.cull=r.values[0];break;
+    // Position arrays 80304b00/80304ce0 and palettes80415140/80415160
+    // are guest resource identities. Strides12=XYZ float3, 4=RGBA bytes.
+    // Descriptor 1 DIRECT/2 INDEX8; format 3 S16, 4 F32, 5 RGBA8 below.
     case ShadowGX::Array:{
         int index=slot(r.values[0]);if(index<0 || r.values[2]!=(index==1?4:12))return {};
         uint32_t address=uint32_t(r.values[1]);

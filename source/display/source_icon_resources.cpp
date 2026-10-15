@@ -5,6 +5,8 @@
 #include <string>
 namespace ttyd {
 std::optional<uint32_t>
+// Synthetic camera base84000000(hex), stride 400(hex), 13 source slots.
+// A token is readable through the provider below, never cast to host memory.
 sourceIconCameraIdentity(const CameraManager *cameras,
                          std::optional<uint32_t> index) {
   if (!cameras)
@@ -14,6 +16,9 @@ sourceIconCameraIdentity(const CameraManager *cameras,
     return {};
   return 0x84000000u + 0x400u * (*selected);
 }
+// GP has first refusal. Camera+114 yaw is readable without a published view;
+// +11c..14b(hex) are 12 row-major float words requiring viewPublished.
+// memcpy preserves binary32 payload rather than numerically converting bits.
 std::optional<uint32_t> sourceIconRuntimeWord(const CameraManager *cameras,
                                               const EventGpAddresses &gp,
                                               uint32_t address) {
@@ -58,6 +63,9 @@ uint16_t be16(const std::vector<uint8_t> &b, size_t p) {
   return uint16_t(uint16_t(b[p]) << 8 | b[p + 1]);
 }
 } // namespace
+// Transactional load: retain nothing until every directory frame resolves to
+// an actual TPL image. U16BE offsets bound icon.bin to65536 bytes.
+// constants.bin is seven original DOL spans, total 188 bytes (table below).
 bool SourceIconResources::load(const char *root) {
   if (ready() || !root)
     return false;
@@ -69,6 +77,9 @@ bool SourceIconResources::load(const char *root) {
   if (!dir || !constants || constants->size() != 188 || !textures ||
       dir->size() < 4)
     return false;
+  // Directory header U16 count, then count U16 offsets. Each descriptor has
+  // 8-byte header(width+2, height+4, frame count+6), then4-byte texture/delay
+  // pairs. Animated totals must be positive; single static frame may have0 delay.
   const auto count = be16(*dir, 0);
   if (!count || 2u * (uint32_t(count) + 1) > dir->size())
     return false;
@@ -102,6 +113,9 @@ std::optional<uint16_t> SourceIconResources::half(uint32_t a) const {
   struct Span {
     uint32_t base, size, offset;
   };
+  // Entries are original guest base, byte length, offset into constants.bin.
+  // Palette/default colors, yaw conversion, EXP/reel constants retain exact bytes;
+  // these ranges are immutable source data, not mutable guest RAM.
   for (const auto &s : std::array<Span, 7>{
            {{0x80415040,24,0},{0x80415080,32,24},{0x8041f864,60,56},{0x8041f860,4,116},{0x8041f8a0,4,120},{0x80426884,40,124},{0x80419f30,24,164}}})
     if (a >= s.base && uint64_t(a) - s.base + 2 <= s.size)
@@ -125,12 +139,17 @@ std::optional<uint32_t> SourceIconResources::word(uint32_t a) const {
   return h && l ? std::optional<uint32_t>(uint32_t(*h) << 16 | *l)
                 : std::nullopt;
 }
+// Opaque texture-object token=index+1 keeps0 unavailable. objects_: 0 absent,
+// 1 constructed, 2 LOD configured. Index domain is TPL textures, not icon IDs.
+// A bind hold retains state 2 so retry does not reconstruct/reset the object.
 std::optional<uint32_t>
 SourceIconResources::request(const SourceIconGXCall &r, void *user,
                              bool (*bind)(void *, uint32_t)) {
   if (!ready())
     return {};
   const auto &a = r.integers;
+  // tplGetGXTexObj; linear zero-LOD configuration and actual GXLoadTexObj
+  // follow. Width/height queries802b76c4/76d4 return original dimensions.
   if (r.function == 0x80037a80) {
     if (a[0] != Palette || a[1] >= count())
       return {};

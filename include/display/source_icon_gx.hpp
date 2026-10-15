@@ -2,6 +2,8 @@
 #include "battle_audience_matrix.hpp"
 #include "source_icon_record.hpp"
 namespace ttyd {
+// Original function identity, 8 integer argument lanes, 4 float lanes and
+// affine3x4 matrix payload. Values are guest/source bits, never native pointers.
 struct SourceIconGXCall {
   uint32_t function = 0;
   std::array<uint32_t, 8> integers{};
@@ -25,6 +27,8 @@ struct SourceIconGXServices {
   // the original GXBegin. A false result must not consume partial geometry.
   bool (*quad)(void *, const SourceIconGXQuad &) = nullptr;
 };
+// Request/math latches and table step prevent already acknowledged setters
+// from replaying. Numeric phases are private continuation labels, not source PC.
 struct SourceIconGXCursor {
   bool active = false, ready = false, mathReady = false, loaded = false,
        flip = false;

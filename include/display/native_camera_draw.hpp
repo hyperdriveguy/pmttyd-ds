@@ -1,7 +1,10 @@
 #pragma once
 #include "camera_manager.hpp"
 namespace ttyd {
+// Physical rotated-target pixels; rect width/height are extents, not endpoints.
 struct NativeCameraRect {uint32_t x=0,y=0,width=0,height=0;};
+// DummyDraw is the one real source primitive; DummyStateRestore only reapplies
+// its GPU state after another native pass has used the device.
 enum class NativeCameraCommand {Viewport,Scissor,Projection,DummyDraw,DummyStateRestore};
 struct NativeCameraPacket {
     NativeCameraCommand kind;NativeCameraRect rect;
@@ -16,6 +19,9 @@ std::optional<NativeCameraRect> nativeCameraRoundedRect(float x,float y,float w,
 std::array<float,7> cameraGxProjectionVector(const CameraProjectionMatrix&,uint32_t kind);
 CameraProjectionMatrix cameraGxProjectionMatrix(const std::array<float,7>&);
 CameraProjectionMatrix nativeCameraTransform(const CameraProjectionMatrix&,const CameraViewMatrix&);
+// Retains acknowledged source values separately from backend packets. false
+// preserves prior logical state; backend partial physical writes are repaired
+// by restore on the next resume. Default view is affine identity.
 class NativeCameraDraw {
 public:
     bool request(const CameraDrawRequest&,const NativeCameraSubmit&);

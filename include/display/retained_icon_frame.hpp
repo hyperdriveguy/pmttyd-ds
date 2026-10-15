@@ -6,6 +6,8 @@
 #include <vector>
 namespace ttyd {
 // Renderer admission metadata, never an original GP counter or simulation tick.
+// Shared token is lifetime identity, not an allocated source byte. Sequence0
+// is unstarted; monotonic renderer publication sequence is not elapsed time.
 struct SourceIconPass {
   std::shared_ptr<const uint8_t> owner;
   uint64_t sequence = 0;
@@ -17,6 +19,8 @@ struct RetainedIconCamera {
   NativeCameraRect viewport{};
   float sourceAspect = 0;
 };
+// Self-contained copied draw state; image is original TPL index, camera is
+// source camera domain. Default depth(-1, 0) is native reversed full range.
 struct RetainedIconPacket {
   SourceIconGXQuad quad;
   NativeIconPlan material;
@@ -42,6 +46,8 @@ private:
   std::shared_ptr<const uint8_t> owner_;
   uint64_t sequence_ = 0;
   bool complete_ = false;
+  // building/published storage must remain distinct until source pass return;
+  // successful individual quad acknowledgements do not publish the pass.
   std::vector<RetainedIconPacket> building_, published_;
   std::optional<RetainedIconCamera> buildingCamera_, publishedCamera_;
 };

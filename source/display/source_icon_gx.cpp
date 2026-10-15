@@ -1,6 +1,9 @@
 #include "source_icon_gx.hpp"
 namespace ttyd {
 namespace {
+// Immutable call tables preserve source setter ordering. Function tokens are
+// original US SDK/service identities; see docs/code/display-state.md. Arrays
+// zero-fill trailing lanes so a retry has the exact same complete payload.
 struct Op {
   uint32_t function;
   std::array<uint32_t, 8> args{};
@@ -10,6 +13,9 @@ struct Op {
 constexpr Op unlit[] = {{0x802b6f3c, {1}},
                         {0x802b6e54, {4}, 0x8041f868},
                         {0x802b6f78, {4, 0, 0, 0, 0, 0, 2}}};
+// Two-stage texture/raster then record-tint program. Color input IDs:
+// 0 PREV, 2 C0, 4 C1, 8 TEXC, 10 RASC, 15 ZERO; alpha 0 APREV, 1 A0,
+// 2 A1, 4 TEXA, 5 RASA, 7 ZERO. Swap components0/1/2/3 are R/G/B/A.
 constexpr Op normal[] = {{0x802b8fcc, {2}},
                          {0x802b8e30, {0, 0, 0, 4}},
                          {0x802b88d4, {0, 0}},
@@ -20,6 +26,9 @@ constexpr Op normal[] = {{0x802b8fcc, {2}},
                          {0x802b8a50, {1, 0, 0, 0, 1, 0}},
                          {0x802b8960, {1, 15, 2, 0, 15}},
                          {0x802b89a4, {1, 7, 1, 0, 7}}};
+// Three stages replicate source texture R/G/B through swap tables1/2/3,
+// accumulate PREV and apply record alpha in the last stage. Reset swaps only
+// after acknowledged quad emission so a held draw keeps its shader identity.
 constexpr Op grayscale[] = {{0x802b8fcc, {3}},
                             {0x802b8ce0, {1, 0, 0, 0, 3}},
                             {0x802b8ce0, {2, 1, 1, 1, 3}},
@@ -51,6 +60,9 @@ constexpr Op overlay[] = {{0x802b8ab8, {2}},
                           {0x802b8a50, {2, 0, 0, 0, 1, 0}},
                           {0x802b8960, {2, 15, 0, 4, 15}},
                           {0x802b89a4, {2, 7, 0, 2, 7}}};
+// One2x4 texcoord generator from TEX0(source 4), identity matrix 60,
+// no normalization, postmatrix125. Opaque alpha>=128 writes source depth;
+// fractional record alpha enables SRCALPHA/INVSRCALPHA and disables writes.
 constexpr Op texgen[] = {{0x802b5084, {1}},
                          {0x802b4e04, {0, 1, 4, 60, 0, 125}}};
 constexpr Op blend[] = {{0x802b932c, {1, 4, 5, 0}},
@@ -61,6 +73,8 @@ constexpr Op opaque[] = {{0x802b932c, {0, 4, 5, 0}},
                          {0x802b940c, {0}},
                          {0x802b8d60, {6, 128, 1, 0, 0}},
                          {0x802b93d8, {1, 3, 1}}};
+// GX vertex attrs9 XYZ, 13 ST; DIRECT1, F32 format 4, vat0. Quad vertices
+// are emitted separately after GXBegin(0x80, vat0, count 4).
 constexpr Op descriptors[] = {{0x802b4520, {}},
                               {0x802b3c08, {9, 1}},
                               {0x802b3c08, {13, 1}},
@@ -78,6 +92,8 @@ struct Run {
     c.pending = c.request.function;
     return s.call ? s.call(s.user, c.request) : std::optional<uint32_t>{};
   }
+  // ready/mathReady latch a pending payload across provider holds. Only an
+  // engaged optional acknowledges a call; engaged0 is a successful void return.
   std::optional<uint32_t> call(uint32_t f, std::array<uint32_t, 8> args = {}) {
     if (!c.ready) {
       c.request = {};
@@ -90,6 +106,8 @@ struct Run {
       c.ready = false;
     return result;
   }
+  // Table step increments only after acknowledgement. Resolved constant/color
+  // payload stays latched while a provider holds; do not reread it on each retry.
   template <size_t N>
   bool sequence(const Op (&ops)[N], bool overlayColor = false) {
     while (c.step < N) {
@@ -136,6 +154,10 @@ struct Run {
   }
 };
 } // namespace
+// flags 4/8 mirror model X/Y. Bit 16 selects unlit full-size UI/depth-off
+// and adds a Y flip when current camera differs from camera 8. Bit 32 selects
+// grayscale; bits 16|64|128 skip conditional map blend. Bits400/800(hex)
+// select front/back cull. These are source flags, not PICA state masks.
 bool resumeSourceIconGX(const BattleActMatrix &input,
                         const SourceMatrixIcon &icon,
                         const SourceIconGXServices &services,
@@ -222,6 +244,9 @@ bool resumeSourceIconGX(const BattleActMatrix &input,
     }
     c.phase = 9;
   }
+  // Actual zero bin/TPL chooses source 1x1 fallback object80415080. The
+  // native resource provider may hold here; never invent successful fallback
+  // admission just because an original loaded-buffer pointer was zero.
   if (c.phase == 9) {
     if (!c.ready) {
       c.request = {};
@@ -310,6 +335,8 @@ bool resumeSourceIconGX(const BattleActMatrix &input,
     c.color = *color;
     c.phase = 160;
   }
+  // Phase160 is a native continuation label for conditional overlay setters,
+  // not an original opcode/address or frame delay. Keep phase16 map query done.
   if (c.phase == 160) {
     if (!r.sequence(overlay, true))
       return false;
@@ -363,6 +390,8 @@ bool resumeSourceIconGX(const BattleActMatrix &input,
       return false;
     c.phase = 23;
   }
+  // Only width==0 AND height==0 requests texture dimensions. A single zero
+  // lane does not trigger the source fallback-size branch.
   if (c.phase == 23) {
     if (!c.icon.width && !c.icon.height) {
       const auto value = r.call(0x802b76c4, {c.texture});
@@ -383,6 +412,8 @@ bool resumeSourceIconGX(const BattleActMatrix &input,
     c.height = float(uint16_t(*value));
     c.phase = 25;
   }
+  // Bottom-anchored quad: half-width left, full-height top. World icons scale
+  // .6; icon 403 adds.8, 405 adds.9. UI flag 16 bypasses these source factors.
   if (c.phase == 25) {
     float left = (-c.width) * .5f, top = c.height, width = c.width,
           down = -c.height;
@@ -415,6 +446,8 @@ bool resumeSourceIconGX(const BattleActMatrix &input,
       return false;
     c.phase = 27;
   }
+  // One atomic four-vertex geometry acknowledgement follows the acknowledged
+  // Begin. Holding here must not rerun Begin, matrices, texture or material calls.
   if (c.phase == 27) {
     c.pending = 0x800197f8;
     if (!services.quad || !services.quad(services.user, c.geometry))

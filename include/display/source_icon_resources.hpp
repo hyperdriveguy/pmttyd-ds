@@ -12,9 +12,13 @@ std::optional<uint32_t> sourceIconRuntimeWord(const CameraManager *,
 
 class SourceIconResources {
 public:
+  // Synthetic guest address domains: Directory stores original BE icon.bin;
+  // Palette identifies the actual imported TPL table. Neither is native memory.
   static constexpr uint32_t Directory = 0x83000000, Palette = 0x83100000;
   bool load(const char *root);
   bool ready() const { return bool(textures_); }
+  // Number of TPL images, not the number of icon descriptors. An animated
+  // icon can reference several texture indices.
   uint32_t count() const { return textures_ ? textures_->count() : 0; }
   std::optional<AnimationTPLImage> image(uint32_t index) const {
     return textures_ ? textures_->image(index) : std::nullopt;
@@ -27,6 +31,7 @@ public:
 private:
   std::vector<uint8_t> directory_, constants_;
   std::shared_ptr<const AnimationTextureResource> textures_;
+  // Object-state bytes 0/1/2 = absent/constructed/linear-LOD configured.
   std::vector<uint8_t> objects_;
 };
 } // namespace ttyd

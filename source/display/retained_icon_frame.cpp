@@ -16,6 +16,9 @@ void RetainedIconFrames::reset() {
   owner_.reset(); sequence_=0; complete_=false;
   building_.clear(); published_.clear(); buildingCamera_.reset(); publishedCamera_.reset();
 }
+// Owner identity resets both histories. A newer sequence clears only building
+// state; the previous completed publication remains visible during a hold.
+// Empty completed passes intentionally publish empty geometry to retire icons.
 void RetainedIconFrames::observe(const SourceIconPass& p) {
   if (!p.owner) { reset(); return; }
   if (owner_ != p.owner) { reset(); owner_=p.owner; }
@@ -34,6 +37,9 @@ void RetainedIconFrames::observe(const SourceIconPass& p) {
 bool RetainedIconFrames::building(const SourceIconPass& p) const {
   return p.owner && p.owner==owner_ && p.sequence && p.sequence==sequence_ && !p.complete && !complete_;
 }
+// Camera 4 scene packets require an admitted camera snapshot; camera 8 UI
+// packets do not. Rectangles use physical240x400 bounds. No partial packet
+// enters building state when any geometry/material/pipeline validation fails.
 bool RetainedIconFrames::append(const SourceIconPass& p,const RetainedIconPacket& q) {
   // Caller observes pass boundaries. Stale packets cannot replace newer frames.
   if (!building(p) || (q.camera!=4 && q.camera!=8) || (q.camera==4 && !buildingCamera_) || !valid(q.viewport) ||
@@ -47,17 +53,23 @@ bool RetainedIconFrames::camera(const SourceIconPass& p,const RetainedIconCamera
       !std::isfinite(c.sourceAspect) || c.sourceAspect<=0) return false;
   buildingCamera_=c; return true;
 }
+// Both in-progress and last-published packets pin image residency. Evicting
+// only by the currently bound image would invalidate replay on either screen.
 bool RetainedIconFrames::retains(uint32_t image) const {
   const auto has=[image](const auto& packets){return std::any_of(packets.begin(),packets.end(),
     [image](const auto& p){return p.image==image;});};
   return has(building_) || has(published_);
 }
+// Tilted row 1 is display horizontal. Adjust source aspect by physical
+// viewport width/height; retain source camera roll/view, not a guessed billboard.
 CameraProjectionMatrix iconSceneTransform(const CameraProjectionMatrix& m,const RetainedIconCamera& c) {
   auto result=m;
   const float scale=c.sourceAspect*float(c.viewport.width)/float(c.viewport.height);
   for (auto& v:result[1]) v*=scale;
   return result;
 }
+// Embed the source viewport into the full tilted240x400 clip domain. Scale
+// and translate with homogeneous row 3 so perspective division stays correct.
 CameraProjectionMatrix iconViewportTransform(const CameraProjectionMatrix& m,const NativeCameraRect& v) {
   auto result=m;
   const float x=float(v.width)/240.f,y=float(v.height)/400.f;

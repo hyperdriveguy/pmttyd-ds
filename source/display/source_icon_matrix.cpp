@@ -2,9 +2,14 @@
 #include <cstring>
 namespace ttyd {
 namespace {
+// Original global addresses hold directory/bin/TPL pointers and shared GP.
+// The native resource provider maps them to synthetic immutable guest domains.
 constexpr uint32_t Directory=0x8041e634,Bin=0x8041e638,Tpl=0x8041e63c,GP=0x80415fd0;
 float real(uint32_t bits){float value;std::memcpy(&value,&bits,4);return value;}
 }
+// Only original iconDispGx2/Col identities are admitted. Capture request once;
+// caller retains this request/continuation until completion. Missing word/half
+// is a hold; an actual zero loaded-buffer pointer takes the original early return.
 bool resumeSourceIconMatrix(const BattleAudienceIconRequest& request,const SourceIconMatrixServices& s,SourceIconMatrixCursor& c){
     if(request.function!=0x8001a6e0 && request.function!=0x8001a4bc)return false;
     if(!c.active){c={};c.active=true;c.request=request;}
@@ -32,6 +37,8 @@ bool resumeSourceIconMatrix(const BattleAudienceIconRequest& request,const Sourc
     }
     if(c.phase==2){
         uint32_t selected=c.icon.id;
+        // Local name story below actually reads GP+16c LANGUAGE selection,
+        // not plot progress. Icons 73/103 use separate localized U16 tables.
         if(selected==73 || selected==103){
             const auto gp=word(GP);if(!gp)return false;
             const auto story=word(*gp+0x16c);if(!story)return false;
@@ -43,6 +50,9 @@ bool resumeSourceIconMatrix(const BattleAudienceIconRequest& request,const Sourc
         c.descriptor=c.metadata+*offset;c.phase=3;
     }
     if(c.phase==3){
+        // Descriptor header:+2 width,+4 height,+6 frame count; frame rows
+        // are U16 texture/+8 and delay/+10, 4-byte stride. Clock GP+1c is
+        // signed for remainder: negative clocks retain original branch behavior.
         const auto width=half(c.descriptor+2),height=half(c.descriptor+4),texture=half(c.descriptor+8),delay=half(c.descriptor+10),count=half(c.descriptor+6);
         if(!width || !height || !texture || !delay || !count)return false;
         auto icon=c.icon;icon.width=*width;icon.height=*height;icon.texture=*texture;icon.delay=*delay;
@@ -66,6 +76,8 @@ bool resumeSourceIconMatrix(const BattleAudienceIconRequest& request,const Sourc
         }
         c.icon=icon;c.phase=4;
     }
+    // Camera+11c is 3x4 view, 12 binary32 words. PSMTXConcat8029dd64
+    // computes view*supplied model before iconGX800197f8, not after drawing.
     if(c.phase==4){
         c.matrix={};c.matrix.function=0x8029dd64;
         for(uint32_t i=0;i<12;++i){const auto bits=word(c.camera+0x11c+4*i);if(!bits)return false;c.matrix.left[i]=real(*bits);}
