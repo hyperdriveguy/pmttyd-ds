@@ -1270,3 +1270,7 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Retained original NPC display prefix](field/NATIVE_NPC_MAIN_DISPLAY_PREFIX.md): ordered camera/cull/material/depth/queue requests; shadow/separate/history remain unfinished.
 
 - [Original NPC shadow, blur and separate-pose suffix](field/NATIVE_NPC_MAIN_SHADOW_SUFFIX.md): retained shared-pose/shadow/queue composition to late history.
+
+## Retained action-command manager
+
+- [Retained action-command manager](battle/RETAINED_ACTION_COMMAND_MANAGER.md): one physical pad update, retained original callback and deferred display registration across provider waits.

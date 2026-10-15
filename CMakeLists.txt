@@ -2168,3 +2168,9 @@ target_sources(ttyd_core PRIVATE source/field/field_npc_main_shadow.cpp)
 add_executable(field_npc_main_shadow_tests tests/field_npc_main_shadow_tests.cpp)
 target_link_libraries(field_npc_main_shadow_tests PRIVATE ttyd_core)
 add_test(NAME field_npc_main_shadow COMMAND field_npc_main_shadow_tests)
+
+# Retain one original action-command manager invocation across provider waits.
+target_sources(ttyd_core PRIVATE source/battle/battle_action_manager_continuation.cpp)
+add_executable(battle_action_manager_continuation_tests tests/battle_action_manager_continuation_tests.cpp)
+target_link_libraries(battle_action_manager_continuation_tests PRIVATE ttyd_core)
+add_test(NAME battle_action_manager_continuation COMMAND battle_action_manager_continuation_tests)
