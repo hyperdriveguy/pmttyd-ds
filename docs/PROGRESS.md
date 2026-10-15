@@ -15084,3 +15084,71 @@ Next: finish actual mixed native raster submission and its isolated rendering
 probe; bind real process startup/root/DVD/heap lifetime and actual global GX
 state. Normal whole weapon callback/camera queue, tutorial/story battle flow and
 real audience target selection are still open. The remake goal remains active.
+
+## 2026-10-15 — Retained battle UI and native submission documentation
+
+Added 125 inline comment lines across thirteen display C++/header files plus
+[font GX pipeline](code/font-gx-pipeline.md) and
+[weapon/window bridges](code/weapon-window-bridges.md), linked from index.
+Code/docs commits 6de2c93e and b87d2a5a. Executable tokens/string literals unchanged; no original
+story/dialogue, numeric, simulation or asset behavior changes. No new tests for
+this documentation-only pass.
+
+Font notes explain 33-child DrawStart order, eighteen early setters before late
+caller color, literal static texture object, fresh GP-language scale and late
+captured-camera view/fog; stable requests/lifetimes and real child completion.
+Finite GX notes distinguish native18/four-lane coverage from guest registers,
+exact original tuples and actual sink matrix/color, current source/static-object/
+atlas generation, initial missing proof versus observed loss while Texture coverage is set, unsupported
+profile rebuild, zero-language refusal, ordinary alpha/depth/blend/TEV semantics
+and no-RNG inspection. Renderer notes explain actual imported texture admission,
+Camera8 projection with no second view, whole leaf preflight, six-stage reset,
+512x256/single-T-flip UVs and color normalization.
+
+Weapon notes explain exact callback/camera/Main/pass/queue admission, finite
+bit-identical viewport and scissor/projection epoch, short camera versus long
+resource proof, begin/source/seal/submit/finish stages, no source/RNG replay,
+submit-success-before-post-guards, hidden old publication during a new pass and
+deferred retirement. Window notes explain source-PC/register layout, argument-bit
+and borrowed-color identity, completion0 versus missing read, type/object mask,
+late color/view, actual distinct window material, QUADS36/180 FIFO stores and
+fresh interleaved constants. Submenu notes explain exact LE original2/3 catalog,
+32x32 RGBA8 full-image admission, edge gutters, generation leases, reentrant
+retirement, invalidation-before-release and explicit host/native boundaries.
+These helpers do not produce normal activation or complete mixed GPU submission.
+
+Frozen baseline 5699eb7cb4efbf66b3aa3a9a64630dd717142de5 plus owned docs is at
+artifacts/battle-ui-bridges-code-documentation-validation/source. Full git-blob
+audit covers 4250 baseline tracked files with zero unexpected changes; all 16
+frozen/live documentation snapshots match and 109 local guide/index links resolve.
+Both initial gates terminated successfully and their logs/exit markers are
+retained. Final wording qualifies texture-proof staleness by its actual coverage
+bit and first-setter clearing; both full gates were rerun after that prose-only
+refinement. Native ELF/3DSX hashes are identical before/after refinement.
+Concurrent party/font/window/texture/
+animation/renderer/battle/tool edits preserved/excluded; no combined moving-tree
+validation claim. Original host/native handles observed terminal0, with agreeing
+exit markers. No test changes or filtered test selection.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits 0: 490/490 C++ (84.79s),
+223/223 Python (33.697s), zero skipped. Actual original45-descriptor enemy,
+private HitN64 and original party-position fixtures ran. Native
+make all -o assets-ready -j4 SOUNDTRACK=gamecube exits 0. Manifest pins source,
+products/evidence/fixtures/logs and native ELF/3DSX. Existing compiler/Pillow
+warnings remain. No emulator/profile/save changes or original CPU/GPU/pixel/
+audio/performance/hardware parity claims.
+
+Dependency preflight finds only CMake registration of original animation selection,
+retained native owner and test. Tools/converters/assets/Makefile unchanged. All 78
+accepted products and surface/footer/HP/enemy/HitN64/party evidence/default
+fixtures inherited and rechecked by hash, including actual HitN64 external PNG
+read path. Small mutable evidence copied privately. No conversion/import/overlay/
+shared-cache write; native full regeneration skipped. Python fixtures independently
+read ISO read-only into empty temporary outputs. See [asset ledger](ASSETS.md).
+Original rights retained; no ISO/extracted original or compiled binary committed.
+
+Next: remaining battle draw/menu continuations, newer animation/party/font/
+window/texture integrations, runtime changes and tooling. Inventory maps only
+tracked source/include C++/header/PICA hash agreement; untracked additions/tools
+need separate review and matching hashes are not semantic completeness proof.
+Broader documentation and remake goals remain active.

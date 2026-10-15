@@ -3477,3 +3477,20 @@ are not native import/render or original framebuffer parity evidence.
 Original Nintendo/Intelligent Systems rights remain; no redistribution license
 is granted and no ISO, extracted original or compiled pack is committed. See
 [the source/window ownership contract](behavior/display/ORIGINAL_CAMERA8_WINDOW_PACKETS.md).
+
+## Battle UI bridge documentation validation inputs (2026-10-15)
+
+artifacts/battle-ui-bridges-code-documentation-validation/source freezes baseline
+5699eb7cb4efbf66b3aa3a9a64630dd717142de5. Relative to native-admission validation,
+only CMake adds the original animation selector/native retained owner/test.
+Tools/converters/assets/Makefile unchanged. All 78 accepted products and original
+surface/footer/HP/enemy/HitN64/party evidence/default test fixtures inherited by
+hash; small mutable/default evidence copied privately. Actual HitN64 metadata PNG
+read path remains a pinned earlier private fixture identical to current copy.
+All evidence rechecked after gates. No conversion/import/overlay/shared-cache
+write. Native full regeneration skipped; Python fixtures independently read ISO
+read-only into empty temporary destinations. Guides explain existing submenu
+32x32/gutter and original US512x256 font adapters without altering pixels,
+packaged BFN or editable art. Nintendo/Intelligent Systems rights retained; no
+new license/redistribution rights and no ISO/extracted original or compiled
+binary committed.
