@@ -2576,3 +2576,25 @@ Nintendo/Intelligent Systems rights remain reserved; local extraction grants
 no redistribution rights. ISO, raw original assets/listings and compiled packs/
 binaries remain ignored/private. Exact source/product/native validation is
 journaled in `artifacts/npc-effects-validation-manifest.json`.
+
+## Trio scheduler documentation validation inputs (2026-10-15)
+
+artifacts/trio-scheduler-code-documentation-validation/source inherits 50 explicit
+accepted products plus original common/Frankly/footer 14/HP 3 evidence. Frozen
+committed animation_boot_image.py/field_player_pose_assets.py hashes match
+artifacts/field-source-animation-validation-manifest.json; its asset_diff agrees
+with field-source-animation-asset-diff.json. NPC-draw after-product inventory is
+hash-pinned by npc-draw-validation-manifest.json. Before gates, 33 exact matching
+cache inputs were checked: field-player/boot products and two door products.
+Seventeen actual changes, including six new Mario bin/t3x files, bring explicit
+accepted coverage to 56. All source/product/authority hashes journaled and rechecked.
+No extraction, new conversion, editable import or shared-pack write in this batch.
+
+Retain prior original field-bank texture layout, RGBA8, 512-wide Lanczos scaling,
+linear filtering, source MODEL/TPL/descriptor order, added original clips and pinned
+boot tokens/triplet/frame-to-ms. NPC-draw pack 152804 bytes SHA256
+e9e85d212180b28087c7c8c4d904f82417c1a0ea30f1271ab10c2a3d0c9a78ab.
+No geometry/lighting/audio/message changes. Python fixtures independently read
+ISO read-only into empty temporary outputs; native full asset regeneration skipped.
+Nintendo/Intelligent Systems rights retained; private tracking/copying grants no
+new license. No ISO/original extracted asset/compiled binary committed.

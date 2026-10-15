@@ -12247,3 +12247,64 @@ Next: finish Trio turn/handoff/action/Main/display scheduling and public draw/
 material adapters, then re-audit newly committed enemy resources/audience/pinch/
 Harbor/NPC/animation integrations. Remaining event/message/story/effect/platform/
 file/save helpers and tools still need systematic inline audit. Full goal active.
+
+## 2026-10-15 — Trio turn, Main and display scheduling documented
+
+Added inline notes to committed Trio runtime legacy postAction/turn/handoff,
+actor preparation/attack registration, broken-unit/pad/Hammer/action work,
+unit/part display prefix/footer, retained Main, camera Main/Draw, tick and scene
+publication. Added [scheduling](code/trio-scheduling.md) and
+[display prefix](code/trio-display-prefix.md), updated provider/event guides/index.
+Code/docs commit a70cd9ba. Runtime executable tokens/string literals unchanged;
+no behavior changes or new tests for prose-only work. Corrected old removal
+comment: registry/event retirement is not proof all pose/file owners were freed.
+
+Explained source bank/field domains and multi-state visits, real phase/event/
+message/audience/slot barriers, scope of legacy empty-effect Turn admission,
+chance/RNG/category order, actor and source root ownership, explicit native input
+channels/pad layout and overlapping command projections. Display notes distinguish
+retained indices/latches from nontransactional per-unit/per-part stores, first
+pose match/remaining-flag force, original phase settling/effect/alpha ordering,
+source depth capture before pose Main, actual callbacks and precise stock EXP
+counter behavior. Footer and camera registration/publication/dispatch are separate;
+outer providers remain actual boundaries. Clock/sampling gates are documented
+without claiming render FPS or full source scheduler/hardware parity.
+
+Private committed runtime sections now have annotations; whole file remains
+partial until public facade/draw/material wrappers and newly committed/concurrent
+source Turn/pinch/sequence/pose integrations are reviewed. partial_files/inventory
+retains that status. Full code/remake goals remain active. No original story,
+message, art, music or sound behavior modified.
+
+Frozen validation baseline 652dded02f1472ea2b56666e6caa8392a0ee55e6 plus owned documentation is at
+artifacts/trio-scheduler-code-documentation-validation/source. Audit covers 3902
+tracked baseline files: zero unexpected changes. All six documented frozen/live
+annotation snapshots match; all 90 local guide/index links resolve. Concurrent
+Trio/field/NPC/animation/render/provider changes preserved/excluded; no combined
+moving-worktree validation. No post-launch source refinements.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits 0: 427/427 C++ (46.24s),
+207/207 Python (33.142s), zero skipped. Native make all -o assets-ready -j4
+SOUNDTRACK=gamecube exits 0. Both original handles polled to terminal; exit markers
+agree. Manifest records source/dependency/authority/log and ELF/3DSX hashes.
+Existing compiler/Pillow warnings remain. No emulator/profile/save changes or
+pixel/performance/Gekko parity claims.
+
+Cache starts from 50 explicit accepted products. Three committed converter inputs
+changed since parent: ordinary field Mario packages, boot image and NPC-draw source
+constants. Before gates, 33 matching cache inputs were verified against pinned
+field-source-animation and npc-draw manifests; 17 actual replacements/additions,
+no cache conversion/import/shared write needed. Six new Mario bin/t3x products
+bring explicit accepted count to 56; all products and common/Frankly/footer 14/HP 3
+evidence rechecked. Frozen boot/field-player converter hashes match animation
+authority. Original 32-bit boot tokens/triplet/time factor and original MODEL/TPL/
+clips/UV/rate/rights retain prior conversion choices. Door pack 152804 bytes SHA256
+e9e85d212180b28087c7c8c4d904f82417c1a0ea30f1271ab10c2a3d0c9a78ab.
+Existing Python fixtures independently read ISO read-only into empty temporary
+outputs; native full asset regeneration deliberately skipped. No ISO/original
+asset/compiled binary committed; rights/provenance unchanged. See [assets](ASSETS.md).
+
+Next: finish public Trio facade/camera/outer-main/draw/material wrappers and header
+ownership notes, then re-audit new retained Turn/audience/pose/recovery bindings and
+new field animation/NPC/render code. Remaining event/message/story/effect/platform/
+file/save helpers and tools need systematic inline audit; goal stays active.
