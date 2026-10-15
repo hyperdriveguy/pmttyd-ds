@@ -3522,6 +3522,24 @@ bytes nor native panel residency creates source completion.
 Original Nintendo/Intelligent Systems rights are retained; no new license or
 redistribution rights are granted. No original payload or ISO is committed.
 
+
+### Original cold UI startup data
+
+`tools/source_ui_startup_assets.py` reads the original US revision0 ISO read-only
+and writes ignored `romfs/source-ui-startup/memory.pmevt`/`memory.json`. Its ten
+source spans retain original font names/palette, root string, font/SDK scalars,
+SDK tables and source loader BSS. Initialized DOL sections take priority over
+BSS; no original pixels, strings or source values are rewritten. Pack SHA-256:
+`7577bb75184fd6e6fe81d5e291fccd76919ef25b62a454b21523232a5053a9fe`.
+Metadata records every original file offset/BSS origin, full FST hash, original
+BFN extents and the exact16-byte US GP initializer evidence. Existing altered
+or extra files are preserved and rejected; only exact matching packs are reused.
+The actual startup delivery reuses separately tracked unmodified
+`source-font/papermarioset_US.bfn`, with genuine file read into actual source heap.
+[Startup ownership contract](behavior/display/NATIVE_UI_STARTUP_FONT_PREFIX.md).
+Original Nintendo/Intelligent Systems rights are retained; no extraction or
+tracking grants a redistribution license. No ISO or generated payload is committed.
+
 Harbor battle callback recovery (2026-10-15): original US ISO opened read-only for complete DOL start8004ef54/b8, wait8004eed8/7c, get_reglid8004f894/58 and original gor.rel beforebattle inventory. Evidence/provenance stays in artifacts/harbor-battle-handoff-evidence; no new runtime pack, asset conversion, dialogue/art/audio edit or redistribution grant. Existing Nintendo/Intelligent Systems original rights unchanged.
 
 ## Battle menu-controller documentation validation inputs (2026-10-15)

@@ -376,6 +376,10 @@ public:
     void setFieldMarioCameraId(uint32_t id) {fieldMarioBattle.cameraId=id;} // Source raw word134 store; viewport ownership is separate.
     const FieldPartyRegistry& fieldPartyState() const {return fieldParties;}
     bool initializeNativeFieldAnimation(const char*,std::shared_ptr<NativeFileCache>,const EventNativePlatform&);
+    // Normal native port startup: real UI prefix before Mario Entries. The
+    // legacy animation-only entry remains explicit for existing mechanics tests.
+    bool initializeNativeUiFieldAnimation(const char*,std::shared_ptr<NativeFileCache>,const EventNativePlatform&);
+    std::shared_ptr<class NativeUiStartup> nativeUiStartup() const;
     bool hasNativeFieldAnimation() const{return bool(fieldParties.nativeAnimation);}
     const BattlePose* nativeMarioPose() const;
     unsigned nativeMarioBank() const;
@@ -548,6 +552,7 @@ private:
     bool departureDone=false;
     bool departureParentStarted=false;
     int departurePause=0;
+    std::shared_ptr<class NativeUiStartup> nativeUiStartup_;
 };
 struct CollisionSnapshot;
 // Stages a room's collision; destruction restores the previous data unless committed.

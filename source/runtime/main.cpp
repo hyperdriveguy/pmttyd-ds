@@ -104,7 +104,10 @@ int main() {
     // heap publication order; actual PICA vertex data is flushed by Renderer.
     animationPlatform.flushBlock=[](void*,uint32_t){__sync_synchronize();};
     animationPlatform.systemCall=[](void*){__sync_synchronize();};
-    if(!game.initializeNativeFieldAnimation("romfs:",ttyd::fieldAnimationFileCache(),animationPlatform)){
+    // Source SDK fctiwz owner is admitted only after its finite int32-domain
+    // checks; native cast implements that exact toward-zero conversion.
+    animationPlatform.truncate=[](void*,float value){return int32_t(value);};
+    if(!game.initializeNativeUiFieldAnimation("romfs:",ttyd::fieldAnimationFileCache(),animationPlatform)){
         renderer.shutdown();consoleInit(GFX_TOP,nullptr);std::printf("Original animation startup unavailable.\nPress START to exit.\n");
         while(aptMainLoop()){hidScanInput();if(hidKeysDown()&KEY_START)break;gfxFlushBuffers();gfxSwapBuffers();gspWaitForVBlank();}
         romfsExit();gfxExit();return 1;

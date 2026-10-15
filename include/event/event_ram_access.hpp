@@ -23,6 +23,12 @@ public:
  }
  // Prove a caller-owned backing identity inside this synchronous borrow.
  bool aliases(uint32_t address,const uint8_t* bytes,uint32_t size) const{return size && owner_.rawRamSpan(address,size)==bytes;}
+ // Exact live mapping identity under this callback-local borrow. No pointer
+ // is returned or cached beyond the borrow; byte-identical copies reject.
+ bool matchesBacking(uint32_t address,uint32_t size,const uint8_t* expected) const {
+  return expected && size && uint64_t(address)+size<=0x100000000ULL &&
+         owner_.rawRamSpan(address,size)==expected;
+ }
  bool readWord(uint32_t address,uint32_t& value) const {
   if(const auto* b=at(address,4)){value=uint32_t(b[0])<<24|uint32_t(b[1])<<16|uint32_t(b[2])<<8|b[3];return true;}
   return owner_.readWord(address,value);

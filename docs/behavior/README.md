@@ -1422,3 +1422,9 @@ Original battle menu native resource/queue owners:
   frontiers and complete GPU integration remain open.
 
 - [Full original harbor native resource banks](field/HARBOR_NATIVE_RESOURCES.md): original five-bank census, shared Goombella clips, exact texture paths and bounded readiness.
+
+- [Retained original centered font](display/RETAINED_CENTERED_STRING_FONT.md).
+- [Retained original font width](display/RETAINED_SOURCE_FONT_WIDTH.md).
+- [Retained packed weapon cost](battle/RETAINED_PACKED_WEAPON_COST.md).
+- [Original process font startup](display/NATIVE_UI_STARTUP_FONT_PREFIX.md).
+- [Native weapon icon residency](display/NATIVE_WEAPON_SOURCE_ICON_RESIDENCY.md).

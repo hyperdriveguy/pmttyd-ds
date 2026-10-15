@@ -12,7 +12,10 @@ C3D_Tex *Renderer::sourceIconTexture() {
 }
 // Synchronize before retiring imported descriptor/texture pairs, then clear
 // logical bindings and retained packets together. Wrapper copies own no clone.
-void Renderer::releaseSourceIcons() {
+void Renderer::releaseSourceIcons(bool preserveWeaponPins) {
+  // Only the ordinary Game-inactive transition preserves actual weapon pins.
+  // Explicit shutdown remains force-all and invalidates the native pin owners.
+  if(!preserveWeaponPins)weaponSourceIconPins.clear(true);
   orderedHpCapturePass=0;orderedHpPresentation=nullptr;
   bool any = false;
   for (const auto &cell : sourceIconCells)
@@ -20,6 +23,7 @@ void Renderer::releaseSourceIcons() {
   if (any)
     C3D_FrameSync();
   for (auto &cell : sourceIconCells) {
+    if(preserveWeaponPins && weaponSourceIconPins.retains(cell.index))continue;
     cell.generation.reset();
     if (cell.gpu.imported) {
       Tex3DS_TextureFree(cell.gpu.imported);
@@ -39,7 +43,7 @@ void Renderer::releaseSourceIcons() {
 // A miss holds the source call rather than drawing a substitute texture.
 void Renderer::prepareSourceIcons(const Game &game) {
   if (!game.trioBattleActive) {
-    releaseSourceIcons();
+    releaseSourceIcons(true);
     return;
   }
   retainedIcons.observe(game.trioAttack.sourceIconPass());
@@ -49,78 +53,7 @@ void Renderer::prepareSourceIcons(const Game &game) {
   }
   if (!pendingSourceIcon)
     return;
-  const auto index = *pendingSourceIcon;
-  const auto original = sourceIcons.image(index);
-  if (!original)
-    return;
-  for (auto &cell : sourceIconCells)
-    if (cell.index == index && cell.gpu.imported) {
-      pendingSourceIcon.reset();
-      return;
-    }
-  SourceIconCell *next = nullptr;
-  for (auto &cell : sourceIconCells) {
-    if ((boundSourceIcon && cell.index == *boundSourceIcon) || retainedIcons.retains(cell.index) ||
-        (orderedHpPresentation && orderedHpPresentation->retains(cell.index)))
-      continue;
-    if (!next || !cell.gpu.imported || cell.stamp < next->stamp)
-      next = &cell;
-    if (!cell.gpu.imported)
-      break;
-  }
-  if (!next)
-    return;
-  C3D_FrameSync();
-  next->generation.reset();
-  if (next->gpu.imported) {
-    Tex3DS_TextureFree(next->gpu.imported);
-    C3D_TexDelete(&next->gpu.texture);
-  }
-  *next = {};
-  const std::string path =
-      "romfs:/source-icons/" + std::to_string(index) + ".t3x";
-  FILE *f = std::fopen(path.c_str(), "rb");
-  if (!f) {
-    frontFailure = "Original icon cell missing: " + path;
-    return;
-  }
-  next->gpu.imported =
-      Tex3DS_TextureImportStdio(f, &next->gpu.texture, nullptr, false);
-  std::fclose(f);
-  // PICA minimum 8 and power-of-two backing must contain source dimensions
-  // plus 4 total gutter pixels(2 each side). Admit exactly one unrotated RGBA8
-  // image without mipmaps/LOD bias; UV replay removes that same gutter.
-  const auto size = [](uint32_t n) {
-    uint32_t p = 8;
-    while (p < n + 4)
-      p *= 2;
-    return p;
-  };
-  const auto *sub = next->gpu.imported
-                        ? Tex3DS_GetSubTexture(next->gpu.imported, 0)
-                        : nullptr;
-  if (!sub || Tex3DS_GetNumSubTextures(next->gpu.imported) != 1 ||
-      Tex3DS_SubTextureRotated(sub) || next->gpu.texture.fmt != GPU_RGBA8 ||
-      next->gpu.texture.minLevel || next->gpu.texture.maxLevel ||
-      next->gpu.texture.lodBias ||
-      next->gpu.texture.width != size(original->width) ||
-      next->gpu.texture.height != size(original->height) ||
-      sub->width != next->gpu.texture.width ||
-      sub->height != next->gpu.texture.height) {
-    if (next->gpu.imported) {
-      Tex3DS_TextureFree(next->gpu.imported);
-      C3D_TexDelete(&next->gpu.texture);
-    }
-    *next = {};
-    frontFailure = "Original icon cell import mismatch: " + path;
-    return;
-  }
-  C3D_TexSetFilter(&next->gpu.texture, GPU_LINEAR, GPU_LINEAR);
-  C3D_TexSetWrap(&next->gpu.texture, GPU_CLAMP_TO_EDGE, GPU_CLAMP_TO_EDGE);
-  next->index = index;
-  next->generation=std::make_shared<const uint8_t>(0);
-  next->stamp = ++sourceIconStamp;
-  pendingSourceIcon.reset();
+  (void)prepareSourceIconImageInternal(*pendingSourceIcon);
 }
 // Bind only a resident exact image; pendingSourceIcon schedules the later
 // admission attempt. Roll back logical binding if downstream GPU setup holds.

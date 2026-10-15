@@ -35,6 +35,14 @@ public:
  // Actual DVD child supplies exactly its observed bytes. Only that prefix is
  // copied/mapped. Unknown unused capacity is never zero-filled/readable.
  bool installRead(uint32_t base,const std::vector<uint8_t>& actualBytes);
+ // Native source-heap transfer ONLY: backing/knownPrefix are actual captured
+ // allocator output, including real memset writes. Destination VM RAM has been
+ // detached before adoption; no capacity tail is inferred or initialized.
+ bool adoptHeapAllocation(uint32_t base,uint8_t* backing,uint32_t capacity,
+                          uint32_t knownPrefix,std::shared_ptr<const void> allocationOwner);
+ // Genuine later DVD Read may overwrite that captured known heap prefix once.
+ // Does not change original unknown-adopt/installRead behavior or map a tail.
+ bool deliverHeapRead(uint32_t base,const std::vector<uint8_t>& actualBytes);
  bool captured()const{return bool(snapshot_);}
  // Any intersection claims routing ownership, including unread/unknown tail.
  bool owns(uint32_t address,uint32_t size=1)const;
@@ -53,7 +61,7 @@ private:
  struct Snapshot {std::array<std::vector<uint8_t>,4> spans;};
  // capacity reserves address ownership; known is the actual readable DVD
  // prefix. The strong owner pins backing storage even after all VMs unbind.
- struct Allocation {uint32_t base,capacity,known=0;uint8_t* backing;std::shared_ptr<const void> owner;};
+ struct Allocation {uint32_t base,capacity,known=0;uint8_t* backing;std::shared_ptr<const void> owner;bool heapTransferred=false,readDelivered=false;};
  std::unique_ptr<Snapshot> snapshot_;
  std::vector<Allocation> allocations_;
  std::vector<NativeSourceFontBinding*> bindings_;

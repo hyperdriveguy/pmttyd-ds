@@ -32,6 +32,7 @@
 #include "battle_submenu_surface_gpu.hpp"
 #include "battle_window_packets.hpp"
 #include "battle_weapon_native_raster_plan.hpp"
+#include "battle_weapon_source_icon_pin.hpp"
 #include "battle_submenu_packets.hpp"
 #include "battle_audience_backend.hpp"
 #include "native_camera_draw.hpp"
@@ -87,6 +88,8 @@ public:
     std::optional<BattleClassSurfaceLease> classMenuSurfaceLease()const;
     // Explicit preparation outside FrameBegin; source callbacks borrow leases.
     bool prepareWeaponMenuSurfaces();
+    // Actual caller preframe only; never import inside source callbacks/GPU.
+    bool prepareSourceIconImage(uint32_t,const std::shared_ptr<BattleWeaponSourceIconPin>&);
     std::optional<BattleSubmenuSurfaceLease> weaponMenuSurfaceLease()const;
     const BattleSubmenuSurfaceGpuResource* weaponMenuSurfaceResources()const;
     bool prepareWindowPrimitiveSurface();
@@ -229,8 +232,10 @@ private:
     struct SourceIconCell {Texture gpu;uint32_t index=UINT32_MAX;uint64_t stamp=0;std::shared_ptr<const uint8_t> generation;};
     std::array<SourceIconCell,202> sourceIconCells{}; // Published + building: each100 items plus AP icon442.
     std::optional<uint32_t> pendingSourceIcon,boundSourceIcon;uint64_t sourceIconStamp=0;
+    BattleWeaponSourceIconPins weaponSourceIconPins;bool sourceIconPreparing=false;
+    bool prepareSourceIconImageInternal(uint32_t);
     void prepareSourceIcons(const Game&);
-    void releaseSourceIcons();
+    void releaseSourceIcons(bool preserveWeaponPins=false);
     bool bindSourceIcon(uint32_t);
     C3D_Tex* sourceIconTexture();
     std::optional<uint32_t> sourceIconCall(const Game&,const SourceIconGXCall&);

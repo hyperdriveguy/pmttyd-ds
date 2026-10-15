@@ -1,5 +1,6 @@
 #include "game.hpp"
 #include "native_field_animation.hpp"
+#include "native_ui_startup.hpp"
 namespace ttyd {
 // Native bootstrap requires a fresh pose namespace and no held producer.
 // Creation/configuration/Mario Entries are ordered admissions, not a rollback
@@ -13,6 +14,24 @@ bool Game::initializeNativeFieldAnimation(const char* root,std::shared_ptr<Nativ
 // Simulation owns presenter/selection changes. A pending Main/publication
 // freezes this prefix; the runtime drains it before advancing another tick.
 // Camera simulation ticks, converted by the shared clock helper, drive poses.
+bool Game::initializeNativeUiFieldAnimation(const char* root,std::shared_ptr<NativeFileCache> files,const EventNativePlatform& platform){
+ if(fieldParties.originalPool)return false;
+ if(!nativeUiStartup_){
+  auto owner=NativeFieldAnimation::create(root,std::move(files),platform);
+  if(!owner)return false;
+  nativeUiStartup_=NativeUiStartup::create(std::move(owner),root);
+  if(!nativeUiStartup_)return false;
+ }
+ // Held allocator/delivery/SDK children retain this exact actual process and
+ // prefix. No Mario Entry may interleave or authorize incomplete UI history.
+ if(!nativeUiStartup_->resumeFont())return false;
+ auto owner=nativeUiStartup_->fieldProcess();
+ if(!owner || !fieldParties.configureNativeAnimation(std::move(owner),fieldPlayerPoseResources()) || !fieldParties.initializeMario(fieldMarioBattle,{},0))return false;
+ prepareNativeFieldAnimation();return nativeMarioPose()!=nullptr;
+}
+std::shared_ptr<NativeUiStartup> Game::nativeUiStartup() const{
+ return nativeUiStartup_ && nativeUiStartup_->current() && nativeUiStartup_->fontObject() && nativeUiStartup_->fieldProcess()==fieldParties.nativeAnimation?nativeUiStartup_:nullptr;
+}
 void Game::prepareNativeFieldAnimation(){
  if(!fieldParties.nativeAnimation || nativeAnimationPending())return;
  marioPresentation.update(fieldJump.motion,fieldMovement.speed,fieldMovement.headingOffsetDegrees,progress.hp,fieldCameraTickMilliseconds(fieldCameraSimulationTicks),true);
@@ -47,6 +66,7 @@ bool Game::nativeMarioReflect() const{return fieldParties.nativeAnimation && fie
 bool Game::retainNativeFieldAnimation(Game& previous,bool checkpoint){
  if(nativePartyPending() || previous.nativePartyPending())return false;
  if(nativeAnimationPending() || previous.nativeAnimationPending())return false;
+ const auto retainedUi=previous.nativeUiStartup();
  auto& old=previous.fieldParties;auto& next=fieldParties;if(!old.nativeAnimation)return true;
  BattlePoseClock clock;
  if(!old.nativeAnimation->ready() || !old.nativeAnimation->clock(clock))return false;
@@ -87,6 +107,7 @@ bool Game::retainNativeFieldAnimation(Game& previous,bool checkpoint){
  }
  // Ownership admission is complete. A later source sampler hold is reported
  // by the ordinary renderer; it is not a failed/rolled-back room transaction.
+ nativeUiStartup_=retainedUi;
  prepareNativeFieldAnimation();return true;
 }
 }

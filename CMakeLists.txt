@@ -2646,6 +2646,17 @@ add_executable(battle_weapon_native_raster_plan_tests tests/battle_weapon_native
 target_link_libraries(battle_weapon_native_raster_plan_tests PRIVATE ttyd_core)
 add_test(NAME battle_weapon_native_raster_plan COMMAND battle_weapon_native_raster_plan_tests)
 set_tests_properties(battle_weapon_native_raster_plan PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Actual process font startup prefix and retained real source heap transfer.
+target_sources(ttyd_core PRIVATE source/platform/native_ui_startup.cpp)
+add_executable(native_ui_startup_tests tests/native_ui_startup_tests.cpp)
+target_link_libraries(native_ui_startup_tests PRIVATE ttyd_core)
+add_test(NAME native_ui_startup COMMAND native_ui_startup_tests)
+set_tests_properties(native_ui_startup PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+add_executable(native_ui_startup_game_tests tests/native_ui_startup_game_tests.cpp)
+target_link_libraries(native_ui_startup_game_tests PRIVATE ttyd_core)
+add_test(NAME native_ui_startup_game COMMAND native_ui_startup_game_tests)
+set_tests_properties(native_ui_startup_game PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 # Same-process original NPC animation children under an exclusive field pass.
 target_sources(ttyd_core PRIVATE source/display/native_field_npc_animation.cpp)
 add_executable(native_npc_animation_tests tests/native_npc_animation_tests.cpp)
@@ -2661,3 +2672,35 @@ add_executable(animation_draw_wrapper_tests tests/animation_draw_wrapper_tests.c
 target_link_libraries(animation_draw_wrapper_tests PRIVATE ttyd_core)
 add_test(NAME animation_draw_wrapper COMMAND animation_draw_wrapper_tests)
 set_tests_properties(animation_draw_wrapper PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+
+# Original battle UI source continuation and ownership.
+target_sources(ttyd_core PRIVATE source/display/source_string_font.cpp)
+add_executable(source_string_font_tests tests/source_string_font_tests.cpp)
+target_link_libraries(source_string_font_tests PRIVATE ttyd_core)
+add_test(NAME source_string_font COMMAND source_string_font_tests)
+set_tests_properties(source_string_font PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+
+# Original battle UI source continuation and ownership.
+target_sources(ttyd_core PRIVATE source/battle/battle_weapon_cost_continuation.cpp)
+add_executable(battle_weapon_cost_continuation_tests tests/battle_weapon_cost_continuation_tests.cpp)
+target_link_libraries(battle_weapon_cost_continuation_tests PRIVATE ttyd_core)
+add_test(NAME battle_weapon_cost_continuation COMMAND battle_weapon_cost_continuation_tests)
+set_tests_properties(battle_weapon_cost_continuation PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+
+# Original battle UI source continuation and ownership.
+target_sources(ttyd_core PRIVATE source/display/source_font_width.cpp)
+add_executable(source_font_width_tests tests/source_font_width_tests.cpp)
+target_link_libraries(source_font_width_tests PRIVATE ttyd_core)
+add_test(NAME source_font_width COMMAND source_font_width_tests)
+set_tests_properties(source_font_width PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+
+# Original battle UI source continuation and ownership.
+target_sources(ttyd_core PRIVATE source/display/battle_weapon_source_icon_pin.cpp)
+add_executable(battle_weapon_source_icon_pin_tests tests/battle_weapon_source_icon_pin_tests.cpp)
+target_link_libraries(battle_weapon_source_icon_pin_tests PRIVATE ttyd_core)
+add_test(NAME battle_weapon_source_icon_pin COMMAND battle_weapon_source_icon_pin_tests)
+set_tests_properties(battle_weapon_source_icon_pin PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

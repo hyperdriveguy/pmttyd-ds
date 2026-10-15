@@ -75,6 +75,22 @@ bool NativeSourceFontMemory::installRead(uint32_t base,const std::vector<uint8_t
 // Routing ownership means ANY intersection, including unread allocation tail.
 // It is deliberately broader than cell/read admission; a fallback must not
 // invent data for an owned-but-unknown font byte.
+bool NativeSourceFontMemory::adoptHeapAllocation(uint32_t base,uint8_t*backing,uint32_t capacity,uint32_t known,std::shared_ptr<const void>owner){
+ if(!known||known>capacity||!adoptAllocation(base,backing,capacity,std::move(owner)))return false;
+ size_t done=0;for(;done<bindings_.size();++done)if(!bindings_[done]->vm_->registerExternalRam(base,backing,known))break;
+ if(done!=bindings_.size()){for(size_t i=0;i<done;++i)bindings_[i]->vm_->unregisterExternalRam(base);allocations_.pop_back();return false;}
+ auto&a=allocations_.back();a.known=known;a.heapTransferred=true;
+ for(auto*b:bindings_){b->payloads_.push_back(base);}
+ return true;
+}
+bool NativeSourceFontMemory::deliverHeapRead(uint32_t base,const std::vector<uint8_t>&bytes){
+ auto a=std::find_if(allocations_.begin(),allocations_.end(),[&](const auto&v){return v.base==base;});
+ if(a==allocations_.end()||!a->heapTransferred||a->readDelivered||bytes.empty()||bytes.size()>a->known)return false;
+ // Mapping/current admission precedes any overwrite. A held raw VM borrow
+ // cannot observe a partial delivery or permit an unrelated mapping change.
+ for(auto*b:bindings_){const bool admitted=b->vm_->withRawRamAccess([&](auto&ram){if(!ram.bind(base,a->known)||!ram.matchesBacking(base,a->known,a->backing))return false;for(uint32_t i=0;i<a->known;++i){uint8_t value;if(!ram.readByte(base+i,value)||value!=a->backing[i])return false;}return true;});if(!admitted)return false;}
+ std::memmove(a->backing,bytes.data(),bytes.size());a->readDelivered=true;return true;
+}
 bool NativeSourceFontMemory::owns(uint32_t address,uint32_t size)const{if(!extent(address,size))return false;for(auto span:StateSpans)if(overlap(address,size,span.first,span.second))return true;for(const auto&a:allocations_)if(overlap(address,size,a.base,a.capacity))return true;return false;}
 uint8_t*NativeSourceFontMemory::cell(uint32_t address)const{
  if(snapshot_)for(size_t i=0;i<StateSpans.size();++i)if(address>=StateSpans[i].first&&uint64_t(address)<uint64_t(StateSpans[i].first)+StateSpans[i].second)return &snapshot_->spans[i][address-StateSpans[i].first];
