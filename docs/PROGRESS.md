@@ -8199,3 +8199,37 @@ normal Game bootstrap invokes this stage. Complete field Main/facing/query/
 collision/display and hardware/raster checks remain required. Continue adding
 areas through source definitions/parsed inputs and area-specific services;
 do not label this early Rogueport slice or the full remake complete.
+
+## 2026-10-14 — Field motion, contact, camera and transitions documented
+
+Added comments to 37 C++ implementation/header files covering movement, jump,
+scripted jump, floor/step/road contact, wall/ray/NPC contact, NPC map movement and
+wander, idle/key/body state, water/void recovery, camera target/events/timers,
+door/pipe parameters and object/shadow geometry. The [field-motion guide](code/field-motion.md)
+explains unit boundaries, numeric domains, source flags, query/update order and
+provider limitations. Corrected the FieldShadowRecord color comment to native
+ABGR (alpha high byte); its bits and behavior are unchanged. All 37 files preserve
+executable tokens. Code/docs commit ae8f83a8.
+
+Validation freezes baseline ad41392ed6a8e6841f84d565b28aa84ee36e7420 plus documentation in
+artifacts/field-motion-code-documentation-validation/source. Audited 3553 tracked
+files: zero unexpected changes; 39 documented files match live/frozen hashes.
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test passes 347/347 C++ in 57.69s and
+199/199 Python in 27.560s, zero skipped. make all -o assets-ready -j4
+SOUNDTRACK=gamecube exits 0. host.log/native.log and source/binary/log hashes are
+recorded in manifest.json. This checks the frozen snapshot, not concurrent work.
+
+Private asset assembly reused the accepted draw-pipeline caches. Regenerated
+small original door and battle-sequence-entry data packs using the frozen
+converters and read-only ISO, and copied the recovery pack only after matching
+its recorded SHA256. Mutable evidence directories were copied privately; other
+large local-assets dependencies remained shared read inputs. See [asset notes](ASSETS.md).
+No editable import, shared pack write, emulator/profile/save changes or new
+measured hardware/timing/floating-point fidelity claims. Existing build warnings
+remain. Native asset regeneration was skipped deliberately in favor of the
+recorded private input assembly.
+
+Next: remaining field/NPC/partner services and ownership, remaining battle,
+message/inventory/story, effect/audio and relevant port tooling. Re-audit code
+added or changed concurrently in previously covered modules. Port-wide
+documentation and the remake remain incomplete; the documentation goal stays active.

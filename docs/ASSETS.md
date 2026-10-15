@@ -1515,3 +1515,24 @@ Systems resources remain local only; no redistribution rights are asserted.
 ISO and compiled/extracted packs stay outside source history. See
 [history contract](behavior/field/TAGGED_MAP_NPC_HISTORY_GATE_AND_DEFINITION_SOURCE.md)
 and [native composition](behavior/field/NATIVE_MAP_NPC_HISTORY_BOOTSTRAP.md).
+
+## Field-motion documentation validation cache (2026-10-14)
+
+artifacts/field-motion-code-documentation-validation/source starts with the
+accepted draw-pipeline documentation RomFS and evidence caches. The frozen
+converters read /home/carson/games/roms/G8ME01.iso read-only and regenerated
+private door-data.pmevt/door-data.json (152004-byte mutable door data, 970 objects)
+and battle-sequence-entry.pmevt/battle-sequence-entry.json (180-byte pack).
+The expanded door data retains the original map-history attribute table; the
+battle-entry pack retains original strings/colors/listener data. Converter logs
+and output SHA256 values are in the validation manifest. No editable asset import
+or shared cache writes occurred. Mutable message-icons/material-light/field-native/
+field-map-npc/door-data evidence directories were copied privately; remaining
+large local-assets dependencies were shared read inputs.
+
+recovery-effect.bin was copied from artifacts/battle-lens-qwwrj2n7/romfs only after
+matching artifacts/recovery-lifecycle-source-manifest.json SHA256
+553c3a347e1f88c4206fd3a26a0531c5a6ba673ca3bb63183846dd2ba1d7138f.
+No image/audio conversion or original binary/ISO bytes were committed. Original
+Nintendo/Intelligent Systems rights remain reserved; these private validation
+copies confer no new license or redistribution rights.
