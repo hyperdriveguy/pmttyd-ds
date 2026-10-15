@@ -45,6 +45,10 @@ struct BattleAudienceAttackEventCursor::State {
   BattleAudienceAttackServices owner;
   EventEntry *entry = nullptr;
   uint64_t lifetime = 0;
+  // Native phases0/1 capture arguments,2 queries cached GetItemOn2;
+  // attack3 offsets effect Y,4 hit,5 fresh member position,6 sound,7 pitch,
+  // 8 attack flag; getter10 writes outputs incrementally. output counts committed
+  // stores, preventing prior output replay when a later conversion holds.
   uint32_t id = 0, command = 0, args = 0, function = 0, phase = 0, pending = 0;
   std::array<int32_t, 4> destinations{};
   std::array<float, 3> position{};
@@ -94,6 +98,9 @@ resumeBattleAudienceAttackEvent(EventEntry &e, uint32_t fn,
   }
   auto &c = *cursor.state_;
   auto word = [&](uint32_t a) { return m.word(m.user, a); };
+  // Audience B+0x2858, member table +0x1bc, stride0x134. Each call
+  // recaptures global B. Source performs no slot bounds/eligibility scan here;
+  // the original selected-cache owner must supply a valid chosen slot.
   auto member = [&](int32_t slot) {
     return currentBattleAddress(s.actors) + 0x2858 + 0x1bc +
            uint32_t(slot) * 0x134;
@@ -104,6 +111,9 @@ resumeBattleAudienceAttackEvent(EventEntry &e, uint32_t fn,
   };
   for (;;)
     switch (c.phase) {
+    // Getter captures four RAW destination tokens before its source query.
+    // Attack evaluates first slot then mode through EVT values; GetItemOn2 later
+    // overwrites that local slot. Do not optimize away argument resolution.
     case 0:
       if (fn == 0x801466c4) {
         for (unsigned i = 0; i < 4; ++i)
@@ -134,6 +144,9 @@ resumeBattleAudienceAttackEvent(EventEntry &e, uint32_t fn,
       c.phase = fn == 0x801466c4 ? 10 : 3;
       break;
     }
+    // All modes add original binary32 Y literal0x80422fac. Mode exactly1
+    // skips effects/audio; other signed modes call effHitEntry(0,3) at
+    // scale0x80422fb0. volatile forces the source single-precision boundary.
     case 3: {
       volatile float y = c.position[1] + real(word(0x80422fac));
       c.position[1] = y;
@@ -151,6 +164,9 @@ resumeBattleAudienceAttackEvent(EventEntry &e, uint32_t fn,
         return {};
       c.phase = 5;
       break;
+    // Re-resolve chosen member through fresh global AFTER effect completion.
+    // Sound uses actual member XYZ +0x48/+0x4c/+0x50, without local effect Y
+    // offset. A hold must retain this sound position rather than reread it.
     case 5: {
       const auto r = member(c.slot);
       for (unsigned i = 0; i < 3; ++i)
@@ -158,6 +174,8 @@ resumeBattleAudienceAttackEvent(EventEntry &e, uint32_t fn,
       c.phase = c.mode == 1 ? 8 : 6;
       break;
     }
+    // Original positional key0x802f429c; any engaged handle (including -1)
+    // advances to psndSFX_pit pitch1023. Missing sound is not allocation failure.
     case 6: {
       c.pending = 0x800d9848;
       if (!s.sound)
@@ -175,11 +193,17 @@ resumeBattleAudienceAttackEvent(EventEntry &e, uint32_t fn,
         return {};
       c.phase = 8;
       break;
+    // Last source mutation: OR member flag0x40 using another fresh global.
+    // Item clearing/lifecycle notification belongs to its later holding/damage
+    // owner, not this callback; effect/audio must finish before publishing flag.
     case 8: {
       const auto r = member(c.slot);
       m.storeWord(m.user, r, word(r) | 0x40);
       return done();
     }
+    // Exact EVT null-output sentinel -250000000 skips both conversion and
+    // store. Slot is integer; XYZ use source truncation in order. Keep all earlier
+    // acknowledged output stores and captured XYZ across later provider holds.
     case 10:
       while (c.output < 4) {
         const auto destination = c.destinations[c.output];
@@ -210,6 +234,9 @@ resumeBattleAudienceAttackEvent(EventEntry &e, uint32_t fn,
 std::optional<bool> setQueuedBattleAudienceAttackPitch(PositionalSfxRegistry &s,
                                                        int32_t handle,
                                                        int32_t pitch) {
+  // Source no-op domains: handle-1 or empty descriptor key-1. Low eight
+  // handle bits select slot; source has no generation check. Queued bit0 admits
+  // a uint16 pitch write; a live engine branch remains explicitly unavailable.
   if (handle == -1)
     return true;
   const auto index = uint32_t(handle) & 255;
@@ -237,6 +264,9 @@ struct BattleAudienceAttackEvents::State {
     BattleAudienceAttackServices services;
     BattleAudienceAttackEventCursor cursor;
   };
+  // Address alone is insufficient: Call also records real lifetime/id/
+  // command/function. Each Call snapshots external providers once; map ownership
+  // does not retire VM entries or cancel external resource work automatically.
   std::unordered_map<EventEntry *, std::unique_ptr<Call>> calls;
   bool invoking = false;
   explicit State(EventNativeRuntime &r) : vm(r) {}
@@ -249,6 +279,9 @@ int32_t BattleAudienceAttackEvents::invoke(EventEntry &e, uint32_t fn) {
     return 0;
   Guard guard(state_->invoking);
   auto &slot = state_->calls[&e];
+  // Reused entry address or new command gets a fresh cursor/provider capture.
+  // Existing held command retains its copied backend even if public callbacks
+  // change. Direct cursor additionally rejects changed args/provider identities.
   if (!slot || slot->lifetime != e.lifetime || slot->id != e.id ||
       slot->command != e.currentCommand || slot->function != fn) {
     slot = std::make_unique<State::Call>();
@@ -285,6 +318,8 @@ int32_t BattleAudienceAttackEvents::invoke(EventEntry &e, uint32_t fn) {
       return c.pitch && c.pitch(c.user, h, v);
     };
   }
+  // EVT adapter0 means blocked; source2 means completed command. Erase only
+  // on an engaged result, preserving child/output state across blocked retries.
   const auto result =
       resumeBattleAudienceAttackEvent(e, fn, slot->services, slot->cursor);
   if (!result)
@@ -292,6 +327,8 @@ int32_t BattleAudienceAttackEvents::invoke(EventEntry &e, uint32_t fn) {
   state_->calls.erase(&e);
   return *result;
 }
+// Refuse if either actual source function is already registered, so this
+// adapter cannot silently replace another owner's attack/getter callbacks.
 bool BattleAudienceAttackEvents::bind(EventCallbackRegistry &r) {
   if (r.contains(0x801465e0) || r.contains(0x801466c4))
     return false;

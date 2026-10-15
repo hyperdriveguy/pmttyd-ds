@@ -23,6 +23,9 @@ struct Guard {
   explicit Guard(bool &v) : flag(v) { flag = true; }
   ~Guard() { flag = false; }
 };
+// Entry identifies the source routine, Phase its retained native program
+// counter. pending is a diagnostic guest callee token; a nonzero token may
+// survive acknowledged bookkeeping until finish, so active() owns lifetime.
 enum class Entry { All, Unit, Reaction, Consume };
 enum class Phase {
   UnitFind,
@@ -41,6 +44,9 @@ enum class Phase {
   OuterRead,
   OuterCheck
 };
+// Original stored event IDs, not pointers/generation handles. Unit fields
+// scan all four even after a live ID; outer fields stop at the first live ID.
+// Keep the original outer order (it is deliberately not offset-sorted).
 constexpr uint32_t unitFields[]{0x29c, 0x2a8, 0x2b4, 0x2bc};
 constexpr uint32_t outerFields[]{0x182b4, 0x182c4, 0x180fc, 0x182c8, 0x182c0};
 } // namespace
@@ -48,6 +54,10 @@ void releasePackedBattleAfterReaction(int32_t unit, uint32_t key,
                                       const BattleActorServices &s) {
   const auto &m = s.memory;
   assert(m.word && m.storeWord);
+  // Release independently recaptures GLOBAL B, not the barrier's passed B.
+  // Queue +0x16f5c has 64 eight-byte (signed unit ID,key) pairs; -1 is empty.
+  // Compact each word in source order, clear last pair at504/508, then revisit
+  // this index so adjacent duplicates are all removed. No waiting child exists.
   const auto queue = currentBattleAddress(s) + 0x16f5c;
   for (int32_t i = 0; i < 64; ++i) {
     const auto r = queue + 8 * uint32_t(i);
@@ -70,6 +80,9 @@ struct BattleEventBarrierCursor::State {
   BattleEventBarrierServices owner;
   Entry entry = Entry::All;
   Phase phase = Phase::UnitFind;
+  // passed owns initial/outer event scans; reaction and consume independently
+  // capture the current global battle. field/event/item/script persist through
+  // holds; later source loads remain fresh rather than snapshotting a unit.
   uint32_t passed = 0, unit = 0, field = 0, event = 0, reaction = 0, key = 0,
            script = 0, consume = 0, item = 0, pending = 0;
   int32_t queueUnit = 0;
@@ -120,6 +133,9 @@ struct BattleEventBarrierRunner {
       cursor.state_.reset();
       return n;
     };
+    // Reaction result1 means attempted dispatch, so barriers return ready0.
+    // Reaction0 permits Unit ready1; All must still check its five outer IDs.
+    // The optional engagement test below is intentional: engaged0 is complete.
     auto after = [&](int32_t result) -> std::optional<int32_t> {
       if (entry == Entry::Reaction)
         return finish(result);
@@ -162,6 +178,9 @@ struct BattleEventBarrierRunner {
         }
         c.phase = Phase::UnitCheck;
         break;
+      // Capture field+ID before waiting on evtCheckID. A live ID marks the
+      // scan unready but does not stop stale cleanup in later units/fields.
+      // No added HP, allegiance, animation or status eligibility gates.
       case Phase::UnitCheck: {
         c.pending = 0x80036604;
         if (!s.eventExists)
@@ -177,6 +196,8 @@ struct BattleEventBarrierRunner {
         c.phase = Phase::UnitField;
         break;
       }
+      // Reaction has its own global capture. Missing-unit release recaptures
+      // again, then recursively restarts here; it may observe a different B.
       case Phase::AfterStart:
         c.reaction = currentBattleAddress(s.actors);
         c.index = 0;
@@ -206,11 +227,17 @@ struct BattleEventBarrierRunner {
         releasePackedBattleAfterReaction(c.queueUnit, c.key, s.actors);
         c.phase = Phase::AfterStart;
         break;
+      // Four reservations at independently captured B+0x19060. Each slot is
+      // consumed separately, even repeated item IDs. Preserve captured item and
+      // destination while held; any engaged removal return clears it once.
       case Phase::ConsumeStart:
         c.consume = currentBattleAddress(s.actors);
         c.reserved = 0;
         c.phase = Phase::ConsumeRead;
         break;
+      // Source writes zero even for an already empty reservation. Standalone
+      // Consume finishes its void body after four slots; wrapper returns completion,
+      // not the source integer0 carried internally by finish().
       case Phase::ConsumeRead:
         if (c.reserved == 4) {
           if (entry == Entry::Consume)
@@ -239,6 +266,9 @@ struct BattleEventBarrierRunner {
         c.phase = Phase::ConsumeRead;
         break;
       }
+      // A present reaction consumes items BEFORE conclusion. Concluded1
+      // retains the queued pair; otherwise release precedes GetData/evtEntry.
+      // Conclusion uses reaction B, not consumer or passed B.
       case Phase::Concluded: {
         c.pending = 0x8011aa34;
         if (!s.concluded)
@@ -258,10 +288,16 @@ struct BattleEventBarrierRunner {
         releasePackedBattleAfterReaction(c.queueUnit, c.key, s.actors);
         c.phase = Phase::Data;
         break;
+      // Retained unit/key survive release's independent global capture.
+      // A null data-table script is still passed to the actual allocator.
       case Phase::Data:
         c.script = packedUnitData(c.unit, c.key, s.actors);
         c.phase = Phase::Create;
         break;
+      // priority10/flags0 are original evtEntry operands. Engaged pointer0
+      // is completed allocation failure, still reaction1/barrier0. Nonzero guest
+      // entry yields fresh +0x15c ID; then store fresh unit ID to entry+0x160.
+      // Allocation holds do not repeat queue release or data lookup.
       case Phase::Create: {
         c.pending = 0x800374ac;
         if (!s.create)
@@ -286,6 +322,8 @@ struct BattleEventBarrierRunner {
         }
         c.phase = Phase::OuterCheck;
         break;
+      // Unlike the unit scan, first live outer ID returns ready0 immediately.
+      // Only an acknowledged absent ID clears its captured source field.
       case Phase::OuterCheck: {
         c.pending = 0x80036604;
         if (!s.eventExists)

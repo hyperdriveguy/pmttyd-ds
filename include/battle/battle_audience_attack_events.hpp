@@ -5,6 +5,9 @@
 #include <memory>
 #include <optional>
 namespace ttyd {
+// Numeric/sound nullopt means unavailable; engaged sound -1 is a valid
+// source handle. hit/pitch false retain provider-owned partial work. A true hit
+// also acknowledges an actual completed allocation failure (scalar ignored).
 struct BattleAudienceAttackServices {
   BattleActorServices actors;
   EventDispatchServices values;
@@ -16,6 +19,9 @@ struct BattleAudienceAttackServices {
                                   const std::array<float, 3> &) = nullptr;
   bool (*pitch)(void *, int32_t, int32_t) = nullptr;
 };
+// Cursor pins EventEntry address, lifetime, ID, command, args, function and
+// all service identities. Reset cannot undo already stored EVT outputs, effects
+// or sound. Keep backend/VM/providers alive until held entries are retired.
 class BattleAudienceAttackEventCursor {
 public:
   BattleAudienceAttackEventCursor();

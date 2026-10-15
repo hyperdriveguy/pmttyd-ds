@@ -118,5 +118,6 @@ Progress and exact validation are recorded in [PROGRESS](../PROGRESS.md).
 Retained audience target/turn-end numeric and provider contracts are described in
 [audience continuations](battle-retained-audience.md). Packed threshold flags,
 alert selection/countdown and recovery setters are described in
-[pinch and recovery](battle-pinch-recovery.md). Source Turn/barrier parents and
-newer Trio integration still require their separate inline audit.
+[pinch and recovery](battle-pinch-recovery.md). The [Turn parent](battle-turn.md), [event barriers](battle-event-barriers.md) and
+[audience attack events](battle-audience-attack-events.md) now have inline numeric/
+continuation notes. Newer Trio integration still requires its separate audit.

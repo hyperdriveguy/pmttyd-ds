@@ -14,6 +14,9 @@ struct BattleEventBarrierServices {
   std::optional<uint32_t> (*create)(void *, uint32_t script, int32_t priority,
                                     uint32_t flags) = nullptr;
 };
+// One entry kind and passed battle pointer per invocation. Pin all provider
+// users/callbacks, including the audience lifecycle observer. Reset abandons
+// native state only, never guest writes/queue shifts/item removals already done.
 class BattleEventBarrierCursor {
 public:
   BattleEventBarrierCursor();
@@ -31,6 +34,9 @@ private:
   bool invoking_ = false;
   friend struct BattleEventBarrierRunner;
 };
+// Both barrier APIs scan all 64 unit slots; Unit omits the five outer battle
+// event fields. Neither name promises single-unit scope. Reaction's engaged1
+// instead means attempted reaction dispatch, including event allocation failure.
 // Original int0/1 is complete readiness, distinct from nullopt provider wait.
 std::optional<int32_t>
 resumeBattleAllEventBarrier(uint32_t, const BattleEventBarrierServices &,
