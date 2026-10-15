@@ -3258,3 +3258,16 @@ regeneration skipped; Python fixtures independently use read-only ISO and empty
 temporary destinations. No editable import/shared-pack write or ISO, extracted
 original/compiled product commit. Nintendo/Intelligent Systems rights retained;
 local conversion grants no new license.
+
+## Effect pool/HitN64 documentation validation inputs (2026-10-15)
+
+artifacts/effect-pool-hit-code-documentation-validation/source inherits all 71
+accepted products and original enemy/footer/HP/HitN64/party-position fixtures.
+Dependency comparison finds no converter/assets/Makefile/CMake changes since the
+prior frozen baseline. Small mutable evidence/default fixtures copied privately;
+actual inherited HitN64 decoded-PNG read path independently pinned. All product/
+evidence/fixture hashes checked after gates. No conversion, editable import,
+overlay or shared-pack write. Native full regeneration skipped; Python fixtures
+independently read ISO read-only into empty temporary outputs. No ISO, original
+extracted asset or compiled product committed; Nintendo/Intelligent Systems
+rights retained and no new license granted.

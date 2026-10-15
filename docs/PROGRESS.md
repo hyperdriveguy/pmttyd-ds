@@ -14442,3 +14442,53 @@ Next: remaining effect pool/HitN64/recovery/resource/draw code, runtime helpers,
 tooling and newer concurrent changes. Field snapshot coverage does not prove
 all later party/Mario/registry integrations reviewed; hash inventory is only a
 review aid. Full code documentation/remake goal remains active.
+
+## 2026-10-15 — Effect pool/HitN64 code documentation
+
+Added 147 inline comment lines across twelve effect C++/header files plus
+[effect pool/HitN64 guide](code/effect-pool-hit-n64.md), linked from index.
+Code/docs commit ff96b64e. All executable tokens/string literals unchanged;
+no original dialogue/story/assets, numeric or simulation behavior changed.
+No new tests for this prose-only work.
+
+Pool notes map original globals/layouts, exact-zero versus active predicates,
+signed traversal/fresh context, callback/cache reloads, async0 versus unavailable,
+initialization and context-release-only cleanup. HitN64 notes explain wrapped
+count/size arithmetic, original biases/RNG/root alpha, once-per-invocation Main,
+held delete/queue, source draw/GX/indexed vertex order, borrowed transforms,
+real texture fallback, immutable pack versus mutable owners, generation invalidation,
+ordered capture and permanent stale retirement. Native notes map shader ABI,
+whole-batch CPU/preflight/GPU boundaries, source TEV equations, arena lifetime
+and inherited raster obligations. Preparation is not queued callback completion;
+production scheduling and original numeric/GPU/hardware parity remain separate.
+
+Frozen baseline 503745cbc210ac9c6932d1d1d6fd40b5787e18a6 plus owned docs is at
+artifacts/effect-pool-hit-code-documentation-validation/source. Full git-blob
+audit covers 4173 baseline tracked files with
+zero unexpected changes; all fourteen frozen/live documentation snapshots match
+and 105 local guide/index links resolve. Source/guide prose finalized before gates.
+Concurrent party/font/animation/Mario/file/GPU/runtime work preserved/excluded;
+no combined moving-worktree validation claim. Original host/native handles observed
+terminal0; exit markers agree.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits 0: 478/478 C++ (106.46s),
+218/218 Python (127.493s), zero skipped. Actual original 45-descriptor enemy,
+private HitN64 and original party-position fixtures ran. Native
+make all -o assets-ready -j4 SOUNDTRACK=gamecube exits 0. Manifest pins source,
+product/evidence/fixture/log and ELF/3DSX hashes. Existing compiler/Pillow warnings
+remain. No emulator/profile/save changes or hardware/Gekko numeric/pixel/audio/
+performance parity claims.
+
+Dependency preflight confirms converters/assets/Makefile/CMake unchanged since
+prior frozen source. All 71 accepted products and original enemy/footer/HP/HitN64/
+party-position fixtures inherited by hash; small mutable evidence/default fixtures
+copied privately. Actual inherited HitN64 PNG read path independently pinned.
+No conversion/import/overlay/shared-cache write. Native full regeneration skipped;
+Python fixtures independently read ISO read-only into empty temporary outputs.
+See [asset ledger](ASSETS.md). Original rights retained; no ISO, extracted original
+or compiled binary committed.
+
+Next: recovery lifecycle/resource/draw code, remaining runtime helpers/tooling,
+and newer concurrent battle/display/party/font/Mario/animation/file integrations.
+Snapshot inventory is a review aid, not semantic coverage proof. Full code
+documentation/remake goal remains active.
