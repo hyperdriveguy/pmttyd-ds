@@ -1,5 +1,6 @@
 #pragma once
 #include "field_npc_clock_binding.hpp"
+#include "field_npc_draw.hpp"
 #include "field_npc_main_auto_pose.hpp"
 #include "field_npc_main_detection.hpp"
 #include "field_npc_main_entry.hpp"
@@ -38,6 +39,12 @@ struct FieldNpcMainEntryNativeServices {
   // Real field encounter/talk/battle and Kpa score providers; false no effects.
   bool (*tail)(void *, EventAddressSpace &, const FieldNpcTailRequest &,
                FieldNpcTailResponse &) = nullptr;
+  // Deferred NPC draw providers retain the same field camera/queue/animation
+  // producer pass. Scalar/matrix and Main/draw effects are atomic on false.
+  bool (*drawNumber)(void *, EventAddressSpace &, FieldNpcMatrixNumber &) = nullptr;
+  bool (*drawMatrix)(void *, EventAddressSpace &, BattleAudienceMatrixRequest &) = nullptr;
+  bool (*draw)(void *, EventAddressSpace &, const FieldNpcDrawRequest &,
+               FieldNpcDrawResponse &) = nullptr;
   bool (*sound)(void *, EventAddressSpace &,
                 const FieldNpcMainEntryRequest &) = nullptr;
 };
@@ -104,6 +111,10 @@ public:
   // One complete source invocation only after all real child effects and final
   // retained-F byte clear. Reset after completion/pass retirement, not on hold.
   bool advanceMain(FieldNpcMainCursor &);
+
+  // Complete supported queued callback only. Does not register/dispatch it or
+  // replace the normal renderer. Keep this binding alive until completion.
+  bool advanceDraw(uint32_t callback, uint32_t actor, FieldNpcDrawCursor &);
 
 private:
   FieldNpcMainEntryBinding(std::shared_ptr<FieldNpcRegistryOwner>,

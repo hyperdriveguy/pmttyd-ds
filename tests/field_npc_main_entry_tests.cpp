@@ -1,4 +1,6 @@
 #include "animation_initialize.hpp"
+#include "battle_audience_aux_callback.hpp"
+#include "npc_presentation.hpp"
 #include "animation_pool_memory.hpp"
 #include "animation_tangent_memory.hpp"
 #include "event_native_runtime.hpp"
@@ -1038,6 +1040,142 @@ void actorScan() {
 
 
 }
+void actualDrawCallbacks() {
+  auto storage = std::make_unique<NativeWorld>();
+  auto &w = *storage;
+  struct Probe {
+    NativeWorld *w;
+    bool ready = false;
+    unsigned mains = 0, draws = 0, setters = 0;
+    std::vector<uint32_t> names;
+  } probe{&w};
+  constexpr uint32_t Record = 0x8f000000, File = 0x8f010000,
+                     Holder = 0x8f020000, Model = 0x8f030000,
+                     Directory = 0x8f040000, Camera = 0x8f050000;
+  auto &memory = w.vm->memory;
+  for (auto pair :
+       std::array<std::pair<uint32_t, unsigned>, 6>{{{Record, 16},
+                                                     {File, 0xa4},
+                                                     {Holder, 4},
+                                                     {Model, 0x1b0},
+                                                     {Directory, 64},
+                                                     {Camera, 0x24}}})
+    assert(memory.registerRam(pair.first, std::vector<uint8_t>(pair.second)));
+  FieldNpcMainEntryNativeServices n;
+  n.user = &probe;
+  n.numbers.divide = nativeFieldNpcClockDivide;
+  n.numbers.convert = nativeFieldNpcClockConvert;
+  n.admitMario = [](void *, EventAddressSpace &, uint32_t) { return true; };
+  n.drawNumber = [](void *, EventAddressSpace &, FieldNpcMatrixNumber &q) {
+    assert(q.function == 0x80007328);
+    q.result = npcReviseAngle(q.args[0]);
+    return true;
+  };
+  n.drawMatrix = [](void *, EventAddressSpace &,
+                    BattleAudienceMatrixRequest &q) {
+    BattleAudienceAuxServices math;
+    bindAudienceAuxMathAdapter(math);
+    return math.matrix(nullptr, q);
+  };
+  n.draw = [](void *p, EventAddressSpace &m, const FieldNpcDrawRequest &q,
+              FieldNpcDrawResponse &r) {
+    auto &f = *static_cast<Probe *>(p);
+    assert(&m == &f.w->vm->memory);
+    switch (q.function) {
+    case 0x80007328:
+      r.number = npcReviseAngle(q.scalars[0]);
+      return true;
+    case 0x80010864:
+      r.word = Record;
+      return true;
+    case 0x8000f2fc:
+      assert(q.args[0] == 4);
+      r.word = Camera;
+      return true;
+    case 0x802725a0:
+      r.number = 0;
+      return true;
+    case 0x80041170:
+      assert(q.args[0] == f.w->pose && q.args[2] == 0);
+      ++f.setters;
+      f.names.push_back(q.args[1]);
+      return true;
+    case 0x8003ed2c:
+      if (!f.ready)
+        return false;
+      assert(q.args[0] == f.w->pose);
+      ++f.mains;
+      return true;
+    case 0x8003b4d8:
+      if (!f.ready)
+        return false;
+      assert(q.args[0] == f.w->pose && q.args[2] >= 1 && q.args[2] <= 3);
+      ++f.draws;
+      return true;
+    default:
+      assert(false);
+      return false;
+    }
+  }; // Explicit field camera/Main/draw fixture, not a production renderer.
+  auto binding =
+      FieldNpcMainEntryBinding::bind(w.owner, *w.registry, *w.vm, *w.view, n);
+  assert(binding);
+  w.store(w.actor, w.word(w.actor) | 0x02000000);
+  w.store(w.actor + 0x1d4, 0x00400000);
+  w.store(w.actor + 0x114, 0xff7f03ab);
+  w.store(w.actor + 0xf0, 0);
+  w.store(w.actor + 0x144, bits(90));
+  FieldNpcDrawCursor c;
+  assert(!binding->advanceDraw(0x8004c7e0, w.actor, c));
+  auto *actual = w.pool->slot(w.pose);
+  assert(actual && actual->word(0xf0) == 0x7f3f01ab &&
+         actual->word(0xe8) & 0x40);
+  auto foreign =
+      FieldNpcMainEntryBinding::bind(w.owner, *w.registry, *w.vm, *w.view, n);
+  assert(foreign && !foreign->advanceDraw(0x8004c7e0, w.actor, c));
+  // No color/flag replay after the held Main; typed and VM views are identical.
+  w.store(w.view->poseAddress(w.pose) + 0xf0, 0x12345678);
+  probe.ready = true;
+  assert(binding->advanceDraw(0, w.actor + 0x340, c) && !c.active &&
+         actual->word(0xf0) == 0x12345678 && probe.mains == 1 &&
+         probe.draws == 3);
+  // True descriptor pointer getter, source strcmp, table and actual pose alias.
+  w.store(w.actor, w.word(w.actor) | 0x00800000);
+  const uint32_t poseAddress = w.view->poseAddress(w.pose),
+                 modelCache = w.word(NativeWorld::Work);
+  w.store(poseAddress + 0x10, 0);
+  w.store(poseAddress + 0x14, 0);
+  w.store(poseAddress + 0x74, bits(-180));
+  w.store(modelCache + 8, File);
+  w.store(File + 0xa0, Holder);
+  w.store(Holder, Model);
+  w.store(Model + 0x1ac, Directory);
+  const uint32_t sourceName = w.word(0x803066f8);
+  for (unsigned i = 0; i < 4; ++i) {
+    uint8_t ch;
+    assert(memory.readByte(sourceName + i, ch) &&
+           memory.writeByte(Directory + i, ch));
+  }
+  assert(binding->advanceDraw(0x8004c50c, w.actor, c) && probe.setters == 1 &&
+         probe.names.back() == w.word(0x803066fc));
+  // Raw material/get-pose leaves must not add an active/resource gate.
+  w.store(w.actor + 0x104, 255);
+  w.pose = 255;
+  w.store(w.actor, w.word(w.actor) & ~0x00800000);
+  assert(binding->advanceDraw(0x8004c7e0, w.actor, c));
+  assert(w.pool->slot(255)->word(0) == 0 &&
+         w.pool->slot(255)->word(0xf0) == 0x7f3f01ab &&
+         w.pool->slot(255)->word(0xe8) & 0x40);
+  // Missing native Main/draw and changed pool mappings hold; no empty success.
+  probe.ready = false;
+  assert(!binding->advanceDraw(0x8004c7e0, w.actor, c));
+  const auto draws = probe.draws;
+  w.store(NativeWorld::Work + 0x14, 255);
+  probe.ready = true;
+  assert(!binding->advanceDraw(0, w.actor, c) && probe.draws == draws);
+  w.store(NativeWorld::Work + 0x14, 256);
+  assert(binding->advanceDraw(0, w.actor, c));
+}
 } // namespace
 int main() {
   ordinary();
@@ -1046,4 +1184,5 @@ int main() {
   holds();
   actualAliases();
   actorScan();
+  actualDrawCallbacks();
 }
