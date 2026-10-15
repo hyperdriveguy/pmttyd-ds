@@ -3057,3 +3057,25 @@ regenerated privately from the read-only ISO with those exact converters;
 other inherited products remain hash-matched. This is source-data closure,
 not new authored art or a measured animation constant. Original rights above
 remain unchanged.
+
+## Harbor/professor documentation validation inputs (2026-10-15)
+
+artifacts/harbor-professor-code-documentation-validation/source inherits the
+previous private 63-product cache and original enemy/footer/HP evidence/default
+fixtures. Baseline f71f6785a5b0caef08f49fecfa34a48d9bb3887e adds the independent
+field-party definition recipe. Frozen tools/field_party_definition_assets.py
+SHA256 ce8c0e524a18e6cff4e16b3bda9939a304bb85d4d958d7a37cf943b08c31277f
+reads the original ISO read-only and checks three DOL records (kinds1/8/13)
+against its pinned source hashes. It ran once into an empty private cache-rebuild
+output; no editable assets or shared cache were overwritten.
+
+Two generated products admitted into the private RomFS:
+field-party-definitions.pmevt, 168 bytes,
+SHA256 cd6d758b411d507c6a8a17fb9cc03e582b9e086053d3032af215e0781703a750;
+field-party-definitions.json, 1427 bytes,
+SHA256 d8991b30cd9d1d9e73102ad6bdbd7bd1f4192cc0694d4cc8bbbb1547ddc72c80.
+All 65 accepted products and inherited evidence/fixtures checked after gates.
+Native full regeneration skipped; Python fixtures independently use read-only ISO
+and empty temporary outputs. Source/build products remain ignored; no ISO,
+extracted original or compiled binary committed. Nintendo/Intelligent Systems
+rights retained; local tracking/conversion grants no new license.

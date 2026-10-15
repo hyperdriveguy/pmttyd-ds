@@ -13929,3 +13929,58 @@ font and scalar help font children; another worker is probing the actual new
 Trio renderer route and its real Mario-key/camera-letterbox query frontier.
 No readiness/sequence flags or unknown coordinates are forced. Full remake goal
 remains active; original US dialogue/story data is unchanged.
+
+## 2026-10-15 — Harbor/professor code documentation
+
+Added 204 inline comment lines across six story C++/header files, plus
+[harbor dialogue/events](code/harbor-story-events.md) and
+[professor/underground events](code/professor-story-events.md), linked from index.
+Code/docs commit a22478e5; wording refinement 026bca36. All executable tokens/string literals unchanged.
+Original dialogue, attribution, control tokens, branches, event words, art/audio
+and simulation behavior unchanged. No tests added for this prose-only work.
+
+Notes distinguish the crowd's native one-stage-per-call controller from the
+original encounter interpreter; actor/speaker identities, delayed retreats,
+print-entry anchors, actual-speed pose ownership, Q1024 jump admission,
+per-entry waits, movement units, key-depth, pending battle services and all-child
+completion are explicit. Professor notes document pack/catalog ABI, per-entry
+script ownership, guest allocator/clock addresses, source saved-switch writes,
+flag/lifetime/placement separation, capture and fence barriers, once_stop/append,
+signed selection results, raw phase operands and per-callback battle movement.
+Both guides identify native adapters and current unbound service boundaries.
+
+Frozen baseline f71f6785a5b0caef08f49fecfa34a48d9bb3887e plus owned docs is at
+artifacts/harbor-professor-code-documentation-validation/source. Full git-blob
+source audit covers 4074 baseline tracked files,
+zero unexpected changes; all nine frozen/live documentation snapshots match,
+and 98 local guide/index links resolve. Concurrent battle/display/effect/party
+work preserved/excluded; no moving combined-worktree validation claim.
+Initial host/native handles both terminal0 (459 C++/214 Python); logs and
+exit markers retained. Corrected underground lookup wording to shared font without
+professor global text, and jump mask0x2 spelling. Both complete gates rerun
+incrementally after final source/prose. Final original process handles observed
+terminal with exit markers0.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits 0: 459/459 C++ (60.60s),
+214/214 Python (34.544s), zero skipped. Actual original 45-descriptor enemy-bank
+fixture ran. Native make all -o assets-ready -j4 SOUNDTRACK=gamecube exits 0.
+Manifest records source/product/evidence/log and native ELF/3DSX hashes.
+Existing compiler/Pillow warnings remain. No emulator/profile/save changes or
+hardware/pixel/audio/Gekko/performance parity claims.
+
+Private cache inherits 63 accepted products and original enemy/footer/HP fixtures.
+Dependency preflight identifies the added independent field-party definition
+converter/Makefile recipe and new CMake tests; prior converter/assets bytes are
+unchanged. Frozen converter reads ISO read-only, verifies three source DOL
+record hashes, and writes two products into an empty private destination.
+Those two products join the 65 checked inputs; no editable import/shared-cache
+write. Native full regeneration skipped; Python fixtures independently use
+read-only ISO and empty temporary outputs. See [asset ledger](ASSETS.md).
+No ISO, extracted original or compiled binary committed; original rights retained.
+
+Next: document field NPC clock/matrix helpers and their bindings, then remaining
+field/runtime/effect implementations and tooling; newer battle,
+party, animation and native GPU additions also need inline review. All 50 tracked
+story files currently match annotation snapshots. That hash inventory is a review
+aid, not proof of full semantic coverage, all concurrent changes, or a faithful
+complete prologue/game. Full documentation/remake goal remains active.
