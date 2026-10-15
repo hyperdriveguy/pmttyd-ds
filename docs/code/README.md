@@ -41,7 +41,9 @@ core battle action/status/resource/damage helpers, and Game/portable runtime
 helper composition, portable display/camera/animation helpers, and main renderer/
 platform resource ownership and current scene-specific render adapters.
 Audio/frontend service notes are included in the runtime guide. Native
-display/GPU helpers added since the earlier service pass, field subsystem
-modules, remaining battle, message, inventory and story implementations still require a systematic inline numeric/behavior audit;
+display/GPU helpers added since the earlier service pass, field/NPC/partner
+modules, remaining battle, message, inventory, story, audio and port tooling still
+require a systematic inline numeric/behavior audit. Concurrent additions to
+already covered modules also need review;
 existing comments and contracts in those areas do not imply complete coverage.
 Progress and exact validation are recorded in [PROGRESS](../PROGRESS.md).

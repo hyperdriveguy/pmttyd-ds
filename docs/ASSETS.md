@@ -1366,3 +1366,31 @@ rights asserted. New source registry BSS zero comes from verified original
 startup clear, not extracted synthetic memory. Native allocated buffers/guest
 IDs are platform ownership adapters, not original allocator content/address
 claims. No authored art/audio/dialogue or GPU/raster readiness claim.
+
+## Render-adapter documentation validation constants (2026-10-14)
+
+Private cache: artifacts/render-adapter-code-documentation-validation/source/romfs.
+The base RomFS and matching message-icons/material-light caches were copied from
+prior accepted artifacts/scene-code-documentation-validation/source; no new
+editable-asset import or image/audio conversion was performed.
+
+Frozen code 513661e0ad7afbfd3f7860627ba5d233a02cc25b expects a newer original icon
+constant domain than the previous documentation baseline. Its own frozen
+tools/source_icon_assets.py read_constants helper read the supplied
+/home/carson/games/roms/G8ME01.iso read-only and produced private
+romfs/source-icons/constants.bin: 188 bytes, SHA256
+b2126d655f8bebc5abcca2fda33ec490267827f5dccfccd40aa2a410b3dbf5f2.
+The seven DOL spans are (0x80415040,24),(0x80415080,32),(0x8041f864,60),
+(0x8041f860,4),(0x8041f8a0,4),(0x80426884,40),(0x80419f30,24).
+Private sources.json sha256/constant_spans were updated together. Thirteen matching original atlas evidence images were also copied into private
+local-assets/field-native from artifacts/source-checks/trouble-world. Each image
+was checked against its existing atlas_evidence SHA256 before use;the per-image
+paths/hashes are in the validation manifest. The 613 cached
+original image cells remain unchanged; native validation reuses this cache with
+assets-ready regeneration skipped. Initial fixture failures and final full test/
+build evidence are retained in the render-adapter validation manifest/logs.
+
+Original Nintendo/Intelligent Systems rights remain reserved. All original and
+derived pack bytes stay in ignored local caches; path/hash tracking grants no
+new license or redistribution rights. Shared packs and assets/ edits were not
+overwritten, and no ISO content was committed.

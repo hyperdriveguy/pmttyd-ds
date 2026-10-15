@@ -7617,3 +7617,45 @@ capture artifacts/azahar-area-npc-owner-normal/boot.png,60AppFPS/100% in this
 single emulator sample. Log artifacts/area-npc-owner-normal-smoke.log. This is
 boot evidence only, not registered field-NPC rendering or hardware profiling.
 User emulator profile/saves remain unchanged.
+
+## 2026-10-14 — Remaining scene render adapters documented
+
+Added inline numeric/ownership/behavior notes to 26 native C++ render adapters
+and the item-effect shader. Coverage includes battle/tutorial/audience/class,
+source icon admission and packet replay, finishing camera/material/shadow/shape
+bridges, stage and second-view submission, field acquisition/effects and source
+window/font/selector consumers. The [adapter guide](code/render-adapters.md)
+maps US callback/SDK identities and explains source/native units, budgets,
+texture gutters, atomic primitive staging, provider holds, GPU-state restoration
+and distinct cull/flag domains. Shader comments describe independent POS pattern
+and opacity UV inputs. Commit bc5a2879 contains the first documentation batch;
+this follow-up clarifies partial physical-state publication and remaining scope.
+All 26 C++ files and the shader preserve executable tokens.
+
+Validation froze baseline 513661e0ad7afbfd3f7860627ba5d233a02cc25b plus documentation in
+artifacts/render-adapter-code-documentation-validation/source. Audited 3499
+tracked files with zero unexpected changes; 29 documented files match live/frozen
+hashes. CMAKE_BUILD_PARALLEL_LEVEL=4 make test passes 334/334 C++ (55.64s) and
+193/193 Python (45.373s); make all -o assets-ready -j4 SOUNDTRACK=gamecube
+passes, including the item-effect shader/final comment rebuild. Final native
+cache check exits 0. Logs host-complete.log/native-final.log/native-final-pack.log;
+manifest records source/binary hashes and exact cache dependencies.
+
+Initial host run passed 332/334 C++; two fixtures expected the newer 188-byte
+source icon constant domain while the reused prior cache had 124 bytes. Regenerated
+only that private constant record/metadata with the frozen read-only ISO helper.
+The next run passed 334 C++ and 192/193 Python; the new field-resource test required
+13 original atlas evidence files omitted from the reused cache. Copied those from
+the prior validated source and checked every metadata SHA256 before rerunning
+the full test command. See [asset notes](ASSETS.md). No shared pack writes,
+editable-asset import, image/audio replacement or emulator/profile/save changes.
+Existing compiler/Pillow warnings remain. This proves the frozen documentation
+snapshot, not the concurrently changing whole worktree, visual equivalence or
+hardware performance.
+
+Next: document native display/GPU helper modules added since the earlier portable
+service pass, then field/NPC/partner, remaining battle helpers, message/inventory/
+story, audio and relevant port tooling. Re-audit concurrent changes to already
+covered runtime/event/save/composition code. Current render_*.cpp adapters now
+have numeric/behavior annotations; that does not complete the port-wide goal or
+the remake. The documentation goal stays active.

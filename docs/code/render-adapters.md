@@ -31,6 +31,13 @@ depth. Color, alpha and depth writes remain independent. GX before-alpha depth
 location is retained separately; PICA's constant-reference early test does not
 implement that control. The admitted class combinations use late depth testing.
 
+Provider rejection does not promise rollback of already queued physical GPU
+state. For example, material publication can bind a texture and configure TEV
+before rejecting a missing later input. The acknowledged logical program remains
+unchanged; the next resume restores that state. Stack bridge contexts are borrowed
+only during the synchronous provider call. A continuation may retain request
+values and its cursor, but must not retain those stack context pointers.
+
 ## Original callback and SDK identities
 
 These are US guest function tokens, not native callable addresses. Names come
@@ -71,13 +78,13 @@ these live values before field-pouch export so it does not display stale HP/FP.
 
 | Domain | Implemented numeric contract |
 | --- | --- |
-| Native streams | XYZ3/UV2/RGBA 4 float attributes; permutation 0x210; six resettable PICA TEV stages |
+| Native streams | XYZ(3)/UV(2)/RGBA(4) float attributes; permutation 0x210; six resettable PICA TEV stages |
 | Tutorial actors | Setup 2: Crump/Mario/Goombella; PMHTUV01 exact-EOF UV scale 1/2/4/8 |
 | Startup resources | Nine banks, CPU readiness separate from actual GPU texture admission; context 1 |
-| Tutorial curtain | PMCUR001/A_2, 216 triangles/648 bindings, nonlooping0..45, UV scale 8; context 2 |
+| Tutorial curtain | PMCUR001/A_2, 216 triangles/648 bindings, nonlooping 0..45, UV scale 8; context 2 |
 | Audience | Combined 3600-vertex native budget; source map modes 1 opaque/2 translucent |
 | Class menu |1024 quads*6 vertices per frame; source flags 0 ordinary, 16 normal icon, 48 disabled icon |
-| Field icon | Fixed32 slots, six vertices each; item95 icon 307, coin403 textures414..417 |
+| Field icon | Fixed 32 slots, six vertices each; item 95 icon 307, coin descriptor 403, textures 414..417 |
 | Window frame | Nine slices*6=54 vertices per frame allocation; bounded by MaxWindowFrames |
 | Window font | Six vertices per glyph quad; outline can emit five quads per glyph; MaxWindowFontQuads counts quads |
 | Item effect | Two six-vertex passes; texture 44 pattern 16x16, texture 42 opacity 128x128 |
@@ -89,11 +96,11 @@ GX mode 0x80 is a quad, 0x90 triangles, 0xa0 a fan. Letterbox stages eight S16
 vertices then emits two four-vertex fans. Stage color geometry admits direct
 position/color and no texture data. Cylinder position/color are INDEX8 pairs;
 format 4 is F32 position, format 5 RGBA8 color. Descriptor 0/1/2 means
-NONE/DIRECT/INDEX8 in these source declarations. Actor surface cull2 means
-suppressed surface; GX cull2 means front-face culling. Keep those domains apart.
+NONE/DIRECT/INDEX8 in these source declarations. Actor surface cull 2 means
+suppressed surface; GX cull 2 means front-face culling. Keep those domains apart.
 
 Character texture admission validates coordinate 0, source CMPR format 14 without
-palette/LOD/mips, clamp wrap0 and linear filter1. It stages texture object, LOD
+palette/LOD/mips, clamp wrap 0 and linear filter 1. It stages texture object, LOD
 and actual bind separately. Texture-coordinate matrix 30 is uploaded matrix
 selection, 60 identity; tuple 125 retains the original postmatrix selection. A
 bind also validates resource identity, atlas cell, UV scale and matrix/generator.
