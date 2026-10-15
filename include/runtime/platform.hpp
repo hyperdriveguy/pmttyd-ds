@@ -31,6 +31,7 @@
 #include "battle_class_footer_gpu.hpp"
 #include "battle_submenu_surface_gpu.hpp"
 #include "battle_window_packets.hpp"
+#include "battle_weapon_native_raster_plan.hpp"
 #include "battle_submenu_packets.hpp"
 #include "battle_audience_backend.hpp"
 #include "native_camera_draw.hpp"
@@ -99,6 +100,9 @@ public:
     std::optional<BattleFontRasterView> battleFontRasterView(const Game&)const;
     bool canDrawBattleFontGlyph(const BattleFontGlyphPacket&)const;
     bool drawBattleFontGlyphs(const std::vector<BattleFontGlyphPacket>&);
+    std::shared_ptr<const BattleWeaponRasterPlan> prepareWeaponOrderedRaster(std::shared_ptr<const BattleWeaponOrderedBatch>)const;
+    bool canDrawWeaponOrderedRaster(const BattleWeaponRasterPlan&)const;
+    bool submitWeaponOrderedRaster(const BattleWeaponRasterPlan&);
     bool changeRoom(uint32_t room);
     const std::string& resourceFailure() const{return frontFailure;}
     void beginFrontend();
@@ -239,6 +243,8 @@ private:
     Texture messageIndicatorTexture;
     Texture shadowTexture44; // Native loaded resource adapter; original palette loader remains separate.
     BattleFontGpuResource battleFontGpu;
+    mutable bool weaponRasterInvoking_=false;
+    bool canDrawWeaponOrderedRasterImpl(const BattleWeaponRasterPlan&)const;
     bool prepareBattleFont();
     void retireBattleFont();
     std::unique_ptr<NativeBattleClassSurfaceGpu> classSurfaceGpu;

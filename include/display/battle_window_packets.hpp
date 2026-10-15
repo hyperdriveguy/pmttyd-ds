@@ -68,6 +68,7 @@ public:
  NativeBattleWindowSurfaceGpu&operator=(const NativeBattleWindowSurfaceGpu&)=delete;
  bool load(const char*root);void release();const BattleWindowSurfaceResource&resource()const;
 #ifdef __3DS__
+ C3D_Tex*texture(const BattleWindowSurfaceLease&)const;
  bool canDraw(const BattleWindowPacket&,const shaderProgram_s*,int,const C3D_Tex*parking)const;
  bool draw(const BattleWindowPacket&,shaderProgram_s*,int,C3D_Tex*parking);
 #endif

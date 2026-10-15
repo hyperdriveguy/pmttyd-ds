@@ -2617,6 +2617,13 @@ add_executable(source_mario_dvd_root_tests tests/source_mario_dvd_root_tests.cpp
 target_link_libraries(source_mario_dvd_root_tests PRIVATE ttyd_core)
 add_test(NAME source_mario_dvd_root COMMAND source_mario_dvd_root_tests)
 set_tests_properties(source_mario_dvd_root PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Finite native C-runtime adapter for actual Font/Window private resource paths.
+target_sources(ttyd_core PRIVATE source/platform/native_source_resource_path_formatter.cpp)
+add_executable(native_source_resource_path_formatter_tests tests/native_source_resource_path_formatter_tests.cpp)
+target_link_libraries(native_source_resource_path_formatter_tests PRIVATE ttyd_core)
+add_test(NAME native_source_resource_path_formatter COMMAND native_source_resource_path_formatter_tests)
+set_tests_properties(native_source_resource_path_formatter PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 target_sources(ttyd_core PRIVATE source/platform/native_source_window_memory.cpp)
 add_executable(native_source_window_memory_tests tests/native_source_window_memory_tests.cpp)
 target_link_libraries(native_source_window_memory_tests PRIVATE ttyd_core)
@@ -2631,3 +2638,11 @@ add_test(NAME field_npc_battle_event COMMAND field_npc_battle_event_tests)
 if(EXISTS "${CMAKE_SOURCE_DIR}/romfs/harbor-program.bin")
     add_test(NAME field_npc_battle_event_original COMMAND field_npc_battle_event_tests "${CMAKE_SOURCE_DIR}/romfs")
 endif()
+
+
+# Prepared mixed original weapon UI geometry and atomic native raster plan.
+target_sources(ttyd_core PRIVATE source/display/battle_weapon_native_raster_plan.cpp)
+add_executable(battle_weapon_native_raster_plan_tests tests/battle_weapon_native_raster_plan_tests.cpp)
+target_link_libraries(battle_weapon_native_raster_plan_tests PRIVATE ttyd_core)
+add_test(NAME battle_weapon_native_raster_plan COMMAND battle_weapon_native_raster_plan_tests)
+set_tests_properties(battle_weapon_native_raster_plan PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

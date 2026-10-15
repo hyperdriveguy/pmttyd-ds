@@ -1401,6 +1401,10 @@ Original battle menu native resource/queue owners:
 - [Private raw publication capture proof](display/NATIVE_PRIVATE_CAPTURE_PROOFS.md): default-off predicate-independence opt-in, raw guard/source spans, complete VM physical-alias exclusion, scalar fallback and retained decoding semantics.
 
 - [Original Mario DVD root pointer](platform/ORIGINAL_MARIO_DVD_ROOT.md).
+- [Finite native Font/Window path formatter](platform/NATIVE_FINITE_RESOURCE_PATH_FORMATTER.md).
 - [Native source window process memory](display/NATIVE_SOURCE_WINDOW_MEMORY.md).
 
 - [Retained original harbor battle callbacks](field/NATIVE_HARBOR_BATTLE_CALLBACKS.md): source start/wait/regular-EVT-ID parents, actual caller VM bridge and pending-owner limits.
+
+
+- [Prepared native weapon UI raster](display/PREPARED_NATIVE_WEAPON_RASTER.md).

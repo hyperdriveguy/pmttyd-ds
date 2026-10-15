@@ -35,6 +35,7 @@ void NativeBattleWindowSurfaceGpu::release(){state_->resource.retire();
 #endif
 }
 #ifdef __3DS__
+C3D_Tex*NativeBattleWindowSurfaceGpu::texture(const BattleWindowSurfaceLease&l)const{return state_->imported&&state_->resource.accepts(l)?&state_->texture:nullptr;}
 bool NativeBattleWindowSurfaceGpu::canDraw(const BattleWindowPacket&p,const shaderProgram_s*program,int location,const C3D_Tex*parking)const{
  if(!program||location<0||!parking||!state_->imported||!validateBattleWindowPacket(p,state_->resource))return false;
  const auto m=battleWindowTransform(p);for(const auto&row:m)for(float v:row)if(!std::isfinite(v))return false;return true;
