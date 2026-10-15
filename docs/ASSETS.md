@@ -2046,3 +2046,18 @@ already committed original-pixel footer converter. These are prerequisites from
 the committed base, not animation art changes. Other accepted RomFS products
 remain byte-identical; exact hashes/diff are in ignored
 artifacts/animation-process-validation-manifest.json. All products stay private.
+
+### Original NPC automatic-pose constants (2026-10-14)
+
+field_npc_actor_assets.py reads the US ISO read-only and adds unchanged DOL
+spans802c13c8/24 bytes (binary64 .5,3,0),8041e3c8/4 (canonicalNaN7fffffff),
+and8041fcdc/4 (idle3dcccccd). SHA256 identities are in
+[the behavior contract](behavior/field/NATIVE_NPC_MAIN_AUTOMATIC_POSE_SECTION.md)
+and ignored artifacts/npc-auto-pose-constants.json. The private door-data.pmevt/
+json closure is regenerated with these spans; no code/BSS, fabricated strings,
+resampling, geometry or audio changes. Native pose tests select actual original
+c_kuri_h animation names/indices from the existing unchanged directory/pack.
+Source extraction/evidence, compiled packs and test executables remain outside
+Git. Existing Nintendo/Intelligent Systems rights and private local-use
+restrictions are unchanged; no redistribution license or original binary/ISO
+is committed. See PROGRESS for complete cache hash checks and validation.

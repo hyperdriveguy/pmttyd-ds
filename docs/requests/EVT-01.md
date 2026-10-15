@@ -4972,3 +4972,16 @@ Runtime layout/critical-field validation relies on the generator's complete
 source-span hash checks. Normal Game activation, original Entry→typed file
 metadata, CPU output/tangent consumers and broader providers remain open.
 EVT-01 and full playable prologue remain incomplete.
+
+### 2026-10-14 NPC automatic-pose implementation update
+
+The [automatic-pose subsection](../behavior/field/NATIVE_NPC_MAIN_AUTOMATIC_POSE_SECTION.md)
+now retains80049fbc..4a160 with separate SP squares/add, explicit estimate,
+three double Newton rounds, original canonical-NaN path, fresh dt, retained
+descriptor/factor and postchild phase publication. Actual shared pose selection
+supports the original signed raw selector and forced restart. Source-static
+local analysis is delivered; native estimate remains an explicit adaptation,
+not Gekko seed/FPSCR parity. Real source-clock quotients/movement/Mario/resource
+owners, runtime traces, detection/interrupt/display/history/tail and ordinary
+Area activation remain open. Neither this result nor movement advances the
+actor loop or completes Main.

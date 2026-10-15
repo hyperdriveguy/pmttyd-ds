@@ -10403,3 +10403,79 @@ child waits and continue the original field/event/render providers. EVT-01 and
 the full playable prologue goal remain active/incomplete. Evidence:
 artifacts/animation-process-validation-manifest.json, source/asset audit,
 final test/build logs and isolated probe/ordinary smoke captures.
+
+## 2026-10-14 — Original NPC automatic pose and shared animation selection
+
+Implemented complete source49fbc..4a160 in a retained allocation-free core,
+composed after actual entry/movement through the existing shared owner/VM/pose
+binding. Fresh flags/dt gates, separate SP squares/add, explicit reciprocal
+estimate request, three original binary64 Newton rounds with negated fused
+correction, original canonical-NaN/zero classification, fresh postnorm dt,
+retained descriptor/factor, phase equality and postchild phase publication all
+follow source order. The original source animation selector uses negative raw
+string pointers versus nonnegative numeric indices (including null0), fallback0
+and forced restart1. Actual shared BattlePosePool and VM pose bytes are reused;
+no new catalog namespace or evaluate/Main call. Missing estimate/clock/resources
+remain pending; no fixture owner is enabled in ordinary Game.
+
+[Contract](behavior/field/NATIVE_NPC_MAIN_AUTOMATIC_POSE_SECTION.md),
+[request update](requests/EVT-01.md). Independent read-only review found no
+source-order/numeric/hold defect and independently matched all new constant
+spans to the read-only ISO. Warning-enabled standalone build/run passed. Tests
+cover independent idle trace, every-primitive suspension, a source-specific
+separate-square/FMA distinction, an independent rational-rounding oracle for
+three Newton rounds, exceptional dt/norm/threshold, fresh postseed dt, retained
+descriptor/fresh name, phase equality, child mutation before publication,
+missing providers and ownership. Shared native fixture tests named/index/null/
+out-of-range selectors, held clock, forced same-clip restarts, timestamp/cache
+reset, actual VM aliases and unchanged MainCount/parent frontier.
+
+Frozenec6998fe8e21c38bd70c10611847a8179912b751 on acceptedb39db50f:
+3713 tracked files audited with zero mismatch. Full make test passes383/383 C++
+(41.18s) and203/203 Python (32.547s), zero skipped. make all -j4 -o assets-ready
+SOUNDTRACK=gamecube exits0. Existing compiler/Pillow warnings remain. This is a
+frozen-source validation, not a combined concurrent-HEAD/worktree claim.
+Code commitb04c612f13ba81b846c97c8b8d37a8a7b15c45df.
+
+All2131 private RomFS products hashed against accepted previous NPC baseline:
+only door-data.json/pmevt changed for the unchanged original double.5/3/0,
+canonicalNaN7fffffff and idle3dcccccd spans. Private source pack152376 bytes.
+No new art/audio/story/geometry conversion; original strings/animations stay
+unchanged. ISO read-only, extracted data/ELFs/packs ignored; original rights
+unchanged. [Assets](ASSETS.md), artifacts/npc-auto-pose-assets-after.json and
+constants.json record exact identities. Accepted local gor_02.s is unchanged.
+
+Strict isolated ARM fixture:entry/movement/autoPose/holds/sharedAliases/
+newton/selectors/frontiers PASS, including the independent three-round oracle.
+Normal source restored/touched/rebuilt; SHA256
+901fb0921b4089edb0829332235336dcc11a0c019bc5277e60828c1a65787f79
+matches the pre-probe normal copy. Private main instrumentation was never
+committed. Isolated normal40-second screenshot visually inspected: original
+storybook at App60FPS/100% speed with no asset-error console. This verifies
+startup only, not actual field/hardware performance. ARM object uses VFP single
+squares/add/divide/comparisons and double multiplies, with the fused correction
+through fma. Only isolated emulator profiles/saves were touched.
+
+Completion reaches active unfinished Detection before actor11c load4a160.
+It does not advance the actor loop, clear final state10, publish prior position
+or complete Main. Source seed remains an explicit provider; the opt-in native
+1/sqrt(double) estimate is an adaptation, NOT proven Gekko frsqrte/FPSCR/GQR/
+subnormal/NaN-payload equivalence. Source three-step refinement still executes.
+Clock quotient admission is explicit and must use actual source clocks in
+production. Normal Game retains its existing separate field path. Full parent,
+actual Mario/movement/cold resource owners and ordinary Area activation remain
+open. Previous15FPS llvmpipe field sample, occluded visual assertion and
+asset-error admission gaps remain unresolved. No physical New2DSXL/complete
+field-rendering performance claim; full-game goal and EVT-01 remain active.
+
+Next: implement original detection from fresh actor11c at4a160, retaining event
+liveness/interrupt/movement child semantics and the source pointer/numeric
+ownership. Continue display/material/shadow and late MainCount-gated history,
+final state10 clear/next actor, then field tail4b1d0. Finish actual source clock,
+Mario/collision/gravity/audio/cold resources before enabling ordinary Area Main.
+Replace the seed adapter only after original estimate/runtime evidence exists;
+keep current adaptation explicit meanwhile. Repair visual occlusion and
+asset-error smoke checks and profile actual field on physical hardware.
+Evidence:artifacts/npc-auto-pose-validation-manifest.json, source/asset hash
+checks, full/target/native logs and isolated normal/probe captures. No original
+binary or generated compiled asset is committed.
