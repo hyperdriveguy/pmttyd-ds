@@ -3,19 +3,21 @@
 #include "battle_weapon_ordered_publication.hpp"
 namespace ttyd {
 class Renderer;
-enum class BattleWeaponRasterKind {Font,Submenu,Icon,Window};
+enum class BattleWeaponRasterKind {Font,Submenu,Icon,Window,ClassSurface};
 struct BattleWeaponRasterVertex {float x=0,y=0,z=0,u=0,v=0;uint32_t rgba=0;};
 struct BattleWeaponRasterPrimitive {
  BattleWeaponRasterKind kind=BattleWeaponRasterKind::Font;
  const void*texture=nullptr;CameraProjectionMatrix transform{};
  NativeCameraRect viewport{},scissor{};float depthScale=0,depthOffset=0;
  NativeIconPlan iconMaterial;NativeDisplayPipeline iconPipeline;
+ BattleClassSurfaceRGB classRGB=BattleClassSurfaceRGB::TextureRaster;uint32_t classMaterial=0xffffffff;
  std::array<BattleWeaponRasterVertex,36>vertices{};uint8_t count=0;
 };
 struct BattleWeaponRasterResources {
  const BattleFontGpuResource*font=nullptr;
  const BattleSubmenuSurfaceGpuResource*submenu=nullptr;
  const BattleWindowSurfaceResource*window=nullptr;
+ const BattleClassSurfaceGpuResource*classes=nullptr;
 };
 // Immutable prepared geometry. Source ownership/current and actual Renderer
 // residency proofs remain mandatory external/native admission, never inferred.

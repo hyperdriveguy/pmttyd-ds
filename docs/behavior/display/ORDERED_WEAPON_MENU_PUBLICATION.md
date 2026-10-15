@@ -107,3 +107,5 @@ windowSetup or normal battle. Tests hold Window behind a pending font without
 replaying earlier FIFO, reject missing actual object/SDK/resource providers,
 retain late-captured color, allow independent global Window source ownership,
 and reject retired source/native Window owners before any mixed GPU work.
+
+Class surface extension appends typed alternative4 for original I4 circle/bubble0/1. It preserves actual TEX object/known32B lifetime independently of the resident class pair, true camera8 and common-bank/W owner. Class final FIFO waits behind pending font reservations; whole mixed preflight rejects stale source or native leases. C0 RGB and raster RGBA stay separate; C0 alpha is unused. See [source class packets](ORIGINAL_CLASS_SURFACE_PACKETS.md).

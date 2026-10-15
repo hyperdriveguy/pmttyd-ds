@@ -2647,6 +2647,13 @@ target_link_libraries(battle_weapon_native_raster_plan_tests PRIVATE ttyd_core)
 add_test(NAME battle_weapon_native_raster_plan COMMAND battle_weapon_native_raster_plan_tests)
 set_tests_properties(battle_weapon_native_raster_plan PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 
+# Typed actual original I4 class0/1 packets in ordered native weapon batches.
+target_sources(ttyd_core PRIVATE source/display/battle_class_surface_packets.cpp source/display/battle_class_surface_source.cpp)
+add_executable(battle_class_surface_packets_tests tests/battle_class_surface_packets_tests.cpp)
+target_link_libraries(battle_class_surface_packets_tests PRIVATE ttyd_core)
+add_test(NAME battle_class_surface_packets COMMAND battle_class_surface_packets_tests)
+set_tests_properties(battle_class_surface_packets PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
 # Actual process font startup prefix and retained real source heap transfer.
 target_sources(ttyd_core PRIVATE source/platform/native_ui_startup.cpp)
 add_executable(native_ui_startup_tests tests/native_ui_startup_tests.cpp)
@@ -2729,3 +2736,11 @@ add_executable(native_npc_group_tests tests/native_npc_group_tests.cpp)
 target_link_libraries(native_npc_group_tests PRIVATE ttyd_core)
 add_test(NAME native_npc_group COMMAND native_npc_group_tests)
 set_tests_properties(native_npc_group PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+
+# Actual process GP language alias; original UI source readers share live state.
+target_sources(ttyd_core PRIVATE source/event/event_gp_language_alias.cpp)
+add_executable(event_gp_language_alias_tests tests/event_gp_language_alias_tests.cpp)
+target_link_libraries(event_gp_language_alias_tests PRIVATE ttyd_core)
+add_test(NAME event_gp_language_alias COMMAND event_gp_language_alias_tests)
+set_tests_properties(event_gp_language_alias PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

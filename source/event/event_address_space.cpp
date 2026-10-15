@@ -14,6 +14,7 @@ bool EventAddressSpace::matchesBytes(uint32_t a,const uint8_t* expected,uint32_t
 bool EventAddressSpace::readByte(uint32_t a,uint8_t& v) const {
     if(rawRamCache_)if(const auto* p=rawRamSpan(a,1)){v=*p;return true;}
     if(entries_.readByte(a,v) || contexts_.readByte(a,v) || runtime_.readByte(a,v) || gp_.readByte(a,v))return true;
+    if(gp_.languageAliasSpan(a,1))return false;
     for(const auto& r:ram_)if(a>=r.base && uint64_t(a)-r.base<r.bytes.size()) {v=r.bytes[a-r.base];return true;}
     for(const auto& r:external_)if(a>=r.base && uint64_t(a)-r.base<r.size){v=r.bytes[a-r.base];return true;}
     return false;
@@ -21,6 +22,7 @@ bool EventAddressSpace::readByte(uint32_t a,uint8_t& v) const {
 bool EventAddressSpace::writeByte(uint32_t a,uint8_t v) {
     if(rawRamCache_)if(auto* p=rawRamSpan(a,1)){*p=v;return true;}
     if(entries_.writeByte(a,v) || contexts_.writeByte(a,v) || runtime_.writeByte(a,v) || gp_.writeByte(a,v))return true;
+    if(gp_.languageAliasSpan(a,1))return false;
     for(auto& r:ram_)if(a>=r.base && uint64_t(a)-r.base<r.bytes.size()) {r.bytes[a-r.base]=v;return true;}
     for(auto& r:external_)if(a>=r.base && uint64_t(a)-r.base<r.size){r.bytes[a-r.base]=v;return true;}
     return false;
@@ -29,7 +31,7 @@ bool EventAddressSpace::writeByte(uint32_t a,uint8_t v) {
 // live providers. Raw acceleration uses broader mayMapRange extents, so a RAM
 // region admitted in a sparse hole may still correctly miss the direct lane.
 bool EventAddressSpace::available(uint32_t base,uint64_t size) const {
-    if(!size || uint64_t(base)+size>0x100000000ULL)return false;
+    if(!size || uint64_t(base)+size>0x100000000ULL || gp_.languageAliasSpan(base,size))return false;
     for(const auto& r:external_)if(uint64_t(base)<uint64_t(r.base)+r.size && uint64_t(r.base)<uint64_t(base)+size)return false;
     // RAM covers every byte; interval rejection avoids millions of semantic
     // provider probes during native battle startup. Sparse live views still
@@ -137,6 +139,7 @@ uint8_t* EventAddressSpace::rawRamSpan(uint32_t a,unsigned size) {
     return const_cast<uint8_t*>(static_cast<const EventAddressSpace&>(*this).rawRamSpan(a,size));
 }
 bool EventAddressSpace::readSpan(uint32_t a,unsigned size,uint32_t& value) const {
+    if(gp_.languageAliasSpan(a,size))return gp_.readAliasSpan(a,size,value);
     if(uint64_t(a)+size>0x100000000ULL)return false;
     uint32_t result=0;
     if(const auto* bytes=rawRamSpan(a,size)){for(unsigned i=0;i<size;++i)result=result<<8|bytes[i];value=result;return true;}
@@ -147,6 +150,7 @@ bool EventAddressSpace::readSpan(uint32_t a,unsigned size,uint32_t& value) const
 // partial writes caused by an unmapped suffix; it does not promise rollback if
 // later semantic writes fail/change mappings through unsupported mutation.
 bool EventAddressSpace::writeSpan(uint32_t a,unsigned size,uint32_t value) {
+    if(gp_.languageAliasSpan(a,size))return gp_.writeAliasSpan(a,size,value);
     if(uint64_t(a)+size>0x100000000ULL)return false;
     if(auto* bytes=rawRamSpan(a,size)){for(unsigned i=0;i<size;++i)bytes[i]=uint8_t(value>>(8*(size-1-i)));return true;}
     // Native unsupported-range policy:reject before changing any mapped byte.

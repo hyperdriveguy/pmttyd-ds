@@ -137,3 +137,5 @@ or end-to-end source binding. The separate original leaf probes can provide a
 future isolated native mixed test. Real process window Setup/DVD delivery,
 queued source graph/GPU ownership, normal tutorial/battle activation and
 original PPC parity remain separate unfulfilled integration work.
+
+Class surface extension retains original circle/bubble0/1 as typed ClassSurface primitives with actual class-pair lease and original TEX object owner. It maps source UV through unchanged atlas regions, uses copied source camera projection/raster, and preserves independent C0/RGBA for rasterRGB*C0RGB and rasterA*textureA. No native selector projection, CPU color pre-multiplication, submenu index alias or reordered separate draw is introduced. See [source class packets](ORIGINAL_CLASS_SURFACE_PACKETS.md).

@@ -79,6 +79,14 @@ bool BattleWeaponOrderedPublication::appendWindow(uint64_t pass,BattleWindowPack
  // the weapon common bank. Its own long proof is retained by the typed packet.
  building_.emplace_back(std::move(p));return true;
 }
+bool BattleWeaponOrderedPublication::appendClassSurface(uint64_t pass,BattleClassSurfacePacketPtr p){
+ if(!enter())return false;
+ Guard guard{*this};
+ if(!source(pass)||sealed_||pending_||!binding_.classes||!p||building_.size()>=binding_.capacity||
+ p->sourceResourceOwner!=binding_.sourceResourceOwner||p->sourceResourceOwner.owner_before(binding_.sourceResourceOwner)||binding_.sourceResourceOwner.owner_before(p->sourceResourceOwner)||
+ p->camera.pass!=pass||p->camera.generation!=binding_.generation||!validateBattleClassSurfacePacket(*p,*binding_.classes)||!source(pass))return false;
+ building_.emplace_back(std::move(p));return true;
+}
 bool BattleWeaponOrderedPublication::appendIcon(uint64_t pass,const RetainedIconPacket&p){
  if(!enter())return false;
  Guard guard{*this};
@@ -92,6 +100,7 @@ bool BattleWeaponOrderedPublication::preflight(const std::vector<BattleWeaponOrd
   if(const auto*p=std::get_if<BattleFontGlyphPacket>(&q)){if(!binding_.font->accepts(p->font)||!validBattleFontGlyphPacket(*p))return false;}
   else if(const auto*p=std::get_if<BattleSubmenuPacketPtr>(&q)){if(!*p||!validateBattleSubmenuPacket(**p,*binding_.submenu)||!submenuGeometry(**p))return false;}
   else if(const auto*icon=std::get_if<BattleEnemyHpIconPacket>(&q)){if(!iconGeometry(icon->packet)||!validBattleEnemyHpIconResidency(icon->residency))return false;const auto r=binding_.icon(binding_.user,icon->packet.image);if(!r||!same(*r,icon->residency))return false;}
+  else if(const auto*cp=std::get_if<BattleClassSurfacePacketPtr>(&q)){if(!*cp||!binding_.classes||(*cp)->camera.pass!=pass_||(*cp)->camera.generation!=binding_.generation||!validateBattleClassSurfacePacket(**cp,*binding_.classes))return false;}
   else {const auto&p=std::get<BattleWindowPacketPtr>(q);if(!p||!binding_.window||p->camera.pass!=pass_||p->camera.generation!=binding_.generation||!validateBattleWindowPacket(*p,*binding_.window))return false;}
   if(!live())return false;
  }

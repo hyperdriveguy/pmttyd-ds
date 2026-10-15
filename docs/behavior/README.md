@@ -1408,6 +1408,7 @@ Original battle menu native resource/queue owners:
 
 
 - [Prepared native weapon UI raster](display/PREPARED_NATIVE_WEAPON_RASTER.md).
+- [Original radial class surface packets](display/ORIGINAL_CLASS_SURFACE_PACKETS.md).
 
 
 - [Same-process native NPC animation pass](display/NATIVE_NPC_ANIMATION_PASS.md):
@@ -1437,3 +1438,6 @@ Original battle menu native resource/queue owners:
 - [Actual-VM group traversal](display/NATIVE_ACTUAL_VM_GROUP_TRAVERSAL.md):
   complete retained dispProc parent, real modeling/output stores, sequential
   raw matrix Copy and finite blend; explicit node/material/effect/GPU children.
+
+
+- [Shared process GP language alias](event/SHARED_PROCESS_GP_LANGUAGE_ALIAS.md).

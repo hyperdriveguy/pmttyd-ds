@@ -11,8 +11,9 @@ std::shared_ptr<const BattleWeaponRasterPlan>Renderer::prepareWeaponOrderedRaste
   if(const auto*p=std::get_if<BattleEnemyHpIconPacket>(&q)){if(!canDrawEnemyHpIcon(*p))return {};}
   else if(const auto*p=std::get_if<BattleSubmenuPacketPtr>(&q)){if(!*p||!submenuSurfaceGpu||!submenuSurfaceGpu->texture((*p)->surface))return {};}
   else if(const auto*p=std::get_if<BattleWindowPacketPtr>(&q)){if(!*p||!windowPrimitiveGpu||!windowPrimitiveGpu->texture((*p)->surface))return {};}
+  else if(const auto*p=std::get_if<BattleClassSurfacePacketPtr>(&q)){if(!*p||!classSurfaceGpu||!classSurfaceGpu->texture(0,(*p)->surface))return {};}
  }
- BattleWeaponRasterResources resources{&battleFontGpu,submenuSurfaceGpu?&submenuSurfaceGpu->resource():nullptr,windowPrimitiveGpu?&windowPrimitiveGpu->resource():nullptr};
+ BattleWeaponRasterResources resources{&battleFontGpu,submenuSurfaceGpu?&submenuSurfaceGpu->resource():nullptr,windowPrimitiveGpu?&windowPrimitiveGpu->resource():nullptr,classSurfaceGpu?&classSurfaceGpu->resource():nullptr};
  auto plan=prepareBattleWeaponRasterGeometry(this,std::move(b),resources);return plan&&canDrawWeaponOrderedRasterImpl(*plan)?plan:nullptr;
 }
 bool Renderer::canDrawWeaponOrderedRaster(const BattleWeaponRasterPlan&p)const{
@@ -21,11 +22,12 @@ bool Renderer::canDrawWeaponOrderedRaster(const BattleWeaponRasterPlan&p)const{
 }
 bool Renderer::canDrawWeaponOrderedRasterImpl(const BattleWeaponRasterPlan&p)const{
  if(!c3dReady||!c2dReady||!programReady||!top||transformLoc<0||!fontTexture.imported||p.owner_!=this||p.fontAnchor_.texture!=&fontTexture.texture)return false;
- const BattleWeaponRasterResources resources{&battleFontGpu,submenuSurfaceGpu?&submenuSurfaceGpu->resource():nullptr,windowPrimitiveGpu?&windowPrimitiveGpu->resource():nullptr};if(!p.current(this,resources))return false;
+ const BattleWeaponRasterResources resources{&battleFontGpu,submenuSurfaceGpu?&submenuSurfaceGpu->resource():nullptr,windowPrimitiveGpu?&windowPrimitiveGpu->resource():nullptr,classSurfaceGpu?&classSurfaceGpu->resource():nullptr};if(!p.current(this,resources))return false;
  for(const auto&q:p.batch_->packets){
   if(const auto*v=std::get_if<BattleFontGlyphPacket>(&q)){if(!canDrawBattleFontGlyph(*v))return false;}
   else if(const auto*v=std::get_if<BattleEnemyHpIconPacket>(&q)){if(!canDrawEnemyHpIcon(*v))return false;}
   else if(const auto*v=std::get_if<BattleSubmenuPacketPtr>(&q)){if(!submenuSurfaceGpu||!submenuSurfaceGpu->texture((*v)->surface))return false;}
+  else if(const auto*v=std::get_if<BattleClassSurfacePacketPtr>(&q)){if(!classSurfaceGpu||!classSurfaceGpu->texture(0,(*v)->surface))return false;}
   else{const auto&window=std::get<BattleWindowPacketPtr>(q);if(!windowPrimitiveGpu||!windowPrimitiveGpu->texture(window->surface))return false;}
  }
  return c3dReady&&c2dReady&&programReady&&top&&transformLoc>=0&&fontTexture.imported&&battleFontGpu.accepts(p.fontAnchor_);
@@ -51,6 +53,13 @@ bool Renderer::submitWeaponOrderedRaster(const BattleWeaponRasterPlan&p){
    for(unsigned i=0;i<6;++i)C3D_TexEnvInit(C3D_GetTexEnv(i));
    auto*env=C3D_GetTexEnv(0);
    if(item.kind==BattleWeaponRasterKind::Font){C3D_TexEnvSrc(env,C3D_RGB,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR);C3D_TexEnvFunc(env,C3D_RGB,GPU_REPLACE);C3D_TexEnvSrc(env,C3D_Alpha,GPU_PRIMARY_COLOR,GPU_TEXTURE0,GPU_PRIMARY_COLOR);C3D_TexEnvFunc(env,C3D_Alpha,GPU_MODULATE);}
+   else if(item.kind==BattleWeaponRasterKind::ClassSurface&&item.classRGB==BattleClassSurfaceRGB::MaterialRaster){
+    // Original C0 RGB times raster RGB; texture contributes ONLY alpha.
+    // C0 alpha never participates in the original AlphaIn{7,5,4,7} path.
+    C3D_TexEnvColor(env,__builtin_bswap32(item.classMaterial));
+    C3D_TexEnvSrc(env,C3D_RGB,GPU_PRIMARY_COLOR,GPU_CONSTANT);C3D_TexEnvFunc(env,C3D_RGB,GPU_MODULATE);
+    C3D_TexEnvSrc(env,C3D_Alpha,GPU_PRIMARY_COLOR,GPU_TEXTURE0);C3D_TexEnvFunc(env,C3D_Alpha,GPU_MODULATE);
+   }
    else{C3D_TexEnvSrc(env,C3D_Both,GPU_TEXTURE0,GPU_PRIMARY_COLOR);C3D_TexEnvFunc(env,C3D_Both,GPU_MODULATE);}
    C3D_TexBind(0,texture);parkUnusedSamplers();
   }
