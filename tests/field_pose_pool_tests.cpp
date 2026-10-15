@@ -56,4 +56,14 @@ void constructor(){
  assert(field.poses().pose(0)->word(0)==9 && field.poses().pose(0)->word(0xec)==2 && field.poses().pose(0)->timestamp()==333 && !field.main(0,{333,444}));
 }
 }
-int main(){fieldOwner();signedMetadata();constructor();}
+// Every descriptor in each actual map dependency is converted and admitted.
+void completeOriginalBanks(){
+ const char* models[]={"c_deale","c_kuri_h","c_joho_b","c_monban","c_binbo","c_bomt_n","c_kuribo_n","c_tyusan","c_roten_g","c_borodo_n","c_f_mura","c_luigi","hoshi"};
+ const unsigned counts[]={13,17,5,16,5,41,5,6,5,5,13,36,6};unsigned total=0;
+ for(unsigned i=0;i<13;++i){const std::string base=std::string("romfs/field-native-")+models[i];const auto resource=loadBattlePoseResource((base+".pose-directory.bin").c_str(),(base+".pmanim").c_str());assert(resource && resource->names.size()==counts[i]);FieldPosePool field;assert(field.install(resource));const auto h=field.enter(models[i],0,{1000,1000});assert(h && field.height(*h)==10.f && field.radius(*h)==10.f);
+  for(const auto& name:resource->names){assert(field.animationReady(models[i],name) && field.selectName(*h,name,true,{1000,1000}) && field.evaluate(*h,{1000,1000}));const auto* pose=field.poses().pose(*h);assert(pose && !pose->shape.positions.empty() && !pose->shape.nodes.empty() && !pose->shape.world.empty());++total;}
+  assert(field.paperOn(*h) && !field.main(*h,{1000,1000}) && field.release(*h));
+ }
+ assert(total==173);
+}
+int main(){fieldOwner();signedMetadata();constructor();completeOriginalBanks();}
