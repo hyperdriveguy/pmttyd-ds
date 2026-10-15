@@ -5502,3 +5502,29 @@ Next bind evt_npc_entry/evt_npc_set_tribe, forced source SetAnim, same-VM source
 arguments/names/tribes and actual original four-actor child; integrate IO pump
 and retained invocation resumption before Game's animation clock gate. Complete
 GOR00 tags/setup and source RNG, GPU/audio/battle/result/return remain open.
+
+
+## 2026-10-15 — Actual-VM Joint/Transform NodePush and CPU SDK
+
+Delivered [complete local node builders](../behavior/display/NATIVE_ACTUAL_VM_NODE_BUILDERS.md)
+with exact12/21 captures, live literals, asymmetrical Joint/conditional Transform
+paths, six/three ordered rotations, all16/8 dispatch routes, actual pre-dispatch
+modeling publications and fresh final-level concat. Group binding now owns the
+CPU child when no external node provider is installed; a false external provider
+never falls through. Native SDK adapts finite arithmetic, double-trig narrowing,
+live SDK constants, original13pair Concat captures and6pair output order.
+Original read-only boot extraction adds dispatch/SDK data with per-span hashes.
+
+- [ ] Complete actual renderProc/materialProc/Vivian/dynamic callback/texture/
+  FIFO/Citro3D GPU/cache children and remaining reached source spans. Seed802c1048,
+  special literals/table owners remain distinct from the new node SDK data.
+- [ ] Complete linked Draw and normal Game camera/queue/offscreen scheduling,
+  draining full callbacks before lease retirement; continue original event/story/
+  object/area coverage and physical hardware performance/visual verification.
+- [ ] Measure original SDK/libm/GQR0/FPSCR numeric domains; finite native adapter
+  results are not an original execution oracle or full exception/NaN parity.
+
+The local NodePush source/control gap is closed; prior node-child todo is delivered
+within the documented native numeric/storage domain. GPU/effect/normal activation
+and the broad EVT-01 runtime request remain OPEN. Static audits and fixture/GPU
+receipts must not be relabeled original runtime or completed rendering.

@@ -1447,3 +1447,6 @@ Original battle menu native resource/queue owners:
 
 - [Native original Window startup](display/NATIVE_UI_STARTUP_WINDOW_PREFIX.md).
 - [Source cold GX history](display/SOURCE_COLD_GX_INHERITED_HISTORY.md).
+- [Actual-VM node builders](display/NATIVE_ACTUAL_VM_NODE_BUILDERS.md):
+  complete retained Joint/Transform bodies, original dispatch data and native CPU
+  SDK matrices with real modeling-stack stores; GPU children remain separate.

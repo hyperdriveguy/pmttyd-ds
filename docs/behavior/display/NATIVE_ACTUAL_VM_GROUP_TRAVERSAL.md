@@ -102,3 +102,13 @@ explicit node/render receipts, reject competing leases, repair partial raw pairs
 cover both overlap directions and run finite/nonfinite blend frontiers. These
 fixtures prove control/ownership; they do not prove original node matrices, GPU
 pixels, ordinary NPC activation or physical New2DS XL performance.
+
+
+## Actual NodePush delivery (2026-10-15)
+
+The default node child now owns [actual Joint/Transform controllers and CPU SDK
+binding](NATIVE_ACTUAL_VM_NODE_BUILDERS.md). It replaces the missing-node hold
+with source captures, live constants, exact component/dispatch requests and real
+modeling-stack output. An explicitly installed backend node provider remains
+exclusive, including on false. Material/Vivian/callback/render GPU work remains
+unfinished; the original typed node24/C++ stack is not substituted.

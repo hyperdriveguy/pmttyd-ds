@@ -3938,3 +3938,24 @@ Per-file DVD request addresses/backing and cooperative ROMFS byte budget are
 native platform policy, not original DVD scheduling/latency. Original asset
 rights remain with their respective holders; no ISO/assets redistributed.
 See [shared-cache preload](behavior/file/NATIVE_SHARED_CACHE_ASYNC_PRELOAD.md).
+
+## 2026-10-15 — Original NodePush dispatch and SDK matrix data
+
+[Node binding](behavior/display/NATIVE_ACTUAL_VM_NODE_BUILDERS.md) extends the
+existing private `romfs/animation-boot/memory.pmevt` and `memory.json` only.
+Read-only `/home/carson/games/roms/G8ME01.iso`, US disc0 revision0 DOL initialized
+data supplies unchanged bytes: Joint table80306698/40, Transform803066d8/20,
+Concat tail8041e458/8 and SDK ONE/ZERO80429358/8. These are112 data bytes; the
+PMEVT directory adds48 bytes. No executable code, texture/geometry/audio/story
+conversion is involved. The converter pins individual SHA256 values and emits
+exact ISO offsets/section precedence in private JSON provenance. Existing node
+ONE/ZERO/TWO/DEG spans retain their original paths/bytes.
+
+All2,152 private RomFS products remain present; exactly the two boot products
+change. Other2,150 products are checked unchanged. Source converters/tests are
+committed; ISO, extracted payloads, compiled packs and binaries remain outside
+source history. Runtime imports remain mutable and strict source spans replace
+no user-editable overlay. Nintendo/Intelligent Systems copyright and prior
+local-use-only/no-redistribution limitations remain; no new license is asserted.
+Evidence: ignored npc-node-assets-before.json / npc-node-assets-after.json and
+npc-node-sdk-adapter-evidence.txt. No new Dolphin execution/timing observation.

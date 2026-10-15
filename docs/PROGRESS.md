@@ -16758,3 +16758,94 @@ Continue original tutorial/real battles and actual lower-screen audience scene
 with physical bad-thrower selection plus optional tapping. No populated menu,
 whole tutorial, full battle, original PPC/hardware pixel parity, or performance
 completion is claimed by this startup increment.
+
+## 2026-10-15 — Original actual-VM Joint/Transform and CPU SDK matrices
+
+Completed finite CPU node increment, code `b794a422b5a569191fc08ee28d53841e8e909a10` and
+captured-parent correction `b1808a6298fb6355165c8c1fdc5f683ee1bb64b5`.
+[Contract](behavior/display/NATIVE_ACTUAL_VM_NODE_BUILDERS.md). The actual group
+parent now owns source Joint8003e2a8/Transform8003e7ec node controllers and native
+CPU SDK matrices when no external node provider is installed. External node
+false remains exclusive. Actual original Mario group traversal executes these
+CPU builders; no identity/node receipt substitutes for this default path.
+GPU/material/effect/render and ordinary Game NPC scheduling remain incomplete.
+
+Both complete local bodies retain exact12/21 field captures and interleaved
+single multiplications, fresh reached ONE/ZERO/TWO/DEG reads, literal asymmetric
+Joint scales and conditional Transform pivots, all6/3 axis steps, all16/8 source
+dispatch routes/aliases, actual stack publication before table dispatch and
+fresh final level. Incoming parent scales remain captured even when an SDK
+callback mutates the caller's request during that invocation. Unknown captured dispatch target holds at the native code
+frontier without replaying stack stores. Node24 snapshots and the typed C++
+modeling stack are not used as this actual-VM bridge.
+
+The owned native SDK supplies finite reached Multiply/Divide, live distinct SDK
+constants, double sin/cos narrowed separately, and ordered FMA matrix products.
+Final guest Concat captures13 pairs in original interleaved order before its
+6 stores in00/10/08/18/20/28 order (hex). Pair prefixes survive missing backing;
+all inputs stay captured through partial output repair and physical aliases.
+Fixed local/snapshot storage is reused without per-node VM/mesh/heap creation.
+This is native finite/raw-storage adaptation, not original libm/GQR0/FPSCR/NaN/
+subnormal/exception equivalence or a measured physical hardware optimization.
+
+Original read-only boot extraction adds112 initialized DOL data bytes: two
+node dispatch tables, SDK tail pair and SDK ONE/ZERO. Existing node literals
+are unchanged. PMEVT grows4872→5032 bytes including48 directory bytes; JSON
+provenance records exact hashes/ISO offsets. All2,152 products remain present;
+exactly `romfs/animation-boot/memory.pmevt` and `memory.json` change, with other
+2,150 products unchanged. No executable source payload, geometry, textures,
+dialogue, story, music, SFX or license terms changed. See [ledger](ASSETS.md).
+
+Validation froze accepted `ba2848b8eb32c33c8a8aa6bdba655e39e23d5591` plus twelve owned paths as
+`99aef2c60c26abb7ad13b0a875a04deca3c10e49`, then applied the two-path capture correction as
+`d04dd916b3fab5b6ccd1ce801e7a87ecd2179ef3` in `artifacts/source-checks/npc-wander`.
+All 4,016 tracked files match and all 2,152
+RomFS products match the new two-product audit. Concurrent source/docs/staging
+were preserved. Normal SHA256 `b2c388ad1f568a17261860d676a5990f01fec8f6ff0aa53ee6aa953ad6a974d4`.
+
+- `CMAKE_BUILD_PARALLEL_LEVEL=4 TRIO_ENEMY_POSE_PACK=romfs make --jobserver-style=pipe test`:
+  exit0; 453 C++ tests pass,66.92s; 212 Python tests pass,
+  36.386s; zero skips. Existing Pillow deprecation warnings remain.
+  An interrupted prior build left two truncated host executables; they were
+  removed and relinked before this complete successful gate.
+- `make --jobserver-style=pipe all -j4 -o assets-ready SOUNDTRACK=gamecube`:
+  exit0 using audited original products plus rebuilt boot pair. Private ARM
+  assertion patch removed; normal rebuild reproduces saved SHA256 exactly.
+- Fresh isolated ARM profile `artifacts/azahar-npc-node-final-probe`: exit0, marker
+  `nodes=PASS masks=PASS captures=PASS literals=PASS sdk=PASS aliases=PASS repair=PASS graph=PASS lease=PASS`. All24 masks/every parent primitive hold, source-derived
+  golden dispatch/call aliases, same-invocation parent mutation, fresh literals and stale/missing tables, NaN/±0
+  gates, pivots, fresh final level, known native matrices/double-trig narrowing,
+  mutable SDK constants, reached-only NaN skips, ordered missing-input capture
+  frontiers, partial output repairs and physical aliases pass. Original Mario
+  graph uses real default CPU nodes under retained leases. Existing group tests
+  also pass on ARM. GPU/cache/material receipts remain explicit test fixtures.
+- Uninstrumented fresh-save40s boot `artifacts/azahar-npc-node-normal`: exit0;
+  original storybook manually inspected. Normal checkpoint field profile
+  `artifacts/azahar-npc-node-field`: exit0;70s warmup, image-confirmed occupied
+  file selection,20s load and idle/right/left/final-idle captures. Rogueport/Mario
+  rendering and returning movement manually inspected. Existing renderer
+  regression checks do not establish new NPC GPU activation or measured FPS.
+- Independent original source/SDK/ownership review and warning checks pass.
+  Markdown link check passes with zero broken links; exact count in log.
+  Evidence: `artifacts/npc-node-validation-manifest.json`.
+
+ISO remained read-only; no extracted/compiled product committed. No new Dolphin
+execution observation, matched original GPU images or physical New2DS XL profile.
+Full original events/NPCs/objects/areas and normal runtime activation remain open;
+EVT-01 and the overall goal remain active.
+
+Next tasks:
+
+1. Implement complete retained raw renderProc8003c884 parent with real current
+   camera/view tokens and explicit material/GX/texture/FIFO children. Shape−1
+   returns before camera; other paths perform reached matrix/GX work before pass
+   rejection. Multi-UV retains W captured after GXBegin across run vertices,
+   reloading D through that W rather than global root per UV. Detailed source/
+   binding/validation map: `artifacts/npc-renderProc-next-evidence.txt`.
+2. Bind actual render/material/Vivian/callback/array/FIFO requests to Citro3D
+   GPU/cache/texture owners, with any reached original data spans. Do not feed
+   typed selector0/kind0 shape snapshots as complete actual-VM renderer results.
+   Full SDK numeric domains remain a separate measured-parity task.
+3. Finish linked Draw and ordinary Game camera/queue/offscreen/callback draining;
+   continue original area/event/object/story coverage, then matched original
+   visual comparisons and physical hardware performance profiling.
