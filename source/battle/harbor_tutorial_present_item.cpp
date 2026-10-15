@@ -1,10 +1,15 @@
 #include "harbor_tutorial_packed.hpp"
 namespace ttyd {
+// MenuRam+20 is stable native XYZ scratch across retained visits. The cursor
+// owns captured recovery/math progress; rebuilding services must not reset it.
+// Missing math returns nullopt; effect admission is separately unavailable.
 std::optional<int32_t> HarborTutorialPacked::presentItem() {
   BattlePresentItemServices s;
   s.actors = nativeBattleActorServices(vm);
   s.user = this;
   s.privatePosition = MenuRam + 0x20;
+  // Preserve double subtraction THEN single rounding (two platform calls).
+  // Computing float(a)-float(b) would move the rounding boundary.
   s.subtractDoubleSingle = [](void *p, double a,
                               double b) -> std::optional<float> {
     const auto &ops = static_cast<HarborTutorialPacked *>(p)->vm.platform;

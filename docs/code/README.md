@@ -13,6 +13,7 @@ Recovered original behavior and its evidence remain in
 | [Runtime ownership](runtime.md) | Native main loop, physical input, audio and frontend |
 | [Game composition](game-composition.md) | Room collision, units, tick order, restore and follower ownership |
 | [Checkpoint bytes](save-format.md) | Native save encoder, decoder and file replacement |
+| [Harbor service adapters](harbor-service-adapters.md) | Native damage admission, aftereffect preview, AP report and retained item/menu ownership |
 | [Damage order](battle-damage-order.md) | Typed calculator modifiers, synchronous hit/counter flow and Dive arithmetic |
 | [Retained battle owners](battle-retained-owners.md) | Main/sequence/stage continuations and shared field-sequence facade admission |
 | [Audience drawing/touch](battle-audience-draw.md) | Immediate mutation, retained callback limits, auxiliary icons and completed-pass touch proof |
@@ -93,6 +94,7 @@ Action menu/UI/ring and immediate/retained class draw/raster/footer helpers are 
 Audience initialization/population/control, actor reactions, item/selection lifecycles and sound helpers are covered.
 Audience draw/callback/touch, AP/drop/present, ordinary part/HP and small battle resource/state leaves are covered.
 Typed damage and synchronous orchestration, Dive, retained Main/stage and sequence facade owners are covered.
+Selected Harbor damage/aftereffect/AP/audience/item/weapon-input adapters are covered.
 Remaining field/NPC/partner modules, battle, message, inventory, story, effect
 and port tooling still
 require a systematic inline numeric/behavior audit. Concurrent additions to

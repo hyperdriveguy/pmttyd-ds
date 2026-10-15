@@ -7,22 +7,38 @@
 #include <cassert>
 #include <cstdlib>
 namespace ttyd {
+// Translate packed BE unit/part fields into typed calculator storage. Native
+// slots0..3 use 0x1000-byte spacing in separate Units/Parts guest regions;
+// source kind pointer is unit+10. These are adapter allocations, not GC addresses.
+// Source offsets:108/10c max/current HP,10e/112 max/current FP;118..135
+//30 status bytes;138 status flags;27c flags;264/268/26c requested HP/FP/cost;
+//270..272 byte reports,274 pattern,1fe..206 reaction halfwords. Unnamed
+// field200/202/204/206 remain numeric until their meaning is established.
 void HarborTutorialPacked::readDamage(unsigned id){
  auto& d=damageUnits[id];const auto u=Units+id*0x1000,p=Parts+id*0x1000,k=word(u+0x10);
+ // Interpret the unsigned BE half as signed16 explicitly.32768/65536 are
+ // the sign boundary/modulus, not HP caps; unreadable admitted memory aborts.
  auto half=[&](uint32_t at){uint16_t v=0;if(!vm.memory.readHalf(at,v))std::abort();return int16_t(v<32768?int(v):int(v)-65536);};
  d.kind=int32_t(word(u+8));d.belong=int8_t(byte(u+0xc));d.hp=half(u+0x10c);d.maxHp=half(u+0x108);d.fp=half(u+0x112);d.maxFp=half(u+0x10e);
  d.flags=word(u+0x27c);d.statusFlags=word(u+0x138);d.attributes=word(u+0x104);d.extraDefense=int32_t(word(u+0x21c));d.damageSequence=half(u+0x260);d.attackSequence=int32_t(word(u+0x280));
  d.fpCostReduction=byte(u+0x2f5);d.danger=byte(k+0xc);d.peril=byte(k+0xd);d.zapTap=byte(u+0x2f0);
  for(unsigned i=0;i<30;++i)d.statusBytes[i]=byte(u+0x118+i);
+ //2e4..301 are original badge/bonus bytes, not a contiguous native badge
+ // enum. Kind+c/d supply danger/peril thresholds; unit+2f0 is ZapTap count.
  auto& b=d.badges;b.powerPlus=byte(u+0x2e4);b.pUpDDown=byte(u+0x2e5);b.allOrNothing=byte(u+0x2e6);b.megaRush=byte(u+0x2e7);b.powerRush=byte(u+0x2e8);b.pDownDUp=byte(u+0x2e9);b.doublePain=byte(u+0x2ea);b.lastStand=byte(u+0x2eb);b.defendPlus=byte(u+0x2ec);b.damageDodge=byte(u+0x2ed);b.pityFlower=byte(u+0x2f8);b.hpDrain=byte(u+0x2f9);b.fpDrain=byte(u+0x2fa);b.icePower=byte(u+0x301);
  d.hpBefore=int32_t(word(u+0x208));d.hpAfter=int32_t(word(u+0x20c));d.lastHp=byte(u+0x270);d.lastFp=byte(u+0x271);d.lastConsumedFp=byte(u+0x272);d.pattern=int32_t(word(u+0x274));
  d.dealtHp=int32_t(word(u+0x284));d.requestedHp=int32_t(word(u+0x264));d.requestedFp=int32_t(word(u+0x268));d.consumedFp=int32_t(word(u+0x26c));d.damageFlags=uint16_t(half(u+0x1fe));
  d.field200=uint16_t(half(u+0x200));d.field202=uint16_t(half(u+0x202));d.field204=uint16_t(half(u+0x204));d.field206=uint16_t(half(u+0x206));
  damageParts[id].attributes=word(p+0x1ac);
+ // Part+1ac attributes;1b4/1b8 point to five signed element defenses and
+ // attributes. Kind+9c has four sound pointers;128 is a native string-copy
+ // safety bound, not an observed original maximum. Owned strings back c_str().
  for(unsigned i=0;i<5;++i){defenses[id][i]=int8_t(byte(word(p+0x1b4)+i));defenseAttributes[id][i]=int8_t(byte(word(p+0x1b8)+i));}
  damageParts[id].defense=defenses[id].data();damageParts[id].defenseAttributes=defenseAttributes[id].data();
  for(unsigned i=0;i<4;++i){auto& name=damageSounds[id][i];name.clear();const auto at=word(k+0x9c+4*i);if(at)for(unsigned n=0;n<128;++n){const auto c=byte(at+n);if(!c)break;name+=char(c);}d.damageSounds[i]=at?name.c_str():nullptr;}
 }
+// Publish only fields this admitted damage path mutates. Do not bulk-copy
+// the typed snapshot: other source fields/guest owners must remain intact.
 void HarborTutorialPacked::writeDamage(unsigned id){
  const auto& d=damageUnits[id];const auto u=Units+id*0x1000;
  half(u+0x10c,d.hp);half(u+0x112,d.fp);word(u+0x27c,d.flags);word(u+0x284,d.dealtHp);
@@ -30,6 +46,9 @@ void HarborTutorialPacked::writeDamage(unsigned id){
  byte(u+0x270,d.lastHp);byte(u+0x271,d.lastFp);byte(u+0x272,d.lastConsumedFp);word(u+0x274,d.pattern);half(u+0x1fe,d.damageFlags);half(u+0x200,d.field200);half(u+0x204,d.field204);
  for(unsigned i=0;i<30;++i)byte(u+0x118+i,d.statusBytes[i]);
 }
+// Typed addresses point into fixed arrays for registered slots0..3. Effects,
+// sounds and notices are retained requests, not proof of rendered/audio output.
+// Hit callbacks publish the target's current damage snapshot BEFORE dispatch.
 DamageApplicationServices HarborTutorialPacked::damageApplication(){
  DamageApplicationServices s;s.user=this;
  s.getUnit=[](void* self,int32_t id)->DamageUnit*{auto& p=*static_cast<HarborTutorialPacked*>(self);return id>=0 && id<4 && p.registered[size_t(id)]?&p.damageUnits[size_t(id)]:nullptr;};
@@ -41,19 +60,32 @@ DamageApplicationServices HarborTutorialPacked::damageApplication(){
  s.hitEvent=[](void* self,DamageUnit& d,uint32_t code){auto& p=*static_cast<HarborTutorialPacked*>(self);const auto id=unsigned(&d-p.damageUnits.data());p.writeDamage(id);packedBattleRunHitEvent(Units+id*0x1000,code,nativeBattleUnitEventServices(p.vm));};
  return s;
 }
+// Scope is Mario(slot1) <-> Crump(slot2):source power callbacks80189d30
+// default,80189cb0 jump,80189c38 hammer. Reject unsupported branches BEFORE
+// live calculation/RNG. False is native unavailability, never a miss/zero hit.
 bool HarborTutorialPacked::checkDamageCore(uint32_t a,uint32_t d,uint32_t part,uint32_t w,uint32_t flags,int32_t& result){
  // Admission is explicit until guard effects, nonordinary status/counter branches
  // and general inventory/recovery providers are bound. No guessed result exits.
  if(!a || !d)return false;const auto ai=word(a),di=word(d),callback=word(w+0x1c);
  const bool boss=ai==2 && di==1 && callback==0x80189d30;
  const bool mario=ai==1 && di==2 && (callback==0x80189cb0 || callback==0x80189c38);
+ // Weapon+40 FP callback must be null;6c element0..4,6d unused mode0;
+ // B+18ff9 battle mode0. B+1cb0 defense results above3 would need more guard
+ // providers. Require weapon80..ae status payload, unit118..135 status and
+ //2e4..301 badge/bonus bytes all zero; this is narrow admission, not game rules.
  if((!boss && !mario) || part!=Parts+0x1000*di || word(w+0x40) || byte(w+0x6c)>=5 || byte(w+0x6d)!=0 || byte(Battle+0x18ff9)!=0)return false;
  if(packedACPossibility(d,nativeBattleActorServices(vm)) && int32_t(word(Battle+0x1cb0))>3)return false;
  for(unsigned i=0x80;i<=0xae;++i)if(byte(w+i))return false;
  for(auto u:{a,d}){for(unsigned i=0x118;i<=0x135;++i)if(byte(u+i))return false;for(unsigned i=0x2e4;i<=0x301;++i)if(byte(u+i))return false;}
+ // Run source counter precheck, then reject a counter in work word9.
+ // No ordinary-hit substitution is permitted for an unsupported counter.
  BattleCounterWork counter;counter.init();BattlePackedCounterServices cs;cs.memory=nativeBattleActorServices(vm);cs.user=this;cs.status=[](void* self,uint32_t u,int32_t type){auto& p=*static_cast<HarborTutorialPacked*>(self);return checkPackedBattleStatus(u,type,nativeBattleActorServices(p.vm));};auto checkedFlags=flags;packedBattleCheckCounter(counter,a,d,part,w,checkedFlags,cs);if(counter.words[9])return false;
  readDamage(ai);readDamage(di);
  struct Power{HarborTutorialPacked* p;uint32_t actor,weapon;};Power power{this,a,w};WeaponPowerServices ps;ps.user=&power;
+ // B+1cb8 is source action result. Global pouch pointer8041eb00 supplies
+ //98/99 jump/hammer level, unit2ff/300 their bonuses, weapon20 power words.
+ // Weapon74 retains special flags. Lethal base hits below remain unadmitted
+ // until inventory/revival/event ownership is complete; no HP clamp fakes it.
  ps.actionResult=[](void* self){return static_cast<Power*>(self)->p->word(Battle+0x1cb8);};
  ps.pouchLevel=[](void* self,MarioPowerKind kind){auto& c=*static_cast<Power*>(self);return c.p->byte(c.p->word(0x8041eb00)+(kind==MarioPowerKind::Jump?0x98:0x99));};
  ps.bonus=[](void* self,const DamageUnit&,MarioPowerKind kind){auto& c=*static_cast<Power*>(self);return c.p->byte(c.actor+(kind==MarioPowerKind::Jump?0x2ff:0x300));};
@@ -73,6 +105,9 @@ bool HarborTutorialPacked::checkDamageCore(uint32_t a,uint32_t d,uint32_t part,u
  s.fpDamage=[](void* context,uint32_t,uint32_t,uint32_t,uint32_t,uint32_t& code,uint32_t f){auto& c=*static_cast<Calculation*>(context);auto& p=*c.self;DamageBattleState state;state.actionResult=p.word(Battle+0x1cb8);state.mode=p.byte(Battle+0x18ff9);return calculateFpDamage(&p.damageUnits[c.ai],p.damageUnits[c.di],p.damageParts[c.di],*c.weapon,code,f,state);};
  s.weaponStatus=[](void*,uint32_t,uint32_t,uint32_t,uint32_t,uint32_t){return uint32_t(0);}; // All original status parameter bytes admitted zero above.
  s.irand=[](void* context,int32_t bound){return static_cast<Calculation*>(context)->self->random.bounded(bound);};
+ // Temporarily bind the defender's sound owner during application, restore
+ // the previous owner afterward, then publish attacker dealt-HP report284.
+ // Presentation vectors retain requests; application itself updates live state.
  s.directDamage=[](void* context,int32_t attacker,uint32_t,uint32_t,int32_t hp,int32_t fp,uint32_t code,int32_t pattern,int32_t recovery){auto& c=*static_cast<Calculation*>(context);auto& p=*c.self;const auto old=p.damageSoundUnit;p.damageSoundUnit=Units+c.di*0x1000;applyDirectDamage(attacker,p.damageUnits[c.di],&p.damageParts[c.di],hp,fp,code,pattern,recovery,p.random,p.damageApplication());p.damageSoundUnit=old;p.word(Units+c.ai*0x1000+0x284,p.damageUnits[c.ai].dealtHp);};
  result=checkPackedBattleDamage(a,d,part,w,flags,s);return true;
 }

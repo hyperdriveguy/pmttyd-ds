@@ -4,6 +4,10 @@
 #include <climits>
 #include <cmath>
 namespace ttyd {
+// Battle+18ffc is source AP report work; byte+a is the bingo-chance gate.
+// Only its zero path is admitted until the actual bingo producer is bound.
+// Scalar arithmetic is routed through VM platform operations to retain source
+// conversion/rounding order; a native algebraic rewrite can change results.
 bool HarborTutorialPacked::inviteApReport() {
   // PointInc's full bingo producer remains unbound. Admit this report only
   // when the original chance byte cannot request it; preserve the RNG draw.
@@ -54,6 +58,8 @@ bool HarborTutorialPacked::inviteApReport() {
     auto &p = *static_cast<HarborTutorialPacked *>(self);
     return p.vm.platform.truncate(p.vm.platform.user, v);
   };
+  // Reload global BattleWork* (8041eb90) for each callback. Break-slot work
+  // is B+1616c, its turn word at+10; it need not equal this adapter's Battle.
   s.breakTurn = [](void *self) {
     auto &p = *static_cast<HarborTutorialPacked *>(self);
     return int32_t(p.word(p.word(0x8041eb90) + 0x1616c + 0x10));

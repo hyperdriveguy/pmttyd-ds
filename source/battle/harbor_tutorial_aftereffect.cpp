@@ -1,6 +1,9 @@
 #include "battle_weapon_aftereffect.hpp"
 #include "harbor_tutorial_packed.hpp"
 namespace ttyd {
+// Admission probes the SAME source RNG sequence on a copy before touching live
+// state. A rejected linked hazard stays pending; it does not reroll until safe.
+// The supported request callbacks below only inspect complete no-event exits.
 bool HarborTutorialPacked::aftereffectEvent(EventEntry &e, int32_t &result) {
   struct Context {
     HarborTutorialPacked *p;
@@ -17,6 +20,10 @@ bool HarborTutorialPacked::aftereffectEvent(EventEntry &e, int32_t &result) {
   };
   s.request = [](void *self, uint32_t function, int32_t argument) {
     auto &p = *static_cast<Context *>(self)->p;
+    // US guest tokens:8041eb90 holds BattleWork*,8041eb00 holds pouch*.
+    // Request addresses identify original functions, never host call targets.
+    //18110 null stage table, pouch88 signed resource gate,180f8 falling bits60,
+    // and ef4 tutorial bit1000 are source layouts, not native tuning values.
     const auto b = p.word(0x8041eb90);
     if (function == 0x80148bf0)
       return p.word(b + 0x18110) == 0; // Complete original null table leaf.

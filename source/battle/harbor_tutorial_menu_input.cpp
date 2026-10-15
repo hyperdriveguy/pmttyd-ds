@@ -3,6 +3,10 @@
 #include "battle_weapon_menu_decision.hpp"
 #include <cassert>
 namespace ttyd {
+// Admitted original class codes:0 jump,1 hammer,2 item,4 special. This
+// native bridge supplies setup/UI storage, not the complete class controller.
+// Source aliases171c+540 and1c5c both retain the chosen type. MenuRam+c is
+// cursor scratch; MenuRam+c00 is native UI work, +c14 its presented byte.
 bool HarborTutorialPacked::openWeaponMenu(uint32_t type,HarborTutorial& scene,void* messageUser,uint32_t(*message)(void*,uint32_t),uint32_t setupFlag){
  if(type!=0 && type!=1 && type!=2 && type!=4)return false;
  struct Context{HarborTutorialPacked* p;HarborTutorial* scene;void* messageUser;uint32_t(*message)(void*,uint32_t);};Context c{this,&scene,messageUser,message};
@@ -14,7 +18,13 @@ bool HarborTutorialPacked::openWeaponMenu(uint32_t type,HarborTutorial& scene,vo
  s.initialize=[](void* self,uint32_t b,uint32_t,uint32_t,uint32_t){auto& c=*static_cast<Context*>(self);assert(b==Battle);c.p->word(Battle+0x1c78,MenuRam+0xc00);c.p->byte(MenuRam+0xc14,0);c.scene->weaponMenuOpen=true;c.scene->weaponTargetMenuOpen=false;return true;};
  return setupPackedBattleWeaponMenu(Battle,type,setupFlag,s);
 }
+// Presentation acknowledgement is explicit. Merely building/opening rows
+// leaves +c14 zero until a caller actually presents this native weapon menu.
 void HarborTutorialPacked::weaponMenuPresented(){byte(MenuRam+0xc14,1);}
+// MenuRam+10 is separate input cursor scratch. Source B+f44 supplies trigger,
+// B+fbc repeat, and B+1c78 UI ownership. Engagement (including result0) means
+// a completed source visit; refresh projected rows only on that completion.
+// Target setup here opens a scene view; selectWeapon owns actual decision work.
 std::optional<int32_t> HarborTutorialPacked::inputWeaponMenu(HarborTutorial& scene,void* messageUser,uint32_t(*message)(void*,uint32_t)){
  struct Context{HarborTutorialPacked* p;HarborTutorial* scene;void* messageUser;uint32_t(*message)(void*,uint32_t);};Context c{this,&scene,messageUser,message};
  BattleWeaponMenuMainServices s;s.memory=nativeBattleActorServices(vm);s.user=&c;s.privateCursor=MenuRam+0x10;
@@ -25,6 +35,8 @@ std::optional<int32_t> HarborTutorialPacked::inputWeaponMenu(HarborTutorial& sce
  s.trigger=[](void* self,uint32_t mask){return static_cast<Context*>(self)->p->word(Battle+0xf44)&mask;};
  s.repeat=[](void* self,uint32_t mask){return static_cast<Context*>(self)->p->word(Battle+0xfbc)&mask;};
  s.sound=[](void* self,uint32_t sound){static_cast<Context*>(self)->scene->weaponMenuSounds.push_back(sound);};
+ // Release the actual old UI allocation before clearing its pointer and
+ // scene flag. A failed release must keep both for the next admitted visit.
  s.endUI=[](void* self,uint32_t b){auto& c=*static_cast<Context*>(self);const auto old=c.p->word(b+0x1c78);if(old && !c.p->classUiRelease(old))return false;c.p->word(b+0x1c78,0);c.scene->weaponMenuOpen=false;return true;};
  s.decide=[](void* self,uint32_t,uint32_t type,uint32_t index){auto& c=*static_cast<Context*>(self);assert(type==c.scene->weaponMenuType);return c.p->selectWeapon(index,*c.scene,c.messageUser,c.message);};
  s.targetSetup=[](void* self,uint32_t){static_cast<Context*>(self)->scene->weaponTargetMenuOpen=true;return true;};
