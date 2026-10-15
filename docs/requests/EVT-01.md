@@ -4752,3 +4752,10 @@ explicit host/ARM allocator/RAM fixtures. Pose paper/material/Vivian/dimensions
 are implemented; full Game factory/tagged map/events and paper-facing/GPU/room
 lifetime remain pending. Complete gor02 banks/hoshi are still needed. The
 initial/stay/talk tribe roles use S_1/S_1/T_1; lowercase d_1 is +20/+24 only.
+
+Resource progress: [original map NPC exporter](../behavior/field/ORIGINAL_MAP_NPC_RESOURCE_EXPORT.md)
+now supplies all13 required gor02/fallback banks and all173 original CPU clips,
+full PMPOSE02 identities and unchanged MODEL/TPL. Read-only source census and
+host/ARM loading validate resources only. Game's stable actor memory/registry,
+tagged-map stores, actual setup/init/regular event lifetime and facing/Main/GPU
+providers remain open. No fabricated source allocation or readiness is added.

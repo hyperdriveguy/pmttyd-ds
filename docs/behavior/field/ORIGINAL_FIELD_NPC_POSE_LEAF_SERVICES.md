@@ -125,3 +125,10 @@ must be connected to a retained field owner. Existing field presentation
 and battle resource mechanics are reusable components, not a registration
 or source file/cache ABI substitute. Full map registration and the NPC setup
 event must remain unacknowledged until their actual required owners exist.
+
+The separate [map resource exporter](ORIGINAL_MAP_NPC_RESOURCE_EXPORT.md) now
+supplies full PMPOSE02, unchanged MODEL/TPL and all173 source CPU clips across
+all13 gor02/fallback banks. The older finite presentation converter discussed
+above remains separate. Real field-pool host/ARM admission is verified, while
+Game registration, field-facing/Main/GPU and original shared lifetime remain
+required; availability of these exports alone does not acknowledge them.

@@ -1160,3 +1160,4 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native field pose resource bridge](field/NATIVE_FIELD_POSE_RESOURCE_BRIDGE.md): real MODEL/TPL/descriptor0 catalog, original constructor leaves and pending field-facing/map owners.
 
 - [Audience SetTarget and retained native interruption](battle/AUDIENCE_TARGET_SELECTION_AND_NATIVE_INTERRUPTION.md) — original holder cleanup, physical-X query and real UI End owner.
+- [Original map NPC resource export](field/ORIGINAL_MAP_NPC_RESOURCE_EXPORT.md): data-derived area dependencies, thirteen real banks/all173 CPU clips, unchanged MODEL/TPL and pending Game owners.

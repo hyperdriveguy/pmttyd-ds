@@ -1274,3 +1274,39 @@ remain unavailable; this bridge does not claim rendered NPC registration.
 ## Audience target/status data admission (2026-10-14)
 
 Reuses the existing private original `harbor-tutorial-events.pmevt` without conversion changes. Read-only ISO comparison confirmed exact vectors802fa104/0x30, zero80424988/4 and query Z offset804249cc/4 in that pack. Addresses identify original source data, not native pointers. No new art, dialogue or original bytes enter source history; existing original licensing restrictions apply. Checks are recorded in `artifacts/audience-interrupt-original-data.json`.
+
+### Original tagged-map NPC resource banks
+
+New tools/field_npc_resource_assets.py exports original dependencies from
+m/AREA/s and first-match npcTribe803316d0 in read-only US G8ME01 revision0 DOL.
+Default m/gor_02/s has15 actors/12 model banks. Original a/hoshi fallback is
+included independently. Models: c_deale,c_kuri_h,c_joho_b,c_monban,c_binbo,
+c_bomt_n,c_kuribo_n,c_tyusan,c_roten_g,c_borodo_n,c_f_mura,c_luigi,hoshi.
+All173 descriptors retain exact original names/order and actual animation data;
+no lowercase/uppercase alias or generated pose replaces a source request.
+
+Each private romfs/field-native-MODEL publishes .pmanim (all source CPU clips),
+.pose-directory.bin (PMPOSE02 complete names/discrete/model flags), unchanged
+.draw-model.bin and .draw-textures.bin, plus .json content/source provenance.
+romfs/field-npc-resources.json maps selected original areas/actors/tribes to
+shared resource names and original descriptor rows/roles/hashes. New areas can
+use repeated --area; converter domains must actually admit their models.
+local-assets/field-native/ retains original model/TPL/map extractions and atlas
+PNG evidence. Exact a/MODEL and a/TEXTURE- paths/hashes are in per-bank assets;
+TPL name is taken from the actual model header rather than assumed.
+
+66 new ignored products3813960bytes (CPU2845047, raw MODEL/TPL843632).
+Raw companions are byte-identical to original extracts. Existing finite field
+presentation packs are unchanged. Native CPU library remains the adapter for
+sparse geometry/hierarchy/color/sampler conversion; atlas gutters/resizing are
+inherited conversion choices, not original GPU publication. No new T3X or
+Game actor visibility registration is claimed. Full CPU/raw banks coexist
+with existing packs pending migration to one retained actor resource owner.
+
+Conversion fingerprint includes original MODEL/TPL and helper sources; required
+products and private atlas evidence are SHA256 checked. Verified missing-atlas
+recovery reproduces identical image and all66 production products. Products/
+asset hashes: artifacts/area-field-resources-products.json and validation
+manifest. ISO opened rb and not modified. Nintendo/Intelligent Systems original
+copyrighted resources remain private; no redistribution permission asserted.
+No raw assets, extracted source or compiled packs are committed.

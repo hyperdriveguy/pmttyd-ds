@@ -7285,3 +7285,60 @@ Normal isolated15s boot smoke exited0; inspected original opening book/table
 capture artifacts/azahar-area-field-pose-normal/boot.png (57AppFPS/98% in that
 single emulator sample). This is a boot check, not a field-NPC rendering or
 hardware performance benchmark. Logs artifacts/area-field-pose-normal-smoke.log.
+
+### Full original map NPC CPU resource exports
+
+Code53ca4cd1 adds a data-derived field NPC exporter to assets-base. It reads
+original m/AREA/s and npcTribe803316d0 (first exact Shift-JIS match), shares
+banks by exact model name, retains source role/name/hash evidence and includes
+actual hoshi fallback resources. --area can select multiple future maps;
+unsupported conversion domains fail visibly. It does not invent visibility or
+replace original init/story event logic with presentation entries.
+
+All12 original gor02 banks plus hoshi now export all173 source descriptors as
+PMANIM4 CPU animation, PMPOSE02 full directory/discrete/model flags and unchanged
+MODEL/TPL companions. The six previously absent banks are included. All13
+observed original+c8/+cc values are5/5, yielding finite constructor dimensions
+10/10; not a default for other resources. Original Professor d_1 misses remain
+case-sensitive descriptor0 fallback; no alias to D_1. Atlas PNGs are private
+conversion evidence; no new GPU registration/publication is asserted.
+
+66 ignored production products total3813960bytes, including2845047CPU animation
+bytes and843632raw MODEL/TPL bytes. Banks are not eagerly loaded by Game.
+New resources coexist with current finite presentation packs until consumers
+are migrated to one retained actor/resource owner. Existing presentation packs
+and original source ISO are unchanged. Cache hashes production products and
+atlas evidence: deletion/recovery of c_deale atlas regenerates identical image
+and all66 production products remain identical; subsequent cache hit confirmed.
+
+Frozen sourcef29f9821370f5b9c437d5e4734dd9e3ebb983c94,3418tracked files,
+zero audit mismatches. Final required CMAKE_BUILD_PARALLEL_LEVEL=4 make test
+-o assets-ready exited0:322/322 C++ in55.68s,190/190 Python in52.069s.
+make all -j4 -o assets-ready SOUNDTRACK=gamecube exited0. Normal3DSX SHA256
+027cd57c4a7d04903c36ae9feda7d54bfade292fc489858b60410dfbac7730c2.
+Native strict ARM fixture independently loads/admit/releases all13 original
+banks and selects/evaluates all173 descriptors; it passes CPU sampling and
+paper-facing pending boundary. Actual loader also validates authored key times.
+It retains actual MODEL/TPL, not fake pose handles. It does not establish Game
+registration, complete animPoseMain, facing, original raster/float parity or GPU
+publication. Isolated artifacts/azahar-area-field-resources-probe exited0.
+No user emulator profile/save changes. Private probe edits restored; unused
+fixture-function warnings are excluded from production. Existing warnings remain.
+Manifest artifacts/area-field-resources-validation-manifest.json; exact products
+and hashes artifacts/area-field-resources-products.json. Tests/build/cache/probe
+logs artifacts/area-field-resources-*. No full merged-worktree validation claim;
+unrelated concurrent changes preserved.
+
+Next actual owner: compose Game's PackedNpcRegistryServices with retained field
+pose pool and stable addressable actor memory, then original tagged-map stores
+and actual setup/init/regular events. Named lookup, collision and rendering must
+use the same registered actors. Bind paper-facing/Main/clock/GPU and deletion/
+room lifetime. Read EVT-01/OW-INTERACT-01 inbox for remaining services. No new
+story dialogue, replacement art/audio, hardware timing or full-remake claim.
+
+Normal isolated15s smoke exited0 but captured startup black; no rendered-boot
+claim was based on that image. A fresh isolated40s smoke of the identical binary
+exited0 and showed the original storybook town/text scene at60AppFPS/100% in
+that one sample. Image inspected: artifacts/azahar-area-field-resources-normal-v2/
+boot.png; log artifacts/area-field-resources-normal-smoke-v2.log. This is normal
+boot evidence only, not field-NPC GPU/raster parity or hardware performance.

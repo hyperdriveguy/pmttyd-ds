@@ -92,3 +92,10 @@ companions in required products and conversion fingerprints. Keep GPU uploads,
 model/texture reference counts, per-pose CPU state, allocation failure/fallback,
 and release/room lifetime explicit; resource export alone cannot acknowledge
 those services or the original map initialization parent.
+
+Subsequent [map resource exporter](ORIGINAL_MAP_NPC_RESOURCE_EXPORT.md) now
+supplies complete source companions/CPU banks for all12 gor02 models and hoshi,
+including the six banks absent from the finite presentation exporter above.
+This removes that asset prerequisite; actual Game-owned actors and facing/Main/
+GPU/lifetime providers remain pending. Professor-only bridge fixtures are not
+being reclassified as complete map registration.
