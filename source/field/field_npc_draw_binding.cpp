@@ -3,7 +3,8 @@
 #include "field_npc_main_entry_binding.hpp"
 namespace ttyd {
 bool FieldNpcMainEntryBinding::advanceDraw(uint32_t callback, uint32_t actor,
-                                           FieldNpcDrawCursor &c) {
+                                           FieldNpcDrawCursor &c,
+                                           uint32_t camera) {
   if ((c.active && c.owner.transform.user != this) ||
       !poses_.aliases(*owner_->poses().sharedPool(), vm_.memory))
     return false;
@@ -39,7 +40,8 @@ bool FieldNpcMainEntryBinding::advanceDraw(uint32_t callback, uint32_t actor,
       const auto common = b.services();
       return common.request(p, {q.function, {q.args[0], q.args[1]}}, out.word);
     }
-    if (q.function == 0x800406b4 || q.function == 0x80040730) {
+    if (q.function == 0x800406b4 || q.function == 0x80040730 ||
+        q.function == 0x80040710 || q.function == 0x8004069c) {
       if (q.args[0] >= 256 ||
           !b.poses_.aliases(*b.owner_->poses().sharedPool(), m))
         return false;
@@ -47,8 +49,12 @@ bool FieldNpcMainEntryBinding::advanceDraw(uint32_t callback, uint32_t actor,
       uint32_t flags;
       if (q.function == 0x800406b4)
         return m.writeWord(pose + 0xf0, q.color);
+      if (q.function == 0x8004069c)
+        return m.readWord(pose + 0xe8, out.word);
       return m.readWord(pose + 0xe8, flags) &&
-             m.writeWord(pose + 0xe8, flags | q.args[1]);
+             m.writeWord(pose + 0xe8, q.function == 0x80040710
+                                          ? flags & ~q.args[1]
+                                          : flags | q.args[1]);
     }
     if (q.function == 0x80039c44) {
       // Actual source getter: return descriptor NAME ADDRESS, not native text.
@@ -68,6 +74,6 @@ bool FieldNpcMainEntryBinding::advanceDraw(uint32_t callback, uint32_t actor,
     }
     return b.native_.draw && b.native_.draw(b.native_.user, m, q, out);
   };
-  return advanceFieldNpcDraw(callback, actor, s, c);
+  return advanceFieldNpcDraw(callback, actor, s, c, camera);
 }
 } // namespace ttyd

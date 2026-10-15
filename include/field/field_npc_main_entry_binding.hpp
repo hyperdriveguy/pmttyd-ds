@@ -114,7 +114,7 @@ public:
 
   // Complete supported queued callback only. Does not register/dispatch it or
   // replace the normal renderer. Keep this binding alive until completion.
-  bool advanceDraw(uint32_t callback, uint32_t actor, FieldNpcDrawCursor &);
+  bool advanceDraw(uint32_t callback, uint32_t actor, FieldNpcDrawCursor &, uint32_t camera = 0);
 
 private:
   FieldNpcMainEntryBinding(std::shared_ptr<FieldNpcRegistryOwner>,

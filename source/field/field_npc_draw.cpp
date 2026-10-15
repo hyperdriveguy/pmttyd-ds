@@ -9,16 +9,22 @@ float real(uint32_t w) {
 }
 } // namespace
 bool advanceFieldNpcDraw(uint32_t callback, uint32_t actor,
-                         const FieldNpcDrawServices &s, FieldNpcDrawCursor &c) {
+                         const FieldNpcDrawServices &s, FieldNpcDrawCursor &c,
+                         uint32_t camera) {
   if (!c.active) {
-    if (callback != 0x8004c50c && callback != 0x8004c7e0)
+    if (callback != 0x8004c50c && callback != 0x8004c7e0 &&
+        callback != 0x8004bf28 && callback != 0x8004c234 &&
+        callback != 0x8004bc3c)
       return false;
     c = {};
     c.active = true;
     c.owner = s;
     c.actor = actor;
     c.callback = callback;
-    c.xlu = callback == 0x8004c7e0;
+    c.xlu = callback == 0x8004c7e0 || callback == 0x8004c234;
+    c.offscreen = callback == 0x8004bf28 || callback == 0x8004c234;
+    c.cameraId = camera;
+    c.phase = c.offscreen ? 100 : callback == 0x8004bc3c ? 200 : 0;
   }
   const auto &p = c.owner;
   const auto &m = p.transform;
@@ -47,6 +53,7 @@ bool advanceFieldNpcDraw(uint32_t callback, uint32_t actor,
       c.call.args = args;
       c.call.scalars = scalars;
       c.call.color = c.color;
+      c.call.bounds = c.bounds;
       if (fn == 0x8003b4d8)
         c.call.matrix = c.matrix;
       c.response = {};
@@ -329,6 +336,214 @@ bool advanceFieldNpcDraw(uint32_t callback, uint32_t actor,
       c.phase = 60;
       break;
     case 64:
+      if (c.offscreen) {
+        c.phase = 102;
+        break;
+      }
+      c = {};
+      return true;
+    case 100:
+      if (!call(0x80005ce4))
+        return false;
+      ++c.phase;
+      break;
+    case 101:
+      if (!call(0x802b69d0))
+        return false;
+      c.phase = 0;
+      break;
+    case 102:
+      if (!call(0x80005ce4))
+        return false;
+      ++c.phase;
+      break;
+    case 103:
+      if (!call(0x802b6a08))
+        return false;
+      c.bounds = c.response.bounds;
+      ++c.phase;
+      break;
+    case 104:
+      if (!word(c.actor + 0x110, c.handle))
+        return false;
+      ++c.phase;
+      break;
+    case 105:
+      if (!call(0x80072f38, {c.handle, 0, 0}))
+        return false;
+      c = {};
+      return true;
+    case 200:
+      if (!load(c.actor + 0x144, c.angle))
+        return false;
+      c.angle = -c.angle;
+      ++c.phase;
+      break;
+    case 201:
+      if (!call(0x80007328, {}, {c.angle, 0}))
+        return false;
+      c.incoming = float(c.response.number);
+      ++c.phase;
+      break;
+    case 202:
+      if (!word(c.actor + 0x104, c.handle))
+        return false;
+      ++c.phase;
+      break;
+    case 203:
+      if (!call(0x8004069c, {c.handle, 0, 0}))
+        return false;
+      c.savedFlags = c.response.word;
+      ++c.phase;
+      break;
+    case 204:
+      if (!call(0x8000f2fc, {c.cameraId, 0, 0}))
+        return false;
+      c.camera = c.response.word;
+      ++c.phase;
+      break;
+    case 205:
+      if (!load(c.camera + 0x114, c.angle))
+        return false;
+      ++c.phase;
+      break;
+    case 206:
+      if (!advanceFieldNpcBlurTrig(c.angle, false, m, c.trig, c.trigValue))
+        return false;
+      ++c.phase;
+      break;
+    case 207:
+      if (!load(0x8041fd34, c.literal))
+        return false;
+      c.offsetX = c.literal * c.trigValue;
+      ++c.phase;
+      break;
+    case 208:
+      if (!call(0x8000f2fc, {c.cameraId, 0, 0}))
+        return false;
+      c.camera = c.response.word;
+      ++c.phase;
+      break;
+    case 209:
+      if (!load(c.camera + 0x114, c.angle))
+        return false;
+      ++c.phase;
+      break;
+    case 210:
+      if (!advanceFieldNpcBlurTrig(c.angle, true, m, c.trig, c.trigValue))
+        return false;
+      c.trigValue = -c.trigValue;
+      ++c.phase;
+      break;
+    case 211:
+      if (!load(0x8041fd34, c.literal))
+        return false;
+      ++c.phase;
+      break;
+    case 212:
+      if (!word(c.actor + 0x104, c.handle))
+        return false;
+      c.offsetZ = c.literal * c.trigValue;
+      ++c.phase;
+      break;
+    case 213:
+      if (!call(0x8003ed2c, {c.handle, 0, 0}))
+        return false;
+      c.history = 4;
+      c.alphaCounter = 100;
+      ++c.phase;
+      break;
+    case 214:
+      if (!advanceFieldNpcMatrix(c.actor, int32_t(c.history), m, c.transform,
+                                 c.matrix))
+        return false;
+      ++c.phase;
+      break;
+    case 215:
+      if (!load(0x8041fc7c, c.literal))
+        return false;
+      ++c.phase;
+      break;
+    case 216:
+      c.transform.math = {};
+      c.transform.math.function = 0x8029e264;
+      c.transform.math.left = c.matrix;
+      c.transform.math.xyz = {c.offsetX, c.literal, c.offsetZ};
+      ++c.phase;
+      break;
+    case 217:
+      if (!m.matrix || !m.matrix(m.user, c.transform.math))
+        return false;
+      c.matrix = c.transform.math.output;
+      ++c.phase;
+      break;
+    case 218:
+      if (!word(c.actor + 0x104, c.handle))
+        return false;
+      ++c.phase;
+      break;
+    case 219:
+      if (!call(0x80040730, {c.handle, 0x40, 0}))
+        return false;
+      ++c.phase;
+      break;
+    case 220:
+      if (!word(0x8041fc68, c.color))
+        return false;
+      c.color = (c.color & 0xffffff00) | uint8_t(128 - c.alphaCounter);
+      ++c.phase;
+      break;
+    case 221:
+      if (!word(c.actor + 0x104, c.handle))
+        return false;
+      ++c.phase;
+      break;
+    case 222:
+      if (!call(0x800406b4, {c.handle, 0, 0}))
+        return false;
+      c.pass = 1;
+      ++c.phase;
+      break;
+    case 223:
+      if (!word(c.actor + 0x104, c.handle))
+        return false;
+      ++c.phase;
+      break;
+    case 224:
+      if (!load(0x8041fd34, c.literal))
+        return false;
+      ++c.phase;
+      break;
+    case 225:
+      if (!call(0x8003b4d8, {c.handle, 0, c.pass}, {c.incoming, c.literal}))
+        return false;
+      if (c.pass < 3) {
+        ++c.pass;
+        c.phase = 223;
+      } else {
+        --c.history;
+        c.alphaCounter -= 25;
+        c.phase = c.history ? 214 : 226;
+      }
+      break;
+    case 226:
+      if (!word(c.actor + 0x104, c.handle))
+        return false;
+      ++c.phase;
+      break;
+    case 227:
+      if (!call(0x80040710, {c.handle, 0x40, 0}))
+        return false;
+      ++c.phase;
+      break;
+    case 228:
+      if (!word(c.actor + 0x104, c.handle))
+        return false;
+      ++c.phase;
+      break;
+    case 229:
+      if (!call(0x80040730, {c.handle, c.savedFlags, 0}))
+        return false;
       c = {};
       return true;
     default:

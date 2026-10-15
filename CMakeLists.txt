@@ -2220,3 +2220,9 @@ add_executable(native_field_animation_tests tests/native_field_animation_tests.c
 target_link_libraries(native_field_animation_tests PRIVATE ttyd_core)
 add_test(NAME native_field_animation COMMAND native_field_animation_tests)
 set_tests_properties(native_field_animation PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+# Original offscreen coverage and blur-history NPC callback variants.
+target_sources(ttyd_core PRIVATE source/field/field_npc_blur_trig.cpp)
+add_executable(field_npc_effect_draw_tests tests/field_npc_effect_draw_tests.cpp)
+target_link_libraries(field_npc_effect_draw_tests PRIVATE ttyd_core)
+add_test(NAME field_npc_effect_draw COMMAND field_npc_effect_draw_tests)
+set_tests_properties(field_npc_effect_draw PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

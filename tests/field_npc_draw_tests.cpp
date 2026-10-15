@@ -306,7 +306,7 @@ void facingBoundsAndReturns() {
   }
   Fixture unsupported;
   FieldNpcDrawCursor c;
-  assert(!unsupported.run(c, 0x8004bf28) && !c.active &&
+  assert(!unsupported.run(c, 0x8004ffff) && !c.active &&
          unsupported.trace.empty());
   Fixture absent;
   auto s = absent.services();

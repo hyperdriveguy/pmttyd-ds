@@ -1045,7 +1045,8 @@ void actualDrawCallbacks() {
   auto &w = *storage;
   struct Probe {
     NativeWorld *w;
-    bool ready = false;
+    bool ready = false, gpuReady = false;
+    unsigned syncs = 0, clears = 0, reads = 0, boxes = 0, blurCameras = 0;
     unsigned mains = 0, draws = 0, setters = 0;
     std::vector<uint32_t> names;
   } probe{&w};
@@ -1059,7 +1060,7 @@ void actualDrawCallbacks() {
                                                      {Holder, 4},
                                                      {Model, 0x1b0},
                                                      {Directory, 64},
-                                                     {Camera, 0x24}}})
+                                                     {Camera, 0x118}}})
     assert(memory.registerRam(pair.first, std::vector<uint8_t>(pair.second)));
   FieldNpcMainEntryNativeServices n;
   n.user = &probe;
@@ -1089,7 +1090,9 @@ void actualDrawCallbacks() {
       r.word = Record;
       return true;
     case 0x8000f2fc:
-      assert(q.args[0] == 4);
+      assert(q.args[0] == 4 || q.args[0] == 9);
+      if (q.args[0] == 9)
+        ++f.blurCameras;
       r.word = Camera;
       return true;
     case 0x802725a0:
@@ -1105,6 +1108,29 @@ void actualDrawCallbacks() {
         return false;
       assert(q.args[0] == f.w->pose);
       ++f.mains;
+      return true;
+    case 0x80005ce4:
+      if (!f.gpuReady)
+        return false;
+      ++f.syncs;
+      return true;
+    case 0x802b69d0:
+      if (!f.gpuReady)
+        return false;
+      ++f.clears;
+      return true;
+    case 0x802b6a08:
+      if (!f.gpuReady)
+        return false;
+      ++f.reads;
+      r.bounds = {7, 8, 99, 100};
+      return true;
+    case 0x80072f38:
+      if (!f.gpuReady)
+        return false;
+      assert(q.args[0] == 999 &&
+             q.bounds == (std::array<uint16_t, 4>{7, 8, 99, 100}));
+      ++f.boxes;
       return true;
     case 0x8003b4d8:
       if (!f.ready)
@@ -1175,6 +1201,24 @@ void actualDrawCallbacks() {
   assert(!binding->advanceDraw(0, w.actor, c) && probe.draws == draws);
   w.store(NativeWorld::Work + 0x14, 256);
   assert(binding->advanceDraw(0, w.actor, c));
+  // Explicit synchronized raster fixture: no callback starts before GPU ready.
+  w.store(w.actor + 0x110, 999);
+  const auto beforeMain = probe.mains;
+  assert(!binding->advanceDraw(0x8004bf28, w.actor, c, 9));
+  assert(probe.mains == beforeMain && probe.syncs == 0);
+  probe.gpuReady = true;
+  assert(binding->advanceDraw(0, w.actor, c, 4));
+  assert(probe.syncs == 2 && probe.clears == 1 && probe.reads == 1 &&
+         probe.boxes == 1);
+  // Raw inactive shared material flags are saved/restored; color is not
+  // restored.
+  w.store(w.view->poseAddress(255) + 0xe8, 0x100);
+  const auto beforeBlur = probe.draws;
+  assert(binding->advanceDraw(0x8004bc3c, w.actor, c, 9));
+  assert(probe.draws == beforeBlur + 12 && probe.blurCameras == 2);
+  assert(w.pool->slot(255)->word(0) == 0 &&
+         w.pool->slot(255)->word(0xe8) == 0x100 &&
+         w.pool->slot(255)->word(0xf0) == 0xffffff67);
 }
 } // namespace
 int main() {
