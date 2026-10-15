@@ -1596,3 +1596,16 @@ source fixture with its previously recorded hash. Original MODEL header counts
 come from existing original CPU resources; native test W/file/holder/heap views
 are explicitly runtime fixture policy, not distributable original readiness
 assets. ISO remains read-only, and generated packs stay outside source history.
+
+## Map-lifecycle documentation validation cache (2026-10-14)
+
+artifacts/map-lifecycle-code-documentation-validation/source privately copies
+accepted NPC/object documentation RomFS/evidence inputs. Door-data.pmevt/json,
+battle-sequence-entry.pmevt/json and recovery-effect.bin matched recorded parent
+SHA256 values before copying; manifest.json records parent provenance and hashes.
+Mutable message-icons/material-light/field-native/field-map-npc/door-data evidence
+directories are private copies; other large local-assets inputs are shared read
+dependencies. No new ISO read, extraction, conversion, editable import or shared
+pack write occurred. Original Nintendo/Intelligent Systems rights remain reserved;
+private validation copies confer no new license or redistribution rights. No
+original binary/ISO bytes were committed.

@@ -8703,3 +8703,44 @@ or extraction. Manifest artifacts/animation-refresh-validation-manifest.json.
 Documentation links:1367 Markdown files, zero broken links. Native SHA256
 bcd62b0df52240eb228e8d1dfc98926fa2c5bb6afbc07de08fbfd17c0e9e9705. Concurrent work is preserved; the moving merged worktree is not
 claimed validated as a whole.
+
+## 2026-10-14 — Map NPC history and retained area lifetime documented
+
+Added inline comments to 15 C++ implementation/header files covering parsed map
+NPC records, tribe/AI/territory registration, history promotion/group clears/
+ordinal masks, bootstrap retry state, stable registry aliases, packed reset and
+retained area VM dispatch/root/retirement ordering. The [map-lifecycle guide](code/map-lifecycle.md)
+explains private byte layouts versus original guest storage, duplicate lookup
+selection, known versus unavailable table/skip results, constructor preflight,
+source callback identities and the six ordered external release requests.
+Documented that ReInit retains VM/context banks/allocator/next IDs and does not
+produce child return banks. All 15 files preserve executable tokens. Main
+code/docs commit c8dea1df.
+
+Validation freezes baseline 3afdc9f87493390160e31b39fdd59cf8628e2c8d plus documentation in
+artifacts/map-lifecycle-code-documentation-validation/source. Audited 3586 tracked
+files: zero unexpected changes; 17 documented files match frozen hashes. Live
+annotation snapshots also match their recorded hashes. Three touched files had
+preexisting implementation edits (field_npc_registry_owner.hpp and field_area_event
+header/source); those were preserved and explicitly excluded from frozen inputs,
+with separate live/baseline hashes. Only comments were staged. Tests do not claim
+validation of concurrent work or the moving whole worktree.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test passes 354/354 C++ in 38.64s and
+199/199 Python in 28.858s, zero skipped. make all -o assets-ready -j4
+SOUNDTRACK=gamecube exits 0. host.log/native.log and source/binary/log hashes are
+recorded in manifest.json. No new behavior tests were needed for annotations.
+
+Reused accepted NPC/object documentation RomFS/evidence. Door/sequence/recovery
+products matched recorded parent hashes before private copying; mutable evidence
+was copied privately and other large local-assets inputs remained shared read
+dependencies. No extraction, conversion, editable import or shared pack write;
+native regeneration deliberately skipped. Existing compiler/Pillow warnings
+remain. No emulator/profile/save changes or new measured hardware/timing/pixel/
+floating-point fidelity claims. See [asset notes](ASSETS.md).
+
+Next: field item/coin/quest/encounter services, remaining battle, message/
+inventory/story, effect/audio and port tooling. Re-audit new NPC setup binding,
+area/registry integration and other concurrent changes in already covered code.
+Port-wide documentation and the remake remain incomplete; documentation goal
+stays active.
