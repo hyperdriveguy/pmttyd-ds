@@ -11056,3 +11056,55 @@ snapshots at proper capture points and preserve source aliases/stale fields.
 Do not overwrite source scratch with detached CPU caches. Normal Game activation,
 source clock, full output/ring/facing/link/release/field/event and performance
 parity remain open. Full playable prologue/EVT-01/goal remain incomplete.
+
+## 2026-10-14 — Audience control, item lifetimes and sound documented
+
+Added inline numeric/layout/ownership/behavior notes to 34 C++ files covering
+Init/zero adapters/full population, actor/idle/reaction control, target/window,
+original resources and native atlas, held/flight items, original first-eligible
+query/cancellation, selected-holder continuation, lifecycle/incarnation metadata
+and sound count/start/envelope helpers. Added [audience work](code/battle-audience.md),
+[items/identity](code/battle-audience-items.md), [sound](code/battle-audience-sound.md)
+and index entries. Code/docs commit 82d2da31. All 34 preserve executable tokens
+and literal strings; no behavior changes or new tests for this prose-only work.
+
+Explained main child order, guest/native ownership, source byte/word state domains,
+source phase counts versus render/audio timing, weighted endpoint-1, zero-list
+RNG requests, weight-index sort behavior, paired seats, callerF29, independent
+owner captures, slot0 penalty lookup, delayed item timers/impact publication,
+cache-output alias order, lifecycle generations versus eligibility, committed
+selected-target holds, two independent sound envelopes and real handle-1 versus
+unavailable providers. Original values retain their recovered domains; no guessed
+geometry, source field names, numeric parity or complete native service claims.
+
+Frozen validation baseline c77647f0c4e154a5d7d32790b8ffc241d7105619 plus owned documentation is at
+artifacts/battle-audience-code-documentation-validation/source. Audit checks all
+3825 tracked baseline files:zero unexpected changes. All 38 documented files
+match frozen/live hashes; all 53 local guide/index links resolve. Concurrent
+animation/tangent/NPC/HP and runtime work was preserved and excluded; results do
+not validate a combined moving checkout. No refinements after build launch.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test passes 411/411 C++ (45.40s) and
+207/207 Python (31.290s), zero skipped. make all -o assets-ready -j4
+SOUNDTRACK=gamecube exits0. Manifest records source, dependency, authority, log and
+ELF/3DSX SHA256 values. Existing compiler/Pillow warnings remain. No emulator,
+profile/save changes or hardware/timing/pixel/performance claims.
+
+Accepted cache begins with preceding action-UI documentation inputs 43 products,
+common-menu/relocated Frankly evidence and 14 footer PNG/atlas hashes. Before gates,
+5 verified overlays admit committed prerequisites:2 NPC Mario-detection door
+products (pack 152472 bytes), plus 3 original HP surface products. Final accepted
+product count 46. NPC manifest hash matches its recorded validation authority;
+HP products match hp-stage-source-manifest and five frozen GPU/tool/fixture hashes
+match that authority. Original common TPL compressed spans, decoded HP pixel
+hashes and atlas crops independently verify;3 HP PNG evidence copies are private.
+No conversion/import/shared pack writes during assembly. Existing Python fixtures
+independently read ISO read-only and write empty temporary outputs; native
+regeneration deliberately skipped. No ISO/original asset binaries committed;
+conversion choices/rights unchanged; see [asset notes](ASSETS.md).
+
+Next: audience draw/callback/touch and AP leaves, remaining battle/damage/UI
+helpers, message/story/effect, platform/file/event/runtime helpers and tools.
+Re-audit concurrent Main/stage/HP, animation/tangent and NPC integration against
+committed versions. Matching annotation hashes are not complete subsystem proof.
+Full code documentation and remake remain unfinished; goal stays active.

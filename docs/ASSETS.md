@@ -2225,3 +2225,31 @@ static copied tangent asset substitutes for live storage. Existing20-span boot
 image and all accepted private RomFS products remain byte-identical. Read-only
 output/tangent layout evidence is artifacts/animation-output-evidence/; no ISO,
 original bytes or packs committed/distributed and rights remain unchanged.
+
+## Audience-code documentation validation inputs (2026-10-14)
+
+artifacts/battle-audience-code-documentation-validation/source reuses accepted
+action-UI documentation cache, then adds 5 hash-verified prerequisite overlays:
+
+- door-data.pmevt/json from artifacts/source-checks/npc-wander match
+  artifacts/npc-mario-assets-after.json; its SHA256 matches
+  artifacts/npc-mario-validation-manifest.json. Pack 152472 bytes SHA256
+  6a13a31fe9e979c1a9008d394390f8a49e91ca2a8982739c3434b98e2bc2a9f3
+  retains committed source Mario-detection numeric spans.
+- battle-enemy-hp-surfaces.bin/t3x/json from artifacts/hp-stage-validation match
+  artifacts/hp-stage-source-manifest.json. Five frozen GPU/header/tool/fixture
+  hashes match its recorded inputs. Source battle/common/battle_common.tpl
+  SHA256 8eb685317056f42b3ef73138eaad85d16fa4943d830b44a149f09971a5959bb1,
+  original indices 17/18 (40x16 CMPR) retain decoded pixels with 2px transparent
+  padding in 128x32 atlas, no resampling. Compressed-source and decoded pixel
+  hashes plus exact atlas crops independently verify;common-17/18.png and
+  atlas.png copies live under private local-assets/documentation-hp-evidence.
+
+Manifest journals exact sources, old/new product and authority hashes; final
+accepted count 46, plus 14 existing footer PNG/atlas and 3 HP PNG evidence hashes,
+common-menu/relocated Frankly evidence. No new conversion/resampling, geometry/
+lighting changes, editable imports or shared pack writes. Existing Python
+fixtures independently read ISO read-only and generate into empty temporary
+destinations; native asset regeneration is deliberately skipped. Original
+Nintendo/Intelligent Systems rights remain reserved; tracking/copying grants no
+new license. No ISO, extracted original asset or compiled binary was committed.
