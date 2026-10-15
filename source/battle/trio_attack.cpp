@@ -730,16 +730,27 @@ struct TrioAttackRuntime {
         };
         return packedBattleAudienceMain(s);
     }
+    // Raw operands are BE32 words; value/output resolve source operand tags.
+    // unit() translates actor selectors before registry lookup at B+0x20.
+    // Guest strings have a native 128-byte bound; an unterminated key becomes
+    // empty here, not a fabricated original name. selectedWeapon is required.
     int32_t raw(EventEntry& e,unsigned i)const{return int32_t(word(e.arguments+4*i));}
     int32_t value(EventEntry& e,unsigned i){return getEventValue(e,raw(e,i),vm.interpreterServices().operands);}
     void output(EventEntry& e,unsigned i,int32_t v){setEventValue(e,raw(e,i),v,vm.interpreterServices().operands);}
     uint32_t unit(EventEntry& e,unsigned operand=0){const int32_t id=translateBattleActor(&e,value(e,operand),nativeBattleActorServices(vm));return word(Battle+0x20+4*id);}
     std::string text(uint32_t address)const{std::string s;for(unsigned i=0;i<128;++i){const auto c=byte(address+i);if(!c)return s;s+=char(c);}return {};}
     uint32_t selectedWeapon(){const auto selected=packedSelectedCommandWeapon(Battle,nativeBattlePackedSelectionServices(vm));required(selected.has_value());return *selected;}
+    // Trace first-visit RAW operands, then prefer bound typed callbacks over
+    // explicit source-token cases. Source returns 0 wait, 2 completion, 255 special
+    // scheduler exit; individual movement commands also retain their source 1.
+    // These cases are scoped adapters, not a general PPC function dispatcher.
     int32_t call(EventEntry& e,uint32_t fn,int32_t first) {
         if(first){ProfessorServiceRequest r{fn,e.currentCommand,now,{}};for(unsigned i=0;i<e.argumentCount;++i)r.rawOperands.push_back(raw(e,i));trace.push_back(std::move(r));}
         int32_t result;if(registry.invoke(e,fn,first,result))return result;
         switch(fn) {
+        // Unit+0x104 mask20 needs unbound provider801267cc; only no-effect path
+        // returns output -1. Following leaves retain home30, unit104/part1ac
+        // attribute masks, part1bc pose table, unit18 data and kind8 domains.
         case 0x80212794:{const auto u=unit(e);if(word(u+0x104)&0x20){if(!pending)pending=0x801267cc;return 0;}output(e,1,-1);return 2;}
         case 0x801123d0:{const auto u=unit(e);std::array<float,3> position{};for(unsigned i=0;i<3;++i)position[i]=float(value(e,i+1));for(unsigned i=0;i<3;++i)real(u+0x30+4*i,position[i]);return 2;}
         case 0x8010e368:{const auto u=unit(e);word(u+0x104,word(u+0x104)&~uint32_t(raw(e,1)));return 2;}
@@ -747,9 +758,16 @@ struct TrioAttackRuntime {
         case 0x80106468:{const auto p=packedUnitPart(unit(e),value(e,1),nativeBattleActorServices(vm).memory);word(p+0x1bc,uint32_t(raw(e,2)));return 2;}
         case 0x8010dae0:word(unit(e)+0x18,uint32_t(raw(e,1)));return 2;
         case 0x8010dc44:word(unit(e)+8,uint32_t(value(e,1)));return 2;
+        // Installed wait/attack/damage/confusion scripts live at28c/0x2a0/0x2b0/
+        // 0x2a4; attack installation clears2ac. Sound1c4/0x1c8 are source keys;
+        // banks 0x1dc/0x1cc hold IDs plus three narrowed timing halfwords.
         case 0x8010a500:case 0x8010a388:case 0x8010a55c:case 0x8010a32c:{const auto u=unit(e);const unsigned offset=fn==0x8010a500?0x28c:fn==0x8010a388?0x2a0:fn==0x8010a55c?0x2b0:0x2a4;word(u+offset,uint32_t(raw(e,1)));if(fn==0x8010a388)word(u+0x2ac,0);return 2;}
         case 0x80104b08:{const auto u=unit(e);word(u+0x1c4,uint32_t(value(e,1)));word(u+0x1c8,uint32_t(value(e,2)));return 2;}
         case 0x80104ddc:case 0x80104f64:{const auto u=unit(e);std::array<int32_t,5> args{};for(unsigned i=0;i<5;++i)args[i]=value(e,i+1);const auto base=u+(fn==0x80104ddc?0x1dc:0x1cc);word(base,args[0]);word(base+4,args[1]);for(unsigned i=0;i<3;++i)half(base+8+2*i,args[i+2]);return 2;}
+        // Wing-loss part redefinition admits only kind 2 ->definition ID 1.
+        // Copy original definition attributes/defenses and offsets; reset only
+        // selected mutable part fields. Following source pose request owns restart,
+        // not replacing this definition pointer alone.
         case 0x8011319c:{
             const auto u=unit(e),p=packedUnitPart(u,value(e,1),nativeBattleActorServices(vm).memory),record=uint32_t(raw(e,2));const auto id=uint32_t(value(e,3));
             if(!record || word(record)!=id || word(u+8)!=2 || id!=1){if(!pending)pending=fn;return 0;}
@@ -759,6 +777,10 @@ struct TrioAttackRuntime {
             // reuses its geometry/pose IDs; the following source pose request resets animation.
             return 2;
         }
+        // Voice adapter admits only raw argument 1=0 and retains original key;
+        // it does not allocate a public voice. Action parameter sentinel 0xf1194d80
+        // leaves each 0x1cc8 word unchanged; interpolation stores locals 11..15 and
+        // admits only curve 5, advancing a source visit counter after each sample.
         case 0x8015235c:if(raw(e,1)!=0){if(!pending)pending=fn;return 0;}soundRequests.push_back(text(uint32_t(raw(e,0))));return 2; // Original request retained; returned voice is discarded by this source call.
         case 0x80115648:output(e,0,int8_t(byte(word(0x8041eb00)+0x99)));return 2;
         case 0x80107ad4:word(Battle+0x1cc4,uint32_t(raw(e,0)));return 2;
@@ -766,22 +788,37 @@ struct TrioAttackRuntime {
         case 0x8010510c:return battleStageFloorPositionEvent(e,nativeBattleUnitEventServices(vm),vm.platform.user,vm.platform.signedWordFloat);
         case 0x80056120:{std::array<int32_t,4> args{};for(unsigned i=0;i<4;++i)args[i]=value(e,i);e.locals[11]=args[0];e.locals[12]=args[1];e.locals[13]=args[2];e.locals[14]=0;e.locals[15]=args[3];return 2;}
         case 0x80055f90:{if(e.locals[11]!=5){if(!pending)pending=fn;return 0;}const auto sample=cameraInterpolation(e.locals[11],e.locals[14],e.locals[15],float(e.locals[12]),float(e.locals[13]));required(sample.has_value());setEventFloat(e,raw(e,0),*sample,vm.interpreterServices().operands);output(e,1,e.locals[14]<e.locals[15]?1:0);e.locals[14]=int32_t(uint32_t(e.locals[14])+1);return 2;}
+        // Sound work at unit+0x18c keeps original parameter mapping: a[2] at
+        // +0xc, a[3] at BOTH +0xe/+0x10, a[4] unused. Preserve exact narrowing
+        // and store order rather than normalizing this into a tuple API.
         case 0x80105020:{const auto u=unit(e);std::array<int32_t,7> a{};for(unsigned i=0;i<7;++i)a[i]=value(e,i+1);const auto record=u+0x18c;word(record,uint32_t(a[0]));word(record+4,uint32_t(a[1]));half(record+0xc,a[2]);half(record+0xe,a[3]);half(record+0x10,a[3]);half(record+0x14,0);half(record+8,a[5]);half(record+0xa,a[6]);word(record+0x18,0xffffffff);return 2;}
+        // Defense uses actual private pad 0x1d1c, HP+0x10c, actor+0x305/0x306/0x307 and
+        // weapon13 gate. Override+0x1d18 is signed16; result+0x1cb0 and pad state
+        // publish together. This is not a raw-button-only guard approximation.
         case 0x80107694:{const auto u=unit(e),w=uint32_t(value(e,1));word(Battle+0x1cb0,0);readPad(Battle+0x1d1c,privatePad);DefenseContext context;context.hp=half(u+0x10c);context.simplifiers=byte(u+0x305);context.unsimplifiers=byte(u+0x306);context.automatic=byte(u+0x307);context.weaponGate=byte(w+0x13);DefenseCommand command;command.overrideCounter=half(Battle+0x1d18);command.evaluate(privatePad,context);half(Battle+0x1d18,command.overrideCounter);word(Battle+0x1cb0,command.result);writePad(Battle+0x1d1c,privatePad);return 2;}
         case 0x80113f1c:return battleMarkUnit1feEvent(e,nativeBattleUnitEventServices(vm));
         case 0x80113708:output(e,0,word(Battle+0xf18)==uint32_t(raw(e,1)));return 2;
         case 0x801137b8:output(e,0,half(word(0x8041eb90)));return 2;
         case 0x80104498:{const auto u=unit(e);if(word(u+0x308)){if(!pending)pending=fn;return 0;}output(e,1,0);return 2;}
         case 0x8010eed4:{const auto side=int8_t(byte(unit(e)+0xc));output(e,1,side==0?1:side==1?0:side);return 2;}
+        // Candidate buffer B+0x428 samples source weapon64/68 masks. Signed
+        // side-policy byte B+0xa+8*side is negated, then optionally inverted by
+        // attribute 0x10000000. Choice weapon7c writes both unit and part outputs.
         case 0x8010b664:{const auto actor=translateBattleActor(&e,value(e,0),nativeBattleActorServices(vm));const int32_t side=int8_t(value(e,1));const auto w=uint32_t(value(e,2)),attributes=word(w+0x68);int32_t direction=int8_t(-byte(Battle+0xa+8*side));if(attributes&0x10000000)direction=int8_t(-direction);
             samplePackedBattleCandidates({nativeBattleActorServices(vm),Battle+0x428},w,actor,side,word(w+0x64),attributes,direction,nativeBattleSamplingServices(vm));return 2;}
         case 0x8010b5e4:{const auto w=uint32_t(value(e,0));std::array<int32_t,2> selected{};CandidateChoiceOutputs outputs;outputs.user=&selected;outputs.write=[](void* p,bool unitOutput,int32_t v){(*static_cast<std::array<int32_t,2>*>(p))[unitOutput?0:1]=v;};
             choosePackedBattleCandidate({nativeBattleActorServices(vm),Battle+0x428},word(w+0x7c),nativeBattleChoiceServices(vm),outputs);output(e,1,selected[0]);output(e,2,selected[1]);return 2;}
+        // Only no-protector domain is admitted; scan all six native actor
+        // protector fields+0x140 before BOTH outputs. Matching protector waits
+        // for original redirect core rather than silently retaining the target.
         case 0x8010ad00: { // Source fresh no-protector domain; retain both output writes.
             (void)unit(e);const int32_t target=translateBattleActor(&e,value(e,1),nativeBattleActorServices(vm));const int32_t part=value(e,2);
             for(unsigned id=1;id<7;++id)if(int32_t(word(Units+id*0x1000+0x140))==target){if(!pending)pending=fn;return 0;}
             output(e,1,target);output(e,2,part);return 2;
         }
+        // Zero item/FP/AP cost is a narrow admission, not skipped accounting:
+        // still read/write FP+0x112 and advance Mario action point/count 0x16f4b/0x16f4c.
+        // Partner selected-weapon path later uses 0x16f4d/0x16f4e for kinds 224..230.
         case 0x801059a0: { // Ordinary item0/FP0/AP0 still records its action count.
             const auto u=unit(e),weapon=uint32_t(value(e,1));
             if(word(weapon+8) || byte(weapon+0x11) || byte(weapon+0x12)){if(!pending)pending=fn;return 0;}
@@ -791,6 +828,10 @@ struct TrioAttackRuntime {
         }
         case 0x801058e0:output(e,1,byte(uint32_t(value(e,0))+0x6e));return 2;
         case 0x80107b38:{const auto u=unit(e);const int32_t base=value(e,1);byte(Battle+0x1cbc,base);byte(Battle+0x1cbd,std::clamp(base-int32_t(byte(u+0x305))+int32_t(byte(u+0x306)),int32_t(0),int32_t(6)));return 2;}
+        // Setup table 0x80364348 has 20-byte(id, Main, Result, Display, Delete) rows,
+        // terminated by ID 0. Store actor+0x1c90/options+0x1c94/argument+0x1c98, state+0x1c9c,
+        // count+0x1cb4/result+0x1cb8; source actor flag 0x10 suppresses Display only.
+        // Difficulty raw+0x1cbc/adjusted+0x1cbd clamps to 0..6 in its preceding leaf.
         case 0x801077ec: {
             const auto u=unit(e);const int32_t id=value(e,1),arg=value(e,3);const auto options=uint32_t(raw(e,2));
             word(Battle+0x1c90,u);word(Battle+0x1c94,options);word(Battle+0x1c9c,0);word(Battle+0x1cb4,0);word(Battle+0x1cb8,1);
@@ -805,12 +846,18 @@ struct TrioAttackRuntime {
         case 0x8010e5a8:byte(unit(e)+0x189,value(e,1));return 2;
         case 0x8010e4bc:return battleResetUnitFacingEvent(e,nativeBattleUnitEventServices(vm),nativeBattleActorServices(vm));
         case 0x8010b85c:case 0x8010b7c4:{const auto u=unit(e);const int32_t amount=value(e,2),sign=int8_t(byte(u+0x189));const auto x=value(e,1);output(e,1,int32_t(uint32_t(x)+(fn==0x8010b85c?uint32_t(amount)*uint32_t(sign):0u-uint32_t(amount)*uint32_t(sign))));return 2;}
+        // Narrow facing query: actor part -1, mode 1 literal X or 16 target unit/
+        // part. Target part attribute 0x10000000 remains unbound. Equal X keeps
+        // current signed facing+0x189; offsets use wrapped 32-bit delta helpers.
         case 0x8010e684: {
             const auto u=unit(e);const int32_t actorPart=value(e,1),target=value(e,2),targetPart=value(e,3),mode=raw(e,4);
             if(actorPart!=-1 || (mode!=1 && mode!=16)){if(!pending)pending=fn;return 0;}
             float x=float(target);if(mode==16){const int32_t id=translateBattleActor(&e,target,nativeBattleActorServices(vm));const auto t=word(Battle+0x20+4*id),part=packedUnitPart(t,targetPart,nativeBattleActorServices(vm).memory);if(word(part+0x1ac)&0x10000000){if(!pending)pending=fn;return 0;}x=real(t+0x3c)+real(part+0x24);}
             const float delta=x-real(u+0x3c);output(e,5,delta>0?1:delta<0?-1:int8_t(byte(u+0x189)));return 2;
         }
+        // Table-pose type ranges choose fallback 28/39/69 and scan at most 70
+        // source 8-byte rows. First exact OR fallback match wins; a later exact
+        // match does not override an earlier fallback. Types 29..39 force restart.
         case 0x80106b20: {
             const auto u=unit(e);const int32_t partId=value(e,1),type=value(e,2);const auto p=packedUnitPart(u,partId,nativeBattleActorServices(vm).memory);
             uint32_t table=word(p+0x1bc),name=0;if(!table){if(!pending)pending=fn;return 0;}
@@ -821,8 +868,17 @@ struct TrioAttackRuntime {
         case 0x80106bb8:{const auto u=unit(e);const auto p=packedUnitPart(u,value(e,1),nativeBattleActorServices(vm).memory);changePose(u,p,text(uint32_t(value(e,2))),false);return 2;}
         case 0x80105890:output(e,0,byte(selectedWeapon()+0x6e));return 2;
         case 0x80105928:{const auto u=unit(e),w=selectedWeapon();if(word(w+8) || byte(w+0x11) || byte(w+0x12)){if(!pending)pending=fn;return 0;}if(word(u+8)>=224 && word(u+8)<231){auto points=byte(Battle+0x16f4d),count=byte(Battle+0x16f4e);addActionPoint(points,0);addActionCount(count);byte(Battle+0x16f4d,points);byte(Battle+0x16f4e,count);}return 2;}
+        // Selected-weapon precheck admits accuracy 100, zero statuses 0x118..0x135,
+        // no unsupported counter/fog/attributes/badges. Even certain accuracy
+        // consumes irand(100) unless incoming100000 or weapon74 bit 8 bypasses;
+        // weapon bit 4 first marks attacker27c bit 8. Source event activity controls
+        // return 2/255 after output, not a native hit boolean.
         case 0x8010aaa8:{const auto a=unit(e),d=unit(e,1),p=packedUnitPart(d,value(e,2),nativeBattleActorServices(vm).memory),w=selectedWeapon();const uint32_t flags=uint32_t(raw(e,3));for(unsigned o=0x118;o<=0x135;++o)if(byte(a+o) || byte(d+o)){if(!pending)pending=fn;return 0;}if(byte(w+0x10)!=100 || (word(p+0x1b0)&2) || word(Battle+0x182bc) || (word(d+0x104)&0x18) || (word(p+0x1ac)&(0x4000|0x40)) || byte(d+0x2e0) || byte(d+0x2e1) || byte(d+0x2e2)){if(!pending)pending=fn;return 0;}if(word(w+0x74)&4)word(a+0x27c,word(a+0x27c)|8);if(!(flags&0x100000) && !(word(w+0x74)&8))(void)random.bounded(100);output(e,4,1);return e.flags&1?2:255;}
         case 0x8010a688:{const auto a=unit(e),d=unit(e,1),p=packedUnitPart(d,value(e,2),nativeBattleActorServices(vm).memory),w=selectedWeapon();if((word(d+8)!=1 && word(d+8)!=2) || word(p+0x1b0) || w!=0x80393ea8){if(!pending)pending=fn;return 0;}word(d+0x258,p);const auto result=checkGroundDamage(a,d,p,w,uint32_t(raw(e,3)));if(result>=0)output(e,4,result);return result>=0 && (e.flags&1)?2:255;}
+        // Raw output sentinel -250000000 omits a destination. Scale/offset/
+        // rotation setters separately compare numeric float sentinel; preserve
+        // operand domain. Facing188 overrides189 only when nonzero. Angle table
+        // queries preserve prior angle when both direction components are zero.
         case 0x8011355c:{const auto u=unit(e);for(unsigned i=0;i<3;++i)if(raw(e,i+1)!=-250000000)setEventFloat(e,raw(e,i+1),real(u+0x3c+4*i),vm.interpreterServices().operands);return 2;}
         case 0x80111894:{const auto u=unit(e);for(unsigned i=0;i<3;++i)if(raw(e,i+1)!=-250000000)output(e,i+1,int32_t(real(u+0x6c+4*i)));return 2;}
         case 0x8010e614:output(e,1,int8_t(byte(unit(e)+0x189)));return 2;
@@ -830,7 +886,14 @@ struct TrioAttackRuntime {
         case 0x801103dc:case 0x8011049c:{const auto id=translateBattleActor(&e,value(e,0),nativeBattleActorServices(vm));if(id==-1)return 2;const auto u=word(Battle+0x20+4*id);for(unsigned i=0;i<3;++i){const float v=getEventFloat(e,raw(e,i+1),vm.interpreterServices().operands);if(v!=-250000000.f)real(u+0x90+4*i,fn==0x801103dc?real(u+0x90+4*i)+v:v);}return 2;}
         case 0x80112978:{const auto u=unit(e);for(unsigned i=0;i<3;++i){const float v=float(value(e,i+1));if(v!=-250000000.f)real(u+0x54+4*i,v);}return 2;}
         case 0x93105b2c:case 0x93105a14:case 0x80189910:{std::array<float,4> p{};for(unsigned i=0;i<4;++i)p[i]=getEventFloat(e,raw(e,i),vm.interpreterServices().operands);const int32_t previous=value(e,4);const float dx=p[2]-p[0],dy=p[3]-p[1];output(e,4,dx==0 && dy==0?previous:int32_t(sourceAngles.angle(dx,dy,0,0)));return 2;}
+        // Deliberate request-only completion: stylish/effect/voice/camera leaves
+        // retain trace/projection without actual presentation provider ownership.
+        // Do not mistake return2 on these selected adapters for full original
+        // service implementation; unknown function tokens still wait below.
         case 0x801072e4:return 2; // Retained original stylish-audience request; producer adapter remains open.
+        // Full event wrapper delegates only to the admitted native damage core.
+        // Live-event lookup tests both ID and active bit 1; retained hit-child
+        // completion remains separate from the calculator's signed result.
         case 0x8010a78c: {
             BattleCheckDamageEventServices services;services.units=nativeBattleUnitEventServices(vm);services.user=this;
             services.part=[](void* self,uint32_t u,int32_t id){auto& r=*static_cast<TrioAttackRuntime*>(self);return packedUnitPart(u,id,nativeBattleActorServices(r.vm).memory);};
@@ -838,6 +901,10 @@ struct TrioAttackRuntime {
             services.eventExists=[](void* self,uint32_t id){auto& runtime=static_cast<TrioAttackRuntime*>(self)->vm;for(int32_t i=0;i<runtime.battle.capacity;++i)if(runtime.battle.entries[i].id==id && (runtime.battle.entries[i].flags&1))return true;return false;};
             return battleCheckDamageEvent(e,services);
         }
+        // Auto pose requires no status118..135 or unit104 bit20000 and an
+        // actual type 28 table name; preserve part204 flag rewrite. Other leaves
+        // retain restore1c70/0x1c74, live attack/hit handles2a8/0x2b4 and status 27
+        // byte+0x135; setting an unsupported status is unavailable, not ignored.
         case 0x801064d8:{const auto u=unit(e),p=packedUnitPart(u,value(e,1),nativeBattleActorServices(vm).memory);for(unsigned o=0x118;o<=0x135;++o)if(byte(u+o)){if(!pending)pending=fn;return 0;}if(word(u+0x104)&0x20000){if(!pending)pending=fn;return 0;}const auto table=word(p+0x1bc);uint32_t name=0;for(unsigned i=0;i<28 && word(table+8*i+4);++i)if(word(table+8*i)==28){name=word(table+8*i+4);break;}if(!name){if(!pending)pending=fn;return 0;}changePose(u,p,text(name),false);word(p+0x204,(word(p+0x204)&~uint32_t(2|0x10|0x80|4))|1);return 2;}
         case 0x801141a4:word(Battle+0x1c70,0);byte(Battle+0x1c74,0);return 2;
         case 0x8010dcb0:{const auto kind=int32_t(word(unit(e)+8));output(e,1,kind==222 || (kind>=224 && kind<231));return 2;}
@@ -846,6 +913,11 @@ struct TrioAttackRuntime {
         case 0x80111720:case 0x801115f8:{const auto u=unit(e);std::array<float,3> v{};for(unsigned i=0;i<3;++i)v[i]=float(value(e,i+1));for(unsigned i=0;i<3;++i){const float old=real(u+0x6c+4*i);real(u+0x6c+4*i,angle(fn==0x801115f8?old+v[i]:raw(e,i+1)==-250000000?old:v[i]));}return 2;}
         case 0x80110f9c:{const auto u=unit(e);for(unsigned i=0;i<3;++i){const float v=float(value(e,i+1));if(v!=-250000000.0f)real(u+0x78+4*i,v);}return 2;}
         case 0x8006d970:return 2; // Original effect request retained; particle provider pending.
+        // Drop query reloads kind pointer AFTER each RNG draw before chance
+        // comparison; do not cache callback-visible source fields. EXP uses
+        // signed pouch level+0x8a, unit level+0xd and original group factor constants.
+        // Held-drop reservation appends at setup+0x7c (up to eight scanned slots)
+        // then clears unit308; this is distinct from material generation later.
         case 0x8010d914:{const auto u=unit(e);if(!u){output(e,1,0);return 2;}uint32_t k=word(u+0x10);int32_t amount=byte(k+0x12);for(unsigned i=0;i<byte(k+0x10);++i){const auto draw=random.bounded(100);k=word(u+0x10);if(draw<byte(k+0x11))++amount;}output(e,1,amount);return 2;}
         case 0x8010d8d8:{const auto w=word(Battle+0x2738);word(w+0x14,word(w+0x14)+uint32_t(value(e,0)));return 2;}
         case 0x8010d9bc:{const auto u=unit(e);if(!u){output(e,1,0);return 2;}const int32_t player=half(word(0x8041eb00)+0x8a),enemy=byte(u+0xd);int32_t exp=0;if(player<=enemy){const auto setup=word(word(Battle+0x2738)+0xc),group=word(setup+0x18);const auto type=int32_t(word(group));const float factor=real(type<=2?0x804226a8:type==3?0x804226b4:type==4?0x804226b8:0x804226bc);exp=byte(word(u+0x10)+0xf)+int32_t((factor*float(enemy-player))*real(0x804226c0));}output(e,1,exp);return 2;}
@@ -854,7 +926,14 @@ struct TrioAttackRuntime {
         case 0x8010da28:{const auto u=unit(e);if((word(u+0x1c)&0x40000000) && word(u+0x308)){const auto setup=word(word(Battle+0x2738)+0xc);unsigned i=0;while(i<8 && word(setup+0x7c+4*i))++i;word(setup+0x7c+4*i,word(u+0x308));word(u+0x308,0);}return 2;}
         case 0x80103e34:return battleStatusWindowOnOffEvent(e,statusWindowServices());
         case 0x80105df8:clearStatus(unit(e));return 2;
+        // Kill leaf clears HP/status first. Mode bit 2 marks attribute20000;
+        // otherwise set status135 and, unless mode bit 1, set broken flag 0x80000000.
+        // Removal/hit scripts still own actual lifecycle, not this flag alone.
         case 0x80113304:{const auto u=unit(e);if(!u)return 2;half(u+0x10c,0);clearStatus(u);const uint32_t mode=uint32_t(raw(e,1));if(mode&2)word(u+0x104,word(u+0x104)|0x20000);else {byte(u+0x135,1);if(!(mode&1))word(u+0x1c,word(u+0x1c)|0x80000000);}return 2;}
+        // Stylish window work 0x271c count, 0x2720/0x2724/0x2728 lo/hi/end, 0x272c actor,
+        // 0x2730 result, 0x2734 history scan. Source A mask 0x100: early history  =>-1;
+        // lo<t<=hi  =>2; late  =>-2; absent/flag 0x10 actor or timeout  =>1. First visit
+        // initializes, then count increments before tests; completion returns 1.
         case 0x80106dfc: {
             if(first){const auto id=translateBattleActor(&e,value(e,0),nativeBattleActorServices(vm));word(Battle+0x271c,0);for(unsigned i=0;i<3;++i)word(Battle+0x2720+4*i,value(e,i+1));word(Battle+0x272c,id);word(Battle+0x2730,0);word(Battle+0x2734,value(e,4));}
             const auto id=int32_t(word(Battle+0x272c));const uint32_t a=id>=0 && id<64?word(Battle+0x20+4*id):0;const int32_t t=int32_t(word(Battle+0x271c)+1);word(Battle+0x271c,t);
@@ -868,6 +947,10 @@ struct TrioAttackRuntime {
         }
         case 0x80106d7c:{const auto result=int32_t(word(Battle+0x2730)),count=int32_t(word(Battle+0x271c));if(raw(e,0)!=-250000000)output(e,0,result);if(raw(e,1)!=-250000000)output(e,1,count);return 2;}
         case 0x80139898:return 2; // Original no-stylish audience request retained.
+        // Clamp input+difficulty-1 to 0..6; for selectors OTHER than -1/-5,
+        // unit 278 low byte 30 overrides result to-1. TimingA/Hammer Stop below
+        // REQUEST states 1000/1005; later Main owns callback cleanup. Reading
+        // result/count does not evaluate a command or advance its tick.
         case 0x801075c4:{const int32_t actor=value(e,0),input=value(e,1);int32_t result=std::clamp(input+int32_t(byte(Battle+0x1cbd))-1,int32_t(0),int32_t(6));if(actor!=-1 && actor!=-5 && (word(unit(e)+0x278)&255)==30)result=-1;output(e,2,result);return 2;}
         case 0x80106fa0:return 2; // Original success-effect request retained in trace.
         case 0x8010f2e8:return battleCheckHitCodeEvent(e,nativeBattleUnitEventServices(vm));
@@ -903,6 +986,9 @@ struct TrioAttackRuntime {
         }
         case 0x80106f40:{const bool on=value(e,0)!=0;const auto mask=uint32_t(raw(e,1));word(Battle+0x1f50,on?word(Battle+0x1f50)|mask:word(Battle+0x1f50)&~mask);return 2;}
         case 0x80106ef0:output(e,0,timing().successWindow(byte(Battle+0x1cbd)));return 2;
+        // Hammer result callback 0x8012a174 reads existing result bit 1 only;
+        // other admitted path evaluates TimingA against captured general history.
+        // Count/result are signed-word projections; source bit 1 means wait.
         case 0x80107708:{if(word(Battle+0x1ca4)==0x8012a174)return word(Battle+0x1cb8)&1?0:2;auto c=timing();TimingAContext context;context.difficulty=byte(Battle+0x1cbd);context.setupOptions=word(Battle+0x1c94);context.actorFlags=word(word(Battle+0x1c90)+0x27c);context.battleFlags=word(Battle+0xef4);c.evaluate(history,context,random);storeTiming(c);return c.result&1?0:2;}
         case 0x80107660:output(e,0,int32_t(word(Battle+0x1cb8)));return 2;
         case 0x80107548:output(e,0,int32_t(word(Battle+0x1cb4)));return 2;
@@ -937,12 +1023,20 @@ struct TrioAttackRuntime {
         if(!pending)pending=fn;
         return 0;
     }
+    // Native rotation normalization is [0, 360), including negative wrap and
+    // NaN->0 policy. Do not describe this host adaptation as measured PPC NaN
+    // payload/FPSCR behavior. Clear 30 statuses plus six 12-byte notices below
+    // preserves each notice's final word+8 exactly.
     float angle(float v) const {float result=float(std::fmod(double(v),360.0));if(std::isnan(result))result=0;if(result<0)result+=360;if(result>=360)result=0;return result;}
     void clearStatus(uint32_t u) {
         // Packed status export is completed from the recovered clear contract.
         BattleStatusUnit status;clearUnitStatus(status);for(unsigned i=0;i<30;++i)byte(u+0x118+i,status.statusBytes[i]);
         for(unsigned i=0;i<6;++i){const auto at=u+0xae8+12*i;byte(at,0xff);for(unsigned j=1;j<4;++j)byte(at+j,0);word(at+4,0);} // Retain each word8.
     }
+    // Scoped native battle entry, not full source UnitEntry/sequence startup.
+    // Borrow current field camera publication without claiming complete history.
+    // Supplied pouch is canonical; legacy checkpoint replaces only current HP+0x70
+    // on an explicit fresh snapshot. No inventory rebuild/healing on real entry.
     bool initialize(const TrioBattleCommands& menu,ProfessorStory& s,int16_t hp,std::shared_ptr<ProloguePouch> supplied) {
         scene=&s;now=s.now;
         if(const auto* retained=cameras->camera(4);retained && retained->viewPublished){
@@ -955,6 +1049,11 @@ struct TrioAttackRuntime {
         // remaining original fields use the explicit recovered initial-stage
         // snapshot, not a claim to deserialize an original saved inventory.
         if(!suppliedEntry)entryPouch->half(0x70,hp);
+        // Native VM heap 0x82000000..0x82100000 (1MiB), map reservation 0x85600000/
+        // 64040 bytes, Battle 0x19100, Units/Parts 0x10000, Kinds 0x1000, Work 0x14000. Source
+        // pointer cells/spotlight aliases are separate mapped owners. Pouch
+        // projection 0x85000000 has 0x600 bytes, source body 0x5d4; camera stock EXP XY
+        // 0x8041eb98 aliases the real camera owner's bytes rather than a copy.
         for(auto span:std::array<std::pair<uint32_t,unsigned>,15>{{{0x85600000,0x64040},{0x8041e808,16},{0x82000000,0x100000},{0x8041f070,16},{0x8041e428,4},{0x8041e844,4},{0x8041eb90,4},{0x8041eb00,4},{0x8041ebdc,12},{0x804295d4,4},{Battle,0x19100},{Units,0x10000},{Parts,0x10000},{Kinds,0x1000},{Work,0x14000}}})
             if(!vm.memory.registerRam(span.first,std::vector<uint8_t>(span.second)))return false;
         if(!menuFiles || !menuFiles->bind(vm.memory))return false;
@@ -978,6 +1077,10 @@ struct TrioAttackRuntime {
         initializePackedBattleStageWorkStorage(Battle,nativeBattleActorServices(vm).memory);
         for(unsigned i=0;i<64;++i)word(Battle+0x16f5c+8*i,0xffffffff);
         for(unsigned i=0;i<28;++i)byte(Battle+0x18da0+12*i,0xff);
+        // Source bank selectors initialize turn 0, sequence 0x0300004c, phase
+        // 04000002, actor05000009, attack06000007. Reaction queues 64 entries use
+        // ffffffff; message 28 records stride12 use ff sentinel. Setup Work+0xc
+        // points Work+0x100, group at Work+0x118. Native main rate 60 is explicit.
         half(Battle,0);word(Battle+0xf14,0x0300004c);word(Battle+0xf18,0x04000002);word(Battle+0xf1c,0x05000009);word(Battle+0xf20,0x06000007);
         word(Battle+0x2738,Work);word(Work+0xc,Work+0x100);word(Work+0x118,reactionGroup);
         word(0x8041eb90,Battle);word(0x8041eb00,0x85000000);byte(Battle+0xa,1);byte(Battle+0x12,255);
@@ -987,8 +1090,15 @@ struct TrioAttackRuntime {
         word(Battle+0xef8,word(Battle+0xef8)|2u); // Original btlDispInit publication; other Init services stay separate.
         if(!initializePackedSetup4AudienceParameters(audienceSetupConfig,Work+0x100,audienceInitServices()))return false;
         word(Battle+0x420,menu.actor);word(Battle+0x424,6);word(Battle+0x1c5c,0);word(Battle+0x171c+0x4b0,0);word(Battle+0x171c+0x80,menu.attack->weapon);
+        // Seven source partner snapshots at B+0x162a0/stride 44: float0,
+        // 30 status bytes+4, flags+0x24, signed halfwords 0x28/0x2a. Native arrays keep
+        // those domains separately; candidate buffer remains raw source bytes.
         for(unsigned i=0;i<7;++i){const auto snapshot=Battle+0x162a0+44*i;partySnapshots[i].value=real(0x80422174);real(snapshot,partySnapshots[i].value);word(snapshot+0x24,0);for(unsigned j=0;j<30;++j)byte(snapshot+4+j,0);half(snapshot+0x28,0);half(snapshot+0x2a,0);}
         for(unsigned i=0;i<menu.candidates.bytes.size();++i)byte(Battle+0x428+i,menu.candidates.bytes[i]);
+        // Six admitted registry actors; unit/part stride 0x1000, temporary kind
+        // stride 0x200. Source unit 21/22/23 move counts, 0x2c phase, 0x140 protector -1,
+        // 189 facing, 0x114 uniform XY scale and90..0xa4 axis scales stay distinct.
+        // Enemy/Frankly definitions overwrite temporary kind data as specified.
         for(unsigned id=1;id<7;++id) {
             const uint32_t u=Units+id*0x1000,p=Parts+id*0x1000,k=Kinds+id*0x200;
             word(Battle+0x20+id*4,u);word(u,id);word(u+8,menu.units[id].kind);byte(u+0xc,menu.units[id].belong);
@@ -1019,6 +1129,9 @@ struct TrioAttackRuntime {
                     // Mario has three authored parts. Keep primary addresses
                     // stable and place his extra parts in the unused unit0
                     // partition; a third 0x500 record in unit1 overlaps unit2.
+                    // This address policy is native placement only; linked-list
+                    // order and source0x4c definitions preserve all three Mario
+                    // parts. Slot 0's two spare records avoid overwriting unit 2.
                     const auto partAddress=[&](unsigned j){return id==1 && j?Parts+0x500*(j-1):p+0x500*j;};
                     for(unsigned j=0;j<count;++j) {
                         const uint32_t record=source+0x4c*j,part=partAddress(j);word(part,j+1<count?partAddress(j+1):0);word(part+4,record);word(part+0x4ec,u);byte(part+0xbd,1);
@@ -1031,6 +1144,10 @@ struct TrioAttackRuntime {
             }
         }
         word(Units+6*0x1000+0x298,franklyPhase);
+        // Initialize HP gauge/dimensions and all actual linked parts. Pose
+        // handles 0x1c0/0x4f0 use ffffffff; part1c4 starts empty. Unit311/312 are
+        // source ff bytes, not native actor indices. Pose factories require
+        // actual source definitions/resources; no placeholder pose is fabricated.
         for(unsigned id=1;id<7;++id){const auto unit=Units+id*0x1000;half(unit+0xcc,half(word(unit+0x10)+0x16));half(unit+0xce,half(word(unit+0x10)+0x18));initializePackedBattleHpGauge(unit,nativeBattleActorServices(vm));byte(unit+0x311,255);byte(unit+0x312,255);for(auto part=word(unit+0x14);part;part=word(part)){half(part+0x1a2,half(word(part+4)+0x30));half(part+0x1a4,half(word(part+4)+0x32));real(part+0x78,1);for(unsigned axis=0;axis<3;++axis){real(part+0x6c+4*axis,1);real(part+0x60+4*axis,1);real(part+0x3c+4*axis,0);real(part+0x48+4*axis,0);real(part+0x54+4*axis,0);}real(part+0x208,1);real(part+0x20c,1);word(part+0x4f0,0xffffffff);word(part+0x1c0,0xffffffff);byte(part+0x1c4,0);byte(part+0x214,0);byte(part+0x215,0);}}
         // Real player and surviving lecture-Frankly mode1 pose owners.
         // Enemy factories remain explicit providers when they survive display.
@@ -1046,12 +1163,19 @@ struct TrioAttackRuntime {
             word(part+0x1c0,uint32_t(*handle));partPoseHandles.emplace(part,*handle);
         }
         for(unsigned id=1;id<7;++id)clearStatus(Units+id*0x1000);
+        // Import original Mario/partner resources AFTER clearing fresh state;
+        // retain source snapshots/status/scale and base/max/current HP/FP fields.
+        // Source first-turn processing and phase tables run only after import.
         UnitResourceServices resources;resources.user=entryPouch.get();resources.pouch=[](void* p){return static_cast<ProloguePouch*>(p)->bytes.data();};resources.snapshots=&partySnapshots;
         for(unsigned id=1;id<=2;++id){const auto u=Units+id*0x1000;readDamage(id);auto& d=damageUnits[id];d.baseHp=half(u+0x10a);d.baseFp=half(u+0x110);d.hpPlusCount=byte(u+0x2f1);d.fpPlusCount=byte(u+0x2f2);importUnitResources(d,resources);
             half(u+0x10a,d.baseHp);half(u+0x108,d.maxHp);half(u+0x10c,d.hp);half(u+0x110,d.baseFp);half(u+0x10e,d.maxFp);half(u+0x112,d.fp);
             if(id==2){real(u+0x114,d.snapshotValue);word(u+0x138,d.flags);half(u+0x13c,d.snapshot13c);half(u+0x13e,d.snapshot13e);for(unsigned j=0;j<30;++j)byte(u+0x118+j,d.statusBytes[j]);}}
         BattleTurnFirstBackend firstTurn;firstTurn.runtime=&vm;battleTurnFirstProcess(Battle,nativeBattleTurnFirstServices(firstTurn));
         buildBattlePhaseTables(Battle,phaseServices());
+        // Movement sound adapter records original key but returns handle-1:
+        // explicit failed public allocation, not successful MusyX playback.
+        // Callback registry binds actual source helpers; remaining switch cases
+        // above keep their narrower native admission contracts.
         child=nativeBattleDataChildServices(vm);takeoffBackend.runtime=&vm;takeoff=nativeBattleTakeoffServices(vm,nativeBattleTakeoffCoreServices(takeoffBackend));BattleSoundPlaybackServices playback;playback.user=this;playback.trigger=[](void* p,uint32_t,uint32_t key,int32_t,int32_t,const std::array<float,3>&){auto& r=*static_cast<TrioAttackRuntime*>(p);r.soundRequests.push_back(r.text(key));return uint32_t(-1); // Explicit native request failure; no public slot allocated.
 };playback.position=[](void*,uint32_t,const std::array<float,3>&){};playback.off=[](void*,uint32_t){};movement=nativeBattleMovePositionServices(vm,playback);
         bool ok=bindBattleJumpSettingCallback(registry,vm) && bindBattleFlagQueryCallback(registry,vm) && bindBattleSelectedTargetCallback(registry,vm) && bindBattleCommandWeaponCallback(registry,vm) &&
@@ -1073,6 +1197,10 @@ struct TrioAttackRuntime {
         return launch(menu);
 
     }
+    // Selective packed->typed projection, not complete original unit storage.
+    // Fields: HP108/0x10c, FP10e/112, status118..135, flags27c, sequence260/280,
+    // jump/hammer bonuses2ff/300 and reaction1fe..206. Enemy elemental defense
+    // arrays come from original spec rows3..5, not arbitrary changed part tables.
     void readDamage(unsigned id) {
         auto& d=damageUnits[id];const auto u=Units+id*0x1000,p=Parts+id*0x1000;
         d.kind=int32_t(word(u+8));d.belong=int8_t(byte(u+0xc));d.hp=half(u+0x10c);d.maxHp=half(u+0x108);d.fp=half(u+0x112);d.maxFp=half(u+0x10e);
@@ -1085,12 +1213,19 @@ struct TrioAttackRuntime {
         if(id>=3 && id<=5){defenses[id]=trioBattleUnitSpecs()[id-3].defense;for(unsigned i=0;i<5;++i)defenseAttributes[id][i]=int8_t(trioBattleUnitSpecs()[id-3].defenseAttributes[i]);}
         damageParts[id].defense=defenses[id].data();damageParts[id].defenseAttributes=defenseAttributes[id].data();
     }
+    // Publish supported HP/accounting/reaction fields only. In particular this
+    // does not bulk-copy typed struct bytes or claim a complete FP/status/badge
+    // export. Unnamed source reaction words retain numeric field names.
     void writeDamage(unsigned id) {
         const auto& d=damageUnits[id];const auto u=Units+id*0x1000;
         half(u+0x10c,d.hp);word(u+0x27c,d.flags);word(u+0x208,d.hpBefore);word(u+0x20c,d.hpAfter);word(u+0x264,d.requestedHp);word(u+0x268,d.requestedFp);word(u+0x26c,d.consumedFp);
         half(u+0x200,d.field200);half(u+0x204,d.field204);
         byte(u+0x270,d.lastHp);byte(u+0x271,d.lastFp);byte(u+0x272,d.lastConsumedFp);word(u+0x274,d.pattern);half(u+0x1fe,d.damageFlags);
     }
+    // Array-backed actors 1..6/primary body parts. Presentation vectors retain
+    // requests; hit callback publishes current typed damage BEFORE source event.
+    // Inventory count is explicit native 0, so general revival/inventory behavior
+    // is outside this scoped provider rather than proven absent in the game.
     DamageApplicationServices application() {
         DamageApplicationServices s;s.user=this;
         s.getUnit=[](void* p,int32_t id)->DamageUnit* {return id>=1 && id<7?&static_cast<TrioAttackRuntime*>(p)->damageUnits[id]:nullptr;};
@@ -1102,11 +1237,20 @@ struct TrioAttackRuntime {
         s.hitEvent=[](void* p,DamageUnit& d,uint32_t code){auto& r=*static_cast<TrioAttackRuntime*>(p);const unsigned id=&d-r.damageUnits.data();r.writeDamage(id);r.hitEvent(Units+id*0x1000,code);};
         s.inventory.itemCount=[](void*,int32_t)->int32_t{return 0;};return s;
     }
+    // Installed damage script 0x2b0 differs from running hit handle 0x2b4. Retire
+    // hit/wait/phase/attack handles2b4/290/0x29c/0x2a8, then create source root at
+    // priority 10/flags 0x20 and publish hit code 0x278 plus new handle. Null script
+    // returns before cancellation. This is not whole battle-turn completion.
     void hitEvent(uint32_t u,uint32_t code) {
         const auto script=word(u+0x2b0);if(!script)return;
         for(unsigned offset:{0x2b4u,0x290u,0x29cu,0x2a8u}){const auto id=word(u+offset);if(id)deleteEventId(id,vm.creationServices());word(u+offset,0);}
         auto& e=createRootEvent(vm.schedule,script,10,0x20,vm.creationServices());e.owner=int32_t(word(u));word(u+0x278,code);word(u+0x2b4,e.id);
     }
+    // Narrow Jump/Hammer vs source kinds1..3 and enemy default-power hits
+    // vs Mario 222/Goombella 224. Unsupported weapon/counter domains wait.
+    // Superguard result 5(non-piercing) performs original zero defender hit then
+    // attacker 1-HP reaction(code 311, attacker selector-5), returning signed -1.
+    // Negative source control flow is not native provider unavailability.
     bool checkDamageCore(uint32_t a,uint32_t d,uint32_t p,uint32_t w,uint32_t flags,int32_t& result) {
         const bool playerHit=(word(d+8)==1 && !word(p+0x1b0) && w==0x803538a8) || (word(a+8)==222 && (word(d+8)==1 || word(d+8)==3) && word(p+0x1b0)<=1 && w==0x80353de8);
         const bool enemyHit=(word(a+8)>=1 && word(a+8)<=3) && (word(d+8)==222 || word(d+8)==224) && !word(p+0x1b0) && word(w+0x1c)==0x80189d30 && !word(w+0x40);
@@ -1119,6 +1263,11 @@ struct TrioAttackRuntime {
         }
         result=checkGroundDamage(a,d,p,w,flags);return true;
     }
+    // Ordered HP then FP calculators share code; increment defender sequence,
+    // apply actual direct damage, then publish attacker flags/attack sequence and
+    // defender byte+0x273. Return 18 means nonzero HP OR FP, 19 both zero, not bool.
+    // Goombella power reads signed pouch partner level (14-byte record,+a),
+    // indexes2*level+resultBit with only upper clamp5; valid level is caller-owned.
     int32_t checkGroundDamage(uint32_t a,uint32_t d,uint32_t p,uint32_t w,uint32_t flags) {
         if((word(w+0x74)&0x4000) && (word(p+0x1ac)&0x800) && (flags&0x100))flags|=0x400000;
         const auto ai=word(a),di=word(d);readDamage(ai);readDamage(di);auto& attacker=damageUnits[ai];auto& defender=damageUnits[di];auto& part=damageParts[di];
@@ -1132,6 +1281,10 @@ struct TrioAttackRuntime {
         applyDirectDamage(ai,defender,&part,hp,fp,code,byte(w+0x6d),1,random,application());
         word(a+0x27c,attacker.flags);word(a+0x280,word(a+0x280)+1);byte(d+0x273,word(a+0x280));return hp || fp?18:19;
     }
+    // Admit curves 0/1/4 and zero auxiliary mode. Re-resolve event operands each
+    // visit. Source motion offsets+0x148 start, 0x154 current, 0x160 target, 0x16c count,
+    // 0x170 speed, 0x180 distance, 0x184 elapsed. Count/speed division precedes source
+    // zero-count exit; do not invent a native fallback or renderer-frame clock.
     int32_t divePosition(EventEntry& e,bool first) {
         const auto u=unit(e);std::array<int32_t,8> args{};for(unsigned i=0;i<8;++i)args[i]=value(e,i+1);
         const auto curve=args[5];if(args[6]!=0 || (curve!=0 && curve!=1 && curve!=4)){if(!pending)pending=0x8010bf8c;return 0;}
@@ -1141,12 +1294,20 @@ struct TrioAttackRuntime {
             const auto target=vector(0x160);real(u+0x180,distance(start,target));if(!word(u+0x16c))word(u+0x16c,uint32_t(int32_t(real(u+0x180)/real(u+0x170))));else real(u+0x170,real(u+0x180)/float(int32_t(word(u+0x16c))));if(!word(u+0x16c))return 2;
             real(u+0x184,0);real(u+0x17c,0);if(target[0]!=start[0])byte(u+0x188,target[0]>start[0]?1:255);loadPackedUnitSoundMode(3,args[7],u+0x1c4,u+0x18c,nativeBattleActorServices(vm).memory);
         }
+        // Sample BEFORE incrementing elapsed, finish only AFTER elapsed>count.
+        // Otherwise Y adds signed sine arc 180 degrees * traveled fraction;
+        // zero remaining/total distance become 1 only at these original guards.
+        // Movement-sound control/end remain ordered around actual completion.
         const int32_t elapsed=int32_t(real(u+0x184)),count=int32_t(word(u+0x16c));for(unsigned axis=0;axis<3;++axis)real(u+0x154+4*axis,battleDiveInterpolate(curve,elapsed,count,real(u+0x148+4*axis),real(u+0x160+4*axis)));
         real(u+0x184,real(u+0x184)+1);const auto target=vector(0x160);if(real(u+0x184)>float(count)){for(unsigned axis=0;axis<3;++axis)real(u+0x3c+4*axis,target[axis]);endPackedUnitMovementSound(u,movement.sound);return 2;}
         const auto current=vector(0x154);float remaining=distance(current,target);if(remaining==0)remaining=1;if(real(u+0x180)==0)real(u+0x180,1);const float degrees=180.f*(1.f-remaining/real(u+0x180));const float sine=float(std::sin(double(degrees)*3.141592653589793/180.));const float amplitude=float(args[4]),offset=amplitude<0?-sine*(-amplitude):sine*amplitude;
         for(unsigned axis=0;axis<3;++axis)real(u+0x3c+4*axis,current[axis]+(axis==1?offset:0));
         controlPackedUnitMovementSound(u,movement.sound);return 0;
     }
+    // requested 0 preserves stored count. Prepare horizontal heading/speed,
+    // residual correction and vertical velocity using source half-gravity 0.5;
+    // each visit integrates Y, gravity then X/Z, decrements count and snaps target
+    // on exhaustion. Return 1 final versus 0 wait differs from normal event 2.
     int32_t genericJump(EventEntry& e,bool first) {
         const int32_t selector=value(e,0),x=value(e,1),y=value(e,2),z=value(e,3),requested=value(e,4);(void)value(e,5);
         const auto id=translateBattleActor(&e,selector,nativeBattleActorServices(vm));const auto u=word(Battle+0x20+4*id);
@@ -1168,11 +1329,17 @@ struct TrioAttackRuntime {
         for(unsigned axis=0;axis<3;++axis)real(u+0x3c+4*axis,real(u+0x160+4*axis));
         return 1;
     }
+    // Write original name/NUL into part1c4, then source part204 flags. Force
+    // restarts scene animation even for same name; ordinary repeated publication
+    // preserves poseAt. Native guest-name bounds remain caller-owned here.
     void changePose(uint32_t u,uint32_t p,const std::string& name,bool force) {
         for(unsigned i=0;i<=name.size();++i)byte(p+0x1c4+i,i==name.size()?0:unsigned(name[i]));
         auto flags=(word(p+0x204)|3)&~uint32_t(0x80|0x200|0x10|8);if(force)flags|=8;word(p+0x204,flags);
         const unsigned id=word(u);if(force || scene->actors[visual[id]].pose!=name){scene->actors[visual[id]].pose=name;scene->actors[visual[id]].poseAt=now;}
     }
+    // TimingA typed bridge copies exactly 11 scratch words at 0x1f20 and fields
+    // countdown+0x1f54, state+0x1c9c, flags+0x1f50, classification+0x1ce8, result+0x1cb8, count+0x1cb4.
+    // storeTiming mirrors this projection; neither method advances the command.
     TimingACommand timing() const {
         TimingACommand c;c.finishCountdown=int32_t(word(Battle+0x1f54));c.state=int32_t(word(Battle+0x1c9c));c.flags=word(Battle+0x1f50);c.classification=int32_t(word(Battle+0x1ce8));c.result=word(Battle+0x1cb8);c.count=int32_t(word(Battle+0x1cb4));
         for(unsigned i=0;i<11;++i)c.scratch[i]=word(Battle+0x1f20+4*i);
@@ -1188,6 +1355,10 @@ struct TrioAttackRuntime {
         s.status=[](void* p,uint32_t u,int32_t id){auto& f=*static_cast<EventNativeRuntime*>(p);BattleStatusUnit unit;for(unsigned i=0;i<30;++i)required(f.memory.readByte(u+0x118+i,unit.statusBytes[i]));return checkStatus(&unit,id);};return s;
     }
     bool eventLive(uint32_t id)const {for(int i=0;i<vm.battle.capacity;++i)if((vm.battle.entries[i].flags&1) && vm.battle.entries[i].id==id)return true;return false;}
+    // Scan 64 unit entries, clearing ONLY retired phase/attack/hit/extra handles
+    // 0x29c/0x2a8/0x2b4/0x2bc. Live event blocks. Then require 64 reaction sentinels and
+    // five original stage event handles idle. A nonempty queued-reaction table
+    // awaits its actual producer; do not equate no live root with barrier success.
     bool barrier() {
         bool ready=true;for(unsigned i=0;i<64;++i){const auto u=word(Battle+0x20+4*i);if(!u)continue;for(unsigned o:{0x29cu,0x2a8u,0x2b4u,0x2bcu}){const auto id=word(u+o);if(id){if(eventLive(id))ready=false;else word(u+o,0);}}}
         if(!ready)return false;
@@ -1195,6 +1366,10 @@ struct TrioAttackRuntime {
         for(unsigned o:{0x182b4u,0x182c4u,0x180fcu,0x182c8u,0x182c0u}){const auto id=word(Battle+o);if(id){if(eventLive(id))return false;word(Battle+o,0);}}return true;
     }
     bool messagesIdle(){for(unsigned i=0;i<28;++i)if(byte(Battle+0x18da0+12*i)!=0xff){if(!pending)pending=0x801956f8;return false;}return true;} // Original empty message work; AnnouceMain unit leaf returns0.
+    // Three group policies at B+8/stride8 update corresponding end word+c.
+    // Policy 1 counts eligible live group actors; policy 2 requires marked 0x40000
+    // actors, with distinct exclusion masks. Two ended groups OR battle flags 0x30
+    // conclude. This source test is richer than checking enemy HP alone.
     bool concluded() {
         unsigned count=0;for(unsigned g=0;g<3;++g){const uint16_t config=uint16_t(half(Battle+8+8*g));word(Battle+0xc+8*g,0);bool end=config==0;
             if(config&1){bool found=false;for(unsigned i=0;i<64;++i){const auto u=word(Battle+0x20+4*i);if(u && int8_t(byte(u+0xc))==int(g) && !byte(u+0x135) && !(word(u+0x104)&(0x20000|0x10000000))){found=true;break;}}end=!found;}
@@ -1202,12 +1377,20 @@ struct TrioAttackRuntime {
             if(end){word(Battle+0xc+8*g,1);++count;}}
         return count>=2 || (word(Battle+0xef4)&0x30);
     }
+    // Audience entry B+0x2858+4 and break-slot+0x1616c+0x130 point to source event
+    // entries whose ID is+0x15c. Clear pointer only after actual retirement. Slot
+    // states 1..8 wait; mode>=3 is explicitly unbound. Four reserve words+0x19060
+    // require empty ownership rather than silently discarding a held item.
     bool audienceIdle(){const auto base=(Battle+0x2858),entry=word(base+4);if(entry && eventLive(word(entry+0x15c)))return false;word(base+4,0);return true;}
     bool breakSlotIdle(){const auto work=Battle+0x1616c;const int32_t state=int32_t(word(work+4));if(int32_t(word(work+0xc))>=3){if(!pending)pending=0x8020342c;return false;}if(state>=1 && state<=8)return false;const auto entry=word(work+0x130);if(entry && eventLive(word(entry+0x15c)))return false;word(work+0x130,0);return true;}
     void reserveItems(){for(unsigned i=0;i<4;++i){if(word(Battle+0x19060+4*i)){if(!pending)pending=0x800f74b4;return;}word(Battle+0x19060+4*i,0);}}
     void endingRequest(uint32_t function,std::initializer_list<int32_t> operands={}) {
         trace.push_back({function,0,now,std::vector<int32_t>(operands)});
     }
+    // Actual positional sound registry resolves 20-byte source rows 0x80316b28,
+    // empty-name sentinel 0x804218c8, story and GP rate. Native conversion admits
+    // finite signed 32 only. Record traces in addition to real handle ownership;
+    // recording request 0x800d9848/0x800d9934 is not itself a successful sound start.
     BattleAudienceSoundStartServices audienceSoundStartServices() {
         BattleAudienceSoundStartServices start;start.actors=nativeBattleActorServices(vm);start.user=this;
         start.truncate=[](void*,float value)->std::optional<int32_t>{if(std::isfinite(value) && value>=-2147483648.f && value<2147483648.f)return int32_t(value);return {};};
@@ -1228,6 +1411,9 @@ struct TrioAttackRuntime {
         start.volume=[](void* self,int32_t handle,uint8_t volume){auto& owner=*static_cast<TrioAttackRuntime*>(self);owner.endingRequest(0x800d97d0,{handle,volume});return owner.publicSfx->setVolume(handle,volume);};
         return start;
     }
+    // Assigned keys use actual start/volume/stop providers. An unassigned key
+    // records explicit native failure handle-1; never mint a name/valid voice.
+    // optional 0 volume/handle is engaged, distinct from unavailable optional.
     BattleAudienceSoundServices audienceSoundServices() {
         BattleAudienceSoundServices s;s.actors=nativeBattleActorServices(vm);s.user=this;
         s.play=[](void* p,uint32_t key,bool assigned,int32_t right,int32_t left)->std::optional<int32_t> {
@@ -1262,6 +1448,9 @@ struct TrioAttackRuntime {
         if(packedBattleAudienceAddTargetNum(delta,bias,nativeBattleActorServices(vm)))return true;
         pending=0x801a18cc;return false;
     }
+    // Clear via source setStatus(id, 0, 0), writing 30 status and five move bytes.
+    // Other typed status fields/flags are not blindly exported back to packed
+    // work; retain this selective writeback even if helper mutates its copy.
     void endingStatus(uint32_t u,int32_t id) {
         BattleStatusUnit status;status.flags=word(u+0x27c);
         for(unsigned i=0;i<30;++i)status.statusBytes[i]=byte(u+0x118+i);
@@ -1270,6 +1459,10 @@ struct TrioAttackRuntime {
         for(unsigned i=0;i<30;++i)byte(u+0x118+i,status.statusBytes[i]);
         for(unsigned i=0;i<5;++i)byte(u+0x20+i,status.moveBytes[i]);
     }
+    // Nineteen source slots represent ten tens and nine ones. Original icon 404
+    // art uses opaque native handles 0x85100000/stride 0x80, not an original SDK ABI.
+    // Keep nested FMA layout/source scales and per-record animation creation
+    // clock. End+0x30 bit 2 enables this reward presentation owner.
     void initializeExpIcons(uint32_t end) {
         endingRequest(0x802149ec,{int32_t(end)});
         rewardIconClockAt=UINT64_MAX; // Source per-record clock starts at creation; iconMain follows event/battle processing.
@@ -1283,6 +1476,10 @@ struct TrioAttackRuntime {
         }
         word(end+0x30,word(end+0x30)|2);
     }
+    // End+8 total/end+0xa remaining are signed halfwords. Shown icons ramp alpha
+    // by 64 per source visit to 255; ten-slot phase counters saturate 16. Hidden
+    // records reset alpha/phase but retain original handles/storage. Queue
+    // registration here does not prove real viewport/GX presentation completed.
     void endingDisplay() {
         endingRequest(0x80215088,{8,int32_t(Battle)});const auto end=word(Battle+0xf28);if(!end)return;
         if(word(end+0x30)&2){
@@ -1296,6 +1493,9 @@ struct TrioAttackRuntime {
             endingRequest(0x80010bc4,{8,1,int32_t(0x8021471c),int32_t(Battle)}); // Native viewport/window provider is separate from original GX registration.
         }
     }
+    // Advance all 19 icon animation clocks once per admitted millisecond while
+    // owner bit2 is set, including hidden icons. Clearing presentation bit does
+    // not erase handles or reinterpret this as 19 rendered frames.
     void iconClock(uint64_t time) {
         const auto end=word(Battle+0xf28);if(!end || !(word(end+0x30)&2) || rewardIconClockAt==time)return;
         rewardIconClockAt=time;for(auto& icon:rewardIcons)++icon.animationTick; // Hidden flag2 does not suppress source animated1000 clock.
@@ -1305,11 +1505,19 @@ struct TrioAttackRuntime {
         const auto p=packedUnitPart(u,packedBodyPartId(u,memory),memory),name=packedBattlePoseName(p,type,memory);
         if(!name){pending=0x8012772c;return;}changePose(u,p,text(name),type>=29 && type<=39);
     }
+    // Source end bank B+0xf24 uses 0x070000xx; B+0xf28 owns native 0x2ac-byte ending
+    // work from actual map arena. This is an immediate scoped state machine:
+    // some source stores precede unavailable services, so whole-call replay is
+    // not generally guaranteed by child providers or retained diagnostics.
     void ending() {
         const auto info=word(Battle+0x2738),mario=battleMarioUnit(Battle,nativeBattleActorServices(vm)),party=battlePartyUnit(Battle,nativeBattleActorServices(vm));
         auto state=word(Battle+0xf24);endingRequest(0x80212890);
         // E0 remains zero before the unbound reward presentation owner. Whistle's
         // source range07..1b is not admitted by this bounded implementation.
+        // Admit original victory result 1 only; special result/info+0x1c branches
+        // wait. Source rank/turn audience adjustments precede shell-release root
+        // and ending allocation. Initial random timer is irand(120)+60 source
+        // visits, not measured rendering FPS or elapsed milliseconds.
         if(state==0x07000000){
             endingRequest(0x80125398);for(unsigned i=0;i<64;++i){const auto u=word(Battle+0x20+4*i);if(u)byte(u+0x311,0xff);}
             BattleConclusionServices services;services.actors=nativeBattleActorServices(vm);services.user=this;
@@ -1329,6 +1537,10 @@ struct TrioAttackRuntime {
             endingRequest(0x802151b4);word(end+0x30,0);word(end,0);word(end+0x29c,0);word(end+0x2a0,random.bounded(120)+60);word(end+0x2a4,0);
             endingDisplay();return;
         }
+        // Preserve alternate partner body/status branch; require empty item
+        // reservation and clear statuses 0..24. Barrier/clap precede original
+        // data 0x3f events/drop-material generation. Special pouch+0x5ba==3 waits;
+        // no reward is synthesized for an unsupported ending domain.
         if(state==0x07000005){
             // The alternate party body-table/status-flag branch needs its
             // original owner. Preserve it rather than clearing the flag here.
@@ -1353,6 +1565,10 @@ struct TrioAttackRuntime {
             endingDisplay();
             return;
         }
+        // Fresh no-fog path only. Stock EXP floors 1, caps 100, mode 3 doubles,
+        // level>=99 zeroes, then cap 100 again. Camera speed 2/mode 17 or 18 precede
+        // state 0x09 and 120-visit hold. Source state advances before later crowd/
+        // voice adapters; do not infer their full completion from the new state.
         if(state==0x07000008){
             endingRequest(0x80147bd0);if(word(Battle+0x182b8)!=0){pending=0x80147bd0;return;} // Exact fresh no-fog early return; active effect lifetime remains required.
             const auto end=word(Battle+0xf28);word(end+0xc,0);endingRequest(0x800f7bd4,{int32_t(Battle)});
@@ -1372,6 +1588,10 @@ struct TrioAttackRuntime {
             endingRequest(0x800daefc,{0x400});endingRequest(0x800db7a0,{1,int32_t(party && byte(party+0x135)?0x8030ea98:0x8030ea88)}); // Original WIN2/WIN1 keys; complete voice/camera/crowd routing remains an adapter.
         }
         if(state==0x07000009){const auto end=word(Battle+0xf28);word(end+4,word(end+4)-1);if(int32_t(word(end+4))<=0)word(Battle+0xf24,0x0700000a);endingDisplay();return;}
+        // Positive EXP requires actual data 0x40 victory roots before PointGet.
+        // Native effect token 0x85200000 is opaque, not an effEntry pointer. Count
+        // state 0x0b moves one Star Point per 4 visits, or each visit after A/B held
+        // mask 0x300 adds 1000. Tick sound every 8 counter visits, not every point.
         if(state==0x0700000a){const auto end=word(Battle+0xf28);if(half(end+8)<=0){pending=0x80215938;return;}
             for(const auto u:{mario,party}){if(!u)continue;const auto script=battleUnitData(u,0x40,nativeBattleActorServices(vm).memory);if(!script){pending=0x8012733c;return;}auto& e=createRootEvent(vm.schedule,script,10,0,vm.creationServices());e.owner=int32_t(word(u));word(u+0x2a8,e.id);}
             endingRequest(0x8021b70c,{0,int32_t(half(end+8)),0,90,0,0});
@@ -1390,6 +1610,10 @@ struct TrioAttackRuntime {
             }else{const auto counter=int32_t(word(end+4));word(end+4,counter>=1000?10:counter<120?140-counter:20);word(Battle+0xf24,0x0700000c);}
             endingDisplay();return;
         }
+        // Post-count waits depend on acceleration/history, then hide icons,
+        // request soft PointGet deletion and wait 60 or 5 source visits. Crossing
+        // 100 Star Points marks level-up end+c; its unbound branch must not be
+        // bypassed to reach ordinary teardown. Records survive deletion bit clear.
         if(state==0x0700000c){const auto end=word(Battle+0xf28);word(end+4,word(end+4)-1);
             if(int32_t(word(end+4))<=0){word(end+4,60);endingRequest(0x802146c0,{int32_t(end)});
                 word(end+0x30,word(end+0x30)&~2u); // Source deletion preserves icon records and their pointers.
@@ -1400,6 +1624,10 @@ struct TrioAttackRuntime {
         if(state==0x0700000d){const auto end=word(Battle+0xf28);word(end+4,word(end+4)-1);if(int32_t(word(end+4))<=0){word(end+0x29c,0);word(Battle+0xf24,0x0700000e);}endingDisplay();return;}
         if(state==0x0700000e){if(word(Battle+0xef4)&0x400000){pending=0x8041b8c0;return;}word(Battle+0xf24,0x07000010);endingDisplay();return;}
         if(state==0x07000010){const auto end=word(Battle+0xf28);word(end+0x30,word(end+0x30)&~2u);if(word(end+0xc)){pending=0x80215cc0;return;}word(Battle+0xf24,0x07000019);endingDisplay();return;}
+        // Original win pose/voice and type 42 follow source status/party gates.
+        // Crowd fade(0, 30), field NPC flag 0x100 and fade 200 occur in later banks;
+        // timers are source counters except actual fade's millisecond service.
+        // Fading the screen alone does not restore the field or complete battle.
         if(state==0x07000019){const auto end=word(Battle+0xf28),flags=word(mario+0x138),setup=word(info+0xc);
             if(!(flags&0x30000000) && (!party || (flags==0 && !byte(party+0x135)))){const uint32_t key=(word(setup+4)&0x20000000)?0x802feafc:0x802feb14;endingRequest(0x8012619c,{int32_t(mario),int32_t(key),int32_t(0xf1194d80),0});soundRequests.push_back(text(key));}
             endingRequest(0x801275f4,{int32_t(mario),int32_t(0x80427298)});const auto memory=nativeBattleActorServices(vm).memory;changePose(mario,packedUnitPart(mario,packedBodyPartId(mario,memory),memory),text(0x80427298),false);
@@ -1411,6 +1639,10 @@ struct TrioAttackRuntime {
             endingDisplay();return;}
         if(state==0x0700001d){endingRequest(0x80013368,{10,200,255});endingFade.enter(200);endingFadeClockAt=UINT64_MAX;word(Battle+0xf24,0x0700001e);endingRequest(0x800daefc,{0x201});endingDisplay();return;}
         if(state==0x0700001e){endingRequest(0x80010d94);if(endingFade.finished)word(Battle+0xf24,0x0700001f);endingDisplay();return;}
+        // endingExported protects resource export, pouch publication, end-work
+        // free and sequence change ONCE. It does NOT make following field party
+        // constructors/appearance callbacks generally restartable after a hold.
+        // Required real Mario/party owners may keep this ending suspended.
         if(state==0x0700001f){if(!endingExported){const auto setup=word(info+0xc);endingRequest(0x800f8444,{party?int32_t(word(party+8)):0});
                 if((word(setup+4)&0x40) && int16_t(half(mario+0x10c))<=0)half(mario+0x10c,1);
                 endingRequest(0x800f8a68,{int32_t(Battle)});PackedUnitResourceServices resources;resources.memory=nativeBattleActorServices(vm);resources.user=this;resources.pouch=[](void* p){return static_cast<TrioAttackRuntime*>(p)->word(0x8041eb00);};resources.partyIndex=[](void*,int32_t kind){return battlePartyIndex(kind);};
@@ -1432,6 +1664,10 @@ struct TrioAttackRuntime {
                 if(entryPouch->half(unsigned(14*kind))&1) {
                     if(fieldMario->partyIndices[0]<128){pending=0x800be69c;return;}
                     endingRequest(0x800bea68,{kind});endingRequest(0x800be144,{kind});
+                    // Only unlocked, currently absent Goombella(kind 1) constructor
+                    // is admitted. Actual free slot, pose/resource/material/light
+                    // owners and definition 0x80314410 must agree. Preserve field
+                    // publication order; do not fabricate a partner at failure.
                     const auto slot=fieldParties->allocateFirst();
                     if(slot<0){pending=0x800bea68;return;} // Entry wrapper requires a free slot.
                     endingRequest(0x801a94f0);fieldParties->initializeBeforePose(slot,uint8_t(kind),*fieldMario);
@@ -1466,6 +1702,10 @@ struct TrioAttackRuntime {
                     actor->word(0x70,0x3f800000);actor->word(0x74,0x3f800000);actor->word(0x78,0x3f800000);actor->bytes[0x38]=10;
                     actor->scalar(0x110,fieldAppearance.display(fieldAppearance.user));
                     actor->scalar(0x10c,fieldAppearance.display(fieldAppearance.user));
+                    // Original placement helper's scalar success is discarded;
+                    // its output vector/pose side effects still matter. Publish
+                    // Mario party index only after first mode/pose placement;
+                    // fresh Hello repeats placement/HP rather than jump setup.
                     auto appearance=[&]() {
                         endingRequest(0x800c6718,{slot});FieldWallVector position;
                         fieldPartyAppearPosition2(actor->scalar(0xf4),slot,position,fieldAppearance); // Original caller ignores success/failure.
@@ -1493,6 +1733,9 @@ struct TrioAttackRuntime {
             endingRequest(0x8018ef8c);judgeBattleGeneralRule(nativeBattleActorServices(vm));
             endingRequest(0x8019fd68,{1});
             if(!stopBattleAudienceSound(1,audienceSoundServices())){if(!pending)pending=0x8019fd68;return;}
+            // Real remaining engine/sequence/exit owner is still unbound.
+            // Exact pouch export and a finished fade are not full field return;
+            // do not clear pending or claim the remake/battle lifecycle complete.
             pending=0x800f8e28;return; // Uppercase engine's remaining services/completion and sequence/exit owners follow real ending.
         }
         pending=0x80215234;
