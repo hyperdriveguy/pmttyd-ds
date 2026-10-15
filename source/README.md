@@ -7,6 +7,7 @@ files use subsystem prefixes; pair them with the corresponding public header in
 | Prefix or name family | Subsystem | Start here |
 | --- | --- | --- |
 | `battle_`, `trio_`, `harbor_tutorial*` | Battle mechanics, tutorial integration, presentation adapters | `docs/behavior/battle/`, `docs/behavior/story/` |
+| `effect_`, `recovery_effect*` | Effect lifecycle, Maya timing and original embedded resource views (`effect/`) | `docs/behavior/effect/`, `docs/behavior/display/` |
 | `event_` | Event VM, memory, callbacks, operands and opcode dispatch | `docs/behavior/event/` |
 | `field_`, `npc_`, `goomba_`, `road_`, `floor_`, `wall_`, `water_` | Field state, movement, collision, actors and room transitions | `docs/behavior/field/`, `docs/behavior/overworld/`, `docs/behavior/partner/` |
 | `opening_`, `demo_`, `prologue_`, `professor_` | Opening sequence and scripted story scenes | `docs/behavior/story/` |

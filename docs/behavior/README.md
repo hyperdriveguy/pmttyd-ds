@@ -1172,3 +1172,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Retained attack selection and native audience admission](battle/RETAINED_ATTACK_SELECTION_AND_AUDIENCE_ADMISSION.md) — retained message/cursor waits, source type11/12 admission and menu ownership.
 - [Tagged-map NPC store order](field/TAGGED_MAP_NPC_REGISTRATION_STORE_ORDER.md): exact source parser inputs, AI address correction and actual fifteen gor02 rows.
 - [Native tagged-map NPC registration](field/NATIVE_TAGGED_MAP_NPC_REGISTRATION.md): retained actor registration, parsed-input adapter, source data views and remaining bootstrap/Main providers.
+
+- [Recovery effect lifecycle and Maya ownership](effect/RECOVERY_EFFECT_LIFECYCLE_AND_MAYA_OWNERSHIP.md) — original recovery constructor/Main, retained Maya timing, addressed resources and remaining native services.

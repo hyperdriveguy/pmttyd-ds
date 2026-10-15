@@ -1447,3 +1447,28 @@ Nintendo/Intelligent Systems resources remain private with no redistribution
 rights asserted; ISO opened rb and unchanged, extracts/packs/binaries outside
 source history. No authored story dialogue, art/audio replacement or GPU/raster
 publication claim is added.
+
+### Recovery effect embedded resources and lifecycle
+
+Read-only `/home/carson/games/roms/G8ME01.iso` (US G8ME01 revision0) feeds
+`tools/recovery_effect_assets.py`. Private source JSON at
+`artifacts/recovery-effect-import-v2/recovery-effect.json` retains original
+integer values, addresses and per-span SHA256; compiling it reproduces
+`recovery-effect.bin` byte-for-byte. Nine spans retain conversion bias802c1f18/8,
+recovery vectors/SFX names802f3b20/170, keys80371fa8/6f4, dispatch8037269c/88,
+colors804179d8/24, face804179fc/2a, descriptor graph80417a28/28, Maya constants
+8042019c/1c and recovery constants80422db0/9c (hex extents).
+PMREC001 adds only a little-endian bounded span directory; original payloads
+remain big-endian with unchanged guest pointers. No texture resizing, geometry
+reduction, lighting edits, new artwork or audio conversion occurred.
+
+Private validation copy: `artifacts/battle-lens-qwwrj2n7/romfs/recovery-effect.bin`,
+2678 bytes, SHA256 `553c3a347e1f88c4206fd3a26a0531c5a6ba673ca3bb63183846dd2ba1d7138f`.
+`tools/verify_recovery_effect.py` pins12 whole recovery/Maya bodies and9 data
+spans; this is static identity evidence, not effect admission/raster proof.
+The empty-destination importer never rewrites editable sources; any future
+tracked editable-source migration must follow assets/manifest provenance rules.
+No extracted source/compiled pack is committed here. Nintendo/Intelligent Systems
+own the original resources; local use only, no redistribution rights. Native
+Maya curve evaluation, original textures18–21/108, sound playback, effect driver,
+displays and terminal N64 stardust32 remain separately owned integration work.
