@@ -80,3 +80,13 @@ backend exclusion and camera-owner replacement. Test GPU/traversal receipts are
 explicit fixtures and do not constitute a renderer. Continue with real actual-VM
 group/shape/material/texture/GPU owners, then normal Game queue scheduling and
 linked wrapper work. Entire outer callbacks must drain before ending the lease.
+
+
+## Actual group parent integration (2026-10-15)
+
+Optional `NativeNpcInnerBackend::groups` now selects the owned
+[actual-VM group parent](NATIVE_ACTUAL_VM_GROUP_TRAVERSAL.md) instead of the
+external traversal callback. Its false result retains the whole Draw; no fallback
+acknowledges it. This implements complete dispProc local control and actual
+modeling/output stores, while NodePush/material/Vivian/callback/render remain
+explicit unfinished children. The original typed battle traversal remains separate.

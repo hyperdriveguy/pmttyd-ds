@@ -16354,3 +16354,86 @@ Continue shared field/battle children, full result/teardown/return/postbattle
 and original dialogue/story flow through DEMO-01/RESULT-01/EVT-01. No GPU/Main
 completion, source visibility, measured timing, physical hardware/performance,
 matched original visuals/audio or full playable prologue claim.
+
+## 2026-10-15 — Original actual-VM group traversal and modeling publications
+
+Completed finite parent increment, code `d6b8f90db1aac4798171abbc1b67c23e073dfd8c`.
+[Contract](behavior/display/NATIVE_ACTUAL_VM_GROUP_TRAVERSAL.md). Original Inner
+can now own the complete raw dispProc8003c4bc parent under the same NPC lease.
+It reads actual source group/visibility/node/global data, performs flag40/80
+output publication and matched/unmatched flag20 branches, retains material/
+Vivian/callback/render children, traverses child/sibling using source parent
+semantics, and pops actual modeling globals. Only group−1 is empty; there is no
+source index/depth/cycle/underflow clamp or invented pass argument.
+
+Independent original read-only audit pinned exact seed/translation/holder reads,
+inline saved matrix P+124, table lookup before kind classification, fresh factor/
+pose flags after effects, and ordered basis-only aliasing blend. Kind4's table
+entry aliases global work root80415dc0; the fixtures now exercise that alias
+without corrupting unrelated ordinary graph cases. Source node audit records
+12 Joint/21 Transform fields before the first SDK call, in exact nonascending
+order with live ZERO/TWO loads. Those complete node bodies are the next binding
+frontier; typed node24/C++ stack is not substituted.
+
+Native group binding shares VM/current/lease/lifetime guards and excludes the
+external traversal fallback once selected. Raw VM-to-VM matrix Copy captures and
+stores each finite pair sequentially, retaining partial progress and literal
+forward/backward overlaps. A partial destination pair cannot publish one lane;
+repair requires a complete raw backing span. The finite blend adapter narrows
+fsubs before std::fma and holds nonfinite/overflow domains with captured operands.
+These are native adaptation limits, not original guards or full GQR0/FPSCR/
+exception/subnormal/NaN parity. Stable frames reuse observed depth, with no
+per-draw VM/mesh/frame teardown or hardcoded actor/group-count dependency.
+
+Validation froze accepted `5b40c94ec84baf67888dcd4bbf504c096d881898` plus nine owned paths in
+`artifacts/source-checks/npc-wander`; source tree `ba2848b8eb32c33c8a8aa6bdba655e39e23d5591`.
+All 4,010 tracked files match; all 2,152
+private RomFS products are unchanged. Concurrent source, docs and staging were
+preserved. Normal SHA256 `0ca5b9a5cba18adb7aae89d1dc816419c11ddc695b9cbe170f65dcf30ea8ca7a`.
+
+- `CMAKE_BUILD_PARALLEL_LEVEL=4 TRIO_ENEMY_POSE_PACK=romfs make --jobserver-style=pipe test`:
+  exit0; 451 C++ tests pass,96.03s; 212 Python tests pass,
+  36.567s; zero skips. Existing Pillow deprecation warnings remain.
+- `make --jobserver-style=pipe all -j4 -o assets-ready SOUNDTRACK=gamecube`:
+  exit0. Private ARM assertion patch removed; normal rebuild reproduces saved
+  SHA256 exactly. Fixed a test-only auto declaration incompatible with ARM's
+  unsigned-long uint32_t typedef before final probe/host gates.
+- Fresh isolated ARM profile `artifacts/azahar-npc-group-probe`: exit0; exact marker
+  `groups=PASS graph=PASS holders=PASS special=PASS aliases=PASS copy=PASS blend=PASS lease=PASS`. Covers every primitive hold, signed visibility,
+  child/sibling semantics, output seed/holder order, fresh global captures,
+  unmatched/special kinds and root-table alias, effect-before-blend/basis aliases,
+  raw pop underflow, frame reuse and exact signed-zero request identity. Native
+  checks walk original Mario's group graph with explicit node/render receipts,
+  enforce retained lease/external-fallback exclusion, repair partial paired RAM,
+  cover both overlap directions and finite/nonfinite blend frontiers. Existing
+  actual-VM Inner tests also pass on ARM. Receipts are not SDK/GPU implementations.
+- Uninstrumented fresh-save40s boot `artifacts/azahar-npc-group-normal`: exit0;
+  original storybook manually inspected. Normal checkpoint field profile
+  `artifacts/azahar-npc-group-field`: exit0;70s warmup, image-confirmed occupied
+  file selection,20s load and idle/right/left/final idle captures. Rogueport/Mario
+  rendering and returning movement manually inspected. These are existing
+  renderer regression checks, not activation of the new NPC GPU pipeline.
+- Independent source/ownership/warning review and pure group tests pass. Markdown
+  links pass with zero broken links; exact count in validation log.
+  Evidence: `artifacts/npc-group-validation-manifest.json`.
+
+No assets, conversions, geometry, dialogue, story conditions, music, SFX or license
+terms changed; ISO remained read-only. No extracted payload or compiled product
+committed. No new Dolphin observation, matched original GPU images, numeric/FPS
+parity or physical New2DS XL performance claim. Full original event/NPC/object/
+area coverage remains incomplete and EVT-01 stays OPEN. Goal remains active.
+
+Next tasks:
+
+1. Complete actual-VM Joint/Transform NodePush controllers: exact12/21 fields,
+   reached live literals, original component/rotation/pivot/mask routes and SDK
+   math, real stack publication before dispatch and fresh final level reload.
+   Raw Copy and final Concat have different input/store order; preserve both.
+2. Bind actual renderProc/materialProc/Vivian/dynamic callback/texture/FIFO and
+   Citro3D GPU/cache owners to mutable source outputs. Ensure reached seed/
+   literal/table bytes use real source backing, retaining holds where missing.
+3. Finish linked Draw, ordinary Game camera/queue/offscreen scheduling and whole
+   callback draining; continue original area/event/object/story resources, then
+   compare original visuals and profile physical hardware. Read-only next-boundary
+   evidence is in npc-node-push-ordered-evidence.txt, npc-node-push-boundary-evidence.txt
+   and npc-actual-traversal-next-evidence.txt.

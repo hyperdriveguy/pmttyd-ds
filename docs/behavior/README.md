@@ -1434,3 +1434,6 @@ Original battle menu native resource/queue owners:
   traversal ABI; GPU/material/cache/traversal backends remain explicit.
 
 - [Retained native NPC creation](field/RETAINED_NATIVE_NPC_CREATION.md): original constructor/pose holds, raw hoshi fallback, shared owner/consumer exclusion and remaining EVT/bootstrap bindings.
+- [Actual-VM group traversal](display/NATIVE_ACTUAL_VM_GROUP_TRAVERSAL.md):
+  complete retained dispProc parent, real modeling/output stores, sequential
+  raw matrix Copy and finite blend; explicit node/material/effect/GPU children.

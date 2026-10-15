@@ -5458,3 +5458,29 @@ Next bind original evt_npc_entry and evt_npc_set_tribe to same-VM argument/name/
 tribe storage and original async/forced selection providers. Preserve source
 Entry0 polling versus native child hold, setter1 yield, source four-actor order/
 names, full GOR00 setup/registration and real RNG. EVT-01 remains open.
+
+## 2026-10-15 — Actual-VM complete group traversal parent
+
+Delivered [raw dispProc parent](../behavior/display/NATIVE_ACTUAL_VM_GROUP_TRAVERSAL.md)
+with complete local branches, exact parent/group/current/next/fraction ABI, fresh
+global/pose reads, flag40/80 holders, matched/unmatched flag20 behavior, actual
+stack pop/publication, callbacks and child/sibling order. Native Inner can own it
+under the existing same-VM NPC lease. Sequential raw matrix Copy and finite blend
+have actual CPU adapters; original GPU/effect/node completions are not assumed.
+
+- [ ] Implement full actual-VM Joint/Transform NodePush: exact12/21 interleaved
+  field captures with live ZERO/TWO/ONE/angle constants, component SDK requests,
+  original jump-table compositions, actual modeling-global publication and fresh
+  final level reload. Existing typed node24/C++ stack is not the source bridge.
+- [ ] Ensure reached seed802c1048/12, special literals and table80415db0 backing
+  come from the read-only original image; unknown kind4 aliases global work root.
+  Missing source data must hold rather than receive invented zero defaults.
+- [ ] Complete actual renderProc/materialProc/Vivian/dynamic callback/GX texture/
+  FIFO/Citro3D children, linked wrapper and ordinary Game queue/camera lifecycle.
+  GPU images, full event/story/area coverage and hardware profiling stay open.
+
+The local dispProc source gap is closed by pinned read-only audit. Node source
+capture/publication audits are in ignored npc-node-push-boundary-evidence.txt
+and complete ordered SDK/literal/dispatch mapping npc-node-push-ordered-evidence.txt;
+these static deductions are not original execution/timing measurements. EVT-01
+remains OPEN until its complete runtime contract is fulfilled.

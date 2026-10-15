@@ -105,3 +105,11 @@ complete local defaults/overrides/last-stage and indexed fan emission contracts.
 Both callees ignore their second incoming key-index argument locally. Material
 requests differ from ordinary renderer alpha-input/emission work. Called shader/
 texture/GX/normal-matrix/source/lifetime/original visuals remain open.
+
+
+Actual-VM delivery (2026-10-15):
+[retained raw parent and binding](NATIVE_ACTUAL_VM_GROUP_TRAVERSAL.md) now covers
+all local dispProc branches with fresh VM/global reads and actual modeling/output
+stores. It includes the matched flag20 branch, callback ordering, source sibling
+parent semantics and VM-to-VM paired Copy. NodePush, material, Vivian and GPU
+children remain explicit; this does not replace full original render integration.

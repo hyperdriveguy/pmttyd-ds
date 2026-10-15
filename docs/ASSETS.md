@@ -3802,3 +3802,16 @@ Intelligent Systems copyright, local use only/no redistribution rights unchanged
 A retained constructor now consumes the actual source -2 fallback; ordinary
 typed pose callers still accept valid handles only. See the
 [retained NPC creation contract](behavior/field/RETAINED_NATIVE_NPC_CREATION.md).
+
+## 2026-10-15 — Actual-VM original group parent
+
+The [group parent](behavior/display/NATIVE_ACTUAL_VM_GROUP_TRAVERSAL.md) reads
+existing original Mario MODEL/group/visibility/node data and mutable same-process
+outputs. No asset extraction, conversion, geometry, texture, music, SFX or story
+change. The read-only ISO audit pins full dispProc and node-child capture source;
+ignored artifacts retain disassembly, hashes and private validation products.
+Actual native modeling BSS uses the existing runtime allocation. Native seed,
+literal and table reads require their actual source backing; missing data holds.
+All 2,152 prior private RomFS products remain unchanged. No ISO, extracted payload
+or compiled product is committed; Nintendo/Intelligent Systems rights and prior
+local-use-only licensing limitations remain unchanged.
