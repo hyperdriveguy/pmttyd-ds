@@ -25,6 +25,10 @@ struct HarborClassFrameFixture {
  ttyd::BattleClassFramePipeline pipeline;ttyd::HarborClassMenuDrawBinding binding;
  ttyd::BattleActorServices source,memory;ttyd::BattleClassRasterServices raster;
  ttyd::BattleClassFooterServices footer;ttyd::BattleClassFooterCursor party,pinch,button;
+ // Optional actual retained footer raster owner. Install before starting a
+ // pass; retain its context/resource generation through all source waits.
+ void* footerRasterUser=nullptr;
+ std::optional<uint32_t> (*footerRaster)(void*,const ttyd::BattleClassRasterRequest&)=nullptr;
  ttyd::BattleRandom random{1};unsigned rngCalls=0;uint64_t sequence=0;
  std::map<uint32_t,uint32_t> camera;std::array<uint32_t,4> scratch{};
  static constexpr uint32_t Cam4=0x87500400,Cam8=0x87500800,Stack=0x87600000;
@@ -109,6 +113,7 @@ struct HarborClassFrameFixture {
   raster.memory=memory;raster.math=linked;raster.user=this;
   raster.request=[](void* u,const ttyd::BattleClassRasterRequest& q)->std::optional<uint32_t>{
    auto& f=*static_cast<HarborClassFrameFixture*>(u);
+   if(f.footerRaster)return f.footerRaster(f.footerRasterUser,q);
    if(q.function==ttyd::BattleClassRasterService::Camera)return q.integers==std::vector<uint32_t>{8}?std::optional<uint32_t>(Cam8):std::nullopt;
    return f.backend.request(q);
   };

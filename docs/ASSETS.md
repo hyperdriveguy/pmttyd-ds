@@ -1916,8 +1916,11 @@ are retained. Conversion preserves original decoded RGBA pixels without
 resampling, places two-pixel transparent padding in512x256 RGBA8 backing
 (524288 texture bytes), and performs no geometry/lighting change. Metadata
 records source-body verification and per-image pixel hashes. Normal assets-base
-invokes the narrow converter; no editable source is overwritten. GPU footer
-admission and the linked TexturePlane2 helper remain unbound. Original Nintendo/
+invokes the narrow converter; no editable source is overwritten. The native
+footer owner now imports this exact atlas with linear filtering and clamped
+atlas edges; the retained TexturePlane2 and direct pinch-Quad providers append
+original cue geometry in class-menu order. No assets are imported inside an
+active GPU frame. Ordinary battle scheduling remains a separate integration. Original Nintendo/
 Intelligent Systems rights retained; no redistribution license is granted. ISO,
 extracts, original images and compiled packs remain outside source history.
 

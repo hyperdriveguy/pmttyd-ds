@@ -27,6 +27,7 @@
 #include "window_frame.hpp"
 #include "window_font.hpp"
 #include "battle_class_backend.hpp"
+#include "battle_class_footer_gpu.hpp"
 #include "battle_audience_backend.hpp"
 #include "native_camera_draw.hpp"
 #include "native_display_state.hpp"
@@ -62,6 +63,7 @@ public:
     bool init();
     bool drawClassMenu(const BattleClassBackend&);
     const BattleClassAssets* classMenuAssets();
+    const BattleClassFooterGpuResource* classFooterResources();
     bool changeRoom(uint32_t room);
     const std::string& resourceFailure() const{return frontFailure;}
     void beginFrontend();
@@ -193,6 +195,7 @@ private:
     Texture messageIndicatorTexture;
     Texture shadowTexture44; // Native loaded resource adapter; original palette loader remains separate.
     BattleClassAssets classAssets;
+    std::unique_ptr<NativeBattleClassFooterGpu> classFooterGpu;
     std::array<Texture,2> classTextures;
     Vertex* classVertices=nullptr;
     unsigned classVertexCount=0;

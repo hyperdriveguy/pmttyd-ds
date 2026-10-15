@@ -3,6 +3,7 @@
 #include "message_icons.hpp"
 #include "window_font.hpp"
 #include <functional>
+#include <memory>
 namespace ttyd {
 // Native 24-byte metadata ABI: U32 width/height plus four float UV endpoints.
 struct BattleClassRegion {
@@ -21,7 +22,14 @@ private:
   std::array<BattleClassRegion, 2> surfaces_{};
   std::array<BattleClassRegion, 10> icons_{};
 };
-enum class BattleClassTexture { Surfaces, ClassIcons, MessageIcons, Font };
+struct BattleClassFooterAtlasQuad;
+enum class BattleClassTexture {
+  Surfaces,
+  ClassIcons,
+  MessageIcons,
+  Font,
+  Footer
+};
 struct BattleClassVertex {
   float x = 0, y = 0, z = 0, u = 0, v = 0;
   uint32_t rgba = 0;
@@ -30,6 +38,7 @@ struct BattleClassQuad {
   BattleClassTexture texture;
   std::array<BattleClassVertex, 4> vertices;
   uint32_t sourceFlags = 0;
+  std::shared_ptr<const BattleClassFooterAtlasQuad> footer = nullptr;
 };
 // Finite native UI backend. Queries are synchronous; geometry is retained in
 // source request order for the native GPU. No action-command/render-frame
@@ -43,6 +52,7 @@ public:
   std::vector<BattleClassQuad> quads;
   std::function<uint32_t(uint32_t)> random;
   void begin();
+  bool appendFooter(const BattleClassFooterAtlasQuad &);
   // FontString preflights the complete native run: rejection consumes no RNG
   // and emits no prefix. Accepted runs finish synchronously, preserving each
   // glyph's two-RNG/quad order. Font/labels are immutable; RNG cannot reenter

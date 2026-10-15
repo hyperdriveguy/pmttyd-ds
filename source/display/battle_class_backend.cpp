@@ -1,4 +1,5 @@
 #include "battle_class_backend.hpp"
+#include "battle_class_footer_gpu.hpp"
 #include <cmath>
 #include <cstdio>
 #include <cstring>
@@ -28,6 +29,24 @@ uint32_t multiplyColor(uint32_t a, uint32_t b) {
   return result;
 }
 } // namespace
+bool BattleClassBackend::appendFooter(
+    const BattleClassFooterAtlasQuad &packet) {
+  if (pendingPoints_ || !packet.texture || !packet.generation ||
+      packet.index < 4 || packet.index > 16 ||
+      (packet.rgb != BattleClassFooterRGB::Modulate &&
+       packet.rgb != BattleClassFooterRGB::Raster))
+    return false;
+  for (const auto &v : packet.vertices)
+    if (!std::isfinite(v.x) || !std::isfinite(v.y) || !std::isfinite(v.z) ||
+        !std::isfinite(v.u) || !std::isfinite(v.v))
+      return false;
+  BattleClassQuad q;
+  q.texture = BattleClassTexture::Footer;
+  q.vertices = packet.vertices;
+  q.footer = std::make_shared<const BattleClassFooterAtlasQuad>(packet);
+  quads.push_back(std::move(q));
+  return true;
+}
 // Private LE atlas metadata: PMBCLS01 has two surfaces40x40/128x80;
 // PMICON1 has ten static48x48 IDs334..343. Regions are 24 bytes.
 // Validate both files/EOF before replacing the retained asset catalog.

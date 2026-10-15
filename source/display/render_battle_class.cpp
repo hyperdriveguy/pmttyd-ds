@@ -41,6 +41,15 @@ bool Renderer::prepareClassMenuDrawing() {
 const BattleClassAssets *Renderer::classMenuAssets() {
   return prepareClassMenuDrawing() ? &classAssets : nullptr;
 }
+const BattleClassFooterGpuResource *Renderer::classFooterResources() {
+  if (!c3dReady || !programReady || !top)
+    return nullptr;
+  if (!classFooterGpu)
+    classFooterGpu = std::make_unique<NativeBattleClassFooterGpu>();
+  if (!classFooterGpu->resource().ready() && !classFooterGpu->load("romfs:"))
+    return nullptr;
+  return &classFooterGpu->resource();
+}
 void Renderer::releaseClassMenuDrawing() {
   if (c3dReady)
     C3D_FrameSync();
@@ -51,6 +60,10 @@ void Renderer::releaseClassMenuDrawing() {
     }
     slot = Texture{};
   }
+  if (classFooterGpu) {
+    classFooterGpu->release();
+    classFooterGpu.reset();
+  }
   if (classVertices)
     linearFree(classVertices);
   classVertices = nullptr;
@@ -58,18 +71,22 @@ void Renderer::releaseClassMenuDrawing() {
 }
 // A complete batch must belong to this exact asset owner. Preflight the whole
 // batch before appending vertices; partial menus must not consume arena space.
-// sourceFlags 0=ordinary geometry, 16=normal icon, 48=disabled icon color program.
+// sourceFlags 0=ordinary geometry, 16=normal icon, 48=disabled icon color
+// program.
 bool Renderer::drawClassMenu(const BattleClassBackend &batch) {
-  if (!batch.complete() || !prepareClassMenuDrawing() ||
-      batch.assets != &classAssets)
+  // Resource preparation belongs before FrameBegin. Preflight a complete
+  // ordered batch, including every footer lifetime, before any GPU mutation.
+  if (!batch.complete() || batch.assets != &classAssets || !classVertices ||
+      !classTextures[0].imported || !classTextures[1].imported ||
+      transformLoc < 0)
     return false;
   if (batch.quads.size() > 1024 - classVertexCount / 6)
     return false;
   if (!fontTexture.imported || !messageIconTexture.imported)
     return false;
-  for (const auto &q : batch.quads)
-    if (q.sourceFlags && q.sourceFlags != 16 && q.sourceFlags != 48)
-      return false;
+  if (!validateBattleClassFooterBatch(
+          batch, classFooterGpu ? &classFooterGpu->resource() : nullptr))
+    return false;
   if (batch.quads.empty())
     return true;
   C2D_Flush();
@@ -122,6 +139,17 @@ bool Renderer::drawClassMenu(const BattleClassBackend &batch) {
   parkUnusedSamplers();
   unsigned at = first;
   for (const auto &q : batch.quads) {
+    if (q.texture == BattleClassTexture::Footer) {
+      // Same source-ordered queue: no separate later overlay or source retry.
+      classFooterGpu->draw(*q.footer, &program, transformLoc, transform,
+                           &fontTexture.texture);
+      at += 6;
+      continue;
+    }
+    // Restore the borrowed arena after an immediate footer primitive.
+    auto *quadBuffers = C3D_GetBufInfo();
+    BufInfo_Init(quadBuffers);
+    BufInfo_Add(quadBuffers, classVertices, sizeof(Vertex), 3, 0x210);
     C3D_Tex *texture = nullptr;
     switch (q.texture) {
     case BattleClassTexture::Surfaces:
@@ -135,6 +163,8 @@ bool Renderer::drawClassMenu(const BattleClassBackend &batch) {
       break;
     case BattleClassTexture::Font:
       texture = &fontTexture.texture;
+      break;
+    case BattleClassTexture::Footer:
       break;
     }
     // Reinitialize before every quad so a disabled icon cannot leak its
