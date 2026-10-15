@@ -10941,3 +10941,56 @@ profile actual field/hardware, and retain original event/story conditions.
 Evidence:artifacts/npc-mario-validation-manifest.json, assets-after/constants
 JSON, source/helper listings, full/target/native logs and isolated normal/probe
 captures. No probe instrumentation, generated original asset or binary is committed.
+
+## 2026-10-14 — Retained stage children and original enemy HP GPU pixels
+
+Committedc77647f0c4e154a5d7d32790b8ffc241d7105619: retained StageObjectMain/
+StageWorkMain preserve transform/cache writes, spotlight/entry/free completion
+and decremented counter operands across unavailable providers. Trio now calls
+these retained children. Original source callbacks inside each child still own
+their own partial work; action/audience and other inner services remain open,
+so no generic Main retry is enabled. Differential traces and every external
+wait twice match the synchronous references, including provider mutations.
+
+Imported original common-bank HP17/18 as a separate128x32 RGBA8 atlas with68-byte
+PMBEHP01 catalog. Actual read-only ISO rebuild exactly matches all three private
+worker products. Source type4 relocation→bar→linked raster/GX→ordered native
+GPU batches preserves17→solid→18 and texture generations. Existing footer4..16
+pack remains unchanged. Source data/hashes/conversion/rights are in ASSETS.md;
+original binaries, dumps and converted packs are excluded from source history.
+
+Frozen8abc76fdf2518da365abbf45226ac8d7e6713c96 plus15 owned files: make test
+408/408 C++ (47.30s),207/207 Python (30.606s), zero skipped; make all -j6
+-o assets-ready SOUNDTRACK=gamecube exits0. Existing compiler/Pillow warnings
+remain. Independent1960 source/build inputs and2139 accepted RomFS products
+match, no extras. Newer accepted animation-boot pair matches its source version.
+1431 Markdown files checked, zero broken links. Concurrent NPC/animation work
+in shared HEAD is outside this frozen validation graph.
+
+Private native GPU probe PASS after actual source completion, full batch
+preflight, native draw and FrameEnd/Sync: three complete bars/nine original
+quads, actual native imported atlas and source type4 original TPL. Isolated30s
+screenshot visually inspected: full/half/low yellow fills, original red/white
+outline and black trailing highlight. Camera8 identity, unit/gauge fields and
+4x inspection projection are explicit fixtures; queued parent/Tattle/numerals
+are omitted. This proves source/GPU execution, not normal battle activation,
+original raster parity or physical performance. Lower console is development
+harness text, not proposed lower-screen game UI. Isolated25s ordinary boot
+visually inspected: original storybook, no visible asset error or exception.
+
+Private source restored byte-for-byte and rebuilt; normal3DSX SHA256
+6adee1e86d64bca24d7f6e4049fd14199d214182164f518e721e102325368c52
+equals its pre-probe copy. Probe SHA256
+c8889553ed818f8f5e3371e6a3e60d179b5bbc5c2f79dfe9f6e58cd9660180e9.
+Only isolated profiles/saves used; no instrumentation committed. Evidence:
+artifacts/hp-stage-{owned,source-manifest,assets-rebuild}.json, tested-inputs.tar,
+host/native/native-restored logs and azahar-hp-stage-normal/hp-gpu-fixture.
+The idle private build tree then advanced to the next separately audited graph;
+the tested scope2 inputs/binary/manifests remain preserved independently.
+
+Next batch is validating whole queued HP source composition, actual HP camera
+admission, native reset-epoch guards and one ordered glyph/bar publication with
+actual icon import generations. Normal activation and original camera/status/
+Tattle/resource/scheduler lifetimes must be bound before claiming the complete
+HP callback, tutorial, real battle or lower-screen audience feature finished.
+The full goal remains active/incomplete.
