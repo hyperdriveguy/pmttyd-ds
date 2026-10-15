@@ -2179,3 +2179,10 @@ target_sources(ttyd_core PRIVATE source/field/field_npc_main_history.cpp)
 add_executable(field_npc_main_history_tests tests/field_npc_main_history_tests.cpp)
 target_link_libraries(field_npc_main_history_tests PRIVATE ttyd_core)
 add_test(NAME field_npc_main_history COMMAND field_npc_main_history_tests)
+
+# Original BE animation caches and private output consumers.
+target_sources(ttyd_core PRIVATE source/display/animation_scratch_memory.cpp)
+add_executable(animation_scratch_memory_tests tests/animation_scratch_memory_tests.cpp)
+target_link_libraries(animation_scratch_memory_tests PRIVATE ttyd_core)
+add_test(NAME animation_scratch_memory COMMAND animation_scratch_memory_tests)
+set_tests_properties(animation_scratch_memory PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

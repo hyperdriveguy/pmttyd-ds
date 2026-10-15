@@ -5067,3 +5067,19 @@ review corrected prior interpolation prose to -600->0 then0->+600. No new assets
 Field tail, real runtime/callback/resource producers, normal Area activation and
 original execution/visual parity remain open. FieldTail is not whole Main success;
 EVT-01 and playable-prologue/full-game goals remain incomplete.
+
+
+### Native original animation scratch consumption (2026-10-14)
+
+[Bounded source sampler/readers](../behavior/display/NATIVE_SOURCE_ANIMATION_SCRATCH.md)
+now use actual loaded MODEL/descriptor/T controls, keys/discrete/sparse streams
+and original AllocBuffer BE cache/output spans. Adopted source Entry poses attach
+this owner; traversal/material/FIFO readers resolve actual source output at their
+capture points. Real tangent ownership, true visibility/texture aliases, untouched
+texture fields, held-node captures and owner/copy retirement are covered. Read-only
+source-input/capture review: artifacts/animation-scratch-evidence/. The native
+private/nonalias domain has explicit bounds; it is not complete linked/ring/facing,
+source callbacks, release/GC or ordinary Game activation. EVT-01 remains open.
+Next bind one retained source process before ordinary Mario/partner/NPC creation,
+actual GP/field Main/facing and source release/refresh ownership; validate a real
+walk/room transition after that wiring. No full prologue parity claim.

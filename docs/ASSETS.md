@@ -2328,3 +2328,21 @@ replacement. Existing extraction/conversion paths and Nintendo/Intelligent
 Systems rights stay unchanged. No ISO, original body/asset, pack or binary
 committed. Exact hashes:evidence artifacts/npc-history-assets-after.json and
 npc-history-validation-manifest.json.
+
+
+### Source animation scratch readers (2026-10-14)
+
+No animation asset conversion or geometry/art/audio/dialogue change; no new
+animation pack. Validation repaired the existing HP/door fixture assets below.
+The actual relocated original MODEL files staged by NativeFileCache supply raw
+controls,44-byte keys, discrete rows and five sparse channels. Original source
+scratch allocations supply authoritative cache/output bytes, including24-byte
+texture records; native snapshots do not overwrite them. Existing original-data
+licensing/provenance restrictions continue. ISO is read-only; extracted assets,
+RomFS packs, disassembly and probes stay ignored. Validation uses the complete
+accepted live-tangent RomFS snapshot plus three hash-matched accepted HP GPU
+files needed by the newer frozen source base. Its own door-data converter was
+rerun read-only against the ISO to include current NPC numeric views (152492
+bytes/970 objects). Final RomFS has2139 files; only those five paths differ
+from the preceding animation validation. The changing shared RomFS was not
+used as a substitute fixture.

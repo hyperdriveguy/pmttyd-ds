@@ -1,4 +1,5 @@
 #include "platform.hpp"
+#include "animation_scratch_memory.hpp"
 #include "battle_pose_inner.hpp"
 #include "animation_shape_render.hpp"
 #include "map_material_color.hpp"
@@ -175,8 +176,10 @@ void Renderer::resumeFinishingCamera(const Game& game){
                 const auto* pose=pool->pose(context.handle);if(!pose || !pose->resource || !pose->resource->bank)return false;
                 const auto selected=pose->word(0x14);if(selected>=pose->resource->names.size())return false;
                 const auto* animation=pose->resource->bank->pose(pose->resource->names[selected].c_str());if(!animation)return false;
-                const auto& output=index?pose->shape.normals:pose->shape.positions;
                 const auto count=index?animation->normals.size():animation->positions.size();
+                std::vector<ActorVector> decoded;
+                if(pose->sourceBuffers){decoded.reserve(count);for(uint32_t i=0;i<count;++i){const auto value=animationOutputVector(*pose,index!=0,i);if(!value)return false;decoded.push_back(*value);}}
+                const auto& output=pose->sourceBuffers?decoded:index?pose->shape.normals:pose->shape.positions;
                 if(output.size()!=count)return false;
                 static_assert(sizeof(ActorVector)==12,"Source vector flush stride");
                 return R_SUCCEEDED(GSPGPU_FlushDataCache(output.data(),uint32_t(12*count)));

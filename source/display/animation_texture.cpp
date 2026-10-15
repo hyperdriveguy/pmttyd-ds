@@ -1,4 +1,5 @@
 #include "animation_texture.hpp"
+#include "animation_scratch_memory.hpp"
 #include <cstring>
 #include <cmath>
 namespace ttyd {
@@ -70,8 +71,8 @@ bool resumeAnimationTexture(const BattlePose& pose,uint32_t draw,const Animation
     case 0:
         if(c.j>=c.slots){c.j=0;next(12);break;}
         c.slot=d.word(c.draw+0x10+4*(c.slots-c.j-1));c.pending=0x8003dcfc;
-        if(c.slot>=pose.shape.textures.size() || c.slot>=d.word(0x130))return false;
-        c.state=pose.shape.textures[c.slot];c.index=d.word(d.word(0x194)+8*c.slot)+c.state;c.overrideWrap=d.word(d.word(0x194)+8*c.slot+4);
+        if(c.slot>=d.word(0x130))return false;
+        {const auto state=animationOutputByte(pose,true,c.slot);if(!state)return false;c.state=*state;}c.index=d.word(d.word(0x194)+8*c.slot)+c.state;c.overrideWrap=d.word(d.word(0x194)+8*c.slot+4);
         if(int32_t(c.index)<0 || c.index>=d.word(0x134)){c.pending=0x8026a2a8;return false;} // Diagnostic/fallback owner remains explicit.
         c.phase=d.word(d.word(0x198)+64*c.index+8)==0?1:10;break;
     case 1:c.pending=0x80037b5c;if(!s.get || !s.get(s.user,pose,d.word(d.word(0x198)+64*c.index+4),c.image))return false;c.ci=c.image.paletteHeader!=0;next(2);break;
@@ -90,7 +91,7 @@ bool resumeAnimationTexture(const BattlePose& pose,uint32_t draw,const Animation
         if(c.j>=c.slots){c.active=false;c.pending=0;return true;}
         c.slot=d.word(c.draw+0x10+4*(c.slots-c.j-1));c.pending=0x8003dcfc;if(c.slot>=d.word(0x12c))return false;
         std::array<float,5> t;
-        if(!pose.shape.surfaces.empty()){if(c.slot>=pose.shape.surfaces.size())return false;t=pose.shape.surfaces[c.slot].transform;}
+        if(pose.sourceBuffers || !pose.shape.surfaces.empty()){const auto transform=animationOutputTransform(pose,c.slot);if(!transform)return false;t=*transform;}
         else for(unsigned i=0;i<5;++i)t[i]=d.real(d.word(0x190)+24*c.slot+4+4*i);
         c.step=c.count=c.mask=0;c.matrixQueued=false;
         auto op=[&](uint32_t fn,unsigned target,unsigned left=0,unsigned right=0){auto& r=c.operations[c.count++];r={};r.function=fn;r.target=target;r.left=left;r.right=right;};

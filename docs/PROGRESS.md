@@ -11477,3 +11477,91 @@ using corrected signs and retained F/F2/Mario captures; then compose whole Main.
 Bind actual producer/pass/callback and earlier owners before normal Area Main;
 repair visual/asset-error smoke admission, profile actual field/hardware and
 retain original story/event conditions for future areas.
+
+### Authoritative original animation scratch sampling and consumers (2026-10-14)
+
+Actual source Entry adoption now attaches a scoped source-buffer provider. Main's
+ordinary unlinked/private-output domain reads the actual relocated FileEntry/
+holder/MODEL/directory/descriptor/T chain: original controls,44-byte keys,
+discrete8-byte rows and five sparse streams. It replays and interpolates directly
+into the actual AllocBuffer BE reservations, using the live source tangent table.
+The converted native vectors are derived presentation snapshots and never feed
+back into original RAM. [Contract](behavior/display/NATIVE_SOURCE_ANIMATION_SCRATCH.md).
+
+Visibility and24-byte texture rows retain their true cache/output aliases;
+positions/normals/node scalar floats retain distinct caches and outputs. Source
+channel/write order, relative unsigned indices, signed compressed deltas,
+texture byte wrap/float shifts, untouched padding/scales/rotation, backward cache
+rebuild, signed-large prior-index recovery and loop-seam output retention are
+preserved. Actual table/backing/target and private nonalias bounds are explicit
+native admission policy; unused zero-count wrapped pointers remain accepted.
+
+Traversal visibility/nodes, material selector/second-walk transform and fan FIFO
+position/normal reads now resolve current source outputs at their existing
+capture points. Held matrix operations finish from retained captured fields;
+held completed fans keep copied geometry. Native cache flushing decodes current
+source vectors; final GPU staging stays Citro3D. Context/copy retirement freezes
+current cache/output into detached native adapters. Direct-owner retirement
+handles last-shared-owner destruction without weak reacquisition; control-block
+identity prevents accidental adoption after heap address reuse. Failed retirement
+keeps unavailable weak views rather than stale VM access or silent fallback.
+Typed legacy release holds while a source buffer provider is attached; real
+source file/heap release remains a required distinct provider.
+
+Validation uses immutable basec70dc31a9119c4d4a9104c54c643f22b888b5436 plus only
+owned journal/new files/CMake registration. Concurrent shared edits are excluded.
+
+- Final `CMAKE_BUILD_PARALLEL_LEVEL=6 make test -o assets-ready`:415/415 C++
+  (45.46s),207/207 Python (30.588s), no skips/failures;
+  artifacts/animation-source-scratch-test-accepted.log. The six actual models
+  compare against independent converted sampling across forward/backward times.
+  VM edits independently prove authoritative cache/output reads, raw timeline
+  selection, live tangent changes/restoration, untouched texture fields, seam
+  retention, source-held-node capture, missing backing/overlap rejection, copy
+  isolation and successful/failed last-owner retirement. Separate read-only
+  source/input/lifetime review: artifacts/animation-scratch-evidence/.
+- Initial validation used stale assets: missing HP GPU files and older door
+  constants caused three C++ failures; missing local evidence files caused five
+  Python errors. Restored three hash-matched HP files from the accepted HP
+  manifest and local fixtures from the accepted animation snapshot; reran the
+  frozen converter read-only against the ISO. Door data is152492 bytes/970
+  objects. Final RomFS2139 files differs from the preceding animation snapshot
+  only by those three HP files and door-data.json/pmevt. No test or gameplay
+  logic was changed to accommodate missing assets.
+- `make all -j6 -o assets-ready SOUNDTRACK=gamecube` passed, including final
+  restoration; artifacts/animation-source-scratch-all-accepted.log and
+  animation-source-scratch-normal-restore-build.log. Normal binary SHA256
+  71ca9184a318d469540fc98069846a65b376d60f25bab1c41e5ce9eb71594afe.
+- Isolated30-second normal Azahar capture was visually inspected: original
+  storybook/dialogue,60FPS/100% emulator speed; no asset-error/exception console.
+  artifacts/azahar-animation-source-scratch-normal/boot.png. This is boot-only
+  evidence, not source-backed field gameplay or physical 2DS performance.
+- Private ARM fixture binary SHA256
+  5b593dd045ee8380693146b878dac5067a939214da487a2874423fe1d939edec
+  passed the same actual-source fixture in isolated Azahar. Snapshot at
+  artifacts/azahar-animation-source-scratch-probe/animation-source-scratch-probe.snapshot
+  reports PASS for all six models, actual buffers/raw timeline/live tangents,
+  VM edits, texture preservation, loop seam, held-node capture, missing backing,
+  no fallback, copy isolation and last-owner retirement. Its capture was visually
+  inspected. It is a CPU/VM ownership fixture, not rendering/gameplay/performance
+  acceptance. Temporary Main hooks were restored byte-for-byte; rebuilt normal
+  SHA equals the saved normal binary already inspected. No emulator user profile
+  or saves were touched. All packs/probes/disassembly stay ignored.
+- Independent base+owned-journal audit:3853 source inputs,2139 RomFS hashes,
+  zero mismatches; artifacts/animation-source-scratch-validation-manifest.json.
+  Documentation link validation also passed; see
+  artifacts/animation-source-scratch-doc-links.log.
+
+Limitations: ordinary Game Mario/partner/NPC activation still uses its current
+path. The new sampler admits only finite supported data, unlinked private
+nonalias outputs without optional facing. Whole source Main/GP clock scheduling,
+linked/ring/facing/callback/GQR/FP exceptional domains, original release/GC and
+whole-owner field/battle teardown remain open. Static hierarchy/material/atlas
+metadata and native libm/FMA/matrix/GPU adapters are not complete Gekko parity.
+No whole-prologue or physical-hardware performance claim.
+
+Next bind one retained actual process before ordinary Mario/partner/NPC pose
+creation, with real GP/field Main/facing/release/refresh ownership. Verify an
+ordinary Mario/Goombella walk and room transition through these buffers, then
+continue original prologue events/interiors/visibility. EVT-01 remains open;
+the playable-prologue goal remains active and incomplete.

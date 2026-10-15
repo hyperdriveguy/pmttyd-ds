@@ -30,6 +30,7 @@ struct BattlePose {
     std::shared_ptr<const BattlePoseResource> resource;
     ActorAnimationSample shape; // Real per-pose CPU output and retained hierarchy workspace.
     ActorAnimationCache cache; // Fully replayed current-key state, separate from fractional output.
+    std::shared_ptr<class AnimationScratchPose> sourceBuffers; // Actual source-backed sampling/consumer views.
     int32_t archiveType=0;
     uint32_t word(unsigned offset) const;
     void word(unsigned offset,uint32_t value);
@@ -95,6 +96,8 @@ private:
     friend class AnimationPoolMemory;
     friend class AnimationStartupProcess;
     friend class AnimationTangentMemory;
+    friend class AnimationScratchMemory;
+    friend class AnimationScratchPose;
     void restart(BattlePose&,BattlePoseClock);
     bool tangentSamplingAvailable() const;
     std::array<std::unique_ptr<BattlePose>,256> poses_{};

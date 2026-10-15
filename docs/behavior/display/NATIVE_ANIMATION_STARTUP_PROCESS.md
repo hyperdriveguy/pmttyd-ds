@@ -61,6 +61,6 @@ actual production owner bytes. See [shared files](../file/NATIVE_SHARED_ANIMATIO
 and [work aliases](NATIVE_ANIMATION_POOL_MEMORY.md).
 
 Normal Game still uses its existing startup/rendering path. [Original pose Entry and typed metadata adoption](NATIVE_SOURCE_ANIMATION_POSE_ENTRY.md)
-now use this owner. CPU output consumers,
-ordinary Mario/partner activation, complete renderer/field providers and process
-teardown remain open. This owner alone is not a playable-prologue parity claim.
+now use this owner. [Source-backed scratch sampling and consumers](NATIVE_SOURCE_ANIMATION_SCRATCH.md)
+cover ordinary unlinked/private output. Ordinary Mario/partner activation,
+complete renderer/field providers and source process teardown remain open. This owner alone is not a playable-prologue parity claim.

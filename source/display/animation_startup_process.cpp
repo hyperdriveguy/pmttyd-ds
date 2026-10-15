@@ -28,6 +28,7 @@ bool admittedImage(const EventScriptAssets& image){
 }
 }
 AnimationStartupProcess::AnimationStartupProcess(std::shared_ptr<NativeFileCache> files,std::shared_ptr<BattlePosePool> pool,const EventNativePlatform& platform,uint32_t gp):pool_(std::move(pool)),files_(std::move(files)),vm_(std::make_unique<EventNativeRuntime>(gp,platform)){}
+AnimationStartupProcess::~AnimationStartupProcess(){if(scratch_)scratch_->retire();}
 std::unique_ptr<AnimationStartupProcess> AnimationStartupProcess::cold(std::shared_ptr<NativeFileCache> files,std::shared_ptr<BattlePosePool> pool,const EventNativePlatform& platform,const char* path,uint32_t gp,uint32_t arena,uint32_t bytes){
  // Explicit native arena policy: aligned, nonwrapping, room for all four source
  // fixed pools, descriptor reservation and a valid final free-list header.
@@ -92,7 +93,8 @@ bool AnimationStartupProcess::advance(){
  if(!aliases_)aliases_=AnimationPoolMemory::bind(pool_,vm_->memory);
  if(!aliases_ || !aliases_->matchesWork())return false;
  if(!tangentMemory_)tangentMemory_=AnimationTangentMemory::bind(pool_,vm_->memory);
- return ready();
+ if(tangentMemory_ && tangentMemory_->current() && !scratch_)scratch_=AnimationScratchMemory::bind(pool_,files_,vm_->memory,*aliases_);
+ return ready() && scratch_ && scratch_->current();
 }
 bool AnimationStartupProcess::text(uint32_t address,std::string& out) const{
  // Native filename/string admission. Core Entry itself has no such length cap.
@@ -165,7 +167,9 @@ bool AnimationStartupProcess::adoptEntry(){
  // timestamp, refs, file identities, scratch pointers or untouched stale words.
  model.resource=resource;if(!texture.resource){texture.name=resource->textureName;texture.resource=resource;}
  p->resource=std::move(resource);p->shape=std::move(shape);p->cache=std::move(cache);p->nativeGeneration=pool_->nextGeneration_++;p->archiveType=entry_.mode==1?2:entry_.mode==0?1:0;pool_->archiveType_=p->archiveType;
- return true;
+ if(!scratch_ || !scratch_->current())return false;
+ p->sourceBuffers=scratch_->pose(h,p->nativeGeneration);
+ return bool(p->sourceBuffers);
 }
 std::optional<int32_t> AnimationStartupProcess::enter(uint32_t name,uint32_t mode,std::shared_ptr<const BattlePoseResource> resource){
  if(!ready())return {};

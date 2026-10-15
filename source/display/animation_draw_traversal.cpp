@@ -1,4 +1,5 @@
 #include "animation_draw_traversal.hpp"
+#include "animation_scratch_memory.hpp"
 namespace ttyd {
 // Iterative source group recursion keeps both matrix and call-frame stacks
 // across holds. Start at last group; an invisible group skips its node/child
@@ -19,13 +20,14 @@ bool resumeAnimationDrawTraversal(BattlePosePool& pool,const BattlePoseInnerCont
             if(f.group==-1){c.frames.pop_back();break;}
             if(f.group<0 || uint32_t(f.group)>=resource.groups()){c.pending=0x8003c4bc;return false;}
             f.captured=resource.group(uint32_t(f.group));
-            if(f.captured.visibility>=pose->shape.visibility.size()){c.pending=0x8003c4bc;return false;}
-            f.phase=pose->shape.visibility[f.captured.visibility]?1:9;break;
+            {const auto visible=animationOutputByte(*pose,false,f.captured.visibility);if(!visible){c.pending=0x8003c4bc;return false;}
+            f.phase=*visible?1:9;}break;
         case 1:{
-            if(f.captured.node>pose->shape.nodes.size() || pose->shape.nodes.size()-f.captured.node<24){c.pending=0x8003c4bc;return false;}
-            std::array<float,24> node;for(unsigned i=0;i<24;++i)node[i]=pose->shape.nodes[f.captured.node+i];
-            std::array<float,3> parent{1,1,1};
-            if(f.captured.joint && f.parent!=-1){const auto p=resource.group(uint32_t(f.parent));if(p.joint){if(p.node>pose->shape.nodes.size() || pose->shape.nodes.size()-p.node<6){c.pending=0x8003c4bc;return false;}for(unsigned i=0;i<3;++i)parent[i]=pose->shape.nodes[p.node+3+i];}}
+            std::array<float,24> node{};std::array<float,3> parent{1,1,1};
+            if(!f.node.active){
+            for(unsigned i=0;i<24;++i){const auto value=animationOutputNode(*pose,f.captured.node+i);if(!value){c.pending=0x8003c4bc;return false;}node[i]=*value;}
+            if(f.captured.joint && f.parent!=-1){const auto p=resource.group(uint32_t(f.parent));if(p.joint){for(unsigned i=0;i<3;++i){const auto value=animationOutputNode(*pose,p.node+3+i);if(!value){c.pending=0x8003c4bc;return false;}parent[i]=*value;}}}
+            }
             if(!resumeAnimationNodeDraw(node,f.captured.joint!=0,parent,c.stack,s.user,s.matrix,f.node)){c.pending=f.node.pending;return false;}
             f.phase=2;break;}
         // Pose flag 40/80(hex) publish different destinations(+15c/+164).

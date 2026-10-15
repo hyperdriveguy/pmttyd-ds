@@ -1,4 +1,5 @@
 #include "animation_fan.hpp"
+#include "animation_scratch_memory.hpp"
 #include <cmath>
 namespace ttyd {
 namespace {
@@ -59,8 +60,9 @@ bool AnimationFanStream::request(const AnimationShapeCall& r,const AnimationFanT
     else {
         if(used_>=count_)return false;
         const uint64_t p=uint64_t(bindings_[0].base)+r.indices[0],n=uint64_t(bindings_[1].base)+r.indices[1];
-        if(p>=r.pose->shape.positions.size() || n>=r.pose->shape.normals.size())return false;
-        AnimationFanVertex v;v.position=r.pose->shape.positions[size_t(p)];v.normal=r.pose->shape.normals[size_t(n)];
+        if(p>0xffffffff || n>0xffffffff)return false;
+        const auto position=animationOutputVector(*r.pose,false,uint32_t(p)),normal=animationOutputVector(*r.pose,true,uint32_t(n));if(!position || !normal)return false;
+        AnimationFanVertex v;v.position=*position;v.normal=*normal;
         if(!finite(v.position) || !finite(v.normal))return false;
         const uint32_t colorTable=raw.word(0x164),colorCount=raw.word(0x100);const uint64_t color=(bindings_[2].base-colorTable)/4+uint64_t(r.indices[2]);
         if(color>=colorCount)return false;

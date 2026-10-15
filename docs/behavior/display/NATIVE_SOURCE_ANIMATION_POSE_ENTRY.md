@@ -61,10 +61,10 @@ resource identity. It prepares real descriptor0 CPU shape/cache workspace, then
 attaches sidecar resources and native generation. Adoption never calls typed
 enter/restart and never rewrites the authoritative BE pose/model/texture rows,
 clock, references, source file handles or scratch pointers. A held adoption does
-not replay the completed source parent. CPU workspace is still separate from
-source scratch vectors; their authoritative output integration is required before
-ordinary Game activation. [Tangent consumers](NATIVE_LIVE_ANIMATION_TANGENTS.md)
-now share the actual initialized source table.
+not replay the completed source parent. [Source scratch sampling and consumer
+views](NATIVE_SOURCE_ANIMATION_SCRATCH.md) now attach to actual adopted poses;
+native vectors are decoded presentation snapshots. [Tangent consumers](NATIVE_LIVE_ANIMATION_TANGENTS.md)
+share the actual initialized source table. Ordinary Game activation remains open.
 
 ## Original data and evidence
 
@@ -85,7 +85,8 @@ actual fileFree, and null texture continuing to a held AllocBuffer without dummy
 buffer success. Source absence is never replaced by invented positive handles.
 
 Normal Game remains on its existing field path. This is real Entry ownership,
-not full CPU/scratch aliasing, original renderer, release/GC, scene cancellation,
-ordinary Mario/partner provider activation, physical performance or prologue
-parity. Next connect authoritative source output vectors with typed CPU evaluation,
-then use the retained process before ordinary field pose creation.
+not complete original renderer, release/GC, scene cancellation, ordinary
+Mario/partner provider activation, physical performance or prologue parity. The
+bounded source scratch sampler and its readers are now connected. Next use the
+retained process before ordinary field pose creation and bind the remaining
+whole-owner clock/update/facing/release services.

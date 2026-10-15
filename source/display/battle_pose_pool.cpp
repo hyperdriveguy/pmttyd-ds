@@ -2,6 +2,7 @@
 #include "animation_texture.hpp"
 #include "animation_sample_time.hpp"
 #include "animation_tangent_memory.hpp"
+#include "animation_scratch_memory.hpp"
 #include <cassert>
 #include <cstring>
 #include <map>
@@ -84,7 +85,10 @@ std::shared_ptr<const BattlePoseResource> loadBattlePoseResource(const char* dir
     cache[key]=resource;return resource;
 }
 BattlePosePool::BattlePosePool(const BattlePosePool& other):models_(other.models_),textures_(other.textures_),archiveType_(other.archiveType_),nextGeneration_(other.nextGeneration_),work_(other.work_),workEstablished_(other.workEstablished_),tangents_(other.tangents_?std::make_unique<AnimationTangentTable>(*other.tangents_):nullptr){
-    for(unsigned i=0;i<poses_.size();++i)if(other.poses_[i])poses_[i]=std::make_unique<BattlePose>(*other.poses_[i]);
+    for(unsigned i=0;i<poses_.size();++i)if(other.poses_[i]){
+        poses_[i]=std::make_unique<BattlePose>(*other.poses_[i]);
+        auto& p=*poses_[i];if(p.sourceBuffers && p.sourceBuffers->snapshot(p,true))p.sourceBuffers.reset();
+    }
 }
 uint32_t BattlePosePool::outputSelector() const{return uint32_t(work_[0xe8])<<24|uint32_t(work_[0xe9])<<16|uint32_t(work_[0xea])<<8|work_[0xeb];}
 void BattlePosePool::outputSelector(uint32_t value){for(unsigned i=0;i<4;++i)work_[0xe8+i]=uint8_t(value>>(24-8*i));}
@@ -153,7 +157,7 @@ std::optional<int32_t> BattlePosePool::enter(std::shared_ptr<const BattlePoseRes
     const auto* initial=resource->bank->pose(resource->names.front().c_str());ActorAnimationSample shape;
     if(!initial || !initial->evaluate(0,shape,tangents_.get()) || shape.positions.empty() || shape.nodes.empty() || shape.world.empty())return {}; // Visibility does not determine buffer ownership.
     if(!poses_[handle])poses_[handle]=std::make_unique<BattlePose>();
-    auto& pose=*poses_[handle];pose.nativeGeneration=nextGeneration_++;
+    auto& pose=*poses_[handle];pose.sourceBuffers.reset();pose.nativeGeneration=nextGeneration_++;
     if(!reused){
         if(!reusedTexture){auto& t=textures_[texture];t.flags(1);t.file(0);t.name=resource->textureName;t.resource=resource;}
         textures_[texture].references(textures_[texture].references()+1);models_[model].flags(1);models_[model].file(0);models_[model].texture(texture);models_[model].resource=resource;
@@ -230,6 +234,7 @@ bool BattlePosePool::tangentSamplingAvailable() const{
 }
 bool BattlePosePool::evaluate(int32_t handle,BattlePoseClock clock){
     auto* p=pose(handle);if(!p || !tangentSamplingAvailable())return false;
+    if(p->sourceBuffers)return p->sourceBuffers->evaluate(*p,clock);
     const auto index=p->word(0x14);if(index>=p->resource->names.size())return false;
     const auto* animation=p->resource->bank->pose(p->resource->names[index].c_str());if(!animation)return false;
     const uint64_t elapsed=clockFor(*p,clock)-p->timestamp();
@@ -275,7 +280,7 @@ bool BattlePosePool::clearEffect(int32_t handle){auto* p=pose(handle);if(!p || p
 // Smart-buffer flags0xc0 require a separate provider and hold release. Last
 // model owner releases its texture reference; clear pose ownership last.
 bool BattlePosePool::release(int32_t handle){
-    auto* p=pose(handle);if(!p)return false;
+    auto* p=pose(handle);if(!p || p->sourceBuffers)return false; // Real source file/heap release is a separate provider.
     if(p->word(4)==0 && (p->word(0)&0xc0))return false; // Actual smart-buffer providers are required.
     const auto modelIndex=p->word(0x10);
     if(modelIndex>=models_.size())return false;
@@ -289,6 +294,6 @@ bool BattlePosePool::release(int32_t handle){
         if(texture.references()==0){texture.resource.reset();texture.flags(0);}
         model.resource.reset();
     }
-    p->word(0,0);p->resource.reset();p->shape=ActorAnimationSample{};p->cache=ActorAnimationCache{};return true;
+    p->sourceBuffers.reset();p->word(0,0);p->resource.reset();p->shape=ActorAnimationSample{};p->cache=ActorAnimationCache{};return true;
 }
 }
