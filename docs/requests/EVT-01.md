@@ -5316,3 +5316,20 @@ See [native bridge](../behavior/partner/NATIVE_STORY_PARTY_DISPATCH.md).
   currently quarantines them behind an explicit boundary.
 - [ ] Complete original engine/sequence/battle teardown and field return; local
   lecture/constructor fixtures do not establish full gameplay completion.
+
+## 2026-10-15 — Native mesh publication and Mario/Game activation
+
+Delivered [atomic native mesh publication](../behavior/display/NATIVE_ATOMIC_MESH_PUBLICATION.md)
+over the completed retained Main executor. Fresh post-call capture, live original
+static geometry/backing proof, ordered decode and candidate assembly precede a
+single guarded swap. Failure after Main never restarts source evaluation. Normal
+Mario now uses this path; Game/runtime retain the producer pass before new input,
+camera, clock, room, restore or save work. Published root/yaw/reflection match the
+mesh; rendering does no source evaluation. Resource/workspace reuse is tested.
+
+This answers the native post-Main consumer/barrier dependency, not original
+Draw/Inner load ordering or complete field NPC/queue/GPU activation. Next deliver
+complete animPoseSetAnim80041170, especially force0 already-selected early return
+before clock admission, and bind it into actual NPC draw services. Keep original
+offscreen/blur frontiers explicit. No guessed story or new asset conversion.
+EVT-01 remains OPEN. Exact validation and performance limits are in progress.

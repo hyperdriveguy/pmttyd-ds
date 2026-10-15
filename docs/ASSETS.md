@@ -3354,3 +3354,17 @@ SlitOff8014c448 bodies. ELF/listing/provenance hashes are pinned in the session
 manifest. This source inspection is not a hardware or pixel-parity observation.
 The private ARM fixture uses the same production RomFS bytes, with only a test
 entrypoint/strict marker injection in its private main.cpp.
+
+## 2026-10-15 — Atomic native mesh publication (no asset changes)
+
+The native consumer reads the existing original a/ model resources and retained
+source outputs through their actual shared VM file mappings. Immutable original
+model identity plus live static geometry/material/index/UV/directory tables guard
+the trusted conversion-to-assembly relationship. The existing original Mario pose
+banks, texture atlases and citro3d submission remain in use. No extraction,
+rescaling, geometry reduction, lighting adjustment, music, dialogue or sound-effect
+conversion was added. The read-only ISO verifier passed; all 2152 inherited RomFS
+products and gor_02.s shader source remain byte-identical to the accepted baseline.
+Original rights/licensing are unchanged. ISO, extracted originals, converted packs,
+private fixtures and validation binaries remain outside source history. Exact
+validation snapshot and hashes are in progress and the ignored artifact manifest.

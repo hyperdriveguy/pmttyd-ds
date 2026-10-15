@@ -1382,3 +1382,4 @@ Original battle menu native resource/queue owners:
 
 
 - [Native shader lifetime across graphics reinitialization](display/NATIVE_SHADER_PROCESS_LIFETIME.md).
+- [Native atomic mesh publication and field simulation barrier](display/NATIVE_ATOMIC_MESH_PUBLICATION.md): fresh post-Main capture, static geometry/backing proof, private reusable candidate and atomic swap; normal Mario activation with same-pass Game/runtime draining. Original NPC Draw/Inner/queue/GPU integration remains open.

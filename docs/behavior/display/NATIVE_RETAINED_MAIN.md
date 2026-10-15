@@ -6,9 +6,9 @@
 [cache replay](RETAINED_ANIMATION_MAIN_CACHE_REPLAY.md) and
 [interpolation/publications](RETAINED_ANIMATION_MAIN_INTERPOLATION.md).
 It uses the actual VM, shared pool/array aliases, files and source scratch.
-There is no `BattlePosePool::main/evaluate` fallback. This completes the native
-raw source Main owner, not normal Game activation, native shape assembly or
-full source Draw/Inner/GPU ownership. EVT-01 remains open.
+There is no `BattlePosePool::main/evaluate` fallback. The raw owner is now composed with
+[atomic native mesh publication and a Mario/Game barrier](NATIVE_ATOMIC_MESH_PUBLICATION.md).
+Complete source NPC Draw/Inner/queue/GPU ownership remains open; EVT-01 stays open.
 
 ## Process, platform and pass ownership
 
@@ -82,12 +82,11 @@ transaction over arbitrary external writes.
 
 Source completion writes actual scratch/global buffers and source scalar state.
 It intentionally does not invoke the old evaluator or replace `BattlePose::shape`.
-Existing renderer consumers still read that native presentation snapshot. Next
-add a distinct retained source-complete → snapshot/assemble → publish owner;
-failure there must not restart Main. Then connect a Game simulation barrier that
-resumes the pending pass before advancing GP/camera/story/room/pose owners.
-The existing Game path is not activated by this delivery, and the public native
-pending guards do not alone prove the whole Game barrier.
+The separate [native publication owner](NATIVE_ATOMIC_MESH_PUBLICATION.md) now
+captures fresh post-Main outputs, assembles a private candidate and swaps the
+presentation snapshot atomically. Normal Mario and the Game/runtime pass barrier
+are activated through that adapter. Source Draw/Inner/queue/GPU activation for
+other NPCs remains separate; the raw Main API still does not assemble a mesh.
 
 Trace/portable child contracts and actual cold-process tests cover real shared
 GQR holds/repair, all five caches and three outputs, no shape fallback, wrong

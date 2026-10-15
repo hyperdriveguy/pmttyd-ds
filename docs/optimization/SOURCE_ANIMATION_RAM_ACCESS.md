@@ -60,3 +60,28 @@ newer baseline. No asset conversion choices are changed by this optimization.
 Required full gates and exact terminal results are in
 [progress](../PROGRESS.md). Further work needs fixed-route whole-loop profiling
 on New 2DS XL while preserving source timing, draw ordering and GPU lifetimes.
+
+## Retained Main and atomic publication follow-up — 2026-10-15
+
+Normal Mario now uses the [retained Main/publication owner](../behavior/display/NATIVE_ATOMIC_MESH_PUBLICATION.md).
+The raw backing cache also accelerates facade access within a closed borrow;
+whole-region admission excludes all semantic extents, with exact-range fallback
+when needed. It caches addresses, never source values or header comparisons.
+Fresh W-root/24-byte header checks and lifetime/pass checks remain; fixed process
+structure is proved once per borrow and RAII clears that proof at return.
+Native Main can complete disjoint original helper copies using libc after the
+strict owned-destination/external-alias/root exclusions in the contract. Original
+numeric/GQR operations and scalar fallback frontiers remain retained. The request
+predicate borrows the uniquely owning NativeFieldAnimation; explicit process
+retirement precedes request-state destruction, avoiding repeated weak locking.
+
+Earlier ordinary-sampler microbenchmarks above do not measure this new retained
+owner. Initial atomic integration was too slow in Azahar. Whole-loop phase
+measurements without per-call SD writes identified roughly 26 ms Main plus 11 ms
+publication per tick before whole-copy admission. Those are emulator observations,
+not physical hardware measurements or original constants. Exact final evidence,
+source hashes and current performance limits are recorded in
+[progress](../PROGRESS.md) and the ignored animation-publish validation manifest.
+Per-call SD profiling from an intermediate diagnostic distorted the timings and
+is not used for final performance conclusions. No profiler remains in the normal
+binary, and no new asset conversion or shader change was made.

@@ -456,3 +456,13 @@ Partial delivery only; this is not remake or EVT-01 completion.
 | Full retained Main output interpolation | EVT-01 | VALIDATED complete local interpolation/final publications and native ARM geometry assertions, 2026-10-15; parent OPEN | Codex inbox fulfillment (no lock claimed) | [Contract](../behavior/display/RETAINED_ANIMATION_MAIN_INTERPOLATION.md): all signed branches, exact cubic aliases/holds and eight original sampler buffers; native Main/pass/shape/GPU integration and normal NPC activation remain OPEN |
 
 | Native retained full Main owner | EVT-01 | VALIDATED complete local raw source Main and native ARM assertions, 2026-10-15; parent OPEN | Codex inbox fulfillment (no lock claimed) | [Contract](../behavior/display/NATIVE_RETAINED_MAIN.md): actual GQR/VM/linked/facing/producer guards and eight original sampler buffers; native shape, whole-Game barrier, normal NPC/Draw/Inner/GPU activation remain OPEN |
+
+## 2026-10-15 — Native post-Main atomic mesh consumer
+
+[Contract](../behavior/display/NATIVE_ATOMIC_MESH_PUBLICATION.md) and
+[EVT-01 update](EVT-01.md) delivered: source-complete capture/assembly/publication,
+static geometry physical-backing proof, normal Mario path and retained Game/runtime
+producer barrier. Native scheduling/admission constants are explicitly port policy.
+Full NPC source Draw/Inner/queue/material/light/shadow ownership stays open. Next
+source dependency is complete SetAnim80041170. Exact gates and limitations are in
+[progress](../PROGRESS.md).

@@ -14654,3 +14654,100 @@ Concurrent foreign changes are preserved/excluded from frozen validation.
 Next: actual harbor/plaza dispatch; temporary kind11 and active mode children;
 held native cancellation; retained upper battle display/engine/sequence teardown
 and actual field return. Full prologue/hardware fidelity remains unverified.
+
+## 2026-10-15 — Atomic native original mesh publication and Mario/Game barrier
+
+Added [fresh post-Main atomic mesh publication](behavior/display/NATIVE_ATOMIC_MESH_PUBLICATION.md)
+over actual source outputs. Normal field Mario now runs retained original Main
+and this consumer. Source completion, fresh capture/decode, private candidate
+assembly and final publication retain separate frontiers; failed reads/static
+admission/assembly never replay completed Main. Live original geometry identity,
+static closure and actual file backing guard converted assembly. Global outputs,
+linked poses, null timelines and fresh post-call redirection are tested. All
+thirteen sample/workspace capacities and Main frames reuse after warmup. The
+adapter accepts handle/resource domains for future actors/areas; current runtime
+activation is Mario, not complete source NPC rendering.
+
+Mario request identity/setup persist through holds; handle/bank/root/yaw/
+reflection publish with the mesh. Shared camera ownership and a configuration
+generation replace pointer-address identity. Game/runtime drain pending work
+before new sequence/camera/clock/input/room/restore/save owners; drain-only work
+consumes no tick or input edge and disables catch-up dropping. Shutdown save now
+also rejects a pending native pass. Renderer emits no Mario vertices while
+pending and performs no source evaluation. Raw Main, Entry and Release guards
+prevent producer overlap. External VM/file/pool mutation still requires same-pass
+caller serialization.
+
+Performance work keeps fresh source header/lifetime/pass/GQR checks while using
+callback-scoped raw backing caches, native 24-byte header comparisons and a
+structural proof scoped by RAII. A closed native replay binding admits native
+libc copies only for complete disjoint nonsemantic owned scratch destinations,
+excluding all external physical aliases and the W-root word. Unsupported/zero/
+wrapped/alias cases keep original scalar continuations, including the word
+helper's shifted-zero do/while wrap. No active scalar copy switches lanes.
+The unique request owner retires its process before request state destruction,
+avoiding per-primitive weak locking. Each capture read still checks fresh
+ownership; the redundant surrounding check was removed. Read-only parallel
+review found no required corrections to these guard/copy/lifetime rules.
+
+Exact accepted BASE/TREE: `8097a15c07c521b46c4c44a5140ff9963497c2b2` /
+`94dad66b5a737e56736cf21d2be48b49ee203bc7`, in `artifacts/source-checks/npc-wander`.
+The full blob audit matches all 3986 tracked files. All 2152
+inherited RomFS products and original gor_02.s shader source are unchanged.
+Concurrent root work is preserved/excluded. Shared Game/runtime paths and CMake
+use immutable owned patches; validation does not claim the entire moving root.
+The accepted base already includes the Release dependency. Initial feature code
+was committed as e47e0f219e0f8ab556c8726b412d6cbfdc491565; the scoped performance
+follow-up and this documentation are separate incremental commits.
+
+Validation (final exact snapshot):
+
+- `TRIO_ENEMY_POSE_PACK=romfs CMAKE_BUILD_PARALLEL_LEVEL=4 make test`: exit 0,
+  444/444 C++ (89.02s), 212/212 Python (43.956s), zero skipped.
+  Includes enabled native-copy count/output parity, byte/word truncation,
+  zero/wrapped counts, owned/external/physical alias rejection, retained service
+  identity, every one-visit capture hold, static mismatch/repair, linked/null
+  timelines, assembly failure, lifecycle/Game barriers, header-alias next-primitive
+  holds, no replay and capacity reuse.
+- `make all -j4 -o assets-ready SOUNDTRACK=gamecube`: exit 0. Normal 3DSX SHA256
+  `9a2dd593c9c8433e2e8f4c4b2f7f2f7cf6429e8630e991e12552d6c846cac87f`; removing the probe and rebuilding reproduces it.
+- Read-only ISO Main verifier: 2 bodies, 1773 instructions, 17 constants, 5 spans,
+  2 imports, 65 direct callers and one serialized resource example; pass.
+- Fresh isolated ARM probe `artifacts/azahar-animation-publish-copy-final-probe`:
+  actualMesh/atomic/holds/globals/linked/null/producer/gameBarrier/reuse/noReplay/
+  ramCache all PASS, including the added owned-copy RAM assertions.
+- Instrumented final field `artifacts/azahar-animation-publish-final-field`:
+  movement and tick-progress assertions pass; original Rogueport/Mario/NPC art
+  visible after warmup. Idle Main is approximately 2.2–2.5 ms/tick and publication
+  7.2 ms/tick, versus about 26 ms Main plus 11 ms publication before this follow-up.
+  Walking increases Main cost. Phase totals use in-memory ticks and sparse SD logs.
+- Uninstrumented field `artifacts/azahar-animation-publish-copy-clean-field`:
+  70-second warmup, original fixture, right/left inputs, captures and exception
+  checks pass. Final displayed rate is about 15 FPS (simulation 52.12 ms for the
+  displayed loop, CPU render 6.4 ms, GPU 0.5 ms). This remains below the rendering
+  goal. Normal fresh boot `artifacts/azahar-animation-publish-copy-normal` passes
+  the 40-second isolated smoke without native exceptions.
+
+Evidence is pinned in ignored `artifacts/animation-publish-validation-manifest.json`
+and its named test/build/audit/probe logs. Existing unrelated build/Pillow warnings
+remain. A first unconfigured Python run skipped two original-asset tests; the final
+configured run above skips none. A reused diagnostic folder exposed an older
+completion marker and was rejected; the final probe uses a new profile. Earlier
+post-production-Game probe residency stalled without an assertion; unchanged
+assertions run before production allocation pass. Intermediate per-call SD
+profiling distorted costs and is excluded from final performance conclusions.
+No automated check touches the user's emulator profile or saves.
+
+No asset conversion, dialogue/story, audio or shader change. Original rights are
+unchanged; ISO, extracted originals, compiled packs, fixtures and binaries remain
+outside source history. Native bounds and visit budgets are port policy, not
+measured original behavior. Emulator timings are not physical New 2DS XL results.
+Complete original SetAnim/SetLocalTime, NPC Main/DrawMtx/Inner/queue/GPU material/
+light/shadow ownership and original pixel parity remain open. EVT-01 stays OPEN.
+
+Next: profile and reduce publication decode/static-closure/assembly costs; keep
+scalar ownership/alias fallbacks exact. Complete source SetAnim 80041170 (especially
+force-0 already-selected return before clock access), then bind same-process NPC
+Main/draw services and additional original actor/area data while preserving
+source offscreen/blur frontiers. Physical hardware performance and full-game
+fidelity validation remain required. The full-remake goal remains active.

@@ -8,15 +8,22 @@ mutators reject while the callback is active. Nested access rejects without
 calling the nested callback. RAII releases the guard on success, false or host
 exception. This is native acceleration policy, not a new original VM primitive.
 
-Only explicitly `bind(address,size)`-validated complete raw RAM spans are cached.
+Explicit `bind(address,size)` admission remains available. Facade reads/writes
+within the same borrow also cache complete actual RAM regions after proving that
+no semantic-provider extent overlaps the whole region. The cache stores byte
+addresses only; it never stores values. When the whole region cannot be admitted,
+a separately excluded exact request range can be cached. Fully nonsemantic unmapped-range proofs
+can also be reused while mappings remain fixed.
 Binding uses the existing semantic-provider exclusion and contiguous-span rule;
 GP/context/entry/runtime semantics retain the ordinary facade. Data edits through
 other views remain immediately visible because the cache contains storage views,
 not copied values. No raw host pointers are exposed by the interface.
 
 Thirty-two fixed entries avoid heap allocation. Growing same-address prefixes
-replace the existing entry; contained requests reuse admission. A full cache
-still admits valid storage and falls back to ordinary reads/writes. A failed
+replace the existing entry; contained requests reuse admission. A full explicit-bind cache
+still admits valid storage and falls back to ordinary reads/writes. Automatic
+region admission uses bounded round-robin replacement; eviction changes only
+lookup cost. A failed
 binding grants no unchecked access. All unbound, cross-region and semantic
 reads/writes retain the previous facade, including failed-write atomicity and
 32-bit ceiling behavior. BE word loads/stores preserve unaligned byte layout.
@@ -49,3 +56,22 @@ and colors for each sampled frame. Those bounded comparisons do not prove every
 clip or original execution/FPSCR domain, full renderer equivalence or physical
 New 2DS XL performance. See the latest [progress](../../PROGRESS.md) and
 [optimization record](../../optimization/SOURCE_ANIMATION_RAM_ACCESS.md).
+
+The retained native Main executor and atomic mesh capture/decode now use this
+closed synchronous scope. Current/pass/reservation predicates must remain pure;
+all source header, pose lifetime and numeric/GQR checks still read fresh values.
+The W guard uses a fresh root and 24-byte BE header comparison, with native
+memcmp only over proved raw storage and byte fallback elsewhere. Structural
+tangent/scratch owner identities are proved once per closed borrow and RAII
+clears that proof before return; comparison results are never cached.
+Capture releases its lease before model geometry admission, assembly and final
+publication; no nested lease or yield is introduced. Exact current measurements
+and remaining limits are in [progress](../../PROGRESS.md).
+
+The optional closed-native replay copy service requires whole owned destination
+RAM, nonwrapping disjoint virtual/physical ranges and no physical destination
+overlap with any external region. The owned W-root word is separately excluded.
+Only positive byte copies or positive truncated-word counts are admitted; other
+cases retain the original scalar helper. Failure stores nothing, active scalar
+cursors never switch lanes, and parent service identity includes the copy slot.
+See [native publication](../display/NATIVE_ATOMIC_MESH_PUBLICATION.md).
