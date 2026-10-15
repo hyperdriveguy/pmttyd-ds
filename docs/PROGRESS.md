@@ -1,3 +1,59 @@
+### Full retained original Main cache replay (2026-10-15)
+
+Code commit 9dea7a5aa515e39b5f03f98456510dd39b2f5441 implements the complete
+8003f0f4..80040084 region: rebuild/forward/same-key, all five base copies,
+all five stream graphs and exact bulk/remainder/alias order. Entry captures,
+fresh post-copy index, GQR delta loads, texture destination/source order,
+unsigned pointer termination and malformed wrapped counters survive holds.
+Same-key reset and conditional rebuild R3c=0 are local original effects;
+final R3c=current/R40=fraction publication still awaits interpolation.
+The composed scalar/replay owner does not repeat clock/scalar work after
+successful boundaries. Fixed-size cursors allocate nothing per invocation.
+Actual VM/pool binding checks owner/aliases per primitive and requires actual
+GQR4=00060006 at quantized loads, with no assumed detached fallback.
+
+[Contract](behavior/display/RETAINED_ANIMATION_MAIN_CACHE_REPLAY.md) records
+source/hash/copy semantics/ownership and limits. Independent read-only source,
+controller and tests review found no substantive defect. Trace/hold fixtures
+cover all paths and channels, overlaps, bulk/remainder sizes, source mutation,
+zero MODEL counts and count-wrap domains. Actual cold MarioM_W/17-tick caches
+match all five admitted original sampler caches; GQR holds survive missing
+state and changed epoch without scalar replay. Native ARM harness passed
+rebuild/forward/sameKey/copies/fiveStreams/holds/aliases/malformed/actualCache/
+gqr/noScalarReplay assertions.
+
+Accepted isolated source tree bbb0083142fe15c8fde95b407a174e73b07c831a,
+base 0ce46c8ca6fa396bc3ad3b4dbdc3d52af12e2ae9: all 3971 tracked files
+and 2152 RomFS products audited exact. `TRIO_ENEMY_POSE_PACK=romfs
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test` passed 439 C++ tests (47.69 seconds)
+and 212 Python tests (33.386 seconds), zero skipped. `make all -j4 -o
+assets-ready SOUNDTRACK=gamecube` passed, including temporary ARM probe and
+restored normal build. ISO verifier passed 2 bodies/1773 instructions/
+17 constants/5 spans/2 imports/65 callers/one serialized example.
+Only four private pack/manifest products change to admit original scale
+8041fbac+4; removing that span reconstructs prior packs. Original gor_02.s
+and all art/music/SFX/story/dialogue/geometry/lighting remain unchanged.
+See [assets](ASSETS.md) for exact source/packs/license. No original data or
+binary is committed.
+
+Restored normal executable SHA256
+85ee59b18af655450ac4d9b11440a0a5f22bb12bab58ee1ae61e726d459cd4b3
+matches the pre-probe normal build. Forty-second isolated startup capture inspected: original storybook and opening US text, App60 FPS / speed100%, no visible asset-error console. This is startup evidence only, not field or physical-hardware performance validation.
+Private source/product/test/native logs, harness patch, hashes and captures
+are in ignored artifacts/animation-replay-validation-manifest.json. Scoped
+code/docs commits preserve shared index and unrelated concurrent work.
+
+Limitations: normal Game NPC animation still uses the previous path; this
+child is not full Main completion. Original PPC NaN payload/exception/alignment
+parity, original field visual/numeric parity and physical New 2DS XL performance
+remain unproven. Cooperative yields require the same producer pass; no arbitrary
+iteration cap is substituted. Future synchronous RawRamAccess nonalias bulk
+admission can reduce per-primitive overhead after correctness/measurement.
+Next implement FULL interpolation80040084..80040540 with retained entry
+captures, exact channel graphs and final40538/4053c publications. Then connect
+complete Main/Inner/platform/linked/GPU owners before claiming original NPC
+rendering. Continue inbox EVT-01; full-game/area integration remains open.
+
 ### Original timeline scans and retained scalar evaluation (2026-10-15)
 
 Code commit 31e2146095fca91dd8b9acbff1c37aa6c5027451 implements complete Main8003ef80..8003f0f4: both

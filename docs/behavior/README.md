@@ -1319,3 +1319,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Retained Main timeline/scalar evaluation](display/RETAINED_ANIMATION_MAIN_TIMELINE.md): exact scans/indices/state/fraction and time-to-timeline continuation over actual VM aliases; cache/output/full Main and normal NPC activation remain open.
 
 - [Retained original party removal](partner/RETAINED_PARTY_REMOVAL.md): complete Kill/Kill2, raw EVT clear/kill and fresh-owner Mario removal graphs; native actor/free/constructor binding remains open.
+
+- [Retained Main full cumulative cache replay](display/RETAINED_ANIMATION_MAIN_CACHE_REPLAY.md): rebuild/forward/same-key, exact copies and all five stream/alias graphs through40084; interpolation/full Main and normal NPC activation remain open.

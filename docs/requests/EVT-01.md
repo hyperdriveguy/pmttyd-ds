@@ -5235,3 +5235,7 @@ Native actor ownership through table clear/free, original definition records,
 retained ordinary reentry, auxiliary Entry2Pos(kind13) and authored harbor/plaza
 conversion remain OPEN. No early canonical join or invented scene is added.
 EVT-01 and the prologue goal remain active.
+
+### 2026-10-15 Full retained Main cache replay
+
+[Replay contract](../behavior/display/RETAINED_ANIMATION_MAIN_CACHE_REPLAY.md) implements complete original8003f0f4..80040084, both copy/rebuild and forward paths, all five stream kernels and same-key reset. Native VM/pool GQR binding and scalar/replay continuation preserve acknowledged effects across holds. Host and native assertions validate exact operation/alias/copy/counter graphs and actual original sampler caches. Full interpolation40084..40540/final publications, linked/platform/GPU owners, normal Game NPC activation and original hardware/visual/numeric parity remain OPEN. EVT-01 is not closed. Read-only next-region documentation audit is in progress.

@@ -2850,3 +2850,23 @@ cache; both inherited packs preceded current committed animation fixtures. Origi
 ELF/listing extracts and compiled products remain outside source history;
 original Nintendo material retains its original ownership/licensing. These
 controllers do not replace original records with authored story logic.
+
+### 2026-10-15 Main replay scale admission
+
+Read-only G8ME01.iso word 8041fbac+4 (3d800000, 1/16), SHA256
+2625276c57610c65a55868a40c431d1fd6651984b8ee92c081b49a98a0e9d884,
+added to the original startup/actor executable-memory whitelist. Exactly four
+RomFS products change: door-data.json (481910 bytes,
+75e1fa355d4ff6d5e88731aaf21c603333ed3b28a8cb8cfeb0fdc9c9cfb59884),
+door-data.pmevt (152964, dc5602e2e1ec5845c3d58e50295bdc45046631607b425e98d1ecd31d2da46acd),
+animation-boot/memory.json (9806,
+1364c6f147c015823a0aff92593fb4ca2191e2c15edc4dc0f1ca43c112c443f9),
+animation-boot/memory.pmevt (4824,
+8e54d3126b4166c39f6c6217bf4c009ad491a06f154b1a175a06b68cbf51e01a).
+Exact product names/hashes and removal-to-prior-pack proof are in ignored
+artifacts/animation-replay-assets-after.json and animation-replay-products.py.
+All 2152 product paths are retained; removing only this span reconstructs the
+prior packs. Original gor_02.s remains unchanged. No texture scaling, geometry,
+lighting, dialogue, music or SFX conversion in this step. Nintendo/Intelligent
+Systems original proprietary data: local development only; existing licensing
+restrictions still apply. ISO/extractions/packs/binaries remain outside history.
