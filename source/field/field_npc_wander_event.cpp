@@ -4,6 +4,9 @@
 #include <cstring>
 namespace ttyd {
 namespace {
+// Original USER_FUNC init/main identities, shared irand, reviseAngle,
+// angleABf, compAngle and animPoseGetPeraEnd. Stage numbers below are native
+// continuation labels; work+4 stores the distinct original four-phase enum.
 constexpr uint32_t Init = 0x80237878, Main = 0x802372a8, Random = 0x80005da0,
                    Revise = 0x80007328, Angle = 0x8000703c,
                    Compare = 0x800071f0, Ready = 0x80040750;
@@ -74,6 +77,9 @@ int32_t fieldNpcWanderEvent(uint32_t fn, EventEntry &e, bool first,
     c.pending = false;
     return true;
   };
+  // Init completes the EVT opcode (2); Main returns source continue (0).
+  // Both end this invocation and clear the cursor. Provider-unavailable paths
+  // also return0 but retain the cursor: the next retry must not replay effects.
   auto done = [&]() {
     c = {};
     return fn == Init ? 2 : 0;
@@ -121,6 +127,9 @@ int32_t fieldNpcWanderEvent(uint32_t fn, EventEntry &e, bool first,
       }
       c.stage = 3;
       break;
+    // _mapAlloc(root cell8041e808, 44 bytes); publish through actual entry+c4
+    // (LW10), then reload before initializing. Allocator owns alignment/zeroing;
+    // this helper must not substitute local storage or free it on event return.
     case 3:
       if (!c.pending) {
         uint32_t root = 0;
@@ -145,6 +154,10 @@ int32_t fieldNpcWanderEvent(uint32_t fn, EventEntry &e, bool first,
       store(c.work + 12, 0);
       c.stage = 5;
       break;
+    // Source sysMsec2Frame calls6000/9000/1500 store independently at10/14/18.
+    // Work44 bytes: flags0, phase4, count8, flips+c, frame budgets10/14/18,
+    // anchor XYZ1c/20/24, radius28. Init captures actor Y only after callbacks;
+    // actor speed1b0 and flag00400000 select later NPC-main component use.
     case 5:
     case 6:
     case 7: {
@@ -166,6 +179,9 @@ int32_t fieldNpcWanderEvent(uint32_t fn, EventEntry &e, bool first,
       save(c.actor + 0x1b0, c.values[3]);
       store(c.actor, word(c.actor) | 0x00400000);
       return done();
+    // Each genuine Main invocation reacquires Mario, entry+c4 work and phase.
+    // Source phases0/1/2/3 select movement setup/move/idle setup/idle. Other
+    // phase values return continuing0 without a fabricated transition.
     case 20:
       if (!c.pending)
         begin(0x8005e0c0);
@@ -186,6 +202,9 @@ int32_t fieldNpcWanderEvent(uint32_t fn, EventEntry &e, bool first,
                              : 100;
       break;
     }
+    // Duration = signed budget/2 + irand(signed budget/2+1), with fresh budget
+    // after the RNG call. Phase0 keeps the multiple of20 via signed division,
+    // not the remainder. Count is U32; decrement transitions on exact zero only.
     case 30:
     case 80:
     case 91: {
@@ -208,6 +227,9 @@ int32_t fieldNpcWanderEvent(uint32_t fn, EventEntry &e, bool first,
         c.stage = c.stage == 80 ? 81 : 92;
       break;
     }
+    // Random heading offset irand(60)-30 degrees. turn publishes yaw144,
+    // then reads it back into movement heading1ac. Idle flip stage93 later
+    // updates yaw only; it intentionally leaves movement heading unchanged.
     case 31:
     case 81:
       if (!c.pending) {
@@ -235,6 +257,8 @@ int32_t fieldNpcWanderEvent(uint32_t fn, EventEntry &e, bool first,
       store(c.work + 12, 0);
       c.stage = (word(c.work) & 0x10000) ? 83 : 84;
       break;
+    // Flag10000 enables2+(irand(1000)%3) idle flips. Remainder and signed
+    // narrowing stay source-shaped; this is not a fresh uniform draw bound3.
     case 83:
       if (!c.pending) {
         begin(Random);
@@ -270,6 +294,9 @@ int32_t fieldNpcWanderEvent(uint32_t fn, EventEntry &e, bool first,
         return 0;
       save(c.actor + 0x144, float(c.response.number));
       return done();
+    // distABf captures horizontal distance once for this invocation. Each
+    // reached paper-readiness query stays separate; successful providers may
+    // mutate pose/actor aliases between those queries and later source reads.
     case 40:
       if (!c.pending) {
         begin(0x8000722c);
@@ -346,6 +373,9 @@ int32_t fieldNpcWanderEvent(uint32_t fn, EventEntry &e, bool first,
       store(c.work, word(c.work) & (c.stage == 43 ? ~2u : ~3u));
       c.stage = c.stage == 43 ? 45 : c.stage == 50 ? 51 : 54;
       break;
+    // marioGetTouchNpcPtr uses the prior radial hint, not collision contact.
+    // Both strict abs(compAngle)<90 tests and strict distance<radius must pass
+    // for the180-degree avoidance turn. Equality does not enter that branch.
     case 46:
       if (!c.pending)
         begin(0x80096948);
@@ -389,6 +419,10 @@ int32_t fieldNpcWanderEvent(uint32_t fn, EventEntry &e, bool first,
       } else
         c.stage = 51;
       break;
+    // Decrement/phase2 transition precedes movement and audio. Components
+    // remain untouched when this branch exits or paper readiness rejects it.
+    // Ready movement uses min(speed*dt, 20*speed/1000), with dt in seconds;
+    // NPC-main consumes X1b4/Z1bc later instead of this helper moving roots.
     case 54:
       store(c.work + 8, word(c.work + 8) - 1);
       if (!word(c.work + 8)) {
@@ -397,6 +431,9 @@ int32_t fieldNpcWanderEvent(uint32_t fn, EventEntry &e, bool first,
       }
       c.stage = 55;
       break;
+    // Source binary32 tau=6.2831854820251465; convert degrees/360 for sin/cos.
+    // Recompute each input from fresh heading, retain double result until frsp;
+    // X=step*sin, Z=-step*cos. This does not assert native/Gekko libm parity.
     case 56:
     case 57:
       if (!c.pending) {
@@ -411,6 +448,9 @@ int32_t fieldNpcWanderEvent(uint32_t fn, EventEntry &e, bool first,
                                    : -float(c.response.number)));
       ++c.stage;
       break;
+    // psndGetFlag mask100 plus material flags1800 clear adds sound ID mask
+    //10000. Material query uses actual pose104. Names/samples are not guessed:
+    // searchPSSFXList precedes psndSFXOnEx_3D(ID|mask, root, 255, 255, 0, 8).
     case 58:
       if (!c.pending)
         begin(0x800dc0e8);
@@ -430,6 +470,9 @@ int32_t fieldNpcWanderEvent(uint32_t fn, EventEntry &e, bool first,
         c.mask = 0x10000;
       c.stage = 60;
       break;
+    // Sound half period1e8 / fresh speed1b0; strict elapsed1dc>threshold.
+    // Toggle1d8 chooses sound names1e0/1e4. Even no name reaches reset/toggle;
+    // toggle stores signed low byte of1-old into halfword, not a bool negation.
     case 60: {
       const float period = float(half(c.actor + 0x1e8)),
                   speed = load(c.actor + 0x1b0),
@@ -471,6 +514,9 @@ int32_t fieldNpcWanderEvent(uint32_t fn, EventEntry &e, bool first,
       c.stage = 64;
       break;
     }
+    // Advance elapsed only if second sound name exists or toggle is nonzero.
+    // Fused1000*dt+elapsed is intentional; do not replace by split multiply/add.
+    // Local constants are compiled recovered values, not mutable guest loads.
     case 64:
       if (word(c.actor + 0x1e4) || int16_t(half(c.actor + 0x1d8)) != 0) {
         const float dt = load(c.actor + 0x1a4), elapsed = load(c.actor + 0x1dc);

@@ -7,10 +7,14 @@ constexpr uint32_t Parent=0x80042854;
 float asFloat(uint32_t bits){float value;std::memcpy(&value,&bits,4);return value;}
 double asDouble(uint64_t bits){double value;std::memcpy(&value,&bits,8);return value;}
 uint32_t bits(float value){uint32_t result;std::memcpy(&result,&value,4);return result;}
+// Force binary32 rounding at original fsubs/fmuls/frsp boundaries; the widened
+// angle goes to an explicitly adapted native double tan, not exact Gekko libm.
 float rounded(float value){volatile float result=value;return result;}
 struct Operations {
  const AnimationInitializeServices& s;AnimationInitializeCursor& c;
  bool load(uint32_t a,uint32_t& value){auto v=s.memory.word?s.memory.word(s.memory.user,a):std::nullopt;if(!v)return false;value=*v;return true;}
+ // W is the live source work-pointer cell80415dc0. Reload at the original
+ // publication points; mutating W through services is observable.
  bool work(){return load(0x80415dc0,c.work);}
  bool store(uint32_t a,uint32_t value){return s.memory.store && s.memory.store(s.memory.user,a,value);}
  bool call(uint32_t function,std::array<uint32_t,5> args={}){
@@ -26,6 +30,10 @@ bool initializeAnimation(const AnimationInitializeServices& s,AnimationInitializ
  Operations m{s,c};
  for(;;)switch(c.phase){
  case 0:if(!m.work())return false;++c.phase;break;
+ // Counts64/64/256/1024 at W4/c/14/f0 and cursor f4=0. Heap0 allocations
+ // use current counts*16/12/170(hex)/12 for resource/secondary/pose/aux rows.
+ // Capture size across the child; publish its result through freshly loaded W.
+ // Source has no allocation-null guard, cleanup or blanket per-pool clear.
  case 1:{constexpr uint32_t offsets[]={4,0xc,0x14,0xf0,0xf4},values[]={64,64,256,1024,0};
   if(!m.store(c.work+offsets[c.index],values[c.index]))return false;
   if(++c.index<5){c.phase=0;break;}c.index=0;++c.phase;break;}
@@ -41,6 +49,9 @@ bool initializeAnimation(const AnimationInitializeServices& s,AnimationInitializ
  case 7:if(!m.work())return false;++c.phase;break;
  case 8:if(!m.store(c.work+0xe8,0))return false;c.phase=2;break;
  case 10:if(!m.work())return false;++c.phase;break;
+ // Explicit scalar stores only; d8/dc=1, others listed=0. Wf8/fc survive.
+ // Even after104=0, retain its fresh null test before allocating180000(hex)
+ // scratch. Reentering this cold parent can orphan old pools; it is not reset.
  case 11:{constexpr uint32_t offsets[]={0x30,0x34,0x38,0x24,0x28,0x2c,0xcc,0xd0,0xd4,0xd8,0xdc,0x104,0x10c};
   if(!m.store(c.work+offsets[c.index],c.index==9 || c.index==10?1:0))return false;
   if(++c.index<13){c.phase=10;break;}c.index=0;++c.phase;break;}
@@ -58,6 +69,11 @@ bool initializeAnimation(const AnimationInitializeServices& s,AnimationInitializ
   if(!value)return false;
   c.bias=asDouble(*value);c.phase=22;break;}
  case 22:if(!m.store(c.work+0x108,c.pointer))return false;++c.phase;break;
+ //178 table entries for signed degrees-89..88. XOR80000000 and double
+ //43300000 high word implement the PPC integer-bias conversion; subtract the
+ // captured bias802c1070 then round before multiplying factor8041fbb4.
+ // Original factor bits3c8efa33 differ from exact pi/180. Table803d9580,
+ // zero-angle row803d96e4; pending table store must not rerun completed tan.
  case 23:{const uint32_t low=uint32_t(int32_t(c.index)-89)^0x80000000u;
   const float converted=rounded(float(asDouble(0x4330000000000000ULL|low)-c.bias));
   c.angle=double(rounded(c.factor*converted));++c.phase;break;}
@@ -65,6 +81,10 @@ bool initializeAnimation(const AnimationInitializeServices& s,AnimationInitializ
   c.value=bits(rounded(float(c.tangentResult)));c.pending=Parent;++c.phase;break;
  case 25:if(!m.store(0x803d9580+4*c.index,c.value))return false;
   c.phase=++c.index<178?23:26;break;
+ // fileAllocf(type0, literal a/vivian.bin at802c11d8). Nonnull H+a0 is a
+ // holder pointer; capture destination WORD80415db4 then dereference holder.
+ // memcpy_as4 copiesc00 bytes, then reload holder/payload for16 tail bytes to
+ //80415da0. Null H skips copies/free; source adds no payload-length guard.
  case 26:if(!m.call(0x8018a61c,{0,0x802c11d8}))return false;c.handle=c.call.result;c.phase=c.handle?28:36;break;
  case 28:if(!m.load(c.handle+0xa0,c.holder))return false;++c.phase;break;
  case 29:if(!m.load(0x80415db4,c.destination))return false;++c.phase;break;
@@ -74,6 +94,9 @@ bool initializeAnimation(const AnimationInitializeServices& s,AnimationInitializ
  case 33:if(!m.load(c.holder,c.payload))return false;++c.phase;break;
  case 34:if(!m.call(0x80005634,{0x80415da0,c.payload+0xc00,16}))return false;++c.phase;break;
  case 35:if(!m.call(0x8018a260,{c.handle}))return false;++c.phase;break;
+ // fileSetCurrentArchiveType(0), then fileAllocf(type0, a/ag2tg.bin at
+ //802c11e8). Publish returned handle, including0, to freshly loaded W100.
+ // No immediate release: real file reference/holder/archive owner retains it.
  case 36:if(!m.call(0x80189d38,{0}))return false;++c.phase;break;
  case 37:if(!m.call(0x8018a61c,{0,0x802c11e8}))return false;c.handle=c.call.result;++c.phase;break;
  case 38:if(!m.work())return false;++c.phase;break;

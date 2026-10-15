@@ -4,11 +4,17 @@
 namespace ttyd {
 namespace {
 struct Lock {LightLock& mutex;explicit Lock(LightLock& value):mutex(value){LightLock_Lock(&mutex);}~Lock(){LightLock_Unlock(&mutex);}};
+// Native selector IDs18/19 correspond to original fanfare rows217/219.
+// All stream/group/tail mutations below hold musicMutex; itemGetBgmMain is an
+// internal already-locked step, not an independently synchronized entry.
 constexpr int KeyItemTrack=18;
 constexpr int CoinTrack=19;
 }
 bool Audio::keyItemFanfareReady() {return itemFanfareReady(KeyItemTrack);}
 bool Audio::coinFanfareReady() {return itemFanfareReady(CoinTrack);}
+// Attempt result caches per fanfare (including failure). Require canonical
+//44-byte WAV, 32000Hz, stereo16, exact profile frame count and file length;
+// a .loop sidecar rejects these nonlooping original COMMON restart markers.
 bool Audio::itemFanfareReady(int track) {
     const auto* profile=itemGetFanfareProfile(track);if(!ready || !profile)return false;
     Lock lock(musicMutex);
@@ -29,6 +35,9 @@ bool Audio::itemFanfareReady(int track) {
 }
 bool Audio::prepareFieldItemGetAudio() {return prepareItemGetAudio(KeyItemTrack);}
 bool Audio::prepareFieldCoinGetAudio() {return prepareItemGetAudio(CoinTrack);}
+// Preparation retains field track0 and envelope base70/global100. Muted
+// presentation may start that logical owner. Needs one free of3 native streams
+// and no fanfare/group tail; it does not evict music to force admission.
 bool Audio::prepareItemGetAudio(int track) {
     if(!itemFanfareReady(track))return false;
     Lock lock(musicMutex);retireKeyItemFanfare();
@@ -41,6 +50,8 @@ bool Audio::prepareItemGetAudio(int track) {
     if(itemGetFieldSlot>=0)return itemGetFieldSlot==int(musicSlot) && itemGetFieldTrack==0;
     itemGetFieldSlot=int(musicSlot);itemGetFieldTrack=0;itemGetFieldEnvelope.bind(70,100,false);return true;
 }
+// EOF is insufficient to release a stream while NDSP buffers remain queued
+// or playing. Retain clean tail ownership until hardware queue drains.
 void Audio::retireKeyItemFanfare() {
     const int slots[2]={keyItemSlot,keyItemTailSlot};
     for(int slot:slots){
@@ -56,6 +67,9 @@ void Audio::retireKeyItemFanfare() {
 }
 bool Audio::beginKeyItemFanfare(int32_t gpRate) {return beginItemGetFanfare(KeyItemTrack,gpRate);}
 bool Audio::beginCoinFanfare(int32_t gpRate) {return beginItemGetFanfare(CoinTrack,gpRate);}
+// gpRate is live source simulation rate, not render FPS. Fresh group admission
+// requires a free native stream; source replacement of an active group remains
+// unavailable. Start publishes the initial envelope before returning.
 bool Audio::beginItemGetFanfare(int track,int32_t gpRate) {
     if(gpRate<=0 || !itemFanfareReady(track))return false;
     Lock lock(musicMutex);retireKeyItemFanfare();
@@ -71,6 +85,8 @@ bool Audio::beginItemGetFanfare(int track,int32_t gpRate) {
     // Source On_f_d invokes all admitted groups before returning.
     return itemGetBgmMain(gpRate);
 }
+// Source-like result domain:-1 absent/unavailable, 0 active logical group.
+// A detached tail may still play after the group check returns-1.
 int32_t Audio::keyItemFanfareCheck() {
     if(!ready)return -1;
     Lock lock(musicMutex);retireKeyItemFanfare();return keyItemSlot<0?-1:0;
@@ -102,6 +118,9 @@ bool Audio::itemGetBgmMain(int32_t gpRate) {
     }
     return true;
 }
+// Source outer ordering is BGMMain then SoundSSMain. Detach transfers slot
+// ownership to the tail; its first subtraction may occur in the SAME call.
+// Tick once per admitted source visit, not once per audio buffer/render frame.
 bool Audio::tickKeyItemAudio(int32_t gpRate) {
     if(!ready || gpRate<=0)return false;
     Lock lock(musicMutex);retireKeyItemFanfare();
@@ -128,6 +147,8 @@ bool Audio::itemGetFieldMusicSilent() {
     if(!ready)return false;
     Lock lock(musicMutex);return itemGetFieldSlot>=0 && itemGetFieldEnvelope.silent();
 }
+// Source1000ms field envelope operations3800/A0 use live gpRate conversion.
+// Resume retains file/cursor (NULLcontinue), never fopen/seek/restart the song.
 bool Audio::muteItemGetFieldMusic(int32_t gpRate) {
     if(!ready)return false;
     const auto duration=fieldBgmDuration(1000,gpRate);if(!duration)return false;

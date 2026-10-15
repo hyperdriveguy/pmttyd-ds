@@ -1,6 +1,9 @@
 #pragma once
 #include "positional_sfx_registry.hpp"
 #include <array>
+// Immutable20-byte BE rows: name pointer0, descriptor4, volume12, pan13,
+// flags14, mode15, priority16, delay17, variation18. Row accessors require admitted
+// offsets; array bounds are not independently checked in word/half.
 namespace ttyd {
 struct PositionalSfxRow {
     // Exact original20-byte immutable table row, including name/descriptor words.

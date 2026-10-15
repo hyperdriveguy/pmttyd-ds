@@ -1,6 +1,9 @@
 #pragma once
 #include "field_wall.hpp"
 #include <cstdint>
+// Typed compatibility surface: work retains source phases/counters; actor
+// token/contact are caller identities, not guest addresses. Packed event routing
+// uses field_npc_wander_event and its own admitted aliases/continuation cursor.
 namespace ttyd {
 // Source Event+c4 work. Units and frame/RNG providers belong to their callers.
 struct NpcWanderWork {

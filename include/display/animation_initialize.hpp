@@ -1,5 +1,8 @@
 #pragma once
 #include "battle_sequence_entry.hpp"
+// The cursor owns successful child results and captured operands across holds.
+// Retain the same service/guest owners until completion; false never authorizes
+// restarting cold initialization or treating prior allocations as rolled back.
 namespace ttyd {
 struct AnimationInitializeServices {
  BattleSequenceEntryServices memory;

@@ -14,6 +14,8 @@ void turn(NpcWanderActor& actor,float heading) {
     actor.yaw=npcReviseAngle(heading);actor.moveHeading=actor.yaw;
 }
 }
+// Pose mask8 gates turning until raw abs(target-retained)<10 degrees;
+// this comparison does not wrap across360. npcCompAngle handles other tests.
 bool npcWanderTurnReady(uint32_t flags,float retained,float target) {
     return !(flags&8) || std::fabs(target-retained)<10.f;
 }
@@ -37,6 +39,11 @@ void initializeNpcWander(NpcWanderWork& work,NpcWanderActor& actor,float x,float
     work.moveFrames=s.frames(s.user,6000);work.idleFrames=s.frames(s.user,9000);work.flipFrames=s.frames(s.user,1500);
     work.anchor={x,actor.root.y,z};work.radius=radius;actor.speed=speed;actor.flags|=0x00400000;
 }
+// Four source phases: 0 choose movement, 1 produce components, 2 choose idle,
+//3 idle/flips. Work flags masks1/2 latch boundary correction, 10000 allows flips.
+// Actor400000 marks component ownership; phase visits do not integrate roots.
+// Readiness/RNG order is observable, while this typed API has no resumable false
+// provider contract. Packed scheduling belongs to the event adapter instead.
 int tickNpcWander(NpcWanderWork& w,NpcWanderActor& a,const NpcWanderMario& mario,const NpcWanderServices& s) {
     assert(s.random && s.turnReady && s.angle && s.distance && s.sine && s.cosine);
     const auto ready=[&]{return s.turnReady(s.user,a);};
@@ -70,6 +77,9 @@ int tickNpcWander(NpcWanderWork& w,NpcWanderActor& a,const NpcWanderMario& mario
         float step=a.speed*a.dt;if(step>=cap)step=cap;
         const float radians=(6.2831854820251465f*a.moveHeading)/360.f;
         a.components.x=step*s.sine(s.user,radians);a.components.z=step*-s.cosine(s.user,radians);
+        // Sound100 and material1800 gates produce request modifier10000.
+        // period/speed uses strict elapsed>threshold, no zero-speed guard;
+        //255 volume/pan sent by backend mean original default selection.
         const uint32_t mask=(a.soundFlags&0x100) && !(a.materialFlags&0x1800)?0x10000:0;
         const float threshold=float(a.stepPeriod)/a.speed;
         if(a.stepElapsed>threshold) {

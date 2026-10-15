@@ -1,6 +1,8 @@
 #include "platform.hpp"
 #include "audio_policy.hpp"
 namespace ttyd {
+// OpeningSequence owns logical BGM selection/volumes; this publishes the
+// snapshot after servicing the separately owned map-turn effect.
 void Audio::updateFrontend(const OpeningSequence& opening,bool enabled){
     if(!ready)return;
     updateOpeningMapTurn(opening,enabled);
@@ -8,6 +10,12 @@ void Audio::updateFrontend(const OpeningSequence& opening,bool enabled){
     if(!opening.openingMusicOwned()){updateFrontend(-1,true);return;}
     const auto state=opening.mapBgm.snapshot();frontendMusic(state.tracks,state.volumes);
 }
+// One native attempt per admitted transition request. Disabling/clearing the
+// request clears dedicated channel19 and resets attempt state; load failure is
+// not retried every frame while the same request stays active. Cache mono16
+// PCM up to512Ki frames (~1MiB); 44-byte canonical header comes from policy.
+// Flush linear memory before NDSP reads it. Mix12 entries are the NDSP matrix;
+// preserve source volume100/pan64 scaled by127, including its asymmetric gains.
 void Audio::updateOpeningMapTurn(const OpeningSequence& opening,bool enabled){
     if(!enabled || !opening.mapTransition.entryRequested){
         ndspChnWaveBufClear(19);openingMapSoundAttempted=false;return;

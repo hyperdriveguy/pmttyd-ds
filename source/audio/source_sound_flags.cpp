@@ -1,5 +1,9 @@
 #include "source_sound_flags.hpp"
 namespace ttyd {
+// OR/publish once, narrow16 bits. Initial mask1 gate selects BGM groups0/1
+// via800dabac, duration1000ms/flags0. After BOTH callbacks, re-read current
+// mask2 gate for environment groups0/1 via800d7470. False resumes that child;
+// changing flags in a callback can affect ENV without replaying the BGM calls.
 bool SourceSoundFlags::set(uint32_t mask,const SoundFlagServices& s,SoundFlagCursor& c){
     if(!c.active){
         const uint32_t result=uint32_t(value_)|mask;value_=uint16_t(result);

@@ -1,6 +1,11 @@
 #pragma once
 #include <array>
 #include <cmath>
+// Shared legacy table adaptation, not a serialized original tangent asset.
+//178 rows span signed degrees-89..88, index89 is zero; factor3c8efa33 is
+// original binary32 0.017453288659453392, not an exact pi/180 substitute.
+// Static local initialization generates once per process and need not follow
+// live source animInit cadence or alias guest tangent storage.
 namespace ttyd {
 // Native libm adaptation of animInit's runtime table; no Gekko tan parity claim.
 inline float animationTangentRounded(float value){volatile float result=value;return result;}

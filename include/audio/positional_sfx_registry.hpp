@@ -2,6 +2,9 @@
 #include <array>
 #include <cstdint>
 #include <optional>
+//40 typed public slots retain source metadata without serializing a guest
+// record. Initialize resets key/engine/flags only; generation and other fields
+// deliberately survive a later public-bank reinitialization.
 namespace ttyd {
 struct PositionalSfxSlot {
     int32_t key=0;

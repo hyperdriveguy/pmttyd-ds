@@ -1,6 +1,9 @@
 #pragma once
 #include "battle_sequence_entry.hpp"
 #include <memory>
+// Nested cursors retain parent/child state, including successful allocations.
+// active resumes only the same function; callers keep original memory/services
+// alive. A false result leaves publications intact rather than rolling back.
 namespace ttyd {
 struct AnimationBufferCursor {
  bool active=false,queued=false;

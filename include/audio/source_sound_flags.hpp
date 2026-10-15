@@ -1,5 +1,8 @@
 #pragma once
 #include <cstdint>
+// Retained low16 flag word and per-call fade cursor. Clearing bits invokes
+// no fade. A held set resumes its original publication/children even if the
+// caller supplies a different mask; use a fresh cursor for a distinct call.
 namespace ttyd {
 enum class SoundFlagFade {Bgm,Environment};
 struct SoundFlagServices {

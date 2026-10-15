@@ -1,5 +1,8 @@
 #pragma once
 #include "field_npc_actor_event.hpp"
+// Continuation identity includes provider user, EventEntry pointer/ID, original
+// function and guest entry address. Keep admitted actor/work aliases alive
+// across a hold; recycling an actor inside a request violates that lifetime.
 namespace ttyd {
 // Original callee identity and captured ABI inputs. Floats are source-unit
 // operands; sine/cosine return double in number. Sound uses

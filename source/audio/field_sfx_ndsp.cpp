@@ -1,6 +1,10 @@
 #include "field_sfx_ndsp.hpp"
 #include <3ds.h>
 namespace ttyd {
+// Handle low8=slot, next16=generation. Reject duplicate live channel or
+// conflicting descriptor for the same low13-bit key. Effect attach requires
+// descriptor20000000 with stream/song masksc0000000 clear; pending skips that
+// voice admission and stores engine=-1, queued mask1. No On backend is invented.
 bool FieldSfxNdsp::install(int32_t handle,int32_t key,uint32_t descriptor,int32_t channel,bool pending) {
  const unsigned index=uint32_t(handle)&255;
  if(handle<0 || index>=registry_.slots.size() || key<0 || registry_.slots[index].key!=-1)return false;
@@ -17,6 +21,9 @@ bool FieldSfxNdsp::install(int32_t handle,int32_t key,uint32_t descriptor,int32_
 }
 bool FieldSfxNdsp::attach(int32_t h,int32_t k,uint32_t d,int32_t c){return install(h,k,d,c,false);}
 bool FieldSfxNdsp::attachPending(int32_t h,int32_t k,uint32_t d){return install(h,k,d,-1,true);}
+// Mirrors Off's occupancy/queued/engine gates, not Chk's generation test.
+// Empty/pending/engine=-1 needs no NDSP backend. Live unsupported descriptors
+// remain unavailable so a later caller cannot acknowledge a fabricated stop.
 bool FieldSfxNdsp::canOff(int32_t handle,bool available) const {
  if(handle==-1)return true;
  const unsigned index=uint32_t(handle)&255;if(index>=registry_.slots.size())return false;
@@ -37,6 +44,8 @@ PositionalSfxStopServices FieldSfxNdsp::services() {
   return false;
  };return s;
 }
+// Clear walks low slot indices because source Off ignores generation. A
+// failed provider retains that and later slots; already stopped slots stay free.
 bool FieldSfxNdsp::clear() {
  for(unsigned i=0;i<registry_.slots.size();++i)if(registry_.slots[i].key!=-1 && !registry_.off(int32_t(i),services()))return false;
  return true;

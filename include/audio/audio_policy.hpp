@@ -2,6 +2,8 @@
 #include "game.hpp"
 #include <cstdint>
 #include <cstring>
+// Native cue/track selectors are presentation policy. They are separate from
+// original table row IDs, source SFX handles and NDSP hardware channel numbers.
 namespace ttyd {
 enum class AudioCue : int { None=-1, Confirm, Jump, Hit, Success, Guard };
 inline AudioCue audioCue(const Game& game) {
@@ -14,6 +16,9 @@ inline AudioCue audioCue(const Game& game) {
     default:return AudioCue::None;
     }
 }
+// Native base tracks0 field/1 battle/2 victory;-1 means silence. Defeat
+// suppresses a track. soundtrackTrack applies district/danger/thinking, then
+// nonzero professor override last; disabled always returns-1 before overrides.
 inline int audioTrack(Scene scene,bool enabled) {
     if(!enabled || scene==Scene::Defeat || scene==Scene::FieldDefeat)return -1;
     return scene==Scene::Battle?1:scene==Scene::Victory?2:0;
@@ -26,6 +31,8 @@ inline int soundtrackTrack(Scene scene,bool enabled,bool harborDanger,int profes
     const bool field=scene==Scene::Explore || scene==Scene::Dialogue;
     if(field) {
         if(switchSoundtrack) {
+            // Native rooms0..5 map plaza, harbor, east, west, station, underground.
+            // Switch13..16 are district variants; 11 underground, 17 battle-think.
             constexpr int districts[]={0,13,14,15,16,11};
             if(room<6)track=districts[room];
         } else if(room==5)track=11;
@@ -65,10 +72,16 @@ inline const char* musicAssetPath(int track,bool switchSoundtrack) {
 }
 struct PcmHeader {uint32_t rate=0,channels=0,frames=0;};
 struct ItemGetFanfareProfile {int track,row;uint32_t frames;uint8_t volume,pan;bool bypassGlobal;};
+// Original rows217/219: 83888/65352 stereo frames at32000Hz, volume80,
+// pan64, global-volume bypass. Tracks18/19 are native selector IDs, not rows.
 inline const ItemGetFanfareProfile* itemGetFanfareProfile(int track) {
     static constexpr ItemGetFanfareProfile profiles[]={{18,217,83888,80,64,true},{19,219,65352,80,64,true}};
     return track==18?&profiles[0]:track==19?&profiles[1]:nullptr;
 }
+// Canonical44-byte LE RIFF/WAVE only: fmt size16, PCM format1, 16-bit samples,
+//1/2 channels, 8..48kHz, whole interleaved frames, exact byte/block rates and
+// RIFF size=dataBytes+36. Extra chunks/compressed formats are not accepted.
+// Caller must supply44 readable bytes and validate payload length separately.
 inline bool pcmHeader(const unsigned char* p,PcmHeader& out) {
     auto u16=[p](int i)->uint32_t {return p[i]|uint32_t(p[i+1])<<8;};
     auto u32=[p](int i)->uint32_t {return p[i]|uint32_t(p[i+1])<<8|uint32_t(p[i+2])<<16|uint32_t(p[i+3])<<24;};

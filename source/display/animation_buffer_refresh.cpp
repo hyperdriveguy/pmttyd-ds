@@ -2,6 +2,9 @@
 #include <cstring>
 namespace ttyd {
 namespace {
+// Source parents: animPoseBattleInit41c58, Refresh41c84, testAlloc42ac8,
+// initTestHeap42e5c, animPose_AllocBuffer41ee0 (all80000000 base).
+// Internal Rebuild1/Restore2 are native traversal continuations, not guest calls.
 constexpr uint32_t Battle=0x80041c58,Refresh=0x80041c84,Allocate=0x80042ac8,Reset=0x80042e5c,Pose=0x80041ee0;
 constexpr uint32_t Rebuild=1,Restore=2;
 bool run(uint32_t,uint32_t,const BattleSequenceEntryServices&,AnimationBufferCursor&,unsigned);
@@ -15,6 +18,8 @@ struct Operations {
   if(!c.queued){c.call={};c.call.function=fn;c.call.args=args;c.queued=true;}
   c.pending=fn;if(!s.call || !s.call(s.user,c.call))return false;c.queued=false;return true;
  }
+ // Child success feeds its result back exactly once. Rebuild/Restore also
+ // propagate their captured W; other children do not silently replace it.
  bool child(uint32_t fn,uint32_t bytes=0){
   if(!c.child)c.child=std::make_unique<AnimationBufferCursor>();
   if(!run(fn,bytes,s,*c.child,depth+1))return false;
@@ -33,6 +38,9 @@ bool run(uint32_t fn,uint32_t bytes,const BattleSequenceEntryServices& s,Animati
   c={};c.active=true;c.function=fn;c.bytes=bytes;c.pose=fn==Pose?bytes:0;c.pending=fn>2?fn:Refresh;
  }else if(c.function!=fn)return false;
  Operations m{s,c,depth};
+ // W80415dc0:+104 scratch base,+108 allocation cursor,+10 pose array,
+ // +14 pose count,+10c battle selector. Battle marks selector1 then Refresh.
+ // Reset/Refresh lazily allocate heap0/180000(hex), then reset cursor to base.
  if(fn==Battle){for(;;)switch(c.phase){
   case 0:if(!m.work())return false;++c.phase;break;
   case 1:if(!m.store(c.work+0x10c,1))return false;++c.phase;break;
@@ -51,6 +59,10 @@ bool run(uint32_t fn,uint32_t bytes,const BattleSequenceEntryServices& s,Animati
   case 8:if(fn==Reset)return m.done();if(!m.child(Rebuild))return false;return m.done();
   default:return false;
  }}
+ // Pose rows170(hex): nonzero flags0 admitted. Battle selector chooses
+ // nonzero pose+c; ordinary selector excludes exactly1. Count comparison is
+ // signed and fresh each row; do not equate active with visible/rendered.
+ // Model path: W0 resource records16 bytes -> +8 handle -> +a0 holder -> payload.
  if(fn==Rebuild || fn==Restore){for(;;)switch(c.phase){
   case 0:if(!m.work())return false;++c.phase;break;
   case 1:if(!m.load(c.work+0x14,c.value))return false;if(signedWord(c.index)>=signedWord(c.value))return m.done();++c.phase;break;
@@ -66,6 +78,9 @@ bool run(uint32_t fn,uint32_t bytes,const BattleSequenceEntryServices& s,Animati
   case 23:if(!m.load(c.value+16*c.model+8,c.value))return false;++c.phase;break;
   case 24:if(!m.load(c.value+0xa0,c.value))return false;++c.phase;break;
   case 25:if(!m.load(c.value,c.model))return false;++c.phase;break;
+  // Eight reservations: model counts f0, f0, f8, f8, 13c, 140, 140, 12c times
+  //12, 12, 12, 12, 1, 4, 4, 24 -> pose48/4c/50/54/58/60/64/68. Copy58->5c,
+  //68->6c aliases current cursors. Rebuild deliberately writes pose3c=-1 twice.
   case 26:{constexpr uint32_t offsets[]={0xf0,0xf0,0xf8,0xf8,0x13c,0x140,0x140,0x12c};
    if(!m.load(c.model+offsets[c.buffer],c.bytes))return false;
    c.bytes*=c.buffer<4?12:c.buffer==4?1:c.buffer<7?4:24;++c.phase;break;}
@@ -94,6 +109,9 @@ bool run(uint32_t fn,uint32_t bytes,const BattleSequenceEntryServices& s,Animati
   case 7:{constexpr uint32_t offsets[]={0xf0,0xf0,0xf8,0xf8,0x13c,0x140,0x140,0x12c};
    if(!m.load(c.model+offsets[c.buffer],c.bytes))return false;
    c.bytes*=c.buffer<4?12:c.buffer==4?1:c.buffer<7?4:24;++c.phase;break;}
+  // Round requests up to32 bytes with source U32 wrap. Advance W108 before
+  // unsigned STRICT cursor<base+180000 test: exact end overflows. Preserve
+  // first saved cursor even when observable callbacks mutate later cursor.
   case 8:c.aligned=(c.bytes+31)&~31u;++c.phase;break;
   case 9:if(!m.load(c.work+0x108,c.value))return false;++c.phase;break;
   case 10:if(!m.store(c.work+0x108,c.value+c.aligned))return false;++c.phase;break;
@@ -122,6 +140,10 @@ bool run(uint32_t fn,uint32_t bytes,const BattleSequenceEntryServices& s,Animati
   case 33:if(!m.store(c.pose+0x3c,0xffffffff))return false;return m.done();
   default:return false;
  }}
+ // Overflow recovery differs by parent. Pose first resets/restores, then
+ // Refresh + recursive testAlloc; testAlloc first rebuilds inline, then resets/
+ // restores, then Refresh + recursive testAlloc. Native recursion depth64 is
+ // an admission hold, not source success or permission to overwrite live poses.
  // testAlloc: three literal reservations with source unsigned strict-end test.
  for(;;)switch(c.phase){
  case 0:c.aligned=(c.bytes+31)&~31u;if(!c.attempt && !m.work())return false;++c.phase;break;

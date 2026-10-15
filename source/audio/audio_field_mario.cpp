@@ -1,4 +1,7 @@
 #include "platform.hpp"
+// Native presentation mute remixes all3 retained BGM slots under mutex; the
+// field stream/logical envelope still exists. Motion-post binding is installed
+// only when the original OLD-motion cleanup has actual stop ownership.
 namespace ttyd {
 void Audio::muteFieldItemPresentation(bool mute) {
  LightLock_Lock(&musicMutex);
@@ -8,6 +11,8 @@ void Audio::muteFieldItemPresentation(bool mute) {
  }
  LightLock_Unlock(&musicMutex);
 }
+//0 requires idle+secondary Off, 10 fall Off; 1/2/3/11/15 are no-op posts.
+// Readiness is checked again when called because handles/backend may change.
 bool Audio::fieldMarioPostReady(unsigned old) const {
  if(!fieldMarioOwner)return false;
  const auto& handles=fieldMarioOwner->fieldMarioSoundHandles();

@@ -8,6 +8,8 @@ Recovered original behavior and its evidence remain in
 
 | Guide | Implementation covered |
 | --- | --- |
+| [Audio services](audio-services.md) | Sound slots/handles, pending starts, fades, fanfares and opening adapters |
+| [Wander/animation services](wander-animation-services.md) | Event continuations, cold pools/tangents and recursive scratch recovery |
 | [Runtime ownership](runtime.md) | Native main loop, physical input, audio and frontend |
 | [Game composition](game-composition.md) | Room collision, units, tick order, restore and follower ownership |
 | [Checkpoint bytes](save-format.md) | Native save encoder, decoder and file replacement |
@@ -61,7 +63,8 @@ Finite item/coin/Goomba delivery and field battle-information helpers are covere
 Trouble Center state/menu/window and board/counter event adapters are covered.
 Committed setup/actor leaves, shared field pose integration and pouch/selection helpers are covered.
 Packed battle actor entry/setup, resource/pouch leaves and startup controllers are covered.
-Remaining field/NPC/partner modules, battle, message, inventory, story, effect/audio
+Packed wander events, typed wandering, cold animation/scratch parents and audio helpers are covered.
+Remaining field/NPC/partner modules, battle, message, inventory, story, effect
 and port tooling still
 require a systematic inline numeric/behavior audit. Concurrent additions to
 already covered modules also need review;

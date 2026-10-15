@@ -1,5 +1,8 @@
 #pragma once
 #include "positional_sfx_registry.hpp"
+// Native bridge owns only already admitted pending/effect slots.40 logical
+// slots share4 native channels20..23; this is not forty simultaneous voices.
+// Copying a source handle does not allocate a hardware channel.
 namespace ttyd {
 // Adapter for already-owned native effect voices; not an On allocator, macro
 // interpreter, or source emitter. Registry Off retains original slot semantics.
