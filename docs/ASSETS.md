@@ -1902,3 +1902,21 @@ and one accepted raw common TPL is added for newer committed base requirements.
 Both menu products match the accepted menu-resource-source-manifest.json. The original ISO
 is read-only; no original payload is committed/distributed. Nintendo/Intelligent
 Systems rights and existing local-use-only restrictions remain unchanged.
+
+### Original class footer cues (2026-10-14)
+
+`tools/battle_class_footer_assets.py` extracts common-bank indices4..16 from
+read-only `/home/carson/games/roms/G8ME01.iso`, path
+`battle/common/battle_common.tpl` (217920 bytes, SHA256
+8eb685317056f42b3ef73138eaad85d16fa4943d830b44a149f09971a5959bb1).
+Ignored work cache: `local-assets/battle-class-footers`; compiled products:
+`romfs/battle-class-footers.bin`, `.t3x`, `.json`. Original cue4/5 images are80x32,
+danger6..10 are112x48, critical11..16 are112x56. All six language table mappings
+are retained. Conversion preserves original decoded RGBA pixels without
+resampling, places two-pixel transparent padding in512x256 RGBA8 backing
+(524288 texture bytes), and performs no geometry/lighting change. Metadata
+records source-body verification and per-image pixel hashes. Normal assets-base
+invokes the narrow converter; no editable source is overwritten. GPU footer
+admission and the linked TexturePlane2 helper remain unbound. Original Nintendo/
+Intelligent Systems rights retained; no redistribution license is granted. ISO,
+extracts, original images and compiled packs remain outside source history.

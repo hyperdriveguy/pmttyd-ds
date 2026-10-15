@@ -2005,3 +2005,9 @@ add_executable(file_model_relocation_tests tests/file_model_relocation_tests.cpp
 target_link_libraries(file_model_relocation_tests PRIVATE ttyd_core)
 add_test(NAME file_model_relocation COMMAND file_model_relocation_tests)
 set_tests_properties(file_model_relocation PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Original retained class footers and cue catalog.
+target_sources(ttyd_core PRIVATE source/display/battle_class_footer_backend.cpp)
+add_executable(battle_class_footer_backend_tests tests/battle_class_footer_backend_tests.cpp)
+target_link_libraries(battle_class_footer_backend_tests PRIVATE ttyd_core)
+add_test(NAME battle_class_footer_backend COMMAND battle_class_footer_backend_tests "${CMAKE_SOURCE_DIR}/romfs/battle-class-footers.bin")
