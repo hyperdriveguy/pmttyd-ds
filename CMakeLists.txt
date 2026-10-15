@@ -1775,3 +1775,9 @@ add_executable(field_npc_registry_owner_tests tests/field_npc_registry_owner_tes
 target_link_libraries(field_npc_registry_owner_tests PRIVATE ttyd_core)
 add_test(NAME field_npc_registry_owner COMMAND field_npc_registry_owner_tests)
 set_tests_properties(field_npc_registry_owner PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Original outer update and shared GP input publication.
+target_sources(ttyd_core PRIVATE source/runtime/game_outer_main.cpp source/runtime/physical_input_gp.cpp)
+add_executable(game_outer_main_tests tests/game_outer_main_tests.cpp)
+target_link_libraries(game_outer_main_tests PRIVATE ttyd_core)
+add_test(NAME game_outer_main COMMAND game_outer_main_tests)

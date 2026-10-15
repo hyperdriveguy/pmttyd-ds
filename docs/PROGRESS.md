@@ -7659,3 +7659,86 @@ story, audio and relevant port tooling. Re-audit concurrent changes to already
 covered runtime/event/save/composition code. Current render_*.cpp adapters now
 have numeric/behavior annotations; that does not complete the port-wide goal or
 the remake. The documentation goal stays active.
+
+### Original outer update and shared GP input continuation
+
+Implemented full retained marioStMain8006f904 parent: live GP10/yield/reload,
+all33original service boundaries in order, source idle enable/first-nonzero
+four-channel scan, exact baseline-low→hardware-clock→baseline-high reads,
+signed wrapping delta/division and strict>120, separate sequence2/4 queries,
+fresh finalGP flagOR2000. Each acknowledged prefix survives held child calls.
+No repeated makeKey, forced GP clear or skipped subsystem admits later work.
+[Contract](behavior/platform/NATIVE_OUTER_MAIN_CONTINUATION_AND_SHARED_INPUT.md).
+
+Game binds the actual retained PhysicalInputProducer into battle GP byte/word
+aliases1324,1328..13d7 and1310..1313, preserving raw DemoPad history separately.
+GP motor gate1294/rate4 supply the native PAD adapter. Retirement snapshots
+include live signed countdown/axis bits; replacement owner is rejected.
+After finished camera draw, Game enters outer continuation before legacy
+field/event/presentation scope. Main supplies actual draw-sync/fieldExit to the
+same OriginalSequence owner and suppresses out-of-band sequence/field updates.
+Its retained work/Init/Main/Exit cursor is never reset/imported for success.
+Complete parent would hold at next OSGetTick8029d864; frame profiling/end-render
+remain separate. Missing children stay pending. No full source outer-loop,
+battle entry, teardown or field-return completion is claimed.
+
+Frozen basea7d17d20 plus owned journal/new files, preserved concurrent work.
+Initial private-pack assembly copied a partial shared root and22C++ asset-load
+checks failed; no source gates weakened. Reassembled validated prior2030RomFS
+products plus66SHA256-matched field-resource products. The next run passes
+334/334C++ in39.69s; its Python step exposed19failing local conversion-evidence
+checks and2skipped directory checks. Added private fixtures from the validated
+source and13SHA256-matched field atlases, omitting unrelated large Switch/audio
+caches. Failure logs retained. New source helper/alias/sequence tests pass.
+A one-line new Game indentation warning was corrected before final validation.
+Existing baseline compiler/Pillow warnings remain. No new asset conversion,
+source ISO mutation, original-asset commit or redistribution claim.
+
+Native matched-assets make all -j4 -o assets-ready DEBUG_SHORT_BOOT=1
+SOUNDTRACK=gamecube BUILD=build-outer-update TARGET=ttyd-outer-update exits0.
+Ordinary isolated15s matched-assets boot exits0; inspected original underground
+Mario/Goombella/map at artifacts/azahar-outer-update-matched-normal/boot.png.
+The earlier partial-pack boot also exited0, but is not a validation of the
+corrected asset set. User emulator profiles/saves untouched.
+
+Final required make test -o assets-ready exits0 with the complete private test
+fixture set:334/334 C++ in37.35s,193/193 Python in27.757s,zero skipped.
+Native restored all exits0 after reversing all11private probe edits;3DSX
+SHA25605ca2062404ff31cde3a93bd4048aa328a2aefed9e5ddae48700dc858455d5fc.
+Logs artifacts/outer-update-test-final.log and outer-update-all-final.log.
+Audit3498source files/2096RomFS products,zero mismatches; full hashes in
+artifacts/outer-update-validation-manifest.json. Concurrent merged worktree is
+not claimed validated as a whole. Documentation checker1349Markdown files,
+zero broken links before final progress append. No private source edits remain.
+
+Read-only entry recovery now supplies17complete bodies, hashes/constants and
+call inventory in artifacts/battle-sequence-init-ownership-evidence. Native
+entry must precede attack/menu admission: original seq_battleInit has real
+music/control/event effects; Main0..4 run fade, audience/map loading and
+battle_init. That initializer clears GLOBALB and resets event/animation/field
+owners, so replay after victory cannot repair the lifecycle. One authentic
+shared BattleWork must replace the separate Trio action snapshot. Corrected
+older BATTLE_INIT.md allocation arithmetic: lis2/addi-28520 is102552/0x19098,
+with equal memset length, rather than28520bytes. No allocation behavior changed.
+
+Next: actual shared field battle F/N/GP/event/audio/control owners before Trio
+entry; genuine sequence Init/Main0..4 and one BattleInit/BattleWork; remaining
+outer services; source state5/listener/state6>30 and ordered BattleEnd/resource
+free/field-event resumption. Active reel Plane2, HP number/bar providers,
+original full prologue dialogue/events/interiors/visibility and hardware parity
+remain open. Full prologue/remake goal stays active.
+
+Isolated150s original ending probe exits0 with preserved pre-shutdown snapshots
+under artifacts/azahar-outer-update-ending. Real native observations/assertions:
+makeKey admitted1 at GP rate60/motor gate0; input-readyGP1324=1, raw/held/pressed0;
+outerphase3/index1,pending80073f20, GP81000000.word10=0; retained live
+Battle84000000.ef4=80000000; sharedsequence current/requested4,previous2,
+work[4,0,0,0,0,0,0,0], real pendingInit80073f20. No sequence/counter/result
+forcing or later-subsystem acknowledgement. Private deterministic physical
+inputs and explicit field-Bero bit1clear are fixture adapters, not proof of
+original field entry. Original attacks/rewards/fade reach the existing black
+field-restoration hold; final image inspected. No user emulator profile/save
+changes. Private snapshot script avoids truncation races at shutdown. Actual
+shared entry history is the next implementation boundary, not missing teardown
+permission or an arbitrary next-frame wait. Source doc/link audit rerun after
+these final records; full playable original-fidelity prologue remains incomplete.

@@ -20,6 +20,8 @@
 #include "battle_break_slot_draw.hpp"
 #include "field_bero_exec.hpp"
 #include "original_sequence.hpp"
+#include "game_outer_main.hpp"
+#include "physical_input.hpp"
 #include "source_sound_flags.hpp"
 #include "display_queue.hpp"
 #include "shadow_work.hpp"
@@ -62,6 +64,10 @@ public:
     void setCameraLetterboxServices(const CameraLetterboxServices&);
     void setOriginalSequence(std::shared_ptr<OriginalSequence>);
     void setSoundFlags(std::shared_ptr<SourceSoundFlags>);
+    bool setPhysicalInputOwner(PhysicalInputProducer*); // Stable Game owner until runtime retirement.
+    bool makeOuterKey(const std::array<RawPad,4>&) const;
+    bool outerMainPending() const;
+    bool resumeOuterMain(const GameOuterMainServices&) const;
     bool finishingDrawPending() const;
     void resumeFinishingDraw(const CameraDrawServices&) const;
     bool resumeShadowDisplay(uint32_t camera,uint32_t userdata,const ShadowDisplayServices&) const;

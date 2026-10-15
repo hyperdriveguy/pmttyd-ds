@@ -1,4 +1,5 @@
 #include "event_gp_addresses.hpp"
+#include "physical_input.hpp"
 #include "event_time_publication.hpp"
 #include "event_operands.hpp"
 #include <cassert>
@@ -33,5 +34,16 @@ int main() {
     assert(map.writeWord(base+0x170,0x025801c0) && linked.readWord(base+0x170,value) && value==0x025801c0);
     std::vector<uint8_t> retired;assert(map.unregisterGp(base,&retired) && retired[0x170]==2 && retired[0x171]==0x58);
     assert(linked.readWord(base+0x170,value) && value==0x025801c0);
+    PhysicalInputProducer input,unrelated;assert(linked.bindPhysicalInput(base,input) && linked.bindPhysicalInput(base,input) && !linked.bindPhysicalInput(base,unrelated));
+    input.channels[3].buttons=0x89abcdef;assert(linked.readWord(base+0x1334,value) && value==0x89abcdef);
+    assert(linked.writeByte(base+0x1335,0x11) && input.channels[3].buttons==0x8911cdef);
+    assert(linked.writeWord(base+0x1358,0xffffffff) && input.channels[0].buttonCountdown==-1);
+    assert(linked.writeByte(base+0x13bf,0x80) && input.channels[3].analog.mainY==-128);
+    assert(linked.writeWord(base+0x1324,1) && input.ready==1);
+    assert(linked.writeByte(base+0x1312,9) && input.channels[2].forceMotor==9);
+    assert(linked.writeByte(base+0x13d5,7) && input.channels[1].previousMotorMode==7);
+    assert(linked.writeWord(base+0x1314,0x12345678) && linked.readWord(base+0x1314,value) && value==0x12345678);
+    assert(input.demo[3].raw.buttons==0); // GP writes do not mutate the raw PAD history.
+    assert(linked.unregisterGp(base,&retired) && retired[0x1334]==0x89 && retired[0x1335]==0x11 && retired[0x13bf]==0x80);
     std::cout<<"event GP address tests passed\n";
 }

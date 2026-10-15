@@ -344,7 +344,7 @@ public:
     int warpRequest = -1;
     bool finishWarp();
     uint32_t warpTarget() const;
-    void tick(const Input& input);
+    void tick(const Input& input,const OriginalSequenceServices* sequenceServices=nullptr);
     void restore(const Progress& saved);
     bool checkpointGround(float& height);
     void startBattle();

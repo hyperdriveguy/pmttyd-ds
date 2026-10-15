@@ -1166,3 +1166,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Native original present-item consumer](battle/NATIVE_PRESENT_ITEM_CONSUMER.md) — type12 handoff, exact packed recovery and retained unbound-effect boundary.
 - [Native retained NPC registry owner](field/NATIVE_RETAINED_NPC_REGISTRY_OWNER.md): Game-owned stable actor/pose storage, cold BSS/Init, scoped facade aliases and explicit map/lifetime boundaries.
+
+- [Native outer Main continuation and shared input](platform/NATIVE_OUTER_MAIN_CONTINUATION_AND_SHARED_INPUT.md): GP barrier,33 ordered services, idle tail and retained sequence/input ownership.

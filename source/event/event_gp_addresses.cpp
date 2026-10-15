@@ -1,4 +1,5 @@
 #include "event_gp_addresses.hpp"
+#include "physical_input_gp.hpp"
 
 // Live GP aliases: +4 refresh rate,+14 battle-context selector,+38/3c event
 // timestamp high/low; all other bytes remain retained packed storage.
@@ -27,6 +28,10 @@ bool EventGpAddresses::bindRenderDimensions(uint32_t base,std::array<uint8_t,4>&
     for(auto& r:regions_)if(r.base==base){if(r.renderDimensions)return false;r.renderDimensions=bytes.data();return true;}
     return false;
 }
+bool EventGpAddresses::bindPhysicalInput(uint32_t base,PhysicalInputProducer& input){
+    for(auto& r:regions_)if(r.base==base){if(r.input && r.input!=&input)return false;r.input=&input;return true;}
+    return false;
+}
 bool EventGpAddresses::unregisterGp(uint32_t base,std::vector<uint8_t>* bytes) {
     size_t i=0;while(i<regions_.size() && regions_[i].base!=base)++i;if(i==regions_.size())return false;
     if(bytes) {std::vector<uint8_t> snapshot(size);for(uint32_t j=0;j<size;++j)readByte(base+j,snapshot[j]);*bytes=std::move(snapshot);}
@@ -37,6 +42,7 @@ bool EventGpAddresses::readByte(uint32_t a,uint8_t& value) const {
     if(a>=0x80415fd0 && a<0x80415fd4) {value=uint8_t(current_>>(24-8*(a&3)));return true;}
     auto p=find(a);if(!p.valid)return false;const auto& r=regions_[p.region];
     if(r.renderDimensions && p.offset>=0x170 && p.offset<0x174){value=r.renderDimensions[p.offset-0x170];return true;}
+    if(r.input && readPhysicalInputGpByte(*r.input,p.offset,value))return true;
     const auto& g=*r.globals;uint32_t word;
     switch(p.offset&~3u) {case 4:word=static_cast<uint32_t>(g.refreshRate);break;case 0x14:word=static_cast<uint32_t>(g.battleContext);break;case 0x38:word=static_cast<uint32_t>(g.timestamp>>32);break;case 0x3c:word=static_cast<uint32_t>(g.timestamp);break;default:value=r.bytes[p.offset];return true;}
     value=uint8_t(word>>(24-8*(p.offset&3)));return true;
@@ -45,6 +51,7 @@ bool EventGpAddresses::writeByte(uint32_t a,uint8_t value) {
     if(a>=0x80415fd0 && a<0x80415fd4) {const unsigned shift=24-8*(a&3);current_=(current_&~(0xffu<<shift))|(uint32_t(value)<<shift);return true;}
     auto p=find(a);if(!p.valid)return false;auto& r=regions_[p.region];
     if(r.renderDimensions && p.offset>=0x170 && p.offset<0x174){r.renderDimensions[p.offset-0x170]=value;return true;}
+    if(r.input && writePhysicalInputGpByte(*r.input,p.offset,value))return true;
     auto& g=*r.globals;const uint32_t off=p.offset&~3u;uint32_t word;
     switch(off) {case 4:word=static_cast<uint32_t>(g.refreshRate);break;case 0x14:word=static_cast<uint32_t>(g.battleContext);break;case 0x38:word=static_cast<uint32_t>(g.timestamp>>32);break;case 0x3c:word=static_cast<uint32_t>(g.timestamp);break;default:r.bytes[p.offset]=value;return true;}
     const unsigned shift=24-8*(p.offset&3);word=(word&~(0xffu<<shift))|(uint32_t(value)<<shift);

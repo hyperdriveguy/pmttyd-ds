@@ -161,6 +161,7 @@ struct TrioAttackRuntime {
     std::shared_ptr<CameraManager> cameras;
     std::shared_ptr<FieldBeroExec> bero;
     std::shared_ptr<OriginalSequence> sequence;
+    PhysicalInputProducer* outerInput=nullptr;GameOuterMainCursor outerMainCursor;bool outerMainCompleted=false;
     std::shared_ptr<SourceSoundFlags> soundFlags;SoundFlagCursor letterboxSoundCursor;
     CameraMainCursor cameraMainCursor;
     CameraDrawCursor cameraDrawCursor;
@@ -1923,6 +1924,35 @@ void TrioAttack::setCameraLetterboxServices(const CameraLetterboxServices& servi
 void TrioAttack::setOriginalSequence(std::shared_ptr<OriginalSequence> sequence){if(runtime_)runtime_->sequence=std::move(sequence);}
 void TrioAttack::setSoundFlags(std::shared_ptr<SourceSoundFlags> flags){if(runtime_)runtime_->soundFlags=std::move(flags);}
 bool TrioAttack::finishingDrawPending() const{return runtime_ && (runtime_->cameraDrawWaiting || runtime_->pending==0x8000f454);}
+bool TrioAttack::setPhysicalInputOwner(PhysicalInputProducer* input){
+    if(!runtime_ || !input || !runtime_->vm.gpAddresses.bindPhysicalInput(runtime_->vm.gpAddresses.currentAddress(),*input))return false;
+    runtime_->outerInput=input;return true;
+}
+bool TrioAttack::makeOuterKey(const std::array<RawPad,4>& pads) const{
+    if(!runtime_ || !runtime_->outerInput || !runtime_->outerMainCursor.active || runtime_->outerMainCursor.index!=0 || runtime_->outerMainCursor.phase!=3)return false;
+    auto& r=*runtime_;uint32_t gp,rate,motors;
+    if(!r.vm.memory.readWord(0x80415fd0,gp) || !r.vm.gpAddresses.bindPhysicalInput(gp,*r.outerInput) || !r.vm.memory.readWord(gp+4,rate) || !r.vm.memory.readWord(gp+0x1294,motors))return false;
+    int32_t signedRate;std::memcpy(&signedRate,&rate,4);
+    r.outerInput->update(pads,signedRate,motors!=0); // Native PADRead/clamp adapter; New2DS XL has no motor hardware.
+    return true;
+}
+bool TrioAttack::outerMainPending() const{return runtime_ && (runtime_->pending==0x8006f904 || runtime_->outerMainCursor.active || runtime_->outerMainCompleted);}
+bool TrioAttack::resumeOuterMain(const GameOuterMainServices& source) const{
+    if(!outerMainPending() || runtime_->outerMainCompleted)return false;
+    struct Bridge {TrioAttackRuntime& r;const GameOuterMainServices& source;} b{*runtime_,source};
+    auto s=source;s.user=&b;
+    s.word=[](void* p,uint32_t a)->std::optional<uint32_t>{uint32_t v;auto& b=*static_cast<Bridge*>(p);return b.r.vm.memory.readWord(a,v)?std::optional<uint32_t>(v):std::nullopt;};
+    s.byte=[](void* p,uint32_t a)->std::optional<uint8_t>{uint8_t v;auto& b=*static_cast<Bridge*>(p);return b.r.vm.memory.readByte(a,v)?std::optional<uint8_t>(v):std::nullopt;};
+    s.store=[](void* p,uint32_t a,uint32_t v){return static_cast<Bridge*>(p)->r.vm.memory.writeWord(a,v);};
+    s.request=[](void* p,uint32_t fn,uint32_t& pending){auto& b=*static_cast<Bridge*>(p);b.r.endingRequest(fn);return b.source.request && b.source.request(b.source.user,fn,pending);};
+    s.time=[](void* p){const auto& s=static_cast<Bridge*>(p)->source;return s.time?s.time(s.user):std::nullopt;};
+    s.divide=[](void* p,int64_t a,uint32_t d){const auto& s=static_cast<Bridge*>(p)->source;return s.divide?s.divide(s.user,a,d):std::nullopt;};
+    s.sequence=[](void* p){const auto& s=static_cast<Bridge*>(p)->source;return s.sequence?s.sequence(s.user):std::nullopt;};
+    const bool complete=updateGameOuterMain(s,runtime_->outerMainCursor);
+    runtime_->outerMainCompleted=complete; // Profiling/end-render continuation remains a separate owner.
+    runtime_->pending=complete?0x8029d864:runtime_->outerMainCursor.pending;
+    return complete;
+}
 void TrioAttack::resumeFinishingDraw(const CameraDrawServices& services) const{if(finishingDrawPending())runtime_->continueFinishingDraw(&services);}
 bool TrioAttack::resumeLetterboxDraw(uint32_t camera,uint32_t userdata,const CameraLetterboxDrawServices& source) const{
     if(!runtime_ || !runtime_->cameras)return false;const auto& call=runtime_->cameraDrawCursor.display;

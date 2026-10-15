@@ -178,22 +178,22 @@ int main() {
                 // Scoped native sequence transition: genuine GPU synchronization and
                 // complete field Exit; battle Init remains a separate provider wait.
                 // Existing demo gameplay is still an adapter, not full source seqMain.
-                if(game.originalSequence->state.requested!=game.originalSequence->state.current || game.originalSequence->pending()){
-                    ttyd::OriginalSequenceServices sequence;sequence.user=&game;
-                    sequence.drawSync=[](void*){
-                        // Blocking FrameBegin waits the previous GX command queue.
-                        // Close this empty frame before the ordinary renderer begins.
-                        if(!C3D_FrameBegin(0))return false;
-                        C3D_FrameEnd(0);return true;
-                    };
-                    sequence.callback=[](void* user,uint32_t identity,ttyd::OriginalSequenceWork&){
-                        if(identity!=0x80007390)return false;
-                        ttyd::originalFieldSequenceExit(static_cast<ttyd::Game*>(user)->fieldSystemFlags);return true;
-                    };
-                    game.originalSequence->main(sequence);
-                }
-                audio.bindFieldMarioMotion(game);renderer.bindFieldItemGet(game,audio);renderer.advanceTutorialAnimations(game);game.tick(pending);
-                renderer.advanceFieldIcons();audio.tickKeyItemAudio(ttyd::TickRate);renderer.advanceFieldItemPresentation();}
+                ttyd::OriginalSequenceServices sequence;sequence.user=&game;
+                sequence.drawSync=[](void*){
+                    // Blocking FrameBegin waits the previous GX command queue.
+                    // Close this empty frame before the ordinary renderer begins.
+                    if(!C3D_FrameBegin(0))return false;
+                    C3D_FrameEnd(0);return true;
+                };
+                sequence.callback=[](void* user,uint32_t identity,ttyd::OriginalSequenceWork&){
+                    if(identity!=0x80007390)return false;
+                    ttyd::originalFieldSequenceExit(static_cast<ttyd::Game*>(user)->fieldSystemFlags);return true;
+                };
+                if(!game.trioAttack.outerMainPending() && (game.originalSequence->state.requested!=game.originalSequence->state.current || game.originalSequence->pending()))game.originalSequence->main(sequence);
+                const bool outerUpdate=game.trioAttack.outerMainPending();
+                if(!outerUpdate){audio.bindFieldMarioMotion(game);renderer.bindFieldItemGet(game,audio);renderer.advanceTutorialAnimations(game);}
+                game.tick(pending,&sequence);
+                if(!outerUpdate){renderer.advanceFieldIcons();audio.tickKeyItemAudio(ttyd::TickRate);renderer.advanceFieldItemPresentation();}}
             else {
                 ++frontTicks;
                 // PAD publication is global across scene ownership. Preserve

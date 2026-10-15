@@ -94,8 +94,8 @@
 | Item | Value |
 | --- | --- |
 | Argument | `r3` = pointer to battle configuration |
-| Allocation | 28520 bytes via `BattleAlloc` |
-| Calls | `0x800f8934` (BattleAlloc), `0x800050b4` (heapZero), plus 10+ initialization functions |
+| Allocation | `0x19098` bytes (102552): `lis r4,2` then `addi r3,r4,-28520`, via `BattleAlloc`; heapZero uses the same length |
+| Calls | `0x800f8934` (BattleAlloc), `0x800050b4` (memset), plus 10+ initialization functions |
 | Side effects | Clears ~20 fields, initializes subsystems |
 | Return | None (void) |
 

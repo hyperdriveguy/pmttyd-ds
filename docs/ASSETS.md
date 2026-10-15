@@ -1394,3 +1394,7 @@ Original Nintendo/Intelligent Systems rights remain reserved. All original and
 derived pack bytes stay in ignored local caches; path/hash tracking grants no
 new license or redistribution rights. Shared packs and assets/ edits were not
 overwritten, and no ISO content was committed.
+
+### Outer update/input owner implementation
+
+No new asset conversion. Validation uses the existing private original packs matching basea7d17d20, including prior field-bank exports and188-byte source icon constants. Source ISO remains read-only; original payloads stay ignored and retain the licensing/provenance of their existing ledger entries. Native outer/Main and input GP aliases add no replacement art/audio.

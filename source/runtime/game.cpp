@@ -2102,7 +2102,28 @@ void Game::updateMarioPresentation() {
 // exit owner always runs on return. Priority branches intentionally prevent
 // ordinary input from advancing a locked scene, but neutral movement may keep
 // airborne/support physics alive. See game-composition guide for full order.
-void Game::tick(const Input& rawInput) {
+void Game::tick(const Input& rawInput,const OriginalSequenceServices* sequenceServices) {
+    if(trioAttack.outerMainPending()){
+        ++ticks; // Native admission clock; held source children do not run later owners.
+        struct Bridge {Game& game;const Input& input;const OriginalSequenceServices* sequence;} bridge{*this,rawInput,sequenceServices};
+        GameOuterMainServices outer;outer.user=&bridge;
+        outer.request=[](void* p,uint32_t fn,uint32_t& pending){auto& b=*static_cast<Bridge*>(p);
+            if(fn==0x80005ff8){
+                if(!b.input.physicalSnapshot)return false;
+                std::array<RawPad,4> pads{};pads[0].buttons=b.input.physicalButtons;
+                auto stick=[](float v){return std::isfinite(v)?int8_t(std::clamp(v,-1.f,1.f)*70):int8_t(0);};
+                pads[0].mainX=stick(b.input.x);pads[0].mainY=stick(-b.input.z);
+                return b.game.trioAttack.makeOuterKey(pads);
+            }
+            if(fn==0x8002e228){
+                const bool done=b.game.originalSequence->main(b.sequence?*b.sequence:OriginalSequenceServices{});
+                if(!done)pending=b.game.originalSequence->pending();
+                return done;
+            }
+            return false; // Each remaining real subsystem needs its own admission.
+        };
+        trioAttack.resumeOuterMain(outer);saveRequested=false;return;
+    }
     synchronizeFieldNpcs();
     fenceCollisionDisabled=progress.room==2 && (progress.originalStory.value_or(0)>=10 || professorStory.fenceCollisionOff);
     applyDoorCollision(progress.room,fieldDoor.interiorMask,fieldMapFlags);
@@ -2393,6 +2414,7 @@ void Game::tick(const Input& rawInput) {
             const auto partyAppearance=fieldPartyAppearanceServices();
             if(trioCommands.state==TrioBattleCommands::State::AttackReady && trioAttack.begin(trioCommands,trioBattleIntro,progress.hp,progress.originalPouch,&professorStory.actors[3].npcBattleFlags,&fieldMarioBattle,&fieldParties,&partyAppearance,battleSpotlight,trioRandom,publicSfx,shadows,commandPalette,cameraManager,beroExec)) {
                 trioAttack.setOriginalSequence(originalSequence);
+                trioAttack.setPhysicalInputOwner(&inputProducer);
                 trioAttack.setSoundFlags(soundFlags);
                 const auto sample=inputProducer.channels[0].battleSample();
                 const uint32_t triggers=i.physicalSnapshot?sample.pressed:(i.confirm?0x100u:0u)|(i.cancel?0x200u:0u);
