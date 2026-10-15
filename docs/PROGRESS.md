@@ -15336,3 +15336,74 @@ work is preserved and excluded from this isolated validation. No hardware,
 pixel/audio parity or performance improvement is claimed.
 
 The genuine shared harbor NPC/configuration/sequence owner, complete tutorial turn/result/ending/teardown path, sailor regular-event owners and afterbattle child remain unfinished. Full prologue and visual/hardware/performance parity are not claimed. Next: bind actual shared field and battle owners, then complete original result/teardown and postbattle event execution; keep RESULT-01/DEMO-01 and the overall goal active.
+
+## 2026-10-15 — Retained battle menu, input, Phase/Move and subicon documentation
+
+Added 180 inline comment lines across twelve C++/header files and four guides:
+[class/weapon menus](code/battle-menu-continuations.md),
+[command input](code/battle-command-input-continuation.md),
+[Phase/Move](code/battle-phase-move-continuation.md), and
+[subicons](code/weapon-subicon-continuation.md), linked from index.
+Code/docs commit 285040d7. Executable tokens/string literals unchanged; no numeric,
+simulation, original story/dialogue or asset behavior changes. No new tests for
+this documentation-only work.
+
+Class notes explain 20-byte record versus anchor, opaque denial reason3 versus
+enable-only clear, captured versus fresh unit/pouch/definition, post-message
+icons, independent Operations/Lecture gates, no artificial stable-state row cap, signed
+publication and raw M0 ABI. Input notes map 30 states versus types, independent
+unknown private SP08, four reason-event pairs, fallthrough versus common tail,
+target ID/part remap before unknown-output holds, signed byte/count/permutation,
+independent repeat directions, cancel/confirm/audience ordering, retained type
+versus fresh mode/operation, and selector/flag/OffLight return ownership.
+Weapon notes explain actual nested End, confirmation/navigation priority,
+post-End reason mutation (including zero), Setup flag timing and no fabricated
+readiness. UI notes explain actual current versus passed B, distinct private
+outputs/cursors, heap capture/free/allocation, raw pointer0, exact 292-byte work,
+seven parallel arrays, source subtype signed-count loops and lease checkpoints.
+Phase/Move notes distinguish encoded source channels from ticks, full 64 scans,
+width-specific resets, selection invariants, state8 return before Act, 200 badge
+scans and original event/reaction/message boundaries. Subicon notes explain
+borrowed optional bit identity, unused actual registry lookup, independent
+fctiwz captures, signed conversion bias, source literals, row gates, FMA/concat
+order and actual retained raster child. Scalar values were independently read
+from original DOL read-only and pinned in ignored evidence. Actual allocation,
+source child lifetimes and missing production domains remain explicit.
+
+Frozen baseline b8c7dcabc28802bab85995eb986e1d87eedfca0f plus owned docs is at
+artifacts/battle-menu-controllers-code-documentation-validation/source. Full
+git-blob audit covers 4294 baseline tracked files with zero unexpected changes;
+all 17 frozen/live documentation snapshots match and 112 local guide/index links
+resolve. Source/prose finalized before gates. Concurrent source-window/font/
+animation/party/story/renderer/battle/tool edits preserved/excluded; no combined
+moving-tree validation claim. Original host/native handles observed terminal0
+and exit markers agree. No test changes or filtered test selection.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits 0: 498/498 C++ (104.82s),
+226/226 Python (42.204s), zero skipped. Actual original45-descriptor enemy,
+private HitN64, original party-position and temporary-Professor/fence fixtures
+ran. Native make all -o assets-ready -j4 SOUNDTRACK=gamecube exits 0. Manifest
+pins source, products/evidence/fixtures/logs and ELF/3DSX. Existing compiler/Pillow
+warnings remain. No emulator/profile/save changes or original CPU/GPU/pixel/
+audio/performance/hardware parity claims.
+
+Dependency review finds original window-panel converter/build stage plus party
+definition/entry expansions and new source GX/window/font/ordered-packet/Professor
+CMake tests. Three frozen converters read ISO read-only into new empty private
+outputs; six products copied only into the private frozen build. Party definition
+adds original kind11; entry now has16 original spans. Original msgWindow descriptor0
+72x72 CMPR becomes128x128 RGBA8 by full right/bottom/corner clamp-edge replication,
+with source interior unchanged/no resizing. Accepted product inventory grows78->80;
+prior four party products replaced, two window products added. Five unchanged
+Professor bank/default fixture files additionally pinned; inherited surface/footer/
+HP/enemy/HitN64/party evidence and actual external HitN64 PNG rechecked. No editable
+import/shared-cache write. Native full regeneration skipped; Python fixtures
+independently read ISO read-only into empty temporary outputs. See
+[asset ledger](ASSETS.md). Original rights retained; no ISO/extracted original or
+compiled binary committed.
+
+Next: retained Act/ActMenu/draw controllers, remaining newer animation/party/font/
+window/resource integrations, runtime changes and tooling. Inventory covers only
+tracked source/include C++/header/PICA hashes; untracked additions/tools need
+separate audit and matching hashes do not establish semantic completeness.
+Broader documentation/remake goals remain active.

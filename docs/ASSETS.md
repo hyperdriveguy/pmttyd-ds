@@ -3523,3 +3523,31 @@ Original Nintendo/Intelligent Systems rights are retained; no new license or
 redistribution rights are granted. No original payload or ISO is committed.
 
 Harbor battle callback recovery (2026-10-15): original US ISO opened read-only for complete DOL start8004ef54/b8, wait8004eed8/7c, get_reglid8004f894/58 and original gor.rel beforebattle inventory. Evidence/provenance stays in artifacts/harbor-battle-handoff-evidence; no new runtime pack, asset conversion, dialogue/art/audio edit or redistribution grant. Existing Nintendo/Intelligent Systems original rights unchanged.
+
+## Battle menu-controller documentation validation inputs (2026-10-15)
+
+artifacts/battle-menu-controllers-code-documentation-validation/source freezes
+b8c7dcabc28802bab85995eb986e1d87eedfca0f. Dependency diff adds original window
+panel staging, expands original party definitions/entry and registers source
+GX/window/font/ordered packet/Professor tests. Three exact frozen converters read
+ISO read-only into fresh empty private outputs, then copy six compiled products
+only to the private frozen build; no checked-in editable/shared asset overwritten.
+Accepted map now pins80 products:78 prior paths, four party replacements and two
+new window products. Definition pack adds original kind11 record803145a0; entry
+has16 original spans including Professor construction and null position scalar.
+Existing five field-native-c_kuri_h bank/default fixture files inherited unchanged
+and newly hash-pinned; original filenames and character identity retained.
+
+Window source f/msgWindow.tpl is321984 bytes,
+SHA2562ef0cdc818d2402de5bfb95394f67d78017e74bc1b41c38b79780cb0b870dc67.
+Descriptor0 CMPR72x72 source pixels remain unchanged at0,0 in128x128 RGBA8;
+right/bottom/corner replicate clamp edges, UV scale72/128, no resizing or new art.
+Original/native pixel hashes and runtime FNVcaadb76327b7d2be remain in private
+metadata. Panel PNG stays private evidence; only T3X/JSON enter private RomFS.
+Surface/footer/HP/enemy/HitN64/party fixtures and actual HitN64 metadata PNG read
+path remain inherited/hash-checked. Subicon scalar evidence records read-only
+original DOL addresses/bits/values and reader hash; no asset conversion for those
+numeric notes. All products/evidence rechecked after gates. Native full
+regeneration skipped; Python fixtures independently use ISO read-only and empty
+temporary outputs. Nintendo/Intelligent Systems rights retained; no new license
+or redistribution rights, no ISO/extracted original or compiled product committed.
