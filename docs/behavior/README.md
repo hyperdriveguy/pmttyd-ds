@@ -1432,3 +1432,5 @@ Original battle menu native resource/queue owners:
 - [Actual-VM NPC Inner parent and CPU binding](display/NATIVE_ACTUAL_VM_NPC_INNER.md):
   complete retained local parent/map/ring, actual Main/modeling state and exact
   traversal ABI; GPU/material/cache/traversal backends remain explicit.
+
+- [Retained native NPC creation](field/RETAINED_NATIVE_NPC_CREATION.md): original constructor/pose holds, raw hoshi fallback, shared owner/consumer exclusion and remaining EVT/bootstrap bindings.

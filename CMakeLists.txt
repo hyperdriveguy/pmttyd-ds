@@ -2714,3 +2714,8 @@ add_executable(native_npc_inner_tests tests/native_npc_inner_tests.cpp)
 target_link_libraries(native_npc_inner_tests PRIVATE ttyd_core)
 add_test(NAME native_npc_inner COMMAND native_npc_inner_tests)
 set_tests_properties(native_npc_inner PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+add_executable(field_npc_native_creation_tests tests/field_npc_native_creation_tests.cpp)
+target_link_libraries(field_npc_native_creation_tests PRIVATE ttyd_core)
+add_test(NAME field_npc_native_creation COMMAND field_npc_native_creation_tests)
+set_tests_properties(field_npc_native_creation PROPERTIES WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})

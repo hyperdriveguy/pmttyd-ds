@@ -3790,3 +3790,15 @@ license/distribution rights. No ISO/extracted original/compiled product committe
 Editable assets/manifest.json overlay preserved; no dialogue/story/music/SFX,
 numeric behavior or original asset changes. Manifest records all input/evidence/
 product hashes and exact validation scope.
+
+### Retained NPC Entry fallback resources (2026-10-15)
+
+Native process staging now includes `a/hoshi` type5 and `a/hoshi-` type4 from
+existing ignored `field-native-hoshi.draw-model.bin`/`.draw-textures.bin`.
+These are unchanged original MODEL/TPL, with the existing full six-pose bank
+and source provenance. No extraction/conversion/product bytes changed; original
+ISO remains read-only and no original assets enter source history. Nintendo/
+Intelligent Systems copyright, local use only/no redistribution rights unchanged.
+A retained constructor now consumes the actual source -2 fallback; ordinary
+typed pose callers still accept valid handles only. See the
+[retained NPC creation contract](behavior/field/RETAINED_NATIVE_NPC_CREATION.md).

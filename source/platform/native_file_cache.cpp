@@ -198,6 +198,7 @@ bool stagePrologueAnimationFiles(NativeFileCache& cache,const char* root){
   {"a/c_pkr",5,"field-player-c_pkr.draw-model.bin"},
   {"a/c_kuri_h",5,"field-native-c_kuri_h.draw-model.bin"},
   {"a/c_kuribo",5,"trio-enemy-kuribo.draw-model.bin"},
+  {"a/hoshi",5,"field-native-hoshi.draw-model.bin"},
   {"a/c_kanbu_ibt",5,"field-native-c_kanbu_ibt.draw-model.bin"},
   {"a/c_zako_n",5,"field-native-c_zako_n.draw-model.bin"},
   {"a/c_gara",5,"field-native-c_gara.draw-model.bin"},
@@ -208,6 +209,7 @@ bool stagePrologueAnimationFiles(NativeFileCache& cache,const char* root){
   {"a/c_kuri_h-",4,"field-native-c_kuri_h.draw-textures.bin"},
   {"a/c_kuribo-",4,"trio-enemy-kuribo.draw-textures.bin"},
   // Crump MODEL names c_kanbu as its texture bank; no invented _ibt alias.
+  {"a/hoshi-",4,"field-native-hoshi.draw-textures.bin"},
   {"a/c_kanbu-",4,"field-native-c_kanbu_ibt.draw-textures.bin"},
   {"a/c_zako_n-",4,"field-native-c_zako_n.draw-textures.bin"},
   {"a/c_gara-",4,"field-native-c_gara.draw-textures.bin"},

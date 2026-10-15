@@ -59,5 +59,28 @@ void serviceBoundaries(){Fixture f;f.initialize();const auto a=f.w(R+0xc);f.vivi
 void wordBoundaries(){Fixture f;f.initialize();const auto a=f.w(R+0xc);f.w(0x802c11f8,0x11);f.w(0x802c11fc,0x22);f.w(0x802c1200,0x33);f.w(0x81000038,0x1234);f.w(0x8100003c,0x5678);std::vector<uint32_t> timestampStores;
  f.onStore=[a,&timestampStores](Fixture& f,uint32_t address,uint32_t){if(address==a+0x98)f.w(a+0x94,0x99);if(address==a+0xe0)f.w(0x802c120c,0x44);if(address==a+0x154)f.w(0x8041fc94,0);if(address==a+0x19c){f.w(0x81000038,0xabcd);timestampStores.push_back(address);}if(address==a+0x198)timestampStores.push_back(address);if(address==a+0x110)f.w(0x8041fc6c,0xdeadbeef);};enterPackedNpc(0x1000,0x1000,f.services());assert(f.w(a+0x98)==0x11 && f.w(a+0x9c)==0x22 && f.w(a+0xa0)==0x99 && f.w(a+0xe8)==0x44 && f.w(a+0x1cc)==0x3f800000 && f.w(a+0x1c8)==0x3f800000 && f.w(a+0x114)==0xdeadbeef && f.w(a+0x198)==0x1234 && (timestampStores==std::vector<uint32_t>{a+0x19c,a+0x198}));
 }
+void retainedConstructor(){
+ Fixture f;f.initialize();const auto a=f.w(R+0xc);auto s=f.services();PackedNpcEntryCursor cursor;int32_t result=99;
+ unsigned attempts=0;s.tryPoseEntry=[](void* p,uint32_t model,int32_t mode)->std::optional<int32_t>{
+  auto& f=*static_cast<Fixture*>(p);f.poses.emplace_back(model,mode);return f.onPose?std::optional<int32_t>(f.onPose(f,unsigned(f.poses.size()))):std::nullopt;
+ };
+ // Pending first call leaves the source actor prefix, not a completed handle0.
+ assert(!resumePackedNpcEntry(0x1000,0x802c1468,s,cursor,&f,result) && result==99);
+ assert(f.w(a)==3 && f.w(a+0x104)==0 && f.w(R)==0 && f.paper.empty());const auto clears=f.clears.size();
+ f.w(a+0x200,0x12345678);f.w(0x81000014,7);
+ assert(!resumePackedNpcEntry(0x1000,0x802c1468,s,cursor,&f,result) && f.clears.size()==clears && f.w(a+0x200)==0x12345678);
+ assert(f.poses.back().second==0); // First pose mode stays pinned across holds.
+ assert(!resumePackedNpcEntry(0x1000,0x802c1468,s,cursor,&s,result) && result==99);
+ f.onPose=[&](Fixture&,unsigned)->int32_t{++attempts;return -2;};
+ // Hold fallback independently; its original mode is sampled after result-2.
+ s.tryPoseEntry=[](void* p,uint32_t model,int32_t mode)->std::optional<int32_t>{auto& f=*static_cast<Fixture*>(p);f.poses.emplace_back(model,mode);if(model==0x8041fd6c)return {};return -2;};
+ assert(!resumePackedNpcEntry(0x1000,0x802c1468,s,cursor,&f,result) && f.w(a+0x104)==0xfffffffe && cursor.phase==2);
+ assert(f.poses.back()==std::make_pair(uint32_t(0x8041fd6c),int32_t(1)));
+ f.w(0x81000014,0);f.w(0x81000038,0x1234);f.w(0x8100003c,0x5678);f.vivian=true;
+ s.tryPoseEntry=[](void* p,uint32_t model,int32_t mode)->std::optional<int32_t>{auto& f=*static_cast<Fixture*>(p);f.poses.emplace_back(model,mode);assert(model==0x8041fd6c && mode==1);return 11;};
+ assert(resumePackedNpcEntry(0x1000,0x802c1468,s,cursor,&f,result) && result==0 && cursor.complete);
+ assert(f.clears.size()==clears && f.w(a+0x200)==0x12345678 && f.w(a)==0x04800003 && f.w(a+0x104)==11 && f.w(a+0x198)==0x1234 && f.w(a+0x19c)==0x5678 && f.w(R)==1 && f.w(R+0x14)==0);
+ const auto calls=f.poses.size();assert(resumePackedNpcEntry(0x1000,0x802c1468,s,cursor,&f,result) && f.poses.size()==calls && f.w(R)==1);
 }
-int main(){initialization();constructionAndNames();serviceBoundaries();wordBoundaries();}
+}
+int main(){initialization();constructionAndNames();serviceBoundaries();wordBoundaries();retainedConstructor();}

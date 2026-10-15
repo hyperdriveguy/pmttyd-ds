@@ -35,20 +35,38 @@ uint32_t packedNpcNameToPointer(uint32_t name,PackedNpcLookup lookup,const Packe
 // First scan checks duplicate names but does not reuse/reject one; second
 // scan independently takes the first inactive slot. Active/new flags=3.
 // Admission must exclude full capacity before this synchronous source body.
-int32_t enterPackedNpc(uint32_t name,uint32_t model,const PackedNpcRegistryServices& s){
- const auto& m=s.memory;assert(m.word && m.storeWord && m.storeByte && s.clear && s.compare && s.copyString && s.poseEntry && s.paperOn && s.heightBits && s.radiusBits && s.vivianType && s.lightFlagOn);
+bool resumePackedNpcEntry(uint32_t name,uint32_t model,const PackedNpcRegistryServices& s,PackedNpcEntryCursor& c,const void* owner,int32_t& result){
+ const auto& m=s.memory;assert(m.word && m.storeWord && m.storeByte && s.clear && s.compare && s.copyString && (s.poseEntry || s.tryPoseEntry) && s.paperOn && s.heightBits && s.radiusBits && s.vivianType && s.lightFlagOn);
+ if(!owner)return false;
+ if(!c.initialized){c={};c.initialized=true;c.owner=owner;c.name=name;c.model=model;}
+ if(c.owner!=owner || c.name!=name || c.model!=model)return false;
+ if(c.complete){result=c.index;return true;}
  auto word=[&](uint32_t a){return m.word(m.user,a);};auto store=[&](uint32_t a,uint32_t v){m.storeWord(m.user,a,v);};
- const auto registry=selectedRegistry(m);const auto count=signedWord(word(registry+4));auto actor=word(registry+0xc);
- for(int32_t i=0;i<count;++i,actor+=0x340)if((word(actor)&1) && s.compare(s.user,actor+8,name)==0)break;
- actor=word(registry+0xc);int32_t index=0;
- for(;index<count;++index,actor+=0x340)if(!(word(actor)&1))break;
- assert(index<count); // Native pre-admission excludes the source overrun domain.
- s.clear(s.user,actor,0x340);store(actor,3);s.copyString(s.user,actor+8,name);
- auto selector=[&]{return word(word(GpPointer)+0x14)?1:0;};
- // Pose handle+104: only result-2 retries with original hoshi fallback8041fd6c.
- // Re-read live battle selector on retry; other negative results are not repaired.
- store(actor+0x104,uint32_t(s.poseEntry(s.user,model,selector())));
- if(signedWord(word(actor+0x104))==-2)store(actor+0x104,uint32_t(s.poseEntry(s.user,0x8041fd6c,selector())));
+ if(c.phase==0){
+  c.registry=selectedRegistry(m);const auto count=signedWord(word(c.registry+4));auto actor=word(c.registry+0xc);
+  for(int32_t i=0;i<count;++i,actor+=0x340)if((word(actor)&1) && s.compare(s.user,actor+8,name)==0)break;
+  actor=word(c.registry+0xc);c.index=0;
+  for(;c.index<count;++c.index,actor+=0x340)if(!(word(actor)&1))break;
+  assert(c.index<count);c.actor=actor;
+  s.clear(s.user,actor,0x340);store(actor,3);s.copyString(s.user,actor+8,name);
+  c.poseModel=model;c.selector=word(word(GpPointer)+0x14)?1:0;c.phase=1;
+ }
+ if(c.phase==1){
+  const auto pose=s.tryPoseEntry?s.tryPoseEntry(s.user,c.poseModel,c.selector):std::optional<int32_t>(s.poseEntry(s.user,c.poseModel,c.selector));
+  if(!pose)return false;
+  store(c.actor+0x104,uint32_t(*pose));
+  // The published handle is re-read before deciding on original hoshi retry.
+  if(signedWord(word(c.actor+0x104))==-2){c.poseModel=0x8041fd6c;c.selector=word(word(GpPointer)+0x14)?1:0;c.phase=2;}
+  else c.phase=3;
+ }
+ if(c.phase==2){
+  const auto pose=s.tryPoseEntry?s.tryPoseEntry(s.user,c.poseModel,c.selector):std::optional<int32_t>(s.poseEntry(s.user,c.poseModel,c.selector));
+  if(!pose)return false;
+  store(c.actor+0x104,uint32_t(*pose));c.phase=3;
+ }
+ // Only the pose calls may suspend. The admitted source suffix executes once,
+ // with its original fresh handle/GP/constants reads and captured registry.
+ const auto actor=c.actor;
  s.paperOn(s.user,signedWord(word(actor+0x104)));
  // Original zero root vector802c11f8 is copied to+8c then previous+98;
  // unit scale802c1204 goes to+e0. Height/radius fields+14c/+150 come from pose.
@@ -70,7 +88,10 @@ int32_t enterPackedNpc(uint32_t name,uint32_t model,const PackedNpcRegistryServi
  // 00800000. Pose material-light mask2 and bank count increment occur last.
  if(s.vivianType(s.user,signedWord(word(actor+0x104))))store(actor,word(actor)|0x04000000);
  if(s.compare(s.user,model,0x802c1468)==0)store(actor,word(actor)|0x00800000);
- s.lightFlagOn(s.user,signedWord(word(actor+0x104)),2);store(registry,word(registry)+1);
- return index;
+ s.lightFlagOn(s.user,signedWord(word(actor+0x104)),2);store(c.registry,word(c.registry)+1);
+ c.complete=true;result=c.index;return true;
+}
+int32_t enterPackedNpc(uint32_t name,uint32_t model,const PackedNpcRegistryServices& s){
+ PackedNpcEntryCursor cursor;int32_t result=0;const bool complete=resumePackedNpcEntry(name,model,s,cursor,&s,result);assert(complete);(void)complete;return result;
 }
 }

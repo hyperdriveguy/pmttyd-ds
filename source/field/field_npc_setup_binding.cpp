@@ -121,6 +121,7 @@ FieldNpcSetupWorld FieldNpcSetupBinding::world(){
 int32_t FieldNpcSetupBinding::invoke(EventEntry& e,bool first,FieldNpcSetupCursor& c,const FieldNpcSetupOperands& o,const FieldNpcSetupEvents& events){
  if(first)c={};
  c.firstVisit(first);
+ if(owner_->entryPending())return 0;
  uint32_t gp=0,mode=0,field=0;if(!vm_.memory.readWord(0x80415fd0,gp) || uint64_t(gp)+0x16b>UINT32_MAX || !vm_.memory.readWord(gp+0x14,mode) || mode!=mode_ || !vm_.memory.readWord(gp+0x168,field) || field!=owner_->fieldWorkAddress())return 0;
  return fieldNpcSetupEvent(e,first,c,o,world(),events);
 }
@@ -153,6 +154,7 @@ struct ActorOperands {
 };
 }
 bool FieldNpcSetupBinding::caller(const EventEntry& e) const{
+ if(owner_->entryPending())return false;
  uint32_t gp=0,mode=0;if(!vm_.memory.readWord(0x80415fd0,gp) || uint64_t(gp)+0x17>UINT32_MAX || !vm_.memory.readWord(gp+0x14,mode) || mode!=mode_)return false;
  const auto& context=mode?vm_.battle:vm_.field;if(context.capacity<0 || context.capacity>256 || (context.capacity && !context.entries))return false;
  for(int n=0;n<context.capacity;++n)if(&e==&context.entries[n] && (e.flags&1))return true;

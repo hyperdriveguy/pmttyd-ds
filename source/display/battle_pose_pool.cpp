@@ -134,6 +134,10 @@ void BattlePosePool::restart(BattlePose& pose,BattlePoseClock clock){
 // original modelName; texture names share independently. Texture references
 // count MODEL owners, model references count POSES. Mode0/1/2 selects archive
 // type1/2/0; any nonzero mode uses the separate event-time clock.
+std::optional<int32_t> BattlePosePool::enterSource(std::shared_ptr<const BattlePoseResource> resource,int32_t mode,BattlePoseClock clock,const char* name){
+    if(nativeSourceEntry_)return nativeSourceEntry_(nativeProvider_,std::move(resource),mode,clock,name);
+    return enter(std::move(resource),mode,clock,name);
+}
 std::optional<int32_t> BattlePosePool::enter(std::shared_ptr<const BattlePoseResource> supplied,int32_t mode,BattlePoseClock clock,const char* requestedModel){
     if(nativeEntry_)return nativeEntry_(nativeProvider_,std::move(supplied),mode,clock,requestedModel);
     if(mode<0 || mode>2 || !tangentSamplingAvailable())return {};

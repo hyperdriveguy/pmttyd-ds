@@ -6,6 +6,12 @@
 namespace ttyd {
 class EventAddressSpace;
 class FieldNpcRegistryBinding;
+struct FieldNpcRegistryEntryState;
+struct FieldNpcEntryCursor {
+ std::shared_ptr<FieldNpcRegistryEntryState> state;
+ bool pending() const;
+ bool complete() const;
+};
 struct FieldMapNpcBattleAdmission {
  void* user=nullptr;
  // Required for non--1 requests; no effects, complete numeric/RNG admission.
@@ -26,6 +32,7 @@ public:
  FieldNpcRegistryOwner(const FieldNpcRegistryOwner&)=delete;
  FieldNpcRegistryOwner& operator=(const FieldNpcRegistryOwner&)=delete;
  bool initialized() const{return initialized_;}
+ bool entryPending() const{return bool(pendingEntry_);}
  bool ownsFieldActor(uint32_t address) const; // Admission only; active/name gates remain source reads.
  uint32_t fieldWorkAddress() const{return addresses_[3];}
  FieldPosePool& poses(){return poses_;}
@@ -41,6 +48,9 @@ private:
  std::array<std::vector<uint8_t>,4> allocations_;
  FieldPosePool poses_;
  bool initialized_=false;
+ // Preserve an unfinished source constructor even if its caller disappears.
+ // Cancellation is unbound: never expose its partial actor as a ready record.
+ std::shared_ptr<FieldNpcRegistryEntryState> pendingEntry_;
 };
 // Must retire before its facade. Retains the owner; unregisters only its own
 // external spans. Multiple independent facades alias the same actor bytes.
@@ -59,6 +69,7 @@ public:
  // services are admitted before Entry; no partial row is repeated on a hold.
  std::optional<uint32_t> registerMapNpc(const PackedMapNpcInput&,BattlePoseClock,const FieldMapNpcBattleAdmission& = {});
  std::optional<int32_t> enter(uint32_t name,uint32_t model,BattlePoseClock);
+ std::optional<int32_t> resumeEnter(uint32_t name,uint32_t model,BattlePoseClock,FieldNpcEntryCursor&);
  std::optional<uint32_t> lookup(uint32_t name,PackedNpcLookup=PackedNpcLookup::NoAssert);
  std::optional<std::vector<uint32_t>> activeActors() const; // Active1, not query/display readiness.
 private:
@@ -73,5 +84,6 @@ private:
  std::shared_ptr<FieldNpcRegistryOwner> owner_;
  EventAddressSpace& memory_;
  std::vector<uint32_t> mapped_;
+ FieldNpcEntryCursor implicitEntry_;
 };
 }

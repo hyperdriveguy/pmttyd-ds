@@ -8,7 +8,7 @@ namespace ttyd {
 bool FieldNpcMainEntryBinding::advanceDraw(uint32_t callback, uint32_t actor,
                                            FieldNpcDrawCursor &c,
                                            uint32_t camera) {
-  if ((c.active && c.owner.transform.user != this) ||
+  if (owner_->entryPending() || (c.active && c.owner.transform.user != this) ||
       !poses_.aliases(*owner_->poses().sharedPool(), vm_.memory))
     return false;
   FieldNpcDrawServices s;

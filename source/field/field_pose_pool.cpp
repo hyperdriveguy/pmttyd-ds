@@ -43,4 +43,13 @@ std::optional<int32_t> FieldPosePool::enter(const std::string& model,int32_t mod
  if(!canEnter(model,mode))return {};
  return poses_->enter(resources_.at(model),mode,clock,model.c_str());
 }
+std::optional<int32_t> FieldPosePool::resumeEnter(const std::string& model,int32_t mode,BattlePoseClock clock,FieldPoseEntryCursor& c){
+ if(!c.owner){c.owner=this;c.model=model;c.mode=mode;}
+ if(c.owner!=this || c.model!=model || c.mode!=mode)return {};
+ if(c.complete)return c.result;
+ if(!c.admitted){if(!poses_->sourceEntryAvailable() || !canEnter(model,mode))return {};c.resource=resources_.at(model);c.admitted=true;}
+ const auto result=poses_->enterSource(c.resource,c.mode,clock,c.model.c_str());
+ if(!result)return {};
+ c.result=*result;c.complete=true;return result;
+}
 }

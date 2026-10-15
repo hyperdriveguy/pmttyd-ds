@@ -8,7 +8,7 @@ namespace ttyd {
 //36/16, not just <= capacity. Ordinary reset also requires exact retained F.
 // Admission does not release poses/events or clear the auxiliary/history buffers.
 bool FieldNpcRegistryBinding::reset(int32_t selector){
- if(!owner_->initialized_)return false;
+ if(!owner_->initialized_ || owner_->entryPending())return false;
  const unsigned selected=selector?2:0;const uint32_t capacity=selector?16:36;
  const auto registry=0x8041e8b4+(selector?0x14u:0u);uint32_t actualCapacity=0,array=0,gp=0,field=0,unused=0;
  if(!memory_.readWord(registry+4,actualCapacity) || actualCapacity!=capacity || !memory_.readWord(registry+12,array) || array!=owner_->addresses_[selected] || !owner_->span(array,capacity*0x340u))return false;

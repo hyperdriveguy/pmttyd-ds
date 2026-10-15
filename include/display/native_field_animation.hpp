@@ -25,6 +25,8 @@ public:
  bool tick(bool battle,bool paused=false);
  bool mario(const MarioPresentation&,const std::array<int32_t,3>& handles,unsigned budget=8192);
  bool resumeMario(unsigned budget=8192);
+ // Entry resumes through its invoking script, separately from Mario draining.
+ bool entryPending() const{return bool(entering_);}
  bool presentationPending() const{return marioActive_ || (process_ && process_->presentationPending());}
  bool producerPending() const{return npcOwner_ || presentationPending() || (process_ && process_->producerPending());}
  bool configurePresentation(std::shared_ptr<const CameraManager>);
@@ -59,6 +61,7 @@ private:
  friend class AnimationNativeInner;
  NativeFieldAnimation()=default;
  std::optional<int32_t> enter(std::shared_ptr<const BattlePoseResource>,int32_t,const char*);
+ std::optional<int32_t> enterSource(std::shared_ptr<const BattlePoseResource>,int32_t,const char*);
  std::shared_ptr<BattlePosePool> pool_;
  std::shared_ptr<NativeFileCache> files_;
  std::unique_ptr<AnimationStartupProcess> process_;

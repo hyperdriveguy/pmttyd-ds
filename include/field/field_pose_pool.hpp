@@ -5,6 +5,11 @@ namespace ttyd {
 // Retained field resource wrapper over standalone or shared CPU poses. Requires real
 // original MODEL/TPL data and descriptor0; it does not acknowledge GPU/facing
 // Main readiness or a missing source file. Unavailable native data stays pending.
+struct FieldPoseEntryCursor {
+ const class FieldPosePool* owner=nullptr;
+ std::shared_ptr<const BattlePoseResource> resource;
+ std::string model;int32_t mode=0,result=0;bool admitted=false,complete=false;
+};
 class FieldPosePool {
 public:
  // Caller pool shares global handles/model/texture caches with field roles
@@ -17,6 +22,9 @@ public:
  bool canEnter(const std::string& model,int32_t mode) const;
  bool animationReady(const std::string& model,const std::string& animation) const;
  std::optional<int32_t> enter(const std::string& model,int32_t mode,BattlePoseClock);
+ // One initial admission, then resume the exact pinned native Entry directly.
+ // In-progress source cache publication must not be rejected as a new request.
+ std::optional<int32_t> resumeEnter(const std::string&,int32_t,BattlePoseClock,FieldPoseEntryCursor&);
  bool paperOn(int32_t handle){return poses_->paperOn(handle);}
  bool materialLightFlagOn(int32_t handle,uint32_t flags){return poses_->materialLightFlagOn(handle,flags);}
  std::optional<int32_t> vivianType(int32_t handle) const{return poses_->vivianType(handle);}

@@ -54,6 +54,7 @@ public:
  uint32_t pending() const{return cursor_.pending;}
  EventNativeRuntime& vm(){return *vm_;}
  const EventNativeRuntime& vm() const{return *vm_;}
+ AnimationPoolMemory* animationMemory(){return aliases_.get();}
  const AnimationPoolMemory* animationMemory() const{return aliases_.get();}
 private:
  friend class AnimationNativeMain;

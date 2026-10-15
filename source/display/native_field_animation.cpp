@@ -12,7 +12,7 @@ float real(const EventAddressSpace& m,uint32_t a){const uint32_t v=word(m,a);flo
 float rounded(float x){volatile float f=x;return f;}
 }
 std::shared_ptr<NativeFieldAnimation> NativeFieldAnimation::create(const char* root,std::shared_ptr<NativeFileCache> files,const EventNativePlatform& platform){
- if(!root || !files || !stagePrologueAnimationFiles(*files,root) || !files->yieldProvider(nullptr,[](void*){return true;}))return {};
+ if(!root || !files || !stagePrologueAnimationFiles(*files,root) || (!files->hasYieldProvider() && !files->yieldProvider(nullptr,[](void*){return true;})))return {};
  auto n=std::shared_ptr<NativeFieldAnimation>(new NativeFieldAnimation);n->files_=std::move(files);n->pool_=std::make_shared<BattlePosePool>();
  n->process_=AnimationStartupProcess::cold(n->files_,n->pool_,platform,(std::string(root)+"/animation-boot/memory.pmevt").c_str(),0x81000000,0x82000000,12*1024*1024);
  if(!n->process_ || !n->process_->advance())return {};
@@ -21,10 +21,12 @@ std::shared_ptr<NativeFieldAnimation> NativeFieldAnimation::create(const char* r
  if(!m.registerRam(0x800000f8,std::vector<uint8_t>(4)) || !m.writeWord(0x800000f8,Bus) || !m.registerRam(0x8041ec30,std::vector<uint8_t>(4)) || !m.registerRam(Name,std::vector<uint8_t>(256)) || !m.registerRam(0x803d8e70,std::vector<uint8_t>(0x600)) || !m.registerRam(0x8041e89c,std::vector<uint8_t>(8)) || word(m,0x8041fb40)!=0x41855555)return {};
  n->pool_->nativeProvider_=n.get();
  n->pool_->nativeEntry_=[](void* u,std::shared_ptr<const BattlePoseResource> r,int32_t mode,BattlePoseClock,const char* name){return static_cast<NativeFieldAnimation*>(u)->enter(std::move(r),mode,name);};
+ n->pool_->nativeSourceEntry_=[](void* u,std::shared_ptr<const BattlePoseResource> r,int32_t mode,BattlePoseClock,const char* name){return static_cast<NativeFieldAnimation*>(u)->enterSource(std::move(r),mode,name);};
+ n->pool_->nativeEntryAvailable_=[](const void* p){const auto& n=*static_cast<const NativeFieldAnimation*>(p);return n.ready() && !n.entryPending() && !n.producerPending() && !n.releasing_.active;};
  n->pool_->nativeRelease_=[](void* u,int32_t h){return static_cast<NativeFieldAnimation*>(u)->release(h);};
  n->pool_->nativeClock_=[](const void* u,BattlePoseClock& c){return static_cast<const NativeFieldAnimation*>(u)->clock(c);};if(!n->configurePresentation({}))return {};return n;
 }
-NativeFieldAnimation::~NativeFieldAnimation(){if(pool_ && pool_->nativeProvider_==this){pool_->nativeEntry_=nullptr;pool_->nativeClock_=nullptr;pool_->nativeRelease_=nullptr;pool_->nativeProvider_=nullptr;}npcInnerBinding_.reset();process_.reset();}
+NativeFieldAnimation::~NativeFieldAnimation(){if(pool_ && pool_->nativeProvider_==this){pool_->nativeEntry_=nullptr;pool_->nativeSourceEntry_=nullptr;pool_->nativeEntryAvailable_=nullptr;pool_->nativeClock_=nullptr;pool_->nativeRelease_=nullptr;pool_->nativeProvider_=nullptr;}npcInnerBinding_.reset();process_.reset();}
 bool NativeFieldAnimation::ready() const{return process_ && process_->ready();}
 bool NativeFieldAnimation::clock(BattlePoseClock& out) const{
  if(!ready())return false;
@@ -35,7 +37,7 @@ bool NativeFieldAnimation::clock(BattlePoseClock& out) const{
  out={a,b};return true;
 }
 bool NativeFieldAnimation::tick(bool battle,bool paused){
- if(!ready() || producerPending())return false;
+ if(!ready() || entryPending() || producerPending())return false;
  auto& vm=process_->vm();auto& m=vm.memory;uint32_t gp=0,bus=0,window=0;
  if(!m.readWord(0x80415fd0,gp) || gp!=0x81000000 || !m.readWord(0x800000f8,bus) || !m.readWord(0x8041ec30,window))return false;
  if(window){uint16_t flags=0;uint32_t state=0;if(window>0xffffffdc || !m.readHalf(window,flags) || (!(flags&0x1000) && !m.readWord(window+0x20,state)))return false;}
@@ -46,8 +48,8 @@ bool NativeFieldAnimation::tick(bool battle,bool paused){
  s.lower=[](void* u){return uint32_t(static_cast<NativeFieldAnimation*>(u)->raw_);};
  publishEventRetraceTime(0,s);return true;
 }
-std::optional<int32_t> NativeFieldAnimation::enter(std::shared_ptr<const BattlePoseResource> resource,int32_t mode,const char* requested){
- if(!ready() || producerPending() || releasing_.active || mode<0 || mode>2 || !resource || !resource->draw || !resource->textures || !resource->bank || resource->names.empty())return {};
+std::optional<int32_t> NativeFieldAnimation::enterSource(std::shared_ptr<const BattlePoseResource> resource,int32_t mode,const char* requested){
+ if(!ready() || (!entering_ && producerPending()) || releasing_.active || mode<0 || mode>2 || !resource || !resource->draw || !resource->textures || !resource->bank || resource->names.empty())return {};
  const std::string name=requested?requested:resource->modelName;if(name.empty() || name.size()>=256 || name!=resource->modelName || !files_->contains("a/"+name,5) || !files_->contains("a/"+resource->textureName+"-",4))return {};
  // Preserve the original model-cache canonical resource, including its atlas.
  for(const auto& model:pool_->models())if(model.flags() && model.resource && model.resource->modelName==resource->modelName){resource=model.resource;break;}
@@ -56,12 +58,16 @@ std::optional<int32_t> NativeFieldAnimation::enter(std::shared_ptr<const BattleP
  uint32_t address=Name;uint8_t mappedByte=0;
  for(auto pair:{std::make_pair("a_mario",0x802c18a0u),std::make_pair("a_mario_r",0x802c18a8u),std::make_pair("e_mario",0x802c18b4u),std::make_pair("c_pkr",0x804213e0u),std::make_pair("c_kuri_h",0x802cb4bcu)})if(name==pair.first && (name!="c_kuri_h" || process_->vm().memory.readByte(pair.second,mappedByte)))address=pair.second;
  auto result=process_->enter(address,uint32_t(mode),resource);if(result){entering_.reset();name_.clear();}
- // Source exposes -2 for file failure; the typed API exposes only valid handles.
+ return result;
+}
+std::optional<int32_t> NativeFieldAnimation::enter(std::shared_ptr<const BattlePoseResource> resource,int32_t mode,const char* name){
+ const auto result=enterSource(std::move(resource),mode,name);
+ // Ordinary typed callers must never receive a negative pose handle.
  if(result && *result<0)return {};
  return result;
 }
 bool NativeFieldAnimation::configurePresentation(std::shared_ptr<const CameraManager> cameras){
- if(producerPending())return false;
+ if(entryPending() || producerPending())return false;
  if(process_->mainConfiguration()==configuredMain_ && configuredMain_ && cameras_==cameras)return true;
  AnimationFacingAddressPolicy addresses;addresses.base=0x81900000;addresses.unmapped=[this](uint32_t a,uint32_t n){return process_->vm().memory.unmappedRange(a,n);};
  // The uniquely owned process retires in our destructor body while request

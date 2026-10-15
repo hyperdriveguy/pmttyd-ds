@@ -21,7 +21,8 @@ public:
  struct Source {std::string path;uint32_t type;std::vector<uint8_t> original;};
  bool stage(const std::string& path,uint32_t type,std::vector<uint8_t> original);
  bool stage(std::vector<Source>); // Atomic catalog addition, including validation.
- bool yieldProvider(void*,bool (*)(void*)); // Configure before first bind/acquire.
+ bool yieldProvider(void*,bool (*)(void*));
+ bool hasYieldProvider() const{return yield_!=nullptr;} // Configure before first bind/acquire.
  bool bind(EventAddressSpace&); // Owner outlives every borrowing VM.
  // One serialized retained acquisition; nullopt means unavailable, engaged0
  // completed source failure. New-file type must match staged bytes, but actual

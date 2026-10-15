@@ -23,7 +23,7 @@ FieldNpcClockBinding::bind(std::shared_ptr<FieldNpcRegistryOwner> owner,
 // Callback lambdas have stable identities across cursor resumes.
 bool FieldNpcClockBinding::advance(uint32_t actor,
                                    FieldNpcClockCursor &cursor) {
-  if (!owner_->ownsFieldActor(actor))
+  if (owner_->entryPending() || !owner_->ownsFieldActor(actor))
     return false;
   FieldNpcClockServices s;
   s.user = this;

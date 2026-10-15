@@ -16285,3 +16285,72 @@ changed battle/field/native ownership code,newer animation/font/window/resource/
 raster/startup integration and tools. Inventory tracks only source/include C++/
 header/PICA hashes; matching hashes are a review aid,not semantic completeness.
 Tools and untracked additions still need separate audit. Broad goals remain active.
+
+### Retained original native NPC construction — 2026-10-15
+
+Ported npcEntry8004b894 as a retained constructor with original registry/free
+scan, actor clear/flags3/name prefix, separately captured first/fallback pose
+calls and original suffix. Native pose holds preserve source actor bytes and
+never replay clear/copy or publish a fake completed handle. Field pose Entry
+admits once then resumes the same real source child despite temporary incomplete
+model metadata. Shared registry explicit/implicit cursors retain actor/pose
+owners; new constructors wait for existing native producers before effects.
+Lookup/enumeration/reset and bound Main/traversal/tail/Draw/clock/actor/wander/
+setup consumers defer while construction is pending. Abandoned calls stay
+retained/quarantined, without invented native cancellation.
+
+Separate raw native Entry results preserve original -2→hoshi fallback while
+typed callers keep valid-handle-only behavior. Existing original hoshi MODEL/
+TPL are now staged; runtime/private products remain unchanged. Native startup
+preserves an explicitly supplied yield provider. Actual native fixture holds
+a cached file after original partial model publication, repairs the same file
+and resumes; source fallback fixture nulls a real acquired MODEL holder to
+execute original fileFree/-2 and actual hoshi Entry. Three actual Mario poses
+share the namespace and retain identical source state across all five harbor
+model constructions. Fixtures reuse an original source name deliberately; they
+do not execute the original harbor four-actor story child. Additional coverage
+includes primitive fallback/mode/timestamp ordering, competing retained Main,
+two-VM identity, consumer guards and abandoned-call ownership.
+
+Validation uses the accepted harbor-native-resources source plus only this
+scoped delta; unrelated concurrent edits/staging/commits are excluded and
+preserved. make test exits0: 493/493 C++ (129.78s), 224/224 Python (87.496s), zero
+skipped. Final native make all -j6 -o assets-ready SOUNDTRACK=gamecube and
+private ARM build exit0. Exact runtime/private input audit permits skipping
+unchanged asset conversion. All source/include dependencies now point at the
+frozen source. An audit invalidated 101 reused native objects whose dependency
+files pointed at older snapshots with different headers; the final build
+recompiled those objects. Earlier ARM startup failures and failed field load
+are diagnostic, not accepted passes. Existing compiler/Pillow warnings remain.
+
+A retained Entry has its own entryPending signal, separate from Mario-only
+producer draining. Native clock/configuration/new-producer admission reject
+Entry while the invoking owner retains its continuation. Future Game/EVT
+integration must explicitly resume that owner before Game's animation clock
+gate; this prerequisite does not claim that integration complete.
+
+Fresh isolated normal50s, ARM60s and checkpoint70s-warmup Azahar runs exit0.
+Eight strict ARM markers verify retained actor/cache/fallback/Mario states/
+shared-VM/consumer/producer/abandoned-call assertions. Private probe compiles
+the exact tracked fixture with explicit romfs: roots; 525 exact final production
+objects reused except main. Other source/include and ROMFS match. Final normal
+capture shows original opening presentation; checkpoint idle/right/left/idle
+captures verify field loading and movement. The checkpoint has no active
+partner; no Goombella walking visual-parity claim. User profiles/saves untouched;
+final production binary unchanged throughout final captures.
+
+Audited 4251 source files, 2192 runtime products, 1474 private
+inputs and 1 reference input. Products are byte-identical to the
+accepted asset baseline; no import/conversion/ISO write. Final doc links: 1556
+Markdown files, zero broken. Exact source journals, failures, final logs, native
+dependency audit, object hashes, binaries and captures:
+artifacts/field-npc-creation-validation-manifest.json.
+
+Limitations/next: original EVT Entry/SetTribe callbacks, actual async loader and
+forced SetAnim providers, source four-actor names/order, complete GOR00 tagged
+map/setup/RNG and normal scheduling remain required. Existing synchronous map
+registration composition needs its own retained parent for asynchronous Entry.
+Continue shared field/battle children, full result/teardown/return/postbattle
+and original dialogue/story flow through DEMO-01/RESULT-01/EVT-01. No GPU/Main
+completion, source visibility, measured timing, physical hardware/performance,
+matched original visuals/audio or full playable prologue claim.

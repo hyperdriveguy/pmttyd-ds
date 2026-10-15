@@ -131,7 +131,7 @@ FieldNpcMainEntryServices FieldNpcMainEntryBinding::services() {
 }
 FieldNpcMainFrontier
 FieldNpcMainEntryBinding::advance(FieldNpcMainEntryCursor &c) {
-  if (!poses_.aliases(*owner_->poses().sharedPool(), vm_.memory))
+  if (owner_->entryPending() || !poses_.aliases(*owner_->poses().sharedPool(), vm_.memory))
     return FieldNpcMainFrontier::Pending;
   return advanceFieldNpcMainEntry(services(), c);
 }
@@ -483,7 +483,7 @@ FieldNpcActorsFrontier
 // Never run a clock prepass or clear/recycle an actor early to advance the scan.
 FieldNpcMainEntryBinding::advanceActors(FieldNpcMainActorsCursor &c) {
   using Result = FieldNpcActorsFrontier;
-  if ((c.binding && c.binding != this) ||
+  if (owner_->entryPending() || (c.binding && c.binding != this) ||
       !poses_.aliases(*owner_->poses().sharedPool(), vm_.memory))
     return Result::Pending;
   c.binding = this;
@@ -521,7 +521,7 @@ FieldNpcMainEntryBinding::advanceActors(FieldNpcMainActorsCursor &c) {
 // Phase2 is terminal/effect-free, not automatic reset. Queue/camera/Mario/field
 // owners and borrowed resources outlive holds AND deferred callback dispatch.
 bool FieldNpcMainEntryBinding::advanceMain(FieldNpcMainCursor &c) {
-  if ((c.binding && c.binding != this) ||
+  if (owner_->entryPending() || (c.binding && c.binding != this) ||
       !poses_.aliases(*owner_->poses().sharedPool(), vm_.memory))
     return false;
   c.binding = this;

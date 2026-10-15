@@ -45,7 +45,14 @@ std::unique_ptr<FieldNpcRegistryBinding> FieldNpcRegistryBinding::bind(std::shar
 bool FieldNpcRegistryBinding::text(uint32_t a,std::string& out,unsigned limit) const{
  out.clear();for(unsigned i=0;i<limit;++i){uint8_t c;if(uint64_t(a)+i>UINT32_MAX || !memory_.readByte(a+i,c))return false;if(!c)return true;out.push_back(char(c));}return false;
 }
-struct FieldNpcRegistryBinding::Call {FieldNpcRegistryBinding* binding;BattlePoseClock clock;unsigned allocation=0;};
+struct FieldNpcRegistryEntryState {
+ FieldNpcRegistryBinding* binding=nullptr;uint32_t name=0,model=0,gp=0;
+ std::string nameBytes,modelBytes;
+ PackedNpcEntryCursor source;std::array<FieldPoseEntryCursor,2> poses;
+};
+bool FieldNpcEntryCursor::pending() const{return state && !state->source.complete;}
+bool FieldNpcEntryCursor::complete() const{return state && state->source.complete;}
+struct FieldNpcRegistryBinding::Call {FieldNpcRegistryBinding* binding;BattlePoseClock clock;unsigned allocation=0;FieldNpcRegistryEntryState* entry=nullptr;};
 // Synchronous admitted callbacks: allocator consumes exactly four predefined
 // buffers in original order; CPU pose/math services cannot acknowledge missing
 // resources. Assertions enforce admission contracts, not a fallback implementation.
@@ -61,6 +68,12 @@ PackedNpcRegistryServices FieldNpcRegistryBinding::services(Call& c){
  s.compare=[](void* p,uint32_t a,uint32_t b)->int32_t{auto& m=static_cast<Call*>(p)->binding->memory_;for(;;++a,++b){uint8_t x=0,y=0;const bool ok=m.readByte(a,x) && m.readByte(b,y);assert(ok);(void)ok;if(x!=y || !x)return int32_t(x)-int32_t(y);}};
  s.copyString=[](void* p,uint32_t a,uint32_t b){auto& m=static_cast<Call*>(p)->binding->memory_;uint8_t v=0;do{const bool ok=m.readByte(b++,v) && m.writeByte(a++,v);assert(ok);(void)ok;}while(v);};
  s.poseEntry=[](void* p,uint32_t a,int32_t mode)->int32_t{auto& c=*static_cast<Call*>(p);std::string model;const bool ok=c.binding->text(a,model,64);assert(ok);(void)ok;const auto h=c.binding->owner_->poses_.enter(model,mode,c.clock);assert(h);return *h;};
+ if(c.entry)s.tryPoseEntry=[](void* p,uint32_t a,int32_t mode)->std::optional<int32_t>{
+  auto& c=*static_cast<Call*>(p);std::string model;
+  if(!c.binding->text(a,model,64))return {};
+  auto& cursor=c.entry->poses[c.entry->source.phase==2?1:0];
+  return c.binding->owner_->poses_.resumeEnter(model,mode,c.clock,cursor);
+ };
  s.paperOn=[](void* p,int32_t h){const bool ok=static_cast<Call*>(p)->binding->owner_->poses_.paperOn(h);assert(ok);(void)ok;};
  s.heightBits=[](void* p,int32_t h){const auto v=static_cast<Call*>(p)->binding->owner_->poses_.height(h);assert(v);return bits(*v);};
  s.radiusBits=[](void* p,int32_t h){const auto v=static_cast<Call*>(p)->binding->owner_->poses_.radius(h);assert(v);return bits(*v);};
@@ -79,7 +92,7 @@ bool FieldNpcRegistryBinding::initialize(){
 // Fresh GP+14 chooses ordinary/alternate. Validate exact owned array and
 // capacity<=36/16 before walking340(hex)-byte slots; counts alone are not identity.
 bool FieldNpcRegistryBinding::registry(uint32_t& base,uint32_t& array,uint32_t& count) const{
- if(!owner_->initialized_)return false;
+ if(!owner_->initialized_ || owner_->entryPending())return false;
  uint32_t gp=0,mode=0;if(!memory_.readWord(0x80415fd0,gp) || uint64_t(gp)+0x17>UINT32_MAX || !memory_.readWord(gp+0x14,mode))return false;
  base=0x8041e8b4+(mode?0x14:0);if(!memory_.readWord(base+4,count) || !memory_.readWord(base+0xc,array))return false;
  return count<=(mode?16u:36u) && array==owner_->addresses_[mode?2:0];
@@ -100,6 +113,7 @@ std::optional<uint32_t> FieldNpcRegistryBinding::lookup(uint32_t name,PackedNpcL
 // name/model strings, free actor, nonaliasing inputs, original constants/live GP
 // timestamp and real CPU pose capacity. Failure must not partially enter.
 bool FieldNpcRegistryBinding::canEnter(uint32_t name,uint32_t model) const{
+ if(!owner_->poses_.sharedPool()->sourceEntryAvailable())return false;
  std::string nameBytes,modelBytes,luigi;
  uint32_t base=0,array=0,count=0,gp=0,mode=0,unused=0;
  if(!text(name,nameBytes,32) || !text(model,modelBytes,64) || !registry(base,array,count) || !activeActors())return false;
@@ -114,9 +128,28 @@ bool FieldNpcRegistryBinding::canEnter(uint32_t name,uint32_t model) const{
  for(auto a:constants)if(!memory_.readWord(a,unused))return false;
  return true;
 }
+std::optional<int32_t> FieldNpcRegistryBinding::resumeEnter(uint32_t name,uint32_t model,BattlePoseClock clock,FieldNpcEntryCursor& cursor){
+ if(!cursor.state){
+  if(owner_->entryPending() || !canEnter(name,model))return {};
+  auto state=std::make_shared<FieldNpcRegistryEntryState>();state->binding=this;state->name=name;state->model=model;
+  if(!memory_.readWord(0x80415fd0,state->gp) || !text(name,state->nameBytes,32) || !text(model,state->modelBytes,64))return {};
+  cursor.state=state;owner_->pendingEntry_=std::move(state);
+ }
+ auto& state=*cursor.state;
+ if(state.binding!=this || state.name!=name || state.model!=model)return {};
+ if(state.source.complete)return state.source.index;
+ if(owner_->pendingEntry_!=cursor.state)return {};
+ // Stable caller memory/input domain; source mode/timestamp are still read
+ // freshly at their reached phases. Never repeat fresh actor/pool admission.
+ uint32_t gp=0,unused=0;std::string currentName,currentModel;
+ if(!memory_.readWord(0x80415fd0,gp) || gp!=state.gp || !memory_.readWord(gp+0x14,unused) || !memory_.readWord(gp+0x38,unused) || !memory_.readWord(gp+0x3c,unused) || !text(name,currentName,32) || currentName!=state.nameBytes || !text(model,currentModel,64) || currentModel!=state.modelBytes)return {};
+ Call call{this,clock,0,&state};int32_t result=0;
+ if(!resumePackedNpcEntry(name,model,services(call),state.source,&state,result))return {};
+ owner_->pendingEntry_.reset();return result;
+}
 std::optional<int32_t> FieldNpcRegistryBinding::enter(uint32_t name,uint32_t model,BattlePoseClock clock){
- if(!canEnter(name,model))return {};
- Call call{this,clock};return enterPackedNpc(name,model,services(call));
+ const auto result=resumeEnter(name,model,clock,implicitEntry_);
+ if(result)implicitEntry_={};return result;
 }
 
 

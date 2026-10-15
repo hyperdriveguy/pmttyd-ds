@@ -66,6 +66,10 @@ public:
     BattlePosePool& operator=(const BattlePosePool&)=delete;
     std::optional<int32_t> enter(std::shared_ptr<const BattlePoseResource>,int32_t mode,BattlePoseClock,
         const char* requestedModel=nullptr);
+    // NPC source constructor consumes raw-2 fallback; typed callers keep their
+    // valid-handle-only API. Empty still means an unfinished native child.
+    std::optional<int32_t> enterSource(std::shared_ptr<const BattlePoseResource>,int32_t,BattlePoseClock,const char* requestedModel=nullptr);
+    bool sourceEntryAvailable() const{return !nativeEntryAvailable_ || nativeEntryAvailable_(nativeProvider_);}
     BattlePose* pose(int32_t handle);
     const BattlePose* pose(int32_t handle) const;
     std::optional<bool> testTranslucent(int32_t handle) const;
@@ -99,6 +103,8 @@ private:
     friend class AnimationScratchMemory;
     friend class AnimationScratchPose;
     friend class NativeFieldAnimation;
+    std::optional<int32_t> (*nativeSourceEntry_)(void*,std::shared_ptr<const BattlePoseResource>,int32_t,BattlePoseClock,const char*)=nullptr;
+    bool (*nativeEntryAvailable_)(const void*)=nullptr;
     bool resolveClock(BattlePoseClock& clock) const{return !nativeClock_ || nativeClock_(nativeProvider_,clock);}
     void* nativeProvider_=nullptr;
     std::optional<int32_t> (*nativeEntry_)(void*,std::shared_ptr<const BattlePoseResource>,int32_t,BattlePoseClock,const char*)=nullptr;

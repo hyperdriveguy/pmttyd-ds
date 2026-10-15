@@ -5442,3 +5442,19 @@ fresh resource queries. GPU/material/cache/traversal are explicit backend holds.
 The local parent source gap is closed by the pinned audit above; additional
 unresolved child functionality stays in this inbox. No fake renderer completion
 or undocumented empty-group assumption is authorized by the delivered parent.
+
+### Retained native npcEntry prerequisite — 2026-10-15
+
+Fresh direct-Entry documentation exposed two native resume hazards: actor
+clear/name copy replay and new-request admission over partially published
+source model caches. Added retained original npcEntry/pose constructors, actual
+raw-2→hoshi fallback, producer admission and shared registry/Main/Draw/clock/
+actor/setup guards. Actual source file holds, failure/fallback and Mario/shared
+pose ownership are tested. Existing full hoshi resources are staged unchanged.
+[Contract](../behavior/field/RETAINED_NATIVE_NPC_CREATION.md).
+
+This is the prerequisite constructor, not an EVT wrapper success receipt.
+Next bind original evt_npc_entry and evt_npc_set_tribe to same-VM argument/name/
+tribe storage and original async/forced selection providers. Preserve source
+Entry0 polling versus native child hold, setter1 yield, source four-actor order/
+names, full GOR00 setup/registration and real RNG. EVT-01 remains open.
