@@ -1,6 +1,9 @@
 #pragma once
 #include "battle_action_help.hpp"
 #include <optional>
+// nullopt is unavailable native evaluation/removal; engaged0 is EVT retry,
+// engaged2 completion. Prior effects persist; these immediate wrappers have no
+// suspended-prefix cursor. ReadResult/ReadCount preserve raw destinations.
 namespace ttyd {
 struct BattleActionEventServices {
   BattleActorServices memory;

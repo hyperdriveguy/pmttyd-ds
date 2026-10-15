@@ -8,6 +8,9 @@ int32_t byte(const BattleActorServices& m,uint32_t at){assert(m.byte);const auto
 void store(const BattleActorServices& m,uint32_t at,uint32_t v){assert(m.memory.storeWord);m.memory.storeWord(m.memory.user,at,v);}
 void count(const BattleActorServices& m,uint32_t at){assert(m.byte && m.memory.storeByte);const auto v=m.byte(m.user,at);if(v<100)m.memory.storeByte(m.memory.user,at,uint8_t(v+1));}
 }
+// Predicate only, not damage evaluation: nonnull HP callback1c or exact
+// signed status -lane patterns qualify. FP power alone is not checked here.
+// Preserve positive pairs/negative third-lane tests rather than any-nonzero.
 int32_t packedWeaponIsAttack(uint32_t w,const BattleActorServices& m){
  if(!w)return 0;
  if(word(m,w+0x1c))return 1;
@@ -20,6 +23,9 @@ uint32_t packedUnitData(uint32_t u,uint32_t key,const BattleActorServices& m){
  auto table=word(m,u+0x18);if(!table)return 0;
  for(;;table+=8){const auto candidate=word(m,table);if(!candidate)return 0;if(candidate==key)return word(m,table+4);}
 }
+// Selection writes event2a0/category2ac and action-record bytes (<100 only),
+// but creates NO event root. override551 nonzero resets unit state 20=0 and
+// publishes Wait 0x80416b40/category1. Other unknown types use Wait/category0.
 bool resumePackedBattleAttackSelection(uint32_t u, uint32_t menu,
                                        const BattleAttackSelectionServices &s,
                                        BattleAttackSelectionCursor &c) {
@@ -75,6 +81,9 @@ bool resumePackedBattleAttackSelection(uint32_t u, uint32_t menu,
     return finish();
   }
   switch (type) {
+  // Types 0/1/2/4/6 get28-byte weapon rows, script+b0/category0; null script
+  // alone falls back Wait. Record selectors16f38/39, 3a/3b, 55/56 and family
+  //41..44 differ by type/attack predicate. Type 2 weapon8036aa84 skips count only.
   case 0:
   case 1:
   case 2:
@@ -104,6 +113,9 @@ bool resumePackedBattleAttackSelection(uint32_t u, uint32_t menu,
     }
     return finish();
   }
+  // Operation548 selects exact scripts/categories/counters below. Sub1/2
+  // use fixed Mario/partner weapon scripts without ordinary Wait fallback;
+  // sub 8 uses data key2/category3 even script0. Unused/unknown sub defaults Wait1.
   case 5: {
     const auto sub = word(m, menu + 0x548);
     switch (sub) {
@@ -159,6 +171,11 @@ bool resumePackedBattleAttackSelection(uint32_t u, uint32_t menu,
     m.memory.storeByte(m.memory.user, u + 0x20, 1);
     event(0x80351754, 7);
     return finish();
+  // Types 11/12 rewind state 6->5, 7->6, 9->8, else4. Type 11 recaptures
+  // global registry actor for data6 (fallback80373d00), counts47/48, then may
+  // hold message19094 from captured B+0x19090 mask 1. Resume phase 2 performs
+  // ONLY continuation, never state/counter publication again. Type 12 independently
+  // reads current audience band16040 to choose fixed source script; type 13 is fixed.
   case 11:
   case 12: {
     const auto old = byte(m, u + 0x20);

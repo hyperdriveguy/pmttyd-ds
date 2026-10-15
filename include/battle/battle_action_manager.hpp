@@ -1,6 +1,8 @@
 #pragma once
 #include "battle_actor.hpp"
 #include <optional>
+// Immediate parent has no retry cursor: provider unavailability can follow
+// pad/main effects. optional0 is a completed source callback result, not missing.
 namespace ttyd {
 struct BattleActionManagerServices {
   BattleActorServices memory;

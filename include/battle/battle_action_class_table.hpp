@@ -1,6 +1,9 @@
 #pragma once
 #include "battle_actor.hpp"
 #include <optional>
+// Class rows are a different ABI from weapon rows: menu+8, 20-byte stride;
+// type+0, enabled+4, label+8, icon halfword+0xc, denial reason+0x10.
+// This immediate producer returns a raw source scalar, not always a row count.
 namespace ttyd {
 struct BattleActionClassServices {
   BattleActorServices memory;

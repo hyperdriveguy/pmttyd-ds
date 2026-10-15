@@ -2,6 +2,9 @@
 #include <cassert>
 namespace ttyd {
 namespace {int32_t signedWord(uint32_t v){return v<=0x7fffffffu?int32_t(v):int32_t(int64_t(v)-0x100000000LL);}}
+// No weapon/script gives zero; unaffordable cost gives -1. Actual eligibility
+// sampling uses private scratch, not live B+0x428. Negate the enemy-row direction
+// as signed low8 here; final target decision deliberately uses another direction.
 std::optional<int32_t> packedWeaponTargetCount(uint32_t b,uint32_t u,uint32_t w,const BattleWeaponTargetCountServices& s){
  const auto& m=s.memory;assert(m.memory.word);auto word=[&](uint32_t at){return m.memory.word(m.memory.user,at);};
  if(!w || !word(w+0xb0))return 0;
@@ -12,6 +15,9 @@ std::optional<int32_t> packedWeaponTargetCount(uint32_t b,uint32_t u,uint32_t w,
  if(!s.sample(s.user,s.privateBuffer,w,signedWord(actor),signedByte(uint8_t(enemy)),admission,attributes,signedByte(uint8_t(-raw))))return std::nullopt;
  return signedByte(m.byte(m.user,s.privateBuffer+0xa6c));
 }
+// Capture row count once. Clear enabled/reason before testing each weapon.
+// Positive targets enable; negative means cost denial (type 4 reason 2, else1);
+// zero means no targets (type 0 reason 4, type 1 reason 5, else3). No rollback.
 bool updatePackedBattleWeaponTable(uint32_t b,uint32_t type,const BattleWeaponEligibilityServices& s){
  const auto& m=s.memory;assert(m.memory.word && m.memory.storeWord && s.unit && s.cursor && s.cursorSlot && s.targetCount);
  auto word=[&](uint32_t at){return m.memory.word(m.memory.user,at);};auto store=[&](uint32_t at,uint32_t v){m.memory.storeWord(m.memory.user,at,v);};
@@ -22,6 +28,11 @@ bool updatePackedBattleWeaponTable(uint32_t b,uint32_t type,const BattleWeaponEl
   if(*targets>0){store(row+0x84,1);store(row+0x98,0);}else store(row+0x98,*targets<0?(type==4?2:1):(type==0?4:type==1?5:3));
  }return true;
 }
+// Types 0/1 build Jump/Hammer levels and badges; type 2 scans 20 pouch slots;
+// type 4 scans 16 star bits; type 6 delegates to the actual party producer.
+// Zero count preserves prior cursor/descriptors. Positive count clamps only the
+// upper cursor bound, then reduces scroll for six visible rows before eligibility.
+// Providers can mutate count/kind/rows; preserve late reads and partial stores.
 std::optional<int32_t> makePackedBattleWeaponTable(uint32_t b,uint32_t type,const BattleWeaponTableServices& s){
  const auto& m=s.memory;assert(m.memory.word && m.memory.storeWord && m.memory.half && m.memory.storeHalf && m.byte && s.unit && s.pouch);
  auto word=[&](uint32_t at){return m.memory.word(m.memory.user,at);};

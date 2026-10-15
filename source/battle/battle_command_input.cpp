@@ -7,6 +7,9 @@ int32_t signedByte(uint8_t v) {
   return v < 128 ? int32_t(v) : int32_t(v) - 256;
 }
 } // namespace
+// Dispatch through the original menu state, preserving fresh owner reads and
+// child call order. This immediate parent has no retained continuation: a missing
+// child can follow earlier effects, so retry admission belongs to its caller.
 std::optional<int32_t>
 packedBattleCommandInput(uint32_t b, const BattleCommandInputServices &s) {
   const auto &a = s.memory;

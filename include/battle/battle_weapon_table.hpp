@@ -1,6 +1,9 @@
 #pragma once
 #include "battle_attack_selection.hpp"
 #include <optional>
+// Weapon rows begin at menu+0x80 with 28-byte stride; fields are weapon+0,
+// enabled+4, label+8, icon halfword+0xc, ordinal+0x10, item+0x14, reason+0x18.
+// Private cursor/count scratch addresses must be nonzero and distinct.
 namespace ttyd {
 struct BattleWeaponTargetCountServices {
  BattleActorServices memory;void* user=nullptr;uint32_t privateBuffer=0;

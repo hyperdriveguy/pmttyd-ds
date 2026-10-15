@@ -2,12 +2,16 @@
 #include <cassert>
 #include <cstring>
 namespace ttyd {
+// Key19008, mode 1900c. Display setter then recaptures B and writes inline
+// audience-window byte2858+1375c as1 when mode 0, else0. Do not merge owners.
 void packedBattleActionHelpSetKey(uint32_t key,const BattleActorServices& s){const auto& m=s.memory;const auto b=currentBattleAddress(s);m.storeWord(m.user,b+0x19008,key);}
 void packedBattleActionHelpSetDisplay(int32_t mode,const BattleActorServices& s){
  const auto& m=s.memory;const auto b=currentBattleAddress(s);m.storeWord(m.user,b+0x1900c,uint32_t(mode));
  // WinSetActive independently resolves the current inline audience window.
  const auto current=currentBattleAddress(s);m.storeByte(m.user,current+0x2858+0x1375c,mode==0?1:0);
 }
+// Capture B before resolving on; write main state 1c9c=100 even on 0.
+// On!=0 checks actor1c90's flags27c mask 10 before independently setting help 2.
 int32_t packedBattleStartActionCommandEvent(EventEntry& e,const BattleUnitEventServices& u,const BattleActorServices& s){
  const auto& m=u.memory;const auto args=e.arguments,b=currentBattleAddress(s);const auto raw=m.word(m.user,args);
  const auto on=u.values.resolve(u.values.user,e,raw<0x80000000u?int32_t(raw):int32_t(int64_t(raw)-0x100000000LL));
@@ -15,6 +19,9 @@ int32_t packedBattleStartActionCommandEvent(EventEntry& e,const BattleUnitEventS
  if(on){const auto actor=m.word(m.user,b+0x1c90);if(!(m.word(m.user,actor+0x27c)&0x10))packedBattleActionHelpSetDisplay(2,s);}
  return 2;
 }
+// Only key0, mode 0, or battle ef4 mask 2 bypass submission. Otherwise register
+// actual callback 0x80216728 on camera 8/class 1, arg0, loaded priority 0x804272b8.
+// A nonexistent native draw provider cannot acknowledge source registration.
 bool packedBattleActionHelpMain(const BattleActionHelpServices& s) {
     const auto& m=s.actors.memory;assert(m.word);
     const auto b=currentBattleAddress(s.actors);

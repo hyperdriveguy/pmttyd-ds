@@ -13,6 +13,8 @@ Recovered original behavior and its evidence remain in
 | [Runtime ownership](runtime.md) | Native main loop, physical input, audio and frontend |
 | [Game composition](game-composition.md) | Room collision, units, tick order, restore and follower ownership |
 | [Checkpoint bytes](save-format.md) | Native save encoder, decoder and file replacement |
+| [Battle commands](battle-commands.md) | Input states, action callbacks, attack publication, feedback, command poses and power |
+| [Weapon menus](battle-weapon-menus.md) | Class/weapon row layouts, eligibility, target decision and retained audience selection |
 | [Typed battle support](typed-battle-support.md) | Semantic movement/position, candidates, facing and target-confirmation order |
 | [Packed battle state](packed-battle-state.md) | Status bytes, menu/candidate records, prechecks, counters and shared recovery |
 | [Packed battle motion](packed-battle-motion.md) | Position/part/hit aliases, movement, sound records, jumps and takeoff |
@@ -72,6 +74,7 @@ Packed wander events, typed wandering, cold animation/scratch parents and audio 
 Outer battle sequence/phase/return controllers, rules, costs and selected EVT services are covered.
 Packed battle status/part/position, candidates, precheck/counter/recovery, movement and jump helpers are covered.
 Typed movement/position/selection, candidate support and facing/target-confirmation helpers are covered.
+Command input/action help/feedback, attack registration/selection, weapon/class tables and weapon UI are covered.
 Remaining field/NPC/partner modules, battle, message, inventory, story, effect
 and port tooling still
 require a systematic inline numeric/behavior audit. Concurrent additions to

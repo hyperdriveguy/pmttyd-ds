@@ -1,5 +1,8 @@
 #pragma once
 #include "battle_actor.hpp"
+// Cursor pins unit/menu and memory/byte-reader identity. Phase1 captures
+// override/type/B once; phase 2 holds message acknowledgement AFTER publications.
+// Synchronous wrapper discards its cursor on false; use retained API for holds.
 namespace ttyd {
 struct BattleAttackSelectionServices {
  BattleActorServices memory;

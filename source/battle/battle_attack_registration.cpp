@@ -11,6 +11,12 @@ EventEntry* create(const BattleAttackRegistrationServices& s,uint32_t script) {
     if(s.create)return s.create(s.user,script,10,0);
     assert(s.schedule);return &createRootEvent(*s.schedule,script,10,0,s.events);
 }
+// Forced battle ef4 mask 40000000, unit attrs2000 clear, category2ac masks
+//8/10 clear selects8034f234 BEFORE status gates. Re-read category afterward:
+//10 guards null script2a0; 2 creates even script0. Status 1/2/9 block;
+//27 blocks unless attr10000. Status 6 STILL draws100 with strict<0, not50;
+// ordinary nonnegative RNG cannot take that route but history advances.
+// Status 5 draws100<50, ORs unit27c mask 10, and uses script2a4; else2a0.
 EventEntry* select(uint32_t battle,uint32_t u,const BattleAttackRegistrationServices& s) {
     if(read(s,battle+0xef4)&0x40000000u)if(!(read(s,u+0x104)&0x2000)) {
         const uint32_t category=read(s,u+0x2ac);if(!(category&8) && !(category&0x10))return create(s,0x8034f234);
@@ -27,6 +33,10 @@ EventEntry* select(uint32_t battle,uint32_t u,const BattleAttackRegistrationServ
     return create(s,read(s,u+0x2a0));
 }
 }
+// First actor lookup decides windowOff unless category mask 1; then FRESH
+//420/unit lookup selects root. Creation priority10/flags0. Only an actual
+// entry stores ID2a8/owner and removes wait290. Advance channel 6 ALWAYS,
+// including blocked/null-entry routes; selection itself does not execute attack.
 void registerBattleAttackState6(uint32_t battle,const BattleAttackRegistrationServices& s) {
     assert(s.unit);uint32_t u=s.unit(s.user,battle,sw(read(s,battle+0x420)));
     if(!(read(s,u+0x2ac)&1)) {assert(s.windowOff);s.windowOff(s.user);}

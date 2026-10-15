@@ -2,6 +2,9 @@
 #include <array>
 #include <cstdint>
 
+// Typed view borrows active-command fields. Result masks1(pending)/2(success)
+// differ from EVT results0/2, help modes0/2 and source main state 100. Callbacks
+// may mutate the same referenced fields; do not replace reads with a snapshot.
 namespace ttyd {
 // References to the active command's shared semantic fields. No copied result
 // or per-hit count reset: callback mutations are visible to later script reads.

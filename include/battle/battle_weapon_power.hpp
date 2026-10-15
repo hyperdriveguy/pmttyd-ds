@@ -1,5 +1,8 @@
 #pragma once
 #include "battle_damage.hpp"
+// Power callback services and table data must remain bound through damage
+// evaluation. Minimal ordinary weapon factories are not complete source records;
+// their specialFlags are original HP-modifier masks, not native UI flags.
 namespace ttyd {
 enum class MarioPowerKind {Jump,Hammer};
 struct WeaponPowerServices {

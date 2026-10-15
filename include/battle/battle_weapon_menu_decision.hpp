@@ -1,6 +1,8 @@
 #pragma once
 #include "battle_actor.hpp"
 #include <optional>
+// Engaged result 0 is successful source work, not native unavailability.
+// Actual target sampling and UI initialization are required before publication.
 namespace ttyd {
 struct BattleWeaponMenuDecisionServices {
  BattleActorServices memory;void* user=nullptr;uint32_t privateCursor=0;

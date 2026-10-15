@@ -2,6 +2,10 @@
 #include <cassert>
 #include <cstring>
 namespace ttyd {
+// Always update private padB+0x1d1c/channel 0 first. Null main slot 1ca0 skips
+// ALL display work. Nonnull main result 0 clears1ca0, then fresh display slot
+//1ca8 can STILL register this visit (camera 8, class 1, B argument, priority 0x80422d68).
+// Do not couple display admission to whether main survived its callback.
 bool packedBattleActionCommandManager(uint32_t b,
                                       const BattleActionManagerServices &s) {
   const auto &m = s.memory.memory;

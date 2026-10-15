@@ -2,6 +2,11 @@
 #include <cassert>
 #include <cstring>
 namespace ttyd {
+// Retained phases pin memory identity and private item output. Trigger0x400,
+// battle mask 0x40000000 clear and Mario attributes0x10 clear admit phase 1.
+// Item -1 cancels. Target setup runs once before phase 3's actual end-menu hold.
+// After acknowledgement save state 1c5c->1c60, publish type 11/menu29, lightOff(0, 1)
+// and OR battle mask 4. True means selected interruption, not an attack root.
 std::optional<bool> resumePackedBattleMenuAudienceCheck(const BattleMenuAudienceServices& s,BattleMenuAudienceCursor& c){
  const auto& m=s.memory.memory;
  assert(m.word && m.storeWord && s.trigger);

@@ -1,5 +1,8 @@
 #include "battle_action_events.hpp"
 namespace ttyd {
+// Captured B: callback1ca4 or discarded result 1cb8&2 read, then FRESH result
+// mask 1 gates retry0. Callback scalar is ignored. Ready result hides help via
+// helper that independently recaptures current owners, then returns2.
 std::optional<int32_t>
 packedBattleResultActionEvent(EventEntry &,
                               const BattleActionEventServices &s) {
@@ -18,6 +21,9 @@ packedBattleResultActionEvent(EventEntry &,
   packedBattleActionHelpSetDisplay(0, s.memory);
   return 2;
 }
+// Remove callback1cac executes if present before help 0; this leaf does not
+// clear callback storage itself. Read helper uses count 1cb4/result 1cb8 as signed
+// words; no operand resolution or output-sentinel shortcut is added.
 std::optional<int32_t>
 packedBattleStopActionEvent(EventEntry &, const BattleActionEventServices &s) {
   const auto &m = s.memory.memory;

@@ -11,6 +11,8 @@ int32_t integer(uint32_t n) {
   return v;
 }
 } // namespace
+// Scan unit+0x14 list for part attributes+0x1ac mask 1; return definition ID,
+// not the part pointer. Null unit gives -1.
 int32_t packedBattleBodyPartId(uint32_t u, const EventMemoryServices &m) {
   if (!u)
     return -1;
@@ -19,6 +21,9 @@ int32_t packedBattleBodyPartId(uint32_t u, const EventMemoryServices &m) {
       return integer(m.word(m.user, m.word(m.user, p + 4)));
   return -1;
 }
+// Unit attributes mask 0x20000 force pose 27. Otherwise signed source IDs at
+// 0x80416ab0 end at -1. Status provider receives signed low8, but the selected
+// pose is the full table ID. Missing status is distinct from known false.
 std::optional<int32_t>
 packedBattleStatusPoseType(uint32_t u, const BattleCommandPoseServices &s) {
   const auto &m = s.memory.memory;
@@ -39,6 +44,8 @@ packedBattleStatusPoseType(uint32_t u, const BattleCommandPoseServices &s) {
       return id;
   }
 }
+// Four separate read/modify/writes at part+0x204: clear0x12, set1,
+// clear0x80, clear4. Combining these would hide provider-visible accesses.
 void packedBattlePoseAnime(uint32_t p, const EventMemoryServices &m) {
   auto change = [&](uint32_t clear, uint32_t set) {
     m.storeWord(m.user, p + 0x204, (m.word(m.user, p + 0x204) & ~clear) | set);
@@ -48,6 +55,9 @@ void packedBattlePoseAnime(uint32_t p, const EventMemoryServices &m) {
   change(0x80, 0);
   change(4, 0);
 }
+// Resolve and copy actual animation name into part+0x1c4 BEFORE flag writes.
+// Types 29..39 force bit 8; 29/30 additionally set bit 0x10. Failed copy leaves
+// flags untouched; original fallback-table selection owns missing names.
 bool packedBattleSetAnimationType(uint32_t p, int32_t type,
                                   const BattleCommandPoseServices &s) {
   const auto &m = s.memory.memory;
@@ -71,6 +81,9 @@ bool packedBattleSetAnimationType(uint32_t p, int32_t type,
     change(0, 0x10);
   return true;
 }
+// Resolve body part even when status+0x138 masks0x30000000 suppress query.
+// Only status pose 28 chooses animation type 67 and sets bit 0x80; other cases
+// perform PoseAnime flag reset without inventing a new status clip.
 bool packedBattleCommandPose(uint32_t u, const BattleCommandPoseServices &s) {
   const auto &m = s.memory.memory;
   assert(m.word && m.storeWord);

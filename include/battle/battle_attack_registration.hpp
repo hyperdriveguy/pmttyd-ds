@@ -2,6 +2,9 @@
 #include "event_lifecycle.hpp"
 #include "event_memory_opcodes.hpp"
 
+// Local btlseqAct state 6 only. Optional creation returning null is a source
+// no-entry result, not a substitute script. All providers must be admitted;
+// this void API cannot retain an unavailable suffix for later retry.
 namespace ttyd {
 struct BattleAttackRegistrationServices {
     EventMemoryServices memory;

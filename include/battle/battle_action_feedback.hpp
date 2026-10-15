@@ -2,6 +2,9 @@
 #include "battle_actor.hpp"
 #include "battle_unit_event.hpp"
 #include <optional>
+// Result declaration and waiting-audience reaction are separate owners.
+// Native missing requests may follow counters/sounds/stores; no rollback or
+// whole-dispatch retry cursor exists. Scalar result -1 alone means bad feedback.
 namespace ttyd {
 struct BattleActionFeedbackServices {
   BattleActorServices memory;

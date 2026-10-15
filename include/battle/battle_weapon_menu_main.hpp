@@ -1,5 +1,8 @@
 #pragma once
 #include "battle_weapon_menu_decision.hpp"
+// Weapon menu results0/1 are local decisions, not EVT retry/completion codes.
+// Missing providers return nullopt; effects before that point are not rolled back.
+// The audience child has a retained API; its synchronous wrapper discards holds.
 namespace ttyd {
 struct BattleWeaponMenuMainServices {
  BattleActorServices memory;void* user=nullptr;uint32_t privateCursor=0;

@@ -26,6 +26,9 @@ int setActionParameters(ActionCommandView& w,const std::array<int32_t,8>& operan
     }
     return 2;
 }
+// SetACFlag REPLACES raw setup mask, not OR. Start always writes state 100,
+// even resolved on 0; on controls help 2 only (actor mask 10 suppresses it).
+// Timing options instead resolve on and OR/clear a RAW mask. Outputs stay raw.
 int setActionFlags(ActionCommandView& w,uint32_t rawMask) {assert(w.setupFlags);*w.setupFlags=rawMask;return 2;}
 int startActionCommand(ActionCommandView& w,int32_t rawOn,const ActionValueServices& s) {
     const int32_t on=resolve(s,rawOn);assert(w.state);*w.state=100;
@@ -55,6 +58,8 @@ int setTimingOptions(ActionCommandView& w,int32_t rawOn,uint32_t rawMask,const A
 int readTimingSuccessWindow(ActionCommandView& w,int32_t destination,const ActionValueServices& s) {
     assert(w.successWindow);const int32_t window=w.successWindow(w.user);return output(s,destination,window);
 }
+// Optional remove callback runs before help 0 and owns deletion effects;
+// this leaf does not null/reset command pointers, result, count or parameters.
 int stopActionCommandEvent(ActionCommandView& w) {
     if(w.remove)w.remove(w.user);
     help(w,0);return 2;

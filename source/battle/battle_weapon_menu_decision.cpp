@@ -2,6 +2,11 @@
 #include <cassert>
 namespace ttyd {
 namespace {int32_t sw(uint32_t v){return v<=0x7fffffff?int32_t(v):int32_t(int64_t(v)-0x100000000LL);}int32_t sb(uint8_t v){return v<128?int32_t(v):int32_t(v)-256;}}
+// Capture acting unit before table build. Final sample uses owner-row direction
+// WITHOUT eligibility's negation, then resets target rank+0xab7 to zero.
+// Weapon mask 0x10000000 picks LAST same-side rank (also when both masks set);
+// otherwise 0x20000000 picks FIRST different-side rank, including neutral side 2.
+// No match preserves rank0. Missing provider can follow prior effects.
 std::optional<int32_t> decidePackedBattleWeapon(uint32_t b,uint32_t type,uint32_t index,const BattleWeaponMenuDecisionServices& s){
  const auto& m=s.memory;assert(m.memory.word && m.memory.half && m.byte && m.memory.storeByte && s.unit && s.build && s.enemyBelong && s.sample);
  auto word=[&](uint32_t at){return m.memory.word(m.memory.user,at);};auto byte=[&](uint32_t at){return m.byte(m.user,at);};
@@ -18,6 +23,8 @@ std::optional<int32_t> decidePackedBattleWeapon(uint32_t b,uint32_t type,uint32_
  if(chosen>=0)m.memory.storeByte(m.memory.user,buffer+0xab7,uint8_t(chosen));
  return 0;
 }
+// Build table, obtain private cursor, initialize actual UI with menu+0x80,
+// then OR menu flags0x01000010. A missing initializer cannot publish readiness.
 bool setupPackedBattleWeaponMenu(uint32_t b,uint32_t type,uint32_t flags,const BattleWeaponMenuDecisionServices& s){
  const auto& m=s.memory;assert(m.memory.word && m.memory.storeWord && s.build && s.cursor && s.initialize && s.privateCursor);
  const auto menu=b+0x171c;if(!s.build(s.user,b,type))return false;s.cursor(s.user,menu,type,s.privateCursor);

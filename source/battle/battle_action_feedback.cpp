@@ -5,6 +5,8 @@ namespace {
 int32_t sw(uint32_t v) {
   return v < 0x80000000u ? int32_t(v) : int32_t(int64_t(v) - 0x100000000LL);
 }
+// Audience B2858; 200 actors at+1bc, stride134(hex). Nested existence/system
+// checks deliberately recapture global B instead of pinning every lookup.
 uint32_t base(const BattleActorServices &m) {
   return currentBattleAddress(m) + 0x2858;
 }
@@ -28,6 +30,9 @@ float real(uint32_t at, const EventMemoryServices &m) {
   return f;
 }
 } // namespace
+// Exists requires flags1 and excludes100/2; system-controlled excludes10.
+// Waiting additionally needs half1c=ffff and unsigned state byte19<=3. The
+// actor pointer tested later was captured before nested eligibility queries.
 int32_t packedBattleAudienceWaiting(int32_t id, const BattleActorServices &m) {
   (void)base(m);
   const auto p = actor(id, m);
@@ -44,6 +49,10 @@ int32_t packedBattleAudienceWaitingCount(const BattleActorServices &m) {
       ++count;
   return count;
 }
+// Capture audience owner before scanning waiting count. If any: good requests
+//801a0aec(180, 120), bad801a0fd0; then801a12fc, then bad-only HP callback 0x80189c38
+// requests801a1520(7). Only after admitted children OR captured audience flags
+//10(good)/20(bad). These constants are source request parameters, not measured time.
 bool packedBattleAudienceActionFeedback(
     uint32_t weapon, bool good, const BattleAudienceFeedbackServices &s) {
   const auto a = base(s.memory);
@@ -67,9 +76,15 @@ bool packedBattleAudienceActionFeedback(
   m.storeWord(m.user, a, m.word(m.user, a) | (good ? 0x10u : 0x20u));
   return true;
 }
+// Original no-try local leaf only performs global lookup; no invented
+// acrobat counter or audience reaction is added.
 void packedBattleAudienceAcrobatNoTry(const BattleActorServices &m) {
   (void)base(m);
 }
+// Capture B before weapon/result resolution. Counter16f58(good)/59(bad)
+// increments only below200; 19074 marks good. Good path records weapon18ffc,
+// multiplier19000=FMA(source 0x804221a4, result, 804221a0), weapon bytes19/1a to
+//19005/06. Bad preserves those prior fields. Audience runs last for BOTH paths.
 std::optional<int32_t>
 packedBattleDeclareActionResultEvent(EventEntry &e,
                                      const BattleActionFeedbackServices &s) {

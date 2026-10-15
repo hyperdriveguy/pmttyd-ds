@@ -1,5 +1,7 @@
 #pragma once
 #include <cstdint>
+// These are WEAPON-row icons, not action-class palette IDs334..339. Current
+// pouch is queried per call; unsigned level 2/3 choose upgrades, all others default.
 namespace ttyd {
 struct BattleWeaponIconServices {
     void* user=nullptr;

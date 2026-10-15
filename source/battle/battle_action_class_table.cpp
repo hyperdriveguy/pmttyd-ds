@@ -10,6 +10,13 @@ int32_t integer(uint32_t v) {
 }
 int32_t signByte(uint8_t n) { return n < 128 ? int32_t(n) : int32_t(n) - 256; }
 } // namespace
+// Query actor/pouch/setup before testing wrapped menu pointer; null menu
+// returns the pouch POINTER. Missing label may follow earlier row stores.
+// Mario always gets Jump, but signed boot level<1 disables without a new reason.
+// Class icons334..339 use level 1/2/otherwise-highest, unlike weapon icons164..169.
+// Partner type 6, Item2, Star4, Operation5 and special13 retain original gates.
+// Operation/special gates freshly read battle flags independently; do not cache.
+// Publish cursor count, clamp only index>=signed count to count -1; no lower clamp.
 std::optional<uint32_t>
 makePackedBattleActionClassTable(uint32_t b,
                                  const BattleActionClassServices &s) {

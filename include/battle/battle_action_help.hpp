@@ -1,6 +1,9 @@
 #pragma once
 #include "battle_actor.hpp"
 #include "battle_unit_event.hpp"
+// Source help key/mode are guest values, not native texture readiness. Each
+// getter/setter may recapture current B; the audience-window write is independent
+// of the B that received help mode. Preserve callback-visible owner changes.
 namespace ttyd {
 struct BattleActionHelpServices {
     BattleActorServices actors;

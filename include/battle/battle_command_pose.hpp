@@ -1,6 +1,8 @@
 #pragma once
 #include "battle_actor.hpp"
 #include <optional>
+// Pose definitions, part IDs and live part pointers are distinct. Preserve
+// per-store flag reads: memory callbacks may mutate flags between operations.
 namespace ttyd {
 struct BattleCommandPoseServices {
   BattleActorServices memory;

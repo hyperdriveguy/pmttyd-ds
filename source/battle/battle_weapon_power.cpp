@@ -8,6 +8,9 @@ int32_t marioCallback(DamageUnit* actor,MarioPowerKind kind,DamageWeapon& weapon
     return marioWeaponPower(*actor,kind,*static_cast<const WeaponPowerServices*>(weapon.callbackData));
 }
 }
+// Success is result mask 2 only; level is SIGNED low8. Index=(level -1)*2+
+// success with U32 wrap, upper clamp>=6 to5 and NO lower clamp. Bonus callback
+// precedes indexed power read even when bonus0; nonzero addition wraps signed word.
 int32_t marioWeaponPower(const DamageUnit& actor,MarioPowerKind kind,const WeaponPowerServices& s) {
     assert(s.actionResult && s.pouchLevel && s.bonus && s.powerWord);
     const uint32_t success=(s.actionResult(s.user)>>1)&1;
@@ -22,6 +25,9 @@ int32_t marioWeaponPower(const DamageUnit& actor,MarioPowerKind kind,const Weapo
 int32_t defaultWeaponPower(DamageUnit*,DamageWeapon& w,DamageUnit&,DamagePart&) {return w.defaultPower;}
 int32_t jumpWeaponPower(DamageUnit* a,DamageWeapon& w,DamageUnit&,DamagePart&) {return marioCallback(a,MarioPowerKind::Jump,w);}
 int32_t hammerWeaponPower(DamageUnit* a,DamageWeapon& w,DamageUnit&,DamagePart&) {return marioCallback(a,MarioPowerKind::Hammer,w);}
+// Six source words index three upgrade levels x failure/success. Jump
+//1/1, 2/2, 3/3 mask 35807; Hammer1/2, 2/4, 3/6 mask 30887; harbor power1 mask 1087.
+// callbackData must be supplied for Mario; factories do not infer pouch/AC ownership.
 DamageWeapon ordinaryJumpWeapon() {
     DamageWeapon w;w.hpPower=jumpWeaponPower;w.powerWords={1,1,2,2,3,3};w.specialFlags=0x35807;return w;
 }

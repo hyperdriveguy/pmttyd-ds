@@ -2,6 +2,8 @@
 #include "battle_actor.hpp"
 #include <array>
 #include <optional>
+// Source command-input dispatcher. Child return values have subsystem-specific
+// meanings; unavailable native work must not be promoted to a menu decision.
 namespace ttyd {
 // Original callee identities: scalar results are raw words, not VM completion.
 enum class BattleCommandService : uint32_t {
