@@ -7851,3 +7851,73 @@ field/NPC/partner, remaining battle, message/inventory/story, audio and relevant
 port tooling. Re-audit concurrent additions and changes in previously covered
 runtime/event/save/composition modules. Port-wide documentation and the remake
 remain incomplete; the documentation goal stays active.
+
+### Original tagged-map NPC registration in retained actors
+
+Code7ab397be implements setupDataBase's admitted NPC effect span85334..8555c
+and FieldNpcRegistryBinding::registerMapNpc. It executes original tribe lookup,
+Entry then first-active named lookup, low8 map ordinal, flags/current-only root,
+yaw/tribe dimensions, AI metadata, territory/ranges, sound/halfwords, unconditional
+area lookup, actual battle request and late pose-buffer/animation services.
+Duplicate names still allocate a new slot but populate the earlier named actor;
+no dictionary or returned-slot shortcut changes that domain. Previous root is
+not silently copied from tag XYZ. Map flags are active1/pending4/query2 clear,
+plus actual constructor/AI effects, not complete Main/query readiness.
+
+Original source inspection corrected AI address80348270→80338270 (signed addi).
+All15 original gor02 tags use AI「なし」, territoryNOTHING, zero territory/
+ranges and BTLNO_INVALID. Their map phase runs actual battle-1 clearing with
+no RNG; later npcEnt battle0 remains a separate17-request path. Unconditional
+area lookup still precedes the invalid comparison. Native-1 and named-table-1
+are fully admitted internally; other numeric requests require a complete
+external numeric/RNG admission provider. No missing world service succeeds.
+
+New parsed-input adapter preserves original ordinal/Shift-JIS strings/17float32
+words in392-byte records; runtime maps words LE→BE without invented source
+stack addresses. Loader rejects malformed/unloaded input without replacing its
+previous valid state. Resource census and map-input export now share an ordered
+parser that preserves duplicate actor names and stops at the actual generic
+outer closing tag. Missing/unsupported fields fail instead of assuming zero.
+The prior parser/history gate is still caller-owned, not inferred visibility.
+
+Shared private door-data pack now includes original full tribe/AI/territory
+source tables and their string/constants views:103464→148048bytes. The first
+validation run rejected the pack because the new exporter omitted PMEVT span
+alignment; fixed it by reading actual aligned neighboring source bytes, not
+padding with fabricated zeros or weakening the loader. Reran full checks after
+all edits. Native parsed gor02 pack is5896bytes. Source caches/metafingerprints
+refresh because parser dependencies changed; all52 existing PMANIM/directory/
+MODEL/TPL products stay byte-identical.87 asset hashes journaled,16 existing
+metadata/source-pack changes and2 new parsed products. ISO stays read-only.
+
+Final required CMAKE_BUILD_PARALLEL_LEVEL=4 make test -o assets-ready exited0:
+324/324 C++ in39.61s and193/193 Python in29.982s. make all -j4
+-o assets-ready SOUNDTRACK=gamecube exited0. Strict native ARM fixture passed
+originalTags15/registration/duplicates/orderedServices/admission in isolated
+artifacts/azahar-area-map-npc-probe (exit0). Actual Game-owned owner, original
+all13 banks and full DOL source views/parsed tag records are used; no fake actor
+or pose handles. Explicit runtime-copy mutation fixture verifies pair/lateZ,
+sequential AI reads, captured zero, unconditional area-before-sentinel and late
+tribe fields/pose handle across battle service. Numeric-1 sentinel/named paths,
+resource/malformed/unknown-numeric holds and loader transactions are covered.
+Normal3DSX SHA256f69686fca78c1563961489170dbdd9008bd8e774dc837425a98b982922d09b3b.
+Frozen tree5523ab1f90c2c97ab8751469732f53b28a665333,3429tracked files,
+zero audit mismatches. Manifest artifacts/area-map-npc-validation-manifest.json;
+exact assets artifacts/area-map-npc-assets-after.json and test/build/probe logs
+artifacts/area-map-npc-*. Private probe edits restored; no new production/native
+fixture warnings, baseline compiler/Pillow warnings remain. Isolated profiles
+exclude user settings/saves. CMake append rebased onto currentHEAD; full moving
+merged worktree is not claimed validated. Unrelated changes preserved.
+
+Next: connect admitted registration to real normal map bootstrap, original
+parser/map-history skip gate and GP/session clocks; then bind the distinct
+npcEnt setup/init/regular phase and its genuine numeric battle/RNG owners.
+Migrate collision/rendering/named event callbacks onto these same actors,
+implement source query-ready/Main/paper-facing/GPU and reset/deletion/event
+lifetime. No new actor is claimed visible merely because registration passes.
+Full original area/story/rendering and hardware performance remain unfinished.
+
+Normal isolated40s boot smoke exited0; inspected original storybook town/text
+capture artifacts/azahar-area-map-npc-normal/boot.png,60AppFPS/100% in that
+single sample. Log artifacts/area-map-npc-normal-smoke.log. This is normal boot
+evidence, not new visible NPC registration, GPU/raster parity or hardware timing.

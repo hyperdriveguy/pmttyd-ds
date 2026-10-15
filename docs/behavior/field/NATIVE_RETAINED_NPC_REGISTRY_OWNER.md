@@ -111,3 +111,10 @@ resource-backed constructor leaves do not acknowledge source map registration,
 query-ready publication, paper-facing Main, GPU upload/draw readiness, all
 world callbacks or completion of the original area parent. Unsupported work
 remains pending at its real provider boundary.
+
+Subsequent [tagged registration](NATIVE_TAGGED_MAP_NPC_REGISTRATION.md) now
+composes the admitted map effect span with this retained owner and real source
+tables/resources. It supplies metadata/initial-pose effects without inventing
+upstream parser/history/bootstrap, later npcEnt/query/Main/facing/GPU or room
+lifetime readiness. The earlier missing-map-registration boundary above is
+superseded for explicitly admitted rows only.

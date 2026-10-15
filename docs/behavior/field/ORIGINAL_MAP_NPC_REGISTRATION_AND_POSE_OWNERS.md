@@ -111,7 +111,7 @@ map setup deliberately has active1 and pending4 with query2 clear. The
 producer of later query readiness must be bound separately; do not infer it
 from rendering or installed talk scripts.
 
-The following map setup scans npc AI rows at80348270, stride0x24, by the
+The following map setup scans npc AI rows at80338270, stride0x24, by the
 parsed AI name. Matching data ORs AI flags and installs actor+120,+124,
 +12c,+130,+134,+138,+13c. It resolves territory type through table80416580
 and installs territory/ranges at+1f8..22c. Tribe sounds+40/+44 and fields

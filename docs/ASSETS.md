@@ -1411,3 +1411,39 @@ copied cache dependency. Other large local-assets dependencies are shared read
 inputs. Original Nintendo/Intelligent Systems rights remain reserved; ignored
 local copies grant no new license or redistribution rights. Source assets and
 shared RomFS were not overwritten; no original pack/ISO content was committed.
+
+### Original tagged-map registration inputs and DOL views
+
+New tools/field_map_npc_assets.py reads original m/AREA/s, preserving tagged
+order, duplicate names, exact Shift-JIS fields and parsed float32 words. Default
+m/gor_02/s supplies15 rows; romfs/field-npc-map-gor_02.bin is5896bytes
+(PMFMNPC1 header16 plus15*392). Each native adapter record holds ordinal,
+17float32 words and five64-byte string fields. This is an adapted parsed-input
+layout, not an original source allocation or fabricated stack snapshot. Original
+source path/hash and adapter SHA are in its .json; extracts remain ignored under
+local-assets/field-map-npc/. Runtime converts numeric lanes LE→BE for the VM.
+No missing tag field is invented. Resource census now uses this same ordered
+parser; model sharing does not collapse actor/name rows.
+
+The shared original door-data.pmevt103464→148048bytes now merges1169 aligned
+DOL views (raw view sizes sum44276 including possible overlap): original
+npcTribe803316d0/6ba0 SHA2569951ac6fcdfd82b738c99148210f79af3e54fc94f7bbcaa0effc8007f8569ca9,
+npc_ai_type_table80338270/804 SHA256c01757d66166cab51c43b2d1620610d64cf96eedeefbd2bfd3aff3655cbde1ac,
+territory80416580/20 SHA2562bcb3897e23a9041e954c7b17a19eb5bfcd25313368cda02edf30178f6d20b4b,
+and actual table strings, BTLNO_INVALID802c3b10 and single0 at804207b4.
+All views are unchanged original data; alignment includes real source neighbors,
+never synthetic zeros. No PPC bodies, registry BSS or readiness results are
+packaged. Per-view addresses/sizes/hashes in door-data.json.field_map_npc.
+The original map AI address is80338270; prior80348270 prose was a transcription
+error corrected in the source contracts.
+
+All52 original field PMANIM/directory/raw MODEL/TPL products remain identical.
+13 per-bank metadata fingerprints and resource-census metadata refresh because
+the shared parser dependency changed; source/cell/clip data is unchanged. Other
+original area descriptors/prefetch products unchanged.87 product hashes and
+16 changed existing metadata/source-pack paths plus2 new parsed products are
+recorded in artifacts/area-map-npc-assets-after.json. Original copyrighted
+Nintendo/Intelligent Systems resources remain private with no redistribution
+rights asserted; ISO opened rb and unchanged, extracts/packs/binaries outside
+source history. No authored story dialogue, art/audio replacement or GPU/raster
+publication claim is added.
