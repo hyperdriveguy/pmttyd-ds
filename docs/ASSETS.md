@@ -2110,3 +2110,30 @@ Animation changes only the two private boot products. Validation also
 regenerates door-data.pmevt/json for already committed NPC automatic-pose
 constants; all other2132 accepted products remain byte-identical. No new art conversion, redistribution or rights change;
 Nintendo/Intelligent Systems originals remain private and uncommitted.
+
+## Stage/camera documentation validation inputs (2026-10-14)
+
+artifacts/battle-stage-camera-code-documentation-validation/source reuses accepted
+battle-command documentation RomFS/evidence. Assembly verifies 41 product hashes,
+common-menu source/relocated Frankly evidence and 14 private footer PNG/atlas
+hashes. Inherited door-data pack 152376 bytes retains automatic-pose numeric
+closure accepted in the preceding validation. The first host gate exposed missing
+cold-image data required by committed animation_startup_process. Failed log is
+retained. Only animation-boot/memory.pmevt/json are added from
+artifacts/animation-process-source after hashes matched
+artifacts/animation-process-validation-manifest.json. Four frozen startup
+source/header/tool/fixture hashes match that authority. Pack 4456 bytes SHA256
+e0fc4934db86df43558001ae2dac5a72915cdd305b70559a956f7acc67f499ae; metadata 5135
+bytes SHA256 f4ab76fd2efbf8f30c836cda517bdc00d41a452d49b92f4b14bec1aa43cae225.
+Final cache verifies 43 product hashes and manifest records exact sources/authority.
+Both full gates reran. Original image retains 14 US DOL data/BSS ranges, with
+initialized DOL data winning overlap, as documented in the original asset notes.
+No new conversion,
+resampling, geometry/lighting changes, editable imports or shared pack writes.
+Small mutable evidence is copied privately; other large local-assets inputs are
+shared reads. Existing Python fixtures independently read ISO read-only and
+convert into empty temporary outputs; native regeneration is deliberately skipped.
+Parent/input hashes are recorded in the documentation validation manifest.
+Original conversion choices/provenance and Nintendo/Intelligent Systems reserved
+rights remain unchanged; private tracking/copying grants no redistribution
+license. No ISO, extracted original asset or compiled binary was committed.

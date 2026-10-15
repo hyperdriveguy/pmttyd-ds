@@ -10674,3 +10674,61 @@ performance. Release/GC/cancellation/thread scheduling, broader renderer/field/
 event parents, occluded/asset-error field smoke concerns and complete prologue
 remain open. Next bind live CPU outputs/tangents, then integrate this retained
 owner before original field Mario/partner pose creation. EVT-01/goal incomplete.
+
+## 2026-10-14 — Stage, camera and battle feedback drawing documented
+
+Added inline ownership/numeric/behavior notes to 20 C++ files: stage floor/work/
+objects, spotlight, camera requests/frame, typed TimingA, packed TimingA display
+and break-slot storage/retained draw. Added [battle stage](code/battle-stage.md),
+[battle camera](code/battle-camera.md), [TimingA/reels](code/battle-feedback-draw.md)
+and index entries. Code/docs commit dc3c5d0c. All 20 preserve executable tokens
+and literal strings; no behavior changes or new tests for this prose-only work.
+
+Explained packed layouts and counter lanes, repeated owner/descriptor reads,
+source defaults/flags and source coordinate/curve domains. Obscure cases include
+stage cache writes before map callbacks, shared layer 2 rotation cache, raw floor
+output despite unused X, full-bank spotlight precondition, priority-discarding
+body homing, XY 5 versus Z 5 speed admission, timeline restoring only XY, baseline
+publication before retained tremor, zero/negative timer decrement, successful
+TimingA interpolation overwritten before draw, partial idle-reel bridge and
+state 11 skipping strip scissor. Unknown bits remain unidentified and source
+main/draw counts are not measured render frames. Native services/numerics do
+not establish original SDK/Gekko parity or full battle integration.
+
+Frozen source is baseline c729a1117db9e50a2cae07d41cddab0923680e4f plus owned documentation at
+artifacts/battle-stage-camera-code-documentation-validation/source. Audited all
+3771 baseline tracked files: zero unexpected changes. All 24 documented files
+match recorded frozen/live snapshots; all 48 local guide/index links resolve.
+Concurrent work was preserved/excluded; no combined-moving-tree validation.
+One camera comment was corrected after initial build launch to state single-unit
+Y as centerY+(height-50)/2, separate from two-part framing. Only prose changed;
+full host/native gates reran incrementally after the initial processes completed.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test passes 400/400 C++ (68.71s) and
+205/205 Python (32.118s), zero skipped. make all -o assets-ready -j4
+SOUNDTRACK=gamecube exits0. Manifest records source/dependency/log/ELF/3DSX hashes
+and initial/final gate results. Existing compiler/Pillow warnings remain.
+No emulator/profile/save changes or new hardware/timing/pixel claims.
+
+Reused preceding battle-command validation's accepted cache: 41 product hashes,
+common-menu/relocated Frankly evidence and 14 private footer PNG/atlas hashes.
+Inherited automatic-pose door pack 152376 bytes already matches committed source.
+Initial host run passed 399/400 C++ but animation_startup_process failed because
+this cache lacked the newly committed cold image; Python was not reached.
+Retained failed/initial logs, then copied ONLY animation-boot/memory.pmevt/json
+from artifacts/animation-process-source after both hashes matched
+artifacts/animation-process-validation-manifest.json. Four frozen startup
+source/header/tool/fixture hashes also match that recorded snapshot. Pack 4456
+bytes SHA256 e0fc4934db86df43558001ae2dac5a72915cdd305b70559a956f7acc67f499ae.
+Final cache verifies 43 accepted product hashes. Full host/native gates reran;
+no code/test changes, conversion/import or shared pack writes for cache repair.
+Existing Python converter fixtures independently read ISO read-only and use
+empty temporary outputs. Native asset regeneration deliberately skipped.
+No original binaries or ISO committed; choices/licensing unchanged. Details in
+[asset notes](ASSETS.md).
+
+Next: remaining action UI/class display, audience controllers and callbacks,
+message/story/effect, platform/file/event/runtime helpers and tools. Re-audit
+concurrent lifecycle, cold animation, NPC and display integration against their
+committed versions. Snapshot agreement alone is not semantic completeness.
+Full documentation and remake remain incomplete; goal stays active.
