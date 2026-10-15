@@ -8457,3 +8457,71 @@ Next: NPC registry/pose/placement/talk and room/area lifecycle, partner services
 remaining battle, message/inventory/story, effect/audio and relevant port tooling.
 Re-audit concurrent additions/changes to already covered modules. Port-wide
 documentation and the remake remain incomplete; documentation goal stays active.
+
+
+### Original NPC reset and retained room-VM retirement
+
+Code290e015d implements npcReset8004bafc over the actual retained registry:
+argument0 selects ordinary, any nonzero selects alternate independently of GP14.
+Capacity/array are captured before the clear; selected count0, fresh GP/F mode
+halfword0 for ordinary, then mainCount0 follow. Native admission checks exact
+owned allocations/capacity/F identity before any stores, and native libc memset
+clears contiguous actor storage without per-byte facade dispatch. Other bank,
+auxiliary data, all remaining F/history and poses/events are preserved exactly
+at this source boundary. Reset is not cold Init or per-actor delete/release.
+
+FieldAreaEvent::retireMapNpcs now runs that actual reset once, requires six
+external source services in order (ext,mobj,offscreen,image,effect,pose), and
+holds scheduler/registration/new roots through resource waits. Missing callbacks
+do not acknowledge resource release. Successful steps never repeat. Stable
+provider identity, retirement-invocation reentry guard, manager-pass exclusion
+and ordinary-context admission preserve lifetime. After complete providers,
+actual event ReInit and case ReInit run; native root/cursor diagnostics clear
+without child-copyback, fake completed roots or per-event retirement callbacks.
+
+Implementation review caught a preserved-state issue before final validation:
+destroying/recreating the VM would lose context banks and next event IDs. Final
+code retains VM/binding/allocator/context allocations and work/flags/field94/IDs
+across retirement, drops only parsed tag mapping/native cursors, and reselects
+the next supported room/battle registration without Init. Different immutable
+program closures require their genuine REL/load owner and hold. Caller still
+supplies actual next GP snapshot/F. Callback reentry was also guarded before
+final validation. Two read-only source reviews found no remaining blocker in
+the admitted scope. No normal Game activation is claimed.
+
+Documentation deliveries recover full original _unload request order, distinct
+pose AutoRelease/Refresh and selected event/case reset, plus cold random-state
+initialization. Original seed8041e3c0 is initialized .sdata00000001, preserved
+by source startup copy/clear records. Scoped DOL and all29 REL scans find no
+other direct identified writer beyond rand8026c338. This is not proof against
+all computed/bulk aliases, save persistence, runtime reseeding or complete
+consumer order. Cold seed1 is not known pre-Rogueport RNG state. Continue RNG-01;
+shared original consumers must use one retained session owner, never per-room
+reseed. No random implementation/interleaving was silently substituted here.
+
+Final validation: CMAKE_BUILD_PARALLEL_LEVEL=4 make test -o assets-ready exit0,
+328/328 C++ in49.05s and193/193 Python in42.471s. make all -j4
+-o assets-ready SOUNDTRACK=gamecube exit0; restored normal build matches the
+normal tested binary. No new compiler warnings; baseline Pillow deprecation
+remains. Isolated ARM fixture exit0: reset/banks/history/retainedVm/retirementOrder
+PASS in artifacts/azahar-area-npc-reset-probe. Tests exercise actual original
+actor/pose data, source fresh-pointer mutation, complete selected-bank clear,
+selector/GP divergence, bad admission, callback holds/reentry, root suppression,
+retained context banks and next-root ID1234. Resource callbacks in the sequencing
+fixture are test providers, not proof that real image/effect/pose refresh ran.
+Normal isolated40s boot exit0; inspected original storybook/text, sampled
+59AppFPS/99%, not a hardware benchmark or field-NPC raster proof. Normal binary
+SHA256f77eae9a849fce92b65ec652efe0bfbc48f7bb146ecbd0d66a3b287f33490f25 is
+unchanged: the new lifecycle API is not production-bootstrap activated yet.
+Frozen treefdb9f09a188d8a22c990449a7aca14a6a188dd82; exact source/artifacts in
+artifacts/area-npc-reset-validation-manifest.json.87 private asset products
+remain byte-identical (artifacts/area-npc-reset-assets-after.json), no new pack
+or conversion. Private probe source restored; unrelated moving worktree changes
+were excluded from the frozen validation.
+
+Next: provide genuine intervening image/effect/pose release and surviving-pose
+refresh services, plus prior Mario/map/REL and later unload services; then bind
+the normal Game room transition. Build the real retained npcEnt setup world with
+one session RNG and source init/regular events. Original field Main/facing/query/
+collision/display, full events/objects/areas/story and hardware acceptance remain
+required; this is still the early Rogueport slice, not a complete remake.

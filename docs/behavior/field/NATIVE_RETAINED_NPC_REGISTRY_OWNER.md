@@ -118,3 +118,11 @@ tables/resources. It supplies metadata/initial-pose effects without inventing
 upstream parser/history/bootstrap, later npcEnt/query/Main/facing/GPU or room
 lifetime readiness. The earlier missing-map-registration boundary above is
 superseded for explicitly admitted rows only.
+
+
+Subsequent [native reset and retained room VM](NATIVE_NPC_ROOM_RESET_AND_RETAINED_VM.md)
+now supersedes the earlier missing-reset frontier for admitted npcReset calls
+and explicitly supplied resource-teardown providers. It clears the actual
+selected bank, preserves F/history and retains context banks/next IDs across
+room ReInit. It does not implement npcDelete/group deletion, genuine missing
+pose/effect/image release/refresh, full outer unload or normal Game activation.

@@ -367,3 +367,9 @@ both detached-tail assertions fail, including a controlled owner-count burst.
 No physical fade/drain or full reward claim. [Exact scope and evidence](../behavior/audio/NATIVE_COIN_FANFARE_ROW219_PROVIDER.md).
 Native window lifetime,5376/Game reward admission and full quest chain remain
 open; parent requests stay open.
+
+
+### NPC room lifetime and RNG initialization source deliveries
+
+- [Original room reset/teardown](../behavior/field/ORIGINAL_NPC_ROOM_RESET_AND_TEARDOWN.md) and [native reset/retained VM](../behavior/field/NATIVE_NPC_ROOM_RESET_AND_RETAINED_VM.md): source static ownership plus code290e015d,328C++/193Python and scoped isolated ARM fixtures; genuine outer/resource release providers remain open under EVT-01.
+- [Random launch state/direct writers](../behavior/meta/ORIGINAL_RANDOM_STATE_INITIALIZATION_AND_WRITERS.md): read-only initialized seed1/startup and DOL/all29 REL static census; no runtime/interleaving or save persistence completion claim. RNG-01 remains open.

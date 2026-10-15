@@ -1563,3 +1563,16 @@ read, extraction, conversion, editable import or shared pack write occurred.
 Original Nintendo/Intelligent Systems rights remain reserved; private validation
 copies confer no new license or redistribution rights. No original binary/ISO
 bytes were committed.
+
+
+### NPC reset and retained room-VM validation assets
+
+No new original resource conversion or asset selection was introduced for
+code290e015d. The isolated reset/room-retirement fixtures use existing local
+romfs/door-data.pmevt, field-npc-map-gor_02.bin and original field-native model/
+pose/texture banks. All87 previously journaled private products are byte-identical
+in artifacts/area-npc-reset-assets-after.json. Original-data inspection for
+teardown and RNG lifecycle remains ignored under artifacts/npc-room-teardown/
+and artifacts/field-rng-lifecycle/; the ISO is read-only. No original assets,
+inspection ELF/listings or compiled packs are committed. Existing Nintendo/
+Intelligent Systems local-use/no-redistribution provenance remains unchanged.

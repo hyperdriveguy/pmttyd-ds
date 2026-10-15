@@ -4810,3 +4810,17 @@ request open for those providers and runtime traces; no fabricated cleanup,
 mask bank, parser globals or RNG substitutes were added.
 
 Implemented complete retained battle_init800738ac parent and nested it in sequence Main state4. Exact shared camera mode, actual pouch alias, declared native primary arena plus original N_battleMapAlloc and actual shared F20 Information setters are bound. [Contract](../behavior/battle/NATIVE_FIELD_BATTLE_INITIALIZATION_AND_SHARED_STORAGE.md). Ordinary authored field bootstrap remains open. Next animation child requires global W/scratch/testAlloc refresh and retained resource/pose lifetime, not only W10c=1; subsequent NPC release/context/party/lower BattleInit must consume the same owners. Static evidence/review: artifacts/battle-sequence-init-ownership-evidence/battle-init-next-provider.md and field-initialize-implementation-review.md. No late Init acknowledgment after legacy victory.
+
+
+### Original NPC reset and retained room-VM retirement
+
+[Source teardown delivery](../behavior/field/ORIGINAL_NPC_ROOM_RESET_AND_TEARDOWN.md)
+recovers argument-selected npcReset, separate pose AutoRelease/Refresh and event/
+case reset ordering. Code290e015d implements actual retained reset and native
+room-retirement sequencing with mandatory resource providers; see
+[native contract](../behavior/field/NATIVE_NPC_ROOM_RESET_AND_RETAINED_VM.md).
+Final328C++/193Python and isolated ARM reset/retainedVm/order fixtures pass.
+VM context banks/next IDs survive source ReInit; no per-event deletion/copyback
+is invented. Remaining genuine resource/refresh, Mario/map/REL/outer unload and
+normal Game invocation keep the request open. Sequencing test callbacks are not
+proof of complete original-world release services.

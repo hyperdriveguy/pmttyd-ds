@@ -75,3 +75,16 @@ contracts, and save storage with [SAVE-01](SAVE-01.md). No lock reserved.
 ## Answers and delivery notes (append-only history)
 
 No delivery yet.
+
+
+### Scoped launch-state and direct-writer delivery
+
+[Original random-state initialization and writers](../behavior/meta/ORIGINAL_RANDOM_STATE_INITIALIZATION_AND_WRITERS.md)
+recovers initialized .sdata seed8041e3c0=1 and startup copy/clear exclusions,
+plus complete scoped DOL/all29 REL direct-reference/import scans. Sole directly
+identified runtime writer is rand8026c338. This answers launch initialization
+and the bounded direct-writer census, not computed/bulk aliases, save persistence,
+runtime traces, helpers or consumer interleaving. Seed1 is not known state before
+Rogueport NPC setup. One session owner must survive rooms/new-file/title flow;
+do not reseed per NPC/area. No new random implementation was added with this
+documentation delivery. Remaining todos above stay open.
