@@ -3,6 +3,8 @@ namespace ttyd {
 namespace {
 // Opaque port handle, scoped to this owner, never a host pointer or GC address.
 constexpr int32_t MenuHandle=1;
+// Event ID high32 +function low32 scopes a pending open. Same callback
+// may run again later after done erases its key; do not key by firstCall alone.
 uint64_t pendingKey(const TroubleEventRequest& r){return uint64_t(r.eventId)<<32 | r.function;}
 }
 bool TroubleBoardPresentation::bind(TroubleBoardEvent& event,const MessageAssets& assets,const MessageFont& font,
@@ -13,12 +15,16 @@ bool TroubleBoardPresentation::bind(TroubleBoardEvent& event,const MessageAssets
 bool TroubleBoardPresentation::visit(uint64_t visit,uint64_t now,const TroubleBoardInput& input) {
  return eventMain(visit,now,input) && presentationMain(input);
 }
+// Event phase precedes icon/message/selection phase. UI acknowledgment
+// published this visit is therefore observed by EVT on a later visit.
 bool TroubleBoardPresentation::eventMain(uint64_t visit,uint64_t now,const TroubleBoardInput& input) {
  if(!event_ || presentationPending_ || (visited_ && visit<=lastVisit_))return false;
  visited_=true;lastVisit_=visit;now_=now;input_=input;presentationPending_=true;
  event_->tick(now,{this,[](void* p,TroubleEventRequest& r){return static_cast<TroubleBoardPresentation*>(p)->call(r);}});
  return true;
 }
+// Exactly one UI pass per accepted event visit: icons, message, selector,
+// selection-sound drain. This can finish retained UI after a root has ended.
 bool TroubleBoardPresentation::presentationMain(const TroubleBoardInput& input) {
  if(!presentationPending_)return false;
  presentationPending_=false;
@@ -38,6 +44,8 @@ int32_t TroubleBoardPresentation::call(TroubleEventRequest& r) {
  auto opened=[&]{return opened_.find(key)!=opened_.end();};
  auto done=[&]{opened_.erase(key);return 2;};
  switch(r.kind) {
+ // Toge state is per event; type2 fixes anchor and placement override7.
+ // Print consumes it once, while message pending state controls callback wait.
  case TroubleEventCall::Toge:
   toge_[r.eventId]={r.values[0],r.values[1],r.values[2],r.values[3]};return 2;
  case TroubleEventCall::Print:
@@ -68,6 +76,9 @@ int32_t TroubleBoardPresentation::call(TroubleEventRequest& r) {
   }
   if(!selection.complete())return 0;
   r.result=selection.current;return done();
+ // Single native menu handle1 is an owner token. Active quest refreshes
+ // from each VM request; completion flags use last published event switches,
+ // not a raw VM pointer. Hold until original text/icons/font/audio are ready.
  case TroubleEventCall::MenuInit: {
   if(menu_ || !services_.menuSound)return 0;
   auto next=std::make_unique<TroubleQuestPresentation>();
@@ -79,6 +90,9 @@ int32_t TroubleBoardPresentation::call(TroubleEventRequest& r) {
   if(!next->begin(r.story,*font_,room_.c_str(),s))return 0;
   menu_=std::move(next);r.result=MenuHandle;return 2;
  }
+ // A contained status2 must ALSO publish a contained quest result (-1 is
+ // valid cancel). MenuEnd separately destroys retained work; renderer cannot
+ // acknowledge completion or free the five original icons.
  case TroubleEventCall::MenuMain: {
   if(!menu_ || r.work!=MenuHandle)return 0;
   activeQuest_=r.activeQuest;

@@ -2,6 +2,8 @@
 #include "trouble_quest_window.hpp"
 #include "message_icons.hpp"
 namespace ttyd {
+// Flags1 active, 2 hidden, 4 flipX, 8 flipY, 10 camera8, 1000 animated (hex). Resource bytes
+// remain original; frame/delay are iconMain visits independent of render FPS.
 struct TroubleQuestIcon {
  const char* name=nullptr;const MessageIcon* resource=nullptr;
  uint16_t flags=0,frame=0,delay=0;float x=0,y=0,z=0,scale=1;
@@ -16,6 +18,8 @@ struct TroubleQuestStateServices {
 };
 // Finite exclusive five-name icon domain; original global pool/case/EVT lifetime
 // and native cue playback belong to their providers. Owner must remain stable.
+// Self-owner identity and menu identity prevent copied state advancing
+// borrowed callback pointers. Display work/result are per-invoke publications.
 class TroubleQuestPresentation {
 public:
  bool begin(int32_t story,const MessageFont&,const char* originalRoomResource,const TroubleQuestStateServices&);

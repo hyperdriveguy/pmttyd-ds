@@ -6,6 +6,8 @@
 namespace ttyd {
 struct TroubleWindowClip {uint32_t x=0,y=0,width=608,height=480;};
 enum class TroubleWindowOp {FogOff,Frame,FontStart,Color,Scale,Edge,Scissor,ScaleVec,MatrixString,String};
+// Source drawing commands, not native pixels. Colors are RRGGBBAA; Scissor
+// uses top-left source viewport coordinates, other positions use centered UI.
 struct TroubleWindowRequest {
  TroubleWindowOp op=TroubleWindowOp::FogOff;
  uint32_t color=0;
@@ -29,6 +31,8 @@ struct TroubleWindowServices {
 bool drawTroubleQuestWindow(TroubleQuestMenuWork&,const TroubleWindowServices&);
 // Exact original US strcpy caches with retained room resource/header pointers.
 // Native font widths are prepared once for the immutable supplied font/spacing2.
+// Retain4 header pointers plus30 client[21]/contents[31] byte copies, including
+// terminators; 64 U16 widths=4+2*30. Width lookup uses pointer identity, not text.
 class TroubleQuestWindowCache {
 public:
  bool prepare(const char* roomResource,const MessageFont&);

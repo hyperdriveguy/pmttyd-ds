@@ -2,6 +2,9 @@
 #include <cstring>
 namespace ttyd {
 namespace {
+// Original pointer504: 10 looping40x40 frames, delay2 except final28.
+// Arrow524 is24x32; L134/R136 are60x48, all single/static. Pin actual
+// source metadata rather than replacing missing icon animation.
 constexpr uint32_t Ids[]={504,524,524,134,136};
 }
 TroubleQuestIcon* TroubleQuestPresentation::find(const char* name) {
@@ -41,10 +44,14 @@ bool TroubleQuestPresentation::begin(int32_t story,const MessageFont& font,const
  if(!menu_.begin(story,s))return false;
  owner_=this;return true;
 }
+// Clear display pointer/result before producer. A native provider hold does
+// not reuse the previous draw publication or invent a selected quest.
 std::optional<int32_t> TroubleQuestPresentation::invoke(TroubleQuestMenuInput input) {
  if(!canAdvance())return {};
  displayWork_=nullptr;result_.reset();return menu_.invoke(input);
 }
+// Active+animated test ignores hidden2. Decrement then advance in same
+// source visit; resource unavailability suspends all icon frame changes.
 void TroubleQuestPresentation::iconMain(bool ready) {
  if(!canAdvance() || !ready)return;
  for(auto& icon:icons_)if((icon.flags&0x1001)==0x1001) {

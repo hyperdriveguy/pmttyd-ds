@@ -6,11 +6,16 @@
 #include <memory>
 namespace ttyd {
 bool loadTroubleBoardEventAssets(const char* root);
+// Native semantic tags match the21 original address entries, not executable
+// host pointers. Relocated REL identities stay stable in the private closure.
 enum class TroubleEventCall:uint32_t {
  Key,Toge,Print,Select,Append,Continue,MenuInit,MenuMain,MenuEnd,
  MarioDirection,PartyDirection,RegisterCase,Cancel,CoinRead,CoinAdd,
  NpcPosition,DoorParameter,ItemDelete,ItemDeleteCheck,Check,Start
 };
+// Captured request: raw operands plus resolved values, source localsLW0
+// selection/LW11 quest/LW10 work, GSW0 story/GSW1420 active quest.
+// cancellationItems is borrowed immutable original data for one quest.
 struct TroubleEventRequest {
  TroubleEventCall kind=TroubleEventCall::Key;
  uint32_t function=0,eventId=0;
@@ -36,6 +41,9 @@ struct TroubleEventServices {
 };
 enum class TroubleBoardRoot {Board,Counter,Installer};
 struct TroubleBoardEventRuntime;
+// rootAlive tracks retained root IDs; finished tracks ALL event allocations.
+// Children/cases may outlive a root. Case reentry can restart activity after
+// an installer's roots ended; do not use rootAlive as VM lifetime.
 class TroubleBoardEvent {
 public:
  TroubleBoardEvent()=default;

@@ -3,12 +3,17 @@
 #include <cstdint>
 #include <optional>
 namespace ttyd {
+//30 original one-based quest IDs in source row order; 0 unfilled. count counts
+// entries without compacting, top/cursor are zero-based rows, counter94 retained
+// source work. Coordinates/scroll use original608x480 centered UI space.
 struct TroubleQuestMenuWork {
  std::array<int32_t,30> quests{};
  int32_t count=0,state=0,cursor=0,top=0,previous=0,counter94=0;
  float pointerX=0,pointerY=0,scroll=0;
 };
 TroubleQuestMenuWork originalTroubleQuestList(int32_t story);
+// Source button masks: A100/B200, L40/R20; direction repeat/trigger
+// up1000/down2000 (hex), not raw libctru button numbering.
 struct TroubleQuestMenuInput {uint32_t buttons=0,directionRepeat=0,directionTrigger=0;};
 struct TroubleQuestMenuServices {
  void* user=nullptr;

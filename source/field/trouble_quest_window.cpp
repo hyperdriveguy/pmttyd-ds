@@ -3,6 +3,9 @@
 #include <cstdio>
 #include <cstring>
 namespace ttyd {
+// Ordered source requests in608x480 domain: blue2ba3ffff/white frames,
+// font.85 scale, black/gray/red row states. Emission is NOT transactional;
+// partial early failure can retain already-published frame/scissor state.
 bool drawTroubleQuestWindow(TroubleQuestMenuWork& w,const TroubleWindowServices& s) {
  if(!s.ready || !s.emit || !s.header || !s.client || !s.contents || !s.width || !s.flag || !s.activeQuest || !s.scissor || !s.ready(s.user))return false;
  if(w.count<0 || w.count>30)return false;
@@ -12,6 +15,8 @@ bool drawTroubleQuestWindow(TroubleQuestMenuWork& w,const TroubleWindowServices&
  auto edge=[&](bool on){TroubleWindowRequest r;r.op=TroubleWindowOp::Edge;r.edge=on;return emit(r);};
  auto scale=[&](){TroubleWindowRequest r;r.op=TroubleWindowOp::Scale;r.scaleX=r.scaleY=r.scaleZ=.85f;return emit(r);};
  auto frame=[&](uint32_t c,float x,float y,float width,float height){TroubleWindowRequest r;r.op=TroubleWindowOp::Frame;r.color=c;r.x=x;r.y=y;r.width=width;r.height=height;return emit(r);};
+ // Source width narrowsU16 before cap. Matrix title draw ignores prior.85
+ // shared scale; caps115(left headings)/100(column headings) compress X only.
  auto title=[&](unsigned index,float x,float y,float span,float cap,bool firstEdge){
   const char* text=s.header(s.user,index);if(!text)return false;
   if(firstEdge && !edge(true))return false;
@@ -26,12 +31,16 @@ bool drawTroubleQuestWindow(TroubleQuestMenuWork& w,const TroubleWindowServices&
     !frame(0xffffffff,-129,170,410,340) || !frame(0x2ba3ffff,-103,190,120,40) || !frame(0x2ba3ffff,91,190,120,40) ||
     !simple(TroubleWindowOp::FontStart) || !color(0xffffffff) || !scale() || !title(2,-103,180,120,100,true) || !edge(false) ||
     !title(3,91,180,120,100,true) || !edge(false))return false;
+ // List clip175/98/410/304; row-loop failures still attempt saved-clip restore.
+ // Earlier command-chain failures return immediately, without rollback.
  const auto saved=s.scissor(s.user);
  TroubleWindowRequest clip;clip.op=TroubleWindowOp::Scissor;clip.clip={175,98,410,304};
  if(!emit(clip) || !simple(TroubleWindowOp::FontStart) || !color(0x000000ff) || !scale())return false;
  bool success=true;
  for(int32_t i=0;i<w.count;++i) {
   if(i>=30){success=false;break;} // Native finite domain, not a source clamp.
+  // Completion gray808080ff, ordinary black000000ff; active redff0000ff
+  // overrides either. Query known completion then active quest for EACH row.
   const auto completed=s.flag(s.user,5374+w.quests[i]);
   if(!completed || !color(*completed?0x808080ff:0x000000ff)){success=false;break;}
   const auto active=s.activeQuest(s.user);
@@ -41,6 +50,8 @@ bool drawTroubleQuestWindow(TroubleQuestMenuWork& w,const TroubleWindowServices&
   for(unsigned column=0;column<2;++column) {
    const char* text=column?s.contents(s.user,id):s.client(s.user,id);
    if(!text){success=false;break;}
+   // Baseline140-30*row+scroll; clientX-119/contentX51. Width caps
+   //180/260 apply BEFORE.85 factor; Y/Z stay.85 while X may compress.
    const float y=float(140-30*i)+w.scroll;
    const float measured=float(uint16_t(s.width(s.user,text))),cap=column?260.f:180.f;
    TroubleWindowRequest r;r.op=TroubleWindowOp::ScaleVec;
@@ -53,6 +64,9 @@ bool drawTroubleQuestWindow(TroubleQuestMenuWork& w,const TroubleWindowServices&
  }
  clip.clip=saved;return emit(clip) && success;
 }
+// Exact original key families irai_*_win/irai_client_%02u/contents_%02u.
+// Byte capacities include NUL, not glyph count. Prepare immutable font spacing2
+// once, then publish cache only after all4 headers/60 strings measure.
 bool TroubleQuestWindowCache::prepare(const char* path,const MessageFont& font) {
  auto resource=std::make_shared<MessageResource>();if(!resource->load(path))return false;
  TroubleQuestWindowCache next;
@@ -70,6 +84,8 @@ bool TroubleQuestWindowCache::prepare(const char* path,const MessageFont& font) 
  }
  next.messages_=std::move(resource);*this=std::move(next);return true;
 }
+// Only retained cache pointers admitted. Equal bytes at another address
+// are not a cache hit; unknown pointer returns0, not a new font measurement.
 uint16_t TroubleQuestWindowCache::width(const char* text) const {
  for(unsigned i=0;i<4;++i)if(text==headers_[i])return widths_[i];
  for(unsigned i=0;i<30;++i){if(text==clients_[i].data())return widths_[4+2*i];if(text==contents_[i].data())return widths_[5+2*i];}

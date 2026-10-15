@@ -8,8 +8,12 @@ struct TroubleQuestServices;
 // Native finite knowledge store for Trouble Center GSF5374..5421 and
 // GSW1469..1474. Four legacy named flags remain canonical in talk state.
 struct TroubleQuestExtraState {
+ //48 flag bits relative to5374; exclude bit2(5376) and31..33(5405..7),
+ // whose legacy named optionals remain canonical. byteKnown low6 maps1469..74.
  static constexpr uint64_t Mask=((uint64_t(1)<<48)-1) &
   ~((uint64_t(1)<<2) | (uint64_t(7)<<31));
+ // Known-zero is distinct from unknown. values must be a subset of known;
+ // unknown byte storage must be zero, without claiming the source switch is zero.
  uint64_t known=0,values=0;
  std::array<uint8_t,6> bytes{};
  uint8_t byteKnown=0;

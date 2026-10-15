@@ -4,6 +4,8 @@
 #include "message_selection.hpp"
 #include <map>
 namespace ttyd {
+// Split source input channels: message triggers, selection input and menu
+// repeat/trigger masks. Rendering reads publication without consuming these.
 struct TroubleBoardInput {
  uint32_t messageTriggers=0;
  MessageSelectionInput selection;
@@ -46,6 +48,8 @@ private:
  std::map<uint64_t,bool> opened_;
  TroubleBoardAnchor anchor_;
  TroubleBoardInput input_;
+ // Visit serial is independent of milliseconds: reject duplicate/regressed
+ // visits and require presentationMain between eventMain calls.
  uint64_t now_=0,lastVisit_=0;
  bool visited_=false,presentationPending_=false;
  int32_t activeQuest_=0;

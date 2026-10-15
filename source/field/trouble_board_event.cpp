@@ -17,12 +17,22 @@ struct TroubleBoardProgram {
  std::array<uint32_t,30> cancellationAddresses{};
 };
 std::shared_ptr<const TroubleBoardProgram> assets;
+// US callback tokens in TroubleEventCall order: Key, Toge, Print, Select,
+// Append, Continue, MenuInit/Main/End, Mario/PartyDirection, RunCase, Cancel,
+// CoinRead/Add, NpcPosition, DoorParameter, ItemDelete/Check, Check, Start.
+//9010/9011 tokens and9054 roots are relocated original REL identities.
 constexpr uint32_t Functions[]={0x800e7474,0x800d2008,0x800d284c,0x800d2090,0x800d23c4,0x800d21fc,
  0x90110600,0x9010fedc,0x9010fe60,0x800e6de8,0x800eb21c,0x80070110,0x901108b0,0x800f1018,
  0x800f0fe8,0x80053158,0x800e7f8c,0x800aa3d0,0x800aa360,0x9010fe94,0x9011097c};
+// Original relocated board/counter/installer roots and30-pointer confirmation
+// table. These addresses identify guest EVT/data, not native function pointers.
 constexpr uint32_t Board=0x90546018,Counter=0x90546210,Installer=0x90545f30,Confirmation=0x90545b98;
 int32_t signedWord(uint32_t value){return value<=INT32_MAX?int32_t(value):int32_t(int64_t(value)-0x100000000LL);}
 }
+// PMIRAI01 private LE header pins four original addresses+callback count21.
+// Require each semantic tag exactly once and its exact function token.
+// Cancellation table90545cd4 has30 pointers; each list must terminate-1
+// within121 words and contain only admitted key IDs1..120.
 bool loadTroubleBoardEventAssets(const char* root) {
  if(!root)return false;
  const std::string base=root;EventScriptAssets next;
@@ -62,18 +72,24 @@ struct TroubleBoardEventRuntime {
  EventNativeRuntime vm;
  FieldCasePool cases;
  std::vector<uint32_t> rootIds; // Event lifetimes survive caseDelete/slot reuse.
+ // Native GP81000000, heap82000000..82100000(1MiB); bus clock243MHz
+ // converts via eventClockRate to source timestamp units, not render cadence.
  explicit TroubleBoardEventRuntime():vm(0x81000000,platform(this)){}
  static EventNativePlatform platform(TroubleBoardEventRuntime* r) {
   EventNativePlatform p;p.user=r;p.clock=[](void*)->uint32_t{return 243000000;};
   p.truncate=[](void*,float v){assert(std::isfinite(v) && double(v)>=INT32_MIN && double(v)<2147483648.);return int32_t(v);};
   p.divideWord=[](void*,int32_t a,int32_t b){assert(b);return a/b;};
   p.flushBlock=[](void*,uint32_t){};p.systemCall=[](void*){};
+  // Native cache/syscall hooks above do not establish original device timing.
+  // Original diagnostic formatting increments a counter without failing the VM.
   p.format=[](void* r,const EventDiagnosticCall&){++static_cast<TroubleBoardEventRuntime*>(r)->owner->diagnosticCount;};
   p.call=[](void* r,EventEntry& e,uint32_t fn,int32_t first){return static_cast<TroubleBoardEventRuntime*>(r)->call(e,fn,first!=0);};return p;
  }
  int32_t operand(EventEntry& e,unsigned n) {
   uint32_t v=0;if(n>=e.argumentCount || !vm.memory.readWord(e.arguments+n*4,v)){owner->failed=true;return 0;}return signedWord(v);
  }
+ // -30000000 is LW0 EVT token; offset selects local namespace word.
+ // Store via operand services so source family routing remains observable.
  int32_t local(EventEntry& e,int n){return getEventValue(e,-30000000+n,vm.interpreterServices().operands);}
  void store(EventEntry& e,int n,int32_t value){setEventValue(e,-30000000+n,value,vm.interpreterServices().operands);}
  std::string text(uint32_t address) {
@@ -85,6 +101,9 @@ struct TroubleBoardEventRuntime {
   }
   owner->failed=true;return {};
  }
+ // The callback set/argc<=6 is closed admission. RunCase uses actual case
+ // pool; Check maps selected1..30 to original confirmation pointer and LW11,
+ // with-1 cancel giving null. Start resets working switches internally.
  int32_t call(EventEntry& e,uint32_t fn,bool first) {
   const auto found=program->callbacks.find(fn);
   if(found==program->callbacks.end() || e.argumentCount>6){owner->failed=true;return 0;}
@@ -110,6 +129,9 @@ struct TroubleBoardEventRuntime {
    for(int32_t b=1469;b<=1474;++b)writeSavedSwitch(SavedSwitchFamily::GlobalByte,b,0,op);
    return 2;
   }
+  // Capture locals/story/quest, then raw read+value resolution per argument.
+  // Text IDs/name bytes are retained, never rewritten story dialogue.
+  // Providers must retain started operations even after first becomes false.
   TroubleEventRequest request;request.kind=kind;request.function=fn;request.first=first;request.eventId=e.id;
   request.selection=local(e,0);request.quest=local(e,11);request.work=local(e,10);request.argumentCount=uint8_t(e.argumentCount);
   request.story=readSavedSwitch(SavedSwitchFamily::GlobalByte,0,op);
@@ -133,6 +155,9 @@ struct TroubleBoardEventRuntime {
   if(owner->failed)return 0;
   if(!services.call){owner->pendingFunction=fn;return 0;}
   const auto status=services.call(services.user,request);
+  // Direction callbacks alone admit status1(clear/yield). Others require0
+  // hold or2 continue. MenuInit needs nonzero work; MenuMain/Select publish
+  // LW0; coin/item-check writes the original raw destination operand.
   if(status==1 && (kind==TroubleEventCall::MarioDirection || kind==TroubleEventCall::PartyDirection))return 1;
   if(status!=0 && status!=2){owner->failed=true;return 0;}
   if(status==0){owner->pendingFunction=fn;return 0;}
@@ -143,6 +168,9 @@ struct TroubleBoardEventRuntime {
    setEventValue(e,request.operands[kind==TroubleEventCall::CoinRead?0:1],request.result,op);
   return 2;
  }
+ // Import fully known supplied saved state; do not infer missing bits zero.
+ // Original allocator cells and GP+4=60 are native VM support. Roots use
+ // priority0/flag20(hex); source firstCall and child scheduling remain in VM.
  bool initialize(uint64_t time,int32_t story,TroubleBoardRoot root) {
   if(!vm.memory.registerRam(0x82000000,std::vector<uint8_t>(1024*1024)) ||
      !vm.memory.registerRam(0x8041f070,std::vector<uint8_t>(16)) ||
@@ -165,6 +193,8 @@ struct TroubleBoardEventRuntime {
   for(int32_t b=1469;b<=1474;++b)setTroubleQuestByte(owner->switches,b,readSavedSwitch(SavedSwitchFamily::GlobalByte,b,op));
  }
 };
+// Validate all48 flags and6 working bytes plus quest1420 before constructing
+// the VM. Move the successful candidate then rebind runtime owner pointer.
 bool TroubleBoardEvent::begin(uint64_t time,int32_t story,const FieldActorTalkState& state,TroubleBoardRoot root) {
  if((root!=TroubleBoardRoot::Board && root!=TroubleBoardRoot::Counter && root!=TroubleBoardRoot::Installer) || !assets || active() || !state.trouble.valid() || !state.quest1420)return false;
  for(int32_t f=5374;f<=5421;++f)if(!troubleQuestFlag(state,f))return false;
@@ -173,6 +203,8 @@ bool TroubleBoardEvent::begin(uint64_t time,int32_t story,const FieldActorTalkSt
  if(!next.runtime_->initialize(time,story,root))return false;
  next.started=true;*this=std::move(next);runtime_->owner=this;return true;
 }
+// Explicit all-known refresh into the SAME retained VM. No event restart,
+// context reset or implicit clearing of unknown caller save extensions.
 bool TroubleBoardEvent::synchronizeSavedState(int32_t story,const FieldActorTalkState& state) {
  if(!runtime_ || !started || failed || !state.trouble.valid() || !state.quest1420)return false;
  for(int32_t f=5374;f<=5421;++f)if(!troubleQuestFlag(state,f))return false;
@@ -188,6 +220,8 @@ bool TroubleBoardEvent::synchronizeWorldWork(uint32_t index,uint32_t address) {
  if(!runtime_ || !started || failed || index>=runtime_->vm.field.work.size())return false;
  runtime_->vm.field.work[index]=signedWord(address);return true;
 }
+// Admit constructor burst: board needs5 free entries before lecture5374,
+// otherwise2; counter2. Retain existing children/cases and event IDs.
 bool TroubleBoardEvent::appendRoot(TroubleBoardRoot root) {
  if(!runtime_ || !started || failed || rootAlive ||
     (root!=TroubleBoardRoot::Board && root!=TroubleBoardRoot::Counter))return false;
@@ -204,6 +238,9 @@ bool TroubleBoardEvent::appendRoot(TroubleBoardRoot root) {
 }
 const FieldCasePool* TroubleBoardEvent::cases() const{return runtime_?&runtime_->cases:nullptr;}
 bool TroubleBoardEvent::markCase(int32_t index) {return runtime_ && started && !failed && runtime_->cases.mark(index);}
+// Mark/contact and dispatch are separate passes. Active case records survive
+// root retirement; ordinary case events revive finished state without replacing
+// VM. Priority20 needs actual NPC stop and remains held if unavailable.
 bool TroubleBoardEvent::dispatchCases() {
  if(!runtime_ || !started || failed)return false;
  runtime_->owner=this;FieldCaseDispatchServices s;s.schedule=&runtime_->vm.schedule;s.creation=runtime_->vm.creationServices();
@@ -219,6 +256,9 @@ bool TroubleBoardEvent::dispatchCases() {
  if(live){rootAlive=true;finished=false;}
  return true;
 }
+// No provider means no manager visit, so source firstCall is not consumed.
+// After run, publish switches, prune dead root IDs, then test ALL allocations
+// for finish. Pending function is a diagnostic, not the only outstanding child.
 void TroubleBoardEvent::tick(uint64_t time,const TroubleEventServices& services) {
  if(!active())return;
  waitingForProvider=!services.call;

@@ -2,8 +2,14 @@
 #include <algorithm>
 namespace ttyd {
 namespace {
+// Exact original five icon names: pointer, up/down arrows, L/R buttons.
+// Entry IDs504/524/524/134/136 and sound rows belong to original resources.
+// Pointer flag4 flips X;up-arrow flag8 flips Y;L/R scale.8 is source sizing.
 constexpr const char* Names[]={"iraiYubi","iraiArrowUp","iraiArrowDown","iraiLButton","iraiRButton"};
 }
+// Source chapter thresholds populate fixed rows. At261 rows18/19 hold
+// quests20/21; at281 row20 receives19. Do not sort/compact this deliberate
+// order. Other triples gate56/112/164/215/339/373, last three at401.
 TroubleQuestMenuWork originalTroubleQuestList(int32_t story) {
  TroubleQuestMenuWork w;
  for(int32_t i=0;i<6;++i)w.quests[i]=i+1;
@@ -20,6 +26,9 @@ bool TroubleQuestMenu::begin(int32_t story,const TroubleQuestMenuServices& s) {
     !s.iconPosition || !s.iconDelete || !s.sound || !s.publish || !s.display || !s.ready(s.user))return false;
  work_=originalTroubleQuestList(story);services_=s;owner_=this;return true;
 }
+// Row spacing30; scroll eases1/6 per admitted main visit. Ten visible rows,
+// pointer(-129, 120-row*30), source arrow/button anchors retained below.
+// Icon hide bit2 follows top/count limits; draw publication is a separate owner.
 void TroubleQuestMenu::present() {
  auto& w=work_;auto& s=services_;
  w.scroll=(float(w.top*30)-w.scroll)/6.f+w.scroll;
@@ -32,6 +41,9 @@ void TroubleQuestMenu::present() {
  for(unsigned i:{2u,4u})s.iconFlags(s.user,Names[i],last?2:0,last?0:2);
  s.display(s.user,w);
 }
+// States0 initialize, 1 input, 100 selected, 101 cancel. Terminal selection
+// publishes/deletes icons on NEXT invocation, then returns2; caller runs MenuEnd.
+// Sounds42/43 open/close, 18/19 accept/cancel, 5 movement are source row IDs.
 std::optional<int32_t> TroubleQuestMenu::invoke(TroubleQuestMenuInput input) {
  if(!canAdvance())return {};
  auto& w=work_;auto& s=services_;
@@ -50,6 +62,8 @@ std::optional<int32_t> TroubleQuestMenu::invoke(TroubleQuestMenuInput input) {
   s.sound(s.user,43);return 2;
  }
  if(w.state!=1){s.display(s.user,w);return 0;}
+ // A precedes B. Missing active/completion knowledge holds before later input;
+ // completed row or nonzero active quest cannot accept. Flag=5374+quest ID.
  if(input.buttons&0x100) {
   const auto active=s.activeQuest(s.user);if(!active)return {};
   if(*active==0) {
@@ -58,6 +72,9 @@ std::optional<int32_t> TroubleQuestMenu::invoke(TroubleQuestMenuInput input) {
   }
  }
  if(input.buttons&0x200){s.sound(s.user,19);w.state=101;s.display(s.user,w);return 0;}
+ // Process down then up separately. Edge trigger permits wrapping; held repeat
+ // alone stops at endpoints. Scroll thresholds7/3 leave source margins.
+ // L/R page up to10 rows, then reset counter94 only on cursor change.
  const int32_t old=w.cursor;
  if((input.directionRepeat&0x2000) && (w.cursor<w.count-1 || (input.directionTrigger&0x2000))) {
   ++w.cursor;s.sound(s.user,5);

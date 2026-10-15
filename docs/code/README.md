@@ -12,6 +12,7 @@ Recovered original behavior and its evidence remain in
 | [Game composition](game-composition.md) | Room collision, units, tick order, restore and follower ownership |
 | [Checkpoint bytes](save-format.md) | Native save encoder, decoder and file replacement |
 | [Battle core](battle-core.md) | Action commands, private input, status, resources and damage accounting |
+| [Trouble Center](trouble-center.md) | Saved-state knowledge, row order, original board VM and split UI visits |
 | [Field items/encounters](field-items.md) | Item/coin pickup, borrowed windows, audio envelopes, quest delivery and packed battle information |
 | [Map NPC/area lifetime](map-lifecycle.md) | Parsed tags, history/skip masks, stable registry aliases and ordered room retirement |
 | [NPC/partner/object owners](npc-objects.md) | Packed registration/setup, CPU poses, talk/paper state, save blocks and map matrices |
@@ -54,6 +55,7 @@ Bero entry metadata, case/map overlays and position/preparation leaves are cover
 Packed NPC entry/setup, catalog/talk/paper and typed partner/object helpers are covered.
 Map-NPC parsing/history/bootstrap and retained registry/area lifetime are covered.
 Finite item/coin/Goomba delivery and field battle-information helpers are covered.
+Trouble Center state/menu/window and board/counter event adapters are covered.
 Remaining field/NPC/partner modules, battle, message, inventory, story, effect/audio
 and port tooling still
 require a systematic inline numeric/behavior audit. Concurrent additions to

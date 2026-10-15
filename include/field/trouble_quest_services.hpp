@@ -14,6 +14,8 @@ struct TroubleQuestServices {
 };
 // Contained2 is the original event return. nullopt is native missing-provider
 // or invalid-list admission, before any source write.
+// Start/cancel reset only working flags5405..5421 and bytes1469..1474.
+// They do not themselves select quest1420 or clear completion flags5375..5404.
 std::optional<int32_t> startTroubleQuest(const TroubleQuestServices&);
 std::optional<int32_t> cancelTroubleQuestItems(const std::vector<int32_t>& originalItems,const TroubleQuestServices&);
 }
