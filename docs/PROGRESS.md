@@ -14092,3 +14092,76 @@ value-output math/ray adapter. Original rendering/Gekko rounding, hardware speed
 and full battle/prologue parity are not claimed. Next: auxiliary constructor and
 authored Goombella story publication, then remaining upper engine/sequence/exit
 owner800f8e28 and field return. Full remake goal remains active.
+
+
+## 2026-10-15 — Retained original battle menu text controllers
+
+Previous goal turn made concrete progress through committed/validated native
+class drawing. This batch commits20 new controller/header/test/contract/tool
+files plus two scoped registrations as3e36b229, with original font provenance
+in838284de. Other roots' simultaneous commits and uncommitted work are preserved.
+
+Whole weapon Help80117c1c retains original partially initialized192-byte stack
+text, markup parsing, three row draws, original ShiftJIS fallback and window/
+font/message call order. Missing source bytes remain unknown; overflowing the
+source buffer requires a genuine stack-alias provider, without invented bounds
+or terminators. MatrixFont80076cdc and ScalarFont800773d0→VecPitch80077034
+retain their different original pen, camera, scale, edge, command and read-order
+semantics. They share original lead/map/WID/retained command helpers and the
+same finite US atomic glyph owner. Rejected glyph admission consumes no RNG;
+admitted glyphs use two actual random calls and one actual sink emission under
+an explicit immutable native owner contract. Native loaded-font/TEV/matrix/
+ordered-GPU owners remain required, rather than inferred from parsed font data.
+
+Fourteen complete shared font-state helpers preserve raw/effective RGBA, actual
+caller-buffer mutation/aliasing, wrapped palette indexing, scalar/vector scale
+bits, original start/reset memory order, edge, noise and rainbow operations.
+Child waits retain exact requests and do not repeat CPU mutations. Actual GX/
+JUT setup is required before completion; capturing requests is insufficient.
+Tests include every linked child wait and all65536 alpha byte combinations.
+Actual ISO source checks pin14 whole helper bodies/26 calls/four literal spans.
+
+Font checks use read-only original f/papermarioset_US.bfn and existing private
+font.pmfont/font.t3x. Raw BFN hash is checked untouched. Private fixtures then
+apply original setup's width7→9 writes to glyph0;256 mappings compare original
+MAP, while162 widths compare post-setup BFN to the existing atlas pack. No new
+production font conversion, replacement pixels, ISO/pack/binary commit, story
+rewrite or touch-only control was introduced. See ASSETS.md for exact path/hash
+and original licensing. Physical Circle Pad/D-pad/A/B controls remain available.
+
+Validation uses accepted immutable native-draw source/RomFS plus exactly20 new
+files and two append registrations: artifacts/font-ui-validation/source. All6296
+input hashes rechecked after gates. CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits0:
+473/473 C++ (91.82s),216/216 Python (61.961s), zero skipped. Native make all
+-o assets-ready -j4 SOUNDTRACK=gamecube exits0. Four original-source checks and
+doc check exit0 (1522 Markdown files/zero broken links). Strict focused host,
+ASan/UBSan and ARM checks also pass. All root handles observed terminal. Existing
+compiler/Pillow warnings remain. Git diff --check caught one terminal blank line
+in the appended CMake registration; after all consumers ended, only that blank
+line was removed and final CMake configure exited0. Exact before/after hashes
+are recorded; no code tokens, test commands or RomFS bytes changed afterward.
+New20 postimages equal committed bytes; CMake/index foreign baseline differences
+are archived separately, without a combined moving-worktree validation claim.
+Native binary SHA256 c4d88f2c08c22ea7aeab06532007cbb94f8007b9aab78314c7f4925a8a66cb8c.
+No additional startup/GPU claim for these still-unbound text children.
+
+A separate actual production Renderer probe builds/runs in isolated Azahar with
+real Game→Trio VM, original menu Setup/registration and actual CameraMain pass.
+It reaches four UI rows, real allocation85600200 and renderer binding, but holds
+at CameraDraw stage0 on genuine BeroEXEC query8007ac40: checkpoint restore makes
+that unsaved history unknown. Source readiness stays0; class callback/GPU count0.
+Reviewed clean capture shows the original Trio scene and lower floor, without a
+menu. Four authorized test hooks are the only changes among3580 copied inputs.
+This is precise blocker evidence, not successful production menu presentation.
+No Bero clear, fake camera pass, sequence/readiness write or user-profile/save
+change bypassed it. Exact evidence: artifacts/trio-class-native-probe/manifest.json.
+
+Next: integrate frozen whole Mario Key/Ctrl batch and its narrow real Ctrl
+binding; Key still needs genuine ability getters and actor-incarnation pins.
+UI workers are implementing whole JUT draw-start, actual shared process-font/
+BFN setup ownership, and original weapon/help window plus common-bank surfaces2/3.
+Then compose those genuine children into the actual weapon queued renderer.
+Ordinary battle entry/whole Main, tutorial cadence, target/payment/attack/audio/
+effect owners and selected lower-audience taps with a physical alternative remain
+unfinished. Unknown Bero/field/constructor history must stay explicit until a real
+producer supplies it. The full tutorial/battle remake goal remains active.
