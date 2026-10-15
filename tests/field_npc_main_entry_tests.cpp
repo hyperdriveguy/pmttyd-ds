@@ -17,6 +17,11 @@ uint32_t bits(float f) {
   std::memcpy(&v, &f, 4);
   return v;
 }
+float real(uint32_t v) {
+  float f;
+  std::memcpy(&f, &v, 4);
+  return f;
+}
 struct Fixture {
   std::map<uint32_t, uint32_t> words;
   std::map<uint32_t, uint16_t> halves;
@@ -332,7 +337,8 @@ struct NativeWorld {
   std::unique_ptr<FieldNpcRegistryBinding> registry;
   std::unique_ptr<FieldNpcMainEntryBinding> entry;
   uint32_t next = 0x8a000000, actor = 0, pose = 0;
-  bool marioReady = false;
+  bool marioReady = false, movementReady = false;
+  unsigned movementCalls = 0;
   static constexpr uint32_t Work = 0x803d9470, M = 0x8d000000;
   uint32_t word(uint32_t a) {
     uint32_t v;
@@ -419,6 +425,17 @@ struct NativeWorld {
     n.user = this;
     n.numbers.divide = nativeFieldNpcClockDivide;
     n.numbers.convert = nativeFieldNpcClockConvert;
+    n.movement = [](void *p, EventAddressSpace &memory,
+                    const FieldNpcMainMoveRequest &q,
+                    FieldNpcMainMoveResponse &) {
+      auto &f = *static_cast<NativeWorld *>(p);
+      if (!f.movementReady)
+        return false;
+      assert(&memory == &f.vm->memory && q.args[0] == f.actor &&
+             q.function == 0x80048d9c);
+      ++f.movementCalls;
+      return memory.writeWord(q.args[0] + 0x90, bits(9));
+    }; // Explicit gravity fixture, not a replacement production child.
     n.admitMario = [](void *p, EventAddressSpace &, uint32_t m) {
       return static_cast<NativeWorld *>(p)->marioReady && m == M;
     };
@@ -448,6 +465,25 @@ void actualAliases() {
          (f.pool->pose(int32_t(f.pose))->word(0) & 0x100) &&
          f.word(f.view->poseAddress(f.pose)) ==
              f.pool->pose(int32_t(f.pose))->word(0));
+  // Compose the movement section using the exact retained actor/VM. Missing
+  // child services suspend after earlier original publications, without a
+  // replay of Main entry, clock, or position updates.
+  f.store(f.actor, f.word(f.actor) | 0x40000008);
+  f.store(f.actor + 0x1b4, bits(4));
+  f.store(f.actor + 0x1bc, bits(6));
+  FieldNpcMainMoveCursor move;
+  const auto oldX = real(f.word(f.actor + 0x8c));
+  assert(f.entry->advanceMovement(c, move) == FieldNpcMoveFrontier::Pending &&
+         move.phase == 29 && f.movementCalls == 0);
+  assert(real(f.word(f.actor + 0x8c)) == oldX + 4 &&
+         f.word(f.actor + 0x1b4) == 0 && f.word(0x8041e8ac) == 1);
+  f.movementReady = true;
+  assert(f.entry->advanceMovement(c, move) ==
+             FieldNpcMoveFrontier::AutomaticPose &&
+         f.movementCalls == 1 && move.delta[1] == 9 && c.phase == 60);
+  assert(f.entry->advanceMovement(c, move) ==
+             FieldNpcMoveFrontier::AutomaticPose &&
+         f.movementCalls == 1 && f.word(0x8041e8ac) == 1);
   // Source getter is address arithmetic, not active/clip readiness. An explicit
   // cold-slot handle input must mutate the SAME inactive row without a new
   // gate.

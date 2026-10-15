@@ -1,6 +1,7 @@
 #pragma once
 #include "field_npc_clock_binding.hpp"
 #include "field_npc_main_entry.hpp"
+#include "field_npc_main_movement.hpp"
 namespace ttyd {
 class AnimationPoolMemory;
 // Admission is read-only; sound false has no effects and remains pending.
@@ -8,6 +9,8 @@ struct FieldNpcMainEntryNativeServices {
   void *user = nullptr;
   FieldNpcClockNumbers numbers;
   bool (*admitMario)(void *, EventAddressSpace &, uint32_t) = nullptr;
+  bool (*movement)(void *, EventAddressSpace &, const FieldNpcMainMoveRequest &,
+                   FieldNpcMainMoveResponse &) = nullptr;
   bool (*sound)(void *, EventAddressSpace &,
                 const FieldNpcMainEntryRequest &) = nullptr;
 };
@@ -20,6 +23,8 @@ public:
        EventNativeRuntime &, AnimationPoolMemory &,
        const FieldNpcMainEntryNativeServices &);
   FieldNpcMainFrontier advance(FieldNpcMainEntryCursor &);
+  FieldNpcMoveFrontier advanceMovement(FieldNpcMainEntryCursor &,
+                                       FieldNpcMainMoveCursor &);
 
 private:
   FieldNpcMainEntryBinding(std::shared_ptr<FieldNpcRegistryOwner>,

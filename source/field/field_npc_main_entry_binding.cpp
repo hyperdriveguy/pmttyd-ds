@@ -118,4 +118,26 @@ FieldNpcMainEntryBinding::advance(FieldNpcMainEntryCursor &c) {
     return FieldNpcMainFrontier::Pending;
   return advanceFieldNpcMainEntry(services(), c);
 }
+FieldNpcMoveFrontier
+FieldNpcMainEntryBinding::advanceMovement(FieldNpcMainEntryCursor &entry,
+                                          FieldNpcMainMoveCursor &movement) {
+  if (advance(entry) != FieldNpcMainFrontier::Movement)
+    return FieldNpcMoveFrontier::Pending;
+  FieldNpcMainMoveServices s;
+  s.memory = services().clock;
+  s.pair = [](void *p, uint32_t a) -> std::optional<std::array<uint32_t, 2>> {
+    auto &m = static_cast<FieldNpcMainEntryBinding *>(p)->vm_.memory;
+    std::array<uint32_t, 2> v;
+    if (!m.readWord(a, v[0]) || !m.readWord(a + 4, v[1]))
+      return {};
+    return v;
+  };
+  s.request = [](void *p, const FieldNpcMainMoveRequest &q,
+                 FieldNpcMainMoveResponse &out) {
+    auto &b = *static_cast<FieldNpcMainEntryBinding *>(p);
+    return b.native_.movement &&
+           b.native_.movement(b.native_.user, b.vm_.memory, q, out);
+  };
+  return advanceFieldNpcMainMovement(entry.actor, s, movement);
+}
 } // namespace ttyd
