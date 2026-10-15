@@ -1764,3 +1764,8 @@ target_sources(ttyd_core PRIVATE source/battle/battle_break_slot_draw.cpp)
 add_executable(battle_break_slot_draw_tests tests/battle_break_slot_draw_tests.cpp)
 target_link_libraries(battle_break_slot_draw_tests PRIVATE ttyd_core)
 add_test(NAME battle_break_slot_draw COMMAND battle_break_slot_draw_tests)
+
+target_sources(ttyd_core PRIVATE source/battle/battle_packed_recovery.cpp source/battle/battle_present_item.cpp source/battle/harbor_tutorial_present_item.cpp)
+add_executable(battle_present_item_tests tests/battle_present_item_tests.cpp)
+target_link_libraries(battle_present_item_tests PRIVATE ttyd_core)
+add_test(NAME battle_present_item COMMAND battle_present_item_tests)

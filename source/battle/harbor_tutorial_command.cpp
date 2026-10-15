@@ -48,19 +48,8 @@ HarborTutorialPacked::commandInput(HarborTutorial &scene, void *messageUser,
       return 0;
     }
     case F::PresentItem: {
-      const auto b = p.word(0x8041eb90);
-      const auto item = int32_t(p.word(p.word(0x8041eb90) + 0x2858 + 0x137e4));
-      if (item >= 339)
-        return 0;
-      const auto target =
-          int32_t(p.word(p.word(0x8041eb90) + 0x2858 + 0x137ec));
-      if (target < -1 || target >= 64)
-        return 0;
-      (void)battleRegistryUnit(b, target, nativeBattleActorServices(p.vm));
-      if (item == 0)
-        return 0;       // Complete ordinary None-item exit after actual lookup.
-      return missing(); // Gift effects/state changes require their original
-                        // owner.
+      const auto value=p.presentItem();
+      return value?std::optional<uint32_t>(uint32_t(*value)):missing();
     }
     case F::Restore: {
       const auto b = p.word(0x8041eb90);

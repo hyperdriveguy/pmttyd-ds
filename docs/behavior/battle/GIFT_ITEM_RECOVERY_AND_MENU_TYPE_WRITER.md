@@ -35,9 +35,9 @@ ordering and are not a preloaded vector copy.
 Convert returned signed integer H using the original xoris/high-word sequence:
 constructed binary64 word `(0x43300000, uint32(H)^0x80000000)`,subtract
 binary64 bias0x4330000080000000 at802efe78 using `fsubs` (single result).
-This yields signed-H conversion with original single rounding. Then read
-binary32 scale from U114,constant5.0 from804225f8,and preloaded private
-position y. Preserve:
+This yields signed-H conversion with original single rounding. Instruction order
+loads binary32 scale from U114 and constant5.0 from804225f8 before fsubs, then
+loads private position Y/X/Z before fmadds. Preserve:
 
 - `t = fmadds(scale, convertedH, 5.0)` (one fused single operation).
 - `yEffect = fadds(originalY, t)` (separate single operation).

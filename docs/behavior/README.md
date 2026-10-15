@@ -1163,3 +1163,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Original map NPC resource export](field/ORIGINAL_MAP_NPC_RESOURCE_EXPORT.md): data-derived area dependencies, thirteen real banks/all173 CPU clips, unchanged MODEL/TPL and pending Game owners.
 
 - [Native original break-slot reel display](battle/NATIVE_BREAK_SLOT_REEL_DRAW.md): retained reel parent, real inactive scissors and active Plane2 boundary.
+
+- [Native original present-item consumer](battle/NATIVE_PRESENT_ITEM_CONSUMER.md) — type12 handoff, exact packed recovery and retained unbound-effect boundary.

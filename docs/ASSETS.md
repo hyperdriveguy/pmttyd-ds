@@ -1342,3 +1342,7 @@ regeneration skipped; it did not re-import assets/.
 Original Nintendo/Intelligent Systems rights remain reserved. These original and
 derived files stay in ignored local caches; recording paths/hashes grants no new
 license or redistribution rights. No ISO content was staged or committed.
+
+## Present-item data admission and validation dependencies (2026-10-14)
+
+The existing private harbor event pack already has original conversion bias802efe78/8 and5.0 at804225f8/4, both checked against the read-only ISO. No present-item image, audio or dialogue conversion changed. Validation refreshed the already committed source-icon constant spans from116 to124 bytes using `read_constants`, retaining the identical613 image cells/catalog, and refreshed door/NPC-constructor data with its committed converter. These are current baseline dependency repairs, not new gift art. Paths/identities are recorded under `artifacts/present-item-*`; original rights restrictions and the no-distribution policy remain unchanged.

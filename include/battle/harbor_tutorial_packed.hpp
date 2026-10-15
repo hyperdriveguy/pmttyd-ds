@@ -7,6 +7,7 @@
 #include "battle_packed_generic_jump.hpp"
 #include "display_queue.hpp"
 #include "battle_weapon_menu_main.hpp"
+#include "battle_present_item.hpp"
 #include <unordered_map>
 #include <unordered_set>
 #include <optional>
@@ -38,6 +39,8 @@ public:
  bool menuAudienceItemOn(uint32_t output);
  std::optional<bool> attackAudienceMenu(HarborTutorial&);
  BattleMenuAudienceCursor audienceMenuCursor;
+ BattlePresentItemCursor presentItemCursor;
+ std::optional<int32_t> presentItem();
  void captureClassRows(HarborTutorial&);
  bool buildClassMenu(HarborTutorial&,void*,uint32_t(*)(void*,uint32_t));
  bool buildWeaponMenu(uint32_t type,HarborTutorial&,void* messageUser,uint32_t(*message)(void*,uint32_t));
