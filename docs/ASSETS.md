@@ -2963,3 +2963,21 @@ code/tests from ed888f61 (original pose Release/shared file ownership) because
 the current native interface depends on them; no private artifact is committed.
 Exact source/product hashes and dependency paths are in ignored
 artifacts/animation-native-main-validation-manifest.json.
+
+## New Game documentation validation inputs (2026-10-15)
+
+artifacts/opening-newgame-code-documentation-validation/source inherits 63
+accepted products and original footer/HP/enemy evidence/default fixture paths.
+Two interpolation-span converters (animation_boot_image.py/field_npc_actor_assets.py)
+match authority tree eeee7ce233970b0ae6eff60d108a225975736d35. The validation manifest
+pins animation-interpolation-assets-after.json; both reports are privately archived
+by hash. Four existing door-data/animation-boot JSON/PMEVT products matched before
+private copy; per-product/source/converter/authority hashes are journaled.
+Door-data.pmevt 152972 bytes SHA256 90992f21cca1bdcc34c2a0e4cfbb0913c1bba59aadb5e221ef58ba82dc0e26dd;
+animation-boot/memory.pmevt 4872 bytes SHA256 aa06fab33e43734314a99f0aa864bdb99041b144e720b4b7b8563419f11cfd62.
+All 63
+accepted/evidence/fixture hashes checked after gates. No new conversion, editable
+import, shared-pack write or changed opening art/audio/story assets. Native full
+regeneration skipped; Python fixtures independently use read-only ISO/empty outputs.
+Nintendo/Intelligent Systems rights retained; local tracking/copying grants no new
+license. No ISO, extracted original or compiled binary committed.

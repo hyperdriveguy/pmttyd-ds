@@ -13711,3 +13711,76 @@ attribution and conditions throughout. Remaining field/runtime/effect/tooling
 and newer battle/menu/animation/party changes still need separate inline audit.
 Hash inventory is a review aid, not full semantic or game coverage proof.
 Full documentation/remake goal remains active.
+
+## 2026-10-15 — New Game scene/provider code documented
+
+Added 204 inline comment lines across 28 New Game C++/header files. Added
+[sequence/house](code/opening-sequence-house.md),
+[Voyage/arrival](code/opening-voyage-arrival.md) and
+[map/heading/wake](code/opening-map-heading-wake.md), linked from index.
+Code/docs commit f38a3149. All executable tokens/string literals unchanged; no
+original messages/control tokens/speakers/story order/branches, art/audio or
+simulation behavior changed. No new tests for this prose-only work.
+
+Sequence notes explain resource validation order versus story order, room/global
+lookup and ambiguity, source speaker tokens, ms/60Hz adapters, part-only renderer
+claims, admission deadline shifts/four clock resets, independent BGM/map clocks,
+original message gates and story2/story3 publication. These bounded controllers
+are not described as complete original REL execution or measured timing.
+
+House notes distinguish root-blocking and parallel requests, native walking from
+source-shaped incremental glide, result1's extra invocation, source arithmetic/
+Q1024 publication, pre-NPC sound queries, geometry versus collision, original
+object tag/matrix/mean transforms and source door568/1024 parameter. Sound notes
+explain fixed/holding/final loops and post-wait departure, source cue identities,
+unbound ENV/scope, direct sparse-call position limits, actual PCM buffer lifecycle,
+mute consumption and failures advancing the cursor (report, not retained retry).
+
+Voyage notes retain initial globals/reseed, double-increment logo counter,
+resource/global-modulo/input gates, one physical edge per final catch-up tick,
+acceptance-time music branch, separate logo/heading/white ownership, Q1024 local
+pivot transform and source original prompt nonregistration. Arrival notes describe
+source curve/wait values, explicit incoming GW8, no-hit quadratic jump/gravity
+flags, paper capture/final draw gates and parent180-tick release versus child480.
+Field departure preserves source clock through field anchoring and map unload.
+Ship binding notes preserve seven-group hierarchy/overlap/remap/write ordering
+and separate wake transforms rather than inventing new mesh identities.
+
+Map/heading/wake notes explain original alpha callback versus native opaque-frame
+barrier, concurrent49/50 entry, exact heading handshake/letter/ring constants,
+embedded Stardust reset/admission, native RNG seed versus original global history,
+particle update/visibility/scale/draw order, original wake message/time phases,
+double Q1024 and polynomial UV taps. Source request fields are separate from
+resource/GPU/hardware/audio completion and full stream/ENV/MusyX ownership.
+
+Frozen baseline 46419bd422b35838cdfe2c211b418b821231a6bf plus owned docs is at
+artifacts/opening-newgame-code-documentation-validation/source. Full audit covers
+4061 baseline tracked files, zero unexpected changes; all 32 documented frozen/live
+snapshots match and all 113 local guide/index links resolve. Source/prose finalized
+before gates. Concurrent/later battle/field/party/animation/GPU/render additions
+preserved/excluded; no combined moving-worktree validation claim.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits 0: 457/457 C++ (51.33s),
+213/213 Python (32.754s), zero skipped. Actual original 45-descriptor enemy-bank
+fixture ran. Native make all -o assets-ready -j4 SOUNDTRACK=gamecube exits 0.
+Original host/native handles observed terminal; exit markers agree. Manifest
+records source/converter/authority/product/evidence/log and ELF/3DSX hashes.
+Existing compiler/Pillow warnings remain. No emulator/profile/save changes or
+hardware/pixel/audio/Gekko/performance parity claims.
+
+Private cache inherits 63 accepted products and original evidence/default enemy
+fixtures. Preflight finds only two changed interpolation-span converters; frozen
+bytes match authority tree eeee7ce233970b0ae6eff60d108a225975736d35. Four existing
+hash-matched door/boot JSON/PMEVT products copied; no conversion, editable import
+or shared-cache write. Both authority reports privately archived by hash. All 63
+accepted/evidence/fixture hashes checked after gates. Python fixtures independently
+use read-only ISO/empty temporary outputs; native full regeneration skipped.
+Original rights/provenance unchanged; no ISO, extracted original or compiled binary
+committed. See [assets](ASSETS.md).
+
+Next: document remaining harbor encounter/story and professor controllers, then
+remaining field/runtime/effect code and tooling. Newer battle/menu/animation/party
+and native GPU changes need separate inline audit. Story now has 44 matching
+annotation snapshots and six remaining files; inventory is a review aid, not
+proof of every behavior/live change or a complete faithful opening/game.
+Full documentation/remake goal remains active.
