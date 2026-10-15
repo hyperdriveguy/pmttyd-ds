@@ -4,6 +4,9 @@
 namespace ttyd {
 namespace {
 using F = BattleClassRasterService;
+// *Done phases consume acknowledged results once. Request/math phases keep
+// exact operands until available. Unavailable is a sticky unsupported angle
+// frontier; it does not retry the earlier primitives or manufacture geometry.
 enum class P {
   Camera,
   CameraDone,
@@ -212,6 +215,9 @@ struct BattleClassRasterContinuationAccess {
         c.color = word(0x80427440u + uint32_t(-20532));
         c.phase = P::Setup;
         break;
+      // Eight ordered GX calls use the same texture*raster TEV encoding as
+      // immediate raster. Store the request before admission; setup advances only
+      // after acknowledgement, including callbacks returning scalar0.
       case P::Setup: {
         static constexpr F functions[]{
             F::Init2D,  F::MaterialColor, F::TevStages, F::ColorOp,
@@ -317,6 +323,9 @@ struct BattleClassRasterContinuationAccess {
       case P::TextureDone:
         c.phase = P::Offset;
         break;
+      // Closed intervals deliberately overlap at half-turn. Freeze copied
+      // source 32-float XY/UV templates only after admitted texture/offset work;
+      // later primitive callbacks cannot retarget those arrays.
       case P::Offset: {
         std::optional<float> offset;
         const auto zero = constant(-20500), halfTurn = constant(-20488);
@@ -354,6 +363,8 @@ struct BattleClassRasterContinuationAccess {
         }
         break;
       }
+      // Begin tuple128/0/4 = GX_QUADS, vertex format0, four vertices.
+      // quad0..3 shadow then4..7 body; vertex advances only after Point succeeds.
       case P::CircleBegin:
         request(F::Begin, {128, 0, 4}, {}, {}, P::CirclePoint);
         break;
@@ -396,6 +407,8 @@ struct BattleClassRasterContinuationAccess {
         c.scaled = c.result;
         rotate(c.radians, P::CircleIconRotationDone);
         break;
+      // Original rotation is acknowledged then discarded; the next actual
+      // identity call supplies the matrix used by the icon. Do not fold them.
       case P::CircleIconRotationDone:
         c.next = P::CircleIdentityDone;
         c.phase = P::Identity;
@@ -489,6 +502,8 @@ struct BattleClassRasterContinuationAccess {
         c.matrix = c.result;
         request(F::FontStart, {}, {}, {}, P::FontStarted);
         break;
+      // Enabled/color read stays late, AFTER actual FontStart; label/matrix
+      // were captured earlier and remain pinned through FontColor/FontString.
       case P::FontStarted: {
         const bool enabled = word(c.row + 4) == 1;
         const auto color =

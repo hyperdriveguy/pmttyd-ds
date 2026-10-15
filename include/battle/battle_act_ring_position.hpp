@@ -2,6 +2,9 @@
 #include "battle_actor.hpp"
 #include <array>
 #include <optional>
+// Negative displacements address original float bank 0x80427440. They are
+// source constants (projection offset/clamp, phase and ellipse radii), not guessed
+// native screen coordinates. Numeric/projection providers remain explicit.
 namespace ttyd {
 struct BattleActRingPositionServices {
   BattleActorServices memory;

@@ -13,6 +13,8 @@ Recovered original behavior and its evidence remain in
 | [Runtime ownership](runtime.md) | Native main loop, physical input, audio and frontend |
 | [Game composition](game-composition.md) | Room collision, units, tick order, restore and follower ownership |
 | [Checkpoint bytes](save-format.md) | Native save encoder, decoder and file replacement |
+| [Action UI/ring](battle-action-ui.md) | Selection, UI allocation, row states and retained stack/icon ordering |
+| [Class raster/footer](battle-class-raster.md) | Source constant bank, circle/bubble GX calls, buttons, pinch and queue/animation continuations |
 | [Battle stage](battle-stage.md) | Packed stage/floor, map-object caches and spotlight ownership |
 | [Battle camera](battle-camera.md) | Priority requests, framing modes, source numerics and tremor continuation |
 | [Timing/reel drawing](battle-feedback-draw.md) | TimingA display and break-slot storage, idle limits and retained draw ordering |
@@ -79,6 +81,7 @@ Packed battle status/part/position, candidates, precheck/counter/recovery, movem
 Typed movement/position/selection, candidate support and facing/target-confirmation helpers are covered.
 Command input/action help/feedback, attack registration/selection, weapon/class tables and weapon UI are covered.
 Stage/floor/object/spotlight, camera requests/framing and TimingA/break-slot display helpers are covered.
+Action menu/UI/ring and immediate/retained class draw/raster/footer helpers are covered.
 Remaining field/NPC/partner modules, battle, message, inventory, story, effect
 and port tooling still
 require a systematic inline numeric/behavior audit. Concurrent additions to

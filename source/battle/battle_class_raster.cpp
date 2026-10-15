@@ -29,6 +29,9 @@ struct Draw {
                                           std::move(reals), std::move(matrix)})
                      : std::nullopt;
   }
+  // One TEV stage: texture color/alpha multiplied by raster color/alpha,
+  // ADD/zero bias/scale1/clamp/PREV, texcoord0/map0/color 0A0. Numeric tuples
+  // below are GX enum encodings, not native GPU register values.
   bool setup(uint32_t color) const {
     return call(F::Init2D).has_value() &&
            call(F::MaterialColor, {1, color}).has_value() &&
@@ -65,6 +68,9 @@ struct Draw {
     const auto object = call(F::TextureObject, {palette, index});
     return object && call(F::LoadTexture, {*object, 0}).has_value();
   }
+  // Two INDEPENDENT closed angle intervals meet at half-turn: second
+  // overwrites first there. Outside both (including unordered) is unavailable,
+  // not a default zero shadow offset. Circle divides by its scale constant.
   std::optional<float> offset(float angle, bool circle) const {
     std::optional<float> result;
     const auto zero = constant(-20500), halfTurn = constant(-20488);
@@ -94,6 +100,9 @@ struct Draw {
   }
 };
 } // namespace
+// Depth shade wraps (192-truncate(bank[-20380]*depth)) to low8, never clamps.
+// Scale is FMA(-bank[-20276], depth, bank[-20280]); texture index 0 is the circle.
+// Draw four black-alpha128 shadow quads, then four gray-alpha255 body quads.
 bool drawPackedBattleClassCircle(uint32_t row, const BattleActMatrix &base,
                                  const std::array<float, 3> &position,
                                  float parameter,
@@ -174,6 +183,8 @@ bool drawPackedBattleClassCircle(uint32_t row, const BattleActMatrix &base,
     return false;
   if (!s.identity)
     return false;
+  // Preserve the preceding rotation call even though identity REPLACES its
+  // result. This discarded SDK effect is part of original ordering.
   iconRotation = s.identity(s.user);
   if (!iconRotation)
     return false;
@@ -192,6 +203,9 @@ bool drawPackedBattleClassCircle(uint32_t row, const BattleActMatrix &base,
   return d.call(F::IconColor, {enabled ? 16u : 48u, icon, color}, {}, *matrix)
       .has_value();
 }
+// Texture index 1 is the bubble. Work+0x1c selects mirrored left/right edges;
+// shadow and body precede icon and font. Missing later text is not permission
+// to replay those primitives. Row icon 0 falls back403; enabled is EXACTLY1.
 bool drawPackedBattleClassBubble(uint32_t w, uint32_t row,
                                  const BattleActMatrix &base, float parameter,
                                  const BattleClassRasterServices &s) {
@@ -263,6 +277,9 @@ bool drawPackedBattleClassBubble(uint32_t w, uint32_t row,
   const auto measured = d.call(F::FontWidth, {label});
   if (!measured)
     return false;
+  // FontWidth consumes only unsigned low16. Compress X only above source
+  // max width; retain Y/Z font scale. Re-read enabled after FontStart for color,
+  // independently of the earlier icon's enabled flag.
   const float width = float(*measured & 65535), maxWidth = d.constant(-20480),
               fontScale = d.constant(-20228);
   const float xScale =

@@ -1,6 +1,9 @@
 #include "battle_display_footer.hpp"
 #include <cassert>
 namespace ttyd {
+// Six source RGB ramp states: G up, R down, B up, G down, R up, B down.
+// Targets255/192 and initial alpha207 form the command palette; alpha stays
+// unchanged. Invalid signed states are left alone, not normalized.
 void BattleCommandPalette::step(){
     if(state<0 || state>5)return;
     static constexpr uint8_t channel[]{1,0,2,1,0,2},target[]{255,192,255,192,255,192};
@@ -16,6 +19,9 @@ bool enter(DisplayQueue& q,BattleFooterCursor& c,BattleFooterRecord request){
 }
 void start(BattleFooterCursor& c){if(!c.active){c={};c.active=true;}}
 }
+// Palette steps once before command record(camera 8, class 0, priority 902).
+// Seven mask/callback pairs below then use priority 500. Flags are fresh before
+// each NEW record; an already pending record is never re-gated or reconstructed.
 bool registerBattleCommandDisplay(uint32_t battle,BattleCommandPalette& palette,DisplayQueue& queue,BattleFooterCursor& c,const BattleActorServices& a){
     assert(a.memory.word);start(c);
     if(uint32_t(battle+0x171c)==0){c.active=false;return true;}
@@ -30,6 +36,9 @@ bool registerBattleCommandDisplay(uint32_t battle,BattleCommandPalette& palette,
     }
     c.active=false;return true;
 }
+// Hidden flag 0x20000 skips only first four records. Window query still runs
+// once afterward, and a true window can submit camera 8/class 1/priority 499.
+// Hidden decision and pending records survive holds; no dropped queue work.
 bool registerBattleAudienceDisplay(uint32_t flags,const BattleAudienceWindowServices& window,DisplayQueue& queue,BattleFooterCursor& c){
     assert(window.window);
     if(!c.active){start(c);c.hidden=(flags&0x20000)!=0;}
@@ -44,9 +53,17 @@ bool registerBattleAudienceDisplay(uint32_t flags,const BattleAudienceWindowServ
     if(c.window && !enter(queue,c,{8,1,0x801a35d0,0,499}))return false;
     c.active=false;return true;
 }
+// Source camera 8/class 0/priority 490 schedules the retained break-slot parent;
+// registration success does not acknowledge that parent's texture/GX work.
 bool registerBattleBreakSlotDisplay(DisplayQueue& queue,BattleFooterCursor& c){
     start(c);if(!enter(queue,c,{8,0,0x802036d4,0,490}))return false;c.active=false;return true;
 }
+// Scan200 actors, stride 0x134; flags must include BOTH1 and4. Positive
+// timer decrements and skips opcode. One handled opcode per actor per visit:
+// -8 wait,-6 loop start,-7 loop end,-5 label jump,-4 label,-3 restart,-2 frame,
+// -1/end or outside -8..-1 does not advance. Script reads may hold mid-opcode.
+// Loop stacks use byte depth+0x40 and raw source addresses, not a bounded native
+// container. Backward loop/forward label scans retain prior pointer mutations.
 bool processPackedBattleAudienceAnimations(uint32_t first,const BattleAudienceAnimationServices& s,BattleAudienceAnimationCursor& c){
     const auto& m=s.actors.memory;assert(m.word && m.storeWord && m.storeByte && s.actors.byte && s.scriptWord);
     if(!c.active){c={};c.active=true;c.first=first;}

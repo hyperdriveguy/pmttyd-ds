@@ -18,6 +18,8 @@ bool same(const BattleActIconDrawServices &a,
          x.flushBlock == y.flushBlock && x.systemCall == y.systemCall &&
          a.bubble == b.bubble && a.circle == b.circle;
 }
+// Unavailable is a sticky source-stack/bounds frontier until reset; adding
+// guessed slots or resuming with a different vector does not repair this call.
 enum class Phase { Positions, Sort, Row, Bubble, Circle, Unavailable };
 } // namespace
 struct BattleActIconDrawCursor::State {
@@ -76,6 +78,9 @@ bool resumePackedBattleActIcons(uint32_t work, uint32_t rows,
       }
       c.phase = Phase::Sort;
       break;
+    // Depth is slot Y; strict< swaps descending order. Equal or unordered
+    // comparisons do not swap at that comparison; do not claim a stable sort.
+    // Count is reloaded during sorting; growth beyond captured depths holds.
     case Phase::Sort:
       for (uint32_t i = 0;; ++i) {
         const auto count = word(c.cursor + 8);
@@ -94,6 +99,9 @@ bool resumePackedBattleActIcons(uint32_t work, uint32_t rows,
       }
       c.phase = Phase::Row;
       break;
+    // Fresh flags precede borrowing this row's actual matrix/parameter/position.
+    // Once bubble/circle phase starts, those operands are pinned across retries;
+    // acknowledged siblings are skipped and later rows still observe changes.
     case Phase::Row: {
       const auto count = word(c.cursor + 8);
       if (integer(c.index) >= integer(count)) {

@@ -3,6 +3,9 @@
 #include <array>
 #include <optional>
 #include <vector>
+// Matrices are source 3x4 arrays; slots model unwritten stack values with
+// optional members. Negative offsets use original bank 0x80427440. Immediate
+// drawing is one source invocation, not a replay-safe native readiness wrapper.
 namespace ttyd {
 using BattleActMatrix = std::array<float, 12>;
 struct BattleActDrawSlot {

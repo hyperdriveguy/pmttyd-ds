@@ -14,6 +14,10 @@ float scalar(uint32_t n) {
   return v;
 }
 } // namespace
+// Capture B/UI/cursor before camera 8. GP+4 scales duration(n) as signed
+// wrapped(rate*n)/60; it is not renderer FPS. UI modes0/2 wait for all state 3,
+// 10 publishes ready1, and mode 1 starts cyclic state 4/5 rotation on adjacent
+// index change, clearing keys until all rows stabilize.
 bool drawPackedBattleActMenu(const BattleActDrawServices &s) {
   const auto &m = s.memory.memory;
   auto word = [&](uint32_t a) { return m.word(m.user, a); };
@@ -72,6 +76,9 @@ bool drawPackedBattleActMenu(const BattleActDrawServices &s) {
       }
     }
   }
+  // Per-row state 0 delays, 1 enters, 3 rests, 4/5 rotate, 10 slides selected,
+  // 11 grows others. State 0 and unsupported states leave stack slots unwritten;
+  // downstream missing geometry must remain unavailable, not identity/zero.
   put(w + 0x1c, 0);
   std::vector<BattleActDrawSlot> slots;
   for (uint32_t i = 0;; ++i) {
@@ -95,6 +102,9 @@ bool drawPackedBattleActMenu(const BattleActDrawServices &s) {
     if (state != 1 && state != 3 && state != 4 && state != 5 && state != 10 &&
         state != 11)
       continue;
+    // Source degree rows: 0x803635d8+count*20+order*4-60. Wrap endpoints
+    // use bank[-20476] full turn, radians use[-20492]/[-20488]. States4/5
+    // publish state 3/timer-1 before late increment, preserving exact order.
     auto ringAngle = [&](uint32_t count, uint32_t order) {
       return f(0x803635d8 + count * 20 + order * 4 - 60);
     };
@@ -166,6 +176,8 @@ bool drawPackedBattleActMenu(const BattleActDrawServices &s) {
       return false;
     (*center)[0] += (*offset)[0];
     (*center)[1] += (*offset)[1];
+    // Source deliberately makes depth equal OFFSET Y, not projected center Z.
+    // Sorting later uses slot Y, while circle shading/scale uses this depth.
     (*center)[2] = (*offset)[1];
     slot.position = *center;
     auto translate = [&](std::array<float, 3> pos) -> bool {
@@ -174,6 +186,9 @@ bool drawPackedBattleActMenu(const BattleActDrawServices &s) {
       slot.matrix = s.translation(s.user, pos);
       return slot.matrix.has_value();
     };
+    // Entry spin uses rate-scaled10 duration and ASCII axis 120 ('x'); selected
+    // X adds bank[-20468]. States10 use curve4 X/Y and curve0 parameter over
+    // duration 12; state 11 uses bank[-20456] growth and[-20452] Z scale.
     if (state == 1) {
       const bool selected = i == word(c);
       const auto gp = word(0x80415fd0), counter = word(a + 0x48);
@@ -276,6 +291,10 @@ bool drawPackedBattleActMenu(const BattleActDrawServices &s) {
     return false;
   return s.pinchMark && s.pinchMark(s.user);
 }
+// Actor kind222 chooses class cursor B+0x1bb4, otherwise+0x1bc0. Copy all
+// Y depths BEFORE flag filtering; sort descending with strict< comparisons.
+// Live count and later row flags remain fresh. Flags1/2 mean draw/bubble;
+// missing optional inputs can stop after earlier children have drawn.
 bool drawPackedBattleActIcons(uint32_t w, uint32_t rows,
                               const std::vector<BattleActDrawSlot> &slots,
                               const BattleActIconDrawServices &s) {

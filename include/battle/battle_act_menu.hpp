@@ -2,6 +2,9 @@
 #include "battle_actor.hpp"
 #include <array>
 #include <optional>
+// Class rows start at menu+8, stride 20 bytes; menu=B+0x171c. Service enum
+// values are original guest call identities, not native function pointers.
+// Engaged optional zero acknowledges a real call; each consumer owns its meaning.
 namespace ttyd {
 enum class BattleActService : uint32_t {
   Unit = 0x800f88cc,

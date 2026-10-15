@@ -1,6 +1,9 @@
 #pragma once
 #include "battle_class_raster.hpp"
 #include <memory>
+// Owns one circle/bubble invocation with bit-identical inputs and fixed
+// service identity. Each queued SDK request/math operand survives false; reset
+// releases continuation state, not previously submitted GPU work.
 namespace ttyd {
 // One original circle/bubble invocation. Fixed service binding and
 // bit-identical input identity are required across waits. GPU/SDK

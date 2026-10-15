@@ -1,5 +1,8 @@
 #pragma once
 #include "battle_act_draw_continuation.hpp"
+// Queued wrapper first uses passed B for type 14 lookup, then DrawMainMenu
+// captures its OWN current-global B. Lookup output can remain unwritten because
+// source never consumes it; acknowledgement is separate from its scalar value.
 namespace ttyd {
 // Source BattleMenuDisp_ActSelect_Disp80116cb8/20: its passed battle argument
 // is unused. DrawMainMenu captures its own current-global battle on first entry.

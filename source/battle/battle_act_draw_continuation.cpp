@@ -27,6 +27,9 @@ bool same(const BattleActDrawServices &a, const BattleActDrawServices &b) {
          a.concat == b.concat && a.icons == b.icons &&
          a.partyButton == b.partyButton && a.pinchMark == b.pinchMark;
 }
+// Phases split original SDK boundaries, not simulation states. Acknowledged
+// providers/stores never replay; operands are captured before entering a held
+// phase while source reads after that boundary remain fresh.
 enum class Phase {
   Camera,
   Mode,
@@ -110,6 +113,9 @@ bool resumePackedBattleActMenuDraw(const BattleActDrawServices &s,
         return false;
       c.phase = Phase::Mode;
       break;
+    // Same source UI/row state domains as immediate DrawMainMenu. This phase
+    // performs mode stores once; a later camera/math/footer hold resumes after
+    // them rather than advancing ring animation a second time.
     case Phase::Mode: {
       const auto mode = integer(word(c.w + 0xc));
       if (mode == 0 || mode == 2) {
@@ -262,6 +268,9 @@ bool resumePackedBattleActMenuDraw(const BattleActDrawServices &s,
       c.phase = Phase::Offset;
       break;
     }
+    // Center and offset are separately acknowledged. Preserve offset Y as
+    // stack depth before branch-specific transforms; don't recapture center on
+    // retry or fill optional slots for states that never wrote them.
     case Phase::Offset: {
       if (!s.offset)
         return false;
@@ -393,6 +402,9 @@ bool resumePackedBattleActMenuDraw(const BattleActDrawServices &s,
         advanceRow();
       }
       break;
+    // X/Y/parameter calls retain their exact operands independently. Fresh
+    // rate/timer/constants for the NEXT call are captured only after the prior
+    // provider succeeds, so a hold is not a whole-row snapshot/re-evaluation.
     case Phase::InterpolateX: {
       if (!s.interpolate)
         return false;
@@ -437,6 +449,9 @@ bool resumePackedBattleActMenuDraw(const BattleActDrawServices &s,
         put(c.a + 0x34, 3);
       advanceRow();
       break;
+    // Capture row pointer only when actual icons provider exists. The slots
+    // vector stays owned and stable through icons, party-button and pinch calls;
+    // each child must retain its own unfinished GPU/service suffix.
     case Phase::CaptureIcons:
       if (!s.icons)
         return false;

@@ -34,10 +34,14 @@ struct Context {
   }
 };
 } // namespace
+// Cursor words+0/+4 are index/scroll; leave count+8 untouched.
 void initializePackedBattleActCursor(uint32_t c, const EventMemoryServices &m) {
   m.storeWord(m.user, c, 0);
   m.storeWord(m.user, c + 4, 0);
 }
+// Build classes, lookup type 14 cursor, initialize real UI, then publish flags
+// 0x01000001 and idle timer 0. flag 0 with marker+0x558 clear resets only the
+// nine listed index/scroll pairs; their count words and skipped slots survive.
 bool setupPackedBattleActMenu(uint32_t b, uint32_t flag,
                               const BattleActMenuServices &s) {
   using F = BattleActService;
@@ -56,6 +60,8 @@ bool setupPackedBattleActMenu(uint32_t b, uint32_t flag,
       initializePackedBattleActCursor(m + offset, s.memory.memory);
   return true;
 }
+// Actual UI end precedes clearing menu active mask 1. Missing child can
+// follow earlier effects; these immediate setup/main/end APIs have no cursor.
 bool endPackedBattleActMenu(uint32_t b, const BattleActMenuServices &s) {
   Context c{s};
   if (!c.call(BattleActService::End, {b}))
@@ -63,6 +69,9 @@ bool endPackedBattleActMenu(uint32_t b, const BattleActMenuServices &s) {
   c.word(b + 0x1720, c.word(b + 0x1720) & ~1u);
   return true;
 }
+// Battle masks0x00800000/0x40000000 forbid switching. BOTH Mario/party
+// need state 0, positive signed moves+0x23 equal signed+0x22, statuses1/2/9/27
+// clear; Mario attributes0x10 and party byte+0x12b separately deny it.
 std::optional<int32_t>
 checkPackedBattleChangePosition(uint32_t b, const BattleActMenuServices &s) {
   using F = BattleActService;
@@ -101,6 +110,9 @@ checkPackedBattleChangePosition(uint32_t b, const BattleActMenuServices &s) {
   }
   return 0;
 }
+// First position trigger0x800 precedes key admission and forced-row updates.
+// Every normal result submits display. Successful item selection may return0
+// AFTER changing menu/endUI; do not turn this API into a generic Boolean.
 std::optional<int32_t> mainPackedBattleActMenu(uint32_t b,
                                                const BattleActMenuServices &s) {
   using F = BattleActService;
@@ -159,6 +171,9 @@ std::optional<int32_t> mainPackedBattleActMenu(uint32_t b,
       }
     }
   }
+  // Held-key query uses raw mask 0xffffffff. No key increments timer+0x560;
+  // signed timer>=900 requests mode 6/speed5 EVERY visit. This source call count
+  // is not measured real time. Any held key resets timer and requests mode 0.
   const auto now = c.call(F::Now, {0xffffffff});
   if (!now)
     return std::nullopt;
@@ -236,6 +251,9 @@ std::optional<int32_t> mainPackedBattleActMenu(uint32_t b,
       return finish(1);
     }
   }
+  // Repeat0x80000 forward wins over 0x40000 reverse. In-range index store
+  // precedes sound, but wrap sound precedes FRESH cursor lookup/store; callbacks
+  // can replace the cursor. Audience then precedes the second position trigger.
   auto repeat = c.call(F::Repeat, {0x80000});
   if (!repeat)
     return std::nullopt;

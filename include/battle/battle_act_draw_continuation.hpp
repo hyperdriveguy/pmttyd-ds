@@ -1,6 +1,9 @@
 #pragma once
 #include "battle_act_draw.hpp"
 #include <memory>
+// Retains one DrawMainMenu invocation, including copied/optional stack slots.
+// Keep the service table and owners identical across holds; advance simulation
+// only after this invocation and its retained child providers complete.
 namespace ttyd {
 // One original DrawMainMenu invocation, including its copied stack slots. The
 // caller owns simulation cadence: resume this invocation before starting the

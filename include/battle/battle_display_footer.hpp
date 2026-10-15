@@ -1,6 +1,9 @@
 #pragma once
 #include "battle_actor.hpp"
 #include "display_queue.hpp"
+// Logical display queue registration is separate from GPU execution. Retained
+// pending records pin borrowed argument/priority across queue unavailability;
+// providers/queue/storage must outlive the invocation and its borrowed records.
 namespace ttyd {
 struct BattleCommandPalette {
     int8_t state=0;std::array<uint8_t,4> rgba{{255,192,192,207}};

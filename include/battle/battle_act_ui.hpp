@@ -1,6 +1,9 @@
 #pragma once
 #include "battle_actor.hpp"
 #include <optional>
+// UI allocation is 0x124 bytes at B+0x1c78. Its cursor/row pointers are
+// borrowed. Release/allocation effects persist on false; caller must admit
+// providers before replaying construction or ending an already freed UI.
 namespace ttyd {
 struct BattleActUiServices {
   BattleActorServices memory;

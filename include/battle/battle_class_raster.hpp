@@ -1,5 +1,8 @@
 #pragma once
 #include "battle_act_draw.hpp"
+// Requests name original GX/font/icon call identities. Engaged0 can be a
+// valid acknowledged scalar; nullopt alone is missing. Use retained counterparts
+// when readiness can interrupt after submitted primitives or earlier SDK calls.
 namespace ttyd {
 enum class BattleClassRasterService : uint32_t {
   Camera = 0x8000f2fc,

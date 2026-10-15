@@ -1,6 +1,9 @@
 #pragma once
 #include "battle_act_draw.hpp"
 #include <memory>
+// Cursor borrows the slots VECTOR OBJECT by identity, not just its bytes.
+// Same work/rows/providers must persist. Initial depths are captured, but later
+// slot values/counts/flags remain source-visible at their original read points.
 namespace ttyd {
 // One whole original DrawMainIcon invocation. The source stack-slot container
 // is borrowed by object identity and must outlive the cursor. Depths/order and

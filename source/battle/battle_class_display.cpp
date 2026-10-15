@@ -14,12 +14,17 @@ bool same(const BattleActDrawServices& a,const BattleActDrawServices& b) {
         a.partyButton==b.partyButton && a.pinchMark==b.pinchMark;
 }
 }
+// Both queued camera argument and this immediate wrapper's B are ignored
+// by original draw body. Do not substitute passed B for global draw ownership.
 bool resumePackedBattleClassDisplay(uint32_t battle,
                                     const BattleActDrawServices& s,
                                     BattleActDrawCursor& c) {
     (void)battle;
     return resumePackedBattleActMenuDraw(s,c);
 }
+// Reject changed owner/services/passed B while pending without resetting
+// progress. Lookup completes once; later child holds cannot replay it. This
+// executes an already queued callback and does not insert another queue record.
 bool resumePackedBattleClassQueuedDisplay(uint32_t camera,uint32_t battle,
                                           const BattleClassDisplayServices& s,
                                           BattleClassDisplayCursor& c) {

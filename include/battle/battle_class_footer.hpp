@@ -1,5 +1,8 @@
 #pragma once
 #include "battle_class_raster.hpp"
+// These immediate footer leaves can mutate spin angle or submit SDK work
+// before false. Retain/admit them at the parent boundary; they do not themselves
+// save a provider suffix. Source float bank is 0x80427440 plus signed offsets.
 namespace ttyd {
 struct BattleClassFooterServices {
   BattleClassRasterServices raster;

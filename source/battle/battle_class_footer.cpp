@@ -42,10 +42,15 @@ struct Footer {
   bool button(int32_t type, float x, float y, float angle) const {
     return s.button && s.button(s.user, type, x, y, angle);
   }
+  // Positive angle subtracts bank[-20368] with NO post-subtract clamp;
+  // nonpositive angle becomes bank[-20500]. Work+0x120 is the footer spin.
   void decrement(uint32_t w) const {
     const float value = real(w + 0x120), zero = c(-20500);
     floating(w + 0x120, value > zero ? value - c(-20368) : zero);
   }
+  // Signed HP: draw only alive, below max and <=5. HP1 selects localized
+  // danger table 0x80416d30 and alternates RGBA every25 of50 GP clock units;
+  // other admitted HP uses table 0x80416d24. This is not measured render time.
   bool pinch(bool party) const {
     const auto b = currentBattleAddress(s.raster.memory);
     const auto camera = call(F::Camera, {8});
@@ -120,6 +125,10 @@ struct Footer {
   }
 };
 } // namespace
+// Item-1 resets spin. No-party path projects Mario only and omits the
+// partner-path arrival sound. With party, project both before item lookup;
+// item arrival sounds only at exact reset angle, then decrements and draws 5.
+// Without item, actual change-position admission can draw button 4 instead.
 bool packedBattleClassPartyButton(const BattleClassFooterServices &s) {
   Footer f{s};
   const auto b = currentBattleAddress(s.raster.memory), w = f.word(b + 0x1c78);
@@ -179,6 +188,9 @@ bool packedBattleClassMarioPinch(const BattleClassFooterServices &s) {
 bool packedBattleClassPartyPinch(const BattleClassFooterServices &s) {
   return Footer{s}.pinch(true);
 }
+// Init2D follows Mario lookup. Original world-X threshold chooses partner/
+// Mario ordering; each child recaptures its own B/camera/unit, so do not cache
+// those owners or reorder pinch calls by native screen coordinates.
 bool packedBattleClassPinchMarks(const BattleClassFooterServices &s) {
   Footer f{s};
   const auto mario =
@@ -189,6 +201,9 @@ bool packedBattleClassPinchMarks(const BattleClassFooterServices &s) {
     return packedBattleClassPartyPinch(s) && packedBattleClassMarioPinch(s);
   return packedBattleClassMarioPinch(s) && packedBattleClassPartyPinch(s);
 }
+// Rotation axis 121 is ASCII 'y'. Multiply angle by source conversion, then
+// add translation at matrix indices3/7/11. TexturePlane2 type/color/flags 0
+// requires its actual palette/size/GX provider, not a synthetic quad shortcut.
 bool packedBattleClassButton(int32_t type, float x, float y, float angle,
                              const BattleClassFooterServices &s) {
   Footer f{s};

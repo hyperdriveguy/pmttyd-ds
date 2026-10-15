@@ -15,6 +15,8 @@ int32_t integer(uint32_t n) {
   return v;
 }
 } // namespace
+// Acting unit position+0x3c projects first. Add bank[-20220/-20216] to X/Y,
+// overwrite Z with bank[-20500], then lower-clamp X at bank[-20212].
 bool packedBattleActRingCenter(std::array<float, 3> &result,
                                const BattleActRingPositionServices &s) {
   const auto &m = s.memory.memory;
@@ -35,6 +37,9 @@ bool packedBattleActRingCenter(std::array<float, 3> &result,
     result[0] = minimum;
   return true;
 }
+// Angle=bank[-20224]-theta; cosine and sine receive promoted DOUBLE angle.
+// X radius[-20240] writes BEFORE sine admission; Y radius[-20284] follows.
+// A missing sine can therefore leave only the X output updated.
 bool packedBattleActRingOffset(float theta, std::array<float, 2> &result,
                                const BattleActRingPositionServices &s) {
   const float angle = constant(-20224, s) - theta;
