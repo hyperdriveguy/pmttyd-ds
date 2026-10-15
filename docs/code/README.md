@@ -203,3 +203,8 @@ separate Input-state/event domains. The newer Trio integration audit stays parti
 [Trio sequence bindings](trio-sequence-bindings.md) explains retained Turn/Phase/
 Move/Act composition, typed returns, packed offsets, event domains and numeric
 admission. Newer runtime integrations still need separate review.
+
+[Trio cadence](trio-cadence.md) documents retained pinch/action/sequence dispatch,
+input snapshots and distinct native clock gates. [Trio menu frame bindings](trio-menu-frame-bindings.md)
+documents actual allocation/resource/camera proofs, facade lifetime and exact
+queue callback admission. Remaining runtime changes still require review.

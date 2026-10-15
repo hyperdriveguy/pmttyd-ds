@@ -1220,6 +1220,11 @@ struct TrioAttackRuntime {
         // source ff bytes, not native actor indices. Pose factories require
         // actual source definitions/resources; no placeholder pose is fabricated.
         for(unsigned id=1;id<7;++id){const auto unit=Units+id*0x1000;half(unit+0xcc,half(word(unit+0x10)+0x16));half(unit+0xce,half(word(unit+0x10)+0x18));initializePackedBattleHpGauge(unit,nativeBattleActorServices(vm));byte(unit+0x311,255);byte(unit+0x312,255);for(auto part=word(unit+0x14);part;part=word(part)){half(part+0x1a2,half(word(part+4)+0x30));half(part+0x1a4,half(word(part+4)+0x32));real(part+0x78,1);for(unsigned axis=0;axis<3;++axis){real(part+0x6c+4*axis,1);real(part+0x60+4*axis,1);real(part+0x3c+4*axis,0);real(part+0x48+4*axis,0);real(part+0x54+4*axis,0);}real(part+0x208,1);real(part+0x20c,1);word(part+0x4f0,0xffffffff);word(part+0x1c0,0xffffffff);byte(part+0x1c4,0);byte(part+0x214,0);byte(part+0x215,0);}}
+        // Registry IDs1/2 are Mario/partner,3..5 original enemies,6 Professor.
+        // Type28 selects the source initial pose name. Mode1 is the battle pose
+        // pool domain; native generation plus handle owns each entered instance.
+        // Missing table/model publishes handle-1; missing actual pose/resource
+        // fails initialization. Original names must fit the admitted part buffer.
         // Actual model/type28 names select the original mode1 resource.
         for(const unsigned id:{1u,2u,3u,4u,5u,6u})for(auto part=word(Units+id*0x1000+0x14);part;part=word(part)){
             const auto table=word(part+0x1bc),modelName=word(word(part+4)+8);
@@ -1254,6 +1259,9 @@ struct TrioAttackRuntime {
             bindBattleMovePositionCallback(registry,movement) && bindBattleGetMoveFrameCallback(registry,vm) && bindBattleGetHitPosCallback(registry,vm) && bindBattleMarioJumpParameterCallback(registry,vm) && bindBattleStartWaitCallback(registry,vm) && bindBattleCheckStatusCallback(registry,vm) && bindBattleCheckDataCallback(registry,vm) && bindBattleSetFallAccelCallback(registry,vm) && bindBattleFramesToMillisecondsCallback(registry,vm);
         jumpBackend.runtime=&vm;jumpBackend.user=this;jumpBackend.play=[](void*,uint32_t,const std::array<float,3>&)->uint32_t{return 0;};
         jump=nativeBattleMarioJumpServices(jumpBackend);ok=ok && bindBattleMarioJumpPositionCallback(registry,jump);
+        // Original audience script callbacks share this VM. Sound/pitch use
+        // the real public slot owner; recording a request is not playback or
+        // HitN64 effect completion. Keep registry/context alive with the VM.
         audienceAttackEvents.user=this;
         // effHitEntry is a genuine missing HitN64 provider, not a vector notice.
         // Mode1 bypasses it in the original script callback; mode0 holds there.
@@ -2979,6 +2987,10 @@ struct TrioAttackRuntime {
         displayActive=false;return true;
     }
     BattlePinchCursor sourcePinch;
+    // Admit only this native Battle allocation. Mode is the retained source
+    // operand,not a visual danger level. Finite [-2^31,2^31) is the native
+    // truncation domain; invalid/missing math holds without a fabricated0.
+    // No sound callback is bound: a warning can hold after countdown writes.
     bool resumeSourcePinch(uint32_t battle,int32_t mode) {
         if(battle!=Battle){pending=0x8011efd8;return false;}
         if(!sourcePinch.active())endingRequest(0x8011efd8,{int32_t(battle),mode});
@@ -3002,6 +3014,9 @@ struct TrioAttackRuntime {
     // Whole original manager owns the private-pad update and captures Main once.
     // Its parent pins completionSample across suspension. The legacy action loop
     // above remains separate until the original active sequence is fully bound.
+    // Private channel0 pad lives at B1d1c,distinct from general Bf2c. Only
+    // TimingA Main8012aae0 is admitted here; legacy Hammer is a separate path.
+    // Display registration acknowledges a queue entry,never callback execution.
     bool resumeSourceAction(uint32_t battle) {
         if(battle!=Battle){pending=0x800fa5b0;return false;}
         BattleActionManagerServices s;s.memory=nativeBattleActorServices(vm);s.user=this;
@@ -3014,6 +3029,9 @@ struct TrioAttackRuntime {
         s.main=[](void* p,uint32_t callback,uint32_t b)->std::optional<int32_t>{
             auto& r=*static_cast<TrioAttackRuntime*>(p);
             if(b!=Battle || callback!=0x8012aae0)return {};
+            // Copy only TimingA Main's state1c9c/countdown1f54/flags1f50/
+            // classification1ce8 and11 scratch words1f20. The parent owns its
+            // callback slots; Main result0 alone must not erase Display.
             TimingACommand command;
             command.state=int32_t(r.word(b+0x1c9c));command.finishCountdown=int32_t(r.word(b+0x1f54));
             command.flags=r.word(b+0x1f50);command.classification=int32_t(r.word(b+0x1ce8));
@@ -3037,6 +3055,9 @@ struct TrioAttackRuntime {
         if(resumePackedBattleActionCommandManager(battle,s,sourceAction))return true;
         pending=sourceAction.pending()?sourceAction.pending():0x800fa5b0;return false;
     }
+    // Main and Sequence retain different source PCs. completionSample belongs
+    // to the entire Main invocation; newer physical samples cannot replace it
+    // while a later sequence/action/display child is suspended.
     BattleSequenceDispatchCursor sourceSequence;
     BattleMainCursor completionMain;
     BattlePadSample completionSample;
@@ -3047,6 +3068,8 @@ struct TrioAttackRuntime {
     // aliased owner. General/private pads, sequence, stage, audience and display
     // are distinct children; child bool means whole-call admission, not frame time.
     void completionPass(const BattlePadSample& sample) {
+        // Capture input only at a fresh Main. completionFunction deduplicates
+        // adjacent diagnostic notices,not source calls or provider effects.
         if(!completionMain.active()){
             completionSample=sample;completionFunction=0;completionDisplayReady=false;
         }
@@ -3072,6 +3095,9 @@ struct TrioAttackRuntime {
                 }
                 return true;
             }
+            // BattleSequenceManager is real retained dispatch,not handoff().
+            // Only pinch8011efd8 and Turn8011c510 are wired. Init/FirstAct/End
+            // keep their actual pending identities; legacy ending is no substitute.
             if(fn==0x8011f1ec) {
                 BattleSequenceDispatchServices manager;manager.actors=nativeBattleActorServices(r.vm);manager.user=&r;
                 manager.request=[](void* self,const BattleSequenceDispatchRequest& q){
@@ -3098,6 +3124,9 @@ struct TrioAttackRuntime {
                 return true; // Actual live inactive bank; never cleared to pass this gate.
             }
             if(fn==0x80139150)return r.updateStageWork();
+            // ActionHelp may complete its real no-display branch. An actual
+            // requested dispEntry80010bc4 stays unavailable here,not a fake
+            // successful help callback or a native diagnostic text box.
             if(fn==0x802168a4) {
                 BattleActionHelpServices help;help.actors=nativeBattleActorServices(r.vm);help.user=&r;
                 help.display=[](void* p,int32_t,int32_t,uint32_t,uint32_t,float){auto& runtime=*static_cast<TrioAttackRuntime*>(p);runtime.endingRequest(0x80010bc4);runtime.pending=0x80010bc4;return false;};
@@ -3114,6 +3143,9 @@ struct TrioAttackRuntime {
             }
             r.pending=fn;return false; // Real stage/map/render/audio providers remain required.
         };
+        // Clear the previous diagnostic before resume. Whole BattleMain
+        // completes before camMain8000f704; camDraw and marioStMain are later
+        // outer owners,not evidence of battle teardown or field restoration.
         pending=0;
         if(resumePackedBattleMainWrapper(services,completionMain)){pending=0x8000f704;endingRequest(pending);} // Actual next outer provider; no teardown shortcut.
         else if(!pending)pending=completionMain.pending();
@@ -3291,6 +3323,9 @@ struct TrioAttackRuntime {
         if(displayActive && displayIndex==64 && (pending==0x801a4224 || pending==0x80010bc4)){
             pending=0;if(displayPrefix())finishDisplayContinuation();
         }
+        // BattleMain800f8e28 starts only on a new native millisecond. Shadow
+        // Main8002db8c must complete first. timestamp is ms*eventClockRate at
+        // nominal243MHz,an explicit clock adapter rather than measured hardware.
         if(pending==0x800f8e28 && sampledAt!=time) {
             sampledAt=time;BattlePadSample sample;
             if(physical)sample=*physical;else {sample.snapshot.buttons=uint16_t(triggers);sample.pressed=triggers;}
@@ -3299,6 +3334,11 @@ struct TrioAttackRuntime {
             if(!shadows || !shadows->main(displayQueue,shadowMainCursor)){pending=0x8002db8c;return;}
             completionPass(sample);
         }
+        // This dense legacy branch has TWO cadences: sample/pads/action/stage
+        // use sampledAt,but camera+VM manager can run on every pending-clear
+        // visit. Gauge has its own once-per-time guard. Pending bypasses all
+        // of that work while icon/PointGet/fade and map/scene projection below
+        // still visit their independent native clocks. No elapsed-time catch-up.
         if(!pending){if(sampledAt!=time){sampledAt=time;checkBrokenUnits();BattlePadSample sample;if(physical)sample=*physical;else {sample.snapshot.buttons=uint16_t(triggers);sample.pressed=triggers;}readPad(Battle+0xf2c,generalPad);generalPad.update(sample);writePad(Battle+0xf2c,generalPad);history=generalPad.triggers;vm.gp.timestamp=time*eventClockRate(243000000);if(word(Battle+4)==3)ending();else if(!done){if(word(Battle+0xf20)<0x06000007)enemyAction();else postAction();}else handoff();readPad(Battle+0x1d1c,privatePad);privatePad.update(sample);writePad(Battle+0x1d1c,privatePad);actionManager();if(!updateStageObjects() && !pending)pending=0x80149798;}updateCamera(time);vm.runManager();if(!pending && gaugeClockAt!=time){gaugeClockAt=time;BattleHpGaugeServices gauge;gauge.actors=nativeBattleActorServices(vm);gauge.interpolate=[](void*,int32_t mode,int32_t step,int32_t duration,float start,float end)->std::optional<float>{return battleHpGaugeCurve(mode,step,duration,start,end);};for(int32_t id=0;id<64;++id){const auto u=battleRegistryUnit(word(0x8041eb90),id,gauge.actors);if(u)packedBattleHpGaugeMain(u,gauge);}}if(hasBrokenUnit())done=false;}iconClock(time);if(pointGetClockAt!=time){pointGetClockAt=time;pointGet.tick();}if(endingFadeClockAt!=time){endingFadeClockAt=time;endingFade.tick(60);}stageBackground.recalculate();stageForeground.recalculate();publish(s);
     }
     // Read actual registry IDs 1..6 through visual map; null entries hide scene
@@ -3312,6 +3352,9 @@ struct TrioAttackRuntime {
 // pouch/camera/field/pose owner arguments belong ONLY to fresh construction.
 // Fresh defaults(seed1, 608x480 camera, mode 2) are explicit native context, not
 // recovered process history. Publish runtime_/HP token only after initialize.
+// Fresh-only original class messages map at native guest reservation85a00000;
+// map/bind failure precedes runtime publication. Reuse returns earlier and cannot
+// adopt a new bank. HP allocation token is published only after initialization.
 bool TrioAttack::begin(const TrioBattleCommands& menu,ProfessorStory& scene,int16_t hp,std::shared_ptr<ProloguePouch> entryPouch,uint32_t* fieldNpcBattleFlags,FieldMarioBattleState* fieldMario,FieldPartyRegistry* fieldParties,const FieldPartyAppearanceServices* appearance,std::shared_ptr<BattleSpotlightState> spotlight,std::shared_ptr<BattleRandom> random,std::shared_ptr<PositionalSfxRegistry> sounds,std::shared_ptr<ShadowWork> shadows,std::shared_ptr<BattleCommandPalette> palette,std::shared_ptr<CameraManager> cameras,std::shared_ptr<FieldBeroExec> bero,std::shared_ptr<const MessageAssets> classMessages){if(!assetsReady || !menu.attack || !((menu.actor==1 && (menu.attack->weapon==0x803538a8 || menu.attack->weapon==0x80353de8)) || (menu.actor==2 && menu.attack->weapon==0x80393ea8)))return false;if(runtime_)return runtime_->done && runtime_->readyActor==menu.actor && runtime_->launch(menu);auto r=std::make_shared<TrioAttackRuntime>(random?std::move(random):std::make_shared<BattleRandom>(1),fieldParties?fieldParties->originalPool:nullptr);if(classMessages){auto labels=BattleClassMenuMessages::map(r->vm.memory,0x85a00000,std::move(classMessages));if(!labels || !r->bindOriginalClassMessages(labels->binding(r->vm.memory)))return false;}r->bero=std::move(bero);r->cameras=std::move(cameras);if(!r->cameras){r->cameras=std::make_shared<CameraManager>();r->cameras->initializeBoot(608,480);}r->cameras->camera(4)->mode=2;r->palette=palette?std::move(palette):std::make_shared<BattleCommandPalette>();r->shadows=shadows?std::move(shadows):std::make_shared<ShadowWork>();r->publicSfx=sounds?std::move(sounds):std::make_shared<PositionalSfxRegistry>();r->spotlight=spotlight?std::move(spotlight):std::make_shared<BattleSpotlightState>();r->fieldNpcBattleFlags=fieldNpcBattleFlags;r->fieldMario=fieldMario;r->fieldParties=fieldParties;if(appearance)r->fieldAppearance=*appearance;if(!r->initialize(menu,scene,hp,std::move(entryPouch)))return false;r->hpAllocation=std::make_shared<const uint8_t>(0);runtime_=std::move(r);return true;}
 bool TrioAttack::hasBattleRuntime()const{return bool(runtime_);}
 void TrioAttack::tick(uint64_t time,ProfessorStory& scene,uint32_t triggers,const BattlePadSample* physical){if(runtime_)runtime_->tick(time,scene,triggers,physical);}
@@ -3464,15 +3507,11 @@ std::optional<uint32_t> TrioAttack::enemyHpCamera(std::optional<uint32_t> index)
 bool TrioAttack::enemyHpMatrix(BattleAudienceMatrixRequest& q) const {
     return runtime_ && runtime_->hpCamera.matrix(q);
 }
-// Only the currently INVOKING source callback 0x8011fde0 on camera 8/Battle may
-// dispatch this owner. Pin runtime before external hooks, reject reentry, and
-// bind exact stable renderer/GX services once. Native camera view 0x60000000 must
-// be proven unmapped against all real guest/file views; it is not source RAM.
-// Each pass retains acknowledged begin/frame/publish work. Recheck camera after
-// hooks; finish only current admitted epoch. Failed publish may retry, so the
-// external provider owns partial effects even when the source frame is complete.
 // Actual class allocation/camera/source resources. The retained native owner
 // never calls a development presented setter or invents a display queue entry.
+// Requires live global B and class UI W=B1c78 plus its exact native token.
+// Closures pin runtime/token but borrow this facade; keep its address/lifetime
+// fixed through all frame uses. A retained runtime alone cannot prove freshness.
 std::optional<TrioClassMenuFrameBinding> TrioAttack::classMenuFrameBinding(const BattleActDrawServices& linked) const {
     const auto r=runtime_;if(!r || !r->cameras || !r->originalClassMessages)return {};
     uint32_t actualBattle=0,w=0;
@@ -3488,6 +3527,8 @@ std::optional<TrioClassMenuFrameBinding> TrioAttack::classMenuFrameBinding(const
     TrioClassMenuFrameBinding out;out.native.allocationOwner=token;
     out.native.allocation=w;out.native.generation=generation;out.native.cameras=r->cameras;
     out.native.actors=nativeBattleActorServices(r->vm);
+    // Native synthetic camera-view reservation,not original RAM. unmappedRange
+    // checks actual VM/file mappings; a preferred address alone admits nothing.
     out.native.addresses={0x60010000,[r](uint32_t base,uint32_t bytes){return r->vm.memory.unmappedRange(base,bytes);}};
     out.native.allocationCurrent=[this,r,token,w](){
         uint32_t b=0,current=0;const auto i=r->actMenuUiAllocations.find(w);
@@ -3506,6 +3547,9 @@ std::optional<TrioClassMenuFrameBinding> TrioAttack::classMenuFrameBinding(const
         if(findPackedCommandCursor(menu,type,cursor,nativeBattlePackedSelectionServices(owner.vm)))result=cursor;
         return true; // Original no-match is completed; output is not consumed.
     };
+    // Whitelist only seven original mapped class-message pointers. Cache NUL
+    // bytes in map nodes for stable c_str borrows; immutable per-VM message policy
+    // is required. Unknown address,unreadable byte or wrapping scan returns null.
     out.label=[r](uint32_t address)->const char*{
         if(const auto cached=r->originalClassLabelBytes.find(address);cached!=r->originalClassLabelBytes.end())return cached->second.c_str();
         bool known=false;
@@ -3527,6 +3571,9 @@ std::optional<TrioClassMenuFrameBinding> TrioAttack::classMenuFrameBinding(const
     };
     return out;
 }
+// Weapon binding additionally pins source common-TPL indirection:
+// B+a0 descriptor -> descriptor+a0 cell -> common-TPL payload. Each link must
+// remain exact across holds; ready CPU/file bytes do not prove GPU residency.
 std::optional<TrioWeaponMenuFrameBinding> TrioAttack::weaponMenuFrameBinding(const BattleWeaponDrawServices& linked) const {
     const auto r=runtime_;
     if(!r || !r->cameras || !r->menuFiles || !r->menuFiles->ready() || !r->menuResourceInitialized)return {};
@@ -3551,6 +3598,8 @@ std::optional<TrioWeaponMenuFrameBinding> TrioAttack::weaponMenuFrameBinding(con
             r->vm.memory.readWord(0x8041eb90,b) && b==Battle &&
             r->vm.memory.readWord(Battle+0x1c78,current) && current==w;
     };
+    // Shared owner pins storage; this predicate proves current runtime/file
+    // initialization AND all three original pointer links,not just numeric B.
     out.native.sourceResourceCurrent=[this,r,files,descriptor,cell,palette](){
         uint32_t d=0,c=0,p=0;
         return runtime_==r && r->menuResourceInitialized && r->menuFiles==files && files->ready() &&
@@ -3569,6 +3618,9 @@ std::optional<TrioWeaponMenuFrameBinding> TrioAttack::weaponMenuFrameBinding(con
     };
     return out;
 }
+// Resume only the exact current invoking queue callback:weapon80121ce8 or
+// class8012210c,camera8,userdata Battle. Registration or matching B alone cannot
+// create a callback/pass. Frame owner retains linked source/raster partial work.
 bool TrioAttack::resumeWeaponMenuFrame(uint32_t camera,uint32_t userdata,BattleWeaponNativeFrame& frame) const {
     const auto r=runtime_;if(!r || camera!=8 || userdata!=Battle || !r->cameraMainPublication)return false;
     const auto& call=r->cameraDrawCursor.display;
@@ -3581,6 +3633,13 @@ bool TrioAttack::resumeClassMenuFrame(uint32_t camera,uint32_t userdata,BattleCl
     if(!call.active || !call.invoking || call.callback!=0x8012210c || call.camera!=camera || call.userdata!=userdata)return false;
     return frame.resume(r->cameraMainPublication,r->cameraMainCursor,r->cameraDrawCursor,r->displayQueue,camera,userdata,submission);
 }
+// Only the currently INVOKING source callback 0x8011fde0 on camera 8/Battle may
+// dispatch this owner. Pin runtime before external hooks, reject reentry, and
+// bind exact stable renderer/GX services once. Native camera view 0x60000000 must
+// be proven unmapped against all real guest/file views; it is not source RAM.
+// Each pass retains acknowledged begin/frame/publish work. Recheck camera after
+// hooks; finish only current admitted epoch. Failed publish may retry, so the
+// external provider owns partial effects even when the source frame is complete.
 bool TrioAttack::resumeEnemyHpDraw(uint32_t camera,uint32_t userdata,const TrioEnemyHpNativeServices& source) const {
     const auto allocation=enemyHpAllocation();
     const auto owner=runtime_; // External hooks may replace the public owner.

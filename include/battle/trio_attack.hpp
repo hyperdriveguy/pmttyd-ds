@@ -113,6 +113,9 @@ public:
     // fresh-only shared/borrowed resource arguments do not rebind that runtime.
     bool begin(const TrioBattleCommands&,ProfessorStory&,int16_t marioHp,std::shared_ptr<ProloguePouch> entryPouch={},uint32_t* fieldNpcBattleFlags=nullptr,FieldMarioBattleState* fieldMario=nullptr,FieldPartyRegistry* fieldParties=nullptr,const FieldPartyAppearanceServices* appearance=nullptr,std::shared_ptr<BattleSpotlightState> spotlight={},std::shared_ptr<BattleRandom> random={},std::shared_ptr<PositionalSfxRegistry> sounds={},std::shared_ptr<ShadowWork> shadows={},std::shared_ptr<BattleCommandPalette> palette={},std::shared_ptr<CameraManager> cameras={},std::shared_ptr<FieldBeroExec> bero={},std::shared_ptr<const MessageAssets> classMessages={});
     bool hasBattleRuntime() const; // Actual existing VM owner, independent of action/finishing state.
+    // Native millisecond/sample guards differ from VM visits and presentation
+    // clocks. A retained Main keeps its original physical sample across holds;
+    // repeated redraws do not imply another action-command simulation tick.
     void tick(uint64_t milliseconds,ProfessorStory&,uint32_t triggers=0,const BattlePadSample* physical=nullptr);
     bool statusWindowVisible() const;
     // active/finished describe native action readiness (!done/done), NOT whole
@@ -143,6 +146,10 @@ public:
     bool resumeEnemyHpDraw(uint32_t camera,uint32_t userdata,const TrioEnemyHpNativeServices&) const;
     // Stable actual VM binding; linked math/footer/GPU providers must own their
     // retained child invocations. This does not activate source command Main.
+    // Factories pin VM/allocation resources but their current predicates also
+    // borrow this facade. Keep its address/lifetime fixed until bindings retire.
+    // UI identity,whole camera Main publication and exact invoking queue record
+    // are separate required proofs; no getter creates a pass or imports a GPU asset.
     std::optional<TrioClassMenuFrameBinding> classMenuFrameBinding(const BattleActDrawServices& linked) const;
     bool resumeClassMenuFrame(uint32_t camera,uint32_t userdata,BattleClassNativeFrame&,BattleClassNativeSubmission={}) const;
     std::optional<TrioWeaponMenuFrameBinding> weaponMenuFrameBinding(const BattleWeaponDrawServices& linked) const;
