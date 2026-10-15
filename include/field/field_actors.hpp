@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <cstdio>
 #include <optional>
+#include <memory>
 #include <string>
 #include <vector>
 #include "trouble_quest_state.hpp"
@@ -75,6 +76,9 @@ private:
 };
 bool loadFieldActorCatalog(const char* root);
 const FieldActorAssets& fieldActorCatalog();
+// Copy exact original room/global resources from the actual configured field
+// asset root; caller retains immutable snapshot through its battle VM lifetime.
+std::shared_ptr<const MessageAssets> snapshotFieldMessageAssets(const char* roomAsset);
 uint64_t fieldActorCatalogGeneration();
 class NpcAngleTable;
 const NpcAngleTable& fieldNpcAngles();

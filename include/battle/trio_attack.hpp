@@ -35,6 +35,7 @@
 #include "battle_audience_aux_callback.hpp"
 #include "battle_part_display.hpp"
 namespace ttyd {
+class MessageAssets;
 // Native providers retain this owner through every held source callback. Every
 // external callback must become unavailable before its GPU/Game owner retires.
 // Allocation/pass are native lifetime/publication IDs, not guest addresses or
@@ -108,7 +109,8 @@ public:
     // Fresh creation admits only original Mario Jump/Hammer or Goombella
     // default weapon. Calling begin again reuses only the ready same-actor owner;
     // fresh-only shared/borrowed resource arguments do not rebind that runtime.
-    bool begin(const TrioBattleCommands&,ProfessorStory&,int16_t marioHp,std::shared_ptr<ProloguePouch> entryPouch={},uint32_t* fieldNpcBattleFlags=nullptr,FieldMarioBattleState* fieldMario=nullptr,FieldPartyRegistry* fieldParties=nullptr,const FieldPartyAppearanceServices* appearance=nullptr,std::shared_ptr<BattleSpotlightState> spotlight={},std::shared_ptr<BattleRandom> random={},std::shared_ptr<PositionalSfxRegistry> sounds={},std::shared_ptr<ShadowWork> shadows={},std::shared_ptr<BattleCommandPalette> palette={},std::shared_ptr<CameraManager> cameras={},std::shared_ptr<FieldBeroExec> bero={});
+    bool begin(const TrioBattleCommands&,ProfessorStory&,int16_t marioHp,std::shared_ptr<ProloguePouch> entryPouch={},uint32_t* fieldNpcBattleFlags=nullptr,FieldMarioBattleState* fieldMario=nullptr,FieldPartyRegistry* fieldParties=nullptr,const FieldPartyAppearanceServices* appearance=nullptr,std::shared_ptr<BattleSpotlightState> spotlight={},std::shared_ptr<BattleRandom> random={},std::shared_ptr<PositionalSfxRegistry> sounds={},std::shared_ptr<ShadowWork> shadows={},std::shared_ptr<BattleCommandPalette> palette={},std::shared_ptr<CameraManager> cameras={},std::shared_ptr<FieldBeroExec> bero={},std::shared_ptr<const MessageAssets> classMessages={});
+    bool hasBattleRuntime() const; // Actual existing VM owner, independent of action/finishing state.
     void tick(uint64_t milliseconds,ProfessorStory&,uint32_t triggers=0,const BattlePadSample* physical=nullptr);
     bool statusWindowVisible() const;
     // active/finished describe native action readiness (!done/done), NOT whole

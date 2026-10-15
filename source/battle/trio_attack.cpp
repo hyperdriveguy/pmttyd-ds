@@ -6,6 +6,15 @@
 #include "battle_phase_move_continuation.hpp"
 #include "battle_majinai_query.hpp"
 #include "battle_act_continuation.hpp"
+#include "battle_command_input_continuation.hpp"
+#include "battle_menu_audience_native.hpp"
+#include "battle_weapon_menu_continuation.hpp"
+#include "battle_weapon_ui_continuation.hpp"
+#include "battle_command_pose_native.hpp"
+#include "battle_present_item_native.hpp"
+#include "battle_act_menu_continuation.hpp"
+#include "battle_action_class_table_continuation.hpp"
+#include "battle_class_menu_messages.hpp"
 #include "battle_event_barrier_continuation.hpp"
 #include "battle_audience_turn_end_continuation.hpp"
 #include "battle_packed_status_recovery.hpp"
@@ -345,6 +354,19 @@ struct TrioAttackRuntime {
     BattleTurnRequest sourceMoveLinkedRequest;
     const BattleMoveRequest* sourceMoveOriginalRequest=nullptr;
     BattleActCursor actCursor;
+    BattleCommandInputContinuationCursor sourceCommandInputCursor;
+    BattleWeaponMenuContinuationCursor sourceWeaponMainCursor,sourceWeaponSetupCursor,sourceWeaponEndCursor;
+    BattleWeaponUiCursor sourceWeaponUiCursor;
+    const BattleWeaponUiRequest* sourceWeaponUiMapRequest=nullptr;
+    std::shared_ptr<const uint8_t> sourceWeaponUiFreeOwner;
+    uint32_t sourceWeaponUiFreePointer=0;bool sourceWeaponUiFreeCaptured=false;
+    BattlePresentItemNativeCursor sourcePresentItemCursor;
+    BattleActMenuContinuationCursor actMenuMainCursor,actMenuSetupCursor,actMenuEndCursor;
+    BattleActionClassTableCursor actClassTableCursor;
+    std::shared_ptr<const BattleActionClassMessageBinding> originalClassMessages,heldClassMessages;
+    BattleActUiContinuationCursor actMenuUiCursor;
+    BattleMenuAudienceNativeCursor actMenuAudienceCursor;
+    std::map<uint32_t,std::shared_ptr<const uint8_t>> actMenuUiAllocations;
     BattleEventBarrierCursor actWaitCursor,actConsumeCursor;
     BattleEventBarrierCursor turnEventBarrierCursor;
     BattleAudienceTurnEndCursor sourceAudienceTurnEndCursor;
@@ -1966,6 +1988,318 @@ struct TrioAttackRuntime {
     }
     // Retained original Act parent. Unsupported children hold at their actual
     // source call; no legacy command/action state is acknowledged here.
+    BattleActUiServices originalActMenuUiServices() {
+        BattleActUiServices s;s.memory=nativeBattleActorServices(vm);s.user=this;
+        s.allocate=[](void* p,uint32_t bytes)->std::optional<uint32_t>{
+            auto& r=*static_cast<TrioAttackRuntime*>(p);
+            if(!r.vm.platform.flushBlock||!r.vm.platform.systemCall){r.pending=0x8002ff58;return {};}
+            const auto address=eventMapAllocate(r.word(0x8041e80c),bytes,r.vm.memoryBinding.services());
+            if(address)r.actMenuUiAllocations[address]=std::make_shared<const uint8_t>(0);
+            return address;
+        };
+        s.release=[](void* p,uint32_t address){
+            auto& r=*static_cast<TrioAttackRuntime*>(p);
+            // Native allocation identity is retired before the real map free.
+            // An unknown owner is not silently freed or acknowledged.
+            if(!r.actMenuUiAllocations.erase(address))return false;
+            eventMapFree(r.word(0x8041e80c),address,r.vm.memoryBinding.services());
+            return true;
+        };return s;
+    }
+    // Bind once before source class construction. The actual US resource plus
+    // its VM text mapping outlive every descriptor/UI borrow until VM retirement.
+    bool bindOriginalClassMessages(std::shared_ptr<const BattleActionClassMessageBinding> owner) {
+        if(originalClassMessages || actClassTableCursor.active() || !owner || !owner->allocation || !owner->lookup)return false;
+        originalClassMessages=std::move(owner);return true;
+    }
+    BattleActionClassServices originalClassTableServices() {
+        BattleActionClassServices s;s.memory=nativeBattleActorServices(vm);s.user=this;
+        s.unit=[](void* p,uint32_t battle,int32_t id)->std::optional<uint32_t>{
+            return battleRegistryUnit(battle,id,nativeBattleActorServices(static_cast<TrioAttackRuntime*>(p)->vm));};
+        s.pouch=[](void* p)->std::optional<uint32_t>{return static_cast<TrioAttackRuntime*>(p)->word(0x8041eb00);};
+        s.message=[](void* p,uint32_t key)->std::optional<uint32_t>{
+            auto& r=*static_cast<TrioAttackRuntime*>(p);
+            if(!r.heldClassMessages || !r.heldClassMessages->allocation || !r.heldClassMessages->lookup)return {};
+            return r.heldClassMessages->lookup(r.heldClassMessages->user,key);
+        };return s;
+    }
+    std::optional<uint32_t> resumeOriginalClassTable(uint32_t battle) {
+        // Native resource admission precedes first entry. An unavailable actual
+        // msgSearch owner can later bind without restarting a partially emitted
+        // table. Once begun, the exact resource/mapping owner is retained.
+        if(!originalClassMessages){pending=0x80081b8c;return {};}
+        if(!actClassTableCursor.active())heldClassMessages=originalClassMessages;
+        else if(heldClassMessages!=originalClassMessages){pending=0x80081b8c;return {};}
+        const auto result=resumePackedBattleActionClassTable(battle,originalClassTableServices(),actClassTableCursor);
+        if(!result){pending=actClassTableCursor.pending()?actClassTableCursor.pending():0x80124dc8;return {};}
+        heldClassMessages.reset();return result;
+    }
+    BattleActMenuContinuationServices originalActMenuServices() {
+        BattleActMenuContinuationServices s;s.memory=nativeBattleActorServices(vm);s.user=this;
+        s.request=[](void* p,const BattleActMenuContinuationRequest& q)->std::optional<uint32_t>{
+            auto& r=*static_cast<TrioAttackRuntime*>(p);const auto actors=nativeBattleActorServices(r.vm);
+            const auto& a=q.arguments;using F=BattleActService;
+            switch(q.function){
+            case F::ClassTable:{
+                const auto result=r.resumeOriginalClassTable(a[0]);
+                if(result)return *result;return {};
+            }
+            case F::Unit:return battleRegistryUnit(a[0],int32_t(a[1]),actors);
+            case F::Mario:return battleMarioUnit(a[0],actors);
+            case F::Party:return battlePartyUnit(a[0],actors);
+            case F::Status:return checkPackedBattleStatus(a[0],int32_t(a[1]),actors)?1:0;
+            case F::Cursor:{
+                if(!q.privateCursorOutput){r.pending=uint32_t(q.function);return {};}
+                uint32_t cursor=0;
+                if(findPackedCommandCursor(a[0],a[1],cursor,nativeBattlePackedSelectionServices(r.vm)))
+                    *q.privateCursorOutput=cursor;
+                return 0;
+            }
+            case F::Allowed:return packedBattleMenuKeyAllowed(a[0],actors)?1:0;
+            case F::Trigger:return r.word(currentBattleAddress(actors)+0xf44)&a[0];
+            case F::Repeat:return r.word(currentBattleAddress(actors)+0xfbc)&a[0];
+            case F::Now:return r.word(currentBattleAddress(actors)+0x1034)&a[0];
+            case F::CameraMode:
+            case F::CameraSpeed:{
+                BattleCameraRequestServices camera;camera.positions=nativeBattlePartPositionServices(r.vm);
+                const auto battle=currentBattleAddress(actors);
+                if(q.function==F::CameraMode)setBattleCameraMode(battle,int32_t(a[0]),int32_t(a[1]),camera);
+                else setBattleCameraSpeed(battle,int32_t(a[0]),int32_t(a[1]),camera);
+                // Original priority rejection is complete, not provider wait.
+                return 0;
+            }
+            case F::Init:
+                if(resumePackedBattleActUiInit(a[0],a[1],a[2],a[3],r.originalActMenuUiServices(),r.actMenuUiCursor))return 0;
+                r.pending=r.actMenuUiCursor.pending()?r.actMenuUiCursor.pending():uint32_t(q.function);return {};
+            case F::End:
+                if(resumePackedBattleActUiEnd(a[0],r.originalActMenuUiServices(),r.actMenuUiCursor))return 0;
+                r.pending=r.actMenuUiCursor.pending()?r.actMenuUiCursor.pending():uint32_t(q.function);return {};
+            case F::Audience:{
+                const auto result=r.resumeOriginalAudienceCheck();
+                return result?std::optional<uint32_t>(*result?1:0):std::nullopt;
+            }
+            case F::Display:return 0; // Exact original80116cd8/4 is blr.
+            default:
+                // Actual ClassTable/WeaponTable/TargetCount and retained sound
+                // providers must be supplied; no legacy menu case or vector
+                // append acknowledges these original children.
+                r.pending=uint32_t(q.function);return {};
+            }
+        };return s;
+    }
+    std::optional<int32_t> resumeOriginalActMenuMain(uint32_t battle) {
+        const auto result=resumePackedBattleActMenuMain(battle,originalActMenuServices(),actMenuMainCursor);
+        if(!result && !pending)pending=actMenuMainCursor.pending()?actMenuMainCursor.pending():0x8012230c;
+        return result;
+    }
+    bool resumeOriginalActMenuSetup(uint32_t battle,uint32_t flag) {
+        const bool ready=resumePackedBattleActMenuSetup(battle,flag,originalActMenuServices(),actMenuSetupCursor);
+        if(!ready && !pending)pending=actMenuSetupCursor.pending()?actMenuSetupCursor.pending():0x80122794;
+        return ready;
+    }
+    bool resumeOriginalActMenuEnd(uint32_t battle) {
+        const bool ready=resumePackedBattleActMenuEnd(battle,originalActMenuServices(),actMenuEndCursor);
+        if(!ready && !pending)pending=actMenuEndCursor.pending()?actMenuEndCursor.pending():0x801220d4;
+        return ready;
+    }
+    std::optional<bool> resumeOriginalAudienceCheck() {
+        BattleMenuAudienceNativeServices services;
+        services.actors=nativeBattleActorServices(vm);services.user=this;
+        // Runtime's token is created once after VM initialization and retired
+        // only at destruction. This checks memory ownership, not camera/UI state.
+        services.allocationCurrent=[](void* p){
+            auto& r=*static_cast<TrioAttackRuntime*>(p);
+            return r.hpAllocation && r.hpAllocationCurrent(uint64_t(reinterpret_cast<uintptr_t>(r.hpAllocation.get())));
+        };
+        services.trigger=[](void* p,uint32_t mask)->std::optional<uint32_t>{
+            auto& r=*static_cast<TrioAttackRuntime*>(p);
+            return r.word(currentBattleAddress(nativeBattleActorServices(r.vm))+0xf44)&mask;
+        };
+        services.mario=[](void* p,uint32_t battle)->std::optional<uint32_t>{
+            auto& r=*static_cast<TrioAttackRuntime*>(p);
+            return battleMarioUnit(battle,nativeBattleActorServices(r.vm));
+        };
+        services.endActMenu=[](void* p,uint32_t battle){return static_cast<TrioAttackRuntime*>(p)->resumeOriginalActMenuEnd(battle);};
+        const auto result=resumeNativeBattleMenuAudience(services,actMenuAudienceCursor);
+        if(!result&&!pending)pending=actMenuAudienceCursor.pending()?actMenuAudienceCursor.pending():0x8011f524;
+        return result;
+    }
+    std::optional<int32_t> resumeOriginalPresentItem() {
+        BattlePresentItemNativeServices services;
+        services.actors=nativeBattleActorServices(vm);services.user=this;
+        services.allocationCurrent=[](void* p){
+            auto& r=*static_cast<TrioAttackRuntime*>(p);
+            return r.hpAllocation && r.hpAllocationCurrent(uint64_t(reinterpret_cast<uintptr_t>(r.hpAllocation.get())));
+        };
+        services.subtractDoubleSingle=[](void* p,double a,double b)->std::optional<float>{
+            const auto& ops=static_cast<TrioAttackRuntime*>(p)->vm.platform;
+            if(!ops.subtractDouble||!ops.roundDoubleFloat)return {};
+            return ops.roundDoubleFloat(ops.user,ops.subtractDouble(ops.user,a,b));
+        };
+        services.fma=[](void* p,float a,float b,float c)->std::optional<float>{
+            const auto& ops=static_cast<TrioAttackRuntime*>(p)->vm.platform;
+            return ops.fmaFloat?std::optional<float>(ops.fmaFloat(ops.user,a,b,c)):std::nullopt;
+        };
+        services.add=[](void* p,float a,float b)->std::optional<float>{
+            const auto& ops=static_cast<TrioAttackRuntime*>(p)->vm.platform;
+            return ops.addFloat?std::optional<float>(ops.addFloat(ops.user,a,b)):std::nullopt;
+        };
+        // effRecoveryEntry remains an actual missing retained effect owner.
+        // Apply source recovery once, hold without clearing present item.
+        const auto result=resumeNativeBattlePresentItem(services,sourcePresentItemCursor);
+        if(!result&&!pending)pending=sourcePresentItemCursor.pending()?sourcePresentItemCursor.pending():0x80120024;
+        return result;
+    }
+    BattleWeaponUiServices originalWeaponUiServices() {
+        BattleWeaponUiServices services;services.actors=nativeBattleActorServices(vm);services.user=this;
+        services.allocationCurrent=[](void* p){
+            auto& r=*static_cast<TrioAttackRuntime*>(p);
+            if(!r.hpAllocation||!r.hpAllocationCurrent(uint64_t(reinterpret_cast<uintptr_t>(r.hpAllocation.get()))))return false;
+            if(r.sourceWeaponUiFreeOwner){
+                const auto found=r.actMenuUiAllocations.find(r.sourceWeaponUiFreePointer);
+                if(found==r.actMenuUiAllocations.end()||found->second!=r.sourceWeaponUiFreeOwner)return false;
+            }
+            return true;
+        };
+        services.request=[](void* p,const BattleWeaponUiRequest& q)->std::optional<uint32_t>{
+            auto& r=*static_cast<TrioAttackRuntime*>(p);const auto& a=q.arguments;
+            if(q.function==0x8002fdc4){
+                if(!r.sourceWeaponUiFreeCaptured){
+                    r.sourceWeaponUiFreeCaptured=true;r.sourceWeaponUiMapRequest=&q;r.sourceWeaponUiFreePointer=a[1];
+                    const auto found=r.actMenuUiAllocations.find(a[1]);
+                    if(found!=r.actMenuUiAllocations.end())r.sourceWeaponUiFreeOwner=found->second;
+                }
+                const auto found=r.actMenuUiAllocations.find(a[1]);
+                if(r.sourceWeaponUiMapRequest!=&q||r.sourceWeaponUiFreePointer!=a[1]||!r.sourceWeaponUiFreeOwner||
+                   found==r.actMenuUiAllocations.end()||found->second!=r.sourceWeaponUiFreeOwner){r.pending=q.function;return {};}
+                // Retire exact actual allocation metadata before genuine free.
+                r.actMenuUiAllocations.erase(found);
+                eventMapFree(a[0],a[1],r.vm.memoryBinding.services());
+                r.sourceWeaponUiFreeCaptured=false;r.sourceWeaponUiMapRequest=nullptr;
+                r.sourceWeaponUiFreePointer=0;r.sourceWeaponUiFreeOwner.reset();return 0;
+            }
+            if(q.function==0x8002ff58){
+                // These actual original flush operations follow allocation's
+                // clear. Admit the atomic VM map owner before any mutations.
+                if(!r.vm.platform.flushBlock||!r.vm.platform.systemCall){r.pending=q.function;return {};}
+                const auto address=eventMapAllocate(a[0],a[1],r.vm.memoryBinding.services());
+                if(address)r.actMenuUiAllocations[address]=std::make_shared<const uint8_t>(0);
+                return address; // Source pointer0 stays0; never a fabricated hold.
+            }
+            r.pending=q.function;return {};
+        };return services;
+    }
+    bool resumeOriginalWeaponUiInit(uint32_t battle,uint32_t cursor,uint32_t rows,uint32_t flags) {
+        const bool ready=resumePackedBattleWeaponUiInit(battle,cursor,rows,flags,originalWeaponUiServices(),sourceWeaponUiCursor);
+        if(!ready&&!pending)pending=sourceWeaponUiCursor.pending()?sourceWeaponUiCursor.pending():0x80116070;
+        return ready;
+    }
+    bool resumeOriginalWeaponUiEnd(uint32_t battle) {
+        const bool ready=resumePackedBattleWeaponUiEnd(battle,originalWeaponUiServices(),sourceWeaponUiCursor);
+        if(!ready&&!pending)pending=sourceWeaponUiCursor.pending()?sourceWeaponUiCursor.pending():0x8011600c;
+        return ready;
+    }
+    bool retireOriginalWeaponUi() {
+        if(!sourceWeaponUiCursor.reset())return false;
+        sourceWeaponUiFreeCaptured=false;sourceWeaponUiMapRequest=nullptr;
+        sourceWeaponUiFreePointer=0;sourceWeaponUiFreeOwner.reset();return true;
+    }
+    BattleWeaponMenuContinuationServices originalWeaponMenuServices() {
+        BattleWeaponMenuContinuationServices services;services.actors=nativeBattleActorServices(vm);services.user=this;
+        services.call=[](void* p,const BattleWeaponMenuContinuationRequest& q)->std::optional<uint32_t>{
+            auto& r=*static_cast<TrioAttackRuntime*>(p);const auto& a=q.arguments;
+            const auto actors=nativeBattleActorServices(r.vm);
+            switch(q.function){
+            case 0x80116070:if(r.resumeOriginalWeaponUiInit(a[0],a[1],a[2],a[3]))return 0;return {};
+            case 0x8011600c:if(r.resumeOriginalWeaponUiEnd(a[0]))return 0;return {};
+            case 0x800f88cc:return battleRegistryUnit(a[0],int32_t(a[1]),actors);
+            case 0x80119df8:return packedBattleMenuKeyAllowed(a[0],actors)?1:0;
+            case 0x80124cb8:{
+                if(!q.privateCursorOutput){r.pending=q.function;return {};}
+                uint32_t cursor=0;if(findPackedCommandCursor(a[0],a[1],cursor,nativeBattlePackedSelectionServices(r.vm)))
+                    *q.privateCursorOutput=cursor;
+                return 0;}
+            case 0x8011a06c:return r.word(currentBattleAddress(actors)+0xf44)&a[0];
+            case 0x80119f60:return r.word(currentBattleAddress(actors)+0xfbc)&a[0];
+            case 0x80138994:case 0x8013898c:case 0x8011606c:
+                return 0; // These exact whole original symbols are blr.
+            case 0x8011f524:{
+                const auto result=r.resumeOriginalAudienceCheck();
+                return result?std::optional<uint32_t>(*result?1:0):std::nullopt;}
+            default:
+                // Whole source table/update/decision/target, retained sound,
+                // Weapon UI80116070/8011600c owners are still required.
+                r.pending=q.function;return {};
+            }
+        };return services;
+    }
+    std::optional<int32_t> resumeOriginalWeaponMenuMain(uint32_t battle,uint32_t type) {
+        const auto result=resumePackedBattleWeaponMenuMain(battle,type,originalWeaponMenuServices(),sourceWeaponMainCursor);
+        if(!result&&!pending)pending=sourceWeaponMainCursor.pending()?sourceWeaponMainCursor.pending():0x80121d0c;
+        return result;
+    }
+    bool resumeOriginalWeaponMenuSetup(uint32_t battle,uint32_t type,uint32_t flags) {
+        const bool ready=resumePackedBattleWeaponMenuSetup(battle,type,flags,originalWeaponMenuServices(),sourceWeaponSetupCursor);
+        if(!ready&&!pending)pending=sourceWeaponSetupCursor.pending()?sourceWeaponSetupCursor.pending():0x80122068;
+        return ready;
+    }
+    bool resumeOriginalWeaponMenuEnd(uint32_t battle) {
+        const bool ready=resumePackedBattleWeaponMenuEnd(battle,originalWeaponMenuServices(),sourceWeaponEndCursor);
+        if(!ready&&!pending)pending=sourceWeaponEndCursor.pending()?sourceWeaponEndCursor.pending():0x80121cb0;
+        return ready;
+    }
+    BattleCommandInputContinuationServices originalCommandInputServices() {
+        BattleCommandInputContinuationServices services;
+        services.actors=nativeBattleActorServices(vm);services.user=this;
+        services.call=[](void* p,const BattleCommandInputContinuationRequest& q)->std::optional<uint32_t>{
+            auto& r=*static_cast<TrioAttackRuntime*>(p);const auto& a=q.arguments;
+            const auto actors=nativeBattleActorServices(r.vm);
+            switch(q.function){
+            case 0x80121d0c:{const auto result=r.resumeOriginalWeaponMenuMain(a[0],a[1]);
+                return result?std::optional<uint32_t>(uint32_t(*result)):std::nullopt;}
+            case 0x80122068:if(r.resumeOriginalWeaponMenuSetup(a[0],a[1],a[2]))return 0;return {};
+            case 0x8011f524:{const auto result=r.resumeOriginalAudienceCheck();
+                return result?std::optional<uint32_t>(*result?1:0):std::nullopt;}
+            case 0x80120024:{const auto result=r.resumeOriginalPresentItem();
+                return result?std::optional<uint32_t>(uint32_t(*result)):std::nullopt;}
+            case 0x800f88cc:return battleRegistryUnit(a[0],int32_t(a[1]),actors);
+            case 0x801264cc:
+                if(nativeBattleCommandPose(r.vm,a[0]))return 0;
+                r.pending=q.function;return {};
+            case 0x80124cb8:{
+                if(!q.privateCursorOutput){r.pending=q.function;return {};}
+                uint32_t cursor=0;
+                if(findPackedCommandCursor(a[0],a[1],cursor,nativeBattlePackedSelectionServices(r.vm)))
+                    *q.privateCursorOutput=cursor;
+                return 0;}
+            case 0x8011f5f0:{
+                const auto battle=currentBattleAddress(actors);
+                if(!r.byte(battle+0x1c74))r.word(battle+0x1c70,r.word(battle+0x171c));
+                else if(r.word(battle+0x1c70)==r.word(battle+0x171c)){
+                    r.word(battle+0x1c70,0);r.byte(battle+0x1c74,0);}
+                return 0;}
+            case 0x80216954:packedBattleActionHelpSetKey(a[0],actors);return 0;
+            case 0x8021690c:packedBattleActionHelpSetDisplay(int32_t(a[0]),actors);return 0;
+            case 0x8013899c:case 0x80138990:case 0x80138988:case 0x8013898c:case 0x80138998:
+                return 0; // Actual complete original blr leaves, not renderer readiness.
+            case 0x800374ac:{
+                auto& event=createRootEvent(r.vm.schedule,a[0],int32_t(a[1]),a[2],r.vm.creationServices());
+                uint32_t address=0;required(r.vm.entryAddresses.addressOf(&event,address));return address;}
+            case 0x80036604:return uint32_t(checkEventId(a[0],r.vm.creationServices()));
+            case 0x8011a06c:return r.word(currentBattleAddress(actors)+0xf44)&a[0];
+            case 0x80119f60:return r.word(currentBattleAddress(actors)+0xfbc)&a[0];
+            case 0x80122794:if(r.resumeOriginalActMenuSetup(a[0],a[1]))return 0;return {};
+            case 0x8012230c:{const auto result=r.resumeOriginalActMenuMain(a[0]);
+                return result?std::optional<uint32_t>(uint32_t(*result)):std::nullopt;}
+            default:r.pending=q.function;return {};
+            }
+        };return services;
+    }
+    std::optional<int32_t> resumeOriginalCommandInput(uint32_t battle) {
+        const auto result=resumePackedBattleCommandInput(battle,originalCommandInputServices(),sourceCommandInputCursor);
+        if(!result&&!pending)pending=sourceCommandInputCursor.pending()?sourceCommandInputCursor.pending():0x801229d8;
+        return result;
+    }
     BattleActServices originalActServices() {
         BattleActServices services;services.actors=nativeBattleActorServices(vm);services.user=this;
         services.call=[](void* p,const BattleActSequenceRequest& q)->std::optional<BattleActOutput>{
@@ -1976,6 +2310,9 @@ struct TrioAttackRuntime {
             case BattleActChild::CommandInit:
                 // Whole80125380/18: actual ordered stores, no UI allocation.
                 r.word(a[0]+0x171c,0);r.word(a[0]+0xef4,r.word(a[0]+0xef4)|0x80u);break;
+            case BattleActChild::CommandInput:{
+                const auto result=r.resumeOriginalCommandInput(a[0]);if(!result)return {};
+                out.value=uint32_t(*result);break;}
             case BattleActChild::Unit:
                 out.value=battleRegistryUnit(a[0],int32_t(a[1]),actors);break;
             case BattleActChild::Mario:
@@ -2897,7 +3234,8 @@ struct TrioAttackRuntime {
 // pouch/camera/field/pose owner arguments belong ONLY to fresh construction.
 // Fresh defaults(seed1, 608x480 camera, mode 2) are explicit native context, not
 // recovered process history. Publish runtime_/HP token only after initialize.
-bool TrioAttack::begin(const TrioBattleCommands& menu,ProfessorStory& scene,int16_t hp,std::shared_ptr<ProloguePouch> entryPouch,uint32_t* fieldNpcBattleFlags,FieldMarioBattleState* fieldMario,FieldPartyRegistry* fieldParties,const FieldPartyAppearanceServices* appearance,std::shared_ptr<BattleSpotlightState> spotlight,std::shared_ptr<BattleRandom> random,std::shared_ptr<PositionalSfxRegistry> sounds,std::shared_ptr<ShadowWork> shadows,std::shared_ptr<BattleCommandPalette> palette,std::shared_ptr<CameraManager> cameras,std::shared_ptr<FieldBeroExec> bero){if(!assetsReady || !menu.attack || !((menu.actor==1 && (menu.attack->weapon==0x803538a8 || menu.attack->weapon==0x80353de8)) || (menu.actor==2 && menu.attack->weapon==0x80393ea8)))return false;if(runtime_)return runtime_->done && runtime_->readyActor==menu.actor && runtime_->launch(menu);auto r=std::make_shared<TrioAttackRuntime>(random?std::move(random):std::make_shared<BattleRandom>(1),fieldParties?fieldParties->originalPool:nullptr);r->bero=std::move(bero);r->cameras=std::move(cameras);if(!r->cameras){r->cameras=std::make_shared<CameraManager>();r->cameras->initializeBoot(608,480);}r->cameras->camera(4)->mode=2;r->palette=palette?std::move(palette):std::make_shared<BattleCommandPalette>();r->shadows=shadows?std::move(shadows):std::make_shared<ShadowWork>();r->publicSfx=sounds?std::move(sounds):std::make_shared<PositionalSfxRegistry>();r->spotlight=spotlight?std::move(spotlight):std::make_shared<BattleSpotlightState>();r->fieldNpcBattleFlags=fieldNpcBattleFlags;r->fieldMario=fieldMario;r->fieldParties=fieldParties;if(appearance)r->fieldAppearance=*appearance;if(!r->initialize(menu,scene,hp,std::move(entryPouch)))return false;r->hpAllocation=std::make_shared<const uint8_t>(0);runtime_=std::move(r);return true;}
+bool TrioAttack::begin(const TrioBattleCommands& menu,ProfessorStory& scene,int16_t hp,std::shared_ptr<ProloguePouch> entryPouch,uint32_t* fieldNpcBattleFlags,FieldMarioBattleState* fieldMario,FieldPartyRegistry* fieldParties,const FieldPartyAppearanceServices* appearance,std::shared_ptr<BattleSpotlightState> spotlight,std::shared_ptr<BattleRandom> random,std::shared_ptr<PositionalSfxRegistry> sounds,std::shared_ptr<ShadowWork> shadows,std::shared_ptr<BattleCommandPalette> palette,std::shared_ptr<CameraManager> cameras,std::shared_ptr<FieldBeroExec> bero,std::shared_ptr<const MessageAssets> classMessages){if(!assetsReady || !menu.attack || !((menu.actor==1 && (menu.attack->weapon==0x803538a8 || menu.attack->weapon==0x80353de8)) || (menu.actor==2 && menu.attack->weapon==0x80393ea8)))return false;if(runtime_)return runtime_->done && runtime_->readyActor==menu.actor && runtime_->launch(menu);auto r=std::make_shared<TrioAttackRuntime>(random?std::move(random):std::make_shared<BattleRandom>(1),fieldParties?fieldParties->originalPool:nullptr);if(classMessages){auto labels=BattleClassMenuMessages::map(r->vm.memory,0x85a00000,std::move(classMessages));if(!labels || !r->bindOriginalClassMessages(labels->binding(r->vm.memory)))return false;}r->bero=std::move(bero);r->cameras=std::move(cameras);if(!r->cameras){r->cameras=std::make_shared<CameraManager>();r->cameras->initializeBoot(608,480);}r->cameras->camera(4)->mode=2;r->palette=palette?std::move(palette):std::make_shared<BattleCommandPalette>();r->shadows=shadows?std::move(shadows):std::make_shared<ShadowWork>();r->publicSfx=sounds?std::move(sounds):std::make_shared<PositionalSfxRegistry>();r->spotlight=spotlight?std::move(spotlight):std::make_shared<BattleSpotlightState>();r->fieldNpcBattleFlags=fieldNpcBattleFlags;r->fieldMario=fieldMario;r->fieldParties=fieldParties;if(appearance)r->fieldAppearance=*appearance;if(!r->initialize(menu,scene,hp,std::move(entryPouch)))return false;r->hpAllocation=std::make_shared<const uint8_t>(0);runtime_=std::move(r);return true;}
+bool TrioAttack::hasBattleRuntime()const{return bool(runtime_);}
 void TrioAttack::tick(uint64_t time,ProfessorStory& scene,uint32_t triggers,const BattlePadSample* physical){if(runtime_)runtime_->tick(time,scene,triggers,physical);}
 // No runtime =>visible status window, false active/finished. With runtime,
 // active=!done/finished=done describe this native action boundary, not completion

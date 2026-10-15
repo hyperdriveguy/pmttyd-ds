@@ -2427,7 +2427,13 @@ void Game::tick(const Input& rawInput,const OriginalSequenceServices* sequenceSe
             }
             if(trioCommands.state==TrioBattleCommands::State::AttackReady && progress.originalPouch && !trioAttack.active() && !trioAttack.finished())progress.originalPouch->half(0x70,int16_t(progress.hp)); // Current field HP enters the original resource snapshot once.
             const auto partyAppearance=fieldPartyAppearanceServices();
-            if(trioCommands.state==TrioBattleCommands::State::AttackReady && trioAttack.begin(trioCommands,trioBattleIntro,progress.hp,progress.originalPouch,&professorStory.actors[3].npcBattleFlags,&fieldMarioBattle,&fieldParties,&partyAppearance,battleSpotlight,trioRandom,publicSfx,shadows,commandPalette,cameraManager,beroExec)) {
+            // Only fresh VM entry snapshots the actual field room/global bank.
+            // Later attacks retain the bound resource/mapping; missing source
+            // messages leave AttackReady unavailable without an empty owner.
+            std::shared_ptr<const MessageAssets> classMessages;
+            if(trioCommands.state==TrioBattleCommands::State::AttackReady && !trioAttack.hasBattleRuntime())
+                classMessages=snapshotFieldMessageAssets(roomAsset(progress.room));
+            if(trioCommands.state==TrioBattleCommands::State::AttackReady && (trioAttack.hasBattleRuntime() || classMessages) && trioAttack.begin(trioCommands,trioBattleIntro,progress.hp,progress.originalPouch,&professorStory.actors[3].npcBattleFlags,&fieldMarioBattle,&fieldParties,&partyAppearance,battleSpotlight,trioRandom,publicSfx,shadows,commandPalette,cameraManager,beroExec,std::move(classMessages))) {
                 trioAttack.setOriginalSequence(originalSequence);
                 trioAttack.setPhysicalInputOwner(&inputProducer);
                 trioAttack.setSoundFlags(soundFlags);

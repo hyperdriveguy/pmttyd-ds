@@ -34,6 +34,13 @@ bool loadFieldActorCatalog(const char* root) {
     catalog=std::move(next);npcAngles=nextAngles;assetRoot=root;++generation;return true;
 }
 const FieldActorAssets& fieldActorCatalog(){return catalog;}
+std::shared_ptr<const MessageAssets> snapshotFieldMessageAssets(const char* room) {
+    if(!room || assetRoot.empty() || !*room || std::string(room).find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_")!=std::string::npos)return {};
+    auto snapshot=std::make_shared<MessageAssets>();
+    if(!snapshot->loadGlobal((assetRoot+"/messages/global.txt").c_str()) ||
+       !snapshot->loadRoom((assetRoot+"/messages/"+room+".txt").c_str()))return {};
+    return snapshot;
+}
 uint64_t fieldActorCatalogGeneration(){return generation;}
 const NpcAngleTable& fieldNpcAngles(){return npcAngles;}
 std::string fieldActorTalkKey(const FieldActorRecord& actor,int32_t story,const FieldActorTalkState& state,const FieldActorTalkInventory& items) {
