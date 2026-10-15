@@ -1199,3 +1199,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native registered NPC setup world](field/NATIVE_REGISTERED_NPC_SETUP_WORLD.md): retained real actor/pose/numeric setup and independent event roots, with source admission and actual integration limits.
 - [NPC setup-world admission requirements](field/NATIVE_NPC_SETUP_WORLD_ADMISSION_REQUIREMENTS.md): fresh GP/F halfword owner, missing-actor/deletion domains, original fifteen setup rows and eleven callback dependencies.
 - [Original NPC flag, position and yaw leaves](field/ORIGINAL_NPC_FLAG_POSITION_YAW_EVENT_LEAVES.md): five exact callbacks, resolver domains, ordered stores, camera4-dependent facing math and output routing.
+
+- [Native class draw continuations and resource owners](battle/NATIVE_CLASS_DRAW_CONTINUATIONS_AND_RESOURCE_OWNERS.md) — retained original menu calls, screen projection, concrete raster bridge and original file-entry lifetime.
