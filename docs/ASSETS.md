@@ -3504,3 +3504,20 @@ RomFS products and the original gor_02.s source remain byte-identical to the
 accepted baseline. Original rights/licensing are unchanged. ISO, extracted
 originals, compiled packs, fixtures, profiler builds and validation binaries stay
 outside source history.
+## Original raw process window TPL (2026-10-15)
+
+`tools/source_window_resources_assets.py` exports unchanged original
+`f/msgWindow.tpl`, read-only US revision0 ISO offset947396944,321984 bytes,
+SHA256 `2ef0cdc818d2402de5bfb95394f67d78017e74bc1b41c38b79780cb0b870dc67`.
+Ignored products `romfs/source-window/msgWindow.tpl` and `source-window.json`
+record source extent/hash and converter identity. There is no image conversion,
+palette relocation, texture object patch or readiness write at export. Empty
+new destinations only; exact matching packs may be reused, while changed or
+extra existing files are preserved and rejected. Native private allocation
+backing permits the actual source Unpack mutations without changing the file.
+Actual process window globals/unknowns share history across VM bindings; real
+Setup/DVD/heap/delivery/GPU producer proofs remain external. Neither raw object
+bytes nor native panel residency creates source completion.
+[Ownership contract](behavior/display/NATIVE_SOURCE_WINDOW_MEMORY.md).
+Original Nintendo/Intelligent Systems rights are retained; no new license or
+redistribution rights are granted. No original payload or ISO is committed.

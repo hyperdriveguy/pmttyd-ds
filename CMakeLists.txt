@@ -2609,3 +2609,16 @@ add_executable(field_party_professor_tests tests/field_party_professor_tests.cpp
 target_link_libraries(field_party_professor_tests PRIVATE ttyd_core)
 add_test(NAME field_party_professor COMMAND field_party_professor_tests)
 set_tests_properties(field_party_professor PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+
+# Original DVD root leaf and private shared process window memory.
+target_sources(ttyd_core PRIVATE source/platform/source_mario_dvd_root.cpp)
+add_executable(source_mario_dvd_root_tests tests/source_mario_dvd_root_tests.cpp)
+target_link_libraries(source_mario_dvd_root_tests PRIVATE ttyd_core)
+add_test(NAME source_mario_dvd_root COMMAND source_mario_dvd_root_tests)
+set_tests_properties(source_mario_dvd_root PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+target_sources(ttyd_core PRIVATE source/platform/native_source_window_memory.cpp)
+add_executable(native_source_window_memory_tests tests/native_source_window_memory_tests.cpp)
+target_link_libraries(native_source_window_memory_tests PRIVATE ttyd_core)
+add_test(NAME native_source_window_memory COMMAND native_source_window_memory_tests)
+set_tests_properties(native_source_window_memory PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
