@@ -133,3 +133,7 @@ semantics, borrowed VM views and ticketed SD handoff for original event data.
 [Event addressing](event-addressing.md) and [event service APIs](event-service-api.md)
 cover live packed aliases, scoped raw RAM, header contracts, result protocols and
 separate event/storage/heap lifetimes.
+
+[Opening demo/book](opening-demo-book.md) and [title/audio/effects](opening-title-effects.md)
+explain original narration identities, capture/final-pose admission, bounded scene
+requests, native clock/framing adapters and independent fade/effect owners.

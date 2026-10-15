@@ -14,6 +14,9 @@ public:
     OpeningBookScene book;
     OpeningBgmScene bgm;
     OpeningDemoExit exit;
+    // 1..24 select op_book_01..24, 25..37 select op_00..12. Speaker tokens
+    // are original identities; these counters are not IDs to be paraphrased.
+    // Public now/deadline use milliseconds; book/market/audio use60Hz adapter ticks.
     unsigned narration=0;
     uint32_t speaker=0;
     uint64_t now=0;
@@ -21,6 +24,9 @@ public:
     bool bookOpening=false;
     bool paperServicesBound=false; // Renderer registers only after original assets load.
     float bookRotation=0;
+    // Dependencies publish at individual loader boundaries; a later failure
+    // does not roll back all earlier loads. Caller must admit the full bundle
+    // before begin; narration failure never substitutes text or artwork.
     bool load(const char* root);
     void begin(uint64_t now);
     void tick(uint64_t now,uint32_t keys=0);

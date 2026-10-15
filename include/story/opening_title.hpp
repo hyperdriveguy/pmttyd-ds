@@ -10,6 +10,9 @@ namespace ttyd {
 class OpeningTitle {
 public:
     OpeningTitleBgm bgm;
+    // Ordinary demo-return route only. States0 admission,1 curtain34,2 logo,
+    // 3 input,10/11/12 files-curtain chain,20/21 idle-demo black fade. These
+    // are source state IDs, not a complete file-menu/card implementation.
     uint32_t state=0,curtainType=34;
     bool musicReady=false,resourcesReady=false,curtainReady=false,failed=false;
     bool filesRequested=false,demoRequested=false,complete=false;
@@ -20,9 +23,15 @@ public:
     float whiteProgress=1,blackProgress=0;bool whiteDriverFinished=false,blackDriverFinished=false,blackPresented=false;
     bool curtainFinalPresented=false;float curtainLoops=0;
     void begin(){*this={};}
+    // Admission hooks are claims from actual resource owners, not timers.
+    // Caller supplies validated original assets; mute/audible availability is
+    // separate from title's resource readiness. A/START cannot bypass state0.
     void admitMusic(bool actual){musicReady=actual;}
     void admitResources(){resourcesReady=true;}
     void admitCurtain(uint32_t type){if(type==curtainType)curtainReady=true;}
+    // Curtain34/Z_2 has zero frame span; completion also requires90/180
+    // native ticks, loop evidence and final scale1 presentation. Other used spans:
+    // 33/A_2=160,63/A_1=80,26/Z_1=60. Pose descriptor count alone is not span.
     float curtainFrame() const{return curtainType==34?0.f:float(std::min<uint32_t>(curtainCounter,curtainType==33?160:curtainType==63?80:60));}
     bool curtainDriverFinished() const{return curtainReady && (curtainType==34?curtainCounter==(narrowFast?90u:180u) && curtainLoops>=1:curtainLoops>=1);}
     void presented(uint32_t type,float frame,float scale){
@@ -33,12 +42,17 @@ public:
     uint8_t blackAlpha() const{return uint8_t(int(255.f*blackProgress));}
     void presentedBlack(uint8_t alpha){if(state==21 && blackDriverFinished && alpha==255)blackPresented=true;}
     uint8_t whiteAlpha() const{return uint8_t(int(255.f*whiteProgress));}
+    // Source disp2 alpha: trunc(amplitude*459*sin(pi*counter/120)), clamp0..255.
+    // Native prompt counter is simulation-owned60Hz, unlike original draw counter.
     uint8_t promptAlpha() const{
         const float phase=(3.141592025756836f*float(promptCounter))/120.f;
         const float value=promptAmplitude*(459.f*float(std::sin(double(phase))));
         return uint8_t(std::clamp(int(value),0,255));
     }
     bool inputReady() const{return state==3 && counter>60;}
+    // One caller-supplied simulation invocation, no internal time accumulation
+    // between calls. BGM/prompt/fade clocks advance before state admission;
+    // repeated1000/60 float fade steps preserve strict endpoint comparisons.
     void tick(uint32_t triggers=0){
         if(failed || complete)return;
         bgm.tick();
@@ -66,11 +80,17 @@ public:
             state=2;whiteProgress=1;whiteElapsed=0;whiteDriverFinished=false;counter=0;
             // Original20/500 white-in overlaps the logo interpolation.
             whiteActive=true;return;
+        // Curves10/11 sample logo300->120/copyright-300->-170 at0..60;
+        // transition only counter>60. State3 then has its own strict>60 input
+        // delay, so the press that exits demo cannot immediately open a file.
         case 2:
             logoX=copyrightX=0;
             logoY=*cameraInterpolation(10,counter,60,300,120);
             copyrightY=*cameraInterpolation(11,counter,60,-300,-170);
             ++counter;if(counter>60){state=3;counter=0;promptCounter=0;}return;
+        // Input A|START precedes idle timeout and wins at its boundary.
+        // Amplitude ramps by.1 only after input eligibility; idle counts strict
+        // >19*60, then requests source paper33 and an independently owned black fade.
         case 3:
             ++counter;if(counter<=60)return;
             promptAmplitude=std::min(1.f,promptAmplitude+.1f);
@@ -78,6 +98,9 @@ public:
             ++idleCounter;if(idleCounter>19*60){demoRequested=true;state=20;}return;
         case 20:
             bgm.offForIdle();requestCurtain(33);counter=0;blackElapsed=blackProgress=0;blackDriverFinished=blackPresented=false;state=21;return;
+        // Idle return waits actual black final-frame publication, not the
+        // earlier160-frame paper. File path instead waits63 then26 final poses;
+        // requestCurtain clears old admission/publication on every owner change.
         case 21:
             logoY=*cameraInterpolation(11,counter,60,120,400);
             copyrightY=*cameraInterpolation(11,counter,60,-170,-400);

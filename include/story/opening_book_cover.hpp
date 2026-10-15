@@ -8,11 +8,17 @@ struct BookCoverVertex {float x,y,z,u,v;};
 struct BookCoverQuad {std::array<BookCoverVertex,4> vertices;unsigned palette=0,cull=0;bool blend=false;uint8_t alpha=255;};
 // Source procedural quads and local matrix order. Runtime camera8 mutation,
 // SDK/Gekko bit equality and final adjust/fade provider remain separate.
+// Initial camera8 half-FOV25/2 degrees uses original double tan input.
+// Cover quads below keep hinge(-width/2+8), negative Y rotation, local scale
+// and offset order; native trig is not a recovered SDK numeric implementation.
 inline float openingBookCameraDistance(){return 240.f/float(std::tan(0.21816612780094147));}
 inline std::optional<std::array<BookCoverQuad,3>> openingBookCover(float width,float height,float scale,float angle,float offsetX=0,float offsetY=0,float fade=0){
     if(!std::isfinite(width)||!std::isfinite(height)||!std::isfinite(scale)||!std::isfinite(angle)||!std::isfinite(offsetX)||!std::isfinite(offsetY)||!std::isfinite(fade)||width<=0||height<=0||scale<=0||fade<0||fade>1)return std::nullopt;
     const float radians=-angle*.01745329238474369f,c=std::cos(radians),s=std::sin(radians),hinge=std::fma(-width,.5f,8.f);
     const std::array<BookCoverVertex,4> local{{{0,height*.5f,0,0,0},{width,height*.5f,0,1,0},{width,-height*.5f,0,1,1},{0,-height*.5f,0,0,1}}};
+    // Draw requests: stationary inner TPL2/mirrored U/back-cull/alpha;
+    // rotating front TPL1/normal U/back-cull/opaque; rotating inner TPL2/
+    // mirrored U/front-cull/opaque. Return is geometry, not GPU admission.
     std::array<BookCoverQuad,3> quads;
     for(unsigned q=0;q<3;++q){
         auto& quad=quads[q];quad.palette=q==1?1:2;quad.cull=q==2?1:2;quad.blend=q==0;quad.alpha=q==0?uint8_t(int(255.f*(1-fade))):255;
@@ -23,6 +29,8 @@ inline std::optional<std::array<BookCoverQuad,3>> openingBookCover(float width,f
     }
     return quads;
 }
+// Source page TPL3..7 is.95 of cover dimensions; illustration TPL8..12
+// instead has its own -101.333..115/-45 rectangle with no cover hinge.
 inline std::optional<BookCoverQuad> openingBookPage(float width,float height,float scale,unsigned page,float offsetX=0,float offsetY=0,float fade=0){
     const auto cover=openingBookCover(width,height,scale,0,offsetX,offsetY,fade);if(!cover||page>4)return std::nullopt;
     auto quad=(*cover)[0];quad.palette=3+page;
@@ -37,9 +45,12 @@ inline std::optional<BookCoverQuad> openingBookIllustration(float scale,unsigned
     quad.vertices={{{offsetX+left*scale,offsetY+115*scale,0,0,0},{offsetX+right*scale,offsetY+115*scale,0,1,0},{offsetX+right*scale,offsetY-45*scale,0,1,1},{offsetX+left*scale,offsetY-45*scale,0,0,1}}};
     return quad;
 }
-// Native 304x240 viewport adaptation of the recovered camera8 initial lens.
+// Native half-scale source geometry centered in the400x240 screen.
 // Used for winding admission; actual vertices retain XYZ and hardware perspective.
 inline std::array<float,2> openingBookScreen(const BookCoverVertex& p){const float d=openingBookCameraDistance(),q=d/(d-p.z);return {200+p.x*q*.5f,120-p.y*q*.5f};}
+// Winding-only native admission: cull2 positive area, cull1 negative, others
+// unculled. Actual XYZ/perspective/camera/viewport/GPU ownership stays external;
+// this helper does not clip arbitrary geometry against the camera near plane.
 inline bool openingBookFaceVisible(const BookCoverQuad& quad){
     const auto a=openingBookScreen(quad.vertices[0]),b=openingBookScreen(quad.vertices[1]),c=openingBookScreen(quad.vertices[2]);
     const float area=(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]);

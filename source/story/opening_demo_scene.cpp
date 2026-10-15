@@ -3,6 +3,10 @@
 #include <cmath>
 #include <cstring>
 namespace ttyd {
+// Retain original dmo request order, endpoints, pose names and message gates.
+// Millisecond waits round UP to whole60Hz ticks; explicit duration1 entries are
+// authored WAIT_FRAME1 boundaries. Camera currently interpolates linearly, not
+// a claim of numeric equivalence to source selector11 or full event scheduling.
 void OpeningDemoScene::program() {
     auto wait=[&](unsigned ms){requests.push_back({Kind::Wait,0,{},{},(uint64_t(ms)*60+999)/1000});};
     auto camera=[&](std::array<float,3> e,std::array<float,3> a,unsigned ms){Request r{Kind::Camera};r.point=e;r.aim=a;r.duration=(uint64_t(ms)*60+999)/1000;requests.push_back(r);};
@@ -33,12 +37,17 @@ void OpeningDemoScene::program() {
     requests.push_back({Kind::Open});wait(2000);
 }
 void OpeningDemoScene::pose(unsigned i,const char* p,const char* talk) {actors[i].pose=p;actors[i].talkPose=talk;actors[i].poseTick=tick;}
+// Four original Peach tribe rows: standard, standard2, carrying, anxious.
+// Table indexes select original idle/talk/walk tokens; no generated pose names.
 void OpeningDemoScene::tribe(unsigned n) {
     static const char* idles[]={"P_S_1","P_S_7","P_S_8","P_S_4"};
     static const char* talks[]={"P_T_1","P_T_13","P_T_14","P_T_4"};
     static const char* walks[]={"P_W_1","P_W_7","P_W_8","P_W_4"};
     idle[0]=idles[n];walk[0]=walks[n];pose(0,idles[n],talks[n]);
 }
+// Reset scene state but preserve previously admitted source angle table.
+// begin then installs authored positions/yaw/pose, compiles requests and enters
+// the first step at the supplied simulation tick.
 void OpeningDemoScene::reset(){const auto saved=angles;const bool ready=facingReady;*this=OpeningDemoScene{};angles=saved;facingReady=ready;}
 void OpeningDemoScene::begin(uint64_t simulationTick) {
     reset();tick=beginTick=simulationTick;active=true;
@@ -46,12 +55,18 @@ void OpeningDemoScene::begin(uint64_t simulationTick) {
     actors[1].position={-145,0,450};actors[1].yaw=90;actors[1].visible=true;pose(1,"S_1","T_1");
     actors[2].position={-125,0,450};actors[2].visible=true;pose(2,"S_1");program();step();
 }
+// Request point.Y is the speed operand, not target height. Preserve current
+// actor Y; duration is ceil(horizontal distance*60/speed), minimum1 native tick.
+// Heading/hypot/linear interpolation are explicit native motion adapters.
 void OpeningDemoScene::move(unsigned i,std::array<float,3> target,float speed) {
     auto& a=actors[i];auto& m=motion[i];m.start=a.position;m.target=target;m.target[1]=a.position[1];
     const float dx=target[0]-a.position[0],dz=target[2]-a.position[2];
     const float distance=std::hypot(dx,dz);m.begin=tick;m.end=tick+std::max<uint64_t>(1,uint64_t(std::ceil(distance*60/speed)));m.active=true;a.moving=true;
     a.yaw=std::atan2(dx,-dz)*180/3.14159265358979323846f;if(a.yaw<0)a.yaw+=360;pose(i,walk[i],a.talkPose);
 }
+// One effect Main per simulation tick; render visits never age these owners.
+// Reveal180 and music240 are fixed60Hz presentations of3000/4000ms requests.
+// Handoff's18-tick waits represent300ms, independent of root/merchant motion.
 void OpeningDemoScene::update() {
     effects.advance(tick);
     auto advance=[&](Motion& m,std::array<float,3>& p){if(!m.active)return;const float t=std::min(1.f,float(tick-m.begin)/float(m.end-m.begin));for(unsigned i=0;i<3;++i)p[i]=m.start[i]+(m.target[i]-m.start[i])*t;if(t==1)m.active=false;};
@@ -63,6 +78,9 @@ void OpeningDemoScene::update() {
         if(handoffStage==0 && tick>=handoffTick+18){move(0,{-100,0,450},40);handoffStage=1;}
         if(handoffStage<2)actors[2].position[0]=actors[1].position[0]+chestOffset;
         if(handoffStage==1 && !motion[0].active){handoffStage=2;handoffSteps=0;}
+        // Do not collapse sixty ordered float additions into a multiply or
+        // endpoint snap. Q1024 steps85/1024 and170/1024 retain source transfer;
+        // later chest X tracks Peach with the captured offset.
         if(handoffStage==2){
             // Original sixty WAIT_FRAME1 iterations, ADD_F Q1024 operands.
             actors[2].position[0]+=.0830078125f;actors[2].position[1]+=.166015625f;
@@ -79,6 +97,9 @@ void OpeningDemoScene::update() {
             if(!facing[i].prepare(input,angles,service)){effects.failed=true;return;}
         }
     }
+    // Opening has independent Peach reactions at18/36 ticks and radiation
+    // at30 (500ms) after crystals. Radiation uses captured crystal position;
+    // these owners continue while the root waits for final title transition.
     if(opened){
         if(tick>=openTick+18 && tick<openTick+36 && std::strcmp(actors[0].pose,"P_B_3"))pose(0,"P_B_3");
         if(tick>=openTick+36 && std::strcmp(actors[0].pose,"P_B_4"))pose(0,"P_B_4");
@@ -86,6 +107,10 @@ void OpeningDemoScene::update() {
     }
 }
 void OpeningDemoScene::advance(uint64_t simulationTick) {if(!active || simulationTick<tick)return;while(tick<simulationTick){++tick;step();}step();}
+// Guard update once per tick, then execute immediate requests until a wait,
+// actor move/lift or matching message blocks. Camera requests start motion but
+// do not block this root by themselves. Repeated same-tick calls cannot replay
+// handoff increments; waitingForTitle is request-list end, not effect retirement.
 void OpeningDemoScene::step() {
     if(!updated || updateTick!=tick){updated=true;updateTick=tick;update();}
     while(cursor<requests.size()){

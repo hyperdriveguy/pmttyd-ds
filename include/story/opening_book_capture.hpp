@@ -10,6 +10,9 @@ struct OpeningBookCapture {
  static constexpr float offsetX=(400.f-2*OpeningBookView::captureLeft-size)/size;
  static constexpr float offsetY=(float(size)-240.f)/size;
 };
+// Homogeneous clip transform (offset*w before perspective divide), not a
+// postprojected screen translation. Only computes crop coordinates; actual GPU
+// completion, target lifetime and capture admission remain renderer-owned.
 inline std::array<float,2> openingBookCaptureClip(float x,float y,float w){
  return {{OpeningBookCapture::scaleX*x+OpeningBookCapture::offsetX*w,
           OpeningBookCapture::scaleY*y+OpeningBookCapture::offsetY*w}};

@@ -7,6 +7,9 @@ class OpeningDemoExit {
 public:
     bool entryAdmitted=false,entryFinished=false,requested=false,driverFinished=false,opaquePresented=false;
     bool parentExitRequest=false;
+    // A|START0x1100 only. Source requested type17/500 or2000 normalizes to
+    // actual type10/2000 via dmo mapChange override; F0-white RGBA and sequence3
+    // destination title remain distinct from entry type9/500 black.
     uint32_t buttonMask=0x1100,configuredType=17,configuredMilliseconds=500;
     uint32_t actualType=10,actualMilliseconds=2000,sourceColor=0xf0f0f0ff,sequence=3;
     const char* destination="title";
@@ -15,6 +18,8 @@ public:
     // demo_init requests type9/500 after actual original demo.tpl admission.
     void admitEntry(){if(!entryAdmitted){entryAdmitted=true;entryLastAdvance=now;}}
     uint8_t entryAlpha() const{return uint8_t(int(255.f*entryProgress));}
+    // Actual zero-alpha frame completion is required after entry driver ends.
+    // Resource admission and elapsed clock alone do not open the input gate.
     void entryPresented(uint8_t alpha){if(entryAdmitted && entryDriverFinished && alpha==0)entryFinished=true;}
     bool entryDriverFinished=false;
     uint32_t entryType=9,entryMilliseconds=500,entryColor=0x000000ff;
@@ -30,6 +35,9 @@ public:
         if(!entryFinished || requested)return false;
         requested=true;parentExitRequest=true;configuredMilliseconds=2000;lastAdvance=now;return true;
     }
+    // Sparse ticks replay repeated binary32 elapsed +=1000/60. Source entry
+    // ends only ratio<0; exit only ratio>1. Equality is still in progress, not
+    // a rounded nominal-duration acknowledgement.
     void advance(uint64_t tick){
         if(tick<now)return;
         now=tick;
@@ -51,6 +59,8 @@ public:
         }
     }
     uint8_t alpha() const{return uint8_t(int(255.f*progress));}
+    // Renderer acknowledgement must follow actual opaque final presentation.
+    // requested/driverFinished/opaquePresented are separate ownership stages.
     void presented(uint8_t alpha){if(requested && driverFinished && alpha==255)opaquePresented=true;}
     bool finished() const{return requested && driverFinished && opaquePresented;}
 private:

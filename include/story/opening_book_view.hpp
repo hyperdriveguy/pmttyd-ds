@@ -5,10 +5,14 @@ namespace ttyd {
 // Native 400x240 adaptation; source book framing remains 608x480 at half scale.
 // Extra horizontal field is revealed without stretching the book geometry.
 struct OpeningBookView {
+    // Source608x480 framing becomes304x240 geometry within400x240 screen.
+    // Native pan/zoom/capture constants below adapt framing, not source mesh/UVs.
     static constexpr unsigned width=400,height=240,sourceWidth=608,sourceHeight=480;
     // Center the opened book's spine instead of retaining the closed-cover
     // center. The source hinge is (-288/2+8)*1.5 at half-size pixels.
     static constexpr float openPan=(288.f/2-8)*1.5f*.5f;
+    // Crop origin110 = native margin48 + source124/2; opening pan moves
+    // capture with the spine. Width193 = original386/2, before target padding.
     static constexpr unsigned captureLeft=110+unsigned(openPan),captureWidth=193,captureHeight=240;
     static constexpr float sourceScale=.5f;
     // camLetterBox's settled source bars are49/44, not symmetric48s.
@@ -18,6 +22,9 @@ struct OpeningBookView {
     // Keep the source illustration's right edge in view after filling the
     // settled cinematic crop. The wider green cover remains visible on left.
     static constexpr float pictureOverflow=(101.33333587646484375f*1.5f*.5f+openPan)*visibleZoom-200;
+    // Original-aspect desktop fills400 wide; excess height crops beyond240.
+    // Capture uses193x240 content in256 square; ordinary visible crop excludes
+    // original49/44 source bars and compensates their asymmetric vertical center.
     static constexpr std::array<float,4> desktop{{0,-720.f/19.f,400,6000.f/19.f}};
 };
 inline std::array<float,2> openingBookViewportPoint(float x,float y,float panWeight=0){
@@ -29,6 +36,9 @@ inline float openingBookPan(float scale,float angle,float fade=0){
 }
 // Source capture-rectangle placement, then ImageBaseMatrix T(offset)*S(scale).
 // Offsets live in the virtual64x48 image plane, outside the crop's local scale.
+// Adapt original64x48 paper plane and source124/0/386/480 capture to native
+// content. Folded-back threshold x<-32 changes horizontal scale to preserve
+// portrait art; native depth reference16/inverted Z is not original camera depth.
 inline std::array<float,3> openingBookPaperPoint(float x,float y,float z,float depth,float scale=1,float offsetX=0,float offsetY=0,float panWeight=1,bool capture=false){
     // The front reproduces the captured rectangle. Once folded left of its
     // hinge, retain the back's portrait proportions with the vertical pixel

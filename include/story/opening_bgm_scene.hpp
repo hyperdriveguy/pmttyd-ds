@@ -6,6 +6,9 @@ namespace ttyd {
 // Simulation60Hz adapts source work->frameRate; no audible/Gekko parity claim.
 class OpeningBgmScene {
 public:
+    // Track5/6 are native catalog book/market slots, not source BGM enum IDs.
+    // Snapshot requests publication only; it does not acknowledge audible playback.
+    // Source mode0x201 selects group1, with no0x100 fade-in flag.
     struct Snapshot {
         int primaryTrack=5,tailTrack=-1;
         uint8_t primaryVolume=90,tailVolume=0;
@@ -17,6 +20,10 @@ public:
     void begin(uint64_t tick){now=tick;transitionStart=0;transitioned=false;}
     void advance(uint64_t tick){if(tick>=now)now=tick;}
     void transition(){if(!transitioned){transitioned=true;transitionStart=now;}}
+    // Retain group fade90 over360 ticks (6000ms). At240 ticks replace with
+    // market77, detach current book volume30, then subtract30/45 in repeated
+    // binary32 steps for750ms. Zero-state retirement is a separate iteration;
+    // do not replace float-tail logic with integer group fade or closed formula.
     Snapshot snapshot() const {
         Snapshot out;out.offRequested=transitioned;
         if(!transitioned)return out;

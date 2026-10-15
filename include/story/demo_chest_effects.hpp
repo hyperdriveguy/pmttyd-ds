@@ -3,6 +3,9 @@
 #include <cstdint>
 #include <vector>
 namespace ttyd {
+// PMDEFX01 converted vertex is24 bytes (float XYZ/UV + RGBA); original N64
+// vertex is14 bytes (signed16 XYZ/ST + RGBA), exported with ST divided32.
+// This native layout must not be used to memcpy the original FIFO bytes.
 struct DemoEffectVertex {std::array<float,3> xyz{};std::array<float,2> uv{};std::array<uint8_t,4> color{};};
 static_assert(sizeof(DemoEffectVertex)==24,"Original N64 export stride");
 struct DemoCrystal {bool active=false;uint32_t type=0,age=0,camera=5;int32_t remaining=100,alpha=0;float scale=.5f;std::array<float,3> position{};};
@@ -16,6 +19,9 @@ bool loadDemoChestEffectAssets(const char* root);
 // explicit native numeric/simulation adapters.
 class DemoChestEffects {
 public:
+    // Two crystal slots cover original types2/6;16 deterministic radiation
+    // rays cover type3. These are bounded demo consumers, not the global pool.
+    // Requests retain REL command offsets/camera5; draw yaw bridges source camera4.
     std::array<DemoCrystal,2> crystals{};
     std::array<DemoRadiationRay,16> rays{};
     std::vector<DemoEffectRequest> requests;

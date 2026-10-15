@@ -7,6 +7,8 @@ namespace ttyd {
 // Linear movement/camera and source paper capture/effect services are separate.
 class OpeningDemoScene {
 public:
+    // Actor slots0/1/2 are Peach/merchant/chest, not field registry IDs.
+    // Camera/linear motion use source endpoints but native numeric interpolation.
     std::array<OpeningSceneActor,3> actors; // Peach, merchant, golden chest
     DemoChestEffects effects;
     std::array<float,3> eye{0,385,1473},at{0,100,0};
@@ -27,6 +29,9 @@ public:
     uint64_t visibleMapGroups() const{return wallsVisible?3:1;}
     bool mapGroupVisible(uint32_t group) const{return group<2 && (visibleMapGroups()&(uint64_t(1)<<group));}
 private:
+    // Native request program, not EVT opcodes. Camera/pose/tribe requests may
+    // continue alongside waits/messages; motion/effect/facing updates run once
+    // per simulation tick, with sparse calls replaying every missed update.
     enum class Kind {Wait,Move,Camera,Tribe,Pose,Reverse,Message,Lift,Handoff,Walls,Open};
     struct Request {Kind kind=Kind::Wait;unsigned actor=0;std::array<float,3> point{},aim{};uint64_t duration=0;const char* pose=nullptr;const char* talk=nullptr;};
     struct Motion {std::array<float,3> start{},target{};uint64_t begin=0,end=0;bool active=false;};
