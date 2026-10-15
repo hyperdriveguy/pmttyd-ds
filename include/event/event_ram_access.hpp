@@ -46,6 +46,17 @@ public:
   if((a>=b?a-b:b-a)<size)return false;
   std::memcpy(to,from,size);return true;
  }
+ // Prove host write storage cannot mutate ANY guest RAM through an alias.
+ // The caller owns the host object lifetime; no pointer is retained here.
+ bool disjointStorage(const void* bytes,size_t size) const {
+  if(!size)return true;
+  const uintptr_t a=reinterpret_cast<uintptr_t>(bytes);
+  if(!bytes || size>UINTPTR_MAX-a)return false;
+  auto overlaps=[&](const uint8_t* data,size_t n){const uintptr_t b=reinterpret_cast<uintptr_t>(data);return n && (a>=b?uint64_t(a-b)<n:uint64_t(b-a)<size);};
+  for(const auto& r:owner_.ram_)if(overlaps(r.bytes.data(),r.bytes.size()))return false;
+  for(const auto& r:owner_.external_)if(overlaps(r.bytes,r.size))return false;
+  return true;
+ }
  // A stricter lane for native interpreter data copies: destination belongs to
  // owned RAM and cannot alias any external owner/record/file backing.
  bool copyOwned(uint32_t destination,uint32_t source,uint32_t size){

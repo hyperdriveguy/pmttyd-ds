@@ -92,9 +92,9 @@ AnimationNativeMainProgress AnimationNativeMain::progress() const{
  const auto& f=*frames_.back();return {frames_.size(),f.main.phase,f.geometry.phase,f.geometry.cache.phase,f.geometry.cache.replay.phase,f.geometry.interpolation.phase};
 }
 
-bool AnimationStartupProcess::configureMain(std::shared_ptr<const CameraManager> cameras,AnimationFacingAddressPolicy addresses,std::function<bool(uint64_t)> current){
+bool AnimationStartupProcess::configureMain(std::shared_ptr<const CameraManager> cameras,AnimationFacingAddressPolicy addresses,std::function<bool(uint64_t)> current,bool privateCapture){
  if(producerPending() || entryResource_)return false;
- auto owner=AnimationNativeMain::bind(*this,std::move(cameras),std::move(addresses),current);if(!owner)return false;main_=std::move(owner);presentation_.reset(new AnimationMeshPublication(*this,std::move(current)));++mainConfiguration_;return true;
+ auto owner=AnimationNativeMain::bind(*this,std::move(cameras),std::move(addresses),current);if(!owner)return false;main_=std::move(owner);presentation_.reset(new AnimationMeshPublication(*this,std::move(current),privateCapture));++mainConfiguration_;return true;
 }
 bool AnimationStartupProcess::main(uint32_t handle,uint64_t pass,unsigned visits){return !entryResource_ && !selectionPending() && !presentationPending() && main_ && main_->advance(handle,pass,visits);}
 

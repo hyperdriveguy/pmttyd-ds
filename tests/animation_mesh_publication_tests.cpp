@@ -9,7 +9,7 @@ using namespace ttyd;
 namespace {
 struct Fixture {
  std::shared_ptr<NativeFieldAnimation> native;std::shared_ptr<BattlePosePool> pool;bool valid=true;uint64_t pass=91;int32_t handle=0;
- Fixture(){assert(loadFieldPlayerPoseAssets("romfs"));EventNativePlatform platform;platform.flushBlock=[](void*,uint32_t){};platform.systemCall=[](void*){};native=NativeFieldAnimation::create("romfs",NativeFileCache::create(),platform);assert(native);pool=native->pool();auto h=pool->enter(fieldPlayerPoseResources()[0],2,{});assert(h && pool->selectName(*h,"M_W_1",true,{}));handle=*h;for(unsigned i=0;i<17;++i)assert(native->tick(false));AnimationFacingAddressPolicy a;a.base=0x81900000;a.unmapped=[this](uint32_t p,uint32_t n){return memory().unmappedRange(p,n);};assert(process().configureMain({},a,[this](uint64_t p){return valid && p==pass;}));}
+ Fixture(bool fast=true){assert(loadFieldPlayerPoseAssets("romfs"));EventNativePlatform platform;platform.flushBlock=[](void*,uint32_t){};platform.systemCall=[](void*){};native=NativeFieldAnimation::create("romfs",NativeFileCache::create(),platform);assert(native);pool=native->pool();auto h=pool->enter(fieldPlayerPoseResources()[0],2,{});assert(h && pool->selectName(*h,"M_W_1",true,{}));handle=*h;for(unsigned i=0;i<17;++i)assert(native->tick(false));AnimationFacingAddressPolicy a;a.base=0x81900000;a.unmapped=[this](uint32_t p,uint32_t n){return memory().unmappedRange(p,n);};assert(process().configureMain({},a,[this](uint64_t p){return valid && p==pass;},fast));}
  AnimationStartupProcess& process(){return native->process();}EventAddressSpace& memory(){return process().vm().memory;}BattlePose& pose(){return *pool->pose(handle);}
  uint32_t read(uint32_t a){uint32_t v;assert(memory().readWord(a,v));return v;}
  uint32_t model(){auto& p=pose();return read(read(read(read(read(0x80415dc0))+16*p.word(0x10)+8)+0xa0));}
@@ -28,6 +28,28 @@ void actualAndEveryVisit(){
  unsigned visits=0;for(;visits<100000;++visits){if(f.process().present(uint32_t(f.handle),f.pass,1))break;assert(same(f.pose().shape,old));const auto reads=f.process().presentationOwner()->reads();f.valid=false;assert(!f.process().present(uint32_t(f.handle),f.pass,32) && f.process().presentationOwner()->reads()==reads && same(f.pose().shape,old));f.valid=true;assert(!f.process().present(uint32_t(f.handle)+1,f.pass,1));assert(!f.process().present(uint32_t(f.handle),f.pass+1,1));}assert(visits<100000 && same(f.pose().shape,expected) && f.process().quantization().writes()==q && f.process().presentationOwner()->publications()==1);
  // Two reusable sample slots retain capacities after warmup.
  f.source();f.finish();auto capacities=[](const ActorAnimationSample& s){return std::array<size_t,13>{{s.positions.capacity(),s.normals.capacity(),s.nodes.capacity(),s.textures.capacity(),s.visibility.capacity(),s.vertices.capacity(),s.colors.capacity(),s.surfaces.capacity(),s.batches.capacity(),s.world.capacity(),s.seen.capacity(),s.active.capacity(),s.textureTransforms.capacity()}};};const auto capacity=capacities(f.process().presentationOwner()->candidate());const auto frames=f.process().mainOwner()->frameAllocations();f.source();f.finish();assert(capacities(f.process().presentationOwner()->candidate())==capacity && f.process().mainOwner()->frameAllocations()==frames);
+}
+void fastParityAndFallback(){
+ {Fixture slow(false),fast;slow.source();fast.source();
+ bool done=false;for(unsigned i=0;i<10000 && !done;++i){const unsigned budget=i%4==3?8192:i%4==2?31:i%4==1?7:1;const bool a=slow.process().present(uint32_t(slow.handle),slow.pass,budget),b=fast.process().present(uint32_t(fast.handle),fast.pass,budget);assert(a==b && slow.process().presentationOwner()->phase()==fast.process().presentationOwner()->phase() && slow.process().presentationOwner()->reads()==fast.process().presentationOwner()->reads() && same(slow.pose().shape,fast.pose().shape));done=a;}
+ assert(done && !slow.process().presentationOwner()->fastSlices() && fast.process().presentationOwner()->fastSlices());}
+ {Fixture f;f.source();while(f.process().presentationOwner()->phase()!=20)assert(!f.process().present(uint32_t(f.handle),f.pass,1));
+ const auto old=f.pose().shape;const auto* publication=f.process().presentationOwner();const auto& candidate=publication->candidate();
+ constexpr uint32_t alias=0x8c000000;
+ assert(f.memory().registerExternalRam(alias,reinterpret_cast<uint8_t*>(const_cast<ActorVector*>(candidate.positions.data())),sizeof(ActorVector)));
+ assert(!f.process().present(uint32_t(f.handle),f.pass,7) && !publication->fastSlices() && same(old,f.pose().shape));
+ assert(f.memory().unregisterExternalRam(alias) && f.memory().registerExternalRam(alias,reinterpret_cast<uint8_t*>(const_cast<AnimationMeshPublication*>(publication)),1));
+ assert(!f.process().present(uint32_t(f.handle),f.pass,7) && !publication->fastSlices());assert(f.memory().unregisterExternalRam(alias));
+ f.finish();assert(publication->fastSlices());}
+ // Missing later channels retain a readable prefix through scalar fallback.
+ {Fixture missing;missing.source();const auto pointer=missing.pose().word(0x54);std::vector<uint8_t> normals(missing.read(missing.model()+0xf8)*12);for(unsigned i=0;i<normals.size();++i)assert(missing.memory().readByte(pointer+i,normals[i]));missing.pose().word(0x54,0x8d000000);
+ assert(!missing.process().present(uint32_t(missing.handle),missing.pass,8192));const auto* m=missing.process().presentationOwner();assert(m->phase()==20 && !m->fastSlices() && m->reads()>=missing.read(missing.model()+0xf0)*3);
+ assert(missing.memory().registerRam(0x8d000000,std::move(normals)));missing.finish();assert(m->fastSlices());}
+ // Nonfinite values hold at the same lane; repair resumes fresh raw reads.
+ {Fixture finite;finite.source();const auto output=finite.pose().word(0x4c),before=finite.read(output+4);const auto shape=finite.pose().shape;
+ assert(finite.memory().writeWord(output+4,0x7fc00000) && !finite.process().present(uint32_t(finite.handle),finite.pass,8192));const auto* n=finite.process().presentationOwner();const auto reads=n->reads(),slices=n->fastSlices();assert(n->phase()==20 && slices && same(shape,finite.pose().shape));
+ finite.valid=false;assert(!finite.process().present(uint32_t(finite.handle),finite.pass,8192) && n->reads()==reads && n->fastSlices()==slices);finite.valid=true;
+ assert(finite.memory().writeWord(output+4,before));finite.finish();assert(n->fastSlices()>slices);}
 }
 void postMainGuardsAndStaticMismatch(){
  Fixture f;f.source();const auto old=f.pose().shape;const auto q=f.process().quantization().writes();const auto epoch=f.pose().timestamp();assert(!f.native->tick(false) && !f.native->release(f.handle) && !f.pool->enter(fieldPlayerPoseResources()[0],2,{}));assert(!f.process().main(uint32_t(f.handle),f.pass,8192));assert(!f.process().advance());const auto generation=f.pose().nativeGeneration;f.pose().nativeGeneration++;assert(!f.process().present(uint32_t(f.handle),f.pass,8192) && same(f.pose().shape,old));f.pose().nativeGeneration=generation;
@@ -86,4 +108,4 @@ void sourceHeaderAliasGuard(){
 }
 
 }
-int main(){actualAndEveryVisit();postMainGuardsAndStaticMismatch();globalAndMissingDecode();assemblyAtomicityAndFreshCapture();marioAndGameBarrier();rawAndReleaseAdmission();failedAssembly();linkedAndNull();sourceHeaderAliasGuard();}
+int main(){actualAndEveryVisit();fastParityAndFallback();postMainGuardsAndStaticMismatch();globalAndMissingDecode();assemblyAtomicityAndFreshCapture();marioAndGameBarrier();rawAndReleaseAdmission();failedAssembly();linkedAndNull();sourceHeaderAliasGuard();}

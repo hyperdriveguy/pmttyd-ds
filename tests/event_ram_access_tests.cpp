@@ -24,6 +24,10 @@ void runEventRamAccessFixture(const char* root){
   assert(ram.writeWord(Base+1,0x89abcdef) && m.readWord(Base+1,value) && value==0x89abcdef);
   assert(m.writeByte(Base+2,7) && ram.readByte(Base+2,byte) && byte==7);
   assert(ram.writeByte(Base+3,0x55) && m.readWord(Base+1,value) && value==0x890755ef);
+  assert(ram.disjointStorage(nullptr,0) && !ram.disjointStorage(nullptr,1));
+  assert(ram.disjointStorage(bytes.data(),bytes.size())); // registerRam owns a copy.
+  assert(!ram.disjointStorage(aliased.data()+31,1) && !ram.disjointStorage(aliased.data()+32,1));
+  assert(!ram.disjointStorage(distinct.data(),1) && ram.disjointStorage(aliased.data()+34,30));
   // Semantic state remains live and never enters the raw cache.
   assert(m.writeWord(0x81000038,0x11223344) && ram.readWord(0x81000038,value) && value==0x11223344);
   assert(ram.writeWord(0x8100003c,0x55667788) && vm->gp.timestamp==0x1122334455667788ULL);
@@ -84,7 +88,8 @@ void runEventRamAccessFixture(const char* root){
  assert(!m.copyOwnedRam(Base+64,Base,16));
  std::vector<uint8_t> aliasStorage(64,0xa5);auto* aliasBytes=aliasStorage.data();
  assert(m.registerRam(0x8a000000,std::move(aliasStorage)) && m.registerExternalRam(0x8b000000,aliasBytes+8,16));
- assert(m.withRawRamAccess([&](auto&){
+ assert(m.withRawRamAccess([&](auto& ram){
+  assert(!ram.disjointStorage(aliasBytes,64) && !ram.disjointStorage(aliasBytes+63,1));
   uint8_t v=0;
   assert(m.copyOwnedRam(Base+64,External,16));
   for(unsigned i=0;i<16;++i){assert(m.readByte(Base+64+i,v) && v==aliased[i]);}

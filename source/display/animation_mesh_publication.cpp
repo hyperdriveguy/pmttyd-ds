@@ -5,9 +5,9 @@
 #include <cstring>
 namespace ttyd {
 namespace {constexpr uint32_t Counts[]={0xf0,0xf8,0x13c,0x140,0x12c},Outputs[]={0x4c,0x54,0x5c,0x64,0x6c},Widths[]={12,12,1,4,24};}
-AnimationMeshPublication::AnimationMeshPublication(AnimationStartupProcess& p,std::function<bool(uint64_t)> current):process_(p),pool_(p.pool_),aliases_(*p.animationMemory()),current_(std::move(current)){}
+AnimationMeshPublication::AnimationMeshPublication(AnimationStartupProcess& p,std::function<bool(uint64_t)> current,bool privateCapture):process_(p),pool_(p.pool_),aliases_(*p.animationMemory()),current_(std::move(current)),privateCapture_(privateCapture){}
 AnimationMeshPublication::~AnimationMeshPublication()=default;
-bool AnimationMeshPublication::available() const{const auto* p=pool_->slot(handle_);return active_ && current_(pass_) && (captureReady_ || process_.ready()) && process_.animationMemory()==&aliases_ && aliases_.aliases(*pool_,process_.vm().memory) && p && p->nativeGeneration==generation_ && p->resource==resource_ && p->sourceBuffers==buffers_;}
+bool AnimationMeshPublication::available() const{if(fastCapture_)return true;const auto* p=pool_->slot(handle_);return active_ && current_(pass_) && (captureReady_ || process_.ready()) && process_.animationMemory()==&aliases_ && aliases_.aliases(*pool_,process_.vm().memory) && p && p->nativeGeneration==generation_ && p->resource==resource_ && p->sourceBuffers==buffers_;}
 bool AnimationMeshPublication::reserve(uint32_t handle,uint64_t pass){
  if(active_)return handle==handle_ && pass==pass_ && available();
  if(!current_(pass) || !process_.ready() || handle>=256)return false;
@@ -33,10 +33,21 @@ bool AnimationMeshPublication::capture(unsigned& visits,unsigned budget){
  const uint32_t r=aliases_.poseAddress(handle_);
  // Only reads/current checks run here. Never hold this lease through static
  // geometry admission, assembly, source evaluation or a caller-visible yield.
- return process_.vm().memory.withRawRamAccess([&](auto&){
+ return process_.vm().memory.withRawRamAccess([&](auto& ram){
  if(!process_.ready())return false;
  captureReady_=true;
- struct ResetReady {bool& value;~ResetReady(){value=false;}} resetReady{captureReady_};
+ struct ResetReady {bool& ready;bool& fast;~ResetReady(){fast=false;ready=false;}} resetReady{captureReady_,fastCapture_};
+ // This slice only reads raw guest data and writes private native storage.
+ // Exclude every VM alias of that storage, not only current channel sources.
+ // Re-prove on each borrow; scalar fallback keeps its precise read frontier.
+ uint32_t guardWork=0;
+ if(phase_==20 && privateCapture_ && available() && ram.bind(0x80415dc0,4) && ram.readWord(0x80415dc0,guardWork) && ram.bind(guardWork,24) && ram.disjointStorage(this,sizeof(*this))){
+  auto separate=[&](const auto& v){return ram.disjointStorage(v.data(),v.size()*sizeof(v[0]));};
+  bool raw=separate(candidate_.positions) && separate(candidate_.normals) && separate(candidate_.visibility) && separate(candidate_.nodes) && separate(candidate_.textures) && separate(candidate_.surfaces);
+  for(unsigned c=0;c<5 && raw;++c)if(counts_[c])raw=ram.bind(outputs_[c],counts_[c]*Widths[c]);
+  if(raw){fastCapture_=true;++fastSlices_;}
+ }
+
  for(;visits<budget;++visits){
   if(phase_==15 || phase_==30 || phase_==31)return true;
   // Each word/byte primitive checks fresh ownership. Pure cursor transitions

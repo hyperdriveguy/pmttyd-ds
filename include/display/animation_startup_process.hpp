@@ -31,7 +31,9 @@ public:
  uint32_t entryPending() const{return entry_.pending;}
  // Configure once while quiescent. current(pass) must prove the same immutable
  // producer/camera/file pass; no camera is required for null/flag8-clear exits.
- bool configureMain(std::shared_ptr<const CameraManager>,AnimationFacingAddressPolicy,std::function<bool(uint64_t)> current);
+ // privateCapture additionally promises current is independent of all private
+ // publication candidate/cursor writes. Raw/disjoint admission remains dynamic.
+ bool configureMain(std::shared_ptr<const CameraManager>,AnimationFacingAddressPolicy,std::function<bool(uint64_t)> current,bool privateCapture=false);
  bool main(uint32_t handle,uint64_t pass,unsigned visits=64);
  bool reservePresentation(uint32_t handle,uint64_t pass);
  bool present(uint32_t handle,uint64_t pass,unsigned budget=8192);
