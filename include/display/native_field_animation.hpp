@@ -2,8 +2,10 @@
 #include "animation_startup_process.hpp"
 #include "mario_presentation.hpp"
 #include "animation_pose_release.hpp"
+#include "native_npc_inner_services.hpp"
 namespace ttyd {
 struct FieldNpcAnimationServices;
+struct FieldNpcDrawRequest;
 // Native simulation service over the real cold VM, source files and one pose
 // namespace. Creation precedes Mario's three Entries. Copies of the typed pool
 // deliberately do not inherit these borrowing services.
@@ -31,6 +33,9 @@ public:
  bool endNpcPass(const void* owner,uint64_t pass);
  bool npcPassPending() const{return npcOwner_!=nullptr;}
  FieldNpcAnimationServices npcAnimationServices();
+ bool configureNpcInner(const NativeNpcInnerServices&); // Quiescent provider, outlives pass/holds.
+ bool npcDrawPending() const{return npcDraw_.active;}
+ AnimationDrawWrapperFrontier npcDrawFrontier() const{return npcDrawFrontier_;}
 
  void publicationBudget(unsigned budget){budget_=budget;} // Native scheduling policy, not source timing.
  unsigned publicationBudget() const{return budget_;}
@@ -61,6 +66,13 @@ private:
  uint32_t requestBank_=0;int32_t requestHandle_=-1;uint16_t requestStart_=0;std::string requestName_;
  float requestYaw_=0,publishedYaw_=0;bool requestReflect_=false,publishedReflect_=false;
  const void* npcOwner_=nullptr;uint64_t npcPass_=0;std::function<bool()> npcCurrent_;
+ bool drawNpc(const FieldNpcDrawRequest&);
+ bool npcDrawCurrent() const;
+ NativeNpcInnerServices npcInner_;AnimationDrawWrapperCursor npcDraw_;
+ AnimationDrawWrapperFrontier npcDrawFrontier_=AnimationDrawWrapperFrontier::Pending;
+ uint32_t npcDrawHandle_=0;uint64_t npcDrawGeneration_=0;
+ std::shared_ptr<const BattlePoseResource> npcDrawResource_;
+ std::shared_ptr<AnimationScratchPose> npcDrawBuffers_;
  unsigned budget_=8192;
  uint64_t raw_=0,uploaded_=UINT64_MAX;int32_t selected_=-1,sampled_=-1;unsigned bank_=0;
 };

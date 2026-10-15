@@ -68,6 +68,23 @@ void leaseAndSourceHolds(){
  assert(p.configureMain({},addresses,[](uint64_t){return true;}));assert(f.begin() && p.mainConfiguration()>config);
  assert(n.endNpcPass(&f.token,f.pass));
 }
+void retainedInnerMain(){
+ Fixture f;auto& n=*f.native;
+ struct Probe {Fixture* fixture;bool done=false;unsigned calls=0;} probe{&f};
+ NativeNpcInnerServices inner;inner.user=&probe;
+ inner.request=[](void* u,EventAddressSpace& memory,const AnimationInnerDrawRequest& q){
+  auto& p=*static_cast<Probe*>(u);auto& f=*p.fixture;++p.calls;
+  assert(&memory==&f.memory() && q.pose==f.native->process().animationMemory()->poseAddress(f.handle));
+  if(!p.done){if(!f.native->process().main(uint32_t(f.handle),f.pass,1))return false;p.done=true;}
+  return true;
+ }; // Explicit Inner fixture: real retained late Main, no GPU completion claim.
+ assert(n.configureNpcInner(inner) && f.begin());
+ FieldNpcDrawRequest q;q.function=0x8003b4d8;q.args={uint32_t(f.handle),0,2};q.scalars={0,1};FieldNpcDrawResponse response;auto service=n.npcAnimationServices();
+ assert(!service.request(service.user,f.memory(),q,response) && n.npcDrawPending() && n.process().mainPending());
+ assert(!n.endNpcPass(&f.token,f.pass) && !f.call(0x8003ed2c) && !f.call(0x80041170,0,1));
+ bool done=false;for(unsigned i=0;i<100000 && !done;++i)done=service.request(service.user,f.memory(),q,response);
+ assert(done && probe.done && probe.calls>1 && !n.npcDrawPending() && !n.process().producerPending() && n.process().quantization().writes()==4 && n.endNpcPass(&f.token,f.pass));
+}
 void retainedDrawBinding(){
  Fixture f;auto& n=*f.native;auto& m=f.memory();
  // Add only missing original literal words, read from the immutable ISO pack.
@@ -92,20 +109,25 @@ void retainedDrawBinding(){
   if(q.function==0x80007328){r.number=npcReviseAngle(q.scalars[0]);return true;}
   assert(false);return false;
  }; // Explicit GPU receipt fixture, never a production draw implementation.
+ NativeNpcInnerServices inner;inner.user=&probe;
+ inner.request=[](void* u,EventAddressSpace&,const AnimationInnerDrawRequest& q){auto& p=*static_cast<Probe*>(u);assert(q.pass==2 && q.pose!=0 && q.angle==270 && q.scale==2);if(!p.gpu)return false;++p.draw;return true;};
+ assert(n.configureNpcInner(inner));
  auto binding=FieldNpcMainEntryBinding::bind(owner,*registry,n.process().vm(),*const_cast<AnimationPoolMemory*>(n.process().animationMemory()),services);assert(binding);
  assert(f.begin());n.publicationBudget(1);FieldNpcDrawCursor c;
  assert(!binding->advanceDraw(0x8004c7e0,actor,c) && c.active);
  n.publicationBudget(8192);for(unsigned i=0;i<10000 && n.process().mainPending();++i)assert(!binding->advanceDraw(0,actor,c));
  assert(!n.process().mainPending() && !probe.legacyAnimation && !probe.draw);
- const auto writes=n.process().quantization().writes();assert(writes);
+ const auto writes=n.process().quantization().writes();assert(writes && n.npcDrawPending() && !n.endNpcPass(&f.token,f.pass) && !n.configureNpcInner(inner));
  f.store(n.process().animationMemory()->poseAddress(f.handle)+0xf0,0x12345678);
  assert(!binding->advanceDraw(0,actor,c) && n.process().quantization().writes()==writes);
- probe.gpu=true;assert(binding->advanceDraw(0,actor,c) && !c.active && probe.draw==3 && !probe.legacyAnimation);
+ f.current=false;assert(!binding->advanceDraw(0,actor,c) && !probe.draw);f.current=true;
+ const auto generation=f.pose().nativeGeneration;++f.pose().nativeGeneration;assert(!binding->advanceDraw(0,actor,c) && !probe.draw && !f.call(0x8003ed2c) && !f.call(0x80041170,0,1));f.pose().nativeGeneration=generation;
+ probe.gpu=true;assert(binding->advanceDraw(0,actor,c) && !c.active && probe.draw==1 && !probe.legacyAnimation);
  assert(f.pose().word(0xf0)==0x12345678 && n.process().quantization().writes()==writes && n.endNpcPass(&f.token,f.pass));
  // Installed animation provider is exclusive even when no pass admits it.
  assert(!binding->advanceDraw(0x8004c7e0,actor,c) && c.active && !probe.legacyAnimation);
  ++f.pass;assert(f.begin());for(unsigned i=0;i<10000 && c.active;++i)binding->advanceDraw(0,actor,c);
- assert(!c.active && probe.draw==6 && !probe.legacyAnimation && n.endNpcPass(&f.token,f.pass));
+ assert(!c.active && probe.draw==2 && !probe.legacyAnimation && n.endNpcPass(&f.token,f.pass));
  // Actual Main entry and movement prefixes, then original idle-pose selection.
  // The legacy clock is deliberately unavailable: installed native selection
  // must receive raw args and retain its source prefix before phase108 commits.
@@ -126,4 +148,4 @@ void retainedDrawBinding(){
 
 }
 }
-int main(){leaseAndSourceHolds();retainedDrawBinding();}
+int main(){leaseAndSourceHolds();retainedInnerMain();retainedDrawBinding();}

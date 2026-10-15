@@ -2655,3 +2655,9 @@ set_tests_properties(native_npc_animation PROPERTIES WORKING_DIRECTORY "${CMAKE_
 
 # Actual same-VM field battle ownership and sequence/result bridge.
 target_sources(ttyd_core PRIVATE source/field/field_npc_battle_binding.cpp)
+# Actual-VM ordinary unlinked source Draw wrapper, explicit linked frontiers.
+target_sources(ttyd_core PRIVATE source/display/animation_draw_wrapper.cpp source/display/native_field_npc_draw.cpp)
+add_executable(animation_draw_wrapper_tests tests/animation_draw_wrapper_tests.cpp)
+target_link_libraries(animation_draw_wrapper_tests PRIVATE ttyd_core)
+add_test(NAME animation_draw_wrapper COMMAND animation_draw_wrapper_tests)
+set_tests_properties(animation_draw_wrapper PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

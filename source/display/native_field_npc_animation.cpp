@@ -14,7 +14,7 @@ bool NativeFieldAnimation::endNpcPass(const void* owner,uint64_t pass){
  // Child quiescence alone cannot prove the outer callback/queue is drained.
  // The caller owns that boundary and must retain this lease until then.
  if(!owner || npcOwner_!=owner || npcPass_!=pass || !npcCurrent_ ||
-    !npcCurrent_() || process_->producerPending() || entering_ || releasing_.active)
+    !npcCurrent_() || process_->producerPending() || npcDrawPending() || entering_ || releasing_.active)
   return false;
  npcOwner_=nullptr;npcCurrent_={};return true;
 }
@@ -30,6 +30,8 @@ FieldNpcAnimationServices NativeFieldAnimation::npcAnimationServices(){
    return false;
   // Process children retain exact raw arguments and partial source effects.
   // The public raw Main wrapper intentionally rejects an active NPC lease.
+  if(q.function==0x8003b4d8)return n.drawNpc(q);
+  if(n.npcDrawPending())return false;
   if(q.function==0x80041170)
    return n.process_->setAnimation(q.args[0],q.args[1],q.args[2],n.budget_);
   if(q.function==0x8003ed2c)

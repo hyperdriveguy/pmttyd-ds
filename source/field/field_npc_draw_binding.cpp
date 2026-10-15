@@ -84,7 +84,8 @@ bool FieldNpcMainEntryBinding::advanceDraw(uint32_t callback, uint32_t actor,
       out.word = directory + (index << 6);
       return true;
     }
-    if ((q.function == 0x80041170 || q.function == 0x8003ed2c) &&
+    if ((q.function == 0x80041170 || q.function == 0x8003ed2c ||
+         q.function == 0x8003b4d8) &&
         b.native_.animation.request)
       return b.native_.animation.request(b.native_.animation.user, m, q, out);
     return b.native_.draw && b.native_.draw(b.native_.user, m, q, out);
