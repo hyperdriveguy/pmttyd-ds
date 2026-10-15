@@ -4,6 +4,10 @@ namespace ttyd {
 namespace {
 int32_t signedWord(uint32_t v){return v<0x80000000u?int32_t(v):int32_t(int64_t(v)-0x100000000ll);}
 }
+// Always capture its OWN global B, even with null flags pointer. Weapon74
+// mask 0x800 chooses among five enabled bits 0x100..1000; multiple candidates
+// draw rank then scan HIGH-to-low4..1 (default 0). OR result mask 0x01000000<<i;
+// do not clear existing flag choices or consume RNG for 0/1 candidates.
 uint32_t packedBattleCheckPikkyoro(uint32_t w,uint32_t* flags,const BattleDamageOrchestrationServices& s) {
     const auto& m=s.memory.memory;assert(m.word);
     const auto battle=m.word(m.user,0x8041eb90);
@@ -21,6 +25,9 @@ uint32_t packedBattleCheckPikkyoro(uint32_t w,uint32_t* flags,const BattleDamage
     if(flags)*flags=value;
     return value;
 }
+// Null defender returns18 before part/sequence effects. Otherwise retain B,
+// optionally publish last part258 and always advance attack sequence on normal
+// tail. Void callbacks cannot acknowledge a held suffix; admission is caller-owned.
 int32_t checkPackedBattleDamage(uint32_t a,uint32_t d,uint32_t p,uint32_t w,uint32_t flags,const BattleDamageOrchestrationServices& s) {
     const auto& m=s.memory.memory;assert(m.word);
     auto word=[&](uint32_t at){return m.word(m.user,at);};
@@ -42,6 +49,10 @@ int32_t checkPackedBattleDamage(uint32_t a,uint32_t d,uint32_t p,uint32_t w,uint
     auto special=[&](uint32_t code){assert(s.emergencyRevival);s.emergencyRevival(s.user,d,code);event(d,code);};
     auto possible=[&](){assert(s.acPossible);return s.acPossible(s.user,d);};
     auto defense=[&](){assert(s.defenseResult);return s.defenseResult(s.user);};
+    // Superguard5 is tested before counters/calculators. Nice effect2 writes
+    // source 0.75 payload after position(-60,+45,-10); defense sound/audience and
+    // sequence precede zero direct damage. Weapon mode 2/3 returns21; mode 4 can
+    // run attacker's explicit script, otherwise source self-hit1, then-1.
     if(!(word(w+0x74)&0x20000) && possible() && defense()==5) {
         nice(2);flags|=0x80000;assert(s.systemSound);s.systemSound(s.user,0x802ee064);audience(DamageAudienceRequest::GuardGood);
         sequence();const uint8_t mode=byte(w+0x13);
@@ -54,6 +65,10 @@ int32_t checkPackedBattleDamage(uint32_t a,uint32_t d,uint32_t p,uint32_t w,uint
     }
     BattlePackedCounterServices cs;cs.memory=s.memory;cs.user=s.user;cs.status=s.status;
     (void)packedBattleCheckCounter(counter,a,d,p,w,flags,cs);
+    // Counter admission0 skips the whole hit body but not sequence tail.
+    // Ordinary guard re-queries possibility/result; never reuse superguard reads.
+    // HP then FP share code; status application and reaction/pattern rewrites
+    // happen AFTER both calculators, before direct damage/event decisions.
     if(counter.words[0]) {
         bool eventExit=false;
         if(flags&0x100) {
@@ -84,6 +99,9 @@ int32_t checkPackedBattleDamage(uint32_t a,uint32_t d,uint32_t p,uint32_t w,uint
             if(statuses&4)code=flags|28;
             if(statuses&8)code=flags|29;
             if((flags&0x100) && (statuses&0x10)){store(d+0x274,0);special(0x717);result=18;eventExit=true;}
+            // Status9's strict irand(100)<0 branch is normally unreachable
+            // for nonnegative RNG but STILL consumes the draw. Do not change
+            // threshold or infer that a zero-probability branch is side-effect-free.
             else if((flags&0x100) && (word(w+0x74)&0x80)) {
                 assert(s.status);if(s.status(s.user,d,9)){assert(s.irand);if(s.irand(s.user,100)<0){special(0x8717);result=18;eventExit=true;}}
             }
@@ -93,6 +111,9 @@ int32_t checkPackedBattleDamage(uint32_t a,uint32_t d,uint32_t p,uint32_t w,uint
                 else {result=18;if(kind>=1 && kind<=215 && (hp>0 || statuses))audience(DamageAudienceRequest::EnemyDamage,hp);}
                 int32_t pattern=byte(w+0x6d);
                 if(pattern==20 && counter.words[9])pattern=0;
+                // Pattern14/16 consumes draw100 even if attribute0x4000
+                // already forced pattern0; incoming0x20000 gate applies afterward.
+                // Source pattern and status/counter cases remain separate domains.
                 if(pattern==14 || pattern==16) {
                     if(word(d+0x104)&0x4000)pattern=0;
                     assert(s.irand);const auto draw=s.irand(s.user,100);
@@ -103,6 +124,10 @@ int32_t checkPackedBattleDamage(uint32_t a,uint32_t d,uint32_t p,uint32_t w,uint
             }
         }
     }
+    // Counter tail: words 1/6/7 independently add wrapped HP*50/100 to
+    // word 10; ONLY zero becomes1 (no positive clamp). Four flag slots produce
+    // source statuses 4/9/8/6. Optional bomb/sound/fog precede StopAC on captured
+    // B, Help0, self damage and possible defender event. Return-1 is intentional.
     sequence();auto& k=counter.words;if(!k[9])return result;
     for(unsigned offset:{1u,6u,7u})if(k[offset])k[10]+=uint32_t(signedWord(uint32_t(hp)*50u)/100);
     const unsigned offsets[]={3,5,2,4};const int32_t types[]={4,9,8,6};

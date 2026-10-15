@@ -7,6 +7,9 @@
 #include "event_memory_release.hpp"
 namespace ttyd {
 BattleSequenceBinding::BattleSequenceBinding(Game& game,EventNativeRuntime& vm):game_(game),vm_(vm),process_(game.battleSequenceProcess),npcs_(game.originalFieldNpcs){}
+// Bind BEFORE legacy snapshot B exists and only with established field NPC
+// owner. Failed script import may reuse only a COMPLETE byte-identical source
+// view; it does not repair partial/conflicting mappings or reset live state.
 std::unique_ptr<BattleSequenceBinding> BattleSequenceBinding::bind(Game& game,EventNativeRuntime& vm,const char* root){
     // Entry must be connected before the legacy action snapshot creates B.
     if(game.trioAttack.cameras() || !game.originalFieldNpcs || !game.originalFieldNpcs->initialized() || !root)return {};
@@ -25,10 +28,15 @@ std::unique_ptr<BattleSequenceBinding> BattleSequenceBinding::bind(Game& game,Ev
     return result;
 }
 BattleSequenceBinding::~BattleSequenceBinding(){for(auto a:storageMappings_)vm_.memory.unregisterExternalRam(a);if(mapped_)vm_.memory.unregisterExternalRam(0x8041e968);}
+// Actual field party/NPC shared pool identity must agree. Bind existing W/RAM
+// before entry/init; no synthetic empty animation pool replaces missing owners.
 bool BattleSequenceBinding::attachAnimationPool(){
     if(animationMemory_ || entered_ || init_.active || fieldInit_.active || !game_.fieldParties.originalPool || game_.fieldParties.originalPool!=npcs_->poses().sharedPool())return false;
     animationMemory_=AnimationPoolMemory::bind(game_.fieldParties.originalPool,vm_.memory);return bool(animationMemory_);
 }
+// Five alias spans: heap globals8041e808(20bytes), pouch/battle pointer cells,
+// source arena and original pouch. Partial map failure unregisters only completed
+// spans; process storage publishes only after all mappings succeed.
 bool BattleSequenceBinding::attachStorage(std::shared_ptr<BattleSequenceStorage> owner){
     if(!owner || owner->pouch_!=game_.progress.originalPouch || !storageMappings_.empty() || fieldInit_.active || (process_->storage && process_->storage!=owner))return false;
     struct Span {uint32_t address;uint8_t* bytes;uint32_t size;};
@@ -36,10 +44,16 @@ bool BattleSequenceBinding::attachStorage(std::shared_ptr<BattleSequenceStorage>
     for(const auto& span:spans){if(!vm_.memory.registerExternalRam(span.address,span.bytes,span.size)){for(auto a:storageMappings_)vm_.memory.unregisterExternalRam(a);storageMappings_.clear();return false;}storageMappings_.push_back(span.address);}
     process_->storage=std::move(owner);return true;
 }
+// Require exact VM facade, attached owner, actual flush/barrier providers and
+// source allocator admission before effects. Allocation is the shared primary
+// map arena; a different facade cannot stand in merely by matching addresses.
 std::optional<uint32_t> BattleSequenceBinding::allocateMap(uint32_t root,uint32_t bytes,EventAddressSpace& facade){
     if(&facade!=&vm_.memory || storageMappings_.empty() || !process_->storage || !vm_.platform.flushBlock || !vm_.platform.systemCall || !process_->storage->canAllocate(root,bytes,facade))return {};
     return eventMapAllocate(root,bytes,vm_.memoryBinding.services());
 }
+// Walk32-byte-aligned source heap headers: validate full header/payload span,
+// live-used bit and monotonic nonoverlapping next. A matching payload address
+// alone cannot prove current allocation ownership or sufficient size.
 bool BattleSequenceBinding::ownsMapAllocation(uint32_t payload,uint32_t bytes,const EventAddressSpace& facade) const{
     if(&facade!=&vm_.memory || storageMappings_.empty() || !process_->storage)return false;
     const auto& owner=*process_->storage;uint32_t root=0;if(!facade.readWord(0x8041e808,root))return false;
@@ -51,16 +65,24 @@ bool BattleSequenceBinding::ownsMapAllocation(uint32_t payload,uint32_t bytes,co
         h=next;
     }
 }
+// Require same optional party/NPC pool, no legacy battle snapshot, actual
+// GP+168 field work identity and active owned actor at F+8. This is no-effects
+// native admission, not source NPC initialization or completed battle setup.
 bool BattleSequenceBinding::admitEntry() const{
     uint32_t gp=0,f=0,n=0,flags=0;
     return (!game_.fieldParties.originalPool || game_.fieldParties.originalPool==npcs_->poses().sharedPool()) && !game_.trioAttack.cameras() && vm_.memory.readWord(0x80415fd0,gp) && vm_.memory.readWord(gp+0x168,f) && f==npcs_->fieldWorkAddress() && vm_.memory.readWord(f+8,n) && npcs_->ownsFieldActor(n) && vm_.memory.readWord(n,flags) && (flags&1);
 }
+// Diagnostic priority is sound, animation, field-init, init/main. Zero pending
+// does not independently prove all external services/native integration ready.
 uint32_t BattleSequenceBinding::pending() const{
     if(sound_.active)return sound_.pending;
     if(animation_.active)return pendingAnimationBufferFunction(animation_);
     if(fieldInit_.active)return fieldInit_.pending;
     return init_.active?init_.pending:main_.pending;
 }
+// Only source Init80073f20/Main80073b24 on Game's exact sequence work.
+// Entered becomes true only after complete Init. Stack-local bridge closures
+// are rebuilt per call; retained child cursors belong to this facade, not them.
 bool BattleSequenceBinding::callback(uint32_t fn,OriginalSequenceWork& work,const BattleSequenceEntryServices& backend,const SoundFlagServices& sound){
     if((fn!=0x80073f20 && fn!=0x80073b24) || &work!=&game_.originalSequence->state.work || game_.trioAttack.cameras())return false;
     if(fn==0x80073f20 && !init_.active && !admitEntry())return false;
@@ -78,6 +100,9 @@ bool BattleSequenceBinding::callback(uint32_t fn,OriginalSequenceWork& work,cons
             if(!binding.storageMappings_.empty())return binding.vm_.memory.readWord(0x8041eb00,c.result);
             break;
         case 0x8000e95c:{if(c.args[0]!=4 || c.args[1]!=2 || !game.cameraManager)return false;auto* camera=game.cameraManager->camera(4);if(!camera)return false;camera->mode=2;return true;}
+        // Actual map pool allocation requires source capacity0x64000 and
+        // platform cache/barrier hooks. Camera call admits only source(4, 2);
+        // saved-switch call only(0, 0xf5de0180). Others delegate to real backend.
         case 0x80030078:{
             const auto& storage=binding.process_->storage;uint32_t root=0;
             if(!storage || binding.storageMappings_.empty() || !binding.vm_.platform.flushBlock || !binding.vm_.platform.systemCall || !binding.vm_.memory.readWord(0x8041e808,root) || !storage->canAllocate(root,0x64000,binding.vm_.memory))return false;
@@ -101,6 +126,10 @@ bool BattleSequenceBinding::callback(uint32_t fn,OriginalSequenceWork& work,cons
         return b.backend.call && b.backend.call(b.backend.user,c);
     };
     if(fn==0x80073f20){const bool done=initializeBattleSequenceEntry(s,init_);if(done)entered_=true;return done;}
+    // Main intercepts actual field initializer and animation battle-init only.
+    // Keep each child cursor across waits; source Main's word/half-only outer
+    // table intentionally exposes no byte callbacks. Missing backend stays held,
+    // never fake success or activation of the legacy snapshot renderer.
     struct Nested {BattleSequenceBinding& binding;BattleSequenceEntryServices base;} nested{*this,s};
     BattleSequenceEntryServices outer=s;outer.user=&nested;
     outer.word=[](void* p,uint32_t a){auto& n=*static_cast<Nested*>(p);return n.base.word(n.base.user,a);};

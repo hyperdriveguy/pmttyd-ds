@@ -10,6 +10,8 @@ bool same(const BattleActorServices& a,const BattleActorServices& b){
         a.audienceLifecycle.user==b.audienceLifecycle.user &&
         a.audienceLifecycle.event==b.audienceLifecycle.event;
 }
+// RAII guard refuses recursive run/reset even from inside an admitted child.
+// Successful completion drops retained state; the next invocation starts anew.
 struct Invoking {
     bool& flag;
     explicit Invoking(bool& f):flag(f){flag=true;}
@@ -28,6 +30,10 @@ bool BattleMainCursor::active()const{return bool(state_);}
 uint32_t BattleMainCursor::pending()const{return state_ && state_->index<battleMainRequests.size()?battleMainRequests[state_->index]:0;}
 bool BattleMainCursor::reset(){if(invoking_)return false;state_.reset();return true;}
 struct BattleMainRunner {
+    // Lower wrapper captures outer B before independently capturing upper B.
+    // Null OUTER completes without children. Otherwise keep all11 child indices
+    // and inner owner across holds, then compute source result and publish only
+    // to retained outer. Engaged0 completes; wrapper returns has_value, not!=0.
     static std::optional<int32_t> run(const BattleMainServices& s,BattleMainCursor& cursor,bool wrapper){
         if(cursor.invoking_ || !s.actors.memory.word)return {};
         if(cursor.state_){
@@ -65,6 +71,10 @@ BattleSequenceDispatchCursor::~BattleSequenceDispatchCursor()=default;
 bool BattleSequenceDispatchCursor::active()const{return bool(state_);}
 uint32_t BattleSequenceDispatchCursor::pending()const{return state_ && state_->index<state_->count?state_->calls[state_->index].function:0;}
 bool BattleSequenceDispatchCursor::reset(){if(invoking_)return false;state_.reset();return true;}
+// Capture global B and bank+4 once, queue up to TWO exact requests, then
+// resume them without rereading route even if child changes bank/global B.
+// Bank 0: first entry then pinch(mode 1); 1: pinch0/start; 2: pinch0/act; 3: end;
+// other banks complete with no child. Child bool denotes whole-call admission.
 bool resumePackedBattleSequenceManager(const BattleSequenceDispatchServices& s,BattleSequenceDispatchCursor& cursor){
     if(cursor.invoking_ || !s.actors.memory.word)return false;
     if(cursor.state_){

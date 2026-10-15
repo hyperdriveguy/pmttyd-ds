@@ -6,6 +6,9 @@
 #include "animation_buffer_refresh.hpp"
 #include "animation_pool_memory.hpp"
 #include <memory>
+// Facade borrows Game/VM; retained process state owns saved-mode BSS/storage.
+// Mapping aliases must outlive callbacks; destructor unregisters only its own
+// spans, never source storage or another facade's saved game/animation lifetime.
 namespace ttyd {
 class Game;class EventNativeRuntime;class FieldNpcRegistryOwner;
 // Process BSS8041e968. Init writes this from live GP+c; facades never seed it.

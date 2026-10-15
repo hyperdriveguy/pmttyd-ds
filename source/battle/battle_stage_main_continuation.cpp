@@ -44,6 +44,9 @@ bool BattleStageObjectCursor::reset() {
   state_.reset();
   return true;
 }
+// Captured B covers32 rows, stride 0x7c at+0x1715c. Cache comparisons,
+// copies and dirty-bit2 clearing happen once per row BEFORE any held map call.
+// Shared layer2 rotation cache remains shared, not one snapshot per object.
 bool resumePackedBattleStageObjectMain(const BattleStageObjectServices &s,
                                        BattleStageObjectCursor &cursor) {
   if (cursor.invoking_)
@@ -125,6 +128,9 @@ bool resumePackedBattleStageObjectMain(const BattleStageObjectServices &s,
         c.phase = 8;
       break;
     }
+    // Each pending transform pins name/XYZ. After acknowledgement, next
+    // pivot/rotation/name reads remain fresh. Positive pivot is read after
+    // rotate; visibility is read after transforms, then group flags queried.
     case 1:
       if (!s.translate || !s.translate(s.user, c.name, c.point))
         return false;
@@ -209,6 +215,9 @@ bool BattleStageWorkCursor::reset() {
   state_.reset();
   return true;
 }
+// Capture stage W=B+0x163fc BEFORE spotlight, retain it across child effects.
+// Twelve records at+4/stride 0xe8; inactive scratch pointer+0xe4 is captured for
+// free and cleared only after acknowledgement. Completed rows never replay.
 bool resumePackedBattleStageWorkMain(const BattleStageWorkServices &s,
                                      BattleStageWorkCursor &cursor) {
   if (cursor.invoking_)
@@ -235,6 +244,10 @@ bool resumePackedBattleStageWorkMain(const BattleStageWorkServices &s,
   struct Counter {
     uint32_t count, start, end, mode, duration, output;
   };
+  // Four original count/start/end/mode/duration/output offset tuples; byte
+  // endpoints unsigned, mode signed. Count predecrements ONCE before operands
+  // freeze; interpolate result freezes separately before possibly held truncate.
+  // Output narrows to low8 only after actual truncate, then advances index.
   constexpr Counter counters[] = {{0xaf0, 0xaea, 0xaec, 0xb00, 0xaf8, 0xae8},
                                   {0xaf4, 0xaeb, 0xaed, 0xb01, 0xafc, 0xae9},
                                   {0xb10, 0xb0a, 0xb0c, 0xb20, 0xb18, 0xb08},

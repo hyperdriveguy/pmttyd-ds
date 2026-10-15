@@ -2,6 +2,9 @@
 #include "battle_stage_objects.hpp"
 #include "battle_stage_work.hpp"
 #include <memory>
+// Retained stage counterparts preserve source cache/counter stores and exact
+// pending child operands across false. Service/lifecycle identity and nonreentry
+// are checked; child providers must retain their own unfinished invocations.
 namespace ttyd {
 class BattleStageObjectCursor {
 public:

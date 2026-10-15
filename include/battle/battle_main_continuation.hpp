@@ -1,6 +1,9 @@
 #pragma once
 #include "battle_main.hpp"
 #include <memory>
+// Native metadata retains a single source invocation; it does not own the
+// children's partial work or simulation cadence. Fixed memory/service/lifecycle
+// bindings and nonreentry protect pending indices without guest-state rollback.
 namespace ttyd {
 // Native continuation metadata only. Providers and actual guest memory must
 // outlive a held call. A false provider retains its own partial child work.

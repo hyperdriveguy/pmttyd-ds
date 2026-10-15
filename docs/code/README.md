@@ -13,6 +13,8 @@ Recovered original behavior and its evidence remain in
 | [Runtime ownership](runtime.md) | Native main loop, physical input, audio and frontend |
 | [Game composition](game-composition.md) | Room collision, units, tick order, restore and follower ownership |
 | [Checkpoint bytes](save-format.md) | Native save encoder, decoder and file replacement |
+| [Damage order](battle-damage-order.md) | Typed calculator modifiers, synchronous hit/counter flow and Dive arithmetic |
+| [Retained battle owners](battle-retained-owners.md) | Main/sequence/stage continuations and shared field-sequence facade admission |
 | [Audience drawing/touch](battle-audience-draw.md) | Immediate mutation, retained callback limits, auxiliary icons and completed-pass touch proof |
 | [Part/HP presentation](battle-part-presentation.md) | Matrices/material/history, HP reloads/gauges, projection and stock EXP |
 | [Reports/resources](battle-reports-resources.md) | AP/drop ordering, present recovery, menu files, curtain, status window and Majinai bytes |
@@ -90,6 +92,7 @@ Stage/floor/object/spotlight, camera requests/framing and TimingA/break-slot dis
 Action menu/UI/ring and immediate/retained class draw/raster/footer helpers are covered.
 Audience initialization/population/control, actor reactions, item/selection lifecycles and sound helpers are covered.
 Audience draw/callback/touch, AP/drop/present, ordinary part/HP and small battle resource/state leaves are covered.
+Typed damage and synchronous orchestration, Dive, retained Main/stage and sequence facade owners are covered.
 Remaining field/NPC/partner modules, battle, message, inventory, story, effect
 and port tooling still
 require a systematic inline numeric/behavior audit. Concurrent additions to

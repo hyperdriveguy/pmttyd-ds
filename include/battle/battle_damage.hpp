@@ -2,6 +2,9 @@
 #include <cstdint>
 #include "battle_status.hpp"
 
+// Typed fields mirror recovered byte/word domains but do not reproduce a BE
+// guest-memory access trace. Power/status callbacks may mutate their owners;
+// calculator results/code are separate from resource application and hit events.
 namespace ttyd {
 // Friendly badge labels are annotations of the documented US byte fields.
 struct DamageBadges {

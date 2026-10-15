@@ -1,6 +1,9 @@
 #pragma once
 #include "battle_packed_counter.hpp"
 #include "battle_damage_application.hpp"
+// Synchronous source controller: ALL callbacks must be admitted and execute
+// actual services. No provider-readiness return/cursor exists. Source results
+//18/19/21/-1 are control flow, not native ready/unavailable booleans.
 namespace ttyd {
 enum class DamageAudienceRequest {GuardGood,GuardBad,EnemyNoDamage,EnemyDamage,Countered};
 // Source service boundary for complete BattleCheckDamage800fb01c. Callbacks
