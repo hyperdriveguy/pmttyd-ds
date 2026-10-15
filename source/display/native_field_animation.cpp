@@ -34,7 +34,7 @@ bool NativeFieldAnimation::clock(BattlePoseClock& out) const{
  out={a,b};return true;
 }
 bool NativeFieldAnimation::tick(bool battle,bool paused){
- if(!ready())return false;
+ if(!ready() || process_->mainPending())return false;
  auto& vm=process_->vm();auto& m=vm.memory;uint32_t gp=0,bus=0,window=0;
  if(!m.readWord(0x80415fd0,gp) || gp!=0x81000000 || !m.readWord(0x800000f8,bus) || !m.readWord(0x8041ec30,window))return false;
  if(window){uint16_t flags=0;uint32_t state=0;if(window>0xffffffdc || !m.readHalf(window,flags) || (!(flags&0x1000) && !m.readWord(window+0x20,state)))return false;}
@@ -46,7 +46,7 @@ bool NativeFieldAnimation::tick(bool battle,bool paused){
  publishEventRetraceTime(0,s);return true;
 }
 std::optional<int32_t> NativeFieldAnimation::enter(std::shared_ptr<const BattlePoseResource> resource,int32_t mode,const char* requested){
- if(!ready() || releasing_.active || mode<0 || mode>2 || !resource || !resource->draw || !resource->textures || !resource->bank || resource->names.empty())return {};
+ if(!ready() || process_->mainPending() || releasing_.active || mode<0 || mode>2 || !resource || !resource->draw || !resource->textures || !resource->bank || resource->names.empty())return {};
  const std::string name=requested?requested:resource->modelName;if(name.empty() || name.size()>=256 || name!=resource->modelName || !files_->contains("a/"+name,5) || !files_->contains("a/"+resource->textureName+"-",4))return {};
  // Preserve the original model-cache canonical resource, including its atlas.
  for(const auto& model:pool_->models())if(model.flags() && model.resource && model.resource->modelName==resource->modelName){resource=model.resource;break;}
@@ -60,6 +60,7 @@ std::optional<int32_t> NativeFieldAnimation::enter(std::shared_ptr<const BattleP
  return result;
 }
 bool NativeFieldAnimation::mario(const MarioPresentation& mario,const std::array<int32_t,3>& handles){
+ if(process_->mainPending())return false;
  sampled_=-1;if(!ready() || !mario.supported || !mario.poseUploaded)return false;
  bank_=(mario.displayFlags&0x10000000)?2:(mario.displayFlags&0x80000000)?1:0;
  const int32_t handle=handles[bank_];auto* p=pool_->pose(handle);if(!p || !p->sourceBuffers || !p->resource->bank->pose(mario.selected))return false;

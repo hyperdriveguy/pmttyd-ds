@@ -7,6 +7,7 @@
 #include "animation_buffer_refresh.hpp"
 #include "animation_tangent_memory.hpp"
 #include "animation_scratch_memory.hpp"
+#include "animation_native_main.hpp"
 namespace ttyd {
 // Owns a cold animation subsystem's actual VM/SDK arena/work/cache aliases.
 // Runs cold startup and original Entry with real file/buffer owners. Live CPU
@@ -26,12 +27,21 @@ public:
  // failure, empty is unavailable. No teardown/release contract is implied.
  std::optional<int32_t> enter(uint32_t name,uint32_t mode,std::shared_ptr<const BattlePoseResource>);
  uint32_t entryPending() const{return entry_.pending;}
+ // Configure once while quiescent. current(pass) must prove the same immutable
+ // producer/camera/file pass; no camera is required for null/flag8-clear exits.
+ bool configureMain(std::shared_ptr<const CameraManager>,AnimationFacingAddressPolicy,std::function<bool(uint64_t)> current);
+ bool main(uint32_t handle,uint64_t pass,unsigned visits=64);
+ bool mainPending() const{return main_ && main_->pending();}
+ const AnimationNativeMain* mainOwner() const{return main_.get();}
+ AnimationQuantizationState& quantization(){return quantization_;}
+ const AnimationQuantizationState& quantization() const{return quantization_;}
  bool ready() const{return aliases_ && aliases_->matchesWork() && tangentMemory_ && tangentMemory_->current() && scratch_ && scratch_->current();}
  uint32_t pending() const{return cursor_.pending;}
  EventNativeRuntime& vm(){return *vm_;}
  const EventNativeRuntime& vm() const{return *vm_;}
  const AnimationPoolMemory* animationMemory() const{return aliases_.get();}
 private:
+ friend class AnimationNativeMain;
  AnimationStartupProcess(std::shared_ptr<NativeFileCache>,std::shared_ptr<BattlePosePool>,const EventNativePlatform&,uint32_t);
  AnimationInitializeServices services();
  bool child(BattleSequenceCall&);
@@ -56,6 +66,8 @@ private:
  std::string entryFilename_;
  std::unique_ptr<AnimationPoolMemory> aliases_;
  std::unique_ptr<AnimationTangentMemory> tangentMemory_; // Retires before arrays and VM.
- std::shared_ptr<AnimationScratchMemory> scratch_; // Retire first; no dangling VM readers.
+ AnimationQuantizationState quantization_;
+ std::shared_ptr<AnimationScratchMemory> scratch_; // Retire before arrays/VM.
+ std::unique_ptr<AnimationNativeMain> main_; // Retire frames before scratch/VM.
 };
 }

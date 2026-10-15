@@ -28,7 +28,7 @@ bool admittedImage(const EventScriptAssets& image){
 }
 }
 AnimationStartupProcess::AnimationStartupProcess(std::shared_ptr<NativeFileCache> files,std::shared_ptr<BattlePosePool> pool,const EventNativePlatform& platform,uint32_t gp):pool_(std::move(pool)),files_(std::move(files)),vm_(std::make_unique<EventNativeRuntime>(gp,platform)){}
-AnimationStartupProcess::~AnimationStartupProcess(){if(scratch_)scratch_->retire();}
+AnimationStartupProcess::~AnimationStartupProcess(){main_.reset();if(scratch_)scratch_->retire();}
 std::unique_ptr<AnimationStartupProcess> AnimationStartupProcess::cold(std::shared_ptr<NativeFileCache> files,std::shared_ptr<BattlePosePool> pool,const EventNativePlatform& platform,const char* path,uint32_t gp,uint32_t arena,uint32_t bytes){
  // Explicit native arena policy: aligned, nonwrapping, room for all four source
  // fixed pools, descriptor reservation and a valid final free-list header.
@@ -88,6 +88,7 @@ bool AnimationStartupProcess::child(BattleSequenceCall& c){
  }
 }
 bool AnimationStartupProcess::advance(){
+ if(mainPending())return false;
  if(!initialized_){auto s=services();if(!initializeAnimation(s,cursor_))return false;initialized_=true;}
  // Completed source effects never replay while either alias admission waits.
  if(!aliases_)aliases_=AnimationPoolMemory::bind(pool_,vm_->memory);
@@ -172,7 +173,7 @@ bool AnimationStartupProcess::adoptEntry(){
  return bool(p->sourceBuffers);
 }
 std::optional<int32_t> AnimationStartupProcess::enter(uint32_t name,uint32_t mode,std::shared_ptr<const BattlePoseResource> resource){
- if(!ready())return {};
+ if(!ready() || mainPending())return {};
  if(!entryResource_){
   std::string requested;
   if(mode>2 || !pool_->cacheMetadataReady() || !resource || !resource->draw || !resource->textures || !resource->bank || resource->names.empty() || !text(name,requested) || requested!=resource->modelName || !files_->contains("a/"+resource->modelName,5) || !files_->contains("a/"+resource->textureName+"-",4))return {};

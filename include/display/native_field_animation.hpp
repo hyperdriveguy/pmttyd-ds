@@ -22,6 +22,9 @@ public:
  // Retained source Release; ordinary Entry uses real fileFree. Smart buffers
  // require their own provider and retain the original smartFree barrier.
  bool release(int32_t handle);
+ // Raw source Main only; native shape publication is a distinct next owner.
+ // Caller configures process Main and pins its producer pass first.
+ bool main(uint32_t handle,uint64_t pass,unsigned visits=64);
  uint32_t releasePending() const{return releasing_.pending;}
  const BattlePose* marioPose() const{return sampled_>=0?pool_->pose(sampled_):nullptr;}
  unsigned marioBank() const{return bank_;}

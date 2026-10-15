@@ -2371,3 +2371,10 @@ add_executable(animation_main_interpolation_tests tests/animation_main_interpola
 target_link_libraries(animation_main_interpolation_tests PRIVATE ttyd_core)
 add_test(NAME animation_main_interpolation COMMAND animation_main_interpolation_tests)
 set_tests_properties(animation_main_interpolation PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Complete actual-VM native Main with retained linked frames and GQR state.
+target_sources(ttyd_core PRIVATE source/display/animation_native_main.cpp)
+add_executable(animation_native_main_tests tests/animation_native_main_tests.cpp)
+target_link_libraries(animation_native_main_tests PRIVATE ttyd_core)
+add_test(NAME animation_native_main COMMAND animation_native_main_tests)
+set_tests_properties(animation_native_main PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
