@@ -3844,3 +3844,33 @@ owners. CPU setup completion still does not admit Window/queue/GPU readiness.
 Original Nintendo/Intelligent Systems rights retained; provenance grants no new
 license/distribution rights. No ISO/extracted original/compiled product committed.
 Editable assets/manifest.json overlay remains preserved.
+
+
+### 2026-10-15 matched original boot/NPC data views for battle UI validation
+
+The current committed runtime's original animation boot producer requires31
+spans. Re-ran `tools/animation_boot_image.py` read-only against the supplied
+US revision0 ISO in an isolated snapshot: ignored
+`romfs/animation-boot/memory.pmevt` SHA256
+`aa06fab33e43734314a99f0aa864bdb99041b144e720b4b7b8563419f11cfd62`,
+metadata `memory.json` SHA256
+`87fd5c255d0939e0f88599417fbf0c588fa7f8a1e94c716fc9e55e86686c60fd`.
+Initialized DOL/BSS provenance and exact scalar hashes are retained by the
+existing converter; no source value or runtime admission was substituted.
+
+The current NPC source-data converter requires43 immutable DOL views. Re-ran
+`tools/door_data_assets.py` in an isolated private work directory, retaining
+unmodified `rel/gor.rel` and the complete original event/data closure. Ignored
+`romfs/door-data.pmevt` SHA256
+`90992f21cca1bdcc34c2a0e4cfbb0913c1bba59aadb5e221ef58ba82dc0e26dd`;
+`romfs/door-data.json` SHA256
+`63b84412756ea43faf1a3ec0e2e05a9d2deaa1c3f00101b08934cea9f7a0f1e1`.
+Only these two door products differ from the inherited41-view pack. The other
+regenerated door/area/prefetch products remain byte-identical. These are data
+availability corrections, not rewritten scripts, invented defaults or timing
+measurements. No texture geometry/scaling, music or sound conversion changed.
+
+Exact source/product deltas and failed/final gates are retained under
+`artifacts/class-ui-{head,boot31,final}-validation`. Original Nintendo/Intelligent
+Systems rights remain; local extraction grants no redistribution rights.
+ISO, extracted REL/data and compiled packs remain outside source history.

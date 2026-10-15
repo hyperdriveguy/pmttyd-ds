@@ -16496,3 +16496,74 @@ remaining changed battle code and tools; whole-file Trio numeric coverage still
 needs synthesis. Hash inventory covers only tracked source/include C++/header/
 PICA and is a review aid,not semantic completeness; untracked additions and tools
 need their own audit. Broad documentation/remake goals remain active.
+
+
+## 2026-10-15 — Original class packets/shared language accepted; four-type GPU proof
+
+Commit `8e807cb026b6128ab10d9024ab971bd5dc21e4d9` integrates22 owned paths.
+Original class surfaces0/1 retain genuine I4 metadata, source InitSub/Quad/Vertex
+FIFO and exact C0*raster RGB with texture*raster alpha. Actual TEX-load snapshots
+survive later legitimate temporary SDK output reuse while actual common-bank/
+source/native retirement still invalidates packets. Class geometry now joins
+the same ordered/prepared native batch as font, Window, submenu and icons.
+The process language alias shares actual GP+16c reads AND writes, preserves
+other GP/input/dimension/timestamp lanes, retains source registration ownership
+and blocks RAM fallback on stale aliases. No default language or whole-GP copy.
+
+Final exact6,621-input authority:
+`artifacts/class-ui-final-validation/manifest.json`, SHA256
+`17d6f7c306ab87f1fc5911effcc37f581a646aca13e3e8b7fbbcc4a698845773`.
+All hashes unchanged after all consumers terminated. Only CMake/behavior-index
+committed baseline suffixes differ from validated bytes; owned journals were
+replayed onto current committed text to preserve independent additions. All20
+other code/contract postimages exactly match validation. Scoped merge and
+committed-byte audits are retained in that directory.
+
+- Full `CMAKE_BUILD_PARALLEL_LEVEL=4 make --jobserver-style=pipe test`: exit0;
+  514 C++ in154.03s,231 Python in69.949s,zero skips.
+- `make --jobserver-style=pipe all -o assets-ready -j4 SOUNDTRACK=gamecube`:
+  exit0. Native `artifacts/ttyd-original-class-language.3dsx` SHA256
+  `062511c3f2a39dbb3ae5b0fb6acada70467c091f42fa0d9e02f054d324746458`.
+  Reused557 exactly matched native objects/generated headers only after the
+  parent native handle terminated; fresh link/RomFS embedding. Host built fresh.
+- Unchanged source class I4/TEV/FIFO verifier and1,594-document link gate: exit0.
+- Final isolated Azahar field checkpoint: exit0,70s warmup, physical file2
+  selection,20s load, right/left/idle captures; final field image root-viewed.
+  Zero native exception/unmapped access. Only generated test profile/save used.
+
+Two failed parents remain intact. First current-HEAD graph failed22 startup
+C++ tests because boot28 did not meet actual loader31. After original boot31
+regeneration, all514 C++ passed; one of231 Python tests then correctly rejected
+NPC metadata41 vs current source43. Only original boot/NPC products were
+regenerated in separate snapshots; no test/source admission was bypassed.
+Final gate is fully green. Exact new product paths/hashes are in ASSETS.
+
+Native all-four-type rendering probe is also frozen:
+`artifacts/weapon-icon-native-probe/frozen.json`, SHA256
+`d0ef5b88843d20eee4a48e2b74e3d90b8004adb9b8e27216078d478deea8a171`.
+Actual original records445/446/504 resolve images465/466/533 and are imported
+through the real catalog/Tex3DS cache, never an index-as-GX handle. Four top
+RGB buffers match SHA256
+`5de4a8fadc72045f0839e4eed54241e0f7edda47760ccdb18570b4fe68b5711b`
+with34,545 nonbackground pixels; final reimport crop root-viewed.217 packets,
+420 RNG,360/72 Window/submenu FIFO,**25 queries**,7,894 reads and748 requests
+remain stable. Physical A retires/reimports actual Renderer resources; old
+icon generations/packets/plan reject even with old tokens alive. Strict ARM,
+native build and isolated smoke exit0; zero native exceptions/unmapped access.
+Its source-only Main differs from exact6,487 accepted inputs. Explicit TEST
+parent/GX/OS/heap/direct Camera8/opaque source-icon-object admission remains;
+pending publication is deliberately unacknowledged. This is actual native GPU
+ownership/raster evidence, not a normal source weapon callback/PPC/hardware proof.
+Prior submenu query-count14→10 correction remains separately recorded.
+
+Next actual UI integration is in progress: original Window real async startup
+and51 objects/sourceReady1 are focused-frozen; scoped source-backed cold GX
+history is focused-frozen; the actual queued weapon route is being connected to
+real source TEX/font/window/icon owners. A real menu-bank bug was found: factory
+used B+a0 instead of source producer/consumers' B+163f8; the correction and
+regression are being prepared. Original HUD partner/AP work now uses whole
+statusGetValue plus actual optional source children and source-backed gauge
+selection; Root Status5 remains unregistered until this normal feature is ready.
+Keep all these packages separate from the accepted gates above until integrated.
+Populated normal menu, full tutorial/real battle activation and lower audience
+bad-item targeting with physical selection plus optional taps remain open.
