@@ -37,7 +37,7 @@ bool loadSaveBlockEventAssets(const char* root) {
 struct SaveBlockEventRuntime {
     SaveBlockEvent* owner=nullptr;SaveEventServices services;
     EventNativeRuntime vm;
-    // Explicit native VM context: GP0x81000000, source243MHz bus-clock input,
+    // Explicit native VM context: GP0x81000000, native243MHz clock-adapter input,
     // finite integer numeric adapters. Platform cache-flush/syscall are no-ops;
     // this VM runs source data/opcodes, not original CPU or card hardware.
     SaveBlockEventRuntime():vm(0x81000000,platform(this)){}
