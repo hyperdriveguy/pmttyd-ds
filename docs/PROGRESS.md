@@ -1,3 +1,95 @@
+## 2026-10-14 — Original audience target cleanup and X menu handoff
+
+Previous goal turn made progress with native sampler safety. Commit
+`d17e1fe1d005e07e9bcc7fc9ba45a285b317acca` implements whole original
+BattleAudience_SetTarget and binds the tutorial class/weapon/target callers to
+its real query/target/UI End path. This removes the deliberate stop on every
+actual GetItemOn match. [Contract](behavior/battle/AUDIENCE_TARGET_SELECTION_AND_NATIVE_INTERRUPTION.md).
+The full requested tutorial/battle and optional audience-tap goal remains active.
+
+Static read-only ISO inspection pins SetTarget801a2bec/9c and its linked
+GetExist/GetPtr/ItemGetPtr/ChangeStatus. Selected member flags OR20 precedes
+an exact ascending0..199 scan. Other existing state7 holders have item flags
+cleared, retained-member held half set-1 and original ChangeStatus(slot,0).
+Selected item/state and ineligible members are preserved. Signed indices,
+wrapped arithmetic, unused getter calls and fresh global-B lookup order remain
+observable. No assumed audience count, bad-item filter or source item-state
+substitute narrows the original physical button query.
+
+The new retained interruption cursor captures original B before Trigger400;
+query/target acknowledgements survive a UI availability wait. A retry cannot
+poll a second trigger or rerun the acknowledged target cleanup. It rejects a
+different memory owner/read/write callback or private output identity. Previous
+menu type is read after actual End; source type11, state29 and fresh flags OR4
+follow in order. The existing real UI-release owner closes the native class/
+weapon presentation and clears only Act-menu flag1. Verified source light-off
+is a blr leaf. Unknown UI ownership holds, not a fabricated successful free.
+
+The helper retains its own continuation. The existing outer command-unbound
+latch/whole Main cursor is still unfinished, so this does not certify automatic
+whole-command resumption after an unavailable outer invocation. Known native UI
+owners finish synchronously. The existing fixed weapon projection is explicit;
+tracked class allocations retain the real SDK-free owner. The new ARM fixture
+exercises the fixed projection and unknown/replaced-owner paths, not a newly
+constructed full original class-menu scene.
+
+Required host checks in frozen `artifacts/battle-lens-qwwrj2n7` passed329/329
+C++ in36.06s and190/190 Python in28.249s, exit0: `CMAKE_BUILD_PARALLEL_LEVEL=4
+make test -o assets-ready`, log `artifacts/audience-interrupt-test.log`.
+Required native `MAKEFLAGS=-j4 TMPDIR=artifacts/tmp make all -o assets-ready
+BUILD=build-battle-lens TARGET=ttyd-battle-lens` exited0; logs
+`artifacts/audience-interrupt-native.log` and final normal
+`artifacts/audience-interrupt-native-final.log`. No new production warning;
+existing unrelated warnings remain. Temporary main restored exactly.
+Normal3DSX SHA256
+`9232480e89ad51521a6cdbeb2889b74158f26d90ac43b611620f56496827415d`.
+
+Frozen baseline `ff9a51f48b23fd96317e8d6bace50f505a84e22c` plus owned feature
+inputs audited1696 source/include/test/tool/build files with zero mismatches.
+Manifest `artifacts/audience-interrupt-source-manifest.json`. Concurrent pose,
+NPC, icon and source-footer work was preserved/excluded; the whole current
+working tree or later merged HEAD is not claimed validated as one build.
+Documentation links checked1345 Markdown files, zero broken links.
+
+Portable tests cover selected preservation, paired/flag2/inactive exclusions,
+state8 preservation, slot199 cleanup and slot200 exclusion, signed held index,
+current-B mutation after item clear, retained query/UI waits, wrong-owner reject,
+changed target/output/global state during a wait, fresh post-End type/flags,
+no-match and battle blocker. The packed bridge uses actual samplePhysical/general
+battle-pad storage with the source X400 bit, whole GetItemOn/SetTarget/UI End,
+and verifies type11/state29, unchanged HP7 and zero attack roots. Fixture actor/
+status memory is explicit test data; it does not construct story crowd
+members or grant items. No simulation counter/timing constant was invented.
+
+Excluded ARM probe runs those same tests with heap-owned VM/packed/scene owners.
+Isolated Azahar exited0, status `PASS target cleanup;padX;UIhold;HP7;roots0`.
+Inspected `artifacts/azahar-audience-interrupt/boot.png`; log captured before
+termination has zero unmapped accesses/native exceptions. Probe build/smoke logs
+`artifacts/audience-interrupt-probe-build.log` and
+`artifacts/audience-interrupt-probe-smoke.log`. User emulator profiles/saves were
+untouched. This tests synthetic source pad samples on ARM, not native hardware
+input latency or a normal Game audience battle. No raster/performance parity
+claim follows from the console fixture.
+
+Existing original source verifiers passed20 menu/helper bodies with243 anchors
+and3 data spans, plus17 population bodies/9 data spans. Original local body
+identities/disassembly are recorded under `artifacts/audience-interrupt-*`.
+Checked existing harbor event-pack vectors802fa104/30, zero80424988/4 and query
+Z offset804249cc/4 byte-for-byte against the read-only ISO. All three already
+match. No pack, artwork, audio, dialogue or licensing conversion changed; no
+original bytes entered source history. Existing menu/HUD style and physical
+controls remain intact. Optional lower-screen tap routing is still unbound.
+
+Next bind real AudienceAttack/action/receipt ownership after source state29 and
+complete the original present-item consumer; then admit live audience telegraphs
+and validate optional lower-audience selection against actual source records
+while retaining physical X. Whole Main/camera cadence and command continuation,
+GP counter ownership, missing queued draw providers, class-menu Game activation,
+original actor/pose frame admission, AP/HUD ordering, enabled fog/lit icon
+programs/original1x1 dummy, tutorial follow-ups, full turn/damage/actual SFX and
+finishing field return remain unfinished. No playable throw prevention, story
+success or full battle completion is inferred from this input/target handoff.
+
 ## 2026-10-14 — Native sampler safety across original battle/item/message art
 
 Previous goal turn made progress with retained original icon geometry. Commit
