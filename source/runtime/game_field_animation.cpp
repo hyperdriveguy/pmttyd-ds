@@ -1,17 +1,27 @@
 #include "game.hpp"
 #include "native_field_animation.hpp"
 namespace ttyd {
+// Native bootstrap requires a fresh pose namespace and no held producer.
+// Creation/configuration/Mario Entries are ordered admissions, not a rollback
+// transaction: false can leave earlier owner work installed for caller handling.
 bool Game::initializeNativeFieldAnimation(const char* root,std::shared_ptr<NativeFileCache> files,const EventNativePlatform& platform){
  if(fieldParties.originalPool || nativeAnimationPending())return false;
  auto owner=NativeFieldAnimation::create(root,std::move(files),platform);
  if(!owner || !fieldParties.configureNativeAnimation(std::move(owner),fieldPlayerPoseResources()) || !fieldParties.initializeMario(fieldMarioBattle,{},0))return false;
  prepareNativeFieldAnimation();return nativeMarioPose()!=nullptr;
 }
+// Simulation owns presenter/selection changes. A pending Main/publication
+// freezes this prefix; the runtime drains it before advancing another tick.
+// Camera simulation ticks, converted by the shared clock helper, drive poses.
 void Game::prepareNativeFieldAnimation(){
  if(!fieldParties.nativeAnimation || nativeAnimationPending())return;
  marioPresentation.update(fieldJump.motion,fieldMovement.speed,fieldMovement.headingOffsetDegrees,progress.hp,fieldCameraTickMilliseconds(fieldCameraSimulationTicks),true);
  updateNativeFieldAnimation();
 }
+// Root remains in native world units; water supplies absolute Y while ordinary
+// motion uses floor+jump. Configure the actual camera owner before submission.
+// Only field Explore/Dialogue outside battle/story locks starts Mario work;
+// publicationBudget is a native visit budget, not measured source frame timing.
 void Game::updateNativeFieldAnimation(){
  if(!fieldParties.nativeAnimation || nativeAnimationPending())return;
  auto& animation=*fieldParties.nativeAnimation;
@@ -25,6 +35,8 @@ void Game::updateNativeFieldAnimation(){
 const BattlePose* Game::nativeMarioPose() const{return fieldParties.nativeAnimation?fieldParties.nativeAnimation->marioPose():nullptr;}
 unsigned Game::nativeMarioBank() const{return fieldParties.nativeAnimation?fieldParties.nativeAnimation->marioBank():0;}
 bool Game::nativeAnimationPending() const{return fieldParties.nativeAnimation && fieldParties.nativeAnimation->producerPending();}
+// Resume the existing request with its captured pass/selection/root. This is
+// drain work only; no presenter update, new input edge or simulation tick here.
 bool Game::drainNativeAnimation(){return !nativeAnimationPending() || fieldParties.nativeAnimation->resumeMario(fieldParties.nativeAnimation->publicationBudget());}
 ActorVector Game::nativeMarioRoot() const{return fieldParties.nativeAnimation?fieldParties.nativeAnimation->marioRoot():ActorVector{};}
 float Game::nativeMarioYaw() const{return fieldParties.nativeAnimation?fieldParties.nativeAnimation->marioYaw():0;}
@@ -38,6 +50,9 @@ bool Game::retainNativeFieldAnimation(Game& previous,bool checkpoint){
  auto& old=previous.fieldParties;auto& next=fieldParties;if(!old.nativeAnimation)return true;
  BattlePoseClock clock;
  if(!old.nativeAnimation->ready() || !old.nativeAnimation->clock(clock))return false;
+ // Room candidate admission checks every present pose's incarnation/resource
+ // and full source bytes. For Mario handles only, allow exactly the documented
+ // reinit patch: material word e8=0 and light word ec OR2 (bytes e8..ef).
  if(!checkpoint){
   if(!next.originalPool)return false;
   for(unsigned i=0;i<next.poses.size();++i)if(next.poses[i]){
@@ -59,6 +74,9 @@ bool Game::retainNativeFieldAnimation(Game& previous,bool checkpoint){
   for(unsigned i=0;i<next.poses.size();++i)if(next.poses[i])next.poses[i]=std::make_unique<FieldPartyPose>(source,int32_t(i),next.poses[i]->sourceResource);
   next.originalPool=std::move(source);next.nativeAnimation=old.nativeAnimation;
   fieldParties.reinitializeMario(fieldMarioBattle);
+ // Checkpoint handoff MOVES the live pool/process instead of adopting detached
+ // views. Retain handle/party identities, source clock, upload serial and NPC
+ // owner, then perform Mario reinit. This does not restart the cold source VM.
  }else{
   next=std::move(old);fieldMarioBattle.poseHandles=previous.fieldMarioBattle.poseHandles;
   fieldMarioBattle.partyIndices=previous.fieldMarioBattle.partyIndices;fieldMarioBattle.savedPartyKinds=previous.fieldMarioBattle.savedPartyKinds;

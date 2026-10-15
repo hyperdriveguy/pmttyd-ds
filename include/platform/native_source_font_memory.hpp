@@ -43,11 +43,16 @@ public:
  std::optional<uint32_t> word(uint32_t)const;
  bool storeByte(uint32_t,uint8_t);
  bool storeWord(uint32_t,uint32_t);
+ // Original address/byte-size spans: font pointer+GX object/descriptors;
+ // initialized palette/spacing/name table; two actual glyph-map BSS cells.
+ // bind captures supplied bytes; these extents do not authorize default zeros.
  static constexpr std::array<std::pair<uint32_t,uint32_t>,4> StateSpans{{
   {0x8041e978,0x44},{0x80416010,0x44},{0x80429578,4},{0x80429598,4}}};
 private:
  NativeSourceFontMemory()=default;
  struct Snapshot {std::array<std::vector<uint8_t>,4> spans;};
+ // capacity reserves address ownership; known is the actual readable DVD
+ // prefix. The strong owner pins backing storage even after all VMs unbind.
  struct Allocation {uint32_t base,capacity,known=0;uint8_t* backing;std::shared_ptr<const void> owner;};
  std::unique_ptr<Snapshot> snapshot_;
  std::vector<Allocation> allocations_;
@@ -55,6 +60,9 @@ private:
  uint8_t* cell(uint32_t)const;
  friend class NativeSourceFontBinding;
 };
+// RAII alias lease: restore this VM's pre-bind state bytes on destruction,
+// while shared process mutations/allocation bytes survive in the owner.
+// The borrowed VM must outlive the lease, with mappings unchanged by outsiders.
 class NativeSourceFontBinding {
 public:
  ~NativeSourceFontBinding();

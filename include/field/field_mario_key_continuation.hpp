@@ -10,6 +10,8 @@ struct FieldMarioKeyPartyCapture {
     const void* actor=nullptr;
     std::shared_ptr<const void> registry, incarnation;
 };
+// Original function/callsite identities distinguish repeated calls to one
+// getter. argument is source operand storage, not a native pointer encoding.
 struct FieldMarioKeyRequest {
     uint32_t function=0,callsite=0;
     int32_t argument=0;
@@ -24,6 +26,9 @@ struct FieldMarioKeyServices {
     std::optional<uint32_t> (*partyWord)(void*,const FieldMarioKeyPartyCapture&,uint32_t)=nullptr;
     std::optional<uint8_t> (*partyByte)(void*,const FieldMarioKeyPartyCapture&,uint32_t)=nullptr;
 };
+// One invocation caches completed result until reset. Provider-table mismatch
+// holds without replacement; observed lifetime loss poisons until reset. It
+// rejects recursive resume/reset from callbacks and retains actual actor pins.
 class FieldMarioKeyCursor {
 public:
     bool reset();

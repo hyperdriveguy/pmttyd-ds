@@ -171,3 +171,8 @@ catch-up/state ordering, source callbacks, atomic geometry and immutable resourc
 
 [Runtime bridges](runtime-bridges.md) explains retained outer Main/sequence state,
 shared GP input bytes, native field-position/quest providers and HitN64 shader units.
+
+[Native field admission](native-field-admission.md) explains animation adoption,
+party bindings, retained key predicates and static MODEL checks.
+[Source font loading](source-font-loading.md) explains lazy setup, original width
+mutations, VM aliases and readable-prefix versus reserved allocation ownership.

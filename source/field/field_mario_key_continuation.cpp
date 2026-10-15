@@ -12,12 +12,17 @@ bool FieldMarioKeyCursor::reset() {
     if(invoking_)return false;
     *this=FieldMarioKeyCursor{};return true;
 }
+// Byte38 is the control-depth predicate: return1 iff zero, including rejecting
+// all negative signed-byte bit patterns. Ownership is checked around the read.
 std::optional<int32_t> originalMarioChkCtrl(const FieldMarioKeyServices&s) {
     if(!current(s)||!s.marioByte)return {};
     const auto value=s.marioByte(s.user,0x38);
     if(!current(s)||!value)return {};
     return *value==0?1:0;
 }
+// No guest writes. nullopt holds the exact query/read frontier; engaged0 is
+// a completed rejection. current/partyCurrent guard actual retained lifetimes,
+// not source state, before/after external calls; retirement poisons invocation.
 std::optional<int32_t> resumeOriginalMarioChkKey(const FieldMarioKeyServices&s,FieldMarioKeyCursor&c) {
     if(c.invoking_||c.poisoned_)return {};
     if(!c.bound_){c.services_=s;c.bound_=true;}else if(!same(s,c.services_))return {};
@@ -31,6 +36,8 @@ std::optional<int32_t> resumeOriginalMarioChkKey(const FieldMarioKeyServices&s,F
     auto finish=[&](int32_t value)->std::optional<int32_t>{c.pending_=0;c.result_=value;return value;};
     while(alive()) {
         if(c.result_)return c.result_;
+        // PartyId result selects the actual lookup. Even NULL needs a registry
+        // pin; nonnull needs its incarnation pin, preventing slot-address ABA.
         if(c.step_==1) {
             c.pending_=0x800bf1b4;
             if(!s.party)return {};
@@ -39,6 +46,8 @@ std::optional<int32_t> resumeOriginalMarioChkKey(const FieldMarioKeyServices&s,F
             if(!p->registry||(p->actor&&!p->incarnation)||!s.partyCurrent||!s.partyCurrent(s.user,*p))return {};
             c.party_=*p;++c.step_;continue;
         }
+        // Fresh key-depth byte39 must be zero. Captured NULL party is accepted
+        // only at step8, AFTER Sequence/Ship twice/Roll/Slit gates succeed.
         if(c.step_==3) {
             c.pending_=0x8005c4ac;
             if(!s.marioByte)return {};
@@ -48,6 +57,8 @@ std::optional<int32_t> resumeOriginalMarioChkKey(const FieldMarioKeyServices&s,F
             ++c.step_;continue;
         }
         if(c.step_==8) {if(!c.party_.actor)return finish(1);++c.step_;continue;}
+        // Word0 flag100 gates a fresh kind byte31 read; kinds7/5/6 reject.
+        // Retain this flags decision across a held byte read; do not rescan it.
         if(c.step_==12) {
             c.pending_=0x8005c558;
             if(!s.partyWord)return {};
@@ -63,6 +74,9 @@ std::optional<int32_t> resumeOriginalMarioChkKey(const FieldMarioKeyServices&s,F
             if(*value==7||*value==5||*value==6)return finish(0);
             ++c.step_;continue;
         }
+        // Source order: PartyId; Sequence must2; Ship !=1 then a DISTINCT
+        // Ship !=2; Roll/Slit !=0; Christine !=1; Bomhei/Yoshi ==0; held-item==0.
+        // Callsite addresses preserve duplicate-getter reads and diagnostics.
         FieldMarioKeyRequest r;
         switch(c.step_) {
         case 0:r={0x80141050,0x8005c48c,0};break;

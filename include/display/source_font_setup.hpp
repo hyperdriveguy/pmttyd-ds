@@ -10,6 +10,8 @@ struct SourceFontPath {
  std::map<uint32_t,uint8_t> cells;
  std::optional<uint8_t> byte(uint32_t offset)const;
 };
+// Retained original child request. Function/site plus captured integer/float
+// vectors remain unchanged during a hold; path/destination borrow cursor state.
 struct SourceFontSetupCall {
  uint32_t function=0,callsite=0;
  std::vector<uint32_t> integers;
@@ -25,6 +27,10 @@ struct SourceFontSetupServices {
  // ownership and failure behavior. Engaged zero is a real returned zero.
  std::optional<uint32_t> (*request)(void*,const SourceFontSetupCall&)=nullptr;
 };
+// One lazy setup invocation. Entry/argument, shared lifetime CONTROL BLOCK,
+// service identities and current predicate are retained; reset/reentry during
+// callbacks is refused. Successful completion clears state; later entry starts
+// again at the source pointer guard, not an invented persistent done flag.
 class SourceFontSetupCursor {
 public:
  SourceFontSetupCursor();~SourceFontSetupCursor();

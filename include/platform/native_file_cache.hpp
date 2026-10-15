@@ -34,6 +34,8 @@ public:
  // Exact immutable source identity and live relocated static geometry closure.
  // Timelines/deltas and output buffers are separate consumers. Checks actual
  // VM backing in a synchronous borrow; no detached payload fallback.
+ // Synchronous static admission only: immutable identity may be cached weakly,
+ // but live bytes/relocated roots are rechecked on every call. No raw lease escapes.
  bool modelGeometryCurrent(EventAddressSpace&,uint32_t,std::shared_ptr<const class AnimationDrawResource>) const;
  static constexpr uint32_t Manager=0x8041ec68,Global=0x80418498;
 private:
@@ -43,6 +45,8 @@ private:
   std::array<uint8_t,12> header{};
   std::vector<uint8_t> original,payload;
   FileTextureRelocationCursor relocation;
+  // Exact original-byte equality was proved for this immutable draw identity.
+  // Weak ownership avoids extending resource life or caching live geometry state.
   mutable std::weak_ptr<const class AnimationDrawResource> geometryIdentity;
  };
  // Explicit native backed tokens, not recovered heap placement: pool at
