@@ -3874,3 +3874,33 @@ Exact source/product deltas and failed/final gates are retained under
 `artifacts/class-ui-{head,boot31,final}-validation`. Original Nintendo/Intelligent
 Systems rights remain; local extraction grants no redistribution rights.
 ISO, extracted REL/data and compiled packs remain outside source history.
+
+## Texture/state documentation validation inputs (2026-10-15)
+
+artifacts/source-texture-state-code-documentation-validation/source freezes
+baseline8e807cb026b6128ab10d9024ab971bd5dc21e4d9. Relative to prior UI text/startup
+validation,CMake registers native NPC construction,actual-VM group/modeling,
+class packets and shared GP-language code/tests. New
+verify_battle_class_surface_packets.py is read-only source/resource pins,not a
+converter. Other tools/assets/converters/Makefile unchanged.
+
+All114 private accepted products and729 prior work/atlas/provenance paths
+inherited/rechecked,including generated manifest absolute paths and actual
+external HitN64 PNG read path. Full harbor/Goombella/Mario/Professor/source-UI
+and surface/footer/HP/enemy/HitN64/party/Harbor-battle fixtures remain unchanged.
+Small mutable/default evidence copied privately;large unchanged inputs reused
+read-only. No new conversion/import/overlay or live shared-cache write. Native
+full assets-ready regeneration skipped; Python fixtures independently read ISO
+read-only into temporary outputs.
+
+Frozen existing source verifiers for GX texture objects,palette,Window setup,
+font state and class packets additionally read original US revision0 ISO
+read-only;all exit0. These pin original bodies/calls/SDK tables/scalars/TPL
+resources and emit only private text logs. CPU/static pins do not authorize
+source Window completion,native texture residency,queue/GPU execution or original
+pixel/CPU parity. Manifest records exact tool/result/log hashes.
+
+Comments/guides alter no executable tokens,source numeric policy,assets/dialogue/
+story/music/SFX or licensing. Original Nintendo/Intelligent Systems rights
+retained; provenance grants no new license/distribution rights. No ISO/extracted
+original/compiled product committed. Editable assets/manifest.json preserved.

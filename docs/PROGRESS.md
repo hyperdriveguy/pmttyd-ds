@@ -16567,3 +16567,65 @@ selection; Root Status5 remains unregistered until this normal feature is ready.
 Keep all these packages separate from the accepted gates above until integrated.
 Populated normal menu, full tutorial/real battle activation and lower audience
 bad-item targeting with physical selection plus optional taps remain open.
+
+## 2026-10-15 — Original texture objects, Window setup and shared font-state documentation
+
+Added 113 inline comment lines across eight C++/header files plus
+[source texture objects](code/source-texture-objects.md) and
+[shared font state](code/shared-font-state.md),linked from code index.
+Code/docs commit57a4ebb0. All executable tokens/string literals unchanged;
+no mechanics/dialogue/story/asset or test edits for this documentation pass.
+
+SDK notes explain PPC MSB rotate/mask versus logical fields,actual32-byte memset,
+wrap/filter/mipmap bits,full format versus low4 dispatch,low16 dimensions,
+source tile count,live format/filter/scalar reads and captured unsupported target.
+LOD notes explain original NaN/ordered clamps,separate conversion boundaries,
+pre-conversion captured object words versus min-write/max-reload ordering.
+Palette notes explain captured table/fresh post-Init header,single lfd bias and
+two unsigned fsubs,nested real SDK work,unknown BE private32-byte storage and
+first-refusal overlap policy. Window notes explain archive/DVD/callback branches,
+scheduling versus execution,source palette/completion/object globals,fresh loop
+reads,only-callback completion1,panic/strict pointer threshold and relocation
+flags/low16 wrap. Font-state notes explain shared raw/effective color,caller
+mutation/aliases,distinct start order and fourteen helper scopes,actual GX enum
+arguments,noise index50/matrix and non-restoring off helpers. Source completion
+still proves neither native texture residency nor complete queue/GPU execution.
+
+Frozen baseline 8e807cb026b6128ab10d9024ab971bd5dc21e4d9 plus owned docs is at
+artifacts/source-texture-state-code-documentation-validation/source. Full git-
+blob audit covers 4403 baseline tracked files with zero unexpected changes;all11
+owned source/docs frozen/live files match and125 local guide/index links resolve.
+All source/prose finalized before gates. Concurrent Window/GP/field/NPC/group/
+raster/resource work preserved/excluded; no moving-worktree validation claim.
+Original host/native handles observed terminal0 and exit markers agree.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits0: 519/519 C++ (183.44s),
+231/231 Python (55.122s),zero skipped. Four scoped SDK/palette/Window/font
+state tests and newly registered class-packet/native-creation/group/GP tests
+ran. Scoped SDK/palette/Window fixtures assert actual read-only ISO/BFN/header
+inputs; Window callback builds all51 original entries with explicit test DVD/heap
+providers. Original enemy45-descriptor,HitN64,party-position,Professor/fence,conditional
+Harbor battle and actual Game UI retention fixtures ran. Native make all
+-o assets-ready -j4 SOUNDTRACK=gamecube exits0. Five existing read-only source
+verifiers additionally exit0:SDK texture objects,palette,Window,font state and
+new class-packet pins. They check actual original bodies/calls/tables/constants/
+TPL data; static pins and explicit native test receipts do not prove executed-
+PPC or full Game/GPU parity. Manifest pins source,tools/results/logs,accepted
+products/evidence/fixtures and ELF/3DSX. Existing compiler/Pillow warnings remain.
+No emulator/profile/save changes or original hardware/pixel/audio/performance claim.
+
+Preflight caught a newly committed class-packet verifier alongside CMake changes;
+it was inspected as read-only pins,not an exporter. CMake registers actual native
+NPC construction,group/modeling,class packets and shared GP-language code/tests.
+Other tools/assets/converters/Makefile unchanged.114 accepted products and729
+prior generated work/provenance paths rechecked with all inherited fixtures,
+including actual external HitN64 PNG read path. No conversion/import/overlay/
+shared-cache write. Native full regeneration skipped; Python fixtures independently
+read ISO read-only into temporary outputs. See [asset ledger](ASSETS.md). Original
+rights retained; no ISO/extracted original/compiled product committed.
+
+Next: newer animation/field/NPC/GP/Window/class/raster/resource integration,
+remaining changed battle code and tools. Whole-file Trio numeric coverage still
+needs synthesis. Inventory tracks only source/include C++/header/PICA hashes;
+matching snapshots are a review aid,not semantic completeness. Untracked additions
+and tools require separate audit. Broad documentation/remake goals stay active.
