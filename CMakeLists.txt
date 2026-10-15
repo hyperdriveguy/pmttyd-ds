@@ -1746,3 +1746,10 @@ add_executable(source_icon_position_tests tests/source_icon_position_tests.cpp)
 target_link_libraries(source_icon_position_tests PRIVATE ttyd_core)
 add_test(NAME source_icon_position COMMAND source_icon_position_tests)
 set_tests_properties(source_icon_position PROPERTIES WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+
+# Original field-owned pose resources and real NPC constructor pose services.
+target_sources(ttyd_core PRIVATE source/field/field_pose_pool.cpp)
+add_executable(field_pose_pool_tests tests/field_pose_pool_tests.cpp)
+target_link_libraries(field_pose_pool_tests PRIVATE ttyd_core)
+add_test(NAME field_pose_pool COMMAND field_pose_pool_tests)
+set_tests_properties(field_pose_pool PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

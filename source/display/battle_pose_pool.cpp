@@ -102,10 +102,11 @@ void BattlePosePool::restart(BattlePose& pose,BattlePoseClock clock){
 // original modelName; texture names share independently. Texture references
 // count MODEL owners, model references count POSES. Mode0/1/2 selects archive
 // type1/2/0; any nonzero mode uses the separate event-time clock.
-std::optional<int32_t> BattlePosePool::enter(std::shared_ptr<const BattlePoseResource> supplied,int32_t mode,BattlePoseClock clock){
+std::optional<int32_t> BattlePosePool::enter(std::shared_ptr<const BattlePoseResource> supplied,int32_t mode,BattlePoseClock clock,const char* requestedModel){
     if(mode<0 || mode>2)return {};
     archiveType_=mode==1?2:mode==0?1:0;
     if(!supplied || supplied->modelName.empty() || supplied->textureName.empty() || supplied->names.empty() || !supplied->bank)return {};
+    const std::string request=requestedModel?requestedModel:supplied->modelName;
     unsigned handle=0;while(handle<poses_.size() && poses_[handle] && poses_[handle]->word(0))++handle;if(handle==poses_.size())return {};
     unsigned model=0;while(model<models_.size() && (!models_[model].flags || models_[model].resource->modelName!=supplied->modelName))++model;
     const bool reused=model<models_.size();
@@ -133,11 +134,35 @@ std::optional<int32_t> BattlePosePool::enter(std::shared_ptr<const BattlePoseRes
     //90=-1 unlinked output/effect sentinel;f0/f4=-1 optional handles. Matrix
     //124 is3x4 identity at16-byte row/4-byte column stride. f8/fc/44=scale/
     //scale/rate1 defaults; unidentified scalar/flag words remain explicit offsets.
-    pose.word(0x90,0xffffffff);for(unsigned offset:{0xe0u,0xe4u,0xe8u,0xecu,0x154u,0x158u})pose.word(offset,0);
-    pose.word(0xf0,0xffffffff);pose.word(0xf4,0xffffffff);pose.scalar(0xf8,1);pose.scalar(0xfc,1);pose.scalar(0x100,0);pose.scalar(0x44,1);
+    pose.word(0x90,0xffffffff);for(unsigned offset:{0xe0u,0xe4u,0xe8u,0xecu})pose.word(offset,0);
+    pose.word(0xf0,0xffffffff);pose.word(0xf4,0xffffffff);pose.scalar(0xfc,1);pose.scalar(0xf8,1);pose.scalar(0x100,0);pose.scalar(0x44,1);
     for(unsigned row=0;row<3;++row)for(unsigned column=0;column<4;++column)pose.scalar(0x124+16*row+4*column,row==column?1:0);
+    // Source Entry uses its original request, not a substituted cache resource.
+    uint32_t type=0,pointer=0x80415dc4;
+    if(request=="tst_vivi"){type=1;pointer=0x80415da0;}
+    else if(request=="c_vivian"){type=1;pointer=0x80415da4;}
+    else if(request=="c_maririn"){type=2;pointer=0x80415da8;}
+    else if(request=="c_majyorin"){type=3;pointer=0x80415dac;}
+    pose.word(0x11c,type);pose.word(0x120,pointer);pose.word(0x154,0);pose.word(0x158,0);
     return int32_t(handle);
 }
+bool BattlePosePool::paperOn(int32_t handle){auto* p=pose(handle);if(!p)return false;p->word(0,p->word(0)|8);return true;}
+bool BattlePosePool::materialLightFlagOn(int32_t handle,uint32_t flags){auto* p=pose(handle);if(!p)return false;p->word(0xec,p->word(0xec)|flags);return true;}
+std::optional<int32_t> BattlePosePool::vivianType(int32_t handle) const {
+    const auto* p=pose(handle);if(!p)return {};
+    const auto v=p->word(0x11c);
+    return v<=0x7fffffffu?int32_t(v):int32_t(int64_t(v)-0x100000000LL);
+}
+namespace {
+std::optional<float> modelDimension(const BattlePose* p,uint32_t offset){
+    if(!p || !p->resource->draw || !p->resource->draw->span(offset,1,4))return {};
+    const auto raw=p->resource->draw->word(offset);
+    const int32_t value=raw<=0x7fffffffu?int32_t(raw):int32_t(int64_t(raw)-0x100000000LL);
+    return rounded(rounded(float(value))*2.f);
+}
+}
+std::optional<float> BattlePosePool::height(int32_t handle) const{return modelDimension(pose(handle),0xcc);}
+std::optional<float> BattlePosePool::radius(int32_t handle) const{return modelDimension(pose(handle),0xc8);}
 bool BattlePosePool::setRate(int32_t handle,float rate){auto* p=pose(handle);if(!p)return false;p->scalar(0x44,rate);return true;}
 // Ordinary admitted Main requires unlinked90=-1,private outputSelector0,
 // genuine model flags/discrete data. Pose flag8 needs a missing facing provider;

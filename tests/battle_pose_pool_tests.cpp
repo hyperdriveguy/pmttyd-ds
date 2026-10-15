@@ -100,6 +100,15 @@ void lifetimeAndCapacity(){
     assert(hiddenId && hidden.pose(*hiddenId)->shape.vertices.empty() && !hidden.pose(*hiddenId)->shape.positions.empty());
     assert(hidden.selectName(*hiddenId,"walk",true,{0,100}) && hidden.evaluate(*hiddenId,{0,100}) && !hidden.pose(*hiddenId)->shape.vertices.empty());
 }
+void npcLeafState(){
+    const auto r=resource(fixture());BattlePosePool pool;
+    const char* names[]={"tst_vivi","c_vivian","c_maririn","c_majyorin","other"};
+    const uint32_t types[]={1,1,2,3,0},pointers[]={0x80415da0,0x80415da4,0x80415da8,0x80415dac,0x80415dc4};
+    for(unsigned i=0;i<5;++i){const auto id=pool.enter(r,0,{},names[i]);assert(id && pool.vivianType(*id)==int32_t(types[i]) && pool.pose(*id)->word(0x120)==pointers[i]);}
+    assert(pool.models()[0].references==5);auto* p=pool.pose(0);p->word(0,0x201);p->word(0xec,0x80);assert(pool.paperOn(0) && p->word(0)==0x209 && pool.materialLightFlagOn(0,3) && p->word(0xec)==0x83 && pool.vivianType(0)==1);
+    assert(!pool.height(0) && !pool.radius(0) && !pool.paperOn(-1) && !pool.materialLightFlagOn(256,2) && !pool.vivianType(-1));
+    p->word(0,1);assert(pool.release(0));const auto reused=pool.enter(r,0,{});assert(reused && *reused==0 && pool.vivianType(0)==0 && pool.pose(0)->word(0x120)==0x80415dc4);
+}
 void original(){
     auto mario=loadBattlePoseResource("romfs/trio-attack-mario.pose-directory.bin","romfs/trio-attack-mario.pmanim");
     auto partner=loadBattlePoseResource("romfs/trio-attack-goombella.pose-directory.bin","romfs/trio-attack-goombella.pmanim");
@@ -115,4 +124,4 @@ void original(){
     assert(pool.selectName(2,"M_S_3",true,{0,60}) && pool.pose(2)->word(0x14)==2 && !pool.evaluate(2,{0,160}));
 }
 }
-int main(int argc,char**){stateAndTime();discreteTimeline();lifetimeAndCapacity();if(argc>1)original();std::cout<<"battle pose pool passed\n";}
+int main(int argc,char**){stateAndTime();discreteTimeline();lifetimeAndCapacity();npcLeafState();if(argc>1)original();std::cout<<"battle pose pool passed\n";}

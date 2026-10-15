@@ -36,6 +36,9 @@ def build(iso=DEFAULT_ISO):
     from field_battle_registry_assets import gor_registry_segments
     registry_segments,registration,registry_meta=gor_registry_segments(iso,raw,'artifacts/reference/us_symbols.csv')
     segments.extend(registry_segments)
+    from field_npc_constructor_assets import constructor_segments
+    npc_segments,npc_meta=constructor_segments(iso)
+    segments.extend(npc_segments)
     packed=merge_segments(segments)
     programs=[(objects[a]['address'],objects[b]['address']) for a,b in [('evt_door_02_entry','door_data_02'),('evt_door_03_entry','door_data_03'),('evt_door_03_roll_entry','door_data_03_roll')]]+[(0x8033156c,objects['door_data_04']['address'])]
 
@@ -49,7 +52,7 @@ def build(iso=DEFAULT_ISO):
     (out/'field-area-init.bin').write_bytes(struct.pack('<8sIII',b'PMFAIN01',1,2,objects['gor_02_init_evt']['address']))
     (out/'field-area-events.bin').write_bytes(struct.pack('<8sI',b'PMFAEV02',len(programs))+b''.join(struct.pack('<III',2,*p) for p in programs))
     (out/'door-data.bin').write_bytes(struct.pack('<8sI6I',b'PMDRDT01',1,*row))
-    meta.update(field_battle_registry=registry_meta,field_battle_setup=battle_meta,area_initializers=[dict(room=2,address=objects['gor_02_init_evt']['address'])],linked_dol_events=linked_meta,door_entry=dict(address=0x8033156c,size=0x134,sha256=hashlib.sha256(entry[:0x134]).hexdigest(),prefetch_address=0x803316a0,prefetch_word=0x800e8288),entry_programs=[dict(script=a,record=b) for a,b in programs],source='rel/gor.rel',source_sha256=digest,records=[dict(room=row[0],source=row[1],work=row[2],normal=row[3],alternate=row[4],quest=row[5])],
+    meta.update(field_npc_constructor=npc_meta,field_battle_registry=registry_meta,field_battle_setup=battle_meta,area_initializers=[dict(room=2,address=objects['gor_02_init_evt']['address'])],linked_dol_events=linked_meta,door_entry=dict(address=0x8033156c,size=0x134,sha256=hashlib.sha256(entry[:0x134]).hexdigest(),prefetch_address=0x803316a0,prefetch_word=0x800e8288),entry_programs=[dict(script=a,record=b) for a,b in programs],source='rel/gor.rel',source_sha256=digest,records=[dict(room=row[0],source=row[1],work=row[2],normal=row[3],alternate=row[4],quest=row[5])],
         policy='Original full gor02 root/REL data closure and referenced linked DOL EVT objects with actual scanner context; no PPC or arbitrary mutable globals. Full world-service/data binding remains separate.',
         license='Original Nintendo/Intelligent Systems resources; local use only, no redistribution rights')
     (out/'door-data.json').write_text(json.dumps(meta,indent=2)+'\n')

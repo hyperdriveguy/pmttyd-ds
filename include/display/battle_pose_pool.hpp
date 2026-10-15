@@ -44,15 +44,21 @@ struct BattlePoseTextureCache {
     std::string name;
     std::shared_ptr<const BattlePoseResource> resource; // Owns converted texture descriptors/palettes.
 };
-// Scoped native battle handle namespace. Field handles belong to their own owner;
-// these numbers do not assert the original global animation allocation history.
+// Source-sized pool used by distinct native battle/field owners. A pool instance
+// owns its handles; numbers do not assert original global allocation history.
 class BattlePosePool {
 public:
-    std::optional<int32_t> enter(std::shared_ptr<const BattlePoseResource>,int32_t mode,BattlePoseClock);
+    std::optional<int32_t> enter(std::shared_ptr<const BattlePoseResource>,int32_t mode,BattlePoseClock,
+        const char* requestedModel=nullptr);
     BattlePose* pose(int32_t handle);
     const BattlePose* pose(int32_t handle) const;
     std::optional<bool> testTranslucent(int32_t handle) const;
     const BattlePose* slot(unsigned index) const {return index<poses_.size()?poses_[index].get():nullptr;}
+    bool paperOn(int32_t handle);
+    bool materialLightFlagOn(int32_t handle,uint32_t flags);
+    std::optional<int32_t> vivianType(int32_t handle) const;
+    std::optional<float> height(int32_t handle) const;
+    std::optional<float> radius(int32_t handle) const;
     bool setRate(int32_t handle,float rate);
     bool main(int32_t handle,BattlePoseClock);
     uint32_t outputSelector=0; // Native work owner's source animInit W+e8 history.
