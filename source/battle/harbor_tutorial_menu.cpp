@@ -46,7 +46,7 @@ void HarborTutorialPacked::captureWeaponRows(uint32_t type,HarborTutorial& scene
  scene.weaponRowIndex=int32_t(word(activeCursor));
 }
 bool HarborTutorialPacked::buildClassMenu(HarborTutorial& scene,void* messageUser,uint32_t(*message)(void*,uint32_t)){
- if(!freshPouch)return false;
+ if(attackSelectionCursor.active || !freshPouch)return false;
  // Explicit native acting-Mario bridge. Source builder itself never writes420.
  word(Battle+0x420,1);
  struct Context{HarborTutorialPacked* p;void* messageUser;uint32_t(*message)(void*,uint32_t);};Context c{this,messageUser,message};
@@ -66,6 +66,7 @@ void HarborTutorialPacked::captureClassRows(HarborTutorial& scene){
  }
 }
 bool HarborTutorialPacked::buildWeaponMenu(uint32_t type,HarborTutorial& scene,void* messageUser,uint32_t(*message)(void*,uint32_t)){
+ if(attackSelectionCursor.active)return false;
  weaponDecided=false;commandFinalized=false;commandUnbound=0;scene.commandInputPending=0;
  if(!freshPouch || (type!=0 && type!=1 && type!=2 && type!=4))return false;
  word(Battle+0x420,1);readDamage(1);
@@ -98,10 +99,11 @@ bool HarborTutorialPacked::selectWeapon(unsigned index,HarborTutorial& scene,voi
  return true;
 }
 bool HarborTutorialPacked::selectAttackEvent(){
- if(!weaponDecided)return false;
  BattleAttackSelectionServices selection;selection.memory=nativeBattleActorServices(vm);selection.user=this;
  selection.cursor=[](void* self,uint32_t menu,uint32_t type,uint32_t& cursor){auto& p=*static_cast<HarborTutorialPacked*>(self);return findPackedCommandCursor(menu,type,cursor,nativeBattlePackedSelectionServices(p.vm));};
- const bool selected=packedSetBattleAttackEvent(Units+0x1000,Battle+0x171c,selection);
+ // Original audience modes do not depend on a weapon decision. Preserve
+ // their acknowledged selection/count if a real message owner is unavailable.
+ const bool selected=resumePackedBattleAttackSelection(Units+0x1000,Battle+0x171c,selection,attackSelectionCursor);
  if(selected)weaponDecided=false;
  return selected;
 }

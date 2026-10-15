@@ -1168,3 +1168,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native retained NPC registry owner](field/NATIVE_RETAINED_NPC_REGISTRY_OWNER.md): Game-owned stable actor/pose storage, cold BSS/Init, scoped facade aliases and explicit map/lifetime boundaries.
 
 - [Native outer Main continuation and shared input](platform/NATIVE_OUTER_MAIN_CONTINUATION_AND_SHARED_INPUT.md): GP barrier,33 ordered services, idle tail and retained sequence/input ownership.
+
+- [Retained attack selection and native audience admission](battle/RETAINED_ATTACK_SELECTION_AND_AUDIENCE_ADMISSION.md) — retained message/cursor waits, source type11/12 admission and menu ownership.

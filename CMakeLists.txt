@@ -1781,3 +1781,7 @@ target_sources(ttyd_core PRIVATE source/runtime/game_outer_main.cpp source/runti
 add_executable(game_outer_main_tests tests/game_outer_main_tests.cpp)
 target_link_libraries(game_outer_main_tests PRIVATE ttyd_core)
 add_test(NAME game_outer_main COMMAND game_outer_main_tests)
+
+add_executable(battle_attack_selection_continuation_tests tests/battle_attack_selection_continuation_tests.cpp)
+target_link_libraries(battle_attack_selection_continuation_tests PRIVATE ttyd_core)
+add_test(NAME battle_attack_selection_continuation COMMAND battle_attack_selection_continuation_tests)

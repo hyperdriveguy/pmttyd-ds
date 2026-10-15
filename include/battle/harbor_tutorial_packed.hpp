@@ -8,6 +8,7 @@
 #include "display_queue.hpp"
 #include "battle_weapon_menu_main.hpp"
 #include "battle_present_item.hpp"
+#include "battle_attack_selection.hpp"
 #include <unordered_map>
 #include <unordered_set>
 #include <optional>
@@ -52,6 +53,7 @@ public:
  std::optional<int32_t> inputWeaponMenu(HarborTutorial&,void*,uint32_t(*)(void*,uint32_t));
  void weaponMenuPresented();
  bool selectAttackEvent();
+ BattleAttackSelectionCursor attackSelectionCursor;
  bool weaponDecided=false,commandFinalized=false;
  bool commandInputBlocked() const{return commandUnbound!=0;}
  bool selectWeapon(unsigned row,HarborTutorial&,void* messageUser,uint32_t(*message)(void*,uint32_t));
