@@ -1165,3 +1165,4 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native original break-slot reel display](battle/NATIVE_BREAK_SLOT_REEL_DRAW.md): retained reel parent, real inactive scissors and active Plane2 boundary.
 
 - [Native original present-item consumer](battle/NATIVE_PRESENT_ITEM_CONSUMER.md) — type12 handoff, exact packed recovery and retained unbound-effect boundary.
+- [Native retained NPC registry owner](field/NATIVE_RETAINED_NPC_REGISTRY_OWNER.md): Game-owned stable actor/pose storage, cold BSS/Init, scoped facade aliases and explicit map/lifetime boundaries.

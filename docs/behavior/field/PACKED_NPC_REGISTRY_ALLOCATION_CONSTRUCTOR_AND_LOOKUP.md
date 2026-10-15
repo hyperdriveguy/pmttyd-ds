@@ -65,3 +65,11 @@ tagged-map setup/order, source reinitialization/deletion/readiness lifetimes,
 and shared session RNG. Keep existing source NPC setup admission held until
 those actual owners exist. Renderer integration and full original events/story/
 areas and hardware performance remain separate unfinished requirements.
+
+The subsequent [retained Game owner](NATIVE_RETAINED_NPC_REGISTRY_OWNER.md)
+now composes cold BSS, this actual Init/Entry/lookup and real field resources
+with stable externally mapped actor allocations. All13 source resource banks
+are exported; map-tag registration, normal Game bootstrap, reset/delete/query
+readiness, facing/Main/GPU and shared RNG/lifetime remain pending. The prior
+binding frontier above is historical, not a claim that the new cold owner
+completes source map setup.

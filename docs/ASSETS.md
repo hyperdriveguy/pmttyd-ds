@@ -1346,3 +1346,23 @@ license or redistribution rights. No ISO content was staged or committed.
 ## Present-item data admission and validation dependencies (2026-10-14)
 
 The existing private harbor event pack already has original conversion bias802efe78/8 and5.0 at804225f8/4, both checked against the read-only ISO. No present-item image, audio or dialogue conversion changed. Validation refreshed the already committed source-icon constant spans from116 to124 bytes using `read_constants`, retaining the identical613 image cells/catalog, and refreshed door/NPC-constructor data with its committed converter. These are current baseline dependency repairs, not new gift art. Paths/identities are recorded under `artifacts/present-item-*`; original rights restrictions and the no-distribution policy remain unchanged.
+
+### Retained Game NPC registry resource use
+
+The Game-owned cold registry/binding reuses ignored door-data.pmevt original
+constructor constants/name views and existing field-native-c_kuri_h PMPOSE02,
+PMANIM4, unchanged MODEL/TPL for strict host/ARM construction checks. Fixture
+model bytes are copied from the unchanged original MODEL header into explicitly
+fixture-owned guest RAM; this is not packaged source BSS or an invented pose
+handle. The production owner requires actual readable name/model/constants
+and installed field resources before entry. All13 original map/fallback banks
+remain available for later resource composition; no eager loading is added.
+
+No asset conversion or pack changes in this step:85 private product hashes
+match previous resource/source manifests (artifacts/area-npc-owner-assets.json).
+Original ISO remains read-only, extracted/compiled data outside history, original
+Nintendo/Intelligent Systems data retained privately with no redistribution
+rights asserted. New source registry BSS zero comes from verified original
+startup clear, not extracted synthetic memory. Native allocated buffers/guest
+IDs are platform ownership adapters, not original allocator content/address
+claims. No authored art/audio/dialogue or GPU/raster readiness claim.

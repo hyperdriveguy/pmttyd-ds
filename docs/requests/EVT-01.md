@@ -4765,3 +4765,12 @@ Original802036d4 reel parent is now implemented with three fresh global-B getter
 Ordinary150s native probe exits0: callbackphase39/index3/pending0, flags0/state0 for all3reels, two actual native scissors and final608x480. Camera draw completes; next actual pending8006f904 requires the original [outer-loop order](../behavior/platform/GAME_OUTER_LOOP_AND_EVENT_UPDATE_ORDER.md), especially seqMain before lowercasebattleMain and later events. Do not force bank4 teardown or skip directly to field restoration.
 
 Separate positive23 fixture now captures5original camera8 icon packets/20vertices usingtexture418 and actual retained GPU replay after the camera pass completes. Forced count restores original0. This resolves the prior publication hold; it is an explicit fixture, not an ordinary observed reward or source-pixel parity proof.
+
+Owner progress: [retained Game NPC registry](../behavior/field/NATIVE_RETAINED_NPC_REGISTRY_OWNER.md)
+now supplies real stable actor/pose storage and scoped external-memory facade
+bindings, with original cold npcInit and admitted Entry/lookup via actual Game
+API. Host/ARM checks pass. This is not yet normal map bootstrap: actual tagged
+map stores, GP lifecycle/clocks, source setup/init/regular events and query-ready
+writer remain needed. Fresh source evidence distinguishes startup BSS count0
+from npcInit and room npcReset(0)→animPoseAutoRelease, battle reset/release and
+npcDelete/group link/pose/event ownership. No reset/deletion success is stubbed.

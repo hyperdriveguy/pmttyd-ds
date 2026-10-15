@@ -7546,3 +7546,74 @@ NPC/partner, remaining battle helpers, message/inventory/story, audio and releva
 port tooling. Re-audit modules changed during concurrent work, including the save
 format and new display/runtime services. The port-wide documentation goal remains
 active; this batch does not establish full code coverage or a complete remake.
+
+### Game-owned retained NPC registry and scoped VM bindings
+
+Codecab83cdf adds FieldNpcRegistryOwner/Binding and
+Game::initializeOriginalFieldNpcs. The explicit cold API composes actual npcInit
+and retains ordinary36/alternate16 actor buffers, auxiliary/field-battle work,
+source registry bytes and real field pose/resource ownership. Stable external
+backing aliases across independent event-memory facades. Game publishes its
+shared owner only after complete binding and cold initialization succeed;
+partial failure removes only the candidate mappings. Full actor clears use
+native memset on the retained allocation rather than per-byte VM writes.
+
+Cold count0 comes from recovered original __start→__init_data BSS clear
+8041e580..8041f424 (descriptor800055b8), not extra stores in npcInit. Owner
+initialization is once-only. New facade binding neither reruns Init nor invents
+its GP+168 publication. Native virtual allocation IDs come from an explicit
+aligned policy and are not original __memAlloc addresses. Native auxiliary
+allocation bytes are not described as source initialization; a poisoned byte
+remains unchanged through the actual npcInit primitive in the fixture.
+
+Actual admitted Entry uses original duplicate/free-slot scans, original actor
+clears/stores and original resource-backed pose leaves. It pre-admits bounded
+names, registry/capacity, no cleared-slot request aliases, GP/constants and real
+resource/capacity before effects. Missing resources stay pending, with no fake
+hoshi/load-error acknowledgment. Exact active-only lookup preserves source
+NoAssert missing0 and Release exhausted-pointer semantics. Query/display flags
+remain distinct. Bindings retain the owner and must retire referencing events
+and die before the facade; never manually replace their external mappings.
+Shared Game copies/facades are session owners, not serialized checkpoint clones.
+
+Final required CMAKE_BUILD_PARALLEL_LEVEL=4 make test -o assets-ready exited0:
+323/323 C++ in35.07s and190/190 Python in33.058s. make all -j4
+-o assets-ready SOUNDTRACK=gamecube exited0. Native strict ARM fixture passed
+coldInit, realEntry, retainedFacades and admission via actual Game API/owner,
+original Frankly MODEL/TPL and unchanged source constants/name; request model
+bytes are copied from original MODEL into explicit fixture RAM. Tests cover
+collision/GP-failure cleanup, uncleared auxiliary, duplicate36/full hold,
+alternate pools/clocks, shared byte aliases and owner retention, no reinit,
+malformed names/capacity and request/clear aliases. No map/facing/GPU readiness
+is fabricated. Isolated artifacts/azahar-area-npc-owner-probe exited0.
+Private probe edits restored; its loop-indentation fixture warning and existing
+baseline compiler/Pillow warnings are recorded, not production regressions.
+
+Frozen source5bdd00e4653b44380f3d7fe997730dbb6edeeb3e,3422tracked files,
+zero mismatches. Initial isolated compile exposed a missing prerequisite in the
+older frozen baseline; added only committed external-RAM facade header/source
+from36cf0d40 to the validation tree, then reran both required commands. This
+existing API is reused, not reimplemented. Normal3DSX SHA256
+d50db5a3ee5b496af9ea024cc3bf06b138bc9bd7aaf7b6800f42ac8f32e6b841.
+85 private asset hashes unchanged; no new conversion or original ISO writes.
+Manifest artifacts/area-npc-owner-validation-manifest.json and
+artifacts/area-npc-owner-assets.json; exact test/build/probe logs under
+artifacts/area-npc-owner-*. Public CMake append rebased onto current HEAD;
+whole concurrent merged worktree is not claimed validated. Other work preserved.
+
+This API is not yet invoked by the normal Game/map bootstrap. Next: compose
+actual tagged-map registration into these same actor records (source names,
+descriptors, position/yaw, AI/territory, sound and both battle requests), then
+bind actual source setup/init/regular events and migrate lookup/collision/
+rendering consumers to those actors. Provide actual GP bootstrap/clocks,
+query-ready writer, paper-facing/Main/GPU, original shared RNG, reset/delete/
+room lifetimes. npcReset, autoRelease and deletion have distinct original
+owners and must not be substituted with cold initialization. The source
+contracts/inbox now record their call boundaries. Full area/story/rendering
+and hardware performance remain unfinished.
+
+Normal isolated40s boot smoke exited0; inspected original storybook town/text
+capture artifacts/azahar-area-npc-owner-normal/boot.png,60AppFPS/100% in this
+single emulator sample. Log artifacts/area-npc-owner-normal-smoke.log. This is
+boot evidence only, not registered field-NPC rendering or hardware profiling.
+User emulator profile/saves remain unchanged.
