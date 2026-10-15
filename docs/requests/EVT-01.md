@@ -5056,3 +5056,14 @@ delivered. Native tests share actual pose bytes, ShadowWork and DisplayQueue.
 Late history/final state clear/actor traversal/tail, real collision/math/callback
 producers and ordinary Area activation remain open. Local completion is only
 History frontier; no whole Main, field rendering or request closure.
+
+### 2026-10-14 NPC late history and complete actor scan update
+
+[Native history/traversal](../behavior/field/NATIVE_NPC_MAIN_HISTORY_AND_TRAVERSAL.md)
+now composes the complete actor body through sourceb1d0. Raw scalar copy order,
+fresh flag100/MainCount gating, clear-only vs inactive skips, held-next-entry
+retirement and actual captured bank traversal are preserved. Tail static source
+review corrected prior interpolation prose to -600->0 then0->+600. No new assets.
+Field tail, real runtime/callback/resource producers, normal Area activation and
+original execution/visual parity remain open. FieldTail is not whole Main success;
+EVT-01 and playable-prologue/full-game goals remain incomplete.

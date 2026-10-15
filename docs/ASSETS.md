@@ -2315,3 +2315,16 @@ Native asset regeneration remains skipped; existing Python fixtures independentl
 read ISO read-only and use empty temporary outputs. Nintendo/Intelligent Systems
 rights remain reserved; private tracking/copying grants no new license. No ISO,
 extracted original asset or compiled binary was committed.
+
+### NPC history/traversal asset audit (2026-10-14)
+
+No new extraction, pack data or asset conversion. All2131 frozen RomFS products
+match the accepted shadow baseline byte-for-byte, including original messages,
+audio and door-data.pmevt152488 bytes SHA256
+842715d5cd84974d7de49898eda7441d018400a8cd7d6c5634d5c8babca941b7.
+Local gor_02.s unchanged. Read-only DOL sign audit of8041fce4/8 verified
+c416000044160000 (-600,+600); only documentation was corrected, no numeric pack
+replacement. Existing extraction/conversion paths and Nintendo/Intelligent
+Systems rights stay unchanged. No ISO, original body/asset, pack or binary
+committed. Exact hashes:evidence artifacts/npc-history-assets-after.json and
+npc-history-validation-manifest.json.

@@ -1274,3 +1274,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 ## Retained action-command manager
 
 - [Retained action-command manager](battle/RETAINED_ACTION_COMMAND_MANAGER.md): one physical pad update, retained original callback and deferred display registration across provider waits.
+
+- [Original late NPC history and actor traversal](field/NATIVE_NPC_MAIN_HISTORY_AND_TRAVERSAL.md): raw late copies, fresh count gates and retained full scan to the unfinished field tail.

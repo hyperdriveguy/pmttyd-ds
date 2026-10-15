@@ -186,8 +186,8 @@ is neither an early pre-move operation nor an unconditional all-slot update.
 ## Complete post-pool field tail
 
 Reload current GP→F. Retain effect record E=F+550. If E+0 nonzero, E+8 state2
-increments E+c count: <20 calls intplGetValue(5,count,20,600,0)→E+10;
-20..79 writes E+10=0;80..99 calls intplGetValue(1,count−80,20,0,−600)→E+10;
+increments E+c count: <20 calls intplGetValue(5,count,20,-600,0)→E+10;
+20..79 writes E+10=0;80..99 calls intplGetValue(1,count−80,20,0,+600)→E+10;
 >=100 clears E+4 and skips queue. Reached animation steps set E+14=0 and
 dispEntry(9,2,_fbatFirstAttackAnnouceDisp80047dfc,E,0). E+8 state1 increments count; >60 clears E+4,
 otherwise writes E+10/E+14=0 and submits the same queue. Other states skip.
@@ -245,3 +245,9 @@ The static source audit itself changes no code, build, asset import, emulator,
 user profile or save. Native follow-up validation is documented separately.
 This local complete block map does not complete called physics/query/battle/
 display services or prove original/New2DSXL runtime/performance fidelity.
+
+### 2026-10-14 Tail interpolation sign correction
+
+Read-only instruction/constant audit pins first -600->0 and second0->+600;
+[history/traversal evidence](NATIVE_NPC_MAIN_HISTORY_AND_TRAVERSAL.md) records
+addresses/hashes. Earlier prose reversed both signs. Field tail remains open.

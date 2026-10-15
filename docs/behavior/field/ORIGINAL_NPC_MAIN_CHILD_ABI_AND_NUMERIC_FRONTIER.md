@@ -39,7 +39,7 @@ A=current packed NPC; GP is the separately fresh global pointer; F=retained tail
 | shadowSetCollision 4af90/b054 | r3=shadow token,r4=0 | ignored |
 | hitCheckFilter 4aff8 | r3=0; f1=rootX,f2=R(rootY+1),f3=rootZ,f4=0,f5=-1,f6=0; r4=stack44,r5=stack40,r6=stack3c,r7=stack38,r8=stack34,r9=stack30,r10=stack2c | r3 nonzero => read output stack40 hitY into Vivian scratchY. stack38 initialized100; others uninitialized outputs. Keep 7 individually addressable float slots |
 | animPoseVivianMain 4b014 | r3=fresh A104,r4=&scratchVec stack84 | ignored; original-root shadow is freshly loaded afterward, not scratch hitY |
-| intplGetValue 4b22c/b268 | r3=5,r4=incremented count,r5=20,f1=600,f2=0; second r3=1,r4=count-80,r5=20,f1=0,f2=-600 | f1 stored E10; original8041fce8=600 (44160000); earlier60 documentation corrected |
+| intplGetValue 4b22c/b268 | r3=5,r4=incremented count,r5=20,f1=-600,f2=0; second r3=1,r4=count-80,r5=20,f1=0,f2=+600 | f1 stored E10; original8041fce4=-600 (c4160000),8041fce8=+600 (44160000); earlier60 documentation corrected |
 | fbatEncountCheck 4b31c | no args | ignored; GP then freshly reloaded to capture F2 for remaining score/fire tail |
 | kpaJumpChk 4b344 | no args | r3 int retained jump result; called only first retained Mario+3c read==2 |
 | kpaFireAttackCheck 4b358 | no args | r3 int retained fire result; second FRESH retained Mario+3c read==2 controls call independently of first |
@@ -55,7 +55,7 @@ A=current packed NPC; GP is the separately fresh global pointer; F=retained tail
 - 4addc depth uses SINGLE fused fmadds(5000,z,5000). Clamp sequence is if(depth<0)0 else if(depth>10000)10000, then fmuls by-1. NaN survives both clamps; +0 becomes-0. std::clamp/min/max do not automatically provide matching NaN operand semantics.
 - Autopose: NaN speed is neither <.1 nor <descriptorThreshold and selects run. NaN phase threshold similarly selects run if speed not idle. No descriptor-null guard exists in source auto pose.
 - T2 quarter gate is if(distance>quarter) execute other tests; unordered skips range/height/angle tests and leaves avoidance success. T1/4 quarter gate similarly bypasses range/angle but NOT later vertical. Direction rejection uses abs(compAngle)>halfWidth, so NaN angle does not reject. Inner circle compare rejects only strict >, so NaN remains admitted; rectangle strict outside checks also preserve admission on NaN.
-- State1/2 effect count increment is wrapping word, subsequent comparisons SIGNED. E+4 completion clear does not clear E+0. State2 start interpolation is600, not60.
+- State1/2 effect count increment is wrapping word, subsequent comparisons SIGNED. E+4 completion clear does not clear E+0. State2 start interpolation is-600, not60/+600; second ends+600.
 - Tail state is retained F signed halfword read once; F+54d clear always uses retained F, even after services replace GP168. New F2 captured only after fbatEncountCheck is separately retained across jump/fire/score callbacks. Mario pointer retained across both type reads; don't call marioGetPtr again in between.
 - The source's loop bound is signed cmpw(index,count); index starts0. Negative counts do no actors. MainCount increment wraps32 and blur history parity reads global fresh after all display children.
 
@@ -85,3 +85,9 @@ Original helper bodies inspected read-only:
 
 - __cvt_sll_flt at80264e70, 180 bytes, SHA25669207aa0a8e4377cd39df889250f0a6e3366c4ad873f80e607d8458641906a26.
 - __div2i at80264ad8, 312 bytes, SHA256b8acc70386f7831b292e561c133ce6abb4a2881bb22e97780f09d2e0bbeee660.
+
+### 2026-10-14 Tail interpolation sign correction
+
+Read-only instruction/constant audit pins first -600->0 and second0->+600;
+[history/traversal evidence](NATIVE_NPC_MAIN_HISTORY_AND_TRAVERSAL.md) records
+addresses/hashes. Earlier prose reversed both signs. Field tail remains open.

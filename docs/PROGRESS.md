@@ -11397,3 +11397,83 @@ Main/stage/sequence bindings, message/story/effect/platform/file/event helpers
 and tools. Re-audit concurrent animation/tangent/NPC/HP/display code against its
 committed versions; matching old snapshots is not a completeness proof.
 Full code documentation and remake remain unfinished; goal stays active.
+
+### 2026-10-14 Original NPC late history and complete actor scan
+
+Implemented raw-word source8004b10c..b1b4 history and native composition through
+b1d0: exact scalar X/Y captures and stores before fresh Z, fresh flag100 and
+MainCount parity, oldest-first five-vector shifts, final fresh state10 clear,
+and captured bank/count/array traversal. Initial inactive slots skip history/
+clear; postclock query loss clears only; hidden/cull/body-late query loss still
+runs reached history. Every primitive retains captures/effects through holds.
+Child cursors retire only after old body/history and final clear finish and
+entry reaches the next Movement or FieldTail. FieldTail is unfinished Main.
+Native fixed cursors/memory/pools and ARM integer instructions are reused;
+no per-actor heap allocation or new timing/render-frame coupling.
+
+[Contract](behavior/field/NATIVE_NPC_MAIN_HISTORY_AND_TRAVERSAL.md),
+[request](requests/EVT-01.md). Independent read-only history/traversal/core/native/
+fixture review found no actionable defect. Warning-enabled standalone history
+tests pass without diagnostics. Raw NaN/signed-zero words, every primitive hold,
+source gates, late root/count changes and fresh last-current rereads are covered.
+Native actual-bank scan uses live slots0/2 and inactive1/3. It holds the next
+clock after first history/final clear, changes first root42 while held, then
+holds second gravity. Earlier history remains10; source clock output19c is
+1032750. Captured count4/array survive external count1/array0 changes; second
+history uses fresh odd MainCount3, and late query loss still permits reached
+history/final clear. Skipped slots retain state10/history; repeated FieldTail
+and foreign binding checks publish nothing. Existing shared pose/shadow/queue
+fixtures and clear-only entry tests still pass. Gravity/numeric admission are
+explicit fixtures; normal Game's separate field path remains in use.
+
+An initial audit incorrectly claimed a retained-clock bug, and the first test
+expected a completed clock actor. Full helper review shows cases46/54 already
+reset their cursor. Removed the redundant proposed reset and asserted actual
+second clock output/!active. Source clock and entry logic are unchanged. The
+first diagnostic run from root could not load private test resources; the
+correct private working directory exposed the fixture expectation. Failure logs
+retained; no production behavior or assertions were weakened.
+
+Static tail audit also corrected existing parent/child ABI prose: first effect
+interpolation -600->0 (8041fce4 c4160000), then0->+600 (8041fce8 44160000).
+Read-only ISO span/hash and exact instructions are pinned in the history source
+notes; no tail implementation or measured original execution claim.
+
+Frozen d40e7e2572a2c7ad9a4d54a6ba904e0d6ff9b5e6 on accepted9c981dd0:3730 tracked files exact,
+zero mismatch. CMAKE_BUILD_PARALLEL_LEVEL=4 make test passes388/388 C++
+(58.87s),203/203 Python (103.277s), zero skipped.
+make all -j4 -o assets-ready SOUNDTRACK=gamecube passes. Existing compiler/Pillow
+and prior native fixture formatting warnings remain. Final full run includes
+the added next-clock hold test; initial full pass is retained separately.
+Validation targets this frozen tree, not concurrent combined HEAD. Scoped code
+commit f9d5e170a846005d009c22e5c5f5a98bff1c5447 preserves other work/public index.
+
+All2131 private RomFS products match the accepted shadow baseline exactly;
+no pack/constant/original asset change or regeneration. Pack152488 bytes;
+local gor_02.s unchanged. No ISO, original body/asset, compiled pack or binary
+committed. Existing provenance/rights unchanged; see ASSETS.md.
+Strict fresh-profile ARM PASS: entry/movement/autoPose/detection/Mario/display/
+shadow/Vivian/history/actorScan/holds/sharedMaterials/queue/frontiers. Probe
+instrumentation uncommitted. Normal source restored/touched/rebuilt; SHA256
+3545c66f79da0c0421d071b663cc73dcafd6043ec5c1fe336cd2b70a97804846
+matches pre-probe normal and prior shadow binary: normal Game has not activated
+this source actor path. Normal40-second isolated capture inspected: original
+storybook cover, App43FPS/72% during concurrent validation, no asset-error
+console. This is an uncontrolled llvmpipe startup sample, not proof of a
+rendering regression or stable performance. Startup only; no actual field
+or physical performance claim. Only isolated profiles/saves touched. Evidence:
+artifacts/npc-history-validation-manifest.json, assets/source audit, full/target/
+native logs, strict marker, captures and corrected source notes.
+
+Open: source field tail8004b1d0..b3dc and whole Main completion, real movement/
+collision/math/camera/shadow/pass/callback/interrupt/resource/audio/sequence/Mario
+owners and normal Area activation. Original numeric/FPSCR/GQR/seed/NaN payload,
+execution/story-event/visual parity remain unproven. Previous15FPS llvmpipe field/
+occluded-pixel assertion and asset-error smoke admission gaps remain. No physical
+New2DSXL acceptance or complete remake claim. Goal and EVT-01 remain active.
+
+Next: implement original field effect/encounter/Kpa score/fire/talk/battle tail
+using corrected signs and retained F/F2/Mario captures; then compose whole Main.
+Bind actual producer/pass/callback and earlier owners before normal Area Main;
+repair visual/asset-error smoke admission, profile actual field/hardware and
+retain original story/event conditions for future areas.

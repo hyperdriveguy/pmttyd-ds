@@ -419,3 +419,11 @@ Validated [NPC shadow/blur/separate suffix](../behavior/field/NATIVE_NPC_MAIN_SH
 shadow index0 and held queue composition are verified. Two unchanged original
 radius constants pinned. Partial delivery: real backend/pass owners, late
 history/parent/tail and ordinary Area activation remain open; EVT-01 stays open.
+
+### 2026-10-14 — Partial EVT-01 NPC history/actor traversal
+
+Validated [late history and full actor scan](../behavior/field/NATIVE_NPC_MAIN_HISTORY_AND_TRAVERSAL.md)
+to unfinished FieldTail. Static source evidence corrects tail interpolation signs
+and retracts an audit's mistaken clock-reuse warning: helper already resets on
+success. Native multi-actor holds and captured-vs-fresh data are checked; field
+tail, production ownership and normal Area activation remain open. Partial only.

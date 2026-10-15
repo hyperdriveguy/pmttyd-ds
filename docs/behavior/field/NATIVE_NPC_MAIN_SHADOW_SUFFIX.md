@@ -90,3 +90,10 @@ hitCheckFilter8001577c/128hex
 2449ccf33696b3a35d43431dc373741cc46c2836adf11e5cf8d4a4174388e10a.
 These are static source observations; no Dolphin execution or full field visual
 performance acceptance is claimed.
+
+## Actor traversal update (2026-10-14)
+
+[Late history and traversal](NATIVE_NPC_MAIN_HISTORY_AND_TRAVERSAL.md) now compose
+the suffix with raw history, final state10 clear and next-actor scanning. Only
+FieldTail is returned; tail services, production owners and normal Area activation
+remain open. This does not change the standalone suffix's History boundary.
