@@ -1,3 +1,73 @@
+## 2026-10-14 — Retained original class drawing and native bubble/circle proof
+
+Previous goal turn was concrete progress (upper Trio menus and UI ownership).
+Continued with three UI workers on actual source drawing/projection and resource
+ownership. Commit9e86d7f239d1d9c17f0d97d2885e767e806f380e adds a retained whole
+DrawMainMenu parent, btlGetScreenPoint, the actual source icon-order→whole
+circle/bubble→original backend adapter, original menu-resource Init/End and
+shared fileFree reference/state mutation. No normal Game class-menu activation
+is claimed. See behavior/battle/NATIVE_CLASS_DRAW_CONTINUATIONS_AND_RESOURCE_OWNERS.md.
+
+The draw cursor preserves completed source reads/writes and every SDK/footer
+operand through waits. Tests compare exact traces/storage/optional slots with
+the synchronous body across states/counts/modes and stall every external call
+twice. Review found null icons read W+4 before short-circuit; fixed with a separate
+capture phase and77 null-provider prefix cases. The parent still requires retained
+child raster/footer providers. Unwritten entry-row positions remain unavailable;
+no fabricated matrix/position or presentation acknowledgement was added.
+
+The source screen helper captures camera4 before XYZ and applies actual view,
+projection and fresh304/240/0 constants. Menu Init captures B before root/format/
+fileAlloc(path,4), retaining null result0 as a stored source value. End releases
+current descriptor without clearing B163f8. fileFree gates null/+a0/state1,
+stores low16 decrement, rereads and retires only exact0; negative counts remain
+state1. Native FileEntry/TPL acquisition, camera owners and normal callback/input
+scheduling are still needed. Source callbacks must not mutate these counters
+for a second screen or unrelated render retry.
+
+Frozen validation base6dc85de1b1080137c472d9f7e28c6fa86a8b8faa plus owned changes:
+artifacts/class-draw-validation. Final CMAKE_BUILD_PARALLEL_LEVEL=6 make test
+exits0:363/363 C++ in65.51s and199/199 Python in69.622s. Earlier all-green run
+preceded the null-provider correction; final log is class-draw-test-final.log.
+Native make all -j6 -o assets-ready SOUNDTRACK=gamecube TARGET=ttyd-class-draw
+BUILD=build-class-draw exits0. All new TUs compile on ARM. Existing baseline
+compiler/Pillow warnings remain. Read-only original act-draw, class-raster and
+file-request verifiers pass; projection source evidence is retained privately in
+artifacts/battle-screen-point-source-evidence.json.
+
+Isolated Azahar original-surface fixture35s exits0; inspected
+artifacts/azahar-class-draw-final/boot.png. Actual source icon ordering and whole
+bubble/circle bodies produce the original selected red boot, white bubble,
+unchanged US Jump text and disabled circle through Renderer::drawClassMenu.
+Lower source stage/seat geometry stays unobscured. CPU status:
+PASS sourceCircleBubble;quads=16;rng=8;originalLabel=Jump. Log has zero exception/
+unmapped lines. Fixture uses explicit camera/layout/memory/material inputs,
+source font/assets/label and a declared seed1 test RNG; no original pre-battle
+RNG history, full ring entry, live audience, normal command scheduling, timing
+parity or hardware performance is established. First fixture exited without a
+pouch; corrected it to actual beginFresh and reran. Its empty UI capture is not
+counted as success. All profile/save writes are isolated under artifacts.
+
+Normal main and renderer restored byte-for-byte and both recompiled/relinked.
+Source audit covers1809 compiler/test/tool inputs, zero mismatches/extra inputs;
+2097 reused private RomFS file hashes are recorded in
+artifacts/class-draw-source-manifest.json. Final normal3DSX SHA256
+ a4d08e45e54238c6331f9b587f11f8f37450a55dc253d2926de696513bd613f2.
+No new asset conversion/import was needed: existing original battle_common
+surfaces, icon atlas and font were reused under their existing ASSETS licensing.
+Documentation check:1380 Markdown files, zero broken links. Concurrent roots'
+changes were excluded from the frozen build and preserved during scoped commits.
+
+Next: bind real FileEntry/TPL acquisition/relocation and camera4/8 address owners;
+retain child circle/bubble/footer calls and resolve entry's unwritten-stack
+frontier through real ownership or a proven native visual adaptation. Then wire
+the actual8012210c queued class callback and normal command input, removing the
+development readiness setter only once true source/native admission owns it.
+Add original footer/pinch assets/providers for low HP; fill partner/AP/coin/SP
+HUD from real owners. Real audience-incarnation/eligibility publication and
+chosen-slot interruption, recovery GPU/effNumberGX/SFX and normal tutorial/trio
+completion remain required. Full requested systems and the remake are unfinished.
+
 ## 2026-10-14 — Parallel UI work: upper Trio menus and retained input geometry
 
 User requested additional UI workers. Three workers handled menu placement,
