@@ -1307,3 +1307,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Retained shared animation paper facing](display/RETAINED_ANIMATION_PAPER_FACING.md): original Main tail and complete Inner facing/scale branches, actual field camera/shared pose aliases and retained composition; Main prefix and normal NPC activation remain open.
 
 - [Original HitN64 effect entry and lifetime](effect/HIT_N64_ENTRY_MAIN_AND_DISPLAY_FRONTIER.md): retained actual pool constructor/update/delete; original display and native ownership remain open.
+
+- [Retained animation Main entry](display/RETAINED_ANIMATION_MAIN_ENTRY.md): exact resource/output captures, GQR/linked/null ordering and retained evaluation-to-facing boundary; production evaluation and NPC activation remain open.

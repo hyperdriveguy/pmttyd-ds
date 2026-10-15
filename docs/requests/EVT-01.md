@@ -5166,3 +5166,15 @@ Existing Main evaluation is not atomic on failure; a retained successful
 evaluation/null-descriptor boundary, full field setter/draw/queue/GPU owners,
 normal NPC activation and original visual/numeric/hardware parity remain OPEN.
 EVT-01 is not closed.
+
+### 2026-10-15 Retained animation Main entry and paper sampling
+
+[Main entry](../behavior/display/RETAINED_ANIMATION_MAIN_ENTRY.md) preserves
+original resource/output captures, ordered GQR requests, linked child, late
+null-descriptor exit and completed-evaluation boundary before optional facing.
+Original source sampling now admits paper flag8 within its private/unlinked
+domain. Actual cold VM/pool/camera fixtures verify holds without evaluation
+replay. Production captured-context evaluation, platform/linked providers,
+normal NPC activation and original runtime/visual/numeric/hardware parity
+remain OPEN; synchronous evaluate failure is not an atomic retry boundary.
+EVT-01 is not closed.

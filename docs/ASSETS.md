@@ -2718,3 +2718,22 @@ Original vertex bank `803a0458/118` has280 bytes, SHA256
 Constructor/Main CPU ownership does not establish queued display or GPU use.
 Original Nintendo/Intelligent Systems rights remain; private extraction grants
 no redistribution rights. No original pixels, ISO, packs or binaries are committed.
+### Retained Main validation prerequisites (2026-10-15)
+
+The retained Main entry and paper-sampling change introduces no asset format or
+conversion changes. Its isolated committed-code baseline requires the existing
+original `c_kuribo` resource catalog. Seven missing products under private
+`romfs/trio-enemy-kuribo.*` were generated using the already committed
+`tools/trio_enemy_pose_assets.py`, reading `/home/carson/games/roms/G8ME01.iso`
+read-only. Existing conversion choices are recorded in the original enemy
+resource manifest: all 45 source descriptors, unchanged draw/TPL metadata,
+dedicated RGBA8 atlas and surface-aware resource identity. This is prerequisite
+refresh for landed code, not newly invented art or a new conversion policy.
+The previous 2145 products remain byte-identical; the combined 2152-product
+inventory and seven additions are pinned in
+`artifacts/animation-main-assets-after.json`. No story/dialogue, music/sound,
+geometry reduction or lighting changes. All source/extracted files, generated
+packs and executables remain private/ignored. Original Nintendo/Intelligent
+Systems rights remain reserved; extraction grants no redistribution rights.
+Exact source/build/native evidence is in
+`artifacts/animation-main-validation-manifest.json`.

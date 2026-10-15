@@ -1,3 +1,66 @@
+### Original animation Main entry and paper sampling (2026-10-15)
+
+Code commit 240f19d7bfb4faa5a29ceeac9cbd256357bf94a0 adds the retained original Main prelude, an explicit
+evaluation child and the completed-evaluation boundary before optional facing.
+It captures actual source work/pool/resource/timeline/output pointers, performs
+four ordered GQR requests, retains linked child progress, and checks the captured
+null timeline only afterward. Linked mutations cannot silently replace earlier
+captures. Original modulo address arithmetic and provider/input identity remain
+explicit; there is no fabricated handle/active admission, recursion cap or
+once-per-tick success. Cursor storage is bounded with no per-invocation heap.
+
+The source sampler no longer rejects paper flag8: full original Main reads that
+parent flag only in the optional tail after sampling. Existing owned-file,
+private-output, unlinked, tangent and lifetime checks remain. Actual cold-process
+tests compare ordinary/paper pose state and decoded position/normal outputs,
+then compose real VM/pool/camera aliases and hold facing AFTER evaluation.
+Changing the pose epoch while held proves evaluation is not replayed. A null
+original descriptor still runs GQR setup but skips evaluation and facing.
+
+[Contract](behavior/display/RETAINED_ANIMATION_MAIN_ENTRY.md) records the source
+graph and provider limits. This is not complete production Main: evaluation
+and linked/platform owners are explicit children, and synchronous evaluate can
+publish state before failure. Its failure must not be retried as an atomic
+provider. The production captured-context evaluation adapter, broader output
+and linked domains, normal Game NPC activation and original runtime/numeric/
+visual/hardware parity remain open. EVT-01 and the full goal stay active.
+
+Exact isolated tree 391e7a9b361633c1c7a8d4524f8d24fd5f43238c uses committed baseline 50a79e9b161db2dd60a81853221d4525d72d3d8c
+with 3958 tracked files audited exact. `TRIO_ENEMY_POSE_PACK=romfs CMAKE_BUILD_PARALLEL_LEVEL=4 make test`
+passed 436 C++ tests (60.89 seconds) and 212 Python tests (36.617
+seconds), zero skipped. `make all -j4 -o assets-ready SOUNDTRACK=gamecube`
+passed. Source verifier passed two bodies/1773 reviewed instructions/17
+constants/5 data spans/2 imports/65 direct caller sites/one serialized example.
+Read-only independent controller/tests/docs/source review found no substantive
+issues. Initial isolated checks exposed missing prerequisites and a new test's
+working directory; both were corrected before the final full run. The existing enemy asset tests default
+to a separate private pack directory; the final command points them at the
+actual RomFS so both original-bank tests run rather than skip.
+
+The committed baseline required seven original c_kuribo enemy products absent
+from the prior isolated RomFS. The existing committed extractor regenerated
+these from the read-only ISO. All previous 2145 products remain byte-identical;
+combined 2152-product hashes are recorded. No new art/audio/geometry/lighting or
+story/dialogue conversion choices; no original resources/PPC/binaries committed.
+Native ARM probe passed entry/captures/GQR/linked/nullExit/holds/modulo/sourcePaper/
+retainedEvaluation assertions. Platform/evaluation callbacks in that probe are
+explicit fixtures, not production Main. Normal source restored/rebuilt with
+identical pre/post SHA256 78a18364131b3f23a22a31c7831d55c02f2762d9b82d48c2ba96d1be70198204. Forty-second normal startup capture:
+original storybook, App54 FPS / speed90%, no visible asset-error console. Startup is not field or physical New 2DS XL performance.
+Exact evidence is in ignored `artifacts/animation-main-validation-manifest.json`.
+Scoped code/docs commits preserve unrelated concurrent work.
+
+Next: retain source8003ee08..8003eebc clock/time prefix, including exact mode/control
+capture, GP-before-hardware loads, low-before-high timestamp subtraction and
+unsigned64 conversion (existing effectMayaConvertUnsigned, not signed clock
+conversion). Then implement the real captured-context retained evaluation owner (including
+its time/sample/cache/output continuation and failure effects), bind quantized
+platform and linked children, compose setter/Inner/draw/queue/GPU owners, then
+activate source NPCs in normal Game. Compare original field/event/dialogue
+chronology and visual/numeric output, resolve field occlusion/admission and
+measure New 2DS XL performance. Wider Rogueport/prologue/full remake remain
+unfinished.
+
 ### Original shared animation paper facing (2026-10-15)
 
 Code commit 0c9c7b981b074fcfdbe254b7faa0c31c09083d05 implements the original
