@@ -3585,3 +3585,24 @@ fixtures are explicitly test setup, not new game assets or original behavior
 measurements. See [contract](behavior/display/NATIVE_NPC_ANIMATION_PASS.md).
 
 Native field battle ownership (2026-10-15): no new runtime asset conversion or pack changes. Read-only original harbor registration/sailor/GSF1179 evidence is in artifacts/harbor-native-npc-evidence. Validation reuses the accepted original door/map NPC/pose and harbor packs; original US callback recovery remains artifacts/harbor-battle-handoff-evidence. Original ISO, extracts and compiled products stay outside source history; original rights unchanged.
+
+## Native menu-helper documentation validation inputs (2026-10-15)
+
+artifacts/native-menu-helpers-code-documentation-validation/source freezes
+baseline a51093a10e74682cd547f540200ad57c820dbfc3. Relative to Act documentation,
+only CMake adds same-process native NPC animation code/test. Tools/converters/
+assets/Makefile unchanged. All 82 accepted products and original surface/footer/
+HP/enemy/HitN64/party/Professor/Harbor default fixtures/evidence inherited by hash,
+with small mutable/default evidence copied privately. Actual HitN64 metadata PNG
+read path remains hash-pinned earlier private evidence identical to current copy.
+No conversion/import/overlay/shared-cache write; all inputs rechecked after gates.
+
+32 numeric observations in native-menu-literals.json record original DOL bits,
+values/table targets and reader hash (ISO read-only): draw r2-relative scalar
+bank, signed-conversion biases, PresentItem height offset5, audience Z offset3
+and selected original Common/Submenu jump-table entries. These are source
+constants,not measured timing/CPU/GPU parity. No asset conversion for comments.
+Existing private products retain their own original paths/licenses. Native full
+regeneration skipped; Python fixtures independently use read-only ISO/empty
+temporary outputs. Nintendo/Intelligent Systems rights retained; no new license
+or distribution rights, no ISO/extracted original or compiled product committed.

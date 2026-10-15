@@ -15641,3 +15641,63 @@ commit audit are in artifacts/field-battle-owner-validation-manifest.json.
 Concurrent unrelated work is preserved and excluded from these isolated gates.
 
 Limitations/next: unknown/foreign ID provenance still holds; actual retired IDs are preserved. The independent HarborEncounter VM is not joined to this field scheduler. Production map/bootstrap, remaining control/audio/battle children, complete battle result/teardown/return and postbattle story remain required. No original runtime/pixel/audio/hardware/performance parity or full playable prologue is claimed. RESULT-01/DEMO-01 and the overall goal remain active.
+
+## 2026-10-15 — Queued weapon draw and native menu helper documentation
+
+Added 119 inline comment lines across twelve C++/header files plus
+[queued weapon drawing](code/queued-weapon-draw.md) and
+[native menu support](code/native-menu-support.md), linked from index.
+Code/docs commit 42aa2067. All executable tokens/string literals unchanged;
+no original dialogue/story, numeric, simulation or asset behavior changes.
+No new tests for this documentation-only work.
+
+Queued-draw notes explain separate Win/Common global captures, native five-class/
+seven-weapon private domain and absent cells, source top/mode/Sub1 logic, six
+visible/buffer rows, signed timers, fresh GP-rate arithmetic, original PI/angle/
+FMA and offsetY-as-Z, readiness prefix versus whole source/raster completion,
+per-row scroll writes, pre-fctiwz count capture, post-cost BP reread, original
+MainIcon/SubIcon/cursor/help order and selected-weapon/item help branches.
+Native helper notes explain first-eligible200 audience query (not harmful-only),
+separate globals/cache/private XYZ readback, actual physical-X target/End/type
+publication and lifetime checkpoints; seven original label keys, pointer-alias
+identity, complete bank registration, immutable per-VM policy versus ABA;
+nonempty63-byte-plus-NUL pose-name admission, contiguous name/flags and actual
+sequential copy; and once-only HP/FP recovery, native private XYZ, signed height/
+bias, separate math/effect holds and fresh-global clear only after actual effect.
+These are finite original-memory adapters,not fallback story or GPU readiness.
+
+Frozen baseline a51093a10e74682cd547f540200ad57c820dbfc3 plus owned docs is at
+artifacts/native-menu-helpers-code-documentation-validation/source. Full git-blob
+audit covers 4328 baseline tracked files with zero unexpected changes; all 15
+frozen/live documentation snapshots match and 117 local guide/index links resolve.
+All source/prose finalized before gates. Concurrent startup/field/NPC/window/
+centered-font/class/raster/resource/tool integrations preserved/excluded; no
+combined moving-worktree validation claim. Original host/native handles observed
+terminal0 and exit markers agree. No test changes or filtered test selection.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits 0: 505/505 C++ (111.05s),
+228/228 Python (52.907s), zero skipped. Actual original45-descriptor enemy,
+private HitN64, party-position and temporary-Professor/fence fixtures ran.
+Conditional original Harbor battle barrier test was registered and ran; new
+native NPC animation test registered with its asserted original Mario resources.
+Native make all -o assets-ready -j4 SOUNDTRACK=gamecube exits 0. Manifest pins
+source, products/evidence/fixtures/logs and ELF/3DSX. Existing compiler/Pillow
+warnings remain. No emulator/profile/save changes or original CPU/GPU/pixel/
+audio/performance/hardware parity claims.
+
+Dependency diff only adds CMake's retained native NPC animation code/test.
+Tools/converters/assets/Makefile unchanged; all 82 accepted products and inherited
+surface/footer/HP/enemy/HitN64/party/Professor/Harbor fixtures/evidence rechecked,
+including actual HitN64 external PNG read path. Small mutable/default evidence
+copied privately. No conversion/import/overlay/shared-cache write. 32 original
+scalar/table observations independently read from ISO DOL read-only and pinned
+for numeric notes; no extracted binary committed. Native full regeneration
+skipped; existing Python fixtures independently read ISO read-only into empty
+temporary outputs. See [asset ledger](ASSETS.md). Original rights retained;
+no ISO/extracted original or compiled binary committed.
+
+Next: Trio's newer/partial runtime integration and changed battle code, newer
+animation/field/party/font/window/resource/raster/startup integrations and tools.
+Inventory only tracks source/include C++/header/PICA hashes: untracked additions
+and tooling need separate audit; matching hashes are not semantic completeness.
+The broad documentation/remake goals remain active.
