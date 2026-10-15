@@ -378,3 +378,8 @@ open; parent requests stay open.
 ### Registered NPC setup world and original actor leaves
 
 Code65d1b669: [native retained setup bridge](../behavior/field/NATIVE_REGISTERED_NPC_SETUP_WORLD.md),329C++/193Python/native build and scoped isolated ARM checks pass. Source deliveries: [admission/dependency requirements](../behavior/field/NATIVE_NPC_SETUP_WORLD_ADMISSION_REQUIREMENTS.md) and [original five NPC flag/position/yaw leaves](../behavior/field/ORIGINAL_NPC_FLAG_POSITION_YAW_EVENT_LEAVES.md). Static source contracts and direct setup fixtures do not close EVT-01's full original area initialization, normal Game, camera/Main/render or lifecycle providers.
+
+
+### Original NPC actor callback integration
+
+Codeb385793a: [native five-leaf binding](../behavior/field/NATIVE_NPC_ACTOR_EVENT_LEAVES.md), corrected original DOL name/constant closure, genuine default-init completion, checked aliased outputs and camera4 source arithmetic. Final330C++/194Python/native builds and isolated ARM fixture pass. Full area parent/world/wander/Game/render/lifetime providers remain open under EVT-01; normal storybook smoke is not NPC raster/hardware validation.

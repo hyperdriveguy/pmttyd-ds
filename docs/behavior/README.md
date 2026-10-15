@@ -1203,3 +1203,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native class draw continuations and resource owners](battle/NATIVE_CLASS_DRAW_CONTINUATIONS_AND_RESOURCE_OWNERS.md) — retained original menu calls, screen projection, concrete raster bridge and original file-entry lifetime.
 
 - [Fresh shared field and battle poses](display/NATIVE_SHARED_FIELD_AND_BATTLE_POSES.md): original player defaults, live record aliases, shared NPC/battle handles and native resource lifetime.
+
+- [Native NPC actor event leaves](field/NATIVE_NPC_ACTOR_EVENT_LEAVES.md): five original flag/position/yaw callbacks, actual retained actors/operands/camera4, ordered stores and hold-safe aliased outputs.

@@ -74,3 +74,13 @@ self/ancestor deletion, changed script rejection and actual area installation.
 Earlier Bero/Mario parent services, all11 original init/regular callbacks,
 normal Game activation, shared full-session draw order, query/Main/facing/GPU,
 complete rendering/collision and hardware performance remain required.
+
+
+### Subsequent actor-leaf integration
+
+Codeb385793a supplies [five actual actor callbacks](NATIVE_NPC_ACTOR_EVENT_LEAVES.md),
+including real operand outputs and retained camera4. Corrected original data
+closure now includes8041fd80 `me`, so DOL npc_init_evt genuinely executes its
+flag leaf and returns. Other unbound fixture roots still hold; their explicit
+retirement remains a scheduling test. Full original parent, remaining world/
+wander owners, Game/Main/query/facing/render and resource/session work stay open.

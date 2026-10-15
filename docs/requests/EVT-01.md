@@ -4845,3 +4845,7 @@ Mario/partner CPU pool boundary for fresh sessions only. Keep genuine global W,
 file/holder/heap/scratch/output startup, field Main/facing/collision, complete
 clip census, live VM copy/retirement and tagged authored battle_start open.
 Do not publish an empty W or certify full entry based on this ownership bridge.
+
+### Original NPC actor leaves and default init completion
+
+Codeb385793a binds [five source actor callbacks](../behavior/field/NATIVE_NPC_ACTOR_EVENT_LEAVES.md) to the actual retained registry/VM, checked operand output routing and published camera4. Original default npc_init_evt now genuinely completes after correcting its missing `me` asset literal.330C++/194Python/native and isolated ARM checks pass, including aliased GP output holds. Actual Area case registration/scoped map-hit-door adapters already exist; remaining full parent/owner integration and packed wander work/event lifetimes stay open. No full original initialization, normal Game, Main/query/facing/render, shared-session RNG/pose namespace or physical-performance completion claim.

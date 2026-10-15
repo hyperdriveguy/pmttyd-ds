@@ -9011,3 +9011,54 @@ restoration. Original storybook/US English capture was inspected; final capture
 artifacts/azahar-shared-pose-restored/boot.png. Profiles and saves are isolated;
 user settings/saves untouched. This does not establish original GPU/pixel/Gekko
 numeric parity, physical3DS performance, source battle teardown or full prologue.
+
+## 2026-10-14 — Original NPC flag, position and yaw callbacks
+
+Codeb385793a implements original800500b0/80053158/80052e98/80050988/8005088c
+through the retained registry/VM setup bridge. Real context/association targets
+admit both owned banks without an invented active gate. Flag-off then `me`
+position/yaw remains valid. Previous/current position publication, fresh output
+reads, raw destination capture and source negative/signed camera-relative yaw
+are preserved. Checked operand services retain completed outputs over missing
+owners or conversion domains, including an output that overwrites GP itself.
+Immediate Area calls use stack cursors; held calls retain them, with actual
+event/room retirement cleanup. See [contract](behavior/field/NATIVE_NPC_ACTOR_EVENT_LEAVES.md).
+
+Discovered/fixed a real original-data dependency: prior door closure contained
+DOL npc_init_evt80415e18 but omitted its `me` literal8041fd80. Nine hash-pinned
+unchanged DOL string/numeric views (128 payload bytes) now join the private
+pack. The original default init genuinely executes its flag leaf and returns
+in addition to the previous chusan3/roten3 minimal completions. Other direct
+fixture callbacks remain unbound; manual remaining-init retirement still only
+tests regular-root construction, not their behavior. No invented story text,
+world state, Mario/party sentinel dispatch or successful missing provider.
+
+Final frozen treeaca69e1630e5370b3cded74e3e4035ce5f9bed29 audits3448 tracked
+files with zero mismatches. CMAKE_BUILD_PARALLEL_LEVEL=4 make test passes330/330
+C++ (35.99s) and194/194 Python (27.327s). Native
+make all -j4 -o assets-ready SOUNDTRACK=gamecube exits0, including final normal
+restore. Strict isolated ARM fixture passes originalRows15/draws255/defaultInit/
+actorLeaves5/operandAlias/camera, including NaN flag/no-store outputs and
+exceptional selector holds. New production/probe builds have no compiler
+warnings; existing Python Pillow deprecation remains. Manifest
+artifacts/area-npc-leaves-validation-manifest.json records source/binary/log/
+capture hashes. Earlier fixture/test snapshots are not the final validation.
+
+Normal fresh isolated40s Azahar boot exits0; original town storybook/text
+capture inspected at sample60AppFPS/100%. Normal SHA256
+ffce0711b27229fa3735c31dfb5b24d58dde5adbd6bf85d1b1ce4a578ae2fc21
+matches restored binary. No user profile or saves touched. Of87 owned private
+products, only door-data.pmevt/json change; no new art/audio conversion or
+shared pack write. The moving concurrent worktree is not claimed validated.
+This does not prove new NPC raster, full camera history, Gekko floating-point,
+physical3DS performance or full area initialization.
+
+Next: actual retained wander/case/map/hit/door integration and earlier Mario/
+Bero parent services, keeping original story guards and event work ownership.
+Area already has real case registration and scoped map/hit/door adapters;
+wire their actual owners rather than fixture acknowledgments. Source wander
+services require packed event locals[10] allocation and ordered requests;
+do not wrap the existing snapshot helper as if it supplied those lifetimes.
+Then normal Game activation, shared pose namespace/session RNG, NPC Main/query/
+facing/render/collision and genuine room resources. Full remake/goal remains
+active and incomplete.

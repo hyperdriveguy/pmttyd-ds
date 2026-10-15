@@ -1670,3 +1670,26 @@ Renderer selects matching resource identity. Frankly retains the existing field
 CPU descriptor set and a matching shared-field-frankly GPU pack. No generated
 assets or ISO are committed. Nintendo/Intelligent Systems resources; local use
 only, no redistribution rights granted. Original art only; no generated artwork.
+
+## Original NPC actor-leaf data closure (2026-10-14)
+
+Codeb385793a adds tools/field_npc_actor_assets.py to the canonical door exporter.
+It opens /home/carson/games/roms/G8ME01.iso read-only and pins nine unchanged
+DOL views:802c1470/c,802c14b0/8,802c14f0/40,8041fd80/4,8041fdcc/10,
+8041fde0/8,8041f448/4,8041f45c/4,802bf240/8 (hex address/length).
+These128 bytes retain original name/numeric constants and real neighboring
+padding; no binary bytes are fabricated or committed. The previous linked
+script pack omitted `me`, although npc_init_evt referenced8041fd80.
+
+Privately regenerated using python3 tools/door_data_assets.py inside
+artifacts/source-checks/trouble-world. All extracted gor REL/prefetch data and
+new compiled packs remain ignored there, without modifying shared products.
+New door-data.pmevt is152228 bytes (previous152004); original addresses and
+source values are retained. Its metadata records each DOL span digest. Of87
+prior owned product hashes, only romfs/door-data.pmevt and romfs/door-data.json
+change. No texture/geometry/music conversion;13 retained NPC resource families
+are reused. Exact hashes/build log and isolated normal/ARM fixtures are in
+artifacts/area-npc-leaves-validation-manifest.json. Original Nintendo/Intelligent
+Systems rights remain reserved; local extraction conveys no redistribution
+license. ISO was not modified or committed. This validates source data and
+scoped callback use, not new NPC GPU raster or hardware performance.
