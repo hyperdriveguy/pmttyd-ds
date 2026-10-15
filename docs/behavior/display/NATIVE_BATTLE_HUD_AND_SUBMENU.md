@@ -35,17 +35,18 @@ Trio command/target lists use the original type0 frame, unchanged US glyph
 mapping/WID1 widths/spacing2 and original selection hand504. This is a weapon
 submenu presentation adapter; the full original rotating action-class menu is
 still required. Plain labels come from the existing original message lookup;
-no tagged story stream is flattened or rewritten. The lower-screen frame
-backend shares original geometry and GPU restoration with the top-screen
-backend, selecting320-wide projection/160-center and restoring the actual
-lower target after each native frame submission.
+no tagged story stream is flattened or rewritten. As of2026-10-14 the list
+uses the upper400-wide projection/200-center. Its original half-size frame,
+labels, icons and selection hand retain their layout with a40px horizontal
+translation from the former320-wide surface. The native upper overlay owns
+submission; the lower view retains the continued scene during all Trio phases.
 
-The shared BattleMenuLayout defines visible lower-screen rows and optional tap
-hit regions. D-pad/Circle Pad repeats still go through the original native
-physical producer; A confirms and B cancels with existing priority. Taps outside
-the list do not confirm. Required actions have physical alternatives. The old
-horizontal touch regions are retired for this original-script trio submenu;
-the independent legacy Crump development harness remains separately scoped.
+BattleMenuLayout still supplies the list's row spacing. Its old lower-screen
+command hit regions are no longer consumed by Game: tapping an audience-space
+coordinate cannot select an invisible command row. D-pad/Circle Pad repeats
+still go through the original native physical producer; A confirms and B cancels
+with existing priority. The independent legacy Crump development harness
+remains separately scoped. Optional actual audience targeting remains unbound.
 
 Validation checks source table pins, original pixel equality, every atlas cell's
 bounds/nonoverlap, list edges/row mapping and existing physical navigation,
@@ -55,7 +56,8 @@ passing host tests does not prove original-runtime or hardware raster parity.
 Next: bind the original tutorial player-command scheduler and full rotating
 menu, then original audience actors/throw telegraphs/targeting before adding an
 optional lower-screen tap shortcut with a physical stop-throw alternative.
-The current lower screen remains a submenu surface, not a fabricated audience.
+The lower screen now remains a scene continuation; original menu scheduling
+and actual harmful-thrower tap ownership still require their live producers.
 
 ## User layout references, 2026-10-14
 
@@ -67,9 +69,9 @@ implementation baseline. The references do not authorize replacement art or
 invented menu labels.
 
 The lower screen must continue the battle scene into the lower part of the
-audience. It must not become a separate menu/dashboard surface. The existing
-lower-screen submenu adapter described above is interim and must be replaced
-when the full class/weapon presentation is bound. A native 400-wide top and
+audience. It must not become a separate menu/dashboard surface. The Trio
+submenu adapter now draws above; the full class/weapon presentation still
+needs its source display binding. A native400-wide top and
 320-wide bottom view need a consistent scene continuation with an explicit
 horizontal crop; they must not duplicate the stage or stretch audience art.
 Exact camera/reflow placement still needs visual validation on the two screens.

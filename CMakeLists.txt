@@ -1869,3 +1869,13 @@ add_executable(animation_buffer_binding_tests tests/animation_buffer_binding_tes
 target_link_libraries(animation_buffer_binding_tests PRIVATE ttyd_core)
 add_test(NAME animation_buffer_binding COMMAND animation_buffer_binding_tests)
 set_tests_properties(animation_buffer_binding PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Immutable upper-menu admission and optional audience touch geometry.
+target_sources(ttyd_core PRIVATE source/battle/battle_audience_touch.cpp source/display/battle_class_publication.cpp)
+add_executable(battle_audience_touch_tests tests/battle_audience_touch_tests.cpp)
+target_link_libraries(battle_audience_touch_tests PRIVATE ttyd_core)
+add_test(NAME battle_audience_touch COMMAND battle_audience_touch_tests)
+add_executable(battle_class_publication_tests tests/battle_class_publication_tests.cpp)
+target_link_libraries(battle_class_publication_tests PRIVATE ttyd_core)
+add_test(NAME battle_class_publication COMMAND battle_class_publication_tests)
+set_tests_properties(battle_class_publication PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

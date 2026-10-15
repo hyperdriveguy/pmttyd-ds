@@ -1391,6 +1391,9 @@ void Renderer::overlay(const Game& g) {
             messageIconImage(0x1f8,g.ticks,200+(box.x+2)*MessageWindowScale,120-choice.cursorY*.5f,1,uint8_t(choice.opacity));
         }
         if(g.harborStory.failed || g.storyPresentation().failed)text("Development notice: source scene unavailable",25,112,.45f,Ink);
+        if(g.trioBattleActive && !g.trioAttack.rewardPresentationActive() &&
+           (g.trioCommands.state==TrioBattleCommands::State::Command ||
+            g.trioCommands.state==TrioBattleCommands::State::Target))battleMenuRows(g);
         if(g.trioBattleActive && g.trioAttack.rewardPresentationActive()) {
             // Source camera8 submits the reward UI after the world. Keep the
             // native two-dimensional layer independent of the stage depth.
@@ -1419,6 +1422,9 @@ void Renderer::overlay(const Game& g) {
             if(g.trioAttack.pendingFunction()){panel(16,20,368,30,Paper);text("Development notice: source damage services pending",25,28,.43f,Ink);}
             else if(g.trioAttack.active()) {panel(16,20,170,30,Paper);text(g.trioCommands.state==TrioBattleCommands::State::AttackReady && g.trioCommands.attack && g.trioCommands.attack->weapon==0x80353de8?"Hold left, then release":"A: action command",25,28,.5f,Ink);}
             else text(g.trioAttack.finished()?"Development notice: turn scheduling pending":"Development notice: original attack event pending",25,112,.45f,Ink);
+            if(!g.trioAttack.active() && !g.trioAttack.finished() &&
+               g.trioCommands.state==TrioBattleCommands::State::AttackReady)
+                text("B: return to target selection",58,218,.38f,Ink);
         }
         if(g.storyPresentation().pendingService)text("Development notice: original battle backend pending",25,112,.45f,Ink);
         return;
@@ -1450,27 +1456,9 @@ void Renderer::overlay(const Game& g) {
 // Prototype timing bars read simulation state;they do not own command timing.
 void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audioAvailable) {
     if(g.harborTutorial.running())return;
-    if(g.trioBattleActive && g.trioAttack.rewardPresentationActive()) {
-        if(g.trioAttack.pendingFunction())text("Development notice: original battle return pending",12,76,.42f,Ink);
-        return;
-    }
-    if(g.trioBattleActive && g.trioCommands.state!=TrioBattleCommands::State::Closed) {
-        const auto& commands=g.trioCommands;
-        if(commands.state==TrioBattleCommands::State::Command || commands.state==TrioBattleCommands::State::Target) {
-            battleMenuRows(g);
-        } else {
-            sourceWindowFrame(type0WindowFrame(-284,104,568,60,10,{255,255,255,230}),true);
-            sourceWindowFrame(type0WindowFrame(-284,-92,568,48,10,{255,255,255,230}),true);
-            if(g.trioAttack.active()) {
-                text(commands.commandName(commands.command),12,76,.63f,Ink);
-                text(g.trioAttack.pendingFunction()?"Development notice: source damage services pending":g.trioCommands.state==TrioBattleCommands::State::AttackReady && g.trioCommands.attack && g.trioCommands.attack->weapon==0x80353de8?"Hold Circle Pad left, then release":"A: action command",12,174,.42f,Ink);
-            } else {
-                text(g.trioAttack.finished()?"Development notice: turn scheduling pending":"Development notice: original attack event pending",12,76,.42f,Ink);
-                if(!g.trioAttack.finished())text("B: return to target selection",12,174,.44f,Ink);
-            }
-        }
-        return;
-    }
+    // Battle controls/HUD remain on the upper display. Leave the continued
+    // audience scene unobscured on the lower display in every Trio phase.
+    if(g.trioBattleActive)return;
     if(g.harborEncounter.locked() || g.harborStory.locked() || g.storyPresentation().locked() || g.scene==Scene::Dialogue)return;
     panel(6,5,308,32,Ink);text("ROGUEPORT FIELD NOTES",16,11,.59f,Paper);
     if(g.scene==Scene::Battle) {

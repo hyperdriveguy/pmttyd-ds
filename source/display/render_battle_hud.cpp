@@ -55,7 +55,7 @@ void Renderer::battleHud(const Game& g) {
         number(fp,189,20,false);number(maxFp,217,20,true);
     }
 }
-// Bottom command reflow: actor2 has one command, others two; target mode
+// Upper command reflow: actor2 has one command, others two; target mode
 // reads selected index from packed candidate byte+ab7. Frame uses source UI
 // units, then native half-scale. Icon 504 is the original selection hand.
 // Font 512x256 atlas uses WID1 widths+spacing 2; 0xffff means unmapped byte.
@@ -66,17 +66,19 @@ void Renderer::battleMenuRows(const Game& g) {
     const unsigned selected=target?commands.candidates.bytes[0xab7]:commands.command;
     // Original type0 frame, US font and animated selection hand; native reflow
     // does not claim the original rotating action-class menu choreography.
-    sourceWindowFrame(type0WindowFrame(-284,64,568,float(rows*60+16),10,{255,255,255,230}),true);
+    sourceWindowFrame(type0WindowFrame(-284,64,568,float(rows*60+16),10,{255,255,255,230}));
     for(int row=0;row<rows;++row) {
         const float y=BattleMenuLayout::Top+row*BattleMenuLayout::RowHeight+6;
         const auto* label=target?commands.targetName(commands.target(row)[0]):commands.commandName(row);
         // This plain-label adapter uses the unchanged source atlas, mapping,
         // WID1 glyph widths and spacing2. Tagged story text stays in msgDisp.
-        float x=50;
+        // Preserve the existing half-size original art, centered in400px.
+        // This is the320px list's horizontal layout translated by40px.
+        float x=90;
         if(!target)if(const auto icon=commands.commandIcon(unsigned(row),g.progress.originalPouch.get())) {
             if(const auto* art=messageIcon(*icon)) {
                 const float height=art->frame(g.ticks).height*.5f;
-                messageIconImage(*icon,g.ticks,62,y+9+height*.5f,1,255);x=84;
+                messageIconImage(*icon,g.ticks,102,y+9+height*.5f,1,255);x=124;
             }
         }
         const auto& font=harborMessageFont();
@@ -91,8 +93,8 @@ void Renderer::battleMenuRows(const Game& g) {
             C2D_DrawParams params={{x,y+1,glyph.width*.5f,glyph.height*.5f},{0,0},.6f,0};
             C2D_DrawImage(image,&params,&tint);x+=(glyph.width+2)*.5f;
         }
-        if(unsigned(row)==selected)messageIconImage(504,g.ticks,32,y+15,.5f,255);
+        if(unsigned(row)==selected)messageIconImage(504,g.ticks,72,y+15,.5f,255);
     }
-    text(target?"D-pad / Circle Pad: select   A: confirm   B: back":"D-pad / Circle Pad: select   A: targets",18,198,.38f,C2D_Color32(30,20,20,255));
+    text(target?"D-pad / Circle Pad: select   A: confirm   B: back":"D-pad / Circle Pad: select   A: targets",58,198,.38f,C2D_Color32(30,20,20,255));
 }
 }

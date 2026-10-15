@@ -1192,3 +1192,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Original random-state initialization and direct writers](meta/ORIGINAL_RANDOM_STATE_INITIALIZATION_AND_WRITERS.md): initialized launch seed1, DOL/REL direct-reference census and remaining runtime/interleaving frontier.
 
 - Display: [animation refresh and scratch recovery](display/NATIVE_ANIMATION_REFRESH_AND_SCRATCH_RECOVERY.md) — retained mode/refresh/recursive allocator/reset parents and real VM battle-entry continuation; shared global pose/file/output migration remains open.
+
+- [Battle dual-screen UI fidelity audit](display/BATTLE_DUAL_SCREEN_UI_FIDELITY_AUDIT.md) — original HUD resources, upper Trio menus, immutable draw admission and remaining live audience/class-menu owners.

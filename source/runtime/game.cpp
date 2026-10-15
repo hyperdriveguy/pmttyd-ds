@@ -1,4 +1,3 @@
-#include "battle_menu_layout.hpp"
 #include "camera_road_view.hpp"
 #include "game.hpp"
 #include "wall_geometry.hpp"
@@ -2428,9 +2427,9 @@ void Game::tick(const Input& rawInput,const OriginalSequenceServices* sequenceSe
             else {
                 trioCommands.syncPositions(trioBattleIntro);
                 uint32_t buttons=(i.confirm?0x100u:0u)|(i.cancel?0x200u:0u);
-                // Adapt general direction masks to battle virtual left/right:
-                // 0xa000=up/right,0x5000=down/left; physical D-pad6=right/down,
-                //9=left/up. Preserve this source-menu axis folding.
+                // The native upper-screen list uses down/right for next and
+                // up/left for previous. DEMO main-stick down/right=0xa000,
+                // up/left=0x5000; physical D-pad down/right=6,up/left=9.
                 uint32_t repeats=(i.right?0x80000u:0u)|(i.left?0x40000u:0u);
                 if(i.physicalSnapshot) {
                     const auto& pad=inputProducer.channels[0];
@@ -2438,14 +2437,9 @@ void Game::tick(const Input& rawInput,const OriginalSequenceServices* sequenceSe
                     repeats=(pad.directionRepeat&0xa000?0x80000u:0u)|(pad.directionRepeat&0x5000?0x40000u:0u)|
                         (pad.repeat&6?0x80000u:0u)|(pad.repeat&9?0x40000u:0u);
                 }
-                if(tap && (trioCommands.state==TrioBattleCommands::State::Command || trioCommands.state==TrioBattleCommands::State::Target)) {
-                    const bool target=trioCommands.state==TrioBattleCommands::State::Target;
-                    const int row=BattleMenuLayout::touchedRow(i.touchX,i.touchY,target?trioCommands.count():trioCommands.actor==2?1:2);
-                    if(row>=0) {
-                        if(target)trioCommands.chooseTarget(unsigned(row));else trioCommands.chooseCommand(unsigned(row));
-                        buttons|=0x100;
-                    }
-                }
+                // Command rows are on the upper screen. The lower audience
+                // scene has no command hitboxes; navigation/confirmation stay
+                // available through Circle Pad/D-pad and physical A/B.
                 trioCommands.input(buttons,repeats);
             }
         }
