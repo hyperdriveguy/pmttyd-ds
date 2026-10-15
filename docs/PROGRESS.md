@@ -13437,3 +13437,75 @@ weapon/Phase/Turn/audience integration, raw animation/release/texture/party chan
 still need separate inline review. Current tracked event CPP/header hashes all
 match annotations, but inventory is a review aid, not semantic completeness or
 validation of future live changes. Full documentation/remake goal stays active.
+
+## 2026-10-15 — retained original menu/input and physical-X integration
+
+Commits8dc7ada2 and6261914b add complete retained original class-menu
+Main/Setup/End, CommandInput/target parent, ClassTable, Weapon Main/Setup/End
+and actual Weapon UI common/subtype allocation/free. Original physical navigation,
+confirm/cancel, private cursor-output unknownness and source call ordering survive
+child waits. Atomic command-pose copies actual original names before part flags;
+typed PresentItem retains actual math/position/healing without invented guest
+stack outputs. Recovery still holds at its genuine missing effect owner.
+
+ClassTable now uses the seven original US labels through actual configured
+field room/global resources. Fresh Game entry snapshots once; Trio maps unchanged
+label bytes into permanent private VM cache0x85a00000 and retains the binding.
+Unknown/ambiguous keys and missing resources have no authored fallback. Original
+IDs, control bytes, NULs, resource precedence and pointer aliases are preserved.
+ASSETS records paths, no-conversion choices and original reserved rights. This
+exclusive private-VM no-remap/write policy is not a generic ABA registration lease.
+
+All three original X callers compose the real physical trigger, Mario gates,
+first-eligible GetItemOn scan, original SetTarget and retained End. Native private
+selection survives cache mutations; no guest scratch is manufactured. Original X
+can choose a good item; optional harmful-holder tapping remains a separate path.
+Whole checker tests compare observable memory traces against the existing source
+graph, including global/cache changes, states, hold/resume, reentry and allocation
+loss. No query/target/healing prefix is replayed while a child waits.
+
+Exact frozen gate tree: artifacts/original-menu-validation/source, baseline
+575ee1ac plus51 owned paths;6189 tracked/romfs input hashes match after gates.
+Accepted prior cache uses four hash-pinned existing clock door/boot overlays from
+message-documentation authority; current converter hashes match,63 accepted
+products checked. Inherited private evidence/default-fixture roots stay read-only;
+this does not inventory unrelated28GiB local assets or validate moving HEAD.
+Forty-eight committed owned postimages match the gate exactly; CMake/index/ASSETS
+also preserve independent concurrent additions, recorded in committed-foreign-diffs.
+
+Full make test exits0:453/453 C++ in70.15s,213/213 Python in57.641s, zero skipped.
+Initial CTest452/453 exposed missing actual field root in Game's old fixture,
+preventing fresh runtime creation. The fixture now loads real FieldActorCatalog;
+all original assertions remain. Full private fixture and complete rerun pass.
+Full make all -o assets-ready -j4 SOUNDTRACK=gamecube exits0; test-only correction
+leaves native source/binary unchanged and final make all exits0. Existing compiler,
+Pillow and final make jobserver warnings remain. Eight read-only source verifiers
+pass; original global.txt byte comparison passes. Frozen1500 Markdown files have
+zero broken links. All root test/build/emulator handles observed terminal.
+
+Actual isolated ARM physical-X CPU probe30s exits0 and records full PASS marker;
+reviewed capture agrees. Separate normal Azahar35s exits0, reviewed original
+storybook/title prompt and no asset-error screen. No user's profile/save touched.
+Normal artifacts/ttyd-original-menu-native.3dsx SHA256
+2479d3653fd3e016264ef7b04fe7bddff91030474a19f8f08307a5128079ace2;
+probe bbccf9efcba36af3e5f6a6493e8f11fab84b940a67117320c41052cfae9781c2.
+Manifest pins inputs, cache authority, commands/logs, markers and captures.
+No ISO, extracted original resources or compiled binaries committed.
+
+Limits: ordinary source Main/entry cadence is still unactivated; active battle
+retains legacy harness sequencing. Weapon table/update/decision/target, sounds,
+payment/sampling/attack selector, genuine drawing/camera/resource/effect owners
+remain unfinished. Weapon constructor readiness stays source0 until actual draw
+advances it. No fake UI, sound, query or GPU acknowledgement substitutes for these
+owners. Startup/CPU/source checks do not prove active menu/tap acceptance, original
+executed-PPC/framebuffer parity, normal-stack limits, performance or hardware.
+
+Three additional UI workers continue actual class FramePipeline/camera/queue
+composition, complete original weapon drawing and original surface/icon texture
+generation ownership. Existing radial drawing is reused, never redesigned. Frozen
+HitN64 draw/texture/GPU batches and a successful separate native import/render/
+release probe await root integration/full gates; no normal effect activation is
+claimed. Next integrate those batches, finish actual source battle entry/active
+cadence and selected-tap completed lower-audience publication/one-shot consumption,
+then tutorial/real battle/field return and hardware verification. Controls remain
+physical as well as optional touch. Full goal remains active and incomplete.
