@@ -12524,3 +12524,70 @@ actual harbor NPC→auxiliary kind13→canonical kind1 event chronology without 
 early join; finish release/GC, full frame/window/event ownership, camera/occlusion,
 interior/triggers/story fidelity and measure fixed routes on physical New 2DS XL.
 EVT-01 and the playable prologue/full-game goal remain active; no parity claim.
+
+## 2026-10-15 — Trio public facade and draw bindings documented
+
+Added inline ownership/domain/numeric/behavior notes to Trio header and public
+facade methods. Added [public API](code/trio-api.md) and
+[draw bindings](code/trio-draw-bindings.md), updated index/provider/scheduling guides.
+Code/docs commit e8e3e09f. Both C++ files preserve executable tokens/string literals;
+no behavior changes or new tests for prose-only work.
+
+Explained fresh-only versus reused resource ownership, native active/finished
+meaning, source command readiness/preparation writes, borrowed catalog/pose/trace/
+reward views, camera snapshot precedence, actual key-stage admission and outer Main
+completion/profiling boundary. Draw comments describe exact invoking callback/
+camera/userdata gates, legacy versus modern HP contracts, VM/GP/external fallback
+order, original provider users, optional zero/false results, independent parent/icon/
+inner/traversal/shape cursors, source pass-mask filtering and explicit draw-provider
+precedence. Source shadow collision/material/TEV/lighting states require actual
+owners; missing providers do not become empty successful draws. Existing pose
+field 0x90 stays numeric without inventing a semantic name.
+
+Established committed runtime/header/public API are now annotated on the recorded
+baseline; live Trio remains partial because newer source Turn/audience/pinch/
+sequence/Action/enemy-resource integration still needs separate audit. partial_files
+retains that distinction. Full code/remake goal remains active. No original story,
+dialogue, art, audio or gameplay changes.
+
+Frozen validation baseline b0330b766ec481e351a3e4d3932406bd0b61e428 plus owned documentation is at
+artifacts/trio-facade-code-documentation-validation/source. Audit covers all 3943
+baseline tracked files: zero unexpected changes. All seven documented frozen/live
+annotation snapshots match; all 95 local guide/index links resolve. Newer runtime/
+renderer/field/RAM/provider work preserved/excluded; the later e78d2325 integration
+is not claimed validated by this snapshot. No combined-moving-worktree validation
+or post-launch source refinements. Initial gates had 435 C++ success and two
+Python original-asset skips due missing default local cache paths. Preserved initial
+logs; copied 11 hash-matched private fixture paths (raw inputs, pack, atlas) without
+conversion/test changes, then reran both full gates incrementally after terminal
+initial processes. Final results below include both real Python asset checks.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits 0: 435/435 C++ (47.08s) and
+212/212 Python (33.813s), zero skipped. CTest captured full original 45-descriptor
+enemy-bank success, not its unavailable-data path. Native make all -o assets-ready
+-j4 SOUNDTRACK=gamecube exits 0. All async gate handles polled to terminal; final native direct exit observed,
+and both exit markers agree. Manifest records source/dependency/authority/log/ELF/3DSX hashes and private
+atlas evidence. Existing compiler/Pillow warnings remain. No emulator/profile/
+save changes or hardware/pixel/performance/Gekko parity claims.
+
+Cache inherits 56 accepted products. Preflight reviews committed Makefile/new
+source-verifier/enemy-converter/NPC-effect changes. Nine inputs admitted: two
+NPC-effect door files and seven original enemy-bank products including metadata;
+explicit accepted count 63. Door outputs were absent in caches, so frozen converter
+ran into empty private cache-rebuild using read-only ISO; only exact authority-
+matched pair admitted, all ancillary output hashes recorded/unused. Pack 152840
+bytes SHA256 cf1404103dc9ab8a6c5325aaa0f1a72f72e8b9778b130677d7072766bbca3369.
+Enemy products verified against original REL/MODEL/TPL plus composite frozen-helper
+fingerprint, source roles, 45 descriptor names, 14 textures, per-product hashes and
+atlas PNG hash. Additional 11 hash-matched fixture-path copies admit both real
+Python source/pack checks. Six payloads+metadata added from existing private converter outputs;
+no enemy regeneration/resampling needed. No editable import/shared pack write.
+Original rights/provenance unchanged; existing Python fixtures independently use
+read-only ISO/empty temporary outputs; native full regeneration skipped. No ISO/
+original asset/compiled binary committed. See [assets](ASSETS.md).
+
+Next: audit new retained source Turn/status/barrier/audience/pinch modules and Trio
+integration, enemy/recovery resources, then field animation/NPC/render/raw-RAM additions.
+Remaining event/message/story/effect/platform/file/save helpers and tools still need
+systematic inline audit. Preserve source-ID/control-token fidelity and provider
+lifetimes; passing tests do not establish full live subsystem coverage.

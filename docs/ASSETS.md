@@ -2671,3 +2671,31 @@ Nintendo/Intelligent Systems rights remain reserved; local extraction grants
 no redistribution rights. ISO, original resources/listings and compiled packs/
 binaries remain ignored/private. Exact dependency/source/product/native logs
 are in artifacts/animation-facing-validation-manifest.json.
+
+## Trio facade documentation validation inputs (2026-10-15)
+
+artifacts/trio-facade-code-documentation-validation/source inherits 56 accepted
+products, original common/Frankly/footer/HP evidence. Frozen NPC-effect converter
+reproduces exact door-data.pmevt/json from read-only ISO into empty private output
+because required pair absent in old caches. Only authority-matched pair copied;
+ancillary generated hashes recorded/unused. npc-effects after-inventory hash is
+pinned by its validation manifest. Pack 152840 bytes SHA256
+cf1404103dc9ab8a6c5325aaa0f1a72f72e8b9778b130677d7072766bbca3369.
+
+Seven original trio-enemy-kuribo products are copied from existing private pack:
+six payloads plus metadata. Frozen converter matches owned source journal; helper+
+original tik.rel/c_kuribo MODEL/TPL fingerprint matches metadata. Original source
+hashes, roles/initial names, 45-descriptor order, 14 textures, per-product hashes and
+atlas PNG are independently checked; private atlas evidence retained. Source
+MODEL SHA256 9b934dee83eb489f5151d8a497ac59611e402b7db786c9e82b4809d7d7a475e4;
+TPL SHA256 bccf3f47fd1f713cf8c86a162f9b8a2f86af0b4398a9806e57b114baaf9fc692.
+Eleven extra hash-matched private fixture paths (three raw inputs, seven pack/
+metadata, atlas) also admit default Python local-data checks; first skipped logs
+retained, full gates rerun. No test changes, new enemy conversion/resampling or
+editable import/shared-pack write. Total
+explicit accepted products 63. Source CPU descriptors/raw draw metadata/dedicated
+RGBA8 atlas retain their prior original conversion and rights terms. All source/
+product/authority/evidence hashes are journaled. Python fixtures independently read
+ISO into empty temporary outputs; native full regeneration deliberately skipped.
+Nintendo/Intelligent Systems rights retained; private tracking/copying grants no
+new license. No ISO/original extracted asset/compiled binary committed.
