@@ -37,6 +37,11 @@ Mario for maximum, then obtains Mario again for current-FP write ownership;
 helpers can independently recapture globals. Do not collapse those reads into
 one cached pointer across service-visible mutation.
 
+Choice's `packedCanAct` checks statuses 1/2/9/27 and status-word mask 1,
+but a null unit reaches result 1 through its final short-circuit. This differs
+from AC eligibility's unchecked alliance/kind prefix; do not merge them into
+one assumed null-handling helper.
+
 [battle_packed_pad.cpp](../../source/battle/battle_packed_pad.cpp) copies the
 private battle history, not physical polling. Two decimal-12-byte snapshots at
 `0/c` hold buttons, signed main/sub axes, triggers and analog/retained A/B.
@@ -129,11 +134,33 @@ strictly below -30, not hit Z.
 Filtering compacts rows in separate passes with exact pairwise loads/stores.
 Admission examples: `10000` Mario only, `20000` kinds 216–217 only; masks
 `1/2/10/40/20` exclude source kind groups; `1000` excludes actor, `4000` requires
-actor, `100/200` apply side/neutral rules and `2000` excludes matching actor kind.
+actor, `100/200` apply side/neutral rules and `2000` excludes matching actor kind only for a different unit ID.
 Part masks under `100000/200000` select exact eligibility branches. Attribute
 filters are a separate namespace: source Monosiri, unit/part state, same-unit
 part preference and directional occlusion. Successful Monosiri admission queries
 again with fresh kind; it does not reuse the first pointer.
+
+The two filter-mask namespaces retain these numeric meanings:
+
+| Admission mask (`ac0`) | Predicate applied |
+| --- | --- |
+| `1/2/10/20/40` | Exclude kinds 222–223 / 224–230 / 1–215 / 216–217 / 218–221 |
+| `100/200` | Exclude same side / exclude different nonneutral side |
+| `1000/4000` | Exclude actor / require actor |
+| `2000` | For another unit ID, exclude matching actor kind |
+| `10000/20000` | Require kind 222 / require kinds 216–217 |
+| `100000` | Require part mask 3 and exclude part mask `40000` |
+| `200000` | Require part mask 7 and exclude part masks `10/40000` |
+
+| Attribute mask (`ac4`) | Predicate applied |
+| --- | --- |
+| `1` | Reject part `80000`; require first Monosiri pointer, then fresh lookup word `+4` nonzero (no second-null guard) |
+| `2/8`, `4`, `10` | Reject unit `104` mask 4; reject mask 2; require mask 6 respectively |
+| `1000` | Reject part `1ac` mask `100000` |
+| `2000` | Reject part mask `200000`, unless attribute `100000` permits the actor itself |
+| `4000/8000` | Reject / require part mask `400000` |
+| `2000000/4000000` | Reject unit mask `20` / part mask `2000000` |
+| `1000000` | Directional same-lane occlusion pass described below |
 
 Admission `100000` removes a mask-2 part when a same-unit mask-1 peer remains.
 Attribute `1000000` checks same-lane directional blockers, with part `40/400000`
@@ -160,6 +187,22 @@ from precheck byte `c`). Weapon zero skips item overrides. Unit attribute
 `20000` sets weight 1 before exact item-ID/status branches. FP-restoring metadata
 can query max/current twice, or reload weapon/item metadata if already full.
 No zero-maximum guard or inferred host heuristic is added.
+
+Chooser coefficient indices `c0..c6` refer to the loaded float table above,
+not invented tuning values. The principal flag formulas are:
+
+| Choice flag | Weight operation |
+| --- | --- |
+| `1/2` | Scale Mario / partner by `c0` |
+| `4/8` | Multiply by `c1+c2*(count-rank)` / `c3+c2*rank` |
+| `10/20` | Scale same side / different nonneutral side by `c0` |
+| `100/200` | Multiply by `c4-hp/max` / `c5+hp/max` |
+| `400/800` | Multiply by `c0-c6*hp` / `c5+c6*hp`, preserving fused operations |
+| `1000` | Scale by `c0` when HP <= kind byte `d` |
+| `80000000` | Select weighted-random suffix instead of maximum-weight suffix |
+
+Each intermediate conversion/truncation remains at its source point; these
+formulas explain the masks and do not authorize reassociation into host double.
 
 Deterministic choice scans all 74 weights with initial best zero and strict `>`,
 so ties favor first **row index**, not necessarily first rank. Default remains

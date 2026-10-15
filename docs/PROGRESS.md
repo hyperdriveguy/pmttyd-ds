@@ -9952,3 +9952,59 @@ artifacts/azahar-model-relocation-normal/boot.png inspected. Startup sample
 60AppFPS/100% speed is not field/hardware timing validation. Only isolated
 project-local emulator profiles/saves were used; user state untouched. Final
 link check remains1403Markdown files with zero broken links.
+
+## 2026-10-14 — Packed battle state, candidate records and motion documented
+
+Added inline numeric/ownership/behavior notes to 36 C++ implementation/header
+files: status, part/world/hit coordinates, position/selection, move reset/position,
+movement sound, takeoff, precheck/counter/hit-event/recovery/pad, candidate sampling/
+choice and generic/Mario jump parents. Added [packed state](code/packed-battle-state.md)
+and [packed motion](code/packed-battle-motion.md), plus index entries. Main commit
+6505c6fd; final Markdown review expands distinct filter/weight masks and CanAct/
+AC-possibility null behavior. All 36 preserve executable tokens and literal strings.
+
+Explained signed-low-byte status IDs and shared strength storage, single-part
+shortcut versus ID lookup, raw/float sentinel domains, axis/output alias order,
+independently recaptured battle owners, partner FP ownership and narrowing before
+upper clamp. Motion notes distinguish per-visit fields/return tests, generic versus
+Mario phase/velocity meanings, integer versus float angular division, sound timer/
+retained handle ownership, and source floor providers. Candidate notes explain
+private BE rows, ordered compaction/filtering, live output/weight callbacks, pair-swap
+tie behavior and roulette <=0 selection. Native bounds and unmodeled scratch
+reads remain explicit; source constants are not described as measured timing.
+
+Frozen validation uses baseline c955f692fb30cbb4e7e810cff5e9c9115e7c6d48 plus owned documentation in
+artifacts/battle-packed-code-documentation-validation/source. Audited all 3706
+baseline tracked files: zero unexpected changes; 39 documented files match frozen
+and recorded live hashes. All 58 local guide/index links resolve. Unrelated
+moving-checkout work was preserved/excluded; no combined-moving-tree validation
+is claimed. Only Markdown was expanded after build start; all 36 C++ files retain
+their exact documented snapshot hashes.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test passes 383/383 C++ (58.18s) and
+203/203 Python (54.171s), zero skipped. make all -o assets-ready -j4
+SOUNDTRACK=gamecube exits0. Manifest records source, dependency, log and native
+binary hashes. Initial host run had one field_npc_clock fixture failure because
+the inherited door-data pack lacked the new original clock literal. The moving
+npc-wander cache was already newer and did not match its recorded authority;
+matching two products were found in animation-files-source, hash-verified, copied
+privately, then the complete host and native/repack gates rerun. Initial failed
+log is retained; no test/source fixture was changed. Existing compiler/Pillow
+warnings remain. No emulator/profile/
+save changes, new measured hardware/timing, pixel or SDK/Gekko numerical fidelity
+claims. No tests were added or disabled for these comment-only changes.
+
+Private cache reuses accepted battle-controller documentation RomFS/evidence,
+checks all 38 accepted product hashes plus relocated Frankly/common-menu source
+evidence, and privately copies mutable evidence. Two door-data products from committed NPC-clock validation were copied only
+after matching its length/SHA authority, including original8041fd50 clock literal.
+No new conversion/editable import/shared write is required. Existing Python fixtures independently
+read the ISO read-only and generate in empty temporary destinations; native asset
+regeneration is deliberately skipped. No original binaries/ISO were committed;
+rights/conversion/licensing remain unchanged in [asset notes](ASSETS.md).
+
+Next: typed movement/selection support, action/weapon/camera/stage/audience/menu
+controllers, message/story/effect, platform/file and uncovered event/runtime/save
+modules and port tools. Re-audit newly committed shared animation/NPC-clock/MODEL
+relocation and concurrent cold menu integration, plus drift in earlier snapshots.
+Full port documentation and the remake remain incomplete; goal stays active.

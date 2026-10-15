@@ -1920,3 +1920,23 @@ invokes the narrow converter; no editable source is overwritten. GPU footer
 admission and the linked TexturePlane2 helper remain unbound. Original Nintendo/
 Intelligent Systems rights retained; no redistribution license is granted. ISO,
 extracts, original images and compiled packs remain outside source history.
+
+## Packed battle-state/motion documentation validation inputs (2026-10-14)
+
+artifacts/battle-packed-code-documentation-validation/source reuses accepted
+battle-controller documentation RomFS/evidence. Cache assembly verifies all 38
+accepted product hashes, relocated Frankly PNG and privately copied common-menu
+raw TPL against its packaged original hash. Mutable evidence remains private;
+other large local-assets directories are shared read inputs. After one initial NPC-clock fixture failure, the cache overlays only
+door-data.pmevt/json matching artifacts/npc-clock-assets-after.json, whose own
+hash matches artifacts/npc-clock-validation-manifest.json. Matching copies
+come from artifacts/animation-files-source; the moving npc-wander cache had
+changed further and was rejected. Pack152244 bytes includes original4-byte
+clock literal8041fd50; no runtime/BSS/PPC state is fabricated. Final native
+repack includes these accepted products. No new conversion, resampling,
+geometry/lighting change, editable import or
+shared cache write occurs. Existing Python fixtures independently read the ISO
+read-only and generate in empty temporary directories. Native validation skips
+regeneration. Accepted per-asset provenance/conversion/licensing is unchanged;
+Nintendo/Intelligent Systems rights remain reserved. Private copies grant no
+redistribution license. No original ISO/extraction/binary bytes were committed.
