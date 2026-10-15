@@ -3583,3 +3583,5 @@ outside source history. Regression fixtures use the existing Mario resource
 and original missing literals from `romfs/door-data.pmevt`; raw actor/GPU/gravity
 fixtures are explicitly test setup, not new game assets or original behavior
 measurements. See [contract](behavior/display/NATIVE_NPC_ANIMATION_PASS.md).
+
+Native field battle ownership (2026-10-15): no new runtime asset conversion or pack changes. Read-only original harbor registration/sailor/GSF1179 evidence is in artifacts/harbor-native-npc-evidence. Validation reuses the accepted original door/map NPC/pose and harbor packs; original US callback recovery remains artifacts/harbor-battle-handoff-evidence. Original ISO, extracts and compiled products stay outside source history; original rights unchanged.

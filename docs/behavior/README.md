@@ -1413,3 +1413,5 @@ Original battle menu native resource/queue owners:
 - [Same-process native NPC animation pass](display/NATIVE_NPC_ANIMATION_PASS.md):
   exclusive retained original SetAnim/Main services for deferred draws and
   automatic-pose selection; actual GPU and normal Game activation remain open.
+
+- [Native same-VM field battle ownership](field/NATIVE_FIELD_NPC_BATTLE_OWNERS.md): actual NPC/F/result/sequence bridge, regular event ownership and retirement quarantine.

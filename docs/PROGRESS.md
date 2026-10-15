@@ -15600,3 +15600,44 @@ Next tasks:
 4. Continue EVT-01/DEMO-01/RESULT-01 and end-to-end original opening progression;
    compare matched original visuals and profile physical hardware before any
    correctness/performance completion claim. Keep scoped incremental commits.
+
+### Actual field NPC battle ownership and scheduler (2026-10-15)
+
+Implemented FieldNpcBattleBinding over the same initialized NPC owner, field EventNativeRuntime/setup binding and OriginalSequence. Reuses the original name resolver and verifies real GP/F and caller identity. Source start writes actual F8 and resets actual F30; result getters/readiness use that record and actual sequence current, while sequence4 is only requested. Mario/party/audio children remain explicit backend continuations. No development FieldBattleWork, NPC token, outcome or current-sequence shortcut is supplied.
+
+FieldAreaEvent now dispatches these original callbacks, retains first across late binding, observes actual event retirement/quarantine, and blocks map NPC teardown during pending calls. Nonzero regular IDs require an actual same-scheduler regular actor/script owner or an observed retirement from that same VM. Field history starts at map preparation and survives late battle binding; source ReInit/unload clears it. A live reused-ID birth supersedes old proof, and nonregular retirement invalidates it. Fresh source recovery shows both sailors can RETURN on GSF1179 before the postbattle query while NPC11c retains their IDs; the original exact stale ID must be returned. Additional tests cover this bookkeeping path. Tests use actual source map registrations and npcSetup-created regular events; a synthetic control-flow fixture proves original return1 followed by next-visit deletion of the exact real event. Actual evtDelete while a child holds exercises quarantine and suppresses later invocations.
+
+Validation: CMAKE_BUILD_PARALLEL_LEVEL=6 make --jobserver-style=pipe test
+exits 0: 492/492 C++ (79.48s), 223/223 Python (34.387s), zero skipped. Existing
+NPC setup test now contains actual battle/regular-ID/retirement fixtures and
+accepts explicit asset roots. Focused full NPC setup suite also passes. Native
+make --jobserver-style=pipe all -j6 -o assets-ready SOUNDTRACK=gamecube
+TARGET=ttyd-field-battle-owner exits 0; private ARM build exits 0. Probe reuses
+525 exact final production objects, excluding main; all other source/include/
+RomFS inputs match. Final host/native/private/emulator handles terminal 0.
+Existing compiler/Pillow and private unused-fixture warnings remain.
+
+An earlier full host/native revision passed before fresh source evidence exposed
+legitimate stale sailor IDs. Corrected history, then repeated required gates.
+First private ARM run failed to write its marker because the existing host
+fixture hardcoded romfs/... paths; made test asset root explicit, selected
+romfs: on ARM, and repeated final host/build/probe gates. Production code/binary
+was unchanged by this fixture-root correction; final native make is up to date.
+No live job was replaced after observation timeout.
+
+Isolated production 45-second and private ARM 60-second Azahar checks exit 0.
+All 11 strict markers pass: actual F, sequence request, result gate, retained
+children, shared registry, regular producer, return1, actual event deletion,
+quarantine, area binding and legitimate retired ID. Phase record reaches complete.
+Viewed normal capture shows original opening-book art; probe capture documents
+fixture completion only, not field/battle visual parity. User profiles/saves
+untouched; no hardware, performance or original runtime timing claim.
+
+Frozen accepted harbor snapshot plus scoped changes audits 4246 source files,
+2166 runtime products, 778 private inputs and one reference input. Products and
+private/reference inputs remain byte-identical; no new runtime asset conversion.
+Fresh read-only source evidence, exact journals/hashes/logs/binaries/captures and
+commit audit are in artifacts/field-battle-owner-validation-manifest.json.
+Concurrent unrelated work is preserved and excluded from these isolated gates.
+
+Limitations/next: unknown/foreign ID provenance still holds; actual retired IDs are preserved. The independent HarborEncounter VM is not joined to this field scheduler. Production map/bootstrap, remaining control/audio/battle children, complete battle result/teardown/return and postbattle story remain required. No original runtime/pixel/audio/hardware/performance parity or full playable prologue is claimed. RESULT-01/DEMO-01 and the overall goal remain active.

@@ -188,6 +188,12 @@ FieldNpcActorEventServices FieldNpcSetupBinding::actorServices(){
 // Resolve exact me/master/slave names through retained ownership, not art IDs.
 // Party/mario sentinels ffffffff/fe/fd are NOT dereferenceable NPC records;
 // nonaccessing flag-selector path alone can return them without a fake actor.
+bool FieldNpcSetupBinding::bindsFieldOwner(const EventNativeRuntime& vm,const std::shared_ptr<FieldNpcRegistryOwner>& owner) const{return &vm==&vm_ && owner==owner_ && mode_==0;}
+bool FieldNpcSetupBinding::ownsCaller(const EventEntry& e) const{return caller(e);}
+std::optional<uint32_t> FieldNpcSetupBinding::resolveEventActor(EventEntry& e,uint32_t name,bool dereference){
+ if(!caller(e))return {};
+ const auto services=actorServices();return services.resolve(services.user,e,name,dereference);
+}
 int32_t FieldNpcSetupBinding::invokeActorEvent(uint32_t fn,EventEntry& e,bool first,FieldNpcActorEventCursor& cursor){
  if(first)cursor={};
  if(!caller(e))return 0;

@@ -2652,3 +2652,6 @@ add_executable(native_npc_animation_tests tests/native_npc_animation_tests.cpp)
 target_link_libraries(native_npc_animation_tests PRIVATE ttyd_core)
 add_test(NAME native_npc_animation COMMAND native_npc_animation_tests)
 set_tests_properties(native_npc_animation PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Actual same-VM field battle ownership and sequence/result bridge.
+target_sources(ttyd_core PRIVATE source/field/field_npc_battle_binding.cpp)

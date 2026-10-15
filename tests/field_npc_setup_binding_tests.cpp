@@ -1,4 +1,5 @@
 #include "field_npc_setup_binding.hpp"
+#include "field_npc_battle_binding.hpp"
 #include "field_area_event.hpp"
 #include "field_map_npc_assets.hpp"
 #include "field_battle_information.hpp"
@@ -17,19 +18,21 @@
 #include <cstring>
 using namespace ttyd;
 namespace {
+const char* fixtureAssetRoot="romfs";
+std::string fixtureAssetPath(const char* name){return std::string(fixtureAssetRoot)+"/"+name;}
 constexpr uint32_t Base=0x85000000,Inputs=0x87000000,Area=0x8041fa70,Table=0x90524f10,CallerScript=0x80415e18;
 struct Fixture {
  std::unique_ptr<Game> game=std::make_unique<Game>();std::unique_ptr<EventNativeRuntime> vm;
  std::shared_ptr<EventScriptAssets> source=std::make_shared<EventScriptAssets>();std::unique_ptr<FieldNpcRegistryBinding> registry;std::unique_ptr<FieldNpcSetupBinding> setup;
- std::unique_ptr<BattleSequenceBinding> sequence;bool marioReady=false;std::map<uint32_t,FieldNpcWanderEventCursor> wander;
+ std::shared_ptr<FieldNpcRegularEventHistory> regularHistory;std::unique_ptr<FieldNpcBattleBinding> battle;std::unique_ptr<BattleSequenceBinding> sequence;bool marioReady=false;std::map<uint32_t,FieldNpcWanderEventCursor> wander;
  CameraManager cameras;std::map<uint32_t,FieldNpcActorEventCursor> leaves;
  BattleRandom random{0x12345678};unsigned draws=0,created=0,pending=0;bool admitted=true,blocked=false;EventEntry* caller=nullptr;
- Fixture(){EventNativePlatform p;p.flushBlock=[](void*,uint32_t){};p.systemCall=[](void*){};p.clock=[](void*)->uint32_t{return 243000000;};p.truncate=[](void*,float v){return int32_t(v);};p.user=this;p.call=[](void* p,EventEntry& e,uint32_t fn,int32_t first)->int32_t{auto& f=*static_cast<Fixture*>(p);if(f.setup && fieldNpcWanderEventFunction(fn)){auto result=f.setup->invokeWanderEvent(fn,e,first!=0,f.wander[e.id]);if(!f.wander[e.id].initialized)f.wander.erase(e.id);return result;}if(f.setup && fieldNpcActorEventFunction(fn)){auto result=f.setup->invokeActorEvent(fn,e,first!=0,f.leaves[e.id]);if(result==2)f.leaves.erase(e.id);return result;}++f.pending;return 0;};vm=std::make_unique<EventNativeRuntime>(0x81000000,p);
-  assert(source->load("romfs/door-data.pmevt") && vm->memory.importScripts(*source));assert(vm->memory.registerRam(0x8041f070,std::vector<uint8_t>(16)) && vm->memory.registerRam(0x8041e428,std::vector<uint8_t>(4)) && vm->memory.registerRam(0x82000000,std::vector<uint8_t>(0x80000)) && vm->memory.registerRam(0x8041e844,std::vector<uint8_t>(4)) && vm->memory.registerRam(0x88000000,std::vector<uint8_t>(8)));
+ Fixture(){EventNativePlatform p;p.flushBlock=[](void*,uint32_t){};p.systemCall=[](void*){};p.clock=[](void*)->uint32_t{return 243000000;};p.truncate=[](void*,float v){return int32_t(v);};p.user=this;p.call=[](void* p,EventEntry& e,uint32_t fn,int32_t first)->int32_t{auto& f=*static_cast<Fixture*>(p);if(f.battle && fieldNpcBattleEventFunction(fn)){const auto result=f.battle->invoke(fn,e,first!=0);return result?*result:0;}if(f.setup && fieldNpcWanderEventFunction(fn)){auto result=f.setup->invokeWanderEvent(fn,e,first!=0,f.wander[e.id]);if(!f.wander[e.id].initialized)f.wander.erase(e.id);return result;}if(f.setup && fieldNpcActorEventFunction(fn)){auto result=f.setup->invokeActorEvent(fn,e,first!=0,f.leaves[e.id]);if(result==2)f.leaves.erase(e.id);return result;}++f.pending;return 0;};p.retiring=[](void* p,const EventEntry& e){auto& f=*static_cast<Fixture*>(p);if(f.battle)f.battle->retire(e);else if(f.regularHistory)f.regularHistory->retire(e);};vm=std::make_unique<EventNativeRuntime>(0x81000000,p);
+  assert(source->load(fixtureAssetPath("door-data.pmevt").c_str()) && vm->memory.importScripts(*source));assert(vm->memory.registerRam(0x8041f070,std::vector<uint8_t>(16)) && vm->memory.registerRam(0x8041e428,std::vector<uint8_t>(4)) && vm->memory.registerRam(0x82000000,std::vector<uint8_t>(0x80000)) && vm->memory.registerRam(0x8041e844,std::vector<uint8_t>(4)) && vm->memory.registerRam(0x88000000,std::vector<uint8_t>(8)));
   const auto m=vm->memoryBinding.services();const auto start=eventSdkInitializeAllocator(0x82000000,0x82080000,1,m);assert(eventSdkCreateHeap(start,0x82080000,m)==0);store(0x8041e844,0);vm->gp.refreshRate=60;vm->initializeContexts();
   registry=game->initializeOriginalFieldNpcs(vm->memory,Base);assert(registry);registerPackedBattleArea("gor",0x90540da8,0x90540f84,nativeBattleActorServices(*vm));for(unsigned n=0;n<4;++n)assert(vm->memory.writeByte(0x8100012c+n,n<3?uint8_t("gor"[n]):0));
-  for(const char* name:{"c_deale","c_kuri_h","c_joho_b","c_monban","c_binbo","c_bomt_n","c_kuribo_n","c_tyusan","c_roten_g","c_borodo_n","c_f_mura","c_luigi"}){const auto base=std::string("romfs/field-native-")+name;assert(game->originalFieldNpcs->poses().load((base+".pose-directory.bin").c_str(),(base+".pmanim").c_str()));}
-  FieldMapNpcAssets tags;assert(tags.load("romfs/field-npc-map-gor_02.bin") && tags.mapTo(vm->memory,Inputs));for(unsigned n=0;n<15;++n)assert(registry->registerMapNpc(*tags.input(n,Inputs,Area),{123,234}));
+  for(const char* name:{"c_deale","c_kuri_h","c_joho_b","c_monban","c_binbo","c_bomt_n","c_kuribo_n","c_tyusan","c_roten_g","c_borodo_n","c_f_mura","c_luigi"}){const auto base=fixtureAssetPath("field-native-")+name;assert(game->originalFieldNpcs->poses().load((base+".pose-directory.bin").c_str(),(base+".pmanim").c_str()));}
+  FieldMapNpcAssets tags;assert(tags.load(fixtureAssetPath("field-npc-map-gor_02.bin").c_str()) && tags.mapTo(vm->memory,Inputs));for(unsigned n=0;n<15;++n)assert(registry->registerMapNpc(*tags.input(n,Inputs,Area),{123,234}));
   setup=FieldNpcSetupBinding::bind(game->originalFieldNpcs,*registry,*vm,source,services());assert(setup);caller=&createRootEvent(vm->schedule,CallerScript,0,0,vm->creationServices());caller->arguments=0x88000000;store(0x88000000,Table);
  }
  ~Fixture(){vm->reinitializeContext();} // Retire referencing entries before actor unmapping.
@@ -71,11 +74,12 @@ void actualSetup(){
  assert(f.invoke(false,c)==2 && f.created==17 && f.draws==255);unsigned regular=0;for(unsigned n=0;n<15;++n){const auto a=f.actor(n);if(!f.word(a+0x124))continue;const auto id=f.word(a+0x11c);for(int k=0;k<f.vm->field.capacity;++k){const auto& e=f.vm->field.entries[k];if(e.id==id){assert(e.field170==a && e.rawBytes[0]==1 && e.flags==0x21 && !e.waitingParent);++regular;}}}assert(regular==2);
  // Install the same real bridge in the actual retained area facade. Execution
  // still waits for original earlier Bero/Mario services, not a skipped parent.
- assert(loadFieldAreaEventAssets("romfs"));auto game=std::make_unique<Game>();FieldAreaEvent area;auto state=std::make_unique<FieldAreaGpState>();
+ assert(loadFieldAreaEventAssets(fixtureAssetRoot));auto game=std::make_unique<Game>();FieldAreaEvent area;auto state=std::make_unique<FieldAreaGpState>();
  std::memcpy(state->bytes.data()+0x10c-state->Begin,"gor_02",7);std::memcpy(state->bytes.data()+0x12c-state->Begin,"gor",4);
- FieldMapNpcAssets tags;assert(tags.load("romfs/field-npc-map-gor_02.bin") && area.begin(2,0) && !area.bindNpcSetup(f.services()) && area.prepareMapNpcs(*game,*state,tags,Inputs,Area,0x8100010c,Base));
+ FieldMapNpcAssets tags;assert(tags.load(fixtureAssetPath("field-npc-map-gor_02.bin").c_str()) && area.begin(2,0) && !area.bindNpcSetup(f.services()) && area.prepareMapNpcs(*game,*state,tags,Inputs,Area,0x8100010c,Base));
  for(unsigned n=0;n<15;++n){const auto* pose=f.game->originalFieldNpcs->poses().poses().pose(int32_t(f.word(f.actor(n)+0x104)));assert(pose && game->originalFieldNpcs->poses().install(pose->resource));}
  assert(area.advanceMapNpcs({123,234}) && !area.bindNpcSetup({}) && area.bindNpcSetup(f.services()) && !area.bindNpcSetup(f.services()));
+ assert(area.bindNpcBattle(*game->originalSequence,{}) && !area.bindNpcBattle(*game->originalSequence,{}) && !area.npcBattlePending());
 
 }
 void holdsAndDeletion(){
@@ -121,7 +125,7 @@ void actualActorLeaves(){
 }
 
 void actualWanderRoots(){
- Fixture f;assert(loadProloguePouchAssets("romfs"));f.game->progress.originalPouch=createProloguePouch();assert(f.game->progress.originalPouch);f.sequence=f.game->bindOriginalBattleSequence(*f.vm,"romfs");assert(f.sequence);
+ Fixture f;assert(loadProloguePouchAssets(fixtureAssetRoot));f.game->progress.originalPouch=createProloguePouch();assert(f.game->progress.originalPouch);f.sequence=f.game->bindOriginalBattleSequence(*f.vm,fixtureAssetRoot);assert(f.sequence);
  auto storage=BattleSequenceStorage::cold(f.game->progress.originalPouch,0x8a000000,0x80000,0x8b000000);assert(storage && f.sequence->attachStorage(storage));
  f.setup=FieldNpcSetupBinding::bind(f.game->originalFieldNpcs,*f.registry,*f.vm,f.source,f.services());assert(f.setup);
  FieldNpcSetupCursor setup;assert(f.invoke(true,setup)==0);for(unsigned n=0;n<15;++n)deleteEventId(f.word(f.actor(n)+0x118),f.vm->creationServices());assert(f.invoke(false,setup)==2);
@@ -152,5 +156,76 @@ void actualWanderRoots(){
  f.sequence.reset(); // Explicitly detach before the VM/facade dies.
 }
 
+
+struct BattleBackend {
+ uint32_t hold=0x8005c3cc;std::vector<uint32_t> calls;
+ BattleSequenceEntryServices services(){BattleSequenceEntryServices s;s.user=this;s.call=[](void* p,BattleSequenceCall& c){auto& b=*static_cast<BattleBackend*>(p);if(c.function==b.hold)return false;b.calls.push_back(c.function);if(c.function==0x80141050)c.result=255;else if(c.function==0x800bf1b4){assert(c.args[0]==255);c.result=0;}return true;};return s;}
+};
+void actualBattleOwners(){
+ Fixture f;BattleBackend backend;f.battle=FieldNpcBattleBinding::bind(f.game->originalFieldNpcs,*f.setup,*f.vm,*f.game->originalSequence,backend.services());assert(f.battle);
+ const auto npc=f.actor(8),field=f.game->originalFieldNpcs->fieldWorkAddress(),name=f.word(Table+8*0x5c);
+ f.store(0x88000000,name);f.store(0x88000004,0x1005b);f.store(field+0x30,0x12345678);
+ f.store(0x81000168,field+4);assert(!f.battle->invoke(0x8004ef54,*f.caller,true) && backend.calls.empty());f.store(0x81000168,field);
+ assert(!f.battle->invoke(0x8004ef54,*f.caller,false) && f.battle->pendingFunction()==0x8005c3cc && f.word(field+8)==npc && f.word(field+0x30)==0x12345678);
+ assert(f.game->originalSequence->state.current==2 && f.game->originalSequence->state.requested==2);
+ // Actual GP/F identity changes cannot retarget a retained source invocation.
+ f.store(0x81000168,field+4);backend.hold=0;assert(!f.battle->invoke(0x8004ef54,*f.caller,false) && backend.calls.empty());f.store(0x81000168,field);
+ auto result=f.battle->invoke(0x8004ef54,*f.caller,false);assert(result && *result==0 && !f.battle->pending() && f.word(field+0x30)==0);
+ assert(f.game->originalSequence->state.requested==4 && f.game->originalSequence->state.current==2 && !f.game->originalSequence->state.p0 && !f.game->originalSequence->state.p1);
+ const auto calls=backend.calls;result=f.battle->invoke(0x8004ef54,*f.caller,false);assert(result && *result==2 && backend.calls==calls);
+ result=f.battle->invoke(0x8004eed8,*f.caller,true);assert(result && *result==0 && backend.calls==calls); // Actual field sequence2, result0.
+ f.game->originalSequence->state.current=4;f.store(field+0x30,5);result=f.battle->invoke(0x8004eed8,*f.caller,false);assert(result && *result==0 && backend.calls==calls);
+ // Explicit fixture supplies field-return completion; production binding never
+ // writes current sequence or invents this result from actor HP.
+ f.game->originalSequence->state.current=2;backend.hold=0x800dbcc4;assert(!f.battle->invoke(0x8004eed8,*f.caller,false));const auto before=backend.calls;
+ backend.hold=0;result=f.battle->invoke(0x8004eed8,*f.caller,false);assert(result && *result==2 && !f.battle->pending());
+ assert(backend.calls.size()==before.size()+2 && backend.calls[before.size()]==0x800dbcc4 && backend.calls.back()==0x8005c30c && f.word(field+0x30)==5);
+ EventNativeRuntime foreign(0x81000000,{});assert(!FieldNpcBattleBinding::bind(f.game->originalFieldNpcs,*f.setup,foreign,*f.game->originalSequence,{}));
+ // Bound source child cancellation is quarantined by an ACTUAL evtDelete hook.
+ backend.hold=0x8005c3cc;assert(!f.battle->invoke(0x8004ef54,*f.caller,true));const auto id=f.caller->id;deleteEventId(id,f.vm->creationServices());
+ assert(f.battle->pending() && f.battle->quarantined() && f.battle->pendingFunction()==0x8005c3cc);
+ auto& next=createRootEvent(f.vm->schedule,CallerScript,0,0,f.vm->creationServices());assert(next.id!=id);next.arguments=0x88000000;
+ backend.hold=0;const auto stopped=backend.calls;assert(!f.battle->invoke(0x8004ef54,next,true) && backend.calls==stopped);
 }
-int main(){actualSetup();holdsAndDeletion();ancestorAdmission();actualActorLeaves();actualWanderRoots();}
+void regularEventOwnership(){
+ Fixture f;FieldNpcSetupCursor setup;assert(f.invoke(true,setup)==0);for(unsigned n=0;n<15;++n)deleteEventId(f.word(f.actor(n)+0x118),f.vm->creationServices());assert(f.invoke(false,setup)==2);
+ const auto npc=f.actor(8),name=f.word(Table+8*0x5c),regular=f.word(npc+0x11c);assert(regular && checkEventId(regular,f.vm->creationServices()));
+ f.battle=FieldNpcBattleBinding::bind(f.game->originalFieldNpcs,*f.setup,*f.vm,*f.game->originalSequence,{});assert(f.battle);
+ f.store(0x88000000,name);f.store(0x88000004,uint32_t(-30000000));
+ auto result=f.battle->invoke(0x8004f894,*f.caller,true);assert(result && *result==1 && uint32_t(f.caller->locals[0])==regular && !f.battle->pending());
+ // A nonzero ID from another actor/VM is unavailable, never converted to ID0.
+ f.store(npc+0x11c,f.caller->id);assert(!f.battle->invoke(0x8004f894,*f.caller,true));f.store(npc+0x11c,regular);
+ result=f.battle->invoke(0x8004f894,*f.caller,false);assert(result && *result==1 && uint32_t(f.caller->locals[0])==regular);
+ // Explicit synthetic control-flow fixture: real native regular root producer,
+ // original query callback, next-visit DELETE_EVENT. No story event replacement.
+ constexpr uint32_t script=0x88000100;
+ const std::array<uint32_t,9> words{{0x0003005b,0x8004f894,name,uint32_t(-30000000),0x0001005f,uint32_t(-30000000),2,1,0}};
+ assert(f.vm->memory.registerRam(script,std::vector<uint8_t>(words.size()*4)));for(unsigned n=0;n<words.size();++n)f.store(script+4*n,words[n]);
+ auto& query=createRootEvent(f.vm->schedule,script,0,0,f.vm->creationServices());const auto queryId=query.id;
+ // Stop the real regular roots so unrelated wandering leaves stay out of this
+ // fixture; source deletion must still remove the exact stopped event ID.
+ for(int n=0;n<f.vm->field.capacity;++n){auto& e=f.vm->field.entries[n];if((e.flags&1) && e.id!=queryId)e.flags|=2;}
+ f.vm->gp.timestamp+=17*243000ULL;f.vm->runManager();assert(uint32_t(query.locals[0])==regular && checkEventId(regular,f.vm->creationServices()));
+ f.vm->gp.timestamp+=17*243000ULL;f.vm->runManager();assert(!checkEventId(regular,f.vm->creationServices()) && !checkEventId(queryId,f.vm->creationServices()));
+ assert(f.word(npc+0x11c)==regular);f.caller->flags&=~2u;result=f.battle->invoke(0x8004f894,*f.caller,true);assert(result && *result==1 && uint32_t(f.caller->locals[0])==regular);
+ f.store(npc+0x11c,0);result=f.battle->invoke(0x8004f894,*f.caller,true);assert(result && *result==1 && f.caller->locals[0]==0);
+}
+
+void retirementBeforeBinding(){
+ Fixture f;FieldNpcSetupCursor setup;assert(f.invoke(true,setup)==0);for(unsigned n=0;n<15;++n)deleteEventId(f.word(f.actor(n)+0x118),f.vm->creationServices());assert(f.invoke(false,setup)==2);
+ const auto npc=f.actor(8),regular=f.word(npc+0x11c),name=f.word(Table+8*0x5c);
+ f.regularHistory=FieldNpcRegularEventHistory::bind(f.game->originalFieldNpcs,*f.vm);assert(f.regularHistory);
+ deleteEventId(regular,f.vm->creationServices());assert(f.word(npc+0x11c)==regular && f.regularHistory->owns(regular,npc));
+ // Late battle binding keeps the history already recorded by the field owner.
+ f.battle=FieldNpcBattleBinding::bind(f.game->originalFieldNpcs,*f.setup,*f.vm,*f.game->originalSequence,{},f.regularHistory);assert(f.battle);
+ f.store(0x88000000,name);f.store(0x88000004,uint32_t(-30000000));auto result=f.battle->invoke(0x8004f894,*f.caller,true);
+ assert(result && *result==1 && uint32_t(f.caller->locals[0])==regular);
+ // An active different birth with a reused ID must take precedence over old
+ // retirement metadata; its later nonregular retirement invalidates old proof.
+ auto& reused=createRootEvent(f.vm->schedule,CallerScript,0,0,f.vm->creationServices());const auto newId=reused.id;reused.id=regular;
+ assert(!f.regularHistory->owns(regular,npc));deleteEventId(regular,f.vm->creationServices());assert(!f.regularHistory->owns(regular,npc));
+ (void)newId; // Deliberate ID-alias fixture, not a source allocator policy.
+ EventNativeRuntime foreign(0x81000000,{});assert(!f.regularHistory->matches(f.game->originalFieldNpcs,foreign));
+}
+}
+int main(){actualSetup();holdsAndDeletion();ancestorAdmission();actualActorLeaves();actualWanderRoots();actualBattleOwners();regularEventOwnership();retirementBeforeBinding();}

@@ -36,6 +36,10 @@ class FieldNpcSetupBinding {
 public:
  static std::unique_ptr<FieldNpcSetupBinding> bind(std::shared_ptr<FieldNpcRegistryOwner>,FieldNpcRegistryBinding&,EventNativeRuntime&,std::shared_ptr<const EventScriptAssets>,const FieldNpcSetupNativeServices&);
  int32_t invokeWanderEvent(uint32_t,EventEntry&,bool first,FieldNpcWanderEventCursor&);
+ // No-effects owner/caller admission and the shared original name resolver.
+ bool bindsFieldOwner(const EventNativeRuntime&,const std::shared_ptr<FieldNpcRegistryOwner>&) const;
+ bool ownsCaller(const EventEntry&) const;
+ std::optional<uint32_t> resolveEventActor(EventEntry&,uint32_t name,bool dereference);
  // Checked actor operands defer at most one setter word, then publish only on
  // full per-output admission. Actor-name sentinels require separate handling.
  int32_t invokeActorEvent(uint32_t function,EventEntry&,bool first,FieldNpcActorEventCursor&);
