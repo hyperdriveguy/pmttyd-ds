@@ -17,6 +17,12 @@ class BattleHudAssetsTests(unittest.TestCase):
         self.assertEqual(art['rows'][4]['icon'],441)
         self.assertEqual(art['large_digits'],list(range(481,501,2)))
         self.assertEqual(art['small_digits'],list(range(482,502,2)))
+        self.assertEqual(art['counters'],{
+            'coins':dict(getter=0x800d3e64,pouch_offset=0x78,signed=True),
+            'star_points':dict(getter=0x800d3424,pouch_offset=0x96,signed=True)})
+        self.assertEqual(art['status_values'],0x8013c9ac)
+        self.assertEqual([row['icon'] for row in art['rows'][6:11]],
+                         [475,443,444,478,478])
 
     @unittest.skipUnless(Path(DEFAULT_ISO).is_file(),'original local ISO unavailable')
     def test_original_weapon_icon_bindings(self):

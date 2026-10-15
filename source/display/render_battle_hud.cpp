@@ -30,6 +30,21 @@ void Renderer::battleHud(const Game& g) {
         maxHp=int16_t(limits>>16);hp=int16_t(resources>>16);
         maxFp=int16_t(resources&65535);fp=int16_t(flower&65535);
     }
+    // Source statusGetValue reads coins and Star Points from the pouch in
+    // both field and battle modes. The executing VM owns changes (including
+    // reward counting) before its eventual field export; never freeze these
+    // counters at the field snapshot once a packed pouch exists.
+    int coins=-1,starPoints=-1;
+    if(g.progress.originalPouch) {
+        coins=g.progress.originalPouch->half(0x78);
+        starPoints=g.progress.originalPouch->half(0x96);
+    }
+    uint32_t pouch=0;
+    if(read(0x8041eb00,pouch) && pouch) {
+        uint32_t coinPair=0,pointPair=0;
+        coins=read(pouch+0x78,coinPair)?int16_t(coinPair>>16):-1;
+        starPoints=read(pouch+0x94,pointPair)?int16_t(pointPair&65535):-1;
+    }
     auto icon=[&](uint32_t id,float x,float y,float scale=.5f) {
         const auto* art=messageIcon(id);if(!art)return;
         messageIconImage(id,g.ticks,x,y+art->frame(g.ticks).height*scale*.5f,scale,255);
@@ -53,6 +68,21 @@ void Renderer::battleHud(const Game& g) {
     if(maxFp>0) {
         icon(473,192,20);icon(441,158,20);icon(480,200.5f,17);
         number(fp,189,20,false);number(maxFp,217,20,true);
+    }
+    if(coins>=0 || starPoints>=0) {
+        // Original green status banner, star-point symbol, coin and multiply
+        // mark are already in the shared original atlas. The right-hand group
+        // is a native compact reflow; no AP capacity/fill or audience count is
+        // inferred from these independent pouch counters.
+        icon(475,335,16,1);
+        if(starPoints>=0) {
+            icon(443,289,20);icon(478,301,20);
+            number(starPoints,321,20,false);
+        }
+        if(coins>=0) {
+            icon(444,339,20);icon(478,351,20);
+            number(coins,378,20,false);
+        }
     }
 }
 // Upper command reflow: actor2 has one command, others two; target mode

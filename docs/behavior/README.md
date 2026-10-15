@@ -1214,3 +1214,9 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Cold animation initialization](display/NATIVE_COLD_ANIMATION_INITIALIZATION.md): complete retained animInit, typed tangent/bias services, original auxiliary copies and cold-before-pose boundary.
 
 - [Native packed NPC wander events](field/NATIVE_PACKED_NPC_WANDER_EVENTS.md): original init/four-phase main through actual actors/LW10/map arena, held requests versus genuine main0, original regular wrappers and remaining world owners.
+
+- [Native original common-menu file ownership](display/NATIVE_CLASS_MENU_FILE_OWNERSHIP.md)
+- [Original common TPL packaging](display/BATTLE_CLASS_COMMON_TPL_PACKAGING.md)
+- [Retained class drawing and audience touch admission](display/RETAINED_CLASS_AND_AUDIENCE_UI_ADMISSION.md)
+
+- [Native original battle HUD status elements](display/NATIVE_BATTLE_HUD_STATUS_ELEMENTS.md)

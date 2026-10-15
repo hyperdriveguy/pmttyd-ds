@@ -1772,3 +1772,22 @@ Mario pointer/radial hint/material getters remains ignored separately.
 Original Nintendo/Intelligent Systems rights remain reserved; local extraction
 provides no redistribution license. ISO unchanged/uncommitted. This validates
 scoped script/memory use, not full NPC GPU raster or hardware performance.
+
+### Original common-menu file backing (2026-10-14)
+
+`tools/battle_class_surface_assets.py` now also packages the exact original
+`battle/common/battle_common.tpl` as ignored `romfs/battle-class-common.tpl`.
+Read-only source: `/home/carson/games/roms/G8ME01.iso`; temporary extraction:
+`local-assets/battle-class-ui/battle_common.tpl`. Size217920, SHA256
+`8eb685317056f42b3ef73138eaad85d16fa4943d830b44a149f09971a5959bb1`.
+No resampling, decoding, pointer relocation or geometry/lighting changes apply
+to this raw copy. Existing circle/bubble atlas products remain byte-identical.
+The new raw bank permits real file/holder/TPL ownership; it does not activate
+ordinary menu scheduling. Native source Set relocates a separate mutable copy.
+Original Nintendo/Intelligent Systems rights retained; no redistribution license
+is granted. ISO, extraction, raw bank and compiled products remain uncommitted.
+See [packaging contract](behavior/display/BATTLE_CLASS_COMMON_TPL_PACKAGING.md).
+
+The HUD coin/Star Point groups use already packaged original IDs475/443/444/478;
+no new texture allocation/conversion is needed. The converter records original
+status/getter source pins; see [HUD counters](behavior/display/NATIVE_BATTLE_HUD_STATUS_ELEMENTS.md).

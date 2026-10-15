@@ -1,7 +1,33 @@
-import json,struct,unittest
+import hashlib,json,struct,sys,tempfile,unittest
 from pathlib import Path
 from PIL import Image
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
+from battle_class_surface_assets import COMMON_OUTPUT,SOURCE_HASH,SOURCE_SIZE,package_common_tpl
 class ClassSurfaceAssets(unittest.TestCase):
+ def test_exact_original_common_tpl_and_corruption_rejection(self):
+  root=Path(__file__).resolve().parents[1]
+  original=root/'local-assets/battle-class-ui/battle_common.tpl'
+  raw=original.read_bytes()
+  self.assertEqual(len(raw),SOURCE_SIZE)
+  self.assertEqual(hashlib.sha256(raw).hexdigest(),SOURCE_HASH)
+  self.assertEqual(struct.unpack_from('>3I',raw),(0x0020af30,97,12))
+  with tempfile.TemporaryDirectory() as temporary:
+   destination=Path(temporary)/'pack'
+   record=package_common_tpl(original,destination)
+   packaged=destination/COMMON_OUTPUT
+   self.assertEqual(packaged.read_bytes(),raw)
+   self.assertEqual(record['size'],SOURCE_SIZE)
+   self.assertEqual(record['sha256'],SOURCE_HASH)
+   self.assertEqual(record['path'],COMMON_OUTPUT)
+   corrupted=Path(temporary)/'corrupted.tpl'
+   changed=bytearray(raw);changed[-1]^=1;corrupted.write_bytes(changed)
+   with self.assertRaisesRegex(ValueError,'Original US common battle texture changed'):
+    package_common_tpl(corrupted,destination)
+   self.assertEqual(packaged.read_bytes(),raw)
+   corrupted.write_bytes(raw[:-1])
+   with self.assertRaises(ValueError):package_common_tpl(corrupted,destination)
+   self.assertEqual(packaged.read_bytes(),raw)
+
  def test_original_pixels_and_native_descriptors(self):
   root=Path(__file__).resolve().parents[1]
   manifest=json.loads((root/'romfs/battle-class-surfaces.json').read_text())

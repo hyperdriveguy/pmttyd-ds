@@ -8,6 +8,12 @@ STATUS_TABLE = 0x8036edd0
 DIGIT_TABLE = 0x80415084
 STATUS_HASH = 'a44bcbdc5e0be34e351fd345b6b66a914ca77e16a6436c5d2a910d919ac10fbc'
 DIGIT_HASH = '54b8acd42d57db411d64d29bb6eb6f2741bd2ecadea16b20bd0752c36e693137'
+COUNTER_GETTERS = {
+    'star_points': (0x800d3424, 0x96, bytes.fromhex('806d1be0a86300964e800020')),
+    'coins': (0x800d3e64, 0x78, bytes.fromhex('806d1be0a86300784e800020')),
+}
+STATUS_VALUES = 0x8013c9ac
+STATUS_VALUES_HASH = 'bc743f6eb6f985fd41b52dd17d76d542b1939081d4de853b7d0b73c003d473fd'
 
 def source_art(iso):
     with Path(iso).open('rb') as disc:
@@ -28,6 +34,15 @@ def source_art(iso):
                     return data
             raise ValueError('Unmapped battle HUD source')
         status, digits = read(STATUS_TABLE, 156), read(DIGIT_TABLE, 40)
+        counters = {}
+        for name,(address,offset,body) in COUNTER_GETTERS.items():
+            if read(address,len(body)) != body:
+                raise ValueError('Unexpected original signed pouch getter: '+name)
+            counters[name] = dict(getter=address,pouch_offset=offset,signed=True)
+        # Both original field and battle arms call these getters. Pin their
+        # actual containing producer instead of inferring field-only counters.
+        if hashlib.sha256(read(STATUS_VALUES,0x178)).hexdigest() != STATUS_VALUES_HASH:
+            raise ValueError('Unexpected original status value producer')
     if hashlib.sha256(status).hexdigest() != STATUS_HASH or hashlib.sha256(digits).hexdigest() != DIGIT_HASH:
         raise ValueError('Unexpected original battle HUD tables')
     rows = [dict(x=x, y=y, icon=icon, scale=scale) for x,y,icon,scale in
@@ -35,4 +50,6 @@ def source_art(iso):
     numbers = list(struct.unpack('>20H', digits))
     return dict(status_table=STATUS_TABLE, status_sha256=STATUS_HASH, rows=rows,
                 digit_table=DIGIT_TABLE, digit_sha256=DIGIT_HASH,
-                large_digits=numbers[:10], small_digits=numbers[10:])
+                large_digits=numbers[:10], small_digits=numbers[10:],
+                counters=counters,status_values=STATUS_VALUES,
+                status_values_sha256=STATUS_VALUES_HASH)

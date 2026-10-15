@@ -10,6 +10,7 @@
 #include "battle_status_window.hpp"
 #include "battle_packed_status.hpp"
 #include "battle_sequence_startup.hpp"
+#include "battle_menu_file_cache.hpp"
 #include <cassert>
 #include <cstdio>
 #include <cstring>
@@ -17,6 +18,7 @@
 namespace ttyd {
 namespace {
 EventScriptAssets scripts;MessageAssets messages;MessageFont font;
+std::shared_ptr<BattleMenuFileCache> menuFiles;
 std::array<uint32_t,12> source{};std::unordered_map<uint32_t,uint32_t> callbacks;bool ready=false;
 int32_t signedWord(uint32_t v){return v<=0x7fffffff?int32_t(v):int32_t(int64_t(v)-0x100000000LL);}
 }
@@ -34,10 +36,17 @@ bool loadHarborTutorialAssets(const char* root){
  uint32_t marioKind=0,parts=0;ok=ok && p.readWord(0x80416a50,marioKind) && p.readWord(marioKind+0xb8,parts) && p.readWord(parts,parts);
  for(unsigned id=0;ok && id<6;++id){char key[24];std::snprintf(key,sizeof(key),"mac_0_b_t1_%03u",id);MessagePlayback probe;ok=probe.open(key,m.find(key),f,0);}
  if(!ok)return false;
+ auto files=std::make_shared<BattleMenuFileCache>();
+ if(!files->load((base+"/battle-class-common.tpl").c_str()))return false;
+ menuFiles=std::move(files);
  scripts=std::move(p);messages=std::move(m);font=std::move(f);source=entries;callbacks=std::move(table);ready=true;return true;
 }
 struct HarborTutorialRuntime {
+ // Shared backing outlives this VM and its borrowed external mappings. Asset
+ // reload replaces the catalog owner without invalidating an existing battle.
+ std::shared_ptr<BattleMenuFileCache> files=menuFiles;
  HarborTutorial* scene=nullptr;EventNativeRuntime vm;std::unique_ptr<HarborTutorialPacked> packed;
+ std::unique_ptr<BattleMenuFileBinding> menuBinding;BattleMenuResourceCursor menuCursor;
  void* resourceUser=nullptr;bool(*paperReady)(void*,uint32_t,int32_t)=nullptr;bool(*niceReady)(void*,int32_t)=nullptr;
  void* fadeUser=nullptr;void(*fadeEntry)(void*,int32_t,int32_t,uint32_t)=nullptr;bool(*fadeFinished)(void*)=nullptr;
  uint32_t initRoot=0,phaseRoot=0,attackRoot=0,executingEvent=0,pendingEvent=0;uint64_t messagePoseSerial=0;bool openingDispatched=false,phaseInterrupted=false;
@@ -129,7 +138,9 @@ struct HarborTutorialRuntime {
  }
  return pending(function);
  }
- bool initialize(){if(!vm.memory.registerRam(0x82000000,std::vector<uint8_t>(1024*1024)) || !vm.memory.registerRam(0x8041f070,std::vector<uint8_t>(16)) || !vm.memory.registerRam(0x8041e428,std::vector<uint8_t>(4)) || !vm.memory.registerRam(0x8041e844,std::vector<uint8_t>(4)) || !vm.memory.importScripts(scripts))return false;
+ bool initialize(){if(!files || !files->bind(vm.memory))return false;
+ menuBinding=std::make_unique<BattleMenuFileBinding>(files,nativeBattleActorServices(vm));
+ if(!vm.memory.registerRam(0x82000000,std::vector<uint8_t>(1024*1024)) || !vm.memory.registerRam(0x8041f070,std::vector<uint8_t>(16)) || !vm.memory.registerRam(0x8041e428,std::vector<uint8_t>(4)) || !vm.memory.registerRam(0x8041e844,std::vector<uint8_t>(4)) || !vm.memory.importScripts(scripts))return false;
  auto m=vm.memoryBinding.services();auto start=eventSdkInitializeAllocator(0x82000000,0x82100000,1,m);if(eventSdkCreateHeap(start,0x82100000,m)!=0 || !vm.memory.writeWord(0x8041e844,0) || !vm.memory.writeWord(0x81000004,60))return false;
  vm.gp.timestamp=scene->now*eventClockRate(243000000);vm.initializeContexts();vm.gp.battleContext=1;packed=std::make_unique<HarborTutorialPacked>(vm);if(!packed->provision())return false;
  // Explicit native fresh window context, matching the trio bridge. Subsequent
@@ -220,6 +231,14 @@ bool HarborTutorial::selectWeapon(unsigned row){
  if(!runtime_ || failed || !initialized || !introComplete || phaseActive || attackActive || damageActive || row>=weaponRows.size() || !weaponRows[row].enabled)return false;
  auto& r=*runtime_;r.scene=this;r.packed->publish(*this);
  const bool selected=r.packed->selectWeapon(row,*this,&r,[](void* self,uint32_t key){auto& r=*static_cast<HarborTutorialRuntime*>(self);const auto id=r.text(key);return r.packed->cacheMenuLabel(key,messages.find(id.c_str()));});r.packed->capture(*this);return selected;
+}
+bool HarborTutorial::initializeClassMenuResources(){
+ if(!runtime_ || failed)return false;
+ return initializePackedBattleMenuResources(runtime_->menuBinding->services(),runtime_->menuCursor);
+}
+bool HarborTutorial::endClassMenuResources(){
+ if(!runtime_ || failed)return false;
+ return endPackedBattleMenuResources(runtime_->menuBinding->services(),runtime_->menuCursor);
 }
 bool HarborTutorial::openClassMenu(){
  if(!runtime_ || failed || !initialized || !introComplete || phaseActive || attackActive || damageActive)return false;

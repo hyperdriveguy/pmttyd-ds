@@ -86,6 +86,11 @@ public:
     // Source damage producer bridge: original reaction roots, no HP/result synthesis.
     uint32_t dispatchHitEvent(int32_t actorId,uint32_t code);
     uint32_t dispatchDirectHitEvent(int32_t actorId,uint32_t code,uint32_t script);
+    // Explicit original Init/End call boundaries for the scheduler owner. Each
+    // successful Init acquires one reference; rendering and VM destruction do
+    // not synthesize a matching End. Complete BattleInit/End remain unbound.
+    bool initializeClassMenuResources();
+    bool endClassMenuResources();
     bool openClassMenu();
     void classMenuPresented();
     bool classMenuOpen=false;
