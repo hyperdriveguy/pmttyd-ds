@@ -4,6 +4,7 @@
 #include "battle_field_initialize.hpp"
 #include "battle_sequence_storage.hpp"
 #include "animation_buffer_refresh.hpp"
+#include "animation_pool_memory.hpp"
 #include <memory>
 namespace ttyd {
 class Game;class EventNativeRuntime;class FieldNpcRegistryOwner;
@@ -18,6 +19,7 @@ public:
     bool callback(uint32_t,OriginalSequenceWork&,const BattleSequenceEntryServices&,const SoundFlagServices& = {});
     uint32_t pending() const;
     bool attachStorage(std::shared_ptr<BattleSequenceStorage>);
+    bool attachAnimationPool(); // Existing actual W/RAM, before sequence entry.
     // Shared primary map arena; compare facade identity before any effects.
     std::optional<uint32_t> allocateMap(uint32_t root,uint32_t bytes,EventAddressSpace&);
     bool ownsMapAllocation(uint32_t payload,uint32_t bytes,const EventAddressSpace&) const;
@@ -27,6 +29,7 @@ private:
     Game& game_;EventNativeRuntime& vm_;
     std::shared_ptr<BattleSequenceProcess> process_;
     std::shared_ptr<FieldNpcRegistryOwner> npcs_;
+    std::unique_ptr<AnimationPoolMemory> animationMemory_;
     bool mapped_=false,entered_=false;
     BattleSequenceEntryCursor init_,main_;
     SoundFlagCursor sound_;

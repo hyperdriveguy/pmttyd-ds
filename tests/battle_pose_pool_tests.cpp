@@ -61,7 +61,7 @@ void discreteTimeline(){
     BattlePosePool pool;auto id=pool.enter(r,1,{});assert(id);
     assert(pool.testTranslucent(*id)==true && !pool.testTranslucent(-1));
     assert(pool.main(*id,{0,0}) && pool.pose(*id)->word(0x3c)==0 && pool.pose(*id)->scalar(0x40)==0);
-    pool.outputSelector=1;assert(!pool.main(*id,{0,0}));pool.outputSelector=0;
+    pool.outputSelector(1);assert(!pool.main(*id,{0,0}));pool.outputSelector(0);
     pool.pose(*id)->word(0,9);assert(!pool.main(*id,{0,0}));pool.pose(*id)->word(0,1);
     assert(pool.evaluate(*id,{0,0}) && pool.pose(*id)->word(0x80)==0x12345678 && pool.pose(*id)->word(0x34)==0 && pool.pose(*id)->word(0x38)==0);
     assert(pool.selectName(*id,"walk",true,{0,0}));
@@ -77,25 +77,25 @@ void discreteTimeline(){
 void lifetimeAndCapacity(){
     const auto bank=fixture();BattlePosePool pool;const auto a=resource(bank),b=resource(bank,"other","texture");
     auto first=pool.enter(a,1,{}),second=pool.enter(a,1,{}),third=pool.enter(b,1,{});assert(first && second && third);
-    assert(pool.models()[0].references==2 && pool.models()[1].references==1 && pool.textures()[0].references==2);
-    assert(pool.release(*first) && pool.models()[0].references==1 && pool.textures()[0].references==2 && !pool.pose(*first) && !pool.release(*first));
+    assert(pool.models()[0].references()==2 && pool.models()[1].references()==1 && pool.textures()[0].references()==2);
+    assert(pool.release(*first) && pool.models()[0].references()==1 && pool.textures()[0].references()==2 && !pool.pose(*first) && !pool.release(*first));
     assert(pool.slot(*first)->word(0xc)==1 && pool.slot(*first)->word(0xf0)==0xffffffff);
-    assert(pool.release(*second) && pool.models()[0].flags==0 && pool.textures()[0].references==1);
-    auto reused=pool.enter(a,1,{0,77});assert(reused && *reused==0 && pool.models()[0].references==1 && pool.textures()[0].references==2);
-    auto* p=pool.pose(*reused);p->word(0,0x41);assert(!pool.release(*reused) && pool.models()[0].references==1);p->word(0,1);
-    p->word(4,1);p->word(8,1);assert(pool.release(*reused) && pool.pose(*reused) && p->word(8)==0 && pool.models()[0].references==1);
-    assert(pool.release(*reused) && !pool.pose(*reused) && pool.models()[0].flags==0 && pool.textures()[0].references==1);
-    assert(pool.release(*third) && pool.textures()[0].flags==0 && !pool.textures()[0].resource);
+    assert(pool.release(*second) && pool.models()[0].flags()==0 && pool.textures()[0].references()==1);
+    auto reused=pool.enter(a,1,{0,77});assert(reused && *reused==0 && pool.models()[0].references()==1 && pool.textures()[0].references()==2);
+    auto* p=pool.pose(*reused);p->word(0,0x41);assert(!pool.release(*reused) && pool.models()[0].references()==1);p->word(0,1);
+    p->word(4,1);p->word(8,1);assert(pool.release(*reused) && pool.pose(*reused) && p->word(8)==0 && pool.models()[0].references()==1);
+    assert(pool.release(*reused) && !pool.pose(*reused) && pool.models()[0].flags()==0 && pool.textures()[0].references()==1);
+    assert(pool.release(*third) && pool.textures()[0].flags()==0 && !pool.textures()[0].resource);
     BattlePosePool full;
     for(unsigned i=0;i<256;++i){auto id=full.enter(a,1,{});assert(id && *id==int32_t(i));}
-    assert(full.models()[0].references==256 && full.textures()[0].references==1 && !full.enter(a,1,{}));
+    assert(full.models()[0].references()==256 && full.textures()[0].references()==1 && !full.enter(a,1,{}));
     assert(full.release(17));auto hole=full.enter(a,1,{});assert(hole && *hole==17);
     BattlePosePool models;
     for(unsigned i=0;i<64;++i)assert(models.enter(resource(bank,"model"+std::to_string(i),"texture"+std::to_string(i)),1,{}));
     assert(!models.enter(resource(bank,"extra","extra"),1,{}));
-    assert(models.release(9));auto hole2=models.enter(resource(bank,"extra","extra"),1,{});assert(hole2 && *hole2==9 && models.models()[9].references==1);
+    assert(models.release(9));auto hole2=models.enter(resource(bank,"extra","extra"),1,{});assert(hole2 && *hole2==9 && models.models()[9].references()==1);
     auto bad=std::make_shared<BattlePoseResource>(*a);bad->names[0]="unconverted";BattlePosePool rejected;
-    assert(!rejected.enter(bad,1,{}) && !rejected.slot(0) && rejected.models()[0].flags==0 && rejected.textures()[0].references==0);
+    assert(!rejected.enter(bad,1,{}) && !rejected.slot(0) && rejected.models()[0].flags()==0 && rejected.textures()[0].references()==0);
     BattlePosePool hidden;auto hiddenId=hidden.enter(resource(fixture(true)),1,{});
     assert(hiddenId && hidden.pose(*hiddenId)->shape.vertices.empty() && !hidden.pose(*hiddenId)->shape.positions.empty());
     assert(hidden.selectName(*hiddenId,"walk",true,{0,100}) && hidden.evaluate(*hiddenId,{0,100}) && !hidden.pose(*hiddenId)->shape.vertices.empty());
@@ -105,7 +105,7 @@ void npcLeafState(){
     const char* names[]={"tst_vivi","c_vivian","c_maririn","c_majyorin","other"};
     const uint32_t types[]={1,1,2,3,0},pointers[]={0x80415da0,0x80415da4,0x80415da8,0x80415dac,0x80415dc4};
     for(unsigned i=0;i<5;++i){const auto id=pool.enter(r,0,{},names[i]);assert(id && pool.vivianType(*id)==int32_t(types[i]) && pool.pose(*id)->word(0x120)==pointers[i]);}
-    assert(pool.models()[0].references==5);auto* p=pool.pose(0);p->word(0,0x201);p->word(0xec,0x80);assert(pool.paperOn(0) && p->word(0)==0x209 && pool.materialLightFlagOn(0,3) && p->word(0xec)==0x83 && pool.vivianType(0)==1);
+    assert(pool.models()[0].references()==5);auto* p=pool.pose(0);p->word(0,0x201);p->word(0xec,0x80);assert(pool.paperOn(0) && p->word(0)==0x209 && pool.materialLightFlagOn(0,3) && p->word(0xec)==0x83 && pool.vivianType(0)==1);
     assert(!pool.height(0) && !pool.radius(0) && !pool.paperOn(-1) && !pool.materialLightFlagOn(256,2) && !pool.vivianType(-1));
     p->word(0,1);assert(pool.release(0));const auto reused=pool.enter(r,0,{});assert(reused && *reused==0 && pool.vivianType(0)==0 && pool.pose(0)->word(0x120)==0x80415dc4);
 }
@@ -117,7 +117,7 @@ void original(){
     assert(loadBattlePoseResource("romfs/trio-attack-mario.pose-directory.bin","romfs/trio-attack-mario.pmanim")==mario);
     BattlePosePool pool;
     for(unsigned i=0;i<3;++i){auto id=pool.enter(mario,1,{0,50});assert(id && *id==int32_t(i) && !pool.pose(*id)->shape.vertices.empty());}
-    auto id=pool.enter(partner,1,{0,50});assert(id && *id==3 && pool.models()[0].references==3 && pool.models()[1].references==1 && pool.textures()[0].references==1 && pool.textures()[1].references==1);
+    auto id=pool.enter(partner,1,{0,50});assert(id && *id==3 && pool.models()[0].references()==3 && pool.models()[1].references()==1 && pool.textures()[0].references()==1 && pool.textures()[1].references()==1);
     assert(pool.testTranslucent(0)==false && pool.testTranslucent(3)==false);
     assert(pool.selectName(0,"M_J_1D",false,{0,60}) && pool.pose(0)->word(0x14)==7 && pool.evaluate(0,{0,160}));
     assert(pool.selectName(1,"KRN_H_1",true,{0,60}) && pool.pose(1)->word(0x14)==0 && pool.evaluate(1,{0,160}));

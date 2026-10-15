@@ -25,6 +25,10 @@ std::unique_ptr<BattleSequenceBinding> BattleSequenceBinding::bind(Game& game,Ev
     return result;
 }
 BattleSequenceBinding::~BattleSequenceBinding(){for(auto a:storageMappings_)vm_.memory.unregisterExternalRam(a);if(mapped_)vm_.memory.unregisterExternalRam(0x8041e968);}
+bool BattleSequenceBinding::attachAnimationPool(){
+    if(animationMemory_ || entered_ || init_.active || fieldInit_.active || !game_.fieldParties.originalPool || game_.fieldParties.originalPool!=npcs_->poses().sharedPool())return false;
+    animationMemory_=AnimationPoolMemory::bind(game_.fieldParties.originalPool,vm_.memory);return bool(animationMemory_);
+}
 bool BattleSequenceBinding::attachStorage(std::shared_ptr<BattleSequenceStorage> owner){
     if(!owner || owner->pouch_!=game_.progress.originalPouch || !storageMappings_.empty() || fieldInit_.active || (process_->storage && process_->storage!=owner))return false;
     struct Span {uint32_t address;uint8_t* bytes;uint32_t size;};

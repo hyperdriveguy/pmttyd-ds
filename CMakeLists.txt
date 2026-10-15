@@ -1985,3 +1985,10 @@ add_executable(field_npc_radial_hint_tests tests/field_npc_radial_hint_tests.cpp
 target_link_libraries(field_npc_radial_hint_tests PRIVATE ttyd_core)
 add_test(NAME field_npc_radial_hint COMMAND field_npc_radial_hint_tests)
 set_tests_properties(field_npc_radial_hint PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Authoritative BE animation caches and same-byte source pool aliases.
+target_sources(ttyd_core PRIVATE source/display/animation_pool_memory.cpp)
+add_executable(animation_pool_memory_tests tests/animation_pool_memory_tests.cpp)
+target_link_libraries(animation_pool_memory_tests PRIVATE ttyd_core)
+add_test(NAME animation_pool_memory COMMAND animation_pool_memory_tests)
+set_tests_properties(animation_pool_memory PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

@@ -82,14 +82,38 @@ std::shared_ptr<const BattlePoseResource> loadBattlePoseResource(const char* dir
     }
     cache[key]=resource;return resource;
 }
-BattlePosePool::BattlePosePool(const BattlePosePool& other):outputSelector(other.outputSelector),models_(other.models_),textures_(other.textures_),archiveType_(other.archiveType_),nextGeneration_(other.nextGeneration_){
+BattlePosePool::BattlePosePool(const BattlePosePool& other):models_(other.models_),textures_(other.textures_),archiveType_(other.archiveType_),nextGeneration_(other.nextGeneration_),work_(other.work_),workEstablished_(other.workEstablished_){
     for(unsigned i=0;i<poses_.size();++i)if(other.poses_[i])poses_[i]=std::make_unique<BattlePose>(*other.poses_[i]);
+}
+uint32_t BattlePosePool::outputSelector() const{return uint32_t(work_[0xe8])<<24|uint32_t(work_[0xe9])<<16|uint32_t(work_[0xea])<<8|work_[0xeb];}
+void BattlePosePool::outputSelector(uint32_t value){for(unsigned i=0;i<4;++i)work_[0xe8+i]=uint8_t(value>>(24-8*i));}
+bool BattlePosePool::cacheMetadataReady() const{
+    if(!sourceArraysCurrent())return false;
+    for(const auto& t:textures_){
+        if(!t.flags()){if(t.references() || t.resource)return false;continue;}
+        if(!t.references() || t.references()>0x7fffffff || !t.resource || t.name.empty())return false;
+    }
+    for(const auto& m:models_){
+        if(!m.flags()){if(m.references() || m.resource)return false;continue;}
+        if(!m.references() || m.references()>0x7fffffff || !m.resource || m.texture()>=textures_.size())return false;
+        const auto& t=textures_[m.texture()];if(!t.flags() || t.name!=m.resource->textureName)return false;
+    }
+    for(const auto& p:poses_)if(p){
+        if(!p->word(0)){if(p->resource)return false;continue;}
+        const auto index=p->word(0x10);if(!p->resource || index>=models_.size() || !models_[index].flags() || models_[index].resource!=p->resource)return false;
+    }
+    return true;
 }
 uint32_t BattlePose::word(unsigned offset) const {assert(offset+4<=state.size());return uint32_t(state[offset])<<24|uint32_t(state[offset+1])<<16|uint32_t(state[offset+2])<<8|state[offset+3];}
 void BattlePose::word(unsigned offset,uint32_t value){assert(offset+4<=state.size());for(unsigned i=0;i<4;++i)state[offset+i]=uint8_t(value>>(24-8*i));}
 float BattlePose::scalar(unsigned offset) const {const auto bits=word(offset);float value;std::memcpy(&value,&bits,4);return value;}
 void BattlePose::scalar(unsigned offset,float value){uint32_t bits;std::memcpy(&bits,&value,4);word(offset,bits);}
-BattlePose* BattlePosePool::pose(int32_t handle){return handle>=0 && unsigned(handle)<poses_.size() && poses_[unsigned(handle)] && poses_[unsigned(handle)]->word(0)?poses_[unsigned(handle)].get():nullptr;}
+BattlePose* BattlePosePool::pose(int32_t handle){
+    if(!sourceArraysCurrent() || handle<0 || unsigned(handle)>=poses_.size())return nullptr;
+    auto* p=poses_[unsigned(handle)].get();if(!p || !p->word(0) || !p->resource)return nullptr;
+    const auto index=p->word(0x10);if(index>=models_.size() || !models_[index].flags() || models_[index].resource!=p->resource)return nullptr;
+    return p;
+}
 const BattlePose* BattlePosePool::pose(int32_t handle) const {return const_cast<BattlePosePool*>(this)->pose(handle);}
 std::optional<bool> BattlePosePool::testTranslucent(int32_t handle) const {
     const auto* p=pose(handle);if(!p || !p->resource->modelFlags)return {};
@@ -109,28 +133,31 @@ std::optional<int32_t> BattlePosePool::enter(std::shared_ptr<const BattlePoseRes
     if(mode<0 || mode>2)return {};
     archiveType_=mode==1?2:mode==0?1:0;
     if(!supplied || supplied->modelName.empty() || supplied->textureName.empty() || supplied->names.empty() || !supplied->bank)return {};
+    if(!cacheMetadataReady())return {};
     const std::string request=requestedModel?requestedModel:supplied->modelName;
     unsigned handle=0;while(handle<poses_.size() && poses_[handle] && poses_[handle]->word(0))++handle;if(handle==poses_.size())return {};
-    unsigned model=0;while(model<models_.size() && (!models_[model].flags || models_[model].resource->modelName!=supplied->modelName))++model;
+    unsigned model=0;while(model<models_.size() && (!models_[model].flags() || models_[model].resource->modelName!=supplied->modelName))++model;
     const bool reused=model<models_.size();
-    if(!reused){model=0;while(model<models_.size() && models_[model].flags)++model;if(model==models_.size())return {};}
+    if(!reused){model=0;while(model<models_.size() && models_[model].flags())++model;if(model==models_.size())return {};}
+    if(reused && models_[model].references()>=0x7fffffff)return {};
     const auto resource=reused?models_[model].resource:std::move(supplied);
-    unsigned texture=reused?models_[model].texture:0;
+    unsigned texture=reused?models_[model].texture():0;
     bool reusedTexture=reused;
     if(!reused){
-        while(texture<textures_.size() && (!textures_[texture].flags || textures_[texture].name!=resource->textureName))++texture;
+        while(texture<textures_.size() && (!textures_[texture].flags() || textures_[texture].name!=resource->textureName))++texture;
         reusedTexture=texture<textures_.size();
-        if(!reusedTexture){texture=0;while(texture<textures_.size() && textures_[texture].flags)++texture;if(texture==textures_.size())return {};}
+        if(!reusedTexture){texture=0;while(texture<textures_.size() && textures_[texture].flags())++texture;if(texture==textures_.size())return {};}
     }
+    if(!reused && reusedTexture && textures_[texture].references()>=0x7fffffff)return {};
     const auto* initial=resource->bank->pose(resource->names.front().c_str());ActorAnimationSample shape;
     if(!initial || !initial->evaluate(0,shape) || shape.positions.empty() || shape.nodes.empty() || shape.world.empty())return {}; // Visibility does not determine buffer ownership.
     if(!poses_[handle])poses_[handle]=std::make_unique<BattlePose>();
     auto& pose=*poses_[handle];pose.nativeGeneration=nextGeneration_++;
     if(!reused){
-        if(!reusedTexture){auto& t=textures_[texture];t.flags=1;t.name=resource->textureName;t.resource=resource;}
-        ++textures_[texture].references;models_[model].flags=1;models_[model].texture=texture;models_[model].resource=resource;
+        if(!reusedTexture){auto& t=textures_[texture];t.flags(1);t.file(0);t.name=resource->textureName;t.resource=resource;}
+        textures_[texture].references(textures_[texture].references()+1);models_[model].flags(1);models_[model].file(0);models_[model].texture(texture);models_[model].resource=resource;
     }
-    ++models_[model].references;pose.resource=resource;pose.shape=std::move(shape);pose.archiveType=archiveType_;
+    models_[model].references(models_[model].references()+1);pose.resource=resource;pose.shape=std::move(shape);pose.archiveType=archiveType_;
     allocateActorAnimationCache(*initial,pose.cache);
     pose.word(0,1);pose.word(4,0);pose.word(8,0);pose.word(0xc,uint32_t(mode));pose.word(0x10,model);pose.word(0x14,0);restart(pose,clock);
     for(unsigned offset:{0x70u,0x74u,0x7cu})pose.scalar(offset,0);
@@ -172,7 +199,7 @@ bool BattlePosePool::setRate(int32_t handle,float rate){auto* p=pose(handle);if(
 // evaluating scalar/cache prefix alone does not certify its full Main tail.
 bool BattlePosePool::main(int32_t handle,BattlePoseClock clock){
     auto* p=pose(handle);
-    if(!p || p->word(0x90)!=0xffffffff || outputSelector || !p->resource->modelFlags || p->resource->discrete.size()!=p->resource->names.size())return false;
+    if(!p || p->word(0x90)!=0xffffffff || outputSelector() || !p->resource->modelFlags || p->resource->discrete.size()!=p->resource->names.size())return false;
     if(!evaluate(handle,clock))return false;
     return !(p->word(0)&8); // A real optional-facing provider is required when admitted.
 }
@@ -247,12 +274,13 @@ bool BattlePosePool::release(int32_t handle){
     const auto modelIndex=p->word(0x10);
     if(modelIndex>=models_.size())return false;
     auto& model=models_[modelIndex];
-    if(!model.flags || !model.references || model.resource!=p->resource || model.texture>=textures_.size() || !textures_[model.texture].references)return false;
+    if(!cacheMetadataReady())return false;
+    if(!model.flags() || !model.references() || model.resource!=p->resource || model.texture()>=textures_.size() || !textures_[model.texture()].references())return false;
     if(p->word(4)!=0){const auto remaining=p->word(8)-1;p->word(8,remaining);if(remaining<0x80000000u)return true;}
-    --model.references;
-    if(model.references==0){
-        model.flags=0;auto& texture=textures_[model.texture];--texture.references;
-        if(texture.references==0){texture.resource.reset();texture.flags=0;}
+    model.references(model.references()-1);
+    if(model.references()==0){
+        model.flags(0);auto& texture=textures_[model.texture()];texture.references(texture.references()-1);
+        if(texture.references()==0){texture.resource.reset();texture.flags(0);}
         model.resource.reset();
     }
     p->word(0,0);p->resource.reset();p->shape=ActorAnimationSample{};p->cache=ActorAnimationCache{};return true;

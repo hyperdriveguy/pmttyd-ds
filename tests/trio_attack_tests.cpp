@@ -93,7 +93,7 @@ int main(){
     assert(jump.readWord(0x84202000,value) && value==0);
     assert(jump.readWord(0x84202004,value) && value==0x80393ba0);
     assert(jump.readWord(0x842024ec,value) && value==0x84102000);
-    assert(jump.battlePosePool() && jump.battlePosePool()->models()[0].references==3 && jump.battlePosePool()->models()[1].references==1);
+    assert(jump.battlePosePool() && jump.battlePosePool()->models()[0].references()==3 && jump.battlePosePool()->models()[1].references()==1);
     for(unsigned i=0;i<3;++i){
         const auto part=marioParts[i];assert(jump.readWord(part+0x1c0,value) && value==i);
         const auto* pose=jump.battlePose(part);assert(pose && pose->word(0xc)==1 && pose->word(0x14)==0 && pose->resource->modelName=="b_mario" && !pose->shape.vertices.empty());

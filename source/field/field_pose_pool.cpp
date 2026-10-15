@@ -28,14 +28,14 @@ bool FieldPosePool::animationReady(const std::string& model,const std::string& a
 // Modes0..2 only; shared BattlePosePool has256 pose slots. Existing model
 // already owns its texture, so its free-pose path needs no new model/TPL slot.
 bool FieldPosePool::canEnter(const std::string& model,int32_t mode) const {
- if(mode<0 || mode>2)return false;
+ if(!poses_->cacheMetadataReady() || mode<0 || mode>2)return false;
  const auto found=resources_.find(model);if(found==resources_.end())return false;
  const auto& resource=*found->second;
  bool freePose=false;for(unsigned i=0;i<256;++i){const auto* p=poses_->slot(i);if(!p || !p->word(0)){freePose=true;break;}}if(!freePose)return false;
- bool freeModel=false;for(const auto& m:poses_->models()){if(!m.flags)freeModel=true;else if(m.resource->modelName==resource.modelName)return true;}
+ bool freeModel=false;for(const auto& m:poses_->models()){if(!m.flags())freeModel=true;else if(m.resource->modelName==resource.modelName)return m.references()<0x7fffffff;}
  if(!freeModel)return false;
- for(const auto& t:poses_->textures())if(!t.flags || t.name==resource.textureName)return true;
- return false;
+ bool freeTexture=false;for(const auto& t:poses_->textures()){if(!t.flags())freeTexture=true;else if(t.name==resource.textureName)return t.references()<0x7fffffff;}
+ return freeTexture;
 }
 // Returned handle belongs to injected global namespace when supplied. Other
 // roles consume its256 slots too; do not treat it as field-local actor index.

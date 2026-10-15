@@ -171,7 +171,7 @@ void Renderer::resumeFinishingCamera(const Game& game){
             // Vector stride12 is three binary32 components; flush real CPU data.
             inner.flush=[](void* user,unsigned index,const BattlePoseInnerContext& context){
                 const auto* pool=static_cast<InnerBridge*>(user)->game->trioAttack.battlePosePool();
-                if(!pool || pool->outputSelector || index>1)return false;
+                if(!pool || pool->outputSelector() || index>1)return false;
                 const auto* pose=pool->pose(context.handle);if(!pose || !pose->resource || !pose->resource->bank)return false;
                 const auto selected=pose->word(0x14);if(selected>=pose->resource->names.size())return false;
                 const auto* animation=pose->resource->bank->pose(pose->resource->names[selected].c_str());if(!animation)return false;

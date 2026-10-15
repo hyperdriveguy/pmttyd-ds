@@ -1841,3 +1841,15 @@ Native validation deliberately skips regeneration. Provenance/conversion choices
 in accepted generated metadata are unchanged. Original Nintendo/Intelligent
 Systems rights remain reserved; private validation copies grant no redistribution
 license. No ISO/extraction/original binary bytes were committed.
+
+
+### Shared animation memory validation assets (2026-10-14)
+
+This change adds no extracted or converted assets. Its frozen build uses2130
+private RomFS products from the accepted animation-cold validation manifest;
+all remain byte-identical. Original c_pkr/a_mario/c_kuri_h animation data and
+original packed door event descriptors feed shared-owner tests. The fixture's
+MODEL header views copy only original0x1b0 bytes from accepted resource packs;
+virtual file/holder addresses are test-owned and do not assert original file
+manager/type5 relocation history. The ISO remains read-only. No original bytes
+are committed or redistributed; original rights/local-use restrictions remain.

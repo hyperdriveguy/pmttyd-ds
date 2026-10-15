@@ -9588,3 +9588,70 @@ file services, uncovered event/runtime/save modules and port tools.
 Re-audit concurrent NPC-main/shared animation pool integration and all changes
 to previously documented files against current snapshots. The broad code
 documentation goal and remake remain incomplete; goal stays active.
+
+### Authoritative shared animation memory (2026-10-14)
+
+This increment replaces native cache scalar mirrors with actual source-shaped
+BE model16/texture12-byte rows, including opaque file words. Pose0x170 and W e8
+are the same bytes used by typed consumers and explicitly attached VM services.
+[Contract](behavior/display/NATIVE_ANIMATION_POOL_MEMORY.md). Original complete
+Entry/release listings checked under artifacts/animation-live-cache-evidence/;
+original signed<=0 release/fileFree graph remains outside the admitted positive
+signed-reference native domain. New native resource file words remain honestly0;
+release preserves stale file/index bytes. Counts remain64/64/256.
+
+New AnimationPoolMemory requires caller-owned real root/W/RAM and matching current
+records, extracts spans transactionally, maps each actual row and prepares all256
+stable pose backing objects only after extraction succeeds. Failed admission
+restores RAM/work/object identity. Detach restores CURRENT bytes, never an old
+snapshot. Root/layout changes make native resource consumers wait. A read-only
+review found active P10 could select a different source model while native CPU
+work used stale metadata; pose admission now validates exact model/resource
+identity. The regression mutates to another active original model and out of
+range, proves Main/select/evaluate hold, restores bytes and recovers. Copying
+pools preserves independent bytes and omits the original attachment guard.
+
+BattleSequenceBinding can explicitly attach the actual Game Mario/partner/NPC
+shared pool before entry. Integration uses real original Mario/Goombella/Frankly
+resources, actual door event descriptors, real seqInit/Main and mode2 Refresh,
+then retains the genuine NPC-release boundary without replaying completed
+allocations. Explicit fixture W/heap/null-file startup and nonzero file/holder/
+original MODEL HEADER views are test supplied; these are NOT production file
+manager/complete relocated type5 history. No normal-startup bypass was added.
+
+Validation: frozen base8d6c0a0c7b2323263cc575fd19b4f73ce7fc78e1 plus scoped own
+journal/new files, excluding concurrent work. TMPDIR=artifacts/native-stage-map-tmp
+CMAKE_BUILD_PARALLEL_LEVEL=4 make -C artifacts/animation-live-source test
+-o assets-ready exits0:368/368 C++ in37.70s and202/202 Python in32.001s.
+The first final run caught an old render fixture replacing a pose resource
+behind its model cache; it now creates a proper matching cache entry. The
+failed log is retained; the complete corrected suite passed. Native make all
+-j4 -o assets-ready SOUNDTRACK=gamecube TARGET=ttyd-animation-live
+BUILD=build-animation-live exits0, including restored normal main. Existing
+unrelated compiler/Pillow warnings remain. No new original assets were imported;
+all2130 private RomFS products match the prior accepted cold-animation manifest.
+Audit:3656 source files, zero mismatches. Manifest:
+artifacts/animation-live-validation-manifest.json. Normal native SHA256
+5df63fa11645f5a71d26ec89a6ddd438e411e075754192a222d42a3229b84a5e.
+
+Strict isolated Azahar ARM fixture passes sameBytes/fullCapacity/liveWe8/
+refsDomain/poseModelGuard/rollback/currentDetach/sharedMarioPartnerNpc/
+originalRefresh/npcReleaseBoundary/noReplay. Snapshot:
+artifacts/azahar-animation-live-probe/animation-live-probe.snapshot. Exact probe
+source/binary hashes:artifacts/animation-live-probe-validation.json. Probe main
+was restored and normal native binary matches its pre-probe hash. User emulator
+profiles/saves were untouched. Moving combined checkout is not claimed validated.
+
+Next: genuine shared SDK heap/file/holder/loaded MODEL/live tangent/output owner,
+then deferred source cold bootstrap before Game's existing three Mario entries.
+CPU vectors still do not alias guest scratch outputs. Full original field/battle
+parents, authored story events, indoor coverage, visibility, sound and prologue
+parity remain unfinished. Keep documentation inbox and overall goal active;
+continue incremental commits. No physical3DS/performance/original pixel parity
+claim follows from these ownership tests.
+
+Normal isolated40s Azahar boot exits0; original storybook art/US text in
+artifacts/azahar-animation-live-normal/boot.png inspected. Sample59AppFPS/99%
+speed under software OpenGL is startup evidence only, not field or physical
+New2DSXL performance. Final documentation check:1398 Markdown files, zero broken
+links. All source/ROMFS audit mismatches remain zero.

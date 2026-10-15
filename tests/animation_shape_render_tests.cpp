@@ -88,15 +88,19 @@ int main(){
     put(raw.word(0x150)+8*66+4,0xffff0000); // Begin0 still occurs.
     FILE* f=std::tmpfile();assert(f && std::fwrite(bytes.data(),bytes.size(),1,f)==1);std::rewind(f);
     auto changed=std::make_shared<AnimationDrawResource>();assert(changed->read(f));std::fclose(f);
-    auto owner=std::make_shared<BattlePoseResource>(*resource);owner->draw=changed;p->resource=owner;
+    auto owner=std::make_shared<BattlePoseResource>(*resource);owner->draw=changed;
+    // A changed model owns its matching cache entry, never an independent pose
+    // resource swap behind the authoritative model row.
+    BattlePosePool changedPool;const auto changedHandle=changedPool.enter(owner,1,{});
+    assert(changedHandle && changedPool.main(*changedHandle,{}));
     c={};pass=2;input.model={1,0,0,0,0,1,0,0,0,0,1,0};t=Trace{};t.holdVertex=false;t.camera.viewPublished=true;t.camera.matrices.view={{{1,0,0,0},{0,1,0,0},{0,0,1,0}}};
-    assert(resumeAnimationShape(pool,*h,pass,input,services,c));unsigned begins=0,indices=0,arrays=0;
+    assert(resumeAnimationShape(changedPool,*changedHandle,pass,input,services,c));unsigned begins=0,indices=0,arrays=0;
     for(const auto& r:t.calls){
         if(r.function==0x802b5a6c){if(!begins)assert(r.arguments[2]==0);++begins;}
         if(r.function==0xcc008000){assert(r.arguments[0]==5 && r.indices[3]==0);++indices;}
         if(r.function==0x802b4db0 && r.arguments[0]>=13){assert(r.arguments[1]==raw.word(0x18c)+(r.arguments[0]==13?0:8*107));++arrays;}
     }
-    assert(begins==22 && indices>0 && arrays==2);p->resource=resource;
+    assert(begins==22 && indices>0 && arrays==2);
     // Pass rejection still follows all camera/normal/current-matrix calls.
     t=Trace{};t.camera.viewPublished=true;t.camera.matrices.view={{{1,0,0,0},{0,1,0,0},{0,0,1,0}}};c={};pass=1;
     p->word(0xf0,0xffffffff);p->word(0xf4,0xffffffff);assert(resumeAnimationShape(pool,*h,pass,input,services,c) && t.calls.size()==3);

@@ -4892,3 +4892,19 @@ Code3342657e supplies [complete packed init/main callbacks](../behavior/field/NA
 ### NPC Main parent source audit and native radial-hint correction
 
 [Complete original npcMain graph](../behavior/field/ORIGINAL_NPC_MAIN_PARENT_CONTROL_FLOW.md) recovers clocks, movement/clear/side ordering, regular-ID interruption gates, display/history and post-pool field tail. Corrected earlier milliseconds/1000 shorthand to source shifted-tick integer microseconds/1000000. [Native follow-up](../behavior/field/NATIVE_NPC_PRIOR_RADIAL_HINT.md), code8618d376, fixes the active Game wander consumer to use the prior encounter radial hint rather than side collision.367C++/201Python/native and isolated ARM fixture pass. Keep actual packed Mario/Main/display/resource providers and normal Area activation open; this is a catalog-path correction, not full original Main integration.
+
+
+### Authoritative shared animation records (2026-10-14)
+
+Typed native cache records now own source BE16/12-byte rows; shared pose and W e8
+bytes can be explicitly attached to the actual event VM. The complete64/64/256
+layout must come from caller-owned real W/RAM and match current typed history.
+Attachment/rollback/current-byte detach and live root/index guards are explicit.
+[Contract](../behavior/display/NATIVE_ANIMATION_POOL_MEMORY.md).
+Original Entry/release listings verified; source signed<=0/fileFree lifecycle
+remains outside the positive-count native admission domain. Actual shared
+Mario/partner/NPC + sequence Refresh is covered with explicitly test-supplied
+file/holder/header views; those are not complete loaded type5/file ownership.
+Next bind genuine SDK heap/file/cache/relocated MODEL/live tangent/output owners,
+then source cold startup before Game's existing three Mario entries. Normal
+bootstrap and complete original field/battle/prologue obligations remain open.

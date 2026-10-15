@@ -105,7 +105,7 @@ bool resumeAnimationShape(BattlePosePool& pool,int32_t handle,const std::optiona
                 const auto kind=d.word(d.word(0x198)+64*index+8);if(kind==1 || kind==2){c.pending=0x8003c884;return false;}}
             // Independent flag10 rebind needs the work override-pointer owner.
             if(p->word(0)&0x10){c.pending=0x8003c884;return false;}
-            if(pool.outputSelector){c.pending=0x8003c884;return false;}
+            if(pool.outputSelector()){c.pending=0x8003c884;return false;}
             c.run=d.word(0x150)+8*d.word(c.draw+0x38);c.runCount=d.word(c.draw+0x3c);c.attribute=0;c.attributeStep=0;c.phase=19;break;
         case 19:queue(0x802b4520);if(!emit(0x802b4520))return false;
             done(20);break;
