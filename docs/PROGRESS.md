@@ -8825,3 +8825,45 @@ callbacks and earlier Bero/Mario parent services. Retain genuine shared-session
 RNG state/interleaving, pose namespace, query/Main/facing/render/collision and
 resource/room lifecycle work; do not bypass their waits. Full remake and goal
 remain unfinished.
+
+## 2026-10-14 — Trouble Center state and retained UI/event owners documented
+
+Added inline comments to 14 C++ implementation/header files covering saved-state
+knowledge, working-switch reset/cancellation, original quest list/input producer,
+font/string caches and ordered window requests, five-icon presentation, retained
+board/counter/installer VM and split event/UI visits. The [Trouble Center guide](code/trouble-center.md)
+explains one-based quest IDs versus rows/flags, unsorted story-gated list order,
+known-zero/unknown states, callback tags/statuses, borrowed owners, partial draw
+failure, source icon metadata and root-versus-child/case lifetime. All 14 files
+preserve executable tokens. Main code/docs commit e133cca1.
+
+Validation freezes baseline da952df39eb1a369f4aa506f4357cee5aa03b4fd plus documentation in
+artifacts/trouble-center-code-documentation-validation/source. Audited 3606 tracked
+files: zero unexpected changes; 16 documented files match frozen and recorded
+live hashes. No touched source had preexisting implementation edits. Concurrent
+work elsewhere is preserved/excluded; the moving whole worktree is not claimed
+validated. CMAKE_BUILD_PARALLEL_LEVEL=4 make test passes 359/359 C++ in 37.79s
+and 199/199 Python in 28.884s, zero skipped. make all -o assets-ready -j4
+SOUNDTRACK=gamecube exits 0. host.log/native.log and source/binary/log hashes are
+recorded in manifest.json. All 27 local guide/index links resolve. Existing
+compiler/Pillow warnings remain.
+
+A current field-only inventory compares all 138 implementation/header files with
+recorded documentation snapshots:132 have a recorded pass; 6 new and 7 changed
+files require review. Exact paths in field-inventory.json. New field_npc_actor_event,
+field_party_pose and field_npc_setup_binding pairs and changed registry/pose/area/
+partner integration are next. This is a backlog inventory, not proof that every
+numeric/semantic requirement is complete in the current field tree.
+
+Accepted field-item documentation RomFS/evidence was privately copied after
+door/sequence/recovery hashes matched the parent manifest. Mutable evidence was
+copied privately; other large local-assets inputs remain shared read dependencies.
+Cache assembly needed no new ISO read, original-asset extraction/conversion,
+editable import or shared pack write. Native regeneration deliberately skipped.
+No emulator/profile/save changes or new measured hardware/timing/pixel/numeric
+fidelity claims. See [asset notes](ASSETS.md).
+
+Next: audit the 6 new/7 changed field files above, then remaining battle,
+message/inventory/story, effect/audio and port tooling. Also re-audit concurrent
+renderer/animation/platform additions. Port-wide documentation and the remake
+remain incomplete; documentation goal stays active.

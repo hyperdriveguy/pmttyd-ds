@@ -1636,3 +1636,16 @@ compiled packs/binaries remain outside source history. The ISO was not modified
 or committed. Original Nintendo/Intelligent Systems rights remain reserved;
 private validation copies confer no redistribution license. Actor/pose loading
 and event setup tests do not establish new NPC raster or hardware parity.
+
+## Trouble Center documentation validation cache (2026-10-14)
+
+artifacts/trouble-center-code-documentation-validation/source privately copies
+accepted field-item documentation RomFS/evidence inputs. Door-data.pmevt/json,
+battle-sequence-entry.pmevt/json and recovery-effect.bin matched recorded parent
+SHA256 values before copying; manifest.json records parent provenance and hashes.
+Mutable message-icons/material-light/field-native/field-map-npc/door-data evidence
+directories are private copies; other large local-assets inputs are shared read
+dependencies. Cache assembly needed no new ISO read, original-asset extraction/
+conversion, editable import or shared pack write. Original Nintendo/Intelligent
+Systems rights remain reserved; private validation copies confer no new license
+or redistribution rights. No original binary/ISO bytes were committed.
