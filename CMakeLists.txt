@@ -2271,3 +2271,10 @@ add_executable(animation_facing_tests tests/animation_facing_tests.cpp)
 target_link_libraries(animation_facing_tests PRIVATE ttyd_core)
 add_test(NAME animation_facing COMMAND animation_facing_tests)
 set_tests_properties(animation_facing PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Retained original Main resource/output captures and evaluation boundary.
+target_sources(ttyd_core PRIVATE source/display/animation_main.cpp)
+add_executable(animation_main_tests tests/animation_main_tests.cpp)
+target_link_libraries(animation_main_tests PRIVATE ttyd_core)
+add_test(NAME animation_main COMMAND animation_main_tests)
+set_tests_properties(animation_main PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

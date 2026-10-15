@@ -37,7 +37,7 @@ struct View {
   if(!p.resource || !p.resource->draw || !p.resource->bank || p.word(0x10)>=64 || p.word(0x14)>=p.resource->names.size())return false;
   work=mem.word(0x80415dc0);const uint32_t models=mem.word(work),record=models+16*p.word(0x10);
   const uint32_t holder=mem.word(mem.word(record+8)+0xa0);model=mem.word(holder);
-  if(!mem.ok || !model || !file(model,0x1b0) || mem.word(work+0xe8) || p.word(0x90)!=0xffffffff || (p.word(0)&8))return false;
+  if(!mem.ok || !model || !file(model,0x1b0) || mem.word(work+0xe8) || p.word(0x90)!=0xffffffff)return false;
   const uint32_t directory=mem.word(model+0x1ac);if(!file(directory+64*p.word(0x14),64))return false;
   timeline=mem.word(directory+64*p.word(0x14)+0x3c);
   if(!timeline || !file(timeline,0x44))return false;
