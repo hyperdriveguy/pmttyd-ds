@@ -1,4 +1,7 @@
 #include "effect_maya_animation.hpp"
+#include "effect_maya_math_adapter.hpp"
+#include "effect_maya_matrix.hpp"
+#include "effect_pool.hpp"
 #include "recovery_effect.hpp"
 #include "recovery_effect_resources.hpp"
 #include <cassert>
@@ -11,6 +14,10 @@ struct Owner {
   std::map<uint32_t, uint8_t> memory;
   RecoveryEffectServices recovery;
   EffectMayaAnimationServices maya;
+  EffectMayaMatrixServices curve;
+  EffectMayaMatrixCursor curveCall;
+  EffectPoolServices pool;
+  EffectMainCursor driver;
   RecoveryEntryCursor entry;
   RecoveryMainCursor main;
   EffectMayaAnimationCursor mayaCall;
@@ -71,7 +78,12 @@ struct Owner {
     region(effect, 0x28);
     region(0x80415fd0, 4);
     region(0x800000f8, 4);
-    region(0x110000, 0x100);
+    region(0x110000, 0x200);
+    region(0x80415ee0, 4);
+    region(0x120000, 0x18);
+    storeWord(this, 0x80415ee0, 0x120000);
+    storeWord(this, 0x120000, 1);
+    storeWord(this, 0x120004, effect);
     storeWord(this, 0x80415fd0, 0x110000);
     storeWord(this, 0x800000f8, 162000000);
     storeWord(this, 0x110004, 60);
@@ -104,14 +116,28 @@ struct Owner {
         storeByte(p, a + i, 0);
       return true;
     };
+    curve.memory = m;
+    curve.user = this;
+    curve.byte = [](void *p, uint32_t a) { return self(p).byte(a); };
+    bindEffectMayaMatrixMathAdapter(curve);
+    pool.memory = m;
+    pool.user = this;
+    pool.update = [](void *p, uint32_t callback, uint32_t e) {
+      auto &o = self(p);
+      assert(callback == 0x80142bc4 && e == o.effect);
+      return resumeRecoveryEffectMain(e, o.recovery, o.main);
+    };
     maya.matrix = [](void *p, uint32_t a, uint32_t channel, uint32_t out,
                      uint32_t index) {
       auto &o = self(p);
       ++o.matrices;
       assert(a == o.animation && channel == 0x80417a2c && out == a + 0x14 &&
              index == a + 0x44);
-      return o.matrixReady;
-    }; // Fixture acknowledgement only; no transform or native binding.
+      if (!o.matrixReady)
+        return false;
+      return resumeEffectMayaAnimMatrix(a, channel, out, index, o.curve,
+                                        o.curveCall);
+    };
     auto &s = recovery;
     s.memory = m;
     s.user = this;
@@ -119,8 +145,8 @@ struct Owner {
     s.effectEntry = [](void *p) -> std::optional<uint32_t> {
       auto &o = self(p);
       ++o.effectAllocations;
-      return o.effect;
-    }; // Explicit fixture pool record.
+      return effectPoolEntry(o.pool);
+    };
     s.heapAllocate = [](void *p, int32_t heap,
                         uint32_t n) -> std::optional<uint32_t> {
       auto &o = self(p);
@@ -198,7 +224,7 @@ int main() {
          Owner::word(&o, o.animation + 0xc) == 1000 &&
          Owner::half(&o, o.animation) == 1);
   const unsigned ticks = o.tickReads;
-  assert(!resumeRecoveryEffectMain(o.effect, o.recovery, o.main));
+  assert(!resumeEffectMain(o.pool, o.driver));
   assert(o.main.active && o.mayaCall.operation == 3 && o.matrices == 1 &&
          o.tickReads == ticks && o.draws.empty());
   assert(Owner::word(&o, payload + 0x2c) == 0 &&
@@ -207,13 +233,38 @@ int main() {
   // Calculate's acknowledged elapsed conversion or recovery's constructor.
   Owner::storeWord(&o, 0x110044, 405000000);
   Owner::storeWord(&o, 0x11001c, 11);
-  assert(!resumeRecoveryEffectMain(o.effect, o.recovery, o.main) &&
-         o.matrices == 2 && o.heapAllocations == 2 && o.sounds == 1 &&
+  assert(!resumeEffectMain(o.pool, o.driver) && o.matrices == 2 &&
+         o.heapAllocations == 2 && o.sounds == 1 &&
          o.scalar(o.animation + 4) == 0.f);
   o.matrixReady = true;
-  assert(resumeRecoveryEffectMain(o.effect, o.recovery, o.main) &&
-         !o.main.active && !o.mayaCall.operation);
+  assert(resumeEffectMain(o.pool, o.driver) && !o.main.active &&
+         !o.mayaCall.operation);
   assert(o.matrices == 3 && o.heapAllocations == 2 && o.sounds == 1 &&
          Owner::half(&o, payload + 0x2c) == 1);
   assert(o.draws == std::vector<uint32_t>({0x801422f4, 0x801420fc}));
+  assert(!o.driver.active && !o.curveCall.active &&
+         Owner::word(&o, o.effect) == 1);
+  // Actual source key0: zero scale about -1.484375 pivot, translated Y5.
+  assert(o.scalar(o.animation + 0x14) == 0 &&
+         o.scalar(o.animation + 0x14 + 20) == 0 &&
+         o.scalar(o.animation + 0x14 + 40) == 0);
+  assert(o.scalar(o.animation + 0x14 + 28) == 3.515625f &&
+         o.scalar(o.animation + 0x44) == 0);
+  // 150ms at signed GP frequency60 reaches source key9, whose original
+  // rotation/translation are zero and scale is identity. No matrix stub
+  // remains.
+  Owner::storeWord(&o, 0x110044, 46575000);
+  assert(resumeEffectMayaAnimCalculate(o.animation, o.maya, o.mayaCall));
+  assert(o.scalar(o.animation + 4) == 9 && o.scalar(o.animation + 0x14) == 1 &&
+         o.scalar(o.animation + 0x14 + 20) == 1 &&
+         o.scalar(o.animation + 0x14 + 40) == 1);
+  assert(o.scalar(o.animation + 0x14 + 12) == 0 &&
+         o.scalar(o.animation + 0x14 + 28) == 0 &&
+         o.scalar(o.animation + 0x14 + 44) == 0);
+  Owner::storeWord(&o, 0x110044,
+                   93960000); // Elapsed1320ms→79.2; original clamps79.
+  assert(resumeEffectMayaAnimCalculate(o.animation, o.maya, o.mayaCall));
+  assert(o.scalar(o.animation + 4) == 79 && Owner::half(&o, o.animation) == 3 &&
+         o.scalar(o.animation + 0x14 + 20) == 1.5f &&
+         o.scalar(o.animation + 0x14 + 28) == 8.7421875f);
 }

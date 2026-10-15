@@ -121,7 +121,8 @@ Do not route kind6 through Main merely to obtain an executable effect.
 ## Maya ownership, timing, layout and numeric boundary
 
 Alloc follows descriptor+8 to the channel table, reads signed count there,
-allocates heap3 size18+count*34 and clears that whole allocation. It stores
+allocates heap3 size18+count*34 and clears that whole allocation. Layout
+offsets/sizes in this paragraph are hexadecimal (matrix30 is48 decimal bytes). It stores
 the descriptor at A10. Channel matrices start A14 with stride34; the related
 scalar output starts A44 with the same stride. Each matrix occupies30 bytes,
 followed by that four-byte scalar; the next matrix starts A48. The descriptor
@@ -178,13 +179,22 @@ size, exact payload length and no trailing data. Its byte/half/word readers
 resolve immutable original addresses and decode big-endian values. Loading a
 valid pack supplies data only: it does not admit the Maya curve evaluator,
 SDK matrix operations, effect-pool driver, texture resources, display callbacks,
-sound macros or child effects. Matrix remains an explicit external service in
-`effect_maya_animation.hpp`; tests supplying that service are not original
-curve-evaluation proof. The portable unsigned divide rejects denominator0;
+sound macros or child effects. Matrix remains an explicit lifecycle callback in
+`effect_maya_animation.hpp`. The complete portable evaluator, source pool and
+retained continuations are now implemented by the linked
+[curve/pool contract](MAYA_QUANTIZED_CURVES_AND_EFFECT_POOL_CONTINUATIONS.md).
+Original-data ownership tests exercise source curves through the explicitly
+installed rendering affine adapter; full Gekko numeric and native effect
+admission remain separate. The portable unsigned divide rejects denominator0;
 actual native clock admission must provide the original valid hardware-derived
 divisor rather than relying on a guessed divide-by-zero result.
 
 ## Graphics and native integration remain separately owned
+
+Whole portable Disp/Disp2 now preserve original texture/material requests,
+geometry, matrix ordering and retained service waits; see
+[draw callbacks](RECOVERY_DRAW_CALLBACKS_AND_NUMBER_TRANSFORMS.md).
+Actual GPU/texture-cache/number rendering and normal-game admission remain open.
 
 The original base bank `e/us/effect.tpl` contains118 images. Recovery Disp
 uses18/20 for HP and19/21 for FP. Its original multi-texture GX material is

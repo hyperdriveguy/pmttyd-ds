@@ -1180,3 +1180,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Tagged-map NPC history and definitions](field/TAGGED_MAP_NPC_HISTORY_GATE_AND_DEFINITION_SOURCE.md): actual source map table, retained history promotion/group invalidation, death-mask gate and parser/bootstrap boundaries.
 - [Native map-NPC history and area-root preparation](field/NATIVE_MAP_NPC_HISTORY_BOOTSTRAP.md): bounded original history, retained row admission, real same-VM registration before root and remaining Game/field services.
+
+- [Maya quantized curves and effect-pool continuations](effect/MAYA_QUANTIZED_CURVES_AND_EFFECT_POOL_CONTINUATIONS.md) — source quantization, fused interpolation, matrix composition, pool traversal and file-cache waits.
+- [Recovery draw callbacks and number transforms](effect/RECOVERY_DRAW_CALLBACKS_AND_NUMBER_TRANSFORMS.md) — original texture/material calls, live camera/payload ownership and retained quad/number submission.

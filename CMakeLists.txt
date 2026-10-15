@@ -1828,3 +1828,15 @@ add_executable(battle_sequence_binding_tests tests/battle_sequence_binding_tests
 target_link_libraries(battle_sequence_binding_tests PRIVATE ttyd_core)
 add_test(NAME battle_sequence_binding COMMAND battle_sequence_binding_tests)
 set_tests_properties(battle_sequence_binding PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Original Maya curve evaluator, effect pool and recovery draw callbacks.
+target_sources(ttyd_core PRIVATE source/effect/effect_maya_matrix.cpp source/effect/effect_maya_math_adapter.cpp source/effect/effect_pool.cpp source/effect/recovery_effect_draw.cpp)
+add_executable(effect_maya_matrix_tests tests/effect_maya_matrix_tests.cpp)
+target_link_libraries(effect_maya_matrix_tests PRIVATE ttyd_core)
+add_test(NAME effect_maya_matrix COMMAND effect_maya_matrix_tests)
+add_executable(effect_pool_tests tests/effect_pool_tests.cpp)
+target_link_libraries(effect_pool_tests PRIVATE ttyd_core)
+add_test(NAME effect_pool COMMAND effect_pool_tests)
+add_executable(recovery_effect_draw_tests tests/recovery_effect_draw_tests.cpp)
+target_link_libraries(recovery_effect_draw_tests PRIVATE ttyd_core)
+add_test(NAME recovery_effect_draw COMMAND recovery_effect_draw_tests)
