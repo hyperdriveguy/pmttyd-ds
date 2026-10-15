@@ -1174,3 +1174,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native tagged-map NPC registration](field/NATIVE_TAGGED_MAP_NPC_REGISTRATION.md): retained actor registration, parsed-input adapter, source data views and remaining bootstrap/Main providers.
 
 - [Recovery effect lifecycle and Maya ownership](effect/RECOVERY_EFFECT_LIFECYCLE_AND_MAYA_OWNERSHIP.md) — original recovery constructor/Main, retained Maya timing, addressed resources and remaining native services.
+
+- [Native original battle-sequence entry and field binding](battle/NATIVE_BATTLE_SEQUENCE_ENTRY_AND_FIELD_BINDING.md): complete Init/Main parents, registered actor/GP/event/control ownership and explicit legacy-entry exclusion.

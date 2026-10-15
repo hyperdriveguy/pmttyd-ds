@@ -8051,3 +8051,80 @@ message/inventory/story, effect/audio and relevant port tooling. Re-audit newly
 added or changed code in already covered runtime/event/save/display modules.
 Port-wide documentation and the remake remain incomplete; the documentation goal
 stays active.
+
+### Original battle sequence entry parents and field-owner binding (2026-10-14)
+
+Implemented the complete retained seq_battleInit80073f20 and
+seq_battleMain80073b24 parents, including all12 state routes, original separate
+GSW0 reads, late retained-N music word, original StopAll4, sound/control effects,
+resource polling versus unavailable services, signed wait/rank handling, actual
+battle_init child boundary, end/listener order and strict state6 >30 transition.
+Successful GP captures survive a held GP168 read. Source type captures survive
+control-child mutations. No fabricated resource/audio/battle_init completion.
+
+Game's BattleSequenceBinding composes the actual shared OriginalSequence work,
+Game-owned initialized field NPC registry and caller-owned EventNativeRuntime.
+It admits only an active aligned actor in that registry; actual saved switches,
+event context, sound flags, Mario/party controls and sequence requests share
+existing owners. Original process8041e968 uses retained mutable4-byte backing,
+including admitted checkpoint handoff. The binding must retire before VM/Game
+reset or relocation; callback cursors do not reconstruct mid-call history.
+Binding rejects a legacy Trio runtime even if it appeared during a held call.
+
+Ordinary native bootstrap is still incomplete: it needs a persistent shared
+field VM/GP/F, actual tagged tik_01/c_kuribo actor and raw-name/setup4 writes on
+that same actor, then original battle_start before menu/action admission.
+Source npcInit owns the fourth580-byte F allocation and fresh GP168 publication;
+setup4 is not encounter type. The real battle_init transitive graph still needs
+providers and one BattleWork. Never acknowledge the old pending Init after
+victory or certify the old visual-token action snapshot as real field entry.
+The request inbox retains these open items; source ownership evidence is
+artifacts/field-battle-work-owner-evidence/report.md. See
+[the binding contract](behavior/battle/NATIVE_BATTLE_SEQUENCE_ENTRY_AND_FIELD_BINDING.md).
+
+The new180-byte PMEVT data pack contains only original112-byte path strings and
+32-byte fade/listener data (SHA2567a5295a1050b3672569655c8f637aebd65aa69924acc700db5e18de8d5cf8349).
+The ISO stays read-only; no PPC/BSS/readiness or copyrighted pack is committed.
+Assets use the previously validated2096 outer-update RomFS products plus these
+2 entry data products. Private generated products remain outside source history.
+
+Validation: CMAKE_BUILD_PARALLEL_LEVEL=4 make test -o assets-ready exited0:
+339/339 C++ in36.73s and194/194 Python in32.083s. Initial compiler access errors
+were corrected with a scoped friend and existing public test getter; a missing
+story-assets fixture setup was corrected before this final passing run. Those
+failed logs remain under artifacts/battle-entry-*. Final host tests exercise
+actual CPU Frankly resources, registered NPC/VM memory, real two-event StopAll4,
+shared sequence2→4 and held audio/fade/resource boundaries. Encounter F8/F10
+and event slots are explicitly test supplied, not an authored prologue trace.
+
+Normal isolated15s Azahar smoke exited0; inspected Rogueport plaza/Mario/
+Goombella capture artifacts/azahar-battle-entry-normal/boot.png. This is boot
+validation, not battle-entry playability, pixel parity or hardware performance.
+Sandbox Xvfb socket access failed, then the same isolated test passed with
+approved display access; no user settings or saves were changed.
+
+Strict isolated ARM fixture passed originalCPUResource/registeredNPC/
+sharedSequence/eventStop/soundFlags/controls/retainedBSS/legacyRejection; Azahar
+exited0. Exact snapshot artifacts/azahar-battle-entry-probe/battle-entry-probe.snapshot.
+The fixture reuses the host assertions with native romfs paths and NDEBUG
+explicitly undefined; no fake actor/pose handles or successful engine-child
+defaults. Its encounter/callback backend remains test supplied. Private main
+edits were restored; final make all -j4 -o assets-ready SOUNDTRACK=gamecube
+TARGET=ttyd-battle-entry BUILD=build-battle-entry exited0. No new production or
+fixture warnings; existing compiler/Pillow warnings remain.
+
+Frozen source base3cfcf6adfa5704d26baab9a74a6513e684169819 and scoped edit
+journal isolate this change from other roots' concurrent work. Source/asset
+manifest artifacts/battle-entry-validation-manifest.json records exact hashes;
+normal native SHA256 eab1cbe51b8a4e70f143dac410607c8b35613a0ba1e4e75a9d86d8513a2f6355.
+Final documentation-link check:1355 Markdown files, zero broken links.
+Source audit:3523 files and2098 RomFS files, zero mismatches. Evidence is in
+the artifacts/battle-entry-* set. Isolated profiles do not touch user saves.
+The moving merged worktree is not claimed validated as a whole.
+
+Next: connect persistent actual field VM and original tagged encounter ownership
+before action entry. For the battle_init child, preserve captured F/N/pouch,
+use existing shared camera mode and implement genuine primary-map arena,
+animPoseRefresh buffers and downstream owners before one BattleInit. Character
+animation, dialogue, indoor/event visibility fidelity and complete playable
+prologue/hardware performance remain ongoing requirements.

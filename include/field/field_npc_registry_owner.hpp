@@ -22,6 +22,7 @@ public:
  FieldNpcRegistryOwner(const FieldNpcRegistryOwner&)=delete;
  FieldNpcRegistryOwner& operator=(const FieldNpcRegistryOwner&)=delete;
  bool initialized() const{return initialized_;}
+ bool ownsFieldActor(uint32_t address) const; // Admission only; active/name gates remain source reads.
  uint32_t fieldWorkAddress() const{return addresses_[3];}
  FieldPosePool& poses(){return poses_;}
  const FieldPosePool& poses() const{return poses_;}

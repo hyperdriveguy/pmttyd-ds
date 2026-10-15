@@ -118,6 +118,7 @@ int main() {
         if(!renderer.changeRoom(checkpoint.room)){restoreFailure=renderer.resourceFailure().empty()?"Checkpoint scene unavailable":renderer.resourceFailure();return false;}
         candidate.cameraManager->sourceRenderDimensions=game.cameraManager->sourceRenderDimensions; // Source GP render fields survive a committed checkpoint handoff.
         candidate.cameraManager->stockExpPosition=game.cameraManager->stockExpPosition; // Preserve source process globals only after checkpoint admission.
+        candidate.battleSequenceProcess=game.battleSequenceProcess; // Process8041e968 survives admitted checkpoint handoff.
         candidate.soundFlags=game.soundFlags; // Audio boot owner survives a successfully staged checkpoint.
         game=std::move(candidate);transaction.commit();return true;
     };

@@ -1345,6 +1345,7 @@ void Game::restore(const Progress& saved) {
     const auto retainedCameras=cameraManager;
     const auto retainedBero=beroExec;
     const auto retainedSequence=originalSequence;
+    const auto retainedBattleSequenceProcess=battleSequenceProcess;
     const auto retainedSoundFlags=soundFlags;
     const auto retainedSpotlight=battleSpotlight;
     const auto retainedTrioRandom=trioRandom;
@@ -1370,6 +1371,7 @@ void Game::restore(const Progress& saved) {
     shadows=retainedShadows;
     cameraManager=retainedCameras;
     soundFlags=retainedSoundFlags; // Source sound flags survive field/checkpoint/battle adapters.
+    battleSequenceProcess=retainedBattleSequenceProcess;
     originalSequence=retainedSequence;originalSequence->importNativeField(); // Native checkpoint admission resets unsaved callback history.
     beroExec=retainedBero;beroExec->unknown(); // Restore is not original get_info; unsaved transition history is unavailable.
     battleSpotlight=retainedSpotlight;

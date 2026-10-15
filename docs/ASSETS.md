@@ -1487,3 +1487,7 @@ Other large local-assets inputs remain shared read dependencies. No extraction,
 conversion, editable import or shared pack write occurred. Original Nintendo/
 Intelligent Systems rights remain reserved; ignored private copies grant no new
 license or redistribution rights. No original pack/ISO bytes were committed.
+
+### Original battle-sequence entry constants
+
+Read-only US ISO DOL spans802c2abc+70 and804203b0+20 (hex) preserve112 bytes of source room/stage/audience strings and32 bytes of color/format/listener data. Private battle-sequence-entry.pmevt is180 bytes, SHA2567a5295a1050b3672569655c8f637aebd65aa69924acc700db5e18de8d5cf8349. Metadata records span hashes. No code, BSS, saved mode, work state, readiness, texture scaling or replacement art/audio is exported. tools/battle_sequence_entry_assets.py participates in assets-base. Original Nintendo/Intelligent Systems resources, local use only; no redistribution rights. Packs stay ignored.

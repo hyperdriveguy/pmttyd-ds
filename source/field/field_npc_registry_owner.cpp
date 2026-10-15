@@ -16,6 +16,9 @@ std::shared_ptr<FieldNpcRegistryOwner> FieldNpcRegistryOwner::cold(uint32_t base
  if(base<0x10000 || (base&15) || end>0x100000000ULL)return {};
  return std::shared_ptr<FieldNpcRegistryOwner>(new FieldNpcRegistryOwner(base));
 }
+bool FieldNpcRegistryOwner::ownsFieldActor(uint32_t address) const{
+ return initialized_ && address>=addresses_[0] && uint64_t(address)-addresses_[0]<36u*0x340 && (address-addresses_[0])%0x340==0;
+}
 uint8_t* FieldNpcRegistryOwner::span(uint32_t a,uint32_t n){
  for(unsigned i=0;i<4;++i)if(a>=addresses_[i] && uint64_t(a)-addresses_[i]+n<=allocations_[i].size())return allocations_[i].data()+(a-addresses_[i]);
  return nullptr;

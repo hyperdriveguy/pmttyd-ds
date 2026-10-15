@@ -262,6 +262,7 @@ assets-base:
 	@python3 tools/field_item_get_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
 	@python3 tools/field_actor_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
 	@python3 tools/field_npc_resource_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
+	@python3 tools/battle_sequence_entry_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
 	@python3 tools/field_map_npc_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
 	@python3 tools/audio_map.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)" --output local-assets/audio-map/native --romfs romfs
 

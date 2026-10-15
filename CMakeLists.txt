@@ -1818,3 +1818,13 @@ add_executable(field_map_npc_bootstrap_tests tests/field_map_npc_bootstrap_tests
 target_link_libraries(field_map_npc_bootstrap_tests PRIVATE ttyd_core)
 add_test(NAME field_map_npc_bootstrap COMMAND field_map_npc_bootstrap_tests)
 set_tests_properties(field_map_npc_history field_map_npc_bootstrap PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Original sequence entry parents and genuine field/NPC/context binding.
+target_sources(ttyd_core PRIVATE source/battle/battle_sequence_entry.cpp source/battle/battle_sequence_binding.cpp)
+add_executable(battle_sequence_entry_tests tests/battle_sequence_entry_tests.cpp)
+target_link_libraries(battle_sequence_entry_tests PRIVATE ttyd_core)
+add_test(NAME battle_sequence_entry COMMAND battle_sequence_entry_tests)
+add_executable(battle_sequence_binding_tests tests/battle_sequence_binding_tests.cpp)
+target_link_libraries(battle_sequence_binding_tests PRIVATE ttyd_core)
+add_test(NAME battle_sequence_binding COMMAND battle_sequence_binding_tests)
+set_tests_properties(battle_sequence_binding PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

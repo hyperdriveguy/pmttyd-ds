@@ -4790,3 +4790,5 @@ Next upstream dependency: actual normal bootstrap/GP clocks and saved map-histor
 skip gate/parser lifecycle. Then npcEnt init/regular scheduling and real shared
 RNG/numeric battle services, query-ready/Main/facing/GPU and room/event lifetime.
 No admission shortcut acknowledges those owners.
+
+Implemented retained complete seq_battleInit/Main parents and a Game/shared OriginalSequence/actual field NPC+EventNativeRuntime binding; no successful default for source resource/audio/battle_init children. [Contract](../behavior/battle/NATIVE_BATTLE_SEQUENCE_ENTRY_AND_FIELD_BINDING.md). Real ordinary bootstrap still needs persistent shared field GP/F/VM, tik_01/c_kuribo map actor registration, retained original source name and setup4 writes to that same N, and real battle_start before action/menu admission. Do not acknowledge the old pending Init after a legacy Trio snapshot exists. Recovered npcInit/fbat ownership evidence is artifacts/field-battle-work-owner-evidence/report.md. Full original prologue/teardown/event/story requirements remain open.

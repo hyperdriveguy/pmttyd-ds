@@ -196,6 +196,7 @@ struct FieldNpcSoundRequest {std::string key;uint32_t mask=0;FieldWallVector roo
 // Room collision itself is process-global; candidate Games query staged geometry.
 // Units and owner chronology: docs/code/game-composition.md.
 class Game {
+    friend class BattleSequenceBinding; // Explicit source-entry composition uses the existing control owners.
 public:
     explicit Game(bool initializeAnimation=true) {
         if(initializeAnimation)if(auto bank=fieldMarioAnimationBank())fieldParties.initializeMario(fieldMarioBattle,std::move(bank),0);
@@ -273,6 +274,8 @@ public:
     FieldDoorState fieldDoor;
     FieldDoorDataWorld fieldDoorData;
     std::shared_ptr<class FieldNpcRegistryOwner> originalFieldNpcs;
+    std::shared_ptr<struct BattleSequenceProcess> battleSequenceProcess;
+    std::unique_ptr<class BattleSequenceBinding> bindOriginalBattleSequence(class EventNativeRuntime&,const char* assetsRoot);
     // Cold source npcInit only. Returned facade binding must retire before its
     // EventAddressSpace; it retains the Game-owned stable actor/pose storage.
     std::unique_ptr<class FieldNpcRegistryBinding> initializeOriginalFieldNpcs(class EventAddressSpace&,uint32_t allocationBase);
