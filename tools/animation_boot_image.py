@@ -24,6 +24,9 @@ SPANS = [('animation-work', 2151519344, 272, 'e4d879a3407de578f579dfab4366fcea75
 # Additional original Entry defaults, formats and live sort storage.
 SPANS += [('entry-colors', 2151807756, 8, '12a3ae445661ce5dee78d0650d33362dec29c4f82af05e7e57fb595bbbacf0ca'), ('entry-one-zero', 2151807780, 8, 'e416065dd951359ab79d557107324f0f8fb0142494f2523ca9fdac35f1ac3d18'), ('entry-model-format-prefix', 2151807796, 12, 'd4e6d20a3d26563a68bab4cbc39c7f01d80e9490444a91696460f6271d8f4556'), ('entry-texture-format', 2150371432, 8, 'bda93144bb3a69b5bd1541dc0a8975bcced82e3b7399a2b532c9e043dd6d864d'), ('entry-sort-strings', 2150371752, 48, '009683c1ef3a549e20527d41aea567922b1f26b0dc59d972001f444f44efa094'), ('entry-default-sort', 2151767492, 4, 'ad95131bc0b799c0b1af477fb14fcf26a6a9f76079e48bf090acb7e8367bfd0e')]
 
+# Original normal Mario creation tokens/triplet, party model and local-time factor.
+SPANS += [('normal-model-tokens', 2150373536, 28, '6b4bb10db518b91cca6e508d2d692407debb0201f9dddb0515c63864d708daae'), ('normal-triplet', 2151767728, 12, '8a7a8b512cf150345386614e31c586a9304ce2c1d3358bb02f56d1cc6451e838'), ('goombella-token', 2151814112, 8, '18542b0684783d3889890a9fb3f5ba38e410abb8eae4d350abfe1bb6f49a8efb'), ('frame-to-ms', 2151807808, 4, '23a596e4559d2e7a848de9041c64fe7e961317ffb3aba9390759092b780dbdce')]
+
 def build(iso=DEFAULT_ISO,output='romfs/animation-boot'):
  root=Path(output);root.mkdir(parents=True,exist_ok=True)
  with Path(iso).open('rb') as disc:

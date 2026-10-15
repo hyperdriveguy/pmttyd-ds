@@ -198,11 +198,7 @@ bool Renderer::init() {
     if(!fieldActorAssets.load("romfs:/field-actors.pmnpc"))return false;
     if(!npcAngles.load("romfs:/npc-angle.bin"))return false;
     if(!shadowGeometry.load("romfs:/shadows.pmshadow"))return false;
-    FILE* characterFile=std::fopen("romfs:/characters-mesh.t3x","rb");if(!characterFile)return false;
-    characterTextures.imported=Tex3DS_TextureImportStdio(characterFile,&characterTextures.texture,nullptr,false);std::fclose(characterFile);
-    if(!characterTextures.imported)return false;
-    C3D_TexSetFilter(&characterTextures.texture,GPU_LINEAR,GPU_LINEAR);
-    C3D_TexSetWrap(&characterTextures.texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
+    if(!prepareLegacyMarioTexture())return false;
     FILE* partnerFile=std::fopen("romfs:/partner-mesh.t3x","rb");if(!partnerFile)return false;
     partnerTextures.imported=Tex3DS_TextureImportStdio(partnerFile,&partnerTextures.texture,nullptr,false);std::fclose(partnerFile);
     if(!partnerTextures.imported)return false;
@@ -338,9 +334,17 @@ bool Renderer::prepareSceneActorTextures(const Game& g) {
         g.progress.originalNpcTalkState.flag5405==false);
     const bool retire=(!trio && (trioMarioTexture.imported || trioPartnerTexture.imported || trioFranklyTexture.imported || sharedPartnerTexture.imported || sharedFranklyTexture.imported)) || (!quest && goombaQuestTexture.imported) || (!item && fieldItemGetTexture.imported);
     const bool admit=(trio && (!trioMarioTexture.imported || !trioPartnerTexture.imported || !trioFranklyTexture.imported || !sharedPartnerTexture.imported || !sharedFranklyTexture.imported)) || (quest && !goombaQuestTexture.imported) || (item && !fieldItemGetTexture.imported);
-    if(!retire && !admit)return true;
+    const bool nativeMario=!trio && !g.harborEncounter.locked() && !g.storyPresentation().locked() && g.hasNativeFieldAnimation();
+    const int sourceBank=nativeMario?int(g.nativeMarioBank()):-1;
+    const bool sourceChange=(sourceBank!=nativeMarioTextureBank) || (nativeMario && !nativeMarioTexture.imported);
+    if(nativeMario && !g.nativeMarioPose()){frontFailure="Original field Mario sample unavailable";return false;}
+    const bool legacyChange=nativeMario?bool(characterTextures.imported):!characterTextures.imported;
+    if(!retire && !admit && !sourceChange && !legacyChange)return true;
     C3D_FrameSync();
     const auto release=[](Texture& slot){if(slot.imported){Tex3DS_TextureFree(slot.imported);C3D_TexDelete(&slot.texture);slot=Texture{};}};
+    if(sourceChange){release(nativeMarioTexture);nativeMarioTextureBank=-1;nativeMarioBatches.clear();}
+    if(nativeMario)release(characterTextures);
+    else if(!prepareLegacyMarioTexture())return false;
     if(!trio){finishingAnimationFans.reset();if(finishingShadowProgram.texture==ShadowTexture::CharacterAtlas)finishingShadowProgram.texture.reset();finishingAtlas.reset();finishingTextureObjectReady=false;finishingTextureLODReady=false;release(trioMarioTexture);release(trioPartnerTexture);release(trioFranklyTexture);release(sharedPartnerTexture);release(sharedFranklyTexture);}
     if(!quest)release(goombaQuestTexture);
     if(!item)release(fieldItemGetTexture);
@@ -352,6 +356,16 @@ bool Renderer::prepareSceneActorTextures(const Game& g) {
         C3D_TexSetFilter(&slot.texture,GPU_LINEAR,GPU_LINEAR);C3D_TexSetWrap(&slot.texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);return true;
     };
     if(trio && (!load("romfs:/trio-attack-mario.t3x",trioMarioTexture) || !load("romfs:/trio-attack-goombella.t3x",trioPartnerTexture) || !load("romfs:/professor.t3x",trioFranklyTexture) || !load("romfs:/field-player-c_pkr.t3x",sharedPartnerTexture) || !load("romfs:/shared-field-frankly.t3x",sharedFranklyTexture)))return false;
+    if(nativeMario && sourceChange){
+        constexpr const char* banks[]={"a_mario","a_mario_r","e_mario"};if(sourceBank<0 || sourceBank>2)return false;
+        const auto base=std::string("romfs:/field-player-")+banks[sourceBank];
+        FILE* f=std::fopen((base+".bin").c_str(),"rb");char magic[8];float scale=0;
+        const bool valid=f && std::fread(magic,8,1,f)==1 && !std::memcmp(magic,"PMSUV1\0",8) && std::fread(&scale,4,1,f)==1 && std::fgetc(f)==EOF;
+        if(f)std::fclose(f);
+        if(!valid || !(scale==1 || scale==2 || scale==4 || scale==8) || !load((base+".t3x").c_str(),nativeMarioTexture))return false;
+        if(!animationAtlasDimensions(nativeMarioTexture.texture.width,nativeMarioTexture.texture.height,scale)){frontFailure="Original Mario atlas dimensions invalid";return false;}
+        nativeMarioUVScale=scale;nativeMarioTextureBank=sourceBank;
+    }
     if(quest && !load("romfs:/goomba-quest-mario.t3x",goombaQuestTexture))return false;
     if(item && !load("romfs:/field-item-get-mario.t3x",fieldItemGetTexture))return false;
     return true;
@@ -1169,7 +1183,7 @@ void Renderer::world(const Game& g) {
         character(0,mario,1.55f,1.55f,1,lift,tilt);
         character(2,crump,2.1f,2.1f,-1);
     }
-    const int legacyCount=count;
+    const int legacyCount=count;nativeMarioBatches.clear();bool sourceMario=false;
     const bool questPose=!std::strcmp(g.marioPresentation.selected,"M_N_5B") || !std::strcmp(g.marioPresentation.selected,"M_N_C");
     const bool itemGetPose=!battle && !std::strcmp(g.marioPresentation.selected,"M_I_U");
     if(!battle && !g.trioBattleActive && g.harborEncounter.locked()) {
@@ -1181,9 +1195,12 @@ void Renderer::world(const Game& g) {
         const bool mirror=g.trioBattleActive?battleMirrorZ(right?180:0,a.battleRotation[1],cameraAngle,a.battleFlags):right;
         characterModel(a.moving?"M_W_1":a.pose.c_str(),float(g.storyPresentation().now-a.poseAt)*.06f,g.trioBattleActive?Vec2{a.position[0]*.01f,a.position[2]*.01f}:g.progress.position,g.trioBattleActive?a.position[1]*.01f:g.groundHeight,
                        right?180:0,mirror,false,g.trioBattleActive?trioMarioAnimations->bank.get():&professorMarioAnimations,g.trioBattleActive?trioMarioUVScale:professorMarioUVScale,g.trioBattleActive?&a:nullptr);
-    } else if(!battle && g.marioPresentation.supported && !(g.marioPresentation.displayFlags&1))
-        characterModel(g.marioPresentation.selected,g.marioPresentation.animationFrame(),g.progress.position,g.water.active()?g.water.position[1]:g.groundHeight+g.jumpHeight,
+    } else if(!battle && g.marioPresentation.supported && !(g.marioPresentation.displayFlags&1)){
+        const float rootY=g.water.active()?g.water.position[1]:g.groundHeight+g.jumpHeight;
+        if(g.hasNativeFieldAnimation())sourceMario=nativeMarioModel(g,rootY);
+        else characterModel(g.marioPresentation.selected,g.marioPresentation.animationFrame(),g.progress.position,rootY,
                        g.marioPresentation.drawYaw(),g.marioPresentation.reflectZ(),false,questPose?&goombaQuestAnimations:itemGetPose?&fieldItemGetAnimations:nullptr,questPose?goombaQuestUVScale:itemGetPose?fieldItemGetUVScale:1);
+    }
     const int actorEnd=count;
     if(!battle && (g.trioBattleActive || g.storyPresentation().locked())) {
         const auto& a=g.storyPresentation().actors[1];const bool right=a.yaw>0 && a.yaw<180;
@@ -1265,7 +1282,8 @@ void Renderer::world(const Game& g) {
     BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);
     C3D_TexBind(0,&atlas);
     C3D_DrawArrays(GPU_TRIANGLES,6,legacyCount-6);
-    if(actorEnd>legacyCount){C3D_TexBind(0,g.trioBattleActive?&trioMarioTexture.texture:g.harborEncounter.locked()?&harborMarioTexture.texture:g.storyPresentation().locked()?&professorMarioTexture.texture:questPose?&goombaQuestTexture.texture:itemGetPose?&fieldItemGetTexture.texture:&characterTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,legacyCount,actorEnd-legacyCount);}
+    if(sourceMario)drawNativeMario(false);
+    if(actorEnd>legacyCount && !sourceMario){C3D_TexBind(0,g.trioBattleActive?&trioMarioTexture.texture:g.harborEncounter.locked()?&harborMarioTexture.texture:g.storyPresentation().locked()?&professorMarioTexture.texture:questPose?&goombaQuestTexture.texture:itemGetPose?&fieldItemGetTexture.texture:&characterTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,legacyCount,actorEnd-legacyCount);}
     if(partnerEnd>actorEnd){C3D_TexBind(0,g.trioBattleActive?&trioPartnerTexture.texture:&partnerTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,actorEnd,partnerEnd-actorEnd);}
     if(!battle && !g.trioBattleActive)drawFieldActors(false);
     if(undergroundEnd>fieldActorEnd){C3D_TexBind(0,&undergroundTexture.texture);C3D_DrawArrays(GPU_TRIANGLES,fieldActorEnd,undergroundEnd-fieldActorEnd);}
@@ -1307,7 +1325,8 @@ void Renderer::world(const Game& g) {
         C3D_TexEnvFunc(env,C3D_Both,GPU_MODULATE);
     }
     // Original stage400000 opaques,500000 shadows,600000 translucent.
-    if(!battle){if(!g.trioBattleActive)drawFieldActors(true);if(g.trioBattleActive){drawMap(true,g,true,&trioBackground);drawMap(true,g,true,&trioStage);}else drawMap(false,g,true);if(!g.trioBattleActive)drawOpeningDeparture(g,true);}
+    if(!battle){if(!g.trioBattleActive)drawFieldActors(true);
+    if(sourceMario)drawNativeMario(true);if(g.trioBattleActive){drawMap(true,g,true,&trioBackground);drawMap(true,g,true,&trioStage);}else drawMap(false,g,true);if(!g.trioBattleActive)drawOpeningDeparture(g,true);}
     if(g.trioBattleActive){
         captureTrioActor(g,sky.texture,0,6,false);
         captureTrioActor(g,atlas,6,legacyCount-6);
@@ -1658,6 +1677,7 @@ void Renderer::shutdown() {
     if(characterTextures.imported) {Tex3DS_TextureFree(characterTextures.imported);C3D_TexDelete(&characterTextures.texture);}
     if(goombaQuestTexture.imported){Tex3DS_TextureFree(goombaQuestTexture.imported);C3D_TexDelete(&goombaQuestTexture.texture);}
     if(fieldItemGetTexture.imported){Tex3DS_TextureFree(fieldItemGetTexture.imported);C3D_TexDelete(&fieldItemGetTexture.texture);}
+    if(nativeMarioTexture.imported){Tex3DS_TextureFree(nativeMarioTexture.imported);C3D_TexDelete(&nativeMarioTexture.texture);nativeMarioTexture=Texture{};nativeMarioTextureBank=-1;}
     if(partnerTextures.imported) {Tex3DS_TextureFree(partnerTextures.imported);C3D_TexDelete(&partnerTextures.texture);}
     if(trioFranklyTexture.imported){Tex3DS_TextureFree(trioFranklyTexture.imported);C3D_TexDelete(&trioFranklyTexture.texture);}
     if(trioPartnerTexture.imported){Tex3DS_TextureFree(trioPartnerTexture.imported);C3D_TexDelete(&trioPartnerTexture.texture);}

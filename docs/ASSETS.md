@@ -2505,3 +2505,33 @@ remain reserved; local extraction grants no redistribution rights. ISO, raw
 original assets/listings and compiled packs/binaries remain ignored/private.
 Exact source/product/native validation is journaled in
 `artifacts/npc-draw-validation-manifest.json`.
+
+### Ordinary field Mario source-bank GPU packages (2026-10-14)
+
+`tools/field_player_pose_assets.py` now exports matching local `.bin`/`.t3x`
+packages for original a_mario, a_mario_r and e_mario, alongside c_pkr. These
+use each bank's actual converted texture-cell layout, not the combined legacy
+characters atlas. Retain RGBA8, original cells/UV coefficients, 512-wide Lanczos
+downscaling and linear filtering. Added original M_U_2/M_I_U front and
+M_N_5B/M_N_C effect clips for retained native requests. Original MODEL/TPL and
+source-order descriptor bytes are unchanged. No synthesized art, dialogue,
+geometry, lighting or audio conversion in this step.
+
+The read-only US rev0 DOL boot image additionally pins normal model names
+802c18a0/28, triplet80415eb0/12, c_pkr token804213e0/8 and original
+frame-to-ms8041fb40/4 (41855555), with hashes/section offsets in ignored
+animation-boot/memory.json. Native bus/timebase/arena/caller RAM are explicit
+runtime inputs and are not presented as original initialized data.
+
+Frozen local validation retains2145 RomFS products:17 differences from the
+accepted source-scratch baseline, including six new Mario `.bin`/`.t3x` files,
+boot metadata/pack, updated field-player metadata/CPU banks and door-data
+metadata/pack regenerated with the frozen baseline converter. The latter
+restores that baseline's original NPC shadow constants; no helper/test assertions
+were weakened. Exact hashes,
+original provenance and product differences are recorded privately in
+`artifacts/field-source-animation-asset-diff.json` and the validation manifest.
+All extraction used the supplied ISO read-only; generated products and extracted
+originals remain ignored. Nintendo/Intelligent Systems rights unchanged; local
+use only, no redistribution rights. See
+[ordinary native binding](behavior/display/NATIVE_ORDINARY_MARIO_SOURCE_ANIMATION.md).

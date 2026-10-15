@@ -2213,3 +2213,10 @@ add_executable(field_npc_draw_tests tests/field_npc_draw_tests.cpp)
 target_link_libraries(field_npc_draw_tests PRIVATE ttyd_core)
 add_test(NAME field_npc_draw COMMAND field_npc_draw_tests)
 set_tests_properties(field_npc_draw PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Native field animation owns the source VM and simulation clock.
+target_sources(ttyd_core PRIVATE source/display/native_field_animation.cpp source/runtime/game_field_animation.cpp)
+add_executable(native_field_animation_tests tests/native_field_animation_tests.cpp)
+target_link_libraries(native_field_animation_tests PRIVATE ttyd_core)
+add_test(NAME native_field_animation COMMAND native_field_animation_tests)
+set_tests_properties(native_field_animation PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

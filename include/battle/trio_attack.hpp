@@ -51,6 +51,7 @@ struct TrioEnemyHpNativeServices {
 class BattleAudienceIncarnationOwner;
 bool loadTrioAttackAssets(const char* root);
 std::shared_ptr<const ActorAnimationPack> fieldMarioAnimationBank();
+std::shared_ptr<class NativeFileCache> fieldAnimationFileCache();
 struct TrioAttackRuntime;
 struct BattlePose;
 class BattlePosePool;

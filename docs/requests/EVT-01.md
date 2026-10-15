@@ -5113,3 +5113,19 @@ actual VM descriptor-pointer getter and shared material/pose aliases. Source
 Main/SetAnim/draw/camera/current queue providers remain explicit. Original
 offscreen/blur callbacks, field owner composition, normal activation, runtime/
 visual/numeric/hardware parity remain OPEN. EVT-01 is not closed.
+
+### Ordinary Mario source activation and remaining NPC/party lifetime (2026-10-14)
+
+[Ordinary native Mario](../behavior/display/NATIVE_ORDINARY_MARIO_SOURCE_ANIMATION.md)
+now creates the retained source process before all three mode2 Entries, samples
+BE scratch from the actual GP clock and draws matching bank textures. Room/
+checkpoint admission preserves the process. This does not close EVT-01.
+Read-only activation evidence independently identifies harbor Goombella NPC →
+afterbattle auxiliary kind13 → plaza story6 canonical kind1 conversion. Keep
+those original event sites/conditions distinct; loading c_pkr is not a join.
+NPC flag8 needs the actual camera4 facing/Main/inner branch and storedP78
+reflection order before normal source NPC activation. Current clearing of that
+flag is not an acceptable shortcut. Source release/GC, linked/paper paths,
+whole Mario/frame/window owners and full event chronology remain open.
+Evidence:ignored artifacts/animation-field-activation-evidence/report.md and
+source listings/REL event inventories. No new dialogue or story writes here.

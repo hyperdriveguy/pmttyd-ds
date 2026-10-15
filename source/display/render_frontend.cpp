@@ -16,7 +16,10 @@ uint32_t rgb(unsigned r,unsigned g,unsigned b,unsigned a=255){return C2D_Color32
 // remain resident through the attract demo to avoid a later admission stall.
 void Renderer::beginFrontend(){
     C3D_FrameSync();freeOpeningDeparture();
+    if(nativeMarioTexture.imported){Tex3DS_TextureFree(nativeMarioTexture.imported);C3D_TexDelete(&nativeMarioTexture.texture);nativeMarioTexture=Texture{};}
+    nativeMarioTextureBank=-1;nativeMarioBatches.clear();
     for(auto* room:{&plaza,&stage,&trioBackground,&trioStage})freeRoom(*room);
+    if(!prepareLegacyMarioTexture())return;
     // Admit Title before the opening clock/music starts. Preserve these small
     // owners across the attract demo so its white exit performs no cold import.
     for(const char* name:{"title-background","title-logo","title-copyright","title-prompt","title-prompt-pattern"})

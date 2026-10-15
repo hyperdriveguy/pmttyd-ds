@@ -1389,6 +1389,7 @@ void Game::restore(const Progress& saved) {
     if(retainedPosePool){fieldParties=std::move(retainedOriginalParties);fieldMarioBattle.partyIndices=retainedPartyIndices;}
     else fieldParties.poses=std::move(retainedMarioPoses);
     fieldParties.reinitializeMario(fieldMarioBattle); // Original live pose material clear, then light|2; clocks/resources survive.
+    marioPresentation.poseUploadSerial=retainedPresentation.poseUploadSerial;
     marioPresentation.facing=retainedPresentation.facing;marioPresentation.display=retainedPresentation.display;marioPresentation.target=retainedPresentation.target;
     fieldCameraEvents=cameraEvents;fieldCameraFlags=retainedCameraFlags;
     fieldCameraFrame=retainedFrame;fieldCameraAuthored=retainedAuthored;
@@ -1423,6 +1424,7 @@ void Game::restore(const Progress& saved) {
     if(p.room==2 && p.originalStory==11)professorStory.restoreProfessor(p.originalFlag1207);
     saveObjects=std::make_shared<FieldSaveObjects>();
     saveObjects->configure(progress.room,progress.originalStory,fieldDoor.interiorMask,fieldSystemFlags,ticks*1000/60);
+    prepareNativeFieldAnimation();
 }
 void Game::updateSaveObjects() {
     if(!saveObjects || (scene!=Scene::Explore && scene!=Scene::Dialogue) || trioBattleActive ||
@@ -2114,6 +2116,7 @@ void Game::updateMarioPresentation() {
 // ordinary input from advancing a locked scene, but neutral movement may keep
 // airborne/support physics alive. See game-composition guide for full order.
 void Game::tick(const Input& rawInput,const OriginalSequenceServices* sequenceServices) {
+    if(fieldParties.nativeAnimation)fieldParties.nativeAnimation->tick(trioBattleActive || scene==Scene::Battle);
     if(trioAttack.outerMainPending()){
         ++ticks; // Native admission clock; held source children do not run later owners.
         struct Bridge {Game& game;const Input& input;const OriginalSequenceServices* sequence;} bridge{*this,rawInput,sequenceServices};
@@ -2183,6 +2186,7 @@ void Game::tick(const Input& rawInput,const OriginalSequenceServices* sequenceSe
                 ordinary?game.partner.z-previous.z:0,movementClass,game.ticks,game.fieldMovement.headingOffsetDegrees,
                 game.partnerFollow.motion!=PartnerFollow::Motion::Ground);
             game.troubleBoardPresentationMain(raw);
+            game.updateNativeFieldAnimation();
         }
     } presentation{*this,partner,rawInput};
     Input input=rawInput;const Input& i=input;

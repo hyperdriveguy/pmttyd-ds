@@ -375,6 +375,11 @@ public:
     const FieldMarioBattleState& fieldMarioBattleState() const {return fieldMarioBattle;}
     void setFieldMarioCameraId(uint32_t id) {fieldMarioBattle.cameraId=id;} // Source raw word134 store; viewport ownership is separate.
     const FieldPartyRegistry& fieldPartyState() const {return fieldParties;}
+    bool initializeNativeFieldAnimation(const char*,std::shared_ptr<NativeFileCache>,const EventNativePlatform&);
+    bool hasNativeFieldAnimation() const{return bool(fieldParties.nativeAnimation);}
+    const BattlePose* nativeMarioPose() const;
+    unsigned nativeMarioBank() const;
+    bool retainNativeFieldAnimation(Game& previous,bool checkpoint=false);
     FieldPartyAppearanceServices fieldPartyAppearanceServices();
     bool fieldControlEnabled() const {return marioFieldControl && partnerFieldControl;}
     const char* dialogue() const;
@@ -419,6 +424,8 @@ public:
     const GoombaReward& fieldReward() const {return goombaReward;}
     const std::vector<FieldNpcSoundRequest>& fieldNpcSounds() const{return npcSoundRequests;}
 private:
+    void updateNativeFieldAnimation();
+    void prepareNativeFieldAnimation();
     void troubleBoardEventMain(const Input&);
     void troubleBoardPresentationMain(const Input&);
     int32_t troubleBoardCall(TroubleEventRequest&);

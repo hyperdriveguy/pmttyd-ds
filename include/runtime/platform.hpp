@@ -375,6 +375,8 @@ private:
     bool frontImage(const char*,float,float,float,float,uint8_t alpha=255);
     void frontMessage(const MessagePlayback&,uint64_t ticks);
     Texture sky,characterTextures,partnerTextures,fontTexture,harborTexture,messageWindowTexture;
+    Texture nativeMarioTexture;int nativeMarioTextureBank=-1;float nativeMarioUVScale=1;
+    std::vector<ActorSurfaceBatch> nativeMarioBatches;
     Texture messageKanban,messageDiary;
     bool prepareDiary();
     void diaryBorder(const MessageWindowPlan&,uint8_t);
@@ -458,6 +460,9 @@ private:
     void box(float x,float z,float w,float d,float h,uint32_t color);
     void ground(float x0,float z0,float x1,float z1,float y,uint32_t color);
     void character(int index,Vec2 p,float height,float width,float facing,float lift=0,float tilt=0);
+    bool prepareLegacyMarioTexture();
+    bool nativeMarioModel(const Game&,float rootY);
+    void drawNativeMario(bool translucent);
     bool characterModel(const char* pose,float frame,Vec2 root,float rootY,float yaw,bool reflectZ,bool companion=false,const ActorAnimationPack* custom=nullptr,float uvScale=1,const ProfessorSceneActor* battleActor=nullptr);
     void marioGroundShadow(const FieldShadowRecord&);
     void harborActors(const Game&);
@@ -467,6 +472,7 @@ private:
     void messageBorder(const MessageWindowPlan&,uint8_t alpha,int type=0);
     int marioAirShadow(const FieldShadowRecord&);
     void shadow(Vec2 p,float radius,float floor=0);
+    static constexpr int MaxVertices=12000;
     void vertex(float x,float y,float z,float u,float v,uint32_t color,const ActorColor* rgba=nullptr);
     void text(const char*,float x,float y,float scale,uint32_t color);
     void panel(float x,float y,float w,float h,uint32_t color);

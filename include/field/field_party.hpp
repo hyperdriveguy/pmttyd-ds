@@ -2,6 +2,7 @@
 #include "field_battle.hpp"
 #include "actor_animation.hpp"
 #include "field_party_pose.hpp"
+#include "native_field_animation.hpp"
 #include <array>
 #include <cassert>
 #include <memory>
@@ -34,6 +35,13 @@ struct FieldPartyRegistry {
     uint32_t currentDefinition=0; // Original global kind-record pointer view.
     uint32_t goombellaInitWork=0; // Owned view of8041eae0, cleared by the used kuribo_init callback.
     std::shared_ptr<BattlePosePool> originalPool;
+    std::shared_ptr<NativeFieldAnimation> nativeAnimation; // Not inherited by a detached registry copy.
+    bool configureNativeAnimation(std::shared_ptr<NativeFieldAnimation> owner,std::array<std::shared_ptr<const BattlePoseResource>,4> resources){
+        if(!owner || !owner->ready() || originalPool)return false;
+        for(const auto& p:poses)if(p)return false;
+        for(const auto& r:resources)if(!r || !r->draw || !r->textures)return false;
+        originalPool=owner->pool();nativeAnimation=std::move(owner);originalResources=std::move(resources);return true;
+    }
     std::array<std::shared_ptr<const BattlePoseResource>,4> originalResources{};
     // Configure once before any role view exists. Four resources retain token
     // order a_mario/a_mario_r/e_mario/c_pkr; full identity validation is loader
@@ -54,7 +62,7 @@ struct FieldPartyRegistry {
         for(unsigned i=0;i<poses.size();++i)if(other.poses[i])poses[i]=originalPool?std::make_unique<FieldPartyPose>(originalPool,int32_t(i),other.poses[i]->sourceResource):std::make_unique<FieldPartyPose>(*other.poses[i]);
     }
     FieldPartyRegistry& operator=(const FieldPartyRegistry& other) {
-        if(this!=&other){FieldPartyRegistry copy(other);actors=std::move(copy.actors);poses=std::move(copy.poses);originalPool=std::move(copy.originalPool);originalResources=std::move(copy.originalResources);currentDefinition=copy.currentDefinition;goombellaInitWork=copy.goombellaInitWork;}return *this;
+        if(this!=&other){FieldPartyRegistry copy(other);actors=std::move(copy.actors);poses=std::move(copy.poses);originalPool=std::move(copy.originalPool);originalResources=std::move(copy.originalResources);nativeAnimation.reset();currentDefinition=copy.currentDefinition;goombellaInitWork=copy.goombellaInitWork;}return *this;
     }
     FieldPartyRegistry(FieldPartyRegistry&&)=default;
     FieldPartyRegistry& operator=(FieldPartyRegistry&&)=default;

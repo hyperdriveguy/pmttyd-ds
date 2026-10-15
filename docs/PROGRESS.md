@@ -12052,3 +12052,78 @@ Next: continue Trio runtime at call/event dispatch, then damage/ending/init/
 scheduler/public draw sections; retain partial audit status until all are reviewed.
 Re-audit newly committed retained Harbor/NPC/HP/animation/native renderer code,
 then remaining event/message/story/effect/platform/file/save helpers and tools.
+
+### 2026-10-14 Ordinary Mario activation over the retained source process
+
+Normal native startup now runs the real animation cold process before ordered
+mode2 a_mario/a_mario_r/e_mario Entries. Actual returned handles, shared original
+file/cache/buffer ownership and BE scratch drive ordinary Mario. Native-only
+Entry and clock services are omitted from detached copies. Source retrace bank
+publication and signed millisecond division consume an explicit162MHz/4,60Hz
+simulation policy; rendering/IO/room admission do not advance time. Pending upload
+serials preserve equal-name resets and front/rear returns. Exact unlinked local
+frame conversion/epoch/paper-copy stores precede source Main. Unknown/mismatched
+resources remain unavailable without poisoning a later Entry; source negative
+file failure is never exposed as a valid typed handle.
+
+Normal field drawing consumes source-produced geometry/colors/batches and its
+matching original front/rear/effect GPU bank. Six local GPU products are new;
+required original idle/item/quest clips are included. A real ARM capture exposed
+front-bank import failure while legacy characters-mesh remained resident.
+Native/legacy texture residency is now mutually exclusive after FrameSync;
+frontend/nonnative entry restores legacy resources. Corrected plaza captures
+visibly show Mario's original front/rear idle/walk/run poses; no asset-error
+notice. East-room wall occlusion remains an independent camera frontier.
+
+Checkpoint/room candidate handoff retains the process/clock/actual handles and
+prepares a first visible sample without a speculative tick. Generation/resource/
+scalar mismatches reject before adoption; intentional material-clear/light|2 is
+applied after admission. Clock preflight preserves the previous checkpoint owner
+on failure. Source sampling holds after adoption are not misreported as rolled-
+back transactions. Host/ARM fixtures cover selection/clock/startframe/restart,
+actual extra source Entry, copy/retirement, normal movement, material reinit,
+rejected candidate isolation and checkpoint identity. These are retained-owner
+checks, not a visually exercised map-transition or full original MarioInit claim.
+
+Exact frozen baseline34c6af20acca49339736be2140cd53a68130ddec plus only this
+step's journal/owned inputs. Final CMAKE_BUILD_PARALLEL_LEVEL=6 make test passes
+419/419 C++ (44.73s),207/207 Python (34.449s), zero skipped.
+make all -j6 -o assets-ready SOUNDTRACK=gamecube passes. Normal SHA256
+6925b74be9ffd08f726bc52619964a934a769a49d877460fe3289d06c3f5ee54;
+strict ARM/short-field diagnostic binary SHA256
+403e84ded79050a75bbd4375ff19d2a9c3a19b28efb4cf44b0367e5387833951.
+Normal original storybook capture inspected at~60FPS/100%; strict ARM marker and
+plaza/east field scripts pass source ownership/bank checks with no final texture
+failure file. Only isolated profiles and copied development saves were used.
+Initial stale NPC shadow fixture was regenerated with the frozen converter;
+assertions unchanged. Invalid experimental capacity injection was discarded:
+unadopted pose metadata is not an actual source file-failure result. Initial
+texture-failure captures and corrected runs remain private. Existing compiler/
+Pillow warnings remain. Final production native additions compile without new
+warnings; private fixture formatting warnings are not production changes.
+
+3877 source/document inputs and2145 RomFS hashes audited with zero
+mismatches.17 product differences from the accepted source-scratch baseline:
+six new GPU products, changed front/effect CPU banks/metadata, boot24-span data
+and frozen-baseline door metadata/pack. Unchanged original MODEL/TPL/source
+order, exact hashes and read-only ISO provenance retained privately. No ISO,
+original bodies, extracted assets, packs or binaries committed. Root local
+product admission preserves concurrent newer NPC-tail door products.
+[Contract](behavior/display/NATIVE_ORDINARY_MARIO_SOURCE_ANIMATION.md),
+[asset notes](ASSETS.md),[request](requests/EVT-01.md).
+Evidence:artifacts/field-source-animation-{validation-manifest.json,asset-diff.json,
+test-complete.log,native-residency.log},arm-{residency,plaza},normal-final.
+Shared checkout/index changes preserved; validation describes this frozen tree,
+not concurrently evolving combined HEAD.
+
+The prologue goal remains active. Goombella's source NPC→auxiliary kind13→
+canonical kind1 activation must follow original harbor/plaza events; no early
+join, dialogue or story writes were introduced. Source NPC flag8 facing/inner
+reflection, original release/GC, full frame/Mario/window ownership, complete
+rendering/audio and story parity remain open. Field captures run roughly6..10FPS
+under uncontrolled llvmpipe with substantial simulation time; this is not native
+performance acceptance or proof of a measured regression. No physical hardware
+claim. Next optimize repeated scratch VM lookups with callback-scoped validated
+RAM access while preserving BE/source arithmetic/store order and no persistent
+pointers; recheck field CPU/visible animation. Then bind real camera-facing and
+Goombella role/event lifetimes, and validate actual room transitions and hardware.

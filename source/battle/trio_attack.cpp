@@ -102,6 +102,7 @@ void required(bool ok){if(!ok)std::abort();}
 uint32_t bits(float v){uint32_t b;std::memcpy(&b,&v,4);return b;}
 }
 std::shared_ptr<const ActorAnimationPack> fieldMarioAnimationBank() {return fieldMarioBank;}
+std::shared_ptr<NativeFileCache> fieldAnimationFileCache(){return trioMenuFiles?trioMenuFiles->files():nullptr;}
 // Validate source EVT signature 0x80355cf0=0x0005005b, PMTHIT3 three 4-word reaction
 // rows plus group/phase, original angle data and usable Mario/partner/Frankly
 // pose resources. Native metadata is little-endian; EVT memory remains BE.

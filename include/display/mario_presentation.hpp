@@ -16,6 +16,7 @@ struct MarioPresentation {
     unsigned previousMotion=~0u;
     const char* front="M_S_1";
     const char* selected="M_S_1R";
+    uint64_t poseUploadSerial=0; // Counts admitted original pending uploads, including equal-name restarts.
     uint64_t poseStartMilliseconds=0;
     uint64_t poseNowMilliseconds=0;
     uint16_t poseStartFrame=0;
@@ -105,13 +106,17 @@ struct MarioPresentation {
             else if(std::strcmp(front,"M_J_1B")==0)next="M_J_1BR";
             else if(std::strcmp(front,"M_J_1C")==0)next="M_J_1CR";
         }
+        // Match selected model to the original rear-name producer. Effect
+        // selection remains higher priority in marioAnimeId.
+        if(next!=front)displayFlags|=0x80000000u;
+        else if(!rear || !(displayFlags&0x70000004))displayFlags&=~0x80000000u;
         // Original conversion lists have no M_I_U pair; ordinary misses use the front handle.
         if(std::strcmp(front,"M_I_U")==0 && !(displayFlags&0x70000004))displayFlags&=~0x80000000u;
         if(!poseUploaded || queuedPose || pendingReset || std::strcmp(selected,next)!=0) {
             if(std::strcmp(selected,next)!=0)poseStartFrame=0; // Rear name writer zeros28.
             selected=next;
             poseStartMilliseconds=now-uint64_t(float(poseStartFrame)*16.66666603088379f);
-            poseUploaded=true;
+            poseUploaded=true;++poseUploadSerial;
         }
         queuedPose=false;
         if(!(displayFlags&0x100))turn(speed); // Rear selection precedes display-direction update.

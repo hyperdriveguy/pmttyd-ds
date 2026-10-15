@@ -1288,3 +1288,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Retained original NPC draw matrix](display/RETAINED_NPC_DRAW_MATRIX.md): complete shared mtx_setup with source reads, SDK operations and retry boundaries; queued callbacks/runtime activation remain open.
 
 - [Retained original ordinary NPC callbacks](display/RETAINED_NPC_ORDINARY_DRAW_CALLBACKS.md): complete ordinary/xlu source graphs, facing table and native pose/material/descriptor aliases; field rendering owners and activation remain open.
+
+- [Ordinary native Mario source animation](display/NATIVE_ORDINARY_MARIO_SOURCE_ANIMATION.md) — retained cold process, source Entry/clock/scratch, matching GPU atlases and room/checkpoint admission.

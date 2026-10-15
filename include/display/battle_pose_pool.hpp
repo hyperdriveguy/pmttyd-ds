@@ -98,6 +98,11 @@ private:
     friend class AnimationTangentMemory;
     friend class AnimationScratchMemory;
     friend class AnimationScratchPose;
+    friend class NativeFieldAnimation;
+    bool resolveClock(BattlePoseClock& clock) const{return !nativeClock_ || nativeClock_(nativeProvider_,clock);}
+    void* nativeProvider_=nullptr;
+    std::optional<int32_t> (*nativeEntry_)(void*,std::shared_ptr<const BattlePoseResource>,int32_t,BattlePoseClock,const char*)=nullptr;
+    bool (*nativeClock_)(const void*,BattlePoseClock&)=nullptr;
     void restart(BattlePose&,BattlePoseClock);
     bool tangentSamplingAvailable() const;
     std::array<std::unique_ptr<BattlePose>,256> poses_{};

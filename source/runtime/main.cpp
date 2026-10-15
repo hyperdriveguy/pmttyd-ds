@@ -98,7 +98,17 @@ int main() {
         romfsExit();gfxExit();return 1;
     }
     ttyd::Audio audio;audio.init();
-    auto ownedGame=std::make_unique<ttyd::Game>();auto& game=*ownedGame;ttyd::Progress saved;
+    auto ownedGame=std::make_unique<ttyd::Game>(false);auto& game=*ownedGame;ttyd::Progress saved;
+    ttyd::EventNativePlatform animationPlatform;
+    // Guest CPU RAM is coherent in the VM. ARM barriers preserve the source
+    // heap publication order; actual PICA vertex data is flushed by Renderer.
+    animationPlatform.flushBlock=[](void*,uint32_t){__sync_synchronize();};
+    animationPlatform.systemCall=[](void*){__sync_synchronize();};
+    if(!game.initializeNativeFieldAnimation("romfs:",ttyd::fieldAnimationFileCache(),animationPlatform)){
+        renderer.shutdown();consoleInit(GFX_TOP,nullptr);std::printf("Original animation startup unavailable.\nPress START to exit.\n");
+        while(aptMainLoop()){hidScanInput();if(hidKeysDown()&KEY_START)break;gfxFlushBuffers();gfxSwapBuffers();gspWaitForVBlank();}
+        romfsExit();gfxExit();return 1;
+    }
     const std::string saveDirectory="sdmc:/3ds/ttyd-2ds";
     std::string savePath=ttyd::saveSlotPath(saveDirectory,0);
     mkdir("sdmc:/3ds",0777);mkdir(saveDirectory.c_str(),0777);
@@ -113,10 +123,11 @@ int main() {
         ttyd::CollisionTransition transaction;float height=checkpoint.elevation;
         restoreFailure.clear();
         if(!stageRoomCollision(checkpoint.room,transaction)){restoreFailure="Checkpoint collision unavailable";return false;}
-        auto ownedCandidate=std::make_unique<ttyd::Game>();auto& candidate=*ownedCandidate;candidate.restore(ttyd::snapshotSaveProgress(checkpoint));candidate.retainPhysicalInput(game);
+        auto ownedCandidate=std::make_unique<ttyd::Game>(false);auto& candidate=*ownedCandidate;candidate.restore(ttyd::snapshotSaveProgress(checkpoint));candidate.retainPhysicalInput(game);
         if(!candidate.checkpointGround(height)){restoreFailure="Checkpoint ground unavailable";return false;}
         if(!ttyd::walkable(checkpoint.position,height)){restoreFailure="Checkpoint position blocked";return false;}
         if(!renderer.changeRoom(checkpoint.room)){restoreFailure=renderer.resourceFailure().empty()?"Checkpoint scene unavailable":renderer.resourceFailure();return false;}
+        if(!candidate.retainNativeFieldAnimation(game,true)){restoreFailure="Original animation process unavailable";return false;}
         candidate.cameraManager->sourceRenderDimensions=game.cameraManager->sourceRenderDimensions; // Source GP render fields survive a committed checkpoint handoff.
         candidate.cameraManager->stockExpPosition=game.cameraManager->stockExpPosition; // Preserve source process globals only after checkpoint admission.
         candidate.battleSequenceProcess=game.battleSequenceProcess; // Process8041e968 survives admitted checkpoint handoff.
@@ -256,6 +267,7 @@ int main() {
             const uint32_t target=game.pipeTarget();
             bool ok=stageRoomCollision(target,transaction) && candidate.finishPipeWarp();
             if(ok)ok=renderer.changeRoom(target);
+            if(ok)ok=candidate.retainNativeFieldAnimation(game);
             if(ok){transaction.commit();game=std::move(candidate);game.fade.startIn();notice="";noticeTicks=0;}
             else {game.cancelPipeWarp();notice="Pipe transition failed";noticeTicks=180;}
             accumulator=0;pending={};previous=seconds();
@@ -268,6 +280,7 @@ int main() {
             uint32_t target=game.warpTarget();
             bool ok=stageRoomCollision(target,transaction) && candidate.finishWarp();
             if(ok)ok=renderer.changeRoom(target);
+            if(ok)ok=candidate.retainNativeFieldAnimation(game);
             if(ok) {transaction.commit();game=std::move(candidate);game.beginRoadArrival();game.fade.startIn();notice="";noticeTicks=0;}
             else {game.cancelRoad();notice="Room transition failed";noticeTicks=180;}
             accumulator=0;pending={};previous=seconds();

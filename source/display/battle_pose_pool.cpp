@@ -135,6 +135,7 @@ void BattlePosePool::restart(BattlePose& pose,BattlePoseClock clock){
 // count MODEL owners, model references count POSES. Mode0/1/2 selects archive
 // type1/2/0; any nonzero mode uses the separate event-time clock.
 std::optional<int32_t> BattlePosePool::enter(std::shared_ptr<const BattlePoseResource> supplied,int32_t mode,BattlePoseClock clock,const char* requestedModel){
+    if(nativeEntry_)return nativeEntry_(nativeProvider_,std::move(supplied),mode,clock,requestedModel);
     if(mode<0 || mode>2 || !tangentSamplingAvailable())return {};
     archiveType_=mode==1?2:mode==0?1:0;
     if(!supplied || supplied->modelName.empty() || supplied->textureName.empty() || supplied->names.empty() || !supplied->bank)return {};
@@ -216,7 +217,7 @@ bool BattlePosePool::selectName(int32_t handle,const std::string& name,bool forc
     return selectIndex(handle,index,force,clock);
 }
 bool BattlePosePool::selectIndex(int32_t handle,uint32_t index,bool force,BattlePoseClock clock){
-    auto* p=pose(handle);if(!p)return false;if(index>=p->resource->names.size())index=0;
+    auto* p=pose(handle);if(!p || !resolveClock(clock))return false;if(index>=p->resource->names.size())index=0;
     if(!force && index==p->word(0x14))return true;
     p->word(0x14,index);
     if(p->word(0x90)!=0xffffffff && (p->word(0)&2))p->word(0,p->word(0)|4);
@@ -233,7 +234,7 @@ bool BattlePosePool::tangentSamplingAvailable() const{
     return !sourceGuard_ || (tangentOwner_ && tangentOwner_->current());
 }
 bool BattlePosePool::evaluate(int32_t handle,BattlePoseClock clock){
-    auto* p=pose(handle);if(!p || !tangentSamplingAvailable())return false;
+    auto* p=pose(handle);if(!p || !tangentSamplingAvailable() || !resolveClock(clock))return false;
     if(p->sourceBuffers)return p->sourceBuffers->evaluate(*p,clock);
     const auto index=p->word(0x14);if(index>=p->resource->names.size())return false;
     const auto* animation=p->resource->bank->pose(p->resource->names[index].c_str());if(!animation)return false;
