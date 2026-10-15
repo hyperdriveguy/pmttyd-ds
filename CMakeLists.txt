@@ -1998,3 +1998,10 @@ add_executable(field_npc_clock_tests tests/field_npc_clock_tests.cpp)
 target_link_libraries(field_npc_clock_tests PRIVATE ttyd_core)
 add_test(NAME field_npc_clock COMMAND field_npc_clock_tests)
 set_tests_properties(field_npc_clock PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Original nested MODEL pointer publication and clearing.
+target_sources(ttyd_core PRIVATE source/platform/file_model_relocation.cpp)
+add_executable(file_model_relocation_tests tests/file_model_relocation_tests.cpp)
+target_link_libraries(file_model_relocation_tests PRIVATE ttyd_core)
+add_test(NAME file_model_relocation COMMAND file_model_relocation_tests)
+set_tests_properties(file_model_relocation PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

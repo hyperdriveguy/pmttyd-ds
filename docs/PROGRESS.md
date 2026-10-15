@@ -9765,3 +9765,72 @@ action controllers, stage/audience/menu owners, message/story/effect, platform/f
 uncovered event/runtime/save modules and port tooling. Re-audit concurrent shared
 animation-pool/NPC-main/menu integration and drift in previously documented files.
 Full port documentation and the remake remain incomplete; goal stays active.
+
+### Complete native type5 model pointer setup and clear (2026-10-14)
+
+Previous goal turn made progress in7b23991f by giving typed/VM animation records
+one authoritative byte owner. This increment fills the next loaded-model gap:
+complete original local type5 Set8018ac80 and Clear8018b320 handlers now use
+EventMemoryServices with source unsigned guards, captured signed count, wrapping
+full-word record offsets and exact root/parent/child operation order. Set reloads
+table/child after parent publication; Clear retains absolute child and converts
+fresh root words last. No pointer-form normalization, null-child shortcut,
+visited map, count clamp, payload guard or fake file success is added.
+[Contract](behavior/file/NATIVE_TYPE5_MODEL_RELOCATION.md).
+
+Full original Mario215124-byte and Goombella120932-byte model fixtures verify
+every root/record/embedded-child pointer, repeated-call guards and exact complete
+byte restoration. Authored cases cover unsigned equality, nonpositive/captured
+count mutation, shared children, changed live tables, retained children,
+root/child aliases, zero-relative links/fields and word wrap. Read-only static
+review found no concrete source mismatch; report:
+artifacts/model-relocation-static-review.md. Original read-only verifier passes
+3complete body identities,842instruction anchors and4data spans. These are static
+byte/native fixture results, not original execution traces.
+
+Frozen base7b23991f48673c32c50955207f9f155235aaa5f3 plus own new files/suffixes;
+source snapshot excludes concurrent changes. Final TMPDIR=artifacts/native-stage-map-tmp
+CMAKE_BUILD_PARALLEL_LEVEL=4 make -C artifacts/model-relocation-source test
+-o assets-ready exits0:380/380 C++ in40.23s and203/203 Python in37.570s.
+Standalone -Wall/-Wextra focused host fixture also passes. Native make all -j4
+-o assets-ready SOUNDTRACK=gamecube TARGET=ttyd-model-relocation
+BUILD=build-model-relocation exits0, including restored normal main. Existing
+unrelated compiler/Pillow warnings remain.
+
+First complete run exposed5tests requiring a newer committed common-menu pack;
+added accepted raw TPL and updated metadata only after matching the menu-resource
+manifest hashes. Total2131RomFS products; relative to animation-live only the
+common-menu metadata changes and raw TPL is added. No new conversion/extraction,
+ISO write, original asset commit or licensing change. See ASSETS. Failed logs
+remain retained; no source/asset service check was bypassed.
+
+ARM fixture initially needed an explicitly typed initializer list because this
+ABI's uint32_t differs from the host's. First map-per-word model fixture exceeded
+its38s observation window with no result; it is not claimed passed. Original
+model tests now use actual contiguous BE bytes, avoiding per-word tree-node
+allocation and retaining complete byte/pointer checks. Corrected isolated ARM
+fixture passes originalMario/originalGoombella/fullRoundtrip/idempotence/
+rootGuards/capturedCount/liveTable/retainedChild/aliases/wrap. Snapshot:
+artifacts/azahar-model-relocation-probe-bytes/model-relocation-probe.snapshot.
+Exact tested source/binary hashes:artifacts/model-relocation-probe-validation.json.
+Private probe main restored byte-for-byte; final normal SHA256
+ d281173bb9fdd21c61e71873d4c15575412b22f7ef806b1af0123b649fc4767b.
+It differs from the earlier pre-probe normal binary because the accepted pack
+was updated. Audit3697source files/2131RomFS products, zero mismatches:
+artifacts/model-relocation-validation-manifest.json. Moving combined checkout
+is not claimed validated as a whole. Documentation check1403Markdown files,
+zero broken links.
+
+Next: shared native file manager covering real animation models, texture files
+and auxiliary payloads, source file pool/acquisition/holder/reference/movement
+ownership and source heap backing. Type5 handlers receive resolved payloads;
+complete source dispatch/acquisition and normal startup are still unbound here.
+Then genuine cold bootstrap before Game's existing Mario entries and live
+CPU/guest tangent/output ownership. Full authored field/battle/story/prologue
+and physical3DS performance/pixel parity remain unfinished. Goal stays active.
+
+Normal isolated40s Azahar boot exits0; original storybook art and US text in
+artifacts/azahar-model-relocation-normal/boot.png inspected. Startup sample
+60AppFPS/100% speed is not field/hardware timing validation. Only isolated
+project-local emulator profiles/saves were used; user state untouched. Final
+link check remains1403Markdown files with zero broken links.

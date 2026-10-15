@@ -1888,3 +1888,17 @@ temporary destinations. Native validation deliberately skips asset regeneration.
 Accepted provenance/conversion/licensing metadata is unchanged. Original
 Nintendo/Intelligent Systems rights remain reserved; private copies grant no
 redistribution rights. No ISO/extraction/original binary bytes were committed.
+
+
+### Type5 model relocation validation (2026-10-14)
+
+No new original asset extraction/conversion. Full unchanged private
+field-player-a_mario.draw-model.bin (215124 bytes) and
+field-player-c_pkr.draw-model.bin (120932 bytes) exercise loaded-model pointer
+setup/clear in temporary writable copies. They retain their accepted source
+provenance, original raw offsets and embedded model/animation payloads. Tests
+restore the complete original bytes after Clear. The2130 prior RomFS products remain unchanged except the common-menu metadata,
+and one accepted raw common TPL is added for newer committed base requirements.
+Both menu products match the accepted menu-resource-source-manifest.json. The original ISO
+is read-only; no original payload is committed/distributed. Nintendo/Intelligent
+Systems rights and existing local-use-only restrictions remain unchanged.

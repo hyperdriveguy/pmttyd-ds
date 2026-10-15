@@ -4912,3 +4912,17 @@ bootstrap and complete original field/battle/prologue obligations remain open.
 ### Retained original NPC clock subsection
 
 [Clock implementation](../behavior/field/NATIVE_PACKED_NPC_CLOCK_SECTION.md) supplies complete80049b88..49dc0 clock processing through actual registry/GP/facade storage, source bus owner, signed wrapped arithmetic and explicitly retained numeric requests. [All39 child ABIs](../behavior/field/ORIGINAL_NPC_MAIN_CHILD_ABI_AND_NUMERIC_FRONTIER.md) clarify scratch aliases, integer→double→float conversion, repeated Mario3c gates and effect600 constant. This closes the clock subregion only. Full Main gates/pose/timer/movement/detection/display/history/tail, normal Area activation and original/runtime/hardware fidelity remain open; do not acknowledge the full Main parent from a subsection return.
+
+
+### Complete native type5 model pointer handlers (2026-10-14)
+
+Implemented original type5 Set/Clear local bodies through actual address services:
+25 root fields, captured signed record count,64-byte records, root-relative
+parent links and child-relative eight-field conversions. Preserves Set's live
+post-parent table/child reload and Clear's retained absolute C/root-last order.
+[Native contract](../behavior/file/NATIVE_TYPE5_MODEL_RELOCATION.md).
+Original complete Mario/Goombella model fixtures check every relocated pointer
+and exact full-byte roundtrip, separately from authored alias/order cases.
+This closes the local type5 handler implementation gap; source acquisition/type
+dispatch/file manager/holder/model ownership and cold startup remain unbound.
+Keep those providers and overall EVT-01/prologue obligations open.
