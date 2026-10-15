@@ -2,6 +2,9 @@
 #include "battle_actor.hpp"
 #include <array>
 #include <optional>
+// Thirty-two records at B+0x1715c, stride 0x7c. Positive signed ordinal admits
+// a record; descriptor+6 is the layer. Memory caches are source state, not proof
+// that native transform/visibility services completed.
 namespace ttyd {
 struct BattleStageObjectServices {
     using Point=std::array<float,3>;

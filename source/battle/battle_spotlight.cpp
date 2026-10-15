@@ -12,6 +12,9 @@ void triple(uint32_t from,uint32_t to,const EventMemoryServices& m) {
     m.storeWord(m.user,to+8,m.word(m.user,from+8));
 }
 }
+// Source table 0x802f37a8 supplies three XYZ defaults (+0x54/60/6c), then
+// SBSS2 color 0x804295d4 and active halfword mask 1. Requires a real free slot:
+// a full positive-count scan reaches bank end; there is no grow/wrap fallback.
 uint32_t packedBattleSpotlightEntry(const BattleSpotlightServices& s) {
     const auto& m=s.memory;assert(m.word && m.half && m.storeWord && m.storeHalf);
     const auto w=m.word(m.user,0x804175a0),count=m.word(m.user,w);
@@ -25,6 +28,10 @@ uint32_t packedBattleSpotlightEntry(const BattleSpotlightServices& s) {
     m.storeHalf(m.user,record,m.half(m.user,record)|1);
     return record;
 }
+// Publish count 5 before allocation, recapturing owner for later accesses.
+// Clear count*0x2c bytes, then create five source entries. X uses FMA(step, i,
+// offset) from 0x80422b1c/18; all default XYZ words load before overrides.
+// A missing allocation can follow count publication; no local rollback exists.
 bool initializePackedBattleSpotlight(const BattleSpotlightServices& s) {
     const auto& m=s.memory;assert(m.word && m.storeWord && s.fma);
     auto owner=[&](){return m.word(m.user,0x804175a0);};
@@ -48,6 +55,9 @@ bool initializePackedBattleSpotlight(const BattleSpotlightServices& s) {
     }
     return true;
 }
+// Retain the discarded count read. Signed-positive gate+8 alone submits
+// camera 6/class 0 callback 0x80137d20, argument 0, source priority 0x80422b14.
+// The original count loop contributes no observable per-record main work.
 bool packedBattleSpotlightMain(const BattleSpotlightServices& s) {
     const auto& m=s.memory;assert(m.word);
     const auto w=m.word(m.user,0x804175a0);
@@ -57,6 +67,8 @@ bool packedBattleSpotlightMain(const BattleSpotlightServices& s) {
     const float priority=number(m.word(m.user,0x80422b14));
     return s.display && s.display(s.user,6,0,0x80137d20,0,priority);
 }
+// Free the recorded bank through the actual provider; source work fields,
+// including its pointer, remain unchanged. Repeating this is not idempotent.
 bool freePackedBattleSpotlight(const BattleSpotlightServices& s) {
     const auto& m=s.memory;assert(m.word);
     const auto w=m.word(m.user,0x804175a0),allocation=m.word(m.user,w+4);

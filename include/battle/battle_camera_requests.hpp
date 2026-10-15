@@ -1,5 +1,8 @@
 #pragma once
 #include "battle_packed_hit.hpp"
+// Camera work spans B+0x2754..0x2857. Priority+0x275c admits >= current;
+// requests do not raise priority themselves. EVT wrappers return completion2
+// even for rejected priority. Guest tokens/indices are not native pointers.
 namespace ttyd {
 struct BattleCameraRequestServices {
  BattlePartPositionServices positions;EventDispatchServices values;

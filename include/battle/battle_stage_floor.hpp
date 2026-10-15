@@ -1,5 +1,7 @@
 #pragma once
 #include "battle_unit_event.hpp"
+// Floor fields belong to stage work at B+0x163fc. Coordinates are source
+// world units; the EVT destination is a raw work token, not a resolved value.
 namespace ttyd {
 // Complete original floor consumer. Passed battle and X/Y are intentionally
 // unused: BattleStageGetPtr reloads global ownership after the wrapper capture.

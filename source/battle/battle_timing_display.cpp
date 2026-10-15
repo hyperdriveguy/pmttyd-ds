@@ -23,6 +23,11 @@ float single(float v) {
   return out;
 }
 } // namespace
+// Resolve global B independently of the display parent's captured B. Require
+// camera 8, then active mask 1 at B+0x1f50 selects icon 109/108 and source base
+// 0x802f01c8/1d4. Flag16/scale0x80422718 are source icon presentation data.
+// Load base XYZ even though X/Y are then overridden; increment scratch+0 only
+// after actual icon submission acknowledges.
 bool packedBattleTimingADraw(float x, float y,
                              const BattleTimingDisplayServices &s) {
   const auto &m = s.memory.memory;
@@ -50,6 +55,11 @@ bool packedBattleTimingADraw(float x, float y,
   m.storeWord(m.user, a, m.word(m.user, a) + 1);
   return true;
 }
+// State 99 evaluates curve 4 with duration 20, stores the result, then deliberately
+// overwrites X with 0x80422720 like state 100. States1000/1001 interpolate only
+// at count>=40 using step=count-40; otherwise use that same X constant.
+// Draw may recapture another B. Parent count changes AFTER draw using a fresh
+// read: decrement if positive for 99/100, increment if<60 for 1000/1001.
 bool packedBattleTimingADisplay(uint32_t b,
                                 const BattleTimingDisplayServices &s) {
   const auto &m = s.memory.memory;

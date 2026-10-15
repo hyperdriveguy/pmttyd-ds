@@ -3,6 +3,9 @@
 #include <cstring>
 namespace ttyd {
 namespace {float real(uint32_t v){float f;std::memcpy(&f,&v,4);return f;}int32_t signedWord(uint32_t v){int32_t n;std::memcpy(&n,&v,4);return n;}}
+// The source renderer uses608-wide scissor coordinates, not 3DS pixels.
+// Three getter passes recapture global B; do not pin one work owner across
+// the entire draw. Optional reads distinguish missing memory from stored0.
 bool drawBattleBreakSlot(const BattleBreakSlotDrawServices& s,BattleBreakSlotDrawCursor& c){
     if(!c.active){c={};c.active=true;}
     auto word=[&](uint32_t a){return s.word?s.word(s.user,a):std::nullopt;};
@@ -13,6 +16,9 @@ bool drawBattleBreakSlot(const BattleBreakSlotDrawServices& s,BattleBreakSlotDra
     case 0:if(!getter(1))return false;break;
     case 1:if(c.index==3){next(6);break;}else {c.reel=c.base+0x5c*c.index;const auto f=word(c.reel+4);if(!f)return false;next(*f&1?2:5);}break;
     case 2:{const auto state=word(c.reel+8);if(!state)return false;c.state=signedWord(*state);next(c.state>=1 && c.state<=4?3:5);break;}
+    // State 1..4 enabled reels first draw icon 476 at X=226+42*index, Y122;
+    // flag 16 and color 0x80426884. Direct icon provider takes precedence over
+    // retained SourceIconMatrix fallback; false retains the same queued request.
     case 3:if(!c.queued){c.matrix={};c.matrix.function=0x8029e230;c.matrix.xyz={std::fma(42.f,float(c.index),226.f),122,0};c.queued=true;}
         if(!matrix())return false;
         c.icon={};c.icon.function=0x8001a4bc;c.icon.flags=16;c.icon.icon=476;c.icon.matrix=c.matrix.output;next(4);break;
@@ -23,6 +29,9 @@ bool drawBattleBreakSlot(const BattleBreakSlotDrawServices& s,BattleBreakSlotDra
         next(5);break;
     case 5:++c.index;next(1);break;
     case 6:if(!getter(7))return false;break;
+    // First reel state selects strip82..114/table 0x80419f30 for 1..4,
+    // otherwise176..304/table 0x80419f3c. State 11 deliberately skips scissor
+    // submission while still selecting the latter table.
     case 7:{const auto state=word(c.base+8);if(!state)return false;c.state=signedWord(*state);
         if(c.state>=1 && c.state<=4){c.scissor={0,82,608,32};next(8);}else {c.table=0x80419f3c;c.scissor={0,176,608,128};next(c.state==11?9:8);}break;}
     case 8:c.pending=0x802ba644;if(!s.scissor || !s.scissor(s.user,c.scissor))return false;
@@ -30,8 +39,16 @@ bool drawBattleBreakSlot(const BattleBreakSlotDrawServices& s,BattleBreakSlotDra
         next(9);break;
     case 9:if(!getter(10))return false;break;
     case 10:if(c.index==3){next(35);break;}else {c.reel=c.base+0x5c*c.index;const auto flags=word(c.reel+4);if(!flags)return false;next(*flags&1?11:34);}break;
+    // GX source enums: blend BLEND/SRCALPHA/INVSRCALPHA/CLEAR, Z-before-
+    // texture on, alpha ALWAYS/AND/ALWAYS, depth enable/LEQUAL/no write.
+    // Step advances only after each real GX call acknowledges.
     case 11:{static const ShadowGXRequest setup[]={{ShadowGX::Blend,{1,4,5,0}},{ShadowGX::DepthLocation,{1}},{ShadowGX::Alpha,{7,0,0,7,0}},{ShadowGX::Depth,{1,3,0}}};
         while(c.step<4){c.pending=uint32_t(setup[c.step].kind);if(!s.gx || !s.gx(s.user,setup[c.step]))return false;++c.step;}next(12);break;}
+    // Thirteen SDK matrix boundaries retain translate/scale/XYZ rotations,
+    // concatenations and positive/negative pivot reads separately. Rotation
+    // axes 120/121/122 are ASCII x/y/z; source 0x804268a0 converts to radians.
+    // queued freezes request construction, step preserves partially read XYZ;
+    // category counts matrix operations here, then becomes texture category.
     case 12:{
         // Preserve every SDK boundary, including the fresh negative-pivot read.
         static constexpr uint32_t functions[]{0x8029e230,0x8029e2b0,0x8029dff0,0x8029dff0,0x8029dff0,0x8029dd64,0x8029dd64,0x8029e230,0x8029e230,0x8029dd64,0x8029dd64,0x8029dd64,0x8029dd64};
@@ -54,6 +71,10 @@ bool drawBattleBreakSlot(const BattleBreakSlotDrawServices& s,BattleBreakSlotDra
     case 15:{const auto id=s.half?s.half(s.user,c.table+2*c.category):std::nullopt;if(!id)return false;c.plane={};c.plane.texture=*id;c.plane.matrix=c.matrices[5];next(16);break;}
     case 16:{const auto alpha=s.byte?s.byte(s.user,c.reel+0x58):std::nullopt;if(!alpha)return false;c.plane.rgba=(c.color&0xffffff00)|*alpha;next(17);break;}
     case 17:c.pending=0x8010323c;if(!s.plane || !s.plane(s.user,c.plane))return false;next(18);break;
+    // States>10 or3/4 omit the adjacent category plane. Other states advance
+    // ordinal with signed wrap-to0 against live count, reload category table,
+    // then translate Y by-32 for 1..4 or-128 otherwise. Both planes read alpha
+    // separately; actual plane0x8010323c completion advances the phase.
     case 18:{const auto state=word(c.reel+8);if(!state)return false;c.state=signedWord(*state);next(c.state>10 || c.state==3 || c.state==4?34:19);break;}
     case 19:{const auto ordinal=word(c.reel+0x1c);if(!ordinal)return false;c.candidate=*ordinal+1;next(20);break;}
     case 20:{const auto count=word(c.reel+0x18);if(!count)return false;if(signedWord(c.candidate)>=signedWord(*count))c.candidate=0;next(21);break;}
@@ -70,6 +91,9 @@ bool drawBattleBreakSlot(const BattleBreakSlotDrawServices& s,BattleBreakSlotDra
     case 27:{const auto alpha=s.byte?s.byte(s.user,c.reel+0x58):std::nullopt;if(!alpha)return false;c.plane.rgba=(c.color&0xffffff00)|*alpha;next(28);break;}
     case 28:c.pending=0x8010323c;if(!s.plane || !s.plane(s.user,c.plane))return false;next(34);break;
     case 34:++c.index;c.category=0;next(10);break;
+    // Restore full scissor from GP pointer 0x80415fd0, unsigned halfword width/
+    // height+0x170/172. These reads and restore are required completion work,
+    // not optional cleanup after the last plane.
     case 35:{const auto gp=word(0x80415fd0);if(!gp)return false;c.gp=*gp;next(36);break;}
     case 36:{const auto width=s.half?s.half(s.user,c.gp+0x170):std::nullopt;if(!width)return false;c.scissor={0,0,*width,0};next(37);break;}
     case 37:{const auto height=s.half?s.half(s.user,c.gp+0x172):std::nullopt;if(!height)return false;c.scissor[3]=*height;next(38);break;}

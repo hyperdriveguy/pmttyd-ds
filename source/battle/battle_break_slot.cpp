@@ -6,6 +6,9 @@ namespace {
 uint32_t controller(const BattleActorServices& s){return currentBattleAddress(s)+0x1616c;}
 uint32_t reel(unsigned index,const BattleActorServices& s){return controller(s)+0x18+index*0x5c;}
 }
+// Preload source arrays0x802fe040/60/80 with 8/8/5 words BEFORE clearing
+// controller. Allocate each reel's category table separately; engaged null is
+// explicitly unavailable before memcpy, and earlier allocations are retained.
 bool initializePackedBattleBreakSlot(const BattleBreakSlotServices& s) {
     const auto& m=s.actors.memory;assert(m.word && m.storeWord && m.storeByte);
     const auto c=controller(s.actors);
@@ -26,6 +29,10 @@ bool initializePackedBattleBreakSlot(const BattleBreakSlotServices& s) {
     }
     return true;
 }
+// Keep repeated global/Mario/party lookups. State 0 counts reels with state 2;
+// exactly two stopped and unequal first/second categories publishes state 1.
+// Then EACH reel must still be idle0: an active reel returns false after any
+// prior stores. Idle rows clear mask 1 and set alpha byte+0x58=255.
 bool packedBattleBreakSlotIdleMain(const BattleActorServices& s) {
     const auto& m=s.memory;assert(m.word && m.storeWord && m.storeByte);
     const auto b=currentBattleAddress(s);(void)currentBattleAddress(s);
@@ -44,6 +51,9 @@ bool packedBattleBreakSlotIdleMain(const BattleActorServices& s) {
     }
     return true;
 }
+// Free all three table pointers with fresh controller/reel lookup each time.
+// Do not zero pointers or invent rollback; a held later free retains earlier
+// effects, so repeating this immediate parent is not automatically safe.
 bool endPackedBattleBreakSlot(const BattleBreakSlotServices& s) {
     for(unsigned i=0;i<3;++i) {
         const auto r=reel(i,s.actors),p=s.actors.memory.word(s.actors.memory.user,r+0x14);

@@ -1,6 +1,9 @@
 #pragma once
 #include "battle_camera_requests.hpp"
 #include "camera_depth.hpp"
+// Eye/at/up are CPU frame state; packed baseline and delta vectors are
+// published before tremor. A retained tremor cursor pins only that tail, not
+// mode 3 interpolation or the whole frame. Caller must retain B/frame/services.
 namespace ttyd {
 struct BattleCameraFrame {CameraDepthPoint eye{},at{},up{{0,1,0}};};
 // Holds the supported-mode Main tail at an unavailable interpolation, retaining

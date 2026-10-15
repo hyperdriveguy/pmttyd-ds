@@ -2,6 +2,9 @@
 #include <array>
 #include <cstdint>
 
+// TimingA uses sampled simulation history, not draw counters. Result mask 2,
+// classifications0..3, main states and setup flags are separate numeric domains;
+// seed ownership and original impact/scheduler alignment remain caller-owned.
 namespace ttyd {
 constexpr uint32_t BattleButtonA = 0x100;
 

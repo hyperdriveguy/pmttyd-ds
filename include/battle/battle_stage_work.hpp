@@ -1,6 +1,9 @@
 #pragma once
 #include "battle_actor.hpp"
 #include <optional>
+// Inline stage work is B+0x163fc, size 0xb3c; twelve entries start at+4,
+// stride 0xe8, with scratch pointer+0xe4. This immediate main has no retry cursor:
+// earlier child/store effects survive false and must not be blindly replayed.
 namespace ttyd {
 struct BattleStageWorkServices {
     BattleActorServices actors;

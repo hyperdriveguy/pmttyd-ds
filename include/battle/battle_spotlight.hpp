@@ -2,6 +2,9 @@
 #include "event_memory_opcodes.hpp"
 #include <array>
 #include <optional>
+// Global 0x804175a0 points at spotlight work: count+0, bank+4, draw gate+8.
+// Records are0x2c bytes. Per-session SBSS/entry color outlives a BattleWork;
+// init/free must not implicitly reset those separate source globals.
 namespace ttyd {
 // Per-session SBSS history, distinct from each BattleWork/map-heap lifetime.
 // Native live memory is published here between battle runtime lifetimes.

@@ -1,6 +1,9 @@
 #pragma once
 #include "battle_actor.hpp"
 #include <optional>
+// Break-slot controller B+0x1616c (size 0x134); three reels begin+0x18,
+// stride 0x5c. Idle main is a partial source bridge, not the complete active slot
+// game. False can follow state/earlier-reel stores and has no saved suffix.
 namespace ttyd {
 struct BattleBreakSlotServices {
     BattleActorServices actors;

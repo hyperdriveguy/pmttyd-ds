@@ -32,6 +32,8 @@ int32_t BattleRandom::next() {
     state=state*1103515245u+12345u;
     return int32_t((state>>16)&32767);
 }
+// Bound0 returns0 WITHOUT advancing RNG; nonzero uses one draw then C++
+// signed remainder. This is not rejection sampling or a uniform-range rewrite.
 int32_t BattleRandom::bounded(int32_t bound) {
     return bound==0 ? 0 : next()%bound;
 }
@@ -45,6 +47,9 @@ int TimingACommand::successWindow(int difficulty) const {
     while(count>entry->threshold)++entry;
     return entry->samples;
 }
+// Special actor/setup route precedes automatic and battle-force routes.
+// Its impossible negative draw still advances RNG. Special/automatic paths
+// leave prior classification intact; only ordinary scan/forced route writes it.
 uint32_t TimingACommand::evaluate(const BattleTriggerHistory& history,
                                 const TimingAContext& context,BattleRandom& random) {
     const int window=successWindow(context.difficulty);

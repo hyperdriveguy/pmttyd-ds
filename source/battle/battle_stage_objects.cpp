@@ -5,6 +5,9 @@ namespace ttyd {
 namespace {
 float number(uint32_t word) {float value;std::memcpy(&value,&word,4);return value;}
 }
+// Four XYZ vectors at+4/+0x10/+0x28/+0x1c compare with caches at+0x30.
+// Float != preserves NaN-as-dirty and signed-zero equality. Cache copies and
+// dirty-bit 2 clearing PRECEDE map callbacks; this parent retains no retry cursor.
 bool packedBattleStageObjectMain(const BattleStageObjectServices& s) {
     const auto& m=s.actors.memory;
     assert(m.word && m.half && m.storeWord && s.translate && s.rotate && s.groupFlags && s.groupFlag);
@@ -29,12 +32,18 @@ bool packedBattleStageObjectMain(const BattleStageObjectServices& s) {
             if(different(r+offset,r+offset+0x30)){copy(r+offset,r+offset+0x30);dirty=true;}
         const auto flags=m.word(m.user,r+0x68);
         if(flags&2){m.storeWord(m.user,r+0x68,flags&~uint32_t(2));dirty=true;}
+        // Layer2 additionally consumes the shared B+0x180e0 rotation cache
+        // at+0x180ec. Read the descriptor/layer again afterward; do not turn this
+        // shared update into one independent dirty flag per stage object.
         const auto descriptor=m.word(m.user,r+0x64);
         if(m.half(m.user,descriptor+6)==2 && different(b+0x180e0,b+0x180ec)) {
             copy(b+0x180e0,b+0x180ec);dirty=true;
         }
         const auto layer=m.half(m.user,m.word(m.user,r+0x64)+6);
         auto name=[&](){return m.word(m.user,m.word(m.user,r+0x64));};
+        // Only layers<8 transform. Translation sums (v4+v10) then v28;
+        // layers2/3 translate about Y pivot+0x14/+8, rotate, then reread the
+        // positive pivot. Layer2 rotates by shared vector, layer3 by row+0x1c.
         if(dirty && layer<8) {
             BattleStageObjectServices::Point total{};
             for(unsigned axis=0;axis<3;++axis) {
@@ -49,6 +58,9 @@ bool packedBattleStageObjectMain(const BattleStageObjectServices& s) {
                 if(!s.translate(s.user,name(),{0,real(pivot),0}))return false;
             } else if(!s.rotate(s.user,name(),point(r+0x1c)))return false;
         }
+        // Visibility mask 1 synchronization runs even when clean or layer>=8.
+        // Name lookup remains fresh across each service; false may follow caches
+        // and successful earlier transforms, so caller admission is essential.
         const bool hidden=(m.word(m.user,r+0x68)&1)!=0;
         const auto actual=s.groupFlags(s.user,name());
         if(!actual)return false;

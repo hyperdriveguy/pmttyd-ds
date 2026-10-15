@@ -2,6 +2,9 @@
 #include <cassert>
 #include <cstring>
 namespace ttyd {
+// Zero storage first, then preserve the original explicit writes and order.
+// Two byte-output groups start at 0xae8/0xb08 (defaults 0/140), initial words1
+// at 0xae4/0xb04. Source floor/vector constants occupy0xb24..0xb38.
 void initializePackedBattleStageWorkStorage(uint32_t battle,const EventMemoryServices& m) {
     assert(m.word && m.storeWord && m.storeByte);
     const auto w=battle+0x163fc;
@@ -28,6 +31,9 @@ void initializePackedBattleStageWorkStorage(uint32_t battle,const EventMemorySer
 namespace {
 int32_t signedWord(uint32_t v){int32_t s;std::memcpy(&s,&v,4);return s;}
 }
+// Capture stage owner BEFORE spotlight main, then visit all twelve entries.
+// Active mask 1 requires the real child; inactive scratch is cleared only after
+// free acknowledges. Spotlight/entry failure does not undo earlier work.
 bool packedBattleStageWorkMain(const BattleStageWorkServices& s) {
     const auto& m=s.actors.memory;
     assert(m.word && m.storeWord && m.storeByte && s.actors.byte);
@@ -45,6 +51,11 @@ bool packedBattleStageWorkMain(const BattleStageWorkServices& s) {
             }
         }
     }
+    // Four source byte interpolators: count/start/end/mode/duration/output
+    // offsets below are relative to captured stage work. Signed positive count
+    // decrements BEFORE interpolation; duration and remaining are then reloaded.
+    // Mode is signed low8, endpoints unsigned bytes, output wraps to low8 after
+    // real truncation. Counts track main visits, not measured render frames.
     struct Counter {uint32_t count,start,end,mode,duration,output;};
     constexpr Counter counters[]={{0xaf0,0xaea,0xaec,0xb00,0xaf8,0xae8},
         {0xaf4,0xaeb,0xaed,0xb01,0xafc,0xae9},

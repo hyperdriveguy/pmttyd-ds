@@ -2,6 +2,9 @@
 #include "battle_actor.hpp"
 #include <array>
 #include <optional>
+// Packed TimingA scratch begins B+0x1f20, separate from typed TimingA state.
+// Display visits can write scratch/counts; they do not advance sampled input or
+// establish action-command timing. Immediate callbacks retain no retry cursor.
 namespace ttyd {
 struct BattleTimingIconRequest {
   uint32_t camera = 8, icon = 0, flags = 0;

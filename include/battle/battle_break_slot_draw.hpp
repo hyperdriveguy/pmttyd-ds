@@ -1,6 +1,9 @@
 #pragma once
 #include "source_icon_matrix.hpp"
 #include "shadow_display.hpp"
+// Retained source parent0x802036d4 owns queued requests/phase/step. Keep the
+// same services, cursor and downstream provider state until complete. Success
+// retires only active/pending; real texture-plane admission remains required.
 namespace ttyd {
 struct BattleBreakSlotPlaneRequest {BattleActMatrix matrix{};uint32_t texture=0,rgba=0,flags=0;};
 struct BattleBreakSlotDrawServices {

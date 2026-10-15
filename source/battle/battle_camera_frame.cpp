@@ -13,6 +13,11 @@ void real(const BattleCameraRequestServices& s,uint32_t a,float v){uint32_t bits
 float single(float v){volatile float result=v;return result;}
 CameraDepthPoint vector(const BattleCameraRequestServices& s,uint32_t a){return {real(s,a),real(s,a+4),real(s,a+8)};}
 void vector(const BattleCameraRequestServices& s,uint32_t a,CameraDepthPoint v){for(unsigned i=0;i<3;++i)real(s,a+4*i,v[i]);}
+// Source smoothing levels use divisors1.5/15/5/1/200/100; level 3 snaps.
+// XY admits0..4, Z 0..5; invalid levels reset 1. Relative battle mask 0x100 adds
+// Mario home Z and -homeZ/4 Y, then stored XYZ offset regardless of flag 0x20.
+// X bounds are +/-[100+max((600-eyeZ)/2, 0)] for BOTH eye and at. Coordinates
+// and coefficients are source framing policy, not 3DS screen dimensions.
 bool move(uint32_t b,BattleCameraFrame& c,CameraDepthPoint eye,CameraDepthPoint at,bool relative,bool clamp,
     CameraDepthPoint& de,CameraDepthPoint& da,const BattleCameraRequestServices& s){
     int32_t xy=int16_t(half(s,b+0x277c)),z=int16_t(half(s,b+0x277e));
@@ -32,6 +37,13 @@ bool move(uint32_t b,BattleCameraFrame& c,CameraDepthPoint eye,CameraDepthPoint 
     axis(c.at[0],at[0],da[0],xy);axis(c.at[1],at[1],da[1],xy);c.up={0,1,0};
     axis(c.eye[2],eye[2],de[2],z);axis(c.at[2],at[2],da[2],z);return true;
 }
+// Two lanes map masks1/2 to X/Y, total+0x2830, remaining+0x2838, stride 4.
+// Stage 0 captures speeds and forces3; phase=(total-remaining)&2 selects sign.
+// Stage 1 can hold interpolation with temporary speeds still published. Resume
+// here avoids baseline/earlier-lane replay; duration/step use signed division by 2.
+// Stage 2 moves only for positive remaining, clears flag only at zero, restores
+// speeds and decrements even zero/negative timers. Shaken CPU frame is NOT
+// republished into the baseline vectors during this tail.
 bool tremor(uint32_t b,BattleCameraFrame& c,const BattleCameraFrameServices& services,BattleCameraTremorCursor& cursor){
     const auto& s=services.requests;
     while(cursor.axis<2){
@@ -67,6 +79,9 @@ bool tremor(uint32_t b,BattleCameraFrame& c,const BattleCameraFrameServices& ser
     cursor.active=false;return true;
 }
 }
+// Clear0x104 camera bytes. Setup type 0 -> mode 14, types 1..8 ->15, type 9
+// ->16; other types retain cleared mode 0. Original default offset 0x802f0240
+// and speeds1 are source startup data, not an inferred prior camera history.
 void initializeBattleCamera(uint32_t b,const BattleCameraRequestServices& s){
     for(unsigned i=0;i<0x104;i+=4)word(s,b+0x2754+i,0);
     word(s,b+0x2754,0);const auto type=int32_t(word(s,word(s,b+0x2738)+8));
@@ -74,6 +89,9 @@ void initializeBattleCamera(uint32_t b,const BattleCameraRequestServices& s){
     word(s,b+0x275c,0);real(s,b+0x2778,0);half(s,b+0x277c,1);half(s,b+0x277e,1);
     for(unsigned i=0;i<3;++i)word(s,b+0x27b0+4*i,word(s,0x802f0240+4*i));word(s,b+0x2758,0);
 }
+// Capture current CPU eye/at as starts and requested vectors as ends; store
+// remaining+0x27d8, total+0x27dc and curve+0x27d4 only after priority admits.
+// Does not select mode 3 or advance the timeline itself.
 bool setBattleCameraMoveTo(uint32_t b,int32_t priority,int32_t duration,int32_t curve,CameraDepthPoint eye,CameraDepthPoint at,const BattleCameraFrame& c,const BattleCameraRequestServices& s){
     if(priority<int32_t(word(s,b+0x275c)))return false;
     vector(s,b+0x27e0,c.eye);vector(s,b+0x27ec,eye);vector(s,b+0x27f8,c.at);vector(s,b+0x2804,at);
@@ -87,6 +105,9 @@ int32_t battleCameraMoveToEvent(EventEntry& e,const BattleCameraFrame& c,const B
     const int32_t duration=integer(7),curve=integer(8);
     setBattleCameraMoveTo(word(s,0x8041eb90),priority,duration,curve,eye,at,c,s);return 2;
 }
+// Unsupported modes<=20 return false after prefix stores; >20 takes the
+// ordinary tail without a mode movement. A false immediate-mode prefix has
+// no retained cursor. Only an active supplied tremor cursor skips that prefix.
 bool updateBattleCameraFrame(uint32_t b,BattleCameraFrame& c,const BattleCameraFrameServices& services,BattleCameraTremorCursor* continuation){
     BattleCameraTremorCursor local;auto& cursor=continuation?*continuation:local;
     if(!cursor.active){
@@ -97,6 +118,12 @@ bool updateBattleCameraFrame(uint32_t b,BattleCameraFrame& c,const BattleCameraF
     if(mode==0 || mode==15 || mode==16){
         if(mode!=0){half(s,b+0x277c,3);half(s,b+0x277e,3);}const float x=mode==16?-100.f:0.f;
         if(!move(b,c,{x,110,mode==0?750.f:500.f},{x,60,0},true,true,de,da,s))return false;
+    // Mode 7 follows unit center; 10 follows hit part; 11 frames two parts.
+    // Width subtracts24 and clamps at0; single-unit Y adds (height-50)/2
+    // to center Y, then clamps0..100. Two-part Y uses its separate expression.
+    // Two-part ratio uses stored home/hit X span (zero->10), clamps0.5..1;
+    // coefficients1.5/80/20/9 and eye/at bases110/60/750 preserve source math.
+    // Missing unit/part resets mode 0 without rerunning default movement now.
     }else if(mode==7 || mode==10 || mode==11){
         const auto first=battleRegistryUnit(b,int32_t(word(s,b+0x2764)),s.positions.memory);
         uint32_t part=0;bool missing=!first;
@@ -123,6 +150,9 @@ bool updateBattleCameraFrame(uint32_t b,BattleCameraFrame& c,const BattleCameraF
             if(!move(b,c,{p[0],single(single(110.f+p[1])+t),single(750.f-q)}, {p[0],single(single(60.f+p[1])+t),-q},true,true,de,da,s))return false;
         }
         if(missing)setBattleCameraMode(b,0,0,s);
+    // Victory center averages Mario/party HOME positions; 18 lowers Y20.
+    // Speeds reset 1, eye offset(0, 100, 350), at Y+50 with absolute Z 0.
+    // Missing Mario holds; missing partner simply uses Mario.
     }else if(mode==17 || mode==18){
         const auto mario=battleMarioUnit(b,s.positions.memory),party=battlePartyUnit(b,s.positions.memory);
         if(!mario)return false;auto center=vector(s,mario+0x30);
@@ -131,12 +161,19 @@ bool updateBattleCameraFrame(uint32_t b,BattleCameraFrame& c,const BattleCameraF
         half(s,b+0x277c,1);half(s,b+0x277e,1);
         if(!move(b,c,{center[0],single(center[1]+100.f),single(center[2]+350.f)},
             {center[0],single(center[1]+50.f),0},false,true,de,da,s))return false;
+    // Startup visit1 snaps rank 0..3 depth 750/830/920/1000 (other ranks0).
+    // Visit10 changes to mode 3, duration 120/curve 4. These are main-call counts,
+    // not renderer frames or measured real time.
     }else if(mode==14){
         const auto counter=word(s,b+0x2758)+1;word(s,b+0x2758,counter);
         if(counter==1){
             const int32_t rank=int16_t(half(s,word(s,0x8041eb00)+0x88));const float depths[]{750,830,920,1000};const float z=rank>=0 && rank<4?depths[rank]:0;
             half(s,b+0x277c,3);half(s,b+0x277e,3);if(!move(b,c,{0,110,z},{0,60,0},true,true,de,da,s))return false;
         }else if(counter==10){word(s,b+0x2758,0);setBattleCameraMode(b,0,3,s);setBattleCameraMoveTo(b,0,120,4,{0,110,750},{0,60,0},c,s);}
+    // Timeline decrements remaining BEFORE six interpolation calls, reloading
+    // curve/duration each time. No retained prefix cursor on failure here.
+    // On success force both speeds3, move, then restore ONLY saved XY speed;
+    // Z remains3. Preserve this asymmetry and partial effects.
     }else if(mode==3){
         const int32_t remaining=int32_t(word(s,b+0x27d8));if(remaining>0){
             const int16_t saved=int16_t(half(s,b+0x277c));word(s,b+0x27d8,uint32_t(remaining)-1);
@@ -149,6 +186,9 @@ bool updateBattleCameraFrame(uint32_t b,BattleCameraFrame& c,const BattleCameraF
             if(!move(b,c,eye,at,false,false,de,da,s))return false;half(s,b+0x277c,uint16_t(saved));
         }
     }else if(mode<=20)return false;
+    // Cap eyeZ before axis locks4/8/16 restore old eye/at and zero deltas.
+    // Publish unshaken baseline+0x2780/2798 and deltas+0x27bc/27c8, then issue
+    // independent rumble-off requests before entering the retained tremor tail.
     if(c.eye[2]>=1000)c.eye[2]=1000;
     const auto flags=word(s,b+0x2754);for(unsigned i=0;i<3;++i)if(flags&(4u<<i)){c.eye[i]=oldEye[i];c.at[i]=oldAt[i];de[i]=da[i]=0;}
     vector(s,b+0x2780,c.eye);vector(s,b+0x2798,c.at);vector(s,b+0x27bc,de);vector(s,b+0x27c8,da);

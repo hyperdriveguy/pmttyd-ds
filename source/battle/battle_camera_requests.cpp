@@ -12,6 +12,9 @@ void real(const BattleCameraRequestServices& s,uint32_t a,float v){uint32_t b;st
 void half(const BattleCameraRequestServices& s,uint32_t a,uint16_t v){s.positions.memory.memory.storeHalf(s.positions.memory.memory.user,a,v);}
 bool admitted(const BattleCameraRequestServices& s,uint32_t b,int32_t priority){return priority>=int32_t(word(s,b+0x275c));}
 }
+// Resolve integer amplitudes via signedWordFloat, preserving interleaved raw
+// operand reads. Mask2 owns the second tremor lane (+0x282c/34/3c, amplitudes
+// +0x2848/4c). Rumble channel0 starts only when suppression mask 0x40 is clear.
 int32_t battleCameraShakeHorizontalEvent(EventEntry& e,const BattleCameraRequestServices& s){
  const auto args=e.arguments;assert(s.values.resolve && s.signedWordFloat);
  auto resolve=[&](uint32_t token){return s.values.resolve(s.values.user,e,int32_t(token));};
@@ -28,16 +31,23 @@ int32_t battleCameraShakeHorizontalEvent(EventEntry& e,const BattleCameraRequest
  if(!(word(s,b+0x2754)&0x40)){assert(s.rumbleOn);s.rumbleOn(s.user,0);}
  return 2;
 }
+// Set mode, zero zoom/counter, reset both speeds1. Internal axis-unlock has
+// its OWN priority 0 gate; a high-priority mode write need not unlock axes.
+// Always clear offset flag 0x20 afterward, retaining stored offset coordinates.
 bool setBattleCameraMode(uint32_t b,int32_t priority,int32_t mode,const BattleCameraRequestServices& s){if(!admitted(s,b,priority))return false;
  word(s,b+0x2760,uint32_t(mode));real(s,b+0x2778,0);half(s,b+0x277c,1);half(s,b+0x277e,1);word(s,b+0x2758,0);
  // Each source internal axis request has its own priority0 admission gate.
  if(admitted(s,b,0))for(uint32_t mask:{4u,8u,16u})word(s,b+0x2754,word(s,b+0x2754)&~mask);
  word(s,b+0x2754,word(s,b+0x2754)&~0x20u);return true;
 }
+// Request accepts levels0..5, otherwise1, and reloads XY before copying Z.
+// Frame movement later rejects XY 5 but accepts Z 5: do not unify those bounds.
 bool setBattleCameraSpeed(uint32_t b,int32_t priority,int32_t level,const BattleCameraRequestServices& s){if(!admitted(s,b,priority))return false;
  half(s,b+0x277c,uint16_t(level>=0 && level<=5?level:1));const auto& m=s.positions.memory.memory;const auto selected=m.half(m.user,b+0x277c);half(s,b+0x277e,selected);return true;
 }
 bool setBattleCameraZoom(uint32_t b,int32_t priority,float zoom,const BattleCameraRequestServices& s){if(!admitted(s,b,priority))return false;real(s,b+0x2778,zoom);return true;}
+// Set flag 0x20 and store XYZ at+0x27b0. This producer records the flag;
+// relative framing's actual vector addition is separate from that flag test.
 bool setBattleCameraOffset(uint32_t b,int32_t priority,float x,float y,float z,const BattleCameraRequestServices& s){if(!admitted(s,b,priority))return false;
  word(s,b+0x2754,word(s,b+0x2754)|0x20);real(s,b+0x27b0,x);real(s,b+0x27b4,y);real(s,b+0x27b8,z);return true;
 }
@@ -48,6 +58,9 @@ int32_t battleCameraOffsetEvent(EventEntry& e,const BattleCameraRequestServices&
 }
 int32_t battleCameraModeEvent(EventEntry& e,const BattleCameraRequestServices& s){const auto priority=value(s,e,0),mode=value(s,e,1);setBattleCameraMode(battle(s),priority,mode,s);return 2;}
 int32_t battleCameraSpeedEvent(EventEntry& e,const BattleCameraRequestServices& s){const auto priority=value(s,e,0),level=value(s,e,1);setBattleCameraSpeed(battle(s),priority,level,s);return 2;}
+// EVT zoom truncates resolved float to signed integer then converts back to
+// float; direct setBattleCameraZoom has no such truncation. AddZoom similarly
+// truncates delta before adding it to the stored float.
 int32_t battleCameraZoomEvent(EventEntry& e,const BattleCameraRequestServices& s){const auto priority=value(s,e,0);assert(s.values.resolveFloat && s.positions.unit.truncateFloat);const auto zoom=s.values.resolveFloat(s.values.user,e,raw(s,e,1));const auto integer=s.positions.unit.truncateFloat(s.positions.unit.user,zoom);const auto b=battle(s);
  setBattleCameraZoom(b,priority,float(integer),s);
  return 2;
@@ -57,10 +70,15 @@ int32_t battleCameraAddZoomEvent(EventEntry& e,const BattleCameraRequestServices
  const auto delta=s.values.resolveFloat(s.values.user,e,raw(s,e,1));const auto integer=s.positions.unit.truncateFloat(s.positions.unit.user,delta);const auto b=battle(s);
  if(admitted(s,b,priority)){const auto bits=word(s,b+0x2778);float old;std::memcpy(&old,&bits,4);real(s,b+0x2778,old+float(integer));}return 2;
 }
+// Masks4/8/16 freeze X/Y/Z in frame main. Only on==1 sets the bit; any
+// other resolved value clears it. Rejected priority still completes the EVT.
 int32_t battleCameraAxisEvent(EventEntry& e,uint32_t mask,const BattleCameraRequestServices& s){
  assert(mask==4 || mask==8 || mask==16);const auto priority=value(s,e,0),on=value(s,e,1);const auto b=battle(s);
  if(admitted(s,b,priority))word(s,b+0x2754,on==1?word(s,b+0x2754)|mask:word(s,b+0x2754)&~mask);return 2;
 }
+// Explicit-parts variant honors priority and performs the discarded first-part
+// lookup. Home XYZ loads together before camera publication. Target-1 skips
+// only target writes, preserving the old target fields.
 int32_t battleCameraHomingPartsEvent(EventEntry& e,const BattleCameraRequestServices& s){
  const auto priority=value(s,e,0),owner=value(s,e,1),ownerPart=value(s,e,2),target=value(s,e,3),targetPart=value(s,e,4);
  const auto b=battle(s);if(!admitted(s,b,priority))return 2;
@@ -79,6 +97,9 @@ int32_t battleCameraHomingPartsEvent(EventEntry& e,const BattleCameraRequestServ
  for(unsigned axis=0;axis<3;++axis)real(s,b+0x281c+4*axis,hit[axis]);
  return 2;
 }
+// Body-part variant resolves but DISCARDS priority; unlike explicit-parts,
+// it has no admission gate. Source part lookups and fresh home-word reads stay
+// observable even when their returned part pointer is discarded.
 int32_t battleCameraHomingEvent(EventEntry& e,const BattleCameraRequestServices& s){(void)value(s,e,0);const auto owner=value(s,e,1),target=value(s,e,2);const auto b=battle(s);const auto& u=s.positions.unit;assert(u.translate && u.unit);
  const auto first=u.translate(u.user,e,owner);word(s,b+0x2764,uint32_t(first));const auto actor=u.unit(u.user,b,first);const auto body=packedBodyPartId(actor,u.memory);word(s,b+0x276c,uint32_t(body));(void)packedUnitPart(actor,body,u.memory);
  for(unsigned axis=0;axis<3;++axis)word(s,b+0x2810+4*axis,word(s,actor+0x30+4*axis));
