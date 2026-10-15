@@ -1,3 +1,71 @@
+### Complete native retained Main owner and producer guards (2026-10-15)
+
+Code commit b621ccda0bbf9f5a4840cd1a93d43575e1624d92 adds a process-owned native executor composing original
+Main prelude, full scalar/timeline/replay/interpolation/final publications,
+retained linked children and optional facing. It uses actual shared VM/pool/
+file/scratch owners and never calls typed main/evaluate as fallback. A real
+persistent native semantic SPR bank owns GQR0..7; original SPR914..917 writes
+set GQR2..5 and the quantized provider reads actual GQR4. All linked frames
+share this state. Missing/wrong state holds at the source load and recovers
+through the state producer, without replaying prior GQR or source effects.
+
+Stable heap frames retain parent captures and exactly one linked request;
+explicit scheduling avoids recursive C++ stack growth and never reports cycles
+complete. Retired blank frames are reused after nesting-depth warm-up. Per-
+resume visit budgets do not cap total source loops/depth. Same handle/pass,
+process/alias/current/generation/resource/scratch/token-reservation identities
+are checked before primitives. Native pending guards stop clock tick, Entry,
+Release, legacy Mario selection/evaluation and process reconfiguration before
+mutations. Direct pool/file/VM producer discipline remains caller-owned.
+Lazy camera admission preserves original nullT and flag8-clear no-camera exits;
+reached camera holds preserve successful geometry/final publications.
+
+[Contract](behavior/display/NATIVE_RETAINED_MAIN.md), inbox EVT-01 and read-only
+native integration notes record complete local scope and remaining Game/shape
+boundaries. Independent read-only executor/test review and warning-enabled
+syntax checks passed. Actual cold MarioM_W/17-tick tests compare all5 caches/
+3 outputs to the admitted original sampler, exercise global W output RAM with
+invalid private R4c/R54, real GQR corruption/repair, budget0, repeat invocations
+with frame reuse, no shape fallback, wrong handle/pass, stale generation/
+current/token mapping, pending producer guards, nullT/clear8 without camera,
+post-geometry camera wait with epoch/index mutation and no replay, linked
+push/pop/capture mutation/flag2 skip and cyclic budgets. Native ARM probe passed
+all corresponding assertions.
+
+Accepted isolated tree 8097a15c07c521b46c4c44a5140ff9963497c2b2 based on eeee7ce233970b0ae6eff60d108a225975736d35
+contains 3982 tracked files and exact committed dependency ed888f61
+(original source pose Release/shared file ownership,7 dependency paths plus its
+2 test registrations). Earlier snapshot failed to build because that existing
+Release header was absent; corrected dependency admission is explicit. Final
+`TRIO_ENEMY_POSE_PACK=romfs CMAKE_BUILD_PARALLEL_LEVEL=4 make test` passed
+443 C++ tests (57.68 seconds) and212 Python tests (34.383 seconds),
+zero skipped. `make all -j4 -o assets-ready SOUNDTRACK=gamecube` passed normal,
+probe and restored builds. ISO verifier passed2 bodies/1773 instructions/
+17 constants/5 spans/2 imports/65 callers/one serialized example. All2152
+RomFS products and original gor_02.s remain byte-identical. No new original
+asset or PPC data, binary, pack, story/dialogue/art/music/SFX/geometry/lighting
+change is committed. See [assets](ASSETS.md).
+
+Restored normal executable SHA256 393c7928f0eabcc817cb1c7d3b7d43e4a9704cebd00036fa8922ee000d041427 matches pre-probe build.
+Forty-second isolated normal startup inspected: original storybook and opening US text, App60 FPS / speed100%, no visible asset-error console. Startup is not field/physical-device performance proof. Exact source/product/dependency/native/test/harness/capture
+hashes and logs are in ignored artifacts/animation-native-main-validation-manifest.json.
+Scoped code/docs commits preserve shared index and unrelated concurrent work.
+
+Limitations: this completes the raw native source Main owner, not normal Game
+activation, native shape assembly/publication or full Draw/Inner/GPU ownership.
+Existing normal Mario/NPC paths remain unchanged until the separate source-
+complete→snapshot/assemble→publish owner and same-pass Game simulation barrier
+are connected. Current native pending guards alone do not prove the whole Game
+barrier. Caller must serialize direct pose/file/camera/VM mutations under the
+same producer pass; generic external writes are not transactional. Native heap
+limits, original Gekko FPSCR/NaN payload/exception/alignment parity, original
+field visual/numeric parity and physical New2DS XL performance remain open.
+Next implement complete retained native presentation publication after raw
+Main, connect Game barriers before next GP/camera/story/pose/room mutation,
+then activate/measure source actor rendering and finish original event/object
+integration. Reuse the actual Main callback for retained NPC/Draw/Inner owners;
+no per-tick dedup or render-owned clock. Full-game goal remains active.
+
 ### Full original Main output interpolation and retained geometry (2026-10-15)
 
 Code commit c725107a1cbd00ad2f1db8c5ad37ece49332fa46 implements complete Main80040084..80040540:

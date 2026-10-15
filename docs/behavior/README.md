@@ -1336,3 +1336,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Retained original weapon UI work](battle/RETAINED_WEAPON_UI_WORK.md): original common work allocation, subtype initialization and exact retirement.
 
 - [Retained Main full output interpolation](display/RETAINED_ANIMATION_MAIN_INTERPOLATION.md): original vectors/cubic nodes and final cache publications through40540, scalar/replay/geometry continuation; native Main/pass/shape integration and normal NPC activation remain open.
+
+- [Native retained source Main executor](display/NATIVE_RETAINED_MAIN.md): complete actual-VM Main, shared GQR state, retained linked frames and reached facing; raw completion/producer guards validated, native shape/Game/Draw/Inner/GPU activation remains open.

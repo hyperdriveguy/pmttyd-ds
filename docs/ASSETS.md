@@ -2946,3 +2946,20 @@ shared-pack write, new artwork/audio or changed story payloads. Native full
 regeneration skipped; Python fixtures independently use read-only ISO/empty
 outputs. Nintendo/Intelligent Systems rights retained; local extraction/tracking
 confers no new license. No ISO, extracted original or compiled binary committed.
+
+### 2026-10-15 Native retained Main ownership
+
+No asset extraction, conversion, scaling, geometry/lighting, story/dialogue,
+music or SFX changes. All2152 private RomFS products and original local
+field-map-npc/gor_02.s remain byte-identical to the accepted interpolation
+pack; source hashes/licensing remain as recorded above. Main consumes the
+actual original VM/model/texture/timeline/tangent/scratch aliases through
+existing source-backed bindings. Shared GQR state and semantic camera tokens
+are explicit native platform adaptations, not generated replacement assets.
+Original ISO/PPC/extractions/packs/binaries remain outside history under the
+existing Nintendo/Intelligent Systems local-use licensing restrictions.
+The isolated validation tree additionally admits exact committed lifecycle
+code/tests from ed888f61 (original pose Release/shared file ownership) because
+the current native interface depends on them; no private artifact is committed.
+Exact source/product hashes and dependency paths are in ignored
+artifacts/animation-native-main-validation-manifest.json.
