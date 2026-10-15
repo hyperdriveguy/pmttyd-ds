@@ -1,6 +1,8 @@
 #pragma once
 #include "battle_actor.hpp"
 #include <array>
+// Scratch12 words/30(hex) bytes belongs to caller. init clears all and sets
+// word0=1; CheckCounter itself resets only count28 after a nonnull attacker.
 namespace ttyd {
 // Original 0x30-byte scratch storage; offsets remain explicit for CheckDamage.
 struct BattleCounterWork {

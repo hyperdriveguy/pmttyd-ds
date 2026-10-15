@@ -2,6 +2,9 @@
 #include "battle_packed_hit.hpp"
 #include "battle_candidate_choice.hpp"
 
+// Stack/private candidate buffer must not escape sample/choose callbacks.
+// Native outputs can alias; all raw output operands are written, without sentinel
+// skipping. Sample scalar controls offset sign, not candidate count/readiness.
 namespace ttyd {
 // Providers own the recovered sampling/choice bodies and source domains.
 // Each invocation supplies its own buffer. No shared attack buffer or fixed

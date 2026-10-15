@@ -7,6 +7,8 @@ namespace {
 uint32_t word(const EventMemoryServices& s,uint32_t a) {assert(s.word);return s.word(s.user,a);}
 int32_t sw(uint32_t v) {return v<=0x7fffffff?int32_t(v):int32_t(int64_t(v)-0x100000000LL);}
 }
+// unit170 horizontal speed, 174 acceleration/gravity field. Movement setter
+// resolves a FLOAT operand; SetPos below instead resolves INTEGER coordinates.
 void storePackedMovementFloat(uint32_t unit,bool acceleration,float value,const EventMemoryServices& s) {
     uint32_t bits;std::memcpy(&bits,&value,4);assert(s.storeWord);s.storeWord(s.user,unit+(acceleration?0x174:0x170),bits);
 }
@@ -18,10 +20,15 @@ int32_t packedMovementSetterEvent(EventEntry& e,bool acceleration,const BattleUn
     const uint32_t battle=word(s.memory,0x8041eb90),unit=s.unit(s.user,battle,id);
     storePackedMovementFloat(unit,acceleration,value,s.memory);return 2;
 }
+// Home30/visible3c: each axis loads then stores, not a preloaded vector. Zero
+// destination is not optional. Aliasing outputs may change subsequent source reads.
 void copyPackedUnitPosition(uint32_t unit,bool home,const std::array<uint32_t,3>& outputs,const EventMemoryServices& s) {
     assert(s.storeWord);const uint32_t offset=home?0x30:0x3c;
     for(unsigned i=0;i<3;++i)s.storeWord(s.user,outputs[i],word(s,unit+offset+4*i));
 }
+// Resolve/convert all3 integers, including raw f1194d80 sentinels, BEFORE
+// current unit lookup. Snapshot previous XYZ, replace sentinel axes, then store
+// all3 axes. Sentinel detection uses RAW operand, not the resolved numeric value.
 int32_t packedSetUnitPositionEvent(EventEntry& e,const BattleUnitEventServices& s) {
     const uint32_t args=e.arguments;assert(s.values.resolve && s.translate && s.unit && s.memory.storeWord);
     const int32_t actor=s.values.resolve(s.values.user,e,sw(word(s.memory,args))),id=s.translate(s.user,e,actor);
@@ -33,6 +40,9 @@ int32_t packedSetUnitPositionEvent(EventEntry& e,const BattleUnitEventServices& 
     for(unsigned i=0;i<3;++i)s.memory.storeWord(s.memory.user,unit+0x3c+4*i,coordinates[i]);
     return 2;
 }
+// Snapshot XYZ before conversion/output callbacks. Visible GetPos skips
+// raw sentinel f1194d80; GetHomePos writes even that destination. Do not share
+// a generic optional-output implementation with raw pointer leaves.
 int32_t packedUnitPositionEvent(EventEntry& e,bool home,const BattleUnitEventServices& s) {
     const uint32_t args=e.arguments;assert(s.values.resolve && s.translate && s.unit && s.values.store);
     const int32_t actor=s.values.resolve(s.values.user,e,sw(word(s.memory,args)));

@@ -27,6 +27,9 @@ struct Ops {
     float subtractProduct(float a,float b,float c) const {const auto& p=s.motion.query.common;assert(p.negativeMultiplySubtract);return p.negativeMultiplySubtract(user,a,b,c);}
     int32_t divideWord(int32_t a,int32_t b) const {assert(s.divideWord);return s.divideWord(user,a,b);}
     float radians(uint32_t unit) const {const float tau=real(m,0x804222c0),theta=real(m,unit+0x1b4),degrees=real(m,0x804222bc);return div(mul(tau,theta),degrees);}
+    // Curve phase178 increments by gravity-field174*(coefficient*sin(theta)+1)
+    // using source DOUBLE FMA then single rounding. Initial prior-Y1bc zero is
+    // stored TWICE. Theta1b4/step1b8 remain degrees until radians conversion.
     void advance(uint32_t unit,int32_t mode,bool initial) const {
         float rad;
         if(initial) {const float zero=real(m,0x80422280),tau=real(m,0x804222c0);store(m,unit+0x1bc,zero);const float degrees=real(m,0x804222bc);store(m,unit+0x1bc,zero);const float theta=real(m,unit+0x1b4);rad=div(mul(tau,theta),degrees);}else rad=radians(unit);
@@ -36,7 +39,12 @@ struct Ops {
     void theta(uint32_t unit) const {const float theta=real(m,unit+0x1b4),step=real(m,unit+0x1b8);store(m,unit+0x1b4,add(theta,step));store(m,unit+0x1b4,revisePackedJumpAngle(real(m,unit+0x1b4),s));}
 };
 }
+// Reads alliance/kind BEFORE nullable final flag test; unit must be admitted.
+// Reject alliance!=0, kind223, status1/2/9/27 or status-word138 mask1.
 int32_t packedACPossibility(uint32_t unit,const BattleActorServices& s) {assert(s.byte);if(s.byte(s.user,unit+0xc)!=0 || word(s.memory,unit+8)==223)return 0;for(int id:{1,2,9,27})if(checkPackedBattleStatus(unit,id,s))return 0;return unit && (word(s.memory,unit+0x138)&1)?0:1;}
+// fmod by original double360, round single, NaN->source0. Negative results
+// add original float360 then cap>=360 to0. Preserve sign-bit zero/NaN handling
+// and source loads rather than a generic host angle-normalization shortcut.
 float revisePackedJumpAngle(float input,const BattlePackedMarioJumpServices& s) {const auto& p=s.motion.query.common.position;const auto& m=p.unit.memory;assert(s.fmod && s.motion.roundDouble);const double degrees=wide(m,0x802bf240);float result=s.motion.roundDouble(p.numericUser,s.fmod(p.numericUser,double(input),degrees));if(result!=result)result=real(m,0x8041f448);const float zero=real(m,0x8041f448);if(result<zero) {const float degreesFloat=real(m,0x8041f45c);assert(p.add);result=p.add(p.numericUser,result,degreesFloat);if(result>=degreesFloat)result=zero;}return result;}
 int32_t packedMarioJumpPositionEvent(EventEntry& e,int32_t first,const BattlePackedMarioJumpServices& s) {
     const auto& motion=s.motion;const auto& p=motion.query.common.position;const auto& u=p.unit;const auto& m=u.memory;const uint32_t args=e.arguments;Ops op{s,m,p.numericUser};assert(u.values.resolve && u.translate && u.unit);
@@ -45,6 +53,9 @@ int32_t packedMarioJumpPositionEvent(EventEntry& e,int32_t first,const BattlePac
     const int32_t y=resolve(ry);const uint32_t rz=word(m,args+12);const float fy=op.cvt(y);
     const int32_t z=resolve(rz);const uint32_t rn=word(m,args+16);const float fz=op.cvt(z);
     const int32_t count=resolve(rn),mode=resolve(word(m,args+20)),sound=resolve(word(m,args+24));const uint32_t battle=word(m,0x8041eb90),unit=u.unit(u.user,battle,id);
+    // Resolve all operands every invocation. First mode1 selects phase2 and
+    // skips ordinary setup. Others set baseline154/target160, heading17c,
+    // distance180, count16c; zero derived count returns2, with no forced1.
     if(first) {
         e.initialized=1;if(mode==1)e.initialized=2;
         else {
@@ -54,6 +65,11 @@ int32_t packedMarioJumpPositionEvent(EventEntry& e,int32_t first,const BattlePac
             const int32_t n=sw(word(m,unit+0x16c));if(n==0) {const float d=real(m,unit+0x180),speed=real(m,unit+0x170);assert(u.truncateFloat);word(m,unit+0x16c,uint32_t(u.truncateFloat(u.user,op.div(d,speed))));}else {const float d=real(m,unit+0x180),nf=op.cvt(n);store(m,unit+0x170,op.div(d,nf));}
             const int32_t nr=sw(word(m,unit+0x16c));const float speed=real(m,unit+0x170),distance=real(m,unit+0x180),nf=op.cvt(nr),residual=op.subtractProduct(nf,speed,distance);
             const int32_t setupN=sw(word(m,unit+0x16c));if(setupN==0)return 2;
+            // Per-axis increments1a8..1b0 divide target-baseline by fresh
+            // count; 174=source pi/count, 178=0. Angle starts90; step is float
+            //360/count for mode<3, INTEGER div360/count converted for others.
+            // Height184 rounds after each double ((distance-20)/6)+47;
+            // modes2/4 use distinct source multipliers, not guessed jump heights.
             float zeroCurve=0,pi=0;
             for(unsigned i=0;i<3;++i) {const int32_t n= i==0?setupN:sw(word(m,unit+0x16c));const float target=real(m,unit+0x160+4*i),base=real(m,unit+0x154+4*i),diff=op.sub(target,base),divisor=op.cvt(n);if(i==0) {zeroCurve=real(m,0x80422280);pi=real(m,0x804222c4);}store(m,unit+0x1a8+4*i,op.div(diff,divisor));}
             store(m,unit+0x178,zeroCurve);store(m,unit+0x174,op.div(pi,op.cvt(sw(word(m,unit+0x16c)))));
@@ -67,12 +83,20 @@ int32_t packedMarioJumpPositionEvent(EventEntry& e,int32_t first,const BattlePac
         }
     }
     const int32_t phase=e.initialized<128?e.initialized:int32_t(e.initialized)-256;
+    // Baseline advances by all3 increments; visibleY=FMA(height, sin(phase), Y).
+    // Signed count<3 may clamp up to targetY. Decrement tests EXACT U32 zero,
+    // unlike generic jump's signed>0. Completion resets velocity via negative
+    // (priorY-priorY), not folded0, then writes source gravity constant.
     if(phase==1) {
         for(unsigned i=0;i<3;++i) {const float base=real(m,unit+0x154+4*i),delta=real(m,unit+0x1a8+4*i);store(m,unit+0x154+4*i,op.add(base,delta));}
         auto v=vector(m,unit+0x3c);store(m,unit+0x1bc,v[1]);v[0]=real(m,unit+0x154);const float q=op.sine(real(m,unit+0x178)),height=real(m,unit+0x184),baseY=real(m,unit+0x158);v[1]=op.fused(height,q,baseY);v[2]=real(m,unit+0x15c);visible(m,unit,v);
         const float targetY=real(m,unit+0x164);if(targetY>v[1] && sw(word(m,unit+0x16c))<3) {v[1]=targetY;visible(m,unit,v);}store(m,unit+0x1bc,v[1]);op.advance(unit,mode,false);op.theta(unit);word(m,unit+0x16c,word(m,unit+0x16c)-1);if(word(m,unit+0x16c)!=0)return 0;
         v[1]=real(m,unit+0x164);visible(m,unit,v);const float last=real(m,unit+0x1bc),g=real(m,0x804222cc);store(m,unit+0x178,negate(op.sub(last,last)));store(m,unit+0x174,g);return 1;
     }
+    // Eligibility failure returns2. Otherwise preserve self-subtraction,
+    // signed zero/NaN and double services; set count1/phase3 and yield0 before
+    // continuation. Phase3 moves XY, snaps no generic target and ends on U32 zero.
+    // Original overwritten sound scratch loads remain explicitly unmodeled here.
     if(phase==2) {
         assert(s.eligible);if(!s.eligible(s.user,unit))return 2;
         const float last=real(m,unit+0x1bc),g=real(m,0x804222cc),difference=op.sub(last,last),ninety=real(m,0x804222c8);const double divisor=wide(m,0x802ee730);

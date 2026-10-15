@@ -12,7 +12,13 @@ float negate(float v) {uint32_t bits;std::memcpy(&bits,&v,4);bits^=0x80000000;st
 std::array<float,3> vector(const EventMemoryServices& s,uint32_t a) {std::array<float,3> values;for(unsigned i=0;i<3;++i)values[i]=real(s,a+4*i);return values;}
 void visible(uint32_t unit,const std::array<float,3>& values,const EventMemoryServices& s) {for(unsigned i=0;i<3;++i)store(s,unit+0x3c+4*i,values[i]);}
 }
+// Unit baseline154/target160; each axis skips exact source float sentinel
+//804226c4, distinct from raw EVT operand sentinel f1194d80. Input vector copies
+// before stores; source sentinel is freshly read per axis.
 void setPackedMovePosition(uint32_t unit,bool target,const std::array<float,3>& input,const EventMemoryServices& s) {const auto values=input;const uint32_t offset=target?0x160:0x154;for(unsigned i=0;i<3;++i)if(values[i]!=real(s,0x804226c4))store(s,unit+offset+4*i,values[i]);}
+// Source radians=(tau80422690*heading)/degrees80422694 with single
+// operations, double sin/cos then round. Z flips speed's IEEE sign bit. X store
+// precedes old-Z read: aliased addresses must not become simultaneous updates.
 void integratePackedMoveHorizontal(uint32_t x,uint32_t z,float speed,float heading,const BattlePackedMovePositionServices& s) {
     const auto& c=s.query.common;const auto& p=c.position;const auto& m=p.unit.memory;assert(p.multiply && p.add && c.divide && s.sine && s.cosine && s.roundDouble);
     const float tau=real(m,0x80422690),degrees=real(m,0x80422694),product=p.multiply(p.numericUser,tau,heading),rad=c.divide(p.numericUser,product,degrees);
@@ -30,6 +36,10 @@ int32_t packedMovePositionEvent(EventEntry& e,int32_t firstCall,const BattlePack
     const int32_t z=resolve(rawZ);const uint32_t rawCount=word(m,args+16);const float targetZ=convert(z);
     const int32_t count=resolve(rawCount),soundMode=resolve(word(m,args+20)),soundType=resolve(word(m,args+24));
     const uint32_t battle=word(m,0x8041eb90),unit=u.unit(u.user,battle,id);
+    // Visible3c ->baseline154, target160; count16c, heading17c, distance180,
+    // direction188=1/ff only for nonzero horizontal delta. Count0 computes
+    // trunc(distance/speed), forces1 only here, and adjusts residual speed;
+    // explicit count divides distance by count. No division/finiteness guard.
     if(firstCall!=0) {
         e.initialized=1;word(m,unit+0x16c,uint32_t(count));const auto current=vector(m,unit+0x3c);
         setPackedMovePosition(unit,false,current,m);setPackedMovePosition(unit,true,{targetX,targetY,targetZ},m);
@@ -46,6 +56,9 @@ int32_t packedMovePositionEvent(EventEntry& e,int32_t firstCall,const BattlePack
         }else {const float d=real(m,unit+0x180),n=convert(sw(storedCount));store(m,unit+0x170,c.divide(p.numericUser,d,n));}
         loadPackedUnitSoundMode(soundType,soundMode,unit+0x1c4,unit+0x18c,m);
     }
+    // Integrate and publish baseline, then decrement U32 count. Signed>0
+    // controls movement sound and returns0; otherwise snap to complete target,
+    // stop retained sound and return1. No render-delta multiplication is added.
     const float speed=real(m,unit+0x170),heading=real(m,unit+0x17c);integratePackedMoveHorizontal(unit+0x154,unit+0x15c,speed,heading,s);
     const auto baseline=vector(m,unit+0x154);visible(unit,baseline,m);word(m,unit+0x16c,word(m,unit+0x16c)-1);
     if(sw(word(m,unit+0x16c))>0) {controlPackedUnitMovementSound(unit,s.sound);return 0;}

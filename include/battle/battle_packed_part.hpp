@@ -2,6 +2,8 @@
 #include "battle_unit_event.hpp"
 #include "battle_actor.hpp"
 
+// Guest part pointers and registry IDs are distinct. Caller admits linked
+// lists/output storage/numeric providers; no null-head or cycle fallback exists.
 namespace ttyd {
 struct BattlePartPositionServices {
     BattleUnitEventServices unit;

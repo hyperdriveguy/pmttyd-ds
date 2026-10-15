@@ -10,7 +10,12 @@ int32_t signedWord(uint32_t value) {return value<=0x7fffffff?int32_t(value):int3
 int32_t signedByte(uint32_t value) {value&=255;return value<128?int32_t(value):int32_t(value)-256;}
 float real(const EventMemoryServices& s,uint32_t address) {const uint32_t bits=word(s,address);float value;std::memcpy(&value,&bits,4);return value;}
 }
+// Signed alliance c: 0<->1, other values unchanged. This is not Boolean !side.
 int32_t packedEnemyBelong(uint32_t unit,const BattleActorServices& s) {assert(s.byte);const int32_t belong=signedByte(s.byte(s.user,unit+0xc));return belong==0?1:belong==1?0:belong;}
+// Capture B first, resolve actor/target/part then raw outputs. Keep actor
+// home Y; target hit query writes Y to discarded scratch. Sample weapon0 with
+// admission01001240/attributes01000000 and negated low-byte alliance direction;
+// choose mode4 ALWAYS runs, even with no candidates.
 int32_t packedTakeoffPositionEvent(EventEntry& e,const BattlePackedTakeoffServices& s) {
     const auto& p=s.position;const auto& u=p.unit;const auto& m=u.memory;const uint32_t args=e.arguments;
     const uint32_t battle=word(m,0x8041eb90);
@@ -31,6 +36,10 @@ int32_t packedTakeoffPositionEvent(EventEntry& e,const BattlePackedTakeoffServic
     BattleCandidateBuffer buffer; // Stack-owned semantic storage; providers initialize all readable fields.
     const int32_t sampled=s.core.sample(s.core.user,buffer,0,actorId,belong,0x01001240,0x01000000,signedByte(0u-side));
     int32_t chosenUnit,chosenPart;s.core.choose(s.core.user,buffer,4,chosenUnit,chosenPart);
+    // Default60. Positive signed candidate count may replace ONLY X when
+    // nearer than original target. Pointer-equal requested/chosen part uses60,
+    // otherwise30; sample's nonzero scalar negates only in this candidate branch.
+    // Fresh signed alliance-row direction multiplies offset before XYZ truncate.
     int32_t magnitude=60;
     if(signedByte(buffer.bytes[0xa6c])>0) {
         chosenUnit=u.translate(u.user,e,chosenUnit);const uint32_t candidate=u.unit(u.user,battle,chosenUnit);

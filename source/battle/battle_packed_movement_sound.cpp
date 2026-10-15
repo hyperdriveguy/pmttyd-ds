@@ -8,8 +8,13 @@ int32_t half(const EventMemoryServices& s,uint32_t a) {assert(s.half);const uint
 void word(const EventMemoryServices& s,uint32_t a,uint32_t v) {assert(s.storeWord);s.storeWord(s.user,a,v);}
 void half(const EventMemoryServices& s,uint32_t a,int32_t v) {assert(s.storeHalf);s.storeHalf(s.user,a,uint16_t(v));}
 std::array<float,3> visible(uint32_t unit,const EventMemoryServices& s) {std::array<float,3> position;for(unsigned i=0;i<3;++i) {const uint32_t bits=word(s,unit+0x3c+4*i);std::memcpy(&position[i],&bits,4);}return position;}
+// Original trigger sentinel-250000000 and zero argument are forwarded
+// unchanged; position is a semantic vector, not an invented guest stack pointer.
 uint32_t trigger(uint32_t unit,uint32_t key,const std::array<float,3>& position,const BattlePackedMovementSoundServices& s) {assert(s.playback.trigger);return s.playback.trigger(s.playback.user,unit,key,-250000000,0,position);}
 }
+// Always reset alternation half14=0, handle18=-1. Mode-2 retains keys/timing;
+// mode-1/type0..3 chooses source offsets8/18/0/28 (hex), type2 zeros periods.
+// Other modes clear keys/periods. Initial countdown12 copies initial period+c.
 void loadPackedUnitSoundMode(int32_t type,int32_t mode,uint32_t source,uint32_t dest,const EventMemoryServices& s) {
     half(s,dest+0x14,0);word(s,dest+0x18,0xffffffff);
     if(mode!=-2) {
@@ -21,6 +26,11 @@ void loadPackedUnitSoundMode(int32_t type,int32_t mode,uint32_t source,uint32_t 
     }
     half(s,dest+0x12,half(s,dest+0xc));
 }
+// Record keys0/4. No keys returns after discarded scratch-template reads.
+// First-only mode starts ONCE with supplied position, then updates retained
+// handle18 using freshly computed part/unit position. Periodic mode instead
+// decrements signed half12 through0 to-1, alternates low parity of14, loads
+// period e/10 and triggers with ORIGINAL supplied position; no handle retained.
 void controlPackedMovementSound(uint32_t unit,uint32_t record,uint32_t part,const std::array<float,3>& supplied,const BattlePackedMovementSoundServices& s) {
     const auto& m=s.position.memory.memory;const auto initial=supplied;
     // Original scratch-vector template is read even though all axes are replaced
@@ -39,6 +49,8 @@ void controlPackedMovementSound(uint32_t unit,uint32_t record,uint32_t part,cons
     const uint32_t key=word(m,record+(firstTurn?0:4));const int32_t period=half(m,record+(firstTurn?0xe:0x10));half(m,record+0x12,period);
     if(key)trigger(unit,key,initial,s); // Periodic return has no retained-handle store.
 }
+// Unit record18c, source mode table1c4. End stops only retained handle18;
+// -1 is no-op. Periodic one-shots are not retroactively tracked/stopped here.
 void endPackedMovementSound(uint32_t record,const BattlePackedMovementSoundServices& s) {const auto& m=s.position.memory.memory;const uint32_t handle=word(m,record+0x18);if(handle==0xffffffff)return;assert(s.playback.off);s.playback.off(s.playback.user,handle);word(m,record+0x18,0xffffffff);}
 void controlPackedUnitMovementSound(uint32_t unit,const BattlePackedMovementSoundServices& s) {const auto position=visible(unit,s.position.memory.memory);controlPackedMovementSound(unit,unit+0x18c,0,position,s);}
 void endPackedUnitMovementSound(uint32_t unit,const BattlePackedMovementSoundServices& s) {endPackedMovementSound(unit+0x18c,s);}

@@ -3,6 +3,8 @@
 #include "event_dispatch.hpp"
 #include <optional>
 
+// Menu cursor types, registry IDs and candidate row indices are separate
+// domains. Unsupported cursor type yields nullopt, not an original weapon0 result.
 namespace ttyd {
 struct BattlePackedSelectionServices {
     BattleActorServices memory;

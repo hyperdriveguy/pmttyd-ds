@@ -1,6 +1,10 @@
 #include "battle_packed_pad.hpp"
 #include <cassert>
 namespace ttyd {
+// Two12-byte snapshots current0/previous+c: buttons U16, main/sub axes
+// signed bytes2..5, triggers6/7, analog A/B8/9, retained A/Ba/b. Four30-word
+// histories at18/90/108/180(hex): trigger/repeat/held/released; repeat bytes1f8/1f9.
+// Each history index reads all4 banks before moving to next; no bulk struct copy.
 BattlePadWork readPackedBattlePad(uint32_t a,const BattleActorServices& s){assert(s.memory.half && s.memory.word && s.byte);BattlePadWork p;
  auto snapshot=[&](uint32_t at,BattlePadSnapshot& v){v.buttons=s.memory.half(s.memory.user,at);v.mainX=int8_t(s.byte(s.user,at+2));v.mainY=int8_t(s.byte(s.user,at+3));v.subX=int8_t(s.byte(s.user,at+4));v.subY=int8_t(s.byte(s.user,at+5));v.leftTrigger=s.byte(s.user,at+6);v.rightTrigger=s.byte(s.user,at+7);v.analogA=s.byte(s.user,at+8);v.analogB=s.byte(s.user,at+9);v.retainedA=s.byte(s.user,at+10);v.retainedB=s.byte(s.user,at+11);};snapshot(a,p.current);snapshot(a+12,p.previous);
  for(unsigned i=0;i<30;++i){p.triggers.entries[i]=s.memory.word(s.memory.user,a+0x18+4*i);p.repeats.entries[i]=s.memory.word(s.memory.user,a+0x90+4*i);p.held.entries[i]=s.memory.word(s.memory.user,a+0x108+4*i);p.released[i]=s.memory.word(s.memory.user,a+0x180+4*i);}p.repeatPhase=s.byte(s.user,a+0x1f8);p.repeatCounter=s.byte(s.user,a+0x1f9);return p;

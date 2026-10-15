@@ -1,5 +1,7 @@
 #pragma once
 #include "battle_packed_part.hpp"
+// Source sound record offsets are bytes, not an NDSP voice struct. Playback
+// owns actual sound lookup/handle lifetime; trigger/position/off must be admitted.
 namespace ttyd {
 struct BattleSoundPlaybackServices {
     void* user=nullptr;

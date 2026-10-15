@@ -14,6 +14,8 @@ void half(const BattleActorServices& s,uint32_t a,int32_t v) {assert(s.memory.st
 void byte(const BattleActorServices& s,uint32_t a,uint8_t v) {assert(s.memory.storeByte);s.memory.storeByte(s.memory.user,a,v);}
 float real(const BattleActorServices& s,uint32_t a) {const uint32_t bits=word(s,a);float value;std::memcpy(&value,&bits,4);return value;}
 uint32_t row(uint32_t base,int32_t i) {return base+4+36u*uint32_t(i);}
+// Compact36-byte rows in source load/store order: four two-word captures,
+// then trailing word. Do not memcpy across observable/aliasable services.
 void remove(const BattleActorServices& m,uint32_t base,int32_t index,int32_t& n) {
     for(int32_t j=index;j<n-1;++j) {
         const uint32_t dest=row(base,j),src=dest+36;
@@ -23,12 +25,17 @@ void remove(const BattleActorServices& m,uint32_t base,int32_t index,int32_t& n)
     --n;
 }
 }
+// Original minimum/offset/divisor80422668/6c/70 -> trunc bucket, upper cap48
+// only. Negative direction maps48-q; nonnegative keeps q. No lower clamp.
 int32_t packedSamplingForwardLevel(float x,int32_t direction,const BattlePackedSamplingServices& s) {
     const auto& c=s.common;const auto& p=c.position;const auto& m=p.memory;int32_t q=0;
     const float minimum=real(m,0x80422668);
     if(x>minimum) {const float offset=real(m,0x8042266c),denominator=real(m,0x80422670);assert(p.add && c.divide && p.unit.truncateFloat);const float sum=p.add(p.numericUser,offset,x),value=c.divide(p.numericUser,sum,denominator);q=p.unit.truncateFloat(p.unit.user,value);if(q>48)q=48;}
     return direction<0?sw(48u-uint32_t(q)):q;
 }
+// Publish weapon0, actor ab8, side abc, admission ac0, attributes ac4, direction
+// ac8 BEFORE actor/global queries. Actor27c mask10 swaps exclusive100/200
+// admission and returns1; otherwise0. Scalar is this swap, not candidate count.
 int32_t samplePackedBattleCandidates(const BattleCandidateRecords& b,uint32_t weapon,int32_t actor,int32_t belong,uint32_t admission,uint32_t attributes,int32_t direction,const BattlePackedSamplingServices& s) {
     const auto& bm=b.bytes;const uint32_t a=b.address;
     word(bm,a,weapon);word(bm,a+0xab8,uint32_t(actor));byte(bm,a+0xabc,uint8_t(belong));word(bm,a+0xac0,admission);word(bm,a+0xac4,attributes);byte(bm,a+0xac8,uint8_t(direction));
@@ -43,6 +50,8 @@ int32_t samplePackedBattleCandidates(const BattleCandidateRecords& b,uint32_t we
 void updatePackedBattleCandidates(const BattleCandidateRecords& b,const BattlePackedSamplingServices& s) {
     const auto& c=s.common;const auto& p=c.position;const auto& m=p.memory;const auto& bm=b.bytes;const uint32_t a=b.address;
     const uint32_t initialAdmission=word(bm,a+0xac0),battle=currentBattleAddress(m);
+    // Top admission80000000 publishes count byteff(-1) ONLY, leaving cursor/
+    // rows/ranks untouched. Ordinary path later resets cursor ab7 and count a6c.
     if(initialAdmission&0x80000000) {byte(bm,a+0xa6c,255);return;}
     auto truncate=[&](float v) {assert(p.unit.truncateFloat);return p.unit.truncateFloat(p.unit.user,v);};
     auto convert=[&](int32_t v) {assert(c.convert);return c.convert(p.numericUser,v);};
@@ -51,6 +60,10 @@ void updatePackedBattleCandidates(const BattleCandidateRecords& b,const BattlePa
     auto fma=[&](float x,float y,float z) {assert(p.fma);return p.fma(p.numericUser,x,y,z);};
     auto unitAt=[&](uint32_t r) {return battleRegistryUnit(battle,half(bm,r),m);};
     auto partAt=[&](uint32_t r) {const uint32_t u=unitAt(r);return packedUnitPart(u,half(bm,r+2),m.memory);};
+    //64 units skip status27/attribute40; walk kind+b4 parts through next0,
+    // excluding part1ac10000. Geometry uses part188/194 layers, NOT hit leaf
+    //170/17c. Extra Y offset28*unit114 applies when unit attribute2 is clear.
+    // Facing is part bd; sort bias includes forward1a0 and optional300*direction.
     int32_t total=0;
     for(int32_t id=0;id<64;++id) {
         const uint32_t unit=battleRegistryUnit(battle,id,m);if(!unit)continue;
@@ -65,6 +78,9 @@ void updatePackedBattleCandidates(const BattleCandidateRecords& b,const BattlePa
             const float hitX=fma(sign,productX,world[0]),sortZ=add(zOffset,world[2]);
             const float offY=real(m,part+0x18c),offY2=real(m,part+0x198),scaleY=real(m,unit+0x114),sumY=add(offY,offY2),hitY=fma(scaleY,sumY,baseY);
             const float offZ=real(m,part+0x190),offZ2=real(m,part+0x19c),scaleZ=real(m,unit+0x114),sumZ=add(offZ,offZ2),hitZ=fma(scaleZ,sumZ,world[2]);
+            // Row: ID/part0/2, hitXYZ signed halves4/6/8, sortXYZ words c/10/14,
+            // bias18, forward/lane bytes1c/1d, word20=-1. Truncate/narrow sort
+            // coordinates to signed16 before word storage; lane threshold Z<-30.
             const uint32_t r=row(a,total);half(bm,r,id);half(bm,r+2,sw(word(m,definition)));half(bm,r+4,truncate(hitX));half(bm,r+6,truncate(hitY));half(bm,r+8,truncate(hitZ));word(bm,r+0x18,0);word(bm,r+0x20,0xffffffff);
             if((word(m,unit+0x104)&1) && !(word(m,part+0x1ac)&0x20000)) {const int32_t direction=sb(byte(bm,a+0xac8));word(bm,r+0x18,word(bm,r+0x18)+uint32_t(300*direction));}
             const int32_t forward=half(m,part+0x1a0),sortY=sh(uint16_t(truncate(baseY)));const uint32_t bias=word(bm,r+0x18)+uint32_t(forward*facing);const int32_t z=sh(uint16_t(truncate(sortZ)));word(bm,r+0x18,bias);
@@ -74,6 +90,9 @@ void updatePackedBattleCandidates(const BattleCandidateRecords& b,const BattlePa
         }
     }
     byte(bm,a+0xab7,0);byte(bm,a+0xa6c,uint8_t(total));int32_t n=sb(byte(bm,a+0xa6c));
+    // Admission filtering then attribute filtering then same-unit/occlusion
+    // passes compact rows separately. Fresh masks/IDs/providers may mutate;
+    // keep reject short-circuit order and repeated Monosiri lookup on success.
     for(int32_t i=0;i<n;) {
         const uint32_t r=row(a,i),unit=unitAt(r),part=packedUnitPart(unit,half(bm,r+2),m.memory),mask=word(bm,a+0xac0);
         auto kind=[&] {return sw(word(m,unit+8));};auto range=[&](int32_t low,int32_t high) {const int32_t k=kind();return k>=low && k<=high;};
@@ -114,6 +133,10 @@ void updatePackedBattleCandidates(const BattleCandidateRecords& b,const BattlePa
         }
         if(reject)remove(bm,a,i,n);else ++i;
     }
+    // Admission100000 removes part mask2 when same-unit mask1 peer remains.
+    // Attribute1000000 occlusion compares same-lane directional sortX peers;
+    // blocker flags40/400000 and swapped actor self have explicit exemptions.
+    // packedRegistryPart for blocker recaptures global B, unlike earlier unitAt.
     if(word(bm,a+0xac0)&0x100000)for(int32_t i=0;i<n;) {
         const uint32_t r=row(a,i),part=partAt(r);bool reject=false;
         if(word(m,part+0x1ac)&2)for(int32_t j=0;j<n;++j) {const uint32_t peer=row(a,j);if(peer!=r && half(bm,r)==half(bm,peer)) {const uint32_t other=partAt(peer);if(word(m,other+0x1ac)&1) {reject=true;break;}}}
@@ -131,6 +154,10 @@ void updatePackedBattleCandidates(const BattleCandidateRecords& b,const BattlePa
         }
         if(reject)remove(bm,a,i,n);else ++i;
     }
+    // Publish narrowed count then identity rank bytes. Pair-swap sort key
+    //=10*U32bias+signed hitX, with wrap. Direction>0 swaps greater; otherwise
+    // swaps <= including equality. This is NOT a stable sort (even positive
+    // direction can reorder ties indirectly); do not substitute stable_sort.
     byte(bm,a+0xa6c,uint8_t(n));const int32_t published=sb(byte(bm,a+0xa6c));for(int32_t i=0;i<published;++i)byte(bm,a+0xa6d+uint32_t(i),uint8_t(i));
     const int32_t direction=sb(byte(bm,a+0xac8));
     for(int32_t i=0;i<published-1;++i)for(int32_t j=i+1;j<published;++j) {

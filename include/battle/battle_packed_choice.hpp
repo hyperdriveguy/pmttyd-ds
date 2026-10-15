@@ -2,6 +2,9 @@
 #include "battle_packed_hit.hpp"
 #include "battle_candidate_choice.hpp"
 
+// Candidate records may be guest memory or a private BE byte buffer. Callback
+// outputs/count/rank reads remain live. Caller admits <=74 readable rows and
+// valid indices; this helper does not repair weights or clamp invalid RNG bounds.
 namespace ttyd {
 struct BattleCandidateRecords {BattleActorServices bytes;uint32_t address=0;};
 BattleCandidateRecords privateBattleCandidateRecords(BattleCandidateBuffer&);

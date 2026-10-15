@@ -1,6 +1,8 @@
 #pragma once
 #include "battle_unit_event.hpp"
 
+// Raw copy APIs and EVT wrappers have different snapshot/sentinel contracts.
+// Coordinates remain source-space IEEE words; no render-axis conversion occurs.
 namespace ttyd {
 // Original leaf loads/stores each axis in order. Output0 is not optional.
 void copyPackedUnitPosition(uint32_t unit,bool home,const std::array<uint32_t,3>& outputs,const EventMemoryServices&);

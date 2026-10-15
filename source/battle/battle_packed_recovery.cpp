@@ -13,6 +13,8 @@ int32_t half(uint32_t at, const BattleActorServices &a) {
 }
 bool party(int32_t kind) { return kind >= 224 && kind < 231; }
 } // namespace
+// Read kind, current B and own max10e even for partner224..230, then read
+// Mario's max. Partner resource ownership is shared, not an independent FP pool.
 int32_t packedBattleMaxFp(uint32_t u, const BattleActorServices &a) {
   const auto kind = signedWord(a.memory.word(a.memory.user, u + 8));
   const auto b = currentBattleAddress(a);
@@ -28,6 +30,9 @@ void recoverPackedBattleHp(uint32_t u, int32_t amount,
   if (value > maximum)
     m.storeHalf(m.user, hp, uint16_t(maximum));
 }
+// Capture B, query Mario for max through helper (which recaptures global B),
+// then independently query Mario again for current112 write owner. Successful
+// callbacks may change registry/global ownership; do not cache the first Mario.
 void recoverPackedBattleFp(uint32_t u, int32_t amount,
                            const BattleActorServices &a) {
   const auto &m = a.memory;

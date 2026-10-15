@@ -1,5 +1,7 @@
 #pragma once
 #include "battle_actor.hpp"
+// Precheck codes1..6 are original routing results, not HP amounts or Boolean
+// hit success. Admitted providers own source statuses/RNG/numeric conversion.
 namespace ttyd {
 struct BattlePackedHitPrecheckServices {
  BattleActorServices memory;

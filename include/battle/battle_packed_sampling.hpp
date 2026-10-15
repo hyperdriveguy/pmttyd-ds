@@ -1,5 +1,8 @@
 #pragma once
 #include "battle_packed_choice.hpp"
+// Sampler owns candidate construction/filter/sort, chooser owns weighting.
+// Caller admits all original tables/parts/numerics and <=74 candidate storage;
+// no local overflow cap, transaction or fabricated empty-list recovery exists.
 namespace ttyd {
 struct BattlePackedSamplingServices {
     BattlePackedChoiceServices common;

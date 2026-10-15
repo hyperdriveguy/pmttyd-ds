@@ -12,6 +12,9 @@ uint32_t word(const BattleActorServices& s,uint32_t a) {assert(s.memory.word);re
 int32_t half(const BattleActorServices& s,uint32_t a) {assert(s.memory.half);return sh(s.memory.half(s.memory.user,a));}
 uint8_t byte(const BattleActorServices& s,uint32_t a) {assert(s.byte);return s.byte(s.user,a);}
 float real(const BattleActorServices& s,uint32_t a) {const uint32_t v=word(s,a);float f;std::memcpy(&f,&v,4);return f;}
+// Rows36 bytes from+4, ID/part signed halves0/2. Metadata count a6c, ranks
+// a6d, cursor ab7, actor ab8. Private adapters assert storage bounds, not source
+// success. FP helpers read own fields before partner224..230 redirects to Mario.
 uint32_t row(int32_t i) {return 4+36u*uint32_t(i);}
 int32_t plus(int32_t a,int32_t b) {return sw(uint32_t(a)+uint32_t(b));}
 }
@@ -32,6 +35,10 @@ int32_t packedCanAct(uint32_t unit,const BattleActorServices& s) {
     for(int32_t id:{1,2,9,27})if(checkPackedBattleStatus(unit,id,s))return 0;
     return unit && (word(s,unit+0x138)&1)?0:1;
 }
+// Capture B, emit initial(-1, 0); nonpositive signed count returns. Emit first
+// ranked candidate BEFORE weights. Unit output precedes live part read, allowing
+// callbacks/aliases to affect it. Weight array74 uses first row bonus10,+100
+// per ranked occurrence. Do not replace repeated count/index reads by snapshots.
 void choosePackedBattleCandidate(const BattleCandidateRecords& b,uint32_t flags,const BattlePackedChoiceServices& s,CandidateChoiceOutputs output) {
     const auto& m=s.position.memory;const auto& bm=b.bytes;const uint32_t base=b.address;
     const uint32_t battle=currentBattleAddress(m);assert(output.write);
@@ -45,6 +52,9 @@ void choosePackedBattleCandidate(const BattleCandidateRecords& b,uint32_t flags,
     const auto& p=s.position;auto convert=[&](int32_t v) {assert(s.convert);return s.convert(p.numericUser,v);};
     auto multiply=[&](float a,float b) {assert(p.multiply);return p.multiply(p.numericUser,a,b);};
     auto add=[&](float a,float b) {assert(p.add);return p.add(p.numericUser,a,b);};
+    // Original float coefficients804221f0+4*n drive each flag formula with
+    // explicit rounding/truncation. No host-double or hardcoded heuristic
+    // replacements. HP ratio has no zero-max guard; weights use signed word wrap.
     auto constant=[&](unsigned n) {return real(m,0x804221f0+4*n);};
     auto update=[&](int32_t& weight,float value) {assert(p.unit.truncateFloat);weight=p.unit.truncateFloat(p.unit.user,value);};
     auto scale=[&](int32_t& weight) {const float coefficient=constant(0),value=convert(weight);update(weight,multiply(coefficient,value));};
@@ -77,6 +87,10 @@ void choosePackedBattleCandidate(const BattleCandidateRecords& b,uint32_t flags,
             const float w=convert(weight);update(weight,multiply(factor,w));
         }
         if(flags&0x1000) {const uint32_t kind=word(m,unit+0x10);const int32_t hp=half(m,unit+0x10c);if(hp<=byte(m,kind+0xd))scale(weight);}
+        // Weapon0 skips item overrides. Attribute20000 forces weight1 before
+        // item checks. Exact item IDs/status tests below retain source policy;
+        // FP-restoring metadata byte1e re-queries max/current, then fresh weapon
+        // and1d/1f only if full. Do not reuse earlier owner or getter results.
         const uint32_t weapon=word(bm,base);if(!weapon)continue;
         if(word(m,unit+0x104)&0x20000)weight=1;
         const int32_t item=sw(word(m,weapon+8));bool override=false;
@@ -104,6 +118,10 @@ void choosePackedBattleCandidate(const BattleCandidateRecords& b,uint32_t flags,
         }
         if(override)weight=1;
     }
+    // Deterministic: all74 weights, strict>best0, first row-index tie, default0.
+    // Flag80000000 roulette sums ALL74 with wrap, draws supplied bound, subtracts
+    // until <=0 (not <0). Draw0 can select zero-weight row0; no generic fallback
+    // or skipping zero weights. Final emit reads live row halves again.
     int32_t selected=0;
     if(!(flags&0x80000000)) {int32_t best=0;for(int32_t i=0;i<74;++i)if(weights[i]>best) {best=weights[i];selected=i;}}
     else {int32_t total=0;for(auto w:weights)total=plus(total,w);assert(s.random);int32_t draw=s.random(s.user,total);for(selected=0;selected<74;++selected) {draw=sw(uint32_t(draw)-uint32_t(weights[selected]));if(draw<=0)break;}}

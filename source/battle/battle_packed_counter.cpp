@@ -9,6 +9,10 @@ int32_t packedBattleCheckCounter(BattleCounterWork& work,uint32_t a,uint32_t d,
  auto word=[&](uint32_t at){return s.memory.memory.word(s.memory.memory.user,at);};
  auto byte=[&](uint32_t at){return s.memory.byte(s.memory.user,at);};
  auto status=[&](uint32_t u,int32_t type){return s.status(s.user,u,type);};
+ // Work offsets20/24 codes, 28 count, 2c pattern; 00 eligibility, 04..1c gates.
+ // hit sets code, code|100 and caller flags100. block also increments count,
+ // writes pattern31..36 and clears eligibility. Blocking else-if chain is first
+ // match; later nonblocking tests may overwrite code while accumulating gates.
  auto& x=work.words;x[10]=0;
  auto hit=[&](uint32_t code){x[8]=code;x[9]=code|0x100;flags|=0x100;};
  auto block=[&](uint32_t code,uint32_t pattern){hit(code);++x[10];x[11]=pattern;x[0]=0;};
@@ -33,6 +37,9 @@ int32_t packedBattleCheckCounter(BattleCounterWork& work,uint32_t a,uint32_t d,
   if(status(d,22) && !(word(w+0x78)&0x400)){hit(54);x[6]=1;}
   if(byte(d+0x2f0) && !(word(w+0x78)&0x200)){hit(53);x[7]=1;}
  }
+ // Final codes43..54 map to these source return codes, including48->0.
+ // Last code wins; several earlier gates/counts survive. Missing attacker returns
+ // before clearing scratch count. Do not infer result from count>0 or reset all.
  constexpr std::array<int32_t,12> results{{8,7,9,10,11,0,12,13,15,14,16,17}};
  const uint32_t index=x[8]-43;return index<results.size()?results[index]:0;
 }

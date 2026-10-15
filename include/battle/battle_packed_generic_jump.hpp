@@ -1,5 +1,8 @@
 #pragma once
 #include "battle_packed_move_position.hpp"
+// Generic jump fields share offsets with Mario's curve controller but not
+// identical meanings. Native math/floor/audio providers must be complete; no
+// retry cursor or successful missing floor is supplied by this synchronous leaf.
 namespace ttyd {
 struct BattlePackedGenericJumpServices {
  BattlePackedMovePositionServices movement;

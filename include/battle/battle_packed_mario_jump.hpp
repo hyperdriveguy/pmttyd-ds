@@ -1,5 +1,8 @@
 #pragma once
 #include "battle_packed_move_position.hpp"
+// Event initialized byte is a source phase (1 trajectory, 2 eligibility, 3
+// continuation), not just Boolean firstCall. Motion fields change meaning by
+// phase; numeric rounding/services and captured callback order are observable.
 namespace ttyd {
 struct BattlePackedMarioJumpServices {
     BattlePackedMovePositionServices motion;

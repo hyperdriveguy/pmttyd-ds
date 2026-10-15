@@ -10,6 +10,10 @@ int32_t signedByte(uint8_t value) {return value<128?int32_t(value):int32_t(value
 float real(const EventMemoryServices& s,uint32_t address) {const uint32_t bits=word(s,address);float value;std::memcpy(&value,&bits,4);return value;}
 void store(const EventMemoryServices& s,uint32_t address,float value) {uint32_t bits;std::memcpy(&bits,&value,4);assert(s.storeWord);s.storeWord(s.user,address,bits);}
 template<class World,class Read,class Write>
+// Capture signed unit alliance and CURRENT B row direction+a BEFORE world
+// helper. Layers part170/17c, scale unit114: rounded X/Y product then FMA;
+// Z uses one FMA without intermediate product. Y factor comes from source1
+//804226a8. Every offset/scale/output read keeps original ordering.
 void hit(uint32_t unit,uint32_t part,const BattlePartPositionServices& s,World world,Read read,Write write) {
     const auto& m=s.memory.memory;assert(s.memory.byte);
     const int32_t belong=signedByte(s.memory.byte(s.memory.user,unit+0xc));
@@ -46,6 +50,9 @@ void writePackedHitPosition(uint32_t unit,uint32_t part,const std::array<uint32_
     const auto& m=s.memory.memory;
     hit(unit,part,s,[&] {writePackedPartWorldPosition(part,outputs,s);},[&](unsigned i) {return real(m,outputs[i]);},[&](unsigned i,float v) {store(m,outputs[i],v);});
 }
+// First unit lookup is retained, but part helper recaptures global B again.
+// Snapshot all hit coordinates before conversion/stores; raw f1194d80 skips
+// output axes. Two owner captures can differ under callbacks; do not merge them.
 int32_t packedHitPositionEvent(EventEntry& e,const BattlePartPositionServices& s) {
     const uint32_t args=e.arguments;const auto& u=s.unit;assert(u.values.resolve && u.translate && u.unit && u.values.store);
     const int32_t actor=u.values.resolve(u.values.user,e,signedWord(word(u.memory,args))),id=u.translate(u.user,e,actor);

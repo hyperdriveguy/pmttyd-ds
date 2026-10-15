@@ -1,6 +1,9 @@
 #pragma once
 #include "battle_move_frame_event.hpp"
 #include "battle_packed_movement_sound.hpp"
+// firstCall owns setup only; all operands still resolve on every invocation.
+// Providers retain exact numeric/RNG/audio boundaries; this synchronous leaf
+// has no continuation for unavailable children. Source returns are0/1, not bool.
 namespace ttyd {
 struct BattlePackedMovePositionServices {
     BattleMoveFrameServices query;
