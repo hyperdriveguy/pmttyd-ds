@@ -15046,3 +15046,41 @@ Concurrent foreign changes are preserved/excluded from frozen validation.
 Next: original party driver/follow/terrain/presentation and direction/control;
 active mode cleanup/cancellation; full engine/battle teardown/field return;
 harbor/plaza dispatch and end-to-end prologue/hardware verification. Goal active.
+
+
+## Original battle UI packet integration (2026-10-15)
+
+Committed `2351b5d7cffee0b67f58fef4b3dfe55cd5f14bbc`: original
+Window nine-quad geometry/art, original submenu quads, atomic font capture and
+mixed Window/font/submenu/icon publication in original source order. The
+original GX texture constructors and palette loader now produce the actual
+CPU texture objects. Whole window setup retains the original archive/DVD
+branches and separate completion callback: native texture import does not set
+source readiness. Whole original font Setup SDK children use actual shared VM
+memory. Font admission reserves mixed order before the original two RNG calls;
+no held draw replays a prefix. All controls retain physical alternatives.
+
+Validation authority: `artifacts/weapon-ui-integration-validation/manifest.json`
+(6435 inputs, all rehashed unchanged), with `owned.json`, `results.json` and
+per-tool logs. Private snapshot excludes concurrent animation/party work.
+`make test`: 489/489 C++ (87.71s), 224/224 Python (61.901s), zero skips.
+`make all -o assets-ready -j4 SOUNDTRACK=gamecube`: exit0, using frozen private
+original RomFS products. Binary `artifacts/ttyd-original-weapon-ui-packets.3dsx`
+SHA256 `9ad8fa13bfbaf52ed0f2607798c2d2ff50cdc110c4df46b23f3b4d5bf2c40b89`.
+Original GX, TEX, submenu, window primitive/setup, font Setup/GX and installed
+SDK lifetime verifiers all exit0; 1537 frozen documentation links checked with
+zero broken. Native panel conversion reproduced the pinned clamp-correct T3X.
+Isolated 35-second Azahar boot exit0; root viewed original book cover and
+physical A/START prompt, no native unmapped-memory diagnostics or exceptions.
+Initial sandbox display-socket failure was retried with approved isolated Xvfb
+access; user profiles/saves were untouched. This boot does not exercise battles.
+
+Commit shared CMake/index/asset notes preserve independent concurrent appendices;
+the other45 owned paths match the validated bytes. ISO/original textures/raw
+files/compiled packs remain private and ignored; asset provenance is in ASSETS.
+No dialogue/story changes or hardware/PPC pixel-parity claim.
+
+Next: finish actual mixed native raster submission and its isolated rendering
+probe; bind real process startup/root/DVD/heap lifetime and actual global GX
+state. Normal whole weapon callback/camera queue, tutorial/story battle flow and
+real audience target selection are still open. The remake goal remains active.
