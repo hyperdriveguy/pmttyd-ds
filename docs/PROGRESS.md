@@ -12654,3 +12654,61 @@ integration, enemy/recovery resources, then field animation/NPC/render/raw-RAM a
 Remaining event/message/story/effect/platform/file/save helpers and tools still need
 systematic inline audit. Preserve source-ID/control-token fidelity and provider
 lifetimes; passing tests do not establish full live subsystem coverage.
+
+## 2026-10-15 — retained Trio action manager and original HitN64 lifetime
+
+Commits 2b1d2ffa and fed4ab36 add the native source Main ActionCommandManager
+binding and the original HitN64 constructor/lifetime respectively. Trio's source
+Main now delegates private-pad update, captured Main, TimingA and actual deferred
+display registration to the retained original manager. Its pinned physical sample
+survives a held child. Unknown Main callbacks, including Hammer pending actual
+sound ownership, remain unavailable. TimingA state1002 owns its four callback
+clears; the manager's ordinary zero result clears Main alone. Legacy active
+battle cadence remains separate until complete original Phase/Move/Act admission.
+The native Trio fixture preserves all127 private-pad words when later A arrives
+during a real held source display.
+
+HitN64 implements whole original Entry801c6344/270 and Main801c61bc/188,
+actual effectPoolEntry reservation, heap3 payload, source RNG/particle fields,
+source lifetime/depth/display boundaries and actual pool hard-delete fixtures.
+Original allocation returns are not replaced with invented failure success.
+Retained child waits preserve construction and update prefixes. Original
+texture74 is independently extracted from read-only e/us/effect_n64.tpl and
+decoded unscaled32x128 I4; source hashes/conversion/rights are in ASSETS.md.
+Original Display/main_dl, process pool/heap/lifetime and queued native GPU owners
+remain open. No normal audience hit acknowledgment is added by CPU tests.
+
+Exact validation: frozen artifacts/battle-action-native-validation/source,
+committed d03df230 baseline plus11 owned paths. Full make test exits0:
+438/438 C++ in87.17s and212/212 Python in70.941s, zero skipped. Full
+make all -o assets-ready -j4 SOUNDTRACK=gamecube exits0. Existing compiler/Pillow
+warnings remain. Read-only ISO source/texture verifier passes. Frozen doc links:
+1478 Markdown files, zero broken. Final6113 source/asset/license hashes match;
+no source inputs changed during gates. Accepted previous UI cache is supplemented
+only by four hash-verified facing dependency products from its accepted manifest.
+No shared asset regeneration or original-asset/binary commit.
+
+Copied normal binary artifacts/ttyd-battle-action-hit-native.3dsx SHA256
+61135923f2f8e4b9f7a337c681ceb38da56bf0f596f14ff41c4c6020fe22d029.
+Isolated35-second Azahar exits0; inspected capture shows original storybook and
+no asset-error screen. Initial sandbox Xvfb socket failure is archived separately;
+retry uses permitted display access. No user's emulator profile/save touched.
+Startup is not active-battle HUD, original effect GPU, audience input or hardware
+acceptance. Both initial and final gates are terminal; manifest records logs,
+source proof, cache overlays and capture hashes. Initial437/212/native0 gates
+preceded the corrected TimingA-only writeback and added HitN64 batch; final gates
+above include both. No probe instrumentation was installed.
+
+Concurrent animation Main and documentation commits were preserved by scoped
+commits. Nine owned postimages match the tested source exactly; CMakeLists.txt
+and ASSETS.md also preserve independent concurrent additions, recorded as exact
+diffs in the manifest. Newer concurrent code/working changes are excluded from
+these frozen gates; no joint moving-HEAD validation claim.
+
+Next: integrate frozen complete Act and Phase/Move with actual retained children,
+complete original radial-menu/CommandInput and Hit display owners, then admit the
+source active Main cadence. Preserve physical X at its original menu/weapon/
+target callsites. Actual camera/visibility/lifetime publication and one-shot tap
+consumption are still needed before enabling selected harmful-audience taps.
+Original menu art and lower-screen scene remain; full tutorial/real battle/field
+return and hardware verification remain unfinished. Goal stays active.
