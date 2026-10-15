@@ -4,6 +4,9 @@
 #include <string>
 #include <vector>
 #include <array>
+// Native handles1/2 identify owned normal/Luigi TPLs, not fileAllocf objects.
+// Raw BE TPL validation and private LE atlas admission are separate operations;
+// atlas readiness alone cannot establish population, animation or guest handles.
 namespace ttyd {
 // Typed native file handles resolve to owned, validated original TPL payloads.
 // These are not replicas of the GameCube fileAllocf pointer layout.

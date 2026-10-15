@@ -14,6 +14,8 @@ float divide(float a,float b){volatile float v=a/b;return v;}
 float constant(int32_t offset,const BattleActorServices& a){return scalar(0x80427440u+uint32_t(offset),a);}
 bool exists(int32_t slot,const BattleActorServices& a){const auto flags=a.memory.word(a.memory.user,record(slot,a));return (flags&1) && !(flags&0x102);}
 }
+// Column offset must stay0..19. Positive rowOffset SUBTRACTS20 seats,
+// then admit0..199; this is not ordinary Y-positive row addition/wrapping.
 int32_t packedBattleAudienceOffsetSeat(int32_t slot,int32_t x,int32_t row,const BattleActorServices& a){
     (void)base(a);(void)record(slot,a);
     const auto column=integer(uint32_t(slot%20)+uint32_t(x));
@@ -22,6 +24,9 @@ int32_t packedBattleAudienceOffsetSeat(int32_t slot,int32_t x,int32_t row,const 
     return result>=0 && result<200?result:-1;
 }
 int32_t packedBattleAudienceBreakTurn(const BattleActorServices& a){return integer(a.memory.word(a.memory.user,currentBattleAddress(a)+0x1617c));}
+// Ratio=(desired+offset)/baseline chooses separate FPR0/FPR29 and reaction
+// coefficients. Type 4 breathing has its own180/188 threshold ladder; types
+// 6/7/9 use distinct reset/midpoint coefficients; type 2 skips scale breathing.
 bool controlPackedBattleAudienceIdle(int32_t slot,int32_t front,const BattleAudienceIdleServices& s){
     const auto& a=s.actors;const auto& m=a.memory;const auto owner=base(a),r=record(slot,a);
     (void)m.word(m.user,0x8041eb00); // Whole pouchGetPtr800d5eb0, return unused.
@@ -79,6 +84,10 @@ bool controlPackedBattleAudienceIdle(int32_t slot,int32_t front,const BattleAudi
         if(!changeScale(coefficient,float(afterReset)<=*midpoint))return false;
         m.storeWord(m.user,r+0x30,m.word(m.user,r+0x30)+1);
     }
+    // Hit flag 0x40 clears0x60 and changes state 10 before target penalty.
+    // Source penalty inspects ITEM SLOT0 (kind 236..239 bypass), not held item.
+    // Otherwise flag 0x20/held item suppress random reactions. One draw360000
+    // gates turn/head/joy/jump; row-neighbor and BreakTurn are late source reads.
     const auto flags=m.word(m.user,r);
     if(flags&0x40){
         m.storeWord(m.user,r,flags&~0x60u);packedBattleAudienceChangeStatus(slot,10,a);

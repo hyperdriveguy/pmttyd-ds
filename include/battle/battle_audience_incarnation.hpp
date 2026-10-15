@@ -3,6 +3,9 @@
 #include <array>
 #include <memory>
 #include <optional>
+// Native per-VM provenance uses source-observed births/readiness, not guest
+// heuristics. Two hundred actor and100 item generations share one serial. A
+// lifetime token distinguishes Reset even if guest allocation address is reused.
 namespace ttyd {
 struct BattleAudienceIncarnationIdentity {
   std::shared_ptr<const uint8_t> owner;

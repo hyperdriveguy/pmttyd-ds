@@ -5,6 +5,9 @@ namespace {
 float scalar(uint32_t address,const BattleActorServices& s){const auto bits=s.memory.word(s.memory.user,address);float value;std::memcpy(&value,&bits,4);return value;}
 int32_t integer(uint32_t value){int32_t result;std::memcpy(&result,&value,4);return result;}
 }
+// Total uses signed word wrap. Nonzero count computes volume through real
+// truncation; positionX is source constant for left0/total0, otherwise truncated
+// imbalance narrows to UNSIGNED byte then widens to float. Preserve wrap/sign.
 std::optional<BattleAudienceSoundInfo> packedBattleAudienceSoundInfo1(int32_t right,int32_t left,const BattleAudienceSoundStartServices& s){
     const auto total=integer(uint32_t(right)+uint32_t(left));BattleAudienceSoundInfo info;
     if(total!=0){
@@ -37,6 +40,9 @@ std::optional<int32_t> startPackedBattleAudienceSound2(uint32_t key,int32_t slot
     const auto position=packedBattleAudienceSoundInfo2(slot,s.actors);if(!s.on)return {};
     return s.on(s.user,key,position);
 }
+// Read position once to choose lane 10 for X<=0, else11. Stop that lane,
+// then Sound2 independently rereads actor position for actual start. Kind0
+// selects0x802fa43c, other kinds 0x802fa458; only real handle starts publication.
 bool playPackedBattleAudienceThrowSound(int32_t kind,int32_t slot,const BattleAudienceSoundStartServices& s,const BattleAudienceSoundServices& sound){
     const auto position=packedBattleAudienceSoundInfo2(slot,s.actors);
     const int32_t lane=position[0]<=scalar(0x80424988,s.actors)?10:11;

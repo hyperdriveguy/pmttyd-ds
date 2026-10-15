@@ -1,6 +1,9 @@
 #pragma once
 #include "battle_actor.hpp"
 #include <array>
+// Original first-eligible GetItemOn and chosen-target cancellation. Raw output
+// pointers can alias live work, so each source read/store order matters. Selected
+// native-tap admission is a separate lifecycle-aware API, not this scan.
 namespace ttyd {
 // Whole source SetTarget: mark the selected actor and cancel other holders.
 void packedBattleAudienceSetTarget(int32_t,const BattleActorServices&);

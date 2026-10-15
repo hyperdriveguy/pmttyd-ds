@@ -2,6 +2,9 @@
 #include "battle_actor.hpp"
 #include <array>
 #include <optional>
+// One hundred flight records at A+0xf25c/stride 0x48. Each is an original
+// work record, not inventory. Present/damage metadata goes to the source owner;
+// linked event/services must actually deliver it. Immediate main has no cursor.
 namespace ttyd {
 struct BattleAudienceItemEntryServices {
     BattleActorServices actors;void* user=nullptr;

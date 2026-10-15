@@ -5,6 +5,8 @@ namespace ttyd {
 namespace {
 int32_t integer(uint32_t v){int32_t n;std::memcpy(&n,&v,4);return n;}
 float rounded(float f){volatile float value=f;return value;}
+// Duration0 returns endpoint. Otherwise retain separate single-precision
+// subtraction/product/division/addition; step is not silently clamped.
 float interpolate(int32_t step,int32_t duration,uint8_t start,uint8_t end) {
     if(!duration)return float(end);
     const auto delta=rounded(float(end)-float(start));
@@ -12,6 +14,10 @@ float interpolate(int32_t step,int32_t duration,uint8_t start,uint8_t end) {
     return rounded(float(start)+rounded(product/float(duration)));
 }
 }
+// Check result-1 clears active without stop. Life0 stops; negative life is
+// indefinite. Positive envelope preincrements elapsed, truncates percent toU8,
+// then backend volume is baseByte*percent/100. Lifetime fade can issue a SECOND
+// volume call in the same visit; life decrements only after admitted calls.
 bool packedBattleAudienceSoundMain(const BattleAudienceSoundMainServices& s) {
     const auto& m=s.actors.memory;assert(m.word && m.storeWord && m.storeByte && s.actors.byte);
     (void)currentBattleAddress(s.actors); // Initial BaseGetPtr before NoiseMain.

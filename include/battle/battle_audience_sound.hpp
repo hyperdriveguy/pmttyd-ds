@@ -1,6 +1,9 @@
 #pragma once
 #include "battle_actor.hpp"
 #include <optional>
+// Twenty-four records at A+0x133fc, stride 0x24: flags 0, handle4, category 8,
+// life+c, fade10, elapsed14, duration 18, volume bytes1c..20 (hex). Public backend
+// handle -1 is a real failed request; nullopt is unavailable provider work.
 namespace ttyd {
 struct BattleAudienceSoundServices {
     BattleActorServices actors;

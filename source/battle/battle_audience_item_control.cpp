@@ -17,6 +17,8 @@ bool systemControl(int32_t slot,const BattleActorServices& a){
     (void)base(a);const auto r=record(slot,a);
     return exists(slot,a) && !(a.memory.word(a.memory.user,r)&0x10);
 }
+// Original penalty rereads ITEM SLOT0, not this actor's held item. Kinds
+// 236..239 bypass target decrement; otherwise actual addTarget owns effects.
 bool penalty(const BattleAudienceItemControlServices& s){
     const auto& a=s.actors;const auto& m=a.memory;
     auto item=packedBattleAudienceItemAddress(0,a);
@@ -30,6 +32,8 @@ bool penalty(const BattleAudienceItemControlServices& s){
 }
 }
 uint32_t packedBattleAudienceItemAddress(int32_t index,const BattleActorServices& a){return base(a)+0xf25c+uint32_t(index)*0x48;}
+// Deny audience mask 0x4000, absent/non-system actor, actor mask 0x200 or
+// states 12/13/14/15/17/18/21/22. Do not infer eligibility from visibility.
 bool packedBattleAudienceEscapeAllowed(int32_t slot,const BattleActorServices& a){
     const auto owner=base(a),r=record(slot,a);const auto& m=a.memory;
     if(m.word(m.user,owner)&0x4000)return false;
@@ -40,6 +44,11 @@ bool packedBattleAudienceEscapeAllowed(int32_t slot,const BattleActorServices& a
     default:return true;
     }
 }
+// ItemOn7 owns countdown of held flight-state 1 and requests throw sound
+// after changing actor state 8. Hit flag 0x40 can clear actual item, notify
+// ItemClear, unlink and change state 10 before unavailable penalty provider.
+// Damage10 scale uses8-step cycle; Escape12 type 11 falls, others use raw-RNG
+// trajectory and linked sounds before eventual Delete. No retained suffix.
 bool controlPackedBattleAudienceItemState(uint32_t fn,int32_t slot,int32_t front,const BattleAudienceItemControlServices& s){
     if(fn!=0x80191a48 && fn!=0x80191980 && fn!=0x8019173c && fn!=0x80191290)return false;
     const auto& a=s.actors;const auto& m=a.memory;

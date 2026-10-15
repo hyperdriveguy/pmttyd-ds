@@ -4,6 +4,9 @@
 namespace ttyd {
 namespace {
 uint32_t word(const std::vector<uint8_t>& b,size_t o){return uint32_t(b[o])<<24|uint32_t(b[o+1])<<16|uint32_t(b[o+2])<<8|b[o+3];}
+// Exact original sizes/counts below. TPL magic0x0020af30; every image64x64,
+// format14(CMPR), no palette,>=2048 payload bytes. Reject trailing bytes and
+// malformed offsets before publishing owned payloads.
 bool read(const std::string& path,std::vector<uint8_t>& b,size_t size,unsigned count) {
     FILE* f=std::fopen(path.c_str(),"rb");if(!f)return false;
     b.resize(size);const bool ok=std::fread(b.data(),1,size,f)==size && std::fgetc(f)==EOF;std::fclose(f);
@@ -17,6 +20,8 @@ bool read(const std::string& path,std::vector<uint8_t>& b,size_t size,unsigned c
     return true;
 }
 }
+// Normal428896 bytes/205 frames, Luigi39776/19. Commit both owned buffers
+// only after both validate; failed reload preserves the previously admitted set.
 bool BattleAudienceResources::load(const char* root) {
     if(!root)return false;
     std::vector<uint8_t> normal,luigi;
@@ -24,6 +29,10 @@ bool BattleAudienceResources::load(const char* root) {
        !read(std::string(root)+"/audience-luigi.tpl",luigi,39776,19))return false;
     normal_=std::move(normal);luigi_=std::move(luigi);return true;
 }
+// PMAUD001: 20-byte LE header, 224*32-byte records, 1024-square native atlas.
+// Exact15-column packing uses68-pixel cells, 2-pixel inset, 64-square frames;
+// native V is flipped. UV comparison rejects nonfinite/cross-frame values.
+// Commit only complete catalogs; failed reload does not clear prior readiness.
 bool BattleAudienceResources::loadFrames(const char* root) {
     if(!root)return false;
     FILE* f=std::fopen((std::string(root)+"/audience-frames.bin").c_str(),"rb");

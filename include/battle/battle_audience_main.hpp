@@ -1,6 +1,9 @@
 #pragma once
 #include "battle_actor.hpp"
 #include <optional>
+// Audience A=B+0x2858: 200 actors at+0x1bc/stride 0x134, 100 items at
+// +0xf25c/stride 0x48. Immediate parents retain NO suffix cursor; unavailable
+// children can follow stores/RNG/earlier calls and must not be blindly replayed.
 namespace ttyd {
 struct BattleAudienceMainServices {
     BattleActorServices actors;

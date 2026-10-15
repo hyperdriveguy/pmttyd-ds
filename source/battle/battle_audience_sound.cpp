@@ -10,6 +10,8 @@ void word(const BattleActorServices& s,uint32_t a,uint32_t v){s.memory.storeWord
 void byte(const BattleActorServices& s,uint32_t a,uint8_t v){s.memory.storeByte(s.memory.user,a,v);}
 }
 uint32_t battleAudienceSoundRecord(int32_t slot,const BattleActorServices& s) {return base(s)+0x133fc+uint32_t(slot)*0x24;}
+// Ten-by-ten half scan excludes states 12/13/17, unlike control's11/12.
+// Source getter recaptures A independently for record/flags; keep those reads.
 int32_t battleAudienceHalfCount(bool right,const BattleActorServices& s) {
     (void)base(s); // Source RL_Sub's initial base query precedes per-position getters.
     int32_t count=0;
@@ -22,6 +24,9 @@ int32_t battleAudienceHalfCount(bool right,const BattleActorServices& s) {
     }
     return count;
 }
+// Count buckets <50/<100/<150/else produce categories1..4; count 0 stops
+// recorded voice if category!=0. Battle0x80 edge schedules slot 2 80-call fade.
+// NoiseAlways may return for already-active voice; bucket publication still follows.
 bool noiseMainBattleAudienceSound(const BattleAudienceSoundServices& s) {
     const auto b=currentBattleAddress(s.actors),a=base(s.actors),r=battleAudienceSoundRecord(2,s.actors);
     const auto left=battleAudienceHalfCount(false,s.actors),right=battleAudienceHalfCount(true,s.actors),count=left+right;
@@ -50,6 +55,8 @@ bool noiseMainBattleAudienceSound(const BattleAudienceSoundServices& s) {
     }
     return true;
 }
+// Stop only flag 1-active records, then FRESH flag read clears only mask 1.
+// Source retains handle/lifetime/volume. This immediate leaf has no rollback.
 bool stopBattleAudienceSound(int32_t slot,const BattleAudienceSoundServices& s) {
     const auto record=battleAudienceSoundRecord(slot,s.actors);
     if(!(word(s.actors,record)&1))return true;
@@ -57,6 +64,9 @@ bool stopBattleAudienceSound(int32_t slot,const BattleAudienceSoundServices& s) 
     word(s.actors,record,word(s.actors,record)&~1u); // Reload after actual backend request; preserve every other field/bit.
     return true;
 }
+// Stop slot 1 BEFORE requesting new clap. Zero count leaves key unassigned;
+// assigned=false preserves that source boundary, not permission to play key0.
+// Real handle-1 stores rejection but skips active/life/volume publication.
 bool clapBattleAudienceSound(int32_t lifetime,int32_t fade,const BattleAudienceSoundServices& s) {
     (void)base(s.actors);
     const auto record=battleAudienceSoundRecord(1,s.actors);
@@ -80,11 +90,17 @@ bool clapBattleAudienceSound(int32_t lifetime,int32_t fade,const BattleAudienceS
     word(s.actors,record+0x18,0);word(s.actors,record+0x14,0);byte(s.actors,record+0x1e,100);
     return true;
 }
+// Capture current percent byte1e into start1f, narrow target to byte20,
+// reset elapsed14 and duration 18, clear lifetime fade10. All24 setter visits
+// recapture their own owner; source durations are main visits, not audio frames.
 void setBattleAudienceVolume(int32_t slot,int32_t target,int32_t duration,const BattleActorServices& s) {
     const auto record=battleAudienceSoundRecord(slot,s);
     byte(s,record+0x1f,s.byte(s.user,record+0x1e));byte(s,record+0x20,uint8_t(target));
     word(s,record+0x14,0);word(s,record+0x18,uint32_t(duration));word(s,record+0x10,0);
 }
+// Active slot 2 returns after count queries; it does not restart a voice.
+// Successful request publishes life-1 (indefinite), backend base volume and
+// percent100, then audience flag 0x2000. Volume lookup may hold AFTER activation.
 bool noiseAlwaysBattleAudienceSound(const BattleAudienceSoundServices& s) {
     const auto a=base(s.actors),record=battleAudienceSoundRecord(2,s.actors);
     const auto right=battleAudienceHalfCount(true,s.actors),left=battleAudienceHalfCount(false,s.actors),total=right+left;

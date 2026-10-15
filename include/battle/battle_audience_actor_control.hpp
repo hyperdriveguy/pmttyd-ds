@@ -1,6 +1,9 @@
 #pragma once
 #include "battle_actor.hpp"
 #include <optional>
+// State dispatch and motion are immediate source work. Fields+4/+8 are
+// phase/count, +0x30 local timer,+0x19 state,+0x1b species. Separate binary32
+// operations and linked sine/interpolation are not measured renderer cadence.
 namespace ttyd {
 struct BattleAudienceActorControlServices {
     BattleActorServices actors;

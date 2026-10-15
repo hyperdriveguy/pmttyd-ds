@@ -2,6 +2,9 @@
 #include "battle_actor.hpp"
 #include "battle_audience_touch.hpp"
 #include <memory>
+// Native chosen-slot adapter requires actual displayed-frame/lifecycle proof;
+// it never substitutes for the physical first-eligible X path. False rejects,
+// nullopt holds a provider, true completes source interruption without root creation.
 namespace ttyd {
 // Native chosen-slot input identity, supplied after actual displayed-frame tap
 // admission. Tokens/generations must come from real lifecycle owners.

@@ -19,6 +19,9 @@ void countHalf(bool right,uint32_t retained,const BattleActorServices& a) {
     }
 }
 }
+// Narrow setup4 fixture admits exactly zero capacity and sixteen fixed byte
+// pairs (type 10 weight5, 13..15 weight1, others0), but STILL makes16 RNG requests
+// of bound 1. It does not implement arbitrary configuration ranges.
 bool initializePackedSetup4AudienceParameters(uint32_t config,uint32_t setup,const BattleAudienceInitServices& s) {
     const auto& m=s.actors.memory;assert(m.word && m.storeWord && m.storeByte && s.actors.byte && s.random);
     if(m.word(m.user,config+0x1c)!=0)return false;
@@ -33,6 +36,9 @@ bool initializePackedSetup4AudienceParameters(uint32_t config,uint32_t setup,con
     }
     return true;
 }
+// Retains the used zero-capacity graph's level/weight/RNG history, including
+// rank capacity store then overwrite0, two draws 10, cardinality/tie draws and
+// 300 requests of bound 0. Zero audience does not imply no initialization work.
 bool initializePackedSetup4ZeroAudience(const BattleAudienceInitServices& s) {
     const auto& m=s.actors.memory;assert(m.word && m.half && m.storeWord && s.actors.byte && s.random && s.fma);
     const auto b=currentBattleAddress(s.actors),a=base(s.actors),setup=m.word(m.user,m.word(m.user,b+0x2738)+0xc),t=setup+0xac,p=m.word(m.user,0x8041eb00);
@@ -79,6 +85,10 @@ bool initializePackedSetup4ZeroAudience(const BattleAudienceInitServices& s) {
     for(unsigned i=0;i<12;++i)m.storeWord(m.user,a+0x13794+4*i,uint32_t(weight[i]));
     return true;
 }
+// Original normal/Luigi paths produce guest handles through actual texture
+// provider. Throw limit distribution at draw100 cutoffs80/90/95 is0/1/2/3.
+// Count, window float, noise, slot 2 volume(60, 180), target follow in order;
+// missing late providers can follow reset, texture stores and RNG.
 bool initializePackedBattleAudience(const BattleAudienceInitServices& s) {
     const auto& m=s.actors.memory;assert(m.word && m.storeWord && m.storeByte && s.actors.byte && s.random);
     const auto a=base(s.actors),window=base(s.actors)+0x1375c;
@@ -106,6 +116,10 @@ bool initializePackedBattleAudience(const BattleAudienceInitServices& s) {
     m.storeWord(m.user,a+0x13910,0);
     return s.target && s.target(s.user);
 }
+// Desired+offset truncates, clamps at0 then signed capacity; count excludes
+// flags 0x102 and state 12 (not control's11/12). Actors can recapture global A
+// while state bytes use an earlier owner. This is AddAudienceNum's early-return
+// domain only; nontrivial additions/removals remain unavailable.
 bool updatePackedBattleAudienceZeroTarget(const BattleActorServices& a) {
     const auto& m=a.memory;assert(m.word && m.half && a.byte);
     const auto owner=base(a);if(m.word(m.user,owner)&0x40000)return true;

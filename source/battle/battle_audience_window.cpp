@@ -10,6 +10,10 @@ int32_t integer(uint32_t v){int32_t n;std::memcpy(&n,&v,4);return n;}
 // that contract arithmetic or evaluate intermediates at wider precision.
 float rounded(float f){volatile float value=f;return value;}
 }
+// Smooth count toward live A+0x13784 with source asymmetric coefficients
+// and minimum positive step. Re-read count for overshoot clamp. Unsigned timer
+// increment/decrement wraps before signed clamp0..15; quadratic position keeps
+// original rounding boundaries rather than replacing with an eased lerp.
 void packedBattleAudienceWindowMain(const BattleActorServices& s) {
     const auto& m=s.memory;assert(m.word && m.storeWord && s.byte);
     const auto a=currentBattleAddress(s)+0x2858;

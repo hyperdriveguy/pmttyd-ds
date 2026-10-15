@@ -11,6 +11,9 @@ bool exists(int32_t slot,const BattleActorServices& a){
  return (flags&1) && !(flags&0x100) && !(flags&2);
 }
 }
+// Mark chosen actor0x20 without an eligibility recheck. Cancel only OTHER
+// existing actors in state 7: clear actual item then ItemClear observation, unlink
+// held halfword and reset actor state. Fresh globals remain per source getter.
 void packedBattleAudienceSetTarget(int32_t selected,const BattleActorServices& a){
  const auto& m=a.memory;const auto target=member(selected,a);
  m.storeWord(m.user,target,m.word(m.user,target)|0x20u);

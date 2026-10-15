@@ -1,6 +1,10 @@
 #include "battle_audience_item_on.hpp"
 #include <cstring>
 namespace ttyd {
+// Scan200 actors: active1, not0x102, held!=-1 and SIGNED item state<=4 or7.
+// No item-active-bit gate is added. Cache slot only if index output nonzero;
+// XYZ cache always writes on match, then optional XYZ and freshly read kind.
+// No-match unconditionally writes -1 THROUGH out[0], even if address0.
 void packedBattleAudienceItemOn(const std::array<uint32_t, 5> &out,
                                 const BattleActorServices &s) {
   const auto &m = s.memory;

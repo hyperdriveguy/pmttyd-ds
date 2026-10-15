@@ -3,6 +3,9 @@
 #include "battle_audience_sound.hpp"
 #include <array>
 #include <optional>
+// Source spatial info and voice starts are immediate linked services. Public
+// handle-1 is preserved, including Sound1's following volume request; no silent
+// success, guessed handle or renderer clock substitutes for backend admission.
 namespace ttyd {
 struct BattleAudienceSoundInfo {uint8_t volume=0;std::array<float,3> position{};};
 struct BattleAudienceSoundStartServices {

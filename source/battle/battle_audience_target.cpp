@@ -8,6 +8,9 @@ float number(uint32_t v){float f;std::memcpy(&f,&v,4);return f;}
 uint32_t bits(float f){uint32_t v;std::memcpy(&v,&f,4);return v;}
 int32_t signedWord(uint32_t v){int32_t n;std::memcpy(&n,&v,4);return n;}
 }
+// Consume delta in source chunks no larger than +/-1; recompute ratio each
+// time. Signed truncation of (desired/baseline-1)/step selects asymmetric
+// denominators(integer+1 or integer-1), preserving word wrap and signs.
 bool packedBattleAudienceAddTargetNumSub(float delta,const BattleActorServices& s) {
     const auto& m=s.memory;assert(m.word && m.storeWord);
     const auto a=currentBattleAddress(s)+0x2858;
@@ -36,6 +39,9 @@ bool packedBattleAudienceAddTargetNumSub(float delta,const BattleActorServices& 
     } while(delta!=zero);
     return true;
 }
+// Add bias first; opposite-signed delta consumes offset before touching
+// desired. Child freshly captures A independently, then parent clamps its
+// captured desired0..capacity and offset to original min/max constants.
 bool packedBattleAudienceAddTargetNum(float delta,float bias,const BattleActorServices& s) {
     const auto& m=s.memory;assert(m.word && m.storeWord);
     const auto a=currentBattleAddress(s)+0x2858;

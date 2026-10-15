@@ -4,6 +4,9 @@ namespace ttyd {
 // Native metadata observations AFTER actual source lifecycle writes. They are
 // synchronous/nonblocking; no observer may mutate guest memory or call source
 // services. related carries the captured holder record for ItemReady only.
+// Birth means source active storage was published, Ready means required
+// source initialization/link stores completed. Reserved is an occupied paired
+// neighbor, not an independently born actor. Hooks observe, never advance work.
 enum class BattleAudienceLifecycleEvent : uint8_t {
   Reset,
   ActorBirth,

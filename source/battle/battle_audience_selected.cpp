@@ -38,6 +38,9 @@ bool same(const BattleAudienceSelectedServices &a,
          a.lightOff == b.lightOff;
 }
 } // namespace
+// Read-only: exact owner/generations, visibility/danger/interruptibility,
+// source active/held/item-state gates AND actual harmful kind 236..239. Do not
+// infer provenance from live pointers, animation position or a scanned cache.
 std::optional<BattleAudienceSelectedHolder>
 inspectSelectedBattleAudienceHolder(const BattleAudienceSelectedInput &input,
                                     const BattleAudienceSelectedLive &live,
@@ -71,6 +74,9 @@ inspectSelectedBattleAudienceHolder(const BattleAudienceSelectedInput &input,
     return {};
   return BattleAudienceSelectedHolder{input, member, item, kind};
 }
+// Reinspect immediately before original slot/XYZ cache stores. A previous
+// inspection is not authorization to publish; late owner loss rejects. Once
+// stores begin, no rollback of callback-visible earlier cache writes exists.
 bool cacheSelectedBattleAudienceHolder(const BattleAudienceSelectedInput &input,
                                        const BattleAudienceSelectedLive &live,
                                        const BattleActorServices &a) {
@@ -115,6 +121,10 @@ BattleAudienceSelectedCursor::BattleAudienceSelectedCursor() = default;
 BattleAudienceSelectedCursor::~BattleAudienceSelectedCursor() = default;
 bool BattleAudienceSelectedCursor::active() const { return bool(state_); }
 void BattleAudienceSelectedCursor::reset() { state_.reset(); }
+// Fixed input/services across holds; lifetime revalidates EVERY call. Query
+// checks visibility/eligibility before SetTarget. After SetTarget, held UI/light
+// suffix does not rescan eligibility or undo selection, but still rejects lost
+// lifetime. Saved type->11/menu29, lightOff(0, 1), battle mask 4 publish in order.
 std::optional<bool> resumeSelectedBattleAudienceInterruption(
     const BattleAudienceSelectedInput &input,
     const BattleAudienceSelectedLive &live,

@@ -32,6 +32,8 @@ BattleAudienceIncarnationOwner::itemIndex(uint32_t r) const {
     return {};
   return uint32_t(offset / 0x48);
 }
+// Generation0 is unknown. On U64 exhaustion discard all identities and stop
+// admitting births until actual Reset; never wrap into a stale generation.
 uint64_t BattleAudienceIncarnationOwner::birth() {
   if (exhausted_)
     return 0;
@@ -43,6 +45,10 @@ uint64_t BattleAudienceIncarnationOwner::birth() {
   }
   return ++serial_;
 }
+// Reset accepts only a nonzero whole 0x13914 guest span and creates a new
+// owner token. Exact actor/item record alignment is required for observations.
+// Reserved/Clear invalidates actor; ItemReady links the captured holder's then-
+// current generation. Observers perform no guest reads or source side effects.
 void BattleAudienceIncarnationOwner::observe(BattleAudienceLifecycleEvent event,
                                              uint32_t r, uint32_t related) {
   using E = BattleAudienceLifecycleEvent;
@@ -113,6 +119,9 @@ BattleAudienceIncarnationOwner::itemGeneration(uint32_t item) const {
     return {};
   return items_[item].generation;
 }
+// Both lifecycles must be observed alive/ready and the item's stored actor
+// generation must match NOW. Slot reuse invalidates the old link even when
+// source pointers/kind are unchanged. This proves identity, not eligibility.
 std::optional<BattleAudienceIncarnationIdentity>
 BattleAudienceIncarnationOwner::identity(uint32_t slot, uint32_t item) const {
   const auto actor = actorGeneration(slot), held = itemGeneration(item);

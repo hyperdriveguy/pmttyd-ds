@@ -12,6 +12,9 @@ int32_t integer(uint32_t v){int32_t n;std::memcpy(&n,&v,4);return n;}
 float number(uint32_t v){float f;std::memcpy(&f,&v,4);return f;}
 uint32_t bits(float f){uint32_t v;std::memcpy(&v,&f,4);return v;}
 }
+// Capture B and A independently. Rising battle flag 0x80 can request window
+// activation before fixed Control/Item/AP/Window/Sound order below. Mirror0x10000
+// only AFTER all admitted children; failure leaves earlier effects intact.
 bool packedBattleAudienceMain(const BattleAudienceMainServices& s) {
     const auto& m=s.actors.memory;assert(m.word && m.storeWord && m.storeByte);
     const auto b=currentBattleAddress(s.actors),a=base(s.actors);
@@ -23,6 +26,9 @@ bool packedBattleAudienceMain(const BattleAudienceMainServices& s) {
     else m.storeWord(m.user,a,m.word(m.user,a)&~0x10000u);
     return true;
 }
+// Count ten rows of twenty seats, right half FIRST. Control excludes actor
+// states 11/12; sound counting uses a different exclusion set. Motion flag 0x10
+// integrates d0/dc/e4 directly and bypasses actor child, even without Exists.
 bool packedBattleAudienceControl(const BattleAudienceControlServices& s) {
     const auto& m=s.actors.memory;assert(m.word && m.storeWord && s.actors.byte);
     const auto b=currentBattleAddress(s.actors),a=base(s.actors);
@@ -51,6 +57,9 @@ bool packedBattleAudienceControl(const BattleAudienceControlServices& s) {
         } else if(exists(i,s.actors) && s.actors.byte(s.actors.user,record+0x1b)<=12)
             if(!s.actor || !s.actor(s.user,record,i,false))return false;
     }
+    // Throw attempts: forced mode cap10000/bound 60; otherwise counters0/1/2
+    // choose1800/6000/30000. Larger counter's unassigned bound holds. On draw0,
+    // shuffle200 indices via1000 swaps (2000 draws), then stop only on ItemOn1.
     if(m.word(m.user,b+0x19078)&0x20000)m.storeWord(m.user,a+0x137f4,10000);
     if(!(m.word(m.user,b+0xef4)&0x80))return true;
     const auto counter=integer(m.word(m.user,a+0x137f0));
@@ -72,6 +81,9 @@ bool packedBattleAudienceControl(const BattleAudienceControlServices& s) {
     }
     return true;
 }
+// These are rejection/admission leaves, not active-item/AP implementations.
+// Active items or AP flag 2 require their real continuation; do not clear them
+// to make the inactive graph succeed.
 bool packedBattleAudienceInactiveItems(const BattleActorServices& s) {
     (void)currentBattleAddress(s);(void)base(s);auto item=base(s)+0xf25c;
     for(unsigned i=0;i<100;++i,item+=0x48)if(s.memory.word(s.memory.user,item)&1)return false;
@@ -80,6 +92,9 @@ bool packedBattleAudienceInactiveItems(const BattleActorServices& s) {
 bool packedBattleAudienceInactiveApSources(const BattleActorServices& s) {
     return !(s.memory.word(s.memory.user,base(s))&2); // Set-bit graph is a provider.
 }
+// Only original rejection prefix: owner flag 0x40000, empty species table,
+// columns outside4..15, or nonexistent actor can yield0. Active/type-specific
+// work stays nullopt; engaged0 is a completed source rejection.
 std::optional<int32_t> packedBattleAudienceEmptyItemOn(int32_t index,const BattleActorServices& s) {
     const auto a=base(s),record=actor(index,s);
     if(s.memory.word(s.memory.user,a)&0x40000)return 0;

@@ -23,6 +23,10 @@ bool freeSeat(int32_t slot,const BattleActorServices& a){
     return !(m.word(m.user,record(slot,a))&0x100);
 }
 }
+// Rank seating rows use40-byte records; source front/back row and column
+// weights multiply then add1 with word wrap. Raw RNG/truncation still run when
+// empty. Exclusive cumulative endpoint can return-1 at raw32767; nullopt means
+// missing numeric provider/table domain, not an empty seat result.
 std::optional<int32_t> packedBattleAudienceFreeSeat(bool front,const BattleAudiencePopulationServices& s){
     const auto& a=s.actors;const auto& m=a.memory;assert(m.word && m.half);
     (void)base(a);const auto p=m.word(m.user,0x8041eb00);const auto rank=int16_t(m.half(m.user,p+0x88));
@@ -50,6 +54,9 @@ std::optional<int32_t> packedBattleAudienceFreeSeat(bool front,const BattleAudie
     for(unsigned i=0;i<count;++i)if(*draw<cumulative[i])return seats[i];
     return -1; // rand()==32767 can select the exclusive cumulative endpoint.
 }
+// Below20 counted actors try front, then back ONLY for actual-1. Weighted
+// unavailability does not authorize fallback. Uniform variant skips RNG when
+// empty and samples an enumerated free-seat list otherwise.
 std::optional<int32_t> packedBattleAudienceFreeFrontThenBack(const BattleAudiencePopulationServices& s){
     const auto& m=s.actors.memory;
     if(integer(m.word(m.user,base(s.actors)+0x13784))>=20)return packedBattleAudienceFreeSeat(false,s);
@@ -70,6 +77,9 @@ std::optional<int32_t> packedBattleAudienceFreeSeatUniform(const BattleAudienceP
     if(!count)return -1;
     return seats[s.random(s.user,int32_t(count))];
 }
+// Active/nonreserved only. Same nonnull root skips restart only when force0;
+// otherwise set root24/current28/timer 2c, three loop words34..3c and depth40.
+// No synthetic root or bounds-normalized animation index is introduced.
 void packedBattleAudienceSetAnimation(int32_t slot,int32_t animation,int32_t force,const BattleActorServices& a){
     const auto& m=a.memory;(void)base(a);const auto r=record(slot,a),flags=m.word(m.user,r);
     if(!(flags&1) || (flags&0x100))return;
@@ -79,6 +89,10 @@ void packedBattleAudienceSetAnimation(int32_t slot,int32_t animation,int32_t for
     for(const auto offset:{0x34u,0x38u,0x3cu})m.storeWord(m.user,r+offset,0);
     m.storeByte(m.user,r+0x40,0);
 }
+// Type data rows 0x803b4de4 stride 32 supply animation table/dimensions.
+// Seat X is caller-produced; floorY comes from stage+b34, depth=FMA(source
+// column coefficient, column, row*30+115). Type 11 and appearance11 adjust source
+// depth/Y separately. Flag8 marks only columns 4..15 of the first three rows.
 bool packedBattleAudienceEntrySub(int32_t slot,uint8_t type,int32_t appearance,const BattleAudiencePopulationServices& s){
     const auto& a=s.actors;const auto& m=a.memory;assert(m.word && m.storeWord && m.storeHalf && m.storeByte && a.byte && s.fma);
     (void)base(a);const auto st=stage(a),r=record(slot,a);
@@ -106,6 +120,10 @@ bool packedBattleAudienceEntrySub(int32_t slot,uint8_t type,int32_t appearance,c
     if((slot>=4 && slot<=15) || (slot>=24 && slot<=35) || (slot>=44 && slot<=55))m.storeWord(m.user,r,m.word(m.user,r)|8);
     return true;
 }
+// Paired trait rejects signed remainder==1 (positive odd slots), not all odd
+// words. Publish flags 5/0x85 then ActorBirth BEFORE raw RNG. Entry completion
+// reserves the following record0x101 then ActorReady. A hold after Birth is
+// not permission to infer readiness from live bytes or retry as a new birth.
 std::optional<int32_t> packedBattleAudienceEntry(int32_t slot,int32_t type,int32_t appearance,const BattleAudiencePopulationServices& s){
     const auto& a=s.actors;const auto& m=a.memory;assert(m.word && m.storeWord && a.byte);
     (void)base(a);(void)stage(a);const auto r=record(slot,a);
@@ -126,6 +144,9 @@ std::optional<int32_t> packedBattleAudienceEntry(int32_t slot,int32_t type,int32
     observeBattleAudienceLifecycle(a.audienceLifecycle,BattleAudienceLifecycleEvent::ActorReady,r);
     return 1;
 }
+// Reserved record delegates to preceding slot; real owner resets source
+// transforms/counters/alpha before state byte. Delete clears paired neighbor
+// then owner and notifies each. Neither function invents item unlinking.
 void packedBattleAudienceChangeStatus(int32_t slot,int32_t state,const BattleActorServices& a){
     const auto& m=a.memory;(void)base(a);const auto r=record(slot,a),flags=m.word(m.user,r);
     if(!(flags&1))return;
@@ -150,6 +171,10 @@ int32_t packedBattleAudienceAnimationEnded(int32_t slot,const BattleActorService
     if(integer(m.word(m.user,m.word(m.user,r+0x28)))!=-1)return 0;
     const auto timer=m.word(m.user,r+0x2c);return timer==0 || (timer&0x80000000u)?1:0;
 }
+// Full mode graph: capacity50*(rank+1), level table 65 rows, twelve species plus
+// guest12. Modes2/5/6 supply special weights; other modes preserve cardinality,
+// 24 shuffle swaps, signed setup weights, paired doubling and override mapping.
+// Source sort compares weight[i/j], not weight[order[i/j]]: do not repair it.
 bool initializePackedBattleAudiencePopulation(const BattleAudiencePopulationServices& s){
     const auto& a=s.actors;const auto& m=a.memory;
     assert(m.word && m.half && m.storeWord && a.byte && s.random && s.fma && s.truncate);
@@ -214,6 +239,11 @@ bool initializePackedBattleAudiencePopulation(const BattleAudiencePopulationServ
         }
         guest=true;
     }
+    // Allocate by wrapped signed quotient, paired species consume two seats.
+    // Zero divisor/overflow division holds after earlier stores. Residual loop
+    // retains pair-fit failures; guest substitution consumes one allocation.
+    // Mode2 fills uniform left/right seats; other modes preserve150 swaps, even
+    // with zero length (300 bound 0 requests), before sequential Entry attempts.
     std::array<int32_t,13> allocation{};
     const auto converted=s.truncate(s.user,scalar(owner+0x1377c,a)+scalar(owner+0x13780,a));if(!converted)return false;
     int32_t target=*converted;if(target<0)target=0;

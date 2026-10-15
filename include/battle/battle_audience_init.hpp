@@ -1,6 +1,9 @@
 #pragma once
 #include "battle_actor.hpp"
 #include <optional>
+// Init clears A size 0x13914, then observes real Reset before linked setup.
+// Source globals/owners are freshly resolved at selected boundaries; metadata
+// hook must not manufacture source completion, population or resource handles.
 namespace ttyd {
 struct BattleAudienceInitServices {
     BattleActorServices actors;

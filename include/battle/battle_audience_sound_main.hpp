@@ -1,6 +1,9 @@
 #pragma once
 #include "battle_actor.hpp"
 #include <optional>
+// SoundMain calls real NoiseMain before all24 records WITHOUT active-bit
+// admission. Backend check, lifetime and percent envelopes own separate stages;
+// late unavailable volume/stop preserves earlier stores/voice effects.
 namespace ttyd {
 struct BattleAudienceSoundMainServices {
     BattleActorServices actors;

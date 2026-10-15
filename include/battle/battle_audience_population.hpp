@@ -1,6 +1,9 @@
 #pragma once
 #include "battle_actor.hpp"
 #include <optional>
+// Seats form10 rows x20 columns. Actor flags 1(active), 0x100(reserved),
+// 0x80(paired owner) have distinct roles. Metadata notifications follow actual
+// source lifecycle stores; they do not replace Entry or prove eligibility.
 namespace ttyd {
 struct BattleAudiencePopulationServices {
     BattleActorServices actors;

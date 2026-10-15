@@ -1,6 +1,9 @@
 #pragma once
 #include "battle_actor.hpp"
 #include <optional>
+// Idle Wait includes source register-sensitive math. callerF29 is an explicit
+// incoming register value for low/unordered ratio paths, never a fabricated zero
+// or the previous actor's local. Missing numeric/RNG children retain prior stores.
 namespace ttyd {
 struct BattleAudienceIdleServices {
     BattleActorServices actors;

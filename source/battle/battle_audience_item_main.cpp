@@ -25,6 +25,10 @@ bool shadowGuard(uint32_t u,const BattleActorServices& a){const auto& m=a.memory
     return integer(m.word(m.user,u+8))==228 && integer(m.word(m.user,u+0x228))>0;
 }
 }
+// Item kind narrows toU16; 121..235 requires switch235. Species table,
+// columns 4..15, state exclusions and actor flag 8 must admit before free scan.
+// Birth follows active-bit store; Ready follows actual actor state 7/held link.
+// Caller-supplied limit remains source domain, not silently clamped to 100.
 std::optional<int32_t> createPackedBattleAudienceItem(int32_t slot,int32_t kind,int32_t limit,const BattleAudienceItemEntryServices& s){
     const auto& a=s.actors;const auto& m=a.memory;const auto owner=base(a),r=actor(slot,a);
     if(m.word(m.user,owner)&0x40000)return 0;
@@ -55,6 +59,9 @@ std::optional<int32_t> createPackedBattleAudienceItem(int32_t slot,int32_t kind,
     }
     return 0;
 }
+// Scan64 battle slots: source body/part queries precede side/HP gates.
+// Side0 alive with part attribute0x10000 clear qualifies. No candidates returns
+// engaged0 without RNG; nullopt marks unavailable/invalid provider results.
 std::optional<uint32_t> detectPackedBattleAudiencePlayerTarget(const BattleAudienceItemMainServices& s){
     const auto& a=s.actors;const auto& m=a.memory;const auto battle=currentBattleAddress(a);(void)base(a);
     std::array<int32_t,64> candidates{};uint32_t count=0;
@@ -71,6 +78,9 @@ std::optional<uint32_t> detectPackedBattleAudiencePlayerTarget(const BattleAudie
     if(*draw<0 || uint32_t(*draw)>=count)return {};
     return battleRegistryUnit(battle,candidates[*draw],a);
 }
+// Original key item 1 chooses inventory capacity20 vs10; recapture pouch
+// before scanning signed halfwords+0x192. This is free inventory, not item-bank
+// allocation capacity or a grant of the incoming audience item.
 int32_t packedBattleAudienceEmptyItemSlots(const BattleActorServices& a){
     const auto& m=a.memory;const auto p=m.word(m.user,0x8041eb00);
     const auto count=packedKeyItemCount(p,1,m)?20u:10u;
@@ -78,6 +88,10 @@ int32_t packedBattleAudienceEmptyItemSlots(const BattleActorServices& a){
     for(unsigned i=0;i<count;++i)if(int16_t(m.half(m.user,current+0x192+2*i))==0)++empty;
     return empty;
 }
+// Item fields: flags 0, state 4, timer 8, ownerSlot+c, kind 10, position14..1c,
+// size/angle20/24, velocity28..30, acceleration34..3c, target 40, mode 44 (hex).
+// Actor states 13/19/21/12 or failed Exists clear item and unlink holder.
+// clear notifies AFTER flag 0 but before timer/state/unlink suffix.
 bool processPackedBattleAudienceItems(const BattleAudienceItemMainServices& s){
     const auto& a=s.actors;const auto& m=a.memory;const auto battle=currentBattleAddress(a),owner=base(a);
     auto item=packedBattleAudienceItemAddress(0,a);
@@ -105,6 +119,10 @@ bool processPackedBattleAudienceItems(const BattleAudienceItemMainServices& s){
         const auto species=0x803b4de4u+uint32_t(type)*32;
         if(state==13 || state==19 || state==21 || state==12 || !exists(integer(m.word(m.user,item+0xc)),a)){clear(item);continue;}
         switch(m.word(m.user,item+4)){
+        // Pick zero-kind from weighted species table, set timer=index+180 and
+        // initial transform, then FALL THROUGH state 1. State 1 timer is decremented
+        // by actor ItemOn, not by this held-position interpolation. Lift has
+        // duration 5 with upper-only step clamp (early negative steps remain).
         case 0:{
             m.storeWord(m.user,item,m.word(m.user,item)|2);
             if(integer(m.word(m.user,item+0x10))==0){
@@ -166,6 +184,9 @@ bool processPackedBattleAudienceItems(const BattleAudienceItemMainServices& s){
             real(item+0x30,divide(sub((*position)[2],real(item+0x1c,a)),duration),a);
             real(item+0x3c,c(-10936,a),a);m.storeWord(m.user,item+8,uint32_t(*ticks));m.storeWord(m.user,item+4,m.word(m.user,item+4)+1);continue;
         }
+        // Flight target uses distance-scaled source duration, truncate ticks
+        // and FMA gravity. State 2 integrates only positive timer; 20 resets actor,
+        // zero advances state 3 but impact executes next visit. Kind239 spins.
         case 2:
             if(!(m.word(m.user,battle+0xef4)&0x80))m.storeWord(m.user,item+0x44,0);
             if(integer(m.word(m.user,item+8))==20)packedBattleAudienceChangeStatus(integer(m.word(m.user,item+0xc)),0,a);
@@ -174,6 +195,10 @@ bool processPackedBattleAudienceItems(const BattleAudienceItemMainServices& s){
             integrate(item);
             if(integer(m.word(m.user,item+0x10))==239)real(item+0x24,add(real(item+0x24,a),c(-10704,a)),a);
             m.storeWord(m.user,item+8,m.word(m.user,item+8)-1);continue;
+        // Impact rejects flags/status18/shadow/inventory gates, then publishes
+        // presentation kind/target and original0xc0 harmful weapon copy. Counter
+        // saturates3. Kinds236..239 are harmful; ordinary121..235 take state 7
+        // delay5, harmful/rejected continue to bounce. No direct item grant.
         case 3:{
             if(!(m.word(m.user,battle+0xef4)&0x80))m.storeWord(m.user,item+0x44,0);
             const auto target=m.word(m.user,item+0x40);if(!target)return false;
@@ -220,6 +245,10 @@ bool processPackedBattleAudienceItems(const BattleAudienceItemMainServices& s){
         case 5:
             integrate(item);
             if(real(item+0x18,a)<=c(-10936,a)){m.storeWord(m.user,item+8,60);m.storeWord(m.user,item+4,6);real(item+0x18,c(-10936,a),a);}continue;
+        // Bounce states 4/5 integrate before ground tests. Fade6 starts60,
+        // toggles visible mask 2 only below30 using timer&3, then cleanup stops
+        // sound lanes10 AND11 before actor reset/clear. State 7 decrements5-call
+        // delay. Missing second stop retains the first stop's effects.
         case 6:{
             const auto timer=integer(m.word(m.user,item+8));
             if(timer<=0){if(!cleanup(item))return false;continue;}

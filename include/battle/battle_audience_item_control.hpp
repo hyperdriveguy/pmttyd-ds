@@ -1,6 +1,9 @@
 #pragma once
 #include "battle_actor.hpp"
 #include <optional>
+// Actor item states 7/8/10/12 are separate from item-flight states 0..7.
+// Item bank A+0xf25c stride 0x48; held index is SIGNED halfword+0x1c.
+// Source linked sounds/penalties may hold after state/item lifecycle effects.
 namespace ttyd {
 struct BattleAudienceItemControlServices {
     BattleActorServices actors;

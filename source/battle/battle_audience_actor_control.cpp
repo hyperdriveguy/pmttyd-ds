@@ -15,6 +15,9 @@ float sub(float a,float b){volatile float v=a-b;return v;}
 float mul(float a,float b){volatile float v=a*b;return v;}
 float divide(float a,float b){volatile float v=a/b;return v;}
 }
+// Turn/head/jump function IDs below correspond to states 1/2/3. Timer
+// thresholds15/30/45 and10/20/40/50/60 are source phase counts. Type 7 jump
+// uses three repetitions and its own velocity/acceleration words.
 bool controlPackedBattleAudienceIdleReaction(uint32_t fn,int32_t slot,int32_t front,const BattleActorServices& a){
     if(fn!=0x80192164 && fn!=0x80192054 && fn!=0x80191f20)return false;
     const auto r=record(slot,a);const auto& m=a.memory;
@@ -54,6 +57,9 @@ bool controlPackedBattleAudienceIdleReaction(uint32_t fn,int32_t slot,int32_t fr
     }
     return true;
 }
+// Joy arm/jump/jump2/boo are states 4/5/6/9. Arm/boo interpolate curve4,
+// duration 15, repeating after count>30 while stored duration decays. Jump
+// captures raw-RNG velocity then waits for acceleration==source zero, not Y0.
 bool controlPackedBattleAudienceReaction(uint32_t fn,int32_t slot,int32_t front,const BattleAudienceReactionServices& s){
     if(fn!=0x80191e18 && fn!=0x80191cec && fn!=0x80191bb0 && fn!=0x80191884)return false;
     const auto& a=s.actors;const auto& m=a.memory;const auto r=record(slot,a);
@@ -103,6 +109,11 @@ bool controlPackedBattleAudienceReaction(uint32_t fn,int32_t slot,int32_t front,
     }
     return true;
 }
+// Resolve Front once, dispatch21 state slots, then integrate XYZ position
+// +0x48/velocity+0x78/acceleration+0x84. Out-of-table state still runs tail.
+// Jump d0/dc/e4 is separate; type 11 zeros it, type 2 adds phase-wrapped sine
+// hover before publishing render position+c0/c4/c8. Late sine hold retains
+// phase/integration stores, with no local replay cursor.
 bool controlPackedBattleAudienceActor(int32_t slot,const BattleAudienceActorControlServices& s){
     const auto& a=s.actors;const auto& m=a.memory;const auto r=record(slot,a);
     if(!s.front)return false;
