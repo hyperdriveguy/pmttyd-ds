@@ -14,6 +14,8 @@ struct FieldPreviousPartyWorld {
  // full signed source Entry/Entry2 return, not a boolean or allocated kind.
  std::optional<int32_t> (*enter)(void*,int32_t kind,bool secondary)=nullptr;
 };
+// Cursor retains raw selector, captured Mario and full constructor return
+// across native holds. It is bound to w.user, not reusable across world owners.
 struct FieldPreviousPartyCursor {
  enum class Stage {Start,Constructor,Tail,Lookup,Complete,Unsupported};
  Stage stage=Stage::Start;

@@ -6,6 +6,9 @@ namespace {
 int32_t signedWord(uint32_t w){return w<=0x7fffffff?int32_t(w):int32_t(int64_t(w)-0x100000000LL);}
 float readFloat(const EventOperandServices& s,uint32_t address){const uint32_t bits=s.readWord(s.user,address);float value;std::memcpy(&value,&bits,4);return value;}
 }
+// Mario root+8c/+90/+94 uses engine units. Any nonzero mode returns Y-1.
+// In that mode Y is read BEFORE destination; mode0 reads destination first.
+// Each evtSetFloat may mutate later input, so preserve per-axis routing.
 int32_t fieldMarioGetPosition(EventEntry& e,const FieldStoryPositionServices& s) {
     assert(s.mario && s.values.readWord);
     const uint32_t arguments=e.arguments;
@@ -30,9 +33,12 @@ int32_t fieldMarioGetPosition(EventEntry& e,const FieldStoryPositionServices& s)
     setEventFloat(e,zDestination,z,s.values);
     return 2;
 }
+// 800e71f8 is the US evt_mario_get_pos callback identity.
 bool bindFieldMarioPositionCallback(EventCallbackRegistry& registry,FieldStoryPositionServices& s) {
     return registry.bind(0x800e71f8,&s,[](void* p,EventEntry& e,int32_t){return fieldMarioGetPosition(e,*static_cast<FieldStoryPositionServices*>(p));});
 }
+// -30000000 is LW0 EVT token; +2 selects LW2. evtGetValue intentionally
+// truncates encoded positions for original integer IF comparisons.
 bool harborPositionGate(EventEntry& e,HarborPositionGate gate,const EventOperandServices& s) {
     if(getEventValue(e,-30000000+2,s)>-100)return false;
     return gate==HarborPositionGate::GoombellaAttack || getEventValue(e,-30000000,s)>=-25;

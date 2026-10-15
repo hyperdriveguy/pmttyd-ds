@@ -4,6 +4,8 @@
 namespace ttyd {
 namespace {
 int32_t signedByte(uint8_t v){return v<128?int32_t(v):int32_t(v)-256;}
+// Camera slot4 halfword bit10 freezes Y; Mario display word+4 bit20000
+// changes follow depth. Reacquire Mario after camera store, not before it.
 void follow(bool off,const FieldMarioPreparationWorld& w) {
  const auto& s=w.storage;const auto camera=s.camera(s.user,4);assert(camera);
  const auto flags=s.half(s.user,camera);
@@ -13,6 +15,8 @@ void follow(bool off,const FieldMarioPreparationWorld& w) {
 }
 bool admitted(uint32_t fn,const FieldMarioPreparationWorld& w){return w.admit && w.admit(w.storage.user,fn);}
 }
+// Main flag8 blocks controls. KeyOff increments byte+39, KeyOn decrements;
+// only exact zero clears flag8. No saturation or underflow repair is applied.
 int32_t fieldMarioKeyOff(const FieldMarioPreparationWorld& w) {
  const auto& s=w.storage;const auto mario=s.mario(s.user);assert(mario);
  const auto main=s.read(s.user,mario);s.write(s.user,mario,main|8);
@@ -34,6 +38,10 @@ int32_t fieldMarioKeyEvent(EventEntry& e,const FieldMarioPreparationOperands& o,
  // Actual partyKeyOn/Off are return-only US bodies, with no actor lookup.
  return 2;
 }
+// Main2000000 background enable; byte+3c form1/form2 selects write domain.
+// Source IEEE constants for fields+1b8/+1bc:20/47(form1),10/25.9(small),
+//20/37(other); form2 keeps those fields. Fields+184/+188 get1/2 or1/2.25.
+// These source field values are not native render scaling or measured tuning.
 int32_t fieldMarioBackgroundEvent(bool enabled,const FieldMarioPreparationWorld& w) {
  if(!admitted(enabled?0x800e7410:0x800e73ec,w))return 0;
  const auto& s=w.storage;assert(s.mario && s.read && s.write && s.camera && s.half && w.byte && w.storeHalf);
@@ -51,6 +59,8 @@ int32_t fieldMarioBackgroundEvent(bool enabled,const FieldMarioPreparationWorld&
  }
  follow(enabled,w);return 2;
 }
+// 800e7314 is original camera-Y-off callback; background on/off uses
+//800e7410/800e73ec, key wrapper800e7474. Admission precedes original effects.
 int32_t fieldMarioCameraYOffEvent(const FieldMarioPreparationWorld& w) {
  if(!admitted(0x800e7314,w))return 0;
  const auto& s=w.storage;assert(s.camera && s.half && s.mario && s.read && s.write && w.storeHalf);follow(true,w);return 2;

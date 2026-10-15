@@ -14,12 +14,16 @@ struct FieldBeroInfoProgram {
  EventScriptAssets data;
  uint32_t fallback=0,defaultEvent=0,defaultOut=0,prefixes=0;
  std::unordered_map<uint32_t,Table> tables;
+ // Native bounded string admission: at most 63 payload bytes plus NUL.
  bool text(uint32_t address,std::string& out) const {
   out.clear();for(unsigned n=0;n<64;++n){uint8_t byte=0;if(!data.readByte(address+n,byte))return false;if(!byte)return true;out.push_back(char(byte));}return false;
  }
 };
 namespace {std::shared_ptr<const FieldBeroInfoProgram> assets;uint64_t generation=0;
 int32_t signedWord(uint32_t v){return v<=INT32_MAX?int32_t(v):int32_t(int64_t(v)-0x100000000LL);}}
+// Private PMBRIO02 header is LE; EventScriptAssets preserves guest BE words.
+// Bounds 64 rooms/16 entries and exact EOF are catalog admission, not a claim
+// that original lookup code checked these limits. Publish only a complete pack.
 bool loadFieldBeroInfoAssets(const char* root) {
  if(!root)return false;
  auto next=std::make_shared<FieldBeroInfoProgram>();const std::string base=root;
@@ -35,6 +39,8 @@ bool loadFieldBeroInfoAssets(const char* root) {
   t.nodes.resize(number);ok=std::fread(t.nodes.data(),4,number,f)==number;
   for(unsigned e=0;ok && e<number;++e) {
    uint32_t word=0;std::string name;
+   // Original Bero record = 15 words/60 bytes, followed by a zero-name sentinel.
+   // Node tokens are source identities; nonzero duplicates are not admitted.
    for(unsigned w=0;ok && w<15;++w)ok=next->data.readWord(t.address+e*60+w*4,word);
    ok=ok && next->data.readWord(t.address+e*60,word) && word && next->text(word,name) && !name.empty();
    for(unsigned p=0;p<e;++p)if(t.nodes[e] && t.nodes[e]==t.nodes[p])ok=false;
@@ -43,11 +49,15 @@ bool loadFieldBeroInfoAssets(const char* root) {
  }
  uint32_t word=0;for(unsigned w=0;ok && w<15;++w)ok=next->data.readWord(next->fallback+4*w,word);
  for(unsigned n=0;ok && n<8;++n){std::string text;ok=next->data.readWord(next->prefixes+4*n,word) && next->text(word,text) && !text.empty();}
+ // Pin original initial_pos first command and RETURN/END tail, including its
+ // actual adjacent scanner-prefetch word. These are EVT bytes, not PPC code.
  ok=ok && next->data.readWord(next->defaultEvent,word) && next->data.readWord(next->defaultOut,word) &&
   next->data.readWord(0x8030f060,word) && word==0x0001005b && next->data.readWord(0x8030f064,word) && word==0x8007a214 &&
   next->data.readWord(0x8030f2d0,word) && word==2 && next->data.readWord(0x8030f2d4,word) && word==1 && next->data.readWord(0x8030f2d8,word) && std::fgetc(f)==EOF;std::fclose(f);if(!ok)return false;
  assets=std::move(next);++generation;return true;
 }
+// Room/catalog invalidation intentionally leaves currentNumber_ intact: get_info
+// does not reset the source BSS word. Generation mismatch rejects stale catalogs.
 void FieldBeroInfo::invalidate(){program_.reset();room_=UINT32_MAX;incomingKnown_=false;registered_=false;entries_={};switches_={};incoming_.clear();publication_.reset();}
 void FieldBeroInfo::synchronize(uint32_t room) {
  if(room_==room && generation_==generation)return;
@@ -74,6 +84,8 @@ bool FieldBeroInfo::registerOriginal(uint32_t address,const FieldMapFlags& map,F
  entries_={};for(unsigned n=0;n<table.nodes.size();++n){entries_[n]=table.address+60*n;switches_[n]=-1;}
  exec.afterInfo();registered_=true;return true;
 }
+// Offset 24 is explicit signed length; -1 selects kind-dependent default.
+// High-half kind low12 = 0/3/f00 uses 30 engine units, other kinds use 60.
 std::optional<float> FieldBeroInfo::length(int32_t index) const {
  if(!program_ || generation_!=generation || index<0)return std::nullopt;
  const auto& t=program_->tables.at(room_);if(uint32_t(index)>=t.nodes.size())return std::nullopt;
@@ -82,14 +94,21 @@ std::optional<float> FieldBeroInfo::length(int32_t index) const {
  if(!program_->data.readWord(t.address+60*uint32_t(index)+4,kind))return std::nullopt;
  kind=(kind>>16)&0xfff;return kind==0 || kind==3 || kind==0xf00?30.f:60.f;
 }
+// Output LW3..14: name, kind, direction, XYZ pointer, entry event, sentinel,
+// switch, case type, exit event, sentinel, map, destination. 0xffff0000 is
+// original raw metadata, not a host pointer or a native error result.
 bool FieldBeroInfo::infoByIndex(EventEntry& event,int32_t index) const {
  if(!registered() || index<0 || uint32_t(index)>=program_->tables.at(room_).nodes.size() || !switches_[unsigned(index)])return false;
  const auto address=entries_[unsigned(index)];uint32_t name=0,kind=0,direction=0,entry=0,caseType=0,exit=0,map=0,destination=0;
  if(!readWord(address,name) || !readWord(address+4,kind) || !readWord(address+8,direction) || !readWord(address+28,entry) || !readWord(address+32,caseType) || !readWord(address+36,exit) || !readWord(address+40,map) || !readWord(address+44,destination))return false;
  kind>>=16;
+ // Direction 20000 requests AUTO; 10000 remains unspecified for other kinds.
+ // Kind 0/1 maps eight original name prefixes to directions 0..7; 8 is no match.
  if(direction==20000){direction=10000;if((kind&0xfff)<=1){std::string text;if(!program_->text(name,text))return false;direction=8;
   for(unsigned n=0;n<8;++n){uint32_t pointer=0;std::string prefix;if(!readWord(program_->prefixes+4*n,pointer) || !program_->text(pointer,prefix))return false;if(text.compare(0,prefix.size(),prefix)==0){direction=n;break;}}
  }}
+ // Case -1 defaults by kind: f00->0, 0->10, 1->9, 2->4, 3->7.
+ // Unlisted kinds retain -1 rather than acquiring an invented generic case.
  if(caseType==UINT32_MAX)switch(kind&0xfff){case 0xf00:caseType=0;break;case 0:caseType=10;break;case 1:caseType=9;break;case 2:caseType=4;break;case 3:caseType=7;break;}
  const uint32_t words[]={name,kind,direction,address+12,entry?entry:program_->defaultEvent,0xffff0000,uint32_t(*switches_[unsigned(index)]),caseType,exit?exit:program_->defaultOut,0xffff0000,map,destination};
  for(unsigned n=0;n<12;++n)event.locals[n+3]=signedWord(words[n]);
@@ -97,6 +116,8 @@ bool FieldBeroInfo::infoByIndex(EventEntry& event,int32_t index) const {
 }
 bool FieldBeroInfo::known() const{return program_ && generation_==generation && incomingKnown_;}
 bool FieldBeroInfo::importScripts(EventAddressSpace& memory) const{return program_ && generation_==generation && memory.importScripts(program_->data);}
+// Capture eight into-info words only after successful selection. Failure makes
+// incoming state unknown; it must not leave a previous publication usable.
 bool FieldBeroInfo::publishIncoming(const std::string& name,uint32_t flags) {
  if(!program_ || generation_!=generation || name.size()>=64 || name.find('\0')!=std::string::npos)return false;
  incoming_=name;flags_=flags;incomingKnown_=true;EventEntry event;
@@ -109,6 +130,9 @@ bool FieldBeroInfo::publishRoadIncoming(uint32_t sourceNode,uint32_t flags) {
  for(unsigned n=0;n<t.nodes.size();++n)if(t.nodes[n]==sourceNode){uint32_t pointer=0;std::string name;return program_->data.readWord(t.address+n*60,pointer) && program_->text(pointer,name) && publishIncoming(name,flags);}
  return false;
 }
+// LW1..8 selection: unmatched/empty incoming uses fallback, except GP bit2
+// plus empty name selects table entry0 and publishes its actual name pointer.
+// XYZ remains a guest pointer at record+12; default callback replaces null only.
 bool FieldBeroInfo::intoInfo(EventEntry& event,uint32_t incomingAddress) const {
  if(!known())return false;
  const auto& t=program_->tables.at(room_);uint32_t selected=program_->fallback,index=0;
@@ -132,5 +156,7 @@ bool FieldBeroInfo::readByte(uint32_t address,uint8_t& value) const {
  if(incomingKnown_ && address>=IncomingAddress && uint64_t(address)<=uint64_t(IncomingAddress)+incoming_.size()){value=address==IncomingAddress+incoming_.size()?0:uint8_t(incoming_[address-IncomingAddress]);return true;}
  return program_->data.readByte(address,value);
 }
+// Reassemble BE guest words through byte lookup, including the native alias.
+// Publish output only after all four reads succeed.
 bool FieldBeroInfo::readWord(uint32_t address,uint32_t& value) const {uint32_t next=0;for(unsigned n=0;n<4;++n){uint8_t byte=0;if(!readByte(address+n,byte))return false;next=next<<8|byte;}value=next;return true;}
 }

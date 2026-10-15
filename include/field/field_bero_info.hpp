@@ -16,6 +16,8 @@ bool loadFieldBeroInfoAssets(const char* root);
 // and raw EVT callback memory ordering remain separate owners.
 class FieldBeroInfo {
 public:
+ // Native guest alias for the retained NUL-terminated incoming name; not a
+ // US RAM allocation. Reads include the terminator but not subsequent bytes.
  static constexpr uint32_t IncomingAddress=0x85000000;
  void synchronize(uint32_t room);
  void invalidate();
@@ -42,6 +44,8 @@ private:
  uint32_t room_=UINT32_MAX,flags_=0;
  uint64_t generation_=0;
  bool incomingKnown_=false,registered_=false;
+ // Source register table has 16 slots. Each selected record spans 60 bytes;
+ // switches store -1 initially. An engaged optional containing zero is known.
  std::array<uint32_t,16> entries_{};
  std::array<std::optional<int32_t>,16> switches_{};
  std::string incoming_;

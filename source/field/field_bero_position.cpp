@@ -3,6 +3,8 @@
 #include <cmath>
 namespace ttyd {
 namespace {
+// Explicit single-precision boundaries preserve source operation grouping;
+// supplied trig/FMA services still own numerical compatibility.
 float single(float value){volatile float rounded=value;return rounded;}
 int32_t signedWord(uint32_t v){return v<=INT32_MAX?int32_t(v):int32_t(int64_t(v)-0x100000000LL);}
 }
@@ -10,8 +12,12 @@ std::optional<FieldBeroPosition> fieldBeroNormalPosition(std::array<int32_t,3> x
  const std::string& name,int32_t direction,int32_t mode,float distance,const FieldBeroPositionServices& s) {
  FieldBeroPosition out;
  out.start=out.finish={float(xyz[0]),float(xyz[1]),float(xyz[2])};
+ // X sentinel 100000 requests named center lookup, replacing all XYZ.
  if(xyz[0]==100000 && (!s.center || !s.center(s.user,name,out.start)))return std::nullopt;
  out.center=out.start;
+ // Zero distance bypasses all trig/floor services. Nonzero uses direction/8
+ // turns; mode1 reverses by 180deg. Start backs up 30, floor casts down
+ // 1,000,000, finish advances 30+distance, recovery adds 37 to finish Y.
  if(distance!=0) {
   if(!s.floor || !s.sine || !s.cosine || !s.negativeMultiplySubtract || !s.multiplyAdd)return std::nullopt;
   auto heading=single(single(360.f*float(direction))*.125f);
@@ -34,6 +40,9 @@ std::optional<FieldBeroPosition> fieldBeroNormalPosition(std::array<int32_t,3> x
  out.recovery={out.finish.x,single(37.f+out.finish.y),out.finish.z};
  return out;
 }
+// EVT float literal: truncate(single(value*1024)) then subtract 230000000
+// with 32-bit wrap. Values <=-220000000 decode via +230000000 and /1024;
+// others remain numeric integers. Reject exceptional fctiwz domain, do not clamp.
 std::optional<FieldBeroStartPublication> fieldBeroStartPublication(FieldWallVector p) {
  FieldBeroStartPublication result;const float values[]={p.x,p.y,p.z};float decoded[3];
  for(unsigned n=0;n<3;++n) {

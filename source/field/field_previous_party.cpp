@@ -2,6 +2,9 @@
 #include "event_manager.hpp"
 namespace ttyd {
 namespace {int32_t signedByte(uint8_t v){return v<128?int32_t(v):int32_t(v)-256;}}
+// Only raw selectors0/1 admitted. Mario signed bytes+245/+246 store current
+// indices; +247/+248 store previous kinds. Original first visit reconstructs
+// only when index<0 and kind!=0; subsequent visits run the lookup tail only.
 int32_t fieldPreviousPartyEvent(EventEntry& e,bool first,FieldPreviousPartyCursor& c,
  void* operands,uint32_t (*word)(void*,uint32_t),const FieldPreviousPartyWorld& w) {
  if(first)c={};
@@ -23,6 +26,8 @@ int32_t fieldPreviousPartyEvent(EventEntry& e,bool first,FieldPreviousPartyCurso
    c.stage=FieldPreviousPartyCursor::Stage::Constructor;
   } else c.stage=FieldPreviousPartyCursor::Stage::Tail;
  }
+ // nullopt constructor return holds with no effects; negative real result
+ // completes. Nonnegative is narrowed to byte, then re-read signed for lookup.
  if(c.stage==FieldPreviousPartyCursor::Stage::Constructor) {
   if(!w.enter || !w.storeByte || !w.byte)return 0;
   const auto result=w.enter(w.user,c.kind,c.selector!=0);if(!result)return 0;
@@ -34,6 +39,8 @@ int32_t fieldPreviousPartyEvent(EventEntry& e,bool first,FieldPreviousPartyCurso
   if(!w.byte)return 0;
   c.index=signedByte(w.byte(w.user,c.mario+0x245+c.selector));c.stage=FieldPreviousPartyCursor::Stage::Lookup;
  }
+ // Engaged optional containing pointer0 is an acknowledged null and completes;
+ // only unavailable optional holds. Never confuse optional engagement with token.
  if(c.stage==FieldPreviousPartyCursor::Stage::Lookup) {
   if(!w.party || !w.party(w.user,c.index))return 0; // optional distinguishes actual null0.
   c.stage=FieldPreviousPartyCursor::Stage::Complete;return 2;

@@ -5,6 +5,8 @@
 #include <cstddef>
 #include <cstring>
 namespace ttyd {
+// Source ABI: record a0 bytes, local bank +54, event ID +94, priority +9c.
+// This semantic native pool retains that layout without emulating heap aliases.
 static_assert(sizeof(FieldCaseRecord)==160 && offsetof(FieldCaseRecord,locals)==0x54 &&
  offsetof(FieldCaseRecord,eventId)==0x94 && offsetof(FieldCaseRecord,priority)==0x9c,"case record layout");
 std::optional<int32_t> FieldCasePool::enter(const FieldCaseDescriptor& d) {
@@ -23,6 +25,9 @@ const FieldCaseRecord* FieldCasePool::active(int32_t n) const {const auto* r=rec
 bool FieldCasePool::erase(int32_t n) {if(!record(n))return false;records_[unsigned(n)].flags&=uint16_t(~1u);return true;}
 void FieldCasePool::reinitialize(){for(auto& r:records_)r.flags&=uint16_t(~1u);}
 bool FieldCasePool::mark(int32_t n){if(!active(n))return false;records_[unsigned(n)].flags|=2;return true;}
+// Second pass consumes active+marked records in slot order. Check stale IDs
+// before construction; a provider/capacity hold preserves the current mark.
+// Child flag20(hex) and field16c carry original case ownership, not execution.
 bool FieldCasePool::dispatch(const FieldCaseDispatchServices& s) {
  assert(s.schedule);
  for(auto& r:records_)if((r.flags&3)==3) {
@@ -43,6 +48,8 @@ bool FieldCasePool::dispatch(const FieldCaseDispatchServices& s) {
  }
  return true;
 }
+// Mode0 deletes a live event before clearing active. Other modes clear only
+// the case; erase/reinitialize do not zero the payload or stop existing events.
 bool FieldCasePool::eraseEvent(int32_t mode,int32_t n,const EventCreationServices& s) {
  if(!record(n))return false;
  if(mode==0){const auto* r=active(n);if(!r)return false; // Native live-case admission.
@@ -53,11 +60,16 @@ int32_t fieldCaseNumber(int32_t raw) {
  // Source signed <= comparisons. First three namespaces remain raw; remaining
  // variable families become their index without consulting an event/context.
  if(raw<=-220000000)return raw;
+ // EVT variable namespaces are spaced by 20,000,000; subtract the family
+ // base (limit-10,000,000) using signed comparisons. This is not evtGetValue.
  constexpr int32_t limits[]={-200000000,-180000000,-160000000,-140000000,
   -120000000,-100000000,-80000000,-60000000,-40000000,-20000000};
  for(const auto limit:limits)if(raw<=limit)return int32_t(int64_t(raw)-int64_t(limit-10000000));
  return raw;
 }
+// Argument layout: type, flag, name, number-token, script, raw destination.
+// Read number via evtGetNumber semantics; do not resolve its variable value.
+// Snapshot locals before output, then freshly read destination after admission.
 int32_t fieldRunCaseEvent(EventEntry& e,bool bero,const FieldCaseEventServices& s) {
  assert(s.word && s.value && s.setValue && s.text && s.owner);
  const auto args=e.arguments;

@@ -15,6 +15,8 @@ struct FieldMarioPreparationWorld {
  void (*storeByte)(void*,uintptr_t,uint8_t)=nullptr;
  void (*storeHalf)(void*,uintptr_t,uint16_t)=nullptr;
 };
+// Key leaf return is signed depth, not EVT status. Event wrappers instead
+// return2 on completion. Depth at Mario+39 wraps as an 8-bit source counter.
 int32_t fieldMarioKeyOff(const FieldMarioPreparationWorld&);
 int32_t fieldMarioKeyOn(const FieldMarioPreparationWorld&);
 int32_t fieldMarioKeyEvent(EventEntry&,const FieldMarioPreparationOperands&,const FieldMarioPreparationWorld&);

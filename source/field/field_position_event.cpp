@@ -7,6 +7,8 @@ namespace {
 uint32_t bits(float value){uint32_t out;std::memcpy(&out,&value,4);return out;}
 float scalar(uint32_t value){float out;std::memcpy(&out,&value,4);return out;}
 }
+// Capture actor before resolving scalars, then fetch/resolve/store one axis
+// at a time. Reordering into a bulk Vec3 read loses callback-visible ordering.
 int32_t fieldMarioSetPositionEvent(EventEntry& e,const FieldPositionOperands& o,const FieldPositionWorld& w) {
  assert(o.word && o.scalar && w.mario && w.write);
  const auto args=e.arguments;const auto mario=w.mario(w.user);assert(mario);
@@ -14,6 +16,8 @@ int32_t fieldMarioSetPositionEvent(EventEntry& e,const FieldPositionOperands& o,
   const auto value=o.scalar(o.user,e,raw);w.write(w.user,mario+0x8c+4*n,bits(value));}
  return 2;
 }
+// Raw selector0 means currentParty; any nonzero means literal slot1 (not
+// evtGetValue). A real null actor completes without reading position operands.
 int32_t fieldPartySetPositionEvent(EventEntry& e,const FieldPositionOperands& o,const FieldPositionWorld& w) {
  assert(o.word && w.party);
  const auto args=e.arguments;const auto selector=o.word(o.user,args);
@@ -25,6 +29,9 @@ int32_t fieldPartySetPositionEvent(EventEntry& e,const FieldPositionOperands& o,
   const auto value=o.scalar(o.user,e,raw);w.write(w.user,party+0x58+4*n,bits(value));}
  return 2;
 }
+// Source camera slot4: target +94/+98/+9c, copy to +ac/+b0/+b4.
+// Y adds original single .01; Mario previous roots at +ec/+f8 retain unshifted
+// XYZ. Road reset precedes shift reset; owner/read/write calls stay ordered.
 int32_t fieldCameraRoadResetEvent(const FieldPositionWorld& w) {
  assert(w.mario && w.camera && w.read && w.write && w.roadReset && w.shiftReset);
  const auto mario=w.mario(w.user),camera=w.camera(w.user,4);assert(mario && camera);

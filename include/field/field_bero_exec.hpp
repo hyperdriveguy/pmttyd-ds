@@ -4,6 +4,8 @@
 namespace ttyd {
 struct EventEntry;
 // Source startup BSS producer is0. Unknown transition history must not become0.
+// bits_ and known_ are independent: an unknown masked bit cannot be treated
+// as clear. get_info restores all-known zero; op0 sets and every other op clears.
 class FieldBeroExec {
 public:
     void afterInfo(){bits_=0;known_=~0u;} // Only after actual get_info providers complete.

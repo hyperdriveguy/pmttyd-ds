@@ -12,6 +12,8 @@ struct FieldStoryPositionServices {
 // destination operands stay raw and X/Y/Z writes use evtSetFloat quantization.
 int32_t fieldMarioGetPosition(EventEntry&,const FieldStoryPositionServices&);
 bool bindFieldMarioPositionCallback(EventCallbackRegistry&,FieldStoryPositionServices&);
+// Original harbor predicates read integer locals: LW2 Z<=-100; before
+// battle additionally LW0 X>=-25. Do not substitute unquantized root floats.
 enum class HarborPositionGate {GoombellaAttack,BeforeBattle};
 // Locals must have been populated by the original get-position callback.
 // These original integer IF predicates deliberately use evtGetValue, not floats.

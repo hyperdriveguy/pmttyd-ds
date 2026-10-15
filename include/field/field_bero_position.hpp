@@ -5,6 +5,8 @@
 #include <string>
 namespace ttyd {
 struct EventEntry;
+// resolved=false means provider hold; resolved=true/hit=false is a real miss.
+// XYZ, ray length and recovery offsets are original engine units.
 struct FieldBeroFloor {bool resolved=false,hit=false;float y=0;};
 struct FieldBeroPositionServices {
  void* user=nullptr;
@@ -23,6 +25,8 @@ struct FieldBeroPosition {
 // and SDK numerical services are explicit; no callback ABI/side-effect claim.
 std::optional<FieldBeroPosition> fieldBeroNormalPosition(std::array<int32_t,3> xyz,
  const std::string& name,int32_t direction,int32_t mode,float distance,const FieldBeroPositionServices&);
+// READF output retains EVT fixed-point encoding and the subsequent decoded
+// float, which may differ from the original input after truncation/float rounding.
 struct FieldBeroStartPublication {
  std::array<int32_t,3> words{};
  FieldWallVector position;

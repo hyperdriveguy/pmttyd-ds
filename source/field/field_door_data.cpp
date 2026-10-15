@@ -9,6 +9,8 @@ namespace {
 struct Spec {uint32_t room,source,work,normal,alternate,quest;};
 struct Assets {EventScriptAssets scripts;std::vector<Spec> specs;};
 std::shared_ptr<const Assets> assets;uint64_t generation=0;
+// Native admission: pointer list must terminate within64 words, each name
+// within32 bytes including NUL. Failure does not publish a partial name vector.
 bool names(const EventScriptAssets& data,uint32_t pointer,std::vector<std::string>& result) {
  std::vector<std::string> next;
  for(unsigned n=0;n<64;++n) {
@@ -25,6 +27,9 @@ bool names(const EventScriptAssets& data,uint32_t pointer,std::vector<std::strin
  return false;
 }
 }
+// PMDRDT01 LE specs are six words:room/source/work/normal/alternate/quest.
+// Native limits64 specs,room<=65535,work<32,quest<=255; original record is
+//18 guest words, word13(+34) is NPC-name list. Publish only after exact EOF.
 bool loadFieldDoorDataAssets(const char* root) {
  if(!root)return false;
  auto next=std::make_shared<Assets>();const std::string base=root;
@@ -48,6 +53,9 @@ void FieldDoorDataWorld::synchronize(uint32_t room) {
   copies_.clear();initialized_=false;room_=room;generation_=generation;mapPhase_=0;
  }
 }
+// Stage all matching room copies before commit. Known quest1420 selects
+// alternate only on equality; unknown quest holds instead of assuming zero.
+// 840fffb8 is last 72-byte start in the native1MiB arena, not source heap size.
 bool FieldDoorDataWorld::initialize(uint32_t room,std::optional<uint8_t> quest) {
  synchronize(room);if(!assets)return false;if(initialized_)return true;
  std::vector<FieldDoorDataCopy> next;uint32_t cursor=next_;
@@ -70,12 +78,16 @@ bool FieldDoorDataWorld::readWord(uint32_t address,uint32_t& word) const {
  for(const auto& c:copies_)if(address>=c.address && uint64_t(address)<uint64_t(c.address)+72){word=c.words[(address-c.address)/4];return true;}
  return assets->scripts.readWord(address,word);
 }
+// Selector0 replaces NPC-name-list word13. Every other selector succeeds
+// without touching a record, including an otherwise invalid guest address.
 bool FieldDoorDataWorld::setParameter(uint32_t address,int32_t selector,uint32_t value) {
  if(selector!=0)return true; // Original resolves arguments, then performs no access.
  if(generation_!=generation || !initialized_)return false;
  for(auto& c:copies_)if(c.address==address){c.words[13]=value;return true;}
  return false;
 }
+// Room2/work11 prefix: hide map name at+20, then disable hit name at+24.
+// A hold after first success resumes at phase1; a new map epoch restarts it.
 bool FieldDoorDataWorld::initializeHouse05Map(FieldMapFlags& map) {
  if(room_!=2 || !workAddress(11))return false;
  if(mapEpoch_!=map.epoch()){mapEpoch_=map.epoch();mapPhase_=0;}

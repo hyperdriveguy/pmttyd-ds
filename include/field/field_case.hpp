@@ -6,6 +6,8 @@
 namespace ttyd {
 // Semantic native owner of caseInit's64 original160-byte records. Source RAM
 // aliasing/heap addresses are separate; names>=64 and full pools hold admission.
+// Flags1 active,2 marked for dispatch,4 derives from descriptor type8000.
+// Event ID is an owned scheduler identity, separate from pool index/callback.
 struct FieldCaseRecord {
  uint16_t flags=0,padding=0;
  uint32_t type=0;
@@ -20,6 +22,8 @@ struct FieldCaseDescriptor {
  uint16_t type=0;
  std::string name;
  uint32_t argument=0,callback=0,script=0;
+ // Bero cases request priority20 and NPC stop; ordinary cases priority0.
+ // Local bank is copied at registration, before returning the case index.
  int32_t priority=0;
  std::array<int32_t,16> locals{};
 };

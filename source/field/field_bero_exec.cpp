@@ -2,6 +2,8 @@
 #include "event_manager.hpp"
 #include <cassert>
 namespace ttyd {
+// Read/resolve operation, then read/resolve mask, then reacquire the owner.
+// Captured argument base does not imply prefetching both operand words.
 int32_t fieldBeroExecOnOffEvent(EventEntry& e,const FieldBeroExecEventServices& s){
     assert(s.word && s.value && s.owner);const auto args=e.arguments;
     const auto operation=s.value(s.user,e,int32_t(s.word(s.user,args)));

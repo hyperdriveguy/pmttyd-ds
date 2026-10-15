@@ -25,6 +25,8 @@ public:
  bool npcNames(uint32_t address,std::vector<std::string>&) const;
  const std::vector<FieldDoorDataCopy>& copies() const{return copies_;}
 private:
+ // Native guest arena [84000000,84100000) advances by72 per copy. Room
+ // invalidation clears owners but deliberately does not rewind next_.
  uint32_t room_=UINT32_MAX,next_=0x84000000;
  uint64_t generation_=0,mapEpoch_=0;
  unsigned mapPhase_=0;

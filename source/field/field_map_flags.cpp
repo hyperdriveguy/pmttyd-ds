@@ -14,6 +14,9 @@ struct FieldMapFlagGeometry {
 namespace {
 std::unordered_map<uint32_t,std::shared_ptr<const FieldMapFlagGeometry>> assets;
 uint64_t generation=0;
+// Private LE PMFLG001: max1,000,000 triangle vertices,8192 nodes,64-byte
+// names, U16 owner per vertex. Parent must precede child, all three triangle
+// vertices share owner, source IDs unique. Bounds are native pack admission.
 std::shared_ptr<const FieldMapFlagGeometry> load(const std::string& path) {
  FILE* f=std::fopen(path.c_str(),"rb");if(!f)return {};
  auto g=std::make_shared<FieldMapFlagGeometry>();char magic[8];uint32_t count=0;
@@ -35,6 +38,8 @@ std::shared_ptr<const FieldMapFlagGeometry> load(const std::string& path) {
  ok=ok && std::fgetc(f)==EOF;std::fclose(f);return ok?g:nullptr;
 }
 }
+// PMFLDS01 admits at most64 rooms and relative safe leaf paths. Candidate
+// replacement is atomic; no partial catalog becomes visible on malformed EOF.
 bool loadFieldMapFlagAssets(const char* root) {
  if(!root)return false;
  const std::string base=root;FILE* f=std::fopen((base+"/field-map-flags.bin").c_str(),"rb");if(!f)return false;
@@ -58,10 +63,15 @@ void FieldMapFlags::synchronize(uint32_t room) {
  geometry_=it->second;flags_.resize(geometry_->nodes.size());hitFlags_.resize(flags_.size());
 }
 bool FieldMapFlags::ready(uint32_t vertices) const{return geometry_ && generation_==generation && geometry_->vertices==vertices;}
+// Duplicate names are ambiguous and fail rather than picking an arbitrary
+// branch. Generation mismatch refuses stale ownership after asset reload.
 int FieldMapFlags::find(const std::string& name) const {
  if(!geometry_ || generation_!=generation)return -1;
  int found=-1;for(unsigned n=0;n<geometry_->nodes.size();++n)if(geometry_->nodes[n].name==name){if(found>=0)return -1;found=int(n);}return found;
 }
+// Apply to the selected node and descendants using parent chains. Preorder
+// permits starting at target, but does not make every later node a descendant.
+// Only bit1 changes the visibility cache; other map flags remain retained.
 bool FieldMapFlags::mapFlag(const std::string& name,uint32_t mask,bool on) {
  const auto target=find(name);if(target<0)return false;
  for(unsigned n=unsigned(target);n<flags_.size();++n) {
@@ -73,6 +83,8 @@ bool FieldMapFlags::mapFlag(const std::string& name,uint32_t mask,bool on) {
  }
  return true;
 }
+// Enabled inverts disable-bit1. Export sorted source IDs disabled by either
+// bit1 or bit80; preserve the independent draw flags and name-query rules.
 bool FieldMapFlags::hitEnabled(const std::string& name,bool enabled) {return hitFlags(name,1,!enabled);}
 bool FieldMapFlags::hitFlags(const std::string& name,uint16_t mask,bool on) {
  const auto target=find(name);if(target<0 || !geometry_->nodes[unsigned(target)].collision)return false;
@@ -85,6 +97,8 @@ bool FieldMapFlags::hitFlags(const std::string& name,uint16_t mask,bool on) {
 }
 std::optional<uint32_t> FieldMapFlags::mapFlags(const std::string& name) const{const auto n=find(name);return n<0?std::nullopt:std::optional<uint32_t>(flags_[unsigned(n)]);}
 std::optional<bool> FieldMapFlags::hitEnabled(const std::string& name) const{const auto n=find(name);return n<0 || !geometry_->nodes[unsigned(n)].collision?std::nullopt:std::optional<bool>(!(hitFlags_[unsigned(n)]&0x81));}
+// Coalesce maximal visible vertex spans lazily. Triangle-owner validation
+// ensures transitions remain primitive-aligned; callers may intersect subranges.
 void FieldMapFlags::refreshVisibility() const {
  if(!dirty_)return;
  visible_.clear();uint32_t n=0;

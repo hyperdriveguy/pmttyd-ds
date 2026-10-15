@@ -16,6 +16,8 @@ public:
  void invalidate();
  void synchronize(uint32_t room);
  bool ready(uint32_t vertices) const;
+ // Epoch changes on invalidation; generation rejects an old catalog while
+ // epoch also tells dependent per-room setup to replay its ordered prefix.
  uint64_t epoch() const{return epoch_;}
  bool mapFlag(const std::string& name,uint32_t mask,bool on);
  bool hitEnabled(const std::string& name,bool enabled);
@@ -37,6 +39,8 @@ private:
  std::shared_ptr<const FieldMapFlagGeometry> geometry_;
  uint32_t room_=UINT32_MAX;
  uint64_t generation_=0,epoch_=0;
+ // Map bit1 hides draw vertices; hit bits1/80 disable collision. Only hit80
+ // excludes name lookup, so a disabled bit1 node can still be queried by name.
  std::vector<uint32_t> flags_,disabled_;
  std::vector<uint16_t> hitFlags_;
  mutable std::vector<std::array<uint32_t,2>> visible_;
