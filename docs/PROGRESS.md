@@ -14334,3 +14334,56 @@ owner800f8e28 and complete field return. Constant spans are admitted complete;
 grouped vector/seed loads do not promise arbitrary partial-RAM fault replay parity.
 Source GPU/math/FPSCR parity and hardware performance remain unverified. Full
 prologue/remake goal stays active.
+
+## 2026-10-15 — Queued NPC draw and party-removal code documentation
+
+Added 128 inline comment lines across seven field C++/header files plus
+[queued NPC drawing](code/npc-queued-drawing.md) and
+[party removal ownership](code/party-removal-ownership.md), linked from index.
+Code/docs commit 962951c3. All executable tokens/string literals unchanged;
+no original dialogue/story/assets, numeric or scheduling behavior changed.
+No new tests for this prose-only work.
+
+Draw notes document five callback identities, captured invocation/payloads,
+queue-class versus translucent pass routing, source darkening and retained
+material, discarded getter/fresh handles, double-to-float angle order, asymmetric
+rear bounds, fourteen original name pairs, offscreen sync/primary-versus-alternate
+coverage, two blur camera queries, four historical matrices/twelve passes,
+alpha sequence and clear/OR flag footer without color restore. Binding notes
+map exact shared material/getter graph and explicit camera/GPU/Main providers.
+Removal notes map signed bytes, source globals/definitions/hooks, raw EVT slots,
+post-hook rereads, public table-clear versus captured actor allocation, child
+progress-through-hold, fresh Mario owners, native index/token policy, same live
+animation/file/pool ownership, typed proxy retirement, lease exclusion/expiry and
+caller-owned cancellation. Guides distinguish local mechanics from production
+wiring, original GPU/numeric/runtime parity and hardware performance.
+
+Frozen baseline 6cec1276a4274a8280a85abf0e54af912d7f316b plus owned docs is at
+artifacts/npc-draw-party-code-documentation-validation/source. Full git-blob
+audit covers 4165 baseline tracked files with
+zero unexpected changes; all ten frozen/live documentation snapshots match and
+99 local guide/index links resolve. Source/guide prose finalized before gates.
+Concurrent party/font/animation/Mario/file/GPU/runtime work preserved/excluded;
+no combined moving-worktree validation claim. Original host/native handles
+observed terminal0; exit markers agree.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits 0: 477/477 C++ (74.76s),
+218/218 Python (35.341s), zero skipped. Actual original 45-descriptor enemy-bank
+and private HitN64 fixtures ran. Native make all -o assets-ready -j4 SOUNDTRACK=gamecube
+exits 0. Manifest pins source/data/evidence/log and ELF/3DSX hashes.
+Existing compiler/Pillow warnings remain. No emulator/profile/save changes or
+hardware/Gekko numeric/pixel/audio/performance parity claims.
+
+Dependency preflight confirms converters/assets/Makefile/CMake unchanged since
+prior frozen source. All 71 accepted products and original enemy/footer/HP/HitN64
+fixtures inherited by hash, with small mutable evidence/default fixtures copied
+privately. Actual inherited HitN64 PNG read path independently pinned and equal
+to current private copy. No conversion/import/overlay/shared-cache write.
+Native full regeneration skipped; Python fixtures independently read ISO read-only
+into empty temporary outputs. Original rights retained; no ISO, extracted original
+or compiled binary committed. See [asset ledger](ASSETS.md).
+
+Next: remaining party constructors/event bridges and effect/runtime/tooling.
+Newer concurrent party/font/Mario/battle/display/file/animation changes require
+separate inline review. Snapshot inventory is a review aid, not semantic coverage
+proof. Full code documentation/remake goal remains active.

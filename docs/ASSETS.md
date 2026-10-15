@@ -3220,3 +3220,16 @@ Original Nintendo/Intelligent Systems rights and local-only provenance remain.
 No ISO/extracted source/compiled pack is committed; no redistribution rights
 are implied. Complete story dispatch, kind11/other source resources, source GPU
 parity and hardware performance remain separate implementation work.
+
+## Queued NPC/party-removal documentation validation inputs (2026-10-15)
+
+artifacts/npc-draw-party-code-documentation-validation/source inherits all 71
+accepted products and original enemy/footer/HP/HitN64/default test fixtures.
+Dependency comparison finds no converter/assets/Makefile/CMake changes since the
+prior frozen baseline. Small mutable evidence/default fixtures copied privately;
+actual inherited HitN64 decoded-PNG read path independently pinned and equal to
+the current private copy. All product/evidence/fixture hashes checked after gates.
+No conversion, editable import, overlay or shared-pack write. Native full
+regeneration skipped; Python fixtures independently read ISO read-only into empty
+temporary outputs. No ISO, original extracted asset or compiled product committed;
+Nintendo/Intelligent Systems rights retained and no new license granted.
