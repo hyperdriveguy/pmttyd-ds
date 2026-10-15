@@ -20,9 +20,17 @@ std::unordered_map<uint32_t,uint32_t> undergroundCallbacks;uint32_t undergroundE
 MessageAssets messages;EventScriptAssets scripts;MessageFont font;
 uint32_t script=0,fenceScript=0,lectureScript=0,pipeScript=0,franklyName=0,goombellaName=0;std::unordered_map<uint32_t,uint32_t> callbacks;bool ready=false;
 std::vector<uint32_t> fenceNodes;float fenceFrames=0;
+// Guest two's-complement decoding; do not treat original addresses as host
+// pointers or implementation-defined signed casts.
 int32_t signedWord(uint32_t v){return v<=0x7fffffff?int32_t(v):int32_t(int64_t(v)-0x100000000LL);}
 }
 const std::vector<uint32_t>& professorFenceCollisionNodes(){return fenceNodes;}
+// Scoped little-endian metadata: magic8 then u32 entry/fence/lecture/pipe,
+// Frankly/Goombella name addresses and64 callback pairs. Numeric tags match
+// professor_event_assets.py; PMPROG4 supersedes earlier contract pack versions.
+// Commit global bank only after source font/icons, sorted collision nodes and
+// nonlooping fence A_1 span0..140 validate. Pipe entry is retained but unlike
+// the first three entry words is not probed by readWord in this loader.
 bool loadProfessorStoryAssets(const char* root) {
     if(!root)return false;
     const std::string base=root;
@@ -49,6 +57,10 @@ bool loadProfessorStoryAssets(const char* root) {
     scripts=std::move(p);messages=std::move(m);font=std::move(f);script=entry;fenceScript=fence;lectureScript=lecture;pipeScript=pipe;
     franklyName=frankly;goombellaName=goombella;callbacks=std::move(next);ready=true;return true;
 }
+// PMTRIO1 reuses professor service indices0..63 plus underground64..70.
+// Three relocated trio names map slots3..5. tik_01 room messages precede
+// tik_04 fallback; global text/font come from professor loading. Bounds here
+// admit count<72 and tags<71; these are metadata guards, not story counters.
 bool loadUndergroundStoryAssets(const char* root) {
     const std::string base=root;
     EventScriptAssets scripts;MessageAssets text;MessageResource extra;
@@ -65,6 +77,10 @@ bool loadUndergroundStoryAssets(const char* root) {
     undergroundCallbacks=std::move(callbacks);trioNames=names;undergroundEntry=entry;undergroundReady=true;return true;
 }
 const std::array<TrioBattleUnitSpec,4>& trioBattleUnitSpecs(){return battleUnits;}
+// PMBTRIO1 carries three original init/entry/phase roots and tags<95;
+// PMBUNIT2 carries four fieldwise unit records (u32/f32=4 bytes,i16=2,i8=1).
+// Kind checks1/3/2/0xb4 bind Goomba/Spiky/Paragoomba/Frankly in source order.
+// Require separate command assets before publishing. No flattening of scripts.
 bool loadTrioBattleAssets(const char* root) {
     const std::string base=root;EventScriptAssets scripts;
     if(!scripts.load((base+"/trio-battle-events.pmevt").c_str()))return false;
@@ -95,6 +111,8 @@ struct ProfessorRuntime {
     std::unordered_map<uint32_t,uint32_t> messagePlacements;
     std::unordered_map<uint32_t,uint64_t> waits;
     EventNativeRuntime vm;
+    // Private authored GP base;243000000 is GameCube clock Hz, converted
+    // from public ms when assigning the event timestamp. It is not3DS CPU Hz.
     ProfessorRuntime():vm(0x81000000,platform(this)) {}
     static EventNativePlatform platform(ProfessorRuntime* owner) {
         EventNativePlatform p;p.user=owner;p.clock=[](void*)->uint32_t{return 243000000;};
@@ -103,6 +121,9 @@ struct ProfessorRuntime {
         p.flushBlock=[](void*,uint32_t){};p.systemCall=[](void*){}; // CPU-owned native arena, no GPU consumers.
         p.call=[](void* p,EventEntry& e,uint32_t fn,int32_t first){return static_cast<ProfessorRuntime*>(p)->call(e,fn,first!=0);};return p;
     }
+    // Guest strings require NUL within256 bytes; argument slots have4-byte
+    // stride. NPC name tokens select Mario0/G1/Frankly2/trio3..5; an unknown
+    // name fails the scene instead of quietly selecting a different speaker.
     std::string string(uint32_t a) {
         std::string result;for(unsigned i=0;i<256;++i){uint8_t c=0;if(!vm.memory.readByte(a+i,c)){scene->failed=true;return {};}
             if(!c)return result;
@@ -129,11 +150,16 @@ struct ProfessorRuntime {
         const auto op=vm.interpreterServices().operands;
         for(unsigned axis=0;axis<3;++axis)setEventFloat(e,operand(e,first+axis),scene->actors[actor].position[axis],op);
     }
+    // Per-entry deadline initialized once:0 waits/revisits,2 advances. Scripts
+    // retain their own child/wait scheduling; this is only a service boundary.
     int delay(EventEntry& e,bool first,uint64_t duration) {
         if(first)waits[e.id]=scene->now+duration;
         if(scene->now<waits[e.id])return 0;
         waits.erase(e.id);return 2;
     }
+    // Heading degrees retain paper-facing yaw90/270 only for10..170/190..350;
+    // near-depth travel leaves prior yaw. (distance+1)/speed*1000 is native
+    // duration policy, not original measured NPC stepping; zero span is inactive.
     int move(EventEntry& e,bool first,unsigned actor,unsigned x,unsigned z,unsigned speed) {
         auto& m=moves[actor];auto& a=scene->actors[actor];
         if(first) {
@@ -151,6 +177,9 @@ struct ProfessorRuntime {
         }
         return m.active?0:2;
     }
+    // An entry ID owns each movement: deleting it cancels motion before the
+    // next interpolation. No-hit jump is y=start+t*(deltaY+4*apex-4*apex*t),
+    // not a field collision/gravity service. End snaps all interpolated axes.
     void advance() {
         for(unsigned i=0;i<moves.size();++i)if(moves[i].active) {
             auto& m=moves[i];
@@ -163,6 +192,11 @@ struct ProfessorRuntime {
             if(t==1){m.active=false;scene->actors[i].moving=false;scene->actors[i].jumping=false;}
         }
     }
+    // Party callback appends original _kur suffix. Source party/extparty names
+    // select G1/Frankly2; battle intro forces Frankly. Cache root at print entry.
+    // once_stop releases print while its window stays active for later append.
+    // Battle placement low bits==1 chooses override0, otherwise3, then clears
+    // this entry's placement word;0x1effffff excludes preserved high controls.
     int print(EventEntry& e,bool first,bool party) {
         if(first) {
             auto key=string(pointer(e,party?0:1));if(party)key+="_kur";
@@ -176,6 +210,8 @@ struct ProfessorRuntime {
         }
         return scene->message.active() && !scene->message.stopped()?0:2;
     }
+    // Selection owns a separate window; signed result writes original LW0
+    // (operand tag-30000000). Input advances outside the VM before this poll.
     int select(EventEntry& e,bool first) {
         if(first) {
             const auto key=string(pointer(e,1));
@@ -186,6 +222,8 @@ struct ProfessorRuntime {
         setEventValue(e,-30000000,scene->selection.current,vm.interpreterServices().operands);
         scene->selectionResults.push_back(scene->selection.current);return 2;
     }
+    // Reuse retained original window/cursor via append, including once_stop;
+    // trace the original ID rather than substituting a new conversation.
     int append(EventEntry& e,bool first) {
         if(first) {
             const auto key=string(pointer(e,1));
@@ -194,6 +232,11 @@ struct ProfessorRuntime {
         }
         return scene->message.active() && !scene->message.stopped()?0:2;
     }
+    // Namespace precedence battle>underground>professor. Indices are converter
+    // SERVICES identities, not VM opcodes; tools append catalogs without renumbering.
+    // Trace raw operands once per admission, retaining pointer/tag identities.
+    // Unknown function fails; admitted unhandled presentation tags return2.
+    // That return records request acceptance, not backend/hardware completion.
     int32_t call(EventEntry& e,uint32_t function,bool first) {
         const auto& admitted=scene->battleIntro?battleCallbacks:scene->underground?undergroundCallbacks:callbacks;
         const auto found=admitted.find(function);if(found==admitted.end()){scene->failed=true;return 0;}
@@ -201,7 +244,15 @@ struct ProfessorRuntime {
         if(first){ProfessorServiceRequest r{function,e.currentCommand,scene->now,{}};
             for(unsigned i=0;i<e.argumentCount;++i)r.rawOperands.push_back(operand(e,i));
             scene->presentationRequests.push_back(std::move(r));}
+        // Explicit source placement increments generation; hidden sentinelY-1000
+        // and NPC bit0x80 are independent of npcActive/lifetime. flagMask below
+        // records only source-owned bits, so consumers can merge other flags.
         auto setPosition=[&](unsigned actor,unsigned index){for(unsigned i=0;i<3;++i)scene->actors[actor].position[i]=number(e,index+i);++scene->actors[actor].placementGeneration;scene->actors[actor].hidden=scene->actors[actor].position[1]==-1000 || (scene->actors[actor].flags&0x80);};
+        //0/1 cameras,3 door barrier,5/7/8 item entry/pos/scale,9 map flags;
+        //11 get Mario pos,12 keys,13/14 move/turn,15 temporary party,16 pose,
+        //17/18 print,19 NPC flags,20 get NPC pos,21 no-hit hop,22 move,
+        //23/24 pos/yaw,26 party move,28 party turn. Other presentation-only
+        // indices retain their raw trace through the default acceptance path.
         switch(tag) {
         case 0:if(first)scene->cameras.push_back({{},{},value(e,0),value(e,1),true});return 2;
         case 1:if(first){ProfessorCameraRequest r;for(unsigned i=0;i<3;++i){r.eye[i]=number(e,i);r.at[i]=number(e,i+3);}r.duration=value(e,6);r.curve=value(e,7);scene->cameras.push_back(r);}return 2;
@@ -244,6 +295,9 @@ struct ProfessorRuntime {
         case 24:scene->actors[npc(e,0)].yaw=number(e,1);return 2;
         case 26:return move(e,first,1,1,2,3);
         case 28:if(first)scene->actors[1].yaw=number(e,1);return delay(e,first,uint64_t(std::max<int32_t>(0,value(e,2))));
+        // Battle extension71..94: registrations72..76 are traced;77 resolves
+        // scoped Frankly unit6; work index0..15; actor selector-3 is Mario,
+        // otherwise Frankly. These are used lecture services, not general lookup.
         case 71:return 2; // Original local lecture_init is a return2 leaf.
         case 72:case 73:case 74:case 75:case 76:return 2; // Script registrations retained in request trace.
         case 77:setEventValue(e,operand(e,1),6,vm.interpreterServices().operands);return 2;
@@ -256,6 +310,9 @@ struct ProfessorRuntime {
         case 84: {
             const unsigned actor=value(e,0)==-3?0:2;scene->actors[actor].pose=string(pointer(e,2));scene->actors[actor].poseAt=scene->now;return 2;
         }
+        // One X/Z step per callback visit, independent of elapsed ms. Final
+        // visit snaps XYZ and returns1 (advance+yield), not immediate return2.
+        // Positive count is required; entry-ID map retains suspended movement.
         case 85: {
             auto& m=battleMoves[e.id];
             if(first) {
@@ -267,16 +324,23 @@ struct ProfessorRuntime {
             if(--m.count>0)return 0;
             a.position=m.target;a.moving=false;battleMoves.erase(e.id);return 1; // Source advance+yield.
         }
+        // Phase comparison intentionally reads RAW operand1, not getEventValue.
+        // The packed phase literal must not be decoded as a variable tag.
         case 86:setEventValue(e,operand(e,0),scene->battlePhaseWord==uint32_t(operand(e,1)),vm.interpreterServices().operands);return 2;
         case 87:setEventValue(e,operand(e,0),scene->battleTurn,vm.interpreterServices().operands);return 2;
         case 89:case 90:return 2; // Source talk/stay names retained; used names are T_1/S_1.
         case 91:scene->battleStatusVisible=value(e,0)!=0;return 2;
         case 92:if(value(e,1)==0)scene->cameras.push_back({{},{},0,11,true});return 2;
+        // Battle camera source frames become integer ms by *1000/60; curve
+        // remains source value. msg_toge preserves high0xe1000000 controls.
         case 93: {
             ProfessorCameraRequest r;for(unsigned axis=0;axis<3;++axis){r.eye[axis]=number(e,axis+1);r.at[axis]=number(e,axis+4);}
             r.duration=value(e,7)*1000/60;r.curve=value(e,8);scene->cameras.push_back(r);return 2;
         }
         case 94:messagePlacements[e.id]=(messagePlacements[e.id]&0xe1000000u)|uint32_t(value(e,0));return 2;
+        // Underground extension64..70: facing toward NPC, explicit Mario/party
+        // placements, source trio run/damage pose prefixes, BGM restoration.
+        // Party selector1 means secondary Frankly; other used selector is G.
         case 64:case 65: {
             const unsigned actor=tag==64?0:value(e,0)==1?2:1,target=npc(e,tag==64?0:1);
             const auto& a=scene->actors[actor].position;const auto& b=scene->actors[target].position;
@@ -291,10 +355,16 @@ struct ProfessorRuntime {
         }
         case 70:scene->music=0;return 2;
         case 63:if(value(e,0)==1)scene->professorControlEnabled=value(e,1)!=0;return 2;
+        // Native music projection:-1=off,1=non-null scene BGM token,0=restore;
+        // full original BGM/ENV/SFX mix remains a different presentation owner.
         case 30:scene->music=-1;return 2;
         case 31:scene->music=pointer(e,1)?1:0;return 2;
         case 35:positionOut(e,1,value(e,0)==1?2:1);return 2;
         case 36:if(value(e,0)==1)scene->temporaryProfessor=false;return 2;
+        // Capture admission and completion are separate. Bounding box43 holds
+        // for actual renderer captureReady and writes four INTEGER outputs.
+        // Animation wait50 must first yield, then requires A_1 elapsed140/60s;
+        // visibility/release and A_saku_04 collision request remain independent.
         case 41:scene->captureRequested=true;return 2;
         case 43:
             if(!scene->captureReady)return 0;
@@ -309,6 +379,10 @@ struct ProfessorRuntime {
         case 54:
             if(string(pointer(e,0))=="A_saku_04" && value(e,1)==1 && value(e,2)==0)scene->fenceCollisionOff=true;
             return 2;
+        // Eight float operands are two ordered2D segments, output operand8.
+        // Preserve ordered endpoint rejection and fused cross products; >0
+        // rejects same-side pairs, so endpoint/collinear cases stay inclusive.
+        // Replacing with epsilon/general geometry changes source branch behavior.
         case 55: {
             float a[8];for(unsigned i=0;i<8;++i)a[i]=number(e,i);
             bool hit=true;
@@ -328,6 +402,9 @@ struct ProfessorRuntime {
             }
             setEventValue(e,operand(e,8),hit?1:0,vm.interpreterServices().operands);return 2;
         }
+        //56 choice,57 append,58 partykill->NPC projection,59 battle info,
+        //60 start/61 wait require the supplied FIELD battle owner. Missing owner
+        // blocks;62 previous-party placement always retains its service barrier.
         case 56:return select(e,first);
         case 57:return append(e,first);
         case 58:scene->goombellaNpc=true;return 2;
@@ -348,6 +425,11 @@ struct ProfessorRuntime {
         default:return 2;
         }
     }
+    // Private1MiB guest heap0x82000000..0x82100000;16-byte SDK descriptor
+    // area0x8041f070, current heap0x8041e428, handle0x8041e844. GP+4=60Hz.
+    // Seed actual GSW0 and GSF1207(departed), then priority10/flags0 root.
+    // Original script writes are read back by tick; native code does not infer
+    // story progression from a completed animation or a message count.
     bool initialize(uint32_t entry,int32_t initialStory) {
         if(!vm.memory.registerRam(0x82000000,std::vector<uint8_t>(1024*1024)) ||
            !vm.memory.registerRam(0x8041f070,std::vector<uint8_t>(16)) ||
@@ -362,6 +444,8 @@ struct ProfessorRuntime {
         auto creation=vm.creationServices();rootId=createRootEvent(vm.schedule,entry,10,0,creation).id;return true;
     }
 };
+// Original first-talk story8, Frankly(-135,0,-240); tick immediately with
+// doorBusy=true so source placement can precede the original door-end barrier.
 bool ProfessorStory::begin(uint64_t time,std::array<float,3> mario,std::array<float,3> goombella,bool departed) {
     if(!ready || triggered)return false;
     *this=ProfessorStory{};triggered=true;now=time;professorDeparted=departed;
@@ -370,6 +454,9 @@ bool ProfessorStory::begin(uint64_t time,std::array<float,3> mario,std::array<fl
     runtime_=std::make_shared<ProfessorRuntime>();runtime_->scene=this;
     if(!runtime_->initialize(script,8)){failed=true;return false;}tick(time,0,true);return !failed;
 }
+// Fence may replace a FINISHED first-talk owner only while temporary Frankly
+// exists. Preserve his entire actor snapshot/departed flag through reset; fresh
+// story9 VM owns the subsequent scene, not the completed first-talk VM.
 bool ProfessorStory::beginFence(uint64_t time,std::array<float,3> mario,std::array<float,3> goombella) {
     if(!ready || running() || !temporaryProfessor)return false;
     const auto professor=actors[2];const bool departed=professorDeparted;
@@ -379,6 +466,8 @@ bool ProfessorStory::beginFence(uint64_t time,std::array<float,3> mario,std::arr
     runtime_=std::make_shared<ProfessorRuntime>();runtime_->scene=this;
     if(!runtime_->initialize(fenceScript,9)){failed=true;return false;}tick(time,0,true);return !failed;
 }
+// Story10 reload already hides fence/disables collision and restores Frankly
+//(-220,0,305), then starts original passive crossing event with door free.
 bool ProfessorStory::beginLecture(uint64_t time,std::array<float,3> mario,std::array<float,3> goombella,bool departed) {
     if(!ready || triggered)return false;
     *this=ProfessorStory{};triggered=true;fenceStarted=true;fenceHidden=true;fenceCollisionOff=true;story=10;now=time;
@@ -388,6 +477,9 @@ bool ProfessorStory::beginLecture(uint64_t time,std::array<float,3> mario,std::a
     runtime_=std::make_shared<ProfessorRuntime>();runtime_->scene=this;
     if(!runtime_->initialize(lectureScript,10)){failed=true;return false;}tick(time,0,false);return !failed;
 }
+// Only upper story bound11 is checked here; caller owns valid lower domain.
+// Departed flag supplies temporary Frankly presence. Trio spawn hidden atY-1000
+// until actual event placement; actor order KUR/PTK/TGK differs from unit records.
 bool ProfessorStory::beginUnderground(uint64_t time,int32_t initialStory,std::array<float,3> mario,std::array<float,3> goombella,bool departed) {
     if(!ready || !undergroundReady || triggered || initialStory>11)return false;
     *this=ProfessorStory{};underground=true;triggered=true;temporaryProfessor=departed;professorDeparted=departed;story=initialStory;now=time;
@@ -398,6 +490,9 @@ bool ProfessorStory::beginUnderground(uint64_t time,int32_t initialStory,std::ar
     runtime_=std::make_shared<ProfessorRuntime>();runtime_->scene=this;
     if(!runtime_->initialize(undergroundEntry,initialStory)){failed=true;return false;}tick(time,0,false);return !failed;
 }
+// Scoped original lecture init->entry->phase chain, not general battle Main.
+// Mario/G native presentation starts(-100,0,-5)/(-140,0,5); remap source unit
+// order Goomba/Spiky/Para to actor3/5/4. Only entry0 starts now; tick appends1/2.
 bool ProfessorStory::beginTrioBattleIntro(uint64_t time) {
     if(!ready || !undergroundReady || !battleReady || triggered)return false;
     *this=ProfessorStory{};battleIntro=true;underground=true;triggered=true;keysEnabled=false;temporaryProfessor=true;story=11;now=time;
@@ -409,6 +504,9 @@ bool ProfessorStory::beginTrioBattleIntro(uint64_t time) {
     runtime_=std::make_shared<ProfessorRuntime>();runtime_->scene=this;
     if(!runtime_->initialize(battleEntries[0],11)){failed=true;return false;}tick(time,0,false);return !failed;
 }
+// Execute original pipe writer synchronously for one manager visit; success
+// requires no live events, no failure and actual departed flag. Does not invent
+// a deferred success while its original event remains waiting.
 bool ProfessorStory::departThroughPipe(uint64_t time,int32_t initialStory,bool departed) {
     if(!ready || running())return false;
     *this=ProfessorStory{};triggered=true;now=time;story=initialStory;professorDeparted=departed;
@@ -417,6 +515,9 @@ bool ProfessorStory::departThroughPipe(uint64_t time,int32_t initialStory,bool d
     tick(time,0,false);
     return finished && !failed && professorDeparted;
 }
+// Presentation-only story11 restore: departed hides/removes NPC atY-1000;
+// otherwise source root(-220,0,305), yaw270. Bit0x40000000 is explicitly owned
+// through flagMask. No interpreter is created or story dialogue replayed.
 void ProfessorStory::restoreProfessor(bool departed) {
     *this=ProfessorStory{};triggered=true;finished=true;story=11;professorDeparted=departed;
     actors[2].position=departed?std::array<float,3>{0,-1000,0}:std::array<float,3>{-220,0,305};
@@ -424,6 +525,10 @@ void ProfessorStory::restoreProfessor(bool departed) {
     actors[2].placementGeneration=1;
     actors[2].npcActive=!departed;actors[2].flagMask=0x40000000;
 }
+// Monotonic ms; move -> message -> selection -> VM -> saved-state readback.
+// After event finish, text may still drain, but VM stays stopped. Completion
+// counts ALL allocations/children; battleIntro then creates the next of three
+// roots on a later manager pass, preserving separate source init/entry/phase.
 void ProfessorStory::tick(uint64_t time,uint32_t keys,bool doorBusy,const MessageSelectionInput& selectionInput) {
     if(failed || time<now || !runtime_)return;
     if(!running()){now=time;if(message.active())message.tick(now,keys);return;}

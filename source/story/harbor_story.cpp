@@ -4,6 +4,8 @@
 #include <cstdio>
 namespace ttyd {
 namespace {MessageAssets messages;MessageFont font;bool ready=false;}
+// Stage resources locally: publish only after all six unchanged US messages
+// and the source font open. A failed reload leaves the previous global bank.
 bool loadHarborStoryAssets(const char* root) {
     if(!root)return false;
     const std::string base=root;
@@ -15,9 +17,14 @@ bool loadHarborStoryAssets(const char* root) {
 const MessageFont& harborMessageFont(){return font;}
 void HarborStory::reset(bool available) {
     *this=HarborStory{};enabled=available;
+    // Original gor speaker offsets and opening roots in order Goombella,
+    // Crump, A, B. Defaults carry NPC flags0x40000623; Goombella starts yaw90
+    // with display angle180. These values are scene placement, not camera pixels.
     actors={{{0x14b28,175,15,-300},{0x14b40,225,15,-300},{0x14b5c,255,15,-330},{0x14b6c,280,15,-330}}};
     actors[0].display=180;actors[0].yaw=90;
 }
+// Cache the root at print entry; later movement does not drag the text anchor.
+// IDs resolve original payloads, with no substitute text on a missing resource.
 bool HarborStory::print(int id,unsigned actor) {
     char key[20];std::snprintf(key,sizeof(key),"mac_0_%03d",id);speaker=actors[actor].key;
     speakerRoot={actors[actor].x,actors[actor].y,actors[actor].z};
@@ -27,6 +34,8 @@ bool HarborStory::begin(uint64_t time) {
     if(!ready || !enabled || triggered)return false;
     triggered=true;now=time;stage=1;return print(16,0);
 }
+// delta is a positive LEFT displacement, not an absolute X or signed step.
+// One pending request per actor; admission delays are relative to current ms.
 void HarborStory::move(unsigned actor,int delta,float speed,unsigned delay) {
     auto& a=actors[actor];a.pending=true;a.moveAt=now+delay;a.displacement=delta;a.speed=speed;
 }
@@ -52,6 +61,9 @@ void HarborStory::advanceActors(uint64_t delta) {
         }
     }
 }
+// Simulation supplies actualSpeed; <0.1 means stay, then tribe thresholds
+// choose walk/run. Goombella uses PKR poses, others ordinary poses. NPC bit0x200
+// gates talk ownership; matrix preparation observes retained yaw/flags/root.
 void HarborStory::preparePresentation(const NpcAngleTable& angles,const NpcCameraService& camera,const MessagePlayback* text,uint32_t who,uint64_t time) {
     for(unsigned i=0;i<actors.size();++i) {
         auto& a=actors[i];
@@ -63,6 +75,13 @@ void HarborStory::preparePresentation(const NpcAngleTable& angles,const NpcCamer
         a.presentationReady=a.presentation.prepare(input,angles,camera);
     }
 }
+// Advance movement even while dialogue blocks. Only one stage executes per
+// call: a large time jump does not catch up every intervening wait/message.
+// Source-derived order:016(G), staggered100-unit retreat ->017(C),018(G),
+// wait500 ->019(C),020(A), waits500+1000, staggered20-unit retreat ->021(G).
+// First retreat waits1400ms; followers delay300/350ms at120 units/s versus
+// Goombella180. Second followers delay100/150ms, Goombella50ms, all120.
+// The last line waits only Goombella's move; other actors remain independent.
 void HarborStory::tick(uint64_t time,uint32_t keys) {
     if(!locked() || failed || time<now)return;
     const uint64_t delta=time-now;now=time;advanceActors(delta);

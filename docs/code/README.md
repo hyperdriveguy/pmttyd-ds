@@ -141,3 +141,7 @@ requests, native clock/framing adapters and independent fade/effect owners.
 [New Game sequence/house](opening-sequence-house.md), [Voyage/arrival](opening-voyage-arrival.md)
 and [map/heading/wake](opening-map-heading-wake.md) explain original IDs, source
 request gates, scene/audio ownership and explicit native presentation adapters.
+
+[Harbor dialogue/events](harbor-story-events.md) and
+[professor/underground events](professor-story-events.md) document the remaining
+story controllers, source callback catalogs and native service boundaries.

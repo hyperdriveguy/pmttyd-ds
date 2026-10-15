@@ -12,8 +12,15 @@ namespace ttyd {
 namespace {
 EventScriptAssets scripts;MessageAssets messages;MessageFont font;uint32_t script=0;
 std::array<uint32_t,4> names{};std::unordered_map<uint32_t,uint32_t> callbacks;bool ready=false;
+// Preserve a guest word's two's-complement sign without an out-of-range
+// uint32_t-to-int32_t conversion; event pointers and negative operand tags share it.
 int32_t signedWord(uint32_t v){return v<=0x7fffffff?int32_t(v):int32_t(int64_t(v)-0x100000000LL);}
 }
+// PMHBR001 stores native little-endian u32 entry, four actor-name addresses,
+// callback count, then (source function address, converter service index) pairs.
+// Header8/word4 are pack widths; <=24 services mirrors harbor_event_assets.py.
+// Duplicate/null callbacks, trailing bytes, bad entry or US022..024 text fail
+// before publication. Numeric tags below must stay aligned with that converter.
 bool loadHarborEncounterAssets(const char* root) {
     if(!root)return false;
     const std::string base=root;
@@ -37,6 +44,9 @@ struct HarborEncounterRuntime {
     std::array<Move,5> moves{};FieldScriptedJump jump;bool jumpLive=false;
     std::unordered_map<uint32_t,uint64_t> waits;
     EventNativeRuntime vm;
+    // Authored guest GP0x81000000; clock callback is the GameCube243MHz rate,
+    // not handheld wall time. GP timestamp converts caller ms via eventClockRate.
+    // Arena is CPU-owned: guest flush/system-call hooks have no GPU consumer.
     HarborEncounterRuntime():vm(0x81000000,platform(this)){}
     static EventNativePlatform platform(HarborEncounterRuntime* r) {
         EventNativePlatform p;p.user=r;p.clock=[](void*)->uint32_t{return 243000000;};
@@ -45,13 +55,22 @@ struct HarborEncounterRuntime {
         p.flushBlock=[](void*,uint32_t){};p.systemCall=[](void*){};
         p.call=[](void* p,EventEntry& e,uint32_t fn,int32_t first){return static_cast<HarborEncounterRuntime*>(p)->call(e,fn,first!=0);};return p;
     }
+    // Arguments are guest32-bit words at stride4. Strings cap256 bytes including
+    // the required terminator; unknown actor names fail rather than aliasing.
+    // NPC names map four source identities to slots1..4 (Mario is slot0).
     int32_t operand(EventEntry& e,unsigned i){uint32_t v=0;if(i>=e.argumentCount || !vm.memory.readWord(e.arguments+4*i,v)){scene->failed=true;return 0;}return signedWord(v);}
     int32_t value(EventEntry& e,unsigned i){return getEventValue(e,operand(e,i),vm.interpreterServices().operands);}
     float number(EventEntry& e,unsigned i){return getEventFloat(e,operand(e,i),vm.interpreterServices().operands);}
     std::string string(uint32_t a){std::string result;for(unsigned i=0;i<256;++i){uint8_t c=0;if(!vm.memory.readByte(a+i,c)){scene->failed=true;return {};}if(!c)return result;result.push_back(char(c));}scene->failed=true;return {};}
     unsigned npc(EventEntry& e,unsigned i){const auto a=uint32_t(value(e,i));for(unsigned n=0;n<4;++n)if(names[n]==a)return n+1;scene->failed=true;return 1;}
     void outPosition(EventEntry& e,unsigned i,unsigned actor){for(unsigned k=0;k<3;++k)setEventFloat(e,operand(e,i+k),scene->actors[actor].position[k],vm.interpreterServices().operands);}
+    // Return0 retains the current VM command;2 advances immediately. Per-entry
+    // deadlines initialize only on first callback admission, not each resume.
     int delay(EventEntry& e,bool first,uint64_t duration){if(first)waits[e.id]=scene->now+duration;if(scene->now<waits[e.id])return 0;waits.erase(e.id);return 2;}
+    // Native speed bridge: (distance+1)/rate seconds, truncated to ms with a
+    // minimum1ms; +1 is existing adapter policy, not measured source timing.
+    // Mario rate>60 chooses run; 180/pi converts atan2 to retained degree yaw.
+    // NPC auto-poses are owned outside this movement callback.
     int move(EventEntry& e,bool first,unsigned actor,unsigned x,unsigned z,unsigned speed){
         auto& m=moves[actor];auto& a=scene->actors[actor];
         if(first){m.start=a.position;m.target={number(e,x),a.position[1],number(e,z)};
@@ -65,6 +84,9 @@ struct HarborEncounterRuntime {
         }
         return m.active?0:2;
     }
+    // Run before VM dispatch; Mario Y remains owned by field/jump support,
+    // while NPC movement interpolates all axes. Completion releases the callback
+    // on the same visit's manager pass and restores Mario's ordinary stay pose.
     void advance(){for(unsigned i=0;i<5;++i){auto& m=moves[i];if(!m.active)continue;
         const float t=std::min(1.f,float(scene->now-m.begin)/float(m.end-m.begin));
         for(unsigned k=0;k<3;++k)if(i!=0 || k!=1)scene->actors[i].position[k]=m.start[k]+(m.target[k]-m.start[k])*t;
@@ -74,6 +96,12 @@ struct HarborEncounterRuntime {
     int32_t call(EventEntry& e,uint32_t function,bool first){
         const auto found=callbacks.find(function);if(found==callbacks.end()){scene->failed=true;return 0;}
         if(first){HarborEncounterRequest r{function,e.currentCommand,scene->now,{}};for(unsigned i=0;i<e.argumentCount;++i)r.operands.push_back(operand(e,i));scene->requests.push_back(std::move(r));}
+        // Converter indices, not original event opcodes:0 key-depth,1 control,
+        //2/3 Mario pos/yaw,4/5 NPC pos/yaw,6 NPC flags,7 Mario getpos,
+        //8 environment,9 Mario move,10 reaction,11 Mario pose,12 NPC move,
+        //13 print,14 camera,15 Mario display flags,16 SFX,17 jump,18/19 HP,
+        //20 battle info,21 battle start,22 wait end,23 registry query.
+        // First-admission trace stores RAW operand words, not resolved values.
         switch(found->second){
         case 0:if(value(e,0)==0)++scene->keyDepth;else --scene->keyDepth;return 2;
         case 1:scene->controlEnabled=value(e,0)!=0;return 2;
@@ -88,11 +116,16 @@ struct HarborEncounterRuntime {
         case 11:scene->actors[0].poseOverride=true;scene->actors[0].pose=string(uint32_t(value(e,0)));scene->actors[0].poseAt=scene->now;return 2;
         case 12:return move(e,first,npc(e,0),1,2,4);
         case 13:if(first){const auto key=string(uint32_t(value(e,1)));const unsigned who=npc(e,3);
+            // Original gor REL speaker tokens Goombella/Crump/A/B. These differ
+            // from relocated name pointers used to look up the NPC slots.
             constexpr uint32_t offsets[]={0x14b28,0x14b40,0x14b5c,0x14b6c};scene->speaker=offsets[who-1];scene->speakerRoot=scene->actors[who].position;
             if(!scene->message.open(key.c_str(),messages.find(key.c_str()),font,scene->now)){scene->failed=true;return 0;}scene->messageOrder.push_back(key);}
             return scene->message.active()?0:2;
         case 14:if(first){HarborEncounterCamera r;for(unsigned i=0;i<3;++i){r.eye[i]=number(e,i);r.at[i]=number(e,i+3);}r.duration=value(e,6);r.curve=value(e,7);scene->cameras.push_back(r);}return 2;
         case 15:{auto& a=scene->actors[0];const auto mask=uint32_t(value(e,1));if(value(e,0)==1)a.flags|=mask;else a.flags&=~mask;return 2;}
+        // Scoped stationary jump only: roll operand4 must0, duration ms*.06
+        // truncates to60Hz ticks. Bit2 suppresses automatic jump poses; phase2
+        // selects landing pose. Unsupported domain holds at pendingService.
         case 17:{auto& a=scene->actors[0];if(first){const float x=number(e,0),y=number(e,1),z=number(e,2);
             // The preceding source get-position callback stores Q1024 event
             // floats. Admit only that exact round-trip of this stationary
@@ -110,6 +143,10 @@ struct HarborEncounterRuntime {
         default:scene->pendingService=function;return 0; // Unbound wait/registry services never fabricate completion.
         }
     }
+    // Private1MiB guest heap0x82000000..0x82100000, SDK descriptor words at
+    //0x8041f070 (16 bytes), current heap0x8041e428 and heap handle0x8041e844.
+    // GP+4 holds60Hz; GSW0=4 is original story entry. Root priority10/flags0
+    // and LW0 resume branch are VM setup, not a parallel native story machine.
     bool initialize(bool resume){
         if(!vm.memory.registerRam(0x82000000,std::vector<uint8_t>(1024*1024)) ||
            !vm.memory.registerRam(0x8041f070,std::vector<uint8_t>(16)) || !vm.memory.registerRam(0x8041e428,std::vector<uint8_t>(4)) ||
@@ -121,6 +158,9 @@ struct HarborEncounterRuntime {
         auto creation=vm.creationServices();auto& root=createRootEvent(vm.schedule,script,10,0,creation);root.locals[0]=resume?1:0;return true;
     }
 };
+// Native pre-admission placements: floor15, roots55/105/135/160 and Z-300/-330;
+// Goombella yaw90, others270, source NPC flags0x40000620. Original resume branch
+// may overwrite these. First manager visit runs immediately with support15.
 bool HarborEncounter::begin(uint64_t time,std::array<float,3> mario,int health,bool resume){
     if(!ready || triggered)return false;
     *this=HarborEncounter{};triggered=true;now=time;hp=health;
@@ -129,6 +169,10 @@ bool HarborEncounter::begin(uint64_t time,std::array<float,3> mario,int health,b
     runtime_=std::make_shared<HarborEncounterRuntime>();runtime_->scene=this;
     if(!runtime_->initialize(resume)){failed=true;return false;}tick(time,0,15);return !failed;
 }
+// Same-time calls are allowed; backwards time/failure stops dispatch. Advance
+// movement then text then VM, so callback completion sees current text/roots.
+// admitted tracks nonzero key-depth (not a permanent latch); finished requires
+// allocationCount==0, including child events, not merely root return.
 void HarborEncounter::tick(uint64_t time,uint32_t keys,std::optional<float> support){
     if(!running() || failed || time<now || !runtime_)return;
     now=time;auto& r=*runtime_;r.scene=this;r.floor=support;r.advance();

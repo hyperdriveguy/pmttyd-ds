@@ -10,9 +10,16 @@ namespace ttyd {
 bool loadProfessorStoryAssets(const char* root);
 bool loadUndergroundStoryAssets(const char* root);
 bool loadTrioBattleAssets(const char* root);
+// PMBUNIT2 record, decoded fieldwise rather than fread(sizeof(struct)):
+// five defense lanes and64-byte NUL-terminated name; original unit/part masks,
+// offsets and signed forward bias retain source units. Array order is Goomba,
+// Spiky, Paragoomba, Frankly; scene actor slots use a different order.
 struct TrioBattleUnitSpec {uint32_t kind=0;int16_t hp=0,fp=0;std::array<float,3> position{};uint32_t attributes=0;std::array<int8_t,5> defense{};std::array<uint8_t,5> defenseAttributes{};uint32_t partAttributes=0,counterAttributes=0;std::array<float,3> partPosition{},hitOffset{},samplingOffset{};int16_t forwardBias=0;std::array<char,64> nameKey{};};
 const std::array<TrioBattleUnitSpec,4>& trioBattleUnitSpecs();
 const std::vector<uint32_t>& professorFenceCollisionNodes();
+// Field root and battle projection have separate transforms/flag owners.
+// Pose clock is ms; hidden does not mean deleted. Placement generations let the
+// field owner detect explicit source teleports independently of motion samples.
 struct ProfessorSceneActor {
     std::array<float,3> position{},battleRotation{},battlePivot{};
     std::array<float,3> battleScale{{1,1,1}},battleDisplayOffset{};
@@ -25,6 +32,8 @@ struct ProfessorSceneActor {
     uint32_t flagMask=0; // Bits explicitly owned by source flag_onoff requests.
     bool npcActive=false; // Creation/lifetime, independent of display hiding.
 };
+// Original eye/target units and interpolation curve(default11); duration is
+// ms here. Battle moveto converts source60Hz frames separately in the adapter.
 struct ProfessorCameraRequest {
     std::array<float,3> eye{},at{};int duration=0,curve=11;bool off=false;
 };
@@ -43,6 +52,9 @@ public:
     uint64_t fencePoseAt=0;
     uint32_t pendingService=0;
     bool battleIntro=false,battleStatusVisible=true;unsigned battleIntroStage=0;
+    // Scoped lecture phase0x04/phase1 seed, turn1; -1 unit/max-moves means
+    // unset. Sixteen lectureWork cells mirror the admitted callback range,
+    // not arbitrary story flags or a complete battle manager.
     uint32_t battlePhaseWord=0x04000001;int32_t battleTurn=1,lectureUnitId=-1;
     int32_t lectureMaxMoves=-1;std::array<int32_t,16> lectureWork{};
     bool underground=false,undergroundGroupShown=false;
@@ -63,6 +75,9 @@ public:
     std::vector<ProfessorCameraRequest> cameras;
     std::vector<ProfessorServiceRequest> presentationRequests;
     std::vector<std::string> messageOrder;
+    // Entry APIs initialize distinct original script roots, with ms time.
+    // Fresh first-talk8, fence9, lecture10, underground<=11, battle intro11;
+    // restored story11 can be presentation-only without a live interpreter.
     bool begin(uint64_t milliseconds,std::array<float,3> mario,std::array<float,3> goombella,bool departed=false);
     bool beginFence(uint64_t milliseconds,std::array<float,3> mario,std::array<float,3> goombella);
     bool beginLecture(uint64_t milliseconds,std::array<float,3> mario,std::array<float,3> goombella,bool departed=false);
@@ -72,6 +87,8 @@ public:
     void restoreProfessor(bool departed);
     void tick(uint64_t milliseconds,uint32_t keys,bool doorBusy,const MessageSelectionInput& selectionInput={});
     bool running() const{return triggered && !finished;}
+    // Passive underground/fence>=10 polling can coexist with field control
+    // when original keysEnabled permits it; running alone is not an input lock.
     bool locked() const{return running() && !((underground || (fenceStarted && story>=10)) && keysEnabled);}
 private:
     std::shared_ptr<ProfessorRuntime> runtime_;
