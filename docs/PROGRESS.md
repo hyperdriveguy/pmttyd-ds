@@ -8565,3 +8565,80 @@ battle, message/
 inventory/story, effect/audio and port tooling. Re-audit concurrent additions to
 already covered code. Port-wide documentation and the remake remain incomplete;
 the documentation goal stays active.
+
+### Retained animation refresh and recursive scratch recovery (2026-10-14)
+
+Previous goal turn was progress:74751e71 committed actual field battle-init
+parent and shared camera/map/pouch storage. This increment implements all four
+animation parents: animPoseBattleInit80041c58, Refresh80041c84,
+testAlloc80042ac8 and initTestHeap80042e5c. Original listings/hashes and static
+review are artifacts/animation-startup-owner-evidence/. Review found no source
+read/capture mismatch. Recovered allocator has strict unsigned newcursor<end,
+wrapped alignment/reservations and three recovery stages, not ring overwrite.
+
+Machine retains fresh/captured W distinction, signed live count/pool loops,
+whole-word active and mode0/1/2 filtering, repeated original model/file/holder
+counts, eight ordered allocation requests, freshly read aliases58/5c and68/6c,
+duplicate cache invalidation and post-loop W reuse. First overflow rebuilds
+selected buffers inline; second resets and calls real poseAllocBuffer then
+invalidates; third runs Refresh and recursively retries. Real heap0 and
+poseAllocBuffer remain providers, never default successes. Native64-frame stack
+admission holds unsupported recursion without repeating completed effects;
+that is port policy, not a measured source recursion limit or source return.
+
+BattleSequenceBinding now nests this machine inside actual battle_init and
+reports deepest child. No substitute W/count/pose/file is published by production
+code. Existing actual VM owns all accesses; a missing genuine W remains pending.
+[Contract](behavior/display/NATIVE_ANIMATION_REFRESH_AND_SCRATCH_RECOVERY.md).
+No extraction/conversion or shared asset writes; matched prior2100 RomFS products
+and original gor_02.s fixture remain private. ISO stays read-only.
+
+Full session animation ownership remains open. Mode1 refresh MUST include
+mode2 Mario/partner, while current FieldPartyRegistry stores a separate semantic
+five-pose representation and field NPC/legacy battle pools can collide. Adopt
+one namespace BEFORE original actor creation; do not copy live records or fake
+an empty pool. Retain actual W, loaded model/file/holder, resources, scratch
+and output ranges. Existing typed cache uses actual scalar word3c, but its
+native CPU shape arrays are not claimed to alias every new guest scratch range.
+Full cold animInit/tangent/files, upstream tagged authored battle_start,
+subsequent NPC release/context/party/lower BattleInit and full prologue still
+remain required. The documentation inbox keeps these boundaries open.
+
+Validation: final TMPDIR=artifacts/native-stage-map-tmp
+CMAKE_BUILD_PARALLEL_LEVEL=4 make -C artifacts/animation-refresh-source test
+-o assets-ready exited0:352/352 C++ in54.32s and199/199 Python in36.327s.
+Initial full run correctly held at map allocation because the new fixture lacked
+cache callback admission; explicit fixture callbacks were added. A standalone
+unsupported-recursion diagnostic exposed an internal pending label; corrected
+to a real function identity and added the permanent bounded-recursion/no-replay
+check. Standalone -Wall/-Wextra branch check passed before integration; new
+native source/fixture builds emit no code warnings. Baseline compiler/Pillow
+warnings remain. Failed diagnostic/test logs are retained, not reported as passes.
+
+Native make all -j4 -o assets-ready SOUNDTRACK=gamecube
+TARGET=ttyd-animation-refresh BUILD=build-animation-refresh exited0, using isolated
+TMPDIR. Strict isolated ARM fixture passed branchRecovery, strictEndWrap,
+retainedWait, boundedRecursion, originalCPUResource, samePoseBytes, selectedMode2,
+realModelCounts, cacheInvalidation and npcReleaseBoundary. Exact snapshot
+artifacts/azahar-animation-refresh-probe/animation-refresh-probe.snapshot.
+Fixture uses original MODEL/TPL CPU resources, actual registered field NPC plus
+an extra real mode2 typed pose, same BE state aliases and source model counts.
+W/count/file/holder views, zeroed heap block, encounter F8 and state4 position
+are explicitly test supplied. This does not certify original file/heap startup,
+Mario/partner migration, guest-buffer/CPU-array equivalence or authored entry.
+Typed evaluate consumes the same invalidated cache3c after source refresh.
+
+Private main fixture edits restored; final required native all exited0. Normal
+isolated40s Azahar boot exited0; inspected original storybook town/English text
+capture artifacts/azahar-animation-refresh-normal/boot.png. Isolated profile
+and saves only; user settings/saves untouched. No GPU/pixel/Gekko numeric or
+physical3DS performance parity claim. Full prologue remains unfinished.
+
+Frozen base74751e718e491d998ccfbfda982517db4f472205 and scoped edit journal
+isolate this increment from concurrent roots. Source audit:3582 files,
+2100 RomFS files, zero mismatches, plus original parsed-map source hash. All
+2100 RomFS hashes also match prior battle-init validation exactly; no conversion
+or extraction. Manifest artifacts/animation-refresh-validation-manifest.json.
+Documentation links:1367 Markdown files, zero broken links. Native SHA256
+bcd62b0df52240eb228e8d1dfc98926fa2c5bb6afbc07de08fbfd17c0e9e9705. Concurrent work is preserved; the moving merged worktree is not
+claimed validated as a whole.

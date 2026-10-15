@@ -1589,3 +1589,10 @@ inputs are shared read dependencies. No new ISO read, extraction, conversion,
 editable import or shared pack write occurred. Original Nintendo/Intelligent
 Systems rights remain reserved; these private validation copies confer no new
 license or redistribution rights. No original binary/ISO bytes were committed.
+
+Animation refresh/scratch recovery adds no extraction or conversion. Validation
+reuses the frozen battle-init2100 private RomFS products and original gor_02.s
+source fixture with its previously recorded hash. Original MODEL header counts
+come from existing original CPU resources; native test W/file/holder/heap views
+are explicitly runtime fixture policy, not distributable original readiness
+assets. ISO remains read-only, and generated packs stay outside source history.

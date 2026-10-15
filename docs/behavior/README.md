@@ -1190,3 +1190,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Original NPC room reset and teardown](field/ORIGINAL_NPC_ROOM_RESET_AND_TEARDOWN.md): exact reset, pose release/refresh and context cleanup ownership/order.
 - [Native NPC reset and retained room VM](field/NATIVE_NPC_ROOM_RESET_AND_RETAINED_VM.md): source bank clear, resource-service holds and preserved context/ID lifetime across supported rooms.
 - [Original random-state initialization and direct writers](meta/ORIGINAL_RANDOM_STATE_INITIALIZATION_AND_WRITERS.md): initialized launch seed1, DOL/REL direct-reference census and remaining runtime/interleaving frontier.
+
+- Display: [animation refresh and scratch recovery](display/NATIVE_ANIMATION_REFRESH_AND_SCRATCH_RECOVERY.md) — retained mode/refresh/recursive allocator/reset parents and real VM battle-entry continuation; shared global pose/file/output migration remains open.

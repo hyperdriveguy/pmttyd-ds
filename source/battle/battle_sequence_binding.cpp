@@ -38,6 +38,7 @@ bool BattleSequenceBinding::admitEntry() const{
 }
 uint32_t BattleSequenceBinding::pending() const{
     if(sound_.active)return sound_.pending;
+    if(animation_.active)return pendingAnimationBufferFunction(animation_);
     if(fieldInit_.active)return fieldInit_.pending;
     return init_.active?init_.pending:main_.pending;
 }
@@ -86,7 +87,25 @@ bool BattleSequenceBinding::callback(uint32_t fn,OriginalSequenceWork& work,cons
     outer.word=[](void* p,uint32_t a){auto& n=*static_cast<Nested*>(p);return n.base.word(n.base.user,a);};
     outer.half=[](void* p,uint32_t a){auto& n=*static_cast<Nested*>(p);return n.base.half(n.base.user,a);};
     outer.store=[](void* p,uint32_t a,uint32_t v){auto& n=*static_cast<Nested*>(p);return n.base.store(n.base.user,a,v);};
-    outer.call=[](void* p,BattleSequenceCall& call){auto& n=*static_cast<Nested*>(p);if(call.function!=0x800738ac)return n.base.call(n.base.user,call);if(!n.binding.fieldInit_.active && !n.binding.admitEntry())return false;if(!initializeFieldBattle(n.base,n.binding.fieldInit_))return false;call.result=0;return true;};
+    auto children=outer;
+    children.byte=[](void* p,uint32_t a){auto& n=*static_cast<Nested*>(p);return n.base.byte(n.base.user,a);};
+    children.storeByte=[](void* p,uint32_t a,uint8_t v){auto& n=*static_cast<Nested*>(p);return n.base.storeByte(n.base.user,a,v);};
+    children.call=[](void* p,BattleSequenceCall& call){auto& n=*static_cast<Nested*>(p);
+        if(call.function!=0x80041c58)return n.base.call(n.base.user,call);
+        return runAnimationBufferFunction(call.function,0,n.base,n.binding.animation_);
+    };
+    struct FieldBridge {Nested& nested;BattleSequenceEntryServices children;} fieldBridge{nested,children};
+    outer.user=&fieldBridge;
+    outer.word=[](void* p,uint32_t a){auto& n=static_cast<FieldBridge*>(p)->nested;return n.base.word(n.base.user,a);};
+    outer.half=[](void* p,uint32_t a){auto& n=static_cast<FieldBridge*>(p)->nested;return n.base.half(n.base.user,a);};
+    outer.store=[](void* p,uint32_t a,uint32_t v){auto& n=static_cast<FieldBridge*>(p)->nested;return n.base.store(n.base.user,a,v);};
+    outer.byte=nullptr;outer.storeByte=nullptr; // Main uses word/half requests only.
+    outer.call=[](void* p,BattleSequenceCall& call){auto& b=*static_cast<FieldBridge*>(p);auto& n=b.nested;
+        if(call.function!=0x800738ac)return n.base.call(n.base.user,call);
+        if(!n.binding.fieldInit_.active && !n.binding.admitEntry())return false;
+        if(!initializeFieldBattle(b.children,n.binding.fieldInit_))return false;
+        call.result=0;return true;
+    };
     return updateBattleSequenceEntry(work,outer,main_);
 }
 }

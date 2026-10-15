@@ -4824,3 +4824,5 @@ VM context banks/next IDs survive source ReInit; no per-event deletion/copyback
 is invented. Remaining genuine resource/refresh, Mario/map/REL/outer unload and
 normal Game invocation keep the request open. Sequencing test callbacks are not
 proof of complete original-world release services.
+
+Implemented retained animPoseBattleInit/Refresh/testAlloc/initTestHeap parents and nested animation entry into actual battle_init continuation. [Contract](../behavior/display/NATIVE_ANIMATION_REFRESH_AND_SCRATCH_RECOVERY.md). Complete static source/review and ownership migration evidence is artifacts/animation-startup-owner-evidence/. Critical open integration: one session pose namespace BEFORE Mario/partner/NPC/battle Entry, real W/model/file/holder aliases and shared scratch/output lifetime. Mode1 refresh includes actual mode2 Mario/partner; choosing only mode0 NPCs to fabricate empty success is invalid. Current legacy colliding handles/semantic FieldPartyPose cannot be silently copied/adopted. Original heap/animPose_AllocBuffer children remain real waits; cold animInit/tangent/file and ordinary authored startup remain open.

@@ -3,6 +3,7 @@
 #include "source_sound_flags.hpp"
 #include "battle_field_initialize.hpp"
 #include "battle_sequence_storage.hpp"
+#include "animation_buffer_refresh.hpp"
 #include <memory>
 namespace ttyd {
 class Game;class EventNativeRuntime;class FieldNpcRegistryOwner;
@@ -27,6 +28,7 @@ private:
     BattleSequenceEntryCursor init_,main_;
     SoundFlagCursor sound_;
     BattleFieldInitializeCursor fieldInit_;
+    AnimationBufferCursor animation_;
     std::vector<uint32_t> storageMappings_;
 };
 }

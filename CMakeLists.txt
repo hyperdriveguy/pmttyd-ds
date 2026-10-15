@@ -1859,3 +1859,13 @@ add_executable(field_npc_room_retirement_tests tests/field_npc_room_retirement_t
 target_link_libraries(field_npc_room_retirement_tests PRIVATE ttyd_core)
 add_test(NAME field_npc_room_retirement COMMAND field_npc_room_retirement_tests)
 set_tests_properties(field_npc_room_retirement PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Original animation refresh, scratch recovery and battle entry continuation.
+target_sources(ttyd_core PRIVATE source/display/animation_buffer_refresh.cpp)
+add_executable(animation_buffer_refresh_tests tests/animation_buffer_refresh_tests.cpp)
+target_link_libraries(animation_buffer_refresh_tests PRIVATE ttyd_core)
+add_test(NAME animation_buffer_refresh COMMAND animation_buffer_refresh_tests)
+add_executable(animation_buffer_binding_tests tests/animation_buffer_binding_tests.cpp)
+target_link_libraries(animation_buffer_binding_tests PRIVATE ttyd_core)
+add_test(NAME animation_buffer_binding COMMAND animation_buffer_binding_tests)
+set_tests_properties(animation_buffer_binding PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
