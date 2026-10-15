@@ -2,6 +2,9 @@
 #include "event_memory_opcodes.hpp"
 #include <array>
 namespace ttyd {
+// Twelve floats are affine3x4. Channel descriptor count0/table4;keys stride
+// b2hex with signed16 time plus22 eight-byte curve records. SDK stages retain
+// fixed scratch matrices,not source guest stack addresses.
 using EffectMayaMatrix = std::array<float, 12>;
 enum class EffectMayaBinary { Add, Subtract, Multiply, Divide };
 enum class EffectMayaFused {
@@ -24,6 +27,9 @@ struct EffectMayaMatrixServices {
   bool (*concat)(void *, const EffectMayaMatrix &, const EffectMayaMatrix &,
                  EffectMayaMatrix &) = nullptr;
 };
+// Values0..2 translation,3..5 XYZ rotation,6..8 scale,9..11 pivotA,
+//12..14 translationA,15..17 pivotB,18..20 translationB,21 scalar. Capture
+// interpolation before first fallible SDK child;successful stages never repeat.
 struct EffectMayaMatrixCursor {
   bool active = false;
   uint32_t phase = 0, animation = 0, channel = 0, matrixOut = 0, scalarOut = 0;

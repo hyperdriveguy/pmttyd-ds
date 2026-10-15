@@ -1,5 +1,10 @@
 #include "field_party_native_entry.hpp"
 namespace ttyd {
+// Twelve unchanged source spans:three scale/vector passes and overwritten
+// seeds(b178/b184/b190/b19c/b220),names(b4dc/b52c),Hello dispatch3141c4,
+// normal/aux pose rows314744/314a14,unit421200,dimensions421584.
+// Validate exact address/size; import only absent complete spans into actual VM.
+// Loader layout admission is separate from converter's original-byte hashes.
 std::unique_ptr<NativeFieldPartyEntry> NativeFieldPartyEntry::create(const char* root,FieldPartyRegistry& p,FieldMarioBattleState& m,std::shared_ptr<ProloguePouch> q,Trace t){
  if(!root)return {};
  auto n=std::unique_ptr<NativeFieldPartyEntry>(new NativeFieldPartyEntry(p,m,std::move(q),std::move(t)));
@@ -25,6 +30,8 @@ std::unique_ptr<NativeFieldPartyEntry> NativeFieldPartyEntry::create(const char*
  }
  return n;
 }
+// issued_ latches first request/trace per phase; next() clears it. It is not
+// a generic success bit:child availability and captured operands remain separate.
 void NativeFieldPartyEntry::request(uint32_t f,std::initializer_list<int32_t> args){if(!issued_){issued_=true;if(trace_)trace_(f,args);}}
 bool NativeFieldPartyEntry::word(uint32_t a,uint32_t& v) const {
  if(parties_.nativeAnimation)return parties_.nativeAnimation->process().vm().memory.readWord(a,v);
@@ -38,8 +45,13 @@ FieldPartyPose* NativeFieldPartyEntry::pose(int32_t h) const {
  if(parties_.originalPool && !parties_.originalPool->pose(h))return nullptr;
  return parties_.pose(h);
 }
+// Original actor name18,clear bytes20/21,OR word8 mask2000. seed() reads
+// three overwritten source stack-seed words for ordering,without publishing them.
 void NativeFieldPartyEntry::updateName(){actor_->word(0x18,selected_);actor_->bytes[0x20]=actor_->bytes[0x21]=0;actor_->word(8,actor_->word(8)|0x2000);}
 bool NativeFieldPartyEntry::seed(uint32_t a) const {uint32_t v=0;return word(a,v) && word(a+4,v) && word(a+8,v);}
+// Scoped kinds ordinary1/aux13 only. Ordinary live signed HP(pouch half20)
+// <=5 selects row12,otherwise1;aux13 row1 skips HP. Actor word4 mask8000
+// is the unbound d_mario domain. Do not turn aux13 into canonical join kind1.
 bool NativeFieldPartyEntry::select(){
  const int32_t admitted=form_==Form::Secondary?13:1;
  if(!issued_){
@@ -52,6 +64,10 @@ bool NativeFieldPartyEntry::select(){
  const uint32_t row=form_==Form::Secondary?0x80314a14:0x80314744;
  if(!word(row+4*uint32_t(selector_),selected_)){pending_=0x800be144;return false;}return true;
 }
+// Capture old/selected string identities once per comparison; actual guest
+// bytes decide equality,including distinct aliases. Bound10000hex is native
+// finite-string admission. Main's second comparison still runs with fresh8000,
+// suppressing only its eventual name write. It is not a duplicated no-op.
 bool NativeFieldPartyEntry::compare(bool second){
  if(!issued_){
   oldName_=actor_->word(0x18);
@@ -71,6 +87,8 @@ bool NativeFieldPartyEntry::step(int32_t kind,std::shared_ptr<const ActorAnimati
  if(started_ && form_!=Form::Ordinary){pending_=entryFunction();return false;}started_=true;
  return advance(kind,std::move(bank),now,appearance,result);
 }
+// Retain raw float words,form and kind across loading holds. A later call
+// cannot retarget coordinates/form or a different native animation/pool owner.
 bool NativeFieldPartyEntry::position(int32_t kind,bool secondary,const std::array<float,3>& xyz,std::shared_ptr<const ActorAnimationPack> bank,uint64_t now,const FieldPartyAppearanceServices& appearance,int32_t& result){
  std::array<uint32_t,3> bits{};for(unsigned i=0;i<3;++i)std::memcpy(&bits[i],&xyz[i],4);
  const auto form=secondary?Form::Secondary:Form::Position;
@@ -83,6 +101,9 @@ bool NativeFieldPartyEntry::advance(int32_t kind,std::shared_ptr<const ActorAnim
  if(kind_>=0 && kind!=kind_){pending_=entryFunction();return false;}
  if(actor_ && phase_!=Phase::Done && parties_.pointer(slot_)!=actor_){pending_=0x800be144;return false;}
  for(;;)switch(phase_){
+ // Ordinary caller requires canonical pouch join mask1 at half14 BEFORE
+ // any Kill/allocation;failure returns-1 terminal. Nonnegative primary245 is
+ // re-queried before Kill. Position/Secondary skip this join/removal sequence.
  case Phase::Caller:
   if(!parties_.nativeEntryOwner.expired() || !parties_.nativeRemovalOwner.expired()){pending_=entryFunction();return false;}
   if(kind!=(form_==Form::Secondary?13:1) || (form_==Form::Ordinary && !pouch_)){pending_=entryFunction();return false;}
@@ -98,6 +119,10 @@ bool NativeFieldPartyEntry::advance(int32_t kind,std::shared_ptr<const ActorAnim
   request(0x800be69c,{oldIndex_});
   if(!lifetime_->kill(oldIndex_)){pending_=lifetime_->pending();if(!pending_)pending_=0x800be69c;return false;}
   mario_.partyIndices[0]=255;next(Phase::Allocate);break;
+ // First-free ordinary record188hex is published once,then entry lease
+ // excludes competing allocation/removal. Aux tests ONLY slot1:occupied returns
+ // genuine-1,never substitutes free0. Source flags9 OR4,kind13,slot byte2f,
+ // owner160,camera164 and absent pose IDs c/10/14 remain distinct fields.
  case Phase::Allocate:
   if(!issued_){
    if(form_==Form::Ordinary){request(0x800bea68,{kind_});if(trace_)trace_(0x800be144,{kind_});}
@@ -117,6 +142,9 @@ bool NativeFieldPartyEntry::advance(int32_t kind,std::shared_ptr<const ActorAnim
   actor_->word(0x164,mario_.cameraId);actor_->word(0xc,0xffffffff);actor_->word(0x10,0xffffffff);actor_->word(0x14,0xffffffff);
   actor_->word(0,9);actor_->bytes[0x2f]=1;actor_->word(0x160,FieldMarioOwnerAddress);actor_->bytes[0x31]=uint8_t(kind_);actor_->word(0,actor_->word(0)|4);
   definition_=0x803143e8+uint32_t(kind_)*0x28;parties_.currentDefinition=definition_;next(Phase::Resource);break;
+ // Secondary retains local definition;Main rereads currentDefinition for
+ // model,then BOTH reread global before init. word4 mask8000 selects d_mario
+ // token2cb340 but real alternate resource/name providers remain unavailable.
  case Phase::Resource:
   if(actor_->bytes[0x31]!=(form_==Form::Secondary?13:1)){pending_=0x800be144;return false;}
   if(actor_->word(4)&0x8000){resource_=0x802cb340;next(Phase::Release);break;}
@@ -126,6 +154,9 @@ bool NativeFieldPartyEntry::advance(int32_t kind,std::shared_ptr<const ActorAnim
  case Phase::ResourceRead:
   if(!word(definition_,resource_)){pending_=0x800be144;return false;}
   next(Phase::Release);break;
+ // Capture reached old pose once. Actual source release can invalidate its
+ // typed wrapper before a file wait finishes;retire wrapper then,not on handle
+ // reuse. Enter4176c uses source resource/mode2 before actor posec publication.
  case Phase::Release:
   if(!issued_){handle_=int32_t(actor_->word(0xc));if(handle_>=0)request(0x8003b2d0,{handle_});}
   if(handle_>=0){
@@ -145,6 +176,9 @@ bool NativeFieldPartyEntry::advance(int32_t kind,std::shared_ptr<const ActorAnim
   request(0x800414b0,{handle_});
   if(auto* p=pose(handle_))p->paperOff();else {pending_=0x800414b0;return false;}
   next(Phase::Owner);break;
+ // Post-paperOff capture actor160 once. Two independent marioAnimeId593fc
+ // calls choose current owner pose for material flags then light flags; each
+ // getter/mask stays captured across setter holds,with fresh partner posec.
  case Phase::Owner:
   if(actor_->word(0x160)!=FieldMarioOwnerAddress){pending_=0x800be144;return false;}
   capturedMario_=&mario_;next(Phase::MaterialSelect);break;
@@ -179,6 +213,9 @@ bool NativeFieldPartyEntry::advance(int32_t kind,std::shared_ptr<const ActorAnim
   if(!issued_ && (actor_->word(4)&2)){next(Phase::MainFinish);break;}
   if(!compare(true))return false;
   next(Phase::MainFinish);break;
+ // Clear1c,then capture fresh current definition/init+4. Only original
+ // kuribo_init c4fa0 is bound:bytes33=1,32=0,source width/height f0/f4,
+ // shared Goombella init work0. Unknown initializer holds rather than completes.
  case Phase::MainFinish:
   actor_->word(0x1c,0);definition_=parties_.currentDefinition;next(Phase::InitRead);break;
  case Phase::InitRead:
@@ -194,6 +231,10 @@ bool NativeFieldPartyEntry::advance(int32_t kind,std::shared_ptr<const ActorAnim
   if(!word(0x80421588,height_)){pending_=init_;return false;}
   actor_->word(0xf0,width_);actor_->word(0xf4,height_);parties_.goombellaInitWork=0;
   next(form_==Form::Secondary?Phase::AuxMode:form_==Form::Position?Phase::PosVector:Phase::Scale);break;
+ // Mode wrapper saves prior34 to35 except9/3,then freshly rereads old mode.
+ // Inner old0->2 is genuine no-work;other cleanup domains hold. Finish sets
+ // mode2/word8 OR8,reads source unit1/seed,then XYZ58 and previousXYZb8 plus
+ // unit scale70/74/78. No appearance/Hello/display/Mario246 publication here.
  case Phase::AuxMode:
   request(0x800bcb2c,{slot_,2});oldMode_=actor_->bytes[0x34];
   if(oldMode_!=9 && oldMode_!=3)actor_->bytes[0x35]=uint8_t(oldMode_);
@@ -212,6 +253,9 @@ bool NativeFieldPartyEntry::advance(int32_t kind,std::shared_ptr<const ActorAnim
   actor_->word(0x58,position_[0]);actor_->word(0x5c,position_[1]);actor_->word(0x60,position_[2]);
   const uint32_t x=actor_->word(0x58),y=actor_->word(0x5c);actor_->word(0xb8,x);actor_->word(0xbc,y);actor_->word(0xc0,actor_->word(0x60));
   actor_->word(0x70,unit_);actor_->word(0x74,unit_);actor_->word(0x78,unit_);result_=slot_;lease_.reset();next(Phase::Done);break;}
+ // Ordinary Position tail:initial vector b184,overwritten seed b190,XYZ58,
+ // capture owner160,final vector b19c,then TWO display calls and fresh pose
+ // choice. Finish mode0;no previousXYZ,appearance/Hello or Mario245 write.
  case Phase::PosVector:{
   uint32_t x=0,y=0;if(!word(0x802cb184,x) || !word(0x802cb188,y)){pending_=0x800be84c;return false;}
   actor_->word(0x70,x);actor_->word(0x74,y);next(Phase::PosVectorZ);break;}
@@ -238,6 +282,9 @@ bool NativeFieldPartyEntry::advance(int32_t kind,std::shared_ptr<const ActorAnim
  case Phase::PosFinish:
   actor_->bytes[0x34]=0;result_=slot_;lease_.reset();next(Phase::Done);break;
 
+ // Ordinary appearance vector b178,Hello state38=10,capture owner,then two
+ // DISTINCT display queries:actor110 first,10c second. Their results are not
+ // collapsed even when provider returns the same angle.
  case Phase::Scale:{
   uint32_t x=0,y=0;if(!word(0x802cb178,x) || !word(0x802cb17c,y)){pending_=0x800bea68;return false;}
   actor_->word(0x70,x);actor_->word(0x74,y);next(Phase::ScaleZ);break;}
@@ -251,6 +298,9 @@ bool NativeFieldPartyEntry::advance(int32_t kind,std::shared_ptr<const ActorAnim
   if(!appearance.display){pending_=0x800bea68;return false;}actor_->scalar(0x110,appearance.display(appearance.user));next(Phase::DisplaySecond);break;
  case Phase::DisplaySecond:
   if(!appearance.display){pending_=0x800bea68;return false;}actor_->scalar(0x10c,appearance.display(appearance.user));next(form_==Form::Position?Phase::PosSelect:Phase::Place);break;
+ // Source appearance2 c6718 requires real value-output providers;original
+ // boolean return is ignored. Publish resulting XYZ/previousXYZ after the child.
+ // Intermediate reentrant output-alias observations are outside this adapter.
  case Phase::Place:{
   request(0x800c6718,{slot_});if(!appearance.ready()){pending_=0x800c6718;return false;}
   FieldWallVector position;fieldPartyAppearPosition2(actor_->scalar(0xf4),slot_,position,appearance);
@@ -264,6 +314,10 @@ bool NativeFieldPartyEntry::advance(int32_t kind,std::shared_ptr<const ActorAnim
  case Phase::PlaceCompare:
   if(!compare())return false;
   next(Phase::Publish);break;
+ // First appearance/pose/mode1 precedes Mario primary publication. Fresh
+ // Hello clears through only bound state10->dispatch bb9ec;second placement
+ // and live pose selection run before terminal result. No construction/material
+ // or first display work replays while a later Hello/string child is held.
  case Phase::Publish:
   actor_->bytes[0x34]=1;
   if(hello_){result_=slot_;lease_.reset();next(Phase::Done);break;}

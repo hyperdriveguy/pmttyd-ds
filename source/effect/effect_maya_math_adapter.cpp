@@ -2,6 +2,8 @@
 #include "battle_audience_aux_callback.hpp"
 namespace ttyd {
 namespace {
+// Reuse the established affine provider with bounded copied payloads. It may
+// reject outside its finite domain;do not acknowledge that as identity output.
 bool calculate(BattleAudienceMatrixRequest &request, EffectMayaMatrix &output) {
   BattleAudienceAuxServices math;
   bindAudienceAuxMathAdapter(math);
@@ -11,6 +13,9 @@ bool calculate(BattleAudienceMatrixRequest &request, EffectMayaMatrix &output) {
   return true;
 }
 } // namespace
+// SDK tokens:Translate29e230,Scale29e2b0,RotRad29dff0,Concat29dd64.
+// left/right order stays source order;native host/libm rotations are policy,
+// not measured Gekko/FPSCR/raster parity. Memory and user remain caller-owned.
 void bindEffectMayaMatrixMathAdapter(EffectMayaMatrixServices &s) {
   s.binary = effectMayaBinary32;
   s.fused = effectMayaFused32;

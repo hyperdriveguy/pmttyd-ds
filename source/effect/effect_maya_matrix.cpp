@@ -3,6 +3,9 @@
 #include <cstring>
 namespace ttyd {
 namespace {
+// IEEE word payloads and explicit SP binary/fused operations preserve source
+// rounding graph. NegativeMultiplySubtract negates the fused rounded result,
+// which differs from an unrelated reassociated subtraction for zero/NaN signs.
 float fromBits(uint32_t b) {
   float v;
   std::memcpy(&v, &b, 4);
@@ -47,6 +50,9 @@ float effectMayaFused32(void *, EffectMayaFused op, float a, float b, float c) {
   const float v = std::fma(a, b, -c);
   return op == EffectMayaFused::MultiplySubtract ? v : -v;
 }
+// Reject retargeted animation/channel/output/provider identity. Signed key
+// count<=1 resets and writes NOTHING. Raw memory/numeric callbacks require
+// complete admitted mappings;SDK bool children are retained hold boundaries.
 bool resumeEffectMayaAnimMatrix(uint32_t animation, uint32_t channel,
                                 uint32_t matrixOut, uint32_t scalarOut,
                                 const EffectMayaMatrixServices &s,
@@ -98,6 +104,9 @@ bool resumeEffectMayaAnimMatrix(uint32_t animation, uint32_t channel,
       return false;
     uint32_t previous = 0, next = 0;
     float position = 0;
+    // Scan first next signed time>=fresh frame;otherwise final pair/time.
+    // Before-first frame is not clamped up;NaN reaches final pair. Reload table
+    // and frame at original scan points rather than snapshotting them once.
     for (int32_t i = 1; i < c.count; ++i) {
       const auto table = w(channel + 4);
       previous = table + static_cast<uint32_t>(i - 1) * 0xb2;
@@ -111,6 +120,9 @@ bool resumeEffectMayaAnimMatrix(uint32_t animation, uint32_t channel,
         break;
       }
     }
+    // GQR5 load type7=signed16,scale6=divide64(0.015625),not scale7.
+    // Six value/tangent reads include unused previous+4/next+6 BEFORE hold byte
+    // previous+9(relative to eight-byte lane base). Nonzero holds previous value.
     for (uint32_t i = 0; i < 22; ++i) {
       const auto a = previous + i * 8, b = next + i * 8;
       // GQR5=06070607: signed16 load type7, scale exponent6.
@@ -127,6 +139,10 @@ bool resumeEffectMayaAnimMatrix(uint32_t animation, uint32_t channel,
         c.values[i] = v0;
         continue;
       }
+      // Signed time difference converts after subtraction. Only duration==0
+      // substitutes original epsilon bits322bcc77(4201a4);negative stays signed.
+      // Hermite coefficients preserve every SP multiply/add/fused boundary and
+      // NEGATED fused operation,not merely the algebraic cubic polynomial.
       const int32_t t0 = h(previous), t1 = h(next);
       const float duration = static_cast<float>(t1 - t0);
       const float zero = f(0x804201a0);
@@ -157,6 +173,10 @@ bool resumeEffectMayaAnimMatrix(uint32_t animation, uint32_t channel,
     c.phase = 2;
   }
   // Stack matrices retain original SDK operation order; no host trig fallback.
+  // SDK stages0..10 build translation,Rx,Ry,Rz,scale,pivotA,-pivotA,
+  // translationA,pivotB,-pivotB,translationB. Axis78/79/7a are ASCII x/y/z.
+  // Stages11..20 perform original ten concatenations into14 scratch slots;
+  // a false output is ignored,with captured operands/stage left unchanged.
   while (c.phase >= 2 && c.phase < 23) {
     const uint32_t stage = c.phase - 2;
     EffectMayaMatrix output{};
@@ -211,6 +231,9 @@ bool resumeEffectMayaAnimMatrix(uint32_t animation, uint32_t channel,
     } else {
       if (!s.concat)
         return false;
+      // Triples are(left,right,destination),retaining original temporary alias
+      // order:B=((TB*PB)*S)*-PB;A=(((((TA*PA)*Rz)*Ry)*Rx)*-PA);
+      // final=(T*A)*B. Do not regroup products or substitute inverse pivots.
       static constexpr uint8_t operations[10][3] = {
           {10, 8, 11}, {11, 4, 11}, {11, 9, 4},  {7, 5, 11},  {11, 3, 11},
           {11, 2, 11}, {11, 1, 11}, {11, 6, 12}, {0, 12, 11}, {11, 4, 13}};
@@ -225,6 +248,9 @@ bool resumeEffectMayaAnimMatrix(uint32_t animation, uint32_t channel,
   }
   if (!s.memory.storeWord)
     return false;
+  // Twelve output words publish BEFORE scalar21. Source ordered clamp>1,
+  // then<0 preserves NaN/signed zero;no finite fallback. Final scalar store
+  // resets cursor. Matrix/scalar outputs are actual guest destinations.
   if (c.phase == 23) {
     for (uint32_t i = 0; i < 12; ++i)
       s.memory.storeWord(s.memory.user, matrixOut + i * 4,

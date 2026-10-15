@@ -18,6 +18,9 @@ struct EffectMayaAnimationServices {
   bool (*matrix)(void *, uint32_t animation, uint32_t channel,
                  uint32_t matrixOut, uint32_t indexOut) = nullptr;
 };
+// operation0 idle,1 allocate,2 play,3 calculate,4 delete;phase retains child
+// completion. Reject changed operation/argument/providers while held. Completion
+// resets;raw memory services are synchronous mapped-domain preconditions.
 struct EffectMayaAnimationCursor {
   uint8_t operation = 0, phase = 0;
   uint32_t argument = 0, result = 0, bytes = 0, gp = 0, index = 0, table = 0,
@@ -26,6 +29,9 @@ struct EffectMayaAnimationCursor {
   float converted = 0;
   EffectMayaAnimationServices owner;
 };
+// Native retention wraps original synchronous bodies;not original event waits.
+// Descriptor+8 channel table;count*34hex+18hex heap3 bytes. Animation+4 frame,
+// +8/+c start-ms high/low,+10 descriptor,+14 channel outputs(stride34hex).
 bool resumeEffectMayaAnimAllocate(uint32_t descriptor,
                                   const EffectMayaAnimationServices &,
                                   EffectMayaAnimationCursor &,

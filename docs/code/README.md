@@ -158,3 +158,7 @@ priority, eligibility, deferred registrations, raw history and original field ow
 [Queued NPC drawing](npc-queued-drawing.md) and
 [party removal ownership](party-removal-ownership.md) explain callback pass routing,
 material/GPU state, source removal requests and native retirement leases.
+
+[Party construction/events](party-construction-events.md) and
+[Maya effect animation](effect-maya-animation.md) explain constructor forms,
+publication gates, source clocks, quantized curves and transform ordering.

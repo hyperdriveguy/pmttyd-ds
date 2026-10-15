@@ -12,9 +12,15 @@ namespace ttyd {
 // teardown/completion or dereferences borrowed registry/Mario during destruction.
 class NativeFieldPartyEntry {
 public:
+ // Trace reports first reached source request identities, not scheduling or
+ // completion. Form/Phase are native continuations. Done stays terminal, so a
+ // held outer caller cannot replay a completed constructor. No implicit reset.
  using Trace=std::function<void(uint32_t,std::initializer_list<int32_t>)>;
  // Position constructors do not perform the pouch join gate or publish Mario
  // slot indices. Ordinary kind1 uses Main; auxiliary kind13 uses only slot1.
+ // xyz bits(including signed zero) bind this invocation. Ordinary Position
+ // finishes mode0;Secondary kind13 uses mode2 and previousXYZ/unit scalars.
+ // Direct APIs do not publish Mario slot bytes; the EVT wrapper owns that.
  bool position(int32_t kind,bool secondary,const std::array<float,3>&,std::shared_ptr<const ActorAnimationPack>,uint64_t,const FieldPartyAppearanceServices&,int32_t& result);
  static std::unique_ptr<NativeFieldPartyEntry> create(const char*,FieldPartyRegistry&,FieldMarioBattleState&,std::shared_ptr<ProloguePouch>,Trace={});
  bool step(int32_t kind,std::shared_ptr<const ActorAnimationPack>,uint64_t,const FieldPartyAppearanceServices&,int32_t& result);
@@ -23,6 +29,9 @@ public:
  int32_t slot() const{return slot_;}
 private:
  enum class Form {Ordinary,Position,Secondary};
+ // Each next() retires only that stage's issued request latch. Grouped raw
+ // source reads require complete mappings; this is not instruction-level replay
+ // of arbitrary partial-RAM faults. Fixed owners/pool/actor survive all holds.
  enum class Phase {Caller,Kill,Allocate,AuxAllocate,Resource,ResourceRead,Release,Enter,Paper,Owner,MaterialSelect,MaterialGet,MaterialOn,LightSelect,LightGet,LightOn,
   MainSelect,MainCompare,MainAgain,MainFinish,InitRead,Init,InitWidth,InitHeight,AuxMode,AuxModeInner,AuxModeFinish,AuxUnit,AuxSeed,AuxPosition,PosVector,PosVectorZ,PosSeed,PosPosition,PosOwner,PosFinalVector,PosFinalZ,PosSelect,PosCompare,PosFinish,Scale,ScaleZ,ScaleOwner,DisplayFirst,DisplaySecond,Place,PlaceSelect,PlaceCompare,Publish,Hello,HelloMain,Done};
  NativeFieldPartyEntry(FieldPartyRegistry& p,FieldMarioBattleState& m,std::shared_ptr<ProloguePouch> q,Trace t):parties_(p),mario_(m),pouch_(std::move(q)),trace_(std::move(t)){}

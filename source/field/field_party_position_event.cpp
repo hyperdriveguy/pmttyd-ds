@@ -1,16 +1,24 @@
 #include "field_party_position_event.hpp"
 namespace ttyd {
+// Pin only original integer operand-resolution primitives actually used here.
+// Address/memory/entry lifetime are separate from matching callback pointers.
 bool NativeFieldPartyPositionEvent::providers(const EventOperandServices& s){
  if(!s.contextAddress || !s.entryAddress || !s.globalAddress || !s.readWord || !s.readByte || !s.truncate)return false;
  if(!pinned_){operands_=s;pinned_=true;return true;}
  return s.user==operands_.user && s.contextAddress==operands_.contextAddress && s.entryAddress==operands_.entryAddress && s.globalAddress==operands_.globalAddress && s.readWord==operands_.readWord && s.readByte==operands_.readByte && s.truncate==operands_.truncate;
 }
+// Arguments are raw32-bit words at stride4;getEventValue80031260 resolves
+// INTEGER values. Encoded event floats therefore truncate before construction,
+// rather than preserving fractional coordinates via getEventFloat.
 bool NativeFieldPartyPositionEvent::value(unsigned index,EventEntry& e,const EventOperandServices& s,int32_t& out){
  if(!providers(s))return false;
  uint32_t raw=0;if(!memory_->readWord(args_+4*index,raw))return false;
  if(trace_)trace_(0x80031260,{int32_t(raw)});
  out=getEventValue(e,int32_t(raw),operands_);return true;
 }
+// Preserve actual Entry pointer AND id plus live memory/previous-mode across
+// holds. Source first-call synchronous execution becomes retained native loading
+// without inventing a new event branch or early successful constructor result.
 int32_t NativeFieldPartyPositionEvent::step(EventEntry& e,bool first,bool previous,EventAddressSpace& memory,const EventOperandServices& operands,std::shared_ptr<const ActorAnimationPack> bank,uint64_t now,const FieldPartyAppearanceServices& appearance){
  pending_=0;
  if(stage_!=Stage::Start && (&e!=entry_ || uint32_t(e.id)!=entryId_ || &memory!=memory_ || previous!=previous_)){pending_=function();return 0;}
@@ -18,6 +26,9 @@ int32_t NativeFieldPartyPositionEvent::step(EventEntry& e,bool first,bool previo
  case Stage::Start:
   entry_=&e;entryId_=uint32_t(e.id);memory_=&memory;first_=first;previous_=previous;args_=e.arguments;
   if(trace_){trace_(function(),{});trace_(0x8005e0c0,{});}stage_=Stage::Selector;break;
+ // Raw selector reads even on initial first=false. That no-op completes2;
+ // first=true uses native raw0/1 admission,then existing signed nonnegative
+ // Mario index suppresses all kind/coordinate resolution and construction.
  case Stage::Selector:
   if(!memory_->readWord(args_,selector_)){pending_=function();return 0;}stage_=Stage::Guard;break;
  case Stage::Guard:
@@ -34,6 +45,9 @@ int32_t NativeFieldPartyPositionEvent::step(EventEntry& e,bool first,bool previo
   // equivalent for signed32 values under the supported round-to-nearest mode.
   position_[axis]=float(resolved);
   stage_=axis==0?Stage::Y:axis==1?Stage::Z:previous_?Stage::SavedKind:Stage::Construct;break;}
+ // Previous path resolves all THREE coordinates before signed saved kind;
+ // zero skips constructor. Explicit path resolves kind first. Constructor never
+ // joins pouch;separate authored join callbacks retain that ownership.
  case Stage::SavedKind:
   kind_=int8_t(mario_.savedPartyKinds[selector_]);if(!kind_){stage_=Stage::Done;break;}stage_=Stage::Construct;break;
  case Stage::Construct:
@@ -41,6 +55,9 @@ int32_t NativeFieldPartyPositionEvent::step(EventEntry& e,bool first,bool previo
   if(!constructor_){pending_=selector_?0x800bd6d8:0x800be84c;return 0;}
   if(!constructor_->position(kind_,selector_!=0,position_,bank,now,appearance,result_)){pending_=constructor_->pending();return 0;}
   stage_=Stage::Publish;break;
+ // Publish captured selector only for nonnegative constructor slot;negative
+ // result completes2 without changing Mario. Real event retirement must discard
+ // adapter:matching addresses alone cannot authorize a reused entry lifetime.
  case Stage::Publish:
   if(result_>=0)mario_.partyIndices[selector_]=uint8_t(result_);
   stage_=Stage::Done;break;

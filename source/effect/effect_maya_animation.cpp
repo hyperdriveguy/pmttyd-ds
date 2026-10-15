@@ -3,6 +3,9 @@
 
 namespace ttyd {
 namespace {
+// Raw memory primitives are synchronous(no optional/failure channel). Require
+// mapped source spans;only explicit external bool services can hold. Float
+// loads/stores preserve bits and guest addresses are never native pointers.
 uint32_t w(const EffectMayaAnimationServices &s, uint32_t a) {
   return s.memory.word(s.memory.user, a);
 }
@@ -33,6 +36,8 @@ bool same(const EffectMayaAnimationServices &a,
          a.divideUnsigned == b.divideUnsigned &&
          a.convertUnsigned == b.convertUnsigned && a.matrix == b.matrix;
 }
+// One operation/argument/service identity per cursor;1 allocate,2 play,
+//3 calculate,4 delete. finish() resets for a NEW invocation,not terminal reuse.
 bool begin(uint8_t op, uint32_t arg, const EffectMayaAnimationServices &s,
            EffectMayaAnimationCursor &c) {
   if (c.operation)
@@ -50,6 +55,9 @@ bool finish(EffectMayaAnimationCursor &c) {
   c = {};
   return true;
 }
+// Live GP80415fd0/context14 selects timestamp38/3c when nonzero,40/44
+// otherwise. Bus800000f8>>2 and high32(10624dd3*busQuarter)>>6 form ms divisor.
+// Capture before unsigned division hold;no rendering-frame or fixed-tick clock.
 void captureTime(const EffectMayaAnimationServices &s,
                  EffectMayaAnimationCursor &c) {
   c.gp = w(s, 0x80415fd0);
@@ -67,12 +75,17 @@ bool effectMayaDivideUnsigned(void *, uint64_t n, uint64_t d, uint64_t &out) {
   out = n / d;
   return true;
 }
+// Unsigned64 conversion intentionally rounds through double then float;
+// direct uint64-to-float can differ near binary32 halfway cases.
 bool effectMayaConvertUnsigned(void *, uint64_t n, float &out) {
   // Volatile preserves the original helper's intermediate binary64 rounding.
   volatile double intermediate = static_cast<double>(n);
   out = static_cast<float>(intermediate);
   return true;
 }
+// Allocation heap3,size=wrapped32(channelCount*0x34+0x18). Acknowledged
+// allocation/clear happen once;descriptor publishes only afterward. No invented
+// null/full/saturation policy is added to the original raw-memory domain.
 bool resumeEffectMayaAnimAllocate(uint32_t d,
                                   const EffectMayaAnimationServices &s,
                                   EffectMayaAnimationCursor &c, uint32_t &out) {
@@ -97,6 +110,9 @@ bool resumeEffectMayaAnimAllocate(uint32_t d,
   out = c.result;
   return finish(c);
 }
+// Start-ms low publishes before source zero/high/frame,then OR half flags1.
+// Play does NOT clear ended mask2;calling Play alone is not an inferred restart
+// of an already-ended animation. External flag ownership remains explicit.
 bool resumeEffectMayaAnimPlay(uint32_t a, const EffectMayaAnimationServices &s,
                               EffectMayaAnimationCursor &c) {
   if (!begin(2, a, s, c))
@@ -116,6 +132,10 @@ bool resumeEffectMayaAnimPlay(uint32_t a, const EffectMayaAnimationServices &s,
   s.memory.storeHalf(s.memory.user, a, flags | 1);
   return finish(c);
 }
+// Only active1 && !ended2 enters. Elapsed subtraction wraps UNSIGNED64.
+// GP+4 rate converts via original signed-bias double43300000/xor80000000
+// then SP multiply/divide by source1000(42019c);frame>=end clamps/ORs ended2.
+// Current call still calculates channels;future ended calls skip them.
 bool resumeEffectMayaAnimCalculate(uint32_t a,
                                    const EffectMayaAnimationServices &s,
                                    EffectMayaAnimationCursor &c) {
@@ -167,6 +187,10 @@ bool resumeEffectMayaAnimCalculate(uint32_t a,
     c.index = 0;
     c.phase = 4;
   }
+  // Reload descriptor/table/signed count for EVERY channel after prior child.
+  // Channel stride10hex;output matrix a14+i*34hex,scalar a44+i*34hex. Child
+  // address/arguments stay captured through hold;successful earlier channels
+  // never replay even if a later child changes table/count/global state.
   for (;;) {
     if (c.phase == 4) {
       uint32_t descriptor = w(s, a + 0x10);
@@ -184,6 +208,8 @@ bool resumeEffectMayaAnimCalculate(uint32_t a,
     c.phase = 4;
   }
 }
+// Original heap3 release;missing provider holds,successful release resets
+// cursor. This helper does not own the surrounding effect record lifetime.
 bool resumeEffectMayaAnimDelete(uint32_t a,
                                 const EffectMayaAnimationServices &s,
                                 EffectMayaAnimationCursor &c) {
