@@ -1,6 +1,7 @@
 #include "field_npc_main_entry_binding.hpp"
 #include "animation_pool_memory.hpp"
 #include "event_native_runtime.hpp"
+#include <cstring>
 namespace ttyd {
 FieldNpcMainEntryBinding::FieldNpcMainEntryBinding(
     std::shared_ptr<FieldNpcRegistryOwner> owner, EventNativeRuntime &vm,
@@ -380,5 +381,54 @@ FieldNpcDisplayFrontier FieldNpcMainEntryBinding::advanceDisplay(
     return b.native_.display && b.native_.display(b.native_.user, m, q, out);
   };
   return advanceFieldNpcMainDisplay(entry.actor, s, display);
+}
+FieldNpcDisplayFrontier FieldNpcMainEntryBinding::advanceShadow(
+    FieldNpcMainEntryCursor &entry, FieldNpcMainMoveCursor &movement,
+    FieldNpcAutoPoseCursor &pose, FieldNpcDetectionCursor &detection,
+    FieldNpcMarioCursor &mario, FieldNpcDisplayCursor &display,
+    FieldNpcShadowCursor &shadow) {
+  const auto frontier = advanceDisplay(entry, movement, pose, detection, mario,
+                                       display);
+  if (frontier == FieldNpcDisplayFrontier::Pending)
+    return frontier;
+  FieldNpcShadowServices s;
+  s.memory = services().clock;
+  s.byte = [](void *p, uint32_t a) -> std::optional<uint8_t> {
+    uint8_t v;
+    if (!static_cast<FieldNpcMainEntryBinding *>(p)->vm_.memory.readByte(a, v))
+      return {};
+    return v;
+  };
+  s.queue = [](void *p, const FieldNpcDisplayRequest &q,
+               FieldNpcDisplayResponse &out) {
+    auto &b = *static_cast<FieldNpcMainEntryBinding *>(p);
+    return b.native_.display &&
+           b.native_.display(b.native_.user, b.vm_.memory, q, out);
+  };
+  s.request = [](void *p, const FieldNpcShadowRequest &q,
+                 FieldNpcShadowResponse &out) {
+    auto &b = *static_cast<FieldNpcMainEntryBinding *>(p);
+    auto &m = b.vm_.memory;
+    if (q.function == 0x80039824) {
+      if (q.args[0] >= 256 ||
+          !b.poses_.aliases(*b.owner_->poses().sharedPool(), m))
+        return false;
+      const auto a = b.poses_.poseAddress(q.args[0]);
+      uint32_t flags;
+      if (!m.contiguousRam(a, 0x170) || !m.readWord(a, flags)) return false;
+      // Complete shared alias row is writable and retained for this call.
+      // Actual source leaf: flag20 then strided matrix translations.
+      if (!m.writeWord(a, flags | 0x20)) return false;
+      for (unsigned i = 0; i < 3; ++i) {
+        uint32_t w; std::memcpy(&w, &q.point[i], 4);
+        if (!m.writeWord(a + 0x130 + i * 0x10, w)) return false;
+      }
+      return true;
+    }
+    return b.native_.shadow && b.native_.shadow(b.native_.user, m, q, out);
+  };
+  return advanceFieldNpcMainShadow(entry.actor, frontier, display.depth, s, shadow)
+             ? FieldNpcDisplayFrontier::History
+             : FieldNpcDisplayFrontier::Pending;
 }
 } // namespace ttyd

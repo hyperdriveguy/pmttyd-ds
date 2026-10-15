@@ -23,6 +23,9 @@ public:
     // Copy every segment transactionally into writable original-address RAM.
     // Extracted assets remain unchanged;these are runtime-owned data copies.
     bool importScripts(const EventScriptAssets&);
+    // One complete raw RAM span, excluding semantic providers. No pointer
+    // escapes and callers must recheck after any mapping mutation.
+    bool contiguousRam(uint32_t a,uint32_t n) const{return n && rawRamSpan(a,n);}
     bool readByte(uint32_t,uint8_t&) const;
     bool readHalf(uint32_t,uint16_t&) const;
     bool readWord(uint32_t,uint32_t&) const;

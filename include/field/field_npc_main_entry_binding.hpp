@@ -4,6 +4,7 @@
 #include "field_npc_main_detection.hpp"
 #include "field_npc_main_entry.hpp"
 #include "field_npc_main_display.hpp"
+#include "field_npc_main_shadow.hpp"
 #include "field_npc_main_movement.hpp"
 #include "field_npc_mario_detection.hpp"
 namespace ttyd {
@@ -29,6 +30,9 @@ struct FieldNpcMainEntryNativeServices {
   // NaN rejection is acknowledged success. No fallback camera or registration.
   bool (*display)(void *, EventAddressSpace &, const FieldNpcDisplayRequest &,
                   FieldNpcDisplayResponse &) = nullptr;
+  // Same shadow pool/frame through holds; actual zero slot is valid.
+  bool (*shadow)(void *, EventAddressSpace &, const FieldNpcShadowRequest &,
+                 FieldNpcShadowResponse &) = nullptr;
   bool (*sound)(void *, EventAddressSpace &,
                 const FieldNpcMainEntryRequest &) = nullptr;
 };
@@ -62,6 +66,11 @@ public:
   FieldNpcDisplayFrontier advanceDisplay(FieldNpcMainEntryCursor &,
       FieldNpcMainMoveCursor &, FieldNpcAutoPoseCursor &,
       FieldNpcDetectionCursor &, FieldNpcMarioCursor &, FieldNpcDisplayCursor &);
+
+  FieldNpcDisplayFrontier advanceShadow(FieldNpcMainEntryCursor &,
+      FieldNpcMainMoveCursor &, FieldNpcAutoPoseCursor &,
+      FieldNpcDetectionCursor &, FieldNpcMarioCursor &, FieldNpcDisplayCursor &,
+      FieldNpcShadowCursor &);
 
 private:
   FieldNpcMainEntryBinding(std::shared_ptr<FieldNpcRegistryOwner>,

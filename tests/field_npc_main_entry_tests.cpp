@@ -4,6 +4,7 @@
 #include "event_native_runtime.hpp"
 #include "field_npc_main_entry_binding.hpp"
 #include "display_queue.hpp"
+#include "shadow_work.hpp"
 #include <cassert>
 #include <cmath>
 #include <cstring>
@@ -346,7 +347,8 @@ struct NativeWorld {
   bool poseClockReady = false, cloudReady = false, interruptReady = false;
   unsigned cloudCalls = 0, interruptCalls = 0, vivianCalls = 0;
   bool marioServicesReady = false;
-  bool displayReady = false, queueReady = false;
+  bool displayReady = false, queueReady = false, shadowReady = false;
+  std::unique_ptr<ShadowWork> shadows = std::make_unique<ShadowWork>();
   std::unique_ptr<DisplayQueue> displayQueue = std::make_unique<DisplayQueue>();
   BattlePoseClock selectedClock{1234, 5678};
   static constexpr uint32_t Work = 0x803d9470, M = 0x8d000000;
@@ -435,6 +437,23 @@ struct NativeWorld {
     store(M + 0x1dc, 0x87654321);
     FieldNpcMainEntryNativeServices n;
     n.user = this;
+    n.shadow = [](void *p, EventAddressSpace &memory,
+                  const FieldNpcShadowRequest &q, FieldNpcShadowResponse &out) {
+      auto &f = *static_cast<NativeWorld *>(p);
+      assert(&memory == &f.vm->memory);
+      if (!f.shadowReady) return false;
+      if (q.function == 0x8001577c) {
+        assert(q.scalars[1] == 1 && q.scalars[6] == 100);
+        out.word = 0x8f000000; out.hit[1] = -5; return true;
+      }
+      if (q.function == 0x8002be98) {
+        const auto slot = f.shadows->enter(
+            {q.scalars[0], q.scalars[1], q.scalars[2]}, q.scalars[3]);
+        if (!slot) return false; out.word = *slot; return true;
+      }
+      assert(q.function == 0x8002bcfc && q.args[0] == 0 && q.args[1] == 0);
+      f.shadows->record(0)->flags &= ~1u; return true;
+    }; // Explicit collision fixture; SAME actual native shadow pool.
     n.display = [](void *p, EventAddressSpace &memory,
                    const FieldNpcDisplayRequest &q, FieldNpcDisplayResponse &out) {
       auto &f = *static_cast<NativeWorld *>(p);
@@ -784,6 +803,47 @@ void actualAliases() {
            record->callback == 0x8004c50c && record->userdata == f.actor);
   }
   assert(c.phase == 60 && f.word(0x8041e8ac) == 1);
+  // Shadow suffix holds before collision, then updates actual inactive pose
+  // strided translations and the shared ShadowWork index0, never a fake actor.
+  f.store(f.actor, 0x04080000 | 0x100);
+  f.store(f.actor + 0x110, 255);
+  f.store(f.actor + 0x8c, bits(0));
+  f.store(f.actor + 0x90, bits(0));
+  f.store(f.actor + 0x94, bits(0));
+  f.store(f.actor + 0x14c, bits(6));
+  f.store(f.actor + 0xe0, bits(2));
+  f.store(f.actor + 0x154, bits(4));
+  f.store(f.view->poseAddress(255), 0);
+  FieldNpcShadowCursor shadow;
+  assert(f.entry->advanceShadow(c, move, automatic, proximityPrefix, proximity,
+                                display, shadow) == FieldNpcDisplayFrontier::Pending);
+  assert(shadow.phase == 57 && f.shadows->count() == 0 &&
+         f.pool->slot(255)->word(0) == 0);
+  f.shadowReady = true;
+  f.queueReady = false;
+  assert(f.entry->advanceShadow(c, move, automatic, proximityPrefix, proximity,
+                                display, shadow) == FieldNpcDisplayFrontier::Pending);
+  assert(shadow.phase == 92 && f.shadows->count() == 1 &&
+         f.shadows->record(0)->position[1] == 0 &&
+         f.shadows->record(0)->radius == 16 && f.shadows->record(0)->flags == 0 &&
+         f.pool->slot(255)->word(0) == 0x20 &&
+         f.pool->slot(255)->word(0x130) == bits(0) &&
+         f.pool->slot(255)->word(0x140) == bits(-5) &&
+         f.pool->slot(255)->word(0x150) == bits(0));
+  f.store(f.view->poseAddress(255) + 0x140, bits(42));
+  f.queueReady = true;
+  assert(f.entry->advanceShadow(c, move, automatic, proximityPrefix, proximity,
+                                display, shadow) == FieldNpcDisplayFrontier::History);
+  assert(f.shadows->count() == 1 && f.displayQueue->count() == 7 &&
+         f.pool->slot(255)->word(0x140) == bits(42) && c.phase == 60 &&
+         f.word(0x8041e8ac) == 1);
+  assert(f.displayQueue->record(3)->callback == 0x8004bc3c);
+  for (unsigned i = 4; i < 7; ++i) {
+    auto record = f.displayQueue->record(i);
+    assert(record && record->camera == 1 && record->drawClass == i - 4 &&
+           record->callback == 0x8004bf28 && record->userdata == f.actor);
+  }
+  f.store(f.view->poseAddress(255), 0);
   f.store(f.actor, beforeDisplayFlags);
   // Source getter is address arithmetic, not active/clip readiness. An explicit
   // cold-slot handle input must mutate the SAME inactive row without a new

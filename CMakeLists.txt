@@ -2163,3 +2163,8 @@ target_sources(ttyd_core PRIVATE source/field/field_npc_main_display.cpp)
 add_executable(field_npc_main_display_tests tests/field_npc_main_display_tests.cpp)
 target_link_libraries(field_npc_main_display_tests PRIVATE ttyd_core)
 add_test(NAME field_npc_main_display COMMAND field_npc_main_display_tests)
+# Original NPC shadow, blur and separate-pose suffix through late history.
+target_sources(ttyd_core PRIVATE source/field/field_npc_main_shadow.cpp)
+add_executable(field_npc_main_shadow_tests tests/field_npc_main_shadow_tests.cpp)
+target_link_libraries(field_npc_main_shadow_tests PRIVATE ttyd_core)
+add_test(NAME field_npc_main_shadow COMMAND field_npc_main_shadow_tests)
