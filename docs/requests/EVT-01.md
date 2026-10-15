@@ -5247,3 +5247,19 @@ EVT-01 and the prologue goal remain active.
 ### 2026-10-15 Native retained full Main owner
 
 [Native Main contract](../behavior/display/NATIVE_RETAINED_MAIN.md) composes complete source prelude/geometry/facing using the actual VM/pool/files, shared semantic SPR bank and explicit stable linked frames. Native lifecycle guards retain the same pending producer pass; no typed evaluate fallback or premature shape publication occurs. Cold VM tests and native ARM probe cover raw caches/outputs/global output RAM/GQR/linked/facing/hold/lifetime paths. Native shape snapshot/assembly/publication, whole-Game simulation barrier, normal NPC/Draw/Inner/GPU activation and original field/hardware fidelity remain OPEN. EVT-01 stays OPEN. Read-only next presentation audit is recorded in ignored animation-main-presentation-notes.txt.
+
+### 2026-10-15 Native original party removal owners
+
+[Native removal](../behavior/partner/NATIVE_PARTY_REMOVAL.md) now retains the
+actual actor after table clear, retires typed pose proxies before handle reuse,
+runs real source Release/fileFree, then frees the captured actor. A weak native
+lease blocks competing actor allocation/removal and expires without touching
+borrowed Game members during context destruction. Actual EventEntry clear/kill
+and the original Mario caller survive genuine file-owner waits. Original
+kinds1/8/13 records are extracted unchanged; kind8 uses c_babyyoshi, not c_pkr.
+The ending no-party branch binds the caller; completed Mario restore/party work
+is latched while later services hold. Ordinary existing-primary reentry still
+needs a retained constructor before its Kill barrier can safely move. Auxiliary
+Entry2Pos(kind13), authored harbor/plaza conversion and full field return stay
+OPEN; no early canonical join or fabricated story condition is introduced.
+EVT-01 and the complete prologue goal remain active.

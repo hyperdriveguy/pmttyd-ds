@@ -13784,3 +13784,79 @@ and native GPU changes need separate inline audit. Story now has 44 matching
 annotation snapshots and six remaining files; inventory is a review aid, not
 proof of every behavior/live change or a complete faithful opening/game.
 Full documentation/remake goal remains active.
+
+## 2026-10-15 — Native source party retirement and original definition ownership
+
+Bound retained Kill/Kill2, original Mario remove-all80141198 and raw clear/kill
+EVT wrappers to real native actor, animation and file owners. Table clear moves
+the actor into retained ownership; its late pose-ID read and real source Release
+survive fileFree waits. Only the final heap-free child disposes the captured
+actor. Typed pose views retire during actual teardown before handle reuse;
+borrowed early return preserves the live pose/view for its remaining owners.
+Initial native admission serializes against another active pool Release and
+requires a valid native owner/pose; admitted teardown resumes raw state after
+typed metadata becomes temporarily unavailable.
+
+A weak native lease prevents competing actor allocation/removal during a hold.
+Its owned token expires without touching borrowed registry/Mario on adapter
+teardown, respecting Game member destruction order. This is native exclusion
+policy, not an original party flag. Native cancellation is not original Kill
+completion; normal callers keep all borrowed owners stationary until completion.
+Detached legacy pools cannot fake a source fileFree acknowledgement.
+
+Added the unchanged original40-byte kind1/8/13 records and reproducible extractor.
+The168-byte PMEVT pack plus JSON are the only two new runtime products. Cold
+import uses the actual animation VM; later adapters preserve mutable source
+records. Original kind8 is c_babyyoshi(802cb47c), while kind1/13 use c_pkr(804213e0);
+all three share init800c4fa0 and genuine exit+24=0. No kind/model canonicalization,
+new story unlock, rewritten dialogue/art/audio or invented scene is added.
+
+The ending no-party path now resumes the original Mario caller instead of its
+unconditional Kill barrier. Source Mario restoration and a completed party
+constructor/removal are latched while later ending services hold. Regression
+checks retain exactly one entry/constructor across110 later visits. Joined
+existing-primary removal still requires a fully retained ordinary constructor
+before its barrier can safely move; this change does not claim that path ready.
+See [native ownership/domain](behavior/partner/NATIVE_PARTY_REMOVAL.md).
+
+Final isolated validation: baseline16184fbd68dd7a1c03af3309e2065f0b7db77850 plus
+owned changes at artifacts/field-party-native-source. CMAKE_BUILD_PARALLEL_LEVEL=6
+make test exits0:447/447 C++ (71.02s),213/213 Python (34.510s),zero skipped.
+Native make all -j6 -o assets-ready SOUNDTRACK=gamecube
+TARGET=ttyd-field-party-native exits0. Fresh45s normal Azahar smoke reaches the
+original storybook, visually inspected. Separate final ARM build/smoke executes
+all actual native ownership fixtures and passes the strict ten-part marker.
+Its capture is before a normal rendered frame, not boot-completion evidence;
+normal startup is established separately by the production-binary smoke.
+Both final smoke processes exit0. Initial passing gates
+were superseded after adding borrowed-pose preservation/other-pool serialization;
+only final source/binaries support the accepted claim. One emulator approval
+review timed out; its authorized single retry succeeded. No permission remains
+blocked and no user emulator profile/save was touched.
+
+Fixtures cover actual cold VM/shared files, genuine file-owner waits after table
+clear, unchanged held state, competing leases, twenty warm sample/release cycles,
+stale readers, source-kind/callback handling, mode11, weak expiry, borrowed early
+return then teardown, another pool consumer waiting, real mapped EventEntry
+operand mutation, retained outer/event requests, Mario survival and detached
+copies. Extractor checks compare actual read-only ISO bytes/hashes/layout/metadata.
+Independent read-only review found no further concrete mismatch. Existing
+compiler/Pillow warnings remain; no original Gekko execution/numeric/pixel or
+physical hardware/performance parity claim is made.
+
+Audit records4011 tracked/owned inputs,2155 products (2153 accepted unchanged plus
+2 new original data products),770 private inputs and exact binary/log/evidence
+hashes at artifacts/field-party-native-validation-manifest.json. Concurrent newer
+menu/interpolation/documentation changes are preserved/excluded from the frozen
+validation; scoped hunks were reviewed against the later commit parent and do
+not overlap its menu changes. This is not combined moving-worktree validation.
+ISO, original extracts, caches and compiled products remain outside history.
+
+Next: retain the complete ordinary party constructor/Hello across every resource,
+material and appearance hold, then bind existing-primary Kill safely. Implement
+auxiliary Entry2Pos(kind13), followed by original harbor/plaza NPC-to-auxiliary-
+to-canonical conversion at authored story conditions. Other surviving borrowed
+handle consumers still own role-view retirement; general collector/cancellation
+and global party VM facade remain open. Full battle field return, original NPC/
+animation scheduling, interiors/triggers/prologue visibility and hardware checks
+remain incomplete. EVT-01 and the complete prologue/full-game goal remain active.

@@ -2378,3 +2378,9 @@ add_executable(animation_native_main_tests tests/animation_native_main_tests.cpp
 target_link_libraries(animation_native_main_tests PRIVATE ttyd_core)
 add_test(NAME animation_native_main COMMAND animation_native_main_tests)
 set_tests_properties(animation_native_main PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+target_sources(ttyd_core PRIVATE source/field/field_party_native_lifetime.cpp)
+add_executable(field_party_native_lifetime_tests tests/field_party_native_lifetime_tests.cpp)
+target_link_libraries(field_party_native_lifetime_tests PRIVATE ttyd_core)
+add_test(NAME field_party_native_lifetime COMMAND field_party_native_lifetime_tests)
+set_tests_properties(field_party_native_lifetime PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

@@ -759,6 +759,10 @@ int main(){
             assert(charged.trioAttack.readWord(0x84101110,value) && charged.progress.originalPouch->half(0x74)==int16_t(value&0xffff));
             assert(charged.trioAttack.readWord(0x8410210c,value) && charged.progress.originalPouch->half(20)==int16_t(value>>16));
             for(unsigned n=0;n<110;++n)charged.tick(Input{});assert(!charged.trioAttack.rewardEffect());
+            // Completed field-party entry must not replay while later engine/
+            // drawing services keep the overall finishing invocation suspended.
+            assert(std::count_if(charged.trioAttack.requests().begin(),charged.trioAttack.requests().end(),[](const ProfessorServiceRequest& r){return r.function==0x801412fc;})==1);
+            assert(std::count_if(charged.trioAttack.requests().begin(),charged.trioAttack.requests().end(),[](const ProfessorServiceRequest& r){return r.function==0x800bea68;})==(fastReward?1:0));
             const auto& finalRequests=charged.trioAttack.requests();
             assert(std::count_if(finalRequests.begin(),finalRequests.end(),[](const ProfessorServiceRequest& r){return r.function==0x800d98bc && r.rawOperands==std::vector<int32_t>{int32_t(0x802feaa8)};})==(fastReward?1:5));
             assert(charged.progress.originalStory==11 && charged.fieldBattleState().result==0 && !charged.fieldControlEnabled());

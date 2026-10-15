@@ -1,4 +1,5 @@
 #include "trio_attack.hpp"
+#include "field_party_native_lifetime.hpp"
 #include "trio_enemy_pose_resources.hpp"
 #include "battle_main_continuation.hpp"
 #include "battle_action_manager_continuation.hpp"
@@ -98,6 +99,7 @@ namespace {
 // reloaded. Global asset loading below is not a transactional rollback API.
 EventScriptAssets scripts;NpcAngleTable sourceAngles;bool assetsReady=false;
 std::shared_ptr<BattleMenuFileCache> trioMenuFiles;
+std::string fieldPartyAssetRoot;
 std::string fieldPartnerAnimationPath;
 std::weak_ptr<const ActorAnimationPack> fieldPartnerAnimationCache;
 std::shared_ptr<const ActorAnimationPack> fieldMarioBank;
@@ -183,7 +185,7 @@ bool loadTrioAttackAssets(const char* root) {
     auto files=std::make_shared<BattleMenuFileCache>();
     if(!files->load((std::string(root)+"/battle-class-common.tpl").c_str()))return false;
     trioMenuFiles=std::move(files);
-    scripts=std::move(next);reactionUnits=units;reactionGroup=group;franklyPhase=phase;playerBattleResources=std::move(battleResources);assetsReady=true;return true;
+    scripts=std::move(next);reactionUnits=units;reactionGroup=group;franklyPhase=phase;playerBattleResources=std::move(battleResources);fieldPartyAssetRoot=root;assetsReady=true;return true;
 }
 struct TrioAttackRuntime {
     // The source file owner precedes the VM so external byte views die first.
@@ -488,6 +490,9 @@ struct TrioAttackRuntime {
     FieldMarioBattleState* fieldMario=nullptr;
     FieldPartyRegistry* fieldParties=nullptr;
     FieldPartyAppearanceServices fieldAppearance;
+    bool endingMarioRestored=false,endingPartyReady=false;
+    std::string partyAssetRoot=fieldPartyAssetRoot;
+    std::unique_ptr<NativeFieldPartyLifetime> fieldPartyLifetime;
     StageMapObjects stageBackground,stageForeground;
     BattleHitRegistry battleHits;
     std::shared_ptr<BattleSpotlightState> spotlight;
@@ -1721,8 +1726,9 @@ struct TrioAttackRuntime {
                 word(Battle+0xf28,0);packedBattleSetSequence(Battle,0,4,nativeBattleActorServices(vm).memory);
             }
             if(!fieldMario){pending=0x8005e0c0;return;}
-            endingRequest(0x8005e0c0);restoreFieldMarioAfterBattle(*fieldMario);
+            if(!endingMarioRestored){endingRequest(0x8005e0c0);restoreFieldMarioAfterBattle(*fieldMario);endingMarioRestored=true;}
             if(!fieldParties){pending=party?0x801412fc:0x80141198;return;}
+            if(!endingPartyReady){
             if(party) {
                 const auto kind=battlePartyIndex(int32_t(word(party+8)));
                 endingRequest(0x801412fc,{kind});
@@ -1792,7 +1798,11 @@ struct TrioAttackRuntime {
                 } // Real source -1 return: no unlock, kill or constructor side effects.
             }else {
                 endingRequest(0x80141198);
-                for(const auto index:fieldMario->partyIndices)if(index<128){pending=0x800be69c;return;}
+                if(!fieldPartyLifetime)fieldPartyLifetime=NativeFieldPartyLifetime::create(partyAssetRoot.c_str(),*fieldParties,*fieldMario);
+                if(!fieldPartyLifetime){pending=0x80141198;return;}
+                if(!fieldPartyLifetime->removeAll()){pending=fieldPartyLifetime->pending();if(!pending)pending=0x80141198;return;}
+            }
+            endingPartyReady=true;
             }
             endingRequest(0x80141050);const auto index=fieldParties->current(*fieldMario);
             endingRequest(0x800bf1b4,{index});if(auto* actor=fieldParties->pointer(index))actor->word(4,actor->word(4)&~1u);

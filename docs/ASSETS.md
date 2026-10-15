@@ -2981,3 +2981,22 @@ import, shared-pack write or changed opening art/audio/story assets. Native full
 regeneration skipped; Python fixtures independently use read-only ISO/empty outputs.
 Nintendo/Intelligent Systems rights retained; local tracking/copying grants no new
 license. No ISO, extracted original or compiled binary committed.
+
+## 2026-10-15 — Original party definition records and native removal
+
+`tools/field_party_definition_assets.py` reads the US revision0 DOL read-only and
+packages unchanged40-byte kinds1/8/13 records at80314410/80314528/803145f0.
+Ignored `romfs/field-party-definitions.pmevt` (168 bytes) and its JSON provenance
+are the only new runtime products. [The native removal contract](behavior/partner/NATIVE_PARTY_REMOVAL.md)
+records complete source hashes/model pointers: kind8 is c_babyyoshi via802cb47c;
+kinds1/13 are c_pkr via804213e0. Shared init800c4fa0 does not canonicalize kind
+or model. Exit+24 is original0 in all three records. No executable data, model
+conversion, art/audio/dialogue rewrite or story unlock is added.
+
+Native loading imports initialized records once into the same animation VM;
+later adapters preserve its live modifications. Model-string dependencies and
+complete constructors are outside this small data pack. The Makefile assets
+phase generates it; existing accepted2153 products/768 private fixtures are
+inherited with hashes for isolated checks. Originals remain Nintendo/Intelligent
+Systems material for local use, without redistribution rights. ISO, original
+extracts, packs, provenance products and compiled binaries remain uncommitted.
