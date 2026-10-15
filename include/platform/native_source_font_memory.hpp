@@ -1,0 +1,71 @@
+#pragma once
+#include <memory>
+#include <optional>
+#include <array>
+#include <utility>
+#include <vector>
+#include "event_address_space.hpp"
+namespace ttyd {
+// Immutable exact original US BFN from the accepted private raw-file pack.
+// Runtime FNV is a trusted-pack corruption guard; converter pins SHA-256.
+class NativeSourceFontFile {
+public:
+ static std::shared_ptr<const NativeSourceFontFile> load(const char*);
+ NativeSourceFontFile(const NativeSourceFontFile&)=delete;
+ NativeSourceFontFile&operator=(const NativeSourceFontFile&)=delete;
+ const std::vector<uint8_t>& bytes()const{return bytes_;}
+ static constexpr const char* SourcePath="f/papermarioset_US.bfn";
+private:
+ NativeSourceFontFile()=default;
+ std::vector<uint8_t> bytes_;
+};
+class NativeSourceFontBinding;
+// One process owner, capturing real source state rather than initializing it.
+// VM bindings must be destroyed BEFORE their borrowed EventAddressSpace,
+// outside raw borrows. The caller must not mutate their owned VM mappings.
+class NativeSourceFontMemory:public std::enable_shared_from_this<NativeSourceFontMemory> {
+public:
+ static std::shared_ptr<NativeSourceFontMemory> create();
+ NativeSourceFontMemory(const NativeSourceFontMemory&)=delete;
+ NativeSourceFontMemory&operator=(const NativeSourceFontMemory&)=delete;
+ std::unique_ptr<NativeSourceFontBinding> bind(EventAddressSpace&);
+ // Actual heap child supplies live native storage and its strong allocation
+ // owner; guest base is explicit native mapping policy, not a recovered heap.
+ bool adoptAllocation(uint32_t base,uint8_t* backing,uint32_t capacity,std::shared_ptr<const void> allocationOwner);
+ // Actual DVD child supplies exactly its observed bytes. Only that prefix is
+ // copied/mapped. Unknown unused capacity is never zero-filled/readable.
+ bool installRead(uint32_t base,const std::vector<uint8_t>& actualBytes);
+ bool captured()const{return bool(snapshot_);}
+ // Any intersection claims routing ownership, including unread/unknown tail.
+ bool owns(uint32_t address,uint32_t size=1)const;
+ std::optional<uint8_t> byte(uint32_t)const;
+ std::optional<uint16_t> half(uint32_t)const;
+ std::optional<uint32_t> word(uint32_t)const;
+ bool storeByte(uint32_t,uint8_t);
+ bool storeWord(uint32_t,uint32_t);
+ static constexpr std::array<std::pair<uint32_t,uint32_t>,4> StateSpans{{
+  {0x8041e978,0x44},{0x80416010,0x44},{0x80429578,4},{0x80429598,4}}};
+private:
+ NativeSourceFontMemory()=default;
+ struct Snapshot {std::array<std::vector<uint8_t>,4> spans;};
+ struct Allocation {uint32_t base,capacity,known=0;uint8_t* backing;std::shared_ptr<const void> owner;};
+ std::unique_ptr<Snapshot> snapshot_;
+ std::vector<Allocation> allocations_;
+ std::vector<NativeSourceFontBinding*> bindings_;
+ uint8_t* cell(uint32_t)const;
+ friend class NativeSourceFontBinding;
+};
+class NativeSourceFontBinding {
+public:
+ ~NativeSourceFontBinding();
+ NativeSourceFontBinding(const NativeSourceFontBinding&)=delete;
+ NativeSourceFontBinding&operator=(const NativeSourceFontBinding&)=delete;
+private:
+ NativeSourceFontBinding(std::shared_ptr<NativeSourceFontMemory>,EventAddressSpace&);
+ std::shared_ptr<NativeSourceFontMemory> owner_;EventAddressSpace* vm_;
+ std::array<std::vector<uint8_t>,4> originals_;
+ std::vector<uint32_t> payloads_;
+ bool bound_=false;
+ friend class NativeSourceFontMemory;
+};
+}

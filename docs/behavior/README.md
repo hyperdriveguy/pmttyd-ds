@@ -1365,3 +1365,15 @@ Original retained battle UI text controllers:
 - [Shared font state](display/RETAINED_SHARED_FONT_STATE.md).
 
 - [Native party position constructors and EVT publication](partner/NATIVE_PARTY_POSITION_EVENTS.md): actual ordinary1/auxiliary13 data, explicit/previous integer-coordinate resolution and late Mario slot publication.
+
+Original battle menu native resource/queue owners:
+
+- [retained mario key and control queries](overworld/RETAINED_MARIO_KEY_AND_CONTROL_QUERIES.md).
+- [retained jut font draw start](display/RETAINED_JUT_FONT_DRAW_START.md).
+- [retained source window and submenu surfaces](display/RETAINED_SOURCE_WINDOW_AND_SUBMENU_SURFACES.md).
+- [native weapon menu frame](display/NATIVE_WEAPON_MENU_FRAME.md).
+- [native source font resource ownership](display/NATIVE_SOURCE_FONT_RESOURCE_OWNERSHIP.md).
+- [resident battle font and glyph packets](display/RESIDENT_BATTLE_FONT_AND_GLYPH_PACKETS.md).
+
+
+- [Original normal font GX state](display/NATIVE_ORDINARY_FONT_GX_STATE.md).
