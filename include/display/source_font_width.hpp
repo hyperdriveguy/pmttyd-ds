@@ -22,6 +22,9 @@ struct SourceFontWidthServices {
  std::optional<int32_t>(*call)(void*,const SourceFontWidthCall&)=nullptr;
  std::optional<float>(*fma)(void*,float,float,float)=nullptr;
 };
+// Pins borrowed text identity,owners,line destination and service table.
+// Successful children/private bytes survive a wait. Sticky context loss needs
+// explicit reset; reset discards native progress without rolling back guest STH.
 class SourceFontWidthCursor {
 public:
  SourceFontWidthCursor();~SourceFontWidthCursor();

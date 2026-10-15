@@ -10,16 +10,25 @@
 #include <string>
 namespace ttyd {namespace {
 struct Span {uint32_t address,size;uint64_t hash;};
+// Cold source image,address/byte length/FNV1a64 in ascending order:font
+// literals,SDK formats,palette-spacing-name pointers,SDK filters,font globals,
+// root string,draw scalars,texture scalars,fog and selected color. These hashes
+// are admission pins,not licenses or generation IDs; exporter records SHA256 too.
 constexpr Span Spans[]={{0x802c2b30,144,0xa7bc9710cf961686ULL},{0x803c4e84,60,0x58a395e7b5c6d4c0ULL},{0x80416010,68,0x0957b20c36b054385ULL},{0x8041e558,8,0x8263db999b8acaebULL},{0x8041e978,68,0xe7d16c6b24f5c8f5ULL},{0x8041f494,4,0x0daffda6dc58ed3bULL},{0x804203e4,96,0x38fa0130cc650a0eULL},{0x80429440,40,0x054efeb1b416e63eULL},{0x80429578,4,0x4d25767f9dce13f5ULL},{0x80429598,4,0x4d25767f9dce13f5ULL}};
 struct Image {
  EventScriptAssets source;std::array<std::vector<uint8_t>,10>bytes;
  EventAddressSpace*installed=nullptr;bool retained=false;
  ~Image(){if(installed&&!retained)for(const auto&s:Spans)installed->unregisterRam(s.address);}
+ // FNV1a64 offset14695981039346656037/prime1099511628211 over exact bytes.
+ // Reject any address/extent/hash mismatch before installing cold source RAM.
  bool load(const char*path){
   if(!source.load(path)||source.segments().size()!=bytes.size())return false;
   for(unsigned i=0;i<bytes.size();++i){const auto&s=Spans[i];const auto&t=source.segments()[i];if(t.address!=s.address||t.size!=s.size)return false;uint64_t hash=14695981039346656037ULL;for(uint32_t n=0;n<s.size;++n){uint8_t v;if(!source.readByte(s.address+n,v))return false;bytes[i].push_back(v);hash=(hash^v)*1099511628211ULL;}if(hash!=s.hash)return false;}
   return true;
  }
+ // All ten ranges must be unmapped. Roll back only newly registered ranges
+ // on partial failure; successful factory keeps them in the process VM so
+ // recreation cannot overwrite live source history.
  bool install(EventAddressSpace&vm){
   for(const auto&s:Spans)if(!vm.unmappedRange(s.address,s.size))return false;
   unsigned done=0;for(;done<bytes.size();++done)if(!vm.registerRam(Spans[done].address,bytes[done]))break;
@@ -30,6 +39,8 @@ struct Image {
   return (a>=0x802c2b30&&uint64_t(a)+n<=0x802c2bc0)||(a>=0x8041f494&&uint64_t(a)+n<=0x8041f498);
  }
 };
+//256 cold slot objects already exist. Require zero flags/resource/generation,
+// not null object pointers; held Entry or Release excludes startup admission.
 bool coldPrefix(NativeFieldAnimation&process){
  if(process.process().entryPending()||process.releasePending())return false;
  const auto pool=process.pool();if(!pool)return false;
@@ -49,6 +60,8 @@ struct NativeUiStartup::State {
  NativeUiStartupAdmission admission;Counts count;
  uint32_t gp=0,pending=0,phase=0;bool alive=true,invalid=false;
  const void*formatDestination=nullptr;
+ // Finite native DVD records use152 bytes (98hex). Synthetic addresses are
+ // reserved only after actual unmappedRange checks; they are not ISO pointers.
  struct Entry {uint32_t address=0;std::array<uint8_t,152>bytes{};FILE*file=nullptr;};
  std::map<uint32_t,std::unique_ptr<Entry>>entries;
  struct Heap {uint32_t base=0,bytes=0;std::shared_ptr<std::vector<uint8_t>>backing;bool detached=false,adopted=false;};
@@ -56,6 +69,9 @@ struct NativeUiStartup::State {
  struct Read {std::vector<uint32_t>arguments;std::vector<uint8_t>bytes;bool observed=false;};
  std::optional<Read>read;
  EventNativeRuntime&vm()const{return process->process().vm();}
+ // Same actual GP pointer must survive. A nonzero global font pointer must
+ // equal this captured heap; zero is not itself proof of completed font setup.
+ // Observed mismatch poisons this owner instead of silently rebinding it.
  bool current(){
   if(!alive||invalid||!process||!process->ready())return false;
   uint32_t actual=0,fontPointer=0;
@@ -79,6 +95,9 @@ struct NativeUiStartup::State {
   a.memory.storeWord=[](void*p,uint32_t at,uint32_t v){auto&s=*static_cast<State*>(p);if(!s.vm().memory.writeWord(at,v))s.invalid=true;};
   a.memory.storeByte=[](void*p,uint32_t at,uint8_t v){auto&s=*static_cast<State*>(p);if(!s.vm().memory.writeByte(at,v))s.invalid=true;};return a;
  }
+ // Only the original literal/root spans are immutable formatter inputs.
+ // Compare live bytes to imported originals and admit only exact256-byte
+ // private Font destination; unknown names are not filesystem fallbacks.
  bool bindFormatter(){
   NativeResourcePathFormatterServices s;s.user=this;s.lifetime=process;s.current=[](void*p){return static_cast<State*>(p)->current();};
   s.byte=[](void*p,uint32_t a)->std::optional<uint8_t>{auto&s=*static_cast<State*>(p);uint8_t value;if(!s.image->source.readByte(a,value))return {};return value;};
@@ -86,6 +105,9 @@ struct NativeUiStartup::State {
   s.privateDestination=[](void*p,NativeResourcePathKind kind,const void*output,uint32_t capacity){auto&s=*static_cast<State*>(p);return kind==NativeResourcePathKind::Font&&output&&output==s.formatDestination&&capacity==256&&s.current();};s.stringBudget=256;s.outputCapacity=256;return formatter.bind(std::move(s));
  }
  std::optional<std::string>text(const SourceFontPath*source){if(!source)return {};std::string out;for(unsigned i=0;i<256;++i){auto v=source->byte(i);if(!v)return {};if(!*v)return out;out.push_back(char(*v));}return {};}
+ // Only exact source ./font probes may return real catalog-miss0; unknown
+ // paths hold. Selected ./f/US opens a separate rb FILE for actual delivery;
+ // immutable preflight bytes did not perform this source read.
  std::optional<uint32_t>open(const SourceFontSetupCall&q){
   if(q.integers!=std::vector<uint32_t>{2,0}||q.formatDestination||!q.reals.empty())return {};
   const auto name=text(q.path);if(!name)return {};
@@ -100,9 +122,16 @@ struct NativeUiStartup::State {
   if(std::fseek(e->file,0,SEEK_END)!=0||std::ftell(e->file)!=long(file->bytes().size())||std::fseek(e->file,0,SEEK_SET)!=0){std::fclose(e->file);return {};}
   if(!vm().memory.registerExternalRam(address,e->bytes.data(),152)){std::fclose(e->file);return {};}
   // Explicit finite native DVD entry producer, not whole DVDMgr/SDK emulation.
+  // DVD entry:filename0,length74; flags90 starts8000,half92=2. Read below
+  // owns destination7c,length80,offset84 and callback8c; this finite adapter
+  // records delivered count88. No whole original worker semantics are implied.
+  // Candidate base60030000/stride152/count256 is explicit native token policy.
   const auto n=name->size();std::memcpy(e->bytes.data(),name->c_str(),n+1);set(e->bytes,0x74,4,uint32_t(file->bytes().size()));set(e->bytes,0x90,2,0x8000);set(e->bytes,0x92,2,2);
   entries.emplace(address,std::move(e));++count.opens;return address;
  }
+ // Real source heap0 allocates once before transfer admission. Detach only
+ // its exact payload into shared backing; source allocator headers stay live.
+ // A held transfer must never allocate another block.
  std::optional<uint32_t>allocate(const SourceFontSetupCall&q){
   if(q.integers.size()!=2||q.integers[0]||q.integers[1]!=file->bytes().size())return {};
   if(!heap){
@@ -123,6 +152,9 @@ struct NativeUiStartup::State {
   }
   h.adopted=true;++count.heapTransfers;return h.base;
  }
+ // Capture exact DVD args,perform one real read and compare every byte to
+ // original preflight before publishing source delivery. DvdDelivery can hold
+ // after fread; retry reuses observed bytes and coherent entry fields.
  std::optional<uint32_t>deliver(const SourceFontSetupCall&q){
   if(q.integers.size()!=4||!heap||!heap->adopted||q.integers[1]!=heap->base||q.integers[2]!=file->bytes().size()||q.integers[3])return {};
   const auto at=entries.find(q.integers[0]);if(at==entries.end()||!at->second->file)return {};
@@ -146,6 +178,9 @@ struct NativeUiStartup::State {
   set(e.bytes,0x7c,4,heap->base+uint32_t(read->bytes.size()));set(e.bytes,0x80,4,0);set(e.bytes,0x84,4,0);set(e.bytes,0x88,4,uint32_t(read->bytes.size()));set(e.bytes,0x90,2,(get(e.bytes,0x90,2)&~1u)|2u);
   const auto result=get(e.bytes,0x74,4);read.reset();return result;
  }
+ // Original identities:root07388,formatter26a0b8,DVD open144e88/length
+ //144dcc/close144dd4/read144e18,heap300f0 and SDK texture72b0/7544.
+ // Close sets flags bit8 but keeps the mapped record until native retirement.
  std::optional<uint32_t>request(const SourceFontSetupCall&q){
   if(!current())return {};
   switch(q.function){
@@ -162,6 +197,9 @@ struct NativeUiStartup::State {
  }
 };
 NativeUiStartup::NativeUiStartup()=default;NativeUiStartup::~NativeUiStartup()=default;
+// Cold startup owns the process lifetime and optional admission owner.
+// Factory failure rolls back image mappings; success retains cold RAM even
+// after this wrapper retires. It does not acknowledge a camera/window/GPU pass.
 std::shared_ptr<NativeUiStartup>NativeUiStartup::create(std::shared_ptr<NativeFieldAnimation>process,const char*root,NativeUiStartupAdmission admission){
  if(!process||!root||!process->ready()||!coldPrefix(*process)||(admission.admit&&!admission.lifetime))return {};
  auto state=std::make_shared<State>();state->process=std::move(process);state->admission=std::move(admission);state->image=std::make_unique<Image>();
@@ -172,6 +210,9 @@ std::shared_ptr<NativeUiStartup>NativeUiStartup::create(std::shared_ptr<NativeFi
  if(!state->texture||!state->bindFormatter())return {};
  auto result=std::shared_ptr<NativeUiStartup>(new NativeUiStartup);state->image->retained=true;result->state_=std::move(state);return result;
 }
+// Native phases0 US GP store,1 whole FontManager,2 completed texture object.
+// Resume2 never repeats cold admission/language store; later language() reads
+// actual shared GP history. Keep self/state alive through reentrant providers.
 bool NativeUiStartup::resumeFont(){
  if(invoking_||!state_)return false;
  const auto keepAlive=shared_from_this();const auto state=state_;auto&s=*state;if(!s.current())return false;if(s.phase==2)return s.texture->object().has_value();if(!coldPrefix(*s.process))return false;

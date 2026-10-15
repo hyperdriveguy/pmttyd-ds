@@ -13,6 +13,9 @@ struct PackedWeaponCostServices {
  std::optional<double>(*power)(void*,double,double)=nullptr;
  std::optional<int32_t>(*truncate)(void*,double)=nullptr;
 };
+// One unit/weapon invocation pins provider/control-block identity through holds.
+// A completed scalar0 consumes the cursor; absent result retains it. Reentry/
+// reset during a callback is refused; observed current loss stales until reset.
 class PackedWeaponCostCursor {
 public:
  PackedWeaponCostCursor();~PackedWeaponCostCursor();
@@ -24,6 +27,7 @@ private:
  friend std::optional<uint32_t>resumePackedWeaponCost(uint32_t,uint32_t,const PackedWeaponCostServices&,PackedWeaponCostCursor&);
 };
 // Whole BtlUnit_GetWeaponCost80126968/158 over actual packed addresses.
-// Free item0/base0 weapons need neither a unit read nor a pouch count.
+// Item0 skips pouch count; a resulting cost0 skips unit reduction. Nonzero
+// item still queries its equipped count even when captured base FP is0.
 std::optional<uint32_t>resumePackedWeaponCost(uint32_t unit,uint32_t weapon,const PackedWeaponCostServices&,PackedWeaponCostCursor&);
 }

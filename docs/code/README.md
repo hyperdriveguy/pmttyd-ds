@@ -212,3 +212,7 @@ queue callback admission. Remaining runtime changes still require review.
 [Trio field return and resources](trio-field-return-resources.md) explains the
 three completed prefixes, retained party construction/removal and exact original
 enemy MODEL/TPL/CPU admission. Whole-runtime numeric coverage remains under audit.
+
+[Battle UI text and cost](battle-ui-text-cost.md) explains actual packed cost,
+command-width private bytes and centered raw drawing. [Native UI startup](native-ui-startup.md)
+explains cold source mappings,actual heap/FILE delivery and retained process ownership.

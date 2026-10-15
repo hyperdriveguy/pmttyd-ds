@@ -15,6 +15,8 @@ struct NativeUiStartupAdmission {
 // no Game/Renderer and never acknowledges seq_logoExit, CameraMain or a queue.
 class NativeUiStartup:public std::enable_shared_from_this<NativeUiStartup> {
 public:
+ // Must precede live pose entry/release. Successful cold mappings are permanent
+ // process history; failure/retire are native ownership events,not guest resets.
  static std::shared_ptr<NativeUiStartup>create(std::shared_ptr<NativeFieldAnimation>,const char*romfsRoot,NativeUiStartupAdmission={});
  ~NativeUiStartup();
  NativeUiStartup(const NativeUiStartup&)=delete;NativeUiStartup&operator=(const NativeUiStartup&)=delete;
@@ -32,6 +34,8 @@ public:
  // Native test/diagnostic counts:actual child effects, not simulation clocks.
  struct Counts {uint32_t gpStores=0,opens=0,reads=0,closes=0,heapAllocations=0,heapTransfers=0;};
  Counts counts()const;
+ // Makes later admission unavailable. Source heap and successful cold RAM stay
+ // process-owned; this does not run guest free,close a battle or restore a save.
  void retire();
 private:
  NativeUiStartup();struct State;std::shared_ptr<State>state_;bool invoking_=false;

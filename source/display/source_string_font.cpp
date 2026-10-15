@@ -5,6 +5,8 @@ float real(uint32_t n){float f;std::memcpy(&f,&n,4);return f;}
 float add(float a,float b){volatile float v=a+b;return v;}
 float mul(float a,float b){volatile float v=a*b;return v;}
 float converted(uint32_t hi,uint32_t lo,uint32_t value,bool sign){uint64_t raw=uint64_t(hi)<<32|lo,bits=0x4330000000000000ULL|(value^(sign?0x80000000u:0u));double bias,number;std::memcpy(&bias,&raw,8);std::memcpy(&number,&bits,8);volatile float out=number-bias;return out;}
+// Outline coordinates narrow to signed16 (sign32768/modulus65536); main
+// glyph coordinates use signed32. They are distinct original argument domains.
 int32_t sh(uint32_t n){n&=65535;return n<32768?int32_t(n):int32_t(n)-65536;}
 int32_t sw(uint32_t n){return n<0x80000000u?int32_t(n):int32_t(int64_t(n)-0x100000000LL);}
 bool owner(const std::shared_ptr<const void>&a,const std::shared_ptr<const void>&b){return a==b&&!a.owner_before(b)&&!b.owner_before(a);}
@@ -14,6 +16,9 @@ bool same(const SourceStringFontServices&a,const SourceStringFontServices&b){
 }
 struct Running{bool&v;explicit Running(bool&b):v(b){v=true;}~Running(){v=false;}};
 }
+// Base object is borrowed at entry,but its12 matrix words are captured only
+// at reached concat. Before capture a width wait may see changed base bytes;
+// afterwards exact bytes (including signed zero) and object identity stay fixed.
 struct SourceStringFontCursor::State {
  SourceStringFontServices services;SourceMatrixFontText text;BattleActorServices actors;
  const SourceMatrixFontText*borrowedText=nullptr;const BattleActMatrix*borrowedBase=nullptr;
@@ -42,16 +47,28 @@ bool resumeSourceStringFont(const BattleActMatrix&base,const SourceMatrixFontTex
  Running running(cursor.invoking_);if(!cursor.state_){cursor.state_=std::make_unique<SourceStringFontCursor::State>();auto&c=*cursor.state_;c.services=s;c.text=text;c.borrowedText=&text;c.borrowedBase=&base;c.bind();}
  auto&c=*cursor.state_;
  for(;;){if(!c.valid())return false;switch(c.phase){
+ // Actual camera is captured BEFORE whole width child(text,null line pointer).
+ // Centering uses width low16,source unsigned bias2b90 and constant2041c.
  case 0:{c.pending=0x8000f2e4;if(!common.camera)return false;const auto v=common.camera(common.user);if(!c.valid()||!v)return false;c.camera=*v;c.phase=1;continue;}
  case 1:{c.pending=0x8007554c;if(!s.width)return false;const auto v=s.width(common.user,c.text,0);if(!c.valid()||!v)return false;c.width=*v&65535;c.phase=2;continue;}
  case 2:{const auto hi=c.word(0x802c2b90),lo=c.word(0x802c2b94);const float half=real(c.word(0x8042041c));c.pen=mul(half,-converted(hi,lo,c.width,false));c.phase=3;continue;}
+ // SDK concat reads camera view+11c and base once per child; load GX matrix0
+ // before capturing signed conversion bias2b98. No additional projection here.
  case 3:{c.pending=0x8029dd64;if(!c.matrix){c.matrix=BattleAudienceMatrixRequest{};c.matrix->function=0x8029dd64;for(unsigned i=0;i<12;++i)c.matrix->left[i]=real(c.word(c.camera+0x11c+4*i));c.base=*c.borrowedBase;c.captured=true;c.matrix->right=c.base;}if(!common.matrix)return false;const bool done=common.matrix(common.user,*c.matrix);if(!c.valid()||!done)return false;c.transformed=c.matrix->output;c.matrix.reset();c.phase=4;continue;}
  case 4:{c.pending=0x802ba2fc;if(!common.loadMatrix)return false;const bool done=common.loadMatrix(common.user,c.transformed,0);if(!c.valid()||!done)return false;c.signedHi=c.word(0x802c2b98);c.signedLo=c.word(0x802c2b9c);c.phase=5;continue;}
+ // This loop maps raw bytes,including markup/newlines and glyphffff. Width
+ // may parse commands but drawing is not StringMatrix or a second parser.
  case 5:{const auto v=c.read(0x80076cac);if(!v)return false;if(!*v){cursor.state_.reset();return true;}c.code=*v;c.phase=sourceMatrixFontLead(c.code,c.actors)?6:7;continue;}
  case 6:{c.pending=0x80076abc;if(!c.text.half)return false;const auto v=c.text.half(c.text.user,c.offset);if(!c.valid()||!v)return false;c.code=*v;c.glyph=sourceMatrixFontMap(c.code,c.actors);c.offset+=2;c.phase=8;continue;}
  case 7:{const auto v=c.read(0x80076ad0);if(!v)return false;c.code=*v;++c.offset;c.glyph=sourceMatrixFontMap(c.code,c.actors);c.phase=8;continue;}
+ // Global outline e9a4 saves current color e9ac,installs palette0 at416010,
+ // multiplies alpha by fresh byte e9a8/255 and emits four offset glyphs.
+ // Holds keep prior color/glyph side effects; resetting is not a color restore.
  case 8:if(c.word(0x8041e9a4)){const auto palette=c.word(0x80416010);c.saved=c.word(0x8041e9ac);const auto alpha=c.byte(0x8041e9a8);c.store(0x8041e9ac,palette);c.color=(palette&0xffffff00)|((palette&255)*alpha/255);c.phase=9;}else c.phase=18;continue;
  case 9:if(!c.tev())return false;c.phase=10;continue;
+ // Two independent fctiwz children precede X +/-2 and Y +/-2 pairs.
+ // Each outline coordinate narrows signed16; main has its own conversion.
+ // After four offsets,restore saved source color with freshly read alpha.
  case 10:if(!c.convert(0x80076b44))return false;c.integerX=uint32_t(sh(c.integerX));c.phase=11;continue;
  case 11:if(!c.emit(sh(c.integerX-2),0))return false;c.phase=12;continue;
  case 12:if(!c.emit(sh(c.integerX+2),0))return false;c.phase=13;continue;
@@ -61,6 +78,9 @@ bool resumeSourceStringFont(const BattleActMatrix&base,const SourceMatrixFontTex
  case 16:if(!c.tev())return false;c.phase=18;continue;
  case 18:if(!c.convert(0x80076bf8))return false;c.phase=19;continue;
  case 19:if(!c.emit(sw(c.integerX),0))return false;c.phase=20;continue;
+ // Per-glyph WID1 lookup precedes fresh GP pointer/language16c and spacing
+ // table41601c. Convert signed wrapped(spacing+width),then round float addition;
+ // cached centering width is not a replacement for these late source reads.
  case 20:{const auto entry=sourceMatrixFontWidth(c.glyph,c.actors);const auto gp=c.word(0x80415fd0);const auto width=c.byte(entry+1);const auto language=c.word(gp+0x16c);const auto spacing=c.word(0x8041601c+4*language);c.pen=add(c.pen,converted(c.signedHi,c.signedLo,spacing+width,true));c.phase=5;continue;}
  default:return false;
  }}
