@@ -145,3 +145,6 @@ request gates, scene/audio ownership and explicit native presentation adapters.
 [Harbor dialogue/events](harbor-story-events.md) and
 [professor/underground events](professor-story-events.md) document the remaining
 story controllers, source callback catalogs and native service boundaries.
+
+[NPC clocks/matrices/numerics](npc-clocks-matrices-numerics.md) explains packed
+clock fields, retained draw transforms, blur polynomials and scalar length graphs.

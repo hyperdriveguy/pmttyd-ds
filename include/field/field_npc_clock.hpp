@@ -15,6 +15,9 @@ struct FieldNpcClockServices {
   // Source __cvt_sll_flt: signed64 -> rounded double -> rounded float.
   bool (*convert)(void *, uint64_t, float &) = nullptr;
 };
+// A single actor visit, not an entire Main traversal. phase is a retained
+// primitive index; index selects four clock outputs. hi/lo are guest word lanes,
+// number/quotient raw signed64 bits. Owner/actor identity must survive a hold.
 struct FieldNpcClockCursor {
   bool active = false;
   FieldNpcClockServices owner;
@@ -25,6 +28,10 @@ struct FieldNpcClockCursor {
 };
 // Caller owns earlier active/query/pose/state/timer work and later Main work.
 // This returns true only after this complete clock region; it is not npcMain.
+// actor+1d4 state mask0x10 enables elapsed work; clearing it refreshes only
+// anchor198/19c. Main flag0x20000 enables the separate178/17c accumulator.
+// Return false can follow successful earlier stores; never roll back/restart
+// a held cursor. Completion resets it, so a later call begins a NEW clock visit.
 bool updateFieldNpcClock(uint32_t actor, const FieldNpcClockServices &,
                          FieldNpcClockCursor &);
 bool nativeFieldNpcClockDivide(void *, uint64_t, uint32_t, uint64_t &);

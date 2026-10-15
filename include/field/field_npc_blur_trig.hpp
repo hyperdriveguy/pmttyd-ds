@@ -1,6 +1,9 @@
 #pragma once
 #include "field_npc_matrix.hpp"
 namespace ttyd {
+// One sine OR cosine evaluation, with independent literal reads. Capture yaw
+// in degrees, mode and providers at entry; later retry arguments are ignored.
+// Successful completion publishes scalar and resets, so reuse starts a new graph.
 struct FieldNpcBlurTrigCursor {
   bool active = false, cosine = false, negative = false;
   uint32_t phase = 0;

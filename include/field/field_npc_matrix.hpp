@@ -15,6 +15,9 @@ struct FieldNpcMatrixServices {
   bool (*number)(void *, FieldNpcMatrixNumber &) = nullptr;
   bool (*matrix)(void *, BattleAudienceMatrixRequest &) = nullptr;
 };
+// One source matrix visit: actor/raw slot/providers captured only at entry.
+// Later call arguments cannot replace that owner while active. pending holds a
+// stable numeric/SDK request; output/rotation are native3x4 matrix payloads.
 struct FieldNpcMatrixCursor {
   bool active = false, pending = false;
   FieldNpcMatrixServices owner;
@@ -30,6 +33,9 @@ struct FieldNpcMatrixCursor {
 // Values are captured at original reads, including repeated pivot/scale reads.
 // Retain source mappings and producer pass across holds; successful primitives
 // are never replayed. Result is published only on completion; cursor resets.
+// No actor-slot bounds policy is added here. The word provider admits actual
+// mappings, including wrapped negative history slots. Unlike the clock helper,
+// this cursor uses captured arguments rather than rejecting changed retry args.
 bool advanceFieldNpcMatrix(uint32_t actor, int32_t slot,
                            const FieldNpcMatrixServices &,
                            FieldNpcMatrixCursor &, BattleActMatrix &result);

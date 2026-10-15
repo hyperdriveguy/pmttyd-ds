@@ -3,6 +3,8 @@
 #include <limits>
 namespace ttyd {
 namespace {
+// Interpret two's-complement64 bits without an out-of-range unsigned cast.
+// Joined values wrap modulo2^64; float words are bit copies, not integer casts.
 int64_t signed64(uint64_t v) {
   return v <= uint64_t(INT64_MAX)
              ? int64_t(v)
@@ -24,6 +26,8 @@ bool same(const FieldNpcClockServices &a, const FieldNpcClockServices &b) {
          a.divide == b.divide && a.convert == b.convert;
 }
 } // namespace
+// Positive unsigned32 divisor and signed64 dividend: truncate toward zero.
+// Zero divisor is unavailable, not an invented zero-time result.
 bool nativeFieldNpcClockDivide(void *, uint64_t n, uint32_t d, uint64_t &out) {
   if (!d)
     return false;
@@ -37,6 +41,11 @@ bool nativeFieldNpcClockConvert(void *, uint64_t n, float &out) {
   out = static_cast<float>(intermediate);
   return true;
 }
+// Packed actor reads end at1d8 exclusive in the32-bit guest address space.
+//0x80415fd0 holds live GP; GP38/3c is high/low timestamp.0x800000f8 is bus Hz.
+// Actor high/low pairs:178/17c conditional accumulation,188/18c elapsed,
+//190/194 delta,198/19c anchor. Float outputs180/1a0/1a4/1a8 are seconds.
+// Clock phases are primitive continuations, not simulation ticks or event IDs.
 bool updateFieldNpcClock(uint32_t actor, const FieldNpcClockServices &s,
                          FieldNpcClockCursor &c) {
   if (!s.word || !s.store || uint64_t(actor) + 0x1d8 > 0x100000000ULL)
@@ -61,6 +70,9 @@ bool updateFieldNpcClock(uint32_t actor, const FieldNpcClockServices &s,
   // never rereads an earlier captured lane or repeats a completed publication.
   for (;;)
     switch (c.phase) {
+    // State mask0x10 clear takes50..54: anchor refresh only. Enabled path
+    // reads old anchor low, GP low/high, old anchor high, then publishes wrapped
+    // difference low first. These source lane reads are deliberately ordered.
     case 0:
       if (!read(actor + 0x1d4, c.lo))
         return false;
@@ -102,6 +114,10 @@ bool updateFieldNpcClock(uint32_t actor, const FieldNpcClockServices &s,
         return false;
       ++c.phase;
       break;
+    // Fresh bus and reread delta precede signed ms conversion. Source reciprocal
+    //0x10624dd3 with bus>>2, high32 product then>>6 forms the ms divisor.
+    // Only positive quotient>500 caps delta to sixteen captured divisor units;
+    // exactly500, negative and wrapped signed values retain their original bits.
     case 8:
       if (!read(0x800000f8, c.bus))
         return false;
@@ -134,6 +150,9 @@ bool updateFieldNpcClock(uint32_t actor, const FieldNpcClockServices &s,
         return false;
       ++c.phase;
       break;
+    // Main mask0x20000 accumulates delta at178; otherwise zero that pair.
+    // Read accumulated low/delta low/high/high before low/high publication.
+    // Successful low store stays visible if the subsequent high store holds.
     case 14:
       if (!read(actor, c.lo))
         return false;
@@ -180,6 +199,8 @@ bool updateFieldNpcClock(uint32_t actor, const FieldNpcClockServices &s,
         return false;
       ++c.phase;
       break;
+    // Elapsed188 always adds delta, independent of conditional accumulator.
+    // Refresh GP again afterward; do not reuse the earlier timestamp snapshot.
     case 23:
       if (!read(actor + 0x18c, c.lo))
         return false;
@@ -239,6 +260,11 @@ bool updateFieldNpcClock(uint32_t actor, const FieldNpcClockServices &s,
     // Repeat the source conversion four times, with fresh bus/source reads
     // after the previous output store. No millisecond rounding or render-frame
     // delta.
+    // Four independent outputs, each with fresh bus/source/literal reads:
+    //188->1a0,178->180,190->1a4,198->1a8. Wrapped source<<3 precedes signed
+    // division. Reciprocal0x431cde83/high32/>>15 forms microsecond divisor;
+    // actual float1000000 at8041fd50 converts the rounded quotient to seconds.
+    // Keep source truncation/rounding; a host duration conversion changes it.
     case 40:
       if (!read(0x800000f8, c.bus))
         return false;

@@ -2,12 +2,18 @@
 #include <cstring>
 namespace ttyd {
 namespace {
+// Guest float words retain their exact bits; no host numeric cast or native
+// pointer reinterpretation. All original addresses below are32-bit identities.
 float real(uint32_t w) {
   float f;
   std::memcpy(&f, &w, 4);
   return f;
 }
 } // namespace
+// Packed layout: root8c/90/94; history a4+12*slot; scale e0/e4/e8;
+// rotation ec/f0/f4 (X/Y/Z degrees); pivot f8/fc/100. Read order and repeated
+// loads remain observable across mutating providers. Final-only result commit
+// means false leaves caller matrix unchanged, even after earlier SDK success.
 bool advanceFieldNpcMatrix(uint32_t actor, int32_t slot,
                            const FieldNpcMatrixServices &s,
                            FieldNpcMatrixCursor &c, BattleActMatrix &result) {
@@ -35,6 +41,9 @@ bool advanceFieldNpcMatrix(uint32_t actor, int32_t slot,
     out = real(w);
     return true;
   };
+  // Original numeric calls:8000f2e4 current camera(address in word),
+  //8000703c angle(fromX/fromZ/toX/toZ),80007328 revise(args lane0).
+  // On hold retain exact request payload instead of rerunning preceding loads.
   auto number = [&](uint32_t fn) {
     if (!c.pending) {
       c.number = {};
@@ -47,6 +56,10 @@ bool advanceFieldNpcMatrix(uint32_t actor, int32_t slot,
     c.pending = false;
     return true;
   };
+  // SDK identities:8029dd04 identity,8029e2d8 scale-apply,8029e264
+  // translate-apply,8029dff0 axis rotation,8029dd64 concat. Rotation writes a
+  // separate temporary; concat is rotation LEFT times current output RIGHT.
+  // Payloads are bounded native values, not guest SDK stack pointers.
   auto math = [&](uint32_t fn) {
     if (!c.pending) {
       c.math = {};
@@ -72,6 +85,10 @@ bool advanceFieldNpcMatrix(uint32_t actor, int32_t slot,
   // Explicit phases preserve each successful source load on a later hold.
   for (;;)
     switch (c.phase) {
+    // Flags02000000 or08000000 bypass camera correction. Original literals
+    //8041fc7c=0,fc94=1. Otherwise query camera once, compare camera look angle
+    // with angle to actor, and revise the difference. Camera X/Z reload for
+    // second query; a provider mutation must be observed at that later point.
     case 0:
       if (!word(c.actor, c.bits))
         return false;
@@ -153,6 +170,9 @@ bool advanceFieldNpcMatrix(uint32_t actor, int32_t slot,
       c.correction = c.number.result;
       ++c.phase;
       break;
+    // Independent additive yaw is revised TWICE for the reflection test.
+    // Inclusive source90..270 (fcb0/fcc4) multiplies Z scale by -1(fcd8).
+    // Unordered comparisons skip reflection; original yaw is reread for rotation.
     case 15:
       if (!load(c.actor + 0xf0, c.values[0]))
         return false;
@@ -186,6 +206,9 @@ bool advanceFieldNpcMatrix(uint32_t actor, int32_t slot,
       c.reflection *= c.first;
       c.phase = 22;
       break;
+    // Identity then short-circuit unit-scale checks. A needed scale operation
+    // keeps first X, freshly reloads Z THEN Y, and reflects only Z. NaN enters
+    // the nonidentity path; do not replace equality with epsilon validation.
     case 22:
       if (!math(0x8029dd04))
         return false;
@@ -227,6 +250,9 @@ bool advanceFieldNpcMatrix(uint32_t actor, int32_t slot,
         return false;
       ++c.phase;
       break;
+    // Negative pivot translation: short-circuit zero checks, retain first X,
+    // then reload Y/Z and negate. Positive pivot later performs its own fresh
+    // checks/reads; no whole-transform snapshot or cached pivot is substituted.
     case 31:
       if (!load(c.actor + 0xf8, c.values[0]))
         return false;
@@ -265,6 +291,9 @@ bool advanceFieldNpcMatrix(uint32_t actor, int32_t slot,
         return false;
       ++c.phase;
       break;
+    // Rotate Z(f4), then X(ec), then Y(f0+camera correction), left-concat each.
+    // Axis122/120/121 are SDK ASCII z/x/y tokens. Source radians-per-degree
+    //8041fd7c has binary32 bits3c8efa35; do not replace with exact pi/180.
     case 38:
       if (!load(c.actor + 0xf4, c.angle))
         return false;
@@ -319,6 +348,9 @@ bool advanceFieldNpcMatrix(uint32_t actor, int32_t slot,
         return false;
       ++c.phase;
       break;
+    // Fresh Y follows earlier SDK calls. Add correction BEFORE loading the
+    // radians literal. Skip only when both original Y and correction equal0,
+    // even if nonzero values could algebraically cancel each other.
     case 48:
       if (!load(c.actor + 0xf0, c.angle))
         return false;
@@ -348,6 +380,8 @@ bool advanceFieldNpcMatrix(uint32_t actor, int32_t slot,
         return false;
       ++c.phase;
       break;
+    // Positive pivot follows rotations; source can reload a changed pivot.
+    // Conditional checks deliberately do not capture all three axes at once.
     case 53:
       if (!load(c.actor + 0xf8, c.values[0]))
         return false;
@@ -383,6 +417,9 @@ bool advanceFieldNpcMatrix(uint32_t actor, int32_t slot,
         return false;
       ++c.phase;
       break;
+    // Raw slot0xffffffff(-1) chooses current root; all other slots use
+    // unsigned32 wrapping actor+a4+12*slot with no new clamp. Stride12 is three
+    // float words. Final translation alone publishes result and resets cursor.
     case 60:
       if (!load(c.actor + (c.slot == 0xffffffff ? 0x8c : 0xa4 + 12 * c.slot),
                 c.values[0]))

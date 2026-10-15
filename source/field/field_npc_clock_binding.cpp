@@ -5,6 +5,8 @@ FieldNpcClockBinding::FieldNpcClockBinding(
     std::shared_ptr<FieldNpcRegistryOwner> owner, EventNativeRuntime &vm,
     const FieldNpcClockNumbers &numbers)
     : owner_(std::move(owner)), vm_(vm), numbers_(numbers) {}
+// Require the same initialized owner AND exact memory facade; another VM or
+// registry cannot silently supply the clock for an actor with the same address.
 std::unique_ptr<FieldNpcClockBinding>
 FieldNpcClockBinding::bind(std::shared_ptr<FieldNpcRegistryOwner> owner,
                            FieldNpcRegistryBinding &registry,
@@ -16,6 +18,9 @@ FieldNpcClockBinding::bind(std::shared_ptr<FieldNpcRegistryOwner> owner,
   return std::unique_ptr<FieldNpcClockBinding>(
       new FieldNpcClockBinding(std::move(owner), vm, numbers));
 }
+// No actor copy/copyback or Main gate traversal here. Reads/stores alias the
+// VM bytes directly, so another facade sees completed partial publications.
+// Callback lambdas have stable identities across cursor resumes.
 bool FieldNpcClockBinding::advance(uint32_t actor,
                                    FieldNpcClockCursor &cursor) {
   if (!owner_->ownsFieldActor(actor))
@@ -27,6 +32,8 @@ bool FieldNpcClockBinding::advance(uint32_t actor,
     // The same explicitly installed platform bus owner serves EVT time
     // requests. Do not cache bus at binding or substitute the host/3DS CPU
     // frequency.
+    // Original low-memory bus-clock word is served by the installed platform
+    // callback on EACH reached source read; every other word uses guest memory.
     if (address == 0x800000f8) {
       if (!self.vm_.platform.clock)
         return {};

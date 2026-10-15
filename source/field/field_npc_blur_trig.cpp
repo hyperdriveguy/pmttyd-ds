@@ -2,6 +2,10 @@
 #include <cmath>
 #include <cstring>
 namespace ttyd {
+// Source blur polynomial, not libm periodic sin/cos. Preserve literal-load
+// ordering even for constants:tau8041fd10,360fcc0,pi fd1c,halfPi fd20,
+//threeHalfPi fd24,ONE fc94; sine A/B fd14/fd18,cosine fd28/fd2c.
+// Phases are retained primitive boundaries. Empty word holds without publishing.
 bool advanceFieldNpcBlurTrig(float yaw, bool cosine,
                              const FieldNpcMatrixServices &s,
                              FieldNpcBlurTrigCursor &c, float &result) {
@@ -23,6 +27,8 @@ bool advanceFieldNpcBlurTrig(float yaw, bool cosine,
   };
   for (;;)
     switch (c.phase) {
+    // Form tau*yaw before loading pi/coefficientA/B; divide by360 only after
+    // coefficientB. Delayed division and source float rounding are observable.
     case 0:
       if (!load(0x8041fd10, c.tau))
         return false;
@@ -50,6 +56,10 @@ bool advanceFieldNpcBlurTrig(float yaw, bool cosine,
       c.value /= c.divisor;
       ++c.phase;
       break;
+    // Single quadrant reduction only: no repeated modulo or finite check.
+    // <=pi then <=halfPi reflects second quadrant (cos negative); <threeHalfPi
+    // subtracts pi with both signs negative; final quadrant subtracts3pi/2
+    // BEFORE fresh halfPi, with sine negative. NaN follows comparison outcomes.
     case 5:
       if (!load(0x8041fc94, c.one))
         return false;
@@ -84,6 +94,9 @@ bool advanceFieldNpcBlurTrig(float yaw, bool cosine,
       c.negative = !c.cosine;
       ++c.phase;
       break;
+    // Source SP graph:FMA(FMA(A,x*x,-B),x*x,ONE), then sine's x multiply,
+    // then sign. Native std::fma is explicit adaptation, not measured Gekko
+    // exception/subnormal/FPSCR parity. Do not reassociate into a libm call.
     case 9: {
       const float square = c.value * c.value;
       float out = std::fma(std::fma(c.a, square, -c.b), square, c.one);
