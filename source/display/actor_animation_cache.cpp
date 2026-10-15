@@ -9,11 +9,7 @@ std::optional<float> cubic(const ActorSparseUpdate& r,float t,float h){
     if(r.b<-89 || r.b>88)return {}; // Original adjacent-table domain needs its provider.
     //178 tangent samples indexed by signed angle+89 cover -89..88 degrees.
     // c outside(-89,89) is the source no-cubic gate; b must index the table.
-    static const auto table=[](){
-        std::array<float,178> values{};
-        for(int i=0;i<178;++i)values[i]=float(std::tan(double(rounded(float(i-89)*.017453288659453392f))));
-        return values;
-    }();
+    const auto& table=nativeAnimationTangents();
     const float t2=rounded(t*t),t3=rounded(t*t2);
     const float h10=rounded(t-std::fma(2.f,t2,-t3));
     const float h01=std::fma(-2.f,t3,rounded(3.f*t2));

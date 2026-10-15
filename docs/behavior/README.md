@@ -1210,3 +1210,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Original wander packed binding frontier](field/ORIGINAL_WANDER_EVENT_PACKED_BINDING_FRONTIER.md): actual regular wrappers/story guard, LW10/map-heap ownership, ordered requests and regular stop/start/replacement lifetime.
 
 - [Retained pose-buffer allocation](display/NATIVE_POSE_BUFFER_ALLOCATION_AND_RECURSIVE_RECOVERY.md): exact inlined reservations, recursive Restore and distinct overflow recovery.
+
+- [Cold animation initialization](display/NATIVE_COLD_ANIMATION_INITIALIZATION.md): complete retained animInit, typed tangent/bias services, original auxiliary copies and cold-before-pose boundary.

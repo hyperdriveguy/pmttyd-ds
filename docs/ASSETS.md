@@ -1733,3 +1733,19 @@ shared read inputs; mutable evidence directories are private copies. Original
 Nintendo/Intelligent Systems rights remain reserved; private validation copies
 confer no new license or redistribution rights. No original binary/ISO bytes
 were committed.
+
+
+### Original cold animation auxiliary payloads (2026-10-14)
+
+`tools/animation_startup_assets.py` reads a/vivian.bin (3088 bytes; ISO offset
+926901544; SHA256478c261680ace260c1a56b4ca1a16c7076209bd0d60c3b5a54c1d7cfcf0064b1)
+and a/ag2tg.bin (41984 bytes; SHA256d756d29d6e8eb7848bf2ff96b1c463223c140f0c33f7385ffac1ca40918125ba)
+from the read-only US ISO. Full source offsets/sizes/hashes are also recorded in
+the generated per-file provenance and animation-startup/sources.json. Outputs
+are unchanged private payloads under ignored romfs/animation-startup/a/ and the
+isolated artifacts/animation-cold-source/romfs/animation-startup/a/; no conversion,
+resizing, generated artwork, licensing change or asset commit. ag2tg duplicates
+the already retained prefetch bytes by identity; it does not create a new table.
+Original Nintendo/Intelligent Systems data, local use only, no redistribution
+rights granted. Availability does not certify original file-handle/lifetime
+or cold startup. Existing packs remain unchanged.

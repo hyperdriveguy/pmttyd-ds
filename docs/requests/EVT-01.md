@@ -4867,3 +4867,20 @@ open. New source report identifies real Vivian destinations80415db4→80305900
 and initialized80415da0 bytes; do not invent zero destination history or run
 cold init over active shared poses. Next bind genuine startup/address ownership
 before admitting authored battle entry; full prologue remains unfinished.
+
+
+### Retained cold animation initialization (2026-10-14)
+
+Implemented complete animInit80042854 parent with original allocation/publication
+order, explicit scalar writes, scratch guard,178 retained typed double tan calls,
+atomic bias read and exact Vivian holder/destination/payload captures/copies,
+archive0 and fresh W100 ag2tg handle publication. Original auxiliary payloads
+are exported unchanged; CPU cubic consumers share their native tangent table.
+[Contract](../behavior/display/NATIVE_COLD_ANIMATION_INITIALIZATION.md).
+Read-only static review/evidence:artifacts/animation-cold-start-evidence/.
+Normal Game already creates3Mario poses, so do NOT run cold init over it. Next
+require a deferred cold Game(false) bootstrap with genuine SDK heap/W/model/
+texture/pose/aux/scratch/file/holder/relocated MODEL and live tangent/output
+ownership before source Entry. Keep missing providers pending and full original
+startup/field/battle/prologue obligations open; static native numeric adapter
+is not an alias of the future VM table or Gekko/libm parity evidence.

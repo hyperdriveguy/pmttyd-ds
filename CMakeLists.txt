@@ -1931,3 +1931,10 @@ target_sources(ttyd_core PRIVATE source/field/field_npc_wander_event.cpp)
 add_executable(field_npc_wander_event_tests tests/field_npc_wander_event_tests.cpp)
 target_link_libraries(field_npc_wander_event_tests PRIVATE ttyd_core)
 add_test(NAME field_npc_wander_event COMMAND field_npc_wander_event_tests)
+
+# Complete original cold animation initialization and native tangent provider.
+target_sources(ttyd_core PRIVATE source/display/animation_initialize.cpp)
+add_executable(animation_initialize_tests tests/animation_initialize_tests.cpp)
+target_link_libraries(animation_initialize_tests PRIVATE ttyd_core)
+add_test(NAME animation_initialize COMMAND animation_initialize_tests)
+set_tests_properties(animation_initialize PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

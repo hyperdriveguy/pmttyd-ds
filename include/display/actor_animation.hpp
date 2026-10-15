@@ -1,4 +1,5 @@
 #pragma once
+#include "animation_tangent.hpp"
 #include "actor_mesh.hpp"
 #include "actor_surface.hpp"
 #include <algorithm>
@@ -110,11 +111,7 @@ inline float actorNodeDelta(const ActorSparseUpdate& record,float q,float durati
     if(record.c<=-89 || record.c>=89)return 0;
     const float q2=q*q,q3=q*q2;
     // Source table stores rounded tan of a rounded angle using word3c8efa33.
-    static const auto table=[](){
-        std::array<float,178> values{};
-        for(int i=0;i<178;++i)values[i]=float(std::tan(double(float(i-89)*.017453288659453392f)));
-        return values;
-    }();
+    const auto& table=nativeAnimationTangents();
     const float tin=table[size_t(int(record.b)+89)],tout=table[size_t(int(record.c)+89)];
     const float first=(q3-2*q2+q)*(duration*tin);
     const float sum=std::fma(3*q2-2*q3,float(record.a)*.0625f,first);

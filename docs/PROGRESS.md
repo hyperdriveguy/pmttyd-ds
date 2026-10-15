@@ -9195,3 +9195,79 @@ battle, message/inventory integrations, story, effect/audio, platform and port t
 Re-audit current code against recorded snapshots rather than treating a file-count
 inventory as semantic completion. Full documentation and the remake remain
 incomplete; documentation goal stays active.
+
+### Complete retained cold animation initialization (2026-10-14)
+
+Previous goal turn was progress:a3a0a5d9 completed original pose-buffer allocation
+and recursive recovery. This increment implements complete animInit80042854
+with exact fresh W/count reads, heap0 size/order/publications, interleaved We8,
+explicit scalar stores, literal scratch guard and W104→108 publication. No
+blanket work clear, null-result rejection or source-absent cleanup is added.
+Factor and double bias are captured in their exact order around retained W104;
+178 binary32-angle/double-tan/binary32-store requests retain independent child
+and store waits. A dedicated atomic doubleWord callback avoids a half-captured
+lfd bias across native waits. Original Vivian holder/destination/payload reads,
+second holder reload/copy, conditional fileFree, archive0, ag2tg request and
+fresh W100 publication preserve source order and captured operands.
+[Contract](behavior/display/NATIVE_COLD_ANIMATION_INITIALIZATION.md).
+
+Both existing native cubic consumers now share one runtime178-entry native
+libm tangent table with source binary32 factor/angle rounding, removing duplicate
+generation. This table is a native numeric adapter, not an alias of the future
+VM source tangent owner or proof of Gekko/libm bit equality. Original auxiliary
+Vivian3088 bytes and ag2tg41984 bytes are extracted unchanged with pinned hashes
+and full source offsets/provenance. Five private products are new; all prior2125
+RomFS products remain byte-identical. No art/audio conversion, asset commit,
+ISO write or distribution. Local ignored packs only; see ASSETS.
+
+Original-source review found no concrete semantic mismatch. Evidence and complete
+listings/provenance:artifacts/animation-cold-start-evidence/. Further read-only
+cache audit identifies minimal BE16-byte model/12-byte texture records and their
+actual Entry/release/canEnter consumers, plus source file/holder/relocated MODEL
+requirements. Do not create detached snapshots or fake H/L addresses claiming
+real file-manager lifecycle. New fixture uses actual original Vivian bytes and
+complete branch/reentry/hold checks; virtual W, heap returns and file handles
+are explicitly test supplied. Source allocation zero/flush and real file/archive
+ownership are providers, never auto-success supplied by this parent.
+
+Normal Game already creates three Mario poses. Genuine cold animInit MUST run
+before those entries, not over an active shared pool. This increment therefore
+does not acknowledge normal source startup. Next: authoritative BE cache/pose
+backing and shared W/heap/file/holder/loaded MODEL/tangent/output owner, then a
+deferred cold Game(false) bootstrap with actual providers before source Entry.
+CPU vectors still do not alias guest scratch outputs; original SDK/file/camera/
+field Main/collision/authored event and complete prologue behavior remain open.
+Full goal and documentation inbox remain active.
+
+Validation: TMPDIR=artifacts/native-stage-map-tmp CMAKE_BUILD_PARALLEL_LEVEL=4
+make -C artifacts/animation-cold-source test -o assets-ready exits0:366/366 C++
+in38.22s and202/202 Python in34.470s. Standalone -Wall/-Wextra fixture passes
+without warnings after pre-integration indentation cleanup. Native make all -j4
+-o assets-ready SOUNDTRACK=gamecube TARGET=ttyd-animation-cold
+BUILD=build-animation-cold exits0, including normal restore. Existing unrelated
+compiler/Pillow warnings remain. Original read-only verify_animation_main.py
+passes2bodies/1773instructions/17constants/5spans/2imports/65directsites and one
+serialized resource example. This is static byte evidence, not original runtime.
+
+Strict isolated ARM fixture passes allocationOrder, originalAuxiliary,
+allTangents, retainedHeapWait, retainedTanWait, atomicBiasWait, liveWork,
+capturedCopies, nullBranches and noReplay. It exercises actual original Vivian
+payload and reentry plus exact heap/file requests with explicitly test-owned
+W/handles/heap return addresses. Snapshot:
+artifacts/azahar-animation-cold-probe/animation-cold-probe.snapshot. Probe source/
+binary hashes:artifacts/animation-cold-probe-validation.json. Private main edits
+are restored; normal binary matches its pre-probe hash. ARM nm confirms one
+712-byte tangent table and one guard symbol; no full runtime performance claim.
+
+Frozen base3e84f471896564449804ab39b8ff0dd538a6b55f plus scoped journal isolates this
+increment from concurrent work. Audit:3647 source files and2130 RomFS products,
+zero mismatches. Manifest:artifacts/animation-cold-validation-manifest.json.
+Normal native SHA256 6cf9bf794a5b9f447b20dffdcd232120a17008ea53c3acf916d6f86df8787437.
+Documentation link check:1389 Markdown files, zero broken links. The moving
+combined checkout is not claimed validated as a whole.
+
+Normal isolated40s Azahar boot exits0. Original storybook/US English capture
+artifacts/azahar-animation-cold-normal/boot.png was inspected (sample60AppFPS/100%).
+Only generated isolated profile/saves used; user settings/saves untouched. No
+original GPU/pixel/Gekko numeric or physical3DS performance parity claim. Full
+prologue remains unfinished; genuine source startup ownership is the next step.
