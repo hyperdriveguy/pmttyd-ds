@@ -3,6 +3,7 @@
 namespace ttyd {
 // Current map-bank work projection. Source cold clear zeros these bytes;
 // authored fog and subsequent EVT writers own changes independently.
+// flags 1 fog, 2 primary, 4 secondary, 8 extra blend. Colors/fog are RRGGBBAA.
 struct MapMaterialGroup {
     uint16_t flags=0;
     std::array<uint32_t,3> colors{};
@@ -15,6 +16,8 @@ struct MapMaterialColorServices {
     const CameraState* (*currentCamera)(void*)=nullptr;
     bool (*gx)(void*,const ShadowGXRequest&)=nullptr;
 };
+// ready latches the resolved GX request; function/flags/colors are initial
+// inputs, whereas current camera/group are resolved at their actual leaf.
 struct MapMaterialColorCursor {
     bool active=false,ready=false;uint32_t function=0,pending=0,flags=0,c1=0,c2=0;
     const CameraState* camera=nullptr;

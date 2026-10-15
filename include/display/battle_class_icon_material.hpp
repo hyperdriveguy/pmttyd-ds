@@ -3,6 +3,8 @@
 #include <cstdint>
 namespace ttyd {
 enum class ClassIconChannel : uint8_t { Red, Green, Blue };
+// Each coefficient 85=255/3 represents original 555555ff(hex) RGB constant.
+// First stage starts accumulation; last alone applies record alpha.
 struct ClassIconStage {
   ClassIconChannel channel;
   uint8_t coefficient;

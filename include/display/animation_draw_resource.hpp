@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 namespace ttyd {
+// Signed link/shape -1 means absent; visibility/node are indices, not pointers.
 struct AnimationDrawGroup {int32_t sibling=-1,child=-1,shape=-1;uint32_t visibility=0,node=0,joint=0;};
 // Original serialized MODEL offsets, never executable or relocated CPU pointers.
 // Import validation bounds source tables; runtime retains their source order.
@@ -19,6 +20,8 @@ public:
     bool span(uint32_t offset,uint32_t count,uint32_t stride) const;
     const std::string& modelName() const{return model_;}
     const std::string& textureName() const{return texture_;}
+    // Header144/1a8(hex) owns group count/table; descriptor directory 148/1ac
+    // uses64-byte records containing a60-byte bounded name.
     uint32_t groups() const{return word(0x144);}
     AnimationDrawGroup group(uint32_t) const;
     std::string descriptor(uint32_t) const;

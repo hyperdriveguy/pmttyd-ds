@@ -1,5 +1,8 @@
 #include "map_material_color.hpp"
 namespace ttyd {
+// Source RGBA lanes truncate after EACH multiplication /255. C2 RED(high 8),
+// not C2 alpha, modulates output alpha. Flags40/800/1000(hex) and map2/4/8
+// select ordered primary/secondary/extra contributions; do not collapse products.
 uint32_t mapMaterialLastStageColor(uint32_t flags,uint32_t c1,uint32_t c2,const MapMaterialGroup& group){
     std::array<uint8_t,4> rgba{255,255,255,255};
     auto multiply=[&](uint32_t color){for(unsigned i=0;i<4;++i)rgba[i]=uint8_t(unsigned(rgba[i])*((color>>(24-8*i))&255)/255);};
@@ -11,6 +14,9 @@ uint32_t mapMaterialLastStageColor(uint32_t flags,uint32_t c1,uint32_t c2,const 
     if((mapFlags&8) && !(flags&0x800))multiply(group.colors[2]);
     return uint32_t(rgba[0])<<24|uint32_t(rgba[1])<<16|uint32_t(rgba[2])<<8|rgba[3];
 }
+// Original last-stage blend80021860/fog800217c8 are distinct continuations.
+// Fog reads current camera even when disabled. Queue complete values once
+// before a held GX call; do not reacquire camera/group on each retry.
 bool resumeMapMaterialColor(uint32_t function,uint32_t flags,uint32_t c1,uint32_t c2,const MapMaterialColorServices& s,MapMaterialColorCursor& c){
     if(!c.active){if(function!=0x80021860 && function!=0x800217c8)return false;c={};c.active=true;c.function=function;c.flags=flags;c.c1=c1;c.c2=c2;}
     if(c.function!=function)return false;
@@ -21,6 +27,8 @@ bool resumeMapMaterialColor(uint32_t function,uint32_t flags,uint32_t c1,uint32_
         if(function==0x80021860){c.request.kind=ShadowGX::TevKColor;c.request.color=mapMaterialLastStageColor(c.flags,c.c1,c.c2,*group);}
         else {
             c.request.kind=ShadowGX::Fog;c.request.color=0xffffffff;
+            // Map flag 1 enables authored fog; source type indices 0..4 map to
+            // GX fog modes 2/4/5/6/7. Source near/far remain engine units.
             if(group->flags&1){constexpr int32_t types[]{2,4,5,6,7};if(group->fogType>=5)return false; // Native resource admission, not a source bounds check.
                 c.request.values[0]=types[group->fogType];c.request.color=group->fogColor;
                 c.request.floats={group->fogStart,group->fogEnd,c.camera->nearPlane,c.camera->farPlane};}

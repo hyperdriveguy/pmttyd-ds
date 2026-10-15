@@ -20,6 +20,9 @@ void hitMatrix(ShadowRecord& record,const ShadowCollisionHit& hit){
     m[1]=mul(radius,mul(n[0],n[1]));m[2]=mul(radius,mul(n[0],n[2]));
 }
 }
+// Capture pool/camera query once across holds. Radius0/flag 2 skip; type 3
+// or flag 1-clear uses direct translate(positionY+1.5) and radius/height.
+// Otherwise cast an independent downward ray fromY+1, not Mario support cache.
 bool shadowPrepareCollision(ShadowWork& work,ShadowCollisionCursor& cursor,const ShadowCollisionServices& services){
     if(!cursor.active){
         cursor={};cursor.active=true;cursor.owner=&work;cursor.pool=work.record(0);
@@ -53,6 +56,8 @@ bool shadowPrepareCollision(ShadowWork& work,ShadowCollisionCursor& cursor,const
         ShadowCollisionHit hit;
         const auto result=services.ray(services.user,cursor.ray,hit);
         if(result==ShadowRayResult::Unavailable)return false;
+        // Miss advances scan without setting prepared flag 2. Unavailable
+        // preserves pending ray inputs; Hit stores raw-normal matrix then flag 2.
         if(result==ShadowRayResult::Hit){hitMatrix(record,hit);record.flags|=2;}
         cursor.rayPending=false;++cursor.index;
     }

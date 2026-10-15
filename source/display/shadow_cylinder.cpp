@@ -5,6 +5,9 @@ namespace ttyd {
 namespace {
 float single(float v){volatile float f=v;return f;}
 ShadowGXRequest request(ShadowGX kind,std::initializer_list<int32_t> args){ShadowGXRequest r;r.kind=kind;unsigned i=0;for(auto v:args)r.values[i++]=v;return r;}
+// Three source passes: OR back-face alpha mask, zero front-face alpha, then
+// destination-alpha RGB blend with work color. Depth writes stay disabled.
+// Per-pass setter order matters even when later setters replace earlier state.
 std::optional<ShadowGXRequest> state(unsigned pass,unsigned step,const ShadowWork& w,const ShadowDisplayGlobals& g){
     if(pass==0)switch(step){
     case 0:return request(ShadowGX::Depth,{1,3,0});case 1:return request(ShadowGX::Cull,{2});
@@ -38,6 +41,9 @@ bool bound(ShadowCylinderCursor& c,const ShadowDisplayServices& s,uint32_t funct
     c.bounds=next;return true;
 }
 }
+// Borrow exact record/view/camera across holds. Camera 1 alone performs draw
+// sync, bounding-box clear/read and collision-bound publication. Other cameras
+// must not inherit those calls or their results.
 bool shadowCylinder(ShadowWork& w,uint32_t camera,const CameraState& view,ShadowRecord& record,
                     ShadowCylinderCursor& c,const ShadowDisplayGlobals& g,const ShadowDisplayServices& s,uint32_t& pending){
     if(!c.active){c={};c.active=true;c.camera=camera;c.record=&record;c.view=&view;c.stage=camera==1?0:2;}
@@ -66,6 +72,10 @@ bool shadowCylinder(ShadowWork& w,uint32_t camera,const CameraState& view,Shadow
             if(!submit(c,s,pending))return false;++c.step;
         }
         ++c.stage;break;
+        // Each pass captures variant/flags/opacity anew, then pins palette/list
+        // plan across holds. Variant1 uses cube resources; flag 4 profile uses
+        // fixed cylinder lists. Ordinary radius=clamp(1-outer, 0, 1); alpha derives
+        // from low 8(workColor)*scale/255*inner with source float/truncation order.
     case 6:{
         // Fresh dispatch/flags/opacity captures for EACH pass. Retain this plan
         // before palette/list holds, while later passes can observe mutations.
@@ -95,6 +105,8 @@ bool shadowCylinder(ShadowWork& w,uint32_t camera,const CameraState& view,Shadow
         c.requestPending=true;++c.stage;break;
     }
     case 7:if(!submit(c,s,pending))return false;++c.stage;break;
+    // GXCallDisplayList identities/byte lengths are immutable original data.
+    // Advance only after full list acknowledgement; do not replay prior lists.
     case 8:
         while(c.listIndex<c.listCount){
             pending=0x802b9fa0;

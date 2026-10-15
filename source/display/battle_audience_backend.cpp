@@ -31,6 +31,9 @@ void bindAudienceMathAdapters(BattleAudienceDrawServices& s){
     s.fma=[](void*,float a,float b,float c){return std::fma(a,b,c);};
     s.truncate=[](void*,float v)->std::optional<int32_t>{if(!std::isfinite(v) || v>=2147483648.f || v<-2147483648.f)return {};return int32_t(v);};
 }
+// Finite original audience GX contract: one channel/generator/stage, source
+// direct XYZ/ST attrs 9/13, F32 format 4, quad80(hex), four vertices. Record
+// only validated requests; backend acknowledgement is not general GX support.
 bool BattleAudienceBackend::request(const BattleAudienceGXRequest& r){
     const auto& v=r.arguments;std::array<int32_t,7> expected{};
     switch(r.function){
@@ -51,6 +54,9 @@ bool BattleAudienceBackend::request(const BattleAudienceGXRequest& r){
     if(v!=expected)return false;
     requests.push_back(r);return true;
 }
+// Texture identity includes bank/index/dimensions. Transform original XYZ
+// once, then piecewise split only triangles crossing UV0/1 clamp boundaries.
+// Clamp source UV before atlas remap so interpolation cannot sample neighbors.
 bool BattleAudienceBackend::emitQuad(const BattleAudienceQuad& q){
     if(!assets)return false;const auto* region=assets->frame(q.texture.bank,q.texture.index);
     if(!region || q.texture.width!=region->width || q.texture.height!=region->height)return false;
@@ -68,6 +74,8 @@ bool BattleAudienceBackend::emitQuad(const BattleAudienceQuad& q){
         }
         return true;
     }
+    // Stage split geometry separately, then append in original triangle order.
+    // CPU polygon allocation is native adaptation, not a source event or tick.
     std::vector<BattleAudienceVertex> staged;
     for(const auto indices:{std::array<unsigned,3>{0,1,2},{0,2,3}}){
         std::vector<Polygon> pieces{{points[indices[0]],points[indices[1]],points[indices[2]]}};

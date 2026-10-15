@@ -1,5 +1,8 @@
 #include "battle_class_icon_material.hpp"
 namespace ttyd {
+// Rational semantic reference: floor((R+G+B)/3), textureAlpha*recordAlpha/255.
+// Record RGB is ignored. Original per-stage GX/PICA quantization/filtering is
+// separate; this helper must not replace actual disabled-icon shader stages.
 uint32_t disabledClassIconColor(uint32_t texture, uint32_t record) {
   const auto mean = (((texture >> 24) & 255) + ((texture >> 16) & 255) +
                      ((texture >> 8) & 255)) /

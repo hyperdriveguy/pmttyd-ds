@@ -1,6 +1,9 @@
 #include "animation_shape_render.hpp"
 #include <cmath>
 namespace ttyd {
+// SDK tokens8029e6a4 point transform/8029df28 inverse-transpose. Preserve
+// explicit float/FMA graph. Native 1/det substitutes the Gekko estimate;
+// singular status0 acknowledges math but leaves prior output untouched.
 bool animationShapeNativeMath(AnimationShapeMath& r){
     if(r.function==0x8029e6a4){
         for(float v:r.input)if(!std::isfinite(v))return false;
@@ -25,6 +28,8 @@ bool animationShapeNativeMath(AnimationShapeMath& r){
     BattleActMatrix out{};for(unsigned row=0;row<3;++row){for(unsigned col=0;col<3;++col)out[4*row+col]=cof[3*row+col]*reciprocal;out[4*row+3]=zero;}
     r.output=out;r.status=1;return true;
 }
+// shape-1 is source empty draw. Otherwise retain pose/resource identity and
+// queued argument payloads. A provider hold never permits moving to next draw.
 bool resumeAnimationShape(BattlePosePool& pool,int32_t handle,const std::optional<uint32_t>& pass,const AnimationShapeRequest& input,const AnimationShapeServices& s,AnimationShapeCursor& c){
     if(!c.active){
         if(input.shape==-1)return true;
@@ -55,6 +60,9 @@ bool resumeAnimationShape(BattlePosePool& pool,int32_t handle,const std::optiona
             done(5);break;
         case 5:queue(0x802ba39c);if(!emit(0x802ba39c))return false;
             done(6);break;
+        // Shape records 168 bytes; draw records 108; run records 8. Pass selector
+        // +a0 and alpha bytes pose+f3/+f7 gate source submission. Cull mapping
+        // {2, 1, 3, 0} maps authored selector to source front/back/all/none.
         case 6:{c.pending=0x8003c884;if(!pass || c.input.shape<0 || uint32_t(c.input.shape)>=d.word(0xe8))return false;
             const auto h=d.word(0x14c)+168*uint32_t(c.input.shape),m=d.word(h+0xa0);
             if(!((m==0 && *pass==2) || m==*pass || p->state[0xf3]!=255 || p->state[0xf7]!=255)){c.active=false;c.pending=0;return true;}
@@ -85,6 +93,8 @@ bool resumeAnimationShape(BattlePosePool& pool,int32_t handle,const std::optiona
         case 16:if(queue(0x80021b80)){c.request.arguments={c.slots,d.word(c.draw+8),p->word(0xe8),0,0,0,0};c.request.matrix=c.input.model;}
             if(!emit(0x80021b80))return false;
             done(18);break;
+        // Kind1/2 overrides, pose flag 10(hex) and nonzero output selector need
+        // separate owners; do not bypass them using default converted geometry.
         case 18:
             // The native owner has no override objects. Nonzero source P+4
             // still needs the kind scan: an all-kind0 bank skips naturally.
@@ -99,6 +109,9 @@ bool resumeAnimationShape(BattlePosePool& pool,int32_t handle,const std::optiona
             c.run=d.word(0x150)+8*d.word(c.draw+0x38);c.runCount=d.word(c.draw+0x3c);c.attribute=0;c.attributeStep=0;c.phase=19;break;
         case 19:queue(0x802b4520);if(!emit(0x802b4520))return false;
             done(20);break;
+        // Attributes position/normal/color 9/10/11 plus texcoords13+.
+        // Descriptor 3 INDEX16; strides12/12/4/8 for XYZ/normal/RGBA/ST.
+        // Multi-slot texture streams reverse the draw's slot ordering.
         case 20:{if(c.attribute>=3+c.slots){c.phase=24;break;}
             const uint32_t attr=c.attribute<3?9+c.attribute:13+c.attribute-3;
             if(c.attributeStep==0){if(queue(0x802b3c08))c.request.arguments={attr,3,0,0,0,0,0};if(!emit(0x802b3c08))return false;
@@ -111,6 +124,8 @@ bool resumeAnimationShape(BattlePosePool& pool,int32_t handle,const std::optiona
                 if(!emit(0x802b4db0))return false;
             done(20);c.attributeStep=0;++c.attribute;}
             break;}
+        // Run count is low 16 of serialized word+4. FIFO carries3+slots
+        // narrowed indices; cc008000(hex) is a source FIFO token, not a host address.
         case 24:if(!c.runCount){c.draw+=108;++c.drawIndex;c.phase=8;break;}
             c.first=d.word(c.run);c.count=d.word(c.run+4)&0xffff;c.vertex=0;c.phase=25;break;
         case 25:if(queue(0x802b5a6c))c.request.arguments={0xa0,0,c.count,0,0,0,0};if(!emit(0x802b5a6c))return false;

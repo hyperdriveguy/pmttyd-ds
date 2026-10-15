@@ -14,6 +14,8 @@ bool normalize(const std::array<float,3>& v,std::array<float,3>& out){
 }
 float real(const EventMemoryServices& m,uint32_t address){const auto bits=m.word(m.user,address);float value;std::memcpy(&value,&bits,4);return value;}
 }
+// SDK axis-angle/vector math uses native sin/cos and reciprocal-sqrt seed.
+// Preserve visible FMA/store graph without claiming Gekko estimate/FPSCR parity.
 bool nativeBattleStageMath(BattleStageMath& r){
     if(r.function==0x8029ebe4)return normalize(r.vector,r.output);
     if(r.function==0x8029e6a4){AnimationShapeMath point;point.function=r.function;point.input=r.matrix;point.vector=r.vector;
@@ -28,6 +30,9 @@ bool nativeBattleStageMath(BattleStageMath& r){
         std::fma(z,sine,xyk),cosine+yyk,-xt+yzk,0,xzk+(-yt),xt+yzk,zzk+cosine,0};
     for(float x:r.matrix)if(!std::isfinite(x))return false;return true;
 }
+// Original dark80138da8/light801389a0(hex); stage work=BattleWork+163fc.
+// Each request/primitive latches before provider hold. Source camera 4 must
+// publish its view before the position matrix is admitted.
 bool resumePackedBattleStageDisplay(uint32_t callback,const BattleStageDisplayServices& s,BattleStageDisplayCursor& c){
     if(callback!=0x80138da8 && callback!=0x801389a0)return false;
     const bool light=callback==0x801389a0;const auto& a=s.actors;const auto& m=a.memory;
@@ -38,6 +43,8 @@ bool resumePackedBattleStageDisplay(uint32_t callback,const BattleStageDisplaySe
         if(!c.queued){c.request={};c.request.kind=kind;c.request.values=values;c.queued=true;}
         c.pending=uint32_t(kind);return s.gx && s.gx(s.user,c.request);
     };
+    // Intentional start+2*(end-start), not midpoint. Source light records use
+    // stridee8(hex), start+58, end+88, direction+b8, width+40, color+28.
     auto center=[&](uint32_t r){for(unsigned i=0;i<3;++i){c.start[i]=real(m,r+0x58+4*i);const auto end=real(m,r+0x88+4*i);c.center[i]=std::fma(2.f,end-c.start[i],c.start[i]);}};
     for(;;)switch(c.phase){
     case 0:c.pending=0x8000f2fc;if(!s.camera || !(c.camera=s.camera(s.user,4)))return false;done(1);break;
@@ -68,6 +75,8 @@ bool resumePackedBattleStageDisplay(uint32_t callback,const BattleStageDisplaySe
         }
         done(light?5:2);break;}
     case 2:if(!emit(ShadowGX::Depth,{1,c.index?1:6,0}))return false;done(3);break;
+    // Three dark quads span +/-640 atZ105; second reverses winding. Alpha
+    // bytes+ae8/+b08(hex) and depth compare sequence remain source state.
     case 3:if(!c.queued){
             c.primitive={};c.primitive.mode=0x80;c.primitive.count=4;
             const auto alpha=a.byte(a.user,c.owner+(c.index==2?0xae8:0xb08));
@@ -84,6 +93,9 @@ bool resumePackedBattleStageDisplay(uint32_t callback,const BattleStageDisplaySe
             c.segment=0;done(6);break;}
     case 6:center(c.owner+0xe8*c.index);
         for(unsigned i=0;i<3;++i)c.previous[i]=std::fma(c.vector[i],c.width,c.center[i]);done(7);break;
+    // Up to 12 active light records; 18 segments of20-degree axis rotation
+    // (.3490658402442932 radians), transform, normalize, then triangle. This is
+    // authored spotlight geometry, not native screen-resolution tessellation.
     case 7:case 8:case 9:{
         const auto phase=c.phase;
         if(!c.queued){

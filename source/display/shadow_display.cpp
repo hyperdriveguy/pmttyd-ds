@@ -7,6 +7,9 @@ ShadowGXRequest request(ShadowGX kind,std::initializer_list<int32_t> args){
 }
 // Prefix and suffix retain source ordering, including subsequently replaced
 // arrays/descriptors. No record gate runs until the whole setup completes.
+// Helper0 polygon, 1 cylinder, 2 textured. GX numeric values retain source
+// API domains, see docs/code/display-state.md. Complete setup runs even for
+// an empty eligible record scan; replacement array declarations are intentional.
 std::optional<ShadowGXRequest> setup(unsigned helper,unsigned step,const ShadowWork& work,const ShadowDisplayGlobals& globals,ShadowTexture texture){
     if(step==0)return request(ShadowGX::NumChans,{1});
     if(step==1)return request(ShadowGX::ChanCtrl,{4,0,0,0,0,2,2});
@@ -65,6 +68,9 @@ std::optional<ShadowGXRequest> setup(unsigned helper,unsigned step,const ShadowW
     }
     return {};
 }
+// Source record types0 polygon/2 cylinder/1 texture. Eligibility requires
+// nonzero radius, prepared flag 2 and matching camera. Capture eligibility once
+// before held geometry so later mutation cannot retroactively skip that draw.
 bool scan(ShadowWork& work,ShadowDisplayCursor& c,unsigned helper,const ShadowDisplayGlobals& globals,const ShadowDisplayServices& s){
     constexpr uint8_t types[]{0,2,1};
     constexpr ShadowGeometry kinds[]{ShadowGeometry::Polygon,ShadowGeometry::Cylinder,ShadowGeometry::Texture};
@@ -85,6 +91,9 @@ bool scan(ShadowWork& work,ShadowDisplayCursor& c,unsigned helper,const ShadowDi
     return true;
 }
 }
+// Retain drawClass/camera/userdata/work identity. Camera 2 owns projection
+// classes0/2/5/7; other camera 2 classes return empty only at original branch.
+// Ordinary cameras1/4/5/7 run polygon->cylinder->texture with distinct queries.
 bool shadowDisplay(ShadowWork& work,uint32_t camera,uint32_t userdata,ShadowDisplayCursor& c,ShadowDisplayGlobals& globals,const ShadowDisplayServices& s){
     if(!c.active){c={};c.active=true;c.camera=camera;c.userdata=userdata;c.owner=&work;}
     if(c.camera!=camera || c.userdata!=userdata || c.owner!=&work)return false;
@@ -119,6 +128,9 @@ bool shadowDisplay(ShadowWork& work,uint32_t camera,uint32_t userdata,ShadowDisp
                     c.profileTracking=c.profile && c.profile->followCamera4==1;
                 }
                 if(!c.profile){c.pending=0x8002d3d8;return false;}
+                // followCamera4==1 uses camera 4 AIM; eye is aimY+1000 and
+                // up(0, 0,-1). This is original engine-space profile tracking,
+                // not the native gameplay camera's world-unit conversion.
                 if(c.profileTracking){
                     c.pending=0x8000f2fc;
                     const auto* camera4=s.cameraByIndex?s.cameraByIndex(s.user,4):nullptr;

@@ -4,6 +4,7 @@ namespace ttyd {
 struct AnimationFanVertex {
     ActorVector position{},normal{};std::array<float,2> uv{};std::array<uint8_t,4> color{};
 };
+// Resource+cell+scale+generator+matrix together define the bound atlas identity.
 struct AnimationFanTexture {
     std::shared_ptr<const BattlePoseResource> resource;
     uint16_t cell=0;float uvScale=1;uint32_t generator=60;
@@ -27,6 +28,8 @@ public:
     uint32_t stagedVertices()const{return used_;}
     bool active()const{return active_;}
 private:
+    // Each INDEX16 attribute needs independent descriptor/format/array calls.
+    // Position/normal bases index live CPU outputs; color/UV bases are file offsets.
     struct Binding {bool descriptor=false,format=false,array=false;uint32_t base=0;};
     std::array<Binding,4> bindings_{};std::array<AnimationFanVertex,Capacity> vertices_{};
     std::shared_ptr<const BattlePoseResource> resource_;const BattlePose* pose_=nullptr;

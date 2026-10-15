@@ -4,6 +4,9 @@
 #include <cstring>
 #include <map>
 namespace ttyd {
+// Source archive1, type 5 group/type 4 texture, flags 0. ag2tg scans32-byte
+// strings; matching row's NEXT row supplies the texture bank. Completion token
+// -1 is source success and distinct from missing native files(return0/hold).
 bool animationGroupBaseAsync(const char* name,const std::vector<uint8_t>& table,const AnimationGroupAsyncServices& s) {
  if(!name || !s.archive || !s.request)return false;
  s.archive(s.user,1);
@@ -23,6 +26,8 @@ bool animationGroupBaseAsync(const char* name,const std::vector<uint8_t>& table,
  const auto pixels=s.request(s.user,4,0,"a/"+texture+"-");
  return group==-1 || (group!=0 && (pixels==-1 || pixels!=0));
 }
+// waitCount0/1/100 are private phase markers, not elapsed ticks. Poll p_dokan_x
+// then p_dokan_y on separate visits; EVT returns0 yield/2 done.
 int32_t fieldBeroReadMarioPera(EventEntry& e,bool first,const AnimationGroupPollServices& s) {
  if(first)e.waitCount=0;
  if(e.waitCount==0) {if(s.poll && s.poll(s.user,"p_dokan_x"))e.waitCount=1;}
@@ -30,6 +35,8 @@ int32_t fieldBeroReadMarioPera(EventEntry& e,bool first,const AnimationGroupPoll
  return e.waitCount==100?2:0;
 }
 struct AnimationGroupPrefetch::Impl {
+ // Each cached payload owns stream/storage. Opening yields once; subsequent
+ // polls read at most chunk bytes per FILE, not per outer event visit.
  struct File {
   FILE* stream=nullptr;std::vector<uint8_t> bytes;size_t loaded=0;bool ready=false;
   ~File(){if(stream)std::fclose(stream);}
@@ -63,6 +70,8 @@ struct AnimationGroupPrefetch::Impl {
 };
 AnimationGroupPrefetch::AnimationGroupPrefetch()=default;
 AnimationGroupPrefetch::~AnimationGroupPrefetch()=default;
+// Native caps: chunk<=64KiB, table<=1MiB with 32-byte rows, each payload
+// <=4MiB. Completed bytes remain resident; no pose creation/refcount happens here.
 bool AnimationGroupPrefetch::open(const char* root,uint32_t chunk) {
  if(impl_ || !root || !chunk || chunk>65536)return false;
  auto next=std::make_unique<Impl>();next->root=root;next->chunk=chunk;

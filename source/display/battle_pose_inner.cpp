@@ -1,5 +1,8 @@
 #include "battle_pose_inner.hpp"
 namespace ttyd {
+// Optional false is an acknowledged opaque result; nullopt is unavailable.
+// Pose40(hex) enables primary alpha; secondary always participates. Map flags
+// 2/4 enable colors unless pose 800/1000 suppress them; each query is fresh.
 std::optional<bool> battlePoseMapTranslucent(uint32_t flags,uint32_t primary,uint32_t secondary,const BattlePoseInnerServices& s,BattlePoseMapCursor& c){
     if(c.step==0){
         if(((flags&0x40) && uint8_t(primary)!=255) || uint8_t(secondary)!=255){c.step=4;return true;}
@@ -15,6 +18,9 @@ std::optional<bool> battlePoseMapTranslucent(uint32_t flags,uint32_t primary,uin
     }
     return c.step==4;
 }
+// Pose+14 selects descriptor,+28/+2c current/next frame,+30 fraction.
+// Capture source context and secondary THEN primary colors before material
+// predicate; live flags are read later at the actual mapTestXLU boundary.
 bool resumeBattlePoseInner(BattlePosePool& pool,uint32_t mode,std::optional<uint32_t>& workPass,const BattlePartDrawRequest& input,const BattlePoseInnerServices& s,BattlePoseInnerCursor& c){
     if(!c.active){
         auto* p=pool.pose(input.handle);if(!p || !p->resource || !p->resource->modelFlags)return false;
@@ -46,6 +52,9 @@ bool resumeBattlePoseInner(BattlePosePool& pool,uint32_t mode,std::optional<uint
         const auto translucent=battlePoseMapTranslucent(c.mapFlags,c.primary,c.secondary,s,c.map);if(!translucent)return false;
         c.effectivePass=*translucent?3:c.input.pass;c.requestPending=false;c.materialCallback=p->word(0xe0);c.phase=c.materialCallback?2:3;c.step=0;break;}
     case 2:c.pending=c.materialCallback;if(!s.callback || !s.callback(s.user,c.materialCallback,c.effectivePass))return false;c.phase=4;break;
+    // Built-in passes0..3 install source Z/blend/alpha state; 3 translucent
+    // disables depth writes, 0/2 alpha>=128. A material callback owns its own
+    // work-pass publication; only the built-in branch updates workPass here.
     case 3:
         if(c.effectivePass<=3){while(c.step<4){
             if(!c.requestPending){c.gx={};const bool translucent=c.effectivePass==3;
@@ -75,6 +84,8 @@ bool resumeBattlePoseInner(BattlePosePool& pool,uint32_t mode,std::optional<uint
     case 9:
         if(!matrix([&](){c.matrix.function=0x8029dd64;c.matrix.left=c.context.model;c.matrix.right=c.operand;}))return false;
         c.context.model=c.matrix.output;c.phase=10;break;
+    // Pose+3c ffffffff(hex) requests original Main. Linked shared-ring flag
+    // +4 bit 2 and facing flag 8 hold at separate real owners, not empty draws.
     case 10:
         if(!c.requestPending){
             if(p->word(0x3c)!=0xffffffff){c.phase=11;break;}
@@ -88,6 +99,8 @@ bool resumeBattlePoseInner(BattlePosePool& pool,uint32_t mode,std::optional<uint
         if(!matrix([&](){c.matrix.function=0x8029dd30;c.matrix.left=c.context.model;}))return false;
         c.context.model=c.matrix.output;c.phase=12;break;
     case 12:c.pending=0x8003c210;if(!s.publish || !s.publish(s.user,c.context))return false;c.phase=13;c.step=0;break;
+    // Flush positions then normals, then invalidate GPU vertices, then traverse.
+    // Each flush resolves current output/count; do not capture both before hold.
     case 13:
         while(c.step<2){c.pending=0x80296a54;if(!s.flush || !s.flush(s.user,c.step,c.context))return false;++c.step;}
         c.phase=14;break;

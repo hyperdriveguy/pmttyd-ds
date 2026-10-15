@@ -1,6 +1,9 @@
 #include "animation_node_draw.hpp"
 #include <cassert>
 namespace ttyd {
+// Node24 floats: translation0, scale3, rotation6, joint rotation9, rotation
+// pivot12, scale pivot15, rotation delta18, scale delta21. Offsets are FLOAT
+// indices. Capture all operations before SDK calls; do not rebuild after a hold.
 bool resumeAnimationNodeDraw(const std::array<float,24>& n,bool joint,const std::array<float,3>& parent,std::vector<BattleActMatrix>& stack,void* user,bool (*matrix)(void*,BattleAudienceMatrixRequest&),AnimationNodeCursor& c){
     if(stack.empty())return false;
     if(!c.active){
@@ -11,6 +14,8 @@ bool resumeAnimationNodeDraw(const std::array<float,24>& n,bool joint,const std:
         auto concat=[&](unsigned target,unsigned left,unsigned right){op(0x8029dd64,target,left,right);};
         auto triple=[&](unsigned first){return std::array<float,3>{n[first],n[first+1],n[first+2]};};
         auto nonzero=[](const std::array<float,3>& v){return v[0]!=0 || v[1]!=0 || v[2]!=0;};
+        // Deliberately asymmetric source gate: third lane==1, not !=1.
+        // Replacing it with a conventional nonidentity test changes joint draws.
         auto jointGate=[](const std::array<float,3>& v){return v[0]!=1 || v[1]!=1 || v[2]==1;};
         const auto t=triple(0),s=triple(3);bool haveT=nonzero(t),haveS=false,haveQ=false,haveR=false;
         if(haveT)translation(0,t);
@@ -26,10 +31,14 @@ bool resumeAnimationNodeDraw(const std::array<float,24>& n,bool joint,const std:
         };
         if(!joint)pivot(1,15,21,haveS);
         op(0x8029dd04,3); // Always, including zero rotations.
+        // Axis order Z/Y/X (ASCII 120+x index), ordinary rotations doubled,
+        // joint rotations undoubled; degree factor is original binary32 literal.
         auto rotations=[&](unsigned first,float multiplier){for(int axis=2;axis>=0;--axis){const float angle=multiplier==1?n[first+axis]:n[first+axis]*multiplier;if(angle!=0){op(0x8029dff0,10);c.operations[c.count-1].axis=120+axis;c.operations[c.count-1].radians=angle*.01745329238474369f;concat(3,3,10);haveR=true;}}};
         if(joint)rotations(9,1);
         rotations(6,2);
         if(!joint)pivot(3,12,18,haveR);
+        // Private function0 publishes a new stack level BEFORE final concat.
+        // Matrix operand 12 is a sentinel for previous stack entry, not matrices[12].
         op(0,0); // Publish incremented modeling level BEFORE mask dispatch.
         std::array<unsigned,4> components{};unsigned componentCount=0;if(haveT)components[componentCount++]=0;if(haveQ)components[componentCount++]=2;if(haveR)components[componentCount++]=3;if(haveS)components[componentCount++]=1;
         unsigned result=9;
@@ -37,6 +46,8 @@ bool resumeAnimationNodeDraw(const std::array<float,24>& n,bool joint,const std:
         else {result=components[0];for(size_t i=1;i<componentCount;++i){concat(9,result,components[i]);result=9;}}
         op(0x8029dd64,11,12,result); //12 denotes the freshly published previous stack matrix.
     }
+    // Operation index advances only on acknowledgement; requestPending latches
+    // concat inputs so a resumed call cannot observe a newly modified stack.
     while(c.step<c.count){
         const auto& op=c.operations[c.step];
         if(!op.function){stack.emplace_back();++c.step;continue;}

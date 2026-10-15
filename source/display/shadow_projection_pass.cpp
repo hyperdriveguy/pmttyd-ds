@@ -5,6 +5,9 @@ namespace {
 ShadowGXRequest gx(ShadowGX kind,std::initializer_list<int32_t> args){
     ShadowGXRequest r;r.kind=kind;unsigned i=0;for(auto v:args)r.values[i++]=v;return r;
 }
+// Camera 2 projection setup retains every source setter, including later copy
+// blend/depth-disable replacements. step 22 is a separate GP14 read in caller;
+// step 23 sets captured grayscale/white material, not a constant guessed upfront.
 ShadowGXRequest prefix(unsigned step,const ShadowWork& w,const ShadowDisplayGlobals& g,uint32_t color){
     switch(step){
     case 0:return gx(ShadowGX::NumChans,{1});
@@ -40,6 +43,8 @@ bool submit(ShadowDisplayCursor& c,const ShadowDisplayServices& s){
     c.passRequest=next;c.passPending=false;return true;
 }
 }
+// Work and auxiliary projection owners differ. Class2 restores one auxiliary
+// before setting up another; reselect the owner/profile at each source operation.
 bool shadowProjectionPass(ShadowWork& w,ShadowDisplayCursor& c,ShadowDisplayGlobals& g,const ShadowDisplayServices& s){
     auto selectedProfile=[&]()->ShadowProfile*{
         const auto index=c.auxiliary?c.auxiliary->profileIndex:w.profileIndex;
@@ -64,6 +69,9 @@ bool shadowProjectionPass(ShadowWork& w,ShadowDisplayCursor& c,ShadowDisplayGlob
             if(!submit(c,s))return false;
             if(c.phase==5)g.savedViewport=c.passRequest.viewport;else g.savedScissor=c.passRequest.scissor;
             ++c.phase;break;
+        // Square viewport size from authored profile; scissor inset1 and size-2
+        // leave a one-pixel edge. Native packet admission may hold unsupported
+        // raster domains; never clamp source profile to fit the handheld.
         case 7:case 8:
             if(!c.passPending){
                 c.passRequest={};c.passPending=true;
@@ -126,6 +134,9 @@ bool shadowProjectionPass(ShadowWork& w,ShadowDisplayCursor& c,ShadowDisplayGlob
                 c.requestPending=false;++c.step;
             }
             ++c.phase;break;
+        // Projection type 3/prepared flag 2 scan increments work.counter only
+        // after complete six-index geometry. Zero counter may finish; nonzero
+        // image/compositing suffix needs its actual provider and stays pending.
         case 16:
             while(c.index<w.count()){
                 auto& record=c.pool[c.index];
@@ -155,6 +166,8 @@ bool shadowProjectionPass(ShadowWork& w,ShadowDisplayCursor& c,ShadowDisplayGlob
             }
             if(!submit(c,s))return false;
             ++c.phase;break;
+        // Original End leaves projection and request pool in place. Restore
+        // only the saved source view/viewport/scissor required by this class.
         case 21:
             if(c.auxiliary?c.auxiliary->counter:w.counter){c.pending=c.drawClass==7?0x8002b4d8:0x8002b834;return false;}
             if(c.drawClass==2 && !c.auxiliarySetupStarted){

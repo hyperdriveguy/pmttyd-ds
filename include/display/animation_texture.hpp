@@ -2,6 +2,8 @@
 #include "animation_draw_traversal.hpp"
 #include "animation_node_draw.hpp"
 namespace ttyd {
+// Header offsets and pixel/palette data are original BE file identities.
+// Sampler wrap0/1/2=clamp/repeat/mirror; LOD bytes/bias retain source values.
 struct AnimationTPLImage {
     uint32_t index=0,imageHeader=0,paletteHeader=0,data=0,format=0,wrapS=0,wrapT=0,minFilter=0,magFilter=0,paletteData=0,paletteFormat=0;
     uint16_t width=0,height=0,paletteCount=0;float bias=0;uint8_t edge=0,minLOD=0,maxLOD=0;
@@ -25,6 +27,8 @@ struct AnimationTextureServices {
     bool (*gx)(void*,const AnimationTextureRequest&)=nullptr;
     bool (*matrix)(void*,BattleAudienceMatrixRequest&)=nullptr;
 };
+// Queued GX and matrix requests latch independently; ci captures palette
+// presence from the FIRST getter. Operation/matrix arrays are native workspace.
 struct AnimationTextureCursor {
     bool active=false,queued=false,matrixQueued=false,ci=false;uint32_t phase=0,pending=0,draw=0,slots=0,j=0,slot=0,state=0,index=0,overrideWrap=0;
     uint32_t step=0,count=0,mask=0,result=0;const BattlePose* pose=nullptr;

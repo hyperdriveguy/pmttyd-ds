@@ -5,6 +5,9 @@ namespace ttyd {
 std::shared_ptr<const AnimationTextureResource> AnimationTextureResource::load(const char* path){
     FILE* f=path?std::fopen(path,"rb"):nullptr;if(!f)return {};auto r=std::make_shared<AnimationTextureResource>();const bool ok=r->read(f);std::fclose(f);return ok?r:nullptr;
 }
+// TPL is BE: magic0020af30(hex), count/table at 4/8; table rows 8 bytes,
+// image headers36, palette headers12. Native cap 16MiB/4096 images. read clears
+// old images and may leave partial results on false; load returns no owner then.
 bool AnimationTextureResource::read(FILE* file){
     images_.clear();if(!file || std::fseek(file,0,SEEK_END))return false;const auto length=std::ftell(file);
     if(length<12 || length>16*1024*1024 || std::fseek(file,0,SEEK_SET))return false;
@@ -23,6 +26,9 @@ bool AnimationTextureResource::read(FILE* file){
         AnimationTPLImage i;i.index=n;i.imageHeader=h;i.paletteHeader=p;i.height=half(h);i.width=half(h+2);i.format=word(h+4);i.data=word(h+8);i.wrapS=word(h+12);i.wrapT=word(h+16);i.minFilter=word(h+20);i.magFilter=word(h+24);
         auto bits=word(h+28);std::memcpy(&i.bias,&bits,4);i.edge=b[h+32];i.minLOD=b[h+33];i.maxLOD=b[h+34];
         if(!i.width || !i.height || !std::isfinite(i.bias) || i.wrapS>2 || i.wrapT>2 || i.minLOD>i.maxLOD)return false;
+        // GX tiles: formats I4/CI4/CMPR(0/8/14)8x8x32 bytes;
+        // I8/IA4/CI8(1/2/9)8x4x32; IA8/RGB565/RGB5A3/CI14(3/4/5/10)
+        // 4x4x32; RGBA8(6)4x4x64. Bounds here cover base image bytes.
         unsigned tw=4,th=4,bytes=32;
         switch(i.format){case 0:case 8:case 14:tw=th=8;break;case 1:case 2:case 9:tw=8;break;case 3:case 4:case 5:case 10:break;case 6:bytes=64;break;default:return false;}
         if(!span(i.data,uint64_t((i.width+tw-1)/tw)*((i.height+th-1)/th)*bytes))return false;
@@ -34,6 +40,8 @@ bool AnimationTextureResource::read(FILE* file){
 bool animationAtlasDimensions(uint32_t width,uint32_t height,float uvScale){
     return (width==512 || width==1024) && (uvScale==1 || uvScale==2 || uvScale==4 || uvScale==8) && height==width/uvScale;
 }
+// Selected pose descriptor+slot+state+original TPL image must agree before
+// using a converted cell. Equal texture names across packages are insufficient.
 std::optional<uint16_t> animationTextureCell(const AnimationTextureRequest& r){
     if(!r.pose || !r.pose->resource || !r.pose->resource->draw || !r.pose->resource->bank)return {};
     const auto& resource=*r.pose->resource;const auto selected=r.pose->word(0x14);if(selected>=resource.names.size())return {};
@@ -42,6 +50,9 @@ std::optional<uint16_t> animationTextureCell(const AnimationTextureRequest& r){
     if(r.slot>=d.word(0x130) || d.word(d.word(0x194)+8*r.slot)+r.state!=r.descriptor || r.descriptor>=d.word(0x134) || (d.word(d.word(0x198)+64*r.descriptor+8)!=0 || d.word(d.word(0x198)+64*r.descriptor+4)!=r.image.index))return {};
     const auto cell=p->textures[r.slot].cells[r.state];return cell<64?std::optional<uint16_t>(cell):std::nullopt;
 }
+// Two ordered walks: first load original textures, then coordinate matrices.
+// Slots traverse reverse draw order. Keep two original TPL image queries; the
+// palette decision is captured before the second getter and must not be merged.
 bool resumeAnimationTexture(const BattlePose& pose,uint32_t draw,const AnimationTextureServices& s,AnimationTextureCursor& c){
     if(!c.active){if(!pose.resource || !pose.resource->draw)return false;c={};c.active=true;c.pose=&pose;c.resource=pose.resource;c.draw=draw;const auto& d=*c.resource->draw;
         const auto first=d.word(0x19c);if(draw<first || (draw-first)%108 || (draw-first)/108>=d.word(0x138)){c.pending=0x8003dcfc;return false;}
@@ -72,6 +83,9 @@ bool resumeAnimationTexture(const BattlePose& pose,uint32_t draw,const Animation
     case 7:if(!send(0x802b790c))return false;next(8);break;
     case 8:if(!send(0x802b7880))return false;next(10);break;
     case 10:++c.j;next(0);break;
+        // Surface transform is U/V translation, U/V scale, rotation. Rotation
+        // pivots about(.5,.5); V translation retains (1-v)-scaleV even when
+        // it looks reducible. Mask1/2/4 selects rotation/translation/scale.
     case 12:{
         if(c.j>=c.slots){c.active=false;c.pending=0;return true;}
         c.slot=d.word(c.draw+0x10+4*(c.slots-c.j-1));c.pending=0x8003dcfc;if(c.slot>=d.word(0x12c))return false;
@@ -90,6 +104,8 @@ bool resumeAnimationTexture(const BattlePose& pose,uint32_t draw,const Animation
         while(c.step<c.count){const auto& op=c.operations[c.step];if(!c.matrixQueued){c.math={};c.math.function=op.function;c.math.xyz=op.xyz;c.math.axis=122;c.math.radians=op.radians;c.math.left=c.matrices[op.left];c.math.right=c.matrices[op.right];c.matrixQueued=true;}
             c.pending=c.math.function;if(!s.matrix || !s.matrix(s.user,c.math))return false;c.matrices[op.target]=c.math.output;c.matrixQueued=false;++c.step;}
         next(14);break;
+    // Generator setup precedes matrix upload. Matrix30+3*j, identity60,
+    // postmatrix125 retain GX coordinate identity; axis122 is ASCII z.
     case 14:if(!send(0x802b4e04))return false;next(c.mask?15:16);break;
     case 15:if(!send(0x802ba3d0))return false;next(16);break;
     case 16:++c.j;next(12);break;

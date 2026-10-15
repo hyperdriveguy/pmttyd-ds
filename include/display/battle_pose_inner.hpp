@@ -3,6 +3,8 @@
 #include "battle_part_display.hpp"
 namespace ttyd {
 struct BattlePoseMapGroup {uint16_t flags=0;uint8_t primaryAlpha=255,secondaryAlpha=255;};
+// Snapshot frame fields and retained resource/model; handle remains a pool
+// identity, not an ARM pointer. Geometry pass can differ from original input pass.
 struct BattlePoseInnerContext {
     int32_t handle=-1;uint32_t descriptor=0,current=0,next=0,pass=0;float fraction=0;
     std::shared_ptr<const BattlePoseResource> resource;BattleActMatrix model{};
@@ -23,6 +25,7 @@ struct BattlePoseInnerServices {
     const struct AnimationDrawTraversalServices* traversal=nullptr;
     const struct AnimationShapeServices* shape=nullptr;
 };
+// Steps1/2 are independent original map queries; 4 means translucent true.
 struct BattlePoseMapCursor {unsigned step=0;};
 struct BattlePoseInnerCursor {
     BattlePoseMapCursor map;

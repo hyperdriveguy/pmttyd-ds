@@ -3,6 +3,7 @@
 #include "battle_act_draw.hpp"
 namespace ttyd {
 struct MapTevInput {int32_t slots=0;uint32_t mode=0,flags=0;BattleActMatrix model{};};
+// Counts are source working integers; only final GPU publication narrows U8.
 struct MapTevCounters {uint32_t stages=1,maps=0,generators=0,indirect=0;};
 struct MapTevServices {
     void* user=nullptr;
@@ -11,6 +12,8 @@ struct MapTevServices {
     // blocks. A missing provider holds; no projected effect is silently skipped.
     bool (*branch)(void*,uint32_t entry,const MapTevInput&,MapTevCounters&,uint32_t& pending)=nullptr;
 };
+// stage/step retain partial table setter progress; callbackCounts remains
+// independent across a held optional callback, preventing repeated initialization.
 struct MapTevCursor {
     bool active=false,queued=false,callbackReady=false;uint32_t phase=0,stage=0,step=0,pending=0;
     MapTevInput input;MapTevCounters counts,callbackCounts;ShadowGXRequest request;

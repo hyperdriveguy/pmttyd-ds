@@ -1,11 +1,14 @@
 #pragma once
 #include "shadow_display.hpp"
 namespace ttyd {
+// Original 96-byte BE record: flags U16+0, RGBA U32+48(hex).
 struct MapLightRecord {
     std::array<uint8_t,96> bytes{};
     uint16_t flags() const {return uint16_t(bytes[0])<<8|bytes[1];}
     uint32_t color() const {return uint32_t(bytes[0x48])<<24|uint32_t(bytes[0x49])<<16|uint32_t(bytes[0x4a])<<8|bytes[0x4b];}
 };
+// Two independently owned banks, 32 allocated records each. Known=false
+// distinguishes absent source ownership from a known empty scene.
 struct MapLightBank {bool known=false;int32_t count=32;std::array<MapLightRecord,32> records{};};
 struct MapMaterialFog {uint32_t enabled=0,type=0,rgba=0;float start=0,end=0;};
 struct MapMaterialLightWork {
@@ -32,6 +35,8 @@ struct MapMaterialLightServices {
     bool (*light)(void*,unsigned slot,const MapLightRecord*,uint32_t& attenuation,uint32_t& pending)=nullptr;
     bool (*gx)(void*,const ShadowGXRequest&)=nullptr;
 };
+// At most8 selected borrowed records. Default attenuation2 is source none,
+// ambient000000ff(hex) opaque black; mask bits identify published light slots.
 struct MapMaterialLightCursor {
     bool active=false,queued=false;uint32_t phase=0,pending=0,flags=0,step=0,mask=0,attenuation=2,ambient=0x000000ff;
     std::array<float,3> origin{};std::array<const MapLightRecord*,8> selected{};int32_t count=0,index=0;

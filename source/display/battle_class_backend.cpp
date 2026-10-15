@@ -28,6 +28,9 @@ uint32_t multiplyColor(uint32_t a, uint32_t b) {
   return result;
 }
 } // namespace
+// Private LE atlas metadata: PMBCLS01 has two surfaces40x40/128x80;
+// PMICON1 has ten static48x48 IDs334..343. Regions are 24 bytes.
+// Validate both files/EOF before replacing the retained asset catalog.
 bool BattleClassAssets::load(const char *surfaces, const char *icons) {
   std::array<BattleClassRegion, 2> nextSurfaces;
   std::array<BattleClassRegion, 10> nextIcons;
@@ -79,6 +82,8 @@ const BattleClassRegion *BattleClassAssets::surface(uint32_t id) const {
 const BattleClassRegion *BattleClassAssets::icon(uint32_t id) const {
   return ready_ && id >= 334 && id < 344 ? &icons_[id - 334] : nullptr;
 }
+// Reset CPU batch/matrix/texture readiness. Source RGBAffffffff white and
+// 000000ff opaque black seed native bookkeeping, not source world ownership.
 void BattleClassBackend::begin() {
   quads.clear();
   matrix_ = {};
@@ -104,6 +109,9 @@ bool BattleClassBackend::quad(const BattleClassRegion &r,
   return true;
 }
 std::optional<uint32_t>
+// Synchronous query/retained geometry backend. optional0 acknowledges void;
+// nullopt refuses unsupported input. Source numeric service names are enumed
+// in battle_class_raster.hpp; this is not a generic GX interpreter.
 BattleClassBackend::request(const BattleClassRasterRequest &r) {
   using F = BattleClassRasterService;
   const auto &n = r.integers;
@@ -160,6 +168,8 @@ BattleClassBackend::request(const BattleClassRasterRequest &r) {
     texture_ = n[0];
     loadedTexture_ = true;
     return 0;
+  // GXBegin mode 128=QUADS, vat0, count 4. Points append one whole quad only
+  // on the fourth acknowledgement; no other draw may interrupt pendingPoints_.
   case F::Begin:
     if (pendingPoints_ || n != std::vector<uint32_t>({128, 0, 4}) ||
         !loadedMatrix_ || !loadedTexture_)
@@ -207,6 +217,8 @@ BattleClassBackend::request(const BattleClassRasterRequest &r) {
                ? std::optional<uint32_t>(0)
                : std::nullopt;
   }
+  // Flags16 full-size ordinary/48 disabled icon; retain flags for GPU program.
+  // X is centered, Y bottom-anchored. Other mirror/crop modes remain unbound.
   case F::Icon:
   case F::IconColor: {
     if (pendingPoints_ || !r.matrix ||
@@ -255,6 +267,8 @@ BattleClassBackend::request(const BattleClassRasterRequest &r) {
       return {};
     fontColor_ = n[0];
     return 0;
+  // Width/centering uses original spacing2. Glyph UVs map512x256 atlas with
+  // flipped V; source RNG requests pass through the supplied presentation owner.
   case F::FontString: {
     if (n.size() != 1 || !font || !label || !r.matrix || pendingPoints_ ||
         !random)

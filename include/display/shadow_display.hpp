@@ -2,6 +2,7 @@
 #include "camera_manager.hpp"
 #include "shadow_collision.hpp"
 namespace ttyd {
+// Enum words are US GX function identities, not ordinal/native GPU opcodes.
 enum class ShadowGX : uint32_t {
     TevOp=0x802b88d4,TevSwapMode=0x802b8c98,TevKColorSel=0x802b8be0,TevKAlphaSel=0x802b8c3c,NumIndStages=0x802b87ac,
     TevKColor=0x802b8b7c,NumChans=0x802b6f3c,ChanCtrl=0x802b6f78,ChanMaterial=0x802b6e54,ChanAmbient=0x802b6d6c,
@@ -42,6 +43,8 @@ struct ShadowCylinderServices {
     bool (*list)(void*,uint32_t sourceAddress,uint32_t bytes)=nullptr;
     bool (*bounds)(void*,ShadowCylinderBounds&)=nullptr;
 };
+// Captured view/record survive holds; pass plan is recaptured for each of
+// three source passes, while listIndex remembers acknowledged whole lists.
 struct ShadowCylinderCursor {
     bool active=false,requestPending=false;
     uint32_t camera=0,stage=0,pass=0,step=0,listIndex=0,listCount=0;
@@ -66,6 +69,8 @@ struct ShadowDisplayServices {
     std::optional<uint32_t> (*gp14)(void*)=nullptr;
     ShadowCylinderServices cylinder;
 };
+// Independent GX/pass/geometry latches prevent side-effect replay. Profiles
+// and pool are borrowed mutable owners; their source read points stay explicit.
 struct ShadowDisplayCursor {
     bool active=false,requestPending=false,geometryPending=false;
     uint32_t camera=0,userdata=0,phase=0,step=0,index=0,pending=0;
@@ -87,6 +92,8 @@ struct ShadowDisplayCursor {
     ShadowCylinderCursor cylinder;
 };
 // Typed cold-start fog words; later source writers must update these owners.
+// Saved camera values are shared retained source work, not per-frame defaults.
+// Do not reset them merely because a native presentation begins.
 struct ShadowDisplayGlobals {
     uint32_t polygonFog=0,textureFog=0,projectionFog=0,cylinderTevRGB=0,cylinderZeroMaterial=0;
     CameraViewMatrix savedView{};

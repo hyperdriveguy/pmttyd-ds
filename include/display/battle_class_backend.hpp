@@ -4,6 +4,7 @@
 #include "window_font.hpp"
 #include <functional>
 namespace ttyd {
+// Native 24-byte metadata ABI: U32 width/height plus four float UV endpoints.
 struct BattleClassRegion {
   uint32_t width = 0, height = 0;
   float u0 = 0, v0 = 0, u1 = 0, v1 = 0;
@@ -43,6 +44,7 @@ public:
   std::function<uint32_t(uint32_t)> random;
   void begin();
   std::optional<uint32_t> request(const BattleClassRasterRequest &);
+  // No pending four-point primitive; does not imply original event completion.
   bool complete() const { return pendingPoints_ == 0; }
 
 private:

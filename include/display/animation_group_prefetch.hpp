@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 namespace ttyd {
+// Source request return -1/nonzero is completed; 0 pending. archive selection
+// precedes both requests even if a previously completed group is cached.
 struct AnimationGroupAsyncServices {
  void* user=nullptr;
  void (*archive)(void*,uint32_t)=nullptr;
@@ -24,6 +26,7 @@ public:
  ~AnimationGroupPrefetch();
  AnimationGroupPrefetch(const AnimationGroupPrefetch&)=delete;
  AnimationGroupPrefetch& operator=(const AnimationGroupPrefetch&)=delete;
+ // chunkBytes4096 is native cooperative I/O policy, not original DVD timing.
  bool open(const char* root,uint32_t chunkBytes=4096);
  bool poll(const char* group);
  const std::vector<uint8_t>* resident(const std::string& path) const;

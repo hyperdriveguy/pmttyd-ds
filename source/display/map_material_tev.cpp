@@ -1,9 +1,14 @@
 #include "map_material_tev.hpp"
 namespace ttyd {
 namespace {
+// Stage rows retain GX order/output/RGB/alpha arguments verbatim. Numeric
+// input domains and blend/cull conventions: docs/code/display-state.md.
+// order255 means no texture/raster input; output0 PREV, 1/2 source registers.
 struct Stage {std::array<int32_t,3> order;int32_t out;std::array<int32_t,4> rgb,alpha;};
 constexpr Stage first{{0,0,255},0,{15,15,15,8},{7,7,7,4}};
 constexpr Stage last{{255,255,4},0,{15,0,10,15},{7,0,5,7}};
+// Eight fixed bases cover source modes 1..7 and12; mode 5 has four stages,
+// others three. Zero/no-texture/generic bases are selected independently.
 constexpr Stage fixed[8][4]{
     {first,{{1,1,255},0,{0,8,9,15},{7,7,7,0}},last},
     {first,{{1,1,255},0,{15,0,9,15},{7,0,4,7}},last},
@@ -24,6 +29,8 @@ ShadowGXRequest stageRequest(const Stage& row,uint32_t stage,uint32_t step){
     }return r;
 }
 }
+// Stage setters and optional source blocks acknowledge independently. Queued
+// calls hold exact arguments; missing branch providers cannot be skipped.
 bool resumeMapMaterialTev(const MapTevInput& input,const MapTevServices& s,MapTevCursor& c){
     if(!c.active){c={};c.active=true;c.input=input;c.counts.maps=c.counts.generators=uint32_t(input.slots);}
     auto emit=[&](const ShadowGXRequest& r){if(!c.queued){c.request=r;c.queued=true;}c.pending=uint32_t(c.request.kind);
@@ -50,6 +57,8 @@ bool resumeMapMaterialTev(const MapTevInput& input,const MapTevServices& s,MapTe
             c.counts.stages=k;
         }
         c.step=0;c.stage=0;c.phase=1;break;}
+    // Unless flag 10000000(hex), append PREV*K0 stage with selectors 12/28.
+    // All eight setters must complete before incrementing the stage counter.
     case 1:
         if(!(c.input.flags&0x10000000)){
             ShadowGXRequest r;const auto k=int32_t(c.counts.stages);
@@ -61,11 +70,17 @@ bool resumeMapMaterialTev(const MapTevInput& input,const MapTevServices& s,MapTe
         }
         c.step=0;c.phase=2;break;
     case 2:if((c.input.flags&4) && !branch(0x8002bc7c))return false;++c.phase;break;
+    // Flag/block order: 400 projection, 10000 depth, 20000 projected shadow,
+    // 40000 alternate depth, 80100000 terminal color, 800000 cosine alpha(hex).
+    // Preserve every branch hold before proceeding to the next mask.
     case 3:case 4:case 5:case 6:case 7:case 8:{
         constexpr uint32_t masks[]{0x400,0x10000,0x20000,0x40000,0x80100000,0x800000};
         constexpr uint32_t entries[]{0x80023128,0x80023314,0x80023d58,0x80023e9c,0x800244ac,0x80024654};
         if((c.input.flags&masks[c.phase-3]) && !branch(entries[c.phase-3]))return false;
         ++c.phase;break;}
+    // Optional callback0f000000(hex) gets a copied counter set with indirect
+    // reset0; only stages/generators/indirect copy back. Texture-map count does
+    // not inherit callback modifications. Final setters narrow to low 8 bits.
     case 9:
         if(c.input.flags&0x0f000000){
             if(!c.callbackReady){c.callbackCounts=c.counts;c.callbackCounts.indirect=0;c.callbackReady=true;}
