@@ -13860,3 +13860,72 @@ handle consumers still own role-view retirement; general collector/cancellation
 and global party VM facade remain open. Full battle field return, original NPC/
 animation scheduling, interiors/triggers/prologue visibility and hardware checks
 remain incomplete. EVT-01 and the complete prologue/full-game goal remain active.
+
+
+## 2026-10-15 — Original battle UI drawing and native class submission
+
+Committed mechanics `089ee5b8` and native binding `0cef8ca3`. The actual Trio
+class UI allocation can now retain original queued callback8012210c/camera8
+through source geometry, concrete party/pinch/button footers and actual GPU
+submission. Geometry/footer order, copied backend identity, real camera matrices,
+VM mutations and resource generations survive child waits. Failed GPU admission
+holds the completed source invocation; successful submission is never replayed.
+Shutdown/allocation loss retires or poisons retained contexts before texture free.
+The renderer submits this menu after world/HP drawing without resetting its arena
+or advancing an unrelated source callback twice. Real source sound requests still
+require an actual sound owner; recording a vector does not acknowledge them.
+
+Added complete retained weapon Draw/Disp/Win/Common/Sub1, seven-row submenu
+parent/raster and original cursor/icon children with source-verification tools.
+These retain missing private outputs/providers as explicit waits. Added shared
+original audience GetItemOn native locals, including original unused XYZ cache
+reads in the four-output footer query. Existing physical-X control remains;
+no new touch-only control or fabricated audience hit rectangle is introduced.
+
+Original class surface/icon imports now admit an atomic generation only after
+exact dimensions/format/orientation checks. Added original HitN64 source draw,
+texture helpers and ordered dual-UV native GPU backend with private image74
+32x128 I4→RGBA8 and original indexed vertices/immutable source views. Source is
+read-only US ISO e/us/effect_n64.tpl; no scaling or authored substitute. Private
+conversion metadata, asset paths and rights are recorded in ASSETS.md. ISO,
+extracted originals, packs and compiled binaries are not committed.
+
+Validation is the immutable74-owned-path snapshot in
+artifacts/native-draw-validation/source, baseline4b1d82ea. Its manifest audits
+6276 source/RomFS/private-fixture hashes. Exact frozen converters generated four
+Hit products and refreshed four door/boot dependency products in empty private
+outputs; inherited assets remain hash matched without shared-cache writes.
+An initial helper preflight correctly rejected the older clock cache; that attempt
+is preserved separately and no build result is claimed for it. Initial full host
+run skipped two absent private Hit fixtures; a private directory overlay supplied
+the exact freshly generated products, without modifying inherited symlink targets.
+Final CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits0: 469/469 C++ (55.04s),
+216/216 Python (41.299s), zero skipped. Native make all -o assets-ready -j4
+SOUNDTRACK=gamecube exits0. Eight original-source/doc checks exit0, including
+1518 Markdown files/zero broken links. All handles observed terminal. Existing
+Pillow/compiler warnings remain. Concurrent field/party/animation/documentation
+changes were preserved; committed-vs-frozen differences are recorded separately,
+with no combined moving-worktree validation claim.
+
+Isolated35s Azahar startup exits0; reviewed capture shows the original opening
+book/star and lower A/START title prompt. Normal binary SHA256
+c6577ca5ab563b365626c2e5269f37ae4d2e0133f74644f6bc1309d7f33576f5.
+Separate private native probes cover actual original Hit texture/ordered GPU
+submission (186frames/36828draws), atomic class surface import rollback/retirement
+(374frames), and original Jump/Hammer radial menu plus physical Right/Left/A
+(657frames/583source passes). The radial fixture uses an explicit test camera/
+scheduler and legacy request-recording sound service. These prove neither normal
+battle entry nor original executed-PPC/stack/framebuffer/audio parity or hardware
+performance. Probe manifests retain exact hashes, logs and limitations. No user
+emulator profile or saves were modified.
+
+The tutorial/full real battle remains unfinished: ordinary active battle still
+uses legacy sequencing; whole original battle entry/Main, weapon selection/
+real target/payment/attack/effect/audio owners, exact matrix/scalar text children,
+and selected audience taps from actual completed lower-scene camera/occlusion
+publication remain pending. Bottom-screen scene continuation and a physical
+alternative remain required. Next UI workers are implementing original matrix
+font and scalar help font children; another worker is probing the actual new
+Trio renderer route and its real Mario-key/camera-letterbox query frontier.
+No readiness/sequence flags or unknown coordinates are forced. Full remake goal
+remains active; original US dialogue/story data is unchanged.
