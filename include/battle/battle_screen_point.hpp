@@ -2,6 +2,9 @@
 #include "event_memory_opcodes.hpp"
 #include <array>
 #include <optional>
+// Source 304/240 output scale is half608x480, not native viewport pixels.
+// Typed snapshot projection and this live SDK/camera helper have different
+// acquisition contracts; neither implies native reflow or clipping policy.
 namespace ttyd {
 using BattleScreenPoint=std::array<float,3>;
 struct BattleScreenPointServices {

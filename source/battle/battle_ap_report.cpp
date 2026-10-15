@@ -30,6 +30,8 @@ float real(uint32_t at, const EventMemoryServices &m) {
   return v;
 }
 } // namespace
+// Scan200 actors: active1, not0x102, excluding states 12/13/17. Species
+// comparisons use fresh record lookups rather than one frozen population count.
 int32_t packedBattleAudiencePpKindCount(int32_t kind,
                                         const BattleActorServices &s) {
   (void)base(s);
@@ -39,6 +41,10 @@ int32_t packedBattleAudiencePpKindCount(int32_t kind,
       ++count;
   return count;
 }
+// Allocate output pointer A+0x137c8 only when empty; copy12 bytes FORWARD
+// with per-byte source reads (alias-visible). Thirteen species coefficients
+// at table 0x803b4de4 stride 0x20/+0x14 accumulate by FMA, then linked sqrt/round.
+// AC/addition positivity and Mario/party flags select distinct source factors.
 bool packedBattleBuildApReport(uint32_t input,
                                const BattleApReportServices &s) {
   const auto &m = s.memory.memory;
@@ -94,6 +100,10 @@ bool packedBattleBuildApReport(uint32_t input,
   const auto sum = s.add(s.user, ac, addition);
   float gain;
   uint32_t old;
+  // Break-turn branch reads bonus and multiplies once BEFORE capturing old
+  // AP counter; ordinary branch captures counter first. Preserve that ordering,
+  // multiply sequence, wrapped truncation credit and unconditional draw100.
+  // Invite clears input only after builder and optional point child complete.
   if (turn >= 1) {
     const auto bonus = real(slot + 0x14, m);
     gain = s.multiply(s.user, one, audience);

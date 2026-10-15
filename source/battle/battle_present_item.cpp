@@ -20,6 +20,10 @@ double number(uint32_t hi, uint32_t lo) {
   return v;
 }
 } // namespace
+// Item>=339 or target outside[-1, 63] returns0. Registry query still precedes
+// item 0/negative rejection; accepted target-1 does not prove a nonnull unit.
+// Ordinary non123/124 items publish marker/type 12/menu29 and AllEnd mask
+//0xffeeeeee, NOT actual UI destruction or an inventory grant.
 std::optional<int32_t>
 resumePackedBattlePresentItem(const BattlePresentItemServices &s,
                               BattlePresentItemCursor &c) {
@@ -66,6 +70,9 @@ resumePackedBattlePresentItem(const BattlePresentItemServices &s,
       put(c.battle + 0x171c, 29);
       return done(1);
     }
+    // HP123/FP124 recover one point ONCE, then GetPos writes actual private
+    // XYZ in source order. Signed height conversion preserves0x43300000/xor
+    // bias technique and original double-subtract/single-round boundary.
     if (c.item == 123)
       recoverPackedBattleHp(c.unit, 1, a);
     else
@@ -119,6 +126,9 @@ resumePackedBattlePresentItem(const BattlePresentItemServices &s,
     put(c.position + 4, raw);
     c.phase = 5;
   }
+  // Required effect0(HP)/1(FP), amount1 follows retained height/scale/FMA.
+  // Success clears item on FRESH current-global B, not captured B; returns0
+  // despite recovery/effect/clear. A held effect cannot repeat resource recovery.
   if (c.phase == 5) {
     if (!s.effect ||
         !s.effect(s.user, c.item == 123 ? 0 : 1, 1, c.effectPosition))

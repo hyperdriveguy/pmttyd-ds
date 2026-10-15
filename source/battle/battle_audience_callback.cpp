@@ -1,5 +1,9 @@
 #include "battle_audience_callback.hpp"
 namespace ttyd {
+// Capture audience owner, camera 4 and sixteen GX acknowledgements once;
+// actor0 pointer independently captures current B afterward. Query current
+// display record per actor: class 2 admits alpha!=255, others alpha255, flags 1&4.
+// Stage 5 preserves the admitted actor at pending0x801a38f8 until implemented.
 bool resumePackedBattleAudienceCallback(const BattleAudienceCallbackServices& s,BattleAudienceCallbackCursor& c){
     const auto& a=s.actors;
     if(!c.active){c={};c.active=true;}

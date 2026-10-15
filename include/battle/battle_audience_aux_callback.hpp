@@ -1,5 +1,8 @@
 #pragma once
 #include "source_icon_matrix.hpp"
+// Callback0x801a37f0 draws 100 item records, stride 0x48; 0x801a36c8 draws
+//100 AP records, stride 0x60. Retained operands/acknowledgements stay pinned;
+// caller must retain bindings, while source reads after each boundary stay fresh.
 namespace ttyd {
 struct BattleAudienceAuxServices {
     BattleAudienceCallbackServices common;void* user=nullptr;

@@ -6,9 +6,15 @@ int32_t signedWord(uint32_t bits){int32_t out;std::memcpy(&out,&bits,4);return o
 int32_t signedHalf(uint16_t v){return v<0x8000?int32_t(v):int32_t(v)-0x10000;}
 float real(uint32_t bits){float out;std::memcpy(&out,&bits,4);return out;}
 float add(float a,float b){volatile float out=a+b;return out;}
+// Monosiri bank uses SIGNED kind/32 quotient and remainder. PPC word shift
+// consumes low6; remainder shifts32..63 produce0 rather than modulo32 wrapping.
 uint32_t bankAddress(uint32_t battle,uint32_t kind){return battle+0x163d4+4*uint32_t(signedWord(kind)/32);}
 uint32_t bankMask(uint32_t kind){const uint32_t shift=uint32_t(signedWord(kind)%32)&63;return shift<32?uint32_t(1)<<shift:0;}
 }
+// Global B/kind captured once; force flag 2 bypasses switch/bank work.
+// Otherwise switch(kind+4474), fresh unit flags and independent bank bits OR;
+// alternate kind+4 bank is checked only when unit flags mask 4, with no second
+// switch query. Any nonzero result normalizes1 at completion.
 std::optional<int32_t> checkBattleMonosiri(uint32_t unit,const BattleMonosiriServices& s,BattleMonosiriCursor& c){
     if(!c.active){c={};c.active=true;c.unit=unit;}
     auto word=[&](uint32_t a){return s.word?s.word(s.user,a):std::nullopt;};
@@ -25,10 +31,17 @@ std::optional<int32_t> checkBattleMonosiri(uint32_t unit,const BattleMonosiriSer
     default:return {};
     }
 }
+// Source projection scales NDC by half608/480 =304/240 and forces Z0.
+// This typed snapshot helper adds no source camera acquisition or reflow policy.
 CameraDepthPoint battleEnemyHpScreenPoint(const CameraDepthSnapshot& camera,CameraDepthPoint point){
     const auto projected=cameraDepthProject(camera,cameraDepthView(camera,point));
     volatile float x=304.f*projected[0],y=240.f*projected[1];return {x,y,0};
 }
+// Camera8 admits draw; 64 slots skip status27, failed Monosiri, attribute
+//0x02000000 and inactive menu/unit cases. Read current position BEFORE possible
+// battle0x80 home overwrite, then signed d4/d6 offsets and actual screen helper.
+// barColor initializes ONCE per invocation: fade alpha may carry to later units;
+// number remains white. Next-slot does not reset the color register.
 bool drawBattleEnemyHp(uint32_t battle,const BattleEnemyHpDrawServices& s,BattleEnemyHpDrawCursor& c){
     if(!c.active){c={};c.active=true;c.battle=battle;}
     auto word=[&](uint32_t a){return s.word?s.word(s.user,a):std::nullopt;};
@@ -55,6 +68,9 @@ bool drawBattleEnemyHp(uint32_t battle,const BattleEnemyHpDrawServices& s,Battle
     case 16:{const auto v=half(c.unit+0x204);if(!v)return false;c.elapsed=signedHalf(*v);next(c.elapsed<20?17:19);break;}
     case 17:{c.pending=0x80006c8c;const auto v=s.interpolate?s.interpolate(s.user,0,c.elapsed,20,0,255):std::nullopt;if(!v)return false;c.fade=*v;next(18);break;}
     case 18:{c.pending=0x8011ff38;const auto v=s.truncate?s.truncate(s.user,c.fade):std::nullopt;if(!v)return false;c.barColor=(c.barColor&0xffffff00)|uint8_t(*v);next(19);break;}
+    // Reload slot for HP-dependent X offset 12/16/20 (>=100/>=10/other),
+    // reload AGAIN for displayed signed HP, then draw number and original-unit
+    // bar. Do not collapse these pointers or reapply the number's white to bar.
     case 19:{const auto v=word(slotAddress());if(!v)return false;c.reloaded=*v;next(20);break;}
     case 20:{const auto v=half(c.reloaded+0x10c);if(!v)return false;const int32_t hp=signedHalf(*v),offset=hp>=100?12:hp>=10?16:20;
         c.matrix={};for(unsigned i=0;i<3;++i)c.matrix[i][i]=1;c.matrix[0][3]=add(c.screen[0],float(offset));c.matrix[1][3]=add(c.screen[1],-32);next(21);break;}

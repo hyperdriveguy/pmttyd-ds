@@ -1,5 +1,8 @@
 #pragma once
 #include <cstdint>
+// Bounded original fade type 23 uses OFF_d_maku_left_right/A_2. rawDuration
+// and entryColor are retained inputs but do not drive this branch's completion;
+// the actual pose clock/resource provider owns progression.
 namespace ttyd {
 // Bounded original fadeEntry23/fadeMain branch. Pose time and asset admission
 // belong to the actual presentation provider, never the raw duration field.

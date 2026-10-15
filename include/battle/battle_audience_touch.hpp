@@ -3,6 +3,9 @@
 #include <array>
 #include <optional>
 #include <vector>
+// Native lower-screen adaptation uses acknowledged world geometry and actual
+// completed displayed pass. It adds no original targeting, visibility or depth
+// rule; source physical-X first-eligible behavior remains independent.
 namespace ttyd {
 // Native input adaptation, not original game targeting rules. The producer must
 // retain an actor/item incarnation: reusing a source slot alone is insufficient.

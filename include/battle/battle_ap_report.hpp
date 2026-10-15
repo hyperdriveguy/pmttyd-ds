@@ -1,6 +1,9 @@
 #pragma once
 #include "battle_actor.hpp"
 #include <optional>
+// AP report is12 source bytes, not a native struct serialization. Linked
+// math/RNG callbacks are admitted source operations; missing point-increment
+// readiness can follow AP credit and must not restart this immediate builder.
 namespace ttyd {
 struct BattleApReportServices {
   BattleActorServices memory;

@@ -2,11 +2,17 @@
 #include <cassert>
 #include <initializer_list>
 namespace ttyd {
+// Reject other types without mutation. Reentry resets work while retaining
+// previous pose handle for release only AFTER new resource admission.
 bool BattleCurtainFade::enter(int32_t kind,int32_t duration,uint32_t color){
  if(kind!=23)return false;
  const auto previousPose=pose;
  *this={};pose=previousPose;active=true;flags=1;type=kind;rawDuration=duration;entryColor=color;return true;
 }
+// Ready admits pose mode 2; allocation must succeed. At loop>=0.5, decay
+// each RGB channel by0.98 with integer truncation, preserve alpha and set mask 0x40.
+// Re-read loop AFTER pose main;>=1 marks finished and releases. Getter calls
+// are independent; duration is not a substitute clock or an automatic timeout.
 void BattleCurtainFade::tick(const BattleCurtainPoseServices& s){
  if(!active || !(flags&1) || step>1)return;
  assert(s.ready && s.entry && s.release && s.flagsOn && s.flagsOff && s.animation && s.color && s.loopTimes && s.main);

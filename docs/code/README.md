@@ -13,6 +13,9 @@ Recovered original behavior and its evidence remain in
 | [Runtime ownership](runtime.md) | Native main loop, physical input, audio and frontend |
 | [Game composition](game-composition.md) | Room collision, units, tick order, restore and follower ownership |
 | [Checkpoint bytes](save-format.md) | Native save encoder, decoder and file replacement |
+| [Audience drawing/touch](battle-audience-draw.md) | Immediate mutation, retained callback limits, auxiliary icons and completed-pass touch proof |
+| [Part/HP presentation](battle-part-presentation.md) | Matrices/material/history, HP reloads/gauges, projection and stock EXP |
+| [Reports/resources](battle-reports-resources.md) | AP/drop ordering, present recovery, menu files, curtain, status window and Majinai bytes |
 | [Audience control](battle-audience.md) | Source work/population, actor reactions, target/window numerics and resource admission |
 | [Audience items/identity](battle-audience-items.md) | Held/flight state, original query, lifecycle provenance and selected interruptions |
 | [Audience sound](battle-audience-sound.md) | Voice records, count buckets, two envelope stages and throw lanes |
@@ -86,6 +89,7 @@ Command input/action help/feedback, attack registration/selection, weapon/class 
 Stage/floor/object/spotlight, camera requests/framing and TimingA/break-slot display helpers are covered.
 Action menu/UI/ring and immediate/retained class draw/raster/footer helpers are covered.
 Audience initialization/population/control, actor reactions, item/selection lifecycles and sound helpers are covered.
+Audience draw/callback/touch, AP/drop/present, ordinary part/HP and small battle resource/state leaves are covered.
 Remaining field/NPC/partner modules, battle, message, inventory, story, effect
 and port tooling still
 require a systematic inline numeric/behavior audit. Concurrent additions to

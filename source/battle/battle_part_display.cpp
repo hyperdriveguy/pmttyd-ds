@@ -4,11 +4,16 @@
 namespace ttyd {
 namespace {
 enum Slot {Uminus,Uplus,Udisplay,Uworld,Urx,Ury,Urz,Uscale,Temp,Unit,Pminus,Pplus,Prx,Pry,Prz,Pworld,Pdisplay,Pscale,Draw,History,Depth};
+// Original byte selector0..5 maps YZX, YXZ, XYZ, XZY, ZXY, ZYX. Invalid
+// selectors skip ordered rotation products; do not silently choose XYZ.
 constexpr unsigned rotationOrders[6][3]{{1,2,0},{1,0,2},{0,1,2},{0,2,1},{2,0,1},{2,1,0}};
 float real(const BattleActorServices& a,uint32_t p){auto b=a.memory.word(a.memory.user,p);float v;std::memcpy(&v,&b,4);return v;}
 uint32_t bits(float v){uint32_t b;std::memcpy(&b,&v,4);return b;}
 std::array<float,3> xyz(const BattleActorServices& a,uint32_t p){return {real(a,p),real(a,p+4),real(a,p+8)};}
 }
+// Unsigned phase halfword: degrees=(phase*(floating?4: 3)+270)%360.
+// Binary32 full-turn multiply/divide precedes double sine; amplitudes 2/4 use
+// FMA(amplitude, sine, amplitude). Native adapter does not prove SDK sine parity.
 float nativeBattlePartPhaseOffset(uint16_t phase,bool floating){
     const int32_t degrees=(int32_t(phase)*(floating?4:3)+270)%360;
     const float turns=float(float(degrees)*6.2831854820251465f);
@@ -42,6 +47,9 @@ bool resumePackedBattlePartDisplay(uint32_t part,const BattlePartDisplayServices
     auto trans=[&](unsigned target,std::array<float,3> v){c.target=target;c.matrix.function=0x8029e230;c.matrix.xyz=v;};
     auto concat=[&](unsigned target,unsigned left,unsigned right){c.target=target;c.matrix.function=0x8029dd64;c.matrix.left=c.matrices[left];c.matrix.right=c.matrices[right];};
     auto identity=[&](){c.target=Temp;c.matrix.function=0x8029dd04;};
+    // Shared unit scale 114 affects X/Y only; Z uses a4*98, with optional
+    // source negative multiplier. Matrix helpers pin prepared request operands
+    // across holds; later source getters remain fresh at their call sites.
     auto scaleUnit=[&](bool negative){c.target=Uscale;c.matrix.function=0x8029e2b0;
         const float sharedScale=real(a,c.unit+0x114);
         c.matrix.xyz={sharedScale*(real(a,c.unit+0x9c)*real(a,c.unit+0x90)),sharedScale*(real(a,c.unit+0xa0)*real(a,c.unit+0x94)),real(a,c.unit+0xa4)*real(a,c.unit+0x98)};
@@ -76,6 +84,9 @@ bool resumePackedBattlePartDisplay(uint32_t part,const BattlePartDisplayServices
         }}))return false;
             ++c.step;}
         c.phase=2;break;
+    // Special0x20000000 holds AFTER sixteen ordinary unit matrix operations.
+    // Direction uses signed unit/part/side bytes; source float/gravity offsets,
+    // camera correction and facing normalize are separate admitted scalars.
     case 2:{
         if(m.word(m.user,part+0x1ac)&0x20000000){c.phase=99;break;}
         c.direction=int8_t(a.byte(a.user,c.unit+0x189))<0?real(a,0x80422258):real(a,0x8042225c);
@@ -139,6 +150,9 @@ bool resumePackedBattlePartDisplay(uint32_t part,const BattlePartDisplayServices
             ++c.step;
         }
         c.phase=15;break;
+    // Copy source color, then material masks0x10/0x20 can blacken RGB. Only
+    // initial-white RGB enters status4 tint/fade: blue uses ALREADY reduced red,
+    // not original255. Preserve sequential byte reads and unit312 fade scaling.
     case 15:
         m.storeWord(m.user,part+0x218,m.word(m.user,part+0x4f4));
         for(auto mask:{0x10u,0x20u})if(m.word(m.user,part+0x204)&mask)for(unsigned i=0;i<3;++i)m.storeByte(m.user,part+0x218+i,0);
@@ -148,6 +162,9 @@ bool resumePackedBattlePartDisplay(uint32_t part,const BattlePartDisplayServices
         if(*status){m.storeByte(m.user,part+0x218,uint8_t(unsigned(a.byte(a.user,part+0x218))*160/255));m.storeByte(m.user,part+0x21a,uint8_t(unsigned(a.byte(a.user,part+0x218))*160/255));}
         c.phase=17;break;}
     case 17:for(unsigned i=0;i<3;++i)m.storeByte(m.user,part+0x218+i,uint8_t(unsigned(a.byte(a.user,part+0x218+i))*a.byte(a.user,c.unit+0x312)/255));c.phase=18;break;
+    // Material event color, FlagOn0x40, before-callback, status16-dependent
+    // FlagOn/Off0x800000, THREE real draw passes 1..3, then after-callback.
+    // Callback pointers/requests pin once prepared; acknowledged work never replays.
     case 18:case 19:case 22:{
         if(!c.requestPending){c.material={c.phase==18?0x800406b4u:c.phase==19 || c.status16?0x80040730u:0x80040710u,int32_t(m.word(m.user,part+0x1c0)),c.phase==18?m.word(m.user,part+0x218):c.phase==19?0x40u:0x800000u};c.requestPending=true;}
         c.pending=c.material.function;if(!s.material || !s.material(s.user,c.material))return false;c.requestPending=false;
@@ -164,6 +181,10 @@ bool resumePackedBattlePartDisplay(uint32_t part,const BattlePartDisplayServices
         c.phase=24;break;
     case 25:
         c.color=m.word(m.user,part+0x218);c.historyMode=(m.word(m.user,part+0x1ac)&0x04000000)?1:0;c.phase=26;break;
+    // Shift nine older slots within ten-entry history, stride 0x44, loading each word pair
+    // before either store. Head contains mode, 3x4 matrix, angle, color and two
+    // late words. Matrix-copy hold resumes AFTER shift, never shifts twice;
+    // source history flags can clear new head's low bit only after publication.
     case 26:{const uint32_t h=part+0x21c;
         for(unsigned destination=9;destination>0;--destination){const uint32_t src=h+0xc+(destination-1)*0x44,dst=src+0x44;
             for(unsigned pair=0;pair<8;++pair){const auto x=m.word(m.user,src+8*pair),y=m.word(m.user,src+8*pair+4);m.storeWord(m.user,dst+8*pair,x);m.storeWord(m.user,dst+8*pair+4,y);}

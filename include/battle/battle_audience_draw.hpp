@@ -1,6 +1,9 @@
 #pragma once
 #include "battle_actor.hpp"
 #include "battle_act_draw.hpp"
+// Immediate DispAudience mutates source dimensions, normals and flip angles;
+// invoke once per admitted source pass, then replay retained geometry for extra
+// views. Its false result is not a rollback or a saved provider suffix.
 namespace ttyd {
 struct BattleAudienceTexture {uint32_t bank=0,index=0,width=0,height=0;};
 struct BattleAudiencePoint {float x=0,y=0,z=0,u=0,v=0;};

@@ -3,6 +3,10 @@
 #include <cstring>
 namespace ttyd {
 namespace {float real(uint32_t bits){float f;std::memcpy(&f,&bits,4);return f;}float add(float a,float b){volatile float f=a+b;return f;}}
+// Capture B/count once; offset globals0x8041eb98/9c reload per icon BEFORE
+// queued submission and remain pinned while held. Draw ones then tens using
+// spacing 13/20 and source offsets 308/-220/-100. Count 100 means ten big icons;
+// successful icon acknowledgement alone advances index, without replay.
 bool drawBattleStockExp(const BattleStockExpDrawServices& s,BattleStockExpDrawCursor& c){
     if(!c.active){c={};c.active=true;}
     auto word=[&](uint32_t a){return s.word?s.word(s.user,a):std::nullopt;};

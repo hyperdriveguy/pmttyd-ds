@@ -1,6 +1,9 @@
 #pragma once
 #include "camera_depth.hpp"
 #include <optional>
+// Retained HP draw mixes captured unit identity with later slot reloads.
+// Caller keeps B/providers/cursor fixed; source callbacks use real admission.
+// Source screen units and native viewport/touch pixels are separate domains.
 namespace ttyd {
 struct BattleMonosiriServices {
     void* user=nullptr;

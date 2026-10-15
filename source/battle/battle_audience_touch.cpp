@@ -24,6 +24,9 @@ bool BattleAudienceTouchTarget::operator==(const BattleAudienceTouchTarget& t)co
   return slot==t.slot && item==t.item && actorGeneration==t.actorGeneration && itemGeneration==t.itemGeneration;
 }
 void BattleAudienceTouchFrame::reset(){pass_={};quads_.clear();complete_=false;failed_=false;lower_={};}
+// Reject stale same-owner sequences before reset. Accepted new-pass admission
+// resets old geometry BEFORE camera validation. Camera viewport is rotated
+//240x400 bounds, while public lower-screen hit coordinates are320x240.
 bool BattleAudienceTouchFrame::begin(const SourceIconPass& p,const RetainedIconCamera& camera) {
   // A stale pass cannot replace a newer pass from the same lifetime.
   if(!p.owner || !p.sequence || p.complete ||
@@ -38,6 +41,10 @@ bool BattleAudienceTouchFrame::begin(const SourceIconPass& p,const RetainedIconC
   for(const auto& row:lower_)for(float v:row)if(!std::isfinite(v)){reset();return false;}
   pass_=p;return true;
 }
+// Same building pass only. Duplicate actor slot or invalid target/clip poisons
+// the pass until begin/reset; unrelated-pass rejection does not. World units
+// scale 0.01 once; swap/invert projected axes with half-extents160/120.
+// Require positive clipW; producer owns actual raster occlusion/alpha proof.
 bool BattleAudienceTouchFrame::append(const SourceIconPass& p,const BattleAudienceTouchTarget& t,
                                     const BattleAudienceTouchQuad& world) {
   if(!same(pass_,p) || p.complete || complete_)return false;
@@ -67,6 +74,10 @@ bool BattleAudienceTouchFrame::finish(const SourceIconPass& p) {
   if(!same(pass_,p) || !p.complete || complete_ || failed_)return false;
   complete_=true;return true;
 }
+// Inclusive triangle edges, finite nondegenerate triangles, screen[0, 320)x
+//[0, 240). Each covering quad needs exactly one same-incarnation live candidate.
+// Only explicitly invisible exact identity permits tap-through. Harmless visible
+// occupants or multiple eligible overlaps select none; never choose nearest seat.
 std::optional<BattleAudienceTouchTarget> BattleAudienceTouchFrame::hit(
     const SourceIconPass& p,float x,float y,const std::vector<BattleAudienceTouchCandidate>& live)const {
   if(!complete_ || !p.complete || !same(pass_,p) || !std::isfinite(x) || !std::isfinite(y) ||

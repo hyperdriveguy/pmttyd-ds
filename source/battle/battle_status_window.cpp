@@ -1,6 +1,8 @@
 #include "battle_status_window.hpp"
 #include <cassert>
 namespace ttyd {
+// Show = !273c && !2740 && (274c || (2748 &&2744)), offsets hex.
+// Always query actual isOpen before transition; return desired predicate0/1.
 int32_t packedBattleStatusWindowCheck(const BattleStatusWindowServices& s){
  const auto& m=s.units.memory;assert(m.word && s.isOpen);
  const auto b=m.word(m.user,0x8041eb90);
@@ -13,6 +15,9 @@ void packedBattleStatusWindowSet(uint32_t field,bool on,const BattleStatusWindow
  const auto& m=s.units.memory;assert(m.word && m.storeWord);const auto b=m.word(m.user,0x8041eb90);
  m.storeWord(m.user,b+field,on?1:0);(void)packedBattleStatusWindowCheck(s);
 }
+// Capture B before operand resolution. Args0/1 write2748; 2 sets latch2744;
+// other values leave storage. Check independently recaptures B afterward.
+// Completion2 is not the predicate or a guarantee of same-owner publication.
 int32_t battleStatusWindowOnOffEvent(EventEntry& e,const BattleStatusWindowServices& s){
  const auto& m=s.units.memory;const auto& v=s.units.values;assert(m.word && m.storeWord && v.resolve);
  const auto args=e.arguments,b=m.word(m.user,0x8041eb90);const auto raw=m.word(m.user,args);

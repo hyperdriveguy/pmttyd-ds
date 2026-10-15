@@ -1,5 +1,8 @@
 #include "battle_menu_resources.hpp"
 namespace ttyd {
+// Original format 0x802ef810/root produce a source stack-local path, then
+// fileAllocate mode 4. Engaged descriptor0 is still stored at captured B+163f8;
+// native asynchronous unavailability is nullopt, never inferred from that zero.
 bool initializePackedBattleMenuResources(const BattleMenuResourceServices& s,
                                          BattleMenuResourceCursor& c) {
   if(!c.phase){c={};c.battle=currentBattleAddress(s.memory);c.phase=1;}
@@ -21,6 +24,8 @@ bool initializePackedBattleMenuResources(const BattleMenuResourceServices& s,
   s.memory.memory.storeWord(s.memory.memory.user,c.battle+0x163f8,c.descriptor);
   c={};return true;
 }
+// Capture B and descriptor once before release. Source does NOT clear the
+// B field afterward, so successful end leaves stale pointer bytes intentionally.
 bool endPackedBattleMenuResources(const BattleMenuResourceServices& s,
                                   BattleMenuResourceCursor& c) {
   if(!c.phase){

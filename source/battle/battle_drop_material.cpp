@@ -7,6 +7,9 @@ int32_t signedWord(uint32_t v){return v<0x80000000?int32_t(v):int32_t(int64_t(v)
 int32_t half(const BattleDropMaterialServices& s,uint32_t a){const auto v=s.actors.memory.half(s.actors.memory.user,a);return v<0x8000?int32_t(v):int32_t(v)-65536;}
 void store(const BattleDropMaterialServices& s,uint32_t a,uint32_t v){s.actors.memory.storeWord(s.actors.memory.user,a,v);}
 int32_t random(const BattleDropMaterialServices& s,int32_t bound){return s.random(s.user,bound);}
+// Sixteen-byte threshold/chance/attempts/per-attempt-chance rows; threshold0
+// terminates. Resource ratio is current*100/max, upper clamp100 ONLY. First
+// admitted threshold uses one gate draw100, then one draw per source attempt.
 void resourceDrops(const BattleDropMaterialServices& s,uint32_t table,uint32_t output,int32_t current,int32_t maximum){
     assert(maximum!=0);
     int32_t ratio=current*100/maximum;if(ratio>100)ratio=100;
@@ -19,6 +22,11 @@ void resourceDrops(const BattleDropMaterialServices& s,uint32_t table,uint32_t o
     }
 }
 }
+// Hearts/flowers precede item story gate. Story<=19 sets none weight100,
+// but badge314 fallback still runs if no item. Badge count is queried twice;
+// first scales held/back weights, later independently gates source 25-item draw.
+// Mode1 uses signed-half weighted group table; mode 2 chooses among eight nonzero
+// held items. Preserve source reads/cumulative subtraction/RNG ordering.
 void battleInformationSetDropMaterial(uint32_t info,const BattleDropMaterialServices& s){
     assert(s.actors.memory.word && s.actors.memory.half && s.actors.memory.storeWord && s.random && s.story && s.equippedBadgeCount);
     const auto setup=word(s,info+0xc),battle=currentBattleAddress(s.actors),group=word(s,setup+0x18);

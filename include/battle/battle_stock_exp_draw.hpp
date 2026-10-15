@@ -1,5 +1,8 @@
 #pragma once
 #include "source_icon_position.hpp"
+// Retained source stock-EXP icons, not decimal text. Count at B+f04 caps100:
+// ones use scale 0.35, tens0.5, both original icon 404/flags 16/alpha255.
+// Source world/UI coordinates are not native lower-screen touch pixels.
 namespace ttyd {
 struct BattleStockExpDrawServices {
     void* user=nullptr;std::optional<uint32_t> (*word)(void*,uint32_t)=nullptr;

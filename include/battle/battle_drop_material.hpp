@@ -1,5 +1,8 @@
 #pragma once
 #include "battle_actor.hpp"
+// Drop selection writes original setup outputs only; it grants no pouch
+// resources. Source tables/resource maxima/RNG domains are caller-admitted;
+// invalid counts are not normalized into a different distribution.
 namespace ttyd {
 struct BattleDropMaterialServices {
     BattleActorServices actors;

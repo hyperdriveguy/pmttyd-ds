@@ -7,6 +7,9 @@ uint32_t record(int32_t i,const BattleActorServices& a){return base(a)+0x1bc+uin
 float scalar(uint32_t p,const BattleActorServices& a){const auto b=a.memory.word(a.memory.user,p);float v;std::memcpy(&v,&b,4);return v;}
 uint32_t bits(float v){uint32_t b;std::memcpy(&b,&v,4);return b;}
 }
+// Camera4 dot(eye->at, stored normal90/94/98) uses two FMA boundaries.
+// Nonnegative gives0, otherwise1 (including unordered); keep camera/normal
+// acquisition separate from the preceding draw's captured camera/view.
 std::optional<int32_t> packedBattleAudienceFront(int32_t slot,const BattleAudienceDrawServices& s){
     (void)base(s.actors);const auto r=record(slot,s.actors);
     if(!s.camera || !s.vectors || !s.fma)return {};
@@ -22,6 +25,9 @@ bool drawPackedBattleAudience(const BattleAudienceDrawServices& s){
     const auto& a=s.actors;const auto& m=a.memory;const auto owner=base(a);
     if(!s.camera)return false;const auto camera=s.camera(s.user,4);if(!camera)return false;
     const auto gx=[&](uint32_t fn,std::array<int32_t,7> args={}){return s.request && s.request(s.user,{fn,args});};
+    // Sixteen original GX calls establish cull-none, direct XYZ/ST float
+    // attributes, channel/texgen and TEV state. These are source SDK tuples;
+    // aux item/AP setup adds direct color and intentionally differs in TEV RGB.
     const BattleAudienceGXRequest setup[]{
         {0x802b5c8c,{0}},{0x802b4520,{}},{0x802b3c08,{9,1}},{0x802b3c08,{13,1}},
         {0x802b4558,{0,9,1,4,0}},{0x802b4558,{0,13,1,4,0}},
@@ -34,8 +40,15 @@ bool drawPackedBattleAudience(const BattleAudienceDrawServices& s){
     for(const auto& request:setup)if(!s.request || !s.request(s.user,request))return false;
     auto r=record(0,a);const float half=scalar(0x80424a18,a),negative=-half;
     std::optional<BattleAudienceTexture> loaded;
+    // Loaded texture and GPR flip survive across actors in THIS invocation.
+    // Both start unwritten: unmatched species can inherit prior texture and
+    // unassigned flip can inherit a prior actor's value; no zero default exists.
     std::optional<uint32_t> flip; // Original GPR27 is initially unwritten, unlike FPR27.
     for(unsigned slot=0;slot<200;++slot,r+=0x134){
+        // Per-actor mode 2 admits nonopaque alpha, other modes admit255 only;
+        // flags 1 AND4 are then required. Species0..11 use normal bank, guests
+        // match two live type bytes. A found texture writes source size fields
+        // from its U16 dimensions BEFORE matrix/math/raster providers.
         if(!s.mapMode)return false;const auto mode=s.mapMode(s.user);if(!mode)return false;
         const auto alpha=a.byte(a.user,r+0x44);
         if(*mode==2?alpha==255:alpha!=255)continue;
@@ -58,6 +71,10 @@ bool drawPackedBattleAudience(const BattleAudienceDrawServices& s){
             const float heightRatio=heightBase*scalar(0x80424a1c,a);
             m.storeWord(m.user,r+0x58,bits(scalar(r+0x64,a)*heightRatio));
         }
+        // Source pivot is local pivot*size; rotations use degree conversion,
+        // double trig then float/FMA assembly. Write default normal before its
+        // vector transform, then world/view concat. Late holds retain those
+        // stores; typed matrices do not authorize repeating the immediate parent.
         const float sx=scalar(r+0x54,a),sy=scalar(r+0x58,a),sz=scalar(r+0x5c,a);
         const std::array<float,3> pivot{scalar(r+0xa8,a)*sx,scalar(r+0xac,a)*sy,scalar(r+0xb0,a)*sz};
         if(!s.scale)return false;auto scaled=s.scale(s.user,sx,sy,sz);if(!scaled)return false;
@@ -94,6 +111,10 @@ bool drawPackedBattleAudience(const BattleAudienceDrawServices& s){
         if(!gx(0x802ba2fc,{0}))return false;
         std::array<float,32> uv{};for(unsigned i=0;i<32;++i)uv[i]=scalar(0x802fa024+4*i,a);
         const auto front=packedBattleAudienceFront(int32_t(slot),s);if(!front)return false;
+        //32 copied UV floats hold two animation variants x two flips x four
+        // vertices. Normalize angle with source truncate/FMA; exact negative
+        // turns can leave full-turn boundary and the earlier GPR flip unchanged.
+        // Back-facing exceptions use animation table 7/8/9 roots, not frame IDs.
         unsigned uvBase=m.word(m.user,r+0x24)==m.word(m.user,m.word(m.user,r+0x20)+0x24)?8:0;
         const uint32_t color=uint32_t(a.byte(a.user,r+0x41))<<24|uint32_t(a.byte(a.user,r+0x42))<<16|
             uint32_t(a.byte(a.user,r+0x43))<<8|a.byte(a.user,r+0x44);

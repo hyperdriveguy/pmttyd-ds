@@ -7,6 +7,9 @@ uint32_t word(const BattleMajinaiQueryServices& s,uint32_t a) {assert(s.memory.w
 uint8_t byte(const BattleMajinaiQueryServices& s,uint32_t a) {assert(s.byte);return s.byte(s.user,a);}
 void storeByte(const BattleMajinaiQueryServices& s,uint32_t a,uint8_t v) {assert(s.memory.storeByte);s.memory.storeByte(s.memory.user,a,v);}
 }
+// Count 0 exits. Countdown>=128 clears mode, draws 5+6 then decrements via
+// fresh byte read. Existing mode returns before countdown. New selection uses
+// setup flag 0x20 cutoffs45/90, otherwise30/60/80, from one actual draw100.
 int32_t battleMajinaiCheck(const BattleMajinaiQueryServices& s) {
     const uint32_t p=word(s,0x8041eb00),b=word(s,0x8041eb90);
     if(byte(s,p+0x5b8)==0)return 0;
@@ -27,6 +30,9 @@ int32_t battleMajinaiCheck(const BattleMajinaiQueryServices& s) {
     else selected=random<30?1:random<60?2:random<80?3:4;
     storeByte(s,p+0x5ba,selected);return byte(s,p+0x5ba);
 }
+// Only increase requested count by signed comparison to current unsigned
+// byte; then narrow toU8 without saturation. Separate fresh globals receive
+// countdownff and mode 0. Done decrements even count 0 (wrap255), retaining reread.
 void initializePouchMajinai(int32_t count,const BattleMajinaiQueryServices& s) {
     const uint32_t p=word(s,0x8041eb00);if(int32_t(byte(s,p+0x5b8))>=count)return;
     storeByte(s,p+0x5b8,uint8_t(count));
@@ -48,6 +54,9 @@ void battleMajinaiEndCheck(const BattleMajinaiQueryServices& s) {
     const uint32_t b=word(s,0x8041eb90),p=word(s,0x8041eb00);
     if(byte(s,p+0x5b8)==0) {assert(s.memory.storeWord);s.memory.storeWord(s.memory.user,b+0xef4,word(s,b+0xef4)|0x00400000);}
 }
+// Raw output destination, no resolve/sentinel skip. Only mode 1 stores1,
+// then battle byte18ff9, Done and EndCheck; output callbacks may affect later
+// source reads. EndCheck only ORs flag 0x00400000 when count 0, never clears it.
 int32_t battleMajinaiPowerQuery(EventEntry& e,const BattleMajinaiQueryServices& s) {
     const uint32_t args=e.arguments,b=word(s,0x8041eb90),output=word(s,args),p=word(s,0x8041eb00);
     const int32_t destination=output<=0x7fffffff?int32_t(output):int32_t(int64_t(output)-0x100000000LL);

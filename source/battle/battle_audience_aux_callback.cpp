@@ -5,6 +5,9 @@ namespace ttyd {
 namespace {
 float scalar(const BattleActorServices& a,uint32_t address){const auto bits=a.memory.word(a.memory.user,address);float v;std::memcpy(&v,&bits,4);return v;}
 uint32_t base(const BattleActorServices& a){return currentBattleAddress(a)+0x2858;}
+// Eighteen source GX calls add direct RGBA8 to XYZ/ST; four AP-only calls
+// set blend SRCALPHA/INVSRCALPHA, early Z, ALWAYS alpha and LEQUAL/no-write.
+// SDK enum tuples are not native GPU register encodings.
 constexpr BattleAudienceGXRequest setup[]{
     {0x802b5c8c,{0}},{0x802b4520,{}},{0x802b3c08,{9,1}},{0x802b3c08,{11,1}},{0x802b3c08,{13,1}},
     {0x802b4558,{0,9,1,4,0}},{0x802b4558,{0,11,1,5,0}},{0x802b4558,{0,13,1,4,0}},
@@ -17,6 +20,9 @@ constexpr BattleAudienceGXRequest apState[]{
     {0x802b932c,{1,4,5,0}},{0x802b940c,{1}},{0x802b8d60,{7,0,0,7,0}},{0x802b93d8,{1,3,0}}
 };
 }
+// Only callback identity is checked across holds; fixed service/owner lifetime
+// remains a caller obligation. AP captures owner before unused camera 8 call;
+// item bank captures after GX setup. GXInit keeps its discarded BaseGetPtr.
 bool resumePackedBattleAudienceAux(uint32_t callback,const BattleAudienceAuxServices& s,BattleAudienceAuxCursor& c){
     if(callback!=0x801a37f0 && callback!=0x801a36c8)return false;
     const auto& common=s.common;const auto& a=common.actors;const bool ap=callback==0x801a36c8;
@@ -46,6 +52,9 @@ bool resumePackedBattleAudienceAux(uint32_t callback,const BattleAudienceAuxServ
     }
     if(c.phase==5){c.record=ap?c.owner+0x10e7c:base(a)+0xf25c;c.index=0;c.phase=6;}
     while(c.index<100){
+        // One flags load: items require active1+visible2, AP only active1.
+        // Item ID maps40-byte definitions0x803108a8/icon halfword20; AP uses442,
+        // flag 16 and late alpha+0x5c after five matrix calls (items use six).
         if(c.phase==6){
             const auto flags=a.memory.word(a.memory.user,c.record); // Exactly one fresh load.
             if(ap?!(flags&1):(flags&3)!=3){++c.index;c.record+=ap?0x60:0x48;continue;}
@@ -103,6 +112,10 @@ bool resumePackedBattleAudienceAux(uint32_t callback,const BattleAudienceAuxServ
     }
     c.active=false;c.pending=0;return true;
 }
+// Native finite-domain matrix adapter, not Gekko/SDK parity. ASCII axes
+//120/121/122 mean x/y/z. TransApply adds translation; ScaleApply scales whole
+// rows INCLUDING translation. Concat retains FMA order and disjoint result;
+// unsupported/nonfinite requests hold instead of producing identity.
 void bindAudienceAuxMathAdapter(BattleAudienceAuxServices& s){
     s.matrix=[](void*,BattleAudienceMatrixRequest& r){
         for(float v:r.xyz)if(!std::isfinite(v))return false;

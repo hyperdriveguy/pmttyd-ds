@@ -1,5 +1,8 @@
 #pragma once
 #include "battle_audience_aux_callback.hpp"
+// Ordinary part display retains21 source matrix slots and SDK/material/draw
+// phases. Caller fixes providers and part while active; only part identity is
+// checked here. Missing special attribute0x20000000 graph stays pending.
 namespace ttyd {
 struct BattlePartScalarRequest {uint32_t function=0,part=0;float value=0;std::array<float,4> coordinates{};};
 struct BattlePartMaterialRequest {uint32_t function=0;int32_t handle=0;uint32_t value=0;};

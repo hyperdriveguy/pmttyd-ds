@@ -9,6 +9,8 @@ float number(uint32_t v){float f;std::memcpy(&f,&v,4);return f;}
 uint32_t bits(float f){uint32_t v;std::memcpy(&v,&f,4);return v;}
 float rounded(float f){volatile float value=f;return value;}
 }
+// Separate HP/max reads and post-store mode reload are observable. Duration
+//20 or40 then lifetime+30 are source values. No invented maxHP0 ratio fallback.
 void initializePackedBattleHpGauge(uint32_t u,const BattleActorServices& s) {
     const auto& m=s.memory;assert(m.half && m.word && m.storeHalf && m.storeWord);
     m.storeHalf(m.user,u+0x200,0);m.storeHalf(m.user,u+0x204,0);m.storeHalf(m.user,u+0x1fc,0);
@@ -19,6 +21,8 @@ void initializePackedBattleHpGauge(uint32_t u,const BattleActorServices& s) {
     m.storeHalf(m.user,u+0x202,m.half(m.user,u+0x1fc)==1?40:20);
     m.storeHalf(m.user,u+0x206,uint16_t(int32_t(integer(m.half(m.user,u+0x202)))+30));
 }
+// Native linear(mode 0)/cubic(mode 2) curve with explicit single-rounding
+// boundaries. Duration0 returns end; step is not clamped to duration.
 float battleHpGaugeCurve(int32_t mode,int32_t step,int32_t duration,float start,float end) {
     assert(mode==0 || mode==2);if(!duration)return end;
     const auto delta=rounded(end-start),n=float(duration),t=float(step);
@@ -27,6 +31,10 @@ float battleHpGaugeCurve(int32_t mode,int32_t step,int32_t duration,float start,
     else {numerator=rounded(t*delta);denominator=n;}
     return rounded(start+rounded(numerator/denominator));
 }
+// Predecrement positive timer. Mode1 interpolates delayed ratio214 using
+// fresh max AFTER provider; mode 0 zeros214 and retains max BEFORE provider
+// for ratio210. Missing interpolation follows stores and blocks later fade tail.
+// Expired fade clears unit flag 1 and gauge flag 1 only when both source gates hold.
 bool packedBattleHpGaugeMain(uint32_t u,const BattleHpGaugeServices& s) {
     const auto& m=s.actors.memory;assert(m.half && m.word && m.storeHalf && m.storeWord);
     auto half=[&](unsigned o){return integer(m.half(m.user,u+o));};

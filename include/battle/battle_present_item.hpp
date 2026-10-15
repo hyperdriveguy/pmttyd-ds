@@ -2,6 +2,9 @@
 #include "battle_actor.hpp"
 #include <array>
 #include <optional>
+// Retained recovery/presentation leaf captures B/unit/private output across
+// math/effect holds. Keep providers stable; cursor identity checks only selected
+// memory callbacks/private address, not the whole service table.
 namespace ttyd {
 struct BattlePresentItemServices {
   BattleActorServices actors;

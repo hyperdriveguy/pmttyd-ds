@@ -1,5 +1,7 @@
 #pragma once
 #include "battle_unit_event.hpp"
+// Five original BattleWork gates, not a native window-state enum. Actual
+// open/close callbacks run only on predicate transition; caller supplies them.
 namespace ttyd {
 struct BattleStatusWindowServices {
  BattleUnitEventServices units;

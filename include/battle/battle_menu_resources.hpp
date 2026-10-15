@@ -2,6 +2,9 @@
 #include "battle_actor.hpp"
 #include <optional>
 #include <string>
+// Cursor retains source root/path/guest descriptor across holds; caller
+// keeps service bindings fixed (not validated here). Init/End use separate
+// invocations; a reset cursor must not replay an already completed fileFree.
 namespace ttyd {
 // Original battleMenuDispInit/End file ownership. The file service returns a
 // guest FileEntry, whose +a0 owns a pointer cell for the actual TPL payload.

@@ -5,6 +5,9 @@ namespace {
 float scalar(uint32_t word) {
     float result;std::memcpy(&result,&word,sizeof(result));return result;
 }
+// Camera4 view+11c then projection+15c both transform the copied local
+// in-place. Only after BOTH acknowledge fetch original scale/zero constants
+// and publish output; failure does not partially update output XYZ.
 bool projectCapturedPoint(uint32_t camera,BattleScreenPoint point,BattleScreenPoint& output,
                           const BattleScreenPointServices& s) {
     const auto read=[&](uint32_t address) {

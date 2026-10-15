@@ -2,6 +2,9 @@
 #include "battle_actor.hpp"
 #include "battle_audience_draw.hpp"
 #include "camera_manager.hpp"
+// Retained callback is a source prefix plus complete EMPTY admission graph.
+// An admitted actor reaches an explicit missing continuation, never successful
+// empty draw. Keep providers/current queue record and camera stable while held.
 namespace ttyd {
 struct BattleAudienceCallbackServices {
     BattleActorServices actors;void* user=nullptr;
