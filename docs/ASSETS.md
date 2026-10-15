@@ -2432,3 +2432,24 @@ Evidence: `artifacts/hp-runtime-assets-proof.json`; private outputs remain ignor
 No actor texture/geometry conversion changed and no ISO or extracted/compiled
 asset bytes enter source history. Original Nintendo/Intelligent Systems rights
 remain unchanged; this project gains no redistribution rights.
+### Original shared NPC matrix constant (2026-10-14)
+
+Read-only US G8ME01 disc0 revision0 `/home/carson/games/roms/G8ME01.iso`
+DOL8041fd7c..fd7f supplies unchanged big-endian bytes3c8efa35, the original
+rounded radians factor0.01745329238474369. The extraction view SHA256 is
+7388adb66bc2fb8cdd730d8148adcae18abd8bb48b05b7bd9b9e05efa6c09702.
+`tools/field_npc_actor_assets.py` records and verifies that range. Regenerating
+`tools/door_data_assets.py` in the isolated accepted source tree updates only
+private `romfs/door-data.json` and `romfs/door-data.pmevt` among2131 products.
+The pack is152488 bytes, SHA256
+62929efd5f0115a23ec550bc5c6bd7ffe886b0a332fc02c1df8384688ecfca8a.
+Four added source bytes bridge two spans, removing one12-byte index row; pack
+size therefore decreases8. Removing only these four bytes and remerging recovers
+the exact prior152496-byte pack SHA256
+917782e901710c8c85af5bcf172c3b1baa03d23b66faf16aa4b9997112b7aed3.
+The local gor_02.s and all other RomFS product hashes remain unchanged.
+No art resampling, geometry reduction, lighting or audio conversion changes.
+Original Nintendo/Intelligent Systems resources remain local use only, with no
+redistribution rights. ISO, extracted resources, source listings and binaries
+are ignored/private and were not committed. Callback/matrix source evidence and
+exact validation/product hashes are in `artifacts/npc-matrix-validation-manifest.json`.

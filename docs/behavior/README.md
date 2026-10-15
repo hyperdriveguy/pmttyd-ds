@@ -1284,3 +1284,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Trio HP runtime binding](display/TRIO_ENEMY_HP_RUNTIME_BINDING.md): real allocation, CameraMain epoch, source common-bank Init/End and retained full callback.
 - [Native Trio HP renderer binding](display/NATIVE_TRIO_ENEMY_HP_RENDERER_BINDING.md): original glyph/bar GPU resources, ordered replay and precise finishing-versus-active scheduling limits.
+
+- [Retained original NPC draw matrix](display/RETAINED_NPC_DRAW_MATRIX.md): complete shared mtx_setup with source reads, SDK operations and retry boundaries; queued callbacks/runtime activation remain open.

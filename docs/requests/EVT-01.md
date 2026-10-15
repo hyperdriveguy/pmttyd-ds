@@ -5095,3 +5095,12 @@ render callback still require real producers/owners. Tests use explicit field
 callbacks, not original story/event acceptance. Local source control-flow
 composition is delivered; normal Area Main, runtime/render/numeric parity and
 full prologue/remake remain open. EVT-01 is not closed.
+
+### 2026-10-14 Original shared NPC draw matrix
+
+[Retained mtx_setup](../behavior/display/RETAINED_NPC_DRAW_MATRIX.md) implements
+the complete local source helper8004ca80 with exact camera/scale/pivot/rotation/
+history addressing and per-primitive holds. Independent read-only callback audit
+identifies full facing-name swap, offscreen bounds and blur restoration graphs.
+Native field pose/camera/render owners, whole callbacks, normal runtime activation,
+original visual/numeric parity and hardware performance remain OPEN. EVT-01 is not closed.

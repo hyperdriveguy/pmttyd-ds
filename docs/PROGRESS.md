@@ -1,3 +1,54 @@
+### Original shared NPC draw matrix (2026-10-14)
+
+Code commit 6765d7b542f5ff979b902338450d00509f96907a delivers the complete retained original `mtx_setup`
+8004ca80 helper, shared by ordinary/translucent/offscreen/blur NPC callbacks.
+The goal remains active. This advances a required rendering dependency; normal
+Game still uses the older NPC presentation path. No new live NPC/event/object
+or full callback activation is claimed by this change.
+
+Source camera/angle/revise calls, short-circuit scale/pivot reads, retained X
+versus reloaded Y/Z, Z/X/Y left-concatenation, fresh Y rotation, reflection and
+wrapping history-slot addressing are preserved. Every successful primitive is
+retained across a hold; output publishes only after final root translation.
+Storage is fixed-size with no per-call allocation. Numeric/SDK providers remain
+explicit; native finite math is not measured original numeric parity.
+
+Read-only inbox research independently audited all six matrix/draw bodies.
+The contract [retained draw matrix](behavior/display/RETAINED_NPC_DRAW_MATRIX.md)
+records complete local implementation and next callback boundaries. Ordinary
+classes1/2 skip Main, unlike class0; existing yaw documentation is corrected.
+No root documentation lock was claimed; EVT-01 remains open. New unchanged
+DOL radians bytes3c8efa35 are extracted/hash-verified into private door-data.
+Removing those four bytes recovers the exact previous pack. Only two of2131
+RomFS products changed; source art/music/dialogue and local gor_02.s remain
+unchanged. See ASSETS and ignored validation manifest for exact hashes.
+
+Validation used accepted frozen tree bc2d6234c0d1acab04d7a75e7115bb91ab23069c (3736 tracked files exact),
+isolated from concurrent work. Final `CMAKE_BUILD_PARALLEL_LEVEL=4 make test`:
+390 C++ tests, 41.51 seconds;203 Python tests, 44.298 seconds; zero
+skipped. Initial Python failure identified stale generated metadata; regenerating
+private door-data resolved it. The ARM test probe initially exposed a mixed
+int/int32_t initializer type in the fixture; an explicitly typed array fixed it.
+Final normal `make all -j4 -o assets-ready SOUNDTRACK=gamecube` passed; unchanged
+asset generation was skipped after scoped read-only door-data regeneration.
+
+Isolated Azahar ARM probe passed matrix/trace/holds/camera/reflection/rawSlots/
+nanGates/publication. Normal source restored and rebuilt; pre/post binary SHA256
+d17d1bad8743be0ffa980bdb46dba9bbe023403d4ef6457b2880faf9198fb335. Forty-second normal startup capture was visually inspected: original
+storybook, App60FPS/99%, no visible asset-error console. This is startup only,
+not field/hardware performance validation. Existing Pillow deprecations remain.
+Exact source, products, logs, native marker and capture hashes are recorded in
+`artifacts/npc-matrix-validation-manifest.json`. Source changes and documentation
+were committed separately; unrelated shared changes were preserved.
+
+Next: implement the complete ordinary/xlu queued callbacks, including the
+14-pair facing-pose swap graph and actual animation/Main/draw owners. Then add
+source offscreen GPU bounds and blur history/material restoration callbacks.
+Connect actual field camera/animation/display producers before activating the
+retained whole NPC Main in normal Game. Original visual/numeric traces, live
+field smoke admission/occlusion and New 2DS XL performance remain required.
+The Rogueport slice, playable prologue and full remake remain incomplete.
+
 ### Original footer GPU composition and selected audience interruption (2026-10-14)
 
 This goal turn made concrete progress in two scoped commits:

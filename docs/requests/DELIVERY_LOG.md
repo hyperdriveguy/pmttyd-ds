@@ -436,3 +436,5 @@ VM Kpa fresh-getter query leaves and copied score ABI are checked. Two unchanged
 DOL spans pin -600/+600/60. Real field event/render/resource/pass providers,
 normal Area activation and original runtime/story acceptance remain open.
 Partial delivery only; this is not remake or EVT-01 completion.
+
+| Original NPC queued matrix and callback dependency audit | EVT-01 | VALIDATED local mtx_setup implementation/source graph, 2026-10-14; parent OPEN | Codex inbox fulfillment (no lock claimed) | [Retained matrix](../behavior/display/RETAINED_NPC_DRAW_MATRIX.md): complete scalar/read/SDK ordering and exhaustive retry fixtures; ordinary pose swaps, offscreen/blur callbacks, native field producers, runtime/visual/numeric/hardware parity remain OPEN |

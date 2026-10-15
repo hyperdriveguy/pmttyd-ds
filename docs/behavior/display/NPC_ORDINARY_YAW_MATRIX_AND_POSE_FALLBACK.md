@@ -15,7 +15,9 @@ Professor scene yaw90/270 are these exact source event requests.
 
 `npcDisp` 0x8004c50c/0x2d4 loads yaw+144, negates it and calls reviseAngle:
 incoming animation angle A=reviseAngle(-yaw). It calls
-`mtx_setup(NPC,&matrix,-1)`, invokes animPoseMain and requests
+`mtx_setup(NPC,&matrix,-1)`. For current queue class0 it invokes
+animPoseMain then requests pass1. Classes1/2 request passes2/3 without Main.
+Other classes return after the shared prelude. Draw requests are
 animPoseDrawMtx(poseID,matrix,pass,A,2.0). Scale2 is the binary32 at
 0x8041fd34 (r2-30476, r2=0x80427440). The matrix's additive Y rotation
 NPC+f0 is a distinct field; do not write event yaw+144 into it.
@@ -116,3 +118,8 @@ facing/clock/draw consumers; this documentation adds concrete ordinary NPC
 producer bindings, not a native implementation or complete scene verification.
 NPC setup flag owners, runtime camera cadence, full material/shadow rendering,
 source SDK numbers and actual emulator/hardware scene comparison remain open.
+
+The complete retained native `mtx_setup` controller now preserves this graph,
+including every short-circuit/repeated read and SDK hold. See
+[retained matrix implementation and callback boundaries](RETAINED_NPC_DRAW_MATRIX.md).
+Queued callbacks and normal Game activation remain open.
