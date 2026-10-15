@@ -2312,3 +2312,8 @@ add_executable(animation_main_timeline_tests tests/animation_main_timeline_tests
 target_link_libraries(animation_main_timeline_tests PRIVATE ttyd_core)
 add_test(NAME animation_main_timeline COMMAND animation_main_timeline_tests)
 set_tests_properties(animation_main_timeline PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+target_sources(ttyd_core PRIVATE source/field/field_party_lifetime.cpp)
+add_executable(field_party_lifetime_tests tests/field_party_lifetime_tests.cpp)
+target_link_libraries(field_party_lifetime_tests PRIVATE ttyd_core)
+add_test(NAME field_party_lifetime COMMAND field_party_lifetime_tests)

@@ -1317,3 +1317,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Retained complete action sequence](battle/RETAINED_ACTION_SEQUENCE.md): original fifteen-state Act parent and retained original child calls; missing native menu/display owners remain explicit.
 
 - [Retained Main timeline/scalar evaluation](display/RETAINED_ANIMATION_MAIN_TIMELINE.md): exact scans/indices/state/fraction and time-to-timeline continuation over actual VM aliases; cache/output/full Main and normal NPC activation remain open.
+
+- [Retained original party removal](partner/RETAINED_PARTY_REMOVAL.md): complete Kill/Kill2, raw EVT clear/kill and fresh-owner Mario removal graphs; native actor/free/constructor binding remains open.

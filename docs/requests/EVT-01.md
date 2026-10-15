@@ -5222,3 +5222,16 @@ replay/interpolation/platform/linked/GPU owners, normal NPC activation and
 original visual/numeric/hardware parity remain OPEN; EVT-01 is not closed.
 Read-only next-stage audit records full replay source and copy/alias traps in
 ignored artifacts/npc-main-parent-evidence/animation-main-cache-replay-notes.txt.
+
+### 2026-10-15 Retained party Kill/Kill2 and original callers
+
+[Party removal](../behavior/partner/RETAINED_PARTY_REMOVAL.md) now implements
+complete source Kill/Kill2, raw EVT clear/kill and marioPartyKill80141198 graphs.
+Fresh listings confirm post-hook signed index reread and double table load,
+Kill2 saved-kind0, table-clear before fresh pose release and actor free, literal1
+auxiliary EVT dispatch, and a second Mario query between primary/auxiliary
+removal. Hold fixtures retain captured owners/child arguments without replay.
+Native actor ownership through table clear/free, original definition records,
+retained ordinary reentry, auxiliary Entry2Pos(kind13) and authored harbor/plaza
+conversion remain OPEN. No early canonical join or invented scene is added.
+EVT-01 and the prologue goal remain active.

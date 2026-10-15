@@ -13190,3 +13190,59 @@ Recent Trio Act/Phase/menu/Turn/audience/pinch/sequence integration and animatio
 release/texture additions still need separate inline review. All current tracked
 message header/CPP snapshots match annotations, but hash inventory is only a
 review aid, not full semantic or full-game proof. Full documentation goal active.
+
+## 2026-10-15 — Retained original party removal and caller order
+
+Implemented complete portable source partyKill800be69c and partyKill2 800be594,
+raw EVT clear/kill wrappers and marioPartyKill80141198. Source actors/Mario owners,
+definition and child arguments survive holds. Kill observes post-hook index and
+kind changes through both original table reads; Kill2 saves zero. Both publish
+saved-kind/index/table changes before a fresh pose-ID read, then release the pose
+and free the captured actor. Zero exit hook skips mode reads; signed kind/index
+and original unguarded linked-pointer reads remain explicit. EVT uses raw slot
+operands and literal1 auxiliary calls; outer Mario removal freshly queries Mario
+between primary/auxiliary slots and preserves its void return.
+
+Added [the removal contract](behavior/partner/RETAINED_PARTY_REMOVAL.md), inbox
+breadcrumb and original-source provenance. Read-only independent review found no
+controller mismatch against five fresh complete original listings. Tests compare
+ordered traces, hold every primitive once, mutate hooks/indices/pointers/owners,
+preserve pending child arguments after published effects, and cover negative/null,
+mode11, signed kind and raw EVT arithmetic. These are source controllers; real
+native actor ownership/free and authored story call sites are not bound yet.
+
+Validation is isolated at artifacts/field-party-lifetime-source, baseline
+ee73b3bbf1a8fa0eafeb54828db1d8ad8f445383 plus owned changes. Final
+CMAKE_BUILD_PARALLEL_LEVEL=6 make test exits0:445/445 C++ (49.64s),212/212 Python
+(34.462s),zero skipped. Final make all -j6 -o assets-ready SOUNDTRACK=gamecube
+TARGET=ttyd-field-party-lifetime exits0. Normal45s isolated Azahar startup reaches
+the original storybook, visually inspected. Separate ARM-injected fixture build
+and45s isolated smoke pass the strict seven-part completion marker, then resume
+normal boot. No user profile/save was touched. No hardware/performance/pixel or
+original-runtime execution parity claim; existing compiler/Pillow warnings remain.
+
+Validation setup exposed inherited stale startup/door packs, an absent host
+artifact directory and missing private fixture inputs; these were corrected before
+the final passing run. The private ARM fixture also required an explicitly typed
+int32 array for INT32_MIN. Frozen converters independently regenerate the existing
+27-span startup image and88-segment door data from the read-only ISO. Exactly four
+of2153 runtime products change from the preceding accepted cache; no new runtime
+pack or original asset is committed. All726 additional private fixture paths plus
+42 enemy inputs are hashed against accepted predecessors/pack evidence. Earlier
+failed logs remain available and are not counted as passing validation.
+
+Source/product/binary/evidence/log hashes are in
+artifacts/field-party-lifetime-validation-manifest.json. The audit covers3998
+tracked/owned inputs with zero unexpected changes; code inputs are unchanged
+through final gates. Concurrent newer battle/menu/timeline/effect/field/render and
+documentation work is preserved/excluded, not combined moving-worktree validation.
+No ISO, original extract, cache or compiled product is committed.
+
+Next: bind retained native actor ownership through table-clear/release/free,
+original party definition records and pose-view retirement. Make ordinary reentry
+construction restartable before replacing the battle ending's Kill barrier;
+otherwise later ending holds can destroy/recreate the newly published actor.
+Then complete auxiliary Entry2Pos(kind13) and authored harbor/plaza Goombella
+conversion without an early canonical join. Full battle field return, source
+animation/NPC scheduling, interiors/triggers/visibility and physical hardware
+validation remain open. EVT-01 and the prologue/full-game goal stay active.

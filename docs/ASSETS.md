@@ -2832,3 +2832,21 @@ The current check is pinned in artifacts/animation-timeline-assets-after.json
 and artifacts/animation-timeline-validation-manifest.json. Original Nintendo/
 Intelligent Systems rights remain reserved; original resources, source listings,
 packs, ISO and executables remain private/ignored.
+
+## 2026-10-15 — Party removal source evidence
+
+Retained Kill/Kill2 and their EVT/Mario callers use complete fresh read-only
+US revision0 DOL listings, hashes and outer-order notes under ignored
+`artifacts/field-party-lifetime-evidence/`. Original function addresses/hashes
+are recorded in [the removal contract](behavior/partner/RETAINED_PARTY_REMOVAL.md).
+No art, audio, message or new runtime pack was added. Validation regenerated
+the existing animation-boot memory.pmevt/memory.json from the read-only ISO
+using the frozen committed converter:27 original spans, including Main clock
+8041fba4/8, are required by this baseline. The inherited26-span pack was stale;
+the matching current door-data.pmevt/door-data.json were also regenerated
+with the frozen converter to include original bias802c1070/8 and Main clock
+8041fba4/8. Exactly these four products differ from the preceding accepted
+cache; both inherited packs preceded current committed animation fixtures. Original ISO,
+ELF/listing extracts and compiled products remain outside source history;
+original Nintendo material retains its original ownership/licensing. These
+controllers do not replace original records with authored story logic.
