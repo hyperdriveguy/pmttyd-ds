@@ -2737,3 +2737,23 @@ packs and executables remain private/ignored. Original Nintendo/Intelligent
 Systems rights remain reserved; extraction grants no redistribution rights.
 Exact source/build/native evidence is in
 `artifacts/animation-main-validation-manifest.json`.
+
+## Retained battle documentation validation inputs (2026-10-15)
+
+artifacts/battle-retained-code-documentation-validation/source inherits 63
+accepted products, original footer/HP/enemy atlas evidence and private default
+Python enemy fixtures from the prior Trio facade snapshot. New baseline converter
+changes are tools/animation_boot_image.py and tools/field_npc_actor_assets.py.
+Their bytes match facing authority tree f939e93610545b5ae2510f9adbf4cbda990a2503.
+The authority manifest pins animation-facing-assets-after.json; its four changed
+door-data and animation-boot JSON/PMEVT files are hash-matched before private copy.
+Door pack 152920 bytes SHA256
+42eff18104303e162533727e7e3dc4faafa6269b55b398ad25d16b9b75044378;
+boot pack 4788 bytes SHA256
+be0dfa08ab0ed46e45b7b9d2432a6e22f0c4991f4f50e08d56dbc0ce7c7986be.
+All 63 accepted hashes and copied evidence/fixture hashes verified after gates.
+No new conversion, resampling, editable import or shared-pack write. Native full
+regeneration skipped; Python fixtures independently use read-only ISO and empty
+temporary outputs. Original Nintendo/Intelligent Systems rights and recorded
+conversion/provenance remain unchanged; private tracking grants no new license.
+No ISO, extracted original or compiled binary committed.

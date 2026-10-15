@@ -12712,3 +12712,60 @@ target callsites. Actual camera/visibility/lifetime publication and one-shot tap
 consumption are still needed before enabling selected harmful-audience taps.
 Original menu art and lower-screen scene remain; full tutorial/real battle/field
 return and hardware verification remain unfinished. Goal stays active.
+
+## 2026-10-15 — Retained audience, pinch and recovery documented
+
+Added 105 inline comment lines across eight C++/header files for retained audience
+target/turn-end, pinch and packed status recovery. Added
+[audience continuation guide](code/battle-retained-audience.md) and
+[pinch/recovery guide](code/battle-pinch-recovery.md), linked from the code index.
+Code/docs commit bf2a4c92; defense-label correction fd372e63. Executable tokens and string literals unchanged;
+no gameplay changes or new tests for this comment-only work.
+
+Explained exact provider/input identities, float-bit input comparison, partial
+writes across holds/reset, independent parent/child global captures, sticky
+unsupported chunk domains, original binary64-to-single conversion, signed/wrapped
+clamps, one-draw RNG ownership, category/population ordering and retained
+AddAudienceNum suffix captures. Pinch notes describe two flag groups, first-unit
+selection, per-unit held audience changes, signed-byte alert countdown in source
+invocations and sound gates. Recovery notes explain shared duration/strength
+slots, signed-low-byte selectors, opposite cancellations, move reset conditions
+and return values that do not summarize all mutations. Numeric guest tokens and
+unidentified fields retain source identity; no provisional measurements invented.
+
+Frozen validation baseline 50a79e9b161db2dd60a81853221d4525d72d3d8c plus owned documentation is at
+artifacts/battle-retained-code-documentation-validation/source. Full audit covers
+3955 baseline tracked files, zero unexpected changes; all 11 documented frozen/live
+snapshots match and all 72 local guide/index links resolve. Concurrent uncommitted
+battle/field/animation/release/effect/render/file-cache work is preserved and
+excluded. This validates the frozen snapshot, not the combined moving worktree.
+Initial full gates passed. Final source review corrected the IDs14/15 label to
+Defense Up/Down in one comment and one guide sentence after both initial processes
+were terminal. Initial logs/exit markers retained; both full gates rerun against
+the corrected frozen snapshot. No executable-token or test changes.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits 0: 437/437 C++ (47.13s),
+212/212 Python (34.464s), zero skipped. The actual original 45-descriptor enemy
+bank fixture ran. Native make all -o assets-ready -j4 SOUNDTRACK=gamecube exits 0.
+Both original async gate processes observed terminal and exit markers agree.
+Manifest records frozen source, dependency, authority, product, evidence, log and
+ELF/3DSX hashes. Existing compiler/Pillow warnings remain. No emulator/profile/save
+changes; no hardware, pixel, performance or Gekko parity claim.
+
+Cache inherits 63 accepted products and original evidence/default Python fixture
+paths. Preflight detects only two converter changes since the prior baseline:
+boot image and NPC actor spans. Both frozen converters match the facing authority
+tree; four existing door/boot products match its hash-pinned after-inventory and
+are copied into this private snapshot. Door pack 152920 bytes, SHA256
+42eff18104303e162533727e7e3dc4faafa6269b55b398ad25d16b9b75044378;
+boot pack 4788 bytes, SHA256
+be0dfa08ab0ed46e45b7b9d2432a6e22f0c4991f4f50e08d56dbc0ce7c7986be.
+No new conversion, editable import or shared cache writes. Python fixtures use
+read-only ISO/empty temporary destinations independently; native full asset
+regeneration skipped. No ISO, extracted originals or binaries committed.
+
+Next: document retained Turn and event-barrier parents, audience attack-event
+resources and newer Trio integration, then remaining field animation/NPC/render/
+raw-RAM and release/effect additions. Broader event/message/story/platform/file/
+save/tooling audit remains active. Full code/remake goal is incomplete; keep
+original dialogue/control tokens and provider lifetimes intact.
