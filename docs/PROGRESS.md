@@ -10152,3 +10152,51 @@ real Mario radial/audio/numeric/cold resources before normal Area activation;
 do not enable fixtures in ordinary Game. Fix visual harness frontend/occlusion
 admission and add explicit asset-error detection; profile actual field/hardware.
 Full-game goal and EVT-01 remain active/incomplete.
+
+## 2026-10-14 — Typed battle movement and targeting support documented
+
+Added inline numeric/ownership/behavior notes to 24 C++ implementation/header
+files covering typed jump/move/sound/position, takeoff, candidate sampling/choice,
+menu selection, facing and target confirmation, plus packed count/parameter EVT
+wrappers. Added [typed battle support](code/typed-battle-support.md) and its
+index entry. Main code/docs commit de7c0639. All 24 preserve executable tokens
+and literal strings; no code changes or guide refinements after build start.
+
+Explained semantic weapon pointer versus BE row bytes, typed versus packed
+memory traces, source curve/height/bucket/weight coefficients, aliasable outputs,
+raw-output versus result sentinel, native view/service lifetime, unmirrored facing
+part X, independent repeat keys, cancel/confirm/audience ordering and late provider
+failure without rollback. Distinct work captures and unsupported cursor domains
+remain explicit. Source simulation visits are not measured render timing and
+native arithmetic/provider admission is not original SDK/Gekko parity.
+
+Frozen validation uses baseline d3914af5ffeba67b096aea4f5e39aee5fabbe45e plus owned documentation in
+artifacts/battle-support-code-documentation-validation/source. Audited all 3733
+baseline tracked files: zero unexpected changes; 26 documented files match frozen
+and recorded live hashes. All 52 local guide/index links resolve. Moving checkout
+work outside scope was preserved/excluded; no combined-moving-tree validation.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test passes 390/390 C++ (47.11s) and
+204/204 Python (30.448s), zero skipped. make all -o assets-ready -j4
+SOUNDTRACK=gamecube exits0. Manifest records source, dependency, log and native
+binary hashes. Existing compiler/Pillow warnings remain. No emulator/profile/
+save changes, new hardware/timing/pixel or SDK/Gekko fidelity claims. No tests
+were added or disabled for these documentation-only changes.
+
+Private cache starts from accepted packed-battle documentation inputs. It
+verifies 41 accepted product hashes plus relocated Frankly/common-menu evidence
+and 14 privately copied footer PNG/atlas hashes. To support committed baseline
+fixtures, 5 products are overlaid only after matching recorded authorities:
+2 NPC-entry door products (pack152308 bytes) plus3 original class-footer products.
+The 13 source footer images and atlas crops are independently checked against
+pinned pixel hashes before building; original choices/licensing are unchanged.
+No new conversion/import/shared write; existing Python converters independently
+read ISO read-only and use empty temporary destinations. Native regeneration
+is deliberately skipped. No original binaries/ISO were committed; details in
+[asset notes](ASSETS.md).
+
+Next: action/weapon/input controllers, stage/audience/camera/menu owners,
+message/story/effect, platform/file and uncovered event/runtime/save modules and
+port tools. Re-audit committed shared animation/NPC entry/file/menu integration
+and concurrent additions against earlier snapshots. Full code documentation
+and remake remain incomplete; goal stays active.
