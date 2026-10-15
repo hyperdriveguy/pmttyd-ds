@@ -1791,3 +1791,20 @@ See [packaging contract](behavior/display/BATTLE_CLASS_COMMON_TPL_PACKAGING.md).
 The HUD coin/Star Point groups use already packaged original IDs475/443/444/478;
 no new texture allocation/conversion is needed. The converter records original
 status/getter source pins; see [HUD counters](behavior/display/NATIVE_BATTLE_HUD_STATUS_ELEMENTS.md).
+
+## Packed battle-entry documentation validation inputs (2026-10-14)
+
+artifacts/battle-entry-code-documentation-validation/source reuses accepted
+pouch/field-session documentation RomFS/evidence. Cache assembly checks all 36
+accepted product hashes (including five cold-animation auxiliary files matched
+to artifacts/animation-cold-validation-manifest.json) plus the relocated original
+Frankly PNG hash, then copies
+RomFS and mutable message/material/field/map/door/player evidence privately.
+Other large local-assets directories remain shared read inputs. Conversion
+choices and per-asset provenance/licensing in generated metadata are unchanged.
+Native validation skips asset regeneration. Cache assembly performs no new
+original conversion/import/shared write; existing Python converter fixtures
+separately read the ISO read-only and generate only in empty temporary dirs.
+Original Nintendo/Intelligent Systems rights remain reserved; private validation
+copies confer no new license or redistribution rights. No original binary/ISO
+bytes were committed.

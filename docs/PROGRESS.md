@@ -9437,3 +9437,48 @@ query/candidate/interrupt stop/start/replacement, facing/automatic pose,
 collision/gravity, shared world/bootstrap/resource lifetime and normal Game
 activation. Then validate actual NPC draw pixels and physical3DS performance.
 Complete area/prologue and full remake remain unfinished; goal stays active.
+
+## 2026-10-14 — Packed battle entry and startup documented
+
+Added inline ownership/numeric/behavior notes to 30 C++ implementation/header
+files covering actor selectors/registry, unit entry/setup, vectors, status/gauge
+initialization, HP/FP import/export, equipment, pose lookup/display entry, fresh pouch,
+sequence/resource startup, unit EVT leaves, first act and turn-start processing.
+Added [battle entry/startup](code/battle-entry.md) and its index entry. Explained
+publication before late initialization with no rollback, signed fields/source
+wrapping, mask values versus bit indices, first-table-fallback priority, raw EVT
+outputs, callback read order and state-machine fallthrough. Unknown fields retain
+offset names; source counters are not described as measured timing. Code/docs
+commit 8d6c0a0c. All 30 preserve executable tokens, including string contents.
+
+Frozen validation uses baseline 78af9eb4c06ea167a39642a0e19f17ebaff0c038 plus owned documentation in
+artifacts/battle-entry-code-documentation-validation/source. All 3651 baseline
+tracked files audited: zero unexpected changes; 32 documented files match frozen
+and live hashes. All 44 local guide/index links resolve. Other moving-checkout
+work was preserved/excluded; no combined-worktree validation is claimed.
+
+Final CMAKE_BUILD_PARALLEL_LEVEL=4 make test passes 369/369 C++ (37.14s)
+and 202/202 Python (30.560s), zero skipped. make all -o assets-ready -j4
+SOUNDTRACK=gamecube exits0. Initial full gates passed; final incremental full host
+and native gates followed comment wording/helper-name refinements. Manifest
+records exact source, dependency, log and native binary hashes. Existing compiler/
+Pillow warnings remain. No emulator run/profile/save changes or new measured
+hardware, pixel, timing or Gekko numerical fidelity claims.
+
+Private cache reuses accepted pouch/field-session RomFS/evidence, checks all 36
+accepted product hashes and the relocated Frankly atlas evidence, and copies
+mutable evidence privately. Five newly required cold-animation auxiliary products
+were copied only after matching the committed cold-animation validation manifest. Native pack regeneration is deliberately skipped.
+Cache assembly makes no new original conversion/import/shared write. Existing
+Python converter fixtures independently read the ISO read-only and build into
+empty temporary destinations. No original binary/ISO bytes were committed;
+original rights/licensing remain unchanged in [asset notes](ASSETS.md).
+
+A fresh ignored documentation-inventory.json records tracked C++/header/PICA
+snapshot matches and drift by subsystem. This is a navigation aid, not proof of
+semantic completeness; untracked additions and tools require separate auditing.
+
+Next: re-audit newly committed packed wander/cold-animation additions, remaining
+battle controllers/resources/menus, message/story/effect/audio/platform and port
+tools. Concurrent additions to covered files still require their own review.
+Full code documentation and the remake remain incomplete; goal stays active.
