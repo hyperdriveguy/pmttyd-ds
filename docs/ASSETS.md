@@ -2366,3 +2366,19 @@ and use empty temporary outputs; native full asset regeneration is deliberately
 skipped. Nintendo/Intelligent Systems rights remain reserved; private tracking/
 copying grants no new license. No ISO, extracted original asset or compiled
 binary was committed.
+
+## Harbor service documentation validation inputs (2026-10-14)
+
+artifacts/harbor-services-code-documentation-validation/source reuses 46 accepted
+products from battle-damage-owners documentation validation, plus common-menu/
+Frankly evidence, 14 private footer PNG/atlas and three HP PNG hashes. All hashes
+were checked before and after gates. No converter/assets/Makefile changes
+occurred between parent and current baselines, so no new overlays/conversion
+were required. Existing original source ranges and conversion choices remain
+unchanged; no resampling, geometry/lighting changes, editable imports or shared
+pack writes. Existing Python converter fixtures independently read the ISO
+read-only and use empty temporary outputs; native full asset regeneration is
+deliberately skipped. Nintendo/Intelligent Systems rights remain reserved;
+private tracking/copying grants no new license. No ISO, original extracted asset
+or compiled binary committed. Exact dependency/log/native hashes and source
+baseline are journaled in the ignored validation manifest.

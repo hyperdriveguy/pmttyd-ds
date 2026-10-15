@@ -11618,3 +11618,51 @@ review this session did not annotate or validate that composition yet. Re-audit
 concurrent animation/tangent/NPC/HP/display integrations against committed code;
 matching an earlier snapshot is not proof of full subsystem coverage. Full
 code documentation and remake remain unfinished; goal stays active.
+
+## 2026-10-14 — Harbor tutorial service admission documented
+
+Added inline layout/domain/ownership/behavior notes to six Harbor adapters:
+damage, aftereffect, AP report, audience selection, present item and weapon-menu
+input. Added [Harbor service adapters](code/harbor-service-adapters.md) and index
+entry. Code/docs commit 34c6af20. All six preserve executable tokens/string
+literals; no behavior changes or new tests for prose-only work.
+
+Explained registered-slot spacing versus original packed fields, signed
+halfword boundaries, partial damage writeback and owned sound strings; narrow
+Mario/Crump callback/element/status/badge/counter/lethal admission; presentation
+request versus completion; same-sequence RNG preview before live aftereffects;
+bingo chance gating and platform arithmetic order; retained audience/item cursor
+ownership, explicit UI-release/presentation acknowledgement, trigger versus
+repeat input and native scratch versus original offsets. Missing effect/math/
+hazard providers stay pending; no invented fallback behavior. Constants are
+identified as source fields or native policy, not measured hardware behavior.
+
+Frozen validation baseline b916036634bab27b271fe6632b78b5f1ff1633a3 plus owned documentation lives at
+artifacts/harbor-services-code-documentation-validation/source. Audit covers
+3870 tracked baseline files: zero unexpected changes. All eight documented files
+match frozen/live snapshots; all 61 local guide/index links resolve. Concurrent
+Harbor/action/Trio/HP/NPC/animation/runtime work was preserved/excluded; validation
+does not cover the combined moving worktree. No post-launch source refinements.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test passes 420/420 C++ (47.43s) and
+207/207 Python (30.510s), zero skipped. Complete host make log confirms the
+successful terminal test phase; its process handle was not retained. Native
+make all -o assets-ready -j4 SOUNDTRACK=gamecube exits 0. Manifest records source,
+dependency/log and ELF/3DSX hashes. Existing compiler/Pillow warnings remain.
+No emulator/profile/save changes or hardware/pixel/performance claims.
+
+Cache inherits 46 accepted products plus common-menu/Frankly evidence, 14 private
+footer PNG/atlas and three HP PNG hashes. Preflight found no converter/assets/
+Makefile changes since the parent validation baseline; all inherited accepted
+product hashes match. No overlays, new cache conversion, editable import or
+shared-pack write was needed. Existing Python converter fixtures independently
+read the ISO read-only and use empty temporary outputs. Native full asset
+regeneration was deliberately skipped. No original asset binaries/ISO committed;
+provenance/rights unchanged. See [asset notes](ASSETS.md).
+
+Next: remaining Harbor entry/packed actor/class-menu/command/action composition
+and Trio/runtime composition, then remaining event/message/story/effect/platform/
+file/save helpers and tools. Header and packed actor source were read for the
+next pass but not annotated in this batch. Re-audit concurrent additions against
+committed code; matching a prior snapshot is only an audit aid. Full code
+documentation and remake remain unfinished; goal stays active.
