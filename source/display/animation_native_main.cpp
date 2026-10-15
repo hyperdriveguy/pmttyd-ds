@@ -96,6 +96,6 @@ bool AnimationStartupProcess::configureMain(std::shared_ptr<const CameraManager>
  if(producerPending() || entryResource_)return false;
  auto owner=AnimationNativeMain::bind(*this,std::move(cameras),std::move(addresses),current);if(!owner)return false;main_=std::move(owner);presentation_.reset(new AnimationMeshPublication(*this,std::move(current)));++mainConfiguration_;return true;
 }
-bool AnimationStartupProcess::main(uint32_t handle,uint64_t pass,unsigned visits){return !entryResource_ && !presentationPending() && main_ && main_->advance(handle,pass,visits);}
+bool AnimationStartupProcess::main(uint32_t handle,uint64_t pass,unsigned visits){return !entryResource_ && !selectionPending() && !presentationPending() && main_ && main_->advance(handle,pass,visits);}
 
 }

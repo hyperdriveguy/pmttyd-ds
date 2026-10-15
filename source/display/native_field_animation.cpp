@@ -52,8 +52,8 @@ std::optional<int32_t> NativeFieldAnimation::enter(std::shared_ptr<const BattleP
  for(const auto& model:pool_->models())if(model.flags() && model.resource && model.resource->modelName==resource->modelName){resource=model.resource;break;}
  if(!entering_){name_=name;entering_=resource;mode_=mode;auto& m=process_->vm().memory;for(unsigned i=0;i<=name.size();++i)if(!m.writeByte(Name+i,i<name.size()?uint8_t(name[i]):0))return {};}
  else if(entering_!=resource || mode_!=mode || name_!=name)return {};
- uint32_t address=Name;
- for(auto pair:{std::make_pair("a_mario",0x802c18a0u),std::make_pair("a_mario_r",0x802c18a8u),std::make_pair("e_mario",0x802c18b4u),std::make_pair("c_pkr",0x804213e0u)})if(name==pair.first)address=pair.second;
+ uint32_t address=Name;uint8_t mappedByte=0;
+ for(auto pair:{std::make_pair("a_mario",0x802c18a0u),std::make_pair("a_mario_r",0x802c18a8u),std::make_pair("e_mario",0x802c18b4u),std::make_pair("c_pkr",0x804213e0u)})if(name==pair.first && (name!="c_kuri_h" || process_->vm().memory.readByte(pair.second,mappedByte)))address=pair.second;
  auto result=process_->enter(address,uint32_t(mode),resource);if(result){entering_.reset();name_.clear();}
  // Source exposes -2 for file failure; the typed API exposes only valid handles.
  if(result && *result<0)return {};
@@ -82,7 +82,7 @@ bool NativeFieldAnimation::mario(const MarioPresentation& mario,const std::array
  BattlePoseClock clock;if(!this->clock(clock))return false;
  const float ms=rounded(real(process_->vm().memory,0x8041fb40)*float(mario.poseStartFrame));
  if(!std::isfinite(ms) || ms<0 || double(ms)>=18446744073709551616.0 || ((selected_!=handle || uploaded_!=mario.poseUploadSerial) && p->word(0x90)!=0xffffffff))return false;
- requestRoot_=nextRoot_;requestHandle_=handle;requestBank_=bank;requestSerial_=mario.poseUploadSerial;requestStart_=mario.poseStartFrame;requestName_=mario.selected;requestYaw_=mario.drawYaw();requestReflect_=mario.reflectZ();setupDone_=false;++marioPass_;marioActive_=true;
+ requestRoot_=nextRoot_;requestHandle_=handle;requestBank_=bank;requestSerial_=mario.poseUploadSerial;requestStart_=mario.poseStartFrame;requestName_=mario.selected;requestYaw_=mario.drawYaw();requestReflect_=mario.reflectZ();setupDone_=false;selectionDone_=false;++marioPass_;marioActive_=true;
  if(!process_->reservePresentation(uint32_t(handle),marioPass_)){marioActive_=false;return false;}
  return resumeMario(budget);
 }
@@ -90,10 +90,15 @@ bool NativeFieldAnimation::resumeMario(unsigned budget){
  if(!marioActive_ || !budget)return false;
  auto* p=pool_->pose(requestHandle_);if(!p)return false;
  if(!setupDone_){
-  BattlePoseClock current;if(!clock(current))return false;
   if(selected_!=requestHandle_ || uploaded_!=requestSerial_){
-   if(!pool_->selectName(requestHandle_,requestName_.c_str(),true,current))return false;
+   if(!selectionDone_){
+    uint32_t index=0;for(unsigned i=0;i<p->resource->names.size();++i)if(p->resource->names[i]==requestName_){index=i;break;}
+    if(!process_->setAnimation(uint32_t(requestHandle_),index,1,budget))return false;
+    selectionDone_=true;
+   }
+   BattlePoseClock current;if(!clock(current))return false;
    const float ms=rounded(real(process_->vm().memory,0x8041fb40)*float(requestStart_));
+   if(!std::isfinite(ms) || ms<0 || double(ms)>=18446744073709551616.0)return false;
    const uint64_t q=p->word(0xc)?current.modeNonzero:current.modeZero,epoch=q-uint64_t(double(ms));
    p->word(0x1c,uint32_t(epoch));p->word(0x18,uint32_t(epoch>>32));p->word(0x8c,p->word(0x1c));p->word(0x88,p->word(0x18));selected_=requestHandle_;uploaded_=requestSerial_;
   }

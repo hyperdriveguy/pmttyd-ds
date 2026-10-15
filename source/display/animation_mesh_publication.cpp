@@ -83,6 +83,6 @@ bool AnimationMeshPublication::advance(uint32_t handle,uint64_t pass,unsigned bu
  }
  return false;
 }
-bool AnimationStartupProcess::reservePresentation(uint32_t handle,uint64_t pass){return !entryResource_ && presentation_ && (presentationPending() || !mainPending()) && presentation_->reserve(handle,pass);}
-bool AnimationStartupProcess::present(uint32_t handle,uint64_t pass,unsigned budget){return !entryResource_ && presentation_ && (presentationPending() || !mainPending()) && presentation_->advance(handle,pass,budget);}
+bool AnimationStartupProcess::reservePresentation(uint32_t handle,uint64_t pass){return !entryResource_ && !selectionPending() && presentation_ && (presentationPending() || !mainPending()) && presentation_->reserve(handle,pass);}
+bool AnimationStartupProcess::present(uint32_t handle,uint64_t pass,unsigned budget){return !entryResource_ && !selectionPending() && presentation_ && (presentationPending() || !mainPending()) && presentation_->advance(handle,pass,budget);}
 }

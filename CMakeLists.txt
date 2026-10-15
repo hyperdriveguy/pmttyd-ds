@@ -2552,3 +2552,9 @@ set_tests_properties(field_party_script_call PROPERTIES WORKING_DIRECTORY "${CMA
 
 # Native graphics service is explicitly unavailable in host builds.
 target_sources(ttyd_core PRIVATE source/display/native_graphics_program.cpp)
+# Original ordinary animation selector and retained native owner.
+target_sources(ttyd_core PRIVATE source/display/animation_selection.cpp source/display/animation_native_selection.cpp)
+add_executable(animation_selection_tests tests/animation_selection_tests.cpp)
+target_link_libraries(animation_selection_tests PRIVATE ttyd_core)
+add_test(NAME animation_selection COMMAND animation_selection_tests)
+set_tests_properties(animation_selection PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

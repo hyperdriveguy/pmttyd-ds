@@ -9,6 +9,7 @@
 #include "animation_scratch_memory.hpp"
 #include "animation_native_main.hpp"
 #include "animation_mesh_publication.hpp"
+#include "animation_native_selection.hpp"
 namespace ttyd {
 // Owns a cold animation subsystem's actual VM/SDK arena/work/cache aliases.
 // Runs cold startup and original Entry with real file/buffer owners. Live CPU
@@ -35,7 +36,12 @@ public:
  bool reservePresentation(uint32_t handle,uint64_t pass);
  bool present(uint32_t handle,uint64_t pass,unsigned budget=8192);
  bool presentationPending() const{return presentation_ && presentation_->pending();}
- bool producerPending() const{return mainPending() || presentationPending();}
+ bool selectionPending() const{return selection_ && selection_->pending();}
+ uint32_t selectionPhase() const{return selection_?selection_->phase():0;}
+ // Exclusive source selector; resume identical inputs after false. May set up
+ // its own reserved phase0 presentation, but cannot overlap source Main.
+ bool setAnimation(uint32_t handle,uint32_t selector,uint32_t force,unsigned visits=64);
+ bool producerPending() const{return mainPending() || presentationPending() || selectionPending();}
  const AnimationMeshPublication* presentationOwner() const{return presentation_.get();}
  bool mainPending() const{return main_ && main_->pending();}
  uint64_t mainConfiguration() const{return mainConfiguration_;}
@@ -49,6 +55,7 @@ public:
  const AnimationPoolMemory* animationMemory() const{return aliases_.get();}
 private:
  friend class AnimationNativeMain;
+ friend class AnimationNativeSelection;
  friend class AnimationMeshPublication;
  AnimationStartupProcess(std::shared_ptr<NativeFileCache>,std::shared_ptr<BattlePosePool>,const EventNativePlatform&,uint32_t);
  AnimationInitializeServices services();
@@ -77,6 +84,7 @@ private:
  AnimationQuantizationState quantization_;
  std::shared_ptr<AnimationScratchMemory> scratch_; // Retire before arrays/VM.
  uint64_t mainConfiguration_=0;
+ std::unique_ptr<AnimationNativeSelection> selection_;
  std::unique_ptr<AnimationMeshPublication> presentation_;
  std::unique_ptr<AnimationNativeMain> main_; // Retire frames before scratch/VM.
 };

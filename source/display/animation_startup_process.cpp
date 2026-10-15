@@ -28,7 +28,7 @@ bool admittedImage(const EventScriptAssets& image){
 }
 }
 AnimationStartupProcess::AnimationStartupProcess(std::shared_ptr<NativeFileCache> files,std::shared_ptr<BattlePosePool> pool,const EventNativePlatform& platform,uint32_t gp):pool_(std::move(pool)),files_(std::move(files)),vm_(std::make_unique<EventNativeRuntime>(gp,platform)){}
-AnimationStartupProcess::~AnimationStartupProcess(){presentation_.reset();main_.reset();if(scratch_)scratch_->retire();}
+AnimationStartupProcess::~AnimationStartupProcess(){selection_.reset();presentation_.reset();main_.reset();if(scratch_)scratch_->retire();}
 std::unique_ptr<AnimationStartupProcess> AnimationStartupProcess::cold(std::shared_ptr<NativeFileCache> files,std::shared_ptr<BattlePosePool> pool,const EventNativePlatform& platform,const char* path,uint32_t gp,uint32_t arena,uint32_t bytes){
  // Explicit native arena policy: aligned, nonwrapping, room for all four source
  // fixed pools, descriptor reservation and a valid final free-list header.

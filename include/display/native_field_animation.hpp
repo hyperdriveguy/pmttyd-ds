@@ -21,7 +21,7 @@ public:
  bool mario(const MarioPresentation&,const std::array<int32_t,3>& handles,unsigned budget=8192);
  bool resumeMario(unsigned budget=8192);
  bool presentationPending() const{return marioActive_ || (process_ && process_->presentationPending());}
- bool producerPending() const{return presentationPending() || (process_ && process_->mainPending());}
+ bool producerPending() const{return presentationPending() || (process_ && process_->producerPending());}
  bool configurePresentation(std::shared_ptr<const CameraManager>);
  void publicationBudget(unsigned budget){budget_=budget;} // Native scheduling policy, not source timing.
  unsigned publicationBudget() const{return budget_;}
@@ -48,7 +48,7 @@ private:
  AnimationReleaseCursor releasing_;uint64_t releasingGeneration_=0;
  std::shared_ptr<const CameraManager> cameras_;uint64_t configuredMain_=0;
  ActorVector nextRoot_{},requestRoot_{},publishedRoot_{};
- bool marioActive_=false,setupDone_=false;uint64_t marioPass_=0,requestSerial_=0;
+ bool marioActive_=false,setupDone_=false,selectionDone_=false;uint64_t marioPass_=0,requestSerial_=0;
  uint32_t requestBank_=0;int32_t requestHandle_=-1;uint16_t requestStart_=0;std::string requestName_;
  float requestYaw_=0,publishedYaw_=0;bool requestReflect_=false,publishedReflect_=false;
  unsigned budget_=8192;
