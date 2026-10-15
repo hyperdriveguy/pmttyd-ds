@@ -35,7 +35,9 @@ post-loop reservation uses that final captured W, without an invented root read.
 Second failure runs actual initTestHeap and selected animPose_AllocBuffer(P),
 then invalidates each cache once. Third failure calls Refresh and recursively
 retries the original aligned request. Retained child cursors preserve all of
-this recursion. Heap allocation and animPose_AllocBuffer remain real providers;
+this recursion. Heap allocation remains a real provider; the complete
+[pose-buffer allocator](NATIVE_POSE_BUFFER_ALLOCATION_AND_RECURSIVE_RECOVERY.md)
+now runs as the actual retained child;
 there is no ring overwrite, fake success or replacement file/model pointer.
 Native stack admission holds beyond64 retained nested machine frames. That is
 a port resource bound, not a measured original recursion limit or source return.
@@ -48,16 +50,14 @@ pose count, or manufactures a loaded file. Missing W remains unavailable before
 mode effects; missing heap or overflow rebuild remains pending at its real call.
 All subsequent NPC release/context/party/lower BattleInit requirements remain.
 
-The current native owners still require migration: FieldPosePool owns one
-BattlePosePool, FieldPartyRegistry has five semantic mode2 poses without full
-170-byte scalar records, and legacy Trio owns another pool. A complete session
-must establish one pose/model/texture namespace before those actors enter, alias
-same BattlePose.state bytes through the VM, retain real loaded model/file/holder
-views, and connect published scratch ranges to the actual CPU/GPU output owner.
-The typed evaluator already reads the same cache3c word, but its separate native
-shape arrays are not claimed to alias every published guest scratch range.
-Colliding live legacy handles cannot be adopted by copying records or treating
-the pool as empty. Full cold animInit/tangent/file history also remains required.
+Fresh native sessions now use the
+[shared field/NPC/battle pose namespace](NATIVE_SHARED_FIELD_AND_BATTLE_POSES.md).
+They still require genuine W, loaded model/file/holder and scratch/output
+startup ownership before source-address refresh can run normally. The typed
+evaluator reads the same cache3c word, but its separate native shape arrays
+are not claimed to alias every published guest scratch range. Legacy colliding
+handles cannot be adopted by copying records or declaring the pool empty.
+Full cold animInit/tangent/file history remains required.
 
 Validation fixtures deliberately separate branch tests from original-resource
 binding. The latter uses actual registered NPC/pose CPU records and original

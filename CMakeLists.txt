@@ -1919,3 +1919,9 @@ add_executable(shared_pose_session_tests tests/shared_pose_session_tests.cpp)
 target_link_libraries(shared_pose_session_tests PRIVATE ttyd_core)
 add_test(NAME shared_pose_session COMMAND shared_pose_session_tests)
 set_tests_properties(shared_pose_session PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Original retained pose-buffer constructor and recursive recovery.
+add_executable(animation_pose_buffer_tests tests/animation_pose_buffer_tests.cpp)
+target_link_libraries(animation_pose_buffer_tests PRIVATE ttyd_core)
+add_test(NAME animation_pose_buffer COMMAND animation_pose_buffer_tests)
+set_tests_properties(animation_pose_buffer PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

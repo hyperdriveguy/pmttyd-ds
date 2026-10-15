@@ -34,14 +34,11 @@ int main(){
  {Buffers f;AnimationBufferCursor c;f.words[f.work+0x14]=1;unsigned allocations=0;
   f.onStore=[&](uint32_t a,uint32_t){if(a==f.poses+0x48){++allocations;f.words[f.model+0xf0]=9;}};
   assert(runAnimationBufferFunction(0x80041c84,0,f.services(),c));assert(allocations==1 && f.words[f.poses+0x4c]==f.base+64 && f.words[f.poses+0x50]==f.base+192);}
- {Buffers f;AnimationBufferCursor c;f.words[f.work+0x14]=1;f.words[f.work+0x108]=f.base+0x17ffe0;f.hold=0x80041ee0;
-  assert(!runAnimationBufferFunction(0x80042ac8,0x17ffe0,f.services(),c) && pendingAnimationBufferFunction(c)==f.hold);
-  assert(f.calls.back().args[0]==f.poses);auto count=f.stores.size();assert(!runAnimationBufferFunction(0x80042ac8,1,f.services(),c) && f.stores.size()==count); // Retains original aligned request.
-  f.onCall=[&](BattleSequenceCall& c){if(c.function==0x80041ee0){f.words[f.work+0x14]=0;f.words[f.poses]=0;}};f.hold=0;
-  assert(runAnimationBufferFunction(0x80042ac8,1,f.services(),c) && c.result==f.base && f.words[f.work+0x108]==f.base+0x17ffe0);}
- {Buffers f;AnimationBufferCursor c;f.words[f.work+0x14]=1;f.words[f.work+0x108]=f.base+0x17ffe0;
-  f.onCall=[&](BattleSequenceCall& c){if(c.function==0x80041ee0){f.words[f.work+0x108]=f.base+0x100;f.words[f.work+0x14]=0;}};
-  assert(runAnimationBufferFunction(0x80042ac8,0x17ffe0,f.services(),c) && c.result==f.base && f.words[f.work+0x108]==f.base+0x17ffe0 && f.count(0x80041ee0)==1);}
+ {Buffers f;AnimationBufferCursor c;f.words[f.work+0x14]=1;f.words[f.work+0x108]=f.base+0x17ffe0;unsigned invalidations=0;
+  f.onStore=[&](uint32_t a,uint32_t){if(a==f.poses+0x3c && ++invalidations==3){f.words[f.work+0x14]=0;f.words[f.poses]=0;}};
+  assert(runAnimationBufferFunction(0x80042ac8,0x17ffe0,f.services(),c) && c.result==f.base && f.words[f.work+0x108]==f.base+0x17ffe0);
+  assert(invalidations==4 && f.count(0x80041ee0)==0); // Real recursive child plus caller's own cache store.
+ }
  {Buffers f;AnimationBufferCursor c;f.words[f.work+0x104]=0;f.words[f.work+0x14]=0;f.words[f.work+0x108]=0x180000;f.hold=0x800300f0;
   assert(!runAnimationBufferFunction(0x80042ac8,1,f.services(),c));auto stored=f.words[f.work+0x108];assert(stored==0x180020);assert(!runAnimationBufferFunction(0x80042ac8,1,f.services(),c) && f.words[f.work+0x108]==stored);f.hold=0;assert(runAnimationBufferFunction(0x80042ac8,1,f.services(),c) && c.result==f.base);}
  {Buffers f;AnimationBufferCursor c;f.words[f.poses]=0x80000000;assert(runAnimationBufferFunction(0x80041c58,0,f.services(),c) && f.words[f.work+0x10c]==1);assert(!f.words.count(f.poses+0x48));}

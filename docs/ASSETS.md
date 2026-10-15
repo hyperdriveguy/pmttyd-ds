@@ -1693,3 +1693,15 @@ artifacts/area-npc-leaves-validation-manifest.json. Original Nintendo/Intelligen
 Systems rights remain reserved; local extraction conveys no redistribution
 license. ISO was not modified or committed. This validates source data and
 scoped callback use, not new NPC GPU raster or hardware performance.
+
+
+### Pose-buffer allocator validation (2026-10-14)
+
+No new art/audio conversion or shared pack writes. Validation retains2125
+private RomFS products; only door-data.pmevt/json are regenerated with the
+committed base extractor to include its newer NPC actor leaves. All other2123
+products, including original MODEL/TPL/player/field NPC resources, are byte-identical
+to the previous shared-pose manifest. Original allocator fixture reads actual
+MODEL counts and same typed pose bytes; test W/file/holder/scratch views do not
+certify file loading or original startup. ISO remains read-only; no generated
+assets committed.

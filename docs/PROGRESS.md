@@ -9072,3 +9072,77 @@ REL hashes/listings live under ignored artifacts/npc-wander-bridge-evidence/.
 No further code/assets/build/profile/save changes. Scoped relative-link and
 whitespace checks pass. This is static source delivery for the next retained
 bridge, not proof of native wandering or original runtime observations.
+
+### Complete original pose-buffer allocator (2026-10-14)
+
+Previous goal turn was progress:7484b472 established fresh shared original
+player/NPC/battle CPU poses. This increment implements complete
+animPose_AllocBuffer80041ee0/93c inside the retained animation buffer machine.
+All eight inlined blocks capture old W108 before file/MODEL count loads,
+reserve using the same W, then re-read W/base/cursor for unsigned strict-end.
+Multiplication/size alignment wrap32; old cursor is not aligned. First overflow
+runs actual Reset+recursive selected-pose Restore; second runs Refresh then
+actual testAlloc with retained aligned size. This deliberately differs from
+testAlloc's first-overflow inline Rebuild. Live58/5c and68/6c aliases, one final
+cache invalidation and Restore caller's extra invalidation are preserved.
+
+Restore now invokes the real retained child instead of asking an external
+provider to acknowledge it. Existing BattleSequenceBinding therefore consumes
+this original recovery graph over its actual caller VM. Heap0 and genuine
+shared W/model/file/holder/output storage remain real dependencies. No empty
+pool or fake allocator success is introduced; unsupported recursive domains
+retain the existing64-frame native admission hold. This is port resource policy,
+not an original recursion limit or completed allocation.
+[Contract](behavior/display/NATIVE_POSE_BUFFER_ALLOCATION_AND_RECURSIVE_RECOVERY.md).
+
+Read-only original-source review found no ordering/capture/arithmetic mismatch.
+Evidence:artifacts/shared-animation-startup-next/, including complete listings,
+byte provenance, verified startup data and static implementation review. Cold
+animInit must precede source Entry and cannot be run over current active poses.
+The report identifies initialized Vivian destination80415db4→80305900 and actual
+80415da0 bytes; preserve them when binding that parent. SDK heap allocation is
+distinct from battle mapheap. Global source W, live BE cache records, actual
+file/holder/relocated MODEL and CPU-vector/guest-scratch output ownership remain
+next; then complete cold init/tangent/files and authored prologue chronology.
+
+New tests cover all eight requests, early captured cursor, live aliases, mode2
+in both contexts, genuine recursion, second-overflow recovery, retained heap
+wait and bounded nontermination. Existing overflow tests now exercise actual
+recursive children rather than injected success. Original-resource fixture
+calls this allocator over the SAME live typed pose record and original MODEL
+counts, then proves typed evaluation reads the invalidated cache word. Its W,
+file/holder and zeroed scratch views remain test supplied; source file/heap
+startup and output-vector aliases are not certified.
+
+First standalone test compilation found a callback variable/type naming clash;
+corrected before validation. Initial full suite failed a newer committed NPC
+leaf assertion because the copied private event pack predated the frozen base.
+Regenerating door-data.pmevt/json with that base's original ISO extractor fixes
+its admission; no source callback was bypassed. Of2125 private RomFS products,
+only those two event products differ from the previous shared-pose manifest;
+all2123 others are byte-identical. No new art/audio conversion or shared pack
+write, no assets committed, ISO remains read-only. Failed logs retained.
+
+Validation: TMPDIR=artifacts/native-stage-map-tmp CMAKE_BUILD_PARALLEL_LEVEL=4
+make -C artifacts/pose-buffer-source test -o assets-ready exits0:365/365 C++
+in38.25s and201/201 Python in32.837s. Standalone -Wall/-Wextra new allocator
+and existing refresh tests pass. Native make all -j4 -o assets-ready
+SOUNDTRACK=gamecube TARGET=ttyd-pose-buffer BUILD=build-pose-buffer exits0,
+including normal restore. Strict isolated ARM fixture passes allEightBuffers,
+captureOrder, liveAliases, actualRecursion, selectedMode2, secondOverflow,
+retainedWait and boundedRecovery, plus original-resource same-byte binding.
+Snapshot:artifacts/azahar-pose-buffer-probe/pose-buffer-probe.snapshot. Private
+main edits restored. Existing compiler/Pillow warnings remain.
+
+Frozen basee03b0e933e42e3ce6b038f52d3a2df6a9cad482d and scoped edit journal isolate this
+increment from concurrent work. Audit:3638 source files,2125 RomFS products,
+zero mismatches. Manifest:artifacts/pose-buffer-validation-manifest.json.
+Native SHA256 26a08ae34b06a88b712c6c72d2349181ee896c1f959584cda346cfc94a15cee8.
+Documentation links:1385 Markdown files, zero broken links. The moving merged
+checkout is not claimed validated as a whole. Full prologue remains unfinished
+and the documentation inbox/goal stay active.
+
+Normal isolated40s Azahar boot exits0. Inspected original storybook/US English
+capture artifacts/azahar-pose-buffer-normal/boot.png (sample60AppFPS/100%).
+Only generated isolated profile/saves used; user settings/saves untouched. No
+original GPU/pixel/Gekko numeric or physical3DS performance parity claim.

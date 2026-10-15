@@ -39,6 +39,13 @@ void runAnimationBindingFixture(){
  backend.admit=true;assert(!binding->callback(0x80073b24,work,services) && binding->pending()==0x8004ce58 && work[1]==4 && backend.requests==3);
  assert(p0->word(0x48)==0 && p1->word(0x48)==0x8b000000 && p1->word(0x58)==p1->word(0x5c) && p1->word(0x68)==p1->word(0x6c) && p1->word(0x3c)==0xffffffff);
  auto before=p1->word(0x48);assert(!binding->callback(0x80073b24,work,services) && backend.requests==3 && p1->word(0x48)==before);
+ // Complete source pose allocator over the same live typed state and original
+ // MODEL counts. Fixture file/W/scratch views still do not certify cold startup.
+ services.word=[](void* p,uint32_t a)->std::optional<uint32_t>{uint32_t v=0;return static_cast<Backend*>(p)->vm.memory.readWord(a,v)?std::optional<uint32_t>(v):std::nullopt;};
+ services.store=[](void* p,uint32_t a,uint32_t v){return static_cast<Backend*>(p)->vm.memory.writeWord(a,v);};
+ uint32_t cursor=0;assert(vm->memory.readWord(0x8a000108,cursor));AnimationBufferCursor allocator;
+ assert(runAnimationBufferFunction(0x80041ee0,0x8a010170,services,allocator));
+ assert(p1->word(0x48)==cursor && p1->word(0x58)==p1->word(0x5c) && p1->word(0x68)==p1->word(0x6c) && p1->word(0x3c)==0xffffffff);
  // The exact same cache word is read by typed evaluate after source refresh.
  assert(field.evaluate(1,{0,17}) && p1->word(0x3c)!=0xffffffff);
  binding.reset();assert(vm->memory.unregisterExternalRam(0x8a010000) && vm->memory.unregisterExternalRam(0x8a010170));

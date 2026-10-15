@@ -4852,3 +4852,18 @@ Codeb385793a binds [five source actor callbacks](../behavior/field/NATIVE_NPC_AC
 
 
 Source follow-up: [packed wander frontier](../behavior/field/ORIGINAL_WANDER_EVENT_PACKED_BINDING_FRONTIER.md) supplies original actual-wrapper radius/story conditions, LW10 map allocation and observable init/main service order plus regular scheduler and stop/start/replacement owners. Static read-only DOL/REL evidence only; actual retained wander/Mario/pose/audio/Main bindings and lifetime remain open. Existing semantic snapshot helper cannot establish these alias/order contracts.
+
+
+### Original pose-buffer allocation continuation (2026-10-14)
+
+Implemented complete animPose_AllocBuffer80041ee0 and nested actual recursive
+Restore in the refresh/testAlloc machine. First overflow Reset+recursiveRestore
+is distinct from testAlloc's inline Rebuild; second overflow Refresh+testAlloc
+retains original size. [Contract](../behavior/display/NATIVE_POSE_BUFFER_ALLOCATION_AND_RECURSIVE_RECOVERY.md).
+Source review/evidence: artifacts/shared-animation-startup-next/. Keep genuine
+cold animInit, original SDKheap and auxiliary files/tangent numeric services,
+shared W/live model cache/file/holder/relocated MODEL and CPU output aliasing
+open. New source report identifies real Vivian destinations80415db4→80305900
+and initialized80415da0 bytes; do not invent zero destination history or run
+cold init over active shared poses. Next bind genuine startup/address ownership
+before admitting authored battle entry; full prologue remains unfinished.

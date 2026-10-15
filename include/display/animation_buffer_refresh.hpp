@@ -10,7 +10,8 @@ struct AnimationBufferCursor {
  std::unique_ptr<AnimationBufferCursor> child;
 };
 // Complete retained animPoseBattleInit, animPoseRefresh, testAlloc and
-// initTestHeap parents. Heap0 and animPose_AllocBuffer remain real services.
+// initTestHeap and animPose_AllocBuffer parents. Heap0 remains a real service.
+// The second argument is a source pose address for animPose_AllocBuffer.
 // Recursive recovery is retained, not collapsed to ring-buffer overwrite.
 bool runAnimationBufferFunction(uint32_t function,uint32_t bytes,
  const BattleSequenceEntryServices&,AnimationBufferCursor&);
