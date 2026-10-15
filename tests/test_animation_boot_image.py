@@ -21,4 +21,7 @@ class AnimationBootImage(unittest.TestCase):
    self.assertEqual(spans[0x8041e458],bytes.fromhex('000000003f800000'))
    self.assertEqual(struct.unpack_from('>I',spans[0x80306698])[0],0x8003e5b8)
    self.assertEqual(struct.unpack_from('>I',spans[0x803066d8],28)[0],0x8003ec38)
+   self.assertEqual(spans[0x80415dc8],bytes.fromhex('00000002000000010000000300000000'))
+   self.assertEqual(spans[0x802c103c],bytes(12))
+   self.assertEqual(spans[0x802c1078].split(b'\0')[0].count(b'%'),1)
    self.assertNotIn(0x803e6e78,spans) # Shared filename belongs to the real file cache.

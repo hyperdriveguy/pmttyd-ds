@@ -44,6 +44,11 @@ SPANS += [('node-joint-dispatch',0x80306698,0x40,'7fc767c67ceb21b2e9e387c2e0c57d
  ('sdk-concat-tail',0x8041e458,8,'35a329e9a766e1a60f366cf4599a0ecc21be601e310be696c25bb91f31cb475b'),
  ('sdk-matrix-one-zero',0x80429358,8,'e416065dd951359ab79d557107324f0f8fb0142494f2523ca9fdac35f1ac3d18')]
 
+# Original renderProc initialized cull table, light seed and warning format.
+SPANS += [('render-cull-table',0x80415dc8,16,'c18ceb647eba232a898446a1e9f49062cb65a114a2b5736db1f26c53bdc859ed'),
+ ('render-light-seed',0x802c103c,12,'15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b'),
+ ('render-index-warning',0x802c1078,76,'a9a703d116f0da2933c3853744550afb966f34c72c8a106587fa2f22fa5fb971')]
+
 def build(iso=DEFAULT_ISO,output='romfs/animation-boot'):
  root=Path(output);root.mkdir(parents=True,exist_ok=True)
  with Path(iso).open('rb') as disc:

@@ -4,7 +4,7 @@
 #include <cstring>
 namespace ttyd {
 namespace {float real(uint32_t w){float f;std::memcpy(&f,&w,4);return f;}uint32_t bits(float f){uint32_t w;std::memcpy(&w,&f,4);return w;}}
-AnimationGroupBinding::AnimationGroupBinding(EventAddressSpace& m,const NativeNpcGroupBackend& b,std::function<bool()> current):memory_(m),backend_(b),current_(std::move(current)),node_(m,current_){}
+AnimationGroupBinding::AnimationGroupBinding(EventAddressSpace& m,const NativeNpcGroupBackend& b,std::function<bool()> current):memory_(m),backend_(b),current_(std::move(current)),node_(m,current_),render_(m,b.renderChildren,current_){}
 bool AnimationGroupBinding::copy(uint32_t from,uint32_t to){
  if(!current_ || !current_())return false;
  if(!copying_){copying_=true;copySource_=from;copyDestination_=to;pair_=0;pairLoaded_=false;}
@@ -30,7 +30,7 @@ AnimationGroupServices AnimationGroupBinding::source(){
  s.material=[](void* u,uint32_t shape,uint32_t current){auto& b=*static_cast<AnimationGroupBinding*>(u);return b.current_ && b.current_() && b.backend_.material && b.backend_.material(b.backend_.user,b.memory_,shape,current);};
  s.vivian=[](void* u,const AnimationGroupVivian& q){auto& b=*static_cast<AnimationGroupBinding*>(u);return b.current_ && b.current_() && b.backend_.vivian && b.backend_.vivian(b.backend_.user,b.memory_,q);};
  s.callback=[](void* u,uint32_t fn,uint32_t data,uint32_t group,uint32_t matrix){auto& b=*static_cast<AnimationGroupBinding*>(u);return b.current_ && b.current_() && b.backend_.callback && b.backend_.callback(b.backend_.user,b.memory_,fn,data,group,matrix);};
- s.render=[](void* u,uint32_t shape,uint32_t current){auto& b=*static_cast<AnimationGroupBinding*>(u);return b.current_ && b.current_() && b.backend_.render && b.backend_.render(b.backend_.user,b.memory_,shape,current);};
+ s.render=[](void* u,uint32_t shape,uint32_t current){auto& b=*static_cast<AnimationGroupBinding*>(u);return b.current_ && b.current_() && (b.backend_.render?b.backend_.render(b.backend_.user,b.memory_,shape,current):b.render_.advance(shape));};
  s.blend=[](void* u,uint32_t k,uint32_t m,uint32_t old)->std::optional<uint32_t>{auto& b=*static_cast<AnimationGroupBinding*>(u);const float factor=real(k),source=real(m),saved=real(old);if(!b.current_ || !b.current_() || !std::isfinite(factor) || !std::isfinite(source) || !std::isfinite(saved))return {};volatile float delta=source-saved;const float result=std::fma(factor,float(delta),saved);return std::isfinite(result)?std::optional<uint32_t>(bits(result)):std::nullopt;};return s;
 }
 bool AnimationGroupBinding::advance(const AnimationInnerTraversal& q,unsigned visits){return current_ && current_() && resumeAnimationGroup(q,source(),cursor_,visits);}
