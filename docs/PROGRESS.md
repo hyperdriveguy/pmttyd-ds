@@ -8744,3 +8744,41 @@ inventory/story, effect/audio and port tooling. Re-audit new NPC setup binding,
 area/registry integration and other concurrent changes in already covered code.
 Port-wide documentation and the remake remain incomplete; documentation goal
 stays active.
+
+## 2026-10-14 — Field pickups, quest delivery and encounter data documented
+
+Added inline comments to 24 C++ implementation/header files covering item/icon
+pools, forced item95 pickup, Mario motion, kind6/7 effect, coin callback/borrowed
+window lifetime, BGM/stream envelopes, Goomba quest2/13 acquisition/hand-in/reward
+and field battle/control/packed configuration. The [field-items guide](code/field-items.md)
+connects numeric masks, clocks, units, source table layouts and service ordering.
+Explained inactive item versus active icon lookup, duplicate setter targets,
+known-zero versus unknown revised remove, source coin amount re-resolution,
+low-word timing, retained mute floor, publish-before-counter volume and strict
+first-attack selector matching. Verified exact signed configuration bounds
+-130000000..-119934464 from existing literals; no behavior change. All 24 files
+preserve executable tokens. Main code/docs commit 6dc85de1.
+
+Validation freezes baseline 9ee823680801631e73c9ba883830330108574b83 plus documentation in
+artifacts/field-items-code-documentation-validation/source. Audited 3599 tracked
+files: zero unexpected changes; 26 documented files match frozen and recorded
+live hashes. No touched source had preexisting implementation edits. Concurrent
+work elsewhere is preserved and excluded; this is not a whole-moving-tree claim.
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test passes 358/358 C++ in 37.31s and
+199/199 Python in 28.268s, zero skipped. make all -o assets-ready -j4
+SOUNDTRACK=gamecube exits 0. host.log/native.log and source/binary/log hashes are
+recorded in manifest.json. Existing compiler/Pillow warnings remain.
+
+Accepted map-lifecycle documentation RomFS/evidence inputs were copied privately;
+door/sequence/recovery products matched parent hashes first. Mutable evidence
+directories were private copies; remaining large local-assets inputs were shared
+read dependencies. Cache assembly performed no original-asset extraction/
+conversion, editable import or shared pack write; native asset regeneration deliberately skipped. No emulator/profile/save
+changes or new measured hardware/timing/pixel/floating-point fidelity claims.
+See [asset notes](ASSETS.md).
+
+Next: Trouble Center quest state/menu/window/services/board graphs, remaining
+battle, message/inventory/story, effect/audio and port tooling. Re-audit concurrent
+NPC setup/area/registry, renderer and animation-refresh additions in previously
+covered modules. Port-wide documentation and the remake remain incomplete;
+documentation goal stays active.

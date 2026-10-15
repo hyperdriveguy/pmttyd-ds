@@ -1609,3 +1609,16 @@ dependencies. No new ISO read, extraction, conversion, editable import or shared
 pack write occurred. Original Nintendo/Intelligent Systems rights remain reserved;
 private validation copies confer no new license or redistribution rights. No
 original binary/ISO bytes were committed.
+
+## Field-item documentation validation cache (2026-10-14)
+
+artifacts/field-items-code-documentation-validation/source privately copies the
+accepted map-lifecycle documentation RomFS/evidence. Door-data.pmevt/json,
+battle-sequence-entry.pmevt/json and recovery-effect.bin matched parent manifest
+SHA256 values before copying; the new manifest records parent provenance and
+accepted hashes. Mutable message-icons/material-light/field-native/field-map-npc/
+door-data evidence directories are private copies; remaining large local-assets
+inputs are shared read dependencies. Cache assembly needed no new ISO read,
+original-asset extraction/conversion, editable import or shared pack write. Original Nintendo/Intelligent
+Systems rights remain reserved; private validation copies confer no new license
+or redistribution rights. No original binary/ISO bytes were committed.
