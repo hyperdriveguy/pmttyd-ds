@@ -1,3 +1,104 @@
+## 2026-10-14 — Original Maya curves, effect pool and recovery draw callbacks
+
+Previous goal turn made progress on recovery/Maya lifecycle ownership. Commit
+`52045352cb768e333bd1422aec5d51518f9867a9` adds whole portable
+MayaMatrix8005e4f4/3ac, effect Entry/Main/Init/Init64/AutoRelease, and recovery
+Disp801422f4/684 / Disp2 801420fc/1f8 with retained service waits.
+[Curve/pool contract](behavior/effect/MAYA_QUANTIZED_CURVES_AND_EFFECT_POOL_CONTINUATIONS.md),
+[draw contract](behavior/effect/RECOVERY_DRAW_CALLBACKS_AND_NUMBER_TRANSFORMS.md).
+The full tutorial/battle/optional audience-tap objective remains active.
+
+Maya decodes GQR5 literal06070607 correctly: signed16 type7, LOAD exponent6,
+therefore1/64. Independent audit corrected the initial scale7 task hypothesis
+before implementation. All six quantized loads precede the hold byte;22 channels
+preserve source interval/NaN selection, zero-duration epsilon, separate binary32
+and fused instruction boundaries,11 SDK constructors/10 concatenations and
+matrix-before-scalar publication. Every SDK wait retains operands and rejects
+owner/output reuse. Tests exercise every21 call boundary, nonzero tangents,
+endpoint/NaN/clamp/epsilon and fused cancellation. An explicit native-port math
+adapter reuses existing rendering affine math, including host/libm rotations and
+finite-domain admission. Full Gekko FPSCR/subnormal/NaN/raster parity is not
+claimed; no silent identity or guessed transform is substituted.
+
+The source pool keeps exact-zero allocation/partial initialization, original
+one-past exhausted scan semantics, live per-record context/flags, captured
+bank/count, same-scan creation and complete file-cache tail. Async return0 is
+executed source return, not suspension. Held callback/free/async/allocation/clear
+calls retain their original operands; fresh manager/GP/tag captures remain at
+source sites. Init includes Init64's fresh pointer reload; context release frees
+heap3 before flags0 and never invents per-effect destructors. Actual valid
+heap/file/guest storage and boot/driver cadence remain provider responsibilities.
+
+Recovery draw callbacks preserve original camera/payload recaptures and the
+initial billboard matrix used later by particles. HP textures18/20 and FP19/21,
+root±16/ST1, particle±6/ST2, unsigned tick/index palette wrap, alpha low byte,
+GX setters/material order and signed sprintf/strlen number centering are retained.
+Pending quads use atomic acknowledgement, and completed setters/matrices do not
+replay. Tests change E+c/type and four cameras to prove refreshed root vs retained
+particle base; number requests preserve original style, amount,255 alpha/mode1.
+Actual effNumberGX/texture/GPU submission remain external owners, not no-ops.
+The runtime default-RGBA word read is retained but is not fabricated into the
+static pack; its four bytes are overwritten by source palette/alpha operations.
+
+Original-data ownership test now routes actual source effect acquisition and
+Main traversal through real Maya allocation/play/calculate/evaluator and the
+declared affine adapter. It checks source key0 zero-scale/pivot output,
+key9 identity and key79 terminal scale/pivot/clamp, while preserving held timing
+and preventing allocation/sound replay. Display/SFX callbacks remain explicit
+fixture services. Sub-agents implemented independent curve/pool portions and
+audited both plus root's draw callbacks; no scoped defect remained at freeze.
+The prior lifecycle contract was updated to link the implemented boundaries.
+
+Required validation used frozen `artifacts/battle-lens-qwwrj2n7`, baseline
+`9aa81d8f9f739f97e30035957927c526a2a4d364` plus owned inputs.
+`CMAKE_BUILD_PARALLEL_LEVEL=4 make test -o assets-ready` passed350/350 C++
+(39.34s) and199/199 Python (30.599s), exit0;
+`artifacts/maya-pool-test-final.log`. Required native
+`MAKEFLAGS=-j4 TMPDIR=artifacts/tmp make all -o assets-ready
+BUILD=build-battle-lens TARGET=ttyd-battle-lens` exited0; source compile log
+`maya-pool-native-final.log`, refreshed-pack `maya-pool-native-packed.log`,
+normal-main restore `maya-pool-native-restored.log`. The initial native invocation
+overlapped frozen preparation and is excluded from validation; the final source
+run compiled all four new translation units after preparation was complete.
+Normal main restored exactly. Normal3DSX SHA256
+`8eb50b12d49c1d9ede65822dc7acaa68485566e675e03142efab32aabb4f920f`.
+Audit1773 source/include/test/tool/build inputs found zero mismatches/extra inputs;
+`artifacts/maya-pool-source-manifest.json`. Concurrent pending/later merged work
+was preserved/excluded; the entire live/merged tree is not claimed tested.
+New focused tests passed Werror; existing unrelated warnings remain.
+
+Initial full suite found3 baseline private-resource failures in NPC history,
+bootstrap and sequence binding. Refreshed door-data with its committed converter
+(152004 bytes/970 objects) and generated original battle-sequence-entry.pmevt
+with its committed converter. Logs `maya-pool-door-refresh.log` /
+`maya-pool-sequence-refresh.log`. No tests were disabled. Existing2678-byte
+recovery pack and original images remained unchanged; no new asset conversion
+or extracted payload was committed. Existing asset-ledger licensing applies.
+Read-only ISO verifiers passed: recovery12 bodies/9 spans; driver14 bodies,
+186 anchors/8 spans/4 scoped calls; deletion6 bodies/57 anchors/1 span/271 DOL
+call sites. Their JSON evidence is `artifacts/maya-pool-*-source.json`.
+
+Combined ARM fixture passed isolated Azahar15s, exit0:
+`artifacts/azahar-maya-pool/fixture-status.txt` reports
+`PASS originaldata;pool;curves0/9/79;waitonce;drawcallbacks;owners`.
+Screenshot inspected; pre-stop guest log has no Unmapped/LogException entries.
+This proves covered ARM CPU/source requests, not rendered recovery pixels,
+audible SFX, normal-game gift delivery, full original numeric parity or hardware
+performance. Temporary fixture main was copied only into frozen validation tree,
+then normal main was restored/rebuilt. User emulator settings/saves untouched.
+Documentation checker passed1367 Markdown files/zero broken links before this
+progress entry.
+
+Next: bind real native effect-pool/heap/file-cache/GP-time ownership and actual
+GX rendering for recovery18–21, whole effNumberGX(mode1/image108), original
+recovery sound macros and terminal N64 stardust32. Preserve source scene4 world
+projection for both top and lower audience continuation. Only acknowledge the
+native present-item effect entry when those owners accept a surviving effect;
+its recover-once hold remains unbound without fake item clear/delivery. Main2
+kind6, full tutorial/story/battle choreography, original message-window ownership,
+optional audience taps and hardware acceptance remain open. Physical controls
+and original menu/HUD style remain mandatory.
+
 ## 2026-10-14 — Original recovery and Maya lifecycle ownership
 
 Previous goal turn made progress with retained attack selection. Commit
