@@ -198,11 +198,20 @@ bool stagePrologueAnimationFiles(NativeFileCache& cache,const char* root){
   {"a/c_pkr",5,"field-player-c_pkr.draw-model.bin"},
   {"a/c_kuri_h",5,"field-native-c_kuri_h.draw-model.bin"},
   {"a/c_kuribo",5,"trio-enemy-kuribo.draw-model.bin"},
+  {"a/c_kanbu_ibt",5,"field-native-c_kanbu_ibt.draw-model.bin"},
+  {"a/c_zako_n",5,"field-native-c_zako_n.draw-model.bin"},
+  {"a/c_gara",5,"field-native-c_gara.draw-model.bin"},
+  {"a/c_suifu_b",5,"field-native-c_suifu_b.draw-model.bin"},
   {"a/a_mario-",4,"field-player-a_mario.draw-textures.bin"},
   {"a/a_mario_r-",4,"field-player-a_mario_r.draw-textures.bin"},
   {"a/c_pkr-",4,"field-player-c_pkr.draw-textures.bin"},
   {"a/c_kuri_h-",4,"field-native-c_kuri_h.draw-textures.bin"},
   {"a/c_kuribo-",4,"trio-enemy-kuribo.draw-textures.bin"},
+  // Crump MODEL names c_kanbu as its texture bank; no invented _ibt alias.
+  {"a/c_kanbu-",4,"field-native-c_kanbu_ibt.draw-textures.bin"},
+  {"a/c_zako_n-",4,"field-native-c_zako_n.draw-textures.bin"},
+  {"a/c_gara-",4,"field-native-c_gara.draw-textures.bin"},
+  {"a/c_suifu_b-",4,"field-native-c_suifu_b.draw-textures.bin"},
   {"a/vivian.bin",0,"animation-startup/a/vivian.bin"},
   {"a/ag2tg.bin",0,"animation-startup/a/ag2tg.bin"}};
  std::vector<NativeFileCache::Source> sources;

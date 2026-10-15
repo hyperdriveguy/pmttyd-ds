@@ -15808,3 +15808,78 @@ ownership. Full host/native gates for that snapshot are running; no success is
 claimed yet. Its source-pin checks and1,546-document link check exited0.
 Normal tutorial/battle UI activation, actual Window async startup, physical
 bad-thrower selection and audience targeting remain open.
+
+### Full original harbor native resources — 2026-10-15
+
+Imported all original CPU poses and immutable MODEL/TPL/descriptor companions
+for Goombella32, Crump59, subordinate28 and the actual two sailors16/9
+(144 poses). New converter retains first-exact original tribe identities,
+source offsets/hashes and local provenance. Crump's MODEL uses `c_kanbu-`
+textures, not an invented `c_kanbu_ibt-`. Make's asset preparation now includes
+this catalog. The actual shared native file cache atomically stages the four
+new models/four TPLs with existing prologue resources, without changing arena
+limits or staging Goombella twice. Original cache acquisition/relocation/
+reference/release fixture now traverses every new model and its real texture
+bank through two actual VM views. The canonical field-player Goombella bank
+converts all32 original descriptors in source order; an earlier eleven-clip
+first-entry bank could otherwise conceal story poses from the shared NPC pool.
+Goombella atlas grows31→46 cells (source atlas1024x512→1024x1024,
+runtime512x256→512x512); existing half-resolution RGBA8/Lanczos conversion
+rebuilds atlas/UV scale together, with original MODEL/TPL bytes unchanged.
+No facing/render logic, dialogue, story condition or visibility change.
+
+ARM resource loading caught a real Crump import rejection missed by metadata
+checks: its seven unused UV streams have count0 and original offsetffbc8fc0.
+The importer now skips span admission for zero-count UV index streams only.
+Selected-channel/run/index checks and source relocation stores remain intact;
+no original bytes are normalized. C++ regression loads all five complete banks
+and makes Crump stream1 nonempty to prove the sentinel then remains rejected.
+Source FIFO only reads selected streams (all Crump draws select0). The same
+empty-stream rule is applied to live file geometry byte comparisons, while
+all25 relocated root words still require exact source-plus-base equality.
+Actual shared-cache/two-VM regression loads all five harbor MODEL banks, validates live
+geometry, then corrupts/restores Crump's empty-stream root to prove it still
+rejects wrong relocation. First host
+gate passed but the private ARM gate failed; corrected admission and repeated
+final required checks. Failed logs/profile are retained as diagnostic evidence.
+
+Final validation uses the previously accepted field-battle-owner snapshot
+plus only this scoped source/conversion delta. Concurrent unrelated edits,
+index entries and commits are preserved and excluded from isolated gates.
+make test exits0: 492/492 C++ (139.96s), 224/224 Python (60.625s), zero skipped.
+Final make --jobserver-style=pipe all -j6 -o assets-ready SOUNDTRACK=gamecube
+TARGET=ttyd-harbor-native-resources exits0; final private ARM build exits0.
+Asset preparation is skipped only after independent frozen conversion and
+exact product audit. Final probe reuses525 exact production objects except
+main; other source/include/RomFS inputs match. Existing compiler/Pillow
+warnings remain. No live job was restarted after a timeout.
+
+Fresh isolated final normal50s and ARM50s Azahar profiles exit0; strict8 ARM
+markers pass: cache/sharedVM/relocation/references/Crump texture/full144/
+canonical32/walk mesh. Full original CPU banks load on ARM; Goombella walk
+produces an actual mesh. This is no Main/GPU/event completion receipt.
+Final isolated checkpoint profile exits0 after70s warmup and original file-menu
+navigation/field load; idle/right/left/idle captures show Rogueport movement.
+This checkpoint has no active partner, so it does not establish Goombella
+walking visual parity. Normal capture shows original opening book/US text.
+The final production binary remains unchanged throughout all final captures;
+user emulator profiles/saves untouched. Earlier captures are diagnostic only.
+
+Audited 4249 source files, 2192 runtime products, 1474 private
+inputs and 1 reference input. Exactly34 runtime products differ from
+the accepted asset baseline (26 new); raw Goombella MODEL/TPL/directory remain
+byte-identical. Full field-player/native Goombella CPU packs are byte-identical.
+Original asset atlas/UV changes and dimensions are recorded above. Frozen doc
+link check:1555 Markdown files, zero broken links. Exact journals, provenance,
+failed/final logs, hashes, binaries and captures:
+artifacts/harbor-native-resources-validation-manifest.json.
+
+Limits/next: resources alone do not acknowledge async loader, retained native
+npcEntry, ordered SetTribe/forced SetAnim, actual shared actor bootstrap or
+Main/Draw/GPU. Bind those children using complete source evidence, preserving
+source return0 versus native holds and SetTribe return1. Tagged GOR00 setup
+still needs its complete original actor/setup table and source RNG. Continue
+RESULT-01/DEMO-01 control/audio/battle teardown/field return and postbattle
+story integration. No playable full prologue, hardware/performance or original
+visual/audio parity claim. Extracts/products remain ignored, ISO read-only,
+local-use-only original Nintendo/Intelligent Systems licensing unchanged.

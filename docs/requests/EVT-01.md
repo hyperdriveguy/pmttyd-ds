@@ -5409,3 +5409,16 @@ full opening/story remain open; EVT-01 stays OPEN. Next implement the linked
 prepass/ring/inline-selector/paper-matrix subcontrollers from the existing
 contracts and complete the actual-VM Inner binding. Do not substitute typed
 mesh success or an exported SetAnim call for the inline linked source graph.
+
+### Native harbor resource delivery — 2026-10-15
+
+Fresh complete Entry/SetTribe/async/registry bodies and original caller/data
+are in local `artifacts/field-npc-direct-entry-evidence/`; companion sailor
+registration evidence is in `artifacts/harbor-native-npc-evidence/`. Entry
+polls real animGroupBaseAsync, source0 ends one invocation; SetTribe preserves
+model/handle, ordered stores/forced selection, and returns1. Imported original
+five-bank/full144-pose resources and expanded the shared party Goombella bank
+to32. Actual process cache stages exact Crump/subordinate/sailor MODEL/TPL
+paths. This supplies missing bytes without claiming native Entry/SetTribe,
+async readiness, registration, Main/Draw, battle or postbattle completion.
+[Resource contract](../behavior/field/HARBOR_NATIVE_RESOURCES.md). EVT-01 remains open.

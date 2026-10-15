@@ -16,7 +16,28 @@ std::shared_ptr<AnimationDrawResource> rawFixture(bool cycle=false){
     if(cycle)word(0x400+0x40,2);
     FILE* f=std::tmpfile();assert(f && std::fwrite(raw.data(),raw.size(),1,f)==1);std::rewind(f);auto r=std::make_shared<AnimationDrawResource>();const bool ok=r->read(f);std::fclose(f);if(cycle){assert(!ok);return {};}assert(ok);return r;
 }
+void originalHarborResources(const char* root){
+    const char* names[]={"c_pkr","c_kanbu_ibt","c_zako_n","c_gara","c_suifu_b"};
+    constexpr unsigned counts[]={32,59,28,16,9};
+    for(unsigned i=0;i<5;++i){
+        const auto path=std::string(root)+"/field-native-"+names[i];
+        const auto resource=loadBattlePoseResource((path+".pose-directory.bin").c_str(),(path+".pmanim").c_str());
+        assert(resource && resource->draw && resource->textures && resource->names.size()==counts[i]);
+        for(const auto& name:resource->names)assert(resource->bank->pose(name.c_str()));
+        if(i!=1)continue;
+        const auto& original=*resource->draw;
+        for(unsigned k=1;k<8;++k)assert(!original.word(0x108+4*k) && original.word(0x16c+4*k)==0xffbc8fc0);
+        // An actual read from that out-of-file sentinel remains inadmissible.
+        FILE* source=std::fopen((path+".draw-model.bin").c_str(),"rb");assert(source && !std::fseek(source,0,SEEK_END));
+        const auto size=std::ftell(source);assert(size>0);std::rewind(source);std::vector<uint8_t> bytes(size_t(size),0);
+        assert(std::fread(bytes.data(),1,bytes.size(),source)==bytes.size());std::fclose(source);
+        bytes[0x10f]=1; // Stream1 count0 ->1, BE.
+        FILE* f=std::tmpfile();assert(f && std::fwrite(bytes.data(),bytes.size(),1,f)==1);std::rewind(f);
+        AnimationDrawResource malformed;assert(!malformed.read(f));std::fclose(f);
+    }
+}
 int main(){
+    originalHarborResources("romfs");
     for(const auto& spec:std::array<std::pair<const char*,unsigned>,3>{{{"romfs/trio-attack-mario.draw-model.bin",42},{"romfs/trio-attack-goombella.draw-model.bin",22},{"romfs/professor.draw-model.bin",19}}}){
         const auto r=AnimationDrawResource::load(spec.first);assert(r && r->groups()==spec.second);const auto root=r->group(r->groups()-1);assert(root.shape==-1 && root.node+24<=r->word(0x140));
     }

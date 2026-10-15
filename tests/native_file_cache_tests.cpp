@@ -1,4 +1,5 @@
 #include "native_file_cache.hpp"
+#include "animation_draw_resource.hpp"
 #include "battle_menu_file_cache.hpp"
 #include "animation_initialize.hpp"
 #include "event_native_runtime.hpp"
@@ -59,10 +60,19 @@ void runNativeFileCacheFixture(const char* root){
  assert(!files->stage("late",0,{1}) && !files->acquire("./a/c_pkr",5));
  const auto common=menu->acquire("./battle/common/battle_common.tpl",4);assert(common && payload(m,*common)==0x87100000);
  std::map<std::string,uint32_t> textures;
- const char* models[]={"a_mario","a_mario_r","e_mario","b_mario","c_pkr","c_kuri_h"};
+ const char* models[]={"a_mario","a_mario_r","e_mario","b_mario","c_pkr","c_kuri_h","c_kanbu_ibt","c_zako_n","c_gara","c_suifu_b"};
  uint32_t last=0;
  for(auto model:models){
   const auto path=std::string("a/")+model;auto h=files->acquire(path,5);assert(h && *h!=*common && byte(m,*h+1)==5 && half(m,*h+2)==1);auto b=payload(m,*h);assert(b && word(m,b+0x14c)>=b && text(m,b+4)==model);
+  const std::string name=model;
+  const auto pack=name=="b_mario"?"trio-attack-mario":name=="a_mario" || name=="a_mario_r" || name=="e_mario" || name=="c_pkr"?"field-player-"+name:"field-native-"+name;
+  auto draw=AnimationDrawResource::load((std::string(root)+"/"+pack+".draw-model.bin").c_str());
+  assert(draw && files->modelGeometryCurrent(m,b,draw) && files->modelGeometryCurrent(second.memory,b,draw));
+  if(name=="c_kanbu_ibt"){
+   // Empty-stream byte admission never bypasses the actual relocated root.
+   const auto expected=b+draw->word(0x170);assert(m.writeWord(b+0x170,0) && !files->modelGeometryCurrent(second.memory,b,draw));
+   assert(m.writeWord(b+0x170,expected) && files->modelGeometryCurrent(second.memory,b,draw));
+  }
   if(std::string(model)=="e_mario" || std::string(model)=="b_mario"){
    const auto pack=std::string(model)=="e_mario"?"field-player-e_mario":"trio-attack-mario";auto raw=load(std::string(root)+"/"+pack+".draw-model.bin");unsigned sentinels=0;
    for(unsigned i=0;i<rawWord(raw,0x148);++i){auto c=rawWord(raw,rawWord(raw,0x1ac)+64*i+0x3c);if(rawWord(raw,c+0x30)==0xffbc8fc0u){assert(word(m,b+c+0x30)==uint32_t(b+c+0xffbc8fc0u));++sentinels;}}
@@ -73,13 +83,14 @@ void runNativeFileCacheFixture(const char* root){
   assert(files->acquire(path,0)==h && half(second.memory,*h+2)==2); // Source filename-only cache hit ignores new type.
   assert(files->release(*h) && files->release(*h) && !half(m,*h+2) && byte(m,*h)==2);last=*h;
  }
- assert(textures.size()==4 && half(m,textures["a/a_mario-"]+2)==3);
+ assert(textures.size()==8 && half(m,textures["a/a_mario-"]+2)==3);
+ assert(textures.count("a/c_kanbu-") && !files->contains("a/c_kanbu_ibt-",4));
  Cold cold{first,files};cold.run();const auto ag=word(m,0x803d9470+0x100);assert(ag && byte(m,ag+1)==0 && half(m,ag+2)==1);
  auto vivian=load(std::string(root)+"/animation-startup/a/vivian.bin");for(unsigned i=0;i<0xc00;++i)assert(byte(m,0x80305900+i)==vivian[i]);for(unsigned i=0;i<16;++i)assert(byte(m,0x80415da0+i)==vivian[0xc00+i]);
  auto agBytes=load(std::string(root)+"/animation-startup/a/ag2tg.bin");auto agPayload=payload(m,ag);for(unsigned i=0;i<agBytes.size();++i)assert(byte(second.memory,agPayload+i)==agBytes[i]);
  auto v=files->acquire("a/vivian.bin",0);assert(v && half(m,*v+2)==1 && files->release(*v) && byte(m,*v)==2);
  assert(m.writeWord(*v+0xac,1) && !files->acquire("a/vivian.bin",0) && !files->acquire("a/ag2tg.bin",0));yieldReady=true;assert(m.writeWord(*v+0xac,0) && files->acquire("a/vivian.bin",0)==v && half(m,*v+2)==1);
- assert(word(m,NativeFileCache::Manager+0xc)==ag && word(m,NativeFileCache::Manager+0x10)==0x87000000+13*0xb0);
+ assert(word(m,NativeFileCache::Manager+0xc)==ag && word(m,NativeFileCache::Manager+0x10)==0x87000000+21*0xb0);
  assert(files->archiveType(2) && word(m,NativeFileCache::Manager+4)==2 && files->acquire("a/ag2tg.bin",0)==ag && payload(m,ag)==agPayload && half(m,ag+2)==2);
  assert(m.writeWord(NativeFileCache::Global,0) && !files->acquire("a/c_pkr",5) && !files->release(last) && !files->archiveType(0));assert(m.writeWord(NativeFileCache::Global,NativeFileCache::Manager));
  EventNativeRuntime conflict(0x81000000,{});assert(conflict.memory.registerRam(0x87500000,{7}));assert(!files->bind(conflict.memory));uint32_t missing=0;assert(!conflict.memory.readWord(NativeFileCache::Global,missing) && byte(conflict.memory,0x87500000)==7 && half(second.memory,ag+2)==2);

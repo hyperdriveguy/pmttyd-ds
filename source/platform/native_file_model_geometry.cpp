@@ -26,7 +26,9 @@ bool NativeFileCache::modelGeometryCurrent(EventAddressSpace& memory,uint32_t mo
   // Eight UV-index streams use count108+4*i and pointer16c+4*i (hex),
   // each serialized as four-byte words. Directory rows are64 bytes; compare
   // only their60-byte names, excluding the relocated timeline pointer at+60.
-  for(unsigned i=0;i<8;++i)if(!same(draw->word(0x16c+4*i),uint64_t(draw->word(0x108+4*i))*4))return false;
+  // Original empty streams can have sentinel offsets. Root relocation
+  // equality above still covers them; there are no stream bytes to compare.
+  for(unsigned i=0;i<8;++i){const auto count=draw->word(0x108+4*i);if(count && !same(draw->word(0x16c+4*i),uint64_t(count)*4))return false;}
   const uint32_t directory=draw->word(0x1ac);for(uint32_t i=0;i<draw->word(0x148);++i)if(!same(directory+64*i,60))return false;
   return true;
  });

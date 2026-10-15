@@ -46,7 +46,10 @@ bool AnimationDrawResource::read(FILE* f){
     // 144 groups 88; 148 pose directory 64. Eight UV index streams follow108/16c.
     constexpr uint32_t tables[][3]{{0xe8,0x14c,168},{0xec,0x150,8},{0xf0,0x154,12},{0xf4,0x158,4},{0xf8,0x15c,12},{0xfc,0x160,4},{0x100,0x164,4},{0x104,0x168,4},{0x128,0x18c,8},{0x12c,0x190,24},{0x130,0x194,8},{0x134,0x198,64},{0x138,0x19c,108},{0x13c,0x1a0,1},{0x140,0x1a4,4},{0x144,0x1a8,88},{0x148,0x1ac,64}};
     for(const auto& t:tables)if(!span(word(t[1]),word(t[0]),t[2]))return false;
-    for(unsigned k=0;k<8;++k)if(!span(word(0x16c+4*k),word(0x108+4*k),4))return false;
+    // Empty original UV streams may retain non-address sentinels (Crump's
+    // unused streams contain0xffbc8fc0). No index is read when count is zero.
+    // Selected streams/runs still pass the per-draw bounds checks below.
+    for(unsigned k=0;k<8;++k){const auto count=word(0x108+4*k);if(count && !span(word(0x16c+4*k),count,4))return false;}
     if(!groups() || groups()>65536 || !word(0x148))return false;
     const auto validGroup=[&](int32_t i){return i==-1 || (i>=0 && uint32_t(i)<groups());};
     for(uint32_t i=0;i<groups();++i){const auto g=group(i);

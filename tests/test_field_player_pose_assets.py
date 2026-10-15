@@ -15,5 +15,7 @@ class FieldPlayerPoseAssets(unittest.TestCase):
     raw=(root/'romfs'/(r['asset']+'.draw-model.bin')).read_bytes();self.assertEqual(raw[4:68].split(b'\0')[0].decode(),name)
     self.assertEqual(hashlib.sha256(raw).hexdigest(),r['source'][0]['sha256'])
     for product,info in r['products'].items():self.assertEqual(hashlib.sha256((root/'romfs'/product).read_bytes()).hexdigest(),info['sha256'])
+   partner=meta['resources']['c_pkr'];self.assertEqual(partner['converted_pose_names'],partner['source_descriptor_order']);self.assertEqual(len(partner['converted_pose_names']),32)
+   self.assertEqual(struct.unpack('<8sI',(root/'romfs/field-player-c_pkr.pmanim').read_bytes()[:12]),(b'PMANIM4\0',32))
    self.assertIn('PKR_D_2',meta['resources']['c_pkr']['converted_pose_names']);self.assertGreater((root/'romfs/field-player-c_pkr.t3x').stat().st_size,64)
    self.assertGreater((root/'romfs/shared-field-frankly.t3x').stat().st_size,64)

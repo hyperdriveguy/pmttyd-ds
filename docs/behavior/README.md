@@ -1420,3 +1420,5 @@ Original battle menu native resource/queue owners:
 - [Native unlinked NPC Draw wrapper](display/NATIVE_UNLINKED_NPC_DRAW_WRAPPER.md):
   actual-VM original pass admission and retained Inner dispatch; linked/register
   frontiers and complete GPU integration remain open.
+
+- [Full original harbor native resource banks](field/HARBOR_NATIVE_RESOURCES.md): original five-bank census, shared Goombella clips, exact texture paths and bounded readiness.

@@ -3616,3 +3616,29 @@ all prior private products, conversion and licensing terms remain unchanged.
 ISO access was read-only for a complete wrapper/slice audit. No extracted
 payload or compiled binary is added to source history. See
 [contract](behavior/display/NATIVE_UNLINKED_NPC_DRAW_WRAPPER.md).
+
+### Full original harbor NPC banks and Goombella story clips (2026-10-15)
+
+`tools/harbor_native_npc_assets.py` reads the US ISO read-only and exports
+MODEL/TPL `a/c_pkr`, `a/c_kanbu_ibt`, `a/c_zako_n`, `a/c_gara`, `a/c_suifu_b`
+plus their actual texture banks. Crump uses `a/c_kanbu-`; other TPL names append
+`-` to the model name. Source tribe identities come from the original DOL first
+exact matching rows. Private `local-assets/harbor-native/` contains extraction
+provenance/atlas evidence. Ignored `romfs/field-native-*` products contain full
+original MODEL/TPL, pose directories, all CPU clips and hashed manifests;
+`harbor-native-npc-resources.json` catalogs the five banks/144 original poses.
+The canonical `field-player-c_pkr` pack now contains all32 source clips to
+avoid a partial first-entry bank hiding later story poses. Original MODEL/TPL bytes, Mario subsets and orientation are unchanged.
+Full Goombella coverage expands its atlas from31 cells/1024x512 to46 cells/
+1024x1024; runtime dimensions become512x512 instead of512x256. The existing
+half-resolution RGBA8/Lanczos policy rebuilds atlas and UV scale together
+(UV scale2 becomes1). Native file-cache
+staging adds four models/four TPLs before VM publication, deduplicating existing
+Goombella resources. No original ISO/assets are committed or redistributed.
+Nintendo/Intelligent Systems copyright; local use only, no redistribution rights.
+Crump retains original ffbc8fc0 offsets in zero-count UV index streams;
+import admission skips empty-stream span checks while selected streams remain
+bounded. Original relocation stores still cover these untouched sentinel words.
+Resource import does not create actors, acknowledge async/pose/GPU work or
+change original story/visibility. See the
+[harbor resource contract](behavior/field/HARBOR_NATIVE_RESOURCES.md).
