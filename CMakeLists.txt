@@ -2292,3 +2292,9 @@ add_executable(native_animation_release_tests tests/native_animation_release_tes
 target_link_libraries(native_animation_release_tests PRIVATE ttyd_core)
 add_test(NAME native_animation_release COMMAND native_animation_release_tests)
 set_tests_properties(native_animation_release PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+# Retained original Main clock and selected sample time with live VM aliases.
+target_sources(ttyd_core PRIVATE source/display/animation_main_time.cpp source/display/animation_main_time_binding.cpp)
+add_executable(animation_main_time_tests tests/animation_main_time_tests.cpp)
+target_link_libraries(animation_main_time_tests PRIVATE ttyd_core)
+add_test(NAME animation_main_time COMMAND animation_main_time_tests)
+set_tests_properties(animation_main_time PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

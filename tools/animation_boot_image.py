@@ -30,6 +30,9 @@ SPANS += [('normal-model-tokens', 2150373536, 28, '6b4bb10db518b91cca6e508d2d692
 # Original shared animation Main/Inner camera-facing literals.
 SPANS += [('draw-radians',0x8041fb2c,4,'7388adb66bc2fb8cdd730d8148adcae18abd8bb48b05b7bd9b9e05efa6c09702'), ('paper-facing',0x8041fb6c,0x2c,'18c2acf85532159d4157b603544711245e68b9f6fd3132b106a3802ae739555b')]
 
+# Original Main clock/frame literals.
+SPANS += [('main-frame-clock',0x8041fba4,8,'ddc0adc8aa32f0760b2cecfb24f4467cc09eff8318c59d91bfb09c2ba30e2057')]
+
 def build(iso=DEFAULT_ISO,output='romfs/animation-boot'):
  root=Path(output);root.mkdir(parents=True,exist_ok=True)
  with Path(iso).open('rb') as disc:

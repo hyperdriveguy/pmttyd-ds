@@ -5,6 +5,9 @@
 #include <limits>
 using namespace ttyd;
 int main(){
+    const auto cancelled=finishAnimationSampleTime(animationSampleTimePlan(60,1,0,10),6);
+    assert(cancelled && *cancelled==0 && std::signbit(*cancelled));
+    assert(animationFnmsubs(0,1,0)==0 && std::signbit(animationFnmsubs(0,1,0)));
     auto p=animationSampleTimePlan(26,1,5,15);
     assert(p.span==10 && p.ratio==2.1f && p.loopConversion);
     assert(*finishAnimationSampleTime(p,p.ratio)==6);

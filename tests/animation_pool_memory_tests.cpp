@@ -70,7 +70,10 @@ void runAnimationPoolMemoryFixture(const char* root){
  // Genuine complete capacity scan and shared Mario/partner/NPC source entry binding.
  {assert(loadFieldPlayerPoseAssets(root));auto game=std::make_unique<Game>(false);auto& parties=const_cast<FieldPartyRegistry&>(game->fieldPartyState());assert(parties.configureOriginalPool(fieldPlayerPoseResources()));
   MemoryWorld w(parties.originalPool);w.attach();auto& mario=const_cast<FieldMarioBattleState&>(game->fieldMarioBattleState());assert(parties.initializeMario(mario,{},0) && parties.enterPose(0x804213e0,2,{},0)==3);
+  // The source pack now owns the original bias; retire the startup fixture copy.
+  assert(w.vm->memory.unregisterRam(0x802c1070));
   EventScriptAssets data;assert(data.load((std::string(root)+"/door-data.pmevt").c_str()) && w.vm->memory.importScripts(data));
+  assert(w.word(0x802c1070)==0x43300000 && w.word(0x802c1074)==0x80000000);
   auto registry=game->initializeOriginalFieldNpcs(w.vm->memory,0x85000000);assert(registry);auto path=std::string(root)+"/field-native-c_kuri_h";
   auto npc=loadBattlePoseResource((path+".pose-directory.bin").c_str(),(path+".pmanim").c_str());assert(npc && game->originalFieldNpcs->poses().install(npc));
   std::vector<uint8_t> nameBytes(64);for(unsigned i=0;i<64;++i)nameBytes[i]=npc->draw->byte(4+i);assert(w.vm->memory.registerRam(0x86000000,std::move(nameBytes)));

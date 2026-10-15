@@ -420,9 +420,12 @@ struct NativeWorld {
     assert(view && view->aliases(*pool, vm->memory));
     tangents = AnimationTangentMemory::bind(pool, vm->memory);
     assert(tangents && tangents->current());
+    // The original pack takes over the bias used by the startup fixture.
+    assert(vm->memory.unregisterRam(0x802c1070));
     EventScriptAssets source;
     assert(source.load("romfs/door-data.pmevt") &&
            vm->memory.importScripts(source));
+    assert(word(0x802c1070)==0x43300000 && word(0x802c1074)==0x80000000);
     owner = FieldNpcRegistryOwner::cold(0x85000000, pool);
     registry = FieldNpcRegistryBinding::bind(owner, vm->memory);
     assert(registry && registry->initialize());

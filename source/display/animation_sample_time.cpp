@@ -2,6 +2,10 @@
 #include <cmath>
 namespace ttyd {
 namespace {float single(float value){volatile float result=value;return result;}}
+float animationFnmsubs(float a,float c,float b){
+    const float fused=std::fma(a,c,-b);
+    return std::isnan(fused)?fused:-fused;
+}
 // Zero span publishes offset as ratio and selects start. Looping negative
 // offset also selects start without conversion; nonloop clamps start/end.
 // Plan construction is separate because ratio is published before fctiwz.
@@ -30,6 +34,6 @@ std::optional<float> finishAnimationSampleTime(const AnimationSampleTimePlan& pl
     if(!plan.loopConversion)return plan.selected;
     if(!convert)return {};
     const auto index=convert(user,publishedRatio);if(!index)return {};
-    return std::fma(-float(*index),plan.span,plan.frame);
+    return animationFnmsubs(float(*index),plan.span,plan.frame);
 }
 }

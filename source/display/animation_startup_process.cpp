@@ -11,13 +11,13 @@ struct Span{uint32_t address,size;};
 constexpr Span ImageSpans[]={{0x802c1068,8},{0x802c1070,8},{0x802c11a8,48},{0x802c11d8,16},{0x802c11e8,16},{0x802c18a0,28},
  {0x80305900,0xc00},{Work,0x110},{0x803d9580,178*4},{0x804151b8,40},
  {0x80415da0,16},{0x80415db4,4},{0x80415dc0,4},{0x80415dc4,4},{0x80415eb0,12},{0x8041e428,12},
- {0x8041e808,80},{0x8041f070,20},{0x8041fb0c,8},{0x8041fb24,8},{0x8041fb2c,4},{0x8041fb34,12},{0x8041fb40,4},{0x8041fb6c,0x2c},{0x8041fbb4,4},{0x804213e0,8}};
+ {0x8041e808,80},{0x8041f070,20},{0x8041fb0c,8},{0x8041fb24,8},{0x8041fb2c,4},{0x8041fb34,12},{0x8041fb40,4},{0x8041fb6c,0x2c},{0x8041fba4,8},{0x8041fbb4,4},{0x804213e0,8}};
 // Build-time extraction pins every span hash; runtime checks layout and critical fields.
 bool admittedImage(const EventScriptAssets& image){
  if(image.segments().size()!=sizeof(ImageSpans)/sizeof(*ImageSpans))return false;
  for(unsigned i=0;i<image.segments().size();++i)if(image.segments()[i].address!=ImageSpans[i].address || image.segments()[i].size!=ImageSpans[i].size)return false;
  auto word=[&](uint32_t a,uint32_t expected){uint32_t v=0;return image.readWord(a,v) && v==expected;};
- if(!word(0x8041fb2c,0x3c8efa35) || !word(0x80415dc0,Work) || !word(0x80415db4,0x80305900) || !word(0x8041fbb4,0x3c8efa33) || !word(0x802c1070,0x43300000) || !word(0x802c1074,0x80000000) || !word(0x8041fb40,0x41855555))return false;
+ if(!word(0x8041fba4,0x42700000) || !word(0x8041fba8,0x447a0000) || !word(0x8041fb2c,0x3c8efa35) || !word(0x80415dc0,Work) || !word(0x80415db4,0x80305900) || !word(0x8041fbb4,0x3c8efa33) || !word(0x802c1070,0x43300000) || !word(0x802c1074,0x80000000) || !word(0x8041fb40,0x41855555))return false;
  const uint32_t values[]={7300,3472,224,128,100};
  for(unsigned i=0;i<5;++i)if(!word(0x804151b8+8*i,i==4?0:1) || !word(0x804151bc+8*i,values[i]))return false;
  for(uint32_t a=Work;a<Work+0x110+178*4;a+=4)if(!word(a,0))return false;

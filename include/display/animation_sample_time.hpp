@@ -2,6 +2,10 @@
 #include <cstdint>
 #include <optional>
 namespace ttyd {
+// Native single fused subtract then non-NaN negation, including exact -0.
+// Original FPSCR/exception/NaN-payload parity remains unmeasured.
+float animationFnmsubs(float a,float c,float b);
+
 // frame/start/end use authored animation-time units, not necessarily a
 // rendering clock. loopConversion distinguishes a required numeric provider
 // from the already-selected zero-span/negative/nonloop outcomes.
