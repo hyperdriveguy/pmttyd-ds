@@ -1,6 +1,8 @@
 #include "field_npc_setup_binding.hpp"
 #include "field_battle_information.hpp"
 #include "event_native_runtime.hpp"
+#include "camera_manager.hpp"
+#include <cmath>
 #include <algorithm>
 #include <cassert>
 namespace ttyd {
@@ -98,5 +100,59 @@ int32_t FieldNpcSetupBinding::invoke(EventEntry& e,bool first,FieldNpcSetupCurso
  c.firstVisit(first);
  uint32_t gp=0,mode=0,field=0;if(!vm_.memory.readWord(0x80415fd0,gp) || uint64_t(gp)+0x16b>UINT32_MAX || !vm_.memory.readWord(gp+0x14,mode) || mode!=mode_ || !vm_.memory.readWord(gp+0x168,field) || field!=owner_->fieldWorkAddress())return 0;
  return fieldNpcSetupEvent(e,first,c,o,world(),events);
+}
+}
+
+namespace ttyd {
+namespace {
+// Execute the existing operand router once with checked reads and a deferred
+// output word. A failed request publishes nothing; successful outputs retain
+// the source setter's quantization and namespace asymmetry.
+struct ActorOperands {
+ EventNativeRuntime& vm;bool valid=true;
+ bool hasWrite=false;uint32_t destination=0,value=0;
+ explicit ActorOperands(EventNativeRuntime& v):vm(v){}
+ EventOperandServices services(){
+  EventOperandServices s;s.user=this;
+  s.contextAddress=[](void* p){auto& a=*static_cast<ActorOperands*>(p);const auto* g=a.vm.gpAddresses.currentGlobals();if(!g){a.valid=false;return uint32_t(0);}return uint32_t(g->battleContext?0x803d8dd0:0x803d8d30);};
+  s.entryAddress=[](void* p,EventEntry& e){auto& a=*static_cast<ActorOperands*>(p);uint32_t address=0;if(!a.vm.entryAddresses.addressOf(&e,address))a.valid=false;return address;};
+  s.globalAddress=[](void* p){auto& a=*static_cast<ActorOperands*>(p);if(!a.vm.gpAddresses.currentGlobals())a.valid=false;return a.vm.gpAddresses.currentAddress();};
+  s.readWord=[](void* p,uint32_t address){auto& a=*static_cast<ActorOperands*>(p);uint32_t v=0;if(!a.vm.memory.readWord(address,v))a.valid=false;return v;};
+  s.readByte=[](void* p,uint32_t address){auto& a=*static_cast<ActorOperands*>(p);uint8_t v=0;if(!a.vm.memory.readByte(address,v))a.valid=false;return v;};
+  s.writeWord=[](void* p,uint32_t address,uint32_t value){auto& a=*static_cast<ActorOperands*>(p);assert(!a.hasWrite);a.hasWrite=true;a.destination=address;a.value=value;};
+  s.truncate=[](void* p,float f)->int32_t{auto& a=*static_cast<ActorOperands*>(p);if(!a.vm.platform.truncate || !std::isfinite(f) || double(f)<-2147483648. || double(f)>=2147483648.){a.valid=false;return 0;}return a.vm.platform.truncate(a.vm.platform.user,f);};
+  return s;
+ }
+ bool publish(){if(!valid)return false;return !hasWrite || vm.memory.writeWord(destination,value);}
+};
+}
+int32_t FieldNpcSetupBinding::invokeActorEvent(uint32_t fn,EventEntry& e,bool first,FieldNpcActorEventCursor& cursor){
+ if(first)cursor={};
+ uint32_t gp=0,mode=0;if(!vm_.memory.readWord(0x80415fd0,gp) || uint64_t(gp)+0x17>UINT32_MAX || !vm_.memory.readWord(gp+0x14,mode) || mode!=mode_)return 0;
+ const auto& context=mode?vm_.battle:vm_.field;if(context.capacity<0 || context.capacity>256 || (context.capacity && !context.entries))return 0;bool registered=false;
+ for(int n=0;n<context.capacity;++n)registered|=&e==&context.entries[n] && (e.flags&1);
+ if(!registered)return 0;
+ FieldNpcActorEventServices s;s.user=this;
+ s.word=[](void* p,uint32_t a,uint32_t& v){return static_cast<FieldNpcSetupBinding*>(p)->vm_.memory.readWord(a,v);};
+ s.value=[](void* p,EventEntry& e,int32_t raw,int32_t& v){ActorOperands a(static_cast<FieldNpcSetupBinding*>(p)->vm_);v=getEventValue(e,raw,a.services());return a.valid;};
+ s.real=[](void* p,EventEntry& e,int32_t raw,float& v){ActorOperands a(static_cast<FieldNpcSetupBinding*>(p)->vm_);v=getEventFloat(e,raw,a.services());return a.valid;};
+ s.setReal=[](void* p,EventEntry& e,int32_t raw,float v){ActorOperands a(static_cast<FieldNpcSetupBinding*>(p)->vm_);setEventFloat(e,raw,v,a.services());return a.publish();};
+ s.resolve=[](void* p,EventEntry& e,uint32_t name,bool dereference)->std::optional<uint32_t>{
+  auto& b=*static_cast<FieldNpcSetupBinding*>(p);std::string text;if(!b.text(name,text,32))return {};
+  auto owned=[&](uint32_t a){for(unsigned bank:{0u,2u})if(a>=b.owner_->addresses_[bank] && (a-b.owner_->addresses_[bank])%0x340==0 && uint64_t(a)-b.owner_->addresses_[bank]<uint64_t(bank?16:36)*0x340)return b.owner_->span(a,0x340)!=nullptr;return false;};
+  uint32_t actor=0;
+  if(text=="me")actor=e.field170;
+  else if(text=="party" || text=="(^x^)party")actor=0xffffffff;
+  else if(text=="extparty")actor=0xfffffffe;
+  else if(text=="mario")actor=0xfffffffd;
+  else if(text=="master" || text=="slave_0" || text=="slave_1" || text=="slave_2" || text=="slave_3"){
+   const auto self=e.field170;if(!owned(self))return {};actor=b.word(self+(text=="master"?0x32c:0x330+4*unsigned(text.back()-'0')));
+  }else {const auto found=b.binding_.lookup(name,PackedNpcLookup::Release);if(!found)return {};actor=*found;}
+  if(dereference && !owned(actor))return {};
+  return actor;
+ };
+ s.store=[](void* p,uint32_t a,uint32_t v){const bool ok=static_cast<FieldNpcSetupBinding*>(p)->vm_.memory.writeWord(a,v);assert(ok);(void)ok;};
+ s.cameraHeading=[](void* p,uint32_t index)->std::optional<float>{auto& b=*static_cast<FieldNpcSetupBinding*>(p);const auto* camera=b.services_.cameras?b.services_.cameras->camera(index):nullptr;if(!camera || !camera->viewPublished)return {};return camera->yaw;};
+ return fieldNpcActorEvent(fn,e,first,cursor,s);
 }
 }

@@ -1907,3 +1907,8 @@ add_executable(file_handle_release_tests tests/file_handle_release_tests.cpp)
 target_link_libraries(file_handle_release_tests PRIVATE ttyd_core)
 add_test(NAME file_handle_release COMMAND file_handle_release_tests)
 set_tests_properties(battle_class_draw_adapter PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+# Original NPC flag/position/yaw event leaves and retained actor/operand owners.
+target_sources(ttyd_core PRIVATE source/field/field_npc_actor_event.cpp)
+add_executable(field_npc_actor_event_tests tests/field_npc_actor_event_tests.cpp)
+target_link_libraries(field_npc_actor_event_tests PRIVATE ttyd_core)
+add_test(NAME field_npc_actor_event COMMAND field_npc_actor_event_tests)
