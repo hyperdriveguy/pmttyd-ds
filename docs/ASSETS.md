@@ -3338,3 +3338,19 @@ write. Native full regeneration skipped; Python fixtures independently read ISO
 read-only into empty temporary outputs. No ISO, original extracted asset or
 compiled product committed; Nintendo/Intelligent Systems rights retained and no
 new license granted.
+
+## 2026-10-15 — Cross-VM native story party services
+
+No new runtime asset products, original dialogue or conversion choices. Frozen
+source uses all 2161 accepted field-party-position runtime products and 778 private
+inputs unchanged. Original lecture instructions and US message/control bytes
+remain in the accepted Professor packs. Original assets retain their owners'
+rights; no ISO, extracted source body or compiled binary is committed.
+
+Fresh read-only G8ME01 DOL evidence under artifacts/field-party-story-evidence
+covers complete join800f0a8c/partyJoin80140f74/pouchGetPtr800d5eb0,
+run800eae70/partyRun800becdc, stop800eaeb8/partyStop800becb8 and
+SlitOff8014c448 bodies. ELF/listing/provenance hashes are pinned in the session
+manifest. This source inspection is not a hardware or pixel-parity observation.
+The private ARM fixture uses the same production RomFS bytes, with only a test
+entrypoint/strict marker injection in its private main.cpp.

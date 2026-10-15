@@ -109,6 +109,9 @@ struct ProfessorRuntime {
     struct BattleMove {std::array<float,3> target{},step{};int32_t count=0;unsigned actor=2;};
     std::unordered_map<uint32_t,BattleMove> battleMoves;
     std::unordered_map<uint32_t,uint32_t> messagePlacements;
+    std::unordered_map<uint32_t,std::unique_ptr<NativeFieldPartyScriptCall>> partyCalls;
+    std::vector<std::unique_ptr<NativeFieldPartyScriptCall>> retiredPartyCalls;
+    uint32_t retiredPartyPending=0; // Opaque native cancellation remains unbound.
     std::unordered_map<uint32_t,uint64_t> waits;
     EventNativeRuntime vm;
     // Private authored GP base;243000000 is GameCube clock Hz, converted
@@ -119,7 +122,16 @@ struct ProfessorRuntime {
         p.truncate=[](void*,float v)->int32_t{assert(std::isfinite(v) && double(v)>=-2147483648. && double(v)<2147483648.);return int32_t(v);};
         p.divideWord=[](void*,int32_t a,int32_t b){assert(b);return a/b;};
         p.flushBlock=[](void*,uint32_t){};p.systemCall=[](void*){}; // CPU-owned native arena, no GPU consumers.
-        p.call=[](void* p,EventEntry& e,uint32_t fn,int32_t first){return static_cast<ProfessorRuntime*>(p)->call(e,fn,first!=0);};return p;
+        p.call=[](void* p,EventEntry& e,uint32_t fn,int32_t first){return static_cast<ProfessorRuntime*>(p)->call(e,fn,first!=0);};
+        p.retiring=[](void* p,const EventEntry& e){
+            auto& r=*static_cast<ProfessorRuntime*>(p);auto i=r.partyCalls.find(e.id);
+            if(i==r.partyCalls.end())return;
+            if(!i->second->releaseForRetirement()){
+                r.retiredPartyPending=i->second->pending();
+                r.retiredPartyCalls.push_back(std::move(i->second));
+            }
+            r.partyCalls.erase(i); // ID reuse cannot resume a retired invocation.
+        };return p;
     }
     // Guest strings require NUL within256 bytes; argument slots have4-byte
     // stride. NPC name tokens select Mario0/G1/Frankly2/trio3..5; an unknown
@@ -237,6 +249,13 @@ struct ProfessorRuntime {
     // Trace raw operands once per admission, retaining pointer/tag identities.
     // Unknown function fails; admitted unhandled presentation tags return2.
     // That return records request acceptance, not backend/hardware completion.
+    int32_t partyCall(EventEntry& e,uint32_t function,bool first) {
+        auto& cursor=partyCalls[e.id];if(!cursor)cursor=std::make_unique<NativeFieldPartyScriptCall>();
+        const auto result=cursor->step(e,first,function,vm,scene->fieldParty,scene->now);
+        if(result==2){partyCalls.erase(e.id);scene->pendingService=0;}
+        else scene->pendingService=cursor->pending();
+        return result;
+    }
     int32_t call(EventEntry& e,uint32_t function,bool first) {
         const auto& admitted=scene->battleIntro?battleCallbacks:scene->underground?undergroundCallbacks:callbacks;
         const auto found=admitted.find(function);if(found==admitted.end()){scene->failed=true;return 0;}
@@ -295,6 +314,7 @@ struct ProfessorRuntime {
         case 24:scene->actors[npc(e,0)].yaw=number(e,1);return 2;
         case 26:return move(e,first,1,1,2,3);
         case 28:if(first)scene->actors[1].yaw=number(e,1);return delay(e,first,uint64_t(std::max<int32_t>(0,value(e,2))));
+        case 27:case 29:return (scene->fieldParty.bound() || partyCalls.count(e.id))?partyCall(e,function,first):2;
         // Battle extension71..94: registrations72..76 are traced;77 resolves
         // scoped Frankly unit6; work index0..15; actor selector-3 is Mario,
         // otherwise Frankly. These are used lecture services, not general lookup.
@@ -360,7 +380,10 @@ struct ProfessorRuntime {
         case 30:scene->music=-1;return 2;
         case 31:scene->music=pointer(e,1)?1:0;return 2;
         case 35:positionOut(e,1,value(e,0)==1?2:1);return 2;
-        case 36:if(value(e,0)==1)scene->temporaryProfessor=false;return 2;
+        case 36:
+            if((scene->fieldParty.bound() || partyCalls.count(e.id)) && partyCall(e,function,first)!=2)return 0;
+            if(value(e,0)==1)scene->temporaryProfessor=false;
+            return 2;
         // Capture admission and completion are separate. Bounding box43 holds
         // for actual renderer captureReady and writes four INTEGER outputs.
         // Animation wait50 must first yield, then requires A_1 elapsed140/60s;
@@ -407,7 +430,9 @@ struct ProfessorRuntime {
         // blocks;62 previous-party placement always retains its service barrier.
         case 56:return select(e,first);
         case 57:return append(e,first);
-        case 58:scene->goombellaNpc=true;return 2;
+        case 58:
+            if((scene->fieldParty.bound() || partyCalls.count(e.id)) && partyCall(e,function,first)!=2)return 0;
+            scene->goombellaNpc=true;return 2;
         case 59:scene->battleSetup=value(e,1);return 2;
         case 60:{
             if(!scene->fieldBattle.work){scene->pendingService=function;return 0;}
@@ -419,7 +444,7 @@ struct ProfessorRuntime {
             const auto result=waitFieldBattleEnd(scene->fieldBattle);
             scene->pendingService=result==0?function:0;return result;
         }
-        case 62:scene->pendingService=function;return 0; // Previous-party placement retains its independent owner.
+        case 62:return partyCall(e,function,first); // Actual previous-position reconstruction owns its full native wait.
         // Source music,effects,item/paper/display/party-flag requests are retained
         // above for native consumers. They do not fabricate story/dialogue.
         default:return 2;
@@ -529,14 +554,19 @@ void ProfessorStory::restoreProfessor(bool departed) {
 // After event finish, text may still drain, but VM stays stopped. Completion
 // counts ALL allocations/children; battleIntro then creates the next of three
 // roots on a later manager pass, preserving separate source init/entry/phase.
+bool ProfessorStory::nativePartyPending() const{return runtime_ && (!runtime_->partyCalls.empty() || !runtime_->retiredPartyCalls.empty());}
 void ProfessorStory::tick(uint64_t time,uint32_t keys,bool doorBusy,const MessageSelectionInput& selectionInput) {
     if(failed || time<now || !runtime_)return;
+    if(runtime_->retiredPartyPending){now=time;pendingService=runtime_->retiredPartyPending;finished=false;return;}
     if(!running()){now=time;if(message.active())message.tick(now,keys);return;}
     now=time;
-    auto& r=*runtime_;r.scene=this;r.keys=keys;r.doorBusy=doorBusy;r.advance();
+    auto& r=*runtime_;r.scene=this;r.keys=keys;r.doorBusy=doorBusy;
+    if(r.retiredPartyPending){pendingService=r.retiredPartyPending;return;}
+    r.advance();
     if(message.active())message.tick(now,keys);
     if(selection.active())selection.tick(selectionInput);
     r.vm.gp.timestamp=now*eventClockRate(243000000);r.vm.runManager();
+    if(r.retiredPartyPending){pendingService=r.retiredPartyPending;finished=false;return;}
     story=readSavedSwitch(SavedSwitchFamily::GlobalByte,0,r.vm.interpreterServices().operands);
     professorDeparted=readSavedSwitch(SavedSwitchFamily::GlobalFlag,1207,r.vm.interpreterServices().operands)!=0;
     finished=r.vm.runtime.allocationCount==0;

@@ -2,6 +2,7 @@
 #include "message_playback.hpp"
 #include "message_selection.hpp"
 #include "field_battle.hpp"
+#include "field_party_script_call.hpp"
 #include <array>
 #include <memory>
 #include <string>
@@ -61,6 +62,7 @@ public:
     bool goombellaNpc=false;
     bool professorDeparted=false,professorControlEnabled=true;
     int battleSetup=-1;
+    FieldPartyScriptBindings fieldParty; // Optional actual native owner; retained across callback holds.
     FieldBattleServices fieldBattle; // Supplied current field owner; standalone scenes retain their service barrier.
     MessageSelection selection;
     std::vector<std::string> selectionOrder;
@@ -86,6 +88,7 @@ public:
     bool beginTrioBattleIntro(uint64_t milliseconds);
     void restoreProfessor(bool departed);
     void tick(uint64_t milliseconds,uint32_t keys,bool doorBusy,const MessageSelectionInput& selectionInput={});
+    bool nativePartyPending() const; // Includes admission waits before registry leases.
     bool running() const{return triggered && !finished;}
     // Passive underground/fence>=10 polling can coexist with field control
     // when original keysEnabled permits it; running alone is not an input lock.

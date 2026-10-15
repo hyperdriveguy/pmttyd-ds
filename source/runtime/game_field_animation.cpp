@@ -33,6 +33,7 @@ bool Game::nativeMarioReflect() const{return fieldParties.nativeAnimation && fie
 // checkpoint providers admit may its role views reconnect to the same source
 // pool. Reject new/stale speculative handles instead of fabricating adoption.
 bool Game::retainNativeFieldAnimation(Game& previous,bool checkpoint){
+ if(nativePartyPending() || previous.nativePartyPending())return false;
  if(nativeAnimationPending() || previous.nativeAnimationPending())return false;
  auto& old=previous.fieldParties;auto& next=fieldParties;if(!old.nativeAnimation)return true;
  BattlePoseClock clock;

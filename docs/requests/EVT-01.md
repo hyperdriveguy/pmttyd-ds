@@ -5297,3 +5297,22 @@ See [position binding](../behavior/partner/NATIVE_PARTY_POSITION_EVENTS.md).
 - [ ] Bind separate pouch join, dir/run and temporary kind11 resource/lifetime.
 - [ ] Bind other mode cleanup, source-visible output aliases and full engine/field
   return; do not infer prologue completion from constructor fixtures.
+
+### 2026-10-15 retained lecture party service dispatch
+
+Professor callback tags27/29/36/58/62 now delegate actual caller-VM entries and
+operands to retained native run/stop/clear/kill/previous placement services when
+an actual field owner is bound. Native resource waits precede scene projection
+and event advancement. Separate source and animation VM ownership is exercised.
+Join leaf uses actual evtGetValue and the canonical shared pouch; raw mode
+selectors use the independent current-index word. Fresh complete original leaf
+bodies, hashes and report are in artifacts/field-party-story-evidence.
+See [native bridge](../behavior/partner/NATIVE_STORY_PARTY_DISPATCH.md).
+
+- [ ] Connect the retained explicit-position/join leaves to full harbor/plaza streams.
+- [ ] Bind temporary kind11 Professor construction, native party direction/movement,
+  active SlitOff and old3/4/11 cleanup children.
+- [ ] Bind cancellation of held native construction/release children; retirement
+  currently quarantines them behind an explicit boundary.
+- [ ] Complete original engine/sequence/battle teardown and field return; local
+  lecture/constructor fixtures do not establish full gameplay completion.

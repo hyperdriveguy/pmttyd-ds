@@ -120,6 +120,7 @@ int main() {
     // then stage rendering. Failure rolls collision back through the transaction
     // destructor; commit only after every owner accepts the checkpoint.
     auto restoreProgress=[&](const ttyd::Progress& checkpoint) {
+        if(game.nativePartyPending())return false;
         if(game.nativeAnimationPending())return false;
         ttyd::CollisionTransition transaction;float height=checkpoint.elevation;
         restoreFailure.clear();
@@ -266,7 +267,7 @@ int main() {
         metrics.simulationMs=(seconds()-simulationStart)*1000;
         // Pipe/road/reload work happens outside Game::tick. Loading may block;
         // reset wall-clock accumulation afterwards so IO time cannot age gameplay.
-        if(!game.nativeAnimationPending() && game.pipeRequest>=0 && game.fade.ready()) {
+        if(!game.nativeAnimationPending() && !game.nativePartyPending() && game.pipeRequest>=0 && game.fade.ready()) {
             ttyd::CollisionTransition transaction;
             auto ownedCandidate=std::make_unique<ttyd::Game>(game);auto& candidate=*ownedCandidate;
             const uint32_t target=game.pipeTarget();
@@ -277,7 +278,7 @@ int main() {
             else {game.cancelPipeWarp();notice="Pipe transition failed";noticeTicks=180;}
             accumulator=0;pending={};previous=seconds();
         }
-        if(!game.nativeAnimationPending() && game.warpRequest>=0 && game.fade.ready()) {
+        if(!game.nativeAnimationPending() && !game.nativePartyPending() && game.warpRequest>=0 && game.fade.ready()) {
             ttyd::CollisionTransition transaction;
             // Target ID comes from the original, validated road table.
             auto ownedCandidate=std::make_unique<ttyd::Game>(game);auto& candidate=*ownedCandidate;

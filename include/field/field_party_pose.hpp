@@ -56,4 +56,5 @@ public:
 // Original token order a_mario,a_mario_r,e_mario,c_pkr.
 bool loadFieldPlayerPoseAssets(const char* root);
 std::array<std::shared_ptr<const BattlePoseResource>,4> fieldPlayerPoseResources();
+std::string fieldPlayerPoseAssetRoot(); // Last fully admitted immutable player-bank directory.
 }

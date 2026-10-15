@@ -14596,3 +14596,61 @@ Next: remaining runtime helpers/tooling and newer concurrent display/battle/
 party/font/Mario/animation/file/effect-resource integrations. Hash inventory is a
 review aid, not semantic coverage proof or proof all later effect code is reviewed.
 Full code documentation/remake goal remains active.
+
+## 2026-10-15 — Retained original lecture party dispatch
+
+Native Professor scene callbacks now use actual story entry/operand memory and
+separate retained native field construction/removal owners. Native kill/clear
+resource waits finish before scene projection; previous-party construction
+retains original first=true across missing owners and file holds and publishes
+Mario245/246 only after completion. No copied/fake event is inserted into the
+animation VM. Game supplies actual registry/Mario/current-index/pouch/root/bank/
+appearance owners only for native sessions. Original dialogue/story unchanged.
+
+The reusable join leaf resolves original integer operands once and changes only
+the canonical pouch's joined bit. Run/stop use RAW selector and independently
+published current index; run preserves fresh auxiliary mode2. Mode wrapper
+publishes final bytes/flags after actual no-slit old1/2 leaf work; active SlitOff
+and old3/4/11 children remain explicit holds. Serialization begins before actor
+capture, preventing slot/address reuse during retained work. Missing join pouch
+can arrive at its reached child without replaying operands.
+
+Entry retirement releases pure leaf/mode ownership and quarantines held opaque
+constructor/release children behind an explicit cancellation boundary. The scene
+checks this boundary before and after manager execution, including last-entry
+retirement. Restore/checkpoint/warp owner handoff refuses active party leases.
+Default standalone legacy scene projections remain explicitly partial; kind11
+Professor, direction/movement/position projections and actual battle/field exit
+remain separate. This does not complete the prologue.
+
+CMAKE_BUILD_PARALLEL_LEVEL=6 make test exits 0: 479/479 C++ (72.01s),
+218/218 Python (34.623s), zero skipped. Native make all -j6 -o assets-ready
+SOUNDTRACK=gamecube TARGET=ttyd-field-party-story exits 0; final private ARM build
+also exits 0. Final native-only main guards were rebuilt after the host pass;
+no host-target executable/test-fixture code changed after accepted host gates.
+Both isolated 45-second Azahar jobs exit0. Production capture visually shows
+the original storybook. Private ARM fixture writes all 13 strict markers:
+crossVm, canonicalJoin, latePouch, rawSelectors, auxiliaryMode2, retainedKill,
+retainedPrevious, firstCall, noSlit, leaseGuards, handoffGuards, lectureKill and
+missingBindings. Its black/App 0 FPS capture proves pre-render fixture completion
+only; production startup is checked independently. User profiles/saves unchanged.
+
+All accepted host/native/ARM/emulator handles observed terminal 0. Earlier runs
+were superseded while ownership review changes were being made; their logs are
+retained separately. Existing compiler/Pillow warnings remain. No hardware,
+complete story/battle-return, FPSCR, pixel, audio or performance parity claim.
+
+Frozen baseline plus owned changes audits 4178 source inputs, 2161 unchanged runtime
+products and 778 unchanged private inputs. Converter preflight against the prior
+accepted cache found no new conversion behavior/products; the party converter
+change was documentation only. Fresh eight-body original evidence, exact source,
+product/input/binary/log/capture hashes and scoped journals are in
+artifacts/field-party-story-validation-manifest.json. Private ARM source/include/
+RomFS matches production except the test/marker main injection, with no extra
+runtime products. Its 509 non-main objects come from the exact terminal accepted
+production build; main.o/main.d were removed and final private main rebuilt.
+Concurrent foreign changes are preserved/excluded from frozen validation.
+
+Next: actual harbor/plaza dispatch; temporary kind11 and active mode children;
+held native cancellation; retained upper battle display/engine/sequence teardown
+and actual field return. Full prologue/hardware fidelity remains unverified.

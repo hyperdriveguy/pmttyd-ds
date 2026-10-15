@@ -386,6 +386,8 @@ public:
     bool nativeMarioReflect() const;
     bool retainNativeFieldAnimation(Game& previous,bool checkpoint=false);
     FieldPartyAppearanceServices fieldPartyAppearanceServices();
+    FieldPartyScriptBindings fieldPartyScriptBindings();
+    bool nativePartyPending() const;
     bool fieldControlEnabled() const {return marioFieldControl && partnerFieldControl;}
     const char* dialogue() const;
     const char* prompt() const;

@@ -1340,6 +1340,7 @@ bool Game::beginWater() {
 // saved BEFORE replacing *this because saved may alias this->progress.
 // Native road/story setup is gated by explicit room/story, never harness victory.
 void Game::restore(const Progress& saved) {
+    if(nativePartyPending())return;
     if(nativeAnimationPending())return;
     const auto retainedCommandPalette=commandPalette;
     const auto retainedShadows=shadows;
@@ -2482,6 +2483,7 @@ void Game::tick(const Input& rawInput,const OriginalSequenceServices* sequenceSe
             choice.buttons=keys|(i.z<-.5f?8u:0u)|(i.z>.5f?4u:0u);
         }
         professorStory.fieldBattle=professorStory.underground?fieldBattleServices():FieldBattleServices{};
+        professorStory.fieldParty=fieldPartyScriptBindings();
         professorStory.tick(ticks*1000/60,keys,false,choice);
         const auto& m=professorStory.actors[0].position;
         const auto& p=professorStory.actors[1].position;
