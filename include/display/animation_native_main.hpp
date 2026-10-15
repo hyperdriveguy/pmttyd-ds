@@ -43,7 +43,7 @@ private:
   std::function<bool(uint64_t)> current);
  struct Frame;
  AnimationNativeMain(AnimationStartupProcess&,std::shared_ptr<const CameraManager>,AnimationFacingAddressPolicy,std::function<bool(uint64_t)>);
- bool available() const;
+ bool stable() const;bool available() const;
  bool push(uint32_t);
  bool linked(Frame&,uint32_t);
  AnimationMainServices services(Frame&);
@@ -58,6 +58,6 @@ private:
  std::unique_ptr<AnimationFacingBinding> facing_;
  std::vector<std::unique_ptr<Frame>> frames_,free_;
  uint64_t allocations_=0;
- bool active_=false;uint32_t handle_=0;uint64_t pass_=0;
+ bool resumeReady_=false,active_=false;uint32_t handle_=0;uint64_t pass_=0;
 };
 }

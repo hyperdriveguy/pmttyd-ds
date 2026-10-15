@@ -16,9 +16,11 @@ bool Renderer::prepareLegacyMarioTexture(){
  C3D_TexSetWrap(&characterTextures.texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);return true;
 }
 bool Renderer::nativeMarioModel(const Game& g,float rootY){
+ if(g.nativeAnimationPending())return true; // Retain publication; suppress stale mesh during producer hold.
+ (void)rootY;
  const auto* p=g.nativeMarioPose();if(!p || !p->sourceBuffers || !nativeMarioTexture.imported || nativeMarioTextureBank!=int(g.nativeMarioBank()))return false;
  const auto& s=p->shape;if(s.vertices.size()>size_t(MaxVertices-count) || s.colors.size()!=s.vertices.size())return false;
- const ActorRootTransform transform({g.progress.position.x,rootY,g.progress.position.z},g.marioPresentation.drawYaw(),g.marioPresentation.reflectZ());
+ const ActorRootTransform transform(g.nativeMarioRoot(),g.nativeMarioYaw(),g.nativeMarioReflect());
  const uint32_t start=count;
  for(size_t i=0;i<s.vertices.size();++i){const auto& v=s.vertices[i];const auto xyz=transform.point(v);vertex(xyz[0],xyz[1],xyz[2],v.u,1-(1-v.v)*nativeMarioUVScale,0xffffffff,&s.colors[i]);}
  for(auto b:s.batches){b.start+=start;nativeMarioBatches.push_back(b);}return true;

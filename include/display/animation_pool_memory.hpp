@@ -23,6 +23,7 @@ private:
  struct Span {uint32_t address,size;std::vector<uint8_t> saved;};
  std::shared_ptr<BattlePosePool> pool_;EventAddressSpace& memory_;
  uint32_t work_=0,models_=0,textures_=0,poses_=0;
+ std::array<uint8_t,24> header_{};
  bool active_=false;
  std::vector<Row> rows_;std::vector<Span> spans_;
 };

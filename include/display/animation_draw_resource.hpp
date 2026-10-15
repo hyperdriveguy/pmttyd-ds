@@ -26,6 +26,7 @@ public:
     AnimationDrawGroup group(uint32_t) const;
     std::string descriptor(uint32_t) const;
 private:
+    friend class NativeFileCache;
     std::vector<uint8_t> data_;std::string model_,texture_;
 };
 }

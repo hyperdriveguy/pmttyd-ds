@@ -21,6 +21,8 @@ public:
   // Capacity limits acceleration, never the admitted address domain.
   return true;
  }
+ // Prove a caller-owned backing identity inside this synchronous borrow.
+ bool aliases(uint32_t address,const uint8_t* bytes,uint32_t size) const{return size && owner_.rawRamSpan(address,size)==bytes;}
  bool readWord(uint32_t address,uint32_t& value) const {
   if(const auto* b=at(address,4)){value=uint32_t(b[0])<<24|uint32_t(b[1])<<16|uint32_t(b[2])<<8|b[3];return true;}
   return owner_.readWord(address,value);
@@ -52,17 +54,26 @@ private:
  uint8_t* at(uint32_t address,uint32_t size) const {
   for(unsigned i=0;i<count_;++i){const auto& s=spans_[i];if(address>=s.address && uint64_t(address-s.address)+size<=s.size)return s.bytes+(address-s.address);}return nullptr;
  }
+ void remember(uint32_t a,uint32_t n,uint8_t* bytes){
+  for(unsigned i=0;i<count_;++i)if(spans_[i].address==a){spans_[i]={a,n,bytes};return;}
+  if(count_<spans_.size())spans_[count_++]={a,n,bytes};
+  else{spans_[replacement_]={a,n,bytes};replacement_=(replacement_+1)%spans_.size();}
+ }
  // Thirty-two spans is an accelerator cache size, not a guest memory limit.
  // bind may succeed without caching at capacity; uncached reads/writes still
  // use the facade. Same-start stream prefixes may extend an existing binding.
- EventAddressSpace& owner_;std::array<Span,32> spans_{};unsigned count_=0;
+ uint32_t unmappedBase_=0;uint64_t unmappedSize_=0;bool unmappedValid_=false;
+ EventAddressSpace& owner_;std::array<Span,32> spans_{};unsigned count_=0,replacement_=0;
 };
 // RAII releases borrow even on exception; returned bool is callback result,
 // not an allocation or independent async lifetime. No cached spans survive it.
+// Facade reads/writes also reuse whole-region backing proofs during this scope.
+// Bytes stay live; independent semantic registries/backing owners must stay fixed.
 template<typename Callback> bool EventAddressSpace::withRawRamAccess(Callback&& callback){
  if(rawRamBorrowed_)return false;
  rawRamBorrowed_=true;
- struct Release {bool& borrowed;~Release(){borrowed=false;}} release{rawRamBorrowed_};
- RawRamAccess access(*this);return callback(access);
+ RawRamAccess access(*this);rawRamCache_=&access;
+ struct Release {bool& borrowed;RawRamAccess*& cache;~Release(){cache=nullptr;borrowed=false;}} release{rawRamBorrowed_,rawRamCache_};
+ return callback(access);
 }
 }

@@ -36,10 +36,12 @@ public:
     template<typename Callback> bool withRawRamAccess(Callback&&);
     // Pure current mapping admission, using the same interval/semantic checks
     // as registration. No storage is reserved; recheck after mapping changes.
-    bool unmappedRange(uint32_t base,uint64_t size) const{return available(base,size);}
+    bool unmappedRange(uint32_t base,uint64_t size) const;
     // BE widths alias the same live fields. A fallback store first checks
     // byte readability to avoid unmapped-prefix writes; this is not a transaction
     // against arbitrary semantic/provider side effects or concurrent mutation.
+    // Fresh native ownership proof; no value cache or pointer escapes.
+    bool matchesBytes(uint32_t,const uint8_t*,uint32_t) const;
     bool readByte(uint32_t,uint8_t&) const;
     bool readHalf(uint32_t,uint16_t&) const;
     bool readWord(uint32_t,uint32_t&) const;
@@ -48,6 +50,7 @@ public:
     bool writeWord(uint32_t,uint32_t);
 private:
     bool rawRamBorrowed_=false;
+    RawRamAccess* rawRamCache_=nullptr;
     struct Region {uint32_t base;std::vector<uint8_t> bytes;};
     bool available(uint32_t,uint64_t) const;
     const uint8_t* rawRamSpan(uint32_t,unsigned) const;

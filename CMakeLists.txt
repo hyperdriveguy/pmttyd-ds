@@ -2492,3 +2492,10 @@ add_executable(field_party_position_event_tests tests/field_party_position_event
 target_link_libraries(field_party_position_event_tests PRIVATE ttyd_core)
 add_test(NAME field_party_position_event COMMAND field_party_position_event_tests)
 set_tests_properties(field_party_position_event PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Atomic native mesh publication over fresh post-Main source output captures.
+target_sources(ttyd_core PRIVATE source/display/animation_mesh_publication.cpp source/platform/native_file_model_geometry.cpp)
+add_executable(animation_mesh_publication_tests tests/animation_mesh_publication_tests.cpp)
+target_link_libraries(animation_mesh_publication_tests PRIVATE ttyd_core)
+add_test(NAME animation_mesh_publication COMMAND animation_mesh_publication_tests)
+set_tests_properties(animation_mesh_publication PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

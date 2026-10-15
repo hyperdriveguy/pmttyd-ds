@@ -1,5 +1,6 @@
 #include "animation_native_main.hpp"
 #include "animation_startup_process.hpp"
+#include "event_ram_access.hpp"
 namespace ttyd {
 namespace {constexpr uint32_t CameraSize=13*0x280;}
 bool AnimationQuantizationState::write(uint32_t spr,uint32_t value){if(spr<912 || spr>919)return false;words_[spr-912]=value;++writes_;return true;}
@@ -17,11 +18,12 @@ std::unique_ptr<AnimationNativeMain> AnimationNativeMain::bind(AnimationStartupP
  return std::unique_ptr<AnimationNativeMain>(new AnimationNativeMain(p,std::move(c),std::move(a),std::move(current)));
 }
 bool AnimationNativeMain::owns(uint32_t a) const{return a>=addresses_.base && uint64_t(a)<uint64_t(addresses_.base)+CameraSize;}
-bool AnimationNativeMain::available() const{
- if(!active_ || !current_(pass_) || !process_.ready() || process_.animationMemory()!=&aliases_ || !aliases_.aliases(*pool_,process_.vm().memory) || !addresses_.unmapped(addresses_.base,CameraSize))return false;
+bool AnimationNativeMain::stable() const{
+ if(!active_ || !current_(pass_) || (!resumeReady_ && !process_.ready()) || process_.animationMemory()!=&aliases_ || !addresses_.unmapped(addresses_.base,CameraSize))return false;
  for(const auto& frame:frames_){const auto* p=pool_->slot(frame->handle);if(!p || p->nativeGeneration!=frame->generation || p->resource!=frame->resource || p->sourceBuffers!=frame->buffers)return false;}
  return true;
 }
+bool AnimationNativeMain::available() const{return stable() && aliases_.aliases(*pool_,process_.vm().memory);}
 std::optional<uint32_t> AnimationNativeMain::word(uint32_t a) const{uint32_t w;return available() && !owns(a) && process_.vm().memory.readWord(a,w)?std::optional<uint32_t>(w):std::nullopt;}
 bool AnimationNativeMain::push(uint32_t handle){
  // Named native lifetime admission only. The original parent keeps raw linked
@@ -39,7 +41,7 @@ bool AnimationNativeMain::linked(Frame& f,uint32_t handle){
 }
 bool AnimationNativeMain::camera(){
  if(!available() || !cameras_)return false;
- if(!facing_)facing_=AnimationFacingBinding::bind(pool_,process_.vm().memory,aliases_,cameras_,addresses_,[this](){return available();});
+ if(!facing_)facing_=AnimationFacingBinding::bind(pool_,process_.vm().memory,aliases_,cameras_,addresses_,[this](){return stable();});
  return facing_ && facing_->available();
 }
 AnimationFacingServices AnimationNativeMain::facingServices(){
@@ -57,13 +59,22 @@ AnimationMainServices AnimationNativeMain::services(Frame& f){
  s.evaluate=[](void* u,const AnimationMainEvaluation& input){auto& f=*static_cast<Frame*>(u);auto& n=*f.owner;return n.available() && advanceAnimationMainGeometry(input,n.time_->services(),n.replay_->services(),f.geometry);};return s;
 }
 bool AnimationNativeMain::advance(uint32_t handle,uint64_t pass,unsigned visits){
+ // Closed synchronous slice: internal source/numeric/camera services only.
+ // Pure current/reservation predicates and stable semantic registries are
+ // required. Only backing proofs cache; every source value stays live.
+ return process_.vm().memory.withRawRamAccess([&](auto&){
+ if(!process_.ready())return false;
+ // Tangent/scratch/alias owner identities cannot retire within this closed
+ // borrow. Header bytes and pose/pass state are still checked at every service.
+ resumeReady_=true;
+ struct ResetReady {bool& value;~ResetReady(){value=false;}} resetReady{resumeReady_};
  if(!active_){
   if(!visits || !current_(pass) || !process_.ready() || !addresses_.unmapped(addresses_.base,CameraSize))return false;
   handle_=handle;pass_=pass;if(!push(handle))return false;active_=true;
  }else if(handle_!=handle || pass_!=pass)return false;
  if(!available())return false;
- if(!time_)time_=AnimationMainTimeBinding::bind(pool_,process_.vm().memory,aliases_,[this](){return available();});
- if(!replay_)replay_=AnimationMainReplayBinding::bind(pool_,process_.vm().memory,aliases_,[this](){return available();},[this](){return process_.quantization().read(4);});
+ if(!time_)time_=AnimationMainTimeBinding::bind(pool_,process_.vm().memory,aliases_,[this](){return stable();});
+ if(!replay_)replay_=AnimationMainReplayBinding::bind(pool_,process_.vm().memory,aliases_,[this](){return stable();},[this](){return process_.quantization().read(4);});
  if(!time_ || !replay_)return false;
  for(unsigned i=0;i<visits;++i){
   if(!available())return false;
@@ -73,6 +84,7 @@ bool AnimationNativeMain::advance(uint32_t handle,uint64_t pass,unsigned visits)
   frames_.back()->childDone=true;
  }
  return false;
+ });
 }
 uint32_t AnimationNativeMain::phase() const{return frames_.empty()?0:frames_.back()->main.phase;}
 AnimationNativeMainProgress AnimationNativeMain::progress() const{
@@ -81,9 +93,9 @@ AnimationNativeMainProgress AnimationNativeMain::progress() const{
 }
 
 bool AnimationStartupProcess::configureMain(std::shared_ptr<const CameraManager> cameras,AnimationFacingAddressPolicy addresses,std::function<bool(uint64_t)> current){
- if(mainPending() || entryResource_)return false;
- auto owner=AnimationNativeMain::bind(*this,std::move(cameras),std::move(addresses),std::move(current));if(!owner)return false;main_=std::move(owner);return true;
+ if(producerPending() || entryResource_)return false;
+ auto owner=AnimationNativeMain::bind(*this,std::move(cameras),std::move(addresses),current);if(!owner)return false;main_=std::move(owner);presentation_.reset(new AnimationMeshPublication(*this,std::move(current)));++mainConfiguration_;return true;
 }
-bool AnimationStartupProcess::main(uint32_t handle,uint64_t pass,unsigned visits){return !entryResource_ && main_ && main_->advance(handle,pass,visits);}
+bool AnimationStartupProcess::main(uint32_t handle,uint64_t pass,unsigned visits){return !entryResource_ && !presentationPending() && main_ && main_->advance(handle,pass,visits);}
 
 }

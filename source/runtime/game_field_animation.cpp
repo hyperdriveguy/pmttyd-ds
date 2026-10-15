@@ -2,29 +2,38 @@
 #include "native_field_animation.hpp"
 namespace ttyd {
 bool Game::initializeNativeFieldAnimation(const char* root,std::shared_ptr<NativeFileCache> files,const EventNativePlatform& platform){
- if(fieldParties.originalPool)return false;
+ if(fieldParties.originalPool || nativeAnimationPending())return false;
  auto owner=NativeFieldAnimation::create(root,std::move(files),platform);
  if(!owner || !fieldParties.configureNativeAnimation(std::move(owner),fieldPlayerPoseResources()) || !fieldParties.initializeMario(fieldMarioBattle,{},0))return false;
  prepareNativeFieldAnimation();return nativeMarioPose()!=nullptr;
 }
 void Game::prepareNativeFieldAnimation(){
- if(!fieldParties.nativeAnimation)return;
+ if(!fieldParties.nativeAnimation || nativeAnimationPending())return;
  marioPresentation.update(fieldJump.motion,fieldMovement.speed,fieldMovement.headingOffsetDegrees,progress.hp,fieldCameraTickMilliseconds(fieldCameraSimulationTicks),true);
  updateNativeFieldAnimation();
 }
 void Game::updateNativeFieldAnimation(){
- if(!fieldParties.nativeAnimation)return;
+ if(!fieldParties.nativeAnimation || nativeAnimationPending())return;
+ auto& animation=*fieldParties.nativeAnimation;
+ if(!animation.configurePresentation(cameraManager))return;
+ animation.setMarioRoot({progress.position.x,water.active()?water.position[1]:groundHeight+jumpHeight,progress.position.z});
  // WORD4's active-handle bits share the existing retained presenter authority.
  fieldMarioBattle.secondaryFlags=(fieldMarioBattle.secondaryFlags&~0x90000000u)|(marioPresentation.displayFlags&0x90000000u);
  if(!trioBattleActive && !harborEncounter.locked() && !professorStory.locked() && (scene==Scene::Explore || scene==Scene::Dialogue))
-  fieldParties.nativeAnimation->mario(marioPresentation,fieldMarioBattle.poseHandles);
+  animation.mario(marioPresentation,fieldMarioBattle.poseHandles,animation.publicationBudget());
 }
 const BattlePose* Game::nativeMarioPose() const{return fieldParties.nativeAnimation?fieldParties.nativeAnimation->marioPose():nullptr;}
 unsigned Game::nativeMarioBank() const{return fieldParties.nativeAnimation?fieldParties.nativeAnimation->marioBank():0;}
+bool Game::nativeAnimationPending() const{return fieldParties.nativeAnimation && fieldParties.nativeAnimation->producerPending();}
+bool Game::drainNativeAnimation(){return !nativeAnimationPending() || fieldParties.nativeAnimation->resumeMario(fieldParties.nativeAnimation->publicationBudget());}
+ActorVector Game::nativeMarioRoot() const{return fieldParties.nativeAnimation?fieldParties.nativeAnimation->marioRoot():ActorVector{};}
+float Game::nativeMarioYaw() const{return fieldParties.nativeAnimation?fieldParties.nativeAnimation->marioYaw():0;}
+bool Game::nativeMarioReflect() const{return fieldParties.nativeAnimation && fieldParties.nativeAnimation->marioReflect();}
 // Candidate validation never owns the running source VM. Only after all room/
 // checkpoint providers admit may its role views reconnect to the same source
 // pool. Reject new/stale speculative handles instead of fabricating adoption.
 bool Game::retainNativeFieldAnimation(Game& previous,bool checkpoint){
+ if(nativeAnimationPending() || previous.nativeAnimationPending())return false;
  auto& old=previous.fieldParties;auto& next=fieldParties;if(!old.nativeAnimation)return true;
  BattlePoseClock clock;
  if(!old.nativeAnimation->ready() || !old.nativeAnimation->clock(clock))return false;

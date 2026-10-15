@@ -9,6 +9,8 @@ std::unique_ptr<AnimationPoolMemory> AnimationPoolMemory::bind(std::shared_ptr<B
  auto result=std::unique_ptr<AnimationPoolMemory>(new AnimationPoolMemory(std::move(pool),memory));auto& b=*result;
  auto word=[&](uint32_t a,uint32_t& v){return memory.readWord(a,v);};uint32_t count=0;
  if(!word(0x80415dc0,b.work_) || !b.work_ || !word(b.work_,b.models_) || !word(b.work_+4,count) || count!=64 || !word(b.work_+8,b.textures_) || !word(b.work_+0xc,count) || count!=64 || !word(b.work_+0x10,b.poses_) || !word(b.work_+0x14,count) || count!=256)return {};
+ const uint32_t header[]={b.models_,64,b.textures_,64,b.poses_,256};
+ for(unsigned i=0;i<6;++i)for(unsigned lane=0;lane<4;++lane)b.header_[4*i+lane]=uint8_t(header[i]>>(24-8*lane));
  b.spans_={{b.work_,0x110,{}},{b.models_,64*16,{}},{b.textures_,64*12,{}},{b.poses_,256*0x170,{}}};
  for(unsigned i=0;i<b.spans_.size();++i){auto& span=b.spans_[i];const uint64_t end=uint64_t(span.address)+span.size;
   if(!span.address || end>0x100000000ULL || (span.address<0x80415dc4 && end>0x80415dc0))return {};
@@ -49,9 +51,8 @@ std::unique_ptr<AnimationPoolMemory> AnimationPoolMemory::bind(std::shared_ptr<B
  b.pool_->sourceGuard_=[](const void* p){return static_cast<const AnimationPoolMemory*>(p)->matchesWork();};return result;
 }
 bool AnimationPoolMemory::matchesWork() const{
- if(!active_)return false;
- const std::pair<uint32_t,uint32_t> words[]={{0x80415dc0,work_},{work_,models_},{work_+4,64},{work_+8,textures_},{work_+0xc,64},{work_+0x10,poses_},{work_+0x14,256}};
- for(auto p:words){uint32_t v=0;if(!memory_.readWord(p.first,v) || v!=p.second)return false;}return true;
+ uint32_t root=0;
+ return active_ && memory_.readWord(0x80415dc0,root) && root==work_ && memory_.matchesBytes(work_,header_.data(),uint32_t(header_.size()));
 }
 bool AnimationPoolMemory::detach(){
  if(!active_)return true;

@@ -31,6 +31,10 @@ public:
  bool archiveType(uint32_t);
  bool contains(const std::string&,uint32_t) const;
  bool ownsPayload(uint32_t address,uint32_t bytes) const;
+ // Exact immutable source identity and live relocated static geometry closure.
+ // Timelines/deltas and output buffers are separate consumers. Checks actual
+ // VM backing in a synchronous borrow; no detached payload fallback.
+ bool modelGeometryCurrent(EventAddressSpace&,uint32_t,std::shared_ptr<const class AnimationDrawResource>) const;
  static constexpr uint32_t Manager=0x8041ec68,Global=0x80418498;
 private:
  NativeFileCache();
@@ -39,6 +43,7 @@ private:
   std::array<uint8_t,12> header{};
   std::vector<uint8_t> original,payload;
   FileTextureRelocationCursor relocation;
+  mutable std::weak_ptr<const class AnimationDrawResource> geometryIdentity;
  };
  // Explicit native backed tokens, not recovered heap placement: pool at
  // 0x87000000; first payload has1MiB before headers; later payloads use

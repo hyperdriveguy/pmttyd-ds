@@ -120,6 +120,7 @@ int main() {
     // then stage rendering. Failure rolls collision back through the transaction
     // destructor; commit only after every owner accepts the checkpoint.
     auto restoreProgress=[&](const ttyd::Progress& checkpoint) {
+        if(game.nativeAnimationPending())return false;
         ttyd::CollisionTransition transaction;float height=checkpoint.elevation;
         restoreFailure.clear();
         if(!stageRoomCollision(checkpoint.room,transaction)){restoreFailure="Checkpoint collision unavailable";return false;}
@@ -188,6 +189,9 @@ int main() {
         // first tick receives accumulated edges; subsequent ticks keep held state.
         while(accumulator>=1./60 && metrics.steps<5) {
             if(frontend.screen==ttyd::FrontScreen::Playing){
+                // Drain the same native producer before any new sequence/input/
+                // audio/camera visit. A retry consumes no simulation tick/edge.
+                if(game.nativeAnimationPending()){game.drainNativeAnimation();break;}
                 // Scoped native sequence transition: genuine GPU synchronization and
                 // complete field Exit; battle Init remains a separate provider wait.
                 // Existing demo gameplay is still an adapter, not full source seqMain.
@@ -254,14 +258,15 @@ int main() {
             if(frontend.screen==ttyd::FrontScreen::Playing && game.progress.sound) audio.play(game);
             game.troubleBoardSounds.clear(); // Consume once per native audio visit, including muted/unavailable playback.
             if(noticeTicks>0)--noticeTicks;
+            if(frontend.screen==ttyd::FrontScreen::Playing && game.nativeAnimationPending())break;
         }
         // Native overload policy drops whole remaining ticks (and the fraction),
         // recording the count rather than changing action-command tick duration.
-        if(accumulator>=1./60) {metrics.droppedTicks+=uint64_t(accumulator*60);accumulator=0;}
+        if(accumulator>=1./60 && metrics.steps==5 && !game.nativeAnimationPending()) {metrics.droppedTicks+=uint64_t(accumulator*60);accumulator=0;}
         metrics.simulationMs=(seconds()-simulationStart)*1000;
         // Pipe/road/reload work happens outside Game::tick. Loading may block;
         // reset wall-clock accumulation afterwards so IO time cannot age gameplay.
-        if(game.pipeRequest>=0 && game.fade.ready()) {
+        if(!game.nativeAnimationPending() && game.pipeRequest>=0 && game.fade.ready()) {
             ttyd::CollisionTransition transaction;
             auto ownedCandidate=std::make_unique<ttyd::Game>(game);auto& candidate=*ownedCandidate;
             const uint32_t target=game.pipeTarget();
@@ -272,7 +277,7 @@ int main() {
             else {game.cancelPipeWarp();notice="Pipe transition failed";noticeTicks=180;}
             accumulator=0;pending={};previous=seconds();
         }
-        if(game.warpRequest>=0 && game.fade.ready()) {
+        if(!game.nativeAnimationPending() && game.warpRequest>=0 && game.fade.ready()) {
             ttyd::CollisionTransition transaction;
             // Target ID comes from the original, validated road table.
             auto ownedCandidate=std::make_unique<ttyd::Game>(game);auto& candidate=*ownedCandidate;
@@ -287,7 +292,7 @@ int main() {
         }
         // Save-block writes carry an immutable checkpoint and presentation ticket.
         // Ordinary save requests below wait for this worker to relinquish the file.
-        if(game.saveObjects) {
+        if(game.saveObjects && !game.nativeAnimationPending()) {
             uint64_t ticket;ttyd::SaveBlockSwitches switches;
             if(game.saveObjects->presentation.takeWriteRequest(ticket,switches)) {
                 auto checkpoint=game.progress;
@@ -296,11 +301,11 @@ int main() {
                 if(!saveWorker.start(savePath,checkpoint,ticket))game.saveObjects->presentation.completeWrite(ticket,false);
             }
         }
-        if(game.saveRequested && !game.saveLocked() && !saveWorker.thread) {
+        if(!game.nativeAnimationPending() && game.saveRequested && !game.saveLocked() && !saveWorker.thread) {
             notice=ttyd::writeSave(savePath,game.progress)?"Progress saved":"Save failed; progress kept in memory";
             noticeTicks=180;game.saveRequested=false;
         }
-        if(game.reloadRequested) {
+        if(!game.nativeAnimationPending() && game.reloadRequested) {
             game.reloadRequested=false;ttyd::Progress checkpoint;
             const auto result=ttyd::loadSave(savePath,checkpoint);bool ok=false;
             if((result==ttyd::LoadResult::Loaded || result==ttyd::LoadResult::Recovered) && checkpoint.hp>0) {

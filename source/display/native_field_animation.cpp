@@ -21,7 +21,7 @@ std::shared_ptr<NativeFieldAnimation> NativeFieldAnimation::create(const char* r
  n->pool_->nativeProvider_=n.get();
  n->pool_->nativeEntry_=[](void* u,std::shared_ptr<const BattlePoseResource> r,int32_t mode,BattlePoseClock,const char* name){return static_cast<NativeFieldAnimation*>(u)->enter(std::move(r),mode,name);};
  n->pool_->nativeRelease_=[](void* u,int32_t h){return static_cast<NativeFieldAnimation*>(u)->release(h);};
- n->pool_->nativeClock_=[](const void* u,BattlePoseClock& c){return static_cast<const NativeFieldAnimation*>(u)->clock(c);};return n;
+ n->pool_->nativeClock_=[](const void* u,BattlePoseClock& c){return static_cast<const NativeFieldAnimation*>(u)->clock(c);};if(!n->configurePresentation({}))return {};return n;
 }
 NativeFieldAnimation::~NativeFieldAnimation(){if(pool_ && pool_->nativeProvider_==this){pool_->nativeEntry_=nullptr;pool_->nativeClock_=nullptr;pool_->nativeRelease_=nullptr;pool_->nativeProvider_=nullptr;}}
 bool NativeFieldAnimation::ready() const{return process_ && process_->ready();}
@@ -34,7 +34,7 @@ bool NativeFieldAnimation::clock(BattlePoseClock& out) const{
  out={a,b};return true;
 }
 bool NativeFieldAnimation::tick(bool battle,bool paused){
- if(!ready() || process_->mainPending())return false;
+ if(!ready() || producerPending())return false;
  auto& vm=process_->vm();auto& m=vm.memory;uint32_t gp=0,bus=0,window=0;
  if(!m.readWord(0x80415fd0,gp) || gp!=0x81000000 || !m.readWord(0x800000f8,bus) || !m.readWord(0x8041ec30,window))return false;
  if(window){uint16_t flags=0;uint32_t state=0;if(window>0xffffffdc || !m.readHalf(window,flags) || (!(flags&0x1000) && !m.readWord(window+0x20,state)))return false;}
@@ -46,7 +46,7 @@ bool NativeFieldAnimation::tick(bool battle,bool paused){
  publishEventRetraceTime(0,s);return true;
 }
 std::optional<int32_t> NativeFieldAnimation::enter(std::shared_ptr<const BattlePoseResource> resource,int32_t mode,const char* requested){
- if(!ready() || process_->mainPending() || releasing_.active || mode<0 || mode>2 || !resource || !resource->draw || !resource->textures || !resource->bank || resource->names.empty())return {};
+ if(!ready() || producerPending() || releasing_.active || mode<0 || mode>2 || !resource || !resource->draw || !resource->textures || !resource->bank || resource->names.empty())return {};
  const std::string name=requested?requested:resource->modelName;if(name.empty() || name.size()>=256 || name!=resource->modelName || !files_->contains("a/"+name,5) || !files_->contains("a/"+resource->textureName+"-",4))return {};
  // Preserve the original model-cache canonical resource, including its atlas.
  for(const auto& model:pool_->models())if(model.flags() && model.resource && model.resource->modelName==resource->modelName){resource=model.resource;break;}
@@ -59,25 +59,49 @@ std::optional<int32_t> NativeFieldAnimation::enter(std::shared_ptr<const BattleP
  if(result && *result<0)return {};
  return result;
 }
-bool NativeFieldAnimation::mario(const MarioPresentation& mario,const std::array<int32_t,3>& handles){
- if(process_->mainPending())return false;
- sampled_=-1;if(!ready() || !mario.supported || !mario.poseUploaded)return false;
- bank_=(mario.displayFlags&0x10000000)?2:(mario.displayFlags&0x80000000)?1:0;
- const int32_t handle=handles[bank_];auto* p=pool_->pose(handle);if(!p || !p->sourceBuffers || !p->resource->bank->pose(mario.selected))return false;
- BattlePoseClock current;if(!clock(current))return false;
- if(selected_!=handle || uploaded_!=mario.poseUploadSerial){
-  if(!pool_->selectName(handle,mario.selected,true,current))return false;
-  // Used unlinked SetLocalTime: source float41855555 multiply, finite native
-  // unsigned conversion, modulo64 subtraction, low-before-high ordinary and
-  // paper stores. No cache/rate reset beyond the preceding forced selection.
-  const float ms=rounded(real(process_->vm().memory,0x8041fb40)*float(mario.poseStartFrame));
-  if(!std::isfinite(ms) || ms<0 || double(ms)>=18446744073709551616.0)return false;
-  const uint64_t q=p->word(0xc)?current.modeNonzero:current.modeZero,epoch=q-uint64_t(double(ms));
-  if(p->word(0x90)!=0xffffffff)return false;
-  p->word(0x1c,uint32_t(epoch));p->word(0x18,uint32_t(epoch>>32));p->word(0x8c,p->word(0x1c));p->word(0x88,p->word(0x18));
-  selected_=handle;uploaded_=mario.poseUploadSerial;
+bool NativeFieldAnimation::configurePresentation(std::shared_ptr<const CameraManager> cameras){
+ if(producerPending())return false;
+ if(process_->mainConfiguration()==configuredMain_ && configuredMain_ && cameras_==cameras)return true;
+ AnimationFacingAddressPolicy addresses;addresses.base=0x81900000;addresses.unmapped=[this](uint32_t a,uint32_t n){return process_->vm().memory.unmappedRange(a,n);};
+ std::weak_ptr<NativeFieldAnimation> weak=shared_from_this();
+ if(!process_->configureMain(cameras,addresses,[weak](uint64_t pass){auto n=weak.lock();return n && n->marioActive_ && n->marioPass_==pass;}))return false;
+ cameras_=std::move(cameras);configuredMain_=process_->mainConfiguration();return true;
+}
+bool NativeFieldAnimation::mario(const MarioPresentation& mario,const std::array<int32_t,3>& handles,unsigned budget){
+ if(marioActive_){
+  const unsigned bank=(mario.displayFlags&0x10000000)?2:(mario.displayFlags&0x80000000)?1:0;
+  if(!mario.selected || !mario.supported || !mario.poseUploaded || handles[bank]!=requestHandle_ || bank!=requestBank_ || mario.poseUploadSerial!=requestSerial_ || requestName_!=mario.selected || mario.poseStartFrame!=requestStart_ || mario.drawYaw()!=requestYaw_ || mario.reflectZ()!=requestReflect_)return false;
+  return resumeMario(budget);
  }
- if(!pool_->main(handle,current))return false;
- sampled_=handle;return true;
+ if(producerPending() || entering_ || releasing_.active)return false;
+ if(!ready() || !mario.selected || !mario.supported || !mario.poseUploaded || !budget){sampled_=-1;return false;}
+ const unsigned bank=(mario.displayFlags&0x10000000)?2:(mario.displayFlags&0x80000000)?1:0;
+ const int32_t handle=handles[bank];auto* p=pool_->pose(handle);if(!p || !p->sourceBuffers || !p->resource->bank->pose(mario.selected)){sampled_=-1;return false;}
+ BattlePoseClock clock;if(!this->clock(clock))return false;
+ const float ms=rounded(real(process_->vm().memory,0x8041fb40)*float(mario.poseStartFrame));
+ if(!std::isfinite(ms) || ms<0 || double(ms)>=18446744073709551616.0 || ((selected_!=handle || uploaded_!=mario.poseUploadSerial) && p->word(0x90)!=0xffffffff))return false;
+ requestRoot_=nextRoot_;requestHandle_=handle;requestBank_=bank;requestSerial_=mario.poseUploadSerial;requestStart_=mario.poseStartFrame;requestName_=mario.selected;requestYaw_=mario.drawYaw();requestReflect_=mario.reflectZ();setupDone_=false;++marioPass_;marioActive_=true;
+ if(!process_->reservePresentation(uint32_t(handle),marioPass_)){marioActive_=false;return false;}
+ return resumeMario(budget);
+}
+bool NativeFieldAnimation::resumeMario(unsigned budget){
+ if(!marioActive_ || !budget)return false;
+ auto* p=pool_->pose(requestHandle_);if(!p)return false;
+ if(!setupDone_){
+  BattlePoseClock current;if(!clock(current))return false;
+  if(selected_!=requestHandle_ || uploaded_!=requestSerial_){
+   if(!pool_->selectName(requestHandle_,requestName_.c_str(),true,current))return false;
+   const float ms=rounded(real(process_->vm().memory,0x8041fb40)*float(requestStart_));
+   const uint64_t q=p->word(0xc)?current.modeNonzero:current.modeZero,epoch=q-uint64_t(double(ms));
+   p->word(0x1c,uint32_t(epoch));p->word(0x18,uint32_t(epoch>>32));p->word(0x8c,p->word(0x1c));p->word(0x88,p->word(0x18));selected_=requestHandle_;uploaded_=requestSerial_;
+  }
+  setupDone_=true;
+ }
+ for(unsigned part=0;part<3;++part){
+  const auto before=process_->presentationOwner()->phase();
+  if(process_->present(uint32_t(requestHandle_),marioPass_,budget)){sampled_=requestHandle_;bank_=requestBank_;publishedYaw_=requestYaw_;publishedReflect_=requestReflect_;publishedRoot_=requestRoot_;marioActive_=false;return true;}
+  const auto after=process_->presentationOwner()->phase();if(!((before==0 && after==1) || (before!=31 && after==31)))return false;
+ }
+ return false;
 }
 }

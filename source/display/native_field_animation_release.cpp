@@ -1,8 +1,8 @@
 #include "native_field_animation.hpp"
 namespace ttyd {
-bool NativeFieldAnimation::main(uint32_t handle,uint64_t pass,unsigned visits){return ready() && !entering_ && !releasing_.active && process_->main(handle,pass,visits);}
+bool NativeFieldAnimation::main(uint32_t handle,uint64_t pass,unsigned visits){return ready() && !presentationPending() && !entering_ && !releasing_.active && process_->main(handle,pass,visits);}
 bool NativeFieldAnimation::release(int32_t handle){
- if(!ready() || process_->mainPending() || entering_ || handle<0 || unsigned(handle)>=256)return false;
+ if(!ready() || producerPending() || entering_ || handle<0 || unsigned(handle)>=256)return false;
  // Only the initial admission may use typed metadata. Source teardown clears
  // model flags before its children finish, temporarily invalidating pose().
  auto* p=pool_->poses_[unsigned(handle)].get();

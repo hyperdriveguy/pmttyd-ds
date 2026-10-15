@@ -379,6 +379,11 @@ public:
     bool hasNativeFieldAnimation() const{return bool(fieldParties.nativeAnimation);}
     const BattlePose* nativeMarioPose() const;
     unsigned nativeMarioBank() const;
+    bool nativeAnimationPending() const;
+    bool drainNativeAnimation();
+    ActorVector nativeMarioRoot() const;
+    float nativeMarioYaw() const;
+    bool nativeMarioReflect() const;
     bool retainNativeFieldAnimation(Game& previous,bool checkpoint=false);
     FieldPartyAppearanceServices fieldPartyAppearanceServices();
     bool fieldControlEnabled() const {return marioFieldControl && partnerFieldControl;}

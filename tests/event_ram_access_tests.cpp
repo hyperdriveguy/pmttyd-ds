@@ -57,6 +57,29 @@ void runEventRamAccessFixture(const char* root){
  try{m.withRawRamAccess([&](auto& ram)->bool{assert(ram.bind(Base,16));throw 7;});assert(false);}catch(int v){assert(v==7);}
 #endif
  assert(m.withRawRamAccess([&](auto& ram){return ram.bind(Base,1024);}));
+ // Transparent facade acceleration caches backing, never bytes. Disjoint
+ // guest aliases observe the same live host bytes at every width.
+ assert(m.withRawRamAccess([&](auto&){
+  uint32_t value=0;uint8_t byte=0;
+  assert(m.readWord(External,value));
+  assert(m.writeWord(External+0x102,0x12345678));
+  assert(m.readWord(External+4,value) && value==0x12345678);
+  const uint8_t expected[]={0x12,0x34,0x56,0x78};assert(m.matchesBytes(External+4,expected,4));
+  assert(m.writeByte(External+5,0xab) && m.readByte(External+0x103,byte) && byte==0xab);
+  assert(!m.matchesBytes(External+4,expected,4) && !m.matchesBytes(0xfffffffe,expected,4));
+  assert(m.writeHalf(External+6,0xcdef) && m.readWord(External+0x102,value) && value==0x12abcdef);
+  assert(m.writeWord(0x81000038,0x87654321) && m.readWord(0x81000038,value) && value==0x87654321);
+  assert(m.readWord(0x85000000,value) && value==0xdeadbeef);
+  const uint8_t crossing[]={0xde,0xad,0xbe,0xef};assert(m.matchesBytes(0x85000000,crossing,4));
+  const uint8_t semantic[]={0x87,0x65,0x43,0x21};assert(m.matchesBytes(0x81000038,semantic,4));
+  assert(!m.withRawRamAccess([&](auto&){return true;}) && !m.unregisterExternalRam(External));
+  assert(m.unmappedRange(0x89000000,32) && m.unmappedRange(0x89000000,32) && !m.unmappedRange(External,4));
+  return true;
+ }));
+ assert(m.registerRam(0x89000000,std::vector<uint8_t>(32)) && !m.unmappedRange(0x89000000,32));
+ // A subsequent remap cannot hit a cached pointer from the ended scope.
+ assert(m.unregisterRam(Base) && m.registerRam(Base,std::vector<uint8_t>(1024,0x6a)));
+ assert(m.withRawRamAccess([&](auto&){uint32_t v=0;return m.readWord(Base,v) && v==0x6a6a6a6a;}));
  assert(m.importScripts(scripts) && m.unregisterExternalRam(External));
 }
 int main(){runEventRamAccessFixture("romfs");}

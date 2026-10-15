@@ -4,13 +4,21 @@
 // fields precede RAM. 0x100000000 is the exclusive32-bit address ceiling.
 // Byte/half/word aliases update the same semantic state; this is not host RAM.
 namespace ttyd {
+bool EventAddressSpace::matchesBytes(uint32_t a,const uint8_t* expected,uint32_t n) const {
+    if(!expected || !n || uint64_t(a)+n>0x100000000ULL)return false;
+    if(const auto* p=rawRamSpan(a,n))return !std::memcmp(p,expected,n);
+    for(uint32_t i=0;i<n;++i){uint8_t b;if(!readByte(a+i,b) || b!=expected[i])return false;}
+    return true;
+}
 bool EventAddressSpace::readByte(uint32_t a,uint8_t& v) const {
+    if(rawRamCache_)if(const auto* p=rawRamSpan(a,1)){v=*p;return true;}
     if(entries_.readByte(a,v) || contexts_.readByte(a,v) || runtime_.readByte(a,v) || gp_.readByte(a,v))return true;
     for(const auto& r:ram_)if(a>=r.base && uint64_t(a)-r.base<r.bytes.size()) {v=r.bytes[a-r.base];return true;}
     for(const auto& r:external_)if(a>=r.base && uint64_t(a)-r.base<r.size){v=r.bytes[a-r.base];return true;}
     return false;
 }
 bool EventAddressSpace::writeByte(uint32_t a,uint8_t v) {
+    if(rawRamCache_)if(auto* p=rawRamSpan(a,1)){*p=v;return true;}
     if(entries_.writeByte(a,v) || contexts_.writeByte(a,v) || runtime_.writeByte(a,v) || gp_.writeByte(a,v))return true;
     for(auto& r:ram_)if(a>=r.base && uint64_t(a)-r.base<r.bytes.size()) {r.bytes[a-r.base]=v;return true;}
     for(auto& r:external_)if(a>=r.base && uint64_t(a)-r.base<r.size){r.bytes[a-r.base]=v;return true;}
@@ -28,6 +36,16 @@ bool EventAddressSpace::available(uint32_t base,uint64_t size) const {
     for(const auto& r:ram_)if(uint64_t(base)<uint64_t(r.base)+r.bytes.size() && uint64_t(r.base)<uint64_t(base)+size)return false;
     if(entries_.mayMapRange(base,size) || contexts_.mayMapRange(base,size) || runtime_.mayMapRange(base,size) || gp_.mayMapRange(base,size))
         for(uint64_t i=0;i<size;++i) {uint8_t v;if(readByte(base+uint32_t(i),v))return false;}
+    return true;
+}
+// An unchanged synchronous borrow may reuse a fully nonsemantic reservation
+// proof. Sparse semantic holes retain fresh admission checks.
+bool EventAddressSpace::unmappedRange(uint32_t base,uint64_t size) const {
+    if(rawRamCache_ && rawRamCache_->unmappedValid_ && rawRamCache_->unmappedBase_==base && rawRamCache_->unmappedSize_==size)return true;
+    if(!available(base,size))return false;
+    if(rawRamCache_ && !entries_.mayMapRange(base,size) && !contexts_.mayMapRange(base,size) && !runtime_.mayMapRange(base,size) && !gp_.mayMapRange(base,size)){
+        rawRamCache_->unmappedBase_=base;rawRamCache_->unmappedSize_=size;rawRamCache_->unmappedValid_=true;
+    }
     return true;
 }
 bool EventAddressSpace::registerExternalRam(uint32_t base,uint8_t* bytes,uint32_t size){
@@ -101,9 +119,17 @@ bool EventAddressSpace::importScripts(const EventScriptAssets& scripts) {
 // if its current fields are sparse/unreadable. This check admits unaligned raw
 // words too; byte assembly keeps BE semantics without typed host-pointer casts.
 const uint8_t* EventAddressSpace::rawRamSpan(uint32_t a,unsigned size) const {
+    if(rawRamCache_)if(const auto* p=rawRamCache_->at(a,size))return p;
     if(uint64_t(a)+size>0x100000000ULL || entries_.mayMapRange(a,size) || contexts_.mayMapRange(a,size) || runtime_.mayMapRange(a,size) || gp_.mayMapRange(a,size))return nullptr;
-    for(const auto& r:ram_)if(a>=r.base && uint64_t(a)-r.base+size<=r.bytes.size())return r.bytes.data()+(a-r.base);
-    for(const auto& r:external_)if(a>=r.base && uint64_t(a)-r.base+size<=r.size)return r.bytes+(a-r.base);
+    auto remember=[&](uint32_t base,uint32_t n,const uint8_t* bytes){
+        // Prove the whole cached region, not merely this requested word. Sparse
+        // semantic extents must never become raw aliases through later hits.
+        if(!rawRamCache_)return;
+        if(!entries_.mayMapRange(base,n) && !contexts_.mayMapRange(base,n) && !runtime_.mayMapRange(base,n) && !gp_.mayMapRange(base,n))rawRamCache_->remember(base,n,const_cast<uint8_t*>(bytes));
+        else rawRamCache_->remember(a,size,const_cast<uint8_t*>(bytes)+(a-base)); // This exact request already passed semantic exclusion.
+    };
+    for(const auto& r:ram_)if(a>=r.base && uint64_t(a)-r.base+size<=r.bytes.size()){remember(r.base,uint32_t(r.bytes.size()),r.bytes.data());return r.bytes.data()+(a-r.base);}
+    for(const auto& r:external_)if(a>=r.base && uint64_t(a)-r.base+size<=r.size){remember(r.base,r.size,r.bytes);return r.bytes+(a-r.base);}
     return nullptr;
 }
 uint8_t* EventAddressSpace::rawRamSpan(uint32_t a,unsigned size) {

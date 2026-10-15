@@ -1340,6 +1340,7 @@ bool Game::beginWater() {
 // saved BEFORE replacing *this because saved may alias this->progress.
 // Native road/story setup is gated by explicit room/story, never harness victory.
 void Game::restore(const Progress& saved) {
+    if(nativeAnimationPending())return;
     const auto retainedCommandPalette=commandPalette;
     const auto retainedShadows=shadows;
     const auto retainedCameras=cameraManager;
@@ -1559,6 +1560,7 @@ void Game::rebaseFieldCamera() {
 // target adds1 ENGINE unit to the retained contact Y. Prepare/finish use
 // candidates and commit only admitted camera state; view mode3 bypasses roads.
 void Game::beginFieldCameraTick() {
+    if(nativeAnimationPending())return;
     if(cameraManager && cameraManager->camera(4)->mode==2)return; // Battle owns retained camera4.
     if(!fieldCameraInitialized)rebaseFieldCamera();
     if(fieldCameraFlags&2){fieldMovement.headingOffsetDegrees=cameraHeadingSnapshot(fieldCameraFrame.yaw);return;}
@@ -2116,7 +2118,8 @@ void Game::updateMarioPresentation() {
 // ordinary input from advancing a locked scene, but neutral movement may keep
 // airborne/support physics alive. See game-composition guide for full order.
 void Game::tick(const Input& rawInput,const OriginalSequenceServices* sequenceServices) {
-    if(fieldParties.nativeAnimation)fieldParties.nativeAnimation->tick(trioBattleActive || scene==Scene::Battle);
+    if(nativeAnimationPending()){drainNativeAnimation();return;}
+    if(fieldParties.nativeAnimation && !fieldParties.nativeAnimation->tick(trioBattleActive || scene==Scene::Battle))return;
     if(trioAttack.outerMainPending()){
         ++ticks; // Native admission clock; held source children do not run later owners.
         struct Bridge {Game& game;const Input& input;const OriginalSequenceServices* sequence;} bridge{*this,rawInput,sequenceServices};
