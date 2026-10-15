@@ -15779,3 +15779,32 @@ Next tasks:
    GPU owners, draining whole callbacks before ending leases. Continue exact
    original event/story/area resources, then matched original visuals and
    physical-hardware profiling. EVT-01 and the overall goal remain active/open.
+
+
+## 2026-10-15 — Native mixed original UI probe and additional UI workers
+
+Completed the isolated native prepared Window/font/submenu probe. Frozen evidence:
+`artifacts/weapon-mixed-native-probe/frozen.json`, SHA256
+`27517e682ead098579b71bba5d549a88d5c9450f97a9f2acba9242b7b34ee3e5`.
+All 6,458 accepted source/header/private asset inputs were preserved. Native
+build, strict ARM check and isolated Azahar smoke exited0. The explicit TEST
+parent produced214 packets (2Window,210font,2submenu),360 Window FIFO words,
+72 submenu FIFO words and420 font RNG calls;14 resource queries,7,799 reads
+and634 requests stayed stable through held/reimported frames. Four actual
+400x240 top buffers matched SHA256
+`96e626ab176c962fafa754305d74748903243e2573c25b48c7e3292cfb2042a6`,
+with34,537 nonbackground pixels. The final top crop was manually inspected.
+Physical A retired the old Renderer generation and rejected its prepared plan
+before GPU submission. No unmapped native access or native exception occurred.
+The probe retains explicit TEST parent/camera/globalGX admission; it does not
+prove whole original weapon callback execution, native icon drawing, tutorial
+activation, hardware parity or a complete battle.
+
+At the user's request, all three available UI workers are active on class-menu
+source packets/queued binding, shared actual process language state, and original
+Window startup. Root has frozen a separate6,487-input integration snapshot for
+centered text/width, packed cost, real process Font startup and weapon icon
+ownership. Full host/native gates for that snapshot are running; no success is
+claimed yet. Its source-pin checks and1,546-document link check exited0.
+Normal tutorial/battle UI activation, actual Window async startup, physical
+bad-thrower selection and audience targeting remain open.
