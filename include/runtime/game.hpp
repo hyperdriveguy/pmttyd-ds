@@ -272,6 +272,11 @@ public:
     RoadCaseAdmission roadAdmission;
     FieldDoorState fieldDoor;
     FieldDoorDataWorld fieldDoorData;
+    std::shared_ptr<class FieldNpcRegistryOwner> originalFieldNpcs;
+    // Cold source npcInit only. Returned facade binding must retire before its
+    // EventAddressSpace; it retains the Game-owned stable actor/pose storage.
+    std::unique_ptr<class FieldNpcRegistryBinding> initializeOriginalFieldNpcs(class EventAddressSpace&,uint32_t allocationBase);
+
     FieldMapFlags fieldMapFlags;
     FieldBeroInfo fieldBeroInfo;
     std::optional<FieldBeroPosition> fieldBeroPosition; // Actual admitted start/end/recovery calculation; not complete EVT world execution.

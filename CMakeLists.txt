@@ -1769,3 +1769,9 @@ target_sources(ttyd_core PRIVATE source/battle/battle_packed_recovery.cpp source
 add_executable(battle_present_item_tests tests/battle_present_item_tests.cpp)
 target_link_libraries(battle_present_item_tests PRIVATE ttyd_core)
 add_test(NAME battle_present_item COMMAND battle_present_item_tests)
+
+target_sources(ttyd_core PRIVATE source/field/field_npc_registry_owner.cpp source/runtime/game_field_npc_registry.cpp)
+add_executable(field_npc_registry_owner_tests tests/field_npc_registry_owner_tests.cpp)
+target_link_libraries(field_npc_registry_owner_tests PRIVATE ttyd_core)
+add_test(NAME field_npc_registry_owner COMMAND field_npc_registry_owner_tests)
+set_tests_properties(field_npc_registry_owner PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
