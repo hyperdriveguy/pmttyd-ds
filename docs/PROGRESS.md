@@ -13371,3 +13371,69 @@ additions still need separate inline review. Current tracked platform/save
 header/CPP hashes match annotations, but inventory is only a review aid and not
 proof of every live concurrent change or full semantic/game coverage. Full
 documentation/remake goal remains active.
+
+## 2026-10-15 — Event address bindings and public contracts documented
+
+Annotated all 31 event headers plus seven newer/changed address/lifecycle/runtime
+implementations. Added [addressing guide](code/event-addressing.md) and
+[service API guide](code/event-service-api.md), updated existing VM/index links.
+Code/docs commit b571bb38. All 38 C++/header executable tokens/string literals
+unchanged; no gameplay, original scripts/dialogue/control-token or asset changes.
+No new tests for this prose-only work.
+
+Comments/guides explain packed guest extents versus native object layout, live
+BE field aliases, unknown-byte round-trip, unresolved nonzero links/array tokens,
+late resolution, detach-before-unregister, raw restoration versus source deletion/
+heap free, GP root retirement/selection and actual input/dimension precedence.
+Direct RAM checks are conservative for semantic extents while registration retains
+sparse readable-byte admission. Scoped raw access blocks facade mapping mutation,
+not writes or separate semantic registries; caller must keep those stable and
+avoid children/yields. Thirty-two cache slots limit acceleration, not memory
+admission. Copy requires virtual AND physical disjointness; uncached access retains
+facade semantics. Word fallback preflight is not a general rollback transaction.
+
+Corrected four stale comment descriptions: unaligned raw words can use direct
+lanes; GP bound dimensions/input override retained bytes; restart resets lifetime,
+not every wait timer; RAM borrow rejects storage-mapping mutation, not data writes.
+No executable behavior changed by those corrections. Source lifetime is eligible
+elapsed time, not an immutable allocation serial; source ID/slot checks and actual
+owner/incarnation evidence remain separate. Header service-user lifetimes and
+router optional/handler/dispatcher/registry result domains are now explicit.
+
+API notes distinguish Init/ReInit clearing and retained state, source timestamp
+store order, packed entry allocation from host sizeof, native callback observation
+from source world work, deletion/copy-back ordering, context/global recapture,
+operand namespace/float asymmetries, map versus SDK allocator headers/coalescing,
+source cache/time/system prefixes and original diagnostic scratch. Platform hook
+declarations do not imply interpreter forwarding/defaults. Required asserted
+domains are not a missing-memory fallback; registry unbound dispatch explicitly
+aborts. No original hardware/numeric/cadence or full native story proof inferred.
+
+Frozen baseline 16184fbd68dd7a1c03af3309e2065f0b7db77850 plus owned docs is at
+artifacts/event-api-code-documentation-validation/source. Full audit covers 4005
+baseline tracked files, zero unexpected changes; all 42 documented frozen/live
+snapshots match and all 99 local guide/index links resolve. Source/prose finalized
+before gates; concurrent/later battle/field/animation/effect/render additions are
+preserved/excluded. No combined moving-worktree validation claim.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits 0: 446/446 C++ (49.34s),
+212/212 Python (33.810s), zero skipped. Actual original 45-descriptor enemy-bank
+fixture ran. Native make all -o assets-ready -j4 SOUNDTRACK=gamecube exits 0.
+Both original async handles observed terminal; exit markers agree. Manifest records
+source/dependency, accepted product/evidence/log and ELF/3DSX hashes. Existing
+compiler/Pillow warnings remain. No emulator/profile/save changes or hardware/
+pixel/performance/Gekko parity claim.
+
+Cache inherits 63 accepted products and original footer/HP/enemy evidence/default
+Python fixture paths unchanged; all checked after gates. Preflight verifies no
+tool/asset/Makefile changes since prior frozen baseline. No conversion, overlay,
+editable import, shared-pack write or provenance/license change. Python fixtures
+independently use read-only ISO/empty temporary destinations; native full asset
+regeneration skipped. No ISO, extracted original or compiled binary committed.
+
+Next: audit story/opening controllers and their source IDs/state/ownership, then
+remaining field/runtime/effect code and tooling. Recent battle menu/action/pose/
+weapon/Phase/Turn/audience integration, raw animation/release/texture/party changes
+still need separate inline review. Current tracked event CPP/header hashes all
+match annotations, but inventory is a review aid, not semantic completeness or
+validation of future live changes. Full documentation/remake goal stays active.
