@@ -1314,3 +1314,31 @@ No raw assets, extracted source or compiled packs are committed.
 ### Original reel display constants
 
 The private source-icons constants pack grows124 to188 bytes with original DOL spans80426884+28 and80419f30+18 (hex). Existing124-byte prefix and613 image cells are unchanged. Added RGBA/f32 values and small65,67,69,68,66 / big70,72,74,73,71 U16 tables support original802036d4. These indices refer to battle_common.tpl; no substitute texture is exported. Read-only source `/home/carson/games/roms/G8ME01.iso`; Nintendo/Intelligent Systems ownership, local use only and no redistribution rights. Generated constants.bin/sources.json remain ignored.
+
+## Opening-renderer documentation validation cache (2026-10-14)
+
+Private validation source: artifacts/scene-code-documentation-validation/source.
+Its initial RomFS copy lacked newer original model companions/event payloads.
+Refreshed 109 outputs from artifacts/source-checks/trouble-world/romfs, whose
+previous validation is recorded in artifacts/area-field-pose-validation-manifest.json;
+its matching local-assets/message-icons cache accompanies those textures. This
+copies prior conversion output; it does not import over checked-in editable assets.
+Per-output SHA256 values and the prior cache path are in the scene validation
+manifest's asset_refresh.copied_outputs.
+
+The frozen tools/source_icon_assets.py read_constants helper reread five admitted
+DOL spans from /home/carson/games/roms/G8ME01.iso using read-only access. Private
+romfs/source-icons/constants.bin is 124 bytes, SHA256
+c5ec5344a42fd999c7113e153ecc422bfb8c46078a000ce4bc4cf15b9cec5aa1.
+The concurrently edited root cache had extra spans incompatible with this frozen
+loader; the private constants record and sources.json were updated together.
+Frozen tools/material_light_assets.py also extracted original m/bti_01/d and
+m/stg_00_1/d to private local-assets/material-light/*.d, retaining original bytes
+and DOL ambient data in private romfs/material-light.bin (64 bytes) and its JSON
+provenance. No image resizing, art/music/dialogue replacement or shared cache write
+was performed. Native validation reused this private RomFS with assets-ready
+regeneration skipped; it did not re-import assets/.
+
+Original Nintendo/Intelligent Systems rights remain reserved. These original and
+derived files stay in ignored local caches; recording paths/hashes grants no new
+license or redistribution rights. No ISO content was staged or committed.

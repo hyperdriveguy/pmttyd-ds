@@ -7407,3 +7407,41 @@ next sequence pass may observe readiness immediately. Preserve actual sequence
 work history/state5/6 and original resource/field-root teardown order. No full
 prologue completion claim. Final source manifest and doc-link count follow
 artifacts/break-reel-validation-manifest.json and break-reel-doc-links-final.log.
+
+## 2026-10-14 — Opening/frontend code documentation
+
+Documented twelve native rendering adapters: frontend, book capture/cover/paper,
+crystal effects, title, heading, map turn, voyage logo, wake, ship capture/paper
+and retained departure. Comments explain numeric format identities, atlas gutter
+arithmetic, native/source units, fixed-point reveal indices, pass/cull/alpha
+policy, visibility/speaker tokens, GPU cache transitions and ownership transfers.
+The [scene implementation guide](code/scene-rendering.md) links these conventions
+and distinguishes post-submission acknowledgement from selected GPU-synchronized
+terminal acknowledgements. All twelve C++ files preserve executable tokens.
+Documentation commit e0af73ee; this follow-up clarifies acknowledgement wording.
+
+Validation used baseline 1f24fe6db385bd1bbf1d7c4f46a0e4cffa14f9cc plus these
+comments in artifacts/scene-code-documentation-validation/source. Audited 3484
+tracked files: zero unexpected changes; fourteen documented files match live/frozen
+hashes. CMAKE_BUILD_PARALLEL_LEVEL=4 make test passes 332/332 C++ and 191/191 Python;
+make all -o assets-ready -j4 SOUNDTRACK=gamecube passes, including native rebuilds
+of final comments and refreshed pack. Logs host-final.log/native-final-pack.log;
+manifest records hashes, cache provenance and initial failure logs.
+
+Initial host run passed 307/332: 24 asset-loading assertions used an incomplete/
+stale copied root RomFS, and one fixture could not create its private artifacts
+file. Refreshed 109 outputs from the prior validated area-field-pose cache, copied
+its matching message icon cache, created the private fixture directory/reference,
+and regenerated the frozen loader's 124-byte icon constants from the ISO read-only.
+The second run passed 332 C++ and 190/191 Python; the remaining missing material-light
+source cache was generated privately by the frozen converter, then the full test
+command reran. See [asset validation notes](ASSETS.md). Existing compiler/Pillow
+warnings remain. No source asset edits, shared pack writes, emulator/profile/save
+changes or visual/performance equivalence claims. Concurrent implementation edits
+are excluded; this validates the recorded snapshot, not the entire moving worktree.
+
+Next: document remaining battle/item/icon/window/shadow render adapters, then field/
+NPC/partner, remaining battle helpers, message/inventory/story, audio and relevant
+port tooling. Re-audit modules changed during concurrent work, including the save
+format and new display/runtime services. The port-wide documentation goal remains
+active; this batch does not establish full code coverage or a complete remake.

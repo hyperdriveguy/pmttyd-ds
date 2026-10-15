@@ -11,10 +11,11 @@ buffers and [runtime ownership](runtime.md) for the outer loop.
 `renderFrontend` admits resources before frame submission, draws offscreen and
 visible passes, flushes C2D, then calls `C3D_FrameEnd`. Candidates such as
 `paperPresented`, `shipPresented` and `mapTurnPresented` record what was drawn.
-Negative values mean no candidate. Terminal frames and capture consumers require
-GPU synchronization before their scene acknowledgement. Advancing the event at
-mesh evaluation time could release resources or sample a capture before its GPU
-producer finished.
+Negative values mean no candidate. Selected terminal frames and capture consumers
+trigger GPU synchronization before their scene acknowledgement. Other candidates
+are acknowledged after frame submission; this does not prove LCD scanout.
+Advancing the event at mesh evaluation time could release resources or sample a
+capture before its GPU producer finished.
 
 Book capture targets are transient and borrow one of four retained page textures.
 Deleting a target does not release that texture; `freeBookCaptures` owns its
