@@ -10479,3 +10479,56 @@ asset-error smoke checks and profile actual field on physical hardware.
 Evidence:artifacts/npc-auto-pose-validation-manifest.json, source/asset hash
 checks, full/target/native logs and isolated normal/probe captures. No original
 binary or generated compiled asset is committed.
+
+## 2026-10-14 — Battle command and weapon-menu implementation documented
+
+Documented 31 C++ files covering command-input states, action-command callback/
+help/feedback ownership, attack-selection/registration, command poses, weapon
+power/icons and class/weapon row production, eligibility, decisions and main UI.
+Added [battle commands](code/battle-commands.md) and
+[weapon menus](code/battle-weapon-menus.md), indexed in docs/code/README.md.
+Code/docs commit ee35c9c3 preserves executable tokens and string literals.
+
+Explained distinct result domains, source offsets/masks, callback-visible fresh
+reads, retained versus immediate parents, row ABIs, signed levels, cursor bounds,
+source item/badge/star limits and icon domains. Obscure cases include main-zero
+still admitting display, channel6 advance with no root, status6 RNG draw tested
+against zero, negative power indices, successful zero menu results, independently
+read operation gates and audience interruption holds without prefix replay.
+Unknown flag names remain unknown; source parameters are not measured timings.
+
+Validation snapshot baseline b04c612f13ba81b846c97c8b8d37a8a7b15c45df contains only owned documentation
+over 3762 tracked files; full hash audit reports zero unexpected changes.
+All 34 documented files match recorded frozen/live annotation snapshots;
+all 43 local guide/index links resolve. Two audience lifecycle edits already
+present in live code were preserved and excluded from the committed/tested
+baseline. Other concurrent checkout changes are likewise excluded; these results
+do not validate the combined moving checkout. No refinements after build start.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test passes 399/399 C++ (39.68s) and
+204/204 Python (30.552s), zero skipped. make all -o assets-ready -j4
+SOUNDTRACK=gamecube exits0. Logs, source/dependency and ELF/3DSX SHA256 values
+are recorded in artifacts/battle-commands-code-documentation-validation/manifest.json.
+Existing compiler/Pillow warnings remain. No new tests were needed for these
+comment-only changes. No emulator/profile/save or hardware/timing/pixel claims.
+
+Validation reused 41 hash-pinned accepted products from the preceding typed
+battle-support snapshot, plus common-menu/relocated Frankly evidence and 14
+private footer PNG/atlas hashes. Initial host run passed 398/399 C++ then
+failed field_npc_main_entry at the new automatic-pose phase42 fixture; Python
+was not reached. The reused cache lacked baseline b04c612f's numeric closure.
+Retained the failed log, then overlaid ONLY door-data.pmevt/json matching
+artifacts/npc-auto-pose-assets-after.json, whose own hash matches
+artifacts/npc-auto-pose-validation-manifest.json. Pack now 152376 bytes.
+Reran the complete host gate and native repack; no source/test changes,
+conversion, editable import or shared pack writes. Existing Python conversion fixtures
+independently read the original ISO read-only and write empty temporary outputs;
+native asset regeneration was deliberately skipped. Original choices and rights
+remain unchanged; no original assets or binaries were committed. See
+[asset notes](ASSETS.md).
+
+Next: stage/audience/camera and remaining action/menu providers, message/story/
+effect, platform/file/event/runtime helpers and port tools. Review concurrent
+lifecycle, animation/NPC and display integrations against their committed
+versions; matching an older annotation snapshot is not full subsystem coverage.
+Full code documentation and the remake remain incomplete; goal stays active.

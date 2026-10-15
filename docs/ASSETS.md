@@ -2061,3 +2061,25 @@ Source extraction/evidence, compiled packs and test executables remain outside
 Git. Existing Nintendo/Intelligent Systems rights and private local-use
 restrictions are unchanged; no redistribution license or original binary/ISO
 is committed. See PROGRESS for complete cache hash checks and validation.
+
+## Battle command/menu documentation validation inputs (2026-10-14)
+
+artifacts/battle-commands-code-documentation-validation/source reuses the accepted
+typed battle-support documentation cache. Assembly verifies all 41 accepted
+product SHA256 values plus relocated Frankly/common-menu evidence and 14 footer
+PNG/atlas hashes, copying mutable evidence privately and sharing only large
+read inputs. The first host gate exposed stale inherited door data required by
+baseline b04c612f's automatic-pose fixture. Retained failed host/native logs;
+overlaid only door-data.pmevt/json from artifacts/source-checks/npc-wander after
+byte size/SHA256 matched artifacts/npc-auto-pose-assets-after.json and that
+manifest matched its recorded validation authority. Pack 152376 bytes, SHA256
+371c6d0c6a5a4d47f1d33f027be7738f2861de72e81df2387334a3f6e6ab0662.
+The documentation manifest records old/new product and authority hashes.
+Full host/native gates reran after repair. No new conversion/resampling, geometry/lighting edits,
+editable imports or shared pack writes. The manifest pins the parent and exact
+input hashes. Existing Python fixtures independently read the ISO read-only
+and convert into empty temporary destinations; native build deliberately skips
+asset regeneration. All original provenance/conversion choices remain as
+previously recorded. Nintendo/Intelligent Systems rights remain reserved;
+private validation copies grant no redistribution license. No ISO, extracted
+original assets or compiled binaries were committed.
