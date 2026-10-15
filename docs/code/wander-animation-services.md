@@ -53,6 +53,17 @@ after the RNG callback. Counts wrap unsigned; zero-before-decrement is not an
 expiry shortcut. Idle flips update visual yaw `+0x144` while retaining movement
 heading `+0x1ac`. Other turns write yaw then read it back into movement heading.
 
+| Packed actor field | Owner/value used by wander |
+| --- | --- |
+| `8c/90/94` | Root XYZ; supplied to math and sound |
+| `104` | Actual pose handle for readiness/material queries |
+| `144/1ac` | Visual yaw / retained movement heading |
+| `1a4/1b0` | Delta seconds / speed |
+| `1b4/1bc` | Produced X/Z movement components |
+| `1d8/1dc` | Signed sound-toggle halfword / elapsed milliseconds |
+| `1e0/1e4/1e8` | Two sound names / period halfword |
+| `2fc` | Wall token; nonzero triggers the boundary-facing turn |
+
 Phase 1 captures horizontal distance once, but invokes reached readiness/math/
 touch services separately. Callbacks may mutate admitted memory between them.
 Boundary flags masks 1/2 latch correction. Contact comes from the prior Mario
@@ -69,7 +80,8 @@ consumes them later**; this event does not integrate roots.
 Sound queries precede fresh period/speed/elapsed reads. Sound mask `0x100` with
 material mask `0x1800` clear adds modifier `0x10000`. Strict
 `elapsed > period/speed` triggers source-name lookup and the full 3D request
-`(ID|mask, root, 255, 255, 0, 8)`. Even a missing sound name reaches elapsed reset
+`(ID|mask, root, 255, 255, 0, 8)`. The 255 operands select default volume/pan; zero is delay and eight is retained
+distance metadata for positional processing. Even a missing sound name reaches elapsed reset
 and toggle. The toggle stores the signed low byte of `1-old` into a halfword,
 not Boolean inversion. Final elapsed uses fused `1000*dt + elapsed` only when
 the second sound name exists or toggle is nonzero; zero speed is not guarded.

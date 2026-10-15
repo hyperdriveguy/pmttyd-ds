@@ -9537,3 +9537,54 @@ catalog keys for packed pointers. Update the visual harness to identify actor
 visibility/occlusion and actual frontend admission, then profile field draw
 submission and CPU/GPU timing on the intended hardware. Preserve exact original
 story/dialogue and incremental commits. No full-area/full-game completion claim.
+
+## 2026-10-14 — Wander, animation memory and audio services documented
+
+Added inline numeric/ownership/behavior notes to 24 C++ implementation/header
+files: packed/typed wander, cold animation initialization/shared tangent table,
+recursive animation scratch recovery, and all 15 current audio-subsystem files.
+Added [wander/animation services](code/wander-animation-services.md) and
+[audio services](code/audio-services.md), plus index entries. Code/docs commit
+3f5838fd. All 24 preserve executable tokens, including string contents.
+
+Explained continuing source0 versus unavailable retained invocation, same-visit
+stage progression, component production versus later NPC-main consumption,
+shared RNG/budget read order, strict boundary/count/sound gates and fused elapsed
+arithmetic. Animation notes explain live W publication, cold allocation/reentry,
+atomic bias and binary32 tangent generation, file/holder copy lifetime, strict
+scratch-end overflow and differing rebuild/restore recursion. Audio notes cover
+source IDs versus native tracks/channels, generation checks only in Chk, last-free
+selection/pending sound allocation, late partial publications, mute/fade callback
+order, resource-failure caching and retained group/tail/field ownership. Native
+policy limits and unrecovered field meanings remain explicit.
+
+Frozen validation uses baseline 8618d37659d8b5ca37514eedf50c4816e10c3650 plus owned documentation in
+artifacts/actor-services-code-documentation-validation/source. Audited all 3685
+baseline tracked files: zero unexpected changes; 27 documented files match both
+frozen and recorded live hashes. All 49 local guide/index links resolve. Moving
+checkout changes outside this scope were preserved/excluded; no combined-moving-
+worktree validation is claimed.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test passes 380/380 C++ (39.37s) and
+203/203 Python (30.601s), zero skipped. make all -o assets-ready -j4
+SOUNDTRACK=gamecube exits0. Source, dependency, log and native binary hashes are
+recorded in manifest.json. Existing compiler/Pillow warnings remain. No emulator
+run/profile/save changes, new measured timing/hardware, pixel or Gekko/libm
+numerical fidelity claims were made.
+
+Private cache reuses accepted battle-entry documentation RomFS/evidence, checks
+all 38 accepted product hashes and relocated Frankly evidence, and privately copies
+mutable evidence including common-menu source pixels. Two matching committed
+menu products (original common TPL and metadata) come from the accepted menu
+validation cache. Cache assembly makes no new conversion/import/shared write;
+existing Python fixtures independently read the ISO read-only and rebuild only
+in empty temporary directories. Native regeneration is deliberately skipped.
+No original binaries/ISO were committed; rights/conversion/licensing remain
+unchanged in [asset notes](ASSETS.md).
+
+Next: audit battle_main/phase/sequence_entry/storage and ending/return
+controllers, then remaining battle resources/menus, message/story/effect, platform/
+file services, uncovered event/runtime/save modules and port tools.
+Re-audit concurrent NPC-main/shared animation pool integration and all changes
+to previously documented files against current snapshots. The broad code
+documentation goal and remake remain incomplete; goal stays active.

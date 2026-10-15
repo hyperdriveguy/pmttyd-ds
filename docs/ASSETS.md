@@ -1821,3 +1821,23 @@ original Nintendo/Intelligent Systems rights and existing private-use licensing
 notes remain unchanged. No original ISO/extracted binary/compiled pack is
 committed or distributed. Native build skips regeneration; Python converter
 fixtures read the original ISO read-only and write temporary outputs only.
+
+## Wander/animation/audio documentation validation inputs (2026-10-14)
+
+artifacts/actor-services-code-documentation-validation/source reuses accepted
+battle-entry documentation RomFS/evidence. Cache assembly verifies 38 accepted
+product hashes and the relocated Frankly PNG. Mutable evidence is copied
+privately, including common-menu source pixels; other large local-assets inputs
+remain shared reads. Two committed menu products are copied only after matching
+artifacts/menu-resource-source-manifest.json against artifacts/menu-resource-validation:
+romfs/battle-class-common.tpl and romfs/battle-class-surfaces.json. The raw TPL
+retains 217920 bytes/SHA256 8eb685317056f42b3ef73138eaad85d16fa4943d830b44a149f09971a5959bb1;
+its private source copy is independently matched to the same hash.
+
+No conversion, resampling, geometry/lighting adjustment, editable import or shared
+pack write occurs during cache assembly. Existing Python validation independently
+reads the original ISO read-only and generates in empty temporary directories.
+Native validation deliberately skips regeneration. Provenance/conversion choices
+in accepted generated metadata are unchanged. Original Nintendo/Intelligent
+Systems rights remain reserved; private validation copies grant no redistribution
+license. No ISO/extraction/original binary bytes were committed.
