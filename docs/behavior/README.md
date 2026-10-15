@@ -1303,3 +1303,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Retained audience TurnEnd](battle/RETAINED_AUDIENCE_TURN_END.md)
 
 - [Callback-scoped source animation RAM access](event/CALLBACK_SCOPED_RAW_RAM_ACCESS.md): native raw-span acceleration, live BE aliases and retained late validation; no original timing or arithmetic changes.
+
+- [Retained shared animation paper facing](display/RETAINED_ANIMATION_PAPER_FACING.md): original Main tail and complete Inner facing/scale branches, actual field camera/shared pose aliases and retained composition; Main prefix and normal NPC activation remain open.

@@ -1,3 +1,64 @@
+### Original shared animation paper facing (2026-10-15)
+
+Code commit 0c9c7b981b074fcfdbe254b7faa0c31c09083d05 implements the original
+optional animation Main tail and complete Inner facing/uniform-scale branches.
+It preserves independent camera samples, original literal reloads, ordered
+angle loops, captured snap/FMA operands, rotation/reflection/scale ordering and
+reflection before later Main. Retained children never replay acknowledged
+primitives. Source loop backedges yield one iteration per resume, with no total
+iteration cap; owners must hold the same producer pass while pumping them.
+
+A reusable native binding reads actual VM/shared-pose aliases and published
+field CameraManager eye/target coordinates. It guards the full token reservation,
+lifetime/pass and alias ownership at every boundary. The existing Inner owner
+composes this child after material/GX work and before Main without replaying
+smoothing. Storage is bounded with no per-invocation allocation. This does not
+complete Main: its earlier evaluation/null-descriptor boundary must still be
+retained before adding the optional tail; partial sampling failures are not
+atomic. Normal Game NPC activation remains open.
+
+[Source contract](behavior/display/RETAINED_ANIMATION_PAPER_FACING.md) and EVT-01
+record source ranges, call/load ordering, ownership and remaining work. Original
+animation-local constants extend private door-data and the cold startup image;
+the exact cold-image admission list was updated accordingly. Source/asset
+baseline includes already committed native field animation. Twenty-two verified
+prerequisite products were refreshed from accepted field-source evidence, and
+four stale battle pack/provenance products were regenerated with the committed
+ISO extractor to exclude the live file-manager global. A missing local footer
+atlas was also regenerated; all compiled footer bytes stayed identical. The
+combined baseline has 2145 products; this feature changes four constant-pack
+JSON/pmevt files only. Removing its added ranges reproduces exact baseline
+packs. No story/dialogue, art/audio, geometry or lighting changes; original
+assets/PPC/binaries remain ignored. Inbox parent and overall goal remain open.
+
+Accepted isolated source tree f939e93610545b5ae2510f9adbf4cbda990a2503 has
+3913 tracked files, audited exact. `CMAKE_BUILD_PARALLEL_LEVEL=4 make test`
+passed 427 C++ tests (44.67 seconds) and 207 Python tests
+(33.631 seconds), zero skipped. `make all -j4 -o assets-ready
+SOUNDTRACK=gamecube` passed. Initial validation exposed strict cold-image
+admission and stale/missing private dependencies; these were corrected and the
+full suite rerun. Independent source/documentation review found no substantive
+issues. Existing indentation/Pillow warnings remain.
+
+Isolated ARM probe passed entry/Main-facing/Inner-facing/holds/loops/camera
+aliases/pose aliases/guard/Inner composition assertions. The first probe needed
+its private SD temporary directory for an existing fixture; the final harness
+creates it. Native fixtures use actual cold VM/pool and semantic camera owners,
+with explicit Main/draw/GX fixtures. Normal runtime source restored and rebuilt;
+pre/post normal SHA256 c54559dbe9f28fd363372244e97a516c6e2b1a6a2420d489a3cdcd54e6f67104. Forty-second normal startup capture visually
+inspected: original storybook, App 47 FPS / speed 100%, no visible asset-error console. This is startup validation, not proof of field,
+original visual/numeric parity or physical New 2DS XL performance. Exact logs,
+source/product hashes, harness patches and captures are in ignored
+`artifacts/animation-facing-validation-manifest.json`. Code/docs committed
+separately; concurrent unrelated work preserved.
+
+Next: retain the actual field evaluation/Main boundary and null-descriptor
+exit, compose shared Inner and setter/draw/queue/GPU ownership, then activate
+source NPCs in normal Game. Verify original field appearance, dialogue/event
+chronology, occlusion and rendering against the ISO, then measure and optimize
+on New 2DS XL. Existing NPC presentation, wider Rogueport slice, prologue and
+full remake remain incomplete.
+
 ### Original offscreen and blur NPC callbacks (2026-10-15)
 
 Code commit b2ee7653b1b697d0fe99de54008a6483d7cde501 implements complete local offscreen ordinary/xlu

@@ -2640,3 +2640,34 @@ baseline cache; it does not alter original content. The full product inventory
 and provenance hashes are in the ignored animation-ram-borrow validation
 manifest. Native probe binaries, extracts and packs remain uncommitted.
 Original Nintendo rights/licensing restrictions and existing provenance apply.
+### Original shared animation-facing literals and accepted dependencies (2026-10-15)
+
+Read-only US G8ME01 disc0 revision0 `/home/carson/games/roms/G8ME01.iso`
+provides unchanged animation-local literals8041fb24+c (one/zero/radians), SHA256
+782014c141964e6e2c573fa2cf76ac830d29948d46f62ec53a01531a27958882,
+and8041fb6c+2c (sign/heading/wrap/smoothing), SHA256
+18c2acf85532159d4157b603544711245e68b9f6fd3132b106a3802ae739555b.
+Actor extraction verifies both original spans; the cold animation image adds
+only missing fb2c+4 radians and fb6c+2c facing views, preserving existing
+one/zero. Their original addresses and repeated loads are retained; equal
+NPC-local constants are not substituted. Private door-data.pmevt is 152920 bytes,
+SHA256 42eff18104303e162533727e7e3dc4faafa6269b55b398ad25d16b9b75044378;
+animation-boot/memory.pmevt is 4788 bytes, SHA256
+be0dfa08ab0ed46e45b7b9d2432a6e22f0c4991f4f50e08d56dbc0ce7c7986be.
+Removing just the new source bytes/rows reproduces both exact prior packs.
+
+Validation updates its committed-code baseline to include the landed native
+field animation process. 22 prerequisite products were refreshed byte-for-byte
+from hash-verified accepted field-source-animation validation, retaining the
+previous NPC door-data baseline. Four further prerequisites were regenerated with the committed trio-attack extractor: the old cached partner span included the live file-manager word at 80418498; the current 80418450+48 span excludes it. The battle pack and three JSON provenance files changed; mesh, texture and animation payloads did not. This dependency refresh is journaled separately
+in artifacts/animation-facing-seed-assets.json and references
+artifacts/field-source-animation-validation-manifest.json. It includes original
+Mario resource/texture/raw-file and existing footer/HP dependencies, with no new
+conversion choices by this feature. The combined baseline has 2145 products;
+only door-data JSON/pmevt and cold animation memory JSON/pmevt then changed for
+this feature. All other hashes and local gor_02.s remain unchanged.
+No art/audio resampling, geometry/lighting or story/dialogue changes were made.
+Nintendo/Intelligent Systems rights remain reserved; local extraction grants
+no redistribution rights. ISO, original resources/listings and compiled packs/
+binaries remain ignored/private. Exact dependency/source/product/native logs
+are in artifacts/animation-facing-validation-manifest.json.

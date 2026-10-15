@@ -5154,3 +5154,15 @@ VM primitive or an original execution trace. See
 flag8/Goombella event chronology, release/GC, linked/paper paths, full native
 frame/window/event owners and physical hardware parity remain OPEN. EVT-01 is
 not closed by this performance change.
+
+### 2026-10-15 Shared animation paper-facing branches
+
+[Retained paper facing](../behavior/display/RETAINED_ANIMATION_PAPER_FACING.md)
+implements original optional Main tail and complete Inner facing/scale region,
+including independent camera samples, exact literal reloads, yielding source
+loops, snap/FMA capture and reflection before later Main. Actual field semantic
+camera and VM/shared-pose aliases are bound and checked across holds.
+Existing Main evaluation is not atomic on failure; a retained successful
+evaluation/null-descriptor boundary, full field setter/draw/queue/GPU owners,
+normal NPC activation and original visual/numeric/hardware parity remain OPEN.
+EVT-01 is not closed.
