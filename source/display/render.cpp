@@ -177,6 +177,16 @@ bool Renderer::init() {
     std::fclose(trioUV);if(!validTrio)return false;
     trioPartnerAnimations=loadBattlePoseResource("romfs:/trio-attack-goombella.pose-directory.bin","romfs:/trio-attack-goombella.pmanim");
     if(!trioPartnerAnimations)return false;
+    sharedPartnerAnimations=loadBattlePoseResource("romfs:/field-player-c_pkr.pose-directory.bin","romfs:/field-player-c_pkr.pmanim");
+    if(!sharedPartnerAnimations)return false;
+    sharedFranklyAnimations=loadBattlePoseResource("romfs:/field-native-c_kuri_h.pose-directory.bin","romfs:/field-native-c_kuri_h.pmanim");
+    if(!sharedFranklyAnimations)return false;
+    FILE* sharedFranklyUV=std::fopen("romfs:/shared-field-frankly.bin","rb");if(!sharedFranklyUV)return false;
+    char sharedFranklyMagic[8];const bool sharedFranklyValid=std::fread(sharedFranklyMagic,8,1,sharedFranklyUV)==1 && !std::memcmp(sharedFranklyMagic,"PMSUV1\0",8) && std::fread(&sharedFranklyUVScale,4,1,sharedFranklyUV)==1 && std::fgetc(sharedFranklyUV)==EOF;
+    std::fclose(sharedFranklyUV);if(!sharedFranklyValid)return false;
+    FILE* sharedUV=std::fopen("romfs:/field-player-c_pkr.bin","rb");if(!sharedUV)return false;
+    char sharedMagic[8];const bool sharedValid=std::fread(sharedMagic,8,1,sharedUV)==1 && !std::memcmp(sharedMagic,"PMSUV1\0",8) && std::fread(&sharedPartnerUVScale,4,1,sharedUV)==1 && std::fgetc(sharedUV)==EOF;
+    std::fclose(sharedUV);if(!sharedValid)return false;
     FILE* trioPartnerUV=std::fopen("romfs:/trio-attack-goombella.bin","rb");if(!trioPartnerUV)return false;
     const bool validPartner=std::fread(trioMagic,8,1,trioPartnerUV)==1 && !std::memcmp(trioMagic,"PMSUV1",8) && std::fread(&trioPartnerUVScale,4,1,trioPartnerUV)==1 && std::fgetc(trioPartnerUV)==EOF;
     std::fclose(trioPartnerUV);if(!validPartner)return false;
@@ -326,12 +336,12 @@ bool Renderer::prepareSceneActorTextures(const Game& g) {
     const bool item=!trio && !g.harborEncounter.locked() && !g.storyPresentation().locked() && !std::strcmp(g.marioPresentation.selected,"M_I_U") || (!trio && itemGetAssetsReady && g.progress.room==0 &&
         g.progress.originalNpcTalkState.quest1420==2 && g.progress.originalNpcTalkState.flag5406==false &&
         g.progress.originalNpcTalkState.flag5405==false);
-    const bool retire=(!trio && (trioMarioTexture.imported || trioPartnerTexture.imported || trioFranklyTexture.imported)) || (!quest && goombaQuestTexture.imported) || (!item && fieldItemGetTexture.imported);
-    const bool admit=(trio && (!trioMarioTexture.imported || !trioPartnerTexture.imported || !trioFranklyTexture.imported)) || (quest && !goombaQuestTexture.imported) || (item && !fieldItemGetTexture.imported);
+    const bool retire=(!trio && (trioMarioTexture.imported || trioPartnerTexture.imported || trioFranklyTexture.imported || sharedPartnerTexture.imported || sharedFranklyTexture.imported)) || (!quest && goombaQuestTexture.imported) || (!item && fieldItemGetTexture.imported);
+    const bool admit=(trio && (!trioMarioTexture.imported || !trioPartnerTexture.imported || !trioFranklyTexture.imported || !sharedPartnerTexture.imported || !sharedFranklyTexture.imported)) || (quest && !goombaQuestTexture.imported) || (item && !fieldItemGetTexture.imported);
     if(!retire && !admit)return true;
     C3D_FrameSync();
     const auto release=[](Texture& slot){if(slot.imported){Tex3DS_TextureFree(slot.imported);C3D_TexDelete(&slot.texture);slot=Texture{};}};
-    if(!trio){finishingAnimationFans.reset();if(finishingShadowProgram.texture==ShadowTexture::CharacterAtlas)finishingShadowProgram.texture.reset();finishingAtlas.reset();finishingTextureObjectReady=false;finishingTextureLODReady=false;release(trioMarioTexture);release(trioPartnerTexture);release(trioFranklyTexture);}
+    if(!trio){finishingAnimationFans.reset();if(finishingShadowProgram.texture==ShadowTexture::CharacterAtlas)finishingShadowProgram.texture.reset();finishingAtlas.reset();finishingTextureObjectReady=false;finishingTextureLODReady=false;release(trioMarioTexture);release(trioPartnerTexture);release(trioFranklyTexture);release(sharedPartnerTexture);release(sharedFranklyTexture);}
     if(!quest)release(goombaQuestTexture);
     if(!item)release(fieldItemGetTexture);
     const auto load=[&](const char* path,Texture& slot){
@@ -341,7 +351,7 @@ bool Renderer::prepareSceneActorTextures(const Game& g) {
         if(!slot.imported){frontFailure=std::string("Scene actor texture import failed: ")+path;return false;}
         C3D_TexSetFilter(&slot.texture,GPU_LINEAR,GPU_LINEAR);C3D_TexSetWrap(&slot.texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);return true;
     };
-    if(trio && (!load("romfs:/trio-attack-mario.t3x",trioMarioTexture) || !load("romfs:/trio-attack-goombella.t3x",trioPartnerTexture) || !load("romfs:/professor.t3x",trioFranklyTexture)))return false;
+    if(trio && (!load("romfs:/trio-attack-mario.t3x",trioMarioTexture) || !load("romfs:/trio-attack-goombella.t3x",trioPartnerTexture) || !load("romfs:/professor.t3x",trioFranklyTexture) || !load("romfs:/field-player-c_pkr.t3x",sharedPartnerTexture) || !load("romfs:/shared-field-frankly.t3x",sharedFranklyTexture)))return false;
     if(quest && !load("romfs:/goomba-quest-mario.t3x",goombaQuestTexture))return false;
     if(item && !load("romfs:/field-item-get-mario.t3x",fieldItemGetTexture))return false;
     return true;
@@ -1648,6 +1658,8 @@ void Renderer::shutdown() {
     if(partnerTextures.imported) {Tex3DS_TextureFree(partnerTextures.imported);C3D_TexDelete(&partnerTextures.texture);}
     if(trioFranklyTexture.imported){Tex3DS_TextureFree(trioFranklyTexture.imported);C3D_TexDelete(&trioFranklyTexture.texture);}
     if(trioPartnerTexture.imported){Tex3DS_TextureFree(trioPartnerTexture.imported);C3D_TexDelete(&trioPartnerTexture.texture);}
+    if(sharedPartnerTexture.imported){Tex3DS_TextureFree(sharedPartnerTexture.imported);C3D_TexDelete(&sharedPartnerTexture.texture);}
+    if(sharedFranklyTexture.imported){Tex3DS_TextureFree(sharedFranklyTexture.imported);C3D_TexDelete(&sharedFranklyTexture.texture);}
     if(trioMarioTexture.imported){Tex3DS_TextureFree(trioMarioTexture.imported);C3D_TexDelete(&trioMarioTexture.texture);}
     for(auto& a:harborNpcAnimations)if(a.image.imported){Tex3DS_TextureFree(a.image.imported);C3D_TexDelete(&a.image.texture);}
     if(harborMarioTexture.imported){Tex3DS_TextureFree(harborMarioTexture.imported);C3D_TexDelete(&harborMarioTexture.texture);}

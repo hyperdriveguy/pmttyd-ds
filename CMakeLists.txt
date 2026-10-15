@@ -1912,3 +1912,10 @@ target_sources(ttyd_core PRIVATE source/field/field_npc_actor_event.cpp)
 add_executable(field_npc_actor_event_tests tests/field_npc_actor_event_tests.cpp)
 target_link_libraries(field_npc_actor_event_tests PRIVATE ttyd_core)
 add_test(NAME field_npc_actor_event COMMAND field_npc_actor_event_tests)
+
+# Fresh shared field/NPC/battle pose namespace and original player resources.
+target_sources(ttyd_core PRIVATE source/field/field_party_pose.cpp)
+add_executable(shared_pose_session_tests tests/shared_pose_session_tests.cpp)
+target_link_libraries(shared_pose_session_tests PRIVATE ttyd_core)
+add_test(NAME shared_pose_session COMMAND shared_pose_session_tests)
+set_tests_properties(shared_pose_session PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

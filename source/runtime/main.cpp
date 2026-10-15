@@ -89,7 +89,8 @@ int main() {
        !requireAsset("professor story",ttyd::loadProfessorStoryAssets("romfs:")) ||
        !requireAsset("underground story",ttyd::loadUndergroundStoryAssets("romfs:")) ||
        !requireAsset("trio introduction",ttyd::loadTrioBattleAssets("romfs:")) ||
-       !requireAsset("trio attacks",ttyd::loadTrioAttackAssets("romfs:"))) {
+       !requireAsset("trio attacks",ttyd::loadTrioAttackAssets("romfs:")) ||
+       !requireAsset("original player poses",ttyd::loadFieldPlayerPoseAssets("romfs:"))) {
         if(failedAsset)svcOutputDebugString(failedAsset,int32_t(std::strlen(failedAsset)));
         renderer.shutdown();consoleInit(GFX_TOP,nullptr);
         std::printf("Development asset load failed:\n%s\nPress START to exit.\n",failedAsset?failedAsset:"unknown");

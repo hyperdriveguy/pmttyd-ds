@@ -20,7 +20,7 @@ class FieldNpcRegistryOwner {
 public:
  // allocationBase is a native16-byte-aligned guest arena, not source heap
  // identity. Four stable buffers back field actors/release/battle actors/F.
- static std::shared_ptr<FieldNpcRegistryOwner> cold(uint32_t allocationBase);
+ static std::shared_ptr<FieldNpcRegistryOwner> cold(uint32_t allocationBase,std::shared_ptr<BattlePosePool> pool={});
  FieldNpcRegistryOwner(const FieldNpcRegistryOwner&)=delete;
  FieldNpcRegistryOwner& operator=(const FieldNpcRegistryOwner&)=delete;
  bool initialized() const{return initialized_;}
@@ -31,7 +31,7 @@ public:
 private:
  friend class FieldNpcRegistryBinding;
  friend class FieldNpcSetupBinding;
- explicit FieldNpcRegistryOwner(uint32_t);
+ explicit FieldNpcRegistryOwner(uint32_t,std::shared_ptr<BattlePosePool>);
  uint8_t* span(uint32_t,uint32_t);
  std::array<uint8_t,0x30> registry_{}; // Source startup BSS8041e8ac..e8db.
  std::array<uint32_t,4> addresses_{};

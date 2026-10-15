@@ -199,7 +199,12 @@ class Game {
     friend class BattleSequenceBinding; // Explicit source-entry composition uses the existing control owners.
 public:
     explicit Game(bool initializeAnimation=true) {
-        if(initializeAnimation)if(auto bank=fieldMarioAnimationBank())fieldParties.initializeMario(fieldMarioBattle,std::move(bank),0);
+        if(initializeAnimation){
+            const auto resources=fieldPlayerPoseResources();
+            if(resources[0])fieldParties.configureOriginalPool(resources);
+            if(fieldParties.originalPool)fieldParties.initializeMario(fieldMarioBattle,{},0);
+            else if(auto bank=fieldMarioAnimationBank())fieldParties.initializeMario(fieldMarioBattle,std::move(bank),0);
+        }
     }
     Progress progress;
     OpeningFieldDeparture openingDeparture;

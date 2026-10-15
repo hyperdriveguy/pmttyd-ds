@@ -4831,3 +4831,17 @@ Implemented retained animPoseBattleInit/Refresh/testAlloc/initTestHeap parents a
 ### Original registered NPC setup bridge
 
 Code65d1b669 now supplies the [retained real setup world](../behavior/field/NATIVE_REGISTERED_NPC_SETUP_WORLD.md): original table/script admission, actual actor/pose storage, numeric setup/shared RNG services and same-VM independent roots. Frozen329C++/193Python and scoped isolated ARM fifteen-row fixtures pass. Explicit fixture RNG and manual retirement of still-unbound init roots do not prove original parent completion. [Admission requirements](../behavior/field/NATIVE_NPC_SETUP_WORLD_ADMISSION_REQUIREMENTS.md) enumerate eleven direct callbacks; [five flag/position/yaw leaves](../behavior/field/ORIGINAL_NPC_FLAG_POSITION_YAW_EVENT_LEAVES.md) now have source evidence. Keep open for real camera/name/leaf/case/map/hit/wander services, earlier Mario/Bero parents, ordinary Game activation, shared-session RNG and rendering/lifetime integration.
+
+
+### Shared pose namespace implementation follow-up (2026-10-14)
+
+Fresh native sessions now compose original player/partner and registered NPC/
+battle CPU poses in one namespace; see
+[contract](../behavior/display/NATIVE_SHARED_FIELD_AND_BATTLE_POSES.md).
+Source inspection confirms original descriptor0 M_Z_1/M_Z_1R/M_S_5/PKR_Z_1;
+visible legacy seeds do not gate shared entry. Review artifacts:
+artifacts/shared-animation-entry-evidence/. This closes the separate semantic
+Mario/partner CPU pool boundary for fresh sessions only. Keep genuine global W,
+file/holder/heap/scratch/output startup, field Main/facing/collision, complete
+clip census, live VM copy/retirement and tagged authored battle_start open.
+Do not publish an empty W or certify full entry based on this ownership bridge.

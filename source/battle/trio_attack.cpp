@@ -154,7 +154,9 @@ struct TrioAttackRuntime {
     std::vector<TrioAudienceAudioRequest> audienceAudioTrace;
     std::shared_ptr<ProloguePouch> entryPouch;
     std::array<PartnerBattleSnapshot,7> partySnapshots{};
-    BattlePosePool poses;
+    std::shared_ptr<BattlePosePool> poseOwner;
+    BattlePosePool& poses;
+    std::vector<std::pair<int32_t,uint64_t>> ownedPoseHandles;
     BattleCameraFrame cameraFrame;
     uint64_t cameraClockAt=UINT64_MAX;
     bool cameraHistoryComplete=true,cameraUpdateAvailable=false,cameraMainWaiting=false;
@@ -273,8 +275,8 @@ struct TrioAttackRuntime {
     BattleHitRegistry battleHits;
     std::shared_ptr<BattleSpotlightState> spotlight;
     bool spotlightInitialized=false;
-    explicit TrioAttackRuntime(std::shared_ptr<BattleRandom> rng):vm(0x81000000,platform(this)),randomOwner(std::move(rng)),random(*randomOwner) {}
-    ~TrioAttackRuntime(){if(spotlightInitialized)publishSpotlight();}
+    explicit TrioAttackRuntime(std::shared_ptr<BattleRandom> rng,std::shared_ptr<BattlePosePool> pool={}):vm(0x81000000,platform(this)),randomOwner(std::move(rng)),random(*randomOwner),poseOwner(pool?std::move(pool):std::make_shared<BattlePosePool>()),poses(*poseOwner) {}
+    ~TrioAttackRuntime(){if(spotlightInitialized)publishSpotlight();for(auto h:ownedPoseHandles)if(auto* p=poses.pose(h.first))if(p->nativeGeneration==h.second)poses.release(h.first);}
     static EventNativePlatform platform(TrioAttackRuntime* self) {
         EventNativePlatform p;p.user=self;p.clock=[](void*)->uint32_t{return 243000000;};
         p.call=[](void* p,EventEntry& e,uint32_t fn,int32_t first)->int32_t{return static_cast<TrioAttackRuntime*>(p)->call(e,fn,first);};
@@ -820,8 +822,8 @@ struct TrioAttackRuntime {
             if(!name)return false;
             const auto initialName=text(name);
             for(unsigned i=0;i<=initialName.size();++i)byte(part+0x1c4+i,i==initialName.size()?0:uint8_t(initialName[i]));
-            const auto& resource=id==6?franklyBattleResource:playerBattleResources[id-1];if(text(modelName)!=resource->modelName)return false;
-            const auto handle=poses.enter(resource,1,{now,now});if(!handle)return false;
+            const auto& resource=id==6?franklyBattleResource:id==2 && fieldParties && fieldParties->originalPool?fieldParties->originalResources[3]:playerBattleResources[id-1];if(text(modelName)!=resource->modelName)return false;
+            const auto handle=poses.enter(resource,1,{now,now});if(!handle)return false;ownedPoseHandles.emplace_back(*handle,poses.pose(*handle)->nativeGeneration);
             word(part+0x1c0,uint32_t(*handle));partPoseHandles.emplace(part,*handle);
         }
         for(unsigned id=1;id<7;++id)clearStatus(Units+id*0x1000);
@@ -1892,7 +1894,7 @@ struct TrioAttackRuntime {
     }
     void publish(ProfessorStory& s){for(unsigned id=1;id<7;++id){const uint32_t u=word(Battle+0x20+4*id);if(!u){s.actors[visual[id]].hidden=true;continue;}for(unsigned axis=0;axis<3;++axis)s.actors[visual[id]].position[axis]=real(u+0x3c+4*axis);s.actors[visual[id]].yaw=byte(u+0x189)==1?90:270;s.actors[visual[id]].battleFlags=word(u+0x1c);for(unsigned axis=0;axis<3;++axis){s.actors[visual[id]].battleRotation[axis]=real(u+0x60+4*axis)+real(u+0x6c+4*axis);s.actors[visual[id]].battlePivot[axis]=real(u+0x78+4*axis);s.actors[visual[id]].battleScale[axis]=(axis<2?real(u+0x114):1.f)*real(u+0x9c+4*axis)*real(u+0x90+4*axis);s.actors[visual[id]].battleDisplayOffset[axis]=real(u+0x54+4*axis);}}}
 };
-bool TrioAttack::begin(const TrioBattleCommands& menu,ProfessorStory& scene,int16_t hp,std::shared_ptr<ProloguePouch> entryPouch,uint32_t* fieldNpcBattleFlags,FieldMarioBattleState* fieldMario,FieldPartyRegistry* fieldParties,const FieldPartyAppearanceServices* appearance,std::shared_ptr<BattleSpotlightState> spotlight,std::shared_ptr<BattleRandom> random,std::shared_ptr<PositionalSfxRegistry> sounds,std::shared_ptr<ShadowWork> shadows,std::shared_ptr<BattleCommandPalette> palette,std::shared_ptr<CameraManager> cameras,std::shared_ptr<FieldBeroExec> bero){if(!assetsReady || !menu.attack || !((menu.actor==1 && (menu.attack->weapon==0x803538a8 || menu.attack->weapon==0x80353de8)) || (menu.actor==2 && menu.attack->weapon==0x80393ea8)))return false;if(runtime_)return runtime_->done && runtime_->readyActor==menu.actor && runtime_->launch(menu);auto r=std::make_shared<TrioAttackRuntime>(random?std::move(random):std::make_shared<BattleRandom>(1));r->bero=std::move(bero);r->cameras=std::move(cameras);if(!r->cameras){r->cameras=std::make_shared<CameraManager>();r->cameras->initializeBoot(608,480);}r->cameras->camera(4)->mode=2;r->palette=palette?std::move(palette):std::make_shared<BattleCommandPalette>();r->shadows=shadows?std::move(shadows):std::make_shared<ShadowWork>();r->publicSfx=sounds?std::move(sounds):std::make_shared<PositionalSfxRegistry>();r->spotlight=spotlight?std::move(spotlight):std::make_shared<BattleSpotlightState>();r->fieldNpcBattleFlags=fieldNpcBattleFlags;r->fieldMario=fieldMario;r->fieldParties=fieldParties;if(appearance)r->fieldAppearance=*appearance;if(!r->initialize(menu,scene,hp,std::move(entryPouch)))return false;runtime_=std::move(r);return true;}
+bool TrioAttack::begin(const TrioBattleCommands& menu,ProfessorStory& scene,int16_t hp,std::shared_ptr<ProloguePouch> entryPouch,uint32_t* fieldNpcBattleFlags,FieldMarioBattleState* fieldMario,FieldPartyRegistry* fieldParties,const FieldPartyAppearanceServices* appearance,std::shared_ptr<BattleSpotlightState> spotlight,std::shared_ptr<BattleRandom> random,std::shared_ptr<PositionalSfxRegistry> sounds,std::shared_ptr<ShadowWork> shadows,std::shared_ptr<BattleCommandPalette> palette,std::shared_ptr<CameraManager> cameras,std::shared_ptr<FieldBeroExec> bero){if(!assetsReady || !menu.attack || !((menu.actor==1 && (menu.attack->weapon==0x803538a8 || menu.attack->weapon==0x80353de8)) || (menu.actor==2 && menu.attack->weapon==0x80393ea8)))return false;if(runtime_)return runtime_->done && runtime_->readyActor==menu.actor && runtime_->launch(menu);auto r=std::make_shared<TrioAttackRuntime>(random?std::move(random):std::make_shared<BattleRandom>(1),fieldParties?fieldParties->originalPool:nullptr);r->bero=std::move(bero);r->cameras=std::move(cameras);if(!r->cameras){r->cameras=std::make_shared<CameraManager>();r->cameras->initializeBoot(608,480);}r->cameras->camera(4)->mode=2;r->palette=palette?std::move(palette):std::make_shared<BattleCommandPalette>();r->shadows=shadows?std::move(shadows):std::make_shared<ShadowWork>();r->publicSfx=sounds?std::move(sounds):std::make_shared<PositionalSfxRegistry>();r->spotlight=spotlight?std::move(spotlight):std::make_shared<BattleSpotlightState>();r->fieldNpcBattleFlags=fieldNpcBattleFlags;r->fieldMario=fieldMario;r->fieldParties=fieldParties;if(appearance)r->fieldAppearance=*appearance;if(!r->initialize(menu,scene,hp,std::move(entryPouch)))return false;runtime_=std::move(r);return true;}
 void TrioAttack::tick(uint64_t time,ProfessorStory& scene,uint32_t triggers,const BattlePadSample* physical){if(runtime_)runtime_->tick(time,scene,triggers,physical);}
 bool TrioAttack::statusWindowVisible()const{return !runtime_ || runtime_->statusWindowOpen;}
 bool TrioAttack::active()const{return runtime_ && !runtime_->done;}

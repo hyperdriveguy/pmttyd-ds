@@ -374,6 +374,8 @@ private:
     Texture professorMarioTexture;
     Texture trioMarioTexture;std::shared_ptr<const BattlePoseResource> trioMarioAnimations;float trioMarioUVScale=1;
     Texture trioPartnerTexture;std::shared_ptr<const BattlePoseResource> trioPartnerAnimations;float trioPartnerUVScale=1;
+    Texture sharedPartnerTexture;std::shared_ptr<const BattlePoseResource> sharedPartnerAnimations;float sharedPartnerUVScale=1;
+    Texture sharedFranklyTexture;std::shared_ptr<const BattlePoseResource> sharedFranklyAnimations;float sharedFranklyUVScale=1;
     Texture trioFranklyTexture;std::shared_ptr<const BattlePoseResource> trioFranklyAnimations;float trioFranklyUVScale=1;
     Texture* finishingAnimationTextureOwner(const std::shared_ptr<const BattlePoseResource>&,float& uvScale);
     Texture professorMapTexture;

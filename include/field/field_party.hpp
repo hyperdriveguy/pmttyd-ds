@@ -1,6 +1,7 @@
 #pragma once
 #include "field_battle.hpp"
 #include "actor_animation.hpp"
+#include "field_party_pose.hpp"
 #include <array>
 #include <cassert>
 #include <memory>
@@ -27,29 +28,28 @@ struct FieldPartyActor {
     float scalar(unsigned offset) const {const auto bits=word(offset);float value;std::memcpy(&value,&bits,4);return value;}
     void scalar(unsigned offset,float value) {uint32_t bits;std::memcpy(&bits,&value,4);word(offset,bits);}
 };
-// Converted original Mario/partner resources and native CPU shape ownership. These
-// handles belong to this field registry; GPU/time/ABI equivalence is separate.
-struct FieldPartyPose {
-    uint32_t flags=1,materialFlags=0,materialLightFlags=0;
-    uint32_t sourceResource=0;
-    int32_t mode=2,archiveType=0;
-    uint64_t enteredMilliseconds=0;
-    std::shared_ptr<const ActorAnimationPack> resource;
-    ActorAnimationSample shape;
-    void paperOff() {flags&=~8u;}
-};
 struct FieldPartyRegistry {
     std::array<std::unique_ptr<FieldPartyActor>,2> actors;
-    std::array<std::unique_ptr<FieldPartyPose>,5> poses; // Used native domain: three Mario owners and two partner owners.
+    std::array<std::unique_ptr<FieldPartyPose>,256> poses; // Used native domain: three Mario owners and two partner owners.
     uint32_t currentDefinition=0; // Original global kind-record pointer view.
     uint32_t goombellaInitWork=0; // Owned view of8041eae0, cleared by the used kuribo_init callback.
+    std::shared_ptr<BattlePosePool> originalPool;
+    std::array<std::shared_ptr<const BattlePoseResource>,4> originalResources{};
+    bool configureOriginalPool(std::array<std::shared_ptr<const BattlePoseResource>,4> resources){
+        if(originalPool)return false;
+        for(const auto& pose:poses)if(pose)return false;
+        for(const auto& r:resources)if(!r || !r->draw || !r->textures)return false;
+        originalPool=std::make_shared<BattlePosePool>();originalResources=std::move(resources);return true;
+    }
     FieldPartyRegistry()=default;
     FieldPartyRegistry(const FieldPartyRegistry& other):currentDefinition(other.currentDefinition),goombellaInitWork(other.goombellaInitWork) {
         for(unsigned i=0;i<actors.size();++i)if(other.actors[i])actors[i]=std::make_unique<FieldPartyActor>(*other.actors[i]);
-        for(unsigned i=0;i<poses.size();++i)if(other.poses[i])poses[i]=std::make_unique<FieldPartyPose>(*other.poses[i]);
+        originalResources=other.originalResources;
+        if(other.originalPool)originalPool=std::make_shared<BattlePosePool>(*other.originalPool);
+        for(unsigned i=0;i<poses.size();++i)if(other.poses[i])poses[i]=originalPool?std::make_unique<FieldPartyPose>(originalPool,int32_t(i),other.poses[i]->sourceResource):std::make_unique<FieldPartyPose>(*other.poses[i]);
     }
     FieldPartyRegistry& operator=(const FieldPartyRegistry& other) {
-        if(this!=&other){FieldPartyRegistry copy(other);actors=std::move(copy.actors);poses=std::move(copy.poses);currentDefinition=copy.currentDefinition;goombellaInitWork=copy.goombellaInitWork;}return *this;
+        if(this!=&other){FieldPartyRegistry copy(other);actors=std::move(copy.actors);poses=std::move(copy.poses);originalPool=std::move(copy.originalPool);originalResources=std::move(copy.originalResources);currentDefinition=copy.currentDefinition;goombellaInitWork=copy.goombellaInitWork;}return *this;
     }
     FieldPartyRegistry(FieldPartyRegistry&&)=default;
     FieldPartyRegistry& operator=(FieldPartyRegistry&&)=default;
@@ -111,10 +111,16 @@ struct FieldPartyRegistry {
         case 0x802c18b4:shape="M_I_5";break;
         default:return -1;
         }
-        if(mode!=2 || !bank)return -1;
+        if(mode!=2)return -1;
+        if(originalPool){
+            const unsigned resourceIndex=sourceResource==0x802c18a0?0:sourceResource==0x802c18a8?1:sourceResource==0x802c18b4?2:3;
+            auto handle=originalPool->enter(originalResources[resourceIndex],mode,{milliseconds,milliseconds});if(!handle)return -1;
+            poses[unsigned(*handle)]=std::make_unique<FieldPartyPose>(originalPool,*handle,sourceResource);return *handle;
+        }
+        if(!bank)return -1;
         const auto* base=bank->pose(shape);ActorAnimationSample validation;
         if(!base || !base->evaluate(base->start,validation) || validation.vertices.empty())return -1;
-        for(unsigned index=0;index<poses.size();++index)if(!poses[index]) {
+        for(unsigned index=0;index<5;++index)if(!poses[index]) {
             auto pose=std::make_unique<FieldPartyPose>();pose->resource=std::move(bank);pose->sourceResource=sourceResource;pose->enteredMilliseconds=milliseconds;
             pose->shape.positions=base->positions;pose->shape.normals=base->normals;pose->shape.nodes=base->nodes;
             pose->shape.visibility=base->visibility;pose->shape.world.resize(base->groups.size());

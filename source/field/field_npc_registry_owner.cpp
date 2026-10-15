@@ -10,15 +10,15 @@ namespace {
 constexpr uint32_t Registry=0x8041e8ac,Sizes[]={36*0x340,36*0x94,16*0x340,0x580};
 uint32_t bits(float f){uint32_t v;std::memcpy(&v,&f,4);return v;}
 }
-FieldNpcRegistryOwner::FieldNpcRegistryOwner(uint32_t base){
+FieldNpcRegistryOwner::FieldNpcRegistryOwner(uint32_t base,std::shared_ptr<BattlePosePool> pool):poses_(std::move(pool)){
  for(unsigned i=0;i<4;++i){addresses_[i]=base;allocations_[i].resize(Sizes[i]);base+=Sizes[i];}
 }
 // Native base>=10000(hex), 16-byte alignment and end<=2^32 admission.
 // Zero-filled vector allocation does not mean source npcInit cleared release work.
-std::shared_ptr<FieldNpcRegistryOwner> FieldNpcRegistryOwner::cold(uint32_t base){
+std::shared_ptr<FieldNpcRegistryOwner> FieldNpcRegistryOwner::cold(uint32_t base,std::shared_ptr<BattlePosePool> pool){
  uint64_t end=base;for(auto n:Sizes)end+=n;
  if(base<0x10000 || (base&15) || end>0x100000000ULL)return {};
- return std::shared_ptr<FieldNpcRegistryOwner>(new FieldNpcRegistryOwner(base));
+ return std::shared_ptr<FieldNpcRegistryOwner>(new FieldNpcRegistryOwner(base,std::move(pool)));
 }
 bool FieldNpcRegistryOwner::ownsFieldActor(uint32_t address) const{
  return initialized_ && address>=addresses_[0] && uint64_t(address)-addresses_[0]<36u*0x340 && (address-addresses_[0])%0x340==0;

@@ -1352,8 +1352,13 @@ void Game::restore(const Progress& saved) {
     const auto retainedPartyCurrentIndex=fieldPartyCurrentIndex;
     const uint32_t retainedFieldMarioCameraId=fieldMarioBattle.cameraId;
     const auto retainedMarioPoseHandles=fieldMarioBattle.poseHandles;
+    const auto retainedPosePool=fieldParties.originalPool;
+    const auto retainedOriginalNpcs=originalFieldNpcs;
+    const auto retainedPoseResources=fieldParties.originalResources;
     decltype(fieldParties.poses) retainedMarioPoses;
-    for(auto handle:retainedMarioPoseHandles)if(fieldParties.pose(handle))retainedMarioPoses[unsigned(handle)]=std::move(fieldParties.poses[unsigned(handle)]);
+    FieldPartyRegistry retainedOriginalParties;const auto retainedPartyIndices=fieldMarioBattle.partyIndices;
+    if(retainedPosePool)retainedOriginalParties=std::move(fieldParties);
+    else for(auto handle:retainedMarioPoseHandles)if(fieldParties.pose(handle))retainedMarioPoses[unsigned(handle)]=std::move(fieldParties.poses[unsigned(handle)]);
     partnerPresentation={};partnerPresentation.startTick=partnerPresentation.nowTick=ticks;
     const Progress p=saved; // Caller may pass this game's own progress.
     const uint64_t cameraClock=fieldCameraSimulationTicks,shiftTimestamp=fieldCameraShift.previousMilliseconds;
@@ -1377,7 +1382,11 @@ void Game::restore(const Progress& saved) {
     trioRandom=retainedTrioRandom;
     publicSfx=retainedPublicSfx;
     fieldMarioBattle.cameraId=retainedFieldMarioCameraId; // Source reinit preserves the camera ID across record reset.
-    fieldMarioBattle.poseHandles=retainedMarioPoseHandles;fieldParties.poses=std::move(retainedMarioPoses);
+    originalFieldNpcs=retainedOriginalNpcs; // Process registry/pose identity survives native checkpoint facade rebuilding.
+    fieldParties.originalPool=retainedPosePool;fieldParties.originalResources=retainedPoseResources;
+    fieldMarioBattle.poseHandles=retainedMarioPoseHandles;
+    if(retainedPosePool){fieldParties=std::move(retainedOriginalParties);fieldMarioBattle.partyIndices=retainedPartyIndices;}
+    else fieldParties.poses=std::move(retainedMarioPoses);
     fieldParties.reinitializeMario(fieldMarioBattle); // Original live pose material clear, then light|2; clocks/resources survive.
     marioPresentation.facing=retainedPresentation.facing;marioPresentation.display=retainedPresentation.display;marioPresentation.target=retainedPresentation.target;
     fieldCameraEvents=cameraEvents;fieldCameraFlags=retainedCameraFlags;

@@ -34,7 +34,7 @@ bool BattleSequenceBinding::attachStorage(std::shared_ptr<BattleSequenceStorage>
 }
 bool BattleSequenceBinding::admitEntry() const{
     uint32_t gp=0,f=0,n=0,flags=0;
-    return !game_.trioAttack.cameras() && vm_.memory.readWord(0x80415fd0,gp) && vm_.memory.readWord(gp+0x168,f) && f==npcs_->fieldWorkAddress() && vm_.memory.readWord(f+8,n) && npcs_->ownsFieldActor(n) && vm_.memory.readWord(n,flags) && (flags&1);
+    return (!game_.fieldParties.originalPool || game_.fieldParties.originalPool==npcs_->poses().sharedPool()) && !game_.trioAttack.cameras() && vm_.memory.readWord(0x80415fd0,gp) && vm_.memory.readWord(gp+0x168,f) && f==npcs_->fieldWorkAddress() && vm_.memory.readWord(f+8,n) && npcs_->ownsFieldActor(n) && vm_.memory.readWord(n,flags) && (flags&1);
 }
 uint32_t BattleSequenceBinding::pending() const{
     if(sound_.active)return sound_.pending;

@@ -8937,3 +8937,77 @@ Next: audit the 6 new/7 changed field files above, then remaining battle,
 message/inventory/story, effect/audio and port tooling. Also re-audit concurrent
 renderer/animation/platform additions. Port-wide documentation and the remake
 remain incomplete; documentation goal stays active.
+
+### Fresh shared original player/NPC/battle poses (2026-10-14)
+
+Previous goal turn committed6ba63166 animation refresh/scratch parents. This
+increment supplies fresh native Mario/partner typed CPU poses in the same
+BattlePosePool used by registered field NPCs and the native Trio runtime.
+Original resource tokens use actual MODEL descriptor0: M_Z_1/M_Z_1R/M_S_5/
+PKR_Z_1. Live field material/light/timestamp/shape views alias the original
+pose record. Entry no longer depends on legacy visible seed admission.
+An existing namespace cannot be replaced even before party wrappers exist.
+Battle facade retirement releases only its own still-matching generations;
+a later NPC allocation reusing a battle handle survives. Copies clone party
+pose storage once; restore retains shared field/NPC identities and original
+Mario material reset. This does not recreate live VM ownership or source history.
+
+Canonical shared c_pkr and existing NPC c_kuri_h resources retain matching GPU
+atlas identities. New original player extractor retains complete MODEL/TPL/
+descriptor metadata with bounded prologue CPU clips plus original descriptor0.
+Unconverted descriptors remain unavailable; full a_mario exceeds current64-cell
+atlas capacity, so no schema relaxation or substitute animation was introduced.
+Private asset audit:25 new products, zero removed; only existing Frankly JSON
+metadata changed (evidence paths); every existing binary asset pack unchanged.
+ISO remains read-only; no assets committed. See
+[contract](behavior/display/NATIVE_SHARED_FIELD_AND_BATTLE_POSES.md) and ASSETS.
+
+Static review found legacy seed admission and reconfiguration gaps; both fixed.
+First host run found a fixture const-access compilation issue, then a fixture
+expectation incorrectly counted Mario's three original battle parts as one.
+Corrections retain actual source allocation order (Mario3, Goombella, Frankly).
+Failed runs are retained and are not reported as validation passes.
+
+Strict isolated ARM fixture passes sharedHandles, originalDefaults, liveAliases,
+npcOwnership, battleRetirement, reusedHandle, restoreIdentity, gpuResidency and
+matchingAtlasOwners. Snapshot:
+artifacts/azahar-shared-pose-probe-maps/shared-pose-probe.snapshot. Fixture uses
+original MODEL/TPL/CPU packs and actual registered NPC records, with explicit
+fixture event roots and battle admission. GPU check imports canonical atlases,
+checks actual RGBA8 residency/dimensions/resource identity and retires them;
+it does not certify original draw pixels or full finishing callbacks. Initial
+GPU fixture omitted production map retirement and failed texture admission;
+using production map-before-atlas order passes. CPU fixture passed separately
+before that GPU boundary. Native fixture changes are private and restored.
+Two new UV headers compare an explicitly padded8-byte magic, avoiding a literal
+read beyond the string. Normal boot and final checks below use restored sources.
+
+Original global W/file/holder/heap/scratch/output startup remains open. CPU
+vectors are not claimed to alias every guest refresh allocation. Copying a live
+Game does not reconstruct its external NPC/VM/battle ownership graph; field/battle
+admission holds mismatches. Wrappers must retire with their field handle before
+source release/reuse is widened. Normal field facing/Main/collision, full clip
+census, tagged authored battle_start and full original prologue remain required.
+Next bind genuine animation startup and output ownership, then continue the
+retained field/NPC and sequence parents from their held source boundaries.
+Documentation request inbox and goal remain active.
+
+Validation with restored production sources: TMPDIR=artifacts/native-stage-map-tmp
+CMAKE_BUILD_PARALLEL_LEVEL=4 make -C artifacts/shared-pose-source test
+-o assets-ready exited0:355/355 C++ in37.66s,200/200 Python in31.779s.
+Native make all -j4 -o assets-ready SOUNDTRACK=gamecube
+TARGET=ttyd-shared-pose BUILD=build-shared-pose exited0. Existing compiler/Pillow
+warnings remain. Final native SHA256 87aca36fef7586d9ab8e360c6957f97dc6cbf0dc7577063ee0d0990413785652.
+
+Frozen base6ba63166bcd15a9ce155445227a873fc1b9061a7 plus scoped journal
+isolates this increment from concurrent roots. Audit:3597 source files and2125
+RomFS products, zero mismatches; original gor_02.s remains private. Manifest
+artifacts/shared-pose-validation-manifest.json. Documentation links:1381 Markdown
+files, zero broken links. Concurrent changes remain preserved and are not
+claimed validated as a combined moving checkout.
+
+Normal isolated40s Azahar boot passed both before and after private probe
+restoration. Original storybook/US English capture was inspected; final capture
+artifacts/azahar-shared-pose-restored/boot.png. Profiles and saves are isolated;
+user settings/saves untouched. This does not establish original GPU/pixel/Gekko
+numeric parity, physical3DS performance, source battle teardown or full prologue.

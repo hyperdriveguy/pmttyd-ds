@@ -31,14 +31,14 @@ bool FieldPosePool::canEnter(const std::string& model,int32_t mode) const {
  if(mode<0 || mode>2)return false;
  const auto found=resources_.find(model);if(found==resources_.end())return false;
  const auto& resource=*found->second;
- bool freePose=false;for(unsigned i=0;i<256;++i){const auto* p=poses_.slot(i);if(!p || !p->word(0)){freePose=true;break;}}if(!freePose)return false;
- bool freeModel=false;for(const auto& m:poses_.models()){if(!m.flags)freeModel=true;else if(m.resource->modelName==resource.modelName)return true;}
+ bool freePose=false;for(unsigned i=0;i<256;++i){const auto* p=poses_->slot(i);if(!p || !p->word(0)){freePose=true;break;}}if(!freePose)return false;
+ bool freeModel=false;for(const auto& m:poses_->models()){if(!m.flags)freeModel=true;else if(m.resource->modelName==resource.modelName)return true;}
  if(!freeModel)return false;
- for(const auto& t:poses_.textures())if(!t.flags || t.name==resource.textureName)return true;
+ for(const auto& t:poses_->textures())if(!t.flags || t.name==resource.textureName)return true;
  return false;
 }
 std::optional<int32_t> FieldPosePool::enter(const std::string& model,int32_t mode,BattlePoseClock clock){
  if(!canEnter(model,mode))return {};
- return poses_.enter(resources_.at(model),mode,clock,model.c_str());
+ return poses_->enter(resources_.at(model),mode,clock,model.c_str());
 }
 }

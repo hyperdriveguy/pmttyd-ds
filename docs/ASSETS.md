@@ -1649,3 +1649,24 @@ dependencies. Cache assembly needed no new ISO read, original-asset extraction/
 conversion, editable import or shared pack write. Original Nintendo/Intelligent
 Systems rights remain reserved; private validation copies confer no new license
 or redistribution rights. No original binary/ISO bytes were committed.
+
+
+### Shared original field player pose resources (2026-10-14)
+
+`tools/field_player_pose_assets.py` reads `a/a_mario`, `a/a_mario_r`,
+`a/e_mario`, `a/c_pkr` and each MODEL's named `a/<texture-bank>-` from the
+read-only US ISO. It retains complete original MODEL/TPL/descriptor order and
+converts current prologue clips plus actual descriptor0 using the existing
+surface converter. Full a_mario conversion exceeds the current64-cell atlas;
+this export bounds clips instead of relaxing the schema or aliasing unavailable
+poses. Private generated metadata records source ISO offsets, sizes and SHA256,
+selected clips and product hashes. Original defaults: M_Z_1/M_Z_1R/M_S_5/PKR_Z_1.
+
+Products live privately at artifacts/shared-pose-source/romfs/field-player-*,
+with source/atlas evidence under its local-assets/field-player-poses/. Matching
+c_pkr and field-native-c_kuri_h GPU atlases are resized with Lanczos to512px
+width and half logical height, encoded RGBA8 tex3ds; PMSUV1 preserves V scale.
+Renderer selects matching resource identity. Frankly retains the existing field
+CPU descriptor set and a matching shared-field-frankly GPU pack. No generated
+assets or ISO are committed. Nintendo/Intelligent Systems resources; local use
+only, no redistribution rights granted. Original art only; no generated artwork.

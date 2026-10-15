@@ -82,6 +82,9 @@ std::shared_ptr<const BattlePoseResource> loadBattlePoseResource(const char* dir
     }
     cache[key]=resource;return resource;
 }
+BattlePosePool::BattlePosePool(const BattlePosePool& other):outputSelector(other.outputSelector),models_(other.models_),textures_(other.textures_),archiveType_(other.archiveType_),nextGeneration_(other.nextGeneration_){
+    for(unsigned i=0;i<poses_.size();++i)if(other.poses_[i])poses_[i]=std::make_unique<BattlePose>(*other.poses_[i]);
+}
 uint32_t BattlePose::word(unsigned offset) const {assert(offset+4<=state.size());return uint32_t(state[offset])<<24|uint32_t(state[offset+1])<<16|uint32_t(state[offset+2])<<8|state[offset+3];}
 void BattlePose::word(unsigned offset,uint32_t value){assert(offset+4<=state.size());for(unsigned i=0;i<4;++i)state[offset+i]=uint8_t(value>>(24-8*i));}
 float BattlePose::scalar(unsigned offset) const {const auto bits=word(offset);float value;std::memcpy(&value,&bits,4);return value;}
@@ -122,7 +125,7 @@ std::optional<int32_t> BattlePosePool::enter(std::shared_ptr<const BattlePoseRes
     const auto* initial=resource->bank->pose(resource->names.front().c_str());ActorAnimationSample shape;
     if(!initial || !initial->evaluate(0,shape) || shape.positions.empty() || shape.nodes.empty() || shape.world.empty())return {}; // Visibility does not determine buffer ownership.
     if(!poses_[handle])poses_[handle]=std::make_unique<BattlePose>();
-    auto& pose=*poses_[handle];
+    auto& pose=*poses_[handle];pose.nativeGeneration=nextGeneration_++;
     if(!reused){
         if(!reusedTexture){auto& t=textures_[texture];t.flags=1;t.name=resource->textureName;t.resource=resource;}
         ++textures_[texture].references;models_[model].flags=1;models_[model].texture=texture;models_[model].resource=resource;

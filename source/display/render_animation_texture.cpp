@@ -7,6 +7,8 @@ Renderer::Texture* Renderer::finishingAnimationTextureOwner(const std::shared_pt
     if(!resource)return nullptr;
     if(resource==trioMarioAnimations){uvScale=trioMarioUVScale;return &trioMarioTexture;}
     if(resource==trioPartnerAnimations){uvScale=trioPartnerUVScale;return &trioPartnerTexture;}
+    if(resource==sharedPartnerAnimations){uvScale=sharedPartnerUVScale;return &sharedPartnerTexture;}
+    if(resource==sharedFranklyAnimations){uvScale=sharedFranklyUVScale;return &sharedFranklyTexture;}
     if(resource==trioFranklyAnimations){uvScale=trioFranklyUVScale;return &trioFranklyTexture;}
     return nullptr;
 }

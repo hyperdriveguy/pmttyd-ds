@@ -25,6 +25,7 @@ struct BattlePoseClock {uint64_t modeZero=0,modeNonzero=0;}; // GP40/44 and GP38
 struct BattlePose {
     // Offset view of the admitted source scalar state, not mapped SDK pointers.
     std::array<uint8_t,0x170> state{};
+    uint64_t nativeGeneration=0; // Native lifetime identity, not serialized source state.
     std::shared_ptr<const BattlePoseResource> resource;
     ActorAnimationSample shape; // Real per-pose CPU output and retained hierarchy workspace.
     ActorAnimationCache cache; // Fully replayed current-key state, separate from fractional output.
@@ -48,6 +49,9 @@ struct BattlePoseTextureCache {
 // owns its handles; numbers do not assert original global allocation history.
 class BattlePosePool {
 public:
+    BattlePosePool()=default;
+    BattlePosePool(const BattlePosePool&);
+    BattlePosePool& operator=(const BattlePosePool&)=delete;
     std::optional<int32_t> enter(std::shared_ptr<const BattlePoseResource>,int32_t mode,BattlePoseClock,
         const char* requestedModel=nullptr);
     BattlePose* pose(int32_t handle);
@@ -76,5 +80,6 @@ private:
     std::array<BattlePoseModelCache,64> models_{};
     std::array<BattlePoseTextureCache,64> textures_{};
     int32_t archiveType_=0;
+    uint64_t nextGeneration_=1;
 };
 }
