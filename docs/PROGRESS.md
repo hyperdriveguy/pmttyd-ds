@@ -10856,3 +10856,88 @@ Re-audit concurrent lifecycle/Main, animation Entry, NPC detection and HP/displa
 integration against their committed versions. A matching annotation snapshot is
 not proof of complete semantics. Full documentation/remake remain unfinished;
 goal stays active.
+
+## 2026-10-14 — Original NPC Mario avoidance and proximity through Display
+
+Implemented complete source8004a4e4..accc, composed after retained cloud/
+territory detection with actual captured event class. Class2 captures Mario X/Y/Z,
+previous-current vector and facing before its separate eligibility graph;
+class1/4 captures Z/X/Y and computes fused distance BEFORE eligibility. Source
+state2 movement norm uses separate SP squares/add and strict.05 heading gate.
+Fresh Mario/GP/sequence/half admissions and distinct Vivian requests are retained,
+as are captured flags/range/facing versus fresh angle/height bounds. Quarter
+range bypasses all extra avoidance checks but never bypasses proximity heights.
+Copied four-word Kpa table precedes level request; subtract/clamp is original.
+Class4 inner circle uses DOUBLE.75 product; rectangular paths use FLOAT.75 with
+source load/short-circuit/NaN semantics. Conditional trigger2/1 stores and one
+interrupt request finish before the active unfinished Display frontier.
+
+Native same-VM binding reads actual mutable sequence80415190, and actual Kpa
+Mario mode byte3c/work pointer298/level+4. No Scene substitution or ISO initial
+sequence value is imported. Missing storage/Vivian/angle/interrupt providers hold;
+no fixture fallback is enabled in ordinary Game. Kpa index outside0..3 remains
+unsupported/pending, never clamped or replaced with fabricated stack values.
+Core is allocation-free and uses the existing ARM hard-float/libm build.
+
+[Contract](behavior/field/NATIVE_NPC_MARIO_DETECTION.md),
+[request update](requests/EVT-01.md). Independent read-only source/core/native/
+fixture review found no actionable defect. Warning-enabled standalone test
+passed without diagnostics. All7 new unchanged original constant spans matched
+the read-only ISO independently. Helper identities/rights are recorded in
+ASSETS.md; no original body/ISO/data pack is committed. Private door pack is
+152472 bytes; all2131 products hashed against accepted NPC baseline, with only
+door-data.json/pmevt changed for these constants. Local gor_02.s unchanged.
+
+Tests cover independent rejection trace; every-primitive holds; class/flags/GP/
+sequence/half/Vivian gates; separate status requests; retained Mario/range;
+fresh angular bound; source quarter/height differences; exceptional values;
+heading/facing choice; Kpa copied table and unsupported index; inner kinds;
+explicit double-versus-float .75 boundary; source trigger/interrupt/frontier
+ownership. A test fixture initially mutated range before the source range load
+while expecting an older capture; corrected mutation to occur at the later
+height read. Production logic unchanged. The first ARM probe build also exposed a
+newlib assert-macro incompatibility with an inline braced initializer; moved
+the same expected value to a local variable. ARM syntax check then passed,
+followed by a complete new frozen-tree host/native validation. Initial logs
+are retained; assertions were not removed or disabled. Shared VM tests hold missing sequence,
+then hold Vivian after changing live Mario root/sequence, proving earlier
+captures do not replay. Actual mapped Kpa work/level3 and copied radius100 clamp
+adjusted distance0; parent/MainCount remain unchanged after one interrupt.
+
+Frozencc0ddd2a1276ac81023197eba01c669089bc114c on accepted893c6b47:
+3721 tracked source files audited with zero mismatch. Full make test passes385/385 C++
+(92.40s) and203/203 Python (111.196s), zero skipped.
+make all -j4 -o assets-ready SOUNDTRACK=gamecube exits0. Existing compiler/Pillow
+warnings remain. Validation is for the frozen tree, not concurrent combined HEAD.
+Code commit53e104961334a8fb2162c1e3bcfbd54ec82a5ab4; test portability
+fix9f28663747a208c4580f60e3ad449ec150037ba2.
+
+Corrected strict isolated ARM fixture:entry/movement/autoPose/holds/sharedAliases/
+detection/cloud/territory/lookup/mario/sequence/kpa/comparisons/frontiers PASS.
+Fresh profile had no prior completion marker. Normal source restored/touched/
+rebuilt; SHA2560e60d9c902d1f57959cf49b9cd78d7547475c174a0b142a3fed8d56e1a957f25
+matches its pre-probe normal copy. No instrumentation is committed. Normal
+40-second isolated screenshot visually inspected: original storybook,
+App60FPS/100% speed with no asset-error console. This is startup evidence only.
+Native VFP scalar/double arithmetic and explicit fused helpers are retained;
+physical field performance is unmeasured. Only isolated profiles/saves touched.
+
+Local detection completion is not npcMain completion. Display/material/shadow,
+late MainCount-gated history, final state10 clear/next actor and field tail remain
+open. Original norm seed/FPSCR/GQR/subnormal/NaN-payload and angle/runtime parity
+remain unproven; the numeric seed stays an explicit adaptation. Production
+sequence/Mario/Kpa lifetime, Vivian, interrupt/collision/gravity/audio/cold
+resource owners must be connected before ordinary Area Main. Game retains its
+existing separate field path. Previous15FPS llvmpipe field/occluded assertion and
+asset-error smoke admission gaps remain unresolved. No physical New2DSXL or
+complete field-rendering performance claim. Goal and EVT-01 remain active.
+
+Next: implement Display from fresh actor mainflags8004accc, actual camera4 view/
+projection and strict cull, shared pose material/color, ordered display/shadow
+registrations and late history; then field tail4b1d0 and full parent completion.
+Bind real interrupt/Vivian/sequence/Mario and numeric/resource owners before
+normal Area activation. Repair asset-error and visual occlusion admission,
+profile actual field/hardware, and retain original event/story conditions.
+Evidence:artifacts/npc-mario-validation-manifest.json, assets-after/constants
+JSON, source/helper listings, full/target/native logs and isolated normal/probe
+captures. No probe instrumentation, generated original asset or binary is committed.

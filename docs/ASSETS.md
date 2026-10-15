@@ -2177,3 +2177,19 @@ Existing Python fixtures independently read ISO read-only and use empty temporar
 outputs; native regeneration is deliberately skipped. Nintendo/Intelligent
 Systems rights remain reserved. Private tracking/copying grants no new license;
 no ISO, extracted original asset or compiled binary was committed.
+
+### Original NPC Mario detection constants and helper provenance (2026-10-14)
+
+field_npc_actor_assets.py reads the US ISO read-only and pins seven unchanged
+spans:802c1210/16 (Kpa radii0,0,30,100),802c1460/8 (double.75),8041fd54/8
+(.05/.25),8041fcb0/4 (90),8041fcc4/4 (270),8041fccc/4 (180),8041fcd4/4
+(float.75). Exact byte/SHA256 identities:ignored artifacts/npc-mario-constants.json.
+Private door-data.pmevt/json is regenerated; no mutable sequence/Mario success
+values, PPC, script/story changes, art/audio/geometry resampling or replacement.
+seqGetSeq/KpaGetLevel/VivianGetStatus bodies were inspected read-only; sizes/
+hashes and ignored evidence paths are in
+[the contract](behavior/field/NATIVE_NPC_MARIO_DETECTION.md). Runtime sequence
+word80415190 is NOT imported from its ISO initialffffffff value. Extracted
+source/evidence, compiled packs and executables remain outside Git. Existing
+Nintendo/Intelligent Systems rights and private local-use restrictions remain
+unchanged; no redistribution license or original binary/ISO is committed.

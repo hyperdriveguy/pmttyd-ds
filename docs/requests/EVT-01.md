@@ -5011,3 +5011,15 @@ store order; model failure-2 and texture-null continuation stay distinct.
 CPU/source scratch aliasing and tangent consumers, normal Game Mario/partner
 activation, full rendering/release/field/event closure and original runtime
 traces remain open. EVT-01 and playable-prologue goal are incomplete.
+
+### 2026-10-14 NPC Mario avoidance/proximity implementation update
+
+The [retained Mario detection section](../behavior/field/NATIVE_NPC_MARIO_DETECTION.md)
+now covers8004a4e4..accc. Distinct class2/class1/4 order, repeated Mario/Vivian
+requests, retained bounds/facing, copied Kpa table, original norms and double/
+float inner thresholds are preserved. Native sequence reads actual80415190;
+Kpa reads actual Mario mode/work/level. Local static analysis is delivered.
+Real Vivian/angle/interrupt/resource services and sequence/Mario producers,
+original numeric/runtime parity, display/shadow/history/tail and ordinary Area
+activation remain open. Detection completion reaches unfinished Display only;
+no whole-Main completion or actor/history advancement is acknowledged.

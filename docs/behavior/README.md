@@ -1254,3 +1254,4 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Queued enemy HP presentation and bar](display/QUEUED_ENEMY_HP_PRESENTATION_AND_RETAINED_BAR.md): original queued callback and retained source bar.
 - [Enemy HP linked raster helpers](display/ORIGINAL_ENEMY_HP_LINKED_RASTER_HELPERS.md): original texture/raster state, geometry and suspended child ordering.
 - [Source icon number continuation](display/SOURCE_ICON_NUMBER_CONTINUATION.md): original signed digit/table/matrix behavior; native ordered publication remains an integration boundary.
+- [Retained NPC Mario detection](field/NATIVE_NPC_MARIO_DETECTION.md): original avoidance/proximity gates, distinct norm/inner-threshold arithmetic, actual mutable sequence/Kpa reads and unfinished Display frontier.
