@@ -1,5 +1,7 @@
 #pragma once
 #include "battle_actor.hpp"
+// Sequence channels are guest words, not render frame counters. Admission
+// callbacks report real resources/events; elapsed time cannot satisfy a probe.
 namespace ttyd {
 uint32_t packedBattleGetSequence(uint32_t battle,uint32_t channel,const EventMemoryServices&);
 void packedBattleSetSequence(uint32_t battle,uint32_t channel,uint32_t value,const EventMemoryServices&);

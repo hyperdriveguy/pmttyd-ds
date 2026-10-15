@@ -2,6 +2,8 @@
 #include "actor_animation.hpp"
 #include <array>
 #include <functional>
+// Private startup pack validates retained source descriptors and bounded CPU
+// clips, then separately admits textures. ready() alone does not mean GPU ready.
 namespace ttyd {
 // Actual US context1 source-bank/surface admission. This never acknowledges a
 // field capture, pose playback, timing delay or battle completion.

@@ -1,6 +1,14 @@
 #include "battle_turn_first.hpp"
 #include <cassert>
 
+// Turn halfwordbattle+0 wraps16 bits; fresh signed value>=2 triggers fortune.
+// Clear masks18ff0/18ff4, count16f57 saturates100. Each of64 units increments
+// byte24 modulo256, resets move, then samples irand(signed kind+89 span).
+// Initiative28= signed kind+88 base +random - fresh signed span/2 (toward0).
+// Source status flag138 bit01000000 clears afterward; do not normalize RNG bounds.
+// Fog reads GLOBAL battle8041eb90, not explicit turn owner: timer182b8 decrements
+// and re-reads signed; effect182bc soft-deletes at expiry. Timer0 returns1 without
+// deleting an existing effect. Caller ignores result; no FPS duration is implied.
 namespace ttyd {
 namespace {
 uint32_t word(const BattleTurnFirstServices& s,uint32_t a) {assert(s.memory.word);return s.memory.word(s.memory.user,a);}

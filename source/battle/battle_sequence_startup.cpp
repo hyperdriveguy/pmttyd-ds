@@ -1,5 +1,11 @@
 #include "battle_sequence_startup.hpp"
 #include <cassert>
+// Channel0 manager at+4; channels1..7 at f0c/f10/f14/f18/f1c/f20/f24.
+// Invalid channels read0/ignore writes; increment wraps unsigned32 bits.
+// Init states01000000..05: 0 falls into1 same visit; setup then yields2;
+// 2 waits/cleans init IDs288 across all64 slots, even after finding a live event;
+// 3 short-circuits three context1 paper probes then Nice; 4 yields one visit;
+// 5 enables event/system status and hands off to channel0=1/channel2=02000000.
 namespace ttyd {
 namespace {constexpr uint32_t offsets[]{4,0xf0c,0xf10,0xf14,0xf18,0xf1c,0xf20,0xf24};}
 uint32_t packedBattleGetSequence(uint32_t b,uint32_t channel,const EventMemoryServices& m){if(channel>7)return 0;assert(m.word);return m.word(m.user,b+offsets[channel]);}
@@ -17,6 +23,8 @@ void packedBattleSequenceInit(uint32_t b,const BattleStartupServices& s){
  if(state==0x01000004){packedBattleSetSequence(b,1,0x01000005,m);return;}
  if(state==0x01000005){assert(s.statusEventOn && s.statusSystemOn);s.statusEventOn(s.user);s.statusSystemOn(s.user);packedBattleSetSequence(b,0,1,m);packedBattleSetSequence(b,2,0x02000000,m);}
 }
+// Capture channel0 once: Init then pinch1; FirstAct/Turn get pinch0 before
+// dispatch; End has no pinch call. Init's handoff cannot run FirstAct this visit.
 void packedBattleSequenceManager(uint32_t b,const BattleSequenceManagerServices& s){
  switch(packedBattleGetSequence(b,0,s.memory)){
  case 0:assert(s.init && s.pinch);s.init(s.user,b);s.pinch(s.user,b,1);break;
@@ -26,6 +34,9 @@ void packedBattleSequenceManager(uint32_t b,const BattleSequenceManagerServices&
  default:break;
  }
 }
+// GP cell80415fd0 -> language+16c -> table80417af8. Re-read owner/language
+// on each of7 slots; query every nonnull key even after failure. Seven slots do
+// not imply seven unique US resources (native admission owns six Nice banks).
 bool packedBattleNiceReady(int32_t mode,const BattleNiceAdmissionServices& s){
  const auto& m=s.memory.memory;assert(m.word && s.animationReady);bool ready=true;
  for(unsigned i=0;i<7;++i){const auto gp=m.word(m.user,0x80415fd0),language=m.word(m.user,gp+0x16c),row=m.word(m.user,0x80417af8+4*language),key=m.word(m.user,row+4*i);if(key && !s.animationReady(s.user,key,mode,0))ready=false;}return ready;

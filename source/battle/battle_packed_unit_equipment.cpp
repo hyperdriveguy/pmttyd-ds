@@ -1,5 +1,10 @@
 #include "battle_packed_unit_equipment.hpp"
 #include <cassert>
+// Pouch callback precedes the null-unit test. System kind220 returns after
+// optional counter clear at2e0..307, before equipOne/revision. mode&6 visits
+// all200 signed equipped slots at pouch+38a in order, passing mode&~1;
+// otherwise process the explicit item. Ordinary paths revise HP/FP afterward.
+// equipPackedNoItem recognizes only item0's early return before unit access.
 namespace ttyd {
 void equipPackedUnitItems(uint32_t u,int32_t mode,int32_t item,const PackedUnitEquipmentServices& s){const auto& m=s.resources.memory.memory;assert(s.resources.pouch && m.word && m.half && m.storeByte);const auto p=s.resources.pouch(s.resources.user);if(!u)return;
  if(uint32_t(mode)&1)for(unsigned i=0;i<40;++i)m.storeByte(m.user,u+0x2e0+i,0);

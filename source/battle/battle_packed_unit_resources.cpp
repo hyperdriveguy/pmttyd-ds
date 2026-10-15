@@ -1,5 +1,10 @@
 #include "battle_packed_unit_resources.hpp"
 #include <cassert>
+// Unit HP: max108, base10a, current10c; FP: max10e, base110, current112.
+// Mario kind222 imports pouch base8e/90, current70/74. Badge bytes2f1/2f2
+// contribute5 each. Revision only upper-clamps current values, never heals or
+// lower-clamps. Partner kinds224..230 use partyIndex*14-byte pouch rows,
+// base/max/current HP+4/+2/+6; partner revision does not rewrite FP.
 namespace ttyd {
 namespace {int32_t signedWord(uint32_t v){return v<0x80000000u?int32_t(v):int32_t(int64_t(v)-0x100000000LL);}}
 void revisePackedUnitResources(uint32_t u,const PackedUnitResourceServices& s){
@@ -9,6 +14,10 @@ void revisePackedUnitResources(uint32_t u,const PackedUnitResourceServices& s){
  else if(kind>=224 && kind<231){assert(s.partyIndex);const auto row=p+uint32_t(s.partyIndex(s.user,kind))*14;store(u+0x10a,half(row+4));store(u+0x108,half(row+4)+5*badge(u+0x2f1));store(u+0x10c,half(row+6));cap(0x10c,0x108);}
  else{store(u+0x108,half(u+0x10a)+5*badge(u+0x2f1));cap(0x10c,0x108);store(u+0x10e,half(u+0x110)+5*badge(u+0x2f2));cap(0x112,0x10e);}
 }
+// Partner snapshot: battle+162a0+(fresh kind-224)*2c. Float word0 ->114,
+// word24 ->138; seven words4..1c ->118..130; halves20/28/2a ->134/13c/13e.
+// Read kind again after revision callbacks; nonpositive HP sets status27 byte135.
+// Export mirrors these individual fields in source order, not a bulk struct copy.
 void importPackedUnitResources(uint32_t b,uint32_t u,const PackedUnitResourceServices& s){
  const auto& m=s.memory.memory;assert(m.word && m.half && m.storeWord && m.storeHalf && m.storeByte && s.pouch);const auto p=s.pouch(s.user);auto w=[&](uint32_t a){return m.word(m.user,a);};auto store=[&](uint32_t a,uint32_t v){m.storeWord(m.user,a,v);};const auto kind=signedWord(w(u+8));
  if(kind==222){m.storeHalf(m.user,u+0x10c,m.half(m.user,p+0x70));m.storeHalf(m.user,u+0x112,m.half(m.user,p+0x74));revisePackedUnitResources(u,s);}

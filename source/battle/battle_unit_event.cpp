@@ -1,6 +1,12 @@
 #include "battle_unit_event.hpp"
 #include <cassert>
 
+// Global battle8041eb90; part chain unit+14, body attribute part+1ac mask1
+// returns definition+0 ID (not a part pointer). Data unit+18 is8-byte key/value
+// rows terminated by key0; presence does not inspect value. Work starts218,
+// stride4 with source wrapping address arithmetic and no index bounds here.
+// Signed conversions preserve source32/16/8-bit values. EVT result2 completes
+// the opcode; it is distinct from runBattleUnitWait's internal result0.
 namespace ttyd {
 namespace {
 uint32_t word(const BattleUnitEventServices& s,uint32_t a) {assert(s.memory.word);return s.memory.word(s.memory.user,a);}
@@ -19,6 +25,9 @@ int32_t battleGetBodyIdEvent(EventEntry& e,const BattleUnitEventServices& s) {
     const uint32_t args=e.arguments,battle=word(s,0x8041eb90);const int32_t id=actor(e,args,s),output=sw(word(s,args+4));
     const uint32_t u=unit(battle,id,s);const int32_t body=packedBodyPartId(u,s.memory);assert(s.values.store);s.values.store(s.values.user,e,output,body);return 2;
 }
+// Wait script28c, event ID290: remove old event then clear ID before optional
+// priority10/flags0 creation, owner=unit ID. Start opcode checks script first:
+// with no script it leaves an existing wait event alone; Stop explicitly deletes.
 int32_t runBattleUnitWait(uint32_t u,const BattleUnitEventServices& s) {
     const uint32_t previous=word(s,u+0x290);
     if(previous!=0) {assert(s.removeEventId && s.memory.storeWord);s.removeEventId(s.user,previous);s.memory.storeWord(s.memory.user,u+0x290,0);}
@@ -50,6 +59,9 @@ int32_t battleCheckUnitDataEvent(EventEntry& e,const BattleUnitEventServices& s)
     const int32_t output=sw(word(s,args+4)),key=resolve(e,args+8,s);
     const bool present=battleUnitHasData(u,key,s.memory);assert(s.values.store);s.values.store(s.values.user,e,output,present?1:0);return 2;
 }
+// Status is a raw signed low byte of argument1, not EVT-resolved. HP opcode
+// alone special-cases actor=-1: complete without storing output. HP halves are
+// signed, max108/current10c; other missing actors are caller admission failures.
 int32_t battleCheckUnitStatusEvent(EventEntry& e,const BattleUnitEventServices& s) {
     const uint32_t args=e.arguments;const int32_t id=actor(e,args,s);
     const uint8_t raw=uint8_t(word(s,args+4));const int32_t status=raw<128?int32_t(raw):int32_t(raw)-256,output=sw(word(s,args+8));

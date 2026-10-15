@@ -1,5 +1,7 @@
 #pragma once
 #include "event_memory_opcodes.hpp"
+// Fresh-game pouch ownership only; this does not load saves or advance story.
+// message must return the original localized name_party3 text.
 namespace ttyd {
 struct PackedPouchInitializationServices {
  EventMemoryServices memory;

@@ -1,6 +1,9 @@
 #pragma once
 #include "battle_sequence_startup.hpp"
 #include "event_creation.hpp"
+// Channel2 states02000000..0e implement source visit/fallthrough order.
+// Providers own nonordinary first attacks; false means that entry is unavailable.
+// Durations/counters are source values, not measured display-frame timing.
 namespace ttyd {
 struct BattleFirstActServices {
  BattleActorServices memory;

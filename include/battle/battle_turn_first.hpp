@@ -1,6 +1,8 @@
 #pragma once
 #include "battle_actor.hpp"
 
+// One source turn-start call, not one rendered frame. Caller provides admitted
+// packed units, original RNG and effects; this helper does not synthesize them.
 namespace ttyd {
 struct BattleTurnFirstServices {
     EventMemoryServices memory;

@@ -1,5 +1,10 @@
 #include "battle_packed_display_entry.hpp"
 #include <cassert>
+// searchPoseTbl scans at most28 eight-byte rows, first exact OR tag28 wins.
+// Traverse parts from unit+14 via part+0. Part+1bc is table, definition+8 bank;
+// missing either stores handle1c0=-1. Otherwise copy actual pose including NUL
+// to1c4 and allocate context1 pose. Caller must admit name buffer/resources;
+// no guessed idle string or successful unbound allocation is substituted.
 namespace ttyd {
 uint32_t searchPackedBattlePoseTable(uint32_t table,int32_t type,const EventMemoryServices& m){if(!table)return 0;assert(m.word);for(unsigned i=0;i<28;++i,table+=8){const auto tag=m.word(m.user,table);if(tag==uint32_t(type) || tag==28)return m.word(m.user,table+4);}return 0;}
 void initializePackedBattleDisplay(uint32_t u,const PackedBattleDisplayEntryServices& s){const auto& m=s.memory.memory;assert(m.word && m.storeWord && m.storeByte && s.memory.byte);auto w=[&](uint32_t a){return m.word(m.user,a);};auto part=w(u+0x14);

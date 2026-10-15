@@ -3,6 +3,11 @@
 #include <cstring>
 #include <set>
 #include <memory>
+// Nine fixed banks: three paper helpers then six US Nice effects. Keys below
+// are original string addresses, not native pointers. FNV-1a32 uses standard
+// offset2166136261/prime16777619 for corruption checking, not authentication.
+// MODEL BE header1b0: bank/texture-owner names+4/+44 (64 bytes), descriptor
+// count148/directory1ac; descriptor64 has60-byte name then animation header.
 namespace ttyd {
 namespace {
 constexpr const char* Names[]={"p_b_st","p_jyabara","p_kaiten_h","EFF_nice_us","EFF_good_us","EFF_great_us","EFF_wonderful_us","EFF_excellent_us","EFF_lucky_us"};
@@ -27,6 +32,14 @@ bool sourceDescriptors(const BattleStartupResources::Resource& r){
     return true;
 }
 }
+// Private LE PMBRDY01 header words{9, 1, 1}. Admission bounds are native:
+// bank1b0..1MiB, 1..32 descriptors, 1..64 textures, UV scale1/2/4/8;
+// pose names32 bytes, 1..4096 keys, finite ordered times, exact EOF. Original
+// descriptors retain single-loop metadata and key count; unsupported poses
+// must be absent from native pack, not replaced. Supported poses need actual
+// bindings/surfaces and a successful sample at original start time.
+// Heap candidate avoids large stack storage. Failure preserves old resources;
+// successful replacement resets all texture admission, even on the same path.
 bool BattleStartupResources::load(const char* base){
     if(!base)return false;
     const std::string directory=base;
@@ -66,6 +79,9 @@ bool BattleStartupResources::load(const char* base){
     if(ok){resources=std::move(*next);root=directory;textureAdmitted={};loaded=true;}
     return ok;
 }
+// Idempotent admission marks only provider success. releaseTexture only
+// clears this readiness flag; external texture owner performs the GPU release.
+// Context1 readiness proves source/CPU/TPL admission, not field capture or play.
 bool BattleStartupResources::admitTexture(unsigned index,const TextureAdmission& admission){
     if(!loaded || index>=9 || !admission)return false;
     if(textureAdmitted[index])return true;

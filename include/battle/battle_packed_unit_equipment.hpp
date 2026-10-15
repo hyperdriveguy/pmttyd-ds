@@ -1,5 +1,7 @@
 #pragma once
 #include "battle_packed_unit_resources.hpp"
+// Mode bits are source helper flags: 1 clears40 badge-counter bytes; 2/4
+// select the full equipped pouch list. equipOne owns nonzero item semantics.
 namespace ttyd {
 struct PackedUnitEquipmentServices {
  PackedUnitResourceServices resources;void* user=nullptr;

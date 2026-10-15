@@ -1,6 +1,12 @@
 #include "battle_packed_pouch.hpp"
 #include <cassert>
 #include <cstring>
+// Heap0 allocation5d4 publishes global8041eb00 before clearing. Preserve both
+// full byte clear and redundant source halfword writes (observable callbacks).
+// Arrays: 121 key items+a0, 20 carried+192, 32 stored+1ba, 200 badges+1fa,
+// 200 equipped+38a. HP10, FP5, BP3; partner indices1..7 stride14 leave row0
+// unused and rank+8 from clear. Name at5c0 has14(hex)=20 bytes including NUL.
+// EquippedBadgeCount deliberately counts empty slots when queried for ID0.
 namespace ttyd {
 uint32_t initializePackedPouch(const PackedPouchInitializationServices& s){
  assert(s.allocate && s.message && s.memory.storeWord && s.memory.storeHalf && s.memory.storeByte);

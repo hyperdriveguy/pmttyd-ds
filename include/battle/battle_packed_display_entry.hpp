@@ -1,5 +1,7 @@
 #pragma once
 #include "battle_actor.hpp"
+// Source pose-table search and part display initialization have separate
+// lookup rules from BtlUnit_GetPoseNameFromType; do not merge the scans.
 namespace ttyd {
 struct PackedBattleDisplayEntryServices {
  BattleActorServices memory;void* user=nullptr;

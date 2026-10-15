@@ -1,6 +1,8 @@
 #pragma once
 #include "event_memory_opcodes.hpp"
 
+// Guest-address services for the 64-slot source registry; selectors and slots
+// are different namespaces. Callers must admit original memory before lookup.
 namespace ttyd {
 struct BattleActorServices {
     EventMemoryServices memory;

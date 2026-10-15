@@ -2,6 +2,8 @@
 #include "battle_actor.hpp"
 #include "event_creation.hpp"
 #include <array>
+// Synchronous source construction, not a resumable native transaction. All
+// providers/resources and later allocations must be admitted before the call.
 namespace ttyd {
 struct BattleUnitEntryServices {
  BattleActorServices memory;void* user=nullptr;

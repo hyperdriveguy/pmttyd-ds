@@ -1,6 +1,8 @@
 #pragma once
 #include "event_memory_opcodes.hpp"
 
+// EVT adapters preserve raw output destinations versus resolved inputs.
+// Native caller must admit actor, work index and terminating data/part tables.
 namespace ttyd {
 struct BattleUnitEventServices {
     EventMemoryServices memory;

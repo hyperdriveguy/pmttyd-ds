@@ -1,5 +1,9 @@
 #include "battle_first_act.hpp"
 #include <cassert>
+// Field info battle+2738: first-attack type+8, NPC payload+c. Ordinary entry
+// creates root80416d70, then unit2b8 scripts in64-slot order. NPC flag100000
+// skips Mario222/partners224..230; field Mario motion26 uses unitData key65.
+// Created events priority10/flags0, owner=slot, tracked at unit2bc.
 namespace ttyd {
 namespace {int32_t sw(uint32_t v){return v<0x80000000u?int32_t(v):int32_t(int64_t(v)-0x100000000LL);}}
 bool packedBattleFirstAct(uint32_t b,const BattleFirstActServices& s){
@@ -17,6 +21,9 @@ bool packedBattleFirstAct(uint32_t b,const BattleFirstActServices& s){
   }
   set(0x02000001);return true;
  }
+ // Countdown efc wraps before signed test. Fade type23/raw200, color80422550,
+ // sound key802efbc4 ->voice19070; voice ffffffff means absent. State1 may
+ // enter2 immediately; state2 repeats readiness/fade probes rather than caching.
  if(state==0x02000001){const auto remaining=word(b+0xefc)-1;store(b+0xefc,remaining);if(sw(remaining)>0)return true;
   assert(s.fadeEntry && s.sound);s.fadeEntry(s.user,23,200,word(0x80422550));store(b+0x19070,s.sound(s.user,0x802efbc4));set(0x02000002);state=0x02000002;
  }
@@ -26,6 +33,10 @@ bool packedBattleFirstAct(uint32_t b,const BattleFirstActServices& s){
   if(!s.allEventsReady(s.user,b) || !s.fadeFinished(s.user))return true;
   set(0x02000003);const auto u=battleRegistryUnit(b,sw(word(b+0x420)),s.memory);if(u)store(u+0x1c,word(u+0x1c)&~uint32_t(0x04000000));return true;
  }
+ // Concluded hands off manager channel0=3/end channel7=07000000.
+ // Otherwise3->4->5->6->7->8 may fall through this visit. Message and announce
+ // BOTH run (bitwise OR); reaction results narrow toU8. ef4 masks30 gate status,
+ // mask4 clears after reserve consumption. Wall flagNPC+4 mask10 yields9 or a.
  if(state==0x02000003){assert(s.concluded && s.audiencePerAct && s.statusAdjust);if(s.concluded(s.user,b)){s.audiencePerAct(s.user);packedBattleSetSequence(b,0,3,m);packedBattleSetSequence(b,7,0x07000000,m);return true;}
   set(0x02000004);s.statusAdjust(s.user,b);state=0x02000004;
  }
@@ -35,6 +46,11 @@ bool packedBattleFirstAct(uint32_t b,const BattleFirstActServices& s){
  if(state==0x02000007){assert(s.statusMessage && s.statusAnnounce);const auto message=s.statusMessage(s.user,b),announce=s.statusAnnounce(s.user,b);if(message|announce)return true;increment();state=0x02000008;}
  if(state==0x02000008){assert(s.allEventsReady && s.wallClose);if(!s.allEventsReady(s.user,b))return true;const auto npc=word(word(b+0x2738)+0xc);if(word(npc+4)&0x10){set(0x02000009);s.wallClose(s.user);}else set(0x0200000a);return true;}
  if(state==0x02000009){assert(s.eventExists);const auto event=word(b+0x182c0);if(event && !s.eventExists(s.user,event))store(b+0x182c0,0);if(word(b+0x182c0))return true;set(0x0200000a);return true;}
+ // Luck byteunit304 with no status27 starts root80416d40, owner=-5;
+ // tracked event1905c, source masks18ff0/18ff4 ORffffffff, half18ffa counter
+ // saturates300 but does NOT independently unblock state b. Event/readiness/
+ // announce/message probes all run. States c/d may fall into e; ef4 mask2 skips
+ // nozzle check0, then clears on turn handoff(channel0=2, channel3=03000000).
  if(state==0x0200000a){assert(s.status && s.create && s.statusAdjust);store(b+0x1905c,0);bool luck=false;
   for(int32_t id=0;id<64;++id){const auto u=battleRegistryUnit(b,id,s.memory);if(u && byte(u+0x304) && !s.status(s.user,u,27))luck=true;}
   if(luck){auto& event=s.create(s.user,0x80416d40,10,0);event.owner=-5;store(b+0x1905c,event.id);store(b+0x18ff4,word(b+0x18ff4)|0xffffffff);store(b+0x18ff0,word(b+0x18ff0)|0xffffffff);s.statusAdjust(s.user,b);set(0x0200000b);m.storeHalf(m.user,b+0x18ffa,0);}else set(0x0200000c);return true;

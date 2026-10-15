@@ -1,6 +1,8 @@
 #pragma once
 #include "battle_actor.hpp"
 #include <array>
+// Builds system, Mario, optional partner, then source group members. Entry
+// must supply actual packed actors even when an actor has no visible surface.
 namespace ttyd {
 struct BattleUnitSetupServices {
  BattleActorServices memory;

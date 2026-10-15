@@ -1,6 +1,9 @@
 #include "battle_packed_unit_initialization.hpp"
 #include <cassert>
 #include <cstring>
+// Change-info work: 6 records*12 bytes at unit+ae8. Byte0=ff, bytes1..3=0,
+// word4=0; word8 is deliberately untouched. Status icon region348..ae8 clears
+// 7a0 bytes. ClearStatus clears30 bytes118..135 then exact type16 status work.
 namespace ttyd {
 namespace {
 void changeInfo(uint32_t u,const EventMemoryServices& m){for(unsigned i=0;i<6;++i){const auto r=u+0xae8+12*i;m.storeByte(m.user,r,255);for(unsigned j=1;j<4;++j)m.storeByte(m.user,r+j,0);m.storeWord(m.user,r+4,0);}}
@@ -16,6 +19,10 @@ bool initializePackedBattleUnitHelper(uint32_t function,uint32_t u,const BattleA
   // Exact BtlUnit_SetStatus(unit,16,1,-99) branch: accumulated signed byte,
   // negative→0, upper clamp99. No movement/reset branch exists for type16.
   auto value=uint8_t(uint32_t(s.byte(s.user,u+0x129))+uint32_t(-99));if(value>=128)value=0;else if(value>99)value=99;m.storeByte(m.user,u+0x129,value);changeInfo(u,m);return true;}
+ // HP gauge: halves200/204/1fc reset; 208/20c signed current HP; 210/214
+ // current/max ratio with no zero-denominator guard. Source counters202/206
+ // use40 if fresh mode1fc==1, else20, then+30; these are not measured seconds.
+ // Keep fresh mode read even after the earlier zero store (callbacks may mutate).
  case 0x80125fd8:{assert(m.half && m.storeHalf && m.storeWord);m.storeHalf(m.user,u+0x200,0);m.storeHalf(m.user,u+0x204,0);m.storeHalf(m.user,u+0x1fc,0);
   m.storeWord(m.user,u+0x208,uint32_t(int32_t(int16_t(m.half(m.user,u+0x10c)))));m.storeWord(m.user,u+0x20c,uint32_t(int32_t(int16_t(m.half(m.user,u+0x10c)))));
   const auto ratio=float(int16_t(m.half(m.user,u+0x10c)))/float(int16_t(m.half(m.user,u+0x108)));real(u+0x210,ratio,m);real(u+0x214,ratio,m);

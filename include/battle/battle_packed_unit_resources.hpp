@@ -1,5 +1,7 @@
 #pragma once
 #include "battle_actor.hpp"
+// Guest HP/FP and saved partner work use signed16-bit fields, not a native
+// serialized Unit. Service callbacks can change owners between source reads.
 namespace ttyd {
 struct PackedUnitResourceServices {
  BattleActorServices memory;void* user=nullptr;
