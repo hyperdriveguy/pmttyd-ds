@@ -137,3 +137,7 @@ separate event/storage/heap lifetimes.
 [Opening demo/book](opening-demo-book.md) and [title/audio/effects](opening-title-effects.md)
 explain original narration identities, capture/final-pose admission, bounded scene
 requests, native clock/framing adapters and independent fade/effect owners.
+
+[New Game sequence/house](opening-sequence-house.md), [Voyage/arrival](opening-voyage-arrival.md)
+and [map/heading/wake](opening-map-heading-wake.md) explain original IDs, source
+request gates, scene/audio ownership and explicit native presentation adapters.

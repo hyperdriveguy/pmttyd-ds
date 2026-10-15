@@ -9,6 +9,8 @@ namespace {
 struct Object {std::array<float,12> world;std::array<float,3> localMean;};
 std::array<OpeningHouseCue,4> cues{};std::array<Object,2> objects{};bool ready=false;
 const char* names[]={"SFX_EVT_OPN_PARETTA_MOVE1","SFX_EVT_POST_SHAKE1","SFX_DOOR_OPEN1","SFX_DOOR_SHUT1"};
+// evtSetFloat publication truncates signed Q1024. Object means/world matrices
+// are converted metadata; multiply map units by10 before publishing engine XYZ.
 float published(float f){return std::trunc(f*1024.f)/1024.f;}
 bool objectPosition(unsigned object,float parameter,std::array<float,3>& result){
     if(!ready || object>1 || !std::isfinite(parameter))return false;
@@ -20,6 +22,9 @@ bool objectPosition(unsigned object,float parameter,std::array<float,3>& result)
     return true;
 }
 }
+// PMHSND01 pins original names/table rows972/973/568/589 and four mono
+// PCM headers/exact lengths before catalog publication. Metadata identities are
+// distinct from native cue0..3; valid rates8000..48000 are admission bounds.
 bool loadOpeningHouseSoundAssets(const char* root){
     if(!root)return false;
     FILE* f=std::fopen((std::string(root)+"/opening-house-sounds.bin").c_str(),"rb");if(!f)return false;
@@ -45,10 +50,16 @@ void OpeningHouseSounds::begin(uint64_t tick){
     requests.push_back({OpeningHouseAudioRequest::Operation::EnvironmentOn,0xd10,0x110,tick,-1,0,"ENV_OPN_AAA1"});
     requests.push_back({OpeningHouseAudioRequest::Operation::BgmScope,0xd20,0,tick,-1,1});
 }
+// Used fresh-scene inline: delay180 ticks/3000ms,14 initial calls12 ticks
+// apart, then at least one holding call24 ticks apart. Depart is checked AFTER
+// that wait; final17 calls12 ticks apart outlive root/glide completion.
 void OpeningHouseSounds::startFlight(uint64_t tick){flightStarted=true;phase=Phase::Delay;count=0;deadline=tick+180;}
 void OpeningHouseSounds::sfx(unsigned cue,uint32_t command,uint64_t tick,const std::array<float,3>& position,bool resolved){
     OpeningHouseAudioRequest r;r.command=command;r.tick=tick;r.cue=int32_t(cue);r.name=names[cue];r.position=position;r.positionResolved=resolved;requests.push_back(r);
 }
+// Position X/Y publishes Q1024, Z is authored-100. Deadlines, not renders,
+// schedule requests; holding stop does not cancel the current PCM sample or skip
+// its first holding request. Same-tick repeats cannot duplicate elapsed deadlines.
 void OpeningHouseSounds::advance(uint64_t tick,const std::array<float,3>& npc){
     if(!flightStarted || flightFinished)return;
     const std::array<float,3> p={published(npc[0]),published(npc[1]),-100};
@@ -63,6 +74,9 @@ void OpeningHouseSounds::advance(uint64_t tick,const std::array<float,3>& npc){
 }
 void OpeningHouseSounds::postbox(uint64_t tick,uint32_t command,float parameter){std::array<float,3> p{};const bool resolved=objectPosition(1,parameter,p);sfx(1,command,tick,p,resolved);}
 void OpeningHouseSounds::door(uint64_t tick,uint32_t command,float parameter,bool open){std::array<float,3> p{};const bool resolved=objectPosition(0,parameter,p);sfx(open?2:3,command,tick,p,resolved);}
+// Original ENV off(control0x4800) and LPF(argument800) remain requests.
+// ENV on(control0x110,ENV_OPN_AAA1) and BGM scope from begin likewise need their
+// actual owners; primary-sample playback must not masquerade as those services.
 void OpeningHouseSounds::interior(uint64_t tick){
     requests.push_back({OpeningHouseAudioRequest::Operation::EnvironmentOff,0x1590,0x4800,tick});
     requests.push_back({OpeningHouseAudioRequest::Operation::EnvironmentLpf,0x159c,0,tick,-1,800});

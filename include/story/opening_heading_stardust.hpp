@@ -24,6 +24,9 @@ struct OpeningHeadingStardust {
         const std::array<float,7> expected={-.05f,.96f,.01f,.1f,6.2831854820251465f,8.f,1000.f};if(next.constants!=expected)return false;
         next.ready=true;*this=next;return true;
     }
+    // Explicit native seed/recurrence, not recovered global RNG continuity.
+    // Four draws per particle preserve the unused truncated acceleration draw;
+    // groups spawn once per heading, particle lifetimes20/22/24/26 are separate.
     uint32_t random(){randomState=randomState*1103515245u+12345u;return (randomState>>16)&32767u;}
     bool spawn(unsigned index,float x,float y){
         if(!ready || index>=groups.size() || groups[index].started)return false;
@@ -33,6 +36,9 @@ struct OpeningHeadingStardust {
             p.x=radiusX*float(std::cos(double(radians)));p.y=radiusY*float(std::sin(double(radians)));p.life=20+int32_t(n)*2;
         }return true;
     }
+    // At most8 groups*4 particles; life>20 or<0 hides without scale advance.
+    // Visible scale consumes7 source bytes then relaxes toward.1. Frame&7 selects
+    // original quad; color() requires aged started groups and valid particle0..3.
     void step(){if(!ready)return;for(auto& g:groups)if(g.started){++g.age;
         for(unsigned n=0;n<4;++n){auto& p=g.particles[n];p.frame=int32_t((g.age+n)&7);
             p.vx=p.vx*constants[1];p.vy=p.vy+constants[0];p.x=p.x+p.vx;p.y=p.y+p.vy;--p.life;

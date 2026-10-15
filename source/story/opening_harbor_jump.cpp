@@ -10,6 +10,9 @@ bool OpeningHarborJump::begin(Point from,std::array<int32_t,3> to,int32_t millis
     coefficient=-4.f*float(height);linear=(target[1]-start[1])-coefficient;
     savedGravityFlag=flags&0x80000u;flags&=~0x80000u;active=true;return true;
 }
+// X/Z retain s*d/n+start order; Y is nested fused quadratic with original
+// coefficient-4*height. Completion restores only saved gravity bit, preserves
+// other current flags, and has no collision query or renderer-frame timing.
 int32_t OpeningHarborJump::advance(uint32_t elapsedMilliseconds){
     if(failed || !active)return result;
     if(elapsedMilliseconds>=uint32_t(duration)){

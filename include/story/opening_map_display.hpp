@@ -10,8 +10,14 @@ public:
     bool flag0=false,musicOffRequested=false,environmentOffRequested=false,complete=false;
     unsigned poseStage=0;
     void begin(uint64_t tick){*this={};now=start=tick;}
+    // Source first callback contributes alpha2. Actual texture admission
+    // starts clock; native opaque-frame acknowledgement additionally gates GF0
+    // publication, unlike original publish-before-draw ordering.
     void admitted(){if(drawRequested && !resourceReady){resourceReady=true;alpha=2;lastDraw=now;}}
     void presented(uint8_t value){if(opaqueRequested && value==255)opaquePresented=true;}
+    // Pose stages at18/78 ticks, draw request168. Alpha adds2 per admitted
+    // callback and clamps only >255. After actual opaque publication, wait60
+    // ticks before music/ENV off requests and parent completion; no map input gate.
     void tick(uint64_t tick){
         if(tick<now)return;
         now=tick;

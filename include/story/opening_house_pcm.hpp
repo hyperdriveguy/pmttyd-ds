@@ -5,6 +5,10 @@
 namespace ttyd {
 // Native primary-sample presentation, separate from source MusyX/ENV services.
 // Channels10..17 avoid both BGMstreams0..1 and the primary eight clips2..9.
+// Keep player/wave-buffer storage stable while queued: do not copy/move a
+// live player. Explicit shutdown clears channels BEFORE freeing linear PCM;
+// there is no destructor doing that lifecycle automatically. Channel18 is also
+// reserved for title's detached BGM owner, outside this10..17 bank.
 class OpeningHousePcmPlayer {
 public:
     bool update(const OpeningHouseSounds*,bool enabled);

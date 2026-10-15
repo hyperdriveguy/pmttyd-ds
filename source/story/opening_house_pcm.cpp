@@ -2,6 +2,9 @@
 #include "audio_policy.hpp"
 #include <cstdio>
 namespace ttyd {
+// Lazy four-clip mono PCM16 admission;512K frames per clip is native bound.
+// Complete clip read precedes DSP cache flush. Failure frees every loaded clip;
+// successful clips stay at stable linear addresses while voices reference them.
 bool OpeningHousePcmPlayer::load(){
     if(ready)return true;
     auto fail=[&](){for(auto& clip:clips){if(clip.data)linearFree(clip.data);clip={};}return false;};
@@ -23,6 +26,9 @@ void OpeningHousePcmPlayer::clear(){
     queuedVoices=0;
 }
 void OpeningHousePcmPlayer::shutdown(){clear();for(auto& clip:clips){if(clip.data)linearFree(clip.data);clip={};}voices={};ready=false;owner=nullptr;cursor=0;}
+// Admit only resolved Sfx3D cue0..3/control0; native mix uses table volume/
+// pan divided127, not actual position. Eight stable voices/channels10..17 can
+// overlap; FREE/DONE may be reused only after clearing the old channel.
 bool OpeningHousePcmPlayer::play(const OpeningHouseAudioRequest& request){
     if(request.operation!=OpeningHouseAudioRequest::Operation::Sfx3D || request.cue<0 || request.cue>=4 || request.control!=0 || !request.positionResolved)return false;
     if(!load())return false;
@@ -38,6 +44,10 @@ bool OpeningHousePcmPlayer::play(const OpeningHouseAudioRequest& request){
     }
     return false; // Explicit bounded native voice admission failure, never an acknowledgement.
 }
+// Bind by owner pointer+beginTick epoch; owner change resets queue cursor.
+// Mute clears voices and CONSUMES pending requests, so unmute never replays them.
+// Cursor also advances on failed play: false reports/counters failure, not a
+// retained retry. ENV/BGM-scope remain counted unbound in the source trace.
 bool OpeningHousePcmPlayer::update(const OpeningHouseSounds* sounds,bool enabled){
     if(!sounds){clear();owner=nullptr;cursor=0;return true;}
     if(owner!=sounds || epoch!=sounds->beginTick || cursor>sounds->requests.size()){clear();owner=sounds;epoch=sounds->beginTick;cursor=0;}

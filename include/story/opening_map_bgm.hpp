@@ -7,6 +7,9 @@ namespace ttyd {
 // its old SoundSS stream receives the source default750ms floating tail.
 class OpeningMapBgm {
 public:
+    // Native catalog0/7/8/9 maps harbor/house/voyage variants; source group0
+    // is mode512, not one of these track indexes or an NDSP handle. Snapshot
+    // reports requested owners/volume, not actual audible completion.
     struct Snapshot{std::array<int,3> tracks{{-1,-1,-1}};std::array<uint8_t,3> volumes{{0,0,0}};};
     void begin(uint64_t tick){*this={};now=tick;}
     void advance(uint64_t tick){
@@ -16,11 +19,17 @@ public:
             if(tail>=0){if(tailVolume==0)tail=-1;else tailVolume=std::max(0.f,tailVolume-tailDecrement);}
         }
     }
+    // Repeated same-track polling preserves fading; an explicit original On
+    // while fading may replace it. Snapshot current volume into detached tail,
+    // subtract tailVolume/45 in float steps, and retire on the next zero check.
     void on(int track,bool originalOnRequest=false){
         if(track==primary && !(originalOnRequest && fading))return;
         if(primary>=0 && volume()){tail=primary;tailVolume=volume();tailDecrement=tailVolume/45.f;}
         primary=track;base=track==0?70:track==7?80:track==8?86:track==9?78:127;fading=false;remaining=0;
     }
+    // Preserve already-running fade. Integer source envelope uses base*
+    // remaining/duration; native floor(ms*60/1000), minimum1 tick. No hardware
+    // stream allocator, ENV acknowledgement or complete BGM implementation here.
     void off(uint32_t milliseconds=2000){if(primary>=0 && !fading){base=volume();fading=true;duration=std::max<uint32_t>(1,milliseconds*60/1000);remaining=duration;}}
     Snapshot snapshot()const{
         Snapshot out;out.tracks[0]=fading && !remaining?-1:primary;out.volumes[0]=volume();

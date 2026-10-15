@@ -4,6 +4,9 @@
 #include <cstring>
 #include <set>
 namespace ttyd {
+// PMHOBJ02 converted little-endian bindings: four ordered tags0 door,
+// 1 postbox,2 ki2,3 ki1; row-major3x4 world matrices. Vertex indexes must be
+// globally unique across all four objects. Validate before replacing resident set.
 bool OpeningHouseObjects::load(const char* path,uint32_t vertexCount){
     if(!path)return false;
     FILE* f=std::fopen(path,"rb");if(!f)return false;
@@ -39,6 +42,10 @@ void OpeningHouseObjects::apply(float door,float postbox,const Writer& write) co
 void OpeningHouseObjects::apply(float door,float postbox,float tree,const Writer& write) const {
     if(!write || !std::isfinite(door) || !std::isfinite(postbox) || !std::isfinite(tree))return;
     // evt_door multiplies its interpolation operand by Q1024(-568), then -1.
+    // Source Q1024(-568) followed by negation =>568/1024=.5546875.
+    // Quantize actual rotation again before native trig. Other parameters use
+    // local translate /10; trees take opposite signs. Zero writes original XYZ,
+    // avoiding accumulated transform drift or an unnecessary matrix recompute.
     const float degrees=std::trunc((door*.5546875f)*1024.f)/1024.f;
     const float angle=degrees*.01745329238474369f;
     const float c=std::cos(angle),s=std::sin(angle);

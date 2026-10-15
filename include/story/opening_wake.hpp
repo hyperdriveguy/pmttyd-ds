@@ -19,6 +19,9 @@ struct OpeningWake {
     }
     void begin(uint64_t time){*this={};now=time;simulationTick=time*60/1000;deadline=time+4000;}
     bool messageReady(unsigned index) const{return ready && messageIndex==index;}
+    // Three original messages gate phases: first wait4000ms, next after
+    // close+2000, effects start second-close+300 then message after7800 more;
+    // final close waits2300. No substituted line or new message input condition.
     void messageComplete(unsigned index) {
         if(!messageReady(index))return;
         ready=false;
@@ -26,6 +29,10 @@ struct OpeningWake {
         else if(index==1){phase=2;effectsAt=now+300;deadline=effectsAt+7800;}
         else {phase=3;deadline=now+2300;}
     }
+    // WW0 depth/WW1 eyelid interpolation publishes Q1024, divides10, then
+    // publishes again. Eyelid has2000/100/100/100/500/2000ms segments; depth
+    // converges in final segment. viewShift is per absolute60Hz tick, with native
+    // sine/fused integration; renderer samples it without advancing this clock.
     void tick(uint64_t time) {
         if(time<now || complete)return;
         now=time;

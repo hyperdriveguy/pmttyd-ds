@@ -12,6 +12,9 @@ public:
     int32_t duration=0,result=0;
     float coefficient=0,linear=0;
     bool active=false,failed=false;
+    // No-hit source path saves/clears gravity flag0x80000. At elapsed>=time,
+    // snap integer target, OR saved flag into CURRENT flags and return2; duration0
+    // reaches that completion before division. This differs from incremental glide.
     bool begin(Point from,std::array<int32_t,3> to,int32_t milliseconds,int32_t height,uint32_t originalFlags=0);
     int32_t advance(uint32_t elapsedMilliseconds);
 };

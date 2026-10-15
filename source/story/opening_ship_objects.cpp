@@ -20,6 +20,9 @@ std::array<float,12> invert(const std::array<float,12>& m){
  return result;
 }
 }
+// PMHOBJ02 seven groups0..6: ship/wake roots then five child transforms.
+// Per-group vertex uniqueness allows parent/child overlap. Require finite,
+// invertible3x4 world matrices and exact EOF before publishing resident bindings.
 bool OpeningShipObjects::load(const char* path,uint32_t vertexCount){
  FILE* f=path?std::fopen(path,"rb"):nullptr;if(!f)return false;char magic[8];uint32_t vertices=0,count=0;
  bool ok=std::fread(magic,8,1,f)==1 && !std::memcmp(magic,"PMHOBJ02",8) && std::fread(&vertices,4,1,f)==1 && vertices==vertexCount && std::fread(&count,4,1,f)==1 && count==7;
@@ -36,6 +39,9 @@ bool OpeningShipObjects::load(const char* path,uint32_t vertexCount){
  ok=ok && std::fgetc(f)==EOF;std::fclose(f);if(ok){objects=std::move(pending);childPositions.resize(vertices);hasChild.assign(vertices,0);for(unsigned n=2;n<7;++n)for(const auto& b:objects[n].bindings)hasChild[b.index]=1;}
  return ok;
 }
+// All mappings preflight before mutation; reindex both root and child groups
+// then rebuild shared scratch/membership. This is mesh-index adaptation, not
+// a new source vertex identity or a deduplication proof.
 bool OpeningShipObjects::remapVertices(const std::vector<uint32_t>& indices,uint32_t count) {
  if(objects.size()!=7 || !count)return false;
  for(const auto& o:objects)for(const auto& b:o.bindings)if(b.index>=indices.size() || indices[b.index]>=count)return false;
@@ -52,6 +58,9 @@ void OpeningShipObjects::applyVoyage(const Point& position,float yaw,float rock,
 }
 void OpeningShipObjects::applyMatrices(float x,float y,float wakeX,float yaw,float rock,const std::array<float,4>& parts,const Writer& write,float z,float wakeY,float wakeYaw) const {
  if(objects.size()!=7 || !write)return;
+ // Source child axes X,Z,Z,Y,X use part operands0,1,1,2,3. Evaluate child
+ // world XYZ first, bring back through root inverse, then root rock/yaw and
+ // translation. Wake bypasses ship children/rock and uses its separate transform.
  constexpr unsigned axes[]={0,2,2,1,0},part[]={0,1,1,2,3};
  std::array<Rotation,5> childRotations;for(unsigned n=0;n<5;++n)childRotations[n]=rotation(axes[n],parts[part[n]]);
  const Rotation rootRock=rotation(2,rock),rootYaw=rotation(1,yaw),wakeRotation=rotation(1,wakeYaw);

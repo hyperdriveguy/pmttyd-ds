@@ -12,6 +12,8 @@
 #include "opening_harbor_scene.hpp"
 #include "opening_voyage_scene.hpp"
 namespace ttyd {
+// Native scene order, not original REL opcodes. Completion means arrival
+// parent released story3; the independent ship-departure child can remain live.
 enum class OpeningPart { House, Letter, HouseReturn, MapDisplay, Voyage, Prologue, Wake, Arrival, Complete };
 // Sequencing adapter: retains original IDs/tokens and explicit source speakers.
 // Scene choreography is provided separately; this does not run REL bytecode.
@@ -36,9 +38,15 @@ public:
     bool failed=false;
     std::string failure;
     uint64_t now=0;
+    // Renderer publishes actual resource/frame admission for the current part.
+    // Part equality is not an async generation token; caller retires stale scene
+    // producers. Only House/Voyage/Arrival/Wake clocks rebase on admission.
     void bindSceneServices(){sceneServicesBound=true;}
     void publishSceneAdmission(OpeningPart owner) const{if(owner==part)sceneReadyNotification=true;}
     void publishSceneFailure(const std::string& reason) const{sceneReadyNotification=false;sceneAdmitted=false;sceneFailure=reason;}
+    // Full load validates original11 message payloads and wake camera before
+    // local publication; house sound catalog has its own earlier commit point.
+    // Global/room ID lookup rejects ambiguity, never substitutes story text.
     bool load(const char* root);
     void begin(uint64_t time);
     void tick(uint64_t time,uint32_t keys);

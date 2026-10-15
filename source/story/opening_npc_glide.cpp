@@ -1,6 +1,8 @@
 #include "opening_npc_glide.hpp"
 #include <cmath>
 namespace ttyd {
+// Source half-cosine uses original binary32 pi, double cosine then float.
+// Clamp only fractions>1; negative previous phase is deliberately not clamped.
 float OpeningNpcGlide::curve11(float fraction){
     if(fraction>1)fraction=1;
     const float phase=3.1415927410125732f*fraction;
@@ -18,6 +20,10 @@ bool OpeningNpcGlide::begin(Point from,Point to,uint32_t command){
     if(distance==0){result=1;return true;}
     duration=distance/speed;active=true;return true;
 }
+// Elapsed/delta are seconds from simulation owner, finite/monotonic with
+// positive delta. Compute incremental curve difference and fused arc difference,
+// then ADD to retained position. Result0 retries,1 completes/yields,2 completes/
+// continues on the reached source terminal-arithmetic branch; no forced snap.
 int32_t OpeningNpcGlide::step(float time,float dt){
     if(!active || failed)return result;
     if(!std::isfinite(time) || !std::isfinite(dt) || time<0 || dt<=0 || time<elapsed){failed=true;return result;}

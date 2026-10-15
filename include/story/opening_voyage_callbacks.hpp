@@ -15,6 +15,10 @@ struct OpeningVoyageLogo {
     mutable bool resourcesReady=false;
     void begin(uint64_t tick){*this={};started=tick;active=true;}
     void admitResources() const {resourcesReady=true;}
+    // One callback per supplied tick, including unavailable-resource visits.
+    // States1/3 increment the SAME counter before alpha and again before Y;
+    // entry ends alpha254/Y0; state1 exit waits global tick%15==0. State2
+    // acceptance requires source eligibility independently of that modulo.
     void advance(uint64_t tick,uint32_t keys,bool eligible){
         if(!active || complete || tick<started || lastTick==tick || (lastTick!=UINT64_MAX && tick<lastTick))return;
         lastTick=tick;
@@ -40,6 +44,9 @@ struct OpeningVoyageLogo {
         }
     }
 };
+// Local ship callback uses pivot Y+/-6000 and phi=(5*globalX)/-6000.
+// Four output publications truncate Q1024. Native trig/matrix numeric equality
+// remains separate; uninvoked prompt helpers below do not register a source draw.
 struct OpeningVoyageLocalTransform {std::array<float,3> position{};float rotationZ=0;};
 inline OpeningVoyageLocalTransform openingVoyageLocalTransform(const std::array<float,3>& global,float theta){
     // Original callback unk_muj_000045a8: translate(-6000Y), rotateZ,

@@ -9,6 +9,9 @@ namespace ttyd {
 class OpeningHouseObjects {
 public:
     using Point=std::array<float,3>;
+    // Callback writes converted map vertex index/XYZ immediately. No collision
+    // update or GPU admission is implied. Door parameter is source interpolation
+    // operand, not already final degrees; every apply recomputes retained geometry.
     using Writer=std::function<void(uint32_t,const Point&)>;
     bool load(const char* path,uint32_t vertexCount);
     void apply(float doorParameter,float postboxParameter,const Writer&) const;

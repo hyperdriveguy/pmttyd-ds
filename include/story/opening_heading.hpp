@@ -11,6 +11,10 @@ struct OpeningHeading {
     bool startRequested=false,started=false,inputReady=false;
     bool exitRequested=false,exitComplete=false,complete=false;
     void begin(uint64_t time){*this={};now=enteredAt=time;entryRequested=true;}
+    // Phases: entry ack ->3000ms ->2000ms -> start-fade ack -> actual
+    // display start ->3000ms input gate -> A/B/START0x1300 -> exit ack.
+    // now/deadline are ms; same-time calls may consume an already acknowledged
+    // phase, but elapsed time never fabricates resource/display completion.
     void tick(uint64_t time,uint32_t keys) {
         if(time<now || complete)return;
         now=time;

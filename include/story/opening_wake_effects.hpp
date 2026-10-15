@@ -7,6 +7,9 @@
 #include <cstring>
 namespace ttyd {
 struct OpeningWakeTap {float u=0,v=0,weight=.125f;};
+// Used indices0..7: eight normalized UV taps, each weight1/8. Preserve
+// original quadrant reduction and fused sine/cosine polynomials, not libm trig.
+// depth/100 then /100 sets radius; this helper neither captures nor draws GPU data.
 inline OpeningWakeTap openingWakeTap(unsigned index,float depth) {
     constexpr float pi=3.1415927410125732f,half=1.5707963705062866f,threeHalf=4.71238899230957f;
     const float angle=(6.2831854820251465f*float(index))*.125f;

@@ -13,6 +13,8 @@ public:
     uint32_t sourceCommand=0;
     int32_t result=0;
     bool active=false,failed=false;
+    // Reinitializes the used callback; nonfinite endpoints fail. Zero distance
+    // completes with1. No terrain, collision or general NPC lifetime is supplied.
     bool begin(Point from,Point to,uint32_t sourceCommand);
     // Callback result0 retains invocation; result1 clears/yields. The native
     // house consumes pending movement through its bounded NPC presentation.

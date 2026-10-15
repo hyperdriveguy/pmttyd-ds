@@ -6,6 +6,8 @@
 #include "opening_npc_glide.hpp"
 #include "opening_house_sounds.hpp"
 namespace ttyd {
+// Borrowed immutable original pose-name strings plus simulation-owned root/
+// yaw/pose clock. Rendering consumes snapshots, not an original packed NPC ABI.
 struct OpeningSceneActor {
     std::array<float,3> position{};
     float yaw=0;
@@ -36,6 +38,9 @@ public:
     void messageComplete(unsigned index);
     const char* actorPose(unsigned actor,bool talking) const;
 private:
+    // Native bounded request kinds, not EVT opcodes. ParallelMove/camera/door
+    // start independent motion; Move/glide/wait/message gate root continuation.
+    // Actor0/1/2 is Mario/Luigi/Parakarry, separate from field registry IDs.
     enum class Kind {Wait,Set,Move,ParallelMove,Glide,FlightDepart,PostboxSound,EnvironmentInterior,Pose,Yaw,Visible,Camera,Interior,Door,Postbox,Message};
     struct Request {
         Kind kind=Kind::Wait;unsigned actor=0;

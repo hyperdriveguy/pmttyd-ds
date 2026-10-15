@@ -3,6 +3,9 @@
 #include <cstdint>
 #include <vector>
 namespace ttyd {
+// Converted metadata distinguishes original SFX table/FX/macro/sample IDs.
+// Four used cues: flight/postbox/door-open/door-shut, not arbitrary sound indexes.
+// Retained request records do not themselves acknowledge an ENV/MusyX consumer.
 struct OpeningHouseCue {uint32_t tableIndex=0,flags=0,fxId=0,objectId=0,sampleId=0,rate=0,frames=0;std::array<uint8_t,8> parameters{};std::array<char,32> name{};};
 static_assert(sizeof(OpeningHouseCue)==68,"Original sound metadata layout");
 bool loadOpeningHouseSoundAssets(const char* root);
@@ -24,6 +27,9 @@ public:
     void begin(uint64_t tick);
     void startFlight(uint64_t tick);
     void depart(){departurePublished=true;}
+    // Caller supplies source position sampled before NPC delta consumption.
+    // Scene replays each tick; a sparse direct call reuses its ONE passed XYZ
+    // for every overdue request, so it cannot reconstruct historical positions.
     void advance(uint64_t tick,const std::array<float,3>& sourceNpcPosition);
     void postbox(uint64_t tick,uint32_t command,float parameter);
     void door(uint64_t tick,uint32_t command,float parameter,bool open);

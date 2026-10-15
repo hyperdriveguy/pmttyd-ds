@@ -14,12 +14,19 @@ struct OpeningHeadingDisplay {
     float backgroundAngle=0,ringRotation=0;
     std::array<bool,8> sparkleRequested{};
     OpeningHeadingStardust stardust;
+    // Fresh begin resets embedded Stardust admission too; actual renderer
+    // loads/admit resources afterward. Eight source texture IDs19..25 (21 twice),
+    // X=32*i+16-128, delay1+20*i; these are not ASCII glyph codes.
     void begin(uint64_t at){
         *this={};tick=at;constexpr uint8_t order[]={19,20,21,22,21,23,24,25};
         for(unsigned i=0;i<8;++i)letters[i]={float(32*i+16)-128,50,0,90,int32_t(1+20*i),0,0,order[i]};
     }
     void admit(){if(!state)state=1;}
     bool start(){if(state!=1)return false;state=2;return true;}
+    // Existing particles step BEFORE new letter groups spawn. State1/2
+    // background+2.5 wraps only >180 and cycles four palettes. State2 delay<0
+    // starts curve5 frames0..90 inclusive; last letter then rotates ring+.8
+    // and reveals48 fixed units per tick capped0x4000 (64*256).
     void advance(uint64_t at){
         if(at<tick)return;
         while(tick<at){++tick;stardust.step();

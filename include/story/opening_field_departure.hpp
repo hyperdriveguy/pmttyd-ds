@@ -7,6 +7,9 @@ struct OpeningFieldDeparture {
  OpeningHarborScene scene;
  uint64_t fieldAnchor=0,sourceAnchor=0,lastFieldTick=0;
  bool active=false;
+ // Copy still-running source child only after story3 and actual paper end.
+ // Anchors translate field ticks to retained source time without restarting it;
+ // room1 is native harbor index (not source story value or frame number).
  bool begin(const OpeningHarborScene& source,uint64_t fieldTick) {
   if(!source.storyPublished || source.complete || source.departureAt==UINT64_MAX || !source.paperDone)return false;
   scene=source;fieldAnchor=lastFieldTick=fieldTick;sourceAnchor=source.now;active=true;return true;

@@ -3,6 +3,9 @@
 #include <algorithm>
 #include <cmath>
 namespace ttyd {
+// Preserve aaa source request/pose/message order. Millisecond waits round UP
+// to60Hz ticks; wait(1)/wait(2) are explicit source frame waits, not ms. Original
+// REL byte offsets identify request provenance and are never CPU call pointers.
 void OpeningHouseScene::appendProgram() {
     auto wait=[&](uint64_t frames){requests.push_back({Kind::Wait,0,{},{},frames});};
     auto ms=[&](unsigned value){wait((uint64_t(value)*60+999)/1000);};
@@ -40,6 +43,9 @@ void OpeningHouseScene::begin(uint64_t simulationTick) {
     actors[2].pose="S_1";actors[2].position={500,500,0};
     eye={145,122,884};at={145,108,-180};appendProgram();step();
 }
+// Native walking duration ceil(distance*60/80), minimum1 tick, preserves
+// actor0/1 height. Glide is a separate source-shaped incremental callback and
+// must not be replaced with this linear waypoint or an endpoint snap.
 void OpeningHouseScene::startMove(unsigned actor,const std::array<float,3>& target) {
     auto& a=actors[actor];auto& m=motion[actor];m.start=a.position;m.target=target;
     if(actor!=2)m.target[1]=a.position[1];
@@ -59,6 +65,9 @@ void OpeningHouseScene::updateMotion() {
             else {actors[0].pose="M_S_1";actors[0].poseTick=tick;actors[0].yaw=90;}
         }
     }
+    // Consume glide at most once per tick; result1 clears/yields one more
+    // source invocation before root resumes, including zero-distance entry.
+    // Source sound sampling below uses the position captured BEFORE this update.
     if(parakarryGlide.active && tick>glideUpdated){
         glideUpdated=tick;
         const auto result=parakarryGlide.step(float(tick-glideBegin)/60.f,1.f/60.f);
@@ -83,6 +92,9 @@ void OpeningHouseScene::advance(uint64_t simulationTick) {
     while(tick<simulationTick && !complete){++tick;step();}
     step();
 }
+// Independent music starts90 ticks/1500ms; foreground curve11 spans240
+// ticks/4000ms. Publish Q1024 after interpolation AND after divide10. Captured
+// pre-npcMain sound position preserves event-before-NPC request ordering.
 void OpeningHouseScene::step() {
     const auto sourceSoundPosition=actors[2].position; // Event queries precede npcMain's delta consumption.
     musicStarted=tick-beginTick>=90;updateMotion();
@@ -112,6 +124,9 @@ void OpeningHouseScene::step() {
             case Kind::Message:waitingMessage=true;nextMessage=r.actor;break;
             }
         }
+        // Only these root-blocking requests wait. Parallel actor/camera/door
+        // owners continue through other waits; exact message index releases its
+        // gate. Sound inline lifetime is not cancelled when its glide finishes.
         if((r.kind==Kind::Wait && tick<deadline) || (r.kind==Kind::Move && motion[r.actor].active) || (r.kind==Kind::Glide && (parakarryGlide.active || tick<glideResume)) || (r.kind==Kind::Message && waitingMessage)){sounds.advance(tick,sourceSoundPosition);return;}
         ++cursor;started=false;
     }

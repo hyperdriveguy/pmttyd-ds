@@ -14,6 +14,9 @@ struct OpeningHarborScene {
  bool paperCapturePending=false,paperLive=false,paperDone=false,paperFinalPresented=false;
  bool visible=true,marioVisible=false,storyPublished=false,complete=false;
  CameraPoint eye{0,700,1420},at{0,-10,0};
+ // resolvedWork8 is explicit incoming source bank state (fresh native0), not
+ // invented restored height. Clocks use60Hz ticks; captures/final frames require
+ // actual renderer publication. Direct admission methods trust that owner.
  void begin(uint64_t tick,float resolvedWork8=0){*this={};now=started=tick;work8=y=resolvedWork8;}
  float paperFrame() const{return paperLive?float(std::min<uint64_t>(now-paperAt,60)):0;}
  bool messageReady(unsigned index) const{return index==0?now-started>=480:index==1 && firstClosed!=UINT64_MAX && now-firstClosed>=120;}
@@ -22,6 +25,9 @@ struct OpeningHarborScene {
  void presented(float frame){if(paperLive && frame>=60)paperFinalPresented=true;}
  static float q(float value){return std::trunc(value*1024.f)/1024.f;}
  static float interpolate(unsigned curve,float a,float b,uint64_t elapsed,uint64_t duration){return q(*cameraInterpolation(curve,int32_t(std::min(elapsed,duration)),int32_t(duration),a,b));}
+ // Approach: wait180 ticks, curve0(-600->-270)/120, curve4(-270->-75)/120;
+ // first message at480, second first-close+120. Jump starts second-close+60,
+ // duration1800ms/height100, target Y truncates current GW8 to integer.
  void tick(){
   ++now;const uint64_t t=now-started;
   if(t<=180){x=-600;amplitude=0;}else if(t<=300){x=interpolate(0,-600,-270,t-180,120);amplitude=5;}else if(t<=420){x=interpolate(4,-270,-75,t-300,120);amplitude=3;}else {x=-75;amplitude=1;}
@@ -31,10 +37,16 @@ struct OpeningHarborScene {
   if(after && post>=60 && !jumpStarted){jumpStarted=true;jumpAt=now;jump.begin({{0,work8,0}},{{0,int32_t(std::trunc(work8)),0}},1800,100,0x400000a0u);}
   if(jumpStarted){jump.advance(uint32_t((now-jumpAt)*1000/60));work8=y=q(jump.position[1]);}
   const bool paused=jumpStarted && jump.active;
+  // Paper capture begins +84 ticks (jump+400ms), then original frame0..60.
+  // Actual final frame AND elapsed60 restore yaw0. Departure requires +288 and
+  // paperDone, then begins next tick; capture failure cannot become story3.
   if(after && post>=84 && !paperLive && !paperDone)paperCapturePending=true;
   if(paperLive && paperFrame()>=60 && paperFinalPresented){paperLive=false;paperDone=true;yaw=0;}
   if(after && post>=288 && departureAt==UINT64_MAX && paperDone)departureAt=now+1;
   const bool departing=departureAt!=UINT64_MAX && now>=departureAt;
+  // Two departure legs120/360 ticks; wake stays X=-475. Parent story3 at
+  //180 ticks releases field while child remains visible/alive until480. Speed/
+  // rocking pause during dummy jump; segment amplitude is held through a sway.
   if(departing){const uint64_t d=now-departureAt;amplitude=d<=120?3:5;
    x=d<=120?interpolate(1,-75,-270,d,120):interpolate(0,-270,-1260,d-120,360);
    wakeX=-475;storyPublished=d>=180;visible=d<480;complete=d>=480;

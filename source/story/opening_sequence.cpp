@@ -7,6 +7,9 @@ bool OpeningSequence::load(const char* base) {
     const char* names[]={"aaa_00","gor_10","gor_00"};
     if(!pendingGlobal.load((root+"/messages/global.txt").c_str()) || !pendingFont.load((root+"/font.pmfont").c_str()))return false;
     for(unsigned i=0;i<3;++i)if(!pendingRooms[i].load((root+"/messages/"+names[i]+".txt").c_str()))return false;
+    // Validation order groups payloads by resource, not story order: five
+    // aaa_00 (including pro_05), four gor_10 (letter+wake), two gor_00 arrivals.
+    // Runtime below retains pro_00..03 -> pro_04 -> pro_05 -> mac_0_012..015.
     const char* ids[]={"pro_00","pro_01","pro_02","pro_03","pro_05","pro_04","mac_0_012","mac_0_013","mac_0_013_01","mac_0_014","mac_0_015"};
     for(unsigned i=0;i<11;++i){MessagePlayback probe;const unsigned room=i<5?0:i<9?1:2;if(!probe.open(ids[i],pendingRooms[room].find(ids[i]),pendingFont,0))return false;}
     CameraRoadAsset pendingCamera;CameraRoadWork road;
@@ -15,13 +18,21 @@ bool OpeningSequence::load(const char* base) {
     wakeEye={frame->eye.x*100,frame->eye.y*100,frame->eye.z*100};wakeAt={frame->at.x*100,frame->at.y*100,frame->at.z*100};wakeCamera=std::move(pendingCamera);
     global=std::move(pendingGlobal);rooms=std::move(pendingRooms);font=std::move(pendingFont);ready=true;return true;
 }
+// Room0 house/return/map, room1 letter/wake, room2 arrival; global fallback
+// only after an unambiguous room miss. Original raw control bytes remain intact.
 const char* OpeningSequence::find(const char* id) const {
     const unsigned room=part==OpeningPart::Letter || part==OpeningPart::Wake?1:part==OpeningPart::Arrival?2:0;
     if(rooms[room].ambiguous(id))return nullptr;
     if(const char* raw=rooms[room].find(id))return raw;
     return global.find(id);
 }
+// Original source speaker token accompanies unchanged ID. Native terminal-
+// input adaptation is opt-in presentation only; missing/unsupported text fails
+// rather than inventing dialogue, speaker attribution or a successful scene.
 bool OpeningSequence::print(const char* id,uint32_t who){speaker=who;const char* raw=find(id);if(!raw || !message.open(id,raw,font,now)){failure=std::string(raw?"Unsupported original message: ":"Missing original message: ")+id;failed=true;return false;}message.requireTerminalInput=true;return true;}
+// Reset only per-part message/admission state. Native public time is ms;
+// scene adapters use floor(ms*60/1000), while heading/wake accept ms. HouseReturn
+// installs authored camera/actor snapshots; it does not rerun the house program.
 bool OpeningSequence::enter(OpeningPart p,uint64_t time){
     part=p;index=0;now=time;waiting=false;message={};enteredAt=time;sceneAdmitted=false;sceneReadyNotification=false;sceneFailure.clear();
     speaker=0;
@@ -48,6 +59,9 @@ bool OpeningSequence::enter(OpeningPart p,uint64_t time){
 void OpeningSequence::begin(uint64_t time){failed=false;failure.clear();story=0;globalWork8=0;mapBgm.begin(time*60/1000);mapTransition={};enter(OpeningPart::House,time);}
 void OpeningSequence::tick(uint64_t time,uint32_t keys){
     if(failed || complete() || time<now)return;
+    // BGM/map-transfer clocks advance even before bound scene admission.
+    // Admission shifts deadline by loading delay, then restarts only the four
+    // explicit scene clocks below; other helpers retain their entry clocks.
     now=time;mapBgm.advance(now*60/1000);mapTransition.advance(now*60/1000);
     if(sceneServicesBound){
         if(!sceneFailure.empty()){failed=true;failure=sceneFailure;return;}
@@ -72,6 +86,9 @@ void OpeningSequence::tick(uint64_t time,uint32_t keys){
             if(mapDisplay.poseStage==2){house.actors[0].pose="M_L_3";house.actors[0].poseTick=now*60/1000;}
         }
     }
+    // Catalog requests are separate from actual playback/resource readiness.
+    // Same-track polling does not restart a fade. Continue scene clocks while
+    // a message owns input; acknowledge exact prior index only after it closes.
     const int wantedMusic=music();if(wantedMusic>=0)mapBgm.on(wantedMusic);
     if(part==OpeningPart::MapDisplay && mapDisplay.musicOffRequested)mapBgm.off();
     if(message.active()){message.tick(now,keys);if(message.active())return;deadline=now;if(part==OpeningPart::House){house.messageComplete(index-1);house.advance(now*60/1000);}
@@ -79,6 +96,10 @@ void OpeningSequence::tick(uint64_t time,uint32_t keys){
         if(part==OpeningPart::Arrival)harbor.messageComplete(index-1);
     }
     if(now<deadline)return;
+    // House0x468=Parakarry,0x474=Luigi; letter/wake/arrival retain source0.
+    // Story2 requires map EXIT presentation; Voyage entry animation continues
+    // concurrently. Story3 follows harbor departure's180-tick parent release,
+    // not full480-tick child completion. No direct battle is fabricated here.
     switch(part){
     case OpeningPart::House:{const char* ids[]={"pro_00","pro_01","pro_02","pro_03"};if(index<4 && house.messageReady(index)){print(ids[index],index==0?0x468:0x474);++index;}else if(index==4 && house.complete)enter(OpeningPart::Letter,time);break;}
     case OpeningPart::Letter:if(index==0){print("pro_04",0);++index;}else enter(OpeningPart::HouseReturn,time);break;
@@ -94,6 +115,8 @@ void OpeningSequence::tick(uint64_t time,uint32_t keys){
 const char* OpeningSequence::map() const {
     switch(part){case OpeningPart::House:case OpeningPart::HouseReturn:case OpeningPart::MapDisplay:return "aaa_00";case OpeningPart::Letter:case OpeningPart::Wake:return "gor_10";case OpeningPart::Voyage:return "muj_20";case OpeningPart::Arrival:return "gor_00";default:return nullptr;}
 }
+// Native catalog0 harbor,7 house; Voyage owns8/9 choice. -1 means this
+// controller requests no track, not a source BGM enum or an audio completion.
 int OpeningSequence::music() const {
     if(part==OpeningPart::House || part==OpeningPart::Letter || part==OpeningPart::HouseReturn || part==OpeningPart::MapDisplay)return house.musicStarted?7:-1;
     if(part==OpeningPart::Voyage)return voyage.music();

@@ -8,6 +8,9 @@ public:
     bool entryRequested=false,entryAdmitted=false,entryComplete=false;
     float entryFrame=0;
     void begin(){*this={};requested=true;}
+    // Used49 exit is zero-span;50 entry ends80. Resource/capture/final-draw
+    // claims are independent and come from actual renderer owners, not timers.
+    // Voyage proceeds concurrently with entry; it does not wait entryComplete.
     void admitted(float exitEnd,float entryEnd){if(requested && exitEnd==0 && entryEnd==80)resourcesReady=true;}
     void captured(){if(requested && resourcesReady)captureReady=true;}
     void enter(){if(exitComplete)entryRequested=true;}
