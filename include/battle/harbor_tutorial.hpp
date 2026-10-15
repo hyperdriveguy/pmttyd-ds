@@ -38,6 +38,8 @@ struct HarborTutorialClassRow {
 struct ProloguePouch;
 struct HarborTutorialRuntime;
 class DisplayQueue;
+struct BattleCommandPalette;
+struct BattleFooterCursor;
 struct HarborClassMenuDrawBinding {
     BattleClassDisplayServices display;
     std::shared_ptr<const uint8_t> owner;
@@ -101,6 +103,14 @@ public:
     // not synthesize a matching End. Complete BattleInit/End remain unbound.
     bool initializeClassMenuResources();
     bool endClassMenuResources();
+    // Explicit process-owned palette binding after begin/import, before source
+    // command display registration. Reuses the same boot owner across battles;
+    // never initializes/reset its color history at entry or per display pass.
+    bool bindCommandDisplayPalette(std::shared_ptr<BattleCommandPalette>);
+    // Original CommandDisplay registration only. The caller retains queue and
+    // cursor across waits, once per simulation display pass, and dispatches all
+    // registered callbacks through the camera owner. No draw/ack/input occurs.
+    bool registerCommandDisplay(DisplayQueue&,BattleFooterCursor&);
     bool openClassMenu();
     // Actual VM memory/cursor-lookup binding for an admitted source display.
     // Linked camera/math/footer providers and source display cadence remain

@@ -1235,3 +1235,4 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Shared native animation/menu file cache](file/NATIVE_SHARED_ANIMATION_FILE_CACHE.md): one source manager and real model/TPL/auxiliary holders, acquisition/reference reuse, staging and startup boundary.
 - [Retained NPC Main entry and clock composition](field/NATIVE_NPC_MAIN_ENTRY_AND_CLOCK_COMPOSITION.md): captured source bank/count/flags, actual pose mutation, timer/clock ordering, Kpa branch and explicit unfinished movement/tail frontiers.
+- [Native command palette and tutorial registration](display/NATIVE_COMMAND_PALETTE_AND_TUTORIAL_REGISTRATION.md)

@@ -1,4 +1,5 @@
 #include "harbor_tutorial.hpp"
+#include "battle_command_palette_memory.hpp"
 #include "message_assets.hpp"
 #include "event_native_runtime.hpp"
 #include "event_memory_bootstrap.hpp"
@@ -47,6 +48,7 @@ struct HarborTutorialRuntime {
  std::shared_ptr<BattleMenuFileCache> files=menuFiles;
  HarborTutorial* scene=nullptr;EventNativeRuntime vm;std::unique_ptr<HarborTutorialPacked> packed;
  std::unique_ptr<BattleMenuFileBinding> menuBinding;BattleMenuResourceCursor menuCursor;
+ std::shared_ptr<BattleCommandPalette> commandPalette;
  void* resourceUser=nullptr;bool(*paperReady)(void*,uint32_t,int32_t)=nullptr;bool(*niceReady)(void*,int32_t)=nullptr;
  void* fadeUser=nullptr;void(*fadeEntry)(void*,int32_t,int32_t,uint32_t)=nullptr;bool(*fadeFinished)(void*)=nullptr;
  uint32_t initRoot=0,phaseRoot=0,attackRoot=0,executingEvent=0,pendingEvent=0;uint64_t messagePoseSerial=0;bool openingDispatched=false,phaseInterrupted=false;
@@ -266,6 +268,18 @@ std::optional<HarborClassMenuDrawBinding> HarborTutorial::classMenuDrawBinding(
     runtime->packed->readWord(HarborTutorialPacked::Battle+0x1c78,actual) && actual==w;
  };
  return out;
+}
+bool HarborTutorial::bindCommandDisplayPalette(std::shared_ptr<BattleCommandPalette> palette){
+ if(!runtime_ || failed || !palette)return false;
+ auto& r=*runtime_;
+ if(r.commandPalette)return r.commandPalette==palette;
+ if(!bindBattleCommandPaletteMemory(r.vm.memory,*palette))return false;
+ r.commandPalette=std::move(palette);return true;
+}
+bool HarborTutorial::registerCommandDisplay(DisplayQueue& queue,BattleFooterCursor& cursor){
+ if(!runtime_ || failed || !runtime_->commandPalette)return false;
+ return registerBattleCommandDisplay(HarborTutorialPacked::Battle,
+   *runtime_->commandPalette,queue,cursor,nativeBattleActorServices(runtime_->vm));
 }
 void HarborTutorial::classMenuPresented(){if(runtime_ && classMenuOpen){uint32_t w=0;if(runtime_->packed->readWord(HarborTutorialPacked::Battle+0x1c78,w) && w)runtime_->vm.memory.writeByte(w+0x14,1);}}
 bool HarborTutorial::buildClassMenu(){
