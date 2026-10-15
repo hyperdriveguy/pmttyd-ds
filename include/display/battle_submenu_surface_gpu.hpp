@@ -13,6 +13,8 @@ private:
  std::array<BattleClassRegion,2> regions_{};
  friend class BattleSubmenuSurfaceGpuResource;friend struct BattleSubmenuSurfaceLease;
 };
+// Strong immutable catalog/generation pin plus exact live native texture.
+// Address equality without the still-resident generation cannot admit reuse.
 struct BattleSubmenuSurfaceLease {
  std::shared_ptr<const BattleSubmenuSurfaceGeneration> generation;
  const void* texture=nullptr;
@@ -33,6 +35,8 @@ private:
  BattleSubmenuSurfaceLease lease_;std::shared_ptr<BattleSubmenuSurfaceGeneration> generation_;
  BattleClassSurfaceTextureServices owner_{};bool invoking_=false,retirePending_=false;
 };
+// Prepare outside FrameBegin; import/release synchronizes live C3D. Host
+// wrapper deliberately stays unavailable; host descriptor services test policy.
 class NativeBattleSubmenuSurfaceGpu {
 public:
  NativeBattleSubmenuSurfaceGpu();~NativeBattleSubmenuSurfaceGpu();

@@ -7,6 +7,9 @@ bool same(const WindowPrimitiveServices&a,const WindowPrimitiveServices&b){retur
 bool equal(float a,float b){return std::memcmp(&a,&b,4)==0;}
 struct Invoke{bool& b;explicit Invoke(bool&v):b(v){b=true;}~Invoke(){b=false;}};
 }
+// pc is original source instruction identity, f[] its binary32 registers.
+// Entry f30/f31=x/y,f27/f28=width/height,f29=border; later f2/f3 are right/
+// bottom,f4/f5 inner left/right,f6/f7 inner top/bottom before scratch reuse.
 struct WindowPrimitiveCursor::State {
  WindowPrimitiveServices owner;const uint32_t* color=nullptr;uint32_t type=0,argumentType=0,camera=0,bits=0,constantColor=0,loadedColor=0,texture=0;
  uint32_t pc=0x8007b4a8,pending=0;bool waiting=false,mathWaiting=false,done=false,poisoned=false;
@@ -16,6 +19,9 @@ struct WindowPrimitiveCursor::State {
 WindowPrimitiveCursor::WindowPrimitiveCursor()=default;WindowPrimitiveCursor::~WindowPrimitiveCursor()=default;
 bool WindowPrimitiveCursor::reset(){if(invoking_)return false;state_.reset();return true;}
 uint32_t WindowPrimitiveCursor::pending()const{return state_?state_->pending:0;}
+// Retain exact source loads/arithmetic/FIFO sequence rather than precomputing
+// nine quads. Five float args compare by bits (including signed zero/NaNs);
+// observed owner loss poisons until reset, and reentry/reset is refused.
 bool resumeOriginalWindowPrimitive(uint32_t type,const uint32_t& color,float x,float y,float width,float height,float border,const WindowPrimitiveServices&s,WindowPrimitiveCursor&cursor){
  if(cursor.invoking_)return false;
  Invoke invoking(cursor.invoking_);
@@ -29,11 +35,15 @@ bool resumeOriginalWindowPrimitive(uint32_t type,const uint32_t& color,float x,f
   if(!c.waiting){c.request={};c.request.function=fn;c.request.callsite=site;c.request.integers=std::move(ints);c.request.reals=std::move(reals);c.request.color=rgba;c.request.matrix=matrix;c.waiting=true;}
   c.pending=fn;if(!s.request)return {};auto v=s.request(s.user,c.request);if(!current()||!v)return {};c.waiting=false;return v;
  };
+ // Each FIFO float owns its own retained store at cc008000. Advance source
+ // PC only after acknowledgment; a later hold never repeats an earlier store.
  auto emit=[&](uint32_t site,float f){if(!c.waiting){c.request={};c.request.kind=WindowPrimitiveRequestKind::FifoFloat;c.request.callsite=site;c.request.reals={f};c.waiting=true;}c.pending=0xcc008000;if(!s.request)return false;auto v=s.request(s.user,c.request);if(!current()||!v)return false;c.waiting=false;return true;};
  auto math=[&](uint32_t fn){if(!c.mathWaiting){c.math={};c.math.function=fn;if(fn==0x8029dd64){c.math.left=c.view;c.math.right=c.local;}c.mathWaiting=true;}c.pending=fn;if(!s.matrix||!s.matrix(s.user,c.math)||!current())return false;c.local=c.math.output;c.mathWaiting=false;return true;};
  while(current()){
  switch(c.pc){
  case 0x8007b4a8:{const auto v=call(0x8000f2e4,0x8007b4a8);if(!v)return false;c.camera=*v;c.pc=0x8007b4ac;break;}
+ // Actual window completion ea1c=0 is cached no-draw success AFTER camera
+ // query. Low16 nonzero type normalizes0; texture indexing retains source mask.
  case 0x8007b4ac:if(!read(0x8041ea1c,c.bits))return false;if(!c.bits){c.done=true;c.pc=0x8007ba94;break;}if(c.type&0xffff)c.type=0;c.pc=0x8007b4cc;break;
  case 0x8007b4cc:if(!call(0x802b5c8c,0x8007b4cc,{0}))return false;c.pc=0x8007b4d4;break;
  case 0x8007b4d4:if(!call(0x802b940c,0x8007b4d4,{1}))return false;c.pc=0x8007b4ec;break;
@@ -43,6 +53,8 @@ bool resumeOriginalWindowPrimitive(uint32_t type,const uint32_t& color,float x,f
  case 0x8007b514:if(!read(0x80420538,c.bits))return false;c.f[1]=scalar(c.bits);c.pc=0x8007b51c;break;
  case 0x8007b51c:if(!read(0x80420528,c.constantColor))return false;c.pc=0x8007b534;break;
  case 0x8007b534:if(!call(0x802b8ff4,0x8007b534,{0},{c.f[1],c.f[1],c.f[1],c.f[1]},c.constantColor))return false;c.pc=0x8007b538;break;
+ // Direct POS9/UV13, VAT0 float4 XY/ST, texgen matrix60; no color attribute.
+ // One TEV stage uses constant C0 times texture color/alpha, not font material.
  case 0x8007b538:if(!call(0x802b4520,0x8007b538,{}))return false;c.pc=0x8007b544;break;
  case 0x8007b544:if(!call(0x802b3c08,0x8007b544,{9,1}))return false;c.pc=0x8007b550;break;
  case 0x8007b550:if(!call(0x802b3c08,0x8007b550,{13,1}))return false;c.pc=0x8007b568;break;
@@ -59,6 +71,8 @@ bool resumeOriginalWindowPrimitive(uint32_t type,const uint32_t& color,float x,f
  case 0x8007b630:if(!call(0x802b89a4,0x8007b630,{0,7,1,4,7}))return false;c.pc=0x8007b640;break;
  case 0x8007b640:if(!call(0x802b8c98,0x8007b640,{0,0,0}))return false;c.pc=0x8007b648;break;
  case 0x8007b648:if(!call(0x802ba39c,0x8007b648,{0}))return false;c.pc=0x8007b64c;break;
+ // Borrowed caller color is loaded only here; later waits retain this copy.
+ // SDK identity then view*local captures12 words from original camera+11c.
  case 0x8007b64c:c.loadedColor=*c.color;c.pc=0x8007b65c;break;
  case 0x8007b65c:if(!call(0x802b8ab8,0x8007b65c,{1},{},c.loadedColor))return false;c.pc=0x8007b664;break;
  case 0x8007b664:if(!math(0x8029dd04))return false;c.pc=0x8007b668;break;
@@ -66,8 +80,14 @@ bool resumeOriginalWindowPrimitive(uint32_t type,const uint32_t& color,float x,f
  case 0x8007b674:if(!math(0x8029dd64))return false;c.pc=0x8007b680;break;
  case 0x8007b680:if(!call(0x802ba2fc,0x8007b680,{0},{},{},c.local))return false;c.pc=0x8007b688;break;
  case 0x8007b688:if(!call(0x802ba39c,0x8007b688,{0}))return false;c.pc=0x8007b68c;break;
+ // Fresh ea24 points to original32-byte GX objects; type offset is
+ // (type<<5)&001fffe0. It is not an atlas index or a texture-ready substitute.
  case 0x8007b68c:if(!read(0x8041ea24,c.texture))return false;c.texture+=((c.type<<5)&0x001fffe0);c.pc=0x8007b69c;break;
  case 0x8007b69c:if(!call(0x802b7880,0x8007b69c,{c.texture,0}))return false;c.pc=0x8007b6ac;break;
+ // Begin QUADS128,VAT0,36 vertices. Following180 individual FIFO floats
+ // are XYZ+UV for nine cells. Every lfs of538/540/544/548 reloads source
+ // 0/one-third/two-thirds/1; retain these interleavings and binary32 operations.
+ // No border clamp,mesh replacement or original SDK numeric parity is implied.
  case 0x8007b6ac:if(!call(0x802b5a6c,0x8007b6ac,{128,0,36}))return false;c.pc=0x8007b6b4;break;
  case 0x8007b6b4: c.f[2]=c.f[30]+c.f[27];c.pc=0x8007b6b8;break;
  case 0x8007b6b8: if(!emit(0x8007b6b8,c.f[30]))return false;c.pc=0x8007b6bc;break;

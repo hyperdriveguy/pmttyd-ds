@@ -2,12 +2,15 @@
 #include <cmath>
 #include <algorithm>
 namespace ttyd {namespace {
+// Native presence bits for18 required GX setters. All is complete coverage;
+// descriptor/format masks separately require all four lanes (binary1111).
 enum Bits:uint32_t {Indirect=1u<<0,Cull=1u<<1,ZComp=1u<<2,Alpha=1u<<3,Blend=1u<<4,ZMode=1u<<5,
  Clear=1u<<6,Channel=1u<<7,Channels=1u<<8,TexGens=1u<<9,Stages=1u<<10,Order=1u<<11,
  ColorOp=1u<<12,AlphaOp=1u<<13,ColorIn=1u<<14,AlphaIn=1u<<15,Texture=1u<<16,TexCoord=1u<<17};
 constexpr uint32_t All=(1u<<18)-1;
 struct Running{bool&v;explicit Running(bool&b):v(b){v=true;}~Running(){v=false;}};
 bool finite(const BattleActMatrix&m){for(float f:m)if(!std::isfinite(f))return false;return true;}
+// US512x256 atlas only: exact source diagonal, not a repaired language0 matrix.
 bool ordinaryTextureMatrix(const BattleActMatrix&m){
  const BattleActMatrix actual{1.f/512,0,0,0,0,1.f/256,0,0,0,0,1,0};
  return m==actual; // Both signed zeros have identical effect in this finite scale.
@@ -23,6 +26,9 @@ bool BattleFontGxState::source()const{
  if(!binding_.font.current()||!binding_.publicationCurrent()||!binding_.sourceCurrent()){stale_=true;return false;}
  return true;
 }
+// Missing initial source-static-object proof may hold and later become ready.
+// Once Texture was admitted, losing that proof permanently stales this binding;
+// texture-address reuse must not revive an old source object/atlas generation.
 bool BattleFontGxState::texture()const{
  if(!source())return false;
  const bool current=binding_.staticTextureCurrent(0x8041e97c,binding_.font);
@@ -47,6 +53,9 @@ bool BattleFontGxState::tevColor(uint32_t slot,uint32_t rgba){
  if(invoking_)return false;
  Running run(invoking_);return color(slot,rgba);
 }
+ // Fixed tuples below are the ordinary original GX profile, not broad GX API
+ // emulation. A malformed/unknown tuple latches unsupported; the actual first
+ // indirect-mask setter clears coverage to rebuild. Source ownership never resets.
 bool BattleFontGxState::request(const SourceFontStateCall&q){
  if(invoking_||!source())return false;
  Running run(invoking_);
@@ -55,6 +64,10 @@ bool BattleFontGxState::request(const SourceFontStateCall&q){
  auto reject=[&](){state_.unsupported=true;return false;};
  uint32_t bit=0;
  switch(q.function){
+ // GX IDs remain function identities. Alpha7 is ALWAYS, blend1/4/5 is
+ // source-alpha/inverse-source-alpha, Z1/7/0 enables ALWAYS without Z writes.
+ // Clear descriptors then direct POS9/CLR011/TEX013/TEX114 in VAT0;
+ // format types3/5/2/0 are S16/RGBA8/U16/U8 in their respective lanes.
  case 0x802b8880:if(!args({0}))return reject();state_={};bit=Indirect;break;
  case 0x802b5c8c:if(!args({0}))return reject();bit=Cull;break;
  case 0x802b940c:if(!args({1}))return reject();bit=ZComp;break;
@@ -81,6 +94,8 @@ bool BattleFontGxState::request(const SourceFontStateCall&q){
  case 0x802b8e30:if(!args({0,0,0,255}))return reject();bit=Order;break;
  case 0x802b89e8:if(!args({0,0,0,0,1,0}))return reject();bit=ColorOp;break;
  case 0x802b8a50:if(!args({0,0,0,0,1,0}))return reject();bit=AlphaOp;break;
+ // TEV color selects constant C0 RGB; alpha multiplies A0 by texture alpha.
+ // No GT8/other cutoff or arbitrary noise/rainbow profile is admitted.
  case 0x802b8960:if(!args({0,15,2,12,15}))return reject();bit=ColorIn;break;
  case 0x802b89a4:if(!args({0,7,1,4,7}))return reject();bit=AlphaIn;break;
  case 0x802b7880:if(!args({0x8041e97c,0}))return reject();if(!texture())return false;bit=Texture;break;
@@ -101,6 +116,8 @@ bool BattleFontGxState::request(const SourceFontStateCall&q){
  }
  state_.fixedState|=bit;return source();
 }
+ // Fog type0/fourzero scalars disables fog while retaining actual color.
+ // Nonfinite/nonzero scalars fail the finite profile; no normalization occurs.
 bool BattleFontGxState::fog(const SourceFontDrawStartFog&q){
  if(invoking_||!source())return false;
  Running run(invoking_);
@@ -108,6 +125,9 @@ bool BattleFontGxState::fog(const SourceFontDrawStartFog&q){
  for(float f:q.reals)if(f!=0){state_.unsupported=true;return false;}
  state_.fog=q;return source();
 }
+// Both finite position slot0 and TEV color register1 already reached the
+// actual sink. Coverage alone is insufficient: require matrix30/type1, current
+// matrix0, fog and current font/object proof. This never draws or consumes RNG.
 bool BattleFontGxState::ordinaryProfile()const{
  if(invoking_)return false;
  Running run(invoking_);

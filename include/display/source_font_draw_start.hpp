@@ -8,6 +8,8 @@ struct SourceFontDrawStartInput {
  // Null selects original guest pointer, including actual guest0 domain.
  const uint32_t* privateColor=nullptr;
 };
+// Actual final GX fog child: type0 disables fog; four source float lanes and
+// the persistent BSS color remain captured separately from integer operands.
 struct SourceFontDrawStartFog {
  uint32_t function=0x802b8ff4,callsite=0x80074e74,type=0,color=0;
  std::array<float,4> reals{};
@@ -17,6 +19,9 @@ struct SourceFontDrawStartServices {
  std::optional<uint32_t> (*camera)(void*)=nullptr;
  bool (*fog)(void*,const SourceFontDrawStartFog&)=nullptr;
 };
+// Captures pointer identity, not early color/view values. Context, private
+// color and provider lifetimes survive holds. Stale ownership cannot revive;
+// reset is metadata only and cannot undo already completed GX children.
 class SourceFontDrawStartCursor {
 public:
  SourceFontDrawStartCursor();~SourceFontDrawStartCursor();

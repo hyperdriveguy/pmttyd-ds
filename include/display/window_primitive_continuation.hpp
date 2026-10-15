@@ -3,6 +3,9 @@
 #include <memory>
 namespace ttyd {
 enum class WindowPrimitiveRequestKind {Call,FifoFloat};
+// Call retains original function/site; FifoFloat has one captured real and
+// original stfs site, pending FIFO token cc008000. Engaged return0 completes
+// either request; nullopt holds without replacing already captured operands.
 struct WindowPrimitiveRequest {
     WindowPrimitiveRequestKind kind=WindowPrimitiveRequestKind::Call;
     uint32_t function=0,callsite=0;
@@ -18,6 +21,9 @@ struct WindowPrimitiveServices {
     std::optional<uint32_t> (*request)(void*,const WindowPrimitiveRequest&)=nullptr;
     bool (*matrix)(void*,BattleAudienceMatrixRequest&)=nullptr;
 };
+// One invocation pins provider/color identities and all five float BIT
+// patterns. Completed terminal PC remains until reset; reset has no guest effects.
+// Real context/color lifetime and serialized source mutation belong to caller.
 class WindowPrimitiveCursor {
 public:
     WindowPrimitiveCursor();~WindowPrimitiveCursor();

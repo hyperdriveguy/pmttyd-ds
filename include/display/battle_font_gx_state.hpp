@@ -11,6 +11,8 @@ struct BattleFontGxBinding {
  // actual loaded font allocation and this actual resident atlas generation.
  std::function<bool(uint32_t,const BattleFontLease&)> staticTextureCurrent;
 };
+// Native coverage masks, not guest GX registers:18 fixed setters and four
+// descriptor/format lanes. Matrices/color/fog must be supplied independently.
 struct BattleFontGxSnapshot {
  uint32_t fixedState=0,descriptors=0,formats=0;
  bool unsupported=false;
@@ -31,6 +33,9 @@ public:
  bool fog(const SourceFontDrawStartFog&);
  bool loadMatrix(const BattleActMatrix&,uint32_t slot);
  bool tevColor(uint32_t slot,uint32_t rgba);
+ // Ready only for the exact admitted US profile and current static texture.
+ // Inspection emits no packets/RNG; unsupported profiles hold until a genuine
+ // first DrawStart setter rebuilds state. Lost ownership stays stale.
  bool ordinaryProfile()const;
  std::optional<BattleFontGxSnapshot> snapshot()const;
  void retire();

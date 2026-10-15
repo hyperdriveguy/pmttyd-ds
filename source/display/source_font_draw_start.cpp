@@ -3,6 +3,10 @@
 namespace ttyd {namespace {
 float real(uint32_t n){float f;std::memcpy(&f,&n,4);return f;}
 struct Fixed{uint32_t function,site,count;std::array<uint32_t,7>args;};
+// Original {function,callsite,operand count,operands}, in source order.
+// First18 GX setters precede the late color read: indirect/cull/depth/alpha/
+// blend, descriptors/formats, channel and texgen. Attributes9/11/13/14 mean
+// POS/CLR0/TEX0/TEX1; direct1 and VAT0 formats retain exact source tuples.
 constexpr Fixed early[]{
  {0x802b8880,0x80074c20,1,{0}},{0x802b5c8c,0x80074c28,1,{0}},
  {0x802b940c,0x80074c30,1,{1}},{0x802b8d60,0x80074c48,5,{7,0,0,7,0}},
@@ -15,6 +19,8 @@ constexpr Fixed early[]{
  {0x802b6f78,0x80074d20,7,{4,0,1,1,0,0,2}},{0x802b6f3c,0x80074d28,1,{1}},
  {0x802b5084,0x80074d30,1,{1}}
 };
+// One TEV stage/order/ops/inputs, then LoadTexObj of literal static object
+// e97c into slot0. No dereference of e97c as a pointer cell or atlas-ID alias.
 constexpr Fixed late[]{
  {0x802b8fcc,0x80074d4c,1,{1}},{0x802b8e30,0x80074d60,4,{0,0,0,255}},
  {0x802b89e8,0x80074d7c,6,{0,0,0,0,1,0}},{0x802b8a50,0x80074d98,6,{0,0,0,0,1,0}},
@@ -37,6 +43,9 @@ struct SourceFontDrawStartCursor::State {
 };
 SourceFontDrawStartCursor::SourceFontDrawStartCursor()=default;SourceFontDrawStartCursor::~SourceFontDrawStartCursor()=default;
 bool SourceFontDrawStartCursor::active()const{return bool(state_);}bool SourceFontDrawStartCursor::stale()const{return state_&&state_->invalid;}uint32_t SourceFontDrawStartCursor::pending()const{return state_?state_->pending:0;}bool SourceFontDrawStartCursor::reset(){if(invoking_)return false;state_.reset();return true;}
+// One whole33-child invocation. Pin all service and shared-owner identities;
+// held request/math/fog objects keep operands stable. Missing children hold;
+// current loss poisons, and successful prefix effects never replay.
 bool resumeSourceFontDrawStart(const SourceFontDrawStartInput&input,const SourceFontDrawStartServices&s,SourceFontDrawStartCursor&cursor){
  const auto&common=s.common;if(cursor.invoking_||!common.current||!common.lifetime||!common.actors.memory.word)return false;
  if(cursor.state_){const auto&c=*cursor.state_;if(c.input.guestColor!=input.guestColor||c.input.privateColor!=input.privateColor||!same(c.services,s))return false;}
@@ -48,6 +57,8 @@ bool resumeSourceFontDrawStart(const SourceFontDrawStartInput&input,const Source
   if(c.index==std::size(early)){c.phase=2;continue;}
   if(!c.fixed(early[c.index]))return false;
   ++c.index;continue;
+ // Only now read the caller color (private native word or actual guest word).
+ // A change before this read is visible; a held TEV child keeps captured RGBA.
  case 2:
   if(!c.request(0x802b8ab8,0x80074d44,[&](auto&q){q.integers={1};q.color=input.privateColor?*input.privateColor:c.word(input.guestColor);}))return false;
   c.index=0;c.phase=3;continue;
@@ -55,6 +66,8 @@ bool resumeSourceFontDrawStart(const SourceFontDrawStartInput&input,const Source
   if(c.index==std::size(late)){c.phase=4;continue;}
   if(!c.fixed(late[c.index]))return false;
   ++c.index;continue;
+ // Fresh GP+16c AFTER texture load: zero chooses Y1/1024, any nonzero
+ // Y1/256; X1/512,Z1. Keep the actual SDK scale output across its hold.
  case 4:{c.pending=0x8029e2b0;if(!c.math){c.math=BattleAudienceMatrixRequest{};c.math->function=0x8029e2b0;const auto language=c.word(c.word(0x80415fd0)+0x16c);const auto x=real(c.word(0x804203ec)),y=real(c.word(language==0?0x804203f0:0x804203f4)),z=real(c.word(0x804203e4));c.math->xyz={x,y,z};}if(!c.valid()||!common.matrix)return false;const bool done=common.matrix(common.user,*c.math);if(!c.valid()||!done)return false;c.textureMatrix=c.math->output;c.math.reset();c.phase=5;continue;}
  case 5:
   if(!c.request(0x802ba3d0,0x80074e20,[&](auto&q){q.integers={30,1};q.matrix=c.textureMatrix;}))return false;
@@ -62,12 +75,16 @@ bool resumeSourceFontDrawStart(const SourceFontDrawStartInput&input,const Source
  case 6:
   if(!c.request(0x802b4e04,0x80074e3c,[](auto&q){q.integers={0,1,4,30,0,125};}))return false;
   c.phase=7;continue;
+ // Original camera pointer was captured at entry; its12 view words at+11c
+ // are read NOW into the retained LoadPosMtx request, not snapshotted at entry.
  case 7:
   if(!c.request(0x802ba2fc,0x80074e48,[&](auto&q){q.integers={0};BattleActMatrix view;for(unsigned i=0;i<12;++i)view[i]=real(c.word(c.camera+0x11c+4*i));q.matrix=view;}))return false;
   c.phase=8;continue;
  case 8:
   if(!c.request(0x802ba39c,0x80074e50,[](auto&q){q.integers={0};}))return false;
   c.phase=9;continue;
+ // Final Fog uses fresh source positive zero203f8 and actual BSS color29578.
+ // Zero BSS needs a real persistent loader/storage owner, not a per-read default.
  case 9:{c.pending=0x802b8ff4;if(!c.fog){c.fog=SourceFontDrawStartFog{};const auto zero=real(c.word(0x804203f8));const auto color=c.word(0x80429578);c.fog->reals.fill(zero);c.fog->color=color;}if(!c.valid()||!s.fog)return false;const bool done=s.fog(common.user,*c.fog);if(!c.valid()||!done)return false;cursor.state_.reset();return true;}
  default:return false;
  }}

@@ -34,9 +34,14 @@ public:
  BattleWeaponNativeFrame& operator=(const BattleWeaponNativeFrame&)=delete;
  bool bind(BattleWeaponNativeFrameBinding,std::shared_ptr<const void> resources,
            const BattleWeaponDrawServices&,BattleWeaponNativeSubmission);
+ // Native generation/pass metadata is distinct from simulation/render clocks.
+ // Requires actual invoking queue callback80121ce8, camera8 and passed B;
+ // no scheduler registration or readiness producer is supplied here.
  bool resume(uint64_t successfulMainPass,const CameraMainCursor&,const CameraDrawCursor&,
              const DisplayQueue&,uint32_t camera,uint32_t battle);
  const BattleWeaponCameraBridge* camera()const;
+ // Whole source draw completion precedes seal/submit/camera finish. It does
+ // not expose a publication; publication additionally needs all those owners.
  bool sourceComplete(uint64_t pass)const;
  uint64_t publishedPass()const;
  std::shared_ptr<const void> publication()const;

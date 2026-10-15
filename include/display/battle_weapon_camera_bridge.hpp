@@ -1,6 +1,8 @@
 #pragma once
 #include "battle_class_camera_bridge.hpp"
 namespace ttyd {
+// Actual camera8 snapshot for this short callback epoch; six viewport float
+// lanes and four scissor words accompany the source view/projection state.
 struct BattleWeaponCameraView {
  CameraDepthSnapshot matrices;
  std::array<float,6> viewport{};
@@ -16,6 +18,8 @@ public:
             const DisplayQueue&,uint32_t battle);
  bool finish(BattleClassCameraEpoch);
  void retire();
+ // Rechecks base camera epoch plus projection kind/scissor and bit-identical
+ // finite viewport (including signed-zero distinction). Changes latch stale.
  bool available()const;
  bool owns(uint32_t)const;
  std::optional<uint32_t> camera(std::optional<uint32_t> index={})const;

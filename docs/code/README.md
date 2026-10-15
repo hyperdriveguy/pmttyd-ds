@@ -176,3 +176,7 @@ shared GP input bytes, native field-position/quest providers and HitN64 shader u
 party bindings, retained key predicates and static MODEL checks.
 [Source font loading](source-font-loading.md) explains lazy setup, original width
 mutations, VM aliases and readable-prefix versus reserved allocation ownership.
+
+[Font GX pipeline](font-gx-pipeline.md) explains late DrawStart captures, exact
+ordinary state and native glyph replay. [Weapon/window bridges](weapon-window-bridges.md)
+explains short camera epochs, long submission ownership, source FIFO and atlas leases.

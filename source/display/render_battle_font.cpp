@@ -1,5 +1,7 @@
 #include "platform.hpp"
 namespace ttyd {
+// Adopt the actual already-imported font texture/metadata once; this is not
+// proof that original font Init/Setup/static GX object has completed.
 bool Renderer::prepareBattleFont(){
  if(!c3dReady||!programReady||!fontTexture.imported)return false;
  if(battleFontGpu.lease().current())return true;
@@ -12,6 +14,9 @@ bool Renderer::prepareBattleFont(){
 }
 BattleFontLease Renderer::battleFontLease()const{return battleFontGpu.lease();}
 void Renderer::retireBattleFont(){battleFontGpu.retire();}
+// Actual battle camera8/CameraDraw projection and raster are required. Glyph
+// position matrices already include source view; identity here avoids a second
+// view transform. This projection adapter supplies no original camera fallback.
 std::optional<BattleFontRasterView> Renderer::battleFontRasterView(const Game& game)const{
  const auto* cameras=game.trioAttack.cameras();const auto&p=finishingCameraDraw.projectionMatrix();
  if(!game.trioBattleActive||!cameras||cameras->currentIndex()!=8||!p||!iconViewport||!iconScissor)return {};
@@ -30,6 +35,9 @@ bool Renderer::drawBattleFontGlyphs(const std::vector<BattleFontGlyphPacket>&pac
  for(const auto&p:packets)if(!canDrawBattleFontGlyph(p))return false;
  if(packets.empty())return true;
  C2D_Flush();C3D_BindProgram(&program);
+ // Native attributes XYZ/UV/RGBA; ordinary source profile has ALWAYS alpha
+ // compare,source-alpha blending,ALWAYS depth test with color-only writes.
+ // Reset all six native TEV stages,then use C0 RGB and A0*texture-alpha.
  auto*attrs=C3D_GetAttrInfo();AttrInfo_Init(attrs);AttrInfo_AddLoader(attrs,0,GPU_FLOAT,3);AttrInfo_AddLoader(attrs,1,GPU_FLOAT,2);AttrInfo_AddLoader(attrs,2,GPU_FLOAT,4);
  C3D_CullFace(GPU_CULL_NONE);C3D_DepthTest(true,GPU_ALWAYS,GPU_WRITE_COLOR);
  C3D_AlphaTest(false,GPU_ALWAYS,0);
@@ -46,6 +54,8 @@ bool Renderer::drawBattleFontGlyphs(const std::vector<BattleFontGlyphPacket>&pac
   for(unsigned i=0;i<4;++i){auto&row=m.r[i];row.x=transform[i][0];row.y=transform[i][1];row.z=transform[i][2];row.w=transform[i][3];}
   C3D_FVUnifMtx4x4(GPU_VERTEX_SHADER,transformLoc,&m);
   const auto&q=p.quad;const float positions[4][2]={{float(q.left),float(q.top)},{float(q.right),float(q.top)},{float(q.right),float(q.bottom)},{float(q.left),float(q.bottom)}};
+  // Original US glyph coordinates use512x256 texels; normalize once and flip
+  // native T once. Packed RGBA bytes become0..1 vertex constants (/255).
   const float uv[4][2]={{float(q.u0)/512,1-float(q.v0)/256},{float(q.u1)/512,1-float(q.v0)/256},{float(q.u1)/512,1-float(q.v1)/256},{float(q.u0)/512,1-float(q.v1)/256}};
   C3D_ImmDrawBegin(GPU_TRIANGLE_FAN);
   for(unsigned i=0;i<4;++i){C3D_ImmSendAttrib(positions[i][0],positions[i][1],0,1);C3D_ImmSendAttrib(uv[i][0],uv[i][1],0,1);C3D_ImmSendAttrib(float(q.rgba>>24)/255,float((q.rgba>>16)&255)/255,float((q.rgba>>8)&255)/255,float(q.rgba&255)/255);}
