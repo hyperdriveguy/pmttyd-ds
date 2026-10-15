@@ -1,3 +1,50 @@
+### Native UI shader lifetime cleanup verified (2026-10-15)
+
+Commit14279f7a4063aa18fcdf9a059c37df39f6234420 fixes the SDK lifetime issue
+reported in the preceding original-UI batch. One genuine existing world shader
+program/DVLB is prepared and pinned for the process before C2D initialization.
+After GPU synchronization it becomes the actual cached program before scene/C2D
+shader frees. All fallible work stays in init; no null/fake program, private SDK
+context reset, draw, RNG or source readiness is introduced. The actual installed
+Citro3D and Citro2D archives are both pinned by the verifier; changed archives
+require a renewed audit. [Contract](behavior/display/NATIVE_SHADER_PROCESS_LIFETIME.md).
+
+Final authority artifacts/native-ui-parking-validation/manifest.json pins6394
+inputs. Prior accepted6390 inputs remain physically archived at
+artifacts/native-ui-owners-accepted/source; their source authority is separate
+from the working directory reused only after all earlier consumers terminated.
+All packed assets and private fixtures remained byte-identical; no conversion,
+shared-cache or editable-asset write was needed for this native-only follow-up.
+Final make test:482/482 C++84.45s;221/221 Python56.020s, zero skips. Native
+make all -o assets-ready -j4 SOUNDTRACK=gamecube:0. SDK verifier:0, both archives.
+1530 frozen Markdown documents:0 broken links. All final input hashes checked.
+
+Native artifacts/ttyd-original-battle-ui-lifetime.3dsx SHA256
+4e2b7ac41966f2e3655d4e6b0d556367ac7233871f657e71d189451a4803e3bb.
+Isolated35s normal Azahar startup:0; root-viewed original book-cover/A-START
+prompt. The actual Renderer fresh-import font probe now has0 unmapped-access
+diagnostics and0 native exceptions (the earlier4 Read32 diagnostics remain
+archived). Physical-A retirement invalidates old font packets; fresh import
+renders the same3616-ink-pixel target, RGB SHA256
+d3490fe52df58ac6bf9ef658c7218e5944abdde106694bce074e28b1409ecce3.
+230 glyph packets/460 RNG/18766 source reads stay unchanged across replay.
+Root independently checked capture pixels/logs and byte-identical actual probe
+Renderer/parking/font-sink code against production frozen inputs. This resolves
+the preceding shutdown limitation. Explicit test CPU font/object admission and
+direct boot-camera SDK view remain test-only; no whole source Setup, queued
+CameraMain, normal battle/tutorial, PPC or physical-device parity claim.
+
+Next UI integration: frozen submenu packet7, GX texture-object5, actual font
+texture-child4, typed ordered publication4 (latest signed-zero pitch correction),
+and palette texture-object5. Manifests and exact unapplied journals live under
+artifacts; the Window packet/resource/converter worker is finalizing its batch.
+Keep source window completion/object/global GX state and real source owners
+mandatory; missing providers hold. Integrate/prove the actual ordered native
+frame before enabling it; preserve original menus, dialogue, physical controls
+and the lower scene/audience continuation. Real Bero history, complete tutorial/
+battle entry and selected bad-thrower targeting with a physical alternative
+remain unfinished. Goal remains active; the remake is not complete.
+
 ### Original battle UI font residency and queued weapon owners (2026-10-15)
 
 Commits 25afbadbd375b1537d3d6e1e8e29dc36d617bede (53 core/contracts/tools)
