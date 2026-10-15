@@ -1,3 +1,104 @@
+## 2026-10-14 — Original present-item consumer and packed recovery
+
+Previous goal turn made progress with the audience-X target/UI handoff. Commit
+`513661e0ad7afbfd3f7860627ba5d233a02cc25b` implements whole original
+_check_present_item80120024/1f8 and packed RecoverHp/RecoverFp/GetMaxFp leaves,
+and binds the native command entry to that consumer instead of its None-only
+admission. [Contract](behavior/battle/NATIVE_PRESENT_ITEM_CONSUMER.md).
+The complete tutorial/battle/optional audience-tap objective remains active.
+
+The consumer retains original capture/query/target/unit order and signed bounds.
+Generic admitted items now publish source pending1/2, exact AllEnd flag mask
+ffeeeeee, post-mask previous type, type12 and state29, without pretending to grant
+inventory or create an event. AllEnd does not free UI or invoke every UI End.
+Recovery items123/124 apply HP/FP+1 before position/height/effect preparation;
+return0 is not equated with no work. Packed recovery preserves16-bit wrap,
+upper-only clamp, fresh post-store HP maximum and separate Mario maximum/owner
+lookups for partner FP. It does not substitute stale semantic resource caches.
+
+Private XYZ load/store aliases and original numeric instruction order are
+preserved. Bias/scale/5.0 load before fsubs; private Y/X/Z load after it and before
+fmadds/fadds. The older formula-focused contract prose was corrected against
+fresh read-only disassembly. Native math uses existing declared numeric adapters,
+not a rendering-frame counter or a measured timing constant. A source cancellation
+fixture retains2^-23 where an unfused product loses it.
+
+Acknowledged recovery/operands survive unavailable math/effect services, with
+memory/output-owner guards. Effect-entry acknowledgement then clears the present
+number through a fresh current global B; target/menu fields are retained and
+result0 returned. The bool means native execution acknowledgement, not the
+original effect entry's ignored return value. Native effRecoveryEntry ownership/
+resources/renderer are still unbound. Native recovery gifts apply once and hold
+there, without a fake effect or item clear. The existing outer command-unbound
+latch/whole Main continuation is still a separate frontier. No complete playable
+gift delivery or automatic outer resumption is claimed.
+
+Required frozen validation at `artifacts/battle-lens-qwwrj2n7`, baseline
+`1f24fe6db385bd1bbf1d7c4f46a0e4cffa14f9cc` plus owned feature inputs:
+`CMAKE_BUILD_PARALLEL_LEVEL=4 make test -o assets-ready` passed333/333 C++ in55.41s
+and191/191 Python in43.512s, exit0. Log `artifacts/present-item-test-final.log`.
+Required `MAKEFLAGS=-j4 TMPDIR=artifacts/tmp make all -o assets-ready
+BUILD=build-battle-lens TARGET=ttyd-battle-lens` exited0; initial/final logs
+`artifacts/present-item-native.log` and `artifacts/present-item-native-final.log`.
+Normal main restored exactly. Normal3DSX SHA256
+`903750f89ba6d630d7dbcd8e860c2e719e78253532982b419ead720c89b4bc2f`.
+No new production warning; existing unrelated warnings remain.
+
+Audit covered1713 source/include/test/tool/build inputs with zero mismatches;
+`artifacts/present-item-source-manifest.json` records identities. Concurrent
+opening/reel/GP/outer-Main/NPC work was preserved/excluded. The entire live tree
+or later merged HEAD is not claimed tested as one source tree. Documentation
+checker passed1350 Markdown files with zero broken links.
+
+Initial full suite found stale snapshot dependencies: source-icon constants
+still116 bytes, and door-data lacked the committed NPC-constructor spans.
+Refreshed constants to124 bytes through the committed read_constants helper,
+verified unchanged icon.bin/icon.tpl fingerprints and retained all613 image
+cells/catalog; updated its original provenance metadata. Ran the committed
+read-only door converter:103464-byte pack/970 objects. No image was resized or
+replaced. All three failing asset-backed tests (source icon resources/position,
+field pose pool) pass in the final full suite. Initial focused fixture also
+omitted its actor byte-reader callback; corrected that test provider. An initial
+relative clang-format command targeted the snapshot before the new files existed;
+it made no edits. Formatting was subsequently applied to absolute owned paths
+before final validation. No original source failure is left unaccounted for.
+
+Portable checks cover signed item/target boundary ordering, pending states12/13,
+post-AllEnd type mutation, exact mask, unchanged generic present record, HP/FP
+wrap/clamp, partner-kind boundaries, FP owner changes between lookups, retained
+math/effect waits, changed source/private position during a wait, wrong-owner
+reject and aliased GetPos. Native bridge checks real generic type12/state29/
+pending2, no invented roots, HP recovery once and the genuine unbound-effect
+hold. A separate explicit test effect service acknowledges the retained request
+and verifies eventual clear; that service is not shipped as a fake effect.
+
+Excluded ARM fixture runs these tests with a heap-owned VM/packed owner. Isolated
+Azahar exited0: `PASS bounds;type12;pending2;HPFP;fma;effecthold;roots0`.
+Inspected `artifacts/azahar-present-item/boot.png`; pre-termination log has zero
+unmapped accesses/native exceptions. Build/smoke logs
+`artifacts/present-item-probe-build.log` and `artifacts/present-item-probe-smoke.log`.
+User emulator profiles/saves untouched. This is a control/resource/numeric fixture,
+not normal Game gift execution, effect art, original FPSCR/Dolphin raster parity
+or New2DSXL performance evidence. Temporary main restored.
+
+Original menu verifier passed20 bodies/243 anchors/3 numeric spans. Fresh local
+body identities for present/recovery/MaxFp and read-only pack-vs-ISO comparison
+of bias802efe78/8 and5.0 at804225f8/4 are in `artifacts/present-item-*`.
+Both spans already matched the original harbor pack; no present-item pack,
+art/audio/dialogue conversion or licensing change. No original resource payloads entered
+source history. Existing original menu/HUD style and physical input are intact.
+
+Next admit actual recovery-effect entry/resource/render ownership, original
+AudienceAttack/AudienceMove/Get/Damage scripts and receipt owners, and remove the
+incorrect unconditional weapon-decision gate for nonweapon audience selection
+through the real selector/message owner. Whole command/Main continuation,
+class-menu Game activation, live audience telegraphs and optional lower-screen
+tap selection with physical X remain unfinished. Main/camera/GP cadence, queued
+draw providers, actor/pose frame admission, AP/HUD order, enabled fog/lit icons/
+original1x1 resource, tutorial follow-ups, full turn/damage/SFX and finishing
+field return also remain open. No battle or story completion is inferred from
+this present-item handoff.
+
 ## 2026-10-14 — Original audience target cleanup and X menu handoff
 
 Previous goal turn made progress with native sampler safety. Commit
