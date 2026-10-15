@@ -1,9 +1,10 @@
 #include "native_field_animation.hpp"
+#include "animation_native_inner.hpp"
 #include "field_npc_draw.hpp"
 namespace ttyd {
 bool NativeFieldAnimation::configureNpcInner(const NativeNpcInnerServices& s){
  if(!ready() || producerPending() || entering_ || releasing_.active)return false;
- npcInner_=s;return true;
+ npcInnerBinding_.reset();npcInner_=s;return true;
 }
 bool NativeFieldAnimation::npcDrawCurrent() const{
  const auto* p=pool_->slot(npcDrawHandle_);

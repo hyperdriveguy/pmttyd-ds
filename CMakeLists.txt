@@ -2704,3 +2704,13 @@ add_executable(battle_weapon_source_icon_pin_tests tests/battle_weapon_source_ic
 target_link_libraries(battle_weapon_source_icon_pin_tests PRIVATE ttyd_core)
 add_test(NAME battle_weapon_source_icon_pin COMMAND battle_weapon_source_icon_pin_tests)
 set_tests_properties(battle_weapon_source_icon_pin PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+# Original actual-VM Inner parent, inline ring and native CPU ownership.
+target_sources(ttyd_core PRIVATE source/display/animation_inner.cpp source/display/animation_native_inner.cpp)
+add_executable(animation_inner_tests tests/animation_inner_tests.cpp)
+target_link_libraries(animation_inner_tests PRIVATE ttyd_core)
+add_test(NAME animation_inner COMMAND animation_inner_tests)
+set_tests_properties(animation_inner PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+add_executable(native_npc_inner_tests tests/native_npc_inner_tests.cpp)
+target_link_libraries(native_npc_inner_tests PRIVATE ttyd_core)
+add_test(NAME native_npc_inner COMMAND native_npc_inner_tests)
+set_tests_properties(native_npc_inner PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

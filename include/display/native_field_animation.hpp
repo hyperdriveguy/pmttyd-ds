@@ -6,6 +6,8 @@
 namespace ttyd {
 struct FieldNpcAnimationServices;
 struct FieldNpcDrawRequest;
+class AnimationNativeInner;
+struct NativeNpcInnerBackend;
 // Native simulation service over the real cold VM, source files and one pose
 // namespace. Creation precedes Mario's three Entries. Copies of the typed pool
 // deliberately do not inherit these borrowing services.
@@ -33,6 +35,7 @@ public:
  bool endNpcPass(const void* owner,uint64_t pass);
  bool npcPassPending() const{return npcOwner_!=nullptr;}
  FieldNpcAnimationServices npcAnimationServices();
+ bool configureNpcInnerBackend(const NativeNpcInnerBackend&);
  bool configureNpcInner(const NativeNpcInnerServices&); // Quiescent provider, outlives pass/holds.
  bool npcDrawPending() const{return npcDraw_.active;}
  AnimationDrawWrapperFrontier npcDrawFrontier() const{return npcDrawFrontier_;}
@@ -53,6 +56,7 @@ public:
  const BattlePose* marioPose() const{return sampled_>=0?pool_->pose(sampled_):nullptr;}
  unsigned marioBank() const{return bank_;}
 private:
+ friend class AnimationNativeInner;
  NativeFieldAnimation()=default;
  std::optional<int32_t> enter(std::shared_ptr<const BattlePoseResource>,int32_t,const char*);
  std::shared_ptr<BattlePosePool> pool_;
@@ -68,6 +72,7 @@ private:
  const void* npcOwner_=nullptr;uint64_t npcPass_=0;std::function<bool()> npcCurrent_;
  bool drawNpc(const FieldNpcDrawRequest&);
  bool npcDrawCurrent() const;
+ std::unique_ptr<AnimationNativeInner> npcInnerBinding_;
  NativeNpcInnerServices npcInner_;AnimationDrawWrapperCursor npcDraw_;
  AnimationDrawWrapperFrontier npcDrawFrontier_=AnimationDrawWrapperFrontier::Pending;
  uint32_t npcDrawHandle_=0;uint64_t npcDrawGeneration_=0;

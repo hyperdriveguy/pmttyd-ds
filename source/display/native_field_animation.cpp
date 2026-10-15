@@ -1,4 +1,5 @@
 #include "native_field_animation.hpp"
+#include "animation_native_inner.hpp"
 #include "event_time_publication.hpp"
 #include "field_npc_clock.hpp"
 #include <cassert>
@@ -17,13 +18,13 @@ std::shared_ptr<NativeFieldAnimation> NativeFieldAnimation::create(const char* r
  if(!n->process_ || !n->process_->advance())return {};
  auto& m=n->process_->vm().memory;
  // Native platform/caller storage, never initialized ISO state or host pointers.
- if(!m.registerRam(0x800000f8,std::vector<uint8_t>(4)) || !m.writeWord(0x800000f8,Bus) || !m.registerRam(0x8041ec30,std::vector<uint8_t>(4)) || !m.registerRam(Name,std::vector<uint8_t>(256)) || word(m,0x8041fb40)!=0x41855555)return {};
+ if(!m.registerRam(0x800000f8,std::vector<uint8_t>(4)) || !m.writeWord(0x800000f8,Bus) || !m.registerRam(0x8041ec30,std::vector<uint8_t>(4)) || !m.registerRam(Name,std::vector<uint8_t>(256)) || !m.registerRam(0x803d8e70,std::vector<uint8_t>(0x600)) || !m.registerRam(0x8041e89c,std::vector<uint8_t>(8)) || word(m,0x8041fb40)!=0x41855555)return {};
  n->pool_->nativeProvider_=n.get();
  n->pool_->nativeEntry_=[](void* u,std::shared_ptr<const BattlePoseResource> r,int32_t mode,BattlePoseClock,const char* name){return static_cast<NativeFieldAnimation*>(u)->enter(std::move(r),mode,name);};
  n->pool_->nativeRelease_=[](void* u,int32_t h){return static_cast<NativeFieldAnimation*>(u)->release(h);};
  n->pool_->nativeClock_=[](const void* u,BattlePoseClock& c){return static_cast<const NativeFieldAnimation*>(u)->clock(c);};if(!n->configurePresentation({}))return {};return n;
 }
-NativeFieldAnimation::~NativeFieldAnimation(){if(pool_ && pool_->nativeProvider_==this){pool_->nativeEntry_=nullptr;pool_->nativeClock_=nullptr;pool_->nativeRelease_=nullptr;pool_->nativeProvider_=nullptr;}process_.reset();}
+NativeFieldAnimation::~NativeFieldAnimation(){if(pool_ && pool_->nativeProvider_==this){pool_->nativeEntry_=nullptr;pool_->nativeClock_=nullptr;pool_->nativeRelease_=nullptr;pool_->nativeProvider_=nullptr;}npcInnerBinding_.reset();process_.reset();}
 bool NativeFieldAnimation::ready() const{return process_ && process_->ready();}
 bool NativeFieldAnimation::clock(BattlePoseClock& out) const{
  if(!ready())return false;
