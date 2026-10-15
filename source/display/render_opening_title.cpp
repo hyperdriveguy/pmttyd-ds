@@ -4,6 +4,9 @@
 #include <cstdio>
 #include <cstring>
 namespace ttyd {
+// PMTIT001 sidecars require UV scale 8 and two poses per bank. Center bank
+// has 4 textures, side bank 1; Z_* and A_* retain original authored pose identities.
+// Attempt latches prevent repeated failed imports until explicit release.
 bool Renderer::loadTitleCurtains(){
     if(titleCurtainsAttempted)return titleCurtainsReady;
     titleCurtainsAttempted=true;
@@ -23,6 +26,8 @@ bool Renderer::loadTitleCurtains(){
     }
     titleCurtainsReady=true;return true;
 }
+// Prompt has independent mask and repeating color pattern UVs. SystemVertex
+// uses four attributes(0x3210); TEV preserves mask alpha while tinting its RGB.
 bool Renderer::frontTitlePrompt(const OpeningTitle& title){
     if(!frontImage("title-prompt",0,0,0,0) || !frontImage("title-prompt-pattern",0,0,0,0))return false;
     const auto find=[&](const char* name)->FrontTexture*{const auto it=std::find_if(frontTextures.begin(),frontTextures.end(),[&](const auto& t){return t.name==name;});return it==frontTextures.end()?nullptr:&*it;};
@@ -45,6 +50,10 @@ bool Renderer::frontTitlePrompt(const OpeningTitle& title){
     C3D_TexBind(0,&pattern->image.texture);C3D_TexBind(1,&mask->image.texture);GSPGPU_FlushDataCache(titlePromptVertices,6*sizeof(SystemVertex));C3D_DrawArrays(GPU_TRIANGLES,0,6);
     C2D_Prepare();C2D_SceneBegin(top);return true;
 }
+// Source types 33/34 select center A_2/Z_2; 63 selects side A_1, otherwise
+// Z_1. Source 64x48 paper projects into native 304x240 centered at(200, 120).
+// Pass2 uses alpha>=128; cull 0/1 maps front/back. Final state is reported to
+// the outer frame owner, which acknowledges it after GPU completion.
 bool Renderer::frontTitleCurtain(OpeningTitle& title,uint32_t& presentedType,float& presentedFrame,float& presentedScale){
     if(!title.state)return true;
     if(!loadTitleCurtains()){title.failed=true;return false;}

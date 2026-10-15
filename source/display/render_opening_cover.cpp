@@ -3,6 +3,9 @@
 #include "opening_book_capture.hpp"
 #include <algorithm>
 namespace ttyd {
+// Cover artwork is 288x352 original pixels; palettes 8..12 combine page
+// palette(image-5) with its illustration. The five-quad maximum is front,
+// page, illustration, back, spine. Zero-sized frontImage calls only admit resources.
 bool Renderer::frontBookCover(const OpeningDemo& demo,bool capture){
     if(demo.bookComplete && !demo.book.adjusting)return true;
     if(!frontImage("demo-1",0,0,0,0)||!frontImage("demo-2",0,0,0,0))return false;
@@ -18,6 +21,9 @@ bool Renderer::frontBookCover(const OpeningDemo& demo,bool capture){
     }
     C2D_Flush();C3D_BindProgram(&program);
     auto* attrs=C3D_GetAttrInfo();AttrInfo_Init(attrs);AttrInfo_AddLoader(attrs,0,GPU_FLOAT,3);AttrInfo_AddLoader(attrs,1,GPU_FLOAT,2);AttrInfo_AddLoader(attrs,2,GPU_FLOAT,4);
+    // Native perspective framing: 25  degrees, 100..10000 depth. Captures use
+    // an untilted projection; LCD uses rotated axes. Reference scale 1.5 and
+    // half-turn180 below fit the book illustration during its opening.
     C3D_Mtx projection,view,matrix;if(capture)Mtx_Persp(&projection,C3D_AngleFromDegrees(25),C3D_AspectRatioTop,100,10000,false);
     else Mtx_PerspTilt(&projection,C3D_AngleFromDegrees(25),C3D_AspectRatioTop,100,10000,false);
     Mtx_LookAt(&view,FVec3_New(0,0,openingBookCameraDistance()),FVec3_New(0,0,0),FVec3_New(0,1,0),false);Mtx_Multiply(&matrix,&projection,&view);
@@ -38,6 +44,8 @@ bool Renderer::frontBookCover(const OpeningDemo& demo,bool capture){
         Mtx_Multiply(&result,&crop,&matrix);matrix=result;
     }
     C3D_FVUnifMtx4x4(GPU_VERTEX_SHADER,transformLoc,&matrix);
+    // Capture keeps193x240 pixels within a 256-square texture (16 px Y inset
+    // in this coordinate orientation). LCD scissor uses tilted240x400 axes.
     if(capture)C3D_SetScissor(GPU_SCISSOR_NORMAL,0,16,193,256);
     else C3D_SetScissor(GPU_SCISSOR_NORMAL,0,0,240,400);
     C3D_DepthTest(false,GPU_ALWAYS,GPU_WRITE_COLOR);C3D_AlphaTest(false,GPU_ALWAYS,0);C3D_CullFace(GPU_CULL_NONE);
@@ -56,6 +64,9 @@ bool Renderer::frontBookCover(const OpeningDemo& demo,bool capture){
         const auto& quad=composition[i];
         if(!openingBookFaceVisible(quad))continue;
         auto* art=texture(quad.palette);if(!art||count>12000-6){ok=false;continue;}
+        // Six vertices form triangles012/230; preflight against12000 native
+        // vertices. Original/padded texture dimensions crop UVs without resizing.
+        // Alpha occupies the high byte of native C2D ABGR.
         const int first=count;constexpr unsigned indices[]={0,1,2,2,3,0};
         for(unsigned index:indices){const auto& p=quad.vertices[index];vertex(p.x,p.y,p.z,p.u*art->size[0]/art->size[2],1-p.v*art->size[1]/art->size[3],0x00ffffff|uint32_t(quad.alpha)<<24);}
         GSPGPU_FlushDataCache(vertices+first,6*sizeof(Vertex));auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);

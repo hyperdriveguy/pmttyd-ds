@@ -1,6 +1,8 @@
 #include "platform.hpp"
 #include <cstring>
 namespace ttyd {
+// PMMAP001 has 88 triangles/264 bindings: 44 capture-kind1 then 44 kind2,
+// source pass 2/cull 1. Capture backing is 512x256 for a 400x240 native frame.
 bool Renderer::prepareMapTurn(OpeningMapTransition& state){
     if(!state.requested)return false;
     if(!mapTurnReady){
@@ -23,6 +25,9 @@ bool Renderer::prepareMapTurn(OpeningMapTransition& state){
     }
     state.admitted(0,80);return true;
 }
+// Types49/50 select static exit Z_1 or entry A_1(frame 0..80). Retained
+// capture readiness gates both. Native projection uses center(200, 120),
+// original 64x48 paper fitted to 304x240 (horizontal offset 48).
 bool Renderer::frontMapTurn(OpeningMapTransition& state,unsigned type,float& presented){
     if(!prepareMapTurn(state) || !state.captureReady || (type!=49 && type!=50))return false;
     if(type==50 && state.entryComplete)return true;
@@ -34,6 +39,8 @@ bool Renderer::frontMapTurn(OpeningMapTransition& state,unsigned type,float& pre
     C3D_Mtx projection;Mtx_OrthoTilt(&projection,0,400,240,0,-200,200,true);C3D_FVUnifMtx4x4(GPU_VERTEX_SHADER,transformLoc,&projection);
     for(unsigned n=0;n<264;++n){
         const auto& p=mapTurnSample.vertices[n];const unsigned cell=n<132?1:0;
+        // Recover cell-local UV from 1024 atlas/128 stride/2 px border/124 px
+        // content, then crop the central304x240 area in 512x256 backing.
         const float u=(p.u*1024-cell*128-2)/124,v=((1-p.v)*1024-2)/124;
         const auto color=mapTurnSample.colors.empty()?ActorColor{{1,1,1,1}}:mapTurnSample.colors[n];
         mapTurnVertices[n]={200+p.x*304/64,120-p.y*5,-p.z*304/64,(48+u*304)/512,(1-v)*240/256,color[0],color[1],color[2],color[3]};
@@ -50,6 +57,7 @@ bool Renderer::frontMapTurn(OpeningMapTransition& state,unsigned type,float& pre
     if((type==49 && !state.exitComplete) || (type==50 && frame==80 && !state.entryComplete))presented=frame;
     C3D_SetScissor(GPU_SCISSOR_DISABLE,0,0,240,400);C3D_CullFace(GPU_CULL_NONE);C3D_AlphaTest(true,GPU_GREATER,0);C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_SRC_ALPHA,GPU_ONE_MINUS_SRC_ALPHA,GPU_ONE,GPU_ONE_MINUS_SRC_ALPHA);C2D_Prepare();C2D_SceneBegin(top);return true;
 }
+// Target borrows capture texture; delete target before texture and vertices.
 void Renderer::freeMapTurn(){
     if(mapTurnTarget){C3D_RenderTargetDelete(mapTurnTarget);mapTurnTarget=nullptr;C3D_TexDelete(&mapTurnCapture);}
     if(mapTurnVertices){linearFree(mapTurnVertices);mapTurnVertices=nullptr;}

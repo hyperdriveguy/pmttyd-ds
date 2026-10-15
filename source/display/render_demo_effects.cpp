@@ -6,6 +6,8 @@ void Renderer::freeDemoEffects() {
     C3D_FrameSync();for(auto& texture:demoEffectTextures)if(texture.imported){Tex3DS_TextureFree(texture.imported);C3D_TexDelete(&texture.texture);texture.imported=nullptr;}
     demoEffectsReady=false;
 }
+// Original crystal textures109/110 differ in horizontal wrap; mirrored T
+// is intentional. Keep texture identity rather than substituting a generic glow.
 bool Renderer::prepareDemoEffects(){
     if(!demoEffectsReady){for(unsigned i=0;i<2;++i){char path[96];std::snprintf(path,sizeof(path),"romfs:/demo-crystal-%u.t3x",109+i);
             FILE* f=std::fopen(path,"rb");if(!f){freeDemoEffects();return false;}auto& texture=demoEffectTextures[i];
@@ -16,6 +18,9 @@ bool Renderer::prepareDemoEffects(){
     }
     return true;
 }
+// Source camera4 yaw drives particles submitted by camera5. The native adapter
+// shares the world view; engine XYZ becomes world XYZ*.01 and V flips for PICA.
+// Emission must fit the common12000-vertex arena as complete triangles.
 bool Renderer::frontDemoEffects(const DemoChestEffects& effects,CameraPoint eye,CameraPoint at) {
     if(effects.failed)return false;
     if(!effects.started)return true;

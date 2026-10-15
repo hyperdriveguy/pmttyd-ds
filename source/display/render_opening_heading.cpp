@@ -3,6 +3,9 @@
 #include <cmath>
 #include <cstring>
 namespace ttyd {
+// PMHEDC01 validates UV scale 8/two poses. Subtitle comes from original
+// msg_stg_seq_prolouge (source spelling retained); 512x32 capture reserves
+// two pixels of padding and at most 508 pixels of glyph width.
 bool Renderer::loadHeadingResources(){
     if(headingResourcesAttempted)return headingResourcesReady;
     headingResourcesAttempted=true;
@@ -47,6 +50,12 @@ bool Renderer::captureHeadingSubtitle(){
     C2D_Flush();C3D_FrameDrawOn(top);C2D_Prepare();C2D_SceneBegin(top);
     headingSubtitleCaptured=ok;return ok;
 }
+// Native 25-degree perspective preserves source heading geometry. Angles
+// below use degrees until converted by tau. Ring has 31 sectors: step 360/31,
+// UV step 1/31, inner/outer radii 40/54 and centerY=-40; 62 strip triangles.
+// ringReveal is 8.8 fixed point over strip vertex indices: /256 counts fully
+// revealed vertices; the remainder is the next vertex alpha.
+// Returned presentation flags are acknowledged by the outer GPU frame owner.
 bool Renderer::frontHeading(OpeningSequence& opening,bool& entryPresented,bool& openPresented,bool& startedPresented,bool& exitPresented){
     if(!loadHeadingResources())return false;
     if(!opening.headingDisplay.stardust.ready){
@@ -122,6 +131,8 @@ bool Renderer::frontHeading(OpeningSequence& opening,bool& entryPresented,bool& 
     }
     return ok;
 }
+// Retire subtitle render target before its borrowed texture; reset attempt
+// latches and UINT64_MAX epoch so a future scene admits fresh resources.
 void Renderer::freeHeading(){
     if(headingCurtain.image.imported){Tex3DS_TextureFree(headingCurtain.image.imported);C3D_TexDelete(&headingCurtain.image.texture);}
     headingCurtain={};headingResourcesReady=headingResourcesAttempted=headingCurtainStarted=false;headingCurtainStart=0;headingExitStart=UINT64_MAX;headingSubtitle={};headingSubtitleWidth=0;

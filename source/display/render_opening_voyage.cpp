@@ -1,6 +1,9 @@
 #include "platform.hpp"
 #include "opening_voyage_callbacks.hpp"
 namespace ttyd {
+// Original US language0 texture 21 uses 440x238 source dimensions. Native
+// presentation halves them to 220x119 around horizontal center200; 59.5
+// is the resulting half-height, not an animation or collision constant.
 bool Renderer::frontVoyageLogo(const OpeningVoyageLogo& logo){
     if(!logo.active || logo.complete)return true;
     // US language0 selects mariost.tpl21 in the original draw palette table.

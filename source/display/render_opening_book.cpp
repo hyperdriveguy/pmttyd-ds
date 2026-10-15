@@ -4,6 +4,9 @@
 #include <cstdio>
 #include <cstring>
 namespace ttyd {
+// PMDPG001 is a native extracted surface table: 124 triangles, 372 bindings.
+// Capture 0/1 selects back/front; source pass 2 and cull 1 are validated, not
+// guessed. A_1 is the nonlooping 0..180 authored paper animation.
 bool Renderer::loadDemoPaper() {
     if(demoPaperAttempted)return demoPaperReady;
     demoPaperAttempted=true;
@@ -35,6 +38,8 @@ bool Renderer::frontBookPaper(OpeningDemo& demo,std::array<float,4>& presented,b
     auto* env=C3D_GetTexEnv(0);C3D_TexEnvSrc(env,C3D_Both,GPU_TEXTURE0,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR);C3D_TexEnvFunc(env,C3D_Both,GPU_MODULATE);
     bool ok=true;
     const auto* pose=demoPaperAnimations.pose("A_1");
+    // Four windows retain independent captures and samples. A pending capture
+    // cannot be sampled in the same frame as its acknowledgement.
     for(unsigned n=0;n<4;++n) {
         const auto& page=demo.book.pages[n];if(!page.active || page.capturePending)continue;
         auto texture=[&](const char* name)->FrontTexture*{auto i=std::find_if(frontTextures.begin(),frontTextures.end(),[&](const auto& t){return t.name==name;});return i==frontTextures.end()?nullptr:&*i;};
@@ -48,6 +53,9 @@ bool Renderer::frontBookPaper(OpeningDemo& demo,std::array<float,4>& presented,b
         for(unsigned v=0;v<372;++v) {
             const auto& point=sample.vertices[v];const auto& surface=demoPaperSurfaces[v/3];
             const float cell=surface.capture?1.f:0.f;
+            // Undo a 1024-square 8x8 atlas cell: 128 stride, 2 px border, 124 px
+            // content. Then map into the actual retained 193x240/256 capture
+            // or original/padded back texture. This is not world scaling.
             const float u=(point.u*1024-cell*128-2)/124,vv=((1-point.v)*1024-2)/124;
             const float texU=surface.capture?u*193/256.f:u*float(back->size[0])/back->size[2];
             const float texV=surface.capture?1-vv*240/256.f:1-vv*float(back->size[1])/back->size[3];
@@ -61,7 +69,11 @@ bool Renderer::frontBookPaper(OpeningDemo& demo,std::array<float,4>& presented,b
         auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);
         // Original cull1, back face. Winding adaptation for the tilted image plane.
         C3D_CullFace(GPU_CULL_BACK_CCW);
+        // Batch only adjacent equal capture IDs: sorting all front/back faces
+        // would change the original 124-triangle submission order.
         for(unsigned t=0;t<124;) {unsigned end=t+1;while(end<124 && demoPaperSurfaces[end].capture==demoPaperSurfaces[t].capture)++end;C3D_TexBind(0,demoPaperSurfaces[t].capture?front:&back->image.texture);C3D_DrawArrays(GPU_TRIANGLES,first+t*3,(end-t)*3);t=end;}
+        // Report a candidate, not a completed presentation. renderFrontend
+        // acknowledges final frames only after the GPU frame boundary.
         presented[n]=frame;
     }
     C3D_SetScissor(GPU_SCISSOR_DISABLE,0,0,240,400);C3D_CullFace(GPU_CULL_NONE);C3D_AlphaTest(true,GPU_GREATER,0);C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_SRC_ALPHA,GPU_ONE_MINUS_SRC_ALPHA,GPU_ONE,GPU_ONE_MINUS_SRC_ALPHA);C2D_Prepare();if(!capture)C2D_SceneBegin(top);return ok;

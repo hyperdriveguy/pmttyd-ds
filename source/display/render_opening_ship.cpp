@@ -3,6 +3,8 @@
 #include <cstdio>
 #include <cstring>
 namespace ttyd {
+// PMSHP001 contains120 triangles/360 bindings; capture IDs 1/2, pass 2, cull 1
+// match original ship paper. A_1 is nonlooping 0..60, not simulation duration.
 bool Renderer::loadShipPaper(){
  if(shipPaperAttempted)return shipPaperReady;
  shipPaperAttempted=true;
@@ -14,6 +16,8 @@ bool Renderer::loadShipPaper(){
  if(!ok || !shipPaperAnimations.load("romfs:/opening-ship-paper.pmanim"))return false;
  const auto* pose=shipPaperAnimations.pose("A_1");shipPaperReady=pose && pose->bindings.size()==360 && pose->start==0 && pose->end==60 && !pose->loop;return shipPaperReady;
 }
+// Called after submitted-frame synchronization. Display transfer writes
+// linear 240x400 RGBA8; invalidate CPU cache before reading GPU output.
 bool Renderer::captureOpeningShip(const OpeningSequence& opening){
  if(!shipCaptureTarget || !opening.harbor.paperCapturePending)return false;
  if(!shipCapturePixels)shipCapturePixels=static_cast<uint8_t*>(linearAlloc(240*400*4));
@@ -23,9 +27,15 @@ bool Renderer::captureOpeningShip(const OpeningSequence& opening){
  constexpr uint32_t flags=GX_TRANSFER_FLIP_VERT(0)|GX_TRANSFER_OUT_TILED(0)|GX_TRANSFER_RAW_COPY(0)|GX_TRANSFER_IN_FORMAT(GX_TRANSFER_FMT_RGBA8)|GX_TRANSFER_OUT_FORMAT(GX_TRANSFER_FMT_RGBA8)|GX_TRANSFER_SCALING(GX_TRANSFER_SCALE_NO);
  C3D_SyncDisplayTransfer(static_cast<uint32_t*>(shipCaptureTarget->frameBuf.colorBuf),GX_BUFFER_DIM(240,400),reinterpret_cast<uint32_t*>(shipCapturePixels),GX_BUFFER_DIM(240,400),flags);GSPGPU_InvalidateDataCache(shipCapturePixels,240*400*4);
  auto* target=static_cast<uint8_t*>(shipCaptureTexture.data);
+ // Transpose tilted framebuffer src=x*240+y into 512x256 texture backing.
+ // PICA uses 8x8 Morton tiles: interleave3 low bits, 64 tiles per row, flipY.
+ // Clamp padding to last valid399/239 pixel to avoid filtered edge garbage.
  for(unsigned y=0;y<256;++y)for(unsigned x=0;x<512;++x){const size_t dst=(((255-y)/8)*64+x/8)*64+([&](){unsigned m=0;for(unsigned b=0;b<3;++b){m|=((x>>b)&1)<<(2*b);m|=(((255-y)>>b)&1)<<(2*b+1);}return m;})();const size_t src=(std::min(x,399u)*240+std::min(y,239u))*4;std::memcpy(target+dst*4,shipCapturePixels+src,4);}
  C3D_TexSetFilter(&shipCaptureTexture,GPU_LINEAR,GPU_LINEAR);C3D_TexSetWrap(&shipCaptureTexture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);C3D_TexFlush(&shipCaptureTexture);opening.harbor.captureComplete();return true;
 }
+// Source 64x48 paper fills native 400x240. Undo1024 atlas cells(128 stride,
+// 2 px border, 124 px content), then crop400/512 and 240/256 capture UVs.
+// Return sampled frame to outer owner; completion requires post-frame sync.
 bool Renderer::frontShipPaper(const OpeningSequence& opening,float& presented){
  if(!opening.harbor.paperLive)return true;
  if(!loadShipPaper() || !shipCaptureReady)return false;

@@ -1,6 +1,8 @@
 #include "platform.hpp"
 #include "opening_wake_effects.hpp"
 namespace ttyd {
+// Native 400x240 world fits512x256 texture backing.48 vertices hold eight
+// six-vertex taps; the render target borrows this retained texture.
 bool Renderer::prepareWakeWorld() {
     if(wakeCaptureReady && wakeWorldTarget && wakeEffectVertices)return true;
     if(!wakeCaptureReady){if(!C3D_TexInitVRAM(&wakeCaptureTexture,512,256,GPU_RGBA8))return false;wakeCaptureReady=true;}
@@ -30,6 +32,9 @@ bool Renderer::frontWakeEffects(const OpeningWake& wake) {
     for(int n=0;n<6;++n)C3D_TexEnvInit(C3D_GetTexEnv(n));
     auto* env=C3D_GetTexEnv(0);C3D_TexEnvSrc(env,C3D_Both,GPU_TEXTURE0,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR);C3D_TexEnvFunc(env,C3D_Both,GPU_MODULATE);C3D_TexBind(0,&wakeCaptureTexture);
     C3D_SetScissor(GPU_SCISSOR_NORMAL,0,48,240,352);
+    // Eight equally weighted taps(.125 each) accumulate RGB/alpha. First
+    // overwrites destination, next taps add. Zero blur depth uses one full-white
+    // tap instead; flush again after modifying its CPU-side color.
     const unsigned taps=wake.depth>0?8:1;
     if(taps==1)for(unsigned n=0;n<6;++n)wakeEffectVertices[n].r=wakeEffectVertices[n].g=wakeEffectVertices[n].b=wakeEffectVertices[n].a=1;
     GSPGPU_FlushDataCache(wakeEffectVertices,sizeof(Vertex)*48);

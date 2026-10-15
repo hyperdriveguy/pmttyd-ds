@@ -11,6 +11,9 @@ constexpr auto FieldRGB=GPU_WRITEMASK(GPU_WRITE_RED|GPU_WRITE_GREEN|GPU_WRITE_BL
 constexpr auto FieldRGBDepth=GPU_WRITEMASK(FieldRGB|GPU_WRITE_DEPTH);
 constexpr uint32_t Ink=0xff352d29,Paper=0xffdff2fb,Red=0xff4966d8;
 uint32_t rgb(unsigned r,unsigned g,unsigned b,unsigned a=255){return C2D_Color32(r,g,b,a);}}
+// Frontend owns resource admission before its scene clock/music start. GPU
+// sync precedes retiring field/battle/departure allocations. Title assets may
+// remain resident through the attract demo to avoid a later admission stall.
 void Renderer::beginFrontend(){
     C3D_FrameSync();freeOpeningDeparture();
     for(auto* room:{&plaza,&stage,&trioBackground,&trioStage})freeRoom(*room);
@@ -21,6 +24,9 @@ void Renderer::beginFrontend(){
     if(!loadTitleCurtains())frontFailure="Title curtain admission failed";
     frontActive=true;
 }
+// preserveMapTurn/preserveTitle retain explicitly borrowed transition assets.
+// Other scene allocations retire only after synchronization. Texture wrapper
+// copies do not clone GPU handles; cinematic banks need explicit deletion.
 void Renderer::releaseFrontend(bool preserveMapTurn,bool preserveTitle){
     C3D_FrameSync();if(!preserveMapTurn)freeMapTurn();freeHeading();if(!preserveTitle)freeTitleCurtains();freeBookCaptures();freeWakeEffects();freeShipCapture();freeDemoEffects();freeRoom(frontRoom);frontMapName.clear();frontHouseObjects.clear();frontShipObjects.clear();frontDrawSnapshot.reset();
     for(auto i=frontTextures.begin();i!=frontTextures.end();){
@@ -31,6 +37,9 @@ void Renderer::releaseFrontend(bool preserveMapTurn,bool preserveTitle){
     for(auto& a:cineActors)if(a.image.imported){Tex3DS_TextureFree(a.image.imported);C3D_TexDelete(&a.image.texture);}
     cineActors.clear();
 }
+// Native .size sidecar is four uint32 values: original W/H, padded W/H.
+// Nonzero dimensions<=1024 must fit padded backing. Zero draw size only admits
+// resources. Cropped UVs preserve original pixels; title textures request VRAM.
 bool Renderer::frontImage(const char* name,float x,float y,float w,float h,uint8_t alpha) {
     if(frontTextures.empty())frontTextures.reserve(32); // C2D retains texture pointers until flush.
     auto found=std::find_if(frontTextures.begin(),frontTextures.end(),[&](const auto& f){return f.name==name;});
@@ -52,6 +61,9 @@ bool Renderer::frontImage(const char* name,float x,float y,float w,float h,uint8
     if(w>0 && h>0){C2D_ImageTint tint;C2D_PlainImageTint(&tint,rgb(255,255,255,alpha),0);C2D_DrawImageAt({&found->image.texture,&sub},x,y,0,&tint,w/z[0],h/z[1]);}
     return true;
 }
+// Bottom-screen source text uses half scale at origin(16, 58), clipped to
+// Y54..176. Font UVs address 512x256. Record0xfff7 changes source RGBA;
+// this helper does not turn non-glyph records into invented dialogue.
 void Renderer::frontMessage(const MessagePlayback& message,uint64_t ticks) {
     if(!message.active())return;
     const auto& font=harborMessageFont();
@@ -72,6 +84,9 @@ void Renderer::frontMessage(const MessagePlayback& message,uint64_t ticks) {
         messageAdvanceIndicator(plan,ticks,true);
     }
 }
+// Native map residency is separate from story state. Retire prior room
+// before allocation to bound linear heap; load failure does not restore its GPU
+// resources. Do not add FrameSync inside the active first map frame.
 bool Renderer::prepareFrontWorld(const char* map,const OpeningSequence* opening,const OpeningDemo& demo) {
     if(frontMapName!=map) {
         // A cutscene owns one map. Release the preceding scene before staging
@@ -136,6 +151,8 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
     // Original actor hierarchy evaluation needs the native stack; keep the
     // large, renderer-only map snapshot in scene-owned heap storage.
     if(!frontDrawSnapshot)frontDrawSnapshot=std::make_unique<Game>();
+    // Renderer-only room255 bypasses ordinary field-room gates. Millisecond
+    // scene time becomes 60Hz sample ticks; this snapshot never runs simulation.
     auto& snapshot=*frontDrawSnapshot;snapshot.progress.room=255;snapshot.ticks=(opening?opening->now:demo.now)*60/1000;
     snapshot.fieldCameraFrame.eye={eye.x*.01f,eye.y*.01f,eye.z*.01f};snapshot.fieldCameraFrame.at={at.x*.01f,at.y*.01f,at.z*.01f};
     C3D_Mtx projection,view;
@@ -154,6 +171,9 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
     C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_SRC_ALPHA,GPU_ONE_MINUS_SRC_ALPHA,GPU_ONE,GPU_ONE_MINUS_SRC_ALPHA);
     for(int n=0;n<6;++n)C3D_TexEnvInit(C3D_GetTexEnv(n));
     auto* env=C3D_GetTexEnv(0);C3D_TexEnvSrc(env,C3D_Both,GPU_TEXTURE0,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR);C3D_TexEnvFunc(env,C3D_Both,GPU_MODULATE);
+    // Packed event-group mask: bit 0 background/land, bit 1 ship, bit 13 wake.
+    // Voyage admits 0/1; arrival exposes ship/wake only outside live paper capture.
+    // UINT32_MAX delegates ordinary visibility to the room/source state.
     const uint32_t visibleGroups=opening && opening->part==OpeningPart::Voyage?3u:opening && opening->part==OpeningPart::Arrival?1u | (opening->harbor.visible && !opening->harbor.paperLive && !opening->harbor.paperCapturePending?2u:0u) | (opening->harbor.visible && !opening->harbor.paperLive && !opening->harbor.paperCapturePending?(1u<<13):0u):!opening && demo.bookComplete?demo.market.visibleMapGroups():UINT32_MAX;
     if(opening && opening->part==OpeningPart::Arrival && opening->harbor.paperCapturePending){
         if(!shipCaptureTarget)shipCaptureTarget=C3D_RenderTargetCreate(240,400,GPU_RB_RGBA8,GPU_RB_DEPTH24_STENCIL8);
@@ -169,6 +189,9 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
     drawMap(false,snapshot,false,&frontRoom,visibleGroups);
     count=0; // Each queued actor retains its own range until frame submission.
     if(cineActors.empty())cineActors.reserve(4);
+    // Each cinematic bank retains a sample keyed by pose pointer+selected
+    // authored time. Negative frame selects snapshot tick; UV scales1/2/4/8
+    // come from exact-EOF sidecars and compensate converted atlas padding.
     auto actor=[&](const char* bank,const char* pose,CameraPoint root,float yaw,float frame=-1,const NpcPresentation* facing=nullptr) {
         auto found=std::find_if(cineActors.begin(),cineActors.end(),[&](const auto& a){return a.name==bank;});
         if(found==cineActors.end()) {
@@ -203,6 +226,9 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
         if(sample.batches.empty())C3D_DrawArrays(GPU_TRIANGLES,first,count-first);
         else for(const auto& batch:sample.batches) {
             if(!batch.count || batch.cull==2)continue;
+            // Source cull2 suppresses draw; 0/1 select front/back, 3 neither.
+            // Pass3 blends without depth writes; pass2 alpha cutoff128 retains
+            // opaque paper pixels. Field RGB-only writes preserve shadow alpha.
             const GPU_CULLMODE culls[]={GPU_CULL_FRONT_CCW,GPU_CULL_BACK_CCW,GPU_CULL_NONE,GPU_CULL_NONE};
             C3D_CullFace(culls[batch.cull]);C3D_DepthTest(true,GPU_GEQUAL,batch.pass==3?FieldRGB:FieldRGBDepth);
             C3D_AlphaTest(batch.pass==2,GPU_GEQUAL,128);
@@ -217,6 +243,8 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
     bool ok=true;
     if(!opening && demo.bookComplete) {
         const auto& scene=demo.market;constexpr const char* banks[]={"c_peach","c_nazo","demo-chest"};
+        // Retained original speaker tokens associate Peach/stranger with
+        // their mouth poses. Zero is the chest, not an invented speaker ID.
         constexpr uint32_t speakers[]={0x2040,0x2048,0};
         for(unsigned n=0;n<3;++n)if(scene.actors[n].visible) {
             const auto& a=scene.actors[n];const bool talking=demo.message.active() && !demo.message.waiting() && demo.speaker==speakers[n];
@@ -224,6 +252,8 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
         }
     } else if(opening && (opening->part==OpeningPart::House || opening->part==OpeningPart::HouseReturn || opening->part==OpeningPart::MapDisplay)) {
         const auto& scene=opening->house;
+        // Source NPC IDs: Luigi 0x474, Parakarry 0x468. Index0 is Mario and
+        // uses characterModel below; these tokens are not native pointers.
         constexpr uint32_t keys[]={0,0x474,0x468};
         for(unsigned n=1;n<3;++n)if(scene.actors[n].visible) {
             const auto& a=scene.actors[n];const bool talking=opening->message.active() && !opening->message.waiting() && opening->speaker==keys[n];
@@ -240,6 +270,9 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
         auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);if(count>first)GSPGPU_FlushDataCache(vertices+first,size_t(count-first)*sizeof(Vertex));C3D_TexBind(0,&characterTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,first,count-first);
     }
     if(opening && opening->part==OpeningPart::MapDisplay && opening->mapDisplay.poseStage==1){
+        // Original icon 314 is billboarded relative to Luigi at engine offset
+        //(-25,+15,-3). Retain quantized scale .5498046875 and source factor
+        // .60000002384;*.01 converts engine geometry to native world units.
         const auto* icon=messageIcon(314);
         if(!icon)ok=false;
         else if(count+6<=MaxVertices){
@@ -265,6 +298,9 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
     if(wakeWorld){C2D_SceneSize(400,240,false);C3D_SetViewport(0,0,400,240);}
     return ok;
 }
+// Scene submission owns completion acknowledgements. Offscreen captures and
+// main presentation share this frame; successful CPU draw generation alone is
+// insufficient to advance a scene. Negative candidate frames mean not drawn.
 void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,OpeningSequence& opening,const char* notice) {
     // Keep only the current demonstration image/scene family resident. This
     // also bounds a natural (unskipped) storybook run and letter/map overlays.
@@ -299,6 +335,8 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,OpeningSequence& ope
             if(!bookTargets[n])demo.failed=true;
         }
     }
+    // SYNCDRAW completes previous-frame consumers before reusing linear
+    // arenas. Window cursors reset here; capture backing persists across frames.
     C2D_TextBufClear(textBuffer);C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
     windowFrameCount=0;
     windowFontCount=0;
@@ -457,6 +495,9 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,OpeningSequence& ope
     }
     if(!ok){text("Original front-end texture unavailable",10,216,.4f,Red);if(!frontFailure.empty())text(frontFailure.c_str(),10,203,.35f,Red);}
     if(notice && *notice)text(notice,10,229,.35f,Ink);
+    // Publish GPU commands before capture readback/terminal acknowledgements.
+    // Synchronize when the next scene can consume or retire captured resources;
+    // otherwise an event could advance with a still-unfinished final image.
     C2D_Flush();C3D_FrameEnd(0);
     if(mapCapture || mapTurnPresented>=0 || (mapPresented==255 && !opening.mapDisplay.opaquePresented) || voyageWhitePresented==255 || shipCaptureRequested || shipPresented>=60 || entryPresented==0 || exitPresented==255 || titlePresentedType || titleBlackPresented==255)C3D_FrameSync();
     if(ok && shipCaptureRequested && !captureOpeningShip(opening)){

@@ -3,6 +3,10 @@
 #include <cstring>
 #include <cmath>
 namespace ttyd {
+// Move retained ship/wake geometry into the field owner after story publish.
+// Event groups 1(ship)/13(wake) are packed in layer bits 26..31; cutaway bits
+//8..23 must be zero. UINT32_MAX marks absent old->compact vertex mappings.
+// Duplicate/overlapping ranges fail before any GPU texture handles move.
 bool Renderer::prepareOpeningDeparture(const OpeningHarborScene& scene,uint64_t fieldTick) {
  if(departureRoom.vertices)return true;
  if(!scene.storyPublished || scene.complete || !scene.paperDone || frontMapName!="opening-gor_00" || !frontRoom.vertices)return false;
@@ -51,6 +55,9 @@ bool Renderer::prepareOpeningDeparture(const OpeningHarborScene& scene,uint64_t 
 void Renderer::freeOpeningDeparture(){C3D_FrameSync();freeRoom(departureRoom);departureObjects.clear();}
 void Renderer::drawOpeningDeparture(const Game& game,bool translucent) {
  if(!game.openingDeparture.active || game.progress.room!=1 || !departureRoom.vertices)return;
+ // Opaque pass updates shared CPU vertices once; translucent pass consumes
+ // the same prepared geometry. Room1 is the opening Rogueport destination.
+ // DEBUG trace cadence30 is simulation ticks, not draw frames.
  if(!translucent){const auto& scene=game.openingDeparture.scene;
   departureObjects.apply(scene.x,scene.y,scene.wakeX,scene.yaw,scene.rock,scene.parts,[&](uint32_t index,const OpeningShipObjects::Point& p){auto& v=departureRoom.vertices[index];v.x=p[0];v.y=p[1];v.z=p[2];});
   GSPGPU_FlushDataCache(departureRoom.vertices,size_t(departureRoom.vertexCount)*sizeof(Vertex));
