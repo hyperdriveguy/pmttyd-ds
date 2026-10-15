@@ -16690,3 +16690,71 @@ and original RNG. Continue full field/battle/result/teardown/return/postbattle
 and original story/dialogue. This prerequisite is not a playable prologue,
 original DVD/thread timing, Main/GPU/visibility completion, physical hardware,
 performance or matched visual/audio parity claim.
+
+
+## 2026-10-15 — Original Window startup and retained source GX history
+
+Committed `b996916e`: same actual native field process now proceeds from Font
+through original Window Setup, real DVD read/job/callback and all51 genuine
+TEX/GX objects before Mario/party animation admission. SourceReady1 follows
+actual completion; archive/read/math/job holds retain their original boundary.
+The existing12MiB heap remains shared. Original Window image metadata is parsed
+from the same relocated source palette; native atlas residency remains separate.
+Added actual cold GX contribution before Font/Mario,84 source-backed setter
+effects with independent process/GP registration proof. This does not complete
+or acknowledge whole Logo/DEMO/GXInit. Later source setters affect future
+captures; immutable loaded packet snapshots remain current until actual process
+or registration retirement. Both Window and GX resources retire explicitly.
+
+Final authority `artifacts/window-gx-ui-final-validation/manifest.json`, SHA256
+`1d473f41eda4cd076527e7748ee24b8e96466d080c5d41ca6f0cc973754690ba`:6,656
+verified unchanged inputs. Full `CMAKE_BUILD_PARALLEL_LEVEL=4 make
+--jobserver-style=pipe test` passed522 C++ tests in99.73s and234 Python tests
+in35.185s, no skips (59833exit0). `make --jobserver-style=pipe all -o
+assets-ready -j4 SOUNDTRACK=gamecube` passed (30220exit0). Exact native artifact
+`artifacts/ttyd-original-window-gx-startup.3dsx`, SHA256
+`ab2c8d8fe1a44b5d152333985d8f258521f2cef6636b44a5c7ef71a5c7c6f44a`.
+Isolated Azahar61973exit0:70s warmup, physical file2/checkpoint load20s,
+right/left/idle; final field image root-viewed, zero unmapped/native exceptions.
+Full original cold-GX source pins and1,606 Markdown links passed. Actual new
+integration test proves pre-Font capture holds, original84 effects, live GP
+language2 through Window completion, same-process retention, startup retirement
+and unregister/re-register-at-same-address rejection of old GX snapshots.
+
+Retained failed parent6656 graph unchanged at
+`artifacts/window-gx-ui-integration-v2`:39950exit2,520/522 C++ passed96.01s;
+only two new test registrations lacked source working directories for relative
+ROMFS. Their unchanged executables passed in source cwd (4389exit0). Corrected
+only CTest working-directory properties in a fresh graph. All compiled
+source/header/test/flags and private products stayed identical; matching
+completed parent build products were copied with generated path rebasing, then
+all targets/tests and native link/RomFS reran. Native41001exit0 and final30220
+produce the same binary, so the actual native smoke covers both. No source/test
+assertion bypass. Journals explicitly composed both retirement hooks.
+
+All21 committed owned postimages verified.18 code/test/converter/contract
+postimages exactly match this validation graph; only CMake, ASSETS and behavior
+index retain concurrent committed suffixes by replaying exact owned journals
+onto current committed text. Independent shared-cache async work was committed
+during validation and remains outside this frozen gate; it was preserved,
+never imported wholesale into the older graph. See results, reuse proof,
+commit-baseline-differences and commit-postimage-verification in the authority
+directory. Original raw Window pack provenance/licensing is recorded in ASSETS;
+ISO, generated data and native artifacts stay outside history.
+
+UI workers remain active: queued weapon runtime/TEX increment11 and29 exact
+anchors is focused-frozen, including actual bank-slot correction B+163f8
+instead of B+a0 and real Init/allocation regression. A separate increment
+connects actual Window ownership and per-Load GX snapshots without amending
+frozen inputs. Original HUD partner/AP feature now executes whole source
+statusGetValue and actual source readers; expanded original atlas and native
+import/reimport probe passed, feature integration is still pending. Root
+Status5 remains unregistered until that feature is ready.
+
+Next: integrate queued menu runtime/TEX and precise accepted GX routing, then
+original HUD partner/AP groups with source-visible arbitration; activate and
+capture a populated normal menu using genuine source event/Bero history.
+Continue original tutorial/real battles and actual lower-screen audience scene
+with physical bad-thrower selection plus optional tapping. No populated menu,
+whole tutorial, full battle, original PPC/hardware pixel parity, or performance
+completion is claimed by this startup increment.
