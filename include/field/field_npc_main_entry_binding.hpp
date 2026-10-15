@@ -13,6 +13,9 @@
 namespace ttyd {
 class AnimationPoolMemory;
 // Admission is read-only; sound false has no effects and remains pending.
+// Original stage effects are explicit providers on the same guest memory.
+// bind() requires base clock/Mario admission, not every later provider; a missing
+// movement/draw/queue/audio/field owner holds exactly when its stage is reached.
 struct FieldNpcMainEntryNativeServices {
   void *user = nullptr;
   FieldNpcClockNumbers numbers;
@@ -50,6 +53,9 @@ struct FieldNpcMainEntryNativeServices {
 };
 // One suspended full actor scan. Every child belongs to the current actor;
 // retire child metadata only after history and the parent final clear finish.
+// Aggregate phases0 entry,1 body through shadow,2 history,3 final clear and
+// next entry,4 FieldTail. Preserve old child captures while next entry holds;
+// retirement at the next boundary prevents history/clock replay.
 struct FieldNpcMainActorsCursor {
   const void *binding = nullptr;
   uint8_t phase = 0;
@@ -63,6 +69,8 @@ struct FieldNpcMainActorsCursor {
   FieldNpcHistoryCursor history;
 };
 enum class FieldNpcActorsFrontier { Pending, FieldTail };
+// Whole Main phases0 actors,1 field tail,2 terminal. Unlike the clock helper,
+// completion stays terminal; caller resets for a NEW source invocation/pass.
 struct FieldNpcMainCursor {
   const void *binding = nullptr;
   uint8_t phase = 0;
@@ -77,6 +85,9 @@ public:
   bind(std::shared_ptr<FieldNpcRegistryOwner>, FieldNpcRegistryBinding &,
        EventNativeRuntime &, AnimationPoolMemory &,
        const FieldNpcMainEntryNativeServices &);
+  // These stage APIs resume their prerequisites; held/completed children stay
+  // in caller cursors. A frontier names the next source work, not whole Main.
+  // advanceDraw is implemented separately in field_npc_draw_binding.cpp.
   FieldNpcMainFrontier advance(FieldNpcMainEntryCursor &);
   FieldNpcMoveFrontier advanceMovement(FieldNpcMainEntryCursor &,
                                        FieldNpcMainMoveCursor &);
@@ -105,7 +116,7 @@ public:
       FieldNpcDetectionCursor &, FieldNpcMarioCursor &, FieldNpcDisplayCursor &,
       FieldNpcShadowCursor &);
 
-  // Complete actor traversal only; returned FieldTail is still unfinished Main.
+  // Complete actor traversal only; returned FieldTail still requires the field tail.
   FieldNpcActorsFrontier advanceActors(FieldNpcMainActorsCursor &);
 
   // One complete source invocation only after all real child effects and final

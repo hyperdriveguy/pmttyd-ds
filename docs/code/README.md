@@ -148,3 +148,6 @@ story controllers, source callback catalogs and native service boundaries.
 
 [NPC clocks/matrices/numerics](npc-clocks-matrices-numerics.md) explains packed
 clock fields, retained draw transforms, blur polynomials and scalar length graphs.
+
+[NPC Main entry/movement](npc-main-entry-movement.md) explains source traversal,
+movement/pose ordering, shared VM binding and composed cursor retirement.

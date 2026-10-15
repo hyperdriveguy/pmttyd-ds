@@ -8,6 +8,8 @@ FieldNpcMainEntryBinding::FieldNpcMainEntryBinding(
     std::shared_ptr<FieldNpcRegistryOwner> owner, EventNativeRuntime &vm,
     AnimationPoolMemory &poses, const FieldNpcMainEntryNativeServices &native)
     : owner_(std::move(owner)), vm_(vm), poses_(poses), native_(native) {}
+// Exact initialized registry/facade/VM AND shared pose-pool alias required.
+// Bind does not create replacement actor/pose storage or admit all future services.
 std::unique_ptr<FieldNpcMainEntryBinding> FieldNpcMainEntryBinding::bind(
     std::shared_ptr<FieldNpcRegistryOwner> owner,
     FieldNpcRegistryBinding &registry, EventNativeRuntime &vm,
@@ -20,6 +22,9 @@ std::unique_ptr<FieldNpcMainEntryBinding> FieldNpcMainEntryBinding::bind(
   return std::unique_ptr<FieldNpcMainEntryBinding>(
       new FieldNpcMainEntryBinding(std::move(owner), vm, poses, s));
 }
+// Same lambda identities/user on each resume. All scalar/half stores alias
+// actual VM bytes.800000f8 alone routes to fresh installed bus-clock callback;
+// numeric adapters retain their separate native_.numbers.user.
 FieldNpcMainEntryServices FieldNpcMainEntryBinding::services() {
   FieldNpcMainEntryServices s;
   s.clock.user = this;
@@ -57,6 +62,9 @@ FieldNpcMainEntryServices FieldNpcMainEntryBinding::services() {
     return static_cast<FieldNpcMainEntryBinding *>(p)->vm_.memory.writeHalf(a,
                                                                             v);
   };
+  // Source bank tokens e8b4/e8c8 select owned ordinary36/alternate16 records.
+  // Positive count must fit exact array alias; zero/signed-negative skips without
+  // dereferencing storage. Do not clamp counts or substitute another actor list.
   s.bank = [](void *p, uint32_t bank, uint32_t count, uint32_t array) {
     auto &b = *static_cast<FieldNpcMainEntryBinding *>(p);
     if (bank != 0x8041e8b4 && bank != 0x8041e8c8)
@@ -70,6 +78,9 @@ FieldNpcMainEntryServices FieldNpcMainEntryBinding::services() {
   s.request = [](void *p, const FieldNpcMainEntryRequest &q, uint32_t &out) {
     auto &b = *static_cast<FieldNpcMainEntryBinding *>(p);
     auto &m = b.vm_.memory;
+    // marioGetPtr: actual global8041e900, source span through1e0 exclusive,
+    // explicit read-only admission and candidate1dc mapping. This atomic child
+    // may retry reads on hold; parent clears candidate only after its success.
     if (q.function == 0x8005e0c0) {
       uint32_t mario = 0, lane = 0;
       if (!m.readWord(0x8041e900, mario) ||
@@ -80,6 +91,8 @@ FieldNpcMainEntryServices FieldNpcMainEntryBinding::services() {
       out = mario;
       return true;
     }
+    // Pose getter is arithmetic with native handle0..255 admission. Source
+    // row stride170 belongs to shared pool; no active/resource-readiness gate.
     if (q.function == 0x80039cf8) {
       if (q.args[0] >= 256 ||
           !b.poses_.aliases(*b.owner_->poses().sharedPool(), m))
@@ -87,6 +100,8 @@ FieldNpcMainEntryServices FieldNpcMainEntryBinding::services() {
       out = b.poses_.poseAddress(q.args[0]);
       return true;
     } // Actual source getter has no active/resource gate.
+    // Original strcmp result sign is retained as a guest word. Limit256 and
+    // address-overflow checks are native admission, not a source string rewrite.
     if (q.function == 0x8026d464) {
       // Bounded native text admission. Reads are synchronous/no-effects; a
       // false request has not admitted the original compare and publishes no
@@ -121,6 +136,8 @@ FieldNpcMainEntryBinding::advance(FieldNpcMainEntryCursor &c) {
   return advanceFieldNpcMainEntry(services(), c);
 }
 FieldNpcMoveFrontier
+// Compose entry first. Pair admission reads two mapped words synchronously,
+// exposing no hold between lanes; movement child receives actual VM aliases.
 FieldNpcMainEntryBinding::advanceMovement(FieldNpcMainEntryCursor &entry,
                                           FieldNpcMainMoveCursor &movement) {
   if (advance(entry) != FieldNpcMainFrontier::Movement)
@@ -143,6 +160,9 @@ FieldNpcMainEntryBinding::advanceMovement(FieldNpcMainEntryCursor &entry,
   return advanceFieldNpcMainMovement(entry.actor, s, movement);
 }
 FieldNpcMoveFrontier
+// State10-clear movement goes straight to Detection, bypassing automatic pose.
+// Otherwise compose exact retained delta/factor. Double literals join guest high/
+// low words; numeric seed and source-clock quotient are explicit admissions.
 FieldNpcMainEntryBinding::advanceAutomaticPose(FieldNpcMainEntryCursor &entry,
                                                FieldNpcMainMoveCursor &movement,
                                                FieldNpcAutoPoseCursor &pose) {
@@ -171,6 +191,9 @@ FieldNpcMainEntryBinding::advanceAutomaticPose(FieldNpcMainEntryCursor &entry,
     if (!pool->pose(handle))
       return false;
     std::string name;
+    // Negative SIGNED selectors are source string addresses, bounded256 with
+    // NUL admission. Nonnegative selectors(including0) are indices. Resolve clock
+    // before force=true selectName/selectIndex; do not add evaluation/Main here.
     if (q.args[1] & 0x80000000u) {
       bool ended = false;
       for (unsigned i = 0; i < 256; ++i) {
@@ -199,6 +222,8 @@ FieldNpcMainEntryBinding::advanceAutomaticPose(FieldNpcMainEntryCursor &entry,
              ? FieldNpcMoveFrontier::Detection
              : FieldNpcMoveFrontier::Pending;
 }
+// Resume all prior actor stages before event detection. This binding handles
+// source event-ID lookup itself; other detection children remain real providers.
 FieldNpcDetectionFrontier FieldNpcMainEntryBinding::advanceDetection(
     FieldNpcMainEntryCursor &entry, FieldNpcMainMoveCursor &movement,
     FieldNpcAutoPoseCursor &pose, FieldNpcDetectionCursor &detection) {
@@ -228,6 +253,10 @@ FieldNpcDetectionFrontier FieldNpcMainEntryBinding::advanceDetection(
                  FieldNpcDetectionResponse &out) {
     auto &b = *static_cast<FieldNpcMainEntryBinding *>(p);
     auto &m = b.vm_.memory;
+    // evtGetPtrID: context803d8d30/803d8dd0 follows FRESH GP+14, independent
+    // of captured NPC bank. Context count/array+90 must alias resolved VM entries.
+    // Bound256, stride1b0, live byte8 mask1, ID15c: first source-order match.
+    // Zero/signed-negative count returns null; malformed storage holds.
     if (q.function == 0x80035a28) {
       // Actual original current-context count/array and first live-ID match.
       // Native admission bounds storage, never clamps or fabricates a pointer.
@@ -270,6 +299,9 @@ FieldNpcDetectionFrontier FieldNpcMainEntryBinding::advanceDetection(
   };
   return advanceFieldNpcMainDetection(entry.actor, s, detection);
 }
+// Mario getters retain atomic read-only child semantics: actual system-level
+// global80415190; kpaGetLevel801ff028 freshly admits Mario, requires byte3c==2,
+// then work298+4, otherwise0. Delegated detection leaf440f8 owns its effects.
 FieldNpcDetectionFrontier FieldNpcMainEntryBinding::advanceMarioDetection(
     FieldNpcMainEntryCursor &entry, FieldNpcMainMoveCursor &movement,
     FieldNpcAutoPoseCursor &pose, FieldNpcDetectionCursor &detection,
@@ -339,6 +371,9 @@ FieldNpcDetectionFrontier FieldNpcMainEntryBinding::advanceMarioDetection(
              ? FieldNpcDetectionFrontier::Display
              : FieldNpcDetectionFrontier::Pending;
 }
+// Material leaves operate on shared pose rows even if inactive:FlagOn40730,
+// FlagOff40710 use worde8; event color406b4 writesf0. Camera/matrix/queue work
+// still requires native display provider; no ready queue is invented here.
 FieldNpcDisplayFrontier FieldNpcMainEntryBinding::advanceDisplay(
     FieldNpcMainEntryCursor &entry, FieldNpcMainMoveCursor &movement,
     FieldNpcAutoPoseCursor &pose, FieldNpcDetectionCursor &detection,
@@ -383,6 +418,10 @@ FieldNpcDisplayFrontier FieldNpcMainEntryBinding::advanceDisplay(
   };
   return advanceFieldNpcMainDisplay(entry.actor, s, display);
 }
+// Preserve display frontier/depth into shadow. animPoseSetLocalPos39824 admits
+// full writable row170, ORs flag20 then writes matrix translation130/140/150.
+// Preflight writable alias keeps this multi-store child atomic on unavailable
+// storage; other shadow/queue requests retain their explicit source owners.
 FieldNpcDisplayFrontier FieldNpcMainEntryBinding::advanceShadow(
     FieldNpcMainEntryCursor &entry, FieldNpcMainMoveCursor &movement,
     FieldNpcAutoPoseCursor &pose, FieldNpcDetectionCursor &detection,
@@ -433,6 +472,10 @@ FieldNpcDisplayFrontier FieldNpcMainEntryBinding::advanceShadow(
              : FieldNpcDisplayFrontier::Pending;
 }
 FieldNpcActorsFrontier
+// One bound scan in original record order. Child terminal states are reused
+// through late history; only then resume entry78(final clear). If the NEXT
+// entry holds, keep old children until it reaches Movement/FieldTail, then reset.
+// Never run a clock prepass or clear/recycle an actor early to advance the scan.
 FieldNpcMainEntryBinding::advanceActors(FieldNpcMainActorsCursor &c) {
   using Result = FieldNpcActorsFrontier;
   if ((c.binding && c.binding != this) ||
@@ -469,6 +512,9 @@ FieldNpcMainEntryBinding::advanceActors(FieldNpcMainActorsCursor &c) {
   default: return Result::Pending;
   }
 }
+// Actor traversal runs once; retained field tail then clears original F54d.
+// Phase2 is terminal/effect-free, not automatic reset. Queue/camera/Mario/field
+// owners and borrowed resources outlive holds AND deferred callback dispatch.
 bool FieldNpcMainEntryBinding::advanceMain(FieldNpcMainCursor &c) {
   if ((c.binding && c.binding != this) ||
       !poses_.aliases(*owner_->poses().sharedPool(), vm_.memory))
@@ -507,6 +553,8 @@ bool FieldNpcMainEntryBinding::advanceMain(FieldNpcMainCursor &c) {
       return entry.request(p, {0x8005e0c0, {}}, v);
     };
     if (q.function == 0x8005e0c0) return mario(out.word);
+    // intplGetValue admits audited modes1/5 only, raw signed counter words and
+    // source single grouping through cameraInterpolation; no easing clamp.
     if (q.function == 0x80006c8c) {
       auto sw = [](uint32_t v) {return v <= 0x7fffffff ? int32_t(v) : int32_t(int64_t(v)-0x100000000LL);};
       if (q.args[0] != 1 && q.args[0] != 5) return false;
@@ -517,6 +565,9 @@ bool FieldNpcMainEntryBinding::advanceMain(FieldNpcMainCursor &c) {
     }
     // Atomic read-only source leaves. Each child gets FRESH Mario itself;
     // never substitute the parent's retained pointer or outer mode gate.
+    // kpaJumpChk/fire helper queries each get FRESH Mario. Jump tests half50;
+    // fire requires main mask1 then work298+13c kind20..23 or40..43 inclusive.
+    // Do not reuse tail parent's pointer/type gate or invent missing work state.
     if (q.function == 0x801fcc98 || q.function == 0x801fe1b0) {
       uint32_t player=0;
       if (!mario(player)) return false;

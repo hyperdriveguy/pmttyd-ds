@@ -3,6 +3,8 @@
 #include <cstring>
 namespace ttyd {
 namespace {
+// Exact float bits for words/retry identity; single() forces binary32
+// rounding, preserving separate squares plus add instead of a fused norm.
 float real(uint32_t w) {
   float f;
   std::memcpy(&f, &w, 4);
@@ -18,6 +20,9 @@ float single(float f) {
   return v;
 }
 } // namespace
+// Original automatic pose only, not animation Main/evaluation. Actor main400
+// enables; fresh dt1a4>ZERO admits. Descriptor28 supplies idle/walk/run names
+// at10/18/1c and run threshold3c. Actor phase108 is1/2/3; handle104 is separate.
 bool advanceFieldNpcMainAutoPose(uint32_t actor, float dx, float dz,
                                  float factor,
                                  const FieldNpcAutoPoseServices &s,
@@ -71,6 +76,9 @@ bool advanceFieldNpcMainAutoPose(uint32_t actor, float dx, float dz,
         return false;
       c.phase = c.dt > c.zero ? 3 : 90;
       break;
+    // Separate rounded dx*dx,dz*dz,then sum. Inline norm owns its three double
+    // refinements and canonical NaN branch; caller must not replace with hypotf.
+    // Reload dt AFTER the norm child, so provider mutations remain observable.
     case 3: {
       const float x2 = single(c.dx * c.dx);
       const float z2 = single(c.dz * c.dz);
@@ -91,12 +99,18 @@ bool advanceFieldNpcMainAutoPose(uint32_t actor, float dx, float dz,
         return false;
       ++c.phase;
       break;
+    // Original idle threshold8041fcdc bits3dcccccd(~.1); strict speed<idle
+    // selects stay1. Otherwise captured descriptor3c*retainedFactor chooses
+    // walk2/run3 with strict comparison; unordered speed/threshold selects run.
     case 21:
       if (!load(0x8041fcdc, c.idle))
         return false;
       c.speed = single(c.norm / c.dt);
       c.phase = c.speed < c.idle ? 22 : 30;
       break;
+    // Stay checks phase BEFORE descriptor lookup. Walk/run capture descriptor
+    // for threshold BEFORE phase check and reuse it for later name load.
+    // Equal phase skips child AND phase store; no forced restart in that case.
     case 22:
       c.selectedPhase = 1;
       c.nameOffset = 0x10;
@@ -127,6 +141,9 @@ bool advanceFieldNpcMainAutoPose(uint32_t actor, float dx, float dz,
         return false;
       c.phase = c.value == c.selectedPhase ? 90 : 40;
       break;
+    // Force1 source selection request; read name at its original later point.
+    // Acknowledged child effects precede phase108 store; a held store must not
+    // replay animation selection. Completion retains phase90 for parent reuse.
     case 40:
       if (!read(actor + 0x104, c.call.args[0]))
         return false;

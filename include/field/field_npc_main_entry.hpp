@@ -2,6 +2,8 @@
 #include "field_npc_clock.hpp"
 #include <array>
 namespace ttyd {
+// Original callee address plus two raw guest argument words. Response is a
+// guest address or scalar word; neither a host pointer nor an event opcode.
 struct FieldNpcMainEntryRequest {
   uint32_t function = 0;
   std::array<uint32_t, 2> args{};
@@ -18,9 +20,15 @@ struct FieldNpcMainEntryServices {
   // bank/count/array must not be normalized or clamped. Negative count skips.
   bool (*bank)(void *, uint32_t, uint32_t, uint32_t) = nullptr;
 };
+// Pending may follow completed stores; keep the same cursor/providers.
+// Movement suspends the entry at actor-body start; FieldTail ends only its scan.
+// The binding composes later stages; this helper alone never acknowledges Main.
 enum class FieldNpcMainFrontier { Pending, Movement, FieldTail };
 // Retained source parent registers through80049e8c exclusive. Movement and tail
-// are unfinished frontiers, NEVER success or permission to skip source work.
+// are caller-owned boundaries, NEVER success or permission to skip source work.
+// Whole-pass bank/count/array and current actor survive body/next-entry holds.
+// phase is a primitive continuation, index a source slot, factor the retained
+// special-room movement/pose multiplier. Child clock resets on its own success.
 struct FieldNpcMainEntryCursor {
   bool active = false;
   FieldNpcMainEntryServices owner;

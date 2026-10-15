@@ -2,6 +2,8 @@
 #include <cstring>
 namespace ttyd {
 namespace {
+// Bit copies preserve source payloads; volatile rounded() keeps each binary32
+// multiply/add/subtract boundary. No wider/FMA vector graph is substituted.
 float real(uint32_t v) {
   float f;
   std::memcpy(&f, &v, 4);
@@ -18,6 +20,9 @@ float rounded(float f) {
 }
 } // namespace
 FieldNpcMoveFrontier
+// Actor layout:state1d4,dt1a4(seconds),pending X/Z1b4/1bc,root8c/90/94,
+// previous98/9c/a0,heading1ac,side contact2fc. Phases retain primitive effects;
+// missing child provider is Pending, never a no-op movement success.
 advanceFieldNpcMainMovement(uint32_t actor, const FieldNpcMainMoveServices &s,
                             FieldNpcMainMoveCursor &c) {
   using R = FieldNpcMoveFrontier;
@@ -56,6 +61,9 @@ advanceFieldNpcMainMovement(uint32_t actor, const FieldNpcMainMoveServices &s,
   };
   for (;;)
     switch (c.phase) {
+    // Captured state10 clear jumps straight to Detection without pose delta.
+    // Otherwise only dt>sourceZERO admits pending motion; zero/negative/NaN dt
+    // still reaches side-response gate and local position subtraction.
     case 0:
       if (!read(actor + 0x1d4, c.state))
         return R::Pending;
@@ -71,6 +79,9 @@ advanceFieldNpcMainMovement(uint32_t actor, const FieldNpcMainMoveServices &s,
         return R::Pending;
       c.phase = c.x > c.zero ? 3 : 30;
       break;
+    // Captured special100000 without10000000 halves X/Z with original.5.
+    // Fresh main08000000 zeroes Z;40000000 selects direct X-store BEFORE fresh
+    // Z-read/store. Direct path leaves Y/contact/history with other owners.
     case 3:
       if (!load(actor + 0x1b4, c.dx))
         return R::Pending;
@@ -123,6 +134,10 @@ advanceFieldNpcMainMovement(uint32_t actor, const FieldNpcMainMoveServices &s,
         return R::Pending;
       c.phase = 26;
       break;
+    // npcHitCheckSide80048418 gets temporary X/Z plus real heading alias.
+    // Store then RELOAD contact2fc. Contact causes second request using locals
+    // minus FRESH actor roots, with real8c/94 output aliases. Discard its return;
+    // successful child owns all writes. Null contact copies locals X then Z.
     case 13:
       if (!load(actor + 0x8c, c.x))
         return R::Pending;
@@ -189,6 +204,9 @@ advanceFieldNpcMainMovement(uint32_t actor, const FieldNpcMainMoveServices &s,
         return R::Pending;
       ++c.phase;
       break;
+    // Fresh sourceZERO clears both pending components before npcMoveG80048d9c.
+    // Only after gravity returns, fresh flags8/20/4000 bypass Mario-side response
+    //800490cc. Prior flag captures must not replace this post-gravity gate.
     case 26:
       if (!read(0x8041fc7c, c.word))
         return R::Pending;
@@ -222,6 +240,9 @@ advanceFieldNpcMainMovement(uint32_t actor, const FieldNpcMainMoveServices &s,
       ++c.phase;
       break;
     // Original paired XY loads, local XY subtraction/store, then fresh Z loads.
+    // PSVECSubtract8029eba4: paired currentXY, paired previousXY, local SP
+    // subtraction, then fresh scalar currentZ/previousZ. Each pair admits both
+    // words or neither. Never copy local delta into actor history here.
     case 32: {
       const auto v =
           s.pair ? s.pair(s.memory.user, actor + 0x8c) : std::nullopt;

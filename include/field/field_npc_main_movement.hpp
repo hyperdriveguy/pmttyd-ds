@@ -6,6 +6,9 @@ namespace ttyd {
 // ActorXZ outputs and heading are real aliases and must be written by the
 // child.
 enum class FieldNpcMoveOutput { None, TemporaryXZ, ActorXZ };
+// Function is an original callee identity. TemporaryXZ uses semantic stack
+// locals (zero argument lanes are NOT guest pointers); ActorXZ requires the
+// child to publish actual actor outputs/heading through the supplied VM.
 struct FieldNpcMainMoveRequest {
   uint32_t function = 0;
   std::array<uint32_t, 4> args{};
@@ -27,6 +30,9 @@ struct FieldNpcMainMoveServices {
 enum class FieldNpcMoveFrontier { Pending, AutomaticPose, Detection };
 // Complete source region80049e8c..80049fbc, including PSVECSubtract. Neither
 // frontier permits advancing the actor loop or claiming Main completion.
+// Captured actor/providers must match retries. current/previous/delta are
+// local vectors; producing delta does not publish previous-position history.
+// Completed frontiers stay active/effect-free until parent retires the actor.
 struct FieldNpcMainMoveCursor {
   bool active = false;
   FieldNpcMainMoveServices owner;

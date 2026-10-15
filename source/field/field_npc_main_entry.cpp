@@ -2,6 +2,8 @@
 #include <cstring>
 namespace ttyd {
 namespace {
+// Original float words retain bits; service identity includes every primitive
+// used by entry/clock so a held pass cannot migrate to a replacement VM.
 float real(uint32_t w) {
   float f;
   std::memcpy(&f, &w, 4);
@@ -17,6 +19,10 @@ bool same(const FieldNpcMainEntryServices &a,
 }
 } // namespace
 FieldNpcMainFrontier
+// Ordered original traversal; native phase numbers name continuations.
+// GP80415fd0/context14 selects bank8041e8b4 or e8c8 (stride14hex), whose
+// count+4/array+c are captured once. MainCount8041e8ac wraps32. Actor stride340
+// is packed storage, not a visible-actor list or a per-frame allocation.
 advanceFieldNpcMainEntry(const FieldNpcMainEntryServices &s,
                          FieldNpcMainEntryCursor &c) {
   using Result = FieldNpcMainFrontier;
@@ -44,6 +50,10 @@ advanceFieldNpcMainEntry(const FieldNpcMainEntryServices &s,
   };
   for (;;)
     switch (c.phase) {
+    // marioGetPtr8005e0c0 returns actual Mario; clear encounter candidate1dc,
+    // preserving radial hint1d8. Capture bank before child calls can change GP.
+    // Read count, increment local MainCount, read array, admit storage, THEN
+    // publish MainCount. Admission is native availability, not original work.
     case 0:
       if (!read(0x80415fd0, c.gp))
         return Result::Pending;
@@ -103,6 +113,10 @@ advanceFieldNpcMainEntry(const FieldNpcMainEntryServices &s,
       }
       ++c.phase;
       break;
+    // Both initial main masks1(active)/2(query) required. Rejecting this single
+    // captured word skips timer/clock/body/history AND final state clear.
+    // Pose handle104 getter80039cf8 supplies actual shared row; initial8000
+    // selects row mask100 even if getter side effects change later actor flags.
     case 11:
       if (!read(c.actor, c.flags))
         return Result::Pending;
@@ -131,6 +145,9 @@ advanceFieldNpcMainEntry(const FieldNpcMainEntryServices &s,
         return Result::Pending;
       ++c.phase;
       break;
+    // Fresh main100000 clear ORs state10; fresh state10000 overrides by clearing
+    //10. Timer320 is UNSIGNED16 and decrements only nonzero. Clock runs before
+    // fresh query2 recheck, so post-clock rejection retains those prior effects.
     case 16:
       if (!read(c.actor, c.value))
         return Result::Pending;
@@ -181,6 +198,11 @@ advanceFieldNpcMainEntry(const FieldNpcMainEntryServices &s,
         return Result::Pending;
       c.phase = (c.value & 2) ? 25 : 78;
       break;
+    // Copy prior special state100000 into200000, then freshly clear100000.
+    // Compare fresh GP+12c inline room name against kpa_03 at802c1394 using
+    // strcmp8026d464. Only Y>365(literal8041fc88) rejects:NaN also enters.
+    // First transition requests SFX_KUPPA_3RD_WATER_FALL1 at802c139c via
+    //800d9848 with actual actor root8c alias; missing sound holds after stores.
     case 25:
       if (!read(c.actor + 0x1d4, c.state))
         return Result::Pending;
@@ -249,6 +271,9 @@ advanceFieldNpcMainEntry(const FieldNpcMainEntryServices &s,
         return Result::Pending;
       c.phase = 40;
       break;
+    // Fresh special100000 without10000000 loads100 then.5 before storing
+    // captured100 to1d0; otherwise factor1 and1d0 unchanged. Special freshly
+    // ORs half31e mask1; ordinary visits do not clear that halfword.
     case 40:
       if (!read(c.actor + 0x1d4, c.state))
         return Result::Pending;
@@ -297,6 +322,9 @@ advanceFieldNpcMainEntry(const FieldNpcMainEntryServices &s,
         return Result::Pending;
       c.phase = 60;
       break;
+    // Composed body must finish through late history before binding resumes78.
+    //78/79 clear ONLY state10 from a fresh word;80 advances captured slot.
+    // A later body hold is not permission to restart entry or rescan flags.
     case 60:
       return Result::Movement; // Next source load49e8c; no later work skipped.
     case 78:

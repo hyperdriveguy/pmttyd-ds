@@ -2,6 +2,8 @@
 #include "field_npc_inline_norm.hpp"
 #include <array>
 namespace ttyd {
+// animPoseSetAnim80041170(handle, signed selector, force1). Selector's sign
+// chooses guest string versus index; the binding owns mapped string admission.
 struct FieldNpcAutoPoseRequest {
   uint32_t function = 0;
   std::array<uint32_t, 3> args{};
@@ -14,6 +16,9 @@ struct FieldNpcAutoPoseServices {
   bool (*estimate)(void *, double, double &) = nullptr;
   bool (*request)(void *, const FieldNpcAutoPoseRequest &) = nullptr;
 };
+// Terminal phase90 remains active/effect-free. Reject changed actor, input
+// float bits or providers; retained factor/delta belong to this actor visit.
+// Descriptor can be retained across later mutations, unlike a fresh name load.
 struct FieldNpcAutoPoseCursor {
   bool active = false;
   FieldNpcAutoPoseServices owner;
@@ -24,7 +29,7 @@ struct FieldNpcAutoPoseCursor {
   FieldNpcNormCursor normCursor;
   FieldNpcAutoPoseRequest call;
 };
-// Complete source80049fbc..8004a160 only. True reaches unfinished Detection;
+// Complete source80049fbc..8004a160 only. True reaches caller-owned Detection;
 // never completes Main, advances actors or publishes previous-position history.
 bool advanceFieldNpcMainAutoPose(uint32_t actor, float deltaX, float deltaZ,
                                  float retainedFactor,
