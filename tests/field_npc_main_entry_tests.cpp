@@ -338,7 +338,9 @@ struct NativeWorld {
   std::unique_ptr<FieldNpcMainEntryBinding> entry;
   uint32_t next = 0x8a000000, actor = 0, pose = 0;
   bool marioReady = false, movementReady = false;
-  unsigned movementCalls = 0;
+  unsigned movementCalls = 0, poseClockCalls = 0;
+  bool poseClockReady = false;
+  BattlePoseClock selectedClock{1234, 5678};
   static constexpr uint32_t Work = 0x803d9470, M = 0x8d000000;
   uint32_t word(uint32_t a) {
     uint32_t v;
@@ -425,6 +427,15 @@ struct NativeWorld {
     n.user = this;
     n.numbers.divide = nativeFieldNpcClockDivide;
     n.numbers.convert = nativeFieldNpcClockConvert;
+    n.estimate = nativeFieldNpcReciprocalSqrtEstimate;
+    n.poseClock = [](void *p, BattlePoseClock &out) {
+      auto &f = *static_cast<NativeWorld *>(p);
+      if (!f.poseClockReady)
+        return false;
+      ++f.poseClockCalls;
+      out = f.selectedClock;
+      return true;
+    }; // Explicit source-clock quotient fixture, never a rendering-frame clock.
     n.movement = [](void *p, EventAddressSpace &memory,
                     const FieldNpcMainMoveRequest &q,
                     FieldNpcMainMoveResponse &) {
@@ -484,6 +495,59 @@ void actualAliases() {
   assert(f.entry->advanceMovement(c, move) ==
              FieldNpcMoveFrontier::AutomaticPose &&
          f.movementCalls == 1 && f.word(0x8041e8ac) == 1);
+  // Use the same real pose for automatic selection, retaining the descriptor
+  // and local movement delta. Clock unavailability must not restart the pose
+  // or publish phase; the later real shared-pool restart happens once.
+  constexpr uint32_t Descriptor = 0x8e000000, AnimName = 0x8e000100;
+  assert(f.vm->memory.registerRam(Descriptor, std::vector<uint8_t>(64)));
+  const auto *poseBefore = f.pool->pose(int32_t(f.pose));
+  assert(poseBefore && poseBefore->resource->names.size() > 1);
+  const auto originalName = poseBefore->resource->names.at(1);
+  std::vector<uint8_t> nameBytes(originalName.begin(), originalName.end());
+  nameBytes.push_back(0);
+  assert(f.vm->memory.registerRam(AnimName, std::move(nameBytes)));
+  f.store(f.actor, f.word(f.actor) | 0x400);
+  f.store(f.actor + 0x28, Descriptor);
+  f.store(Descriptor + 0x3c, bits(10000));
+  f.store(Descriptor + 0x18, AnimName);
+  f.store(f.actor + 0x108, 0);
+  FieldNpcAutoPoseCursor automatic;
+  const auto oldTimestamp = poseBefore->timestamp();
+  assert(f.entry->advanceAutomaticPose(c, move, automatic) ==
+             FieldNpcMoveFrontier::Pending &&
+         automatic.phase == 42 && f.poseClockCalls == 0 &&
+         f.pool->pose(int32_t(f.pose))->timestamp() == oldTimestamp &&
+         f.word(f.actor + 0x108) == 0);
+  f.poseClockReady = true;
+  assert(f.entry->advanceAutomaticPose(c, move, automatic) ==
+             FieldNpcMoveFrontier::Detection &&
+         f.poseClockCalls == 1 && f.word(f.actor + 0x108) == 2);
+  const auto *selected = f.pool->pose(int32_t(f.pose));
+  const auto expectedStamp = selected->word(0xc) ? f.selectedClock.modeNonzero
+                                                 : f.selectedClock.modeZero;
+  assert(selected->word(0x14) == 1 && selected->timestamp() == expectedStamp &&
+         selected->word(0x3c) == 0xffffffff && selected->word(0x40) == 0 &&
+         f.word(f.view->poseAddress(f.pose) + 0x14) == 1);
+  assert(f.entry->advanceAutomaticPose(c, move, automatic) ==
+             FieldNpcMoveFrontier::Detection &&
+         f.poseClockCalls == 1 && f.word(0x8041e8ac) == 1 && c.phase == 60);
+  // Raw nonnegative selector is an index, including null=>descriptor0. Force1
+  // restarts even though the two changed parent phases can select the same
+  // clip.
+  for (uint32_t selector : {1u, 0u, 0x7fffffffu}) {
+    f.store(Descriptor + 0x18, selector);
+    f.store(f.actor + 0x108, 0);
+    f.selectedClock.modeZero += 9;
+    f.selectedClock.modeNonzero += 9;
+    FieldNpcAutoPoseCursor numeric;
+    assert(f.entry->advanceAutomaticPose(c, move, numeric) ==
+           FieldNpcMoveFrontier::Detection);
+    selected = f.pool->pose(int32_t(f.pose));
+    assert(selected->word(0x14) == (selector == 1 ? 1u : 0u));
+    assert(selected->timestamp() == (selected->word(0xc)
+                                         ? f.selectedClock.modeNonzero
+                                         : f.selectedClock.modeZero));
+  }
   // Source getter is address arithmetic, not active/clip readiness. An explicit
   // cold-slot handle input must mutate the SAME inactive row without a new
   // gate.

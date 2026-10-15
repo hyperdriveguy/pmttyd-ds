@@ -140,4 +140,61 @@ FieldNpcMainEntryBinding::advanceMovement(FieldNpcMainEntryCursor &entry,
   };
   return advanceFieldNpcMainMovement(entry.actor, s, movement);
 }
+FieldNpcMoveFrontier
+FieldNpcMainEntryBinding::advanceAutomaticPose(FieldNpcMainEntryCursor &entry,
+                                               FieldNpcMainMoveCursor &movement,
+                                               FieldNpcAutoPoseCursor &pose) {
+  const auto frontier = advanceMovement(entry, movement);
+  if (frontier != FieldNpcMoveFrontier::AutomaticPose)
+    return frontier;
+  FieldNpcAutoPoseServices s;
+  s.memory = services().clock;
+  s.doubleWord = [](void *p, uint32_t a) -> std::optional<uint64_t> {
+    auto &m = static_cast<FieldNpcMainEntryBinding *>(p)->vm_.memory;
+    uint32_t hi = 0, lo = 0;
+    if (!m.readWord(a, hi) || !m.readWord(a + 4, lo))
+      return {};
+    return uint64_t(hi) << 32 | lo;
+  };
+  s.estimate = [](void *p, double q, double &out) {
+    auto &b = *static_cast<FieldNpcMainEntryBinding *>(p);
+    return b.native_.estimate && b.native_.estimate(b.native_.user, q, out);
+  };
+  s.request = [](void *p, const FieldNpcAutoPoseRequest &q) {
+    auto &b = *static_cast<FieldNpcMainEntryBinding *>(p);
+    if (q.function != 0x80041170 || q.args[2] != 1 || !b.native_.poseClock)
+      return false;
+    auto pool = b.owner_->poses().sharedPool();
+    const auto handle = int32_t(q.args[0]);
+    if (!pool->pose(handle))
+      return false;
+    std::string name;
+    if (q.args[1] & 0x80000000u) {
+      bool ended = false;
+      for (unsigned i = 0; i < 256; ++i) {
+        uint8_t ch;
+        if (uint64_t(q.args[1]) + i > UINT32_MAX ||
+            !b.vm_.memory.readByte(q.args[1] + i, ch))
+          return false;
+        if (!ch) {
+          ended = true;
+          break;
+        }
+        name.push_back(char(ch));
+      }
+      if (!ended)
+        return false;
+    }
+    BattlePoseClock clock;
+    if (!b.native_.poseClock(b.native_.user, clock))
+      return false;
+    return q.args[1] & 0x80000000u
+               ? pool->selectName(handle, name, true, clock)
+               : pool->selectIndex(handle, q.args[1], true, clock);
+  };
+  return advanceFieldNpcMainAutoPose(entry.actor, movement.delta[0],
+                                     movement.delta[2], entry.factor, s, pose)
+             ? FieldNpcMoveFrontier::Detection
+             : FieldNpcMoveFrontier::Pending;
+}
 } // namespace ttyd
