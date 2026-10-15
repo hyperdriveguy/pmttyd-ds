@@ -15,6 +15,9 @@ struct Running {bool& flag;explicit Running(bool& f):flag(f){flag=true;}~Running
 }
 struct BattlePinchCursor::State {
  BattlePinchServices owner;bool direct=false,adapterCaptured=false;
+ // All-unit phases: 0 refresh flags; 1 scan alert group; 2 status child;
+ // 3 countdown; 4 sound child; 5 no candidate. group0 checks 0x20000000,
+ // group1 checks 0x10000000. unitPhase independently resumes per-unit updates.
  uint32_t input=0,phase=0,slot=0,unit=0,unitPhase=0,group=0,pending=0;
  int32_t mode=0;float delta=0,bias=0;
  BattleAudienceTargetCursor target;
@@ -23,6 +26,9 @@ struct BattlePinchCursor::State {
  uint8_t byte(uint32_t a)const{return owner.actors.byte(owner.actors.user,a);}
  void store(uint32_t a,uint32_t n)const{owner.actors.memory.storeWord(owner.actors.memory.user,a,n);}
  void storeByte(uint32_t a,uint8_t n)const{owner.actors.memory.storeByte(owner.actors.memory.user,a,n);}
+ // First transition into a flag can change audience target for Mario only.
+ // Capture each adapter once: danger multiplier 0x804249a0, pinch 0x80424994,
+ // baseline audience+0x13778, zero bias 0x80424988. Retain target child's work.
  bool adapter(bool danger){
   if(!adapterCaptured){
    // Whole BaseGetPtr first; multiplier, baseline, bias then fmuls.
@@ -38,6 +44,11 @@ struct BattlePinchCursor::State {
  }
  bool updateUnit(){
   for(;;)switch(unitPhase){
+  // Unit definition pointer +0x10; signed current/max HP +0x10c/+0x108.
+  // Definition +0xd threshold controls 0x20000000; +0xc controls 0x10000000.
+  // Require HP below max even when below threshold. Set flag before audience
+  // child; mode0/Mario kind222 admits it, and the first flag suppresses the
+  // second adapter. Clearing flags does not reverse previous audience changes.
   case 0:{
    const auto definition=word(unit+0x10);const auto hp=signed16(half(unit+0x10c));const auto threshold=byte(definition+0xd);
    if(hp<=threshold && hp<signed16(half(unit+0x108))){
@@ -80,6 +91,8 @@ struct BattlePinchRunner {
   if(!cursor.state_){cursor.state_=std::make_unique<BattlePinchCursor::State>();auto& c=*cursor.state_;
    c.owner=s;c.input=input;c.mode=mode;c.direct=direct;if(direct)c.unit=input;}
   auto& c=*cursor.state_;
+  // Direct entry updates only this unit. All-unit entry first visits all
+  // 64 registry slots, preserving unit and unitPhase across a held adapter.
   if(direct){if(!c.updateUnit())return false;cursor.state_.reset();return true;}
   const auto finish=[&](){cursor.state_.reset();return true;};
   for(;;)switch(c.phase){
@@ -93,6 +106,10 @@ struct BattlePinchRunner {
    c.unit=battleRegistryUnit(input,int32_t(c.slot),s.actors);
    if(!c.unit || !(c.word(c.unit+0x138)&(c.group?0x10000000u:0x20000000u))){++c.slot;break;}
    c.phase=2;break;
+  // Status27 excludes the candidate, as does nonzero belonging byte +0xc.
+  // Mario222 or partner kinds224..230 with positive HP may trigger an alert.
+  // The first otherwise-qualified unit ends the group even for wrong kind/dead
+  // HP; continuing to search would change the source's group selection.
   case 2:{
    c.pending=0x80127814;if(!s.status)return false;
    const auto status=s.status(s.user,c.unit,27);if(!status)return false;
@@ -105,6 +122,9 @@ struct BattlePinchRunner {
    if(!c.group){c.group=1;c.slot=0;c.phase=1;}else c.phase=5;
    break;
   }
+  // Alert byte B+0x18ff8 wraps on decrement, then uses signed-positive
+  // test (1..127). Expiry reloads 60 source invocations, not render frames.
+  // B+0x1720 bit0 gates sound; countdown write precedes any sound hold.
   case 3:{
    c.storeByte(input+0x18ff8,uint8_t(c.byte(input+0x18ff8)-1));
    const auto countdown=c.byte(input+0x18ff8);
@@ -113,9 +133,13 @@ struct BattlePinchRunner {
    if(!(c.word(input+0x1720)&1))return finish();
    c.phase=4;break;
   }
+  // psndSFXOn key 0x802efc04 for group0, 0x802efc14 for group1.
+  // Missing/held sound remains pending; no invented handle acknowledges it.
   case 4:
    c.pending=0x800d98bc;if(!s.sound || !s.sound(s.user,c.group?0x802efc14:0x802efc04))return false;
    return finish();
+  // No accepted alert candidate: clear Mario's packed +0x238 word and
+  // shared countdown. Do not infer an unnamed field's broader meaning.
   case 5:{
    const auto mario=battleMarioUnit(input,s.actors);if(mario)c.store(mario+0x238,0);
    c.storeByte(input+0x18ff8,0);return finish();

@@ -114,3 +114,9 @@ require a systematic inline numeric/behavior audit. Concurrent additions to
 already covered modules also need review;
 existing comments and contracts in those areas do not imply complete coverage.
 Progress and exact validation are recorded in [PROGRESS](../PROGRESS.md).
+
+Retained audience target/turn-end numeric and provider contracts are described in
+[audience continuations](battle-retained-audience.md). Packed threshold flags,
+alert selection/countdown and recovery setters are described in
+[pinch and recovery](battle-pinch-recovery.md). Source Turn/barrier parents and
+newer Trio integration still require their separate inline audit.

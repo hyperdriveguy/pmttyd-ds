@@ -5,6 +5,8 @@ namespace ttyd {
 namespace {
 uint32_t bits(float f){uint32_t n;std::memcpy(&n,&f,4);return n;}
 float scalar(uint32_t n){float f;std::memcpy(&f,&n,4);return f;}
+// Pin memory/callback identity while held. This comparison does not include
+// actors.audienceLifecycle; callers still own the lifetime of all actor services.
 bool same(const BattleActorServices& a,const BattleActorServices& b){
  const auto& x=a.memory;const auto& y=b.memory;
  return a.user==b.user && a.byte==b.byte && x.user==y.user && x.word==y.word && x.half==y.half &&
@@ -15,6 +17,10 @@ struct Running {bool& flag;explicit Running(bool& f):flag(f){flag=true;}~Running
 }
 struct BattleAudienceTargetCursor::State {
  BattleAudienceTargetContinuationServices owner;
+ // Phases: 0 parent offset cancellation; 1 capture Sub owner; 2 split chunk;
+ // 3/4 await positive/negative conversion; 5 Sub done; 6 parent clamps;
+ // 7 unsupported numeric domain, sticky until explicit reset. Addresses are
+ // original guest tokens, never host pointers or render-frame deadlines.
  bool sub=false;uint32_t deltaBits=0,biasBits=0,phase=0,parent=0,child=0,pending=0;
  float remaining=0,zero=0,chunk=0,desired=0,quotient=0;
 };
@@ -26,6 +32,8 @@ bool BattleAudienceTargetCursor::reset(){if(invoking_)return false;state_.reset(
 struct BattleAudienceTargetRunner {
  static bool run(float delta,float bias,bool sub,const BattleAudienceTargetContinuationServices& s,BattleAudienceTargetCursor& cursor){
   if(cursor.invoking_ || !s.actors.memory.word || !s.actors.memory.storeWord)return false;
+  // Compare raw bits rather than float equality: the held invocation must
+  // also retain NaN payloads and distinguish +0 from -0.
   if(cursor.state_){const auto& c=*cursor.state_;
    if(c.sub!=sub || c.deltaBits!=bits(delta) || c.biasBits!=bits(bias) || c.owner.user!=s.user ||
        c.owner.truncate!=s.truncate || !same(c.owner.actors,s.actors))return false;
@@ -41,6 +49,11 @@ struct BattleAudienceTargetRunner {
    const uint64_t biasBits=(uint64_t(high)<<32)|low,insert=(uint64_t(0x43300000)<<32)|(n^0x80000000u);
    double biasValue,value;std::memcpy(&biasValue,&biasBits,8);std::memcpy(&value,&insert,8);return float(value-biasValue);};
   for(;;)switch(c.phase){
+  // Audience base = current global battle + 0x2858. Packed float fields:
+  // 0x13778 baseline, 0x1377c desired target, 0x13780 signed offset;
+  // 0x13790 signed capacity. Parent and Sub capture separate global owners.
+  // Apply bias first; opposite-sign delta cancels offset before changing target.
+  // Keep the source stores/reloads: providers can observe their exact order.
   case 0:{
    c.parent=currentBattleAddress(s.actors)+0x2858;
    auto zero=real(0x80424988);float offset=real(c.parent+0x13780)+bias;store(c.parent+0x13780,offset);
@@ -58,6 +71,10 @@ struct BattleAudienceTargetRunner {
    c.phase=1;break;
   }
   case 1:c.child=currentBattleAddress(s.actors)+0x2858;c.zero=real(0x80424988);c.phase=2;break;
+  // Source literals are read through guest memory: zero 0x80424988,
+  // +1 0x80424990, -1 0x804249d4, weighting step 0x804249ac.
+  // Each chunk advances remaining once, then freezes quotient/desired across
+  // conversion holds. Nonfinite/nonprogressing domains hold instead of spinning.
   case 2:{
    if(c.remaining==c.zero){c.phase=c.sub?5:6;break;}
    c.pending=0x801a18cc;
@@ -79,6 +96,9 @@ struct BattleAudienceTargetRunner {
    }
    store(c.child+0x1377c,real(c.child+0x1377c)+c.chunk);c.phase=2;break;
   }
+  // An engaged conversion result, including zero, acknowledges this child.
+  // Weighted branches divide by converted integer +/- 1 using 32-bit wrapping
+  // and the original xoris/lfd bias; do not substitute host rounding/reassociate.
   case 3:case 4:{
    c.pending=c.phase==3?0x801a1984:0x801a19f8;
    if(!s.truncate)return false;
@@ -95,6 +115,9 @@ struct BattleAudienceTargetRunner {
    c.phase=2;c.pending=0;break;
   }
   case 5:cursor.state_.reset();return true;
+  // Only the parent clamps desired target to zero/capacity and offset to
+  // original min/max literals 0x804249d8/dc. Standalone Sub skips these clamps.
+  // Clamp against the parent's capture even if Sub used a different global B.
   case 6:{
    const auto zero=real(0x80424988);if(real(c.parent+0x1377c)<zero)store(c.parent+0x1377c,zero);
    const auto rawCapacity=m.word(m.user,c.parent+0x13790);

@@ -15,6 +15,9 @@ struct Running {bool& flag;explicit Running(bool& f):flag(f){flag=true;}~Running
 }
 struct BattleAudienceTurnEndCursor::State {
  BattleAudienceTurnEndServices owner;
+ // Phases: 0 capture/chance update; 1 division; 2 retained target child;
+ // 3 threshold category; 4 one RNG draw; 5 target capture; 6 conversion/count;
+ // 7 AddAudience captures/early gates; 8 retained allocation/removal suffix.
  uint32_t phase=0,pending=0,battle=0,mario=0,audience=0,group=0,sets=0,numOwner=0;
  int32_t numerator=0,level=0,threshold=0,target=0;
  float delta=0,bias=0,targetSum=0;
@@ -25,6 +28,9 @@ struct BattleAudienceTurnEndCursor::State {
  uint8_t byte(uint32_t a)const{return owner.actors.byte(owner.actors.user,a);}
  void store(uint32_t a,uint32_t n)const{owner.actors.memory.storeWord(owner.actors.memory.user,a,n);}
  uint32_t base()const{return currentBattleAddress(owner.actors)+0x2858;}
+ // Phase-list IDs are original numeric categories, not native actor IDs.
+ // Each call recaptures global B independently; count/list live at audience
+ // +0x13904/+0x138cc. Do not hoist base() across successive category calls.
  void category(int32_t kind){
   const auto a=base(),count=word(a+0x13904);
   for(int32_t i=0;i<signedWord(count);++i)if(word(a+0x138cc+4*uint32_t(i))==uint32_t(kind))return;
@@ -44,6 +50,11 @@ bool resumePackedBattleAudienceTurnEnd(const BattleAudienceTurnEndServices& s,Ba
  if(!cursor.state_){cursor.state_=std::make_unique<BattleAudienceTurnEndCursor::State>();cursor.state_->owner=s;}
  auto& c=*cursor.state_;const auto finish=[&](){cursor.state_.reset();return true;};
  for(;;)switch(c.phase){
+ // Capture battle, Mario, audience and unused pouch in original order.
+ // Disabled audience bit 0x40000 is checked after setup/group reads. Chance
+ // +0x13908 adds 3 with word wrapping, then only signed values >100 clamp.
+ // Group entries stride 0x30; kind +0xe is level, Mario +0xd is level.
+ // Frozen numerator = twice the wrapped level sum; denominator is Mario level.
  case 0:{
   c.battle=currentBattleAddress(s.actors);c.mario=battleMarioUnit(c.battle,s.actors);c.audience=c.base();
   (void)c.word(0x8041eb00); // Original pouchGetPtr call, result unused.
@@ -56,6 +67,9 @@ bool resumePackedBattleAudienceTurnEnd(const BattleAudienceTurnEndServices& s,Ba
   for(int32_t i=0;i<count;++i)sum+=c.byte(c.word(c.sets+0x30*uint32_t(i))+0xe);
   c.level=c.byte(c.mario+0xd);c.numerator=signedWord(sum*2);c.phase=1;break;
  }
+ // Provider owns source signed division, including zero/overflow domains.
+ // Minimum threshold is 5 turns; turn counter is signed halfword at B+0.
+ // Past threshold, source multiplier 0x80424984 scales audience baseline.
  case 1:{
   c.pending=0x8019f334;if(!s.divide)return false;
   const auto value=s.divide(s.user,c.numerator,c.level);if(!value)return false;
@@ -73,6 +87,9 @@ bool resumePackedBattleAudienceTurnEnd(const BattleAudienceTurnEndServices& s,Ba
  case 3:
   if(signedHalf(c.half(c.battle))==c.threshold)c.category(6);
   c.phase=4;break;
+ // One acknowledged irand(100) draw per invocation. Compare against fresh
+ // chance, append categories in source order, then clear captured chance.
+ // A hold must not repeat earlier threshold/category or target-child writes.
  case 4:{
   c.pending=0x80005da0;if(!s.random)return false;
   const auto draw=s.random(s.user,100);if(!draw)return false;c.pending=0;
@@ -87,6 +104,10 @@ bool resumePackedBattleAudienceTurnEnd(const BattleAudienceTurnEndServices& s,Ba
   c.numOwner=c.base();if(c.word(c.numOwner)&0x40000)return finish();
   {const auto desired=scalar(c.word(c.numOwner+0x1377c)),offset=scalar(c.word(c.numOwner+0x13780));c.targetSum=desired+offset;}
   c.phase=6;break;
+ // Truncate captured desired+offset once. Floor at zero THEN signed-cap
+ // clamp, with no second floor if capacity is negative. Count 200 records,
+ // stride 0x134/base+0x1bc: flags require bit0, exclude 0x102; state12 excluded.
+ // Repeated global reads below are observable original calls, not redundancy.
  case 6:{
   c.pending=0x801a1c90;if(!s.truncate)return false;
   const auto value=s.truncate(s.user,c.targetSum);if(!value)return false;
@@ -104,6 +125,9 @@ bool resumePackedBattleAudienceTurnEnd(const BattleAudienceTurnEndServices& s,Ba
   }
   c.add.amount=signedWord(uint32_t(c.target)-count);c.pending=0;c.phase=7;break;
  }
+ // AddAudienceNum independently captures B, audience and pouch in order.
+ // Zero capacity/amount or battle+0xef4 bit0x100 completes before suffix entry.
+ // Otherwise freeze these captures across holds; do not recapture in phase8.
  case 7:
   c.add.battle=currentBattleAddress(s.actors);c.add.audience=c.base();c.add.pouch=c.word(0x8041eb00);
   c.add.capacity=c.half(c.add.pouch+0x8c);

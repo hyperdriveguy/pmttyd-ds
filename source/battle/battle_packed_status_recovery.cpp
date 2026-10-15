@@ -5,6 +5,9 @@
 namespace ttyd {
 namespace {
 int32_t sb(uint8_t n) { return n < 128 ? int32_t(n) : int32_t(n) - 256; }
+// Only reached speed-status writes run this move-reset leaf. Unit +0x27c
+// bit0x1000 suppresses it; signed baseline +0x23 must be positive and equal
+// current move count +0x22 before resetting actual packed move state.
 void moveCount(uint32_t u, const BattleActorServices &s) {
   const auto &m = s.memory;
   assert(m.word);
@@ -25,6 +28,10 @@ void setRecovered(uint32_t u, int32_t id, uint8_t duration, uint8_t strength,
     assert(s.memory.storeByte);
     s.memory.storeByte(s.memory.user, u + offset, n);
   };
+  // Original status-ID -> duration byte. Shared slots are intentional:
+  // 10/11 use 0x123, 12/13 use 0x125, 14/15 use 0x127. Adjacent bytes hold
+  // strength where the reached branch requires it. Keep numeric source IDs
+  // aligned with getPackedBattleStatus rather than inventing new native IDs.
   static constexpr uint32_t offsets[]{
       0x12a, 0x118, 0x11a, 0x11b, 0x11c, 0x11e, 0x11f, 0x120, 0x121,
       0x122, 0x123, 0x123, 0x125, 0x125, 0x127, 0x127, 0x129, 0x12b,
@@ -33,6 +40,8 @@ void setRecovered(uint32_t u, int32_t id, uint8_t duration, uint8_t strength,
     put(offsets[id], sb(duration) > 0 ? duration : 0);
     return;
   }
+  // Opposite duration at 0x121/0x122 cancels first; that branch does not
+  // also store the incoming duration, even when it is reaching zero.
   if (id == 8 || id == 9) {
     const auto opposite = id == 8 ? 0x122u : 0x121u;
     if (sb(byte(opposite)) != 0) {
@@ -42,6 +51,9 @@ void setRecovered(uint32_t u, int32_t id, uint8_t duration, uint8_t strength,
     put(offsets[id], duration);
     return;
   }
+  // Paired size statuses share signed strength +0x128. Sign disagreement
+  // clears the pair; zero-strength recovery clears only the selector's side.
+  // Fresh old-strength reads matter after preceding GetStatus/provider work.
   if (id == 14 || id == 15) {
     const auto next = sb(strength);
     if (next > 0) {
@@ -71,6 +83,8 @@ void setRecovered(uint32_t u, int32_t id, uint8_t duration, uint8_t strength,
     }
     return;
   }
+  // Opposite speed duration +0x12f/+0x130 clears only if both durations
+  // are positive. Always run reached moveCount after this setter branch.
   if (id == 19 || id == 20) {
     const auto opposite = id == 19 ? 0x130u : 0x12fu;
     if (sb(byte(opposite)) > 0 && sb(duration) > 0)
@@ -95,6 +109,9 @@ int32_t checkPackedBattleRecoveryStatus(uint32_t u, int32_t rawId,
   const auto hp = s.memory.half(s.memory.user, u + 0x10c);
   if (hp == 0 || hp >= 0x8000)
     return 0;
+  // Null/status27/nonpositive signed HP skip recovery before GetStatus.
+  // Read source status first, then narrow selector to signed low byte; preserve
+  // that ordering even for out-of-range selectors and excluded IDs16/17.
   const auto value = getPackedBattleStatus(u, rawId, s);
   if (sb(value.duration) == 0)
     return 0;
@@ -106,6 +123,10 @@ int32_t checkPackedBattleRecoveryStatus(uint32_t u, int32_t rawId,
     assert(s.memory.storeByte);
     s.memory.storeByte(s.memory.user, u + offset, n);
   };
+  // ID1 has a special positive countdown: <=1 (including negative) clears.
+  // Other durations step toward zero with byte wrapping. Paired 10..13 keep
+  // strength until expiry; other eligible strengths also step toward zero,
+  // except IDs4/14/15/23/24, whose strength is preserved until duration expiry.
   if (id == 1) {
     duration = sb(duration) > 1 ? uint8_t(duration - 1) : 0;
     put(0x118, duration);

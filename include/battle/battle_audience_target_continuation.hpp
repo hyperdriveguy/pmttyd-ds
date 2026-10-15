@@ -9,6 +9,9 @@ struct BattleAudienceTargetContinuationServices {
  // captured quotient, preserving every earlier offset/chunk store.
  std::optional<int32_t> (*truncate)(void*,float)=nullptr;
 };
+// One cursor owns one parent or Sub invocation. Preserve exact float bits
+// (including signed zero), service users and callbacks until completion/reset.
+// reset discards continuation state only; it cannot undo earlier guest writes.
 class BattleAudienceTargetCursor {
 public:
  BattleAudienceTargetCursor();~BattleAudienceTargetCursor();

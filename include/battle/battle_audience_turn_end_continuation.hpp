@@ -8,8 +8,12 @@ namespace ttyd {
 struct BattleAudienceAddNumInvocation {
  uint32_t battle=0,audience=0,pouch=0;
  int32_t amount=0;
+ // Source pouch + 0x8c is a halfword capacity, not a truncated byte.
  uint16_t capacity=0;
 };
+// nullopt means hold for numeric/RNG children; engaged zero is a real result.
+// addAudience false retains its own partial suffix effects and exact invocation.
+// Keep every provider/user stable; resetting does not roll back prefix writes.
 struct BattleAudienceTurnEndServices {
  BattleActorServices actors;
  void* user=nullptr;

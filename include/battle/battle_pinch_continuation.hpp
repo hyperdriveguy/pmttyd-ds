@@ -11,6 +11,9 @@ struct BattlePinchServices {
  // partial child effects; no fabricated sound handle/readiness is supplied.
  bool (*sound)(void*,uint32_t sourceKey)=nullptr;
 };
+// Pin direct-unit versus all-units entry, input, mode and provider identities.
+// Completion consumes the cursor; reset only drops native continuation state.
+// Earlier status flags/countdown/audience writes survive either a hold or reset.
 class BattlePinchCursor {
 public:
  BattlePinchCursor();~BattlePinchCursor();
