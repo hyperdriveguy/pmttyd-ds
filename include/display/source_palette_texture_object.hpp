@@ -9,6 +9,9 @@ struct SourcePaletteTextureObjectServices {
  // Original fsubs: two raw binary64 operands -> raw binary32 result.
  std::optional<uint32_t>(*subtractSingle)(void*,uint64_t,uint64_t)=nullptr;
 };
+// Table captured at entry,header refreshed after Init,one captured lfd bias
+// shared by two conversions. Reset cannot reverse SDK object/source mutations;
+// keep actual resource/output lifetime through all nested waits.
 class SourcePaletteTextureObjectCursor {
 public:
  SourcePaletteTextureObjectCursor();~SourcePaletteTextureObjectCursor();

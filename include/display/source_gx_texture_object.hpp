@@ -25,6 +25,9 @@ struct SourceGxTextureObjectServices {
  // Actual fctiwz numeric provider; unavailable is distinct from integer zero.
  std::optional<int32_t> (*truncate)(void*,float)=nullptr;
 };
+// One Init/LOD invocation pins raw input bits,callbacks and strong owner.
+// Serializing shared output objects remains caller-owned; this is not a lock.
+// Reset abandons native progress without undoing source clear/store prefixes.
 class SourceGxTextureObjectCursor {
 public:
  SourceGxTextureObjectCursor();~SourceGxTextureObjectCursor();

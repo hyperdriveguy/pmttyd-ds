@@ -15,6 +15,9 @@ struct SourceWindowTextureSetupServices {
  // Each child owns its effects through waits. All contexts are pinned by gx.lifetime.
  std::optional<uint32_t>(*request)(void*,const SourceWindowTextureSetupCall&)=nullptr;
 };
+// Input/function/provider identity remains fixed. Reset drops only native
+// continuation/path metadata,not palette relocation or queued DVD effects.
+// Use a different cursor if actual callback arrives before ReadAsync returns.
 class SourceWindowTextureSetupCursor {
 public:
  SourceWindowTextureSetupCursor();~SourceWindowTextureSetupCursor();

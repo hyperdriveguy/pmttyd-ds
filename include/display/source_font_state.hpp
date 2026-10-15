@@ -23,6 +23,9 @@ struct SourceFontStateServices {
   bool (*request)(void*,const SourceFontStateCall&)=nullptr;
   bool (*matrix)(void*,BattleAudienceMatrixRequest&)=nullptr;
 };
+// Pins helper/input/private-cell address and actual resource/service owners.
+// Void completion0 consumes the cursor; missing child keeps partial source/GX
+// effects. Reset is not a style pop or implicit color/global restoration.
 class SourceFontStateCursor {
 public:
   SourceFontStateCursor();~SourceFontStateCursor();

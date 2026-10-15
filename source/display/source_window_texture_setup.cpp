@@ -7,6 +7,9 @@ bool same(const SourceWindowTextureSetupServices&a,const SourceWindowTextureSetu
 struct Running{bool&v;explicit Running(bool&b):v(b){v=true;}~Running(){v=false;}};
 }
 std::optional<uint8_t> SourceWindowTexturePath::byte(uint32_t at)const{const auto i=cells.find(at);return i==cells.end()?std::nullopt:std::optional<uint8_t>(i->second);}
+// Native PCs separate Setup0,DVD callback100 and Unpack200. Path is one
+// owned sparse byte map,never guest SP. Successful source reads/stores/children
+// remain retained; callbacks sharing process state still need separate cursors.
 struct SourceWindowTextureSetupCursor::State {
  SourceWindowTextureSetupServices s;uint32_t function=0,input=0,pc=0,pending=0;
  uint32_t value=0,palette=0,handle=0,rounded=0,root=0,count=0,index=0,offset=0,table=0,header=0,flags=0,object=0;
@@ -35,20 +38,32 @@ bool resumeSourceWindowTextureEntry(uint32_t fn,uint32_t input,const SourceWindo
 #define W(P,S,A,Z,V,N) case P:if(!c.write(S,A,Z,V))return false;c.pc=N;continue
 #define C(P,F,S,A,D,N) case P:if(!c.invoke(F,S,A,c.D))return false;c.pc=N;continue
  for(;;){if(!c.valid())return false;switch(c.pc){
+ // Source globals(hex):ea18 palette,ea1c completion,ea24 object array.
+ // Setup clears first two in order but preserves prior object array while
+ // DVD is pending. arcOpen probes original font/msgWindow.tpl first.
  W(0,0x8007fc00,0x8041ea18,4,0,1);
  W(1,0x8007fc04,0x8041ea1c,4,0,2);
  case 2:if(!c.invoke(0x800782e4,0x8007fc08,{0x802c3080,0,0},c.palette))return false;c.pc=3;continue;
  W(3,0x8007fc10,0x8041ea18,4,c.palette,4);
  case 4:c.pc=c.palette?30:5;continue;
+ // Archive miss uses actual root/private sprintf,DVD Open/Length,then
+ // wrapping(length+31)&ffffffe0 heap0 allocation. Source zero handles or
+ // allocation remain actual values; no new null/readiness guard is inserted.
  C(5,0x80007388,0x8007fc18,{},root,6);
  case 6:if(!c.invoke(0x8026a0b8,0x8007fc30,{0x802c3094,c.root},c.value,true))return false;c.pc=7;continue;
  case 7:if(!c.invoke(0x80144e88,0x8007fc40,{2,0},c.handle,false,true))return false;c.pc=8;continue;
  case 8:if(!c.invoke(0x80144dcc,0x8007fc48,{c.handle},c.value))return false;c.rounded=(c.value+31)&0xffffffe0u;c.pc=9;continue;
  case 9:if(!c.invoke(0x800300f0,0x8007fc5c,{0,c.rounded},c.palette))return false;c.pc=10;continue;
  W(10,0x8007fc60,0x8041ea18,4,c.palette,11);
+ // Source stores handle at its+6c before fresh palette read and genuine
+ // ReadAsync(handle,palette,rounded,0,callback8007fcf0). Completion of that
+ // child schedules work only; this parent does not invoke its own callback.
  W(11,0x8007fc70,c.handle+0x6c,4,c.handle,12);
  R(12,0x8007fc7c,0x8041ea18,palette,13);
  case 13:if(!c.invoke(0x80144de4,0x8007fc80,{c.handle,c.palette,c.rounded,0,0x8007fcf0},c.value))return false;c.pc=900;continue;
+ // Archive hit unpacks then allocates count*32 (wrap32) and constructs
+ // actual TEX/GX objects. Palette/count reload at EVERY unsigned loop test;
+ // object global reload at EACH body. This route never writes completion1.
  case 30:c.pending=0x80037b6c;if(!resumeSourceUnpackTexturePalette(c.palette,c.s,c.unpack)||!c.valid())return false;c.pc=31;continue;
  R(31,0x8007fc8c,0x8041ea18,palette,32);
  R(32,0x8007fc94,c.palette+4,count,33);
@@ -61,6 +76,9 @@ bool resumeSourceWindowTextureEntry(uint32_t fn,uint32_t input,const SourceWindo
  R(39,0x8007fcb0,0x8041ea24,object,40);
  case 40:c.pending=0x80037a80;if(!resumeSourcePaletteTextureObject(c.palette,c.object+c.offset,c.index,c.s.objects,c.tex)||!c.valid())return false;c.offset+=32;++c.index;c.pc=36;continue;
  // Genuine DVD callback: first argument unused; second argument+2c is read first.
+ // Real callback reads secondArgument+2c handle FIRST,then palette/unpack,
+ // then closes captured handle before fresh globals/allocation/object loop.
+ // Only after every object completes does fd68 publish completion1.
  R(100,0x8007fd04,c.input+0x2c,handle,101);
  R(101,0x8007fd08,0x8041ea18,palette,102);
  case 102:c.pending=0x80037b6c;if(!resumeSourceUnpackTexturePalette(c.palette,c.s,c.unpack)||!c.valid())return false;c.pc=103;continue;
@@ -78,6 +96,9 @@ bool resumeSourceWindowTextureEntry(uint32_t fn,uint32_t input,const SourceWindo
  W(114,0x8007fd68,0x8041ea1c,4,1,900);
  // Whole UnpackTexPalette: source pointer threshold, all late alias reads,
  // per-header unpack flags, U16 loop comparison and wrapping offset mask.
+ // TPL magic0020af30; mismatch reaches actual panic(filename,line36,format).
+ // If that whole child returns,source continues. Table>80000000 returns;
+ // EXACT equality still relocates via wrapping base addition.
  R(200,0x80037b80,c.palette,value,201);
  case 201:c.pc=c.value==0x0020af30?203:202;continue;
  case 202:if(!c.invoke(0x80297894,0x80037ba8,{0x802c0148,0x24,0x802c0158},c.value))return false;c.pc=203;continue;
@@ -85,6 +106,9 @@ bool resumeSourceWindowTextureEntry(uint32_t fn,uint32_t input,const SourceWindo
  case 204:c.pc=c.table>0x80000000u?900:205;continue;
  W(205,0x80037bc4,c.palette+8,4,c.table+c.palette,206);
  case 206:c.index=0;c.pc=230;continue;
+ // Eight-byte table rows:image header at+0,palette header+4. Nonnull
+ // pointers add base; nested data+8 adds base only when image flag+23hex
+ // or palette flag+2 is0. Fresh table/header rereads precede flag1 stores.
  R(207,0x80037bcc,c.palette+8,table,208);
  case 208:c.offset=(c.index<<3)&0x0007fff8;c.pc=209;continue;
  R(209,0x80037bd4,c.table+c.offset,header,210);
@@ -113,6 +137,9 @@ bool resumeSourceWindowTextureEntry(uint32_t fn,uint32_t input,const SourceWindo
  R(2283,0x80037c58,c.palette+8,table,2284);
  R(2284,0x80037c5c,c.table+c.offset,header,2285);
  W(2285,0x80037c60,c.header+2,1,1,229);
+ // Index increments32,but comparison consumes LOW16 against fresh word
+ // count; image offset=(index<<3)&0007fff8. Extreme counts can wrap/repeat
+ // indefinitely as source; native resource admission must supply valid storage.
  case 229:++c.index;c.pc=230;continue;
  R(230,0x80037c68,c.palette+4,count,231);
  case 231:c.pc=uint32_t(uint16_t(c.index))<c.count?207:900;continue;

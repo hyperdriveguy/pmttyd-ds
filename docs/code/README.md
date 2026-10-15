@@ -216,3 +216,8 @@ enemy MODEL/TPL/CPU admission. Whole-runtime numeric coverage remains under audi
 [Battle UI text and cost](battle-ui-text-cost.md) explains actual packed cost,
 command-width private bytes and centered raw drawing. [Native UI startup](native-ui-startup.md)
 explains cold source mappings,actual heap/FILE delivery and retained process ownership.
+
+[Source texture objects](source-texture-objects.md) explains SDK bit packing,
+palette/header captures and the distinct Window setup/callback paths.
+[Shared font state](shared-font-state.md) explains actual color aliases, source
+start ordering and the different noise/rainbow GX reset scopes.

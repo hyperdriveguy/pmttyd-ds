@@ -4,6 +4,9 @@ bool same(const SourceGxTextureObjectServices&a,const SourceGxTextureObjectServi
 bool same(const SourcePaletteTextureObjectServices&a,const SourcePaletteTextureObjectServices&b){return same(a.gx,b.gx)&&a.half==b.half&&a.doubleWord==b.doubleWord&&a.subtractSingle==b.subtractSingle;}
 struct Running{bool&value;explicit Running(bool&v):value(v){value=true;}~Running(){value=false;}};
 }
+// One actual palette/index/output object; index<<3 wraps32 for8-byte table
+// entries. Source Init and LOD have nested instruction cursors,not opaque
+// success callbacks. Current loss is sticky; parent and SDK pending differ.
 struct SourcePaletteTextureObjectCursor::State {
  SourcePaletteTextureObjectServices s;uint32_t palette=0,object=0,index=0,offset=0,table=0,header=0,phase=0,pending=0,min=0,max=0;
  uint64_t conversion=0;bool invalid=false;
@@ -31,6 +34,9 @@ bool resumeSourcePaletteTextureObject(uint32_t palette,uint32_t object,uint32_t 
 #define BYTE(P,S,A,D,N) case P:if(!c.byte(S,A,D))return false;c.phase=N;continue
 #define HALF(P,S,A,D,N) case P:if(!c.half(S,A,D))return false;c.phase=N;continue
  for(;;){if(!c.valid())return false;switch(c.phase){
+ // Capture palette+8 table ONCE. Header fields:height0,width2,format4,
+ // image8,wrapS12/wrapT16 (decimal offsets). Min/max bytes33/34 select
+ // mipmap by inequality; actual source performs no count/index clamp.
  WORD(0,0x80037aa0,palette+8,c.table,1);
  WORD(1,0x80037aa4,c.table+c.offset,c.header,2);
  BYTE(2,0x80037aa8,c.header+33,c.min,3);
@@ -42,9 +48,14 @@ bool resumeSourcePaletteTextureObject(uint32_t palette,uint32_t object,uint32_t 
  WORD(8,0x80037ad8,c.header+12,c.init.integers[5],9);
  WORD(9,0x80037adc,c.header+16,c.init.integers[6],10);
  case 10:c.pending=0x802b72b0;c.init.integers[7]=c.min!=c.max;if(!resumeSourceGxTextureObject(c.pending,c.init,c.s.gx,c.child))return false;if(!c.valid())return false;c.phase=11;continue;
+ // After Init,reload HEADER from captured table/offset,not palette+8.
+ // Output/table aliasing and descriptor changes during Init remain visible.
  WORD(11,0x80037ae4,c.table+c.offset,c.header,12);
  BYTE(12,0x80037af4,c.header+33,c.min,13);
  BYTE(13,0x80037afc,c.header+34,c.max,14);
+ // One original lfd at802c0140 captures unsigned-conversion bias. min/max
+ // each use4330|byte then fsubs->binary32; bytes128..255 stay unsigned.
+ // Filters at decimal20/24,bias bits28,edge byte32 load in source order.
  case 14:{c.pending=0x80037b0c;if(!c.s.doubleWord)return false;const auto value=c.s.doubleWord(c.s.gx.user,0x802c0140);if(!c.valid()||!value)return false;c.conversion=*value;c.phase=15;continue;}
  case 15:if(!c.subtract(0x80037b1c,c.min,c.lod.reals[0]))return false;c.phase=16;continue;
  WORD(16,0x80037b20,c.header+20,c.lod.integers[1],17);
@@ -52,6 +63,8 @@ bool resumeSourcePaletteTextureObject(uint32_t palette,uint32_t object,uint32_t 
  WORD(18,0x80037b30,c.header+28,c.lod.reals[2],19);
  case 19:if(!c.subtract(0x80037b34,c.max,c.lod.reals[1]))return false;c.phase=20;continue;
  BYTE(20,0x80037b38,c.header+32,c.lod.integers[4],21);
+ // LOD biasClamp/anisotropy remain literal0 in the value-initialized ABI.
+ // Only both actual SDK children completing consumes this parent invocation.
  case 21:c.pending=0x802b7544;if(!resumeSourceGxTextureObject(c.pending,c.lod,c.s.gx,c.child))return false;if(!c.valid())return false;cursor.state_.reset();return true;
  default:return false;
  }}
@@ -59,6 +72,9 @@ bool resumeSourcePaletteTextureObject(uint32_t palette,uint32_t object,uint32_t 
 #undef BYTE
 #undef HALF
 }
+// Private domain has32 initially UNKNOWN bytes; binding reserves no VM RAM
+// and performs no memset. Caller supplies actual reserved range/current owner.
+// A bound/retired instance never rebinds; exact end2^32 is admitted.
 bool SourcePrivateTextureObject::bind(uint32_t address,std::shared_ptr<const void> lifetime,void*user,bool(*current)(void*)){
  if(lifetime_||invalid_||invoking_||!lifetime||!current||uint64_t(address)+32>0x100000000ULL)return false;
  address_=address;lifetime_=std::move(lifetime);user_=user;current_=current;return live();
@@ -66,6 +82,9 @@ bool SourcePrivateTextureObject::bind(uint32_t address,std::shared_ptr<const voi
 bool SourcePrivateTextureObject::owns(uint32_t address,uint32_t size)const{return lifetime_&&address>=address_&&uint64_t(address)+size<=uint64_t(address_)+32;}
 bool SourcePrivateTextureObject::overlaps(uint32_t address,uint32_t size)const{return lifetime_&&size&&uint64_t(address)<uint64_t(address_)+32&&uint64_t(address)+size>address_;}
 bool SourcePrivateTextureObject::live()const{if(invalid_||invoking_||!lifetime_||!current_)return false;Running running(invoking_);if(!current_(user_))invalid_=true;return !invalid_;}
+// Sizes1/2/4 use BE byte lanes. An unwritten lane holds even when another
+// memory provider offers bytes; route partial overlaps here FIRST via overlaps.
+// Full eight-word snapshot is available only when all32 bytes are known.
 std::optional<uint32_t> SourcePrivateTextureObject::read(uint32_t address,uint32_t size)const{
  if((size!=1&&size!=2&&size!=4)||!owns(address,size)||!live())return {};
  uint32_t value=0;for(uint32_t i=0;i<size;++i){const auto b=bytes_[address-address_+i];if(!b)return {};value=(value<<8)|*b;}return value;

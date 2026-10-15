@@ -5,10 +5,15 @@ namespace ttyd {namespace {
 float real(uint32_t n){float f;std::memcpy(&f,&n,4);return f;}
 double real64(uint32_t hi,uint32_t lo){uint64_t n=(uint64_t(hi)<<32)|lo;double f;std::memcpy(&f,&n,8);return f;}
 float mul(float a,float b){volatile float v=a*b;return v;}
+// PPC rotate-and-mask insertion: first/last number bits from MSB0,not C++
+// least-significant bit0. Preserve every source read/modify/store separately.
 uint32_t insert(uint32_t old,uint32_t value,unsigned shift,unsigned first,unsigned last){const uint32_t mask=(0xffffffffu>>first)&(0xffffffffu<<(31-last));const auto rotated=shift?((value<<shift)|(value>>(32-shift))):value;return (old&~mask)|(rotated&mask);}
 bool same(const SourceGxTextureObjectServices&a,const SourceGxTextureObjectServices&b){return a.user==b.user&&a.lifetime==b.lifetime&&!a.lifetime.owner_before(b.lifetime)&&!b.lifetime.owner_before(a.lifetime)&&a.current==b.current&&a.word==b.word&&a.byte==b.byte&&a.store==b.store&&a.clear==b.clear&&a.truncate==b.truncate;}
 struct Running{bool&v;explicit Running(bool&b):v(b){v=true;}~Running(){v=false;}};
 }
+// pc values below are native instruction frontiers,not source bytes or time.
+// Reads/operands survive holds; observed context loss stales until reset. A
+// completed call consumes its cursor but never proves native texture residency.
 struct SourceGxTextureObjectCursor::State {
  SourceGxTextureObjectServices s;SourceGxTextureObjectInput input;
  uint32_t fn=0,pc=0,pending=0,w=0,tmp=0,hi=0,lo=0,minimum=0,maximum=0,jump=0,kind=0,x=0,y=0;
@@ -37,6 +42,9 @@ bool resumeSourceGxTextureObject(uint32_t function,const SourceGxTextureObjectIn
 #define WRITE(P,S,A,Z,V,N) case P:if(!c.write(S,A,Z,V))return false;c.pc=N;continue
 #define TRUNC(P,S,F,D,N) case P:if(!c.trunc(S,F,c.D))return false;c.pc=N;continue
  for(;;){if(!c.valid())return false;switch(c.pc){
+ // Init clears exactly32 actual object bytes through whole memset child.
+ // Engaged clear0 completes. Then word0 packs wrapS[1:0],wrapT[3:2] and
+ // linear-mag bit4; no inferred zeroed object replaces the clear.
  case 0:{c.pending=0x800050b4;if(!s.clear)return false;const auto v=s.clear(s.user,obj);if(!c.valid()||!v)return false;c.pc=1;continue;}
  READ(1,0x802b72ec,obj,w,2);
  WRITE(2,0x802b72f8,obj,4,insert(c.w,a[5],0,30,31),3);
@@ -44,6 +52,9 @@ bool resumeSourceGxTextureObject(uint32_t function,const SourceGxTextureObjectIn
  WRITE(4,0x802b7308,obj,4,insert(c.w,a[6],2,28,29),5);
  READ(5,0x802b730c,obj,w,6);
  WRITE(6,0x802b7314,obj,4,insert(c.w,1,4,27,27),7);
+ // Mipmap tests LOW8 only. Formats8..10 choose filter5,others6; no-mip
+ // selects4. Byte31 mask1 marks mipmap,mask2 marks Init completion. maxLOD=floor(log2(max(U16 W,H)))
+ // with startingffffffff for both0; no invented valid-dimension clamp.
  case 7:c.pc=uint8_t(a[7])?8:24;continue;
  BYTE(8,0x802b731c,obj+31,w,9);
  WRITE(9,0x802b732c,obj+31,1,c.w|1,10);
@@ -54,12 +65,17 @@ bool resumeSourceGxTextureObject(uint32_t function,const SourceGxTextureObjectIn
  READ(14,0x802b7384,0x8042944c,lo,15);
  READ(15,0x802b738c,0x80429440,tmp,16);
  case 16:c.scale=real(c.tmp);c.pc=17;continue;
+ // Capture object word4 BEFORE maxLOD conversion. Original unsigned double
+ // bias29448 and scale29440 feed fctiwz; a hold must not reload that word.
  READ(17,0x802b7394,obj+4,w,18);
  case 18:{volatile float v=float(real64(0x43300000,c.maximum)-real64(c.hi,c.lo));c.f=mul(c.scale,v);c.pc=19;continue;}
  TRUNC(19,0x802b73a0,c.f,tmp,20);
  WRITE(20,0x802b73b0,obj+4,4,insert(c.w,c.tmp,8,16,23),26);
  READ(24,0x802b73b8,obj,w,25);
  WRITE(25,0x802b73c4,obj,4,insert(c.w,4,5,24,26),26);
+ // Full format word goes at+20; word8 packs U16(width-1) low10,
+ // U16(height-1) next10 and format low4. Image word12 encodes32-byte units
+ // through source rotate27. High input format bits survive only the full word.
  WRITE(26,0x802b73c8,obj+20,4,a[4],27);
  READ(27,0x802b73d8,obj+8,w,28);
  WRITE(28,0x802b73e0,obj+8,4,insert(c.w,uint32_t(uint16_t(a[2]))-1,0,22,31),29);
@@ -69,6 +85,10 @@ bool resumeSourceGxTextureObject(uint32_t function,const SourceGxTextureObjectIn
  WRITE(32,0x802b7404,obj+8,4,insert(c.w,a[4],20,8,11),33);
  READ(33,0x802b7408,obj+12,w,34);
  WRITE(34,0x802b7410,obj+12,4,insert(c.w,a[1],27,11,31),35);
+ // Dispatch uses format low4 into original jump table803c4e84 (0..14),
+ // default15. Targets choose byte30 kind and tile log2 width/height:3/3,
+ //3/2 or2/2. Half28 stores wrapping tile product masked7fff. Unknown target
+ // remains captured/pending; repairing table later cannot redispatch it.
  case 35:if((a[4]&15)>14){c.jump=0x802b7494;c.pc=37;}else c.pc=36;continue;
  READ(36,0x802b7424,0x803c4e84+4*(a[4]&15),jump,37);
  case 37:switch(c.jump){case 0x802b7430:c.kind=1;c.x=3;c.y=3;break;case 0x802b7444:c.kind=2;c.x=3;c.y=2;break;case 0x802b7458:case 0x802b7494:c.kind=2;c.x=2;c.y=2;break;case 0x802b746c:c.kind=3;c.x=2;c.y=2;break;case 0x802b7480:c.kind=0;c.x=3;c.y=3;break;default:c.pending=c.jump;return false;}c.pc=38;continue;
@@ -77,6 +97,9 @@ bool resumeSourceGxTextureObject(uint32_t function,const SourceGxTextureObjectIn
  BYTE(40,0x802b74dc,obj+31,w,41);
  WRITE(41,0x802b74e4,obj+31,1,c.w|2,200);
  // LOD clamp/load order follows original fcmpo branches (NaNs remain unordered).
+ // LOD bias clamps by original ordered branches:lower-4,upper>=4 uses
+ //3.99,then scale32. NaN stays unordered until actual fctiwz provider.
+ // Capture word0 BEFORE conversion; do not replace this with host clamp().
  READ(100,0x802b7548,0x80429450,tmp,101);
  case 101:if(c.f<real(c.tmp)){c.f=real(c.tmp);c.pc=105;}else c.pc=102;continue;
  READ(102,0x802b755c,0x80429454,tmp,103);
@@ -91,6 +114,9 @@ bool resumeSourceGxTextureObject(uint32_t function,const SourceGxTextureObjectIn
  WRITE(111,0x802b7590,obj,4,insert(c.w,c.tmp,9,15,22),112);
  READ(112,0x802b75a4,obj,w,113);
  WRITE(113,0x802b75b0,obj,4,insert(c.w,a[2]==1?1:0,4,27,27),114);
+ // minFilter indexes original byte table with FULL unsigned argument and
+ // wrapped address; mag is exactly==1. Low8 edgeLOD is inverted into bit8.
+ // Clear bits17/18; pack anisotropy19..20 and biasClamp21 from raw arguments.
  BYTE(114,0x802b75b8,0x8041e558+a[1],tmp,115);
  READ(115,0x802b75bc,obj,w,116);
  WRITE(116,0x802b75c4,obj,4,insert(c.w,c.tmp,5,24,26),117);
@@ -104,6 +130,9 @@ bool resumeSourceGxTextureObject(uint32_t function,const SourceGxTextureObjectIn
  WRITE(124,0x802b7608,obj,4,insert(c.w,a[5],19,11,12),125);
  READ(125,0x802b760c,obj,w,126);
  WRITE(126,0x802b7614,obj,4,insert(c.w,a[3],21,10,10),127);
+ // Min/max LOD separately clamp0..10,scale16 and call fctiwz. Write min
+ // to object word4 BEFORE max conversion,then reload that word afterwards.
+ // Aliases across a max-conversion hold therefore differ from earlier captures.
  READ(127,0x802b7618,0x80429460,tmp,128);
  case 128:if(c.g<real(c.tmp)){c.g=real(c.tmp);c.pc=132;}else c.pc=129;continue;
  READ(129,0x802b762c,0x80429464,tmp,130);
