@@ -4,6 +4,9 @@
 #include <cmath>
 namespace ttyd {
 namespace {std::vector<MessageIcon> icons;}
+// Loop modulo total delay; nonlooping icons latch their last frame. All-zero
+// durations select first frame without modulo/division. Zero-duration frames
+// otherwise consume no time. Cadence belongs to the caller, not this lookup.
 const MessageIconFrame& MessageIcon::frame(uint64_t ticks)const {
     uint64_t length=0;for(const auto& f:frames)length+=f.delay;
     if(!length)return frames[0];
@@ -11,6 +14,11 @@ const MessageIconFrame& MessageIcon::frame(uint64_t ticks)const {
     for(const auto& f:frames){if(ticks<f.delay)return f;ticks-=f.delay;}
     return frames.back();
 }
+// Native pack limits: 1..1023 unique icons, 1..256 frames, boolean loop;
+// descriptor dimensions <=512x128 and finite normalized UVs with inverted V.
+// fread uses native struct layout on supported little-endian hosts/3DS; this is
+// a converted pack, not original big-endian ISO bytes. Require exact EOF and
+// publish atomically; failure preserves catalog, success invalidates old views.
 bool loadMessageIcons(const char* path) {
     FILE* f=std::fopen(path,"rb");if(!f)return false;char magic[8];uint32_t count=0;
     bool ok=std::fread(magic,8,1,f)==1 && !std::memcmp(magic,"PMICON1",8) && std::fread(&count,4,1,f)==1 && count>0 && count<1024;

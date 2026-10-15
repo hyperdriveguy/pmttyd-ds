@@ -5,6 +5,8 @@
 #include <vector>
 #include "message_window.hpp"
 namespace ttyd {
+// PMFONT1 native pack: 8-byte glyph (atlas XY, cropped width/height, padding).
+// Mapping is single-byte US code -> glyph; this is not a multibyte decoder.
 struct FontGlyph {uint16_t x,y;uint8_t width,height,padding[2];};
 class MessageFont {
 public:
@@ -12,6 +14,9 @@ public:
     std::array<uint16_t,256> mapping{};
     std::vector<FontGlyph> glyphs;
 };
+// Native 24-byte source-derived record. code >=0xfff0 selects control domain;
+// flags is style OR opcode-specific payload, not one universal bitmask.
+// schedule is a wrapped 32-bit message coordinate, independent of render FPS.
 struct MessageRecord {
     uint32_t flags=0;uint16_t code=0;int16_t x=0,y=0;uint16_t extra=0;
     uint32_t schedule=0;float scale=1,value=1;
@@ -37,6 +42,10 @@ public:
     uint32_t elapsed=0,flags=3;
     uint16_t windowFlags=0; // W allocation/poll bits; distinct from D playback flags.
     bool pending() const{return (windowFlags&2)!=0;}
+    // State: 0 inactive, 1 playback, 2 once_stop, 3 key wait, 5 open start,
+    // 6 opening, 7 close start, 8 closing, 9 native terminal-input adaptation.
+    // wait: 0 ordinary, 1 blocked key, 2 acknowledged key pending resume.
+    // acceptedKey is an unsigned ordinal, compared with signed record.x.
     uint16_t acceptedKey=0,wait=0,state=0;
     // Opt-in presentation adaptation for interactive New Game dialogue.
     // Original records/tokens and ordinary source playback remain unchanged.
@@ -50,6 +59,8 @@ public:
     uint64_t serial=0; // Native draw-cache lifetime, independent of message ID.
     uint64_t openedAt=0;
     MessageWindowGeometry geometry;
+    // Reached types: 0 ordinary, 1 small, 3 system, 4 kanban, 5 selection,
+    // 7 diary, 11 clear. These IDs select presentation, not story branches.
     int windowType=0;
     int placementOverride=-1; // Source common-print mode override; native projection remains adapter.
     int8_t initialChoice=0,cancelChoice=0,choiceCount=0;

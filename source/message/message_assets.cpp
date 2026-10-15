@@ -16,6 +16,9 @@ bool MessageResource::load(const char* path) {
     const size_t read=std::fread(bytes.data(),1,bytes.size(),file);std::fclose(file);
     return read==bytes.size() && assign(std::move(bytes));
 }
+// Parse into temporary offsets, then publish bytes/index together. Invalid
+// NUL structure/padding leaves the old resource (and borrowed pointers) intact.
+// Empty key ends the stream; empty text inside a pair is rejected, not dialogue.
 bool MessageResource::assign(std::vector<uint8_t> bytes) {
     std::vector<MessagePair> index;size_t cursor=0;
     while(cursor<bytes.size() && bytes[cursor]) {
@@ -34,6 +37,8 @@ bool MessageResource::assign(std::vector<uint8_t> bytes) {
     if(cursor>=bytes.size())return false; // Missing resource terminator.
     // US census establishes zero padding after the terminator.
     if(std::any_of(bytes.begin()+cursor,bytes.end(),[](uint8_t b){return b!=0;}))return false;
+    // Bytewise strcmp order supports binary lookup. Retain duplicate entries
+    // so ambiguous() can reject them; stable ordering is not tie resolution.
     std::stable_sort(index.begin(),index.end(),[&](const MessagePair& a,const MessagePair& b){
         return std::strcmp(reinterpret_cast<const char*>(bytes.data()+a.key),reinterpret_cast<const char*>(bytes.data()+b.key))<0;
     });
@@ -52,6 +57,8 @@ const char* MessageResource::find(const char* key) const {
     return it!=index_.end() && std::strcmp(reinterpret_cast<const char*>(bytes_.data()+it->key),key)==0?
         reinterpret_cast<const char*>(bytes_.data()+it->text):nullptr;
 }
+// Room takes precedence over global, but ambiguous room identity blocks
+// fallback. Never silently change attribution/branch text through substitution.
 const char* MessageAssets::find(const char* key) const {
     // Do not silently substitute a global line for an ambiguous room key.
     if(room_.ambiguous(key))return nullptr;

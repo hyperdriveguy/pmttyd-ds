@@ -1,6 +1,8 @@
 #pragma once
 #include "message_playback.hpp"
 namespace ttyd {
+// Width/lineFeeds retain source U16 wrapping. Glyph count is native metadata,
+// not a character count for arbitrary Unicode or an original message schedule.
 struct WindowFontMeasurement {uint16_t width=0,lineFeeds=0;size_t glyphs=0;};
 // Valid original US single-byte plain text. Tagged/multibyte streams need their
 // original consumers; rejection never strips/replaces their control tokens.
@@ -21,7 +23,11 @@ struct WindowFontDrawServices {
     void (*emitQuad)(void*,const WindowFontQuad&)=nullptr;
     uint32_t (*random)(void*,uint32_t bound)=nullptr;
 };
+// Distinct pen domains: float local string, per-glyph translated message,
+// signed direct message, and physical proportional pitch. Do not merge advances.
 enum class WindowFontConsumer {StringMatrix,MessageMatrix,MessageDirect,StringPitch};
+// Original default RGBA/palette0=1e1414ff, ordinary US spacing2. Effective
+// alpha multiplies raw color alpha by draw alpha/255; edge emits four extra quads.
 struct WindowFontStyle {
     uint32_t color=0x1e1414ff,palette0=0x1e1414ff,spacing=2;
     uint8_t alpha=255;

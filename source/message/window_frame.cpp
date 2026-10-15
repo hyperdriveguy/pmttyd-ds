@@ -3,6 +3,9 @@ namespace ttyd {
 WindowFrameMesh type0WindowFrame(float x,float y,float w,float h,float border,std::array<uint8_t,4> color) {
     const float columns[]={x,x+border,(x+w)-border,x+w};
     const float rows[]={y,y-border,border+(y-h),y-h};
+    // Source nine-slice thirds, preserving exact binary32 literals. Submit
+    // all cells in row-major TL/TR/BR/BL order, including the middle. Narrow or
+    // overlapping borders are caller geometry, not clamped/replaced here.
     constexpr float uv[]={0,.3333333432674408f,.6666666865348816f,1};
     constexpr unsigned corners[4][2]={{0,0},{1,0},{1,1},{0,1}};
     WindowFrameMesh mesh{};mesh.color=color;unsigned index=0;
@@ -15,6 +18,8 @@ WindowFrameMesh type0WindowFrame(float x,float y,float w,float h,float border,st
 }
 WindowFrameMesh transformedType0WindowFrame(float x,float y,float w,float h,float border,
         float rotation,float scale,std::array<uint8_t,4> color) {
+    // Build local centered geometry, then backend applies T(center)*Rz*S.
+    // Keep the tab's own center; sharing its base window center changes rotation.
     const float negativeHalfWidth=(-w)*.5f,halfHeight=h*.5f;
     auto mesh=type0WindowFrame(negativeHalfWidth,halfHeight,w,h,border,color);
     mesh.centerX=x-negativeHalfWidth;mesh.centerY=y-halfHeight;
@@ -22,6 +27,8 @@ WindowFrameMesh transformedType0WindowFrame(float x,float y,float w,float h,floa
 }
 std::array<WindowFramePoint,54> windowFrameTriangles(const WindowFrameMesh& mesh) {
     std::array<WindowFramePoint,54> result;unsigned p=0;
+    // Triangulate each quad as TL/TR/BR then TL/BR/BL without reordering
+    // source cells (nine * six =54). GPU batching/texture ownership is external.
     constexpr unsigned corners[]={0,1,2,0,2,3};
     for(unsigned quad=0;quad<9;++quad)for(unsigned corner:corners)result[p++]=mesh.quads[4*quad+corner];
     return result;
@@ -29,6 +36,9 @@ std::array<WindowFramePoint,54> windowFrameTriangles(const WindowFrameMesh& mesh
 ItemSelectionFramePlan itemSelectionFramePlan(int32_t x,int32_t y,int32_t w,int32_t h,
         int32_t decoration,float rotation,float scale,std::array<uint8_t,3> rgb,uint32_t alpha) {
     ItemSelectionFramePlan plan{};
+    // Source base border20, definition RGB and low8 manager alpha. Only
+    // decoration1 adds 150x28/border8 blue2ba4ff tab at centered X and Y+14.
+    // Wrapping word subtraction then signed division by2 retains odd widths.
     plan.frames[plan.count++]=transformedType0WindowFrame(float(x),float(y),float(w),float(h),20,
         rotation,scale,{rgb[0],rgb[1],rgb[2],uint8_t(alpha)});
     if(decoration==1) {

@@ -10,6 +10,9 @@ int16_t signedHalf(uint32_t value) {
 int32_t signedWord(uint32_t bits) {return bits<=0x7fffffff?int32_t(bits):int32_t(int64_t(bits)-0x100000000LL);}
 uint32_t effective(uint32_t rgba,uint8_t alpha) {return (rgba&0xffffff00u)|((rgba&255)*alpha/255);}
 }
+// Validate the whole finite plain stream before draw effects. Reject '<';
+// no token stripping or surrogate text. Mappingffff skips glyph AND advance.
+// Width sums wrapU16, then subtract one trailing spacing from nonzero maximum.
 bool measurePlainWindowFont(const MessageFont& font,const char* text,uint32_t spacing,WindowFontMeasurement& out) {
     if(!text)return false;
     WindowFontMeasurement next;uint16_t current=0,maximum=0;
@@ -23,12 +26,18 @@ bool measurePlainWindowFont(const MessageFont& font,const char* text,uint32_t sp
     maximum=std::max(maximum,current);next.width=maximum?uint16_t(uint32_t(maximum)-spacing):0;
     out=next;return true;
 }
+// Strict overlap (touching an edge is invisible), including flipped scales.
+// Physical pitch lies outside glyph scaling, per-glyph origin inside it. This
+// visibility test must not suppress source quad/RNG evaluation upstream.
 bool windowFontQuadIntersects(const WindowFontQuad& q,WindowFontTransform t,WindowFontClip clip) {
     const float left=t.x+q.pitchX+(float(q.originX)+q.left)*t.scaleX,right=t.x+q.pitchX+(float(q.originX)+q.right)*t.scaleX;
     const float top=t.y+q.pitchY+(float(q.originY)+q.top)*t.scaleY,bottom=t.y+q.pitchY+(float(q.originY)+q.bottom)*t.scaleY;
     return std::max(left,right)>clip.left && std::min(left,right)<clip.right &&
         std::max(top,bottom)>clip.bottom && std::min(top,bottom)<clip.top;
 }
+// Caller owns actual matrix/texture/scissor/GPU work. Validate before emitting;
+// native callbacks are required. Each inner quad consumes two irand(64), even
+// for unused noise UVs; edge order is left,right,down,up,then center.
 bool drawPlainWindowFont(const MessageFont& font,const char* text,WindowFontConsumer consumer,
     const WindowFontStyle& style,const WindowFontDrawServices& services,int32_t x,int32_t y) {
     if(consumer==WindowFontConsumer::StringPitch)return false;
@@ -38,6 +47,9 @@ bool drawPlainWindowFont(const MessageFont& font,const char* text,WindowFontCons
     int32_t penY=consumer==WindowFontConsumer::MessageDirect?y:0;
     const int32_t startX=penX;float floatX=0,floatY=0;
     for(const auto* p=reinterpret_cast<const uint8_t*>(text);*p;++p) {
+        // LF pitch28 differs from cropped glyph height22/top offset-2.
+        // StringMatrix uses float pen, MessageMatrix signed per-glyph origin,
+        // MessageDirect signed screen request. Preserve their narrowing points.
         if(*p=='\n'){
             if(consumer==WindowFontConsumer::StringMatrix){floatX=0;floatY-=28.f;}
             else {penX=startX;penY=signedWord(uint32_t(penY)-28);}
@@ -50,6 +62,9 @@ bool drawPlainWindowFont(const MessageFont& font,const char* text,WindowFontCons
         const int16_t localY=consumer==WindowFontConsumer::StringMatrix?signedHalf(uint32_t(int32_t(floatY))):
             consumer==WindowFontConsumer::MessageMatrix?0:signedHalf(uint32_t(penY));
         const auto emit=[&](int32_t dx,int32_t dy,uint32_t color) {
+            // Quad positions wrap signed16 after offsets, then top subtracts2.
+            // Atlas XY already includes original glyph crop/bearing; do not add
+            // another bearing or derive pen advance from texture padding.
             const int16_t left=signedHalf(uint32_t(int32_t(localX))+uint32_t(dx));
             const int16_t requestY=signedHalf(uint32_t(int32_t(localY))+uint32_t(dy));
             const int16_t top=signedHalf(uint32_t(int32_t(requestY))-2);
@@ -68,6 +83,9 @@ bool drawPlainWindowFont(const MessageFont& font,const char* text,WindowFontCons
     }
     return true;
 }
+// Separate finite scalar-string scope: no outline, tags or LF. Preflight
+// before RNG/emission; physical pen advances with fused scaleX*(width+spacing).
+// Captured Y scale belongs to the backend matrix, not this pen computation.
 bool drawPlainWindowFontPitch(const MessageFont& font,const char* text,const WindowFontStyle& style,
  const WindowFontDrawServices& services,float x,float y,float scaleX,float scaleY) {
  (void)scaleY; // Native per-glyph matrix applies captured Y scale.

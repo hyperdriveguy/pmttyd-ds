@@ -5,6 +5,8 @@
 namespace ttyd {
 // Fit original 640x480 artwork into a centered320x240 area without stretching.
 constexpr float MessageWindowScale=.5f;
+// Original ordinary constructor box in centered640x480, Y-up coordinates.
+// Backend maps it to the handheld screen; this helper does not own GPU state.
 struct MessageWindowGeometry {float x=-280,y=225,width=560,height=176;};
 struct MessageWindowPlan {
     MessageWindowGeometry box;
@@ -13,6 +15,9 @@ struct MessageWindowPlan {
 };
 struct MessageTextClip {float top=0,bottom=240;};
 // Original centered480-high scissor bands, adapted at half scale.
+// Type IDs: 1 small, 3 system, 4 kanban, 5 selection, 7 diary, 11 clear.
+// Original text-scissor heights/offsets are halved into screen coordinates;
+// selection returns full240-high clip. This is separate from glyph crop width400.
 inline MessageTextClip messageTextClip(const MessageWindowPlan& plan,int type) {
     if(type==5)return {};
     const bool system=type==3 || type==11;
@@ -49,6 +54,8 @@ struct MessageGlyphCrop {
     float x=0,y=0,width=0,height=0,u0=0,v0=0,u1=1,v1=1;
     bool visible=false;
 };
+// Native 400-wide screen clipping; interpolate UVs after cropping so partial
+// glyphs retain texture scale. Empty/negative rectangles produce no visible quad.
 inline MessageGlyphCrop messageGlyphCrop(float x,float y,float width,float height,float top,float bottom) {
     MessageGlyphCrop out;
     if(width<=0 || height<=0)return out;
@@ -60,9 +67,16 @@ inline MessageGlyphCrop messageGlyphCrop(float x,float y,float width,float heigh
 }
 // Source centered640x480 coordinates, Y up. Projection is supplied by the
 // backend; original constructor/draw/print constants are kept in this space.
+// Source placement choices: abs(X)>=300 uses mode2 (no tail), otherwise
+// left-of-Mario mode3 or right mode7. See mode bits below, not enum actor IDs.
 inline unsigned messageSpeakerMode(float speakerX,float marioX) {
     return std::fabs(speakerX)>=300?2:speakerX<marioX?3:7;
 }
+// Mode bits: bit0 tail, bit2 right-side tail anchor, bit3 upper-tail/small
+// placement branch. Nonzero mode interpolates box from10x10 at the talk anchor
+// using alpha/255; text waits for alpha255. Ordinary text inset62/-36,
+// selection40/-25, small28/-6; tail factors preserve source binary32 geometry.
+// stretchMessageTail is a separate explicit handheld adaptation, not source art.
 inline MessageWindowPlan messageWindowPlan(MessageWindowGeometry geometry,unsigned mode,
                                            float anchorX,float anchorY,uint8_t alpha,int type=0) {
     MessageWindowPlan out;out.box=geometry;

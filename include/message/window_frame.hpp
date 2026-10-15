@@ -3,6 +3,8 @@
 #include <cstdint>
 namespace ttyd {
 struct WindowFramePoint {float x,y,z,u,v;};
+// Nine source quads * four FIFO vertices =36; native triangulation expands
+// to54 vertices. center/rotation/scale remain separate backend transform inputs.
 struct WindowFrameMesh {
     std::array<WindowFramePoint,36> quads;
     std::array<uint8_t,4> color;
@@ -16,6 +18,8 @@ WindowFrameMesh type0WindowFrame(float x,float y,float width,float height,
 WindowFrameMesh transformedType0WindowFrame(float x,float y,float width,float height,
     float border,float rotationDegrees,float scale,std::array<uint8_t,4> color);
 std::array<WindowFramePoint,54> windowFrameTriangles(const WindowFrameMesh&);
+// Supported decoration0/2 has one base frame; decoration1 adds one tab.
+// Storage for two frames is a finite supported-domain plan, not the window pool.
 struct ItemSelectionFramePlan {std::array<WindowFrameMesh,2> frames;unsigned count=0;};
 // Used manager decoration0/1/2 only. Definition RGB and low8 manager alpha,
 // source signed-word rectangle and separate tab transform centers are retained.

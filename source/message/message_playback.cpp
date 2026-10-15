@@ -6,6 +6,10 @@
 #include <cstring>
 #include <cstdlib>
 namespace ttyd {
+// PMFONT1: 8-byte magic, glyph count, 256 U16 mappings, then 8-byte glyphs.
+// Converted little-endian atlas is 512x256 with cells <=24x24; count<=1024 is
+// a native loader bound. Require resident mappings and exact EOF, then publish
+// atomically. The original BFN bytes/setup lifecycle are separate services.
 bool MessageFont::load(const char* path) {
     if(!path)return false;
     FILE* f=std::fopen(path,"rb");if(!f)return false;
@@ -22,10 +26,18 @@ namespace {
 bool number(const std::string& s,float& f){char* end=nullptr;f=std::strtof(s.c_str(),&end);return end!=s.c_str() && *end==0 && std::isfinite(f);}
 int16_t half(int32_t v){const uint16_t w=uint16_t(v);return w<=32767?int16_t(w):int16_t(int32_t(w)-65536);}
 }
+// Parse original bytes into a temporary native record stream; unsupported
+// controls/malformed operands reject without changing this playback. Limits
+// (64 KiB text, 128-byte tag scan, finite positive scale<=8) are native admission
+// guards, not newly measured original parser behavior. Never strip/rewrite tags.
 bool MessagePlayback::open(const char* key,const char* text,const MessageFont& font,uint64_t now) {
     if(!key || !text || font.glyphs.empty())return false;
     MessagePlayback next;next.identity=key;next.raw=text;
     if(next.raw.size()>65536)return false;
+    // T is wrapped schedule, V defaults25; X/Y/K/S/H retain signed halfword
+    // coordinates/key ordinal/scroll delta/baseline. Ordinary glyphs advance by
+    // width+2; scaleX changes horizontal scale only (style0x10000). Dynamic/
+    // shake/wave bits1/2/4 belong to glyph rendering, not playback acceleration.
     uint32_t t=0,speed=25,style=0;int16_t x=0,y=0,k=0,s=0,baseline=0;float scale=1,verticalScale=1,dynamic=1,lineScale=0;
     bool smallSpacing=false;uint32_t choiceMax=0;
     auto record=[&](uint16_t code){MessageRecord r;r.flags=style;r.code=code;r.x=x;r.y=y;r.schedule=t;r.scale=scale;r.value=dynamic;return r;};
@@ -35,6 +47,10 @@ bool MessagePlayback::open(const char* key,const char* text,const MessageFont& f
             const size_t end=next.raw.find('>',at);if(end==std::string::npos || end-at>=128)return false;
             const auto control=next.raw.substr(at,end-at);const auto space=control.find(' ');
             const auto name=control.substr(0,space);const auto args=space==std::string::npos?std::string{}:control.substr(space+1);float value=0;
+            // Record IDs: fffe key (+100 schedule), fffc once_stop (+50),
+            // fff5 dkey, fffd scroll (+50), fff7 color, fff8 icon,
+            // fffb line feed, ffff terminal. Payload fields depend on opcode.
+            // pos second argument999 preserves Y/scroll; /col is RGBA000000ff.
             if(name=="k" || name=="key") {auto r=record(0xfffe);r.x=k;next.records.push_back(r);t+=100;k=half(k+1);}
             else if(name=="o" || name=="once_stop") {next.records.push_back(record(0xfffc));t+=50;}
             else if(name=="dkey" || name=="/dkey") {auto r=record(0xfff5);r.flags=name=="dkey"?1u:0u;next.records.push_back(r);}
@@ -50,6 +66,9 @@ bool MessagePlayback::open(const char* key,const char* text,const MessageFont& f
             else if(name=="kanban"){next.windowType=4;speed=0;}
             else if(name=="small"){next.windowType=1;smallSpacing=true;}
             else if(name=="system") {next.windowType=3;auto r=record(0xfff7);r.flags=0xdcc8dcff;next.records.push_back(r);}
+            // Select operands: initial/cancel narrow to signed bytes, width/Y
+            // to signed halves. Type5, flag0x20 and style row bit0x100 select
+            // choice records with speed0. This parser does not invent options.
             else if(name=="select") {
                 int a,b,c,d;char extra;
                 if(std::sscanf(args.c_str(),"%d%d%d%d %c",&a,&b,&c,&d,&extra)!=4 || a<-32768 || a>32767 || b<-32768 || b>32767 || c<-32768 || c>32767 || d<-32768 || d>32767)return false;
@@ -59,6 +78,10 @@ bool MessagePlayback::open(const char* key,const char* text,const MessageFont& f
                 next.flags|=0x20;style|=0x100;speed=0;
             }
             else if(name=="clear")next.windowType=11;
+            // Native supported names STICK=0x81, PAD_Y_ON=0x73, else decimal
+            // source ID. Original descriptor first frame supplies dimensions;
+            // retain fused placement, halfword narrowing, aux low16 and +40
+            // advance. Missing catalog entries reject instead of placeholder art.
             else if(name=="icon") {
                 char id[32],extra;float q;int offset,aux,advance;
                 if(std::sscanf(args.c_str(),"%31s%f%d%d%d %c",id,&q,&offset,&aux,&advance,&extra)!=5 || !std::isfinite(q) || q<=0 || q>8)return false;
@@ -79,7 +102,13 @@ bool MessagePlayback::open(const char* key,const char* text,const MessageFont& f
             else if(name=="shake")style|=2;
             else if(name=="/shake")style&=~2u;
             else return false;
+            // Consume one immediate LF after a control without emitting a
+            // line record. This differs from an ordinary standalone newline.
             at=end+1;if(at<next.raw.size() && next.raw[at]=='\n')++at;
+        // Selection LF grows option count; native guard127 bounds signed byte
+        // storage and guarded <24 row-bit shifts avoid undefined native shifts.
+        // Source line pitch32 uses max vertical scale; small spacing factor.7.
+        // Preserve truncation/halfword narrowing instead of accumulating floats.
         } else if(c=='\n') {
             if(next.flags&0x20){
                 if(next.choiceCount>=127)return false;
@@ -96,6 +125,10 @@ bool MessagePlayback::open(const char* key,const char* text,const MessageFont& f
         }
         if(next.records.size()>=2560)return false;
     }
+    // Presentation geometry: small232x64 at.9 scale; selection auto-width
+    // adds80, height=36*count+40 and centers X. Guard record count before adding
+    // terminal (maximum2560 including terminal). Publishing starts state5,
+    // window allocation/poll bits3 and a fresh native draw-cache serial.
     if(next.windowType==1){next.geometry.width=232*.9f;next.geometry.height=64*.9f;}
     if(next.windowType==5) {
         if(next.choiceWidth==0)next.choiceWidth=half(int32_t(std::max(choiceMax,uint32_t(int32_t(x)))+80));
@@ -107,6 +140,10 @@ bool MessagePlayback::open(const char* key,const char* text,const MessageFont& f
     static uint64_t serial=0;next.serial=++serial;
     *this=std::move(next);return true;
 }
+// Append reparses the exact accumulated original bytes, preserving caller's
+// existing identity/geometry/serial/pose state. Only records/raw and playback
+// continuation fields below are replaced; parsed temporary metadata is not
+// wholesale assigned. Reparse failure preserves the resident playback.
 bool MessagePlayback::append(const char* text,const MessageFont& font,uint64_t now) {
     if(!text || !active())return false;
     MessagePlayback parsed;
@@ -121,19 +158,32 @@ bool MessagePlayback::resume(uint64_t now) {
     if(!active())return false;
     state=1;windowFlags|=2;lastTime=now;return true;
 }
+// Internal results: 0 terminal, 1 once_stop, 2 key wait, 3 progressing,
+// 4 native terminal-input gate. Caller supplies normalized clock units; this
+// adapter does not execute original timebase conversion/callback/history/audio.
+// flags bit4 latches acceleration, bit0x80 disables it; mask0x300 is A/B.
 int MessagePlayback::play(uint64_t now,uint32_t input) {
     flags&=~2u;
     const uint32_t delta=uint32_t(now-lastTime);
     auto accelerate=[&](){if(!(flags&0x80) && (input&0x300))flags|=4;};
+    // Scroll precedes wait/record processing. Source binary32 factor is
+    // 0x3eb851ec (~.36); acceleration performs TWO separately truncated fused
+    // additions, not one doubled expression or 100x scrolling.
     if(scrollTarget>scroll) {
         scroll=int32_t(std::fma(.36000001430511475f,float(delta),float(scroll)));accelerate();
         if(flags&4)scroll=int32_t(std::fma(.36000001430511475f,float(delta),float(scroll)));
         scroll=std::min(scroll,scrollTarget);lastTime=now;return 3;
     }
+    // Blocked key leaves timestamp untouched. Acknowledged key increments
+    // ordinal and adds100 rather than elapsed delta; ordinary advance uses low32
+    // delta with wrapped multiplication by100 when accelerated.
     if(wait==1)return 2;
     if(wait==2){++acceptedKey;wait=0;elapsed+=100;}
     else {accelerate();elapsed+=delta*((flags&4)?100u:1u);}
     lastTime=now;
+    // Unsigned schedule admission can consume several records per call.
+    // Matching key/scroll control updates elapsed but does not break the loop;
+    // terminal remains at cursor, once_stop advances past its own record.
     while(cursor<records.size() && records[cursor].schedule<=elapsed) {
         const auto& r=records[cursor];
         if(r.code==0xffff) {
@@ -161,6 +211,9 @@ int MessagePlayback::play(uint64_t now,uint32_t input) {
     }
     return wait?2:3;
 }
+// now must be monotonic; backwards timestamps cause no update. Talk countdown
+// is per invocation (15 after eligible glyph), not a measured frame duration.
+// It runs before window dispatch; pose requests carry their own serial/time.
 void MessagePlayback::tick(uint64_t now,uint32_t input) {
     if(!state || now<lastTime)return;
     auto requestPose=[&](PoseRequest request){poseRequest=request;++poseRequestSerial;poseRequestedAt=now;};
@@ -168,6 +221,10 @@ void MessagePlayback::tick(uint64_t now,uint32_t input) {
         if(!talkLatched){talking=true;talkLatched=true;requestPose(PoseRequest::Talk);}
         if(--talkCountdown==0){talking=false;talkLatched=false;requestPose(PoseRequest::Stay);}
     }
+    // Open/close use elapsed*255/200, with strict >255 opening completion.
+    // Closing zero alpha is retired on the NEXT invocation. Selection's fixed
+    // opacity increments live in MessageSelection, not these time-based fades.
+    // State9 is opt-in handheld terminal wait, not source history state9.
     if(state==5){animationTime=now;state=6;}
     if(state==6){windowFlags|=2;const uint64_t a=(now-animationTime)*255/200;alpha=uint8_t(std::min<uint64_t>(a,255));if(a>255){state=1;lastTime=now;}return;}
     if(state==7){animationTime=now;state=8;}

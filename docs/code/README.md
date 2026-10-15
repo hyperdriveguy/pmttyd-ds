@@ -121,3 +121,7 @@ alert selection/countdown and recovery setters are described in
 [pinch and recovery](battle-pinch-recovery.md). The [Turn parent](battle-turn.md), [event barriers](battle-event-barriers.md) and
 [audience attack events](battle-audience-attack-events.md) now have inline numeric/
 continuation notes. Newer Trio integration still requires its separate audit.
+
+[Message resources](message-resources.md), [parser/playback and selection](message-playback.md)
+and [message window/font/frame drawing](message-window-drawing.md) explain native
+formats, original token retention, finite consumer domains and presentation adapters.

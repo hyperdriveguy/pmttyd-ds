@@ -4,6 +4,8 @@
 #include <vector>
 
 namespace ttyd {
+// Byte offsets into one retained resource buffer, not independently owned
+// strings. Sorting the index never reorders or rewrites original message bytes.
 struct MessagePair {size_t key, text;};
 class MessageResource {
 public:
@@ -11,6 +13,8 @@ public:
     // Rejected loads preserve the resident resource and its returned pointers.
     bool load(const char* path);
     bool assign(std::vector<uint8_t> bytes);
+    // Borrowed original text; valid until successful reload/assignment or
+    // destruction. Duplicate keys return null instead of choosing a story line.
     const char* find(const char* key) const;
     size_t size() const {return index_.size();}
     bool ambiguous(const char* key) const;
