@@ -4808,3 +4808,5 @@ cleanup/history persistence and outer load/parser order, shared npcEnt battle0
 RNG and normal field Main/query/facing/collision/display ownership. Keep the
 request open for those providers and runtime traces; no fabricated cleanup,
 mask bank, parser globals or RNG substitutes were added.
+
+Implemented complete retained battle_init800738ac parent and nested it in sequence Main state4. Exact shared camera mode, actual pouch alias, declared native primary arena plus original N_battleMapAlloc and actual shared F20 Information setters are bound. [Contract](../behavior/battle/NATIVE_FIELD_BATTLE_INITIALIZATION_AND_SHARED_STORAGE.md). Ordinary authored field bootstrap remains open. Next animation child requires global W/scratch/testAlloc refresh and retained resource/pose lifetime, not only W10c=1; subsequent NPC release/context/party/lower BattleInit must consume the same owners. Static evidence/review: artifacts/battle-sequence-init-ownership-evidence/battle-init-next-provider.md and field-initialize-implementation-review.md. No late Init acknowledgment after legacy victory.

@@ -16,6 +16,8 @@ struct BattleSequenceEntryServices {
     std::optional<uint16_t> (*half)(void*,uint32_t)=nullptr;
     bool (*store)(void*,uint32_t,uint32_t)=nullptr;
     bool (*call)(void*,BattleSequenceCall&)=nullptr;
+    std::optional<uint8_t> (*byte)(void*,uint32_t)=nullptr;
+    bool (*storeByte)(void*,uint32_t,uint8_t)=nullptr;
 };
 struct BattleSequenceEntryCursor {
     bool active=false,queued=false,getterCaptured=false;

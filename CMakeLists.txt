@@ -1840,3 +1840,13 @@ add_test(NAME effect_pool COMMAND effect_pool_tests)
 add_executable(recovery_effect_draw_tests tests/recovery_effect_draw_tests.cpp)
 target_link_libraries(recovery_effect_draw_tests PRIVATE ttyd_core)
 add_test(NAME recovery_effect_draw COMMAND recovery_effect_draw_tests)
+
+# Original field-to-battle initialization and shared native storage.
+target_sources(ttyd_core PRIVATE source/battle/battle_field_initialize.cpp source/battle/battle_sequence_storage.cpp)
+add_executable(battle_field_initialize_tests tests/battle_field_initialize_tests.cpp)
+target_link_libraries(battle_field_initialize_tests PRIVATE ttyd_core)
+add_test(NAME battle_field_initialize COMMAND battle_field_initialize_tests)
+add_executable(battle_field_binding_tests tests/battle_field_binding_tests.cpp)
+target_link_libraries(battle_field_binding_tests PRIVATE ttyd_core)
+add_test(NAME battle_field_binding COMMAND battle_field_binding_tests)
+set_tests_properties(battle_field_binding PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

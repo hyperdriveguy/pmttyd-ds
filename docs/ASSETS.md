@@ -1536,3 +1536,16 @@ matching artifacts/recovery-lifecycle-source-manifest.json SHA256
 No image/audio conversion or original binary/ISO bytes were committed. Original
 Nintendo/Intelligent Systems rights remain reserved; these private validation
 copies confer no new license or redistribution rights.
+
+Battle initialization/storage adds no asset conversion or extraction. Validation
+uses the previously validated battle-entry2098 RomFS products overlaid with the
+87 hash-matched products in artifacts/area-map-history-assets-after.json for the
+current committed map-history code. All products are private originals/metadata;
+source ISO remains read-only. Native arena, globals and pouch aliases are mutable
+runtime storage and are never exported as original asset/readiness fixtures.
+
+The isolated parsed-map tests also require the9322-byte private source
+local-assets/field-map-npc/gor_02.s, original m/gor_02/s, SHA256
+dd1dd8400fa0b94dbd6d266155dd1e9caba82176e7eec38e46acf0f3328ef2ec. It was
+copied from matching prior evidence and verified against parsed-product metadata;
+no new ISO extraction or redistribution.

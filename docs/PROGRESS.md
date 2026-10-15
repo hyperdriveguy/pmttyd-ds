@@ -8233,3 +8233,89 @@ Next: remaining field/NPC/partner services and ownership, remaining battle,
 message/inventory/story, effect/audio and relevant port tooling. Re-audit code
 added or changed concurrently in previously covered modules. Port-wide
 documentation and the remake remain incomplete; the documentation goal stays active.
+
+### Original field battle initialization and shared map/pouch storage (2026-10-14)
+
+Previous goal turn made concrete progress: ad41392e committed the full sequence
+entry parents and shared field binding with host/native evidence. This increment
+implements complete retained battle_init800738ac and nests it in Main state4.
+F/N/P captures, fresh GP debug gate/msgLoad routes, map→B clear→animation→NPC
+release→fresh GP14→event reset→sound order, exact Information/party/first-attack
+branches, setup ADDRESS N230 and ordered18/1a/1b stores precede actual lower
+BattleInit(I). Only its real completion returns source0; missing children hold.
+
+The camera leaf modifies existing shared camera4.mode=2 only, preserving inherited
+lens/view/publication. Actual Information leaf writes target retained F20. Entry
+and initial battle_init require F to equal the NPC owner's real fourth580-byte
+allocation and N to be its active aligned actor, protecting infallible supported
+Information storage. Parent static review found no source order/value mismatch;
+reported F admission gap was corrected. Read-only evidence:
+artifacts/battle-sequence-init-ownership-evidence/field-initialize-implementation-review.md.
+
+BattleSequenceStorage retains an explicitly declared native primary map arena,
+map globals, same actual Game pouch bytes/current pointer and shared BattleWork
+pointer backing. Native cold allocation addresses/sizes are caller policy, not
+original SDK startup heap identity or observed allocation history. The actual
+original N_battleMapAlloc runs best-fit/split/zero/cache/nested-header operations
+on those bytes after domain/cache admission. Existing allocation/free algorithms
+consume the same arena, including lower B-sized and unit allocations and paired
+nested/primary frees. Attaching a facade never resets allocator history; partial
+mapping failure rolls back its own aliases. Process owner survives facade and
+admitted handoff; Game/VM and actual pouch identity must stay stable. Do not
+infer that arbitrary arena capacity supports all later resource allocations.
+
+No asset extraction or conversion was needed. Matched private RomFS combines
+prior validated battle-entry2098 files with87 SHA-matched map-history products
+for current committed field-map code. ISO stays read-only; generated packs,
+mutable RAM and native probe remain outside source history. See
+[contract](behavior/battle/NATIVE_FIELD_BATTLE_INITIALIZATION_AND_SHARED_STORAGE.md)
+and [asset notes](ASSETS.md).
+
+Full ordinary bootstrap and prologue remain incomplete. Connect persistent field
+VM, original tagged tik_01/c_kuribo/raw-name/setup4 and authored battle_start
+before action entry. The current graph now reaches real animPoseBattleInit;
+its global W, scratch allocation and selected-pose/testAlloc refresh must be
+implemented with shared lifetime, then NPC release/context/party/lower BattleInit.
+Setting animation mode1 alone or acknowledging old Init after victory cannot
+complete entry. Documentation inbox keeps these gaps open. Complete character,
+dialogue, indoor/event visibility fidelity and hardware performance remain goals.
+
+Validation: final CMAKE_BUILD_PARALLEL_LEVEL=4 make -C
+artifacts/battle-init-source test -o assets-ready exited0:347/347 C++ in35.72s
+and199/199 Python in26.590s. Standalone parent -Wall/-Wextra check passed.
+The first host run found repeated constant-pack import during facade reopening;
+fixed by verifying/reusing the full original constant view, preserving bytes.
+A later Python run lacked the private parsed map source fixture; copied only
+SHA-verified original gor_02.s and reran the complete required checks. Failed
+logs are retained; final log artifacts/battle-init-test-complete.log.
+
+Native make all -j4 -o assets-ready SOUNDTRACK=gamecube TARGET=ttyd-battle-init
+BUILD=build-battle-init exited0. Strict isolated ARM fixture passed parentBranches,
+originalCPUResource, registeredNPC, actualAllocator, cacheOrder, pairedFree,
+pouchAlias, cameraInheritance, retainedStorage and animationBoundary. Exact
+snapshot artifacts/azahar-battle-init-probe/battle-init-probe.snapshot. Fixture
+runs both parent branch assertions and original-resource Game/VM binding tests
+with native paths and NDEBUG explicitly undefined. Test-supplied encounter F8,
+state4 position and acknowledged backend calls are explicitly fixture inputs;
+no authored encounter readiness or lower-BattleInit success is claimed. Cache
+callbacks count original order/address operands, not hardware cache equivalence.
+
+Private main fixture edits were restored. Final production make all exited0;
+a nonfatal shared-/tmp Make FIFO collision appeared in the restored build,
+then a clean no-change all with isolated TMPDIR exited0. No new code warnings;
+baseline compiler/Pillow warnings remain. Normal isolated40s Azahar boot passed
+and original storybook town/text capture was inspected at
+artifacts/azahar-battle-init-normal-matched/boot.png. Earlier15s black loading
+capture was inconclusive and was not treated as boot success. Native SHA256
+489458fd4ff9a23c9d4ae49cf6a9d812b9699b1147b1db1b453a10f0a31a8409. Isolated profiles do not touch user settings/saves. This is
+ARM/boot validation, not original pixel parity, complete prologue entry, or
+physical 3DS performance evidence.
+
+Frozen basead41392ed6a8e6841f84d565b28aa84ee36e7420 plus scoped edit journal
+isolates this change from other roots' concurrent implementation/docs work.
+Source/asset audit covers3560 source files and2100 RomFS files with zero
+mismatches, plus the hash of the original parsed-map source fixture. Manifest
+artifacts/battle-init-validation-manifest.json; logs and source snapshot are
+artifacts/battle-init-*. Documentation-link validation covers1360 Markdown
+files with zero broken links. Other roots' work remains preserved; the moving
+merged worktree is not claimed validated as a whole.

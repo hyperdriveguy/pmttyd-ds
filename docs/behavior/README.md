@@ -1183,3 +1183,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Maya quantized curves and effect-pool continuations](effect/MAYA_QUANTIZED_CURVES_AND_EFFECT_POOL_CONTINUATIONS.md) — source quantization, fused interpolation, matrix composition, pool traversal and file-cache waits.
 - [Recovery draw callbacks and number transforms](effect/RECOVERY_DRAW_CALLBACKS_AND_NUMBER_TRANSFORMS.md) — original texture/material calls, live camera/payload ownership and retained quad/number submission.
+
+- Battle: [field battle initialization and shared storage](battle/NATIVE_FIELD_BATTLE_INITIALIZATION_AND_SHARED_STORAGE.md) — complete retained battle_init parent, same field/pouch/camera/map owners; real animation/resource/lower-initializer waits remain.
