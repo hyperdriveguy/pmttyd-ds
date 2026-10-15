@@ -10732,3 +10732,70 @@ message/story/effect, platform/file/event/runtime helpers and tools. Re-audit
 concurrent lifecycle, cold animation, NPC and display integration against their
 committed versions. Snapshot agreement alone is not semantic completeness.
 Full documentation and remake remain incomplete; goal stays active.
+
+## 2026-10-14 — Retained battle Main, actual audience identity and original HP source children
+
+Committed55ebe1d27d0faf5561dfcb2816afe1d42c932d5c: complete retained upper
+Main/outer wrapper and independent sequence-bank dispatch, with captured
+outer/inner BattleWork, eleven once-only completed siblings and stable provider
+identity. Trio finishing uses that wrapper and its captured physical sample;
+existing retained pose/depth/display completion acknowledges its exact pending
+child. Original final-state/outer publication replaces the previous manual tail.
+Generic tick retries were removed after independent review found synchronous
+audience/stage/action children could repeat mutations before a held provider.
+Those boundaries stay pending until their own retained continuations are bound.
+Physical controls remain available; this increment adds no touch-only action.
+
+Actual original audience Init/Create/Delete/item-holder boundaries now feed
+per-VM native incarnation metadata through inert-by-default service hooks,
+without extra guest reads/stores or inferred allocation from provisioned RAM.
+Birth and completion remain separate, paired reservations are not independent
+actors, and holder links retain exact actor/item generations. Actual Harbor/Trio
+VM owners are exposed by borrowed read-only getters. Visibility/harmful-item/
+current simulation admission still belongs to real display/selection owners.
+
+Added actual CameraManager Main/Draw class-camera admission with bounded guest
+views and guarded producer epochs; complete queued enemy-HP parent/bar
+continuations; linked original texture/raster initializers and geometry helpers;
+and original signed iconNumberDispGx with borrowed matrix/color lifetime. Source
+number tables/scalars already match existing tutorial packed views. The shared
+TexPlane2 footer path keeps its original child order and passes regressions.
+These modules require real status/Tattle/projection/camera/resource/GX providers.
+Whole normal battle initialization/turn/end and ordered number/bar GPU publication
+remain incomplete. No original constants are claimed as measured timing.
+
+Frozen source25b897b9d3de181064a095deff4cd0bc3af0643f plus the48-file
+owned journal validates with make test:405/405 C++ (41.32s),205/205 Python
+(30.596s), no skipped tests; make all -j6 -o assets-ready SOUNDTRACK=gamecube
+exits0. Existing compiler/Pillow warnings remain. Independent audit checks1949
+source/build inputs and2136 accepted RomFS products with zero mismatches or
+extra inputs. The accepted15-view door-data and animation-boot pair were
+hash-checked separately against their producer manifests. Documentation check:
+1426 Markdown files, zero broken links. This validates that frozen graph;
+concurrent later animation-source-entry changes in shared HEAD are outside it.
+
+Private ARM probe runs all Main wait cases, original audience reset/birth/clear
+paths and actual VM factory identity: PASS retainedMainAllWaits;
+sourceAudienceBirthClear; actualVmOwner; explicitFixtures. Isolated25s normal
+and30s probe captures visually inspected: original storybook, no visible asset
+error/exception. These are startup/source-fixture observations, not complete
+battle activation, original raster parity or physical New2DSXL performance.
+Only isolated emulator profiles/saves were used; no probe source is committed.
+Ordinary entry point restored byte-for-byte and forcibly rebuilt; restored
+3DSX SHA256b31bb31a192fb32bfac232df38394677daac2fd74c67a24ec8b3c1ded8d1414a
+equals pre-probe normal; probe SHA256
+2a993b964e1d4d6dca15e3f457352de29a8b3252b0fd0bcaba3c8f45e32cb364.
+Evidence:artifacts/main-lifecycle-{owned,source-manifest}.json, host-final/
+native-final/native-restored logs, isolated azahar-main-lifecycle-normal/probe
+and their proof status file; source verification and worker validation manifests.
+Original ISO/data/dumps/packs remain outside source history.
+
+Next: integrate the workers' separately frozen original HP17/18 atlas/GPU and
+source parent→number→bar composition, then single ordered icon/bar publication
+with actual import generations. HP camera admission must validate actual
+callback8011fde0/camera8; class callback8012210c cannot be spoofed. Finish retained
+stage children and action/audience children before safe retries; bind real
+normal battle/command/camera scheduling and completed lower-screen audience
+visibility, keeping physical X plus optional harmful-item touch interruption.
+Workers are authorized by the user's explicit UI parallelization request.
+The full tutorial/real-battle goal remains active and incomplete.
