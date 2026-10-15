@@ -9482,3 +9482,58 @@ Next: re-audit newly committed packed wander/cold-animation additions, remaining
 battle controllers/resources/menus, message/story/effect/audio/platform and port
 tools. Concurrent additions to covered files still require their own review.
 Full code documentation and the remake remain incomplete; goal stays active.
+
+### Native prior radial hint and complete NPC Main source map (2026-10-14)
+
+Code8618d376 fixes active native Game wandering to consume the prior admitted
+encounter scan's radial hint, distinct from side collision. Skipped scans retain
+it; completed empty scans publish zero; native actor retirement/checkpoint
+restoration clears transient ownership. Existing NpcTalkScan remains the sole
+producer; no additional scan/allocation/draw work. Also retained original
+reviseAngle's rounded-negative-add360→zero guard and signed-zero behavior.
+[Native contract](behavior/field/NATIVE_NPC_PRIOR_RADIAL_HINT.md).
+
+Read-only documentation follow-up supplies the [complete original npcMain
+parent graph](behavior/field/ORIGINAL_NPC_MAIN_PARENT_CONTROL_FLOW.md):39 direct
+callees with all original listing sites verified, precise clock conversion,
+movement/clear/side/automatic-pose order, interruption gates, display/material/
+shadow requests, late previous-position snapshot and field tail. Corrected
+prior clock shorthand: ticks<<3, signed integer microsecond quotient, signed64
+to float then SP divide1000000; integer milliseconds/1000 is not the source.
+This is static evidence, not a measured runtime cadence or complete native
+parent implementation. EVT-01 and the overall remake remain open.
+
+Frozen validation: tree643ee17cdb88180c2bac3b22bbe08c31ceb7eddb on the previously
+validated4199575f packed-wander snapshot, excluding concurrent work. All3644
+tracked files match;2125 RomFS products and accepted local fixtures unchanged.
+Manifest:artifacts/npc-radial-hint-validation-manifest.json. make test passes
+367/367 C++ (37.54s) and201/201 Python (30.454s); make all -j4 -o assets-ready
+SOUNDTRACK=gamecube exits0. Existing compiler/Pillow warnings remain.
+
+Isolated Azahar strict ARM fixture passes radialHint/priorVisit/
+collisionSeparate/angleBoundary. The regression uses real original Goomba4
+catalog/collision data and an explicitly configured single wander input visit;
+it does not fabricate story completion. Normal source restored and rebuilt;
+binary SHA256b6768c71360e65b909a4d3aa9b773d0808316fe15c555f91b347ed265ac2b346
+matches the pre-probe normal binary. A normal40s storybook capture reports
+App60FPS/100% speed, sample only. No user emulator profile/saves touched.
+
+Additional normal field capture reached Rogueport East through the source title
+input/curtain gates, with original Goomba/Mario/Goombella art and geometry
+visible. Two captures show Goomba movement and foreground-post occlusion. This
+is manual visual evidence only: the inherited green-pixel assertion failed on
+the partially occluded second frame; no automated live-wander pass is claimed.
+Earlier harness attempts hit startup black/title screens before field entry.
+All failures/captures are retained under artifacts/azahar-npc-radial-hint-field*.
+The actual field captures report about15AppFPS/25% speed under llvmpipe software
+OpenGL; startup60FPS must not be presented as field-performance validation.
+Physical New2DSXL timing and matched Dolphin pixel/occlusion parity remain open.
+
+Next: implement the retained complete npcMain parent against genuine shared
+GP/Mario/actor/pose/clock/event/display owners, with source-order holds and
+late history publication. Integrate actual Mario radial producer and pending
+numeric/audio services before normal Area VM activation; do not substitute
+catalog keys for packed pointers. Update the visual harness to identify actor
+visibility/occlusion and actual frontend admission, then profile field draw
+submission and CPU/GPU timing on the intended hardware. Preserve exact original
+story/dialogue and incremental commits. No full-area/full-game completion claim.

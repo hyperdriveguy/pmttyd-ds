@@ -1220,3 +1220,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Retained class drawing and audience touch admission](display/RETAINED_CLASS_AND_AUDIENCE_UI_ADMISSION.md)
 
 - [Native original battle HUD status elements](display/NATIVE_BATTLE_HUD_STATUS_ELEMENTS.md)
+
+- [Original NPC Main parent control flow](field/ORIGINAL_NPC_MAIN_PARENT_CONTROL_FLOW.md): complete local clock/movement/interrupt/display/history/tail graph,39 direct callees and original tick-to-microsecond conversion.
+- [Native prior-scan NPC radial hint](field/NATIVE_NPC_PRIOR_RADIAL_HINT.md): separate encounter publication and next-visit wander consumption, retirement and rounded-angle guard.

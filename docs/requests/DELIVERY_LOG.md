@@ -391,3 +391,7 @@ Read-only delivery: [original wander packed binding frontier](../behavior/field/
 ### Original packed wander integration and source-owner correction
 
 Code3342657e: [native original init/four-phase main](../behavior/field/NATIVE_PACKED_NPC_WANDER_EVENTS.md), actual LW10/map work, original Goomba4/Borodo wrapper guards, retained stop/start and held request ordering. Final366C++/201Python/native and scoped ARM fixtures pass. Corrected source touch+1d8 radial-hint and material+e8 ownership. Genuine packed Mario/Main/math/audio/world/render/lifecycle providers stay open under EVT-01; no full original runtime or hardware completion claim.
+
+### NPC Main source parent and native radial hint
+
+Read-only [complete npcMain parent](../behavior/field/ORIGINAL_NPC_MAIN_PARENT_CONTROL_FLOW.md):39 direct-callee identities/sites, precise clock conversion, movement/side/automatic-pose gates, nonzero regular-ID interruption and late snapshot/display/tail ownership. Evidence artifacts/npc-main-parent-evidence/. Code8618d376 supplies [native prior-scan radial hint](../behavior/field/NATIVE_NPC_PRIOR_RADIAL_HINT.md),367C++/201Python/native and isolated ARM fixture checks. EVT-01 remains open for actual packed Mario/NPC Main/resource/render integration and runtime observations; no documentation lock claimed.

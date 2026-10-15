@@ -129,9 +129,11 @@ user function consumes the previously published NPC dt/map-contact and Mario
 radial-hint actor+1d8. This differs from collision pointer+1dc cleared by
 npcMain before its source actor-order scan. The ordinary NPC loop
 requires mainflags1 and2, and sets state+1d4 mask10 when mainflags100000 clear.
-Under state10 it publishes elapsed seconds+1a4 at0x80049d6c from source clock
-milliseconds/1000; an elapsed interval>500ms is capped to the source16ms clock
-request. Paused/state-clock bookkeeping is not equivalent to globally using
+Under state10 it publishes elapsed seconds+1a4 at0x80049d6c through source
+ticks-left-shift3, signed integer microsecond quotient, signed64-to-float and
+SP division1000000; see the [complete parent clock stores](ORIGINAL_NPC_MAIN_PARENT_CONTROL_FLOW.md).
+An elapsed interval>500ms is capped to the source16ms clock request.
+Paused/state-clock bookkeeping is not equivalent to globally using
 simulation frame delta. See [complete side gates](FIELD_NPC_MARIO_SIDE_RESPONSE_NUMERICS.md).
 
 Horizontal movement requires state10 and dt>0. Components+1b4/+1bc are

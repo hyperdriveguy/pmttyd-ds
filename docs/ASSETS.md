@@ -1808,3 +1808,16 @@ separately read the ISO read-only and generate only in empty temporary dirs.
 Original Nintendo/Intelligent Systems rights remain reserved; private validation
 copies confer no new license or redistribution rights. No original binary/ISO
 bytes were committed.
+
+### NPC radial-hint and Main-parent validation (2026-10-14)
+
+Code8618d376 changes no original art, music, dialogue or compiled asset format.
+Private validation reuses all2125 products from the prior packed-wander asset
+baseline, verified byte-for-byte unchanged in
+artifacts/npc-radial-hint-assets-after.json. Read-only original DOL inspection
+adds ignored npcMain/direct-callee and reviseAngle evidence under
+artifacts/npc-main-parent-evidence/. No new conversion or scaling choice;
+original Nintendo/Intelligent Systems rights and existing private-use licensing
+notes remain unchanged. No original ISO/extracted binary/compiled pack is
+committed or distributed. Native build skips regeneration; Python converter
+fixtures read the original ISO read-only and write temporary outputs only.
