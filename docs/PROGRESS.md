@@ -15935,3 +15935,60 @@ field/party/font/window/resource/raster/startup integrations and tools. Inventor
 only tracks source/include C++/header/PICA hashes; tooling and untracked additions
 need separate audit. Matching hashes are a review aid,not semantic completeness.
 The broad documentation/remake goals remain active.
+
+
+## 2026-10-15 — Original process font startup and battle text/icon integration
+
+Commit `cd4e07823c1a19938155aba8ebe1abf20ccfdd5e` adds40 scoped paths:
+whole original centered FontDrawString80076a10, separate whole FontWidth
+wrapper80075528/line8007554c, and packed weapon cost80126968; actual process
+font startup, known source heap transfer/read delivery and font SDK setup;
+and actual weapon icon import/pending/publication ownership. Source cursors
+retain partial effects and unknown reads without replay. Free weapon cost
+returns0 through its actual zero branch without requiring unrelated unit/pouch
+bytes. Width uses original BFN/spacing; no estimated label widths were added.
+
+Cold native startup now initializes the genuine US GP contribution once before
+Mario configuration, runs the whole FontManager with actual ROMFS file reads
+and source heap storage, and preserves that same font/language history through
+room/checkpoint ownership transfers. Altering language to2 survives those host
+lifecycle checks without a second allocation/read. Font source completion and
+native texture residency remain separate. Icon eviction now respects actual
+pending/building/sealed weapon publications and independent long ownership;
+force-all shutdown still retires native generations. No original art, dialogue,
+music or source constants were rewritten. The new source startup memory pack
+is ignored, ISO-derived and documented in ASSETS; no ISO/payload was committed.
+
+Authoritative validation is the immutable6,487-input
+`artifacts/ui-runtime-integration-validation/manifest.json`, SHA256
+`483f8fd1c84fce1fb84e7f23c67f7b69584143250f720b5ac7882f64c50d7e1f`.
+All inputs remained unchanged after consumers terminated. Exact results are in
+that directory's `results.json`; every committed owned postimage matches the
+prepared scoped commit manifest. Eleven shared files retain newer independent
+HEAD baseline changes (native-party/animation guards/APIs, asset registrations
+and documentation) beyond the validated6458 parent; exact differences are
+recorded in `commit-baseline-differences.json`. No full newer live source file
+was imported into the older accepted graph or linked against an older ABI.
+
+- `CMAKE_BUILD_PARALLEL_LEVEL=4 make --jobserver-style=pipe test`: exit0;
+  499 C++ tests pass in57.29s,228 Python tests pass in35.362s,zero skips.
+  Includes fresh matching-ABI actual Game startup/room/checkpoint tests.
+- `make --jobserver-style=pipe all -o assets-ready -j4 SOUNDTRACK=gamecube`:
+  exit0. Native `artifacts/ttyd-original-ui-process-startup.3dsx` SHA256
+  `628018173a46bcb0e537aa490dcdd3679a5d5c001a387e8a0640b645a94ee373`.
+- Original ISO whole-body/child/constant/BFN verifiers for centered font, width
+  and cost: exit0. Frozen documentation:1,546 files,zero broken links.
+- Isolated Azahar native checkpoint smoke: exit0,70s warmup, physical file
+  navigation,20s load, right/left/idle captures. Storybook and final field/right
+  images manually inspected; zero unmapped access/native exceptions. Initial
+  sandbox Xvfb socket attempt failed; approved isolated-display retry succeeded.
+  Only the generated test profile/save was used. This validates startup/load
+  regression, not production battle-menu activation or hardware performance.
+
+Next: integrate source class0/1 packets and actual queued weapon callback,
+shared real GP language aliases and Window async startup. Then run actual icon
+GPU ownership/reimport checks and normal tutorial/battle checkpoints. Current
+normal field HUD still uses its existing provisional panels; this batch does
+not claim the reference battle HUD is complete. Scene4 audience visibility,
+incarnation-aware harmful throwing, physical selection and optional lower-screen
+taps remain required; the full goal stays active.
