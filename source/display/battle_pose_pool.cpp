@@ -281,6 +281,7 @@ bool BattlePosePool::clearEffect(int32_t handle){auto* p=pose(handle);if(!p || p
 // Smart-buffer flags0xc0 require a separate provider and hold release. Last
 // model owner releases its texture reference; clear pose ownership last.
 bool BattlePosePool::release(int32_t handle){
+    if(nativeRelease_)return nativeRelease_(nativeProvider_,handle);
     auto* p=pose(handle);if(!p || p->sourceBuffers)return false; // Real source file/heap release is a separate provider.
     if(p->word(4)==0 && (p->word(0)&0xc0))return false; // Actual smart-buffer providers are required.
     const auto modelIndex=p->word(0x10);

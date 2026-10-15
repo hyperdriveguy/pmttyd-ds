@@ -2282,3 +2282,13 @@ target_sources(ttyd_core PRIVATE source/effect/hit_n64_effect.cpp)
 add_executable(hit_n64_effect_tests tests/hit_n64_effect_tests.cpp)
 target_link_libraries(hit_n64_effect_tests PRIVATE ttyd_core)
 add_test(NAME hit_n64_effect COMMAND hit_n64_effect_tests)
+
+# Original source pose retirement and real native file-reference ownership.
+target_sources(ttyd_core PRIVATE source/display/animation_pose_release.cpp source/display/native_field_animation_release.cpp)
+add_executable(animation_pose_release_tests tests/animation_pose_release_tests.cpp)
+target_link_libraries(animation_pose_release_tests PRIVATE ttyd_core)
+add_test(NAME animation_pose_release COMMAND animation_pose_release_tests)
+add_executable(native_animation_release_tests tests/native_animation_release_tests.cpp)
+target_link_libraries(native_animation_release_tests PRIVATE ttyd_core)
+add_test(NAME native_animation_release COMMAND native_animation_release_tests)
+set_tests_properties(native_animation_release PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

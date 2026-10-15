@@ -103,6 +103,7 @@ private:
     void* nativeProvider_=nullptr;
     std::optional<int32_t> (*nativeEntry_)(void*,std::shared_ptr<const BattlePoseResource>,int32_t,BattlePoseClock,const char*)=nullptr;
     bool (*nativeClock_)(const void*,BattlePoseClock&)=nullptr;
+    bool (*nativeRelease_)(void*,int32_t)=nullptr;
     void restart(BattlePose&,BattlePoseClock);
     bool tangentSamplingAvailable() const;
     std::array<std::unique_ptr<BattlePose>,256> poses_{};

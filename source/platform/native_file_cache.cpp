@@ -159,10 +159,12 @@ bool stagePrologueAnimationFiles(NativeFileCache& cache,const char* root){
   {"a/b_mario",5,"trio-attack-mario.draw-model.bin"},
   {"a/c_pkr",5,"field-player-c_pkr.draw-model.bin"},
   {"a/c_kuri_h",5,"field-native-c_kuri_h.draw-model.bin"},
+  {"a/c_kuribo",5,"trio-enemy-kuribo.draw-model.bin"},
   {"a/a_mario-",4,"field-player-a_mario.draw-textures.bin"},
   {"a/a_mario_r-",4,"field-player-a_mario_r.draw-textures.bin"},
   {"a/c_pkr-",4,"field-player-c_pkr.draw-textures.bin"},
   {"a/c_kuri_h-",4,"field-native-c_kuri_h.draw-textures.bin"},
+  {"a/c_kuribo-",4,"trio-enemy-kuribo.draw-textures.bin"},
   {"a/vivian.bin",0,"animation-startup/a/vivian.bin"},
   {"a/ag2tg.bin",0,"animation-startup/a/ag2tg.bin"}};
  std::vector<NativeFileCache::Source> sources;

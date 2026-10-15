@@ -1,6 +1,7 @@
 #pragma once
 #include "animation_startup_process.hpp"
 #include "mario_presentation.hpp"
+#include "animation_pose_release.hpp"
 namespace ttyd {
 // Native simulation service over the real cold VM, source files and one pose
 // namespace. Creation precedes Mario's three Entries. Copies of the typed pool
@@ -18,6 +19,10 @@ public:
  // policy. Source retrace prefix owns bank/freeze arithmetic, not render calls.
  bool tick(bool battle,bool paused=false);
  bool mario(const MarioPresentation&,const std::array<int32_t,3>& handles);
+ // Retained source Release; ordinary Entry uses real fileFree. Smart buffers
+ // require their own provider and retain the original smartFree barrier.
+ bool release(int32_t handle);
+ uint32_t releasePending() const{return releasing_.pending;}
  const BattlePose* marioPose() const{return sampled_>=0?pool_->pose(sampled_):nullptr;}
  unsigned marioBank() const{return bank_;}
 private:
@@ -27,6 +32,7 @@ private:
  std::shared_ptr<NativeFileCache> files_;
  std::unique_ptr<AnimationStartupProcess> process_;
  std::string name_;std::shared_ptr<const BattlePoseResource> entering_;int32_t mode_=0;
+ AnimationReleaseCursor releasing_;uint64_t releasingGeneration_=0;
  uint64_t raw_=0,uploaded_=UINT64_MAX;int32_t selected_=-1,sampled_=-1;unsigned bank_=0;
 };
 }

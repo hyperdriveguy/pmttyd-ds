@@ -5178,3 +5178,23 @@ replay. Production captured-context evaluation, platform/linked providers,
 normal NPC activation and original runtime/visual/numeric/hardware parity
 remain OPEN; synchronous evaluate failure is not an atomic retry boundary.
 EVT-01 is not closed.
+
+### 2026-10-15 — Source pose Release and native file ownership
+
+[Native original Release](../behavior/display/NATIVE_SOURCE_POSE_RELEASE.md)
+now implements the complete 8003b2d0 graph with retained loads/stores/children,
+including signed count rereads, fresh root/flags/file captures and smartFree
+requests. Native ordinary poses use actual source arrays and NativeFileCache
+fileFree, with sidecars retired only after terminal flags clear. Typed metadata
+can transiently fail during teardown; raw lifetime admission remains pinned.
+Actual current Trio battle construction now stages original c_kuribo MODEL/TPL;
+its eight source poses retire via the production destructor while Mario survives.
+This closes neither full battle/field return nor EVT-01. Genuine smart-header/
+collector ownership and broader linked/effect lifetimes remain OPEN.
+
+Read-only evidence independently confirms kind13 record 803145f0 exit+24 is0,
+like canonical kind1. Next bind complete partyKill/Kill2 and original auxiliary
+Entry2Pos(kind13) plus the authored harbor/plaza conversion; a null hook does not
+permit skipping saved-kind/current-slot/table/release/free order. Keep actual
+source flag8 Main/facing/field scheduling and original story/message conditions
+separate. Evidence:ignored artifacts/animation-field-release-evidence/.

@@ -20,9 +20,10 @@ std::shared_ptr<NativeFieldAnimation> NativeFieldAnimation::create(const char* r
  if(!m.registerRam(0x800000f8,std::vector<uint8_t>(4)) || !m.writeWord(0x800000f8,Bus) || !m.registerRam(0x8041ec30,std::vector<uint8_t>(4)) || !m.registerRam(Name,std::vector<uint8_t>(256)) || word(m,0x8041fb40)!=0x41855555)return {};
  n->pool_->nativeProvider_=n.get();
  n->pool_->nativeEntry_=[](void* u,std::shared_ptr<const BattlePoseResource> r,int32_t mode,BattlePoseClock,const char* name){return static_cast<NativeFieldAnimation*>(u)->enter(std::move(r),mode,name);};
+ n->pool_->nativeRelease_=[](void* u,int32_t h){return static_cast<NativeFieldAnimation*>(u)->release(h);};
  n->pool_->nativeClock_=[](const void* u,BattlePoseClock& c){return static_cast<const NativeFieldAnimation*>(u)->clock(c);};return n;
 }
-NativeFieldAnimation::~NativeFieldAnimation(){if(pool_ && pool_->nativeProvider_==this){pool_->nativeEntry_=nullptr;pool_->nativeClock_=nullptr;pool_->nativeProvider_=nullptr;}}
+NativeFieldAnimation::~NativeFieldAnimation(){if(pool_ && pool_->nativeProvider_==this){pool_->nativeEntry_=nullptr;pool_->nativeClock_=nullptr;pool_->nativeRelease_=nullptr;pool_->nativeProvider_=nullptr;}}
 bool NativeFieldAnimation::ready() const{return process_ && process_->ready();}
 bool NativeFieldAnimation::clock(BattlePoseClock& out) const{
  if(!ready())return false;
@@ -45,7 +46,7 @@ bool NativeFieldAnimation::tick(bool battle,bool paused){
  publishEventRetraceTime(0,s);return true;
 }
 std::optional<int32_t> NativeFieldAnimation::enter(std::shared_ptr<const BattlePoseResource> resource,int32_t mode,const char* requested){
- if(!ready() || mode<0 || mode>2 || !resource || !resource->draw || !resource->textures || !resource->bank || resource->names.empty())return {};
+ if(!ready() || releasing_.active || mode<0 || mode>2 || !resource || !resource->draw || !resource->textures || !resource->bank || resource->names.empty())return {};
  const std::string name=requested?requested:resource->modelName;if(name.empty() || name.size()>=256 || name!=resource->modelName || !files_->contains("a/"+name,5) || !files_->contains("a/"+resource->textureName+"-",4))return {};
  // Preserve the original model-cache canonical resource, including its atlas.
  for(const auto& model:pool_->models())if(model.flags() && model.resource && model.resource->modelName==resource->modelName){resource=model.resource;break;}

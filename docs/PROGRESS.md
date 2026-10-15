@@ -12769,3 +12769,78 @@ resources and newer Trio integration, then remaining field animation/NPC/render/
 raw-RAM and release/effect additions. Broader event/message/story/platform/file/
 save/tooling audit remains active. Full code/remake goal is incomplete; keep
 original dialogue/control tokens and provider lifetimes intact.
+
+## 2026-10-15 — Original source pose retirement and enemy file staging
+
+Implemented the complete original animPoseRelease8003b2d0 graph with retained
+raw pose/model/texture captures, ordered fresh reads, signed counter rereads,
+smartFree/fileFree children and terminal pose-flag clearing. Each primitive hold
+resumes without repeated stores, decrements or child calls. Source invalid-ID/
+count policy is not invented by this controller; native lifetime admission is
+separate. Read-only original hash/listing review found no concrete graph defect.
+See [native contract](behavior/display/NATIVE_SOURCE_POSE_RELEASE.md).
+
+NativeFieldAnimation installs Release in the same production pool as Entry/Main.
+Ordinary source poses now call real NativeFileCache fileFree instead of stopping
+at the prior sourceBuffers barrier. Initial lifetime/generation admission is
+retained across transient model.flags0 states that invalidate typed pose lookup;
+native sidecars retire only after terminal source pose.flags0 clearing. Source
+stale scalar/cache/file words survive. Borrowed early returns remain live, and
+escaped readers cannot adopt a reused handle. Detached copies do not inherit the
+release service. Smart-header ownership stays honestly pending at8002f878; no
+collector, source scratch free or GPU texture destruction is acknowledged.
+
+The original c_kuribo MODEL/TPL were missing from the shared source file catalog
+although the committed battle owner already required their full 45-descriptor
+resources. Staging the accepted original files now permits actual source Entry
+for all eight Trio battle poses alongside Mario's three field poses. A real
+production Trio destructor test retires all eight while Mario/material/texture
+owners survive; source enemy warm re-entry and subsequent field sampling work.
+This is an explicit encounter fixture, not execution of the whole authored
+field/battle/result/return story. Full party/NPC/context lifetimes remain open.
+
+Validation froze base 0c9c7b981b074fcfdbe254b7faa0c31c09083d05 plus owned changes
+at artifacts/field-source-release-source. Full make test exits 0:
+439/439 C++ (46.44s). The initial Python run had two optional private-enemy
+fixture skips. Restoring 42 hash-matched private fixture inputs (no runtime
+product changes) and rerunning the entire Python suite passes 212/212
+(85.703s), zero skipped. Full native make all -j6 -o assets-ready SOUNDTRACK=gamecube
+TARGET=ttyd-field-source-release exits 0. Both original handles were polled to
+terminal. Existing compiler/Pillow warnings remain; no assertions were weakened.
+Focused tests cover exact ordinary service trace, each primitive held once,
+signed-wrap/shared/borrowed cases, mutating children/fresh reloads, actual file
+hold/recovery after model retirement, 40 source warm Entry/sample/Release cycles,
+shared MODEL/TPL counts, relocation preservation, stale readers, copied pools,
+real missing smartFree and actual source battle creation/production retirement.
+
+The private ARM fixture passes those checks under isolated Azahar. Its marker
+records releaseGraph/primitiveHolds/sourceFiles/warmReuse/staleReaders/
+sharedTexture/fileHoldRecovery/smartHold/sourceTrioEntry/
+productionBattleRetirement/retainedMario=PASS. Field input script passes afterward;
+reviewed captures show native-source Mario front/rear walk/run/jump, Goombella
+and original Rogueport art. Probe-only singleton restoration removes fixture
+state before normal Game startup; normal production code has no fixture/SD logs.
+The separate ordinary fresh-profile 45s capture reaches the original storybook.
+No user profile/save, source story/dialogue or progression/unlock conditions were
+changed. No physical New 2DS XL, original Dolphin/FPSCR or whole-game parity claim.
+
+Normal binary: artifacts/field-source-release-source/ttyd-field-source-release.3dsx,
+SHA256 1bce6fd6e024c6d26d6aee81834dd11b0d2a5a5223419482d982b5b058313926.
+Private ARM probe SHA256 30dd3333e9fc794241a582535844cd9bfb59c20860347376c55f65bc15479a6e.
+Source/product/log/probe hashes and exact audit scope are in
+artifacts/field-source-release-validation-manifest.json. Audit: 3960 tracked/owned source/documentation inputs and 2153 RomFS products,
+zero unexpected changes. The immutable snapshot excludes concurrent Main/field/battle/effect/render/documentation changes; it is
+not validation of the entire moving worktree. Asset differences are seven
+hash-pinned accepted enemy products plus four baseline paper-facing boot/door
+products; independent frozen boot regeneration matches the accepted bytes.
+No new original assets/conversion policies are introduced by Release. Original
+MODEL/TPL staging paths/licensing are recorded in [assets](ASSETS.md); no ISO,
+extract, compiled pack or binary was committed.
+
+Next: complete original Party Kill/Kill2 and auxiliary Entry2Pos(kind13), then
+bind actual harbor/plaza Goombella conversion at authored sites without an early
+canonical join. Kind13 exit hook+24 is confirmed genuine0; preserve all other
+saved-kind/current-slot/table/Release/free operations. Bind full source Main/
+facing/NPC field scheduling, broader smart/linked/collector owners, original
+battle result/field return, interiors/triggers/visibility and physical hardware
+verification. EVT-01 and the prologue/full-game goal remain active/incomplete.
