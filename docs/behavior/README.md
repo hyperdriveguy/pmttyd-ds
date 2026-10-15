@@ -1268,3 +1268,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Ordered enemy HP publication](display/ORDERED_ENEMY_HP_PUBLICATION_AND_NATIVE_ICON_GENERATIONS.md): one immutable glyph/bar sequence, real GPU generations and whole combined native preflight. Normal scheduler activation remains separate.
 
 - [Retained original NPC display prefix](field/NATIVE_NPC_MAIN_DISPLAY_PREFIX.md): ordered camera/cull/material/depth/queue requests; shadow/separate/history remain unfinished.
+
+- [Original NPC shadow, blur and separate-pose suffix](field/NATIVE_NPC_MAIN_SHADOW_SUFFIX.md): retained shared-pose/shadow/queue composition to late history.

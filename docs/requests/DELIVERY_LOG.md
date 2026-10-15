@@ -411,3 +411,11 @@ source8004accc..aeac and ordered retained native material/queue composition.
 Two SDK helper identities and four unchanged constant spans pinned read-only.
 Partial delivery only: real field camera/pass/callback wiring, shadow/separate
 pose/history and whole parent completion remain open; EVT-01/OW-CAMERA-01 stay open.
+
+### 2026-10-14 — Partial EVT-01 NPC shadow suffix
+
+Validated [NPC shadow/blur/separate suffix](../behavior/field/NATIVE_NPC_MAIN_SHADOW_SUFFIX.md)
+8004aeac..b10c and static helper ABI. Native inactive-pose translations, actual
+shadow index0 and held queue composition are verified. Two unchanged original
+radius constants pinned. Partial delivery: real backend/pass owners, late
+history/parent/tail and ordinary Area activation remain open; EVT-01 stays open.

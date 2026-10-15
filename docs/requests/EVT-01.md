@@ -5046,3 +5046,13 @@ pose material/color, depth and ordinary display registrations. Static SDK and
 callee review is delivered; native camera/pass/callback composition remains
 open. Shadow, separate pose, late history, parent/tail completion and normal
 Area activation are still mandatory. No whole-Main or rendering closure.
+
+### 2026-10-14 NPC shadow/blur/separate-pose implementation update
+
+[Retained suffix](../behavior/field/NATIVE_NPC_MAIN_SHADOW_SUFFIX.md) implements
+8004aeac..b10c, including descriptor/sine offsets, Vivian hit/pose path, shadow
+index0/collision flags and blur/separate registrations. Static helper audit is
+delivered. Native tests share actual pose bytes, ShadowWork and DisplayQueue.
+Late history/final state clear/actor traversal/tail, real collision/math/callback
+producers and ordinary Area activation remain open. Local completion is only
+History frontier; no whole Main, field rendering or request closure.

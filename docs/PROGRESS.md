@@ -11172,3 +11172,82 @@ Next: implement source shadow and separate registrations, then late history/
 parent/tail. Bind the actual camera/pass/callback and earlier resource/interrupt
 owners before normal Area activation; repair visual/asset-error smoke admission
 and profile the actual field and hardware while retaining exact original story.
+
+### 2026-10-14 Original NPC shadow, blur and separate-pose suffix
+
+Implemented source8004aeac..8004b10c after retained display. Capture sourceflags
+once for ordinary/Vivian/suppressed shadow; preserve descriptor null test,
+pre-child root copy, fresh descriptor after normalized-yaw/sine requests and
+single multiply/fused XYZ offsets. Retain exact width/3/scale/factor/1.33 graph,
+including Vivian's omission of1.33. Shadow index0 is valid; fresh flags control
+collision-bit clear. Vivian preserves seven semantic hit slots without invented
+guest stack addresses/zero-filled outputs, copies only hitY, updates real pose
+flag20 and strided130/140/150 translations, then reloads actor root for shadow.
+Blur and separate-pose queues preserve literal/main camera distinctions,
+callbacks, class order, actual actor identity and retained depth through holds.
+Completion reaches late History only, never parent success or actor advance.
+
+Native composition uses the existing same VM/pool alias, actual ShadowWork and
+DisplayQueue in fixtures. The narrow public contiguousRam predicate preflights
+the complete writable shared row before Vivian writes and exposes no pointer.
+No inactive-pose/resource gate or fake animation evaluation. Real collision,
+angle/sin, shared shadow/pass/callback producers and normal Game activation stay
+open. Same producer generation, mappings and borrowed lifetimes must survive
+holds and deferred dispatch. Core is allocation-free; existing native fixed
+pools and ARM hard-float/libm arithmetic are reused.
+
+[Contract](behavior/field/NATIVE_NPC_MAIN_SHADOW_SUFFIX.md),
+[request update](requests/EVT-01.md). Independent read-only original/helper/core/
+native/fixture review found no actionable defect. Standalone warning-enabled
+pure tests pass; existing DisplayQueue formatting warnings remain. Native probe
+also reports a nonfatal new fixture formatting warning. Source/helper hashes,
+two unchanged radius constant spans and rights are recorded in ASSETS/contract.
+All2131 private products audited; only door-data.json/pmevt change from accepted
+display baseline. Span merging yields pack152488 bytes; local gor_02.s unchanged.
+No ISO, original body, extracted asset, generated pack or binary committed.
+
+Tests cover independent ordinary trace, every primitive hold across descriptor,
+suppressed/ordinary/Vivian, hit/miss, blur and separate branches, late descriptor/
+root/flag changes, shadowindex0, collision flags, NaN depth/owner/frontier binding,
+and non-replay of an invalid completed hit lacking outputY. Fused cancellation
+oracle yields2^-46 (28800000); separate SP multiply/add would yield0. Shared VM
+fixture proves inactive pose255 translations, collisionY=-5 vs fresh shadowY=0,
+actual radius16/slot0, held blur and seven actual queue records; external poseY42
+survives resume. Parent remainsphase60/MainCount1 after suffix completion.
+
+Frozen 9c981dd0bd9899ff3f1987a03e4f310aba54ecc4 on acceptedb1c49f6a:3727 tracked files exact,
+zero mismatch. CMAKE_BUILD_PARALLEL_LEVEL=4 make test passes387/387 C++
+(52.22s) and203/203 Python (32.685s), zero skipped.
+make all -j4 -o assets-ready SOUNDTRACK=gamecube passes. Existing compiler/Pillow
+warnings remain. Full validation is for this frozen tree, not concurrent combined
+HEAD. Scoped code commit 314bb467a1725e5406153ec08864ec51a30bba23 preserves concurrent changes/public index.
+Initial compile exposed private rawRamSpan access; used public contiguousRam
+and adopted only that relevant three-line API into the validation baseline.
+A concurrent CMake append was initially captured by the staging helper; bounded
+the owned registration to its exact five lines and re-froze before all final
+gates. Initial failure logs remain; no source behavior/assertions were weakened.
+
+Strict fresh-profile ARM marker PASS: entry/movement/autoPose/detection/Mario/
+display/shadow/Vivian/holds/sharedMaterials/queue/frontiers. Probe instrumentation
+uncommitted. Normal source restored/touched/rebuilt; SHA256
+3545c66f79da0c0421d071b663cc73dcafd6043ec5c1fe336cd2b70a97804846
+matches pre-probe normal. Normal40-second isolated startup screenshot inspected:
+original storybook, App60FPS/100%, no asset-error console. Startup only; no field
+or physical performance claim. Native disassembly preserves VFP div/multiply
+and explicit fused helper calls. Only isolated profiles/saves used. Evidence:
+artifacts/npc-shadow-validation-manifest.json, source/helper audit, frozen source/
+asset hashes, target/full/native logs, strict marker and captures.
+
+Still open: late history8004b10c, final state10 clear/next actor, field tail4b1d0,
+and whole Main completion. Actual map-query geometry/filter/math, field camera,
+shadow reset/preparation/pass, deferred callbacks, prior movement/interrupt/
+resource/audio/sequence/Mario producers must precede ordinary Area Main. Numeric
+FPSCR/GQR/seed/NaN-payload and original execution/visual parity remain unproven.
+Previous15FPS llvmpipe field/occluded-pixel assertion and asset-error smoke
+admission gaps remain. No physical New2DSXL acceptance. Goal and EVT-01 active.
+
+Next: implement exact late root/history copies and MainCount gating, final
+state10 clear and parent actor traversal; then field tail. Bind the actual
+collision/math/shadow/camera/pass/callback and earlier owners before normal
+Area activation; repair visual/asset-error smoke admission, profile actual field
+and hardware, and retain exact original story/event conditions.

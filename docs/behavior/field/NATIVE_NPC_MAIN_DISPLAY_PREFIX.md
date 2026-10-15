@@ -65,3 +65,10 @@ size54hex SHA2560e86b49668bd9172bfd1256aa2842a4326032efab48cb6b8df58523a63992e78
 PSMTX44MultVec8029eb08 size78hex
 SHA256a9ff54d2a86e2d747391bd563743295604a932ccc380d95c320b983d85df395b.
 These are static original-source observations, not Dolphin execution traces.
+
+## Suffix implementation update (2026-10-14)
+
+The [shadow/blur/separate-pose suffix](NATIVE_NPC_MAIN_SHADOW_SUFFIX.md) now
+consumes all three prefix frontiers and reaches late history. Its completion
+still does not complete Main, advance actors or perform history writes. Actual
+field camera/shadow/callback/pass ownership and rendering acceptance stay open.

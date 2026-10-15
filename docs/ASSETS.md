@@ -2269,3 +2269,22 @@ PPC is added to the pack. Nintendo/Intelligent Systems rights remain reserved;
 local extraction grants no redistribution rights. No ISO, original extracted
 asset, compiled pack or binary is committed. Exact hashes/evidence remain in
 artifacts/npc-display-assets-after.json and the validation manifest.
+
+### NPC shadow radius constants (2026-10-14)
+
+Read-only G8ME01.iso DOL spans8041fce0/4 raw40400000 (3) and8041fd68/4
+raw3faa3d71 (1.3300000429) are unchanged in field_npc_actor_assets.SPANS.
+SHA256 respectively638354a0b185ec05318029e52610c8de48d33523e2b4854e71154187583d1037
+andff83f8ff106269769ede5d0da22e7f511640e2146d3bfe363f9a295b9bf00414.
+Existing zero/one/100/-1/90/180/270 spans are reused. sinfd's original TAU/360
+body is documented but delegated to a real numeric provider; no +/-1 replacement
+or executable PPC is packed. No texture, geometry, lighting or audio conversion.
+Private frozen door pack152488 bytes SHA256
+842715d5cd84974d7de49898eda7441d018400a8cd7d6c5634d5c8babca941b7.
+The span merger joins contiguous data, so the pack shrinks4 bytes despite added
+constants. All2131 products audited against accepted display baseline; only
+door-data.json/pmevt change. Local gor_02.s unchanged. Helper hashes/paths are in
+the behavior contract and ignored source audit; original body/ISO/pack/binary
+are not committed. Nintendo/Intelligent Systems rights remain reserved. Local
+use grants no redistribution rights. Exact private product hashes are recorded
+in artifacts/npc-shadow-assets-after.json and the validation manifest.
