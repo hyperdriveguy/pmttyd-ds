@@ -3,6 +3,9 @@
 #include "battle_main_continuation.hpp"
 #include "battle_action_manager_continuation.hpp"
 #include "battle_turn_continuation.hpp"
+#include "battle_phase_move_continuation.hpp"
+#include "battle_majinai_query.hpp"
+#include "battle_act_continuation.hpp"
 #include "battle_event_barrier_continuation.hpp"
 #include "battle_audience_turn_end_continuation.hpp"
 #include "battle_packed_status_recovery.hpp"
@@ -338,6 +341,11 @@ struct TrioAttackRuntime {
     CameraLetterboxDrawCursor letterboxDrawCursor;
     BattleEnemyHpDrawCursor enemyHpDrawCursor;BattleMonosiriCursor enemyHpMonosiriCursor;
     BattleTurnCursor turnCursor;
+    BattlePhaseCursor sourcePhaseCursor;
+    BattleTurnRequest sourceMoveLinkedRequest;
+    const BattleMoveRequest* sourceMoveOriginalRequest=nullptr;
+    BattleActCursor actCursor;
+    BattleEventBarrierCursor actWaitCursor,actConsumeCursor;
     BattleEventBarrierCursor turnEventBarrierCursor;
     BattleAudienceTurnEndCursor sourceAudienceTurnEndCursor;
     BattleStockExpDrawCursor stockExpDrawCursor;SourceIconPositionCursor stockExpIconCursor;
@@ -1944,9 +1952,9 @@ struct TrioAttackRuntime {
                 if(!resumePackedBattleAudienceTurnEnd(audience,r.sourceAudienceTurnEndCursor)){
                     r.pending=r.sourceAudienceTurnEndCursor.pending()?r.sourceAudienceTurnEndCursor.pending():q.function;return {};}
                 break;}
-            // Legacy handoff conflates Phase/Move and cannot acknowledge this
-            // original source child. Actual source8011c2b4 remains unavailable.
             case 0x8011c2b4:
+                if(!r.resumeOriginalPhase(q.integers[0]))return {};
+                break;
             // Original warning callback/display, direct damage, Burn lifetime,
             // Freeze/regen effects and genuine sound publication need owners.
             case 0x80010bc4:case 0x800fdfd4:case 0x80195f38:case 0x80195d7c:
@@ -1955,6 +1963,136 @@ struct TrioAttackRuntime {
             }
             return out;
         };return s;
+    }
+    // Retained original Act parent. Unsupported children hold at their actual
+    // source call; no legacy command/action state is acknowledged here.
+    BattleActServices originalActServices() {
+        BattleActServices services;services.actors=nativeBattleActorServices(vm);services.user=this;
+        services.call=[](void* p,const BattleActSequenceRequest& q)->std::optional<BattleActOutput>{
+            auto& r=*static_cast<TrioAttackRuntime*>(p);
+            const auto actors=nativeBattleActorServices(r.vm);
+            const auto& a=q.arguments;BattleActOutput out;
+            switch(q.child){
+            case BattleActChild::CommandInit:
+                // Whole80125380/18: actual ordered stores, no UI allocation.
+                r.word(a[0]+0x171c,0);r.word(a[0]+0xef4,r.word(a[0]+0xef4)|0x80u);break;
+            case BattleActChild::Unit:
+                out.value=battleRegistryUnit(a[0],int32_t(a[1]),actors);break;
+            case BattleActChild::Mario:
+                out.value=battleMarioUnit(a[0],actors);break;
+            case BattleActChild::Status:
+                out.value=checkPackedBattleStatus(a[0],int32_t(a[1]),actors);break;
+            case BattleActChild::UnitData:
+                out.value=packedUnitData(a[0],a[1],actors);break;
+            case BattleActChild::Random:
+                out.value=r.random.bounded(int32_t(a[0]));break;
+            case BattleActChild::CheckStatusFlag:
+                out.value=a[0]?(r.word(a[0]+0x138)&a[1]):0;break;
+            case BattleActChild::ClearStatusFlag:
+                r.word(a[0]+0x138,r.word(a[0]+0x138)&~a[1]);break;
+            case BattleActChild::Belong:
+                out.value=r.byte(a[0]+0xc);break;
+            case BattleActChild::PhaseEnd:{
+                BattlePhaseServices phase;phase.actors=actors;
+                phase.status=[](void* p,uint32_t u,int32_t status){
+                    return checkPackedBattleStatus(u,status,nativeBattleActorServices(*static_cast<EventNativeRuntime*>(p)));};
+                out.value=battlePhaseEnded(currentBattleAddress(actors),phase);break;}
+            case BattleActChild::DeleteEvent:
+                deleteEventId(a[0],r.vm.creationServices());break;
+            case BattleActChild::EventExists:
+                out.value=uint32_t(checkEventId(a[0],r.vm.creationServices()));break;
+            case BattleActChild::CreateEvent:{
+                auto& entry=createRootEvent(r.vm.schedule,a[0],int32_t(a[1]),a[2],r.vm.creationServices());
+                required(r.vm.entryAddresses.addressOf(&entry,out.value));break;}
+            case BattleActChild::Concluded:{
+                BattleConclusionServices conclusion;conclusion.actors=actors;conclusion.user=p;
+                conclusion.checkStatus=[](void* p,uint32_t u,int32_t status){
+                    auto& owner=*static_cast<TrioAttackRuntime*>(p);
+                    return int32_t(checkPackedBattleStatus(u,status,nativeBattleActorServices(owner.vm)));};
+                out.value=uint32_t(battleCheckConcluded(a[0],conclusion));break;}
+            case BattleActChild::WaitEvents:
+            case BattleActChild::ConsumeItems:{
+                BattleEventBarrierServices barrier;barrier.actors=actors;barrier.user=p;
+                barrier.eventExists=[](void* p,uint32_t id)->std::optional<int32_t>{
+                    return checkEventId(id,static_cast<TrioAttackRuntime*>(p)->vm.creationServices());};
+                barrier.concluded=[](void* p,uint32_t b)->std::optional<int32_t>{
+                    auto& owner=*static_cast<TrioAttackRuntime*>(p);
+                    BattleConclusionServices conclusion;conclusion.actors=nativeBattleActorServices(owner.vm);conclusion.user=p;
+                    conclusion.checkStatus=[](void* p,uint32_t u,int32_t status){
+                        return int32_t(checkPackedBattleStatus(u,status,nativeBattleActorServices(static_cast<TrioAttackRuntime*>(p)->vm)));};
+                    return battleCheckConcluded(b,conclusion);};
+                barrier.create=[](void* p,uint32_t script,int32_t priority,uint32_t flags)->std::optional<uint32_t>{
+                    auto& owner=*static_cast<TrioAttackRuntime*>(p);
+                    auto& event=createRootEvent(owner.vm.schedule,script,priority,flags,owner.vm.creationServices());
+                    uint32_t address=0;required(owner.vm.entryAddresses.addressOf(&event,address));return address;};
+                // Real nonzero reservations hold at pouchRemoveItem until the
+                // original inventory-removal owner is bound; zero slots finish.
+                if(q.child==BattleActChild::ConsumeItems){
+                    if(!resumeBattleConsumeReservedItems(barrier,r.actConsumeCursor)){
+                        r.pending=r.actConsumeCursor.pending();return {};}
+                }else{
+                    const auto result=resumeBattleAllEventBarrier(a[0],barrier,r.actWaitCursor);
+                    if(!result){r.pending=r.actWaitCursor.pending();return {};}
+                    out.value=uint32_t(*result);
+                }break;}
+            default:
+                r.pending=q.function;return {};
+            }
+            return out;
+        };return services;
+    }
+    bool resumeOriginalAct(uint32_t battle) {
+        const bool complete=resumePackedBattleAct(battle,originalActServices(),actCursor);
+        if(!complete && !pending)pending=actCursor.pending()?actCursor.pending():0x8011b2dc;
+        return complete;
+    }
+    BattleMoveServices originalMoveServices() {
+        BattleMoveServices services;services.actors=nativeBattleActorServices(vm);services.user=this;
+        services.call=[](void* p,const BattleMoveRequest& q)->std::optional<uint32_t>{
+            auto& r=*static_cast<TrioAttackRuntime*>(p);const auto actors=nativeBattleActorServices(r.vm);
+            switch(q.function){
+            case 0x8011b0d0:
+                // Existing actual-VM source table builder has no unavailable
+                // provider: numeric/status reads are admitted synchronously.
+                buildBattlePhaseTables(q.integers[0],r.phaseServices());return 0;
+            case 0x800f7718:case 0x800f76d4:{
+                BattleMajinaiQueryServices majinai;majinai.memory=actors.memory;majinai.user=actors.user;majinai.byte=actors.byte;
+                if(q.function==0x800f7718)battleMajinaiDone(majinai);else battleMajinaiEndCheck(majinai);
+                return 0;}
+            case 0x800050b4:return eventFillMemory(q.integers[0],int32_t(q.integers[1]),q.integers[2],actors.memory);
+            case 0x80127434:{
+                const auto low=uint16_t(q.integers[1]);const auto amount=low<0x8000?int32_t(low):int32_t(low)-65536;
+                actors.memory.storeWord(actors.memory.user,q.integers[0]+0x264,uint32_t(amount));return 0;}
+            case 0x8011bb88:return uint32_t(battlePhaseEnded(currentBattleAddress(actors),r.phaseServices()));
+            case 0x801297bc:{
+                // Whole source leaf, not legacy runPhaseEvent's unconditional
+                // allocation. Fresh script read and original null-script path.
+                const auto unit=q.integers[0],script=r.word(unit+(q.integers[1]?0x294:0x298));
+                if(!script)return 0;
+                auto& event=createRootEvent(r.vm.schedule,script,10,0x20,r.vm.creationServices());
+                event.owner=int32_t(r.word(unit));r.word(unit+0x29c,event.id);return event.id;}
+            case 0x8011b2dc:
+                if(r.resumeOriginalAct(q.integers[0]))return 0;
+                return {};
+            default:break;
+            }
+            // Actual common original children reuse the real Turn providers.
+            // The converted request has stable owned identity across holds.
+            if(!r.sourceMoveOriginalRequest){
+                r.sourceMoveOriginalRequest=&q;r.sourceMoveLinkedRequest={};
+                r.sourceMoveLinkedRequest.function=q.function;r.sourceMoveLinkedRequest.integers=q.integers;
+            }else if(r.sourceMoveOriginalRequest!=&q || r.sourceMoveLinkedRequest.function!=q.function ||
+                r.sourceMoveLinkedRequest.integers!=q.integers)return {};
+            const auto original=r.turnServices();
+            const auto value=original.call?original.call(original.user,r.sourceMoveLinkedRequest):std::nullopt;
+            if(!value)return {};
+            r.sourceMoveOriginalRequest=nullptr;return value->value;
+        };return services;
+    }
+    bool resumeOriginalPhase(uint32_t battle) {
+        if(resumePackedBattlePhase(battle,originalMoveServices(),sourcePhaseCursor))return true;
+        if(!pending)pending=sourcePhaseCursor.pending()?sourcePhaseCursor.pending():0x8011c2b4;
+        return false;
     }
     bool resumeSourceTurn(uint32_t battle) {
         const bool complete=resumePackedBattleTurn(battle,turnServices(),turnCursor);
