@@ -1,10 +1,16 @@
 #include "platform.hpp"
 #include "battle_scene_views.hpp"
 namespace ttyd {
+// Retain borrowed stream/texture plus vertex offsets for this frame's second
+// view. size is a vertex count, not bytes. RGB masks preserve shadow alpha;
+// the depth argument controls both comparison and optional depth writes.
 void Renderer::captureTrioActor(const Game& game,C3D_Tex& texture,uint32_t first,uint32_t size,bool depth){
     if(!game.trioBattleActive || !size)return;
     trioSceneActors.push_back({vertices,texture,first,size,uint32_t(depth?GPU_WRITE_RED|GPU_WRITE_GREEN|GPU_WRITE_BLUE|GPU_WRITE_DEPTH:GPU_WRITE_RED|GPU_WRITE_GREEN|GPU_WRITE_BLUE),GPU_CULL_NONE,depth});
 }
+// Lower-screen continuation changes only projection and GPU state. It must
+// not sample animations, rerun effects, or advance source/RNG requests. The
+// first retained actor span is sky; subsequent spans are actual actors.
 void Renderer::lowerTrioScene(const Game& game){
     if(!game.trioBattleActive || !trioScenePrepared)return;
     BattleSceneMatrix topMatrix;

@@ -2,6 +2,9 @@
 #include "harbor_tutorial.hpp"
 #include <memory>
 namespace ttyd {
+// Nine startup banks retain separate CPU readiness and GPU texture admission.
+// Resource context 1 is distinct from the curtain context 2. Rebinding a fresh
+// event owner must preserve false readiness when any real resource is missing.
 bool Renderer::bindTutorialStartupResources(HarborTutorial& tutorial){
     if(tutorialStartupOwner && tutorialStartupOwner!=&tutorial)
         tutorialStartupOwner->setStartupResources(nullptr,nullptr,nullptr);
@@ -38,6 +41,8 @@ bool Renderer::bindTutorialStartupResources(HarborTutorial& tutorial){
     }
     return ready;
 }
+// Unbind event callbacks before releasing their resource owner. GPU sync then
+// retires all nine descriptor/texture pairs; copying Texture does not clone it.
 void Renderer::releaseTutorialStartupResources(){
     if(tutorialStartupOwner){tutorialStartupOwner->setStartupResources(nullptr,nullptr,nullptr);tutorialStartupOwner=nullptr;}
     if(c3dReady)C3D_FrameSync();

@@ -1,6 +1,9 @@
 #include "platform.hpp"
 #ifdef __3DS__
 namespace ttyd {
+// Bind by actual resident Room identity and matching vertex count, not name.
+// Revision is the simulation owner's publication token: copy/flush only when
+// it changes, leaving opaque/translucent views on the same prepared geometry.
 const StageMapObjects* Renderer::updateStageMap(const Game& game,Room& room) {
     if(!game.trioBattleActive || (&room!=&trioBackground && &room!=&trioStage))return nullptr;
     const auto* objects=game.trioAttack.stageMap(&room==&trioBackground);

@@ -5,6 +5,9 @@
 #include <cstdio>
 #include <cstring>
 namespace ttyd {
+// Setup 2 owns background bti_01/stage stg_00_0 and actor order
+// 0 Crump, 1 Mario, 2 Goombella. PMHTUV01 sidecars admit UV scales1/2/4/8
+// with exact EOF; atlas padding scale is independent of world size.
 bool Renderer::loadTutorialPresentation() {
     if(tutorialReady)return true;
     C3D_FrameSync();
@@ -32,6 +35,8 @@ bool Renderer::loadTutorialPresentation() {
     }
     tutorialReady=true;return true;
 }
+// Pose endpoints use milliseconds*.06 (60Hz source sample clock). Notify
+// animationComplete through the scene owner; a rendered frame is not a tick.
 void Renderer::advanceTutorialAnimations(Game& game) {
     if(!tutorialReady || !game.harborTutorial.running())return;
     if(game.harborTutorial.running()){bindTutorialStartupResources(game.harborTutorial);advanceTutorialCurtain(game.harborTutorial);}
@@ -46,6 +51,8 @@ void Renderer::worldTutorial(const Game& g,bool lower) {
     // Native initial battle framing. Original mode/moveto camera requests are
     // retained by the source owner; its complete camera driver remains unbound.
     C3D_Mtx projection,view;
+    // Explicit native fallback lens42 degrees, near.1/far 80 and world-unit
+    // eye/aim below. Keep this separate from original camera-provider claims.
     Mtx_PerspTilt(&projection,C3D_AngleFromDegrees(42),C3D_AspectRatioTop,.1f,80,false);
     Mtx_LookAt(&view,FVec3_New(0,2.8f,5.5f),FVec3_New(0,1.f,-.4f),FVec3_New(0,1,0),false);
     Mtx_Multiply(&worldTransform,&projection,&view);
@@ -80,6 +87,9 @@ void Renderer::worldTutorial(const Game& g,bool lower) {
         const auto* pose=tutorialActors[i].animations.pose(a.pose.c_str());
         if(!pose || !pose->evaluate(float(g.harborTutorial.now-a.poseAt)*.06f,actorSample) || actorSample.vertices.size()>size_t(12000-count))continue;
         const int first=count;
+        // Crump faces yaw0; Mario/Goombella yaw180. Root/model conversion
+        // and original actor rotation precede engine-position*.01 translation.
+        // The complete pose preflight above reserves the12000-vertex arena.
         const ActorRootTransform root({},i==0?0:180,false);
         const BattleActorRotation rotation(a.rotation,{});
         for(size_t n=0;n<actorSample.vertices.size() && count<12000;++n) {

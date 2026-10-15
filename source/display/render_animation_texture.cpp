@@ -1,6 +1,8 @@
 #include "platform.hpp"
 #include <cmath>
 namespace ttyd {
+// Resource pointer identity selects one of the three actual resident actor
+// banks. Equal names or a successful CPU decode do not imply GPU ownership.
 Renderer::Texture* Renderer::finishingAnimationTextureOwner(const std::shared_ptr<const BattlePoseResource>& resource,float& uvScale){
     if(!resource)return nullptr;
     if(resource==trioMarioAnimations){uvScale=trioMarioUVScale;return &trioMarioTexture;}
@@ -8,15 +10,23 @@ Renderer::Texture* Renderer::finishingAnimationTextureOwner(const std::shared_pt
     if(resource==trioFranklyAnimations){uvScale=trioFranklyUVScale;return &trioFranklyTexture;}
     return nullptr;
 }
+// Address tokens below identify original SDK calls, not callable ARM pointers.
+// Admission is deliberately narrow: coordinate 0, CMPR source format 14 without
+// palette/mips, clamp wrap 0, linear filter 1; native atlas must be RGBA8.
+// Staged object -> LOD -> bind ordering survives a provider hold.
 bool Renderer::finishingAnimationTexture(const AnimationTextureRequest& r){
     if(r.coordinate!=0)return false; // Multitexture shader/array ownership remains separate.
     switch(r.function){
+    // GXInitTexObj: retain object identity; LOD admission must start again.
     case 0x802b72b0:
         if(!r.pose || !r.pose->resource || r.image.paletteHeader || r.image.format!=14 || r.wrapS || r.wrapT || r.image.minLOD || r.image.maxLOD)return false;
         finishingTextureObject=r;finishingTextureObjectReady=true;finishingTextureLODReady=false;return true;
+    // GXInitTexObjLOD: same image, linear min/mag, zero bias/LOD/edge.
     case 0x802b7544:
         if(!finishingTextureObjectReady || r.image.index!=finishingTextureObject.image.index || r.image.minFilter!=1 || r.image.magFilter!=1 || r.image.bias!=0 || r.image.edge || r.image.minLOD || r.image.maxLOD)return false;
         finishingTextureLODReady=true;return true;
+    // GXLoadTexObj: validate atlas/cell before logical texture publication.
+    // Restore the prior logical atlas if the GPU-state owner refuses the bind.
     case 0x802b7880:{
         if(!finishingTextureObjectReady || !finishingTextureLODReady || !r.pose || !r.pose->resource || r.image.index!=finishingTextureObject.image.index)return false;
         const auto cell=animationTextureCell(r);if(!cell)return false;
@@ -26,9 +36,13 @@ bool Renderer::finishingAnimationTexture(const AnimationTextureRequest& r){
         C3D_TexSetFilter(&texture->texture,GPU_LINEAR,GPU_LINEAR);C3D_TexSetWrap(&texture->texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
         ShadowGXRequest request;request.kind=ShadowGX::TextureBind;request.texture=ShadowTexture::CharacterAtlas;
         if(!finishingShadowRequest(request)){finishingAtlas=previous;return false;}return true;}
+    // GXSetTexCoordGen2 tuple: coord 0, type 1, source 4, matrix 30/60,
+    // normalize 0, postmatrix 125. Matrix 30 is the uploaded texture matrix;
+    // 60 is the identity selection. Other coordinate domains stay pending.
     case 0x802b4e04:
         if(r.arguments!=std::array<int32_t,7>{0,1,4,30,0,125,0} && r.arguments!=std::array<int32_t,7>{0,1,4,60,0,125,0})return false;
         finishingTextureGenerator=uint32_t(r.arguments[3]);return true;
+    // GXLoadTexMtxImm: matrix slot 30/type 1; reject nonfinite components.
     case 0x802ba3d0:
         if(r.arguments!=std::array<int32_t,7>{30,1,0,0,0,0,0})return false;
         for(float v:r.matrix)if(!std::isfinite(v))return false;

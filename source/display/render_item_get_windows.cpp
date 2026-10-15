@@ -1,5 +1,7 @@
 #include "platform.hpp"
 namespace ttyd {
+// Two retained acquisition slots publish a prior rectangle snapshot even
+// when their display callback updates the owner for a later simulation visit.
 bool Renderer::itemGetWindows(ItemGetWindows& owner,uint32_t counter) {
  bool success=true;
  for(unsigned slot=0;slot<2;++slot)if(owner.displaySlots()&(1u<<slot)) {
@@ -12,6 +14,9 @@ bool Renderer::coinGetWindow(CoinGetWindow& owner,uint32_t counter) {
  const bool success=!owner.displayed() || drawGetWindow(owner.display(),owner.palette0,counter);
  selectorClip(nullptr);return success;
 }
+// Source UI is 608x480. Help crop startsY384 with height 56; main uses full
+// bounds. Help tint240/240/240 and main225/215/155 are original frame colors.
+// Font spacing 2/alpha 255 are independent of the frame transition alpha.
 bool Renderer::drawGetWindow(const ItemGetWindowDisplay& display,uint32_t palette0,uint32_t counter) {
  bool success=true;const ItemSelectionClip full{0,0,608,480},helpClip{0,384,608,56};
  const auto& w=display.frame;const auto& r=w.rectangle;const auto& seq=w.sequence;

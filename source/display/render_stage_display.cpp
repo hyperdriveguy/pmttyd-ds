@@ -1,6 +1,10 @@
 #include "platform.hpp"
 #include <cmath>
 namespace ttyd {
+// Original GX mode 0x80 is a four-vertex quad, 0x90 one triangle. Native
+// fan preserves quad order. This provider only admits unlit raster color:
+// descriptors{DIRECT, DIRECT, NONE}, position format 4(F32), color 5(RGBA8),
+// one channel/stage and no texture generators. Unknown material stays pending.
 bool Renderer::finishingStagePrimitive(const BattleStagePrimitive& r){
     if(!((r.mode==0x80 && r.count==4) || (r.mode==0x90 && r.count==3)))return false;
     const auto& p=finishingShadowProgram;const auto* pipeline=finishingDisplayState.state();

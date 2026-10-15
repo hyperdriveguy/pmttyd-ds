@@ -1,6 +1,8 @@
 #include "platform.hpp"
 #include "battle_camera_frame.hpp"
 namespace ttyd {
+// Native arena 3600 vertices bounds the combined opaque/translucent audience
+// batch. Actual frame table and texture admission precede GPU submission.
 bool Renderer::prepareAudienceDrawing(){
     if(!c3dReady || !programReady || !top)return false;
     if(audienceVertices && audienceTexture.imported)return true;
@@ -21,6 +23,9 @@ void Renderer::releaseAudienceDrawing(){
     audienceTexture={};if(audienceVertices)linearFree(audienceVertices);audienceVertices=nullptr;
     audienceVertexCount=audienceOpaqueCount=0;audiencePrepared=false;audienceBatch.begin();
 }
+// Upper view prepares geometry once; lower view reuses those exact vertices.
+// Source camera 4 vectors use engine units; the native fallback eye(0, 280, 550)
+// and aim(0, 100,-40) are framing policy, not measured source camera parity.
 void Renderer::drawAudienceScene(const Game& game,bool lower){
     if(!audienceVertices || !audienceTexture.imported)return;
     if(!lower){
@@ -49,6 +54,8 @@ void Renderer::drawAudienceScene(const Game& game,bool lower){
             if(!f)return {};return BattleAudienceTexture{bank,index,f->width,f->height};};
         services.request=[](void* p,const BattleAudienceGXRequest& r){return static_cast<Context*>(p)->renderer->audienceBatch.request(r);};
         services.quad=[](void* p,const BattleAudienceQuad& q){return static_cast<Context*>(p)->renderer->audienceBatch.emitQuad(q);};
+        // Mode 1 appends opaque requests, mode 2 translucent requests. Capture
+        // their boundary before converting engine XYZ*.01 and byte RGBA/255.
         const auto prepare=[&](){return game.harborTutorial.running()?game.harborTutorial.prepareAudienceDrawing(services):game.trioBattleActive && game.trioAttack.prepareAudienceDrawing(services);};
         if(!prepare())return;audienceOpaqueCount=unsigned(audienceBatch.vertices.size());context.mode=2;
         if(!prepare() || audienceBatch.vertices.size()>3600)return;
@@ -67,6 +74,9 @@ void Renderer::drawAudienceScene(const Game& game,bool lower){
     for(unsigned i=0;i<6;++i)C3D_TexEnvInit(C3D_GetTexEnv(i));
     auto* env=C3D_GetTexEnv(0);C3D_TexEnvSrc(env,C3D_Both,GPU_TEXTURE0,GPU_PRIMARY_COLOR,GPU_PRIMARY_COLOR);
     C3D_TexEnvFunc(env,C3D_RGB,GPU_ADD);C3D_TexEnvFunc(env,C3D_Alpha,GPU_MODULATE);
+    // Preserve framebuffer alpha in both passes. Opaque alpha>=128 writes
+    // depth; translucent blends without depth writes. Audience RGB adds its
+    // texture/raster inputs instead of the ordinary world modulation.
     constexpr unsigned rgb=GPU_WRITE_RED|GPU_WRITE_GREEN|GPU_WRITE_BLUE;
     C3D_DepthTest(true,GPU_GEQUAL,GPU_WRITEMASK(rgb|GPU_WRITE_DEPTH));C3D_AlphaTest(true,GPU_GEQUAL,128);
     C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_ONE,GPU_ZERO,GPU_ONE,GPU_ZERO);

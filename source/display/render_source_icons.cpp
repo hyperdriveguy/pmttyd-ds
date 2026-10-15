@@ -10,6 +10,8 @@ C3D_Tex *Renderer::sourceIconTexture() {
       return &cell.gpu.texture;
   return nullptr;
 }
+// Synchronize before retiring imported descriptor/texture pairs, then clear
+// logical bindings and retained packets together. Wrapper copies own no clone.
 void Renderer::releaseSourceIcons() {
   bool any = false;
   for (const auto &cell : sourceIconCells)
@@ -30,6 +32,9 @@ void Renderer::releaseSourceIcons() {
   sourceIconPlan.reset();
   retainedIcons.reset();iconViewport.reset();iconScissor.reset();iconTransform.reset();
 }
+// Out-of-frame admission services one pending image. Eviction chooses an
+// empty/oldest unpinned cell; bound image and both retained passes pin residency.
+// A miss holds the source call rather than drawing a substitute texture.
 void Renderer::prepareSourceIcons(const Game &game) {
   if (!game.trioBattleActive) {
     releaseSourceIcons();
@@ -78,6 +83,9 @@ void Renderer::prepareSourceIcons(const Game &game) {
   next->gpu.imported =
       Tex3DS_TextureImportStdio(f, &next->gpu.texture, nullptr, false);
   std::fclose(f);
+  // PICA minimum 8 and power-of-two backing must contain source dimensions
+  // plus 4 total gutter pixels(2 each side). Admit exactly one unrotated RGBA8
+  // image without mipmaps/LOD bias; UV replay removes that same gutter.
   const auto size = [](uint32_t n) {
     uint32_t p = 8;
     while (p < n + 4)
@@ -109,6 +117,8 @@ void Renderer::prepareSourceIcons(const Game &game) {
   next->stamp = ++sourceIconStamp;
   pendingSourceIcon.reset();
 }
+// Bind only a resident exact image; pendingSourceIcon schedules the later
+// admission attempt. Roll back logical binding if downstream GPU setup holds.
 bool Renderer::bindSourceIcon(uint32_t index) {
   for (auto &cell : sourceIconCells)
     if (cell.index == index && cell.gpu.imported) {
@@ -127,8 +137,12 @@ bool Renderer::bindSourceIcon(uint32_t index) {
   pendingSourceIcon = index;
   return false;
 }
+// Original US function tokens dispatch only admitted providers; optional0 is
+// successful void return, nullopt is a hold. Addresses are never ARM pointers.
+// Map work token 85000000(hex) is synthetic guest identity; +4 exposes flags.
 std::optional<uint32_t> Renderer::sourceIconCall(const Game &game,
                                                  const SourceIconGXCall &r) {
+  // camGetPtr(8) / camGetCurPtr; explicit camera 8 is source UI ownership.
   if (r.function == 0x8000f2fc) {
     if (r.integers != std::array<uint32_t, 8>{8, 0, 0, 0, 0, 0, 0, 0})
       return {};
@@ -139,6 +153,7 @@ std::optional<uint32_t> Renderer::sourceIconCall(const Game &game,
       return {};
     return game.trioAttack.sourceIconCamera();
   }
+  // GXLoadPosMtxImm(slot 0): row-major3x4; GXSetCurrentMtx follows below.
   if (r.function == 0x802ba2fc) {
     if (r.integers != std::array<uint32_t, 8>{})
       return {};
@@ -158,6 +173,7 @@ std::optional<uint32_t> Renderer::sourceIconCall(const Game &game,
     return finishingShadowRequest(q) ? std::optional<uint32_t>(0)
                                      : std::nullopt;
   }
+  // mapSetMaterialLight(channel4), using retained original light-bank query.
   if (r.function == 0x800208c0) {
     if (r.integers != std::array<uint32_t, 8>{4, 0, 0, 0, 0, 0, 0, 0})
       return {};
@@ -181,6 +197,8 @@ std::optional<uint32_t> Renderer::sourceIconCall(const Game &game,
                ? std::optional<uint32_t>(0)
                : std::nullopt;
   }
+  // mapGetWork returns the synthetic token; mapGetBlend reads flag 2 and
+  // colors[0], otherwise source opaque white ffffffff.
   if (r.function == 0x8002b438) {
     return game.trioAttack.materialGroup() ? std::optional<uint32_t>(0x85000000)
                                            : std::nullopt;
@@ -191,6 +209,7 @@ std::optional<uint32_t> Renderer::sourceIconCall(const Game &game,
       return {};
     return (group->flags & 2) ? group->colors[0] : 0xffffffffu;
   }
+  // mapSetMaterialFog resumes its own retained material continuation.
   if (r.function == 0x800217c8) {
     struct Bridge {
       Renderer *renderer;
@@ -214,6 +233,8 @@ std::optional<uint32_t> Renderer::sourceIconCall(const Game &game,
                ? std::optional<uint32_t>(0)
                : std::nullopt;
   }
+  // GXBegin tuple{0x80, vat0, count 4}: admit the whole quad shader plan
+  // before the separate retained quad-emission provider can acknowledge it.
   if (r.function == 0x802b5a6c) {
     if (r.integers != std::array<uint32_t, 8>{128, 0, 4, 0, 0, 0, 0, 0})
       return {};
@@ -223,6 +244,8 @@ std::optional<uint32_t> Renderer::sourceIconCall(const Game &game,
     sourceIconPlan = *plan;
     return 0;
   }
+  // GXSetBlendMode/ZCompLoc/AlphaCompare/ZMode go through the independent
+  // display-pipeline owner, not the icon material-program state machine.
   if (r.function == 0x802b932c || r.function == 0x802b940c ||
       r.function == 0x802b8d60 || r.function == 0x802b93d8) {
     ShadowGXRequest q;

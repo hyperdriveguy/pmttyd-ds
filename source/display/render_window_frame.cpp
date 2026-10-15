@@ -1,5 +1,8 @@
 #include "platform.hpp"
 namespace ttyd {
+// Nine-slice frame emits9 quads*6=54 vertices. Count is frame allocations,
+// not vertices; MaxWindowFrames bounds the shared arena across callbacks.
+// Geometry/color remain source units until the viewport transform below.
 bool Renderer::sourceWindowFrame(const WindowFrameMesh& mesh,bool onBottom) {
     if(!windowFrameVertices || !messagePanel.imported || windowFrameCount>=MaxWindowFrames)return false;
     C2D_Flush();
@@ -17,6 +20,9 @@ bool Renderer::sourceWindowFrame(const WindowFrameMesh& mesh,bool onBottom) {
     // The GPU performs projection; native half-size reflow follows source pose.
     C3D_Mtx local,viewport,model,projection,transform;
     Mtx_Identity(&local);Mtx_Translate(&local,mesh.centerX,mesh.centerY,0,true);
+    // .01745329238474369 is the original degree->radian conversion. Top
+    // center(200, 120), bottom(160, 120); each native target has240px height.
+    // Y half-scale reverses source up-positive UI; horizontal scale is separate.
     Mtx_RotateZ(&local,mesh.rotationDegrees*.01745329238474369f,true);
     Mtx_Scale(&local,mesh.scale,mesh.scale,mesh.scale);
     Mtx_Identity(&viewport);Mtx_Translate(&viewport,onBottom?160:200,120,0,true);

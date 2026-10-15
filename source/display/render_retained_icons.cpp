@@ -1,6 +1,8 @@
 #include "platform.hpp"
 #include "battle_scene_views.hpp"
 namespace ttyd {
+// Capture a complete logical packet, including camera/pipeline/texture and
+// viewport/scissor/depth. Append may hold; do not publish a partial quad.
 bool Renderer::captureSourceIcon(const Game& game,const SourceIconGXQuad& quad){
     const auto pass=game.trioAttack.sourceIconPass();retainedIcons.observe(pass);
     const auto* cameras=game.trioAttack.cameras();const auto camera=cameras?cameras->currentIndex():std::nullopt;
@@ -13,6 +15,8 @@ bool Renderer::captureSourceIcon(const Game& game,const SourceIconGXQuad& quad){
     packet.image=*boundSourceIcon;packet.camera=*camera;
     return retainedIcons.append(pass,packet);
 }
+// Camera 4 icons support lower-view continuation; other camera domains stay
+// on the top target. Both retained passes pin texture residency until retired.
 void Renderer::drawSourceIcons(uint32_t camera,bool lower){
     if(lower && camera!=4)return;
     const auto& scene=retainedIcons.sceneCamera();
@@ -40,6 +44,9 @@ void Renderer::drawSourceIcons(uint32_t camera,bool lower){
         C3D_Mtx transform{};
         for(unsigned i=0;i<4;++i){auto& v=transform.r[i];v.x=matrix[i][0];v.y=matrix[i][1];v.z=matrix[i][2];v.w=matrix[i][3];}
         C3D_FVUnifMtx4x4(GPU_VERTEX_SHADER,transformLoc,&transform);
+        // Four-vertex source quad becomes a native fan. Each unscaled source
+        // image has2px gutter inside padded backing; divide by actual GPU
+        // dimensions and flip V. White vertex color leaves the plan in control.
         C3D_ImmDrawBegin(GPU_TRIANGLE_FAN);
         for(unsigned i=0;i<4;++i){
             const auto& p=packet.quad.positions[i];const auto& uv=packet.quad.uv[i];

@@ -1,6 +1,9 @@
 #include "platform.hpp"
 #include "item_get_effect_shbin.h"
 namespace ttyd {
+// Twelve native vertices hold two six-vertex passes. Original texture 44 is
+// 16-square repeating pattern; texture 42 is 128-square mirrored opacity.
+// Validate whole images so repeat never crosses converted atlas padding.
 bool Renderer::prepareItemGetEffect() {
  if(itemGetEffectProgramReady && itemGetEffectVertices && itemGetEffectTextures[0].imported && itemGetEffectTextures[1].imported)return true;
  C3D_FrameSync();
@@ -40,6 +43,9 @@ void Renderer::releaseItemGetEffect() {
  if(itemGetEffectProgramReady){shaderProgramFree(&itemGetEffectProgram);itemGetEffectProgramReady=false;}
  if(itemGetEffectShader){DVLB_Free(itemGetEffectShader);itemGetEffectShader=nullptr;}
 }
+// Retained effect owns source-space geometry/color/model per pass. UV1
+// addresses opacity 42; separate shader-generated POS projection addresses44.
+// Keep texture projection independent of view/shadow model transformations.
 bool Renderer::itemGetEffect(const FieldItemGetEffect6& effect,uint32_t cameraID,const C3D_Mtx& nativeWorldToClip,const CameraViewport& sourceViewport,float yaw,uint32_t shadow) {
  if(!effect.active()){releaseItemGetEffect();return true;}
  if(cameraID!=effect.camera() || !prepareItemGetEffect())return false;
@@ -69,6 +75,8 @@ bool Renderer::itemGetEffect(const FieldItemGetEffect6& effect,uint32_t cameraID
  C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_SRC_ALPHA,GPU_ONE_MINUS_SRC_ALPHA,GPU_SRC_ALPHA,GPU_ONE_MINUS_SRC_ALPHA);
  parkUnusedSamplers();C3D_TexBind(0,&itemGetEffectTextures[0].texture);C3D_TexBind(1,&itemGetEffectTextures[1].texture);
  for(unsigned n=0;n<6;++n)C3D_TexEnvInit(C3D_GetTexEnv(n));
+ // Source RGBA constants differ from native C 2D ABGR. RGB-only output keeps
+ // the field shadow alpha; alpha uses texture 42 then vertex modulation.
  const auto abgr=[](uint32_t c){return C2D_Color32(c>>24,(c>>16)&255,(c>>8)&255,c&255);};
  // Two GX stages become three PICA stages because each PICA stage owns one
  // constant: gray -> lerp(gray,orange,tex44.rgb) -> raster modulation.

@@ -2,6 +2,8 @@
 #include <algorithm>
 #include <cstring>
 namespace ttyd {
+// PMCUR001 describes original A_2: 216 triangles/648 bindings, nonlooping
+// frames 0..45, UV scale 8. These are pack identities, not native arena budgets.
 bool Renderer::loadTutorialCurtain(){
  if(tutorialCurtainAttempted)return tutorialCurtainReady;
  tutorialCurtainAttempted=true;C3D_FrameSync();
@@ -21,6 +23,9 @@ bool Renderer::loadTutorialCurtain(){
  tutorialCurtainReady=pose->evaluate(0,tutorialCurtain.sample);
  return tutorialCurtainReady;
 }
+// Retained startup-fade owner advances at most once for scene.now. Native
+// milliseconds*.06 sample60Hz authored frames; 45 is the source clip endpoint.
+// Context 2/OFF_d_maku_left_right is an actual admitted paper resource.
 void Renderer::advanceTutorialCurtain(HarborTutorial& scene){
  tutorialFadeOwner=&scene;
  scene.setStartupFade(this,[](void* user,int32_t type,int32_t duration,uint32_t color){auto& r=*static_cast<Renderer*>(user);if(r.tutorialFade.enter(type,duration,color))r.tutorialFadeTick=UINT64_MAX;},[](void* user){return static_cast<Renderer*>(user)->tutorialFade.finished();});
@@ -47,6 +52,8 @@ void Renderer::drawTutorialCurtain(){
  C3D_FVUnifMtx4x4(GPU_VERTEX_SHADER,transformLoc,&projection);
  C3D_CullFace(GPU_CULL_NONE);C3D_DepthTest(false,GPU_ALWAYS,GPU_WRITE_COLOR);C3D_AlphaTest(true,GPU_GEQUAL,128);
  C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_SRC_ALPHA,GPU_ONE_MINUS_SRC_ALPHA,GPU_ONE,GPU_ONE_MINUS_SRC_ALPHA);
+ // Source material flag 0x40 selects retained poseColor; otherwise white.
+ // Convert source RGBA to native ABGR before modulating each vertex channel.
  const uint32_t rgba=(tutorialFadeMaterial&0x40)?tutorialFade.poseColor:0xffffffff;
  const uint32_t abgr=((rgba&255)<<24)|((rgba&0xff00)<<8)|((rgba&0xff0000)>>8)|(rgba>>24);
  const int first=count;
@@ -55,6 +62,8 @@ void Renderer::drawTutorialCurtain(){
  auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);
  C3D_TexBind(0,&tutorialCurtain.image.texture);C3D_DrawArrays(GPU_TRIANGLES,first,count-first);
 }
+// Detach the borrowed callback owner before clearing retained fade state.
+// Caller must retire outstanding GPU users before deleting the texture.
 void Renderer::releaseTutorialCurtain(){
  if(tutorialFadeOwner)tutorialFadeOwner->setStartupFade(nullptr,nullptr,nullptr);
  if(tutorialCurtain.image.imported){Tex3DS_TextureFree(tutorialCurtain.image.imported);C3D_TexDelete(&tutorialCurtain.image.texture);}

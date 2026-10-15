@@ -4,6 +4,8 @@ namespace ttyd {
 void Renderer::releaseItem95Icons() {
  if(item95IconVertices){C3D_FrameSync();linearFree(item95IconVertices);item95IconVertices=nullptr;item95IconCount=0;}
 }
+// Original item95 uses icon 307; coin403 is a four-frame descriptor whose
+// texture indices are414..417. Icon ID and texture index are different domains.
 bool Renderer::item95Icon(const FieldItemIcon& icon,uint32_t cameraID,const C3D_Mtx& nativeWorldToClip,
                          const CameraViewport& viewport,float yaw,uint32_t counter) {
  if(icon.id!=307)return false;
@@ -14,6 +16,9 @@ bool Renderer::coin403Icon(const FieldItemIcon& icon,uint32_t cameraID,const C3D
  if(icon.id!=403)return false;
  return fieldIcon(icon,cameraID,nativeWorldToClip,viewport,yaw,0);
 }
+// This provider admits camera 5 only. One arena slot is six vertices; capacity
+// follows the fixed32 registry, not an unbounded draw count. Invisible icons
+// succeed without emission; unsupported live camera/material domains fail.
 bool Renderer::fieldIcon(const FieldItemIcon& icon,uint32_t cameraID,const C3D_Mtx& nativeWorldToClip,
                         const CameraViewport& viewport,float yaw,uint32_t counter) {
  if(!icon.visible(messageIconTexture.imported!=nullptr))return true;
@@ -31,12 +36,17 @@ bool Renderer::fieldIcon(const FieldItemIcon& icon,uint32_t cameraID,const C3D_M
       (c>>24)/255.f,((c>>16)&255)/255.f,((c>>8)&255)/255.f,(c&255)/255.f};
  }
  C2D_Flush();GSPGPU_FlushDataCache(item95IconVertices+start,sizeof(Vertex)*6);
+ // Apply engine->world*.01 once, then the retained source model. RGBA lanes
+ // above are source high-byte red/low-byte alpha, normalized by 255.
  C3D_Mtx world=nativeWorldToClip,model,transform;Mtx_Scale(&world,.01f,.01f,.01f);
  for(unsigned r=0;r<4;++r)model.r[r]=FVec4_New(draw.model.v[r*4],draw.model.v[r*4+1],draw.model.v[r*4+2],draw.model.v[r*4+3]);
  Mtx_Multiply(&transform,&world,&model);C3D_BindProgram(&program);
  auto* attrs=C3D_GetAttrInfo();AttrInfo_Init(attrs);AttrInfo_AddLoader(attrs,0,GPU_FLOAT,3);AttrInfo_AddLoader(attrs,1,GPU_FLOAT,2);AttrInfo_AddLoader(attrs,2,GPU_FLOAT,4);
  auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,item95IconVertices,sizeof(Vertex),3,0x210);
  C3D_FVUnifMtx4x4(GPU_VERTEX_SHADER,transformLoc,&transform);
+ // Convert source near/far domain to PICA reversed depth. Preserve RGB-only
+ // field writes; opaque icons use alpha>=128/COPY, blended icons source alpha.
+ // Restore default depth mapping(-1, 0) and C 2D policy after this owner.
  C3D_DepthMap(true,viewport.nearDepth-viewport.farDepth,1-viewport.farDepth);C3D_CullFace(GPU_CULL_NONE);
  const auto rgb=GPU_WRITEMASK(GPU_WRITE_RED|GPU_WRITE_GREEN|GPU_WRITE_BLUE);
  C3D_DepthTest(true,GPU_GEQUAL,draw.depthWrite?GPU_WRITEMASK(rgb|GPU_WRITE_DEPTH):rgb);

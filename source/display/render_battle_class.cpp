@@ -2,6 +2,8 @@
 #include "platform.hpp"
 #include <algorithm>
 namespace ttyd {
+// Native class-menu budget is 1024 quads*6 vertices shared across callbacks
+// in this frame. Surface/icon atlases are separate from font/message icons.
 bool Renderer::prepareClassMenuDrawing() {
   if (!c3dReady || !programReady || !top)
     return false;
@@ -54,6 +56,9 @@ void Renderer::releaseClassMenuDrawing() {
   classVertices = nullptr;
   classVertexCount = 0;
 }
+// A complete batch must belong to this exact asset owner. Preflight the whole
+// batch before appending vertices; partial menus must not consume arena space.
+// sourceFlags 0=ordinary geometry, 16=normal icon, 48=disabled icon color program.
 bool Renderer::drawClassMenu(const BattleClassBackend &batch) {
   if (!batch.complete() || !prepareClassMenuDrawing() ||
       batch.assets != &classAssets)
@@ -87,6 +92,8 @@ bool Renderer::drawClassMenu(const BattleClassBackend &batch) {
                         (classVertexCount - first) * sizeof(Vertex));
   C3D_Mtx viewport, projection, transform;
   Mtx_Identity(&viewport);
+  // Source centered UI -> top pixels: half size, Y reversed, center(200, 120).
+  // Z scale 0 flattens UI; the native rotated target represents400x240 pixels.
   Mtx_Translate(&viewport, 200, 120, 0, true);
   Mtx_Scale(&viewport, .5f, -.5f, 0);
   Mtx_OrthoTilt(&projection, 0, 400, 240, 0, -1, 1, true);
@@ -134,6 +141,9 @@ bool Renderer::drawClassMenu(const BattleClassBackend &batch) {
     // three-stage color program into a later bubble, normal icon or glyph.
     for (unsigned stage = 0; stage < 6; ++stage)
       C3D_TexEnvInit(C3D_GetTexEnv(stage));
+    // Disabled icon uses separate weighted R/G/B accumulation stages.
+    // Preserve record alpha at the requested stage; do not tint every later
+    // glyph with this temporary program.
     if (q.sourceFlags == 48) {
       const auto stages = disabledClassIconProgram();
       for (unsigned i = 0; i < stages.size(); ++i) {

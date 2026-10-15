@@ -1,6 +1,9 @@
 #include "platform.hpp"
 #include "trouble_quest_presentation.hpp"
 namespace ttyd {
+// Stack bridge borrows cache/state only during this synchronous draw. Source
+// request order mutates local font/scale/scissor state; GPU success is returned
+// to the retained window continuation. Missing providers cannot be acknowledged.
 bool Renderer::troubleQuestWindow(TroubleQuestWindowCache& cache,TroubleQuestMenuWork& work,const TroubleWindowServices& state) {
  if(!cache.ready() || !messagePanel.imported || !fontTexture.imported || !windowFrameVertices || !windowFontVertices ||
     !state.ready || !state.flag || !state.activeQuest || !state.ready(state.user))return false;
@@ -18,6 +21,8 @@ bool Renderer::troubleQuestWindow(TroubleQuestWindowCache& cache,TroubleQuestMen
  s.emit=[](void* p,const TroubleWindowRequest& q){auto& c=*static_cast<Context*>(p);auto& r=*c.r;
   switch(q.op) {
   case TroubleWindowOp::FogOff:C3D_FogGasMode(GPU_NO_FOG,GPU_PLAIN_DENSITY,false);C3D_FogColor(0xffffff);return true;
+  // Type0 frame border 12 is in original UI units. Color is source RGBA;
+  // font consumers distinguish per-string matrix scale from retained pitch scale.
   case TroubleWindowOp::Frame:return r.sourceWindowFrame(type0WindowFrame(q.x,q.y,q.width,q.height,12,
       {uint8_t(q.color>>24),uint8_t(q.color>>16),uint8_t(q.color>>8),uint8_t(q.color)}));
   case TroubleWindowOp::FontStart:c.font={};c.font.edge=false;c.scaleX=c.scaleY=1;return true;

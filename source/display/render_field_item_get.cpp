@@ -2,6 +2,8 @@
 #include "camera_road_view.hpp"
 #include "message_icons.hpp"
 namespace ttyd {
+// Bounded room 0 acquisition adapter requires actual Mario post/audio state,
+// M_I_U animation, UI atlas and effect resources before accepting the event.
 bool Renderer::prepareFieldItemGetResources() {
  if(!itemGetGame || !itemGetAudio || itemGetGame->progress.room!=0 || !itemGetAudio->fieldMarioPostReady(itemGetGame->fieldMarioMotion()))return false;
  if(!itemGetAssetsAttempted){itemGetAssetsAttempted=true;itemGetAssetsReady=loadItemGetWindowAssets("romfs:");}
@@ -18,6 +20,8 @@ bool Renderer::prepareFieldItemGetResources() {
 bool Renderer::prepareFieldItemGet() {
  if(!prepareFieldItemGetResources() || !itemGetAudio->prepareFieldItemGetAudio())return false;
  if(!itemGetGame->progress.originalPouch)return false;
+ // Original pouch key-item array: 121 halfwords starting+a0(hex); zero is
+ // vacant. Full-storage/discard presentation has no admitted native provider.
  bool freeKeySlot=false;for(unsigned slot=0;slot<121;++slot)freeKeySlot|=itemGetGame->progress.originalPouch->half(0xa0+slot*2)==0;
  if(!freeKeySlot)return false; // Original full-storage/discard native provider remains unbound.
  if(!itemGetGame->acquisitionWindows) {
@@ -40,6 +44,9 @@ bool Renderer::prepareFieldCoinGet() {
  }
  return !itemGetGame->coinWindows->retained() && !itemGetGame->acquisitionEffect.active();
 }
+// Services borrow Game/Audio owned by the native main loop. Effects 6(item)
+// and 7(coin) use adapter handle 1 for the single retained acquisition effect;
+// zero rejects unsupported kinds. This is not a host pointer or source heap ID.
 void Renderer::bindFieldItemGet(Game& game,Audio& audio) {
  itemGetGame=&game;itemGetAudio=&audio;audio.muteFieldItemPresentation(!game.progress.sound);
  FieldItemGetServices s;s.user=this;
@@ -70,6 +77,8 @@ void Renderer::bindFieldItemGet(Game& game,Audio& audio) {
  coin.iconEnter=[](void* p,const char* name,uint32_t descriptor,ItemGetPoint xyz){if(descriptor==403)static_cast<Renderer*>(p)->itemGetGame->fieldItems().enterCoin403(name,xyz);};
  coin.iconFlags=[](void* p,const char* name,uint16_t on,uint16_t off){static_cast<Renderer*>(p)->itemGetGame->fieldItems().iconFlags(name,on,off);};
  coin.iconDelete=[](void* p,const char* name){static_cast<Renderer*>(p)->itemGetGame->fieldItems().deleteIcon(name);};
+ // Music policy: retain field track volume 70/fade 100ms; original requests
+ // name group 1/fanfare 201. The 1000ms fade is passed with simulation TickRate.
  coin.request=[](void* p,FieldCoinRequest request){auto& r=*static_cast<Renderer*>(p);auto& g=*r.itemGetGame;auto& a=*r.itemGetAudio;
   switch(request) {
   case FieldCoinRequest::GetMotion:g.applyFieldItemMarioRequest(ItemGetRequest::GetItemMotion);break;
@@ -88,6 +97,9 @@ void Renderer::bindFieldItemGet(Game& game,Audio& audio) {
  game.bindFieldCoinGetPresentation(coin);
 
 }
+// irai_item is the retained original icon name. Flag 100(hex) selects camera 5,
+// flag 80 skips conditional map-lighting blend, flag 2 hides; clearing 100 returns ordinary
+// camera 4 selection. These flags do not themselves delete the icon.
 void Renderer::fieldItemGetRequest(ItemGetRequest r) {
  auto& game=*itemGetGame;auto& audio=*itemGetAudio;
  if(game.applyFieldItemStateRequest(r))return;
@@ -110,6 +122,8 @@ void Renderer::fieldItemGetRequest(ItemGetRequest r) {
  default:break;
  }
 }
+// Called by simulation ownership, not either screen's draw pass. Window
+// transitions and effect age advance once per admitted simulation visit.
 void Renderer::advanceFieldItemPresentation() {
  if(!itemGetGame)return;
  auto& game=*itemGetGame;
@@ -128,6 +142,8 @@ void Renderer::advanceFieldIcons() {
  const auto* coin=messageIcon(403);
  itemGetGame->fieldItems().advanceIcons(messageIconTexture.imported && coin && coin->frames.size()==4);
 }
+// Camera 5 is the item/icon view; effect camera 4 uses the field view. RGBA
+// 000000ff is opaque black for the effect shadow. Draw only reads these owners.
 void Renderer::drawFieldItemGet(const Game& game) {
  if(game.progress.room!=0 || game.scene==Scene::Battle)return;
  const auto matrix=[](const FieldCameraFrame& frame){C3D_Mtx projection,view,out;

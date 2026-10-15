@@ -1,6 +1,8 @@
 #include "platform.hpp"
 #include <cstdio>
 namespace ttyd {
+// Original n64 texture 44 is 16x16 RGBA8 with no mip levels/bias. Repeat
+// covers the entire image; this is not a padded character/icon atlas cell.
 bool Renderer::prepareShadowTexture44(){
     if(shadowTexture44.imported)return true;
     FILE* file=std::fopen("romfs:/shadow-texture44.t3x","rb");if(!file)return false;
@@ -12,6 +14,9 @@ bool Renderer::prepareShadowTexture44(){
     C3D_TexSetFilter(&shadowTexture44.texture,GPU_LINEAR,GPU_LINEAR);
     C3D_TexSetWrap(&shadowTexture44.texture,GPU_REPEAT,GPU_REPEAT);return true;
 }
+// Restore physical GPU state from acknowledged logical program only. Setup
+// emits no geometry and cannot advance a source callback. Native TEV constants
+// use AABBGGRR; source material/fog records use RRGGBBAA.
 bool Renderer::finishingShadowGpu(const NativeShadowProgram& p){
     if(!p.seeded)return false;
     if(p.texture){
@@ -58,6 +63,9 @@ bool Renderer::finishingShadowGpu(const NativeShadowProgram& p){
         C3D_TexEnvSrc(env,C3D_RGB,GPU_PREVIOUS);C3D_TexEnvFunc(env,C3D_RGB,GPU_REPLACE);
         C3D_TexEnvSrc(env,C3D_Alpha,GPU_PREVIOUS,p.alphaMaterialVertex?GPU_PRIMARY_COLOR:GPU_CONSTANT);C3D_TexEnvFunc(env,C3D_Alpha,GPU_MODULATE);
     }
+    // Eight admitted second-stage setters accumulate mask 255 before enabling
+    // K0 modulation. GX base stage may need PICA0/1, so K0 multiply uses2.
+    // Stage 5 below retains K0 independently of actively sampled constants.
     if(p.tevStages==2){
         if(p.constantStageMask!=255 || !p.tevKColor0)return false;
         const uint32_t k=*p.tevKColor0;
@@ -72,6 +80,9 @@ bool Renderer::finishingShadowGpu(const NativeShadowProgram& p){
     if(p.fogOff){C3D_FogGasMode(GPU_NO_FOG,GPU_PLAIN_DENSITY,false);C3D_FogColor(*p.fogColor>>8);}
     return true;
 }
+// Separate position/camera state, display masks and material-program state.
+// Material state publishes only after physical admission succeeds; holds leave
+// its previous acknowledged logical program intact.
 bool Renderer::finishingShadowRequest(const ShadowGXRequest& request){
     if(request.kind==ShadowGX::PositionMatrix){
         if(request.values!=std::array<int32_t,7>{})return false;
@@ -100,6 +111,8 @@ ShadowDisplayServices Renderer::finishingShadowServices(){
         auto& renderer=*static_cast<Renderer*>(user);
         NativeCameraSubmit submit{user,[](void* user,const NativeCameraPacket& p){return static_cast<Renderer*>(user)->finishingCameraPacket(p);}};
         switch(r.kind){
+        // Mask 0x4 selects register byte 2; bit16 is the GPU texture-cache-clear
+        // request. This is distinct from flushing CPU-written texture memory.
         case ShadowPassKind::InvalidateTextures:
             // Installed Citro3D uses the same isolated cache-clear byte. This
             // queues actual PICA work; CPU texture flush is a separate service.
@@ -125,6 +138,10 @@ ShadowDisplayServices Renderer::finishingShadowServices(){
         texture=ShadowTexture::N64Texture44;return true;
     };
     services.cylinder.enabled=true;services.cylinder.user=this;
+    // Five original 64-byte cylinder lists refer to position array 80304ce0
+    // and color palettes 80415140/160(hex). Desc 2=INDEX8; formats 4/5=F32/RGBA8.
+    // 0xa0 is source fan, otherwise admitted strip. The numeric addresses below
+    // are validated guest resource identities, never native memory addresses.
     services.cylinder.list=[](void* user,uint32_t address,uint32_t bytes){
         auto& renderer=*static_cast<Renderer*>(user);const auto& p=renderer.finishingShadowProgram;
         if(!renderer.shadowGeometry.loaded || bytes!=64 || p.arrays[0]!=0x80304ce0 || p.descriptors[0]!=2 || p.descriptors[1]!=2 || p.formats[0]!=4 || p.formats[1]!=5)return false;

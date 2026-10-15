@@ -5,6 +5,9 @@
 #include <algorithm>
 #include <cmath>
 namespace ttyd {
+// Full source UI608x480 has center(304, 240); half-scale native top center
+// is(200, 120). Clip four corners through the tilted projection, then round
+// and clamp to physical240x400 axes. Do not halve raw scissor integers alone.
 void Renderer::selectorClip(const ItemSelectionClip* clip) {
     C2D_Flush();
     if(!clip){C3D_SetScissor(GPU_SCISSOR_DISABLE,0,0,0,0);return;}
@@ -22,6 +25,10 @@ void Renderer::selectorClip(const ItemSelectionClip* clip) {
     const auto bound=[](float x,unsigned size){return unsigned(std::clamp(std::lround(x),0l,long(size)));};
     C3D_SetScissor(GPU_SCISSOR_NORMAL,bound(left,240),bound(topEdge,400),bound(right,240),bound(bottomEdge,400));
 }
+// Glyph budgets count QUADS, not bytes; outlined text can emit five quads
+// per glyph. Width-limit squeezing affects X scale only. Direct and StringPitch
+// consumers already own their positioning/scaling; matrix consumers apply local
+// transforms here. Font atlas512x256 UVs invert native V.
 bool Renderer::sourceWindowFont(const char* text,WindowFontConsumer consumer,ItemSelectionTextDraw request,
     const WindowFontStyle& supplied,const ItemSelectionClip* clip,const ColorWindowText* colorTokens) {
     const auto& font=harborMessageFont();WindowFontMeasurement measured;
@@ -35,6 +42,8 @@ bool Renderer::sourceWindowFont(const char* text,WindowFontConsumer consumer,Ite
     const unsigned start=windowFontCount*6;
     struct FontContext {Renderer* renderer;ItemSelectionTextDraw request;const ItemSelectionClip* clip;WindowFontConsumer consumer;bool overflow=false;} context{this,request,clip,consumer};
     WindowFontDrawServices services;services.user=&context;
+    // Native presentation LCG(1664525, 1013904223), separate from battle RNG.
+    // Clipping must retain source glyph/random requests even for invisible quads.
     services.random=[](void* p,uint32_t bound){auto& r=static_cast<FontContext*>(p)->renderer->windowFontRng;r=r*1664525u+1013904223u;return r%bound;};
     services.emitQuad=[](void* p,const WindowFontQuad& q){
         auto& context=*static_cast<FontContext*>(p);auto& renderer=*context.renderer;
@@ -91,6 +100,9 @@ bool Renderer::selectorIcon(uint32_t id,uint64_t ticks,float x,float y,float sca
     const auto* icon=messageIcon(id);if(!icon)return false;
     return selectorIconFrame(icon->frame(ticks),x,y,scale,flags,centered);
 }
+// Source flags 4/8 mirror X/Y. Native half-size icon is centered in X;
+// centered mode uses alpha>=128/COPY, ordinary icon restores the UI threshold 8.
+// C 2D layer.6 is native draw ordering, not original display-queue depth.
 bool Renderer::selectorIconFrame(const MessageIconFrame& frame,float x,float y,float scale,uint32_t flags,bool centered) {
     Tex3DS_SubTexture sub{};sub.width=frame.width;sub.height=frame.height;
     sub.left=frame.u0;sub.right=frame.u1;sub.top=frame.v0;sub.bottom=frame.v1;
@@ -111,6 +123,9 @@ bool Renderer::selectorIconFrame(const MessageIconFrame& frame,float x,float y,f
     }
     return drawn;
 }
+// Slots0 rows, 1 header, 2 help retain independent rectangle/sequence owners.
+// Sequence flag 4 suppresses contents, but help text publication still occurs.
+// Frame/labels/cursor/arrows keep source order; help crop isY384..440.
 bool Renderer::itemSelector(ItemSelectionPresentation& p) {
     const auto& main=p.owner.main();const auto& font=harborMessageFont();const ItemSelectionClip full{0,0,608,480};
     bool success=true;WindowFontMeasurement measured;

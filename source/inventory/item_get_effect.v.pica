@@ -1,3 +1,6 @@
+; Native effect ABI: v0 source XYZ, v1 opacity UV, v2 RGBA. Homogeneous W=1.
+; World/model transform positions; independent POS textureProjection makes
+; pattern 44 UV0, while v1 supplies opacity 42 UV1. CPU TEV owns color mixing.
 .fvec transform[4]
 .fvec textureProjection[2]
 .constf constants(0.0, 1.0, 0.0, 0.0)

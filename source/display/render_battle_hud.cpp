@@ -5,6 +5,9 @@
 #include <cstdio>
 #include <algorithm>
 namespace ttyd {
+// Native resource fallback maxHP 10 is harness initialization. Pouch offsets
+// 70/72/74/76(hex) are HP/maxHP/FP/maxFP halfwords. Packed Mario words below
+// are emulated battle-record addresses, never dereferenced as native pointers.
 void Renderer::battleHud(const Game& g) {
     if(g.trioBattleActive && !g.trioAttack.statusWindowVisible())return;
     if(g.harborTutorial.running() && !g.harborTutorial.statusVisible)return;
@@ -21,6 +24,8 @@ void Renderer::battleHud(const Game& g) {
     uint32_t limits=0,resources=0,flower=0;
     auto read=[&](uint32_t at,uint32_t& value){return g.harborTutorial.running()?
         g.harborTutorial.readPackedWord(at,value):g.trioAttack.readWord(at,value);};
+    // Unit+108 limits high 16=maxHP; +10c high 16=HP/low 16=maxFP;
+    // +110 low 16=FP. Signed16 extraction retains uninitialized resource values.
     if(read(0x84101108,limits) && read(0x8410110c,resources) && read(0x84101110,flower)) {
         maxHp=int16_t(limits>>16);hp=int16_t(resources>>16);
         maxFp=int16_t(resources&65535);fp=int16_t(flower&65535);
@@ -33,11 +38,16 @@ void Renderer::battleHud(const Game& g) {
         // Original suu ji/suuji_s tables: alternate large/small IDs, one digit
         // at a time, right aligned. Negative/uninitialized resources are hidden.
         if(value<0)return;
+        // Native cap six decimal digits; icon 481+2*digit is large, next ID
+        // is small. Right-aligned pitches 10/8 are native pixels.
         value=std::min(value,999999);
         do {icon(481+2*(value%10)+(small?1:0),right,y);right-=small?8:10;value/=10;}while(value);
     };
     // Native half-size/crop of the original status-window art. Positions are
     // adapted to400x240; slide/blink/AP-bar callbacks remain separate owners.
+    // Original HP group uses IDs 472/427/480; FP group 473/441/480.
+    // Coordinates below are native UI layout; they do not implement source
+    // status slide/blink choreography.
     icon(472,102,20);icon(427,67,20);icon(480,110,17);
     number(hp,99,20,false);number(maxHp,127,20,true);
     if(maxFp>0) {
@@ -45,6 +55,10 @@ void Renderer::battleHud(const Game& g) {
         number(fp,189,20,false);number(maxFp,217,20,true);
     }
 }
+// Bottom command reflow: actor2 has one command, others two; target mode
+// reads selected index from packed candidate byte+ab7. Frame uses source UI
+// units, then native half-scale. Icon 504 is the original selection hand.
+// Font 512x256 atlas uses WID1 widths+spacing 2; 0xffff means unmapped byte.
 void Renderer::battleMenuRows(const Game& g) {
     const auto& commands=g.trioCommands;
     const bool target=commands.state==TrioBattleCommands::State::Target;

@@ -1,5 +1,8 @@
 #include "platform.hpp"
 namespace ttyd {
+// ShadowGX and SourceIconGXCall retain original function identity/arguments.
+// Material, ambient, TEV-color and fog carry packed RGBA in a separate payload;
+// do not reinterpret those bits as signed scalar arguments.
 bool Renderer::sourceIconState(const ShadowGXRequest &r) {
   SourceIconGXCall call;
   call.function = uint32_t(r.kind);
@@ -17,6 +20,9 @@ bool Renderer::applySourceIconProgram(const NativeIconPlan &p) {
     return false;
   return publishSourceIconProgram(p,*texture);
 }
+// PICA publication changes physical state only; logical source owners remain
+// retained separately. Native vertex ABI is XYZ/UV/RGBA; unused samplers park
+// on a real texture even when TEV does not sample them.
 bool Renderer::publishSourceIconProgram(const NativeIconPlan &p,C3D_Tex &image) {
   auto *texture=&image;
   C3D_BindProgram(&program);
@@ -29,6 +35,8 @@ bool Renderer::publishSourceIconProgram(const NativeIconPlan &p,C3D_Tex &image) 
   parkUnusedSamplers();
   for (unsigned i = 0; i < 6; ++i)
     C3D_TexEnvInit(C3D_GetTexEnv(i));
+  // Source RRGGBBAA -> native AABBGGRR. Constant alpha retains blend low 8;
+  // grayscale accumulates weighted source R/G/B with three PICA stages.
   const auto color = [](uint32_t rgba) {
     return ((rgba & 255) << 24) | ((rgba & 0xff00) << 8) |
            ((rgba >> 8) & 0xff00) | (rgba >> 24);
@@ -53,6 +61,8 @@ bool Renderer::publishSourceIconProgram(const NativeIconPlan &p,C3D_Tex &image) 
       }
     }
   } else {
+    // Ordinary mode multiplies material*tint; Blended adds a third blend
+    // constant multiplication. This is the admitted plan, not arbitrary GX TEV.
     const uint32_t constants[]{p.material, p.tint, p.blend};
     const unsigned count = p.mode == NativeIconPlan::Blended ? 3 : 2;
     for (unsigned i = 0; i < count; ++i) {
@@ -63,6 +73,8 @@ bool Renderer::publishSourceIconProgram(const NativeIconPlan &p,C3D_Tex &image) 
       C3D_TexEnvFunc(env, C3D_Both, GPU_MODULATE);
     }
   }
+  // GX cull0 none/1 back/2 front; source fog color drops its RGBA alpha.
+  // This admitted path disables fog rather than inventing a fog equation.
   C3D_CullFace(p.cull == 0   ? GPU_CULL_NONE
                : p.cull == 1 ? GPU_CULL_BACK_CCW
                              : GPU_CULL_FRONT_CCW);

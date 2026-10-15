@@ -4,6 +4,9 @@
 #include "map_material_color.hpp"
 #include "map_material_tev.hpp"
 namespace ttyd {
+// Physical packet publication and source callback execution are separate.
+// Save icon projection/viewport/scissor only when the corresponding camera
+// state is admitted; native matrix rows are copied, not guest pointers cast.
 bool Renderer::finishingCameraPacket(const NativeCameraPacket& p){
     const auto& r=p.rect;
     if(p.kind==NativeCameraCommand::Viewport){
@@ -37,6 +40,9 @@ bool Renderer::finishingCameraPacket(const NativeCameraPacket& p){
     C3D_AlphaTest(true,GPU_GEQUAL,128);
     // Source does not change cull/fog. Frame restoration changes only state;
     // this branch emits the actual original XYZ/UV triangle exactly once.
+    // Dummy triangle coordinates(0, 0),(20, 0),(20, 20), constant alpha 129,
+    // cutoff 128 and write-mask 0 reproduce source initialization side effects.
+    // Only the real draw seeds logical owners; a frame restore must not reseed.
     if(p.kind==NativeCameraCommand::DummyDraw){
         C3D_ImmDrawBegin(GPU_TRIANGLES);
         for(const auto& xyz:std::array<std::array<float,3>,3>{{{0,0,0},{20,0,0},{20,20,0}}}){
@@ -47,6 +53,9 @@ bool Renderer::finishingCameraPacket(const NativeCameraPacket& p){
     }
     return true;
 }
+// Source compare1/3/6 -> native GREATER/GEQUAL/LEQUAL in reversed depth.
+// Blend tokens0/1/2/4/5/6/7 are ZERO/ONE/SRCCLR/SRCALPHA/INVSRCALPHA/
+// DSTALPHA/INVDSTALPHA. Color/alpha/depth write enables remain independent.
 bool Renderer::finishingDisplayPipeline(const NativeDisplayPipeline& p){
     unsigned mask=(p.color?GPU_WRITE_RED|GPU_WRITE_GREEN|GPU_WRITE_BLUE:0)|(p.alpha?GPU_WRITE_ALPHA:0)|(p.depthWrite?GPU_WRITE_DEPTH:0);
     const auto compare=p.compare==1?GPU_GREATER:p.compare==3?GPU_GEQUAL:p.compare==6?GPU_LEQUAL:GPU_ALWAYS;
@@ -61,6 +70,10 @@ bool Renderer::finishingDisplayPipeline(const NativeDisplayPipeline& p){
     else C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,source,destination,p.sourceBlend==2?GPU_SRC_ALPHA:source,destination);
     return true;
 }
+// Restore acknowledged physical state before resuming the exact source
+// callback cursor. A false provider result retains the wait, not success.
+// Callback tokens below are original US identities (see docs/code/render-adapters.md);
+// borrowed values identify source work and never become native pointers.
 void Renderer::resumeFinishingCamera(const Game& game){
     if(!game.trioBattleActive || !game.trioAttack.finishingDrawPending())return;
     NativeCameraSubmit submit{this,[](void* user,const NativeCameraPacket& p){return static_cast<Renderer*>(user)->finishingCameraPacket(p);}};
@@ -90,6 +103,8 @@ void Renderer::resumeFinishingCamera(const Game& game){
     services.display.callback=[](void* user,uint32_t camera,uint32_t identity,uint32_t borrowed){
         const auto& b=*static_cast<DisplayBridge*>(user);
         auto& renderer=*static_cast<Renderer*>(b.pipeline->user);
+        // Original callbacks: BattleDrawEnemyHP; letterbox; stage dark/light;
+        // audience; reel/stockEXP/audience auxiliaries; unit parts; finally shadow.
         if(identity==0x8011fde0)return b.game->trioAttack.resumeEnemyHpDraw(camera,borrowed,{});
         if(identity==0x8000e564){
             CameraLetterboxDrawServices letterbox;letterbox.user=&renderer;
@@ -124,6 +139,8 @@ void Renderer::resumeFinishingCamera(const Game& game){
             SourceIconMatrixServices icon;icon.user=&iconBridge;
             icon.word=[](void* u,uint32_t address)->std::optional<uint32_t>{auto& b=*static_cast<IconBridge*>(u);const auto resource=b.renderer->sourceIcons.word(address);return resource?resource:b.game->trioAttack.sourceIconWord(address);};
             icon.half=[](void* u,uint32_t address)->std::optional<uint16_t>{auto& b=*static_cast<IconBridge*>(u);
+                // Synthetic map-work identity 85000000(hex), flags halfword+4;
+                // actual source icon constants remain in their own address map.
                 if(address==0x85000004){const auto* group=b.game->trioAttack.materialGroup();return group?std::optional<uint16_t>(group->flags):std::nullopt;}
                 return b.renderer->sourceIcons.half(address);};
             icon.currentCamera=[](void* u){return static_cast<IconBridge*>(u)->game->trioAttack.sourceIconCamera();};
@@ -149,6 +166,9 @@ void Renderer::resumeFinishingCamera(const Game& game){
             struct InnerBridge {Renderer* renderer;const Game* game;} bridge{&renderer,b.game};
             BattlePoseInnerServices inner;inner.user=&bridge;
             inner.gx=[](void* user,const BattleAudienceGXRequest& r){ShadowGXRequest q;q.kind=static_cast<ShadowGX>(r.function);q.values=r.arguments;return static_cast<InnerBridge*>(user)->renderer->finishingShadowRequest(q);};
+            // Selector 0 owns current positions/normals; index 0/1 chooses
+            // position/normal arrays. Pose+14(hex) selects the source descriptor.
+            // Vector stride12 is three binary32 components; flush real CPU data.
             inner.flush=[](void* user,unsigned index,const BattlePoseInnerContext& context){
                 const auto* pool=static_cast<InnerBridge*>(user)->game->trioAttack.battlePosePool();
                 if(!pool || pool->outputSelector || index>1)return false;
@@ -169,6 +189,9 @@ void Renderer::resumeFinishingCamera(const Game& game){
             shape.math=[](void*,AnimationShapeMath& r){return animationShapeNativeMath(r);};
             shape.material=[](void* user,const AnimationShapeCall& r,uint32_t& pending){
                 auto& bridge=*static_cast<InnerBridge*>(user);
+                // animSetMaterial_Texture; mapSetMaterialTev below; then
+                // mapSetMaterialLastStageBlend/Fog. Each leaf keeps its own
+                // provider cursor and validates resources before publication.
                 if(r.function==0x8003dcfc){
                     if(!r.pose)return false;
                     AnimationTextureServices texture;texture.user=&bridge;
@@ -201,6 +224,9 @@ void Renderer::resumeFinishingCamera(const Game& game){
             };
             shape.call=[](void* user,const AnimationShapeCall& r){
                 auto& renderer=*static_cast<InnerBridge*>(user)->renderer;
+                // GXLoadNrmMtxImm retains normal matrix; GXLoadPosMtxImm
+                // copies3x4 position rows. CurrentMtx/CullMode route
+                // through their logical state owners; geometry handles the rest.
                 if(r.function==0x802ba34c){if(!r.matrix)return false;renderer.finishingShapeNormal=*r.matrix;return true;}
                 if(r.function==0x802ba2fc){if(!r.matrix)return false;ShadowGXRequest q;q.kind=ShadowGX::PositionMatrix;
                     for(unsigned row=0;row<3;++row)for(unsigned col=0;col<4;++col)q.matrix[row][col]=(*r.matrix)[4*row+col];

@@ -10,6 +10,9 @@ bool prepareFlatMessage(FlatTexture& target,const char* path) {
  C3D_TexSetWrap(&target.texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);return true;
 }
 template<class FlatTexture>
+// Flat original border uses560x176 content in 1024x256 texture backing.
+// Diary has1px inset, kanban0. UI x uses MessageWindowScale; y uses-.5,
+// centered at(200, 120). Tint strength0 preserves original RGB during alpha fade.
 void flatMessageBorder(FlatTexture& target,const MessageWindowPlan& plan,uint8_t alpha,float inset=0) {
  if(!target.imported)return;
  Tex3DS_SubTexture cell{};cell.width=560;cell.height=176;
