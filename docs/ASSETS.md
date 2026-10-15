@@ -2214,3 +2214,14 @@ The native GPU owner executes source HP textured/raster/solid material state and
 validates generation/whole bar batches before drawing. This alone does not prove
 normal battle activation or unified number/bar order; those require the actual
 queued callback and native ordered publication owner.
+
+
+### Runtime animation tangent alias (2026-10-14)
+
+No extraction/conversion or new original product. The actual cold initializer's
+178 runtime words at803d9580 now alias CPU tangent consumers directly. Original
+factor/native tan adapter and source initialization cadence are unchanged; no
+static copied tangent asset substitutes for live storage. Existing20-span boot
+image and all accepted private RomFS products remain byte-identical. Read-only
+output/tangent layout evidence is artifacts/animation-output-evidence/; no ISO,
+original bytes or packs committed/distributed and rights remain unchanged.

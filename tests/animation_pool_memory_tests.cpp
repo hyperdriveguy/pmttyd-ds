@@ -1,4 +1,5 @@
 #include "animation_pool_memory.hpp"
+#include "animation_tangent_memory.hpp"
 #include "animation_initialize.hpp"
 #include "battle_sequence_binding.hpp"
 #include "event_native_runtime.hpp"
@@ -13,6 +14,7 @@ struct MemoryWorld {
  std::shared_ptr<BattlePosePool> pool;
  std::unique_ptr<EventNativeRuntime> vm;
  std::unique_ptr<AnimationPoolMemory> view;
+ std::unique_ptr<AnimationTangentMemory> tangents;
  uint32_t next=0x8a000000,models=0,textures=0,poses=0;
  explicit MemoryWorld(std::shared_ptr<BattlePosePool> p=std::make_shared<BattlePosePool>()):pool(std::move(p)){
   EventNativePlatform platform;platform.flushBlock=[](void*,uint32_t){};platform.systemCall=[](void*){};
@@ -32,7 +34,7 @@ struct MemoryWorld {
   models=word(Work);textures=word(Work+8);poses=word(Work+0x10);
  }
  uint32_t word(uint32_t a){uint32_t v=0;assert(vm->memory.readWord(a,v));return v;}
- void attach(){view=AnimationPoolMemory::bind(pool,vm->memory);assert(view && view->matchesWork());}
+ void attach(){view=AnimationPoolMemory::bind(pool,vm->memory);assert(view && view->matchesWork());if(!tangents)tangents=AnimationTangentMemory::bind(pool,vm->memory);assert(tangents && tangents->current());}
 };
 std::shared_ptr<const BattlePoseResource> original(const char* root){auto path=std::string(root)+"/field-player-c_pkr";return loadBattlePoseResource((path+".pose-directory.bin").c_str(),(path+".pmanim").c_str());}
 }

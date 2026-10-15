@@ -5023,3 +5023,17 @@ Real Vivian/angle/interrupt/resource services and sequence/Mario producers,
 original numeric/runtime parity, display/shadow/history/tail and ordinary Area
 activation remain open. Detection completion reaches unfinished Display only;
 no whole-Main completion or actor/history advancement is acknowledged.
+
+
+### Live source tangent consumer ownership (2026-10-14)
+
+Both native cubic sampling paths now accept actual runtime803d9580 table bytes.
+AnimationTangentMemory shares the existing BE table with source VM and typed CPU
+pool, preserves current bytes on detach and deep-copies detached pool state.
+Cold readiness includes tangent ownership; attached pools cannot silently use
+legacy static or stale detached data. [Contract](../behavior/display/NATIVE_LIVE_ANIMATION_TANGENTS.md).
+Output research distinguishes MODEL140 scalar floats from MODEL12c24-byte
+texture rows. Next migrate actual BE scratch replay/output/traversal/texture/
+fan/flush as one ownership path, including padding and captured aliases; do not
+write detached CPU buffers over source storage. Ordinary Game/provider wiring,
+source clock, renderer/release/ring/facing/link and complete prologue stay open.

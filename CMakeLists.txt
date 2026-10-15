@@ -2139,3 +2139,10 @@ add_executable(battle_enemy_hp_gpu_tests tests/battle_enemy_hp_gpu_tests.cpp)
 target_link_libraries(battle_enemy_hp_gpu_tests PRIVATE ttyd_core)
 add_test(NAME battle_enemy_hp_gpu COMMAND battle_enemy_hp_gpu_tests)
 set_tests_properties(battle_enemy_hp_gpu PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Same-byte original runtime tangent table consumed by both native samplers.
+target_sources(ttyd_core PRIVATE source/display/animation_tangent_memory.cpp)
+add_executable(animation_tangent_memory_tests tests/animation_tangent_memory_tests.cpp)
+target_link_libraries(animation_tangent_memory_tests PRIVATE ttyd_core)
+add_test(NAME animation_tangent_memory COMMAND animation_tangent_memory_tests)
+set_tests_properties(animation_tangent_memory PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

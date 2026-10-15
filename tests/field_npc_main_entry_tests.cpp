@@ -1,5 +1,6 @@
 #include "animation_initialize.hpp"
 #include "animation_pool_memory.hpp"
+#include "animation_tangent_memory.hpp"
 #include "event_native_runtime.hpp"
 #include "field_npc_main_entry_binding.hpp"
 #include <cassert>
@@ -334,6 +335,7 @@ struct NativeWorld {
   std::shared_ptr<BattlePosePool> pool = std::make_shared<BattlePosePool>();
   std::unique_ptr<EventNativeRuntime> vm;
   std::unique_ptr<AnimationPoolMemory> view;
+  std::unique_ptr<AnimationTangentMemory> tangents;
   std::shared_ptr<FieldNpcRegistryOwner> owner;
   std::unique_ptr<FieldNpcRegistryBinding> registry;
   std::unique_ptr<FieldNpcMainEntryBinding> entry;
@@ -400,6 +402,8 @@ struct NativeWorld {
     assert(initializeAnimation(s, init));
     view = AnimationPoolMemory::bind(pool, vm->memory);
     assert(view && view->aliases(*pool, vm->memory));
+    tangents = AnimationTangentMemory::bind(pool, vm->memory);
+    assert(tangents && tangents->current());
     EventScriptAssets source;
     assert(source.load("romfs/door-data.pmevt") &&
            vm->memory.importScripts(source));

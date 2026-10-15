@@ -87,10 +87,12 @@ bool AnimationStartupProcess::child(BattleSequenceCall& c){
  }
 }
 bool AnimationStartupProcess::advance(){
- if(aliases_)return aliases_->matchesWork();
  if(!initialized_){auto s=services();if(!initializeAnimation(s,cursor_))return false;initialized_=true;}
- // Do not rerun the completed source parent if alias admission is unavailable.
- aliases_=AnimationPoolMemory::bind(pool_,vm_->memory);return bool(aliases_);
+ // Completed source effects never replay while either alias admission waits.
+ if(!aliases_)aliases_=AnimationPoolMemory::bind(pool_,vm_->memory);
+ if(!aliases_ || !aliases_->matchesWork())return false;
+ if(!tangentMemory_)tangentMemory_=AnimationTangentMemory::bind(pool_,vm_->memory);
+ return ready();
 }
 bool AnimationStartupProcess::text(uint32_t address,std::string& out) const{
  // Native filename/string admission. Core Entry itself has no such length cap.
@@ -157,7 +159,7 @@ bool AnimationStartupProcess::adoptEntry(){
  // actual loaded MODEL with the admitted original converted resource metadata.
  for(auto offset:{0xc4u,0xf0u,0xf8u,0x12cu,0x13cu,0x140u,0x144u,0x148u})if(!m.readWord(data+offset,v) || v!=resource->draw->word(offset))return false;
  const auto* initial=resource->bank->pose(resource->names.front().c_str());ActorAnimationSample shape;ActorAnimationCache cache;
- if(!initial || !initial->evaluate(0,shape) || shape.positions.empty() || shape.nodes.empty() || shape.world.empty())return false;
+ if(!initial || !initial->evaluate(0,shape,pool_->tangents_.get()) || shape.positions.empty() || shape.nodes.empty() || shape.world.empty())return false;
  allocateActorAnimationCache(*initial,cache);
  // Sidecars only: never call typed enter/restart or overwrite source BE rows,
  // timestamp, refs, file identities, scratch pointers or untouched stale words.

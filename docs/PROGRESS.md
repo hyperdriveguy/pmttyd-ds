@@ -10994,3 +10994,65 @@ actual icon import generations. Normal activation and original camera/status/
 Tattle/resource/scheduler lifetimes must be bound before claiming the complete
 HP callback, tutorial, real battle or lower-screen audience feature finished.
 The full goal remains active/incomplete.
+
+### Actual runtime tangent bytes consumed by CPU animation (2026-10-14)
+
+Added AnimationTangentMemory: existing source-initialized803d9580/178FLOAT
+storage and both native cubic kernels now share the SAME BE bytes. Cold process
+readiness includes this owner after completed source initialization and array
+alias admission; retries do not replay tan/heap/file effects. Current tangent
+owner must belong to the same VM as the source-array owner. Attached entry/
+evaluation cannot silently use static fallback or stale detached bytes and holds
+before sampling effects. Detached native copies deep-copy retained table bytes.
+Detach preserves current CPU/VM bytes; reattachment requires equality and never
+regenerates or rewinds the table. [Contract](behavior/display/NATIVE_LIVE_ANIMATION_TANGENTS.md).
+
+Both actorNodeDelta/evaluateSelected and cumulative cache sampling accept the
+live table; source-backed entry/adoption and evaluation pass it. Detached legacy
+packs retain their native static adaptation. Existing source fixtures explicitly
+bind their actual complete initializer's table. Read-only review caught the
+attached-pool fallback gap; final guards and same-VM admission close it. Original
+numeric/libm/FPSCR/adjacent-table domains remain separately bounded.
+
+Frozen base55ebe1d27d0faf5561dfcb2816afe1d42c932d5c plus scoped edits; concurrent
+work preserved/excluded. Final make test -o assets-ready:407/407 C++ tests in
+86.08s and205 Python tests in91.562s, zero skipped. Final make all -j4
+-o assets-ready SOUNDTRACK=gamecube and restored ordinary build passed. Earlier
+fixture-only build issues were corrected: missing platform argument for a new
+VM constructor and newlib uint32_t/unsigned auto-deduction mismatch. An exploratory
+focused run linked an older EventNativeRuntime ABI and crashed in its new shared
+owner destructor; it is NOT validation. Accepted full host/native gates rebuild
+all objects consistently from this frozen source. Existing unrelated compiler/
+Pillow warnings remain. Documentation links pass.
+
+Strict isolated ARM fixture:liveTable/bothKernels/actualGoombella/vmMutation/
+restoreNoDrift/noFallback/sameVm/rollback/currentDetach/reattach/copyIsolation/
+lifetime PASS. Real Goombella node output changes when its actual VM table word
+changes and restores exactly with no cache drift. Transactions cover absent
+owner before state effects, wrong VM, mismatched bytes, readable external-RAM
+extraction refusal, live root changes, current-byte detach/reattach and isolated
+copies. Byte-lane mutation survives complete process/VM teardown in retained CPU
+storage. No invented positive file/heap identity supplies this fixture's startup.
+
+Restored ordinary3DSX matches pre-probe SHA256:
+67db3a90455eae1ae149caf1be9fbe417a73b9cf96cace0d0505ef7152fdaa8d.
+Ordinary40-second isolated smoke visually inspected: original storybook/dialogue,
+App60FPS/101% emulator speed and no asset-error console. This is boot evidence
+only, not field/physical performance parity.
+All2136 accepted private RomFS products remain byte-identical. Re-running the
+committed door converter produced identical data. No new extraction/conversion,
+original binary or compiled pack committed; ISO read-only and rights unchanged.
+Only isolated emulator profiles/saves used. Evidence:
+artifacts/animation-live-tangents-validation-manifest.json, final host/native
+logs, ARM object and isolated probe/ordinary captures.
+
+Output research confirms MODEL140 counts scalar node floats; MODEL12c counts
+24-BYTE texture records, including padding/selector/fivefloats. P48/4c,50/54,
+60/64 are distinct cache/output pairs; visibility58/5c and texture68/6c share
+storage. W.e8 redirects position/normal outputs only. Native little-endian float
+vectors cannot alias this BE scratch. Next migrate authoritative source cache/
+output access, traversal/texture/fan/flush captures together; decode read-only CPU
+snapshots at proper capture points and preserve source aliases/stale fields.
+Do not overwrite source scratch with detached CPU caches. Normal Game activation,
+source clock, full output/ring/facing/link/release/field/event and performance
+parity remain open. Full playable prologue/EVT-01/goal remain incomplete.

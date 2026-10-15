@@ -1259,3 +1259,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Retained stage Main children](battle/RETAINED_STAGE_MAIN.md): cache updates, transforms, spotlight, entry and counter operands survive waits.
 - [Original enemy HP GPU assets and ordered batch](display/ORIGINAL_ENEMY_HP_GPU_ASSETS_AND_ORDERED_BATCH.md): original common textures17/18, source material/FIFO validation and generation-bound bar packets; unified number/bar publication remains separate.
+
+- [Live animation tangent ownership](display/NATIVE_LIVE_ANIMATION_TANGENTS.md): same BE source/CPU table, lifetime/rollback and attached-pool availability; exact scratch-output migration boundary.

@@ -1,6 +1,7 @@
 #include "battle_pose_pool.hpp"
 #include "animation_texture.hpp"
 #include "animation_sample_time.hpp"
+#include "animation_tangent_memory.hpp"
 #include <cassert>
 #include <cstring>
 #include <map>
@@ -82,7 +83,7 @@ std::shared_ptr<const BattlePoseResource> loadBattlePoseResource(const char* dir
     }
     cache[key]=resource;return resource;
 }
-BattlePosePool::BattlePosePool(const BattlePosePool& other):models_(other.models_),textures_(other.textures_),archiveType_(other.archiveType_),nextGeneration_(other.nextGeneration_),work_(other.work_),workEstablished_(other.workEstablished_){
+BattlePosePool::BattlePosePool(const BattlePosePool& other):models_(other.models_),textures_(other.textures_),archiveType_(other.archiveType_),nextGeneration_(other.nextGeneration_),work_(other.work_),workEstablished_(other.workEstablished_),tangents_(other.tangents_?std::make_unique<AnimationTangentTable>(*other.tangents_):nullptr){
     for(unsigned i=0;i<poses_.size();++i)if(other.poses_[i])poses_[i]=std::make_unique<BattlePose>(*other.poses_[i]);
 }
 uint32_t BattlePosePool::outputSelector() const{return uint32_t(work_[0xe8])<<24|uint32_t(work_[0xe9])<<16|uint32_t(work_[0xea])<<8|work_[0xeb];}
@@ -130,7 +131,7 @@ void BattlePosePool::restart(BattlePose& pose,BattlePoseClock clock){
 // count MODEL owners, model references count POSES. Mode0/1/2 selects archive
 // type1/2/0; any nonzero mode uses the separate event-time clock.
 std::optional<int32_t> BattlePosePool::enter(std::shared_ptr<const BattlePoseResource> supplied,int32_t mode,BattlePoseClock clock,const char* requestedModel){
-    if(mode<0 || mode>2)return {};
+    if(mode<0 || mode>2 || !tangentSamplingAvailable())return {};
     archiveType_=mode==1?2:mode==0?1:0;
     if(!supplied || supplied->modelName.empty() || supplied->textureName.empty() || supplied->names.empty() || !supplied->bank)return {};
     if(!cacheMetadataReady())return {};
@@ -150,7 +151,7 @@ std::optional<int32_t> BattlePosePool::enter(std::shared_ptr<const BattlePoseRes
     }
     if(!reused && reusedTexture && textures_[texture].references()>=0x7fffffff)return {};
     const auto* initial=resource->bank->pose(resource->names.front().c_str());ActorAnimationSample shape;
-    if(!initial || !initial->evaluate(0,shape) || shape.positions.empty() || shape.nodes.empty() || shape.world.empty())return {}; // Visibility does not determine buffer ownership.
+    if(!initial || !initial->evaluate(0,shape,tangents_.get()) || shape.positions.empty() || shape.nodes.empty() || shape.world.empty())return {}; // Visibility does not determine buffer ownership.
     if(!poses_[handle])poses_[handle]=std::make_unique<BattlePose>();
     auto& pose=*poses_[handle];pose.nativeGeneration=nextGeneration_++;
     if(!reused){
@@ -222,8 +223,13 @@ bool BattlePosePool::selectIndex(int32_t handle,uint32_t index,bool force,Battle
 //3c/40 cumulative cache history,80 discrete value,84 loop ratio,44 rate.
 // Source frame bridge rounds float(elapsed)*60/1000 at each store. Failure can
 // retain earlier source stores; this is a continuation prefix, not atomic sampling.
+bool BattlePosePool::tangentSamplingAvailable() const{
+    // A VM-backed pool may neither fall back to the detached native table nor
+    // keep sampling a detached table while its VM RAM changes independently.
+    return !sourceGuard_ || (tangentOwner_ && tangentOwner_->current());
+}
 bool BattlePosePool::evaluate(int32_t handle,BattlePoseClock clock){
-    auto* p=pose(handle);if(!p)return false;
+    auto* p=pose(handle);if(!p || !tangentSamplingAvailable())return false;
     const auto index=p->word(0x14);if(index>=p->resource->names.size())return false;
     const auto* animation=p->resource->bank->pose(p->resource->names[index].c_str());if(!animation)return false;
     const uint64_t elapsed=clockFor(*p,clock)-p->timestamp();
@@ -259,7 +265,7 @@ bool BattlePosePool::evaluate(int32_t handle,BattlePoseClock clock){
     p->scalar(0x30,fraction);
     ActorAnimationCacheStores stores{p,[](void* u,int32_t v){static_cast<BattlePose*>(u)->word(0x3c,uint32_t(v));},
         [](void* u,float v){static_cast<BattlePose*>(u)->scalar(0x40,v);}};
-    if(!sampleActorAnimationCache(*animation,p->cache,p->shape,current,next,fraction,int32_t(p->word(0x3c)),p->scalar(0x40),stores))return false;
+    if(!sampleActorAnimationCache(*animation,p->cache,p->shape,current,next,fraction,int32_t(p->word(0x3c)),p->scalar(0x40),stores,tangents_.get()))return false;
     p->shape.selectedTime=p->scalar(0x24);
     return animation->assemble(p->shape);
 }

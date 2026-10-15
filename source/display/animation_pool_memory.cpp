@@ -45,7 +45,7 @@ std::unique_ptr<AnimationPoolMemory> AnimationPoolMemory::bind(std::shared_ptr<B
    for(auto& span:b.spans_){const bool restored=memory.registerRam(span.address,std::move(span.saved));assert(restored);(void)restored;}
    b.pool_->work_=oldWork;for(auto i:prepared)b.pool_->poses_[i].reset();return {};}++mapped;
  }
- b.pool_->workEstablished_=true;b.active_=true;b.pool_->sourceGuardUser_=&b;
+ b.pool_->workEstablished_=true;b.active_=true;b.pool_->sourceGuardUser_=&b;b.pool_->sourceMemory_=&memory;
  b.pool_->sourceGuard_=[](const void* p){return static_cast<const AnimationPoolMemory*>(p)->matchesWork();};return result;
 }
 bool AnimationPoolMemory::matchesWork() const{
@@ -59,7 +59,7 @@ bool AnimationPoolMemory::detach(){
  // since attachment. Old snapshots are only for failed-attachment rollback.
  for(auto& span:spans_)for(const auto& row:rows_)if(row.address>=span.address && uint64_t(row.address)+row.size<=uint64_t(span.address)+span.size)
   std::copy(row.bytes,row.bytes+row.size,span.saved.begin()+(row.address-span.address));
- pool_->sourceGuard_=nullptr;pool_->sourceGuardUser_=nullptr;
+ pool_->sourceGuard_=nullptr;pool_->sourceGuardUser_=nullptr;pool_->sourceMemory_=nullptr;
  bool ok=true;for(const auto& row:rows_)ok=memory_.unregisterExternalRam(row.address) && ok;
  for(auto& span:spans_)ok=memory_.registerRam(span.address,std::move(span.saved)) && ok;
  active_=false;return ok;

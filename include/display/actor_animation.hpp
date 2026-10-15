@@ -107,12 +107,12 @@ struct ActorAnimationSample {
 // Cubic Hermite node delta:1/16 position scale,tangent table178 entries
 // indexed angle+89. c outside(-89,89) disables cubic; validated b is[-89,88].
 // q is fractional key time; duration scales derivatives, not renderer time.
-inline float actorNodeDelta(const ActorSparseUpdate& record,float q,float duration) {
+inline float actorNodeDelta(const ActorSparseUpdate& record,float q,float duration,const AnimationTangentTable* tangents=nullptr) {
     if(record.c<=-89 || record.c>=89)return 0;
     const float q2=q*q,q3=q*q2;
     // Source table stores rounded tan of a rounded angle using word3c8efa33.
-    const auto& table=nativeAnimationTangents();
-    const float tin=table[size_t(int(record.b)+89)],tout=table[size_t(int(record.c)+89)];
+    const float tin=tangents?tangents->at(unsigned(int(record.b)+89)):nativeAnimationTangents()[size_t(int(record.b)+89)];
+    const float tout=tangents?tangents->at(unsigned(int(record.c)+89)):nativeAnimationTangents()[size_t(int(record.c)+89)];
     const float first=(q3-2*q2+q)*(duration*tin);
     const float sum=std::fma(3*q2-2*q3,float(record.a)*.0625f,first);
     return std::fma(q3-q2,duration*tout,sum);
@@ -128,16 +128,16 @@ struct ActorAnimationPose {
     std::vector<ActorSurfaceTriangle> triangles;
     // Presentation-clock adapter normalizes time before sampling. Battle Main
     // instead supplies an already-published selected time via evaluateSelected.
-    bool evaluate(float time,ActorAnimationSample& out) const {
+    bool evaluate(float time,ActorAnimationSample& out,const AnimationTangentTable* tangents=nullptr) const {
         if(!std::isfinite(time) || keys.empty() || groups.empty())return false;
         const float length=end-start;
         float selected=start;
         if(length!=0 && time>=start)selected=loop?time-std::trunc((time-start)/length)*length:std::min(time,end);
-        return evaluateSelected(selected,out);
+        return evaluateSelected(selected,out,tangents);
     }
     // The source Main caller has already normalized and published this time.
     // Do not fold it a second time using the legacy presentation-clock adapter.
-    bool evaluateSelected(float selected,ActorAnimationSample& out) const {
+    bool evaluateSelected(float selected,ActorAnimationSample& out,const AnimationTangentTable* tangents=nullptr) const {
         if(!std::isfinite(selected) || keys.empty() || groups.empty())return false;
         if(selected<keys.front().time)return false; // Source predecessor-1 domain needs its actual provider.
         size_t last=0;while(last+1<keys.size() && keys[last+1].time<=selected)++last;
@@ -174,7 +174,7 @@ struct ActorAnimationPose {
                 auto& n=out.normals[r.index];const float factor=q*.0625f;
                 n[0]=std::fma(float(r.a),factor,n[0]);n[1]=std::fma(float(r.b),factor,n[1]);n[2]=std::fma(float(r.c),factor,n[2]);
             }
-            for(const auto& r:keys[next].nodes)out.nodes[r.index]+=actorNodeDelta(r,q,keys[next].time-keys[last].time);
+            for(const auto& r:keys[next].nodes)out.nodes[r.index]+=actorNodeDelta(r,q,keys[next].time-keys[last].time,tangents);
         }
         out.selectedTime=selected;out.last=last;out.next=next;out.fraction=q;
         return assemble(out);

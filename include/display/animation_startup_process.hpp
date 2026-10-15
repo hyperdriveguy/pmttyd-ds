@@ -5,10 +5,11 @@
 #include "native_file_cache.hpp"
 #include "animation_pose_entry.hpp"
 #include "animation_buffer_refresh.hpp"
+#include "animation_tangent_memory.hpp"
 namespace ttyd {
 // Owns a cold animation subsystem's actual VM/SDK arena/work/cache aliases.
 // Runs cold startup and original Entry with real file/buffer owners. Live CPU
-// scratch/tangent consumers and whole-Game platform/field wiring remain separate.
+// scratch consumers and whole-Game platform/field wiring remain separate.
 class AnimationStartupProcess {
 public:
  static std::unique_ptr<AnimationStartupProcess> cold(
@@ -23,7 +24,7 @@ public:
  // failure, empty is unavailable. No teardown/release contract is implied.
  std::optional<int32_t> enter(uint32_t name,uint32_t mode,std::shared_ptr<const BattlePoseResource>);
  uint32_t entryPending() const{return entry_.pending;}
- bool ready() const{return aliases_ && aliases_->matchesWork();}
+ bool ready() const{return aliases_ && aliases_->matchesWork() && tangentMemory_ && tangentMemory_->current();}
  uint32_t pending() const{return cursor_.pending;}
  EventNativeRuntime& vm(){return *vm_;}
  const EventNativeRuntime& vm() const{return *vm_;}
@@ -52,5 +53,6 @@ private:
  bool entryFormatted_=false;
  std::string entryFilename_;
  std::unique_ptr<AnimationPoolMemory> aliases_;
+ std::unique_ptr<AnimationTangentMemory> tangentMemory_; // Retires before arrays and VM.
 };
 }

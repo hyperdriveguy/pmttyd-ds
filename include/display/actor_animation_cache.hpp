@@ -19,5 +19,5 @@ struct ActorAnimationCacheStores {
 void allocateActorAnimationCache(const ActorAnimationPose&,ActorAnimationCache&);
 bool sampleActorAnimationCache(const ActorAnimationPose&,ActorAnimationCache&,ActorAnimationSample&,
     int32_t current,int32_t next,float fraction,int32_t previous,float previousFraction,
-    ActorAnimationCacheStores={});
+    ActorAnimationCacheStores={},const AnimationTangentTable* tangents=nullptr);
 }

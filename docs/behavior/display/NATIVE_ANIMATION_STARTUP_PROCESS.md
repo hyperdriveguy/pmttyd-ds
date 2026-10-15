@@ -29,8 +29,8 @@ allocations establish real model/texture/pose arrays, tangent table and scratch.
 Source fileAllocf loads real a/vivian.bin and a/ag2tg.bin through the shared
 NativeFileCache. Original positive aligned memcpy_as4 copies Vivian0xc00 and
 its16-byte tail in sequential word pairs; actual fileFree releases Vivian and
-ag2tg retains its actual file/holder reference. Native tangent remains the
-explicit native floating-point adapter.
+ag2tg retains its actual file/holder reference. The native tangent initializer remains an explicit floating-point adapter;
+[its actual live table](NATIVE_LIVE_ANIMATION_TANGENTS.md) now backs CPU consumers.
 
 Only these two cold literal-only formatting requests are admitted. Formatting
 completes once before the retained _fileAlloc child; changing a literal while
@@ -61,6 +61,6 @@ actual production owner bytes. See [shared files](../file/NATIVE_SHARED_ANIMATIO
 and [work aliases](NATIVE_ANIMATION_POOL_MEMORY.md).
 
 Normal Game still uses its existing startup/rendering path. [Original pose Entry and typed metadata adoption](NATIVE_SOURCE_ANIMATION_POSE_ENTRY.md)
-now use this owner. CPU tangent/output consumers,
+now use this owner. CPU output consumers,
 ordinary Mario/partner activation, complete renderer/field providers and process
 teardown remain open. This owner alone is not a playable-prologue parity claim.

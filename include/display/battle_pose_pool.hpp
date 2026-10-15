@@ -82,6 +82,7 @@ public:
     // Other source domains require their real file/entry/release providers.
     bool cacheMetadataReady() const;
     bool sourceArraysCurrent() const{return !sourceGuard_ || sourceGuard_(sourceGuardUser_);}
+    const AnimationTangentTable* animationTangents() const{return tangents_.get();}
     bool selectName(int32_t handle,const std::string& name,bool force,BattlePoseClock);
     bool selectIndex(int32_t handle,uint32_t index,bool force,BattlePoseClock);
     bool evaluate(int32_t handle,BattlePoseClock);
@@ -93,7 +94,9 @@ public:
 private:
     friend class AnimationPoolMemory;
     friend class AnimationStartupProcess;
+    friend class AnimationTangentMemory;
     void restart(BattlePose&,BattlePoseClock);
+    bool tangentSamplingAvailable() const;
     std::array<std::unique_ptr<BattlePose>,256> poses_{};
     std::array<BattlePoseModelCache,64> models_{};
     std::array<BattlePoseTextureCache,64> textures_{};
@@ -101,7 +104,10 @@ private:
     uint64_t nextGeneration_=1;
     std::array<uint8_t,0x110> work_{}; // Only e8 has typed initial history before source attachment.
     bool workEstablished_=false;
+    std::unique_ptr<AnimationTangentTable> tangents_; // Source table, absent only in detached legacy mode.
+    const class AnimationTangentMemory* tangentOwner_=nullptr;
     const void* sourceGuardUser_=nullptr;
+    const class EventAddressSpace* sourceMemory_=nullptr;
     bool (*sourceGuard_)(const void*)=nullptr;
 };
 }

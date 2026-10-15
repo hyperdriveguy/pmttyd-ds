@@ -5,17 +5,18 @@ namespace {
 // Source binary32 store boundaries; the tangent table uses native double tan,
 // not measured Gekko/libm parity. .0625 is1/16 compressed delta scale.
 float rounded(float v){volatile float result=v;return result;}
-std::optional<float> cubic(const ActorSparseUpdate& r,float t,float h){
+std::optional<float> cubic(const ActorSparseUpdate& r,float t,float h,const AnimationTangentTable* tangents){
     if(r.b<-89 || r.b>88)return {}; // Original adjacent-table domain needs its provider.
     //178 tangent samples indexed by signed angle+89 cover -89..88 degrees.
     // c outside(-89,89) is the source no-cubic gate; b must index the table.
-    const auto& table=nativeAnimationTangents();
+    const float incoming=tangents?tangents->at(unsigned(int(r.b)+89)):nativeAnimationTangents()[size_t(int(r.b)+89)];
+    const float outgoing=tangents?tangents->at(unsigned(int(r.c)+89)):nativeAnimationTangents()[size_t(int(r.c)+89)];
     const float t2=rounded(t*t),t3=rounded(t*t2);
     const float h10=rounded(t-std::fma(2.f,t2,-t3));
     const float h01=std::fma(-2.f,t3,rounded(3.f*t2));
-    float x=rounded(h10*rounded(h*table[size_t(int(r.b)+89)]));
+    float x=rounded(h10*rounded(h*incoming));
     x=std::fma(h01,rounded(.0625f*float(r.a)),x);
-    x=std::fma(rounded(t3-t2),rounded(h*table[size_t(int(r.c)+89)]),x);
+    x=std::fma(rounded(t3-t2),rounded(h*outgoing),x);
     return x;
 }
 void triples(std::vector<ActorVector>& values,const std::vector<ActorSparseUpdate>& records,float scale){
@@ -32,7 +33,7 @@ void allocateActorAnimationCache(const ActorAnimationPose& p,ActorAnimationCache
 // newly crossed keys; same-key backwards fraction publishes a zero phase first.
 // Validated sparse indices belong to the pack; this is not an untrusted loader.
 bool sampleActorAnimationCache(const ActorAnimationPose& p,ActorAnimationCache& c,ActorAnimationSample& out,
-    int32_t current,int32_t next,float fraction,int32_t previous,float previousFraction,ActorAnimationCacheStores stores){
+    int32_t current,int32_t next,float fraction,int32_t previous,float previousFraction,ActorAnimationCacheStores stores,const AnimationTangentTable* tangents){
     if(current<0 || next<0 || size_t(current)>=p.keys.size() || size_t(next)>=p.keys.size() || previous<-1)return false;
     auto index=[&](int32_t v){if(stores.index)stores.index(stores.user,v);};
     auto phase=[&](float v){if(stores.fraction)stores.fraction(stores.user,v);};
@@ -66,7 +67,7 @@ bool sampleActorAnimationCache(const ActorAnimationPose& p,ActorAnimationCache& 
             const float duration=rounded(p.keys[size_t(next)].time-p.keys[size_t(current)].time);
             for(const auto& r:key.nodes){
                 if(r.c>=89 || r.c<=-89)continue;
-                const auto delta=cubic(r,fraction,duration);if(!delta)return false;
+                const auto delta=cubic(r,fraction,duration,tangents);if(!delta)return false;
                 out.nodes[r.index]=rounded(out.nodes[r.index]+*delta);
             }
         }

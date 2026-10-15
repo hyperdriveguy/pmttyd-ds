@@ -62,8 +62,9 @@ attaches sidecar resources and native generation. Adoption never calls typed
 enter/restart and never rewrites the authoritative BE pose/model/texture rows,
 clock, references, source file handles or scratch pointers. A held adoption does
 not replay the completed source parent. CPU workspace is still separate from
-source scratch vectors; their live aliasing and original tangent consumers are
-required before ordinary Game activation.
+source scratch vectors; their authoritative output integration is required before
+ordinary Game activation. [Tangent consumers](NATIVE_LIVE_ANIMATION_TANGENTS.md)
+now share the actual initialized source table.
 
 ## Original data and evidence
 
@@ -86,5 +87,5 @@ buffer success. Source absence is never replaced by invented positive handles.
 Normal Game remains on its existing field path. This is real Entry ownership,
 not full CPU/scratch aliasing, original renderer, release/GC, scene cancellation,
 ordinary Mario/partner provider activation, physical performance or prologue
-parity. Next connect source tangent/output vectors with typed CPU evaluation,
+parity. Next connect authoritative source output vectors with typed CPU evaluation,
 then use the retained process before ordinary field pose creation.
