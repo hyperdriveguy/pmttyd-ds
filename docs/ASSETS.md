@@ -2453,3 +2453,26 @@ Original Nintendo/Intelligent Systems resources remain local use only, with no
 redistribution rights. ISO, extracted resources, source listings and binaries
 are ignored/private and were not committed. Callback/matrix source evidence and
 exact validation/product hashes are in `artifacts/npc-matrix-validation-manifest.json`.
+
+## Trio provider documentation validation inputs (2026-10-14)
+
+artifacts/trio-providers-code-documentation-validation/source inherits 46 accepted
+products plus original common/Frankly/footer14/HP 3 evidence. Frozen committed
+NPC-tail converter adds original DOL -600/+600/60 spans; existing cached outputs
+did not match its accepted authority, so frozen door_data_assets.py ran into empty
+private cache-rebuild from read-only ISO. All 15 generated hashes recorded; only
+hash-matched door-data.pmevt/json admitted. Source/authority hashes are journaled;
+NPC-tail manifest pins exact after-product inventory. Pack 152496 bytes SHA256
+917782e901710c8c85af5bcf172c3b1baa03d23b66faf16aa4b9997112b7aed3.
+
+Four Trio pack/provenance products are also checked against
+artifacts/hp-runtime-assets-proof.json, whose source converter hash matches frozen
+code. Two were unchanged; event pack/provenance replaced. New event pack 1357332
+bytes SHA256 0a737b207a9321678398c12c0d7b0bef8ad123ed97cc748f5e7d68b9ffb2123d
+excludes only original live file-manager global 80418498 after 72 immutable bytes
+at 80418450. Total explicitly hash-pinned accepted products 50. Conversion choices
+for textures/geometry/lighting/audio/messages unchanged. No editable import or
+shared pack writes. Python fixtures independently read ISO read-only into empty
+temporary outputs; native full asset regeneration skipped. Nintendo/Intelligent
+Systems rights remain reserved; private tracking/copying grants no new license.
+No ISO/original extracted asset/compiled binary committed.

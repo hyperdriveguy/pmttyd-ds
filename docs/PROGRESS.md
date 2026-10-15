@@ -11932,3 +11932,67 @@ remain false until that real alternative is connected; Harbor has its original X
 path. Do not create duplicate isolated helpers or fabricate cameras/readiness/
 visible rectangles. Preserve original US story/IDs/tokens, original audio/art
 and simulation-tick timing. Full tutorial/real-battle goal stays active/incomplete.
+
+## 2026-10-14 — Trio commands and runtime providers documented
+
+Added inline notes to native Trio command header/implementation, retained action
+manager header/implementation and selected Trio runtime/header sections; corrected
+two earlier Harbor comments. Added [Trio commands](code/trio-commands.md),
+[provider ownership](code/trio-providers.md) and index entries. Code/docs commit
+ea335fb6. All eight C++ files preserve executable tokens/string literals. No
+behavior changes or new tests for prose-only work.
+
+Command coverage includes original metadata/labels/icons, registry/visual mapping,
+candidate/permutation field domains, copy-safe sampling view rebinding, actual
+presence/kind synchronization and input/request ownership. Retained manager notes
+explain exact provider identity, one acknowledged pad visit, pinned Main, fresh
+Display after Main effects, float priority bits and queued child holds. Corrected
+Harbor callback names: Main 1ca0/Result 1ca4/Display 1ca8/Delete 1cac; previous Init
+labels were wrong. Source data/order were unchanged.
+
+Partial Trio runtime audit covers process asset globals/nontransactional reload,
+HP allocation/pass/provider/camera ownership and native dispatch, shared cursors/
+resource destruction, required BE memory/host math boundaries, queued pose depth,
+ordered shadow/floor/sound tail, stage setup/retained map services and audience
+population/animation/actor/item/AP/window/sound providers. Immediate audience parent
+is not assumed restartable merely because children retain state. Missing provider
+results remain unavailable. Later event/damage/ending/init/scheduler and other
+public draw adapters remain open; partial_files in the manifest/inventory prevents
+counting runtime/header as fully audited. Full code/remake goals remain active.
+
+Frozen baseline 4ae0c81eca0dd23e71b47499935386864230a4e0 plus owned documentation lives at
+artifacts/trio-providers-code-documentation-validation/source. Final audit covers
+3883 baseline tracked files: zero unexpected changes. All 11 documented frozen/live
+annotation snapshots match; all 69 local guide/index links resolve. Concurrent
+Trio field-file-cache getter and other field/animation/runtime work preserved/
+excluded. No combined-moving-tree validation. After initial launch, corrected
+stage rows 5/6 bit1 wording to hidden and clarified phase 0 diagnostics; both full
+gates reran incrementally after initial processes reached terminal. Initial logs
+retained. No executable change accompanied either refinement.
+
+Final CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits 0: 424/424 C++ (45.02s),
+207/207 Python (31.395s), zero skipped. Native make all -o assets-ready -j4
+SOUNDTRACK=gamecube exits 0. Original/final process results, source/dependency/log/
+ELF/3DSX hashes recorded in manifest. Existing compiler/Pillow warnings remain.
+No emulator/profile/save changes or hardware/pixel/performance/Gekko parity claim.
+
+Private cache starts from 46 accepted products; checked two NPC-tail door products
+and four Trio pack/provenance products, six checked inputs/four actual replacements,
+bringing explicit accepted-product coverage to 50. Preflight found only committed
+NPC-tail/trio converters changed. Required door products absent in old caches,
+so frozen door converter ran from an empty private cache-rebuild directory with
+the read-only ISO. All 15 generated private output hashes recorded; only door pair
+admitted after exact authority matches. Trio pack proof/source hash matches;
+new pack 1357332 bytes SHA256
+0a737b207a9321678398c12c0d7b0bef8ad123ed97cc748f5e7d68b9ffb2123d,
+excluding only live file-global 80418498 from immutable partner span. Door pack
+152496 bytes SHA256 917782e901710c8c85af5bcf172c3b1baa03d23b66faf16aa4b9997112b7aed3.
+Footer 14/HP 3/common/Frankly evidence rechecked. No editable import/shared pack
+write; existing Python fixtures independently use read-only ISO/empty temporary
+outputs. Native full asset regeneration deliberately skipped. No original assets/
+ISO/compiled binary committed; rights/provenance unchanged. See [assets](ASSETS.md).
+
+Next: continue Trio runtime at call/event dispatch, then damage/ending/init/
+scheduler/public draw sections; retain partial audit status until all are reviewed.
+Re-audit newly committed retained Harbor/NPC/HP/animation/native renderer code,
+then remaining event/message/story/effect/platform/file/save helpers and tools.
