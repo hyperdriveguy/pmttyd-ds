@@ -9655,3 +9655,63 @@ artifacts/azahar-animation-live-normal/boot.png inspected. Sample59AppFPS/99%
 speed under software OpenGL is startup evidence only, not field or physical
 New2DSXL performance. Final documentation check:1398 Markdown files, zero broken
 links. All source/ROMFS audit mismatches remain zero.
+
+### Retained original NPC clocks and child ABI audit (2026-10-14)
+
+Code4edebb4b implements complete npcMain clock subregion80049b88..49dc0
+exclusive through [retained actual storage](behavior/field/NATIVE_PACKED_NPC_CLOCK_SECTION.md).
+It preserves low/high capture/store order, wrapped64 arithmetic, signed>500ms
+clamp, stale stopped-clock dt, separately fresh bus/source conversions and
+source integer→double→float rounding. Cursor-bound reads/stores/numeric requests
+survive holds without replay. The binding admits the same initialized ordinary
+registry/facade/VM, actual slot addresses and explicit numeric thunks. Other
+facades bound to that owner see publications directly; no copyback, new scan,
+render-frame clock or per-actor allocation. ARM compile inspection confirms
+UMULL for the two high-product divisors and devkitARM signed division helpers.
+This is static compilation evidence, not measured physical performance.
+
+[All39 child ABIs](behavior/field/ORIGINAL_NPC_MAIN_CHILD_ABI_AND_NUMERIC_FRONTIER.md)
+now document actual inputs/outputs, stack scratch references, perspective divide,
+shadow radius grouping and source helper captures. Corrected parent contract:
+effect interpolation starts600, not60; Jump and Fire each freshly reread retained
+Mario+3c; signed64 conversion first rounds through binary64 before frsp.
+Documentation and independent read-only code review found no clock control-flow
+defect. Initial review gaps were addressed with an independent full source trace
+and primitive holds throughout stopped, capped and accumulator-clear paths.
+
+Frozen source6d6c7f52aeec82016e3077b9e44edff1433ee01c, baseline643ee17c,
+contains3649 tracked files, all blob hashes verified. Concurrent moving-worktree
+changes are excluded; no combined-HEAD validation claim. make test passes
+368/368 C++ (82.36s),201/201 Python (72.521s), zero skipped; make all -j4
+-o assets-ready SOUNDTRACK=gamecube exits0. Initial full gates also passed before
+the final review refinements. Existing compiler/Pillow warnings remain.
+
+Strict isolated Azahar ARM fixture:sourceClock/holds/actualRegistry/
+signedDoubleRounding PASS. Tests include original-data actor Entry, real GP and
+second facade, fractional-ms precision, inclusive500ms boundary/501ms clamp,
+signed negative/wrapped values, missing providers and a source double-rounding
+midpoint. These are explicit inputs, not proof that ordinary Game already calls
+original Main. Original normal main restored/touched/rebuilt; binary hash
+SHA256e3723f12967fac12f59e685e1a8a2b799b99c0e6ff0190f1f696673404daba18
+matches its pre-probe normal copy. Separate40s normal startup capture reports
+App60FPS/100% speed. No user emulator profile/save changes; no new field FPS,
+matched Dolphin pixel/occlusion, source cadence or physical New2DSXL parity claim.
+The previous field visual-assertion failure and15FPS llvmpipe sample remain open.
+
+Private original closure adds only the unchanged four-byte1000000 literal at
+DOL8041fd50.2125 accepted RomFS hashes audited: only door-data.json and
+door-data.pmevt change; all2123 others and the accepted local fixture match.
+Original ISO read-only; extracted data/compiled packs/helper ELFs remain ignored.
+[Asset details](ASSETS.md). Full evidence:
+artifacts/npc-clock-validation-manifest.json, npc-clock-assets-after.json and
+npc-main-child-abi-audit/. No original binary/ISO is committed or distributed.
+
+Next: compose complete Main entry/current-bank traversal and actual pose flag,
+state/timer prerequisites around this clock subsection, then source-order
+movement/gravity/side/auto-pose, event detection/interrupt, display/material/
+shadow, late snapshot and field tail. Preserve retained requests and actual
+GP/Mario/actor/pose/event aliases; do not run a clock-only all-actor pass or mark
+this subsection as full npcMain success. Integrate genuine Mario radial,
+numeric/audio/resource owners before normal Area VM activation. Correct the
+visual harness's frontend/occlusion admission and profile the actual field
+render path/hardware. EVT-01 and the full-game goal remain active/incomplete.

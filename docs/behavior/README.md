@@ -1225,3 +1225,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Native prior-scan NPC radial hint](field/NATIVE_NPC_PRIOR_RADIAL_HINT.md): separate encounter publication and next-visit wander consumption, retirement and rounded-angle guard.
 
 - [Authoritative animation pool memory](display/NATIVE_ANIMATION_POOL_MEMORY.md): shared BE model/texture/pose/W bytes, transactional VM attachment, current-state detach and real startup boundary.
+
+- [Retained packed NPC clock section](field/NATIVE_PACKED_NPC_CLOCK_SECTION.md): complete source clock subregion, held read/store/numeric ownership, real registry/facade aliases and source double rounding; complete Main remains open.
+- [Original NPC Main child ABI and numeric frontier](field/ORIGINAL_NPC_MAIN_CHILD_ABI_AND_NUMERIC_FRONTIER.md): all39 direct children, scratch references, repeated gates, original helper captures and source constant corrections.

@@ -1853,3 +1853,23 @@ MODEL header views copy only original0x1b0 bytes from accepted resource packs;
 virtual file/holder addresses are test-owned and do not assert original file
 manager/type5 relocation history. The ISO remains read-only. No original bytes
 are committed or redistributed; original rights/local-use restrictions remain.
+
+### Original NPC Main clock literal (2026-10-14)
+
+The existing tools/field_npc_actor_assets.py unchanged-data closure now adds four
+original big-endian bytes at US revision0 DOL8041fd50:49742400 (1000000.0).
+SHA256db3aefef05f0dfc29a110d15dbd860630fa5173d7f5d908a57a60984e7495322.
+Extraction opens /home/carson/games/roms/G8ME01.iso read-only. No scaling,
+geometry/lighting/audio/dialogue conversion or new pack format is involved.
+The literal is read live through the VM facade after each original conversion.
+
+Regenerated private products:artifacts/source-checks/npc-wander/romfs/door-data.pmevt
+and door-data.json; mutable gor.rel work stays in that private checkout's
+local-assets/door-data. All other2123 accepted RomFS products are unchanged;
+artifacts/npc-clock-assets-after.json records complete hashes and the two
+expected changes. Numeric helper ELF/disassembly inspection is ignored under
+artifacts/npc-main-child-abi-audit; it is evidence only, never executable PPC in
+the native pack. Native validation skips asset regeneration after this private
+conversion; Python converter fixtures separately read the ISO and use temporary
+outputs. Original Nintendo/Intelligent Systems rights/licensing remain unchanged.
+No ISO, extracted original binary or compiled asset pack enters source history.

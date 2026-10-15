@@ -395,3 +395,7 @@ Code3342657e: [native original init/four-phase main](../behavior/field/NATIVE_PA
 ### NPC Main source parent and native radial hint
 
 Read-only [complete npcMain parent](../behavior/field/ORIGINAL_NPC_MAIN_PARENT_CONTROL_FLOW.md):39 direct-callee identities/sites, precise clock conversion, movement/side/automatic-pose gates, nonzero regular-ID interruption and late snapshot/display/tail ownership. Evidence artifacts/npc-main-parent-evidence/. Code8618d376 supplies [native prior-scan radial hint](../behavior/field/NATIVE_NPC_PRIOR_RADIAL_HINT.md),367C++/201Python/native and isolated ARM fixture checks. EVT-01 remains open for actual packed Mario/NPC Main/resource/render integration and runtime observations; no documentation lock claimed.
+
+### NPC clock section and source child ABI follow-up
+
+[Retained clock](../behavior/field/NATIVE_PACKED_NPC_CLOCK_SECTION.md): actual owner/facade/GP aliases, source64-bit stores/conversions and independent source trace with primitive holds. [Direct child ABI audit](../behavior/field/ORIGINAL_NPC_MAIN_CHILD_ABI_AND_NUMERIC_FRONTIER.md):39 callees, scratch reference domains, source helper rounding and fresh-read corrections. Complete Main/native provider/render/cadence integration remains open under EVT-01; no documentation lock claimed.

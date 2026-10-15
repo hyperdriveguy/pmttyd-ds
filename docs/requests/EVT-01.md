@@ -4908,3 +4908,7 @@ file/holder/header views; those are not complete loaded type5/file ownership.
 Next bind genuine SDK heap/file/cache/relocated MODEL/live tangent/output owners,
 then source cold startup before Game's existing three Mario entries. Normal
 bootstrap and complete original field/battle/prologue obligations remain open.
+
+### Retained original NPC clock subsection
+
+[Clock implementation](../behavior/field/NATIVE_PACKED_NPC_CLOCK_SECTION.md) supplies complete80049b88..49dc0 clock processing through actual registry/GP/facade storage, source bus owner, signed wrapped arithmetic and explicitly retained numeric requests. [All39 child ABIs](../behavior/field/ORIGINAL_NPC_MAIN_CHILD_ABI_AND_NUMERIC_FRONTIER.md) clarify scratch aliases, integer→double→float conversion, repeated Mario3c gates and effect600 constant. This closes the clock subregion only. Full Main gates/pose/timer/movement/detection/display/history/tail, normal Area activation and original/runtime/hardware fidelity remain open; do not acknowledge the full Main parent from a subsection return.

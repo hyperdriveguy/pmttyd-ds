@@ -60,7 +60,8 @@ Under S10,80049b94..49da8 performs:
   accumulated178→180, delta190→1a4, absolute anchor198→1a8.
   Each reloads bus and its own source high/low words. Let
   Dus=high32(431cde83*(bus>>2))>>15. Form wrapped64(source<<3), divide signed
-  by Dus with __div2i, convert signed64 to binary32 with __cvt_sll_flt, then
+  by Dus with __div2i, convert signed64 through rounded binary64 then
+  binary32 with __cvt_sll_flt, then
   SP divide by **1000000.0**, literal49742400 at8041fd50, and store.
 
 At bus243000000, Dms60750 and Dus486. A source17ms delta1032750 ticks
@@ -184,7 +185,7 @@ is neither an early pre-move operation nor an unconditional all-slot update.
 ## Complete post-pool field tail
 
 Reload current GP→F. Retain effect record E=F+550. If E+0 nonzero, E+8 state2
-increments E+c count: <20 calls intplGetValue(5,count,20,60,0)→E+10;
+increments E+c count: <20 calls intplGetValue(5,count,20,600,0)→E+10;
 20..79 writes E+10=0;80..99 calls intplGetValue(1,count−80,20,0,−600)→E+10;
 >=100 clears E+4 and skips queue. Reached animation steps set E+14=0 and
 dispEntry(9,2,_fbatFirstAttackAnnouceDisp80047dfc,E,0). E+8 state1 increments count; >60 clears E+4,
@@ -192,8 +193,9 @@ otherwise writes E+10/E+14=0 and submits the same queue. Other states skip.
 E+0 is not cleared by these completion branches; do not change that store.
 
 Read signed halfword F+0 once. State1 calls fbatEncountCheck then freshGP→F2
-and marioGetPtr. If Mario byte3c==2, separately request kpaJumpChk and
-kpaFireAttackCheck; otherwise both local results0. Jump true: if F2+57c>0 and
+and marioGetPtr. Read retained Mario byte3c freshly before kpaJumpChk and
+again before kpaFireAttackCheck; each request occurs only if its own read==2,
+otherwise that local result0. A jump callback can change the second gate. Jump true: if F2+57c>0 and
 F2+578>=2, request kpaAddScorePos(F2+57c,&MarioRootPlusY60); then clear578/57c
 regardless of reward eligibility. Fire false clears F2+574. States2/3 call
 fbatTalkMode; state5 calls fbatBattleMode;4/6/others do neither. Finally clear
