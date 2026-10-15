@@ -12,7 +12,8 @@ bool same(const AnimationMainEvaluation& a,const AnimationMainEvaluation& b){ret
 bool same(const AnimationMainReplayServices& a,const AnimationMainReplayServices& b){return a.user==b.user && a.word==b.word && a.store==b.store && a.byte==b.byte && a.storeByte==b.storeByte && a.quantized==b.quantized;}
 // One original copy load/store iteration per visit. remaining0 after setup is
 // intentional for memcpy_as4: its first body executes before CTR decrements.
-bool copy(const AnimationMainReplayServices& s,AnimationReplayCopy& c){
+}
+bool advanceAnimationReplayCopy(const AnimationMainReplayServices& s,AnimationReplayCopy& c){
  if(!c.active){c.active=true;c.remaining=c.function==0x80005634?c.bytes>>2:c.bytes;if(c.function==0x8000519c){if(!c.bytes){c={};return true;}c.backward=c.source<c.destination;if(c.backward){c.source+=c.bytes-1;c.destination+=c.bytes-1;}}}
  if(!c.loaded){
   if(c.function==0x80005634){if(!s.word)return false;auto v=s.word(s.user,c.source);if(!v)return false;c.value=*v;}
@@ -22,7 +23,6 @@ bool copy(const AnimationMainReplayServices& s,AnimationReplayCopy& c){
  if(c.function==0x80005634){if(!s.store || !s.store(s.user,c.destination,c.value))return false;c.source+=4;c.destination+=4;}
  else{if(!s.storeByte || !s.storeByte(s.user,c.destination,uint8_t(c.value)))return false;const uint32_t step=c.backward?0xffffffffu:1u;c.source+=step;c.destination+=step;}
  c.loaded=false;if(--c.remaining){return false;}c={};return true;
-}
 }
 bool advanceAnimationMainReplay(const AnimationMainEvaluation& input,const AnimationMainReplayServices& s,AnimationMainReplayCursor& c,AnimationMainReplayResult& out){
  if(!c.active){c={};c.active=true;c.input=input;c.owner=s;}else if(!same(c.input,input) || !same(c.owner,s))return false;
@@ -45,7 +45,7 @@ bool advanceAnimationMainReplay(const AnimationMainEvaluation& input,const Anima
   c.copy={};c.copy.function=c.channel==2?0x8000519c:0x80005634;c.copy.bytes=c.result.counts[c.channel]*DestinationWidths[c.channel];++c.phase;break;
  case 7:if(!word(r+CacheOffsets[c.channel],c.copy.destination))return false;++c.phase;break;
  case 8:if(!word(d+BaseOffsets[c.channel],c.copy.source))return false;++c.phase;break;
- case 9:if(!copy(s,c.copy))return false;++c.channel;c.phase=6;break;
+ case 9:if(!advanceAnimationReplayCopy(s,c.copy))return false;++c.channel;c.phase=6;break;
  case 10:if(!word(r+0x3c,c.word))return false;c.phase=c.word==0xffffffff?11:12;break;
  case 11:if(!store(r+0x3c,0))return false;++c.phase;break;
  case 12:if(!load(0x8041fbac,c.scale))return false;c.phase=22;break;

@@ -2365,3 +2365,9 @@ target_sources(ttyd_core PRIVATE source/battle/battle_weapon_ui_continuation.cpp
 add_executable(battle_weapon_ui_continuation_tests tests/battle_weapon_ui_continuation_tests.cpp)
 target_link_libraries(battle_weapon_ui_continuation_tests PRIVATE ttyd_core)
 add_test(NAME battle_weapon_ui_continuation COMMAND battle_weapon_ui_continuation_tests)
+# Full retained original Main interpolation and final cache publication.
+target_sources(ttyd_core PRIVATE source/display/animation_main_interpolation.cpp)
+add_executable(animation_main_interpolation_tests tests/animation_main_interpolation_tests.cpp)
+target_link_libraries(animation_main_interpolation_tests PRIVATE ttyd_core)
+add_test(NAME animation_main_interpolation COMMAND animation_main_interpolation_tests)
+set_tests_properties(animation_main_interpolation PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

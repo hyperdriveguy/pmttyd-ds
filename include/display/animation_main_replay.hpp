@@ -14,6 +14,9 @@ struct AnimationMainReplayServices {
 struct AnimationReplayCopy {
  bool active=false,backward=false,loaded=false;uint32_t function=0,destination=0,source=0,bytes=0,remaining=0,value=0;
 };
+// Retained original copy leaf, shared by replay and interpolation. False may
+// follow an acknowledged iteration. Operands are initialized by the caller.
+bool advanceAnimationReplayCopy(const AnimationMainReplayServices&,AnimationReplayCopy&);
 struct AnimationMainReplayResult {
  uint32_t current=0,next=0;float fraction=0;std::array<uint32_t,5> counts{};
 };
