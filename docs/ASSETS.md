@@ -3079,3 +3079,33 @@ Native full regeneration skipped; Python fixtures independently use read-only IS
 and empty temporary outputs. Source/build products remain ignored; no ISO,
 extracted original or compiled binary committed. Nintendo/Intelligent Systems
 rights retained; local tracking/conversion grants no new license.
+
+## NPC numeric documentation validation inputs (2026-10-15)
+
+artifacts/npc-numeric-code-documentation-validation/source inherits the previous
+private 65-product cache and original enemy/footer/HP/default test evidence.
+Only new independent HitN64 texture recipe is added to the frozen baseline.
+Frozen hit_n64_texture_assets.py SHA256
+074f8f4def9ba3723752a9450c6c50059644dd58de28ca48a9984ef3a7649b89
+and hit_n64_source_evidence.py SHA256
+c6ecdb099479a7c3b33531315d5f58fa8741dc886fd6abd2be7a84ae1ac42f3c
+ran against the read-only original ISO into empty private local-assets/hit-n64.
+Source function/table/TPL/vertex hashes checked; original image74 I4 decoded
+32x128 without resizing, tex3ds RGBA8 conversion; raw bank/metadata retained.
+Full default Python fixture privately retained, including decoded PNG/provenance.
+
+New private RomFS products (bytes, SHA256):
+
+- romfs/hit-n64-bank.tpl: 235776, 3202ac8f437a2a7664d791ec5d9ee1988504f51b912c1211429708fac0a268ef
+
+- romfs/hit-n64-texture74.bin: 476, 8bc99f42c0846680b282d6ac5aa4ac0e7fcd3f2d2c546ad6292f75539c6bad0e
+
+- romfs/hit-n64-texture74.json: 4372, 1db10702cbdd2ca10966688988c9111b90601f41344c442670110af488380a08
+
+- romfs/hit-n64-texture74.t3x: 1365, 57f38334766192dfae0fe8522c40cb63b82ba15b1ae99f0630dd2b4b60a1f1bf
+
+All 69 accepted products and original evidence/fixture hashes checked after gates.
+Native full regeneration skipped; Python fixtures independently use read-only ISO
+and empty temporary destinations. No editable import, shared-pack write or ISO,
+extracted original/compiled product commit. Nintendo/Intelligent Systems rights
+retained; local extraction/conversion grants no new license.

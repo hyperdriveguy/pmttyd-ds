@@ -13984,3 +13984,58 @@ party, animation and native GPU additions also need inline review. All 50 tracke
 story files currently match annotation snapshots. That hash inventory is a review
 aid, not proof of full semantic coverage, all concurrent changes, or a faithful
 complete prologue/game. Full documentation/remake goal remains active.
+
+## 2026-10-15 — NPC clock/matrix/inline numeric code documentation
+
+Added 126 inline comment lines across ten field C++/header files, plus
+[NPC clock/matrix/numerics guide](code/npc-clocks-matrices-numerics.md) linked
+from the code index. Code/docs commit 6deae6f2. All executable tokens/string
+literals unchanged; no original dialogue/story/assets, numeric behavior or
+simulation scheduling changes. No new tests for this prose-only work.
+
+Clock notes map packed high/low pairs, enable masks, live GP/bus identities,
+source lane/read/store order, signed wrapping/divisor/cap behavior, four fresh
+conversion graphs and double-before-float rounding. Binding notes explain exact
+registry/facade identity, actual shared VM bytes and retirement obligations.
+Matrix notes map field offsets, source SDK/numeric tokens, camera correction,
+reflection, short-circuit/repeated reads, left-concat order, original radians
+literal and raw wrapping history slots. Blur notes explain literal-load order,
+single quadrant reduction, nested FMA and explicit native numeric limits.
+Length notes explain caller-owned square/sum graph, three double refinements,
+canonical NaN classes and signed-zero/input-bit identity. Guide highlights each
+cursor's distinct captured/rejected retry arguments and reset/terminal policy.
+No helper completion is described as full Main/render/normal Game activation.
+
+Frozen baseline fde2f75468310ddf221d2146aabba7c6703d821f plus owned docs is at
+artifacts/npc-numeric-code-documentation-validation/source. Full git-blob audit
+covers 4136 baseline tracked files, zero
+unexpected changes; all 12 frozen/live documentation snapshots match, all 95
+local guide/index links resolve. Source/prose finalized before gates.
+Concurrent battle/animation/party/file/GPU edits preserved/excluded, without a
+combined moving-worktree validation claim. Original host/native handles observed
+terminal0; exit markers agree.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits 0: 472/472 C++ (63.69s),
+217/217 Python (35.255s), zero skipped. Actual original 45-descriptor enemy-bank
+and private HitN64 tests ran. Native make all -o assets-ready -j4 SOUNDTRACK=gamecube
+exits 0. Manifest pins source/converter/product/evidence/log and ELF/3DSX hashes.
+Existing compiler/Pillow warnings remain. No emulator/profile/save changes or
+hardware/Gekko numeric/pixel/audio/performance parity claims.
+
+Private cache inherits 65 accepted products and all original enemy/footer/HP
+fixtures. Dependency preflight identifies only the new independent HitN64 texture
+recipe plus test/verifier changes; prior asset converters/recipes unchanged.
+Frozen converter reads ISO read-only, verifies source bodies/tables/TPL/vertices,
+and decodes original image74 with no resize before tex3ds RGBA8 conversion.
+Four new products and full default Python fixture generated into empty private
+work/output; all 69 products and evidence/fixture hashes checked after gates.
+No editable import/shared-cache write. Native full regeneration skipped; Python
+fixtures independently use read-only ISO and empty temporary outputs.
+See [asset ledger](ASSETS.md). Original rights retained; no ISO, extracted original
+or compiled binary committed.
+
+Next: document NPC Main entry/movement/auto-pose/detection/display/shadow/history/
+tail helpers and their bindings, then remaining effect/runtime code and tooling.
+Newer concurrent battle/display/party/file code needs separate inline review.
+Snapshot inventory is a review aid, not semantic coverage proof. Full code
+documentation/remake goal remains active.
