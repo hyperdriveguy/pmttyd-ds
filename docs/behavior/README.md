@@ -1194,3 +1194,8 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - Display: [animation refresh and scratch recovery](display/NATIVE_ANIMATION_REFRESH_AND_SCRATCH_RECOVERY.md) — retained mode/refresh/recursive allocator/reset parents and real VM battle-entry continuation; shared global pose/file/output migration remains open.
 
 - [Battle dual-screen UI fidelity audit](display/BATTLE_DUAL_SCREEN_UI_FIDELITY_AUDIT.md) — original HUD resources, upper Trio menus, immutable draw admission and remaining live audience/class-menu owners.
+
+
+- [Native registered NPC setup world](field/NATIVE_REGISTERED_NPC_SETUP_WORLD.md): retained real actor/pose/numeric setup and independent event roots, with source admission and actual integration limits.
+- [NPC setup-world admission requirements](field/NATIVE_NPC_SETUP_WORLD_ADMISSION_REQUIREMENTS.md): fresh GP/F halfword owner, missing-actor/deletion domains, original fifteen setup rows and eleven callback dependencies.
+- [Original NPC flag, position and yaw leaves](field/ORIGINAL_NPC_FLAG_POSITION_YAW_EVENT_LEAVES.md): five exact callbacks, resolver domains, ordered stores, camera4-dependent facing math and output routing.

@@ -373,3 +373,8 @@ open; parent requests stay open.
 
 - [Original room reset/teardown](../behavior/field/ORIGINAL_NPC_ROOM_RESET_AND_TEARDOWN.md) and [native reset/retained VM](../behavior/field/NATIVE_NPC_ROOM_RESET_AND_RETAINED_VM.md): source static ownership plus code290e015d,328C++/193Python and scoped isolated ARM fixtures; genuine outer/resource release providers remain open under EVT-01.
 - [Random launch state/direct writers](../behavior/meta/ORIGINAL_RANDOM_STATE_INITIALIZATION_AND_WRITERS.md): read-only initialized seed1/startup and DOL/all29 REL static census; no runtime/interleaving or save persistence completion claim. RNG-01 remains open.
+
+
+### Registered NPC setup world and original actor leaves
+
+Code65d1b669: [native retained setup bridge](../behavior/field/NATIVE_REGISTERED_NPC_SETUP_WORLD.md),329C++/193Python/native build and scoped isolated ARM checks pass. Source deliveries: [admission/dependency requirements](../behavior/field/NATIVE_NPC_SETUP_WORLD_ADMISSION_REQUIREMENTS.md) and [original five NPC flag/position/yaw leaves](../behavior/field/ORIGINAL_NPC_FLAG_POSITION_YAW_EVENT_LEAVES.md). Static source contracts and direct setup fixtures do not close EVT-01's full original area initialization, normal Game, camera/Main/render or lifecycle providers.

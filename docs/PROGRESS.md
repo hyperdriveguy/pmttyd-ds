@@ -8782,3 +8782,46 @@ battle, message/inventory/story, effect/audio and port tooling. Re-audit concurr
 NPC setup/area/registry, renderer and animation-refresh additions in previously
 covered modules. Port-wide documentation and the remake remain incomplete;
 documentation goal stays active.
+
+
+## 2026-10-14 — Original registered NPC setup world
+
+Code65d1b669 binds original evt_npc_setup8005323c to the retained registered
+actor owner, actual descriptors/poses, fresh GP/F halfword mode services,
+populated numeric battle helper and independent same-VM event roots.
+Immutable original table/script scanner admission includes END's extra operand
+read. Full deletion-closure checks hold self/ancestor/unresolved graphs.
+First-call state survives missing admission; allocation retries preserve prior
+source effects. Resume checks stop at the first live init without rescanning
+unreached regular scripts every tick. The real Area installation API is ready
+after parsed-map registration; normal Game invocation remains open.
+See [native contract](behavior/field/NATIVE_REGISTERED_NPC_SETUP_WORLD.md).
+
+Frozen source tree146e8f9eb60a697004ef0c60610f2617357af0c5: 3443 tracked
+files audited, zero mismatches. CMAKE_BUILD_PARALLEL_LEVEL=4 make test passes
+329/329 C++ (36.17s) and193/193 Python (26.904s). Native
+make all -j4 -o assets-ready SOUNDTRACK=gamecube exits0. Strict ARM fixture
+in isolated Azahar passes originalRows=15/initRoots=15/draws=255/regularRoots=2
+and admission checks. Fixture uses actual registered actors, pose resources and
+original setup15-row table with explicit test RNG0x12345678. Only chusan3/roten3
+RETURN/END roots genuinely complete; other unbound roots hold, then are explicitly
+retired by the fixture before proving two regular roots. This is not proof their
+callbacks ran or the original area parent completed.
+
+Normal isolated40s boot exits0 and its original storybook/text capture was
+inspected (sample60AppFPS/100%). Restored normal binary matches tested SHA256
+f77eae9a849fce92b65ec652efe0bfbc48f7bb146ecbd0d66a3b287f33490f25.
+Strict test edits are restored; no user profile/save touched. Manifest
+artifacts/area-npc-world-validation-manifest.json records source/binary/logs/
+captures and all87 private asset products unchanged. This frozen increment
+does not validate concurrent work as a whole or establish hardware performance,
+original pixel/GPU/floating-point parity or new rendered NPC correctness.
+
+Read-only documentation adds setup-world admission/dependency requirements and
+five exact NPC flag/position/yaw/get-position leaves, including camera4-dependent
+RY_LR math and name resolver special-token hazards. Next: bind these real actor
+leaves and camera/name ownership, then original init/regular/case/map/hit/wander
+callbacks and earlier Bero/Mario parent services. Retain genuine shared-session
+RNG state/interleaving, pose namespace, query/Main/facing/render/collision and
+resource/room lifecycle work; do not bypass their waits. Full remake and goal
+remain unfinished.

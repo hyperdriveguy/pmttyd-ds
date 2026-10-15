@@ -74,3 +74,14 @@ original tribe descriptors,pose owners and NPC registration remain required for
 Game admission. The current event pack alone does not prove those data owners.
 Existing render models/body/wander initialized flags do not fill that gap. Keep
 full live area and independent Mario-entry service integration open.
+
+
+### Subsequent registered-world integration
+
+Code65d1b669 supplies the scoped [actual retained registry/pose/numeric setup
+bridge](NATIVE_REGISTERED_NPC_SETUP_WORLD.md), replacing the synthetic-world
+frontier above for admitted direct setup invocations. Original fifteen-row
+source-data checks and real init/regular root construction pass host and ARM.
+Other init callbacks still hold; fixture retirement is explicit. Full original
+parent, earlier Mario/Bero services, ordinary Game activation, session RNG and
+query/Main/facing/GPU/lifetime owners remain open.

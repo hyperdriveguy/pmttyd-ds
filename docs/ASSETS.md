@@ -1622,3 +1622,17 @@ inputs are shared read dependencies. Cache assembly needed no new ISO read,
 original-asset extraction/conversion, editable import or shared pack write. Original Nintendo/Intelligent
 Systems rights remain reserved; private validation copies confer no new license
 or redistribution rights. No original binary/ISO bytes were committed.
+
+
+## Registered NPC setup world validation (2026-10-14)
+
+Code65d1b669 reuses original door-data.pmevt scripts/table rows, parsed gor02
+map records, numeric gor battle closure and thirteen retained NPC resource
+families from the previous private reset/history validation cache. All87 owned
+products match prior hashes; no extraction, texture/geometry/music conversion,
+editable import or shared pack write. Source/normal/ARM fixture artifacts and
+hashes are recorded in artifacts/area-npc-world-validation-manifest.json;
+compiled packs/binaries remain outside source history. The ISO was not modified
+or committed. Original Nintendo/Intelligent Systems rights remain reserved;
+private validation copies confer no redistribution license. Actor/pose loading
+and event setup tests do not establish new NPC raster or hardware parity.
