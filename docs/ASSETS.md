@@ -2806,3 +2806,20 @@ local extraction grants no redistribution rights. ISO, extracted resources,
 original source listings and compiled packs/executables remain ignored/private.
 Exact source/product/native logs and hashes are in
 `artifacts/animation-time-validation-manifest.json`.
+
+## Message documentation validation inputs (2026-10-15)
+
+artifacts/message-code-documentation-validation/source inherits 63 accepted
+products and original footer/HP/enemy evidence/default Python fixture paths.
+Two frozen converter changes (animation_boot_image.py/field_npc_actor_assets.py)
+match clock authority tree 179bfa0bdcf66a8eee269a1d2a068a657ecea89a. Its validation
+manifest pins animation-time-assets-after.json. Four changed door-data and
+animation-boot JSON/PMEVT products are hash-matched before private copy.
+Door pack 152960 bytes SHA256 ea3f9a6aaf9ad351a43afcc06cd8442c13eb47e20d486fdd842e81bc15dde292;
+boot 4808 bytes SHA256 6f1ec8abd7fefc0ae22aed3b1e87330049d48dd73d480f43f22d8780eac5ed3a.
+All 63 accepted and copied evidence/fixture hashes verified after gates. No new
+conversion, resampling, editable import or shared-pack write. Native full
+regeneration skipped; Python fixtures independently use read-only ISO/empty
+temporary outputs. Existing message/font/icon bytes/conversions unchanged.
+Nintendo/Intelligent Systems rights retained; local tracking grants no new license.
+No ISO, extracted original or compiled binary committed.

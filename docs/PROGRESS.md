@@ -13056,3 +13056,72 @@ battle entry/active source cadence, actual effects/frame/camera owners and physi
 X; optional harmful-holder taps require the independent completed lower-screen
 publication and one-shot consumption. Full tutorial/real battle/return and hardware
 verification remain unfinished; goal stays active.
+
+## 2026-10-15 — Message resources, playback and window consumers documented
+
+Added 161 inline comment lines across 13 message C++/header files. Added
+[resources](code/message-resources.md), [playback/selection](code/message-playback.md)
+and [window/font/frame drawing](code/message-window-drawing.md), linked from code
+index. Code/docs commit ee73b3bb. All executable tokens/string literals unchanged;
+no original ID, dialogue, token, story attribution/order/branch, art or audio
+changes. No new tests for this comment-only work.
+
+Resource notes explain original NUL pairs, sorted byte-offset index, rejected
+ambiguous room keys, room/global precedence, transactional publication and
+borrowed pointer invalidation. Native font/icon format limits, endian/layout,
+finite mapping domain, original descriptor delays, zero-delay/loop behavior and
+catalog lifetime are explicit. Guard constants are not labeled as recovered
+original allocation rules.
+
+Parser/playback notes explain typed record opcodes/payloads, halfword coordinates,
+wrapped schedules, style versus playback flags, supported icon identities,
+post-control LF suppression, selection geometry/guards and exact original raw
+byte reparse on append. Playback states, key ordinals, retained once_stop,
+scroll-before-wait, two fused/truncated scroll additions, latched acceleration,
+terminal-input adaptation and pose request publication are described without
+claiming complete original callback/history/audio or measured frame cadence.
+Selection comments distinguish its fixed per-invocation fade from playback time-
+based fades, trigger wrapping versus repeat endpoints, independent opposite input
+blocks, net navigation sound, cancel precedence and retained result lifetime.
+
+Drawing notes describe centered original geometry, mode bits/insets, type scissor,
+400-wide glyph crop and explicit four-screen-pixel tail adaptation. Plain-font
+consumers preserve their separate float/signed/physical pen domains, source
+narrowing, cropped metrics, alpha/outline order, two RNG requests per quad and
+visibility-side-effect boundaries. Nine-slice frame includes all cells, exact
+thirds, native triangle order, per-rectangle transform centers and source tab
+geometry/color/wrapped centering. Original source parity, full story/window
+manager protocol and GPU/hardware output remain separate evidence requirements.
+
+Frozen baseline 1e8cd1fa29744dfbe2c6727dfc2d0fafdb4cf62f plus owned docs is at
+artifacts/message-code-documentation-validation/source. Full audit covers 3981
+baseline tracked files with zero unexpected changes; all 17 owned frozen/live
+snapshots match, all 95 local guide/index links resolve. Source/prose finalized
+before gates. Concurrent/later battle Act/Phase/menu/effect/field/animation/render/
+file/release changes preserved/excluded; no combined moving-worktree validation.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits 0: 442/442 C++ (51.61s),
+212/212 Python (65.623s), zero skipped. Actual original 45-descriptor enemy-bank
+fixture ran. Native make all -o assets-ready -j4 SOUNDTRACK=gamecube exits 0.
+Both original async gate handles observed terminal; exit markers agree. Manifest
+records frozen source, converter/authority, product/evidence/log and ELF/3DSX
+hashes. Existing compiler/Pillow warnings remain. No emulator/profile/save changes,
+hardware/pixel/performance/Gekko parity claims or compiled/original asset commits.
+
+Private cache inherits 63 accepted products. Preflight finds only two changed
+converters (animation boot/NPC actor) since parent baseline; frozen bytes match
+clock authority tree 179bfa0bdcf66a8eee269a1d2a068a657ecea89a. Four existing hash-
+matched door/boot products copied into private snapshot; no new conversion,
+editable import/shared cache write. Door pack 152960 bytes SHA256
+ ea3f9a6aaf9ad351a43afcc06cd8442c13eb47e20d486fdd842e81bc15dde292;
+boot 4808 bytes SHA256 6f1ec8abd7fefc0ae22aed3b1e87330049d48dd73d480f43f22d8780eac5ed3a.
+All 63 products and original evidence/default Python fixtures checked after gates.
+Python fixtures independently use read-only ISO/empty temporary outputs; native
+full regeneration skipped. Existing original rights/provenance unchanged.
+
+Next: audit platform file acquisition/pool/relocation/cache and save-block event/
+presentation owners, then remaining event/story/runtime/field/effect/tooling code.
+Recent Trio Act/Phase/menu/Turn/audience/pinch/sequence integration and animation/
+release/texture additions still need separate inline review. All current tracked
+message header/CPP snapshots match annotations, but hash inventory is only a
+review aid, not full semantic or full-game proof. Full documentation goal active.
