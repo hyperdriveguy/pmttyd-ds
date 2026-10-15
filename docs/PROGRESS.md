@@ -1,3 +1,121 @@
+### Whole original cold class frames over the actual tutorial VM (2026-10-14)
+
+Previous goal turn made concrete progress: d32daf31 bound real common-menu
+resources and added original HUD counters. This increment adds source footers/
+cue packaging in ead9ae5c4e0564e48057fbe3da7a3d87e8f36e14 and the composed class
+frame/native lifetime bridge in633da059a9a112a6ffabb0a152de936f38510516.
+The tutorial/real-battle goal remains active; ordinary source scheduling is
+still unbound and this does not make the remake complete.
+
+The native frame owner now runs the whole original queued callback/wrapper,
+retained DrawMainMenu, cold observable icon policy, retained circles/bubbles and
+original-art backend. Successful SDK/guest/geometry prefixes do not replay;
+publication requires whole callback and backend completion. Reentry is refused,
+provider-requested retirement defers destruction safely, and stale allocations
+expose neither a drawable batch nor admission. Retained source party/pinch/Sub
+footers are real required children; no missing helper is acknowledged as done.
+
+Cold state0 genuinely leaves stack positions unwritten, before source sorting
+reads every Y. Native policy supplies no dummy positions: zero/one-active and
+finite distinct produced active Ys have a unique visible order; ambiguous ties
+hold. Fully produced slots use exact original non-stable sorting. This preserves
+observable raster ordering, not original stack/FPSCR effects. Native FontString
+now stages/validates the entire run before real RNG/geometry, then replays its
+original two-RNG-before-each-quad sequence synchronously. A malformed later glyph
+cannot leave a duplicated prefix. Resources remain immutable and RNG total.
+
+HarborTutorial exposes actual VM memory/cursor lookup plus a fresh lifetime
+for each actual SDK class allocation. Original release invalidates that lifetime;
+SDK guest-address reuse does not revive it. The binding retains native runtime
+storage and checks token plus B1c78. It does not register normal displays, run
+command input or synthesize source End. New actual-VM tests run100 whole source
+passes to mode1/readiness1 without classMenuPresented. Carrying the original
+new-game pouch through existing field entry allows physical A to open the weapon
+menu; genuine source End immediately invalidates the old drawing publication.
+
+The initial confirmation test used bare beginFresh, whose zero-equipment domain
+correctly disables Jump; its real trigger100 was present but row enabled0. The
+fixture now uses the actual original new-game pouch/import (boots/hammer/coins),
+not forced availability flags. Initial standalone linking mixed a changed private
+Harbor layout with the older archive and crashed; compiling all affected Harbor
+units together fixed that invalid test build. Full frozen builds are consistent.
+No story/dialogue/branch/weapon availability was rewritten to obtain the result.
+
+New original footer atlas retains common-bank4/5 and language danger6..10/
+critical11..16, no pixel resampling,512x256 RGBA8 and two-pixel padding. Its
+normal narrow converter is in assets-base; ignored products/caches only. Source
+party footer calls scan GetItemOn801a2d58, not cache getter GetItemOn2. Catalog
+loading is not GPU acknowledgement: TexturePlane2's complete linked helper and
+actual footer texture/current-camera owners still require native binding for
+those cue branches. Healthy solo/no-item fixtures execute genuine footer bodies
+without needing these unavailable branches. ASSETS records provenance/license;
+contract:behavior/display/NATIVE_COLD_CLASS_FRAME_PIPELINE.md.
+
+Validation: frozen base67f3d54310d8012ab35d6a972880b4f6d194c2a3 plus owned scoped
+files/edits in artifacts/class-frame-validation. CMAKE_BUILD_PARALLEL_LEVEL=4
+make -C artifacts/class-frame-validation test -o assets-ready exits0:383/383 C++
+in58.27s and204/204 Python in35.403s. Log:artifacts/class-frame-test-final.log.
+Final brace-only fixture warning cleanup also passes strict host compilation/run.
+Native make all -j4 -o assets-ready SOUNDTRACK=gamecube TARGET=ttyd-class-frame
+BUILD=build-class-frame exits0, including Main/Renderer restoration. Focused
+worker golden/footer tests cover48 cases/every external wait; observable tests
+cover104 waits; pipeline tests include lifetime reuse, footer/SDK holds, immutable
+publication, reentry and deferred retirement. Worker host/ARM syntax and declared
+ASan/UBSan checks pass; the final accessor guard has focused host/ARM coverage.
+Original verify_class_footer.py passes10 bodies/4 spans. Existing compiler/
+Pillow warnings remain; new fixture indentation warnings were cleaned up.
+
+Isolated native fixture PASS:wholeQueued;passes=100;mode=1;ready=1;quads=34;
+rng=680;gpu=1;realTpl97;physicalA;nativeFallbackCamera. Inspected final35s capture
+artifacts/azahar-class-frame-confirm/boot.png: original Jump bubble and surrounding
+command ring render above Mario, original HUD counters remain on top, and lower
+view continues into stage/audience seating. Physical A was exercised on a separate
+actual native source UI before preparing the displayed UI. This check supplies
+the native BattlePadSample packet; it is not Azahar HID injection or a hardware
+button measurement. No render readiness hack/manual slot layout was used. Earlier25s capture also passed. A20s capture
+was black just before its first admitted frame (status file timestamp followed
+capture by0.09s); it was not counted as visual proof. Re-running the identical
+saved final fixture for35s confirms rendering, without product code changes.
+No guest exception/unmapped diagnostic found; isolated profile/save only.
+
+The fixture explicitly schedules display passes and supplies a source-aspect
+camera adapter matching Renderer::worldTutorial's native fallback lens/view.
+It is not normal BattleSequenceManager/btlDispMain/camMain integration, original
+camera-driver proof, full original font/RNG boot parity, complete footer GPU
+support, full tutorial/attack flow or physical3DS performance validation.
+Probe hashes/status/capture:artifacts/class-frame-probe-manifest.json.
+
+Private Main and Renderer restored byte-for-byte, recompiled; normal3DSX equals
+its pre-fixture binary. SHA256
+4e92868e23b088ae56c6bb3f62913fdd62614040039d0df3b89d41920fff6c08.
+Audit1876 source/test/tool/build inputs:zero mismatches/extras;2134 RomFS products.
+Relative to prior2126 products, five hash-verified cold-animation auxiliary
+products were copied from their accepted manifest and three original footer
+products added. No shared pack writes, original asset/ISO commits or new art.
+Manifest:artifacts/class-frame-source-manifest.json. Documentation link check
+1403 files, zero broken links. Concurrent foreign work is preserved/excluded;
+the moving merged worktree is not claimed validated as a whole.
+
+Next: bind actual command sequence and whole btlDispMain registration AFTER
+camMain; keep class callbacks out of the TimingA-only consumer. Use actual
+allocation-current closure and source cadence; retire all child/publication
+owners on UI End. Replace the fixture camera with the real same-scene owner.
+Implement complete linked TexturePlane2/Init/PlainGX plus actual footer GPU
+texture admission, then low-HP/party/item cues. Finish original weapon/target
+presentation and tutorial/real-battle sequence/attack/exit ownership.
+
+Audience research this turn: source harmful kinds236..239 are proved by
+801a549c..801a54b0; original GetItemOn eligibility is flags1, excludes102, held
+index!=-1, signed itemState<=4 or7. Physical X additionally guards BflagsEF4
+40000000 and Mario U104 bit10 and retains first-eligible semantics. Native
+chosen-slot interruption entry is still missing. GetItemOn2 801a2c88 is a selected
+cache getter, not a selector. A targeted tap needs actual slot/item generations,
+source cache write followed by existing retained interruption tail, actual
+scene4 draw admission and visibility/occlusion/per-texel ownership. Draw flags
+alone do not prove a visible target. Do not synthesize X or invent population,
+held items, generations or camera state. Full controls/audience/menu/battle goal
+remains unfinished.
+
 ### Original menu file ownership, retained UI and HUD counters (2026-10-14)
 
 Previous goal turn made progress by assigning the requested additional UI
