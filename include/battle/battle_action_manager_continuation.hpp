@@ -5,6 +5,9 @@ namespace ttyd {
 // One complete original manager invocation, including pad and deferred display.
 // Providers retain partial child work; actual guest memory/services outlive
 // holds.
+// Noncopyable invocation owner pins Battle token and exact service identity.
+// reset refuses reentry but does not roll back acknowledged guest/provider work.
+// pending reports a function token, not an original gameplay result or frame ID.
 class BattleActionManagerCursor {
 public:
   BattleActionManagerCursor();

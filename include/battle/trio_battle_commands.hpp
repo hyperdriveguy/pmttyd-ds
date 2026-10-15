@@ -5,6 +5,8 @@
 namespace ttyd {
 struct ProloguePouch;
 bool loadTrioCommandAssets(const char* root);
+// Native pending command: actor/unit/part are source registry IDs (-1 absent),
+// weapon is an emulated original address. Publishing it does not run an event.
 struct TrioAttackRequest {
     int32_t actor=-1,unit=-1,part=-1;
     uint32_t weapon=0;
@@ -13,6 +15,9 @@ struct TrioAttackRequest {
 // Attack dispatch retains ownership until an executing event backend accepts it.
 class TrioBattleCommands {
 public:
+    // Native UI states, not source sequence bank values. Arrays use registry
+    // IDs 1..6; slot 0 is unused. actor 1 Mario has two rows, actor 2 Goombella one.
+    // Copied sampling views must be rebound to this owner's arrays before use.
     enum class State {Closed,Command,Target,AttackReady};
     State state=State::Closed;
     unsigned command=0;

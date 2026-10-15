@@ -6,16 +6,26 @@
 #include <cstring>
 namespace ttyd {
 namespace {
+// PMTCMD2 has three native little-endian records: Mario Jump, Hammer, Goombella
+// default.64-byte keys retain original message IDs; masks/weapon tokens come
+// from original DOL records. Runtime labels are looked up without rewriting.
 struct Command {uint32_t address=0,admission=0,attributes=0,icon=0;std::array<char,64> key{};};
 std::array<Command,3> commands;
 MessageResource labels;
 bool ready=false;
+// Spec rows map to registry IDs 3..6. Visual indices differ: Mario 0, Goombella 1,
+// Frankly 2, Goomba 3, Spiky 4, Paragoomba 5; visual[0] is an unused sentinel entry.
 constexpr std::array<unsigned,4> registry{{3,4,5,6}};
 constexpr std::array<unsigned,7> visual{{0,0,1,3,5,4,2}};
+// Candidate IDs are BE signed 16; 0x8000/0x10000 are sign boundary/modulus,
+// independent of native PMTCMD2 metadata byte order.
 int32_t half(const BattleCandidateBuffer& b,unsigned o) {
     const uint16_t v=uint16_t(b.bytes[o])<<8|b.bytes[o+1];return v<0x8000?v:int32_t(v)-0x10000;
 }
 }
+// Admit exactly three records, 16-bit icon range, terminated fixed keys and
+// exact EOF. Require all original global labels before publishing new state;
+// failure leaves previously loaded commands/labels intact.
 bool loadTrioCommandAssets(const char* root) {
     if(!root)return false;
     const std::string base=root;
@@ -30,6 +40,9 @@ bool loadTrioCommandAssets(const char* root) {
     for(auto& c:next)if(!text.find(c.key.data()))return false;
     commands=next;labels=std::move(text);ready=true;return true;
 }
+// Goombella's sole UI row maps catalog 2; Mario rows map 0/1. Candidate buffer
+// count at +0xa6c is signed 8, permutation at +0xa6d selects 36-byte records from +4,
+// and selected permutation index is +0xab7. Preserve source order through the map.
 unsigned TrioBattleCommands::weaponIndex() const {return actor==2?2:command;}
 int TrioBattleCommands::count() const {const auto v=candidates.bytes[0xa6c];return v<128?v:int(v)-256;}
 std::array<int32_t,2> TrioBattleCommands::target(unsigned index) const {
@@ -41,6 +54,9 @@ const char* TrioBattleCommands::commandName(unsigned i) const {
     if(!ready || i>=(actor==2?1u:2u))return "";
     return labels.find(commands[actor==2?2:i].key.data());
 }
+// Goombella uses original command icon. Mario's Jump/Hammer icons depend on
+// the actual pouch upgrade bytes; missing pouch stays unavailable. The const
+// cast adapts a borrowed provider API; this callback only reads the pouch.
 std::optional<uint16_t> TrioBattleCommands::commandIcon(unsigned row,const ProloguePouch* pouch) const {
     if(!ready || row>=(actor==2?1u:2u))return std::nullopt;
     if(actor==2)return uint16_t(commands[2].icon);
@@ -49,6 +65,8 @@ std::optional<uint16_t> TrioBattleCommands::commandIcon(unsigned row,const Prolo
     services.pouch=[](void* p){return static_cast<const ProloguePouch*>(p)->bytes.data();};
     return row==0?jumpWeaponIcon(services):hammerWeaponIcon(services);
 }
+// Names follow CURRENT runtime kind, including source wing-loss transitions;
+// the initial registry slot alone cannot identify the current original label.
 const char* TrioBattleCommands::targetName(int32_t id) const {
     if(id<3 || id>6)return "";
     for(const auto& spec:trioBattleUnitSpecs())if(spec.kind==uint32_t(units[id].kind)){
@@ -68,11 +86,17 @@ CandidateSamplingServices TrioBattleCommands::services() {
     CandidateSamplingServices s;s.user=this;
     s.captureWork=[](void* p)->void* {return p;};
     s.unit=[](void*,void* w,int32_t id)->SamplingUnit* {return id>0 && id<7 && static_cast<TrioBattleCommands*>(w)->present[id]?&static_cast<TrioBattleCommands*>(w)->samplingUnits[id]:nullptr;};
+    // This native selection view admits only body part 1. Unit lookup also
+    // checks present[]; refresh must synchronize actual unit/death state first.
+    // Status 27 and position/truncation are delegated to existing source helpers.
     s.part=[](void* p,int32_t id,int32_t part)->SamplingPart* {return id>0 && id<7 && part==1?&static_cast<TrioBattleCommands*>(p)->samplingParts[id]:nullptr;};
     s.status27=[](void*,SamplingUnit& u){return checkStatus(u.data,27);};
     s.worldPosition=[](void*,SamplingPart& p){JumpVector v;getPartWorldPosition(*p.position,&v.x,&v.y,&v.z);return v;};
     s.truncate=[](void*,float value)->int32_t {return static_cast<int32_t>(value);};return s;
 }
+// Accept actors 1/2, then reset UI and populate source spec rows. Unit kinds
+// 222/224 identify Mario/Goombella; belong 0/1 and facing +1/-1 initialize the
+// scoped view. Actual HP/status/alive state is supplied later by syncUnitState.
 bool TrioBattleCommands::begin(const ProfessorStory& scene,int32_t actorId) {
     if(!ready || (actorId!=1 && actorId!=2))return false;
     *this=TrioBattleCommands{};actor=actorId;
@@ -105,10 +129,18 @@ void TrioBattleCommands::chooseCommand(unsigned index) {
 void TrioBattleCommands::chooseTarget(unsigned index) {
     if(state==State::Target && count()>0 && index<unsigned(count()))candidates.bytes[0xab7]=index;
 }
+// Refresh candidates before input, then preserve selected(unit, part) identity
+// if it still exists. Keep the sampler's resulting index when it disappeared;
+// never assume the old permutation index still denotes the same target.
 void TrioBattleCommands::refreshTargets() {
     const auto old=selected();updateBattleCandidates(candidates,services());
     for(int i=0;i<count();++i)if(target(i)==old){candidates.bytes[0xab7]=i;break;}
 }
+// Native mask domains: repeat 0x80000/0x40000 increment/decrement with wrap;
+// trigger 0x100 confirms, 0x200 cancels. Both repeat bits are processed in order.
+// In Command, cancel wins over simultaneous confirm; in Target, refresh/movement
+// precede cancel. AttackReady retains request until consumer acceptance or the
+// explicit development cancel path; choosing a row never starts attack code.
 void TrioBattleCommands::input(uint32_t triggers,uint32_t repeats) {
     if(state==State::Command) {
         const unsigned n=actor==2?1:2;

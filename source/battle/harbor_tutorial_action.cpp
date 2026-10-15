@@ -38,7 +38,7 @@ bool HarborTutorialPacked::actionManager(uint64_t time) {
     auto &p = *static_cast<HarborTutorialPacked *>(self);
     // Only original TimingA Main is bound. State+0x1c9c, countdown+0x1f54,
     // flags+0x1f50, classification+0x1ce8 and scratch+0x1f20 are copied around tick();
-    // callbacks+0x1ca0/0x1ca8/0x1ca4/0x1cac remain source Init/Main/Result/Display fields.
+    // callbacks+0x1ca0/0x1ca8/0x1ca4/0x1cac are Main/Display/Result/Delete slots.
     if (callback != 0x8012aae0)
       return std::nullopt;
     TimingACommand c;

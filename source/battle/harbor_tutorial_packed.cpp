@@ -232,7 +232,7 @@ bool HarborTutorialPacked::invoke(EventEntry& e,uint32_t function,int32_t first,
  }
  // Action work map: 0x1f50 flags, 0x1cbd adjusted difficulty, 0x1cbc raw difficulty;
  // 0x305/0x306 actor simplifier counts; clamp adjusted difficulty 0..6. Setup table
- // 0x80364348 has 20-byte records (id plus Init/Result/Main/Display), zero ID end.
+ // 0x80364348 has 20-byte records (id plus Main/Result/Display/Delete), zero ID end.
  // 0x1c90 actor, 0x1c94 raw options, 0x1c98 argument, 0x1c9c state, 0x1cb4 count, 0x1cb8 result.
  case 0x80106f40:{const auto on=value(e,0);const auto mask=uint32_t(raw(e,1));const auto flags=word(Battle+0x1f50);word(Battle+0x1f50,on?flags|mask:flags&~mask);result=2;return true;}
  case 0x80106ef0:{TimingACommand timing;const auto window=timing.successWindow(byte(Battle+0x1cbd));if(window<0)return false;output(e,0,window);result=2;return true;}

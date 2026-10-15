@@ -2,6 +2,8 @@
 #include <cstring>
 namespace ttyd {
 namespace {
+// Resume requires the SAME memory, actor-byte, lifecycle and child providers.
+// A numerically equal Battle address cannot stand in for a different VM owner.
 bool same(const BattleActionManagerServices &a,
           const BattleActionManagerServices &b) {
   const auto &x = a.memory.memory;
@@ -22,6 +24,9 @@ struct Guard {
   ~Guard() { v = false; }
 };
 } // namespace
+// Native phases 0 pad, 1 capture Main, 2 pending Main, 3 capture Display/priority,
+// 4 pending registration. Child providers must retain their own partial effects;
+// this cursor retains only the outer operation and frozen arguments.
 struct BattleActionManagerCursor::State {
   BattleActionManagerServices owner;
   uint32_t battle = 0, callback = 0, display = 0;
@@ -37,6 +42,8 @@ bool BattleActionManagerCursor::reset() {
   state_.reset();
   return true;
 }
+// Phase 0 reports manager 0x800fa5b0, 2 actual Main callback, 4 dispEntry 0x80010bc4.
+// Other phases are synchronous bookkeeping; diagnostic0 need not mean inactive.
 uint32_t BattleActionManagerCursor::pending() const {
   if (!state_)
     return 0;
@@ -45,6 +52,9 @@ uint32_t BattleActionManagerCursor::pending() const {
          : state_->phase == 4 ? 0x80010bc4
                               : 0;
 }
+// Guard recursive run/reset, then pin invocation/services before child work.
+// Private pad B+0x1d1c/channel 0 executes ONCE. Capture Main from 0x1ca0 only AFTER
+// pad acknowledges; null Main skips ALL display, even if Display slot is set.
 bool resumePackedBattleActionCommandManager(
     uint32_t b, const BattleActionManagerServices &s,
     BattleActionManagerCursor &cursor) {
@@ -78,6 +88,9 @@ bool resumePackedBattleActionCommandManager(
       }
       c.phase = 2;
       break;
+    // Engaged result 0 completes Main AND clears slot 0x1ca0. Other scalars also
+    // complete this child. Missing optional retains same callback/B; do not
+    // resample pad or reload a changed callback during a held Main.
     case 2: {
       if (!s.main)
         return false;
@@ -89,6 +102,9 @@ bool resumePackedBattleActionCommandManager(
       c.phase = 3;
       break;
     }
+    // Fresh Display 0x1ca8 is read after Main effects, even if Main just cleared
+    // itself. Priority 0x80422d68 is source float bits, not a native tuning number.
+    // Freeze both across registration holds; camera 8/class 1/argument B persist.
     case 3: {
       c.display = m.word(m.user, c.battle + 0x1ca8);
       if (!c.display) {

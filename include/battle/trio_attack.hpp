@@ -37,6 +37,9 @@
 namespace ttyd {
 // Native providers retain this owner through every held source callback. Every
 // external callback must become unavailable before its GPU/Game owner retires.
+// Allocation/pass are native lifetime/publication IDs, not guest addresses or
+// render frame numbers. begin/publish are whole external admissions: when false,
+// their provider must retain any partial effects for retry under the same owner.
 struct TrioEnemyHpNativeServices {
     std::shared_ptr<const void> lifetime;
     void* user=nullptr;
@@ -52,6 +55,9 @@ struct TrioAttackRuntime;
 struct BattlePose;
 class BattlePosePool;
 struct BattleCameraFrame;
+// Source presentation projections: 19 reward slots, alpha 255 fully opaque.
+// Pose draw camera 4/class 1 identifies the source queued callback domain; the
+// depth XYZ still needs an admitted camera snapshot to compute queue priority.
 struct TrioRewardIcon {std::array<float,3> position{};float scale=1;uint8_t alpha=255;bool hidden=true;uint64_t animationTick=0;};
 struct TrioAudienceAudioRequest {std::optional<uint32_t> key;int32_t right=0,left=0;std::optional<int32_t> handle;};
 struct TrioShadowDrawRequest {std::array<float,3> position{};float radius=0;};
@@ -132,6 +138,9 @@ public:
     std::shared_ptr<ProloguePouch> exportedPouch() const;
     const StageMapObjects* stageMap(bool background) const;
 private:
+    // Draw/provider hooks can replace this public owner reentrantly. Active
+    // dispatches must pin their runtime and revalidate allocation/pass identity;
+    // shared ownership alone does not establish live source/GPU admission.
     std::shared_ptr<TrioAttackRuntime> runtime_;
 };
 }
