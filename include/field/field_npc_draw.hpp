@@ -49,7 +49,9 @@ struct FieldNpcDrawCursor {
 // Complete local ordinary/xlu, offscreen ordinary/xlu and blur callbacks.
 // Camera argument is retained r3 for blur; other variants ignore it.
 // GPU sync/bounds, camera and Main/draw providers are required, never no-ops.
-// False/empty primitives have no effects. Retain VM/pose/camera/current queue
+// False/empty memory primitives have no effects. Request providers retain any
+// partially executed source child across false; only completion acknowledges
+// it once. Retain VM/pose/camera/current queue
 // record, generation and bindings across holds; acknowledged work never
 // repeats. Completion resets the cursor; this does not activate or schedule
 // Game rendering.

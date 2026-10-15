@@ -3,6 +3,7 @@
 #include "mario_presentation.hpp"
 #include "animation_pose_release.hpp"
 namespace ttyd {
+struct FieldNpcAnimationServices;
 // Native simulation service over the real cold VM, source files and one pose
 // namespace. Creation precedes Mario's three Entries. Copies of the typed pool
 // deliberately do not inherit these borrowing services.
@@ -21,13 +22,21 @@ public:
  bool mario(const MarioPresentation&,const std::array<int32_t,3>& handles,unsigned budget=8192);
  bool resumeMario(unsigned budget=8192);
  bool presentationPending() const{return marioActive_ || (process_ && process_->presentationPending());}
- bool producerPending() const{return presentationPending() || (process_ && process_->producerPending());}
+ bool producerPending() const{return npcOwner_ || presentationPending() || (process_ && process_->producerPending());}
  bool configurePresentation(std::shared_ptr<const CameraManager>);
+ // Caller retains the complete field callback/queue/camera pass until end.
+ // current is pure, non-reentrant and independent of animation source stores.
+ // Owner token is identity only; its lifetime and predicate outlive the lease.
+ bool beginNpcPass(const void* owner,uint64_t pass,std::shared_ptr<const CameraManager>,std::function<bool()> current);
+ bool endNpcPass(const void* owner,uint64_t pass);
+ bool npcPassPending() const{return npcOwner_!=nullptr;}
+ FieldNpcAnimationServices npcAnimationServices();
+
  void publicationBudget(unsigned budget){budget_=budget;} // Native scheduling policy, not source timing.
  unsigned publicationBudget() const{return budget_;}
  float marioYaw() const{return publishedYaw_;}
  bool marioReflect() const{return publishedReflect_;}
- void setMarioRoot(ActorVector root){if(!presentationPending())nextRoot_=root;}
+ void setMarioRoot(ActorVector root){if(!producerPending())nextRoot_=root;}
  ActorVector marioRoot() const{return publishedRoot_;}
  // Retained source Release; ordinary Entry uses real fileFree. Smart buffers
  // require their own provider and retain the original smartFree barrier.
@@ -51,6 +60,7 @@ private:
  bool marioActive_=false,setupDone_=false,selectionDone_=false;uint64_t marioPass_=0,requestSerial_=0;
  uint32_t requestBank_=0;int32_t requestHandle_=-1;uint16_t requestStart_=0;std::string requestName_;
  float requestYaw_=0,publishedYaw_=0;bool requestReflect_=false,publishedReflect_=false;
+ const void* npcOwner_=nullptr;uint64_t npcPass_=0;std::function<bool()> npcCurrent_;
  unsigned budget_=8192;
  uint64_t raw_=0,uploaded_=UINT64_MAX;int32_t selected_=-1,sampled_=-1;unsigned bank_=0;
 };

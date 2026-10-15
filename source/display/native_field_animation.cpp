@@ -66,7 +66,7 @@ bool NativeFieldAnimation::configurePresentation(std::shared_ptr<const CameraMan
  // The uniquely owned process retires in our destructor body while request
  // state is still live. Its copied pass predicates borrow this owner; no cycle
  // or per-primitive weak-control-block synchronization is needed.
- if(!process_->configureMain(cameras,addresses,[this](uint64_t pass){return marioActive_ && marioPass_==pass;},true))return false;
+ if(!process_->configureMain(cameras,addresses,[this](uint64_t pass){return (marioActive_ && marioPass_==pass) || (npcOwner_ && npcPass_==pass && npcCurrent_ && npcCurrent_());},true))return false;
  cameras_=std::move(cameras);configuredMain_=process_->mainConfiguration();return true;
 }
 bool NativeFieldAnimation::mario(const MarioPresentation& mario,const std::array<int32_t,3>& handles,unsigned budget){

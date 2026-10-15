@@ -184,8 +184,13 @@ FieldNpcMainEntryBinding::advanceAutomaticPose(FieldNpcMainEntryCursor &entry,
   };
   s.request = [](void *p, const FieldNpcAutoPoseRequest &q) {
     auto &b = *static_cast<FieldNpcMainEntryBinding *>(p);
-    if (q.function != 0x80041170 || q.args[2] != 1 || !b.native_.poseClock)
-      return false;
+    if (q.function != 0x80041170)return false;
+    if (b.native_.animation.request) {
+      FieldNpcDrawRequest request;request.function=q.function;request.args=q.args;
+      FieldNpcDrawResponse response;
+      return b.native_.animation.request(b.native_.animation.user,b.vm_.memory,request,response);
+    }
+    if (q.args[2] != 1 || !b.native_.poseClock)return false;
     auto pool = b.owner_->poses().sharedPool();
     const auto handle = int32_t(q.args[0]);
     if (!pool->pose(handle))

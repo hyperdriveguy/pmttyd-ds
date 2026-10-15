@@ -2646,3 +2646,9 @@ add_executable(battle_weapon_native_raster_plan_tests tests/battle_weapon_native
 target_link_libraries(battle_weapon_native_raster_plan_tests PRIVATE ttyd_core)
 add_test(NAME battle_weapon_native_raster_plan COMMAND battle_weapon_native_raster_plan_tests)
 set_tests_properties(battle_weapon_native_raster_plan PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+# Same-process original NPC animation children under an exclusive field pass.
+target_sources(ttyd_core PRIVATE source/display/native_field_npc_animation.cpp)
+add_executable(native_npc_animation_tests tests/native_npc_animation_tests.cpp)
+target_link_libraries(native_npc_animation_tests PRIVATE ttyd_core)
+add_test(NAME native_npc_animation COMMAND native_npc_animation_tests)
+set_tests_properties(native_npc_animation PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

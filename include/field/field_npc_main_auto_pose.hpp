@@ -8,7 +8,8 @@ struct FieldNpcAutoPoseRequest {
   uint32_t function = 0;
   std::array<uint32_t, 3> args{};
 };
-// False/empty primitives have no effects; successful requests publish once.
+// False/empty memory/numeric primitives have no effects. A retained animation
+// request can suspend after source stores; resume the same request/provider.
 // Numeric seed is an explicit primitive, not a replacement for the source norm.
 struct FieldNpcAutoPoseServices {
   FieldNpcClockServices memory; // word/store/user only

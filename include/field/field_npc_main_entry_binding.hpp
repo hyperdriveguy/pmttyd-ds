@@ -16,6 +16,13 @@ class AnimationPoolMemory;
 // Original stage effects are explicit providers on the same guest memory.
 // bind() requires base clock/Mario admission, not every later provider; a missing
 // movement/draw/queue/audio/field owner holds exactly when its stage is reached.
+// Separate stable context for retained original animation children. False can
+// follow source stores: the SAME request/provider/pass resumes that child. An
+// installed provider is exclusive; holds never fall through to legacy handlers.
+struct FieldNpcAnimationServices {
+  void* user=nullptr;
+  bool (*request)(void*,EventAddressSpace&,const FieldNpcDrawRequest&,FieldNpcDrawResponse&)=nullptr;
+};
 struct FieldNpcMainEntryNativeServices {
   void *user = nullptr;
   FieldNpcClockNumbers numbers;
@@ -43,13 +50,15 @@ struct FieldNpcMainEntryNativeServices {
   bool (*tail)(void *, EventAddressSpace &, const FieldNpcTailRequest &,
                FieldNpcTailResponse &) = nullptr;
   // Deferred NPC draw providers retain the same field camera/queue/animation
-  // producer pass. Scalar/matrix and Main/draw effects are atomic on false.
+  // producer pass. Scalar/matrix and legacy draw effects are atomic on false;
+  // retained animation children below can suspend after original source stores.
   bool (*drawNumber)(void *, EventAddressSpace &, FieldNpcMatrixNumber &) = nullptr;
   bool (*drawMatrix)(void *, EventAddressSpace &, BattleAudienceMatrixRequest &) = nullptr;
   bool (*draw)(void *, EventAddressSpace &, const FieldNpcDrawRequest &,
                FieldNpcDrawResponse &) = nullptr;
   bool (*sound)(void *, EventAddressSpace &,
                 const FieldNpcMainEntryRequest &) = nullptr;
+  FieldNpcAnimationServices animation;
 };
 // One suspended full actor scan. Every child belongs to the current actor;
 // retire child metadata only after history and the parent final clear finish.
