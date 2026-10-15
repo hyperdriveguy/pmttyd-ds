@@ -14,6 +14,7 @@ public:
  AnimationPoolMemory(const AnimationPoolMemory&)=delete;
  AnimationPoolMemory& operator=(const AnimationPoolMemory&)=delete;
  bool matchesWork() const;
+ bool aliases(const BattlePosePool& pool,const EventAddressSpace& memory) const{return pool_.get()==&pool && &memory_==&memory && matchesWork();}
  bool detach(); // Writes CURRENT bytes back to RAM, never the pre-attach snapshot.
  uint32_t poseAddress(unsigned i) const{return i<256?poses_+i*0x170:0;}
 private:

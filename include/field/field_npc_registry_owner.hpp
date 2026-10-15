@@ -33,6 +33,7 @@ public:
 private:
  friend class FieldNpcRegistryBinding;
  friend class FieldNpcSetupBinding;
+ friend class FieldNpcMainEntryBinding;
  explicit FieldNpcRegistryOwner(uint32_t,std::shared_ptr<BattlePosePool>);
  uint8_t* span(uint32_t,uint32_t);
  std::array<uint8_t,0x30> registry_{}; // Source startup BSS8041e8ac..e8db.
@@ -62,6 +63,7 @@ public:
  std::optional<std::vector<uint32_t>> activeActors() const; // Active1, not query/display readiness.
 private:
  friend class FieldNpcSetupBinding;
+ friend class FieldNpcMainEntryBinding;
  friend class FieldNpcClockBinding;
  FieldNpcRegistryBinding(std::shared_ptr<FieldNpcRegistryOwner>,EventAddressSpace&);
  struct Call;
