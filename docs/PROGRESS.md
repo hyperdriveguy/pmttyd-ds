@@ -8128,3 +8128,74 @@ use existing shared camera mode and implement genuine primary-map arena,
 animPoseRefresh buffers and downstream owners before one BattleInit. Character
 animation, dialogue, indoor/event visibility fidelity and complete playable
 prologue/hardware performance remain ongoing requirements.
+
+
+### Original retained map-NPC history and area-root preparation
+
+Code77ac0622 adds the original setupDataBase84f44..85214 map-definition/
+history stage and composes its captured gate with the existing tagged NPC
+registration in the actual FieldAreaEvent VM. Source _map_attr_data is
+8030f668 (198 named12-byte rows plus actual terminator8030ffb0), not8031f668.
+There are no gor rows: gor02 uses actual group-1/flags0, so history promotion
+runs but death-mask skipping/group invalidation are disabled. This conclusion
+uses original definition bytes, not a fabricated zero history mask.
+
+History uses Game-owned actual retained F (GP+168),64x20-byte records atF+4c,
+16-byte map name and mask+10. Implements first empty/matching slot, clear/copy,
+five-word captured promotion with ordered pair/pair/late-word shifts, actual
+second-slot group comparison and fresh flag1/2/4 invalidation. Final gate is
+captured once; each parsed NPC reads the fresh head mask and original PPCslw
+low8/low6 behavior. Full64/no-match and source string-overflow domains hold
+before unsupported effects; no invented LRU eviction. No save persistence is
+claimed. Documentation agent recovered the source contract and performed a
+read-only implementation review; no blockers found.
+
+FieldMapNpcBootstrap owns mapped compiled original parsed tags and a retained
+ordinal/skip decision. Native resource holds do not repeat successful rows or
+reread an already captured false skip. All15 actual gor02 actors/real pose
+banks can now be registered before the original area root in the same VM.
+FieldAreaEvent preparation binds Game's owner, cold-initializes only once,
+checks exact GP+168 owner identity and requires no active actors on rebinding.
+It neither fabricates room cleanup nor overwrites retained state. Root creation
+waits for completion and requires identical original GP input; the snapshot is
+not reapplied over npcInit's stored pointer. Supplied-door roots cannot bypass
+the requested map stage. Cursor/binding/VM declaration order preserves lifetime.
+Failed preparation blocks roots; correcting inputs requires a fresh facade.
+Normal Game bootstrap does not invoke this adapter yet.
+
+Source exporter adds unchanged _map_attr_data2388bytes, its strings and actual
+empty literal804207a8 to private door-data. Pack148048→152004bytes;1362aligned
+source views totaling48196bytes (overlaps possible). Metadata fingerprints
+refresh for13 field banks;52 existing PMANIM/directory/MODEL/TPL files and the
+parsed-tag binary stay byte-identical.87 private product hashes recorded;
+16 metadata/source-pack changes,0 new products. No extracted data/ISO committed.
+
+Validation: final CMAKE_BUILD_PARALLEL_LEVEL=4 make test -o assets-ready exit0,
+326/326 C++ in36.50s and193/193 Python in27.933s. make all -j4
+-o assets-ready SOUNDTRACK=gamecube exit0, including final-tree no-op check.
+No new compiler warnings; baseline Pillow deprecation remains. Strict native
+ARM fixture exit0: history/actual15tags/areaRoot/resume/skip PASS in isolated
+artifacts/azahar-area-map-history-probe-fixed. Fixtures also cover original flags0,
+new/existing/index63/full history, same/different groups, flag2/4, original
+ordinal shifts, service-mutation copy ordering, partial resource resume,
+skipped ordinals, adapter retirement, uncleared-area rejection and live root
+GP+168 preservation. These are static-source/data fixtures, not Dolphin traces.
+The first excluded ARM fixture timed out because its area-directory literal
+kept host romfs instead of native romfs:. Phase markers isolated the failure
+after all history checks; corrected the private harness and reran, without a
+production workaround. A stray shared-root make attempt stopped at a missing
+generated item_get_effect.v.pica dependency; authoritative native validation
+uses only the frozen checkout above. Normal isolated40s boot exit0; inspected original storybook/text at sampled
+60AppFPS/100%, not a hardware benchmark or field-NPC raster acceptance.
+Normal3DSX SHA256f77eae9a849fce92b65ec652efe0bfbc48f7bb146ecbd0d66a3b287f33490f25.
+Frozen tree42e579c0c961834193d5189c6ecb8c88974b8aa9; manifest
+artifacts/area-map-history-validation-manifest.json and assets
+artifacts/area-map-history-assets-after.json. Private probe source restored.
+Other roots' independent pending changes were excluded from the frozen tree.
+
+Next: bind original room cleanup and outer map-change/load/parser ordering,
+then provide shared actual npcEnt battle0 RNG and retained world services before
+normal Game bootstrap invokes this stage. Complete field Main/facing/query/
+collision/display and hardware/raster checks remain required. Continue adding
+areas through source definitions/parsed inputs and area-specific services;
+do not label this early Rogueport slice or the full remake complete.

@@ -1176,3 +1176,7 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Recovery effect lifecycle and Maya ownership](effect/RECOVERY_EFFECT_LIFECYCLE_AND_MAYA_OWNERSHIP.md) — original recovery constructor/Main, retained Maya timing, addressed resources and remaining native services.
 
 - [Native original battle-sequence entry and field binding](battle/NATIVE_BATTLE_SEQUENCE_ENTRY_AND_FIELD_BINDING.md): complete Init/Main parents, registered actor/GP/event/control ownership and explicit legacy-entry exclusion.
+
+
+- [Tagged-map NPC history and definitions](field/TAGGED_MAP_NPC_HISTORY_GATE_AND_DEFINITION_SOURCE.md): actual source map table, retained history promotion/group invalidation, death-mask gate and parser/bootstrap boundaries.
+- [Native map-NPC history and area-root preparation](field/NATIVE_MAP_NPC_HISTORY_BOOTSTRAP.md): bounded original history, retained row admission, real same-VM registration before root and remaining Game/field services.

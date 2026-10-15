@@ -4792,3 +4792,19 @@ RNG/numeric battle services, query-ready/Main/facing/GPU and room/event lifetime
 No admission shortcut acknowledges those owners.
 
 Implemented retained complete seq_battleInit/Main parents and a Game/shared OriginalSequence/actual field NPC+EventNativeRuntime binding; no successful default for source resource/audio/battle_init children. [Contract](../behavior/battle/NATIVE_BATTLE_SEQUENCE_ENTRY_AND_FIELD_BINDING.md). Real ordinary bootstrap still needs persistent shared field GP/F/VM, tik_01/c_kuribo map actor registration, retained original source name and setup4 writes to that same N, and real battle_start before action/menu admission. Do not acknowledge the old pending Init after a legacy Trio snapshot exists. Recovered npcInit/fbat ownership evidence is artifacts/field-battle-work-owner-evidence/report.md. Full original prologue/teardown/event/story requirements remain open.
+
+
+### Tagged-map history and retained area-root preparation
+
+Source delivery: [map-definition/history gate](../behavior/field/TAGGED_MAP_NPC_HISTORY_GATE_AND_DEFINITION_SOURCE.md)
+recovers original8030f668 definition rows, actual gor02 flags0,64-record
+promotion/group invalidation, ordinal PPCslw mask and proven death writer.
+Code77ac0622 composes bounded history and retained parsed-row registration
+with the actual area scheduler; see [native binding](../behavior/field/NATIVE_MAP_NPC_HISTORY_BOOTSTRAP.md).
+326C++/193Python tests and isolated ARM history/areaRoot/resume/skip fixtures
+pass. This closes the scoped static history/definition owner, not the complete
+map transition. Remaining documentation/implementation frontier: actual room
+cleanup/history persistence and outer load/parser order, shared npcEnt battle0
+RNG and normal field Main/query/facing/collision/display ownership. Keep the
+request open for those providers and runtime traces; no fabricated cleanup,
+mask bank, parser globals or RNG substitutes were added.

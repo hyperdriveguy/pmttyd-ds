@@ -1491,3 +1491,27 @@ license or redistribution rights. No original pack/ISO bytes were committed.
 ### Original battle-sequence entry constants
 
 Read-only US ISO DOL spans802c2abc+70 and804203b0+20 (hex) preserve112 bytes of source room/stage/audience strings and32 bytes of color/format/listener data. Private battle-sequence-entry.pmevt is180 bytes, SHA2567a5295a1050b3672569655c8f637aebd65aa69924acc700db5e18de8d5cf8349. Metadata records span hashes. No code, BSS, saved mode, work state, readiness, texture scaling or replacement art/audio is exported. tools/battle_sequence_entry_assets.py participates in assets-base. Original Nintendo/Intelligent Systems resources, local use only; no redistribution rights. Packs stay ignored.
+
+
+### Original map-definition/history source views
+
+`tools/field_map_npc_assets.py::source_segments` now includes read-only US
+G8ME01 _map_attr_data8030f668/0x954,198 named12-byte records plus actual
+terminator8030ffb0={0,ffffffff,0}, SHA256
+5c76b1a7b2073b6ddbfbeac319e786c9b44b77330e9bd7c062e0f5b8661dd4cc,
+all referenced source strings and empty literal804207a8. Source neighbors for
+PMEVT alignment remain actual DOL bytes. No gor02 entry is invented. Private
+`romfs/door-data.pmevt` grows148048→152004bytes; metadata in door-data.json
+records1362aligned views totaling48196bytes with overlaps possible. Retained
+history is native live F storage, not packaged fabricated BSS/save defaults.
+
+Native area preparation uses the existing parsed gor02 tags unchanged and
+explicit adapted guest identities.13 bank metadata fingerprints refresh from
+the exporter dependency change; all52 animation/directory/MODEL/TPL products
+remain byte-identical, as does field-npc-map-gor_02.bin.87 product hashes and
+16 metadata/source-pack changes are recorded in ignored
+artifacts/area-map-history-assets-after.json. Original Nintendo/Intelligent
+Systems resources remain local only; no redistribution rights are asserted.
+ISO and compiled/extracted packs stay outside source history. See
+[history contract](behavior/field/TAGGED_MAP_NPC_HISTORY_GATE_AND_DEFINITION_SOURCE.md)
+and [native composition](behavior/field/NATIVE_MAP_NPC_HISTORY_BOOTSTRAP.md).
