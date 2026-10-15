@@ -1,10 +1,18 @@
 #pragma once
 #include "field_npc_registry.hpp"
 #include "field_pose_pool.hpp"
+#include "field_map_npc.hpp"
 #include <array>
 namespace ttyd {
 class EventAddressSpace;
 class FieldNpcRegistryBinding;
+struct FieldMapNpcBattleAdmission {
+ void* user=nullptr;
+ // Required for non--1 requests; no effects, complete numeric/RNG admission.
+ bool (*admit)(void*,uint32_t actor,int32_t index)=nullptr;
+ int32_t (*random)(void*,int32_t)=nullptr;
+ int32_t (*savedFlag)(void*,int32_t)=nullptr;
+};
 // One cold-boot NPC owner. Stable native allocations have explicit guest
 // identities, not original __memAlloc addresses. Cold BSS counts are zero;
 // npcInit itself does not clear them. Room reset/deletion remain separate.
@@ -35,6 +43,10 @@ public:
  FieldNpcRegistryBinding(const FieldNpcRegistryBinding&)=delete;
  FieldNpcRegistryBinding& operator=(const FieldNpcRegistryBinding&)=delete;
  bool initialize(); // Once, actual npcInit. Never a room reset.
+ bool canEnter(uint32_t name,uint32_t model) const;
+ // Caller supplies an already parsed, history-gate-admitted row. All row
+ // services are admitted before Entry; no partial row is repeated on a hold.
+ std::optional<uint32_t> registerMapNpc(const PackedMapNpcInput&,BattlePoseClock,const FieldMapNpcBattleAdmission& = {});
  std::optional<int32_t> enter(uint32_t name,uint32_t model,BattlePoseClock);
  std::optional<uint32_t> lookup(uint32_t name,PackedNpcLookup=PackedNpcLookup::NoAssert);
  std::optional<std::vector<uint32_t>> activeActors() const; // Active1, not query/display readiness.

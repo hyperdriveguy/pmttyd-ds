@@ -12,7 +12,7 @@ import re
 import struct
 from pathlib import Path
 from iso_assets import DEFAULT_ISO, extract
-from field_actor_assets import tagged_npcs
+from field_map_npc_assets import parsed_records
 from battle_pose_directory import source_directory, write_directory
 from character_surface_mesh import compile_surface_mesh
 
@@ -62,7 +62,7 @@ def export_model(iso,model_name,work,output):
     original,bank,names=source_directory(model.read_bytes())
     if original!=model_name:raise ValueError('Original MODEL identity differs from request')
     safe_name(bank);extract(iso,'a/'+bank+'-',texture)
-    helpers=['field_npc_resource_assets.py','battle_pose_directory.py','character_surface_mesh.py','character_mesh.py','character_bake.py','character_node.py','character_animation_pack.py','character_animation_data.py','iso_assets.py']
+    helpers=['field_npc_resource_assets.py','field_map_npc_assets.py','battle_pose_directory.py','character_surface_mesh.py','character_mesh.py','character_bake.py','character_node.py','character_animation_pack.py','character_animation_data.py','iso_assets.py']
     fingerprint=hashlib.sha256(b''.join(Path('tools',p).read_bytes() for p in helpers)+model.read_bytes()+texture.read_bytes()).hexdigest()
     atlas=work/(asset+'.png')
     manifest=output/(asset+'.json');products=[output/(asset+'.'+s) for s in ('pmanim','pose-directory.bin','draw-model.bin','draw-textures.bin')]
@@ -90,10 +90,11 @@ def build(iso,areas=('gor_02',)):
     for area in dict.fromkeys(areas):
         safe_name(area);path=work/(area+'.s');extract(iso,'m/'+area+'/s',path)
         actors=[]
-        for name,actor in tagged_npcs(path.read_bytes().decode('shift_jis')).items():
-            if actor['tribe'] not in tribes:raise ValueError('Original map tribe not found: '+actor['tribe'])
-            row=tribes[actor['tribe']];model=row['model'];models.setdefault(model,None)
-            actors.append(dict(name=name,tribe=actor['tribe'],**row))
+        for _,strings,_ in parsed_records(path.read_bytes()):
+            name,tribe=(value.decode('shift_jis') for value in strings[:2])
+            if tribe not in tribes:raise ValueError('Original map tribe not found: '+tribe)
+            row=tribes[tribe];model=row['model'];models.setdefault(model,None)
+            actors.append(dict(name=name,tribe=tribe,**row))
         maps.append(dict(area=area,source=json.loads(path.with_suffix('.s.provenance.json').read_text()),actors=actors))
     models.setdefault('hoshi',None) # Actual animPoseEntry fallback, no fabricated failure.
     for model in models:models[model]=export_model(iso,model,work,output)
