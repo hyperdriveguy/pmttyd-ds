@@ -1,5 +1,6 @@
 #pragma once
 #include "animation_main_time.hpp"
+#include "animation_main_timeline.hpp"
 #include "animation_pool_memory.hpp"
 #include <functional>
 namespace ttyd {
@@ -12,6 +13,7 @@ public:
  static std::unique_ptr<AnimationMainTimeBinding> bind(std::shared_ptr<BattlePosePool>,EventAddressSpace&,const AnimationPoolMemory&,std::function<bool()> current);
  bool available() const;
  AnimationMainTimeServices services();
+ AnimationMainTimelineServices timelineServices();
  AnimationMainTimeBinding(const AnimationMainTimeBinding&)=delete;
  AnimationMainTimeBinding& operator=(const AnimationMainTimeBinding&)=delete;
 private:

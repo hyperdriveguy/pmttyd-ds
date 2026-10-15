@@ -19,4 +19,8 @@ AnimationMainTimeServices AnimationMainTimeBinding::services(){
  s.convertUnsigned=[](void* u,uint64_t n,float& f){return static_cast<AnimationMainTimeBinding*>(u)->available() && effectMayaConvertUnsigned(nullptr,n,f);};
  s.truncate=[](void* u,float f)->std::optional<int32_t>{return static_cast<AnimationMainTimeBinding*>(u)->available()?nativeAnimationLoopConversion(nullptr,f):std::nullopt;};return s;
 }
+AnimationMainTimelineServices AnimationMainTimeBinding::timelineServices(){
+ const auto s=services();return {s.user,s.word,s.store};
+}
+
 }

@@ -2306,3 +2306,9 @@ add_test(NAME battle_phase_move_continuation COMMAND battle_phase_move_continuat
 add_executable(battle_act_continuation_tests tests/battle_act_continuation_tests.cpp)
 target_link_libraries(battle_act_continuation_tests PRIVATE ttyd_core)
 add_test(NAME battle_act_continuation COMMAND battle_act_continuation_tests)
+# Retained original timeline scans and contiguous scalar evaluation owner.
+target_sources(ttyd_core PRIVATE source/display/animation_main_timeline.cpp)
+add_executable(animation_main_timeline_tests tests/animation_main_timeline_tests.cpp)
+target_link_libraries(animation_main_timeline_tests PRIVATE ttyd_core)
+add_test(NAME animation_main_timeline COMMAND animation_main_timeline_tests)
+set_tests_properties(animation_main_timeline PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
