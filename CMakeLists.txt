@@ -2548,3 +2548,7 @@ add_executable(field_party_script_call_tests tests/field_party_script_call_tests
 target_link_libraries(field_party_script_call_tests PRIVATE ttyd_core)
 add_test(NAME field_party_script_call COMMAND field_party_script_call_tests)
 set_tests_properties(field_party_script_call PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+
+# Native graphics service is explicitly unavailable in host builds.
+target_sources(ttyd_core PRIVATE source/display/native_graphics_program.cpp)

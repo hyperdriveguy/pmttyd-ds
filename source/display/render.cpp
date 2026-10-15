@@ -8,6 +8,7 @@
 #include "item_presentation.hpp"
 #include "pouch_revision.hpp"
 #include "world_shbin.h"
+#include "native_graphics_program.hpp"
 #include "message_system_shbin.h"
 #include "field_camera.hpp"
 #include "map_visibility.hpp"
@@ -43,6 +44,10 @@ bool Renderer::init() {
     if(!loadItemPresentations("romfs:/item-presentations.bin") || !loadItemSelectorAssets("romfs:") || !loadPouchRevisionAssets("romfs:"))return false;
     if(!C3D_Init(C3D_DEFAULT_CMDBUF_SIZE)) return false;
     c3dReady=true;
+    // Citro3D retains its previous program across Fini/Init. Establish a real
+    // process shader owner before C2D or any renderer program can be cached.
+    if(!prepareNativeGraphicsParkingProgram())return false;
+    if(!bindNativeGraphicsParkingProgram())return false;
     // Native C2D capacity2048; tilted top target240x400 represents400x240
     // landscape pixels. Bottom is320x240; transfers convert RGBA8 to LCD RGB8.
     if(!C2D_Init(2048)) return false;
@@ -1681,7 +1686,12 @@ void Renderer::shutdown() {
     releaseWeaponMenuSurfaces();
     retireBattleFont(); // Invalidate all copied font leases before native texture free.
     releaseAudienceDrawing();
-    if(c3dReady) C3D_FrameSync();
+    if(c3dReady) {
+        C3D_FrameSync();
+        // No allocation: successful init prepared this exact stable shader
+        // before C2D. Failure before preparation cached no scene/C2D program.
+        bindNativeGraphicsParkingProgram();
+    }
     if(shadowTexture44.imported){Tex3DS_TextureFree(shadowTexture44.imported);C3D_TexDelete(&shadowTexture44.texture);shadowTexture44.imported=nullptr;}
     releaseItem95Icons();
     releaseItemGetEffect();

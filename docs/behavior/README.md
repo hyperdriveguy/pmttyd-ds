@@ -1379,3 +1379,6 @@ Original battle menu native resource/queue owners:
 - [Original normal font GX state](display/NATIVE_ORDINARY_FONT_GX_STATE.md).
 
 - [Retained story-to-native party callbacks](partner/NATIVE_STORY_PARTY_DISPATCH.md): actual caller VM, native resource waits, lecture dispatch, canonical join and mode leaves, and guarded owner handoff.
+
+
+- [Native shader lifetime across graphics reinitialization](display/NATIVE_SHADER_PROCESS_LIFETIME.md).
