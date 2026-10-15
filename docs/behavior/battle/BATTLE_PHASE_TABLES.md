@@ -85,6 +85,9 @@ at0x80363c8c. Its local loop at0x8011c298 redispatches immediately only when
 its transition flag is nonzero; otherwise it exits. State0 invokes phase-first
 processing, advances channel5 and requests immediate redispatch. The other states and actor-event interaction are specified in the
 [move-controller contract](BATTLE_MOVE_CONTROLLER.md).
+State8 prepares S5=9 and S6=0x06000000, then returns through8011c298
+with the immediate flag still0. Act runs at8011c120/124 on the next Move
+invocation. Only state2 has an explicit fallthrough into state3.
 The table is fingerprinted; its hash identifies bytes, not semantic coverage.
 
 ## Actor selection region (`0x8011bf34`–`0x8011bfec`, B)

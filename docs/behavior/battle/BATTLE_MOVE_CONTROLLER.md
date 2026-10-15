@@ -24,7 +24,8 @@ this routine, though its services/scripts can consume it.
 Full state values are0x05000000 plus the decimal index in the table. "Exit"
 below means return to the outer caller without immediate redispatch. "Loop"
 means set immediate=1 and dispatch the resulting state in this same invocation.
-Explicit fallthrough from state2→3 and8→9 is separate from that loop.
+The explicit state2→3 fallthrough is separate from that loop. State8 returns
+with S5=9; it does not execute state9 in the same invocation.
 
 | Index | US entry | Local work/transition |
 | --- | --- | --- |
@@ -36,7 +37,7 @@ Explicit fallthrough from state2→3 and8→9 is separate from that loop.
 | 5 | 8011bda8 | wait barrier; if ready increment S5 and loop, else exit |
 | 6 | 8011bdcc | choose one selector0 phase event, or go to10 |
 | 7 | 8011be60 | wait/conclusion; if continuing set S5=6 and loop |
-| 8 | 8011bec0 | clear action bookkeeping/select actor/set action state; fall through9 |
+| 8 | 8011bec0 | clear action bookkeeping/select actor/set S5=9 and action state; exit |
 | 9 | 8011c120 | btlseqAct(B); exit using whatever state the callee established |
 | 10 | 8011c12c | conclusion/phase-end decision; continue actors or start audience phase work |
 | 11 | 8011c204 | wait for audience phase reaction and event barrier; advance to12; exit |
@@ -120,9 +121,10 @@ invent a local safe fallback or describe this path as a normal "no moves" return
 
 Next scan the actor table again: for each existing entry/unit with unsigned
 state+0x20=1, set state0. This clears deferred marks after selecting one actor.
-It then re-fetches B+0x420 and performs the kind222 branch below, before falling
-through into state9/btlseqAct in the same invocation. No immediate flag is
-needed for this fallthrough.
+It then re-fetches B+0x420 and performs the kind222 branch below, then returns.
+The immediate flag was cleared at8011bc3c; every state8 branch reaches the
+common tail8011c298 without setting it (including8011c058,8011c10c and8011c11c).
+The next Move invocation dispatches S5=9 to btlseqAct at8011c120/124.
 
 ## Kind222 command-availability flags in state8 (B)
 
