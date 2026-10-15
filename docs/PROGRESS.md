@@ -12844,3 +12844,66 @@ saved-kind/current-slot/table/Release/free operations. Bind full source Main/
 facing/NPC field scheduling, broader smart/linked/collector owners, original
 battle result/field return, interiors/triggers/visibility and physical hardware
 verification. EVT-01 and the prologue/full-game goal remain active/incomplete.
+
+## 2026-10-15 — Retained Turn, event barriers and audience attack callbacks documented
+
+Added 171 inline comment lines across six C++/header files. Added
+[Turn guide](code/battle-turn.md), [event barriers](code/battle-event-barriers.md)
+and [audience attack callbacks](code/battle-audience-attack-events.md), linked from
+the code index. Code/docs commit 9db61af8. All executable tokens/string literals
+unchanged. No gameplay, dialogue, art or audio changes, and no new tests for this
+comment-only work.
+
+Turn notes distinguish native retained Step from source channel3, immediate
+recursive dispatch from another invocation, source not-ready0 from provider hold,
+exact captured child operands and typed stack outputs. Documented all dispatch
+families, countdown widths/offsets, null-unit recovery exceptions, status selector
+order, Burn registration/polling, HP bookkeeping, Freeze presentation, Happy's
+integer division/trials/narrowing and original binary32/bias/fused arithmetic.
+Explained event allocation pointers versus IDs, failure0 effects and source yield
+boundaries. No rendering-frame cadence or measured constants invented.
+
+Barrier notes cover all 64 unit slots even in Unit entry, stale cleanup versus
+outer first-live early exit, separately captured passed/reaction/consumer/release
+battle owners, original queue stride/tail/adjacent duplicate compaction, any-
+engaged removal acknowledgement and reservations-before-conclusion ordering.
+Null scripts still reach the real allocator; failed allocation still means
+reaction1/barrier0. Pointer/lifecycle identity is not allocation-lifetime proof.
+Audience callbacks explain actual EventEntry identity, argument resolution before
+cached slot overwrite, repeated global member capture, incremental EVT outputs,
+null-output sentinel, mode1 effect/audio skip, fresh sound position, flag0x40 last,
+legitimate sound handle-1, queued pitch narrowing and live-engine unavailability.
+Backend/VM/cancellation remain caller-owned; no unsupported current integration
+is declared ready by these reusable helpers.
+
+Frozen validation baseline 2cac94ffe1748c367e114152ce2b5e7a539b5073 plus owned documentation is at
+artifacts/battle-turn-code-documentation-validation/source. Full audit covers 3966
+baseline tracked files with zero unexpected changes; all 10 owned frozen/live
+annotation snapshots match and all 85 local guide/index links resolve. Source and
+prose finalized before launching gates. Concurrent uncommitted battle/field/
+release/effect/render/file-cache work and later commits are preserved/excluded;
+this is not combined moving-worktree validation.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits 0: 439/439 C++ (48.25s),
+212/212 Python (37.650s), zero skipped. Actual original 45-descriptor enemy-bank
+fixture ran. Native make all -o assets-ready -j4 SOUNDTRACK=gamecube exits 0.
+Both async gate handles observed terminal and both exit markers agree. Manifest
+records frozen source, dependency, product/evidence/log and ELF/3DSX hashes.
+Existing compiler/Pillow warnings remain. No emulator/profile/save changes or
+hardware/pixel/performance/Gekko parity claim.
+
+Cache inherits the prior 63 accepted products, original footer/HP/enemy evidence
+and default Python fixture paths unchanged; all hashes verified after gates.
+Preflight detects only new read-only tools/hit_n64_source_evidence.py since prior
+baseline; no asset, existing-converter or Makefile changes. New committed Main/
+HitN64 test registrations inspected. No conversion, overlay, editable import,
+shared-pack write or provenance/license change. Python fixtures independently
+use read-only ISO/empty temporary outputs; native full regeneration skipped.
+No ISO, extracted originals or compiled binary committed.
+
+Next: document message assets/playback/selection/window presentation with exact
+original token/ID fidelity, then remaining platform/file/save/story/event helpers.
+Newer Trio Turn/audience/pinch/sequence/action integration, enemy/recovery/HitN64
+resources and field/NPC/animation/render/raw-RAM/release additions still need
+their own inline audit. Inventory hashes are review aids, not semantic coverage
+or full-game proof. The full documentation/remake goal remains active.
