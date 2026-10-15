@@ -3325,3 +3325,16 @@ products retain their bytes/mtime; interrupted compiled products are replaced.
 No editable originals or shared extraction caches are modified. Native resident
 font leases reuse the existing original512x256 font.t3x/font.pmfont pair without
 conversion or additional GPU texture allocation; only metadata is copied.
+
+## Recovery documentation validation inputs (2026-10-15)
+
+artifacts/recovery-code-documentation-validation/source inherits all 71 accepted
+products and original enemy/footer/HP/HitN64/party-position/default test fixtures.
+Only CMake adds a mesh-publication target/test; converter/assets/Makefile bytes
+are unchanged. Small mutable evidence/default fixtures copied privately; actual
+HitN64 decoded-PNG read path independently pinned. All product/evidence/fixture
+hashes checked after gates. No conversion, editable import, overlay or shared-pack
+write. Native full regeneration skipped; Python fixtures independently read ISO
+read-only into empty temporary outputs. No ISO, original extracted asset or
+compiled product committed; Nintendo/Intelligent Systems rights retained and no
+new license granted.

@@ -14545,3 +14545,54 @@ Next: recovery lifecycle/resource/draw code, remaining runtime helpers/tooling,
 and newer concurrent battle/display/party/font/Mario/animation/file integrations.
 Snapshot inventory is a review aid, not semantic coverage proof. Full code
 documentation/remake goal remains active.
+
+## 2026-10-15 — Recovery effect code documentation
+
+Added 106 inline comment lines across six effect C++/header files plus
+[recovery effect guide](code/recovery-effects.md), linked from index.
+Code/docs commit a1f9db7f. All executable tokens/string literals unchanged;
+no original dialogue/story/assets, numeric or simulation behavior changed.
+No new tests for this prose-only work.
+
+Lifecycle notes map supported kinds/normalization, wrapped allocation versus
+truncated bytes, partial initialization, sound tiers/captured roots, Maya versus
+GP1c clock, invocation-local launch/completed across catch-up, signed counters,
+state-specific duration/interpolation, real terminal stardust/SFX/Maya/effect
+ordering and independent depth/queue children. Draw notes explain full identity,
+retained SDK/GX/FIFO payloads, initial versus refreshed camera/billboard captures,
+source texture selection, twenty quad loads/index-before-hold, live palette/BSS,
+world-space number formatting/centering and actual render-owner boundaries.
+Resource notes map LE directory/BE payload, native pack limits, transactional
+publication and one-span reads. Guide distinguishes local code completion from
+production recovery/driver/resource/audio/GPU ownership and original parity.
+
+Frozen baseline e8f3e243d260109bcc8bf797eee365f6412cf465 plus owned docs is at
+artifacts/recovery-code-documentation-validation/source. Full git-blob audit
+covers 4178 baseline tracked files with zero
+unexpected changes; all eight frozen/live documentation snapshots match and
+97 local guide/index links resolve. Source/guide prose finalized before gates.
+Concurrent party/font/Mario/file/GPU/runtime/animation edits preserved/excluded;
+no combined moving-worktree validation claim. Original host/native handles
+observed terminal0; exit markers agree.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits 0: 479/479 C++ (79.73s),
+218/218 Python (33.660s), zero skipped. Actual original 45-descriptor enemy,
+private HitN64 and original party-position fixtures ran. Native
+make all -o assets-ready -j4 SOUNDTRACK=gamecube exits 0. Manifest pins source,
+product/evidence/fixture/log and ELF/3DSX hashes. Existing compiler/Pillow warnings
+remain. No emulator/profile/save changes or hardware/Gekko numeric/pixel/audio/
+performance parity claims.
+
+Dependency preflight identifies only CMake's mesh-publication target/test;
+converters/assets/Makefile unchanged. All 71 accepted products and original
+footer/HP/enemy/HitN64/party-position fixtures inherited by hash, with small mutable
+evidence/default fixtures copied privately. Actual HitN64 PNG read path also
+pinned. No conversion/import/overlay/shared-cache write. Native full regeneration
+skipped; Python fixtures independently read ISO read-only into empty temporary
+outputs. See [asset ledger](ASSETS.md). Original rights retained; no ISO,
+extracted original or compiled binary committed.
+
+Next: remaining runtime helpers/tooling and newer concurrent display/battle/
+party/font/Mario/animation/file/effect-resource integrations. Hash inventory is a
+review aid, not semantic coverage proof or proof all later effect code is reviewed.
+Full code documentation/remake goal remains active.
