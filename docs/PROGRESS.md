@@ -1,3 +1,94 @@
+## 2026-10-14 — Original recovery and Maya lifecycle ownership
+
+Previous goal turn made progress with retained attack selection. Commit
+`5c4bd4b9527a2e178a7a19071df1b45bf8ad2005` now implements portable recovery
+Entry8014335c/400 and Main80142bc4/798 paths for source kinds0–5,7,8,
+plus original Maya Allocate/Play/Calculate/Delete lifecycle leaves.
+[Contract](behavior/effect/RECOVERY_EFFECT_LIFECYCLE_AND_MAYA_OWNERSHIP.md).
+The complete tutorial/battle/optional audience-tap objective remains active.
+
+Recovery owns original effect/payload/Maya requests, signed amount/type branches,
+particle states0–6, source elapsed GP ticks, cumulative completion across elapsed
+iterations, source sound/display order and terminal stardust/Maya/effect deletion.
+Retained cursors preserve acknowledged writes/calls and captured service operands
+across unavailable allocation, animation, math, sound, display and deletion.
+Request identity compares XYZ bits (NaN/signed-zero included); memory/byte-reader
+owners reject reuse. Numeric binary32 operations remain explicit services; no
+host transcendental approximation is silently installed. These bodies contain no
+fused arithmetic instructions; the future Maya curve evaluator does.
+
+Maya allocation clears exactly18+34*channelCount bytes (hex), then stores the
+descriptor. Play captures selected64-bit GP timing and original hardware-derived
+unsigned divisor; Calculate preserves unsigned wrapping elapsed conversion via
+binary64 then binary32, signed GP frequency, source clamp/flags and fresh channel
+table reads. Per-channel matrix/scalar outputs preserve original+14/+44 with34
+stride. Matrix evaluation remains an explicit unavailable service. Main2/kind6
+is explicitly not admitted before allocation; it is not remapped to Main.
+Independent sub-agent audit corrected source ordering/operand capture during
+implementation and found no scoped blocker after final recheck.
+
+New read-only resource importer/compiler preserves9 embedded DOL spans as
+editable integer JSON and immutable PMREC001 addressed data. Original payloads
+and pointer aliases stay big-endian; only the small directory is little-endian.
+Private pack2678 bytes SHA256
+`553c3a347e1f88c4206fd3a26a0531c5a6ba673ca3bb63183846dd2ba1d7138f`.
+Roundtrip is byte-identical. Import refuses nonempty destinations; native loader
+rejects truncation, overlap, wrap, oversized directories/payloads and trailing
+bytes transactionally. Original descriptor/key time79/face/constants/name views
+are tested. No runtime GP/clock, evaluator, texture or sound owner is fabricated.
+`tools/verify_recovery_effect.py` passed12 whole body and9 data identities against
+the read-only ISO; static evidence, not original execution or measured timing.
+Asset paths/conversion/licensing are recorded in docs/ASSETS.md; raw payloads,
+source JSON and compiled pack remain ignored. No HUD/dialogue/control changes.
+
+Required frozen validation: `artifacts/battle-lens-qwwrj2n7`, base
+`8d21daa8b202bbc720d8119b2aaacd2eab1d061c` plus owned feature inputs.
+`CMAKE_BUILD_PARALLEL_LEVEL=4 make test -o assets-ready` passed343/343 C++
+(45.19s) and198/198 Python (65.751s), exit0;
+`artifacts/recovery-lifecycle-test-final.log`. Native required
+`MAKEFLAGS=-j4 TMPDIR=artifacts/tmp make all -o assets-ready
+BUILD=build-battle-lens TARGET=ttyd-battle-lens` exited0 initially, after resource
+refresh and after normal-main restoration; logs `recovery-lifecycle-native.log`,
+`recovery-lifecycle-native-final.log`, `recovery-lifecycle-native-restored-final.log`.
+Normal3DSX SHA256
+`22bf47331c971f0dd37f84383e841942b86e295768ab85822a66d590fe26acd6`.
+Audit1748 source/include/test/tool/build inputs: zero mismatches, zero extra
+frozen inputs; `artifacts/recovery-lifecycle-source-manifest.json`. Concurrent
+foreign work was preserved/excluded; no whole-live/merged-tree claim is made.
+Existing unrelated warnings remain; new focused compilations passed Werror.
+
+Initial full suite had only field_map_npc failure: current baseline's private
+parsed-input pack was absent. Refreshed it with committed field_map_npc_assets.py
+(15 gor_02 records), and refreshed door-data through the committed converter
+(148048 bytes/970 objects). Logs `recovery-lifecycle-map-refresh.log` and
+`recovery-lifecycle-door-refresh.log`; no test was disabled. Final full run passed.
+
+Combined original-data→real Maya allocation/play/timing→recovery Main fixture
+passed isolated Azahar15s, exit0. Marker at
+`artifacts/azahar-recovery-lifecycle-final/fixture-status.txt`:
+`PASS originaldata;Maya;matrixhold;countonce;scene4;fixtureonly`.
+It proves ARM retained waits/no allocation or sound replay, captured elapsed
+across live clock change, and original ordered scene4 display registrations.
+The matrix/display/SFX acknowledgements in this test are explicit fixture
+services, not a real evaluator, rendered recovery or audible sound. Screenshot
+inspected and pre-stop log has no Unmapped/LogException entries. First smoke
+exited before marker due to a host-relative path in the fixture; corrected only
+the temporary main to native romfs:/ path and reran successfully. Normal main
+restored exactly and rebuilt; live main/profile/saves were not replaced.
+Documentation checker passed1357 files/zero broken links before this entry.
+
+Next: implement original effCalcMayaAnimMatrix8005e4f4/3ac (quantized keys,
+22-channel Hermite/fused operations, original transform order) and bind a real
+matrix owner. Add whole source effect-pool/Entry/Main traversal and texture-cache
+owners, original recovery Disp/number materials/images18–21/108, source SFX,
+and terminal N64 stardust32 lifecycle. Bind the native present-item effect callback
+only when these owners actually admit a surviving effect. It currently remains
+unbound, preserving the earlier recover-once hold with no fake clear/delivery.
+Original message-window ownership, audience actor-phase execution, full tutorial/
+story/battle flow, optional lower-screen audience taps and hardware acceptance
+remain open. Physical controls and original menu/scene continuation requirements
+remain mandatory.
+
 ## 2026-10-14 — Retained attack selector and native audience admission
 
 Commit `0b5430733f0ebe90f1df675091b0b7b14f266e52` adds a retained native
