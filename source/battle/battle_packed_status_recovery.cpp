@@ -51,7 +51,7 @@ void setRecovered(uint32_t u, int32_t id, uint8_t duration, uint8_t strength,
     put(offsets[id], duration);
     return;
   }
-  // Paired size statuses share signed strength +0x128. Sign disagreement
+  // Paired defense statuses share signed strength +0x128. Sign disagreement
   // clears the pair; zero-strength recovery clears only the selector's side.
   // Fresh old-strength reads matter after preceding GetStatus/provider work.
   if (id == 14 || id == 15) {

@@ -49,7 +49,7 @@ step toward zero with byte wrapping. IDs 10 through 13 preserve strength until
 expiry; other reached strengths step toward zero except 4/14/15/23/24. Zero
 duration clears local strength. Opposite statuses 8/9 cancel their opposite
 shared field first rather than also storing incoming duration. IDs 14/15 use
-fresh signed strength to decide cancellation of their shared size pair. IDs
+fresh signed strength to decide cancellation of their shared defense pair. IDs
 19/20 cancel opposite positive speed durations and then run the reached move
 reset leaf: unit `+0x27c` bit `0x1000` suppresses it; positive signed baseline
 `+0x23` must equal current move count `+0x22`.
