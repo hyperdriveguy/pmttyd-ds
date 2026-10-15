@@ -11750,3 +11750,57 @@ Main providers in source order, starting with an actual field frame/actor and
 deferred render callbacks; retain unavailable owners instead of activating
 partial events. Repair visual/asset-error smoke admission and profile actual
 field/hardware while preserving exact original story and future-area ownership.
+
+## 2026-10-14 — Harbor packed and scene composition documented
+
+Added inline layout/domain/ownership/behavior notes to eight C++ files: Harbor
+scene and packed headers/implementations, class-menu composition, weapon table/
+projection, command Input/pose and action-command/display adapter. Added
+[Harbor composition](code/harbor-composition.md) and
+[packed state](code/harbor-packed-state.md); updated index/service guide links.
+Code/docs commit 887f2c62. All eight preserve executable tokens/string literals;
+no behavior change or new tests for prose-only work.
+
+Explained 12-pointer/37-index catalog and original US message probing, visual
+slots versus registry IDs, source event roots versus installed scripts, original
+kind/part/pose records versus native guest arenas, bounded string scans and BE
+float transport, selective publish/capture and request ownership, source clock
+versus native milliseconds, real pose-generation completion and explicit phase/
+attack/hit scheduling. Documented class-row overlap, candidate permutation order,
+private scratch addresses, label-cache lifetime, invalid cost conversion,
+per-allocation SDK UI tokens, immediate Input unavailability latch and rebuild
+reset, actual target-payment frontier, TimingA callback/field domains and explicit
+presentation/file/palette ownership. Native policy is distinguished from source
+constants; unknown fields stay numeric. Original story/dialogue/assets unchanged.
+
+Frozen validation baseline 74ad7852b87f7ac7331818e0f19224f88c42de58 plus owned documentation lives at
+artifacts/harbor-composition-code-documentation-validation/source. Audit covers
+3871 baseline tracked files: zero unexpected changes. All 12 documented files match
+frozen/live annotation snapshots; all 82 local guide/index links resolve. Existing
+concurrent implementation edits in Harbor header/scene/action, plus Trio/HP/NPC/
+field/runtime work, were preserved/excluded. Manifest retains separate live and
+committed annotation hashes for those three dirty source files. No validation
+of combined moving worktree or concurrent retained-manager behavior is claimed.
+No post-launch source refinements.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits 0: 420/420 C++ (48.66s) and
+207/207 Python (36.911s), zero skipped. Native make all -o assets-ready -j4
+SOUNDTRACK=gamecube exits 0. Both original process handles were polled to terminal
+and exit markers agree. Manifest records source/dependency/log/native hashes.
+Existing compiler/Pillow warnings remain. No emulator/profile/save changes or
+hardware/pixel/performance/Gekko parity claims.
+
+Cache inherits 46 accepted products plus common-menu/Frankly evidence, 14 private
+footer PNG/atlas and three HP PNG hashes. Preflight found no converter/assets/
+Makefile changes since parent validation baseline; all accepted hashes match.
+No overlays, new cache conversion, editable import or shared-pack writes. Existing
+Python converter fixtures independently read the ISO read-only and use empty
+temporary outputs; native full asset regeneration deliberately skipped. No ISO,
+original extracted asset or compiled binary committed; rights/provenance unchanged.
+See [asset notes](ASSETS.md).
+
+Next: Trio attack/runtime and command composition (currently about 2700 lines),
+then remaining event/message/story/effect/platform/file/save helpers and tools.
+Audit committed retained-action/NPC/HP/animation integrations separately as they
+land; earlier annotation hash agreement is only a review aid. Full code
+documentation and remake remain unfinished; goal stays active.

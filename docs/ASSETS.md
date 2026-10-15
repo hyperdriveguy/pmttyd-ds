@@ -2400,3 +2400,19 @@ paths/hashes are in the behavior contract and ignored tail audit. Nintendo/
 Intelligent Systems rights remain reserved; local extraction grants no new
 redistribution rights. No ISO/original body/asset, pack or binary committed.
 Exact product hashes:artifacts/npc-tail-assets-after.json and validation manifest.
+
+## Harbor composition documentation validation inputs (2026-10-14)
+
+artifacts/harbor-composition-code-documentation-validation/source reuses 46
+accepted products from harbor-services documentation validation, plus original
+common-menu/Frankly evidence, 14 private footer PNG/atlas and three HP PNG hashes.
+All hashes were checked before and after gates. Converter/assets/Makefile inputs
+are unchanged between parent and current baselines; no new overlays/conversion
+were needed. Original source ranges/conversion choices remain unchanged; no
+resampling, geometry/lighting changes, editable imports or shared-pack writes.
+Existing Python converter fixtures independently read the ISO read-only and use
+empty temporary outputs; native full asset regeneration deliberately skipped.
+Nintendo/Intelligent Systems rights remain reserved; private tracking/copying
+grants no new license. No ISO, original extracted asset or compiled binary was
+committed. Exact dependency/log/native hashes and source baseline are journaled
+in the ignored validation manifest.
