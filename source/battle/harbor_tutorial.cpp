@@ -248,6 +248,25 @@ bool HarborTutorial::openClassMenu(){
  const auto result=r.packed->commandInput(*this,&r,[](void* self,uint32_t key){auto& r=*static_cast<HarborTutorialRuntime*>(self);const auto id=r.text(key);return r.packed->cacheMenuLabel(key,messages.find(id.c_str()));});
  r.packed->capture(*this);return result.has_value();
 }
+std::optional<HarborClassMenuDrawBinding> HarborTutorial::classMenuDrawBinding(
+ const BattleActDrawServices& linked)const{
+ if(!runtime_ || failed || !classMenuOpen)return {};
+ auto& r=*runtime_;const auto w=r.word(HarborTutorialPacked::Battle+0x1c78);
+ const auto token=r.packed->classUiLifetime(w);if(!token)return {};
+ HarborClassMenuDrawBinding out;out.owner=token;out.allocation=w;
+ out.display.draw=linked;out.display.draw.memory=nativeBattleActorServices(r.vm);
+ out.display.user=&r;
+ out.display.cursorLookup=[](void* user,uint32_t menu,uint32_t type,std::optional<uint32_t>& result){
+  auto& r=*static_cast<HarborTutorialRuntime*>(user);uint32_t cursor=0;
+  if(findPackedCommandCursor(menu,type,cursor,nativeBattlePackedSelectionServices(r.vm)))result=cursor;
+  return true; // Original no-match is completed lookup, whose output is unused.
+ };
+ out.current=[runtime=runtime_,owner=out.owner,w](){
+  uint32_t actual=0;return runtime->packed->classUiLifetime(w)==owner &&
+    runtime->packed->readWord(HarborTutorialPacked::Battle+0x1c78,actual) && actual==w;
+ };
+ return out;
+}
 void HarborTutorial::classMenuPresented(){if(runtime_ && classMenuOpen){uint32_t w=0;if(runtime_->packed->readWord(HarborTutorialPacked::Battle+0x1c78,w) && w)runtime_->vm.memory.writeByte(w+0x14,1);}}
 bool HarborTutorial::buildClassMenu(){
  if(!runtime_ || failed || !initialized || !introComplete || phaseActive || attackActive || damageActive)return false;

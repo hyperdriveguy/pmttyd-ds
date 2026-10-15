@@ -1230,3 +1230,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Original NPC Main child ABI and numeric frontier](field/ORIGINAL_NPC_MAIN_CHILD_ABI_AND_NUMERIC_FRONTIER.md): all39 direct children, scratch references, repeated gates, original helper captures and source constant corrections.
 
 - [Native type5 model relocation](file/NATIVE_TYPE5_MODEL_RELOCATION.md): complete nested Set/Clear through shared memory, original model round trips and remaining loaded-file ownership.
+
+- [Cold original class frame pipeline](display/NATIVE_COLD_CLASS_FRAME_PIPELINE.md): actual UI allocation identity, retained queued drawing, observable cold-entry adaptation and original footer resources.

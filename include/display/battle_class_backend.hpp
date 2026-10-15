@@ -43,6 +43,10 @@ public:
   std::vector<BattleClassQuad> quads;
   std::function<uint32_t(uint32_t)> random;
   void begin();
+  // FontString preflights the complete native run: rejection consumes no RNG
+  // and emits no prefix. Accepted runs finish synchronously, preserving each
+  // glyph's two-RNG/quad order. Font/labels are immutable; RNG cannot reenter
+  // drawing or alter resources. This is an atomic retained font owner.
   std::optional<uint32_t> request(const BattleClassRasterRequest &);
   // No pending four-point primitive; does not imply original event completion.
   bool complete() const { return pendingPoints_ == 0; }

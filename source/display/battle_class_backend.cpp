@@ -277,17 +277,24 @@ BattleClassBackend::request(const BattleClassRasterRequest &r) {
     WindowFontMeasurement size;
     if (!text || !measurePlainWindowFont(*font, text, 2, size))
       return {};
+    // Stage the finite native glyph run before consuming real RNG or emitting
+    // any geometry. A malformed later glyph must not leave a prefix that a
+    // retained parent could replay. Font/label resources remain immutable and
+    // the synchronous RNG owner may only advance its RNG during this call.
+    struct Action {bool random;uint32_t operand;};
     struct Context {
-      BattleClassBackend *b;
+      BattleClassBackend staged;
       BattleActMatrix matrix;
       float center;
+      std::vector<Action> actions;
       bool failed = false;
     };
-    Context c{this, *r.matrix, -float(size.width) * .5f};
+    Context c{{}, *r.matrix, -float(size.width) * .5f, {}, false};
     WindowFontDrawServices s;
     s.user = &c;
     s.random = [](void *self, uint32_t bound) {
-      return static_cast<Context *>(self)->b->random(bound);
+      static_cast<Context *>(self)->actions.push_back({true,bound});
+      return uint32_t(0); // Source StringMatrix discards both noise RNG results.
     };
     s.emitQuad = [](void *self, const WindowFontQuad &g) {
       auto &c = *static_cast<Context *>(self);
@@ -297,7 +304,7 @@ BattleClassBackend::request(const BattleClassRasterRequest &r) {
                                1 - g.v0 / 256.f,
                                g.u1 / 512.f,
                                1 - g.v1 / 256.f};
-      if (!c.b->quad(
+      if (!c.staged.quad(
               region, BattleClassTexture::Font, c.matrix,
               {{{c.center + g.originX + g.left, float(g.originY + g.top)},
                 {c.center + g.originX + g.right, float(g.originY + g.top)},
@@ -305,15 +312,20 @@ BattleClassBackend::request(const BattleClassRasterRequest &r) {
                 {c.center + g.originX + g.left, float(g.originY + g.bottom)}}},
               g.rgba))
         c.failed = true;
+      else c.actions.push_back({false,uint32_t(c.staged.quads.size()-1)});
     };
     WindowFontStyle style;
     style.color = style.palette0 = fontColor_;
     style.spacing = 2;
-    return drawPlainWindowFont(*font, text, WindowFontConsumer::StringMatrix,
-                               style, s) &&
-                   !c.failed
-               ? std::optional<uint32_t>(0)
-               : std::nullopt;
+    if(!drawPlainWindowFont(*font,text,WindowFontConsumer::StringMatrix,style,s) || c.failed)
+      return {};
+    // No readiness failure remains after the first acknowledged side effect.
+    // Replay preserves the original two-RNG-before-each-quad order.
+    for(const auto& action:c.actions){
+      if(action.random)random(action.operand);
+      else quads.push_back(c.staged.quads[action.operand]);
+    }
+    return 0;
   }
   default:
     return {};

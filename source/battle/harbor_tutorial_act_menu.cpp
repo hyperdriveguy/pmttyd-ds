@@ -13,6 +13,7 @@ bool HarborTutorialPacked::classUiRelease(uint32_t address) {
     return true;
   if (!classUiAllocations.erase(address))
     return false;
+  classUiLifetimes.erase(address);
   eventSdkFree(0, address, vm.memoryBinding.services());
   return true;
 }
@@ -84,6 +85,7 @@ HarborTutorialPacked::actMenu(HarborTutorial &scene, void *messageUser,
         if (!at)
           return std::nullopt;
         p.classUiAllocations.insert(at);
+        p.classUiLifetimes[at]=std::make_shared<const uint8_t>(0);
         return at;
       };
       const bool ready =

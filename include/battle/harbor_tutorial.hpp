@@ -1,4 +1,6 @@
 #pragma once
+#include "battle_class_display.hpp"
+#include <functional>
 #include "message_playback.hpp"
 #include "battle_defense.hpp"
 #include "battle_damage_orchestration.hpp"
@@ -36,6 +38,14 @@ struct HarborTutorialClassRow {
 struct ProloguePouch;
 struct HarborTutorialRuntime;
 class DisplayQueue;
+struct HarborClassMenuDrawBinding {
+    BattleClassDisplayServices display;
+    std::shared_ptr<const uint8_t> owner;
+    uint32_t allocation=0;
+    // Holds the actual runtime and verifies source W plus allocation generation.
+    // Call before each dispatch/resume; retained keys alone do not prove life.
+    std::function<bool()> current;
+};
 // Source setup2 unit initialization and guarded phase requests. This owner does
 // not infer combat outcomes or advance the field story. Native IDs follow the
 // original fresh registry order: system0, Mario1, Crump2, spawned helper3.
@@ -92,6 +102,11 @@ public:
     bool initializeClassMenuResources();
     bool endClassMenuResources();
     bool openClassMenu();
+    // Actual VM memory/cursor-lookup binding for an admitted source display.
+    // Linked camera/math/footer providers and source display cadence remain
+    // caller-owned. Does not register/execute/acknowledge a display by itself.
+    std::optional<HarborClassMenuDrawBinding> classMenuDrawBinding(
+        const BattleActDrawServices& linked) const;
     void classMenuPresented();
     bool classMenuOpen=false;
     bool buildClassMenu();

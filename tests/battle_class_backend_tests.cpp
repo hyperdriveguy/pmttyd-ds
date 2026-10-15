@@ -72,6 +72,20 @@ int main() {
          glyph.vertices[0].rgba == 0x808080ff);
   assert(std::fabs(glyph.vertices[0].x - (20 - measured.width * .5f)) < .0001f);
   assert(!call(F::FontWidth, {999}));
+  // A malformed later glyph previously failed after consuming RNG/emitting J.
+  // Retrying after resource readiness must never duplicate that prefix.
+  const auto code=font.mapping[uint8_t('u')];
+  const auto saved=font.glyphs[code];font.glyphs[code].height=0;
+  const auto before=b.quads.size();rngCalls=0;
+  assert(!call(F::FontString,{123},{},matrix));
+  assert(!rngCalls && b.quads.size()==before);
+  font.glyphs[code]=saved;
+  b.random=[&](uint32_t bound){
+    assert(bound==64 && b.quads.size()==before+rngCalls/2);
+    ++rngCalls;return 0u;
+  };
+  assert(call(F::FontString,{123},{},matrix) && rngCalls==8);
+  assert(b.quads.size()==before+4);
   b.begin();
   assert(b.quads.empty() && b.complete());
   assert(!call(F::Quad, {255, 255, 255, 255}, {0, 0, 1, 1}));

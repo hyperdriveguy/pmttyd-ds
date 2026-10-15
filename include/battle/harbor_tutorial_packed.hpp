@@ -37,6 +37,9 @@ public:
  bool unitInitReady();
  std::optional<int32_t> actMenu(HarborTutorial&,void*,uint32_t(*)(void*,uint32_t),bool setup,uint32_t flag=0);
  bool classUiRelease(uint32_t);
+ std::shared_ptr<const uint8_t> classUiLifetime(uint32_t at) const{
+  const auto it=classUiLifetimes.find(at);return it==classUiLifetimes.end()?nullptr:it->second;
+ }
  bool menuAudienceItemOn(uint32_t output);
  std::optional<bool> attackAudienceMenu(HarborTutorial&);
  BattleMenuAudienceCursor audienceMenuCursor;
@@ -71,6 +74,9 @@ private:
  std::array<bool,4> registered{};
  static constexpr uint32_t MenuRam=0x84600000;
  std::unordered_set<uint32_t> classUiAllocations;
+ // Fresh native lifetime for each actual SDK class-UI allocation. Reusing its
+ // guest address must not admit an old held draw or displayed publication.
+ std::unordered_map<uint32_t,std::shared_ptr<const uint8_t>> classUiLifetimes;
  uint32_t commandUnbound=0;
  uint32_t menuTextAt=MenuRam+0x1000;std::unordered_map<uint32_t,uint32_t> menuText;
 
