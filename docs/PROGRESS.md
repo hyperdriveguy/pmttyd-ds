@@ -10532,3 +10532,83 @@ effect, platform/file/event/runtime helpers and port tools. Review concurrent
 lifecycle, animation/NPC and display integrations against their committed
 versions; matching an older annotation snapshot is not full subsystem coverage.
 Full code documentation and the remake remain incomplete; goal stays active.
+
+## 2026-10-14 — Original NPC cloud/territory detection and actual event identity
+
+Implemented source8004a160..a4e4 plus reached common interrupt8004acc4..accc,
+composed after actual retained entry/movement/automatic pose. Native GetPtrID
+reads live GP/current event context, captures count/array and returns the first
+allocated matching actual VM entry, including stopped. Parent checks stopped
+separately, then reads actor script BEFORE event raw byte10 (rawBytes0, NOT
+scheduler type+c). Zero regularID bypasses lookup/interrupt; null/stopped IDs
+reach real interrupt admission. No fabricated event pointer or exists boolean.
+
+Cloud priorities retain captured script/class/mainflags but freshly capture
+sample root/height/width in source order. Midpoint uses negated fused fnmsubs;
+each power compares against a fresh source zero. First positive posts trigger8
+and skips later detection. Circle territory retains its FMA Xsquare+rounded
+Zsquare graph; automatic pose keeps its distinct separate squares/add. Both now
+share the exact retained source seed/three-double-refinement/classification
+subsection. Fresh postnorm radius214 applies to class1 AND2. Rectangles retain
+class-specific extents, strict boundaries, X short-circuit and unordered-axis
+behavior. Trigger4/8 publication precedes real Interrupt request; its return is
+ignored and callback mutations survive. Missing children remain pending.
+
+[Contract](behavior/field/NATIVE_NPC_CLOUD_AND_TERRITORY_DETECTION.md),
+[request update](requests/EVT-01.md). Independent read-only source review found
+no actionable defect; warning-enabled standalone detection/automatic-pose tests
+passed without diagnostics. Actual source helper bodies were inspected read-only
+and hashes/rights recorded in ASSETS.md. No new original data, art, geometry,
+audio or story conversion. All2131 private RomFS products match accepted
+npc-auto-pose-assets-after.json unchanged; local gor_02.s fixture is unchanged.
+
+Tests cover independent cloud-trigger trace, every-primitive suspension, all
+sample priorities, fresh coordinates/width/radius versus captured gates,
+exceptional powers/norm/radius, caller-specific FMA counterexample, inclusive
+rectangle boundaries/NaN/X short-circuit, unknown kinds, ID gates, interrupt
+holds/mutation and stable owner/frontiers. An initial test-only fail-every-
+primitive helper inherited attempts from an already-observed circle fixture;
+reset its observer counters before comparing runs. Production logic unchanged.
+Shared native fixture covers actual first stopped duplicate match, inactive
+skip, raw byte10 versus type+c, field/battle context selection independent of
+captured NPC bank, missing ID, held cloud/interrupt and unchanged MainCount.
+Automatic-pose regression retains its independent Newton/SP graph checks.
+
+Frozen893c6b47d78fa993256f3507511f87c46a8240db on acceptedec6998fe:
+3718 tracked source files audited without mismatch. Full make test passes384/384 C++
+(51.16s) and203/203 Python (46.747s), zero skipped.
+make all -j4 -o assets-ready SOUNDTRACK=gamecube exits0. Existing compiler/Pillow
+warnings remain. This validates the frozen source, not combined concurrent HEAD.
+Code commit665af4f0ef6232894bd67a982153cdaec5ef0021.
+
+Strict isolated ARM fixture:entry/movement/autoPose/holds/sharedAliases/
+detection/cloud/territory/lookup/frontiers PASS. Normal source restored/touched/
+rebuilt; SHA256901fb0921b4089edb0829332235336dcc11a0c019bc5277e60828c1a65787f79
+matches its pre-probe normal copy and accepted previous normal build. New
+controller remains unactivated in ordinary Area, so unused sections strip out.
+Normal40-second isolated screenshot visually inspected: original storybook,
+App60FPS/100% speed and no asset-error console. Startup only, not field/hardware
+performance evidence. ARM object inspection shows scalar VFP arithmetic and
+explicit fused helpers; no per-advance allocation. Only isolated emulator
+profiles/saves touched. No probe instrumentation is committed.
+
+Mario before4a4e4 and Display before freshmainflags4accc remain active unfinished
+frontiers. No actor advance, final state10 clear, prior-position history or Main
+completion. The source inline norm retains the explicit opt-in native estimate
+adaptation; original Gekko seed/FPSCR/GQR/subnormal/NaN-payload parity remains
+open. Original cloud/interrupt providers, actual Mario/collision/gravity/clock/
+audio/cold resource owners and the remaining parent must be bound before normal
+Area activation. Ordinary Game retains its existing field path and no fixtures
+are enabled. Previous15FPS llvmpipe field sample, occlusion assertion and
+asset-error smoke gaps remain open. No physical New2DSXL/complete field-render
+performance claim. Full-game goal and EVT-01 remain active/incomplete.
+
+Next: resume Mario avoidance/proximity at4a4e4 with captured eventClass; preserve
+fresh Mario/sequence/Vivian admissions, original radius/angle/numeric paths and
+conditional trigger2/1 before one interrupt. Then display/material/shadow, late
+MainCount-gated history/final state10/actor traversal and field tail4b1d0. Bind
+real cloud/interrupt/cold resources and verify original runtime behavior before
+ordinary Area Main. Repair asset-error and visual occlusion admission, profile
+actual field/hardware. Evidence:artifacts/npc-detection-validation-manifest.json,
+asset-check.json, source/helper listings, full/target/native logs and isolated
+normal/probe captures. No original binaries or generated assets are committed.

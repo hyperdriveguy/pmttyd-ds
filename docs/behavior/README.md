@@ -1243,3 +1243,4 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Native cold animation process](display/NATIVE_ANIMATION_STARTUP_PROCESS.md): source SDK arena, retained cold parent, real auxiliary files and final work/cache alias ownership.
 - [Retained NPC Main automatic pose selection](field/NATIVE_NPC_MAIN_AUTOMATIC_POSE_SECTION.md): original norm/refinement graph, shared-pose forced restart and unfinished Detection frontier.
+- [Retained NPC cloud and territory detection](field/NATIVE_NPC_CLOUD_AND_TERRITORY_DETECTION.md): actual VM event IDs/class byte, prioritized cloud samples, source territory bounds and unfinished Mario/Display frontiers.

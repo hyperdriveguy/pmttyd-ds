@@ -2083,3 +2083,16 @@ asset regeneration. All original provenance/conversion choices remain as
 previously recorded. Nintendo/Intelligent Systems rights remain reserved;
 private validation copies grant no redistribution license. No ISO, extracted
 original assets or compiled binaries were committed.
+
+### NPC cloud/territory detection evidence (2026-10-14)
+
+No new asset conversion or data closure. The current private2131-product
+RomFS baseline remains artifacts/npc-auto-pose-assets-after.json. Original
+US ISO helpers evtGetPtrID80035a28 (96 bytes) and cloudGetBreathPower80187f10
+(368 bytes) were inspected read-only; ignored listings/ELFs and exact hashes
+are recorded in [the contract](behavior/field/NATIVE_NPC_CLOUD_AND_TERRITORY_DETECTION.md).
+The implementation shares the previously extracted norm constants without
+changing caller-specific arithmetic graphs. No fabricated event pointers,
+script/dialogue replacements, art/audio/geometry edits or compiled original
+assets enter Git. Existing Nintendo/Intelligent Systems rights and private
+local-use restrictions remain unchanged; no redistribution license is granted.

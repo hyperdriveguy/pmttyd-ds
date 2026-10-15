@@ -4985,3 +4985,15 @@ not Gekko seed/FPSCR parity. Real source-clock quotients/movement/Mario/resource
 owners, runtime traces, detection/interrupt/display/history/tail and ordinary
 Area activation remain open. Neither this result nor movement advances the
 actor loop or completes Main.
+
+### 2026-10-14 NPC cloud/territory detection implementation update
+
+The [retained detection prefix](../behavior/field/NATIVE_NPC_CLOUD_AND_TERRITORY_DETECTION.md)
+now covers8004a160..a4e4 and reached common interrupt8004acc4..accc. Native
+GetPtrID uses actual same-VM current-context event records, first allocated
+match including stopped; parent class is raw byte10, not scheduler type+c.
+Cloud priorities/fresh samples, territory bounds/norm and trigger publication
+are retained. Real cloud/interrupt children remain explicit pending providers.
+Local static analysis is delivered. Mario avoidance/proximity, display/history/
+tail, real child/cold resource owners, original numeric/runtime parity and
+ordinary Area activation stay open; no whole-Main completion is acknowledged.
