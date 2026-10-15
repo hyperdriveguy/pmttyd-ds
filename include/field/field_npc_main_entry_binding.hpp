@@ -4,6 +4,7 @@
 #include "field_npc_main_detection.hpp"
 #include "field_npc_main_entry.hpp"
 #include "field_npc_main_movement.hpp"
+#include "field_npc_mario_detection.hpp"
 namespace ttyd {
 class AnimationPoolMemory;
 // Admission is read-only; sound false has no effects and remains pending.
@@ -19,6 +20,9 @@ struct FieldNpcMainEntryNativeServices {
   bool (*detection)(void *, EventAddressSpace &,
                     const FieldNpcDetectionRequest &,
                     FieldNpcDetectionResponse &) = nullptr;
+  bool (*marioDetection)(void *, EventAddressSpace &,
+                         const FieldNpcMarioRequest &,
+                         FieldNpcMarioResponse &) = nullptr;
   bool (*sound)(void *, EventAddressSpace &,
                 const FieldNpcMainEntryRequest &) = nullptr;
 };
@@ -42,6 +46,12 @@ public:
                                              FieldNpcMainMoveCursor &,
                                              FieldNpcAutoPoseCursor &,
                                              FieldNpcDetectionCursor &);
+
+  FieldNpcDetectionFrontier advanceMarioDetection(FieldNpcMainEntryCursor &,
+                                                  FieldNpcMainMoveCursor &,
+                                                  FieldNpcAutoPoseCursor &,
+                                                  FieldNpcDetectionCursor &,
+                                                  FieldNpcMarioCursor &);
 
 private:
   FieldNpcMainEntryBinding(std::shared_ptr<FieldNpcRegistryOwner>,

@@ -268,4 +268,73 @@ FieldNpcDetectionFrontier FieldNpcMainEntryBinding::advanceDetection(
   };
   return advanceFieldNpcMainDetection(entry.actor, s, detection);
 }
+FieldNpcDetectionFrontier FieldNpcMainEntryBinding::advanceMarioDetection(
+    FieldNpcMainEntryCursor &entry, FieldNpcMainMoveCursor &movement,
+    FieldNpcAutoPoseCursor &pose, FieldNpcDetectionCursor &detection,
+    FieldNpcMarioCursor &mario) {
+  const auto frontier = advanceDetection(entry, movement, pose, detection);
+  if (frontier != FieldNpcDetectionFrontier::Mario)
+    return frontier;
+  FieldNpcMarioServices s;
+  s.norm.memory = services().clock;
+  s.norm.doubleWord = [](void *p, uint32_t a) -> std::optional<uint64_t> {
+    auto &m = static_cast<FieldNpcMainEntryBinding *>(p)->vm_.memory;
+    uint32_t hi, lo;
+    if (!m.readWord(a, hi) || !m.readWord(a + 4, lo))
+      return {};
+    return uint64_t(hi) << 32 | lo;
+  };
+  s.norm.estimate = [](void *p, double q, double &out) {
+    auto &b = *static_cast<FieldNpcMainEntryBinding *>(p);
+    return b.native_.estimate && b.native_.estimate(b.native_.user, q, out);
+  };
+  s.half = [](void *p, uint32_t a) -> std::optional<uint16_t> {
+    uint16_t v;
+    if (!static_cast<FieldNpcMainEntryBinding *>(p)->vm_.memory.readHalf(a, v))
+      return {};
+    return v;
+  };
+  s.pair = [](void *p, uint32_t a) -> std::optional<std::array<uint32_t, 2>> {
+    auto &m = static_cast<FieldNpcMainEntryBinding *>(p)->vm_.memory;
+    std::array<uint32_t, 2> v;
+    if (!m.readWord(a, v[0]) || !m.readWord(a + 4, v[1]))
+      return {};
+    return v;
+  };
+  s.request = [](void *p, const FieldNpcMarioRequest &q,
+                 FieldNpcMarioResponse &out) {
+    auto &b = *static_cast<FieldNpcMainEntryBinding *>(p);
+    auto &m = b.vm_.memory;
+    if (q.function == 0x8005e0c0) {
+      const auto e = b.services();
+      return e.request(p, {q.function, {}}, out.word);
+    }
+    if (q.function == 0x8002e210)
+      return m.readWord(0x80415190, out.word);
+    if (q.function == 0x801ff028) {
+      const auto e = b.services();
+      uint32_t mario = 0, work = 0;
+      uint8_t mode = 0;
+      if (!e.request(p, {0x8005e0c0, {}}, mario) ||
+          !m.readByte(mario + 0x3c, mode))
+        return false;
+      if (mode != 2) {
+        out.word = 0;
+        return true;
+      }
+      return m.readWord(mario + 0x298, work) && m.readWord(work + 4, out.word);
+    }
+    if (q.function == 0x800440f8) {
+      FieldNpcDetectionResponse r;
+      return b.native_.detection &&
+             b.native_.detection(b.native_.user, m, {q.function, q.args[0]}, r);
+    }
+    return b.native_.marioDetection &&
+           b.native_.marioDetection(b.native_.user, m, q, out);
+  };
+  return advanceFieldNpcMarioDetection(entry.actor, detection.eventClass, s,
+                                       mario)
+             ? FieldNpcDetectionFrontier::Display
+             : FieldNpcDetectionFrontier::Pending;
+}
 } // namespace ttyd

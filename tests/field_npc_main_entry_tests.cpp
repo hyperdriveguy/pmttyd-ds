@@ -341,7 +341,8 @@ struct NativeWorld {
   bool marioReady = false, movementReady = false;
   unsigned movementCalls = 0, poseClockCalls = 0;
   bool poseClockReady = false, cloudReady = false, interruptReady = false;
-  unsigned cloudCalls = 0, interruptCalls = 0;
+  unsigned cloudCalls = 0, interruptCalls = 0, vivianCalls = 0;
+  bool marioServicesReady = false;
   BattlePoseClock selectedClock{1234, 5678};
   static constexpr uint32_t Work = 0x803d9470, M = 0x8d000000;
   uint32_t word(uint32_t a) {
@@ -421,7 +422,7 @@ struct NativeWorld {
     pose = word(actor + 0x104);
     store(actor, word(actor) | 0x8000);
     assert(vm->memory.registerRam(0x8041e900, std::vector<uint8_t>(4)) &&
-           vm->memory.registerRam(M, std::vector<uint8_t>(0x200)));
+           vm->memory.registerRam(M, std::vector<uint8_t>(0x300)));
     store(0x8041e900, M);
     store(M + 0x1d8, 0x12345678);
     store(M + 0x1dc, 0x87654321);
@@ -429,6 +430,23 @@ struct NativeWorld {
     n.user = this;
     n.numbers.divide = nativeFieldNpcClockDivide;
     n.numbers.convert = nativeFieldNpcClockConvert;
+    n.marioDetection = [](void *p, EventAddressSpace &memory,
+                          const FieldNpcMarioRequest &q,
+                          FieldNpcMarioResponse &out) {
+      auto &f = *static_cast<NativeWorld *>(p);
+      assert(&memory == &f.vm->memory);
+      if (!f.marioServicesReady)
+        return false;
+      if (q.function == 0x801865b8) {
+        ++f.vivianCalls;
+        out.word = 0;
+        return true;
+      }
+      assert(q.function == 0x80007328 || q.function == 0x8000703c ||
+             q.function == 0x800071f0);
+      out.scalar = 0;
+      return true;
+    }; // Explicit Vivian/angle fixtures; sequence/Kpa MUST use actual VM words.
     n.detection = [](void *p, EventAddressSpace &memory,
                      const FieldNpcDetectionRequest &q,
                      FieldNpcDetectionResponse &out) {
@@ -643,6 +661,70 @@ void actualAliases() {
   assert(f.entry->advanceDetection(c, move, automatic, missingEvent) ==
              FieldNpcDetectionFrontier::Display &&
          missingEvent.event == 0 && f.interruptCalls == 3);
+  // Complete the retained Mario stage with actual mutable Mario/sequence
+  // bytes. A missing source sequence cannot be inferred from the native scene.
+  f.store(f.actor + 0x11c, 42);
+  f.store(f.actor + 0x13c, 0);
+  f.fieldEvents[1].rawBytes[0] = 2;
+  f.store(f.actor + 0x140, 0x80);
+  f.store(NativeWorld::M, 2);
+  FieldNpcDetectionCursor avoidPrefix;
+  FieldNpcMarioCursor avoid;
+  assert(
+      f.entry->advanceMarioDetection(c, move, automatic, avoidPrefix, avoid) ==
+          FieldNpcDetectionFrontier::Display &&
+      f.word(f.actor + 0x140) == 0x82 && f.interruptCalls == 4);
+  f.store(NativeWorld::M, 0);
+  f.store(f.actor + 0x140, 0x80);
+  f.store(f.actor + 0x20c, bits(1000));
+  f.store(f.actor + 0x218, bits(1000));
+  f.store(f.actor + 0x228, bits(1000));
+  FieldNpcMarioCursor admitted;
+  assert(f.entry->advanceMarioDetection(c, move, automatic, avoidPrefix,
+                                        admitted) ==
+             FieldNpcDetectionFrontier::Pending &&
+         admitted.phase == 106);
+  assert(f.vm->memory.registerRam(0x80415190, std::vector<uint8_t>(4)));
+  f.store(0x80415190, 2);
+  constexpr uint32_t OtherMario = 0x8d001000;
+  assert(f.vm->memory.registerRam(OtherMario, std::vector<uint8_t>(0x300)));
+  f.store(OtherMario, 0x82000000);
+  f.store(0x8041e900, OtherMario);
+  assert(f.entry->advanceMarioDetection(c, move, automatic, avoidPrefix,
+                                        admitted) ==
+             FieldNpcDetectionFrontier::Pending &&
+         admitted.phase == 109 && admitted.admissionMario == NativeWorld::M);
+  f.marioServicesReady = true;
+  f.store(0x80415190,
+          1); // already captured eligibility2; no re-request on resume
+  assert(f.entry->advanceMarioDetection(c, move, automatic, avoidPrefix,
+                                        admitted) ==
+             FieldNpcDetectionFrontier::Display &&
+         f.word(f.actor + 0x140) == 0x80 && f.vivianCalls == 1 &&
+         f.interruptCalls == 5);
+  f.store(0x8041e900, NativeWorld::M);
+  f.store(0x80415190, 2);
+  // Kpa mode2 obtains the real work pointer+298 and level+4; radius table comes
+  // from the original pack and numeric phase does not use a guessed level.
+  constexpr uint32_t KpaWork = 0x8d010000;
+  assert(f.vm->memory.registerRam(KpaWork, std::vector<uint8_t>(8)));
+  assert(f.vm->memory.writeByte(NativeWorld::M + 0x3c, 2));
+  f.store(NativeWorld::M + 0x298, KpaWork);
+  f.store(KpaWork + 4, 3);
+  f.store(f.actor, f.word(f.actor) | 0x08000000);
+  f.fieldEvents[1].rawBytes[0] = 1;
+  f.store(f.actor + 0x220, bits(1000));
+  FieldNpcDetectionCursor proximityPrefix;
+  FieldNpcMarioCursor proximity;
+  assert(f.entry->advanceMarioDetection(c, move, automatic, proximityPrefix,
+                                        proximity) ==
+             FieldNpcDetectionFrontier::Display &&
+         proximity.distance == 0 && f.word(f.actor + 0x140) == 0x81 &&
+         f.interruptCalls == 6);
+  assert(f.entry->advanceMarioDetection(c, move, automatic, proximityPrefix,
+                                        proximity) ==
+             FieldNpcDetectionFrontier::Display &&
+         f.interruptCalls == 6 && f.word(0x8041e8ac) == 1 && c.phase == 60);
   // Source getter is address arithmetic, not active/clip readiness. An explicit
   // cold-slot handle input must mutate the SAME inactive row without a new
   // gate.
