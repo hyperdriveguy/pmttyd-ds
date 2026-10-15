@@ -2461,3 +2461,28 @@ add_executable(field_party_native_entry_tests tests/field_party_native_entry_tes
 target_link_libraries(field_party_native_entry_tests PRIVATE ttyd_core)
 add_test(NAME field_party_native_entry COMMAND field_party_native_entry_tests)
 set_tests_properties(field_party_native_entry PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Original retained battle menu text children.
+target_sources(ttyd_core PRIVATE source/display/battle_weapon_help.cpp)
+add_executable(battle_weapon_help_tests tests/battle_weapon_help_tests.cpp)
+target_link_libraries(battle_weapon_help_tests PRIVATE ttyd_core)
+add_test(NAME battle_weapon_help COMMAND battle_weapon_help_tests)
+set_tests_properties(battle_weapon_help PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+target_sources(ttyd_core PRIVATE source/display/source_matrix_font.cpp)
+add_executable(source_matrix_font_tests tests/source_matrix_font_tests.cpp)
+target_link_libraries(source_matrix_font_tests PRIVATE ttyd_core)
+add_test(NAME source_matrix_font COMMAND source_matrix_font_tests)
+set_tests_properties(source_matrix_font PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+target_sources(ttyd_core PRIVATE source/display/source_scalar_font.cpp)
+add_executable(source_scalar_font_tests tests/source_scalar_font_tests.cpp)
+target_link_libraries(source_scalar_font_tests PRIVATE ttyd_core)
+add_test(NAME source_scalar_font COMMAND source_scalar_font_tests)
+set_tests_properties(source_scalar_font PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+target_sources(ttyd_core PRIVATE source/display/source_font_state.cpp)
+add_executable(source_font_state_tests tests/source_font_state_tests.cpp)
+target_link_libraries(source_font_state_tests PRIVATE ttyd_core)
+add_test(NAME source_font_state COMMAND source_font_state_tests)
+set_tests_properties(source_font_state PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

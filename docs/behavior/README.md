@@ -1356,3 +1356,10 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Retained original weapon cursor](display/RETAINED_WEAPON_CURSOR.md): original timer/interpolation and real icon-position children with retained admission.
 
 - [Retained native ordinary Goombella construction](partner/NATIVE_ORDINARY_PARTY_ENTRY.md): actual file/pose waits, material captures, first placement/late index publication/fresh Hello and bounded native ownership.
+
+Original retained battle UI text controllers:
+
+- [Weapon help parser](display/RETAINED_WEAPON_HELP_PARSER.md).
+- [Matrix font](display/RETAINED_MATRIX_FONT_RASTER.md).
+- [Scalar font](display/RETAINED_SCALAR_FONT.md).
+- [Shared font state](display/RETAINED_SHARED_FONT_STATE.md).
