@@ -11565,3 +11565,56 @@ creation, with real GP/field Main/facing/release/refresh ownership. Verify an
 ordinary Mario/Goombella walk and room transition through these buffers, then
 continue original prologue events/interiors/visibility. EVT-01 remains open;
 the playable-prologue goal remains active and incomplete.
+
+## 2026-10-14 — Damage order and retained battle ownership documented
+
+Added inline ownership/layout/numeric/behavior notes to 12 C++ files: typed HP/FP
+calculators/revival marker, synchronous hit/counter orchestration, Dive curves,
+retained Main/sequence/stage controllers and Game/VM sequence facade. Added
+[damage order](code/battle-damage-order.md),
+[retained owners](code/battle-retained-owners.md) and index entries.
+Code/docs commit bfe5c53d. All 12 preserve executable tokens/string literals;
+no behavior changes or new tests for this prose-only work.
+
+Explained callback-visible modifier reload/order, per-stage word wrap/floor,
+defense attribute/code domains, separate HP/FP AllOrNothing gates, source guard/
+status/pattern/counter routing and negative results versus native readiness.
+Obscure cases include impossible negative-draw consumption, pattern RNG after
+zeroing, counter zero-only fallback, adjacent status/callback effects, Dive word
+squares before float conversion, outer/inner Main owner separation, held route
+captures, stage cache publication before map calls, exact field/VM/allocator/
+animation ownership and no fake backend completion. Constants retain source
+meaning; no measured renderer timing or original SDK/Gekko parity claims.
+
+Frozen validation baseline c21ed95236d29c43b1f336c3276f9319dd8f0f9e plus owned documentation lives at
+artifacts/battle-damage-owners-code-documentation-validation/source. Audit covers
+all 3856 baseline tracked files: zero unexpected changes. All 15 documented files
+match frozen/live snapshots; all 57 local guide/index links resolve. Concurrent
+NPC/animation/display/runtime work was preserved/excluded; no combined-moving-tree
+validation. No comments/guide refinements after build launch.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test passes 417/417 C++ (47.74s) and
+207/207 Python (30.272s), zero skipped. make all -o assets-ready -j4
+SOUNDTRACK=gamecube exits0. Manifest records source/dependency/authority/log and
+ELF/3DSX hashes plus process exits. Existing compiler/Pillow warnings remain.
+No emulator/profile/save changes or hardware/pixel/performance claims.
+
+Cache inherits 46 accepted products, common-menu/Frankly evidence, 14 private
+footer PNG/atlas and 3 HP PNG hashes. Before gates, two NPC-shadow door products
+were overlaid only after exact byte/hash matches to
+artifacts/npc-shadow-assets-after.json; that manifest's own hash matches
+npc-shadow-validation-manifest. Frozen actor-data converter bytes match the
+recorded source code commit. Pack 152488 bytes SHA256
+842715d5cd84974d7de49898eda7441d018400a8cd7d6c5634d5c8babca941b7.
+No cache rebuild, new conversion, editable import or shared pack write was needed.
+Existing Python converter fixtures independently read ISO read-only and use
+empty temporary outputs; native full asset regeneration deliberately skipped.
+No original asset binaries/ISO committed; provenance/rights unchanged. See
+[asset notes](ASSETS.md).
+
+Next: Harbor tutorial and Trio/runtime composition, remaining event/message/
+story/effect/platform/file/save helpers and port tools. Partial Harbor source
+review this session did not annotate or validate that composition yet. Re-audit
+concurrent animation/tangent/NPC/HP/display integrations against committed code;
+matching an earlier snapshot is not proof of full subsystem coverage. Full
+code documentation and remake remain unfinished; goal stays active.

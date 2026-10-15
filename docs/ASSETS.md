@@ -2346,3 +2346,23 @@ rerun read-only against the ISO to include current NPC numeric views (152492
 bytes/970 objects). Final RomFS has2139 files; only those five paths differ
 from the preceding animation validation. The changing shared RomFS was not
 used as a substitute fixture.
+
+## Damage/retained-owner documentation validation inputs (2026-10-14)
+
+artifacts/battle-damage-owners-code-documentation-validation/source inherits 46
+accepted products, original common-menu/Frankly evidence, 14 private footer PNG/
+atlas hashes and 3 private HP PNG hashes. Before gates, only door-data.pmevt/json
+from artifacts/source-checks/npc-wander replace private validation inputs after
+exact size/SHA256 matches to artifacts/npc-shadow-assets-after.json; its own
+hash matches artifacts/npc-shadow-validation-manifest.json. Frozen
+field_npc_actor_assets.py bytes match its recorded source code commit.
+Pack 152488 bytes SHA256 842715d5cd84974d7de49898eda7441d018400a8cd7d6c5634d5c8babca941b7;
+metadata 479926 bytes SHA256 8484a6a64155718257f8e19b80414cfa04293a5cd160041e78753aa20c1fb4a5.
+Exact sources, old/new hashes and validation authorities are journaled in the
+manifest. Existing original shadow DOL span choices remain unchanged. No cache
+rebuild, new conversion/resampling, geometry/lighting changes, editable imports
+or shared pack writes. Existing Python fixtures independently read ISO read-only
+and use empty temporary outputs; native full asset regeneration is deliberately
+skipped. Nintendo/Intelligent Systems rights remain reserved; private tracking/
+copying grants no new license. No ISO, extracted original asset or compiled
+binary was committed.
