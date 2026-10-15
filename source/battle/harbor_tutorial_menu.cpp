@@ -12,12 +12,19 @@
 #include <cstdlib>
 #include <climits>
 namespace ttyd {
+// Copy ORIGINAL message bytes once per guest key into stable native guest RAM.
+// Include NUL and round allocation to 4 bytes; exhausting MenuRam+0x4000 aborts.
+// No eviction: row name pointers must remain valid for the runtime's lifetime.
 uint32_t HarborTutorialPacked::cacheMenuLabel(uint32_t key,const char* text){
  if(!text)return 0;
  const auto found=menuText.find(key);if(found!=menuText.end())return found->second;
  const auto length=std::strlen(text)+1;const auto size=(length+3)&~size_t(3);if(size>MenuRam+0x4000-menuTextAt)std::abort();
  const auto address=menuTextAt;menuTextAt+=uint32_t(size);for(size_t n=0;n<length;++n)byte(address+uint32_t(n),uint8_t(text[n]));menuText.emplace(key,address);return address;
 }
+// Eligibility samples real source candidates with a separate private buffer at
+// MenuRam+0x40. Cost callback is admitted only for Mario ID 1; weapon+8 is item ID,
+// 0x11 FP cost, 0x12 AP cost; signed pouch+0x7a is current AP. Invalid pow-to-int
+// conversion latches costReady=false rather than presenting a free attack.
 std::optional<int32_t> HarborTutorialPacked::countWeaponTargets(uint32_t b,uint32_t u,uint32_t w){
  struct Context{HarborTutorialPacked* p;bool costReady=true;};Context context{this,true};void* self=&context;
   auto& p=*static_cast<Context*>(self)->p;BattleWeaponTargetCountServices t;t.memory=nativeBattleActorServices(p.vm);t.user=self;t.privateBuffer=MenuRam+0x40;
@@ -29,22 +36,32 @@ std::optional<int32_t> HarborTutorialPacked::countWeaponTargets(uint32_t b,uint3
    s.getAp=[](void* self){auto& c=*static_cast<Cost*>(self);c.value->apCost=c.p->byte(c.weapon+0x12);uint16_t value=0;if(!c.p->vm.memory.readHalf(c.p->word(0x8041eb00)+0x7a,value))std::abort();return value<32768?int32_t(value):int32_t(value)-65536;};
    const bool affordable=checkWeaponCost(p.damageUnits[id],weapon,s);return cost.context->costReady && affordable?1:0;
   };
+  // Signed allegiance 0/1 swaps for the enemy query; other byte values pass
+  // through. 128/256 are signed 8 boundary/modulus, not additional team IDs.
   t.enemyBelong=[](void* self,uint32_t u){const auto v=static_cast<Context*>(self)->p->byte(u+0xc);const auto belong=v<128?int32_t(v):int32_t(v)-256;return belong==0?1:belong==1?0:belong;};
   t.sample=[](void* self,uint32_t buffer,uint32_t w,int32_t actor,int32_t belong,uint32_t admission,uint32_t attributes,int32_t direction){auto& p=*static_cast<Context*>(self)->p;samplePackedBattleCandidates({nativeBattleActorServices(p.vm),buffer},w,actor,belong,admission,attributes,direction,nativeBattleSamplingServices(p.vm));return true;};
   const auto result=packedWeaponTargetCount(b,u,w,t);if(!static_cast<Context*>(self)->costReady)return std::nullopt;return result;
 }
+// MenuRam+8 is cursor-output scratch for eligibility, separate from builder
+// cursor/count words at +0/+4 and the target-sampling buffer at +0x40.
 bool HarborTutorialPacked::updateWeaponEligibility(uint32_t type){
  BattleWeaponEligibilityServices e;e.memory=nativeBattleActorServices(vm);e.user=this;e.cursorSlot=MenuRam+8;
  e.unit=[](void* self,uint32_t b,int32_t id){return battleRegistryUnit(b,id,nativeBattleActorServices(static_cast<HarborTutorialPacked*>(self)->vm));};
  e.cursor=[](void* self,uint32_t menu,uint32_t t,uint32_t out){auto& p=*static_cast<HarborTutorialPacked*>(self);uint32_t c=0;if(findPackedCommandCursor(menu,t,c,nativeBattlePackedSelectionServices(p.vm)))p.word(out,c);};
  e.targetCount=[](void* self,uint32_t b,uint32_t u,uint32_t w){return static_cast<HarborTutorialPacked*>(self)->countWeaponTargets(b,u,w);};return updatePackedBattleWeaponTable(Battle,type,e);
 }
+// Project source menu B+0x171c: weapon rows begin+0x80, stride 28 bytes with
+// weapon/enabled/name/icon/ordinal/item/reason at 0/4/8/12/16/20/24 (decimal). Cursor+8
+// bounds visible rows to 64; cursor+0 is selected index. Labels remain borrowed
+// guest pointers; copying for the scene does not grant ownership of their RAM.
 void HarborTutorialPacked::captureWeaponRows(uint32_t type,HarborTutorial& scene){
  uint32_t activeCursor=0;if(!findPackedCommandCursor(Battle+0x171c,type,activeCursor,nativeBattlePackedSelectionServices(vm)))std::abort();const auto visibleCount=int32_t(word(activeCursor+8));if(visibleCount<0 || visibleCount>64)std::abort();
  scene.weaponMenuType=type;scene.weaponRows.clear();
  for(int32_t n=0;n<visibleCount;++n){const auto row=Battle+0x171c+0x80+28*uint32_t(n);HarborTutorialWeaponRow r;r.weapon=word(row);r.enabled=word(row+4)!=0;r.nameAddress=word(row+8);uint16_t icon=0;if(!vm.memory.readHalf(row+12,icon))std::abort();r.icon=icon;r.ordinal=int32_t(word(row+16));r.item=int32_t(word(row+20));r.reason=int32_t(word(row+24));if(r.nameAddress)for(unsigned j=0;j<MenuRam+0x4000-r.nameAddress;++j){const auto c=byte(r.nameAddress+j);if(!c)break;r.label+=char(c);}scene.weaponRows.push_back(std::move(r));}
  scene.weaponRowIndex=int32_t(word(activeCursor));
 }
+// Do not rebuild while retained attack selection owns its source records.
+// Fresh pouch is required for original class availability/message lookup.
 bool HarborTutorialPacked::buildClassMenu(HarborTutorial& scene,void* messageUser,uint32_t(*message)(void*,uint32_t)){
  if(attackSelectionCursor.active || !freshPouch)return false;
  // Explicit native acting-Mario bridge. Source builder itself never writes420.
@@ -57,6 +74,9 @@ bool HarborTutorialPacked::buildClassMenu(HarborTutorial& scene,void* messageUse
  const auto built=makePackedBattleActionClassTable(Battle,s);if(!built)return false;
  captureClassRows(scene);return true;
 }
+// Class cursor at menu+0x498; at most 7 rows, stride 20. Icon+0x14 and reason+0x18
+// deliberately overlap following row storage under the recovered source layout;
+// do not infer sizeof(HarborTutorialClassRow) or normalize this to a C++ struct.
 void HarborTutorialPacked::captureClassRows(HarborTutorial& scene){
  const auto menu=Battle+0x171c,cursor=menu+0x498;scene.classRows.clear();scene.classRowIndex=int32_t(word(cursor));
  const auto count=word(cursor+8);assert(count<=7);
@@ -65,6 +85,10 @@ void HarborTutorialPacked::captureClassRows(HarborTutorial& scene){
   scene.classRows.push_back(std::move(v));
  }
 }
+// Source class 0 jump/1 hammer/2 item/4 special. Once selection is inactive,
+// clear native decision/block latches even if fresh-pouch/type admission later
+// fails. Acting Mario is B+0x420. Icon queries receive a temporary 0x5d4-byte pouch
+// projection containing only the relevant 0x98/0x99 upgrade byte, not live storage.
 bool HarborTutorialPacked::buildWeaponMenu(uint32_t type,HarborTutorial& scene,void* messageUser,uint32_t(*message)(void*,uint32_t)){
  if(attackSelectionCursor.active)return false;
  weaponDecided=false;commandFinalized=false;commandUnbound=0;scene.commandInputPending=0;
@@ -84,6 +108,10 @@ bool HarborTutorialPacked::buildWeaponMenu(uint32_t type,HarborTutorial& scene,v
  captureWeaponRows(type,scene);
  return true;
 }
+// Decision engagement (including source 0) admits projection; failed admission
+// leaves the prior scene targets alone. Source candidate buffer B+0x428 has
+// signed count+0xa6c, signed permutation bytes+0xa6d and 36-byte records from+4;
+// unit/part IDs are signed 16. Preserve permutation order, not physical row order.
 bool HarborTutorialPacked::selectWeapon(unsigned index,HarborTutorial& scene,void* messageUser,uint32_t(*message)(void*,uint32_t)){
  struct Context{HarborTutorialPacked* p;HarborTutorial* scene;void* messageUser;uint32_t(*message)(void*,uint32_t);};Context context{this,&scene,messageUser,message};
  BattleWeaponMenuDecisionServices s;s.memory=nativeBattleActorServices(vm);s.user=&context;
@@ -98,6 +126,9 @@ bool HarborTutorialPacked::selectWeapon(unsigned index,HarborTutorial& scene,voi
  weaponDecided=true;
  return true;
 }
+// This cursor owns any partially acknowledged selection. Mario unit is native
+// Units+0x1000 and menu B+0x171c. Consume weaponDecided only after whole completion;
+// successful selection alone does not create a source attack root.
 bool HarborTutorialPacked::selectAttackEvent(){
  BattleAttackSelectionServices selection;selection.memory=nativeBattleActorServices(vm);selection.user=this;
  selection.cursor=[](void* self,uint32_t menu,uint32_t type,uint32_t& cursor){auto& p=*static_cast<HarborTutorialPacked*>(self);return findPackedCommandCursor(menu,type,cursor,nativeBattlePackedSelectionServices(p.vm));};

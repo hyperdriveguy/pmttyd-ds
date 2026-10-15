@@ -19,6 +19,9 @@
 #include "battle_action_help.hpp"
 #include "battle_action_feedback.hpp"
 namespace ttyd {
+// Admitted packed accesses are required invariants: failure aborts rather than
+// returning fabricated zero. word/half/byte access goes through BE VM memory;
+// real uses 4-byte bit-preserving float transport; raw operands remain undecoded.
 namespace {void required(bool ok){if(!ok)std::abort();}int32_t signByte(uint8_t b){return b<128?int32_t(b):int32_t(b)-256;}}
 uint32_t HarborTutorialPacked::word(uint32_t a)const{uint32_t v=0;required(vm.memory.readWord(a,v));return v;}
 void HarborTutorialPacked::word(uint32_t a,uint32_t v){required(vm.memory.writeWord(a,v));}
@@ -31,11 +34,19 @@ int32_t HarborTutorialPacked::raw(EventEntry& e,unsigned i)const{assert(i<e.argu
 int32_t HarborTutorialPacked::value(EventEntry& e,unsigned i){return getEventValue(e,raw(e,i),vm.interpreterServices().operands);}
 void HarborTutorialPacked::output(EventEntry& e,unsigned i,int32_t v){setEventValue(e,raw(e,i),v,vm.interpreterServices().operands);}
 uint32_t HarborTutorialPacked::actor(EventEntry& e){const auto id=translateBattleActor(&e,value(e,0),nativeBattleActorServices(vm));return word(Battle+0x20+4u*uint32_t(id));}
+// Native spans: global Battle pointer 4 bytes, Battle 0x19400, Units/Parts/Menu 0x4000
+// each. Original registry/counter capacities 64 retain sentinel 0xffffffff; source
+// general/private pad work is at 0xf2c/0x1d1c. This is bounded provisioning, not
+// complete original UnitEntry/heap/display/equipment initialization.
 bool HarborTutorialPacked::provision(){
  for(auto span:std::array<std::pair<uint32_t,unsigned>,5>{{{0x8041eb90,4},{Battle,0x19400},{Units,0x4000},{Parts,0x4000},{MenuRam,0x4000}}})if(!vm.memory.registerRam(span.first,std::vector<uint8_t>(span.second)))return false;
  word(0x8041eb90,Battle);initializePackedBattleStageFloorFields(Battle,nativeBattleActorServices(vm).memory);half(Battle+8,2);half(Battle+16,1);half(Battle+24,0);byte(Battle+0xa,1);byte(Battle+0x12,255); // Fresh source group-policy adapter.
  for(unsigned i=0;i<64;++i){word(Battle+0x120+4*i,0xffffffff);word(Battle+0x16f5c+8*i,0xffffffff);}
  BattlePadWork pad;pad.init();writePackedBattlePad(Battle+0x1d1c,pad,nativeBattleActorServices(vm));writePackedBattlePad(Battle+0xf2c,pad,nativeBattleActorServices(vm));
+ // Source sound sentinel -250000000 and zero argument are checked exactly.
+ // Trigger/position/off queue requests with native handles; providers do not
+ // claim actual MusyX/spatial playback. The source function-address registry
+ // below dispatches emulated US tokens to typed native wrappers, never casts.
  BattleSoundPlaybackServices playback;playback.user=this;playback.trigger=[](void* self,uint32_t u,uint32_t key,int32_t sentinel,int32_t zero,const std::array<float,3>& pos){assert(sentinel==-250000000 && zero==0);return static_cast<HarborTutorialPacked*>(self)->requestSound(u,key,pos);};
  playback.position=[](void* self,uint32_t handle,const std::array<float,3>& pos){HarborTutorialSoundRequest r;r.operation=HarborTutorialSoundRequest::Operation::Position;r.handle=handle;r.position=pos;static_cast<HarborTutorialPacked*>(self)->sounds.push_back(r);};
  playback.off=[](void* self,uint32_t handle){HarborTutorialSoundRequest r;r.operation=HarborTutorialSoundRequest::Operation::Off;r.handle=handle;static_cast<HarborTutorialPacked*>(self)->sounds.push_back(r);};
@@ -47,7 +58,12 @@ bool HarborTutorialPacked::provision(){
  return registry.bind(0x80113f1c,&vm,[](void* p,EventEntry& e,int32_t){return battleMarkUnit1feEvent(e,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));}) && registry.bind(0x8010f458,&vm,[](void* p,EventEntry& e,int32_t){auto& vm=*static_cast<EventNativeRuntime*>(p);return battleGetHitDamageEvent(e,nativeBattleUnitEventServices(vm),nativeBattleActorServices(vm));}) && registry.bind(0x80105b40,&vm,[](void* p,EventEntry& e,int32_t){return battleUnitFlagEvent(e,true,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));}) && registry.bind(0x80105ae0,&vm,[](void* p,EventEntry& e,int32_t){return battleUnitFlagEvent(e,false,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));}) && registry.bind(0x8010a010,&vm,[](void* p,EventEntry& e,int32_t){return runBattleDataChild(e,nativeBattleDataChildServices(*static_cast<EventNativeRuntime*>(p)));}) && registry.bind(0x8010e4bc,&vm,[](void* p,EventEntry& e,int32_t){auto& vm=*static_cast<EventNativeRuntime*>(p);return battleResetUnitFacingEvent(e,nativeBattleUnitEventServices(vm),nativeBattleActorServices(vm));}) && registry.bind(0x8010e430,&vm,[](void* p,EventEntry& e,int32_t){return battleCheckUnitAttributeEvent(e,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));}) && registry.bind(0x8010f0e8,&vm,[](void* p,EventEntry& e,int32_t){return battleCheckHitPatternEvent(e,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));}) && registry.bind(0x8010f2e8,&vm,[](void* p,EventEntry& e,int32_t){return battleCheckHitCodeEvent(e,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));}) &&
  registry.bind(0x8010f374,&vm,[](void* p,EventEntry& e,int32_t){return battleGetHitCodeEvent(e,nativeBattleUnitEventServices(*static_cast<EventNativeRuntime*>(p)));}) && bindBattleCheckDataCallback(registry,vm) && bindBattleGetBodyIdCallback(registry,vm) && bindBattleSetMoveSpeedCallback(registry,vm) && bindBattleMovePositionCallback(registry,movement) && bindBattleJumpSettingCallback(registry,vm) && bindBattleGetPosCallback(registry,vm) && bindBattleGetHomePosCallback(registry,vm) && bindBattleGetHitPosCallback(registry,vm) && bindBattleGetUnitWorkCallback(registry,vm) && bindBattleSetUnitWorkCallback(registry,vm) && bindBattleGetHpCallback(registry,vm) && bindBattleGetMaxHpCallback(registry,vm) && bindBattleStartWaitCallback(registry,vm) && bindBattleStopWaitCallback(registry,vm) && bindBattleSelectedTargetCallback(registry,vm) && bindBattleCommandWeaponCallback(registry,vm) && bindBattleWaitGuardMoveCallback(registry,vm) && bindBattleMajinaiQueryCallback(registry,vm) && bindBattleTakeoffCallback(registry,takeoff) && bindBattleGetMoveFrameCallback(registry,vm) && bindBattleMarioJumpParameterCallback(registry,vm) && bindBattleSetFallAccelCallback(registry,vm) && bindBattleFramesToMillisecondsCallback(registry,vm) && bindBattleMarioJumpPositionCallback(registry,marioJump);
 }
+// 128 is a native copied-key bound. Preserve original key token and owner ID
+// alongside text; position/off later refer to the monotonically assigned handle.
 uint32_t HarborTutorialPacked::requestSound(uint32_t u,uint32_t key,const std::array<float,3>& pos){HarborTutorialSoundRequest r;r.handle=nextSoundHandle++;r.key=key;r.owner=int32_t(word(u));r.position=pos;for(unsigned i=0;i<128;++i){const auto c=byte(key+i);if(!c)break;r.name+=char(c);}sounds.push_back(r);return r.handle;}
+// 0x8041eb00 is original pouch pointer cell; 0x84400000 is native 0x5d4-byte storage.
+// A supplied pouch is copied verbatim; otherwise original initializer uses
+// original name_party3 text. One allocation only; do not reset a live pouch.
 bool HarborTutorialPacked::provisionFreshPouch(const char* name,const ProloguePouch* entry){
  if(!name || freshPouch || !vm.memory.registerRam(0x8041eb00,std::vector<uint8_t>(4)) || !vm.memory.registerRam(0x84400000,std::vector<uint8_t>(0x5d4)))return false;
  if(entry){for(unsigned i=0;i<entry->bytes.size();++i)byte(0x84400000+i,entry->bytes[i]);word(0x8041eb00,0x84400000);freshPouch=true;return true;}
@@ -56,12 +72,19 @@ bool HarborTutorialPacked::provisionFreshPouch(const char* name,const ProloguePo
  services.message=[](void* p,const char* key){assert(!std::strcmp(key,"name_party3"));return static_cast<Provider*>(p)->name;};
  freshPouch=initializePackedPouch(services)==0x84400000;return freshPouch;
 }
+// Copy current packed pouch for the existing typed resource importer, then
+// publish only base/max/current HP +0x10a/0x108/0x10c and FP +0x110/0x10e/0x112. HP+/FP+ counts
+// come from Mario+0x2f1/0x2f2; this is not an import of all badges/equipment.
 void HarborTutorialPacked::importMarioPouch(){
  ProloguePouch copy;const auto p=word(0x8041eb00);for(unsigned i=0;i<copy.bytes.size();++i)copy.bytes[i]=byte(p+i);
  readDamage(1);auto& d=damageUnits[1];d.hpPlusCount=byte(Units+0x1000+0x2f1);d.fpPlusCount=byte(Units+0x1000+0x2f2);
  UnitResourceServices services;services.user=&copy;services.pouch=[](void* self){return static_cast<ProloguePouch*>(self)->bytes.data();};importUnitResources(d,services);
  const auto u=Units+0x1000;half(u+0x10a,d.baseHp);half(u+0x108,d.maxHp);half(u+0x10c,d.hp);half(u+0x110,d.baseFp);half(u+0x10e,d.maxFp);half(u+0x112,d.fp);
 }
+// Native field 0x580/NPC 0x340-byte spans at 0x84500000/0x84501000 model only admitted
+// fresh battle-information ownership. GP+0x168 -> field,+8 -> NPC. Require actual
+// source group+0x248/stage+0x230 match before publishing info to Battle+0x2738.
+// Fresh partner ID 0 maps null; no arbitrary party-kind fallback is admitted.
 bool HarborTutorialPacked::provisionFreshFieldInformation(uint32_t c,uint32_t group,uint32_t stage){
  if(!freshPouch || !vm.memory.registerRam(0x84500000,std::vector<uint8_t>(0x580)) || !vm.memory.registerRam(0x84501000,std::vector<uint8_t>(0x340)))return false;
  // Explicit fresh NPC/Fbat allocation adapter; only source-owned information
@@ -72,7 +95,15 @@ bool HarborTutorialPacked::provisionFreshFieldInformation(uint32_t c,uint32_t gr
  PackedFieldBattleInformationServices services;services.memory=nativeBattleActorServices(vm);services.marioPartyId=[](void*)->int32_t{return 0;};services.party=[](void*,int32_t id){assert(id==0);return uint32_t(0);};services.partyKind=[](void*,int32_t)->int32_t{std::abort();};
  const auto info=preparePackedFieldBattleInformation(f,npc,word(0x8041eb00),services);word(Battle+0x2738,info);return true;
 }
+// First non-null sample per millisecond updates general pad history once.
+// physicalCurrent reflects this call's provider presence even on a repeated
+// timestamp; absent input is not written into history as an empty sample.
 void HarborTutorialPacked::samplePhysical(uint64_t time,const BattlePadSample* sample){physicalCurrent=sample!=nullptr;if(!sample || sampledAt==time)return;sampledAt=time;auto general=readPackedBattlePad(Battle+0xf2c,nativeBattleActorServices(vm));general.update(*sample);writePackedBattlePad(Battle+0xf2c,general,nativeBattleActorServices(vm));sampledPhysical=*sample;}
+// Native slots 0..3 only; Mario kind pointer comes from original 0x80416a50.
+// Kind+0xb4 part count 1..3,+0xb8 definitions(stride 0x4c),+0xc0 unit data. Each native
+// part occupies 0x500 bytes within its unit's 0x1000-byte slot. Register once.
+// Source fields: unit+0x14 part list, 0x104 attributes, 0x140 protector (-1), 0x114 scale 1;
+// 0x21/0x22/0x23 move counters start 1, 0x189 and part+0xbd retain signed facing 255 (-1)/1.
 bool HarborTutorialPacked::registerActor(HarborTutorialActor& a){
  if(a.id<0 || a.id>3 || registered[a.id])return false;
  const uint32_t id=uint32_t(a.id),u=Units+id*0x1000,p=Parts+id*0x1000,k=a.id==1?word(0x80416a50):a.sourceKind;
@@ -85,10 +116,15 @@ bool HarborTutorialPacked::registerActor(HarborTutorialActor& a){
  for(unsigned j=0;j<count;++j){const auto definition=source+0x4c*j,part=p+0x500*j;word(part,j+1<count?part+0x500:0);word(part+4,definition);word(part+0x4ec,u);byte(part+0xbd,a.belong==1?255:1);word(part+0x1c0,0xffffffff);
   if(word(definition+0x40)&1)word(u+0x2d4,word(definition));
   for(unsigned axis=0;axis<3;++axis){real(part+0x24+4*axis,real(definition+0xc+4*axis));real(part+0x170+4*axis,real(definition+0x18+4*axis));real(part+0x188+4*axis,real(definition+0x24+4*axis));}
+  // Copy definition attributes 0x40/0x44, defense 0x38/0x3c, pose table 0x48 into source
+  // part+0x1ac/0x1b0/0x1b4/0x1b8/0x1bc. Part+0x4ec points back to unit; linked next part is
+  // first word. Definition flag 1 selects body ID into unit+0x2d4.
   for(auto pair:std::array<std::pair<uint32_t,uint32_t>,5>{{{0x1ac,0x40},{0x1b0,0x44},{0x1b4,0x38},{0x1b8,0x3c},{0x1bc,0x48}}})word(part+pair.first,word(definition+pair.second));
  }
  return true;
 }
+// Startup readiness queries live event ID+active bit 1, not mere nonzero
+// initialization handles. Init event ownership/cleanup remains in source code.
 bool HarborTutorialPacked::unitInitReady(){
  BattleStartupServices services;services.memory=nativeBattleActorServices(vm);services.user=this;
  services.eventExists=[](void* self,uint32_t id){auto& runtime=static_cast<HarborTutorialPacked*>(self)->vm;
@@ -104,6 +140,8 @@ uint32_t HarborTutorialPacked::runHitEventDirect(int32_t id,uint32_t code,uint32
  if(id<0 || id>=4 || !registered[size_t(id)])return 0;
  return packedBattleRunHitEventDirect(word(Battle+0x20+4u*uint32_t(id)),code,script,nativeBattleUnitEventServices(vm));
 }
+// Observation of source hit-event handle+0x2b4 across four registered units;
+// inactive/missing handle does not by itself complete an interrupted phase.
 bool HarborTutorialPacked::hitEventsActive(){
  for(unsigned id=0;id<4;++id)if(registered[id]){
   const auto handle=word(word(Battle+0x20+4*id)+0x2b4);
@@ -111,9 +149,15 @@ bool HarborTutorialPacked::hitEventsActive(){
  }
  return false; // Observation only: original cleanup ownership remains separate.
 }
+// Original unit event handles: 0x288 init, 0x29c phase, 0x2a8 attack, 0x290 wait child.
+// Starting attack cancels recorded wait event before clearing that handle.
 void HarborTutorialPacked::recordInit(int32_t id,uint32_t event){word(Units+uint32_t(id)*0x1000+0x288,event);}
 void HarborTutorialPacked::recordPhase(int32_t id,uint32_t event){word(Units+uint32_t(id)*0x1000+0x29c,event);}
 void HarborTutorialPacked::recordAttack(int32_t id,uint32_t event){const auto u=Units+uint32_t(id)*0x1000;word(u+0x2a8,event);const auto wait=word(u+0x290);if(wait)deleteEventId(wait,vm.creationServices());word(u+0x290,0);}
+// Source turn is signed half at B; 0xef4 flags, 0xf18 phase, 0x16f58/0x16f59 declarations.
+// Project all visual slots PLUS invisible system through actor.id, never slot
+// index. Unit+0x218 has 16 work words, 0x3c/home 0x30 XYZ, 0x308 held item, 0x2c move phase.
+// Script pointers 0x28c/0x298/0x2a0/0x2a4/0x2b0/0x2b8 differ from running event handles.
 void HarborTutorialPacked::publish(const HarborTutorial& scene){
  word(Battle+0xef4,scene.battleFlags);half(Battle,scene.turn);word(Battle+0xf18,scene.phaseWord);byte(Battle+0x16f58,scene.successDeclarations);byte(Battle+0x16f59,scene.failureDeclarations);
  for(unsigned slot=0;slot<4;++slot){const auto& a=slot?scene.actors[slot-1]:scene.systemActor;if(a.id<0 || a.id>3 || !registered[a.id])continue;const auto u=Units+uint32_t(a.id)*0x1000;
@@ -123,6 +167,10 @@ void HarborTutorialPacked::publish(const HarborTutorial& scene){
   for(auto pair:std::array<std::pair<uint32_t,uint32_t>,6>{{{0x28c,a.wait},{0x298,a.phase},{0x2a0,a.attack},{0x2a4,a.confusion},{0x2b0,a.damage},{0x2b8,a.entry}}})word(u+pair.first,pair.second);
  }
 }
+// Selective readback mirrors admitted fields; it deliberately does not copy
+// every source byte or make camera/effect requests authoritative gameplay.
+// Move requests into scene and clear local vectors once; camera+0x2754..0x281c
+// retains flags/priority/mode/actor-part IDs/zoom/signed timers/home/hit.
 void HarborTutorialPacked::capture(HarborTutorial& scene){
  scene.successDeclarations=byte(Battle+0x16f58);scene.failureDeclarations=byte(Battle+0x16f59);
  scene.battleFlags=word(Battle+0xef4);
@@ -144,6 +192,10 @@ void HarborTutorialPacked::capture(HarborTutorial& scene){
  for(auto& r:sounds){r.time=scene.now;scene.soundRequests.push_back(std::move(r));}sounds.clear();
  auto& c=scene.camera;c.flags=word(Battle+0x2754);c.priority=int32_t(word(Battle+0x275c));c.mode=int32_t(word(Battle+0x2760));c.owner=int32_t(word(Battle+0x2764));c.target=int32_t(word(Battle+0x2768));c.ownerPart=int32_t(word(Battle+0x276c));c.targetPart=int32_t(word(Battle+0x2770));c.zoom=real(Battle+0x2778);uint16_t halfword=0;required(vm.memory.readHalf(Battle+0x277c,halfword));c.speed=int16_t(halfword);required(vm.memory.readHalf(Battle+0x277e,halfword));c.remaining=int16_t(halfword);for(unsigned i=0;i<3;++i){c.home[i]=real(Battle+0x2810+4*i);c.hit[i]=real(Battle+0x281c+4*i);}
 }
+// Native dispatch precedence: aftereffect/action/damage adapters, registered
+// callbacks, then explicit packed leaves. False leaves caller pending; source
+// event result 2 is completion, 0 wait, 255 scheduler cancellation/special return.
+// Addresses below are original US callback identities, never host pointers.
 bool HarborTutorialPacked::invoke(EventEntry& e,uint32_t function,int32_t first,int32_t& result){
  if(function==0x801054e8)return aftereffectEvent(e,result);
  if(function==0x80107708 || function==0x80107758 || function==0x80107660 || function==0x80107548)return actionEvent(e,function,result);
@@ -157,6 +209,9 @@ bool HarborTutorialPacked::invoke(EventEntry& e,uint32_t function,int32_t first,
  if(function==0x801093a8)marioJumpUnit=actor(e); // Native sound metadata captures the actual caller unit.
  if(registry.invoke(e,function,first,result))return true;
  switch(function){
+ // HP/FP drain reads 0x2f9/0x2fa capped by dealt-HP 0x284 (not a healing write).
+ // Complete AP-recovery li 2/blr and empty-audience feedback are narrow leaves;
+ // populated feedback cannot be silently acknowledged without real providers.
  case 0x80113950:case 0x801138d8:{
   const auto units=nativeBattleUnitEventServices(vm);const auto args=e.arguments,b=word(0x8041eb90);const auto rawActor=int32_t(word(args)),destination=int32_t(word(args+4));
   const auto id=units.translate(units.user,e,rawActor);const auto u=units.unit(units.user,b,id);int32_t amount=0;
@@ -175,6 +230,10 @@ bool HarborTutorialPacked::invoke(EventEntry& e,uint32_t function,int32_t first,
   s.audience=[](void* self,uint32_t weapon,bool good){auto& p=*static_cast<HarborTutorialPacked*>(self);BattleAudienceFeedbackServices a;a.memory=nativeBattleActorServices(p.vm);return packedBattleAudienceActionFeedback(weapon,good,a);};
   const auto completion=packedBattleDeclareActionResultEvent(e,s);if(!completion)return false;result=*completion;return true;
  }
+ // Action work map: 0x1f50 flags, 0x1cbd adjusted difficulty, 0x1cbc raw difficulty;
+ // 0x305/0x306 actor simplifier counts; clamp adjusted difficulty 0..6. Setup table
+ // 0x80364348 has 20-byte records (id plus Init/Result/Main/Display), zero ID end.
+ // 0x1c90 actor, 0x1c94 raw options, 0x1c98 argument, 0x1c9c state, 0x1cb4 count, 0x1cb8 result.
  case 0x80106f40:{const auto on=value(e,0);const auto mask=uint32_t(raw(e,1));const auto flags=word(Battle+0x1f50);word(Battle+0x1f50,on?flags|mask:flags&~mask);result=2;return true;}
  case 0x80106ef0:{TimingACommand timing;const auto window=timing.successWindow(byte(Battle+0x1cbd));if(window<0)return false;output(e,0,window);result=2;return true;}
  case 0x80107788:result=packedBattleStartActionCommandEvent(e,nativeBattleUnitEventServices(vm),nativeBattleActorServices(vm));return true;
@@ -193,6 +252,9 @@ bool HarborTutorialPacked::invoke(EventEntry& e,uint32_t function,int32_t first,
   }
   result=2;return true;
  }
+ // Only zero item/FP/AP cost weapon is admitted, yet execute original pay
+ // accounting and publication in order. Capture global Battle for notice fields;
+ // pouch+0x7a/0x7b AP writes preserve BE bytes. No free nonzero-cost fallback.
  case 0x801059a0:{
   const auto u=actor(e),weapon=uint32_t(value(e,1));
   if(word(weapon+8) || byte(weapon+0x11) || byte(weapon+0x12))return false;
@@ -216,12 +278,21 @@ bool HarborTutorialPacked::invoke(EventEntry& e,uint32_t function,int32_t first,
   for(unsigned id=0;id<64;++id){const auto u=word(b+0x20+4*id);if(u && int32_t(word(u+0x140))==target)return false;}
   output(e,1,target);output(e,2,part);chosenUnit=target;chosenPart=part;result=2;return true;
  }
+ // Installed script domains: 0x28c wait, 0x2a0 attack, 0x2b0 damage, 0x2a4 confusion,
+ // 0x2b8 entry; attack installation clears 0x2ac. Max-move write clamps signed +0x22
+ // current count only when above new +0x21, not a native unsigned capacity rule.
+ // Sound configuration banks 0x1dc/0x1cc have word IDs and signed half timings;
+ // part+0x130 is work array, 0x4d0..0x4dc automatic pose state (unidentified stays raw).
  case 0x8010a500:case 0x8010a388:case 0x8010a55c:case 0x8010a32c:case 0x8010a4a4:{const auto u=actor(e);const uint32_t offset=function==0x8010a500?0x28c:function==0x8010a388?0x2a0:function==0x8010a55c?0x2b0:function==0x8010a32c?0x2a4:0x2b8;word(u+offset,uint32_t(raw(e,1)));if(function==0x8010a388)word(u+0x2ac,0);result=2;return true;}
  case 0x8010fce0:{const auto battle=word(0x8041eb90);const auto id=translateBattleActor(&e,value(e,0),nativeBattleActorServices(vm));if(id!=-1){const auto u=word(battle+0x20+4u*uint32_t(id));byte(u+0x21,uint8_t(value(e,1)));if(signByte(byte(u+0x22))>signByte(byte(u+0x21)))byte(u+0x22,byte(u+0x21));}result=2;return true;}
  case 0x80104b08:{const auto u=actor(e),launch=uint32_t(value(e,1)),land=uint32_t(value(e,2));word(u+0x1c4,launch);word(u+0x1c8,land);result=2;return true;}
  case 0x80104ddc:case 0x80104f64:{const auto u=actor(e);std::array<int32_t,5> args{};for(unsigned i=0;i<5;++i)args[i]=value(e,i+1);const auto bank=u+(function==0x80104ddc?0x1dc:0x1cc);word(bank,uint32_t(args[0]));word(bank+4,uint32_t(args[1]));half(bank+8,args[2]);half(bank+10,args[3]);half(bank+12,args[4]);result=2;return true;}
  case 0x8010f4cc:{const auto selector=value(e,0),id=translateBattleActor(&e,selector,nativeBattleActorServices(vm)),part=value(e,1),index=value(e,2),v=value(e,3);const auto u=word(Battle+0x20+4u*uint32_t(id)),p=packedUnitPart(u,part,nativeBattleActorServices(vm).memory);word(p+0x130+4u*uint32_t(index),uint32_t(v));result=2;return true;}
  case 0x801063f4:{const auto selector=value(e,0),id=translateBattleActor(&e,selector,nativeBattleActorServices(vm)),part=value(e,1);const auto u=word(Battle+0x20+4u*uint32_t(id)),p=packedUnitPart(u,part,nativeBattleActorServices(vm).memory);word(p+0x4d0,uint32_t(raw(e,2)));word(p+0x4d4,0);word(p+0x4d8,word(0x804226a4));word(p+0x4dc,word(0x804226a4));result=2;return true;}
+ // Badge query admits only first visit with equipped IDs 327/328 both absent;
+ // all other branches need real providers. Defense evaluates actual private
+ // pad, source difficulty/automatic/weapon gate and signed override 0x1d18;
+ // writes result 0x1cb0 and updated pad rather than inferring a guard from keys.
  case 0x80145404:{if(!freshPouch)return false;(void)actor(e);const auto pouch=word(0x8041eb00);const auto memory=nativeBattleActorServices(vm).memory;const auto firstBadge=packedPouchEquippedBadgeCount(pouch,327,memory),secondBadge=packedPouchEquippedBadgeCount(pouch,328,memory);if(first && firstBadge==0 && secondBadge==0){result=2;return true;}return false;}
  case 0x80107694:{if(!physicalCurrent)return false;const auto u=actor(e),weapon=uint32_t(value(e,1));word(Battle+0x1cb0,0);DefenseContext context;uint16_t hp=0,override=0;required(vm.memory.readHalf(u+0x10c,hp));context.hp=int16_t(hp);context.simplifiers=byte(u+0x305);context.unsimplifiers=byte(u+0x306);context.automatic=byte(u+0x307);context.weaponGate=byte(weapon+0x13);required(vm.memory.readHalf(Battle+0x1d18,override));DefenseCommand command;command.overrideCounter=int16_t(override);auto pad=readPackedBattlePad(Battle+0x1d1c,nativeBattleActorServices(vm));command.evaluate(pad,context);half(Battle+0x1d18,command.overrideCounter);word(Battle+0x1cb0,command.result);writePackedBattlePad(Battle+0x1d1c,pad,nativeBattleActorServices(vm));result=2;return true;}
 
@@ -231,6 +302,9 @@ bool HarborTutorialPacked::invoke(EventEntry& e,uint32_t function,int32_t first,
  case 0x8012be38:result=battleCameraHomingEvent(e,camera);return true;
  case 0x8012b8cc:result=battleCameraSpeedEvent(e,camera);return true;
  case 0x8012ba14:result=battleCameraZoomEvent(e,camera);return true;
+ // Position helpers preserve wrapped 32-bit signed-facing delta arithmetic.
+ // Hit precheck negative ->255; nonnegative writes operand 5 then returns 2 only
+ // while event remains active (bit 1). Do not replace this with a boolean hit.
  case 0x8010b7c4:case 0x8010b85c:{const auto selector=value(e,0),id=translateBattleActor(&e,selector,nativeBattleActorServices(vm)),amount=value(e,2);const auto u=word(Battle+0x20+4u*uint32_t(id));const auto direction=signByte(byte(u+0x189)),x=value(e,1);const uint32_t delta=uint32_t(amount)*uint32_t(direction);output(e,1,int32_t(uint32_t(x)+(function==0x8010b85c?delta:0u-delta)));result=2;return true;}
  case 0x8010abac:{const auto a=actor(e);const auto defenderSelector=value(e,1),defenderId=translateBattleActor(&e,defenderSelector,nativeBattleActorServices(vm));const auto d=word(Battle+0x20+4u*uint32_t(defenderId));const auto p=packedUnitPart(d,value(e,2),nativeBattleActorServices(vm).memory),weapon=uint32_t(value(e,3));const auto flags=uint32_t(raw(e,4));
   BattlePackedHitPrecheckServices services;services.memory=nativeBattleActorServices(vm);services.user=this;services.status=[](void* self,uint32_t u,int32_t id){auto& p=*static_cast<HarborTutorialPacked*>(self);return checkPackedBattleStatus(u,id,nativeBattleActorServices(p.vm));};services.random=[](void* self,int32_t bound)->int32_t{return static_cast<HarborTutorialPacked*>(self)->random.bounded(bound);};services.multiply=[](void*,float a,float b){return a*b;};services.truncate=[](void* self,float v)->int32_t{auto& p=*static_cast<HarborTutorialPacked*>(self);return p.vm.platform.truncate(p.vm.platform.user,v);};
@@ -240,6 +314,9 @@ bool HarborTutorialPacked::invoke(EventEntry& e,uint32_t function,int32_t first,
  case 0x8010d0f0:if(jump.floor){result=packedGenericJumpContinueEvent(e,first,jump);return true;}break;
  }
 
+ // Auto-pose leaf preserves ordered flag stores; presentation still owns pose
+ // projection. Enemy-belong swaps signed 0/1 only. Candidate buffer B+0x428 uses
+ // source masks/direction, weapon+0x7c choice; output callbacks retain ID order.
  if(function==0x801064d8){const auto u=actor(e),p=packedUnitPart(u,value(e,1),nativeBattleActorServices(vm).memory);word(p+0x204,word(p+0x204)&~uint32_t(2|0x10));word(p+0x204,word(p+0x204)|1);word(p+0x204,word(p+0x204)&~uint32_t(0x80));word(p+0x204,word(p+0x204)&~uint32_t(4));} // Fresh automatic pose projection remains in the presentation adapter.
  if(function==0x8010eed4){const auto u=actor(e);const auto b=signByte(byte(u+0xc));output(e,1,b==0?1:b==1?0:b);result=2;return true;}
  if(function==0x8010b664){const auto id=translateBattleActor(&e,value(e,0),nativeBattleActorServices(vm));const auto b=int8_t(value(e,1));const auto weapon=uint32_t(value(e,2)),attributes=word(weapon+0x68);int32_t bias=signByte(uint8_t(-byte(Battle+8u*uint32_t(int32_t(b))+0xa)));

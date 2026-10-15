@@ -12,6 +12,9 @@
 #include <optional>
 namespace ttyd {
 bool loadHarborTutorialAssets(const char* root);
+// Native projection of an admitted source actor; scripts/kind are guest tokens.
+// work has the original 16 unit-work slots. poseAt is a millisecond generation
+// used by completion acknowledgements, not a source animation frame counter.
 struct HarborTutorialActor {
     int32_t id=-1,kind=0,hp=0,maxHp=0,maxMoves=1,heldItem=0;
     int8_t belong=0;uint32_t movePhase=0;
@@ -21,6 +24,8 @@ struct HarborTutorialActor {
     std::string pose,stayPose,talkPose;
     uint64_t poseAt=0;
 };
+// First-visit trace retains original function/command/owner and RAW operands.
+// Recording a request proves invocation only, not downstream audio/draw completion.
 struct HarborTutorialRequest {
     uint32_t function=0,command=0;uint64_t time=0;int32_t owner=-1;
     std::vector<int32_t> rawOperands;
@@ -61,6 +66,9 @@ public:
     std::vector<BattleTimingIconRequest> actionCommandIcons;
     int32_t turn=1,speaker=-1,result=0,chosenUnit=-1,chosenPart=0;uint32_t phaseWord=0x04000001,battleFlags=0,pendingService=0;
     uint8_t successDeclarations=0,failureDeclarations=0;
+    // Native clock is monotonic milliseconds. phaseWord 0x04000001 is the source
+    // opening-phase selector; turn 1 is its entry context, not an HP-driven turn loop.
+    // speaker/chosenUnit are registry IDs (-1 absent); chosenPart 0 is unselected.
     uint64_t now=0;
     static constexpr int32_t SystemId=0,MarioId=1,CrumpId=2,HelperId=3;
     HarborTutorialActor systemActor; // Actual invisible source owner, excluded from visual slots.
@@ -147,6 +155,8 @@ public:
 private:
     uint32_t dispatchHit(int32_t,uint32_t,uint32_t,bool direct);
     bool beginWithContext(uint64_t,int32_t,int32_t,bool freshPouch,int32_t originalStory,const ProloguePouch* entry=nullptr);
+    // Shared because held draw bindings can keep the VM/cache alive. Such a
+    // binding must still validate current UI ownership before each dispatch.
     std::shared_ptr<HarborTutorialRuntime> runtime_;
 };
 }

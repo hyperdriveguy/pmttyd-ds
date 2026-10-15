@@ -100,6 +100,7 @@ before clearing that pointer. Target setup only opens the scene's target view;
 the actual weapon decision remains in `selectWeapon`. Row projections refresh
 on an engaged source result, including zero.
 
-These notes cover the six adapters linked above. Tutorial entry, actor mapping,
-message/animation services, class-menu composition, action continuation and Trio
-integration still require their own complete inline audit.
+These notes cover the six adapters linked above. See [composition](harbor-composition.md)
+and [packed state](harbor-packed-state.md) for the tutorial owner and other
+Harbor adapters. Concurrent retained-action changes and Trio integration still
+need their own audit against committed code.

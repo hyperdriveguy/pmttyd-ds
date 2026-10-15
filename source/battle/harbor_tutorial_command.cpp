@@ -8,6 +8,9 @@
 #include "harbor_tutorial_packed.hpp"
 #include <cassert>
 namespace ttyd {
+// Immediate source Input is not generally restartable after partial work.
+// Latch first unbound function across visits (cleared by weapon-table rebuild)
+// rather than replaying acknowledged effects. MenuRam+0x18 is cursor scratch.
 std::optional<int32_t>
 HarborTutorialPacked::commandInput(HarborTutorial &scene, void *messageUser,
                                    uint32_t (*message)(void *, uint32_t)) {
@@ -51,6 +54,9 @@ HarborTutorialPacked::commandInput(HarborTutorial &scene, void *messageUser,
       const auto value=p.presentItem();
       return value?std::optional<uint32_t>(uint32_t(*value)):missing();
     }
+    // Original restore cells: 0x1c70 saved menu word, 0x1c74 byte gate, 0x171c live
+    // state. Save only when gate 0; clear saved state only on matching live word.
+    // Reload global B through 0x8041eb90 rather than assume fixed native Battle.
     case F::Restore: {
       const auto b = p.word(0x8041eb90);
       if (!p.byte(b + 0x1c74))
@@ -106,6 +112,8 @@ HarborTutorialPacked::commandInput(HarborTutorial &scene, void *messageUser,
     case F::Sound:
       c.scene->weaponMenuSounds.push_back(a[0]);
       return 0;
+    // Narrow native acting-Mario/menu identity. Selection is separate from
+    // creating attack roots; no HP/phase/outcome is inferred here.
     case F::SelectAttack:
       if (a[0] != Units + 0x1000 || a[1] != Battle + 0x171c)
         return missing();
@@ -161,6 +169,8 @@ HarborTutorialPacked::commandInput(HarborTutorial &scene, void *messageUser,
     t.offEnemyLight = [](void *) {};
     t.offLight = [](void *, int32_t, int32_t) {
     }; // Verified original blr bodies.
+    // Actual target-payment service 0x80126840 is unbound. Keep target work
+    // pending; do not acknowledge payment merely because a cost looks zero.
     t.pay = [](void *self, uint32_t, uint32_t) {
       static_cast<Context *>(self)->scene->commandInputPending = 0x80126840;
       return false;
@@ -173,6 +183,9 @@ HarborTutorialPacked::commandInput(HarborTutorial &scene, void *messageUser,
     };
     return processPackedBattleTargetSelection(b, u, t);
   };
+  // Source result 1 marks finalization; optional 0 still completes a visit.
+  // If no child diagnostic exists, 0x801229d8 identifies unavailable Input itself.
+  // This latch is native admission metadata, not a source command-state write.
   const auto result = packedBattleCommandInput(Battle, s);
   if (!result)
     commandUnbound =
@@ -185,6 +198,9 @@ HarborTutorialPacked::commandInput(HarborTutorial &scene, void *messageUser,
 } // namespace ttyd
 
 namespace ttyd {
+// Pose names must fit the original 64-byte part buffer at+0x1c4 including NUL;
+// part+0x4ec links owning unit. Reject null/empty/unterminated-at-limit names.
+// Resolve registry actor before publication; unknown actor does not fake a pose.
 bool HarborTutorialPacked::commandPose(uint32_t unit, HarborTutorial &scene) {
   BattleCommandPoseServices s;
   s.memory = nativeBattleActorServices(vm);

@@ -20,9 +20,16 @@ namespace ttyd {
 namespace {
 EventScriptAssets scripts;MessageAssets messages;MessageFont font;
 std::shared_ptr<BattleMenuFileCache> menuFiles;
+// PMHTUT01 catalog has 12 source pointers and at most 37 callback indices.
+// Indices are converter dispatch IDs, not source opcodes or native function
+// pointers. Asset reload publishes only after complete validation below.
 std::array<uint32_t,12> source{};std::unordered_map<uint32_t,uint32_t> callbacks;bool ready=false;
 int32_t signedWord(uint32_t v){return v<=0x7fffffff?int32_t(v):int32_t(int64_t(v)-0x100000000LL);}
 }
+// Load original global/gor_00 US messages and font with the source EVT pack;
+// probe all six mac_0_b_t1_000..005 messages. No dialogue is authored here.
+// Catalog is native little-endian 32-bit data; reject duplicates/trailing bytes,
+// invalid callback IDs or unreadable roots/Mario part table before publication.
 bool loadHarborTutorialAssets(const char* root){
  if(!root)return false;
  const std::string base=root;EventScriptAssets p;MessageAssets m;MessageFont f;
@@ -53,9 +60,16 @@ struct HarborTutorialRuntime {
  void* fadeUser=nullptr;void(*fadeEntry)(void*,int32_t,int32_t,uint32_t)=nullptr;bool(*fadeFinished)(void*)=nullptr;
  uint32_t initRoot=0,phaseRoot=0,attackRoot=0,executingEvent=0,pendingEvent=0;uint64_t messagePoseSerial=0;bool openingDispatched=false,phaseInterrupted=false;
  std::array<uint64_t,3> completeEpoch{};std::array<bool,3> complete{};
+ // One interpolation state per source event ID; limit/step are source loop
+ // counts, not screen frames. Pose-completion epochs are separate millisecond
+ // generations so an old finished animation cannot acknowledge a new pose.
  struct Interpolation{int32_t mode=0,start=0,end=0,limit=0,step=0;};
  std::unordered_map<uint32_t,Interpolation> interpolations;
  HarborTutorialRuntime():vm(0x81000000,platform(this)){}
+ // Source clock 243MHz feeds VM tick conversion; native timestamps are ms.
+ // GP base 0x81000000 is emulated RAM. Arithmetic callbacks explicitly preserve
+ // operation boundaries; these host math choices are not measured Gekko parity.
+ // Flush/system-call hooks here are scoped no-ops, not real SDK cache services.
  static EventNativePlatform platform(HarborTutorialRuntime* r){EventNativePlatform p;p.user=r;p.clock=[](void*)->uint32_t{return 243000000;};
  p.truncate=[](void*,float v)->int32_t{assert(std::isfinite(v) && double(v)>=-2147483648. && double(v)<2147483648.);return int32_t(v);};
  p.divideWord=[](void*,int32_t a,int32_t b)->int32_t{assert(b);return a/b;};p.flushBlock=[](void*,uint32_t){};p.systemCall=[](void*){};
@@ -69,6 +83,9 @@ struct HarborTutorialRuntime {
  int32_t value(EventEntry& e,unsigned i){return getEventValue(e,raw(e,i),vm.interpreterServices().operands);}
  float real(EventEntry& e,unsigned i){return getEventFloat(e,raw(e,i),vm.interpreterServices().operands);}
  void output(EventEntry& e,unsigned i,int32_t v){setEventValue(e,raw(e,i),v,vm.interpreterServices().operands);}
+ // 256 is a native bounded guest-string read; missing NUL/read failure marks
+ // scene failed. Actor selectors -2 owner/-3 Mario translate to VISUAL slots;
+ // system 0 has no visual slot. Event roots retain native priority 10.
  std::string text(uint32_t a){std::string s;for(unsigned i=0;i<256;++i){uint8_t c=0;if(!vm.memory.readByte(a+i,c)){scene->failed=true;return {};}if(!c)return s;s+=char(c);}scene->failed=true;return {};}
  int32_t actor(EventEntry& e,unsigned i=0){int32_t v=value(e,i);if(v==-2)v=e.owner;else if(v==-3)v=1;const auto slot=scene->visualSlot(v);if(slot<0){scene->failed=true;return 0;}return slot;}
  EventEntry& root(uint32_t a,int32_t owner,uint32_t flags=0){auto services=vm.creationServices();auto& e=createRootEvent(vm.schedule,a,10,flags,services);e.owner=owner;return e;}
@@ -79,6 +96,9 @@ struct HarborTutorialRuntime {
   s.close=[](void* self){static_cast<HarborTutorialRuntime*>(self)->scene->statusVisible=false;};
   return s; // Native visibility projection; source slide animation is separate.
  }
+ // State 6 attack registration owns actual source event creation/window hide
+ // and sequence increment. A status can suppress creation: root 0 is still a
+ // completed registration, not permission to invent a fallback attack.
  void registerSelectedAttack(){
   attackRoot=0;BattleAttackRegistrationServices s;s.memory=nativeBattleActorServices(vm).memory;s.events=vm.creationServices();s.schedule=&vm.schedule;s.user=this;
   s.unit=[](void* self,uint32_t b,int32_t id){return battleRegistryUnit(b,id,nativeBattleActorServices(static_cast<HarborTutorialRuntime*>(self)->vm));};
@@ -90,9 +110,19 @@ struct HarborTutorialRuntime {
   registerBattleAttackState6(HarborTutorialPacked::Battle,s);
  }
  bool exists(uint32_t id){for(int32_t i=0;i<vm.battle.capacity;++i)if(vm.battle.entries[i].id==id && (vm.battle.entries[i].flags&1))return true;return false;}
+ // Source pose tables are (type, name) 8-byte rows; 80 is a native scan bound.
+ // Mario uses catalog 11, others kind part-definition+0x48. New matched pose
+ // invalidates native completion; names remain original guest strings.
  bool tablePose(HarborTutorialActor& a,int32_t type){uint32_t table=a.id==1?source[11]:word(word(a.sourceKind+0xb8)+0x48);
  for(unsigned i=0;i<80;++i){const auto name=word(table+i*8+4);if(!name)break;if(word(table+i*8)==uint32_t(type)){a.pose=text(name);a.poseAt=scene->now;const auto slot=scene->visualSlot(a.id);if(slot>=0)complete[size_t(slot)]=false;return true;}}return false;}
+ // First unbound function pins diagnostic plus executing event ID. Keep that
+ // event identity so cancellation can retire stale diagnostics without claiming
+ // another pending child completed. 0 is the source wait return.
  int pending(uint32_t function){if(!scene->pendingService){scene->pendingService=function;pendingEvent=executingEvent;}return 0;}
+ // Trace RAW operands only on first visit. Packed publish/invoke/capture
+ // takes precedence over converter-index fallback; missing callbacks wait.
+ // Projection callbacks that merely retain audio/camera requests below do not
+ // prove original playback/rendering or full service implementation.
  int call(EventEntry& e,uint32_t function,bool first){
  executingEvent=e.id;
  if(first){HarborTutorialRequest r{function,e.currentCommand,scene->now,e.owner,{}};for(unsigned i=0;i<e.argumentCount;++i)r.rawOperands.push_back(raw(e,i));scene->requests.push_back(std::move(r));}
@@ -108,6 +138,9 @@ struct HarborTutorialRuntime {
  a.kind=signedWord(word(a.sourceKind));a.belong=int8_t(word(source[5]+4)>>24);a.movePhase=word(source[5]+8);a.hp=a.maxHp=int16_t(word(a.sourceKind+8)>>16);a.pose="PKR_S_1";for(unsigned i=0;i<3;++i){const auto bits=word(source[5]+0xc+4*i);std::memcpy(&a.position[i],&bits,4);}a.home=a.position;
  if(!packed || !packed->registerActor(a)){scene->failed=true;return 0;}
  output(e,0,a.id);packed->recordInit(a.id,root(source[3],a.id).id);return 2;}
+ // Dispatch 7 work index 0..15; 8/9 position/home XYZ; 16 direct pose;
+ // 19/20 per-event interpolation writes locals[0]=value, 1=continue then advances;
+ // 21 rotation sentinel -1000000000 keeps an axis; 22 waits on live event ID.
  case 7:{auto& a=scene->actors[actor(e)];const auto i=value(e,1);if(i<0 || i>=16){scene->failed=true;return 0;}a.work[i]=value(e,2);return 2;}
  case 8:case 9:{auto& a=scene->actors[actor(e)];auto& p=found->second==8?a.position:a.home;for(unsigned i=0;i<3;++i)p[i]=real(e,i+1);return 2;}
  case 10:case 11:case 17:case 18:case 28:return 2; // Retain source audio/camera requests for presentation consumers.
@@ -126,6 +159,9 @@ struct HarborTutorialRuntime {
  case 24:{auto& a=scene->actors[actor(e)];const auto i=value(e,1);if(i<0 || i>=16){scene->failed=true;return 0;}output(e,2,a.work[i]);return 2;}
  case 25:scene->actors[actor(e)].talkPose=text(uint32_t(value(e,1)));return 2;
  case 26:scene->actors[actor(e)].stayPose=text(uint32_t(value(e,1)));return 2;
+ // Message ID/speaker are captured on first visit; wait until real playback
+ // becomes inactive. 29 enforces one initial visit delay AND actual matching
+ // pose completion; elapsed time alone never completes the animation.
  case 27:if(first){const auto key=text(uint32_t(value(e,1)));const auto id=actor(e,3);scene->speaker=scene->actors[id].id;
  if(!scene->message.open(key.c_str(),messages.find(key.c_str()),font,scene->now)){scene->failed=true;return 0;}scene->messageOrder.push_back(key);}
  return scene->message.active()?0:2;
@@ -140,6 +176,9 @@ struct HarborTutorialRuntime {
  }
  return pending(function);
  }
+ // Native VM heap 0x82000000..0x82100000 (1MiB), SDK allocator globals at 0x8041f070/
+ // 0x8041e428/0x8041e844, GP+4 rate 60 and battle context 1. This isolated VM/storage
+ // does not implement the full process scheduler or original battle lifetime.
  bool initialize(){if(!files || !files->bind(vm.memory))return false;
  menuBinding=std::make_unique<BattleMenuFileBinding>(files,nativeBattleActorServices(vm));
  if(!vm.memory.registerRam(0x82000000,std::vector<uint8_t>(1024*1024)) || !vm.memory.registerRam(0x8041f070,std::vector<uint8_t>(16)) || !vm.memory.registerRam(0x8041e428,std::vector<uint8_t>(4)) || !vm.memory.registerRam(0x8041e844,std::vector<uint8_t>(4)) || !vm.memory.importScripts(scripts))return false;
@@ -153,6 +192,10 @@ struct HarborTutorialRuntime {
 bool HarborTutorial::begin(uint64_t time,int32_t hp,int32_t maxHp){return beginWithContext(time,hp,maxHp,false,0);}
 bool HarborTutorial::beginFresh(uint64_t time,int32_t hp,int32_t maxHp,int32_t story){return beginWithContext(time,hp,maxHp,true,story);}
 bool HarborTutorial::beginFromPouch(uint64_t time,const ProloguePouch& entry,int32_t story){return beginWithContext(time,entry.half(0x70),entry.half(0x72),true,story,&entry);}
+// Reset only after ready/not-triggered admission. Original visual slots are
+// Crump 0/Mario 1/helper 2 but registry IDs 2/1/3; invisible system ID 0 enters first.
+// Mario kind 222, source move phase 0x04000002 and (-100, 0,-5) are native entry
+// context. Original setup/kind tables supply opponent/system fields.
 bool HarborTutorial::beginWithContext(uint64_t time,int32_t hp,int32_t maxHp,bool freshPouch,int32_t story,const ProloguePouch* entry){if(!ready || triggered)return false;*this=HarborTutorial{};triggered=true;now=time;
  actors[0].id=CrumpId;actors[0].sourceKind=source[6];actors[1].id=MarioId;actors[1].kind=222;actors[1].movePhase=0x04000002;actors[1].hp=hp;actors[1].maxHp=maxHp;actors[1].pose="M_S_1";actors[1].position=actors[1].home={-100,0,-5};
  runtime_=std::make_shared<HarborTutorialRuntime>();auto& r=*runtime_;r.scene=this;if(!r.initialize()){failed=true;return false;}actors[0].kind=signedWord(r.word(source[6]));actors[0].belong=int8_t(r.word(source[8]+4)>>24);actors[0].movePhase=r.word(source[8]+8);actors[0].hp=actors[0].maxHp=int16_t(r.word(source[6]+8)>>16);
@@ -168,6 +211,9 @@ bool HarborTutorial::beginWithContext(uint64_t time,int32_t hp,int32_t maxHp,boo
  if(!r.packed->registerActor(systemActor)){failed=true;return false;}
  r.packed->recordInit(SystemId,r.root(r.word(systemActor.sourceKind+0xbc),SystemId).id);
  if(!r.packed->registerActor(actors[1])){failed=true;return false;}
+ // Fresh entry installs pouch and known story byte 0, then source field battle
+ // configuration: catalog[9]-relative(0x60eb8-0x60c90), expected group[9]/stage[10].
+ // Legacy begin deliberately lacks this pouch/Mario-kind-init admission.
  if(freshPouch){if(!r.packed->provisionFreshPouch(messages.find("name_party3"),entry)){failed=true;return false;}uint32_t pouch=0;if(!r.vm.memory.readWord(0x8041eb00,pouch) || !r.vm.memory.writeHalf(pouch+0x70,uint16_t(hp))){failed=true;return false;}if(entry){r.packed->importMarioPouch();r.packed->capture(*this);}
  writeSavedSwitch(SavedSwitchFamily::GlobalByte,0,story,r.vm.interpreterServices().operands);if(!r.packed->provisionFreshFieldInformation(source[9]+0x60eb8-0x60c90,source[9],source[10])){failed=true;return false;}r.packed->recordInit(1,r.root(r.word(actors[1].sourceKind+0xbc),1).id);}
  if(!r.packed->registerActor(actors[0])){failed=true;return false;}
@@ -178,6 +224,11 @@ HarborTutorialActor* HarborTutorial::actorById(int32_t id){if(id==SystemId && sy
 const HarborTutorialActor* HarborTutorial::actorById(int32_t id)const{if(id==SystemId && systemActor.id==SystemId)return &systemActor;const auto slot=visualSlot(id);return slot<0?nullptr:&actors[size_t(slot)];}
 void HarborTutorial::setStartupResources(void* user,bool(*paper)(void*,uint32_t,int32_t),bool(*nice)(void*,int32_t)){if(runtime_){runtime_->resourceUser=user;runtime_->paperReady=paper;runtime_->niceReady=nice;}}
 void HarborTutorial::setStartupFade(void* user,void(*entry)(void*,int32_t,int32_t,uint32_t),bool(*finished)(void*)){if(runtime_){runtime_->fadeUser=user;runtime_->fadeEntry=entry;runtime_->fadeFinished=finished;}}
+// Reject backward milliseconds. Message pose requests preserve their own
+// publication time; source VM scheduling/action admission is scoped native
+// composition, not a renderer frame loop or complete source battle Main.
+// Intro completion requires original phase-root retirement without interruption;
+// no HP threshold or development key advances story/outcomes here.
 void HarborTutorial::tick(uint64_t time,uint32_t keys,const BattlePadSample* physical){if(!runtime_ || failed || time<now)return;now=time;auto& r=*runtime_;r.scene=this;if(message.active())message.tick(now,keys);
  const auto speakerSlot=visualSlot(speaker);
  if(message.poseRequestSerial!=r.messagePoseSerial && speakerSlot>=0){r.messagePoseSerial=message.poseRequestSerial;auto& a=actors[size_t(speakerSlot)];const auto& pose=message.poseRequest==MessagePlayback::PoseRequest::Talk?a.talkPose:a.stayPose;if(!pose.empty()){a.pose=pose;a.poseAt=message.poseRequestedAt;}}
@@ -196,6 +247,9 @@ void HarborTutorial::tick(uint64_t time,uint32_t keys,const BattlePadSample* phy
 const DisplayQueue* HarborTutorial::actionDisplayQueue()const{return runtime_?&runtime_->packed->actionDisplays:nullptr;}
 bool HarborTutorial::dispatchPhase(int32_t sourceTurn,uint32_t sourcePhase){if(!runtime_ || failed || !initialized || phaseActive || attackActive || damageActive || !actors[0].phase)return false;turn=sourceTurn;phaseWord=sourcePhase;runtime_->phaseInterrupted=false;runtime_->phaseRoot=runtime_->root(actors[0].phase,CrumpId,0x20).id;runtime_->packed->recordPhase(CrumpId,runtime_->phaseRoot);phaseActive=true;return true;}
 bool HarborTutorial::dispatchInstalledAttack(int32_t id){const auto slot=visualSlot(id);if(!runtime_ || failed || !initialized || !introComplete || phaseActive || attackActive || damageActive || (id!=CrumpId && id!=HelperId) || slot<0 || !actors[size_t(slot)].attack)return false;pendingService=0;runtime_->attackRoot=runtime_->root(actors[size_t(slot)].attack,id).id;runtime_->packed->recordAttack(id,runtime_->attackRoot);attackActive=true;return true;}
+// Require explicit initialized/intro/idle/target/command context. Source bank
+// 0x06000006 and battle bit 4 select the admitted attack route; finalization may
+// already own selection. Registration can complete with no root under status.
 bool HarborTutorial::dispatchSelectedAttack(){
  if(!runtime_ || failed || !initialized || !introComplete || phaseActive || attackActive || damageActive || weaponMenuOpen || weaponTargets.empty() || runtime_->packed->commandInputBlocked() || (!runtime_->packed->weaponDecided && !runtime_->packed->commandFinalized))return false;
  auto& r=*runtime_;r.scene=this;r.packed->publish(*this);
@@ -211,6 +265,9 @@ bool HarborTutorial::dispatchSelectedAttack(){
  weaponTargetMenuOpen=false;attackActive=r.attackRoot!=0;
  return true; // Admission succeeded even if a source status suppressed a root.
 }
+// Hit-event producer may cancel phase/attack roots. Clear stale diagnostics
+// only for actual retired owners; interrupted opening cannot mark introComplete.
+// This bridge observes roots and captures source writes, never synthesizes HP.
 uint32_t HarborTutorial::dispatchHit(int32_t id,uint32_t code,uint32_t script,bool direct){
  if(!runtime_ || failed || !actorById(id))return 0;
  auto& r=*runtime_;r.scene=this;r.packed->publish(*this);
@@ -250,6 +307,9 @@ bool HarborTutorial::openClassMenu(){
  const auto result=r.packed->commandInput(*this,&r,[](void* self,uint32_t key){auto& r=*static_cast<HarborTutorialRuntime*>(self);const auto id=r.text(key);return r.packed->cacheMenuLabel(key,messages.find(id.c_str()));});
  r.packed->capture(*this);return result.has_value();
 }
+// Returned binding borrows actual VM memory but retains runtime/allocation
+// identity. No-match cursor lookup is completed with absent output. current()
+// checks BOTH fresh lifetime token and live B+0x1c78 before any held draw resumes.
 std::optional<HarborClassMenuDrawBinding> HarborTutorial::classMenuDrawBinding(
  const BattleActDrawServices& linked)const{
  if(!runtime_ || failed || !classMenuOpen)return {};
@@ -269,6 +329,9 @@ std::optional<HarborClassMenuDrawBinding> HarborTutorial::classMenuDrawBinding(
  };
  return out;
 }
+// Process-owned palette binds once per runtime; same owner may reattach,
+// different owner is rejected. Do not reset source color history on each battle
+// entry/display; caller owns the shared palette across scene lifetimes.
 bool HarborTutorial::bindCommandDisplayPalette(std::shared_ptr<BattleCommandPalette> palette){
  if(!runtime_ || failed || !palette)return false;
  auto& r=*runtime_;
@@ -284,6 +347,9 @@ bool HarborTutorial::registerCommandDisplay(DisplayQueue& queue,BattleFooterCurs
 const BattleAudienceIncarnationOwner* HarborTutorial::audienceIncarnations()const{
  return runtime_ && !failed?runtime_->vm.audienceIncarnations.get():nullptr;
 }
+// Source UI+0x14 is explicit presentation acknowledgement, not creation or draw
+// registration. Menu resource Init/End elsewhere retain separate file refs;
+// rendering, queue registration and VM destruction do not synthesize End.
 void HarborTutorial::classMenuPresented(){if(runtime_ && classMenuOpen){uint32_t w=0;if(runtime_->packed->readWord(HarborTutorialPacked::Battle+0x1c78,w) && w)runtime_->vm.memory.writeByte(w+0x14,1);}}
 bool HarborTutorial::buildClassMenu(){
  if(!runtime_ || failed || !initialized || !introComplete || phaseActive || attackActive || damageActive)return false;
@@ -291,6 +357,8 @@ bool HarborTutorial::buildClassMenu(){
  const bool built=r.packed->buildClassMenu(*this,&r,[](void* self,uint32_t key){auto& r=*static_cast<HarborTutorialRuntime*>(self);const auto id=r.text(key);return r.packed->cacheMenuLabel(key,messages.find(id.c_str()));});
  r.packed->capture(*this);return built;
 }
+// Explicit native confirmed-class bridge into Input state 7; ordinary source
+// command completion/target confirmation remain separate caller operations.
 bool HarborTutorial::openWeaponMenu(uint32_t type){
  if(!runtime_ || failed || !initialized || !introComplete || phaseActive || attackActive || damageActive)return false;auto& r=*runtime_;r.scene=this;r.packed->publish(*this);
  const bool opened=r.packed->openWeaponMenu(type,*this,&r,[](void* self,uint32_t key){auto& r=*static_cast<HarborTutorialRuntime*>(self);const auto id=r.text(key);return r.packed->cacheMenuLabel(key,messages.find(id.c_str()));});
@@ -311,5 +379,7 @@ std::optional<int32_t> HarborTutorial::inputCommand(const BattlePadSample& sampl
 }
 bool HarborTutorial::readPackedWord(uint32_t address,uint32_t& value)const{return runtime_ && runtime_->packed && runtime_->packed->readWord(address,value);}
 bool HarborTutorial::prepareAudienceDrawing(const BattleAudienceDrawServices& supplied)const{if(!runtime_ || !runtime_->packed)return false;auto services=supplied;services.actors=nativeBattleActorServices(runtime_->vm);return drawPackedBattleAudience(services);}
+// Actual animation driver acknowledges current actor pose generation. Reusing
+// actor ID or waiting another simulation visit is insufficient for case 29.
 void HarborTutorial::animationComplete(int32_t id){const auto slot=visualSlot(id);if(!runtime_ || slot<0)return;runtime_->complete[size_t(slot)]=true;runtime_->completeEpoch[size_t(slot)]=actors[size_t(slot)].poseAt;}
 }

@@ -7,6 +7,9 @@
 #include "event_memory_release.hpp"
 #include "harbor_tutorial_packed.hpp"
 namespace ttyd {
+// Release only this adapter's actual SDK class allocations (heap 0). Reject
+// unknown/stale addresses; erase lifetime identity before freeing. The fixed
+// legacy weapon projection at MenuRam+0xc00 is the explicitly separate exception.
 bool HarborTutorialPacked::classUiRelease(uint32_t address) {
   // The legacy weapon UI owns a fixed projection, not an SDK allocation.
   if (address == MenuRam + 0xc00)
@@ -17,10 +20,15 @@ bool HarborTutorialPacked::classUiRelease(uint32_t address) {
   eventSdkFree(0, address, vm.memoryBinding.services());
   return true;
 }
+// Only output argument is supplied here; the four original unused parameters
+// are zero. Completion means the packed item-on query ran, not item recovery.
 bool HarborTutorialPacked::menuAudienceItemOn(uint32_t output){
  packedBattleAudienceItemOn({output,0,0,0,0},nativeBattleActorServices(vm));
  return true;
 }
+// Service composition is synchronous; Context closures cannot escape this
+// call. MenuRam+0x1c is private cursor output. optional 0 is completed source work;
+// nullopt retains a diagnostic function token, never an invented class result.
 std::optional<int32_t>
 HarborTutorialPacked::actMenu(HarborTutorial &scene, void *messageUser,
                               uint32_t (*message)(void *, uint32_t), bool setup,
@@ -66,6 +74,8 @@ HarborTutorialPacked::actMenu(HarborTutorial &scene, void *messageUser,
         p.word(a[2], at);
       return 0;
     }
+    // Source cursor menu+0x498 count+8; use actual builder result/readback.
+    // UI allocation failure is unavailable, not an empty successful class menu.
     case F::ClassTable:
       return p.buildClassMenu(*c.scene, c.messageUser, c.message)
                  ? std::optional<uint32_t>(p.word(Battle + 0x171c + 0x498 + 8))
@@ -84,6 +94,8 @@ HarborTutorialPacked::actMenu(HarborTutorial &scene, void *messageUser,
             eventSdkAllocate(0, size, p.vm.memoryBinding.services());
         if (!at)
           return std::nullopt;
+        // Fresh token for EVERY allocation, even reused guest addresses. Held
+        // draw keys need this identity plus the current source W pointer.
         p.classUiAllocations.insert(at);
         p.classUiLifetimes[at]=std::make_shared<const uint8_t>(0);
         return at;
@@ -124,6 +136,8 @@ HarborTutorialPacked::actMenu(HarborTutorial &scene, void *messageUser,
       return packedBattleMenuKeyAllowed(a[0], nativeBattleActorServices(p.vm))
                  ? 1
                  : 0;
+    // General source pad words: 0xf44 trigger, 0xfbc repeat, 0x1034 current held.
+    // All sound IDs are retained presentation requests; no playback claim.
     case F::Trigger:
       return p.word(Battle + 0xf44) & a[0];
     case F::Repeat:
@@ -160,6 +174,8 @@ HarborTutorialPacked::actMenu(HarborTutorial &scene, void *messageUser,
                                    ? std::optional<int32_t>(0)
                                    : std::nullopt)
                             : mainPackedBattleActMenu(Battle, s);
+  // Reflect source row mutations even on an unavailable visit. Scene rows
+  // are diagnostic/presentation projections, not proof of whole menu completion.
   captureClassRows(scene);
   return result;
 }

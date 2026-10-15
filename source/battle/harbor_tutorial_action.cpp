@@ -5,6 +5,9 @@
 #include "harbor_tutorial_packed.hpp"
 #include "message_icons.hpp"
 namespace ttyd {
+// Simulation millisecond/sample identity gates native action work; screen
+// redraws are not source command ticks. Only channel 0/private pad B+0x1d1c is
+// admitted; general history at B+0xf2c is sampled separately by samplePhysical.
 bool HarborTutorialPacked::actionManager(uint64_t time) {
   if (actionManagedAt == time)
     return true;
@@ -30,6 +33,9 @@ bool HarborTutorialPacked::actionManager(uint64_t time) {
   s.main = [](void *self, uint32_t callback,
               uint32_t b) -> std::optional<int32_t> {
     auto &p = *static_cast<HarborTutorialPacked *>(self);
+    // Only original TimingA Main is bound. State+0x1c9c, countdown+0x1f54,
+    // flags+0x1f50, classification+0x1ce8 and scratch+0x1f20 are copied around tick();
+    // callbacks+0x1ca0/0x1ca8/0x1ca4/0x1cac remain source Init/Main/Result/Display fields.
     if (callback != 0x8012aae0)
       return std::nullopt;
     TimingACommand c;
@@ -63,6 +69,9 @@ bool HarborTutorialPacked::actionManager(uint64_t time) {
   return packedBattleActionCommandManager(Battle, s);
 }
 
+// Only camera 8/original TimingA Display 0x8012a7cc with native Battle userdata
+// is admitted. Icons 108/109 must both exist before callback effects. Icon
+// requests feed the scene projection; this helper does not submit GPU work.
 bool HarborTutorialPacked::actionDisplay(uint64_t time, HarborTutorial &scene) {
   if (actionDisplayedAt == time)
     return true;
@@ -96,6 +105,9 @@ bool HarborTutorialPacked::actionDisplay(uint64_t time, HarborTutorial &scene) {
   return true;
 }
 
+// Result/Stop invoke only admitted source callback tokens. Read-count/result
+// events 0x80107660/0x80107548 complete without running evaluation. Missing physical
+// input is unavailable where evaluation needs it, not a fabricated neutral pad.
 bool HarborTutorialPacked::actionEvent(EventEntry &e, uint32_t function,
                                        int32_t &result) {
   BattleActionEventServices s;
@@ -105,6 +117,10 @@ bool HarborTutorialPacked::actionEvent(EventEntry &e, uint32_t function,
   s.evaluate = [](void *self, uint32_t b,
                   uint32_t callback) -> std::optional<int32_t> {
     auto &p = *static_cast<HarborTutorialPacked *>(self);
+    // TimingA Result: 0x1cbd difficulty 0..6; 0x1c94 options; 0x1c90 actor pointer;
+    // actor+0x27c flags/0x307 automatic count; 0xef4 battle flags. Option 1 with actor
+    // flag 0x10, automatic mode or battle 0x01000000 can bypass physical-pad admission.
+    // Count+0x1cb4/result+0x1cb8/classification+0x1ce8 write back after actual evaluation.
     if (callback != 0x8012a8c4)
       return std::nullopt;
     TimingAContext context;
@@ -139,6 +155,8 @@ bool HarborTutorialPacked::actionEvent(EventEntry &e, uint32_t function,
   };
   s.remove = [](void *self, uint32_t b, uint32_t callback) {
     auto &p = *static_cast<HarborTutorialPacked *>(self);
+    // Original TimingA Delete requests state 1000, not immediate callback
+    // removal. Its later Main cleanup owns the actual source clear sequence.
     if (callback != 0x8012a7c0)
       return false;
     p.word(b + 0x1c9c, 1000);

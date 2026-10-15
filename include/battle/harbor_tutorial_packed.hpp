@@ -17,6 +17,9 @@ namespace ttyd {
 // definitions. Packed entry allocation/initialization remains a scoped adapter.
 class HarborTutorialPacked {
 public:
+ // Disjoint native guest RAM regions, not source allocation addresses. Unit/
+ // part slots use stride 0x1000; provision maps 0x4000 bytes each for four IDs 0..3.
+ // The registry itself retains source 64-entry layout; most entries stay null.
  static constexpr uint32_t Battle=0x84000000,Units=0x84100000,Parts=0x84200000;
  EventNativeRuntime& vm;EventCallbackRegistry registry;BattleRandom random{0};
  int32_t chosenUnit=-1,chosenPart=0;
@@ -57,6 +60,8 @@ public:
  void weaponMenuPresented();
  bool selectAttackEvent();
  BattleAttackSelectionCursor attackSelectionCursor;
+ // Native admission latches: weapon decision and source command completion
+ // are separate; neither implicitly schedules an attack or changes the story.
  bool weaponDecided=false,commandFinalized=false;
  bool commandInputBlocked() const{return commandUnbound!=0;}
  bool selectWeapon(unsigned row,HarborTutorial&,void* messageUser,uint32_t(*message)(void*,uint32_t));
@@ -65,6 +70,9 @@ public:
  uint32_t runHitEventDirect(int32_t id,uint32_t code,uint32_t script);
  bool hitEventsActive();
  void recordInit(int32_t id,uint32_t event);void recordPhase(int32_t id,uint32_t event);void recordAttack(int32_t id,uint32_t event);
+ // Selective two-way projection, not a whole packed-state snapshot. Callers
+ // publish before admitted source work, capture afterward; pending child owners
+ // must not have their captured guest work overwritten by a new projection.
  void publish(const HarborTutorial&);void capture(HarborTutorial&);
  bool invoke(EventEntry&,uint32_t function,int32_t first,int32_t& result);
  bool readWord(uint32_t address,uint32_t& value) const{return vm.memory.readWord(address,value);}
@@ -72,11 +80,17 @@ private:
  BattlePadSample sampledPhysical{};
  uint64_t actionManagedAt=UINT64_MAX,actionDisplayedAt=UINT64_MAX;
  std::array<bool,4> registered{};
+ // Native 16KiB private arena. Low words are service scratch; 0xc00 legacy
+ // weapon UI; 0x1000..0x3fff cached original text. Source tables remain in Battle.
+ // Heap-backed class UI has independent SDK allocations and lifetime tokens.
  static constexpr uint32_t MenuRam=0x84600000;
  std::unordered_set<uint32_t> classUiAllocations;
  // Fresh native lifetime for each actual SDK class-UI allocation. Reusing its
  // guest address must not admit an old held draw or displayed publication.
  std::unordered_map<uint32_t,std::shared_ptr<const uint8_t>> classUiLifetimes;
+ // First unavailable immediate Input path latches until weapon-table rebuild.
+ // It prevents replaying partially completed source work without a continuation.
+ // Zero means no latched block, not proof all providers have been installed.
  uint32_t commandUnbound=0;
  uint32_t menuTextAt=MenuRam+0x1000;std::unordered_map<uint32_t,uint32_t> menuText;
 
@@ -88,6 +102,9 @@ private:
  bool checkDamageCore(uint32_t attacker,uint32_t defender,uint32_t part,uint32_t weapon,uint32_t flags,int32_t& result);
  void readDamage(unsigned id);void writeDamage(unsigned id);
  DamageApplicationServices damageApplication();
+ // Four admitted registry IDs; five elemental entries per defense table,
+ // four owned damage-sound strings per actor. Sound handles start 1 (0 absent).
+ // These vectors are requests consumed by capture, not renderer/audio owners.
  std::array<DamageUnit,4> damageUnits{};std::array<DamagePart,4> damageParts{};
  std::array<std::array<int8_t,5>,4> defenses{},defenseAttributes{};
  std::array<std::array<std::string,4>,4> damageSounds{};
