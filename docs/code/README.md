@@ -13,6 +13,8 @@ Recovered original behavior and its evidence remain in
 | [Runtime ownership](runtime.md) | Native main loop, physical input, audio and frontend |
 | [Game composition](game-composition.md) | Room collision, units, tick order, restore and follower ownership |
 | [Checkpoint bytes](save-format.md) | Native save encoder, decoder and file replacement |
+| [Trio scheduling](trio-scheduling.md) | Legacy turn/handoff, command pads, retained Main and camera/outer draw boundaries |
+| [Trio display prefix](trio-display-prefix.md) | Unit/part mutation, pose/effect admission, depth and retained footer registration |
 | [Trio events/entry/damage](trio-events.md) | Callback domains, packed initialization, damage/motion and actual event barriers |
 | [Trio ending](trio-ending.md) | Reward counters/icons, source end-bank states, audio and partial field restoration |
 | [Trio commands](trio-commands.md) | Native rows/registry mapping, candidate projection and retained action-manager phases |
@@ -103,7 +105,7 @@ Typed damage and synchronous orchestration, Dive, retained Main/stage and sequen
 Harbor entry/catalog, packed actor/menu/command composition and action/display adapters are covered.
 Selected Harbor damage/aftereffect/AP/audience/item/weapon-input adapters are covered.
 Trio native command selection and retained action-manager helper are covered.
-Trio runtime provider/event/entry/damage/ending sections have a partial audit; turn/Main/display scheduling and remaining public adapters stay open.
+Trio committed private runtime provider/event/entry/damage/ending/legacy-turn/Main/display sections are annotated. Public facade/draw/material bindings and newer concurrent source Turn/sequence/pose integrations still need review.
 Remaining field/NPC/partner modules, battle, message, inventory, story, effect
 and port tooling still
 require a systematic inline numeric/behavior audit. Concurrent additions to

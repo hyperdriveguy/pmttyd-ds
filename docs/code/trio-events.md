@@ -4,8 +4,9 @@ This covers `call`, `initialize`, damage/motion helpers and barrier queries in
 [TrioAttackRuntime](../../source/battle/trio_attack.cpp). See
 [provider ownership](trio-providers.md), [commands](trio-commands.md),
 [packed motion](packed-battle-motion.md), [damage order](battle-damage-order.md)
-and [ending](trio-ending.md). The runtime still has a partial audit: turn/handoff,
-Main/display scheduling and remaining public draw/material adapters need review.
+and [ending](trio-ending.md). See [scheduling](trio-scheduling.md) and [display prefix](trio-display-prefix.md)
+for legacy turn/handoff/Main code. Public draw/material adapters and newer source
+continuations still need review.
 
 ## Callback domains and completion
 

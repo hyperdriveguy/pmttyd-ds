@@ -1741,24 +1741,44 @@ struct TrioAttackRuntime {
         }
         pending=0x80215234;
     }
+    // Attack bank B+0xf20 advances 0x06000007..0x0e through actual event,
+    // message, audience and slot barriers. Sequential ifs can advance several
+    // states in one invocation; do not impose an extra render frame per state.
+    // done means this native action/handoff boundary, not finished battle/story.
     void postAction() {
         auto state=word(Battle+0xf20);
         if(state==0x06000007){if(!barrier())return;word(Battle+0xf20,++state);} // Adjust is empty under original ff message work.
         if(state==0x06000008){if(!barrier() || !messagesIdle())return;word(Battle+0xf20,++state);}
+        // Source actor cleanup precedes reservation/flag4 release: unit+0x1c
+        // clears04000000, attack+0x27c bit 8 clears status+0x129, mode 1 resets, then
+        // 0x25c clears and move accounting runs. A reservation hold follows those
+        // effects; this immediate prefix is not a rollback transaction.
         if(state==0x06000009){if(!(word(Battle+0xef4)&0x30))packedBattleStatusWindowSet(0x2744,true,statusWindowServices());const auto u=word(Battle+0x20+4*word(Battle+0x420));if(u){word(u+0x1c,word(u+0x1c)&~0x04000000);if(word(u+0x27c)&8){byte(u+0x129,0);word(u+0x27c,word(u+0x27c)&~8);}if(byte(Battle+0x18ff9)==1)byte(Battle+0x18ff9,0);word(u+0x25c,0);consumeBattleActorMove(Battle,u,phaseServices());}reserveItems();if(pending)return;word(Battle+0xef4,word(Battle+0xef4)&~4u);word(Battle+0xf20,++state);}
         // Audience/BreakSlot producers are explicit native presentation adapters;
         // actual readiness fields/events are polled, never inferred from HP.
         if(state==0x0600000a){if(!audienceIdle())return;if(!concluded() && !breakSlotIdle())return;word(Battle+0xf20,++state);}
         if(state==0x0600000b){if(!messagesIdle())return;word(Battle+0xf20,++state);}
+        // Post-action script+0x2c8 owns event handle+0x2cc, priority 10/flags 0.
+        // Starting it cancels wait+0x290; next bank waits actual event retirement.
+        // Final barrier advances actor bank B+0xf1c, then Move 10 is deferred
+        // to a later outer call rather than synthesizing the next actor now.
         if(state==0x0600000c){if(!barrier())return;const auto u=word(Battle+0x20+4*word(Battle+0x420));if(u){word(u+0x2cc,0);const auto script=word(u+0x2c8);if(script){auto& e=createRootEvent(vm.schedule,script,10,0,vm.creationServices());e.owner=int32_t(word(u));word(u+0x2cc,e.id);const auto wait=word(u+0x290);if(wait)deleteEventId(wait,vm.creationServices());word(u+0x290,0);}}word(Battle+0xf20,++state);}
         if(state==0x0600000d){const auto u=word(Battle+0x20+4*word(Battle+0x420));if(u && word(u+0x2cc)){if(eventLive(word(u+0x2cc)))return;word(u+0x2cc,0);}word(Battle+0xf20,++state);}
         if(state==0x0600000e && barrier()){word(Battle+0xf1c,word(Battle+0xf1c)+1);done=true;} // Move10 executes on the next outer call.
     }
+    // selector 1 uses script+0x294, selector 0 script+0x298. Both create original
+    // phase root priority10/flags 0x20 with registry owner and running handle+0x29c;
+    // installed script pointers and scheduler event IDs are different domains.
     void runPhaseEvent(uint32_t u,unsigned selector) {
         const auto script=word(u+(selector?0x294:0x298));
         auto& e=createRootEvent(vm.schedule,script,10,0x20,vm.creationServices());
         e.owner=int32_t(word(u));word(u+0x29c,e.id);
     }
+    // Scoped audience-phase adapter: flags 8 at B+0x2858 enables work; 200 actor
+    // rows start+0x1bc/stride 0x134, category queue+0x138cc/count+0x13904 admits only
+    // 4/9/10/11/12/13. Original state+0x137dc progression can wait after stores.
+    // State 15 decrements break-slot turn+0x1616c+0x10 (floor 0) before clearing flag 8;
+    // state 20 clears only. Other active actor/category/state paths stay pending.
     bool phaseAudienceIdle() {
         (void)word(0x8041eb00);const auto a=(Battle+0x2858),flags=word(a);if(!(flags&8))return true;
         for(unsigned i=0;i<200;++i){const auto f=word(a+0x1bc+0x134*i);if((f&1) && !(f&(0x100|2|0x10))){if(!pending)pending=0x801a6ce8;return false;}}
@@ -1771,17 +1791,27 @@ struct TrioAttackRuntime {
         if(!pending)pending=0x801a6ce8;
         return false;
     }
+    // Preserve first insertion order and suppress duplicate category IDs.
+    // Queue capacity remains caller-owned; native helper does not evict a row
+    // or invent a new category when source storage is full.
     void addAudiencePhase(int32_t category) {
         const auto a=(Battle+0x2858);const int32_t count=int32_t(word(a+0x13904));
         for(int32_t i=0;i<count;++i)if(word(a+0x138cc+4*uint32_t(i))==uint32_t(category))return;
         word(a+0x138cc+4*uint32_t(count),uint32_t(category));word(a+0x13904,word(a+0x13904)+1);
     }
+    // This legacy immediate adapter increments source chance+0x13908 by 3 capped
+    // 100, then performs actual group/turn/RNG work. Active target/extra-audience
+    // effects can remain unavailable AFTER chance/category stores; child holds
+    // do not prove the whole legacy parent is safe to restart.
     bool audienceTurnEnd() {
         const auto b=word(0x8041eb90),mario=battleMarioUnit(b,nativeBattleActorServices(vm)),a=(b+0x2858),pouch=word(0x8041eb00);
         const auto setup=word(word(b+0x2738)+0xc),group=word(setup+0x18);
         if(word(a)&0x40000)return true;
         const auto chance=word(a+0x13908)+3;word(a+0x13908,int32_t(chance)>100?100:chance);
         uint32_t sum=0;const auto sets=word(group+4);for(uint32_t i=0;i<word(group);++i)sum+=byte(word(sets+0x30*i)+0xe);
+        // Threshold max(5, 2*sum(enemy levels)/Mario level); source division
+        // order and valid nonzero level are caller-owned. One irand(100) selects
+        // all six categories together; success resets chance, not one draw each.
         const int32_t threshold=std::max<int32_t>(5,int32_t(2*sum)/byte(mario+0xd)),turn=half(b);
         if(turn>=threshold){if(!pending)pending=0x801a1a74;return false;} // Source AddTargetNum needs its target-size provider.
         const auto draw=random.bounded(100);
@@ -1796,6 +1826,11 @@ struct TrioAttackRuntime {
         }
         return true;
     }
+    // Admit only EMPTY effect/recovery branches of the legacy Turn graph.
+    // Positive HP and status27 exclusion precede states 0x6/0x8/0xa/0xc statuses 4/8/
+    // 23/24; 0xe/0x10 use badge+0x2ee/0x2ef after turn 1; 0x12..0x3e index original 23-ID order.
+    // Any real effect retains its function token, not guessed healing/damage.
+    // This adapter is not the newer full source Turn continuation owner.
     bool emptyTurnPass(uint32_t state) {
         static constexpr std::array<int32_t,23> recovery{{1,2,3,5,6,7,8,9,10,11,4,12,13,14,15,0,23,24,18,19,20,21,22}};
         const auto actors=nativeBattleActorServices(vm);
@@ -1809,6 +1844,10 @@ struct TrioAttackRuntime {
         }
         return true;
     }
+    // Legacy scoped handoff combines turn(B+0xf14), phase(0xf18) and actor(0xf1c)
+    // banks. It must not stand in for a completed source Turn callback. Some
+    // branches loop within one call; others intentionally defer root/barrier
+    // work. No visual update or menu selection itself advances these banks.
     void handoff() {
         if(word(Battle+0xf14)==0x0300004d){if(!audienceTurnEnd())return;word(Battle+0xf14,0x03000001);word(Battle+0xef4,word(Battle+0xef4)&~0x2000u);return;}
         if(word(Battle+0xf14)==0x03000001){BattleTurnFirstBackend backend;backend.runtime=&vm;battleTurnFirstProcess(Battle,nativeBattleTurnFirstServices(backend));word(Battle+0xf14,0x03000002);}
@@ -1816,6 +1855,9 @@ struct TrioAttackRuntime {
         if(word(Battle+0xf14)==0x03000003){if(half(Battle)!=1)word(Battle+0xf14,0x03000005);else {if(!pending)pending=0x8011c588;return;}}
         if(word(Battle+0xf14)==0x03000005)word(Battle+0xf14,0x03000006);
         while(word(Battle+0xf14)>=0x03000006 && word(Battle+0xf14)<=0x0300003e){const auto state=word(Battle+0xf14)-0x03000000;if(!emptyTurnPass(state))return;word(Battle+0xf14,word(Battle+0xf14)+2);}
+        // Source even states 0x40/0x42/0x44 decrement words+0x19050/0x19054/0x19058.46/48
+        // decrement unsigned half timers+0x13c/0x13e only for eligible live units;
+        // source subtraction narrows at each store, not a generic duration API.
         while(word(Battle+0xf14)>=0x03000040 && word(Battle+0xf14)<=0x03000044){const auto field=Battle+0x19050+2*(word(Battle+0xf14)-0x03000040);if(word(field))word(field,word(field)-1);word(Battle+0xf14,word(Battle+0xf14)+2);}
         while(word(Battle+0xf14)==0x03000046 || word(Battle+0xf14)==0x03000048){const auto field=word(Battle+0xf14)==0x03000046?0x13c:0x13e;
             for(unsigned i=0;i<64;++i){const auto u=word(Battle+0x20+4*i);if(!u || half(u+0x10c)<=0 || checkPackedBattleStatus(u,27,nativeBattleActorServices(vm)))continue;const auto timer=uint16_t(half(u+field));if(timer)half(u+field,timer-1);}word(Battle+0xf14,word(Battle+0xf14)+2);
@@ -1829,10 +1871,18 @@ struct TrioAttackRuntime {
             if(state==0x05000001){word(Battle+0xf1c,state+1);continue;}
             if(state==0x05000002){if(byte(0x85000000+0x5ba)==2 && word(Battle+0xf18)==0x04000004){if(!pending)pending=0x8011bc9c;return;}word(Battle+0xf1c,state+2);continue;}
             if(state==0x05000003 || state==0x05000005){if(!barrier())return;word(Battle+0xf1c,state+1);continue;}
+            // All installed 0x294 scripts run before ordered phase table+0x220/
+            // stride 8 consumes one ID at a time. Mark rowffffffff only when its
+            // actual root starts; wait barrier, then test conclusion before next.
+            // Bank 0x08 admits command/enemy action only in its real phase context.
             if(state==0x05000004){for(unsigned i=0;i<64;++i){const auto u=word(Battle+0x20+4*i);if(u && word(u+0x294))runPhaseEvent(u,1);}word(Battle+0xf1c,state+1);continue;}
             if(state==0x05000006){for(unsigned i=0;i<64;++i){const auto pair=Battle+0x220+8*i,id=word(pair);if(id==0xffffffff)continue;const auto u=word(Battle+0x20+4*id);if(!u || !word(u+0x298))continue;runPhaseEvent(u,0);word(pair,0xffffffff);word(Battle+0xf1c,state+1);return;}word(Battle+0xf1c,0x0500000a);continue;}
             if(state==0x05000007){if(!barrier())return;if(concluded()){word(Battle+4,3);word(Battle+0xf24,0x07000000);return;}word(Battle+0xf1c,0x05000006);continue;}
             if(state==0x05000008){if(word(Battle+0xf18)==0x04000004){prepareActor(false);done=false;readyActor=-1;enemyAction();}return;}
+            // Phase-end clears report+0x264/flag 0x1000, then source phase 4 audience
+            // mode uses one draw 100 with thresholds 80/90/95. It seeds actual
+            // work+0x137f4/0x137f0/0x137f8/0x137dc; nonempty effects remain unbound here.
+            // Message/barrier completion, not enemy HP alone, advances phase.
             if(state==0x0500000a){if(concluded()){word(Battle+4,3);word(Battle+0xf24,0x07000000);return;}for(unsigned i=0;i<64;++i){const auto u=word(Battle+0x20+4*i);if(u){word(u+0x264,0);word(u+0x27c,word(u+0x27c)&~0x1000u);}}
                 if(battlePhaseEnded(Battle,phaseServices()) || (word(Battle+0xef4)&0x2000)){if(byte(Battle+0x18ff9)==2)byte(Battle+0x18ff9,0);
                     // Native audience inventory/presentation is empty. The source
@@ -1845,12 +1895,17 @@ struct TrioAttackRuntime {
         }
     }
     bool statusWindowOpen=true;
+    // Native visibility projection plus original request trace. A bool window
+    // owner does not implement source slide animation or GPU completion.
     BattleStatusWindowServices statusWindowServices(){
         BattleStatusWindowServices s;s.units=nativeBattleUnitEventServices(vm);s.user=this;
         s.isOpen=[](void* self){return static_cast<TrioAttackRuntime*>(self)->statusWindowOpen;};
         s.open=[](void* self){auto& r=*static_cast<TrioAttackRuntime*>(self);r.statusWindowOpen=true;r.endingRequest(0x8013c3b8);};
         s.close=[](void* self){auto& r=*static_cast<TrioAttackRuntime*>(self);r.statusWindowOpen=false;r.endingRequest(0x8013c390);};return s;
     }
+    // Delegate actual state 6 event construction/status/random/sequence order.
+    // Native root 0 can be successful admission when a source status suppresses
+    // creation; do not invent an attack merely to make the menu appear active.
     void registerSelectedAttack(){
         root=0;BattleAttackRegistrationServices s;s.memory=nativeBattleUnitEventServices(vm).memory;s.events=vm.creationServices();s.schedule=&vm.schedule;s.user=this;
         s.unit=[](void* self,uint32_t b,int32_t id){return battleRegistryUnit(b,id,nativeBattleActorServices(static_cast<TrioAttackRuntime*>(self)->vm));};
@@ -1861,6 +1916,9 @@ struct TrioAttackRuntime {
         s.advance=[](void* self,uint32_t b,int32_t channel){auto& r=*static_cast<TrioAttackRuntime*>(self);packedBattleIncrementSequence(b,uint32_t(channel),nativeBattleUnitEventServices(r.vm).memory);};
         registerBattleAttackState6(Battle,s);
     }
+    // Enemy attack banks00/03/06 clear dealt report+0x284/0x2d0 and audience
+    // flags 0x1ff0, mark unit attack+0x2ac/flag 0x04000000, then register source root.
+    // Each return preserves outer-call cadence, not a timed animation shortcut.
     void enemyAction() {
         const auto u=word(Battle+0x20+4*word(Battle+0x420));required(u!=0);
         const auto state=word(Battle+0xf20);
@@ -1869,10 +1927,18 @@ struct TrioAttackRuntime {
         if(state!=0x06000006)return;
         registerSelectedAttack();
     }
+    // Reset per-command work+0x18ffc(12 bytes), 64 units' accounting/sequence,
+    // and retain only actor flags 80002000. Actual source phase selector supplies
+    // readyActor; publish acting ID+0x420/flag 0x1000, actor bank 0x05000009 and command
+    // versus enemy attack bank. Existing wait-move bytes clear only for table IDs.
     void prepareActor(bool command=true){for(unsigned i=0;i<12;++i)byte(Battle+0x18ffc+i,0);for(unsigned i=0;i<64;++i){const auto u=word(Battle+0x20+4*i);if(!u)continue;word(u+0x27c,word(u+0x27c)&0x80002000);for(unsigned o:{0x264u,0x268u,0x26cu,0x280u})word(u+o,0);half(u+0x260,0);for(unsigned o=0x270;o<=0x273;++o)byte(u+o,0);}
         readyActor=selectBattlePhaseActor(Battle,phaseServices());const auto u=word(Battle+0x20+4*readyActor);word(Battle+0x420,readyActor);word(u+0x27c,word(u+0x27c)|0x1000);word(Battle+0xf1c,0x05000009);word(Battle+0xf20,command?0x06000002:0x06000000);
         for(unsigned i=0;i<64;++i){const auto id=word(Battle+0x120+4*i);if(id==0xffffffff)continue;const auto p=word(Battle+0x20+4*id);if(p && byte(p+0x20)==1)byte(p+0x20,0);}word(u+0x284,0);word(u+0x2d0,0);
     }
+    // Explicit native confirmed-command bridge: copy raw candidate buffer and
+    // weapon row, select correct cursor(0x4b0 Jump/0x4bc Hammer/0x4c8 partner), then
+    // source attack selection/registration. Partner class 6 differs from Mario
+    // command0/1. No new root or done-reset before actual selection admission.
     bool launch(const TrioBattleCommands& menu){const auto weapon=menu.attack->weapon;word(Battle+0x420,menu.actor);word(Battle+0x1c5c,menu.actor==2?6:menu.command);word(Battle+0x171c+0x540,menu.actor==2?6:menu.command);word(Battle+0x171c+(menu.actor==2?0x4c8:menu.command==0?0x4b0:0x4bc),0);word(Battle+0x171c+0x80,weapon);for(unsigned i=0;i<menu.candidates.bytes.size();++i)byte(Battle+0x428+i,menu.candidates.bytes[i]);
         const auto u=word(Battle+0x20+4*menu.actor);
         BattleAttackSelectionServices selection;selection.memory=nativeBattleActorServices(vm);selection.user=this;
@@ -1880,6 +1946,10 @@ struct TrioAttackRuntime {
         if(!packedSetBattleAttackEvent(u,Battle+0x171c,selection))return false;
         word(Battle+0xef4,word(Battle+0xef4)|4);word(Battle+0xf20,0x06000006);word(Battle+0xf1c,0x05000009);registerSelectedAttack();done=false;readyActor=-1;return true;
     }
+    // Broken flag 80000000 is pending source removal, not a hidden draw flag.
+    // Removal cancels wait/phase/hit handles, repairs phase table and optional
+    // held-drop slot, then nulls registry pointer LAST. Preallocated guest bytes
+    // survive for diagnostics; runtime/shared pose/file owners retire separately.
     bool hasBrokenUnit() const {for(unsigned id=0;id<64;++id){const auto u=word(Battle+0x20+4*id);if(u && (word(u+0x1c)&0x80000000))return true;}return false;}
     void checkBrokenUnits() {
         // Original Main checks broken units before pad/action services. Native
@@ -1889,11 +1959,15 @@ struct TrioAttackRuntime {
             for(unsigned offset:{0x290u,0x29cu,0x2b4u}){const auto event=word(u+offset);if(event)deleteEventId(event,vm.creationServices());word(u+offset,0);}
             for(unsigned i=0;i<64;++i)if(word(Battle+0x120+4*i)==word(u))word(Battle+0x120+4*i,0xffffffff);
             if((word(u+0x1c)&0x40000000) && int8_t(byte(u+0xe))>=0){const auto setup=word(word(Battle+0x2738)+0xc);word(setup+0x5c+4*byte(u+0xe),word(u+0x308));}
-            // No per-unit external effect/pose/extension allocations are made
-            // by this bridge. Shared immutable animation packs remain loaded.
+            // Registry/event retirement is scoped here. Actual shared pose/file
+            // lifetimes remain with the runtime and their explicit source owners.
             word(Battle+0x20+4*id,0); // Source registry publication is last.
         }
     }
+    // Source pad work 0x1fc bytes: current/previous 12-byte snapshots, 30-word
+    // trigger+0x18/repeat+0x90/held+0x108/released+0x180 histories, repeat phase/counter
+    // 0x1f8/0x1f9. Halfword buttons and signed sticks retain original byte domains.
+    // writePad mirrors exact layout; physical and private histories stay separate.
     void readPad(uint32_t base,BattlePadWork& pad) {
         auto snapshot=[&](unsigned o,BattlePadSnapshot& p){p.buttons=uint16_t(half(base+o));p.mainX=int8_t(byte(base+o+2));p.mainY=int8_t(byte(base+o+3));p.subX=int8_t(byte(base+o+4));p.subY=int8_t(byte(base+o+5));p.leftTrigger=byte(base+o+6);p.rightTrigger=byte(base+o+7);p.analogA=byte(base+o+8);p.analogB=byte(base+o+9);p.retainedA=byte(base+o+10);p.retainedB=byte(base+o+11);};
         snapshot(0,pad.current);snapshot(12,pad.previous);
@@ -1906,6 +1980,11 @@ struct TrioAttackRuntime {
         for(unsigned i=0;i<30;++i){word(base+0x18+4*i,pad.triggers.entries[i]);word(base+0x90+4*i,pad.repeats.entries[i]);word(base+0x108+4*i,pad.held.entries[i]);word(base+0x180+4*i,pad.released[i]);}
         byte(base+0x1f8,pad.repeatPhase);byte(base+0x1f9,pad.repeatCounter);
     }
+    // Typed Hammer projection: state+0x1c9c, count/result+0x1cb4/0x1cb8, mode 0x1cc4,
+    // charge/period/suppression/latch/sound+0x1cc8..0x1cd8, entered/steps/class+0x1ce8..
+    // 0x1cf0, delay+0x1c98, signed override+0x1d18; 11 scratch words1f20, countdown+0x1f4c,
+    // stage+0x1f50, finish+0x1f54 and 12 sound handles+0x1f58. These overlap TimingA's
+    // work under its separate active callback domain, not parallel commands.
     HammerCommand hammer() const {
         HammerCommand c;c.state=int32_t(word(Battle+0x1c9c));c.count=int32_t(word(Battle+0x1cb4));c.result=word(Battle+0x1cb8);c.mode=word(Battle+0x1cc4);
         c.chargeSteps=int32_t(word(Battle+0x1cc8));c.period=int32_t(word(Battle+0x1ccc));c.suppression=int32_t(word(Battle+0x1cd0));c.suppressionLatch=int32_t(word(Battle+0x1cd4));c.finalSound=word(Battle+0x1cd8)!=0;
@@ -1913,6 +1992,9 @@ struct TrioAttackRuntime {
         for(unsigned i=0;i<11;++i)c.scratch[i]=word(Battle+0x1f20+4*i);
         c.countdown=int32_t(word(Battle+0x1f4c));c.stage=int32_t(word(Battle+0x1f50));c.finishCountdown=int32_t(word(Battle+0x1f54));for(unsigned i=0;i<12;++i)c.handles[i]=int32_t(word(Battle+0x1f58+4*i));return c;
     }
+    // Publish complete admitted Hammer projection. mainLive=false clears all
+    // four callback slots; it is distinct from the outer manager clearing Main
+    // alone on zero. Native sound sink below records keys and returns failure -1.
     void storeHammer(const HammerCommand& c) {
         word(Battle+0x1c9c,c.state);word(Battle+0x1cb4,c.count);word(Battle+0x1cb8,c.result);word(Battle+0x1cc4,c.mode);word(Battle+0x1cc8,c.chargeSteps);word(Battle+0x1ccc,c.period);
         word(Battle+0x1cd0,c.suppression);word(Battle+0x1cd4,c.suppressionLatch);word(Battle+0x1cd8,c.finalSound);word(Battle+0x1ce8,c.enteredCharge);word(Battle+0x1cec,c.stepCount);word(Battle+0x1cf0,c.classification);word(Battle+0x1c98,c.specialDelay);half(Battle+0x1d18,c.forcedCounter);
@@ -1920,12 +2002,20 @@ struct TrioAttackRuntime {
         word(Battle+0x1f4c,c.countdown);word(Battle+0x1f50,c.stage);word(Battle+0x1f54,c.finishCountdown);for(unsigned i=0;i<12;++i)word(Battle+0x1f58+4*i,c.handles[i]);
         if(!c.mainLive)for(unsigned o:{0x1ca0u,0x1ca8u,0x1ca4u,0x1cacu})word(Battle+o,0);
     }
+    // Only TimingA 0x8012aae0/Hammer 0x8012a17c Main are admitted. Typed tick is
+    // simulation work, not a screen draw. Hammer negative result stays pending
+    // before writeback; ordinary result 0 retires Main. General held+0x1034 and
+    // actual actor/options/difficulty compose the Hammer context.
     void actionManager() {
         if(word(Battle+0x1ca0)==0x8012aae0){auto c=timing();const int result=c.tick();storeTiming(c);if(!result)for(unsigned o:{0x1ca0u,0x1ca4u,0x1ca8u,0x1cacu})word(Battle+o,0);}
         else if(word(Battle+0x1ca0)==0x8012a17c){auto c=hammer();const auto u=word(Battle+0x1c90);HammerContext context;context.held=word(Battle+0x1034);context.setupOptions=word(Battle+0x1c94);context.actorFlags=word(u+0x27c);context.automatic=byte(u+0x307)!=0;context.difficulty=byte(Battle+0x1cbd);
             HammerSoundSink sounds;sounds.user=this;sounds.play=[](void* p,const char* key)->int32_t{static_cast<TrioAttackRuntime*>(p)->soundRequests.emplace_back(key);return -1;};const auto result=c.tick(context,random,sounds);if(result<0){if(!pending)pending=0x8012a17c;return;}storeHammer(c);if(result==0)word(Battle+0x1ca0,0);
         }
     }
+    // Native display continuation retains unit/part/footer indices and selected
+    // one-time stores. It is NOT a cursor for every operation inside a unit or
+    // part: unavailability can follow alpha/gauge/pose/effect changes. Preserve
+    // each explicit acknowledgement and do not assume a whole-pass rollback.
     bool displayPrefix() {
         (void)word(0x8041eb90); // Original retained B; footer is still pending.
         const auto actors=nativeBattleActorServices(vm);
@@ -1933,6 +2023,10 @@ struct TrioAttackRuntime {
         for(;displayIndex<64;++displayIndex) {
             const auto unit=battleRegistryUnit(word(0x8041eb90),displayIndex,actors);if(!unit)continue;
             if(!displayUnitPrefixDone){
+            // Kind 223 display service remains unbound. Unit+0x311 target alpha,
+            // 312 current: rise by12, fall by2 (bounded to target); unit+0x1c bit2
+            // marks transition. HP gauge executes before prefix acknowledgement.
+            // Scale+0x114 starts source 1, then status 11/10 factors apply in order.
             if(word(unit+8)==223){pending=0x801024f0;return false;}
             const auto old=byte(unit+0x312);endingRequest(0x801277ac,{int32_t(unit),2});word(unit+0x1c,word(unit+0x1c)&~2u);
             const auto target=byte(unit+0x311);
@@ -1950,6 +2044,10 @@ struct TrioAttackRuntime {
                 }
             }
             endingRequest(0x801966f0,{int32_t(unit)});
+            // Source effect status 1/6/8/9 plus special faint domain map to
+            // handles324/330/328/0x32c/334 and matching create/remove leaves.
+            // Active effect OR retained old handle requires its actual provider;
+            // no vector notice or zeroing a handle completes effect retirement.
             constexpr unsigned status[]{1,6,8,9,0},handle[]{0x324,0x330,0x328,0x32c,0x334};
             constexpr uint32_t leaf[]{0x80196538,0x801963ac,0x80196240,0x801960ac,0x80195f8c};
             constexpr uint32_t remove[]{0x801964f8,0x8019636c,0x80196200,0x8019606c,0x80195f48};
@@ -1965,6 +2063,9 @@ struct TrioAttackRuntime {
             if((word(current+0xef4)&0x10000) || (word(current+0xef8)&1)){pending=0x80253ca8;return false;}
             displayPart=word(unit+0x14);displayUnitPrefixDone=true;
             }
+            // Retain current part through waits; binding must exist even when
+            // source handle+0x1c0 is ffffffff(skip). Linked-list iteration uses
+            // actual part next pointer, not fixed native slot arithmetic.
             for(auto part=displayPart;part;part=word(part)) {
                 displayPart=part;
                 const auto binding=partPoseHandles.find(part);
@@ -1973,6 +2074,10 @@ struct TrioAttackRuntime {
                 {
                     uint32_t selectedName=part+0x1c4;
                     float rate=real(0x8042224c);
+                    // Auto-pose status priority comes from original 0x80416ab0,
+                    // terminated-1. Default 27 when inactive/28 ordinary. Enemy
+                    // kinds1..215 use first exact-or 28 fallback; player status flags
+                    // select source pose types 57/56/45 and rate 19/20 changes.
                     if(!(word(part+0x204)&2)){
                         endingRequest(0x80103084,{int32_t(unit)});
                         int32_t type=27;
@@ -2019,6 +2124,10 @@ struct TrioAttackRuntime {
                     endingRequest(0x80100a4c,{int32_t(part)});real(part+0x208,rate);
                     const auto handle=int32_t(word(part+0x1c0));endingRequest(0x8004142c,{handle});
                     if(handle!=binding->second || !poses.setRate(handle,real(part+0x208)*real(part+0x20c))){pending=0x8004142c;return false;}
+                    // Clear dirty 1/restart 0x200 BEFORE querying remaining flags
+                    // for force. Any remaining bit makes source force true, not
+                    // merely bit 8. Name selection/effect flags can mutate before
+                    // a later hold; do not replay by restoring the old dirty word.
                     if(word(part+0x204)&1){
                         word(part+0x204,word(part+0x204)&~1u);word(part+0x204,word(part+0x204)&~0x200u);
                         const bool force=word(part+0x204)!=0;endingRequest(0x80041170,{handle,int32_t(selectedName),force?1:0});
@@ -2039,6 +2148,10 @@ struct TrioAttackRuntime {
                     endingRequest(0x80101060,{int32_t(part)});
                     const auto owner=word(part+0x4ec);
                     const bool gravity=(word(word(0x8041eb90)+0xef4)&0x40000000) && !(word(owner+0x104)&0x1004);
+                    // Gravity/floating phases+0x1a6/0x1a8 use periods 120/90 SOURCE
+                    // visits. Inactive phase first takes modulo, then moves toward
+                    // nearest boundary by half-period rule; unsigned halfword
+                    // arithmetic wraps. These are not elapsed millisecond timers.
                     const auto settle=[&](unsigned offset,unsigned period,bool active){
                         auto value=uint16_t(half(part+offset));if(active){half(part+offset,uint16_t(value+1));return;}
                         if(!value)return;
@@ -2051,6 +2164,10 @@ struct TrioAttackRuntime {
                     if(floating){endingRequest(0x80127814,{int32_t(owner),27});floating=!checkPackedBattleStatus(owner,27,actors);}
                     settle(0x1a8,90,floating);
                     endingRequest(0x80100e6c,{int32_t(part)});
+                    // Effect modes 2/3/7 and 4/5/6 retain distinct unbound leaf
+                    // tokens. Other nonzero mode admits clearEffect only once
+                    // after byte+0x214 publication; that byte is set BEFORE provider
+                    // acknowledgement, not a general retry-safe effect cursor.
                     const auto mode=byte(part+0x215);
                     if(mode==2 || mode==3 || mode==7){pending=0x80100d28;endingRequest(pending,{int32_t(part)});return false;}
                     if(mode==4 || mode==5 || mode==6){pending=0x80100a80;endingRequest(pending,{int32_t(part)});return false;}
@@ -2065,6 +2182,10 @@ struct TrioAttackRuntime {
                     endingRequest(0x80128b10,{int32_t(part)});
                     BattlePartPositionServices position;position.memory=actors;
                     position.fma=[](void*,float a,float b,float c){return std::fma(a,b,c);};position.add=[](void*,float a,float b){return a+b;};
+                    // Capture source world position BEFORE actual pose Main;
+                    // queue depth adds part+0x4f8 afterward. Alpha is narrowed after
+                    // each original multiply/divide 255, including half 128 for
+                    // status18/unit attribute8. Color+0x4f4 copies source+0x4f0 RGB.
                     const auto capturedPosition=packedPartWorldPosition(part,position);
                     endingRequest(0x8003ed2c,{handle});
                     if(!poses.main(handle,{now,now})){pending=0x8003ed2c;return false;}
@@ -2075,6 +2196,10 @@ struct TrioAttackRuntime {
                     byte(part+0x4f7,uint8_t((int32_t(byte(part+0x4f7))*int32_t(byte(part+0x4f3)))/255));
                     for(unsigned channel=0;channel<3;++channel)byte(part+0x4f4+channel,byte(part+0x4f0+channel));
                     if((word(unit+0x104)&0x01000000) || (word(part+0x1ac)&0x01000000) || ((word(part+0x1ac)&1) && (word(unit+0x104)&0x10))){if(!completePartShadow(part))return false;continue;}
+                    // Default translucent class 2; only alpha 255 queries actual
+                    // pose translucency to choose1/2. Source hidden/no-draw paths
+                    // still run shadow/sound suffix. Queue registration is not
+                    // GPU execution and requires admitted camera depth.
                     int32_t drawClass=2;
                     if(byte(part+0x4f7)==255){
                         endingRequest(0x80039c0c,{handle});const auto translucent=poses.testTranslucent(handle);
@@ -2087,6 +2212,9 @@ struct TrioAttackRuntime {
                 }
             }
             displayPart=0;
+            // Unit held-item/flag routing chooses ORIGINAL callbacks 0x80101548/
+            // 0x80101678, or battle report 0x801015ec. A queue hold retains this source unit;
+            // its item/flags are not replaced with invented screen rectangles.
             uint32_t callback=0;
             if(word(unit+0x308)){
                 const auto flags=word(unit+0x1c);
@@ -2099,6 +2227,11 @@ struct TrioAttackRuntime {
             }
             displayUnitPrefixDone=false;
         }
+        // Native footer stages 0 stock EXP, 1 two stage callbacks, 2 command,
+        // 3 audience, 4 slot, 5 final flag clears. Explicit latches keep stock
+        // mutation/getter/registration prefix from replaying across held suffix.
+        // Stock counter increments toward4; once reached, display grows1 per
+        // eligible visit. No local counter reset is performed here.
         if(displayFooter==0){
             endingRequest(0x8010045c);
             const auto current=word(0x8041eb90);
@@ -2122,6 +2255,9 @@ struct TrioAttackRuntime {
                 endingRequest(0x800f88cc,{int32_t(current),id});
                 (void)battleRegistryUnit(current,id,actors);stageGetterDone=true;
             }
+            // Original stage callbacks register camera4/class 2 at source
+            // priorities 5000/6000. stageRegistration advances only on admission;
+            // do not register the first callback twice while the second holds.
             constexpr uint32_t callbacks[]{0x80138da8,0x801389a0};
             constexpr float priorities[]{5000,6000};
             for(;stageRegistration<2;++stageRegistration){
@@ -2130,6 +2266,10 @@ struct TrioAttackRuntime {
             }
             displayFooter=2;
         }
+        // Process palette owner is required for command display; each source
+        // registration cursor owns its own suffix. Audience animation start and
+        // captured flags are separate latches; window query uses actual pouch+0x8c.
+        // Complete pass clears source battle report bits 0x10000/0x20000 in order.
         if(displayFooter==2){
             if(!commandDisplayCursor.active){endingRequest(0x80122870,{int32_t(Battle)});endingRequest(0x80119e24);}
             if(!palette){pending=0x80119e24;return false;}
@@ -2164,6 +2304,10 @@ struct TrioAttackRuntime {
     BattlePadSample completionSample;
     uint32_t completionFunction=0;
     bool completionDisplayReady=false;
+    // Retained source Main pins one physical sample across its whole pending
+    // invocation. Each request must use actual native Battle, never a numerically
+    // aliased owner. General/private pads, sequence, stage, audience and display
+    // are distinct children; child bool means whole-call admission, not frame time.
     void completionPass(const BattlePadSample& sample) {
         if(!completionMain.active()){
             completionSample=sample;completionFunction=0;completionDisplayReady=false;
@@ -2176,6 +2320,9 @@ struct TrioAttackRuntime {
             // requires its real allocator/lifetime binding, never aliasing B.
             if(captured!=Battle){r.pending=fn;return false;}
             if(fn==0x800f7b28){r.checkBrokenUnits();return !r.pending;}
+            // Four source general-pad blocks at 0xf2c/stride 0x1fc; only channel 0
+            // has real 3DS input. Other channels explicitly get inactive native
+            // samples. Pin history from channel 0 for actual command evaluation.
             if(fn==0x8011a43c) {
                 for(unsigned channel=0;channel<4;++channel) {
                     const auto b=r.word(0x8041eb90);BattlePadWork pad;
@@ -2199,6 +2346,9 @@ struct TrioAttackRuntime {
                 r.writePad(captured+0x1d1c,r.privatePad);r.actionManager();return !r.pending;
             }
             if(fn==0x80149798){if(r.updateStageObjects())return true;r.pending=fn;return false;}
+            // Sixteen source auxiliary icons+0x182cc/stride 0x9c: active bit 1 plus
+            // nonzero handle+0x1c blocks unavailable animation work. Never clear
+            // actual live records merely to pass the source Main barrier.
             if(fn==0x801aa168) {
                 for(unsigned i=0;i<16;++i) {
                     const auto icon=Battle+0x182cc+0x9c*i;
@@ -2214,6 +2364,9 @@ struct TrioAttackRuntime {
             }
             if(fn==0x801a836c)return r.updateAudience();
             if(fn==0x80203aa0){if(packedBattleBreakSlotIdleMain(nativeBattleActorServices(r.vm)))return true;r.pending=fn;return false;}
+            // External display continuation acknowledges this exact child once
+            // via completionDisplayReady. Whole Main completion then waits next
+            // outer provider 0x8000f704; it does not free battle or restore field.
             if(fn==0x801024f0){
                 if(r.completionDisplayReady){r.completionDisplayReady=false;return true;}
                 return r.displayPrefix();
@@ -2231,6 +2384,10 @@ struct TrioAttackRuntime {
         assert(completionMain.active());
         completionDisplayReady=true;completionPass(completionSample);
     }
+    // One camera-frame attempt per native millisecond, caching availability.
+    // A failed update permanently marks history incomplete. Explicit lens adapter
+    // may build a numerical depth snapshot; it does not recover original camera
+    // history. Rumble-off is a real New2DSXL hardware no-op (no motor).
     bool updateCamera(uint64_t time) {
         if(cameraClockAt==time)return cameraUpdateAvailable;cameraClockAt=time;
         BattleCameraFrameServices camera;camera.requests.positions=nativeBattlePartPositionServices(vm);camera.user=this;
@@ -2244,6 +2401,9 @@ struct TrioAttackRuntime {
         }
         return cameraUpdateAvailable;
     }
+    // camMain publishes retained actual CameraManager views before camDraw.
+    // Native publication generation increments only on whole success; UINT64_MAX
+    // poisons this owner rather than wrap into a previously valid HP epoch.
     void publishFinishingCameras(){
         if(cameraMainPoisoned)return;
         cameraMainWaiting=true;
@@ -2256,6 +2416,10 @@ struct TrioAttackRuntime {
                 c.distance=std::sqrt(x*x+y*y+z*z); // Declared native PSVECDistance numeric adapter.
                 c.yaw=sourceAngles.angle(c.eye[0],c.eye[2],c.at[0],c.at[2]);
             };
+            // Original camera4 mode2 uses its own lens. Projection constants
+            // aspect 1.2666666507720947, orthographic half-angle 0.21816615760326385
+            // and 608x480 source dimensions remain explicit numerical adapters;
+            // a manual depth-test lens is not a prerequisite for source callback.
             if(identity==0x8000ea68){
                 if(c.publication.flags&2)return true; // Callback admission only; Main still publishes view/extra.
                 // Original mode2 consumes the retained camera's own lens.
@@ -2285,6 +2449,10 @@ struct TrioAttackRuntime {
             if(pending!=next)endingRequest(next);pending=next;
         }
     }
+    // Borrowed backend tables last this synchronous call; retained camera/
+    // child cursors live in runtime. New icon pass starts only at a fresh draw
+    // invocation; display registration, execution and completed publication differ.
+    // Missing request/nearFar/display/letterbox providers remain unavailable.
     void continueFinishingDraw(const CameraDrawServices* backend=nullptr){
         struct Bridge {TrioAttackRuntime* runtime;const CameraDrawServices* backend;} bridge{this,backend};
         if(!cameraDrawCursor.active){++iconPassSequence;iconPassComplete=false;}
@@ -2308,6 +2476,9 @@ struct TrioAttackRuntime {
                     if(!set){r.soundFlags->clear(mask);return true;}
                     return r.soundFlags->set(mask,{},r.letterboxSoundCursor);
                 };
+                // Actual field party slot 0 is the source query, not current
+                // partner selection. Native rate 60 is explicit; Key39/Ctrl38
+                // remain separate producers. Sound-flag set can itself hold.
                 provider.partySlot0=[](void* user)->std::optional<uintptr_t>{
                     const auto& r=*static_cast<TrioAttackRuntime*>(user);if(!r.fieldParties)return {};
                     return reinterpret_cast<uintptr_t>(r.fieldParties->pointer(0));
@@ -2323,6 +2494,10 @@ struct TrioAttackRuntime {
             }
             return updateCameraLetterbox(*r.cameras->camera(8),queue,provider,r.letterboxCursor);
         };
+        // Only completed draw publishes iconPassComplete, clears source map
+        // allocation counter 0x8041e810 and awaits real outer Main 0x8006f904.
+        // Diagnostic routing below reports deepest actual held callback; it is
+        // not permission to fake that callback's draw or lifecycle completion.
         if(cameras->draw(displayQueue,services,cameraDrawCursor)){
             cameraDrawWaiting=false;iconPassComplete=true;
             word(0x8041e810,0);pending=0x8006f904;endingRequest(pending); // Actual next outer Main; no teardown shortcut.
@@ -2349,6 +2524,11 @@ struct TrioAttackRuntime {
             if(pending!=next)endingRequest(next);pending=next;
         }
     }
+    // Resume existing camera/depth/footer work before sampling a NEW source
+    // invocation. sampledAt gates simulation input; screen redraw does not tick
+    // action commands. Trigger-only sample is explicit legacy native fallback.
+    // While pending, source event/Main work holds, but icon/PointGet/fade clocks
+    // and final map/scene projections still have their own stated cadence.
     void tick(uint64_t time,ProfessorStory& s,uint32_t triggers,const BattlePadSample* physical){
         scene=&s;now=time;
         if(pending==0x8000f454 || cameraDrawWaiting)continueFinishingDraw();
@@ -2370,6 +2550,10 @@ struct TrioAttackRuntime {
         }
         if(!pending){if(sampledAt!=time){sampledAt=time;checkBrokenUnits();BattlePadSample sample;if(physical)sample=*physical;else {sample.snapshot.buttons=uint16_t(triggers);sample.pressed=triggers;}readPad(Battle+0xf2c,generalPad);generalPad.update(sample);writePad(Battle+0xf2c,generalPad);history=generalPad.triggers;vm.gp.timestamp=time*eventClockRate(243000000);if(word(Battle+4)==3)ending();else if(!done){if(word(Battle+0xf20)<0x06000007)enemyAction();else postAction();}else handoff();readPad(Battle+0x1d1c,privatePad);privatePad.update(sample);writePad(Battle+0x1d1c,privatePad);actionManager();if(!updateStageObjects() && !pending)pending=0x80149798;}updateCamera(time);vm.runManager();if(!pending && gaugeClockAt!=time){gaugeClockAt=time;BattleHpGaugeServices gauge;gauge.actors=nativeBattleActorServices(vm);gauge.interpolate=[](void*,int32_t mode,int32_t step,int32_t duration,float start,float end)->std::optional<float>{return battleHpGaugeCurve(mode,step,duration,start,end);};for(int32_t id=0;id<64;++id){const auto u=battleRegistryUnit(word(0x8041eb90),id,gauge.actors);if(u)packedBattleHpGaugeMain(u,gauge);}}if(hasBrokenUnit())done=false;}iconClock(time);if(pointGetClockAt!=time){pointGetClockAt=time;pointGet.tick();}if(endingFadeClockAt!=time){endingFadeClockAt=time;endingFade.tick(60);}stageBackground.recalculate();stageForeground.recalculate();publish(s);
     }
+    // Read actual registry IDs 1..6 through visual map; null entries hide scene
+    // actors but do not erase diagnostic guest bytes. Source rotation+0x60+0x6c,
+    // pivot+0x78, display offset+0x54 and axis+0x90*0x9c scales retain their order; uniform
+    // 0x114 applies X/Y only. Signed-facing+0x189 maps native yaw 90/270.
     void publish(ProfessorStory& s){for(unsigned id=1;id<7;++id){const uint32_t u=word(Battle+0x20+4*id);if(!u){s.actors[visual[id]].hidden=true;continue;}for(unsigned axis=0;axis<3;++axis)s.actors[visual[id]].position[axis]=real(u+0x3c+4*axis);s.actors[visual[id]].yaw=byte(u+0x189)==1?90:270;s.actors[visual[id]].battleFlags=word(u+0x1c);for(unsigned axis=0;axis<3;++axis){s.actors[visual[id]].battleRotation[axis]=real(u+0x60+4*axis)+real(u+0x6c+4*axis);s.actors[visual[id]].battlePivot[axis]=real(u+0x78+4*axis);s.actors[visual[id]].battleScale[axis]=(axis<2?real(u+0x114):1.f)*real(u+0x9c+4*axis)*real(u+0x90+4*axis);s.actors[visual[id]].battleDisplayOffset[axis]=real(u+0x54+4*axis);}}}
 };
 bool TrioAttack::begin(const TrioBattleCommands& menu,ProfessorStory& scene,int16_t hp,std::shared_ptr<ProloguePouch> entryPouch,uint32_t* fieldNpcBattleFlags,FieldMarioBattleState* fieldMario,FieldPartyRegistry* fieldParties,const FieldPartyAppearanceServices* appearance,std::shared_ptr<BattleSpotlightState> spotlight,std::shared_ptr<BattleRandom> random,std::shared_ptr<PositionalSfxRegistry> sounds,std::shared_ptr<ShadowWork> shadows,std::shared_ptr<BattleCommandPalette> palette,std::shared_ptr<CameraManager> cameras,std::shared_ptr<FieldBeroExec> bero){if(!assetsReady || !menu.attack || !((menu.actor==1 && (menu.attack->weapon==0x803538a8 || menu.attack->weapon==0x80353de8)) || (menu.actor==2 && menu.attack->weapon==0x80393ea8)))return false;if(runtime_)return runtime_->done && runtime_->readyActor==menu.actor && runtime_->launch(menu);auto r=std::make_shared<TrioAttackRuntime>(random?std::move(random):std::make_shared<BattleRandom>(1),fieldParties?fieldParties->originalPool:nullptr);r->bero=std::move(bero);r->cameras=std::move(cameras);if(!r->cameras){r->cameras=std::make_shared<CameraManager>();r->cameras->initializeBoot(608,480);}r->cameras->camera(4)->mode=2;r->palette=palette?std::move(palette):std::make_shared<BattleCommandPalette>();r->shadows=shadows?std::move(shadows):std::make_shared<ShadowWork>();r->publicSfx=sounds?std::move(sounds):std::make_shared<PositionalSfxRegistry>();r->spotlight=spotlight?std::move(spotlight):std::make_shared<BattleSpotlightState>();r->fieldNpcBattleFlags=fieldNpcBattleFlags;r->fieldMario=fieldMario;r->fieldParties=fieldParties;if(appearance)r->fieldAppearance=*appearance;if(!r->initialize(menu,scene,hp,std::move(entryPouch)))return false;r->hpAllocation=std::make_shared<const uint8_t>(0);runtime_=std::move(r);return true;}
