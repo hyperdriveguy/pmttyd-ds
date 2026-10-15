@@ -264,8 +264,8 @@ void ordinary() {
   }
   World unknown;
   FieldNpcMarioCursor u;
-  assert(run(unknown, 7, u) &&
-         unknown.trace == std::vector<World::Effect>{{'c', 0x800440f8, A}});
+  const std::vector<World::Effect> onlyInterrupt{{'c', 0x800440f8, A}};
+  assert(run(unknown, 7, u) && unknown.trace == onlyInterrupt);
 }
 void eligibility() {
   for (uint8_t cls : {1, 2}) {
