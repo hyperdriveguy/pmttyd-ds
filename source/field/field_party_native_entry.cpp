@@ -1,18 +1,18 @@
 #include "field_party_native_entry.hpp"
 namespace ttyd {
-// Twelve unchanged source spans:three scale/vector passes and overwritten
-// seeds(b178/b184/b190/b19c/b220),names(b4dc/b52c),Hello dispatch3141c4,
-// normal/aux pose rows314744/314a14,unit421200,dimensions421584.
+// Sixteen unchanged spans:scale/seed vectors,kind11 model/name/normal row,
+// Goombella pose names/rows,Hello dispatch,unit/dimensions and null position.
+// Distinct Professor data does not canonicalize its model or kind to Goombella.
 // Validate exact address/size; import only absent complete spans into actual VM.
 // Loader layout admission is separate from converter's original-byte hashes.
 std::unique_ptr<NativeFieldPartyEntry> NativeFieldPartyEntry::create(const char* root,FieldPartyRegistry& p,FieldMarioBattleState& m,std::shared_ptr<ProloguePouch> q,Trace t){
  if(!root)return {};
  auto n=std::unique_ptr<NativeFieldPartyEntry>(new NativeFieldPartyEntry(p,m,std::move(q),std::move(t)));
- if(!n->data_.load((std::string(root)+"/field-party-entry.pmevt").c_str()) || !n->definitions_.load((std::string(root)+"/field-party-definitions.pmevt").c_str()) || n->data_.segments().size()!=12)return {};
- constexpr uint32_t addresses[]={0x802cb178,0x802cb184,0x802cb190,0x802cb19c,0x802cb220,0x802cb4dc,0x802cb52c,0x803141c4,0x80314744,0x80314a14,0x80421200,0x80421584};
- constexpr uint32_t sizes[]={12,12,12,12,12,8,8,124,60,60,4,8};
- for(unsigned i=0;i<12;++i)if(n->data_.segments()[i].address!=addresses[i] || n->data_.segments()[i].size!=sizes[i])return {};
- n->native_=p.nativeAnimation;n->pool_=p.originalPool;
+ if(!n->data_.load((std::string(root)+"/field-party-entry.pmevt").c_str()) || !n->definitions_.load((std::string(root)+"/field-party-definitions.pmevt").c_str()) || n->data_.segments().size()!=16)return {};
+ constexpr uint32_t addresses[]={0x802cb178,0x802cb184,0x802cb190,0x802cb19c,0x802cb220,0x802cb4bc,0x802cb4dc,0x802cb52c,0x803141c4,0x80314744,0x8031499c,0x80314a14,0x80421200,0x804213f4,0x80421584,0x80421d60};
+ constexpr uint32_t sizes[]={12,12,12,12,12,12,8,8,124,60,60,60,4,4,8,4};
+ for(unsigned i=0;i<16;++i)if(n->data_.segments()[i].address!=addresses[i] || n->data_.segments()[i].size!=sizes[i])return {};
+ n->root_=root;n->native_=p.nativeAnimation;n->pool_=p.originalPool;
  n->lifetime_=NativeFieldPartyLifetime::create(root,p,m);if(!n->lifetime_)return {};
  if(p.nativeAnimation){
   auto& memory=p.nativeAnimation->process().vm().memory;
@@ -49,19 +49,19 @@ FieldPartyPose* NativeFieldPartyEntry::pose(int32_t h) const {
 // three overwritten source stack-seed words for ordering,without publishing them.
 void NativeFieldPartyEntry::updateName(){actor_->word(0x18,selected_);actor_->bytes[0x20]=actor_->bytes[0x21]=0;actor_->word(8,actor_->word(8)|0x2000);}
 bool NativeFieldPartyEntry::seed(uint32_t a) const {uint32_t v=0;return word(a,v) && word(a+4,v) && word(a+8,v);}
-// Scoped kinds ordinary1/aux13 only. Ordinary live signed HP(pouch half20)
-// <=5 selects row12,otherwise1;aux13 row1 skips HP. Actor word4 mask8000
+// Scoped ordinary1/aux11/13. Ordinary live signed HP(pouch half20)
+// <=5 selects row12,otherwise1;auxiliary row1 skips HP. Actor word4 mask8000
 // is the unbound d_mario domain. Do not turn aux13 into canonical join kind1.
 bool NativeFieldPartyEntry::select(){
- const int32_t admitted=form_==Form::Secondary?13:1;
+ const int32_t admitted=form_==Form::Secondary?kind_:1;
  if(!issued_){
   if(int8_t(actor_->bytes[0x31])!=admitted){pending_=0x800be144;return false;}
   selector_=1;
   if(admitted<8){if(!pouch_){pending_=0x80140ea4;return false;}request(0x80140ea4,{admitted});selector_=pouch_->half(20)<=5?12:1;}
-  else issued_=true; // Source auxiliary13 does not query HP.
+  else issued_=true; // Source auxiliary11/13 does not query HP.
  }
  if((actor_->word(4)&0x8000) || int8_t(actor_->bytes[0x31])!=admitted){pending_=0x800be144;return false;}
- const uint32_t row=form_==Form::Secondary?0x80314a14:0x80314744;
+ const uint32_t row=form_==Form::Secondary?(kind_==11?0x8031499c:0x80314a14):0x80314744;
  if(!word(row+4*uint32_t(selector_),selected_)){pending_=0x800be144;return false;}return true;
 }
 // Capture old/selected string identities once per comparison; actual guest
@@ -106,7 +106,7 @@ bool NativeFieldPartyEntry::advance(int32_t kind,std::shared_ptr<const ActorAnim
  // re-queried before Kill. Position/Secondary skip this join/removal sequence.
  case Phase::Caller:
   if(!parties_.nativeEntryOwner.expired() || !parties_.nativeRemovalOwner.expired()){pending_=entryFunction();return false;}
-  if(kind!=(form_==Form::Secondary?13:1) || (form_==Form::Ordinary && !pouch_)){pending_=entryFunction();return false;}
+  if((form_==Form::Secondary?(kind!=11 && kind!=13):kind!=1) || (form_==Form::Ordinary && !pouch_)){pending_=entryFunction();return false;}
   kind_=kind;request(entryFunction(),{kind});
   if(form_==Form::Secondary){if(trace_)trace_(0x8005e0c0,{});next(Phase::AuxAllocate);break;}
   if(form_==Form::Position){next(Phase::Allocate);break;}
@@ -146,7 +146,7 @@ bool NativeFieldPartyEntry::advance(int32_t kind,std::shared_ptr<const ActorAnim
  // model,then BOTH reread global before init. word4 mask8000 selects d_mario
  // token2cb340 but real alternate resource/name providers remain unavailable.
  case Phase::Resource:
-  if(actor_->bytes[0x31]!=(form_==Form::Secondary?13:1)){pending_=0x800be144;return false;}
+  if(actor_->bytes[0x31]!=(form_==Form::Secondary?kind_:1)){pending_=0x800be144;return false;}
   if(actor_->word(4)&0x8000){resource_=0x802cb340;next(Phase::Release);break;}
   // Secondary loads through its retained local definition; Main rereads global.
   if(form_!=Form::Secondary)definition_=parties_.currentDefinition;
@@ -168,7 +168,17 @@ bool NativeFieldPartyEntry::advance(int32_t kind,std::shared_ptr<const ActorAnim
   next(Phase::Enter);break;
  case Phase::Enter:
   request(0x8004176c,{int32_t(resource_),2});
-  handle_=parties_.enterPose(resource_,2,bank,now);
+  if(resource_==0x802cb4bc){
+   if(!native_ || !pool_){pending_=0x8004176c;return false;}
+   if(!professor_){
+    for(const auto& model:pool_->models())if(model.flags() && model.resource && model.resource->modelName=="c_kuri_h"){professor_=model.resource;break;}
+    if(!professor_)professor_=loadBattlePoseResource((root_+"/field-native-c_kuri_h.pose-directory.bin").c_str(),(root_+"/field-native-c_kuri_h.pmanim").c_str());
+   }
+   if(!professor_ || !professor_->draw || !professor_->textures || professor_->modelName!="c_kuri_h"){pending_=0x8004176c;return false;}
+   auto entered=pool_->enter(professor_,2,{now,now},"c_kuri_h");
+   if(!entered || *entered<0 || unsigned(*entered)>=parties_.poses.size() || !pool_->pose(*entered)){pending_=0x8004176c;return false;}
+   handle_=*entered;parties_.poses[unsigned(handle_)]=std::make_unique<FieldPartyPose>(pool_,handle_,resource_);
+  }else handle_=parties_.enterPose(resource_,2,bank,now);
   if(handle_<0){pending_=0x8004176c;return false;}
   actor_->word(0xc,uint32_t(handle_));next(Phase::Paper);break;
  case Phase::Paper:

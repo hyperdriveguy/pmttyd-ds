@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Extract unchanged US ordinary/auxiliary party records, kinds1,8,13."""
+"""Extract unchanged US ordinary/auxiliary party records, kinds1,8,11,13."""
 import argparse,hashlib,json,struct
 from pathlib import Path
 from iso_assets import DEFAULT_ISO
 from field_map_npc_assets import Dol
 RECORDS=[(1,0x80314410,'66223e5e99847e374a78c965305df7da505db3794f40503a107dbd8c5e2e0e3c'),
  (8,0x80314528,'0736c199924450fd0f59d4b42682e20fdd5086e0d8c6920f37fc3a4195aebb9d'),
+ (11,0x803145a0,'049e0e1444a1cc8477638a4874ce78128bd467d9dbca3dcb3c0926fbf88ae27e'),
  (13,0x803145f0,'8f4f2986bff8e23c7b9fd34a86ee6079a4672253779644f67188345792f3f6d9')]
 def build(iso=DEFAULT_ISO,output='romfs'):
  root=Path(output);root.mkdir(parents=True,exist_ok=True);dol=Dol(iso);segments=[];rows=[]

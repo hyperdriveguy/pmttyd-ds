@@ -1385,3 +1385,5 @@ Original battle menu native resource/queue owners:
 - [Native atomic mesh publication and field simulation barrier](display/NATIVE_ATOMIC_MESH_PUBLICATION.md): fresh post-Main capture, static geometry/backing proof, private reusable candidate and atomic swap; normal Mario activation with same-pass Game/runtime draining. Original NPC Draw/Inner/queue/GPU integration remains open.
 
 - [Retained original ordinary animation selection](display/NATIVE_RETAINED_ANIMATION_SELECTION.md): exact signed/raw selector, directory/clock/literal ordering, native owner and Mario setup integration; full NPC draw and source paper/local-time setters remain open.
+
+- [Native temporary Professor party](partner/NATIVE_TEMPORARY_PROFESSOR_PARTY.md): actual kind11 model/resource/constructor, fresh get-position outputs and original first-talk/fence ownership.

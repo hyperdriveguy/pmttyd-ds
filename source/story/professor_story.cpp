@@ -286,7 +286,17 @@ struct ProfessorRuntime {
         case 12:scene->keysEnabled=value(e,0)!=0;return 2;
         case 13:return move(e,first,0,0,1,2);
         case 14:if(first)scene->actors[0].yaw=number(e,0);return delay(e,first,uint64_t(std::max<int32_t>(0,value(e,1))));
-        case 15:scene->temporaryProfessor=true;scene->actors[2].npcActive=true;for(unsigned i=0;i<3;++i)scene->actors[2].position[i]=number(e,2+i);++scene->actors[2].placementGeneration;scene->actors[2].hidden=scene->actors[2].position[1]==-1000;return 2;
+        case 15:
+            if(scene->fieldParty.bound() || partyCalls.count(e.id)){
+                if(partyCall(e,function,first)!=2)return 0;
+                const auto index=int8_t(scene->fieldParty.mario->partyIndices[1]);
+                auto* actor=index>=0 && index<2?scene->fieldParty.parties->pointer(index):nullptr;
+                scene->temporaryProfessor=actor && actor->bytes[0x31]==11;
+                if(!scene->temporaryProfessor)return 2;
+                for(unsigned i=0;i<3;++i)scene->actors[2].position[i]=actor->scalar(0x58+4*i);
+            }else {scene->temporaryProfessor=true;for(unsigned i=0;i<3;++i)scene->actors[2].position[i]=number(e,2+i);}
+            scene->actors[2].npcActive=true;++scene->actors[2].placementGeneration;
+            scene->actors[2].hidden=scene->actors[2].position[1]==-1000;return 2;
         case 16:scene->actors[0].pose=string(pointer(e,0));scene->actors[0].poseAt=scene->now;return 2;
         case 17:return print(e,first,false);
         case 18:return print(e,first,true);
@@ -379,10 +389,16 @@ struct ProfessorRuntime {
         // full original BGM/ENV/SFX mix remains a different presentation owner.
         case 30:scene->music=-1;return 2;
         case 31:scene->music=pointer(e,1)?1:0;return 2;
-        case 35:positionOut(e,1,value(e,0)==1?2:1);return 2;
+        case 35:
+            if(scene->fieldParty.bound() || partyCalls.count(e.id))return partyCall(e,function,first);
+            positionOut(e,1,value(e,0)==1?2:1);return 2;
         case 36:
-            if((scene->fieldParty.bound() || partyCalls.count(e.id)) && partyCall(e,function,first)!=2)return 0;
-            if(value(e,0)==1)scene->temporaryProfessor=false;
+            if(scene->fieldParty.bound() || partyCalls.count(e.id)){
+                if(partyCall(e,function,first)!=2)return 0;
+                const auto index=int8_t(scene->fieldParty.mario->partyIndices[1]);
+                const auto* actor=index>=0 && index<2?scene->fieldParty.parties->pointer(index):nullptr;
+                scene->temporaryProfessor=scene->temporaryProfessor && actor && actor->bytes[0x31]==11;
+            }else if(value(e,0)==1)scene->temporaryProfessor=false;
             return 2;
         // Capture admission and completion are separate. Bounding box43 holds
         // for actual renderer captureReady and writes four INTEGER outputs.

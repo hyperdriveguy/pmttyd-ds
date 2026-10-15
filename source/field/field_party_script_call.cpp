@@ -22,6 +22,15 @@ bool NativeFieldPartyScriptCall::call(BattleSequenceCall& c){
  if(!lifetime_->kill(int32_t(c.args[0]),c.function==0x800be594)){pending_=lifetime_->pending();if(!pending_)pending_=c.function;return false;}
  c.result=0;return true;
 }
+bool NativeFieldPartyScriptCall::nullCoordinate(){
+ constexpr uint32_t address=0x80421d60;uint32_t value=0;
+ auto native=binding_.parties->nativeAnimation;
+ if(native && native->process().vm().memory.readWord(address,value)){std::memcpy(&coordinate_,&value,4);return true;}
+ if(positionData_.segments().empty() && !positionData_.load((binding_.root+"/field-party-entry.pmevt").c_str()))return false;
+ if(!positionData_.readWord(address,value) || value!=0xc59c4000)return false;
+ if(native){std::vector<uint8_t> bytes(4);for(unsigned i=0;i<4;++i)bytes[i]=uint8_t(value>>(24-8*i));if(!native->process().vm().memory.registerRam(address,std::move(bytes)))return false;}
+ std::memcpy(&coordinate_,&value,4);return true;
+}
 int32_t NativeFieldPartyScriptCall::step(EventEntry& e,bool first,uint32_t fn,EventNativeRuntime& vm,const FieldPartyScriptBindings& b,uint64_t now){
  pending_=0;
  if(stage_!=Stage::Start && (&e!=entry_ || e.id!=id_ || &vm!=vm_ || fn!=function_)){pending_=function_;return 0;}
@@ -31,7 +40,7 @@ int32_t NativeFieldPartyScriptCall::step(EventEntry& e,bool first,uint32_t fn,Ev
  if(actor_ && stage_!=Stage::Done && binding_.parties->pointer(index_)!=actor_){pending_=function_;return 0;}
  for(;;)switch(stage_){
  case Stage::Start:{
-  if(fn!=0x800e3120 && fn!=0x800e2f00 && fn!=0x800e2da0 && fn!=0x800e2e0c && fn!=0x800eae70 && fn!=0x800eaeb8 && fn!=0x800f0a8c){pending_=fn;return 0;}
+  if(fn!=0x800e3120 && fn!=0x800e2f00 && fn!=0x800e2da0 && fn!=0x800e2e0c && fn!=0x800eae70 && fn!=0x800eaeb8 && fn!=0x800f0a8c && fn!=0x800eb3f8){pending_=fn;return 0;}
   vm_=&vm;entry_=&e;id_=e.id;function_=fn;first_=first;next(Stage::Bind);break;}
  case Stage::Bind:
   if(!b.bound()){pending_=fn;return 0;}
@@ -72,8 +81,9 @@ int32_t NativeFieldPartyScriptCall::step(EventEntry& e,bool first,uint32_t fn,Ev
   binding_.parties->nativeEntryOwner=modeLease_;next(Stage::ModeActor);break;
  case Stage::ModeActor:
   if(index_>=2){pending_=0x800bf1b4;return 0;}
-  actor_=binding_.parties->pointer(index_);if(!actor_){modeLease_.reset();next(Stage::Done);break;}next(Stage::ModeGate);break;
+  actor_=binding_.parties->pointer(index_);if(!actor_){if(fn==0x800eb3f8){next(Stage::GetDestination);break;}modeLease_.reset();next(Stage::Done);break;}next(Stage::ModeGate);break;
  case Stage::ModeGate:
+  if(fn==0x800eb3f8){next(Stage::GetDestination);break;}
   if(fn==0x800eae70 && actor_->bytes[0x34]!=0){modeLease_.reset();next(Stage::Done);break;}
   newMode_=fn==0x800eae70?1:0;next(Stage::ModeOuter);break;
  case Stage::ModeOuter:
@@ -90,6 +100,16 @@ int32_t NativeFieldPartyScriptCall::step(EventEntry& e,bool first,uint32_t fn,Ev
   next(Stage::ModeFinish);break;
  case Stage::ModeFinish:
   actor_->bytes[0x34]=uint8_t(newMode_);actor_->word(8,actor_->word(8)|8);modeLease_.reset();next(Stage::Done);break;
+ case Stage::GetDestination:
+  if(!vm.memory.readWord(args_+4*(axis_+1),destination_)){pending_=fn;return 0;}next(Stage::GetCoordinate);break;
+ case Stage::GetCoordinate:
+  if(actor_)coordinate_=actor_->scalar(0x58+4*axis_);
+  else if(!nullCoordinate()){pending_=fn;return 0;}
+  next(Stage::GetWrite);break;
+ case Stage::GetWrite:
+  setEventFloat(e,int32_t(destination_),coordinate_,vm.interpreterServices().operands);
+  if(++axis_<3){next(Stage::GetDestination);break;}
+  modeLease_.reset();next(Stage::Done);break;
  case Stage::Done:return 2;
  }
 }

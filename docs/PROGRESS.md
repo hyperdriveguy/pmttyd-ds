@@ -14995,3 +14995,54 @@ Next: reduce publication cost; route original NPC SetAnim/Main/DrawMtx/Inner/que
 services through retained process owners with original pass/lifetime scheduling.
 Implement full source SetLocalTime/paper setters and preserve offscreen/blur
 frontiers. EVT-01 and the full-remake goal remain OPEN/active.
+
+## 2026-10-15 — Native temporary Professor and original fence handoff
+
+Original auxiliary kind11 construction now uses its actual c_kuri_h shared
+MODEL/TPL/pose bank, definition, normal row and S_1 name. Source flags/owner,
+independent material/light queries, PeraOff, no-HP init24/26, mode2, XYZ/previous
+XYZ and unit scalars remain retained; Mario246 publishes after completion.
+Actual Kill/Kill2 preserve/clear11 and release shared native resources correctly.
+Existing c_kuri_h NPC acquisition without the original name mapping keeps its
+caller workspace. No model/kind alias to Goombella or new fabricated asset.
+
+Original evt_party_get_pos now uses the caller VM's raw operands and actual
+actor, including fresh sequential destination/coordinate/setFloat order and
+fresh -5000 constant loads for null. Completed outputs survive argument-memory
+holds. First-talk tag15 and fence tags35/36 bind these native owners; projection
+waits for construction/removal. The existing provisional follow adapter updates
+the real temporary root and waits for pending ownership, while original movement,
+direction/driver/posing/render/cancellation remain incomplete.
+
+CMAKE_BUILD_PARALLEL_LEVEL=6 make test exits 0: 490/490 C++ (83.85s),
+223/223 Python (35.868s), zero skipped. Focused constructor/script/position/Professor
+regressions also pass. Native make all -j6 -o assets-ready SOUNDTRACK=gamecube
+TARGET=ttyd-field-party-professor exits 0; private ARM fixture build exits 0.
+Final host/native/ARM/emulator handles observed terminal 0. Existing compiler/
+Pillow warnings remain. Initial private object reuse setup failed before copying
+objects because its new build directory was absent; the accepted private build
+compiled all source afresh. No stale ABI object reuse or post-gate executable/
+test-fixture source edits.
+
+Both isolated 45-second Azahar jobs exit0. Production capture visually shows
+the original storybook/US text; private probe capture shows its initial book
+cover after fixture completion. All 11 strict ARM markers pass: kind11,
+originalResource,heldEntry,sharedModel,actualKill,getPosNull,outputOrder,
+partialOutput,originalTalk,fenceGetPosClear,story10. This proves local native
+lifecycle/output/source-event gates, not full visual/follow/battle/prologue parity.
+User emulator profiles/saves untouched; hardware/FPSCR/audio/performance unverified.
+
+Frozen baseline 5f49d704 plus scoped changes audits 4239 source inputs, 2166 runtime
+products and 778 private inputs. Four own party data products update; upstream
+prerequisites add 5 products and update 4. Private input changes are exactly two
+atlas PNGs and 13 footer provenance sidecars' relative source paths. All other
+accepted bytes are unchanged. Converters read original ISO read-only; no ISO,
+extracted source body or compiled binary committed. Private source/include/RomFS
+matches production except its exact fixture/marker main injection, with no extra
+runtime products. Exact deltas, hashes, original evidence, logs/binaries/captures
+and scoped journals are in artifacts/field-party-professor-validation-manifest.json.
+Concurrent foreign changes are preserved/excluded from frozen validation.
+
+Next: original party driver/follow/terrain/presentation and direction/control;
+active mode cleanup/cancellation; full engine/battle teardown/field return;
+harbor/plaza dispatch and end-to-end prologue/hardware verification. Goal active.

@@ -110,3 +110,10 @@ through VM first=false, entry-id rejection and actual auxiliary Clear before
 ordinary creation. Existing ordinary caller and complete battle-ending regression
 remain in the full suite. No full event stream, field return, visual/audio parity,
 all-kind constructor coverage or hardware performance claim follows.
+
+## 2026-10-15 implementation extension
+
+[Temporary Professor binding](NATIVE_TEMPORARY_PROFESSOR_PARTY.md) additionally
+admits fresh auxiliary11 using its actual record/model/row. The source data pack
+now has16 spans/616 bytes and definition records1/8/11/13. Ordinary1/aux13
+ordering above remains unchanged; whole follow/driver/render parity remains open.

@@ -5346,3 +5346,22 @@ The native raw-selector API is available for future NPC services. Typed legacy
 pool selector routing, full source SetLocalTime/paper setters, NPC draw/queue/GPU
 integration and source scheduling are still open. No invented story/asset changes.
 Exact gates and limitations are in progress. EVT-01 remains OPEN.
+
+### 2026-10-15 actual temporary Professor and fence party owner
+
+Fresh kind11 record/model/normal-row/S_1 and kuribo_init/get-position evidence is
+archived under artifacts/field-party-professor-evidence. Native secondary Entry
+now consumes actual c_kuri_h shared file/pose ownership, publishes Mario246 only
+after completion and removes it through actual Kill/Kill2. Professor dispatch
+uses original first-talk creation and fence get-position/clear; source messages
+and story conditions remain unchanged. Get-position uses raw selector/current
+publication, sequential fresh destination/coordinate/constant reads and actual
+caller-VM evtSetFloat, including null -5000. The existing provisional follow
+adapter reads/writes the actual temporary actor; it is not the original driver.
+See [binding](../behavior/partner/NATIVE_TEMPORARY_PROFESSOR_PARTY.md).
+
+- [ ] Bind original partyMain/driveParty/partyMoveWalk/history/terrain/presentation
+  for kind11 and ordinary Goombella; do not treat adapter trajectories as measured.
+- [ ] Bind original party direction/control and active mode cleanup/cancellation.
+- [ ] Complete full engine/battle teardown and actual field return, harbor/plaza
+  dispatch and end-to-end prologue verification.

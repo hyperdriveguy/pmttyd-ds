@@ -53,7 +53,7 @@ std::optional<int32_t> NativeFieldAnimation::enter(std::shared_ptr<const BattleP
  if(!entering_){name_=name;entering_=resource;mode_=mode;auto& m=process_->vm().memory;for(unsigned i=0;i<=name.size();++i)if(!m.writeByte(Name+i,i<name.size()?uint8_t(name[i]):0))return {};}
  else if(entering_!=resource || mode_!=mode || name_!=name)return {};
  uint32_t address=Name;uint8_t mappedByte=0;
- for(auto pair:{std::make_pair("a_mario",0x802c18a0u),std::make_pair("a_mario_r",0x802c18a8u),std::make_pair("e_mario",0x802c18b4u),std::make_pair("c_pkr",0x804213e0u)})if(name==pair.first && (name!="c_kuri_h" || process_->vm().memory.readByte(pair.second,mappedByte)))address=pair.second;
+ for(auto pair:{std::make_pair("a_mario",0x802c18a0u),std::make_pair("a_mario_r",0x802c18a8u),std::make_pair("e_mario",0x802c18b4u),std::make_pair("c_pkr",0x804213e0u),std::make_pair("c_kuri_h",0x802cb4bcu)})if(name==pair.first && (name!="c_kuri_h" || process_->vm().memory.readByte(pair.second,mappedByte)))address=pair.second;
  auto result=process_->enter(address,uint32_t(mode),resource);if(result){entering_.reset();name_.clear();}
  // Source exposes -2 for file failure; the typed API exposes only valid handles.
  if(result && *result<0)return {};

@@ -2,20 +2,20 @@
 namespace ttyd {
 namespace {
 // Source currentDefinition/table globals. Records are unchanged kind1(c_pkr),
-//8(c_babyyoshi),13(auxiliary c_pkr); model tokens identify source strings.
+//8(c_babyyoshi),11(c_kuri_h),13(auxiliary c_pkr); actual model tokens.
 // Sharing init800c4fa0 does not canonicalize kinds or share their lifetimes.
 constexpr uint32_t Table=0x8041ead8,Definition=0x8041ead4;
-constexpr uint32_t Records[]={0x80314410,0x80314528,0x803145f0};
-constexpr uint32_t ModelTokens[]={0x804213e0,0x802cb47c,0x804213e0};
+constexpr uint32_t Records[]={0x80314410,0x80314528,0x803145a0,0x803145f0};
+constexpr uint32_t ModelTokens[]={0x804213e0,0x802cb47c,0x802cb4bc,0x804213e0};
 }
-// Require three40-byte records with exact address/model/init/zero exit+24.
+// Require four40-byte records with exact address/model/init/zero exit+24.
 // In native VM import only when cold; existing complete mappings stay mutable.
 // No adapter recreation restores a callback changed by a prior consumer.
 std::unique_ptr<NativeFieldPartyLifetime> NativeFieldPartyLifetime::create(const char* root,FieldPartyRegistry& parties,FieldMarioBattleState& mario){
  if(!root)return {};
  auto n=std::unique_ptr<NativeFieldPartyLifetime>(new NativeFieldPartyLifetime(parties,mario));
- if(!n->definitions_.load((std::string(root)+"/field-party-definitions.pmevt").c_str()) || n->definitions_.segments().size()!=3)return {};
- for(unsigned i=0;i<3;++i){const auto& s=n->definitions_.segments()[i];uint32_t model=0,init=0,exit=1;
+ if(!n->definitions_.load((std::string(root)+"/field-party-definitions.pmevt").c_str()) || n->definitions_.segments().size()!=4)return {};
+ for(unsigned i=0;i<4;++i){const auto& s=n->definitions_.segments()[i];uint32_t model=0,init=0,exit=1;
   if(s.address!=Records[i] || s.size!=0x28 || !n->definitions_.readWord(s.address,model) || model!=ModelTokens[i] || !n->definitions_.readWord(s.address+4,init) || init!=0x800c4fa0 || !n->definitions_.readWord(s.address+0x24,exit) || exit)return {};
  }
  n->native_=parties.nativeAnimation;n->pool_=parties.originalPool;
@@ -25,7 +25,7 @@ std::unique_ptr<NativeFieldPartyLifetime> NativeFieldPartyLifetime::create(const
   for(auto a:Records){bool full=true;for(unsigned offset=0;offset<0x28;offset+=4){uint32_t value=0;if(!m.readWord(a+offset,value))full=false;}if(full)++mapped;}
   // Cold import once. Already mapped records remain live mutable source data;
   // a new adapter must not restore a callback changed by an earlier consumer.
-  if((mapped && mapped!=3) || (!mapped && !m.importScripts(n->definitions_)))return {};
+  if((mapped && mapped!=4) || (!mapped && !m.importScripts(n->definitions_)))return {};
  }
  return n;
 }

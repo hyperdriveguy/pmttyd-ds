@@ -24,7 +24,7 @@ public:
  // constructor/release children require quarantine until cancellation is bound.
  bool releaseForRetirement();
 private:
- enum class Stage {Start,Bind,Address,Dispatch,JoinRaw,JoinValue,Join,ModeRaw,ModeLookup,ModeLease,ModeActor,ModeGate,ModeOuter,ModeInner,Slit,ModeFinish,Done};
+ enum class Stage {Start,Bind,Address,Dispatch,JoinRaw,JoinValue,Join,ModeRaw,ModeLookup,ModeLease,ModeActor,ModeGate,ModeOuter,ModeInner,Slit,ModeFinish,GetDestination,GetCoordinate,GetWrite,Done};
  Stage stage_=Stage::Start;FieldPartyScriptBindings binding_;EventNativeRuntime* vm_=nullptr;EventEntry* entry_=nullptr;
  std::shared_ptr<NativeFieldAnimation> native_;std::shared_ptr<BattlePosePool> pool_;
  uint32_t function_=0,pending_=0,id_=0,address_=0,args_=0,raw_=0,selector_=0;
@@ -34,6 +34,8 @@ private:
  std::unique_ptr<NativeFieldPartyPositionEvent> position_;
  std::unique_ptr<NativeFieldPartyLifetime> lifetime_;
  FieldPartyRemovalEventCursor removal_;
+ EventScriptAssets positionData_;unsigned axis_=0;uint32_t destination_=0;float coordinate_=0;
+ bool nullCoordinate();
  BattleSequenceEntryServices removalServices();
  bool call(BattleSequenceCall&);
  void next(Stage s){stage_=s;issued_=false;}

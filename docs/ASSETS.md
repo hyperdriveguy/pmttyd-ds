@@ -3422,3 +3422,30 @@ texture scaling, geometry/lighting, audio, dialogue or shader conversion changed
 All 2152 inherited RomFS products remain byte-identical to the accepted baseline.
 Original rights/licensing are unchanged; ISO, extracted originals, compiled packs,
 fixtures and validation binaries stay outside source history.
+
+## 2026-10-15 — Original temporary Professor party data
+
+Native auxiliary11 uses existing accepted field-native-c_kuri_h MODEL/TPL,
+pose-directory/17-pose animation/draw resources. No Professor artwork or dialogue
+is replaced. Read-only original record803145a0/28 is added to the definition pack
+(now4 records/220 bytes). Construction pack adds aligned model802cb4bc/12,
+normal row8031499c/60, S_1 at804213f4/4 and null-position80421d60/4
+(now16 spans/616 bytes). All bytes, including source model padding, are exact
+original DOL data with per-span hashes in the frozen converters/provenance.
+Fresh source/evidence stays under artifacts/field-party-professor-evidence.
+
+Dependency preflight against the previous accepted party cache found upstream
+menu/font changes already in baseline5f49d704. Frozen upstream converters import
+exact original papermarioset_US.bfn plus metadata, generate three submenu
+products, and update footer/surface atlases to their committed clamp-edge
+extrusion behavior. Four upstream runtime products change; five are added.
+Four party products change; all other accepted runtime products are unchanged
+(2166 total). Two private atlas PNGs change;13 footer provenance sidecars differ
+only in the corrected private relative source path. All other private input
+bytes remain unchanged (778 inputs). Original interiors/catalog UV and original
+raw common TPL bytes remain unchanged. No shared/editable cache is an input to
+the upstream submenu importer. Exact delta is pinned in the session manifest.
+
+Original Nintendo/Intelligent Systems rights retained; local supplied ISO opened
+read-only. No ISO, extracted source body, asset pack or compiled binary committed.
+This is not a hardware/pixel/audio or complete prologue parity claim.

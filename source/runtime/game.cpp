@@ -1467,6 +1467,14 @@ void Game::updatePartner() {
 // decision. Paper yaw retains90/270 unless movement heading enters10..170 or
 //190..350 degrees; movement tolerance1e-6 is native positional noise policy.
 void Game::updateTemporaryProfessor() {
+    if(nativePartyPending())return;
+    FieldPartyActor* nativeProfessor=nullptr;
+    if(fieldParties.nativeAnimation){
+        const auto index=int8_t(fieldMarioBattle.partyIndices[1]);
+        if(index<0 || index>=2)return;
+        nativeProfessor=fieldParties.pointer(index);
+        if(!nativeProfessor || nativeProfessor->bytes[0x31]!=11)return;
+    }
     if(!professorStory.temporaryProfessor || (professorStory.locked() && !(fieldDoor.active() && professorStory.fenceStarted)) || (progress.room!=2 && progress.room!=5) ||
        (scene!=Scene::Explore && scene!=Scene::Dialogue) || warpRequest>=0 || fade.active())return;
     PartnerFollowServices services;
@@ -1484,11 +1492,13 @@ void Game::updateTemporaryProfessor() {
     // selector preserves the special-state branches for future party binding.
     const bool other=secondaryPartyUsesOther(true,1,1,0,std::sqrt(dx*dx+dy*dy+dz*dz)*100.f);
     auto& actor=professorStory.actors[2];
-    CameraPoint root{actor.position[0]*.01f,actor.position[1]*.01f,actor.position[2]*.01f};
+    CameraPoint root=nativeProfessor?CameraPoint{nativeProfessor->scalar(0x58)*.01f,nativeProfessor->scalar(0x5c)*.01f,nativeProfessor->scalar(0x60)*.01f}:
+        CameraPoint{actor.position[0]*.01f,actor.position[1]*.01f,actor.position[2]*.01f};
     const auto before=root;
     professorFollow.tick(root,other?goombella:mario,
         other?partnerFollow.motion==PartnerFollow::Motion::Jump:fieldJump.jumping,fieldMovement.speed,services);
     actor.position={root.x*100.f,root.y*100.f,root.z*100.f};
+    if(nativeProfessor)for(unsigned axis=0;axis<3;++axis)nativeProfessor->scalar(0x58+4*axis,actor.position[axis]);
     actor.moving=PartnerFollow::distance(root,before)>.000001f;
     if(actor.moving) {
         const float heading=PartnerPresentation::wrap(std::atan2(root.x-before.x,before.z-root.z)*57.29577951308232f);

@@ -5,7 +5,7 @@
 #include <functional>
 namespace ttyd {
 // Retained ordinary Goombella caller/Main/Entry/fresh Hello and positioned
-// ordinary1/auxiliary13 construction. Other kinds, d_mario and nonordinary
+// ordinary1/auxiliary11/13 construction. Other kinds, d_mario and nonordinary
 // Hello dispatch remain explicit provider boundaries.
 // Keep this object, registry, Mario and pouch stationary through completion.
 // Disposal releases only native exclusion ownership; it never invents source
@@ -17,9 +17,9 @@ public:
  // held outer caller cannot replay a completed constructor. No implicit reset.
  using Trace=std::function<void(uint32_t,std::initializer_list<int32_t>)>;
  // Position constructors do not perform the pouch join gate or publish Mario
- // slot indices. Ordinary kind1 uses Main; auxiliary kind13 uses only slot1.
+ // slot indices. Ordinary kind1 uses Main; auxiliary kinds11/13 use only slot1.
  // xyz bits(including signed zero) bind this invocation. Ordinary Position
- // finishes mode0;Secondary kind13 uses mode2 and previousXYZ/unit scalars.
+ // finishes mode0;Secondary kinds11/13 use mode2 and previousXYZ/unit scalars.
  // Direct APIs do not publish Mario slot bytes; the EVT wrapper owns that.
  bool position(int32_t kind,bool secondary,const std::array<float,3>&,std::shared_ptr<const ActorAnimationPack>,uint64_t,const FieldPartyAppearanceServices&,int32_t& result);
  static std::unique_ptr<NativeFieldPartyEntry> create(const char*,FieldPartyRegistry&,FieldMarioBattleState&,std::shared_ptr<ProloguePouch>,Trace={});
@@ -37,6 +37,7 @@ private:
  NativeFieldPartyEntry(FieldPartyRegistry& p,FieldMarioBattleState& m,std::shared_ptr<ProloguePouch> q,Trace t):parties_(p),mario_(m),pouch_(std::move(q)),trace_(std::move(t)){}
  FieldPartyRegistry& parties_;FieldMarioBattleState& mario_;std::shared_ptr<ProloguePouch> pouch_;Trace trace_;
  std::shared_ptr<NativeFieldAnimation> native_;std::shared_ptr<BattlePosePool> pool_;
+ std::string root_;std::shared_ptr<const BattlePoseResource> professor_;
  EventScriptAssets data_,definitions_;std::unique_ptr<NativeFieldPartyLifetime> lifetime_;
  std::shared_ptr<int> lease_=std::make_shared<int>(0);
  Form form_=Form::Ordinary;bool started_=false;std::array<uint32_t,3> position_{};int32_t oldMode_=0;uint32_t unit_=0;

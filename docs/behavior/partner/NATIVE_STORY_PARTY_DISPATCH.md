@@ -76,8 +76,9 @@ legacy scene harnesses retain their declared partial projections for the older
 run/stop/clear/kill callbacks; previous-position remains a real boundary without
 an owner. No dialogue, message IDs, branches or story conditions are changed.
 
-Kind11 Professor construction, movement, direction and projected position queries
-remain separate services. This bridge does not complete those services, native
+Kind11 Professor construction and actual party get-position are now bound by
+[the temporary Professor owner](NATIVE_TEMPORARY_PROFESSOR_PARTY.md). Movement,
+direction and complete source driver/presentation remain separate services. This bridge does not complete those services, native
 battle teardown, sequence return or full prologue fidelity. Original battle
 start/wait gates remain intact.
 

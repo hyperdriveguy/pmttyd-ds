@@ -2558,3 +2558,8 @@ add_executable(animation_selection_tests tests/animation_selection_tests.cpp)
 target_link_libraries(animation_selection_tests PRIVATE ttyd_core)
 add_test(NAME animation_selection COMMAND animation_selection_tests)
 set_tests_properties(animation_selection PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+add_executable(field_party_professor_tests tests/field_party_professor_tests.cpp)
+target_link_libraries(field_party_professor_tests PRIVATE ttyd_core)
+add_test(NAME field_party_professor COMMAND field_party_professor_tests)
+set_tests_properties(field_party_professor PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

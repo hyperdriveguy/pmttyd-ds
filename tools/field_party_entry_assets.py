@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Unchanged original ordinary Goombella construction data; local ISO only."""
+"""Unchanged original party construction/Professor/get-position data; local ISO only."""
 import argparse,hashlib,json,struct
 from pathlib import Path
 from iso_assets import DEFAULT_ISO
@@ -11,6 +11,7 @@ SPANS=[(0x802cb178,12,'e852d0ceaa6a4d8ae6859337b6e3d25a56b1bef05a492d34283afabbd
  (0x80314744,60,'7a458d068ea5e3d0cb5ba6c6079b3443adf63402ff7ad2d5f39ae775f757e2c7'),
  (0x80421584,8,'2985be53db9fc5414ed2f4f86d8675c2bb8cab4c8f627e16248070a2077e64fa')]
 SPANS=sorted(SPANS+[(2150713876, 60, '7a458d068ea5e3d0cb5ba6c6079b3443adf63402ff7ad2d5f39ae775f757e2c7'), (2150412832, 12, '15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b'), (2151813632, 4, 'de620abd6d3615746360c1d15ce3a56291236d37424124054a49d25e947ffc4d'), (2150412676, 12, 'e852d0ceaa6a4d8ae6859337b6e3d25a56b1bef05a492d34283afabbdfe4db36'), (2150412700, 12, 'e852d0ceaa6a4d8ae6859337b6e3d25a56b1bef05a492d34283afabbdfe4db36'), (2150412688, 12, '15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b')])
+SPANS=sorted(SPANS+[(0x802cb4bc,12,'852df8e776a31ea346f28fc1b04183e1293e54bf678dc4077a4caeca2305f1c7'),(0x8031499c,60,'c3196651b989254166a57eefac53e19464b1d7bf66316ee036e90ca9ccea4145'),(0x804213f4,4,'8a169a1bc2fb315558218e276098b7344dda5dda176daa0e110e3fb6c72635c1'),(0x80421d60,4,'3e55b03fd1d4540c69348a1834f0084d32cfdf3ab431c518b0ac2ef2b1baafee')])
 def build(iso=DEFAULT_ISO,output='romfs'):
  root=Path(output);root.mkdir(parents=True,exist_ok=True);dol=Dol(iso);segments=[]
  try:
