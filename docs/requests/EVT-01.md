@@ -4958,3 +4958,17 @@ real child providers, Gekko numeric/runtime traces, automatic pose49fbc..a160,
 remaining parent/tail and ordinary Area activation stay open. The source audit
 also recovered the automatic-pose seed/Newton/NaN ordering for follow-up;
 no std::sqrt replacement or fabricated guest stack pointer has been enabled.
+
+
+### Actual cold animation VM and SDK heap owner (2026-10-14)
+
+Added AnimationStartupProcess:14 original data/BSS spans, full source five-pool
+bootstrap, same-arena event contexts and animation allocations, real Vivian/
+ag2tg files, retained literal formatting/copy/free, native tangent and final
+same-byte typed aliases. Actual shared filename BSS now maps803e6e78/400.
+Full source parent completion is distinct from final alias admission; retries
+never replay completed allocation/file effects. [Contract](../behavior/display/NATIVE_ANIMATION_STARTUP_PROCESS.md).
+Runtime layout/critical-field validation relies on the generator's complete
+source-span hash checks. Normal Game activation, original Entry→typed file
+metadata, CPU output/tangent consumers and broader providers remain open.
+EVT-01 and full playable prologue remain incomplete.

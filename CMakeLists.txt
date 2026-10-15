@@ -2080,3 +2080,10 @@ add_executable(field_npc_main_auto_pose_tests tests/field_npc_main_auto_pose_tes
 target_link_libraries(field_npc_main_auto_pose_tests PRIVATE ttyd_core)
 add_test(NAME field_npc_main_auto_pose COMMAND field_npc_main_auto_pose_tests)
 set_tests_properties(field_npc_main_auto_pose PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Actual source heap/cold animation VM ownership before original pose entries.
+target_sources(ttyd_core PRIVATE source/display/animation_startup_process.cpp)
+add_executable(animation_startup_process_tests tests/animation_startup_process_tests.cpp)
+target_link_libraries(animation_startup_process_tests PRIVATE ttyd_core)
+add_test(NAME animation_startup_process COMMAND animation_startup_process_tests)
+set_tests_properties(animation_startup_process PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

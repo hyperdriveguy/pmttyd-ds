@@ -105,7 +105,7 @@ bool NativeFileCache::yieldProvider(void* user,bool (*yield)(void*)){
 }
 bool NativeFileCache::bind(EventAddressSpace& vm){
  struct View{uint32_t a;uint8_t* data;uint32_t n;};
- std::vector<View> views={{Global,global_.data(),4},{Manager,manager_.data(),24},{Pool,pool_.data(),uint32_t(pool_.size())}};
+ std::vector<View> views={{Global,global_.data(),4},{Manager,manager_.data(),24},{Pool,pool_.data(),uint32_t(pool_.size())},{Name,name_.data(),uint32_t(name_.size())}};
  for(auto& f:files_){views.push_back({f->headerAddress,f->header.data(),12});views.push_back({f->address,f->payload.data(),uint32_t(f->payload.size())});}
  unsigned mapped=0;for(auto v:views){if(!vm.registerExternalRam(v.a,v.data,v.n)){for(unsigned i=0;i<mapped;++i)vm.unregisterExternalRam(views[i].a);return false;}++mapped;}
  frozen_=true;return true;
@@ -147,6 +147,8 @@ bool NativeFileCache::release(uint32_t entry){
  FileHandleReleaseServices s;s.memory=memory();s.byte=[](void* p,uint32_t a){return static_cast<NativeFileCache*>(p)->byte(a);};releasePackedFileHandle(entry,s);return true;
 }
 bool NativeFileCache::archiveType(uint32_t type){if(word(Global)!=Manager)return false;setPackedFileArchiveType(type,memory());return true;}
+bool NativeFileCache::contains(const std::string& path,uint32_t type) const{for(const auto& f:files_)if(f->path==path && f->type==type)return true;return false;}
+bool NativeFileCache::ownsPayload(uint32_t address,uint32_t bytes) const{for(const auto& f:files_)if(address>=f->address && uint64_t(address)+bytes<=uint64_t(f->address)+f->original.size())return true;return false;}
 bool stagePrologueAnimationFiles(NativeFileCache& cache,const char* root){
  if(!root)return false;
  struct Entry{const char* path;uint32_t type;const char* product;};

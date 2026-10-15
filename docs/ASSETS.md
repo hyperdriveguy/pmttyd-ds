@@ -2028,3 +2028,21 @@ listing, ISO and compiled packs remain outside source history. Existing rights
 and private local-use restrictions are unchanged; this grants no redistribution
 license. Current private2131-product baseline is recorded in
 artifacts/npc-main-entry-assets-after.json; see PROGRESS for hash verification.
+
+
+### Cold animation bootstrap data image (2026-10-14)
+
+New private animation-boot/memory.pmevt and memory.json contain14 original US
+revision0 DOL data/BSS ranges. tools/animation_boot_image.py pins address, size
+and SHA256 for every range and reads the ISO read-only. Initialized DOL data
+wins over overlapping broad BSS; Vivian's original0xc00 data is retained.
+No executable, ISO or packed original bytes enter source history. Manifest
+includes origins and extraction choices. Nintendo/Intelligent Systems rights
+remain unchanged; no redistribution rights are granted.
+
+Validation snapshot also regenerates accepted door-data.pmevt/json for committed
+NPC clock constants and imports battle-class-footers.bin/json/t3x using the
+already committed original-pixel footer converter. These are prerequisites from
+the committed base, not animation art changes. Other accepted RomFS products
+remain byte-identical; exact hashes/diff are in ignored
+artifacts/animation-process-validation-manifest.json. All products stay private.

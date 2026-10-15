@@ -26,6 +26,8 @@ public:
  std::optional<uint32_t> acquire(const std::string&,uint32_t type);
  bool release(uint32_t entry);
  bool archiveType(uint32_t);
+ bool contains(const std::string&,uint32_t) const;
+ bool ownsPayload(uint32_t address,uint32_t bytes) const;
  static constexpr uint32_t Manager=0x8041ec68,Global=0x80418498;
 private:
  NativeFileCache();
@@ -36,10 +38,10 @@ private:
   FileTextureRelocationCursor relocation;
  };
  static constexpr uint32_t Pool=0x87000000,FirstPayload=0x87100000,
-  Headers=0x87200000,Name=0x87300000,Disc=0x87400000,MorePayloads=0x87500000,PayloadLimit=0x88000000;
+  Headers=0x87200000,Name=0x803e6e78,Disc=0x87400000,MorePayloads=0x87500000,PayloadLimit=0x88000000;
  std::array<uint8_t,4> global_{};
  std::array<uint8_t,24> manager_{};
- std::array<uint8_t,256> name_{};
+ std::array<uint8_t,1024> name_{};
  std::vector<uint8_t> pool_;
  std::vector<std::unique_ptr<File>> files_;
  File* current_=nullptr;

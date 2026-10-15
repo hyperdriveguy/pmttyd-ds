@@ -10351,3 +10351,55 @@ Keep asset-error and occlusion checks separate from process-only smoke success,
 and profile the actual field on hardware. Evidence: artifacts/npc-main-movement-
 validation-manifest.json, asset-check.json, test/build/probe logs and isolated
 normal/probe captures. No generated original asset or executable is committed.
+
+### Cold animation process with actual SDK heap ownership (2026-10-14)
+
+Added AnimationStartupProcess, owning one real event VM, explicit native SDK
+arena, shared source file manager and final typed work/cache aliases. Boot pack
+extracts14 exact original US revision0 data/BSS spans, pinning every range hash;
+initialized DOL sections take precedence over overlapping broad BSS. Vivian's
+initial0xc00 bytes are real initialized source data. Runtime validates layout
+and critical fields; full original byte identity is enforced by extraction.
+
+Actual initializeEventMemoryPools builds all five source SDK pools/map. Field/
+battle contexts and cold animation arrays use the SAME arena, real SDK headers,
+allocation/free/zeroing and platform cache services. Cold parent retains actual
+fileAllocf→Yield; original Vivian copy/free and retained ag2tg holder/reference
+use production file backing. Completed literal formatting survives waits and
+input mutation. Shared filename BSS now maps original803e6e78/400. Positive
+aligned memcpy_as4 adapter admits exactly the recovered cold copy domains.
+Final same-byte aliases attach only after the full source parent; alias failure
+never reruns completed allocations/files. Live W mismatch holds readiness.
+[Contract](behavior/display/NATIVE_ANIMATION_STARTUP_PROCESS.md).
+
+Validated frozen base f01d9d00c42778f9922d95ddf52aa26392b8906e plus scoped changes,
+preserving concurrent work. Final make test:391/391 C++ tests in41.71s and
+205 Python tests in34.925s. Initial full run had one missing private footer
+asset; generated it with the committed original-pixel converter, then reran
+full make test successfully. Final make all and restored ordinary make all
+passed. ARM object retains actual SDK allocation, source cold-parent, file and
+alias calls. Documentation link check passed.
+
+Isolated Azahar asserted fixture=PASS for sourceHeap, contexts, coldParent,
+pendingYield, capturedFormatting, realCopies, sharedFilename, aliasRetry,
+sdkReuse and noReplay. Probe executable was replaced with the ordinary build;
+its SHA256 matches the pre-probe ordinary build:
+1e2dfb36ee49b03c91228f90667cd3735bbac08960d48d231d9ba24b0e604d05.
+Ordinary40-second isolated smoke visually inspected: original storybook/dialogue,
+App60FPS/100% emulator speed and no asset-error console. This is boot evidence,
+not field gameplay or hardware performance.
+Private asset audit:2136 products,5 additions (two boot image products and three
+committed footer products), two door-data changes for committed NPC clock
+constants; all other2129 accepted products identical. No original bytes or
+compiled packs enter history. ISO read-only; only isolated emulator saves used.
+
+This owner remains an app/engine lifetime prerequisite, not ordinary Game
+activation. Native arena bounds, file backing and tangent are explicit native
+policies; no measured hardware budget, original numeric parity, teardown/GC/
+thread semantics or full field/performance claim. Source Entry→typed model/file
+metadata synchronization and CPU tangent/output consumers remain open. Next
+connect these owners before ordinary Mario/partner entries, preserve source
+child waits and continue the original field/event/render providers. EVT-01 and
+the full playable prologue goal remain active/incomplete. Evidence:
+artifacts/animation-process-validation-manifest.json, source/asset audit,
+final test/build logs and isolated probe/ordinary smoke captures.

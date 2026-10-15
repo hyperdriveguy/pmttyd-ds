@@ -1240,3 +1240,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Retained NPC Main movement subsection](field/NATIVE_NPC_MAIN_MOVEMENT_SECTION.md): source collision/gravity/side order, actual aliases and unfinished automatic-pose frontier.
 - [Original footer GPU composition](display/NATIVE_ORIGINAL_FOOTER_GPU_COMPOSITION.md)
 - [Selected audience interruption](battle/NATIVE_SELECTED_AUDIENCE_INTERRUPTION.md)
+
+- [Native cold animation process](display/NATIVE_ANIMATION_STARTUP_PROCESS.md): source SDK arena, retained cold parent, real auxiliary files and final work/cache alias ownership.

@@ -92,6 +92,7 @@ public:
     int32_t archiveType() const {return archiveType_;}
 private:
     friend class AnimationPoolMemory;
+    friend class AnimationStartupProcess;
     void restart(BattlePose&,BattlePoseClock);
     std::array<std::unique_ptr<BattlePose>,256> poses_{};
     std::array<BattlePoseModelCache,64> models_{};
