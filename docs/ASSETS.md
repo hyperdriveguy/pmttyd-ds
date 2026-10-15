@@ -3606,3 +3606,13 @@ Existing private products retain their own original paths/licenses. Native full
 regeneration skipped; Python fixtures independently use read-only ISO/empty
 temporary outputs. Nintendo/Intelligent Systems rights retained; no new license
 or distribution rights, no ISO/extracted original or compiled product committed.
+
+## 2026-10-15 — Original unlinked NPC Draw admission
+
+The actual-VM retained unlinked Draw wrapper reads original model pass masks
+and forwards the field caller matrix/angle/source scale2 without asset changes.
+Existing cold Mario resources and serialized MODEL bytes supply validation;
+all prior private products, conversion and licensing terms remain unchanged.
+ISO access was read-only for a complete wrapper/slice audit. No extracted
+payload or compiled binary is added to source history. See
+[contract](behavior/display/NATIVE_UNLINKED_NPC_DRAW_WRAPPER.md).

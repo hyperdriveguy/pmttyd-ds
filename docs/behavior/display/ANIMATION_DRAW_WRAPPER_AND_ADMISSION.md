@@ -53,7 +53,8 @@ CURRENT W+e8,otherwise leaves it untouched. No cursor reset or pointer release.
 If parent P+90==−1 at final dispatch,call inner on P instead and skip this linked
 cleanup. That recheck does not recapture Q or unwind preceding side effects.
 
-Unlinked admitted path also calls inner(P,M,V,A,S),without wrapper cleanup.
+Initially unlinked admission calls inner(P,M,V,A,S),without wrapper cleanup,
+only when the final P+90 reread remains−1 (see mutation qualification below).
 The inner ABI consumes a RECORD POINTER,whereas this wrapper consumes an ID.
 Incoming angle/scale remain passed even if wrapper used them in a prepass;
 prepass scratch does not automatically replace M in the eventual call.
@@ -70,3 +71,15 @@ These are concrete binary bindings,not counts of original frames or scenes.
 DOL sites,including135 wrapper references. A hash/metadata-checked Mario
 resource pins pass mask42-group/root metadata. Source/mode/link/ring/material/
 SDK/render/GX lifetime and original images remain open despite local closure.
+
+
+## Exact unlinked admission and mutation qualification
+
+Read-only full-body audit confirms that the unlinked model-table lookup uses
+the initially captured W, and pass2 reloads resource+c4 if its first bit1 test
+fails. Literal slw uses low6 shift bits: values64/−64 shift0;32/−1 produce0.
+An admitted initially unlinked path still rereads P90. The ordinary inner(P)
+dispatch above applies only while that final value remains−1. If it changes to
+non−1, dispatch uses incoming GPR30, which this path never initialized as Q.
+The [native unlinked wrapper](NATIVE_UNLINKED_NPC_DRAW_WRAPPER.md) exposes that
+missing register context explicitly rather than recapturing a new linked pose.

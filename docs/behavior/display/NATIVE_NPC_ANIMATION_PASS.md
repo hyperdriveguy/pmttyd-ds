@@ -73,3 +73,13 @@ it stops at the named Detection frontier, not full NPC Main. Missing original
 literal words come from `door-data.pmevt`; existing cold-process bytes are not
 replaced. Raw actor bytes are an owned test setup, not source actor creation.
 No new story, message, gameplay constant or Dolphin timing measurement is added.
+
+
+## Original Draw admission follow-up
+
+The [native unlinked Draw wrapper](NATIVE_UNLINKED_NPC_DRAW_WRAPPER.md) now also
+owns Draw8003b4d8 under this lease, preserving source pass filtering and dispatch
+to a separate retained same-VM Inner provider. Wrapper state prevents lease
+retirement. Its Inner can own a same-root/same-pass late source Main; missing
+Inner/GPU/linked-register owners retain explicit holds. This does not activate
+normal NPC scheduling or acknowledge original raster work by default.

@@ -5394,3 +5394,18 @@ opening story progression remain open. EVT-01 stays OPEN.
   original captured draw context; raw Main does not refresh the typed mesh. Use
   the existing wrapper/Inner/group/shape contracts, keeping linked/ring/material/
   queue/GPU lifetime gaps explicit and requesting source evidence where missing.
+
+
+## 2026-10-15 — Actual-VM unlinked NPC Draw wrapper
+
+Delivered [retained unlinked Draw](../behavior/display/NATIVE_UNLINKED_NPC_DRAW_WRAPPER.md)
+for NPC deferred callbacks. The independent read-only source audit pinned initial
+W reuse, pass2 flags reload, low6-bit PPC slw and the final changed-link incoming
+GPR30 frontier. Actual native source-mask filtering now precedes a separate
+retained Inner provider; missing Inner/GPU work remains pending. Its late Main
+may resume only under the same handle/pass. Complete linked wrapper, actual
+Inner/output/cache/material/SDK/group/shape/GPU owners, normal scheduling and
+full opening/story remain open; EVT-01 stays OPEN. Next implement the linked
+prepass/ring/inline-selector/paper-matrix subcontrollers from the existing
+contracts and complete the actual-VM Inner binding. Do not substitute typed
+mesh success or an exported SetAnim call for the inline linked source graph.

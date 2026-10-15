@@ -15701,3 +15701,81 @@ animation/field/party/font/window/resource/raster/startup integrations and tools
 Inventory only tracks source/include C++/header/PICA hashes: untracked additions
 and tooling need separate audit; matching hashes are not semantic completeness.
 The broad documentation/remake goals remain active.
+
+## 2026-10-15 — Actual-VM original unlinked NPC Draw wrapper
+
+Completed finite Draw binding, code `d0ab9f21d755be67bf7d244210157f909e92134b`.
+[Contract](behavior/display/NATIVE_UNLINKED_NPC_DRAW_WRAPPER.md). Deferred NPC
+callbacks now route original Draw8003b4d8 through its actual VM/pool/file graph
+under the retained NPC lease. The complete initially-unlinked branch captures
+initial W, reads the original model pass mask, preserves source pass2's repeated
+flags read and low6-bit PPC slw behavior, rereads final P90 and forwards the
+unchanged pose RECORD/matrix/pass/angle/scale to a separate Inner provider.
+Rejected masks complete naturally without a fake GPU call or wrapper cleanup.
+
+Independent read-only ISO audit found a material contract qualification: an
+initially unlinked path whose final link changes uses incoming GPR30, not a
+newly resolved linked pose. The implementation exposes that missing register
+context explicitly. Initially linked preparation likewise remains an unfinished
+frontier before source prepass effects; neither is acknowledged empty. Corrected
+the existing wrapper contract and recorded exact read/dispatch order/source hashes.
+
+Native resource generation/buffers/configuration/current/VM guards stay pinned.
+Draw owns its call exclusively; a hold never falls through to a legacy GPU
+handler. Wrapper state blocks lease retirement and competing native requests.
+Inner can resume a real late Main only for the same root handle/pass while at
+its retained child phase; presentation/selection remain excluded. Inner success
+requires child quiescence. No production Inner/GPU default was added. Fixed
+cursor/matrix storage and existing VM/executor owners avoid per-draw VM/mesh
+construction; no FPS or physical-hardware performance gain is asserted.
+
+Validation used isolated `artifacts/source-checks/npc-wander`, accepted
+`f4858034da6825d7ce4be4e724060fff6479c473` plus only ten owned paths; final source
+snapshot `2d2badf5239fcf1dba216f53565a6feb8306d40e`. All 3,998 tracked files match;
+all 2,152 private RomFS products are unchanged. Concurrent source, docs and
+staging were preserved. Normal binary SHA256:
+`db4cd1a92dd015b1479c67be1eababcc8e25112645f4c97d88a09d4f1a58b24d`.
+
+- `CMAKE_BUILD_PARALLEL_LEVEL=4 TRIO_ENEMY_POSE_PACK=romfs make --jobserver-style=pipe test`:
+  exit0; 447 C++ tests pass,75.66s; 212 Python tests pass,57.736s; zero skips.
+  Existing Pillow deprecation warnings remain.
+- `make --jobserver-style=pipe all -j4 -o assets-ready SOUNDTRACK=gamecube`:
+  exit0; original products reused, normal 3DSX built. After the private assertion
+  patch was removed, a normal rebuild reproduces the saved SHA256 exactly.
+- Fresh isolated ARM profile `artifacts/azahar-npc-draw-wrapper-probe`: exit0;
+  exact marker `lease=PASS sourceHolds=PASS exclusive=PASS reuse=PASS mario=PASS drawNoReplay=PASS automaticPose=PASS wrapper=PASS lateMain=PASS`.
+  Covers each source-read hold, raw shift/mask domains, captured-W/fresh-mask
+  behavior, linked/register frontiers, exact retained input/provider identity,
+  actual same-pass late Main and full callback traversal through an explicitly
+  bounded Inner receipt fixture. Original Mario mask1 admits only pass2 from
+  the translucent callback's1/2/3 sequence; original NPC scale2 is retained.
+- Uninstrumented fresh-save40s boot `artifacts/azahar-npc-draw-wrapper-normal`:
+  exit0; original storybook renders. Normal checkpoint field profile
+  `artifacts/azahar-npc-draw-wrapper-field`: exit0; 70s warmup, image-confirmed
+  occupied-file selection,20s load, idle/right/left/idle captures. Original
+  Rogueport/Mario rendering and returning movement were manually inspected.
+  These are renderer regression checks, not activation of the new NPC pipeline.
+- `python tools/check_doc_links.py`:1,591 Markdown files; zero broken links.
+  Independent source/native warning checks and two read-only source/guard reviews
+  found no defects. Evidence: `artifacts/npc-draw-wrapper-validation-manifest.json`.
+
+No assets, conversions, music, SFX, dialogue, story conditions or licensing terms
+changed. ISO access remained read-only. Tests use explicit actor/gravity/Inner
+fixtures; no fixture receipt is a production GPU implementation. No new Dolphin
+observation, source execution timing, GPU numeric equivalence or physical New2DS
+XL performance claim. Full original NPC/area/event/object coverage remains open.
+
+Next tasks:
+
+1. Implement actual-VM Inner captures, mode/material/SDK/cache/flush and group/
+   shape/GPU binding using existing source contracts and fresh source outputs.
+   Preserve pre-Main captures; do not substitute stale typed shapes or rerun Main
+   as a shortcut to field rendering.
+2. Complete linked wrapper as retained prepass, Q/resource admission, ring,
+   inline paper-selector/time/Main, material publication, paper matrices and
+   branch-specific cleanup. Exported SetAnim is not equivalent to the inline
+   selector's distinct Qs/Q captures. Model incoming GPR30 only with real context.
+3. Activate normal Game NPC scheduling and actual field camera/queue/offscreen
+   GPU owners, draining whole callbacks before ending leases. Continue exact
+   original event/story/area resources, then matched original visuals and
+   physical-hardware profiling. EVT-01 and the overall goal remain active/open.

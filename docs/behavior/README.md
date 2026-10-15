@@ -1415,3 +1415,8 @@ Original battle menu native resource/queue owners:
   automatic-pose selection; actual GPU and normal Game activation remain open.
 
 - [Native same-VM field battle ownership](field/NATIVE_FIELD_NPC_BATTLE_OWNERS.md): actual NPC/F/result/sequence bridge, regular event ownership and retirement quarantine.
+
+
+- [Native unlinked NPC Draw wrapper](display/NATIVE_UNLINKED_NPC_DRAW_WRAPPER.md):
+  actual-VM original pass admission and retained Inner dispatch; linked/register
+  frontiers and complete GPU integration remain open.
