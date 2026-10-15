@@ -12127,3 +12127,65 @@ claim. Next optimize repeated scratch VM lookups with callback-scoped validated
 RAM access while preserving BE/source arithmetic/store order and no persistent
 pointers; recheck field CPU/visible animation. Then bind real camera-facing and
 Goombella role/event lifetimes, and validate actual room transitions and hardware.
+
+## 2026-10-14 — Trio event, entry, damage and ending code documented
+
+Added 243 inline comment lines in source/battle/trio_attack.cpp across event
+dispatch, scoped initialization, damage/movement/pose/TimingA projection, actual
+barriers/conclusion, audience audio, reward icons/counting and source ending.
+Added [Trio events](code/trio-events.md) and [ending](code/trio-ending.md), updated
+provider guide/index. Code/docs commit 0914e5c7. Executable tokens/string literals
+unchanged; no behavior changes or new tests for prose-only work.
+
+Explained raw operands/results versus native admission, real source mutations
+versus deliberately request-only presentation, callback slots/packed fields,
+first exact-or-fallback pose lookup, certain-accuracy RNG draws, sentinel domains,
+source kind reload after draws, narrow protector/payment/status paths and stylish
+window ordering. Entry notes distinguish canonical pouch from legacy HP-only
+snapshot, explicit native arenas/aliases/source banks and Mario's spare-part
+placement avoiding unit overlap. Damage notes retain signed control results,
+selective writeback and hit-child ownership; motion follows source visits, not
+render FPS. Ending notes cover original reward states/counts/icon storage,
+alpha/animation clocks, real positional handles, one-time export prefix and real
+field/party providers; finished fade/export is not complete field return.
+
+Runtime audit remains partial. Prior provider sections plus this batch are
+covered; postAction/turn/handoff/Main/display scheduler and remaining public
+material/draw bindings remain open. partial_files and inventory retain this
+status rather than count a file hash as full semantic coverage. No measured
+PPC/Gekko/FPSCR, numeric, visual, hardware or whole-remake completion claim.
+
+Frozen validation baseline 8d2be02e705d3ce6cf0543ebd17907d9e2cced19 plus owned documentation is at
+artifacts/trio-events-code-documentation-validation/source. Audit covers all
+3889 baseline tracked files: zero unexpected changes. All five documented frozen/
+live annotation snapshots match; all 77 local guide/index links resolve. Concurrent
+Trio enemy-resource/audience-attack/pinch/Turn/sequence/file-cache additions landed during
+annotation and were preserved/excluded. Exact live diff and separate hashes are
+journaled; neutral pose-factory wording remains valid on both variants. No
+validation of the combined moving worktree; no post-launch source refinements.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits 0: 425/425 C++ (43.60s) and
+207/207 Python (35.114s), zero skipped. Native make all -o assets-ready -j4
+SOUNDTRACK=gamecube exits 0. Both handles polled to terminal, exit markers agree.
+Manifest records source/dependency/log/ELF/3DSX hashes. Existing compiler/Pillow
+warnings remain. No emulator/profile/save changes.
+
+Private cache inherits 50 accepted products/common/Frankly/footer 14/HP 3 evidence.
+Committed converter changes since parent are only field_npc_actor_assets.py:
+original DOL 8041fd7c four-byte radians factor. Older caches lacked exact accepted
+matrix products; frozen door converter ran from an empty private directory/read-only
+ISO. Only hash-matched door-data.pmevt/json admitted; all generated output hashes
+recorded, ancillary outputs unused. Two overlays leave explicit accepted count 50.
+Door pack 152488 bytes SHA256
+62929efd5f0115a23ec550bc5c6bd7ffe886b0a332fc02c1df8384688ecfca8a;
+authority npc-matrix-assets-after.json is hash-pinned by its validation manifest.
+Four added bytes merge spans/remove one 12-byte index row, hence pack shrinks 8.
+No editable import/shared-pack write. Existing Python fixtures independently use
+read-only ISO/empty temporary outputs; native full asset regeneration deliberately
+skipped. No ISO/original asset/compiled binary committed; rights/provenance
+unchanged. See [assets](ASSETS.md).
+
+Next: finish Trio turn/handoff/action/Main/display scheduling and public draw/
+material adapters, then re-audit newly committed enemy resources/audience/pinch/
+Harbor/NPC/animation integrations. Remaining event/message/story/effect/platform/
+file/save helpers and tools still need systematic inline audit. Full goal active.

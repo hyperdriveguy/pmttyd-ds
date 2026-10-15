@@ -2535,3 +2535,23 @@ All extraction used the supplied ISO read-only; generated products and extracted
 originals remain ignored. Nintendo/Intelligent Systems rights unchanged; local
 use only, no redistribution rights. See
 [ordinary native binding](behavior/display/NATIVE_ORDINARY_MARIO_SOURCE_ANIMATION.md).
+
+## Trio event/ending documentation validation inputs (2026-10-14)
+
+artifacts/trio-events-code-documentation-validation/source inherits 50 accepted
+products, original common/Frankly/footer 14/HP 3 evidence. Frozen committed NPC actor
+converter adds original DOL 8041fd7c..fd7f raw 3c8efa35, radians factor
+0.01745329238474369, SHA256 7388adb66bc2fb8cdd730d8148adcae18abd8bb48b05b7bd9b9e05efa6c09702.
+Required accepted matrix door outputs absent in existing caches, so frozen
+source/tools/door_data_assets.py ran into an empty private cache-rebuild directory
+from the read-only ISO. All generated output hashes recorded; only door pair
+admitted after exact size/hash matches to artifacts/npc-matrix-assets-after.json,
+whose hash matches npc-matrix-validation-manifest.json. Pack 152488 bytes SHA256
+62929efd5f0115a23ec550bc5c6bd7ffe886b0a332fc02c1df8384688ecfca8a;
+metadata 480382 bytes SHA256 f2657acf544314fbb96396b15bd354f73443fd8b4ad791d61eb669066b01179d.
+Four source bytes bridge spans, removing one 12-byte index row; other source bytes
+remain unchanged. Two private overlays retain 50 explicit accepted products.
+No editable import/shared pack write, texture/geometry/lighting/audio/message
+conversion change or new license. Python fixtures independently read ISO into
+empty temporary outputs; native full regeneration skipped. Nintendo/Intelligent
+Systems rights reserved. No ISO/original extracted asset/compiled binary committed.
