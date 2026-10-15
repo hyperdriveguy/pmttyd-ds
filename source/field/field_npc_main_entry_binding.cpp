@@ -197,4 +197,75 @@ FieldNpcMainEntryBinding::advanceAutomaticPose(FieldNpcMainEntryCursor &entry,
              ? FieldNpcMoveFrontier::Detection
              : FieldNpcMoveFrontier::Pending;
 }
+FieldNpcDetectionFrontier FieldNpcMainEntryBinding::advanceDetection(
+    FieldNpcMainEntryCursor &entry, FieldNpcMainMoveCursor &movement,
+    FieldNpcAutoPoseCursor &pose, FieldNpcDetectionCursor &detection) {
+  if (advanceAutomaticPose(entry, movement, pose) !=
+      FieldNpcMoveFrontier::Detection)
+    return FieldNpcDetectionFrontier::Pending;
+  FieldNpcDetectionServices s;
+  s.norm.memory = services().clock;
+  s.norm.doubleWord = [](void *p, uint32_t a) -> std::optional<uint64_t> {
+    auto &m = static_cast<FieldNpcMainEntryBinding *>(p)->vm_.memory;
+    uint32_t hi = 0, lo = 0;
+    if (!m.readWord(a, hi) || !m.readWord(a + 4, lo))
+      return {};
+    return uint64_t(hi) << 32 | lo;
+  };
+  s.norm.estimate = [](void *p, double q, double &out) {
+    auto &b = *static_cast<FieldNpcMainEntryBinding *>(p);
+    return b.native_.estimate && b.native_.estimate(b.native_.user, q, out);
+  };
+  s.byte = [](void *p, uint32_t a) -> std::optional<uint8_t> {
+    uint8_t v;
+    if (!static_cast<FieldNpcMainEntryBinding *>(p)->vm_.memory.readByte(a, v))
+      return {};
+    return v;
+  };
+  s.request = [](void *p, const FieldNpcDetectionRequest &q,
+                 FieldNpcDetectionResponse &out) {
+    auto &b = *static_cast<FieldNpcMainEntryBinding *>(p);
+    auto &m = b.vm_.memory;
+    if (q.function == 0x80035a28) {
+      // Actual original current-context count/array and first live-ID match.
+      // Native admission bounds storage, never clamps or fabricates a pointer.
+      uint32_t gp = 0, mode = 0, count = 0, array = 0;
+      if (!m.readWord(0x80415fd0, gp) || !m.readWord(gp + 0x14, mode))
+        return false;
+      const auto context = mode ? 0x803d8dd0u : 0x803d8d30u;
+      if (!m.readWord(context, count) || !m.readWord(context + 0x90, array))
+        return false;
+      if (int32_t(count) <= 0) {
+        out.word = 0;
+        return true;
+      }
+      auto &owned = mode ? b.vm_.battle : b.vm_.field;
+      if (count > 256 || owned.entriesUnresolved || !owned.entries ||
+          b.vm_.entryAddresses.entryAt(array) != owned.entries)
+        return false;
+      for (uint32_t i = 0; i < count; ++i) {
+        const uint64_t candidate = uint64_t(array) + i * 0x1b0;
+        if (candidate + 0x1b0 > 0x100000000ULL)
+          return false;
+        uint8_t flags;
+        uint32_t id = 0;
+        if (!m.readByte(uint32_t(candidate) + 8, flags))
+          return false;
+        if (flags & 1) {
+          if (!m.readWord(uint32_t(candidate) + 0x15c, id))
+            return false;
+          if (id == q.argument) {
+            out.word = uint32_t(candidate);
+            return true;
+          }
+        }
+      }
+      out.word = 0;
+      return true;
+    }
+    return b.native_.detection &&
+           b.native_.detection(b.native_.user, m, q, out);
+  };
+  return advanceFieldNpcMainDetection(entry.actor, s, detection);
+}
 } // namespace ttyd

@@ -1,5 +1,5 @@
 #pragma once
-#include "field_npc_clock.hpp"
+#include "field_npc_inline_norm.hpp"
 #include <array>
 namespace ttyd {
 struct FieldNpcAutoPoseRequest {
@@ -21,7 +21,7 @@ struct FieldNpcAutoPoseCursor {
            nameOffset = 0;
   float dx = 0, dz = 0, factor = 0, dt = 0, zero = 0, norm = 0, speed = 0,
         idle = 0, threshold = 0;
-  double seed = 0, half = 0, three = 0;
+  FieldNpcNormCursor normCursor;
   FieldNpcAutoPoseRequest call;
 };
 // Complete source80049fbc..8004a160 only. True reaches unfinished Detection;
@@ -30,7 +30,4 @@ bool advanceFieldNpcMainAutoPose(uint32_t actor, float deltaX, float deltaZ,
                                  float retainedFactor,
                                  const FieldNpcAutoPoseServices &,
                                  FieldNpcAutoPoseCursor &);
-// Explicit native seed adapter, NOT Gekko frsqrte/FPSCR equivalence. Caller
-// must opt in. The source three double Newton rounds still execute in the core.
-bool nativeFieldNpcReciprocalSqrtEstimate(void *, double, double &);
 } // namespace ttyd

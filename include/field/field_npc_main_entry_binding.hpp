@@ -1,6 +1,7 @@
 #pragma once
 #include "field_npc_clock_binding.hpp"
 #include "field_npc_main_auto_pose.hpp"
+#include "field_npc_main_detection.hpp"
 #include "field_npc_main_entry.hpp"
 #include "field_npc_main_movement.hpp"
 namespace ttyd {
@@ -15,6 +16,9 @@ struct FieldNpcMainEntryNativeServices {
   // Explicit numeric adaptation and real source-clock quotient admission.
   bool (*estimate)(void *, double, double &) = nullptr;
   bool (*poseClock)(void *, BattlePoseClock &) = nullptr;
+  bool (*detection)(void *, EventAddressSpace &,
+                    const FieldNpcDetectionRequest &,
+                    FieldNpcDetectionResponse &) = nullptr;
   bool (*sound)(void *, EventAddressSpace &,
                 const FieldNpcMainEntryRequest &) = nullptr;
 };
@@ -33,6 +37,11 @@ public:
   FieldNpcMoveFrontier advanceAutomaticPose(FieldNpcMainEntryCursor &,
                                             FieldNpcMainMoveCursor &,
                                             FieldNpcAutoPoseCursor &);
+
+  FieldNpcDetectionFrontier advanceDetection(FieldNpcMainEntryCursor &,
+                                             FieldNpcMainMoveCursor &,
+                                             FieldNpcAutoPoseCursor &,
+                                             FieldNpcDetectionCursor &);
 
 private:
   FieldNpcMainEntryBinding(std::shared_ptr<FieldNpcRegistryOwner>,

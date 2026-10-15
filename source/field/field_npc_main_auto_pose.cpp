@@ -13,24 +13,11 @@ uint32_t bits(float f) {
   std::memcpy(&w, &f, 4);
   return w;
 }
-double realDouble(uint64_t w) {
-  double f;
-  std::memcpy(&f, &w, 8);
-  return f;
-}
 float single(float f) {
   volatile float v = f;
   return v;
 }
-double wide(double f) {
-  volatile double v = f;
-  return v;
-}
 } // namespace
-bool nativeFieldNpcReciprocalSqrtEstimate(void *, double q, double &out) {
-  out = 1.0 / std::sqrt(q);
-  return true;
-}
 bool advanceFieldNpcMainAutoPose(uint32_t actor, float dx, float dz,
                                  float factor,
                                  const FieldNpcAutoPoseServices &s,
@@ -67,13 +54,6 @@ bool advanceFieldNpcMainAutoPose(uint32_t actor, float dx, float dz,
     v = real(w);
     return true;
   };
-  auto loadDouble = [&](uint32_t a, double &v) {
-    const auto w = s.doubleWord ? s.doubleWord(s.memory.user, a) : std::nullopt;
-    if (!w)
-      return false;
-    v = realDouble(*w);
-    return true;
-  };
   for (;;)
     switch (c.phase) {
     case 0:
@@ -95,51 +75,15 @@ bool advanceFieldNpcMainAutoPose(uint32_t actor, float dx, float dz,
       const float x2 = single(c.dx * c.dx);
       const float z2 = single(c.dz * c.dz);
       c.norm = single(x2 + z2);
-      c.phase = c.norm > c.zero ? 4 : 10;
+      c.phase = 4;
       break;
     }
     case 4:
-      if (!s.estimate || !s.estimate(s.memory.user, double(c.norm), c.seed))
+      if (!advanceFieldNpcInlineNorm(c.norm, c.zero,
+                                     {s.memory, s.doubleWord, s.estimate},
+                                     c.normCursor, c.speed))
         return false;
-      ++c.phase;
-      break;
-    case 5:
-      if (!loadDouble(0x802c13c8, c.half))
-        return false;
-      ++c.phase;
-      break;
-    case 6:
-      if (!loadDouble(0x802c13d0, c.three))
-        return false;
-      ++c.phase;
-      break;
-    case 7:
-      for (unsigned i = 0; i < 3; ++i) {
-        const double square = wide(c.seed * c.seed);
-        const double scaled = wide(c.half * c.seed);
-        // Source fnmsub negates the fused product-minus-three result. Retain
-        // that negation boundary, including signed zero, rather than
-        // reassociate.
-        const double correction = -std::fma(double(c.norm), square, -c.three);
-        c.seed = wide(scaled * correction);
-      }
-      c.norm = single(float(wide(double(c.norm) * c.seed)));
-      c.phase = 20;
-      break;
-    case 10: {
-      double zero;
-      if (!loadDouble(0x802c13d8, zero))
-        return false;
-      const auto w = bits(c.norm);
-      c.phase = double(c.norm) < zero ||
-                        ((w & 0x7f800000u) == 0x7f800000u && (w & 0x007fffffu))
-                    ? 11
-                    : 20;
-      break;
-    }
-    case 11:
-      if (!load(0x8041e3c8, c.norm))
-        return false;
+      c.norm = c.speed;
       c.phase = 20;
       break;
     case 20:

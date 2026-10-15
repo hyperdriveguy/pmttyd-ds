@@ -330,6 +330,7 @@ void holds() {
   }
 }
 struct NativeWorld {
+  std::array<EventEntry, 3> fieldEvents{}, battleEvents{};
   std::shared_ptr<BattlePosePool> pool = std::make_shared<BattlePosePool>();
   std::unique_ptr<EventNativeRuntime> vm;
   std::unique_ptr<AnimationPoolMemory> view;
@@ -339,7 +340,8 @@ struct NativeWorld {
   uint32_t next = 0x8a000000, actor = 0, pose = 0;
   bool marioReady = false, movementReady = false;
   unsigned movementCalls = 0, poseClockCalls = 0;
-  bool poseClockReady = false;
+  bool poseClockReady = false, cloudReady = false, interruptReady = false;
+  unsigned cloudCalls = 0, interruptCalls = 0;
   BattlePoseClock selectedClock{1234, 5678};
   static constexpr uint32_t Work = 0x803d9470, M = 0x8d000000;
   uint32_t word(uint32_t a) {
@@ -427,6 +429,26 @@ struct NativeWorld {
     n.user = this;
     n.numbers.divide = nativeFieldNpcClockDivide;
     n.numbers.convert = nativeFieldNpcClockConvert;
+    n.detection = [](void *p, EventAddressSpace &memory,
+                     const FieldNpcDetectionRequest &q,
+                     FieldNpcDetectionResponse &out) {
+      auto &f = *static_cast<NativeWorld *>(p);
+      assert(&memory == &f.vm->memory);
+      if (q.function == 0x80187f10) {
+        if (!f.cloudReady)
+          return false;
+        ++f.cloudCalls;
+        out.power = 1;
+        assert(q.point[0] == f.word(f.actor + 0x8c));
+        return true;
+      }
+      assert(q.function == 0x800440f8 && q.argument == f.actor);
+      if (!f.interruptReady)
+        return false;
+      ++f.interruptCalls;
+      out.word = 0xdeadbeef;
+      return true;
+    }; // Explicit cloud/interrupt fixtures; lookup MUST use the real VM.
     n.estimate = nativeFieldNpcReciprocalSqrtEstimate;
     n.poseClock = [](void *p, BattlePoseClock &out) {
       auto &f = *static_cast<NativeWorld *>(p);
@@ -548,6 +570,79 @@ void actualAliases() {
                                          ? f.selectedClock.modeNonzero
                                          : f.selectedClock.modeZero));
   }
+  // Source regular-ID0 bypasses lookup and interrupt. Real event lookup uses
+  // this VM's current context, first allocated ID match (including stopped),
+  // and packed raw byte10 rather than scheduler type+c.
+  FieldNpcDetectionCursor noRegular;
+  f.store(f.actor + 0x11c, 0);
+  assert(f.entry->advanceDetection(c, move, automatic, noRegular) ==
+             FieldNpcDetectionFrontier::Display &&
+         f.interruptCalls == 0);
+  constexpr uint32_t EventBase = 0x8f000000, BattleEventBase = 0x8f100000;
+  assert(
+      f.vm->entryAddresses.registerEntries(EventBase, f.fieldEvents.data(), 3));
+  assert(f.vm->entryAddresses.registerEntries(BattleEventBase,
+                                              f.battleEvents.data(), 3));
+  f.vm->field.entries = f.fieldEvents.data();
+  f.vm->field.capacity = 3;
+  f.vm->battle.entries = f.battleEvents.data();
+  f.vm->battle.capacity = 3;
+  f.fieldEvents[0].id = 42;
+  f.fieldEvents[0].flags = 3;
+  f.fieldEvents[1].id = 42;
+  f.fieldEvents[1].flags = 1;
+  f.fieldEvents[1].type = 5;
+  f.fieldEvents[1].rawBytes[0] = 1;
+  f.store(f.actor + 0x11c, 42);
+  f.store(f.actor + 0x13c, 0x90000000);
+  f.store(f.actor + 0x140, 0x80);
+  FieldNpcDetectionCursor stopped;
+  assert(f.entry->advanceDetection(c, move, automatic, stopped) ==
+             FieldNpcDetectionFrontier::Pending &&
+         stopped.phase == 181 && stopped.event == EventBase &&
+         f.cloudCalls == 0);
+  f.interruptReady = true;
+  assert(f.entry->advanceDetection(c, move, automatic, stopped) ==
+             FieldNpcDetectionFrontier::Display &&
+         f.interruptCalls == 1);
+  f.fieldEvents[0].flags = 0;
+  FieldNpcDetectionCursor cloud;
+  assert(f.entry->advanceDetection(c, move, automatic, cloud) ==
+             FieldNpcDetectionFrontier::Pending &&
+         cloud.phase == 14 && cloud.eventClass == 1 &&
+         cloud.event == EventBase + 0x1b0 && f.cloudCalls == 0);
+  f.cloudReady = true;
+  assert(f.entry->advanceDetection(c, move, automatic, cloud) ==
+             FieldNpcDetectionFrontier::Display &&
+         f.cloudCalls == 1 && f.interruptCalls == 2 &&
+         f.word(f.actor + 0x140) == 0x88);
+  assert(f.entry->advanceDetection(c, move, automatic, cloud) ==
+             FieldNpcDetectionFrontier::Display &&
+         f.cloudCalls == 1 && f.interruptCalls == 2 && f.word(0x8041e8ac) == 1);
+  f.fieldEvents[1].rawBytes[0] = 5;
+  f.fieldEvents[1].type = 1;
+  f.store(f.actor + 0x1f8, 0);
+  FieldNpcDetectionCursor rawClass;
+  assert(f.entry->advanceDetection(c, move, automatic, rawClass) ==
+             FieldNpcDetectionFrontier::Mario &&
+         rawClass.eventClass == 5 && f.cloudCalls == 1);
+  // A later live GP context selects battle events, independent of the NPC bank
+  // captured by entry. Empty/missing events still enter Interrupt, not success.
+  f.vm->gp.battleContext = 1;
+  f.battleEvents[0].flags = 1;
+  f.battleEvents[0].id = 42;
+  f.battleEvents[0].rawBytes[0] = 8;
+  FieldNpcDetectionCursor battleEvent;
+  assert(f.entry->advanceDetection(c, move, automatic, battleEvent) ==
+             FieldNpcDetectionFrontier::Mario &&
+         battleEvent.event == BattleEventBase && battleEvent.eventClass == 8 &&
+         c.bank == 0x8041e8b4);
+  f.vm->gp.battleContext = 0;
+  f.store(f.actor + 0x11c, 43);
+  FieldNpcDetectionCursor missingEvent;
+  assert(f.entry->advanceDetection(c, move, automatic, missingEvent) ==
+             FieldNpcDetectionFrontier::Display &&
+         missingEvent.event == 0 && f.interruptCalls == 3);
   // Source getter is address arithmetic, not active/clip readiness. An explicit
   // cold-slot handle input must mutate the SAME inactive row without a new
   // gate.
