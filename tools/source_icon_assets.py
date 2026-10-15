@@ -5,7 +5,7 @@ from pathlib import Path
 from PIL import Image
 from iso_assets import DEFAULT_ISO, extract, convert_tpl
 
-SPANS=((0x80415040,24),(0x80415080,32),(0x8041f864,0x3c))
+SPANS=((0x80415040,24),(0x80415080,32),(0x8041f864,0x3c),(0x8041f860,4),(0x8041f8a0,4))
 
 def padded(bitmap, wrap_s, wrap_t):
     width,height=bitmap.size
@@ -23,12 +23,9 @@ def padded(bitmap, wrap_s, wrap_t):
             output.putpixel((x+2,y+2),bitmap.getpixel((source(x,width,wrap_s),source(y,height,wrap_t))))
     return output
 
-def build(iso):
-    with Path(iso).open('rb') as disc:
-        if disc.read(8)!=b'G8ME01\0\0':raise ValueError('US G8ME01 disc0 revision0 required')
-    out=Path('romfs/source-icons');work=Path('local-assets/source-icons');out.mkdir(parents=True,exist_ok=True);work.mkdir(parents=True,exist_ok=True)
-    for name in ('icon.bin','icon.tpl'):extract(iso,name,out/name)
+def read_constants(iso):
     with Path(iso).open('rb') as f:
+        if f.read(8)!=b'G8ME01\0\0':raise ValueError('US G8ME01 disc0 revision0 required')
         f.seek(0x420);dol=struct.unpack('>I',f.read(4))[0];f.seek(dol);header=f.read(256)
         def read(address,size):
             for i in range(18):
@@ -37,6 +34,14 @@ def build(iso):
                     f.seek(dol+offset+address-start);return f.read(size)
             raise ValueError('Unmapped original icon constants')
         constants=b''.join(read(a,n) for a,n in SPANS)
+    return constants
+
+def build(iso):
+    with Path(iso).open('rb') as disc:
+        if disc.read(8)!=b'G8ME01\0\0':raise ValueError('US G8ME01 disc0 revision0 required')
+    out=Path('romfs/source-icons');work=Path('local-assets/source-icons');out.mkdir(parents=True,exist_ok=True);work.mkdir(parents=True,exist_ok=True)
+    for name in ('icon.bin','icon.tpl'):extract(iso,name,out/name)
+    constants=read_constants(iso)
     (out/'constants.bin').write_bytes(constants)
     raw=(out/'icon.tpl').read_bytes();magic,count,table=struct.unpack_from('>3I',raw)
     if magic!=0x20af30 or count!=613:raise ValueError('Original US icon TPL required')

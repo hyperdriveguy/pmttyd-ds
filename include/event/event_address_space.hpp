@@ -12,6 +12,10 @@ public:
     EventAddressSpace(EventEntryAddresses& e,EventContextAddresses& c,
                       EventRuntimeAddresses& r,EventGpAddresses& g):entries_(e),contexts_(c),runtime_(r),gp_(g) {}
     bool registerRam(uint32_t base,std::vector<uint8_t> bytes);
+    // Caller retains stable backing storage until unregister or facade destruction.
+    // Big-endian byte aliases share one process owner across separate VM lifetimes.
+    bool registerExternalRam(uint32_t base,uint8_t* bytes,uint32_t size);
+    bool unregisterExternalRam(uint32_t base);
     bool unregisterRam(uint32_t base,std::vector<uint8_t>* bytes=nullptr);
     // Remove a span contained in one RAM region,retaining neighboring bytes.
     // Native owner uses this before registering a live entry view at that span.
@@ -37,5 +41,7 @@ private:
     EventRuntimeAddresses& runtime_;
     EventGpAddresses& gp_;
     std::vector<Region> ram_;
+    struct ExternalRegion {uint32_t base,size;uint8_t* bytes;};
+    std::vector<ExternalRegion> external_;
 };
 }

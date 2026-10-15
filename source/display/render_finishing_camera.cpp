@@ -114,7 +114,7 @@ void Renderer::resumeFinishingCamera(const Game& game){
             };
             return b.game->trioAttack.resumeAudienceCallback(camera,borrowed,audience);
         }
-        if(identity==0x801a37f0 || identity==0x801a36c8){
+        if(identity==0x80100258 || identity==0x801a37f0 || identity==0x801a36c8){
             BattleAudienceAuxServices auxiliary;auxiliary.common.user=&renderer;bindAudienceAuxMathAdapter(auxiliary);
             auxiliary.common.request=[](void* user,const BattleAudienceGXRequest& r){
                 ShadowGXRequest request;request.kind=static_cast<ShadowGX>(r.function);request.values=r.arguments;
@@ -132,6 +132,7 @@ void Renderer::resumeFinishingCamera(const Game& game){
             gx.call=[](void* u,const SourceIconGXCall& r){auto& b=*static_cast<IconBridge*>(u);return b.renderer->sourceIconCall(*b.game,r);};
             gx.quad=[](void* u,const SourceIconGXQuad& q){auto& b=*static_cast<IconBridge*>(u);return b.renderer->captureSourceIcon(*b.game,q);};
             icon.gx=&gx;auxiliary.sourceIcon=&icon;
+            if(identity==0x80100258)return b.game->trioAttack.resumeStockExpDraw(camera,borrowed,icon);
             return b.game->trioAttack.resumeAudienceAux(camera,identity,borrowed,auxiliary);
         }
         if(identity==0x80101774){

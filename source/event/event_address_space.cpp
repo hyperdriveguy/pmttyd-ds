@@ -7,15 +7,18 @@ namespace ttyd {
 bool EventAddressSpace::readByte(uint32_t a,uint8_t& v) const {
     if(entries_.readByte(a,v) || contexts_.readByte(a,v) || runtime_.readByte(a,v) || gp_.readByte(a,v))return true;
     for(const auto& r:ram_)if(a>=r.base && uint64_t(a)-r.base<r.bytes.size()) {v=r.bytes[a-r.base];return true;}
+    for(const auto& r:external_)if(a>=r.base && uint64_t(a)-r.base<r.size){v=r.bytes[a-r.base];return true;}
     return false;
 }
 bool EventAddressSpace::writeByte(uint32_t a,uint8_t v) {
     if(entries_.writeByte(a,v) || contexts_.writeByte(a,v) || runtime_.writeByte(a,v) || gp_.writeByte(a,v))return true;
     for(auto& r:ram_)if(a>=r.base && uint64_t(a)-r.base<r.bytes.size()) {r.bytes[a-r.base]=v;return true;}
+    for(auto& r:external_)if(a>=r.base && uint64_t(a)-r.base<r.size){r.bytes[a-r.base]=v;return true;}
     return false;
 }
 bool EventAddressSpace::available(uint32_t base,uint64_t size) const {
     if(!size || uint64_t(base)+size>0x100000000ULL)return false;
+    for(const auto& r:external_)if(uint64_t(base)<uint64_t(r.base)+r.size && uint64_t(r.base)<uint64_t(base)+size)return false;
     // RAM covers every byte; interval rejection avoids millions of semantic
     // provider probes during native battle startup. Sparse live views still
     // use the existing readable-byte rule whenever their extents intersect.
@@ -23,6 +26,14 @@ bool EventAddressSpace::available(uint32_t base,uint64_t size) const {
     if(entries_.mayMapRange(base,size) || contexts_.mayMapRange(base,size) || runtime_.mayMapRange(base,size) || gp_.mayMapRange(base,size))
         for(uint64_t i=0;i<size;++i) {uint8_t v;if(readByte(base+uint32_t(i),v))return false;}
     return true;
+}
+bool EventAddressSpace::registerExternalRam(uint32_t base,uint8_t* bytes,uint32_t size){
+    if(!bytes || !available(base,size))return false;
+    external_.push_back({base,size,bytes});return true;
+}
+bool EventAddressSpace::unregisterExternalRam(uint32_t base){
+    for(size_t i=0;i<external_.size();++i)if(external_[i].base==base){external_.erase(external_.begin()+i);return true;}
+    return false;
 }
 bool EventAddressSpace::registerRam(uint32_t base,std::vector<uint8_t> bytes) {
     if(!available(base,bytes.size()))return false;
@@ -76,6 +87,7 @@ bool EventAddressSpace::importScripts(const EventScriptAssets& scripts) {
 const uint8_t* EventAddressSpace::rawRamSpan(uint32_t a,unsigned size) const {
     if(uint64_t(a)+size>0x100000000ULL || entries_.mayMapRange(a,size) || contexts_.mayMapRange(a,size) || runtime_.mayMapRange(a,size) || gp_.mayMapRange(a,size))return nullptr;
     for(const auto& r:ram_)if(a>=r.base && uint64_t(a)-r.base+size<=r.bytes.size())return r.bytes.data()+(a-r.base);
+    for(const auto& r:external_)if(a>=r.base && uint64_t(a)-r.base+size<=r.size)return r.bytes+(a-r.base);
     return nullptr;
 }
 uint8_t* EventAddressSpace::rawRamSpan(uint32_t a,unsigned size) {

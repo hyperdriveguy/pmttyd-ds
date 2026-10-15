@@ -4709,3 +4709,39 @@ though these actual ending slots all legitimately skip it. Private trace/source
 restoration details and full validation are recorded in PROGRESS.md.
 
 Packed NPC constructor update: source npcInit/npcEntry/NoAssert/release lookup mechanics now implement exact allocation, fresh-read, duplicate/fallback and initial field semantics. [Contract](../behavior/field/PACKED_NPC_REGISTRY_ALLOCATION_CONSTRUCTOR_AND_LOOKUP.md). Release npcNameToPtr missing-name result is the scan end pointer; native registered-name admission remains mandatory. Original field pose leaves/data gaps recovered [here](../behavior/field/ORIGINAL_FIELD_NPC_POSE_LEAF_SERVICES.md). Game pose/resource factory, tagged-map setup, reinitialization/deletion/query-ready lifecycle and shared session RNG remain open.
+
+
+### Native Stock EXP and positional icon path (2026-10-14)
+
+Implemented queued80100258 with actual global-B/signed-count gate and original
+small-then-big star loops, plus complete8001a918→8001a93c positional icon graph.
+Native uses original ID404, current camera yaw/view and existing real iconGX
+resources/state/retained geometry. Source process X/Y remain writable eight-byte
+storage across battles and successful checkpoint handoff; no literal zero or
+per-battle reset. See [Stock EXP contract](../behavior/battle/NATIVE_STOCK_EXP_DRAW.md)
+and [positional wrapper](../behavior/display/ORIGINAL_POSITION_ICON_SERVICES.md).
+
+Native ordinary-ending probe150s exits0: actual B84000000 rawBf04=0,
+completed1,phase5,pending0,iconActive0 and no icon/camera work in that callback.
+Actual sorted next boundary is BattleBreakSlotDispReel802036d4,camera8,class0,
+userdata0. Source recovery requested. Existing contract says reels still have
+work at state0; do not manufacture an empty callback from default reel state.
+
+Active HP number/bar providers from the preceding callback remain unfinished.
+Original EXP positive-icon capture and whole-frame GPU replay are separate:
+retained packet success does not prove pixels while a later callback holds.
+All original field restoration/story/events/interiors/full prologue goals and
+EVT-01 remain open. Read-only source evidence lives in
+artifacts/stock-exp-display-evidence/report.md; no executable/asset payload committed.
+
+Separate native positive23 fixture completes original small3/big2 stars and
+captures5actual camera8 iconGX quad packets with original animatedtexture418,
+then restores actualBf04=0. Whole-frame publication remains held by802036d4;
+no visible-star/physical-GPU claim is made. No fake publication/source callback
+skip was installed. Read-only recovery now saved complete break-slot callback,
+getters and Plane2 dependencies in artifacts/break-slot-display-evidence/report.md.
+Even flags0 reels require original scissor(0,176,608,128) then full current-GP
+scissor(0,0,U16GP170,U16GP172), not restoring the previous saved rectangle.
+Three independent ReelGetPtr(0) calls capture fresh globalB and source ordering;
+state0 alone only skips initial backgrounds, not all active-flag work. This is
+next implementation work; full prologue/field-return goal stays open.

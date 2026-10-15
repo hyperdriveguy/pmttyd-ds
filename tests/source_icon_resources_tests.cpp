@@ -17,6 +17,7 @@ int main() {
   assert(r.half(SourceIconResources::Directory) == 572 &&
          !r.half(SourceIconResources::Directory + 65536));
   assert(r.word(0x8041f864) == 0xffffffff && r.word(0x8041f86c) == 0x555555ff);
+  assert(r.word(0x8041f860)==0xffffff00 && r.word(0x8041f8a0)==0x3c8efa35);
   for (unsigned i = 0; i < 6; ++i) {
     assert(r.half(0x80415040 + 2 * i) ==
            std::array<uint16_t, 6>{73, 74, 75, 76, 73, 77}[i]);

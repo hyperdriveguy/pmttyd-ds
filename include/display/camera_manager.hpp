@@ -41,6 +41,7 @@ struct CameraDrawServices {
 // Retained source bank; callback and GPU availability are explicit providers.
 class CameraManager {
 public:
+    std::array<uint8_t,8> stockExpPosition{}; // Native shared process backing of source startup-zero floats8041eb98/9c; cameraInit never resets it.
     uint32_t letterboxColor=0; // Original startup-cleared camdrv sbss2 word80429510, live across room/battle ownership.
 
     // NTSC dimensions are explicit caller inputs. Native double trig substitutes

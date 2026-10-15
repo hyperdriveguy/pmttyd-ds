@@ -7051,3 +7051,99 @@ Normal3DSX SHA256 4da177bebc6ea2cb9c3b6735203c6bf1afae0bccb08480353314901afd8397
 Parallel read-only documentation recovered exact pose paper/material flags, Vivian+11c/+120 per-model assignment, signed original MODEL dimension reads/multiply2 and tribe lookup. Current BattlePosePool omits that Vivian reinitialization; original field conversion lacks six required gor02 banks, hoshi and full pose-directory/draw metadata. Those real owner/resource requirements are recorded in the new field contracts. Next build the field-owned pose/resource bridge, original tribe/constructor data admission and full tagged-map registration/reinit/delete/query-ready lifetime, then connect real Game NPC setup and one session RNG. Independent entry/world owners, full original events/story/areas and hardware verification remain unfinished. EVT-01/OW-INTERACT-01/RNG-01 and the full goal remain active.
 
 Documentation link check:1343 Markdown files,zero broken links.
+
+
+## Original Stock EXP and complete positional icon wrapper (2026-10-14)
+
+Implemented80100258 real global-B/signed count gate, local bound100, ones-before-
+tens star loops and exact separately rounded offsets/negative fused multiply-
+subtract. Retains each held request while rereading original process X/Y for
+later icons. Complete positional icon8001a918→8001a93c uses current camera,
+initial loaded-buffer gate, T*Ry*S then late view, fresh second resource gate,
+original descriptor/frame/GP clock and existing iconGX. Late unload reads actual
+null-descriptor ADDRESS2 domain; it is not an invented empty icon return.
+
+Original source ID404 has zero record width/height, four frames418..421 with
+six ticks each; actual textures are40x40 CMPR. Existing iconGX gets texture
+dimensions when both record dimensions are0. Initial new host fixture wrongly
+required nonzero record dimensions; corrected its assertion to actual original
+metadata after checking the read-only directory. Implementation preserved0.
+
+Shared stock-position backing is native CameraManager process-state storage,
+separate from camera records. New external-RAM facade mapping gives coherent
+big-endian byte/half/word aliases across battle VM lifetimes. Successful staged
+checkpoint replacement copies retained bytes only after admission; failed loads
+leave current state untouched. cameraInit/battle entry never clears these fields.
+Tests verify two facades sharing one owner, overlap/wrap/null rejection and
+all-or-none cross-boundary writes. No original writer completeness is claimed.
+
+Added original DOL constant words8041f860/4 and8041f8a0/4 to private source-icons
+pack116→124bytes; original prefix and all613 texture cells unchanged. Reused
+actual original icon directory/TPL/GX providers. Frozen source's committed area
+registry builder regenerated matching door-data103308bytes and field-area-battle
+registration pack; this is a baseline prerequisite update. Details in ASSETS.md.
+
+Frozen base9b5450f850d15bd6e71747f781e159641e1f4ee3, isolated
+artifacts/stock-exp-source; own journal separates concurrent unrelated work.
+Initial final helper validation passed329/329 C++ in34.69s and190/190 Python in
+26.238s; clean native make all exited0. Initial isolated15s normal boot exits0,
+original Rogueport/Mario/Goombella capture inspected,60AppFPS/100%. Later staged
+checkpoint coordinate-handoff copy was added and production sources rebuilt;
+exact final validation/hash/probes follow below. No production behavior was
+weakened to pass fixtures. Existing compiler/Pillow warnings remain separate.
+
+Independent read-only full-body review found no concrete mismatch in parent or
+positional wrapper. This is static review, not original execution or Gekko
+FPSCR/raster parity. No new authored art/audio/dialogue or ISO writes. Complete
+prologue/story/events/interiors/visibility and field restoration remain open.
+
+Actual ordinary-ending probe150s exited0: globalB84000000,rawBf04=0,captured0,
+ones0/tens0,completed1,phase5,pending0,iconActive0. Thus it takes the original
+count gate before icon/camera work. Actual sorted next is break-slot802036d4,
+camera8,class0,userdata0. Screenshot inspected separately; field restoration is
+still unfinished. Ordinary binary predates only the later checkpoint-handoff
+byte-copy line; callback/helper source is identical. Final normal binary below
+includes that handoff. No zero/count fixtures were substituted into this trace.
+
+Separate explicitly forced23 fixture executes actual source small3/big2 path,
+completes1,captured23,ones3,tens2,phase5,pending0 and restores originalBf04=0.
+Native source iconGX binds original animated texture418 and captures5camera8
+quad packets/20vertices. Initial native texture bind genuinely held at802b7880,
+then completed after cache admission. Next live boundary remains802036d4.
+No stock-exp-gpu.txt is produced: whole-camera-pass publication is still held
+by that next callback, so packet capture is not claimed as physical GPU replay
+or visible stars. No test-only renderer publication bypass was installed.
+Private counter fixture/source edits are excluded from production and committed
+source; user emulator settings/saves untouched. Exact terminal exit/capture and
+final validation are recorded below.
+
+Final required CMAKE_BUILD_PARALLEL_LEVEL=4 make test -o assets-ready exited0
+after all production edits:329/329 C++ in34.94s and190/190 Python in26.396s.
+Native make all -j4 -o assets-ready DEBUG_SHORT_BOOT=1 BUILD=build-stock-exp
+TARGET=ttyd-stock-exp exited0 after reversing all23private fixture edits.
+Final production3DSX SHA256d49bb1ace4dec1f6cfed25374a59c1b4eca974238625df5a1bc078fe9c991de5.
+Logs artifacts/stock-exp-test-final-restored.log and
+artifacts/stock-exp-restored-build.log. Source/helper native compile has no new
+warning; existing baseline warnings and private instrumentation format warnings
+are not hidden. Complete source/hash audit and final smoke exit follow below.
+Concurrent worktree changes are preserved and the whole merged worktree is not
+claimed validated as one build. Full prologue goal remains active.
+
+Both ordinary and positive150s Azahar probes exited0. Positive final screenshot
+inspected at the expected unfinished field-restoration notice; no visible star
+or whole-frame completion claim. Positive trace is an explicit count fixture,
+not original observed gameplay. All private code edits were reversed before final
+production validation. Audited3466 source files plus2030RomFS files,zero
+mismatches; full hashes artifacts/stock-exp-validation-manifest.json.
+Documentation links checked1340 Markdown files,zero broken links. Next work:
+original break-slot callback/getters/scissors and its active Plane2/resource graph,
+then actual whole-camera publication, subsequent teardown and original field
+return. HP active number/bar providers and full story/demo parity remain open.
+
+Final production isolated15s normal boot also exited0; capture inspected at
+artifacts/azahar-stock-exp-final-normal/boot.png. Original Rogueport/Mario/
+Goombella render correctly. This final single screenshot reports57AppFPS/95%
+and16.20ms on the host emulator; earlier normal snapshot was60/100%. These
+samples are not a hardware timing comparison or source-pixel parity proof.
+Log artifacts/stock-exp-smoke-final-normal.log. User emulator profiles/saves
+unchanged. All recorded hashes refer to the final restored production source.

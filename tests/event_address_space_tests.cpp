@@ -87,5 +87,16 @@ int main(int argc,char** argv) {
     EventCreationServices creation;creation.user=&f;creation.manager=f.manager();creation.runtime=[](void* p) {return &static_cast<Fixture*>(p)->runtime;};creation.word=[](void* p,uint32_t a) {uint32_t v;assert(static_cast<Fixture*>(p)->memory.readWord(a,v));return v;};
     auto& root=createRootEvent(f.schedule,0x80300000,10,0,creation);assert(root.id==1 && f.runtime.nextId==2);
     assert(f.memory.writeWord(0x8030000a,0xdeadbeef) && f.memory.readWord(0x8030000a,w) && w==0xdeadbeef && assets.readWord(0x8030000c,w) && w==0x12345678);
+    // Two independent VM facades alias one process lifetime owner, with original byte order.
+    std::array<uint8_t,8> process{};Fixture second;
+    assert(f.memory.registerExternalRam(0x8041eb98,process.data(),8));
+    assert(second.memory.registerExternalRam(0x8041eb98,process.data(),8));
+    assert(!f.memory.registerRam(0x8041eb9c,{0}) && !f.memory.registerExternalRam(0x8041eb98,process.data(),8));
+    assert(!f.memory.registerExternalRam(0xffffffff,process.data(),8) && !f.memory.registerExternalRam(0x8041eb00,nullptr,8));
+    assert(f.memory.writeWord(0x8041eb98,0x3f800000) && second.memory.readWord(0x8041eb98,w) && w==0x3f800000);
+    assert(second.memory.writeHalf(0x8041eb9a,0x1234) && process[2]==0x12 && f.memory.readWord(0x8041eb98,w) && w==0x3f801234);
+    const auto before=process;assert(!f.memory.writeWord(0x8041eb9e,0) && process==before);
+    assert(f.memory.unregisterExternalRam(0x8041eb98) && !f.memory.readWord(0x8041eb98,w));
+    assert(second.memory.readWord(0x8041eb98,w) && w==0x3f801234);
     std::cout<<"event address space tests passed\n";
 }

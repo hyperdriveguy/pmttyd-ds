@@ -1227,3 +1227,20 @@ Reuses the already required original `font.t3x` for native texture units1/2 when
 Packed NPC constructor phase (2026-10-14): no new extracted assets, conversion or pack payload. Source evidence reads original US DOL functions/constants from read-only /home/carson/games/roms/G8ME01.iso; complete fresh disassemblies remain ignored under artifacts/npc-registration-*.txt. Existing private shared area/event/prefetch/texture packs from the original VM registry phase are reused unchanged. Constructor consumes original-address vectors802c11f8/802c1204, float/word constants8041fc94/8041fc7c/8041fc6c and strings8041fd6c/8041fd74/802c1468 through caller-owned services; real Game data/resource admission remains pending, so fixture constants are not exported as invented game assets.
 
 Read-only pose evidence identifies real MODEL+c8/+cc dimension words and Vivian model identity mapping; actual original field banks and PMPOSE/draw sidecars still need conversion/admission. [Required resources](behavior/field/ORIGINAL_FIELD_NPC_POSE_LEAF_SERVICES.md). No art/audio/dialogue edits or raw asset/ISO commit. Original Nintendo/Intelligent Systems local-use/no-redistribution licensing remains unchanged.
+
+
+Stock EXP positional-icon constants (2026-10-14): tools/source_icon_assets.py
+read_constants opens /home/carson/games/roms/G8ME01.iso read-only, US disc0/rev0.
+Original DOL8041f860/4 (ffffff00 RGBA) and8041f8a0/4 (3c8efa35 radians/degree)
+append to ignored romfs/source-icons/constants.bin,116→124 bytes. The original
+116-byte prefix and all613 icon images/cells remain byte-identical: no resizing,
+resampling, new art or audio. romfs/source-icons/sources.json records the new
+spans and constant hash; original icon.bin/icon.tpl and all lossless .t3x cells
+are reused unchanged. Complete builder uses the same read_constants function;
+validation updates only constants/metadata without reconverting unchanged cells.
+Existing original Nintendo/Intelligent Systems local-use/no-redistribution
+restrictions apply. No ISO/raw asset/generated pack or compiled binary committed.
+Original stock icon ID404 and actual camera/frame/GX providers are used; visual
+parity and whole-scene publication are separate from resource admission. Frozen
+source's committed door-data builder was also run to match its existing area
+registry schema; that is a prerequisite pack refresh, not a new Stock EXP asset.

@@ -1154,3 +1154,6 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Packed NPC registry allocation, constructor and lookup](field/PACKED_NPC_REGISTRY_ALLOCATION_CONSTRUCTOR_AND_LOOKUP.md): original36/16 pools, ordered constructor services and exact release lookup semantics.
 - [Original field NPC pose leaf services](field/ORIGINAL_FIELD_NPC_POSE_LEAF_SERVICES.md): pose flags/model dimensions/Vivian mapping, tribe lookup and real field resource requirements.
+
+- [Native Stock EXP draw](battle/NATIVE_STOCK_EXP_DRAW.md) — original signed count gate, live process coordinates and small/big star loops.
+- [Original positional icon services](display/ORIGINAL_POSITION_ICON_SERVICES.md) — current-camera billboard/scale graph, late resource-null domain and retained original GX submission.

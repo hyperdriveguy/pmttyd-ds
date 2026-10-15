@@ -1736,3 +1736,13 @@ target_sources(ttyd_core PRIVATE source/field/field_npc_registry.cpp)
 add_executable(field_npc_registry_tests tests/field_npc_registry_tests.cpp)
 target_link_libraries(field_npc_registry_tests PRIVATE ttyd_core)
 add_test(NAME field_npc_registry COMMAND field_npc_registry_tests)
+
+# Original Stock EXP and complete positional icon wrapper.
+target_sources(ttyd_core PRIVATE source/battle/battle_stock_exp_draw.cpp source/display/source_icon_position.cpp)
+add_executable(battle_stock_exp_draw_tests tests/battle_stock_exp_draw_tests.cpp)
+target_link_libraries(battle_stock_exp_draw_tests PRIVATE ttyd_core)
+add_test(NAME battle_stock_exp_draw COMMAND battle_stock_exp_draw_tests)
+add_executable(source_icon_position_tests tests/source_icon_position_tests.cpp)
+target_link_libraries(source_icon_position_tests PRIVATE ttyd_core)
+add_test(NAME source_icon_position COMMAND source_icon_position_tests)
+set_tests_properties(source_icon_position PROPERTIES WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})

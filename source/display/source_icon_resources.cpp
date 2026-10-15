@@ -24,6 +24,7 @@ std::optional<uint32_t> sourceIconRuntimeWord(const CameraManager *cameras,
       address < 0x84000000u + 13 * 0x400u) {
     const auto offset = (address - 0x84000000u) % 0x400u;
     const auto *camera = cameras->camera((address - 0x84000000u) / 0x400u);
+    if(camera && offset==0x114){std::memcpy(&value,&camera->yaw,4);return value;}
     if (!camera || !camera->viewPublished || offset < 0x11c ||
         offset >= 0x14c || offset % 4)
       return {};
@@ -62,10 +63,10 @@ bool SourceIconResources::load(const char *root) {
     return false;
   const std::string base = root;
   const auto dir = read(base + "/icon.bin", 65536),
-             constants = read(base + "/constants.bin", 116);
+             constants = read(base + "/constants.bin", 124);
   const auto textures =
       AnimationTextureResource::load((base + "/icon.tpl").c_str());
-  if (!dir || !constants || constants->size() != 116 || !textures ||
+  if (!dir || !constants || constants->size() != 124 || !textures ||
       dir->size() < 4)
     return false;
   const auto count = be16(*dir, 0);
@@ -101,8 +102,8 @@ std::optional<uint16_t> SourceIconResources::half(uint32_t a) const {
   struct Span {
     uint32_t base, size, offset;
   };
-  for (const auto &s : std::array<Span, 3>{
-           {{0x80415040, 24, 0}, {0x80415080, 32, 24}, {0x8041f864, 60, 56}}})
+  for (const auto &s : std::array<Span, 5>{
+           {{0x80415040,24,0},{0x80415080,32,24},{0x8041f864,60,56},{0x8041f860,4,116},{0x8041f8a0,4,120}}})
     if (a >= s.base && uint64_t(a) - s.base + 2 <= s.size)
       return be16(constants_, s.offset + a - s.base);
   return {};

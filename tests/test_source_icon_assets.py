@@ -33,5 +33,7 @@ class OriginalSourceIcons(unittest.TestCase):
             self.assertEqual(hashlib.sha256((root/f'{index}.t3x').read_bytes()).hexdigest(),row['t3x_sha256'])
             w,h=row['native_size'];self.assertEqual(w&(w-1),0);self.assertEqual(h&(h-1),0)
             self.assertGreaterEqual(w,row['width']+4);self.assertGreaterEqual(h,row['height']+4)
-        self.assertEqual((root/'constants.bin').stat().st_size,116)
+        constants=(root/'constants.bin').read_bytes()
+        self.assertEqual(len(constants),124)
+        self.assertEqual(constants[116:],bytes.fromhex('ffffff003c8efa35'))
 if __name__=='__main__':unittest.main()
