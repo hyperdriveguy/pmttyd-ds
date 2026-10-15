@@ -57,6 +57,12 @@ struct BattleFontGlyphBinding {
  std::function<bool()> ordinaryProfile;
  std::function<uint32_t(uint32_t)> random;
  BattleFontRasterView raster;size_t capacity=0;
+ // Optional paired ordered source sink. Admission reserves bounded storage
+ // BEFORE RNG; emission commits once after RNG and cannot fail/reenter/retire.
+ // resources must pin orderedUser and both callbacks for this sink lifetime.
+ void* orderedUser=nullptr;
+ bool(*orderedAdmit)(void*,const BattleFontGlyphPacket&)=nullptr;
+ void(*orderedEmit)(void*,const BattleFontGlyphPacket&)=nullptr;
 };
 // Actual one-glyph atomic sink, not a queue acknowledgement. Matrix/TEV loads
 // are actual source children; emission copies their current state per glyph.

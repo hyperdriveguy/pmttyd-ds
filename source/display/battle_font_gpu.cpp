@@ -76,7 +76,7 @@ bool BattleFontGlyphSink::current()const{
 }
 bool BattleFontGlyphSink::source(){if(!current()||!binding_.sourceCurrent||!binding_.sourceCurrent()){invalid_=true;return false;}return true;}
 bool BattleFontGlyphSink::bind(BattleFontGlyphBinding b){
- if(bound_||running_||!b.font.current()||!b.resources||!b.capacity||!raster(b.raster)||!b.sourceCurrent||!b.publicationCurrent||!b.ordinaryProfile||!b.random||!b.publicationCurrent()||!b.sourceCurrent())return false;
+ if(bool(b.orderedAdmit)!=bool(b.orderedEmit)||bound_||running_||!b.font.current()||!b.resources||!b.capacity||!raster(b.raster)||!b.sourceCurrent||!b.publicationCurrent||!b.ordinaryProfile||!b.random||!b.publicationCurrent()||!b.sourceCurrent())return false;
  building_.reserve(b.capacity);binding_=std::move(b);bound_=true;invalid_=false;return true;
 }
 bool BattleFontGlyphSink::loadMatrix(const BattleActMatrix&m,uint32_t slot){
@@ -90,6 +90,7 @@ bool BattleFontGlyphSink::tevColor(uint32_t slot,uint32_t rgba){
 bool BattleFontGlyphSink::admit(const WindowFontQuad&q){
  if(pending_||published_||!matrix_||!color_||q.rgba!=*color_||building_.size()>=binding_.capacity||!source()||!binding_.ordinaryProfile()||!source())return false;
  BattleFontGlyphPacket p{binding_.font,q,*matrix_,binding_.raster};if(!validBattleFontGlyphPacket(p))return false;
+ if(binding_.orderedAdmit&&!binding_.orderedAdmit(binding_.orderedUser,p))return false;
  pending_=std::move(p);return true;
 }
 void BattleFontGlyphSink::emit(const WindowFontQuad&q){
@@ -97,6 +98,7 @@ void BattleFontGlyphSink::emit(const WindowFontQuad&q){
  // reenter or mutate resources. A violated owner contract is a native bug;
  // never silently drop an admitted glyph after consuming its two RNG calls.
  if(!invoking_||!pending_||!same(q,pending_->quad)||!current()||building_.size()>=building_.capacity())std::abort();
+ if(binding_.orderedEmit)binding_.orderedEmit(binding_.orderedUser,*pending_);
  building_.push_back(std::move(*pending_));pending_.reset();
 }
 SourceMatrixFontAtomicGlyphServices BattleFontGlyphSink::glyphServices(){

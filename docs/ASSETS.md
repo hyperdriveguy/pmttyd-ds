@@ -3449,3 +3449,31 @@ the upstream submenu importer. Exact delta is pinned in the session manifest.
 Original Nintendo/Intelligent Systems rights retained; local supplied ISO opened
 read-only. No ISO, extracted source body, asset pack or compiled binary committed.
 This is not a hardware/pixel/audio or complete prologue parity claim.
+
+## Original camera8 window0 clamp-correct native atlas
+
+`tools/battle_window_panel_assets.py` reads `f/msgWindow.tpl` descriptor0 from
+local US revision0 ISO (offset947396944,size321984,SHA256
+`2ef0cdc818d2402de5bfb95394f67d78017e74bc1b41c38b79780cb0b870dc67`). It
+preserves decoded original72x72 CMPR pixels at0,0 in128x128 RGBA8. All right,
+bottom and corner padding repeats the last source edge, with no source pixel
+resize/rewrite. Full atlas RGBA SHA256
+`7cab96f83790614593000d0918ed6119ec7bc45f1349741864ec5aadc68d5b45`,
+FNV64`caadb76327b7d2be`; source RGBA SHA256
+`40bb9c0b9723e7dcc916cc079f9d400287c96b7fc5d9b57039f6a14da5bf07c6`.
+Source UV scale72/128 plus native V inversion/clamp preserves linear edges,
+including source UV outside0..1. Existing messagePanel/composed-dialogue assets
+and all their converters are unchanged. The distinct resource is
+`battle-window-panel.t3x` plus provenance JSON; native validation checks actual
+full tiled allocation pixels, import facts and opaque generation before replay.
+
+`tools/build_battle_window_panel_assets.py` exports into an empty temporary
+private directory and copies only T3X/JSON into RomFS after ISO base conversion,
+before editable-manifest compilation. PNG/source/compiled private packs remain
+ignored. Focused Python tests verify every original/padding pixel, independent
+bilinear clamp samples and preservation of nonempty export destinations. Actual
+T3X decompression independently matches the full image; strict host/ARM tests
+are not native import/render or original framebuffer parity evidence.
+Original Nintendo/Intelligent Systems rights remain; no redistribution license
+is granted and no ISO, extracted original or compiled pack is committed. See
+[the source/window ownership contract](behavior/display/ORIGINAL_CAMERA8_WINDOW_PACKETS.md).

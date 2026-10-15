@@ -85,4 +85,18 @@ void finiteGeometry(){
  CHECK(accepted.sink.loadMatrix(accepted.loaded,0));CHECK(accepted.sink.glyph(accepted.glyph('B',32767,32767))&&accepted.randoms==6);
  CHECK(accepted.sink.publish()&&accepted.sink.snapshot()->size()==3);
 }
-int main(){residency();glyphCapture();lifetimeAndAdmission();finiteGeometry();}
+void orderedHooks(){
+ Fixture f;auto b=f.binding();unsigned waits=2,emits=0;std::optional<BattleFontGlyphPacket> reserved;
+ b.orderedUser=&f;
+ b.orderedAdmit=+[](void*,const BattleFontGlyphPacket&)->bool{return true;};
+ Fixture missing;auto incomplete=missing.binding();incomplete.orderedAdmit=b.orderedAdmit;CHECK(!missing.sink.bind(incomplete));
+ struct Ordered{Fixture*fixture;unsigned*waits,*emits;std::optional<BattleFontGlyphPacket>*reserved;} ordered{&f,&waits,&emits,&reserved};
+ b.orderedUser=&ordered;b.orderedAdmit=[](void*p,const BattleFontGlyphPacket&q){auto&s=*static_cast<Ordered*>(p);CHECK(s.fixture->randoms==0);if(*s.waits){--*s.waits;return false;}*s.reserved=q;return true;};
+ b.orderedEmit=[](void*p,const BattleFontGlyphPacket&q){auto&s=*static_cast<Ordered*>(p);CHECK(s.fixture->randoms==2&&s.reserved->has_value());CHECK(q.quad.rgba==(**s.reserved).quad.rgba);CHECK(!s.fixture->sink.publish());++*s.emits;};
+ CHECK(f.sink.bind(b));CHECK(f.sink.loadMatrix(f.loaded,0));CHECK(f.sink.tevColor(1,0x12345600));f.ordinary=true;
+ CHECK(!f.sink.glyph(f.glyph('A'))&&f.randoms==0&&emits==0);
+ CHECK(!f.sink.glyph(f.glyph('A'))&&f.randoms==0&&emits==0);
+ CHECK(f.sink.glyph(f.glyph('A'))&&f.randoms==2&&emits==1);
+ CHECK(f.sink.publish()&&f.sink.snapshot()->size()==1);
+}
+int main(){residency();glyphCapture();lifetimeAndAdmission();finiteGeometry();orderedHooks();}

@@ -1684,6 +1684,7 @@ void Renderer::shutdown() {
     releaseSourceIcons();
     releaseClassMenuDrawing();
     releaseWeaponMenuSurfaces();
+    releaseWindowPrimitiveSurface();
     retireBattleFont(); // Invalidate all copied font leases before native texture free.
     releaseAudienceDrawing();
     if(c3dReady) {

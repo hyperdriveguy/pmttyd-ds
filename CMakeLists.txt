@@ -2543,6 +2543,27 @@ target_link_libraries(battle_font_gx_state_tests PRIVATE ttyd_core)
 add_test(NAME battle_font_gx_state COMMAND battle_font_gx_state_tests)
 set_tests_properties(battle_font_gx_state PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 
+# Exact original camera8 window primitive packets and distinct clamp-correct art.
+target_sources(ttyd_core PRIVATE source/display/battle_window_packets.cpp source/display/battle_window_surface_gpu.cpp)
+add_executable(battle_window_packets_tests tests/battle_window_packets_tests.cpp)
+target_link_libraries(battle_window_packets_tests PRIVATE ttyd_core)
+add_test(NAME battle_window_packets COMMAND battle_window_packets_tests)
+set_tests_properties(battle_window_packets PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Complete original CPU-side GX texture-object constructors.
+target_sources(ttyd_core PRIVATE source/display/source_gx_texture_object.cpp)
+add_executable(source_gx_texture_object_tests tests/source_gx_texture_object_tests.cpp)
+target_link_libraries(source_gx_texture_object_tests PRIVATE ttyd_core)
+add_test(NAME source_gx_texture_object COMMAND source_gx_texture_object_tests)
+set_tests_properties(source_gx_texture_object PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Actual shared process-font VM binding for original Setup SDK children.
+target_sources(ttyd_core PRIVATE source/platform/native_source_font_texture.cpp)
+add_executable(native_source_font_texture_tests tests/native_source_font_texture_tests.cpp)
+target_link_libraries(native_source_font_texture_tests PRIVATE ttyd_core)
+add_test(NAME native_source_font_texture COMMAND native_source_font_texture_tests)
+set_tests_properties(native_source_font_texture PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
 target_sources(ttyd_core PRIVATE source/field/field_party_script_call.cpp source/runtime/game_field_party.cpp)
 add_executable(field_party_script_call_tests tests/field_party_script_call_tests.cpp)
 target_link_libraries(field_party_script_call_tests PRIVATE ttyd_core)
@@ -2552,7 +2573,32 @@ set_tests_properties(field_party_script_call PROPERTIES WORKING_DIRECTORY "${CMA
 
 # Native graphics service is explicitly unavailable in host builds.
 target_sources(ttyd_core PRIVATE source/display/native_graphics_program.cpp)
-# Original ordinary animation selector and retained native owner.
+
+
+# Original palette objects and ordered weapon menu packet capture.
+target_sources(ttyd_core PRIVATE source/display/source_palette_texture_object.cpp)
+add_executable(source_palette_texture_object_tests tests/source_palette_texture_object_tests.cpp)
+target_link_libraries(source_palette_texture_object_tests PRIVATE ttyd_core)
+add_test(NAME source_palette_texture_object COMMAND source_palette_texture_object_tests)
+set_tests_properties(source_palette_texture_object PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+target_sources(ttyd_core PRIVATE source/display/battle_submenu_packets.cpp source/display/battle_submenu_source_gx.cpp)
+add_executable(battle_submenu_packets_tests tests/battle_submenu_packets_tests.cpp)
+target_link_libraries(battle_submenu_packets_tests PRIVATE ttyd_core)
+add_test(NAME battle_submenu_packets COMMAND battle_submenu_packets_tests)
+set_tests_properties(battle_submenu_packets PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+target_sources(ttyd_core PRIVATE source/display/battle_weapon_ordered_publication.cpp)
+add_executable(battle_weapon_ordered_publication_tests tests/battle_weapon_ordered_publication_tests.cpp)
+target_link_libraries(battle_weapon_ordered_publication_tests PRIVATE ttyd_core)
+add_test(NAME battle_weapon_ordered_publication COMMAND battle_weapon_ordered_publication_tests)
+set_tests_properties(battle_weapon_ordered_publication PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+
+# Whole original process window texture setup and real DVD callback.
+target_sources(ttyd_core PRIVATE source/display/source_window_texture_setup.cpp)
+add_executable(source_window_texture_setup_tests tests/source_window_texture_setup_tests.cpp)
+target_link_libraries(source_window_texture_setup_tests PRIVATE ttyd_core)
+add_test(NAME source_window_texture_setup COMMAND source_window_texture_setup_tests)
+set_tests_properties(source_window_texture_setup PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")# Original ordinary animation selector and retained native owner.
 target_sources(ttyd_core PRIVATE source/display/animation_selection.cpp source/display/animation_native_selection.cpp)
 add_executable(animation_selection_tests tests/animation_selection_tests.cpp)
 target_link_libraries(animation_selection_tests PRIVATE ttyd_core)

@@ -30,6 +30,8 @@
 #include "battle_font_gpu.hpp"
 #include "battle_class_footer_gpu.hpp"
 #include "battle_submenu_surface_gpu.hpp"
+#include "battle_window_packets.hpp"
+#include "battle_submenu_packets.hpp"
 #include "battle_audience_backend.hpp"
 #include "native_camera_draw.hpp"
 #include "native_display_state.hpp"
@@ -86,6 +88,12 @@ public:
     bool prepareWeaponMenuSurfaces();
     std::optional<BattleSubmenuSurfaceLease> weaponMenuSurfaceLease()const;
     const BattleSubmenuSurfaceGpuResource* weaponMenuSurfaceResources()const;
+    bool prepareWindowPrimitiveSurface();
+    const BattleWindowSurfaceResource* windowPrimitiveSurfaceResources()const;
+    bool canDrawWindowPrimitivePacket(const BattleWindowPacket&)const;
+    bool drawWindowPrimitivePacket(const BattleWindowPacket&);
+    bool canDrawSubmenuPackets(const std::vector<BattleSubmenuPacketPtr>&)const;
+    bool drawSubmenuPackets(const std::vector<BattleSubmenuPacketPtr>&);
     const BattleClassFooterGpuResource* classFooterResources();
     BattleFontLease battleFontLease()const;
     std::optional<BattleFontRasterView> battleFontRasterView(const Game&)const;
@@ -235,6 +243,8 @@ private:
     void retireBattleFont();
     std::unique_ptr<NativeBattleClassSurfaceGpu> classSurfaceGpu;
     std::unique_ptr<NativeBattleSubmenuSurfaceGpu> submenuSurfaceGpu;
+    std::unique_ptr<NativeBattleWindowSurfaceGpu> windowPrimitiveGpu;
+    void releaseWindowPrimitiveSurface();
     void releaseWeaponMenuSurfaces();
     std::unique_ptr<NativeBattleClassFooterGpu> classFooterGpu;
     Vertex* classVertices=nullptr;

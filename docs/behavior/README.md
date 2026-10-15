@@ -1377,6 +1377,9 @@ Original battle menu native resource/queue owners:
 
 
 - [Original normal font GX state](display/NATIVE_ORDINARY_FONT_GX_STATE.md).
+- [Original camera8 window primitive packets](display/ORIGINAL_CAMERA8_WINDOW_PACKETS.md).
+- [Retained original GX texture-object constructors](display/RETAINED_SOURCE_GX_TEXTURE_OBJECT.md).
+- [Actual mapped font Setup texture children](display/NATIVE_SOURCE_FONT_TEXTURE_CHILDREN.md).
 
 - [Retained story-to-native party callbacks](partner/NATIVE_STORY_PARTY_DISPATCH.md): actual caller VM, native resource waits, lecture dispatch, canonical join and mode leaves, and guarded owner handoff.
 
@@ -1384,6 +1387,13 @@ Original battle menu native resource/queue owners:
 - [Native shader lifetime across graphics reinitialization](display/NATIVE_SHADER_PROCESS_LIFETIME.md).
 - [Native atomic mesh publication and field simulation barrier](display/NATIVE_ATOMIC_MESH_PUBLICATION.md): fresh post-Main capture, static geometry/backing proof, private reusable candidate and atomic swap; normal Mario activation with same-pass Game/runtime draining. Original NPC Draw/Inner/queue/GPU integration remains open.
 
+
+- [Original palette texture-object construction](display/RETAINED_PALETTE_TEXTURE_OBJECT.md).
+- [Ordered original submenu packets](display/ORDERED_ORIGINAL_SUBMENU_PACKETS.md).
+- [Ordered weapon menu publication](display/ORDERED_WEAPON_MENU_PUBLICATION.md).
+
+
+- [Original process window texture setup](display/RETAINED_WINDOW_TEXTURE_SETUP.md).
 - [Retained original ordinary animation selection](display/NATIVE_RETAINED_ANIMATION_SELECTION.md): exact signed/raw selector, directory/clock/literal ordering, native owner and Mario setup integration; full NPC draw and source paper/local-time setters remain open.
 
 - [Native temporary Professor party](partner/NATIVE_TEMPORARY_PROFESSOR_PARTY.md): actual kind11 model/resource/constructor, fresh get-position outputs and original first-talk/fence ownership.
