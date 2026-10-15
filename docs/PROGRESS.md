@@ -7814,3 +7814,40 @@ changes. Private snapshot script avoids truncation races at shutdown. Actual
 shared entry history is the next implementation boundary, not missing teardown
 permission or an arbitrary next-frame wait. Source doc/link audit rerun after
 these final records; full playable original-fidelity prologue remains incomplete.
+
+## 2026-10-14 — Retained display state helpers documented
+
+Added inline comments/numeric legends to 25 C++ implementation/header files for
+native camera/display/icon/shadow program state, source icon resources/matrix/
+position/GX continuations, retained icon frames, letterbox, field camera publication
+and lower battle-view transforms. The [state guide](code/display-state.md)
+explains exact/rounded raster domains, compact projection layout, BE directory
+fields, synthetic addresses, object states, TEV inputs, source flags and exact retry
+boundaries. Documented signed clock remainder, language lookup despite the local
+story variable name, the late-unload read at address 0x2, stable pending payloads,
+whole-pass publication and final-vertex retry. Corrected two stale header comments
+about logical setters and existing indexed geometry providers. Commit 3cfcf6ad.
+All 25 files preserve executable tokens; no behavior was changed.
+
+Validation froze baseline bff91eb6f704afcd6bad88d43743f55022bef3a0 plus documentation in
+artifacts/display-state-code-documentation-validation/source. Audited 3511
+tracked files: zero unexpected changes; 27 documented files match live/frozen
+hashes. CMAKE_BUILD_PARALLEL_LEVEL=4 make test passes 336/336 C++ in 36.33s and
+193/193 Python in 27.878s, zero skipped. make all -o assets-ready -j4
+SOUNDTRACK=gamecube passes; final host/native builds include the last header-comment
+corrections. Logs host-final.log/native-final.log and source/binary hashes in
+manifest.json; initial full host/native runs also passed.
+
+Validation reused private accepted RomFS and matching message-icons/material-light/
+field-native evidence caches from render-adapter-code-documentation-validation.
+No extraction, conversion, editable-asset import or shared pack write. Other large
+local-assets dependencies remain shared read inputs, as recorded in the manifest.
+Existing compiler/Pillow warnings remain. No emulator/profile/save changes or
+new original hardware/timing/pixel/floating-point parity claims. This validates
+the documented frozen snapshot, not the concurrently changing whole worktree.
+
+Next: remaining animation/draw/material/shadow and display batch helpers, then
+field/NPC/partner, remaining battle, message/inventory/story, audio and relevant
+port tooling. Re-audit concurrent additions and changes in previously covered
+runtime/event/save/composition modules. Port-wide documentation and the remake
+remain incomplete; the documentation goal stays active.

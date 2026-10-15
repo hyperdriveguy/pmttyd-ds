@@ -1398,3 +1398,16 @@ overwritten, and no ISO content was committed.
 ### Outer update/input owner implementation
 
 No new asset conversion. Validation uses the existing private original packs matching basea7d17d20, including prior field-bank exports and188-byte source icon constants. Source ISO remains read-only; original payloads stay ignored and retain the licensing/provenance of their existing ledger entries. Native outer/Main and input GP aliases add no replacement art/audio.
+
+## Retained display-state documentation validation cache (2026-10-14)
+
+artifacts/display-state-code-documentation-validation/source reuses a private
+copy of the accepted render-adapter-code-documentation-validation/source/romfs
+plus matching message-icons, material-light and field-native evidence caches.
+No new extraction/conversion or editable-asset import occurred. Cache provenance,
+including original 188-byte icon constants and atlas evidence hashes, remains in
+the prior validation manifest and entries above; the new manifest records the
+copied cache dependency. Other large local-assets dependencies are shared read
+inputs. Original Nintendo/Intelligent Systems rights remain reserved; ignored
+local copies grant no new license or redistribution rights. Source assets and
+shared RomFS were not overwritten; no original pack/ISO content was committed.
