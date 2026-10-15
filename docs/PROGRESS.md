@@ -15992,3 +15992,61 @@ normal field HUD still uses its existing provisional panels; this batch does
 not claim the reference battle HUD is complete. Scene4 audience visibility,
 incarnation-aware harmful throwing, physical selection and optional lower-screen
 taps remain required; the full goal stays active.
+
+## 2026-10-15 — Trio source sequence-provider documentation
+
+Added 65 inline comment lines (replacing 1 prior line) in
+source/battle/trio_attack.cpp and [Trio sequence bindings](code/trio-sequence-bindings.md),
+linked from the code index. Code/docs commit b5a71971. Executable tokens/string
+literals unchanged; no mechanics/dialogue/story or test edits for this pass.
+
+Reviewed turnServices, originalActServices/originalMoveServices, their resume
+wrappers and continuation metadata. Notes explain typed scalar/XYZ/status lanes,
+engaged-zero versus held children, actual packed offsets/masks and original
+function IDs, ShadowGuard kind228/attribute/signed counter, signed height and
+low-half damage conversion, actual TurnFirst versus legacy empty adapter,
+CommandInit Input/flag store order, status callback VM context, distinct status/
+attribute/action flags, guest entry addresses versus scheduler IDs, phase script
+selectors/priority/flags/owner publication, separate barrier/reserve progress,
+owned Move-to-Turn request identity/operands and signed division/truncation
+admission. Unbound inventory/population/damage/effect/audio owners remain pending.
+Trio remains partial: newer cadence/pinch/sequence/pose/public draw integrations
+and later changes need separate review. No whole-file completeness claim.
+
+Frozen baseline 2ad8c33af265b371ef962f34f3731e0c90b9cfd1 plus owned docs is at
+artifacts/trio-sequence-bindings-code-documentation-validation/source. Full git-
+blob audit covers 4344 baseline tracked files with zero unexpected changes; three
+owned frozen/live files match and all112 local guide/index links resolve.
+All source/prose finalized before gates. Concurrent startup/field/NPC/font/window/
+raster/resource/tool changes preserved/excluded; no moving-worktree validation
+claim. Original host/native handles observed terminal0 and exit markers agree.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits0: 506/506 C++ (94.54s),
+229/229 Python (88.875s), zero skipped. Original45-descriptor enemy, HitN64,
+party-position, temporary-Professor/fence and conditional original Harbor battle
+fixtures ran. New original five-bank harbor fixture and full32-pose Goombella
+converter checks ran in the unfiltered Python suite. Native file-cache tests
+exercise actual Crump/subordinate/sailor MODEL/TPL pairs and empty-stream root
+relocations. Native make all -o assets-ready -j4 SOUNDTRACK=gamecube exits0.
+Manifest pins source/products/evidence/fixtures/logs and ELF/3DSX hashes.
+Existing compiler/Pillow warnings remain. No emulator/profile/save changes or
+original CPU/GPU/pixel/audio/performance/hardware parity claims.
+
+Committed dependency changes required fresh private conversion: Makefile adds
+harbor exporter; field_player_pose_assets.py now includes every Goombella pose;
+new harbor_native_npc_assets.py exports five complete banks (144 poses). Exact
+frozen converters read original ISO read-only into two NEW empty output/work
+destinations.62 generated products overlaid only the private cache:112 accepted
+products now pinned,39 new/changed checksums; unchanged raw Mario/Goombella and
+Professor resource binaries/directories checked. Professor JSON path metadata
+explicitly refreshed; all generated work/provenance evidence retained/pinned.
+No editable import or live shared cache write. Native full regeneration skipped;
+Python fixtures independently use read-only ISO/empty temporary outputs.
+See [asset ledger](ASSETS.md). No ISO/extracted original/compiled product committed;
+original rights retained.
+
+Next: remaining newer Trio cadence/pinch/sequence/pose/public draw integration,
+changed battle code and newer animation/field/party/font/window/resource/raster/
+startup integrations and tools. Inventory tracks only source/include C++/header/
+PICA hashes: tools/untracked additions need separate audit; matching hashes do
+not prove semantic completeness. Broad documentation/remake goals stay active.

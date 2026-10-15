@@ -3681,3 +3681,41 @@ asset license asserted. Existing assets/manifest.json remains editable overlay;
 no import over source assets. Original Nintendo/Intelligent Systems rights
 retained; no distribution rights follow. No ISO/extracted original/compiled
 product committed. Manifest records cache/evidence dependencies and hashes.
+
+## Trio sequence-binding documentation validation inputs (2026-10-15)
+
+artifacts/trio-sequence-bindings-code-documentation-validation/source freezes
+baseline2ad8c33af265b371ef962f34f3731e0c90b9cfd1. Relative to prior menu-binding
+validation, committed Makefile/player converter/new harbor exporter dependencies
+require refreshing the private accepted cache. Exact frozen tools run on read-only
+/home/carson/games/roms/G8ME01.iso into NEW empty destinations under
+artifacts/trio-sequence-bindings-code-documentation-validation/private-conversion/
+(field-player and harbor each have their own romfs/work folders). No editable
+assets/ import, live shared-cache update, ISO write or full regeneration.
+
+Original sources a/c_pkr, a/c_kanbu_ibt, a/c_zako_n, a/c_gara, a/c_suifu_b and
+their MODEL-named TPL banks supply32/59/28/16/9 source-order CPU descriptors
+(144 total). Crump uses a/c_kanbu-,not an invented _ibt texture alias. New products
+are romfs/harbor-native-npc-resources.json plus field-native-<model> raw MODEL/TPL,
+PMANIM/PMPOSE/JSON. Existing field-player-c_pkr now includes all32 descriptors;
+its atlas grows31->46 cells,1024x512->1024x1024 source,512x256->512x512 native,
+using existing half-resolution RGBA8/Lanczos conversion. Mario conversion policy
+and raw original Mario/Goombella/Professor binaries/directories are unchanged.
+Only generated JSON evidence paths change for some other regenerated products;
+Professor fixture JSON hash is explicitly updated. Conversion provenance and
+atlas evidence remain private,including absolute manifest read paths.
+
+62 generated products overlay only this validation's private cache;112 accepted
+products are pinned,39 checksums new/changed. Inherited surface/footer/HP/enemy/
+HitN64/party/Professor/Harbor battle evidence/fixtures also checked,including actual
+external HitN64 PNG read path. Manifest records original/product hashes, exact
+converter commands/hashes and retained work/provenance evidence. Native skips
+full assets-ready regeneration; Python tests independently read ISO read-only
+into empty temporary outputs and verify actual default harbor products.
+
+Comments/guides change no code tokens,original assets/dialogue/story/music/effects
+or numeric behavior. Native cache's newly committed original four harbor pairs
+and count-aware empty-UV sentinel admission belong to that frozen baseline.
+Original Nintendo/Intelligent Systems rights retained; local provenance grants
+no new license or redistribution rights. No ISO/extracted original/compiled
+product committed. Editable assets/manifest.json overlay remains authoritative.
