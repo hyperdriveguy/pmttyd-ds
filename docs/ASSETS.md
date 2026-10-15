@@ -2928,3 +2928,21 @@ geometry reduction, lighting, original US dialogue/story, art/music/SFX change.
 Nintendo/Intelligent Systems original proprietary data remain local development
 only under the existing licensing restrictions. No ISO, extracted PPC/assets,
 compiled packs or binaries are committed.
+
+## Opening frontend documentation validation inputs (2026-10-15)
+
+artifacts/opening-frontend-code-documentation-validation/source inherits 63
+accepted products and original footer/HP/enemy evidence/default fixture paths.
+Two replay-span converter changes match authority tree
+bbb0083142fe15c8fde95b407a174e73b07c831a; its validation manifest pins
+animation-replay-assets-after.json. Four door-data/animation-boot JSON/PMEVT
+products were absent in existing caches. Frozen converters ran in empty private
+cache-rebuild from read-only ISO; only exact authority hashes admitted. Ancillary
+outputs remain ignored/unused, with all hashes recorded. Door pack 152964 bytes
+SHA256 dc5602e2e1ec5845c3d58e50295bdc45046631607b425e98d1ecd31d2da46acd;
+boot 4824 bytes SHA256 8e54d3126b4166c39f6c6217bf4c009ad491a06f154b1a175a06b68cbf51e01a.
+All 63 accepted products/evidence/fixtures checked after gates. No editable import,
+shared-pack write, new artwork/audio or changed story payloads. Native full
+regeneration skipped; Python fixtures independently use read-only ISO/empty
+outputs. Nintendo/Intelligent Systems rights retained; local extraction/tracking
+confers no new license. No ISO, extracted original or compiled binary committed.

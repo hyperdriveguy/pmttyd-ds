@@ -13574,3 +13574,72 @@ claimed. Next integrate those batches, finish actual source battle entry/active
 cadence and selected-tap completed lower-audience publication/one-shot consumption,
 then tutorial/real battle/field return and hardware verification. Controls remain
 physical as well as optional touch. Full goal remains active and incomplete.
+
+## 2026-10-15 — Opening demo, book and title consumers documented
+
+Annotated 16 opening frontend C++/header files. Added [demo/book guide](code/opening-demo-book.md)
+and [title/audio/effect guide](code/opening-title-effects.md), linked from index.
+Code/docs commit 209cd92d. All executable tokens/string literals unchanged; no
+narration IDs, speaker tokens, text/control tokens, story order/branches, art or
+audio changes. No new tests for this prose-only work. Full story subsystem still
+needs the New Game/harbor/professor portions below.
+
+Notes explain37-message identities/order, individual loader publication,
+milliseconds versus native60Hz ticks, source wait/scale/interpolation requests,
+separate capture/elapsed/final-evaluated-pose admission, retained old page lifetime,
+provisional unbound-paper fallback and source final-adjust composition. Current
+OpeningDemo tick continues book/market/effect/message clocks after exit request
+until actual final fade presentation completes; this actual adapter behavior is
+not generalized to original whole-map-change scheduling. Source vertices/UVs,
+cover passes/hinge, 193x240-in256 capture, framing/pan/zoom/portrait-back/native
+depth adaptations are explicit. Corrected stale304-viewport wording:304 is
+half-scale source content within400-wide screen, not whole viewport.
+
+Marketplace notes distinguish native request kinds from EVT, source endpoints/
+message gates from linear numeric adapters, per-tick sparse replay/same-tick
+guards, authored Q1024 handoff additions and independent motion/chest/facing/
+effect ownership. Title/fade comments explain resource claims versus actual
+presentation, strict float/integer endpoints, zero-span34 loop/scale gates,
+input-versus-idle precedence, file curtain chain and black idle-return ownership.
+Audio snapshots preserve separate integer group and detached float owners/retirement;
+native track indexes are not original BGM IDs or hardware readiness. Chest notes
+cover native24 versus original14-byte vertices, source table exports, creation
+Main timing, crystal sentinel/lifetime/alpha/scale, deterministic ray reset/order,
+read-only draws and explicit trig/camera/GPU boundaries.
+
+Frozen baseline 4b1d82eaf653ec390cdc8e541aeff7e522306f56 plus owned docs is at
+artifacts/opening-frontend-code-documentation-validation/source. Full audit covers
+4055 baseline tracked files, zero unexpected changes. All 19 documented frozen/live
+snapshots match, all 100 local guide/index links resolve. Source/prose finalized
+before gates. Concurrent/later battle menu/effect/field/party/animation/interpolation/
+render additions preserved/excluded; no combined moving-worktree validation claim.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits 0: 456/456 C++ (54.43s),
+213/213 Python (38.014s), zero skipped. Actual original 45-descriptor enemy-bank
+fixture ran. Native make all -o assets-ready -j4 SOUNDTRACK=gamecube exits 0.
+Original host/native gate handles observed terminal; exit markers agree. Manifest
+records source/tool/authority/product/evidence/log and ELF/3DSX hashes. Existing
+compiler/Pillow warnings remain. No emulator/profile/save changes or hardware/
+pixel/audio/Gekko/performance parity claims.
+
+Cache inherits 63 accepted products and original evidence/default enemy fixtures.
+Preflight reviews two replay-span converter changes and five read-only battle
+verifiers since prior baseline; Makefile/assets unchanged. Frozen converters match
+replay authority tree bbb0083142fe15c8fde95b407a174e73b07c831a. Exact cache versions
+were absent, so frozen door/boot converters ran sequentially into empty private
+cache-rebuild using read-only ISO. Four authority-hash-matched JSON/PMEVT products
+admitted; all ancillary generated hashes recorded/unused. Rebuild handle 18551
+observed terminal 0. Door pack 152964 bytes SHA256
+dc5602e2e1ec5845c3d58e50295bdc45046631607b425e98d1ecd31d2da46acd;
+boot 4824 bytes SHA256 8e54d3126b4166c39f6c6217bf4c009ad491a06f154b1a175a06b68cbf51e01a.
+All 63 accepted/evidence/fixture hashes verified after gates. No editable import or
+shared cache write. Python fixtures independently use read-only ISO/empty temporary
+outputs; native full regeneration skipped. Original rights/provenance unchanged;
+no ISO, extracted original or compiled binary committed. See [assets](ASSETS.md).
+
+Next: document New Game sequence/house/voyage/map/heading/wake/arrival consumers,
+then harbor encounter/story and professor controllers; preserve original IDs,
+attribution and conditions throughout. Remaining field/runtime/effect/tooling
+and newer battle/menu/animation/party changes still need separate inline audit.
+Hash inventory is a review aid, not full semantic or game coverage proof.
+Full documentation/remake goal remains active.
