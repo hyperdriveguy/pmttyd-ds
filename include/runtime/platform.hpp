@@ -78,6 +78,8 @@ public:
     EnemyHpMetrics enemyHpMetrics(const Game&) const;
     bool drawClassMenu(const BattleClassBackend&);
     const BattleClassAssets* classMenuAssets();
+    // Ready-only accessor: never imports during a held native callback.
+    std::optional<BattleClassSurfaceLease> classMenuSurfaceLease()const;
     const BattleClassFooterGpuResource* classFooterResources();
     bool changeRoom(uint32_t room);
     const std::string& resourceFailure() const{return frontFailure;}
@@ -218,11 +220,16 @@ private:
     bool prepareSceneActorTextures(const Game&);
     Texture messageIndicatorTexture;
     Texture shadowTexture44; // Native loaded resource adapter; original palette loader remains separate.
-    BattleClassAssets classAssets;
+    std::unique_ptr<NativeBattleClassSurfaceGpu> classSurfaceGpu;
     std::unique_ptr<NativeBattleClassFooterGpu> classFooterGpu;
-    std::array<Texture,2> classTextures;
     Vertex* classVertices=nullptr;
     unsigned classVertexCount=0;
+    struct ClassMenuBinding;
+    std::shared_ptr<ClassMenuBinding> classMenuBinding;
+    bool classMenuSubmitReady=false,classMenuSubmissionWaiting=false;
+    bool prepareClassMenuFrame(const Game&);
+    void releaseClassMenuFrame();
+    bool resumeClassMenu(const Game&,uint32_t camera,uint32_t userdata);
     bool prepareClassMenuDrawing();
     void releaseClassMenuDrawing();
     BattleAudienceResources audienceAssets;BattleAudienceBackend audienceBatch;

@@ -369,6 +369,7 @@ struct TrioAttackRuntime {
     BattleActUiContinuationCursor actMenuUiCursor;
     BattleMenuAudienceNativeCursor actMenuAudienceCursor;
     std::map<uint32_t,std::shared_ptr<const uint8_t>> actMenuUiAllocations;
+    std::map<uint32_t,std::string> originalClassLabelBytes;
     BattleEventBarrierCursor actWaitCursor,actConsumeCursor;
     BattleEventBarrierCursor turnEventBarrierCursor;
     BattleAudienceTurnEndCursor sourceAudienceTurnEndCursor;
@@ -3403,6 +3404,68 @@ bool TrioAttack::enemyHpMatrix(BattleAudienceMatrixRequest& q) const {
 // Each pass retains acknowledged begin/frame/publish work. Recheck camera after
 // hooks; finish only current admitted epoch. Failed publish may retry, so the
 // external provider owns partial effects even when the source frame is complete.
+// Actual class allocation/camera/source resources. The retained native owner
+// never calls a development presented setter or invents a display queue entry.
+std::optional<TrioClassMenuFrameBinding> TrioAttack::classMenuFrameBinding(const BattleActDrawServices& linked) const {
+    const auto r=runtime_;if(!r || !r->cameras || !r->originalClassMessages)return {};
+    uint32_t actualBattle=0,w=0;
+    if(!r->vm.memory.readWord(0x8041eb90,actualBattle) || actualBattle!=Battle ||
+       !r->vm.memory.readWord(Battle+0x1c78,w))return {};
+    const auto found=r->actMenuUiAllocations.find(w);
+    if(found==r->actMenuUiAllocations.end() || !found->second)return {};
+    const auto token=found->second;
+    // Actual allocation token address is nonzero and cannot be reused while
+    // this binding retains token. The token/current predicate proves lifetime;
+    // the numeric value alone is not an original camera/allocation pointer.
+    const uint64_t generation=uint64_t(reinterpret_cast<uintptr_t>(token.get()));
+    TrioClassMenuFrameBinding out;out.native.allocationOwner=token;
+    out.native.allocation=w;out.native.generation=generation;out.native.cameras=r->cameras;
+    out.native.actors=nativeBattleActorServices(r->vm);
+    out.native.addresses={0x60010000,[r](uint32_t base,uint32_t bytes){return r->vm.memory.unmappedRange(base,bytes);}};
+    out.native.allocationCurrent=[this,r,token,w](){
+        uint32_t b=0,current=0;const auto i=r->actMenuUiAllocations.find(w);
+        return runtime_==r && i!=r->actMenuUiAllocations.end() && i->second==token &&
+            r->vm.memory.readWord(0x8041eb90,b) && b==Battle &&
+            r->vm.memory.readWord(Battle+0x1c78,current) && current==w;
+    };
+    out.native.producerCurrent=[this,r,generation](BattleClassCameraEpoch e){
+        return runtime_==r && !r->cameraMainPoisoned && !r->cameraMainWaiting &&
+            !r->cameraMainCursor.active && e.generation==generation && e.pass &&
+            e.pass==r->cameraMainPublication;
+    };
+    out.display.draw=linked;out.display.draw.memory=out.native.actors;out.display.user=r.get();
+    out.display.cursorLookup=[](void* p,uint32_t menu,uint32_t type,std::optional<uint32_t>& result){
+        auto& owner=*static_cast<TrioAttackRuntime*>(p);uint32_t cursor=0;
+        if(findPackedCommandCursor(menu,type,cursor,nativeBattlePackedSelectionServices(owner.vm)))result=cursor;
+        return true; // Original no-match is completed; output is not consumed.
+    };
+    out.label=[r](uint32_t address)->const char*{
+        if(const auto cached=r->originalClassLabelBytes.find(address);cached!=r->originalClassLabelBytes.end())return cached->second.c_str();
+        bool known=false;
+        for(const auto& key:originalBattleClassMenuMessageKeys()){
+            const auto mapped=r->originalClassMessages->lookup(r->originalClassMessages->user,key.source);
+            if(mapped && *mapped==address){known=true;break;}
+        }
+        if(!known)return nullptr;
+        std::string text;
+        for(uint32_t at=address;;++at){uint8_t byte=0;if(!r->vm.memory.readByte(at,byte))return nullptr;
+            if(!byte)return r->originalClassLabelBytes.emplace(address,std::move(text)).first->second.c_str();
+            text.push_back(char(byte));if(at==UINT32_MAX)return nullptr;
+        }
+    };
+    out.random=[r](uint32_t bound){r->endingRequest(0x80005da0,{int32_t(bound)});return r->random.bounded(int32_t(bound));};
+    out.resourceWord=[r](uint32_t address)->std::optional<uint32_t>{uint32_t value;
+        if(r->vm.memory.readWord(address,value) || r->vm.gpAddresses.readWord(address,value))return value;
+        return {};
+    };
+    return out;
+}
+bool TrioAttack::resumeClassMenuFrame(uint32_t camera,uint32_t userdata,BattleClassNativeFrame& frame,BattleClassNativeSubmission submission) const {
+    const auto r=runtime_;if(!r || camera!=8 || userdata!=Battle || !r->cameraMainPublication)return false;
+    const auto& call=r->cameraDrawCursor.display;
+    if(!call.active || !call.invoking || call.callback!=0x8012210c || call.camera!=camera || call.userdata!=userdata)return false;
+    return frame.resume(r->cameraMainPublication,r->cameraMainCursor,r->cameraDrawCursor,r->displayQueue,camera,userdata,submission);
+}
 bool TrioAttack::resumeEnemyHpDraw(uint32_t camera,uint32_t userdata,const TrioEnemyHpNativeServices& source) const {
     const auto allocation=enemyHpAllocation();
     const auto owner=runtime_; // External hooks may replace the public owner.

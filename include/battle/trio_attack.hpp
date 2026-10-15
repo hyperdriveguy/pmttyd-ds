@@ -17,6 +17,7 @@
 #include "camera_letterbox_draw.hpp"
 #include "battle_enemy_hp_draw.hpp"
 #include "battle_enemy_hp_frame.hpp"
+#include "trio_class_menu_frame_binding.hpp"
 #include "battle_stock_exp_draw.hpp"
 #include "battle_break_slot_draw.hpp"
 #include "field_bero_exec.hpp"
@@ -139,6 +140,10 @@ public:
     bool resumeLetterboxDraw(uint32_t camera,uint32_t userdata,const CameraLetterboxDrawServices&) const;
     bool resumeEnemyHpDraw(uint32_t camera,uint32_t userdata,const BattleEnemyHpDrawServices&) const;
     bool resumeEnemyHpDraw(uint32_t camera,uint32_t userdata,const TrioEnemyHpNativeServices&) const;
+    // Stable actual VM binding; linked math/footer/GPU providers must own their
+    // retained child invocations. This does not activate source command Main.
+    std::optional<TrioClassMenuFrameBinding> classMenuFrameBinding(const BattleActDrawServices& linked) const;
+    bool resumeClassMenuFrame(uint32_t camera,uint32_t userdata,BattleClassNativeFrame&,BattleClassNativeSubmission={}) const;
     std::optional<uint64_t> enemyHpAllocation() const;
     std::shared_ptr<const uint8_t> enemyHpAllocationOwner() const;
     bool enemyHpAllocationCurrent(uint64_t) const;

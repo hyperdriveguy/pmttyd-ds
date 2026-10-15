@@ -7,39 +7,24 @@ namespace ttyd {
 bool Renderer::prepareClassMenuDrawing() {
   if (!c3dReady || !programReady || !top)
     return false;
-  if (classVertices && classTextures[0].imported && classTextures[1].imported)
-    return true;
-  if (!classAssets.ready() &&
-      !classAssets.load("romfs:/battle-class-surfaces.bin",
-                        "romfs:/battle-class-icons.bin"))
+  if (!classSurfaceGpu)
+    classSurfaceGpu = std::make_unique<NativeBattleClassSurfaceGpu>();
+  if (!classSurfaceGpu->resource().ready() && !classSurfaceGpu->load("romfs:"))
     return false;
-  C3D_FrameSync();
-  if (!classVertices)
-    classVertices =
-        static_cast<Vertex *>(linearAlloc(sizeof(Vertex) * 6 * 1024));
-  if (!classVertices)
-    return false;
-  const char *files[] = {"romfs:/battle-class-surfaces.t3x",
-                         "romfs:/battle-class-icons.t3x"};
-  for (unsigned i = 0; i < 2; ++i) {
-    auto &slot = classTextures[i];
-    if (slot.imported)
-      continue;
-    FILE *file = std::fopen(files[i], "rb");
-    if (!file)
-      return false;
-    slot.imported =
-        Tex3DS_TextureImportStdio(file, &slot.texture, nullptr, false);
-    std::fclose(file);
-    if (!slot.imported)
-      return false;
-    C3D_TexSetFilter(&slot.texture, GPU_LINEAR, GPU_LINEAR);
-    C3D_TexSetWrap(&slot.texture, GPU_CLAMP_TO_EDGE, GPU_CLAMP_TO_EDGE);
+  if (!classVertices) {
+    C3D_FrameSync();
+    classVertices = static_cast<Vertex *>(linearAlloc(sizeof(Vertex) * 6 * 1024));
   }
-  return true;
+  return classVertices != nullptr;
 }
 const BattleClassAssets *Renderer::classMenuAssets() {
-  return prepareClassMenuDrawing() ? &classAssets : nullptr;
+  if (!prepareClassMenuDrawing()) return nullptr;
+  return classSurfaceGpu->resource().lease().assets.get();
+}
+std::optional<BattleClassSurfaceLease> Renderer::classMenuSurfaceLease()const {
+  if (!c3dReady || !programReady || !top || !classVertices ||
+      !classSurfaceGpu || !classSurfaceGpu->resource().ready()) return {};
+  return classSurfaceGpu->resource().lease();
 }
 const BattleClassFooterGpuResource *Renderer::classFooterResources() {
   if (!c3dReady || !programReady || !top)
@@ -51,14 +36,12 @@ const BattleClassFooterGpuResource *Renderer::classFooterResources() {
   return &classFooterGpu->resource();
 }
 void Renderer::releaseClassMenuDrawing() {
+  releaseClassMenuFrame();
   if (c3dReady)
     C3D_FrameSync();
-  for (auto &slot : classTextures) {
-    if (slot.imported) {
-      Tex3DS_TextureFree(slot.imported);
-      C3D_TexDelete(&slot.texture);
-    }
-    slot = Texture{};
+  if (classSurfaceGpu) {
+    classSurfaceGpu->release();
+    classSurfaceGpu.reset();
   }
   if (classFooterGpu) {
     classFooterGpu->release();
@@ -76,8 +59,9 @@ void Renderer::releaseClassMenuDrawing() {
 bool Renderer::drawClassMenu(const BattleClassBackend &batch) {
   // Resource preparation belongs before FrameBegin. Preflight a complete
   // ordered batch, including every footer lifetime, before any GPU mutation.
-  if (!batch.complete() || batch.assets != &classAssets || !classVertices ||
-      !classTextures[0].imported || !classTextures[1].imported ||
+  if (!c3dReady || !c2dReady || !programReady || !top || !batch.complete() ||
+      !classSurfaceGpu || !classSurfaceGpu->resource().accepts(batch.surfaceLease) ||
+      batch.assets != batch.surfaceLease.assets.get() || !classVertices ||
       transformLoc < 0)
     return false;
   if (batch.quads.size() > 1024 - classVertexCount / 6)
@@ -153,10 +137,10 @@ bool Renderer::drawClassMenu(const BattleClassBackend &batch) {
     C3D_Tex *texture = nullptr;
     switch (q.texture) {
     case BattleClassTexture::Surfaces:
-      texture = &classTextures[0].texture;
+      texture = classSurfaceGpu->texture(0, batch.surfaceLease);
       break;
     case BattleClassTexture::ClassIcons:
-      texture = &classTextures[1].texture;
+      texture = classSurfaceGpu->texture(1, batch.surfaceLease);
       break;
     case BattleClassTexture::MessageIcons:
       texture = &messageIconTexture.texture;

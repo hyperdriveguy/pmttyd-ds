@@ -1590,6 +1590,7 @@ void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audio
 // SYNCDRAW permits CPU arenas to be reused only after previous GPU work finishes.
 void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool audioAvailable) {
     prepareEnemyHp(g);
+    prepareClassMenuFrame(g);
     prepareSourceIcons(g);
     const bool battleOwner=g.trioBattleActive || g.scene==Scene::Battle || g.scene==Scene::Victory || g.scene==Scene::Defeat;
     const bool mapsFirst=!battleOwner || prepareBattleMaps(g);
@@ -1609,6 +1610,7 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
     if(g.harborTutorial.running() || g.trioBattleActive)prepareAudienceDrawing();
     if(!C3D_FrameBegin(C3D_FRAME_SYNCDRAW))return;
     trioScenePrepared=false;
+    classVertexCount=0;classMenuSubmitReady=false;classMenuSubmissionWaiting=false;
     item95IconCount=0;
     windowFrameCount=0;
     windowFontCount=0;
@@ -1624,8 +1626,13 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
     if(g.harborTutorial.running())worldTutorial(g);else if(battleMapsReady)world(g);
     if(g.trioBattleActive && trioScenePrepared)drawSourceIcons(4);
     if(g.trioBattleActive)drawEnemyHp(g); // Original HP902 precedes other camera8 UI901/499/490.
+    // The first queue visit prepares source UI geometry and holds at its real
+    // GPU submission. Complete that SAME callback after the independent world
+    // adapter and original HP layer, before advancing the source display queue.
+    classMenuSubmitReady=true;
+    if(classMenuSubmissionWaiting&&C3D_FrameDrawOn(top))resumeFinishingCamera(g);
     if(!g.trioBattleActive)drawFieldItemGet(g);
-    classVertexCount=0;C2D_Prepare();C2D_SceneBegin(top);overlay(g);
+    C2D_Prepare();C2D_SceneBegin(top);overlay(g);
     if(!battleMapsReady)text(actorTexturesReady?"Development notice: battle map unavailable":"Development notice: scene actor texture unavailable",16,220,.42f,Ink);
     if(g.trioBattleActive){C2D_Flush();drawSourceIcons(8);C2D_Prepare();C2D_SceneBegin(top);}
     // Native fade layer.99 covers top400x240 and bottom320x240. Opaque255
