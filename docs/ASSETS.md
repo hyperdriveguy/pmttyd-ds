@@ -2193,3 +2193,24 @@ word80415190 is NOT imported from its ISO initialffffffff value. Extracted
 source/evidence, compiled packs and executables remain outside Git. Existing
 Nintendo/Intelligent Systems rights and private local-use restrictions remain
 unchanged; no redistribution license or original binary/ISO is committed.
+## 2026-10-14 — Original enemy HP17/18 surfaces
+
+Read-only `/home/carson/games/roms/G8ME01.iso` path
+`battle/common/battle_common.tpl` (217920 bytes;SHA256
+8eb685317056f42b3ef73138eaad85d16fa4943d830b44a149f09971a5959bb1).
+`tools/battle_enemy_hp_assets.py` verifies original descriptors17/18:40x16 CMPR,
+320 bytes each at0xb100/0xb240. Compressed hashes:
+1968aec5606a2dc326d272efa0602a98ebd08ab15a99b53014e8bedd26a73ddd and
+21c140ae6dae0bda018f9468b364fb733789d5ba60deacb8879acc8e516bc202.
+RGBA pixel hashes and original descriptor metadata are retained in the private
+`battle-enemy-hp-surfaces.json`. Conversion preserves exact decoded pixels,
+adds2px transparent padding and places them in a128x32 RGBA8 atlas (16KiB);
+no resizing, lighting change or geometry reduction. All original edge pixels
+have zero alpha, preserving present clamp boundaries with this padding.
+Separate68-byte PMBEHP01 catalog and `.t3x`/`.json` products live in ignored
+RomFS/work directories; footer4..16 catalog remains unchanged.
+Nintendo/Intelligent Systems retain original rights; no redistribution license.
+The native GPU owner executes source HP textured/raster/solid material state and
+validates generation/whole bar batches before drawing. This alone does not prove
+normal battle activation or unified number/bar order; those require the actual
+queued callback and native ordered publication owner.

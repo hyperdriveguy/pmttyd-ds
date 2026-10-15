@@ -2130,3 +2130,12 @@ add_executable(field_npc_mario_detection_tests tests/field_npc_mario_detection_t
 target_link_libraries(field_npc_mario_detection_tests PRIVATE ttyd_core)
 add_test(NAME field_npc_mario_detection COMMAND field_npc_mario_detection_tests)
 set_tests_properties(field_npc_mario_detection PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+# Retained stage children and original enemy HP17/18 GPU material.
+target_sources(ttyd_core PRIVATE source/battle/battle_stage_main_continuation.cpp source/display/battle_enemy_hp_gpu.cpp)
+add_executable(battle_stage_main_continuation_tests tests/battle_stage_main_continuation_tests.cpp)
+target_link_libraries(battle_stage_main_continuation_tests PRIVATE ttyd_core)
+add_test(NAME battle_stage_main_continuation COMMAND battle_stage_main_continuation_tests)
+add_executable(battle_enemy_hp_gpu_tests tests/battle_enemy_hp_gpu_tests.cpp)
+target_link_libraries(battle_enemy_hp_gpu_tests PRIVATE ttyd_core)
+add_test(NAME battle_enemy_hp_gpu COMMAND battle_enemy_hp_gpu_tests)
+set_tests_properties(battle_enemy_hp_gpu PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

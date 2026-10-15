@@ -1,5 +1,6 @@
 #include "trio_attack.hpp"
 #include "battle_main_continuation.hpp"
+#include "battle_stage_main_continuation.hpp"
 #include "battle_pose_inner.hpp"
 #include "animation_draw_traversal.hpp"
 #include "animation_shape_render.hpp"
@@ -354,13 +355,15 @@ struct TrioAttackRuntime {
         byte(Battle+0x180f8,byte(Battle+0x180f8)|0x20);
         return flag("if_body",true) && flag("if_wire",true);
     }
+    BattleStageObjectCursor stageObjectMain;
+    BattleStageWorkCursor stageWorkMain;
     bool updateStageObjects() {
         BattleStageObjectServices s;s.actors=nativeBattleActorServices(vm);s.user=this;
         s.translate=[](void* p,uint32_t name,const StageMapObjects::Point& value){auto& r=*static_cast<TrioAttackRuntime*>(p);auto* m=r.stageMapOwner(r.text(name));return m && m->translate(r.text(name),value);};
         s.rotate=[](void* p,uint32_t name,const StageMapObjects::Point& value){auto& r=*static_cast<TrioAttackRuntime*>(p);auto* m=r.stageMapOwner(r.text(name));return m && m->rotate(r.text(name),value);};
         s.groupFlags=[](void* p,uint32_t name)->std::optional<uint32_t>{auto& r=*static_cast<TrioAttackRuntime*>(p);auto* m=r.stageMapOwner(r.text(name));return m?m->flags(r.text(name)):std::nullopt;};
         s.groupFlag=[](void* p,uint32_t name,uint32_t mask,bool on){auto& r=*static_cast<TrioAttackRuntime*>(p);auto* m=r.stageMapOwner(r.text(name));return m && m->flag(r.text(name),mask,on);};
-        return packedBattleStageObjectMain(s);
+        return resumePackedBattleStageObjectMain(s,stageObjectMain);
     }
     bool updateStageWork() {
         BattleStageWorkServices s;s.actors=nativeBattleActorServices(vm);s.user=this;
@@ -377,7 +380,7 @@ struct TrioAttackRuntime {
             if(std::isfinite(value) && value>=-2147483648.f && value<2147483648.f)return int32_t(value);
             static_cast<TrioAttackRuntime*>(p)->pending=0x80139150;return {};
         };
-        return packedBattleStageWorkMain(s);
+        return resumePackedBattleStageWorkMain(s,stageWorkMain);
     }
     BattleAudienceInitServices audienceInitServices() {
         BattleAudienceInitServices s;s.actors=nativeBattleActorServices(vm);s.user=this;

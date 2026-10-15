@@ -1255,3 +1255,7 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Enemy HP linked raster helpers](display/ORIGINAL_ENEMY_HP_LINKED_RASTER_HELPERS.md): original texture/raster state, geometry and suspended child ordering.
 - [Source icon number continuation](display/SOURCE_ICON_NUMBER_CONTINUATION.md): original signed digit/table/matrix behavior; native ordered publication remains an integration boundary.
 - [Retained NPC Mario detection](field/NATIVE_NPC_MARIO_DETECTION.md): original avoidance/proximity gates, distinct norm/inner-threshold arithmetic, actual mutable sequence/Kpa reads and unfinished Display frontier.
+## Retained stage and original enemy HP surfaces
+
+- [Retained stage Main children](battle/RETAINED_STAGE_MAIN.md): cache updates, transforms, spotlight, entry and counter operands survive waits.
+- [Original enemy HP GPU assets and ordered batch](display/ORIGINAL_ENEMY_HP_GPU_ASSETS_AND_ORDERED_BATCH.md): original common textures17/18, source material/FIFO validation and generation-bound bar packets; unified number/bar publication remains separate.
