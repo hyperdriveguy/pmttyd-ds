@@ -10799,3 +10799,60 @@ normal battle/command/camera scheduling and completed lower-screen audience
 visibility, keeping physical X plus optional harmful-item touch interruption.
 Workers are authorized by the user's explicit UI parallelization request.
 The full tutorial/real-battle goal remains active and incomplete.
+
+## 2026-10-14 — Action UI and class raster continuations documented
+
+Added inline ownership/layout/numeric/behavior notes to 22 C++ files covering
+class selection and UI allocation, ring center/ellipse, immediate/retained draw
+and icon sorting, queued class wrapper, immediate/retained circle/bubble raster,
+buttons/pinch, palette/queue registration and audience animation bytecodes.
+Added [action UI/ring](code/battle-action-ui.md) and
+[class raster/footer](code/battle-class-raster.md), indexed in docs/code/README.md.
+Code/docs commit 8abc76fd. All 22 preserve executable tokens/string literals.
+No behavior changes or new tests were required for this prose-only work.
+
+Explained original guest-call enums, class rows/UI word arrays, constant-bank
+roles, source duration/rate and transform domains. Obscure cases include item
+selection returning 0 after UI effects, asymmetric wrap sound/store ordering,
+unused lookup output, projected depth replaced by offsetY, optional unwritten
+stack slots, strict-swap ordering without stable-sort claims, independently
+fresh row/count/enable reads, overlapping closed shadow intervals, discarded
+rotation before real identity, low16 font width, no-clamp footer decrement and
+hidden audience still querying/queuing its window. Retained parents preserve
+completed calls and exact queued operands; unretained child suffixes remain
+caller-owned. No guessed source geometry, flag names or timing claims.
+
+Frozen source baseline 9e8eb17b5667474a42d9882a069e44d966ea1ecf plus owned documentation is at
+artifacts/battle-action-ui-code-documentation-validation/source. Full audit of
+3784 tracked baseline files reports zero unexpected changes. All 25 documented
+files match recorded frozen/live snapshots; all 47 local guide/index links resolve.
+Concurrent lifecycle/Main/HP rendering and other checkout work was preserved and
+excluded; these results do not validate the combined moving tree. One guide-only
+clarification after build launch describes fixed cursor entrypoint/owner during
+queue registration; no C++ annotation refinements after launch.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test passes 402/402 C++ (122.67s) and
+205/205 Python (107.836s), zero skipped. make all -o assets-ready -j4
+SOUNDTRACK=gamecube exits0. Manifest records exact source, dependency, authority,
+log and ELF/3DSX hashes. Existing compiler/Pillow warnings remain. No emulator/
+profile/save or physical hardware/pixel/performance claims.
+
+Cache starts from accepted stage/camera documentation inputs: 43 product hashes,
+common-menu/relocated Frankly evidence and 14 private footer PNG/atlas hashes.
+Before gates, proactively replaced ONLY animation-boot/memory.pmevt/json from
+artifacts/animation-live-entry-source, matching recorded product hashes in
+artifacts/animation-live-entry-validation-manifest.json. Five frozen startup/
+Entry source/header/tool/fixture hashes also match that authority. This retains
+six additional original Entry default/format/sort spans required by the committed
+baseline. Final accepted product count remains 43. No conversion/import/shared
+pack writes during assembly; existing Python conversion fixtures independently
+read ISO read-only and generate into empty temporary outputs. Native asset
+regeneration deliberately skipped. Original choices/licenses unchanged; no
+original asset binaries/ISO committed. See [asset notes](ASSETS.md).
+
+Next: audience controller/item/sound/actor helpers, remaining battle/damage/UI
+leaves, message/story/effect, platform/file/event/runtime helpers and tools.
+Re-audit concurrent lifecycle/Main, animation Entry, NPC detection and HP/display
+integration against their committed versions. A matching annotation snapshot is
+not proof of complete semantics. Full documentation/remake remain unfinished;
+goal stays active.

@@ -2156,3 +2156,24 @@ source increment adds no original binary/texture pack and performs no texture
 resampling or geometry conversion. Original data and derived private dumps
 remain ignored outside source history. Nintendo/Intelligent Systems retain
 rights to the original game assets/code; no redistribution license is granted.
+
+## Action UI/class raster documentation validation inputs (2026-10-14)
+
+artifacts/battle-action-ui-code-documentation-validation/source reuses accepted
+stage/camera documentation RomFS/evidence. Assembly verifies 43 product hashes,
+common-menu/relocated Frankly evidence and 14 private footer PNG/atlas hashes.
+Proactively replaces only animation-boot/memory.pmevt/json from
+artifacts/animation-live-entry-source after both SHA256 values match
+artifacts/animation-live-entry-validation-manifest.json. Five frozen startup/
+Entry source/header/tool/fixture hashes also match that authority. Exact sources,
+old/new product hashes, byte counts and authority SHA256 are in the manifest.
+Memory pack SHA256 5365973450f39d9ce334692ba14f13350f8f3fc0c8cd14b370dfb4c849b1db57;
+metadata SHA256 0305a9358bd344fba520a93123c97f5236e4a0c452d7fb3efff6d788ef0bb261.
+Original image adds six source Entry color/one-zero/format/sort spans to prior
+DOL data/BSS image; initialized DOL data wins overlaps as before. No new
+conversion/resampling, geometry/lighting changes, editable imports or shared
+pack writes. Mutable evidence is private; other large inputs remain shared reads.
+Existing Python fixtures independently read ISO read-only and use empty temporary
+outputs; native regeneration is deliberately skipped. Nintendo/Intelligent
+Systems rights remain reserved. Private tracking/copying grants no new license;
+no ISO, extracted original asset or compiled binary was committed.
