@@ -15172,3 +15172,91 @@ Explicit test WindowReady/global-GX/direct Camera8 and font OS/catalog/heap
 providers remain test fixtures. This proves native leaf rendering/lifetime only,
 not production startup, whole weapon callback/normal battle or original PPC
 pixel parity. Probe source, original payloads and binary remain ignored/private.
+
+## 2026-10-15 — Guarded private native capture acceleration
+
+Implemented [private capture proofs](behavior/display/NATIVE_PRIVATE_CAPTURE_PROOFS.md)
+for native phase20 output decoding. General configureMain callers default to
+scalar ownership checks. An explicit opt-in requires current/pass independence
+from private candidate/cursor writes. Each closed borrow then proves a fresh raw
+W-root/header, all raw nonempty channel extents, and physical separation of the
+publication object plus six written vector spans from EVERY VM owned/external
+region. Candidate writes cannot change any guest source/guard bytes; the admitted
+predicate cannot change because of those writes. This permits one full ownership
+check for that slice. Source reads, BE/float conversion, finite failures, candidate
+stores, scalar/channel frontiers, read counts and visit budgets retain their order.
+Missing ranges or aliases take the scalar fallback, preserving readable prefixes.
+No proof/pointer survives a return; RAII clears fast/structural flags. Metadata,
+source Main, assembly, geometry validation and final publication checks remain.
+
+Independent read-only review found the proof/lifetime rules sound. It also caught
+excessive test residency: five cold processes are now scoped sequentially except
+for the two used for parity. The stronger final W proof follows the actual raw
+root independently of the earlier captured metadata W pointer. The raw helper
+proves VM separation only, not arbitrary semantic-provider ownership; raw source/
+guard admission and explicit predicate independence are both required. Native
+bounds and opt-in/work budgets are port policy rather than original constants.
+
+Accepted BASE/TREE: `8f168c555d7688965b63cd7ecb96598259f82a1c` /
+`b338072d1db7475daa7606ed04b9781d0e57b3d2`, in `artifacts/source-checks/npc-wander`.
+All 3991 tracked blobs match, with zero mismatches; all 2152
+inherited RomFS products and original gor_02.s remain unchanged. The sole shared
+NativeFieldAnimation caller edit is applied to the accepted immutable source,
+excluding concurrent root party/font/render changes. Validation is for this exact
+source composition, not the entire moving root. Code commit:
+`b8c7dcabc28802bab85995eb986e1d87eedfca0f`.
+Documentation is a separate incremental commit.
+
+Final validation:
+
+- `TRIO_ENEMY_POSE_PACK=romfs CMAKE_BUILD_PARALLEL_LEVEL=4 make test`: exit0;
+  445/445 C++ (60.32s), 212/212 Python (74.019s), zero skipped.
+  Tests compare opt-in and scalar phase/completion/read-count/full-shape results
+  over varied budgets. Existing every-visit hold, static mismatch/repair, globals,
+  linked/null, lifecycle and Game barriers now exercise opt-in. Added owner/vector
+  VM-alias fallback/re-admission, missing-later-channel prefix, nonfinite/stale-pass
+  repair and raw owned/external/empty/null/overlap-boundary proofs pass.
+- `make all -j4 -o assets-ready SOUNDTRACK=gamecube`: exit0; normal SHA256
+  `52bf70ef7e392ad980884652ebee0b99a58baeb1b35ec30b7571d46f8cc5f5e2`. Restoring normal sources after the probe and rebuilding
+  reproduces it. Full source/asset audit passes after all test/profile restoration.
+- Fresh isolated `artifacts/azahar-publication-fast-probe`: actualMesh, atomicity,
+  holds, globals, linked/null, producer/Game barrier, reuse, no replay, RAM cache,
+  source selection and fastCapture markers all PASS. The same assertions run on
+  ARM before production Game allocation, preserving the established memory limit.
+- Matched instrumented fields `artifacts/azahar-publication-cost-before` and
+  `artifacts/azahar-publication-cost-after`: original fixture, movement and tick
+  assertions pass. Stable idle capture/decode falls 5.180→2.153 ms/tick; assembly
+  stays 1.085→1.092 ms; both geometry checks combined stay 0.719 ms. Source Main
+  stays around 2.2–2.4 ms. Prepare includes the first geometry check and must not
+  be added to that row. Main resumes equal Game ticks in compared idle intervals.
+  In-memory counters with sparse logs avoid per-call SD timing distortion.
+- Clean field `artifacts/azahar-publication-fast-clean`: 70-second warmup,
+  original fixture, right/left movement and exception checks pass. Original
+  Mario/Rogueport/NPC art remains visible. The HUD reports about 25 FPS with
+  simulation 17.09 ms/loop, CPU render 6.6 ms and GPU 0.5 ms. Azahar simultaneously
+  reports 15 app FPS at 50% emulation speed (33.05 ms frame), so this capture cannot
+  prove a wall-clock frame-rate gain. The native phase reduction above is the
+  supported performance result; original pixel parity and hardware speed remain
+  unverified. Fresh normal boot `artifacts/azahar-publication-fast-normal` passes the
+  40-second isolated smoke without native exceptions.
+
+Evidence is pinned in ignored `artifacts/publication-fast-validation-manifest.json`,
+`publication-fast-phase-comparison.json`, exact test/build/audit logs and isolated
+profiles. A transient profiler-build overlap was resolved by waiting for both
+jobs and forcing a stable relink before collecting the before capture. Independent
+make jobs exposed shared temporary FIFO-name collisions across process namespaces;
+later builds use `--jobserver-style=pipe`. The accepted builds/tests above finish
+successfully. Existing unrelated compiler/Pillow warnings remain. No automated
+check changes the user's emulator profile or saves.
+
+No asset conversion, story/dialogue, music/SFX, numeric-operation ordering, clock
+or simulation-tick policy changed. Original rights are unchanged; ISO/extracted
+assets/compiled packs/fixtures/binaries stay outside source history. Profiles do
+not establish original hardware/FPSCR/pixel parity or physical New 2DS XL speed.
+Full source NPC Draw/Inner/queue/GPU/material/light/shadow activation remains open;
+EVT-01 and the full-remake goal stay OPEN/active.
+
+Next: inspect residual decode access/dispatch cost using the admitted raw spans,
+then continue binding original NPC selection/Main/DrawMtx/Inner/queue services to
+retained process owners. Preserve fallback and exclusive pass/lifetime contracts;
+complete source SetLocalTime/paper setters and validate physical hardware speed.

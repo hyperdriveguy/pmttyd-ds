@@ -474,3 +474,11 @@ source dependency is complete SetAnim80041170. Exact gates and limitations are i
 and [EVT-01](EVT-01.md) delivered. Actual Mario setup now uses the source parent;
 force0 equality and partial clock/strcmp/reset frontiers are retained. This does
 not close paper/local-time setters, full NPC draw services or rendering performance.
+
+## 2026-10-15 — Private raw decode proof and performance evidence
+
+[Native contract](../behavior/display/NATIVE_PRIVATE_CAPTURE_PROOFS.md) and
+[optimization evidence](../optimization/SOURCE_ANIMATION_RAM_ACCESS.md) delivered.
+Fresh raw reads and invariant private-write guards reduce capture/decode cost;
+complete static geometry checks and original numeric/cursor semantics remain.
+This delivery does not close full NPC draw activation or physical hardware speed.

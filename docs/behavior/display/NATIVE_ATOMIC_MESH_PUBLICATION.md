@@ -57,11 +57,13 @@ The original source Main slice and each uninterrupted capture/decode slice use
 [callback-scoped raw RAM backing proofs](../event/CALLBACK_SCOPED_RAW_RAM_ACCESS.md).
 The fixed stack cache stores whole-region byte addresses only when every semantic
 provider excludes the full region. Otherwise a separately excluded exact request
-range can be cached; semantic addresses never enter the cache. Every load still observes fresh bytes; pose,
-pass, generation, GQR and header value checks remain in place. The W guard reads
+range can be cached; semantic addresses never enter the cache. Every load still observes fresh bytes. Source Main and scalar fallback retain
+fresh per-primitive pose/pass/generation/GQR/header checks; the opt-in
+[private decode proof](NATIVE_PRIVATE_CAPTURE_PROOFS.md) admits a once-per-borrow
+guard check when raw storage and private writes prove those guards invariant. The W guard reads
 the actual root and compares the actual 24-byte BE header against its admitted
-original layout using native memcmp, with a semantic/cross-region fallback. It
-never caches the comparison result. Fixed tangent/scratch owner identities are
+original layout using native memcmp, with a semantic/cross-region fallback. The
+address cache never stores comparison results. Fixed tangent/scratch owner identities are
 proved once per closed borrow; RAII clears that proof on every return. Source
 alias writes into W invalidate the very next primitive, as the regression test
 checks. A fully
@@ -89,8 +91,10 @@ their borrow before static admission, assembly or final geometry checks. No
 address cache survives a resume. Standard ARMv6K hard-float compilation and
 native libc operations retain the existing 3DS service/GPU path. This is native
 backing and copy acceleration; original numeric operation order remains intact. The read slice avoids a duplicate loop-top
-check because each word/byte primitive still checks fresh ownership and pure cursor
-transitions have no external effects.
+check because scalar fallback word/byte primitives check fresh ownership and pure
+cursor transitions have no external effects. Private decode additionally uses the
+explicit raw/disjoint/independent-predicate proof linked above; no proof survives a
+yield and no geometry/assembly/publication check is removed.
 
 The publication owner accepts a native handle/resource domain rather than a
 Mario-specific mesh format. New original areas and actors can reuse the file,

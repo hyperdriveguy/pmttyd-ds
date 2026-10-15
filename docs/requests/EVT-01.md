@@ -5365,3 +5365,14 @@ See [binding](../behavior/partner/NATIVE_TEMPORARY_PROFESSOR_PARTY.md).
 - [ ] Bind original party direction/control and active mode cleanup/cancellation.
 - [ ] Complete full engine/battle teardown and actual field return, harbor/plaza
   dispatch and end-to-end prologue verification.
+
+## 2026-10-15 — Guarded private capture acceleration
+
+Delivered [private publication capture proofs](../behavior/display/NATIVE_PRIVATE_CAPTURE_PROOFS.md)
+for native original-output decoding. This changes guard lookup cost, preserving
+source reads/numeric operations, scalar frontiers, clock/pass ownership and final
+geometry checks. The raw storage and independent predicate admission is explicit;
+generic callers remain scalar by default. Original-resource host/ARM parity,
+alias fallback, missing/nonfinite repair and lifecycle tests pass. Phase evidence
+is in progress. Full source NPC Draw/Inner/queue/GPU/service activation and physical
+performance remain open; no new story or asset conversion. EVT-01 stays OPEN.

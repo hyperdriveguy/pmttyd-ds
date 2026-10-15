@@ -85,3 +85,30 @@ source hashes and current performance limits are recorded in
 Per-call SD profiling from an intermediate diagnostic distorted the timings and
 is not used for final performance conclusions. No profiler remains in the normal
 binary, and no new asset conversion or shader change was made.
+
+## Private publication decode acceleration — 2026-10-15
+
+Split native phase counters identified capture/decode as the dominant remaining
+publication cost. The [private capture proof](../behavior/display/NATIVE_PRIVATE_CAPTURE_PROOFS.md)
+now removes redundant per-scalar ownership checks only within an admitted raw,
+physically private, predicate-independent decode borrow. General callers default
+to scalar guards. Native VM reads, BE/float operations and finite-failure/cursor
+frontiers retain their order; geometry validation and assembly remain intact.
+
+Stable idle intervals under isolated Azahar, milliseconds per simulation tick:
+
+| Phase | Before | After |
+| --- | ---: | ---: |
+| Capture/decode | 5.180 | 2.153 |
+| Assembly | 1.085 | 1.092 |
+| Both geometry checks combined | 0.719 | 0.719 |
+
+Source Main remains about 2.2–2.4 ms in these intervals. Prepare includes the first
+geometry check, so it must not be added to the geometry row again. Timed counters
+stay in memory; sparse SD logging occurs outside simulation intervals. Both use
+the same original field fixture, ARMv6K hard-float/O2 flags and original packs.
+Main resumes equal actual Game ticks in the compared idle intervals. These are
+emulator observations rather than physical hardware/original timing constants.
+Exact source/asset/binary hashes, clean captures and remaining limits are in
+[progress](../PROGRESS.md) and the ignored publication-fast validation manifest.
+No profiler remains in the normal binary.

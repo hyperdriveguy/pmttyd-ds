@@ -1397,3 +1397,5 @@ Original battle menu native resource/queue owners:
 - [Retained original ordinary animation selection](display/NATIVE_RETAINED_ANIMATION_SELECTION.md): exact signed/raw selector, directory/clock/literal ordering, native owner and Mario setup integration; full NPC draw and source paper/local-time setters remain open.
 
 - [Native temporary Professor party](partner/NATIVE_TEMPORARY_PROFESSOR_PARTY.md): actual kind11 model/resource/constructor, fresh get-position outputs and original first-talk/fence ownership.
+
+- [Private raw publication capture proof](display/NATIVE_PRIVATE_CAPTURE_PROOFS.md): default-off predicate-independence opt-in, raw guard/source spans, complete VM physical-alias exclusion, scalar fallback and retained decoding semantics.

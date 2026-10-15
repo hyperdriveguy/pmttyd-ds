@@ -3494,3 +3494,13 @@ read-only into empty temporary destinations. Guides explain existing submenu
 packaged BFN or editable art. Nintendo/Intelligent Systems rights retained; no
 new license/redistribution rights and no ISO/extracted original or compiled
 binary committed.
+
+## 2026-10-15 — Private native capture optimization (no asset changes)
+
+The decoder still consumes existing actual source output arrays and original
+relocated a/ MODEL geometry/name resources. No extraction, texture scaling,
+geometry/lighting, audio, dialogue or shader conversion changed. All 2152 inherited
+RomFS products and the original gor_02.s source remain byte-identical to the
+accepted baseline. Original rights/licensing are unchanged. ISO, extracted
+originals, compiled packs, fixtures, profiler builds and validation binaries stay
+outside source history.

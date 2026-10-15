@@ -59,7 +59,8 @@ New 2DS XL performance. See the latest [progress](../../PROGRESS.md) and
 
 The retained native Main executor and atomic mesh capture/decode now use this
 closed synchronous scope. Current/pass/reservation predicates must remain pure;
-all source header, pose lifetime and numeric/GQR checks still read fresh values.
+source Main and scalar fallback header/lifetime/numeric/GQR checks read fresh
+values. Opt-in private decode has a separate invariance proof below.
 The W guard uses a fresh root and 24-byte BE header comparison, with native
 memcmp only over proved raw storage and byte fallback elsewhere. Structural
 tangent/scratch owner identities are proved once per closed borrow and RAII
@@ -75,3 +76,14 @@ Only positive byte copies or positive truncated-word counts are admitted; other
 cases retain the original scalar helper. Failure stores nothing, active scalar
 cursors never switch lanes, and parent service identity includes the copy slot.
 See [native publication](../display/NATIVE_ATOMIC_MESH_PUBLICATION.md).
+
+## Private publication storage proof (2026-10-15)
+
+`RawRamAccess::disjointStorage(pointer,size)` checks physical separation from
+ALL registered owned/external VM regions, without retaining a pointer. It proves
+no semantic-provider ownership claim. The [private capture contract](../display/NATIVE_PRIVATE_CAPTURE_PROOFS.md)
+combines this check for the owner object and six candidate write vectors with
+raw root/header/source-range proofs and explicit predicate independence. Only
+that admitted closed decode slice can omit repeated ownership checks. Failure
+falls through the scalar continuation; flags clear by RAII at every return.
+Fresh reads, finite failures, stores and visit counts retain their order.
