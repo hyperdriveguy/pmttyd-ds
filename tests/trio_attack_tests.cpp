@@ -1,4 +1,5 @@
 #include "trio_attack.hpp"
+#include "field_actors.hpp"
 #include "battle_pose_inner.hpp"
 #include "native_shadow_program.hpp"
 #include "actor_animation.hpp"
@@ -199,6 +200,8 @@ int main(){
     const auto* stylish=animation.pose("M_A_5");assert(stylish && stylish->keys.size()==1 && stylish->start==0 && stylish->end==2);
     ActorAnimationSample at0,at2,after;assert(stylish->evaluate(0,at0) && stylish->evaluate(2,at2) && stylish->evaluate(60,after));
     assert(at0.nodes==at2.nodes && at0.nodes==after.nodes && !at0.vertices.empty());
+    // Game snapshots original room/global menu messages from this actual root.
+    assert(loadFieldActorCatalog("romfs"));
     CollisionTransition collision;assert(collision.load("romfs/tik_01"));collision.commit();
     Progress checkpoint;checkpoint.room=5;checkpoint.originalStory=11;checkpoint.originalFlag1207=true;checkpoint.position={-1,.7f};Game game;game.restore(checkpoint);
     Input advance;advance.confirm=true;

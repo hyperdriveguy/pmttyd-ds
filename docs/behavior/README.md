@@ -1321,3 +1321,16 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Retained original party removal](partner/RETAINED_PARTY_REMOVAL.md): complete Kill/Kill2, raw EVT clear/kill and fresh-owner Mario removal graphs; native actor/free/constructor binding remains open.
 
 - [Retained Main full cumulative cache replay](display/RETAINED_ANIMATION_MAIN_CACHE_REPLAY.md): rebuild/forward/same-key, exact copies and all five stream/alias graphs through40084; interpolation/full Main and normal NPC activation remain open.
+- [Retained original radial class menu](battle/RETAINED_CLASS_MENU.md): complete physical navigation, UI allocation/release and admitted original audience interruption.
+- [Retained command input and target handler](battle/RETAINED_COMMAND_INPUT.md): complete thirty-state source parent and original target-selection flow.
+- [Typed native present-item output](battle/TYPED_NATIVE_PRESENT_ITEM.md): original healing and math/effect sequencing without a guest stack substitute.
+- [Retained class-table producer](battle/RETAINED_ACTION_CLASS_TABLE.md): original rows/icons/labels and stable unavailable-message boundaries.
+- [Atomic native command pose](battle/ATOMIC_NATIVE_COMMAND_POSE.md): actual original name copy and source part flags, separately from rendering.
+
+- [Retained original weapon menu](battle/RETAINED_WEAPON_MENU_CONTROLLERS.md): complete physical navigation and retained Main/Setup/End controllers.
+
+- [Native physical-X audience interruption](battle/NATIVE_PHYSICAL_AUDIENCE_INTERRUPT.md): original first-eligible selection without synthetic output storage, retained End and actual allocation ownership.
+
+- [Native original class-menu messages](battle/NATIVE_CLASS_MENU_MESSAGES.md): actual US resource snapshots and permanent private-VM label mapping.
+
+- [Retained original weapon UI work](battle/RETAINED_WEAPON_UI_WORK.md): original common work allocation, subtype initialization and exact retirement.

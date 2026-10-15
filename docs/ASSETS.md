@@ -2870,3 +2870,33 @@ prior packs. Original gor_02.s remains unchanged. No texture scaling, geometry,
 lighting, dialogue, music or SFX conversion in this step. Nintendo/Intelligent
 Systems original proprietary data: local development only; existing licensing
 restrictions still apply. ISO/extractions/packs/binaries remain outside history.
+## Original battle class-menu message cache (2026-10-15)
+
+Source: read-only `/home/carson/games/roms/G8ME01.iso`, original US
+`msg/US/global.txt`. The existing native `romfs/messages/global.txt` is verified
+byte-for-byte against that complete source resource by
+`tools/verify_battle_class_menu_messages.py`. Seven original ClassTable keys
+(`btl_cmd_act_jump`, `btl_cmd_act_hammer`, `btl_cmd_act_item`,
+`btl_cmd_act_operation`, `btl_cmd_act_super_action`, `btl_cmd_act_tech_party`,
+`btl_cmd_act_lecture_end`) retain their source IDs, text, control tokens, raw
+bytes, and NUL terminators. The original ISO census locates these keys only in
+`msg/US/global.txt`; no label rewriting, texture conversion, resampling, or
+new editable extraction occurs.
+
+Native field snapshots copy the actual configured `messages/global.txt` and
+`messages/<roomAsset>.txt` resources through existing MessageAssets lookup,
+preserving room/global precedence and ambiguity. Only fresh Trio VM entry
+acquires a snapshot. The private immutable class cache at guest `0x85a00000`
+registers copied original label bytes once, rejects overlaps, and remains owned
+by that actual VM until teardown; no unregister, rebinding, remapping, or
+source writes are admitted. This private-VM policy does not claim a generic
+registration-generation lease. Missing original resources or keys remain
+unavailable. Equal text from distinct source entries is not deduplicated.
+
+Provenance and per-label hashes:
+`artifacts/class-menu-original-us-label-evidence.json`; actual mapping tests
+and lifetime contract:
+`docs/behavior/battle/NATIVE_CLASS_MENU_MESSAGES.md`. Original Nintendo /
+Intelligent Systems rights remain reserved; local provenance tracking grants
+no new license. ISO, original extracted resources, and compiled packs remain
+private and are not committed or distributed by this change.
