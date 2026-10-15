@@ -5083,3 +5083,15 @@ source callbacks, release/GC or ordinary Game activation. EVT-01 remains open.
 Next bind one retained source process before ordinary Mario/partner/NPC creation,
 actual GP/field Main/facing and source release/refresh ownership; validate a real
 walk/room transition after that wiring. No full prologue parity claim.
+
+### 2026-10-14 Original NPC field tail and local whole-Main composition
+
+[Retained tail/composition](../behavior/field/NATIVE_NPC_MAIN_FIELD_TAIL_AND_COMPLETION.md)
+implementsb1d0..b3e4 and joins the actor pass to final original-F byte clear.
+Source effect counter/reload/easing/queue order, retained F/F2/M, fresh inner
+Kpa getters and copied score arguments are preserved. Native interpolation and
+actual VM Kpa queries are bound; encounter/talk/battle/score and announcement
+render callback still require real producers/owners. Tests use explicit field
+callbacks, not original story/event acceptance. Local source control-flow
+composition is delivered; normal Area Main, runtime/render/numeric parity and
+full prologue/remake remain open. EVT-01 is not closed.

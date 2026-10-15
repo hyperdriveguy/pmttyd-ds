@@ -2382,3 +2382,21 @@ deliberately skipped. Nintendo/Intelligent Systems rights remain reserved;
 private tracking/copying grants no new license. No ISO, original extracted asset
 or compiled binary committed. Exact dependency/log/native hashes and source
 baseline are journaled in the ignored validation manifest.
+
+### NPC field-tail constants (2026-10-14)
+
+field_npc_actor_assets.SPANS pins unchanged DOL8041fce4/8 rawc416000044160000
+(-600,+600), SHA2564d3b57e63f076c32b53d1b26264b1a272d87587d5b4dfef339ca8c9eb350ae2c;
+and8041fc84/4 raw42700000 (60), SHA256
+b1d2919619c1f7fac6b930d389c96f873d849fdf909b58027ee4c97148483777.
+Read-only /home/carson/games/roms/G8ME01.iso matched independently. Existing60
+bytes were already packed; -600/+600 add8 unchanged bytes. Private door pack
+152496 bytes SHA256
+917782e901710c8c85af5bcf172c3b1baa03d23b66faf16aa4b9997112b7aed3.
+All2131 products audited against accepted history baseline; only door-data.json/
+pmevt differ. Local gor_02.s unchanged. No texture/geometry/lighting/audio or
+message conversion, numeric replacement or executable PPC added. Source/helper
+paths/hashes are in the behavior contract and ignored tail audit. Nintendo/
+Intelligent Systems rights remain reserved; local extraction grants no new
+redistribution rights. No ISO/original body/asset, pack or binary committed.
+Exact product hashes:artifacts/npc-tail-assets-after.json and validation manifest.

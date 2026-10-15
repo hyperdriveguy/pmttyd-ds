@@ -11666,3 +11666,87 @@ file/save helpers and tools. Header and packed actor source were read for the
 next pass but not annotated in this batch. Re-audit concurrent additions against
 committed code; matching a prior snapshot is only an audit aid. Full code
 documentation and remake remain unfinished; goal stays active.
+
+### 2026-10-14 Original NPC field tail and retained whole Main composition
+
+Implemented source8004b1d0..b3e4 and composed actor scan+tail+final original F54d
+byte clear into one retained native invocation. Effect gates/state/count wrap,
+mandatory counter reload/signed checks, -600->0/0->+600 interpolation, distinct/
+retained zero loads and camera9/class2/actual-E queue identities match source.
+Retain original F, fresh post-encounter F2, parent Mario and score copy; preserve
+separate mode gates, eligibility, clear578-before57c and fire574 behavior. Final
+single byte clears original F even after GP/F2 changes. True only acknowledges
+one admitted complete invocation; repeated completion has no effects. Missing
+real child providers remain held. Normal Game still uses its existing field path.
+
+Native interpolation reuses audited cameraInterpolation modes1/5; actual VM
+KpaJump/Fire read-only atomic leaves fetch fresh Mario internally and query
+half50/flags1/work298+13c. No fabricated Kpa defaults, clamped source counts,
+no-op field events, dialogue or stack pointers. Numeric conversion/FPSCR remains
+an explicit adaptation boundary. Fixed cursor/native memory/queue owners and
+ARM integer/VFP arithmetic are reused without per-invocation heap allocation.
+
+[Contract](behavior/field/NATIVE_NPC_MAIN_FIELD_TAIL_AND_COMPLETION.md),
+[request](requests/EVT-01.md). Independent read-only original/helper/core/native/
+fixture review found no actionable defect. Warning-enabled standalone tests
+pass; only pre-existing DisplayQueue formatting warnings. Tests cover independent
+trace, every primitive hold, wrapped/signed counts and reload mutations, modes/
+thresholds, retained zero/NaN queue acknowledgment, fresh mode gates, score signed
+eligibility/copied words and narrow final byte. Native actual actor pass continues
+into actual registry-owned field F; holds queue→encounter→missing fire-work map→
+score, switches Mario for fresh inner fire lookup, then mutates GP/score/root.
+Captured parent M/score/vector and original F/neighbor bytes remain correct.
+Another real field owner verifies fresh zero-actor Main and jump-half/fire-flag/
+positive-window/gap/negative-kind boundaries. No story/runtime acceptance claim.
+
+Initial strict ARM probe crashed during nested resource/matrix loading before
+completion. Actual ARM stack-use analysis measured actorScan13240 bytes,
+NativeWorld constructor6144, outer main11512 on a32KiB stack, leaving~1872 for
+deeper calls. Heap-owned fixture worlds/scan/Main cursors preserve assertions/
+ownership and reduce the standalone combined entry-test main frame to240 bytes
+(actorScan inlined), with constructor unchanged. Production code and stack
+policy unchanged. Initial logs/ELF/capture/stack analyses retained; final host/
+ARM gates rerun after the fixture-only fix.
+
+Original DOL fce4/8(-600,+600) and fc84/4(60) independently hash matched read-only
+ISO and are pinned in actor SPANS.60 was already packed; -600/+600 add8 unchanged
+bytes. All2131 products audited vs accepted history baseline, only door-data.json/
+pmevt differ. Pack152496 bytes; local gor_02.s unchanged. Rights/provenance in
+ASSETS/contract. No ISO, original body/asset, pack or binary committed. No texture/
+geometry/lighting/audio or message conversion. Exact hashes remain private.
+
+Frozen e93df553317b3399d88b7c079bc6809375e906c5 on acceptedd40e7e25:3733 tracked files exact,
+zero mismatch. CMAKE_BUILD_PARALLEL_LEVEL=4 make test passes389/389 C++
+(40.39s),203/203 Python (33.864s), zero skipped.
+make all -j4 -o assets-ready SOUNDTRACK=gamecube passes. Existing compiler/Pillow/
+prior fixture formatting warnings remain. Final run includes expanded actual-F/
+Kpa boundary cases; initial full pass retained. Scoped code 2038d94dec98b8a59bfa7c02b212ab79fc649911;
+unrelated concurrent changes/public index preserved. Validation is this frozen
+tree, not concurrent combined HEAD.
+
+Strict fresh-profile ARM PASS: entry/movement/autoPose/detection/Mario/display/
+shadow/Vivian/history/actorScan/tail/wholeMain/kpaLeaves/holds/sharedMaterials/
+queue/frontiers. Probe instrumentation uncommitted. Normal source restored/
+touched/rebuilt; SHA256
+22f14c4d3b876c9a59fe79f626b37ffaec618c67dd8cbbeb5e572234d0843543
+matches pre-probe normal. Native disassembly retains scalar source arithmetic.
+Normal40-second isolated capture inspected: original storybook, App60FPS/100%,
+no asset-error console. Startup only; no actual field/physical performance claim.
+Only isolated profiles/saves touched. Evidence:artifacts/npc-tail-validation-
+manifest.json, source/helper notes/listings, exact source/product hashes, target/
+full/native build/test logs, strict marker and captures.
+
+Local source Main control-flow composition is delivered, not whole remake or
+EVT-01 closure. Real encounter/talk/battle/score-effect/announcement callbacks,
+shared frame/pass/render/resource/audio/collision/math/interrupt/sequence/Mario
+owners and normal Area Main activation remain open. Original numeric/FPSCR/GQR/
+seed/NaN-payload, execution/story-event and visual parity remain unproven. Previous
+15FPS llvmpipe field/occluded-pixel assertion and asset-error smoke admission
+gaps remain. No physical New2DSXL performance/acceptance claim. Goal stays active.
+
+Next: audit current shared animation startup/pose/scratch, Mario/sequence and
+field/frame lifetimes against committed production code. Bind real original
+Main providers in source order, starting with an actual field frame/actor and
+deferred render callbacks; retain unavailable owners instead of activating
+partial events. Repair visual/asset-error smoke admission and profile actual
+field/hardware while preserving exact original story and future-area ownership.

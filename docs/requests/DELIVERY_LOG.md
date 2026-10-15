@@ -427,3 +427,12 @@ to unfinished FieldTail. Static source evidence corrects tail interpolation sign
 and retracts an audit's mistaken clock-reuse warning: helper already resets on
 success. Native multi-actor holds and captured-vs-fresh data are checked; field
 tail, production ownership and normal Area activation remain open. Partial only.
+
+### 2026-10-14 — Partial EVT-01 original NPC Main field tail
+
+Validated [tail and local whole-Main invocation](../behavior/field/NATIVE_NPC_MAIN_FIELD_TAIL_AND_COMPLETION.md)
+through original F54d byte clear. Reused audited mode1/5 interpolation; actual
+VM Kpa fresh-getter query leaves and copied score ABI are checked. Two unchanged
+DOL spans pin -600/+600/60. Real field event/render/resource/pass providers,
+normal Area activation and original runtime/story acceptance remain open.
+Partial delivery only; this is not remake or EVT-01 completion.

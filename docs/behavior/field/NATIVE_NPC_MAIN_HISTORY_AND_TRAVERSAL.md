@@ -76,3 +76,11 @@ message/story change. Existing native pools/memory primitives and ARM integer
 instructions are reused. Field tail, real movement/collision/math/camera/shadow/
 interrupt/resource/audio producers and normal Area activation remain required.
 No full field rendering or physical New2DSXL performance claim.
+
+## Field-tail composition update (2026-10-14)
+
+[Field tail and whole-Main composition](NATIVE_NPC_MAIN_FIELD_TAIL_AND_COMPLETION.md)
+now consume the standalone scan's FieldTail and complete one source invocation
+only after all admitted child work/final F54d clear. Production event/render/
+resource owners and normal Area activation remain open. The standalone scan's
+boundary and captured traversal rules are unchanged.
