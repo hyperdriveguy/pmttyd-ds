@@ -40,6 +40,7 @@ struct HarborTutorialRuntime;
 class DisplayQueue;
 struct BattleCommandPalette;
 struct BattleFooterCursor;
+class BattleAudienceIncarnationOwner;
 struct HarborClassMenuDrawBinding {
     BattleClassDisplayServices display;
     std::shared_ptr<const uint8_t> owner;
@@ -111,6 +112,10 @@ public:
     // cursor across waits, once per simulation display pass, and dispatches all
     // registered callbacks through the camera owner. No draw/ack/input occurs.
     bool registerCommandDisplay(DisplayQueue&,BattleFooterCursor&);
+    // Borrowed actual-VM lifecycle metadata; unknown births remain unknown.
+    // Keep this scene alive and still prove current scene/display/visibility
+    // before using an identity. This getter does not initialize an audience.
+    const BattleAudienceIncarnationOwner* audienceIncarnations() const;
     bool openClassMenu();
     // Actual VM memory/cursor-lookup binding for an admitted source display.
     // Linked camera/math/footer providers and source display cadence remain

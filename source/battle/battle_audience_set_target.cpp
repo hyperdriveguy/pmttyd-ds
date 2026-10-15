@@ -22,6 +22,7 @@ void packedBattleAudienceSetTarget(int32_t selected,const BattleActorServices& a
   const int32_t held=raw<32768?int32_t(raw):int32_t(raw)-65536;
   const auto item=currentBattleAddress(a)+0x2858+0xf25c+uint32_t(held)*0x48;
   m.storeWord(m.user,item,0);
+  observeBattleAudienceLifecycle(a.audienceLifecycle,BattleAudienceLifecycleEvent::ItemClear,item);
   m.storeHalf(m.user,actor+0x1c,0xffff);
   packedBattleAudienceChangeStatus(slot,0,a);
  }

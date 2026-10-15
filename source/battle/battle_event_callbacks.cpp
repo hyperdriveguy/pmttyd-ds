@@ -1,3 +1,4 @@
+#include "battle_audience_incarnation.hpp"
 #include "battle_event_callbacks.hpp"
 #include <cassert>
 #include <cstring>
@@ -135,6 +136,7 @@ BattleTurnFirstServices nativeBattleTurnFirstServices(BattleTurnFirstBackend& ba
 // invariant, not a zero-on-unmapped fallback. Word/half/store share same facade.
 BattleActorServices nativeBattleActorServices(EventNativeRuntime& runtime) {
     BattleActorServices s;s.memory=runtime.memoryBinding.services();s.user=&runtime;
+    s.audienceLifecycle=runtime.audienceIncarnations->hook();
     s.byte=[](void* p,uint32_t a) {uint8_t v=0;const bool mapped=static_cast<EventNativeRuntime*>(p)->memory.readByte(a,v);assert(mapped);(void)mapped;return v;};return s;
 }
 BattleDataChildServices nativeBattleDataChildServices(EventNativeRuntime& runtime) {

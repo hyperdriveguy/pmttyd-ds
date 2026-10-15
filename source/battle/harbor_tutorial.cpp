@@ -281,6 +281,9 @@ bool HarborTutorial::registerCommandDisplay(DisplayQueue& queue,BattleFooterCurs
  return registerBattleCommandDisplay(HarborTutorialPacked::Battle,
    *runtime_->commandPalette,queue,cursor,nativeBattleActorServices(runtime_->vm));
 }
+const BattleAudienceIncarnationOwner* HarborTutorial::audienceIncarnations()const{
+ return runtime_ && !failed?runtime_->vm.audienceIncarnations.get():nullptr;
+}
 void HarborTutorial::classMenuPresented(){if(runtime_ && classMenuOpen){uint32_t w=0;if(runtime_->packed->readWord(HarborTutorialPacked::Battle+0x1c78,w) && w)runtime_->vm.memory.writeByte(w+0x14,1);}}
 bool HarborTutorial::buildClassMenu(){
  if(!runtime_ || failed || !initialized || !introComplete || phaseActive || attackActive || damageActive)return false;

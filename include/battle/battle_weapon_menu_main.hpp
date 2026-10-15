@@ -33,7 +33,7 @@ struct BattleMenuAudienceServices {
 };
 struct BattleMenuAudienceCursor {
  bool active=false;uint8_t phase=0;uint32_t battle=0,output=0;int32_t item=0;
- EventMemoryServices owner;
+ EventMemoryServices owner;BattleAudienceLifecycleHook lifecycle;
 };
 std::optional<bool> resumePackedBattleMenuAudienceCheck(const BattleMenuAudienceServices&,BattleMenuAudienceCursor&);
 std::optional<bool> packedBattleMenuAudienceCheck(const BattleMenuAudienceServices&);

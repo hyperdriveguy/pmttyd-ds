@@ -50,6 +50,7 @@ bool controlPackedBattleAudienceItemState(uint32_t fn,int32_t slot,int32_t front
         if(flags&0x40){
             const auto item=packedBattleAudienceItemAddress(int16_t(m.half(m.user,r+0x1c)),a);
             m.storeWord(m.user,r,m.word(m.user,r)&~0x60u);m.storeHalf(m.user,r+0x1c,0xffff);m.storeWord(m.user,item,0);
+            observeBattleAudienceLifecycle(a.audienceLifecycle,BattleAudienceLifecycleEvent::ItemClear,item);
             packedBattleAudienceChangeStatus(slot,10,a);return penalty(s);
         }
         if(flags&0x20)return true;

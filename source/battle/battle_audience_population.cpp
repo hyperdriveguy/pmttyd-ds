@@ -113,14 +113,17 @@ std::optional<int32_t> packedBattleAudienceEntry(int32_t slot,int32_t type,int32
     if(paired && slot%2==1)return 0; // Source signed remainder rejects positive odd slots only.
     const auto flags=m.word(m.user,r);if(flags&1)return 0;if(flags&0x100)return 0;
     m.storeWord(m.user,r,paired?0x85:5);
-    if(!s.randomRaw)return {};const auto raw=s.randomRaw(s.user);if(!raw)return {};
+    observeBattleAudienceLifecycle(a.audienceLifecycle,BattleAudienceLifecycleEvent::ActorBirth,r);
+    if(!s.randomRaw)return {};
+    const auto raw=s.randomRaw(s.user);if(!raw)return {};
     const int32_t column=slot-(slot/20)*20,jitter=integer(uint32_t(*raw)*10)/32767;
     float x;
     if(!paired)x=float(column*25+jitter-235);
     else{const float offset=scalar(0x804249f8,a)+float(column*25-230);const float withJitter=offset+float(jitter);x=withJitter-scalar(0x8042499c,a);}
     m.storeWord(m.user,r+0x48,bits(x));m.storeWord(m.user,r+0xb4,bits(x));
     if(!packedBattleAudienceEntrySub(slot,uint8_t(type),appearance,s))return {};
-    if(paired)m.storeWord(m.user,r+0x134,0x101);
+    if(paired){m.storeWord(m.user,r+0x134,0x101);observeBattleAudienceLifecycle(a.audienceLifecycle,BattleAudienceLifecycleEvent::ActorReserved,r+0x134);}
+    observeBattleAudienceLifecycle(a.audienceLifecycle,BattleAudienceLifecycleEvent::ActorReady,r);
     return 1;
 }
 void packedBattleAudienceChangeStatus(int32_t slot,int32_t state,const BattleActorServices& a){
@@ -138,8 +141,9 @@ void packedBattleAudienceChangeStatus(int32_t slot,int32_t state,const BattleAct
 }
 void packedBattleAudienceDelete(int32_t slot,const BattleActorServices& a){
     const auto& m=a.memory;(void)base(a);const auto r=record(slot,a);
-    if(m.word(m.user,r)&0x80)m.storeWord(m.user,r+0x134,0);
+    if(m.word(m.user,r)&0x80){m.storeWord(m.user,r+0x134,0);observeBattleAudienceLifecycle(a.audienceLifecycle,BattleAudienceLifecycleEvent::ActorClear,r+0x134);}
     m.storeWord(m.user,r,0);
+    observeBattleAudienceLifecycle(a.audienceLifecycle,BattleAudienceLifecycleEvent::ActorClear,r);
 }
 int32_t packedBattleAudienceAnimationEnded(int32_t slot,const BattleActorServices& a){
     const auto& m=a.memory;const auto r=record(slot,a);

@@ -1,8 +1,10 @@
 #pragma once
 #include "event_entry_storage.hpp"
 #include "event_interpreter.hpp"
+#include <memory>
 
 namespace ttyd {
+class BattleAudienceIncarnationOwner;
 struct EventNativePlatform {
     void* user=nullptr;
     uint32_t (*clock)(void*)=nullptr;
@@ -60,5 +62,7 @@ public:
     EventNativePlatform platform;
     EventMemoryBinding memoryBinding;
     EventEntryStorage entryStorage{entryAddresses,contextAddresses,memoryBinding};
+    // Immutable metadata owner; only actual audience lifecycle hooks populate it.
+    const std::shared_ptr<BattleAudienceIncarnationOwner> audienceIncarnations;
 };
 }

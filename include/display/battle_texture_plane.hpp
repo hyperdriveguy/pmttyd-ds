@@ -4,7 +4,8 @@
 namespace ttyd {
 enum class BattleTexturePlaneKind {Call,FifoFloat,FifoByte};
 enum class BattleTexturePlaneCall : uint32_t {
-  Cull=0x802b5c8c,ClearDescriptors=0x802b4520,Descriptor=0x802b3c08,
+  ColorUpdate=0x802b940c,AlphaCompare=0x802b8d60,BlendMode=0x802b932c,
+  DepthMode=0x802b93d8,Cull=0x802b5c8c,ClearDescriptors=0x802b4520,Descriptor=0x802b3c08,
   AttributeFormat=0x802b4558,Channels=0x802b6f3c,ChannelControl=0x802b6f78,
   TextureGenerators=0x802b5084,TextureGenerator=0x802b4e04,
   CurrentCamera=0x8000f2e4,LoadMatrix=0x802ba2fc,
@@ -29,7 +30,8 @@ struct BattleTexturePlaneServices {
   // TextureObject arguments are actual palette,index; LoadTexture arguments
   // handle,slot0; all texture queries receive that retained opaque handle.
   std::optional<uint32_t> (*request)(void*,const BattleTexturePlaneRequest&)=nullptr;
-  // Actual PSMTXCopy8029dd30 and Concat8029dd64. False must retain any partial
+  // Actual SDK matrix calls: Copy8029dd30 / Concat8029dd64 and, for the
+  // linked TexPlane wrapper, Scale8029e2b0 / Trans8029e230. False must retain any partial
   // provider effects. The same request object/operands survive suspension.
   bool (*matrix)(void*,BattleAudienceMatrixRequest&)=nullptr;
 };
@@ -44,6 +46,12 @@ public:
 private:
   struct State;
   std::unique_ptr<State> state_;
+  static bool resumePart(unsigned,const BattleActMatrix*,uint32_t,
+      const uint32_t*,const std::array<uint32_t,4>*,const BattleTexturePlaneServices&,
+      BattleTexturePlaneCursor&);
+  friend bool resumeBattleTexturePlaneInit(const BattleTexturePlaneServices&,BattleTexturePlaneCursor&);
+  friend bool resumePackedBattleTexturePlainGX(uint32_t,const std::array<uint32_t,4>&,
+      const BattleTexturePlaneServices&,BattleTexturePlaneCursor&);
   friend bool resumePackedBattleTexturePlane2(const BattleActMatrix&,uint32_t,
       const uint32_t&,const BattleTexturePlaneServices&,BattleTexturePlaneCursor&);
 };
@@ -56,4 +64,13 @@ private:
 // Provider tables/owners must remain identical; no guest fields are written.
 bool resumePackedBattleTexturePlane2(const BattleActMatrix& base,uint32_t texture,
     const uint32_t& rgba,const BattleTexturePlaneServices&,BattleTexturePlaneCursor&);
+// Whole original Init801036e4/e0, independently retained. This does not perform
+// InitSub/Rasta, whose source state differs.
+bool resumeBattleTexturePlaneInit(const BattleTexturePlaneServices&,BattleTexturePlaneCursor&);
+// Whole PlainGX801033e4/300. Four borrowed original RGBA locals are loaded at
+// the original byte-load sites, including source read-ahead between FIFO lanes.
+// Their object identity and lifetime must survive holds; no matrix/init is done.
+bool resumePackedBattleTexturePlainGX(uint32_t texture,
+    const std::array<uint32_t,4>& colors,const BattleTexturePlaneServices&,
+    BattleTexturePlaneCursor&);
 }

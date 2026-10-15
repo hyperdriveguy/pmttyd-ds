@@ -1246,3 +1246,11 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Retained NPC cloud and territory detection](field/NATIVE_NPC_CLOUD_AND_TERRITORY_DETECTION.md): actual VM event IDs/class byte, prioritized cloud samples, source territory bounds and unfinished Mario/Display frontiers.
 
 - [Original native pose Entry](display/NATIVE_SOURCE_ANIMATION_POSE_ENTRY.md): complete retained source body, real file/scratch ownership and metadata-only CPU adoption.
+## Retained native battle UI integration
+
+- [Retained Main and sequence dispatch](battle/RETAINED_MAIN_AND_SEQUENCE_DISPATCH.md): ordered child continuations and captured outer/inner owners; whole normal battle activation remains open.
+- [Actual audience lifecycle incarnations](battle/NATIVE_AUDIENCE_LIFECYCLE_INCARNATIONS.md): per-VM identity from original birth/clear hooks; visibility and current display admission remain separate.
+- [Native class camera bridge](camera/NATIVE_CLASS_CAMERA_BRIDGE.md): actual completed Main/Draw ownership and epoch-bound views.
+- [Queued enemy HP presentation and bar](display/QUEUED_ENEMY_HP_PRESENTATION_AND_RETAINED_BAR.md): original queued callback and retained source bar.
+- [Enemy HP linked raster helpers](display/ORIGINAL_ENEMY_HP_LINKED_RASTER_HELPERS.md): original texture/raster state, geometry and suspended child ordering.
+- [Source icon number continuation](display/SOURCE_ICON_NUMBER_CONTINUATION.md): original signed digit/table/matrix behavior; native ordered publication remains an integration boundary.

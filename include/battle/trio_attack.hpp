@@ -34,6 +34,7 @@
 #include "battle_audience_aux_callback.hpp"
 #include "battle_part_display.hpp"
 namespace ttyd {
+class BattleAudienceIncarnationOwner;
 bool loadTrioAttackAssets(const char* root);
 std::shared_ptr<const ActorAnimationPack> fieldMarioAnimationBank();
 struct TrioAttackRuntime;
@@ -76,6 +77,8 @@ public:
     std::optional<TrioShadowDrawRequest> shadowDrawRequest() const;
     const ShadowWork* shadowWork() const;
     const BattleCommandPalette* commandPalette() const;
+    // Borrowed actual-VM lifecycle metadata, not scene/visibility admission.
+    const BattleAudienceIncarnationOwner* audienceIncarnations() const;
     const BattleCameraFrame* cameraFrameState() const;
     bool cameraHistoryComplete() const;
     bool begin(const TrioBattleCommands&,ProfessorStory&,int16_t marioHp,std::shared_ptr<ProloguePouch> entryPouch={},uint32_t* fieldNpcBattleFlags=nullptr,FieldMarioBattleState* fieldMario=nullptr,FieldPartyRegistry* fieldParties=nullptr,const FieldPartyAppearanceServices* appearance=nullptr,std::shared_ptr<BattleSpotlightState> spotlight={},std::shared_ptr<BattleRandom> random={},std::shared_ptr<PositionalSfxRegistry> sounds={},std::shared_ptr<ShadowWork> shadows={},std::shared_ptr<BattleCommandPalette> palette={},std::shared_ptr<CameraManager> cameras={},std::shared_ptr<FieldBeroExec> bero={});

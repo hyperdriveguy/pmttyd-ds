@@ -2137,3 +2137,22 @@ Parent/input hashes are recorded in the documentation validation manifest.
 Original conversion choices/provenance and Nintendo/Intelligent Systems reserved
 rights remain unchanged; private tracking/copying grants no redistribution
 license. No ISO, extracted original asset or compiled binary was committed.
+## 2026-10-14 — Retained battle Main and original HP drawing source
+
+Read-only source: `/home/carson/games/roms/G8ME01.iso`, US GameCube DOL.
+`artifacts/retained-main-source-verification.json` checks20 bodies/117 instruction
+anchors, two direct call sites and one data span for the recovered Main/manager
+contracts. `artifacts/hp-presentation-source-evidence.json` pins the original
+HP parent8011fde0/244 and bar8011fc3c/1a4;
+`artifacts/hp-raster-source-evidence.json` pins TexPlane801032c8/11c,
+PlainGX801033e4/300, InitRasta80103b48/f4, InitSub80103c3c/94,
+QuadRasta80103918/d4 and PointRasta801039ec/28.
+`artifacts/icon-number-source-evidence.json` pins iconNumberDispGx80019120/284
+(SHA25617d2306ea5857b5a64e428ae24292ba9991cbd8d08ec01ddfac766a0604f645e),
+the40-byte numeral tables80415084,12-byte scalars8041f87c and8-byte signed
+bias802bf848. Existing tutorial packed views independently match those original
+constant ranges (`artifacts/icon-number-existing-resource-proof.json`), so this
+source increment adds no original binary/texture pack and performs no texture
+resampling or geometry conversion. Original data and derived private dumps
+remain ignored outside source history. Nintendo/Intelligent Systems retain
+rights to the original game assets/code; no redistribution license is granted.

@@ -10,12 +10,12 @@ namespace ttyd {
 std::optional<bool> resumePackedBattleMenuAudienceCheck(const BattleMenuAudienceServices& s,BattleMenuAudienceCursor& c){
  const auto& m=s.memory.memory;
  assert(m.word && m.storeWord && s.trigger);
- if(c.active && (c.owner.user!=m.user || c.owner.word!=m.word || c.owner.storeWord!=m.storeWord || c.output!=s.privateItem))return {};
+ if(c.active && (c.owner.user!=m.user || c.owner.word!=m.word || c.owner.storeWord!=m.storeWord || c.output!=s.privateItem || c.lifecycle.user!=s.memory.audienceLifecycle.user || c.lifecycle.event!=s.memory.audienceLifecycle.event))return {};
  auto word=[&](uint32_t at){return m.word(m.user,at);};
  auto put=[&](uint32_t at,uint32_t value){m.storeWord(m.user,at,value);};
  auto finish=[&](bool value)->std::optional<bool>{c={};return value;};
  if(!c.active){
-  c.active=true;c.owner=m;c.output=s.privateItem;c.battle=word(0x8041eb90);
+  c.active=true;c.owner=m;c.lifecycle=s.memory.audienceLifecycle;c.output=s.privateItem;c.battle=word(0x8041eb90);
   if(!s.trigger(s.user,0x400) || (word(c.battle+0xef4)&0x40000000u))return finish(false);
   assert(s.mario);const auto mario=s.mario(s.user,c.battle);
   if(word(mario+0x104)&0x10)return finish(false);

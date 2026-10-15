@@ -422,6 +422,13 @@ int main(){
             assert(charged.trioAttack.readWord(0x842014f4,value) && value==0xffffffff);
             const auto history=pose->word(0x3c);const auto cacheTime=pose->scalar(0x40);
             const auto prefixCalls=std::count_if(charged.trioAttack.requests().begin(),charged.trioAttack.requests().end(),[](const auto& request){return request.function==0x8003ed2c && !request.rawOperands.empty() && request.rawOperands[0]==0;});
+            uint32_t heldTrigger=0;
+            assert(charged.trioAttack.readWord(0x84000f44,heldTrigger));
+            const auto heldMainCalls=charged.trioAttack.requests().size();
+            BattlePadSample laterConfirm;laterConfirm.snapshot.buttons=laterConfirm.pressed=0x100;
+            charged.trioAttack.tick((charged.ticks+1)*1000/60,charged.trioBattleIntro,0,&laterConfirm);
+            assert(charged.trioAttack.pendingFunction()==0x8001086c && charged.trioAttack.requests().size()==heldMainCalls);
+            assert(charged.trioAttack.readWord(0x84000f44,value) && value==heldTrigger);
             CameraDepthSnapshot explicitCamera;
             for(unsigned axis=0;axis<3;++axis)explicitCamera.view[axis][axis]=1;
             for(unsigned axis=0;axis<4;++axis)explicitCamera.projection[axis][axis]=1;

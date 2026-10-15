@@ -28,7 +28,9 @@ bool same(const BattleAudienceSelectedServices &a,
   const auto &x = a.memory.memory;
   const auto &y = b.memory.memory;
   return a.user == b.user && a.memory.user == b.memory.user &&
-         a.memory.byte == b.memory.byte && x.user == y.user &&
+         a.memory.byte == b.memory.byte &&
+         a.memory.audienceLifecycle.user == b.memory.audienceLifecycle.user &&
+         a.memory.audienceLifecycle.event == b.memory.audienceLifecycle.event && x.user == y.user &&
          x.word == y.word && x.half == y.half && x.storeWord == y.storeWord &&
          x.storeHalf == y.storeHalf && x.storeByte == y.storeByte &&
          x.flushBlock == y.flushBlock && x.systemCall == y.systemCall &&

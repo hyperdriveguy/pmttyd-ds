@@ -1,4 +1,5 @@
 #include "event_native_runtime.hpp"
+#include "battle_audience_incarnation.hpp"
 #include <cassert>
 
 // Compose semantic managers with original-address memory, not a second VM.
@@ -12,7 +13,8 @@ EventNativeRuntime& owner(void* p) {return *static_cast<EventNativeRuntime*>(p);
 EventNativeRuntime::EventNativeRuntime(uint32_t gpBase,const EventNativePlatform& p):platform(p),
     memoryBinding{memory,this,
         [](void* p,uint32_t a) {auto& f=owner(p);assert(f.platform.flushBlock);f.platform.flushBlock(f.platform.user,a);},
-        [](void* p) {auto& f=owner(p);assert(f.platform.systemCall);f.platform.systemCall(f.platform.user);}} {
+        [](void* p) {auto& f=owner(p);assert(f.platform.systemCall);f.platform.systemCall(f.platform.user);}},
+    audienceIncarnations(std::make_shared<BattleAudienceIncarnationOwner>()) {
     const bool fieldMapped=contextAddresses.registerContext(0x803d8d30,field);
     const bool battleMapped=contextAddresses.registerContext(0x803d8dd0,battle);
     const bool gpMapped=gpAddresses.registerGp(gpBase,gp);

@@ -35,6 +35,10 @@ enum class Phase {Init,Copy,Camera,View,Concat,LoadMatrix,Color,Palette,
 }
 struct BattleTexturePlaneCursor::State {
   BattleTexturePlaneServices owner;
+  unsigned part=0;
+  const std::array<uint32_t,4>* borrowedColors=nullptr;
+  std::array<uint32_t,4> localColors{};
+  std::array<uint8_t,16> colorBytes{};
   const BattleActMatrix* base=nullptr;
   const uint32_t* rgba=nullptr;
   uint32_t texture=0,camera=0,color=0,battle=0,palette=0,handle=0,format=0;
@@ -50,15 +54,18 @@ BattleTexturePlaneCursor::BattleTexturePlaneCursor()=default;
 BattleTexturePlaneCursor::~BattleTexturePlaneCursor()=default;
 bool BattleTexturePlaneCursor::active() const{return bool(state_);}
 void BattleTexturePlaneCursor::reset(){state_.reset();}
-bool resumePackedBattleTexturePlane2(const BattleActMatrix& base,uint32_t texture,
-    const uint32_t& rgba,const BattleTexturePlaneServices& s,BattleTexturePlaneCursor& cursor) {
+bool BattleTexturePlaneCursor::resumePart(unsigned part,const BattleActMatrix* base,uint32_t texture,
+    const uint32_t* rgba,const std::array<uint32_t,4>* colors,
+    const BattleTexturePlaneServices& s,BattleTexturePlaneCursor& cursor) {
   if(cursor.state_) {
     const auto& c=*cursor.state_;
-    if(c.base!=&base || c.rgba!=&rgba || c.texture!=texture || !same(c.owner,s))return false;
+    if(c.part!=part || c.base!=base || c.rgba!=rgba || c.borrowedColors!=colors || c.texture!=texture || !same(c.owner,s))return false;
   } else {
-    if(!s.actors.memory.word)return false;
+    if(part!=1 && !s.actors.memory.word)return false;
     cursor.state_=std::make_unique<BattleTexturePlaneCursor::State>();
-    cursor.state_->owner=s;cursor.state_->base=&base;cursor.state_->rgba=&rgba;cursor.state_->texture=texture;
+    cursor.state_->owner=s;cursor.state_->base=base;cursor.state_->rgba=rgba;cursor.state_->texture=texture;
+    cursor.state_->part=part;cursor.state_->borrowedColors=colors;
+    if(part==2)cursor.state_->phase=Phase::Palette;
   }
   auto& c=*cursor.state_;const auto& m=s.actors.memory;
   const auto word=[&](uint32_t address){return m.word(m.user,address);};
@@ -81,7 +88,7 @@ bool resumePackedBattleTexturePlane2(const BattleActMatrix& base,uint32_t textur
   };
   for(;;)switch(c.phase) {
   case Phase::Init:
-    if(c.index==init.size()){c.phase=Phase::Copy;c.index=0;break;}
+    if(c.index==init.size()){if(part==1){cursor.reset();return true;}c.phase=Phase::Copy;c.index=0;break;}
     prepare(init[c.index]);if(!acknowledge())return false;++c.index;break;
   case Phase::Copy:
     if(!c.mathPending){c.math={};c.math.function=0x8029dd30;c.math.left=*c.base;c.mathPending=true;}
@@ -103,7 +110,7 @@ bool resumePackedBattleTexturePlane2(const BattleActMatrix& base,uint32_t textur
     if(!acknowledge())return false;
     c.phase=Phase::Color;break;
   }
-  case Phase::Color:c.color=*c.rgba;c.phase=Phase::Palette;break;
+  case Phase::Color:c.color=*c.rgba;c.localColors.fill(c.color);c.phase=Phase::Palette;break;
   case Phase::Palette:
     c.battle=currentBattleAddress(s.actors);
     c.palette=word(word(word(c.battle+0x163f8)+0xa0));c.phase=Phase::Texture;break;
@@ -137,7 +144,17 @@ bool resumePackedBattleTexturePlane2(const BattleActMatrix& base,uint32_t textur
     if(c.index==36){cursor.reset();return true;}
     if(!c.pending) {
       Q q;const auto vertex=c.index/9,lane=c.index%9;
-      if(lane>=3 && lane<=6){q.kind=BattleTexturePlaneKind::FifoByte;q.integers={uint8_t(c.color>>(24-8*(lane-3)))};}
+      const auto& sourceColors=c.borrowedColors?*c.borrowedColors:c.localColors;
+      const auto capture=[&](unsigned byte) {
+        c.colorBytes[byte]=uint8_t(sourceColors[byte/4]>>(24-8*(byte%4)));
+      };
+      // Original PlainGX reads colors ahead of their FIFO writes. For the four
+      // lanes with lfs before lbz, capture below after constructing the float.
+      if(c.index==0){capture(0);capture(1);capture(2);}
+      if(c.index>=3 && c.index<=6)capture(unsigned(c.index+1));
+      if(c.index==9 || c.index==10)capture(unsigned(c.index+1));
+      if(c.index>=12 && c.index<=14)capture(unsigned(c.index+1));
+      if(lane>=3 && lane<=6){q.kind=BattleTexturePlaneKind::FifoByte;q.integers={c.colorBytes[4*vertex+lane-3]};}
       else {
         q.kind=BattleTexturePlaneKind::FifoFloat;float value=0;
         if(lane==0)value=(vertex==0 || vertex==3)?-c.halfWidth:c.halfWidth;
@@ -145,6 +162,9 @@ bool resumePackedBattleTexturePlane2(const BattleActMatrix& base,uint32_t textur
         else if(lane==2)value=real(0x80422240);
         else if(lane==7)value=real((vertex==1 || vertex==2)?0x8042224c:0x80422240);
         else value=real(vertex>=2?0x8042224c:0x80422240);
+        if(c.index==2)capture(3);
+        if(c.index==7 || c.index==8)capture(unsigned(c.index+1));
+        if(c.index==11)capture(12);
         q.reals={value};
       }
       prepare(std::move(q));
@@ -153,5 +173,16 @@ bool resumePackedBattleTexturePlane2(const BattleActMatrix& base,uint32_t textur
     ++c.index;break;
   }
   }
+}
+bool resumePackedBattleTexturePlane2(const BattleActMatrix& base,uint32_t texture,
+    const uint32_t& rgba,const BattleTexturePlaneServices& s,BattleTexturePlaneCursor& c) {
+  return BattleTexturePlaneCursor::resumePart(0,&base,texture,&rgba,nullptr,s,c);
+}
+bool resumeBattleTexturePlaneInit(const BattleTexturePlaneServices& s,BattleTexturePlaneCursor& c) {
+  return BattleTexturePlaneCursor::resumePart(1,nullptr,0,nullptr,nullptr,s,c);
+}
+bool resumePackedBattleTexturePlainGX(uint32_t texture,const std::array<uint32_t,4>& colors,
+    const BattleTexturePlaneServices& s,BattleTexturePlaneCursor& c) {
+  return BattleTexturePlaneCursor::resumePart(2,nullptr,texture,nullptr,&colors,s,c);
 }
 }

@@ -84,6 +84,7 @@ bool initializePackedBattleAudience(const BattleAudienceInitServices& s) {
     const auto a=base(s.actors),window=base(s.actors)+0x1375c;
     (void)m.word(m.user,0x8041eb00);
     eventFillMemory(a,0,0x13914,m);
+    observeBattleAudienceLifecycle(s.actors.audienceLifecycle,BattleAudienceLifecycleEvent::Reset,a);
     if(!s.setting || !s.setting(s.user))return false;
     if(!s.texture)return false;
     const auto normal=s.texture(s.user,"battle/audience/audience_normal.tpl");if(!normal)return false;

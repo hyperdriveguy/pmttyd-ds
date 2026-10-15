@@ -1,5 +1,6 @@
 #pragma once
 #include "event_memory_opcodes.hpp"
+#include "battle_audience_lifecycle.hpp"
 
 // Guest-address services for the 64-slot source registry; selectors and slots
 // are different namespaces. Callers must admit original memory before lookup.
@@ -8,6 +9,7 @@ struct BattleActorServices {
     EventMemoryServices memory;
     void* user=nullptr;
     uint8_t (*byte)(void*,uint32_t)=nullptr;
+    BattleAudienceLifecycleHook audienceLifecycle;
 };
 uint32_t currentBattleAddress(const BattleActorServices&);
 uint32_t battleRegistryUnit(uint32_t battle,int32_t id,const BattleActorServices&);

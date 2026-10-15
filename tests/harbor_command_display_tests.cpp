@@ -1,8 +1,11 @@
 #include "fixtures/harbor_class_frame_fixture.hpp"
 #include "battle_display_footer.hpp"
+#include "battle_audience_incarnation.hpp"
 int main(){
     assert(ttyd::loadHarborTutorialAssets("romfs"));
     HarborClassFrameFixture f;assert(f.prepare("romfs"));
+    assert(f.scene.audienceIncarnations() && !f.scene.audienceIncarnations()->token());
+    assert(!f.scene.audienceIncarnations()->identity(0,0)); // RAM provisioning is not original Init/birth evidence.
     ttyd::DisplayQueue queue;ttyd::BattleFooterCursor cursor;
     assert(!f.scene.registerCommandDisplay(queue,cursor) && queue.count()==0);
     auto palette=std::make_shared<ttyd::BattleCommandPalette>();

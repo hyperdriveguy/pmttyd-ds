@@ -46,9 +46,12 @@ std::optional<int32_t> createPackedBattleAudienceItem(int32_t slot,int32_t kind,
     auto item=packedBattleAudienceItemAddress(0,a);
     for(int32_t i=0;i<limit;++i,item+=0x48){
         const auto flags=m.word(m.user,item);if(flags&1)continue;
-        m.storeWord(m.user,item,flags|1);m.storeWord(m.user,item+4,0);
+        m.storeWord(m.user,item,flags|1);
+        observeBattleAudienceLifecycle(a.audienceLifecycle,BattleAudienceLifecycleEvent::ItemBirth,item);
+        m.storeWord(m.user,item+4,0);
         m.storeWord(m.user,item+0xc,uint32_t(slot));m.storeWord(m.user,item+0x10,id);
-        packedBattleAudienceChangeStatus(slot,7,a);m.storeHalf(m.user,r+0x1c,uint16_t(i));return 1;
+        packedBattleAudienceChangeStatus(slot,7,a);m.storeHalf(m.user,r+0x1c,uint16_t(i));
+        observeBattleAudienceLifecycle(a.audienceLifecycle,BattleAudienceLifecycleEvent::ItemReady,item,r);return 1;
     }
     return 0;
 }
@@ -79,7 +82,9 @@ bool processPackedBattleAudienceItems(const BattleAudienceItemMainServices& s){
     const auto& a=s.actors;const auto& m=a.memory;const auto battle=currentBattleAddress(a),owner=base(a);
     auto item=packedBattleAudienceItemAddress(0,a);
     const auto clear=[&](uint32_t item){
-        m.storeWord(m.user,item,0);m.storeWord(m.user,item+8,0);m.storeWord(m.user,item+4,0);
+        m.storeWord(m.user,item,0);
+        observeBattleAudienceLifecycle(a.audienceLifecycle,BattleAudienceLifecycleEvent::ItemClear,item);
+        m.storeWord(m.user,item+8,0);m.storeWord(m.user,item+4,0);
         const auto slot=integer(m.word(m.user,item+0xc));if(slot!=-1)m.storeHalf(m.user,actor(slot,a)+0x1c,0xffff);
     };
     const auto stop=[&](){return s.stopSound && s.stopSound(s.user,10) && s.stopSound(s.user,11);};

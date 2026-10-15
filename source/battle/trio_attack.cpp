@@ -1,4 +1,5 @@
 #include "trio_attack.hpp"
+#include "battle_main_continuation.hpp"
 #include "battle_pose_inner.hpp"
 #include "animation_draw_traversal.hpp"
 #include "animation_shape_render.hpp"
@@ -1697,11 +1698,18 @@ struct TrioAttackRuntime {
         footerFlags=word(Battle+0xef4);if(footerFlags&0x20000)word(Battle+0xef4,footerFlags&~0x20000u);
         displayActive=false;return true;
     }
+    BattleMainCursor completionMain;
+    BattlePadSample completionSample;
+    uint32_t completionFunction=0;
+    bool completionDisplayReady=false;
     void completionPass(const BattlePadSample& sample) {
-        struct Context {TrioAttackRuntime& r;const BattlePadSample& sample;} context{*this,sample};
-        BattleMainServices services;services.actors=nativeBattleActorServices(vm);services.user=&context;
+        if(!completionMain.active()){
+            completionSample=sample;completionFunction=0;completionDisplayReady=false;
+        }
+        BattleMainServices services;services.actors=nativeBattleActorServices(vm);services.user=this;
         services.request=[](void* p,uint32_t fn,uint32_t captured) {
-            auto& c=*static_cast<Context*>(p);auto& r=c.r;r.endingRequest(fn);
+            auto& r=*static_cast<TrioAttackRuntime*>(p);
+            if(r.completionFunction!=fn){r.endingRequest(fn);r.completionFunction=fn;}
             // This native runtime owns one stable BattleWork. An owner swap
             // requires its real allocator/lifetime binding, never aliasing B.
             if(captured!=Battle){r.pending=fn;return false;}
@@ -1712,7 +1720,7 @@ struct TrioAttackRuntime {
                     const auto address=b+0xf2c+0x1fc*channel;r.readPad(address,pad);
                     // Only physical channel0 is bound on the 3DS. Other native
                     // channels have explicit inactive samples, not GC evidence.
-                    pad.update(channel==0?c.sample:BattlePadSample{});r.writePad(address,pad);
+                    pad.update(channel==0?r.completionSample:BattlePadSample{});r.writePad(address,pad);
                     if(channel==0){r.generalPad=pad;r.history=pad.triggers;}
                 }
                 return true;
@@ -1725,7 +1733,7 @@ struct TrioAttackRuntime {
                 return true;
             }
             if(fn==0x800fa5b0) {
-                r.readPad(captured+0x1d1c,r.privatePad);r.privatePad.update(c.sample);
+                r.readPad(captured+0x1d1c,r.privatePad);r.privatePad.update(r.completionSample);
                 r.writePad(captured+0x1d1c,r.privatePad);r.actionManager();return !r.pending;
             }
             if(fn==0x80149798){if(r.updateStageObjects())return true;r.pending=fn;return false;}
@@ -1744,17 +1752,22 @@ struct TrioAttackRuntime {
             }
             if(fn==0x801a836c)return r.updateAudience();
             if(fn==0x80203aa0){if(packedBattleBreakSlotIdleMain(nativeBattleActorServices(r.vm)))return true;r.pending=fn;return false;}
-            if(fn==0x801024f0)return r.displayPrefix();
+            if(fn==0x801024f0){
+                if(r.completionDisplayReady){r.completionDisplayReady=false;return true;}
+                return r.displayPrefix();
+            }
             r.pending=fn;return false; // Real stage/map/render/audio providers remain required.
         };
         pending=0;
-        if(packedBattleMainWrapper(services)){pending=0x8000f704;endingRequest(pending);} // Actual next outer provider; no teardown shortcut.
+        if(resumePackedBattleMainWrapper(services,completionMain)){pending=0x8000f704;endingRequest(pending);} // Actual next outer provider; no teardown shortcut.
+        else if(!pending)pending=completionMain.pending();
     }
     void finishDisplayContinuation(){
-        const auto actors=nativeBattleActorServices(vm);
-        endingRequest(0x800f89a0,{int32_t(Battle),0});
-        publishPackedBattleMainResult(Battle,packedBattleMainAfterRequests(Battle,actors),actors);
-        pending=0x8000f704;endingRequest(pending);
+        // The retained display child has completed outside the parent while
+        // waiting for its actual depth/queue providers. Acknowledge that exact
+        // child once; the retained Main owns final checks/outer publication.
+        assert(completionMain.active());
+        completionDisplayReady=true;completionPass(completionSample);
     }
     bool updateCamera(uint64_t time) {
         if(cameraClockAt==time)return cameraUpdateAvailable;cameraClockAt=time;
@@ -2226,6 +2239,7 @@ const ShadowWork* TrioAttack::shadowWork()const{return runtime_?runtime_->shadow
 void TrioAttack::invalidateBattleHitRegistry(){if(runtime_)runtime_->battleHits.invalidate();}
 const BattleHitRegistry* TrioAttack::battleHitRegistry()const{return runtime_?&runtime_->battleHits:nullptr;}
 const BattleCommandPalette* TrioAttack::commandPalette()const{return runtime_?runtime_->palette.get():nullptr;}
+const BattleAudienceIncarnationOwner* TrioAttack::audienceIncarnations()const{return runtime_?runtime_->vm.audienceIncarnations.get():nullptr;}
 const BattleCameraFrame* TrioAttack::cameraFrameState()const{return runtime_?&runtime_->cameraFrame:nullptr;}
 bool TrioAttack::cameraHistoryComplete()const{return runtime_ && runtime_->cameraHistoryComplete;}
 const BattlePose* TrioAttack::battlePose(uint32_t part)const{
