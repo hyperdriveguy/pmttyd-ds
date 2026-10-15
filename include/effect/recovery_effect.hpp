@@ -34,6 +34,10 @@ struct RecoveryEffectServices {
   bool (*display)(void *, int32_t, int32_t, uint32_t, uint32_t,
                   float) = nullptr;
 };
+// Raw memory is synchronous;bool/optional external children hold. Cursor
+// binds used memory,user,byte reader and original requested amount/XYZ BITS;
+// normalized amount/copied sound root are separate. Other callbacks stay stable
+// by caller contract. Success resets;no automatic rollback of published owners.
 struct RecoveryEntryCursor {
   bool active = false;
   uint32_t phase = 0, effect = 0, payload = 0, maya = 0, sound = 0,
@@ -44,6 +48,9 @@ struct RecoveryEntryCursor {
   uint8_t (*byteReader)(void *, uint32_t) = nullptr;
   std::array<float, 3> position{}, requestPosition{};
 };
+// One driver invocation,possibly MANY elapsed GP1c steps. launched/completed
+// initialize once per invocation,not each catch-up iteration;terminal particles
+// contribute repeatedly. Maya Calc runs once before that loop. Success resets.
 struct RecoveryMainCursor {
   bool active = false;
   uint32_t phase = 0, effect = 0, payload = 0, particle = 0, maya = 0;

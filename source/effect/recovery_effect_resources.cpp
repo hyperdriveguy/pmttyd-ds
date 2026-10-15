@@ -20,6 +20,9 @@ bool RecoveryEffectResources::load(const char *path) {
   std::fclose(f);
   return okay;
 }
+// Native limits:magic8,count1..64,total<=65536,nonempty ordered/nonoverlap
+// spans wholly inside32-bit address space. Validate complete directory/payload/
+// EOF before swapping bank. These are pack admission bounds,not source counts.
 bool RecoveryEffectResources::read(FILE *f) {
   if (!f)
     return false;
@@ -49,6 +52,9 @@ bool RecoveryEffectResources::read(FILE *f) {
   spans_ = std::move(next);
   return true;
 }
+// Entire1/2/4-byte read must fit ONE admitted span;even adjacent spans do not
+// merge. Early-out relies on sorted directory. Public half/word join original
+// BE payload bytes,without reinterpretation or alignment assumptions.
 const uint8_t *RecoveryEffectResources::find(uint32_t address,
                                              uint32_t size) const {
   for (const auto &span : spans_) {

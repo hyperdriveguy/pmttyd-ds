@@ -165,3 +165,6 @@ publication gates, source clocks, quantized curves and transform ordering.
 
 [Effect pool/HitN64](effect-pool-hit-n64.md) explains record predicates, simulation,
 source draw requests, texture ownership and ordered GPU publication/submission.
+
+[Recovery effects](recovery-effects.md) explains constructor normalization,
+catch-up/state ordering, source callbacks, atomic geometry and immutable resources.

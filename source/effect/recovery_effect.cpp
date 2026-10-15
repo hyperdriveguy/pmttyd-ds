@@ -2,6 +2,9 @@
 #include <cstring>
 namespace ttyd {
 namespace {
+// Word/byte/half conversions preserve source signedness and float bits.
+// Mapped-memory callbacks have no failure return;external owners alone suspend.
+// binary() explicitly supplies SP operations;no implicit host trig or timing.
 float scalar(uint32_t bits) {
   float n;
   std::memcpy(&n, &bits, 4);
@@ -28,6 +31,9 @@ bool available(const RecoveryEffectServices &s) {
   return s.memory.word && s.memory.half && s.memory.storeWord &&
          s.memory.storeHalf && s.memory.storeByte && s.byte;
 }
+// Original sound STRING addresses from2f3b20. Signed amount-byte tiers<=5,
+// <=10,else big;entry HP0/7 versus FP1/8,4/5 force big. Main SHINE only0/1
+// and4/5;7/8 skip terminal sound/stardust through their separate completion arm.
 uint32_t soundFor(int32_t kind, int32_t amount, bool entry) {
   const uint32_t base = 0x802f3b20;
   const auto tier = amount <= 5 ? 0u : amount <= 10 ? 1u : 2u;
@@ -56,6 +62,9 @@ uint32_t soundFor(int32_t kind, int32_t amount, bool entry) {
 bool recoveryEffectKindSupported(int32_t kind) {
   return kind >= 0 && kind <= 8 && kind != 6;
 }
+// Supported0..5,7,8 only;kind6 Main2 is refused BEFORE allocation. Source
+// kinds2/3 normalize amount0,4/5 to20;count=amount+1 and heap3 size=count*44hex
+// wrap32 without null/full/clamp repair. Requested amount still binds retries.
 std::optional<uint32_t> resumeRecoveryEffectEntry(
     int32_t kind, int32_t amount, const std::array<float, 3> &position,
     const RecoveryEffectServices &s, RecoveryEntryCursor &c) {
@@ -114,6 +123,10 @@ std::optional<uint32_t> resumeRecoveryEffectEntry(
       c.phase = 2;
       break;
     }
+    // Allocate original Maya descriptor417a44,store/reload root38,then Play.
+    // Root kind/amount are truncated bytes,XYZ8/c/10,counter2c signed-half,
+    // tick34=current GP1c,alpha word4=255,targetY40=source-30. This is partial
+    // field initialization,not a memset of root/particle storage.
     case 2: {
       if (!s.mayaAllocate)
         return {};
@@ -156,11 +169,17 @@ std::optional<uint32_t> resumeRecoveryEffectEntry(
       c.phase = 5;
       break;
     }
+    // Immediate SFX uses a COPY of now-stored root XYZ plus freshly read
+    // signed kind/amount bytes. Hold retains that call before particle init;
+    // no allocation/Maya/earlier sound replay.
     case 5:
       if (c.sound && (!s.sfx || !s.sfx(s.user, c.sound, c.position)))
         return {};
       c.phase = 6;
       break;
+    // Particle rows1..<live signed count,stride44hex:XYZ8,velocity14,
+    // scale20,counter2c,state BYTE2,angle30,alpha WORD4. Kinds4/5 use source
+    // alternate Y for indices>=10. Unwritten bytes remain source-stale.
     case 6: {
       const auto zero = m.word(m.user, 0x80422dcc);
       for (int32_t i = 1; i < signedWord(m.word(m.user, c.effect + 8)); ++i) {
@@ -191,6 +210,9 @@ std::optional<uint32_t> resumeRecoveryEffectEntry(
       return {};
     }
 }
+// Capture kind/targetY/Maya once;after Maya Calc read previous root34/fresh
+// GP1c. elapsed=now-previous ONLY when unsigned now>previous,otherwise1.
+// Catch-up is source simulation steps,not rendering frames or Maya clock ms.
 bool resumeRecoveryEffectMain(uint32_t effect, const RecoveryEffectServices &s,
                               RecoveryMainCursor &c) {
   if (!available(s) || !s.binary)
@@ -256,6 +278,9 @@ bool resumeRecoveryEffectMain(uint32_t effect, const RecoveryEffectServices &s,
       c.phase = 10;
       break;
     }
+    // EACH elapsed iteration reloads payload,signed amount and XYZ. Kinds4/5
+    // use logical10 despite allocated20 particles. Signed-half root counter wraps;
+    // >10 latches launch. Do NOT reset invocation-local completed/launched here.
     case 10:
       c.payload = w(effect + 0xc);
       c.amount = signedByte(s.byte(s.user, c.payload + 1));
@@ -270,6 +295,12 @@ bool resumeRecoveryEffectMain(uint32_t effect, const RecoveryEffectServices &s,
       c.particle = c.payload + 0x44;
       c.phase = 20;
       break;
+    // State BYTE2 source graph(one arm per visit,no transition fallthrough):
+    //0 launch circular velocity once ready;1 damp then integrate for counter<10;
+    //2 wait down to0;3 orbit/interpolate11 for40 then signed rand%20->4;
+    //4 wait down to0;5 converge position/scale then6;6 increments completed.
+    // Negative/unknown states skip. Previous terminal visits count again during
+    // catch-up,so completed is not a final recount of unique finished particles.
     case 20:
       if (c.index >= signedWord(w(effect + 8))) {
         c.phase = 100;
@@ -365,6 +396,9 @@ bool resumeRecoveryEffectMain(uint32_t effect, const RecoveryEffectServices &s,
         break;
       }
       break;
+    // Launch theta=(90+360*(index-1)/logicalAmount)*tau/360,cos then sin
+    // requests with separate SP multiply/store. Source negative sine sets Z;
+    // unsupported zero/exceptional numeric domains need explicit providers.
     case 21: {
       if (!s.cosine)
         return false;
@@ -390,6 +424,9 @@ bool resumeRecoveryEffectMain(uint32_t effect, const RecoveryEffectServices &s,
       next();
       break;
     }
+    // Mode11 counter/40 gives orbit angle;distance captures current X/Z before
+    // child,then radius shrinks by source factor. Reached cos/sin stages retain
+    // angle/radius across holds rather than recomputing against changed roots.
     case 30: {
       if (!s.interpolate)
         return false;
@@ -456,6 +493,9 @@ bool resumeRecoveryEffectMain(uint32_t effect, const RecoveryEffectServices &s,
       next();
       break;
     }
+    // State5 distinct mode1 requests:X->0/16,Y->captured targetY/16,
+    // Z->0/20,scale1->0/16. Fresh counter/next-axis reads follow each completed
+    // child. A generic same-duration XYZ lerp changes source completion shape.
     case 40:
     case 41:
     case 42:
@@ -484,6 +524,10 @@ bool resumeRecoveryEffectMain(uint32_t effect, const RecoveryEffectServices &s,
       }
       break;
     }
+    // Only0/1,4/5,7/8 compare accumulated completed>=logical amount.7/8
+    // skip terminal stardust/SFX;others request real stardust(kind2,count2,life30)
+    // at captured rootY-20 with source30/30 operands. Then delete Maya BEFORE
+    // whole effect. Kind2/3 do not gain invented completion from amount0.
     case 100:
       if ((uint32_t(c.kind) <= 1 || uint32_t(c.kind - 7) <= 1 || c.kind == 4 ||
            c.kind == 5) &&
@@ -536,6 +580,10 @@ bool resumeRecoveryEffectMain(uint32_t effect, const RecoveryEffectServices &s,
       if (!s.effectDelete || !s.effectDelete(s.user, effect))
         return false;
       return done();
+    // After ALL elapsed steps,fresh GP tick replaces root34. Depth then
+    // camera4/class1 Disp1422f4;0/1/7/8 freshly recopy XYZ/depth for class2
+    // Disp1420fc,4/5 for class2 Disp141c40. Each queue/depth is a real separate
+    // acknowledgment;registration is not rendering or a recovery gameplay write.
     case 110:
       if (!s.tick)
         return false;

@@ -6,6 +6,9 @@
 namespace ttyd {
 // Immutable original-address resource views. Loading data does not admit an
 // effect, animation evaluator, texture, sound, driver or display callback.
+// PMREC001 directory is native LE(address,size),payload original BE bytes.
+// Failed load/read preserves prior admitted spans;new bank publishes atomically.
+// Resource views never manufacture mutable GP/effect/BSS/texture ownership.
 class RecoveryEffectResources {
 public:
   bool load(const char *path);

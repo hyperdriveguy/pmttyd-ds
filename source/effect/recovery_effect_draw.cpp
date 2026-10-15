@@ -6,6 +6,10 @@ struct Op {
   uint32_t function;
   std::array<uint32_t, 8> args{};
 };
+// Exact original GX ABI:set two generators(matrix60 identity/30),NumChans0,
+// Cull0,direct XYZ9/ST13 F32 formats. rootProgram texture0 replace then quad;
+// particleProgram retains original blend/alpha/depth/TEV texture1*C0 setters.
+// Numeric IDs/selector bytes are source command operands,not native enums.
 constexpr Op setup[] = {{0x802b5084, {2}},
                         {0x802b4e04, {0, 1, 4, 60, 0, 125}},
                         {0x802b4e04, {1, 1, 4, 30, 0, 125}},
@@ -50,6 +54,9 @@ bool same(const RecoveryDrawServices &a, const RecoveryDrawServices &b) {
          a.multiply == b.multiply && a.matrix == b.matrix && a.call == b.call &&
          a.quad == b.quad && a.number == b.number;
 }
+// Separate operation1(root/particles)/2(number) on one cursor. Unlike Main's
+// narrower identity check,this compares every used draw provider. Raw memory/
+// multiply are synchronous;SDK/GX/FIFO/number children retain complete payloads.
 bool begin(uint32_t op, int32_t camera, uint32_t effect,
            const RecoveryDrawServices &s, RecoveryDrawCursor &c) {
   if (c.operation)
@@ -115,6 +122,9 @@ struct Run {
     c.math.function = function;
     c.mathReady = true;
   }
+  // Copy request before SDK child:output on false is ignored. Successful
+  // matrix stage commits once;guest matrix inputs capture at request admission.
+  // Left/right concatenation order stays explicit,without host regrouping.
   bool math(unsigned out) {
     if (!s.matrix)
       return false;
@@ -187,6 +197,9 @@ struct Run {
     }
     return call();
   }
+  // Root quad±16/unitST;particle±6/ST width2,height1. Twenty actual source
+  // constant reads precede atomic emission. Particle index/row advances BEFORE
+  // a possible FIFO hold;geometryReady retains that exact quad on retry.
   bool quad(bool particle) {
     if (!c.geometryReady) {
       // Capture the original twenty FIFO constant loads, in order. Emission
@@ -224,6 +237,9 @@ struct Run {
   }
 };
 } // namespace
+// Keep INITIAL camera pointer for root view and INITIAL T*Ry billboard for
+// later particles. After texture calls,payload/root/camera are refreshed for
+// root geometry;these are distinct source captures,not redundant setup.
 bool resumeRecoveryEffectDraw(int32_t camera, uint32_t effect,
                               const RecoveryDrawServices &s,
                               RecoveryDrawCursor &c) {
@@ -269,6 +285,9 @@ bool resumeRecoveryEffectDraw(int32_t camera, uint32_t effect,
         return false;
       c.phase = 7;
       break;
+    // Source HP0/2/4/7 textures18 then20;FP1/3/5/8 use19 then21. Other
+    // kinds skip loading,retaining inherited bindings. Each GetTexObj5ed58 token
+    // goes to actual map0/map1;no fabricated bank/object or fallback sampler.
     case 7: {
       uint32_t texture = 0;
       switch (c.kind) {
@@ -366,6 +385,9 @@ bool resumeRecoveryEffectDraw(int32_t camera, uint32_t effect,
         return false;
       c.phase = 20;
       break;
+    // Root:T*Ry*S10*T(0,2,0),optionally current Maya38+14 for0/1/4/5/7/8,
+    // prepend FIRST camera's LIVE view11c,appendS.1. Kinds2/3 draw root then
+    // return. Unset blend/depth state remains inherited raster-owner work.
     case 20:
       if (uint32_t(c.kind) <= 1 || uint32_t(c.kind - 7) <= 1 || c.kind == 4 ||
           c.kind == 5) {
@@ -429,6 +451,9 @@ bool resumeRecoveryEffectDraw(int32_t camera, uint32_t effect,
         return r.finish();
       c.phase = 30;
       break;
+    // Particle color:live GP1c+index wraps unsigned,mod12 selects RGB palette
+    //4179d8;alpha is low byte of word4. Default BSS word4295e8 read remains
+    // required even though all color lanes overwrite it. Do not use asset zero.
     case 30:
       if (!c.callReady) {
         const auto gp = r.w(0x80415fd0);
@@ -466,6 +491,9 @@ bool resumeRecoveryEffectDraw(int32_t camera, uint32_t effect,
         return false;
       c.phase = 34;
       break;
+    // Particle model=INITIAL billboard*T(live XYZ)*S(live scale);then a fresh
+    // camera query/view. Do not reuse refreshed root model or first root view.
+    // Every particle loop condition reloads signed effect count;queue order stays.
     case 34:
       if (!r.concat(0, 2, 0))
         return false;
@@ -506,6 +534,9 @@ bool resumeRecoveryEffectDraw(int32_t camera, uint32_t effect,
       return false;
     }
 }
+// Capture signed amount/kind after first camera query. Original sprintf
+// format422df8(%d) and strlen use an opaque retained stack-string owner,not
+// rewritten story text or native pointer masquerading as a guest address.
 bool resumeRecoveryEffectNumberDraw(int32_t camera, uint32_t effect,
                                     const RecoveryDrawServices &s,
                                     RecoveryDrawCursor &c) {
@@ -619,6 +650,9 @@ bool resumeRecoveryEffectNumberDraw(int32_t camera, uint32_t effect,
         return false;
       c.phase = 17;
       break;
+    // Number centering:wrap32(-(length-1)),signed-bias double conversion,
+    // FLOAT24*converted then*.5. Preserve two SP multiplies and source bias
+    //2f3b68 rather than a generic screen-space centering or unsigned length cast.
     case 17:
       if (!c.mathReady) {
         const auto integer = 0u - (c.length - 1u);
@@ -651,6 +685,9 @@ bool resumeRecoveryEffectNumberDraw(int32_t camera, uint32_t effect,
       c.number.style = (c.kind == 1 || c.kind == 3 || c.kind == 8) ? 1 : 0;
       c.phase = 19;
       break;
+    // Full number matrix remains world-space:T*Ry*Tz1*S10*Ty2*Maya*S.035
+    // *T(centerX). Styles HP0 for0/2/7,FP1 for1/3/8;alpha255/mode1. Other
+    // kinds still format/transform but skip actual NumberGX request.
     case 19:
       if (c.kind == 0 || c.kind == 1 || c.kind == 2 || c.kind == 3 ||
           c.kind == 7 || c.kind == 8) {
