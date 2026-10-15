@@ -1,6 +1,9 @@
 #include "field_party_lifetime.hpp"
 namespace ttyd {
 namespace {
+// Original globals:two-slot pointer table8041ead8,current definitionead4;
+// definition data803143e8 stride28hex. Kill/Kill2/Mario constants are callee
+// identities. Signed bytes use sign-bit128/extensionffffff00,not unsigned slots.
 constexpr uint32_t Table=0x8041ead8,Definition=0x8041ead4,Data=0x803143e8;
 constexpr uint32_t Kill=0x800be69c,Kill2=0x800be594,Mario=0x8005e0c0;
 uint32_t signedByte(uint32_t v){return v<128?v:v|0xffffff00u;}
@@ -9,6 +12,9 @@ bool same(const BattleSequenceEntryServices& a,const BattleSequenceEntryServices
     return a.user==b.user && a.word==b.word && a.byte==b.byte &&
         a.store==b.store && a.storeByte==b.storeByte && a.call==b.call;
 }
+// Memory false/empty has no effects. CHILD false can follow internal progress:
+// keep its complete request pinned and let that child resume its own cursor.
+// A completed child is never repeated merely because a later parent store holds.
 template<class Cursor> struct Operations {
     Cursor& c;
     bool word(uint32_t a,uint32_t& v){auto n=c.owner.word?c.owner.word(c.owner.user,a):std::nullopt;if(!n)return false;v=*n;return true;}
@@ -23,6 +29,10 @@ template<class Cursor> struct Operations {
     }
 };
 }
+// Negative index/null INITIAL table actor completes without teardown. Source
+// itself adds no upper bound. Actor160 is owner;owner+i+245 linked signed index,
+// +247 saved kind. Linked kind31 chooses definition+24 exit hook; mode34==11
+// skips nonzero hook. Preserve captured actor/owner even if hook changes globals.
 bool removeFieldParty(int32_t index,bool forget,const BattleSequenceEntryServices& s,FieldPartyRemovalCursor& c){
     if(!c.active){c={};c.active=true;c.index=uint32_t(index);c.forget=forget;c.owner=s;}
     else if(c.index!=uint32_t(index) || c.forget!=forget || !same(c.owner,s))return false;
@@ -38,12 +48,18 @@ bool removeFieldParty(int32_t index,bool forget,const BattleSequenceEntryService
     case 6:if(!m.word(c.definition+0x24,c.hook))return false;c.phase=c.hook?7:9;break;
     case 7:if(!m.byte(c.actor+0x34,c.value))return false;c.phase=c.value==11?9:8;break;
     case 8:if(!m.call(c.hook,c.actor))return false;++c.phase;break;
+    // Kill2 stores saved kind0 directly. Kill rereads post-hook owner index,
+    // null-tests linked table then loads it AGAIN before raw kind31. Do not
+    // cache either table read or canonicalize auxiliary kind13 to ordinary1.
     case 9:if(forget){c.value=0;c.phase=14;break;}if(!m.byte(c.slot+0x245,c.linkedIndex))return false;c.linkedIndex=signedByte(c.linkedIndex);++c.phase;break;
     case 10:if(negative(c.linkedIndex))c.linked=0;else if(!m.word(Table+c.linkedIndex*4,c.linked))return false;c.phase=c.linked?11:13;break;
     // Distinct second load: a provider/hook can change the table between reads.
     case 11:if(!m.word(Table+c.linkedIndex*4,c.linked))return false;++c.phase;break;
     case 12:if(!m.byte(c.linked+0x31,c.value))return false;c.phase=14;break;
     case 13:c.value=0;++c.phase;break;
+    // Save kind,write absentff,clear public table BEFORE poseRelease3b2d0
+    // and heap0 memFree300c4. Captured actor stays backed through both child
+    // continuations; success resets. No HP/unlock/global-definition cleanup.
     case 14:if(!m.storeByte(c.slot+0x247,uint8_t(c.value)))return false;++c.phase;break;
     case 15:if(!m.storeByte(c.slot+0x245,255))return false;++c.phase;break;
     case 16:if(!m.store(Table+c.index*4,0))return false;++c.phase;break;
@@ -55,6 +71,10 @@ bool removeFieldParty(int32_t index,bool forget,const BattleSequenceEntryService
     default:return false;
     }}
 }
+// Event wrappers clear800e2da0/kill800e2e0c read actual entry+18 then RAW
+// args[0],never evtGetValue. Negative signed owner byte completes2. Raw slot0
+// uses captured primary index/Kill;nonzero always literal index1,Kill2 only
+// for clear. Provider owns any native slot bounds,not this source controller.
 bool removeFieldPartyEvent(uint32_t entry,bool clear,const BattleSequenceEntryServices& s,FieldPartyRemovalEventCursor& c,int32_t& result){
     const uint32_t parent=clear?0x800e2da0:0x800e2e0c;
     if(!c.active){c={};c.active=true;c.entry=entry;c.clear=clear;c.owner=s;}
@@ -70,6 +90,10 @@ bool removeFieldPartyEvent(uint32_t entry,bool clear,const BattleSequenceEntrySe
     default:return false;
     }}
 }
+// marioPartyKill80141198 queries owner independently for primary245 and
+// auxiliary246,including absent primary. Each nonnegative value uses Kill then
+// explicitff to THAT captured owner. Negative byte skips child AND explicit
+// store. No Kill2 substitution or synthetic scalar result for this void caller.
 bool removeMarioParties(const BattleSequenceEntryServices& s,FieldMarioPartyRemovalCursor& c){
     if(!c.active){c={};c.active=true;c.owner=s;}
     else if(!same(c.owner,s))return false;

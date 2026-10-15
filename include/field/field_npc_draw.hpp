@@ -25,6 +25,9 @@ struct FieldNpcDrawServices {
   bool (*request)(void *, const FieldNpcDrawRequest &,
                   FieldNpcDrawResponse &) = nullptr;
 };
+// Captures callback/actor/camera/providers at admission; later arguments cannot
+// replace a held invocation. pending pins a source child payload; transform/trig
+// own their independent continuations. Successful completion resets for a NEW draw.
 struct FieldNpcDrawCursor {
   bool active = false, pending = false, xlu = false, rear = false,
        offscreen = false;

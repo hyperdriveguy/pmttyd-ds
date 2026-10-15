@@ -154,3 +154,7 @@ movement/pose ordering, shared VM binding and composed cursor retirement.
 
 [NPC detection/display/tail](npc-main-detection-display-tail.md) covers trigger
 priority, eligibility, deferred registrations, raw history and original field ownership.
+
+[Queued NPC drawing](npc-queued-drawing.md) and
+[party removal ownership](party-removal-ownership.md) explain callback pass routing,
+material/GPU state, source removal requests and native retirement leases.

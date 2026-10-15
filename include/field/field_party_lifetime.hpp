@@ -5,6 +5,9 @@ namespace ttyd {
 // These are retained source invocations, not scheduling phases or actor IDs.
 // Providers return empty/false before effects for a held memory operation.
 // A child may progress before returning false; its queued operands stay pinned.
+// Parent captures original actor/owner before publication. queued pins child
+// operands even if that child progresses while held. Success resets cursor;
+// callers latch completed removal while later event/transition work is pending.
 struct FieldPartyRemovalCursor {
     bool active=false,forget=false,queued=false;
     uint32_t index=0,phase=0,pending=0,actor=0,mario=0,slot=0;
@@ -18,6 +21,9 @@ struct FieldPartyRemovalCursor {
 // Keep captured actors, Mario owners and service context alive across holds.
 bool removeFieldParty(int32_t index,bool forget,const BattleSequenceEntryServices&,FieldPartyRemovalCursor&);
 
+// Entry address/clear mode/services must match retries. Raw address identity
+// does not prove EventEntry allocation lifetime; scheduler retains entry/args.
+// Result stays unchanged on hold and becomes source2 only after full completion.
 struct FieldPartyRemovalEventCursor {
     bool active=false,clear=false,queued=false;
     uint32_t entry=0,phase=0,pending=0,mario=0,args=0,slot=0,index=0;

@@ -8,6 +8,9 @@ namespace ttyd {
 // Encoded actor tokens are native address policy, never original heap addresses.
 class NativeFieldPartyLifetime {
 public:
+ // Base resource admits exact original kind1/8/13 records. A live removal
+ // additionally requires actual native animation/pool/release owners; negative/
+ // null removals can complete without inventing legacy source fileFree.
  static std::unique_ptr<NativeFieldPartyLifetime> create(const char* root,FieldPartyRegistry&,FieldMarioBattleState&);
  ~NativeFieldPartyLifetime()=default;
  NativeFieldPartyLifetime(const NativeFieldPartyLifetime&)=delete;
@@ -21,6 +24,8 @@ public:
  uint32_t pending() const;
  // Captured actor remains backed after table publication and before memFree.
  bool retiring() const{return bool(retiring_);}
+ // Native token policy:two stride200 slots,each backed188-byte source record.
+ // Tokens stay readable via retiring_ after public table clear,until memFree.
  static constexpr uint32_t ActorBase=0x85800000,ActorStride=0x200;
 private:
  NativeFieldPartyLifetime(FieldPartyRegistry& p,FieldMarioBattleState& m):parties_(p),mario_(m){}
