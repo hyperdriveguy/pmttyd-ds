@@ -61,6 +61,23 @@ bool NativeSourceWindowMemory::installRead(uint32_t base,const std::vector<uint8
  if(done!=bindings_.size()){for(size_t j=0;j<done;++j)bindings_[j]->vm_->unregisterExternalRam(base);return false;}
  std::memmove(a->backing,bytes.data(),bytes.size());std::fill_n(a->known.begin(),bytes.size(),1);a->installed=true;for(auto*b:bindings_)b->mappings_.push_back(base);return true;
 }
+bool NativeSourceWindowMemory::adoptHeapAllocation(uint32_t base,uint8_t*data,uint32_t n,uint32_t prefix,std::shared_ptr<const void>owner){
+ if(!prefix||prefix>n||!adoptAllocation(base,data,n,std::move(owner)))return false;
+ Running guard(running_);if(!allBindingsCurrent()){allocations_.pop_back();return false;}
+ size_t done=0;for(;done<bindings_.size();++done)if(!bindings_[done]->vm_->registerExternalRam(base,data,prefix))break;
+ if(done!=bindings_.size()){for(size_t i=0;i<done;++i)bindings_[i]->vm_->unregisterExternalRam(base);allocations_.pop_back();return false;}
+ auto&a=allocations_.back();std::fill_n(a.known.begin(),prefix,1);a.heapKnown=prefix;
+ for(auto*b:bindings_){b->mappings_.push_back(base);}
+ return true;
+}
+bool NativeSourceWindowMemory::deliverHeapRead(uint32_t base,const std::vector<uint8_t>&bytes){
+ if(running_||!current()||bytes.empty())return false;
+ Running guard(running_);if(!allBindingsCurrent())return false;
+ auto a=std::find_if(allocations_.begin(),allocations_.end(),[&](const auto&v){return v.base==base;});
+ if(a==allocations_.end()||!a->heapKnown||a->installed||bytes.size()>a->heapKnown)return false;
+ for(auto*b:bindings_)if(!b->vm_->withRawRamAccess([&](auto&ram){return ram.matchesBacking(base,a->heapKnown,a->backing);}))return false;
+ std::memmove(a->backing,bytes.data(),bytes.size());a->installed=true;return true;
+}
 bool NativeSourceWindowMemory::owns(uint32_t a,uint32_t n)const{if(!n)return false;if(overlap(a,n,StateBase,StateSize))return true;for(const auto&p:allocations_)if(overlap(a,n,p.base,p.capacity))return true;return false;}
 uint8_t*NativeSourceWindowMemory::cell(uint32_t a,bool requireKnown)const{if(a>=StateBase&&uint64_t(a)<uint64_t(StateBase)+StateSize){if(!captured_)return nullptr;unsigned i=a-StateBase;return !requireKnown||known_[i]?const_cast<uint8_t*>(&state_[i]):nullptr;}for(const auto&p:allocations_)if(a>=p.base&&uint64_t(a)<uint64_t(p.base)+p.capacity)return !requireKnown||p.known[a-p.base]?p.backing+a-p.base:nullptr;return nullptr;}
 bool NativeSourceWindowMemory::known(uint32_t a)const{return bool(cell(a,true));}

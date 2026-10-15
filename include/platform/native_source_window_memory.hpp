@@ -29,6 +29,11 @@ public:
  // Reserved but unread/unwritten bytes remain owned and unavailable.
  bool adoptAllocation(uint32_t,uint8_t*,uint32_t,std::shared_ptr<const void>);
  bool installRead(uint32_t,const std::vector<uint8_t>&);
+ // Preserve actual source allocator writes when transferring its detached RAM.
+ // The unread capacity tail remains owned and unknown.
+ bool adoptHeapAllocation(uint32_t,uint8_t*,uint32_t,uint32_t knownPrefix,std::shared_ptr<const void>);
+ // One later real DVD delivery overwrites only this captured known prefix.
+ bool deliverHeapRead(uint32_t,const std::vector<uint8_t>&);
  bool owns(uint32_t,uint32_t size=1)const;
  std::optional<uint8_t>byte(uint32_t)const;
  std::optional<uint16_t>half(uint32_t)const;
@@ -39,7 +44,7 @@ public:
  static constexpr uint32_t StateBase=0x8041ea18,StateSize=16;
 private:
  NativeSourceWindowMemory()=default;
- struct Allocation{uint32_t base,capacity;uint8_t*backing;std::shared_ptr<const void>owner;std::vector<uint8_t>known;bool installed=false;};
+ struct Allocation{uint32_t base,capacity;uint8_t*backing;std::shared_ptr<const void>owner;std::vector<uint8_t>known;bool installed=false;uint32_t heapKnown=0;};
  std::shared_ptr<const void>lifetime_;void*user_=nullptr;bool(*current_)(void*)=nullptr;
  mutable bool invalid_=false,checking_=false;bool running_=false,captured_=false;
  std::array<uint8_t,StateSize>state_{};std::array<bool,StateSize>known_{};

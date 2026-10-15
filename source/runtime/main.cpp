@@ -107,6 +107,10 @@ int main() {
     // Source SDK fctiwz owner is admitted only after its finite int32-domain
     // checks; native cast implements that exact toward-zero conversion.
     animationPlatform.truncate=[](void*,float value){return int32_t(value);};
+    // Actual finite native arithmetic used by the retained original TEX
+    // unsigned LOD conversion; its owner admits the original byte domain.
+    animationPlatform.subtractDouble=[](void*,double a,double b){volatile double v=a-b;return v;};
+    animationPlatform.roundDoubleFloat=[](void*,double v){volatile float f=float(v);return f;};
     if(!game.initializeNativeUiFieldAnimation("romfs:",ttyd::fieldAnimationFileCache(),animationPlatform)){
         renderer.shutdown();consoleInit(GFX_TOP,nullptr);std::printf("Original animation startup unavailable.\nPress START to exit.\n");
         while(aptMainLoop()){hidScanInput();if(hidKeysDown()&KEY_START)break;gfxFlushBuffers();gfxSwapBuffers();gspWaitForVBlank();}

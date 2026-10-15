@@ -3540,6 +3540,25 @@ The actual startup delivery reuses separately tracked unmodified
 Original Nintendo/Intelligent Systems rights are retained; no extraction or
 tracking grants a redistribution license. No ISO or generated payload is committed.
 
+
+### Original cold Window startup state
+
+`tools/source_window_startup_assets.py` reads the US revision0 ISO read-only,
+exports exact initialized literals/unsigned conversion bias plus actual loader
+BSS archive descriptors and Window globals to ignored
+`romfs/source-window-startup/memory.pmevt` and `memory.json`. Four spans,
+288 bytes of original data; pack SHA256
+`cbb8a9711aff88735eb8b2ee129f93eb8d35484a2f12ebfc1f8bca76677da8be`.
+No image conversion, scaling, generated readiness or executable import occurs.
+The existing raw `romfs/source-window/msgWindow.tpl` remains unmodified
+(original `f/msgWindow.tpl`, ISO offset947396944,321984 bytes, SHA256
+`2ef0cdc818d2402de5bfb95394f67d78017e74bc1b41c38b79780cb0b870dc67`).
+The same actual process startup heap/read callback owns these source resources;
+this adds no native atlas/GPU readiness. New exports require an empty destination;
+modified existing products are preserved. Nintendo/Intelligent Systems retain
+all original rights; extraction grants no distribution license. See
+[Window startup prefix](behavior/display/NATIVE_UI_STARTUP_WINDOW_PREFIX.md).
+
 Harbor battle callback recovery (2026-10-15): original US ISO opened read-only for complete DOL start8004ef54/b8, wait8004eed8/7c, get_reglid8004f894/58 and original gor.rel beforebattle inventory. Evidence/provenance stays in artifacts/harbor-battle-handoff-evidence; no new runtime pack, asset conversion, dialogue/art/audio edit or redistribution grant. Existing Nintendo/Intelligent Systems original rights unchanged.
 
 ## Battle menu-controller documentation validation inputs (2026-10-15)

@@ -24,13 +24,13 @@ bool Game::initializeNativeUiFieldAnimation(const char* root,std::shared_ptr<Nat
  }
  // Held allocator/delivery/SDK children retain this exact actual process and
  // prefix. No Mario Entry may interleave or authorize incomplete UI history.
- if(!nativeUiStartup_->resumeFont())return false;
+ if(!nativeUiStartup_->resumeWindow())return false;
  auto owner=nativeUiStartup_->fieldProcess();
  if(!owner || !fieldParties.configureNativeAnimation(std::move(owner),fieldPlayerPoseResources()) || !fieldParties.initializeMario(fieldMarioBattle,{},0))return false;
  prepareNativeFieldAnimation();return nativeMarioPose()!=nullptr;
 }
 std::shared_ptr<NativeUiStartup> Game::nativeUiStartup() const{
- return nativeUiStartup_ && nativeUiStartup_->current() && nativeUiStartup_->fontObject() && nativeUiStartup_->fieldProcess()==fieldParties.nativeAnimation?nativeUiStartup_:nullptr;
+ return nativeUiStartup_ && nativeUiStartup_->current() && nativeUiStartup_->fontObject() && nativeUiStartup_->windowReady() && nativeUiStartup_->fieldProcess()==fieldParties.nativeAnimation?nativeUiStartup_:nullptr;
 }
 void Game::prepareNativeFieldAnimation(){
  if(!fieldParties.nativeAnimation || nativeAnimationPending())return;

@@ -2663,6 +2663,10 @@ set_tests_properties(native_ui_startup PROPERTIES WORKING_DIRECTORY "${CMAKE_SOU
 add_executable(native_ui_startup_game_tests tests/native_ui_startup_game_tests.cpp)
 target_link_libraries(native_ui_startup_game_tests PRIVATE ttyd_core)
 add_test(NAME native_ui_startup_game COMMAND native_ui_startup_game_tests)
+
+add_executable(native_ui_window_startup_tests tests/native_ui_window_startup_tests.cpp)
+target_link_libraries(native_ui_window_startup_tests PRIVATE ttyd_core)
+add_test(NAME native_ui_window_startup COMMAND native_ui_window_startup_tests)
 set_tests_properties(native_ui_startup_game PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 # Same-process original NPC animation children under an exclusive field pass.
 target_sources(ttyd_core PRIVATE source/display/native_field_npc_animation.cpp)
@@ -2758,3 +2762,16 @@ target_sources(ttyd_core PRIVATE source/display/animation_group_request.cpp sour
 add_executable(animation_group_request_tests tests/animation_group_request_tests.cpp)
 target_link_libraries(animation_group_request_tests PRIVATE ttyd_core)
 add_test(NAME animation_group_request COMMAND animation_group_request_tests)
+
+
+# Actual source GX history, independent of native raster state.
+target_sources(ttyd_core PRIVATE source/display/source_gx_inherited_state.cpp)
+add_executable(source_gx_inherited_state_tests tests/source_gx_inherited_state_tests.cpp)
+target_link_libraries(source_gx_inherited_state_tests PRIVATE ttyd_core)
+add_test(NAME source_gx_inherited_state COMMAND source_gx_inherited_state_tests)
+
+add_executable(native_ui_gx_startup_tests tests/native_ui_gx_startup_tests.cpp)
+target_link_libraries(native_ui_gx_startup_tests PRIVATE ttyd_core)
+add_test(NAME native_ui_gx_startup COMMAND native_ui_gx_startup_tests)
+
+set_tests_properties(native_ui_window_startup native_ui_gx_startup PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
