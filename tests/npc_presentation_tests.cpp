@@ -39,6 +39,10 @@ int main() {
         assert(near(table.angle(10,20,float(10+x),float(20+z)),a));
     }
     assert(npcReviseAngle(-90)==270 && npcReviseAngle(720)==0 && npcReviseAngle(std::numeric_limits<float>::quiet_NaN())==0);
+    // Source reviseAngle's rounded negative addition can reach360. Keep its
+    // final zero guard and negative-zero result, rather than a generic modulo.
+    assert(npcReviseAngle(-1.e-10f)==0 && npcReviseAngle(-std::numeric_limits<float>::denorm_min())==0);
+    assert(std::signbit(npcReviseAngle(-0.f)) && !std::signbit(npcReviseAngle(std::numeric_limits<float>::quiet_NaN())));
     Camera camera;NpcMatrixInput input;input.flags=0x02000000;input.yaw=270;
     NpcPresentation left;assert(left.prepare(input,table,camera.service()) && camera.calls==3);
     assert(left.incoming==0 && left.retained==0 && left.target==0 && left.sign==1);

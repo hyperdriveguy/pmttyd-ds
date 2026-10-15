@@ -1980,3 +1980,8 @@ target_sources(ttyd_core PRIVATE source/display/battle_audience_touch_publicatio
 add_executable(battle_audience_touch_publication_tests tests/battle_audience_touch_publication_tests.cpp)
 target_link_libraries(battle_audience_touch_publication_tests PRIVATE ttyd_core)
 add_test(NAME battle_audience_touch_publication COMMAND battle_audience_touch_publication_tests)
+# Native prior-scan NPC radial hint, separate collision and source angle boundary.
+add_executable(field_npc_radial_hint_tests tests/field_npc_radial_hint_tests.cpp)
+target_link_libraries(field_npc_radial_hint_tests PRIVATE ttyd_core)
+add_test(NAME field_npc_radial_hint COMMAND field_npc_radial_hint_tests)
+set_tests_properties(field_npc_radial_hint PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

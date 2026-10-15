@@ -21,6 +21,7 @@ struct NpcWanderActor {
     uint16_t stepPeriod=0;
     int16_t stepToggle=0;
 };
+// contact is marioGetTouchNpcPtr: prior radial hint+1d8, not collision+1dc.
 struct NpcWanderMario {FieldWallVector root;float travelHeading=0;uintptr_t contact=0;};
 // Call order, including repeated readiness/RNG queries, is observable source
 // behavior. USER_FUNC produces components; NPC-main consumes them separately.

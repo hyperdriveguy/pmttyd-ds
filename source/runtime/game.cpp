@@ -1101,11 +1101,11 @@ void Game::synchronizeFieldNpcs() {
     const auto generation=fieldActorCatalogGeneration();
     if(fieldNpcGeneration!=generation || fieldNpcRoom!=progress.room) {
         fieldDoorData.invalidate();fieldMapFlags.invalidate();
-        fieldNpcs.clear();fieldNpcEventCandidate=0;fieldNpcGeneration=generation;fieldNpcRoom=progress.room;
+        fieldNpcs.clear();fieldNpcEventCandidate=0;fieldNpcRadial=0;fieldNpcGeneration=generation;fieldNpcRoom=progress.room;
     }
     fieldDoorData.synchronize(progress.room);fieldMapFlags.synchronize(progress.room);fieldBeroInfo.synchronize(progress.room);
 }
-// Source wander providers consume the prior pose/contact publications. Native
+// Source wander providers consume prior pose and encounter radial-hint publications. Native
 // sound-name tokens1/2 select left/right keys; they are not original addresses.
 // Frame conversion is60Hz; pose epochs are integer milliseconds.
 void Game::updateFieldNpcEvents() {
@@ -1128,7 +1128,7 @@ void Game::updateFieldNpcEvents() {
         const auto& c=*static_cast<Context*>(p);c.game->npcSoundRequests.push_back({name==1?c.actor->wander.soundLeft:c.actor->wander.soundRight,mask,root});
     };
     NpcWanderMario mario;mario.root={progress.position.x*100,(groundHeight+jumpHeight)*100,progress.position.z*100};
-    mario.travelHeading=fieldNpcAngles().angle(0,0,fieldMovement.headingX,fieldMovement.headingZ);mario.contact=fieldNpcHit;
+    mario.travelHeading=fieldNpcAngles().angle(0,0,fieldMovement.headingX,fieldMovement.headingZ);mario.contact=fieldNpcRadial;
     for(const auto& actor:fieldActorCatalog().actors()) {
         if(!actor.wander.enabled || !actor.visible(progress.room,progress.originalStory,fieldDoor.interiorMask,fieldSystemFlags))continue;
         auto& state=fieldNpcs[actor.key];Context context{this,&actor};services.user=&context;
@@ -1167,6 +1167,7 @@ void Game::updateFieldNpcCandidates() {
         state.movement.yaw=turn.yaw;state.savedYaw=turn.savedYaw;
     }
     fieldNpcEventCandidate=uint32_t(scan.candidate);
+    fieldNpcRadial=uint32_t(scan.nearActor); // Publish only after an admitted scan; skipped gates retain the prior hint.
 }
 // NPC active/visible gate is flags&3==3. Source body flag0x8000 publishes
 // presentation flag0x100; camera-facing work belongs to simulation, not draw.

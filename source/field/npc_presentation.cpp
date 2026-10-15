@@ -49,7 +49,7 @@ float NpcAngleTable::angle(float fromX,float fromZ,float toX,float toZ) const {
 float npcReviseAngle(float value) {
     float result=float(std::fmod(double(value),360.));
     if(std::isnan(result))result=0;
-    if(result<0)result+=360;
+    if(result<0){result+=360;if(result>=360)result=0;}
     return result;
 }
 namespace {

@@ -382,6 +382,7 @@ public:
     bool near(Vec2 point, float distance = 1.5f) const;
     const FieldActorRecord* nearbyFieldActor() const;
     uint32_t fieldNpcContact() const{return fieldNpcHit;}
+    uint32_t fieldNpcRadialHint() const{return fieldNpcRadial;} // Prior admitted encounter scan; distinct from side collision.
     const FieldNpcInstance* fieldNpcState(uint32_t key) const;
     const FieldNpcInstance* fieldNpcNamedState(const std::string& originalName) const;
     bool setFieldNpcPosition(const std::string& originalName,FieldWallVector enginePosition);
@@ -456,7 +457,7 @@ private:
     // ~0u/UINT*_MAX sentinels denote no cached room/generation, not room0.
     // The first refresh must rebuild a cache even when the active room is plaza.
     uint32_t fieldNpcRoom=~0u;
-    uint32_t fieldNpcHit=0;
+    uint32_t fieldNpcHit=0,fieldNpcRadial=0;
     void updateFieldNpcCollision();
     void checkFieldRoadCases();
     FieldBattleWork fieldBattleWork;
