@@ -180,3 +180,9 @@ mutations, VM aliases and readable-prefix versus reserved allocation ownership.
 [Font GX pipeline](font-gx-pipeline.md) explains late DrawStart captures, exact
 ordinary state and native glyph replay. [Weapon/window bridges](weapon-window-bridges.md)
 explains short camera epochs, long submission ownership, source FIFO and atlas leases.
+
+[Retained class/weapon menus](battle-menu-continuations.md),
+[command input](battle-command-input-continuation.md),
+[Phase/Move](battle-phase-move-continuation.md) and
+[weapon subicons](weapon-subicon-continuation.md) explain source row layouts,
+private-output knowledge, invocation cadence and precise child/read frontiers.

@@ -17,6 +17,9 @@ struct BattleWeaponUiServices {
  // Engaged0 allocation is actual pointer0, not unavailable or repaired success.
  std::optional<uint32_t> (*request)(void*,const BattleWeaponUiRequest&)=nullptr;
 };
+// Distinct Init/End invocation metadata and provider identities. Actual lease
+// predicate is checked between synchronous source groups/after map children;
+// caller freezes all memory/maps within each group. Observed loss poisons.
 class BattleWeaponUiCursor {
 public:
  BattleWeaponUiCursor();~BattleWeaponUiCursor();

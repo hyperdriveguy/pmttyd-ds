@@ -1,4 +1,6 @@
 #include "battle_weapon_menu_continuation.hpp"
+// Field offsets and masks in these notes are hex; counts, strides, states
+// and icon IDs are decimal. Original addresses remain32-bit source identities.
 namespace ttyd {
 namespace {
 int32_t sw(uint32_t v){return v<0x80000000u?int32_t(v):int32_t(int64_t(v)-0x100000000LL);}
@@ -22,6 +24,8 @@ struct BattleWeaponMenuContinuationCursor::State {
  uint8_t byte(uint32_t a)const{return services.actors.byte(services.actors.user,a);}
  void store(uint32_t a,uint32_t n)const{services.actors.memory.storeWord(services.actors.memory.user,a,n);}
  void put(uint32_t a,uint8_t n)const{services.actors.memory.storeByte(services.actors.memory.user,a,n);}
+ // Weapon records are28 bytes anchored at M=B171c: +80 weapon,+84 enabled,
+ // +98 reason. Cursor+0 selection,+8 count; its output can remain unknown.
  uint32_t row()const{return m+28*word(*privateCursor);}
  bool cursorKnown(){if(privateCursor)return true;pending=0x80124cb8;return false;}
  template<class Build>std::optional<uint32_t> call(uint32_t fn,Build build){
@@ -51,6 +55,8 @@ std::optional<int32_t> resumePackedBattleWeaponMenuMain(uint32_t b,uint32_t type
   if(!result)return {};
   c.u=*result;{c.pc=0x8012203c;continue;}
  }
+ // KeyOK0 still reaches CommonDisplay and completes0 without consuming SP08.
+ // Completed Main0 is a simulation return, not a provider suspension.
  case 0x8012203c: {
   auto result=c.call(0x80119df8,[&](auto& q){q.arguments[q.count++]=c.b;});
   if(!result)return {};
@@ -66,6 +72,9 @@ std::optional<int32_t> resumePackedBattleWeaponMenuMain(uint32_t b,uint32_t type
   if(!result)return {};
   if(c.byte(c.b+0x1c74)){c.put(c.b+0x1c74,0);c.store(c.b+0x1c70,0);}{c.pc=0x80121d74;continue;}
  }
+ // Confirm trigger100 (or freshly republished pending byte) precedes navigation.
+ // Enabled row: sound2520,real End,decision(T,fresh index),target setup,state10,
+ // independent fresh friend/enemy-light tests on weapon64 masks200/4110.
  case 0x80121d74: {
   auto result=c.call(0x8011a06c,[&](auto& q){q.arguments[q.count++]=0x100;});
   if(!result)return {};
@@ -122,6 +131,9 @@ std::optional<int32_t> resumePackedBattleWeaponMenuMain(uint32_t b,uint32_t type
   if(!result)return {};
   {c.pc=0x80121e54;continue;}
  }
+ // Disabled row clears pending before reason test. Reason0 returns normally;
+ // nonzero waits for real End,then writes state8 and rereads reason into M564.
+ // Mutation by End remains visible; do not retain the earlier reason word.
  case 0x80121e54: {
   c.put(c.b+0x1c74,0);
   if(c.word(c.row()+0x98)){c.pc=0x80121e7c;continue;}
@@ -131,6 +143,9 @@ std::optional<int32_t> resumePackedBattleWeaponMenuMain(uint32_t b,uint32_t type
   if(!c.finishEnd())return {};
   c.store(c.m,8);c.result=1;c.store(c.m+0x564,c.word(c.row()+0x98));{c.pc=0x8012204c;continue;}
  }
+ // Forward: signed bounds choose Repeat20000 versus Trigger20000 at wrap.
+ // Reverse similarly uses10000. A movement reaches CommonDisplay immediately,
+ // skipping reverse/cancel/audience; arithmetic reloads index/count after child.
  case 0x80121ea8: {
   if(!c.cursorKnown())return {};
   const auto cursor=*c.privateCursor;const auto count=c.word(cursor+8),index=c.word(cursor);c.pc=sw(index)<sw(count-1)?0x80121ec4:0x80121ef4;continue;
@@ -178,6 +193,9 @@ std::optional<int32_t> resumePackedBattleWeaponMenuMain(uint32_t b,uint32_t type
   if(!result)return {};
   {c.pc=0x8012204c;continue;}
  }
+ // Cancel200 uses retained type2, fresh U2f3/2f4 and signed mode U20.
+ // Special mode0 -> sound2521/state15; nonzero -> state12 without that sound;
+ // ordinary -> sound2521/state1. No cancel then real physical-X audience child.
  case 0x80121f90: {
   auto result=c.call(0x8011a06c,[&](auto& q){q.arguments[q.count++]=0x200;});
   if(!result)return {};
@@ -213,6 +231,8 @@ std::optional<int32_t> resumePackedBattleWeaponMenuMain(uint32_t b,uint32_t type
   if(!result)return {};
   c.pc=*result?0x80122028:0x8012204c;continue;
  }
+ // Audience interruption waits for real End,then marks B1c74=1 while result
+ // stays0. Every ordinary path still calls actual CommonDisplay once.
  case 0x80122028: {
   if(!c.finishEnd())return {};
   c.put(c.b+0x1c74,1);{c.pc=0x8012204c;continue;}
@@ -225,6 +245,8 @@ std::optional<int32_t> resumePackedBattleWeaponMenuMain(uint32_t b,uint32_t type
  default:return {};
  }
 }
+// Whole Table -> private Cursor -> UIInit,then fresh M4 OR01000010 only
+// after Init acknowledgment. No table/UI fallback or fabricated readiness.
 bool resumePackedBattleWeaponMenuSetup(uint32_t b,uint32_t type,uint32_t flags,const BattleWeaponMenuContinuationServices& s,BattleWeaponMenuContinuationCursor& cursor){
  const auto& m=s.actors.memory;
  if(cursor.invoking_||!m.word||!m.storeWord)return false;
@@ -251,6 +273,8 @@ bool resumePackedBattleWeaponMenuSetup(uint32_t b,uint32_t type,uint32_t flags,c
  default:return false;
  }
 }
+// Real UIEnd finishes BEFORE fresh B1720 bit10 clear. The nested Main End
+// shares this owner so a held free cannot repeat earlier sounds/decisions.
 bool resumePackedBattleWeaponMenuEnd(uint32_t b,const BattleWeaponMenuContinuationServices& s,BattleWeaponMenuContinuationCursor& cursor){
  const auto& m=s.actors.memory;
  if(cursor.invoking_||!m.word||!m.storeWord)return false;

@@ -4,6 +4,9 @@
 #include <optional>
 #include "battle_actor.hpp"
 namespace ttyd {
+// Function/site and operands stay captured through a hold. Cursor output is
+// this operation's native optional SP08, independent of CommandInput/Updater.
+// A written0 is real known data; absent knowledge is never synthesized zero.
 struct BattleWeaponMenuContinuationRequest {
  uint32_t function=0,callsite=0;
  std::array<uint32_t,4> arguments{};uint8_t count=0;
@@ -13,6 +16,9 @@ struct BattleWeaponMenuContinuationServices {
  BattleActorServices actors;void* user=nullptr;
  std::optional<uint32_t> (*call)(void*,const BattleWeaponMenuContinuationRequest&)=nullptr;
 };
+// Main/Setup/End pin operation,B,type/flags and provider identities. Caller
+// owns actual context/memory lifetimes; identity checks alone do not retain VM.
+// Main composes a separate retained End cursor and waits for its real UI child.
 class BattleWeaponMenuContinuationCursor {
 public:
  BattleWeaponMenuContinuationCursor();~BattleWeaponMenuContinuationCursor();

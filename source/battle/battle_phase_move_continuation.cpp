@@ -1,5 +1,7 @@
 #include "battle_phase_move_continuation.hpp"
 #include "battle_sequence_startup.hpp"
+// Field offsets and masks in these notes are hex; counts, strides, states
+// and icon IDs are decimal. Original addresses remain32-bit source identities.
 namespace ttyd {
 namespace {
 int32_t s32(uint32_t n){return n<0x80000000u?int32_t(n):int32_t(int64_t(n)-0x100000000LL);}
@@ -18,6 +20,9 @@ enum class Step {Dispatch,First,MajinaiDone,MajinaiEnd,MajinaiEntry,Wait,PhaseSc
  SerialScan,SerialEvent,Concluded,Reset,ResetUnits,Select,SelectStatus,SelectCommit,Deferred,CommandFlags,
  Act,Cleanup,CleanupUnit,PhaseEnd,PerPhase,Reaction,Message,Announce};
 }
+// Source channels:4 Phase,5 Move,6 Act,7 conclusion; encoded high bytes
+//04000000/05000000/06000000/07000000 are source state domains, not tick counts.
+// Step is native continuation metadata for already acknowledged parent work.
 struct BattleMoveCursor::State {
  BattleMoveServices services;uint32_t battle=0,index=0,pending=0,slot=0,unit=0,id=0,pouch=0,mario=0;
  int32_t capturedState=0;uint32_t message=0;
@@ -56,6 +61,9 @@ bool resumePackedBattleMove(uint32_t battle,const BattleMoveServices& s,BattleMo
  if(!cursor.state_){cursor.state_=std::make_unique<BattleMoveCursor::State>();cursor.state_->services=s;cursor.state_->battle=battle;}
  auto& c=*cursor.state_;const auto finish=[&](){cursor.state_.reset();return true;};
  for(;;)switch(c.step){
+ // Unsigned Move-state subtraction admits indices0..14. Immediate redispatch
+ // versus finish below preserves source invocation boundaries; out-of-range
+ // completes locally without inventing another handler or clamping state.
  case Step::Dispatch:
   c.index=c.sequence(5)-0x05000000u;
   if(c.index>14)return finish();
@@ -102,6 +110,9 @@ bool resumePackedBattleMove(uint32_t battle,const BattleMoveServices& s,BattleMo
   if(c.index==7){c.step=Step::Concluded;break;}
   c.inc(5);if(c.index==11)return finish();c.loop();break;
  }
+ // All64 registry slots: any nonnull U with phase-script word294 gets selector1.
+ // Serial bank B220 has64 eight-byte pairs; selector0 launches ONE U298 script,
+ // marks only its ID word -1,then returns. No added HP/status filters.
  case Step::PhaseScan:
   if(c.slot==64){c.inc(5);c.loop();break;}
   c.unit=battleRegistryUnit(battle,int32_t(c.slot),s.actors);
@@ -127,6 +138,8 @@ bool resumePackedBattleMove(uint32_t battle,const BattleMoveServices& s,BattleMo
  case Step::Reset:
   if(!c.call(0x800050b4,[&](BattleMoveRequest& q){q.integers={battle+0x18ffc,0,12,0,0,0,0,0};}))return false;
   c.slot=0;c.step=Step::ResetUnits;break;
+ // Clear per-action fields with original word/half/byte widths; U27c keeps
+ // only80002000. Selection bit1000 is published later and cleared by cleanup.
  case Step::ResetUnits:
   if(c.slot==64){c.slot=0;c.step=Step::Select;break;}
   c.unit=battleRegistryUnit(battle,int32_t(c.slot),s.actors);
@@ -149,6 +162,9 @@ bool resumePackedBattleMove(uint32_t battle,const BattleMoveServices& s,BattleMo
   if(c.capturedState==1){c.storeByte(c.unit+0x20,0);c.next(Step::Select);break;}
   c.step=Step::SelectCommit;break;
  }
+ // Source assumes a valid selected actor, including the all64-skipped path.
+ // Commit ID to B420 and lookup again before U27c OR1000. Do not fabricate
+ // a no-actor success or silently make unchecked guest0 unavailable.
  case Step::SelectCommit:
   c.store(battle+0x420,c.id);c.unit=c.lookup(c.id);c.store(c.unit+0x27c,c.word(c.unit+0x27c)|0x1000);
   c.inc(5);c.set(6,0x06000000);c.slot=0;c.step=Step::Deferred;break;
@@ -157,6 +173,9 @@ bool resumePackedBattleMove(uint32_t battle,const BattleMoveServices& s,BattleMo
   c.id=c.word(battle+0x120+4*c.slot);
   if(c.id!=0xffffffffu){c.unit=c.lookup(c.id);if(c.unit && c.byte(c.unit+0x20)==1)c.storeByte(c.unit+0x20,0);}
   ++c.slot;break;
+ // Mario222: set Bef4 bits600,then independently scan200 signed pouch halfs
+ // at38a for badge IDs240..246 /247..253. Boots98/hammer99 signed level>=2
+ // also clear200/400. These are source availability tests,not native inventory.
  case Step::CommandFlags:
   if(c.word(c.unit+8)==222){
    c.pouch=c.word(0x8041eb00);c.store(battle+0xef4,c.word(battle+0xef4)|0x600);
@@ -179,6 +198,9 @@ bool resumePackedBattleMove(uint32_t battle,const BattleMoveServices& s,BattleMo
  case Step::CleanupUnit:
   if(!c.call(0x80127434,[&](BattleMoveRequest& q){q.integers={c.unit,0,0,0,0,0,0,0};}))return false;
   c.store(c.unit+0x27c,c.word(c.unit+0x27c)&~0x1000u);c.next(Step::Cleanup);break;
+ // Actual phase-end0 and no force flag2000 returns Move8. Otherwise clear
+ // Majinai byte18ff9 only if2,call audience per-phase,increment5 and return.
+ // Reaction later tests lowbyte only; MsgMain and AnnounceMain both always run.
  case Step::PhaseEnd:{
   const auto ended=c.call(0x8011bb88);if(!ended)return false;
   const auto flags=c.word(battle+0xef4);
@@ -209,6 +231,9 @@ BattlePhaseCursor::~BattlePhaseCursor()=default;
 bool BattlePhaseCursor::active()const{return bool(state_);}
 uint32_t BattlePhaseCursor::pending()const{return state_?state_->child.pending():0;}
 bool BattlePhaseCursor::reset(){if(invoking_)return false;state_.reset();return true;}
+// Capture Phase gate once:04000000 increments4/resets5;01..05 own real
+// Move;04000006 increments3/resets4. Other values do nothing. A held child
+// cannot retest this gate or advance a simulation/render clock.
 bool resumePackedBattlePhase(uint32_t battle,const BattleMoveServices& s,BattlePhaseCursor& cursor){
  const auto& m=s.actors.memory;
  if(cursor.invoking_ || !battle || !m.word || !m.storeWord)return false;

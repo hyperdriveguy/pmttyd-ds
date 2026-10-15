@@ -16,6 +16,9 @@ struct BattleMoveServices {
  // The same request object and operands survive every held child.
  std::optional<uint32_t> (*call)(void*,const BattleMoveRequest&)=nullptr;
 };
+// One original invocation. Provider/B identities are fixed, but actual memory,
+// unit/event allocations and child lifetimes are caller-owned. Reset abandons
+// retained metadata without undoing source effects or safely replaying them.
 class BattleMoveCursor {
 public:
  BattleMoveCursor();~BattleMoveCursor();

@@ -1,4 +1,6 @@
 #include "battle_action_class_table_continuation.hpp"
+// Field offsets and masks in these notes are hex; counts, strides, states
+// and icon IDs are decimal. Original addresses remain32-bit source identities.
 namespace ttyd {
 namespace {
 int32_t sw(uint32_t n) {
@@ -66,6 +68,9 @@ struct BattleActionClassTableCursor::State {
   void icon(uint16_t v) const {
     owner.memory.memory.storeHalf(owner.memory.memory.user, row + 20, v);
   }
+  // row=M+20*n is an anchor8 bytes BEFORE the actual20-byte record:
+  // type+8,enabled+c,label+10,icon half+14,reason+18 (hex). Preserve padding.
+  // deny writes0/reason3; a missing equipment level only clears enabled.
   void initialize(uint32_t type, uint32_t enabled, uint32_t reason) {
     row = m + 20 * count;
     put(row + 8, type);
@@ -78,6 +83,9 @@ struct BattleActionClassTableCursor::State {
       put(row + 24, 3);
     }
   }
+  // Actual original msgSearch key/address, not English substitute text.
+  // Capture row/count through this hold; completed scalar0 is stored unchanged.
+  // Message callbacks may change later live gates/equipment levels.
   bool label(uint32_t key) {
     pending = 0x80081b8c;
     if (!owner.message)
@@ -142,6 +150,9 @@ resumePackedBattleActionClassTable(uint32_t b,
       c.step = Step::Pouch;
       break;
     }
+    // M=B171c wraps32 bits. Setup/definition reads still precede the M0
+    // branch, whose raw return is captured pouch P rather than a row count.
+    // First kind selects retained class cursor M498(Mario222)/M4a4(other).
     case Step::Pouch: {
       c.pending = 0x800d5eb0;
       if (!s.pouch)
@@ -161,6 +172,9 @@ resumePackedBattleActionClassTable(uint32_t b,
       c.step = Step::Jump;
       break;
     }
+    // Original type0 Jump is admitted for initial kind222 even without boots.
+    // U104 bit10,status U300,B19050,D4 bit01000000,Bef4 mask06800000
+    // deny in source order; do not short-circuit after an earlier denial.
     case Step::Jump:
       if (c.kind != 222) {
         c.step = Step::Party;
@@ -176,6 +190,8 @@ resumePackedBattleActionClassTable(uint32_t b,
       c.deny(c.word(b + 0xef4) & 0x06800000);
       c.step = Step::JumpMessage;
       break;
+    // Fresh signed boot level AFTER message:1/2/otherwise -> icons334/335/336.
+    // This default is not an equipment-level clamp or a cached pre-message level.
     case Step::JumpMessage: {
       if (!c.label(0x802f0018))
         return {};
@@ -185,6 +201,8 @@ resumePackedBattleActionClassTable(uint32_t b,
       c.step = Step::Party;
       break;
     }
+    // Fresh kinds224..230 admit type6; signed U12b,U16 U13c and Bef4
+    // mask04800000 gate enabled/reason only. Row admission survives denial.
     case Step::Party: {
       const auto kind = sw(c.word(c.u + 8));
       if (kind < 224 || kind >= 231) {
@@ -208,6 +226,9 @@ resumePackedBattleActionClassTable(uint32_t b,
       c.icon(343);
       c.step = Step::Hammer;
       break;
+    // Type1 Hammer differs from Jump: kind222 AND signed hammer level>=1
+    // admit the row. Fresh later P99 can clear enabled without removing it.
+    // U2ff/B19054/D4 bit02000000/Bef4 mask05800000 retain source order.
     case Step::Hammer:
       if (sw(c.word(c.u + 8)) != 222 || sb(c.byte(c.p + 0x99)) < 1) {
         c.step = Step::Item;
@@ -232,6 +253,9 @@ resumePackedBattleActionClassTable(uint32_t b,
       c.step = Step::Item;
       break;
     }
+    // Type2 Item uses fresh Mario/party kind admission, not inventory count.
+    // A later kind reread chooses Mario B19058 versus U16 U13e restriction;
+    // no second party-kind range validation is added after that reread.
     case Step::Item: {
       const auto kind = sw(c.word(c.u + 8));
       if (kind != 222 && !(kind >= 224 && kind < 231)) {
@@ -258,6 +282,9 @@ resumePackedBattleActionClassTable(uint32_t b,
       c.icon(340);
       c.step = Step::Special;
       break;
+    // Type4 Special requires fresh Mario kind and nonzero UNSIGNED P8c half.
+    // Type5 Operations and type13 Lecture below independently reload flag08000000;
+    // message-visible mutation can admit both or neither, not an else pair.
     case Step::Special:
       if (sw(c.word(c.u + 8)) != 222 || !c.half(c.p + 0x8c)) {
         c.step = Step::Operation;
@@ -307,6 +334,9 @@ resumePackedBattleActionClassTable(uint32_t b,
       ++c.count;
       c.step = Step::Publish;
       break;
+    // Publish count,then read index and LIVE count; signed upper correction
+    // only. Negative index stays unchanged,zero count can produce index-1.
+    // Return live count, including a callback-visible publication mutation.
     case Step::Publish: {
       c.put(c.cursor + 8, c.count);
       const auto index = c.word(c.cursor), count = c.word(c.cursor + 8);

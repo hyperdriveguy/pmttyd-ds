@@ -10,6 +10,9 @@ struct BattleActionClassMessageBinding {
   void *user = nullptr;
   std::optional<uint32_t> (*lookup)(void *, uint32_t originalKey) = nullptr;
 };
+// B and provider identities stay fixed, but callbacks do not pin actual VM/
+// pouch/definition/text allocations themselves. Caller retains those owners.
+// reset abandons metadata only; it cannot undo partially emitted source rows.
 class BattleActionClassTableCursor {
 public:
   BattleActionClassTableCursor();

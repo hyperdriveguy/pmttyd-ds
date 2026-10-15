@@ -2,6 +2,9 @@
 #include <memory>
 #include "battle_weapon_draw_continuation.hpp"
 namespace ttyd {
+// Actual DrawSubIconSub8011847c leaf,with copied row matrix/label/icon/
+// eligibility/cost/BP. Engaged0 acknowledges a real child; nullopt holds.
+// It is not a completed whole queued weapon draw or native GPU batch.
 struct BattleSubIconRasterRequest {
  uint32_t function=0x8011847c,callsite=0x80119170,work=0,row=0;
  BattleActMatrix matrix{};

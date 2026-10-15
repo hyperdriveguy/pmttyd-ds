@@ -1,4 +1,6 @@
 #include "battle_command_input_continuation.hpp"
+// Field offsets and masks in these notes are hex; counts, strides, states
+// and icon IDs are decimal. Original addresses remain32-bit source identities.
 namespace ttyd {
 namespace {
 int32_t sb(uint8_t v){return v<128?int32_t(v):int32_t(v)-256;}
@@ -11,6 +13,9 @@ bool same(const BattleCommandInputContinuationServices& a,const BattleCommandInp
 }
 struct Running{bool& f;explicit Running(bool& v):f(v){f=true;}~Running(){f=false;}};
 }
+// B battle,U retained acting unit,M=B171c menu,pc original source site.
+// M00 STATE differs from TYPE M540; M544 prior type,M550 operation byte,
+// M568 reason-event ID. Private cursor output starts unknown, not guest zero.
 struct BattleCommandInputContinuationCursor::State {
  BattleCommandInputContinuationServices services;
  uint32_t b=0,u=0,m=0,pc=0x801229f0,pending=0,state=0,type=0,buffer=0,weapon=0;
@@ -50,6 +55,9 @@ std::optional<int32_t> resumePackedBattleCommandInput(uint32_t battle,const Batt
   if(!result)return {};
   c.u=*result;c.m=c.b+0x171c;if(!c.m)return finish(1);{c.pc=0x80122a14;continue;}
  }
+ // Initial GetCursorPtr(M,14) owns this invocation's actual optional SP08.
+ // Successful unsupported lookup may leave it unknown; only actual consuming
+ // sites hold for missing knowledge. Never borrow a sibling owner's output.
  case 0x80122a14: {
   auto result=c.call(0x80124cb8,[&](auto& q){q.privateCursorOutput=&c.privateCursor;q.arguments[q.count++]=c.m;q.arguments[q.count++]=14;});
   if(!result)return {};
@@ -73,6 +81,8 @@ std::optional<int32_t> resumePackedBattleCommandInput(uint32_t battle,const Batt
  case 0x80122a44: {
   c.progress=0;{c.pc=0x80122a48;continue;}
  }
+ // Original30-state jump table (0..29); unsigned out-of-range reaches common
+ // tail. Targets below are source PCs, not callback addresses or frame counts.
  case 0x80122a48: {
   static constexpr uint32_t entries[]={0x80122a6c,0x80122b24,0x80122b38,0x80122b4c,0x80122b6c,0x80122b94,0x80122b94,0x80122c54,0x80122c68,0x80122c88,0x80122cec,0x80122d20,0x80122cb0,0x80122ccc,0x80122fd8,0x80122fd8,0x8012300c,0x80123020,0x80123040,0x80123064,0x80123064,0x8012309c,0x801230b0,0x801230d0,0x801230f8,0x801230f8,0x8012312c,0x80123144,0x80123158,0x801231ac};
   c.state=c.word(c.m);c.pc=c.state<30?entries[c.state]:0x801231dc;continue;
@@ -138,6 +148,9 @@ std::optional<int32_t> resumePackedBattleCommandInput(uint32_t battle,const Batt
   if(*result){c.progress=1;}
   {c.pc=0x801231dc;continue;}
  }
+ // Four reason-event create/wait pairs:3/4->1,8/9->6,17/18->15,22/23->20.
+ // Store wait state BEFORE evtEntry(script80416dc4,priority0,flags32),publish
+ // entry+15c ID at M568,then immediately query CURRENT M568. No null guard.
  case 0x80122b4c: {
   c.store(c.m,c.state+1);{c.pc=0x80122b60;continue;}
  }
@@ -202,6 +215,9 @@ std::optional<int32_t> resumePackedBattleCommandInput(uint32_t battle,const Batt
   if(!result)return {};
   if(!*result){c.store(c.m+0x568,0);c.progress=1;c.store(c.m,20);}{c.pc=0x801231dc;continue;}
  }
+ // States5/6 share weapon setup. Type0+Bef4 bit200 or type1+bit400
+ // directly selects row0/target; other paths preserve flag policy by entry
+ // state and fresh item badge bytes U2f3/U2f4 before writing state7.
  case 0x80122b94: {
   c.type=c.word(c.m+0x540);
   if((c.type==0&&(c.word(c.b+0xef4)&0x200))||(c.type==1&&(c.word(c.b+0xef4)&0x400))){c.pc=0x80122bc8;continue;}
@@ -277,6 +293,9 @@ std::optional<int32_t> resumePackedBattleCommandInput(uint32_t battle,const Batt
   if(*result){c.progress=1;}
   {c.pc=0x801231dc;continue;}
  }
+ // State10 resolves its own selected weapon (28-byte records at M80),
+ // help ID at weapon70,then enables help and stores state11. A completed
+ // cursor query with unknown output holds only at its first dereference.
  case 0x80122cec: {
   auto result=c.call(0x80124cb8,[&](auto& q){q.privateCursorOutput=&c.privateCursor;q.arguments[q.count++]=c.m;q.arguments[q.count++]=c.word(c.m+0x540);});
   if(!result)return {};
@@ -304,6 +323,9 @@ std::optional<int32_t> resumePackedBattleCommandInput(uint32_t battle,const Batt
   if(!result)return {};
   {c.pc=0x80122d38;continue;}
  }
+ // State11 target bank B428: signed selected byte ab7 -> signed permutation
+ // a6d ->36-byte pair row+4, signed half ID/part. Capture pair BEFORE sampling;
+ // remap to first matching refreshed pair,or0,using signed fresh count a6c.
  case 0x80122d38: {
   const auto old=sb(c.byte(c.buffer+0xab7));
   const auto ordinal=sb(c.byte(c.buffer+0xa6d+uint32_t(old)));
@@ -330,6 +352,9 @@ std::optional<int32_t> resumePackedBattleCommandInput(uint32_t battle,const Batt
   c.weapon=c.word(c.m+0x80+28*c.word(*c.privateCursor));
   c.pc=(c.word(c.weapon+0x64)&0x01000000)?0x80122de8:0x80122e88;continue;
  }
+ // Weapon flag01000000 permits independent forward80000 then reverse40000
+ // repeat queries. Byte writes wrap before signed bound checks; sounds need
+ // fresh count>=2. Do not collapse both directions into one input delta.
  case 0x80122de8: {
   auto result=c.call(0x80119f60,[&](auto& q){q.arguments[q.count++]=0x80000;});
   if(!result)return {};
@@ -356,6 +381,9 @@ std::optional<int32_t> resumePackedBattleCommandInput(uint32_t battle,const Batt
   if(!result)return {};
   {c.pc=0x80122e88;continue;}
  }
+ // Target cancel trigger200 precedes confirm100 and skips confirm/audience
+ // entirely when taken. Accepted confirm stores state29 BEFORE target End,
+ // keeps captured type for later costs,then still visits physical-X audience.
  case 0x80122e88: {
   auto result=c.call(0x8011a06c,[&](auto& q){q.arguments[q.count++]=0x200;});
   if(!result)return {};
@@ -402,6 +430,9 @@ std::optional<int32_t> resumePackedBattleCommandInput(uint32_t battle,const Batt
   if(!result)return {};
   c.store(c.m,29);{c.pc=0x80122f34;continue;}
  }
+ // After target End, fresh flags OR4 and fresh mode/operation select item
+ // operation2->mode8/literal803553a8 or3->mode5/literal80355468. Retained
+ // entry type is not replaced by a callback mutation of current M540.
  case 0x80122f34: {
   auto result=c.call(0x801209e8,[&](auto& q){q.arguments[q.count++]=c.b;});
   if(!result)return {};
@@ -441,6 +472,9 @@ std::optional<int32_t> resumePackedBattleCommandInput(uint32_t battle,const Batt
   if(!result)return {};
   {c.pc=0x801231dc;continue;}
  }
+ // Paired setup states14/15,19/20,24/25 retain entry state for flag1/0,
+ // store16/21/26,restore,then run that Main immediately. Direct Main skips setup.
+ // State12 cancel-check instead stores13 but returns through common tail.
  case 0x80122fd8: {
   c.pc=c.state==14?0x80122fe8:0x80122ff8;continue;
  }
@@ -523,6 +557,8 @@ std::optional<int32_t> resumePackedBattleCommandInput(uint32_t battle,const Batt
   if(!result)return {};
   {c.pc=0x80123158;continue;}
  }
+ // Protect state28: cancel200 first (sound2521,End,state20); confirm100
+ // stores29 before End with no imported target-state sound/help sequence.
  case 0x80123158: {
   auto result=c.call(0x8011a06c,[&](auto& q){q.arguments[q.count++]=0x200;});
   if(!result)return {};
@@ -548,6 +584,9 @@ std::optional<int32_t> resumePackedBattleCommandInput(uint32_t battle,const Batt
   if(!result)return {};
   {c.pc=0x801231dc;continue;}
  }
+ // State29 selects attack with retained U/M before fresh flag clears:
+ // M4 bit01000000,Bef8 bit1,then OffLight(0,0),direct return1. No damage,
+ // turn consumption or original event completion is inferred from this return.
  case 0x801231ac: {
   auto result=c.call(0x80120268,[&](auto& q){q.arguments[q.count++]=c.u;q.arguments[q.count++]=c.m;});
   if(!result)return {};
@@ -558,6 +597,9 @@ std::optional<int32_t> resumePackedBattleCommandInput(uint32_t battle,const Batt
   if(!result)return {};
   return finish(1);
  }
+ // Pending B1c74 reenters state dispatch WITHOUT clearing progress; ordinary
+ // progress reentry clears it at22a44. No pending/progress returns engaged0:
+ // this invocation completed,so the simulation owner may start its next tick.
  case 0x801231dc: {
   if(c.byte(c.b+0x1c74)){c.pc=0x801231e8;continue;}
   if(c.progress){c.pc=0x80122a44;continue;}

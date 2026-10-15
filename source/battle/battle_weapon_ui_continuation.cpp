@@ -1,4 +1,6 @@
 #include "battle_weapon_ui_continuation.hpp"
+// Field offsets and masks in these notes are hex; counts, strides, states
+// and icon IDs are decimal. Original addresses remain32-bit source identities.
 namespace ttyd {
 namespace {
 int32_t sw(uint32_t n){return n<0x80000000u?int32_t(n):int32_t(int64_t(n)-0x100000000LL);}
@@ -48,11 +50,17 @@ bool resumePackedBattleWeaponUiInit(uint32_t ignoredBattle,uint32_t inputCursor,
    // outputs are distinct from the borrowed input weapon cursor.
    c.workOutput=0;c.cursorOutput=0;c.battle=currentBattleAddress(s.actors);c.old=c.word(c.battle+0x1c78);
    c.step=c.old?Step::Free:Step::Allocate;continue;
+  // Constructor Free captures current heap8041e80c and old pointer once.
+  // Allocation independently reloads heap later; neither held child rebuilds
+  // operands. Constructor does NOT clear B1c78 between free and allocation.
   case Step::Free:{
    const auto result=c.request(0x8002fdc4,0x800f8920,0x8011797c,[&](auto& q){q.arguments[q.count++]=c.word(0x8041e80c);q.arguments[q.count++]=c.old;});
    if(!result)return false;
    c.step=Step::Allocate;continue;
   }
+  // Original work extent124hex=292 bytes. Engaged allocation0 publishes0
+  // and retains source unchecked accesses; it is not asynchronous unavailability.
+  // Reload B1c78 afterward so callback-visible pointer replacement is preserved.
   case Step::Allocate:{
    const auto result=c.request(0x8002ff58,0x800f8948,0x80117984,[&](auto& q){q.arguments[q.count++]=c.word(0x8041e80c);q.arguments[q.count++]=0x124;});
    if(!result)return false;
@@ -60,6 +68,9 @@ bool resumePackedBattleWeaponUiInit(uint32_t ignoredBattle,uint32_t inputCursor,
   }
   case Step::Publish:
    c.workOutput=c.word(c.battle+0x1c78);c.step=Step::CommonStores;continue;
+  // Work:0 borrowed weapon cursor,8 rows,c/10 zero,14 readiness byte0,
+  //18 fresh selection. Actual current B,not passed Init metadata,owns work.
+  // Acting kind222 chooses CLASS cursor B1bb4; others B1bc0.
   case Step::CommonStores:
    c.store(c.workOutput,c.inputCursor);c.store(c.workOutput+0xc,0);c.store(c.workOutput+0x10,0);
    m.storeByte(m.user,c.workOutput+0x14,0);c.store(c.workOutput+0x18,c.word(c.inputCursor));
@@ -68,6 +79,8 @@ bool resumePackedBattleWeaponUiInit(uint32_t ignoredBattle,uint32_t inputCursor,
    const auto id=sw(c.word(c.battle+0x420));const auto unit=battleRegistryUnit(c.battle,id,s.actors);
    c.cursorOutput=c.battle+(c.word(unit+8)==222?0x1bb4:0x1bc0);c.step=Step::Arrays;continue;
   }
+  // W98 is actual source literal8042242c. Seven parallel arrays:
+  // a4=flags0,c0=1,dc=-ordinal,f8=0. No blanket clear or extra field guesses.
   case Step::Arrays:{
    const auto literal=c.word(0x8042242c);c.store(c.workOutput+0x98,literal);
    for(uint32_t i=0;i<7;++i){c.store(c.workOutput+0xa4+4*i,0);c.store(c.workOutput+0xc0+4*i,1);c.store(c.workOutput+0xdc+4*i,0u-i);c.store(c.workOutput+0xf8+4*i,0);}
@@ -75,6 +88,10 @@ bool resumePackedBattleWeaponUiInit(uint32_t ignoredBattle,uint32_t inputCursor,
   }
   case Step::Rows:
    c.store(c.workOutput+8,c.inputRows);c.step=Step::Subtype;continue;
+  // Class cursor selection advances BEFORE each row. Signed count reloads
+  // at loop head and again for selected-last test; no seven-row clamp here.
+  // W48 timer0,W84 ordinal,W20 clear then OR1; low flag1 selects states0/10,
+  // otherwise1/11. Original unchecked count/index domain belongs to caller.
   case Step::Subtype:{
    uint32_t index=c.word(c.cursorOutput),ordinal=0;
    for(;;){
@@ -95,6 +112,8 @@ bool resumePackedBattleWeaponUiInit(uint32_t ignoredBattle,uint32_t inputCursor,
   }
  }
 }
+// End uses PASSED B,not current global B. Null work returns; otherwise real
+// MapFree completes before clearing that B1c78,even after callback mutation.
 bool resumePackedBattleWeaponUiEnd(uint32_t battle,const BattleWeaponUiServices& s,BattleWeaponUiCursor& cursor){
  const auto& m=s.actors.memory;
  if(cursor.invoking_||!s.allocationCurrent||!m.word||!m.storeWord)return false;

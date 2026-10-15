@@ -19,6 +19,9 @@ struct BattleCommandInputContinuationServices {
  // Child owns any partial effects. Output/request borrows end with invocation.
  std::optional<uint32_t> (*call)(void*,const BattleCommandInputContinuationRequest&)=nullptr;
 };
+// One source simulation invocation, not a modal UI loop until a choice.
+// Pin B and callback identities; caller pins all actual allocations/context.
+// Reset/reentry cannot replay acknowledged child effects safely.
 class BattleCommandInputContinuationCursor {
 public:
  BattleCommandInputContinuationCursor();~BattleCommandInputContinuationCursor();
