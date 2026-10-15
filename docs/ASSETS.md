@@ -3766,3 +3766,27 @@ Read-only ISO audit pins complete Inner/map code in ignored local evidence.
 All 2,152 accepted private RomFS files retain prior conversions and paths;
 no ISO, extracted payload or compiled product is committed. Original Nintendo/
 Intelligent Systems rights and prior local-only licensing limitations remain.
+
+## Field-return/resource documentation validation inputs (2026-10-15)
+
+artifacts/trio-return-resources-code-documentation-validation/source freezes
+baseline446394827dbc69e067dc09491a80c468e56ec0a4. Relative to prior cadence/draw
+validation,only CMake adds actual-VM Inner/native CPU ownership code/tests.
+Tools/assets/converters/Makefile unchanged.114 accepted private products and729
+prior conversion-work/atlas/provenance evidence paths rechecked,including absolute
+paths in generated resource manifests. No new conversion/import/overlay or shared
+cache write; native full assets-ready regeneration skipped.
+
+Inherited full harbor/Goombella/Mario/Professor/source-UI fixtures and surface/
+footer/HP/enemy/HitN64/party/Harbor-battle evidence remain unchanged. Actual
+HitN64 metadata PNG read path pinned to earlier frozen private evidence,identical
+to current private copy. Small mutable/default evidence copied privately;large
+unchanged inputs reused read-only. Python fixtures independently read the original
+ISO read-only into temporary outputs. New original enemy-wrapper comments describe
+MODEL/TPL/CPU admission; they change no assets or conversion policy.
+
+Original Nintendo/Intelligent Systems rights retained; provenance grants no new
+license/distribution rights. No ISO/extracted original/compiled product committed.
+Editable assets/manifest.json overlay preserved; no dialogue/story/music/SFX,
+numeric behavior or original asset changes. Manifest records all input/evidence/
+product hashes and exact validation scope.

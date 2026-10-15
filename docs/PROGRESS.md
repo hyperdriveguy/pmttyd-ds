@@ -16227,3 +16227,61 @@ These new files are not yet registered/committed or bound to normal HUD drawing.
 Next bind actual getter children and source runtime owners, then the original
 partner/AP presentation. Window startup and actual queued weapon runtime remain
 parallel work. Full tutorial/battle/audience/control objective stays active.
+
+## 2026-10-15 — Retained field return and original enemy resource documentation
+
+Added 49 inline comment lines,replacing 2 stale lines across seven
+C++/header files. Added [field return/resources](code/trio-field-return-resources.md),
+updated ending/cadence guides and code index. Code/docs commit b937505e.
+All executable tokens/string literals unchanged; no mechanics/dialogue/story/
+asset or test edits for this documentation pass.
+
+Trio return notes distinguish export,Mario restore and party-entry/removal
+completed prefixes, original scalar-1 versus whole-call completion, retained
+constructor/removal PCs and separately revisited current-party/rule/audience-stop
+suffix. Pouch publication,fade and constructed actor still do not prove complete
+field return. Native entry notes explain exact segment shapes, source Professor
+model token802cb4bc, same-pool resource preference/full-bank load,mode2/handle
+ownership and terminal original results. Removal notes explain paired process/
+pool identities and permitted whole-removal->Kill nesting. Corrected kind11/13
+lists. Enemy catalog notes explain exact c_kuribo MODEL/TPL identity,flags/counts,
+source-order CPU array dimensions,64-byte texture headers/image admission and
+find membership versus actual pose entry/current draw lease. Full original45
+fixture is separate from the wrapper's complete-supplied-directory policy.
+
+Frozen baseline 446394827dbc69e067dc09491a80c468e56ec0a4 plus owned docs is at
+artifacts/trio-return-resources-code-documentation-validation/source. Full git-
+blob audit covers 4381 baseline tracked files with zero unexpected changes;all11
+owned frozen/live docs/source files match and128 local guide/index links resolve.
+All source/prose finalized before gates. Concurrent field/NPC/GP/class/Window/
+inner/raster/resource integrations preserved/excluded; no moving-worktree claim.
+Original host/native handles observed terminal0 and exit markers agree.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits0: 514/514 C++ (86.61s),
+231/231 Python (33.726s),zero skipped. Actual original45-descriptor enemy,
+HitN64,party-position,temporary-Professor/fence,conditional Harbor battle and
+Game UI startup/process retention fixtures ran. New actual-VM Inner and native
+NPC Inner tests registered and passed; their backend receipts are explicit test
+providers,not proof of complete Game GPU scheduling. Native make all
+-o assets-ready -j4 SOUNDTRACK=gamecube exits0. Manifest pins source,accepted
+products/evidence/fixtures/logs and ELF/3DSX. Existing compiler/Pillow warnings
+remain. No emulator/profile/save changes or original CPU/GPU/pixel/audio/
+performance/hardware parity claims.
+
+Dependency diff changes only CMake for actual-VM Inner/native CPU ownership
+code/tests; tools/assets/converters/Makefile unchanged.114 accepted products,
+729 prior generated work/provenance evidence paths and all inherited surface/
+footer/HP/enemy/HitN64/party/Professor/Harbor fixtures rechecked,including actual
+external HitN64 PNG read path. Small mutable/default evidence copied privately;
+large unchanged inputs reused read-only. No conversion/import/overlay/shared-
+cache write. Native full regeneration skipped; existing Python fixtures read
+ISO read-only into temporary outputs. See [asset ledger](ASSETS.md). No ISO/
+extracted original/compiled product committed; original rights retained.
+
+All identified newer Trio integration sections now have focused review notes,
+but whole-file numeric coverage synthesis and later changes remain unproven;
+manifest keeps that large runtime partial. Next: code-wide numeric coverage,
+changed battle/field/native ownership code,newer animation/font/window/resource/
+raster/startup integration and tools. Inventory tracks only source/include C++/
+header/PICA hashes; matching hashes are a review aid,not semantic completeness.
+Tools and untracked additions still need separate audit. Broad goals remain active.
