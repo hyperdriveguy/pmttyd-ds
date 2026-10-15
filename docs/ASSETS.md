@@ -3156,3 +3156,17 @@ See the [retained matrix font](behavior/display/RETAINED_MATRIX_FONT_RASTER.md),
 Original Nintendo/Intelligent Systems rights remain reserved. Raw ISO resources,
 private patched fixtures, metadata, packs and compiled binaries remain ignored;
 this note grants no redistribution license and adds no extracted asset to git.
+
+## NPC Main entry documentation validation inputs (2026-10-15)
+
+artifacts/npc-main-entry-code-documentation-validation/source inherits all 69
+accepted products and original enemy/footer/HP/HitN64/default test fixtures from
+the prior private snapshot. Dependency comparison finds no converter/assets/
+Makefile/CMake changes. Small mutable evidence/default fixtures copied privately;
+unchanged HitN64 metadata retains a prior frozen private decoded-PNG path, whose
+actual read bytes are independently hash-pinned and equal the new private copy.
+All accepted/evidence/fixture hashes checked after gates. No conversion, editable
+import, overlay or shared-cache write. Native full regeneration skipped; Python
+fixtures independently read ISO read-only into empty temporary destinations.
+No ISO, original extracted asset or compiled product committed; original
+Nintendo/Intelligent Systems rights retained and no new license granted.

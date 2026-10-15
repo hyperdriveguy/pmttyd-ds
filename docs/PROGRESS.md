@@ -14165,3 +14165,57 @@ Ordinary battle entry/whole Main, tutorial cadence, target/payment/attack/audio/
 effect owners and selected lower-audience taps with a physical alternative remain
 unfinished. Unknown Bero/field/constructor history must stay explicit until a real
 producer supplies it. The full tutorial/battle remake goal remains active.
+
+## 2026-10-15 — NPC Main entry/movement/pose/binding code documentation
+
+Added 147 inline comment lines across eight field C++/header files, revised
+three stale boundary comments, and added
+[NPC Main entry/movement guide](code/npc-main-entry-movement.md) linked from
+index. Code/docs commit 40427a70. All executable tokens/string literals unchanged;
+no original dialogue/story/asset, numeric or scheduling behavior changed.
+No new tests for this prose-only work.
+
+Entry notes map captured bank/count/array, source-order traversal, signed counts,
+shared pose getter, captured versus fresh flag gates, timers/clocks, special-room
+branches and factor/audio ordering. Movement notes distinguish semantic locals
+from real output aliases, contact reread/second child, X-store/fresh-Z order,
+pending clear/gravity/side-response ordering and paired/subsequent scalar delta
+reads. Pose notes preserve separate SP squares/add, norm/dt reload, strict
+thresholds, descriptor capture, signed selectors and child-before-phase-store.
+Binding notes explain same-VM/pool identity, actual source leaves, atomic child
+admission versus retained core primitives, aggregate stage completion and child
+retirement only after history/final clear/next entry boundary. Guide distinguishes
+helper frontiers from the implemented composed Main; production activation,
+original cadence and full rendering/numeric/hardware parity remain separate.
+
+Frozen baseline 258e128133c5e679cf5ce6f17281f2a8d06954aa plus owned docs is at
+artifacts/npc-main-entry-code-documentation-validation/source. Full git-blob
+audit covers 4137 baseline tracked files with
+zero unexpected changes; all ten frozen/live documentation snapshots match and
+97 local guide/index links resolve. Source/guide prose finalized before gates.
+Concurrent battle/animation/party/font/file/runtime edits preserved/excluded;
+no combined moving-worktree validation claim. Original host/native handles
+observed terminal0 and exit markers agree.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits 0: 472/472 C++ (60.93s),
+217/217 Python (33.457s), zero skipped. Actual original 45-descriptor enemy-bank
+and private HitN64 tests ran. Native make all -o assets-ready -j4 SOUNDTRACK=gamecube
+exits 0. Manifest pins source/data/evidence/log and ELF/3DSX hashes.
+Existing compiler/Pillow warnings remain. No emulator/profile/save changes or
+hardware/Gekko numeric/pixel/audio/performance parity claims.
+
+Dependency preflight confirms converters/assets/Makefile/CMake unchanged from
+prior frozen source. All 69 accepted products plus original footer/HP/enemy and
+HitN64 fixtures inherited by hash; small mutable evidence/default fixtures copied
+privately. Unchanged HitN64 metadata's actual decoded PNG path points to prior
+frozen private evidence; its bytes independently pinned and equal the current
+private copy. No conversion/import/overlay/shared-cache write. Native full
+regeneration skipped; Python fixtures independently use read-only ISO and empty
+temporary outputs. Original rights retained; no ISO, extracted original or
+compiled binary committed. See [asset ledger](ASSETS.md).
+
+Next: inline review of NPC detection/Mario response/display/shadow/history/tail
+and queued draw helpers/binding, then remaining effects/runtime/tooling. Newer
+concurrent battle/display/party/font/file work also needs separate review.
+Snapshot inventory is a review aid, not full semantic coverage proof. Full code
+documentation/remake goal remains active.
