@@ -3551,3 +3551,25 @@ numeric notes. All products/evidence rechecked after gates. Native full
 regeneration skipped; Python fixtures independently use ISO read-only and empty
 temporary outputs. Nintendo/Intelligent Systems rights retained; no new license
 or redistribution rights, no ISO/extracted original or compiled product committed.
+
+## Act-controller documentation validation inputs (2026-10-15)
+
+artifacts/act-controllers-code-documentation-validation/source freezes baseline
+658e9af746c23910f58a47c505f4616adca75d74. Source-window exporter and Make add exact
+unchanged original raw f/msgWindow.tpl for retained CPU window setup; separate
+new root/formatter tools only verify source reads. One frozen exporter reads ISO
+read-only into an empty private destination, then copies msgWindow.tpl and
+source-window.json only into frozen romfs/source-window. File size321984,
+SHA2562ef0cdc818d2402de5bfb95394f67d78017e74bc1b41c38b79780cb0b870dc67;
+conversion none. Mutable runtime relocation uses another owner/copy,never this
+immutable raw pack. Existing converted panel remains a distinct product.
+Accepted count80->82; prior products/evidence unchanged. Original Harbor event
+fixture inputs (program/events/global/room/font) newly pinned unchanged, as are
+inherited surface/footer/HP/enemy/HitN64/party/Professor fixtures and actual
+HitN64 metadata PNG path. Act scalar evidence independently pins original
+DOL80422584 bits40000000/value2.0 and reader hash; no conversion for that note.
+All products/evidence checked after gates. No editable import/shared-cache write;
+native full regeneration skipped. Python fixtures independently use read-only
+ISO and empty temporary outputs. Nintendo/Intelligent Systems rights retained;
+no new license/redistribution rights, no ISO/extracted original or compiled
+binary committed.

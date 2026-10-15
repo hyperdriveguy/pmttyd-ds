@@ -15453,3 +15453,70 @@ Workers are implementing these concrete dependencies and native mixed proof.
 Physical alternatives and original US story/dialogue remain preserved. Native
 art import never grants source readiness. No hardware/PPC parity, normal battle
 or tutorial completion is claimed; full goal stays active.
+
+## 2026-10-15 — Retained Act and class menu code documentation
+
+Added 122 inline comment lines across four C++/header files plus
+[Act sequence](code/battle-act-sequence.md) and
+[ActMenu/class UI](code/battle-act-menu-continuation.md), linked from index.
+Code/docs commit c151dccb. Executable tokens/string literals unchanged; no original
+story/dialogue, numeric, simulation or asset behavior changed. No new tests for
+this documentation-only work.
+
+Act notes explain native completion versus original channel6 state, retained PC
+rather than redispatch after holds, actual raw scalar/float ABI lanes, ordered
+status/kind routing, source2.0/NaN camera gate, direct-state script flags, fresh
+actor lookup after WindowOff, zero-gravity/event priority, Electric's signed-
+negative RNG branch and Confuse's independent draw, exact event ID/owner/delete
+writes, two barriers/Adjust/full-word pumps, signed mode/count/turn-byte behavior,
+low-byte reactions and distinct post-event owner/final Move increment. Actual
+allocation/child lifetimes remain caller-owned; no original readiness is inferred.
+
+Menu notes explain private-output knowledge, internal End/position return PCs,
+exact nine cursor resets, signed Mario/Party gates and distinct restrictions,
+live count/row/type/target admission,900-invocation idle policy, fresh pending/
+post-sound type and post-End reason reads, type2 mutation without result1,
+forward/reverse/sound ordering, duplicate position queries and audience0 effects.
+Class UI notes map distinct row pointer W4, exact 292-byte free/allocation phases,
+no parent memset, selected-first reverse-order versus next-first entry arrays,
+fresh GP rate with wrapped products/two signed divisions and caller-owned
+synchronous lifetime admission. Audience wrapper documents whole service
+preflight and reuse of the actual checker rather than fallback selection.
+
+Frozen baseline 658e9af746c23910f58a47c505f4616adca75d74 plus owned docs is at
+artifacts/act-controllers-code-documentation-validation/source. Full git-blob
+audit covers 4324 baseline tracked files with zero unexpected changes; all 7
+frozen/live documentation snapshots match and 109 local guide/index links resolve.
+Source/prose finalized before gates. Concurrent field/NPC/window/resource/
+formatter/startup/raster/animation/renderer/tool edits preserved/excluded;
+no moving-worktree validation claim. Original host/native handles observed
+terminal0; exit markers agree. No test changes or filtered selection.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits 0: 504/504 C++ (86.95s),
+228/228 Python (34.782s), zero skipped. Actual original45-descriptor enemy,
+private HitN64, party-position and temporary-Professor/fence fixtures ran.
+Conditional field_npc_battle_event_original was registered and ran the real
+original Harbor event barrier fixture; five unchanged input files pinned.
+Native make all -o assets-ready -j4 SOUNDTRACK=gamecube exits 0. Manifest pins
+source, products/evidence/fixtures/logs and ELF/3DSX. Existing compiler/Pillow
+warnings remain. No emulator/profile/save changes or original CPU/GPU/pixel/
+audio/performance/hardware parity claims.
+
+Dependency diff adds raw window-resource staging, read-only root/formatter
+verifiers and CMake source root/formatter/shared-window/field-battle/prepared-
+raster tests. One frozen exporter reads the original ISO read-only into an empty
+private destination; exact 321984-byte f/msgWindow.tpl plus provenance copied
+only into private frozen RomFS/source-window. Accepted product count80->82;
+prior80 entries and surface/footer/HP/enemy/HitN64/party/Professor evidence
+inherited/rechecked, with actual HitN64 external PNG pinned. Act threshold2.0
+word80422584=40000000 independently read and recorded in ignored scalar evidence.
+No editable import/shared-cache write. Native full regeneration skipped; Python
+fixtures independently use read-only ISO and empty temporary outputs. See
+[asset ledger](ASSETS.md). Original rights retained; no ISO/extracted original
+or compiled binary committed.
+
+Next: remaining queued weapon draw/native audience/item/pose/message helpers,
+newer animation/field/party/font/window/resource/raster integrations and tooling.
+Tracked C++/header/PICA hash inventory is a review aid,not semantic completeness;
+untracked additions and tools require separate audit. Broad documentation and
+remake goals remain active.
