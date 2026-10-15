@@ -24,7 +24,10 @@ public:
     DisplayAdmission enter(uint32_t camera,int32_t drawClass,uint32_t callback,uint32_t userdata,float priority);
     // Source reset clears count only; retained records/current pointer are not
     // zeroed. ordered() bounds active entries, record() bounds raw pool capacity.
-    void reinitialize(){count_=0;}
+    void reinitialize(){count_=0;if(resetEpoch_)resetEpoch_=resetEpoch_==~uint64_t(0)?0:resetEpoch_+1;}
+    // Native borrowed-invocation metadata only. Every actual count reset
+    // advances it; saturation poisons0 permanently, never reuses an epoch.
+    uint64_t resetEpoch()const{return resetEpoch_;}
     void sort();
     bool dispatch(uint32_t camera,const DisplayDispatchServices&,DisplayDispatchCursor&);
     uint32_t count() const{return count_;}
@@ -34,6 +37,7 @@ public:
 private:
     std::array<DisplayRecord,1024> records_{};
     std::array<uint16_t,1024> order_{};
-    uint32_t count_=0;std::optional<uint16_t> current_;
+    uint32_t count_=0;
+    uint64_t resetEpoch_=1;std::optional<uint16_t> current_;
 };
 }

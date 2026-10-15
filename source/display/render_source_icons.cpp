@@ -13,12 +13,14 @@ C3D_Tex *Renderer::sourceIconTexture() {
 // Synchronize before retiring imported descriptor/texture pairs, then clear
 // logical bindings and retained packets together. Wrapper copies own no clone.
 void Renderer::releaseSourceIcons() {
+  orderedHpCapturePass=0;orderedHpPresentation=nullptr;
   bool any = false;
   for (const auto &cell : sourceIconCells)
     any |= cell.gpu.imported != nullptr;
   if (any)
     C3D_FrameSync();
   for (auto &cell : sourceIconCells) {
+    cell.generation.reset();
     if (cell.gpu.imported) {
       Tex3DS_TextureFree(cell.gpu.imported);
       C3D_TexDelete(&cell.gpu.texture);
@@ -58,7 +60,8 @@ void Renderer::prepareSourceIcons(const Game &game) {
     }
   SourceIconCell *next = nullptr;
   for (auto &cell : sourceIconCells) {
-    if ((boundSourceIcon && cell.index == *boundSourceIcon) || retainedIcons.retains(cell.index))
+    if ((boundSourceIcon && cell.index == *boundSourceIcon) || retainedIcons.retains(cell.index) ||
+        (orderedHpPresentation && orderedHpPresentation->retains(cell.index)))
       continue;
     if (!next || !cell.gpu.imported || cell.stamp < next->stamp)
       next = &cell;
@@ -68,6 +71,7 @@ void Renderer::prepareSourceIcons(const Game &game) {
   if (!next)
     return;
   C3D_FrameSync();
+  next->generation.reset();
   if (next->gpu.imported) {
     Tex3DS_TextureFree(next->gpu.imported);
     C3D_TexDelete(&next->gpu.texture);
@@ -114,6 +118,7 @@ void Renderer::prepareSourceIcons(const Game &game) {
   C3D_TexSetFilter(&next->gpu.texture, GPU_LINEAR, GPU_LINEAR);
   C3D_TexSetWrap(&next->gpu.texture, GPU_CLAMP_TO_EDGE, GPU_CLAMP_TO_EDGE);
   next->index = index;
+  next->generation=std::make_shared<const uint8_t>(0);
   next->stamp = ++sourceIconStamp;
   pendingSourceIcon.reset();
 }

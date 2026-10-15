@@ -37,6 +37,7 @@
 #include "source_icon_resources.hpp"
 #include "native_icon_program.hpp"
 #include "retained_icon_frame.hpp"
+#include "battle_enemy_hp_publication.hpp"
 #include <memory>
 #include <3ds.h>
 #include <citro2d.h>
@@ -61,6 +62,14 @@ class TroubleQuestPresentation;
 class Renderer {
 public:
     bool init();
+    // Explicit optional queued HP owner. It must outlive this binding. Capture
+    // pass0 disables capture but keeps building/published icon residency pinned.
+    void bindEnemyHpPresentation(BattleEnemyHpOrderedPresentation*);
+    bool captureEnemyHpPresentation(uint64_t pass);
+    std::optional<BattleEnemyHpIconResidency> enemyHpIconResidency(uint32_t) const;
+    std::optional<BattleEnemyHpRasterView> enemyHpRasterView(const Game&) const;
+    bool canDrawEnemyHpIcon(const BattleEnemyHpIconPacket&) const;
+    bool drawEnemyHpOrdered(BattleEnemyHpOrderedPresentation&,NativeBattleEnemyHpGpu&);
     bool drawClassMenu(const BattleClassBackend&);
     const BattleClassAssets* classMenuAssets();
     const BattleClassFooterGpuResource* classFooterResources();
@@ -178,7 +187,10 @@ private:
     std::optional<NativeCameraPacket> iconViewport,iconScissor,iconTransform;
     bool captureSourceIcon(const Game&,const SourceIconGXQuad&);
     void drawSourceIcons(uint32_t camera,bool lower=false);
-    struct SourceIconCell {Texture gpu;uint32_t index=UINT32_MAX;uint64_t stamp=0;};
+    BattleEnemyHpOrderedPresentation* orderedHpPresentation=nullptr;
+    uint64_t orderedHpCapturePass=0;
+    bool drawEnemyHpIcon(const BattleEnemyHpIconPacket&);
+    struct SourceIconCell {Texture gpu;uint32_t index=UINT32_MAX;uint64_t stamp=0;std::shared_ptr<const uint8_t> generation;};
     std::array<SourceIconCell,202> sourceIconCells{}; // Published + building: each100 items plus AP icon442.
     std::optional<uint32_t> pendingSourceIcon,boundSourceIcon;uint64_t sourceIconStamp=0;
     void prepareSourceIcons(const Game&);

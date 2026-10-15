@@ -1261,3 +1261,8 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Original enemy HP GPU assets and ordered batch](display/ORIGINAL_ENEMY_HP_GPU_ASSETS_AND_ORDERED_BATCH.md): original common textures17/18, source material/FIFO validation and generation-bound bar packets; unified number/bar publication remains separate.
 
 - [Live animation tangent ownership](display/NATIVE_LIVE_ANIMATION_TANGENTS.md): same BE source/CPU table, lifetime/rollback and attached-pool availability; exact scratch-output migration boundary.
+## Queued enemy HP source and native publication
+
+- [Retained enemy HP source frame](display/RETAINED_ENEMY_HP_SOURCE_FRAME.md): actual queued parent→number→bar lifetimes, held frontiers and copied number colors.
+- [Native enemy HP camera bridge](display/NATIVE_ENEMY_HP_CAMERA_BRIDGE.md): actual HP callback8 admission, typed original projection and native queue-reset epochs.
+- [Ordered enemy HP publication](display/ORDERED_ENEMY_HP_PUBLICATION_AND_NATIVE_ICON_GENERATIONS.md): one immutable glyph/bar sequence, real GPU generations and whole combined native preflight. Normal scheduler activation remains separate.

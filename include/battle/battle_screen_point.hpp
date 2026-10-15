@@ -18,4 +18,9 @@ struct BattleScreenPointServices {
 // Output remains untouched until both SDK providers acknowledge their work.
 bool packedBattleScreenPoint(uint32_t position,BattleScreenPoint& output,
                              const BattleScreenPointServices&);
+// Native typed ABI for an actual borrowed XYZ local, never a fabricated guest
+// stack address. Capture camera4 BEFORE copying XYZ, then reuse the same source
+// SDK calls and late constants as the guest-address entry above.
+bool packedBattleScreenPoint(const BattleScreenPoint& position,BattleScreenPoint& output,
+                             const BattleScreenPointServices&);
 }

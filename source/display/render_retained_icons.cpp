@@ -13,6 +13,8 @@ bool Renderer::captureSourceIcon(const Game& game,const SourceIconGXQuad& quad){
     packet.transform=iconTransform->transform;packet.viewport=iconViewport->rect;packet.scissor=iconScissor->rect;
     packet.depthScale=iconViewport->depthScale;packet.depthOffset=iconViewport->depthOffset;
     packet.image=*boundSourceIcon;packet.camera=*camera;
+    if(orderedHpPresentation && orderedHpCapturePass)
+        return orderedHpPresentation->appendIcon(orderedHpCapturePass,packet);
     return retainedIcons.append(pass,packet);
 }
 // Camera 4 icons support lower-view continuation; other camera domains stay

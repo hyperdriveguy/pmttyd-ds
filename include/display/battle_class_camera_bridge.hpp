@@ -47,6 +47,14 @@ public:
   std::optional<std::array<float,2>> ringOffset(float angle) const;
   bool matrix(BattleAudienceMatrixRequest&) const;
 private:
+  friend class BattleEnemyHpCameraBridge;
+  bool bindCallback(std::shared_ptr<const CameraManager>,uint64_t,
+      BattleActorServices,BattleClassCameraAddressPolicy,
+      std::function<bool(BattleClassCameraEpoch)>,uint32_t callback);
+  BattleScreenPointServices screenServices() const;
+  std::optional<BattleScreenPoint> screenPointCopied(const BattleScreenPoint&) const;
+  uint32_t callback_=0x8012210c;
+  uint64_t queueEpoch_=0;
   std::shared_ptr<const CameraManager> bank_;
   BattleActorServices actors_;
   BattleClassCameraAddressPolicy addresses_;
