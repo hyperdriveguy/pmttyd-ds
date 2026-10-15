@@ -1,3 +1,75 @@
+## 2026-10-14 — Retained attack selector and native audience admission
+
+Commit `0b5430733f0ebe90f1df675091b0b7b14f266e52` adds a retained native
+continuation around original _btlcmd_SetAttackEvent80120268/5b4 and removes
+HarborTutorialPacked's extra unconditional weaponDecided gate. Original types11
+and12 can now select audience attack / present damage-or-get scripts without a
+weapon decision. [Contract](behavior/battle/RETAINED_ATTACK_SELECTION_AND_AUDIENCE_ADMISSION.md).
+The complete tutorial/battle/optional audience-tap goal remains active.
+
+Initial override/B/type reads retain source order; ordinary cursor waits preserve
+those captured inputs. Type11 normalizes U20, publishes event/category, updates
+the source counter, then captures a flagged message handle. An unavailable
+continuation retains that handle and retries only the service, without repeating
+normalization, event/category stores or counting. Owner/unit/menu mismatches
+reject reuse. Class/weapon menu builds reject an active selector before mutation;
+the synchronous convenience wrapper is explicitly documented as unsuitable for
+suspend-capable callers. Source branch behavior/classification remains intact.
+No HUD/art/dialogue assets changed and physical controls remain available.
+
+User explicitly authorized sub-agents this turn. Read-only selector audit checked
+fresh ISO disassembly and verified11 bodies/301 instruction anchors/8 spans/7
+scoped direct calls. Its lifecycle finding led to the menu admission guards;
+final recheck found no scoped blocker. Another agent wrote the new contract.
+Independent recovery-effect audit is retained at
+`artifacts/recovery-effect-agent-audit/findings.md` with whole disassemblies and
+symbol identities. It identifies original effect allocation, Maya animation,
+SFX, source elapsed ticks, two scene4 displays and terminal stardust/deletion;
+constructor-only acknowledgement would lose that lifecycle and remains unbound.
+
+Required validation used frozen `artifacts/battle-lens-qwwrj2n7`, base
+`bc5a287953c2f344772f8b5f2d18671c799fcd45` plus owned inputs.
+`CMAKE_BUILD_PARALLEL_LEVEL=4 make test -o assets-ready` passed336/336 C++
+(35.11s) and193/193 Python (33.205s), exit0;
+`artifacts/attack-selection-test-final.log`. Required native
+`MAKEFLAGS=-j4 TMPDIR=artifacts/tmp make all -o assets-ready
+BUILD=build-battle-lens TARGET=ttyd-battle-lens` exited0; logs
+`attack-selection-native-final.log` and `attack-selection-native-restored.log`.
+Normal main restored exactly. Normal3DSX SHA256
+`a789875770e33bd0db79c911944c58e6082c1976e3131560b073229622344c20`.
+Audit of1723 source/include/test/tool/build inputs found zero mismatches;
+`artifacts/attack-selection-source-manifest.json`. Concurrent foreign work was
+preserved/excluded; this is not validation of the entire live or later merged tree.
+
+Initial host run found four stale private dependencies. The committed converter
+refreshed source-icon constants124→188 bytes, preserving existing613 image cells,
+and exported the actual13 field resource banks/all173 descriptors through
+`field_npc_resource_assets.py` in the frozen tree. Existing asset ledger entries
+cover these original resources/conversions/licensing; no raw payload committed.
+Constants SHA256 `b2126d655f8bebc5abcca2fda33ec490267827f5dccfccd40aa2a410b3dbf5f2`;
+refresh log `artifacts/attack-selection-resource-refresh.log`. A subsequent test
+compile exposed an attempted private-member assertion; corrected to public state
+before the final passing full run. Existing unrelated warnings remain.
+
+Temporary native console fixture built successfully and passed isolated Azahar
+15s smoke, exit0: `artifacts/azahar-attack-selection/fixture-status.txt` reports
+`PASS audience11/12;messagehold;countonce;menuguard;owner;roots0`.
+Screenshot inspected; pre-stop guest log has no Unmapped/LogException entries.
+Normal main restored/rebuilt after copying the immutable fixture binary. This
+proves scoped ARM CPU/native adapter behavior, not normal-game battle execution,
+new raster fidelity, hardware performance or complete audience actions.
+Documentation checker passed1354 Markdown files with zero broken links before
+this progress entry.
+
+Next: bind a real original message-window owner for B19094 and the whole
+command/Main caller continuation; implement original audience actor-phase/event
+execution rather than routing it through the confirmed-weapon harness. Recovery
+next isolated step is whole effRecoveryEntry8014335c/400 plus
+Main80142bc4/798 with explicit effect/Maya/timing/math/random/SFX/display/child
+owners and tests, keeping native recovery gifts held until actual resources and
+driver/display ownership are admitted. Optional lower-screen audience taps,
+telegraphs, full tutorial/story/battle flow and hardware acceptance remain open.
+
 ## 2026-10-14 — Original present-item consumer and packed recovery
 
 Previous goal turn made progress with the audience-X target/UI handoff. Commit
