@@ -2225,4 +2225,37 @@ target_sources(ttyd_core PRIVATE source/field/field_npc_blur_trig.cpp)
 add_executable(field_npc_effect_draw_tests tests/field_npc_effect_draw_tests.cpp)
 target_link_libraries(field_npc_effect_draw_tests PRIVATE ttyd_core)
 add_test(NAME field_npc_effect_draw COMMAND field_npc_effect_draw_tests)
-set_tests_properties(field_npc_effect_draw PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+set_tests_properties(field_npc_effect_draw PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")# Original enemy resources and retained source battle/UI services.
+target_sources(ttyd_core PRIVATE
+    source/display/trio_enemy_pose_resources.cpp
+    source/battle/battle_audience_attack_events.cpp
+    source/battle/battle_audience_target_continuation.cpp
+    source/battle/battle_pinch_continuation.cpp
+    source/battle/battle_turn_continuation.cpp
+    source/battle/battle_packed_status_recovery.cpp)
+add_executable(trio_enemy_pose_resources_tests tests/trio_enemy_pose_resources_tests.cpp)
+target_link_libraries(trio_enemy_pose_resources_tests PRIVATE ttyd_core)
+add_test(NAME trio_enemy_pose_resources COMMAND trio_enemy_pose_resources_tests)
+add_executable(battle_audience_attack_events_tests tests/battle_audience_attack_events_tests.cpp)
+target_link_libraries(battle_audience_attack_events_tests PRIVATE ttyd_core)
+add_test(NAME battle_audience_attack_events COMMAND battle_audience_attack_events_tests)
+add_executable(battle_pinch_continuation_tests tests/battle_pinch_continuation_tests.cpp)
+target_link_libraries(battle_pinch_continuation_tests PRIVATE ttyd_core)
+add_test(NAME battle_pinch_continuation COMMAND battle_pinch_continuation_tests)
+add_executable(battle_turn_continuation_tests tests/battle_turn_continuation_tests.cpp)
+target_link_libraries(battle_turn_continuation_tests PRIVATE ttyd_core)
+add_test(NAME battle_turn_continuation COMMAND battle_turn_continuation_tests)
+add_executable(battle_packed_status_recovery_tests tests/battle_packed_status_recovery_tests.cpp)
+target_link_libraries(battle_packed_status_recovery_tests PRIVATE ttyd_core)
+add_test(NAME battle_packed_status_recovery COMMAND battle_packed_status_recovery_tests)
+set_tests_properties(trio_enemy_pose_resources battle_audience_attack_events battle_pinch_continuation PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Retained source Turn children: event/reaction barrier and audience TurnEnd.
+target_sources(ttyd_core PRIVATE source/battle/battle_event_barrier_continuation.cpp source/battle/battle_audience_turn_end_continuation.cpp)
+add_executable(battle_event_barrier_continuation_tests tests/battle_event_barrier_continuation_tests.cpp)
+target_link_libraries(battle_event_barrier_continuation_tests PRIVATE ttyd_core)
+add_test(NAME battle_event_barrier_continuation COMMAND battle_event_barrier_continuation_tests)
+add_executable(battle_audience_turn_end_continuation_tests tests/battle_audience_turn_end_continuation_tests.cpp)
+target_link_libraries(battle_audience_turn_end_continuation_tests PRIVATE ttyd_core)
+add_test(NAME battle_audience_turn_end_continuation COMMAND battle_audience_turn_end_continuation_tests)
+set_tests_properties(battle_audience_turn_end_continuation PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

@@ -1291,4 +1291,13 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Ordinary native Mario source animation](display/NATIVE_ORDINARY_MARIO_SOURCE_ANIMATION.md) — retained cold process, source Entry/clock/scratch, matching GPU atlases and room/checkpoint admission.
 
-- [Retained original NPC offscreen and blur callbacks](display/RETAINED_NPC_OFFSCREEN_AND_BLUR_CALLBACKS.md): full synchronization/bounds/history/material source graphs; actual field/GPU owners and normal activation remain open.
+- [Retained original NPC offscreen and blur callbacks](display/RETAINED_NPC_OFFSCREEN_AND_BLUR_CALLBACKS.md): full synchronization/bounds/history/material source graphs; actual field/GPU owners and normal activation remain open.Additional retained native battle/UI contracts:
+
+- [Complete Turn parent](battle/RETAINED_COMPLETE_TURN_CONTROLLER.md)
+- [Pinch and audience target graph](battle/RETAINED_PINCH_AND_AUDIENCE_TARGET_GRAPH.md)
+- [Packed status recovery](battle/PACKED_STATUS_RECOVERY.md)
+- [Audience attack event execution](battle/AUDIENCE_ATTACK_EVENT_EXECUTION.md)
+- [Original Trio enemy pose resources](display/TRIO_ENEMY_ORIGINAL_POSE_RESOURCES.md)
+
+- [Retained event/reaction barriers](battle/RETAINED_EVENT_BARRIERS.md)
+- [Retained audience TurnEnd](battle/RETAINED_AUDIENCE_TURN_END.md)

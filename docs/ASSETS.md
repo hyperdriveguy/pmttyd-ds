@@ -2597,4 +2597,28 @@ e9e85d212180b28087c7c8c4d904f82417c1a0ea30f1271ab10c2a3d0c9a78ab.
 No geometry/lighting/audio/message changes. Python fixtures independently read
 ISO read-only into empty temporary outputs; native full asset regeneration skipped.
 Nintendo/Intelligent Systems rights retained; private tracking/copying grants no
-new license. No ISO/original extracted asset/compiled binary committed.
+new license. No ISO/original extracted asset/compiled binary committed.## 2026-10-14 — Original Trio enemy draw resources
+
+The read-only US ISO producer `tools/trio_enemy_pose_assets.py` extracts
+`a/c_kuribo` (125524 bytes, SHA256
+9b934dee83eb489f5151d8a497ac59611e402b7db786c9e82b4809d7d7a475e4)
+and `a/c_kuribo-` (23680 bytes, SHA256
+bccf3f47fd1f713cf8c86a162f9b8a2f86af0b4398a9806e57b114baaf9fc692).
+Original tik setup ids3/4/5 select KUR_S_1/TGK_S_1/PTK_S_1 on that shared
+model. All45 descriptors, source draw MODEL and TPL companions remain complete.
+Private output prefix is `local-assets/trio-enemy-native/pack/trio-enemy-kuribo`;
+ordinary build output prefix is ignored `romfs/trio-enemy-kuribo`. The producer
+records exact source byte offsets, hashes, relocations, descriptor order, all14
+original TPL headers and every converted product hash. PMANIM4 CPU data and
+PMPOSE02 source directory accompany unchanged MODEL/TPL. Dedicated native RGBA8
+atlas1024x256 uses existing124px Lanczos cells with2px clamp gutters and UVscale4;
+original per-image dimensions/samplers remain in the raw TPL. No source geometry
+reduction, generated art or replacement sound is introduced in this batch.
+
+The native resource and atlas binding uses actual model/pose/resource identity
+and separate pose handles for all three units. This supplies dependencies;
+source Shape buffers, active camera scheduling and visible battle HP still need
+runtime proof. Original HUD/common-menu/HP17/18 asset rights and conversions are
+unchanged. Nintendo/Intelligent Systems retain original rights; extraction grants
+no redistribution license. ISO, extracted originals, atlas and compiled packs
+remain outside source history. See [enemy resource contract](behavior/display/TRIO_ENEMY_ORIGINAL_POSE_RESOURCES.md).

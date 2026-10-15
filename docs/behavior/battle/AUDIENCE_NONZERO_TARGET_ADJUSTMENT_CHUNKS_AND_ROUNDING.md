@@ -102,7 +102,7 @@ reduce a below-baseline target more slowly. q is recalculated after each target
 store; replacing the loop with one coefficient computed at entry changes behavior.
 
 The signed q+1 or q-1 conversion uses the xoris/43300000 double construction,
-subtracts double constant8030a328=4330000080000000, and then rounds with fsubs
+subtracts double constant802fa328=4330000080000000, and then rounds with fsubs
 to single. This is a signed32 conversion, not unsigned q or a double-only path.
 The fctiwz operation truncates the already rounded single quotient toward zero.
 
