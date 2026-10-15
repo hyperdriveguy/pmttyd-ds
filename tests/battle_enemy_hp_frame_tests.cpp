@@ -1,5 +1,5 @@
-#include "battle_audience_aux_callback.hpp"
 #include "battle_enemy_hp_frame.hpp"
+#include "battle_audience_aux_callback.hpp"
 #include <cassert>
 #include <cmath>
 #include <cstring>
