@@ -6,7 +6,7 @@
 #include <cmath>
 namespace ttyd {
 namespace {constexpr uint32_t CameraBase=0x81910000,CameraSize=13*0x280;}
-AnimationNativeInner::AnimationNativeInner(NativeFieldAnimation& n,const NativeNpcInnerBackend& b):native_(n),backend_(b){}
+AnimationNativeInner::AnimationNativeInner(NativeFieldAnimation& n,const NativeNpcInnerBackend& b):native_(n),backend_(b){if(b.groups)group_=std::make_unique<AnimationGroupBinding>(n.process_->vm().memory,*b.groups,[this]{return current();});}
 bool AnimationNativeInner::current() const{return native_.npcDrawCurrent();}
 bool AnimationNativeInner::ownsCamera(uint32_t a) const{return a>=CameraBase && uint64_t(a)<uint64_t(CameraBase)+CameraSize;}
 bool AnimationNativeInner::camera(){
@@ -47,7 +47,7 @@ AnimationInnerServices AnimationNativeInner::source(){
  s.copy=[](void* u,const BattleActMatrix& m,uint32_t a){return static_cast<AnimationNativeInner*>(u)->copy(m,a);};
  s.flush=[](void* u,uint32_t a,uint32_t n){auto& b=*static_cast<AnimationNativeInner*>(u);return b.current() && b.backend_.flush && b.backend_.flush(b.backend_.user,b.native_.process_->vm().memory,a,n);};
  s.invalidate=[](void* u){auto& b=*static_cast<AnimationNativeInner*>(u);return b.current() && b.backend_.invalidate && b.backend_.invalidate(b.backend_.user,b.native_.process_->vm().memory);};
- s.traverse=[](void* u,const AnimationInnerTraversal& q){auto& b=*static_cast<AnimationNativeInner*>(u);return b.current() && b.backend_.traverse && b.backend_.traverse(b.backend_.user,b.native_.process_->vm().memory,q);};return s;
+ s.traverse=[](void* u,const AnimationInnerTraversal& q){auto& b=*static_cast<AnimationNativeInner*>(u);return b.current() && (b.group_?b.group_->advance(q,b.native_.budget_):b.backend_.traverse && b.backend_.traverse(b.backend_.user,b.native_.process_->vm().memory,q));};return s;
 }
 bool AnimationNativeInner::advance(const AnimationInnerDrawRequest& q){return current() && resumeAnimationInner(q,source(),cursor_,native_.budget_);}
 NativeNpcInnerServices AnimationNativeInner::services(){NativeNpcInnerServices s;s.user=this;s.request=[](void* u,EventAddressSpace& m,const AnimationInnerDrawRequest& q){auto& b=*static_cast<AnimationNativeInner*>(u);return &m==&b.native_.process_->vm().memory && b.advance(q);};return s;}

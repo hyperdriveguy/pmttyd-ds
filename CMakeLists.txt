@@ -2719,3 +2719,13 @@ add_executable(field_npc_native_creation_tests tests/field_npc_native_creation_t
 target_link_libraries(field_npc_native_creation_tests PRIVATE ttyd_core)
 add_test(NAME field_npc_native_creation COMMAND field_npc_native_creation_tests)
 set_tests_properties(field_npc_native_creation PROPERTIES WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+# Original actual-VM dispProc parent and modeling publications.
+target_sources(ttyd_core PRIVATE source/display/animation_group.cpp source/display/animation_group_binding.cpp)
+add_executable(animation_group_tests tests/animation_group_tests.cpp)
+target_link_libraries(animation_group_tests PRIVATE ttyd_core)
+add_test(NAME animation_group COMMAND animation_group_tests)
+set_tests_properties(animation_group PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+add_executable(native_npc_group_tests tests/native_npc_group_tests.cpp)
+target_link_libraries(native_npc_group_tests PRIVATE ttyd_core)
+add_test(NAME native_npc_group COMMAND native_npc_group_tests)
+set_tests_properties(native_npc_group PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

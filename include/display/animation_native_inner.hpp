@@ -1,11 +1,14 @@
 #pragma once
 #include "animation_inner.hpp"
+#include "animation_group_binding.hpp"
 #include "animation_facing_binding.hpp"
 #include "native_npc_inner_services.hpp"
 namespace ttyd {
 class NativeFieldAnimation;
 struct NativeNpcInnerBackend {
  void* user=nullptr;
+ // Present selects owned actual-VM dispProc; backend context outlives holds.
+ std::optional<NativeNpcGroupBackend> groups;
  bool (*gx)(void*,EventAddressSpace&,const BattleAudienceGXRequest&)=nullptr;
  bool (*callback)(void*,EventAddressSpace&,uint32_t identity,uint32_t effectivePass)=nullptr;
  bool (*flush)(void*,EventAddressSpace&,uint32_t sourceAddress,uint32_t bytes)=nullptr;
@@ -25,6 +28,7 @@ private:
  bool camera();
  bool copy(const BattleActMatrix&,uint32_t);
  AnimationInnerServices source();
+ std::unique_ptr<AnimationGroupBinding> group_;
  NativeFieldAnimation& native_;NativeNpcInnerBackend backend_;AnimationInnerCursor cursor_;
  std::unique_ptr<AnimationFacingBinding> facing_;
  std::shared_ptr<const CameraManager> facingCameras_;uint64_t facingConfiguration_=0;
