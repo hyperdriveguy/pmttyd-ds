@@ -1,5 +1,6 @@
 #include "trio_attack.hpp"
 #include "field_party_native_lifetime.hpp"
+#include "field_party_native_entry.hpp"
 #include "trio_enemy_pose_resources.hpp"
 #include "battle_main_continuation.hpp"
 #include "battle_action_manager_continuation.hpp"
@@ -494,6 +495,7 @@ struct TrioAttackRuntime {
     bool endingMarioRestored=false,endingPartyReady=false;
     std::string partyAssetRoot=fieldPartyAssetRoot;
     std::unique_ptr<NativeFieldPartyLifetime> fieldPartyLifetime;
+    std::unique_ptr<NativeFieldPartyEntry> fieldPartyEntry;
     StageMapObjects stageBackground,stageForeground;
     BattleHitRegistry battleHits;
     std::shared_ptr<BattleSpotlightState> spotlight;
@@ -1732,71 +1734,13 @@ struct TrioAttackRuntime {
             if(!endingPartyReady){
             if(party) {
                 const auto kind=battlePartyIndex(int32_t(word(party+8)));
-                endingRequest(0x801412fc,{kind});
-                if(kind<0 || kind>=8){pending=0x801412fc;return;} // Other constructor domains remain their own providers.
-                if(entryPouch->half(unsigned(14*kind))&1) {
-                    if(fieldMario->partyIndices[0]<128){pending=0x800be69c;return;}
-                    endingRequest(0x800bea68,{kind});endingRequest(0x800be144,{kind});
-                    // Only unlocked, currently absent Goombella(kind 1) constructor
-                    // is admitted. Actual free slot, pose/resource/material/light
-                    // owners and definition 0x80314410 must agree. Preserve field
-                    // publication order; do not fabricate a partner at failure.
-                    const auto slot=fieldParties->allocateFirst();
-                    if(slot<0){pending=0x800bea68;return;} // Entry wrapper requires a free slot.
-                    endingRequest(0x801a94f0);fieldParties->initializeBeforePose(slot,uint8_t(kind),*fieldMario);
-                    if(kind!=1){pending=0x800be144;return;} // Other definition/resource records retain their provider.
-                    const uint32_t resource=(fieldParties->pointer(slot)->word(4)&0x8000)?0x802cb340:0x804213e0;
-                    endingRequest(0x8004176c,{int32_t(resource),2});
-                    const auto pose=fieldParties->enterPose(resource,2,resource==0x804213e0?fieldPartnerAnimationBank():nullptr,now);
-                    if(pose<0){pending=0x8004176c;return;}
-                    fieldParties->pointer(slot)->word(0xc,uint32_t(pose));
-                    endingRequest(0x800414b0,{pose});fieldParties->poses[unsigned(pose)]->paperOff();
-                    endingRequest(0x800593fc);
-                    const auto marioPose=fieldMario->poseHandles[unsigned(fieldMarioAnimationId(*fieldMario))];
-                    endingRequest(0x8004069c,{marioPose});
-                    const auto* materialOwner=fieldParties->pose(marioPose);
-                    if(!materialOwner){pending=0x8004069c;return;}
-                    endingRequest(0x80040730,{pose,int32_t(materialOwner->materialFlags)});
-                    fieldParties->pose(pose)->materialFlags|=materialOwner->materialFlags;
-                    endingRequest(0x800593fc);
-                    const auto marioLightPose=fieldMario->poseHandles[unsigned(fieldMarioAnimationId(*fieldMario))];
-                    endingRequest(0x80040684,{marioLightPose});
-                    const auto* lightOwner=fieldParties->pose(marioLightPose);
-                    if(!lightOwner){pending=0x80040684;return;}
-                    endingRequest(0x800406f0,{pose,int32_t(lightOwner->materialLightFlags)});
-                    fieldParties->pose(pose)->materialLightFlags|=lightOwner->materialLightFlags;
-                    endingRequest(0x80140ea4,{kind});
-                    const int16_t hp=entryPouch->half(unsigned(14*kind+6));
-                    if(!fieldParties->requestFreshGoombellaPose(slot,hp)){pending=0x800be144;return;}
-                    if(fieldParties->currentDefinition!=0x80314410){pending=0x800be144;return;}
-                    endingRequest(0x800c4fa0,{slot});fieldParties->kuriboInit(slot);
-                    if(!fieldAppearance.ready()){pending=0x800bea68;return;}
-                    auto* actor=fieldParties->pointer(slot);
-                    actor->word(0x70,0x3f800000);actor->word(0x74,0x3f800000);actor->word(0x78,0x3f800000);actor->bytes[0x38]=10;
-                    actor->scalar(0x110,fieldAppearance.display(fieldAppearance.user));
-                    actor->scalar(0x10c,fieldAppearance.display(fieldAppearance.user));
-                    // Original placement helper's scalar success is discarded;
-                    // its output vector/pose side effects still matter. Publish
-                    // Mario party index only after first mode/pose placement;
-                    // fresh Hello repeats placement/HP rather than jump setup.
-                    auto appearance=[&]() {
-                        endingRequest(0x800c6718,{slot});FieldWallVector position;
-                        fieldPartyAppearPosition2(actor->scalar(0xf4),slot,position,fieldAppearance); // Original caller ignores success/failure.
-                        actor->scalar(0x58,position.x);actor->scalar(0x5c,position.y);actor->scalar(0x60,position.z);
-                        actor->word(0xb8,actor->word(0x58));actor->word(0xbc,actor->word(0x5c));actor->word(0xc0,actor->word(0x60));
-                        if(!(actor->word(4)&2)) {
-                            endingRequest(0x80140ea4,{kind});
-                            if(!fieldParties->requestGoombellaPose(slot,entryPouch->half(unsigned(14*kind+6))))return false;
-                        }
-                        actor->bytes[0x34]=1;return true;
-                    };
-                    if(!appearance()){pending=0x800bea68;return;}
-                    fieldMario->partyIndices[0]=uint8_t(slot); // Source publishes only after first placement/pose/mode.
-                    endingRequest(0x800bf1b4,{slot});endingRequest(0x800bbc48,{slot});
-                    if((actor->word(8)&8) || actor->bytes[0x38]!=10){pending=0x800bbc48;return;}
-                    endingRequest(0x800bb544,{slot});
-                    if(!appearance()){pending=0x800bb544;return;} // Fresh Hello repeats placement and HP, never the16-count jump path.
-                } // Real source -1 return: no unlock, kill or constructor side effects.
+                if(!fieldPartyEntry)fieldPartyEntry=NativeFieldPartyEntry::create(partyAssetRoot.c_str(),*fieldParties,*fieldMario,entryPouch,
+                    [this](uint32_t fn,std::initializer_list<int32_t> args){endingRequest(fn,args);});
+                if(!fieldPartyEntry){pending=0x801412fc;return;}
+                int32_t entryResult=-1;
+                if(!fieldPartyEntry->step(kind,fieldPartnerAnimationBank(),now,fieldAppearance,entryResult)){
+                    pending=fieldPartyEntry->pending();return;
+                }
             }else {
                 endingRequest(0x80141198);
                 if(!fieldPartyLifetime)fieldPartyLifetime=NativeFieldPartyLifetime::create(partyAssetRoot.c_str(),*fieldParties,*fieldMario);

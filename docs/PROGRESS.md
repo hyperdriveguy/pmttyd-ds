@@ -14039,3 +14039,56 @@ tail helpers and their bindings, then remaining effect/runtime code and tooling.
 Newer concurrent battle/display/party/file code needs separate inline review.
 Snapshot inventory is a review aid, not semantic coverage proof. Full code
 documentation/remake goal remains active.
+
+## Retained ordinary Goombella construction (2026-10-15)
+
+Battle ending now owns one retained native ordinary1 caller/Main/Entry/freshHello
+sequence. A model/material/appearance wait no longer replays allocation or
+initialization. Existing-primary replacement uses the actual retained native
+Kill/file-release path before allocating the replacement. Canonical join gate
+still prevents any unlock/removal/allocation for an unjoined partner.
+
+One post-PeraOff Mario capture supplies two independent selectors; getter
+handles/masks and setter operands survive waits. Original signed/live HP, pose
+row/string bytes, distinct Main strcmp blocks, fresh definition/callback capture,
+initializer/vector/display prefixes and first-placement/index/Hello order remain
+explicit. Source data converter adds two ignored304-byte-pack/provenance products.
+A native entry lease prevents another allocation/removal while construction holds,
+expires without dereferencing borrowed Game owners, and rejects a changed native
+owner on resume. Legacy host workspace cannot fake live file retirement.
+
+Final CMAKE_BUILD_PARALLEL_LEVEL=6 make test exits 0: 460/460 C++ (90.86s),
+215/215 Python (70.780s), zero skipped. make all -j6 -o assets-ready
+SOUNDTRACK=gamecube TARGET=ttyd-field-party-entry exits 0. Private ARM fixture
+build exits 0 after correcting a test-only callback's explicit int32_t return
+(the initial private compile rejected int versus ARM long int32_t). Production
+code/include and binary are unchanged by that correction. All original and
+final gate handles observed terminal; earlier host results are superseded.
+
+Both 45-second isolated Azahar jobs exit0. Production normal build reaches the
+original storybook (capture visually inspected). ARM fixture emits all 10 strict
+PASS markers: entryWait, heldFiles, capturedMario, pinnedMask, placementWait,
+retainedStrings, replacement, signedHp, callbackCapture, joinGate. Probe marker
+is written before renderer startup; its capture is black/App 0 FPS, so it proves
+the fixtures and does not prove normal startup. Normal startup is independently
+covered by the production smoke. Neither profile touches user saves/settings.
+
+Frozen baseline a22478e5fe470aa3a57a63c7670afb6bd1fd34d8 plus exact owned changes
+contains 4082 audited source inputs, 2157 runtime products and 770 unchanged
+private fixture inputs. Four prerequisite interpolation boot/door products were
+regenerated with frozen current converters; two original construction products
+were added. Pack SHA256: 54af6a7381c0fd763e340f387b38ac0af4b2eabc5f3665c4f02c1846267d07d0.
+All other accepted products are unchanged. Private ARM source differs only in
+main.cpp; exact production objects reused after terminal build and its main
+object/dependency removed. Source/product/evidence/log/binary hashes and exact
+scope are recorded in artifacts/field-party-entry-validation-manifest.json.
+Concurrent later battle/render/runtime work is preserved/excluded; no combined
+moving-worktree validation claim. Existing compiler/Pillow warnings remain.
+
+Limitations: ordinary normal-resource kind1 and fresh Hello10 only; auxiliary13,
+d_mario, other callbacks/Hello states and source-visible intermediate output
+aliases remain unbound. Production appearance providers use the existing
+value-output math/ray adapter. Original rendering/Gekko rounding, hardware speed
+and full battle/prologue parity are not claimed. Next: auxiliary constructor and
+authored Goombella story publication, then remaining upper engine/sequence/exit
+owner800f8e28 and field return. Full remake goal remains active.

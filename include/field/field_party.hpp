@@ -35,6 +35,7 @@ struct FieldPartyRegistry {
     // Native serialization lease, not an original party flag. Active adapters
     // and borrowed Mario/registry owners must stay stationary until completion.
     std::weak_ptr<void> nativeRemovalOwner;
+    std::weak_ptr<void> nativeEntryOwner; // Published constructor owns its actor through held children.
     uint32_t currentDefinition=0; // Original global kind-record pointer view.
     uint32_t goombellaInitWork=0; // Owned view of8041eae0, cleared by the used kuribo_init callback.
     std::shared_ptr<BattlePosePool> originalPool;
@@ -94,7 +95,7 @@ struct FieldPartyRegistry {
         return true;
     }
     int32_t allocateFirst() {
-        if(!nativeRemovalOwner.expired())return -1; // No slot reuse while source retirement holds.
+        if(!nativeRemovalOwner.expired() || !nativeEntryOwner.expired())return -1; // No slot reuse while source retirement holds.
         for(unsigned i=0;i<actors.size();++i)if(!actors[i]) {
             actors[i]=std::make_unique<FieldPartyActor>(); // First zero precedes lookup.
             pointer(int32_t(i))->bytes.fill(0); // Source clears the looked-up actor again.

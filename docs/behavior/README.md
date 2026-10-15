@@ -1354,3 +1354,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Retained submenu icon raster](display/RETAINED_SUBMENU_ICON_RASTER.md): whole original color/surface/font/icon/cost flow, with genuine runtime memory and raster frontiers.
 - [Retained original weapon cursor](display/RETAINED_WEAPON_CURSOR.md): original timer/interpolation and real icon-position children with retained admission.
+
+- [Retained native ordinary Goombella construction](partner/NATIVE_ORDINARY_PARTY_ENTRY.md): actual file/pose waits, material captures, first placement/late index publication/fresh Hello and bounded native ownership.

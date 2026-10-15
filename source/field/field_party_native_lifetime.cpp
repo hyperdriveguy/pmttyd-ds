@@ -95,6 +95,7 @@ bool NativeFieldPartyLifetime::kill(int32_t index,bool forget){
  return killImpl(index,forget);
 }
 bool NativeFieldPartyLifetime::killImpl(int32_t index,bool forget){
+ if(!parties_.nativeEntryOwner.expired())return false;
  if(!parties_.nativeRemovalOwner.expired() && parties_.nativeRemovalOwner.lock().get()!=removalLease_.get())return false;
  if(index>=2)return false; // Explicit typed domain; source controller has no upper guard.
  if(!removal_.active){
@@ -113,10 +114,12 @@ bool NativeFieldPartyLifetime::killImpl(int32_t index,bool forget){
  parties_.nativeRemovalOwner.reset();captured_=nullptr;capturedAddress_=0;return true;
 }
 bool NativeFieldPartyLifetime::removeAll(){
+ if(!parties_.nativeEntryOwner.expired())return false;
  if(event_.active || (removal_.active && !outer_.active) || (!parties_.nativeRemovalOwner.expired() && parties_.nativeRemovalOwner.lock().get()!=removalLease_.get()))return false;
  return removeMarioParties(services(),outer_);
 }
 bool NativeFieldPartyLifetime::event(uint32_t entry,bool clear,EventAddressSpace& memory,int32_t& result){
+ if(!parties_.nativeEntryOwner.expired())return false;
  if(outer_.active || (removal_.active && !event_.active) || (eventMemory_ && eventMemory_!=&memory) || (native_ && &native_->process().vm().memory!=&memory))return false;
  if(!parties_.nativeRemovalOwner.expired() && parties_.nativeRemovalOwner.lock().get()!=removalLease_.get())return false;
  if(!event_.active){uint32_t args=0,slot=0;if(!memory.readWord(entry+0x18,args) || !memory.readWord(args,slot) || slot>1)return false;}

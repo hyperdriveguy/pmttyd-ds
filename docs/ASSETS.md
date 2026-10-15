@@ -3109,3 +3109,24 @@ Native full regeneration skipped; Python fixtures independently use read-only IS
 and empty temporary destinations. No editable import, shared-pack write or ISO,
 extracted original/compiled product commit. Nintendo/Intelligent Systems rights
 retained; local extraction/conversion grants no new license.
+
+## Retained ordinary Goombella construction data (2026-10-15)
+
+`tools/field_party_entry_assets.py` reads the original US revision0 ISO read-only
+and verifies six SHA256 spans: normal kind1 pose row80314744/3c, strings
+802cb4dc/8 and802cb52c/8, vector802cb178/0c, dimensions80421584/8, and
+Hello dispatch803141c4/7c. Unchanged bytes become ignored
+`romfs/field-party-entry.pmevt` (304bytes) plus provenance JSON. No resampling,
+rewritten strings, canonicalized kinds or generated art. Existing three original
+party definition records remain separate/unchanged. Native construction imports
+missing complete source spans once and preserves already mapped live bytes.
+
+Rights remain Nintendo/Intelligent Systems; local authorized ISO use does not
+grant redistribution rights. No ISO/extracted original/compiled pack is committed.
+Private validation inherits accepted native party assets and770 fixture inputs;
+current frozen interpolation converters regenerate only boot memory and door
+data JSON/PMEVT (four changed accepted products). Two construction products are
+new. Detailed source/product/fixture hashes live in the ignored entry validation
+manifest. Original c_pkr mode2 animation uses the shared native factory; legacy
+host checkpoints keep the pre-existing CPU workspace fallback. Neither supplies
+the separate d_mario resource or full original rendering/field return.

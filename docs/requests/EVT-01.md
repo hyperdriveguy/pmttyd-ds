@@ -5263,3 +5263,20 @@ needs a retained constructor before its Kill barrier can safely move. Auxiliary
 Entry2Pos(kind13), authored harbor/plaza conversion and full field return stay
 OPEN; no early canonical join or fabricated story condition is introduced.
 EVT-01 and the complete prologue goal remain active.
+
+### 2026-10-15 ordinary party entry native binding
+
+Fresh read-only complete EntryMain800be144/380, Entry800bea68/1b8,
+Hello800bbc48/194 and HelloMain800bb544/704 evidence is archived privately
+in artifacts/field-party-entry-evidence. Native ordinary1 construction now
+retains its actor, resource/child operands, one post-PeraOff Mario owner, two
+independent selectors, two Main comparisons and fresh definition/init capture.
+Battle ending uses the real retained existing-primary Kill and completes first
+appearance before publishing Mario245, then ordinary10 Hello's second placement.
+See [native binding](../behavior/partner/NATIVE_ORDINARY_PARTY_ENTRY.md).
+
+- [ ] Bind auxiliary13 Entry2Pos plus authored publication/join conditions.
+- [ ] Bind d_mario, other kind callbacks, nonordinary Hello and source-visible
+  output aliases outside the current production value-output appearance adapter.
+- [ ] Bind remaining upper engine/sequence/exit owner800f8e28 and story field return;
+  constructor completion is not battle/prologue completion.
