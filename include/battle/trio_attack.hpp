@@ -18,6 +18,7 @@
 #include "battle_enemy_hp_draw.hpp"
 #include "battle_enemy_hp_frame.hpp"
 #include "trio_class_menu_frame_binding.hpp"
+#include "trio_weapon_menu_frame_binding.hpp"
 #include "battle_stock_exp_draw.hpp"
 #include "battle_break_slot_draw.hpp"
 #include "field_bero_exec.hpp"
@@ -144,6 +145,8 @@ public:
     // retained child invocations. This does not activate source command Main.
     std::optional<TrioClassMenuFrameBinding> classMenuFrameBinding(const BattleActDrawServices& linked) const;
     bool resumeClassMenuFrame(uint32_t camera,uint32_t userdata,BattleClassNativeFrame&,BattleClassNativeSubmission={}) const;
+    std::optional<TrioWeaponMenuFrameBinding> weaponMenuFrameBinding(const BattleWeaponDrawServices& linked) const;
+    bool resumeWeaponMenuFrame(uint32_t camera,uint32_t userdata,BattleWeaponNativeFrame&) const;
     std::optional<uint64_t> enemyHpAllocation() const;
     std::shared_ptr<const uint8_t> enemyHpAllocationOwner() const;
     bool enemyHpAllocationCurrent(uint64_t) const;

@@ -26,5 +26,9 @@ class FooterAssets(unittest.TestCase):
    self.assertEqual(atlas.crop((x,y,x+w,y+h)).tobytes(),original.tobytes())
    self.assertEqual(hashlib.sha256(original.tobytes()).hexdigest(),record['pixel_sha256'])
    self.assertEqual(struct.unpack_from('<3I4f',raw,12+ordinal*28),(index,w,h,x/512,1-y/256,(x+w)/512,1-(y+h)/256))
-   self.assertEqual(atlas.getpixel((x-1,y)),(0,0,0,0))
-   self.assertEqual(atlas.getpixel((x+w,y)),(0,0,0,0))
+   source=(work/'battle_common.tpl').read_bytes()
+   table=struct.unpack_from('>I',source,8)[0];header=struct.unpack_from('>I',source,table+index*8)[0]
+   self.assertEqual(struct.unpack_from('>4I',source,header+12),(0,0,1,1))
+   for dx in range(-2,w+2):
+    for dy in range(-2,h+2):
+     self.assertEqual(atlas.getpixel((x+dx,y+dy)),original.getpixel((min(w-1,max(0,dx)),min(h-1,max(0,dy)))))

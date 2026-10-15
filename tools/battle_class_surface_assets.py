@@ -27,7 +27,11 @@ def build(iso=DEFAULT_ISO,output='romfs',work='local-assets/battle-class-ui'):
  for index,(width,height,x,y) in enumerate([(40,40,2,2),(128,80,46,2)]):
   image=work/f'common-{index}.png';convert_tpl(tpl,image,index);bitmap=Image.open(image).convert('RGBA')
   if bitmap.size!=(width,height):raise ValueError('Original class surface dimensions changed')
-  atlas.paste(bitmap,(x,y));uv=(x/256,1-y/128,(x+width)/256,1-(y+height)/128)
+  # Original wrap0/min-mag1: extrude clamp texels, never transparent seams.
+  for dx in range(-2,width+2):
+   for dy in range(-2,height+2):
+    atlas.putpixel((x+dx,y+dy),bitmap.getpixel((min(width-1,max(0,dx)),min(height-1,max(0,dy)))))
+  uv=(x/256,1-y/128,(x+width)/256,1-(y+height)/128)
   payload+=struct.pack('<3I4f',index,width,height,*uv)
   records.append(dict(index=index,width=width,height=height,x=x,y=y,uv=uv,pixel_sha256=hashlib.sha256(bitmap.tobytes()).hexdigest()))
  atlas.save(work/'atlas.png')
@@ -35,7 +39,7 @@ def build(iso=DEFAULT_ISO,output='romfs',work='local-assets/battle-class-ui'):
  subprocess.run([tex3ds,'-f','rgba8','-z','auto','-o',str(out/'battle-class-surfaces.t3x'),str(work/'atlas.png')],check=True,stdout=subprocess.DEVNULL)
  (out/'battle-class-surfaces.bin').write_bytes(payload)
  metadata=dict(source=SOURCE,source_sha256=SOURCE_HASH,common_tpl=common,dimensions=[256,128],texture_bytes=131072,images=records,
-  conversion='Original RGBA pixels;2px transparent padding;no resampling;circle quadrants and bubble geometry remain source draw consumers',
+  conversion='Original RGBA pixels;2px clamp-edge extrusion;source interiors/catalogUV unchanged;no resampling;circle quadrants and bubble geometry remain source draw consumers',
   license='Nintendo/Intelligent Systems resources;no redistribution rights')
  (out/'battle-class-surfaces.json').write_text(json.dumps(metadata,indent=2)+'\n');return metadata
 if __name__=='__main__':

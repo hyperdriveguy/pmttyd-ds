@@ -1,6 +1,7 @@
 #pragma once
 #include "battle_class_raster.hpp"
 #include "battle_class_surface_gpu.hpp"
+#include "battle_font_gpu.hpp"
 #include "message_icons.hpp"
 #include "window_font.hpp"
 #include <functional>
@@ -49,6 +50,7 @@ public:
   const BattleClassAssets *assets = nullptr;
   // Actual native pair lease copied into each immutable publication.
   BattleClassSurfaceLease surfaceLease;
+  BattleFontLease fontLease;
   const MessageFont *font = nullptr;
   std::function<const char *(uint32_t)> label;
   std::function<const MessageIconFrame *(uint32_t)> messageIcon;

@@ -68,6 +68,8 @@ bool Renderer::drawClassMenu(const BattleClassBackend &batch) {
     return false;
   if (!fontTexture.imported || !messageIconTexture.imported)
     return false;
+  for(const auto& q:batch.quads)if(q.texture==BattleClassTexture::Font &&
+      (!battleFontGpu.accepts(batch.fontLease) || batch.font!=batch.fontLease.font.get()))return false;
   if (!validateBattleClassFooterBatch(
           batch, classFooterGpu ? &classFooterGpu->resource() : nullptr))
     return false;

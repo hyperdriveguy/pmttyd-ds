@@ -212,6 +212,7 @@ bool Renderer::init() {
     C3D_TexSetFilter(&partnerTextures.texture,GPU_LINEAR,GPU_LINEAR);
     C3D_TexSetWrap(&partnerTextures.texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
     if(!prepareKanban() || !prepareDiary())return false;
+    retireBattleFont(); // Actual import epoch ends before any replacement attempt.
     for(auto entry:{std::pair<const char*,Texture*>{"romfs:/font.t3x",&fontTexture},{"romfs:/harbor-actors.t3x",&harborTexture},{"romfs:/message-window.t3x",&messageWindowTexture}}) {
         FILE* file=std::fopen(entry.first,"rb");if(!file)return false;
         entry.second->imported=Tex3DS_TextureImportStdio(file,&entry.second->texture,nullptr,false);std::fclose(file);
@@ -219,6 +220,7 @@ bool Renderer::init() {
         C3D_TexSetFilter(&entry.second->texture,GPU_LINEAR,GPU_LINEAR);
         C3D_TexSetWrap(&entry.second->texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
     }
+    if(!prepareBattleFont())return false;
     // PMHNPC2 has exactly two XYZ dimension/anchor records for Crump/X-Naut.
     // +/-10 bound is native converted-metric validation, not source actor limits.
     FILE* metrics=std::fopen("romfs:/harbor-actors.bin","rb");if(!metrics)return false;
@@ -1676,6 +1678,8 @@ void Renderer::shutdown() {
     releaseEnemyHp();
     releaseSourceIcons();
     releaseClassMenuDrawing();
+    releaseWeaponMenuSurfaces();
+    retireBattleFont(); // Invalidate all copied font leases before native texture free.
     releaseAudienceDrawing();
     if(c3dReady) C3D_FrameSync();
     if(shadowTexture44.imported){Tex3DS_TextureFree(shadowTexture44.imported);C3D_TexDelete(&shadowTexture44.texture);shadowTexture44.imported=nullptr;}
@@ -1705,7 +1709,7 @@ void Renderer::shutdown() {
     if(professorMapTexture.imported) {Tex3DS_TextureFree(professorMapTexture.imported);C3D_TexDelete(&professorMapTexture.texture);}
     if(undergroundTexture.imported){Tex3DS_TextureFree(undergroundTexture.imported);C3D_TexDelete(&undergroundTexture.texture);}
     if(messageIconTexture.imported) {Tex3DS_TextureFree(messageIconTexture.imported);C3D_TexDelete(&messageIconTexture.texture);}
-    for(auto* texture:{&fontTexture,&harborTexture,&messageWindowTexture})if(texture->imported){Tex3DS_TextureFree(texture->imported);C3D_TexDelete(&texture->texture);}
+    for(auto* texture:{&fontTexture,&harborTexture,&messageWindowTexture})if(texture->imported){Tex3DS_TextureFree(texture->imported);C3D_TexDelete(&texture->texture);texture->imported=nullptr;}
     if(imported) Tex3DS_TextureFree(imported);
     if(atlasReady) C3D_TexDelete(&atlas);
     if(vertices) linearFree(vertices);

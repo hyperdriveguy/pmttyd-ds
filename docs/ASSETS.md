@@ -394,7 +394,7 @@ battle/win/menuwin.tpl was inspected privately and is not selected.
 `tools/battle_class_surface_assets.py` emits ignored
 `romfs/battle-class-surfaces.{bin,t3x,json}` and original decoded images/atlas
 under ignored `local-assets/battle-class-ui/`. Packing uses256x128 RGBA8,
-131072 texture bytes,2px transparent padding and no resampling. The existing
+131072 texture bytes,2px clamp-edge extrusion and no source-image resampling. The existing
 class icon atlas remains separate. Geometry/UV quadrant mirroring, source
 shadow/dimming and label scaling are consumer behavior, not painted into the
 textures. No generated art or rewritten labels were added. Nintendo/Intelligent
@@ -1935,7 +1935,7 @@ Ignored work cache: `local-assets/battle-class-footers`; compiled products:
 `romfs/battle-class-footers.bin`, `.t3x`, `.json`. Original cue4/5 images are80x32,
 danger6..10 are112x48, critical11..16 are112x56. All six language table mappings
 are retained. Conversion preserves original decoded RGBA pixels without
-resampling, places two-pixel transparent padding in512x256 RGBA8 backing
+resampling, places two-pixel clamp-edge extrusion in512x256 RGBA8 backing
 (524288 texture bytes), and performs no geometry/lighting change. Metadata
 records source-body verification and per-image pixel hashes. Normal assets-base
 invokes the narrow converter; no editable source is overwritten. The native
@@ -3131,6 +3131,36 @@ manifest. Original c_pkr mode2 animation uses the shared native factory; legacy
 host checkpoints keep the pre-existing CPU workspace fallback. Neither supplies
 the separate d_mario resource or full original rendering/field return.
 
+## Original raw US BFN and retained source setup (2026-10-15)
+
+`tools/source_font_resources_assets.py` exports exact unmodified original
+`f/papermarioset_US.bfn` from read-only US revision0 ISO offset948050384,
+length66560, SHA256
+`bb9cf410e5d916a1268ff503fc4f1ad7e8630b381cd781958eb0be32abb56b45`.
+Ignored output `romfs/source-font/papermarioset_US.bfn` and
+`source-font.json` retain original extent/hash and converter identity.
+No original bytes/header/mappings/pixels are changed and no width patch occurs
+in this converter. Existing `font_assets.py`, `font.pmfont` and `font.t3x`
+remain unchanged. A new import needs an empty destination; exact matching
+products may be reused, while changed payload/metadata/extra files are preserved
+and rejected rather than overwritten. Converter revisions need a fresh cache.
+
+The retained original source Setup controller performs real mutable width
+writes7 then9 in actual native-backed BFN heap storage. The original file stays
+width1. Actual existing process font globals/palette/spacing/name pointers,
+fog and selected color can be captured/shared across VM bindings without guessed
+constructor BSS or per-VM resets. File loading/mapping is not native font setup:
+root/formatter/DVD/heap and GX InitTexObj/LOD effects remain genuine provider
+boundaries, including actual cold-process initialization and texture ownership.
+The private host fixture reads original BFN/cold DOL bytes, executes source setup
+and validates shared mutable BFNs; host GX callbacks are explicit fixtures.
+No normal activation, native glyph/material/framebuffer or original execution
+parity claim is made. [Resource contract](behavior/display/NATIVE_SOURCE_FONT_RESOURCE_OWNERSHIP.md).
+
+Original Nintendo/Intelligent Systems rights are retained. Source tracking
+confers no new license or redistribution rights. No ISO/raw original payload
+is committed; generated caches and packs remain ignored.
+
 ## Original battle menu font readers (2026-10-15)
 
 Retained matrix/scalar menu-font tests read the US ISO read-only at the source
@@ -3271,3 +3301,27 @@ overlay or shared-pack write. Native full regeneration skipped; Python fixtures
 independently read ISO read-only into empty temporary outputs. No ISO, original
 extracted asset or compiled product committed; Nintendo/Intelligent Systems
 rights retained and no new license granted.
+
+## Original submenu surfaces2/3 (retained weapon UI)
+
+Source: read-only US ISO `battle/common/battle_common.tpl`, 217920 bytes,
+SHA256 `8eb685317056f42b3ef73138eaad85d16fa4943d830b44a149f09971a5959bb1`.
+`tools/battle_submenu_surface_assets.py` decodes original CMPR indices2
+(16×24) and3 (8×24), places unchanged pixels with two-pixel
+clamp-edge extrusion in a32×32 RGBA8 native atlas, and writes
+`battle-submenu-surfaces.{bin,t3x,json}` into an empty output directory.
+Private extraction cache must also be empty. No resizing, redrawn frame or
+editable-asset overwrite. The whole original bank and prior class/footer packs
+are unchanged. New compiled products belong after ISO-backed base conversion
+and before normal editable-manifest compilation. The distinct source help
+frame remains original `f/msgWindow.tpl` descriptor0; submenu images do not
+replace its texture/readiness owner. Original Nintendo/Intelligent Systems
+rights retained; provenance grants no new redistribution rights.
+
+
+The submenu build wrapper compiles in fresh empty temporary output/cache
+directories before publishing its three ignored RomFS products. Unchanged
+products retain their bytes/mtime; interrupted compiled products are replaced.
+No editable originals or shared extraction caches are modified. Native resident
+font leases reuse the existing original512x256 font.t3x/font.pmfont pair without
+conversion or additional GPU texture allocation; only metadata is copied.

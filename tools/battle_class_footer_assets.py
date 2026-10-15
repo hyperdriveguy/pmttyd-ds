@@ -39,7 +39,11 @@ def build(iso=DEFAULT_ISO, output='romfs', work='local-assets/battle-class-foote
             raise ValueError('Original footer surface dimensions changed')
         column, row = (index-4) % 4, (index-4) // 4
         x, y = 2+116*column, 2+60*row
-        atlas.paste(bitmap, (x, y))
+        # All used original descriptors clamp and filter linearly. Preserve
+        # their edge samples, including nonzero critical-label left pixels.
+        for dx in range(-2,width+2):
+            for dy in range(-2,height+2):
+                atlas.putpixel((x+dx,y+dy),bitmap.getpixel((min(width-1,max(0,dx)),min(height-1,max(0,dy)))))
         uv = (x/512, 1-y/256, (x+width)/512, 1-(y+height)/256)
         payload += struct.pack('<3I4f', index, width, height, *uv)
         rows.append(dict(index=index, width=width, height=height, x=x, y=y,
@@ -51,7 +55,7 @@ def build(iso=DEFAULT_ISO, output='romfs', work='local-assets/battle-class-foote
     (out/'battle-class-footers.bin').write_bytes(payload)
     metadata = dict(source=SOURCE, source_sha256=SOURCE_HASH, dimensions=[512, 256],
                     texture_bytes=524288, images=rows, danger=danger, critical=critical,
-                    source_verifier=evidence, conversion='Original RGBA pixels;2px transparent padding;no resampling',
+                    source_verifier=evidence, conversion='Original RGBA pixels;2px clamp-edge extrusion;source interiors/catalogUV unchanged;no resampling',
                     license='Nintendo/Intelligent Systems resources;no redistribution rights')
     (out/'battle-class-footers.json').write_text(json.dumps(metadata, indent=2)+'\n')
     return metadata

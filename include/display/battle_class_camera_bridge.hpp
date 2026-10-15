@@ -48,6 +48,7 @@ public:
   bool matrix(BattleAudienceMatrixRequest&) const;
 private:
   friend class BattleEnemyHpCameraBridge;
+  friend class BattleWeaponCameraBridge;
   bool bindCallback(std::shared_ptr<const CameraManager>,uint64_t,
       BattleActorServices,BattleClassCameraAddressPolicy,
       std::function<bool(BattleClassCameraEpoch)>,uint32_t callback);

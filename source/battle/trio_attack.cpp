@@ -1,4 +1,5 @@
 #include "trio_attack.hpp"
+#include "field_mario_key_continuation.hpp"
 #include "field_party_native_lifetime.hpp"
 #include "field_party_native_entry.hpp"
 #include "trio_enemy_pose_resources.hpp"
@@ -3116,6 +3117,16 @@ struct TrioAttackRuntime {
                     if(query==LetterboxQuery::BeroExec && r.bero){const auto bit=r.bero->read(1);if(bit)return int32_t(*bit);return {};}
                     if(query==LetterboxQuery::Sequence && r.sequence)return r.sequence->state.current;
                     if(query==LetterboxQuery::PartyFlags && party)return int32_t(reinterpret_cast<const FieldPartyActor*>(party)->word(0));
+                    if(query==LetterboxQuery::MarioCtrl && r.fieldMario){
+                        FieldMarioKeyServices source;source.user=user;
+                        source.current=[](void* p){return static_cast<TrioAttackRuntime*>(p)->fieldMario!=nullptr;};
+                        source.marioByte=[](void* p,uint32_t offset)->std::optional<uint8_t>{
+                            const auto* mario=static_cast<TrioAttackRuntime*>(p)->fieldMario;
+                            if(!mario || offset!=0x38)return {};
+                            return mario->controlDepth;
+                        };
+                        return originalMarioChkCtrl(source);
+                    }
                     if(query==LetterboxQuery::Rate)return 60; // Explicit native NTSC simulation adapter.
                     return {}; // Actual Key39/Ctrl38 producers remain separate.
                 };
@@ -3403,6 +3414,54 @@ std::optional<TrioClassMenuFrameBinding> TrioAttack::classMenuFrameBinding(const
         return {};
     };
     return out;
+}
+std::optional<TrioWeaponMenuFrameBinding> TrioAttack::weaponMenuFrameBinding(const BattleWeaponDrawServices& linked) const {
+    const auto r=runtime_;
+    if(!r || !r->cameras || !r->menuFiles || !r->menuFiles->ready() || !r->menuResourceInitialized)return {};
+    uint32_t b=0,w=0,descriptor=0,cell=0,palette=0;
+    if(!r->vm.memory.readWord(0x8041eb90,b) || b!=Battle ||
+       !r->vm.memory.readWord(Battle+0x1c78,w) ||
+       !r->vm.memory.readWord(Battle+0xa0,descriptor) || !descriptor ||
+       !r->vm.memory.readWord(descriptor+0xa0,cell) || !cell ||
+       !r->vm.memory.readWord(cell,palette) || !palette)return {};
+    const auto found=r->actMenuUiAllocations.find(w);
+    if(found==r->actMenuUiAllocations.end() || !found->second)return {};
+    const auto token=found->second;const auto files=r->menuFiles;
+    const uint64_t generation=uint64_t(reinterpret_cast<uintptr_t>(token.get()));
+    TrioWeaponMenuFrameBinding out;out.native.allocationOwner=token;out.native.sourceResourceOwner=r;
+    out.native.allocation=w;out.native.battle=Battle;out.native.generation=generation;
+    out.native.cameras=r->cameras;out.native.actors=nativeBattleActorServices(r->vm);
+    // Explicit native view reservation, checked against every actual mapped owner.
+    out.native.addresses={0x60014000,[r](uint32_t base,uint32_t bytes){return r->vm.memory.unmappedRange(base,bytes);}};
+    out.native.allocationCurrent=[this,r,token,w](){
+        uint32_t b=0,current=0;const auto i=r->actMenuUiAllocations.find(w);
+        return runtime_==r && i!=r->actMenuUiAllocations.end() && i->second==token &&
+            r->vm.memory.readWord(0x8041eb90,b) && b==Battle &&
+            r->vm.memory.readWord(Battle+0x1c78,current) && current==w;
+    };
+    out.native.sourceResourceCurrent=[this,r,files,descriptor,cell,palette](){
+        uint32_t d=0,c=0,p=0;
+        return runtime_==r && r->menuResourceInitialized && r->menuFiles==files && files->ready() &&
+            r->vm.memory.readWord(Battle+0xa0,d) && d==descriptor &&
+            r->vm.memory.readWord(descriptor+0xa0,c) && c==cell &&
+            r->vm.memory.readWord(cell,p) && p==palette;
+    };
+    out.native.producerCurrent=[this,r,generation](BattleClassCameraEpoch e){
+        return runtime_==r && !r->cameraMainPoisoned && !r->cameraMainWaiting &&
+            !r->cameraMainCursor.active && e.generation==generation && e.pass && e.pass==r->cameraMainPublication;
+    };
+    out.source=linked;out.source.math.memory=out.native.actors;
+    out.resourceWord=[r](uint32_t address)->std::optional<uint32_t>{uint32_t value;
+        if(r->vm.memory.readWord(address,value) || r->vm.gpAddresses.readWord(address,value))return value;
+        return {};
+    };
+    return out;
+}
+bool TrioAttack::resumeWeaponMenuFrame(uint32_t camera,uint32_t userdata,BattleWeaponNativeFrame& frame) const {
+    const auto r=runtime_;if(!r || camera!=8 || userdata!=Battle || !r->cameraMainPublication)return false;
+    const auto& call=r->cameraDrawCursor.display;
+    if(!call.active || !call.invoking || call.callback!=0x80121ce8 || call.camera!=camera || call.userdata!=userdata)return false;
+    return frame.resume(r->cameraMainPublication,r->cameraMainCursor,r->cameraDrawCursor,r->displayQueue,camera,userdata);
 }
 bool TrioAttack::resumeClassMenuFrame(uint32_t camera,uint32_t userdata,BattleClassNativeFrame& frame,BattleClassNativeSubmission submission) const {
     const auto r=runtime_;if(!r || camera!=8 || userdata!=Battle || !r->cameraMainPublication)return false;

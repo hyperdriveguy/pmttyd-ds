@@ -7,12 +7,15 @@ Normal class callback activation remains a separate source queue/frame owner.
 
 ## Authoritative products
 
-The unchanged `tools/battle_class_surface_assets.py` imports original US
+`tools/battle_class_surface_assets.py` imports original US
 `battle/common/battle_common.tpl` (217920 bytes, SHA256
 `8eb685317056f42b3ef73138eaad85d16fa4943d830b44a149f09971a5959bb1`).
 Indices0/1 provide the original40×40 circle quadrant and128×80 speech bubble.
 Existing `battle-class-surfaces.bin/.t3x` uses a256×128 RGBA8 atlas, two-pixel
-transparent padding and unscaled source pixels. Circle mirroring and bubble
+clamp-edge extrusion and unscaled source pixels. Original descriptors0/1 use
+wrapS/T0,min/mag1. Extruded edge texels preserve linear clamp sampling at the
+circle quadrant seams; original source pixels/catalog UVs remain unchanged.
+Circle mirroring and bubble
 geometry remain source consumers, rather than artwork changes.
 
 The unchanged `tools/battle_class_icon_assets.py` resolves original icon.bin

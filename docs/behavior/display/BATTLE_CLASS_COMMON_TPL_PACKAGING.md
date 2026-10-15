@@ -20,11 +20,12 @@ path, hash and new output record are included in
 This raw copy preserves every header, relative pointer, flag and original
 compressed texel byte. It performs no decode, source-pointer relocation,
 resampling, geometry reduction, lighting change or new art substitution. The
-existing circle0/bubble1 atlas conversion remains unchanged: original40x40 and
-128x80 pixels,256x128 RGBA8 backing, two-pixel transparent padding, original
-surface descriptors. Both the generated surface `.bin` and `.t3x` were compared
-byte-for-byte with the prior pack and matched after this change. Their metadata
-is unchanged except for the new `common_tpl` output record.
+circle0/bubble1 atlas retains original40x40 and128x80 source pixels,
+256x128 RGBA8 backing and identical catalog UVs/descriptors. Native two-pixel
+gutters repeat original clamp-edge texels because the source sampler is
+wrapS/T0,min/mag1. Only atlas gutter/native texture bytes and conversion
+metadata change; source interiors, descriptor `.bin` and original common TPL
+stay byte-identical. The icon atlas is separate and unchanged.
 
 The resource permits a real native file owner to load the exact original TPL
 and map its actual guest descriptor, pointer cell and palette data. It does not

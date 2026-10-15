@@ -42,5 +42,10 @@ class ClassSurfaceAssets(unittest.TestCase):
    self.assertEqual(original.size,[(40,40),(128,80)][index]);self.assertEqual(atlas.crop((x,y,x+w,y+h)).tobytes(),original.tobytes())
    self.assertEqual(struct.unpack_from('<3I',raw,12+28*index),(index,w,h))
    self.assertEqual(struct.unpack_from('<4f',raw,24+28*index),(x/256,1-y/128,(x+w)/256,1-(y+h)/128))
-   self.assertEqual(atlas.getpixel((x-1,y)),(0,0,0,0));self.assertEqual(atlas.getpixel((x+w,y)),(0,0,0,0))
+   source=(root/'local-assets/battle-class-ui/battle_common.tpl').read_bytes()
+   table=struct.unpack_from('>I',source,8)[0];header=struct.unpack_from('>I',source,table+index*8)[0]
+   self.assertEqual(struct.unpack_from('>4I',source,header+12),(0,0,1,1))
+   for dx in range(-2,w+2):
+    for dy in range(-2,h+2):
+     self.assertEqual(atlas.getpixel((x+dx,y+dy)),original.getpixel((min(w-1,max(0,dx)),min(h-1,max(0,dy)))))
 if __name__=='__main__':unittest.main()

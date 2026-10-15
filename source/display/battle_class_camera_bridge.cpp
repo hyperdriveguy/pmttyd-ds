@@ -26,7 +26,7 @@ bool BattleClassCameraBridge::bind(std::shared_ptr<const CameraManager> bank,
 bool BattleClassCameraBridge::bindCallback(std::shared_ptr<const CameraManager> bank,
     uint64_t generation,BattleActorServices actors,BattleClassCameraAddressPolicy addresses,
     std::function<bool(BattleClassCameraEpoch)> current,uint32_t callback){
-  if(callback!=ClassCallback && callback!=HpCallback)return false;
+  if(callback!=ClassCallback && callback!=HpCallback && callback!=0x80121ce8)return false;
   if(bank_ || !bank || !generation || !actors.memory.word || !current ||
       !addresses.base || addresses.base%4 || uint64_t(addresses.base)+Bytes>0x100000000ULL ||
       !addresses.unmapped || !addresses.unmapped(addresses.base,Bytes))return false;

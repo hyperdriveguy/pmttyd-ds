@@ -12,14 +12,15 @@ struct Renderer::ClassMenuBinding {
   BattleClassSurfaceLease surface;
   const BattleClassFooterGpuResource* footerResource=nullptr;
   const void* fontTexture=nullptr;const void* iconTexture=nullptr;
-  MessageFont font;
+  BattleFontLease font;
   std::map<uint32_t,MessageIconFrame> iconFrames;
   uint64_t sourceTick=0;bool nativeAlive=true,sourcePending=false;
   BattleClassNativeFrame frame;
   std::unique_ptr<BattleClassNativeNumeric> numeric;
   std::unique_ptr<BattleClassNativeFooters> footers;
   bool current() const {
-    if(!nativeAlive||!renderer||!game||!source.native.allocationCurrent||
+    if(!nativeAlive||!renderer||!game||!font.current()||
+       renderer->battleFontLease().generation!=font.generation||!source.native.allocationCurrent||
        !source.native.allocationCurrent()||!surface.current()||
        !renderer->fontTexture.imported||renderer->fontTexture.imported!=fontTexture||
        !renderer->messageIconTexture.imported||renderer->messageIconTexture.imported!=iconTexture||
@@ -41,7 +42,7 @@ struct Renderer::ClassMenuBinding {
     footers=std::make_unique<BattleClassNativeFooters>(frame,*numeric,*footerResource,
         source.native.actors,source.resourceWord,live);
     BattleClassBackend backend;backend.assets=surface.assets.get();backend.surfaceLease=surface;
-    backend.font=&font;backend.label=source.label;backend.random=source.random;
+    backend.fontLease=font;backend.font=font.font.get();backend.label=source.label;backend.random=source.random;
     backend.messageIcon=[weak](uint32_t id)->const MessageIconFrame*{
       auto p=weak.lock();if(!p||!p->current())return nullptr;
       const auto found=p->iconFrames.find(id);if(found!=p->iconFrames.end())return &found->second;
@@ -73,7 +74,7 @@ bool Renderer::prepareClassMenuFrame(const Game& game){
   candidate->source=*source;candidate->battleOwner=game.trioAttack.enemyHpAllocationOwner();
   candidate->surface=*surface;candidate->footerResource=footer;candidate->footerGeneration=footer->generation();
   candidate->fontTexture=fontTexture.imported;candidate->iconTexture=messageIconTexture.imported;
-  candidate->font=harborMessageFont();
+  candidate->font=battleFontLease();
   if(!candidate->current()||!candidate->initialize(candidate))return false;
   classMenuBinding=std::move(candidate);return true;
 }

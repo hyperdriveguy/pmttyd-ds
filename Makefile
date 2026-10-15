@@ -216,6 +216,7 @@ assets-import: assets-base
 assets-base:
 	@python3 tools/asset_pipeline.py prepare
 	@python3 tools/battle_class_surface_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
+	@python3 tools/build_battle_submenu_surface_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
 	@python3 tools/battle_class_footer_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
 	@python3 tools/battle_enemy_hp_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
 	@python3 tools/opening_map_transition_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
@@ -242,6 +243,7 @@ assets-base:
 	@python3 tools/trouble_board_audio_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
 	@python3 tools/message_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
 	@python3 tools/font_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
+	@python3 tools/source_font_resources_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
 	@python3 tools/message_indicator_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
 	@python3 tools/message_window_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"
 	@python3 tools/message_kanban_assets.py --iso "$(or $(TTYD_ISO),/home/carson/games/roms/G8ME01.iso)"

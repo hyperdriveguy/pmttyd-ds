@@ -27,7 +27,9 @@
 #include "window_frame.hpp"
 #include "window_font.hpp"
 #include "battle_class_backend.hpp"
+#include "battle_font_gpu.hpp"
 #include "battle_class_footer_gpu.hpp"
+#include "battle_submenu_surface_gpu.hpp"
 #include "battle_audience_backend.hpp"
 #include "native_camera_draw.hpp"
 #include "native_display_state.hpp"
@@ -80,7 +82,15 @@ public:
     const BattleClassAssets* classMenuAssets();
     // Ready-only accessor: never imports during a held native callback.
     std::optional<BattleClassSurfaceLease> classMenuSurfaceLease()const;
+    // Explicit preparation outside FrameBegin; source callbacks borrow leases.
+    bool prepareWeaponMenuSurfaces();
+    std::optional<BattleSubmenuSurfaceLease> weaponMenuSurfaceLease()const;
+    const BattleSubmenuSurfaceGpuResource* weaponMenuSurfaceResources()const;
     const BattleClassFooterGpuResource* classFooterResources();
+    BattleFontLease battleFontLease()const;
+    std::optional<BattleFontRasterView> battleFontRasterView(const Game&)const;
+    bool canDrawBattleFontGlyph(const BattleFontGlyphPacket&)const;
+    bool drawBattleFontGlyphs(const std::vector<BattleFontGlyphPacket>&);
     bool changeRoom(uint32_t room);
     const std::string& resourceFailure() const{return frontFailure;}
     void beginFrontend();
@@ -220,7 +230,12 @@ private:
     bool prepareSceneActorTextures(const Game&);
     Texture messageIndicatorTexture;
     Texture shadowTexture44; // Native loaded resource adapter; original palette loader remains separate.
+    BattleFontGpuResource battleFontGpu;
+    bool prepareBattleFont();
+    void retireBattleFont();
     std::unique_ptr<NativeBattleClassSurfaceGpu> classSurfaceGpu;
+    std::unique_ptr<NativeBattleSubmenuSurfaceGpu> submenuSurfaceGpu;
+    void releaseWeaponMenuSurfaces();
     std::unique_ptr<NativeBattleClassFooterGpu> classFooterGpu;
     Vertex* classVertices=nullptr;
     unsigned classVertexCount=0;
