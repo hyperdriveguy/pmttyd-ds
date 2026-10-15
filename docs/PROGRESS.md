@@ -1,3 +1,56 @@
+### Original battle UI font residency and queued weapon owners (2026-10-15)
+
+Commits 25afbadbd375b1537d3d6e1e8e29dc36d617bede (53 core/contracts/tools)
+and 3798dc4382dcf184e9854065dead0fc3b5b9c439 (19 native/asset-pipeline paths)
+retain whole original font DrawStart/setup, shared process font memory, finite
+ordinary GX state, whole weapon camera/frame and original window primitive
+owners. Native font packets borrow the actual existing original font import
+with immutable metadata and retiring generations; class-menu publications carry
+that lease. Original MarioCtrl is bound to actual field control depth. MarioKey
+still waits for genuine source ability/incarnation services. Whole weapon mixed
+submission and actual normal battle activation remain unfinished.
+
+Original common-bank submenu2/3 now have a distinct private native atlas and
+scratch-only build wrapper; exact original US BFN is packaged separately for
+retained setup. Original class/footer/submenu image interiors and catalog UVs
+are unchanged. Two-pixel padding now repeats original clamp-edge texels to avoid
+linear-filter seams. No ISO, extracted originals or compiled products committed;
+asset provenance/licensing are in ASSETS. Source dialogue and physical controls
+are unchanged; no touch-only interaction was introduced.
+
+Validation authority: artifacts/native-ui-owners-validation/manifest.json,
+6390 hashed frozen inputs. Final make test:482/482 C++ (62.65s),221/221 Python
+(39.447s), zero skips; make all -o assets-ready -j4 SOUNDTRACK=gamecube:0.
+Six read-only original-source verifiers:0;1529 Markdown documents,0 broken links.
+Strict focused glyph tests:0; ASan/UBSan:0 with detect_leaks=0 because sandbox
+ptrace prevents LeakSanitizer. Initial focused link omitted window_font.cpp;
+corrected command instruments that real dependency. Initial full Python run
+failed two atlas checks against stale inherited cache images; fresh private
+work fixtures replaced those links and are included in the final hash authority.
+No shared caches were overwritten. Composed-transform/clip overflow admission
+now rejects before glyph RNG while retaining singular/offscreen/blank behavior.
+
+Native artifact artifacts/ttyd-original-battle-ui-owners.3dsx SHA256
+2a02dd4dae15c374a7f18daa4f1f618c35e97b82f1fc6009b8a47cdca86df694.
+Isolated35s Azahar startup:0; root-viewed original book-cover startup only.
+Private font GPU probe renders original matrix/scalar glyphs through actual
+Renderer;230 packets/460 RNG/18766 reads remain stable over raster replay and
+physical-A reimport rejects old packets. Root checked identical actual glyph
+pixels before/after reimport. Its CPU font/object SDK admission and direct boot
+camera are explicitly test-only, not whole source setup/queued CameraMain proof.
+Four nonfatal SDK unmapped reads during shader teardown remain under
+investigation: Citro3D retains a cached program across Fini/Init. Do not describe
+that retirement run as clean. No normal battle/tutorial entry or hardware claim.
+
+Frozen accepted source plus exact owned journals excludes independent newer
+worktree changes; five shared baseline differences are archived. Scoped commits
+preserve unrelated staged/live work and both independent ASSETS appendices.
+Next: fix/prove shader cache lifetime; integrate frozen submenu packet7, GX
+texture-object5 and actual native font-child4, then typed ordered mixed/window
+publication. Preserve real source holds: Bero history, actual menu/ability/font
+setup owners, source audience population and selected bad-thrower publication
+with a physical alternative remain required. Goal stays active.
+
 ### Complete native retained Main owner and producer guards (2026-10-15)
 
 Code commit b621ccda0bbf9f5a4840cd1a93d43575e1624d92 adds a process-owned native executor composing original
