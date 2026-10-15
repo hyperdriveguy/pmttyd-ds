@@ -4,6 +4,8 @@
 namespace ttyd {
 class EventAddressSpace;
 // Owns parsed original tag words/strings. No inferred parser/history skip gate.
+// Private record392 bytes: 72 numeric bytes then five64-byte NUL-terminated
+// strings. load converts numeric LE words to guest BE; strings stay byte-exact.
 class FieldMapNpcAssets {
 public:
  bool load(const char* path);

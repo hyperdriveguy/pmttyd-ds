@@ -23,6 +23,8 @@ struct BattleRegistration {uint32_t room,name,setup,numbers,first,count;};
 struct Program {EventScriptAssets scripts;std::vector<BattleRegistration> battles;std::vector<DoorProgram> entries;std::vector<std::array<uint32_t,2>> initializers;};
 std::shared_ptr<const Program> assets;
 int32_t signedWord(uint32_t v){return v<=INT32_MAX?int32_t(v):int32_t(int64_t(v)-0x100000000LL);}
+// Native bounded verification: name/value pairs8 bytes,<=256 rows, 64-byte
+// terminated names. Original callback identities remain guest tokens.
 bool battleNumbersReadable(const EventScriptAssets& scripts,uint32_t table){
  for(unsigned i=0;i<256;++i){const uint64_t entry=uint64_t(table)+8*i;uint32_t name=0,value=0;
   if(entry+8>0x100000000ULL || !scripts.readWord(uint32_t(entry),name) || !scripts.readWord(uint32_t(entry)+4,value))return false;
@@ -34,6 +36,10 @@ bool battleNumbersReadable(const EventScriptAssets& scripts,uint32_t table){
 }
 uint32_t bits(float v){uint32_t out;std::memcpy(&out,&v,4);return out;}
 }
+// Private LE catalogs PMFAEV02(door), PMFAIN01(root), PMFABT01(battle).
+// Each<=256 records, room<=65535, aligned original script/data words. Door
+// starts USER_FUNC argc5/6 (005b), area root starts original opcode22(argc1);
+// pin actual borrowed trailing word for script8033156c before publication.
 bool loadFieldAreaEventAssets(const char* root) {
  if(!root)return false;
  auto next=std::make_shared<Program>();const std::string base=root;
@@ -54,6 +60,8 @@ bool loadFieldAreaEventAssets(const char* root) {
   if(ok)next->initializers.push_back(e);
  }
  ok=ok && std::fgetc(f)==EOF;std::fclose(f);if(!ok)return false;
+ // Original area registry803057ec has33 three-letter names plus null slot;
+ // source setup/number pointers initially0, then registerBattles writes them.
  // Validate the original registry before publishing the candidate assets.
  for(unsigned i=0;i<=33;++i){uint32_t record=0,name=0,a=0,b=0;uint8_t c=0;
   if(!next->scripts.readWord(0x803057ec+4*i,record))return false;
@@ -81,6 +89,8 @@ bool loadFieldAreaEventAssets(const char* root) {
  ok=ok && std::fgetc(f)==EOF;std::fclose(f);if(!ok)return false;
  assets=std::move(next);return true;
 }
+// One immutable program closure per retained VM. A later catalog replacement
+// cannot be substituted across room retirement without its real REL/load owner.
 struct FieldAreaEventRuntime {
  FieldAreaEvent* owner;
  std::shared_ptr<const Program> program=assets;
@@ -102,6 +112,8 @@ struct FieldAreaEventRuntime {
  std::vector<Root> roots;
  std::map<uint32_t,FieldPreviousPartyCursor> previousParty; // Real event IDs; lifetime is source elapsed time, not a generation.
  std::map<uint32_t,FieldNpcSetupCursor> npcSetup;
+ // Native GP81000000, 512KiB heap82000000..82080000; source bus clock
+ //243MHz -> eventClockRate timestamps. Context timing is not render FPS.
  explicit FieldAreaEventRuntime(FieldAreaEvent* p):owner(p),vm(0x81000000,platform(this)){}
  static EventNativePlatform platform(FieldAreaEventRuntime* r) {
   EventNativePlatform p;p.user=r;p.clock=[](void*)->uint32_t{return 243000000;};
@@ -117,6 +129,15 @@ struct FieldAreaEventRuntime {
  bool text(uint32_t address,std::string& out) {
   out.clear();for(unsigned n=0;n<64;++n){uint8_t b=0;if(!vm.memory.readByte(address+n,b))return false;if(!b)return true;out.push_back(char(b));}return false;
  }
+ // Dispatch uses original US function addresses, not host pointers. Groups:
+ //8007a154 pera prefetch, 80054f3c system flags, 8007aa04/aa34 Bero bits;
+ //800e7474 key, 800e73ec/7410 background, 800e7314 camera-Y;
+ //800e3058 previous party, 8005323c NPC setup, 8007a76c length;
+ //80079b74 normal position, 800e7180 Mario/800eb558 party set-pos,
+ //800a785c road reset, 8007a50c register info, 8007a214 into info,
+ //8007a63c current number, 800e81f4 door parameter, 80038468 map flags,
+ //80074664 hit on/off, 80070110 run case, 800e8090 hide NPCs.
+ // Unknown/unavailable functions hold; external service results must be0/1/2.
  int32_t call(EventEntry& e,uint32_t fn,bool first) {
   // The source first-call reset belongs to the event even when a world
   // provider is not yet installed; USER_FUNC will retain first=false later.
@@ -189,6 +210,8 @@ struct FieldAreaEventRuntime {
    const auto index=getEventValue(e,signedWord(word(args)),operands);const auto length=services.beroInfo->length(index);
    if(!length)return 0;
    const auto destination=signedWord(word(args+4));
+   // Destination ranges select encoded float work namespaces. Only those
+   // require finite truncate(length*1024); raw destinations keep EVT routing.
    const bool work=(destination>-220000000 && destination<=-180000000) || (destination>-60000000 && destination<=-20000000);
    const float converted=*length*1024.f;
    if(work && (!std::isfinite(converted) || double(converted)<INT32_MIN || double(converted)>=2147483648.))return 0;
@@ -209,6 +232,8 @@ struct FieldAreaEventRuntime {
    const auto result=fieldBeroNormalPosition(xyz,name,direction,mode,distance,services.geometry);
    // Native finite READF admission precedes publication; it is not a source branch.
    if(!result || !fieldBeroStartPublication(result->start))return 0;
+   // Start XYZ then finish XYZ at descending original globals f8..e4.
+   // Recovery reacquires Mario; motion25 still reads earlier captured owner.
    const uint32_t addresses[]={0x8041e9f8,0x8041e9f4,0x8041e9f0,0x8041e9ec,0x8041e9e8,0x8041e9e4};
    const float values[]={result->start.x,result->start.y,result->start.z,result->finish.x,result->finish.y,result->finish.z};
    uint32_t old=0;for(auto address:addresses)if(!vm.memory.readWord(address,old))return 0;
@@ -237,6 +262,8 @@ struct FieldAreaEventRuntime {
    if(!initId)return services.beroInfo->intoInfo(e)?2:0;
    const auto gp=vm.gpAddresses.currentAddress();uint32_t flags=0;if(!vm.memory.readWord(gp,flags))return 0;
    std::string incoming;bool terminated=false;
+   // GP+11c incoming name is original current state for area-init roots;
+   // supplied-bank-only roots use separately published Bero incoming metadata.
    for(unsigned n=0;n<64;++n){uint8_t byte=0;if(!vm.memory.readByte(gp+0x11c+n,byte))return 0;if(!byte){terminated=true;break;}incoming.push_back(char(byte));}
    if(!terminated || !services.beroInfo->publishIncoming(incoming,flags))return 0;
    return services.beroInfo->intoInfo(e,gp+0x11c)?2:0;
@@ -251,6 +278,8 @@ struct FieldAreaEventRuntime {
    s.setValue=[](void* p,EventEntry& e,int32_t raw,int32_t v){auto& r=*static_cast<FieldAreaEventRuntime*>(p);setEventValue(e,raw,v,r.vm.interpreterServices().operands);};
    return fieldDoorParameterEvent(e,s);
   }
+  // These map/hit adapters admit original recursive mode1 only. Reject
+  // unsupported modes rather than pretending a nonrecursive operation ran.
   if(fn==0x80038468) {
    const auto mode=value(e,0),on=value(e,1);const auto address=uint32_t(value(e,2));const auto mask=uint32_t(value(e,3));
    std::string name;if(mode!=1 || !services.map || services.map->room()!=room || !text(address,name))return 0;
@@ -292,6 +321,9 @@ struct FieldAreaEventRuntime {
   }
   return true;
  }
+ // Writable original allocator cells: HeapArray f070 region, CurrHeap e428,
+ // heapHandle e844; Bero globals e9e4 span24. GP+4=60 is scheduler config.
+ // Original program words import separately from native allocator RAM.
  bool initialize(uint64_t milliseconds) {
   if(!vm.memory.registerRam(0x82000000,std::vector<uint8_t>(0x80000)) || !vm.memory.registerRam(0x8041f070,std::vector<uint8_t>(16)) || !vm.memory.registerRam(0x8041e428,std::vector<uint8_t>(4)) || !vm.memory.registerRam(0x8041e844,std::vector<uint8_t>(4)) || !vm.memory.registerRam(0x8041e9e4,std::vector<uint8_t>(24)) || !vm.memory.importScripts(program->scripts))return false;
   if(!registerBattles())return false;
@@ -315,6 +347,9 @@ bool FieldAreaEvent::begin(uint32_t room,uint64_t milliseconds) {
  }
  started=true;failed=false;completed_.clear();return true;
 }
+// Capture caller GP snapshot once before map preparation. Failure deliberately
+// retains it/binding and blocks new roots; corrected inputs require a fresh facade.
+// Do not reapply snapshot after actual npcInit publishes retained F at GP+168.
 bool FieldAreaEvent::prepareMapNpcs(Game& game,const FieldAreaGpState& state,const FieldMapNpcAssets& tags,uint32_t inputBase,uint32_t area,uint32_t map,uint32_t allocationBase){
  if(!started || !runtime_ || failed)return false;
  auto& r=*runtime_;
@@ -339,6 +374,9 @@ bool FieldAreaEvent::prepareMapNpcs(Game& game,const FieldAreaGpState& state,con
 }
 bool FieldAreaEvent::advanceMapNpcs(BattlePoseClock clock,const FieldMapNpcBattleAdmission& battle){return started && runtime_ && !failed && !runtime_->releasingNpcs && runtime_->mapNpcs && runtime_->mapNpcs->advance(clock,battle);}
 bool FieldAreaEvent::mapNpcsReady() const{return runtime_ && !runtime_->releasingNpcs && runtime_->mapNpcs && runtime_->mapNpcs->ready();}
+// No manager pass/reentry or live unselected battle bank may overlap unload.
+// Retain provider identity and completed-step ordinal across holds; only reset
+// once, then resume the first unfinished external release request.
 bool FieldAreaEvent::retireMapNpcs(const FieldAreaNpcReleaseServices& services){
  if(!started || !runtime_ || failed || !services.admit || !services.step)return false;
  auto& r=*runtime_;
@@ -351,6 +389,8 @@ bool FieldAreaEvent::retireMapNpcs(const FieldAreaNpcReleaseServices& services){
   r.releaseServices=services;r.releasingNpcs=true;
  }else if(services.user!=r.releaseServices.user || services.admit!=r.releaseServices.admit || services.step!=r.releaseServices.step)return false;
  // Exact source request order between npcReset0 and event/case ReInit.
+ // US extReset, mobjReset, offscreenReset, imgAutoRelease, effAutoRelease,
+ // animPoseAutoRelease, in source order. False is pending, not release success.
  constexpr uint32_t functions[]={0x800d6b7c,0x800612f0,0x80073394,0x80071828,0x8005ecd0,0x8003b028};
  while(r.releaseStep<6){pendingFunction=functions[r.releaseStep];pendingEventId=0;
   if(!services.step(services.user,pendingFunction,r.vm.memory))return false;
@@ -365,6 +405,9 @@ bool FieldAreaEvent::retireMapNpcs(const FieldAreaNpcReleaseServices& services){
  r.mapNpcs.reset();r.mapGpState.reset();r.services={};r.releaseServices={};
  r.releaseStep=0;r.releasingNpcs=false;r.retiredNpcs=true;started=false;return true;
 }
+// A prepared map requires exact same caller GP bytes and all NPC rows ready.
+// Reapplying those bytes would overwrite source npcInit's GP+168. Root ID
+// stores GP+164; UINT32_MAX entryIndex labels this root, not a door ordinal.
 std::optional<uint32_t> FieldAreaEvent::appendAreaInit(const FieldAreaGpState& state) {
  if(!started || !runtime_ || failed || runtime_->releasingNpcs || !runtime_->initializer || runtime_->initId || !runtime_->roots.empty() || !completed_.empty())return {};
  auto& r=*runtime_;for(unsigned n=0;n<FieldCasePool::Capacity;++n)if(r.cases.active(n))return {};
@@ -381,6 +424,9 @@ std::optional<uint32_t> FieldAreaEvent::appendAreaInit(const FieldAreaGpState& s
 std::optional<uint32_t> FieldAreaEvent::areaInitEventId() const{return runtime_?runtime_->initId:std::nullopt;}
 bool FieldAreaEvent::eventAlive(uint32_t id) const{return runtime_ && checkEventId(id,runtime_->vm.creationServices());}
 uint32_t FieldAreaEvent::liveEventCount() const{return runtime_?runtime_->vm.runtime.allocationCount:0;}
+// Index-1 returns known null configuration; other nonpositive indices use0.
+// Read live GP+12c three-letter prefix and verify original mutable registry
+// still points at this exported module before selecting its44(hex)-byte row.
 std::optional<uint32_t> FieldAreaEvent::battleSetupConfiguration(int32_t index) const {
  if(!runtime_ || failed)return {};
  if(index==-1)return uint32_t(0);
@@ -403,6 +449,9 @@ std::optional<uint32_t> FieldAreaEvent::battleSetupConfiguration(int32_t index) 
  }
  return {};
 }
+// Supplied-bank door roots are disallowed once map preparation/area init owns
+// ordering. Admission checks event capacity before constructor; LW0 receives
+// original immutable door record pointer, not a mutable door-copy guest address.
 std::optional<uint32_t> FieldAreaEvent::appendDoorEntry(uint32_t entryIndex,const std::array<int32_t,16>& bank) {
  if(!started || !runtime_ || failed || runtime_->mapGpState || runtime_->initId || entryIndex>=runtime_->entries.size())return {};
  const auto creation=runtime_->vm.creationServices();
@@ -414,6 +463,9 @@ std::optional<uint32_t> FieldAreaEvent::appendDoorEntry(uint32_t entryIndex,cons
  auto& e=createRootEvent(runtime_->vm.schedule,data.script,0,0,runtime_->vm.creationServices());e.locals=bank;e.locals[0]=signedWord(data.record);
  runtime_->roots.push_back({e.id,entryIndex,{}});return e.id;
 }
+// Refresh services then run one manager visit. ReInit does not synthesize
+// child completion; normal retirement must have captured a real local bank.
+// Pending diagnostics identify the last callback hold, not all active waits.
 void FieldAreaEvent::tick(uint64_t milliseconds,const FieldAreaEventServices& s) {
  if(!started || !runtime_ || failed || runtime_->releasingNpcs)return;
  auto& r=*runtime_;r.services=s;pendingFunction=pendingEventId=0;r.vm.gp.timestamp=milliseconds*eventClockRate(243000000);r.ticking=true;r.vm.runManager();r.ticking=false;

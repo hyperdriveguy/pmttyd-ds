@@ -4,6 +4,9 @@
 #include <cassert>
 #include <cstring>
 namespace ttyd {
+// No-effects native admission requires exact owned array and source capacity
+//36/16, not just <= capacity. Ordinary reset also requires exact retained F.
+// Admission does not release poses/events or clear the auxiliary/history buffers.
 bool FieldNpcRegistryBinding::reset(int32_t selector){
  if(!owner_->initialized_)return false;
  const unsigned selected=selector?2:0;const uint32_t capacity=selector?16:36;

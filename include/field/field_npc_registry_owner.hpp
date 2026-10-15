@@ -18,6 +18,8 @@ struct FieldMapNpcBattleAdmission {
 // npcInit itself does not clear them. Room reset/deletion remain separate.
 class FieldNpcRegistryOwner {
 public:
+ // allocationBase is a native16-byte-aligned guest arena, not source heap
+ // identity. Four stable buffers back field actors/release/battle actors/F.
  static std::shared_ptr<FieldNpcRegistryOwner> cold(uint32_t allocationBase);
  FieldNpcRegistryOwner(const FieldNpcRegistryOwner&)=delete;
  FieldNpcRegistryOwner& operator=(const FieldNpcRegistryOwner&)=delete;
@@ -38,6 +40,8 @@ private:
 };
 // Must retire before its facade. Retains the owner; unregisters only its own
 // external spans. Multiple independent facades alias the same actor bytes.
+// Binding retains owner and only unregisters its external aliases. Rebinding
+// an existing owner must preserve bytes, pose handles and initialized state.
 class FieldNpcRegistryBinding {
 public:
  static std::unique_ptr<FieldNpcRegistryBinding> bind(std::shared_ptr<FieldNpcRegistryOwner>,EventAddressSpace&);

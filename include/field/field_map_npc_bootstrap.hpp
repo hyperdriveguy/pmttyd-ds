@@ -12,6 +12,8 @@ public:
  FieldMapNpcBootstrap(const FieldMapNpcBootstrap&)=delete;
  FieldMapNpcBootstrap& operator=(const FieldMapNpcBootstrap&)=delete;
  bool advance(BattlePoseClock,const FieldMapNpcBattleAdmission& = {});
+ // Every source row advances ordinal, including skipped rows. Retained false
+ // skip is engaged optional state and must not be recomputed after a hold.
  bool ready() const{return ordinal_==assets_.count();}
  unsigned ordinal() const{return ordinal_;}
 private:

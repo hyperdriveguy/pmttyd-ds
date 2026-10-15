@@ -5,12 +5,16 @@
 #include <cstring>
 namespace ttyd {
 namespace {
+// Native stable storage: 36*340(hex) field, 36*94 release, 16*340 battle,
+//580 field work. Registry startup BSS begins8041e8ac and spans30(hex).
 constexpr uint32_t Registry=0x8041e8ac,Sizes[]={36*0x340,36*0x94,16*0x340,0x580};
 uint32_t bits(float f){uint32_t v;std::memcpy(&v,&f,4);return v;}
 }
 FieldNpcRegistryOwner::FieldNpcRegistryOwner(uint32_t base){
  for(unsigned i=0;i<4;++i){addresses_[i]=base;allocations_[i].resize(Sizes[i]);base+=Sizes[i];}
 }
+// Native base>=10000(hex), 16-byte alignment and end<=2^32 admission.
+// Zero-filled vector allocation does not mean source npcInit cleared release work.
 std::shared_ptr<FieldNpcRegistryOwner> FieldNpcRegistryOwner::cold(uint32_t base){
  uint64_t end=base;for(auto n:Sizes)end+=n;
  if(base<0x10000 || (base&15) || end>0x100000000ULL)return {};
@@ -25,6 +29,9 @@ uint8_t* FieldNpcRegistryOwner::span(uint32_t a,uint32_t n){
 }
 FieldNpcRegistryBinding::FieldNpcRegistryBinding(std::shared_ptr<FieldNpcRegistryOwner> o,EventAddressSpace& m):owner_(std::move(o)),memory_(m){}
 FieldNpcRegistryBinding::~FieldNpcRegistryBinding(){for(auto base:mapped_){const bool removed=memory_.unregisterExternalRam(base);assert(removed);(void)removed;}}
+// Each successful mapping is journaled before proceeding. Failure destroys
+// the partial binding and unregisters only those spans, not another facade
+// or the retained owner. Actor memory may alias through independent facades.
 std::unique_ptr<FieldNpcRegistryBinding> FieldNpcRegistryBinding::bind(std::shared_ptr<FieldNpcRegistryOwner> owner,EventAddressSpace& memory){
  if(!owner)return {};
  auto binding=std::unique_ptr<FieldNpcRegistryBinding>(new FieldNpcRegistryBinding(std::move(owner),memory));auto& o=*binding->owner_;
@@ -37,6 +44,9 @@ bool FieldNpcRegistryBinding::text(uint32_t a,std::string& out,unsigned limit) c
  out.clear();for(unsigned i=0;i<limit;++i){uint8_t c;if(uint64_t(a)+i>UINT32_MAX || !memory_.readByte(a+i,c))return false;if(!c)return true;out.push_back(char(c));}return false;
 }
 struct FieldNpcRegistryBinding::Call {FieldNpcRegistryBinding* binding;BattlePoseClock clock;unsigned allocation=0;};
+// Synchronous admitted callbacks: allocator consumes exactly four predefined
+// buffers in original order; CPU pose/math services cannot acknowledge missing
+// resources. Assertions enforce admission contracts, not a fallback implementation.
 PackedNpcRegistryServices FieldNpcRegistryBinding::services(Call& c){
  PackedNpcRegistryServices s;s.user=&c;s.memory.user=&c;
  s.memory.word=[](void* p,uint32_t a){uint32_t v=0;const bool ok=static_cast<Call*>(p)->binding->memory_.readWord(a,v);assert(ok);(void)ok;return v;};
@@ -64,12 +74,16 @@ bool FieldNpcRegistryBinding::initialize(){
  // initialization claim for the auxiliary buffer which npcInit never clears.
  Call call{this,{}};initializePackedNpcRegistry(services(call));assert(call.allocation==4);owner_->initialized_=true;return true;
 }
+// Fresh GP+14 chooses ordinary/alternate. Validate exact owned array and
+// capacity<=36/16 before walking340(hex)-byte slots; counts alone are not identity.
 bool FieldNpcRegistryBinding::registry(uint32_t& base,uint32_t& array,uint32_t& count) const{
  if(!owner_->initialized_)return false;
  uint32_t gp=0,mode=0;if(!memory_.readWord(0x80415fd0,gp) || uint64_t(gp)+0x17>UINT32_MAX || !memory_.readWord(gp+0x14,mode))return false;
  base=0x8041e8b4+(mode?0x14:0);if(!memory_.readWord(base+4,count) || !memory_.readWord(base+0xc,array))return false;
  return count<=(mode?16u:36u) && array==owner_->addresses_[mode?2:0];
 }
+// Active bit1 and bounded name only. Registered does not imply talk/Main/
+// collision/display readiness or successful event setup.
 std::optional<std::vector<uint32_t>> FieldNpcRegistryBinding::activeActors() const{
  uint32_t base=0,array=0,count=0;if(!registry(base,array,count))return {};
  std::vector<uint32_t> actors;
@@ -80,6 +94,9 @@ std::optional<uint32_t> FieldNpcRegistryBinding::lookup(uint32_t name,PackedNpcL
  std::string bytes;if(!text(name,bytes,32) || !activeActors())return {};
  Call call{this,{}};return packedNpcNameToPointer(name,kind,services(call));
 }
+// Complete no-effects admission before source Entry clears a slot: bounded
+// name/model strings, free actor, nonaliasing inputs, original constants/live GP
+// timestamp and real CPU pose capacity. Failure must not partially enter.
 bool FieldNpcRegistryBinding::canEnter(uint32_t name,uint32_t model) const{
  std::string nameBytes,modelBytes,luigi;
  uint32_t base=0,array=0,count=0,gp=0,mode=0,unused=0;
@@ -101,6 +118,10 @@ std::optional<int32_t> FieldNpcRegistryBinding::enter(uint32_t name,uint32_t mod
 }
 
 
+// Preflight table bounds are native scope: 328 tribe rows, 57 AI, 4 territory,
+//34 area pointers, 4096 battle-name rows, 256 pose handles. Miss at a real
+// terminator is known; missing/unterminated memory is unavailable admission.
+// Source execution below still freshly reads owners in original order.
 std::optional<uint32_t> FieldNpcRegistryBinding::registerMapNpc(const PackedMapNpcInput& i,BattlePoseClock clock,const FieldMapNpcBattleAdmission& battle){
  // Preflight source tables/strings without effects. Parsed input lives outside
  // owner allocations, just as the original source stack does.
@@ -117,6 +138,9 @@ std::optional<uint32_t> FieldNpcRegistryBinding::registerMapNpc(const PackedMapN
  auto tribe=find(0x803316d0,0x54,328,names[1]);if(!tribe || !*tribe || !readable(*tribe,0x54))return {};
  uint32_t model=0;memory_.readWord(*tribe+4,model);std::string modelName;if(!text(model,modelName,64) || !canEnter(i.name,model))return {};
  auto ai=find(0x80338270,0x24,57,names[2]);if(!ai || (*ai && !readable(*ai,0x24)))return {};auto territory=find(0x80416580,8,4,names[3]);if(!territory || (*territory && !readable(*territory,8)))return {};
+ // Predict the post-Entry lookup target: duplicate uses old actor; otherwise
+ // first free slot. Existing target may use another model/pose than new Entry.
+ // Its four330(hex)-family pointers must refer to actual owned actor storage.
  auto target=lookup(i.name);if(!target)return {};const bool duplicate=*target!=0;
  if(!duplicate){uint32_t registryBase=0,array=0,count=0;if(!registry(registryBase,array,count))return {};for(unsigned n=0;n<count;++n){uint32_t flags=0;memory_.readWord(array+0x340*n,flags);if(!(flags&1)){target=array+0x340*n;break;}}}
  if(!*target)return {};
@@ -131,6 +155,8 @@ std::optional<uint32_t> FieldNpcRegistryBinding::registerMapNpc(const PackedMapN
  uint32_t area=0;bool ended=false;
  for(unsigned n=0;n<34;++n){uint32_t row=0,name=0;if(!memory_.readWord(0x803057ec+4*n,row))return {};if(!row){ended=true;break;}if(!memory_.readWord(row,name))return {};std::string actual;if(!text(name,actual,64))return {};if(actual==areaName){area=row;ended=true;break;}}
  if(!ended)return {};
+ // Non--1 battle setup requires caller's complete numeric/RNG admission.
+ // Missing name defaults0 per source definition; do not silently change it to-1.
  if(names[4]!=invalid){uint32_t numbers=0;if(!area || !memory_.readWord(area+12,numbers) || !numbers)return {};auto row=find(numbers,8,4096,names[4]);if(!row)return {};uint32_t value=0;if(*row && !memory_.readWord(*row+4,value))return {};const auto index=value<=0x7fffffff?int32_t(value):int32_t(int64_t(value)-0x100000000LL);if(index!=-1 && (!battle.admit || !battle.admit(battle.user,*target,index)))return {};}
  struct MapCall {FieldNpcRegistryBinding* binding;Call native;const FieldMapNpcBattleAdmission* battle;};MapCall call{this,{this,clock},&battle};const auto primitive=services(call.native);PackedMapNpcServices s;s.user=&call;s.memory=primitive.memory;
  s.compare=[](void* p,uint32_t a,uint32_t b)->int32_t{auto& c=*static_cast<MapCall*>(p);return c.binding->services(c.native).compare(&c.native,a,b);};

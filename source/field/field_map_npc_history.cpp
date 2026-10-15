@@ -4,9 +4,14 @@
 #include <cassert>
 #include <string>
 namespace ttyd {
+// _map_attr_data8030f668: 12-byte rows, name/group/flags, null name terminates.
+// Source lookup returns terminator itself on miss, not a synthetic default row.
 uint32_t packedMapNpcMapDefinition(uint32_t map,const PackedMapNpcHistoryServices& s){
  for(uint32_t p=0x8030f668;;p+=12){const auto name=s.memory.word(s.memory.user,p);if(!name || !s.compare(s.user,name,map))return p;}
 }
+// Captured field F history starts+4c: 64 records*20 bytes =500(hex).
+// First16 bytes hold map name, last word skip mask. Empty literal804207a8
+// is original source storage. Full no-match holds before any unsafe promotion.
 std::optional<PackedMapNpcHistoryGate> preparePackedMapNpcHistory(uint32_t field,uint32_t map,const PackedMapNpcHistoryServices& s){
  const auto& m=s.memory;assert(m.word && m.storeWord && s.compare && s.copyString && s.clear);
  auto word=[&](uint32_t a){return m.word(m.user,a);};auto store=[&](uint32_t a,uint32_t v){m.storeWord(m.user,a,v);};
@@ -17,6 +22,9 @@ std::optional<PackedMapNpcHistoryGate> preparePackedMapNpcHistory(uint32_t field
   if(!s.compare(s.user,slot,map))break;
  }
  if(index==64)return {}; // Native bound; no fabricated eviction or tail record.
+ // Promote selected record to head: save five words, shift earlier records
+ // down in descending slot order. Each pair loads before either store; last
+ // word reads late. This ordering remains visible to memory-service mutation.
  if(index){std::array<uint32_t,5> captured{};for(unsigned n=0;n<5;++n)captured[n]=word(head+20*index+4*n);
   for(unsigned n=index;n;--n){const auto from=head+20*(n-1),to=from+20;
    auto a=word(from),b=word(from+4);store(to,a);store(to+4,b);
@@ -24,6 +32,9 @@ std::optional<PackedMapNpcHistoryGate> preparePackedMapNpcHistory(uint32_t field
   }
   for(unsigned n=0;n<5;++n)store(head+4*n,captured[n]);
  }
+ // Flag1 enables grouped history. Different groups clear entire500(hex);
+ // same group with flag2 clear/flag4 set clears F+74 for4d8 bytes, retaining
+ // first two slots. Re-resolve current/previous definitions after promotion.
  if(word(definition+8)&1){const auto current=packedMapNpcMapDefinition(map,s),previous=packedMapNpcMapDefinition(field+0x60,s);
   const auto currentGroup=word(current+4),previousGroup=word(previous+4);
   if(currentGroup!=previousGroup){s.clear(s.user,head,0x500);s.copyString(s.user,head,map);}
@@ -46,6 +57,10 @@ PackedMapNpcHistoryServices services(EventAddressSpace& memory){
  s.clear=[](void* p,uint32_t a,uint32_t size){for(unsigned n=0;n<size;++n){const bool ok=static_cast<EventAddressSpace*>(p)->writeByte(a+n,0);assert(ok);}};return s;
 }
 }
+// Native preflight before stores: complete580(hex) field span, map strings
+//<=15 bytes, up to199 actual table rows with256-byte name admission, no
+// overlap of field storage with source table/input strings. Proves a free or
+// matching history slot; it does not seed or evict unknown history.
 std::optional<PackedMapNpcHistoryGate> prepareFieldMapNpcHistory(EventAddressSpace& m,uint32_t field,uint32_t map){
  // All field bytes are retained writable RAM under this adapter's contract.
  // Reject overlap with input strings/table: stores must not invalidate admission.
@@ -64,6 +79,8 @@ std::optional<PackedMapNpcHistoryGate> prepareFieldMapNpcHistory(EventAddressSpa
  std::string previous;if(!text(m,field+0x60,previous,16))return {};
  return preparePackedMapNpcHistory(field,map,services(m));
 }
+// Disabled gate returns known false without a mask read; unreadable enabled
+// mask returns nullopt, not an acknowledged clear bit.
 std::optional<bool> skipFieldMapNpc(EventAddressSpace& m,const PackedMapNpcHistoryGate& gate,uint32_t ordinal){
  if(!gate.enabled)return false;
  uint32_t mask=0;if(!m.readWord(gate.head+16,mask))return {};return (mask&packedMapNpcOrdinalMask(ordinal))!=0;

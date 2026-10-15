@@ -1,6 +1,9 @@
 #include "field_npc_reset.hpp"
 #include <cassert>
 namespace ttyd {
+// Source work8041e8b4, bank+14(hex), capacity+4, array+c, stride340.
+// Selection is the raw argument, not live GP battleContext. After clear/store,
+// ordinary path freshly resolves GP+168 to mode halfword; global e8ac=0 last.
 void resetPackedNpcRegistry(int32_t selector,const PackedNpcResetServices& s){
  const auto& m=s.memory;assert(m.word && m.storeWord && m.storeHalf && s.clear);
  const uint32_t registry=0x8041e8b4+(selector?0x14u:0u);

@@ -4,6 +4,9 @@
 #include <cstring>
 namespace ttyd {
 namespace {uint32_t little(const uint8_t* p){return p[0]|uint32_t(p[1])<<8|uint32_t(p[2])<<16|uint32_t(p[3])<<24;}}
+// PMFMNPC1 header16 bytes: count+8, stride+12 fixed392;<=4096 rows.
+// Ordinal must equal row index. Only72 numeric bytes change endianness;
+// bounded string admission is termination, not an ASCII/Shift-JIS rewrite.
 bool FieldMapNpcAssets::load(const char* path){
  if(!path)return false;
  FILE* f=std::fopen(path,"rb");if(!f)return false;uint8_t header[16];bool ok=std::fread(header,16,1,f)==1 && !std::memcmp(header,"PMFMNPC1",8) && little(header+12)==392 && little(header+8)<=4096;std::vector<uint8_t> next;
@@ -14,7 +17,12 @@ bool FieldMapNpcAssets::load(const char* path){
  }
  bytes_=std::move(next);loaded_=true;return true;
 }
+// Empty successfully loaded input maps no RAM and is valid; an unloaded
+// object must not impersonate an empty parsed source stream.
 bool FieldMapNpcAssets::mapTo(EventAddressSpace& m,uint32_t base) const{return loaded_ && (bytes_.empty() || m.registerRam(base,bytes_));}
+// Record offsets: name72, tribe136, AI200, territory264, battle328; XYZ4,
+// direction16, territory base20, loiter32, homing44, four ranges56..68.
+// Widen before checking full guest-address span; caller owns facade lifetime.
 std::optional<PackedMapNpcInput> FieldMapNpcAssets::input(unsigned index,uint32_t base,uint32_t area) const{
  if(index>=count() || uint64_t(base)+bytes_.size()>0x100000000ULL)return {};
  const auto a=base+392*index;PackedMapNpcInput i;i.ordinal=index;i.area=area;i.name=a+72;i.tribe=a+136;i.ai=a+200;i.territory=a+264;i.battle=a+328;i.position=a+4;i.direction=a+16;i.territoryBase=a+20;i.loiter=a+32;i.homing=a+44;for(unsigned n=0;n<4;++n)i.ranges[n]=a+56+4*n;return i;

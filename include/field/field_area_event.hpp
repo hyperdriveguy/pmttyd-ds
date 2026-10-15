@@ -61,10 +61,14 @@ struct FieldAreaNpcReleaseServices {
  bool (*admit)(void*,EventAddressSpace&)=nullptr; // No effects; stable lifetime through holds.
  bool (*step)(void*,uint32_t function,EventAddressSpace&)=nullptr;
 };
+// Retirement captures local bank before source deletion. returned means
+// opcode2 (RETURN); end/deletion is a distinct completion result.
 struct FieldAreaEntryResult {uint32_t eventId=0;uint32_t entryIndex=0;std::array<int32_t,16> locals;bool returned=false;};
 struct FieldAreaEventRuntime;
 // One retained scheduler and case pool for an area. Supplied-bank roots are an
 // explicit continuation adapter until the original full map-init parent is bound.
+// Facade address is retained by VM callbacks; no copying/moving while alive.
+// Map inputs, registry binding, cursors and VM have ordered lifetime boundaries.
 class FieldAreaEvent {
 public:
  FieldAreaEvent()=default;
@@ -92,6 +96,8 @@ public:
  // Registered module's supported numeric row, using fresh GP prefix/registry.
  // -1 returns an engaged null configuration; other negatives select row0.
  // This proves module/row availability only, not actor/pose/RNG admission.
+ // Configuration rows span44(hex) bytes. Native exported first/count admits
+ // only the retained subset; this is not the original table's complete size.
  std::optional<uint32_t> battleSetupConfiguration(int32_t index) const;
  std::optional<uint32_t> appendDoorEntry(uint32_t entryIndex,const std::array<int32_t,16>&);
  void tick(uint64_t milliseconds,const FieldAreaEventServices&);
