@@ -15152,3 +15152,23 @@ window/texture integrations, runtime changes and tooling. Inventory maps only
 tracked source/include C++/header/PICA hash agreement; untracked additions/tools
 need separate review and matching hashes are not semantic completeness proof.
 Broader documentation and remake goals remain active.
+
+
+### Native original Window/font rendering probe
+
+Frozen `artifacts/window-native-probe/frozen.json` SHA256
+`9e367bdcd37194a60f219a5b2ee18408cba7b7a9e10a1c4bc5882a1705c4a55f`
+verifies all6435 integration inputs and records its sole test-only main-file
+journal. Strict ARM, actual-source CPU preflight, fresh native build and isolated
+Azahar all exit0. Root viewed the centered original Window/font capture.
+Four actual400x240 RGB crops (first/replay/physical-A reimport/replay) are identical,
+SHA256 `dd8d81cb56fae7b7dfede11788482db5f8b5d28f3358569ec2ddd818311c1402`;
+29066 nonbackground pixels. Actual Window/font generations retire and old packets
+reject. Source counters stay212 ordered packets (2Windows/210glyphs),360FIFO,
+420RNG,8queries,6583reads,510requests across raster replay. Logs contain no
+unmapped-memory diagnostics or native exceptions. Whole-image viewing briefly
+hid the top region; raw PNG crop hashes proved the capture remained intact.
+Explicit test WindowReady/global-GX/direct Camera8 and font OS/catalog/heap
+providers remain test fixtures. This proves native leaf rendering/lifetime only,
+not production startup, whole weapon callback/normal battle or original PPC
+pixel parity. Probe source, original payloads and binary remain ignored/private.
