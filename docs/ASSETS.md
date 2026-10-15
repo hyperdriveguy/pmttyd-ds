@@ -3170,3 +3170,28 @@ import, overlay or shared-cache write. Native full regeneration skipped; Python
 fixtures independently read ISO read-only into empty temporary destinations.
 No ISO, original extracted asset or compiled product committed; original
 Nintendo/Intelligent Systems rights retained and no new license granted.
+
+## NPC suffix documentation validation inputs (2026-10-15)
+
+artifacts/npc-main-suffix-code-documentation-validation/source inherits the
+previous private 69-product cache and original enemy/footer/HP/HitN64 fixtures.
+Frozen field_party_entry_assets.py SHA256
+be4292ad59633d4a7b509d8e5de1de0c71ba26174ac68549c2f8faf3aea6b916
+reads original ISO read-only and verifies six ordinary-Goombella construction DOL
+spans. It wrote two products into empty private cache-rebuild output; no editable
+asset or shared cache overwritten. This baseline uses six spans/304-byte pack;
+concurrent later twelve-span converter/test changes are excluded.
+
+New private RomFS products (bytes, SHA256):
+
+- romfs/field-party-entry.json: 1219, 89629e1c1f56d1fa23428b4b7f31655a4771328865913ad28410a69619250a11
+
+- romfs/field-party-entry.pmevt: 304, 54af6a7381c0fd763e340f387b38ac0af4b2eabc5f3665c4f02c1846267d07d0
+
+All 71 accepted products and inherited evidence/default fixtures checked after
+gates. Actual inherited HitN64 decoded-PNG read path independently pinned and
+identical to current private copy. Native full regeneration skipped; Python
+fixtures independently read ISO read-only into empty temporary destinations.
+No editable import/shared-pack write or ISO, extracted original/compiled product
+commit. Nintendo/Intelligent Systems rights retained; local conversion grants
+no new license.

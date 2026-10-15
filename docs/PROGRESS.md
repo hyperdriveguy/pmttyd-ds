@@ -14219,3 +14219,59 @@ and queued draw helpers/binding, then remaining effects/runtime/tooling. Newer
 concurrent battle/display/party/font/file work also needs separate review.
 Snapshot inventory is a review aid, not full semantic coverage proof. Full code
 documentation/remake goal remains active.
+
+## 2026-10-15 — NPC detection/display/history/tail code documentation
+
+Added 155 inline comment lines across twelve field C++/header files, revised
+four stale boundary comments (five prior lines), and added
+[NPC detection/display/tail guide](code/npc-main-detection-display-tail.md)
+linked from index. Code/docs commit b0a1ddea. All executable tokens/string
+literals unchanged; original story/dialogue/assets, numeric behavior and
+simulation scheduling unchanged. No new tests for this prose-only work.
+
+Detection notes explain actual event class versus scheduler type, ordered cloud
+samples, trigger priority, caller-specific fused norms, territory bounds and
+interrupt ownership. Mario notes distinguish position/eligibility pointers,
+distinct status queries, avoidance/proximity quarter-gate differences, radius
+capture/index refusal, float/double inner territory and exact trigger completion.
+Display/shadow notes preserve two camera queries, ordered cull/force/material
+and depth graphs, callback/class/camera selection, copied versus fresh roots,
+optional ray outputs, valid shadow0 and queue/provider ownership. History notes
+explain scalar raw-word ordering and live parity. Tail notes map original F versus
+later F2, counter reload/signed branches, zero-load/easing/queue graph, independent
+Mario query gates, copied score point and final original-field byte clear.
+Guide distinguishes registration/completion from actual draw/production activation;
+no original cadence/Gekko/visual/hardware parity implied.
+
+Frozen baseline d4e1972d90accb1f920df5ff6cc2fdb64742f3c3 plus owned docs is at
+artifacts/npc-main-suffix-code-documentation-validation/source. Full git-blob
+audit covers 4164 baseline tracked files with
+zero unexpected changes; all fourteen frozen/live documentation snapshots match
+and 102 local guide/index links resolve. Source/guide prose finalized before gates.
+Concurrent party/font/animation/Mario/file/GPU/runtime edits preserved/excluded;
+no combined moving-worktree validation claim. Original host/native handles
+observed terminal0, exit markers agree.
+
+CMAKE_BUILD_PARALLEL_LEVEL=4 make test exits 0: 477/477 C++ (67.79s),
+218/218 Python (33.666s), zero skipped. Actual original 45-descriptor enemy-bank
+and private HitN64 tests ran. Native make all -o assets-ready -j4 SOUNDTRACK=gamecube
+exits 0. Manifest pins source/converter/data/evidence/log and ELF/3DSX hashes.
+Existing compiler/Pillow warnings remain. No emulator/profile/save changes or
+hardware/Gekko numeric/pixel/audio/performance parity claims.
+
+Private cache inherits 69 accepted products and full original enemy/footer/HP/
+HitN64 fixtures. New independent party-construction recipe reads ISO read-only,
+verifies six DOL spans and writes two products into an empty private destination.
+This frozen baseline uses six spans/304-byte pack; concurrent later twelve-span
+converter/test updates excluded. Verifier changes add no asset dependency; prior
+converters/assets unchanged. All 71 accepted products and inherited evidence/
+fixture hashes checked after gates. Actual inherited HitN64 PNG read path also
+pinned. No editable import/shared-cache write. Native full regeneration skipped;
+Python fixtures independently read ISO read-only into empty temporary outputs.
+See [asset ledger](ASSETS.md). Original rights retained; no ISO, extracted original
+or compiled binary committed.
+
+Next: document queued NPC draw/callback helpers and binding, then remaining party,
+effect/runtime implementations and tooling. Newer concurrent battle/display/font/
+party/file/Mario work needs separate inline audit. Snapshot inventory is a review
+aid, not semantic coverage proof. Full code documentation/remake goal remains active.
