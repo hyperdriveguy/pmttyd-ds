@@ -16849,3 +16849,55 @@ Next tasks:
 3. Finish linked Draw and ordinary Game camera/queue/offscreen/callback draining;
    continue original area/event/object/story coverage, then matched original
    visual comparisons and physical hardware performance profiling.
+
+
+## 2026-10-15 — Original NPC creation callbacks and four-actor child
+
+Implemented complete retained original Entry/SetTribe with distinct source0
+polls, native holds, Entry2 and SetTribe1 yields. Actual source actor/model
+pointers share RAM between event and animation VMs; original constructor and
+forced selector use the real owner/cache. Incomplete SetTribe excludes registry
+consumers. Retirement quarantines without rollback. FieldArea binds the extra
+original source closure, pumps/resumes retained work and checks quarantine
+before and after manager visits. Cached scalar ownership survives until the
+matching USER_FUNC consumes it.
+
+The original harbor child is now editable JSON under assets/original/events,
+with source hashes, relocation provenance and per-asset rights. Normal builds
+compile it after ISO base assets; explicit import requires an empty destination.
+It creates the original four actors and hides them at original (0,-1000,0),
+using original names, models, tribe rows, selector calls and event ordering.
+
+Validation: final frozen make test exits0; 498/498 C++ tests (82.32s),
+228/228 Python tests (33.597s), zero skips; assets-check validates 421 recipes.
+Final make all and private ARM build
+exit0. An initial ARM compile found an unsigned-int/uint32_t callback return
+mismatch; explicit uint32_t fixes it. Final full host gate was rerun after that
+correction. Native dependency normalization invalidated 142 changed-header/source
+objects before rebuilding, excluding stale layout reuse. Compiler style warnings, including compact new binding statements, and existing
+Pillow warnings remain; no warning-free-build claim.
+
+Fresh isolated Azahar normal50s, ARM80s and field70s-warmup smoke runs exit0.
+Eight strict ARM markers pass: source polls, raw model pointers, tribe metadata,
+forced selectors, original hidden positions, unchanged Mario owners, consumer
+exclusion and event retirement quarantine. The two exact tracked fixtures run
+on ARM with explicit romfs: roots; 532 production objects reused except main,
+all other source/include and runtime assets unchanged. Normal storybook and
+Rogueport idle/right/left/final-idle captures manually inspected. This checkpoint
+has no active partner and establishes no Goombella walk visual parity.
+
+Exact replay audits 4277 source files, 2193 runtime products, 1474 private inputs
+and 1 reference input. Compared with the accepted baseline, only the new
+field-npc-creation.pmevt and asset-pipeline stamp differ; existing game products
+and private inputs are unchanged. The new pack was compiled from its editable
+manifest source using the normal pipeline. Asset preparation was skipped only
+after this audit for native builds. Frozen links: 1558 Markdown, zero broken.
+Original ISO was read-only; no compiled/extracted cache or ISO committed.
+Concurrent unrelated source/staging/commits were preserved. Evidence:
+artifacts/npc-creation-events-validation-manifest.json.
+
+The broad goal remains active. Next integrate this owner into ordinary Game
+before animation clock gates, complete original area/tag/setup and RNG services,
+then scene dialogue/battle/result/return, indoor/event/object coverage and
+matched original visual/hardware performance checks. This milestone does not
+establish full prologue playability or Goombella walk visual parity.

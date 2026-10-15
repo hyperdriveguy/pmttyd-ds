@@ -45,6 +45,7 @@ public:
  int32_t invokeActorEvent(uint32_t function,EventEntry&,bool first,FieldNpcActorEventCursor&);
  int32_t invoke(EventEntry&,bool first,FieldNpcSetupCursor&,const FieldNpcSetupOperands&,const FieldNpcSetupEvents&);
 private:
+ friend class FieldNpcCreationBinding;
  FieldNpcSetupBinding(std::shared_ptr<FieldNpcRegistryOwner>,FieldNpcRegistryBinding&,EventNativeRuntime&,std::shared_ptr<const EventScriptAssets>,const FieldNpcSetupNativeServices&,uint32_t mode);
  FieldNpcActorEventServices actorServices();
  bool caller(const EventEntry&) const;

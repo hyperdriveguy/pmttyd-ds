@@ -6,6 +6,7 @@
 #include "field_position_event.hpp"
 #include "field_npc_setup.hpp"
 #include "field_npc_setup_binding.hpp"
+#include "field_npc_creation_binding.hpp"
 #include "field_npc_battle_binding.hpp"
 #include "field_map_npc_bootstrap.hpp"
 #include "event_operands.hpp"
@@ -90,6 +91,11 @@ public:
  // Bind only after parsed map rows are ready and no setup cursor is mid-call.
  // Alias shared_ptr retains entire immutable Program while exposing scripts.
  bool bindNpcSetup(const FieldNpcSetupNativeServices&); // Stable real registry world; explicit shared RNG/clock.
+ bool bindNpcCreation(std::shared_ptr<NativeFieldAnimation>);
+ bool npcCreationPending() const;
+ // Invoke before a caller's animation clock/presentation gate. It pumps IO
+ // and resumes only the retained callback; interpreter result waits for tick.
+ bool resumeNpcCreation();
  bool bindNpcBattle(OriginalSequence&,const BattleSequenceEntryServices&);
  bool npcBattlePending() const;
  // Retains teardown across holds, suppressing scheduler passes/new roots.

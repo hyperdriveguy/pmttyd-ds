@@ -16,9 +16,10 @@ import PIL
 
 from PIL import Image
 from asset_animation import decode as decode_animation, encode as encode_animation
+from asset_event import encode as encode_event
 
 ROOT = Path(__file__).resolve().parents[1]
-KINDS = {'texture', 'atlas', 'model', 'actor', 'sfx', 'music', 'animation', 'pack'}
+KINDS = {'texture', 'atlas', 'model', 'actor', 'sfx', 'music', 'animation', 'pack', 'event'}
 
 
 def digest(path):
@@ -89,7 +90,7 @@ def read_manifest(path, root):
 
 def output_names(entry):
     name = entry['output']; kind = entry['kind']
-    suffix = {'texture': '.t3x', 'atlas': '.t3x', 'actor': '.pmmesh', 'animation': '.pmanim', 'sfx': '.wav', 'music': '.wav'}
+    suffix = {'texture': '.t3x', 'atlas': '.t3x', 'actor': '.pmmesh', 'animation': '.pmanim', 'sfx': '.wav', 'music': '.wav', 'event': '.pmevt'}
     if kind in suffix and not name.endswith(suffix[kind]):
         raise ValueError(f'{entry["id"]}: output must end in {suffix[kind]}')
     if kind == 'model':
@@ -329,7 +330,7 @@ def build(manifest, root, output, work, tex3ds):
         raise ValueError('Run prepare before original converters and build')
     doc = read_manifest(manifest, root)
     output.mkdir(parents=True, exist_ok=True); work.mkdir(parents=True, exist_ok=True)
-    tool_key = digest(__file__) + digest(ROOT / 'tools/asset_animation.py') + PIL.__version__ + sys.version
+    tool_key = digest(__file__) + digest(ROOT / 'tools/asset_animation.py') + digest(ROOT / 'tools/asset_event.py') + PIL.__version__ + sys.version
     if any(e['kind'] in ('texture', 'atlas') for e in doc['assets']):
         executable = shutil.which(tex3ds) or tex3ds
         tool_key += digest(executable)
@@ -381,6 +382,8 @@ def build(manifest, root, output, work, tex3ds):
                     animation = json.loads(source.read_text())
                     json.dumps(animation, allow_nan=False)
                     target.write_bytes(encode_animation(animation))
+                elif kind == 'event':
+                    target.write_bytes(encode_event(json.loads(source.read_text())))
                 elif kind in ('sfx', 'music'):
                     compile_audio(source, entry, target)
                 else:

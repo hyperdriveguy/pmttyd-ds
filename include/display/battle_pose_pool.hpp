@@ -69,6 +69,7 @@ public:
     // NPC source constructor consumes raw-2 fallback; typed callers keep their
     // valid-handle-only API. Empty still means an unfinished native child.
     std::optional<int32_t> enterSource(std::shared_ptr<const BattlePoseResource>,int32_t,BattlePoseClock,const char* requestedModel=nullptr);
+    std::optional<int32_t> enterSourceOriginal(std::shared_ptr<const BattlePoseResource>,int32_t,BattlePoseClock,uint32_t name);
     bool sourceEntryAvailable() const{return !nativeEntryAvailable_ || nativeEntryAvailable_(nativeProvider_);}
     BattlePose* pose(int32_t handle);
     const BattlePose* pose(int32_t handle) const;
@@ -104,6 +105,7 @@ private:
     friend class AnimationScratchPose;
     friend class NativeFieldAnimation;
     std::optional<int32_t> (*nativeSourceEntry_)(void*,std::shared_ptr<const BattlePoseResource>,int32_t,BattlePoseClock,const char*)=nullptr;
+    std::optional<int32_t> (*nativeOriginalEntry_)(void*,std::shared_ptr<const BattlePoseResource>,int32_t,BattlePoseClock,uint32_t)=nullptr;
     bool (*nativeEntryAvailable_)(const void*)=nullptr;
     bool resolveClock(BattlePoseClock& clock) const{return !nativeClock_ || nativeClock_(nativeProvider_,clock);}
     void* nativeProvider_=nullptr;

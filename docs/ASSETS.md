@@ -3959,3 +3959,21 @@ no user-editable overlay. Nintendo/Intelligent Systems copyright and prior
 local-use-only/no-redistribution limitations remain; no new license is asserted.
 Evidence: ignored npc-node-assets-before.json / npc-node-assets-after.json and
 npc-node-sdk-adapter-evidence.txt. No new Dolphin execution/timing observation.
+
+
+## Original harbor NPC creation child — 2026-10-15
+
+Tracked editable source: `assets/original/events/harbor-npc-creation/event.json`
+and adjacent `provenance.json`. Explicit importer
+`tools/import_npc_creation_event.py` reads `/home/carson/games/roms/G8ME01.iso`
+read-only, refuses nonempty destinations and checks original gor.rel identity.
+The retained gor_00.o::enter_gorotsuki_town_init closure preserves original
+ADDR32 relocations into the existing guest namespace, source strings/padding,
+e8 child bytes plus its real scanner prefetch word, and original DOL zero at
+8041fd84. Per-span/source hashes and offsets are in the asset provenance.
+No geometry/texture scaling or lighting conversion applies to this event data.
+Manifest kind `event`, compiled by `tools/asset_event.py`, adds
+`romfs/field-npc-creation.pmevt` after the base pack. Compiled products and
+extraction caches are ignored. Normal builds preserve editable sources.
+Nintendo/Intelligent Systems retain original rights; no redistribution license
+is granted. Importing or tracking these bytes grants no new license.

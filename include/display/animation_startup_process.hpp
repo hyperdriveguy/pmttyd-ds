@@ -29,6 +29,7 @@ public:
  // failure, empty is unavailable. No teardown/release contract is implied.
  std::optional<int32_t> enter(uint32_t name,uint32_t mode,std::shared_ptr<const BattlePoseResource>);
  uint32_t entryPending() const{return entry_.pending;}
+ uint32_t entryName() const{return entry_.name;} // Actual most recent source operand, including completion.
  // Configure once while quiescent. current(pass) must prove the same immutable
  // producer/camera/file pass; no camera is required for null/flag8-clear exits.
  // privateCapture additionally promises current is independent of all private

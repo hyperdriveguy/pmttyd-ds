@@ -22,11 +22,12 @@ std::shared_ptr<NativeFieldAnimation> NativeFieldAnimation::create(const char* r
  n->pool_->nativeProvider_=n.get();
  n->pool_->nativeEntry_=[](void* u,std::shared_ptr<const BattlePoseResource> r,int32_t mode,BattlePoseClock,const char* name){return static_cast<NativeFieldAnimation*>(u)->enter(std::move(r),mode,name);};
  n->pool_->nativeSourceEntry_=[](void* u,std::shared_ptr<const BattlePoseResource> r,int32_t mode,BattlePoseClock,const char* name){return static_cast<NativeFieldAnimation*>(u)->enterSource(std::move(r),mode,name);};
+ n->pool_->nativeOriginalEntry_=[](void* u,std::shared_ptr<const BattlePoseResource> r,int32_t mode,BattlePoseClock,uint32_t name){return static_cast<NativeFieldAnimation*>(u)->enterSource(std::move(r),mode,nullptr,name);};
  n->pool_->nativeEntryAvailable_=[](const void* p){const auto& n=*static_cast<const NativeFieldAnimation*>(p);return n.ready() && !n.entryPending() && !n.producerPending() && !n.releasing_.active;};
  n->pool_->nativeRelease_=[](void* u,int32_t h){return static_cast<NativeFieldAnimation*>(u)->release(h);};
  n->pool_->nativeClock_=[](const void* u,BattlePoseClock& c){return static_cast<const NativeFieldAnimation*>(u)->clock(c);};if(!n->configurePresentation({}))return {};return n;
 }
-NativeFieldAnimation::~NativeFieldAnimation(){if(pool_ && pool_->nativeProvider_==this){pool_->nativeEntry_=nullptr;pool_->nativeSourceEntry_=nullptr;pool_->nativeEntryAvailable_=nullptr;pool_->nativeClock_=nullptr;pool_->nativeRelease_=nullptr;pool_->nativeProvider_=nullptr;}npcInnerBinding_.reset();process_.reset();}
+NativeFieldAnimation::~NativeFieldAnimation(){if(pool_ && pool_->nativeProvider_==this){pool_->nativeEntry_=nullptr;pool_->nativeSourceEntry_=nullptr;pool_->nativeOriginalEntry_=nullptr;pool_->nativeEntryAvailable_=nullptr;pool_->nativeClock_=nullptr;pool_->nativeRelease_=nullptr;pool_->nativeProvider_=nullptr;}npcInnerBinding_.reset();process_.reset();}
 bool NativeFieldAnimation::ready() const{return process_ && process_->ready();}
 bool NativeFieldAnimation::clock(BattlePoseClock& out) const{
  if(!ready())return false;
@@ -48,16 +49,19 @@ bool NativeFieldAnimation::tick(bool battle,bool paused){
  s.lower=[](void* u){return uint32_t(static_cast<NativeFieldAnimation*>(u)->raw_);};
  publishEventRetraceTime(0,s);return true;
 }
-std::optional<int32_t> NativeFieldAnimation::enterSource(std::shared_ptr<const BattlePoseResource> resource,int32_t mode,const char* requested){
+std::optional<int32_t> NativeFieldAnimation::enterSource(std::shared_ptr<const BattlePoseResource> resource,int32_t mode,const char* requested,uint32_t originalName){
  if(!ready() || (!entering_ && producerPending()) || releasing_.active || mode<0 || mode>2 || !resource || !resource->draw || !resource->textures || !resource->bank || resource->names.empty())return {};
  const std::string name=requested?requested:resource->modelName;if(name.empty() || name.size()>=256 || name!=resource->modelName || !files_->contains("a/"+name,5) || !files_->contains("a/"+resource->textureName+"-",4))return {};
+ if(originalName){
+  auto& memory=process_->vm().memory;for(unsigned i=0;i<=name.size();++i){uint8_t b=0;if(uint64_t(originalName)+i>UINT32_MAX || !memory.readByte(originalName+i,b) || b!=(i<name.size()?uint8_t(name[i]):0))return {};}
+ }
  // Preserve the original model-cache canonical resource, including its atlas.
  for(const auto& model:pool_->models())if(model.flags() && model.resource && model.resource->modelName==resource->modelName){resource=model.resource;break;}
- if(!entering_){name_=name;entering_=resource;mode_=mode;auto& m=process_->vm().memory;for(unsigned i=0;i<=name.size();++i)if(!m.writeByte(Name+i,i<name.size()?uint8_t(name[i]):0))return {};}
- else if(entering_!=resource || mode_!=mode || name_!=name)return {};
+ if(!entering_){name_=name;entering_=resource;mode_=mode;entryName_=originalName;if(!originalName){auto& m=process_->vm().memory;for(unsigned i=0;i<=name.size();++i)if(!m.writeByte(Name+i,i<name.size()?uint8_t(name[i]):0))return {};}}
+ else if(entering_!=resource || mode_!=mode || name_!=name || entryName_!=originalName)return {};
  uint32_t address=Name;uint8_t mappedByte=0;
- for(auto pair:{std::make_pair("a_mario",0x802c18a0u),std::make_pair("a_mario_r",0x802c18a8u),std::make_pair("e_mario",0x802c18b4u),std::make_pair("c_pkr",0x804213e0u),std::make_pair("c_kuri_h",0x802cb4bcu)})if(name==pair.first && (name!="c_kuri_h" || process_->vm().memory.readByte(pair.second,mappedByte)))address=pair.second;
- auto result=process_->enter(address,uint32_t(mode),resource);if(result){entering_.reset();name_.clear();}
+ for(auto pair:{std::make_pair("a_mario",0x802c18a0u),std::make_pair("a_mario_r",0x802c18a8u),std::make_pair("e_mario",0x802c18b4u),std::make_pair("c_pkr",0x804213e0u),std::make_pair("c_kuri_h",0x802cb4bcu)})if(!originalName && name==pair.first && (name!="c_kuri_h" || process_->vm().memory.readByte(pair.second,mappedByte)))address=pair.second;
+ auto result=process_->enter(originalName?originalName:address,uint32_t(mode),resource);if(result){entering_.reset();name_.clear();}
  return result;
 }
 std::optional<int32_t> NativeFieldAnimation::enter(std::shared_ptr<const BattlePoseResource> resource,int32_t mode,const char* name){

@@ -5528,3 +5528,18 @@ The local NodePush source/control gap is closed; prior node-child todo is delive
 within the documented native numeric/storage domain. GPU/effect/normal activation
 and the broad EVT-01 runtime request remain OPEN. Static audits and fixture/GPU
 receipts must not be relabeled original runtime or completed rendering.
+
+
+## 2026-10-15 — Original NPC creation child bound
+
+Entry800536e4/SetTribe8004e5c0 now retain source callback behavior over actual
+VM operands, registry actors, shared async cache and forced SetAnim. Original
+model pointers and actor selector storage alias across the event/animation VMs.
+The exact original four-actor creation child is an editable provenance-tracked
+source asset. FieldArea exposes binding/pumping/resumption and excludes
+incomplete or quarantined mutation consumers. See
+[contract](../behavior/field/NATIVE_ORIGINAL_NPC_CREATION_EVENTS.md).
+
+EVT-01 remains OPEN: ordinary Game must compose this owner before animation
+clock/presentation gates; the full original area parent, tags/setup/RNG,
+scene dialogue, GPU/audio/battle/result/return and complete prologue remain.

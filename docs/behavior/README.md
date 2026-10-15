@@ -1450,3 +1450,7 @@ Original battle menu native resource/queue owners:
 - [Actual-VM node builders](display/NATIVE_ACTUAL_VM_NODE_BUILDERS.md):
   complete retained Joint/Transform bodies, original dispatch data and native CPU
   SDK matrices with real modeling-stack stores; GPU children remain separate.
+
+- [Original NPC creation event VM binding](field/NATIVE_ORIGINAL_NPC_CREATION_EVENTS.md):
+  real Entry/SetTribe, shared actor/model pointers, retained forced selection,
+  mutation barriers and original four-actor child.

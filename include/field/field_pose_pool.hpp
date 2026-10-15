@@ -8,7 +8,7 @@ namespace ttyd {
 struct FieldPoseEntryCursor {
  const class FieldPosePool* owner=nullptr;
  std::shared_ptr<const BattlePoseResource> resource;
- std::string model;int32_t mode=0,result=0;bool admitted=false,complete=false;
+ std::string model;uint32_t originalName=0;int32_t mode=0,result=0;bool admitted=false,complete=false;
 };
 class FieldPosePool {
 public:
@@ -24,7 +24,7 @@ public:
  std::optional<int32_t> enter(const std::string& model,int32_t mode,BattlePoseClock);
  // One initial admission, then resume the exact pinned native Entry directly.
  // In-progress source cache publication must not be rejected as a new request.
- std::optional<int32_t> resumeEnter(const std::string&,int32_t,BattlePoseClock,FieldPoseEntryCursor&);
+ std::optional<int32_t> resumeEnter(const std::string&,int32_t,BattlePoseClock,FieldPoseEntryCursor&,uint32_t originalName=0);
  bool paperOn(int32_t handle){return poses_->paperOn(handle);}
  bool materialLightFlagOn(int32_t handle,uint32_t flags){return poses_->materialLightFlagOn(handle,flags);}
  std::optional<int32_t> vivianType(int32_t handle) const{return poses_->vivianType(handle);}

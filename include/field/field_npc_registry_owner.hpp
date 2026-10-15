@@ -32,7 +32,8 @@ public:
  FieldNpcRegistryOwner(const FieldNpcRegistryOwner&)=delete;
  FieldNpcRegistryOwner& operator=(const FieldNpcRegistryOwner&)=delete;
  bool initialized() const{return initialized_;}
- bool entryPending() const{return bool(pendingEntry_);}
+ bool entryPending() const{return bool(pendingEntry_) || mutationOwner_;}
+ bool aliases(EventAddressSpace&) const;
  bool ownsFieldActor(uint32_t address) const; // Admission only; active/name gates remain source reads.
  uint32_t fieldWorkAddress() const{return addresses_[3];}
  FieldPosePool& poses(){return poses_;}
@@ -41,6 +42,7 @@ private:
  friend class FieldNpcRegistryBinding;
  friend class FieldNpcSetupBinding;
  friend class FieldNpcMainEntryBinding;
+ friend class FieldNpcCreationBinding;
  explicit FieldNpcRegistryOwner(uint32_t,std::shared_ptr<BattlePosePool>);
  uint8_t* span(uint32_t,uint32_t);
  std::array<uint8_t,0x30> registry_{}; // Source startup BSS8041e8ac..e8db.
@@ -51,6 +53,7 @@ private:
  // Preserve an unfinished source constructor even if its caller disappears.
  // Cancellation is unbound: never expose its partial actor as a ready record.
  std::shared_ptr<FieldNpcRegistryEntryState> pendingEntry_;
+ const void* mutationOwner_=nullptr; // Retained SetTribe excludes partial actor consumers.
 };
 // Must retire before its facade. Retains the owner; unregisters only its own
 // external spans. Multiple independent facades alias the same actor bytes.
@@ -69,12 +72,13 @@ public:
  // services are admitted before Entry; no partial row is repeated on a hold.
  std::optional<uint32_t> registerMapNpc(const PackedMapNpcInput&,BattlePoseClock,const FieldMapNpcBattleAdmission& = {});
  std::optional<int32_t> enter(uint32_t name,uint32_t model,BattlePoseClock);
- std::optional<int32_t> resumeEnter(uint32_t name,uint32_t model,BattlePoseClock,FieldNpcEntryCursor&);
+ std::optional<int32_t> resumeEnter(uint32_t name,uint32_t model,BattlePoseClock,FieldNpcEntryCursor&,bool originalPoseName=false);
  std::optional<uint32_t> lookup(uint32_t name,PackedNpcLookup=PackedNpcLookup::NoAssert);
  std::optional<std::vector<uint32_t>> activeActors() const; // Active1, not query/display readiness.
 private:
  friend class FieldNpcSetupBinding;
  friend class FieldNpcMainEntryBinding;
+ friend class FieldNpcCreationBinding;
  friend class FieldNpcClockBinding;
  FieldNpcRegistryBinding(std::shared_ptr<FieldNpcRegistryOwner>,EventAddressSpace&);
  struct Call;

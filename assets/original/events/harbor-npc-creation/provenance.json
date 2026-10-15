@@ -1,0 +1,214 @@
+{
+  "schema": 1,
+  "iso_id": "G8ME01 revision0",
+  "source": "rel/gor.rel",
+  "source_sha256": "d4965f21254ecf1a78e5d66ea12a0b000eed3f123032af6ab3cb0f703d3f185a",
+  "closure": {
+    "objects": [
+      {
+        "name": "str_c_zako_n_gor_00013d68",
+        "type": "string",
+        "file_offset": 81256,
+        "size": 9,
+        "address": 2420114024,
+        "sha256": "70712960e278e491b2f24cb6bf7fad31b16321b3d916666feb63413112f108c7"
+      },
+      {
+        "name": "str_\u7b2c\u4e09\u52e2\u529b\u90e8\u4e0b_gor_00013ee8",
+        "type": "string",
+        "file_offset": 81640,
+        "size": 13,
+        "address": 2420114408,
+        "sha256": "d4c3af8de698322c98499af0fccc8445411909dd0fdf1f21cedd1a829cda7a63"
+      },
+      {
+        "name": "str_\u30af\u30ea\u30b9\u30c1\u30fc\u30cc_gor_00014b28",
+        "type": "string",
+        "file_offset": 84776,
+        "size": 13,
+        "address": 2420117544,
+        "sha256": "f442aaf74bc06690c793843975fc1f7b150118ff2b27c147c8e7c1b3df7134c3"
+      },
+      {
+        "name": "str_c_pkr_gor_00014b38",
+        "type": "string",
+        "file_offset": 84792,
+        "size": 6,
+        "address": 2420117560,
+        "sha256": "dd25f2e1b01b8974ee5af6ecfd0e6090b2a0876351da857fffb320807c8a366f"
+      },
+      {
+        "name": "str_\u7b2c\u4e09\u52e2\u529b\u5e79\u90e8_gor_00014b40",
+        "type": "string",
+        "file_offset": 84800,
+        "size": 13,
+        "address": 2420117568,
+        "sha256": "cd1285ba58bfc4377d7ec4a86806398a78d7ba17c2fb76e1bb830d90dd430f2f"
+      },
+      {
+        "name": "str_c_kanbu_ibt_gor_00014b50",
+        "type": "string",
+        "file_offset": 84816,
+        "size": 12,
+        "address": 2420117584,
+        "sha256": "29811e3c0b2e262e4c39f6edf0a76454c8e85f9a1dc78b96cd191b4fc4ecd89b"
+      },
+      {
+        "name": "str_\u7b2c\u4e09\u52e2\u529b\u90e8\u4e0b\uff21_gor_00014b5c",
+        "type": "string",
+        "file_offset": 84828,
+        "size": 15,
+        "address": 2420117596,
+        "sha256": "bd840b6172c43ca587987e1a75adede436aefc2dad175a045ca179d686fe6daf"
+      },
+      {
+        "name": "str_\u7b2c\u4e09\u52e2\u529b\u90e8\u4e0b\uff22_gor_00014b6c",
+        "type": "string",
+        "file_offset": 84844,
+        "size": 15,
+        "address": 2420117612,
+        "sha256": "3af55d68cdeb895c87a94baf2468fd04d261d431054373c00443ad6f3e0abe50"
+      },
+      {
+        "name": "enter_gorotsuki_town_init",
+        "type": "evt",
+        "file_offset": 152208,
+        "size": 232,
+        "address": 2421182984,
+        "sha256": "0443f63f525befc9a3ca3a4455910ff1a5d0511c0ccbf4bf80183c62ed3d0734"
+      }
+    ],
+    "sections": [
+      {
+        "file_offset": 0,
+        "size": 0,
+        "address": 2415919104,
+        "executable": false
+      },
+      {
+        "file_offset": 204,
+        "size": 80428,
+        "address": 2416967680,
+        "executable": true
+      },
+      {
+        "file_offset": 80632,
+        "size": 4,
+        "address": 2418016256,
+        "executable": false
+      },
+      {
+        "file_offset": 80636,
+        "size": 4,
+        "address": 2419064832,
+        "executable": false
+      },
+      {
+        "file_offset": 80640,
+        "size": 50565,
+        "address": 2420113408,
+        "executable": false
+      },
+      {
+        "file_offset": 131208,
+        "size": 317356,
+        "address": 2421161984,
+        "executable": false
+      },
+      {
+        "file_offset": 0,
+        "size": 520,
+        "address": 2422210560,
+        "executable": false
+      },
+      {
+        "file_offset": 0,
+        "size": 0,
+        "address": 2423259136,
+        "executable": false
+      },
+      {
+        "file_offset": 0,
+        "size": 0,
+        "address": 2424307712,
+        "executable": false
+      },
+      {
+        "file_offset": 0,
+        "size": 0,
+        "address": 2425356288,
+        "executable": false
+      },
+      {
+        "file_offset": 0,
+        "size": 0,
+        "address": 2426404864,
+        "executable": false
+      },
+      {
+        "file_offset": 0,
+        "size": 0,
+        "address": 2427453440,
+        "executable": false
+      },
+      {
+        "file_offset": 0,
+        "size": 0,
+        "address": 2428502016,
+        "executable": false
+      },
+      {
+        "file_offset": 0,
+        "size": 0,
+        "address": 2429550592,
+        "executable": false
+      },
+      {
+        "file_offset": 0,
+        "size": 0,
+        "address": 2430599168,
+        "executable": false
+      },
+      {
+        "file_offset": 0,
+        "size": 0,
+        "address": 2431647744,
+        "executable": false
+      }
+    ],
+    "segments": [
+      {
+        "address": 2420114024,
+        "size": 12,
+        "file_offset": 81256,
+        "sha256": "59da818a78b89ee89e5bff537f1d806c3e2908f901d61fb54e400d4c138c818e"
+      },
+      {
+        "address": 2420114408,
+        "size": 16,
+        "file_offset": 81640,
+        "sha256": "b2e49ee40856e55bad532eb41be0adbbd8ed6be9eb1877bf7cbc4dfe9af37eb7"
+      },
+      {
+        "address": 2420117544,
+        "size": 84,
+        "file_offset": 84776,
+        "sha256": "09809a49e902322dd049c455138970fb36b9307dad13a78a055f43c65ad83e39"
+      },
+      {
+        "address": 2421182984,
+        "size": 236,
+        "file_offset": 152208,
+        "sha256": "93df7b321da2773af8e4199d428c2c120cfe12ee399d983e98b3f86c1f925944"
+      }
+    ]
+  },
+  "dol_constant": {
+    "source": "sys/main.dol",
+    "address": 2151808388,
+    "size": 4,
+    "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+  },
+  "policy": "Original nonexecuting data/EVT closure, including real trailing scanner word; only source ADDR32 relocations use native section addresses. Hex JSON is editable source; PMEVT is generated.",
+  "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+}

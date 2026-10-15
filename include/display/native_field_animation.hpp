@@ -15,6 +15,7 @@ class NativeFieldAnimation {
 public:
  static std::shared_ptr<NativeFieldAnimation> create(const char* root,std::shared_ptr<NativeFileCache>,const EventNativePlatform&);
  ~NativeFieldAnimation();
+ std::shared_ptr<NativeFileCache> files() const{return files_;}
  std::shared_ptr<BattlePosePool> pool() const{return pool_;}
  AnimationStartupProcess& process(){return *process_;}
  bool ready() const;
@@ -61,11 +62,11 @@ private:
  friend class AnimationNativeInner;
  NativeFieldAnimation()=default;
  std::optional<int32_t> enter(std::shared_ptr<const BattlePoseResource>,int32_t,const char*);
- std::optional<int32_t> enterSource(std::shared_ptr<const BattlePoseResource>,int32_t,const char*);
+ std::optional<int32_t> enterSource(std::shared_ptr<const BattlePoseResource>,int32_t,const char*,uint32_t originalName=0);
  std::shared_ptr<BattlePosePool> pool_;
  std::shared_ptr<NativeFileCache> files_;
  std::unique_ptr<AnimationStartupProcess> process_;
- std::string name_;std::shared_ptr<const BattlePoseResource> entering_;int32_t mode_=0;
+ std::string name_;std::shared_ptr<const BattlePoseResource> entering_;int32_t mode_=0;uint32_t entryName_=0;
  AnimationReleaseCursor releasing_;uint64_t releasingGeneration_=0;
  std::shared_ptr<const CameraManager> cameras_;uint64_t configuredMain_=0;
  ActorVector nextRoot_{},requestRoot_{},publishedRoot_{};

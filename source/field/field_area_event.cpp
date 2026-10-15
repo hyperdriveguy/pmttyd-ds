@@ -20,7 +20,7 @@ namespace ttyd {
 namespace {
 struct DoorProgram {uint32_t room,script,record;};
 struct BattleRegistration {uint32_t room,name,setup,numbers,first,count;};
-struct Program {EventScriptAssets scripts;std::vector<BattleRegistration> battles;std::vector<DoorProgram> entries;std::vector<std::array<uint32_t,2>> initializers;};
+struct Program {EventScriptAssets scripts,creation;bool hasCreation=false;std::vector<BattleRegistration> battles;std::vector<DoorProgram> entries;std::vector<std::array<uint32_t,2>> initializers;};
 std::shared_ptr<const Program> assets;
 int32_t signedWord(uint32_t v){return v<=INT32_MAX?int32_t(v):int32_t(int64_t(v)-0x100000000LL);}
 // Native bounded verification: name/value pairs8 bytes,<=256 rows, 64-byte
@@ -44,6 +44,11 @@ bool loadFieldAreaEventAssets(const char* root) {
  if(!root)return false;
  auto next=std::make_shared<Program>();const std::string base=root;
  if(!next->scripts.load((base+"/door-data.pmevt").c_str()))return false;
+ // Optional for legacy packs. Normal editable-asset builds supply this
+ // exact original child closure; creation binding requires its presence.
+ if(FILE* extra=std::fopen((base+"/field-npc-creation.pmevt").c_str(),"rb")){
+  std::fclose(extra);if(!next->creation.load((base+"/field-npc-creation.pmevt").c_str()))return false;next->hasCreation=true;
+ }
  FILE* f=std::fopen((base+"/field-area-events.bin").c_str(),"rb");if(!f)return false;
  char magic[8];uint32_t count=0;
  bool ok=std::fread(magic,8,1,f)==1 && !std::memcmp(magic,"PMFAEV02",8) && std::fread(&count,4,1,f)==1 && count && count<=256;
@@ -101,6 +106,7 @@ struct FieldAreaEventRuntime {
  std::unique_ptr<FieldNpcRegistryBinding> mapNpcBinding;
  std::unique_ptr<FieldMapNpcBootstrap> mapNpcs;
  std::unique_ptr<FieldNpcSetupBinding> npcSetupBinding;
+ std::unique_ptr<FieldNpcCreationBinding> npcCreationBinding;
  std::shared_ptr<FieldNpcRegularEventHistory> npcRegularHistory;
  std::unique_ptr<FieldNpcBattleBinding> npcBattleBinding;
  struct BattleFirst {uint32_t function;bool first;};
@@ -128,7 +134,7 @@ struct FieldAreaEventRuntime {
   p.divideWord=[](void*,int32_t a,int32_t b){assert(b);return a/b;};
   p.flushBlock=[](void*,uint32_t){};p.systemCall=[](void*){};
   p.format=[](void* p,const EventDiagnosticCall&){static_cast<FieldAreaEventRuntime*>(p)->owner->failed=true;};
-  p.retiring=[](void* p,const EventEntry& e){auto& r=*static_cast<FieldAreaEventRuntime*>(p);if(r.npcBattleBinding)r.npcBattleBinding->retire(e);else if(r.npcRegularHistory)r.npcRegularHistory->retire(e);r.npcBattleFirst.erase(e.id);r.previousParty.erase(e.id);r.npcSetup.erase(e.id);r.npcActors.erase(e.id);r.npcWander.erase(e.id);for(auto& root:r.roots)if(root.id==e.id){root.bank=e.locals;root.returned=e.opcode==2;}};
+  p.retiring=[](void* p,const EventEntry& e){auto& r=*static_cast<FieldAreaEventRuntime*>(p);if(r.npcBattleBinding)r.npcBattleBinding->retire(e);else if(r.npcRegularHistory)r.npcRegularHistory->retire(e);if(r.npcCreationBinding)r.npcCreationBinding->retire(e);r.npcBattleFirst.erase(e.id);r.previousParty.erase(e.id);r.npcSetup.erase(e.id);r.npcActors.erase(e.id);r.npcWander.erase(e.id);for(auto& root:r.roots)if(root.id==e.id){root.bank=e.locals;root.returned=e.opcode==2;}};
   p.call=[](void* p,EventEntry& e,uint32_t fn,int32_t first){auto& r=*static_cast<FieldAreaEventRuntime*>(p);const auto result=r.call(e,fn,first!=0);if(result==0){r.owner->pendingFunction=fn;r.owner->pendingEventId=e.id;}return result;};return p;
  }
  uint32_t word(uint32_t a){uint32_t v=0;if(!vm.memory.readWord(a,v))owner->failed=true;return v;}
@@ -193,6 +199,9 @@ struct FieldAreaEventRuntime {
   // Five actor leaves share the stable setup world. Retain cursor by real
   // event ID only while held; source first resets it, success2 erases it.
   // Retirement/ReInit also clear cursors without replaying completed effects.
+  if(fieldNpcCreationEventFunction(fn) && npcCreationBinding){
+   auto result=npcCreationBinding->invoke(fn,e);return result?*result:0;
+  }
   if(fieldNpcBattleEventFunction(fn)){
    const auto firstVisit=npcBattleFirst.emplace(e.id,BattleFirst{fn,first}).first;
    if(firstVisit->second.function!=fn || !npcBattleBinding)return 0;
@@ -362,6 +371,7 @@ struct FieldAreaEventRuntime {
  // Original program words import separately from native allocator RAM.
  bool initialize(uint64_t milliseconds) {
   if(!vm.memory.registerRam(0x82000000,std::vector<uint8_t>(0x80000)) || !vm.memory.registerRam(0x8041f070,std::vector<uint8_t>(16)) || !vm.memory.registerRam(0x8041e428,std::vector<uint8_t>(4)) || !vm.memory.registerRam(0x8041e844,std::vector<uint8_t>(4)) || !vm.memory.registerRam(0x8041e9e4,std::vector<uint8_t>(24)) || !vm.memory.importScripts(program->scripts))return false;
+  if(program->hasCreation && !vm.memory.importScripts(program->creation))return false;
   if(!registerBattles())return false;
   const auto memory=vm.memoryBinding.services();const auto start=eventSdkInitializeAllocator(0x82000000,0x82080000,1,memory);
   if(eventSdkCreateHeap(start,0x82080000,memory)!=0 || !vm.memory.writeWord(0x8041e844,0) || !vm.memory.writeWord(0x81000004,60))return false;
@@ -426,6 +436,16 @@ bool FieldAreaEvent::bindNpcSetup(const FieldNpcSetupNativeServices& services){
 // No manager pass/reentry or live unselected battle bank may overlap unload.
 // Retain provider identity and completed-step ordinal across holds; only reset
 // once, then resume the first unfinished external release request.
+bool FieldAreaEvent::bindNpcCreation(std::shared_ptr<NativeFieldAnimation> animation){
+ if(!started || !runtime_ || failed || runtime_->releasingNpcs || !mapNpcsReady())return false;
+ auto& r=*runtime_;if(!r.program->hasCreation || !r.npcSetupBinding || r.npcCreationBinding || r.ticking)return false;
+ r.npcCreationBinding=FieldNpcCreationBinding::bind(r.mapNpcOwner,*r.mapNpcBinding,*r.npcSetupBinding,r.vm,std::move(animation));return bool(r.npcCreationBinding);
+}
+bool FieldAreaEvent::npcCreationPending() const{return runtime_ && runtime_->npcCreationBinding && (runtime_->npcCreationBinding->retained() || runtime_->npcCreationBinding->quarantined());}
+bool FieldAreaEvent::resumeNpcCreation(){
+ if(!runtime_ || !runtime_->npcCreationBinding)return true;
+ auto& b=*runtime_->npcCreationBinding;if(b.quarantined())return false;b.pump();return b.resume();
+}
 bool FieldAreaEvent::bindNpcBattle(OriginalSequence& sequence,const BattleSequenceEntryServices& backend){
  if(!started || !runtime_ || failed)return false;
  auto& r=*runtime_;if(!r.npcSetupBinding || r.npcBattleBinding || r.releasingNpcs || r.ticking)return false;
@@ -433,7 +453,7 @@ bool FieldAreaEvent::bindNpcBattle(OriginalSequence& sequence,const BattleSequen
 }
 bool FieldAreaEvent::npcBattlePending() const{return runtime_ && (!runtime_->npcBattleFirst.empty() || (runtime_->npcBattleBinding && runtime_->npcBattleBinding->pending()));}
 bool FieldAreaEvent::retireMapNpcs(const FieldAreaNpcReleaseServices& services){
- if(npcBattlePending())return false;
+ if(npcBattlePending() || npcCreationPending())return false;
  if(!started || !runtime_ || failed || !services.admit || !services.step)return false;
  auto& r=*runtime_;
  if(!r.mapNpcBinding || !r.mapGpState || r.vm.gp.battleContext || r.ticking || r.releaseInvocation)return false;
@@ -458,7 +478,7 @@ bool FieldAreaEvent::retireMapNpcs(const FieldAreaNpcReleaseServices& services){
  // Discard native cursors/diagnostics without publishing child return banks.
  r.previousParty.clear();r.npcSetup.clear();r.npcActors.clear();r.npcWander.clear();r.roots.clear();r.initId.reset();
  completed_.clear();pendingFunction=pendingEventId=0;
- r.npcBattleBinding.reset();r.npcRegularHistory.reset();r.npcSetupBinding.reset();r.mapNpcs.reset();r.mapGpState.reset();r.services={};r.releaseServices={};
+ r.npcBattleBinding.reset();r.npcRegularHistory.reset();r.npcCreationBinding.reset();r.npcSetupBinding.reset();r.mapNpcs.reset();r.mapGpState.reset();r.services={};r.releaseServices={};
  r.releaseStep=0;r.releasingNpcs=false;r.retiredNpcs=true;started=false;return true;
 }
 // A prepared map requires exact same caller GP bytes and all NPC rows ready.
@@ -524,8 +544,10 @@ std::optional<uint32_t> FieldAreaEvent::appendDoorEntry(uint32_t entryIndex,cons
 // Pending diagnostics identify the last callback hold, not all active waits.
 void FieldAreaEvent::tick(uint64_t milliseconds,const FieldAreaEventServices& s) {
  if(!started || !runtime_ || failed || runtime_->releasingNpcs)return;
+ if(!resumeNpcCreation()){pendingFunction=runtime_->npcCreationBinding->pendingFunction();pendingEventId=runtime_->npcCreationBinding->pendingEventId();return;}
  if(runtime_->npcBattleBinding && runtime_->npcBattleBinding->quarantined()){pendingFunction=runtime_->npcBattleBinding->pendingFunction();return;}
  auto& r=*runtime_;r.services=s;pendingFunction=pendingEventId=0;r.vm.gp.timestamp=milliseconds*eventClockRate(243000000);r.ticking=true;r.vm.runManager();r.ticking=false;
+ if(r.npcCreationBinding && r.npcCreationBinding->quarantined()){pendingFunction=r.npcCreationBinding->pendingFunction();pendingEventId=r.npcCreationBinding->pendingEventId();return;}
  if(r.npcBattleBinding && r.npcBattleBinding->quarantined()){pendingFunction=r.npcBattleBinding->pendingFunction();return;}
  for(auto i=r.roots.begin();i!=r.roots.end();)if(!checkEventId(i->id,r.vm.creationServices())){if(!i->bank){failed=true;return;}completed_.push_back({i->id,i->entryIndex,*i->bank,i->returned});i=r.roots.erase(i);}else ++i;
 }

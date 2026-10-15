@@ -22,6 +22,13 @@ std::shared_ptr<FieldNpcRegistryOwner> FieldNpcRegistryOwner::cold(uint32_t base
  if(base<0x10000 || (base&15) || end>0x100000000ULL)return {};
  return std::shared_ptr<FieldNpcRegistryOwner>(new FieldNpcRegistryOwner(base,std::move(pool)));
 }
+bool FieldNpcRegistryOwner::aliases(EventAddressSpace& memory) const{
+ return memory.withRawRamAccess([&](EventAddressSpace::RawRamAccess& raw){
+  if(!raw.aliases(Registry,registry_.data(),uint32_t(registry_.size())))return false;
+  for(unsigned i=0;i<4;++i)if(!raw.aliases(addresses_[i],allocations_[i].data(),uint32_t(allocations_[i].size())))return false;
+  return true;
+ });
+}
 bool FieldNpcRegistryOwner::ownsFieldActor(uint32_t address) const{
  return initialized_ && address>=addresses_[0] && uint64_t(address)-addresses_[0]<36u*0x340 && (address-addresses_[0])%0x340==0;
 }
@@ -47,7 +54,7 @@ bool FieldNpcRegistryBinding::text(uint32_t a,std::string& out,unsigned limit) c
 }
 struct FieldNpcRegistryEntryState {
  FieldNpcRegistryBinding* binding=nullptr;uint32_t name=0,model=0,gp=0;
- std::string nameBytes,modelBytes;
+ std::string nameBytes,modelBytes;bool originalPoseName=false;
  PackedNpcEntryCursor source;std::array<FieldPoseEntryCursor,2> poses;
 };
 bool FieldNpcEntryCursor::pending() const{return state && !state->source.complete;}
@@ -72,7 +79,7 @@ PackedNpcRegistryServices FieldNpcRegistryBinding::services(Call& c){
   auto& c=*static_cast<Call*>(p);std::string model;
   if(!c.binding->text(a,model,64))return {};
   auto& cursor=c.entry->poses[c.entry->source.phase==2?1:0];
-  return c.binding->owner_->poses_.resumeEnter(model,mode,c.clock,cursor);
+  return c.binding->owner_->poses_.resumeEnter(model,mode,c.clock,cursor,c.entry->originalPoseName?a:0);
  };
  s.paperOn=[](void* p,int32_t h){const bool ok=static_cast<Call*>(p)->binding->owner_->poses_.paperOn(h);assert(ok);(void)ok;};
  s.heightBits=[](void* p,int32_t h){const auto v=static_cast<Call*>(p)->binding->owner_->poses_.height(h);assert(v);return bits(*v);};
@@ -128,15 +135,15 @@ bool FieldNpcRegistryBinding::canEnter(uint32_t name,uint32_t model) const{
  for(auto a:constants)if(!memory_.readWord(a,unused))return false;
  return true;
 }
-std::optional<int32_t> FieldNpcRegistryBinding::resumeEnter(uint32_t name,uint32_t model,BattlePoseClock clock,FieldNpcEntryCursor& cursor){
+std::optional<int32_t> FieldNpcRegistryBinding::resumeEnter(uint32_t name,uint32_t model,BattlePoseClock clock,FieldNpcEntryCursor& cursor,bool originalPoseName){
  if(!cursor.state){
   if(owner_->entryPending() || !canEnter(name,model))return {};
-  auto state=std::make_shared<FieldNpcRegistryEntryState>();state->binding=this;state->name=name;state->model=model;
+  auto state=std::make_shared<FieldNpcRegistryEntryState>();state->binding=this;state->name=name;state->model=model;state->originalPoseName=originalPoseName;
   if(!memory_.readWord(0x80415fd0,state->gp) || !text(name,state->nameBytes,32) || !text(model,state->modelBytes,64))return {};
   cursor.state=state;owner_->pendingEntry_=std::move(state);
  }
  auto& state=*cursor.state;
- if(state.binding!=this || state.name!=name || state.model!=model)return {};
+ if(state.binding!=this || state.name!=name || state.model!=model || state.originalPoseName!=originalPoseName)return {};
  if(state.source.complete)return state.source.index;
  if(owner_->pendingEntry_!=cursor.state)return {};
  // Stable caller memory/input domain; source mode/timestamp are still read

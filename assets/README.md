@@ -145,3 +145,18 @@ Do not edit `romfs/` directly. If a different tool changes an installed output,
 against `local-assets/pipeline/installed.json` and its baseline first. The build
 should have one owner; concurrent builds into one RomFS are unsupported. Use a
 separate checkout/output/cache for independent builds.
+
+
+### Original event data
+
+`event` entries compile editable schema1 JSON guest-address/hex-byte segments
+to `.pmevt` (PMEVT001). The compiler rejects overlapping, unaligned, empty or
+wrapping spans. The original harbor creation child lives at
+`original/events/harbor-npc-creation/`; its neighboring provenance records source
+REL/DOL identities, relocation choices, hashes and retained rights. Editing
+bytes requires preserving original story, pointers and control tokens.
+
+For another import use `python3 tools/import_npc_creation_event.py --help`.
+The importer opens the ISO read-only and requires an empty destination; normal
+builds compile the checked-in JSON and never reimport over edits. The new
+`field-npc-creation.pmevt` is installed after the ISO-backed base pack.

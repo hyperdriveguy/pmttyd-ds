@@ -19,6 +19,11 @@ public:
     // Big-endian byte aliases share one process owner across separate VM lifetimes.
     bool registerExternalRam(uint32_t base,uint8_t* bytes,uint32_t size);
     bool unregisterExternalRam(uint32_t base);
+    // Borrow stable admitted raw storage into a second VM at the SAME guest
+    // address. Source storage/semantic mappings outlive the view unchanged.
+    // Retire target external mapping before changing/destroying source RAM.
+    bool shareRamTo(EventAddressSpace& target,uint32_t address,uint32_t size) const;
+    bool sharesRamWith(const EventAddressSpace& target,uint32_t address,uint32_t size) const;
     bool unregisterRam(uint32_t base,std::vector<uint8_t>* bytes=nullptr);
     // Remove a span contained in one RAM region,retaining neighboring bytes.
     // Native owner uses this before registering a live entry view at that span.

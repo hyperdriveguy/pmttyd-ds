@@ -3273,6 +3273,13 @@
       "source": "assets/original/audio/victory.wav",
       "output": "victory.wav",
       "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/events/harbor-npc-creation",
+      "kind": "event",
+      "source": "assets/original/events/harbor-npc-creation/event.json",
+      "output": "field-npc-creation.pmevt",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
     }
   ]
 }
