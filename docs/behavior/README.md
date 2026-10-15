@@ -1315,3 +1315,5 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 - [Retained animation Main clock/sample time](display/RETAINED_ANIMATION_MAIN_TIME.md): exact source bank/time/control/ratio/bias continuation, live VM/shared-pose binding and fnmsubs signed-zero correction; later evaluation/normal NPC activation remain open.
 - [Retained complete battle Phase and Move](battle/RETAINED_PHASE_AND_MOVE_CONTROLLERS.md): source invocation boundaries, original actor selection and real Act composition.
 - [Retained complete action sequence](battle/RETAINED_ACTION_SEQUENCE.md): original fifteen-state Act parent and retained original child calls; missing native menu/display owners remain explicit.
+
+- [Retained Main timeline/scalar evaluation](display/RETAINED_ANIMATION_MAIN_TIMELINE.md): exact scans/indices/state/fraction and time-to-timeline continuation over actual VM aliases; cache/output/full Main and normal NPC activation remain open.

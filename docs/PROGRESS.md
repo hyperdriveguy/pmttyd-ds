@@ -1,3 +1,68 @@
+### Original timeline scans and retained scalar evaluation (2026-10-15)
+
+Code commit 31e2146095fca91dd8b9acbff1c37aa6c5027451 implements complete Main8003ef80..8003f0f4: both
+timeline scans, predecessor/successor stores and fresh rereads, signed nonloop
+clamps, original discrete state and fraction. It preserves independent selected
+time captures, equal/NaN comparison behavior, signed count<=0 reads, real
+pre-table access, modulo pointer arithmetic, changed clamp counts and fresh
+ZERO. Loop wrap retains its old numerator while rereading current/control/base/
+END/keytime for its new denominator. No arbitrary count/index/finite clamp,
+empty success or substituted state is introduced.
+
+A retained scalar owner now composes the time and timeline children through
+8003ee08..8003f0f4. Successful clock/conversion/publications do not replay when
+later scans/state/fraction suspend. Real VM/pool aliases reuse guarded word/
+store services. Native fixture holds after actual R80, changes epoch and resumes
+only R30; time conversion remains 1. Source scans yield once per taken backedge
+without an original total cap, requiring the same producer pass across visits.
+Cursors are fixed-size with no per-invocation allocation. Remaining cache and
+geometry evaluation are explicit future owners; this is not full Main success
+or normal Game NPC activation.
+
+[Contract](behavior/display/RETAINED_ANIMATION_MAIN_TIMELINE.md) and EVT-01
+record load/store order, source hash, ownership, scope and next tasks. Exact
+trace and 14 branch routes test every primitive hold, identity pinning, source
+mutation/reload graphs, empty/signed-negative/pre-first/NaN/equality, missing
+pre-table reads, huge-count yield and modulo addresses. Actual cold scalar
+publications match the admitted original source-backed sampler. Independent
+read-only controller/scalar/tests review and warning-enabled syntax checks
+found no substantive issues. Explicit source-derived route values supplement
+the hold comparisons; NaN output and equal-key consumption are asserted.
+
+Accepted isolated tree 0ce46c8ca6fa396bc3ad3b4dbdc3d52af12e2ae9 uses prior accepted source tree
+179bfa0bdcf66a8eee269a1d2a068a657ecea89a as base; 3966 tracked files audited
+exact. `TRIO_ENEMY_POSE_PACK=romfs CMAKE_BUILD_PARALLEL_LEVEL=4 make test`
+passed 438 C++ tests (56.4 seconds) and 212 Python tests (34.731
+seconds), zero skipped. `make all -j4 -o assets-ready SOUNDTRACK=gamecube`
+passed. ISO verifier passed 2 bodies/1773 instructions/17 constants/5 spans/
+2 imports/65 callers/one serialized example. All 2152 RomFS products and local
+gor_02.s remain byte-identical. No art/music/SFX/geometry/lighting, conversion,
+original story/dialogue or asset-source changes; no assets/PPC/binaries committed.
+
+Isolated ARM probe passed scans/holds/captures/wrap/signedCounts/pretable/yields/
+actualScalar/noTimeReplay assertions. Normal runtime source restored/rebuilt;
+identical pre/post normal SHA256 a5a12d9be5b639c33993203e98c5369b5a67fb2a8b3ce8e6966ad814c6689950. Forty-second normal startup
+capture inspected: original storybook and opening US text, App60 FPS / speed100%, no visible asset-error console. Startup is not original field/numeric/
+visual or physical New 2DS XL performance proof. Exact source/product/native
+logs, hashes, private harness patch and captures are in ignored
+`artifacts/animation-timeline-validation-manifest.json`. Code/docs committed
+separately, preserving shared index and unrelated concurrent work.
+
+Next implement the FULL original cache replay8003f0f4..80040084, using ignored
+artifacts/npc-main-parent-evidence/animation-main-cache-replay-notes.txt and
+source hash deddfdb5cd40f62358936c795006712e2d7e951a0040a47b881e6c1e8e5099cb.
+Preserve entry captures/counts, base-copy/rebuild range and post-copy index
+reread, both replay paths and all five stream graphs. Vector triples load all
+three signed-byte deltas before destination writes; texture bulk/remainder
+positions have different read order. Copy providers require original byte-copy
+direction and do/while word-copy zero-count semantics, or explicit admitted
+acceleration domains. Existing synchronous raw kernels are not universal
+alias-faithful retained substitutes. Keep final R3c/R40 publication after
+interpolation, then compose full Main/Inner and real platform/linked/queue/GPU
+owners, activate source NPCs in normal Game, and compare original field/event/
+dialogue/numeric behavior and New 2DS XL performance. EVT-01, the full goal and
+the wider Rogueport/prologue/remake remain unfinished.
+
 ### Original retained Main clock and selected sample time (2026-10-15)
 
 Code commit c8447353781a76a8d6ed2e412d681797c856cca2 implements complete nonnull Main8003ee08..8003ef80

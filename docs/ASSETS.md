@@ -2823,3 +2823,12 @@ regeneration skipped; Python fixtures independently use read-only ISO/empty
 temporary outputs. Existing message/font/icon bytes/conversions unchanged.
 Nintendo/Intelligent Systems rights retained; local tracking grants no new license.
 No ISO, extracted original or compiled binary committed.
+### Retained timeline/scalar evaluation asset check (2026-10-15)
+
+This source-only continuation changes no extraction, conversion, asset paths,
+original story/dialogue, art/audio, geometry or lighting. All 2152 private RomFS
+products and local gor_02.s retain the exact prior time-continuation hashes.
+The current check is pinned in artifacts/animation-timeline-assets-after.json
+and artifacts/animation-timeline-validation-manifest.json. Original Nintendo/
+Intelligent Systems rights remain reserved; original resources, source listings,
+packs, ISO and executables remain private/ignored.

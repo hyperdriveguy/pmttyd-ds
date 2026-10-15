@@ -5209,3 +5209,16 @@ zero sign in both retained and existing sampler paths. Retained evaluation
 continues to require original timeline/cache/interpolation owners; full Main,
 normal NPC activation and original field visual/numeric/hardware parity remain
 OPEN. No synchronous partial evaluator is relabeled atomic. EVT-01 is not closed.
+
+### 2026-10-15 Retained Main timeline scans and scalar owner
+
+[Timeline continuation](../behavior/display/RETAINED_ANIMATION_MAIN_TIMELINE.md)
+implements source8003ef80..f0f4 and composes time/scans through the successful
+R30 boundary. Independent scan-time captures, signed counts/clamps, predecessor
+rereads, pre-table state, wrap numerator/denominator captures and fresh ZERO
+are retained over holds and bounded scan yields. Actual VM/pool scalar fixtures
+hold afterR80 and resume onlyR30 with conversion still1. Full original cache
+replay/interpolation/platform/linked/GPU owners, normal NPC activation and
+original visual/numeric/hardware parity remain OPEN; EVT-01 is not closed.
+Read-only next-stage audit records full replay source and copy/alias traps in
+ignored artifacts/npc-main-parent-evidence/animation-main-cache-replay-notes.txt.
