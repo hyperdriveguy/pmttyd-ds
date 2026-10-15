@@ -2622,3 +2622,12 @@ add_executable(native_source_window_memory_tests tests/native_source_window_memo
 target_link_libraries(native_source_window_memory_tests PRIVATE ttyd_core)
 add_test(NAME native_source_window_memory COMMAND native_source_window_memory_tests)
 set_tests_properties(native_source_window_memory PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Retained original field battle USER_FUNC parents and actual caller VM bridge.
+target_sources(ttyd_core PRIVATE source/field/field_npc_battle_event.cpp)
+add_executable(field_npc_battle_event_tests tests/field_npc_battle_event_tests.cpp)
+target_link_libraries(field_npc_battle_event_tests PRIVATE ttyd_core)
+add_test(NAME field_npc_battle_event COMMAND field_npc_battle_event_tests)
+if(EXISTS "${CMAKE_SOURCE_DIR}/romfs/harbor-program.bin")
+    add_test(NAME field_npc_battle_event_original COMMAND field_npc_battle_event_tests "${CMAKE_SOURCE_DIR}/romfs")
+endif()

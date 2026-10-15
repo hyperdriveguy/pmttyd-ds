@@ -3521,3 +3521,5 @@ bytes nor native panel residency creates source completion.
 [Ownership contract](behavior/display/NATIVE_SOURCE_WINDOW_MEMORY.md).
 Original Nintendo/Intelligent Systems rights are retained; no new license or
 redistribution rights are granted. No original payload or ISO is committed.
+
+Harbor battle callback recovery (2026-10-15): original US ISO opened read-only for complete DOL start8004ef54/b8, wait8004eed8/7c, get_reglid8004f894/58 and original gor.rel beforebattle inventory. Evidence/provenance stays in artifacts/harbor-battle-handoff-evidence; no new runtime pack, asset conversion, dialogue/art/audio edit or redistribution grant. Existing Nintendo/Intelligent Systems original rights unchanged.

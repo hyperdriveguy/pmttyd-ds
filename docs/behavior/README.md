@@ -1402,3 +1402,5 @@ Original battle menu native resource/queue owners:
 
 - [Original Mario DVD root pointer](platform/ORIGINAL_MARIO_DVD_ROOT.md).
 - [Native source window process memory](display/NATIVE_SOURCE_WINDOW_MEMORY.md).
+
+- [Retained original harbor battle callbacks](field/NATIVE_HARBOR_BATTLE_CALLBACKS.md): source start/wait/regular-EVT-ID parents, actual caller VM bridge and pending-owner limits.

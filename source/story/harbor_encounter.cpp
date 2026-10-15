@@ -43,6 +43,9 @@ struct HarborEncounterRuntime {
     struct Move {std::array<float,3> start{},target{};uint64_t begin=0,end=0;bool active=false;};
     std::array<Move,5> moves{};FieldScriptedJump jump;bool jumpLive=false;
     std::unordered_map<uint32_t,uint64_t> waits;
+    std::unordered_map<uint32_t,std::unique_ptr<NativeFieldNpcBattleScriptCall>> battleCalls;
+    std::vector<std::unique_ptr<NativeFieldNpcBattleScriptCall>> retiredBattleCalls;
+    uint32_t retiredBattlePending=0;
     EventNativeRuntime vm;
     // Authored guest GP0x81000000; clock callback is the GameCube243MHz rate,
     // not handheld wall time. GP timestamp converts caller ms via eventClockRate.
@@ -53,7 +56,11 @@ struct HarborEncounterRuntime {
         p.truncate=[](void*,float v)->int32_t{assert(std::isfinite(v) && double(v)>=-2147483648. && double(v)<2147483648.);return int32_t(v);};
         p.divideWord=[](void*,int32_t a,int32_t b){assert(b);return a/b;};
         p.flushBlock=[](void*,uint32_t){};p.systemCall=[](void*){};
-        p.call=[](void* p,EventEntry& e,uint32_t fn,int32_t first){return static_cast<HarborEncounterRuntime*>(p)->call(e,fn,first!=0);};return p;
+        p.call=[](void* p,EventEntry& e,uint32_t fn,int32_t first){return static_cast<HarborEncounterRuntime*>(p)->call(e,fn,first!=0);};
+        p.retiring=[](void* p,const EventEntry& e){auto& r=*static_cast<HarborEncounterRuntime*>(p);auto i=r.battleCalls.find(e.id);if(i==r.battleCalls.end())return;
+            if(!i->second->releaseForRetirement()){r.retiredBattlePending=i->second->pending();r.retiredBattleCalls.push_back(std::move(i->second));}
+            r.battleCalls.erase(i);
+        };return p;
     }
     // Arguments are guest32-bit words at stride4. Strings cap256 bytes including
     // the required terminator; unknown actor names fail rather than aliasing.
@@ -139,7 +146,14 @@ struct HarborEncounterRuntime {
         case 18:setEventValue(e,operand(e,0),scene->hp,vm.interpreterServices().operands);return 2;
         case 19:scene->hp=value(e,0);return 2;
         case 20:if(npc(e,0)!=2){scene->failed=true;return 0;}scene->battleSetup=value(e,1);return 2;
-        case 21:scene->battleRequested=true;scene->pendingService=function;return 0;
+        case 21:case 22:case 23:{
+            if(found->second==21)scene->battleRequested=true;
+            int32_t result=0;
+            auto& cursor=battleCalls[e.id];
+            if(!cursor)cursor=std::make_unique<NativeFieldNpcBattleScriptCall>();
+            if(!cursor->step(function,e,first,vm,scene->battleServices,result)){scene->pendingService=cursor->pending();return 0;}
+            battleCalls.erase(e.id);scene->pendingService=0;return result;
+        }
         default:scene->pendingService=function;return 0; // Unbound wait/registry services never fabricate completion.
         }
     }
@@ -173,11 +187,14 @@ bool HarborEncounter::begin(uint64_t time,std::array<float,3> mario,int health,b
 // movement then text then VM, so callback completion sees current text/roots.
 // admitted tracks nonzero key-depth (not a permanent latch); finished requires
 // allocationCount==0, including child events, not merely root return.
+bool HarborEncounter::battlePending() const{return runtime_ && (!runtime_->battleCalls.empty() || !runtime_->retiredBattleCalls.empty());}
 void HarborEncounter::tick(uint64_t time,uint32_t keys,std::optional<float> support){
+    if(runtime_ && runtime_->retiredBattlePending){pendingService=runtime_->retiredBattlePending;finished=false;return;}
     if(!running() || failed || time<now || !runtime_)return;
     now=time;auto& r=*runtime_;r.scene=this;r.floor=support;r.advance();
     if(message.active())message.tick(now,keys);
     r.vm.gp.timestamp=now*eventClockRate(243000000);r.vm.runManager();
+    if(r.retiredBattlePending){pendingService=r.retiredBattlePending;finished=false;return;}
     admitted=keyDepth!=0;story=readSavedSwitch(SavedSwitchFamily::GlobalByte,0,r.vm.interpreterServices().operands);
     finished=r.vm.runtime.allocationCount==0;
 }

@@ -190,3 +190,7 @@ Addendum: the mask-set arm tail is also verified. `0x8034f038` is
 by `00000002` END_EVENT at8034f044 before `00000021` END_IF at8034f048 — so the
 mask2 arm ends the event and does not fall through to the terminal
 `InterruptStop(0)`.
+
+Implementation breadcrumb (2026-10-15): [retained harbor callbacks](../behavior/field/NATIVE_HARBOR_BATTLE_CALLBACKS.md) now preserve complete source start/wait/get_reglid parents and optional actual-caller-VM composition. Fresh source evidence: artifacts/harbor-battle-handoff-evidence. Corrected stale EVT_NPC_BATTLE_START/WAIT_BATTLE_END documents. No fabricated outcome/sequence2 or production fixture provider; shared harbor ownership, original result producer, full teardown/field return, two sailor regular-event owners and postbattle remain OPEN.
+
+- [ ] Bind real shared harbor NPC/regular-event ownership and the caller scheduler before its postbattle get_reglid/DELETE_EVENT pair. Independent-VM IDs cannot be copied into the story scheduler as replacements.

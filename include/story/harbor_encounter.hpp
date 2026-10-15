@@ -1,6 +1,7 @@
 #pragma once
 #include "message_playback.hpp"
 #include "field_scripted_jump.hpp"
+#include "field_npc_battle_event.hpp"
 #include <array>
 #include <memory>
 #include <vector>
@@ -33,11 +34,15 @@ public:
     std::vector<std::string> messageOrder;
     std::vector<HarborEncounterCamera> cameras;
     std::vector<HarborEncounterRequest> requests;
+    // Optional actual field services; supplied owners must survive held calls.
+    // The development Game battle fixture does not satisfy this binding.
+    BattleSequenceEntryServices battleServices;
     // time/tick use milliseconds; resume initializes source LW0=1 (fresh0).
     // Repeated begin is rejected until the caller explicitly resets the owner.
     // floor is native jump support, distinct from VM request coordinates.
     bool begin(uint64_t time,std::array<float,3> mario,int hp,bool resume);
     void tick(uint64_t time,uint32_t keys,std::optional<float> floor={});
+    bool battlePending() const;
     bool running() const{return triggered && !finished;}
     bool locked() const{return running() && (keyDepth!=0 || !controlEnabled);}
 private:

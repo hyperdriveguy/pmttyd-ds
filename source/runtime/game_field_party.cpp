@@ -2,7 +2,7 @@
 namespace ttyd {
 // Weak entry/removal leases and the professor's retained party child all
 // serialize party mutation. Expiry is lease completion, not a source query.
-bool Game::nativePartyPending() const{return !fieldParties.nativeEntryOwner.expired() || !fieldParties.nativeRemovalOwner.expired() || professorStory.nativePartyPending();}
+bool Game::nativePartyPending() const{return !fieldParties.nativeEntryOwner.expired() || !fieldParties.nativeRemovalOwner.expired() || professorStory.nativePartyPending() || harborEncounter.battlePending();}
 FieldPartyScriptBindings Game::fieldPartyScriptBindings(){
  // Native sessions bind the actual shared source namespace. Legacy standalone
  // scene harnesses retain their explicitly partial projection behavior.

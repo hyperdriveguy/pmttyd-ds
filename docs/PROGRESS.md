@@ -15299,3 +15299,40 @@ tutorial battle activation and visible audience interruption remain open. No
 source-ready flags are inferred; no dialogue/story changes or hardware/PPC
 parity claim. Original payloads, packs, binaries and ISO stay outside history.
 The full remake goal remains active.
+
+### Retained harbor battle callback handoff (2026-10-15)
+
+Implemented complete original start8004ef54, wait8004eed8 and get_reglid8004f894 parents with retained unavailable-child continuations. Native source return0 ends the invocation; subsequent original polls re-read owners. The actual caller VM supplies integer operands/output; field services are separately supplied and pinned. The original extra read crosses into the next wait header; registry output reads NPC11c before destination and returns1, preserving interpreter cadence. Corrected two stale event callback documents against fresh complete original DOL evidence.
+
+HarborEncounter now routes its three original callbacks through this optional binding. Missing genuine services remain blocked. Bound children retired by their actual event are quarantined; pending scene ownership gates existing Game handoffs. Original harbor playback tests reach the distinct wait after late field binding while keeping sequence4/result0/story4. No production fake NPC/result/sequence or development battle shortcut was added.
+
+Validation: CMAKE_BUILD_PARALLEL_LEVEL=6 make test exits 0: 492/492 C++
+(75.07s), 223/223 Python (44.800s), zero skipped. Focused retained-parent,
+actual-caller and original harbor fixtures pass. Native make all -j6
+-o assets-ready SOUNDTRACK=gamecube TARGET=ttyd-harbor-battle-handoff exits 0;
+private ARM fixture build exits 0 using 524 exact final production objects,
+with only main rebuilt after exact source/include/RomFS audit. Final host,
+native, private ARM and both emulator handles observed terminal 0. Existing
+compiler/Pillow warnings remain. Initial broad run passed 491/492 C++; its hit
+registry test could not create its scratch file because this session omitted
+artifacts/reference from the new isolated validation setup. Restored that one
+accepted reference input and scratch directory, then reran full make test;
+no code or executable change was needed for that setup correction.
+
+Both isolated 45-second Azahar checks exit 0. Viewed normal capture shows
+original opening-book art; private capture is black after all 11 strict ARM
+markers pass. No private scene visual claim. Assertions cover start/resume,
+extra read, wait gate/cleanup, regular ID/return1, actual caller/captured args,
+late binding and original harbor stopping at sequence4/result0/story4.
+Retirement classification is tested; actual Harbor deletion/quarantine routing
+has code review, not an automated deletion fixture. User profiles/saves untouched.
+
+Frozen accepted Professor source plus scoped changes audits 4243 source files,
+2166 runtime products, 778 private inputs and one reference input. No runtime
+asset/input delta; original recovery reads ISO only. Journal, evidence, logs,
+binaries, captures and exact hashes are recorded in ignored
+artifacts/harbor-battle-handoff-validation-manifest.json. Concurrent foreign
+work is preserved and excluded from this isolated validation. No hardware,
+pixel/audio parity or performance improvement is claimed.
+
+The genuine shared harbor NPC/configuration/sequence owner, complete tutorial turn/result/ending/teardown path, sailor regular-event owners and afterbattle child remain unfinished. Full prologue and visual/hardware/performance parity are not claimed. Next: bind actual shared field and battle owners, then complete original result/teardown and postbattle event execution; keep RESULT-01/DEMO-01 and the overall goal active.
