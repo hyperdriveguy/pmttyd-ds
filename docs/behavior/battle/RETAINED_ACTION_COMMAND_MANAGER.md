@@ -81,3 +81,28 @@ VM/pad/queue owners with explicit provisioner constants and an unavailable callb
 fixture. It verifies TimingA once per sample, repeated calls, missing physical
 samples, retained unknown callbacks and suppression of incomplete icons. These
 are integration fixtures, not observed original console timing.
+
+
+## Native Trio source Main admission
+
+The Trio completion Main now delegates `800fa5b0` to the retained manager with
+its actual VM, private pad at `B+1d1c`, and the parent invocation's pinned physical
+sample. A held child cannot repeat this successful pad update. TimingA Main
+`8012aae0` reads and writes actual command work; only TimingA state1002 clears
+all four callback slots. An ordinary completed zero return leaves the manager
+responsible for clearing Main alone and freshly reading Display.
+
+The display child registers into the actual Trio DisplayQueue with original
+camera8/class1, borrowed BattleWork and source priority. Queue unavailability
+retains that registration; original NaN rejection completes the attempted source
+call without inserting a record. Registration does not execute or prove the
+original UI callback. Unknown Main callbacks, including Hammer until its real
+sound/lifetime owner is admitted, retain their original callback identity and
+remain unavailable. This binding does not use the legacy Hammer sound-request
+vector as completed audio.
+
+The separate legacy active action loop is unchanged. This integration is reached
+through the existing completion Main; complete source Phase/Move/Act, active
+scheduling, action callback rendering, and physical audience interruption remain
+required. The native Trio fixture checks the entire private-pad block stays
+unchanged when a later A sample arrives during an actual held source display.

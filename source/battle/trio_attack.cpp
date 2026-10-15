@@ -1,6 +1,7 @@
 #include "trio_attack.hpp"
 #include "trio_enemy_pose_resources.hpp"
 #include "battle_main_continuation.hpp"
+#include "battle_action_manager_continuation.hpp"
 #include "battle_turn_continuation.hpp"
 #include "battle_event_barrier_continuation.hpp"
 #include "battle_audience_turn_end_continuation.hpp"
@@ -2454,6 +2455,45 @@ struct TrioAttackRuntime {
         if(resumePackedBattleCheckAllPinch(battle,mode,s,sourcePinch))return true;
         pending=sourcePinch.pending()?sourcePinch.pending():0x8011efd8;return false;
     }
+    BattleActionManagerCursor sourceAction;
+    // Whole original manager owns the private-pad update and captures Main once.
+    // Its parent pins completionSample across suspension. The legacy action loop
+    // above remains separate until the original active sequence is fully bound.
+    bool resumeSourceAction(uint32_t battle) {
+        if(battle!=Battle){pending=0x800fa5b0;return false;}
+        BattleActionManagerServices s;s.memory=nativeBattleActorServices(vm);s.user=this;
+        s.pad=[](void* p,uint32_t address,int32_t channel){
+            auto& r=*static_cast<TrioAttackRuntime*>(p);
+            if(channel!=0 || address!=Battle+0x1d1c)return false;
+            r.readPad(address,r.privatePad);r.privatePad.update(r.completionSample);
+            r.writePad(address,r.privatePad);return true;
+        };
+        s.main=[](void* p,uint32_t callback,uint32_t b)->std::optional<int32_t>{
+            auto& r=*static_cast<TrioAttackRuntime*>(p);
+            if(b!=Battle || callback!=0x8012aae0)return {};
+            TimingACommand command;
+            command.state=int32_t(r.word(b+0x1c9c));command.finishCountdown=int32_t(r.word(b+0x1f54));
+            command.flags=r.word(b+0x1f50);command.classification=int32_t(r.word(b+0x1ce8));
+            for(unsigned i=0;i<command.scratch.size();++i)command.scratch[i]=r.word(b+0x1f20+4*i);
+            const auto result=command.tick();
+            r.word(b+0x1c9c,command.state);r.word(b+0x1f54,command.finishCountdown);
+            r.word(b+0x1f50,command.flags);r.word(b+0x1ce8,command.classification);
+            for(unsigned i=0;i<command.scratch.size();++i)r.word(b+0x1f20+4*i,command.scratch[i]);
+            // TimingA state1002 owns all four clears. Ordinary Main result0
+            // clears only Main in the retained manager, then rereads Display.
+            if(!command.callbacksLive)
+                for(const auto offset:{0x1ca0u,0x1ca8u,0x1ca4u,0x1cacu})r.word(b+offset,0);
+            return result;
+        };
+        s.display=[](void* p,int32_t camera,int32_t drawClass,uint32_t callback,uint32_t argument,float priority){
+            auto& r=*static_cast<TrioAttackRuntime*>(p);
+            // This is actual deferred registration, not callback execution. The
+            // camera/display owner must still execute the original UI callback.
+            return r.displayQueue.enter(uint32_t(camera),drawClass,callback,argument,priority)!=DisplayAdmission::Unavailable;
+        };
+        if(resumePackedBattleActionCommandManager(battle,s,sourceAction))return true;
+        pending=sourceAction.pending()?sourceAction.pending():0x800fa5b0;return false;
+    }
     BattleSequenceDispatchCursor sourceSequence;
     BattleMainCursor completionMain;
     BattlePadSample completionSample;
@@ -2502,10 +2542,7 @@ struct TrioAttackRuntime {
                 if(!r.pending)r.pending=r.sourceSequence.pending()?r.sourceSequence.pending():fn;
                 return false;
             }
-            if(fn==0x800fa5b0) {
-                r.readPad(captured+0x1d1c,r.privatePad);r.privatePad.update(r.completionSample);
-                r.writePad(captured+0x1d1c,r.privatePad);r.actionManager();return !r.pending;
-            }
+            if(fn==0x800fa5b0)return r.resumeSourceAction(captured);
             if(fn==0x80149798){if(r.updateStageObjects())return true;r.pending=fn;return false;}
             // Sixteen source auxiliary icons+0x182cc/stride 0x9c: active bit 1 plus
             // nonzero handle+0x1c blocks unavailable animation work. Never clear
