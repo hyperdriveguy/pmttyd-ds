@@ -1,6 +1,9 @@
 #pragma once
 #include "battle_jump_motion.hpp"
 
+// Typed movement API, not a guest-layout alias. firstCall gates setup but
+// wrappers re-resolve operands each invocation. Timing is source simulation
+// visits; no provider false/rollback cursor is supplied here.
 namespace ttyd {
 struct MovePositionArguments {
     JumpVector destination{}; // Immediately converted signed integer operands.

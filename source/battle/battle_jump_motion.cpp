@@ -4,6 +4,8 @@
 
 namespace ttyd {
 namespace {
+// Recovered binary32 Pi/tau, not exact host double constants. Motion advances
+// once per source visit, without render dt. Wrapped count arithmetic is deliberate.
 constexpr float Pi=3.1415927410125732f,TwoPi=6.2831854820251465f;
 uint32_t word(const uint8_t* p) {
     return uint32_t(p[0])<<24|uint32_t(p[1])<<16|uint32_t(p[2])<<8|p[3];
@@ -29,6 +31,8 @@ float sine(const JumpMotionServices& s,float angle) {
     assert(s.sin);return static_cast<float>(s.sin(s.user,static_cast<double>(angle)));
 }
 float radians(float angle) {return div(mul(TwoPi,angle),360.f);}
+// Double FMA factor0.53(mode<3)/0.8(other)*sin(theta)+1, then phase advance
+// and binary32 rounding. These are source curve coefficients, not measured tuning.
 void advancePhase(MarioJumpUnit& u,int32_t mode,const JumpMotionServices& s) {
     const float q=sine(s,radians(u.angle));
     const double factor=std::fma(mode<3?0.53:0.8,static_cast<double>(q),1.0);
@@ -41,6 +45,10 @@ void set(MarioJumpUnit& u,JumpVector p,const JumpMotionServices& s) {
     assert(s.setPosition);s.setPosition(s.user,u,p);
 }
 }
+// Destination: keys0/4, periods c/e/10, countdown12, toggle14, handle18.
+// Reset toggle/handle BEFORE source reads, so overlapping input/output matters.
+// Mode-2 retains keys/periods;-1 type0..3 selects8/18/0/28(hex), type2 zeros
+// periods. Other modes clear. Final countdown copies initial period c.
 void loadUnitSoundMode(int32_t type,int32_t mode,const uint8_t* source,uint8_t* d) {
     assert(d);halfZero(d+0x14);word(d+0x18,0xffffffff);
     if(mode==-1) {
@@ -70,6 +78,8 @@ float reviseJumpAngle(float input,const JumpMotionServices& s) {
     if(result<0.f) {result=add(result,360.f);if(result>=360.f)result=0.f;}
     return result;
 }
+// Exact FLOAT sentinel-250000000 retains each axis. EVT raw-operand
+// sentinel handling belongs to wrappers; do not infer it from resolved values.
 void setMoveCurrentPosition(MarioJumpUnit& u,JumpVector p) {
     if(p.x!=-250000000.f)u.baseline.x=p.x;
     if(p.y!=-250000000.f)u.baseline.y=p.y;
@@ -106,6 +116,9 @@ int marioJumpMotion(MarioJumpUnit& u,MarioJumpEvent& e,const MarioJumpArguments&
             u.phase=0.f;u.phaseIncrement=div(Pi,n);u.speed=add(u.speed,div(residual,n));
             u.angle=90.f;
             u.angleStep=a.mode<3?div(360.f,n):static_cast<float>(360/u.remaining);
+            // Height ((distance-20)/6)+47 rounds after EACH double step;
+            // modes2/4 multiply1.12/1.25. Initial theta90; float360/n when
+            // mode<3, INTEGER360/remaining otherwise. No derived-zero force1.
             u.height=static_cast<float>(static_cast<double>(u.distance)-20.0);
             u.height=static_cast<float>(static_cast<double>(u.height)/6.0);
             u.height=static_cast<float>(static_cast<double>(u.height)+47.0);
@@ -117,6 +130,12 @@ int marioJumpMotion(MarioJumpUnit& u,MarioJumpEvent& e,const MarioJumpArguments&
             if(sound) {assert(s.playSound);s.playSound(s.user,sound,u.baseline);}
         }
     }
+// Event phases1 trajectory, 2 eligibility, 3 continuation. Mode1 selects2
+// without ordinary setup. Trajectory exact-zero countdown differs from linear
+// movement signed>0; last signed remaining<3 may clamp upward to targetY.
+// Completion/phase2 retain negative self-subtraction and gravity1.7999999523162842.
+// Phase2 divisor16.5, phase3 horizontal divisor33 are original continuation scalars;
+// neither is dt. Two phase3 sine calls stay separate and callback-observable.
     switch(e.phase) {
     case 1: {
         u.baseline.x=add(u.baseline.x,u.delta.x);
@@ -167,6 +186,10 @@ int marioJumpMotionEvent(MarioJumpEvent& e,const std::array<int32_t,7>& operands
     auto* u=event.unit(event.user,a.actor);assert(u);
     return marioJumpMotion(*u,e,a,firstCall,motion);
 }
+// Distance>60 adds trunc((distance-60)*binary32 .15) to candidate with
+// word wrap. Requested0 derives from speed; otherwise final is max(request, candidate).
+// No zero-speed guard/force1. Parameter wrapper resolves Y but discards it;
+// RESULT sentinel-250000000 suppresses output, not raw destination equality.
 int32_t marioJumpCount(MarioJumpUnit& u,float x,float z,int32_t requested,
                        const JumpMotionServices& s) {
     const auto current=get(u,s);assert(s.distance);

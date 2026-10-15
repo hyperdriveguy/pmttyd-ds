@@ -13,6 +13,9 @@ float add(float a,float b) {return a+b;}
 BattlePositionUnit& unit(const TakeoffServices& s,void* work,int32_t id) {
     auto* u=s.unit(s.user,work,id);assert(u);return *u;
 }
+// Capture work before operands; resolve actor/target/part, retain own homeY
+// and target hitXZ. Side narrows to signed8; bias is negated LOW8 of side byte.
+// Sample null weapon, admission01001240, attributes01000000, then ALWAYS choose4.
 template<class Sample,class Choose>
 int takeoff(const std::array<int32_t,6>& operands,const TakeoffServices& s,
             const BattleHitPositionServices& hit,Sample sample,Choose choose) {
@@ -34,6 +37,10 @@ int takeoff(const std::array<int32_t,6>& operands,const TakeoffServices& s,
     const int32_t sampled=sample(buffer,actorId,belong,bias);
     int32_t chosenUnit,chosenPart;
     choose(buffer,chosenUnit,chosenPart); // Register return is ignored.
+    // Positive signed count can replace only X with nearer candidate. Pointer
+    // equal requested/chosen part gives60, otherwise30; sample swap scalar negates
+    // magnitude. Empty/nonpositive uses+60 without sample-sign reversal. Fresh
+    // side read multiplies offset. All3 raw outputs write, including sentinels.
     if(buffer.count>0) {
         chosenUnit=s.translate(s.user,chosenUnit);auto& candidate=unit(s,work,chosenUnit);
         auto* part=getPositionPart(candidate,chosenPart);assert(part);
@@ -64,6 +71,9 @@ int jumpTakeoffPositionEvent(const std::array<int32_t,6>& operands,const Takeoff
 int jumpTakeoffPositionEvent(const std::array<int32_t,6>& operands,const TakeoffServices& s,
                              const BattleHitPositionServices& hit,const CandidateSamplingServices& sampling,
                              const CandidateChoiceServices& choice) {
+    // Semantic view points only at this local buffer. Re-read signed count
+    // after choosing because output callbacks can mutate it. Separate native
+    // output userdata avoids replacing the sampling/choice service owner.
     BattleCandidateBuffer privateBuffer;
     return takeoff(operands,s,hit,[&](TakeoffSample& view,int32_t actor,int8_t belong,int8_t bias) {
         const int32_t result=sampleBattleCandidates(privateBuffer,nullptr,actor,belong,0x01001240,0x01000000,bias,sampling);

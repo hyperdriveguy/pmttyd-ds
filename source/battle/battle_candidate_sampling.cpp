@@ -18,16 +18,23 @@ float div(float a,float b) {return a/b;}
 unsigned row(int32_t i) {assert(i>=0);return 4+36*i;}
 SamplingUnit& unit(const CandidateSamplingServices& s,void* w,int32_t id) {auto* u=s.unit(s.user,w,id);assert(u && u->data);return *u;}
 SamplingPart& part(const CandidateSamplingServices& s,const BattleCandidateBuffer& b,int32_t i) {assert(s.part);auto* p=s.part(s.user,half(b,row(i)),half(b,row(i)+2));assert(p && p->position);return *p;}
+// Private native bytes compact with memmove36-byte rows. This is distinct
+// from packed sampler's observable per-word services; do not claim both alias traces.
 void remove(BattleCandidateBuffer& b,int32_t index,int32_t& count) {
     assert(count>index && row(count)<=b.bytes.size());
     std::memmove(b.bytes.data()+row(index),b.bytes.data()+row(index+1),36*(count-index-1));--count;
 }
 }
+// Source bucket: if X>-800, trunc((800+X)/40); upper cap48 only. Negative
+// signed direction mirrors48-q. No generic range clamp or screen coordinate transform.
 int32_t samplingForwardLevel(float x,int8_t direction,const CandidateSamplingServices& s) {
     int32_t q=0;if(x>-800.f) {assert(s.truncate);q=s.truncate(s.user,div(add(800.f,x),40.f));}
     if(q>48)q=48;
     return direction<0?48-q:q;
 }
+// Publish semantic weapon separately; metadata ab8/abc/ac0/ac4/ac8 retains
+// actor/side/admission/attributes/direction. Actor statusFlags10 swaps exclusive
+//100/200 via XOR300; return1 reports swap, not count. Update recaptures work.
 int sampleBattleCandidates(BattleCandidateBuffer& b,DamageWeapon* weapon,int32_t actor,int32_t belong,
                           uint32_t admission,uint32_t attributes,int32_t direction,const CandidateSamplingServices& s) {
     b.weapon=weapon;word(b,0xab8,static_cast<uint32_t>(actor));b.bytes[0xabc]=static_cast<uint8_t>(belong);
@@ -41,6 +48,10 @@ int sampleBattleCandidates(BattleCandidateBuffer& b,DamageWeapon* weapon,int32_t
 }
 void updateBattleCandidates(BattleCandidateBuffer& b,const CandidateSamplingServices& s) {
     assert(s.captureWork && s.unit);void* work=s.captureWork(s.user);
+    // Admission80000000 publishes signed count-1 only, without clearing old
+    // rows/cursor. Ordinary scan64 slots, declared partCount, offset layers188/194;
+    // shared scale snapshot per part. Sort Z adds5, lane threshold<-30, bias adds
+    //300*direction and forwardBias*part direction. Signed16 narrowing precedes keys.
     if(word(b,0xac0)&0x80000000) {b.bytes[0xa6c]=0xff;return;}
     assert(s.status27 && s.worldPosition && s.truncate);int32_t total=0;
     for(int32_t id=0;id<64;++id) {
@@ -71,6 +82,10 @@ void updateBattleCandidates(BattleCandidateBuffer& b,const CandidateSamplingServ
         }
     }
     b.bytes[0xab7]=0;b.bytes[0xa6c]=static_cast<uint8_t>(total);int32_t n=sb(b.bytes[0xa6c]);
+    // Separate admission, attribute, same-unit preference and occlusion passes.
+    // Each pass captures its own mask/part fields per row; typed callbacks can
+    // mutate live semantic fields but do not create packed per-load sequencing.
+    // Monosiri is queried twice; second pointer is a native admitted invariant.
     for(int32_t i=0;i<n;) {
         auto& u=unit(s,work,half(b,row(i)));auto& p=part(s,b,i);const auto& d=*u.data;
         const uint32_t a=word(b,0xac0),f=p.position->attributes;const int32_t actor=signedWord(word(b,0xab8));const int32_t side=sb(b.bytes[0xabc]);
@@ -118,6 +133,9 @@ void updateBattleCandidates(BattleCandidateBuffer& b,const CandidateSamplingServ
     }
     b.bytes[0xa6c]=static_cast<uint8_t>(n);
     for(int32_t i=0;i<n;++i)b.bytes[0xa6d+i]=static_cast<uint8_t>(i);
+    // Publish count/identity ranks then pair-swap on wrapped10*bias+hitX.
+    // Positive direction swaps>, nonpositive<= (ties included). Not stable_sort;
+    // even strict swaps can indirectly reverse equal records.
     for(int32_t i=0;i<n-1;++i)for(int32_t j=i+1;j<n;++j) {
         const auto left=row(sb(b.bytes[0xa6d+i])),right=row(sb(b.bytes[0xa6d+j]));
         const int32_t lk=signedWord(10u*word(b,left+0x18)+static_cast<uint32_t>(half(b,left+4)));

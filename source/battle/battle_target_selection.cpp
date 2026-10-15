@@ -20,6 +20,9 @@ bool processPackedBattleTargetSelection(
     m.memory.storeByte(m.memory.user, at, v);
   };
   auto half = [&](uint32_t at) { return sh(m.memory.half(m.memory.user, at)); };
+  // B171c menu, type540; B428 candidate rows36. Cursor child publishes to
+  // actual mapped privateCursor. Capture old unit/part BEFORE refresh (even
+  // before refreshed count), then preserve their new rank if found, else rank0.
   const auto menu = b + 0x171c, type = word(menu + 0x540), buffer = b + 0x428;
   s.cursor(s.user, menu, type, s.privateCursor);
   const auto old = sb(byte(buffer + 0xab7)),
@@ -41,6 +44,9 @@ bool processPackedBattleTargetSelection(
   put(buffer + 0xab7, uint8_t(selected));
   const auto cursor = word(s.privateCursor),
              weapon = word(menu + 0x80 + 28 * word(cursor));
+  // Weapon64 mask01000000 permits repeat80000 then40000, independently.
+  // Signed cursor/count wrap; count>=2 emits movement key802efe98 even if
+  // both directions cancel net movement. This is not one merged input delta.
   if (word(weapon + 0x64) & 0x01000000) {
     if (s.repeat(s.user, 0x80000)) {
       put(buffer + 0xab7, uint8_t(byte(buffer + 0xab7) + 1));
@@ -59,6 +65,9 @@ bool processPackedBattleTargetSelection(
   }
   assert(s.endTarget && s.help && s.commandPose && s.offEnemyLight &&
          s.offLight);
+  // Cancel200 takes priority over confirm100 and skips audience on return.
+  // Sound2521, endTarget, menu6, clear battle ef4 mask4, help0, command pose;
+  // fresh type0/1 plus battle masks200/400 may select menu1/enemy-light off.
   if (s.trigger(s.user, 0x200)) {
     s.sound(s.user, 2521);
     if (!s.endTarget(s.user, b))
@@ -76,6 +85,9 @@ bool processPackedBattleTargetSelection(
     }
     return true;
   }
+  // Confirm: sound2520, lightOff(1, 1), menu29, endTarget, ef4 OR4. Type2
+  // on unit state20==0 with operation550==2/3 sets state8/5 then pays fixed
+  // weapon803553a8/80355468. Help2 follows; audience still runs afterward.
   if (s.trigger(s.user, 0x100)) {
     s.sound(s.user, 2520);
     s.offLight(s.user, 1, 1);
@@ -95,6 +107,8 @@ bool processPackedBattleTargetSelection(
     s.help(s.user, 2);
   }
   assert(s.audience);
+  // Audience nullopt is unavailable, false is completed-no-interrupt, true
+  // publishes B1c74=1, endTarget/help0. Returntrue does not invent outer P.
   const auto audience = s.audience(s.user);
   if (!audience)
     return false;
@@ -107,6 +121,9 @@ bool processPackedBattleTargetSelection(
   return true;
 }
 std::optional<int32_t>
+// Select attack before clearing menu+4 mask01000000 and battle ef8 mask1,
+// then lightOff(0, 0); return engaged1. Failure preserves prior source effects,
+// never fabricates a selected attack or a completed outer command controller.
 finalizePackedBattleCommand(uint32_t b, uint32_t u,
                             const BattleCommandFinalizeServices &s) {
   const auto &m = s.memory;

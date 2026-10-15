@@ -15,6 +15,9 @@ int32_t resolve(const JumpEventServices& s,int32_t raw) {assert(s.resolve);retur
 int32_t actor(const JumpEventServices& s,int32_t raw) {assert(s.translateActor);return s.translateActor(s.user,resolve(s,raw));}
 MarioJumpUnit& unit(const JumpEventServices& s,int32_t id) {assert(s.unit);auto* u=s.unit(s.user,id);assert(u);return *u;}
 }
+// Source binary32 tau6.2831854820251465 and degrees360 feed double trig,
+// then single results. Read destinations AFTER both calls; X write precedes Z
+// read, so aliased X/Z observes the updated X. Do not make an atomic vector add.
 void integrateMoveHorizontal(float* x,float* z,float speed,float heading,const JumpMotionServices& s) {
     assert(x && z && s.sin && s.cos);
     const float rad=div(mul(6.2831854820251465f,heading),360.f);
@@ -23,6 +26,10 @@ void integrateMoveHorizontal(float* x,float* z,float speed,float heading,const J
     *x=add(*x,mul(speed,sine));
     *z=add(*z,mul(-speed,cosine));
 }
+// Requested speed0 falls back to unit speed then1. Truncate quotient, add1
+// only for positive FMA residual; force exactly-zero count1, leave negatives.
+// This is not a generic ceil/absolute-distance policy. Raw EVT output sentinel
+// skips writing; Y is still integer-resolved before being discarded.
 int32_t queryMoveFrame(MarioJumpUnit& u,float x,float z,float requestedSpeed,const JumpMotionServices& s) {
     assert(s.getPosition && s.distance && s.truncate);
     const auto current=s.getPosition(s.user,u);
@@ -47,6 +54,10 @@ int queryMoveFrameEvent(const std::array<int32_t,6>& operands,const JumpEventSer
     if(output!=-250000000) {assert(event.store);event.store(event.user,output,n);}
     return 2;
 }
+// First captures baseline/target, heading/distance, direction only on nonzero
+// X delta. Derive zero count and force1, adjust residual speed; explicit count
+// divides distance. Publish baseline BEFORE wrapped decrement; remaining>0
+// controls sound/returns0, otherwise snap target/end sound/return1.
 int movePosition(MarioJumpUnit& u,MarioJumpEvent& e,const MovePositionArguments& a,bool firstCall,
                  const JumpMotionServices& s,const MovementSoundServices& sound) {
     if(firstCall) {

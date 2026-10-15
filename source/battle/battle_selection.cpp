@@ -7,6 +7,9 @@ int32_t signedWord(uint32_t v) {return v<=0x7fffffff?static_cast<int32_t>(v):sta
 int32_t signedByte(uint8_t v) {return v<128?v:int32_t(v)-256;}
 int32_t signedHalf(uint16_t v) {return v<0x8000?v:int32_t(v)-0x10000;}
 }
+// Candidate bufferB428: count a6c/cursor ab7/ranks a6d signed bytes;
+// rows24(hex)=36 bytes, unit/part signed halves0/2. Nonpositive count ->-1/-1.
+// Second half loads AFTER first output callback; do not snapshot both in advance.
 int selectedTargetEvent(const std::array<int32_t,2>& outputs,const BattleSelectionServices& s) {
     assert(s.currentWork && s.byte && s.half && s.store);
     const uint32_t work=s.currentWork(s.user),buffer=work+0x428;
@@ -20,6 +23,9 @@ int selectedTargetEvent(const std::array<int32_t,2>& outputs,const BattleSelecti
     const int32_t unit=signedHalf(s.half(s.user,row));s.store(s.user,firstOutput,unit);
     const int32_t part=signedHalf(s.half(s.user,row+2));s.store(s.user,secondOutput,part);return 2;
 }
+// Query acting unit420 before type rejection. Types0..8/10/14 have exact
+// cursor fields; 5/14 depend on Mario222. Unsupported types leave output cursor
+// untouched. Only kind-dependent branches require a nonnull actor here.
 bool findCommandCursor(uint32_t menu,uint32_t type,uint32_t& cursor,const BattleSelectionServices& s) {
     assert(s.currentWork && s.word && s.unit);
     const uint32_t current=s.currentWork(s.user);
@@ -43,6 +49,9 @@ bool findCommandCursor(uint32_t menu,uint32_t type,uint32_t& cursor,const Battle
     }
     cursor=menu+offset;return true;
 }
+// Captured work menu171c/type1c5c remains separate from helper's freshly
+// captured work/actor. Rows28 decimal, weapon pointer80. Nonplayer held-item
+// path uses original table803108a8, stride40 decimal, field24(hex).
 std::optional<uint32_t> selectedCommandWeapon(uint32_t capturedWork,const BattleSelectionServices& s) {
     assert(s.word);const uint32_t menu=capturedWork+0x171c;
     const uint32_t type=s.word(s.user,capturedWork+0x1c5c);

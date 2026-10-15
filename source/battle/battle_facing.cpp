@@ -16,6 +16,9 @@ std::array<float, 3> xyz(uint32_t at, const EventMemoryServices &m) {
   return v;
 }
 } // namespace
+// Capture initial B for alliance direction, but actor/target lookups each
+// read current global B. Mode&9 bypasses target actor translation; mode16
+// still performs its target lookup even if mode1 will later override direction.
 int32_t battleCalculateFaceDirectionEvent(EventEntry &e,
                                           const BattleFacingServices &s) {
   const auto &u = s.positions.unit;
@@ -45,6 +48,10 @@ int32_t battleCalculateFaceDirectionEvent(EventEntry &e,
       targetPart = packedUnitPart(target, targetPartId, m);
   }
   auto byte = [&](uint32_t at) { return sb(bytes.byte(bytes.user, at)); };
+  // Default retained actor189/part bd; mode4 overrides from alliance row+a;
+  // mode8 then overrides with motion188/part bc. Following mode16(targetX)
+  // then mode1(literal integer X) can override again; zero/unordered delta keeps
+  // prior direction. Mode100 negates the word LAST.
   int32_t direction = byte(actor + 0x189);
   if (actorPart)
     direction = byte(actorPart + 0xbd);
@@ -55,6 +62,9 @@ int32_t battleCalculateFaceDirectionEvent(EventEntry &e,
     if (actorPart)
       direction = byte(actorPart + 0xbc);
   }
+  // Facing query deliberately uses UNMIRRORED relative part offset X.
+  // Absolute mask10000000 uses part18; otherwise visible3c+offset24 via add.
+  // All3 axes still load. Do not substitute general part-world FMA/facing helper.
   auto x = [&](uint32_t unit, uint32_t part) {
     auto position = xyz(unit + 0x3c, m);
     if (part) {
@@ -88,6 +98,8 @@ int32_t battleCalculateFaceDirectionEvent(EventEntry &e,
   v.store(v.user, e, output, direction);
   return 2;
 }
+// Resolve actor then direction before fresh global/unit lookup. Narrow to
+// byte189 without clamping; does not change motion188, parts or event output.
 int32_t battleChangeFaceDirectionEvent(EventEntry &e,
                                        const BattleUnitEventServices &s) {
   const auto args = e.arguments;

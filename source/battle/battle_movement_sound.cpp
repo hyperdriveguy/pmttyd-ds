@@ -8,10 +8,16 @@ void word(uint8_t* p,uint32_t v) {p[0]=v>>24;p[1]=v>>16;p[2]=v>>8;p[3]=v;}
 uint16_t half(const uint8_t* p) {return uint16_t(p[0])<<8|p[1];}
 void half(uint8_t* p,uint16_t v) {p[0]=v>>8;p[1]=v;}
 int32_t signedHalf(const uint8_t* p) {const uint16_t v=half(p);return v<0x8000?v:int32_t(v)-0x10000;}
+// Forward source raw sentinel-250000000 and zero argument unchanged;
+// playback owns actual lookup, spatial interpretation and voice lifecycle.
 uint32_t trigger(MarioJumpUnit& u,uint32_t key,JumpVector position,const MovementPlaybackServices& s) {
     assert(s.trigger);return s.trigger(s.user,u,key,-250000000,0,position);
 }
 }
+// Keys0/4 snapshot on entry. First-only starts once at supplied position,
+// then updates handle18 from fresh unit/part position. Periodic decrements
+// signed half12 through0 to-1, toggles parity14, reloads e/10 and triggers with
+// original supplied position; it retains no voice handle. No-key path is no-op.
 void controlMovementSound(MarioJumpUnit& u,uint8_t* r,void* part,JumpVector supplied,
                           const MovementPlaybackServices& s) {
     assert(r);const auto initialPosition=supplied;
@@ -33,6 +39,8 @@ void controlMovementSound(MarioJumpUnit& u,uint8_t* r,void* part,JumpVector supp
     half(r+0x12,half(r+(firstTurn?0xe:0x10)));
     if(key)trigger(u,key,initialPosition,s);
 }
+// Only retained handle18 stops;-1 no-op. Clear only AFTER off callback.
+// Periodic one-shots have no retained handle to stop through this API.
 void endMovementSound(uint8_t* r,const MovementPlaybackServices& s) {
     assert(r);const uint32_t handle=word(r+0x18);
     if(handle==0xffffffff)return;

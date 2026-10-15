@@ -1,6 +1,9 @@
 #pragma once
 #include "battle_damage.hpp"
 
+// ACC(hex)-byte native buffer contains BE rows/metadata plus a SEPARATE
+// semantic weapon pointer. Never reinterpret native struct/bytes0 as guest weapon.
+// Weight indices0..73 and numeric/provider domains remain caller invariants.
 namespace ttyd {
 struct BattleCandidateBuffer {
     // Original record byte offsets/big endian integers, with a semantic weapon

@@ -9,6 +9,8 @@ int32_t add(int32_t a,int32_t b) {return signedWord(static_cast<uint32_t>(a)+sta
 int32_t byte(const BattleCandidateBuffer& b,unsigned offset) {assert(offset<b.bytes.size());const uint8_t v=b.bytes[offset];return v<128?v:int32_t(v)-256;}
 int32_t half(const BattleCandidateBuffer& b,unsigned offset) {assert(offset+1<b.bytes.size());const uint16_t v=uint16_t(b.bytes[offset])<<8|b.bytes[offset+1];return v<0x8000?v:int32_t(v)-0x10000;}
 int32_t word(const BattleCandidateBuffer& b,unsigned offset) {assert(offset+3<b.bytes.size());return signedWord(uint32_t(b.bytes[offset])<<24|uint32_t(b.bytes[offset+1])<<16|uint32_t(b.bytes[offset+2])<<8|b.bytes[offset+3]);}
+//74 rows*36 decimal bytes from+4 end at a6c count; rank bytes a6d, actor
+// word ab8. row's <=74 assert is not complete weight/row-domain validation.
 unsigned row(int32_t index) {assert(index>=0 && index<=74);return 4+36*index;}
 float mul(float a,float b) {return a*b;}
 float plus(float a,float b) {return a+b;}
@@ -23,6 +25,9 @@ void emit(BattleCandidateBuffer& b,int32_t index,CandidateChoiceOutputs output) 
 void chooseBattleCandidate(BattleCandidateBuffer& b,uint32_t flags,const CandidateChoiceServices& s) {
     chooseBattleCandidate(b,flags,s,{s.user,s.output});
 }
+// Capture work, emit(-1, 0), then first ranked candidate before weights. Emit
+// reads part AFTER unit output; callbacks can alter buffer/ranks/count. Initial
+// bonus10,+100 per ranked occurrence; int additions wrap before conversions.
 void chooseBattleCandidate(BattleCandidateBuffer& b,uint32_t flags,const CandidateChoiceServices& s,CandidateChoiceOutputs output) {
     assert(s.captureWork && output.write);void* work=s.captureWork(s.user);
     output.write(output.user,true,-1);output.write(output.user,false,0);
@@ -35,6 +40,10 @@ void chooseBattleCandidate(BattleCandidateBuffer& b,uint32_t flags,const Candida
         const int32_t index=byte(b,0xa6d+rank);assert(index>=0 && index<74);
         auto* u=s.unit(s.user,work,half(b,row(index)));assert(u);
         auto& weight=weights[index];weight=add(weight,100);
+        // Original float coefficients: 1.5 preferred unit/side; rank factors
+        //.1+.4*(count-rank) and .5+.4*rank; HP factors2-ratio/1+ratio and
+        //1.5-.05*HP/1+.05*HP (FMA). Truncate after each selected formula;
+        // no zero-max guard or overall clamping to positive weights.
         if((flags&1) && u->kind==222)update(weight,mul(1.5f,static_cast<float>(weight)));
         if((flags&2) && u->kind>=224 && u->kind<=230)update(weight,mul(1.5f,static_cast<float>(weight)));
         if(flags&4)update(weight,mul(static_cast<float>(weight),plus(.10000000149011612f,mul(.4000000059604645f,static_cast<float>(byte(b,0xa6c)-rank)))));
@@ -46,6 +55,10 @@ void chooseBattleCandidate(BattleCandidateBuffer& b,uint32_t flags,const Candida
         if(flags&0x400)update(weight,mul(std::fma(-.05000000074505806f,static_cast<float>(u->hp),1.5f),static_cast<float>(weight)));
         if(flags&0x800)update(weight,mul(std::fma(.05000000074505806f,static_cast<float>(u->hp),1.f),static_cast<float>(weight)));
         if(flags&0x1000) {assert(s.danger);if(u->hp<=s.danger(s.user,*u))update(weight,mul(1.5f,static_cast<float>(weight)));}
+        // Semantic weapon may change in callbacks. Exact item/status IDs
+        // below are policy branches, not inferred item names. FP metadata at
+        //803108a8+40*item+1e can requery max/current or fresh item1d/1f.
+        // Attributes20000/item override set weight1 before final selection.
         if(!b.weapon)continue;
         if(u->attributes&0x20000)weight=1;
         const int32_t item=b.weapon->itemId;bool override=false;
@@ -78,6 +91,10 @@ void chooseBattleCandidate(BattleCandidateBuffer& b,uint32_t flags,const Candida
         }
         if(override)weight=1;
     }
+    // Scan ALL74 weights; strict>best0 means first ROW-index tie/default0.
+    // Random flag80000000 sums with signed-word wrap, subtracts until <=0.
+    // Draw0 can select zero-weight row0; do not skip zeros/change comparison.
+    // Final output is live again; no scalar success contract exists.
     int32_t selected=0;
     if(!(flags&0x80000000)) {
         int32_t best=0;for(int32_t i=0;i<74;++i)if(weights[i]>best) {selected=i;best=weights[i];}

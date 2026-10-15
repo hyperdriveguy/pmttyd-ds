@@ -1,6 +1,8 @@
 #pragma once
 #include "battle_move_position.hpp"
 
+// Typed BE sound record retains source keys/counts/handle; it is not an NDSP
+// struct. The adapter retains the playback-services object's ADDRESS, not a copy.
 namespace ttyd {
 struct MovementPlaybackServices {
     void* user=nullptr;

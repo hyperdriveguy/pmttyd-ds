@@ -1,6 +1,9 @@
 #pragma once
 #include "battle_jump_motion.hpp"
 
+// Views borrow actual owner fields; they must outlive each call. Native
+// pointer/float outputs can alias and are required, not optional zero slots.
+// This semantic view does not serialize a GameCube unit/part record.
 namespace ttyd {
 struct BattlePositionPart;
 // Views let motion/status/resource owners provide their actual shared fields.

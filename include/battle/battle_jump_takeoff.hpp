@@ -2,6 +2,9 @@
 #include "battle_position.hpp"
 #include "battle_candidate_sampling.hpp"
 
+// Per-invocation sample ownership prevents reentry replacing a parent's
+// candidates. Services may not retain stack buffer/output references. Captured
+// work token and output writes remain independent from sampling/choice userdata.
 namespace ttyd {
 // Private semantic sample, not the shared attack-selection buffer or packed ABI.
 // Sampling services own initialization and any candidate storage behind data.

@@ -2,6 +2,9 @@
 #include "battle_damage.hpp"
 #include <optional>
 
+// Shared address tokens are uint32, not host pointers. Typed unit provider
+// may recapture ownership independently from menu token; unsupported cursor
+// returns false/nullopt, whereas a selected weapon token0 is an engaged result.
 namespace ttyd {
 // Original address arithmetic is retained as uint32_t tokens. Providers map
 // these to owned records; this API never dereferences original RAM addresses.

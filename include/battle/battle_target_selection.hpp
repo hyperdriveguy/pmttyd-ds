@@ -1,6 +1,9 @@
 #pragma once
 #include "battle_actor.hpp"
 #include <optional>
+// Local Input state11/finalization only. Providerfalse/nullopt may FOLLOW
+// source writes/sounds; this body has no retry cursor or rollback. Caller owns
+// full outer progress/tail and must admit services or retain child ordering.
 namespace ttyd {
 struct BattleTargetSelectionServices {
   BattleActorServices memory;

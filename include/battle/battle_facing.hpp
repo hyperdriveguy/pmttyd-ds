@@ -1,5 +1,8 @@
 #pragma once
 #include "battle_packed_part.hpp"
+// Calculate writes only an event result; Change stores low8 into retained
+// facing189. Motion188 is a separate namespace. All raw masks/output operands
+// and independently recaptured battle owners retain original order.
 namespace ttyd {
 struct BattleFacingServices {
   BattlePartPositionServices positions;

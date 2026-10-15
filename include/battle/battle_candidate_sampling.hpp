@@ -2,6 +2,9 @@
 #include "battle_candidate_choice.hpp"
 #include "battle_position.hpp"
 
+// Typed sampling captures semantic owners and constants, not every packed
+// RAM read. Row/mask semantics match packed counterpart; per-word trace parity
+// is not asserted. Caller admits complete lists and <=74 candidate capacity.
 namespace ttyd {
 struct SamplingPart {
     SamplingPart* next=nullptr;

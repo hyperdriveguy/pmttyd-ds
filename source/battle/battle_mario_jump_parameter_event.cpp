@@ -7,6 +7,11 @@ uint32_t word(const EventMemoryServices& s,uint32_t a) {assert(s.word);return s.
 int32_t sw(uint32_t v) {return v<=0x7fffffff?int32_t(v):int32_t(int64_t(v)-0x100000000LL);}
 float real(const EventMemoryServices& s,uint32_t a) {const uint32_t bits=word(s,a);float value;std::memcpy(&value,&bits,4);return value;}
 }
+// Preserve Y/destination prefetch interleaving and discarded Y resolution.
+// Requested0 derives trunc(distance/unit170); beyond source threshold804222d4
+// add trunc(source coefficient804222d0*(distance-threshold)) with U32 wrap.
+// Explicit request is a lower bound on final signed result; no force-to1.
+// Store unless RESULT==-250000000, even if raw destination equals that sentinel.
 int32_t packedMarioJumpParameterEvent(EventEntry& e,const BattleMoveFrameServices& s) {
     const auto& c=s.common;const auto& p=c.position;const auto& u=p.unit;const auto& m=u.memory;const uint32_t args=e.arguments;
     assert(u.values.resolve && u.translate && u.unit && c.convert && s.distance);

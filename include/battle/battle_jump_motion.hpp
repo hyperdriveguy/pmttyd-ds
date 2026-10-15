@@ -2,6 +2,9 @@
 #include <array>
 #include <cstdint>
 
+// Typed motion owns semantic fields, not packed RAM. soundSource36(hex)/
+// soundMode1c are BE byte records; other fields are native values. Baseline,
+// visible and target are independent. Provider/source numeric parity is separate.
 namespace ttyd {
 struct JumpVector {float x=0,y=0,z=0;};
 // Separate semantic unit fields. Visible position never supplies the next
