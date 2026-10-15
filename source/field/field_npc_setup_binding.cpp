@@ -2,6 +2,9 @@
 #include "field_battle_information.hpp"
 #include "event_native_runtime.hpp"
 #include "camera_manager.hpp"
+#include "battle_sequence_binding.hpp"
+#include "source_sound_flags.hpp"
+#include "npc_wander.hpp"
 #include <cmath>
 #include <algorithm>
 #include <cassert>
@@ -149,16 +152,13 @@ struct ActorOperands {
  bool publish(){if(!valid)return false;return !hasWrite || vm.memory.writeWord(destination,value);}
 };
 }
-// Recheck captured context and live active event before actor callback.
-// Resolve exact me/master/slave names through retained ownership, not art IDs.
-// Party/mario sentinels ffffffff/fe/fd are NOT dereferenceable NPC records;
-// nonaccessing flag-selector path alone can return them without a fake actor.
-int32_t FieldNpcSetupBinding::invokeActorEvent(uint32_t fn,EventEntry& e,bool first,FieldNpcActorEventCursor& cursor){
- if(first)cursor={};
- uint32_t gp=0,mode=0;if(!vm_.memory.readWord(0x80415fd0,gp) || uint64_t(gp)+0x17>UINT32_MAX || !vm_.memory.readWord(gp+0x14,mode) || mode!=mode_)return 0;
- const auto& context=mode?vm_.battle:vm_.field;if(context.capacity<0 || context.capacity>256 || (context.capacity && !context.entries))return 0;bool registered=false;
- for(int n=0;n<context.capacity;++n)registered|=&e==&context.entries[n] && (e.flags&1);
- if(!registered)return 0;
+bool FieldNpcSetupBinding::caller(const EventEntry& e) const{
+ uint32_t gp=0,mode=0;if(!vm_.memory.readWord(0x80415fd0,gp) || uint64_t(gp)+0x17>UINT32_MAX || !vm_.memory.readWord(gp+0x14,mode) || mode!=mode_)return false;
+ const auto& context=mode?vm_.battle:vm_.field;if(context.capacity<0 || context.capacity>256 || (context.capacity && !context.entries))return false;
+ for(int n=0;n<context.capacity;++n)if(&e==&context.entries[n] && (e.flags&1))return true;
+ return false;
+}
+FieldNpcActorEventServices FieldNpcSetupBinding::actorServices(){
  FieldNpcActorEventServices s;s.user=this;
  s.word=[](void* p,uint32_t a,uint32_t& v){return static_cast<FieldNpcSetupBinding*>(p)->vm_.memory.readWord(a,v);};
  s.value=[](void* p,EventEntry& e,int32_t raw,int32_t& v){ActorOperands a(static_cast<FieldNpcSetupBinding*>(p)->vm_);v=getEventValue(e,raw,a.services());return a.valid;};
@@ -182,6 +182,34 @@ int32_t FieldNpcSetupBinding::invokeActorEvent(uint32_t fn,EventEntry& e,bool fi
  // Left/right admits only published camera4 view yaw. An existing but
  // unpublished camera cannot supply a guessed facing value.
  s.cameraHeading=[](void* p,uint32_t index)->std::optional<float>{auto& b=*static_cast<FieldNpcSetupBinding*>(p);const auto* camera=b.services_.cameras?b.services_.cameras->camera(index):nullptr;if(!camera || !camera->viewPublished)return {};return camera->yaw;};
- return fieldNpcActorEvent(fn,e,first,cursor,s);
+ return s;
+}
+// Recheck captured context and live active event before actor callback.
+// Resolve exact me/master/slave names through retained ownership, not art IDs.
+// Party/mario sentinels ffffffff/fe/fd are NOT dereferenceable NPC records;
+// nonaccessing flag-selector path alone can return them without a fake actor.
+int32_t FieldNpcSetupBinding::invokeActorEvent(uint32_t fn,EventEntry& e,bool first,FieldNpcActorEventCursor& cursor){
+ if(first)cursor={};
+ if(!caller(e))return 0;
+ return fieldNpcActorEvent(fn,e,first,cursor,actorServices());
+}
+int32_t FieldNpcSetupBinding::invokeWanderEvent(uint32_t fn,EventEntry& e,bool first,FieldNpcWanderEventCursor& cursor){
+ if(first)cursor={};
+ uint32_t address=0;if(!caller(e) || !vm_.entryAddresses.addressOf(&e,address))return 0;
+ FieldNpcWanderEventServices s;s.actor=actorServices();
+ s.half=[](void* p,uint32_t a,uint16_t& v){return static_cast<FieldNpcSetupBinding*>(p)->vm_.memory.readHalf(a,v);};
+ s.storeHalf=[](void* p,uint32_t a,uint16_t v){const bool ok=static_cast<FieldNpcSetupBinding*>(p)->vm_.memory.writeHalf(a,v);assert(ok);(void)ok;};
+ s.work=[](void* p,uint32_t work){auto& b=*static_cast<FieldNpcSetupBinding*>(p);return b.services_.mapHeap && b.services_.mapHeap->ownsMapAllocation(work,44,b.vm_.memory);};
+ s.request=[](void* p,const FieldNpcWanderRequest& q,FieldNpcWanderResponse& out){
+  auto& b=*static_cast<FieldNpcSetupBinding*>(p);auto& memory=b.vm_.memory;
+  if(q.function==0x8002ff58){if(!b.services_.mapHeap)return false;const auto result=b.services_.mapHeap->allocateMap(q.words[0],q.words[1],memory);if(!result)return false;out.word=*result;return true;}
+  if(q.function==0x800059cc){uint32_t gp=0,rate=0;if(!memory.readWord(0x80415fd0,gp) || uint64_t(gp)+7>UINT32_MAX || !memory.readWord(gp+4,rate))return false;out.word=uint32_t(npcWanderFrames(signedWord(q.words[0]),signedWord(rate)));return true;}
+  if(q.function==0x80005da0){if(!b.services_.random || signedWord(q.words[0])<0)return false;out.word=uint32_t(b.services_.random(b.services_.user,signedWord(q.words[0])));return true;}
+  if(q.function==0x8005e0c0 || q.function==0x80096948){uint32_t mario=0;if(!memory.readWord(0x8041e900,mario) || !b.services_.admitMario || !b.services_.admitMario(b.services_.user,memory,mario) || !b.readable(mario,0x1dc))return false;if(q.function==0x8005e0c0)out.word=mario;else out.word=b.word(mario+0x1d8);return true;}
+  if(q.function==0x80040750 || q.function==0x8004069c){const auto* pose=b.owner_->poses().poses().pose(signedWord(q.words[0]));if(!pose)return false;out.word=q.function==0x80040750?uint32_t(npcWanderTurnReady(pose->word(0),pose->scalar(0x74),pose->scalar(0x7c))):pose->word(0xe8);return true;}
+  if(q.function==0x800dc0e8){if(!b.services_.soundFlags)return false;out.word=b.services_.soundFlags->value();return true;}
+  return b.services_.wanderRequest && b.services_.wanderRequest(b.services_.user,memory,q,out);
+ };
+ return fieldNpcWanderEvent(fn,e,first,address,cursor,s);
 }
 }

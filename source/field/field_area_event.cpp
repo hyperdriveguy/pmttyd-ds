@@ -114,6 +114,7 @@ struct FieldAreaEventRuntime {
  std::map<uint32_t,FieldPreviousPartyCursor> previousParty; // Real event IDs; lifetime is source elapsed time, not a generation.
  std::map<uint32_t,FieldNpcSetupCursor> npcSetup;
  std::map<uint32_t,FieldNpcActorEventCursor> npcActors;
+ std::map<uint32_t,FieldNpcWanderEventCursor> npcWander;
  // Native GP81000000, 512KiB heap82000000..82080000; source bus clock
  //243MHz -> eventClockRate timestamps. Context timing is not render FPS.
  explicit FieldAreaEventRuntime(FieldAreaEvent* p):owner(p),vm(0x81000000,platform(this)){}
@@ -123,7 +124,7 @@ struct FieldAreaEventRuntime {
   p.divideWord=[](void*,int32_t a,int32_t b){assert(b);return a/b;};
   p.flushBlock=[](void*,uint32_t){};p.systemCall=[](void*){};
   p.format=[](void* p,const EventDiagnosticCall&){static_cast<FieldAreaEventRuntime*>(p)->owner->failed=true;};
-  p.retiring=[](void* p,const EventEntry& e){auto& r=*static_cast<FieldAreaEventRuntime*>(p);r.previousParty.erase(e.id);r.npcSetup.erase(e.id);r.npcActors.erase(e.id);for(auto& root:r.roots)if(root.id==e.id){root.bank=e.locals;root.returned=e.opcode==2;}};
+  p.retiring=[](void* p,const EventEntry& e){auto& r=*static_cast<FieldAreaEventRuntime*>(p);r.previousParty.erase(e.id);r.npcSetup.erase(e.id);r.npcActors.erase(e.id);r.npcWander.erase(e.id);for(auto& root:r.roots)if(root.id==e.id){root.bank=e.locals;root.returned=e.opcode==2;}};
   p.call=[](void* p,EventEntry& e,uint32_t fn,int32_t first){auto& r=*static_cast<FieldAreaEventRuntime*>(p);const auto result=r.call(e,fn,first!=0);if(result==0){r.owner->pendingFunction=fn;r.owner->pendingEventId=e.id;}return result;};return p;
  }
  uint32_t word(uint32_t a){uint32_t v=0;if(!vm.memory.readWord(a,v))owner->failed=true;return v;}
@@ -188,6 +189,15 @@ struct FieldAreaEventRuntime {
   // Five actor leaves share the stable setup world. Retain cursor by real
   // event ID only while held; source first resets it, success2 erases it.
   // Retirement/ReInit also clear cursors without replaying completed effects.
+  if(fieldNpcWanderEventFunction(fn) && npcSetupBinding){
+   if(first)npcWander.erase(e.id);
+   auto found=npcWander.find(e.id);FieldNpcWanderEventCursor fresh;
+   auto& cursor=found==npcWander.end()?fresh:found->second;
+   const auto result=npcSetupBinding->invokeWanderEvent(fn,e,first,cursor);
+   if(!cursor.initialized){if(found!=npcWander.end())npcWander.erase(found);}
+   else if(found==npcWander.end())npcWander.emplace(e.id,std::move(fresh));
+   return result;
+  }
   if(fieldNpcActorEventFunction(fn) && npcSetupBinding){
    if(first)npcActors.erase(e.id);
    auto found=npcActors.find(e.id);FieldNpcActorEventCursor fresh;
@@ -426,7 +436,7 @@ bool FieldAreaEvent::retireMapNpcs(const FieldAreaNpcReleaseServices& services){
  r.vm.reinitializeContext();r.cases.reinitialize();
  // Source ReInit byte-clears entries without evtDelete or retirement hooks.
  // Discard native cursors/diagnostics without publishing child return banks.
- r.previousParty.clear();r.npcSetup.clear();r.npcActors.clear();r.roots.clear();r.initId.reset();
+ r.previousParty.clear();r.npcSetup.clear();r.npcActors.clear();r.npcWander.clear();r.roots.clear();r.initId.reset();
  completed_.clear();pendingFunction=pendingEventId=0;
  r.npcSetupBinding.reset();r.mapNpcs.reset();r.mapGpState.reset();r.services={};r.releaseServices={};
  r.releaseStep=0;r.releasingNpcs=false;r.retiredNpcs=true;started=false;return true;

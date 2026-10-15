@@ -1925,3 +1925,9 @@ add_executable(animation_pose_buffer_tests tests/animation_pose_buffer_tests.cpp
 target_link_libraries(animation_pose_buffer_tests PRIVATE ttyd_core)
 add_test(NAME animation_pose_buffer COMMAND animation_pose_buffer_tests)
 set_tests_properties(animation_pose_buffer PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Original packed NPC wander event requests, actual map work and retained visits.
+target_sources(ttyd_core PRIVATE source/field/field_npc_wander_event.cpp)
+add_executable(field_npc_wander_event_tests tests/field_npc_wander_event_tests.cpp)
+target_link_libraries(field_npc_wander_event_tests PRIVATE ttyd_core)
+add_test(NAME field_npc_wander_event COMMAND field_npc_wander_event_tests)

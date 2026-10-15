@@ -32,6 +32,21 @@ bool BattleSequenceBinding::attachStorage(std::shared_ptr<BattleSequenceStorage>
     for(const auto& span:spans){if(!vm_.memory.registerExternalRam(span.address,span.bytes,span.size)){for(auto a:storageMappings_)vm_.memory.unregisterExternalRam(a);storageMappings_.clear();return false;}storageMappings_.push_back(span.address);}
     process_->storage=std::move(owner);return true;
 }
+std::optional<uint32_t> BattleSequenceBinding::allocateMap(uint32_t root,uint32_t bytes,EventAddressSpace& facade){
+    if(&facade!=&vm_.memory || storageMappings_.empty() || !process_->storage || !vm_.platform.flushBlock || !vm_.platform.systemCall || !process_->storage->canAllocate(root,bytes,facade))return {};
+    return eventMapAllocate(root,bytes,vm_.memoryBinding.services());
+}
+bool BattleSequenceBinding::ownsMapAllocation(uint32_t payload,uint32_t bytes,const EventAddressSpace& facade) const{
+    if(&facade!=&vm_.memory || storageMappings_.empty() || !process_->storage)return false;
+    const auto& owner=*process_->storage;uint32_t root=0;if(!facade.readWord(0x8041e808,root))return false;
+    const uint64_t end=uint64_t(owner.arenaAddress_)+owner.arena_.size();
+    for(uint32_t h=root;;){uint32_t next=0,size=0;uint16_t used=0;
+        if((h&31) || h<owner.arenaAddress_ || uint64_t(h)+32>end || !facade.readWord(h,next) || !facade.readWord(h+4,size) || !facade.readHalf(h+8,used) || uint64_t(h)+32+size>end)return false;
+        if(uint64_t(h)+32==payload)return used!=0 && size>=bytes;
+        if(!next || next<=h || uint64_t(next)<uint64_t(h)+32+size)return false;
+        h=next;
+    }
+}
 bool BattleSequenceBinding::admitEntry() const{
     uint32_t gp=0,f=0,n=0,flags=0;
     return (!game_.fieldParties.originalPool || game_.fieldParties.originalPool==npcs_->poses().sharedPool()) && !game_.trioAttack.cameras() && vm_.memory.readWord(0x80415fd0,gp) && vm_.memory.readWord(gp+0x168,f) && f==npcs_->fieldWorkAddress() && vm_.memory.readWord(f+8,n) && npcs_->ownsFieldActor(n) && vm_.memory.readWord(n,flags) && (flags&1);

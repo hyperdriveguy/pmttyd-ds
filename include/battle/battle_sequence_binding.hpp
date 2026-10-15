@@ -18,6 +18,9 @@ public:
     bool callback(uint32_t,OriginalSequenceWork&,const BattleSequenceEntryServices&,const SoundFlagServices& = {});
     uint32_t pending() const;
     bool attachStorage(std::shared_ptr<BattleSequenceStorage>);
+    // Shared primary map arena; compare facade identity before any effects.
+    std::optional<uint32_t> allocateMap(uint32_t root,uint32_t bytes,EventAddressSpace&);
+    bool ownsMapAllocation(uint32_t payload,uint32_t bytes,const EventAddressSpace&) const;
 private:
     BattleSequenceBinding(Game&,EventNativeRuntime&);
     bool admitEntry() const;
