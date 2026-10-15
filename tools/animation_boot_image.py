@@ -27,6 +27,9 @@ SPANS += [('entry-colors', 2151807756, 8, '12a3ae445661ce5dee78d0650d33362dec29c
 # Original normal Mario creation tokens/triplet, party model and local-time factor.
 SPANS += [('normal-model-tokens', 2150373536, 28, '6b4bb10db518b91cca6e508d2d692407debb0201f9dddb0515c63864d708daae'), ('normal-triplet', 2151767728, 12, '8a7a8b512cf150345386614e31c586a9304ce2c1d3358bb02f56d1cc6451e838'), ('goombella-token', 2151814112, 8, '18542b0684783d3889890a9fb3f5ba38e410abb8eae4d350abfe1bb6f49a8efb'), ('frame-to-ms', 2151807808, 4, '23a596e4559d2e7a848de9041c64fe7e961317ffb3aba9390759092b780dbdce')]
 
+# Original shared animation Main/Inner camera-facing literals.
+SPANS += [('draw-radians',0x8041fb2c,4,'7388adb66bc2fb8cdd730d8148adcae18abd8bb48b05b7bd9b9e05efa6c09702'), ('paper-facing',0x8041fb6c,0x2c,'18c2acf85532159d4157b603544711245e68b9f6fd3132b106a3802ae739555b')]
+
 def build(iso=DEFAULT_ISO,output='romfs/animation-boot'):
  root=Path(output);root.mkdir(parents=True,exist_ok=True)
  with Path(iso).open('rb') as disc:

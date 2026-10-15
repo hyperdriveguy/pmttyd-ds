@@ -69,6 +69,13 @@ bool resumeBattlePoseInner(BattlePosePool& pool,uint32_t mode,std::optional<uint
         }}
         workPass=c.effectivePass;c.phase=4;break;
     case 4:
+        if(s.facing){
+            if(!c.facingAdmitted){const auto address=s.facingPose?s.facingPose(s.user,c.input.handle):std::nullopt;
+                c.pending=0x80039cf8;if(!address)return false;c.facingPose=*address;c.facingAdmitted=true;}
+            c.pending=0x8000f2fc;
+            if(!advanceAnimationInnerFacing(c.facingPose,c.input.angle,c.input.scale,c.context.model,*s.facing,c.facing,c.context.model))return false;
+            c.phase=10;break;
+        }
         if(p->word(0)&8){c.phase=99;break;} // Source camera4 facing graph is separate.
         c.phase=c.input.angle!=0?5:7;break;
     case 5:

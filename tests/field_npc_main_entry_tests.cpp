@@ -1,3 +1,7 @@
+#include "animation_facing_binding.hpp"
+#include "battle_pose_inner.hpp"
+#include "field_camera_publication.hpp"
+#include "field_camera.hpp"
 #include "animation_initialize.hpp"
 #include "battle_audience_aux_callback.hpp"
 #include "npc_presentation.hpp"
@@ -1220,6 +1224,126 @@ void actualDrawCallbacks() {
          w.pool->slot(255)->word(0xe8) == 0x100 &&
          w.pool->slot(255)->word(0xf0) == 0xffffff67);
 }
+void actualAnimationFacing() {
+  auto fixture = std::make_unique<NativeWorld>();
+  auto &w = *fixture;
+  auto bank = std::make_shared<CameraManager>();
+  bank->initializeBoot(608, 480);
+  const auto frame = adaptedFieldCameraFrame(0, 0, 0);
+  assert(publishNativeFieldCamera(*bank, frame));
+  bool current = true;
+  constexpr uint32_t Base = 0x8f100000;
+  AnimationFacingAddressPolicy policy;
+  policy.base = Base;
+  policy.unmapped = [&](uint32_t a, uint32_t n) {
+    return w.vm->memory.unmappedRange(a, n);
+  };
+  auto binding = AnimationFacingBinding::bind(
+      w.pool, w.vm->memory, *w.view, bank, policy, [&] { return current; });
+  assert(binding);
+  auto s = binding->services();
+  const auto address = binding->poseAddress(int32_t(w.pose));
+  assert(address && *address == w.view->poseAddress(w.pose));
+  assert(s.word(s.user, Base + 4 * 0x280 + 0xc) == bits(frame.eye.x * 100));
+  assert(!s.word(s.user, Base + 4 * 0x280 + 0x10));
+  auto *p = w.pool->pose(int32_t(w.pose));
+  assert(p);
+  p->word(0, p->word(0) | 8);
+  p->scalar(0x74, 180);
+  AnimationFacingCursor main;
+  assert(advanceAnimationMainFacing(*address, s, main));
+  assert(p->scalar(0x78) == -1);
+  current = false;
+  AnimationFacingCursor pending;
+  BattleActMatrix output;
+  output.fill(123);
+  assert(
+      !advanceAnimationInnerFacing(*address, 270, 2, {}, s, pending, output) &&
+      pending.active);
+  current = true;
+  unsigned resumes = 0;
+  while (!advanceAnimationInnerFacing(0, 0, 1, {}, {}, pending, output))
+    assert(++resumes < 100);
+  assert(p->scalar(0x70) == 180 && p->scalar(0x78) == -1);
+  // Native camera alias reservation must never fall through to overlapping RAM.
+  assert(w.vm->memory.registerRam(Base, std::vector<uint8_t>(13 * 0x280)) &&
+         !binding->available());
+  assert(!s.word(s.user, Base + 4 * 0x280 + 0xc));
+  assert(w.vm->memory.unregisterRam(Base));
+  bank->camera(4)->mode = 2;
+  assert(!binding->available());
+  bank->camera(4)->mode = 0;
+  // Full Inner rejoins at its existing later Main boundary; no material replay.
+  p->word(0, 9);
+  p->word(0xe8, 0x800 | 0x1000);
+  p->word(0xf4, 0xffffffff);
+  p->word(0xf0, 0xffffffff);
+  p->word(0x3c, 0xffffffff);
+  struct Context {
+    AnimationFacingBinding *facing;
+    bool mainReady = false;
+    unsigned gx = 0, mains = 0, flushes = 0, draws = 0;
+    BattlePoseInnerContext captured;
+  } context{binding.get()};
+  BattlePoseInnerServices inner;
+  inner.user = &context;
+  inner.facing = &s;
+  inner.facingPose = [](void *u, int32_t h) {
+    return static_cast<Context *>(u)->facing->poseAddress(h);
+  };
+  inner.gx = [](void *u, const BattleAudienceGXRequest &) {
+    ++static_cast<Context *>(u)->gx;
+    return true;
+  };
+  inner.matrix =
+      s.matrix; // Its user is rebound below to the actual camera owner.
+  inner.matrix = [](void *u, BattleAudienceMatrixRequest &q) {
+    auto services = static_cast<Context *>(u)->facing->services();
+    return services.matrix(services.user, q);
+  };
+  inner.main = [](void *u, int32_t) {
+    auto &c = *static_cast<Context *>(u);
+    if (!c.mainReady)
+      return false;
+    ++c.mains;
+    return true;
+  };
+  inner.publish = [](void *u, const BattlePoseInnerContext &q) {
+    static_cast<Context *>(u)->captured = q;
+    return true;
+  };
+  inner.flush = [](void *u, unsigned, const BattlePoseInnerContext &) {
+    ++static_cast<Context *>(u)->flushes;
+    return true;
+  };
+  inner.invalidateVertices = [](void *) { return true; };
+  inner.traverse = [](void *u, const BattlePoseInnerContext &) {
+    ++static_cast<Context *>(u)->draws;
+    return true;
+  };
+  BattlePartDrawRequest draw;
+  draw.handle = int32_t(w.pose);
+  draw.pass = 2;
+  draw.angle = 90;
+  draw.scale = 2;
+  draw.matrix = {1, 0, 0, 3, 0, 1, 0, 4, 0, 0, 1, 5};
+  BattlePoseInnerCursor cursor;
+  std::optional<uint32_t> pass;
+  while (!resumeBattlePoseInner(*w.pool, 0, pass, draw, inner, cursor)) {
+    if (cursor.phase == 10)
+      break;
+    assert(++resumes < 100);
+  }
+  assert(cursor.phase == 10 && context.gx == 4 && context.mains == 0 &&
+         p->scalar(0x70) == 0);
+  const float retained = p->scalar(0x74);
+  context.mainReady = true;
+  assert(resumeBattlePoseInner(*w.pool, 0, pass, draw, inner, cursor));
+  assert(context.gx == 4 && context.mains == 1 && context.flushes == 2 &&
+         context.draws == 1 && p->scalar(0x74) == retained);
+  assert(context.captured.model[3] == 3 && context.captured.model[7] == 4 &&
+         context.captured.model[11] == 5);
+}
 } // namespace
 int main() {
   ordinary();
@@ -1229,4 +1353,5 @@ int main() {
   actualAliases();
   actorScan();
   actualDrawCallbacks();
+  actualAnimationFacing();
 }

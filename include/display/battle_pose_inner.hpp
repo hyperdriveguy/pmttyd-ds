@@ -1,5 +1,6 @@
 #pragma once
 #include "battle_pose_pool.hpp"
+#include "animation_facing.hpp"
 #include "battle_part_display.hpp"
 namespace ttyd {
 struct BattlePoseMapGroup {uint16_t flags=0;uint8_t primaryAlpha=255,secondaryAlpha=255;};
@@ -24,6 +25,10 @@ struct BattlePoseInnerServices {
     bool (*traverse)(void*,const BattlePoseInnerContext&)=nullptr;
     const struct AnimationDrawTraversalServices* traversal=nullptr;
     const struct AnimationShapeServices* shape=nullptr;
+    // Actual source pose address/VM/camera owner. The child retains successful
+    // operations; false may reflect child progress, never restart Inner.
+    std::optional<uint32_t> (*facingPose)(void*,int32_t)=nullptr;
+    const AnimationFacingServices* facing=nullptr;
 };
 // Steps1/2 are independent original map queries; 4 means translucent true.
 struct BattlePoseMapCursor {unsigned step=0;};
@@ -31,11 +36,13 @@ struct BattlePoseInnerCursor {
     BattlePoseMapCursor map;
     bool active=false,requestPending=false;uint32_t phase=0,step=0,pending=0,effectivePass=0,materialCallback=0,mapFlags=0,primary=0,secondary=0;
     BattlePartDrawRequest input;BattlePoseInnerContext context;
+    uint32_t facingPose=0;bool facingAdmitted=false;AnimationFacingCursor facing;
     BattleAudienceGXRequest gx;BattleAudienceMatrixRequest matrix;BattleActMatrix operand{};
 };
 // Source mapTestXLU predicate order; each map branch resolves a fresh group.
 std::optional<bool> battlePoseMapTranslucent(uint32_t flags,uint32_t primary,uint32_t secondary,const BattlePoseInnerServices&,BattlePoseMapCursor&);
-// Ordinary unlinked, flags8-clear graph. Other facing paths hold explicitly.
+// Ordinary unlinked graph, including paper-facing when actual facing services
+// and a source pose alias are supplied. Missing facing owners hold explicitly.
 // mode is the live native work owner's source W10c; built-in GX updates pass.
 bool resumeBattlePoseInner(BattlePosePool&,uint32_t mode,std::optional<uint32_t>& pass,const BattlePartDrawRequest&,const BattlePoseInnerServices&,BattlePoseInnerCursor&);
 }
