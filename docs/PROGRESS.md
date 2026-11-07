@@ -17138,3 +17138,44 @@ Complete tutorial scheduling, battle/result/field return, original menu
 activation and the lower-screen audience scene with physical alternatives to
 every touch action remain required. Three UI workers are active; no full-game
 or full-goal completion is claimed.
+
+### Animation pose lifecycle and group traversal documentation
+
+Added 115 inline comment lines across eight portable implementation/header
+files: animation_group, animation_group_request, animation_pose_entry and
+animation_pose_release. Explained original PC/immediate meaning, SDA/SDA2
+addresses, record strides and offsets, signed wrapping references, semantic
+stack filenames, null-resource paths, clock quotient, partial publication and
+retained child ownership. Traversal comments cover visibility, output holders,
+special effect ordering, aliased basis blending, literal reads, raw stack pop
+and the original current-group parent argument for siblings. Request comments
+explain archive modes, live ag2tg rows, unconditional texture polling and
+readiness sentinels. Two indexed guides were added under docs/code/:
+`animation-pose-lifecycle.md` and `animation-group-traversal.md`. Code/docs commit:
+`571aaded`. Executable tokens and string literals are unchanged in all eight files.
+
+Validation: four existing host fixtures were compiled and passed: animation_group,
+animation_group_request, animation_pose_release and animation_source_entry. The
+last uses actual retained original resources and includes injected Entry failures.
+Tests used the current annotated portable implementations/headers with unchanged
+non-scoped headers and (for Entry) the supporting library and ROMFS from the
+previous fully validated animation-memory-selection private snapshot. All eight
+scoped files and four fixture sources were first proven token/byte equivalent to
+that supporting snapshot. Its core library hash and 114 accepted product hashes
+were rechecked. This is scoped regression evidence, not validation of later
+concurrent runtime changes. ARM C++17 syntax checks passed for all four annotated
+translation units; this is not a native link or hardware test. Eleven live/frozen
+file hashes and 126 local documentation links passed. No tests were added.
+
+Full `make test` and `make all` were not repeated for this comments/prose-only
+batch; there are no executable changes. Earlier full-suite/build results retain
+their own snapshot scope. No ISO/source assets were modified or converted, and
+no emulator profile/save was used. Evidence and commands:
+`artifacts/animation-lifecycle-code-documentation-validation/manifest.json` with
+fixture build/run logs, ARM syntax log, scoped comments patch and documented files.
+
+Goal remains active. Next: remaining animation Main/time/replay/Inner providers,
+node/facing/draw bindings and later changed implementations. Existing inventory
+hashes are review aids, not proof of adequate comment or whole-port coverage.
+Whole-file Trio numeric synthesis and remaining tool/native modules still need
+review; do not report the broad documentation goal or remake complete.
