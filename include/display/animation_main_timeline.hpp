@@ -6,6 +6,8 @@ struct AnimationMainTimelineServices {
  std::optional<uint32_t> (*word)(void*,uint32_t)=nullptr;
  bool (*store)(void*,uint32_t,uint32_t)=nullptr;
 };
+// index/pointer are raw wrapping guest scan state, not sanitized vector bounds.
+// previous is reloaded published state; it need not equal the local scan index.
 struct AnimationMainTimelineCursor {
  bool active=false;uint32_t phase=0,loop=0,count=0,index=0,pointer=0,previous=0,next=0,keys=0,state=0,current=0,control=0;
  AnimationMainEvaluation input;AnimationMainTimelineServices owner;

@@ -12,6 +12,8 @@ struct AnimationMainTimeServices {
  std::optional<int32_t> (*truncate)(void*,float)=nullptr;
 };
 struct AnimationMainTimeResult {uint32_t loop=0;};
+// Captured source words and binary32 intermediates survive holds. This cursor
+// is not a VM lifetime owner or producer lock; its borrowed owners must survive.
 struct AnimationMainTimeCursor {
  bool active=false;uint32_t phase=0,mode=0,control=0,loop=0,gp=0,bus=0,hi=0,lo=0,epochLo=0,epochHi=0,divisor=0;
  AnimationMainEvaluation input;AnimationMainTimeServices owner;

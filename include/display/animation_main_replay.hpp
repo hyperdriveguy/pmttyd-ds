@@ -15,17 +15,23 @@ struct AnimationMainReplayServices {
  // must remain invariant under the admitted raw data copy. Default absent.
  bool (*copy)(void*,uint32_t function,uint32_t destination,uint32_t source,uint32_t bytes)=nullptr;
 };
+// loaded protects one source word/byte across a held store. remaining is a
+// raw source counter; zero after setup can mean a wrapping do/while traversal.
 struct AnimationReplayCopy {
  bool active=false,backward=false,loaded=false;uint32_t function=0,destination=0,source=0,bytes=0,remaining=0,value=0;
 };
 // Retained original copy leaf, shared by replay and interpolation. False may
 // follow an acknowledged iteration. Operands are initialized by the caller.
 bool advanceAnimationReplayCopy(const AnimationMainReplayServices&,AnimationReplayCopy&);
+// Source-order counts: positions,normals,visibility,nodes,textures. These and
+// sample fields become the interpolation child's CAPTURED inputs on success.
 struct AnimationMainReplayResult {
  uint32_t current=0,next=0;float fraction=0;std::array<uint32_t,5> counts{};
 };
 struct AnimationMainReplayCursor {
  bool active=false,rebuild=false;uint32_t phase=0,old=0,key=0,end=0,channel=0,offset=0,count=0,stream=0,source=0,destination=0,bulkLimit=0,entryIndex=0,lane=0,word=0,deltaIndex=0,increment=0;
+ // Wide remaining represents the original CTR-zero 2^32-entry case without
+ // interpreting it as an already-finished host loop.
  uint64_t remaining=0;float scale=0,oldValue=0,delta=0,newValue=0;std::array<float,3> deltas{};
  AnimationMainEvaluation input;AnimationMainReplayServices owner;AnimationMainReplayResult result;AnimationReplayCopy copy;
 };

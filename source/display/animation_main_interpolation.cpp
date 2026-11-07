@@ -8,12 +8,16 @@ uint32_t bits(float f){uint32_t v;std::memcpy(&v,&f,4);return v;}
 float real(uint32_t v){float f;std::memcpy(&f,&v,4);return f;}
 float single(float f){volatile float v=f;return v;}
 bool less(uint32_t a,uint32_t b){return (a^0x80000000u)<(b^0x80000000u);}
+// Byte0 sparse index stays unsigned; node tangent bytes2/3 are signed8.
 int signedByte(uint32_t v){return v<128?int(v):int(v)-256;}
 bool same(const AnimationMainEvaluation& a,const AnimationMainEvaluation& b){return a.work==b.work && a.pool==b.pool && a.pose==b.pose && a.model==b.model && a.timeline==b.timeline && a.positions==b.positions && a.normals==b.normals;}
 bool same(const AnimationMainReplayResult& a,const AnimationMainReplayResult& b){return a.current==b.current && a.next==b.next && bits(a.fraction)==bits(b.fraction) && a.counts==b.counts;}
 bool same(const AnimationMainReplayServices& a,const AnimationMainReplayServices& b){return a.user==b.user && a.word==b.word && a.store==b.store && a.byte==b.byte && a.storeByte==b.storeByte && a.quantized==b.quantized && a.copy==b.copy;}
 bool same(const AnimationMainTimeServices& a,const AnimationMainTimeServices& b){return a.user==b.user && a.word==b.word && a.store==b.store && a.doubleWord==b.doubleWord && a.divide==b.divide && a.convertUnsigned==b.convertUnsigned && a.truncate==b.truncate;}
 }
+// R=pose,T=timeline; guest offsets/addresses below are hex. Captured counts,
+// indices, fraction BITS and output pointers belong to the completed replay
+// pass; do not replace them with fresh R28/R2c/R30 or R4c/R54 fields.
 bool advanceAnimationMainInterpolation(const AnimationMainEvaluation& input,const AnimationMainReplayResult& captured,const AnimationMainReplayServices& s,AnimationMainInterpolationCursor& c){
  if(!c.active){c={};c.active=true;c.input=input;c.captured=captured;c.owner=s;}else if(!same(c.input,input) || !same(c.captured,captured) || !same(c.owner,s))return false;
  const uint32_t r=input.pose,t=input.timeline;
@@ -24,14 +28,24 @@ bool advanceAnimationMainInterpolation(const AnimationMainEvaluation& input,cons
  auto quantized=[&](uint32_t a,float& v){if(!s.quantized)return false;auto x=s.quantized(s.user,a);if(!x)return false;v=*x;return true;};
  auto beginCopy=[&](uint32_t destination,uint32_t source,uint32_t n){c.copy={};c.copy.function=0x80005634;c.copy.destination=destination;c.copy.source=source;c.copy.bytes=n;};
  for(;;)switch(c.phase){
+ // Signed index routes: equal copies position/normal/node caches; increasing
+ // adds NEXT key deltas; decreasing (including loop seam) keeps old outputs.
+ // All three routes still publish final current/fraction at phases 90/91.
  case 0:c.channel=0;c.phase=captured.current==captured.next?1:less(captured.current,captured.next)?10:90;break;
  // Equal-key outputs use the original source cache and captured model counts.
+ // Local copy channel 2 is NODE (captured.counts[3]), not visibility.
+ // Visibility/texture have no interpolation copy here. Equal-key node reads
+ // output R64 BEFORE cache R60, opposite the increasing-key setup below.
  case 1:if(c.channel==3){c.phase=90;break;}c.count=captured.counts[c.channel==2?3:c.channel];if(!c.count){++c.channel;break;}c.phase=c.channel==2?2:3;break;
  case 2:if(!word(r+0x64,c.destination))return false;++c.phase;break;
  case 3:if(!word(r+(c.channel==0?0x48:c.channel==1?0x50:0x60),c.cache))return false;
   beginCopy(c.channel==2?c.destination:c.channel==0?input.positions:input.normals,c.cache,c.count*(c.channel==2?4u:12u));++c.phase;break;
  case 4:if(!advanceAnimationReplayCopy(s,c.copy))return false;++c.channel;c.phase=1;break;
  // Increasing-key setup. NEXT key pointer is retained across all copies.
+ // NEXT key stride44; capture that pointer across vector/node headers.
+ // Scale8041fbac=1/16 times fraction is rounded once. Stream T2c/T30 uses
+ // 4-byte rows (index,XYZ deltas), expanding cumulative index into 12-byte XYZ.
+ // Copy MODEL count gates only base copy; it does not gate nonempty streams.
  case 10:if(!word(t+0x28,c.table))return false;c.key=c.table+captured.next*44u;++c.phase;break;
  case 11:if(!load(0x8041fbac,c.scale))return false;++c.phase;break;
  case 12:if(!word(t+0x2c,c.stream))return false;++c.phase;break;
@@ -44,6 +58,8 @@ bool advanceAnimationMainInterpolation(const AnimationMainEvaluation& input,cons
  // Both vector channels capture three source deltas BEFORE destination reads.
  case 20:if(!byte(c.source,c.index))return false;c.destination+=12u*c.index;c.lane=0;++c.phase;break;
  case 21:if(!quantized(c.source+1+c.lane,c.deltas[c.lane]))return false;if(++c.lane<3)break;c.lane=0;++c.phase;break;
+ // FMA operand order is delta FIRST, scaled fraction second, old third;
+ // replay uses scale first instead. Do not change operand/payload ordering.
  case 22:if(!load(c.destination+4*c.lane,c.oldValue))return false;c.newValue=std::fma(c.deltas[c.lane],c.scaledFraction,c.oldValue);++c.phase;break;
  case 23:if(!store(c.destination+4*c.lane,bits(c.newValue)))return false;if(++c.lane<3){c.phase=22;break;}c.source+=4;if(--c.remaining){c.phase=20;return false;}c.phase=c.channel==0?30:40;break;
  // Auxiliary setup uses the SAME previously captured next-key pointer.
@@ -55,6 +71,9 @@ bool advanceAnimationMainInterpolation(const AnimationMainEvaluation& input,cons
  case 34:if(!advanceAnimationReplayCopy(s,c.copy))return false;++c.phase;break;
  case 35:if(!(c.source<c.end)){c.phase=40;break;}c.remaining=uint32_t(c.end+3u-c.source)>>2;c.phase=20;break;
  // Node duration reloads the time table; headers still use the captured key.
+ // Duration uses a fresh T28 time table (NEXT time then CURRENT time).
+ // Node offset/count still use the older captured key; T3c stream/cache R60
+ // precede output R64. Stream rows and node outputs both have 4-byte stride.
  case 40:if(!word(t+0x28,c.table))return false;++c.phase;break;
  case 41:if(!word(c.key+36,c.offset))return false;++c.phase;break;
  case 42:if(!word(c.key+40,c.count))return false;++c.phase;break;
@@ -67,10 +86,18 @@ bool advanceAnimationMainInterpolation(const AnimationMainEvaluation& input,cons
  case 48:if(!advanceAnimationReplayCopy(s,c.copy))return false;++c.phase;break;
  case 49:c.square=single(captured.fraction*captured.fraction);if(!(c.source<c.end)){c.phase=90;break;}c.remaining=uint32_t(c.end+3u-c.source)>>2;c.phase=50;break;
  // Tangent gate reads byte3 BEFORE byte0 and still advances sparse destination.
+ // Read outgoing signed byte3 BEFORE unsigned byte0; advance sparse output
+ // even if |outgoing|>=89 rejects the entry. No delta/tangent reads then.
+ // Accepted byte2 incoming has NO source bounds check: adjacent guest memory
+ // is reached for out-of-table angles, rather than a clamped host lookup.
  case 50:if(!byte(c.source+3,c.angle))return false;++c.phase;break;
  case 51:if(!byte(c.source,c.index))return false;c.destination+=4u*c.index;c.phase=signedByte(c.angle)>=89 || signedByte(c.angle)<=-89?79:52;break;
  case 52:if(!quantized(c.source+1,c.delta))return false;c.cube=single(captured.fraction*c.square);++c.phase;break;
  case 53:if(!byte(c.source+2,c.index))return false;++c.phase;break;
+ // Cubic h10=t-2*t²+t³,h01=3*t²-2*t³,h11=t³-t² use exact single/FMA
+ // boundaries. Live TWO8041fb64,THREE8041fbb0,-TWO8041fb98 and SCALEfbac
+ // reload per admitted entry. Tangent base803d9580 +164hex biases signed
+ // degree 0 to row 89 (803d96e4); index -128 reaches adjacent Work+74 bytes.
  case 54:if(!load(0x8041fb64,c.two))return false;c.h10=animationFnmsubs(c.two,c.square,c.cube);++c.phase;break;
  case 55:if(!load(0x8041fbb0,c.three))return false;++c.phase;break;
  case 56:if(!load(0x803d9580u+0x164u+uint32_t(signedByte(c.index))*4u,c.tangent))return false;c.h01=single(c.three*c.square);++c.phase;break;
@@ -78,16 +105,22 @@ bool advanceAnimationMainInterpolation(const AnimationMainEvaluation& input,cons
  case 58:if(!load(0x8041fbac,c.scale))return false;++c.phase;break;
  case 59:if(!load(0x803d9580u+0x164u+uint32_t(signedByte(c.angle))*4u,c.otherTangent))return false;
   c.h01=std::fma(c.negativeTwo,c.cube,c.h01);c.delta=single(c.scale*c.delta);c.term=single(c.h10*c.tangent);++c.phase;break;
+ // Old output is read BEFORE remaining h11/m1/term arithmetic. Store one
+ // final rounded old+term; do not collapse the ordered FMAs into a polynomial.
  case 60:if(!load(c.destination,c.oldValue))return false;
   c.h10=single(c.cube-c.square);c.otherTangent=single(c.duration*c.otherTangent);c.term=std::fma(c.h01,c.delta,c.term);c.term=std::fma(c.h10,c.otherTangent,c.term);c.newValue=single(c.oldValue+c.term);++c.phase;break;
  case 61:if(!store(c.destination,bits(c.newValue)))return false;c.phase=79;break;
  case 79:c.source+=4;if(--c.remaining){c.phase=50;return false;}c.phase=90;break;
  // All three control paths publish the retained current then retained fraction.
+ // R3c=current precedes R40=fraction. A hold between them must not replay
+ // earlier cache/output work; completion still excludes Main's facing tail.
  case 90:if(!store(r+0x3c,captured.current))return false;++c.phase;break;
  case 91:if(!store(r+0x40,bits(captured.fraction)))return false;c={};return true;
  default:return false;
  }
 }
+// Compose scalar->replay->interpolation once. Retain completed cache result
+// through output/final-store holds instead of restarting the parent evaluation.
 bool advanceAnimationMainGeometry(const AnimationMainEvaluation& input,const AnimationMainTimeServices& time,const AnimationMainReplayServices& memory,AnimationMainGeometryCursor& c){
  if(!c.active){c={};c.active=true;c.input=input;c.timeOwner=time;c.memoryOwner=memory;}
  else if(!same(c.input,input) || !same(c.timeOwner,time) || !same(c.memoryOwner,memory))return false;

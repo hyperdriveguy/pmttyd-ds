@@ -3,6 +3,11 @@
 #include <cstring>
 namespace ttyd {
 namespace {
+// Parallel arrays use source order: position,normal,visibility,node,texture.
+// Count/Base offsets belong to MODEL; Cache offsets belong to pose; Key offsets
+// locate (offset,count) in 44-byte keys. Stream offsets belong to timeline.
+// Stream strides 4/4/2/4/12 expand to cache rows 12/12/1/4/24 bytes.
+// Addresses/field offsets are hex; counts, widths and key offsets are decimal.
 constexpr uint32_t CountOffsets[]={0xf0,0xf8,0x13c,0x140,0x12c},CacheOffsets[]={0x48,0x50,0x58,0x60,0x68},BaseOffsets[]={0x154,0x15c,0x1a0,0x1a4,0x190},KeyOffsets[]={4,12,28,36,20},StreamOffsets[]={0x2c,0x30,0x38,0x3c,0x34},Widths[]={4,4,2,4,12},DestinationWidths[]={12,12,1,4,24};
 float real(uint32_t b){float f;std::memcpy(&f,&b,4);return f;}
 uint32_t bits(float f){uint32_t b;std::memcpy(&b,&f,4);return b;}
@@ -13,6 +18,11 @@ bool same(const AnimationMainReplayServices& a,const AnimationMainReplayServices
 // One original copy load/store iteration per visit. remaining0 after setup is
 // intentional for memcpy_as4: its first body executes before CTR decrements.
 }
+// Optional bulk child may decline ONLY without effects, before scalar starts.
+// memcpy_as4(80005634) always copies forward words; n>>2==0 still executes
+// the do/while body then wraps its counter. memcpy(8000519c) returns for 0
+// and chooses backward whenever unsigned source<destination (even disjoint).
+// Capture a complete load before its store; held stores retain that value.
 bool advanceAnimationReplayCopy(const AnimationMainReplayServices& s,AnimationReplayCopy& c){
  if(!c.active && s.copy && s.copy(s.user,c.function,c.destination,c.source,c.bytes)){c={};return true;}
  if(!c.active){c.active=true;c.remaining=c.function==0x80005634?c.bytes>>2:c.bytes;if(c.function==0x8000519c){if(!c.bytes){c={};return true;}c.backward=c.source<c.destination;if(c.backward){c.source+=c.bytes-1;c.destination+=c.bytes-1;}}}
@@ -35,32 +45,46 @@ bool advanceAnimationMainReplay(const AnimationMainEvaluation& input,const Anima
  auto quantized=[&](uint32_t a,float& v){if(!s.quantized)return false;auto x=s.quantized(s.user,a);if(!x)return false;v=*x;return true;};
  auto finish=[&](){out=c.result;c={};return true;};
  for(;;)switch(c.phase){
+ // R28=current,R3c=old,R2c=next,R30=fraction, then all five MODEL counts.
+ // Dispatch occurs AFTER those reads. Reset old=-1 or signed current<old
+ // rebuilds bases; forward replay applies only old+1..current inclusive.
  case 0:if(!word(r+0x28,c.result.current))return false;++c.phase;break;
  case 1:if(!word(r+0x3c,c.old))return false;++c.phase;break;
  case 2:if(!word(r+0x2c,c.result.next))return false;++c.phase;break;
  case 3:if(!load(r+0x30,c.result.fraction))return false;c.channel=0;++c.phase;break;
  case 4:if(!word(d+CountOffsets[c.channel],c.result.counts[c.channel]))return false;if(++c.channel<5)break;
   c.channel=0;if(c.old==c.result.current)c.phase=90;else{c.rebuild=c.old==0xffffffff || less(c.result.current,c.old);c.phase=c.rebuild?5:20;}break;
+ // Capture key range BEFORE base copies. Every nonzero MODEL count copies
+ // destination cache first, then source base. Copy byte lengths wrap32.
  case 5:if(!word(t+0x28,c.key))return false;c.end=c.key+c.result.current*44u+44u;c.channel=0;++c.phase;break;
  case 6:if(c.channel==5){c.phase=10;break;}if(!c.result.counts[c.channel]){++c.channel;break;}
   c.copy={};c.copy.function=c.channel==2?0x8000519c:0x80005634;c.copy.bytes=c.result.counts[c.channel]*DestinationWidths[c.channel];++c.phase;break;
  case 7:if(!word(r+CacheOffsets[c.channel],c.copy.destination))return false;++c.phase;break;
  case 8:if(!word(d+BaseOffsets[c.channel],c.copy.source))return false;++c.phase;break;
  case 9:if(!advanceAnimationReplayCopy(s,c.copy))return false;++c.channel;c.phase=6;break;
+ // Reread old cache index after copies; only a still--1 value becomes 0.
+ // Scale8041fbac is 1/16, loaded even for an empty key range.
  case 10:if(!word(r+0x3c,c.word))return false;c.phase=c.word==0xffffffff?11:12;break;
  case 11:if(!store(r+0x3c,0))return false;++c.phase;break;
  case 12:if(!load(0x8041fbac,c.scale))return false;c.phase=22;break;
  case 20:if(!word(t+0x28,c.key))return false;c.end=c.key+(c.result.current+1)*44u;c.key+=(c.old+1)*44u;++c.phase;break;
  case 21:if(!load(0x8041fbac,c.scale))return false;++c.phase;break;
  case 22:if(!(c.key<c.end))return finish();c.channel=0;c.phase=30;break;
+ // Each key reads all channel offset/count/stream/cache headers even when
+ // MODEL count is 0. Unsigned pointer ranges and derived counts wrap32.
  case 30:if(!word(c.key+KeyOffsets[c.channel],c.offset))return false;++c.phase;break;
  case 31:if(!word(c.key+KeyOffsets[c.channel]+4,c.count))return false;++c.phase;break;
  case 32:if(!word(t+StreamOffsets[c.channel],c.stream))return false;++c.phase;break;
  case 33:if(!word(r+CacheOffsets[c.channel],c.destination))return false;
   c.source=c.stream+c.offset*Widths[c.channel];c.word=c.source+c.count*Widths[c.channel];
   if(!(c.source<c.word)){c.phase=80;break;}
+  // Preserve source bulk4/bulk8/remainder position. A derived zero count
+  // after an accepted range represents 2^32 iterations, not empty success.
   c.entryIndex=0;c.count=uint32_t(c.word+Widths[c.channel]-1-c.source)/Widths[c.channel];
   c.bulkLimit=c.count&~uint32_t(c.channel==2 || c.channel==3?7:3);c.remaining=c.count?uint64_t(c.count):(uint64_t(1)<<32);c.phase=40;break;
+ // Sparse index byte is UNSIGNED and cumulative within one channel/key.
+ // All three GQR4 vector deltas are captured before ANY destination read;
+ // Main's GQR4=00060006 means signed8 scale 0, not quantization type4.
  case 40:if(!byte(c.source,c.deltaIndex))return false;
   c.destination+=c.deltaIndex*DestinationWidths[c.channel];c.lane=0;c.phase=c.channel<2?41:c.channel==3?50:60;break;
  // Vector: all three original GQR4 loads precede the first destination read.
@@ -75,6 +99,10 @@ bool advanceAnimationMainReplay(const AnimationMainEvaluation& input,const Anima
  case 60:if(!byte(c.source+1,c.increment))return false;++c.phase;break;
  case 61:if(!byte(c.destination,c.word))return false;c.word+=c.increment;++c.phase;break;
  case 62:if(!s.storeByte || !s.storeByte(s.user,c.destination,uint8_t(c.word)))return false;c.phase=c.channel==2?79:63;break;
+ // Texture selector addition wraps 8 bits. Float+4 then+8 are unscaled
+ // adds, preserving other 24-byte row fields. At+8 the first three bulk4
+ // entries read destination then source; fourth/remainders read source first.
+ // Aliases make that order observable; no whole-stream predecode is valid.
  case 63:if(!load(c.destination+4,c.oldValue))return false;++c.phase;break;
  case 64:if(!load(c.source+4,c.delta))return false;c.newValue=single(c.oldValue+c.delta);++c.phase;break;
  case 65:if(!store(c.destination+4,bits(c.newValue)))return false;
@@ -87,12 +115,16 @@ bool advanceAnimationMainReplay(const AnimationMainEvaluation& input,const Anima
  case 71:if(!store(c.destination+8,bits(c.newValue)))return false;c.phase=79;break;
  case 79:c.source+=Widths[c.channel];++c.entryIndex;if(--c.remaining){c.phase=40;return false;}c.phase=80;break;
  case 80:if(++c.channel<5){c.phase=30;break;}c.key+=44;c.phase=22;if(c.key<c.end)return false;break;
+ // Same-key reverse fraction resets R40 to fresh ZERO only when old>new.
+ // Unordered comparisons do not store. Final R3c/R40 belong to interpolation.
  case 90:if(!load(r+0x40,c.oldValue))return false;if(!(c.oldValue>c.result.fraction))return finish();++c.phase;break;
  case 91:if(!load(0x8041fb28,c.newValue))return false;++c.phase;break;
  case 92:if(!store(r+0x40,bits(c.newValue)))return false;return finish();
  default:return false;
  }
 }
+// Successful scalar time/timeline work remains retained through replay holds.
+// Full provider identity remains required even after its phase has completed.
 bool advanceAnimationMainCache(const AnimationMainEvaluation& input,const AnimationMainTimeServices& time,const AnimationMainReplayServices& replay,AnimationMainCacheCursor& c,AnimationMainReplayResult& out){
  if(!c.active){c={};c.active=true;c.input=input;c.timeOwner=time;c.replayOwner=replay;}
  else if(!same(c.input,input) || !same(c.replayOwner,replay) || c.timeOwner.user!=time.user || c.timeOwner.word!=time.word || c.timeOwner.store!=time.store || c.timeOwner.doubleWord!=time.doubleWord || c.timeOwner.divide!=time.divide || c.timeOwner.convertUnsigned!=time.convertUnsigned || c.timeOwner.truncate!=time.truncate)return false;

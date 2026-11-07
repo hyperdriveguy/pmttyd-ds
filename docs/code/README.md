@@ -231,3 +231,7 @@ selectors, source clock/reset order, visit budgets and exclusive native producer
 references, partial publication and retained child calls. [Animation group traversal](animation-group-traversal.md)
 explains visibility, modeling outputs, special effects, sibling semantics and
 two-request resource polling.
+
+[Animation Main evaluation](animation-main-evaluation.md) explains clock/ratio
+rounding, timeline scans, five compressed streams, exact copy semantics and
+retained interpolation publications.
