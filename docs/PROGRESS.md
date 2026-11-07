@@ -17268,3 +17268,41 @@ Next tasks:
 
 EVT-01 and the full goal remain OPEN. No new Dolphin execution or matched
 original/hardware profile was collected, and no dialogue/story content changed.
+
+### Animation Main evaluation code documentation
+
+Added 124 inline comment lines across eight implementation/header files for
+animation_main_time, animation_main_timeline, animation_main_replay and
+animation_main_interpolation. Explained original clock/divisor/bias constants,
+signed division versus unsigned elapsed conversion, float publication/rounding,
+pre-table reads, loop-wrap captures, five stream layouts, sparse indices,
+copy direction and wrapped counters, GQR requirements, cubic tangent addressing
+and final cache publication order. Added/indexed docs/code/animation-main-evaluation.md
+with field/stream mapping and the retained stage composition. Code/docs commit:
+`2e8c8654`. All eight files preserve executable tokens and string literals.
+
+Validation: existing animation_main_time, animation_main_timeline,
+animation_main_replay and animation_main_interpolation host fixtures compiled
+and passed with all four annotated implementations linked first. Those fixtures
+include actual source-backed resource/sampler comparisons and retained hold/alias/
+wrapped-counter checks. Non-scoped headers/core/ROMFS use the prior fully validated
+animation-memory-selection private snapshot; all eight scoped executable streams
+and four fixture sources were proven equivalent to it. The first interpolation
+fixture compile exposed duplicate pragma-once files in the initial overlay
+harness; its failed log is retained. After consolidating one private include
+tree, all four fixtures were rebuilt and passed. This was harness setup, not an
+implementation change. Four ARM C++17 syntax checks passed; no native link or
+hardware claim. Ten live/private file hashes, 126 local links, supporting core
+hash and 114 accepted product hashes passed final audits. No tests were added.
+
+Full make test/all were not repeated for this comments/prose-only batch, with
+no executable changes. Prior full-suite results retain their separate snapshot
+scope; these checks do not validate concurrent new runtime implementations.
+No imports, asset conversions, story changes or emulator runs. Exact commands,
+source hashes and initial/final logs are retained under
+artifacts/animation-main-stages-code-documentation-validation/.
+
+The documentation goal remains active. Next: outer Main/Inner ownership,
+time/replay bindings, facing/node/draw providers, later changed source and
+remaining native/tool modules. Whole-file Trio numeric coverage and broad
+port completeness remain unproven; hash inventories alone do not prove them.
