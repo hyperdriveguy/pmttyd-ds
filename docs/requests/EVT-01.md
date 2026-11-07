@@ -5566,3 +5566,26 @@ numeric/GPU parity or physical hardware performance. No story dialogue changed.
 - [ ] Complete materialProc/Vivian/callback/linked services and normal Game
   queue/camera/lease scheduling; then original-area/story coverage and images/
   physical hardware performance. EVT-01 and the full goal remain OPEN.
+
+
+## 2026-11-07 — Harbor root admission and corrected lamp event semantics
+
+The original harbor root9050ef7c/870 is now a scoped editable nonexecuting
+REL/linked-DOL event asset. FieldArea admits room1 with its specific original6b
+header and scanner context, and consistently merges shared source bytes before
+VM import. Full callback80136158 is retained with exact raw event scratch,
+lookup/call order, signed modes, live matrices and distinct native holds.
+
+Correction: the four light calls are independent inline roots (6b/6d), each
+returning0 forever; they do not block the parent. The parent proceeds to actual
+audio/Bero/tag/setup/story branches. Never complete these callbacks as no-ops.
+Original read-only evidence: artifacts/harbor-light-binding-evidence/report.md.
+[Contract](../behavior/field/NATIVE_HARBOR_AREA_INITIALIZATION.md).
+
+- [ ] Bind actual lightInit/lightEntry/map-load storage and source lookup groups,
+  stable raw base/dynamic map matrices, SDK vector arithmetic and room retirement.
+- [ ] Compose normal Game area draining/scheduling and original audio/Bero/tag/
+  setup/RNG/story providers. Preserve independent roots and full prologue scope.
+
+EVT-01 remains OPEN. Source wrapper/actual-root fixtures do not establish a
+complete playable prologue, installed native lights or original GPU parity.

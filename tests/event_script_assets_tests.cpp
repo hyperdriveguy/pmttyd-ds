@@ -35,6 +35,15 @@ int main(int argc,char** argv) {
     }
     auto adjacent=packed;word(adjacent,24,0x80300010);save(path,adjacent);assert(assets.load(path));
     assert(assets.readWord(0x8030000f,w) && w==0x01800012); // A mapped word can straddle adjacent original-address spans.
+    // Equal overlapping and adjacent source slices share one canonical RAM
+    // import. A late conflicting byte must not publish an earlier prefix.
+    EventScriptAssets other;assert(other.load(path));assert(assets.merge(other));
+    assert(assets.segments().size()==1 && assets.readWord(0x8030000f,w) && w==0x01800012);
+    assert(assets.merge(assets) && assets.readWord(0x8030000f,w) && w==0x01800012);
+    auto conflict=adjacent;conflict.back()^=1;save(path,conflict);assert(other.load(path));
+    assert(!assets.merge(other) && assets.readWord(0x8030000f,w) && w==0x01800012);
+    assert(assets.readByte(0x8030001f,b) && b==adjacent.back());
+    EventScriptAssets empty;assert(!assets.merge(empty) && !empty.merge(assets));
     assert(!assets.load(nullptr));unlink(path);assert(!assets.load(path));
     std::cout<<"event script asset tests passed\n";
 }

@@ -160,3 +160,12 @@ For another import use `python3 tools/import_npc_creation_event.py --help`.
 The importer opens the ISO read-only and requires an empty destination; normal
 builds compile the checked-in JSON and never reimport over edits. The new
 `field-npc-creation.pmevt` is installed after the ISO-backed base pack.
+
+
+The original harbor initialization closure is editable at
+`original/events/harbor-area-init/`. Its `event.json` compiles to
+`field-harbor-init.pmevt`; adjacent provenance records complete original
+nonexecuting REL/linked-EVT dependencies and light-origin constants. The explicit
+`tools/import_harbor_area_event.py` importer requires an empty destination and
+reads the ISO only. Normal builds preserve checked-in edits. FieldArea merges
+shared original bytes only when identical before creating writable VM storage.

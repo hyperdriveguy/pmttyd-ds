@@ -3999,3 +3999,25 @@ No editable checked-in asset was reimported or overwritten. The extraction is
 compiled boot data; no ISO or compiled product enters source history. Nintendo/
 Intelligent Systems retain original rights; local extraction/tracking grants no
 new license or redistribution rights.
+
+
+## Original complete harbor area initialization data — 2026-11-07
+
+Editable `assets/original/events/harbor-area-init/event.json` and neighboring
+`provenance.json` retain original gor_00.o::gor_00_init_evt9050ef7c/870,
+its633 transitive nonexecuting REL data objects, referenced linked DOL events
+with real scanner prefetch words, and24 original light-origin bytes802f3748..5f.
+`tools/import_harbor_area_event.py` opens G8ME01 revision0 ISO read-only and
+requires an empty destination. Full gor.rel hash, object/source addresses,
+relocation choices, linked-event hashes and DOL literal hash are retained.
+No executable section, fabricated command, geometry/lighting approximation,
+texture scaling, dialogue, music or SFX replacement is introduced.
+
+Manifest kind event compiles the checked-in source to
+`romfs/field-harbor-init.pmevt` after the ISO-backed base pack. Existing creation,
+door and harbor source spans overlap consistently and merge before RAM import;
+conflicts reject atomically. Generated products/caches are ignored. Original
+Nintendo/Intelligent Systems rights remain; no redistribution license is granted.
+The existing broader harbor harness pack is unchanged and is not imported as
+this scoped area data closure. Native scene-light ownership/rendering is still
+unbound; these constants are source data, not measured light positions.

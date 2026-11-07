@@ -16983,3 +16983,69 @@ Next tasks:
 3. Wire ordinary Game camera/queue/offscreen/callback/pass draining, expand
    original area/events/objects/story coverage, then matched original image
    comparisons and physical New2DS XL performance profiling.
+
+
+## 2026-11-07 — Full original harbor initializer and ongoing light callback
+
+Added editable original gor00 root9050ef7c/870 with633 transitive nonexecuting
+REL objects, linked DOL EVT/scanner contexts and original light-origin literals.
+FieldArea now admits room1 at this exact6b root. Original door/creation/harbor
+spans merge consistently before one mutable RAM import; conflicting bytes
+reject atomically without replacing valid assets. Existing game products and
+legacy gor02 finite catalog behavior are preserved.
+
+Implemented complete retained light-binding callback80136158. Original first
+nonzero captures raw XYZ into EventEntry+78/7c/80; later polls retain it while
+re-resolving operands/owners and reading current matrices. Mode0/full dynamic,
+mode1/translation and other signed-mode paths preserve source calls. Native
+child holds preserve captured first and completed work. Original return is0.
+Source recovery corrected an earlier assumption: four lamp bindings are
+independent persistent inline roots; they do not block the harbor parent.
+
+Validation freezes accepted dfc21dce source/products plus this exact scope;
+unrelated concurrent source/staging are preserved and excluded. Final make test
+exits0: 500/500 C++ tests (125.88s), 231/231 Python tests (48.722s), zero skips.
+Focused 3/3 pass; assets-check validates 422 recipes. Final native make all and
+private ARM build exit0. Dependency normalization invalidated 134 differing
+source/header objects, preventing stale layout reuse. New source IDs, structure
+offsets and callback phases have names. No new light-core warning was observed;
+existing unrelated compiler/Pillow warnings remain.
+
+An initial root fixture expected bgmon_f but actual original story0 reaches
+bgmon; the fixture now checks the real 801525a4 callback. Review found missing
+providers could lose first initialization; the cursor now captures first before
+admission, permits each missing callback to install once and pins installed
+identity. Regressions cover missing word/value/lookup/SDK and changed-owner
+rejection. The earlier full gate compiled the pre-fix library while its fixture
+was edited and failed that regression; the final frozen full gate is clean.
+
+Fresh isolated Azahar normal50s, ARM80s and field70s-warmup runs exit0.
+Eight strict ARM markers pass: root/inline/polls/rawScratch/modes/holds/
+lateProviders/merge. Two exact tracked fixtures run on ARM with explicit romfs:
+roots; 533 production objects reused except main. All other source/include and
+runtime products are identical. Actual original harbor root retains four
+separate inline lights while the parent independently reaches its real audio
+frontier. Light SDK arithmetic services are explicit integer golden fixtures,
+not installed native map/light storage or paired-single parity evidence.
+Normal storybook and checkpoint idle/right/left/final-idle images manually
+inspected. Checkpoint has no active partner; no Goombella walk-parity claim.
+User emulator profile/saves untouched. Production binary remained unchanged.
+
+Exact replay audits 4286 source files, 2194 runtime products, 1474 private inputs
+and 1 reference input. One original editable event pack is added and its pipeline
+stamp changes; existing runtime products/private inputs are unchanged. Only the
+new manifest entry was compiled through the normal pipeline, then native asset
+preparation skipped after exact audits. Initial import used an empty destination;
+24 additional original DOL bytes were added as an explicit editable source
+update, with provenance, without reimporting over edits. ISO stayed read-only.
+No compiled pack, extraction cache or ISO committed. Frozen links: 1559 Markdown,
+zero broken. Evidence: artifacts/harbor-area-root-validation-manifest.json.
+
+Actual native map/light allocation, lookup groups, matrix/SDK providers and
+GPU light consumers remain unbound. The new callback exposes those owners
+explicitly; synthetic arithmetic services are fixtures. Normal Game area/session
+scheduling, genuine audio/Bero/tag/setup/RNG/story services, battle/result/return,
+indoors/objects and matched original visual/hardware checks remain. The full
+goal is active; do not report this data/callback milestone as prologue completion.
+Next owner map: artifacts/npc-creation-events-game-next.md; corrected exact
+source light evidence: artifacts/harbor-light-binding-evidence/report.md.

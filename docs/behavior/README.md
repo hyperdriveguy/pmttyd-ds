@@ -1455,3 +1455,7 @@ Original battle menu native resource/queue owners:
   real Entry/SetTribe, shared actor/model pointers, retained forced selection,
   mutation barriers and original four-actor child.
 - [Actual-VM retained renderProc parent](display/NATIVE_ACTUAL_VM_RENDER_PARENT.md): original raw render parent, ordered material/array/FIFO children and producer lease binding.
+
+- [Original harbor area root and persistent light binding](field/NATIVE_HARBOR_AREA_INITIALIZATION.md):
+  scoped original root, consistent data union, independent inline lights and
+  retained source callback; actual map/light providers remain separate.

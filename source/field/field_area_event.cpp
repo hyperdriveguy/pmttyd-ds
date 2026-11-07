@@ -18,6 +18,10 @@
 #include <cstring>
 namespace ttyd {
 namespace {
+constexpr uint32_t HarborRoom=1;
+constexpr uint32_t HarborInitializer=0x9050ef7c;
+constexpr uint32_t HarborInitializerBytes=0x870;
+constexpr uint32_t IndependentInlineOpcode=0x6b;
 struct DoorProgram {uint32_t room,script,record;};
 struct BattleRegistration {uint32_t room,name,setup,numbers,first,count;};
 struct Program {EventScriptAssets scripts,creation;bool hasCreation=false;std::vector<BattleRegistration> battles;std::vector<DoorProgram> entries;std::vector<std::array<uint32_t,2>> initializers;};
@@ -42,12 +46,21 @@ uint32_t bits(float v){uint32_t out;std::memcpy(&out,&v,4);return out;}
 // pin actual borrowed trailing word for script8033156c before publication.
 bool loadFieldAreaEventAssets(const char* root) {
  if(!root)return false;
- auto next=std::make_shared<Program>();const std::string base=root;
+ auto next=std::make_shared<Program>();const std::string base=root;bool hasHarbor=false;
  if(!next->scripts.load((base+"/door-data.pmevt").c_str()))return false;
  // Optional for legacy packs. Normal editable-asset builds supply this
  // exact original child closure; creation binding requires its presence.
  if(FILE* extra=std::fopen((base+"/field-npc-creation.pmevt").c_str(),"rb")){
-  std::fclose(extra);if(!next->creation.load((base+"/field-npc-creation.pmevt").c_str()))return false;next->hasCreation=true;
+  std::fclose(extra);if(!next->creation.load((base+"/field-npc-creation.pmevt").c_str()) || !next->scripts.merge(next->creation))return false;next->hasCreation=true;
+ }
+ // Original scoped nonexecuting gor00 closure. Merge before importing RAM:
+ // shared source objects/prefetch bytes must agree, never overwrite live VM data.
+ if(FILE* extra=std::fopen((base+"/field-harbor-init.pmevt").c_str(),"rb")){
+  std::fclose(extra);EventScriptAssets harbor;uint32_t first=0,trailing=0;
+  if(!harbor.load((base+"/field-harbor-init.pmevt").c_str()) ||
+     !harbor.readWord(HarborInitializer,first) || first!=IndependentInlineOpcode ||
+     !harbor.readWord(HarborInitializer+HarborInitializerBytes,trailing) || !next->scripts.merge(harbor))return false;
+  hasHarbor=true;
  }
  FILE* f=std::fopen((base+"/field-area-events.bin").c_str(),"rb");if(!f)return false;
  char magic[8];uint32_t count=0;
@@ -65,6 +78,11 @@ bool loadFieldAreaEventAssets(const char* root) {
   if(ok)next->initializers.push_back(e);
  }
  ok=ok && std::fgetc(f)==EOF;std::fclose(f);if(!ok)return false;
+ if(hasHarbor){
+  bool found=false;
+  for(const auto& e:next->initializers)if(e[0]==HarborRoom){if(e[1]!=HarborInitializer)return false;found=true;}
+  if(!found)next->initializers.push_back({HarborRoom,HarborInitializer});
+ }
  // Original area registry803057ec has33 three-letter names plus null slot;
  // source setup/number pointers initially0, then registerBattles writes them.
  // Validate the original registry before publishing the candidate assets.
@@ -371,7 +389,6 @@ struct FieldAreaEventRuntime {
  // Original program words import separately from native allocator RAM.
  bool initialize(uint64_t milliseconds) {
   if(!vm.memory.registerRam(0x82000000,std::vector<uint8_t>(0x80000)) || !vm.memory.registerRam(0x8041f070,std::vector<uint8_t>(16)) || !vm.memory.registerRam(0x8041e428,std::vector<uint8_t>(4)) || !vm.memory.registerRam(0x8041e844,std::vector<uint8_t>(4)) || !vm.memory.registerRam(0x8041e9e4,std::vector<uint8_t>(24)) || !vm.memory.importScripts(program->scripts))return false;
-  if(program->hasCreation && !vm.memory.importScripts(program->creation))return false;
   if(!registerBattles())return false;
   const auto memory=vm.memoryBinding.services();const auto start=eventSdkInitializeAllocator(0x82000000,0x82080000,1,memory);
   if(eventSdkCreateHeap(start,0x82080000,memory)!=0 || !vm.memory.writeWord(0x8041e844,0) || !vm.memory.writeWord(0x81000004,60))return false;

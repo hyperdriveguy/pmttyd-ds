@@ -2,6 +2,13 @@
   "schema": 1,
   "assets": [
     {
+      "id": "original/events/harbor-area-init",
+      "kind": "event",
+      "source": "assets/original/events/harbor-area-init/event.json",
+      "output": "field-harbor-init.pmevt",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+},
+    {
       "id": "original/characters.t3x",
       "kind": "texture",
       "source": "assets/original/textures/characters.png",

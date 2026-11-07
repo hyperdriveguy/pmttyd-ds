@@ -2808,3 +2808,14 @@ add_executable(field_npc_creation_binding_tests tests/field_npc_creation_binding
 target_link_libraries(field_npc_creation_binding_tests PRIVATE ttyd_core)
 add_test(NAME field_npc_creation_binding COMMAND field_npc_creation_binding_tests)
 set_tests_properties(field_npc_creation_binding PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+add_executable(field_harbor_area_root_tests tests/field_harbor_area_root_tests.cpp)
+target_link_libraries(field_harbor_area_root_tests PRIVATE ttyd_core)
+add_test(NAME field_harbor_area_root COMMAND field_harbor_area_root_tests)
+set_tests_properties(field_harbor_area_root PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+target_sources(ttyd_core PRIVATE source/field/field_light_binding.cpp)
+
+add_executable(field_light_binding_tests tests/field_light_binding_tests.cpp)
+target_link_libraries(field_light_binding_tests PRIVATE ttyd_core)
+add_test(NAME field_light_binding COMMAND field_light_binding_tests)

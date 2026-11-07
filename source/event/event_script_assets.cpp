@@ -1,4 +1,5 @@
 #include "event_script_assets.hpp"
+#include <algorithm>
 #include <cstdio>
 #include <cstring>
 #include <limits>
@@ -31,6 +32,35 @@ bool EventScriptAssets::load(const char* path) {
         previousEnd=end;nextOffset+=s.size;segments.push_back(s);
     }
     if(nextOffset!=bytes.size())return false;
+    data_=std::move(bytes);segments_=std::move(segments);return true;
+}
+// Merge sorted spans without an address-sized map or per-byte allocation.
+// Payload storage is private: merged offsets need no serialized PMEVT header.
+bool EventScriptAssets::merge(const EventScriptAssets& other) {
+    if(segments_.empty() || other.segments_.empty())return false;
+    std::vector<uint8_t> bytes;
+    std::vector<EventScriptSegment> segments;
+    size_t left=0,right=0;
+    while(left<segments_.size() || right<other.segments_.size()) {
+        const bool own=right==other.segments_.size() ||
+            (left<segments_.size() && segments_[left].address<=other.segments_[right].address);
+        const auto& source=own?*this:other;
+        const auto s=own?segments_[left++]:other.segments_[right++];
+        uint32_t overlap=0;
+        if(!segments.empty() && uint64_t(s.address)<=uint64_t(segments.back().address)+segments.back().size) {
+            const auto& last=segments.back();
+            overlap=uint32_t(std::min<uint64_t>(s.size,uint64_t(last.address)+last.size-s.address));
+            for(uint32_t i=0;i<overlap;++i)
+                if(bytes[last.offset+s.address-last.address+i]!=source.data_[s.offset+i])return false;
+        } else {
+            if(bytes.size()>UINT32_MAX)return false;
+            segments.push_back({s.address,0,uint32_t(bytes.size())});
+        }
+        const auto extra=s.size-overlap;
+        if(uint64_t(bytes.size())+extra>UINT32_MAX || uint64_t(segments.back().size)+extra>UINT32_MAX)return false;
+        bytes.insert(bytes.end(),source.data_.begin()+s.offset+overlap,source.data_.begin()+s.offset+s.size);
+        segments.back().size+=extra;
+    }
     data_=std::move(bytes);segments_=std::move(segments);return true;
 }
 // Upper-bound search chooses the last segment starting at/before address.

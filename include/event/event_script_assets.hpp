@@ -12,6 +12,9 @@ public:
     // PMEVT001 is a port asset container,not an original VM format. A rejected
     // load retains the last valid pack;original addresses never become host pointers.
     bool load(const char* path);
+    // Atomic union of loaded data packs. Overlap must agree byte-for-byte;
+    // conflicting original/editable sources retain the previous pack.
+    bool merge(const EventScriptAssets& other);
     bool readByte(uint32_t originalAddress,uint8_t& value) const;
     bool readWord(uint32_t originalAddress,uint32_t& value) const;
     const std::vector<EventScriptSegment>& segments() const {return segments_;}
