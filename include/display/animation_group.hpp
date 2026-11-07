@@ -3,6 +3,8 @@
 #include <memory>
 #include <vector>
 namespace ttyd {
+// Guest node/matrix addresses stay tokens; the children own SDK/numeric effects.
+// Parent is a scale triple for Joint; Transform ignores that triple.
 struct AnimationGroupNode {
  uint32_t node=0;bool joint=false;std::array<float,3> parent{};
 };
@@ -23,6 +25,9 @@ struct AnimationGroupServices {
  // Original single fsubs followed by fmadds; explicit numeric provider.
  std::optional<uint32_t> (*blend)(void*,uint32_t coefficient,uint32_t source,uint32_t old)=nullptr;
 };
+// One retained recursive invocation. Heap frame addresses remain stable when
+// the vector grows; saved parent references survive push(). Fields are captured
+// source operands, not a validated model tree or a matrix snapshot.
 struct AnimationGroupFrame {
  AnimationInnerTraversal call;uint32_t phase=0;
  uint32_t work=0,model=0,pose=0,groups=0,group=0,visibility=0,index=0,nodes=0,parentGroup=0,kind=0,value=0;
@@ -39,5 +44,6 @@ struct AnimationGroupCursor {
 // Complete dispProc8003c4bc local parent. SDK node/copy, numeric, material,
 // Vivian, callback and render children retain their own effects on false.
 // Preserve this cursor and identical request/providers until completion.
+// Default 128 is a native cooperative-work budget, not a source recursion limit.
 bool resumeAnimationGroup(const AnimationInnerTraversal&,const AnimationGroupServices&,AnimationGroupCursor&,unsigned visits=128);
 }

@@ -6,8 +6,15 @@ float real(uint32_t w){float f;std::memcpy(&f,&w,4);return f;}
 bool same(const AnimationInnerTraversal& a,const AnimationInnerTraversal& b){return a.parent==b.parent && a.group==b.group && a.current==b.current && a.next==b.next && !std::memcmp(&a.fraction,&b.fraction,4);}
 bool same(const AnimationGroupServices& a,const AnimationGroupServices& b){return a.user==b.user && a.word==b.word && a.byte==b.byte && a.store==b.store && a.node==b.node && a.copy==b.copy && a.material==b.material && a.vivian==b.vivian && a.callback==b.callback && a.render==b.render && a.blend==b.blend;}
 void push(AnimationGroupCursor& c,const AnimationInnerTraversal& q){if(c.depth==c.frames.size())c.frames.emplace_back(std::make_unique<AnimationGroupFrame>());auto& f=*c.frames[c.depth++];f={};f.call=q;}
+// Byte offsets of the nine 3x3 basis lanes in a row-major 3x4 affine matrix.
+// Translation lanes 0c/1c/2c are deliberately excluded from the effect blend.
+// Guest addresses/field offsets below are hexadecimal; strides are bytes.
 constexpr uint32_t Basis[]{0,4,8,0x10,0x14,0x18,0x20,0x24,0x28};
 }
+// Fixed translation of US dispProc8003c4bc. Numeric phases are continuation
+// labels, not elapsed frames. A visit advances one reached local operation;
+// a held child retains its own effects. Same providers/request (fraction BITS,
+// including signed zero) must resume. Clearing the cursor cannot undo stores.
 bool resumeAnimationGroup(const AnimationInnerTraversal& input,const AnimationGroupServices& s,AnimationGroupCursor& c,unsigned visits){
  if(!visits)return false;
  if(!c.active){c.active=true;c.input=input;c.owner=s;c.depth=0;push(c,input);}
@@ -16,15 +23,23 @@ bool resumeAnimationGroup(const AnimationInnerTraversal& input,const AnimationGr
  auto store=[&](uint32_t a,uint32_t v){return s.store && s.store(s.user,a,v);};
  for(unsigned visit=0;visit<visits;++visit){auto& f=*c.frames[c.depth-1];const auto g=f.call.group;
   switch(f.phase){
+  // W=root[80415dc0], W20=MODEL, W18=current pose. MODEL1a8 points to
+  // 88-byte groups:40 sibling,44 child,48 shape,4c visibility,50 node,54 kind.
+  // Only group=-1 is empty; other indices and all guest arithmetic wrap32.
   case 0:if(g==0xffffffff){f.phase=105;break;}if(!read(0x80415dc0,f.work))return false;++f.phase;break;
   case 1:if(!read(f.work+0x20,f.model))return false;++f.phase;break;
   case 2:if(!read(f.work+0x18,f.pose))return false;++f.phase;break;
   case 3:if(!read(f.model+0x1a8,f.groups))return false;f.group=f.groups+g*88;++f.phase;break;
   case 4:if(!read(f.pose+0x5c,f.visibility))return false;++f.phase;break;
   case 5:if(!read(f.group+0x4c,f.index))return false;++f.phase;break;
+  // Visibility uses P5c OUTPUT bytes, not P58 cache. Any nonzero byte is
+  // visible; zero skips push/outputs/child/pop but still follows the sibling.
   case 6:{auto b=s.byte?s.byte(s.user,f.visibility+f.index):std::nullopt;if(!b)return false;f.phase=*b?7:103;break;}
   case 7:if(!read(f.group+0x54,f.kind))return false;f.node.joint=f.kind!=0;++f.phase;break;
   case 8:if(!read(f.group+0x50,f.index))return false;++f.phase;break;
+  // P64 contains float nodes; group50 is a WORD index (4-byte stride).
+  // Joint parent scales are +0c/10/14; absent/nonjoint parent uses literal ONE
+  // at8041fb24. This function adds no parent bound or matrix-stack guard.
   case 9:if(!read(f.pose+0x64,f.nodes))return false;f.node.node=f.nodes+f.index*4;f.phase=!f.node.joint?20:f.call.parent==0xffffffff?11:10;break;
   case 10: f.parentGroup=f.groups+f.call.parent*88;if(!read(f.parentGroup+0x54,f.value))return false;f.phase=f.value?12:11;break;
   case 11:if(!read(0x8041fb24,f.value))return false;f.node.parent.fill(real(f.value));f.phase=20;break;
@@ -35,6 +50,10 @@ bool resumeAnimationGroup(const AnimationInnerTraversal& input,const AnimationGr
   case 20:if(!s.node || !s.node(s.user,f.node))return false;f.phase=30;break;
   // Independent current-pose queries and literal seed loads, even though
   // translation overwrites all three local seed words before publication.
+  // Independent live-pose flag queries:40 exports XYZ via P15c holder to
+  // 12-byte/group output;80 copies 48-byte/group matrix via P164 holder.
+  // 8041e8a0 is the live modeling pointer; seed words802c1048/4c/50 are
+  // reached reads even though translation overwrites their local values.
   case 30:if(!read(0x80415dc0,f.work))return false;++f.phase;break;
   case 31:if(!read(f.work+0x18,f.pose))return false;++f.phase;break;
   case 32:if(!read(f.pose,f.value))return false;f.phase=f.value&0x40?33:45;break;
@@ -63,6 +82,10 @@ bool resumeAnimationGroup(const AnimationInnerTraversal& input,const AnimationGr
   case 55:if(!read(f.pose+0x120,f.pointer))return false;++f.phase;break;
   case 56:if(!read(f.pointer,f.value))return false;f.phase=f.value==g?60:90;break;
   // Special B is the inline matrix at P+124, NOT word[P+124].
+  // Matched flag20 diverts ordinary callback/render/child. P11c=kind,
+  // P14=animation index; table80415db0 has pointers to 8-byte parameter pairs.
+  // Table access precedes kind classification (kind 4 can alias the W root).
+  // ZERO=8041fb28; kind 1/2/3 extras=-2/-3/-1 and .5 (fb44), others ZERO.
   case 60:if(!read(f.pose+0x11c,f.kind))return false;f.vivian.saved=f.pose+0x124;++f.phase;break;
   case 61:if(!read(0x8041fb28,f.value))return false;f.vivian.parameters[2]=f.vivian.parameters[3]=real(f.value);++f.phase;break;
   case 62:if(!read(f.pose+0x14,f.animation))return false;++f.phase;break;
@@ -75,6 +98,9 @@ bool resumeAnimationGroup(const AnimationInnerTraversal& input,const AnimationGr
   case 69:if(!read(f.pair,f.value))return false;f.vivian.parameters[0]=real(f.value);++f.phase;break;
   case 70:if(!read(f.pair+4,f.value))return false;f.vivian.parameters[1]=real(f.value);++f.phase;break;
   case 71:if(!s.vivian || !s.vivian(s.user,f.vivian))return false;++f.phase;break;
+  // Effect acknowledges before fresh W/P and basis reads. Factor8041fba0
+  // is source .04f. Blend single(M-old) then fmadds(factor,delta,old), one
+  // lane at a time: aliases may affect later reads. Clear ONLY pose flag20.
   case 72:if(!read(0x80415dc0,f.work))return false;++f.phase;break;
   case 73:if(!read(0x8041fba0,f.coefficient))return false;++f.phase;break;
   case 74:if(!read(f.work+0x18,f.pose))return false;++f.phase;break;
@@ -84,6 +110,8 @@ bool resumeAnimationGroup(const AnimationInnerTraversal& input,const AnimationGr
   case 78:if(!read(f.vivian.saved+Basis[f.lane],f.old))return false;++f.phase;break;
   case 79:{auto v=s.blend?s.blend(s.user,f.coefficient,f.source,f.old):std::nullopt;if(!v)return false;f.result=*v;++f.phase;break;}
   case 80:if(!store(f.vivian.saved+Basis[f.lane],f.result))return false;f.phase=++f.lane==9?100:77;break;
+  // Ordinary P154 callback/P158 data precedes fresh captured-group48 shape
+  // and render. Only shape/current key are passed; no invented pass argument.
   case 90:if(!read(f.pose+0x154,f.callback))return false;f.phase=f.callback?91:94;break;
   case 91:if(!read(f.pose+0x158,f.data))return false;++f.phase;break;
   case 92:if(!read(0x8041e8a0,f.matrix))return false;++f.phase;break;
@@ -92,6 +120,9 @@ bool resumeAnimationGroup(const AnimationInnerTraversal& input,const AnimationGr
   case 95:if(!s.render || !s.render(s.user,f.shape,f.call.current))return false;++f.phase;break;
   case 96:if(!read(f.group+0x44,f.value))return false;++f.phase;break;
   case 97:{auto q=f.call;q.parent=g;q.group=f.value;f.phase=100;push(c,q);break;}
+  // Modeling level 8041e89c decrements before pointer publication to stack
+  // base803d8e70 +48*level. No underflow clamp. Both child AND sibling calls
+  // use CURRENT group as parent; sibling does not inherit incoming parent.
   case 100:if(!read(0x8041e89c,f.level))return false;--f.level;++f.phase;break;
   case 101:if(!store(0x8041e89c,f.level))return false;++f.phase;break;
   case 102:if(!store(0x8041e8a0,0x803d8e70+f.level*48))return false;++f.phase;break;

@@ -13,6 +13,9 @@ struct AnimationEntryServices {
  BattleSequenceEntryServices memory;
  bool (*call)(void*,AnimationEntryCall&)=nullptr;
 };
+// PCs preserve source instruction boundaries; pending names the missing
+// primitive/child. queued captures r3..r7, including semantic filename tags.
+// No per-render tick counter or bounded visit scheduler is added by this body.
 struct AnimationEntryCursor {
  bool active=false,queued=false;
  uint32_t pc=0,pending=0,name=0,mode=0,ctr=0,stackRegisters=0,result=0;

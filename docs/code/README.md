@@ -226,3 +226,8 @@ start ordering and the different noise/rainbow GX reset scopes.
 pool/tangent aliases, scratch channel layouts and native sampling limits.
 [Animation selection ownership](animation-selection-ownership.md) explains signed
 selectors, source clock/reset order, visit budgets and exclusive native producers.
+
+[Animation pose lifecycle](animation-pose-lifecycle.md) explains original Entry/Release
+references, partial publication and retained child calls. [Animation group traversal](animation-group-traversal.md)
+explains visibility, modeling outputs, special effects, sibling semantics and
+two-request resource polling.

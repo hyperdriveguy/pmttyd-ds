@@ -4,10 +4,18 @@ namespace ttyd {
 namespace {
 int32_t signedWord(uint32_t v){int32_t n;std::memcpy(&n,&v,4);return n;}
 }
+// Fixed US function: case labels are original PCs, decimal immediates below
+// are PPC operands. r holds 32 source GPRs; f retains two float words.
+// SDA2 r2=80427440; SDA r13=8041cf20. r13-29024=>W root80415dc0,
+// r13-28496=>GP root80415fd0. r27=802c0d18 is the local literal base.
+// Caller must retain service/mapping ownership: Entry pins name/mode but does
+// not fingerprint callbacks or supply its own reentry/lifetime lock.
 bool enterAnimationPose(uint32_t name,uint32_t mode,const AnimationEntryServices& s,AnimationEntryCursor& c){
  if(!c.active){c={};c.active=true;c.pc=0x8004177c;c.name=name;c.mode=mode;c.r[2]=0x80427440;c.r[13]=0x8041cf20;c.r[3]=name;c.r[4]=mode;}
  else if(c.name!=name || c.mode!=mode)return false;
  auto& r=c.r;
+ // Register writes clear semantic-stack tags; register copies propagate them.
+ // Five child arguments are r3..r7 (mask 31); never fabricate a stack address.
  auto reg=[&](unsigned i,uint32_t v){r[i]=v;c.stackRegisters&=~(1u<<i);};
  auto load=[&](uint32_t a,uint32_t& v){auto n=s.memory.word?s.memory.word(s.memory.user,a):std::nullopt;if(!n)return false;v=*n;return true;};
  auto store=[&](uint32_t a,uint32_t v){return s.memory.store && s.memory.store(s.memory.user,a,v);};
@@ -15,6 +23,10 @@ bool enterAnimationPose(uint32_t name,uint32_t mode,const AnimationEntryServices
  // and child arguments never replay across an unavailable primitive. This is
  // the recovered Entry body, not an interpreter for arbitrary executable data.
  for(;;){c.pending=c.pc;switch(c.pc){
+ // Modes 0/1/2 calls fileSetCurrentArchiveType80189d38 with 1/2/0.
+ // Other modes skip it. W10/W14 hold pose base/count; scan first whole
+ // flags==0 at stride 368 decimal (0x170). Exhaustion uses pointer 0/index -1,
+ // then reaches the original null access, not graceful native admission.
  case 0x8004177c: {const auto stack=(c.stackRegisters>>4)&1;reg(28,r[4]);c.stackRegisters|=stack<<28;}c.pc=0x80041780;break;
  case 0x80041780: reg(4,uint32_t(-32724)<<16);c.pc=0x80041784;break;
  case 0x80041784: {const auto stack=(c.stackRegisters>>3)&1;reg(29,r[3]);c.stackRegisters|=stack<<29;}c.pc=0x80041788;break;
@@ -61,6 +73,9 @@ bool enterAnimationPose(uint32_t name,uint32_t mode,const AnimationEntryServices
  case 0x80041810: if(--c.ctr!=0){c.pc=0x800417ec;break;}c.pc=0x80041814;break;
  case 0x80041814: reg(31,uint32_t(0));c.pc=0x80041818;break;
  case 0x80041818: reg(30,uint32_t(-1));c.pc=0x8004181c;break;
+ // P0 OR active1, P4/P8=0. W0/W4 hold MODEL base/count; 16-byte rows
+ // contain flags0, refs4, file8, texture index c. Active scan reloads W/base;
+ // FileEntry+a0 -> holder[0] MODEL; compare MODEL+4 via strcmp8026d464.
  case 0x8004181c: if(!load(r[31]+uint32_t(0),r[0]))return false;c.stackRegisters&=~(1u<<0);c.pc=0x80041820;break;
  case 0x80041820: reg(25,uint32_t(0));c.pc=0x80041824;break;
  case 0x80041824: {const auto stack=(c.stackRegisters>>25)&1;reg(22,r[25]);c.stackRegisters|=stack<<22;}c.pc=0x80041828;break;
@@ -95,6 +110,9 @@ bool enterAnimationPose(uint32_t name,uint32_t mode,const AnimationEntryServices
  case 0x80041890: reg(25,r[25]+uint32_t(1));c.pc=0x80041894;break;
  case 0x80041894: c.condition=(signedWord(r[25])>signedWord(r[23]))-(signedWord(r[25])<signedWord(r[23]));c.pc=0x80041898;break;
  case 0x80041898: if(c.condition<0){c.pc=0x80041844;break;}c.pc=0x8004189c;break;
+ // Model miss selects first free row, publishes active1 / increments refs,
+ // then fileAllocf8018a61c(type 5, "%s/%s", "a", name). SDA2-30988/-30980
+ // are8041fb34/fb3c. Completed null handle is source failure, not a hold.
  case 0x8004189c: if(!load(r[13]+uint32_t(-29024),r[4]))return false;c.stackRegisters&=~(1u<<4);c.pc=0x800418a0;break;
  case 0x800418a0: reg(25,uint32_t(0));c.pc=0x800418a4;break;
  case 0x800418a4: {const auto stack=(c.stackRegisters>>25)&1;reg(3,r[25]);c.stackRegisters|=stack<<3;}c.pc=0x800418a8;break;
@@ -130,6 +148,9 @@ bool enterAnimationPose(uint32_t name,uint32_t mode,const AnimationEntryServices
  case 0x80041914: if(!load(r[26]+uint32_t(8),r[3]))return false;c.stackRegisters&=~(1u<<3);c.pc=0x80041918;break;
  case 0x80041918: c.condition=r[3]?1:0;c.pc=0x8004191c;break;
  case 0x8004191c: if(!(c.condition==0)){c.pc=0x8004193c;break;}c.pc=0x80041920;break;
+ // Null model handle OR null payload returns index-2 after clearing active
+ // and decrementing refs; payload-null first calls fileFree8018a260.
+ // The stale file word is preserved. No transactional whole-pose rollback.
  case 0x80041920: reg(0,uint32_t(0));c.pc=0x80041924;break;
  case 0x80041924: reg(25,uint32_t(-2));c.pc=0x80041928;break;
  case 0x80041928: if(!store(r[26]+uint32_t(0),r[0]))return false;c.pc=0x8004192c;break;
@@ -151,6 +172,10 @@ bool enterAnimationPose(uint32_t name,uint32_t mode,const AnimationEntryServices
  case 0x80041960: reg(0,r[3]+uint32_t(-1));c.pc=0x80041964;break;
  case 0x80041964: if(!store(r[26]+uint32_t(4),r[0]))return false;c.pc=0x80041968;break;
  case 0x80041968: if(true){c.pc=0x80041a60;break;}c.pc=0x8004196c;break;
+ // sprintf8026a0b8 writes semantic stack+8: "%s/%s-" at r27+848,
+ // prefix "a", loaded MODEL+68decimal(44hex). Retain text across file holds.
+ // W8/Wc texture base/count:12-byte rows flags0/refs4/file8; compare actual
+ // FileEntry+32 filename. A match increments texture refs and shares its row.
  case 0x8004196c: reg(3,0);c.stackRegisters|=1u<<3;c.pc=0x80041970;break;
  case 0x80041970: reg(4,r[27]+uint32_t(848));c.pc=0x80041974;break;
  case 0x80041974: reg(6,r[5]+uint32_t(68));c.pc=0x80041978;break;
@@ -206,6 +231,9 @@ bool enterAnimationPose(uint32_t name,uint32_t mode,const AnimationEntryServices
  case 0x80041a2c: if(--c.ctr!=0){c.pc=0x80041a0c;break;}c.pc=0x80041a30;break;
  case 0x80041a30: reg(21,uint32_t(0));c.pc=0x80041a34;break;
  case 0x80041a34: reg(22,uint32_t(-1));c.pc=0x80041a38;break;
+ // Texture miss calls fileAlloc8018a5f8(formatted stack name,type 4).
+ // Unlike model-null, null TEXTURE has no matching rollback branch: continue
+ // to timestamp/buffer child. Native resource adoption must reject absence.
  case 0x80041a38: reg(0,uint32_t(1));c.pc=0x80041a3c;break;
  case 0x80041a3c: reg(3,0);c.stackRegisters|=1u<<3;c.pc=0x80041a40;break;
  case 0x80041a40: if(!store(r[21]+uint32_t(0),r[0]))return false;c.pc=0x80041a44;break;
@@ -226,6 +254,10 @@ bool enterAnimationPose(uint32_t name,uint32_t mode,const AnimationEntryServices
  case 0x80041a74: reg(3,uint32_t(-2));c.pc=0x80041a78;break;
  case 0x80041a78: if(!store(r[31]+uint32_t(0),r[0]))return false;c.pc=0x80041a7c;break;
  case 0x80041a7c: if(true){c.pc=0x80041c44;break;}c.pc=0x80041a80;break;
+ // P14 animation=0. Bus800000f8 >>2, multiply-high by10624dd3
+ // (4194<<16 +19923), then >>6 gives quarter-bus ticks/millisecond.
+ // GP40/44 for mode0, GP38/3c otherwise; __div2i80264ad8 is signed 64.
+ // P1c LOW is stored before P18 HIGH, preserving hold/read ordering.
  case 0x80041a80: reg(0,uint32_t(0));c.pc=0x80041a84;break;
  case 0x80041a84: c.condition=(signedWord(r[28])>0)-(signedWord(r[28])<0);c.pc=0x80041a88;break;
  case 0x80041a88: if(!store(r[31]+uint32_t(20),r[0]))return false;c.pc=0x80041a8c;break;
@@ -259,6 +291,9 @@ bool enterAnimationPose(uint32_t name,uint32_t mode,const AnimationEntryServices
  case 0x80041af0: if(!c.queued){c.call={};c.call.function=0x80264ad8;for(unsigned i=0;i<5;++i)c.call.args[i]=r[3+i];c.call.stackArguments=(c.stackRegisters>>3)&31;if(c.call.stackArguments)c.call.text=c.stack;c.queued=true;}
    c.pending=0x80264ad8;if(!s.call || !s.call(s.memory.user,c.call))return false;
    reg(3,c.call.result);reg(4,c.call.low);c.queued=false;c.pc=0x80041af4;break;
+ // ZERO at SDA2-31000=8041fb28. Initialize cache3c=-1,fraction40=0,
+ // discrete80=0,ratio84=0 and float70/74/7c=0; modec=input,link90=-1.
+ // AllocBuffer80041ee0 takes POSE POINTER, not numeric handle.
  case 0x80041af4: if(!store(r[31]+uint32_t(28),r[4]))return false;c.pc=0x80041af8;break;
  case 0x80041af8: reg(4,uint32_t(-1));c.pc=0x80041afc;break;
  case 0x80041afc: if(!load(r[2]+uint32_t(-31000),c.f[0]))return false;c.pc=0x80041b00;break;
@@ -277,6 +312,10 @@ bool enterAnimationPose(uint32_t name,uint32_t mode,const AnimationEntryServices
  case 0x80041b30: if(!c.queued){c.call={};c.call.function=0x80041ee0;for(unsigned i=0;i<5;++i)c.call.args[i]=r[3+i];c.call.stackArguments=(c.stackRegisters>>3)&31;if(c.call.stackArguments)c.call.text=c.stack;c.queued=true;}
    c.pending=0x80041ee0;if(!s.call || !s.call(s.memory.user,c.call))return false;
    reg(3,c.call.result);c.queued=false;c.pc=0x80041b34;break;
+ // After buffer child: E0/E4/E8/EC=0; colors F0/F4 use source words
+ // fb0c/fb10; scalesFC/F8=ONE at fb24;100=ZERO,rate44=ONE.
+ // PSMTXIdentity8029dd04 writes inline P124 (292decimal).
+ // Unmentioned stale fields survive; there is deliberately no pose memset.
  case 0x80041b34: reg(0,uint32_t(0));c.pc=0x80041b38;break;
  case 0x80041b38: if(!load(r[2]+uint32_t(-31004),c.f[1]))return false;c.pc=0x80041b3c;break;
  case 0x80041b3c: if(!store(r[31]+uint32_t(224),r[0]))return false;c.pc=0x80041b40;break;
@@ -296,6 +335,9 @@ bool enterAnimationPose(uint32_t name,uint32_t mode,const AnimationEntryServices
  case 0x80041b74: if(!c.queued){c.call={};c.call.function=0x8029dd04;for(unsigned i=0;i<5;++i)c.call.args[i]=r[3+i];c.call.stackArguments=(c.stackRegisters>>3)&31;if(c.call.stackArguments)c.call.text=c.stack;c.queued=true;}
    c.pending=0x8029dd04;if(!s.call || !s.call(s.memory.user,c.call))return false;
    reg(3,c.call.result);c.queued=false;c.pc=0x80041b78;break;
+ // Four 12-byte sort names at802c11a8,b4,c0,cc select kinds 1/1/2/3
+ // and live tail pointers80415da0/a4/a8/ac. Default kind 0 owner80415dc4.
+ // Publish P11c/P120, then clear callback154/data158 and return pose index.
  case 0x80041b78: {const auto stack=(c.stackRegisters>>29)&1;reg(3,r[29]);c.stackRegisters|=stack<<3;}c.pc=0x80041b7c;break;
  case 0x80041b7c: reg(4,r[27]+uint32_t(1168));c.pc=0x80041b80;break;
  case 0x80041b80: if(!c.queued){c.call={};c.call.function=0x8026d464;for(unsigned i=0;i<5;++i)c.call.args[i]=r[3+i];c.call.stackArguments=(c.stackRegisters>>3)&31;if(c.call.stackArguments)c.call.text=c.stack;c.queued=true;}
