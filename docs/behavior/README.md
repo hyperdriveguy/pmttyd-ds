@@ -1409,6 +1409,7 @@ Original battle menu native resource/queue owners:
 
 - [Prepared native weapon UI raster](display/PREPARED_NATIVE_WEAPON_RASTER.md).
 - [Original radial class surface packets](display/ORIGINAL_CLASS_SURFACE_PACKETS.md).
+- [Native queued weapon menu/source memory/TEX ownership](display/NATIVE_QUEUED_WEAPON_MENU_BINDING.md).
 
 
 - [Same-process native NPC animation pass](display/NATIVE_NPC_ANIMATION_PASS.md):
@@ -1459,3 +1460,10 @@ Original battle menu native resource/queue owners:
 - [Original harbor area root and persistent light binding](field/NATIVE_HARBOR_AREA_INITIALIZATION.md):
   scoped original root, consistent data union, independent inline lights and
   retained source callback; actual map/light providers remain separate.
+
+- [Retained original status values](display/RETAINED_SOURCE_STATUS_VALUES.md).
+- [Original battle partner and AP status groups](display/NATIVE_BATTLE_STATUS_GROUPS.md).
+
+- [Actual accepted source GX routing](display/REACHED_SOURCE_GX_SETTER_ROUTING.md).
+
+- [Native queued original Window bridge](display/NATIVE_QUEUED_WEAPON_WINDOW_BRIDGE.md).

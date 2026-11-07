@@ -3,6 +3,7 @@
 #include "battle_texture_plane.hpp"
 #include "camera_depth.hpp"
 #include "animation_texture.hpp"
+#include "source_gx_inherited_state.hpp"
 namespace ttyd {
 struct BattleSubmenuCameraProof {
  std::shared_ptr<const void> lifetime;
@@ -33,6 +34,10 @@ struct BattleSubmenuPacket {
  std::array<std::array<float,3>,4> positions{};
  std::array<std::array<float,2>,4> sourceUV{};
  std::array<uint32_t,4> rgba{};
+ std::shared_ptr<const SourceGxInheritedSnapshot>ordinarySnapshot;
+ // Independent actual callback/proof owner; the common-bank identity above
+ // remains the real source resource, not an incidental native context.
+ std::shared_ptr<const void> sourceProofOwner;
 };
 using BattleSubmenuPacketPtr=std::shared_ptr<const BattleSubmenuPacket>;
 struct BattleSubmenuPacketSink {void* user=nullptr;bool(*append)(void*,BattleSubmenuPacketPtr)=nullptr;};
@@ -41,8 +46,11 @@ struct BattleSubmenuQueryServices {
  std::shared_ptr<const void> lifetime;
  bool (*current)(void*)=nullptr;
  bool (*sourceResourceCurrent)(void*)=nullptr;
+ std::shared_ptr<const SourceGxInheritedSnapshot>(*ordinaryCapture)(void*)=nullptr;
  std::optional<uint32_t> (*camera)(void*,std::optional<uint32_t>)=nullptr;
  std::optional<BattleSubmenuTextureObject> (*texture)(void*,uint32_t palette,uint32_t index)=nullptr;
+ // Optional actual bank identity. Legacy callers retain lifetime as identity.
+ std::shared_ptr<const void> sourceResourceOwner;
 };
 struct BattleSubmenuMemoryReader {void* user=nullptr;std::optional<uint32_t>(*word)(void*,uint32_t)=nullptr;};
 std::optional<AnimationTPLImage> readBattleSubmenuTexture(const BattleSubmenuMemoryReader&,uint32_t palette,uint32_t index);
@@ -61,6 +69,7 @@ private:
  BattleSubmenuCameraProof camera_;BattleSubmenuQueryServices query_;BattleSubmenuPacketSink sink_;
  std::array<std::optional<BattleSubmenuTextureObject>,2> objects_{};
  std::optional<BattleSubmenuTextureObject> loaded_;
+ std::shared_ptr<const SourceGxInheritedSnapshot>loadedOrdinary_;
  std::optional<uint32_t> selected_;std::optional<BattleActMatrix> matrix_;
  uint32_t state_=0,descriptors_=0,formats_=0,lanes_=0;
  bool invoking_=false,poisoned_=false;

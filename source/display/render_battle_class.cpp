@@ -36,6 +36,7 @@ const BattleClassFooterGpuResource *Renderer::classFooterResources() {
   return &classFooterGpu->resource();
 }
 void Renderer::releaseClassMenuDrawing() {
+  releaseWeaponMenuFrame();
   releaseClassMenuFrame();
   if (c3dReady)
     C3D_FrameSync();

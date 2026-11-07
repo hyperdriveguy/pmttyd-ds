@@ -1,4 +1,5 @@
 #pragma once
+#include "native_battle_status.hpp"
 #include "trio_battle_commands.hpp"
 #include <memory>
 #include <optional>
@@ -38,6 +39,8 @@
 #include "battle_part_display.hpp"
 namespace ttyd {
 class MessageAssets;
+class BattleWeaponSourceMemory;
+class NativeUiStartup;
 // Native providers retain this owner through every held source callback. Every
 // external callback must become unavailable before its GPU/Game owner retires.
 // Allocation/pass are native lifetime/publication IDs, not guest addresses or
@@ -56,6 +59,7 @@ bool loadTrioAttackAssets(const char* root);
 std::shared_ptr<const ActorAnimationPack> fieldMarioAnimationBank();
 std::shared_ptr<class NativeFileCache> fieldAnimationFileCache();
 struct TrioAttackRuntime;
+struct TrioWeaponRuntimeRegistration;
 struct BattlePose;
 class BattlePosePool;
 struct BattleCameraFrame;
@@ -69,6 +73,12 @@ struct TrioPoseDrawRequest {uint32_t part=0;int32_t camera=4,drawClass=1;std::ar
 // Executes original event data; unsupported callbacks keep their event waiting.
 class TrioAttack {
 public:
+    TrioAttack()=default;
+    TrioAttack(const TrioAttack&);
+    TrioAttack& operator=(const TrioAttack&);
+    TrioAttack(TrioAttack&&) noexcept;
+    TrioAttack& operator=(TrioAttack&&) noexcept;
+    ~TrioAttack()=default;
     // Returned views/pointers borrow runtime-owned work unless the return type
     // explicitly shares ownership. Keep scene/runtime and real providers stable
     // across held draws; a queued request is not current callback admission.
@@ -118,6 +128,7 @@ public:
     // repeated redraws do not imply another action-command simulation tick.
     void tick(uint64_t milliseconds,ProfessorStory&,uint32_t triggers=0,const BattlePadSample* physical=nullptr);
     bool statusWindowVisible() const;
+    std::optional<NativeBattleStatusSnapshot> statusSnapshot() const;
     // active/finished describe native action readiness (!done/done), NOT whole
     // battle teardown. commandActor/prepareCommands additionally require actual
     // pending/phase/actor context before exposing another command.
@@ -146,13 +157,16 @@ public:
     bool resumeEnemyHpDraw(uint32_t camera,uint32_t userdata,const TrioEnemyHpNativeServices&) const;
     // Stable actual VM binding; linked math/footer/GPU providers must own their
     // retained child invocations. This does not activate source command Main.
-    // Factories pin VM/allocation resources but their current predicates also
-    // borrow this facade. Keep its address/lifetime fixed until bindings retire.
+    // Class predicates still borrow this facade. Weapon predicates use a weak
+    // per-facade registration: destruction/replacement/move rejects retained
+    // bindings without reading a destroyed public owner. Copies are independent.
     // UI identity,whole camera Main publication and exact invoking queue record
     // are separate required proofs; no getter creates a pass or imports a GPU asset.
     std::optional<TrioClassMenuFrameBinding> classMenuFrameBinding(const BattleActDrawServices& linked) const;
     bool resumeClassMenuFrame(uint32_t camera,uint32_t userdata,BattleClassNativeFrame&,BattleClassNativeSubmission={}) const;
     std::optional<TrioWeaponMenuFrameBinding> weaponMenuFrameBinding(const BattleWeaponDrawServices& linked) const;
+    // Source-only actual process font/GP adapter; installs no RAM/font zeros.
+    std::shared_ptr<BattleWeaponSourceMemory> weaponMenuSourceMemory(std::shared_ptr<NativeUiStartup>,const char* actualStartupImage) const;
     bool resumeWeaponMenuFrame(uint32_t camera,uint32_t userdata,BattleWeaponNativeFrame&) const;
     std::optional<uint64_t> enemyHpAllocation() const;
     std::shared_ptr<const uint8_t> enemyHpAllocationOwner() const;
@@ -184,5 +198,10 @@ private:
     // dispatches must pin their runtime and revalidate allocation/pass identity;
     // shared ownership alone does not establish live source/GPU admission.
     std::shared_ptr<TrioAttackRuntime> runtime_;
+    // Only this facade owns its registration. Retained closures hold weak
+    // references; runtime resources cannot keep a retired selector alive.
+    mutable std::shared_ptr<TrioWeaponRuntimeRegistration> weaponRegistration_;
+    std::shared_ptr<TrioWeaponRuntimeRegistration> weaponRuntimeRegistration()const;
+    friend struct TrioWeaponRuntimeLifetimeFixture;
 };
 }

@@ -32,6 +32,10 @@ struct BattleWeaponOrderedBinding {
  // cannot reenter, retire resources or invoke source/RNG. No GPU-prefix retry.
  bool(*ready)(void*,const BattleWeaponOrderedBatch&)=nullptr;
  void(*draw)(void*,const BattleWeaponOrderedBatch&)=nullptr;
+ // Alternative actual native submission. False MUST precede every GPU/
+ // presentation effect; retain the sealed batch unchanged for a later retry.
+ // True commits once. Exactly one of draw/tryDraw must be supplied.
+ bool(*tryDraw)(void*,const BattleWeaponOrderedBatch&)=nullptr;
 };
 class BattleWeaponOrderedPublication {
 public:

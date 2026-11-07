@@ -3287,6 +3287,15 @@
       "source": "assets/original/events/harbor-npc-creation/event.json",
       "output": "field-npc-creation.pmevt",
       "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/ui-message-icons",
+      "kind": "texture",
+      "source": "assets/original/ui-message-icons/atlas.png",
+      "output": "message-icons.t3x",
+      "format": "rgba8",
+      "license": "Nintendo/Intelligent Systems original game assets; all original rights retained; tracking grants no redistribution license",
+      "provenance": "assets/original/ui-message-icons/provenance.json"
     }
   ]
 }

@@ -1598,6 +1598,7 @@ void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audio
 void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool audioAvailable) {
     prepareEnemyHp(g);
     prepareClassMenuFrame(g);
+    prepareWeaponMenuFrame(g);
     prepareSourceIcons(g);
     const bool battleOwner=g.trioBattleActive || g.scene==Scene::Battle || g.scene==Scene::Victory || g.scene==Scene::Defeat;
     const bool mapsFirst=!battleOwner || prepareBattleMaps(g);
@@ -1618,6 +1619,7 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
     if(!C3D_FrameBegin(C3D_FRAME_SYNCDRAW))return;
     trioScenePrepared=false;
     classVertexCount=0;classMenuSubmitReady=false;classMenuSubmissionWaiting=false;
+    weaponMenuSubmitReady=false;weaponMenuSubmissionWaiting=false;
     item95IconCount=0;
     windowFrameCount=0;
     windowFontCount=0;
@@ -1636,8 +1638,8 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
     // The first queue visit prepares source UI geometry and holds at its real
     // GPU submission. Complete that SAME callback after the independent world
     // adapter and original HP layer, before advancing the source display queue.
-    classMenuSubmitReady=true;
-    if(classMenuSubmissionWaiting&&C3D_FrameDrawOn(top))resumeFinishingCamera(g);
+    classMenuSubmitReady=true;weaponMenuSubmitReady=true;
+    if((classMenuSubmissionWaiting||weaponMenuSubmissionWaiting)&&C3D_FrameDrawOn(top))resumeFinishingCamera(g);
     if(!g.trioBattleActive)drawFieldItemGet(g);
     C2D_Prepare();C2D_SceneBegin(top);overlay(g);
     if(!battleMapsReady)text(actorTexturesReady?"Development notice: battle map unavailable":"Development notice: scene actor texture unavailable",16,220,.42f,Ink);

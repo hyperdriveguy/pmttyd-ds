@@ -45,11 +45,15 @@ def source_art(iso):
             raise ValueError('Unexpected original status value producer')
     if hashlib.sha256(status).hexdigest() != STATUS_HASH or hashlib.sha256(digits).hexdigest() != DIGIT_HASH:
         raise ValueError('Unexpected original battle HUD tables')
+    from verify_native_battle_status import verify
+    linked=verify(iso)
+    status_icons=list(dict.fromkeys(linked["portraits"]+list(range(431,438))+linked["gauge_full"]+[455]+linked["gauge_partial"]))
     rows = [dict(x=x, y=y, icon=icon, scale=scale) for x,y,icon,scale in
             (struct.unpack_from('>hhH2xf', status, 12*i) for i in range(13))]
     numbers = list(struct.unpack('>20H', digits))
     return dict(status_table=STATUS_TABLE, status_sha256=STATUS_HASH, rows=rows,
                 digit_table=DIGIT_TABLE, digit_sha256=DIGIT_HASH,
                 large_digits=numbers[:10], small_digits=numbers[10:],
-                counters=counters,status_values=STATUS_VALUES,
+                counters=counters,status_values=STATUS_VALUES,status_icons=status_icons,
+                partner_portraits=linked["portraits"],gauge_full=linked["gauge_full"],gauge_partial=linked["gauge_partial"],
                 status_values_sha256=STATUS_VALUES_HASH)

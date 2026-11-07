@@ -1,4 +1,5 @@
 #include "trio_attack.hpp"
+#include "battle_weapon_source_memory.hpp"
 #include "field_mario_key_continuation.hpp"
 #include "field_party_native_lifetime.hpp"
 #include "field_party_native_entry.hpp"
@@ -193,6 +194,7 @@ struct TrioAttackRuntime {
     // The source file owner precedes the VM so external byte views die first.
     std::shared_ptr<BattleMenuFileCache> menuFiles=trioMenuFiles;
     EventNativeRuntime vm;
+    std::unique_ptr<NativeBattleStatusReader> statusReader;
     BattleAudienceAttackEvents audienceAttackEvents{vm};
     std::unique_ptr<BattleMenuFileBinding> menuBinding;
     BattleMenuResourceCursor menuResourceCursor;bool menuResourceInitialized=false;
@@ -373,6 +375,7 @@ struct TrioAttackRuntime {
     BattleActMenuContinuationCursor actMenuMainCursor,actMenuSetupCursor,actMenuEndCursor;
     BattleActionClassTableCursor actClassTableCursor;
     std::shared_ptr<const BattleActionClassMessageBinding> originalClassMessages,heldClassMessages;
+    std::shared_ptr<EventGpLanguageAlias> sourceWeaponLanguage;
     BattleActUiContinuationCursor actMenuUiCursor;
     BattleMenuAudienceNativeCursor actMenuAudienceCursor;
     // Shared class/weapon VM-map allocation registry; byte value is immaterial.
@@ -3370,6 +3373,35 @@ struct TrioAttackRuntime {
 // map/bind failure precedes runtime publication. Reuse returns earlier and cannot
 // adopt a new bank. HP allocation token is published only after initialization.
 bool TrioAttack::begin(const TrioBattleCommands& menu,ProfessorStory& scene,int16_t hp,std::shared_ptr<ProloguePouch> entryPouch,uint32_t* fieldNpcBattleFlags,FieldMarioBattleState* fieldMario,FieldPartyRegistry* fieldParties,const FieldPartyAppearanceServices* appearance,std::shared_ptr<BattleSpotlightState> spotlight,std::shared_ptr<BattleRandom> random,std::shared_ptr<PositionalSfxRegistry> sounds,std::shared_ptr<ShadowWork> shadows,std::shared_ptr<BattleCommandPalette> palette,std::shared_ptr<CameraManager> cameras,std::shared_ptr<FieldBeroExec> bero,std::shared_ptr<const MessageAssets> classMessages){if(!assetsReady || !menu.attack || !((menu.actor==1 && (menu.attack->weapon==0x803538a8 || menu.attack->weapon==0x80353de8)) || (menu.actor==2 && menu.attack->weapon==0x80393ea8)))return false;if(runtime_)return runtime_->done && runtime_->readyActor==menu.actor && runtime_->launch(menu);auto r=std::make_shared<TrioAttackRuntime>(random?std::move(random):std::make_shared<BattleRandom>(1),fieldParties?fieldParties->originalPool:nullptr);if(classMessages){auto labels=BattleClassMenuMessages::map(r->vm.memory,0x85a00000,std::move(classMessages));if(!labels || !r->bindOriginalClassMessages(labels->binding(r->vm.memory)))return false;}r->bero=std::move(bero);r->cameras=std::move(cameras);if(!r->cameras){r->cameras=std::make_shared<CameraManager>();r->cameras->initializeBoot(608,480);}r->cameras->camera(4)->mode=2;r->palette=palette?std::move(palette):std::make_shared<BattleCommandPalette>();r->shadows=shadows?std::move(shadows):std::make_shared<ShadowWork>();r->publicSfx=sounds?std::move(sounds):std::make_shared<PositionalSfxRegistry>();r->spotlight=spotlight?std::move(spotlight):std::make_shared<BattleSpotlightState>();r->fieldNpcBattleFlags=fieldNpcBattleFlags;r->fieldMario=fieldMario;r->fieldParties=fieldParties;if(appearance)r->fieldAppearance=*appearance;if(!r->initialize(menu,scene,hp,std::move(entryPouch)))return false;r->hpAllocation=std::make_shared<const uint8_t>(0);runtime_=std::move(r);return true;}
+// Native public ownership, not guest state. A copy shares source runtime but
+// never another facade's selector. Move invalidates the moved-from selector,
+// matching the former runtime_ comparison without retaining/dereferencing this.
+struct TrioWeaponRuntimeRegistration {
+    std::weak_ptr<TrioAttackRuntime> runtime;
+    std::weak_ptr<BattleWeaponSourceMemory> memory;
+};
+TrioAttack::TrioAttack(const TrioAttack& other):runtime_(other.runtime_){}
+TrioAttack& TrioAttack::operator=(const TrioAttack& other){
+    if(this!=&other && runtime_!=other.runtime_){weaponRegistration_.reset();runtime_=other.runtime_;}
+    return *this;
+}
+TrioAttack::TrioAttack(TrioAttack&& other) noexcept:runtime_(std::move(other.runtime_)){other.weaponRegistration_.reset();}
+TrioAttack& TrioAttack::operator=(TrioAttack&& other) noexcept{
+    if(this!=&other){other.weaponRegistration_.reset();if(runtime_!=other.runtime_)weaponRegistration_.reset();runtime_=std::move(other.runtime_);}
+    return *this;
+}
+std::shared_ptr<TrioWeaponRuntimeRegistration> TrioAttack::weaponRuntimeRegistration()const{
+    if(!runtime_)return {};
+    if(!weaponRegistration_ || weaponRegistration_->runtime.lock()!=runtime_){
+        auto next=std::make_shared<TrioWeaponRuntimeRegistration>();next->runtime=runtime_;weaponRegistration_=std::move(next);
+    }
+    return weaponRegistration_;
+}
+namespace {
+bool weaponRegistrationCurrent(const std::weak_ptr<TrioWeaponRuntimeRegistration>& weak,const std::shared_ptr<TrioAttackRuntime>& runtime){
+    const auto actual=weak.lock();return actual && actual->runtime.lock()==runtime;
+}
+}
 bool TrioAttack::hasBattleRuntime()const{return bool(runtime_);}
 void TrioAttack::tick(uint64_t time,ProfessorStory& scene,uint32_t triggers,const BattlePadSample* physical){if(runtime_)runtime_->tick(time,scene,triggers,physical);}
 // No runtime =>visible status window, false active/finished. With runtime,
@@ -3394,6 +3426,11 @@ uint32_t TrioAttack::pendingFunction()const{return runtime_?runtime_->pending:0;
 const std::vector<ProfessorServiceRequest>& TrioAttack::requests()const{static const std::vector<ProfessorServiceRequest> empty;return runtime_?runtime_->trace:empty;}
 const std::vector<TrioAudienceAudioRequest>& TrioAttack::audienceAudioRequests()const{static const std::vector<TrioAudienceAudioRequest> empty;return runtime_?runtime_->audienceAudioTrace:empty;}
 bool TrioAttack::readWord(uint32_t a,uint32_t& v)const{return runtime_ && runtime_->vm.memory.readWord(a,v);}
+std::optional<NativeBattleStatusSnapshot>TrioAttack::statusSnapshot()const{
+ if(!runtime_||!runtime_->hpAllocation)return {};
+ auto&r=*runtime_;if(!r.statusReader)r.statusReader=std::make_unique<NativeBattleStatusReader>(r.vm,r.hpAllocation,&r,[](void*p){auto&r=*static_cast<TrioAttackRuntime*>(p);return r.hpAllocation&&r.hpAllocationCurrent(uint64_t(reinterpret_cast<uintptr_t>(r.hpAllocation.get())));});
+ return r.statusReader->snapshot();
+}
 // Ensure actual source animation visit first, then replace ONLY actor-memory
 // provider with this VM. Caller retains linked draw/GX/math providers and their
 // original users; this call alone does not publish source touch/visibility proof.
@@ -3586,43 +3623,61 @@ std::optional<TrioClassMenuFrameBinding> TrioAttack::classMenuFrameBinding(const
     return out;
 }
 // Weapon binding additionally pins source common-TPL indirection:
-// B+a0 descriptor -> descriptor+a0 cell -> common-TPL payload. Each link must
+// B+163f8 descriptor -> descriptor+a0 cell -> common-TPL payload. Each link must
 // remain exact across holds; ready CPU/file bytes do not prove GPU residency.
+std::shared_ptr<BattleWeaponSourceMemory> TrioAttack::weaponMenuSourceMemory(std::shared_ptr<NativeUiStartup> startup,const char* image) const {
+    const auto r=runtime_;if(!r || !startup || !startup->current() || !startup->fontObject())return {};
+    const auto registration=weaponRuntimeRegistration();if(!registration)return {};
+    if(const auto held=registration->memory.lock())return held->startup()==startup && held->current()?held:nullptr;
+    const auto process=startup->fieldProcess();if(!process)return {};
+    auto alias=r->sourceWeaponLanguage;
+    if(alias){if(!alias->sourceIs(process->process().vm().gpAddresses) || !alias->current())return {};}
+    else {uint32_t sourceGp=0;if(!process->process().vm().memory.readWord(0x80415fd0,sourceGp))return {};
+        alias=std::make_shared<EventGpLanguageAlias>(process->process().vm().gpAddresses,sourceGp,startup->lifetime(),[startup]{return startup->current();});}
+    const std::weak_ptr<TrioAttackRuntime> weak=r;
+    const std::weak_ptr<TrioWeaponRuntimeRegistration> selector=registration;
+    auto memory=BattleWeaponSourceMemory::create(r->vm,startup,alias,r,[selector,weak]{const auto actual=weak.lock();return actual && weaponRegistrationCurrent(selector,actual);},image);
+    if(!memory)return {};
+    r->sourceWeaponLanguage=std::move(alias);registration->memory=memory;return memory;
+}
 std::optional<TrioWeaponMenuFrameBinding> TrioAttack::weaponMenuFrameBinding(const BattleWeaponDrawServices& linked) const {
     const auto r=runtime_;
     if(!r || !r->cameras || !r->menuFiles || !r->menuFiles->ready() || !r->menuResourceInitialized)return {};
     uint32_t b=0,w=0,descriptor=0,cell=0,palette=0;
     if(!r->vm.memory.readWord(0x8041eb90,b) || b!=Battle ||
        !r->vm.memory.readWord(Battle+0x1c78,w) ||
-       !r->vm.memory.readWord(Battle+0xa0,descriptor) || !descriptor ||
+       !r->vm.memory.readWord(Battle+0x163f8,descriptor) || !descriptor ||
        !r->vm.memory.readWord(descriptor+0xa0,cell) || !cell ||
        !r->vm.memory.readWord(cell,palette) || !palette)return {};
     const auto found=r->actMenuUiAllocations.find(w);
     if(found==r->actMenuUiAllocations.end() || !found->second)return {};
     const auto token=found->second;const auto files=r->menuFiles;
+    const std::weak_ptr<TrioWeaponRuntimeRegistration> selector=weaponRuntimeRegistration();
     const uint64_t generation=uint64_t(reinterpret_cast<uintptr_t>(token.get()));
     TrioWeaponMenuFrameBinding out;out.native.allocationOwner=token;out.native.sourceResourceOwner=r;
     out.native.allocation=w;out.native.battle=Battle;out.native.generation=generation;
     out.native.cameras=r->cameras;out.native.actors=nativeBattleActorServices(r->vm);
     // Explicit native view reservation, checked against every actual mapped owner.
     out.native.addresses={0x60014000,[r](uint32_t base,uint32_t bytes){return r->vm.memory.unmappedRange(base,bytes);}};
-    out.native.allocationCurrent=[this,r,token,w](){
+    out.native.allocationCurrent=[selector,r,token,w](){
+        if(!weaponRegistrationCurrent(selector,r))return false;
         uint32_t b=0,current=0;const auto i=r->actMenuUiAllocations.find(w);
-        return runtime_==r && i!=r->actMenuUiAllocations.end() && i->second==token &&
+        return i!=r->actMenuUiAllocations.end() && i->second==token &&
             r->vm.memory.readWord(0x8041eb90,b) && b==Battle &&
             r->vm.memory.readWord(Battle+0x1c78,current) && current==w;
     };
     // Shared owner pins storage; this predicate proves current runtime/file
     // initialization AND all three original pointer links,not just numeric B.
-    out.native.sourceResourceCurrent=[this,r,files,descriptor,cell,palette](){
+    out.native.sourceResourceCurrent=[selector,r,files,descriptor,cell,palette](){
+        if(!weaponRegistrationCurrent(selector,r))return false;
         uint32_t d=0,c=0,p=0;
-        return runtime_==r && r->menuResourceInitialized && r->menuFiles==files && files->ready() &&
-            r->vm.memory.readWord(Battle+0xa0,d) && d==descriptor &&
+        return r->menuResourceInitialized && r->menuFiles==files && files->ready() &&
+            r->vm.memory.readWord(Battle+0x163f8,d) && d==descriptor &&
             r->vm.memory.readWord(descriptor+0xa0,c) && c==cell &&
             r->vm.memory.readWord(cell,p) && p==palette;
     };
-    out.native.producerCurrent=[this,r,generation](BattleClassCameraEpoch e){
-        return runtime_==r && !r->cameraMainPoisoned && !r->cameraMainWaiting &&
+    out.native.producerCurrent=[selector,r,generation](BattleClassCameraEpoch e){
+        return weaponRegistrationCurrent(selector,r) && !r->cameraMainPoisoned && !r->cameraMainWaiting &&
             !r->cameraMainCursor.active && e.generation==generation && e.pass && e.pass==r->cameraMainPublication;
     };
     out.source=linked;out.source.math.memory=out.native.actors;

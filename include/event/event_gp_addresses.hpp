@@ -22,6 +22,8 @@ public:
     bool bindPhysicalInput(uint32_t originalBase,PhysicalInputProducer&);
     // Native process-language alias only; no other GP bytes are redirected.
     bool bindLanguageAlias(uint32_t originalBase,std::shared_ptr<EventGpLanguageAlias>);
+    // Identity only; caller separately proves the actual source alias current.
+    bool languageAliasIs(uint32_t originalBase,const std::shared_ptr<EventGpLanguageAlias>&)const;
     std::shared_ptr<const uint8_t> languageRegistration(uint32_t originalBase)const;
     bool languageSourceCurrent(uint32_t originalBase,const std::shared_ptr<const uint8_t>&)const;
     bool languageAliasSpan(uint32_t base,uint64_t bytes)const;

@@ -169,3 +169,11 @@ nonexecuting REL/linked-EVT dependencies and light-origin constants. The explici
 `tools/import_harbor_area_event.py` importer requires an empty destination and
 reads the ISO only. Normal builds preserve checked-in edits. FieldArea merges
 shared original bytes only when identical before creating writable VM storage.
+
+The battle/message icon atlas is editable at
+`original/ui-message-icons/atlas.png`; its neighboring provenance file records
+the original icon/effect IDs, frames, delays, UVs, import hash and licensing.
+The manifest texture overlays `message-icons.t3x` after the ISO-backed base pack.
+Painting within existing cells preserves the original compiled catalog. Changes
+to relative cell layout must update the base converter/catalog at the same time;
+normal builds preserve the checked-in PNG.

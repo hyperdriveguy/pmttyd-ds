@@ -84,19 +84,21 @@ bool transform(const float*m,const std::array<float,3>&v,float&out){float sum=0;
 class BattleClassSurfaceObjectSnapshot {
  uint32_t handle_;AnimationTPLImage image_;std::array<uint32_t,8>bytes_;
  std::shared_ptr<const void>bank_,identity_;void*user_;bool(*current_)(void*);bool(*ordinary_)(void*);
+ std::shared_ptr<const SourceGxInheritedSnapshot>ordinarySnapshot_;
  static bool imageEqual(const AnimationTPLImage&a,const AnimationTPLImage&b){
   return a.index==b.index&&a.imageHeader==b.imageHeader&&a.paletteHeader==b.paletteHeader&&a.data==b.data&&a.format==b.format&&a.wrapS==b.wrapS&&a.wrapT==b.wrapT&&a.minFilter==b.minFilter&&a.magFilter==b.magFilter&&a.paletteData==b.paletteData&&a.paletteFormat==b.paletteFormat&&a.width==b.width&&a.height==b.height&&a.paletteCount==b.paletteCount&&!std::memcmp(&a.bias,&b.bias,4)&&a.edge==b.edge&&a.minLOD==b.minLOD&&a.maxLOD==b.maxLOD;
  }
  static bool live(void*p){const auto&s=*static_cast<const BattleClassSurfaceObjectSnapshot*>(p);return s.bank_&&s.identity_&&s.current_&&s.current_(s.user_);}
  static bool witness(void*p,const BattleClassSurfaceTextureObject&o){return static_cast<const BattleClassSurfaceObjectSnapshot*>(p)->accepts(o);}
- BattleClassSurfaceObjectSnapshot(const BattleClassSurfaceTextureObject&o,const BattleClassSurfaceQueryServices&q):handle_(o.handle),image_(o.image),bytes_(*o.bytes),bank_(q.lifetime),identity_(q.sourceResourceOwner),user_(q.user),current_(q.sourceResourceCurrent),ordinary_(q.ordinaryCurrent){}
+ BattleClassSurfaceObjectSnapshot(const BattleClassSurfaceTextureObject&o,const BattleClassSurfaceQueryServices&q,std::shared_ptr<const SourceGxInheritedSnapshot>ordinary):handle_(o.handle),image_(o.image),bytes_(*o.bytes),bank_(q.lifetime),identity_(q.sourceResourceOwner),user_(q.user),current_(q.sourceResourceCurrent),ordinary_(q.ordinaryCurrent),ordinarySnapshot_(std::move(ordinary)){}
  friend class BattleClassSurfacePacketProvider;
 public:
  BattleClassSurfaceTextureObject captured(const std::shared_ptr<const BattleClassSurfaceObjectSnapshot>&owner)const{
   BattleClassSurfaceTextureObject o;o.handle=handle_;o.image=image_;o.bytes=bytes_;o.lifetime=owner;o.user=const_cast<BattleClassSurfaceObjectSnapshot*>(this);o.current=&live;o.witness=&witness;return o;
  }
+ const std::shared_ptr<const SourceGxInheritedSnapshot>&ordinarySnapshot()const{return ordinarySnapshot_;}
  bool owns(const BattleClassSurfacePacket&p)const{
-  return p.sourceResourceOwner==identity_&&!p.sourceResourceOwner.owner_before(identity_)&&!identity_.owner_before(p.sourceResourceOwner)&&p.sourceProofOwner==bank_&&!p.sourceProofOwner.owner_before(bank_)&&!bank_.owner_before(p.sourceProofOwner)&&p.sourceResourceUser==user_&&p.sourceResourceCurrent==current_&&p.ordinaryCurrent==ordinary_;
+  return p.sourceResourceOwner==identity_&&!p.sourceResourceOwner.owner_before(identity_)&&!identity_.owner_before(p.sourceResourceOwner)&&p.sourceProofOwner==bank_&&!p.sourceProofOwner.owner_before(bank_)&&!bank_.owner_before(p.sourceProofOwner)&&p.sourceResourceUser==user_&&p.sourceResourceCurrent==current_&&p.ordinaryCurrent==ordinary_&&p.ordinarySnapshot==ordinarySnapshot_&&!p.ordinarySnapshot.owner_before(ordinarySnapshot_)&&!ordinarySnapshot_.owner_before(p.ordinarySnapshot);
  }
  bool accepts(const BattleClassSurfaceTextureObject&o)const{
   // Compare identity/canonical copied values BEFORE invoking any supplied raw
@@ -116,15 +118,16 @@ std::optional<std::array<BattleClassVertex,4>> battleClassSurfaceVertices(const 
  }
  return out;
 }
+namespace {bool packetOrdinary(const BattleClassSurfacePacket&p){return p.ordinarySnapshot?(p.ordinarySnapshot->stages()==1&&p.ordinarySnapshot->current()):(p.ordinaryCurrent&&p.ordinaryCurrent(p.sourceResourceUser));}}
 bool validateBattleClassSurfacePacket(const BattleClassSurfacePacket&p,const BattleClassSurfaceGpuResource&r){
  const auto&o=p.object;
  if(!p.objectSnapshot||!p.objectSnapshot->owns(p))return false;
- if(!p.sourceResourceOwner||!p.sourceProofOwner||!p.sourceResourceCurrent||!p.sourceResourceCurrent(p.sourceResourceUser)||!p.ordinaryCurrent||!p.ordinaryCurrent(p.sourceResourceUser)||!r.accepts(p.surface)||!cameraCurrent(p.camera)||!p.objectSnapshot||o.lifetime.owner_before(p.objectSnapshot)||p.objectSnapshot.owner_before(o.lifetime)||!p.objectSnapshot->accepts(o)||!o.bytes||!image(o.image,o.image.index)||!objectImage(*o.bytes,o.image))return false;
+ if(!p.sourceResourceOwner||!p.sourceProofOwner||!p.sourceResourceCurrent||!p.sourceResourceCurrent(p.sourceResourceUser)||!packetOrdinary(p)||!r.accepts(p.surface)||!cameraCurrent(p.camera)||!p.objectSnapshot||o.lifetime.owner_before(p.objectSnapshot)||p.objectSnapshot.owner_before(o.lifetime)||!p.objectSnapshot->accepts(o)||!o.bytes||!image(o.image,o.image.index)||!objectImage(*o.bytes,o.image))return false;
  if(p.rgb!=BattleClassSurfaceRGB::TextureRaster&&p.rgb!=BattleClassSurfaceRGB::MaterialRaster)return false;
  for(const auto&row:p.camera.projection)for(float v:row)if(!std::isfinite(v))return false;
  const auto&v=p.camera.viewport;const auto&s=p.camera.scissor;
  if(!nativeCameraRect(v[0],v[1],v[2],v[3])||!std::isfinite(v[4])||!std::isfinite(v[5])||v[4]<0||v[5]>1||v[4]>v[5]||s[0]>608||s[1]>480||s[2]>608||s[3]>480||!nativeCameraRect(float(s[0]),float(s[1]),float(s[2]),float(s[3])))return false;
- return bool(battleClassSurfaceVertices(p))&&p.objectSnapshot->accepts(o)&&cameraCurrent(p.camera)&&p.sourceResourceCurrent(p.sourceResourceUser)&&p.ordinaryCurrent(p.sourceResourceUser)&&r.accepts(p.surface);
+ return bool(battleClassSurfaceVertices(p))&&p.objectSnapshot->accepts(o)&&cameraCurrent(p.camera)&&p.sourceResourceCurrent(p.sourceResourceUser)&&packetOrdinary(p)&&r.accepts(p.surface);
 }
 BattleClassSurfacePacketProvider::BattleClassSurfacePacketProvider(const BattleClassSurfaceGpuResource&r,BattleSubmenuCameraProof p,BattleClassSurfaceQueryServices q,BattleClassSurfacePacketSink sink):resource_(r),lease_(r.lease()),camera_(std::move(p)),query_(std::move(q)),sink_(sink){}
 bool BattleClassSurfacePacketProvider::current(){
@@ -145,7 +148,7 @@ std::optional<uint32_t> BattleClassSurfacePacketProvider::request(const BattleTe
   if(lane>=3&&lane<=6){if(q.kind!=K::FifoByte||q.integers.size()!=1||q.integers[0]>255||!q.reals.empty()||q.matrix)return {};const unsigned shift=24-8*(lane-3);colors[vertex]=(colors[vertex]&~(255u<<shift))|(q.integers[0]<<shift);}
   else{if(q.kind!=K::FifoFloat||q.reals.size()!=1||!q.integers.empty()||q.matrix||!std::isfinite(q.reals[0]))return {};if(lane<3)p[vertex][lane]=q.reals[0];else{if(q.reals[0]<0||q.reals[0]>1)return {};uv[vertex][lane-7]=q.reals[0];}}
   if(ordinal==35){
-   if(!pending_){BattleClassSurfacePacket packet;packet.surface=lease_;packet.camera=camera_;packet.object=*loaded_;packet.objectSnapshot=loadedSnapshot_;packet.rgb=rgb_;packet.material=material_.value_or(0xffffffff);packet.sourceResourceOwner=query_.sourceResourceOwner;packet.sourceProofOwner=query_.lifetime;packet.sourceResourceUser=query_.user;packet.sourceResourceCurrent=query_.sourceResourceCurrent;packet.ordinaryCurrent=query_.ordinaryCurrent;packet.matrix=*matrix_;packet.positions=p;packet.sourceUV=uv;packet.rgba=colors;pending_=std::make_shared<const BattleClassSurfacePacket>(std::move(packet));pendingLane_=q;}
+   if(!pending_){BattleClassSurfacePacket packet;packet.surface=lease_;packet.camera=camera_;packet.object=*loaded_;packet.objectSnapshot=loadedSnapshot_;packet.rgb=rgb_;packet.material=material_.value_or(0xffffffff);packet.sourceResourceOwner=query_.sourceResourceOwner;packet.sourceProofOwner=query_.lifetime;packet.sourceResourceUser=query_.user;packet.sourceResourceCurrent=query_.sourceResourceCurrent;packet.ordinaryCurrent=query_.ordinaryCurrent;packet.ordinarySnapshot=loadedSnapshot_->ordinarySnapshot();packet.matrix=*matrix_;packet.positions=p;packet.sourceUV=uv;packet.rgba=colors;pending_=std::make_shared<const BattleClassSurfacePacket>(std::move(packet));pendingLane_=q;}
    if(!sameLane(q,*pendingLane_)||!sink_.append||!validateBattleClassSurfacePacket(*pending_,resource_))return {};
    const bool accepted=sink_.append(sink_.user,pending_);
    if(!current()||!accepted)return {};
@@ -166,7 +169,9 @@ std::optional<uint32_t> BattleClassSurfacePacketProvider::request(const BattleTe
  if(q.function==F::LoadTexture){
   if(n.size()!=2||n[1]||q.matrix)return {};
   for(unsigned i=0;i<2;++i)if(objects_[i]&&objects_[i]->handle==n[0]&&objects_[i]->current(objects_[i]->user)&&objects_[i]->witness(objects_[i]->user,*objects_[i])&&current()){
-   const auto snapshot=std::shared_ptr<const BattleClassSurfaceObjectSnapshot>(new BattleClassSurfaceObjectSnapshot(*objects_[i],query_));
+   std::shared_ptr<const SourceGxInheritedSnapshot>ordinary;
+   if(query_.ordinaryCapture){ordinary=query_.ordinaryCapture(query_.user);if(!ordinary||ordinary->stages()!=1||!ordinary->current()||!current())return {};}
+   const auto snapshot=std::shared_ptr<const BattleClassSurfaceObjectSnapshot>(new BattleClassSurfaceObjectSnapshot(*objects_[i],query_,std::move(ordinary)));
    const auto captured=snapshot->captured(snapshot);if(!snapshot->accepts(captured)||!current())return {};
    loaded_=captured;loadedSnapshot_=snapshot;return 0;
   }

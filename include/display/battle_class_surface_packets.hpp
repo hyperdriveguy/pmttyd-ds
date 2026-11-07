@@ -1,6 +1,7 @@
 #pragma once
 #include "battle_submenu_packets.hpp"
 #include "battle_class_raster.hpp"
+#include "source_gx_inherited_state.hpp"
 namespace ttyd {
 enum class BattleClassSurfaceRGB { TextureRaster, MaterialRaster };
 struct BattleClassSurfaceTextureObject:BattleSubmenuTextureObject {
@@ -16,6 +17,9 @@ struct BattleClassSurfaceQueryServices {
  // Actual captured inherited source GX state compatible with this finite path.
  // InitSub alone does not establish fog/write masks/swap/indirect history.
  bool(*ordinaryCurrent)(void*)=nullptr;
+ // Capture exact relevant inherited source state AT actual LoadTexture.
+ // Required native production route; null preserves explicit legacy fixtures.
+ std::shared_ptr<const SourceGxInheritedSnapshot>(*ordinaryCapture)(void*)=nullptr;
  std::optional<uint32_t>(*camera)(void*,std::optional<uint32_t>)=nullptr;
  std::optional<BattleClassSurfaceTextureObject>(*texture)(void*,uint32_t palette,uint32_t index)=nullptr;
 };
@@ -38,6 +42,7 @@ struct BattleClassSurfacePacket {
  std::array<uint32_t,4> rgba{};
  uint32_t material=0xffffffff;
  BattleClassSurfaceRGB rgb=BattleClassSurfaceRGB::TextureRaster;
+ std::shared_ptr<const SourceGxInheritedSnapshot>ordinarySnapshot;
 };
 using BattleClassSurfacePacketPtr=std::shared_ptr<const BattleClassSurfacePacket>;
 struct BattleClassSurfacePacketSink {void*user=nullptr;bool(*append)(void*,BattleClassSurfacePacketPtr)=nullptr;};

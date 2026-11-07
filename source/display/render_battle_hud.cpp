@@ -11,6 +11,7 @@ namespace ttyd {
 void Renderer::battleHud(const Game& g) {
     if(g.trioBattleActive && !g.trioAttack.statusWindowVisible())return;
     if(g.harborTutorial.running() && !g.harborTutorial.statusVisible)return;
+    const auto status=g.harborTutorial.running()?g.harborTutorial.statusSnapshot():g.trioAttack.statusSnapshot();
     int hp=g.progress.hp,maxHp=10,fp=0,maxFp=0;
     if(g.progress.originalPouch) {
         hp=g.progress.originalPouch->half(0x70);maxHp=g.progress.originalPouch->half(0x72);
@@ -45,6 +46,7 @@ void Renderer::battleHud(const Game& g) {
         coins=read(pouch+0x78,coinPair)?int16_t(coinPair>>16):-1;
         starPoints=read(pouch+0x94,pointPair)?int16_t(pointPair&65535):-1;
     }
+    if(status){hp=status->values[0];maxHp=status->values[1];fp=status->values[2];maxFp=status->values[3];starPoints=status->values[7];coins=status->values[8];}
     auto icon=[&](uint32_t id,float x,float y,float scale=.5f) {
         const auto* art=messageIcon(id);if(!art)return;
         messageIconImage(id,g.ticks,x,y+art->frame(g.ticks).height*scale*.5f,scale,255);
@@ -68,6 +70,16 @@ void Renderer::battleHud(const Game& g) {
     if(maxFp>0) {
         icon(473,192,20);icon(441,158,20);icon(480,200.5f,17);
         number(fp,189,20,false);number(maxFp,217,20,true);
+    }
+    // These additional groups require a whole actual-VM value invocation.
+    // Native400x240 layout; source status slide/blink/queued display is separate.
+    if(status&&status->partnerPortrait){
+        icon(472,102,40);icon(*status->partnerPortrait,67,40);icon(480,110,37);
+        number(status->values[5],99,40,false);number(status->values[6],127,40,true);
+    }
+    if(status&&status->gaugeCount){
+        icon(474,257,40,.8f);icon(442,164,38,.65f);
+        for(unsigned i=0;i<status->gaugeCount;++i){const auto&q=status->gauge[i];icon(q.icon,190+q.x*.5f,48-q.y*.5f,.75f);}
     }
     if(coins>=0 || starPoints>=0) {
         // Original green status banner, star-point symbol, coin and multiply

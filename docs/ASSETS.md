@@ -3701,6 +3701,28 @@ no import over source assets. Original Nintendo/Intelligent Systems rights
 retained; no distribution rights follow. No ISO/extracted original/compiled
 product committed. Manifest records cache/evidence dependencies and hashes.
 
+
+### Original partner and Star Power status icons
+
+The message-icon converter additionally includes original partner portraits
+428..440 (actual source partner table8041767c and Yoshi color branch), acquired
+star icons447..454, empty455 and partial-fill456..471 from the original icon.bin/
+icon.tpl. Source `statusGetValue`/status display/gauge and actual signed pouch
+getters are pinned by `tools/verify_native_battle_status.py`; AP capacity follows
+actual pouch8c acquisition flags, not an invented maxAP. Existing unchanged
+pixel conversion applies; the shared atlas expands512x512 to512x1024 (2MiB
+RGBA8, +1MiB main-memory native texture) without an additional GPU owner, with all descriptor
+frames/delays retained; no new art or generated redraw. Temporary extraction PNGs and compiled T3X/JSON remain ignored. The editable
+atlas is tracked at `assets/original/ui-message-icons/atlas.png`, with initial
+source IDs/frames, conversion hashes and licensing in neighboring `provenance.json`.
+Its licensed texture entry in `assets/manifest.json` compiles after the ISO-backed
+base pack, preserving pixel edits within the existing cells. Native icon IDs,
+frame delays and normalized UVs still come from the base converter; changing
+relative cell layout requires updating that converter/catalog together. Native400x240 placement is a presentation adaptation, not source
+StatusWinMain/Disp completion. Nintendo/Intelligent Systems rights retained;
+extraction grants no distribution license. See
+[actual battle status groups](behavior/display/NATIVE_BATTLE_STATUS_GROUPS.md).
+
 ## Trio sequence-binding documentation validation inputs (2026-10-15)
 
 artifacts/trio-sequence-bindings-code-documentation-validation/source freezes

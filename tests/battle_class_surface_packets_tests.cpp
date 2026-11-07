@@ -1,4 +1,5 @@
 #include "battle_class_surface_packets.hpp"
+#include "source_gx_setter_routing.hpp"
 #include "battle_class_raster_continuation.hpp"
 #include "source_palette_texture_object.hpp"
 #include "battle_weapon_ordered_publication.hpp"
@@ -77,7 +78,7 @@ struct Fixture {
  std::vector<BattleClassSurfacePacketPtr>packets;std::vector<uint32_t>trace;
  std::map<uint32_t,uint32_t>memory;size_t holdAt=size_t(-1);unsigned waits=0,sinkHolds=0,sinkCalls=0,blocked=0;bool reenter=false;std::function<bool(BattleClassSurfacePacketPtr)>append;
  static constexpr uint32_t B=0x10000,R=0x20000,W=0x30000,C=0x40000;
- Fixture(){
+ Fixture(bool withGx=false){
   for(unsigned i=0;i<2;++i){objects[i]=std::make_unique<TextureFixture>(0x90000000+0x100*i,i);objects[i]->run();}
   dir=std::filesystem::temp_directory_path()/("pm-class-packets-"+std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));std::filesystem::create_directory(dir);metadata(dir.string());
   BattleClassSurfaceTextureServices gpu;gpu.user=this;gpu.import=[](void*p,uint32_t i,const char*)->std::optional<BattleClassSurfaceImport>{auto&f=*static_cast<Fixture*>(p);return BattleClassSurfaceImport{i?static_cast<const void*>(&f.objects):static_cast<const void*>(&f.resource),256,i?256u:128u,0,1,256,i?256u:128u,false,{0,1,1,0}};};gpu.release=[](void*,uint32_t,const void*){};assert(resource.load(dir.c_str(),gpu));
@@ -86,10 +87,11 @@ struct Fixture {
   query.texture=[](void*p,uint32_t palette,uint32_t index)->std::optional<BattleClassSurfaceTextureObject>{auto&f=*static_cast<Fixture*>(p);if(palette!=0x88000000||index>1)return {};auto&o=*f.objects[f.reuseOutput?0:index];if(o.index!=index){o.index=index;o.clearStarted=false;o.clearPosition=0;o.run();}const auto words=o.output.words();if(!words)return {};const auto table=f.texture.word(palette+8),header=f.texture.word(table+8*index);AnimationTPLImage image;image.index=index;image.width=index?128:40;image.height=index?80:40;image.format=0;image.imageHeader=header;image.data=f.texture.word(header+8);image.minFilter=image.magFilter=1;BattleClassSurfaceTextureObject out;out.handle=o.object;out.image=image;out.bytes=words;out.lifetime=f.life;out.user=p;out.current=[](void*p){return static_cast<Fixture*>(p)->objectLive;};
   out.witness=[](void*p,const BattleClassSurfaceTextureObject&w){auto&f=*static_cast<Fixture*>(p);const auto index=w.image.index;if(!f.objectLive||index>1)return false;const auto&o=*f.objects[f.reuseOutput?0:index];if(o.index!=index)return false;const auto words=o.output.words();const auto header=f.texture.word(f.texture.word(0x88000008)+8*index);return w.handle==o.object&&w.bytes&&words&&*w.bytes==*words&&w.image.imageHeader==header&&w.image.data==f.texture.word(header+8)&&w.image.width==(index?128:40)&&w.image.height==(index?80:40)&&w.image.format==0;};return out;};
   sink.user=this;sink.append=[](void*p,BattleClassSurfacePacketPtr packet){auto&f=*static_cast<Fixture*>(p);++f.sinkCalls;if(f.reenter){f.reenter=false;BattleClassRasterRequest q;q.function=BattleClassRasterService::Init2D;assert(!f.raster->request(q));}if(f.sinkHolds){--f.sinkHolds;return false;}if(f.append&&!f.append(packet))return false;f.packets.push_back(std::move(packet));return true;};
+  if(withGx){gx=std::make_shared<SourceGxInheritedState>();assert(gx->bind({life,this,[](void*p){return static_cast<Fixture*>(p)->live;},[](void*){return true;}})&&gx->initializeCold());gxRoute=std::make_unique<SourceGxSetterRouting>(gx,life,[this]{return live&&executing;});query.ordinaryCurrent=[](void*p){return static_cast<Fixture*>(p)->gxRoute->compatibleNow();};query.ordinaryCapture=[](void*p)->std::shared_ptr<const SourceGxInheritedSnapshot>{auto&f=*static_cast<Fixture*>(p);++f.gxCaptures;return f.gxHold?nullptr:f.gxRoute->capture();};}
   provider=std::make_unique<BattleClassSurfacePacketProvider>(resource,camera,query,sink);
   source.user=this;source.lifetime=life;source.current=query.current;
   source.word=[](void*p,uint32_t at)->std::optional<uint32_t>{auto&f=*static_cast<Fixture*>(p);if(f.wait())return {};const auto value=f.texture.get(at,4);if(value)f.trace.push_back(at);return value;};
-  source.request=[](void*p,const BattleTexturePlaneRequest&q)->std::optional<uint32_t>{auto&f=*static_cast<Fixture*>(p);if(f.wait())return {};const auto value=f.provider->request(q);if(value)f.trace.push_back(q.kind==BattleTexturePlaneKind::Call?uint32_t(q.function):0xcc008000);return value;};
+  source.request=[](void*p,const BattleTexturePlaneRequest&q)->std::optional<uint32_t>{auto&f=*static_cast<Fixture*>(p);if(f.wait())return {};const auto value=f.provider->request(q);if(value){f.trace.push_back(q.kind==BattleTexturePlaneKind::Call?uint32_t(q.function):0xcc008000);if(f.gxRoute)assert(f.gxRoute->accepted(q)!=SourceGxObserved::Unavailable);}return value;};
   raster=std::make_unique<BattleClassSurfaceRaster>(source,*provider);
   memory[0x8041eb90]=B;memory[B+0x163f8]=0x50000;memory[0x500a0]=0x51000;memory[0x51000]=0x88000000;memory[R+4]=1;memory[R+8]=0x1234;memory[R+0xc]=334;memory[W+0x1c]=0;
   for(unsigned i=0;i<12;++i)memory[C+0x11c+4*i]=bits(i%5==0?1:0);
@@ -101,6 +103,7 @@ struct Fixture {
  }
  ~Fixture(){raster.reset();provider.reset();resource.retire();std::filesystem::remove_all(dir);}
  static BattleActMatrix identity(){BattleActMatrix m{};m[0]=m[5]=m[10]=1;return m;}
+ std::shared_ptr<SourceGxInheritedState>gx;std::unique_ptr<SourceGxSetterRouting>gxRoute;unsigned gxCaptures=0;bool gxHold=false;
  bool wait(){return trace.size()==holdAt&&waits++<2;}
  bool circleOnce(){return resumePackedBattleClassCircle(R,base,{0,0,0},0,services,circle);}
  void reachIcon(){for(unsigned i=0;i<10&&!blocked;++i)assert(!circleOnce());if(!blocked||packets.size()!=8)std::cerr<<"pending "<<std::hex<<raster->pending()<<" packets "<<std::dec<<packets.size()<<" source "<<trace.size()<<"\n";assert(blocked&&packets.size()==8);}
@@ -165,5 +168,17 @@ void orderedAndPrepared(){
  auto present=resources;present.classes=&absent.resource;const auto valid=prepareBattleWeaponRasterGeometry(&c,manual,present);assert(valid);absent.resource.retire();assert(!valid->current(&c,present));
 }
 
+void actualPerLoadGx(){
+ Fixture f(true);f.gxHold=true;assert(!f.circleOnce()&&f.packets.empty()&&f.gxCaptures==1);
+ const auto heldTrace=f.trace;assert(!f.circleOnce()&&f.trace==heldTrace&&f.gxCaptures==2);
+ f.gxHold=false;f.reachIcon();assert(f.packets.size()==8&&f.gxCaptures==3);
+ const auto first=f.packets[0];assert(first->ordinarySnapshot&&first->ordinarySnapshot->stages()==1&&validateBattleClassSurfacePacket(*first,f.resource));
+ // Later legitimate source swap changes future admission, never loaded proof.
+ SourceIconGXCall swap;swap.function=0x802b8c98;swap.integers={0,0,1};assert(f.gxRoute->accepted(swap)==SourceGxObserved::Recorded);assert(!f.gxRoute->capture());assert(validateBattleClassSurfacePacket(*first,f.resource));
+ swap.integers[2]=0;assert(f.gxRoute->accepted(swap)==SourceGxObserved::Recorded);assert(f.gxRoute->capture());
+ f.executing=false;assert(!f.gxRoute->capture()&&validateBattleClassSurfacePacket(*first,f.resource));
+ auto changed=*first;changed.ordinarySnapshot.reset();assert(!validateBattleClassSurfacePacket(changed,f.resource));
+ f.gx->retire();assert(!validateBattleClassSurfacePacket(*first,f.resource));
 }
-int main(){actualCircle();actualHeaderQuery();actualTemporaryReuse();actualBubbleAndFrontiers();orderedAndPrepared();std::cout<<"actual class surface source packet tests PASS\n";return 0;}
+}
+int main(){actualPerLoadGx();actualCircle();actualHeaderQuery();actualTemporaryReuse();actualBubbleAndFrontiers();orderedAndPrepared();std::cout<<"actual class surface source packet tests PASS\n";return 0;}

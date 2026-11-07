@@ -260,6 +260,13 @@ private:
     std::unique_ptr<NativeBattleClassFooterGpu> classFooterGpu;
     Vertex* classVertices=nullptr;
     unsigned classVertexCount=0;
+    struct WeaponMenuBinding;
+    std::shared_ptr<WeaponMenuBinding> weaponMenuBinding;
+    std::shared_ptr<const uint8_t> weaponMenuAbandonedAllocation;
+    bool weaponMenuSubmitReady=false,weaponMenuSubmissionWaiting=false;
+    bool prepareWeaponMenuFrame(const Game&);
+    void releaseWeaponMenuFrame();
+    bool resumeWeaponMenu(const Game&,uint32_t camera,uint32_t userdata);
     struct ClassMenuBinding;
     std::shared_ptr<ClassMenuBinding> classMenuBinding;
     bool classMenuSubmitReady=false,classMenuSubmissionWaiting=false;

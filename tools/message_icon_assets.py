@@ -12,7 +12,7 @@ def build(iso):
     directory=work/'icon.bin';tpl=work/'icon.tpl';extract(iso,'icon.bin',directory);extract(iso,'icon.tpl',tpl)
     raw=directory.read_bytes();hud=source_art(iso);weapons=weapon_art(iso);icons=[];bitmaps=[]
     identifiers=list(dict.fromkeys([108,109,129,504,524,134,136,115,404,403,307,308,445,446,447,314]+
-        [row['icon'] for row in hud['rows']]+hud['large_digits']+hud['small_digits']+weapons['icons']))
+        [row['icon'] for row in hud['rows']]+hud['large_digits']+hud['small_digits']+hud['status_icons']+weapons['icons']))
     for identifier in identifiers:
         offset=struct.unpack_from('>H',raw,2*(identifier+1))[0];loop,_,_,count=struct.unpack_from('>4H',raw,offset)
         frames=[]
@@ -36,9 +36,9 @@ def build(iso):
         if key not in unique:unique[key]=(frame,bitmap);aliases[id(frame)]=[]
         aliases[id(unique[key][0])].append(frame)
     bitmaps=list(unique.values())
-    # Pack the original cells into the existing1MiB allocation. Splitting
+    # Pack unchanged original cells into2MiB (512x1024 RGBA8). Splitting
     # intersecting free rectangles avoids wasted shelf space for the wide bars.
-    atlas=Image.new('RGBA',(512,512));free=[(0,0,512,512)]
+    atlas=Image.new('RGBA',(512,1024));free=[(0,0,512,1024)]
     for frame,bitmap in sorted(bitmaps,key=lambda entry:-entry[1].width*entry[1].height):
         w,h=bitmap.size;pw,ph=w+4,h+4
         candidates=[r for r in free if r[2]>=pw and r[3]>=ph]
@@ -56,7 +56,7 @@ def build(iso):
         free=[r for r in unique if not any(r!=q and q[0]<=r[0] and q[1]<=r[1] and
             r[0]+r[2]<=q[0]+q[2] and r[1]+r[3]<=q[1]+q[3] for q in unique)]
         atlas.paste(bitmap,(x+2,y+2))
-        for alias in aliases[id(frame)]:alias['uv']=((x+2)/512,1-(y+2)/512,(x+2+w)/512,1-(y+2+h)/512)
+        for alias in aliases[id(frame)]:alias['uv']=((x+2)/512,1-(y+2)/1024,(x+2+w)/512,1-(y+2+h)/1024)
     payload=bytearray()
     for icon in icons:
         payload+=struct.pack('<3I',icon['id'],icon['loop'],len(icon['frames']))
@@ -66,6 +66,6 @@ def build(iso):
     tex3ds=shutil.which('tex3ds') or '/opt/devkitpro/tools/bin/tex3ds'
     subprocess.run([tex3ds,'-f','rgba8','-z','auto','-o','romfs/message-icons.t3x',str(work/'atlas.png')],check=True,stdout=subprocess.DEVNULL)
     Path('romfs/message-icons.json').write_text(json.dumps(dict(source=['icon.bin','icon.tpl','e/us/effect_us.tpl'],icons=icons,battle_hud=hud,battle_weapons=weapons,
-        atlas_dimensions=[512,512],conversion='Original pixels; identical pixel cells share storage; rectangle packing with2px transparent padding; no resampling',license='Nintendo/Intelligent Systems resources; no redistribution rights'),indent=2)+'\n')
+        atlas_dimensions=[512,1024],conversion='Original pixels; identical pixel cells share storage; rectangle packing with2px transparent padding; no resampling',license='Nintendo/Intelligent Systems resources; no redistribution rights'),indent=2)+'\n')
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--iso',default=DEFAULT_ISO);build(p.parse_args().iso)

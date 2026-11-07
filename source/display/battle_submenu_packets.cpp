@@ -89,13 +89,14 @@ std::optional<std::array<BattleClassVertex,4>> battleSubmenuVertices(const Battl
  return result;
 }
 bool validateBattleSubmenuPacket(const BattleSubmenuPacket&p,const BattleSubmenuSurfaceGpuResource&r){
+ if(p.ordinarySnapshot&&(p.ordinarySnapshot->stages()!=1||!p.ordinarySnapshot->current()))return false;
  if(!p.sourceResourceOwner||!p.sourceResourceCurrent||!p.sourceResourceCurrent(p.sourceResourceUser)||!r.accepts(p.surface)||!cameraCurrent(p.camera)||!finite(p.matrix)||!objectImage(p.loadedObject,p.originalTexture)||!image(p.originalTexture,p.originalTexture.index)||!p.surface.surface(p.originalTexture.index))return false;
  for(const auto&row:p.camera.projection)for(float v:row)if(!std::isfinite(v))return false;
  const auto&vp=p.camera.viewport;const auto&sc=p.camera.scissor;
  if(!nativeCameraRect(vp[0],vp[1],vp[2],vp[3])||!std::isfinite(vp[4])||!std::isfinite(vp[5])||vp[4]<0||vp[5]>1||vp[4]>vp[5])return false;
  if(sc[0]>608||sc[1]>480||sc[2]>608||sc[3]>480||!nativeCameraRect(float(sc[0]),float(sc[1]),float(sc[2]),float(sc[3])))return false;
  for(unsigned i=0;i<4;++i){for(float v:p.positions[i])if(!std::isfinite(v))return false;for(float v:p.sourceUV[i])if(!std::isfinite(v)||v<0||v>1)return false;}
- return bool(battleSubmenuVertices(p))&&cameraCurrent(p.camera)&&p.sourceResourceCurrent(p.sourceResourceUser)&&p.surface.current();
+ return bool(battleSubmenuVertices(p))&&cameraCurrent(p.camera)&&p.sourceResourceCurrent(p.sourceResourceUser)&&p.surface.current()&&(!p.ordinarySnapshot||p.ordinarySnapshot->current());
 }
 bool validateBattleSubmenuBatch(const std::vector<BattleSubmenuPacketPtr>&batch,const BattleSubmenuSurfaceGpuResource&r){
  for(const auto&p:batch)if(!p||!validateBattleSubmenuPacket(*p,r)||!sameCamera(p->camera,batch.front()->camera)||p->sourceResourceOwner.get()!=batch.front()->sourceResourceOwner.get()||p->sourceResourceOwner.owner_before(batch.front()->sourceResourceOwner)||batch.front()->sourceResourceOwner.owner_before(p->sourceResourceOwner)||p->sourceResourceUser!=batch.front()->sourceResourceUser||p->sourceResourceCurrent!=batch.front()->sourceResourceCurrent)return false;
@@ -114,7 +115,7 @@ std::optional<uint32_t> BattleSubmenuPacketProvider::request(const BattleTexture
   if(lane>=3&&lane<=6){if(q.kind!=K::FifoByte||q.integers.size()!=1||q.integers[0]>255||!q.reals.empty()||q.matrix)return {};const unsigned shift=24-8*(lane-3);colors[vertex]=(colors[vertex]&~(255u<<shift))|(q.integers[0]<<shift);}
   else{if(q.kind!=K::FifoFloat||q.reals.size()!=1||!q.integers.empty()||q.matrix||!std::isfinite(q.reals[0]))return {};if(lane<3)p[vertex][lane]=q.reals[0];else{if(q.reals[0]<0||q.reals[0]>1)return {};uv[vertex][lane-7]=q.reals[0];}}
   if(ordinal==35){
-   if(!pending_){BattleSubmenuPacket packet;packet.surface=lease_;packet.camera=camera_;packet.originalTexture=loaded_->image;packet.loadedObject=*loaded_->bytes;packet.sourceResourceOwner=query_.lifetime;packet.sourceResourceUser=query_.user;packet.sourceResourceCurrent=query_.sourceResourceCurrent;packet.matrix=*matrix_;packet.positions=p;packet.sourceUV=uv;packet.rgba=colors;pending_=std::make_shared<const BattleSubmenuPacket>(std::move(packet));pendingLane_=q;}
+   if(!pending_){BattleSubmenuPacket packet;packet.surface=lease_;packet.camera=camera_;packet.originalTexture=loaded_->image;packet.loadedObject=*loaded_->bytes;packet.sourceResourceOwner=query_.sourceResourceOwner?query_.sourceResourceOwner:query_.lifetime;packet.sourceProofOwner=query_.lifetime;packet.sourceResourceUser=query_.user;packet.sourceResourceCurrent=query_.sourceResourceCurrent;packet.ordinarySnapshot=loadedOrdinary_;packet.matrix=*matrix_;packet.positions=p;packet.sourceUV=uv;packet.rgba=colors;pending_=std::make_shared<const BattleSubmenuPacket>(std::move(packet));pendingLane_=q;}
    if(!sameLane(q,*pendingLane_)||!sink_.append||!validateBattleSubmenuPacket(*pending_,resource_))return {};
    const bool accepted=sink_.append(sink_.user,pending_);
    if(!current()||!accepted)return {};
@@ -133,7 +134,10 @@ std::optional<uint32_t> BattleSubmenuPacketProvider::request(const BattleTexture
  }
  if(q.function==F::LoadTexture){
   if(n.size()!=2||n[1]||q.matrix)return {};
-  for(unsigned i=0;i<2;++i)if(objects_[i]&&objects_[i]->handle==n[0]&&objects_[i]->current(objects_[i]->user)&&current()){loaded_=*objects_[i];selected_=i+2;return 0;}
+  for(unsigned i=0;i<2;++i)if(objects_[i]&&objects_[i]->handle==n[0]&&objects_[i]->current(objects_[i]->user)&&current()){
+   std::shared_ptr<const SourceGxInheritedSnapshot>ordinary;
+   if(query_.ordinaryCapture){ordinary=query_.ordinaryCapture(query_.user);if(!ordinary||ordinary->stages()!=1||!ordinary->current()||!current())return {};}
+   loaded_=*objects_[i];loadedOrdinary_=std::move(ordinary);selected_=i+2;return 0;}
   return {};
  }
  if(q.function==F::TextureFormat||q.function==F::TextureWidth||q.function==F::TextureHeight){

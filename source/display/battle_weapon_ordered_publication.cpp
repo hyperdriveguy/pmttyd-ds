@@ -40,7 +40,7 @@ bool BattleWeaponOrderedPublication::source(uint64_t pass){return live()&&pass&&
 bool BattleWeaponOrderedPublication::bind(BattleWeaponOrderedBinding b){
  if(!enter())return false;
  Guard guard{*this};
- if(bound_||invalid_||!b.allocationOwner||!b.sourceResourceOwner||!b.resources||!b.allocation||!b.generation||!b.capacity||!b.current||!b.sourceCurrent||!b.sourceComplete||!b.font||!b.submenu||!b.icon||!b.ready||!b.draw)return false;
+ if(bound_||invalid_||!b.allocationOwner||!b.sourceResourceOwner||!b.resources||!b.allocation||!b.generation||!b.capacity||!b.current||!b.sourceCurrent||!b.sourceComplete||!b.font||!b.submenu||!b.icon||!b.ready||bool(b.draw)==bool(b.tryDraw))return false;
  binding_=std::move(b);bound_=true;building_.reserve(binding_.capacity);return live();
 }
 bool BattleWeaponOrderedPublication::begin(uint64_t pass){
@@ -125,7 +125,9 @@ bool BattleWeaponOrderedPublication::submit(uint64_t pass,const std::shared_ptr<
  if(submitted_)return true;
  if(!binding_.ready(binding_.user,*p)||!source(pass)||!preflight(p->packets))return false;
  // All actual native packet/resource checks preceded the first GPU write.
- binding_.draw(binding_.user,*p);submitted_=true;return live();
+ if(binding_.tryDraw){if(!binding_.tryDraw(binding_.user,*p))return false;}
+ else binding_.draw(binding_.user,*p);
+ submitted_=true;return live();
 }
 BattleWeaponNativeSubmission BattleWeaponOrderedPublication::submission(){return {this,
  [](void*p,uint64_t pass){return static_cast<BattleWeaponOrderedPublication*>(p)->begin(pass);},

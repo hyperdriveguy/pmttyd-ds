@@ -1,4 +1,5 @@
 #pragma once
+#include "native_battle_status.hpp"
 #include "battle_class_display.hpp"
 #include <functional>
 #include "message_playback.hpp"
@@ -150,6 +151,7 @@ public:
     // Borrowed original action-command display requests for this simulation tick.
     const DisplayQueue* actionDisplayQueue() const;
     bool readPackedWord(uint32_t address,uint32_t& value) const;
+    std::optional<NativeBattleStatusSnapshot> statusSnapshot() const;
     bool prepareAudienceDrawing(const BattleAudienceDrawServices&) const;
     bool running() const{return triggered;}
 private:

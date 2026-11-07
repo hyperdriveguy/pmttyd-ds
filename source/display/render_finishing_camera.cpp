@@ -1,4 +1,6 @@
 #include "platform.hpp"
+#include "source_gx_setter_routing.hpp"
+#include "native_ui_startup.hpp"
 #include "animation_scratch_memory.hpp"
 #include "battle_pose_inner.hpp"
 #include "animation_shape_render.hpp"
@@ -95,11 +97,16 @@ void Renderer::resumeFinishingCamera(const Game& game){
         }
         return true;
     };
-    struct DisplayBridge {NativeDisplaySubmit* pipeline;const Game* game;} displayBridge{&pipeline,&game};
+    struct DisplayBridge {NativeDisplaySubmit* pipeline;const Game* game;std::unique_ptr<SourceGxSetterRouting>gx;} displayBridge{&pipeline,&game,{}};
+    if(const auto startup=game.nativeUiStartup()){if(const auto history=startup->gxHistory())displayBridge.gx=std::make_unique<SourceGxSetterRouting>(history,startup->lifetime(),[startup]{return startup->current();});}
     services.display.user=&displayBridge;
     services.display.state=[](void* user,const DisplayStateRequest& request){
-        const auto& pipeline=*static_cast<DisplayBridge*>(user)->pipeline;
-        return static_cast<Renderer*>(pipeline.user)->finishingDisplayState.request(request,pipeline);
+        auto& bridge=*static_cast<DisplayBridge*>(user);const auto& pipeline=*bridge.pipeline;
+        const bool completed=static_cast<Renderer*>(pipeline.user)->finishingDisplayState.request(request,pipeline);
+        // Observe only this genuinely reached and actually accepted source
+        // setter. Metadata is never a substitute for the real native owner.
+        if(completed&&bridge.gx)(void)bridge.gx->accepted(request);
+        return completed;
     };
     services.display.callback=[](void* user,uint32_t camera,uint32_t identity,uint32_t borrowed){
         const auto& b=*static_cast<DisplayBridge*>(user);
@@ -108,6 +115,7 @@ void Renderer::resumeFinishingCamera(const Game& game){
         // audience; reel/stockEXP/audience auxiliaries; unit parts; finally shadow.
         if(identity==0x8011fde0)return renderer.resumeEnemyHp(*b.game,camera,borrowed);
         if(identity==0x8012210c)return renderer.resumeClassMenu(*b.game,camera,borrowed);
+        if(identity==0x80121ce8)return renderer.resumeWeaponMenu(*b.game,camera,borrowed);
         if(identity==0x8000e564){
             CameraLetterboxDrawServices letterbox;letterbox.user=&renderer;
             letterbox.pass=[](void* u,LetterboxPassRequest& r){return static_cast<Renderer*>(u)->finishingLetterboxPass(r);};

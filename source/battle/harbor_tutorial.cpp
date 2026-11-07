@@ -54,6 +54,7 @@ struct HarborTutorialRuntime {
  // reload replaces the catalog owner without invalidating an existing battle.
  std::shared_ptr<BattleMenuFileCache> files=menuFiles;
  HarborTutorial* scene=nullptr;EventNativeRuntime vm;std::unique_ptr<HarborTutorialPacked> packed;
+ std::shared_ptr<const uint8_t>statusLife=std::make_shared<const uint8_t>(0);std::unique_ptr<NativeBattleStatusReader>statusReader;
  std::unique_ptr<BattleMenuFileBinding> menuBinding;BattleMenuResourceCursor menuCursor;
  std::shared_ptr<BattleCommandPalette> commandPalette;
  void* resourceUser=nullptr;bool(*paperReady)(void*,uint32_t,int32_t)=nullptr;bool(*niceReady)(void*,int32_t)=nullptr;
@@ -385,6 +386,11 @@ std::optional<int32_t> HarborTutorial::inputCommand(const BattlePadSample& sampl
  r.packed->capture(*this);return result;
 }
 bool HarborTutorial::readPackedWord(uint32_t address,uint32_t& value)const{return runtime_ && runtime_->packed && runtime_->packed->readWord(address,value);}
+std::optional<NativeBattleStatusSnapshot>HarborTutorial::statusSnapshot()const{
+ if(!runtime_||!runtime_->packed||failed)return {};
+ auto&r=*runtime_;if(!r.statusReader)r.statusReader=std::make_unique<NativeBattleStatusReader>(r.vm,r.statusLife,&r,[](void*p){auto&r=*static_cast<HarborTutorialRuntime*>(p);uint32_t b=0;return r.packed&&r.vm.memory.contiguousRam(HarborTutorialPacked::Battle,0x19100)&&r.vm.memory.readWord(0x8041eb90,b)&&b==HarborTutorialPacked::Battle;});
+ return r.statusReader->snapshot();
+}
 bool HarborTutorial::prepareAudienceDrawing(const BattleAudienceDrawServices& supplied)const{if(!runtime_ || !runtime_->packed)return false;auto services=supplied;services.actors=nativeBattleActorServices(runtime_->vm);return drawPackedBattleAudience(services);}
 // Actual animation driver acknowledges current actor pose generation. Reusing
 // actor ID or waiting another simulation visit is insufficient for case 29.

@@ -17087,3 +17087,54 @@ entry/group/node/Main provider lifetimes and newly added runtime bindings;
 reconcile later changes before claiming file coverage. Whole-file Trio numeric
 coverage, remaining implementation/tool files and full port completeness remain
 unproven.
+
+
+## 2026-11-07 — Original partner/AP HUD and retained weapon UI integration
+
+Integrated the complete retained original status-value reader with actual Trio
+and Harbor resource getters, original partner portraits and acquired-star AP
+gauge rules. Native screen placement is adapted for 400x240; complete original
+StatusWin scheduling and framebuffer parity are not established. The expanded
+114-frame message/icon atlas is now editable under
+assets/original/ui-message-icons, with original source paths, frame identities,
+conversion details and retained-rights provenance. The normal editable manifest
+compiles it after the ISO base; original checked-in edits are never reimported.
+
+Queued weapon callbacks now retain actual resource owners, source memory,
+texture objects, camera/GX state and ordered mixed publication. The original
+Window child reaches the existing native atlas through its source callback.
+Unsupported original font/icon/message helpers still hold at their real call
+boundaries; this is not evidence of a populated normal battle menu. Per-facade
+weak registrations fix dangling selector callbacks across copy, move, assignment
+and destruction; the legacy borrowed class factory remains a separate scope.
+
+Validation authority: artifacts/owned-queued-ui-validation/manifest.json,
+SHA256 507b29309e5cd44a28cfb74af40d1f728e4d00bbd53a3170be82cebfc265b9d1.
+All 6944 frozen inputs were rehashed after consumers stopped, with no mismatch.
+Full fresh make test exits0: 536/536 C++ (119.86s), 236/236 Python (33.744s),
+zero skips. Full fresh native make all -o assets-ready -j4 SOUNDTRACK=gamecube
+exits0; no borrowed object/archive ABI. All421 editable overlays were compiled,
+source verifiers pass, and1614 Markdown files have zero broken links. Native
+3DSX SHA256 bdb3b80c4eb642b6107704b96a181aab8477bde4f0973c24738d1db942e4264d.
+The asset-preparation bypass uses audited private products, including the
+corrected35-span original animation startup pack. Earlier interrupted gates and
+stale31-span failures remain recorded in their separate artifact directories.
+Commit preparation replays only owned anchors over concurrent committed shared
+build/docs changes; source postimages match the frozen validation graph.
+
+The isolated native field checkpoint currently rejects during texture import.
+A logging-only copy identifies field-garf with10533888 linear bytes free; four
+physical retries fail consistently. The texture is byte-identical to an older
+passing build and is a supported512x256 RGBA8 image. Total free space alone does
+not identify the allocator/importer failure; branch-level diagnosis is ongoing.
+The underground probe reaches the actual underground field, not a populated
+battle menu. User emulator profiles/saves were untouched. No physical hardware
+performance or original rendered-image parity claim is made.
+
+Next: resolve the native texture-import regression, integrate the separately
+frozen original Icon startup and font bridge in a fresh consistent graph, then
+bind genuine Icon TEX/GX packets and remaining original message services.
+Complete tutorial scheduling, battle/result/field return, original menu
+activation and the lower-screen audience scene with physical alternatives to
+every touch action remain required. Three UI workers are active; no full-game
+or full-goal completion is claimed.

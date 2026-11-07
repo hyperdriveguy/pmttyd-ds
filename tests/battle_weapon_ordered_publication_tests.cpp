@@ -18,7 +18,7 @@ struct Fixture {
  std::shared_ptr<const uint8_t> iconGeneration=std::make_shared<const uint8_t>(3);
  std::filesystem::path dir;
  bool alive=true,executing=true,complete=false,ready=false,iconAvailable=true,reenter=false,retireOnReady=false;
- unsigned draws=0;std::vector<size_t> order;
+ unsigned draws=0,submitAttempts=0;bool nativeReady=false;std::vector<size_t> order;
  Fixture(){
   MessageFont original;assert(original.load("romfs/font.pmfont"));assert(font.adopt(original,{this,512,256,0,1,512,256,false,{0,1,1,0}}));
   dir=std::filesystem::temp_directory_path()/("pm-weapon-ordered-"+std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));std::filesystem::create_directory(dir);
@@ -50,6 +50,12 @@ void ordered(){
  const auto services=f.owner.submission();std::shared_ptr<const void> opaque=batch;assert(services.current(services.user,opaque));assert(!services.submit(services.user,2,opaque));
  f.executing=false;assert(f.owner.validate(batch));assert(services.current(services.user,opaque));assert(!f.owner.appendIcon(1,f.icon())); // camera callback finished; copied publication survives
  auto forged=std::make_shared<BattleWeaponOrderedBatch>(*batch);assert(!f.owner.validate(forged));auto alias=std::shared_ptr<const BattleWeaponOrderedBatch>(std::make_shared<int>(1),batch.get());assert(!f.owner.validate(alias));assert(!f.owner.submit(1,alias));f.executing=true;assert(f.owner.begin(2));assert(!f.owner.validate(batch));assert(!services.current(services.user,opaque));assert(!f.owner.appendIcon(1,f.icon()));
+}
+void fallibleNativeSubmission(){
+ Fixture f;auto b=f.binding();b.draw=nullptr;b.tryDraw=[](void*p,const BattleWeaponOrderedBatch&batch){auto&f=*static_cast<Fixture*>(p);++f.submitAttempts;assert(!f.owner.submit(1,std::shared_ptr<const BattleWeaponOrderedBatch>{}));assert(!f.owner.begin(2));if(!f.nativeReady)return false;++f.draws;for(const auto&q:batch.packets)f.order.push_back(q.index());return true;};assert(f.owner.bind(b));assert(f.owner.begin(1));f.mixed();f.complete=true;const auto batch=f.owner.seal(1);assert(batch);f.ready=true;
+ for(unsigned i=0;i<2;++i){assert(!f.owner.submit(1,batch)&&f.owner.validate(batch)&&f.owner.seal(1)==batch&&!f.owner.begin(2));assert(f.draws==0&&f.order.empty());}
+ assert(f.submitAttempts==2);f.nativeReady=true;assert(f.owner.submit(1,batch)&&f.owner.submit(1,batch)&&f.submitAttempts==3&&f.draws==1);assert((f.order==std::vector<size_t>{0,1,2,0}));assert(f.owner.begin(2));
+ Fixture absent;auto none=absent.binding();none.draw=nullptr;assert(!absent.owner.bind(none));auto both=absent.binding();both.tryDraw=b.tryDraw;assert(!absent.owner.bind(both));
 }
 void rejection(){
  Fixture missing;auto b=missing.binding();b.sourceComplete=nullptr;assert(!missing.owner.bind(b));missing.start(1);const auto g=missing.glyph();assert(missing.owner.reserveFont(1,g));auto changed=g;changed.quad.left++;assert(!missing.owner.reserveFont(1,changed));changed=g;changed.matrix[1]=-0.f;assert(!missing.owner.reserveFont(1,changed));changed=g;changed.quad.pitchX=-0.f;assert(!missing.owner.reserveFont(1,changed));changed=g;changed.quad.pitchY=-0.f;assert(!missing.owner.reserveFont(1,changed));missing.owner.commitFont(1,g);assert(!missing.owner.appendIcon(1,missing.icon()));assert(!missing.owner.reserveFont(1,g));
@@ -124,4 +130,4 @@ void originalWindowFirst(){
  Fixture capacity;WindowFixture one(capacity);one.bind(1);assert(one.run());assert(!capacity.owner.reserveFont(1,capacity.glyph()));
 }
 }
-int main(){ordered();rejection();originalWindowFirst();return 0;}
+int main(){ordered();rejection();originalWindowFirst();fallibleNativeSubmission();return 0;}

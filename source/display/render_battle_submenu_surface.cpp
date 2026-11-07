@@ -16,6 +16,7 @@ const BattleSubmenuSurfaceGpuResource* Renderer::weaponMenuSurfaceResources()con
  return weaponMenuSurfaceLease()?&submenuSurfaceGpu->resource():nullptr;
 }
 void Renderer::releaseWeaponMenuSurfaces(){
+ releaseWeaponMenuFrame();
  if(submenuSurfaceGpu){submenuSurfaceGpu->release();submenuSurfaceGpu.reset();}
 }
 }

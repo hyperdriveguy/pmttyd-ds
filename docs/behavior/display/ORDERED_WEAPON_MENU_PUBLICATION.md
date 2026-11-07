@@ -1,5 +1,7 @@
 # Ordered original weapon-menu packets
 
+The optional trailing `tryDraw` provider is the alternative to the existing nonfailing `draw`. Exactly one is bound for this owner lifetime. It must return false before any GPU or presentation effects; that result leaves the same sealed batch and submitted state unchanged. A later retry repeats only whole native preflight and the actual native submission. True records the single successful submission. The source parent, already appended packets and original RNG do not rerun. The actual Renderer satisfies this domain by performing every fallible check before its first GPU write and then committing synchronously without callbacks. This is an actual provider contract, not an acknowledgment of an unavailable GPU child.
+
 This is a native composition owner, not a new original-game controller. The
 source parent remains the complete retained queued `80121ce8` → Disp `8011604c`
 → DrawWeaponWin `80115dac` graph described in

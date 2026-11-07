@@ -31,6 +31,11 @@ bool EventGpAddresses::bindLanguageAlias(uint32_t base,std::shared_ptr<EventGpLa
  for(auto&r:regions_)if(r.base==base){if(r.language||!alias->current())return false;r.language=std::move(alias);return true;}
  return false;
 }
+bool EventGpAddresses::languageAliasIs(uint32_t base,const std::shared_ptr<EventGpLanguageAlias>&alias)const{
+ if(languageInvoking_||!alias)return false;
+ for(const auto&r:regions_)if(r.base==base)return r.language==alias&&!r.language.owner_before(alias)&&!alias.owner_before(r.language);
+ return false;
+}
 bool EventGpAddresses::languageAliasSpan(uint32_t a,uint64_t n)const{
  if(!n)return false;
  const uint64_t end=n>0x100000000ULL-a?0x100000000ULL:uint64_t(a)+n;
