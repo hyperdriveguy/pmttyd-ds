@@ -5589,3 +5589,25 @@ Original read-only evidence: artifacts/harbor-light-binding-evidence/report.md.
 
 EVT-01 remains OPEN. Source wrapper/actual-root fixtures do not establish a
 complete playable prologue, installed native lights or original GPU parity.
+
+### 2026-11-07 — Native render camera and shared SDK bridge
+
+[Native camera/SDK contract](../behavior/display/NATIVE_RENDER_CAMERA_AND_SDK.md)
+closes the selected actual-VM render parent's CPU/camera child ownership. Node
+and Render use one retained SDK engine; lazy current/by-index camera tokens
+read reached published view pairs, preserving captures through mapping repair.
+InvXpose singular status preserves absent/prior normals; exceptional status1
+outputs remain outputs. Aliased MultVec publishes X before final-row reads and
+retains its source paired arithmetic through repair. Named source ABI constants
+and point stages identify their original meanings.
+
+- [x] Bind real current-camera/view tokens and shared raw SDK matrix children
+  under explicit nativeRenderSdk selection and producer ownership.
+- [ ] Bind production material/texture/GX/FIFO to field-owned Citro3D indexed
+  fans/cache and finish linked/Vivian/callback services.
+- [ ] Activate ordinary Game queue/camera/pass draining, expand original events/
+  NPCs/objects/areas, then compare original images and profile physical hardware.
+
+Original Mario executes real CPU nodes and camera/shape SDK operations; only
+GPU/material/cache effects remain fixture acknowledgements in this validation.
+No story/dialogue or editable asset was changed. EVT-01 and the goal stay OPEN.

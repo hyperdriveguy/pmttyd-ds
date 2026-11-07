@@ -1467,3 +1467,4 @@ Original battle menu native resource/queue owners:
 - [Actual accepted source GX routing](display/REACHED_SOURCE_GX_SETTER_ROUTING.md).
 
 - [Native queued original Window bridge](display/NATIVE_QUEUED_WEAPON_WINDOW_BRIDGE.md).
+- [Native render camera and shared SDK](display/NATIVE_RENDER_CAMERA_AND_SDK.md): lazy camera tokens, original shared Concat and retained point/normal children.

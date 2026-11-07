@@ -4055,3 +4055,13 @@ regeneration with `-o assets-ready SOUNDTRACK=gamecube`. Host fixture/verifier
 reads of the supplied original ISO were read-only. Rights and licenses remain
 as previously recorded. See the animation-memory-selection documentation
 validation manifest and docs/PROGRESS.md for exact test scope and limitations.
+
+### 2026-11-07 — Native render SDK reuses existing original data
+
+The shared camera/matrix SDK bridge introduces no new asset import, conversion
+or compiled product. It reuses the unchanged original animation boot pack
+(38 spans,5172 bytes) and the existing original model/animation/index resources.
+All2,152 compiled products match the prior raw-render audit exactly. No editable
+asset under `assets/` or manifest entry was overwritten; individual provenance
+and original rights/licensing remain as recorded above. No ISO or compiled
+product is committed by this source increment.

@@ -116,3 +116,10 @@ Node SDK capture/math through a public owner rather than copying Concat. The
 original MultVec child publishes local X before reading its final matrix row;
 a raw-row backing hold must retain that partial store. An atomic typed point
 math receipt alone does not cover those original VM boundaries.
+
+## Native camera and SDK selection
+
+The [native camera/SDK bridge](NATIVE_RENDER_CAMERA_AND_SDK.md) now supplies
+original camera getters, shared same-VM Concat and normal/point math when
+`NativeNpcGroupBackend.nativeRenderSdk` is selected. Material/GPU/FIFO remain
+explicit backend owners, and ordinary Game activation remains open.

@@ -17179,3 +17179,92 @@ node/facing/draw bindings and later changed implementations. Existing inventory
 hashes are review aids, not proof of adequate comment or whole-port coverage.
 Whole-file Trio numeric synthesis and remaining tool/native modules still need
 review; do not report the broad documentation goal or remake complete.
+
+## 2026-11-07 — Shared original SDK and native render camera/math
+
+Completed selected actual-VM render camera/CPU SDK ownership, code
+`291891ac22c193f3086168d51a4e68c797ccc703`. [Contract](behavior/display/NATIVE_RENDER_CAMERA_AND_SDK.md).
+Node and Render now share one retained SDK matrix engine; named original ABI
+constants and point capture/store stages identify their source meanings.
+`NativeNpcGroupBackend.nativeRenderSdk` selects this bridge before explicit
+material/GPU children, while whole-render providers remain exclusive.
+
+Current/by-index getters use the real retained CameraManager bank. Views resolve
+lazily through captured semantic tokens; no camera4 fallback, eager projection/
+mode gate, unpublished-view success or token-to-RAM fallback is introduced.
+Concat preserves13 input captures, live tail and6 output-pair order through
+holds/physical aliases. InvXpose ignores translations, retains singular absent/
+prior output and publishes exceptional status1 results. Aliased MultVec retains
+input captures and X before late row2 mapping reads, sharing paired/FMA arithmetic
+with the existing shape adapter. Inner refreshes camera/config ownership only
+before a new operation, preserving held child/local/producer identities.
+
+The first genuine unbound rendering child is now GXLoadPosMtxImm802ba2fc,
+followed by normal upload/current matrix; material/GPU/indexed submission and
+normal Game activation remain open. This increment establishes CPU/camera
+ownership, not rendered NPC completion, original numeric/GPU parity or physical
+hardware performance. Fixed scratch is reused without per-vertex allocation.
+
+Validation froze accepted `8607348b24757fec4559d1467db205774e1bfbc7` plus fourteen owned paths as
+`1542a383138043e41ab281f4f3267bb337d8b5e9` in `artifacts/source-checks/npc-wander`.
+All 4,027 source files match; all 2,152 compiled
+products match the prior raw-render audit exactly. No asset import/conversion,
+manifest edit or original data span was needed; no editable asset was overwritten.
+Concurrent source/assets/docs and public staging were preserved. ISO remained
+read-only; no compiled product or ISO was committed. Normal SHA256
+`91b8826b7f307355bbbcae107c2b5a14782f2e1a4bde1a7f26c0bf9ef8a28d79`.
+
+- `CMAKE_BUILD_PARALLEL_LEVEL=4 TRIO_ENEMY_POSE_PACK=romfs make --jobserver-style=pipe test`:
+  exit0,456 C++ tests pass,75.4s;212 Python tests pass,
+  59.623s;zero skips. Existing Pillow warnings remain.
+- `make --jobserver-style=pipe all -j4 -o assets-ready SOUNDTRACK=gamecube`:
+  exit0. Existing unrelated native indentation warnings remain. Temporary ARM
+  assertion patch removed; normal rebuild reproduces saved SHA256 exactly.
+- Initial ARM probe failed before its success marker: the test camera selector
+  put an18KB DisplayQueue on a constrained stack alongside caller fixtures.
+  That test-only queue moved to heap; production SDK code was unchanged. Failed
+  isolated emulator was stopped, then full host gates and a fresh ARM profile
+  were rerun. Failure evidence is retained; it is not counted as a pass.
+- Fresh isolated `artifacts/azahar-npc-render-sdk-final-probe`: exit0, marker
+  `camera=PASS concat=PASS normal=PASS point=PASS repair=PASS graph=PASS lease=PASS nodes=PASS`. Warning-clean probe build. Tests cover lazy camera/
+  view repair, reservation collision, captured vs fresh matrix pairs, thirteen
+  shared Concat pair holds, changed request/storage identities, ignored normal
+  translations, singular/exceptional normals, aliased point row2 repair, and
+  independent cancellation/fused/signed-zero bit goldens. Existing native node
+  matrix/alias/repair/graph suites also pass on ARM after extraction.
+- Actual Mario graph runs real CPU nodes, raw render RAM/index traversal and
+  real camera/Concat/normal/point operations across two retained camera owners.
+  A held GPU-position child retains SDK output and blocks producer end/config/
+  tick. Only GPU/material/cache effects remain explicit fixture receipts.
+- Normal40s boot `artifacts/azahar-npc-render-sdk-normal`: exit0; original
+  storybook inspected. Isolated checkpoint `artifacts/azahar-npc-render-sdk-field`:
+  exit0;70s warmup, image-confirmed occupied file,20s load, idle/right/left/final
+  idle captures inspected. Rogueport/Mario rendering and returning movement
+  remain correct in these existing-renderer captures; no new GPU/FPS claim.
+- Independent original numeric/source/ownership review passed before naming
+  cleanup; final gates cover that cleanup and test stack repair. Markdown link
+  check has zero broken links; exact count in log. Full evidence:
+  `artifacts/npc-render-sdk-validation-manifest.json`.
+
+The prior protected staging action was not executed when automatic approval
+review hit an account usage limit; it was a review failure, not a safety finding.
+On this continuation approval review succeeded and scoped staging/commits ran.
+No user permission or safety check was bypassed.
+
+Next tasks:
+
+1. Bind the genuine GX position/normal/current-matrix requests to field-owned
+   state; preserve unavailable/singular normal frontiers, including allowed
+   exceptional SDK outputs, instead of substituting identity or success.
+2. Implement field-owned original material/light/fog/texture state and durable
+   actual-VM indexed fan/FIFO staging for Citro3D. Reuse native shader/state/fan
+   kernels without borrowing Trio resource ownership or flattening Mario-only
+   meshes. Keep multi-texture/lighting/capacity limitations explicit.
+   Read-only implementation/owner/test map:
+   `artifacts/npc-render-sdk-gpu-next-evidence.txt`.
+3. Finish linked/Vivian/callback/materialProc services and ordinary Game camera/
+   queue/offscreen/pass draining, expand original events/NPCs/objects/areas and
+   story, then matched original images and physical New2DS XL profiling.
+
+EVT-01 and the full goal remain OPEN. No new Dolphin execution or matched
+original/hardware profile was collected, and no dialogue/story content changed.
