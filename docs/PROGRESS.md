@@ -17049,3 +17049,41 @@ indoors/objects and matched original visual/hardware checks remain. The full
 goal is active; do not report this data/callback milestone as prologue completion.
 Next owner map: artifacts/npc-creation-events-game-next.md; corrected exact
 source light evidence: artifacts/harbor-light-binding-evidence/report.md.
+
+### Animation memory and selection code documentation
+
+Documented ten implementation/header files for pool aliases, live tangent
+bytes, five scratch channels and retained selection. Added 106 inline comment
+lines plus `docs/code/animation-memory-ownership.md` and
+`docs/code/animation-selection-ownership.md`, linked from the code index.
+Explained capacities, strides, guest offsets, source clock constants, sparse
+deltas, interpolation limits, alias lifetime, rollback boundaries, bytewise
+strcmp continuation, restart write order and producer exclusion. Code/docs
+commit: `eca164b9`. Executable tokens/string literals remain unchanged.
+
+Validation used frozen baseline `f91ab5c2a270a5b8270671ebd4e3c74cc339341e` with only
+the scoped documentation overlay, excluding concurrent worktree changes.
+`CMAKE_BUILD_PARALLEL_LEVEL=4 make test` passed 522/522 C++ and
+231/231 Python tests, zero skips, exit0 (CTest 134.07s; Python 42.885s).
+The earlier host process vanished
+during environment interruption after test 479/522; its incomplete log is retained
+as `host-interrupted.log`. A complete rerun of the same frozen tree passed under
+session 61106. Native `make all -o assets-ready -j4 SOUNDTRACK=gamecube` had already
+completed under session 17538, exit0. Full asset regeneration was bypassed using
+the verified private cache: 114 accepted products and 729 prior conversion-work/
+provenance paths unchanged. No imports or conversions for this batch.
+
+Audited 4415 baseline tracked files, 13 documented file hashes, 10 executable-token
+comparisons and 126 local links. Exact frozen read-only ISO verifiers passed:
+selector/time 5 bodies, 423 instructions; Main/init 2 bodies, 1773 instructions. These
+are static source checks, not original runtime or floating-point parity. Required
+actual-resource fixture sections passed, including new native async preloads.
+Evidence: `artifacts/animation-memory-selection-code-documentation-validation/`
+(manifest, source proofs, full logs and private ELF/3DSX hashes). No emulator run
+for this prose-only batch.
+
+The broad documentation goal remains active. Next: remaining animation
+entry/group/node/Main provider lifetimes and newly added runtime bindings;
+reconcile later changes before claiming file coverage. Whole-file Trio numeric
+coverage, remaining implementation/tool files and full port completeness remain
+unproven.

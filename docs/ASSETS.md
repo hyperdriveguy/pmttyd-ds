@@ -4021,3 +4021,15 @@ Nintendo/Intelligent Systems rights remain; no redistribution license is granted
 The existing broader harbor harness pack is unchanged and is not imported as
 this scoped area data closure. Native scene-light ownership/rendering is still
 unbound; these constants are source data, not measured light positions.
+
+### Animation memory/selection documentation validation cache
+
+No asset imports, edits or conversions in this documentation batch. The private
+frozen validation tree inherited 114 accepted products and 729 earlier conversion
+work/provenance paths, rechecked by SHA-256. Source tools/assets/Makefile were
+unchanged from the preceding documented snapshot; CMake added file-async and
+animation-group-request code/tests only. Native compilation bypassed complete
+regeneration with `-o assets-ready SOUNDTRACK=gamecube`. Host fixture/verifier
+reads of the supplied original ISO were read-only. Rights and licenses remain
+as previously recorded. See the animation-memory-selection documentation
+validation manifest and docs/PROGRESS.md for exact test scope and limitations.
