@@ -4,7 +4,7 @@
 #include <cstring>
 namespace ttyd {
 namespace {float real(uint32_t w){float f;std::memcpy(&f,&w,4);return f;}uint32_t bits(float f){uint32_t w;std::memcpy(&w,&f,4);return w;}}
-AnimationGroupBinding::AnimationGroupBinding(EventAddressSpace& m,const NativeNpcGroupBackend& b,std::function<bool()> current):memory_(m),backend_(b),current_(std::move(current)),node_(m,current_),render_(m,b.renderChildren,current_){}
+AnimationGroupBinding::AnimationGroupBinding(EventAddressSpace& m,const NativeNpcGroupBackend& b,std::function<bool()> current,std::shared_ptr<const CameraManager> cameras):memory_(m),backend_(b),current_(std::move(current)),node_(m,current_),sdk_(b.nativeRenderSdk?std::make_unique<AnimationRenderSdkBinding>(m,std::move(cameras),b.renderChildren,current_):nullptr),render_(m,sdk_?sdk_->services():b.renderChildren,current_){}
 bool AnimationGroupBinding::copy(uint32_t from,uint32_t to){
  if(!current_ || !current_())return false;
  if(!copying_){copying_=true;copySource_=from;copyDestination_=to;pair_=0;pairLoaded_=false;}

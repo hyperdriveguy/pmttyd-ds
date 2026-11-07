@@ -4,13 +4,21 @@ namespace ttyd {
 // SDK tokens8029e6a4 point transform/8029df28 inverse-transpose. Preserve
 // explicit float/FMA graph. Native 1/det substitutes the Gekko estimate;
 // singular status0 acknowledges math but leaves prior output untouched.
+std::optional<float> animationShapeNativePointRow(const std::array<float,4>& row,const ActorVector& vector){
+    for(float v:row)if(!std::isfinite(v))return {};
+    for(float v:vector)if(!std::isfinite(v))return {};
+    volatile float p0=row[0]*vector[0],p1=row[1]*vector[1];
+    const float q0=std::fma(row[2],vector[2],float(p0)),q1=std::fma(row[3],1.f,float(p1));
+    const float result=q0+q1;return std::isfinite(result)?std::optional<float>(result):std::nullopt;
+}
 bool animationShapeNativeMath(AnimationShapeMath& r){
     if(r.function==0x8029e6a4){
         for(float v:r.input)if(!std::isfinite(v))return false;
         for(float v:r.vector)if(!std::isfinite(v))return false;
         ActorVector out;for(unsigned row=0;row<3;++row){const auto i=4*row;
-            const float p0=r.input[i]*r.vector[0],p1=r.input[i+1]*r.vector[1];
-            const float q0=std::fma(r.input[i+2],r.vector[2],p0),q1=std::fma(r.input[i+3],1.f,p1);out[row]=q0+q1;}
+            auto value=animationShapeNativePointRow({r.input[i],r.input[i+1],r.input[i+2],r.input[i+3]},r.vector);
+            if(!value)return false;
+            out[row]=*value;}
         for(float v:out)if(!std::isfinite(v))return false;
         r.vectorOutput=out;return true;
     }

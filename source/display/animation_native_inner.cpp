@@ -6,7 +6,7 @@
 #include <cmath>
 namespace ttyd {
 namespace {constexpr uint32_t CameraBase=0x81910000,CameraSize=13*0x280;}
-AnimationNativeInner::AnimationNativeInner(NativeFieldAnimation& n,const NativeNpcInnerBackend& b):native_(n),backend_(b){if(b.groups)group_=std::make_unique<AnimationGroupBinding>(n.process_->vm().memory,*b.groups,[this]{return current();});}
+AnimationNativeInner::AnimationNativeInner(NativeFieldAnimation& n,const NativeNpcInnerBackend& b):native_(n),backend_(b){}
 bool AnimationNativeInner::current() const{return native_.npcDrawCurrent();}
 bool AnimationNativeInner::ownsCamera(uint32_t a) const{return a>=CameraBase && uint64_t(a)<uint64_t(CameraBase)+CameraSize;}
 bool AnimationNativeInner::camera(){
@@ -49,7 +49,14 @@ AnimationInnerServices AnimationNativeInner::source(){
  s.invalidate=[](void* u){auto& b=*static_cast<AnimationNativeInner*>(u);return b.current() && b.backend_.invalidate && b.backend_.invalidate(b.backend_.user,b.native_.process_->vm().memory);};
  s.traverse=[](void* u,const AnimationInnerTraversal& q){auto& b=*static_cast<AnimationNativeInner*>(u);return b.current() && (b.group_?b.group_->advance(q,b.native_.budget_):b.backend_.traverse && b.backend_.traverse(b.backend_.user,b.native_.process_->vm().memory,q));};return s;
 }
-bool AnimationNativeInner::advance(const AnimationInnerDrawRequest& q){return current() && resumeAnimationInner(q,source(),cursor_,native_.budget_);}
+bool AnimationNativeInner::advance(const AnimationInnerDrawRequest& q){
+ if(!current())return false;
+ if(!cursor_.active && backend_.groups && (!group_ || groupCameras_!=native_.cameras_ || groupConfiguration_!=native_.configuredMain_)){
+  groupCameras_=native_.cameras_;groupConfiguration_=native_.configuredMain_;
+  group_=std::make_unique<AnimationGroupBinding>(native_.process_->vm().memory,*backend_.groups,[this]{return current();},groupCameras_);
+ }
+ return resumeAnimationInner(q,source(),cursor_,native_.budget_);
+}
 NativeNpcInnerServices AnimationNativeInner::services(){NativeNpcInnerServices s;s.user=this;s.request=[](void* u,EventAddressSpace& m,const AnimationInnerDrawRequest& q){auto& b=*static_cast<AnimationNativeInner*>(u);return &m==&b.native_.process_->vm().memory && b.advance(q);};return s;}
 bool NativeFieldAnimation::configureNpcInnerBackend(const NativeNpcInnerBackend& backend){
  if(!ready() || producerPending() || entering_ || releasing_.active)return false;

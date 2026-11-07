@@ -2860,3 +2860,9 @@ add_executable(source_gx_setter_routing_tests tests/source_gx_setter_routing_tes
 target_link_libraries(source_gx_setter_routing_tests PRIVATE ttyd_core)
 add_test(NAME source_gx_setter_routing COMMAND source_gx_setter_routing_tests)
 set_tests_properties(source_gx_setter_routing PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+# Shared actual-VM SDK matrix owner and native render camera/math bridge.
+target_sources(ttyd_core PRIVATE source/display/animation_sdk_matrix_binding.cpp source/display/animation_render_sdk_binding.cpp)
+add_executable(native_npc_render_sdk_tests tests/native_npc_render_sdk_tests.cpp)
+target_link_libraries(native_npc_render_sdk_tests PRIVATE ttyd_core)
+add_test(NAME native_npc_render_sdk COMMAND native_npc_render_sdk_tests)
+set_tests_properties(native_npc_render_sdk PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

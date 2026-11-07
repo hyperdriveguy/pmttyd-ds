@@ -50,5 +50,6 @@ bool resumeAnimationShape(BattlePosePool&,int32_t,const std::optional<uint32_t>&
     const AnimationShapeRequest&,const AnimationShapeServices&,AnimationShapeCursor&);
 // Explicit native numeric adapter: 1/det substitutes for PPC fres;
 // source cofactor/FMA/refinement/store rules are retained. No bit-parity claim.
+std::optional<float> animationShapeNativePointRow(const std::array<float,4>&,const ActorVector&);
 bool animationShapeNativeMath(AnimationShapeMath&);
 }

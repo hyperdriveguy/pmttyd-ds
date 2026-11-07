@@ -29,6 +29,7 @@ private:
  bool copy(const BattleActMatrix&,uint32_t);
  AnimationInnerServices source();
  std::unique_ptr<AnimationGroupBinding> group_;
+ std::shared_ptr<const CameraManager> groupCameras_;uint64_t groupConfiguration_=0;
  NativeFieldAnimation& native_;NativeNpcInnerBackend backend_;AnimationInnerCursor cursor_;
  std::unique_ptr<AnimationFacingBinding> facing_;
  std::shared_ptr<const CameraManager> facingCameras_;uint64_t facingConfiguration_=0;
