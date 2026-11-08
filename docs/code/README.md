@@ -279,3 +279,7 @@ publication.
 [Battle publications](battle-publications.md) compares class admission notices,
 source-ordered HP frames and mixed weapon batches, including atomic font
 reservations and whole-submission retry rules.
+
+[Battle surface packets](battle-surface-packets.md) explains source TPL/GX object
+identity, independent constructor snapshots, inherited state and retained final
+FIFO publication for class/submenu surfaces.

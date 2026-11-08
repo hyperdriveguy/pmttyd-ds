@@ -3,6 +3,8 @@
 #include "battle_class_raster.hpp"
 #include "source_gx_inherited_state.hpp"
 namespace ttyd {
+// Source I4=0 and native PICA RGBA8=0 share a numeric value, not a format.
+// RGB chooses texture*raster or C0*raster; both use texture-alpha*raster-alpha.
 enum class BattleClassSurfaceRGB { TextureRaster, MaterialRaster };
 struct BattleClassSurfaceTextureObject:BattleSubmenuTextureObject {
  // Pure actual owner proof of this exact output address, known32B and source
@@ -40,6 +42,7 @@ struct BattleClassSurfacePacket {
  std::array<std::array<float,3>,4> positions{};
  std::array<std::array<float,2>,4> sourceUV{};
  std::array<uint32_t,4> rgba{};
+ // Packed RGBA white bookkeeping default; C0 alpha is unused by these profiles.
  uint32_t material=0xffffffff;
  BattleClassSurfaceRGB rgb=BattleClassSurfaceRGB::TextureRaster;
  std::shared_ptr<const SourceGxInheritedSnapshot>ordinarySnapshot;
@@ -64,6 +67,7 @@ private:
  std::optional<BattleClassSurfaceTextureObject>loaded_;std::shared_ptr<const BattleClassSurfaceObjectSnapshot>loadedSnapshot_;std::optional<BattleActMatrix>matrix_;
  std::optional<uint32_t>material_;BattleClassSurfaceRGB rgb_=BattleClassSurfaceRGB::TextureRaster;
  uint32_t state_=0,descriptors_=0,formats_=0,lanes_=0;
+ // Reentry guard, sticky owner-loss poison, and first inherited-GX proof seen.
  bool invoking_=false,poisoned_=false,ordinaryKnown_=false;
  std::array<std::array<float,3>,4>positions_{};
  std::array<std::array<float,2>,4>uv_{};std::array<uint32_t,4>rgba_{};

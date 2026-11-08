@@ -3,6 +3,8 @@
 #include <cmath>
 #include <cstring>
 namespace ttyd {
+// Read the live source B -> +0x163f8 FileEntry -> +0xa0 pointer cell chain.
+// Native atlas residency does not substitute for actual relocated TPL metadata.
 std::optional<AnimationTPLImage>
 readBattleSubmenuTexture(const BattleSubmenuMemoryReader &m,
                              uint32_t palette, uint32_t index) {
@@ -21,6 +23,8 @@ readBattleSubmenuTexture(const BattleSubmenuMemoryReader &m,
   const auto actual = read(*holder);
   if (!actual || *actual != palette)
     return {};
+  // 217920 is the original common-bank byte length. 64-bit span arithmetic
+  // rejects a bank crossing the 32-bit guest address space.
   const uint64_t end = uint64_t(palette) + 217920;
   if (end > 0x100000000ULL)
     return {};
@@ -32,6 +36,7 @@ readBattleSubmenuTexture(const BattleSubmenuMemoryReader &m,
   if (!magic || *magic != 0x0020af30 || !count || *count != 97 || !table ||
       !span(*table, 97 * 8))
     return {};
+  // TPL descriptors are 8 bytes; image headers are 36 bytes with no CLUT here.
   const auto image = read(*table + 8 * index),
              clut = read(*table + 8 * index + 4);
   if (!image || !span(*image, 36) || !clut || *clut)
@@ -49,6 +54,7 @@ readBattleSubmenuTexture(const BattleSubmenuMemoryReader &m,
   result.imageHeader = *image;
   result.height = uint16_t(*dimensions >> 16);
   result.width = uint16_t(*dimensions);
+  // I4 and CMPR both occupy 32 bytes per 8x8 source tile (round dimensions up).
   const auto bytes = ((uint32_t(result.width) + 7) / 8) *
                      ((uint32_t(result.height) + 7) / 8) * 32;
   if (!result.width || !result.height || !span(*data, bytes) || *wrapS > 2 ||
@@ -62,6 +68,8 @@ readBattleSubmenuTexture(const BattleSubmenuMemoryReader &m,
   result.magFilter = *mag;
   const auto bits = *bias;
   std::memcpy(&result.bias, &bits, 4);
+  // Final header word packs edge/minLOD/maxLOD/unpacked into high-to-low bytes;
+  // unpacked=1 is the source type4 relocation marker, not native GPU readiness.
   result.edge = uint8_t(*flags >> 24);
   result.minLOD = uint8_t(*flags >> 16);
   result.maxLOD = uint8_t(*flags >> 8);
@@ -74,8 +82,11 @@ namespace {
 bool cameraCurrent(const BattleSubmenuCameraProof&p){return p.lifetime&&p.current&&p.generation&&p.pass&&p.camera==8&&p.current(p.user,p);}
 bool finite(const BattleActMatrix&m){for(float v:m)if(!std::isfinite(v))return false;return true;}
 bool image(const AnimationTPLImage&i,uint32_t index){return i.index==index&&i.width==(index==2?16:8)&&i.height==24&&i.format==14&&i.data&&i.imageHeader&&i.wrapS==0&&i.wrapT==0&&i.minFilter==1&&i.magFilter==1&&i.bias==0&&i.edge==0&&i.minLOD==0&&i.maxLOD==0;}
+// Source GX object word 2 stores width-1/height-1 in two 10-bit fields;
+// word 5 preserves the original format, not the converted atlas PICA format.
 bool objectImage(const std::array<uint32_t,8>&b,const AnimationTPLImage&i){return (b[2]&1023)+1==i.width&&((b[2]>>10)&1023)+1==i.height&&b[5]==i.format;}
 bool sameCamera(const BattleSubmenuCameraProof&a,const BattleSubmenuCameraProof&b){return a.lifetime.get()==b.lifetime.get()&&!a.lifetime.owner_before(b.lifetime)&&!b.lifetime.owner_before(a.lifetime)&&a.user==b.user&&a.current==b.current&&a.generation==b.generation&&a.pass==b.pass&&a.camera==b.camera&&!std::memcmp(&a.projection,&b.projection,sizeof(a.projection))&&!std::memcmp(a.viewport.data(),b.viewport.data(),sizeof(a.viewport))&&a.scissor==b.scissor;}
+// Final FIFO retry compares float bits, including signed zero, without a matrix.
 bool sameLane(const BattleTexturePlaneRequest&a,const BattleTexturePlaneRequest&b){return a.kind==b.kind&&a.integers==b.integers&&a.reals.size()==b.reals.size()&&!std::memcmp(a.reals.data(),b.reals.data(),a.reals.size()*sizeof(float))&&!a.matrix&&!b.matrix;}
 struct Guard{bool&v;explicit Guard(bool&x):v(x){v=true;}~Guard(){v=false;}};
 }
@@ -98,6 +109,8 @@ bool validateBattleSubmenuPacket(const BattleSubmenuPacket&p,const BattleSubmenu
  for(unsigned i=0;i<4;++i){for(float v:p.positions[i])if(!std::isfinite(v))return false;for(float v:p.sourceUV[i])if(!std::isfinite(v)||v<0||v>1)return false;}
  return bool(battleSubmenuVertices(p))&&cameraCurrent(p.camera)&&p.sourceResourceCurrent(p.sourceResourceUser)&&p.surface.current()&&(!p.ordinarySnapshot||p.ordinarySnapshot->current());
 }
+// Empty batch succeeds; nonempty entries must share bit-identical camera
+// state, the same ownership control blocks, and the same long proof callbacks.
 bool validateBattleSubmenuBatch(const std::vector<BattleSubmenuPacketPtr>&batch,const BattleSubmenuSurfaceGpuResource&r){
  for(const auto&p:batch)if(!p||!validateBattleSubmenuPacket(*p,r)||!sameCamera(p->camera,batch.front()->camera)||p->sourceResourceOwner.get()!=batch.front()->sourceResourceOwner.get()||p->sourceResourceOwner.owner_before(batch.front()->sourceResourceOwner)||batch.front()->sourceResourceOwner.owner_before(p->sourceResourceOwner)||p->sourceResourceUser!=batch.front()->sourceResourceUser||p->sourceResourceCurrent!=batch.front()->sourceResourceCurrent)return false;
  return true;
@@ -110,10 +123,14 @@ std::optional<uint32_t> BattleSubmenuPacketProvider::request(const BattleTexture
  using F=BattleTexturePlaneCall;using K=BattleTexturePlaneKind;
  if(q.kind!=K::Call){
   if(!lanes_)return {};
+  // One-based scalar counter: each of four vertices has XYZ floats, RGBA
+  // bytes (high byte first), then ST floats: nine lanes, 36 acknowledgments.
   const unsigned ordinal=lanes_-1,vertex=ordinal/9,lane=ordinal%9;
   auto p=positions_;auto uv=uv_;auto colors=rgba_;
   if(lane>=3&&lane<=6){if(q.kind!=K::FifoByte||q.integers.size()!=1||q.integers[0]>255||!q.reals.empty()||q.matrix)return {};const unsigned shift=24-8*(lane-3);colors[vertex]=(colors[vertex]&~(255u<<shift))|(q.integers[0]<<shift);}
   else{if(q.kind!=K::FifoFloat||q.reals.size()!=1||!q.integers.empty()||q.matrix||!std::isfinite(q.reals[0]))return {};if(lane<3)p[vertex][lane]=q.reals[0];else{if(q.reals[0]<0||q.reals[0]>1)return {};uv[vertex][lane-7]=q.reals[0];}}
+  // Freeze the candidate only at the final V lane. Sink holds retry this same
+  // immutable packet/request; they must not accept a packet and then report false.
   if(ordinal==35){
    if(!pending_){BattleSubmenuPacket packet;packet.surface=lease_;packet.camera=camera_;packet.originalTexture=loaded_->image;packet.loadedObject=*loaded_->bytes;packet.sourceResourceOwner=query_.sourceResourceOwner?query_.sourceResourceOwner:query_.lifetime;packet.sourceProofOwner=query_.lifetime;packet.sourceResourceUser=query_.user;packet.sourceResourceCurrent=query_.sourceResourceCurrent;packet.ordinarySnapshot=loadedOrdinary_;packet.matrix=*matrix_;packet.positions=p;packet.sourceUV=uv;packet.rgba=colors;pending_=std::make_shared<const BattleSubmenuPacket>(std::move(packet));pendingLane_=q;}
    if(!sameLane(q,*pendingLane_)||!sink_.append||!validateBattleSubmenuPacket(*pending_,resource_))return {};
@@ -129,12 +146,16 @@ std::optional<uint32_t> BattleSubmenuPacketProvider::request(const BattleTexture
  if(q.function==F::TextureObject){
   if(n.size()!=2||n[1]<2||n[1]>3||q.matrix||!query_.texture)return {};
   auto v=query_.texture(query_.user,n[0],n[1]);if(!current()||!v||!v->bytes||!v->lifetime||!v->current||!v->current(v->user)||!image(v->image,n[1])||!objectImage(*v->bytes,v->image)||!current())return {};
+  // A reused genuine object handle supersedes old lookup entries. Already
+  // loaded copied state remains independent of later constructor-cell reuse.
   for(auto&old:objects_)if(old&&old->handle==v->handle)old.reset();
   objects_[n[1]-2]=*v;return v->handle;
  }
  if(q.function==F::LoadTexture){
   if(n.size()!=2||n[1]||q.matrix)return {};
   for(unsigned i=0;i<2;++i)if(objects_[i]&&objects_[i]->handle==n[0]&&objects_[i]->current(objects_[i]->user)&&current()){
+   // Capture inherited one-stage GX history at actual texture load, if supplied.
+   // It outlives the short source callback independently of current GPU registers.
    std::shared_ptr<const SourceGxInheritedSnapshot>ordinary;
    if(query_.ordinaryCapture){ordinary=query_.ordinaryCapture(query_.user);if(!ordinary||ordinary->stages()!=1||!ordinary->current()||!current())return {};}
    loaded_=*objects_[i];loadedOrdinary_=std::move(ordinary);selected_=i+2;return 0;}
@@ -147,12 +168,24 @@ std::optional<uint32_t> BattleSubmenuPacketProvider::request(const BattleTexture
  }
  if(q.function==F::LoadMatrix){if(n!=std::vector<uint32_t>{0}||!q.matrix||!finite(*q.matrix))return {};matrix_=*q.matrix;return 0;}
  if(q.matrix)return {};
+ // GX_QUADS=128 (0x80), VAT0, count4; complete setter/descriptor/format
+ // masks plus real loaded source texture and affine matrix are mandatory.
  if(q.function==F::Begin){if(n!=std::vector<uint32_t>{128,0,4}||state_!=0x7fff||descriptors_!=14||formats_!=14||!matrix_||!selected_||!sink_.append)return {};lanes_=1;positions_={};uv_={};rgba_={};return 0;}
+ // Fifteen setter-presence bits form state_=0x7fff; these are local masks,
+ // not GX flags. POS/CLR0/TEX0 enable/format bits are 2/4/8 (sum 14).
+ // GX profile: CULL_NONE=0, Z-before-texture=1, compare ALWAYS=7, AND=0;
+ // blend BLEND=1, SRCALPHA=4, INVSRCALPHA=5, depth write disabled.
+ // DIRECT=1; POS9 XYZ1/F32=4, CLR0=11 RGBA1/RGBA8=5, TEX0=13 ST1/F32.
+ // Channel COLOR0A0=4, unlit, material VTX=1, no lights, CLAMP/NONE=2/2.
+ // Texgen MATRIX2x4=1 from TEX0=4, identity60/post125, normalize0. TEV:
+ // ADD=0, bias ZERO=0, scale1 token0, clamp1, PREV0; RGB ZERO15/RASC10/
+ // TEXC8/C0=2, alpha ZERO7/RASA5/TEXA4. Stage/coord/map0, channel4.
  uint32_t flag=0;bool valid=false;
  switch(q.function){
  case F::Cull:flag=1;valid=n==std::vector<uint32_t>{0};break;
  case F::DepthLocation:flag=2;valid=n==std::vector<uint32_t>{1};break;
  case F::AlphaCompare:flag=4;valid=n==std::vector<uint32_t>{7,0,0,7,0};break;
+ // Logical op NOOP=5 or OR=7 is preserved, though BLEND mode ignores it.
  case F::BlendMode:flag=8;valid=n==std::vector<uint32_t>{1,4,5,5}||n==std::vector<uint32_t>{1,4,5,7};break;
  case F::DepthMode:flag=16;valid=n==std::vector<uint32_t>{1,7,0};break;
  case F::ClearDescriptors:valid=n.empty();if(valid){descriptors_=formats_=0;}break;
@@ -168,6 +201,7 @@ std::optional<uint32_t> BattleSubmenuPacketProvider::request(const BattleTexture
  case F::AlphaIn:flag=4096;valid=n==std::vector<uint32_t>{0,7,5,4,7};break;
  case F::Order:flag=8192;valid=n==std::vector<uint32_t>{0,0,0,4};break;
  case F::ColorIn:flag=16384;valid=n==std::vector<uint32_t>{0,15,10,8,15};break;
+ // GX_MODULATE=0 establishes the five color/alpha/order setter bits together.
  case F::TevOp:valid=n==std::vector<uint32_t>{0,0};if(valid)state_|=1024|2048|4096|8192|16384;break;
  default:break;
  }

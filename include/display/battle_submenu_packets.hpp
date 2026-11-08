@@ -12,12 +12,15 @@ struct BattleSubmenuCameraProof {
  uint64_t generation=0,pass=0;
  uint32_t camera=0;
  CameraProjectionMatrix projection{};
+ // Source viewport x/y/width/height/near/far; scissor x/y/width/height.
+ // These retain the original 608x480 camera domain, before native tilt/scaling.
  std::array<float,6> viewport{};
  std::array<uint32_t,4> scissor{};
 };
 struct BattleSubmenuTextureObject {
  uint32_t handle=0; // Supplied by the actual typed source-output owner, never the index.
  AnimationTPLImage image;
+ // Eight words are the entire 32-byte source GX object, not GPU pixel storage.
  std::optional<std::array<uint32_t,8>> bytes; // Whole known source GX object.
  std::shared_ptr<const void> lifetime;
  void* user=nullptr;bool(*current)(void*)=nullptr;
@@ -71,7 +74,9 @@ private:
  std::optional<BattleSubmenuTextureObject> loaded_;
  std::shared_ptr<const SourceGxInheritedSnapshot>loadedOrdinary_;
  std::optional<uint32_t> selected_;std::optional<BattleActMatrix> matrix_;
+ // Presence masks and one-based pending scalar ordinal (zero means idle).
  uint32_t state_=0,descriptors_=0,formats_=0,lanes_=0;
+ // Observed source/native/camera loss is sticky for this provider instance.
  bool invoking_=false,poisoned_=false;
  std::array<std::array<float,3>,4> positions_{};
  std::array<std::array<float,2>,4> uv_{};std::array<uint32_t,4> rgba_{};
