@@ -2,6 +2,8 @@
 import os,struct,subprocess,time
 from pathlib import Path
 
+V10_SAVE_BYTES = 0x620
+
 def run(env,capture):
     def x(*args):
         return subprocess.check_output(['xdotool',*args],env=env,text=True,stderr=subprocess.DEVNULL).strip()
@@ -16,7 +18,7 @@ def run(env,capture):
     for tick in range(1100):
         if checkpoint.exists():
             b=checkpoint.read_bytes()
-            if len(b) in (40,0x600) and b[:4]==b'PM2D' and b[26]==1 and b[32]==1 and struct.unpack_from('<i',b,28)[0]==3:
+            if len(b) in (40,0x600,V10_SAVE_BYTES) and b[:4]==b'PM2D' and b[26]==1 and b[32]==1 and struct.unpack_from('<i',b,28)[0]==3:
                 time.sleep(2);capture('opening-harbor');return
         if time.monotonic()>end:break
         press('a');time.sleep(.20)
