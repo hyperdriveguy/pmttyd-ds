@@ -2,6 +2,13 @@
   "schema": 1,
   "assets": [
     {
+      "id": "original/effects/fukidashi-entry",
+      "kind": "event",
+      "source": "assets/original/effects/fukidashi/entry/event.json",
+      "output": "fukidashi-entry.pmevt",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
       "id": "original/effects/fukidashi-main",
       "kind": "event",
       "source": "assets/original/effects/fukidashi/main/event.json",

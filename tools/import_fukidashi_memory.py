@@ -26,7 +26,21 @@ SPANS = (
     (0x80422948, 4, '2e4b88c5b36065e9192f27e51a58ea9293d498848552a5ddb361a4e2336f7fae'),
 )
 
-def build(iso, destination):
+ENTRY_SPANS = (
+    (0x802f3654, 12, '15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b'),
+    (0x802f3660, 12, '15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b'),
+    (0x802f366c, 12, '15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b'),
+    (0x802f3678, 12, '15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b'),
+    (0x802f36b0, 10, '81562e56fe7cc7f58c688915b1e0206bf516376ba105fbed13b99e0759f480da'),
+    (0x802f36bc, 26, 'c0d88353f6355d7ac7565f72da5e2786b052fd1a2739819fbc99d201bab397c1'),
+    (0x802f36d8, 27, '730db071bd9c3d42c603f8fe9abb2c5df956e149142516b790bd18c1c347f919'),
+    (0x804228c0, 4, 'df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119'),
+    (0x80422930, 4, '638354a0b185ec05318029e52610c8de48d33523e2b4854e71154187583d1037'),
+    (0x8042294c, 4, '5c4ece04c9361390a40028f671ad8bb2acfb062e5cf25a422ac1a5cf5343a7e5'),
+)
+
+def build(iso, destination, component="main"):
+    spans = {"main": SPANS, "entry": ENTRY_SPANS}[component]
     destination = Path(destination)
     if destination.exists() and (not destination.is_dir() or any(destination.iterdir())):
         raise ValueError('Import destination must be empty')
@@ -40,7 +54,7 @@ def build(iso, destination):
         header = disc.read(256)
         sections = [tuple(struct.unpack_from('>I',header,field+4*i)[0]
                           for field in (0,0x48,0x90)) for i in range(18)]
-        for address, length, expected in SPANS:
+        for address, length, expected in spans:
             padded = (length + 3) & ~3
             offsets = [dol+off+address-va for off,va,size in sections
                        if va <= address and address+padded <= va+size]
@@ -60,4 +74,5 @@ def build(iso, destination):
 if __name__ == '__main__':
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--iso',default=DEFAULT_ISO);p.add_argument('--destination',required=True)
-    a=p.parse_args();build(a.iso,a.destination)
+    p.add_argument('--component',choices=('main','entry'),default='main')
+    a=p.parse_args();build(a.iso,a.destination,a.component)

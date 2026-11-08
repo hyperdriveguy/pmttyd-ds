@@ -2960,3 +2960,10 @@ add_executable(fukidashi_effect_tests tests/fukidashi_effect_tests.cpp)
 target_link_libraries(fukidashi_effect_tests PRIVATE ttyd_core)
 add_test(NAME fukidashi_effect COMMAND fukidashi_effect_tests)
 set_tests_properties(fukidashi_effect PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Original effect construction and implicit attachment sound admission.
+target_sources(ttyd_core PRIVATE source/effect/fukidashi_entry.cpp)
+add_executable(fukidashi_entry_tests tests/fukidashi_entry_tests.cpp)
+target_link_libraries(fukidashi_entry_tests PRIVATE ttyd_core)
+add_test(NAME fukidashi_entry COMMAND fukidashi_entry_tests)
+set_tests_properties(fukidashi_entry PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

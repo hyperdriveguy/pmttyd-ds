@@ -1,0 +1,97 @@
+{
+  "source": "sys/main.dol",
+  "spans": [
+    {
+      "address": "0x802f3654",
+      "original_bytes": 12,
+      "sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+      "packaged_bytes": 12,
+      "iso_offset": 3213652,
+      "packaged_sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "address": "0x802f3660",
+      "original_bytes": 12,
+      "sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+      "packaged_bytes": 12,
+      "iso_offset": 3213664,
+      "packaged_sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "address": "0x802f366c",
+      "original_bytes": 12,
+      "sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+      "packaged_bytes": 12,
+      "iso_offset": 3213676,
+      "packaged_sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "address": "0x802f3678",
+      "original_bytes": 12,
+      "sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+      "packaged_bytes": 12,
+      "iso_offset": 3213688,
+      "packaged_sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "address": "0x802f36b0",
+      "original_bytes": 10,
+      "sha256": "81562e56fe7cc7f58c688915b1e0206bf516376ba105fbed13b99e0759f480da",
+      "packaged_bytes": 12,
+      "iso_offset": 3213744,
+      "packaged_sha256": "58f2831fc98bf75ee2a11c0317025b66e6df339b9af457b9d8abbaf42be14a66",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "address": "0x802f36bc",
+      "original_bytes": 26,
+      "sha256": "c0d88353f6355d7ac7565f72da5e2786b052fd1a2739819fbc99d201bab397c1",
+      "packaged_bytes": 28,
+      "iso_offset": 3213756,
+      "packaged_sha256": "da508c2989b435c60e8bca1e9e3b267fe1d72cf98088db451f0aeae0175c6b4d",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "address": "0x802f36d8",
+      "original_bytes": 27,
+      "sha256": "730db071bd9c3d42c603f8fe9abb2c5df956e149142516b790bd18c1c347f919",
+      "packaged_bytes": 28,
+      "iso_offset": 3213784,
+      "packaged_sha256": "588b5a182063548ed788eff74d1e8acf47158c23295c4bd19d3a74b8348ab438",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "address": "0x804228c0",
+      "original_bytes": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "packaged_bytes": 4,
+      "iso_offset": 4124992,
+      "packaged_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "address": "0x80422930",
+      "original_bytes": 4,
+      "sha256": "638354a0b185ec05318029e52610c8de48d33523e2b4854e71154187583d1037",
+      "packaged_bytes": 4,
+      "iso_offset": 4125104,
+      "packaged_sha256": "638354a0b185ec05318029e52610c8de48d33523e2b4854e71154187583d1037",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "address": "0x8042294c",
+      "original_bytes": 4,
+      "sha256": "5c4ece04c9361390a40028f671ad8bb2acfb062e5cf25a422ac1a5cf5343a7e5",
+      "packaged_bytes": 4,
+      "iso_offset": 4125132,
+      "packaged_sha256": "5c4ece04c9361390a40028f671ad8bb2acfb062e5cf25a422ac1a5cf5343a7e5",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    }
+  ],
+  "conversion": "Original initialized bytes; word alignment retains original adjacent bytes, not synthesized zero padding.",
+  "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+}
