@@ -22,10 +22,13 @@ private:
 // typed evaluate fallback. Producer must retain camera/files/pose state until
 // complete; current(pass) proves that at every primitive. False may follow
 // source stores, linked progress, cooperative yields or exhausted visit budget.
+// Nested diagnostic phases are controller labels,not original cycle/timing data.
 struct AnimationNativeMainProgress {size_t depth=0;uint32_t main=0,geometry=0,cache=0,replay=0,interpolation=0;};
 class AnimationNativeMain {
 public:
  ~AnimationNativeMain();
+ // Default 64 bounds pumps per resume. Same root handle/pass must persist;
+ // explicit source recursion has no invented total depth/visit completion cap.
  bool advance(uint32_t handle,uint64_t pass,unsigned visits=64);
  bool pending() const{return active_;}
  size_t depth() const{return frames_.size();}

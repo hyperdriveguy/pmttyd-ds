@@ -4,12 +4,19 @@
 namespace ttyd {
 namespace {
 uint32_t bits(float f){uint32_t w;std::memcpy(&w,&f,4);return w;}float real(uint32_t w){float f;std::memcpy(&f,&w,4);return f;}
+// Source call ABI has at most 8 tagged arguments. Default limit 2^32 admits
+// guest/scalar words; Matrix/Vector limits 2 select durable renderer locals.
 bool arg(const AnimationRenderCall& q,unsigned i,AnimationRenderKind kind,uint64_t limit=0x100000000ull){return i<q.count && q.arguments[i].kind==kind && q.arguments[i].value<limit;}
 bool same(const AnimationRenderCall& a,const AnimationRenderCall& b){if(a.function!=b.function || a.count!=b.count || a.count>8)return false;for(unsigned i=0;i<a.count;++i)if(a.arguments[i].kind!=b.arguments[i].kind || a.arguments[i].value!=b.arguments[i].value)return false;return true;}
 }
 AnimationRenderSdkBinding::AnimationRenderSdkBinding(EventAddressSpace& m,std::shared_ptr<const CameraManager> c,const AnimationSourceRenderChildren& b,std::function<bool()> current):memory_(m),cameras_(std::move(c)),backend_(b),current_(std::move(current)),matrices_(m,current_,{this,[](void* u,uint32_t a){return static_cast<AnimationRenderSdkBinding*>(u)->owns(a);},[](void* u,uint32_t a,std::array<uint32_t,2>& words){return static_cast<AnimationRenderSdkBinding*>(u)->cameraPair(a,words);}}){}
 bool AnimationRenderSdkBinding::owns(uint32_t a) const{return a>=CameraBase && uint64_t(a)<uint64_t(CameraBase)+CameraSize;}
+// Entire 13-slot semantic camera reservation must remain unmapped. This guard
+// alone needs neither a current camera nor published view; getters/pairs decide.
 bool AnimationRenderSdkBinding::available() const{return current_ && current_() && memory_.unmappedRange(CameraBase,CameraSize);}
+// Slot token stays captured even if current camera later changes. Each view
+// pair is read LIVE at 11c+offset; four-byte alignment is sufficient. Unsupported
+// offsets/unpublished views hold here instead of delegating or reading VM RAM.
 bool AnimationRenderSdkBinding::cameraPair(uint32_t a,std::array<uint32_t,2>& out) const{
  if(!available() || !cameras_ || !owns(a))return false;
  const uint32_t index=(a-CameraBase)/CameraStride,offset=(a-CameraBase)%CameraStride;
@@ -21,14 +28,21 @@ AnimationSdkLocals AnimationRenderSdkBinding::storage(AnimationRenderLocals& loc
  s.pair=[](void* u,uint32_t slot,unsigned offset,std::array<uint32_t,2>& out){auto& l=*static_cast<AnimationRenderLocals*>(u);if(slot>=l.matrices.size() || !l.matrices[slot] || offset>animation_sdk::LastPairOffset || offset%4)return false;const auto& m=*l.matrices[slot];out={bits(m[offset/4]),bits(m[offset/4+1])};return true;};
  s.store=[](void* u,uint32_t slot,const BattleActMatrix& m){auto& l=*static_cast<AnimationRenderLocals*>(u);if(slot>=l.matrices.size())return false;l.matrices[slot]=m;return true;};return s;
 }
+// MultVec consumes guest matrix + local input/output vector IDs. Pin the
+// local owner/request through holds; input/output may be the SAME vector.
 bool AnimationRenderSdkBinding::point(const AnimationRenderCall& incoming,AnimationRenderLocals& local){
  if(incoming.count!=3 || !arg(incoming,0,AnimationRenderKind::Guest) || !arg(incoming,1,AnimationRenderKind::Vector,2) || !arg(incoming,2,AnimationRenderKind::Vector,2))return false;
  if(!pointActive_){pointActive_=true;pointRequest_=incoming;pointLocals_=&local;pointStage_=CaptureVectorXY;}
  if(pointLocals_!=&local || !same(incoming,pointRequest_))return false;
  const auto& q=pointRequest_;auto& locals=*pointLocals_;
  auto pair=[&](unsigned offset){std::array<uint32_t,2> words;if(!matrices_.pair({true,q.arguments[0].value},offset,words,storage(locals)))return false;matrix_[offset/4]=real(words[0]);matrix_[offset/4+1]=real(words[1]);return true;};
+ // Shared paired kernel: single x/y products,distinct fused z/one lanes,
+ // then single lane sum; it is not a left-fold dot product or translation copy.
  auto row=[&](unsigned i){return animationShapeNativePointRow({matrix_[i],matrix_[i+1],matrix_[i+2],matrix_[i+3]},vector_);};
  for(;;)switch(pointStage_){
+ // Exact graph: vectorXY,M00,vectorZ,M08,M10,M18,writeX,computeY,
+ // M20,M28,writeY,writeZ. A missing last row leaves X committed and Y retained;
+ // no replay or whole-matrix prefetch may move that frontier.
  case CaptureVectorXY:vector_[0]=real(locals.vectors[q.arguments[1].value][0]);vector_[1]=real(locals.vectors[q.arguments[1].value][1]);pointStage_=CaptureRow0XY;break;
  case CaptureRow0XY:if(!pair(0))return false;pointStage_=CaptureVectorZ;break;
  case CaptureVectorZ:vector_[2]=real(locals.vectors[q.arguments[1].value][2]);pointStage_=CaptureRow0ZT;break;
@@ -50,20 +64,29 @@ bool AnimationRenderSdkBinding::call(const AnimationRenderCall& q,AnimationRende
  if(pointActive_ && (pointLocals_!=&local || !same(q,pointRequest_)))return false;
  if(matrices_.pending() && q.function!=animation_sdk::Concat)return false;
  switch(q.function){
+ // Getters require actual bank/index only,not a published view. Never
+ // replace missing current with camera4. Concat resolves view pairs lazily.
  case CurrentCameraGetter:{if(q.count || !cameras_)return false;auto i=cameras_->currentIndex();if(!i || !cameras_->camera(*i))return false;result=CameraBase+CameraStride*(*i);return true;}
  case CameraByIndexGetter:if(q.count!=1 || !arg(q,0,AnimationRenderKind::Scalar,CameraCount) || !cameras_ || !cameras_->camera(q.arguments[0].value))return false;result=CameraBase+CameraStride*q.arguments[0].value;return true;
  case animation_sdk::Concat:{if(q.count!=3 || !arg(q,0,AnimationRenderKind::Guest) || !arg(q,1,AnimationRenderKind::Guest) || !arg(q,2,AnimationRenderKind::Matrix,2))return false;AnimationSourceMatrixCall request;request.function=q.function;request.left={true,q.arguments[0].value};request.right={true,q.arguments[1].value};request.output={false,q.arguments[2].value};return matrices_.advance(request,storage(local));}
+ // InvXpose copies BASIS only; translations are not source inputs.
+ // Status0 preserves absent/stale normal storage. Status1 may publish NaN/Inf;
+ // no singular identity or blanket finite-result substitute is supplied here.
  case animation_sdk::InverseTranspose:{if(q.count!=2 || !arg(q,0,AnimationRenderKind::Matrix,2) || !arg(q,1,AnimationRenderKind::Matrix,2) || !local.matrices[q.arguments[0].value])return false;
   AnimationShapeMath math;math.function=q.function;const auto& input=*local.matrices[q.arguments[0].value];for(unsigned row=0;row<3;++row)for(unsigned col=0;col<3;++col)math.input[row*4+col]=input[row*4+col];
   if(!animationShapeNativeMath(math))return false;
   if(math.status)local.matrices[q.arguments[1].value]=math.output;
   result=math.status;return true;}
  case animation_sdk::MultiplyPoint:return point(q,local);
+ // Only exact camera/Concat/InvXpose/MultVec ABIs are owned. Material/GX/
+ // texture/other calls still need the explicit backend; absence stays pending.
  default:return backend_.call && backend_.call(backend_.user,q,local,result);
  }
 }
 AnimationSourceRenderChildren AnimationRenderSdkBinding::services(){AnimationSourceRenderChildren s;s.user=this;
  s.call=[](void* u,const AnimationRenderCall& q,AnimationRenderLocals& local,uint32_t& result){return static_cast<AnimationRenderSdkBinding*>(u)->call(q,local,result);};
+ // Held point/Concat effects exclude unrelated FIFO publication. Likewise
+ // call() rejects replacing a held child or switching its local owner.
  s.fifo=[](void* u,uint32_t a,uint16_t v){auto& b=*static_cast<AnimationRenderSdkBinding*>(u);return b.available() && !b.pointActive_ && !b.matrices_.pending() && b.backend_.fifo && b.backend_.fifo(b.backend_.user,a,v);};return s;
 }
 }

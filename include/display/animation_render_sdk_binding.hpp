@@ -11,6 +11,8 @@ class AnimationRenderSdkBinding {
 public:
  AnimationRenderSdkBinding(const AnimationRenderSdkBinding&)=delete;
  AnimationRenderSdkBinding& operator=(const AnimationRenderSdkBinding&)=delete;
+ // Native token reservation,not an allocated original camera array. Source
+ // slot stride 280hex and view11c preserve getter/pair address relationships.
  static constexpr uint32_t CameraBase=0x81910000,CameraStride=0x280,CameraCount=13,CameraSize=CameraCount*CameraStride;
  static constexpr uint32_t CameraViewOffset=0x11c,CurrentCameraGetter=0x8000f2e4,CameraByIndexGetter=0x8000f2fc;
  AnimationRenderSdkBinding(EventAddressSpace&,std::shared_ptr<const CameraManager>,
@@ -26,6 +28,7 @@ private:
  AnimationSourceRenderChildren backend_;std::function<bool()> current_;
  AnimationSdkMatrixBinding matrices_;
  bool pointActive_=false;AnimationRenderCall pointRequest_;AnimationRenderLocals* pointLocals_=nullptr;
+ // Stages name actual capture/publication frontiers; X precedes row2 reads.
  enum PointStage {CaptureVectorXY,CaptureRow0XY,CaptureVectorZ,CaptureRow0ZT,CaptureRow1XY,CaptureRow1ZT,StoreX,ComputeY,CaptureRow2XY,CaptureRow2ZT,StoreY,StoreZ};
  PointStage pointStage_=CaptureVectorXY;ActorVector vector_{};BattleActMatrix matrix_{};float y_=0;
 };

@@ -243,3 +243,7 @@ raw-copy admission.
 [Animation facing and nodes](animation-facing-nodes.md) explains camera samples,
 paper angle updates, sparse node fields, asymmetric scale gates and retained
 SDK scratch/dispatch ownership.
+
+[SDK matrices and draw ownership](animation-sdk-draw-ownership.md) explains
+paired capture/store order, lazy camera views, normal/point updates and retained
+wrapper/native Main frontiers.

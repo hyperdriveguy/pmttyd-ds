@@ -7,6 +7,8 @@ namespace ttyd {
 namespace animation_sdk {
 constexpr uint32_t Identity=0x8029dd04,Concat=0x8029dd64,InverseTranspose=0x8029df28;
 constexpr uint32_t RotateRadians=0x8029dff0,Translate=0x8029e230,Scale=0x8029e2b0,MultiplyPoint=0x8029e6a4;
+// SDK constants have actual mutable VM backing. Matrices contain 12 binary32
+// lanes (3x4); pair width8 and last start40 are byte extents,not element counts.
 constexpr uint32_t ConcatTail=0x8041e458,Zero=0x8042935c,One=0x80429358;
 constexpr unsigned PairBytes=2*sizeof(uint32_t),MatrixBytes=12*sizeof(float),LastPairOffset=MatrixBytes-PairBytes;
 }
@@ -23,6 +25,8 @@ struct AnimationSdkGuestPairs {
  bool (*owns)(void*,uint32_t address)=nullptr;
  bool (*pair)(void*,uint32_t address,std::array<uint32_t,2>&)=nullptr;
 };
+// Retains request/local adapter descriptors,borrows VM and external storage.
+// Keep the stable binding,local owners and producer pass alive through pending.
 class AnimationSdkMatrixBinding {
 public:
  AnimationSdkMatrixBinding(const AnimationSdkMatrixBinding&)=delete;
