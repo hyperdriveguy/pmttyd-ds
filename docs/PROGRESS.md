@@ -20503,3 +20503,32 @@ source-based packed export; next retain the actual battle-entry canonical pouch
 and commit only a validated completed receipt once, then compose genuine field
 ticket/teardown/return owners. See artifacts/harbor-pouch-hp/next-export-audit.txt
 and the updated shared-pouch/Crump integration contracts. Full-game goal active.
+
+
+### Crump canonical HP combined validation complete (2026-11-08)
+
+The pending validation above is complete for immutable implementation commit
+a0d46b50d8cd248e5d7507adbafe6d4c133ac386 (parent770d7f4c, including committed
+map34206dcb). Full make test exits0:658/658 C++ in270.44s and278/278 Python in
+37.765s. This includes canonical beforebattle HP/tutorial import, actual shared
+pouch/UI Game retention, native encounter/reward regressions and original map
+construction; the map fixture itself passes in177.18s. Native make all exits0
+with original GameCube soundtrack (-j3,-o assets-ready, unchanged previously
+accepted2261-file ISO-backed RomFS). No asset import/edit or story text change.
+
+Exact source archive/file hashes cover all5169 committed files and match the
+frozen candidate. ELF/3DSX, all2261 RomFS files, verification/build/test logs and
+independent original-wrapper/merged-path review are pinned by
+artifacts/harbor-pouch-hp/accepted/validation-manifest.json. The source archive
+SHA256 is d56d1397686795c9e8096236dbde6d7ebd13a3416a49b6f87bf36b8da2861f73.
+Unrelated working-tree changes were excluded and preserved; this receipt makes
+no validation claim for later source commits. Existing compiler/Pillow warnings
+remain. No new emulator capture, Dolphin observation or target-hardware timing
+was produced by this resource-only change; user emulator profiles/saves untouched.
+
+Remaining scope and next tasks are unchanged: capture the exact canonical pouch
+at actual Harbor battle entry, apply only a completed matching source export
+receipt into that same object once, and compose real sequence/field ticket,
+teardown/return and original afterbattle owners. The original opening into/out
+of battle, rendering parity, cold-load performance and full-game goal remain
+unfinished; the HP bridge alone does not satisfy those requirements.
