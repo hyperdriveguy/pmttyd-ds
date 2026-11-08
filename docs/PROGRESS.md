@@ -20717,3 +20717,40 @@ material/geometry consumers and load-latency profiling before enabling room Load
 original runtime captures, hardware performance and full prologue acceptance remain
 open. Remaining portable fixture gaps include selector mutation between the two
 nearest-light getters and equal-key sorting; no runtime equivalence is inferred.
+
+
+### Canonical Harbor pouch return final validation (2026-11-08)
+
+Final implementation92d0df805f8057a1e278a241e1c98ea01c03798a (including497f4596
+and9d29efcb) passes full make test:658/658 C++ in167.24s,278/278 Python in
+49.637s, exit0. Final focused beforebattle/completion-facade tests pass2/2 in
+10.59s. Native make all exits0 with original GameCube soundtrack, -j4 and
+-o assets-ready over the unchanged previously accepted2261-file ISO-backed pack.
+Source/proof checks and independent final review confirm exact field/battle/
+caller/receipt ownership, quiescent same-allocation copy and no repeat export.
+Existing compiler/Pillow warnings remain. No original asset or story-text edit.
+
+All5169 committed files match the fixed build candidate; no extra implementation
+inputs are admitted. Archived ELF/3DSX, complete RomFS/source hashes and immutable
+proof logs/reviews/next-ending audit are pinned in
+artifacts/harbor-pouch-return/accepted/validation-manifest.json. Source archive
+SHA256: 10b30e190fd06b15070d5d7983b042a6d85a35a9a9d805be6bc70dd606b95e93.
+Earlier497f4596/9d29efcb receipts remain separately preserved. Unrelated working
+changes/staging were excluded and preserved. This receipt covers the immutable
+implementation above, not later commits or the complete live worktree. No new
+emulator capture, Dolphin observation or target-hardware measurement was made;
+user emulator profiles/saves untouched.
+
+Canonical resource ownership/export is now available to the actual ending
+coordinator. Its missing production orchestration still cannot publish a field
+result/sequence or release the original wait. Next concrete step from the inbox/
+source audit: add actual runtime/incarnation-owned victory music admission and
+retirement (main currently reopens battle track12, while victory track2 exists
+and the old retirement stops12 only), retain the one-mint reward counter
+immediately, and drive NativeHarborRewardFlow through ReadyForFinishing. Then
+bind genuine original19..1f voice/pose/type42/audience/field-NPC/fade/BGMOff and
+actual synchronized completion, call the guarded canonical commit, and only then
+compose real field presentation/ticket return and original wait/tail/afterbattle.
+See artifacts/harbor-pouch-return/accepted/proofs/next-ending-audit.txt.
+Fresh/resumed full Crump acceptance, original crowd/effect/audio rendering,
+cold-load optimization, New2DS performance and the full-game goal remain open.
