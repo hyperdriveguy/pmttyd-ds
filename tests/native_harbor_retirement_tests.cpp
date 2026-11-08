@@ -29,6 +29,12 @@ int main(){
  assert(renderer.nativeHarborPresentationRetired(tutorial,runtime));
  assert(!renderer.nativeHarborPresentationRetired(copied,runtime));
  assert(!renderer.nativeHarborPresentationRetired(tutorial,forged));
+ // A second genuinely admitted facade cannot replace a still-current hold.
+ Game other(false);assert(other.harborTutorial.beginFromPouch(0,pouch,4));
+ const auto syncs=retirementGpu.sync;
+ assert(!renderer.retireNativeHarborPresentation(other.harborTutorial,other.harborTutorial.nativeGameplayLifetime().lock()));
+ assert(retirementGpu.sync==syncs&&renderer.nativeHarborPresentationRetired(tutorial,runtime));
+
  // This is render routing only: source scene/result/story/trigger never change.
  const auto scene=game.scene;const auto story=game.progress.originalStory;
  const auto retirements=renderer.retirements;

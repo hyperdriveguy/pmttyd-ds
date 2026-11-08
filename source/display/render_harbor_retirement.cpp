@@ -8,6 +8,12 @@ bool Renderer::retireNativeHarborPresentation(HarborTutorial& tutorial,
  const auto proof=tutorial.nativeGameplayFacadeProof();if(!proof.current())return false;
  const auto actual=tutorial.nativeGameplayLifetime().lock();
  if(!runtime||!actual||actual!=runtime||actual.owner_before(runtime)||runtime.owner_before(actual))return false;
+ if(harborRetirement_.proof.current()){
+  const auto retained=harborRetirement_.runtime.lock();
+  if(retained&&(harborRetirement_.facade!=&tutorial||retained!=runtime||
+     retained.owner_before(runtime)||runtime.owner_before(retained)))return false;
+ }
+
  auto same=[&](HarborTutorial* owner){
   if(!owner)return true;
   const auto token=owner->nativeGameplayLifetime().lock();
