@@ -2,6 +2,13 @@
   "schema": 1,
   "assets": [
     {
+      "id": "original/effects/fukidashi-event",
+      "kind": "event",
+      "source": "assets/original/effects/fukidashi/event/event.json",
+      "output": "fukidashi-event.pmevt",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
       "id": "original/harbor-tutorial-stg_00_0.mapobj",
       "kind": "stage-hierarchy",
       "source": "assets/original/tutorial-stage/stg_00_0-hierarchy.json",

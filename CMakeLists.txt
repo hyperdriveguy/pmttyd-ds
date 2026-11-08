@@ -3100,3 +3100,8 @@ target_sources(ttyd_core PRIVATE source/battle/battle_break_slot_init_continuati
 add_executable(battle_break_slot_init_continuation_tests tests/battle_break_slot_init_continuation_tests.cpp)
 target_link_libraries(battle_break_slot_init_continuation_tests PRIVATE ttyd_core)
 add_test(NAME battle_break_slot_init_continuation COMMAND battle_break_slot_init_continuation_tests)
+target_sources(ttyd_core PRIVATE source/effect/fukidashi_event.cpp)
+add_executable(fukidashi_event_tests tests/fukidashi_event_tests.cpp)
+target_link_libraries(fukidashi_event_tests PRIVATE ttyd_core)
+add_test(NAME fukidashi_event COMMAND fukidashi_event_tests)
+set_tests_properties(fukidashi_event PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

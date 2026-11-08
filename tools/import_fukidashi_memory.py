@@ -49,8 +49,17 @@ POSITION_SPANS = (
     (0x80422954, 4, '0c4c4bc393e01c30fa2e061446100aa919205c98ae5c5de3b770b810ad7af223'),
 )
 
+EVENT_SPANS = (
+    (0x80420328, 4, 'c31425b44a7ed682a3356bf6820141e1584a15c43b6d6793f552e5d4621586f7'),
+    (0x8042032c, 4, '638354a0b185ec05318029e52610c8de48d33523e2b4854e71154187583d1037'),
+    (0x80420330, 4, 'df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119'),
+    (0x80420334, 4, '4bdb347a5703ee47ed0bab05bf452f4b3c693bcae8ecc0ebdf7751db42d6503c'),
+    (0x80420338, 4, '964bc35d520d851571318cf74d05c759824d6ff4c949dc8cf9160a989b72da35'),
+    (0x8042033c, 4, 'df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119'),
+)
+
 def build(iso, destination, component="main"):
-    spans = {"main": SPANS, "entry": ENTRY_SPANS, "position": POSITION_SPANS}[component]
+    spans = {"main": SPANS, "entry": ENTRY_SPANS, "position": POSITION_SPANS, "event": EVENT_SPANS}[component]
     destination = Path(destination)
     if destination.exists() and (not destination.is_dir() or any(destination.iterdir())):
         raise ValueError('Import destination must be empty')
@@ -84,5 +93,5 @@ def build(iso, destination, component="main"):
 if __name__ == '__main__':
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--iso',default=DEFAULT_ISO);p.add_argument('--destination',required=True)
-    p.add_argument('--component',choices=('main','entry','position'),default='main')
+    p.add_argument('--component',choices=('main','entry','position','event'),default='main')
     a=p.parse_args();build(a.iso,a.destination,a.component)
