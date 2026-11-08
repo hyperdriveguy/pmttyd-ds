@@ -109,3 +109,17 @@ US sound-key/group/macro/sample identities, positional startup/update/overlap
 and original scheduling observations; generic reused samples do not satisfy
 these requests. The source key/branch recovery is delivered; actual native
 admission/playback remains open.
+
+
+### 2026-11-07: retained constructor cue admission available
+
+`resumeFukidashiEntry` now calls an explicit retained `psndSFXOn3D` provider
+with original numeric93/94 or string-key addresses and a captured world XYZ.
+The constructor's separate position lookup runs after calc_pos and before
+cue dispatch; routing still uses original kind/attachment. Missing party
+pointers can therefore leave original XYZ for numeric cues. When input XYZ contributes,
+its original Y is used; the live NPC branch instead replaces all XYZ. Neither
+stored Y+3 nor computed mark position supplies the constructor sound anchor. Tests
+prove request/hold behavior with fixture audio, not native admission/playback.
+Original strings are now available in `fukidashi-entry.pmevt`; the actual
+source bank/group/macro/sample, scheduling and native cue owner remain open.

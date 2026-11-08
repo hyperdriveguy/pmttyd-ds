@@ -112,7 +112,7 @@ Payload offsets are hexadecimal:
 | --- | --- |
 | 00 | Effect kind |
 | 04/08/0c | Computed world XYZ |
-| 10/14/18 | Stored input X, input Y+0.25, input Z |
+| 10/14/18 | Stored input X, input Y+3, input Z |
 | 1c/20 | Input angle and radius |
 | 24 | Y spin, initially0 |
 | 28 | Derived Z rotation |
@@ -125,10 +125,11 @@ Payload offsets are hexadecimal:
 | 48/4c | Alpha255, camera ID4 |
 | 54 | Spin phase0 |
 
-Payload+50 is not explicitly initialized. Do not zero the whole payload as an
-original behavior claim. A negative duration becomes10000 before writing30/40.
-The constructor calls `calc_pos(payload,1)` after storing its inputs. Kind6 has
-additional initialization outside this scene's domain.
+Payload+38 and+50 are not explicitly initialized. Main writes the first
+selected frame at38. Do not zero the whole payload as an original behavior
+claim. A negative duration becomes10000 before writing30/40. The constructor
+calls `calc_pos(payload,1)` after storing its inputs. Kind6 then writes Y spin24
+to the original -450 constant; it is outside this scene's domain.
 
 Construction also has sound effects. Actual NPC attachments with kind0 call
 `psndSFXOn3D` using `SFX_EVT_NPC_BIKKURI_MARK1`; kind1 uses
@@ -146,7 +147,7 @@ Original macro/sample/group admission remains with [AUDIO-01](../../requests/AUD
 `(sin(k*yaw), 0, -cos(k*yaw))`, with k equal to original binary32
 `0x3c8efa35`. The camera yaw at+114 is read independently across the sin and cos
 calls. Each result narrows to float. It calls `PSMTXRotAxisRad` with this axis
-and angle `k * -((inputAngle-25)+20*secondArgument)`, preserving each original
+and angle `k * -((inputAngle-20)+20*secondArgument)`, preserving each original
 rounded operation. The scene uses secondArgument1.
 
 For each component, the resulting point is the stored input coordinate plus
@@ -156,8 +157,8 @@ uses58/5c/60; a real NPC uses8c/90/94. Preserve the FMA grouping and per-field
 live reads. A missing party retains prior computed XYZ; there is no analogous
 null-NPC fallback. Fixed attachment0 omits the actor contribution.
 
-The helper also writes rotation28 as `(inputAngle-25)+20*secondArgument` and
-auxiliary2c as `FMA(13,radius/12,13)`. The auxiliary value is not a draw-scale
+The helper also writes rotation28 as `(inputAngle-20)+20*secondArgument` and
+auxiliary2c as `FMA(0.5,radius/12,0.5)`. The auxiliary value is not a draw-scale
 request in this body. Do not multiply geometry by it merely because the value
 resembles a size formula.
 
@@ -259,8 +260,9 @@ For each pass, original matrix calls first build:
                   * S(1,.8,1) * Rz(rotation28))`.
 
 This notation describes the ordered products, not permission to regroup their
-paired arithmetic or collapse captures. CameraView was captured from the
-initial camera query; yaw is reacquired inside the pass. The original SDK
+paired arithmetic or collapse captures. The initial query captures the camera
+pointer. Its live view matrix at+11c is consumed by concat after the pass
+matrix children; yaw is reacquired inside each pass. The original SDK
 [affine/alias contract](../display/ANIMATION_MATRIX_STACK_AND_AFFINE_NUMERICS.md)
 and [axis rotation contract](../display/ANIMATION_SDK_AXIS_ROTATION.md) apply.
 The local body later appends fixed `S(1.3,1.3,1.3)` for the symbol only.
@@ -402,3 +404,48 @@ arguments. These are host invocations of the recovered source contract. They
 do not establish original execution timing, native rendering or a running
 Crump scene. Entry/EVT decoding, attachment calculation, draw/material/sound,
 effect-pool production routing and retirement remain open as listed above.
+
+
+## Portable constructor and corrected scalar evidence (2026-11-07)
+
+`resumeFukidashiEntry` now implements the complete constructor using actual
+`effectPoolEntry`, heap3 allocation and held position/actor/audio providers.
+Its inline cursor copies input float bits before any child call and retains
+the real admitted record/payload without replaying allocation or cue selection.
+Flags and the Main callback become visible before the position child finishes.
+Native suspension must not invent an extra source driver visit to a partial
+record; the composing owner preserves actual source ordering and storage
+lifetime. Reset drops the continuation without deleting the admitted effect.
+The shared initialized-data importer adds an `entry` component and normal
+`fukidashi-entry.pmevt` overlay: four sound vectors, class/key strings, zero,
+input-Y adjustment and kind6 initial spin, all pinned to read-only ISO bytes.
+Existing Main imports retain their default behavior and exact output.
+
+After position completes, fresh payload44 selects coordinate resolution.
+Mario/party add their coordinates to original input XYZ; an NPC replaces XYZ
+with its live world position. Party ID is retained across the pointer child.
+A genuine null party pointer preserves original XYZ. Sound selection then uses
+ORIGINAL kind/attachment arguments, not payload44: numeric93/94 for ordinary/
+extra party, original string keys for NPC, none for fixed/Mario or other kinds.
+Thus even a now-missing party can reach its original constructor cue. Any input-coordinate contribution uses original input Y. The NPC coordinate
+branch instead replaces XYZ with live actor coordinates; neither stored Y+3
+nor the computed effect point supplies the constructor sound anchor.
+
+The source re-audit corrects prior prose rather than changing original data:
+with r2=80427440, Entry3321c's b4f0 resolves80422930=3, not0.25;
+calc_pos3351c/337b4's b510 resolves80422950=20, not25; and337cc's b4dc
+resolves8042291c=0.5, not13. Kind6 uses8042294c=-450 after position.
+These effective-address calculations and scalar bytes were independently
+verified directly in the ISO. Constructor also leaves both frame38 and50
+uninitialized. The display constants were rechecked; its initial camera
+query retains a pointer, with live matrix values consumed later. Private
+`artifacts/fukidashi-entry/source-order.txt` and
+`display-constant-addresses.txt` retain full read/store order and source review.
+
+Host tests exercise real Entry/Main/pool/deletion together with explicit
+fixture position/audio children, plus allocation/position/actor/party/audio
+holds, missing-party source results, original-versus-live attachment routing,
+input-bit/provider identity and recursive-entry/reset rejection. Fixture
+children do not prove original calc_pos or sound playback. Actual EVT
+decoding/name admission, original attachment math, native material/audio
+owners, GPU queue retirement and normal scene composition remain required.

@@ -192,3 +192,15 @@ This supplies one reusable dependency for CO-03/CO-09. Actual event construction
 actor attachment, GPU draw, constructor sound and pool/display retirement are
 still required. No change to the uncompleted CO-04..CO-10 production chain is
 claimed by this adapter.
+
+
+### Effect construction available; scalar requirements corrected
+
+The original constructor now admits a real pool record and heap3 payload,
+retains position/actor/audio children and source constructor cues. The
+[effect contract](../effect/CRUMP_FUKIDASHI_EFFECTS.md#portable-constructor-and-corrected-scalar-evidence-2026-11-07)
+corrects prior scalar-address errors: stored Y+3; position angle subtract20;
+auxiliary FMA(0.5,radius/12,0.5); kind6 spin begins-450. This supplies another
+CO-03/CO-09 dependency. Actual EVT routing, attachment math, native drawing,
+sound and resource retirement still need production composition. These
+changes do not close the battle/result/field-return chain or afterbattle.

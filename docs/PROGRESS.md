@@ -18787,3 +18787,61 @@ artifacts/ui-archive-address-validation-manifest.json.
 Next: native original hit/triangle construction and distance math, source light/
 camera/material/mapDraw/GX capture and actual Game/EVT load/unload epochs. Full
 prologue, original traces and hardware checks remain open; goal stays active.
+
+
+## 2026-11-07 — original fukidashi constructor and corrected source scalars
+
+Commit `3fd56bc4` adds complete Entry80133164 using the real source effect
+pool, heap3 payload and retained position/actor/party/audio children. Original
+request float bits are copied before callbacks; actual pool admission, payload
+stores and cue selection are not replayed across held children. Fresh payload
+attachment determines the separate coordinate lookup; original kind/attachment
+still determine cue routing. A null party pointer is a genuine source result,
+not an unavailable child. Partial published records remain parent-owned.
+
+The normal `fukidashi-entry.pmevt` overlay contains ten original initialized
+DOL spans (sound vectors, class/key strings, zero, Y adjustment and spin).
+`import_fukidashi_memory.py --component entry` requires an empty destination;
+its existing default Main output is unchanged. Both modes were freshly read
+from the read-only ISO, matched tracked JSON/provenance exactly and refused
+occupied destinations. The normal asset pipeline compiled the Entry pack.
+No ISO writes or compiled-product commits occurred.
+
+Independent source review corrected three prior contract errors by resolving
+actual signed r2-relative loads: input Y+3, angle subtract20 and auxiliary
+FMA(0.5,radius/12,0.5). Kind6 initializes spin-450 after position. Frame38
+and50 remain uninitialized by Entry. Display constants were rechecked and
+its initial camera query clarified as pointer capture; live view values are
+consumed later. Contracts, source asset notes and EVT-01/AUDIO-01 now retain
+these corrections and actual child/composition boundaries.
+
+Validation used isolated `artifacts/source-checks/npc-wander`, continuing the
+previous accepted Crump/Main baseline with only owned Entry overlays and the
+newly committed `a1632768` archive-address fix, its tests/Makefile and exact
+known generated Window-cache migration. Unrelated uncommitted work excluded.
+
+- `CMAKE_BUILD_PARALLEL_LEVEL=4 CTEST_PARALLEL_LEVEL=4 TRIO_ENEMY_POSE_PACK=romfs make --jobserver-style=pipe test`: exit0; 558/558 C++ tests in 61.68s; 254/254 Python tests in 40.400s, zero skips.
+- `make --jobserver-style=pipe all -j4 -o assets-ready SOUNDTRACK=gamecube`: exit0. Reused accepted ISO-backed products; compiled the new Entry overlay separately through the production pipeline, and migrated only the pinned generated Window cache using its committed importer.
+- Constructor tests prove partial initialization, omitted 38/50 stores, held heap/position/actor/party/sound captures, original/live routing, request/provider identity, input mutation and recursive entry/reset rejection. Actual Entry→pool Main→deletion code runs together, with explicit fixture position/audio/display children.
+
+Exact source overlay, library, pack/cache products and native executable are
+archived in `artifacts/fukidashi-entry/accepted/`; all hashes, source parents,
+commands, logs and independent source/test review are recorded by
+`artifacts/fukidashi-entry/validation-manifest.json`. Native SHA256:
+`32100f0abd707482bf594b3571c85d661f6424ba01cad936a40c719d2085d392`.
+Existing compiler/Pillow warnings remain; the new misleading-indentation
+warning found during targeted compilation was fixed before full validation.
+
+No actual native effect playback, new Azahar/Dolphin scene capture, original
+render comparison or physical New2DS XL performance evidence is claimed.
+Original calc_pos/EVT/name routing, native audio/material/queue retirement and
+normal shared-pool source scheduling remain uncomposed. Full Crump battle
+startup/control/result/teardown/field return, unchanged beforebattle tail,
+afterbattle crowd/party/effects and story6 plaza exit still remain unfinished.
+
+Next: implement original calc_pos from the corrected full source-order audit,
+then bind actual EVT/name/constructor/update/display/audio owners. Preserve
+partial-record ordering across holds and original driver simulation polls.
+Compose the real same-VM Crump setup2 battle/result/return chain and unchanged
+afterbattle, obtain matched original/native scene evidence and measure actual
+New2DS XL CPU/GPU/memory behavior. The wider goal remains active.

@@ -4266,3 +4266,18 @@ pack+metadata via an empty temporary output; edited/unknown caches remain
 untouched and fail. Direct imports still require empty or exact existing output.
 Original Nintendo/Intelligent Systems rights are retained; no source asset edits,
 new licensing grant, ISO writes or compiled pack commits.
+
+
+## Original fukidashi constructor memory
+
+`assets/original/effects/fukidashi/entry/` adds ten pinned initialized DOL
+spans: four original sound-position templates, class/name-key strings and
+three scalar constants. The normal manifest compiles `event.json` into
+`fukidashi-entry.pmevt`; matching zero bytes may merge with the Main pack.
+`tools/import_fukidashi_memory.py --component entry` requires an empty
+destination. Its default remains the unchanged Main import. Per-span
+provenance retains original and aligned lengths/hashes/ISO offsets, including
+actual adjacent source bytes for alignment. Constants are original Y+3,
+zero and kind6 spin-450. Nintendo/Intelligent Systems retain all rights;
+tracking/import grants no redistribution license. Neither raw ISO nor
+compiled products are committed.

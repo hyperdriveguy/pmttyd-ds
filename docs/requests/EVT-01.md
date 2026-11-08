@@ -5737,3 +5737,16 @@ an address error, not full ARC/DVD/source scheduler or prologue composition.
   never overwrite live flags or install a compatibility shadow.
 - [ ] Continue actual hit/triangle, light/camera/GX and Game/event epoch binding,
   plus original runtime and physical New2DS XL verification.
+
+
+### 2026-11-07: original fukidashi constructor and scalar corrections
+
+The [effect contract](../behavior/effect/CRUMP_FUKIDASHI_EFFECTS.md) now
+includes complete retained Entry80133164 with actual pool admission and heap3
+allocation, held position/actor/sound children and original cue routing.
+Independent direct ISO audit corrected earlier scalar prose: stored Y+3,
+position angle subtract20, auxiliary FMA(0.5,radius/12,0.5), kind6 initial-450;
+frame38 and50 are uninitialized by Entry. Display constants are confirmed;
+initial camera query captures its pointer, not an early matrix snapshot.
+EVT operand/name routing, actual calc_pos/native display/audio owners and
+Crump same-VM battle/return/afterbattle production composition remain open.
