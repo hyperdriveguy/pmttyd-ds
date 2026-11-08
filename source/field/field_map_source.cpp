@@ -18,6 +18,22 @@ bool compatible(const FieldMapSourceServices& a,const FieldMapSourceServices& b)
 #undef PIN
 }
 bool root(uint32_t f){switch(f){
+ case 0x8005b5c8: // marioInit
+ case 0x80095a4c: // marioGetRubInit
+ case 0x8012f550: // marioBaloonInit
+ case 0x8009696c: // marioResetGravity
+ case 0x8009455c: // marioChgMot
+ case 0x800a6b10: // mot_stay_post
+ case 0x801a9488: // marioResetCamFollowRate
+ case 0x801a9514: // marioInitCamId
+ case 0x801a9544: // marioResetCamShiftRate
+ case 0x801a95a8: // marioResetCamShift
+ case 0x8005e0c0: // marioGetPtr
+ case 0x800d59c8: // pouchInit
+ case 0x800d4ed4: // pouchCheckItem
+ case 0x800d50cc: // pouchGetItem
+ case 0x800bd6ac: // partyInit
+
  case 0x8002fbe0: // smartInit
  case 0x8002f540: // smartAlloc
  case 0x8002f9cc: // smartAutoFree
@@ -92,6 +108,7 @@ std::optional<uint32_t> resumeFieldMapSource(uint32_t function,const std::array<
   if(!c.pc){const auto result=r[3];c={};return result;}
   switch(c.pc){
 #include "field_map_source_program.inc"
+#include "source_mario_constructor_program.inc"
   default:return {};
   }
  }

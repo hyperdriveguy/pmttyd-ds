@@ -1591,3 +1591,5 @@ retain explicit provider and process-ownership frontiers.
 - [Retained original unit coin event](battle/RETAINED_UNIT_COIN_EVENT.md): whole original GetCoin/unit getter, fresh trial/probability loads and actual retained RNG without speculative victory or pouch awards.
 
 - [Retained original unit EXP events](battle/RETAINED_UNIT_EXP_EVENT.md): complete original GetExp/StoreExp, source signed/type branches and retained platform math without speculative victory or pouch awards.
+
+- [Whole Mario constructor and native owner](field/MARIO_CONSTRUCTOR_NATIVE_OWNER.md): complete15body fixed graph, real shared SDK Mario/pouch allocations, original US constructor name and explicit cold/snapshot boundaries.

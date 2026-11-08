@@ -20108,3 +20108,39 @@ bind the real field-start/wait/sequence and Mario preparation/post owners; then
 verify full fresh/resumed Crump victory, unchanged US dialogue and field return.
 Target hardware performance/audio and the full tutorial deliverable remain
 unverified. The full-game goal stays active.
+
+
+### Whole original Mario/pouch constructor — 2026-11-07
+
+Added the complete15body/1247instruction fixed native constructor graph,
+verified against the read-only US ISO. NativeMarioConstructor runs actual
+SDK heap0 allocation/clear and original Mario/pouch/party/gravity/motion/camera/
+blur initialization in the existing UI/animation VM and same file cache.
+It isolates allocated payload backing at unchanged guest addresses before
+publication, rejects existing cold BSS, retains instruction holds, and exposes
+explicit packed-pouch checkpoint copy without restarting Init. Original
+name_party3 uses the real US-language1 resource. Whole msgSearch/catalog and
+optimized string word-overread are not claimed by the finite native adapters.
+
+A fresh independent address audit corrected the camera templates: signed
+lis/addi selects802fa748/18, two zero vectors, not unrelated8030a748. Updated
+source data, camera contract and evidence pins. No original checked-in asset
+edits were overwritten; the new importer requires an empty destination.
+See [constructor ownership](behavior/field/MARIO_CONSTRUCTOR_NATIVE_OWNER.md).
+
+Exact isolated constructor graph based on17bc1e15: make test passed625 C++
+tests in74.17s and271 Python tests in39.919s; make all passed with the original
+GameCube soundtrack and explicitly compiled new memory recipe. Focused native/
+source constructor tests passed2/2 in1.50s. Source compiler check verified
+all1247 original instructions; empty-destination import reproduced both files
+and rejected reimport. Corrected camera whole bodies/data/anchors verified
+against the ISO. Logs/pins/review are in artifacts/mario-constructor/. These
+receipts exclude later independent camera/menu commits; the upcoming startup
+integration must validate the combined graph and run isolated Azahar.
+
+Next: connect normal Game startup to this actual raw Mario owner and raw
+marioPoseInit; adopt existing handles rather than issuing duplicate Entries.
+Retain owner through native room/checkpoint handoff. Whole source Logo platform,
+Mario Main, shared typed/raw pouch lifecycle, field-to-battle preparation/post,
+actual battle return and target hardware performance remain open. Constructor
+readiness alone does not prove a full Crump opening/battle/return. Goal active.

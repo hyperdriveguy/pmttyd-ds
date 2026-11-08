@@ -48,21 +48,21 @@ exact order, with original load/copy sites pinned:
 | 3 | 158 | Same retained float as154 |
 | 4 | 64 | 00000000,80424aa4 |
 | 5 | 68 | 40000000 (2.0),80424ae8 |
-| 6 | 6c | ffffffff, raw word8030a754 |
-| 7 | 70 | 00000000, raw word8030a758 |
-| 8 | 74 | 00000000, raw word8030a75c |
+| 6 | 6c | 00000000, raw word802fa754 |
+| 7 | 70 | 00000000, raw word802fa758 |
+| 8 | 74 | 00000000, raw word802fa75c |
 
 This body does NOT write target138/140/148 or current13c/144/14c. Values6c/70
 are loaded together before their stores;74 is loaded later. Preserve the raw
-word copy, including ffffffff; interpreting the template as three ordinary
-float zeros changes the source. Semantic meaning/other consumers of64..74
+word copy, including its zero words. The signed low half of the original
+`lis/addi` pair resolves to802fa754, not8030a754. Semantic meaning/other consumers of64..74
 remain separate. No memset of a larger range or whole camera structure.
 
 ## Shift target reset does not snap current channels
 
 marioResetCamShift801a95a8:5c requests owner at801a95b4. Ordered writes:
-138=0,140=0,148=0,64=0,68=2.0; then copy raw template8030a748/4c/50 to6c/70/74,
-respectively, all three ffffffff. Same word-before-store order as rate reset.
+138=0,140=0,148=0,64=0,68=2.0; then copy raw template802fa748/4c/50 to6c/70/74,
+respectively, all three zero words. Same word-before-store order as rate reset.
 The original zero/2.0 float words are shared with that reset above.
 No write to13c/144/14c,150/154/158 or15c. An independently admitted reset does
 not erase retained shifts or copy target into current; later update approaches

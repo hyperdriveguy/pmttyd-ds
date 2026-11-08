@@ -3314,3 +3314,14 @@ add_executable(native_camera_process_tests tests/native_camera_process_tests.cpp
 target_link_libraries(native_camera_process_tests PRIVATE ttyd_core)
 add_test(NAME native_camera_process COMMAND native_camera_process_tests)
 set_tests_properties(native_camera_process PROPERTIES WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+# Full original Mario constructor graph and genuine shared native owner.
+target_sources(ttyd_core PRIVATE source/field/native_mario_constructor.cpp)
+add_executable(native_mario_constructor_tests tests/native_mario_constructor_tests.cpp)
+target_link_libraries(native_mario_constructor_tests PRIVATE ttyd_core)
+add_test(NAME native_mario_constructor COMMAND native_mario_constructor_tests)
+set_tests_properties(native_mario_constructor PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+add_executable(source_mario_constructor_tests tests/source_mario_constructor_tests.cpp)
+target_link_libraries(source_mario_constructor_tests PRIVATE ttyd_core)
+add_test(NAME source_mario_constructor COMMAND source_mario_constructor_tests)
+set_tests_properties(source_mario_constructor PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

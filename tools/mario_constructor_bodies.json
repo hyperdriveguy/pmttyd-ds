@@ -1,0 +1,95 @@
+{
+  "schema": 1,
+  "bodies": [
+    {
+      "name": "marioInit",
+      "address": "0x8005b5c8",
+      "size": 1160,
+      "sha256": "e3976200ee5fc18a245b234f0b88c4095a0de3108c620034b54df1ea545ee6ce"
+    },
+    {
+      "name": "marioGetRubInit",
+      "address": "0x80095a4c",
+      "size": 64,
+      "sha256": "1126f0b69a40a2600118bbb8f65412efad5732656dcbb6177fcd40568de38bfa"
+    },
+    {
+      "name": "marioBaloonInit",
+      "address": "0x8012f550",
+      "size": 48,
+      "sha256": "7d2da3c114b275afc2fa1c7622802ee02a3edf9f545c6892fd7ca9ab3ddc008c"
+    },
+    {
+      "name": "marioResetGravity",
+      "address": "0x8009696c",
+      "size": 56,
+      "sha256": "8b620c3bf865c904e3d25c626609a6766101b83d4bdaccdbccde1e61588b6ebb"
+    },
+    {
+      "name": "marioChgMot",
+      "address": "0x8009455c",
+      "size": 192,
+      "sha256": "cb0d860ff6a94e5e6d0da5dded999fef1e6b881c2169730ce9d09c7f0439da26"
+    },
+    {
+      "name": "mot_stay_post",
+      "address": "0x800a6b10",
+      "size": 172,
+      "sha256": "045f375d0d3f44bb67ed8d1b0e36f43a7e5d4d90a7a3fdc15e1477764c3b4376"
+    },
+    {
+      "name": "marioResetCamFollowRate",
+      "address": "0x801a9488",
+      "size": 56,
+      "sha256": "65f264bf8e3ea2750a60552965dbfe582ac0fcc189552b0d4b357ff6ad8f95fe"
+    },
+    {
+      "name": "marioInitCamId",
+      "address": "0x801a9514",
+      "size": 48,
+      "sha256": "3bb71c8239e37aa8973bef56fa964f5a78ad4354f2b848e5808d35633a385965"
+    },
+    {
+      "name": "marioResetCamShiftRate",
+      "address": "0x801a9544",
+      "size": 100,
+      "sha256": "3d2142763b6d9f0adba6fbbb64ee5e4198b4a78de4037304fd0875c85e0a0ee5"
+    },
+    {
+      "name": "marioResetCamShift",
+      "address": "0x801a95a8",
+      "size": 92,
+      "sha256": "52ac82ec041e67cecd8d7b0c9dc3e9a0ef6c4236c930256d1f2368f5824fa272"
+    },
+    {
+      "name": "marioGetPtr",
+      "address": "0x8005e0c0",
+      "size": 8,
+      "sha256": "3a59459f28ddd5d287c200434ad158a9dfe277f4f6bcaae3eb8698505aa9773d"
+    },
+    {
+      "name": "pouchInit",
+      "address": "0x800d59c8",
+      "size": 1256,
+      "sha256": "c6e29f88e574c1d5caa1aaf5c7a73a53bc2d952cbad00a9e21ab2bfd3113def1"
+    },
+    {
+      "name": "pouchCheckItem",
+      "address": "0x800d4ed4",
+      "size": 504,
+      "sha256": "42deab825c1637d84ab4ad27431a9571fbb92f349716b88a6eba7b736779ba57"
+    },
+    {
+      "name": "pouchGetItem",
+      "address": "0x800d50cc",
+      "size": 1188,
+      "sha256": "7abf7872b6aedf92f82286b20aebcbad5b613f1f83616e7ee8cb661d7e47998c"
+    },
+    {
+      "name": "partyInit",
+      "address": "0x800bd6ac",
+      "size": 44,
+      "sha256": "1de59625edee5097ee19b46d0c8e22fcf80c6e62fe1c9ac3ad0f621092ece667"
+    }
+  ]
+}

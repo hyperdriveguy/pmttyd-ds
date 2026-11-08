@@ -1,0 +1,155 @@
+{
+  "schema": 1,
+  "spans": [
+    {
+      "name": "mario-global",
+      "address": "0x8041e900",
+      "size": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+    },
+    {
+      "name": "blur-index",
+      "address": "0x8041e8f0",
+      "size": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+    },
+    {
+      "name": "blur-positions",
+      "address": "0x803d9848",
+      "size": 96,
+      "sha256": "2ea9ab9198d1638007400cd2c3bef1cc745b864b76011a0e1bc52180ac6452d4"
+    },
+    {
+      "name": "rub-work",
+      "address": "0x803dc228",
+      "size": 104,
+      "sha256": "39f37f8d1931b3bdf767e7510dd69509fbf23af1f7654933d0a4d291cbdd4418"
+    },
+    {
+      "name": "party-pointer-pair",
+      "address": "0x8041ead8",
+      "size": 8,
+      "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+    },
+    {
+      "name": "pouch-global",
+      "address": "0x8041eb00",
+      "size": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+    },
+    {
+      "name": "model-triplets",
+      "address": "0x80415eb0",
+      "size": 48,
+      "sha256": "93f4206ad5303f1097f627986b329d800b96585f2eedba0592987e7744cd16de"
+    },
+    {
+      "name": "model-variant-names",
+      "address": "0x802c18a0",
+      "size": 136,
+      "sha256": "ede31eedeee91fff3fdfe9ccec76d3b253f657d1245f4fd1f3896a646c2db5b2"
+    },
+    {
+      "name": "dot-pose-target-names",
+      "address": "0x8041fe88",
+      "size": 136,
+      "sha256": "77425fa433785831d8659b7365fad15cb1d28d745f0d75e6df8616b16d76b7a2"
+    },
+    {
+      "name": "scale-balloon-vectors",
+      "address": "0x802c1958",
+      "size": 24,
+      "sha256": "e9f533691eb685851bfbe63c411b0fd42dd83198de9818b8e194cbba84c582ab"
+    },
+    {
+      "name": "dot-pose-table",
+      "address": "0x80309748",
+      "size": 96,
+      "sha256": "dc0223caabc4e9aeedab6ff9f6fab1cecab5b1588a421cc8348cc901615d05bf"
+    },
+    {
+      "name": "pose-sda-names",
+      "address": "0x8041ff90",
+      "size": 32,
+      "sha256": "c4e048ea3dc9a9c963c83a21f6db932407303b11073e36a0220c6005f41125ec"
+    },
+    {
+      "name": "jump-B-name",
+      "address": "0x802c1b24",
+      "size": 8,
+      "sha256": "474fced40af0b38023955a6bcf4a33a11cf44c9ed2ccff75695cba65bfaad92a"
+    },
+    {
+      "name": "jump-C-name",
+      "address": "0x802c1b34",
+      "size": 8,
+      "sha256": "95e3a546d1070f04d99bd2e34f8b6e197ce929e6f686265be76eba659e2e0048"
+    },
+    {
+      "name": "speed-two-one",
+      "address": "0x80420004",
+      "size": 8,
+      "sha256": "d28eea941c691fffff58619f9def294d32f3680601f371992bbeba8446e7cf19"
+    },
+    {
+      "name": "twenty",
+      "address": "0x80420088",
+      "size": 4,
+      "sha256": "351a96b7c338b357a0b7c9dfc38cf9cb03edc89aeb18c914de2865dc8526d5a9"
+    },
+    {
+      "name": "speed-2p25",
+      "address": "0x804200b8",
+      "size": 4,
+      "sha256": "7c5f55b36abe3f5f7e484eab91e7fe9d8b7dc26374e9bc66d636fd2f4fff1c4d"
+    },
+    {
+      "name": "height-37",
+      "address": "0x804200c0",
+      "size": 4,
+      "sha256": "bac8970ae4816a31f2fc7b467debdbf536e7c82133e8c2518bf8c69ce227356d"
+    },
+    {
+      "name": "gravity-one",
+      "address": "0x80420a74",
+      "size": 4,
+      "sha256": "de620abd6d3615746360c1d15ce3a56291236d37424124054a49d25e947ffc4d"
+    },
+    {
+      "name": "stay-callback-record",
+      "address": "0x80310030",
+      "size": 12,
+      "sha256": "9be85fbfb123f8a6b751bb076a840f6f400d180e64a83cc184544569f27f8291"
+    },
+    {
+      "name": "camera-shift-templates",
+      "address": "0x802fa748",
+      "size": 24,
+      "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+    },
+    {
+      "name": "camera-zero",
+      "address": "0x80424aa4",
+      "size": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+    },
+    {
+      "name": "camera-rates",
+      "address": "0x80424adc",
+      "size": 16,
+      "sha256": "a287a1dad86a8131c8d85d483fc76a6de985d0d8fb517c605249ddfc4406ce7a"
+    },
+    {
+      "name": "pouch-zero",
+      "address": "0x8042187c",
+      "size": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+    },
+    {
+      "name": "party-name-message-key",
+      "address": "0x802cc728",
+      "size": 12,
+      "sha256": "48eeb920e3cdc047bfdf2d3f2c45bd1db1647e82fcf27930e2545aaa8735a49d"
+    }
+  ]
+}

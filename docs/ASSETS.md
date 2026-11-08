@@ -4537,3 +4537,21 @@ compile edits to `harbor-smoke40.t3x` and `harbor-smoke/memory.pmevt`; no genera
 smoke, raw bank history or import-over-edits. Original rights remain reserved;
 tracking grants no redistribution license. See the [finite native ownership
 contract](behavior/effect/NATIVE_HARBOR_KEMUTEST_SMOKE.md).
+
+
+### Original Mario constructor data
+
+`assets/original/field/mario-constructor/` retains25 original initialized/BSS
+spans for the complete Mario/pouch constructor graph, with whole source-body
+pins and per-span ISO offsets, hashes and retained Nintendo/Intelligent Systems
+rights in `provenance.json`. The memory recipe emits
+`mario-constructor/memory.pmevt`. No texture substitution, scaling or invented
+constructor values. `tools/import_mario_constructor_assets.py` reads the ISO
+only and requires an empty destination; keep edits and never import over them.
+The generated fixed native graph is checked with
+`tools/compile_mario_constructor.py --check`; no ISO or runtime decoder ships.
+The camera template is the signed-address target802fa748/18 (all zero bytes),
+not8030a748. Shared immutable boot prefixes are borrowed; actual source Init
+performs runtime stores. The full native ownership and finite-service limits
+are in [the constructor contract](behavior/field/MARIO_CONSTRUCTOR_NATIVE_OWNER.md).
+Original tracking grants no redistribution license.

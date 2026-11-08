@@ -5983,3 +5983,20 @@ open for remaining source/transitive/native ownership. Fresh exact source
 spans and independent review are under artifacts/mario-logo-startup/.
 
 Normal Game now executes complete source camera CPU bootstrap and binds actual camera4/road ownership in the shared VM. [Contract](../behavior/camera/NATIVE_SOURCE_CAMERA_BOOTSTRAP.md). DEMO selected CPU publication is explicit native adaptation, not complete OS/GX/VI/memInit execution. Existing source contracts answer these bodies; source camMain/outer display, map/GX publication and full field/battle return remain implementation work. No duplicate unknown request.
+
+
+### Whole Mario constructor implementation breadcrumb (2026-11-07)
+
+The complete original marioInit, pouchInit/CheckItem/GetItem, ordinary motion
+post, party and reset leaves now have a pinned fixed native graph. The real
+SDK heap0 Mario2f8/pouch5d4 owners, same-file-cache group requests and US1
+`name_party3` constructor text are bound; source holds preserve completed
+writes. The signed camera template address is802fa748/18, all zero bytes;
+8030a748 was unrelated data. [Contract](../behavior/field/MARIO_CONSTRUCTOR_NATIVE_OWNER.md).
+
+These source bodies are documented and implemented, so no duplicate body
+request is opened. Full native message catalog/fallback, nonordinary motion/audio
+children and whole Mario Main/sequence/field-to-battle ownership remain separate.
+The bounded US-name/string adapter and explicit packed checkpoint copy do not
+close those owners or prove a Crump round trip. Existing open field/sequence
+requests remain active; source-ready group polling is not file-delivery proof.

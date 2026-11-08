@@ -1,0 +1,324 @@
+{
+  "source": "US G8ME01 disc0 revision0",
+  "spans": [
+    {
+      "name": "mario-global",
+      "address": "0x8041e900",
+      "size": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "source": "original DOL BSS zero",
+      "iso_offset": null,
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "name": "blur-index",
+      "address": "0x8041e8f0",
+      "size": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "source": "original DOL BSS zero",
+      "iso_offset": null,
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "name": "blur-positions",
+      "address": "0x803d9848",
+      "size": 96,
+      "sha256": "2ea9ab9198d1638007400cd2c3bef1cc745b864b76011a0e1bc52180ac6452d4",
+      "source": "original DOL BSS zero",
+      "iso_offset": null,
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "name": "rub-work",
+      "address": "0x803dc228",
+      "size": 104,
+      "sha256": "39f37f8d1931b3bdf767e7510dd69509fbf23af1f7654933d0a4d291cbdd4418",
+      "source": "original DOL BSS zero",
+      "iso_offset": null,
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "name": "party-pointer-pair",
+      "address": "0x8041ead8",
+      "size": 8,
+      "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+      "source": "original DOL BSS zero",
+      "iso_offset": null,
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "name": "pouch-global",
+      "address": "0x8041eb00",
+      "size": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "source": "original DOL BSS zero",
+      "iso_offset": null,
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "name": "model-triplets",
+      "address": "0x80415eb0",
+      "size": 48,
+      "sha256": "93f4206ad5303f1097f627986b329d800b96585f2eedba0592987e7744cd16de",
+      "source": "initialized DOL",
+      "iso_offset": 4077040,
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "name": "model-variant-names",
+      "address": "0x802c18a0",
+      "size": 136,
+      "sha256": "ede31eedeee91fff3fdfe9ccec76d3b253f657d1245f4fd1f3896a646c2db5b2",
+      "source": "initialized DOL",
+      "iso_offset": 3009440,
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "name": "dot-pose-target-names",
+      "address": "0x8041fe88",
+      "size": 136,
+      "sha256": "77425fa433785831d8659b7365fad15cb1d28d745f0d75e6df8616b16d76b7a2",
+      "source": "initialized DOL",
+      "iso_offset": 4114184,
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "name": "scale-balloon-vectors",
+      "address": "0x802c1958",
+      "size": 24,
+      "sha256": "e9f533691eb685851bfbe63c411b0fd42dd83198de9818b8e194cbba84c582ab",
+      "source": "initialized DOL",
+      "iso_offset": 3009624,
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "name": "dot-pose-table",
+      "address": "0x80309748",
+      "size": 96,
+      "sha256": "dc0223caabc4e9aeedab6ff9f6fab1cecab5b1588a421cc8348cc901615d05bf",
+      "source": "initialized DOL",
+      "iso_offset": 3304008,
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "name": "pose-sda-names",
+      "address": "0x8041ff90",
+      "size": 32,
+      "sha256": "c4e048ea3dc9a9c963c83a21f6db932407303b11073e36a0220c6005f41125ec",
+      "source": "initialized DOL",
+      "iso_offset": 4114448,
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "name": "jump-B-name",
+      "address": "0x802c1b24",
+      "size": 8,
+      "sha256": "474fced40af0b38023955a6bcf4a33a11cf44c9ed2ccff75695cba65bfaad92a",
+      "source": "initialized DOL",
+      "iso_offset": 3010084,
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "name": "jump-C-name",
+      "address": "0x802c1b34",
+      "size": 8,
+      "sha256": "95e3a546d1070f04d99bd2e34f8b6e197ce929e6f686265be76eba659e2e0048",
+      "source": "initialized DOL",
+      "iso_offset": 3010100,
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "name": "speed-two-one",
+      "address": "0x80420004",
+      "size": 8,
+      "sha256": "d28eea941c691fffff58619f9def294d32f3680601f371992bbeba8446e7cf19",
+      "source": "initialized DOL",
+      "iso_offset": 4114564,
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "name": "twenty",
+      "address": "0x80420088",
+      "size": 4,
+      "sha256": "351a96b7c338b357a0b7c9dfc38cf9cb03edc89aeb18c914de2865dc8526d5a9",
+      "source": "initialized DOL",
+      "iso_offset": 4114696,
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "name": "speed-2p25",
+      "address": "0x804200b8",
+      "size": 4,
+      "sha256": "7c5f55b36abe3f5f7e484eab91e7fe9d8b7dc26374e9bc66d636fd2f4fff1c4d",
+      "source": "initialized DOL",
+      "iso_offset": 4114744,
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "name": "height-37",
+      "address": "0x804200c0",
+      "size": 4,
+      "sha256": "bac8970ae4816a31f2fc7b467debdbf536e7c82133e8c2518bf8c69ce227356d",
+      "source": "initialized DOL",
+      "iso_offset": 4114752,
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "name": "gravity-one",
+      "address": "0x80420a74",
+      "size": 4,
+      "sha256": "de620abd6d3615746360c1d15ce3a56291236d37424124054a49d25e947ffc4d",
+      "source": "initialized DOL",
+      "iso_offset": 4117236,
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "name": "stay-callback-record",
+      "address": "0x80310030",
+      "size": 12,
+      "sha256": "9be85fbfb123f8a6b751bb076a840f6f400d180e64a83cc184544569f27f8291",
+      "source": "initialized DOL",
+      "iso_offset": 3330864,
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "name": "camera-shift-templates",
+      "address": "0x802fa748",
+      "size": 24,
+      "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0",
+      "source": "initialized DOL",
+      "iso_offset": 3242568,
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "name": "camera-zero",
+      "address": "0x80424aa4",
+      "size": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "source": "initialized DOL",
+      "iso_offset": 4133668,
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "name": "camera-rates",
+      "address": "0x80424adc",
+      "size": 16,
+      "sha256": "a287a1dad86a8131c8d85d483fc76a6de985d0d8fb517c605249ddfc4406ce7a",
+      "source": "initialized DOL",
+      "iso_offset": 4133724,
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "name": "pouch-zero",
+      "address": "0x8042187c",
+      "size": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "source": "initialized DOL",
+      "iso_offset": 4120828,
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "name": "party-name-message-key",
+      "address": "0x802cc728",
+      "size": 12,
+      "sha256": "48eeb920e3cdc047bfdf2d3f2c45bd1db1647e82fcf27930e2545aaa8735a49d",
+      "source": "initialized DOL",
+      "iso_offset": 3054120,
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    }
+  ],
+  "bodies": [
+    {
+      "name": "marioInit",
+      "address": "0x8005b5c8",
+      "size": 1160,
+      "sha256": "e3976200ee5fc18a245b234f0b88c4095a0de3108c620034b54df1ea545ee6ce"
+    },
+    {
+      "name": "marioGetRubInit",
+      "address": "0x80095a4c",
+      "size": 64,
+      "sha256": "1126f0b69a40a2600118bbb8f65412efad5732656dcbb6177fcd40568de38bfa"
+    },
+    {
+      "name": "marioBaloonInit",
+      "address": "0x8012f550",
+      "size": 48,
+      "sha256": "7d2da3c114b275afc2fa1c7622802ee02a3edf9f545c6892fd7ca9ab3ddc008c"
+    },
+    {
+      "name": "marioResetGravity",
+      "address": "0x8009696c",
+      "size": 56,
+      "sha256": "8b620c3bf865c904e3d25c626609a6766101b83d4bdaccdbccde1e61588b6ebb"
+    },
+    {
+      "name": "marioChgMot",
+      "address": "0x8009455c",
+      "size": 192,
+      "sha256": "cb0d860ff6a94e5e6d0da5dded999fef1e6b881c2169730ce9d09c7f0439da26"
+    },
+    {
+      "name": "mot_stay_post",
+      "address": "0x800a6b10",
+      "size": 172,
+      "sha256": "045f375d0d3f44bb67ed8d1b0e36f43a7e5d4d90a7a3fdc15e1477764c3b4376"
+    },
+    {
+      "name": "marioResetCamFollowRate",
+      "address": "0x801a9488",
+      "size": 56,
+      "sha256": "65f264bf8e3ea2750a60552965dbfe582ac0fcc189552b0d4b357ff6ad8f95fe"
+    },
+    {
+      "name": "marioInitCamId",
+      "address": "0x801a9514",
+      "size": 48,
+      "sha256": "3bb71c8239e37aa8973bef56fa964f5a78ad4354f2b848e5808d35633a385965"
+    },
+    {
+      "name": "marioResetCamShiftRate",
+      "address": "0x801a9544",
+      "size": 100,
+      "sha256": "3d2142763b6d9f0adba6fbbb64ee5e4198b4a78de4037304fd0875c85e0a0ee5"
+    },
+    {
+      "name": "marioResetCamShift",
+      "address": "0x801a95a8",
+      "size": 92,
+      "sha256": "52ac82ec041e67cecd8d7b0c9dc3e9a0ef6c4236c930256d1f2368f5824fa272"
+    },
+    {
+      "name": "marioGetPtr",
+      "address": "0x8005e0c0",
+      "size": 8,
+      "sha256": "3a59459f28ddd5d287c200434ad158a9dfe277f4f6bcaae3eb8698505aa9773d"
+    },
+    {
+      "name": "pouchInit",
+      "address": "0x800d59c8",
+      "size": 1256,
+      "sha256": "c6e29f88e574c1d5caa1aaf5c7a73a53bc2d952cbad00a9e21ab2bfd3113def1"
+    },
+    {
+      "name": "pouchCheckItem",
+      "address": "0x800d4ed4",
+      "size": 504,
+      "sha256": "42deab825c1637d84ab4ad27431a9571fbb92f349716b88a6eba7b736779ba57"
+    },
+    {
+      "name": "pouchGetItem",
+      "address": "0x800d50cc",
+      "size": 1188,
+      "sha256": "7abf7872b6aedf92f82286b20aebcbad5b613f1f83616e7ee8cb661d7e47998c"
+    },
+    {
+      "name": "partyInit",
+      "address": "0x800bd6ac",
+      "size": 44,
+      "sha256": "1de59625edee5097ee19b46d0c8e22fcf80c6e62fe1c9ac3ad0f621092ece667"
+    }
+  ],
+  "conversion": "Unchanged source initialized data and original BSS zero point. Existing immutable boot prefixes are borrowed and validated, never overwritten; source Init performs all runtime writes. Actual Mario/pouch allocations and stacks are runtime owners, not imported addresses.",
+  "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+}
