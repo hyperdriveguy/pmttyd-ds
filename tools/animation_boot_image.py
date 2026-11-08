@@ -49,6 +49,9 @@ SPANS += [('render-cull-table',0x80415dc8,16,'c18ceb647eba232a898446a1e9f49062cb
  ('render-light-seed',0x802c103c,12,'15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b'),
  ('render-index-warning',0x802c1078,76,'a9a703d116f0da2933c3853744550afb966f34c72c8a106587fa2f22fa5fb971')]
 
+# Original raw texture helper live dispatch, LOD conversion and pivot data.
+SPANS += [('texture-matrix-dispatch', 2150655608, 32, '621974088a55ccc7461c2083621004a562ffd30760533bd1412e7de786fc279b'), ('texture-byte-bias', 2150371424, 8, '2b2979f362d94c89fe17a6e01637f14332de063fe7a544bdc5facfc046f4169f'), ('texture-warning', 2150371524, 220, '13b19522a2cf7245b67a4860784cc3f4a164a3303e0d9ed6c395a9cd96c91c16'), ('texture-positive-pivot', 2151807812, 4, '1b9e0fe7b740b4e583727aa1c9d27ff8c01491f911d2de0747f8c997ef6b3498'), ('texture-negative-pivot', 2151807848, 4, 'd4661c2ebe5a3b9fc5f7f6a5f6273143d954135d35457e90530bf5c0187c18d2')]
+
 def build(iso=DEFAULT_ISO,output='romfs/animation-boot'):
  root=Path(output);root.mkdir(parents=True,exist_ok=True)
  with Path(iso).open('rb') as disc:

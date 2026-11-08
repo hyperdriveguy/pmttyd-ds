@@ -16,10 +16,10 @@ struct Span{uint32_t address,size;};
 // party token and SDK ONE/ZERO. Initialized DOL bytes override broad BSS zeros.
 // Keep synchronized with tools/animation_boot_image.py; hashes belong to that
 // read-only extractor,while this runtime verifies layout and critical words.
-constexpr Span ImageSpans[]={{0x802c103c,12},{0x802c1068,8},{0x802c1070,8},{0x802c1078,76},{0x802c11a8,48},{0x802c11d8,16},{0x802c11e8,16},{0x802c18a0,28},
- {0x80305900,0xc00},{0x80306698,0x40},{0x803066d8,0x20},{Work,0x110},{0x803d9580,178*4},{0x804151b8,40},
+constexpr Span ImageSpans[]={{0x802c103c,12},{0x802c1060,8},{0x802c1068,8},{0x802c1070,8},{0x802c1078,76},{0x802c10c4,220},{0x802c11a8,48},{0x802c11d8,16},{0x802c11e8,16},{0x802c18a0,28},
+ {0x80305900,0xc00},{0x80306678,32},{0x80306698,0x40},{0x803066d8,0x20},{Work,0x110},{0x803d9580,178*4},{0x804151b8,40},
  {0x80415da0,16},{0x80415db4,4},{0x80415dc0,4},{0x80415dc4,4},{0x80415dc8,16},{0x80415eb0,12},{0x8041e428,12},{0x8041e458,8},
- {0x8041e808,80},{0x8041f070,20},{0x8041fb0c,8},{0x8041fb24,8},{0x8041fb2c,4},{0x8041fb34,12},{0x8041fb40,4},{0x8041fb64,4},{0x8041fb6c,0x2c},{0x8041fb98,4},{0x8041fba4,8},{0x8041fbac,4},{0x8041fbb0,4},{0x8041fbb4,4},{0x804213e0,8},{0x80429358,8}};
+ {0x8041e808,80},{0x8041f070,20},{0x8041fb0c,8},{0x8041fb24,8},{0x8041fb2c,4},{0x8041fb34,12},{0x8041fb40,4},{0x8041fb44,4},{0x8041fb64,4},{0x8041fb68,4},{0x8041fb6c,0x2c},{0x8041fb98,4},{0x8041fba4,8},{0x8041fbac,4},{0x8041fbb0,4},{0x8041fbb4,4},{0x804213e0,8},{0x80429358,8}};
 // Build-time extraction pins every span hash; runtime checks layout and critical fields.
 bool admittedImage(const EventScriptAssets& image){
  if(image.segments().size()!=sizeof(ImageSpans)/sizeof(*ImageSpans))return false;
@@ -28,6 +28,7 @@ bool admittedImage(const EventScriptAssets& image){
  // Critical raw float words:2,-2,3,1/16,60,1000,draw degrees->radians,
  // W/Vivian roots,init factor3c8efa33 (distinct from draw3c8efa35),signed
  // integer bias4330000080000000,and frame->ms16.666666 atfb40.
+ if(!word(0x802c1060,0x43300000) || !word(0x802c1064,0) || !word(0x8041fb44,0x3f000000) || !word(0x8041fb68,0xbf000000) || !word(0x80306678,0x8003e178) || !word(0x80306694,0x8003e1f8))return false;
  if(!word(0x8041fb64,0x40000000) || !word(0x8041fb98,0xc0000000) || !word(0x8041fbb0,0x40400000) || !word(0x8041fbac,0x3d800000) || !word(0x8041fba4,0x42700000) || !word(0x8041fba8,0x447a0000) || !word(0x8041fb2c,0x3c8efa35) || !word(0x80415dc0,Work) || !word(0x80415db4,0x80305900) || !word(0x8041fbb4,0x3c8efa33) || !word(0x802c1070,0x43300000) || !word(0x802c1074,0x80000000) || !word(0x8041fb40,0x41855555))return false;
  // Five(enabled,sizeKiB) heap rows at804151b8. First four enabled; last
  // 100KiB row disabled. Work+tangent cold zero check excludes initialized Vivian.

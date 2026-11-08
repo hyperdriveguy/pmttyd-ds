@@ -36,6 +36,7 @@ void runAnimationStartupProcessFixture(const char* root){
  assert(word(m,0x8041e840)==start && word(m,0x8041e82c)==Arena+Bytes && word(m,0x8041e854)==4);
  const auto map=word(m,0x8041e808);assert(map==word(m,0x8041e834)+32 && word(m,map+4)==3472*1024-64);
  assert(platform.flushes==(3472*1024-32)/32 && platform.barriers==1 && word(m,0x80415dc0)==Work && word(m,Work)==0);
+ assert(word(m,0x802c1060)==0x43300000 && word(m,0x802c1064)==0 && word(m,0x8041fb44)==0x3f000000 && word(m,0x8041fb68)==0xbf000000 && word(m,0x80306694)==0x8003e1f8);
  EventScriptAssets boot;assert(boot.load(image.c_str()));for(unsigned i=0;i<0xc00;++i){uint8_t b=0;assert(boot.readByte(0x80305900+i,b) && byte(m,0x80305900+i)==b);}
  vm.gp.timestamp=0x1122334455667788ULL;vm.initializeContexts();uint32_t field=0,battle=0;assert(vm.entryAddresses.addressOf(vm.field.entries,field) && vm.entryAddresses.addressOf(vm.battle.entries,battle));
  assert(field==Arena+96 && battle==field+0x1b020 && vm.field.capacity==256 && vm.battle.capacity==256 && vm.field.previousTimestamp==vm.gp.timestamp);
