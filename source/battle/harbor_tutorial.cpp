@@ -8,6 +8,9 @@
 #include "native_harbor_completion.hpp"
 #include "native_harbor_stylish.hpp"
 #include "native_harbor_nice.hpp"
+#include "native_harbor_smoke.hpp"
+#include "battle_unit_coin.hpp"
+#include "battle_unit_exp.hpp"
 #include "native_harbor_nice_visual.hpp"
 #include "native_ui_startup.hpp"
 #include "event_gp_language_alias.hpp"
@@ -129,6 +132,59 @@ struct HarborTutorialRuntime {
   niceCalls.erase(key);if(scene->pendingService==0x80106fa0){scene->pendingService=0;pendingEvent=0;}return 2;
  }
  std::unordered_map<uint64_t,NativeHarborStylishCursor>nativeStylish;
+ struct SmokeSource {std::weak_ptr<HarborTutorialRuntime>runtime;};
+ NativeHarborSmokeConsumer nativeSmoke;NativeHarborSmokeSource smokeSource;
+ std::map<uint64_t,NativeHarborSmokeCursor>smokeCalls;uint64_t smokeVisit=0;
+ bool smokeCurrent()const{return nativeSmoke.lifetime&&nativeSmoke.current&&nativeSmoke.current(nativeSmoke.user);}
+ int smokeEffect(EventEntry&e){
+  if(!packed||!smokeCurrent())return pending(0x8006d970);
+  const uint64_t key=(uint64_t(e.id)<<32)|e.currentCommand;auto&call=smokeCalls[key];
+  NativeHarborSmokeServices s;s.user=this;s.lifetime=nativeSmoke.lifetime;
+  s.current=[](void*p){return static_cast<HarborTutorialRuntime*>(p)->smokeCurrent();};
+  s.word=[](void*p,uint32_t at)->std::optional<uint32_t>{uint32_t v;if(!static_cast<HarborTutorialRuntime*>(p)->vm.memory.readWord(at,v))return {};return v;};
+  s.byte=[](void*p,uint32_t at)->std::optional<uint8_t>{uint8_t v;if(!static_cast<HarborTutorialRuntime*>(p)->vm.memory.readByte(at,v))return {};return v;};
+  s.value=[](void*p,EventEntry&e,int32_t raw)->std::optional<int32_t>{return getEventValue(e,raw,static_cast<HarborTutorialRuntime*>(p)->vm.interpreterServices().operands);};
+  s.floating=[](void*p,EventEntry&e,int32_t raw)->std::optional<float>{return getEventFloat(e,raw,static_cast<HarborTutorialRuntime*>(p)->vm.interpreterServices().operands);};
+  s.spawn=[](void*p,const NativeHarborSmokeRequest&q){auto&r=*static_cast<HarborTutorialRuntime*>(p);return r.nativeSmoke.spawn?r.nativeSmoke.spawn(r.nativeSmoke.user,q,r.smokeSource):std::optional<uint64_t>{};};
+  if(!resumeNativeHarborSmoke(e,s,call))return pending(0x8006d970);
+  smokeCalls.erase(key);if(scene->pendingService==0x8006d970){scene->pendingService=0;pendingEvent=0;}return 2;
+ }
+ std::map<uint64_t,BattleUnitCoinCursor>coinCalls;
+ int coinEvent(EventEntry&e,uint32_t function){
+  if(!packed)return pending(function);
+  const uint64_t key=(uint64_t(e.id)<<32)|e.currentCommand;auto&cursor=coinCalls[key];
+  BattleUnitCoinServices s;s.user=this;s.lifetime=statusLife;
+  s.current=[](void*p){auto&r=*static_cast<HarborTutorialRuntime*>(p);uint32_t b=0;return r.packed&&r.scene&&!r.scene->failed&&r.vm.memory.readWord(0x8041eb90,b)&&b==r.packed->battleAddress();};
+  s.word=[](void*p,uint32_t at)->std::optional<uint32_t>{uint32_t v;if(!static_cast<HarborTutorialRuntime*>(p)->vm.memory.readWord(at,v))return {};return v;};
+  s.byte=[](void*p,uint32_t at)->std::optional<uint8_t>{uint8_t v;if(!static_cast<HarborTutorialRuntime*>(p)->vm.memory.readByte(at,v))return {};return v;};
+  s.value=[](void*p,EventEntry&e,int32_t raw)->std::optional<int32_t>{return getEventValue(e,raw,static_cast<HarborTutorialRuntime*>(p)->vm.interpreterServices().operands);};
+  s.translate=[](void*p,EventEntry&e,int32_t selector)->std::optional<int32_t>{auto&r=*static_cast<HarborTutorialRuntime*>(p);return translateBattleActor(&e,selector,nativeBattleActorServices(r.vm));};
+  s.random=[](void*p,int32_t bound)->std::optional<int32_t>{return static_cast<HarborTutorialRuntime*>(p)->packed->random.bounded(bound);};
+  s.store=[](void*p,EventEntry&e,int32_t destination,int32_t value){setEventValue(e,destination,value,static_cast<HarborTutorialRuntime*>(p)->vm.interpreterServices().operands);return true;};
+  s.writeWord=[](void*p,uint32_t at,uint32_t value){return static_cast<HarborTutorialRuntime*>(p)->vm.memory.writeWord(at,value);};
+  auto result=function==0x8010d914?resumeBattleGetCoinEvent(e,s,cursor):resumeBattleStoreCoinEvent(e,s,cursor);if(!result)return pending(function);
+  coinCalls.erase(key);if(scene->pendingService==function){scene->pendingService=0;pendingEvent=0;}return *result;
+ }
+ std::map<uint64_t,BattleUnitExpCursor>expCalls;
+ int expEvent(EventEntry&e,uint32_t function){
+  if(!packed)return pending(function);
+  const uint64_t key=(uint64_t(e.id)<<32)|e.currentCommand;auto&cursor=expCalls[key];
+  BattleUnitExpServices s;s.user=this;s.lifetime=statusLife;
+  s.current=[](void*p){auto&r=*static_cast<HarborTutorialRuntime*>(p);uint32_t b=0;return r.packed&&r.scene&&!r.scene->failed&&r.vm.memory.readWord(0x8041eb90,b)&&b==r.packed->battleAddress();};
+  s.word=[](void*p,uint32_t at)->std::optional<uint32_t>{uint32_t v;if(!static_cast<HarborTutorialRuntime*>(p)->vm.memory.readWord(at,v))return {};return v;};
+  s.byte=[](void*p,uint32_t at)->std::optional<uint8_t>{uint8_t v;if(!static_cast<HarborTutorialRuntime*>(p)->vm.memory.readByte(at,v))return {};return v;};
+  s.half=[](void*p,uint32_t at)->std::optional<uint16_t>{uint16_t v;if(!static_cast<HarborTutorialRuntime*>(p)->vm.memory.readHalf(at,v))return {};return v;};
+  s.doubleBits=[](void*p,uint32_t at)->std::optional<uint64_t>{auto&r=*static_cast<HarborTutorialRuntime*>(p);uint32_t high,low;if(!r.vm.memory.readWord(at,high)||!r.vm.memory.readWord(at+4,low))return {};return (uint64_t(high)<<32)|low;};
+  s.value=[](void*p,EventEntry&e,int32_t raw)->std::optional<int32_t>{return getEventValue(e,raw,static_cast<HarborTutorialRuntime*>(p)->vm.interpreterServices().operands);};
+  s.translate=[](void*p,EventEntry&e,int32_t selector)->std::optional<int32_t>{auto&r=*static_cast<HarborTutorialRuntime*>(p);return translateBattleActor(&e,selector,nativeBattleActorServices(r.vm));};
+  s.subtractDoubleFloat=[](void*p,double a,double b)->std::optional<float>{auto&r=*static_cast<HarborTutorialRuntime*>(p);if(!r.vm.platform.subtractDouble||!r.vm.platform.roundDoubleFloat)return {};return r.vm.platform.roundDoubleFloat(r.vm.platform.user,r.vm.platform.subtractDouble(r.vm.platform.user,a,b));};
+  s.multiply=[](void*p,float a,float b)->std::optional<float>{auto&r=*static_cast<HarborTutorialRuntime*>(p);if(!r.vm.platform.multiplyFloat)return {};return r.vm.platform.multiplyFloat(r.vm.platform.user,a,b);};
+  s.truncate=[](void*p,float value)->std::optional<int32_t>{auto&r=*static_cast<HarborTutorialRuntime*>(p);if(!r.vm.platform.truncate||!std::isfinite(value)||double(value)<-2147483648.||double(value)>=2147483648.)return {};return r.vm.platform.truncate(r.vm.platform.user,value);};
+  s.store=[](void*p,EventEntry&e,int32_t destination,int32_t value){setEventValue(e,destination,value,static_cast<HarborTutorialRuntime*>(p)->vm.interpreterServices().operands);return true;};
+  s.writeWord=[](void*p,uint32_t at,uint32_t value){return static_cast<HarborTutorialRuntime*>(p)->vm.memory.writeWord(at,value);};
+  auto result=function==0x8010d9bc?resumeBattleGetExpEvent(e,s,cursor):resumeBattleStoreExpEvent(e,s,cursor);if(!result)return pending(function);
+  expCalls.erase(key);if(scene->pendingService==function){scene->pendingService=0;pendingEvent=0;}return *result;
+ }
  HarborTutorialRuntime():vm(0x81000000,platform(this)){}
  // Source clock 243MHz feeds VM tick conversion; native timestamps are ms.
  // GP base 0x81000000 is emulated RAM. Arithmetic callbacks explicitly preserve
@@ -190,6 +246,9 @@ struct HarborTutorialRuntime {
  int call(EventEntry& e,uint32_t function,bool first){
  executingEvent=e.id;
  if(first){HarborTutorialRequest r{function,e.currentCommand,scene->now,e.owner,{}};for(unsigned i=0;i<e.argumentCount;++i)r.rawOperands.push_back(raw(e,i));scene->requests.push_back(std::move(r));}
+ if(function==0x8010d9bc||function==0x8010d980)return expEvent(e,function);
+ if(function==0x8010d914||function==0x8010d8d8)return coinEvent(e,function);
+ if(function==0x8006d970)return smokeEffect(e);
  if(function==0x80106fa0)return niceEffect(e);
  if(function==0x80106dfc){
   if(!packed)return pending(function);
@@ -306,7 +365,11 @@ void HarborTutorial::setStartupFade(void* user,void(*entry)(void*,int32_t,int32_
 // composition, not a renderer frame loop or complete source battle Main.
 // Intro completion requires original phase-root retirement without interruption;
 // no HP threshold or development key advances story/outcomes here.
-void HarborTutorial::tick(uint64_t time,uint32_t keys,const BattlePadSample* physical){if(!runtime_ || failed || time<now || runtime_->nativeCompletionFrozen)return;now=time;auto& r=*runtime_;r.scene=this;if(message.active())message.tick(now,keys);
+void HarborTutorial::tick(uint64_t time,uint32_t keys,const BattlePadSample* physical){if(!runtime_ || failed || time<now || runtime_->nativeCompletionFrozen)return;now=time;auto& r=*runtime_;r.scene=this;
+ // Native smoke playback clock is actual accepted simulation visits, never
+ // presentation/draw invocations. Missing admission cannot advance events.
+ if(r.nativeSmoke.lifetime){if(r.smokeVisit==UINT64_MAX||!r.smokeCurrent()||!r.nativeSmoke.advance||!r.nativeSmoke.advance(r.nativeSmoke.user,r.smokeVisit+1))return;++r.smokeVisit;}
+ if(message.active())message.tick(now,keys);
  const auto speakerSlot=visualSlot(speaker);
  if(message.poseRequestSerial!=r.messagePoseSerial && speakerSlot>=0){r.messagePoseSerial=message.poseRequestSerial;auto& a=actors[size_t(speakerSlot)];const auto& pose=message.poseRequest==MessagePlayback::PoseRequest::Talk?a.talkPose:a.stayPose;if(!pose.empty()){a.pose=pose;a.poseAt=message.poseRequestedAt;}}
  const bool heldActionManager=r.packed->actionManagerPending();
@@ -416,6 +479,17 @@ std::optional<HarborClassMenuDrawBinding> HarborTutorial::classMenuDrawBinding(
 // Process-owned palette binds once per runtime; same owner may reattach,
 // different owner is rejected. Do not reset source color history on each battle
 // entry/display; caller owns the shared palette across scene lifetimes.
+bool HarborTutorial::bindNativeSmoke(const NativeHarborSmokeConsumer&consumer){
+ if(!runtime_||!runtime_->packed||!consumer.lifetime||!consumer.current||!consumer.current(consumer.user)||!consumer.spawn||!consumer.advance)return false;
+ auto&r=*runtime_;if(r.nativeSmoke.lifetime)return r.nativeSmoke.lifetime==consumer.lifetime&&r.nativeSmoke.user==consumer.user&&r.nativeSmoke.current==consumer.current&&r.nativeSmoke.spawn==consumer.spawn&&r.nativeSmoke.advance==consumer.advance;
+ auto owner=std::make_shared<HarborTutorialRuntime::SmokeSource>();owner->runtime=runtime_;
+ NativeHarborSmokeSource source;source.user=owner.get();source.lifetime=owner;
+ source.current=[](void*p){auto r=static_cast<HarborTutorialRuntime::SmokeSource*>(p)->runtime.lock();uint32_t b=0;return r&&r->packed&&r->scene&&!r->scene->failed&&r->vm.memory.readWord(0x8041eb90,b)&&b==r->packed->battleAddress()&&r->smokeCurrent();};
+ source.random=[](void*p,uint32_t bound)->std::optional<uint32_t>{auto r=static_cast<HarborTutorialRuntime::SmokeSource*>(p)->runtime.lock();if(!r||!r->packed||bound!=NativeHarborSmokeVisual::DelayBound)return {};return uint32_t(r->packed->random.bounded(int32_t(bound)));};
+ source.sin=[](void*p,float angle)->std::optional<float>{auto r=static_cast<HarborTutorialRuntime::SmokeSource*>(p)->runtime.lock();if(!r||!r->vm.platform.sineDouble||!r->vm.platform.roundDoubleFloat)return {};return r->vm.platform.roundDoubleFloat(r->vm.platform.user,r->vm.platform.sineDouble(r->vm.platform.user,double(angle)));};
+ source.cos=[](void*p,float angle)->std::optional<float>{auto r=static_cast<HarborTutorialRuntime::SmokeSource*>(p)->runtime.lock();if(!r||!r->vm.platform.cosineDouble||!r->vm.platform.roundDoubleFloat)return {};return r->vm.platform.roundDoubleFloat(r->vm.platform.user,r->vm.platform.cosineDouble(r->vm.platform.user,double(angle)));};
+ r.nativeSmoke=consumer;r.smokeSource=std::move(source);return true;
+}
 bool HarborTutorial::bindNativeNice(std::shared_ptr<NativeUiStartup> startup,const NativeHarborNiceConsumer&consumer){
  if(!runtime_||!runtime_->packed||!startup||!startup->current()||!consumer.lifetime||!consumer.current||!consumer.current(consumer.user)||!consumer.spawn||!consumer.scale)return false;
  auto&r=*runtime_;const auto process=startup->fieldProcess();if(!process)return false;

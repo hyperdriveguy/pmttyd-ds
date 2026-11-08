@@ -64,6 +64,7 @@ void Renderer::advanceTutorialAnimations(Game& game) {
     if(!tutorialReady || !game.harborTutorial.running())return;
     if(game.harborTutorial.running()){bindTutorialStartupResources(game.harborTutorial);advanceTutorialCurtain(game.harborTutorial);}
     prepareNativeHarborNice(game);
+    prepareNativeHarborSmoke(game);
     for(unsigned i=0;i<3;++i) {
         const auto& a=game.harborTutorial.actors[i];
         const auto selected=selectHarborTutorialAnimation(i,a.pose.c_str(),tutorialActors[i].animations,
@@ -142,6 +143,7 @@ void Renderer::worldTutorial(const Game& g,bool lower) {
     drawMap(true,g,true,&harborBattleBackground);drawMap(true,g,true,&harborBattleStage);
     drawAudienceScene(g,lower);
     drawNativeHarborNice(g,lower);
+    drawNativeHarborSmoke(g,lower);
     if(!lower)drawTutorialCurtain();
 }
 }

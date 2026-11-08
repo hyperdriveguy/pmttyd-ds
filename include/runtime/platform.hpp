@@ -93,6 +93,10 @@ public:
     const BattleClassAssets* classMenuAssets();
     void retireNativeHarborMenu();
     void retireNativeHarborNice();
+    void retireNativeHarborSmoke();
+    // Actual outside-frame native teardown. Caller suspends battle rendering
+    // across held completion and reloads field presentation before returning.
+    bool retireNativeHarborPresentation(HarborTutorial&,const std::shared_ptr<const void>&);
     // Ready-only accessor: never imports during a held native callback.
     std::optional<BattleClassSurfaceLease> classMenuSurfaceLease()const;
     // Explicit preparation outside FrameBegin; source callbacks borrow leases.
@@ -270,7 +274,7 @@ private:
     void releaseWeaponMenuSurfaces();
     std::unique_ptr<NativeBattleClassFooterGpu> classFooterGpu;
     Vertex* classVertices=nullptr;
-    unsigned classVertexCount=0;
+    unsigned classVertexCount=0,classVertexCapacity=0;
     struct WeaponMenuBinding;
     std::shared_ptr<WeaponMenuBinding> weaponMenuBinding;
     std::shared_ptr<const uint8_t> weaponMenuAbandonedAllocation;
@@ -288,12 +292,17 @@ private:
     bool prepareClassMenuFrame(const Game&);
     void releaseClassMenuFrame();
     bool resumeClassMenu(const Game&,uint32_t camera,uint32_t userdata);
+    bool nativeHarborMenuMatches(const std::shared_ptr<const void>&) const;
+    bool nativeHarborNiceMatches(const std::shared_ptr<const void>&) const;
+    bool nativeHarborSmokeMatches(const std::shared_ptr<const void>&) const;
     struct NativeHarborMenu;
     std::shared_ptr<NativeHarborMenu> nativeHarborMenu;
     bool prepareNativeHarborMenu(const Game&);
     bool drawNativeHarborMenu(const Game&);
     void completeNativeHarborMenu(const Game&);
-    bool prepareClassMenuDrawing();
+    static constexpr unsigned MaxClassMenuQuads=1024,ClassVerticesPerQuad=6;
+    bool prepareClassMenuSurfaces();
+    bool prepareClassMenuDrawing(unsigned requiredQuads=MaxClassMenuQuads);
     void releaseClassMenuDrawing();
     BattleAudienceResources audienceAssets;BattleAudienceBackend audienceBatch;
     Texture audienceTexture;Vertex* audienceVertices=nullptr;
@@ -305,6 +314,8 @@ private:
     std::array<Texture,9> tutorialStartupTextures;
     HarborTutorial* tutorialStartupOwner=nullptr;
     struct NativeHarborNice;std::shared_ptr<NativeHarborNice> nativeHarborNice;
+    struct NativeHarborSmoke;std::shared_ptr<NativeHarborSmoke>nativeHarborSmoke;
+    bool prepareNativeHarborSmoke(Game&);void drawNativeHarborSmoke(const Game&,bool lower);
     bool prepareNativeHarborNice(Game&);
     void drawNativeHarborNice(const Game&,bool lower);
     struct Occluder {Bounds3 bounds{};std::vector<uint32_t> batches;uint64_t hiddenUntil=0;bool hidden=false;};

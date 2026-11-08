@@ -1,6 +1,9 @@
 {
   "schema": 1,
   "assets": [
+{"id": "original/effects/harbor-smoke40", "kind": "texture", "source": "assets/original/effects/harbor-smoke/smoke40.png", "output": "harbor-smoke40.t3x", "format": "rgba8", "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"},
+{"id": "original/effects/harbor-smoke-data", "kind": "event", "source": "assets/original/effects/harbor-smoke/memory.json", "output": "harbor-smoke/memory.pmevt", "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"},
+{"id": "original/harbor-field-npc-tags", "kind": "field-npc-tags", "source": "assets/original/harbor-npc-tags/gor_00.s", "output": "field-npc-map-gor_00.bin", "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted", "provenance": "assets/original/harbor-npc-tags/provenance.json"},
     {"id":"original/display/camera-bootstrap", "kind":"event", "source":"assets/original/display/camera-bootstrap/event.json", "output":"source-camera-literals.pmevt", "license":"Nintendo/Intelligent Systems original game asset; no redistribution license granted"},
     {
       "id": "original/display/logo-startup-memory",

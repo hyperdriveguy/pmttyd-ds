@@ -90,3 +90,22 @@ These focused tests are not a fresh whole-core ABI build or a native gameplay
 smoke. The facade gains native identity metadata, so full core/native rebuilds
 with matching headers are mandatory. Normal Crump battle/event/action/result
 and field-return completion remain owned by their actual gameplay services.
+
+
+## Actual native arena admission
+
+An isolated native resumed-encounter trace imported both original class atlases
+with their required exact format, dimensions and full-image UVs, then failed the
+fixed 1024-quad/221184-byte vertex allocation with 287104 total linear bytes free.
+Total free space did not establish a sufficiently large contiguous allocation.
+No presentation receipt was emitted, so the physical menu remained correctly held.
+
+The native command-menu adapter now prepares texture ownership, validates the
+complete CPU plan, then admits exactly that plan's required vertex count outside
+FrameBegin. Growth synchronizes and retires the previous arena before allocation;
+failed allocation remains unavailable. Draw preflight uses the actual retained
+capacity. Existing original queued consumers still request the native maximum
+1024-quad budget. Texture leases certify texture ownership independently of vertex
+storage. No source timing, original asset pixels or source display completion is
+changed. Fresh Renderer layout consumers must be rebuilt together. Physical menu,
+weapon/target input and attack acceptance are recorded separately from compilation.

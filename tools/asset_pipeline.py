@@ -17,11 +17,12 @@ import PIL
 from PIL import Image
 from asset_animation import decode as decode_animation, encode as encode_animation
 from asset_event import encode as encode_event
+from compile_field_npc_tags import encode_field_npc_tags
 from asset_pose_extensions import auxiliary_sources, append_animation_clips, pose_directory_outputs, compile_pose_directory
 from stage_hierarchy_assets import encode as encode_stage_hierarchy
 
 ROOT = Path(__file__).resolve().parents[1]
-KINDS = {'texture', 'atlas', 'model', 'actor', 'sfx', 'music', 'animation', 'pack', 'event', 'pose-directory', 'stage-hierarchy'}
+KINDS = {'texture', 'atlas', 'model', 'actor', 'sfx', 'music', 'animation', 'pack', 'event', 'pose-directory', 'stage-hierarchy', 'field-npc-tags'}
 
 
 def digest(path):
@@ -341,7 +342,7 @@ def build(manifest, root, output, work, tex3ds):
         raise ValueError('Run prepare before original converters and build')
     doc = read_manifest(manifest, root)
     output.mkdir(parents=True, exist_ok=True); work.mkdir(parents=True, exist_ok=True)
-    tool_key = digest(__file__) + digest(ROOT / 'tools/asset_animation.py') + digest(ROOT / 'tools/asset_event.py') + digest(ROOT / 'tools/asset_pose_extensions.py') + digest(ROOT / 'tools/battle_pose_directory.py') + digest(ROOT / 'tools/stage_hierarchy_assets.py') + PIL.__version__ + sys.version
+    tool_key = digest(__file__) + digest(ROOT / 'tools/asset_animation.py') + digest(ROOT / 'tools/asset_event.py') + digest(ROOT / 'tools/asset_pose_extensions.py') + digest(ROOT / 'tools/battle_pose_directory.py') + digest(ROOT / 'tools/stage_hierarchy_assets.py') + digest(ROOT / 'tools/compile_field_npc_tags.py') + digest(ROOT / 'tools/field_map_npc_assets.py') + PIL.__version__ + sys.version
     if any(e['kind'] in ('texture', 'atlas') for e in doc['assets']):
         executable = shutil.which(tex3ds) or tex3ds
         tool_key += digest(executable)
@@ -400,6 +401,8 @@ def build(manifest, root, output, work, tex3ds):
                     target.write_bytes(encode_stage_hierarchy(json.loads(source.read_text())))
                 elif kind == 'pose-directory':
                     compile_pose_directory(source, target, contained(root, entry['texture_source']))
+                elif kind == 'field-npc-tags':
+                    target.write_bytes(encode_field_npc_tags(source.read_bytes()))
                 elif kind == 'event':
                     target.write_bytes(encode_event(json.loads(source.read_text())))
                 elif kind in ('sfx', 'music'):

@@ -1,0 +1,3 @@
+Nintendo/Intelligent Systems original game data. All original rights retained.
+Tracking this locally acquired asset grants no redistribution or other license.
+Source: G8ME01 US revision 0, m/gor_00/s. See provenance.json.

@@ -45,6 +45,7 @@ bool Renderer::bindTutorialStartupResources(HarborTutorial& tutorial){
 // retires all nine descriptor/texture pairs; copying Texture does not clone it.
 void Renderer::releaseTutorialStartupResources(){
     retireNativeHarborNice();
+    retireNativeHarborSmoke();
     if(tutorialStartupOwner){tutorialStartupOwner->setStartupResources(nullptr,nullptr,nullptr);tutorialStartupOwner=nullptr;}
     if(c3dReady)C3D_FrameSync();
     for(unsigned i=0;i<9;++i){

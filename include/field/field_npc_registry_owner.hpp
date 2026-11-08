@@ -79,6 +79,7 @@ private:
  friend class FieldNpcSetupBinding;
  friend class FieldNpcMainEntryBinding;
  friend class FieldNpcCreationBinding;
+ friend class NativeHarborSailors;
  friend class FieldNpcClockBinding;
  FieldNpcRegistryBinding(std::shared_ptr<FieldNpcRegistryOwner>,EventAddressSpace&);
  struct Call;

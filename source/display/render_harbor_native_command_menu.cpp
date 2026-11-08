@@ -14,7 +14,7 @@ bool Renderer::prepareNativeHarborMenu(const Game &game) {
   const auto snapshot = game.harborTutorial.nativeCommandMenu();
   if (!snapshot)
     return false;
-  if (!prepareClassMenuDrawing())
+  if (!prepareClassMenuSurfaces())
     return false;
   const auto surface = classMenuSurfaceLease();
   const auto font = battleFontLease();
@@ -25,7 +25,7 @@ bool Renderer::prepareNativeHarborMenu(const Game &game) {
         const auto *icon = messageIcon(id);
         return icon ? &icon->frame(game.ticks) : nullptr;
       });
-  if (!plan)
+  if (!plan || !prepareClassMenuDrawing(unsigned(plan->batch.quads.size())))
     return false;
   nativeHarborMenu = std::make_shared<NativeHarborMenu>();
   nativeHarborMenu->plan = std::move(*plan);
@@ -36,7 +36,7 @@ bool Renderer::drawNativeHarborMenu(const Game &game) {
   if (!state || state->submitted)
     return false;
   const auto &p = state->plan;
-  constexpr unsigned ClassQuadBudget = 1024, VerticesPerQuad = 6;
+  constexpr unsigned VerticesPerQuad = ClassVerticesPerQuad;
   // Complete CPU geometry/resource/arena preflight BEFORE the first GPU effect.
   // The render thread serializes import/retirement and both draws below;
   // neither linked draw allocates, invokes providers, or replaces these
@@ -48,9 +48,9 @@ bool Renderer::drawNativeHarborMenu(const Game &game) {
       !classSurfaceGpu->resource().accepts(p.batch.surfaceLease) ||
       !battleFontGpu.accepts(p.batch.fontLease) || !fontTexture.imported ||
       !messageIconTexture.imported ||
-      classVertexCount / VerticesPerQuad > ClassQuadBudget ||
+      classVertexCount > classVertexCapacity ||
       p.batch.quads.size() >
-          ClassQuadBudget - classVertexCount / VerticesPerQuad)
+          (classVertexCapacity-classVertexCount)/VerticesPerQuad)
     return false;
   if (p.window && (!windowFrameVertices || !messagePanel.imported ||
                    windowFrameCount >= MaxWindowFrames ||
@@ -84,6 +84,11 @@ void Renderer::completeNativeHarborMenu(const Game &game) {
   case HarborNativeMenuKind::Target:
     break; // No original queued target receipt.
   }
+}
+bool Renderer::nativeHarborMenuMatches(const std::shared_ptr<const void>& runtime) const {
+ if(!nativeHarborMenu)return true;
+ const auto owned=nativeHarborMenu->plan.snapshot.runtime;
+ return owned&&runtime&&owned==runtime&&!owned.owner_before(runtime)&&!runtime.owner_before(owned);
 }
 void Renderer::retireNativeHarborMenu() { nativeHarborMenu.reset(); }
 } // namespace ttyd

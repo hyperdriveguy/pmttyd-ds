@@ -4,25 +4,37 @@
 namespace ttyd {
 // Native class-menu budget is 1024 quads*6 vertices shared across callbacks
 // in this frame. Surface/icon atlases are separate from font/message icons.
-bool Renderer::prepareClassMenuDrawing() {
+bool Renderer::prepareClassMenuSurfaces() {
   if (!c3dReady || !programReady || !top)
     return false;
   if (!classSurfaceGpu)
     classSurfaceGpu = std::make_unique<NativeBattleClassSurfaceGpu>();
-  if (!classSurfaceGpu->resource().ready() && !classSurfaceGpu->load("romfs:"))
+  return classSurfaceGpu->resource().ready() || classSurfaceGpu->load("romfs:");
+}
+// Pre-frame arena admission uses the actual native plan size. Original queued
+// consumers retain the complete MaxClassMenuQuads default budget.
+bool Renderer::prepareClassMenuDrawing(unsigned requiredQuads) {
+  if (requiredQuads > MaxClassMenuQuads || !prepareClassMenuSurfaces())
     return false;
-  if (!classVertices) {
-    C3D_FrameSync();
-    classVertices = static_cast<Vertex *>(linearAlloc(sizeof(Vertex) * 6 * 1024));
-  }
-  return classVertices != nullptr;
+  const unsigned requiredVertices=requiredQuads*ClassVerticesPerQuad;
+  if (!requiredVertices || (classVertices && classVertexCapacity>=requiredVertices))
+    return true;
+  // Previous geometry may still be referenced by the GPU. Retire that arena
+  // before growing to avoid a simultaneous old/new linear allocation peak.
+  C3D_FrameSync();
+  if (classVertices)linearFree(classVertices);
+  classVertices=nullptr;classVertexCount=0;classVertexCapacity=0;
+  classVertices=static_cast<Vertex*>(linearAlloc(sizeof(Vertex)*requiredVertices));
+  if (!classVertices)return false;
+  classVertexCapacity=requiredVertices;
+  return true;
 }
 const BattleClassAssets *Renderer::classMenuAssets() {
   if (!prepareClassMenuDrawing()) return nullptr;
   return classSurfaceGpu->resource().lease().assets.get();
 }
 std::optional<BattleClassSurfaceLease> Renderer::classMenuSurfaceLease()const {
-  if (!c3dReady || !programReady || !top || !classVertices ||
+  if (!c3dReady || !programReady || !top ||
       !classSurfaceGpu || !classSurfaceGpu->resource().ready()) return {};
   return classSurfaceGpu->resource().lease();
 }
@@ -53,6 +65,7 @@ void Renderer::releaseClassMenuDrawing() {
     linearFree(classVertices);
   classVertices = nullptr;
   classVertexCount = 0;
+  classVertexCapacity = 0;
 }
 // A complete batch must belong to this exact asset owner. Preflight the whole
 // batch before appending vertices; partial menus must not consume arena space.
@@ -66,7 +79,8 @@ bool Renderer::drawClassMenu(const BattleClassBackend &batch) {
       batch.assets != batch.surfaceLease.assets.get() || !classVertices ||
       transformLoc < 0)
     return false;
-  if (batch.quads.size() > 1024 - classVertexCount / 6)
+  if (classVertexCount > classVertexCapacity ||
+      batch.quads.size() > (classVertexCapacity-classVertexCount)/ClassVerticesPerQuad)
     return false;
   if (!fontTexture.imported || !messageIconTexture.imported)
     return false;

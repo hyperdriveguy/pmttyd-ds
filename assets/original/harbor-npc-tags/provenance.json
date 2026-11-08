@@ -1,0 +1,9 @@
+{
+  "source_disc": "G8ME01",
+  "source_path": "m/gor_00/s",
+  "source_offset": 988877944,
+  "size": 10549,
+  "sha256": "361cc4c7e2f85bc4b632fcc6daab9283fa39028676b2d27bb9c74a0989dcf32a",
+  "license": "Nintendo/Intelligent Systems original game asset; all original rights retained, no redistribution license granted.",
+  "policy": "Unchanged original m/gor_00/s bytes. Editable source, never overwritten by normal builds; compiler preserves original Shift-JIS strings and numeric source fields."
+}

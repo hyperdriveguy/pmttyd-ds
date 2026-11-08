@@ -1,0 +1,748 @@
+<Npc>
+   <name>
+       "モニー"
+   </>
+   <tribe>
+       "モニー"
+   </>
+   <position>
+        0 -1000  0 
+   </>
+   <dir>
+        90 
+   </>
+   <aitype>
+       "なし"
+   </>
+   <territory_type>
+       "NPC_TERRITORY_TYPE_NOTHING"
+   </>
+   <territory_base>
+        0  0  0 
+   </>
+   <territory_loiter>
+        0  0  0 
+   </>
+   <territory_homing>
+        0  0  0 
+   </>
+   <search_range>
+        0 
+   </>
+   <search_angle>
+        0 
+   </>
+   <homing_range>
+        0 
+   </>
+   <homing_angle>
+        0 
+   </>
+   <btl_setup_no>
+       "BTLNO_INVALID"
+   </>
+</>
+<Npc>
+   <name>
+       "ピートン"
+   </>
+   <tribe>
+       "ピートン"
+   </>
+   <position>
+        0 -1000  0 
+   </>
+   <dir>
+        90 
+   </>
+   <aitype>
+       "なし"
+   </>
+   <territory_type>
+       "NPC_TERRITORY_TYPE_NOTHING"
+   </>
+   <territory_base>
+        0  0  0 
+   </>
+   <territory_loiter>
+        0  0  0 
+   </>
+   <territory_homing>
+        0  0  0 
+   </>
+   <search_range>
+        0 
+   </>
+   <search_angle>
+        0 
+   </>
+   <homing_range>
+        0 
+   </>
+   <homing_angle>
+        0 
+   </>
+   <btl_setup_no>
+       "BTLNO_INVALID"
+   </>
+</>
+<Npc>
+   <name>
+       "ガラの悪い水夫"
+   </>
+   <tribe>
+       "ガラの悪い水夫"
+   </>
+   <position>
+        0 -1000  0 
+   </>
+   <dir>
+        270 
+   </>
+   <aitype>
+       "なし"
+   </>
+   <territory_type>
+       "NPC_TERRITORY_TYPE_NOTHING"
+   </>
+   <territory_base>
+        0  0  0 
+   </>
+   <territory_loiter>
+        0  0  0 
+   </>
+   <territory_homing>
+        0  0  0 
+   </>
+   <search_range>
+        0 
+   </>
+   <search_angle>
+        0 
+   </>
+   <homing_range>
+        0 
+   </>
+   <homing_angle>
+        0 
+   </>
+   <btl_setup_no>
+       "BTLNO_INVALID"
+   </>
+</>
+<Npc>
+   <name>
+       "マルコ"
+   </>
+   <tribe>
+       "マルコ"
+   </>
+   <position>
+        0 -1000  0 
+   </>
+   <dir>
+        270 
+   </>
+   <aitype>
+       "なし"
+   </>
+   <territory_type>
+       "NPC_TERRITORY_TYPE_NOTHING"
+   </>
+   <territory_base>
+        0  0  0 
+   </>
+   <territory_loiter>
+        0  0  0 
+   </>
+   <territory_homing>
+        0  0  0 
+   </>
+   <search_range>
+        0 
+   </>
+   <search_angle>
+        0 
+   </>
+   <homing_range>
+        0 
+   </>
+   <homing_angle>
+        0 
+   </>
+   <btl_setup_no>
+       "BTLNO_INVALID"
+   </>
+</>
+<Npc>
+   <name>
+       "水夫Ａ"
+   </>
+   <tribe>
+       "水夫"
+   </>
+   <position>
+        0 -1000  0 
+   </>
+   <dir>
+        270 
+   </>
+   <aitype>
+       "なし"
+   </>
+   <territory_type>
+       "NPC_TERRITORY_TYPE_NOTHING"
+   </>
+   <territory_base>
+        0  0  0 
+   </>
+   <territory_loiter>
+        0  0  0 
+   </>
+   <territory_homing>
+        0  0  0 
+   </>
+   <search_range>
+        0 
+   </>
+   <search_angle>
+        0 
+   </>
+   <homing_range>
+        0 
+   </>
+   <homing_angle>
+        0 
+   </>
+   <btl_setup_no>
+       "BTLNO_INVALID"
+   </>
+</>
+<Npc>
+   <name>
+       "水夫Ｂ"
+   </>
+   <tribe>
+       "水夫"
+   </>
+   <position>
+        0 -1000  0 
+   </>
+   <dir>
+        270 
+   </>
+   <aitype>
+       "なし"
+   </>
+   <territory_type>
+       "NPC_TERRITORY_TYPE_NOTHING"
+   </>
+   <territory_base>
+        0  0  0 
+   </>
+   <territory_loiter>
+        0  0  0 
+   </>
+   <territory_homing>
+        0  0  0 
+   </>
+   <search_range>
+        0 
+   </>
+   <search_angle>
+        0 
+   </>
+   <homing_range>
+        0 
+   </>
+   <homing_angle>
+        0 
+   </>
+   <btl_setup_no>
+       "BTLNO_INVALID"
+   </>
+</>
+<Npc>
+   <name>
+       "水夫Ｃ"
+   </>
+   <tribe>
+       "ボロ水夫"
+   </>
+   <position>
+        0 -1000  0 
+   </>
+   <dir>
+        270 
+   </>
+   <aitype>
+       "なし"
+   </>
+   <territory_type>
+       "NPC_TERRITORY_TYPE_NOTHING"
+   </>
+   <territory_base>
+        0  0  0 
+   </>
+   <territory_loiter>
+        0  0  0 
+   </>
+   <territory_homing>
+        0  0  0 
+   </>
+   <search_range>
+        0 
+   </>
+   <search_angle>
+        0 
+   </>
+   <homing_range>
+        0 
+   </>
+   <homing_angle>
+        0 
+   </>
+   <btl_setup_no>
+       "BTLNO_INVALID"
+   </>
+</>
+<Npc>
+   <name>
+       "水夫Ｄ"
+   </>
+   <tribe>
+       "水夫"
+   </>
+   <position>
+        0 -1000  0 
+   </>
+   <dir>
+        270 
+   </>
+   <aitype>
+       "なし"
+   </>
+   <territory_type>
+       "NPC_TERRITORY_TYPE_NOTHING"
+   </>
+   <territory_base>
+        0  0  0 
+   </>
+   <territory_loiter>
+        0  0  0 
+   </>
+   <territory_homing>
+        0  0  0 
+   </>
+   <search_range>
+        0 
+   </>
+   <search_angle>
+        0 
+   </>
+   <homing_range>
+        0 
+   </>
+   <homing_angle>
+        0 
+   </>
+   <btl_setup_no>
+       "BTLNO_INVALID"
+   </>
+</>
+<Npc>
+   <name>
+       "めがね水夫"
+   </>
+   <tribe>
+       "めがね水夫"
+   </>
+   <position>
+        0 -1000  0 
+   </>
+   <dir>
+        270 
+   </>
+   <aitype>
+       "なし"
+   </>
+   <territory_type>
+       "NPC_TERRITORY_TYPE_NOTHING"
+   </>
+   <territory_base>
+        0  0  0 
+   </>
+   <territory_loiter>
+        0  0  0 
+   </>
+   <territory_homing>
+        0  0  0 
+   </>
+   <search_range>
+        0 
+   </>
+   <search_angle>
+        0 
+   </>
+   <homing_range>
+        0 
+   </>
+   <homing_angle>
+        0 
+   </>
+   <btl_setup_no>
+       "BTLNO_INVALID"
+   </>
+</>
+<Npc>
+   <name>
+       "オドオド水夫"
+   </>
+   <tribe>
+       "オドオド水夫"
+   </>
+   <position>
+        0 -1000  0 
+   </>
+   <dir>
+        270 
+   </>
+   <aitype>
+       "なし"
+   </>
+   <territory_type>
+       "NPC_TERRITORY_TYPE_NOTHING"
+   </>
+   <territory_base>
+        0  0  0 
+   </>
+   <territory_loiter>
+        0  0  0 
+   </>
+   <territory_homing>
+        0  0  0 
+   </>
+   <search_range>
+        0 
+   </>
+   <search_angle>
+        0 
+   </>
+   <homing_range>
+        0 
+   </>
+   <homing_angle>
+        0 
+   </>
+   <btl_setup_no>
+       "BTLNO_INVALID"
+   </>
+</>
+<Npc>
+   <name>
+       "オドオド水夫兄"
+   </>
+   <tribe>
+       "ボロ水夫"
+   </>
+   <position>
+        0 -1000  0 
+   </>
+   <dir>
+        270 
+   </>
+   <aitype>
+       "なし"
+   </>
+   <territory_type>
+       "NPC_TERRITORY_TYPE_NOTHING"
+   </>
+   <territory_base>
+        0  0  0 
+   </>
+   <territory_loiter>
+        0  0  0 
+   </>
+   <territory_homing>
+        0  0  0 
+   </>
+   <search_range>
+        0 
+   </>
+   <search_angle>
+        0 
+   </>
+   <homing_range>
+        0 
+   </>
+   <homing_angle>
+        0 
+   </>
+   <btl_setup_no>
+       "BTLNO_INVALID"
+   </>
+</>
+<Npc>
+   <name>
+       "水夫ボム兵Ａ"
+   </>
+   <tribe>
+       "水夫ボム兵"
+   </>
+   <position>
+        0 -1000  0 
+   </>
+   <dir>
+        270 
+   </>
+   <aitype>
+       "なし"
+   </>
+   <territory_type>
+       "NPC_TERRITORY_TYPE_NOTHING"
+   </>
+   <territory_base>
+        0  0  0 
+   </>
+   <territory_loiter>
+        0  0  0 
+   </>
+   <territory_homing>
+        0  0  0 
+   </>
+   <search_range>
+        0 
+   </>
+   <search_angle>
+        0 
+   </>
+   <homing_range>
+        0 
+   </>
+   <homing_angle>
+        0 
+   </>
+   <btl_setup_no>
+       "BTLNO_INVALID"
+   </>
+</>
+<Npc>
+   <name>
+       "水夫ボム兵Ｂ"
+   </>
+   <tribe>
+       "水夫ボム兵"
+   </>
+   <position>
+        0 -1000  0 
+   </>
+   <dir>
+        270 
+   </>
+   <aitype>
+       "なし"
+   </>
+   <territory_type>
+       "NPC_TERRITORY_TYPE_NOTHING"
+   </>
+   <territory_base>
+        0  0  0 
+   </>
+   <territory_loiter>
+        0  0  0 
+   </>
+   <territory_homing>
+        0  0  0 
+   </>
+   <search_range>
+        0 
+   </>
+   <search_angle>
+        0 
+   </>
+   <homing_range>
+        0 
+   </>
+   <homing_angle>
+        0 
+   </>
+   <btl_setup_no>
+       "BTLNO_INVALID"
+   </>
+</>
+<Npc>
+   <name>
+       "水夫ボム兵Ｃ"
+   </>
+   <tribe>
+       "水夫ボム兵"
+   </>
+   <position>
+        0 -1000  0 
+   </>
+   <dir>
+        270 
+   </>
+   <aitype>
+       "なし"
+   </>
+   <territory_type>
+       "NPC_TERRITORY_TYPE_NOTHING"
+   </>
+   <territory_base>
+        0  0  0 
+   </>
+   <territory_loiter>
+        0  0  0 
+   </>
+   <territory_homing>
+        0  0  0 
+   </>
+   <search_range>
+        0 
+   </>
+   <search_angle>
+        0 
+   </>
+   <homing_range>
+        0 
+   </>
+   <homing_angle>
+        0 
+   </>
+   <btl_setup_no>
+       "BTLNO_INVALID"
+   </>
+</>
+<Npc>
+   <name>
+       "コルテス"
+   </>
+   <tribe>
+       "コルテス"
+   </>
+   <position>
+        0 -1000  0 
+   </>
+   <dir>
+        270 
+   </>
+   <aitype>
+       "なし"
+   </>
+   <territory_type>
+       "NPC_TERRITORY_TYPE_NOTHING"
+   </>
+   <territory_base>
+        0  0  0 
+   </>
+   <territory_loiter>
+        0  0  0 
+   </>
+   <territory_homing>
+        0  0  0 
+   </>
+   <search_range>
+        0 
+   </>
+   <search_angle>
+        0 
+   </>
+   <homing_range>
+        0 
+   </>
+   <homing_angle>
+        0 
+   </>
+   <btl_setup_no>
+       "BTLNO_INVALID"
+   </>
+</>
+<Npc>
+   <name>
+       "ババ"
+   </>
+   <tribe>
+       "カメックババ（風船）"
+   </>
+   <position>
+        0 -1000  0 
+   </>
+   <dir>
+        270 
+   </>
+   <aitype>
+       "なし"
+   </>
+   <territory_type>
+       "NPC_TERRITORY_TYPE_NOTHING"
+   </>
+   <territory_base>
+        0  0  0 
+   </>
+   <territory_loiter>
+        0  0  0 
+   </>
+   <territory_homing>
+        0  0  0 
+   </>
+   <search_range>
+        0 
+   </>
+   <search_angle>
+        0 
+   </>
+   <homing_range>
+        0 
+   </>
+   <homing_angle>
+        0 
+   </>
+   <btl_setup_no>
+       "BTLNO_INVALID"
+   </>
+</>
+<Npc>
+   <name>
+       "モコリム"
+   </>
+   <tribe>
+       "モコモコ"
+   </>
+   <position>
+        0 -1000  0 
+   </>
+   <dir>
+        270 
+   </>
+   <aitype>
+       "なし"
+   </>
+   <territory_type>
+       "NPC_TERRITORY_TYPE_NOTHING"
+   </>
+   <territory_base>
+        0  0  0 
+   </>
+   <territory_loiter>
+        0  0  0 
+   </>
+   <territory_homing>
+        0  0  0 
+   </>
+   <search_range>
+        0 
+   </>
+   <search_angle>
+        0 
+   </>
+   <homing_range>
+        0 
+   </>
+   <homing_angle>
+        0 
+   </>
+   <btl_setup_no>
+       "BTLNO_INVALID"
+   </>
+</>

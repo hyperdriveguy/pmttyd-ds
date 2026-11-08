@@ -20062,3 +20062,49 @@ Next: compose actual same-VM mapLoad with these source camera/road and shadow
 owners, reach genuine material/GX capture with G0 still0, then source camMain,
 raw/semantic update authority and complete outer display/GPU services. Full Crump
 field/battle/return, prologue parity and hardware performance remain unfinished.
+### Crump native command round and lethal-source integration (2026-11-07)
+
+Integrated the original KemuTest type4 smoke, actual same-VM sailor construction
+primitive, exact source coin/EXP getters and stores, and outside-frame native
+presentation retirement. Coin/EXP callbacks preserve original RNG/read order and
+accumulate only into actual battle state; they do not award directly to the pouch
+or claim ending completion. Actual lethal-source fixture reaches the subsequent
+star-point placement/effect path. The real accumulated reward is9 EXP and0 coins;
+field return must not drop these points. Production same-VM Encounter composition,
+reward presentation/counting and complete field return remain separate work.
+
+Fixed the native class-menu arena admission after an isolated native trace proved
+both original atlases imported correctly but the221184-byte maximum arena could
+not be allocated with287104 total linear bytes free. Native menus now allocate
+exactly their validated plan's vertex requirement, with synchronized growth and
+actual capacity preflight. Existing queued consumers retain their1024-quad native
+budget. Original pixels and physical command readiness are preserved.
+
+Validation: artifacts/crump-victory-integration/results.json pins manifest
+05ad09275dcfa4787f37c710bbb605f23f48e47b18ed73a89c664d2a105ab508,
+16715 unchanged inputs. make test exits0:629/629 C++ in94.81s and275/275 Python
+in38.485s, no skips. make all exits0, SOUNDTRACK=gamecube, after normal
+assets-ready compiled475 recipes with529 editable asset sources unchanged.
+Documentation:1718 files, zero broken links. This graph includes committed
+17bc1e15 startup plus the exact owned contributions; the later camera startup
+commit is outside this receipt. The earlier frozen scene graph passed native and
+621/622 C++ tests; its only failure was root's missing smoke-test asset argument.
+The same binary passed with the genuine compiled PMEVT input. The accepted graph
+above corrects registration and passes the full make test gate.
+
+Separate isolated native arenaV1 evidence, acceptance-v1.json under
+artifacts/harbor-menu-arena-fix/, proves visible original class/weapon menus,
+physical Jump selection, Crump5→4, Mario10→9 after counterattack and turn2
+Command with pending0/failed0. Zero unmapped reads/native exceptions were found.
+That run uses the explicitly pinned15654 baseline plus arenaV1, not this complete
+combined graph. Its target-list visual defect is preserved honestly. The next
+separately frozen targetV2 contribution copies the original part-name field from
+its actual definition and has visible Lord Crump/physical-round evidence; it is
+not silently included in this checkpoint or its receipts.
+
+Next: integrate targetV2 and exact star-point offset/effect; provide actual
+original9-point reward presentation/transfer before admitting native teardown;
+bind the real field-start/wait/sequence and Mario preparation/post owners; then
+verify full fresh/resumed Crump victory, unchanged US dialogue and field return.
+Target hardware performance/audio and the full tutorial deliverable remain
+unverified. The full-game goal stays active.

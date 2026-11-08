@@ -15,6 +15,7 @@
 #include <optional>
 namespace ttyd {
 struct NativeHarborNiceConsumer;
+struct NativeHarborSmokeConsumer;
 struct PositionalSfxRegistry;
 class NativeBattleSound;class NativeHarborCompletion;
 bool loadHarborTutorialAssets(const char* root);
@@ -129,6 +130,7 @@ public:
     bool bindPublicSound(std::shared_ptr<PositionalSfxRegistry>);
     std::shared_ptr<NativeBattleSound> nativeGameplaySound()const;
     bool bindNativeNice(std::shared_ptr<NativeUiStartup>,const NativeHarborNiceConsumer&);
+    bool bindNativeSmoke(const NativeHarborSmokeConsumer&);
     std::optional<int32_t> startPublicMenuSound(uint32_t key);
     // Original CommandDisplay registration only. The caller retains queue and
     // cursor across waits, once per simulation display pass, and dispatches all

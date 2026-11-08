@@ -1521,6 +1521,7 @@ Original battle menu native resource/queue owners:
 | [Cold storage](battle/BATTLE_COLD_STORAGE.md) | Nine original storage/reset bodies | Full cold/native battle initialization |
 | [Retained battle voice and public pending sound](audio/RETAINED_BATTLE_VOICE_AND_PUBLIC_PENDING_SOUND.md) | Original voice/menu public On and real pending-slot ownership | Audible macro/voice service |
 | [Native battle public-slot retirement](audio/NATIVE_BATTLE_SOUND_SLOT_RETIREMENT.md) | Actual On/Off/init incarnation metadata and owned native teardown | Separate music/backend/field completion |
+| [Native Harbor sailor construction](field/NATIVE_HARBOR_SAILOR_CONSTRUCTION.md) | Actual source tag/Entry/metadata births and real regular-event IDs | Original field Init/start/wait/return remain separate |
 | [Native Harbor completion policy](battle/NATIVE_HARBOR_COMPLETION_POLICY.md) | Actual pouch/event/menu/audio teardown and unchanged result receipt | Original End/field wait remain separate |
 
 - [Harbor source lethal damage](battle/HARBOR_SOURCE_LETHAL_DAMAGE.md): actual ordinary lethal admission and retained source death leaves.
@@ -1582,3 +1583,11 @@ retain explicit provider and process-ownership frontiers.
   recovered reset/button/DTV bodies with actual input/MMIO/interrupt boundaries.
 
 - [Native shared original camera bootstrap](camera/NATIVE_SOURCE_CAMERA_BOOTSTRAP.md): all13 actual SDK entries, bounded selected-render-mode publication, source wide arithmetic and real road borrowing.
+
+- [Native Crump lethal KemuTest smoke](effect/NATIVE_HARBOR_KEMUTEST_SMOKE.md): actual original smoke strip, retained source getters/RNG/math and simulation-tick native instance admission; no source guest effect-pointer or queued-display completion claim.
+
+- [Native Harbor presentation retirement](display/NATIVE_HARBOR_PRESENTATION_RETIREMENT.md): actual synchronized resource retirement; production field-return composition remains separate.
+
+- [Retained original unit coin event](battle/RETAINED_UNIT_COIN_EVENT.md): whole original GetCoin/unit getter, fresh trial/probability loads and actual retained RNG without speculative victory or pouch awards.
+
+- [Retained original unit EXP events](battle/RETAINED_UNIT_EXP_EVENT.md): complete original GetExp/StoreExp, source signed/type branches and retained platform math without speculative victory or pouch awards.

@@ -1,5 +1,19 @@
 # Asset sources, organization, and provenance
 
+## Original Harbor sailor tag source
+
+`assets/original/harbor-npc-tags/gor_00.s` is the unchanged original US `m/gor_00/s`
+(10,549 bytes, SHA-256 `361cc4c7e2f85bc4b632fcc6daab9283fa39028676b2d27bb9c74a0989dcf32a`).
+Adjacent provenance pins original disc offset 988877944 and per-asset rights. The
+new normal `field-npc-tags` recipe compiles the existing native PMFMNPC1 tag view
+to `field-npc-map-gor_00.bin`, preserving original Shift-JIS strings, ordinals and
+17 binary32 input values per record. Checked-in edits are compiled without ISO
+reimport; new import used an empty destination. It supplies source data, not field
+Init/history/actor/regular/Main/GPU readiness. Nintendo/Intelligent Systems retain
+all original rights; no redistribution license is granted. See
+[the native constructor contract](behavior/field/NATIVE_HARBOR_SAILOR_CONSTRUCTION.md).
+
+
 Original tutorial map DVD sources are editable under
 `assets/original/maps/tutorial-stage-source/`, with per-file original ISO offsets,
 logical/transfer SHA-256 and licensing in `provenance.json` and `LICENSE.txt`.
@@ -4509,3 +4523,17 @@ into an empty destination only. No runtime camera table/record, render-mode BSS,
 heap or initialized GX state is imported. Native CPU selected-descriptor copying
 and complete camera/matrix constructors execute separately. Nintendo/Intelligent
 Systems rights are retained; tracking grants no redistribution license.
+
+## Original Crump KemuTest smoke
+
+`assets/original/effects/harbor-smoke/smoke40.png` is a lossless editable512x32
+RGBA decode of I4 image40 in original US `e/us/effect.tpl`. Its sixteen frames
+remain original unblended art. Source `memory.json` preserves actual angle/radius
+constants and dispatch/name witnesses for finite subtype4. The empty-destination
+`tools/import_harbor_smoke_assets.py` reads the ISO only, verifies whole original
+Entry/Main/Disp/parent/lookup bodies and bounded source data, and records exact
+ISO offsets/hashes and per-asset license/provenance. Normal texture/event recipes
+compile edits to `harbor-smoke40.t3x` and `harbor-smoke/memory.pmevt`; no generated
+smoke, raw bank history or import-over-edits. Original rights remain reserved;
+tracking grants no redistribution license. See the [finite native ownership
+contract](behavior/effect/NATIVE_HARBOR_KEMUTEST_SMOKE.md).

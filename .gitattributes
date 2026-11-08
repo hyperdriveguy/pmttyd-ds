@@ -1,0 +1,2 @@
+# Preserve original Shift-JIS tag bytes, including source CRLF and whitespace.
+assets/original/harbor-npc-tags/gor_00.s -text -diff

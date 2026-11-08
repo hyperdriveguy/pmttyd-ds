@@ -83,6 +83,11 @@ void Renderer::drawNativeHarborNice(const Game&g,bool lower){
   }
  }
 }
+bool Renderer::nativeHarborNiceMatches(const std::shared_ptr<const void>& runtime) const {
+ if(!nativeHarborNice)return true;
+ const auto owned=nativeHarborNice->runtime.lock();
+ return owned&&runtime&&owned==runtime&&!owned.owner_before(runtime)&&!runtime.owner_before(owned);
+}
 void Renderer::retireNativeHarborNice(){
  auto context=std::move(nativeHarborNice);if(!context)return;
  context->alive=false;context->visual->retire();
