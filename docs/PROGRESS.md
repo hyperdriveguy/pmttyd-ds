@@ -17558,3 +17558,40 @@ admit the actual Window GPU surface before frame binding. Normal source battle
 menu activation, complete tutorial/result/field return and lower audience taps
 with an independent physical selection path remain required. No original
 framebuffer parity, physical hardware FPS or full-goal completion is claimed.
+
+### Animation startup, async files and publication documentation
+
+Added 104 inline comment lines across eight implementation/header files for
+animation_startup_process, animation_group_request_binding,
+animation_mesh_publication and platform/file_async; clarified spacing in one
+existing header comment. Explained cold image/heap/literal admission, source
+completion versus sidecar adoption, bounded filename adapters, raw async result/
+list/callback ordering, native publication limits, private capture proofs and
+final mesh swap. Added/indexed docs/code/animation-startup-publication.md.
+Code/docs commit: `2bd50a44`. All eight files preserve executable tokens and
+string literals.
+
+Validation: existing file_async, native_file_async and animation_mesh_publication
+fixtures compiled and passed with annotated implementation objects linked first.
+Six async/request/publication source/header files and all three fixtures match
+the prior validated animation-memory-selection snapshot, whose coherent supporting
+headers/core/ROMFS were used. This includes actual retained async/resource and
+mesh-publication checks under that snapshot. The current expanded cold startup
+image was not exercised by those tests. Host and ARM C++17 syntax checks passed
+for all four implementations against captured current committed headers. No
+native linking or hardware claim. Ten live/private documented hashes, 133 local
+links, 564 current and 546 prior supporting header hashes, supporting
+core and 114 accepted product hashes passed final audits. No tests were added.
+
+Full make test/all were not repeated for comments/prose-only changes; there are
+no executable changes. Earlier full-suite/build evidence retains its own
+snapshot scope; these checks do not validate concurrent implementations. No
+assets/imports/conversions, ISO writes, story changes or emulator runs. Exact
+commands, logs, source/header hashes, scoped patch and documented copies:
+artifacts/animation-startup-publication-code-documentation-validation/.
+
+Goal remains active. Next: remaining animation resource/lifetime adapters and
+changed modules, then remaining field/native/tool code. The broad documentation
+coverage audit and whole-file Trio numeric synthesis remain unfinished; scoped
+fixtures/hash matches alone do not prove whole-port documentation or remake
+completion.
