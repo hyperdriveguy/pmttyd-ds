@@ -126,7 +126,9 @@ its retained native completion owner and that owner's completed, current receipt
 It compares unchanged result1, all packed bytes and exact battle lifetime pointer
 AND shared control block, including equality with this runtime. Public receipt
 fields alone, a conclusion scalar or an uncompleted owner authorize no write.
-Reentry is refused. Field/facade ownership is rechecked after receipt validation
+The caller also supplies its admitted field constructor and current canonical
+pouch; both must match the retained entry owners/control blocks before and after
+receipt validation. Reentry is refused. Field/facade ownership is rechecked after receipt validation
 because native completion services may be consulted there.
 
 The first valid commit uses `NativeMarioConstructor::adoptPouchSnapshot`: preserve

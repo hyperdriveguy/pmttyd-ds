@@ -20636,3 +20636,15 @@ retain it across real service holds, call this commit only after its matching
 completion, then compose actual field presentation/ticket return before source
 wait/tail/afterbattle. Whole fresh/resumed Crump playthrough, crowd/effect/audio
 rendering parity, cold-load and hardware performance/full-game goal stay open.
+
+
+Canonical-return call-site guard (2026-11-08): initial497f4596 candidate passed
+658 C++ tests in87.09s,278 Python in38.365s and native make all. Exact first
+receipt is artifacts/harbor-pouch-return/first-accepted/validation-manifest.json.
+Final review strengthened the public commit API to require the caller's actual
+field constructor and canonical pouch to match the retained entry identities
+before/after receipt validation. Tests now explicitly reject missing/foreign
+owner control blocks and different pouch objects. The normal Game wrapper passes
+its admitted public owner and current Progress pointer. No source behavior,
+result/sequence or asset changes. Strengthened focused tests pass2/2 in4.89s; full
+revalidation is running and results will follow.

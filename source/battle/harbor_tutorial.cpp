@@ -835,20 +835,22 @@ std::shared_ptr<NativeHarborCompletion>HarborTutorial::beginNativeCompletion(int
  auto owner=std::make_shared<NativeHarborCompletion>(std::move(binding));
  r->nativeCompletion=owner;r->nativeCompletionFrozen=true;return owner;
 }
-std::shared_ptr<ProloguePouch>HarborTutorial::commitNativePouchReturn(const NativeHarborCompletionReceipt& supplied){
+std::shared_ptr<ProloguePouch>HarborTutorial::commitNativePouchReturn(const NativeHarborCompletionReceipt& supplied,
+ const std::shared_ptr<NativeMarioConstructor>& expectedOwner,const std::shared_ptr<ProloguePouch>& expectedPouch){
  const auto r=runtime_;if(!r||r->fieldPouchCommitting)return {};
  struct Guard{bool&flag;explicit Guard(bool&f):flag(f){flag=true;}~Guard(){flag=false;}} guard(r->fieldPouchCommitting);
  const auto registration=sourceMenuRegistration_;const auto facade=this;
  const auto current=[r,registration,facade]{return r->nativeAdmissionProof.current()&&r->nativeAdmissionFacade==facade&&
   r->scene==facade&&registration&&registration->runtime.lock()==r&&r->nativeCompletionFrozen&&!r->vm.schedule.managerActive;};
- if(!current()||!r->fieldPouchCurrent())return {};
+ const auto expected=[&]{return sameOwner(r->fieldPouch.owner,expectedOwner)&&sameOwner(r->fieldPouch.pouch,expectedPouch);};
+ if(!current()||!expected()||!r->fieldPouchCurrent())return {};
  const auto completion=r->nativeCompletion.lock();if(!completion)return {};
  const auto actual=completion->receipt();if(!actual)return {};
  if(actual->result!=1||actual->result!=supplied.result||!sameOwner(actual->battleLifetime,supplied.battleLifetime)||
     !sameOwner(actual->battleLifetime,std::shared_ptr<const void>(r))||actual->pouch.bytes!=supplied.pouch.bytes)return {};
  // Receipt/provider checks can call native owners. Revalidate before touching
  // field storage; copied or retired facades never authorize this mutation.
- if(!current()||!r->fieldPouchCurrent()||!current())return {};
+ if(!current()||!expected()||!r->fieldPouchCurrent()||!current()||!expected())return {};
  if(!r->fieldPouchReturned){
   if(!r->fieldPouch.owner->adoptPouchSnapshot(actual->pouch))return {};
   r->fieldPouchReturned=true;

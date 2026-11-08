@@ -233,8 +233,8 @@ bool Game::beginHarborTutorialFromField(){
 }
 bool Game::commitHarborPouchReturn(const NativeHarborCompletionReceipt& receipt){
  const auto proof=harborPouchFacade_.proof();
- if(!nativeMarioConstructor()||!progress.originalPouch)return false;
- const auto pouch=harborTutorial.commitNativePouchReturn(receipt);
+ const auto owner=nativeMarioConstructor();if(!owner||!progress.originalPouch)return false;
+ const auto pouch=harborTutorial.commitNativePouchReturn(receipt,owner,progress.originalPouch);
  if(!pouch||!proof.current())return false;
  progress.hp=pouch->currentHP();return true;
 }

@@ -113,7 +113,8 @@ public:
     bool beginFromNativePouch(uint64_t milliseconds,int32_t originalStory,NativeHarborFieldPouchBinding);
     // Completed native teardown only; returns the same field pouch after a
     // guarded one-time copy. Does not publish a field result/sequence/story.
-    std::shared_ptr<ProloguePouch> commitNativePouchReturn(const NativeHarborCompletionReceipt&);
+    std::shared_ptr<ProloguePouch> commitNativePouchReturn(const NativeHarborCompletionReceipt&,
+        const std::shared_ptr<NativeMarioConstructor>& expectedOwner,const std::shared_ptr<ProloguePouch>& expectedPouch);
     // Attach after beginFresh; clear before provider teardown. These bindings
     // await the complete source scheduler owner and do not advance intro alone.
     void setStartupResources(void* user,bool(*paperReady)(void*,uint32_t,int32_t),bool(*niceReady)(void*,int32_t));

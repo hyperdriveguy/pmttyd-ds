@@ -68,7 +68,11 @@ struct NativeHarborCompletionFixture {
   forged=*receipt;forged.pouch.bytes[0]^=1;assert(!game->commitHarborPouchReturn(forged));
   forged=*receipt;forged.battleLifetime=std::shared_ptr<const void>(receipt->battleLifetime.get(),[](const void*){});assert(!game->commitHarborPouchReturn(forged));
   auto detached=std::make_unique<Game>(*game);assert(!detached->commitHarborPouchReturn(*receipt));
-  HarborTutorial copied=t;assert(!copied.commitNativePouchReturn(*receipt));
+  HarborTutorial copied=t;assert(!copied.commitNativePouchReturn(*receipt,field,canonical));
+  assert(!t.commitNativePouchReturn(*receipt,{},canonical));
+  assert(!t.commitNativePouchReturn(*receipt,field,std::make_shared<ProloguePouch>(*canonical)));
+  const auto foreignOwner=std::shared_ptr<NativeMarioConstructor>(field.get(),[](NativeMarioConstructor*){});
+  assert(!t.commitNativePouchReturn(*receipt,foreignOwner,canonical)&&canonical->bytes==initial);
   hooks.replacement=std::make_shared<ProloguePouch>(*canonical);
   assert(!game->commitHarborPouchReturn(*receipt)&&canonical->bytes==initial); // Replacement during receipt validation.
   game->progress.originalPouch=canonical;hooks.replacement.reset();
@@ -126,7 +130,7 @@ struct NativeHarborCompletionFixture {
   auto life=std::make_shared<int>(1);NativeHarborCompletionServices s{life,&hooks,[](void* p){return static_cast<Hooks*>(p)->alive;},[](void* p){++static_cast<Hooks*>(p)->visuals;return true;},[](void* p){++static_cast<Hooks*>(p)->music;return true;},{}};
   assert(owner->resume(s));const auto receipt=owner->receipt();assert(receipt&&receipt->result==1&&receipt->pouch.half(0x70)==8&&receipt->pouch.half(0x74)==3);
   assert(hooks.visuals==1&&hooks.music==1);
-  assert(!t.commitNativePouchReturn(*receipt)); // No native field entry association.
+  assert(!t.commitNativePouchReturn(*receipt,{},{})); // No native field entry association.
   // The retained owner pins the old VM, but public facade retirement revokes
   // permission before reading it. Replacement is not the old battle owner.
   t=HarborTutorial{};assert(!owner->resume(s)&&!owner->receipt());
