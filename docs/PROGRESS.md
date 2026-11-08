@@ -18372,3 +18372,40 @@ artifacts/battle-camera-numeric-code-documentation-validation/.
 Goal remains active. Next: native class/weapon frame and renderer ownership,
 remaining field/platform services, changed modules, tools and whole-file Trio
 numeric synthesis. No whole-port or full-game completion is claimed.
+
+### Retained class frame and renderer ownership documentation
+
+Added 39 inline comment lines across battle_class_frame_pipeline,
+battle_class_native_frame implementations/headers and render_battle_class_runtime.
+Explained independent wrapped userdata, before/after provider invalidation,
+retained source completion versus publication/native admission/camera finish,
+idempotent completed keys, immutable held submission identity, recording an
+accepted draw before later guards, source-only optional submission, completed
+outer publication visibility, renderer generation checks, explicit context-pin
+retirement, pending-attempt replacement policy and stable simulation-tick icon
+metadata. Added/indexed docs/code/class-frame-ownership.md. Code/docs commit:
+`f89bca4a`. All five files preserve executable tokens and string literals.
+
+Validation: existing battle_class_native_frame and battle_class_frame_pipeline
+fixtures compiled and passed with both freshly compiled portable implementations
+linked first. Five scoped streams and two fixture bytes match prior validated
+animation-memory-selection support; coherent pinned headers/core/ROMFS supplied
+remaining dependencies. The fixtures exercise retained source prefixes, guarded
+provider identities, submission holds, deferred retirement and no replay after
+accepted submission. Both portable implementations passed host syntax; all
+three implementations passed ARM C++17 syntax against captured current committed
+headers. Five executable comparisons, seven live/private documented hashes,
+138 local links, 579 current/546 prior headers, core and 114
+accepted product hashes passed audits. No new tests, actual Renderer/GPU
+submission/link, original raster parity or hardware timing exercised.
+
+Full make test/all were not repeated for comments/prose only; there are no
+executable changes. Prior suite/build results retain their own snapshot scope
+and do not validate concurrent changes. No assets/imports/conversions, ISO
+writes, story changes or emulator runs. Exact commands/logs, hashes, scoped
+patch and documented copies:
+artifacts/class-frame-ownership-code-documentation-validation/.
+
+Goal remains active. Next: weapon native frame and renderer ownership, remaining
+source services/field/platform adapters, changed modules, tools and whole-file
+Trio numeric synthesis. No whole-port or full-game completion is claimed.
