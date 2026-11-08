@@ -11,6 +11,8 @@ namespace ttyd {
 class AnimationMainTimeBinding {
 public:
  static std::unique_ptr<AnimationMainTimeBinding> bind(std::shared_ptr<BattlePosePool>,EventAddressSpace&,const AnimationPoolMemory&,std::function<bool()> current);
+ // A current alias proof does not supply synchronization or a native active
+ // pose check; mapped inactive source rows remain available to raw operations.
  bool available() const;
  AnimationMainTimeServices services();
  AnimationMainTimelineServices timelineServices();

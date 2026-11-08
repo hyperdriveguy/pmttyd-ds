@@ -8,6 +8,8 @@ namespace ttyd {
 class AnimationMainReplayBinding {
 public:
  static std::unique_ptr<AnimationMainReplayBinding> bind(std::shared_ptr<BattlePosePool>,EventAddressSpace&,const AnimationPoolMemory&,std::function<bool()> current,std::function<std::optional<uint32_t>()> gqr4,bool nativeCopies=false);
+ // Native copy opt-in changes only admitted disjoint raw-RAM acceleration;
+ // default false keeps scalar access boundaries for arbitrary source aliases.
  uint64_t bulkCopies() const{return bulkCopies_;}
  bool available() const;
  AnimationMainReplayServices services();

@@ -235,3 +235,7 @@ two-request resource polling.
 [Animation Main evaluation](animation-main-evaluation.md) explains clock/ratio
 rounding, timeline scans, five compressed streams, exact copy semantics and
 retained interpolation publications.
+
+[Animation parent ownership](animation-parent-ownership.md) explains Main/Inner
+capture boundaries, ring and flush publications, live VM providers and optional
+raw-copy admission.

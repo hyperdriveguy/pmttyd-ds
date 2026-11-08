@@ -18,6 +18,8 @@ struct AnimationMainServices {
  bool (*evaluate)(void*,const AnimationMainEvaluation&)=nullptr;
  AnimationFacingServices facing;
 };
+// This retained invocation owns no VM/resource lifetime. The caller keeps the
+// producer pass and each child's cursor alive across partial source effects.
 struct AnimationMainCursor {
  bool active=false;uint32_t phase=0,handle=0,models=0,resource=0,index=0,entry=0,holder=0,directory=0,selector=0,linked=0,flags=0;
  AnimationMainServices owner;AnimationMainEvaluation captured;AnimationFacingCursor facing;

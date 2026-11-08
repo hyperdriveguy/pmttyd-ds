@@ -3,6 +3,7 @@
 #include "animation_facing.hpp"
 #include "battle_audience_draw.hpp"
 namespace ttyd {
+// Original dispProc ABI. Pass belongs to callback/work state, not this request.
 struct AnimationInnerTraversal {
  uint32_t parent=0xffffffff,group=0,current=0,next=0;float fraction=0;
 };
@@ -21,6 +22,9 @@ struct AnimationInnerServices {
  bool (*invalidate)(void*)=nullptr;
  bool (*traverse)(void*,const AnimationInnerTraversal&)=nullptr;
 };
+// Bounded retained state; matrix is the copied caller input/effective output.
+// pending/gxStep pin one GX call. Original sample captures survive late Main.
+// Providers/producer lifetime remain caller-owned through every budget yield.
 struct AnimationInnerCursor {
  bool active=false,ring=false,pending=false;uint32_t phase=0,mapPhase=0,gxStep=0;
  AnimationInnerDrawRequest input;AnimationInnerServices owner;
@@ -33,5 +37,6 @@ struct AnimationInnerCursor {
 // effects may precede false; retain exact input/cursor/providers/pass. Word
 // arithmetic wraps32; no source ID/count/pass/finite clamps. Source GPU/SDK/
 // Main/traversal children require actual owners. Budget is native scheduling.
+// Default 128 limits native work per pump; it does not cap total source work.
 bool resumeAnimationInner(const AnimationInnerDrawRequest&,const AnimationInnerServices&,AnimationInnerCursor&,unsigned visits=128);
 }

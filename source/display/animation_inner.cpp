@@ -4,9 +4,14 @@ namespace ttyd {
 namespace {
 float real(uint32_t w){float f;std::memcpy(&f,&w,4);return f;}
 int32_t signed32(uint32_t w){return w<=0x7fffffff?int32_t(w):INT32_MIN+int32_t(w-0x80000000u);}
+// Compare all 48 matrix bytes and scalar float bits: signed-zero/NaN payload
+// differences are different retained requests, even when numeric equality holds.
 bool same(const AnimationInnerDrawRequest& a,const AnimationInnerDrawRequest& b){return a.pose==b.pose && a.pass==b.pass && !std::memcmp(a.matrix.data(),b.matrix.data(),48) && !std::memcmp(&a.angle,&b.angle,4) && !std::memcmp(&a.scale,&b.scale,4);}
 bool same(const AnimationInnerServices& a,const AnimationInnerServices& b){return a.user==b.user && a.word==b.word && a.half==b.half && a.byte==b.byte && a.store==b.store && a.gx==b.gx && a.callback==b.callback && a.main==b.main && a.copy==b.copy && a.flush==b.flush && a.invalidate==b.invalidate && a.traverse==b.traverse && a.facing.user==b.facing.user && a.facing.word==b.facing.word && a.facing.store==b.facing.store && a.facing.call==b.facing.call && a.facing.matrix==b.facing.matrix;}
 }
+// Original Inner consumes a POSE POINTER. Hex offsets below describe guest
+// fields; phases/visits are native cooperative scheduling, not rendering ticks.
+// Each acknowledged primitive remains committed; child false can retain work.
 bool resumeAnimationInner(const AnimationInnerDrawRequest& input,const AnimationInnerServices& s,AnimationInnerCursor& c,unsigned visits){
  if(!visits || !s.word || !s.store)return false;
  if(!c.active){c={};c.active=true;c.input=input;c.owner=s;c.matrix=input.matrix;}
@@ -17,6 +22,9 @@ bool resumeAnimationInner(const AnimationInnerDrawRequest& input,const Animation
  const uint32_t p=c.input.pose;
  for(unsigned visit=0;visit<visits;++visit)switch(c.phase){
  // Original prefix interleaves sample loads with file/descriptor resolution.
+ // W root80415dc0; cache16-byte rows ->FileEntry+a0 holder -> MODEL;
+ // MODEL1ac holds 64-byte descriptors+3c. Interleave P28/P2c/P30 sample
+ // captures with resolution. Null timeline exits only after that prefix.
  case 0:if(!read(0x80415dc0,c.work))return false;++c.phase;break;
  case 1:if(!read(p+0x10,c.index))return false;++c.phase;break;
  case 2:if(!read(c.work,c.models))return false;++c.phase;break;
@@ -29,14 +37,23 @@ bool resumeAnimationInner(const AnimationInnerDrawRequest& input,const Animation
  case 9:if(!read(p+0x30,c.fraction))return false;++c.phase;break;
  case 10:if(!read(c.model+0x1ac,c.directory))return false;++c.phase;break;
  case 11:if(!read(c.directory+(c.animation<<6)+0x3c,c.descriptor))return false;if(!c.descriptor)return complete();++c.phase;break;
+ // INITIAL W10c mode gates Pc: nonzero rejects pose mode 0; zero rejects 1.
+ // Original pass 2 admits MODELc4 mask1, otherwise rereads that word and tests
+ // PPC slw semantics: pass low 6 bits, shifts 32..63 produce 0 (not C++ UB).
  case 12:if(!read(c.work+0x10c,c.mode))return false;++c.phase;break;
  case 13:if(!read(p+0xc,c.value))return false;if(c.mode?c.value==0:c.value==1)return complete();c.phase=c.input.pass==2?14:15;break;
  case 14:if(!read(c.model+0xc4,c.flags))return false;c.phase=c.flags&1?17:15;break;
  case 15:if(!read(c.model+0xc4,c.flags))return false;++c.phase;break;
  case 16:{const auto shift=c.input.pass&63;if(!(c.flags&(shift<32?(1u<<shift):0)))return complete();++c.phase;break;}
+ // Secondary Pf4 precedes primary Pf0; low BE byte is alpha. Pe8 mask40
+ // enables primary alpha, secondary always applies. Any translucency forces
+ // effective pass 3 WITHOUT repeating original resource/pass admission.
  case 17:if(!read(p+0xf4,c.secondary))return false;++c.phase;break;
  case 18:if(!read(p+0xf0,c.primary))return false;++c.phase;break;
  case 19:if(!read(p+0xe8,c.flags))return false;c.phase=20;c.mapPhase=0;c.effective=c.input.pass;break;
+ // Map globals INDEX8041e664 then BASE8041e660; record stride2f4hex.
+ // Flags800/1000 bypass respective queries; map half+4 masks2/4 admit alpha
+ // bytes+19/+1d. Each query reloads globals independently;255 is opaque.
  case 20:
   // Complete mapTestXLU; local alphas are captured BE low bytes. Each map
   // query independently loads INDEX then BASE, unsigned half flags then byte.
@@ -53,8 +70,18 @@ bool resumeAnimationInner(const AnimationInnerDrawRequest& input,const Animation
   case 9:{auto b=s.byte?s.byte(s.user,c.mapGroup+0x1d):std::nullopt;if(!b)return false;if(*b!=255)c.effective=3;c.phase=21;break;}
   default:return false;
   }break;
+ // Pe0 callback receives only effective pass and replaces BOTH builtin GX
+ // requests and We0 publication. This differs from the later group callback.
  case 21:if(!read(p+0xe0,c.callback))return false;c.phase=c.callback?22:23;break;
  case 22:if(!s.callback || !s.callback(s.user,c.callback,c.effective))return false;c.phase=27;break;
+ // Builtins: ZMode802b93d8 (enable1,compare3,write !XLU), Blend802b932c
+ // (mode0/1,factors4/5,logic0), ZCompLoc802b940c (passes 1/3=>1),
+ // AlphaCompare802b8d60: passes0/2 threshold128, others always-test tuple.
+ // Only effective 0..3 issue these four calls; other values still publish We0.
+ // GX enum meanings: Zcompare3=LEQUAL; blend0=NONE/1=BLEND,factors4/5
+ // =SRCALPHA/INVSRCALPHA,logic0=CLEAR. Alpha passes0/2 use GEQUAL6 at128
+ // OR1 NEVER0; others ALWAYS7 AND0 ALWAYS7. ZCompLoc1 selects before texture.
+ // pending retains one complete request through a held GX child.
  case 23:
   if(c.effective>3){c.phase=25;break;}
   if(!c.pending){c.gx={};const bool xlu=c.effective==3;switch(c.gxStep){
@@ -68,12 +95,18 @@ bool resumeAnimationInner(const AnimationInnerDrawRequest& input,const Animation
  case 25:if(!read(0x80415dc0,c.work))return false;++c.phase;break;
  case 26:if(!store(c.work+0xe0,c.effective))return false;++c.phase;break;
  case 27:if(!advanceAnimationInnerFacing(p,c.input.angle,c.input.scale,c.input.matrix,s.facing,c.facing,c.matrix))return false;++c.phase;break;
+ // Fresh P3c=-1 triggers late Main. P4 mask2 selects shared-ring prep.
+ // high32(b21642c9*low32(P-pool))>>8 recovers stride368 index for aligned
+ // poses, but source adds no alignment/pool bounds check for other pointers.
  case 28:if(!read(p+0x3c,c.value))return false;c.phase=c.value==0xffffffff?29:70;break;
  case 29:if(!read(0x80415dc0,c.work))return false;++c.phase;break;
  case 30:if(!read(p+4,c.flags))return false;c.ring=c.flags&2;++c.phase;break;
  case 31:if(!read(c.work+0x10,c.pool))return false;c.handle=uint32_t((uint64_t(0xb21642c9u)*uint32_t(p-c.pool))>>32)>>8;c.phase=c.ring?32:60;break;
  // Inline ring. Capacity precedes the remaining MODEL resolution; signed
  // comparisons apply to wrapped32 sums. Oversize still calls Main +cleanup.
+ // Ring Wf0 capacity is read before full MODEL count resolution. MODELf0/
+ // f8 are position/normal counts; sum and cursor+sum wrap32, compare SIGNED.
+ // Exact equality fits; oversize still reaches Main and ring selector cleanup.
  case 32:if(!read(p+0x10,c.index))return false;++c.phase;break;
  case 33:if(!read(c.work,c.models))return false;++c.phase;break;
  case 34:if(!read(c.work+0xf0,c.capacity))return false;++c.phase;break;
@@ -84,6 +117,9 @@ bool resumeAnimationInner(const AnimationInnerDrawRequest& input,const Animation
  case 39:if(!read(c.value+0xf8,c.auxiliary))return false;c.total=c.positions+c.auxiliary;c.phase=signed32(c.total)>signed32(c.capacity)?60:40;break;
  case 40:if(!read(c.work+0xf4,c.cursor))return false;c.phase=signed32(c.cursor+c.total)>signed32(c.capacity)?41:42;break;
  case 41:if(!store(c.work+0xf4,0))return false;++c.phase;break;
+ // Fresh W each publication: We8=1; Wf8=baseWec+12*cursor, advance by
+ // captured positions; Wfc=base+12*CURRENTcursor, advance by auxiliaries.
+ // Each output row is XYZ binary32. No negative/overflow repair is invented.
  case 42:if(!read(0x80415dc0,c.work))return false;++c.phase;break;
  case 43:if(!store(c.work+0xe8,1))return false;++c.phase;break;
  case 44:if(!read(0x80415dc0,c.work))return false;++c.phase;break;
@@ -100,9 +136,13 @@ bool resumeAnimationInner(const AnimationInnerDrawRequest& input,const Animation
  case 55:if(!read(0x80415dc0,c.work))return false;++c.phase;break;
  case 56:if(!read(c.work+0xf4,c.cursor))return false;++c.phase;break;
  case 57:if(!store(c.work+0xf4,c.cursor+c.auxiliary))return false;c.phase=60;break;
+ // Late Main does NOT refresh earlier MODEL/descriptor/sample/fraction.
+ // Ring flag was captured at P4; afterward clear fresh We8 even on oversize.
  case 60:if(!s.main || !s.main(s.user,c.handle))return false;c.phase=c.ring?61:70;break;
  case 61:if(!read(0x80415dc0,c.work))return false;++c.phase;break;
  case 62:if(!store(c.work+0xe8,0))return false;c.phase=70;break;
+ // Modeling level8041e89c=0,pointer8041e8a0=base803d8e70,then SDK Copy.
+ // Publish current pose/descriptor/MODEL to W18/1c/20 with separate W loads.
  case 70:if(!store(0x8041e89c,0))return false;++c.phase;break;
  case 71:if(!store(0x8041e8a0,0x803d8e70))return false;++c.phase;break;
  case 72:if(!s.copy || !s.copy(s.user,c.matrix,0x803d8e70))return false;++c.phase;break;
@@ -116,6 +156,9 @@ bool resumeAnimationInner(const AnimationInnerDrawRequest& input,const Animation
  case 80:if(!read(c.work+0xe8,c.selector))return false;++c.phase;break;
  // Each flush captures its own resource/pointer/count, with the selector
  // retained across both calls. The pointer precedes file/holder/MODEL loads.
+ // Flushes are unconditional, including zero count: fresh MODELf0/f8*12
+ // gives byte lengths; DCFlushRange child owns effects. Selector stays fixed
+ // across both calls, but W/resource/output/count captures are independent.
  case 81:case 90:if(!read(p+0x10,c.index))return false;++c.phase;break;
  case 82:case 91:if(!read(c.work,c.models))return false;++c.phase;break;
  case 83:if(!read(c.selector?c.work+0xf8:p+0x4c,c.output))return false;++c.phase;break;
@@ -128,6 +171,9 @@ bool resumeAnimationInner(const AnimationInnerDrawRequest& input,const Animation
  case 92:if(!read(c.selector?c.work+0xfc:p+0x54,c.output))return false;++c.phase;break;
  case 96:if(!read(c.value+0xf8,c.bytes))return false;c.bytes*=12;++c.phase;break;
  case 97:if(!s.flush || !s.flush(s.user,c.output,c.bytes))return false;++c.phase;break;
+ // GXInvalidateVtxCache precedes fresh CAPTURED MODEL144 group count.
+ // Traverse(parent=-1,groupCount-1,captured current/next/fraction); no pass
+ // argument or post-traversal state restore is prepared by original Inner.
  case 98:if(!s.invalidate || !s.invalidate(s.user))return false;++c.phase;break;
  case 99:if(!read(c.model+0x144,c.value))return false;c.traversal={0xffffffff,c.value-1,c.current,c.next,real(c.fraction)};++c.phase;break;
  case 100:if(!s.traverse || !s.traverse(s.user,c.traversal))return false;return complete();
