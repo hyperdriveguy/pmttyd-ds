@@ -99,3 +99,59 @@ same-VM registry/pose owners and actual returned event IDs. The authored
 beforebattle tail and 276-command afterbattle event must retain their original
 order, names, IDs and control tokens. Numeric completion alone cannot substitute
 for those owners or authorize a fabricated postbattle scene.
+
+
+## Canonical field pouch return (2026-11-08)
+
+Normal staged Game entry now calls `beginHarborTutorialFromField` after the
+original beforebattle adapter reaches its retained setup2 request. An admitted
+native field passes its exact `NativeMarioConstructor` and canonical pouch via
+`HarborTutorial::beginFromNativePouch`. Equal bytes in another object, or the same
+object with a foreign shared-pointer control block, do not satisfy admission.
+Ready/current owner, actual SDK guest address and canonical backing are checked
+before original battle initialization and again after its first manager visit.
+A failed partial Begin remains partial and cannot silently replay initialization.
+
+The battle retains that constructor, packed object and guest address for its
+lifetime. Game contributes a weak native-facade proof plus a pure current
+predicate: check proof before borrowing Game, then verify its admitted public
+constructor and current canonical pointer/control blocks. Copies, moves,
+destruction and checkpoint reconstruction cannot inherit field write permission.
+The callback holds only weak field references; it adds no ownership cycle.
+Existing const-reference/fresh legacy battle entry retains its prior behavior
+and has no canonical-return permission. Absent legacy inventory stays absent.
+
+`HarborTutorial::commitNativePouchReturn` requires this actual facade/runtime,
+its retained native completion owner and that owner's completed, current receipt.
+It compares unchanged result1, all packed bytes and exact battle lifetime pointer
+AND shared control block, including equality with this runtime. Public receipt
+fields alone, a conclusion scalar or an uncompleted owner authorize no write.
+Reentry is refused. Field/facade ownership is rechecked after receipt validation
+because native completion services may be consulted there.
+
+The first valid commit uses `NativeMarioConstructor::adoptPouchSnapshot`: preserve
+its busy, Entry and producer guards; write the existing actual SDK-backed bytes;
+latch only after success. It allocates no replacement pouch and updates no story,
+result or sequence. Later valid visits return the same object without copying;
+later field HP/inventory edits therefore survive. `Game::commitHarborPouchReturn`
+refreshes its legacy/UI HP mirror from that returned object. Replaced canonical
+pointers and foreign physical VM backing revoke admission without writes.
+
+The normal entry helper is installed; the return API awaits the real ending
+coordinator. Nothing calls it from HP/conclusion alone. The complete victory/
+reward/finishing/audio/fade/teardown owner and actual field presentation/ticket
+return must still be composed. Only after those complete may the original field
+wait observe result/sequence and execute its remaining source cleanup/afterbattle.
+This is a bounded native resource handoff, not whole original End or a completed
+Crump playthrough. The exporter and mask40 behavior remain unchanged.
+
+The existing completion-facade regression now builds the real shared UI/Mario
+constructor, runs all132 original beforebattle adapter commands to setup2, and
+uses the production Game entry helper. Its separately labelled TEST status27/
+root-retirement prefix admits the actual native completion owner; it does not
+prove physical gameplay or original fatal/ending scheduling. Tests cover held
+presentation/music, forged result/bytes/control blocks, copied facades, pointer
+replacement during receipt validation, an actual field NPC producer lease,
+reentry, full packed export into the same raw guest allocation, later-write
+preservation and foreign backing rejection. Existing export tests retain
+partner snapshots and source conditional nonpositive-HP behavior coverage.

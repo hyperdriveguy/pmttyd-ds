@@ -214,3 +214,15 @@ rendering prerequisites do not authorize a synthetic result or field return.
 independent tag1 release to field-map `_unload`, after extReset and both heap
 clears. Battle exit's tag2 release does not substitute for that owner. Actual
 native queue/GPU draining and full same-VM Crump round-trip proof remain open.
+
+
+2026-11-08 native implementation breadcrumb: canonical Harbor resource-return
+composition now retains the exact actual field constructor/pouch at battle entry
+and admits only its actual completed native teardown receipt. Original packed
+export/mask40 logic is unchanged. The source-owner snapshot write preserves
+quiescence guards and copies once into existing SDK-backed storage; copied/
+retired facades, replaced pointers, forged receipts and foreign mappings reject
+without writes. No new source-body request is needed for this documented export
+leaf. Real ending/reward/presentation/audio coordination, sealed field return,
+source wait/afterbattle and original playthrough remain open; this partial
+resource handoff does not close RESULT-01.

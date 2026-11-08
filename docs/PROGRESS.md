@@ -20601,3 +20601,38 @@ hot paths before enabling room Load in normal play: several-minute native load
 latency is still unacceptable. Measure ordinary full-loop frames on New2DS and
 compare original runtime/frames. Full prologue acceptance remains open; no map
 capture, room readiness, source geometry or matched story/battle-return claim.
+
+
+### Canonical Harbor completion pouch handoff (2026-11-08)
+
+Native Game battle entry now retains the exact original field constructor,
+canonical packed pouch and actual SDK guest address. The supplied field-facade
+proof/current predicate rejects detached/copied/moved/replaced field ownership.
+Only the actual retained completion owner's finished/current result1 receipt,
+matching all bytes/runtime/shared-control-block identities, can commit that
+export. Source-owner adoptPouchSnapshot preserves busy/Entry/producer guards;
+only successful first copy latches. Later valid visits never replay the copy,
+so subsequent field resource edits survive. Game refreshes its UI HP mirror.
+Original exporter, mask40, story, result and sequence are unchanged. Legacy
+entry has no canonical-return receipt and no inventory is inferred.
+
+Focused tests pass2/2 in4.48s, including the actual source constructor and
+shared raw VM backing, original132-command beforebattle adapter and production
+Game entry helper. TEST status27/root retirement separately admits actual native
+completion; no physical fatal/reward/end acceptance is claimed. Tests cover
+held presentation/music, forged receipts/control blocks, copies, pointer
+replacement during receipt validation, a real field NPC producer lease,
+reentry, all-byte copy into the same guest allocation, later-write preservation
+and foreign physical mapping rejection. Independent scoped source review finds
+no material issue (artifacts/harbor-pouch-return/review.txt).
+
+The fixed candidate is based on eeb6975a; full make test and native make all are
+running at this incremental commit. Validation results will follow. No asset
+import/edit or original text change. No new emulator capture/Dolphin observation
+or New2DS timing is claimed. Unrelated worktree/staging is excluded/preserved.
+
+Next: install actual original ending/reward/finishing/fade/audio coordinator,
+retain it across real service holds, call this commit only after its matching
+completion, then compose actual field presentation/ticket return before source
+wait/tail/afterbattle. Whole fresh/resumed Crump playthrough, crowd/effect/audio
+rendering parity, cold-load and hardware performance/full-game goal stay open.

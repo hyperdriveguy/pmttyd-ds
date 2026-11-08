@@ -314,3 +314,16 @@ when the UI scalar was stale. See [HP consumer boundary](../field/NATIVE_SHARED_
 CO-03's HP resource mismatch is closed for this supplied-object path. This does
 not close actual same-VM field battle start/wait, BattleWork/sequence ownership,
 victory export/return, story5 resume or original afterbattle presentation.
+
+
+## Canonical native victory export handoff (2026-11-08)
+
+An admitted native Game now retains its exact field pouch/source constructor at
+Harbor battle entry and exposes a guarded one-time copy from the actual completed
+native teardown receipt back into that same SDK-backed object. See
+[completion resource ownership](../battle/NATIVE_HARBOR_COMPLETION_POLICY.md#canonical-field-pouch-return-2026-11-08).
+This supplies the canonical storage prerequisite for CO-07. It does not schedule
+the ending coordinator, complete the source battle/field sequence, release the
+original wait, publish story5 or execute afterbattle/crowd/dialogue. The normal
+return API remains unavailable until its real completion services produce the
+matching receipt; no HP/conclusion shortcut invokes it.

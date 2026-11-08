@@ -210,3 +210,32 @@ bool Game::retainNativeFieldAnimation(Game& previous,bool checkpoint){
  prepareNativeFieldAnimation();return true;
 }
 }
+
+namespace ttyd {
+bool Game::beginHarborTutorialFromField(){
+ if(!harborEncounter.battleRequested||harborEncounter.battleSetup!=2||harborTutorial.triggered)return false;
+ const auto owner=nativeMarioConstructor();
+ if(nativeMarioConstructor_&&!owner)return false; // Detached/incomplete native field.
+ const auto time=ticks*1000/60;const auto story=progress.originalStory.value_or(0);
+ if(!owner||!progress.originalPouch)return progress.originalPouch?
+  harborTutorial.beginFromPouch(time,*progress.originalPouch,story):harborTutorial.beginFresh(time,progress.hp,10,story);
+ NativeHarborFieldPouchBinding binding;binding.owner=owner;binding.pouch=progress.originalPouch;
+ const auto proof=harborPouchFacade_.proof();
+ const std::weak_ptr<NativeMarioConstructor> weakOwner=owner;const std::weak_ptr<ProloguePouch> weakPouch=progress.originalPouch;
+ binding.current=[this,proof,weakOwner,weakPouch]{
+  if(!proof.current())return false;
+  const auto owner=weakOwner.lock();const auto pouch=weakPouch.lock();
+  const auto actual=nativeMarioConstructor();const auto& canonical=progress.originalPouch;
+  return owner&&pouch&&actual==owner&&!actual.owner_before(owner)&&!owner.owner_before(actual)&&
+   canonical==pouch&&!canonical.owner_before(pouch)&&!pouch.owner_before(canonical);
+ };
+ return harborTutorial.beginFromNativePouch(time,story,std::move(binding));
+}
+bool Game::commitHarborPouchReturn(const NativeHarborCompletionReceipt& receipt){
+ const auto proof=harborPouchFacade_.proof();
+ if(!nativeMarioConstructor()||!progress.originalPouch)return false;
+ const auto pouch=harborTutorial.commitNativePouchReturn(receipt);
+ if(!pouch||!proof.current())return false;
+ progress.hp=pouch->currentHP();return true;
+}
+}

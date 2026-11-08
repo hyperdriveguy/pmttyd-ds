@@ -246,6 +246,8 @@ public:
     size_t harborCameraCursor=0;
     bool harborResume=false;
     bool beginHarborEncounter(bool resume);
+    bool beginHarborTutorialFromField(); // Requires the retained source setup2 request.
+    bool commitHarborPouchReturn(const NativeHarborCompletionReceipt&);
     ProfessorStory professorStory;
     PartnerFollow professorFollow;
     void updateTemporaryProfessor();
@@ -448,6 +450,7 @@ public:
     const GoombaReward& fieldReward() const {return goombaReward;}
     const std::vector<FieldNpcSoundRequest>& fieldNpcSounds() const{return npcSoundRequests;}
 private:
+    NativeFacadeRegistration harborPouchFacade_;
     void updateNativeFieldAnimation();
     void prepareNativeFieldAnimation();
     void troubleBoardEventMain(const Input&);

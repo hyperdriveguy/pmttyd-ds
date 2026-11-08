@@ -17,6 +17,7 @@
 #include "battle_star_point_offset.hpp"
 #include "native_harbor_nice_visual.hpp"
 #include "native_ui_startup.hpp"
+#include "native_mario_constructor.hpp"
 #include "event_gp_language_alias.hpp"
 #include <map>
 #include "battle_command_palette_memory.hpp"
@@ -47,6 +48,7 @@ std::shared_ptr<BattleMenuFileCache> menuFiles;
 // Indices are converter dispatch IDs, not source opcodes or native function
 // pointers. Asset reload publishes only after complete validation below.
 std::array<uint32_t,12> source{};std::unordered_map<uint32_t,uint32_t> callbacks;bool ready=false;
+template<class A,class B>bool sameOwner(const std::shared_ptr<A>&a,const std::shared_ptr<B>&b){return a&&b&&a==b&&!a.owner_before(b)&&!b.owner_before(a);}
 int32_t signedWord(uint32_t v){return v<=0x7fffffff?int32_t(v):int32_t(int64_t(v)-0x100000000LL);}
 }
 // Load original global/gor_00 US messages and font with the source EVT pack;
@@ -88,6 +90,12 @@ struct HarborTutorialRuntime {
  uint32_t statusBattle=0;std::shared_ptr<const uint8_t>statusBattleOwner;
  std::unique_ptr<BattleMenuFileBinding> menuBinding;BattleMenuResourceCursor menuCursor;
  std::weak_ptr<NativeHarborCompletion> nativeCompletion;bool nativeCompletionFrozen=false;
+ NativeHarborFieldPouchBinding fieldPouch;uint32_t fieldPouchAddress=0;
+ bool fieldPouchReturned=false,fieldPouchCommitting=false;
+ bool fieldPouchCurrent(){
+  return fieldPouch.owner&&fieldPouch.current&&fieldPouch.current()&&fieldPouch.owner->ready()&&
+   fieldPouch.owner->pouchAddress()==fieldPouchAddress&&sameOwner(fieldPouch.owner->sharedPouch(),fieldPouch.pouch);
+ }
  std::weak_ptr<NativeHarborRewardCounter> nativeRewardCounter;bool nativeRewardCounterMinted=false;
  uint32_t nativeVictoryUnit=0,nativeVictoryRoot=0;bool nativeVictoryTracked=false;
  std::shared_ptr<BattleCommandPalette> commandPalette;
@@ -390,6 +398,17 @@ struct HarborTutorialRuntime {
 bool HarborTutorial::begin(uint64_t time,int32_t hp,int32_t maxHp){return beginWithContext(time,hp,maxHp,false,0);}
 bool HarborTutorial::beginFresh(uint64_t time,int32_t hp,int32_t maxHp,int32_t story){return beginWithContext(time,hp,maxHp,true,story);}
 bool HarborTutorial::beginFromPouch(uint64_t time,const ProloguePouch& entry,int32_t story){return beginWithContext(time,entry.half(0x70),entry.half(0x72),true,story,&entry);}
+// Field storage is admitted before source initialization and revalidated after
+// its first manager visit. A failed partial Begin is never silently replayed.
+bool HarborTutorial::beginFromNativePouch(uint64_t time,int32_t story,NativeHarborFieldPouchBinding binding){
+ if(!ready||triggered||!binding.owner||!binding.pouch||!binding.current||!binding.current()||
+    !binding.owner->ready()||binding.owner->busy()||!sameOwner(binding.owner->sharedPouch(),binding.pouch))return false;
+ const auto address=binding.owner->pouchAddress();if(!address)return false;
+ if(!beginFromPouch(time,*binding.pouch,story))return false;
+ auto&r=*runtime_;r.fieldPouch=std::move(binding);r.fieldPouchAddress=address;
+ if(!r.fieldPouchCurrent()){failed=true;return false;}
+ return true;
+}
 // Reset only after ready/not-triggered admission. Original visual slots are
 // Crump 0/Mario 1/helper 2 but registry IDs 2/1/3; invisible system ID 0 enters first.
 // Mario kind 222, source move phase 0x04000002 and (-100, 0,-5) are native entry
@@ -815,6 +834,26 @@ std::shared_ptr<NativeHarborCompletion>HarborTutorial::beginNativeCompletion(int
  };
  auto owner=std::make_shared<NativeHarborCompletion>(std::move(binding));
  r->nativeCompletion=owner;r->nativeCompletionFrozen=true;return owner;
+}
+std::shared_ptr<ProloguePouch>HarborTutorial::commitNativePouchReturn(const NativeHarborCompletionReceipt& supplied){
+ const auto r=runtime_;if(!r||r->fieldPouchCommitting)return {};
+ struct Guard{bool&flag;explicit Guard(bool&f):flag(f){flag=true;}~Guard(){flag=false;}} guard(r->fieldPouchCommitting);
+ const auto registration=sourceMenuRegistration_;const auto facade=this;
+ const auto current=[r,registration,facade]{return r->nativeAdmissionProof.current()&&r->nativeAdmissionFacade==facade&&
+  r->scene==facade&&registration&&registration->runtime.lock()==r&&r->nativeCompletionFrozen&&!r->vm.schedule.managerActive;};
+ if(!current()||!r->fieldPouchCurrent())return {};
+ const auto completion=r->nativeCompletion.lock();if(!completion)return {};
+ const auto actual=completion->receipt();if(!actual)return {};
+ if(actual->result!=1||actual->result!=supplied.result||!sameOwner(actual->battleLifetime,supplied.battleLifetime)||
+    !sameOwner(actual->battleLifetime,std::shared_ptr<const void>(r))||actual->pouch.bytes!=supplied.pouch.bytes)return {};
+ // Receipt/provider checks can call native owners. Revalidate before touching
+ // field storage; copied or retired facades never authorize this mutation.
+ if(!current()||!r->fieldPouchCurrent()||!current())return {};
+ if(!r->fieldPouchReturned){
+  if(!r->fieldPouch.owner->adoptPouchSnapshot(actual->pouch))return {};
+  r->fieldPouchReturned=true;
+ }
+ return r->fieldPouch.pouch;
 }
 std::optional<NativeHarborBattleIdentity>HarborTutorial::nativeFieldBattleIdentity()const{
  if(!triggered||failed||!initialized||!runtime_||runtime_->nativeCompletionFrozen||!sourceMenuRegistration_||sourceMenuRegistration_->runtime.lock()!=runtime_)return {};

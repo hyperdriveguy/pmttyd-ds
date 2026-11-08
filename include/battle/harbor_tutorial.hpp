@@ -52,6 +52,14 @@ struct HarborTutorialClassRow {
  std::string label;
 };
 struct ProloguePouch;
+class NativeMarioConstructor;
+// Exact field storage and actual field-facade admission, retained at entry.
+// current must reject detached/copied/moved/replaced field owners.
+struct NativeHarborFieldPouchBinding {
+ std::shared_ptr<NativeMarioConstructor> owner;
+ std::shared_ptr<ProloguePouch> pouch;
+ std::function<bool()> current;
+};
 struct HarborTutorialRuntime;
 struct HarborSourceMenuRegistration;
 struct HarborNativeMenuSnapshot;
@@ -102,6 +110,10 @@ public:
     // and executes Mario kind+bc initialization before admitting intro phase.
     bool beginFresh(uint64_t milliseconds,int32_t marioHp,int32_t marioMaxHp,int32_t originalStory);
     bool beginFromPouch(uint64_t milliseconds,const ProloguePouch&,int32_t originalStory);
+    bool beginFromNativePouch(uint64_t milliseconds,int32_t originalStory,NativeHarborFieldPouchBinding);
+    // Completed native teardown only; returns the same field pouch after a
+    // guarded one-time copy. Does not publish a field result/sequence/story.
+    std::shared_ptr<ProloguePouch> commitNativePouchReturn(const NativeHarborCompletionReceipt&);
     // Attach after beginFresh; clear before provider teardown. These bindings
     // await the complete source scheduler owner and do not advance intro alone.
     void setStartupResources(void* user,bool(*paperReady)(void*,uint32_t,int32_t),bool(*niceReady)(void*,int32_t));
