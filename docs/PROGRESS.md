@@ -18278,3 +18278,35 @@ artifacts/window-packets-code-documentation-validation/.
 Goal remains active. Next: remaining renderer packet adapters and battle/field/
 platform services, changed modules, broader tool coverage and whole-file Trio
 numeric synthesis. No whole-port or full-game completion is claimed.
+
+### Native HP capture and submenu renderer documentation
+
+Added 43 inline comment lines across render_battle_enemy_hp_runtime,
+render_battle_enemy_hp_publication, render_battle_submenu_surface and
+render_battle_submenu_packets implementations. Explained long allocation
+value/token proofs versus short invocation, capture-pass zero and retry scoping,
+actual source-icon/import lookup, the explicit synthetic map-work flags token,
+callback lifetime pins and release order, projection-only HP state, two-texel
+icon padding, current per-bar temporary batch construction, repeated snapshot
+replay, observational metrics and whole-span submenu geometry/preflight. Added/
+indexed docs/code/hp-submenu-renderer.md. Code/docs commit: `6a25b527`.
+All four files preserve executable tokens and string literals.
+
+Validation: all four native implementations passed ARM C++17 syntax against
+a coherent captured current committed include tree. Four executable-stream
+comparisons, six live/private documented hashes, 138 local links and
+579 supporting header hashes passed audits. No host stub compilation was
+counted as runtime coverage. No runtime fixtures, native link/import/draw,
+original pixel parity or hardware timing exercised; no tests added.
+
+Full make test/all were not repeated for comments/prose only; there are no
+executable changes. Prior suite/build results retain their own snapshot scope
+and do not validate concurrent changes. No assets/imports/conversions, ISO
+writes, story changes or emulator runs. Exact syntax command/log, source/header
+hashes, scoped patch and documented copies:
+artifacts/hp-submenu-renderer-code-documentation-validation/.
+
+Goal remains active. Next: remaining class/weapon native renderer and numeric/
+camera adapters, field/platform services, changed modules, broader tool coverage
+and whole-file Trio numeric synthesis. No whole-port or full-game completion
+is claimed.
