@@ -17980,3 +17980,39 @@ interval. Full prologue dialogue/story/overworld triggers/indoor coverage and
 physical New2DS XL parity remain unfinished. EVT-01 and the full goal stay active.
 See [contract](behavior/field/NATIVE_MAP_OBJECT_SOURCE_OWNER.md) and the request
 inbox; static original evidence is under artifacts/field-map-owner-evidence/.
+
+### Battle class, HP and weapon publication documentation
+
+Added 64 inline comment lines across battle_class_publication,
+battle_enemy_hp_publication and battle_weapon_ordered_publication implementations/
+headers. Explained one-use admission notices, monotonic native keys, omitted
+stack-local source callbacks, mixed HP order, actual icon backing and GX token
+policies, deferred total retirement versus one-shot invalidation, old-frame
+retention, exact object/control-block ownership, pre-RNG font reservations,
+signed-zero retry identity and whole-batch effect-free-on-false submission.
+Added/indexed docs/code/battle-publications.md. Code/docs commit: `8faca354`.
+All six files preserve executable tokens and string literals.
+
+Validation: existing battle_class_publication and battle_enemy_hp_publication
+fixtures compiled and passed with both freshly compiled implementations linked
+first. Their four source/header streams and two fixture bytes match the prior
+validated animation-memory-selection support; coherent pinned supporting
+headers/core/ROMFS supplied remaining dependencies. All three implementations
+passed host/ARM C++17 syntax against captured current committed headers.
+The weapon tryDraw interface differs from the older supporting library; no
+incompatible weapon runtime fixture was reused. Six executable comparisons,
+eight live/private documented hashes, 133 local links, 577 current/546
+prior supporting headers, core and 114 accepted product hashes passed audits.
+No new tests, actual GPU submission/link, source scheduling or hardware parity
+were exercised.
+
+Full make test/all were not repeated for comments/prose only; there are no
+executable changes. Prior suite/build evidence retains its own snapshot scope
+and does not validate concurrent changes. No assets/imports/conversions, ISO
+writes, story changes or emulator runs. Exact commands, logs, source/header
+hashes, scoped patch and documented copies:
+artifacts/battle-publications-code-documentation-validation/.
+
+Goal remains active. Next: typed class/submenu/window packet providers and
+remaining battle/field/platform services, changed modules, tools and whole-file
+Trio numeric synthesis. No whole-port or full-game completion is claimed.
