@@ -2,6 +2,7 @@
 #include "native_harbor_field_sequence.hpp"
 #include "native_battle_status.hpp"
 #include "native_facade_registration.hpp"
+#include "harbor_native_actor_display.hpp"
 #include "battle_class_display.hpp"
 #include "harbor_source_menu_factory.hpp"
 #include <functional>
@@ -185,9 +186,12 @@ public:
     // is not whole End, reward export, teardown or field-return completion.
     std::weak_ptr<const void> nativeGameplayLifetime()const;
     NativeFacadeRegistration::Proof nativeGameplayFacadeProof()const;
+    std::optional<HarborNativeBodyDisplayAttributes> nativeBodyDisplayAttributes(int32_t actorId)const;
     std::optional<NativeHarborBattleIdentity> nativeFieldBattleIdentity()const;
  std::shared_ptr<NativeHarborCompletion> beginNativeCompletion(int32_t originalResult);
  std::shared_ptr<NativeHarborRewardCounter> beginNativeRewardCounter();
+ bool startNativeRewardVictoryEvent();
+ bool nativeRewardVictoryEventComplete()const;
     std::optional<int32_t> nativeGameplayConclusion();
     bool nativeGameplayNextTurn();
     bool running() const{return triggered;}
@@ -203,6 +207,7 @@ private:
     // that facade a fresh slot. The slot never pins the VM it identifies.
     friend struct NativeHarborCompletionFixture;
     friend struct NativeHarborRewardBindingFixture;
+    friend struct NativeHarborVictoryEventFixture;
     mutable std::shared_ptr<HarborSourceMenuRegistration> sourceMenuRegistration_;
     NativeFacadeRegistration nativeMenuRegistration_;
 };

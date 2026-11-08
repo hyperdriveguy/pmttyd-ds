@@ -109,6 +109,9 @@ void Renderer::worldTutorial(const Game& g,bool lower) {
     if(!lower){count=0;tutorialDrawRanges={};}
     for(unsigned i=0;i<3;++i) {
         const auto& a=g.harborTutorial.actors[i];
+        if(a.id<0)continue;
+        const auto attributes=g.harborTutorial.nativeBodyDisplayAttributes(a.id);
+        if(!attributes||!harborNativeBodyDrawAllowed(*attributes))continue;
         const auto selected=selectHarborTutorialAnimation(i,a.pose.c_str(),tutorialActors[i].animations,
             trioMarioAnimations?trioMarioAnimations->bank.get():nullptr);
         if(!selected)continue;
@@ -123,7 +126,6 @@ void Renderer::worldTutorial(const Game& g,bool lower) {
             auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);
             C3D_TexBind(0,&texture.texture);C3D_DrawArrays(GPU_TRIANGLES,span[0],span[1]);continue;
         }
-        if(a.id<0)continue;
         const auto* pose=selected->pose;
         if(!pose || !pose->evaluate(float(g.harborTutorial.now-a.poseAt)*.06f,actorSample) || actorSample.vertices.size()>size_t(12000-count))continue;
         const int first=count;

@@ -7,6 +7,7 @@
 #include "native_battle_sound.hpp"
 #include "native_harbor_completion.hpp"
 #include "native_harbor_reward_counter.hpp"
+#include "battle_data_child.hpp"
 #include "native_harbor_stylish.hpp"
 #include "native_harbor_nice.hpp"
 #include "native_harbor_smoke.hpp"
@@ -88,6 +89,7 @@ struct HarborTutorialRuntime {
  std::unique_ptr<BattleMenuFileBinding> menuBinding;BattleMenuResourceCursor menuCursor;
  std::weak_ptr<NativeHarborCompletion> nativeCompletion;bool nativeCompletionFrozen=false;
  std::weak_ptr<NativeHarborRewardCounter> nativeRewardCounter;bool nativeRewardCounterMinted=false;
+ uint32_t nativeVictoryUnit=0,nativeVictoryRoot=0;bool nativeVictoryTracked=false;
  std::shared_ptr<BattleCommandPalette> commandPalette;
  void* resourceUser=nullptr;bool(*paperReady)(void*,uint32_t,int32_t)=nullptr;bool(*niceReady)(void*,int32_t)=nullptr;
  void* fadeUser=nullptr;void(*fadeEntry)(void*,int32_t,int32_t,uint32_t)=nullptr;bool(*fadeFinished)(void*)=nullptr;
@@ -738,6 +740,50 @@ std::shared_ptr<NativeHarborRewardCounter>HarborTutorial::beginNativeRewardCount
  services.sound=[](void*p){auto&b=*static_cast<Binding*>(p);constexpr uint32_t StarPointSound=0x802feaa8;return b.current()&&b.runtime->packed->sourceSound&&b.runtime->packed->sourceSound->menu(StarPointSound).has_value();};
  auto owner=std::make_shared<NativeHarborRewardCounter>(binding->battle,binding->pouch,std::move(services));r->nativeRewardCounter=owner;r->nativeRewardCounterMinted=true;return owner;
 }
+bool HarborTutorial::startNativeRewardVictoryEvent(){
+ const auto proof=nativeGameplayFacadeProof();if(!proof.current())return false;
+ auto&r=*runtime_;
+ if(failed||r.nativeCompletionFrozen||r.vm.schedule.managerActive||!r.packed)return false;
+ auto counter=r.nativeRewardCounter.lock();if(!counter||!counter->admit()||counter->total()<=0)return false;
+ if(r.nativeVictoryTracked)return true;
+ if(counter->phase()!=NativeHarborRewardCounter::Phase::Ready)return false;
+ constexpr uint32_t SourceDataKey=0x40,TrackedEventOffset=0x2a8;
+ // The original Crump setup has no active party. A nonnull party needs its
+ // actual resource/appearance owner and is outside this bounded native entry.
+ const auto battle=r.packed->battleAddress();const auto actors=nativeBattleActorServices(r.vm);
+ if(!battle||battlePartyUnit(battle,actors))return false;
+ if(!r.nativeVictoryRoot){
+  const auto mario=battleMarioUnit(battle,actors);if(!mario)return false;
+  const auto script=battleUnitData(mario,SourceDataKey,actors.memory);if(!script)return false;
+  uint32_t owner=0,tracked=0;if(!r.vm.memory.readWord(mario,owner)||!r.vm.memory.readWord(mario+TrackedEventOffset,tracked))return false;
+  // Native preflight for the original constructor's flat label scan. It
+  // really reads the lookahead operand even at opcode1; supply no sentinel.
+  constexpr unsigned NativeCommandBudget=256,SourceLabelCapacity=16;
+  uint32_t at=script;unsigned labels=0;bool terminated=false;
+  for(unsigned i=0;i<NativeCommandBudget;++i){uint32_t header=0,lookahead=0;
+   if(!r.vm.memory.readWord(at,header)||!r.vm.memory.readWord(at+4,lookahead))return false;
+   const auto count=int16_t(header>>16);if(count<0||uint64_t(at)+4+4*uint32_t(count)>UINT32_MAX)return false;
+   for(int32_t arg=0;arg<count;++arg){uint32_t value=0;if(!r.vm.memory.readWord(at+4+4*uint32_t(arg),value))return false;}
+   if((header&0xffff)==1){terminated=true;break;}
+   if((header&0xffff)==3&&++labels>SourceLabelCapacity)return false;
+   at+=4+4*uint32_t(count);
+  }
+  if(!terminated)return false;
+  bool vacant=false;for(int32_t i=0;i<r.vm.battle.capacity;++i)vacant|=!(r.vm.battle.entries[i].flags&1);
+  if(!vacant)return false;
+  // Actual source priority10/flags0/root ownerID. Retain its real ID before
+  // the tracked-unit store so a held store cannot create a second event.
+  auto&e=r.root(script,int32_t(owner));r.nativeVictoryRoot=e.id;r.nativeVictoryUnit=mario;
+ }
+ if(!r.vm.memory.writeWord(r.nativeVictoryUnit+TrackedEventOffset,r.nativeVictoryRoot))return false;
+ r.nativeVictoryTracked=true;return true;
+}
+bool HarborTutorial::nativeRewardVictoryEventComplete()const{
+ const auto proof=nativeGameplayFacadeProof();if(!proof.current())return false;
+ const auto&r=*runtime_;if(failed||r.nativeCompletionFrozen||r.vm.schedule.managerActive||!r.nativeVictoryTracked||!r.nativeVictoryRoot)return false;
+ for(int32_t i=0;i<r.vm.battle.capacity;++i)if((r.vm.battle.entries[i].flags&1)&&r.vm.battle.entries[i].id==r.nativeVictoryRoot)return false;
+ return true;
+}
 std::shared_ptr<NativeHarborCompletion>HarborTutorial::beginNativeCompletion(int32_t result){
  if(!runtime_||!runtime_->packed||!sourceMenuRegistration_)return {};
  auto r=runtime_;
@@ -784,6 +830,17 @@ std::optional<NativeHarborBattleIdentity>HarborTutorial::nativeFieldBattleIdenti
   const auto& actual=receipt->battleLifetime;const auto& supplied=candidate.battleLifetime;
   return actual&&supplied&&actual==supplied&&!actual.owner_before(supplied)&&!supplied.owner_before(actual)&&receipt->result==candidate.result&&receipt->pouch.bytes==candidate.pouch.bytes;
  });
+}
+std::optional<HarborNativeBodyDisplayAttributes>HarborTutorial::nativeBodyDisplayAttributes(int32_t actorId)const{
+ const auto proof=nativeGameplayFacadeProof();if(!proof.current()||!runtime_||!runtime_->packed)return {};
+ const auto owner=runtime_;uint32_t battle=0;
+ if(!owner->vm.memory.readWord(0x8041eb90,battle)||battle!=owner->packed->battleAddress())return {};
+ struct Context{HarborTutorialRuntime*runtime;const HarborTutorial*facade;NativeFacadeRegistration::Proof proof;};
+ Context context{owner.get(),this,proof};HarborNativeBodyDisplayServices services;
+ services.user=&context;services.lifetime=owner;
+ services.current=[](void*p){const auto&c=*static_cast<Context*>(p);return c.proof.current()&&c.runtime->nativeAdmissionFacade==c.facade&&c.runtime->scene==c.facade;};
+ services.word=[](void*p,uint32_t a)->std::optional<uint32_t>{uint32_t value;const auto&c=*static_cast<Context*>(p);if(!c.runtime->vm.memory.readWord(a,value))return {};return value;};
+ return harborNativeBodyDisplayAttributes(owner->packed->unitAddress(actorId),services);
 }
 std::weak_ptr<const void>HarborTutorial::nativeGameplayLifetime()const{return runtime_;}
 NativeFacadeRegistration::Proof HarborTutorial::nativeGameplayFacadeProof()const{

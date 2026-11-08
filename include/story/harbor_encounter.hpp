@@ -2,6 +2,7 @@
 #include "message_playback.hpp"
 #include "field_scripted_jump.hpp"
 #include "field_npc_battle_event.hpp"
+#include "native_harbor_encounter_field.hpp"
 #include <array>
 #include <memory>
 #include <vector>
@@ -41,11 +42,18 @@ public:
     // Repeated begin is rejected until the caller explicitly resets the owner.
     // floor is native jump support, distinct from VM request coordinates.
     bool begin(uint64_t time,std::array<float,3> mario,int hp,bool resume);
+    // Fresh native source path; unavailable children hold. Legacy begin remains separate.
+    bool beginNativeField(uint64_t time,std::array<float,3> mario,int hp,bool resume,NativeHarborEncounterFieldConfig);
+    bool nativeFieldVmIs(const EventNativeRuntime&)const;
+    std::optional<NativeHarborBattleTicket> nativeBattleRequest();
+    bool nativeBattleEntered(const NativeHarborBattleTicket&,const HarborTutorial&);
+    bool nativeBattleReturn(const NativeHarborBattleTicket&,const NativeHarborCompletionReceipt&);
     void tick(uint64_t time,uint32_t keys,std::optional<float> floor={});
     bool battlePending() const;
     bool running() const{return triggered && !finished;}
     bool locked() const{return running() && (keyDepth!=0 || !controlEnabled);}
 private:
     std::shared_ptr<HarborEncounterRuntime> runtime_;
+    NativeFacadeRegistration nativeFieldFacade_;
 };
 }

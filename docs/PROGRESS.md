@@ -20412,3 +20412,59 @@ The documentation inbox EVT-01 records these boundaries. Source CPU loading is
 still slow; optimize measured child/ownership hot paths before production room
 activation. Complete mapLoad, source geometry rendering, normal source room Load
 activation, original runtime/pixel parity and full prologue acceptance remain open.
+
+### Crump lethal source closure and native ending foundations (2026-11-08)
+
+Integrated actual GetBackItem, OnPartsAttribute, WaitAttackEnd and KillUnit
+source callbacks after original death effects. GetBackItem preserves the actual
+eight-slot/one-past table branch; WaitAttack polls the real tracked event;
+KillUnit preserves source status27/flags and the source-fresh charge16 load
+order in ClearStatus. Actual death/body visibility gates suppress the native
+body without inventing a missing source display/shadow queue acknowledgment.
+The independent CPU lethal fixture reaches conclusion1/stock9EXP/pending0
+through original damage/death; scene result stays0 until real return ownership.
+
+Added actual positive-reward Mario key40 victory-root admission and retirement
+queries, preserving priority10/flags0, owner ID and tracked U+2a8. The finite
+native reward flow coordinates the real counter/model:120->119 same-visit intro,
+physical A/B acceleration, retained old tick/input through callback holds,
+ordinary icon hide/PointGet soft-delete and five cleanup visits. Zero/level-up
+and missing actual victory retirement cannot become finishing-ready. Renderer
+reward admission now pins the actual ordinary Mario bank and atlas containing
+M_V_2/M_V_1/M_R_1. This foundation does not yet activate production ending,
+original full End, finishing/fade, teardown or field return.
+
+Integrated the fresh source Encounter context and bounded actual Mario GetPos,
+empty ENVOff and key-control providers. Six original NPC constructor roots,
+source information/start/wait, actual VM/host/facade proofs and source wrapping
+key owner are retained. Native cold ENV evidence is explicit and sealed, not an
+inference from absent ambience. Production Game/Audio hookup remains separate;
+fresh source next-provider hold is actual mov_pos2, not a fabricated completion.
+
+Exact frozen validation: artifacts/crump-death-integration/results.json pins
+manifest dcb9a17dca43a3fdc3e0be63496ed178e1aacfa6eb51d8620deca80af437ba25, 16858 unchanged inputs from committed
+f0f38 plus owned changes. make test0: 659/659 C++
+in170.3s and278 Python in90.031s.
+make all0, SOUNDTRACK=gamecube; normal478 recipes;537 editable inputs
+unchanged. Native3DSX SHA256 1460be0ddfad7b44c3124f06678898fb750a0b2e0aef7ac715558121d9586d53.
+Nine read-only original-source verifiers pass;1742 documentation files/zero
+broken links. Concurrent later shared-pouch/map changes are outside this frozen
+receipt and preserved during scoped integration.
+
+Separate physical evidence remains the earlier16788-input instrumented graph:
+artifacts/crump-star-physical-probe/accepted-physical-evidence.json SHA256
+f809129bc4380046a8e0d9f0c3959b50369e0fb52a8a361dbed956b8093a87ff.
+Five physical menu/target/attack rounds reduce Crump5->0 and four counters reduce
+Mario10->6. Original404 medallions are visibly captured above Crump on the upper
+screen; lower scene continues and receives emitted draws, with no lower-pixel
+claim. That older binary honestly stops at GetBackItem8010da28; it does not
+validate this new closure, rewards, End or field return. An earlier150ms input
+attempt failed round2 confirmation;450ms physical pulses completed all5 rounds,
+so no production menu-readiness defect was inferred from the failed attempt.
+
+Next: native fullgraph physical conclusion, original quarter-disc menu assembly
+fix, actual generation-owned battle/victory music and positive reward activation,
+finishing/fade/both-screen presentation, actual synchronized teardown and sealed
+source Wait/postbattle dialogue. Complete fresh field movement/facing and other
+reached providers before switching production admission. Fresh/resumed full
+Crump victory/return, level-up/party domains and hardware performance remain open.

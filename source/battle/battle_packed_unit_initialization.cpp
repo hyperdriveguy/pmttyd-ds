@@ -18,7 +18,7 @@ bool initializePackedBattleUnitHelper(uint32_t function,uint32_t u,const BattleA
  case 0x80127b58:{assert(m.storeByte && m.storeWord && s.byte);for(unsigned i=0;i<30;++i)m.storeByte(m.user,u+0x118+i,0);
   // Exact BtlUnit_SetStatus(unit,16,1,-99) branch: accumulated signed byte,
   // negative→0, upper clamp99. No movement/reset branch exists for type16.
-  auto value=uint8_t(uint32_t(s.byte(s.user,u+0x129))+uint32_t(-99));if(value>=128)value=0;else if(value>99)value=99;m.storeByte(m.user,u+0x129,value);changeInfo(u,m);return true;}
+  const auto value=uint8_t(uint32_t(s.byte(s.user,u+0x129))+uint32_t(-99));m.storeByte(m.user,u+0x129,value);const auto fresh=s.byte(s.user,u+0x129);if(fresh>=128)m.storeByte(m.user,u+0x129,0);else if(fresh>99)m.storeByte(m.user,u+0x129,99);changeInfo(u,m);return true;}
  // HP gauge: halves200/204/1fc reset; 208/20c signed current HP; 210/214
  // current/max ratio with no zero-denominator guard. Source counters202/206
  // use40 if fresh mode1fc==1, else20, then+30; these are not measured seconds.

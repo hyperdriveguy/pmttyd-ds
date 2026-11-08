@@ -23,6 +23,10 @@
 #include "battle_packed_unit_initialization.hpp"
 #include "battle_unit_rotation_events.hpp"
 #include "battle_unit_rotate_offset_event.hpp"
+#include "battle_unit_back_item_event.hpp"
+#include "battle_part_attribute_event.hpp"
+#include "battle_wait_attack_end_event.hpp"
+#include "battle_kill_unit_event.hpp"
 namespace ttyd {
 // Admitted packed accesses are required invariants: failure aborts rather than
 // returning fabricated zero. word/half/byte access goes through BE VM memory;
@@ -252,6 +256,10 @@ bool HarborTutorialPacked::invoke(EventEntry& e,uint32_t function,int32_t first,
  case 0x80105df8:{const auto args=e.arguments;const auto units=nativeBattleUnitEventServices(vm);const auto selector=units.values.resolve(units.values.user,e,int32_t(word(args)));const auto id=units.translate(units.user,e,selector);const auto u=units.unit(units.user,word(0x8041eb90),id);if(!u)return false;if(!initializePackedBattleUnitHelper(0x80127b58,u,nativeBattleActorServices(vm)))return false;result=2;return true;}
  // Whole source camera priority-limit and unit rotation wrappers. Math is
  // genuine VM platform work; no frame/readiness/render acknowledgement exists.
+ case 0x80113304:result=battleKillUnitEvent(e,nativeBattleUnitEventServices(vm),nativeBattleActorServices(vm));return true;
+ case 0x8010a154:result=battleWaitAttackEndEvent(nativeBattleActorServices(vm),vm.creationServices());return true;
+ case 0x8010e23c:result=battleOnPartAttributeEvent(e,nativeBattleUnitEventServices(vm));return true;
+ case 0x8010da28:result=battleGetBackItemEvent(e,nativeBattleUnitEventServices(vm));return true;
  case 0x80110f9c:{if(!vm.platform.roundDoubleFloat||!vm.platform.subtractDouble)return false;BattleUnitRotationEventServices services;services.units=nativeBattleUnitEventServices(vm);services.angle=marioJump;result=battleSetUnitRotateOffsetEvent(e,services);return true;}
  case 0x8012c0ac:result=battleCameraPriorityLimitEvent(e,nativeBattleUnitEventServices(vm));return true;
  case 0x801115f8:case 0x80111720:{if(!vm.platform.fmodDouble || !vm.platform.roundDoubleFloat || !vm.platform.subtractDouble || !vm.platform.addFloat)return false;BattleUnitRotationEventServices services;services.units=nativeBattleUnitEventServices(vm);services.angle=marioJump;result=function==0x801115f8?battleAddUnitRotateEvent(e,services):battleSetUnitRotateEvent(e,services);return true;}

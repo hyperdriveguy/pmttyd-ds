@@ -27,6 +27,10 @@ struct Renderer::NativeHarborRewards:std::enable_shared_from_this<NativeHarborRe
  std::weak_ptr<const void>runtime;
  const HarborTutorial*facade=nullptr;NativeFacadeRegistration::Proof facadeProof;
  Tex3DS_Texture imported=nullptr,panel=nullptr;const void*pixels=nullptr,*panelPixels=nullptr;
+ // Pin the real ordinary Mario bank/atlas used by both original victory
+ // clips and the final type42 M_R_1. A cached tutorial flag alone is no lease.
+ std::shared_ptr<const BattlePoseResource>mario;
+ Tex3DS_Texture marioImported=nullptr;const void*marioPixels=nullptr;
  std::array<MessageIcon,9>art;
  std::array<uint32_t,9>data{};
  std::shared_ptr<NativeHarborRewardPresentation>model;
@@ -39,6 +43,10 @@ struct Renderer::NativeHarborRewards:std::enable_shared_from_this<NativeHarborRe
    r.messageIconTexture.imported!=imported||r.messageIconTexture.texture.data!=pixels||!pixels||
    r.messageIconTexture.texture.width!=512||r.messageIconTexture.texture.height!=1024||
    r.messagePanel.imported!=panel||r.messagePanel.texture.data!=panelPixels||!panelPixels||!r.windowFrameVertices)return false;
+  if(!mario||r.trioMarioAnimations!=mario||!mario->bank||
+   r.trioMarioTexture.imported!=marioImported||!marioImported||
+   r.trioMarioTexture.texture.data!=marioPixels||!marioPixels)return false;
+  for(const char*pose:{"M_V_2","M_V_1","M_R_1"})if(!mario->bank->pose(pose))return false;
   for(const auto&icon:art){const auto*actual=messageIcon(icon.id);if(!actual||!sameArt(icon,*actual))return false;}
   return Tex3DS_GetSubTexture(panel,0)!=nullptr;
  }
@@ -52,6 +60,7 @@ bool Renderer::prepareNativeHarborRewardPresentation(Game&g){
   auto c=std::make_shared<NativeHarborRewards>();c->renderer=this;c->runtime=runtime;c->facade=&g.harborTutorial;c->facadeProof=proof;
   c->imported=messageIconTexture.imported;c->pixels=messageIconTexture.texture.data;
   c->panel=messagePanel.imported;c->panelPixels=messagePanel.texture.data;
+  c->mario=trioMarioAnimations;c->marioImported=trioMarioTexture.imported;c->marioPixels=trioMarioTexture.texture.data;
   for(unsigned i=0;i<c->art.size();++i){const auto*icon=messageIcon(i?PointGetNamespace+PointGetTextures[i-1]:RewardIcon);
    if(!icon||!validNativeHarborRewardArt(*icon))return false;c->art[i]=*icon;}
   for(unsigned i=0;i<c->data.size();++i)if(!g.harborTutorial.readPackedWord(RewardData[i],c->data[i]))return false;

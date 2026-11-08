@@ -3,6 +3,7 @@
 #include "message_assets.hpp"
 #include "event_native_runtime.hpp"
 #include "event_memory_bootstrap.hpp"
+#include "harbor_tutorial.hpp"
 #include <algorithm>
 #include <cassert>
 #include <cstdio>
@@ -47,6 +48,8 @@ struct HarborEncounterRuntime {
     std::vector<std::unique_ptr<NativeFieldNpcBattleScriptCall>> retiredBattleCalls;
     uint32_t retiredBattlePending=0;
     EventNativeRuntime vm;
+    std::unique_ptr<NativeHarborEncounterField> nativeField;
+    bool nativeResume=false,nativeRootStarted=false;
     // Authored guest GP0x81000000; clock callback is the GameCube243MHz rate,
     // not handheld wall time. GP timestamp converts caller ms via eventClockRate.
     // Arena is CPU-owned: guest flush/system-call hooks have no GPU consumer.
@@ -57,7 +60,7 @@ struct HarborEncounterRuntime {
         p.divideWord=[](void*,int32_t a,int32_t b){assert(b);return a/b;};
         p.flushBlock=[](void*,uint32_t){};p.systemCall=[](void*){};
         p.call=[](void* p,EventEntry& e,uint32_t fn,int32_t first){return static_cast<HarborEncounterRuntime*>(p)->call(e,fn,first!=0);};
-        p.retiring=[](void* p,const EventEntry& e){auto& r=*static_cast<HarborEncounterRuntime*>(p);auto i=r.battleCalls.find(e.id);if(i==r.battleCalls.end())return;
+        p.retiring=[](void* p,const EventEntry& e){auto& r=*static_cast<HarborEncounterRuntime*>(p);if(r.nativeField)r.nativeField->retire(r.scene,e);auto i=r.battleCalls.find(e.id);if(i==r.battleCalls.end())return;
             if(!i->second->releaseForRetirement()){r.retiredBattlePending=i->second->pending();r.retiredBattleCalls.push_back(std::move(i->second));}
             r.battleCalls.erase(i);
         };return p;
@@ -101,6 +104,10 @@ struct HarborEncounterRuntime {
             if(i==0){a.pose="M_S_1";a.poseAt=scene->now;}}
     }}
     int32_t call(EventEntry& e,uint32_t function,bool first){
+        if(nativeField){
+            const auto result=nativeField->handles(function)?nativeField->invoke(scene,function,e,first):nativeField->external(scene,function,e,first);
+            scene->pendingService=result?0:nativeField->pending();return result?*result:0;
+        }
         const auto found=callbacks.find(function);if(found==callbacks.end()){scene->failed=true;return 0;}
         if(first){HarborEncounterRequest r{function,e.currentCommand,scene->now,{}};for(unsigned i=0;i<e.argumentCount;++i)r.operands.push_back(operand(e,i));scene->requests.push_back(std::move(r));}
         // Converter indices, not original event opcodes:0 key-depth,1 control,
@@ -161,14 +168,15 @@ struct HarborEncounterRuntime {
     //0x8041f070 (16 bytes), current heap0x8041e428 and heap handle0x8041e844.
     // GP+4 holds60Hz; GSW0=4 is original story entry. Root priority10/flags0
     // and LW0 resume branch are VM setup, not a parallel native story machine.
-    bool initialize(bool resume){
+    bool initialize(bool resume,const EventScriptAssets* original=nullptr){
         if(!vm.memory.registerRam(0x82000000,std::vector<uint8_t>(1024*1024)) ||
            !vm.memory.registerRam(0x8041f070,std::vector<uint8_t>(16)) || !vm.memory.registerRam(0x8041e428,std::vector<uint8_t>(4)) ||
-           !vm.memory.registerRam(0x8041e844,std::vector<uint8_t>(4)) || !vm.memory.importScripts(scripts))return false;
+           !vm.memory.registerRam(0x8041e844,std::vector<uint8_t>(4)) || !vm.memory.importScripts(original?*original:scripts))return false;
         const auto m=vm.memoryBinding.services();const auto start=eventSdkInitializeAllocator(0x82000000,0x82100000,1,m);
         if(eventSdkCreateHeap(start,0x82100000,m)!=0 || !vm.memory.writeWord(0x8041e844,0) || !vm.memory.writeWord(0x81000004,60))return false;
         vm.gp.timestamp=scene->now*eventClockRate(243000000);vm.initializeContexts();
         writeSavedSwitch(SavedSwitchFamily::GlobalByte,0,4,vm.interpreterServices().operands);
+        if(original){nativeResume=resume;return true;}
         auto creation=vm.creationServices();auto& root=createRootEvent(vm.schedule,script,10,0,creation);root.locals[0]=resume?1:0;return true;
     }
 };
@@ -187,15 +195,37 @@ bool HarborEncounter::begin(uint64_t time,std::array<float,3> mario,int health,b
 // movement then text then VM, so callback completion sees current text/roots.
 // admitted tracks nonzero key-depth (not a permanent latch); finished requires
 // allocationCount==0, including child events, not merely root return.
+bool HarborEncounter::beginNativeField(uint64_t time,std::array<float,3> mario,int health,bool resume,NativeHarborEncounterFieldConfig config){
+    if(!ready||triggered||!config.assets||!config.assets->source)return false;
+    *this=HarborEncounter{};triggered=true;now=time;hp=health;actors[0].position=mario;
+    runtime_=std::make_shared<HarborEncounterRuntime>();auto&r=*runtime_;r.scene=this;
+    if(!r.initialize(resume,config.assets->source.get())){failed=true;return false;}
+    r.nativeField=NativeHarborEncounterField::prepare(r.vm,this,nativeFieldFacade_.proof(),std::move(config));
+    if(!r.nativeField){failed=true;return false;}tick(time,0,15);return !failed;
+}
+bool HarborEncounter::nativeFieldVmIs(const EventNativeRuntime&vm)const{return runtime_&&&runtime_->vm==&vm;}
+std::optional<NativeHarborBattleTicket> HarborEncounter::nativeBattleRequest(){return runtime_&&runtime_->nativeField?runtime_->nativeField->request(this):std::nullopt;}
+bool HarborEncounter::nativeBattleEntered(const NativeHarborBattleTicket&t,const HarborTutorial&battle){
+    if(!runtime_||!runtime_->nativeField)return false;const auto identity=battle.nativeFieldBattleIdentity();return identity&&runtime_->nativeField->entered(this,t,*identity);
+}
+bool HarborEncounter::nativeBattleReturn(const NativeHarborBattleTicket&t,const NativeHarborCompletionReceipt&receipt){return runtime_&&runtime_->nativeField&&runtime_->nativeField->returned(this,t,receipt);}
 bool HarborEncounter::battlePending() const{return runtime_ && (!runtime_->battleCalls.empty() || !runtime_->retiredBattleCalls.empty());}
 void HarborEncounter::tick(uint64_t time,uint32_t keys,std::optional<float> support){
     if(runtime_ && runtime_->retiredBattlePending){pendingService=runtime_->retiredBattlePending;finished=false;return;}
     if(!running() || failed || time<now || !runtime_)return;
-    now=time;auto& r=*runtime_;r.scene=this;r.floor=support;r.advance();
+    auto& r=*runtime_;
+    if(r.nativeField&&!r.nativeField->current(this))return;
+    now=time;r.scene=this;r.floor=support;
+    if(r.nativeField){
+        if(!r.nativeField->advance(this)){pendingService=r.nativeField->pending();return;}
+        if(r.nativeField->initialized()&&!r.nativeRootStarted){
+            auto&root=createRootEvent(r.vm.schedule,script,10,0,r.vm.creationServices());root.locals[0]=r.nativeResume?1:0;r.nativeRootStarted=true;
+        }
+    }else r.advance();
     if(message.active())message.tick(now,keys);
     r.vm.gp.timestamp=now*eventClockRate(243000000);r.vm.runManager();
     if(r.retiredBattlePending){pendingService=r.retiredBattlePending;finished=false;return;}
     admitted=keyDepth!=0;story=readSavedSwitch(SavedSwitchFamily::GlobalByte,0,r.vm.interpreterServices().operands);
-    finished=r.vm.runtime.allocationCount==0;
+    finished=r.vm.runtime.allocationCount==0 && (!r.nativeField||r.nativeRootStarted);
 }
 }

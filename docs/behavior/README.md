@@ -1422,6 +1422,10 @@ Original battle menu native resource/queue owners:
 
 - [Retained original harbor battle callbacks](field/NATIVE_HARBOR_BATTLE_CALLBACKS.md): source start/wait/regular-EVT-ID parents, actual caller VM bridge and pending-owner limits.
 - [Native Harbor field sequence admission](field/NATIVE_HARBOR_FIELD_SEQUENCE.md): actual same-VM Start/Wait, sealed runtime/ticket, completed-teardown proof and unchanged field result; private native sequence policy, not original Main acknowledgment.
+- [Native Harbor encounter field context](story/NATIVE_HARBOR_ENCOUNTER_FIELD_CONTEXT.md): fresh actual six-NPC constructors, original placement/source area setup, retained information/start/wait and explicit remaining native callback holds.
+- [Native Mario position preadmission](field/NATIVE_MARIO_POSITION_PREADMISSION.md): actual field XYZ, proof-first bounded source getter/quantization and real fresh Harbor next-provider frontier.
+- [Native empty environmental sound Off](audio/NATIVE_EMPTY_ENVIRONMENT_OFF.md): sealed actual native cold handle contribution, complete raw source wrapper/empty branch, exact SDA-read hold and genuine live/backend frontier.
+- [Native field Mario key admission](field/NATIVE_FIELD_MARIO_KEY_ADMISSION.md): actual typed wrapping key owner, whole source key wrapper and proof-first immediate-domain admission.
 - [Harbor original admission facade](field/NATIVE_HARBOR_BATTLE_ADMISSION_FACADE.md): immutable actual entry facade/proof, copy/move rejection and sealed field-return identity separate from scene projection.
 
 
@@ -1593,6 +1597,7 @@ retain explicit provider and process-ownership frontiers.
 - [Native Harbor presentation retirement](display/NATIVE_HARBOR_PRESENTATION_RETIREMENT.md): actual synchronized resource retirement; production field-return composition remains separate.
 - [Native Harbor Star Point presentation](display/NATIVE_HARBOR_STAR_POINT_PRESENTATION.md): original icon404 frames and retained native resource/instance ownership; no reward or source End receipt.
 - [Native Harbor reward presentation](display/NATIVE_HARBOR_REWARD_PRESENTATION.md): original19-star/PointGet model and real native resources; no reward or End receipt.
+- [Native Harbor body visibility](display/NATIVE_HARBOR_BODY_VISIBILITY.md): live unit/body attribute projection with original ordinary-registration gates; no queue/shadow receipt.
 
 - [Retained original unit coin event](battle/RETAINED_UNIT_COIN_EVENT.md): whole original GetCoin/unit getter, fresh trial/probability loads and actual retained RNG without speculative victory or pouch awards.
 
@@ -1602,6 +1607,8 @@ retain explicit provider and process-ownership frontiers.
 
 - [Retained original star-point offset event](battle/RETAINED_STAR_POINT_OFFSET_EVENT.md): whole80113f88 and registry, ordered math/setters and actual lethal next-effect boundary.
 
+- [Actual Harbor source victory root](battle/NATIVE_HARBOR_VICTORY_EVENT.md): actual key40 event/owner/tracked ID and source retirement, facade lifetime guards.
+- [Native Harbor reward flow](battle/NATIVE_HARBOR_REWARD_FLOW.md): actual counter/presentation coordination, physical held-input retries and positive ordinary branch; finishing remains separate.
 - [Native Harbor reward counter](battle/NATIVE_HARBOR_REWARD_COUNTER.md): source amount/cadence, physical acceleration and retained real-pouch writes; finite native count only.
 - [Actual Harbor reward binding](battle/NATIVE_HARBOR_REWARD_BINDING.md): source-concluded runtime/pouch/sound binding, admission-facade proof and cancellation latch; presentation/ending activation remains separate.
 
@@ -1612,3 +1619,11 @@ retain explicit provider and process-ownership frontiers.
 - [Shared original field pouch backing](field/NATIVE_SHARED_SOURCE_POUCH.md): actual SDK allocation and typed inventory share one packed array; speculative checkpoint admission, worker copies and exact retirement remain explicit.
 
 - [Shared native source-map process](field/NATIVE_SHARED_MAP_PROCESS.md): real process heaps, original DVD/light/road loading, native completion fence and retained first GX capture boundary.
+
+- [Original atomic return-held-item event](battle/ATOMIC_UNIT_BACK_ITEM_EVENT.md): whole8010da28, actual flag/item branches and source eight-slot/one-past return-table writes.
+
+- [Original atomic part-attribute event](battle/ATOMIC_PART_ATTRIBUTE_EVENT.md): whole8010e23c, raw mask capture and actual linked-part lookup/OR store without invented visual/result semantics.
+
+- [Original atomic attack-event barrier](battle/ATOMIC_WAIT_ATTACK_END_EVENT.md): whole8010a154, fresh actual attacker capture and real selected EVT manager live/dead poll.
+
+- [Original atomic KillUnit event](battle/ATOMIC_KILL_UNIT_EVENT.md): whole80113304, raw mode capture and actual HP/status/attribute effects; fresh charge-byte correction preserves real ClearStatus store/read/clamp order.
