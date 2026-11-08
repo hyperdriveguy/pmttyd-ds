@@ -1,0 +1,74 @@
+{
+  "schema": 1,
+  "iso_id": "G8ME01 revision0",
+  "spans": [
+    {
+      "source": "sys/main.dol",
+      "address": 2151807280,
+      "size": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+    },
+    {
+      "source": "sys/main.dol",
+      "address": 2151807284,
+      "size": 4,
+      "sha256": "1b9e0fe7b740b4e583727aa1c9d27ff8c01491f911d2de0747f8c997ef6b3498"
+    },
+    {
+      "source": "sys/main.dol",
+      "address": 2151807296,
+      "size": 4,
+      "sha256": "de620abd6d3615746360c1d15ce3a56291236d37424124054a49d25e947ffc4d"
+    },
+    {
+      "source": "sys/main.dol",
+      "address": 2151807304,
+      "size": 4,
+      "sha256": "7388adb66bc2fb8cdd730d8148adcae18abd8bb48b05b7bd9b9e05efa6c09702"
+    },
+    {
+      "source": "sys/main.dol",
+      "address": 2151807312,
+      "size": 4,
+      "sha256": "2dd83cbe030b1947d988175f38f503c3e1b72413097060d7d8ac05e12311b804"
+    },
+    {
+      "source": "sys/main.dol",
+      "address": 2151807316,
+      "size": 4,
+      "sha256": "2412b43a42f11c1cb3ef7956d3e293016e671a9061fbb76a4282c8b15139cc48"
+    },
+    {
+      "source": "sys/main.dol",
+      "address": 2150365764,
+      "size": 12,
+      "sha256": "9b8ddf1ef739bf7b27a17c33f02c862e27e16639246e87885ef1ee7c7914a656"
+    },
+    {
+      "source": "sys/main.dol",
+      "address": 2150365784,
+      "size": 32,
+      "sha256": "eb16dc8298669760b3971fd087f0e0a4ac083641b2817383857f20ca0989c0f3"
+    },
+    {
+      "source": "sys/main.dol",
+      "address": 2150365852,
+      "size": 12,
+      "sha256": "4c25974396fb752c1ac68d196585032ac12032e870ec358f5663da9275026337"
+    },
+    {
+      "source": "sys/main.dol",
+      "address": 2150366240,
+      "size": 8,
+      "sha256": "2b2979f362d94c89fe17a6e01637f14332de063fe7a544bdc5facfc046f4169f"
+    },
+    {
+      "source": "sys/main.dol",
+      "address": 2151807240,
+      "size": 4,
+      "sha256": "e3820096cb82366b860b8a4e668453a7aaaf423af03bdf289fa308ea03a79332"
+    }
+  ],
+  "policy": "Exact initialized material scalar constants, wrap/light IDs, direction seed, unsigned LOD bias and ambient fallback. Runtime map/light/GX state is never imported.",
+  "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+}

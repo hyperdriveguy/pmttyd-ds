@@ -3058,7 +3058,7 @@ set_tests_properties(field_light_registry_owner PROPERTIES WORKING_DIRECTORY "${
 
 target_sources(ttyd_core PRIVATE source/field/field_map_light_producer.cpp)
 
-target_sources(ttyd_core PRIVATE source/field/field_map_source.cpp)
+target_sources(ttyd_core PRIVATE source/field/field_map_source.cpp source/display/source_map_material.cpp)
 
 target_sources(ttyd_core PRIVATE source/field/field_map_source_owner.cpp)
 
@@ -3458,3 +3458,8 @@ add_executable(native_map_process_tests tests/native_map_process_tests.cpp)
 target_link_libraries(native_map_process_tests PRIVATE ttyd_core)
 add_test(NAME native_map_process COMMAND native_map_process_tests)
 set_tests_properties(native_map_process PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+add_executable(source_map_material_tests tests/source_map_material_tests.cpp)
+target_link_libraries(source_map_material_tests PRIVATE ttyd_core)
+add_test(NAME source_map_material COMMAND source_map_material_tests)
+set_tests_properties(source_map_material PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

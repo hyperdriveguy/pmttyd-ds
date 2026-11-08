@@ -1,0 +1,70 @@
+{
+  "bodies": [
+    {
+      "name": "mapSetMaterial",
+      "address": "80020e54",
+      "size": 1556,
+      "sha256": "8161c005604dcd5f1334d06619507a5b635e2f57081f4d773efe47b388deea8b"
+    },
+    {
+      "name": "mapSetLight",
+      "address": "8002493c",
+      "size": 460,
+      "sha256": "8d11cfd2b95f8751caad7de645a3df9ed7adaf6c742a69722b8e4f1afb04fc46"
+    },
+    {
+      "name": "lightGetAmbient",
+      "address": "8001ba60",
+      "size": 112,
+      "sha256": "f29356e9bef2b211bd436683d7f884bb894b3ece5b3f4c3b56f7294e0bb37e93"
+    },
+    {
+      "name": "lightNameToPtr",
+      "address": "8001bcf8",
+      "size": 160,
+      "sha256": "687f5ac934c23aa7d58e80652dc1447ce5058fefdb3903277ca10a1eb4fafb40"
+    },
+    {
+      "name": "mapGetActiveGroup",
+      "address": "8002b430",
+      "size": 8,
+      "sha256": "8cde3e75090d6cab4542985759ac0a3ac3985b9ab38068cc347149845f80cd0f"
+    },
+    {
+      "name": "lightGetNearObj",
+      "address": "8001bad0",
+      "size": 508,
+      "sha256": "11f63c2cd59b24a146f3724cce464aa8083caf5cb05d633b689bb3ba8096cf31"
+    },
+    {
+      "name": "lightCompare",
+      "address": "8001bccc",
+      "size": 44,
+      "sha256": "f5b7638f41d14e027fc5da4d118346d36d5209dac7f35dc1060068ace5c889ba"
+    },
+    {
+      "name": "qqsort",
+      "address": "800064fc",
+      "size": 388,
+      "sha256": "e1203592c57c011292c76c5366332d0b3a8b5f5a0c5f4211761ed4bbd9df94a1"
+    },
+    {
+      "name": "fsort",
+      "address": "80006680",
+      "size": 1548,
+      "sha256": "66e572cf378a3bd7ef35b6197008d3907ca16a91d653ca457be1e7fede796118"
+    },
+    {
+      "name": "camGetCurPtr",
+      "address": "8000f2e4",
+      "size": 24,
+      "sha256": "d11504c7f47eaaf73ea973a9ad71bd955d3f696e90add509f4ccbe8bc11db27f"
+    },
+    {
+      "name": "TEXGet",
+      "address": "80037b5c",
+      "size": 16,
+      "sha256": "a4ed7f967c9d61e3abda39404ce9c6a992c97aff9115cb753fc4a71006b98575"
+    }
+  ]
+}

@@ -19,13 +19,13 @@
 
 `camGetCurPtr` loads a camera index from SDA offset `0x16e8`, shifts it
 left by 2 (multiply by 4), and uses it to index into a pointer table at
-`0x803d95f8`.
+`0x803c95f8`.
 
 | Item | Value |
 | --- | --- |
 | SDA base (`r13`) | `0x8041cf20` |
 | Index load | `0` = `[r13 + 0x16e8]` (camera index) |
-| Table base | `0x803d95f8` (lis 0x803d + addi -27144) |
+| Table base | `0x803c95f8` (lis 0x803d + signed addi -27144) |
 | Return | `r3` = `table[index]` (pointer to current camera state) |
 | Side effects | None |
 | Calls | None |

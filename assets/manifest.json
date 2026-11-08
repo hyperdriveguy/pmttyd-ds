@@ -208,6 +208,13 @@
       "format": "rgba8"
     },
     {
+      "id": "original/maps/material-source",
+      "kind": "event",
+      "source": "assets/original/maps/material-source/event.json",
+      "output": "field-map-material.pmevt",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
       "id": "original/maps/harbor-source",
       "kind": "event",
       "source": "assets/original/maps/harbor-source/event.json",

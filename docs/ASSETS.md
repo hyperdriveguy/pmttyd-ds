@@ -4563,3 +4563,19 @@ Original tracking grants no redistribution license.
 ### Original Harbor StarPoint numeric source
 
 `assets/original/effects/harbor-star-point/memory.json` retains unchanged US DOL scalar80426f08/38, signed-bias802fe540/8 and empty-literal8042033c/4 spans. `provenance.json` pins original read-only ISO offsets/hashes and complete Entry/Main/Disp/EVT/rand bodies; importer refuses nonempty destinations. Original rights remain retained and tracking grants no new license. The normal event-memory recipe compiles this into ignored `romfs/harbor-star-point/memory.pmevt`. No new artwork: native presentation uses existing original icon404 images418..421.
+
+
+## Original map material literals (2026-11-08)
+
+`assets/original/maps/material-source/event.json` and `provenance.json` retain
+11 initialized spans (92bytes) from read-only G8ME01 revision0 `sys/main.dol`.
+They contain exact material scalar words, wrap/light ID tables, direction seed,
+unsigned LOD bias and opaque-black ambient fallback. Each span retains its
+original address, extent and SHA256. No scaling, rounding, relocation, BSS,
+light records, GXData or FIFO state is synthesized. The normal event recipe
+compiles `field-map-material.pmevt`; compiled products remain outside history.
+`tools/import_map_material_assets.py` verifies the original fingerprints and
+requires an empty destination. It never overwrites edited imports or runs in
+normal builds. Nintendo/Intelligent Systems retain all original rights; no new
+license or redistribution rights are granted. Per-asset licensing is in both
+JSON files. See [the implementation boundary](behavior/display/RETAINED_MAP_MATERIAL_SOURCE.md).

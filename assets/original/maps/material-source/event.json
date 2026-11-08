@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "segments": [
+    {
+      "address": 2151807280,
+      "bytes": "00000000"
+    },
+    {
+      "address": 2151807284,
+      "bytes": "3f000000"
+    },
+    {
+      "address": 2151807296,
+      "bytes": "3f800000"
+    },
+    {
+      "address": 2151807304,
+      "bytes": "3c8efa35"
+    },
+    {
+      "address": 2151807312,
+      "bytes": "c9800000"
+    },
+    {
+      "address": 2151807316,
+      "bytes": "447a0000"
+    },
+    {
+      "address": 2150365764,
+      "bytes": "000000000000000100000002"
+    },
+    {
+      "address": 2150365784,
+      "bytes": "0000000100000002000000040000000800000010000000200000004000000080"
+    },
+    {
+      "address": 2150365852,
+      "bytes": "0000000000000000bf800000"
+    },
+    {
+      "address": 2150366240,
+      "bytes": "4330000000000000"
+    },
+    {
+      "address": 2151807240,
+      "bytes": "000000ff"
+    }
+  ],
+  "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+}

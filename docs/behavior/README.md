@@ -1627,3 +1627,7 @@ retain explicit provider and process-ownership frontiers.
 - [Original atomic attack-event barrier](battle/ATOMIC_WAIT_ATTACK_END_EVENT.md): whole8010a154, fresh actual attacker capture and real selected EVT manager live/dead poll.
 
 - [Original atomic KillUnit event](battle/ATOMIC_KILL_UNIT_EVENT.md): whole80113304, raw mode capture and actual HP/status/attribute effects; fresh charge-byte correction preserves real ClearStatus store/read/clamp order.
+
+- [Retained original map material source](display/RETAINED_MAP_MATERIAL_SOURCE.md): complete1206-word material/light/nearest-sort graph with binary64 LOD and full attenuation ABI; native GX/capture binding remains open.
+
+- [Original map capture SDK boundary](display/MAP_CAPTURE_SDK_SOURCE_AND_BACKEND_BOUNDARY.md): verified Begin/End/Reset/Cull, FIFO save and deferred dirty graph; raw GXData and hardware gather ownership remain open.

@@ -6071,3 +6071,22 @@ ordered disjoint RAM regions without weakening semantic precedence. This
 replaces the preceding timeout with a completed bounded CPU-load proof; native
 load latency is still substantial, and no source capture/G0/geometry completion
 or end-to-end prologue acceptance is inferred.
+
+
+### 2026-11-08 — Raw map material continuation breadcrumb
+
+Implemented the complete original mapSetMaterial/mapSetLight, ordinary ambient,
+name lookup, nearest-light query/comparator, original qqsort/fsort and camera/TEX
+getters as a portable1206-word fixed graph. Raw binary64 FPR state preserves
+unsigned LOD byte conversion and f1..f6 attenuation inputs. Original initialized
+literals are editable/provenance tracked. See
+[the retained source contract](../behavior/display/RETAINED_MAP_MATERIAL_SOURCE.md).
+This is static source/host fixture work, not original runtime or REA evidence.
+Native provider/stack ownership, shared sort serialization, actual GX/TEV and
+capture integration remain open. Existing local Begin/End/Reset/Cull SDK bodies
+are documented; the unresolved capture evidence concerns actual GXData init
+ownership and write-gather/PI commit, overflow and padding/count semantics.
+Do not fabricate successful capture lengths while awaiting those observations.
+Request stays OPEN; full prologue and runtime acceptance remain outstanding.
+
+The recovered local capture SDK contracts and reproducible source fingerprints are now retained in [the capture boundary delivery](../behavior/display/MAP_CAPTURE_SDK_SOURCE_AND_BACKEND_BOUNDARY.md). This closes the local-body documentation question, while preserving the explicit hardware/initialization request above.

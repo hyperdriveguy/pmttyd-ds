@@ -20659,3 +20659,61 @@ owned resource destruction, and original native restore already retires it
 before mutation. This removes one C++ allocation per Game while preserving
 copy/move/restore invalidation. No source readiness/result/sequence is inferred.
 Final focused/full/native checks are running and will be recorded separately.
+
+
+### Original map material/light continuation (2026-11-08)
+
+Added a portable fixed native continuation graph for11 complete original US
+bodies/1206 instructions: mapSetMaterial, mapSetLight, ordinary ambient and name
+lookup, nearest-light query/comparator, qqsort/fsort, active-group/current-camera
+getters and TEXGet. It follows the map object's original selection/channel rules;
+the character material helper is not substituted. FPRs retain raw binary64 until
+source single rounding, preserving every unsigned LOD byte and all six light
+attenuation inputs. Multiword prefixes and queued external operands survive holds;
+root arguments, stack and callback identities stay pinned. Unsupported GX/TEV
+children remain held. Private-frame finite arithmetic does not establish arbitrary
+caller GQR/FPSCR, exceptions or nonfinite payload fidelity.
+
+Imported11 initialized DOL spans/92bytes into an empty editable material source
+with exact fingerprints and retained original rights. Normal builds compile the
+new field-map-material.pmevt recipe; edited assets are never reimported. Corrected
+camGetCurPtr's documented table address to803c95f8 (signed addi). Retained capture
+research as a display contract and reproducible25-body/674-instruction verifier.
+Local Begin/End/Reset/Cull/FIFO/dirty CPU bodies are documented; actual GXData
+initialization and hardware gather/PI commit, overflow/padding semantics remain
+explicit evidence and implementation gaps. EVT-01 stays OPEN.
+
+Full make test exits0:659/659 C++ tests (163.14s),281/281 Python tests
+(48.780s),zero skips. NativeMapProcess passes110.23s; the new material test
+passes1.50s in the full suite (focused0.65s). Fixtures cover all256 unsigned LOD
+bytes, channel0/1/other policies, named duplicates/ambient/null lookup holds,
+point/directional/spot requests, every service hold in the two-texture caller,
+held attenuation/distance/memcpy operands, one-visit yields, identity rejection,
+actual source sorter composition, output filtering and maximum0/-1 postwrites.
+Independent source review finds no unresolved implementation defect in the
+specified scope. Material and capture source verifiers pass1206 and674 original
+instructions respectively. Documentation links pass with zero broken links.
+Asset-ready SOUNDTRACK=gamecube compiles479 recipes; assets-check passes479.
+Native make all (-o assets-ready after preparation,-j2) exits0. Existing compiler
+and Pillow deprecation warnings remain. No native emulator smoke was run for
+this portable-only step; there is no new runtime visual/performance receipt.
+
+Validation pins committed eeb6975a plus only these scoped edits in an isolated
+source/build snapshot. Later concurrent commits/WIP are excluded; scoped replay
+preserves shared source/staging. No native map material provider was installed,
+no GX capture result/TEV/geometry acknowledgment or G0 publication was produced.
+Normal startup still runs map Init only, and original Load remains at actual
+GXBeginDisplayList. No new emulator/original runtime observation, dialogue/story
+change, hardware measurement, visual parity or prologue completion is claimed.
+Exact source/product/object/test/review hashes are recorded in
+artifacts/native-map-material-validation-manifest.json.
+
+Next: bind the portable material graph to a retained actual-VM stack/provider,
+compose existing real SDK and texture-object children with full ABI/currentness,
+serialize shared sort scratch against DVD users, then complete actual GXData/FIFO
+capture ownership and both map material/cull passes with byte-backed lengths.
+Preserve the parent's capture hold until that ownership is real. Continue native
+material/geometry consumers and load-latency profiling before enabling room Load;
+original runtime captures, hardware performance and full prologue acceptance remain
+open. Remaining portable fixture gaps include selector mutation between the two
+nearest-light getters and equal-key sorting; no runtime equivalence is inferred.

@@ -1,0 +1,182 @@
+{
+  "schema": 1,
+  "scope": "Complete local original US GX capture/dirty/FIFO CPU bodies; static evidence only. Hardware/initialization closure remains open.",
+  "bodies": [
+    {
+      "name": "GXBeginDisplayList",
+      "address": "802b9e10",
+      "size": 204,
+      "sha256": "5cc6292d6bb839fa8aa7c7b46984964ba0dc5498b3f60f7f1aeafca72aa3c4fa"
+    },
+    {
+      "name": "GXEndDisplayList",
+      "address": "802b9edc",
+      "size": 196,
+      "sha256": "2bd7ebff96013a36445c2a07749c1271bcc118a42bc8ebb8a912bdb9cee4fb57"
+    },
+    {
+      "name": "GXResetWriteGatherPipe",
+      "address": "802b51b0",
+      "size": 52,
+      "sha256": "f6522d694a0205610c66c253bfb4b467489a5b65e03237fa16dd521433ee68e0"
+    },
+    {
+      "name": "GXSetCullMode",
+      "address": "802b5c8c",
+      "size": 40,
+      "sha256": "4c3e85c18378d7fc19693a84ff010cb1d921456d479ebcb5a60fd4b70796d1ad"
+    },
+    {
+      "name": "GXGetCPUFifo",
+      "address": "802b3be0",
+      "size": 8,
+      "sha256": "e3bf3b44adf40b81076c0c6698613ea7d1f2c60ef399a76b8dfe2ad0c1901984"
+    },
+    {
+      "name": "GXSetCPUFifo",
+      "address": "802b3578",
+      "size": 296,
+      "sha256": "1d7565a951f0bb16691ac34be2673ff03bbd9caf82cfe6ee1fb8e050268e8de4"
+    },
+    {
+      "name": "GXSaveCPUFifo",
+      "address": "802b3818",
+      "size": 52,
+      "sha256": "9d25c01065a2d5116315745f98b75e1137d44c51011732c8f00bf211c2ee0a54"
+    },
+    {
+      "name": "__GXSaveCPUFifo",
+      "address": "802b384c",
+      "size": 200,
+      "sha256": "0b39b85700efcd5938a872b9fb2fb65cfa2d3bfba143eeee09fe3549e12d71dd"
+    },
+    {
+      "name": "GXFlush",
+      "address": "802b5154",
+      "size": 92,
+      "sha256": "292f0fed2ad804761e2c1909aa6cea251caf0c1d8e4498c3891c106b31008676"
+    },
+    {
+      "name": "__GXSetDirtyState",
+      "address": "802b59ec",
+      "size": 128,
+      "sha256": "cc2ad762c117ecda6a049a11f512507114c8994e54616145e7de118941cb9e30"
+    },
+    {
+      "name": "__GXSetGenMode",
+      "address": "802b5d04",
+      "size": 36,
+      "sha256": "003b670e48d94a967abe434a8cbc5352d1d2d68d8aaf08ebf49413e4adf66763"
+    },
+    {
+      "name": "PPCSync",
+      "address": "80295004",
+      "size": 8,
+      "sha256": "1560a9543d41d35b61c288453bb0972cfd1359499e5fcc7ef1e2c52391fa12cb"
+    },
+    {
+      "name": "PPCMfwpar",
+      "address": "802950a8",
+      "size": 12,
+      "sha256": "5882ed333d61193341c80c4ba985212a8ee2d26c8837820d429867c27c160a14"
+    },
+    {
+      "name": "PPCMtwpar",
+      "address": "802950b4",
+      "size": 8,
+      "sha256": "67fa43b7cdebc70d41db82010c290cea0385b707d272548f1545438cc79ea89e"
+    },
+    {
+      "name": "OSDisableInterrupts",
+      "address": "80299ad4",
+      "size": 20,
+      "sha256": "91253610f8caa4988f3df8595ccfc6e5eafaf0b6df1b302668555ab7d528b1bc"
+    },
+    {
+      "name": "OSRestoreInterrupts",
+      "address": "80299afc",
+      "size": 36,
+      "sha256": "54db610a580003e2db23e460425f4662f4f4e7a4da3ae6f89a632df9e52b427a"
+    },
+    {
+      "name": "FifoHelper3a4c",
+      "address": "802b3a4c",
+      "size": 52,
+      "sha256": "06a3aaab54bf92156019ce37c48eacebb9a43d6c6cee22bdc0b1640ce9452c52"
+    },
+    {
+      "name": "FifoHelper3a80",
+      "address": "802b3a80",
+      "size": 48,
+      "sha256": "549de3ccd8189fa4e909488f426f4e1997e93842330b74ed4848ea4c1e190f37"
+    },
+    {
+      "name": "FifoHelper3ab0",
+      "address": "802b3ab0",
+      "size": 48,
+      "sha256": "d822f65a8d9accfad6901dc242f65a3b298316286c269a76b8f32ad8dfede8b5"
+    },
+    {
+      "name": "DirtyBit1Child7e28",
+      "address": "802b7e28",
+      "size": 160,
+      "sha256": "496b80581e47b8b070799bc6296252521af509d98b5a71b54f8d3f541980df56"
+    },
+    {
+      "name": "DirtyBit1",
+      "address": "802b7ec8",
+      "size": 380,
+      "sha256": "481563c3b0eea2238615d3d16749958fdc2c93b667ff251fea2b2fb2660f7106"
+    },
+    {
+      "name": "DirtyBit2",
+      "address": "802b887c",
+      "size": 4,
+      "sha256": "f332ea5b5437103cbb6f1508679da89eec9288ad775c96c439a17fccabe3de8e"
+    },
+    {
+      "name": "DirtyBit8",
+      "address": "802b40fc",
+      "size": 188,
+      "sha256": "6cc3e2a9277f5977b03f9a44f0389081cd45b40e412d1bf2b583a9ddbd143550"
+    },
+    {
+      "name": "DirtyBit16",
+      "address": "802b4a34",
+      "size": 136,
+      "sha256": "75d181dbb6da1df6a2e83fa2cd30d286f619a9411e28d9eb767006a777294f6d"
+    },
+    {
+      "name": "DirtyBits8or16",
+      "address": "802b41b8",
+      "size": 292,
+      "sha256": "498728136b2c88928be767d202b35d5d38314cbbb6454cf34efde6a1d5a6e8d8"
+    }
+  ],
+  "initialized_spans": [
+    {
+      "address": "0x804293d8",
+      "bytes": 4,
+      "hex": "80413e40",
+      "sha256": "eb466edb339e90d4b41108d800a2146fe0b9c8cca097cb87a0a432e2659a6953"
+    },
+    {
+      "address": "0x8041e510",
+      "bytes": 8,
+      "hex": "0004010200080102",
+      "sha256": "810b4b6f411e27d05dad99b87466779fc73b37af838fa2bee391af7667362da2"
+    },
+    {
+      "address": "0x8041e518",
+      "bytes": 8,
+      "hex": "000c010200000000",
+      "sha256": "ea1bc6eb7d036160e6348037668921cba615e25cdcbc42a32fad4fcfe3cadb97"
+    },
+    {
+      "address": "0x8041e514",
+      "bytes": 4,
+      "hex": "00080102",
+      "sha256": "db4854319657b66418878c8daa4dd71d294641fad2dff0626cd08b1cdef618d9"
+    }
+  ]
+}
