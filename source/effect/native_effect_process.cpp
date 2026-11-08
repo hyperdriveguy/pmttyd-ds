@@ -20,7 +20,7 @@ bool same(const NativeEffectRetirement& a,const NativeEffectRetirement& b){retur
 }
 struct NativeEffectProcess::State {
  std::shared_ptr<NativeUiStartup> ui;std::shared_ptr<NativeFieldAnimation> process;
- std::shared_ptr<NativeFileCache> files;std::unique_ptr<NativeEffectTextures>textures;std::string root;
+ std::shared_ptr<NativeFileCache> files;std::unique_ptr<NativeEffectTextures>textures,environment;std::string root;
  // Nonexecuting alias proof over the SAME process registries, not another VM.
  std::unique_ptr<EventAddressSpace> identity;bool alive=true,initialized=false;
  EffectInitCursor init;EffectMainCursor main;EffectReleaseCursor release;
@@ -31,6 +31,7 @@ struct NativeEffectProcess::State {
  EventNativeRuntime& vm()const{return process->process().vm();}
  bool current()const{
   if(textures && !textures->current())return false;
+  if(environment&&!environment->current())return false;
   if(!alive || !ui || !ui->current() || ui->fieldProcess()!=process || !process->ready() || !files->aliases(vm().memory))return false;
   if(!identity || !vm().memory.sharesRamWith(*identity,Root,4))return false;
   for(const auto& s:Spans)if(!vm().memory.sharesRamWith(*identity,s.address,s.bytes))return false;
@@ -95,9 +96,9 @@ std::shared_ptr<NativeEffectProcess> NativeEffectProcess::create(std::shared_ptr
 }
 bool NativeEffectProcess::current()const{return state_ && state_->current();}
 bool NativeEffectProcess::poolReady()const{return current() && state_->initialized;}
-uint32_t NativeEffectProcess::pending()const{return state_?(state_->textures&&state_->textures->pending()?state_->textures->pending():state_->pending):Init;}
+uint32_t NativeEffectProcess::pending()const{if(state_&&state_->environment&&state_->environment->pending())return state_->environment->pending();return state_?(state_->textures&&state_->textures->pending()?state_->textures->pending():state_->pending):Init;}
 bool NativeEffectProcess::mainPending()const{return state_ && state_->visiting;}
-bool NativeEffectProcess::busy()const{return state_ && (state_->init.active || state_->visiting || state_->releasing || (state_->textures&&state_->textures->busy()));}
+bool NativeEffectProcess::busy()const{return state_ && (state_->init.active || state_->visiting || state_->releasing || (state_->textures&&state_->textures->busy()) || (state_->environment&&state_->environment->busy()));}
 std::shared_ptr<NativeUiStartup> NativeEffectProcess::ui()const{return state_?state_->ui:nullptr;}
 EffectPoolServices NativeEffectProcess::services(){
  EffectPoolServices s;s.memory=state_->vm().memoryBinding.services();s.user=state_.get();
@@ -130,6 +131,20 @@ bool NativeEffectProcess::main(const void* owner,uint64_t visit,const NativeEffe
  c.pending=Main;if(!resumeEffectMain(services(),c.main))return false;
  c.visiting=false;c.pending=0;return true;
 }
+bool NativeEffectProcess::initializeEnvironment(){
+ if(invoking_||!poolReady())return false;Guard guard(invoking_);auto&s=*state_;
+ if(s.visiting||s.releasing)return false;
+ if(!s.environment){s.environment=NativeSourceTextureStartup::createEnvironment(s.ui,s.root.c_str());if(!s.environment)return false;}
+ return s.environment->initializeEnvironment();
+}
+bool NativeEffectProcess::beginEnvironmentTextures(){
+ if(invoking_||!poolReady()||!state_->environment)return false;Guard guard(invoking_);
+ if(state_->visiting||state_->releasing)return false;return state_->environment->begin();
+}
+bool NativeEffectProcess::pumpEnvironmentTextures(uint32_t bytes){
+ if(invoking_||!poolReady()||!state_->environment)return false;Guard guard(invoking_);return state_->environment->pump(bytes);
+}
+bool NativeEffectProcess::environmentTexturesReady()const{return current()&&state_->environment&&state_->environment->ready();}
 bool NativeEffectProcess::beginTextures(){
  if(invoking_||!poolReady())return false;Guard guard(invoking_);auto&s=*state_;
  if(s.visiting||s.releasing)return false;

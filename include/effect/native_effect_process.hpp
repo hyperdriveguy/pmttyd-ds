@@ -37,6 +37,10 @@ public:
  bool main(const void* owner,uint64_t visit,const NativeEffectUpdate&);
  bool mainPending()const;
  bool busy()const;
+ bool initializeEnvironment(); // Original envInit once on the same process.
+ bool beginEnvironmentTextures();
+ bool pumpEnvironmentTextures(uint32_t byteBudget);
+ bool environmentTexturesReady()const;
  bool beginTextures(); // Original primary + mandatory N64 job admission.
  bool pumpTextures(uint32_t byteBudget); // Independent actual DVD callbacks.
  bool texturesReady()const;

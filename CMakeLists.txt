@@ -3208,3 +3208,13 @@ add_test(NAME source_shadow_process COMMAND source_shadow_process_tests)
 set_tests_properties(source_shadow_process PROPERTIES WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 
 target_sources(ttyd_core PRIVATE source/platform/source_smart_arena.cpp)
+
+# Whole original environment initialization, texture setup and native transfer.
+target_sources(ttyd_core PRIVATE source/display/source_environment_startup.cpp)
+add_executable(source_environment_startup_tests tests/source_environment_startup_tests.cpp)
+target_link_libraries(source_environment_startup_tests PRIVATE ttyd_core)
+add_test(NAME source_environment_startup COMMAND source_environment_startup_tests)
+add_executable(native_environment_startup_tests tests/native_environment_startup_tests.cpp)
+target_link_libraries(native_environment_startup_tests PRIVATE ttyd_core)
+add_test(NAME native_environment_startup COMMAND native_environment_startup_tests)
+set_tests_properties(native_environment_startup PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

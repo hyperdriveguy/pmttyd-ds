@@ -1,6 +1,20 @@
 {
   "schema": 1,
   "assets": [
+    {
+      "id": "original/display/environment-startup-memory",
+      "kind": "event",
+      "source": "assets/original/display/environment-startup/memory.json",
+      "output": "environment-startup/memory.pmevt",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/display/environment-startup-tpl",
+      "kind": "pack",
+      "source": "assets/original/display/environment-startup/env.tpl",
+      "output": "environment-startup/env.tpl",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
     {"id":"original/memory/smart-process", "kind":"event", "source":"assets/original/memory/smart-process/event.json", "output":"source-smart-literals.pmevt", "license":"Nintendo/Intelligent Systems original game asset; no redistribution license granted"},
     {"id":"original/display/shadow-process", "kind":"event", "source":"assets/original/display/shadow-process/event.json", "output":"source-shadow-literals.pmevt", "license":"Nintendo/Intelligent Systems original game asset; no redistribution license granted"},
     {
