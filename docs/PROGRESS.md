@@ -19393,3 +19393,67 @@ request is needed. Then bind actual fukidashi event/update/render/audio lifetime
 continue genuine setup2 controller/result/export/field return and original
 276-command afterbattle crowd/dialogue/party/map transition. Validate full fresh
 and resume Crump round trips and measure actual hardware rendering budgets.
+
+## 2026-11-07 — actual field startup resources and original target display
+
+Completed the field-owned Crump startup/resource increment (commit
+`1b5ce61c38e30cba3d4ab1230644b45c900e3c9b`). Actual BattleSequence pool and
+camera receipts now admit retained Startup only from the real same-VM
+800f8f04 boundary. Game/VM/binding and allocation lifetime guards reject
+replacement, restore, freed/reused storage and stale borrows. Original event
+context ReInit does not retire an otherwise live process owner. This does not
+activate the source-owned path in normal Game.
+
+Integrated retained bmapLoad/group/deep-object flags, immutable original file
+catalogs and four editable bti_01/stg_00_0 D/T sources, retaining actual rounded
+DVD tail bytes. Added actual-VM Audience resources, retained Noise/native sound
+binding, real BreakSlot allocation/copies, dynamic battle addresses, and public
+service registration separated from legacy fixed-storage provision. Default
+unknown Noise private bytes still hold; the separately tested empty cold-private
+policy is explicit and remains inactive.
+
+Implemented whole original target selection display80120a44/5a0: single/all
+selection, original icon503, actual unit/part/name branches, original window/font
+calls, exact source arithmetic/read ordering and final camera call. Native
+projection/icon/window/font children remain required before acknowledging the
+queued original Target callback. The independent TEST-only raw-ISO instruction
+oracle matches160 static cases and72 twice-held boundary cases, including late
+source mutations and ownership/reentry. It is not a Dolphin/hardware trace.
+
+Validation authority: `artifacts/crump-process-closure-plan/manifest.json`, SHA
+`af4786978374aaa4430c6b7f6c4e2f4171e99b7faeb8f39a894bdb489948cc71`.
+All15491 input hashes remained unchanged after both consumers terminated.
+`make test` passed604/604 C++ tests in88.37s and266/266 Python tests in38.017s,
+zero skips. `make -j4 all -o assets-ready SOUNDTRACK=gamecube` passed; isolated
+3DSX SHA`897cc2ee01ac85cfcbedbeb30c75666130dff664a175c295055f6d1c31333859`.
+Normal asset preparation compiled442 recipes and preserved all480 editable
+source hashes; an initial missing copied symbols fixture failure is retained,
+then corrected by supplying the exact accepted reference. Frozen docs1693/0
+broken links; live post-application docs1695/0. Exact commands, failures, package
+journals and hashes are in that artifact directory. Additional focused suites
+passed strict host, ASan/UBSan (LSan disabled under ptrace), ARM and original ISO
+source pins. REA's advertised DOL CLI option failed schema validation before
+producing a decompile result; original ISO bytes/disassembly remain authority.
+
+The tested graph uses committed2d98ab50 plus exact reviewed journals. Concurrent
+committed native effect/camera-road work was preserved during scoped rebase;
+its real gor_00/c record remains in the immutable default catalog and the Game
+registration guard remains last-declared. The generalized catalog fixture uses
+actual default count. The next gameplay integration MUST rebuild a fresh full
+current-HEAD Game/VM/Renderer closure; the earlier ancestor archive is not a
+combined-current-HEAD validation receipt. Foreign uncommitted work is preserved.
+
+Initial Crump is still not verified playable in normal Game. A direct stub cause
+was identified: normal Game called only tick(), never existing command input or
+attack dispatch. Parallel private native gameplay/menu work now targets that
+path. A focused original-script/physical-input host test completed a real round
+(Crump5→4, Mario7→6, round2, no pending command), but its native menu/GPU/audio
+and end/return integration are unfinished and not part of this frozen graph.
+Next: integrate the native gameplay driver and original-art upper menu (lower
+scene unchanged), bind reached prize/rotation helpers, complete actual pouch/
+owned-sound/resource retirement and same-VM field result return, then run fresh
+full gates and an isolated Azahar physical-input playthrough. Preserve original
+US dialogue/conditions; never convert HP thresholds or numeric results into
+story/End completion. A read-only audit also maps all15 original Mario action
+voices to single primary samples590..604; actual public-slot PCM playback remains
+unbound and pending-slot acceptance is not audibility.

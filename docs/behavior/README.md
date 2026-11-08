@@ -1537,6 +1537,7 @@ Original battle menu native resource/queue owners:
 retain explicit provider and process-ownership frontiers.
 
 | [Retained break-slot initialization](battle/RETAINED_BREAK_SLOT_INITIALIZATION.md) | Whole original cold initializer with retained private arrays and child calls |
+| [Retained original target selection display](battle/RETAINED_TARGET_SELECTION_DISPLAY.md) | Whole source single/all-target cursor, original name window and retained final camera call | Native projection/icon/font/window providers and normal battle activation |
 [Retained original Audience initialization](battle/RETAINED_AUDIENCE_INITIALIZATION.md) preserves actual Init/Setting child and private-frame ownership.
 
 - [Original map light child binding](field/NATIVE_MAP_LIGHT_CHILD_BINDING.md): reached Entry/reset calls, actual shared ambient words, coherent process ownership and retained camera frontier.

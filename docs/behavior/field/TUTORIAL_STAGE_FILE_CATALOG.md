@@ -2,7 +2,9 @@
 
 `FieldMapFileOwner` accepts an immutable, validated catalog of source DVD paths,
 native relative paths, logical lengths and 32-byte transfer lengths. The existing
-four-argument binding retains the original two `gor_00` records.
+four-argument binding retains the actual original `gor_00` catalog, including
+the independently integrated `d`, `t` and camera-road `c` records. Stage rows
+follow that catalog; tests derive their offset rather than assuming two defaults.
 `tutorialStageMapFileCatalog()` adds the genuine `bti_01` base and `stg_00_0`
 foreground D/T records selected by the Crump rank-zero source stage.
 
