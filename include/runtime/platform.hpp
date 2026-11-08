@@ -107,6 +107,7 @@ public:
     // Actual outside-frame native teardown. Caller suspends battle rendering
     // across held completion and reloads field presentation before returning.
     bool retireNativeHarborPresentation(HarborTutorial&,const std::shared_ptr<const void>&);
+    bool nativeHarborPresentationRetired(const HarborTutorial&,const std::shared_ptr<const void>&) const;
     // Ready-only accessor: never imports during a held native callback.
     std::optional<BattleClassSurfaceLease> classMenuSurfaceLease()const;
     // Explicit preparation outside FrameBegin; source callbacks borrow leases.
@@ -551,6 +552,15 @@ private:
     // a weak reference and cannot borrow a later renderer incarnation.
     std::shared_ptr<const uint8_t> sourceMapCpuLifetime_;
     bool sourceMapFrameActive_=false;
+    struct NativeHarborRetirement {
+        const HarborTutorial* facade=nullptr;
+        NativeFacadeRegistration::Proof proof;
+        std::weak_ptr<const void> runtime;
+    } harborRetirement_;
+    // True handles the entire frame, including a held FrameBegin. No combat
+    // preparation or drawing may follow actual presentation retirement.
+    bool renderNativeHarborRetirement(const Game&);
+
     // Frame-owned borrowed geometry/texture descriptors, prepared by top world.
     struct TrioSceneDraw {Vertex* stream=nullptr;C3D_Tex texture{};uint32_t first=0,count=0,depthMask=0;GPU_CULLMODE cull=GPU_CULL_NONE;bool depth=true;};
     std::array<std::vector<TrioSceneDraw>,2> trioSceneMaps;

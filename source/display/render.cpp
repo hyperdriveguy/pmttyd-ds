@@ -1654,6 +1654,7 @@ void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audio
 // SYNCDRAW permits CPU arenas to be reused only after previous GPU work finishes.
 void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool audioAvailable) {
     if(sourceMapFrameActive_)return;
+    if(renderNativeHarborRetirement(g))return;
     prepareEnemyHp(g);
     prepareNativeHarborMenu(g);
     prepareClassMenuFrame(g);
@@ -1747,6 +1748,7 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
 // before deleting borrowed linear buffers/textures/shaders/targets;then C2D/C3D
 // services close. This call is end-of-owner lifecycle,not a per-frame reset.
 void Renderer::shutdown() {
+    harborRetirement_={};
     sourceMapCpuLifetime_.reset(); // Retire source-map callbacks before resources.
     releaseEnemyHp();
     releaseSourceIcons();

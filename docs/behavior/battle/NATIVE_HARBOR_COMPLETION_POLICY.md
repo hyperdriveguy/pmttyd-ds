@@ -159,3 +159,30 @@ replacement during receipt validation, an actual field NPC producer lease,
 reentry, full packed export into the same raw guest allocation, later-write
 preservation and foreign backing rejection. Existing export tests retain
 partner snapshots and source conditional nonpositive-HP behavior coverage.
+
+## Presentation retirement across held completion (2026-11-08)
+
+Actual `Renderer::retireNativeHarborPresentation` now requires the original
+current Harbor facade and an outside-frame call, in addition to matching all
+retained presentation owners. After real `C3D_FrameSync`, it retains the exact
+facade proof and weak runtime identity independently of the reward/fade owners
+it frees. Copied facades and same-address pointers with foreign shared ownership
+cannot admit retirement. A later battle at the same C++ address cannot inherit
+this barrier.
+
+The normal Renderer frame entry checks that barrier before any source-menu,
+map, actor, audience, HUD or overlay preparation. During held completion it
+submits opaque black clears for both actual native targets and returns. A held
+FrameBegin or failed target submission retains the barrier; it cannot fall
+through to battle re-import/draw. This uses the existing Citro3D frame/target
+operations and allocates no frame-local resource owner or geometry. Shutdown
+retires the barrier before target destruction.
+
+This is durable native presentation retirement, not a finishing opaque-frame
+receipt, field-resource reload, original End acknowledgment or permission to
+advance story/result/sequence. The caller must still retain actual completion,
+stop audio, export the canonical pouch and prepare/admit the incoming field
+presentation before allowing field rendering. Game/Harbor replacement is not a
+field-return shortcut. Focused tests execute the actual retirement adapter with
+real admitted Harbor facade/runtime and a TEST GPU boundary; no hardware or
+pixel claim follows from that fixture.

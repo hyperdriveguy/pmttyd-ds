@@ -20840,3 +20840,26 @@ battle ticket.
 Next: compose actual finishing/fade, sealed field NPC work, retained completion,
 GPU/audio teardown and canonical pouch return before accepting the original
 postbattle scene. Full Crump into/out-of-battle and full-game goals remain open.
+
+### Durable Crump presentation retirement (2026-11-08)
+
+Closed an actual held-completion resource hazard: normal Renderer frame
+preparation previously re-imported the tutorial immediately after presentation
+teardown while HarborTutorial.running() remained true. Retirement now requires
+the exact current facade/runtime and an outside-frame call. After actual GPU
+synchronization it retains a separate proof-bound barrier, so later frames
+submit black clears for both targets before any combat preparation/drawing.
+The barrier survives unavailable frame/target submissions; replacement and
+copied/foreign ownership cannot inherit or authorize it. No story/result/scene
+or tutorial trigger is changed, and no per-frame geometry/resource allocation
+was added. This does not supply a finishing receipt or field reload.
+
+Focused actual-adapter test passes with real Harbor facade/runtime and a TEST
+GPU boundary, including foreign control blocks, copied facades, active-frame
+rejection, resource holds, both target clears, failed FrameBegin/target and
+same-address replacement. Independent review and full make test/make all are
+pending. No new emulator capture or hardware measurement.
+Next: retain actual completion after genuine finishing/both-screen admission,
+retire audio, commit the canonical pouch and admit real same-room field
+resources/ticket return without resetting Game. Original wait/afterbattle and
+fresh/resumed full Crump return remain open; full-game goal remains active.
