@@ -17867,3 +17867,35 @@ hashes are review aids, not semantic coverage proof; tools/tests/untracked
 code are excluded. Goal remains active. Next: remaining icon/shadow programs,
 field GPU and battle/field/platform adapters, changed modules and whole-file
 Trio numeric synthesis. No whole-port or full-game completion is claimed.
+
+### Field array and fan staging documentation
+
+Added 37 inline comment lines across field_animation_gpu.hpp/cpp and
+render_field_animation_gpu.cpp. Explained guest ABI identities, compact attribute
+slots, VAT/descriptor operands, sparse component reads, retained matrix/request
+identity, low16 fan counts and short-fan consumption, high-water storage,
+complete-fan submission, ALL cull suppression, sampled validity versus sticky
+invalidation, and native transform/scissor/winding publication. Added/indexed
+docs/code/field-gpu-staging.md. Code/docs commit: `9e514808`.
+All three scoped files preserve executable tokens and string literals.
+
+Validation: portable field_animation_gpu passed host C++17 syntax; both
+implementations passed ARM C++17 syntax against the captured current committed
+include tree. Three executable-stream comparisons, five live/private documented
+hashes, 130 local links and 572 supporting header hashes passed audits.
+No runtime fixtures were reused: this new stager and its native integration
+do not exist in the older supporting runtime library. No new tests, native
+link/GPU execution, original raster parity or hardware timing were exercised.
+
+Full make test/all were not repeated for comments/prose only; there are no
+executable changes. Prior suite/build evidence retains its own snapshot scope
+and does not validate concurrent changes. No assets/imports/conversions, ISO
+writes, story changes or emulator runs. Exact commands, logs, hashes, scoped
+patch and documented copies:
+artifacts/field-gpu-staging-code-documentation-validation/.
+
+Goal remains active. Inventory confirms native icon/shadow programs already
+have matching annotation snapshots; these are not newly reviewed completion
+claims. Next: remaining battle packet/publication adapters and field/platform
+services, changed modules, broader tool coverage and whole-file Trio numeric
+synthesis. No whole-port or full-game completion is claimed.
