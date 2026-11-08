@@ -17828,3 +17828,42 @@ Goal remains active. Next: remaining native graphics/resource and battle/field
 adapters, changed modules and broader numeric/comment coverage. Whole-file
 Trio numeric synthesis remains incomplete; no whole-port or full-game
 completion is claimed.
+
+### Battle GPU resource and profile documentation
+
+Added 90 inline comment lines across the class surface, submenu surface, footer
+and enemy HP GPU implementations/headers. Explained separate source-index/
+slot/format domains, atlas layout and PMBEHP01 ABI, native versus source CMPR
+formats, fresh shared-object epochs, class/submenu reentrant cancellation
+versus externally serialized HP/footer explicit retirement, live TPL descriptor
+validation, local GX-profile masks/codes, 28/36 scalar-lane assembly, held final
+append and native material/alpha-profile differences. Added/indexed
+docs/code/battle-gpu-resources.md. Code/docs commit: `b2db71ad`.
+All eight files preserve executable tokens and string literals.
+
+Validation: existing battle_class_surface_gpu, battle_submenu_surface_gpu,
+battle_enemy_hp_gpu and battle_class_footer_gpu fixtures compiled and passed
+with all four freshly compiled implementations linked first. Eight source/header
+streams and four fixture bytes match the prior validated animation-memory-
+selection support snapshot; its coherent pinned headers/core/ROMFS supply
+remaining dependencies. HP reads the private original TPL and relocates only
+fixture memory; class/submenu tests write and remove private temporary catalogs.
+All four implementations passed host/ARM C++17 syntax against the captured
+current committed include tree. Ten live/private documented hashes, eight
+executable-stream comparisons, 133 local links, 572 current/546 prior
+supporting headers, core and 114 accepted product hashes passed audits.
+No tests were added. Native GPU import/link/draw/hardware were not exercised.
+
+Full make test/all were not repeated for comments/prose only; there are no
+executable changes. Prior full-suite/build evidence retains its own snapshot
+scope and does not validate concurrent changes. No asset edits/imports/
+conversions, ISO writes, story changes or emulator runs. Exact commands, logs,
+hashes, documented copies and scoped patch:
+artifacts/battle-gpu-resources-code-documentation-validation/.
+
+Refreshed tracked source/include inventory has 92 changed annotation snapshots,
+140 files without snapshots and an explicit partial Trio entry. The 930 matching
+hashes are review aids, not semantic coverage proof; tools/tests/untracked
+code are excluded. Goal remains active. Next: remaining icon/shadow programs,
+field GPU and battle/field/platform adapters, changed modules and whole-file
+Trio numeric synthesis. No whole-port or full-game completion is claimed.
