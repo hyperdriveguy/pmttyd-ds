@@ -1,5 +1,6 @@
 #include "audio_policy.hpp"
 #include "mario_action_voice_pcm.hpp"
+#include "harbor_ending_audio_catalog.hpp"
 #include "native_battle_sound.hpp"
 #include "platform.hpp"
 #include <algorithm>
@@ -7,11 +8,12 @@
 namespace ttyd {
 namespace {
 constexpr unsigned FirstVoiceChannel = 10;
-constexpr uint32_t MaximumResidentFrames = 256 * 1024,
+// Native576KiB PCM budget fits all18 original clips (262587 frames).
+constexpr uint32_t MaximumResidentFrames = 288 * 1024,
                    MaximumSampleFrames = 65536, VoiceRate = 22050;
 struct SampleMemory {
   int16_t *data = nullptr;
-  uint32_t frames = 0;
+  uint32_t frames = 0, rate = 0;
   ~SampleMemory() {
     if (data)
       linearFree(data);
@@ -23,8 +25,8 @@ struct VoiceBackend {
   unsigned queued = 0, completed = 0, stopped = 0;
   std::shared_ptr<PositionalSfxRegistry> registry;
   std::shared_ptr<NativeBattleSound> sound;
-  std::array<std::shared_ptr<SampleMemory>, 15> samples{};
-  std::array<bool, 15> attempted{};
+  std::array<std::shared_ptr<SampleMemory>, MarioActionPcmCount + HarborEndingPcmCount> samples{};
+  std::array<bool, MarioActionPcmCount + HarborEndingPcmCount> attempted{};
   std::array<ndspWaveBuf, MarioActionVoicePcm::VoiceCount> waves{};
   static std::optional<unsigned> index(uint32_t row) {
     if (row >= 165 && row <= 169)
@@ -33,7 +35,8 @@ struct VoiceBackend {
       return row - 171 + 5;
     if (row >= 177 && row <= 181)
       return row - 177 + 10;
-    return {};
+    const auto ending=harborEndingPcmIndex(row);
+    return ending?std::optional<unsigned>(MarioActionPcmCount+*ending):std::nullopt;
   }
   std::optional<MarioActionVoiceSample> sample(uint32_t row) {
     const auto i = index(row);
@@ -64,11 +67,12 @@ struct VoiceBackend {
       bool valid =
           std::fread(header, 1, sizeof(header), file) == sizeof(header) &&
           pcmHeader(header, pcm) && pcm.channels == 1 &&
-          pcm.rate == VoiceRate && pcm.frames &&
+          (pcm.rate == VoiceRate || (row == HarborStarPointPcmRow && pcm.rate == HarborStarPointPcmRate)) && pcm.frames &&
           pcm.frames <= MaximumSampleFrames &&
           pcm.frames <= MaximumResidentFrames - residentFrames;
       auto loaded = std::make_shared<SampleMemory>();
       if (valid) {
+        loaded->rate = pcm.rate;
         loaded->frames = pcm.frames;
         loaded->data =
             static_cast<int16_t *>(linearAlloc(pcm.frames * sizeof(int16_t)));
@@ -84,7 +88,7 @@ struct VoiceBackend {
       residentFrames += loaded->frames;
       clip = std::move(loaded);
     }
-    return MarioActionVoiceSample{clip->data, clip->frames, VoiceRate, clip};
+    return MarioActionVoiceSample{clip->data, clip->frames, clip->rate, clip};
   }
   static void mix(unsigned voice, uint8_t volume, uint8_t pan) {
     const float gain = float(volume) / 127.f, balance = float(pan) / 127.f;
@@ -159,7 +163,7 @@ void Audio::updateHarborVoicePcm(const Game &game) {
                         uint8_t pan) {
       auto &b = *static_cast<VoiceBackend *>(p);
       if (!b.active || voice >= b.waves.size() || !sample.memory ||
-          !sample.data || !sample.frames || sample.rate != VoiceRate)
+          !sample.data || !sample.frames || (sample.rate != VoiceRate && sample.rate != HarborStarPointPcmRate))
         return false;
       auto &wave = b.waves[voice];
       if (wave.status != NDSP_WBUF_FREE)
@@ -170,7 +174,7 @@ void Audio::updateHarborVoicePcm(const Game &game) {
       wave.looping = false;
       const unsigned channel = FirstVoiceChannel + voice;
       ndspChnSetInterp(channel, NDSP_INTERP_LINEAR);
-      ndspChnSetRate(channel, VoiceRate);
+      ndspChnSetRate(channel, sample.rate);
       ndspChnSetFormat(channel, NDSP_FORMAT_MONO_PCM16);
       VoiceBackend::mix(voice, volume, pan);
       ndspChnWaveBufAdd(channel, &wave);
@@ -238,30 +242,24 @@ bool Audio::retireHarborVoicePcm(const std::shared_ptr<const void> &runtime) {
 }
 bool Audio::harborBattleAudioRetired(
     const std::shared_ptr<const void> &runtime) const {
-  return runtime && harborVoicePcm && harborVoicePcm->retiredRuntime.lock() == runtime;
+  return runtime && harborVoicePcm && harborVoicePcm->retiredRuntime.lock() == runtime && harborOwnedMusicRetired(runtime);
 }
 bool Audio::retireHarborBattleAudio(
     const std::shared_ptr<const void> &runtime) {
   if (!runtime)
     return false;
-  // A foreign/never-bound track12 owner cannot be certified from its number.
+  // Explicit actual stream leases, never track-number adoption. Preflight
+  // foreign12/2 before stopping any owned PCM prefix.
+  if (!canRetireHarborOwnedMusic(runtime))
+    return false;
   if (!harborVoicePcm)
-    return musicTrack != 12;
+    return retireHarborOwnedMusic(runtime);
   const auto &state = *harborVoicePcm;
   if (state.runtime != runtime && state.retiredRuntime.lock() != runtime)
     return false;
   if (!retireHarborVoicePcm(runtime))
     return false;
-  if (ready) {
-    LightLock_Lock(&musicMutex);
-    for (unsigned slot = 0; slot < 3; ++slot)
-      if (music[slot].track == 12)
-        stopMusic(slot);
-    if (musicTrack == 12)
-      musicTrack = -1;
-    LightLock_Unlock(&musicMutex);
-  }
-  return true;
+  return retireHarborOwnedMusic(runtime);
 }
 void Audio::stopHarborVoicePcm() {
   if (harborVoicePcm && harborVoicePcm->runtime)

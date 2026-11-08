@@ -20,6 +20,8 @@ public:
  NativeBattleSound(const NativeBattleSound&)=delete;
  NativeBattleSound& operator=(const NativeBattleSound&)=delete;
  std::optional<int32_t> voice(EventEntry&);
+ // Direct original unit sound; caller owns this retained invocation cursor.
+ std::optional<int32_t> unitSound(uint32_t unit,uint32_t key,uint32_t rawVolume,int32_t belong,SourceBattleVoiceCursor&);
  std::optional<int32_t> menu(uint32_t key);
  // Same atomic real source On owner with an actual captured source position.
  std::optional<int32_t> position(uint32_t key,const std::array<float,3>&);

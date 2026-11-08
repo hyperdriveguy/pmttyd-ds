@@ -1,4 +1,5 @@
 #include "mario_action_voice_pcm.hpp"
+#include "harbor_ending_audio_catalog.hpp"
 namespace ttyd {
 namespace {
 struct Guard {
@@ -42,7 +43,7 @@ const char *marioActionVoicePcmFile(uint32_t row) {
   case 181:
     return "mario-voice-ac3-5.wav";
   default:
-    return nullptr;
+    return harborEndingPcmFile(row);
   }
 }
 const char *marioActionVoicePcmName(uint32_t row) {
@@ -78,7 +79,7 @@ const char *marioActionVoicePcmName(uint32_t row) {
   case 181:
     return "SFX_VOICE_MARIO_AC3_5";
   default:
-    return nullptr;
+    return harborEndingPcmName(row);
   }
 }
 std::optional<uint32_t> marioActionVoicePcmDescriptor(uint32_t row) {
@@ -89,7 +90,7 @@ std::optional<uint32_t> marioActionVoicePcmDescriptor(uint32_t row) {
     return AuditedEffectBits | (659 + row - 171);
   if (row >= 177 && row <= 181)
     return AuditedEffectBits | (664 + row - 177);
-  return {};
+  return harborEndingPcmDescriptor(row);
 }
 bool MarioActionVoicePcm::current() const {
   return services_.registry && services_.runtime && services_.backend &&
@@ -229,7 +230,7 @@ bool MarioActionVoicePcm::service(bool enabled) {
       return false;
     if (!sample || !sample->memory || !sample->data || !sample->frames ||
         sample->frames > MaximumSampleFrames ||
-        sample->rate != NativeVoiceRate) {
+        sample->rate != (row == HarborStarPointPcmRow ? HarborStarPointPcmRate : NativeVoiceRate)) {
       available = false;
       continue;
     }

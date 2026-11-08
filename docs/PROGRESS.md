@@ -20754,3 +20754,61 @@ compose real field presentation/ticket return and original wait/tail/afterbattle
 See artifacts/harbor-pouch-return/accepted/proofs/next-ending-audit.txt.
 Fresh/resumed full Crump acceptance, original crowd/effect/audio rendering,
 cold-load optimization, New2DS performance and the full-game goal remain open.
+
+### Native Crump reward activation and original UI proportions (2026-11-08)
+
+Activated the native positive-reward flow after the actual original Crump
+conclusion. A stationary proof-bound owner admits generation-owned battle/victory
+music, the actual source Mario key40 victory event, original icon404/PointGet
+presentation and the actual packed-pouch Star Point counter. Physical held A/B
+feeds acceleration in simulation ticks; held callbacks retain their original
+visit/input. Original relief1/relief2 and StarPointGet1 primary samples are
+tracked with provenance/licensing; all prior voice samples are preserved.
+Retired victory audio remains handled silence instead of restarting track12.
+
+Original menu gray circles now assemble the source quarter-disc with mirrored
+quadrants and offset shadows. HUD scaling no longer halves the source sizes
+twice; original portraits, digits and banners use their intended native half
+scale/bottom anchors. Star Power positions follow the source layout. No artwork
+was replaced. The lower screen continues the audience/scene; physical menu and
+attack controls remain available.
+
+Added the source-based ordinary finishing controller and actual Mario
+Get/CheckStatus/voice/body-name/type42 child bindings, plus sealed actual field
+NPC-work access. These are foundations: production finishing/fade, whole End,
+teardown and field return are not activated here. Actual source field Mario
+MovePos/ForceMain/ChgMot/Direction/Speed/Pose/DisplayFlags providers preserve
+held child prefixes; production fresh-field Game admission remains separate.
+
+Frozen validation: artifacts/crump-reward-activation-integration/results.json;
+manifest b2fd7c4380d65f5d7d72384ebfe34ee64f4ac0ff23c66a5b02d42bf6fb49a566, 16942 unchanged inputs,
+committed eeb6975a archive plus exact owned packages/journals. make test0:
+674/674 C++ in148.67s;280 Python in51.855s. Native make all0 with
+SOUNDTRACK=gamecube, SHA256 ada4c19c4f6ff3111c76b4fab0d12cfaeb939e106eafc4864b1966fc8e960a68.
+Normal481 recipes validate;543 editable asset inputs unchanged; eight
+read-only ISO verifiers pass;1758 Markdown files/zero broken links. Later
+concurrent pouch-return/material/canonical-view work remains outside this fixed
+receipt and is preserved by scoped integration. Existing warnings remain.
+
+Separate native physical evidence: death+circle probe accepted SHA256
+1ab876ace006fe6a54aed628d56d211fcedfbe66cd63b6a1e9d27f89c09e564c
+(artifacts/crump-death-physical-probe/accepted.json). Five physical attacks
+reduce Crump5->0, four counters Mario10->6; original defeat004/005 dialogue is
+advanced physically; driver conclusion1/pending0 is reached and source body
+flags hide Crump. Scene result remains0. Gray full circles/shadows are visible.
+Original404 stars are visible above on the upper screen; lower draw emissions
+are not lower-pixel evidence. This older receipt does not validate new rewards.
+HUD4 physical receipt SHA97baec9145204f922e7f11144305a37a17a3f81239a741cadafc19487b4f1b83
+confirms initial full-size HUD and one real round10->9/5->4. It exposed the
+source status-window system flag left off after cleanup; a separate guarded
+postattack restoration package is frozen, not included here. Full reward
+physical probe is running with an isolated profile/DSP copy; no success claim
+yet. No user emulator profile/save changes or target-hardware measurement.
+
+Next: accept the actual positive9EXP physical run; integrate/source-check the
+postattack status restoration and both-screen finishing fade bridge; compose
+actual finishing/audio/field/ticket/pouch completion and GPU-synchronized
+teardown. Finish the canonical Mario field view and fresh source movement,
+Fukidashi/effect/texture/camera providers before production source field entry.
+Fresh/resumed original Crump victory/return and full prologue/hardware fidelity
+remain unfinished; the full-game goal stays active.

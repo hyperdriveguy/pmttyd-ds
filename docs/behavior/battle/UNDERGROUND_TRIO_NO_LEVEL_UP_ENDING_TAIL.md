@@ -43,14 +43,18 @@ this requests its own leave phase. E29c is cleared after the five-call0d
 delay independently of effect completion/deallocation. Effect-driver cadence
 and GPU ownership remain [effect services](../effect/EFFECT_DRIVER_UPDATE_AND_TEXTURE_CACHE.md).
 
-State19 retains the source Mario U138 flag word. Either mask10000000 or
-20000000 suppresses the voice. With a party, the source checks that retained
-word again and calls party CheckStatus(27); a dead party suppresses voice.
-Do not silently substitute a party U138 load for the literal cached Mario
-word. Admitted voice: S4&20000000 selects string802feafc
-`SFX_VOICE_MARIO_RELIEF1`; otherwise802feb14 `SFX_VOICE_MARIO_RELIEF2`.
-BtlUnit_snd_se receives Mario, that key, original float sentinel f1194d80,0.
-M_V_1 at80427298 is requested even when voice is suppressed.
+State19 captures actual setup, then GetMario, GetParty, and only then reads
+Mario U138. The local r27 starts1. Either Mario mask10000000 or20000000
+sets r27=0. Otherwise a nonnull party CheckStatus(27) nonzero also sets0.
+Only r27=0 enters the RELIEF voice branch; healthy Mario with null party
+skips voice. This corrects the prior inverted voice-gate interpretation.
+The source redundantly checks the retained masked Mario word for the party
+branch; it does not load party U138. When voice is reached, S4&20000000
+selects string802feafc SFX_VOICE_MARIO_RELIEF1, otherwise802feb14 RELIEF2.
+BtlUnit_snd_se receives captured Mario, actual key, raw sentinel f1194d80,0.
+A fresh GetMario then requests M_V_1 at80427298 regardless of voice.
+Exact source branches:802163c8..80216410 capture/gate,80216414 tests r27,
+80216418..80216454 choose/call voice,80216458..80216464 fresh Mario/body.
 
 BtlUnit_SetBodyAnim801275f4/4c finds the unit's original body-part ID and
 part pointer, then btlDispChangeAnime(part,name,force0). SetBodyAnimType

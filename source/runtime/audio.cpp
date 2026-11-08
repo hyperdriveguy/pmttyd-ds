@@ -130,6 +130,7 @@ void Audio::play(const Game& game) {
     ndspChnWaveBufAdd(cue+2,&clip.wave);
 }
 void Audio::stopMusic(unsigned slot) {
+    if(music[slot].nativeGeneration)music[slot].nativeGeneration=music[slot].nativeGeneration==UINT64_MAX?0:music[slot].nativeGeneration+1;
     ndspChnWaveBufClear(MusicChannels[slot]);
     if(keyItemSlot==int(slot)){keyItemSlot=-1;keyItemEnvelope.backendVacant();}
     if(keyItemTailSlot==int(slot)){keyItemTailSlot=-1;keyItemTail.clear();}
@@ -158,6 +159,7 @@ void Audio::switchTrack(int track,bool preservePrevious) {
 }
 void Audio::startMusic(unsigned slot,int track,uint8_t volume){
     auto& stream=music[slot];
+    if(stream.nativeGeneration)stream.nativeGeneration=stream.nativeGeneration==UINT64_MAX?0:stream.nativeGeneration+1;
     stream.track=track;stream.position=0;stream.ended=false;stream.loop=false;
     const char* asset=musicAssetPath(track,switchSoundtrack);
     if(!asset)return;
@@ -205,6 +207,7 @@ void Audio::fill(MusicStream& stream,unsigned slot,ndspWaveBuf& buffer) {
 void Audio::serviceMusic(){MusicLock guard(musicMutex);if(!ready || !streamData)return;for(unsigned slot=0;slot<3;++slot)for(auto& buffer:music[slot].buffers)if(buffer.status==NDSP_WBUF_DONE)fill(music[slot],slot,buffer);retireKeyItemFanfare();}
 void Audio::update(Scene scene,bool enabled,bool harborDanger,int professorMusic,uint32_t room,bool thinking) {
     if(!ready)return;
+    if(serviceHarborOwnedMusic(enabled)){if(!musicThread)serviceMusic();return;}
     int wanted=soundtrackTrack(scene,enabled,harborDanger,professorMusic,room,thinking,switchSoundtrack);
     bool retainedItem=false;
     {MusicLock lock(musicMutex);retainedItem=(scene==Scene::Explore || scene==Scene::Dialogue) &&
@@ -215,6 +218,7 @@ void Audio::update(Scene scene,bool enabled,bool harborDanger,int professorMusic
 }
 void Audio::updateFrontend(int track,bool enabled) {
     if(!ready)return;
+    if(serviceHarborOwnedMusic(enabled)){if(!musicThread)serviceMusic();return;}
     if(!enabled)track=-1;
     if(track!=musicTrack)switchTrack(track);
     if(!enabled)for(int n=0;n<8;++n)ndspChnWaveBufClear(n+2);
@@ -274,5 +278,6 @@ void Audio::shutdown() {
     keyItemSlot=keyItemTailSlot=itemGetFieldSlot=itemGetFieldTrack=-1;keyItemEnvelope={};keyItemTail={};itemGetFieldEnvelope={};itemFanfareResourceAttempted={};itemFanfareResourceReady={};
     musicTrack=-1;
     releaseHarborVoicePcm();
+    releaseHarborOwnedMusic();
 }
 }

@@ -1,4 +1,5 @@
 #include "platform.hpp"
+#include "native_battle_hud_layout.hpp"
 #include "battle_menu_layout.hpp"
 #include "message_icons.hpp"
 #include "harbor_story.hpp"
@@ -13,13 +14,6 @@ constexpr uint32_t PouchFp = 0x74, PouchMaxFp = 0x76;
 constexpr uint32_t PouchCoins = 0x78, PouchStarPoints = 0x96;
 constexpr uint32_t PackedMarioUnit = 0x84101000;
 constexpr uint32_t UnitLimits = 0x108, UnitResources = 0x10c, UnitFp = 0x110;
-// Original icon.bin IDs; placement and scale remain native screen reflow.
-constexpr uint16_t HpBanner = 472, MarioPortrait = 427, FractionSlash = 480;
-constexpr uint16_t FpBanner = 473, FlowerSymbol = 441;
-constexpr uint16_t ApBanner = 474, StarPowerSymbol = 442;
-constexpr uint16_t CounterBanner = 475, StarPointSymbol = 443, CoinSymbol = 444;
-constexpr uint16_t MultiplyMark = 478, FirstLargeDigit = 481;
-constexpr int DigitIconStride = 2; // large/small pair per decimal digit
 } // namespace
 // Native resource fallback maxHP 10 is harness initialization. Pouch offsets
 // 70/72/74/76(hex) are HP/maxHP/FP/maxFP halfwords. Packed Mario words below
@@ -63,54 +57,13 @@ void Renderer::battleHud(const Game& g) {
         starPoints=read(pouch+PouchStarPoints-2,pointPair)?int16_t(pointPair&65535):-1;
     }
     if(status){hp=status->values[Status::MarioHp];maxHp=status->values[Status::MarioMaxHp];fp=status->values[Status::Fp];maxFp=status->values[Status::MaxFp];starPoints=status->values[Status::StarPoints];coins=status->values[Status::Coins];}
-    auto icon=[&](uint32_t id,float x,float y,float scale=.5f) {
-        const auto* art=messageIcon(id);if(!art)return;
-        messageIconImage(id,g.ticks,x,y+art->frame(g.ticks).height*scale*.5f,scale,255);
-    };
-    auto number=[&](int value,float right,float y,bool small) {
-        // Original suu ji/suuji_s tables: alternate large/small IDs, one digit
-        // at a time, right aligned. Negative/uninitialized resources are hidden.
-        if(value<0)return;
-        // Native cap six decimal digits; icon 481+2*digit is large, next ID
-        // is small. Right-aligned pitches 10/8 are native pixels.
-        value=std::min(value,999999);
-        do {icon(FirstLargeDigit+DigitIconStride*(value%10)+(small?1:0),right,y);right-=small?8:10;value/=10;}while(value);
-    };
-    // Native half-size/crop of the original status-window art. Positions are
-    // adapted to400x240; slide/blink/AP-bar callbacks remain separate owners.
-    // Original HP group uses IDs 472/427/480; FP group 473/441/480.
-    // Coordinates below are native UI layout; they do not implement source
-    // status slide/blink choreography.
-    icon(HpBanner,102,20);icon(MarioPortrait,67,20);icon(FractionSlash,110,17);
-    number(hp,99,20,false);number(maxHp,127,20,true);
-    if(maxFp>0) {
-        icon(FpBanner,192,20);icon(FlowerSymbol,158,20);icon(FractionSlash,200.5f,17);
-        number(fp,189,20,false);number(maxFp,217,20,true);
-    }
-    // These additional groups require a whole actual-VM value invocation.
-    // Native400x240 layout; source status slide/blink/queued display is separate.
-    if(status&&status->partnerPortrait){
-        icon(HpBanner,102,40);icon(*status->partnerPortrait,67,40);icon(FractionSlash,110,37);
-        number(status->values[Status::PartnerHp],99,40,false);number(status->values[Status::PartnerMaxHp],127,40,true);
-    }
-    if(status&&status->gaugeCount){
-        icon(ApBanner,257,40,.8f);icon(StarPowerSymbol,164,38,.65f);
-        for(unsigned i=0;i<status->gaugeCount;++i){const auto&q=status->gauge[i];icon(q.icon,190+q.x*.5f,48-q.y*.5f,.75f);}
-    }
-    if(coins>=0 || starPoints>=0) {
-        // Original green status banner, star-point symbol, coin and multiply
-        // mark are already in the shared original atlas. The right-hand group
-        // is a native compact reflow; no AP capacity/fill or audience count is
-        // inferred from these independent pouch counters.
-        icon(CounterBanner,335,16,1);
-        if(starPoints>=0) {
-            icon(StarPointSymbol,289,20);icon(MultiplyMark,301,20);
-            number(starPoints,321,20,false);
-        }
-        if(coins>=0) {
-            icon(CoinSymbol,339,20);icon(MultiplyMark,351,20);
-            number(coins,378,20,false);
-        }
+    // Real source values above are unchanged. The bounded plan carries original
+    // icon scales/bottom anchors; messageIconImage performs the one native half
+    // conversion. Native source-window slide/blink remains a separate owner.
+    const auto plan=planNativeBattleHud({hp,maxHp,fp,maxFp,coins,starPoints,status?&*status:nullptr});
+    if(!plan)return;
+    for(std::size_t i=0;i<plan->count;++i){const auto&q=plan->icons[i];
+        messageIconImage(q.icon,g.ticks,q.centerX,q.bottomY,q.sourceScale,255);
     }
 }
 // Upper command reflow: actor2 has one command, others two; target mode

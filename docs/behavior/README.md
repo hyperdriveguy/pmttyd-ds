@@ -1374,6 +1374,7 @@ Original retained battle UI text controllers:
 - [Weapon help parser](display/RETAINED_WEAPON_HELP_PARSER.md).
 - [Matrix font](display/RETAINED_MATRIX_FONT_RASTER.md).
 - [Native manual Harbor command menu](display/NATIVE_HARBOR_COMMAND_MENU.md).
+- [Original quarter-disc assembly in the native Harbor menu](display/NATIVE_HARBOR_CLASS_CIRCLE_ASSEMBLY.md).
 - [Native Harbor target names](display/NATIVE_HARBOR_TARGET_NAMES.md).
 - [Original native Harbor success feedback](display/NATIVE_HARBOR_NICE_EFFECTS.md).
 - [Native heap clear borrowing](event/NATIVE_HEAP_BORROW.md).
@@ -1421,11 +1422,19 @@ Original battle menu native resource/queue owners:
 - [Native source window process memory](display/NATIVE_SOURCE_WINDOW_MEMORY.md).
 
 - [Retained original harbor battle callbacks](field/NATIVE_HARBOR_BATTLE_CALLBACKS.md): source start/wait/regular-EVT-ID parents, actual caller VM bridge and pending-owner limits.
+- [Native Harbor ending field contribution](field/NATIVE_HARBOR_ENDING_FIELD_ACCESS.md): sealed actual field pointer/NPC140 source load/OR, phase and lifetime guards; no return receipt.
 - [Native Harbor field sequence admission](field/NATIVE_HARBOR_FIELD_SEQUENCE.md): actual same-VM Start/Wait, sealed runtime/ticket, completed-teardown proof and unchanged field result; private native sequence policy, not original Main acknowledgment.
 - [Native Harbor encounter field context](story/NATIVE_HARBOR_ENCOUNTER_FIELD_CONTEXT.md): fresh actual six-NPC constructors, original placement/source area setup, retained information/start/wait and explicit remaining native callback holds.
 - [Native Mario position preadmission](field/NATIVE_MARIO_POSITION_PREADMISSION.md): actual field XYZ, proof-first bounded source getter/quantization and real fresh Harbor next-provider frontier.
 - [Native empty environmental sound Off](audio/NATIVE_EMPTY_ENVIRONMENT_OFF.md): sealed actual native cold handle contribution, complete raw source wrapper/empty branch, exact SDA-read hold and genuine live/backend frontier.
 - [Native field Mario key admission](field/NATIVE_FIELD_MARIO_KEY_ADMISSION.md): actual typed wrapping key owner, whole source key wrapper and proof-first immediate-domain admission.
+- [Retained original Mario mov_pos2 and force start](field/RETAINED_MARIO_MOVE_POSITION.md): whole ordered callback/force child, exact polls/numeric boundaries and native simulation admission frontier.
+- [Retained Mario force consumer and coordinate leaf](field/RETAINED_MARIO_FORCE_CONSUMER.md): original count/bit clearing, movePos numeric order and actual simulation-visit admission.
+- [Retained Mario motion transition](field/RETAINED_MARIO_CHANGE_MOTION.md): whole ChgMot/StayPost source order, actual post-table children and canonical native field binding.
+- [Retained Mario direction event](field/RETAINED_MARIO_SET_DIRECTION.md): complete original event/direction/frame children, actual polls and finite native source-field boundaries.
+- [Retained Mario speed getters](field/RETAINED_MARIO_SPEED.md): complete original walk/dash/background getter branches and actual canonical input/scale ownership.
+- [Retained Mario pose event](field/RETAINED_MARIO_SET_POSE.md): whole original pose pointer/table/flag selection and explicit Dot/native presentation child owners.
+- [Retained Mario display flags event](field/RETAINED_MARIO_DISPLAY_FLAGS.md): complete original nonzero/set and zero/clear masks on actual canonical source fields.
 - [Harbor original admission facade](field/NATIVE_HARBOR_BATTLE_ADMISSION_FACADE.md): immutable actual entry facade/proof, copy/move rejection and sealed field-return identity separate from scene projection.
 
 
@@ -1485,6 +1494,7 @@ Original battle menu native resource/queue owners:
 
 - [Retained original status values](display/RETAINED_SOURCE_STATUS_VALUES.md).
 - [Original battle partner and AP status groups](display/NATIVE_BATTLE_STATUS_GROUPS.md).
+- [Original HUD proportions in the native reflow](display/NATIVE_BATTLE_HUD_PROPORTIONS.md).
 
 - [Actual accepted source GX routing](display/REACHED_SOURCE_GX_SETTER_ROUTING.md).
 
@@ -1608,6 +1618,8 @@ retain explicit provider and process-ownership frontiers.
 - [Retained original star-point offset event](battle/RETAINED_STAR_POINT_OFFSET_EVENT.md): whole80113f88 and registry, ordered math/setters and actual lethal next-effect boundary.
 
 - [Actual Harbor source victory root](battle/NATIVE_HARBOR_VICTORY_EVENT.md): actual key40 event/owner/tracked ID and source retirement, facade lifetime guards.
+- [Native Harbor finishing children](battle/NATIVE_HARBOR_FINISHING_BINDING.md): actual registry/source voice and ordered body pose selection with reward/root gates; no ending receipt.
+- [Native Harbor ending composition](battle/NATIVE_HARBOR_ENDING_COMPOSITION.md): main-loop actual-runtime/music/model binding and real reward activation; finishing and field return separate.
 - [Native Harbor reward flow](battle/NATIVE_HARBOR_REWARD_FLOW.md): actual counter/presentation coordination, physical held-input retries and positive ordinary branch; finishing remains separate.
 - [Native Harbor reward counter](battle/NATIVE_HARBOR_REWARD_COUNTER.md): source amount/cadence, physical acceleration and retained real-pouch writes; finite native count only.
 - [Actual Harbor reward binding](battle/NATIVE_HARBOR_REWARD_BINDING.md): source-concluded runtime/pouch/sound binding, admission-facade proof and cancellation latch; presentation/ending activation remains separate.
@@ -1627,6 +1639,10 @@ retain explicit provider and process-ownership frontiers.
 - [Original atomic attack-event barrier](battle/ATOMIC_WAIT_ATTACK_END_EVENT.md): whole8010a154, fresh actual attacker capture and real selected EVT manager live/dead poll.
 
 - [Original atomic KillUnit event](battle/ATOMIC_KILL_UNIT_EVENT.md): whole80113304, raw mode capture and actual HP/status/attribute effects; fresh charge-byte correction preserves real ClearStatus store/read/clamp order.
+
+- [Native Harbor ending audio](audio/NATIVE_HARBOR_ENDING_AUDIO.md): actual retained unitSound, original RELIEF1/2/star-point PCM and runtime-owned battle/victory music leases.
+
+- [Native Harbor ordinary finishing](battle/NATIVE_HARBOR_FINISHING.md): source-backed0e/10/19/1a..fade contribution, exact relief gate, retained60-tick/type42/NPC/audio and actual both-screen opaque readiness. No wholeEnd/field receipt.
 
 - [Retained original map material source](display/RETAINED_MAP_MATERIAL_SOURCE.md): complete1206-word material/light/nearest-sort graph with binary64 LOD and full attenuation ABI; native GX/capture binding remains open.
 

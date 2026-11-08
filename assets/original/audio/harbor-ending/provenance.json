@@ -1,0 +1,236 @@
+{
+  "schema": 1,
+  "source": "US G8ME01 disc0 revision0, read-only",
+  "bank_provenance": {
+    "proj": {
+      "source_path": "sound/proj/pmario.proj",
+      "iso_offset": 1186607380,
+      "size": 28080,
+      "sha256": "f00a06f50bd9da5769f07fa751c2e4ae3731f3e0850236d62cd901c7f8eccdeb"
+    },
+    "pool": {
+      "source_path": "sound/proj/pmario.pool",
+      "iso_offset": 1186493388,
+      "size": 113992,
+      "sha256": "d0b12b497cee5718a5433285bdec8fcfe9b2dd25b1c1c0daa77ddb804cb7d1a0"
+    },
+    "sdir": {
+      "source_path": "sound/proj/pmario.sdir",
+      "iso_offset": 1197891540,
+      "size": 89788,
+      "sha256": "9529535398c5f7a839dd18f00c8e831957b26b5aab6a7bf83e5ee6acb5cb8496"
+    },
+    "samp": {
+      "source_path": "sound/proj/pmario.samp",
+      "iso_offset": 1186635460,
+      "size": 11256080,
+      "sha256": "062f7542e2f13f867ee30a447904b2b8af0ae8e4334ca39b7e1f4286d90833ea"
+    }
+  },
+  "original_sound_tables": [
+    {
+      "table": "bgm",
+      "address": 2150718152,
+      "size": 4192,
+      "sha256": "0bf7c0d076a1023aec640707a667e08b37a0980c391d83b9c603d4b4be76e346"
+    },
+    {
+      "table": "sfx",
+      "address": 2150722344,
+      "size": 84840,
+      "sha256": "42a9025dfc22cc47ac95e67bfb2d2fb5f460c1a12ea93e067e793daaaff1f683"
+    }
+  ],
+  "decoder_sha256": "4395534faa1b90b705903505bff1410a682a85c5188550e346e0e820f6ace522",
+  "importer_sha256": "908705dd720d92e4573d526bc266f91e4d4c78e11943e90964040456555fa0b6",
+  "voices": [
+    {
+      "file": "mario-voice-relief1.wav",
+      "name": "SFX_VOICE_MARIO_RELIEF1",
+      "name_pointer": "0x802feafc",
+      "name_iso_offset": 3259900,
+      "row": {
+        "platform": "gamecube",
+        "table": "sfx",
+        "table_index": 225,
+        "address": 2150726844,
+        "name": "SFX_VOICE_MARIO_RELIEF1",
+        "flags": 536871617,
+        "fx_id": 705,
+        "stream_alias": "",
+        "category": "field-character",
+        "trigger_evidence": "name category only; event condition and ordering require original caller binding",
+        "parameters": {
+          "volume": 77,
+          "pan": 64,
+          "flags": 0,
+          "mode": 1,
+          "priority": 0,
+          "delay": 0,
+          "variation_high": 0,
+          "variation_low": 0
+        }
+      },
+      "effect": {
+        "group_id": 5,
+        "object_id": 831,
+        "priority": 1,
+        "voices": 10,
+        "velocity": 127,
+        "pan": 64,
+        "key": 60
+      },
+      "macro": {
+        "sample_ids": [
+          635
+        ],
+        "offset": 61016,
+        "size": 64
+      },
+      "sample_id": 635,
+      "encoded_sample": {
+        "iso_offset": 1194202596,
+        "size": 11336,
+        "sha256": "20493be3e10eae939eaf205f7715eb965a49be80c694ee62bf47d347f877c2ac"
+      },
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "pcm": {
+        "id": 635,
+        "offset": 7567136,
+        "rate": 22050,
+        "samples": 19838,
+        "loop": null,
+        "channels": 1,
+        "loop_enabled": false,
+        "conversion": "MusyX DSP ADPCM to PCM16; original rate and sample ID retained"
+      },
+      "pcm_sha256": "7cafd4e29d4f14f6c063eebbb3bc0562f1b43ddbde21b82a6b5adb15b1ba8037"
+    },
+    {
+      "file": "mario-voice-relief2.wav",
+      "name": "SFX_VOICE_MARIO_RELIEF2",
+      "name_pointer": "0x802feb14",
+      "name_iso_offset": 3259924,
+      "row": {
+        "platform": "gamecube",
+        "table": "sfx",
+        "table_index": 226,
+        "address": 2150726864,
+        "name": "SFX_VOICE_MARIO_RELIEF2",
+        "flags": 536871618,
+        "fx_id": 706,
+        "stream_alias": "",
+        "category": "field-character",
+        "trigger_evidence": "name category only; event condition and ordering require original caller binding",
+        "parameters": {
+          "volume": 82,
+          "pan": 64,
+          "flags": 0,
+          "mode": 1,
+          "priority": 0,
+          "delay": 0,
+          "variation_high": 0,
+          "variation_low": 0
+        }
+      },
+      "effect": {
+        "group_id": 5,
+        "object_id": 832,
+        "priority": 1,
+        "voices": 10,
+        "velocity": 127,
+        "pan": 64,
+        "key": 60
+      },
+      "macro": {
+        "sample_ids": [
+          636
+        ],
+        "offset": 61080,
+        "size": 64
+      },
+      "sample_id": 636,
+      "encoded_sample": {
+        "iso_offset": 1194213956,
+        "size": 14816,
+        "sha256": "c789114cced66785b1162bb1d08f321fd44a11973d303412e3661286664e2eeb"
+      },
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "pcm": {
+        "id": 636,
+        "offset": 7578496,
+        "rate": 22050,
+        "samples": 25923,
+        "loop": null,
+        "channels": 1,
+        "loop_enabled": false,
+        "conversion": "MusyX DSP ADPCM to PCM16; original rate and sample ID retained"
+      },
+      "pcm_sha256": "73709a8f3c606d8a6f8a738a8be8fe960c7d32cfb4f0d2a240af9017693cc162"
+    },
+    {
+      "file": "star-point-get1.wav",
+      "name": "SFX_STAR_POINT_GET1",
+      "name_pointer": "0x802feaa8",
+      "name_iso_offset": 3259816,
+      "row": {
+        "platform": "gamecube",
+        "table": "sfx",
+        "table_index": 2616,
+        "address": 2150774664,
+        "name": "SFX_STAR_POINT_GET1",
+        "flags": 536871783,
+        "fx_id": 871,
+        "stream_alias": "",
+        "category": "unclassified",
+        "trigger_evidence": "name category only; event condition and ordering require original caller binding",
+        "parameters": {
+          "volume": 60,
+          "pan": 64,
+          "flags": 0,
+          "mode": 0,
+          "priority": 0,
+          "delay": 0,
+          "variation_high": 0,
+          "variation_low": 0
+        }
+      },
+      "effect": {
+        "group_id": 6,
+        "object_id": 1004,
+        "priority": 8,
+        "voices": 10,
+        "velocity": 127,
+        "pan": 64,
+        "key": 60
+      },
+      "macro": {
+        "sample_ids": [
+          785
+        ],
+        "offset": 72280,
+        "size": 64
+      },
+      "sample_id": 785,
+      "encoded_sample": {
+        "iso_offset": 1195458244,
+        "size": 4056,
+        "sha256": "7214328fe84e7570b77d35c1e9c5119c328fa62a9a326758d41c4bce73b0d04d"
+      },
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "pcm": {
+        "id": 785,
+        "offset": 8822784,
+        "rate": 16000,
+        "samples": 7087,
+        "loop": null,
+        "channels": 1,
+        "loop_enabled": false,
+        "conversion": "MusyX DSP ADPCM to PCM16; original rate and sample ID retained"
+      },
+      "pcm_sha256": "e72a66f5b2b830077bf64e2c390a25506e9d4f743fbc60001ea499d8708ebc61"
+    }
+  ],
+  "conversion": "Original-rate mono PCM16 decode of the single primary DSP ADPCM sample per original voice effect. No normalization/resampling/tone generation. MusyX pitch/envelope/delay/spatial macro behavior is not reproduced.",
+  "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+}

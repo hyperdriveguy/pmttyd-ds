@@ -56,6 +56,9 @@ public:
  bool entered(const HarborEncounter*,const NativeHarborBattleTicket&,const NativeHarborBattleIdentity&);
  bool returned(const HarborEncounter*,const NativeHarborBattleTicket&,const NativeHarborCompletionReceipt&);
  std::shared_ptr<FieldNpcRegistryOwner> registry()const;
+ std::optional<uint32_t> endingFieldWork(const HarborEncounter*,const NativeHarborBattleTicket&);
+ std::optional<uint32_t> endingFieldWord(const HarborEncounter*,const NativeHarborBattleTicket&,uint32_t);
+ bool endingFieldStore(const HarborEncounter*,const NativeHarborBattleTicket&,uint32_t,uint32_t);
  std::optional<uint32_t> actor(const HarborEncounter*,uint32_t actualSourceName);
 private:
  struct State;std::unique_ptr<State> state_;bool invoking_=false;

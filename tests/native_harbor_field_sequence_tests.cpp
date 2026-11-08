@@ -62,6 +62,20 @@ void test(const char*tags){World w(tags);for(unsigned i=0;i<10000&&!w.sailors->r
  assert(loadHarborTutorialAssets("romfs")&&loadProloguePouchAssets("romfs"));HarborTutorial tutorial;auto pouch=initializeProloguePouch("Yoshi");assert(tutorial.beginFromPouch(0,pouch,4));NativeHarborCompletionFixture::admitTestPrefix(tutorial);
  auto identity=tutorial.nativeFieldBattleIdentity();assert(identity&&sequence->entered(copy,*identity)&&sequence->entered(*ticket,*identity));
  NativeHarborBattleTicket absent;assert(!sequence->entered(absent,*identity));
+ const auto actualField=sequence->endingFieldWork(copy);assert(actualField&&*actualField==w.owner->fieldWorkAddress());
+ assert(!sequence->endingFieldWork(absent));
+ const auto actualNpc=sequence->endingFieldWord(copy,*actualField+8);assert(actualNpc&&*actualNpc);
+ const auto flagsAddress=*actualNpc+0x140;const auto flagsBefore=w.word(flagsAddress);
+ assert(!sequence->endingFieldStore(copy,flagsAddress,flagsBefore|0x100));
+ assert(!sequence->endingFieldWord(copy,flagsAddress+4));
+ assert(sequence->endingFieldWord(copy,flagsAddress)==flagsBefore);
+ // Original inline OR uses its captured load even across a held service. An
+ // unrelated later mutation must not replace that already consumed source word.
+ assert(w.vm.memory.writeWord(flagsAddress,flagsBefore^0x200));
+ assert(!sequence->endingFieldStore(absent,flagsAddress,flagsBefore|0x100));
+ assert(!sequence->endingFieldStore(copy,flagsAddress,(flagsBefore|0x100)^1));
+ assert(sequence->endingFieldStore(copy,flagsAddress,flagsBefore|0x100));
+ assert(sequence->endingFieldStore(copy,flagsAddress,flagsBefore|0x100)&&w.word(flagsAddress)==(flagsBefore|0x100));
  assert(sequence->invokeSource(0x8004eed8,e,true)==0&&backend.bgmCalls==0&&backend.mario.controlDepth==1);
  NativeHarborCompletionReceipt receipt;receipt.result=1;receipt.pouch=pouch;receipt.battleLifetime=identity->lifetime();
  assert(!sequence->returned(copy,receipt)); // Public fields alone prove no teardown.
@@ -70,6 +84,7 @@ void test(const char*tags){World w(tags);for(unsigned i=0;i<10000&&!w.sailors->r
  auto changedPouch=receipt;changedPouch.pouch.bytes[0]^=1;assert(!sequence->returned(copy,changedPouch));
  receipt.result=0;assert(!sequence->returned(copy,receipt));receipt.result=1;assert(sequence->returned(copy,receipt)&&sequence->returned(copy,receipt));
  assert(w.word(w.owner->fieldWorkAddress()+0x30)==1);
+ assert(!sequence->endingFieldWork(copy)&&!sequence->endingFieldStore(copy,flagsAddress,flagsBefore|0x100));
  assert(!sequence->invokeSource(0x8004eed8,e,false)&&sequence->pending()==0x800dbcc4&&backend.mario.controlDepth==0);const auto prior=backend.accepted;
  assert(!sequence->invokeSource(0x8004eed8,e,false)&&backend.accepted==prior);backend.bgmHeld=false;
  assert(sequence->invokeSource(0x8004eed8,e,false)==2&&backend.posts==1&&backend.bgmCalls==1&&backend.mario.controlDepth==0&&!(backend.mario.flags&0x1002));

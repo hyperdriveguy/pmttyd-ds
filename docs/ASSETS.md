@@ -4579,3 +4579,6 @@ requires an empty destination. It never overwrites edited imports or runs in
 normal builds. Nintendo/Intelligent Systems retain all original rights; no new
 license or redistribution rights are granted. Per-asset licensing is in both
 JSON files. See [the implementation boundary](behavior/display/RETAINED_MAP_MATERIAL_SOURCE.md).
+### Original Harbor ending audio
+
+assets/original/audio/harbor-ending contains three editable original mono PCM16 WAVs, imported into an empty destination by tools/import_harbor_ending_audio_assets.py from read-only US G8ME01. Original ending RELIEF1/2 use samples635/636 at22050Hz; STAR_POINT_GET1 uses785 at16000Hz. Per-asset DOL/name/row/object/macro/encoded-range and PCM hashes are in provenance.json. Nintendo/Intelligent Systems retain all rights; no new redistribution license. Normal sfx recipes preserve rate/amplitude and checked-in edits. Native primary-sample policy is not whole MusyX/spatial execution. Existing original victory track2 supplies btl_win1_32k.stm-derived PCM; this package adds ownership, not replacement music.

@@ -1,5 +1,6 @@
 #include "camera_road_assets.hpp"
 #include "platform.hpp"
+#include "native_harbor_ending_owner.hpp"
 #include "native_map_process.hpp"
 #include "field_pipe.hpp"
 #include "save.hpp"
@@ -100,6 +101,7 @@ int main() {
     }
     ttyd::Audio audio;audio.init();
     auto ownedGame=std::make_unique<ttyd::Game>(false);auto& game=*ownedGame;ttyd::Progress saved;
+    ttyd::NativeHarborEndingOwner harborEnding;
     ttyd::EventNativePlatform animationPlatform;
     // Guest CPU RAM is coherent in the VM. ARM barriers preserve the source
     // heap publication order; actual PICA vertex data is flushed by Renderer.
@@ -229,6 +231,9 @@ int main() {
                 const bool outerUpdate=game.trioAttack.outerMainPending();
                 if(!outerUpdate){audio.bindFieldMarioMotion(game);renderer.bindFieldItemGet(game,audio);renderer.advanceTutorialAnimations(game);}
                 game.tick(pending,&sequence);
+                // Actual runtime/resource/music owners advance outside FrameBegin
+                // on the accepted simulation tick. Unavailable children hold.
+                if(!outerUpdate)harborEnding.advance(game,renderer,audio);
                 if(!outerUpdate){renderer.advanceFieldIcons();audio.tickKeyItemAudio(ttyd::TickRate);renderer.advanceFieldItemPresentation();}}
             else {
                 ++frontTicks;
@@ -334,8 +339,9 @@ int main() {
             accumulator=0;pending={};previous=seconds();
         }
         if(frontend.screen==ttyd::FrontScreen::Playing && game.harborTutorial.running()) {
-            if(!audio.harborBattleAudioRetired(game.harborTutorial.nativeGameplayLifetime().lock()))
-                audio.updateFrontend(12,game.progress.sound);
+            // Only the exact admitted stream generation may service this scene.
+            // A retired victory lease is handled silence, never track12 replay.
+            harborEnding.updateAudio(game,audio);
         }
         else if(frontend.screen==ttyd::FrontScreen::Playing)audio.update(game.trioBattleActive?(game.trioAttack.rewardPresentationActive()?ttyd::Scene::Victory:ttyd::Scene::Battle):game.scene,game.progress.sound,game.harborStory.enabled && game.harborStory.triggered,
                      game.professorStory.locked() && !game.trioBattleActive?game.professorStory.music:0,game.progress.room,

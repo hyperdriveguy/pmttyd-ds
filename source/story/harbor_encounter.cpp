@@ -209,6 +209,9 @@ bool HarborEncounter::beginNativeField(uint64_t time,std::array<float,3> mario,i
 }
 bool HarborEncounter::nativeFieldVmIs(const EventNativeRuntime&vm)const{return runtime_&&&runtime_->vm==&vm;}
 std::optional<NativeHarborBattleTicket> HarborEncounter::nativeBattleRequest(){return runtime_&&runtime_->nativeField?runtime_->nativeField->request(this):std::nullopt;}
+std::optional<uint32_t>HarborEncounter::nativeEndingFieldWork(const NativeHarborBattleTicket&t){return runtime_&&runtime_->nativeField?runtime_->nativeField->endingFieldWork(this,t):std::nullopt;}
+std::optional<uint32_t>HarborEncounter::nativeEndingFieldWord(const NativeHarborBattleTicket&t,uint32_t address){return runtime_&&runtime_->nativeField?runtime_->nativeField->endingFieldWord(this,t,address):std::nullopt;}
+bool HarborEncounter::nativeEndingFieldStore(const NativeHarborBattleTicket&t,uint32_t address,uint32_t value){return runtime_&&runtime_->nativeField&&runtime_->nativeField->endingFieldStore(this,t,address,value);}
 bool HarborEncounter::nativeBattleEntered(const NativeHarborBattleTicket&t,const HarborTutorial&battle){
     if(!runtime_||!runtime_->nativeField)return false;const auto identity=battle.nativeFieldBattleIdentity();return identity&&runtime_->nativeField->entered(this,t,*identity);
 }

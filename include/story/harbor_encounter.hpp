@@ -52,6 +52,9 @@ public:
     std::optional<NativeHarborBattleTicket> nativeBattleRequest();
     bool nativeBattleEntered(const NativeHarborBattleTicket&,const HarborTutorial&);
     bool nativeBattleReturn(const NativeHarborBattleTicket&,const NativeHarborCompletionReceipt&);
+    std::optional<uint32_t> nativeEndingFieldWork(const NativeHarborBattleTicket&);
+    std::optional<uint32_t> nativeEndingFieldWord(const NativeHarborBattleTicket&,uint32_t address);
+    bool nativeEndingFieldStore(const NativeHarborBattleTicket&,uint32_t address,uint32_t value);
     void tick(uint64_t time,uint32_t keys,std::optional<float> floor={});
     bool battlePending() const;
     bool running() const{return triggered && !finished;}

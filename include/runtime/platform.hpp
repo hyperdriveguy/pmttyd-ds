@@ -586,6 +586,7 @@ private:
 // NDSP borrows Clip/MusicStream wave descriptors and PCM backing storage.
 // Clear queues/stop callback/join worker before releasing allocations.
 // Source BGM envelope state and native PCM slots have separate lifetimes.
+struct HarborBattleMusicBinding;
 class Audio {
 public:
     bool init();
@@ -604,6 +605,11 @@ public:
     // Actual primary-sample NDSP owner retirement, not source psndMain/End.
     bool retireHarborVoicePcm(const std::shared_ptr<const void>& actualRuntime);
     bool retireHarborBattleAudio(const std::shared_ptr<const void>& actualRuntime);
+    bool beginHarborBattleMusic(const HarborBattleMusicBinding&,bool enabled);
+    bool beginHarborVictoryMusic(const HarborBattleMusicBinding&,bool enabled);
+    bool updateHarborVictoryMusic(const std::shared_ptr<const void>& actualRuntime,bool enabled);
+    bool updateHarborBattleMusic(const std::shared_ptr<const void>& actualRuntime,bool enabled);
+    bool stopHarborVictoryMusic(const std::shared_ptr<const void>& actualRuntime);
     bool harborBattleAudioRetired(const std::shared_ptr<const void>& actualRuntime) const;
     void updateFrontend(const OpeningSequence&,bool enabled);
     void shutdown();
@@ -629,6 +635,13 @@ private:
     FieldSfxNdsp fieldSfxBackend;Game* fieldMarioOwner=nullptr;
     bool ready=false,titleResourceAttempted=false,titleResourceReady=false;
     OpeningHousePcmPlayer openingHousePcm;
+    struct HarborBattleMusicState;std::shared_ptr<HarborBattleMusicState> harborBattleMusic;
+    bool beginHarborOwnedMusic(const HarborBattleMusicBinding&,bool victory,bool enabled);
+    bool serviceHarborOwnedMusic(bool enabled);
+    bool canRetireHarborOwnedMusic(const std::shared_ptr<const void>&);
+    bool harborOwnedMusicRetired(const std::shared_ptr<const void>&)const;
+    bool retireHarborOwnedMusic(const std::shared_ptr<const void>&);
+    void releaseHarborOwnedMusic();
     struct HarborVoicePcmState;std::shared_ptr<HarborVoicePcmState> harborVoicePcm;
     void updateHarborVoicePcm(const Game&);
     void stopHarborVoicePcm();void releaseHarborVoicePcm();
@@ -644,6 +657,7 @@ private:
     // replaced by decoded header. positions/loop bounds are sample FRAME indices.
     struct MusicStream {
         FILE* file=nullptr;
+        uint64_t nativeGeneration=1; // Native lease metadata; saturation stays unavailable.
         int track=-1;
         uint8_t nativeVolume=127;
         bool loop=false,ended=false;

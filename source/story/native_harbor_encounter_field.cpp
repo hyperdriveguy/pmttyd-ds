@@ -151,6 +151,15 @@ bool NativeHarborEncounterField::advance(const HarborEncounter*f){
   auto&e=createRootEvent(s.vm->schedule,placement?CutscenePlacement:CutsceneEntry,0,0,s.vm->creationServices());s.constructor=e.id;s.stage=placement?State::Stage::WaitPlacement:State::Stage::WaitEntry;
  }return s.current(f);
 }
+std::optional<uint32_t>NativeHarborEncounterField::endingFieldWork(const HarborEncounter*f,const NativeHarborBattleTicket&t){
+ if(invoking_||!state_->current(f)||!state_->sequence)return {};Guard guard(invoking_);return state_->sequence->endingFieldWork(t);
+}
+std::optional<uint32_t>NativeHarborEncounterField::endingFieldWord(const HarborEncounter*f,const NativeHarborBattleTicket&t,uint32_t address){
+ if(invoking_||!state_->current(f)||!state_->sequence)return {};Guard guard(invoking_);return state_->sequence->endingFieldWord(t,address);
+}
+bool NativeHarborEncounterField::endingFieldStore(const HarborEncounter*f,const NativeHarborBattleTicket&t,uint32_t address,uint32_t value){
+ if(invoking_||!state_->current(f)||!state_->sequence)return false;Guard guard(invoking_);return state_->sequence->endingFieldStore(t,address,value);
+}
 bool NativeHarborEncounterField::handles(uint32_t fn)const{return fn==SetBattleInfo||fieldNpcCreationEventFunction(fn)||fieldNpcActorEventFunction(fn)||fieldNpcBattleEventFunction(fn);}
 std::optional<int32_t>NativeHarborEncounterField::invoke(const HarborEncounter*f,uint32_t fn,EventEntry&e,bool first){
  if(invoking_||!state_->current(f)||!handles(fn))return {};Guard guard(invoking_);auto&s=*state_;std::optional<int32_t> result;

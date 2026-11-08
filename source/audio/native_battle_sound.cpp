@@ -22,7 +22,7 @@ struct NativeBattleSound::State {
  std::map<uint64_t,SourceBattleVoiceCursor> voices;uint32_t pending=0;
  std::array<std::shared_ptr<const uint8_t>,40> owned{};
  PositionalSfxStopServices retirementBackend{};
- bool starting=false,poisoned=false,retiring=false,retirementInvoking=false,backendBound=false,retired=false;
+ bool unitInvoking=false,starting=false,poisoned=false,retiring=false,retirementInvoking=false,backendBound=false,retired=false;
  bool current()const{return !poisoned && binding.vm && binding.random && binding.registry && binding.lifetime && binding.current && binding.current(binding.user);}
  std::optional<uint32_t> word(uint32_t address)const{uint32_t v=0;if(!binding.vm->memory.readWord(address,v))return {};return v;}
  std::optional<std::string> text(uint32_t address)const{
@@ -106,7 +106,7 @@ NativeBattleSound::NativeBattleSound(const NativeBattleSoundBinding& binding):st
 }
 NativeBattleSound::~NativeBattleSound()=default;
 bool NativeBattleSound::retireOwned(const PositionalSfxStopServices& backend){
- auto& x=*state_;if(x.starting || x.retirementInvoking)return false;
+ auto& x=*state_;if(x.unitInvoking || x.starting || x.retirementInvoking)return false;
  struct Guard{bool& value;explicit Guard(bool& v):value(v){value=true;}~Guard(){value=false;}} guard(x.retirementInvoking);
  if(!x.current())return false;
  if(x.retired)return true;
@@ -126,10 +126,11 @@ bool NativeBattleSound::retireOwned(const PositionalSfxStopServices& backend){
  if(!x.current())return false;
  x.voices.clear();x.retired=true;x.pending=0;return true;
 }
-std::optional<int32_t> NativeBattleSound::voice(EventEntry& e){auto& x=*state_;if(x.retiring || x.starting || x.retirementInvoking || !x.current())return {};const uint64_t key=uint64_t(e.id)<<32|e.currentCommand;auto& cursor=x.voices[key];int32_t result=0;if(!resumeSourceBattleVoice(e,x.services,cursor,result)){x.pending=cursor.pending();return {};}x.voices.erase(key);x.pending=0;return result;}
-std::optional<int32_t> NativeBattleSound::menu(uint32_t key){return state_->start(key,{});}
-std::optional<int32_t> NativeBattleSound::position(uint32_t key,const std::array<float,3>& position){return state_->start(key,position);}
-bool NativeBattleSound::pitch(int32_t handle,int32_t value){auto&x=*state_;return x.current()&&x.services.pitch&&x.services.pitch(x.services.user,handle,value);}
+std::optional<int32_t> NativeBattleSound::voice(EventEntry& e){auto& x=*state_;if(x.unitInvoking || x.retiring || x.starting || x.retirementInvoking || !x.current())return {};const uint64_t key=uint64_t(e.id)<<32|e.currentCommand;auto& cursor=x.voices[key];int32_t result=0;if(!resumeSourceBattleVoice(e,x.services,cursor,result)){x.pending=cursor.pending();return {};}x.voices.erase(key);x.pending=0;return result;}
+std::optional<int32_t> NativeBattleSound::unitSound(uint32_t unit,uint32_t key,uint32_t rawVolume,int32_t belong,SourceBattleVoiceCursor& cursor){auto& x=*state_;if(x.unitInvoking||x.retiring||x.retired||x.starting||x.retirementInvoking)return {};struct Guard{bool& active;explicit Guard(bool& v):active(v){active=true;}~Guard(){active=false;}} guard(x.unitInvoking);if(!x.current())return {};int32_t handle=0;if(!resumeSourceBattleUnitSound(unit,key,rawVolume,belong,x.services,cursor,handle)){x.pending=cursor.pending();return {};}x.pending=0;return handle;}
+std::optional<int32_t> NativeBattleSound::menu(uint32_t key){return state_->unitInvoking?std::nullopt:state_->start(key,{});}
+std::optional<int32_t> NativeBattleSound::position(uint32_t key,const std::array<float,3>& position){return state_->unitInvoking?std::nullopt:state_->start(key,position);}
+bool NativeBattleSound::pitch(int32_t handle,int32_t value){auto&x=*state_;return !x.unitInvoking&&x.current()&&x.services.pitch&&x.services.pitch(x.services.user,handle,value);}
 uint32_t NativeBattleSound::pending()const{return state_->pending;}
 bool NativeBattleSound::usesRegistry(const PositionalSfxRegistry* registry)const{return state_->binding.registry.get()==registry;}
 bool NativeBattleSound::usesRuntime(const EventNativeRuntime* vm)const{return state_->binding.vm==vm;}

@@ -34,6 +34,51 @@ void quad(BattleClassBackend &b, BattleClassTexture texture,
                  {left, bottom, 0, r.u0, r.v1, rgba}}};
   b.quads.push_back(q);
 }
+// Original texture0 is one quarter-disc. DrawMainIconCircle801191a8 uses
+// these four XY/UV quads (802ef650/802ef6d0), not one stretched full texture.
+// This manual native reflow is flat at source Z=0 and angle=0; it does not
+// advance the original ring animation or acknowledge a source GX callback.
+constexpr float CircleSourceDiameter = 40, CircleSourceCenterY = 20;
+constexpr uint32_t CircleGray = 0xc0c0c0ff, CircleShadow = 0x00000080;
+constexpr std::array<std::array<float, 8>, 4> CircleXY{{
+    {{-20,40, 0,40, 0,20, -20,20}},
+    {{20,40, 20,20, 0,20, 0,40}},
+    {{-20,20, 0,20, 0,0, -20,0}},
+    {{0,20, 20,20, 20,0, 0,0}}}};
+constexpr std::array<std::array<float, 8>, 4> CircleUV{{
+    {{0,0, 1,0, 1,1, 0,1}},
+    {{0,0, 0,1, 1,1, 1,0}},
+    {{0,1, 1,1, 1,0, 0,0}},
+    {{1,1, 0,1, 0,0, 1,0}}}};
+void appendCircle(BattleClassBackend &b, const BattleClassRegion &r,
+            float centerX, float centerY, float diameter) {
+  const float scale = diameter / CircleSourceDiameter;
+  // Original angle0 shadow offsets: X=4/1.3, Y=-3.0769231319.
+  // The source1.3 transform is absorbed by this explicit native diameter.
+  constexpr float SourceDepthScale = 1.3f;
+  constexpr float SourceShadowX = 4.f / SourceDepthScale;
+  constexpr float SourceShadowY = -3.076923131942749f;
+  for (unsigned pass = 0; pass < 2; ++pass) {
+    const float dx = pass ? 0 : SourceShadowX;
+    const float dy = pass ? 0 : SourceShadowY;
+    for (unsigned quadrant = 0; quadrant < CircleXY.size(); ++quadrant) {
+      BattleClassQuad q{};
+      q.texture = BattleClassTexture::Surfaces;
+      for (unsigned v = 0; v < q.vertices.size(); ++v) {
+        const auto lane = v * 2;
+        const float x = centerX + (CircleXY[quadrant][lane] + dx) * scale;
+        const float y = centerY +
+            (CircleSourceCenterY - CircleXY[quadrant][lane+1] - dy) * scale;
+        q.vertices[v] = {(x-NativeCenterX)*SourcePerPixel,
+                         (NativeCenterY-y)*SourcePerPixel, 0,
+                         r.u0+(r.u1-r.u0)*CircleUV[quadrant][lane],
+                         r.v0+(r.v1-r.v0)*CircleUV[quadrant][lane+1],
+                         pass ? CircleGray : CircleShadow};
+      }
+      b.quads.push_back(q);
+    }
+  }
+}
 bool text(BattleClassBackend &b, const std::string &label, float x, float y,
           float available, uint32_t color) {
   if (label.empty())
@@ -69,11 +114,12 @@ bool text(BattleClassBackend &b, const std::string &label, float x, float y,
 }
 bool icon(BattleClassBackend &b,
           const std::function<const MessageIconFrame *(uint32_t)> &lookup,
-          uint32_t id, float x, float y, float size, bool enabled) {
+          uint32_t id, float x, float y, float size, bool enabled,
+          uint32_t color = White) {
   if (const auto *r = b.assets->icon(id)) {
     if (!region(*r))
       return false;
-    quad(b, BattleClassTexture::ClassIcons, *r, x, y, size, size, White,
+    quad(b, BattleClassTexture::ClassIcons, *r, x, y, size, size, color,
          enabled ? 16 : 48);
     return true;
   }
@@ -83,7 +129,7 @@ bool icon(BattleClassBackend &b,
   BattleClassRegion r{f->width, f->height, f->u0, f->v0, f->u1, f->v1};
   if (!region(r))
     return false;
-  quad(b, BattleClassTexture::MessageIcons, r, x, y, size, size, White,
+  quad(b, BattleClassTexture::MessageIcons, r, x, y, size, size, color,
        enabled ? 16 : 48);
   return true;
 }
@@ -142,9 +188,10 @@ std::optional<HarborNativeMenuPlan> prepareHarborNativeMenu(
           (size_t(snapshot.selected) + slot) % snapshot.rows.size();
       const auto &row = snapshot.rows[index];
       const auto &at = centers[slot];
-      quad(b, BattleClassTexture::Surfaces, *circle, at[0] - 18, at[1] - 18, 36,
-           36, White);
-      if (!icon(b, lookup, row.icon, at[0] - 13, at[1] - 13, 26, row.enabled))
+      constexpr float NativeCircleDiameter = 36;
+      appendCircle(b, *circle, at[0], at[1], NativeCircleDiameter);
+      if (!icon(b, lookup, row.icon, at[0] - 13, at[1] - 13, 26, row.enabled,
+                CircleGray))
         return {};
     }
     const auto &selected = snapshot.rows[size_t(snapshot.selected)];

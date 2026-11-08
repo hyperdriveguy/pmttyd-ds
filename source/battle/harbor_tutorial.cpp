@@ -8,6 +8,10 @@
 #include "native_harbor_completion.hpp"
 #include "native_harbor_reward_counter.hpp"
 #include "battle_data_child.hpp"
+#include "native_harbor_finishing.hpp"
+#include "battle_packed_pose_lookup.hpp"
+#include "battle_packed_part.hpp"
+#include "battle_unit_event.hpp"
 #include "native_harbor_stylish.hpp"
 #include "native_harbor_nice.hpp"
 #include "native_harbor_smoke.hpp"
@@ -802,6 +806,55 @@ bool HarborTutorial::nativeRewardVictoryEventComplete()const{
  const auto&r=*runtime_;if(failed||r.nativeCompletionFrozen||r.vm.schedule.managerActive||!r.nativeVictoryTracked||!r.nativeVictoryRoot)return false;
  for(int32_t i=0;i<r.vm.battle.capacity;++i)if((r.vm.battle.entries[i].flags&1)&&r.vm.battle.entries[i].id==r.nativeVictoryRoot)return false;
  return true;
+}
+std::optional<uint32_t>HarborTutorial::nativeRewardBattleAddress()const{
+ const auto proof=nativeGameplayFacadeProof();if(!proof.current())return {};
+ const auto&r=*runtime_;const auto counter=r.nativeRewardCounter.lock();
+ if(failed||r.nativeCompletionFrozen||r.vm.schedule.managerActive||!r.packed||!counter||counter->phase()!=NativeHarborRewardCounter::Phase::Done||!nativeRewardVictoryEventComplete())return {};
+ return r.packed->battleAddress();
+}
+std::optional<uint8_t>HarborTutorial::nativeRewardReadByte(uint32_t address)const{
+ if(!nativeRewardBattleAddress())return {};uint8_t value=0;
+ if(!runtime_->vm.memory.readByte(address,value))return {};return value;
+}
+std::optional<uint32_t>HarborTutorial::nativeRewardFinishingChild(const NativeHarborFinishingRequest&q){
+ const auto battle=nativeRewardBattleAddress();if(!battle)return {};auto&r=*runtime_;
+ const auto actors=nativeBattleActorServices(r.vm);const auto&memory=actors.memory;
+ constexpr uint32_t GetMario=0x800f87a8,GetParty=0x800f8728,CheckStatus=0x80127814,
+  UnitSound=0x8012619c,BodyName=0x801275f4,BodyType=0x80127640,
+  OriginalVictoryName=0x80427298,OriginalFloatSentinel=0xf1194d80;
+ if(q.function==GetMario||q.function==GetParty){
+  if(q.count!=1||q.arguments[0]!=*battle)return {};
+  return q.function==GetMario?battleMarioUnit(*battle,actors):battlePartyUnit(*battle,actors);
+ }
+ if(q.function==CheckStatus){
+  if(q.count!=2||q.arguments[1]!=27)return {};const auto party=battlePartyUnit(*battle,actors);
+  if(!party||q.arguments[0]!=party)return {};return checkPackedBattleStatus(party,27,actors)?1u:0u;
+ }
+ // This finite native presentation binding supports the real Mario actor.
+ // Party body/voice requests require their actual imported resource owner.
+ const auto mario=battleMarioUnit(*battle,actors);
+ if(!mario||q.arguments[0]!=mario)return {};
+ if(q.function==UnitSound){
+  if(q.count!=4||!q.voice||q.arguments[2]!=OriginalFloatSentinel||q.arguments[3]||
+   (q.arguments[1]!=0x802feafc&&q.arguments[1]!=0x802feb14)||!r.packed->sourceSound||!r.packed->sourceSound->usesRuntime(&r.vm))return {};
+  const auto result=r.packed->sourceSound->unitSound(mario,q.arguments[1],q.arguments[2],0,*q.voice);
+  return result?std::optional<uint32_t>(uint32_t(*result)):std::nullopt;
+ }
+ if(q.function!=BodyName&&q.function!=BodyType)return {};
+ if(q.count!=2)return {};
+ const auto partId=packedBodyPartId(mario,memory);const auto part=packedUnitPart(mario,partId,memory);if(!part)return {};
+ uint32_t name=0;
+ if(q.function==BodyName){if(q.arguments[1]!=OriginalVictoryName)return {};name=q.arguments[1];}
+ else{if(q.arguments[1]!=42)return {};name=packedBattlePoseName(part,42,memory);if(!name)return {};}
+ // Resolve actual terminated source bytes before any native pose mutation.
+ std::string pose;bool terminated=false;constexpr unsigned NativeNameCapacity=256;
+ for(unsigned i=0;i<NativeNameCapacity;++i){uint8_t value=0;if(!r.vm.memory.readByte(name+i,value))return {};if(!value){terminated=true;break;}pose.push_back(char(value));}
+ if(!terminated||pose!=(q.function==BodyName?"M_V_1":"M_R_1"))return {};
+ const auto slot=visualSlot(MarioId);if(slot<0)return {};auto&actor=this->actors[size_t(slot)];
+ // Original force0 preserves the existing animation epoch for the same name.
+ if(actor.pose!=pose){actor.pose=std::move(pose);actor.poseAt=now;r.complete[size_t(slot)]=false;}
+ return 0; // Native presentation admission; no guest EVT/End acknowledgment.
 }
 std::shared_ptr<NativeHarborCompletion>HarborTutorial::beginNativeCompletion(int32_t result){
  if(!runtime_||!runtime_->packed||!sourceMenuRegistration_)return {};

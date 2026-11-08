@@ -61,6 +61,7 @@ struct NativeHarborFieldPouchBinding {
  std::function<bool()> current;
 };
 struct HarborTutorialRuntime;
+struct NativeHarborFinishingRequest;
 struct HarborSourceMenuRegistration;
 struct HarborNativeMenuSnapshot;
 class DisplayQueue;
@@ -205,6 +206,9 @@ public:
  std::shared_ptr<NativeHarborRewardCounter> beginNativeRewardCounter();
  bool startNativeRewardVictoryEvent();
  bool nativeRewardVictoryEventComplete()const;
+ std::optional<uint32_t> nativeRewardBattleAddress()const;
+ std::optional<uint8_t> nativeRewardReadByte(uint32_t address)const;
+ std::optional<uint32_t> nativeRewardFinishingChild(const NativeHarborFinishingRequest&);
     std::optional<int32_t> nativeGameplayConclusion();
     bool nativeGameplayNextTurn();
     bool running() const{return triggered;}
@@ -221,6 +225,7 @@ private:
     friend struct NativeHarborCompletionFixture;
     friend struct NativeHarborRewardBindingFixture;
     friend struct NativeHarborVictoryEventFixture;
+    friend struct NativeHarborFinishingBindingFixture;
     mutable std::shared_ptr<HarborSourceMenuRegistration> sourceMenuRegistration_;
     NativeFacadeRegistration nativeMenuRegistration_;
 };

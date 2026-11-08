@@ -1,0 +1,3 @@
+Nintendo/Intelligent Systems original game asset; no redistribution license granted
+Original source samples and derived PCM remain copyrighted.
+Local source tracking grants no new redistribution license.

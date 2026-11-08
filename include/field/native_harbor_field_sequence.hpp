@@ -48,6 +48,11 @@ public:
  // and field presentation return. Source wait still owns control/audio/Post.
  bool returned(const NativeHarborBattleTicket&,const NativeHarborCompletionReceipt&);
  bool current()const;
+ // Source-ending field pointer and NPC140 contribution, sealed to this actual
+ // entered battle. These are not a return/sequence/completion receipt.
+ std::optional<uint32_t> endingFieldWork(const NativeHarborBattleTicket&)const;
+ std::optional<uint32_t> endingFieldWord(const NativeHarborBattleTicket&,uint32_t address);
+ bool endingFieldStore(const NativeHarborBattleTicket&,uint32_t address,uint32_t value);
 private:
  friend class NativeHarborBattleTicket;
  struct State;std::shared_ptr<State> state_;mutable bool invoking_=false;

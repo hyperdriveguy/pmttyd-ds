@@ -1,5 +1,7 @@
 #include "harbor_native_command_menu.hpp"
 #include <cassert>
+#include <cmath>
+#include <algorithm>
 #include <iostream>
 #include <limits>
 using namespace ttyd;
@@ -58,6 +60,47 @@ int main() {
     const auto p = prepare(s);
     assert(p && validHarborNativeMenuPlan(*p) && !p->window);
     assert(p->batch.quads[0].texture == BattleClassTexture::Surfaces);
+    // Each unselected row: four source shadow quarters, four foreground
+    // quarters, then its actual icon. Texture0 alone is NOT a full circle.
+    const auto *region = p->batch.assets->surface(0);
+    assert(region);
+    for (unsigned row = 0; row < s.rows.size()-1; ++row) {
+      const auto first = row*9;
+      float left = std::numeric_limits<float>::infinity(), right = -left;
+      float bottom = left, top = -left;
+      constexpr float expectedUV[4][8] = {
+          {0,0,1,0,1,1,0,1}, {0,0,0,1,1,1,1,0},
+          {0,1,1,1,1,0,0,0}, {1,1,0,1,0,0,1,0}};
+      for (unsigned quarter = 0; quarter < 4; ++quarter) {
+        const auto &shadow = p->batch.quads[first+quarter];
+        const auto &body = p->batch.quads[first+4+quarter];
+        assert(shadow.texture == BattleClassTexture::Surfaces &&
+               body.texture == BattleClassTexture::Surfaces);
+        for (unsigned vertex = 0; vertex < 4; ++vertex) {
+          const auto &a = shadow.vertices[vertex];
+          const auto &v = body.vertices[vertex];
+          assert(a.rgba == 0x00000080 && v.rgba == 0xc0c0c0ff);
+          assert(std::abs((a.x-v.x)-2*(36.f/40)*(4.f/1.3f)) < .0001f);
+          assert(std::abs((a.y-v.y)-2*(36.f/40)*(-3.076923131942749f)) < .0001f);
+          assert(std::abs(v.u-(region->u0+(region->u1-region->u0)*expectedUV[quarter][vertex*2])) < .000001f);
+          assert(std::abs(v.v-(region->v0+(region->v1-region->v0)*expectedUV[quarter][vertex*2+1])) < .000001f);
+          left=std::min(left,v.x);right=std::max(right,v.x);
+          bottom=std::min(bottom,v.y);top=std::max(top,v.y);
+        }
+      }
+      assert(std::abs(right-left-72)<.0001f && std::abs(top-bottom-72)<.0001f);
+      constexpr float offset[4][8] = {
+          {-18,18,0,18,0,0,-18,0}, {18,18,18,0,0,0,0,18},
+          {-18,0,0,0,0,-18,-18,-18}, {0,0,18,0,18,-18,0,-18}};
+      for (unsigned quarter=0; quarter<4; ++quarter)
+        for (unsigned vertex=0; vertex<4; ++vertex) {
+          const auto &v=p->batch.quads[first+4+quarter].vertices[vertex];
+          assert(std::abs(v.x-(left+right)*.5f-offset[quarter][vertex*2]*2)<.0001f);
+          assert(std::abs(v.y-(bottom+top)*.5f-offset[quarter][vertex*2+1]*2)<.0001f);
+        }
+      const auto &icon = p->batch.quads[first+8];
+      for (const auto &vertex : icon.vertices) assert(vertex.rgba==0xc0c0c0ff);
+    }
     bool gray = false;
     for (const auto &q : p->batch.quads)
       gray |= q.sourceFlags == 48;

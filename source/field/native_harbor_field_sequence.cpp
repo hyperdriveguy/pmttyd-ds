@@ -18,6 +18,7 @@ struct NativeHarborFieldSequence::State {
  std::unique_ptr<FieldNpcBattleBinding> sourceBinding;BattleSequenceEntryServices backend;
  std::optional<int32_t> sourceResult;EventEntry* sourceEntry=nullptr;uint32_t sourceId=0,sourceFunction=0;bool poisoned=false;
  std::shared_ptr<const NativeHarborBattleTicket::Seal> ticket;
+ std::optional<uint32_t> endingNpcFlags;bool endingFlagsStored=false;
  bool current()const{
   if(poisoned||!vmProof.current()||!contextProof.current()||(phase==Phase::Battle&&!battle.current()))return false;
   uint32_t now=0,mode=0,work=0;
@@ -77,6 +78,28 @@ bool NativeHarborFieldSequence::entered(const NativeHarborBattleTicket&t,const N
  if(s.phase==State::Phase::Battle)return s.battle.current()&&sameOwner(s.battle.lifetime(),battle.lifetime());
  if(s.phase!=State::Phase::Requested||!s.npcCurrent())return false;
  s.battle=battle;s.nativeSequence.state.previous=s.nativeSequence.state.current;s.nativeSequence.state.current=int32_t(BattleSequence);s.phase=State::Phase::Battle;return true;
+}
+std::optional<uint32_t>NativeHarborFieldSequence::endingFieldWork(const NativeHarborBattleTicket&t)const{
+ if(invoking_||!current()||state_->vm->schedule.managerActive||state_->phase!=State::Phase::Battle||!t.seal_||t.seal_!=state_->ticket||t.seal_->state.lock()!=state_)return {};
+ return state_->field;
+}
+std::optional<uint32_t>NativeHarborFieldSequence::endingFieldWord(const NativeHarborBattleTicket&t,uint32_t address){
+ const auto field=endingFieldWork(t);if(!field)return {};Guard guard(invoking_);auto&s=*state_;uint32_t value=0;
+ constexpr uint32_t NpcEndingFlags=0x140;
+ if(address==*field+FieldNpc){
+  if(!s.vm->memory.readWord(address,value))return {};
+  if(value&&(value!=s.npc||!s.npcCurrent()))return {};return value;
+ }
+ if(address!=s.npc+NpcEndingFlags||!s.npcCurrent())return {};
+ if(s.endingNpcFlags)return *s.endingNpcFlags;
+ if(!s.vm->memory.readWord(address,value))return {};s.endingNpcFlags=value;return value;
+}
+bool NativeHarborFieldSequence::endingFieldStore(const NativeHarborBattleTicket&t,uint32_t address,uint32_t value){
+ if(!endingFieldWork(t))return false;Guard guard(invoking_);auto&s=*state_;
+ constexpr uint32_t NpcEndingFlags=0x140,SourceBattleEnded=0x100;
+ if(address!=s.npc+NpcEndingFlags||!s.npcCurrent()||!s.endingNpcFlags||value!=(*s.endingNpcFlags|SourceBattleEnded))return false;
+ if(s.endingFlagsStored){uint32_t actual=0;return s.vm->memory.readWord(address,actual)&&actual==value;}
+ if(!s.vm->memory.writeWord(address,value))return false;s.endingFlagsStored=true;return true;
 }
 bool NativeHarborFieldSequence::returned(const NativeHarborBattleTicket&t,const NativeHarborCompletionReceipt&r){
  if(invoking_||!current()||state_->vm->schedule.managerActive||!t.seal_||t.seal_!=state_->ticket||t.seal_->state.lock()!=state_)return false;
