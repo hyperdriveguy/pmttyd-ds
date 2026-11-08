@@ -17416,3 +17416,37 @@ remaining animation resource/publication adapters, later changed sources and
 remaining native/tool modules. Whole-file Trio numeric synthesis and full-port
 comment coverage remain unproven. Local fixtures/hash matches alone cannot
 establish that broader completion.
+
+### Native render-owner and raw renderer code documentation
+
+Added 114 inline comment lines across eight implementation/header files for
+animation_native_inner, animation_group_binding, animation_render_binding and
+animation_source_render. Explained provider exclusivity, same-pass/VM routing,
+Inner snapshot Copy versus live Group Copy, raw source fields/strides, texture
+priority/rebinds, GX enum/ABI values, signed selectors, reverse stream order and
+retained halfword FIFO effects. Added/indexed docs/code/animation-native-render-owners.md.
+Code/docs commit: `6ab7ee25`. Executable tokens and string literals are unchanged
+in all eight scoped files.
+
+Validation: existing animation_source_render fixture compiled standalone against
+captured current committed headers plus the annotated raw implementation and
+passed. It exercises primitive holds, independent call goldens, texture/alpha
+branches, mutations, stream chronology and captured invalid-selector frontier.
+This is a synthetic source-operation fixture, not a native GPU integration test.
+Host and ARM C++17 syntax checks passed for all four annotated implementations.
+Native Inner/group/render binding runtime, native linking and GPU/hardware
+behavior were not exercised here. Ten live/private file hashes, 130 local links
+and 563 supporting current header hashes passed final audits. No tests
+were added or changed; no supporting core library/ROMFS/assets were needed.
+
+Full make test/all were not repeated for this comments/prose-only batch; there
+are no executable changes. Earlier full-suite/build evidence retains its own
+snapshot scope. Concurrent implementation changes are excluded from these
+checks. No asset edits/imports/conversions, ISO writes, story changes or emulator
+runs. Exact commands, logs, scoped patch and documented copies:
+artifacts/animation-render-owners-code-documentation-validation/.
+
+Goal remains active. Next: remaining animation resource/request/startup and
+publication adapters, later changed implementations and remaining native/tool
+modules. Whole-file Trio numeric synthesis and whole-port comment coverage
+remain unproven; local fixtures or hash matches do not establish completion.
