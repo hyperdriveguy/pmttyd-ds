@@ -1,5 +1,13 @@
 # Project handoff instructions
 
+## Tool availability notice (2026-11-07)
+
+Ghidra is available at `/usr/bin/ghidra` (resolves to
+`/opt/ghidra/ghidraRun`). Agents may use it for original binary analysis.
+Installation-path presence was verified; GUI startup, headless execution and
+GameCube loader extension availability have not been validated. Keep analysis
+projects/caches outside source history and open the original ISO read-only.
+
 Read README.md and docs/PROGRESS.md before changing code. Continue the native
 New 2DS XL remake; the current deliverable is an early Rogueport slice. User
 preference: original-looking art, original music and sound effects. Use original

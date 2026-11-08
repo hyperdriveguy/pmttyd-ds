@@ -1,3 +1,15 @@
+### Ghidra availability handoff (2026-11-07)
+
+Recorded Ghidra availability in AGENTS.md for future agents. No other agents
+were active in this session. Verified /usr/bin/ghidra resolves to
+/opt/ghidra/ghidraRun; also found Dolphin, Blender, FFmpeg, CMake, Ninja,
+devkitARM GDB and 3dslink. No software was installed. GUI/headless operation
+and Ghidra extensions remain unchecked. Suggested next tools: compatible
+GameCube loader extension and a PowerPC-capable GDB for Dolphin research.
+Documentation only: make test/all were not run; no runtime, asset or ISO changes.
+Next: verify the loader/version pairing and a scratch DOL/REL analysis before
+relying on Ghidra output as new behavior evidence.
+
 ### Native UI shader lifetime cleanup verified (2026-10-15)
 
 Commit14279f7a4063aa18fcdf9a059c37df39f6234420 fixes the SDK lifetime issue
