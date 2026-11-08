@@ -1,8 +1,9 @@
 #pragma once
 #include "source_font_setup.hpp"
 #include "source_window_texture_setup.hpp"
+#include "source_icon_setup.hpp"
 namespace ttyd {
-enum class NativeResourcePathKind {Font,Window};
+enum class NativeResourcePathKind {Font,Window,Icon};
 struct NativeResourcePathFormatterServices {
  void*user=nullptr;std::shared_ptr<const void>lifetime;
  bool(*current)(void*)=nullptr;
@@ -15,7 +16,7 @@ struct NativeResourcePathFormatterServices {
  uint32_t stringBudget=0,outputCapacity=0; // explicit native policy, includes NUL
 };
 // Finite native C-runtime adapter, NOT the whole original printf/varargs/writer.
-// Only three original Font/Window plain%s path callsites are admitted.
+// Only five original Font/Window/Icon plain%s path callsites are admitted.
 class NativeSourceResourcePathFormatter {
 public:
  NativeSourceResourcePathFormatter();~NativeSourceResourcePathFormatter();
@@ -24,6 +25,7 @@ public:
  bool bind(NativeResourcePathFormatterServices);
  std::optional<uint32_t>request(const SourceFontSetupCall&);
  std::optional<uint32_t>request(const SourceWindowTextureSetupCall&);
+ std::optional<uint32_t>request(const SourceIconSetupCall&);
  bool active()const;bool stale()const;std::optional<uint32_t>pendingAddress()const;
  bool reset();void retire();
 private:

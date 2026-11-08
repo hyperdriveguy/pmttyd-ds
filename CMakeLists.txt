@@ -2586,6 +2586,11 @@ add_executable(battle_submenu_packets_tests tests/battle_submenu_packets_tests.c
 target_link_libraries(battle_submenu_packets_tests PRIVATE ttyd_core)
 add_test(NAME battle_submenu_packets COMMAND battle_submenu_packets_tests)
 set_tests_properties(battle_submenu_packets PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+target_sources(ttyd_core PRIVATE source/display/battle_weapon_source_font.cpp)
+add_executable(battle_weapon_source_font_tests tests/battle_weapon_source_font_tests.cpp)
+target_link_libraries(battle_weapon_source_font_tests PRIVATE ttyd_core)
+add_test(NAME battle_weapon_source_font COMMAND battle_weapon_source_font_tests)
+set_tests_properties(battle_weapon_source_font PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 target_sources(ttyd_core PRIVATE source/display/battle_weapon_window_bridge.cpp)
 add_executable(battle_weapon_window_bridge_tests tests/battle_weapon_window_bridge_tests.cpp)
 target_link_libraries(battle_weapon_window_bridge_tests PRIVATE ttyd_core)
@@ -2872,3 +2877,14 @@ add_executable(field_animation_gpu_tests tests/field_animation_gpu_tests.cpp)
 target_link_libraries(field_animation_gpu_tests PRIVATE ttyd_core)
 add_test(NAME field_animation_gpu COMMAND field_animation_gpu_tests)
 set_tests_properties(field_animation_gpu PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+target_sources(ttyd_core PRIVATE
+ source/display/source_icon_setup.cpp
+ source/platform/native_source_icon_memory.cpp
+ source/platform/native_source_icon_process.cpp)
+foreach(icon_test source_icon_setup native_source_icon_memory native_source_icon_process native_ui_icon_startup)
+ add_executable(${icon_test}_tests tests/${icon_test}_tests.cpp)
+ target_link_libraries(${icon_test}_tests PRIVATE ttyd_core)
+ add_test(NAME ${icon_test} COMMAND ${icon_test}_tests)
+ set_tests_properties(${icon_test} PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+endforeach()

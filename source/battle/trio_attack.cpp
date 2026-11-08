@@ -3681,6 +3681,7 @@ std::optional<TrioWeaponMenuFrameBinding> TrioAttack::weaponMenuFrameBinding(con
             !r->cameraMainCursor.active && e.generation==generation && e.pass && e.pass==r->cameraMainPublication;
     };
     out.source=linked;out.source.math.memory=out.native.actors;
+    out.random=[r](uint32_t bound){r->endingRequest(0x80005da0,{int32_t(bound)});return r->random.bounded(int32_t(bound));};
     out.resourceWord=[r](uint32_t address)->std::optional<uint32_t>{uint32_t value;
         if(r->vm.memory.readWord(address,value) || r->vm.gpAddresses.readWord(address,value))return value;
         return {};

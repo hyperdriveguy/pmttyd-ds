@@ -1467,6 +1467,13 @@ Original battle menu native resource/queue owners:
 - [Actual accepted source GX routing](display/REACHED_SOURCE_GX_SETTER_ROUTING.md).
 
 - [Native queued original Window bridge](display/NATIVE_QUEUED_WEAPON_WINDOW_BRIDGE.md).
+- [Native queued original source font composition](display/NATIVE_QUEUED_WEAPON_SOURCE_FONT.md).
 - [Native render camera and shared SDK](display/NATIVE_RENDER_CAMERA_AND_SDK.md): lazy camera tokens, original shared Concat and retained point/normal children.
 
 - [Retained field animation GX arrays and native state](display/NATIVE_FIELD_ANIMATION_GPU_STAGING.md): actual-VM indexed fans, wait repair, reusable storage, independent Citro3D camera/cull publication; material and raster backends remain explicit.
+
+
+
+- [Original icon setup](display/RETAINED_SOURCE_ICON_SETUP.md).
+- [Native icon source memory](display/NATIVE_SOURCE_ICON_MEMORY.md).
+- [Native icon loading process](display/NATIVE_SOURCE_ICON_PROCESS.md).

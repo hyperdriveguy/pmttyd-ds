@@ -5,6 +5,7 @@
 #include "native_source_font_texture.hpp"
 #include "source_gx_inherited_state.hpp"
 #include "native_source_window_memory.hpp"
+#include "native_source_icon_process.hpp"
 #include "animation_texture.hpp"
 namespace ttyd {
 // Native ownership/admission boundaries, not source function identities or
@@ -29,6 +30,9 @@ public:
  // Original Setup acknowledgment is job admission; completion is a separate
  // actual file-delivery/callback pump. resumeWindow composes them serially.
  bool beginWindow();bool pumpWindow();bool resumeWindow();bool windowReady()const;
+ // Supported real IconInit/DVD callback contribution, before live poses.
+ bool resumeIcons();
+ std::shared_ptr<NativeSourceIconProcess>iconProcess()const;
  struct WindowObject {uint32_t palette=0,address=0,index=0;std::array<uint8_t,32>bytes{};AnimationTPLImage image;};
  std::shared_ptr<NativeSourceWindowMemory>windowMemory()const;
  std::optional<WindowObject>windowObject(uint32_t index)const;

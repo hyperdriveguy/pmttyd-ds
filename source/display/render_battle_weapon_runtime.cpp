@@ -11,6 +11,7 @@
 #include "battle_weapon_cursor.hpp"
 #include "battle_weapon_help.hpp"
 #include "battle_weapon_window_bridge.hpp"
+#include "battle_weapon_source_font.hpp"
 #include "battle_packed_pouch.hpp"
 namespace ttyd {
 // This concrete queued route preserves unbound native children as source waits.
@@ -20,14 +21,15 @@ struct Renderer::WeaponMenuBinding {
   TrioWeaponMenuFrameBinding source;std::shared_ptr<BattleWeaponSourceMemory>memory;
   std::shared_ptr<BattleWeaponSourceTextures>textures;
   std::shared_ptr<NativeUiStartup>startup;
+  std::shared_ptr<const SourceGxInheritedSnapshot>fontOrdinary;
   BattleFontLease font;BattleClassSurfaceLease classes;BattleSubmenuSurfaceLease submenu;
   std::weak_ptr<WeaponMenuBinding>context;bool alive=true;mutable bool invalid=false,checking=false;
   bool current()const{
    if(checking||invalid)return false;
    checking=true;struct Guard{bool&v;~Guard(){v=false;}}guard{checking};
    const bool ok=alive&&memory&&memory->current()&&font.current()&&classes.current()&&submenu.current()&&source.native.allocationCurrent&&source.native.allocationCurrent()&&source.native.sourceResourceCurrent&&source.native.sourceResourceCurrent();
-   if(!ok)invalid=true;
-   return ok;
+   if(!ok||(fontOrdinary&&!fontOrdinary->current()))invalid=true;
+   return !invalid;
   }
  };
  Renderer*renderer=nullptr;const Game*game=nullptr;std::shared_ptr<Proof>proof;
@@ -41,6 +43,9 @@ struct Renderer::WeaponMenuBinding {
  BattleSubIconCursor subIcons;BattleSubIconRasterCursor subRaster;
  BattleWeaponCursor cursor;BattleWeaponHelpCursor help;
  BattleWindowSurfaceResource absentWindowSurface;std::unique_ptr<BattleWeaponWindowBridge>windowChild;
+ std::unique_ptr<BattleWeaponSourceFont>fontChild;
+ struct HelpText {std::weak_ptr<WeaponMenuBinding>context;const BattleWeaponHelpBytes*bytes=nullptr;uint32_t offset=0;};
+ std::shared_ptr<HelpText>helpText;
  std::unique_ptr<BattleClassSurfacePacketProvider>classPackets;
  std::unique_ptr<BattleClassSurfaceRaster>classRaster;
  std::shared_ptr<SourceGxSetterRouting>gx;
@@ -56,7 +61,7 @@ struct Renderer::WeaponMenuBinding {
   // Only a genuinely completed previous source/submission reaches a new pass.
   if(pass&&completedPass!=pass)return false;
   const auto view=frame.camera()->view();if(!view)return false;
-  pass=actualPass;sealed.reset();plan.reset();windowChild.reset();
+  pass=actualPass;sealed.reset();plan.reset();windowChild.reset();fontChild.reset();helpText.reset();
   BattleSubmenuCameraProof camera;camera.lifetime=proof;camera.user=proof.get();camera.generation=proof->source.native.generation;camera.pass=pass;camera.camera=8;
   camera.projection=view->matrices.projection;camera.viewport=view->viewport;
   for(unsigned i=0;i<4;++i)camera.scissor[i]=view->scissor[i];
@@ -84,8 +89,54 @@ struct Renderer::WeaponMenuBinding {
   submenuSource=source;submenuSource.request=[](void*p,const BattleTexturePlaneRequest&q)->std::optional<uint32_t>{auto c=lock(p);if(!c||!c->sourceCurrent())return {};const auto result=c->submenuPackets->request(q);if(result&&q.kind==BattleTexturePlaneKind::Call&&q.function==BattleTexturePlaneCall::TextureObject){if(q.integers.size()!=2||!c->proof->textures->acknowledge(q.integers[0],q.integers[1]))return {};}if(result)c->gx->accepted(q);return result;};
   return ordered->begin(pass);
  }
+ static bool fontFunction(uint32_t f){switch(f){case 0x80077b4c:case 0x800777e0:case 0x80077844:case 0x80077758:case 0x80075528:case 0x80076a10:case 0x80076cdc:case 0x800773d0:case 0x80077aa8:case 0x80077ab4:return true;default:return false;}}
+ BattleActorServices fontActors(){
+  auto a=proof->memory->actors();a.user=this;a.memory.user=this;
+  a.byte=[](void*p,uint32_t address){const auto v=static_cast<WeaponMenuBinding*>(p)->proof->memory->byte(address);if(!v)std::abort();return *v;};
+  a.memory.word=[](void*p,uint32_t address){const auto v=static_cast<WeaponMenuBinding*>(p)->numeric->word(address);if(!v)std::abort();return *v;};
+  a.memory.half=[](void*p,uint32_t address){const auto v=static_cast<WeaponMenuBinding*>(p)->proof->memory->half(address);if(!v)std::abort();return *v;};
+  a.memory.storeWord=[](void*p,uint32_t address,uint32_t value){if(!static_cast<WeaponMenuBinding*>(p)->proof->memory->store(address,4,value))std::abort();};
+  a.memory.storeHalf=[](void*p,uint32_t address,uint16_t value){if(!static_cast<WeaponMenuBinding*>(p)->proof->memory->store(address,2,value))std::abort();};
+  a.memory.storeByte=[](void*p,uint32_t address,uint8_t value){if(!static_cast<WeaponMenuBinding*>(p)->proof->memory->store(address,1,value))std::abort();};return a;
+ }
+ static constexpr size_t WeaponMenuGlyphCapacity=4096;
+ static constexpr uint32_t OriginalUsLanguage=1;
+ static constexpr uint32_t OriginalFontWidth=512,OriginalFontHeight=256;
+ std::optional<uint32_t>fontRequest(const BattleWeaponSourceFontCall&q){
+  if(!fontFunction(q.function)||!sourceCurrent()||!proof->startup||proof->startup->language()!=OriginalUsLanguage)return {};
+  if(!fontChild){
+   const auto raster=renderer->battleFontRasterView(*game);if(!raster||!proof->source.random)return {};
+   BattleWeaponSourceFontBinding b;b.actors=fontActors();b.font=proof->font;b.raster=*raster;b.resources=proof;b.capacity=WeaponMenuGlyphCapacity;b.gx=gx;
+   const auto weak=proof->context;b.sourceCurrent=[weak]{auto c=weak.lock();return c&&c->sourceCurrent()&&c->proof->startup->language()==OriginalUsLanguage;};b.publicationCurrent=[p=proof]{return p->current();};
+   b.byte=[m=proof->memory](uint32_t a){return m->byte(a);};b.half=[m=proof->memory](uint32_t a){return m->half(a);};
+   b.camera=[weak]()->std::optional<uint32_t>{auto c=weak.lock();return c?c->numeric->camera():std::nullopt;};b.matrix=[weak](BattleAudienceMatrixRequest&q){auto c=weak.lock();return c&&c->numeric->matrix(q);};
+   b.truncate=[weak](float v)->std::optional<int32_t>{auto c=weak.lock();return c?c->numeric->truncate(v):std::nullopt;};b.fma=[weak](float a,float d,float e)->std::optional<float>{auto c=weak.lock();return c?c->numeric->fma(a,d,e):std::nullopt;};
+   b.staticTextureCurrent=[p=proof](uint32_t address,const BattleFontLease&font){const auto object=p->startup->fontObject();return p->current()&&object&&object->object==address&&object->width==OriginalFontWidth&&object->height==OriginalFontHeight&&font.current()&&font.generation==p->font.generation&&font.font==p->font.font&&font.texture==p->font.texture;};
+   b.ordinaryCurrent=[weak]{auto c=weak.lock();if(!c||!c->sourceCurrent())return false;const auto captured=c->gx->capture();if(!captured)return false;if(!c->proof->fontOrdinary)c->proof->fontOrdinary=captured;return c->proof->fontOrdinary->current();};
+   b.random=proof->source.random;b.orderedUser=proof.get();b.reserve=[](void*p,const BattleFontGlyphPacket&q){auto c=lock(p);return c&&c->sourceCurrent()&&c->ordered->reserveFont(c->pass,q);};
+   b.commit=[](void*p,const BattleFontGlyphPacket&q){const auto c=lock(p);if(!c)std::abort();c->ordered->commitFont(c->pass,q);};
+   fontChild=BattleWeaponSourceFont::create(std::move(b));if(!fontChild)return {};
+  }
+  return fontChild->request(q);
+ }
+ std::optional<uint32_t>helpChild(const BattleWeaponHelpCall&q){
+  if(q.function==0x8007b44c)return windowHelp(q);
+  if(!fontFunction(q.function))return {};
+  BattleWeaponSourceFontCall f;f.function=q.function;f.integers=q.integers;f.reals=q.reals;
+  if(q.function==0x800773d0){
+   if(q.privateText){
+    if(q.guestText)return {};
+    if(!helpText||helpText->bytes!=q.privateText||helpText->offset!=q.privateOffset){helpText=std::make_shared<HelpText>();helpText->context=proof->context;helpText->bytes=q.privateText;helpText->offset=q.privateOffset;}
+    SourceMatrixFontText t;t.user=helpText.get();t.lifetime=helpText;
+    t.byte=[](void*p,uint32_t offset)->std::optional<uint8_t>{const auto&t=*static_cast<HelpText*>(p);const auto c=t.context.lock();if(!c||!c->sourceCurrent()||uint64_t(t.offset)+offset>UINT32_MAX)return {};return t.bytes->byte(t.offset+offset);};
+    t.half=[](void*p,uint32_t offset)->std::optional<uint16_t>{const auto&t=*static_cast<HelpText*>(p);const auto c=t.context.lock();if(!c||!c->sourceCurrent()||uint64_t(t.offset)+offset+2>0x100000000ULL)return {};const auto a=t.bytes->byte(t.offset+offset),b=t.bytes->byte(t.offset+offset+1);return a&&b?std::optional<uint16_t>(uint16_t(uint16_t(*a)<<8|*b)):std::nullopt;};f.sourceText=std::move(t);
+   }else if(q.guestText)f.integers={*q.guestText};else return {};
+  }
+  const auto result=fontRequest(f);if(result)helpText.reset();return result;
+ }
  std::optional<uint32_t>subRasterCall(const BattleSubIconRasterCall&q){
   if(!sourceCurrent())return {};
+  if(fontFunction(q.function)){BattleWeaponSourceFontCall f;f.function=q.function;f.integers=q.integers;f.reals=q.reals;f.matrix=q.matrix;f.privateText=q.privateText;return fontRequest(f);}
   if(q.function==0x8000f2fc&&q.integers==std::vector<uint32_t>{8}&&q.reals.empty()&&!q.matrix&&!q.privateText){const auto n=numeric->raster();return n.request(n.user,{BattleClassRasterService::Camera,{8},{},{}});}
   if(q.function==0x80103a14&&q.integers.empty()&&q.reals.empty()&&!q.matrix&&!q.privateText)return resumeBattleSubmenuInit(submenuSource,submenuInit)?std::optional<uint32_t>(0):std::nullopt;
   if(q.function==0x801037c4&&q.integers.size()==4&&q.reals.size()==4&&!q.matrix&&!q.privateText){std::array<float,4>xy;std::array<uint32_t,4>color;for(unsigned i=0;i<4;++i){xy[i]=q.reals[i];color[i]=q.integers[i];}return resumeBattleSubmenuQuad(xy,color,submenuSource,submenuQuad)?std::optional<uint32_t>(0):std::nullopt;}
@@ -130,10 +181,10 @@ struct Renderer::WeaponMenuBinding {
   }
   if(q.function==0x80119abc&&q.count==2&&q.output){
    BattleClassDrawContinuationServices s;s.raster=numeric->raster();s.raster.user=this;
-   s.raster.request=[](void*p,const BattleClassRasterRequest&r)->std::optional<uint32_t>{auto&c=*static_cast<WeaponMenuBinding*>(p);if(!c.sourceCurrent())return {};if(r.function==BattleClassRasterService::Camera){const auto n=c.numeric->raster();return n.request(n.user,r);}return c.classRaster->request(r);};
+   s.raster.request=[](void*p,const BattleClassRasterRequest&r)->std::optional<uint32_t>{auto&c=*static_cast<WeaponMenuBinding*>(p);if(!c.sourceCurrent())return {};if(r.function==BattleClassRasterService::Camera){const auto n=c.numeric->raster();return n.request(n.user,r);}if(fontFunction(uint32_t(r.function))){BattleWeaponSourceFontCall f;f.function=uint32_t(r.function);f.integers=r.integers;f.reals=r.reals;f.matrix=r.matrix;return c.fontRequest(f);}return c.classRaster->request(r);};
    s.raster.truncate=[](void*p,float v){return static_cast<WeaponMenuBinding*>(p)->numeric->truncate(v);};s.raster.identity=[](void*p){return static_cast<WeaponMenuBinding*>(p)->numeric->identity();};
-   // Actual font/icon children remain unavailable until their complete native
-   // source owners are composed; no raw callback or empty acknowledgment.
+   // Actual source font children above own their retained globals/GX/glyphs.
+   // Missing icon children remain real source waits until their owner binds.
    return resumeBattleClassObservableDraw(q.arguments[0],q.arguments[1],q.output->classes,s,classes)?std::optional<uint32_t>(0):std::nullopt;
   }
   if(q.function==0x80119024&&q.count==3&&q.output){
@@ -148,7 +199,7 @@ struct Renderer::WeaponMenuBinding {
   }
   if(q.function==0x80117c1c&&q.count==1&&q.x&&q.y){
    BattleWeaponHelpServices s;s.actors=proof->source.native.actors;s.lifetime=proof;s.user=this;s.current=[](void*p){return static_cast<WeaponMenuBinding*>(p)->sourceCurrent();};s.byte=[](void*p,uint32_t a){return static_cast<WeaponMenuBinding*>(p)->proof->memory->byte(a);};
-   s.request=[](void*p,const BattleWeaponHelpCall&r)->std::optional<uint32_t>{return static_cast<WeaponMenuBinding*>(p)->windowHelp(r);};
+   s.request=[](void*p,const BattleWeaponHelpCall&r)->std::optional<uint32_t>{return static_cast<WeaponMenuBinding*>(p)->helpChild(r);};
    return resumePackedBattleWeaponHelp(q.arguments[0],*q.x,*q.y,s,help)?std::optional<uint32_t>(0):std::nullopt;
   }
   return {};

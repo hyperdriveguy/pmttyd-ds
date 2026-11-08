@@ -4065,3 +4065,22 @@ All2,152 compiled products match the prior raw-render audit exactly. No editable
 asset under `assets/` or manifest entry was overwritten; individual provenance
 and original rights/licensing remain as recorded above. No ISO or compiled
 product is committed by this source increment.
+
+### Original icon source loader technical startup data
+
+Read-only US revision0 ISO source `icon.bin` remains8174 bytes, SHA256
+0be6b95a7e45e5d932641f24f8240a289a852889f1906d32be839046a680532b;
+`icon.tpl` remains677792 bytes, SHA256
+fb8e99398fd5ef3c36cc518077748405949c004fcc5c515cc8828a64340b74f9.
+Existing188-byte constants/catalogue/native cells and checked-in editable images
+are unchanged. New `tools/source_icon_startup_assets.py` imports only24 source
+format bytes at802bf858 and the18 actual physical-disc bytes following logical
+icon.bin EOF at948147838, for the original rounded8192-byte DVDRead request.
+No padding/default payload is synthesized. `romfs/source-icon-startup/startup.bin`
+is a50-byte PMICST01 private technical pack SHA256
+1623d8d5282ba41ad4b4f75763b19e45d2ee0aadb2cf96fd31baf9d04c5a8bca.
+Its sources.json records exact source offsets/sizes, hashes, conversion and
+converter identity. Only a missing destination permits import. Existing-cache
+verification is read-only and rejects any difference; no asset edit is replaced.
+Nintendo/Intelligent Systems retain original rights; no redistribution license
+is granted. Raw technical products/caches stay ignored and outside source history.

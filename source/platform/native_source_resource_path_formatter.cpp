@@ -4,7 +4,7 @@
 #include <string>
 namespace ttyd {namespace {
 struct Running{bool&value;explicit Running(bool&v):value(v){value=true;}~Running(){value=false;}};
-const char*expected(uint32_t site){switch(site){case 0x80075048:return "%s/f/%s.bfn";case 0x80075094:return "%s/font/%s.bfn";case 0x8007fc30:return "%s/f/msgWindow.tpl";default:return nullptr;}}
+const char*expected(uint32_t site){switch(site){case 0x80075048:return "%s/f/%s.bfn";case 0x80075094:return "%s/font/%s.bfn";case 0x8007fc30:return "%s/f/msgWindow.tpl";case 0x8001b730:return "%s/icon.tpl";case 0x8001b7a0:return "%s/icon.bin";default:return nullptr;}}
 }
 struct NativeSourceResourcePathFormatter::State {
  NativeResourcePathKind kind=NativeResourcePathKind::Font;uint32_t site=0;std::array<uint32_t,3>args{};uint8_t count=0,input=0;
@@ -31,6 +31,11 @@ std::optional<uint32_t>NativeSourceResourcePathFormatter::request(const SourceFo
 std::optional<uint32_t>NativeSourceResourcePathFormatter::request(const SourceWindowTextureSetupCall&q){
  if(q.function!=0x8026a0b8||q.callsite!=0x8007fc30||q.count!=2||!q.destination||q.path||q.arguments[0]!=0x802c3094||q.arguments[2]||q.arguments[3]||q.arguments[4])return {};
  return format(NativeResourcePathKind::Window,q.callsite,{q.arguments[0],q.arguments[1],0},2,q.destination,&q.destination->cells);
+}
+std::optional<uint32_t>NativeSourceResourcePathFormatter::request(const SourceIconSetupCall&q){
+ if(q.function!=0x8026a0b8||q.count!=2||!q.destination||q.path||q.arguments[2]||q.arguments[3]||q.arguments[4]||
+    !((q.callsite==0x8001b730&&q.arguments[0]==0x802bf858)||(q.callsite==0x8001b7a0&&q.arguments[0]==0x802bf864)))return {};
+ return format(NativeResourcePathKind::Icon,q.callsite,{q.arguments[0],q.arguments[1],0},2,q.destination,&q.destination->cells);
 }
 std::optional<uint32_t>NativeSourceResourcePathFormatter::format(NativeResourcePathKind kind,uint32_t site,const std::array<uint32_t,3>&args,uint8_t count,const void*destination,std::map<uint32_t,uint8_t>*cells){
  if(invoking_||!bound_||invalid_)return {};

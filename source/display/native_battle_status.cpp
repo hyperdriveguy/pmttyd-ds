@@ -5,7 +5,28 @@
 #include <algorithm>
 namespace ttyd {
 namespace {
-constexpr uint16_t portraits[]{428, 428, 429, 430, 431, 438, 439, 440};
+using Status = NativeBattleStatusSnapshot;
+// Original status-window partner table8041767c, indexed by source partner ID.
+constexpr uint16_t PartnerPortraits[]{428, 428, 429, 430, 431, 438, 439, 440};
+constexpr uint32_t PouchPointer = 0x8041eb00;
+constexpr uint32_t PouchHp = 0x70, PouchMaxHp = 0x72;
+constexpr uint32_t PouchFp = 0x74, PouchMaxFp = 0x76;
+constexpr uint32_t PouchCoins = 0x78, PouchAp = 0x7a;
+constexpr uint32_t PouchMaxApGetterBits = 0x7c, PouchStarPoints = 0x96;
+constexpr uint32_t PouchAcquiredStarMask = 0x8c;
+constexpr uint32_t PartyRowBytes = 14, YoshiPartnerId = 4;
+constexpr uint16_t YoshiFirstPortrait = 431, YoshiLastPortrait = 437;
+constexpr uint32_t YoshiColorShift = 13;
+constexpr int OrdinaryYoshiColorCount = 6;
+constexpr uint32_t BattleUnits = 0x20, UnitSlotCount = 64;
+constexpr uint32_t UnitKind = 8, UnitAlliance = 0xc, UnitFlags = 0x1c;
+constexpr uint32_t ExcludedPartyFlag = 8, MarioKind = 222;
+constexpr uint32_t FirstPartnerKind = 224, PartnerKindEnd = 231;
+constexpr uint32_t StarSlots = 8, ApPerStar = 100;
+constexpr uint32_t PartialFillSteps = 15, MaxPartialAp = ApPerStar - 1;
+constexpr uint16_t FirstPartialIcon = 456, FirstFullStarIcon = 447;
+constexpr uint16_t EmptyStarIcon = 455;
+constexpr int StarPitch = 32, FullStarYOffset = 12;
 uint32_t sign(uint16_t n) {
   return n < 32768 ? n : uint32_t(int32_t(n) - 65536);
 }
@@ -20,7 +41,7 @@ struct NativeBattleStatusReader::State {
   SourceStatusValuesCursor cursor;
   SourceStatusValueServices services;
   SourceStatusValueOutput output;
-  std::array<std::optional<uint16_t>, 11> cells;
+  std::array<std::optional<uint16_t>, Status::ValueCount> cells;
   uint32_t phase = 0, pending = 0;
   // Each child retains actual captures across missing reads, rather than
   // restarting a unit registry scan or rereading an earlier pouch pointer.
@@ -83,10 +104,10 @@ struct NativeBattleStatusReader::State {
         return {};
       const bool party = child == 0x800f8728;
       for (;;) {
-        if (index == 64)
+        if (index == UnitSlotCount)
           return done(0);
         if (childPhase == 0) {
-          auto v = word(base + 0x20 + 4 * index);
+          auto v = word(base + BattleUnits + 4 * index);
           if (!v)
             return {};
           unit = *v;
@@ -97,10 +118,10 @@ struct NativeBattleStatusReader::State {
           childPhase = party ? 1 : 2;
         }
         if (childPhase == 1) {
-          auto v = word(unit + 0x1c);
+          auto v = word(unit + UnitFlags);
           if (!v)
             return {};
-          if (*v & 8) {
+          if (*v & ExcludedPartyFlag) {
             ++index;
             childPhase = 0;
             continue;
@@ -108,18 +129,18 @@ struct NativeBattleStatusReader::State {
           childPhase = 2;
         }
         if (childPhase == 2) {
-          auto v = word(unit + 8);
+          auto v = word(unit + UnitKind);
           if (!v)
             return {};
           kind = *v;
-          if (party ? (kind < 224 || kind >= 231) : kind != 222) {
+          if (party ? (kind < FirstPartnerKind || kind >= PartnerKindEnd) : kind != MarioKind) {
             ++index;
             childPhase = 0;
             continue;
           }
           childPhase = 3;
         }
-        auto b = byte(unit + 0xc);
+        auto b = byte(unit + UnitAlliance);
         if (!b)
           return {};
         if (!*b)
@@ -131,28 +152,28 @@ struct NativeBattleStatusReader::State {
     uint32_t offset = 0;
     switch (child) {
     case 0x800d3d30:
-      offset = 0x70;
+      offset = PouchHp;
       break;
     case 0x800d3d24:
-      offset = 0x72;
+      offset = PouchMaxHp;
       break;
     case 0x800d3c98:
-      offset = 0x74;
+      offset = PouchFp;
       break;
     case 0x800d3c8c:
-      offset = 0x76;
+      offset = PouchMaxFp;
       break;
     case 0x800d3c44:
-      offset = 0x7a;
+      offset = PouchAp;
       break;
     case 0x800d3bb8:
-      offset = 0x7c;
+      offset = PouchMaxApGetterBits;
       break;
     case 0x800d3424:
-      offset = 0x96;
+      offset = PouchStarPoints;
       break;
     case 0x800d3e64:
-      offset = 0x78;
+      offset = PouchCoins;
       break;
     case 0x800d5eb0:
       break;
@@ -162,7 +183,7 @@ struct NativeBattleStatusReader::State {
     if (q.count)
       return {};
     if (!childPhase) {
-      auto p = word(0x8041eb00);
+      auto p = word(PouchPointer);
       if (!p)
         return {};
       base = *p;
@@ -195,11 +216,11 @@ struct NativeBattleStatusReader::State {
     output.lifetime = life;
     output.half = [](void *p, uint32_t o) -> std::optional<uint16_t> {
       auto &s = *static_cast<State *>(p);
-      return s.valid() && o % 2 == 0 && o < 22 ? s.cells[o / 2] : std::nullopt;
+      return s.valid() && o % 2 == 0 && o < sizeof(int16_t) * Status::ValueCount ? s.cells[o / 2] : std::nullopt;
     };
     output.storeHalf = [](void *p, uint32_t o, uint16_t n) {
       auto &s = *static_cast<State *>(p);
-      if (!s.valid() || o % 2 || o >= 22)
+      if (!s.valid() || o % 2 || o >= sizeof(int16_t) * Status::ValueCount)
         return false;
       s.cells[o / 2] = n;
       return true;
@@ -220,7 +241,7 @@ struct NativeBattleStatusReader::State {
         pending = cursor.pending();
         return {};
       }
-      for (unsigned i = 0; i < 11; ++i) {
+      for (unsigned i = 0; i < Status::ValueCount; ++i) {
         if (!cells[i])
           return {};
         result.values[i] = int16_t(*cells[i]);
@@ -228,10 +249,10 @@ struct NativeBattleStatusReader::State {
       phase = 1;
     }
     if (phase == 1) {
-      const auto id = result.values[4];
-      if (id > 0 && id < 8) {
-        if (id == 4) {
-          auto p = word(0x8041eb00);
+      const auto id = result.values[Status::PartnerId];
+      if (id > 0 && id < int(std::size(PartnerPortraits))) {
+        if (id == YoshiPartnerId) {
+          auto p = word(PouchPointer);
           if (!p) {
             pending = 0x800d2e44;
             return {};
@@ -239,41 +260,41 @@ struct NativeBattleStatusReader::State {
           base = *p;
           phase = 2;
         } else {
-          result.partnerPortrait = portraits[id];
+          result.partnerPortrait = PartnerPortraits[id];
           phase = 3;
         }
       } else
         phase = 3;
     }
     if (phase == 2) {
-      auto f = half(base + 4 * 14);
+      auto f = half(base + YoshiPartnerId * PartyRowBytes);
       if (!f) {
         pending = 0x800d2e44;
         return {};
       }
-      const auto color = *f >> 13;
-      result.partnerPortrait = uint16_t(color < 6 ? 431 + color : 437);
+      const auto color = *f >> YoshiColorShift;
+      result.partnerPortrait = uint16_t(color < OrdinaryYoshiColorCount ? YoshiFirstPortrait + color : YoshiLastPortrait);
       phase = 3;
     }
     // Native display adaptation of gaugeDisp: retain all eight fresh pouch
     // captures for capacity, then its partial-fill selection and icon loop.
     for (;;) {
       if (phase == 3) {
-        if (gaugeIndex == 8) {
+        if (gaugeIndex == StarSlots) {
           ap = uint32_t(
-              std::max(0, std::min(int(result.values[9]), int(capacity))));
-          full = ap / 100;
-          const auto remainder = ap % 100;
+              std::max(0, std::min(int(result.values[Status::Ap]), int(capacity))));
+          full = ap / ApPerStar;
+          const auto remainder = ap % ApPerStar;
           const auto partial =
-              remainder ? std::max<uint32_t>(1, remainder * 15 / 99) : 0u;
+              remainder ? std::max<uint32_t>(1, remainder * PartialFillSteps / MaxPartialAp) : 0u;
           if (partial)
-            result.gauge[result.gaugeCount++] = {uint16_t(456 + partial),
-                                                 int16_t(full * 32), 0};
+            result.gauge[result.gaugeCount++] = {uint16_t(FirstPartialIcon + partial),
+                                                 int16_t(full * StarPitch), 0};
           gaugeIndex = 0;
           phase = 5;
           continue;
         }
-        auto p = word(0x8041eb00);
+        auto p = word(PouchPointer);
         if (!p) {
           pending = 0x800d5eb0;
           return {};
@@ -282,21 +303,21 @@ struct NativeBattleStatusReader::State {
         phase = 4;
       }
       if (phase == 4) {
-        auto f = half(base + 0x8c);
+        auto f = half(base + PouchAcquiredStarMask);
         if (!f) {
           pending = 0x8013d48c;
           return {};
         }
         if (*f & (1u << gaugeIndex))
-          capacity += 100;
+          capacity += ApPerStar;
         ++gaugeIndex;
         phase = 3;
         continue;
       }
       if (phase == 5) {
-        if (gaugeIndex == 8)
+        if (gaugeIndex == StarSlots)
           return publish();
-        auto p = word(0x8041eb00);
+        auto p = word(PouchPointer);
         if (!p) {
           pending = 0x800d5eb0;
           return {};
@@ -305,7 +326,7 @@ struct NativeBattleStatusReader::State {
         phase = 6;
       }
       if (phase == 6) {
-        auto f = half(base + 0x8c);
+        auto f = half(base + PouchAcquiredStarMask);
         if (!f) {
           pending = 0x8013d5b0;
           return {};
@@ -313,8 +334,8 @@ struct NativeBattleStatusReader::State {
         if (!(*f & (1u << gaugeIndex)))
           return publish();
         result.gauge[result.gaugeCount++] = {
-            uint16_t(gaugeIndex < full ? 447 + gaugeIndex : 455),
-            int16_t(gaugeIndex * 32), 12};
+            uint16_t(gaugeIndex < full ? FirstFullStarIcon + gaugeIndex : EmptyStarIcon),
+            int16_t(gaugeIndex * StarPitch), FullStarYOffset};
         ++gaugeIndex;
         phase = 5;
         continue;

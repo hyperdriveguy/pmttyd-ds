@@ -5,6 +5,22 @@
 #include <cstdio>
 #include <algorithm>
 namespace ttyd {
+namespace {
+using Status = NativeBattleStatusSnapshot;
+constexpr uint32_t PouchPointer = 0x8041eb00;
+constexpr uint32_t PouchHp = 0x70, PouchMaxHp = 0x72;
+constexpr uint32_t PouchFp = 0x74, PouchMaxFp = 0x76;
+constexpr uint32_t PouchCoins = 0x78, PouchStarPoints = 0x96;
+constexpr uint32_t PackedMarioUnit = 0x84101000;
+constexpr uint32_t UnitLimits = 0x108, UnitResources = 0x10c, UnitFp = 0x110;
+// Original icon.bin IDs; placement and scale remain native screen reflow.
+constexpr uint16_t HpBanner = 472, MarioPortrait = 427, FractionSlash = 480;
+constexpr uint16_t FpBanner = 473, FlowerSymbol = 441;
+constexpr uint16_t ApBanner = 474, StarPowerSymbol = 442;
+constexpr uint16_t CounterBanner = 475, StarPointSymbol = 443, CoinSymbol = 444;
+constexpr uint16_t MultiplyMark = 478, FirstLargeDigit = 481;
+constexpr int DigitIconStride = 2; // large/small pair per decimal digit
+} // namespace
 // Native resource fallback maxHP 10 is harness initialization. Pouch offsets
 // 70/72/74/76(hex) are HP/maxHP/FP/maxFP halfwords. Packed Mario words below
 // are emulated battle-record addresses, never dereferenced as native pointers.
@@ -14,8 +30,8 @@ void Renderer::battleHud(const Game& g) {
     const auto status=g.harborTutorial.running()?g.harborTutorial.statusSnapshot():g.trioAttack.statusSnapshot();
     int hp=g.progress.hp,maxHp=10,fp=0,maxFp=0;
     if(g.progress.originalPouch) {
-        hp=g.progress.originalPouch->half(0x70);maxHp=g.progress.originalPouch->half(0x72);
-        fp=g.progress.originalPouch->half(0x74);maxFp=g.progress.originalPouch->half(0x76);
+        hp=g.progress.originalPouch->half(PouchHp);maxHp=g.progress.originalPouch->half(PouchMaxHp);
+        fp=g.progress.originalPouch->half(PouchFp);maxFp=g.progress.originalPouch->half(PouchMaxFp);
     }
     if(g.harborTutorial.running()) {
         hp=g.harborTutorial.actors[1].hp;maxHp=g.harborTutorial.actors[1].maxHp;
@@ -27,7 +43,7 @@ void Renderer::battleHud(const Game& g) {
         g.harborTutorial.readPackedWord(at,value):g.trioAttack.readWord(at,value);};
     // Unit+108 limits high 16=maxHP; +10c high 16=HP/low 16=maxFP;
     // +110 low 16=FP. Signed16 extraction retains uninitialized resource values.
-    if(read(0x84101108,limits) && read(0x8410110c,resources) && read(0x84101110,flower)) {
+    if(read(PackedMarioUnit+UnitLimits,limits) && read(PackedMarioUnit+UnitResources,resources) && read(PackedMarioUnit+UnitFp,flower)) {
         maxHp=int16_t(limits>>16);hp=int16_t(resources>>16);
         maxFp=int16_t(resources&65535);fp=int16_t(flower&65535);
     }
@@ -37,16 +53,16 @@ void Renderer::battleHud(const Game& g) {
     // counters at the field snapshot once a packed pouch exists.
     int coins=-1,starPoints=-1;
     if(g.progress.originalPouch) {
-        coins=g.progress.originalPouch->half(0x78);
-        starPoints=g.progress.originalPouch->half(0x96);
+        coins=g.progress.originalPouch->half(PouchCoins);
+        starPoints=g.progress.originalPouch->half(PouchStarPoints);
     }
     uint32_t pouch=0;
-    if(read(0x8041eb00,pouch) && pouch) {
+    if(read(PouchPointer,pouch) && pouch) {
         uint32_t coinPair=0,pointPair=0;
-        coins=read(pouch+0x78,coinPair)?int16_t(coinPair>>16):-1;
-        starPoints=read(pouch+0x94,pointPair)?int16_t(pointPair&65535):-1;
+        coins=read(pouch+PouchCoins,coinPair)?int16_t(coinPair>>16):-1;
+        starPoints=read(pouch+PouchStarPoints-2,pointPair)?int16_t(pointPair&65535):-1;
     }
-    if(status){hp=status->values[0];maxHp=status->values[1];fp=status->values[2];maxFp=status->values[3];starPoints=status->values[7];coins=status->values[8];}
+    if(status){hp=status->values[Status::MarioHp];maxHp=status->values[Status::MarioMaxHp];fp=status->values[Status::Fp];maxFp=status->values[Status::MaxFp];starPoints=status->values[Status::StarPoints];coins=status->values[Status::Coins];}
     auto icon=[&](uint32_t id,float x,float y,float scale=.5f) {
         const auto* art=messageIcon(id);if(!art)return;
         messageIconImage(id,g.ticks,x,y+art->frame(g.ticks).height*scale*.5f,scale,255);
@@ -58,27 +74,27 @@ void Renderer::battleHud(const Game& g) {
         // Native cap six decimal digits; icon 481+2*digit is large, next ID
         // is small. Right-aligned pitches 10/8 are native pixels.
         value=std::min(value,999999);
-        do {icon(481+2*(value%10)+(small?1:0),right,y);right-=small?8:10;value/=10;}while(value);
+        do {icon(FirstLargeDigit+DigitIconStride*(value%10)+(small?1:0),right,y);right-=small?8:10;value/=10;}while(value);
     };
     // Native half-size/crop of the original status-window art. Positions are
     // adapted to400x240; slide/blink/AP-bar callbacks remain separate owners.
     // Original HP group uses IDs 472/427/480; FP group 473/441/480.
     // Coordinates below are native UI layout; they do not implement source
     // status slide/blink choreography.
-    icon(472,102,20);icon(427,67,20);icon(480,110,17);
+    icon(HpBanner,102,20);icon(MarioPortrait,67,20);icon(FractionSlash,110,17);
     number(hp,99,20,false);number(maxHp,127,20,true);
     if(maxFp>0) {
-        icon(473,192,20);icon(441,158,20);icon(480,200.5f,17);
+        icon(FpBanner,192,20);icon(FlowerSymbol,158,20);icon(FractionSlash,200.5f,17);
         number(fp,189,20,false);number(maxFp,217,20,true);
     }
     // These additional groups require a whole actual-VM value invocation.
     // Native400x240 layout; source status slide/blink/queued display is separate.
     if(status&&status->partnerPortrait){
-        icon(472,102,40);icon(*status->partnerPortrait,67,40);icon(480,110,37);
-        number(status->values[5],99,40,false);number(status->values[6],127,40,true);
+        icon(HpBanner,102,40);icon(*status->partnerPortrait,67,40);icon(FractionSlash,110,37);
+        number(status->values[Status::PartnerHp],99,40,false);number(status->values[Status::PartnerMaxHp],127,40,true);
     }
     if(status&&status->gaugeCount){
-        icon(474,257,40,.8f);icon(442,164,38,.65f);
+        icon(ApBanner,257,40,.8f);icon(StarPowerSymbol,164,38,.65f);
         for(unsigned i=0;i<status->gaugeCount;++i){const auto&q=status->gauge[i];icon(q.icon,190+q.x*.5f,48-q.y*.5f,.75f);}
     }
     if(coins>=0 || starPoints>=0) {
@@ -86,13 +102,13 @@ void Renderer::battleHud(const Game& g) {
         // mark are already in the shared original atlas. The right-hand group
         // is a native compact reflow; no AP capacity/fill or audience count is
         // inferred from these independent pouch counters.
-        icon(475,335,16,1);
+        icon(CounterBanner,335,16,1);
         if(starPoints>=0) {
-            icon(443,289,20);icon(478,301,20);
+            icon(StarPointSymbol,289,20);icon(MultiplyMark,301,20);
             number(starPoints,321,20,false);
         }
         if(coins>=0) {
-            icon(444,339,20);icon(478,351,20);
+            icon(CoinSymbol,339,20);icon(MultiplyMark,351,20);
             number(coins,378,20,false);
         }
     }

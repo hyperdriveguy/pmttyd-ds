@@ -17511,3 +17511,50 @@ Area/init/Main/event scheduling and resource release to normal gameplay only
 when their waits and lifetimes compose. Continue EVT-01 inbox work and obtain
 matched original/Dolphin rendering plus physical New2DS XL timing/memory evidence.
 The original NPC/field integration and full-game goal remain incomplete.
+
+
+## 2026-11-07 — Original queued font and actual Icon startup ownership
+
+Integrated the retained original font state/DrawStart, width, centered/string/
+matrix/scalar text and atomic glyph publication into the real queued weapon
+owner. Font draws retain actual BFN/startup resources, camera/GX history and
+Trio RNG children; held callbacks preserve the acknowledged prefix. Original
+help/message/icon children still require their genuine providers, so this does
+not prove an ordinary populated battle menu.
+
+Added whole original IconInit and both completion callbacks, actual native heap
+transfers, DVD entries/read/delivery/close ownership and source-ready writes.
+The existing Font/Window process resumes this contribution before live poses.
+Original TPL has613 images; the8174-byte BIN uses18 actual physical-disc tail
+bytes for the original rounded8192-byte read. The50-byte technical startup pack
+stays ignored, with precise original offsets/hashes/retained-rights provenance.
+No editable original art was replaced or imported over checked-in edits.
+Named all11 status result fields, source offsets and original HUD asset IDs;
+ARM allocated sections and the snapshot ABI remain identical for that cleanup.
+
+Validation: artifacts/ui-font-icon-integration/manifest.json SHA256
+4d0979f66a8e45f2ce2b11c9b5b834ae65c1205eec7134249e92978e84f11156.
+All10994 pinned source/runtime/private-fixture inputs rehashed unchanged after
+consumers stopped. Full make test30221 exits0:541/541 C++ (163.02s),238/238
+Python (46.998s), zero skips. Fresh complete native make all30633 exits0;
+post-fixture make all10954 also exits0. Native3DSX SHA256
+097950ae37f263242583d14744e001bfee1032069035e5ea2769aef6e07bc5a9.
+Nine original source verifiers pass;1618 Markdown files have zero broken links;
+421 editable asset recipes validate. Worker strict host/ARM, ASan/UBSan and
+actual VM/lifetime suites pass; parent full builds reuse no old object/archive
+ABI. Only three shared build/docs postimages differ from the frozen source,
+through exact owned-anchor replay preserving concurrent committed work.
+
+Initial Python failures were validation-fixture omissions, not game-code fixes:
+parent symlink-directory targets and the metadata-referenced audience atlas were
+not included by the first cache scan. Exact private originals are now materialized
+and pinned; initial failures/skips and corrected full reruns remain recorded.
+An unneeded Switch-cache traversal was interrupted and its generated copies
+removed; no source, editable art or runtime product was changed by that attempt.
+
+Next: accept separately validated generic original help-message lookup and the
+frontend legacy-atlas lifetime fix, finish real Icon TEX/GX/ordered dispatch and
+admit the actual Window GPU surface before frame binding. Normal source battle
+menu activation, complete tutorial/result/field return and lower audience taps
+with an independent physical selection path remain required. No original
+framebuffer parity, physical hardware FPS or full-goal completion is claimed.

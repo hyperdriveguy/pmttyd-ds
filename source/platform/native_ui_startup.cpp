@@ -103,6 +103,7 @@ struct NativeUiStartup::State:std::enable_shared_from_this<NativeUiStartup::Stat
  std::unique_ptr<WindowImage>windowImage;std::shared_ptr<const NativeSourceWindowFile>windowFile;
  std::shared_ptr<NativeSourceWindowMemory>windowMemory;std::unique_ptr<NativeSourceWindowBinding>windowBinding;
  SourceWindowTextureSetupCursor windowSetup,windowCompletion;
+ std::shared_ptr<NativeSourceIconProcess>icons;
  uint32_t windowPhase=0,windowHandle=0,windowPending=0,archiveIndex=0;bool archiveHeld=false;
  const void*windowDestination=nullptr;NativeSourceResourcePathFormatter windowFormatter;
  WindowCounts wc;
@@ -247,13 +248,14 @@ struct NativeUiStartup::State:std::enable_shared_from_this<NativeUiStartup::Stat
  }
 
  ~State(){
+  if(icons)icons->retire();
   alive=false;gx->retire();windowBinding.reset();if(windowMemory)windowMemory->retire();texture.reset();
   for(auto&e:entries){if(e.second->file)std::fclose(e.second->file);vm().memory.unregisterExternalRam(e.first);}
   // Source heap allocation remains source-owned; this native retirement does
   // not invent a guest free/reset or rerun cold loading in a surviving process.
  }
  bool gate(NativeUiStartupBoundary at,uint32_t a,uint32_t n){if(!current())return false;const bool ok=!admission.admit||admission.admit(admission.user,at,a,n);return current()&&ok;}
- std::optional<uint32_t>word(uint32_t a){if(!current())return {};if(windowMemory&&windowMemory->owns(a,4))return windowMemory->word(a);if(memory->owns(a,4))return memory->word(a);uint32_t v;if(!vm().memory.readWord(a,v))return {};return v;}
+ std::optional<uint32_t>word(uint32_t a){if(!current())return {};if(icons&&icons->owns(a,4))return icons->word(a);if(windowMemory&&windowMemory->owns(a,4))return windowMemory->word(a);if(memory->owns(a,4))return memory->word(a);uint32_t v;if(!vm().memory.readWord(a,v))return {};return v;}
  BattleActorServices actors(){
   BattleActorServices a;a.user=this;a.memory.user=this;
   a.byte=[](void*p,uint32_t at){auto&s=*static_cast<State*>(p);uint8_t v=0;const bool ok=s.vm().memory.readByte(at,v);if(!ok)s.invalid=true;return v;};
@@ -422,6 +424,18 @@ bool NativeUiStartup::pumpWindow(){
  s.windowPending=0x80144de4;return s.pumpWindow();
 }
 bool NativeUiStartup::resumeWindow(){return pumpWindow();}
+bool NativeUiStartup::resumeIcons(){
+ if(invoking_||!resumeWindow()||!state_)return false;
+ const auto keepAlive=shared_from_this();const auto state=state_;auto&s=*state;
+ invoking_=true;struct Guard{bool&b;~Guard(){b=false;}}guard{invoking_};
+ if(!s.current())return false;
+ if(!s.icons){
+  s.icons=NativeSourceIconProcess::create(s.process,path(s.rootDirectory.c_str(),"source-icons").c_str(),path(s.rootDirectory.c_str(),"source-icon-startup/startup.bin").c_str());
+  if(!s.icons)return false;
+ }
+ return s.icons->pump();
+}
+std::shared_ptr<NativeSourceIconProcess>NativeUiStartup::iconProcess()const{return current()&&state_->icons&&state_->icons->current()?state_->icons:nullptr;}
 bool NativeUiStartup::windowReady()const{return state_&&state_->readyWindow();}
 std::shared_ptr<NativeSourceWindowMemory>NativeUiStartup::windowMemory()const{return windowReady()?state_->windowMemory:nullptr;}
 std::optional<NativeUiStartup::WindowObject>NativeUiStartup::windowObject(uint32_t index)const{
@@ -434,6 +448,7 @@ NativeUiStartup::WindowCounts NativeUiStartup::windowCounts()const{return state_
 bool NativeUiStartup::ownsSourceResource(uint32_t a,uint32_t n)const{
  if(!state_||!n||uint64_t(a)+n>0x100000000ULL)return false;
  const auto overlap=[&](uint32_t b,uint32_t size){return uint64_t(a)<uint64_t(b)+size&&uint64_t(b)<uint64_t(a)+n;};
+ if(state_->icons&&state_->icons->owns(a,n))return true;
  if(state_->memory->owns(a,n)||(state_->windowMemory&&state_->windowMemory->owns(a,n)))return true;
  for(const auto&s:Spans)if(overlap(s.address,s.size))return true;
  if(state_->windowImage)for(const auto&s:WindowSpans)if(overlap(s.address,s.size))return true;
@@ -441,7 +456,8 @@ bool NativeUiStartup::ownsSourceResource(uint32_t a,uint32_t n)const{
 }
 std::optional<uint8_t>NativeUiStartup::sourceResourceByte(uint32_t a)const{
  if(!ownsSourceResource(a)||!current())return {};
- auto&s=*state_;if(s.memory->owns(a))return s.memory->byte(a);
+ auto&s=*state_;if(s.icons&&s.icons->owns(a))return s.icons->byte(a);
+ if(s.memory->owns(a))return s.memory->byte(a);
  if(s.windowMemory&&s.windowMemory->owns(a))return s.windowMemory->byte(a);
  uint8_t v;if(!s.vm().memory.readByte(a,v))return {};return v;
 }
@@ -463,5 +479,5 @@ std::shared_ptr<SourceGxInheritedState>NativeUiStartup::gxHistory()const{return 
 std::shared_ptr<const void>NativeUiStartup::lifetime()const{return state_;}
 std::optional<uint32_t>NativeUiStartup::word(uint32_t a)const{return state_?state_->word(a):std::nullopt;}
 NativeUiStartup::Counts NativeUiStartup::counts()const{return state_?state_->count:Counts{};}
-void NativeUiStartup::retire(){if(state_){state_->alive=false;state_->gx->retire();if(state_->windowMemory)state_->windowMemory->retire();}}
+void NativeUiStartup::retire(){if(state_){if(state_->icons)state_->icons->retire();state_->alive=false;state_->gx->retire();if(state_->windowMemory)state_->windowMemory->retire();}}
 }

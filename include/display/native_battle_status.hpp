@@ -1,13 +1,20 @@
 #pragma once
 #include <array>
 #include <cstdint>
+#include <cstddef>
 #include <memory>
 #include <optional>
 namespace ttyd {
 struct EventNativeRuntime;
 struct NativeBattleStatusSnapshot {
-  std::array<int16_t, 11> values{};
-  // Values are the complete original statusGetValue output, indexed offset/2.
+  // Original statusGetValue output halfwords, in source record offset/2 order.
+  // MaxApGetterBits is the raw signed pouchGetMaxAP return (+7c), not the
+  // acquired-star capacity computed separately from pouch+8c by gaugeDisp.
+  enum ValueIndex : std::size_t {
+    MarioHp, MarioMaxHp, Fp, MaxFp, PartnerId, PartnerHp, PartnerMaxHp,
+    StarPoints, Coins, Ap, MaxApGetterBits, ValueCount
+  };
+  std::array<int16_t, ValueCount> values{};
   std::optional<uint16_t> partnerPortrait;
   struct GaugeIcon {
     uint16_t icon = 0;
