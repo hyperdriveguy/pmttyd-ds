@@ -1,3 +1,27 @@
+### GameCube loader installation verified (2026-11-07)
+
+Built upstream Cuyler36/Ghidra-GameCube-Loader release tag1.3.1 from its source
+archive against installed Ghidra12.1.2 with OpenJDK21/Gradle8.10.2. Installed
+only to the user ghidra_12.1.2_DEV/Extensions/GameCubeLoader directory; no root
+or system package change. Release binary targets12.1, so it was not installed.
+Build passes with upstream unchecked-operation warnings. Local temporary Git
+metadata supplies the build filename hash, not an upstream revision identifier.
+
+Synthetic DOL headless import passed loader/language identity, text mapping and
+li instruction disassembly. Initial import failed on an upstream symbol-map GUI
+prompt despite process exit0; final run uses -loader-autoloadMaps false and
+requires explicit LOADER_SMOKE=PASS. Initial language compilation emitted Sleigh
+warnings. Existing /usr/bin/gdb and llvm-mc/llvm-objdump correctly assemble/read/
+disassemble a synthetic big-endian elf32-powerpc li/blr object; no additional
+GDB/binutils install is needed for those checks. AGENTS.md records availability.
+Logs, synthetic inputs, build archive and source/installed hashes are under
+artifacts/ghidra-tool-installation/ (ignored). No ISO access or original assets.
+
+Documentation/tool installation only: make test/all not run. GUI startup, REL
+imports, decompiler output, Dolphin remote debugging and actual game analysis
+remain unvalidated. Next: restart any open Ghidra GUI to discover the extension;
+use a scratch original-DOL analysis with existing symbols and read-only sources.
+
 ### Ghidra availability handoff (2026-11-07)
 
 Recorded Ghidra availability in AGENTS.md for future agents. No other agents

@@ -4,9 +4,14 @@
 
 Ghidra is available at `/usr/bin/ghidra` (resolves to
 `/opt/ghidra/ghidraRun`). Agents may use it for original binary analysis.
-Installation-path presence was verified; GUI startup, headless execution and
-GameCube loader extension availability have not been validated. Keep analysis
-projects/caches outside source history and open the original ISO read-only.
+GameCubeLoader release 1.3.1 is built against Ghidra 12.1.2 and installed in
+`/home/carson/.config/ghidra/ghidra_12.1.2_DEV/Extensions/GameCubeLoader`.
+Headless synthetic DOL import/mapping/disassembly passed with Gekko_Broadway.
+Use `-loader-autoloadMaps false` for headless DOL imports to avoid a GUI prompt.
+Host `/usr/bin/gdb` and `/usr/bin/llvm-objdump` also passed big-endian 32-bit
+PowerPC disassembly checks; no separate multiarch GDB installation is needed.
+GUI startup, REL imports and original-game analysis remain unvalidated. Keep
+analysis projects/caches outside source history and open the original ISO read-only.
 
 Read README.md and docs/PROGRESS.md before changing code. Continue the native
 New 2DS XL remake; the current deliverable is an early Rogueport slice. User
