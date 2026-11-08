@@ -17788,3 +17788,43 @@ Goal remains active. Next: remaining native graphics/platform and battle/field
 service adapters, changed modules and the broader comment/numeric coverage audit.
 Whole-file Trio numeric synthesis remains incomplete. Neither unchanged tokens
 nor syntax checks prove whole-port documentation or full-game completion.
+
+### Graphics program, resident font and texture-plane documentation
+
+Added 62 inline comment lines across native_graphics_program, battle_font_gpu
+and battle_texture_plane implementations/headers, with small existing-comment
+wording/spacing corrections. Explained real stable-program binding and SDK
+cleanup order, font metadata and generation ownership, pre-RNG geometry
+admission, sticky publication/source currentness, exact GX enum operands,
+unsigned dimension conversion, borrowed color read-ahead and the 36 FIFO
+scalar acknowledgments per quad. Added/indexed docs/code/graphics-font-planes.md.
+Code/docs commit: `00b9308b`. All six files preserve executable tokens and
+string literals. Reviewed world.v.pica without edits; its existing comments
+already explain vertex inputs and homogeneous four-row transformation.
+
+Validation: existing battle_font_gpu and battle_texture_plane fixtures compiled
+and passed with both freshly compiled implementations linked first. Their four
+source/header streams are token-compatible with the prior validated animation-
+memory-selection snapshot; tests used that coherent pinned supporting header/
+core/ROMFS tree. The font fixture reads the original ISO read-only and mutates
+only private in-memory fixture bytes. All three implementations passed host
+and ARM C++17 syntax against a captured current committed include tree.
+The unchanged world shader assembled privately to 272 bytes; a syntax-only
+header declares the real size. No native GPU link, lifetime-probe replay, GPU
+execution or hardware behavior was exercised. Eight live/private documented
+hashes, six executable stream comparisons, 131 local links,
+572 current/546 prior supporting headers, core and 114 accepted
+product hashes passed final audits. No tests were added.
+
+Full make test/all were not repeated for comments/prose-only changes; there
+are no executable changes. Prior suite/build evidence retains its own snapshot
+scope and does not validate concurrent changes. No asset edits/imports, ISO
+writes, story changes or emulator runs. The only new shader binary is a private
+validation artifact, not a source asset or compiled pack. Exact commands, logs,
+hashes, documented copies and scoped patch:
+artifacts/graphics-font-planes-code-documentation-validation/.
+
+Goal remains active. Next: remaining native graphics/resource and battle/field
+adapters, changed modules and broader numeric/comment coverage. Whole-file
+Trio numeric synthesis remains incomplete; no whole-port or full-game
+completion is claimed.
