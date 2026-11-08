@@ -17707,3 +17707,52 @@ Matching hashes are review aids, not proof of adequate comments or completion;
 tools/tests/untracked code remain outside this inventory. Goal remains active.
 Next: native_field_animation/release/NPC lifetime adapters, then remaining
 battle/field/platform/tool modules and whole-file Trio numeric synthesis.
+
+
+## 2026-11-07 — Original help lookup and native checkpoint resource fix
+
+Queued help lookup now uses an immutable snapshot of actual MessageAssets,
+original US text/control bytes and room/global precedence. Caller-owned read
+cursors retain unknown prefixes without blocking a different frame; copied
+facades share immutable mappings while retired selectors reject. Existing seven
+class-label pointer aliases are verified and preserved. Missing/ambiguous keys
+still hold because the original localized fallback table is not owned; this is
+not a whole instruction-level msgSearch implementation.
+
+Fixed field loading's linear-memory peak without reducing original art. The
+frontend legacy Mario atlas occupied4MiB until after destination map/NPC staging,
+even though the committed native field uses another bank. Valid room changes now
+retire it after GPU synchronization and before staging. Failed Renderer room
+transactions restore its former atlas after prior-room rollback; failures remain
+explicit. Actual Garf allocation previously failed with199296 free bytes and now
+succeeds with4393600 before/3869312 after. The earlier10MiB reading was after
+rollback. The separate outer Game CPU/GPU transaction gap remains documented.
+
+Validation: artifacts/ui-checkpoint-final/manifest.json SHA256
+0b69092540c0567df424e8a796fa3ef1e64078487cf09986e0a228608834d716.
+All10999 pinned inputs rehash unchanged. Full make test91979 exits0:
+543/543 C++ (173.86s),238/238 Python (38.320s), zero skips. Fresh native make
+all94562 and final audited-cache make all both exit0. Native3DSX SHA256
+29abedcae16ee79d15c855f95b266f2ae71d11cc2998508c2e4a42a499504ad5.
+1619 Markdown files/zero broken links and421 asset recipes pass. Original art/
+runtime products are unchanged; five original audience test-cache files were
+materialized after initial consumers stopped, correcting the sole Python fixture
+failure. No source or test expectation was changed for that failure.
+
+Production isolated Azahar68232 exits0: positive occupied file-menu recognition,
+physicalA load, original Rogueport east/Mario/NPCs, physicalRight/Left/finalidle.
+Root inspected field-right and final captures; zero unmapped/exception lines.
+The earlier13490 script exit0 was rejected after manual inspection: black loading
+pixels falsely matched dark file-row borders. The corrected script requires
+positive row interiors and actual field HUD, with explicit negative black/
+storybook checks. User profiles/saves untouched. This proves field admission and
+movement, not battle-menu activation, original framebuffer parity or hardware FPS.
+
+User priority is now the initial Crump tutorial through playable battle and field
+return. Current normal Game only ticks the introduction and never drives the
+original command/turn scheduler afterward. Four parallel owners cover startup/
+field return, Main/FirstAct/turn/action scheduling, original physical command UI,
+and native animation/resource presentation. Tutorial texture loading also occurs
+inside an active frame and has a separately prepared preframe fix. Complete
+Crump input/actions/turns/result/unchanged postbattle story are still required;
+no playable tutorial or full-goal completion is claimed here.

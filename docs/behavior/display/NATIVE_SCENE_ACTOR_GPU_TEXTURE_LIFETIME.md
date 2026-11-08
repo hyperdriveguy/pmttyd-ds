@@ -27,6 +27,29 @@ collision, ground, blocked position and renderer import rejection are distinct.
 The existing room/collision transaction retains the previous playable room on
 failure.
 
+## Frontend-to-field legacy Mario admission
+
+Valid room changes retire the frontend legacy Mario atlas after GPU
+synchronization and before destination map/NPC staging. Its original
+1024x1024 RGBA8 pixels occupy4MiB; genuine native field Mario uses a separate
+source bank. Existing scene preparation imports whichever bank the committed
+consumer requires before drawing. A failed Renderer room transaction restores
+its former legacy atlas after attempting prior-room restoration. Failed texture
+restoration remains a real error; failed prior-room restoration leaves GPU
+residency absent. Invalid room IDs cause no retirement.
+
+An isolated native east-checkpoint trace measured199,296 free linear bytes at
+Garf's failed524,288-byte allocation, whereas the earlier10MiB report occurred
+after rollback. Early legacy retirement raises its actual pre-allocation free
+space by exactly4MiB; the same original texture imports/decompresses successfully.
+Physical file navigation and Right/Left/idle pass in the private corrected run.
+This is native port allocation evidence, not original GameCube or hardware parity.
+No original HUD/actor pixels or texture quality are reduced.
+
+The outer main checkpoint lambda can still reject candidate animation-process
+retention after a successful Renderer room commit. That separate CPU/GPU
+transaction gap is not closed by this resource-ordering fix.
+
 ## Evidence and limits
 
 The valid harbor fixture passed host checkpoint/ground/walkability checks but

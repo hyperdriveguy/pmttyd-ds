@@ -12,5 +12,8 @@ struct TrioWeaponMenuFrameBinding {
  // Actual original irand owner. Caller must hold the real source admission
  // through atomic reserve→two RNG→commit; this closure is not readiness.
  std::function<uint32_t(uint32_t)>random;
+ // Actual key bytes and immutable room/global snapshot; missing/ambiguous
+ // lookup remains unavailable until genuine localized fallback is owned.
+ std::function<std::optional<uint32_t>(uint32_t)>messageLookup;
 };
 }

@@ -121,6 +121,7 @@ struct Renderer::WeaponMenuBinding {
  }
  std::optional<uint32_t>helpChild(const BattleWeaponHelpCall&q){
   if(q.function==0x8007b44c)return windowHelp(q);
+  if(q.function==0x80081b8c&&q.integers.size()==1&&q.reals.empty()&&!q.privateColor&&!q.privateText&&!q.guestText){if(!sourceCurrent()||!proof->source.messageLookup)return {};return proof->source.messageLookup(q.integers[0]);}
   if(!fontFunction(q.function))return {};
   BattleWeaponSourceFontCall f;f.function=q.function;f.integers=q.integers;f.reals=q.reals;
   if(q.function==0x800773d0){

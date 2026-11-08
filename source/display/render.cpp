@@ -310,6 +310,8 @@ void Renderer::freeRoom(Room& room) {
 // residency. UINT32_MAX records absent residentFieldRoom during the attempt.
 bool Renderer::changeRoom(uint32_t room) {
     frontFailure.clear();
+    const char* name=roomAsset(room);if(!name)return false;
+    const bool restoreLegacyMario=characterTextures.imported!=nullptr;
     if(room!=1)freeOpeningDeparture();
     releaseFrontend();
     // Room entry owns field resources. Unused battle atlases must not consume
@@ -317,10 +319,12 @@ bool Renderer::changeRoom(uint32_t room) {
     C3D_FrameSync();for(auto* unused:{&stage,&trioBackground,&trioStage})freeRoom(*unused);
     if(finishingShadowProgram.texture==ShadowTexture::CharacterAtlas){finishingShadowProgram.texture.reset();}
     finishingAnimationFans.reset();finishingAtlas.reset();finishingTextureObjectReady=false;finishingTextureLODReady=false;
-    for(auto* unused:{&goombaQuestTexture,&fieldItemGetTexture,&trioMarioTexture,&trioPartnerTexture,&trioFranklyTexture,&trioEnemyTexture})if(unused->imported){
+    // The frontend legacy Mario atlas is not a field-room dependency. Its
+    // existing scene preparation reimports it only if the committed scene
+    // actually needs it; native field Mario uses its own source bank.
+    for(auto* unused:{&characterTextures,&goombaQuestTexture,&fieldItemGetTexture,&trioMarioTexture,&trioPartnerTexture,&trioFranklyTexture,&trioEnemyTexture})if(unused->imported){
         Tex3DS_TextureFree(unused->imported);C3D_TexDelete(&unused->texture);*unused=Texture{};
     }
-    const char* name=roomAsset(room);if(!name)return false;
     const auto previous=residentFieldRoom;const bool restorePrevious=plaza.vertices!=nullptr;
     freeRoom(plaza);residentFieldRoom=UINT32_MAX;
     Room next;
@@ -331,6 +335,11 @@ bool Renderer::changeRoom(uint32_t room) {
             if(loadMap(roomAsset(previous),restored) && loadFieldActors(previous,restored)) {
                 plaza=std::move(restored);residentFieldRoom=previous;
             } else freeRoom(restored);
+        }
+        // A failed checkpoint may return to the frontend, which still owns
+        // legacy Mario draws. Restore its former atlas after room rollback.
+        if(restoreLegacyMario && !prepareLegacyMarioTexture()) {
+            frontFailure=failure+"; "+frontFailure;return false;
         }
         frontFailure=failure;return false;
     }

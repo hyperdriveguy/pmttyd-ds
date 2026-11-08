@@ -19,6 +19,7 @@
 #include "battle_act_menu_continuation.hpp"
 #include "battle_action_class_table_continuation.hpp"
 #include "battle_class_menu_messages.hpp"
+#include "battle_vm_message_lookup.hpp"
 #include "battle_event_barrier_continuation.hpp"
 #include "battle_audience_turn_end_continuation.hpp"
 #include "battle_packed_status_recovery.hpp"
@@ -375,6 +376,8 @@ struct TrioAttackRuntime {
     BattleActMenuContinuationCursor actMenuMainCursor,actMenuSetupCursor,actMenuEndCursor;
     BattleActionClassTableCursor actClassTableCursor;
     std::shared_ptr<const BattleActionClassMessageBinding> originalClassMessages,heldClassMessages;
+    std::shared_ptr<const MessageAssets> originalMessageSnapshot;
+    std::shared_ptr<BattleVmMessageLookup> nativeMessageLookup;
     std::shared_ptr<EventGpLanguageAlias> sourceWeaponLanguage;
     BattleActUiContinuationCursor actMenuUiCursor;
     BattleMenuAudienceNativeCursor actMenuAudienceCursor;
@@ -3372,7 +3375,7 @@ struct TrioAttackRuntime {
 // Fresh-only original class messages map at native guest reservation85a00000;
 // map/bind failure precedes runtime publication. Reuse returns earlier and cannot
 // adopt a new bank. HP allocation token is published only after initialization.
-bool TrioAttack::begin(const TrioBattleCommands& menu,ProfessorStory& scene,int16_t hp,std::shared_ptr<ProloguePouch> entryPouch,uint32_t* fieldNpcBattleFlags,FieldMarioBattleState* fieldMario,FieldPartyRegistry* fieldParties,const FieldPartyAppearanceServices* appearance,std::shared_ptr<BattleSpotlightState> spotlight,std::shared_ptr<BattleRandom> random,std::shared_ptr<PositionalSfxRegistry> sounds,std::shared_ptr<ShadowWork> shadows,std::shared_ptr<BattleCommandPalette> palette,std::shared_ptr<CameraManager> cameras,std::shared_ptr<FieldBeroExec> bero,std::shared_ptr<const MessageAssets> classMessages){if(!assetsReady || !menu.attack || !((menu.actor==1 && (menu.attack->weapon==0x803538a8 || menu.attack->weapon==0x80353de8)) || (menu.actor==2 && menu.attack->weapon==0x80393ea8)))return false;if(runtime_)return runtime_->done && runtime_->readyActor==menu.actor && runtime_->launch(menu);auto r=std::make_shared<TrioAttackRuntime>(random?std::move(random):std::make_shared<BattleRandom>(1),fieldParties?fieldParties->originalPool:nullptr);if(classMessages){auto labels=BattleClassMenuMessages::map(r->vm.memory,0x85a00000,std::move(classMessages));if(!labels || !r->bindOriginalClassMessages(labels->binding(r->vm.memory)))return false;}r->bero=std::move(bero);r->cameras=std::move(cameras);if(!r->cameras){r->cameras=std::make_shared<CameraManager>();r->cameras->initializeBoot(608,480);}r->cameras->camera(4)->mode=2;r->palette=palette?std::move(palette):std::make_shared<BattleCommandPalette>();r->shadows=shadows?std::move(shadows):std::make_shared<ShadowWork>();r->publicSfx=sounds?std::move(sounds):std::make_shared<PositionalSfxRegistry>();r->spotlight=spotlight?std::move(spotlight):std::make_shared<BattleSpotlightState>();r->fieldNpcBattleFlags=fieldNpcBattleFlags;r->fieldMario=fieldMario;r->fieldParties=fieldParties;if(appearance)r->fieldAppearance=*appearance;if(!r->initialize(menu,scene,hp,std::move(entryPouch)))return false;r->hpAllocation=std::make_shared<const uint8_t>(0);runtime_=std::move(r);return true;}
+bool TrioAttack::begin(const TrioBattleCommands& menu,ProfessorStory& scene,int16_t hp,std::shared_ptr<ProloguePouch> entryPouch,uint32_t* fieldNpcBattleFlags,FieldMarioBattleState* fieldMario,FieldPartyRegistry* fieldParties,const FieldPartyAppearanceServices* appearance,std::shared_ptr<BattleSpotlightState> spotlight,std::shared_ptr<BattleRandom> random,std::shared_ptr<PositionalSfxRegistry> sounds,std::shared_ptr<ShadowWork> shadows,std::shared_ptr<BattleCommandPalette> palette,std::shared_ptr<CameraManager> cameras,std::shared_ptr<FieldBeroExec> bero,std::shared_ptr<const MessageAssets> classMessages){if(!assetsReady || !menu.attack || !((menu.actor==1 && (menu.attack->weapon==0x803538a8 || menu.attack->weapon==0x80353de8)) || (menu.actor==2 && menu.attack->weapon==0x80393ea8)))return false;if(runtime_)return runtime_->done && runtime_->readyActor==menu.actor && runtime_->launch(menu);auto r=std::make_shared<TrioAttackRuntime>(random?std::move(random):std::make_shared<BattleRandom>(1),fieldParties?fieldParties->originalPool:nullptr);if(classMessages){r->originalMessageSnapshot=std::make_shared<const MessageAssets>(*classMessages);auto labels=BattleClassMenuMessages::map(r->vm.memory,0x85a00000,std::move(classMessages));if(!labels || !r->bindOriginalClassMessages(labels->binding(r->vm.memory)))return false;}r->bero=std::move(bero);r->cameras=std::move(cameras);if(!r->cameras){r->cameras=std::make_shared<CameraManager>();r->cameras->initializeBoot(608,480);}r->cameras->camera(4)->mode=2;r->palette=palette?std::move(palette):std::make_shared<BattleCommandPalette>();r->shadows=shadows?std::move(shadows):std::make_shared<ShadowWork>();r->publicSfx=sounds?std::move(sounds):std::make_shared<PositionalSfxRegistry>();r->spotlight=spotlight?std::move(spotlight):std::make_shared<BattleSpotlightState>();r->fieldNpcBattleFlags=fieldNpcBattleFlags;r->fieldMario=fieldMario;r->fieldParties=fieldParties;if(appearance)r->fieldAppearance=*appearance;if(!r->initialize(menu,scene,hp,std::move(entryPouch)))return false;r->hpAllocation=std::make_shared<const uint8_t>(0);runtime_=std::move(r);return true;}
 // Native public ownership, not guest state. A copy shares source runtime but
 // never another facade's selector. Move invalidates the moved-from selector,
 // matching the former runtime_ comparison without retaining/dereferencing this.
@@ -3682,6 +3685,35 @@ std::optional<TrioWeaponMenuFrameBinding> TrioAttack::weaponMenuFrameBinding(con
     };
     out.source=linked;out.source.math.memory=out.native.actors;
     out.random=[r](uint32_t bound){r->endingRequest(0x80005da0,{int32_t(bound)});return r->random.bounded(int32_t(bound));};
+    const auto messageCursor=std::make_shared<BattleVmMessageLookupCursor>();
+    out.messageLookup=[selector,r,messageCursor](uint32_t key)->std::optional<uint32_t>{
+        if(!weaponRegistrationCurrent(selector,r) || !r->originalMessageSnapshot)return {};
+        if(!r->nativeMessageLookup){
+            // Private VM cache admission, never a source msgdrv allocation.
+            constexpr uint32_t MessageCacheBase=0x85b00000;
+            constexpr uint32_t MessageCacheCapacity=4u*1024u*1024u;
+            constexpr size_t MaximumSourceKeyBytes=4096;
+            const std::weak_ptr<TrioAttackRuntime>weak=r;
+            BattleVmMessageLookupBinding b;b.messages=r->originalMessageSnapshot;
+            b.vmLifetime=weak;b.addressSpaceIdentity=&r->vm.memory;
+            b.base=MessageCacheBase;b.capacity=MessageCacheCapacity;b.maximumKeyBytes=MaximumSourceKeyBytes;
+            // Cache lifetime follows actual VM, independently of a copied
+            // facade. Every external call checks its own weak selector first.
+            if(!r->originalClassMessages)return {};
+            for(const auto&entry:originalBattleClassMenuMessageKeys()){
+                const auto pointer=r->originalClassMessages->lookup(r->originalClassMessages->user,entry.source);
+                if(!pointer)return {};
+                b.existing.emplace_back(entry.id,*pointer);
+            }
+            b.current=[weak]{return !weak.expired();};
+            b.byte=[weak](uint32_t a)->std::optional<uint8_t>{const auto actual=weak.lock();uint8_t v;return actual&&actual->vm.memory.readByte(a,v)?std::optional<uint8_t>(v):std::nullopt;};
+            b.unmapped=[weak](uint32_t a,uint64_t n){const auto actual=weak.lock();return actual&&actual->vm.memory.unmappedRange(a,n);};
+            b.registerBytes=[weak](uint32_t a,std::vector<uint8_t>bytes){const auto actual=weak.lock();return actual&&actual->vm.memory.registerRam(a,std::move(bytes));};
+            r->nativeMessageLookup=BattleVmMessageLookup::create(std::move(b));
+            if(!r->nativeMessageLookup)return {};
+        }
+        return r->nativeMessageLookup->lookup(key,*messageCursor);
+    };
     out.resourceWord=[r](uint32_t address)->std::optional<uint32_t>{uint32_t value;
         if(r->vm.memory.readWord(address,value) || r->vm.gpAddresses.readWord(address,value))return value;
         return {};
