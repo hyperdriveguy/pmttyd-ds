@@ -18230,3 +18230,39 @@ command/turn/result/ending/teardown/field return and original postbattle. Bind
 remaining native material/texture/fan/snapshot backends without success receipts;
 finish requested crowd documentation and obtain original/Dolphin and physical
 New2DS XL evidence. Full event/NPC/object/area and Crump goals remain active.
+
+### Window packet, tiled-pixel and native replay documentation
+
+Added 67 inline comment lines across battle_window_packets.hpp/cpp,
+battle_window_surface_gpu.cpp and render_battle_window.cpp. Explained all eight
+packed source GX words, source versus native formats, full FNV-1a64 admission
+and Morton/ABGR addressing, borrowed pixels and generation retirement, no-draw
+CurrentCamera prefix, fresh 21-setter coverage, 180-float final-lane publication,
+source/native lifetime proofs, exact GX tuples, reversed depth mapping, sampler/
+shader state and nine ordered native quad fans. Added/indexed
+docs/code/window-packets.md. Code/docs commit: `99dbe9a7`.
+All four scoped files preserve executable tokens and string literals.
+
+Validation: existing battle_window_packets fixture compiled and passed with
+both freshly compiled host-capable implementations linked first. Four scoped
+streams and fixture bytes match the prior validated animation-memory-selection
+support; coherent pinned headers/core/ROMFS supplied remaining dependencies.
+The fixture reads the original ISO read-only and decodes only private memory,
+checking pixel/padding rejection, held final publication, exact geometry, stale
+leases and no-draw completion. Both portable implementations passed host syntax;
+all three implementations passed ARM C++17 syntax against captured current
+committed headers. Four executable comparisons, six live/private documented
+hashes, 134 local links, 577 current/546 prior supporting headers,
+core and 114 accepted product hashes passed audits. No new tests, actual native
+GPU import/link/draw, hardware timing or original raster parity exercised.
+
+Full make test/all were not repeated for comments/prose only; there are no
+executable changes. Prior suite/build results retain their own snapshot scope
+and do not validate concurrent changes. No asset imports/build-product
+conversions, ISO writes, story changes or emulator runs. Exact commands/logs,
+source/header hashes, scoped patch and documented copies:
+artifacts/window-packets-code-documentation-validation/.
+
+Goal remains active. Next: remaining renderer packet adapters and battle/field/
+platform services, changed modules, broader tool coverage and whole-file Trio
+numeric synthesis. No whole-port or full-game completion is claimed.
