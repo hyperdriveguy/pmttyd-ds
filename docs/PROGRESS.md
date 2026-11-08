@@ -17343,3 +17343,39 @@ Main and Inner ownership, later changed implementation files and remaining
 native/tool modules. Whole-file Trio numeric synthesis and broad comment
 coverage still need review; hash inventories and these scoped fixtures do not
 prove documentation or remake completion.
+
+### Animation facing and node-provider code documentation
+
+Added 105 inline comment lines across eight implementation/header files for
+animation_facing, animation_facing_binding, animation_source_node and
+animation_node_binding. Explained original literal units/addresses, camera
+query and wrap order, asymmetric angle bounds, snap/FMA captures, reflection,
+semantic camera tokens, sparse node layouts, asymmetric scale gates, pivot
+suppression, matrix slots/aliases, compiled dispatch targets and stack/SDK
+ownership. Added/indexed docs/code/animation-facing-nodes.md. Code/docs commit:
+`ae808543`. All eight files preserve executable tokens and string literals.
+
+Validation: existing animation_facing, animation_main and animation_source_node
+fixtures compiled and passed. Facing/Main use the current token-identical facing
+objects and coherent copied headers/core/ROMFS from the prior fully validated
+animation-memory-selection private snapshot. Main includes actual-resource/camera
+binding checks. Source-node instead compiles standalone against captured current
+committed headers; its assertions cover all 24 dispatch masks, holds, aliasing,
+mutable literals/targets and final stack reloads. Host and ARM C++17 syntax
+checks passed for all four annotated implementations against current headers.
+Node-binding runtime/SDK integration was not exercised here; no native link or
+hardware claim. Ten live/private documented hashes, 128 local links,
+563 current and 546 prior supporting header hashes, supporting core hash
+and 114 accepted product hashes passed final audits. No tests were added.
+
+Full make test/all were not repeated for this comments/prose-only batch; there
+are no executable changes. Earlier full-suite/build results retain their own
+snapshot scope. These checks do not validate concurrent native implementation
+changes. No assets/imports/conversions, ISO writes, story changes or emulator
+runs. Exact commands, logs, source/header hashes and scoped documented files:
+artifacts/animation-facing-nodes-code-documentation-validation/.
+
+Goal remains active. Next: SDK matrix providers, draw wrappers/native Main/Inner
+ownership, later changed sources and remaining native/tool modules. Whole-file
+Trio numeric synthesis and whole-port documentation remain unproven; neither
+local fixtures nor hash matches establish that broader completion.
