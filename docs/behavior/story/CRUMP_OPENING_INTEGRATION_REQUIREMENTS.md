@@ -286,3 +286,19 @@ ownership or result/end/return. Explicit packed-pouch snapshot admission is
 native saved-state policy. Require the same live authoritative field/battle
 state before treating a source Prepare/Post completion as production return.
 The full fresh/resumed Crump opening-to-battle-to-field acceptance remains open.
+
+
+## Shared field pouch storage (2026-11-07)
+
+A supplied canonical native field pouch now shares the actual constructor SDK
+allocation's packed bytes through `NativeMarioConstructor::sharedPouch()`. Typed
+inventory and source VM reads/writes are immediate aliases. Checkpoint admission
+retains that allocation; speculative candidates cannot copy their snapshots
+into it before commit. Worker snapshots remain detached and legacy absence is
+not filled with invented inventory. See [storage/admission/retirement](../field/NATIVE_SHARED_SOURCE_POUCH.md).
+
+This closes the field-side packed-storage split mentioned above. CO-04/05/07
+still require actual field/battle/sequence ownership, Harbor's genuine export
+into the canonical object and source control/party/position/Prepare/Post/return
+composition. No complete Crump battle or field-return receipt follows from this
+shared backing alone.

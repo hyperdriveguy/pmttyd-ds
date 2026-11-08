@@ -114,7 +114,9 @@ although the portable source graph retains the original fresh-global reads.
 
 Allocation uses actual `eventHeapAllocate(0,size)` and original SDK headers.
 Before source publication, each returned payload is extracted into a standalone
-VM RAM mapping at the same guest address and pinned. This prevents later Window
+VM mapping at the same guest address and pinned. Mario uses owned VM RAM; the
+pouch uses the stationary shared typed byte array described in
+[shared pouch backing](NATIVE_SHARED_SOURCE_POUCH.md). This prevents later Window
 heap extraction from moving the live Mario/pouch backing. Native stack32KiB and
 name32 bytes use private tokens8d080000 and8d088000; they are not original heap
 placements. Group acquisition uses the existing
@@ -218,8 +220,10 @@ constructor fixture also repeats the completed facade without new Entries.
 An existing packed `progress.originalPouch` can be copied after genuine fresh
 constructor completion during cold native saved-state admission. This is explicit
 native snapshot policy, not original card-load or field-return acknowledgment.
-Later typed pouch/control/position/party writes do not become automatic raw
-source aliases. Binding the complete shared Mario/pouch field/battle lifecycle,
+Normal Game now aliases an explicitly supplied canonical pouch to the actual
+source backing; see [shared pouch admission](NATIVE_SHARED_SOURCE_POUCH.md).
+Later typed control/position/party writes remain separate source views. Binding
+the complete Mario/pouch field/battle lifecycle,
 whole Mario Main, Prepare/Post and the source sequence return remains required.
 Normal boot success and these ownership checks do not prove a Crump round trip.
 

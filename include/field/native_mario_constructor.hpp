@@ -24,6 +24,9 @@ public:
   uint32_t pending() const;
   uint32_t marioAddress() const;
   uint32_t pouchAddress() const;
+  // Same packed bytes as the genuine SDK allocation in the source VM. A
+  // returned shared owner keeps typed storage alive; retirement unmaps the VM.
+  std::shared_ptr<ProloguePouch> sharedPouch() const;
   std::shared_ptr<NativeUiStartup> ui() const;
   // Explicit native checkpoint handoff AFTER genuine fresh source Init. Copy
   // packed state into the same live pouch, preserving its allocation/identity.

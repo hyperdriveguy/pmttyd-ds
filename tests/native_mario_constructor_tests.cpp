@@ -43,6 +43,7 @@ void actualConstructorAndPoseOwner() {
   assert(ui && ui->resumeFont());
   auto owner = NativeMarioConstructor::create(ui, "romfs");
   assert(owner && owner->current() && !owner->ready());
+  assert(!owner->sharedPouch());
   auto &m = animation->process().vm().memory;
   // Budget yields retain an actual partially constructed owner, never allocate
   // another Mario/pouch or restart the source parent.
@@ -79,6 +80,11 @@ void actualConstructorAndPoseOwner() {
          word(m, 0x803dc248) == 0xffffffff);
   assert(half(m, pouch + 0x70) == 10 && half(m, pouch + 0x74) == 5 &&
          half(m, pouch + 0xa0) == 9 && byte(m, pouch + 0x99) == 1);
+  const auto shared = owner->sharedPouch();
+  assert(shared && m.hasRamBacking(pouch, shared->bytes.data(), shared->bytes.size()));
+  shared->half(0x78, 321);
+  assert(half(m, pouch + 0x78) == 321);
+  assert(m.writeHalf(pouch + 0x70, 8) && shared->half(0x70) == 8);
   ProloguePouch snapshot;
   assert(owner->capturePouchSnapshot(snapshot));
   snapshot.half(0x70, 3);
@@ -108,4 +114,29 @@ void actualConstructorAndPoseOwner() {
          !owner->posesReady());
 }
 } // namespace
-int main() { actualConstructorAndPoseOwner(); }
+void pouchRetirement(bool foreign) {
+  auto animation = NativeFieldAnimation::create("romfs", NativeFileCache::create(), platform());
+  assert(animation);
+  auto ui = NativeUiStartup::create(animation, "romfs");
+  assert(ui && ui->resumeFont());
+  auto owner = NativeMarioConstructor::create(ui, "romfs");
+  assert(owner && owner->initialize());
+  const auto shared = owner->sharedPouch();
+  const auto address = owner->pouchAddress();
+  assert(shared && address);
+  shared->half(0x70, 6);
+  auto &m = animation->process().vm().memory;
+  if (foreign) {
+    assert(m.unregisterExternalRam(address, shared->bytes.data()));
+    std::vector<uint8_t> replacement(shared->bytes.begin(), shared->bytes.end());
+    assert(m.registerRam(address, std::move(replacement)));
+    assert(!owner->current() && !owner->sharedPouch());
+  }
+  owner.reset();
+  uint16_t value = 0;
+  assert(m.readHalf(address + 0x70, value) == foreign);
+  if (foreign) assert(value == 6);
+  // A retained typed snapshot remains safe after its source view is retired.
+  assert(shared->half(0x70) == 6);
+}
+int main() { actualConstructorAndPoseOwner(); pouchRetirement(false); pouchRetirement(true); }

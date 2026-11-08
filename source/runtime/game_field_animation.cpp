@@ -68,6 +68,11 @@ bool Game::initializeNativeUiFieldAnimation(const char* root,std::shared_ptr<Nat
  if(!nativeMarioConstructor_->initializePoses({resources[0],resources[1],resources[2]}))return false;
  if(!fieldParties.configureNativeAnimation(owner,resources) ||
     !fieldParties.adoptMarioSourcePoses(fieldMarioBattle,nativeMarioConstructor_->poseHandles()))return false;
+ const auto sharedPouch=nativeMarioConstructor_->sharedPouch();
+ if(!sharedPouch)return false;
+ // Only an explicitly supplied packed inventory becomes canonical. Legacy
+ // absence stays absent; source Init is not a native saved-inventory receipt.
+ if(progress.originalPouch)progress.originalPouch=sharedPouch;
  prepareNativeFieldAnimation();return nativeMarioPose()!=nullptr;
 }
 std::shared_ptr<NativeUiStartup> Game::nativeUiStartup() const{
@@ -125,6 +130,12 @@ bool Game::retainNativeFieldAnimation(Game& previous,bool checkpoint){
  if((nativeCameraProcess_&&nativeCameraProcess_->busy())||(previous.nativeCameraProcess_&&previous.nativeCameraProcess_->busy()))return false;
  if((nativeMarioConstructor_ && nativeMarioConstructor_->busy()) || (previous.nativeMarioConstructor_ && previous.nativeMarioConstructor_->busy()))return false;
  const auto retainedNativeMario=previous.nativeMarioConstructor();
+ const auto retainedNativePouch=retainedNativeMario?retainedNativeMario->sharedPouch():nullptr;
+ if(previous.nativeMarioConstructor_ && !retainedNativePouch)return false;
+ // Room staging borrows canonical inventory; it may not replace it with a
+ // detached candidate snapshot. Checkpoint commit is the explicit copy path.
+ if(retainedNativePouch && previous.progress.originalPouch && previous.progress.originalPouch!=retainedNativePouch)return false;
+ if(!checkpoint && retainedNativePouch && progress.originalPouch!=previous.progress.originalPouch)return false;
  const auto retainedNativeCamera=previous.nativeCameraProcess();
  const auto retainedNativeShadow=previous.nativeShadowProcess();
  const auto retainedUi=previous.nativeUiStartup();
@@ -171,6 +182,12 @@ bool Game::retainNativeFieldAnimation(Game& previous,bool checkpoint){
  // by the ordinary renderer; it is not a failed/rolled-back room transaction.
  nativeUiStartup_=retainedUi;nativeEffects_=retainedEffects;nativeShadowProcess_=retainedNativeShadow;nativeCameraProcess_=retainedNativeCamera;nativeMarioConstructor_=retainedNativeMario;
  if(retainedNativeCamera)cameraManager=previous.cameraManager; // Source camera bank survives room/checkpoint ownership handoff.
+ if(retainedNativePouch && progress.originalPouch){
+  // All fallible candidate/pose admission is complete. Copy bytes into the
+  // same source allocation, then publish the shared typed view; never Init.
+  if(checkpoint && progress.originalPouch!=retainedNativePouch)*retainedNativePouch=*progress.originalPouch;
+  progress.originalPouch=retainedNativePouch;
+ }
  prepareNativeFieldAnimation();return true;
 }
 }

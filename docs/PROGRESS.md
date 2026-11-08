@@ -20287,3 +20287,54 @@ bind fresh Encounter's actual field position/control/audio/Prepare providers;
 perform actual synchronized teardown,9EXP publication and original source
 Wait/postbattle dialogue. Full fresh/resumed victory return, level-up/party
 ending domains, hardware performance and full tutorial acceptance remain open.
+
+
+### Shared source/typed field pouch — 2026-11-07
+
+The actual SDK heap0 pouch payload now uses one stationary shared
+ProloguePouch::bytes array, externally mapped at its unchanged guest address
+BEFORE the original source pointer publication and initialization. No second
+source allocation or periodic copy. NativeMarioConstructor::sharedPouch exposes
+the initialized current typed owner; typed inventory and VM reads/writes share
+those bytes immediately. Exact native retirement unmaps only its own external
+buffer, preserves foreign replacements and permits retained typed storage to
+outlive the retired VM view. Original Init bodies/assets/US name are unchanged.
+
+Normal Game explicitly supplied packed inventory joins that shared source
+backing after fresh constructor snapshot admission. Actual restore captures
+pouch ownership through the public admitted accessor before resetting Game;
+a copied candidate's private constructor shared_ptr cannot authorize writes.
+Room handoff rejects pointer substitution before live mutation and copies no
+pouch bytes. Checkpoint commit copies into the same canonical array only after
+all fallible pose/candidate checks. Missing legacy inventory remains null.
+Worker snapshots remain deep copies. Existing Trio ending export already writes
+the same supplied entryPouch; no Trio phase/export behavior was changed.
+See [shared backing contract](behavior/field/NATIVE_SHARED_SOURCE_POUCH.md).
+
+Frozen validation includes committed f0f38d20 original Crump reward work plus
+this exact scoped contribution. Focused native constructor/Game tests pass2/2
+in6.82s: both mutation directions, actual backing identity, partial-init refusal,
+foreign equal-byte replacement/retirement, worker snapshot independence, private
+candidate nonmutation, rejected room substitution, actual restore/checkpoint
+commit and explicit legacy absence. Full make test exits0:643 C++ tests in82.54s
+and278 Python tests in42.159s. make all exits0 with original GameCube soundtrack.
+The newly committed star-point memory recipe was explicitly prepared/compiled
+after the previous base cache; no original asset was imported or edited here.
+
+Exact optimized native products ran in an isolated Azahar profile with a
+source-based packed story4 checkpoint (7HP, native1536-byte save), loaded through
+normal physical frontend inputs. Inspected loaded-field/checkpoint-field captures
+show original Rogueport harbor geometry, Mario and distant opening actors with
+7/10 HP. Initial loading capture reports36FPS; after3s the final field capture
+reports60FPS. No native exception or unmapped-read log. This is native checkpoint
+and field rendering evidence, not a complete Crump battle/return or target
+hardware performance result. User emulator profiles/saves were untouched.
+Exact source/product/RomFS/log/capture receipt: artifacts/shared-source-pouch/accepted/validation-manifest.json.
+
+Remaining: native Progress.hp is still a separate UI/legacy mirror, and the
+staged Harbor minimum-HP adapter must route through canonical resource owners.
+Whole original Mario control/position/party/Main, Harbor battle pouch export,
+Prepare/Post, field start/wait and sequence return remain unbound/incomplete.
+Connect those actual owners and verify fresh/resumed Crump victory through the
+original afterbattle scene and field return. Cold-boot profiling and New2DS
+hardware performance remain open. The full-game goal stays active.

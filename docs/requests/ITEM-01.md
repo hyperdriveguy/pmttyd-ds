@@ -455,3 +455,20 @@ and source story23 gate. Original kanban parser/art/CLAMP sampling are bound;
 ordinary bubble substitution is avoided. The menu/persistent quest providers
 are ready, but board/counter cases and lecture/help/confirmation/acceptance EVT
 are still unbound. Full runtime request stays open.
+
+
+### Shared source/typed field pouch implementation (2026-11-07)
+
+The original constructor's actual heap0 pouch payload now maps the same stable
+packed array owned by `ProloguePouch`. Normal native supplied inventory aliases
+that source record; typed edits and VM writes are immediately shared. Original
+allocation/global publication/Init order is unchanged. Native room retention
+rejects candidate inventory substitution; private checkpoint restore cannot
+mutate running bytes, and admitted checkpoint commit copies into the same
+allocation. Missing legacy inventory stays absent; worker saves remain detached.
+[Contract](../behavior/field/NATIVE_SHARED_SOURCE_POUCH.md).
+
+This closes that finite field-storage bridge, without claiming whole original
+card-load, every battle VM/Harbor export, item UI, source End or field return.
+Existing Trio export already writes the same supplied object. Parent request
+remains open; no new unknown original body or duplicate documentation request.

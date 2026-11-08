@@ -1357,6 +1357,10 @@ void Game::restore(const Progress& saved) {
     const auto retainedNativeShadow=nativeShadowProcess_;
     const auto retainedNativeCamera=nativeCameraProcess_;
     const auto retainedNativeMario=nativeMarioConstructor_;
+    // A copied candidate still carries the private constructor shared_ptr.
+    // Only an admitted actual field process can update its live source bytes.
+    const auto admittedNativeMario=nativeMarioConstructor();
+    const auto retainedNativePouch=admittedNativeMario?admittedNativeMario->sharedPouch():nullptr;
     const auto retainedCommandPalette=commandPalette;
     const auto retainedShadows=shadows;
     const auto retainedCameras=cameraManager;
@@ -1415,6 +1419,10 @@ void Game::restore(const Progress& saved) {
     fieldCameraFrame=retainedFrame;fieldCameraAuthored=retainedAuthored;
     fieldCameraSimulationTicks=cameraClock;fieldCameraShift.previousMilliseconds=shiftTimestamp;
     progress = p;
+    if(retainedNativePouch && progress.originalPouch){
+        if(progress.originalPouch!=retainedNativePouch)*retainedNativePouch=*progress.originalPouch;
+        progress.originalPouch=retainedNativePouch;
+    }
     fieldBeroInfo.unknownCurrentNumber(); // Restore is not an original set_now_number writer.
     fenceCollisionDisabled=p.room==2 && p.originalStory.value_or(0)>=10;
     troubleDoorNotice=false;

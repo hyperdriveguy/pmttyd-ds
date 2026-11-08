@@ -67,6 +67,14 @@ struct NativeMarioConstructor::State {
   FieldMapSourceCursor cursor;
   std::unique_ptr<NativeMarioPoseStartup> poses;
   uint32_t mario = 0, pouch = 0;
+  std::shared_ptr<ProloguePouch> pouchStorage;
+  uint32_t pouchMapping = 0;
+  ~State() {
+    // Only remove our exact external view. A replacement mapping belongs to
+    // its new owner, even if its bytes happen to be equal.
+    if (pouchMapping && pouchStorage)
+      vm().memory.unregisterExternalRam(pouchMapping, pouchStorage->bytes.data());
+  }
   bool marioPublished = false, pouchPublished = false, initialized = false,
        invalid = false;
   EventNativeRuntime &vm() const { return animation->process().vm(); }
@@ -207,9 +215,23 @@ struct NativeMarioConstructor::State {
     // Isolate payload backing before source publication. Later heap extraction
     // cannot move this live record; guest address and SDK headers stay genuine.
     std::vector<uint8_t> bytes;
-    if (!vm().memory.extractRam(address, a[1], bytes) ||
-        !vm().memory.registerRam(address, std::move(bytes)) ||
-        !pin(address, a[1])) {
+    if (!vm().memory.extractRam(address, a[1], bytes)) {
+      invalid = true;
+      return false;
+    }
+    bool mapped;
+    if (a[1] == PouchBytes) {
+      static_assert(ProloguePouch{}.bytes.size() == PouchBytes,
+                    "Packed pouch must match the original source record");
+      pouchStorage = std::make_shared<ProloguePouch>();
+      std::copy(bytes.begin(), bytes.end(), pouchStorage->bytes.begin());
+      mapped = vm().memory.registerExternalRam(
+          address, pouchStorage->bytes.data(), PouchBytes);
+      if (mapped) pouchMapping = address;
+    } else {
+      mapped = vm().memory.registerRam(address, std::move(bytes));
+    }
+    if (!mapped || !pin(address, a[1])) {
       invalid = true;
       return false;
     }
@@ -360,6 +382,9 @@ uint32_t NativeMarioConstructor::marioAddress() const {
 }
 uint32_t NativeMarioConstructor::pouchAddress() const {
   return current() ? state_->pouch : 0;
+}
+std::shared_ptr<ProloguePouch> NativeMarioConstructor::sharedPouch() const {
+  return ready() ? state_->pouchStorage : nullptr;
 }
 std::shared_ptr<NativeUiStartup> NativeMarioConstructor::ui() const {
   return state_ ? state_->ui : nullptr;
