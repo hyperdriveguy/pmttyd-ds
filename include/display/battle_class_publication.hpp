@@ -5,6 +5,7 @@ namespace ttyd {
 // Native ownership metadata, never an original guest field or elapsed clock.
 struct BattleClassPublicationKey {
   std::shared_ptr<const uint8_t> owner;
+  // Source allocation identity; zero means unbound, not a usable guest address.
   uint32_t allocation = 0;
   uint64_t sequence = 0;
 };
@@ -31,6 +32,7 @@ private:
   uint32_t allocation_ = 0;
   BattleClassPublicationKey key_;
   std::shared_ptr<const BattleClassBackend> batch_;
+  // Reset on replacement/retirement, not by duplicate admit() calls.
   bool admitted_ = false, consumed_ = false;
 };
 } // namespace ttyd

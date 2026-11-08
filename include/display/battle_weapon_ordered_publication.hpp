@@ -7,10 +7,12 @@
 #include "battle_enemy_hp_publication.hpp"
 #include <variant>
 namespace ttyd {
+// Vector position is successful source emission order across all five leaf kinds.
 using BattleWeaponOrderedPacket=std::variant<BattleFontGlyphPacket,BattleSubmenuPacketPtr,BattleEnemyHpIconPacket,BattleWindowPacketPtr,BattleClassSurfacePacketPtr>;
 struct BattleWeaponOrderedBatch {
  std::shared_ptr<const uint8_t> allocationOwner;
  std::shared_ptr<const void> sourceResourceOwner;
+ // Native ownership/pass metadata, never source elapsed ticks or render frames.
  uint32_t allocation=0;uint64_t generation=0,pass=0;
  std::vector<BattleWeaponOrderedPacket> packets;
 };
@@ -62,6 +64,7 @@ private:
  BattleWeaponOrderedBinding binding_;
  uint64_t pass_=0,lastPass_=0;bool bound_=false,running_=false,invalid_=false,submitted_=false;
  std::vector<BattleWeaponOrderedPacket> building_;
+ // One pre-RNG reservation is an ordering barrier, not a published packet.
  std::optional<BattleFontGlyphPacket> pending_;
  std::shared_ptr<const BattleWeaponOrderedBatch> sealed_;
  bool live();bool source(uint64_t);bool preflight(const std::vector<BattleWeaponOrderedPacket>&);

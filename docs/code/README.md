@@ -275,3 +275,7 @@ native HP/footer material state.
 [Field GPU staging](field-gpu-staging.md) explains indexed guest-array reads,
 partial-read retention, low16 fan counts, reusable buffers and native camera/cull
 publication.
+
+[Battle publications](battle-publications.md) compares class admission notices,
+source-ordered HP frames and mixed weapon batches, including atomic font
+reservations and whole-submission retry rules.

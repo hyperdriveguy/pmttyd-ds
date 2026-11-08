@@ -16,8 +16,10 @@ struct BattleEnemyHpRasterView {
  float depthScale=-1,depthOffset=0;
 };
 struct BattleEnemyHpRasterPacket {BattleEnemyHpGpuQuad quad;BattleEnemyHpRasterView view;};
+// One vector preserves source number/bar interleaving, not per-material groups.
 using BattleEnemyHpOrderedPacket=std::variant<BattleEnemyHpIconPacket,BattleEnemyHpRasterPacket>;
 struct BattleEnemyHpPublication {
+ // Native identity and monotonic publication pass; zero is unbound/unstarted.
  uint64_t allocation=0,pass=0;
  std::shared_ptr<const uint8_t> owner;
  std::vector<BattleEnemyHpOrderedPacket> packets;
@@ -60,6 +62,7 @@ public:
  void retire();
 private:
  uint64_t allocation_=0,pass_=0,lastPass_=0;
+ // running_ rejects reentry; retireRequested_/invalid_ defer total clear to Guard.
  bool active_=false,running_=false,retireRequested_=false,invalid_=false;
  std::shared_ptr<const uint8_t> owner_;
  BattleEnemyHpPublicationServices services_;
