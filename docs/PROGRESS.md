@@ -18047,3 +18047,58 @@ Goal remains active. Next: window packet/resource constants and renderer
 adapters, remaining battle/field/platform services, changed modules, tools and
 whole-file Trio numeric synthesis. No whole-port or full-game completion
 is claimed.
+
+
+### Original-versus-port playability integration verification (2026-11-07)
+
+Tested a frozen snapshot because shared source files were changing during the
+live attempts. Snapshot pins4617 source files and2206 runtime products; all
+rehash unchanged after validation. Production GameCube-soundtrack3DSX SHA256
+24de723873fc4997c8de3cc471760bb42e05a2f669af61ed900cccde3ad910ae.
+Full findings and replay commands: [playability comparison](mechanics/PLAYABILITY_2026_11_07.md).
+
+Read-only US G8ME01 disc0/revision0 Dolphin observation now reaches the actual
+house/letter/map/voyage/harbor, field movement, original Crump confrontation,
+Jump/target/action presentation, enemy turns, battle completion and postbattle
+crowd. Original first HUD10HP/5FP, a damage1 hit and later9HP were inspected.
+Inputs/captures are logged; no exact frame/timing-window, guard/hammer/item,
+complete crowd/plaza or physical hardware claim. The original reference starts
+from a copied project-owned New slot, not an empty memory card. Isolated
+profiles only; no user emulator settings/saves or ISO writes.
+
+Native fresh-file opening passes with valid v10 story3/room1/HP10 save. Native
+story8 Mouser talk passes message-open/no-onset-save/return/save and checksum
+checks through the normal frontend; original east-side runtime parity was not
+observed. Native story4 encounter admits the original battle stage but remains
+at “Development notice: original tutorial action services pending” after180 A
+presses, directional/confirm inputs and10 seconds of further waiting. No usable
+attack flow or field return. Camera/HUD scale/readability also differs from
+Dolphin. The remake/prologue remains incomplete.
+
+Validation: first live make test failed67/553 before preparation; initial make
+all prepared426 recipes then failed on a stale shader dependency. Those live
+rebuild attempts were stopped after concurrent changes were detected. Frozen
+fresh make all -j4 -o assets-ready SOUNDTRACK=gamecube exits0 using copied,
+hashed prepared products. Frozen make test:551/554 pass in305.30s,3 failures.
+Creating its private artifacts directory fixes battle_hit_registry (focused
+rerun passes). field_map_source lookup trace and field_map_source_owner held
+entry state assertions still fail on an independent repeat; preserved for the
+implementation owner. Full C++ gate remains failing. Separate Python suite:
+247/247 pass in74.181s. Accepted three native profiles have zero ARM exception
+and zero unmapped diagnostics. Scoped documentation links and script syntax pass.
+
+Test repairs: fresh opening now accepts existing1568-byte v10 saves; the old
+false-failure and corrected passing run produce identical valid checkpoint
+hashes. Added visible-field admission for normal-file-menu NPC testing using
+installed Pillow/Tesseract Latin model; earlier fixed-delay/OCR harness failures
+remain recorded. Added explicit input/capture replay and encounter spot scripts.
+No gameplay, art, dialogue, licensing or editable-source import changes.
+
+Evidence: artifacts/playability-2026-11-07/manifest.json, snapshot-inputs.json,
+checkpoint-audit.json, full logs, isolated profiles, original input timelines and
+reviewed screenshots. Next: finish actual tutorial command/input/turn/result/
+teardown/field-return composition and rerun through the postbattle crowd/plaza;
+resolve the two field-map assertions against a new frozen snapshot; add matched
+NPC, stairs/water/road and exact action-command frame checks plus hardware tests.
+This verification task concludes with an observed progression blocker; it does
+not declare the remake or its broader implementation goals complete.

@@ -12,9 +12,10 @@ Original-game mechanics evidence for the US GameCube G8ME01 binary. This ledger 
 
 ## Status
 
-Dolphin booted the original ISO in an isolated profile and captured its initial
-health/safety screen. No gameplay capture has yet established timing or exact
-tutorial rules.
+Isolated Dolphin observations now cover the original new-game opening, harbor
+traversal, Crump battle attacks/enemy turns, battle completion and postbattle
+crowd scene. See the [2026-11-07 playability comparison](mechanics/PLAYABILITY_2026_11_07.md).
+Exact action-command timing windows and broader tutorial eligibility remain unmeasured.
 The opening book was additionally observed on2026-10-14 in an isolated Dolphin
 profile using the read-only US disc0/revision0 ISO. Evidence is retained under
 artifacts/dolphin-book-width: reference-t110.png shows the initial illustrated
@@ -580,3 +581,22 @@ font/raster, sound or physical hardware parity. Source US art and printed runes
 are retained; the visible-region crop is shared rather than introducing a rune
 or illustration offset. The native extra horizontal framing/left-width
 adapters remain explicit in the book contract.
+
+
+## 2026-11-07 — Original playability spots and native integration
+
+The [dated comparison](mechanics/PLAYABILITY_2026_11_07.md) records read-only
+US G8ME01 disc0/revision0 Dolphin observations, exact input/capture paths and
+frozen native validation. Original opening and harbor traversal reached Crump;
+physical A input executed Jump, enemy turns, battle completion and the original
+postbattle crowd. Initial HUD10HP/5FP, a damage1 hit and subsequent9HP are
+visible observations, not recovered timing windows. No guard/hammer/item or
+complete crowd/plaza choreography conclusion is made.
+
+Native fresh-file arrival and story8 Mouser talk/save pass. Harbor story4
+admission reaches the original stage but remains at the development notice
+that tutorial action services are pending after physical input and waiting.
+Native battle camera/HUD readability also differs visibly. Snapshot identity,
+initial harness failures, two unresolved C++ assertions,247 passing Python
+tests and next work are recorded in the comparison. Original-runtime east-NPC
+parity, precise simulation/frame timing and physical hardware remain open.
