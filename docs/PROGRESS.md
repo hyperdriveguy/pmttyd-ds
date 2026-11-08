@@ -18016,3 +18016,34 @@ artifacts/battle-publications-code-documentation-validation/.
 Goal remains active. Next: typed class/submenu/window packet providers and
 remaining battle/field/platform services, changed modules, tools and whole-file
 Trio numeric synthesis. No whole-port or full-game completion is claimed.
+
+### Class and submenu source packet documentation
+
+Added 81 inline comment lines across battle_class_surface_packets and
+battle_submenu_packets implementations/headers. Explained live TPL ownership,
+217920-byte bank and packed descriptors, I4/CMPR tile arithmetic, source versus
+native format domains, source GX object fields, canonical constructor snapshots,
+independent bank/proof/native/camera owners, inherited-state capture and poison,
+fifteen local setter bits and exact GX operands, separate C0/raster alpha,
+36 scalar-lane packet creation, final-request identity and sink retry duties.
+Added/indexed docs/code/battle-surface-packets.md. Code/docs commit:
+`7c46abb2`. All four files preserve executable tokens and string literals.
+
+Validation: both implementations passed host/ARM C++17 syntax against a
+coherent captured current committed include tree. Four executable comparisons,
+six live/private documented hashes, 134 local links and 577 supporting
+header hashes passed audits. Current inherited-state snapshot interfaces differ
+from the older supporting runtime library; no incompatible fixture reuse, native
+link/GPU execution or runtime parity claim. No new tests were added.
+
+Full make test/all were not repeated for comments/prose only; there are no
+executable changes. Prior suite/build results retain their own snapshot scope
+and do not validate concurrent changes. No assets/imports/conversions, ISO
+writes, story changes or emulator runs. Exact syntax commands/logs, hashes,
+scoped patch and documented copies:
+artifacts/battle-surface-packets-code-documentation-validation/.
+
+Goal remains active. Next: window packet/resource constants and renderer
+adapters, remaining battle/field/platform services, changed modules, tools and
+whole-file Trio numeric synthesis. No whole-port or full-game completion
+is claimed.
