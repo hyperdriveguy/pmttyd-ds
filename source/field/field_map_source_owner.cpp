@@ -23,6 +23,7 @@ bool FieldMapSourceOwner::current() const{
 }
 FieldMapSourceServices FieldMapSourceOwner::services(){FieldMapSourceServices s;s.user=this;
  s.word=[](void* u,uint32_t a,uint32_t& v){return static_cast<FieldMapSourceOwner*>(u)->memory_.readWord(a,v);};
+ s.half=[](void* u,uint32_t a,uint16_t& v){return static_cast<FieldMapSourceOwner*>(u)->memory_.readHalf(a,v);};
  s.byte=[](void* u,uint32_t a,uint8_t& v){return static_cast<FieldMapSourceOwner*>(u)->memory_.readByte(a,v);};
  s.store=[](void* u,uint32_t a,uint32_t v){return static_cast<FieldMapSourceOwner*>(u)->memory_.writeWord(a,v);};
  s.storeHalf=[](void* u,uint32_t a,uint16_t v){return static_cast<FieldMapSourceOwner*>(u)->memory_.writeHalf(a,v);};

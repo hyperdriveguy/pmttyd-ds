@@ -4185,3 +4185,19 @@ no checked-in destination was reimported. Exact ISO provenance appears in the
 compiled JSON and private `npc-raw-texture-boot-spans.json`. No ISO or compiled
 pack/binary is committed. Nintendo/Intelligent Systems retain original rights;
 local extraction/tracking grants no new license or redistribution rights.
+
+
+### Unrelocated harbor files for source loader (2026-11-07)
+
+`assets/original/maps/harbor-files/` retains original US `m/gor_00/d` and `t`
+without relocation, exact 32-byte rounded transfer tails, and original loader
+literal/format jump-table spans. `provenance.json` pins each logical length,
+original ISO offset, logical/transfer SHA256 and trailing bytes. D is 1039618
+logical/1039648 transfer bytes; T is 525792 for both. The 30 D tail bytes come
+from the ISO, not synthesized padding. New importer
+`tools/import_harbor_map_files.py` opens the ISO read-only, requires an empty
+destination and refuses existing edits. Normal recipes copy to `maps/gor_00/d`
+and `maps/gor_00/t`, and compile `field-harbor-loader-literals.pmevt`.
+Nintendo/Intelligent Systems retain all original rights; tracking grants no new
+license. These mutable-runtime inputs differ from the earlier constructor-only
+already-relocated harbor-source payload. Do not relocate that earlier pack twice.

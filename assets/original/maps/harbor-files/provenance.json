@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "iso_id": "G8ME01 revision0",
+  "files": [
+    {
+      "file": "d.bin",
+      "source": "m/gor_00/d",
+      "source_offset": 987838324,
+      "logical_bytes": 1039618,
+      "transfer_bytes": 1039648,
+      "source_sha256": "d942568687b82ede86c7ea5aab0a3aea6c0df23b538257fde8ae1632bd13089b",
+      "transfer_sha256": "77b6dccd53870ee447c497c2f83fec900c287d0fff3bfed836a2b0a0c8323c40",
+      "trailing_hex": "00003c4e70633e0d0a2020203c6e616d653e0d0a20202020202020228382",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "file": "t.bin",
+      "source": "m/gor_00/t",
+      "source_offset": 988888496,
+      "logical_bytes": 525792,
+      "transfer_bytes": 525792,
+      "source_sha256": "71d2330e8977e07e7ebc7e5b220aca3de921a6ddd6f7a7246f530ace37421884",
+      "transfer_sha256": "71d2330e8977e07e7ebc7e5b220aca3de921a6ddd6f7a7246f530ace37421884",
+      "trailing_hex": "",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    }
+  ],
+  "dol_spans": [
+    {
+      "address": 2150366104,
+      "size": 320,
+      "sha256": "4b9e82cbfb336b7a5500da9a170f39389985dd599b9b1c48ea58546e365ff778"
+    },
+    {
+      "address": 2150648276,
+      "size": 60,
+      "sha256": "4e7e53664612af978617fb41834f186b606c1fc6d4304b3aaac8d855790c1a6a"
+    },
+    {
+      "address": 2151807244,
+      "size": 8,
+      "sha256": "0aa8eb1ba4f7f4f7fec5017c5aa606dd779d7eb84bf25163324b47e2b3147964"
+    },
+    {
+      "address": 2151807272,
+      "size": 8,
+      "sha256": "1193f9ce29a244d6deb60d8147b59e22c31b06781821da4cf04a5a980937ba55"
+    },
+    {
+      "address": 2151807308,
+      "size": 4,
+      "sha256": "041f8c928efceefce56b2faccc0c0067fe7f247dcb297fb6972c27c932c7c8f1"
+    },
+    {
+      "address": 2151807404,
+      "size": 12,
+      "sha256": "39f75b64d5ed5be64407738d63f796635b7ae121a8d519966934bc464d3a9730"
+    }
+  ],
+  "policy": "Unrelocated original files. Bytes after logical EOF are exact ISO transfer padding, not invented zeroes. Runtime reports logical lengths and executes original relocation/TPL unpack in mutable map-owned copies.",
+  "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+}

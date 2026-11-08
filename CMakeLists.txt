@@ -2947,3 +2947,9 @@ add_executable(animation_source_texture_tests tests/animation_source_texture_tes
 target_link_libraries(animation_source_texture_tests PRIVATE ttyd_core)
 add_test(NAME animation_source_texture COMMAND animation_source_texture_tests)
 set_tests_properties(animation_source_texture PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+target_sources(ttyd_core PRIVATE source/field/field_map_file_owner.cpp)
+add_executable(field_map_loader_tests tests/field_map_loader_tests.cpp)
+target_link_libraries(field_map_loader_tests PRIVATE ttyd_core)
+add_test(NAME field_map_loader COMMAND field_map_loader_tests)
+set_tests_properties(field_map_loader PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

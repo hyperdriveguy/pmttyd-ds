@@ -2,6 +2,27 @@
   "schema": 1,
   "assets": [
     {
+      "id": "original/maps/harbor-files/d",
+      "kind": "pack",
+      "source": "assets/original/maps/harbor-files/d.bin",
+      "output": "maps/gor_00/d",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/maps/harbor-files/t",
+      "kind": "pack",
+      "source": "assets/original/maps/harbor-files/t.bin",
+      "output": "maps/gor_00/t",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/maps/harbor-loader-literals",
+      "kind": "event",
+      "source": "assets/original/maps/harbor-files/literals.json",
+      "output": "field-harbor-loader-literals.pmevt",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
       "id": "original/effects/fukidashi",
       "kind": "atlas",
       "source": "assets/original/effects/fukidashi/atlas.json",

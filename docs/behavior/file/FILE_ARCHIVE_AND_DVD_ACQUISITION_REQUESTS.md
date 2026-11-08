@@ -29,7 +29,7 @@ No local size field,payload copy,archive owner reference or result check exists.
 ## arcOpen scans four active archive descriptors in fixed order
 
 Capture name P and optional output pointers OUTADDR,OUTLEN. Starting at
-803ebff0,scan four descriptors,each40 bytes. Read U16 descriptor00 and require
+803dbff0,scan four descriptors,each40 bytes. Read U16 descriptor00 and require
 bit01;other bits do not affect admission. Call ARCOpen(descriptor+4,P,&local
 fileInfo). Zero result advances;any nonzero is success. No selected-mode/index
 argument reaches this dispatcher;the allocator's three retries each restart

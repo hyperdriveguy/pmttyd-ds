@@ -18521,3 +18521,71 @@ artifacts/weapon-source-resources-code-documentation-validation/.
 Goal remains active. Next: source font/cursor/help services and remaining
 field/platform adapters, changed modules, broader tool coverage and whole-file
 Trio numeric synthesis. No whole-port or full-game completion is claimed.
+
+
+### Complete source map parents and native DVD file process (2026-11-07)
+
+Continued the original prologue port with 33 complete retained source bodies,
+4051 original instructions, spanning full map load/unload, file acquisition,
+relocation/TPL unpack, source joint/texture/bounds/display-list parents and the
+actual DVD manager worker/comparator/qqsort/fsort. The map owner now retains
+all original loader SDA words through 8041e67c and supports halfword reads.
+
+New native file process owns the actual 256x98-byte manager table, shared source
+sort backing, worker stack and native FILE resources in the same VM. Its native
+cold bootstrap and cooperatively pumped worker explicitly replace the GameCube
+OS-thread platform layer; source Main owns counters/completion/callback/queued
+close retirement. Native RomFS transfer completes bytes before acknowledging
+its physical read leaf. This is not yet asynchronous Game integration.
+
+Imported original unrelocated harbor D/T to a new empty asset directory with
+exact disc transfer tails and source literals/jump table; normal asset recipes
+retain logical/transfer lengths and all original rights/provenance. The earlier
+already-relocated constructor pack remains separate. ISO opened read-only.
+
+The original-file fixture reaches the real hitEntry frontier after both source
+reads, actual native map allocations, TPL unpack, all 15974 original relocation
+stores and 540 real SDK-constructed scene objects, with loaded count still 0.
+GPU/cache synchronization and limited libc formatting receipts are explicitly
+fixture-only. No live room readiness, collision completion, GPU rendering or
+Game transition is claimed. Source helper fixtures cover full sort/duplicates,
+TPL holds, worker error/cancel/callback/cap/accounting and close retirement.
+
+Validation freezes accepted 46c20ca6 plus this scope; concurrent work/staging
+remain excluded and preserved. Full make test exits 0: 505/505 C++ (90.25s),
+238/238 Python (36.886s), zero skips. The final exact source also passes the focused
+loader fixture. Complete native make all and private ARM fixture build exit 0.
+All 4051 original words/33 complete boundaries verify against the read-only DOL.
+Assets-check validates 428 recipes. New production map/file sources and final
+ARM wrapper compile without warnings; pre-existing unrelated/Pillow warnings
+remain. A docs-only parallel check reviewed carry/dynamic-call/load/store
+translation; it supplied further full collision evidence, not native completion.
+
+Fresh isolated normal 40s and ARM 140s Azahar runs exit 0. Ten strict ARM markers
+pass for graph/holds/sort/worker/files/relocation/scene/publication/unload/identity.
+Three exact tracked fixtures run through private instrumented main with explicit
+romfs: roots; 541 non-main production objects remain byte-identical. Production
+binary is unchanged by private tests. Normal and ARM post-proof storybook images
+were inspected. No field/Goombella walk, original framebuffer, hardware FPS or
+complete map transition claim. User emulator profiles/saves are untouched.
+
+Initial fixture failures exposed shared literal overlap (fixed by checked pack
+merge) and an incorrect reconstructed archive-table address (correct 803dbff0,
+not 803ebff0). Full final gates pass. A newer committed window-startup adapter
+also uses that old address; correcting/validating its later source revision is
+an explicit next step, outside this accepted map snapshot. No success receipt
+was added for genuine hit/camera/GX/Game boundaries.
+
+Exact replay audits 4333 source files and 2200 RomFS products. Only three new
+original-file/literal products and the pipeline stamp differ from accepted base;
+all other products and non-cache private/reference inputs remain unchanged.
+Pipeline cache additions are retained/hash-pinned separately. Asset import used
+an empty destination; source D/T, exact tails, literal spans and original rights
+are tracked. No ISO/extraction cache/compiled pack is committed. Full commands,
+logs, evidence, source/product/private/object hashes and binaries:
+artifacts/field-map-loader-validation-manifest.json.
+
+Next: full original hitEntry/_hitEnt/triangle construction and true distance
+math, actual light/camera/material/mapDraw/GX capture providers, native async IO,
+Game/source event ownership and safe full unload. Original execution/hardware
+checks and full faithful prologue remain open; goal stays active.

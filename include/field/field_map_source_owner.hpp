@@ -38,7 +38,7 @@ private:
  EventAddressSpace& memory_;uint32_t workAddress_,stackAddress_;
  FieldMapHeapOwner heap_;
  alignas(CacheLineBytes) std::array<uint8_t,FieldMapSource::WorkBytes> work_{};
- std::array<uint8_t,3*sizeof(uint32_t)> globals_{};
+ std::array<uint8_t,FieldMapSource::GlobalsBytes> globals_{};
  std::array<uint8_t,StackBytes> stack_{};
  std::array<uint32_t,3> mappings_{};unsigned mapped_=0;
  bool allocationZeroed_=false,allocated_=false;

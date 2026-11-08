@@ -8,7 +8,7 @@ from iso_assets import DEFAULT_ISO
 from import_harbor_map_source import import_source
 from verify_field_map_source import verify
 class FieldMapSourceAssets(unittest.TestCase):
- def test_complete_original_source_spans(self):self.assertEqual(verify(),1070)
+ def test_complete_original_source_spans(self):self.assertEqual(verify(),4051)
  def test_original_payload_fixups_and_scene_reproduce_editable_sources(self):
   with tempfile.TemporaryDirectory() as temporary:
    out=Path(temporary)/'new';import_source(DEFAULT_ISO,out)
@@ -20,4 +20,23 @@ class FieldMapSourceAssets(unittest.TestCase):
    out=Path(temporary);edited=out/'event.json';edited.write_text('retained edit')
    with self.assertRaises(ValueError):import_source(DEFAULT_ISO,out)
    self.assertEqual(edited.read_text(),'retained edit');self.assertEqual(list(out.iterdir()),[edited])
+
+class HarborMapFiles(unittest.TestCase):
+ def test_raw_files_and_disc_transfer_tail_reproduce_sources(self):
+  from import_harbor_map_files import import_files
+  import hashlib
+  with tempfile.TemporaryDirectory() as temporary:
+   out=Path(temporary)/'new';records=import_files(DEFAULT_ISO,out)
+   for name in ('d.bin','t.bin','literals.json','provenance.json'):
+    self.assertEqual((out/name).read_bytes(),(Path('assets/original/maps/harbor-files')/name).read_bytes())
+   self.assertEqual([r['logical_bytes'] for r in records],[1039618,525792])
+   self.assertEqual([r['transfer_bytes'] for r in records],[1039648,525792])
+   for row in records:self.assertEqual(hashlib.sha256((out/row['file']).read_bytes()).hexdigest(),row['transfer_sha256'])
+ def test_refuse_import_over_existing_edits(self):
+  from import_harbor_map_files import import_files
+  with tempfile.TemporaryDirectory() as temporary:
+   edited=Path(temporary)/'d.bin';edited.write_bytes(b'editable-original')
+   with self.assertRaises(ValueError):import_files(DEFAULT_ISO,temporary)
+   self.assertEqual(edited.read_bytes(),b'editable-original');self.assertEqual(list(Path(temporary).iterdir()),[edited])
+
 if __name__=='__main__':unittest.main()

@@ -5666,3 +5666,23 @@ SquareDistance correction are under artifacts/field-map-owner-evidence/.
 ### Crump opening and raw texture prerequisites (2026-11-07)
 
 The [Crump integration contract](../behavior/story/CRUMP_OPENING_INTEGRATION_REQUIREMENTS.md) inventories ten required owners from field trigger through setup2, full battle/result/teardown, resumed original wait, 276-command postbattle and gor_01/s_bero return. Normal Game still starts a bounded tutorial independently, never completes its result/export/return lifecycle, and does not execute postbattle. All requirements are not yet available. The [raw texture parent](../behavior/display/NATIVE_ACTUAL_VM_TEXTURE_PARENT.md) now preserves original dynamic arguments/header reads, actual-VM TEXGet and shared SDK composition; real GX texture/material/residency and complete fan services remain unavailable. Prioritize same-VM harbor/sequence/NPC/F/result ownership and actual menu/turn/ending/exit wiring; do not replace these with success receipts. This request remains open.
+
+
+### 2026-11-07 — Complete map parents and native DVD worker progress
+
+[Source map loading and DVD worker](../behavior/field/NATIVE_SOURCE_MAP_LOADING_AND_DVD_WORKER.md)
+adds 33 complete source bodies/4051 original words and actual shared native
+manager/file/sort storage. Native original-file prefix executes both reads, TPL
+unpack, all 15974 fixups and 540 scene objects; it retains the genuine hitEntry
+child with loaded count0. Test-only GPU/cache receipts are not production
+services. Source Close queues08; actual worker sorts, completes reads/callbacks
+and retires slots. Parent waits retain their cursor/request and do not tick.
+
+- [ ] Bind complete real hitEntry/Sub/_hitEnt/triangle production, true vector
+  distance and collision lifecycle. Full body/child evidence is being collected
+  under `artifacts/field-map-loader-evidence/`; no narrowed replacement accepted.
+- [ ] Compose actual light/camera/material/mapDraw/GX capture providers, full
+  publication/unload, Game/EVT epochs and native async scheduling. Keep the
+  original full parent intact; no success receipts for missing services.
+- [ ] Obtain original execution and physical New2DS XL evidence. Local static
+  graphs and isolated native fixtures leave full EVT/prologue readiness open.

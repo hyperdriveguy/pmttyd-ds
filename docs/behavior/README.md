@@ -1487,3 +1487,5 @@ Original battle menu native resource/queue owners:
 | [Tutorial original animation coverage](display/HARBOR_TUTORIAL_ORIGINAL_ANIMATION_COVERAGE.md) | Existing original Mario combat bank with matching atlas/UV and shared completion/top/lower ownership | Native tutorial playthrough and remaining original services |
 - [Actual-VM animation texture parent](display/NATIVE_ACTUAL_VM_TEXTURE_PARENT.md): original seven-argument texture/coordinate setup, live reads and retained SDK/GX children.
 - [Crump opening integration requirements](story/CRUMP_OPENING_INTEGRATION_REQUIREMENTS.md): original encounter through battle, teardown, postbattle crowd/party/audio and plaza return, with unmet production dependencies.
+
+- [Native source map loading and DVD worker](field/NATIVE_SOURCE_MAP_LOADING_AND_DVD_WORKER.md) — complete retained parents and native original-file process; real collision/GPU/Game completion remains open.

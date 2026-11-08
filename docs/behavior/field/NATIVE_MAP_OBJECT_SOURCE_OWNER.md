@@ -1,7 +1,7 @@
 # Original map-object construction and matrix ownership
 
 This implements complete local process initialization, lookup, counting,
-construction and matrix-tree recalculation. Full map loading/unloading, live
+construction and matrix-tree recalculation. Full native map-load/unload completion, live
 mapMain animation/setter epochs, lamp-event dispatch and ordinary Game activation
 remain open. Fixtures constructing all original harbor objects do not establish
 playable prologue or original framebuffer parity.
@@ -45,7 +45,8 @@ become fabricated successful empty objects.
 
 ## Actual native storage and SDK
 
-`FieldMapSourceOwner` owns the three globals, aligned process work and64KiB
+`FieldMapSourceOwner` owns the original globals through8041e67c (32 bytes,
+including the initial work/group/auxiliary words), aligned process work and64KiB
 private stack, all mapped as real external VM RAM. The existing primary map
 pool remains with its actual caller-owned backing. Map allocation changes that
 pool's real headers and uses its actual clear/cache callbacks through
@@ -103,8 +104,10 @@ lightMain; do not recalculate after each event simply to force a preferred epoch
 Original `_unload` calls mapUnLoad before later npcReset and evtmgrReInit.
 Freeze manager/renderer users through that retained interval rather than changing
 source call order. Quarantine or finish promised-live opaque operations before
-freeing their backing. Full source load/unload and runtime setters are next
-boundaries, followed by [persistent harbor lamp events](NATIVE_HARBOR_AREA_INITIALIZATION.md)
+freeing their backing. The [complete loader graph and native DVD worker](NATIVE_SOURCE_MAP_LOADING_AND_DVD_WORKER.md)
+now retain full parents and original-file acquisition through the real hitEntry
+frontier. Complete native load/unload services and runtime setters remain open,
+followed by [persistent harbor lamp events](NATIVE_HARBOR_AREA_INITIALIZATION.md)
 and [light owner integration](NATIVE_LIGHT_REGISTRY_OWNER.md).
 
 ## Evidence and limits

@@ -10,10 +10,44 @@ void compare(FieldMapSourceCursor& c,unsigned field,int64_t a,int64_t b){const a
 uint32_t rotate(uint32_t v,unsigned n){return n?(v<<n)|(v>>(32-n)):v;}
 bool compatible(const FieldMapSourceServices& a,const FieldMapSourceServices& b){
 #define PIN(f) (!a.f || a.f==b.f)
- return a.user==b.user && PIN(word) && PIN(byte) && PIN(store) && PIN(storeHalf) && PIN(storeByte) && PIN(call);
+ return a.user==b.user && PIN(word) && PIN(byte) && PIN(half) && PIN(store) && PIN(storeHalf) && PIN(storeByte) && PIN(call);
 #undef PIN
 }
-bool root(uint32_t f){using namespace FieldMapSource;return f==Init || f==Find || f==Entry || f==EntrySub || f==Object || f==Count || f==CountSub || f==Recalculate;}
+bool root(uint32_t f){switch(f){
+ case 0x8002af18: // mapInit
+ case 0x8001f878: // mapGetMapObj
+ case 0x8002a46c: // mapEntry
+ case 0x8002a508: // mapEntrySub
+ case 0x8002b120: // mapGetJoints
+ case 0x8002b16c: // mapGetJointsSub
+ case 0x8002a780: // _mapEnt
+ case 0x80028130: // mapReCalcMatrix
+ case 0x80028d08: // mapLoad
+ case 0x80028f18: // _mapLoad
+ case 0x80028d78: // mapUnLoad
+ case 0x8002fe60: // _mapAllocTail
+ case 0x8002fdc4: // _mapFree
+ case 0x800782e4: // arcOpen
+ case 0x80078444: // arcDataCheck
+ case 0x800783b8: // arcDelete
+ case 0x80037b6c: // UnpackTexPalette
+ case 0x8001f920: // mapSearchDmdJoint
+ case 0x8001fd48: // mapSearchDmdJointSub
+ case 0x8001f958: // mapSearchDmdJointSub2
+ case 0x80037b5c: // TEXGet
+ case 0x8002ad08: // mapBuildTexture
+ case 0x8002af5c: // mapGetBoundingBox
+ case 0x8002a228: // makeDisplayList
+ case 0x8002b438: // mapGetWork
+ case 0x80144e88: // DVDMgrOpen
+ case 0x80144e18: // DVDMgrRead
+ case 0x80144dcc: // DVDMgrGetLength
+ case 0x80144dd4: // DVDMgrClose
+ case 0x80145024: // DVDMgrMain
+ case 0x80145288: // compare
+ case 0x800064fc: // qqsort
+ case 0x80006680: // fsort
+ return true;default:return false;}}
 }
 std::optional<uint32_t> resumeFieldMapSource(uint32_t function,const std::array<uint32_t,5>& args,uint32_t stackTop,const FieldMapSourceServices& s,FieldMapSourceCursor& c,unsigned visits){
  if(c.active && (c.function!=function || !compatible(c.owner,s)))return {};
@@ -21,6 +55,7 @@ std::optional<uint32_t> resumeFieldMapSource(uint32_t function,const std::array<
  c.owner=s;auto& r=c.registers;auto& f=c.floats;
  auto word=[&](uint32_t a,uint32_t& v){uint32_t raw=0;if(!s.word || !s.word(s.user,a,raw))return false;v=raw;return true;};
  auto byte=[&](uint32_t a,uint32_t& v){uint8_t raw=0;if(!s.byte || !s.byte(s.user,a,raw))return false;v=raw;return true;};
+ auto half=[&](uint32_t a,uint32_t& v){uint16_t raw=0;if(!s.half || !s.half(s.user,a,raw))return false;v=raw;return true;};
  auto store=[&](uint32_t a,uint32_t v){return s.store && s.store(s.user,a,v);};
  auto external=[&](uint32_t target,uint32_t next){
   if(!c.queued){c.request={};c.request.function=target;for(unsigned i=0;i<c.request.arguments.size();++i)c.request.arguments[i]=r[3+i];for(unsigned i=0;i<c.request.scalars.size();++i)c.request.scalars[i]=f[1+i];c.lr=next;c.queued=true;}
