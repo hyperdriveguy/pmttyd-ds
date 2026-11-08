@@ -26,7 +26,10 @@ private:
  std::function<bool()>sourceCurrent_;std::function<std::optional<int32_t>(float)>truncate_;
  SourcePrivateTextureObject object_;SourcePaletteTextureObjectCursor cursor_;
  SourcePaletteTextureObjectServices services_;
+ // observed_ is a 13-bit source-read mask; clearPosition_ retains memset progress.
  uint32_t address_=0,palette_=0,index_=0,table_=0,observed_=0,clearPosition_=0;
+ // Private storage binding, retained request and completed-but-unacknowledged
+ // result are distinct states. invalid_ is sticky; reentry remains unavailable.
  bool bound_=false,held_=false,completed_=false;mutable bool invoking_=false,invalid_=false;
  AnimationTPLImage image_{};
  bool longCurrent()const;bool sourceCurrent()const;

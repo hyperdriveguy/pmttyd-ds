@@ -303,3 +303,7 @@ and pinned simulation-time icon metadata.
 [Weapon frame ownership](weapon-frame-ownership.md) explains source versus frame
 completion, independent proof storage, held TEX/text children, native capacities
 and the prepared submission barrier.
+
+[Weapon source resources](weapon-source-resources.md) explains owner-first memory
+routing, shared GP language, exact literal spans and retained TEX constructor
+capture/acknowledgement.

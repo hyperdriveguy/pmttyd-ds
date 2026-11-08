@@ -5,8 +5,8 @@
 #include "native_ui_startup.hpp"
 #include <functional>
 namespace ttyd {
-// Source-only read/store composition. It installs no VM aliases and supplies
-// neither a VM execution receipt nor source UI readiness. The actual VM and
+// Source read/store composition; create binds only the supplied GP-language alias.
+// It supplies neither a VM execution receipt nor source UI readiness. The VM and
 // address-space mappings must survive this owner unchanged through source use.
 class BattleWeaponSourceMemory {
 public:
@@ -21,6 +21,7 @@ public:
  BattleWeaponSourceMemory(const BattleWeaponSourceMemory&)=delete;
  BattleWeaponSourceMemory&operator=(const BattleWeaponSourceMemory&)=delete;
  bool current()const;
+ // Range exclusion query, not a promise that optional reads will succeed.
  bool owns(uint32_t address,uint32_t size=1)const;
  std::optional<uint8_t>byte(uint32_t)const;
  std::optional<uint16_t>half(uint32_t)const;
@@ -37,6 +38,7 @@ private:
  std::shared_ptr<const void>lifetime_;
  std::function<bool()>current_;
  EventScriptAssets constants_;
+ // Reject recursive calls; invalid_ permanently latches observed lifetime loss.
  mutable bool invoking_=false,invalid_=false;
  bool valid()const;
  bool constant(uint32_t,uint32_t)const;
