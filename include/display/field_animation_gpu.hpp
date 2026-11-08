@@ -5,10 +5,15 @@
 #include <functional>
 #include <memory>
 namespace ttyd {
+// Original US GX entrypoint addresses and FIFO MMIO identity; these are guest
+// ABI tokens, never native function/data pointers. Attribute slots pack POS,
+// NRM, CLR0 then TEX0..7; the gap at source attribute 12 is intentional.
 namespace field_animation_gx {
 constexpr uint32_t PositionMatrix=0x802ba2fc,NormalMatrix=0x802ba34c,CurrentMatrix=0x802ba39c,Cull=0x802b5c8c;
 constexpr uint32_t ClearDescriptors=0x802b4520,Descriptor=0x802b3c08,Format=0x802b4558,Array=0x802b4db0,Begin=0x802b5a6c,Fifo=0xcc008000;
 constexpr unsigned Position=9,Normal=10,Color=11,FirstUv=13,UvCount=8,AttributeCount=3+UvCount;
+// Descriptor INDEX16=3, VAT F32=4/RGBA8=5, GX_TRIANGLEFAN=0xa0.
+// MaxVertices is the source unsigned16 count domain, not a measured scene limit.
 constexpr uint32_t Index16=3,Float32=4,Rgba8=5,TriangleFan=0xa0,MaxVertices=0xffff;
 }
 struct FieldAnimationVertex {
@@ -18,6 +23,8 @@ struct FieldAnimationVertex {
 struct FieldAnimationMatrices {
  std::optional<BattleActMatrix> position,normal;std::optional<uint32_t> current,cull;
 };
+// Borrowed reusable buffer plus per-fan matrix snapshot; submit must consume
+// synchronously or copy. A successful later fan may overwrite the same storage.
 struct FieldAnimationBatch {
  const FieldAnimationVertex* vertices=nullptr;uint32_t count=0,uvCount=0;
  const FieldAnimationMatrices* matrices=nullptr;
@@ -59,9 +66,11 @@ private:
  AnimationSourceRenderChildren fallback_;std::function<bool()> current_;
  NativeCameraDraw camera_;FieldAnimationMatrices matrices_;
  std::array<Binding,field_animation_gx::AttributeCount> bindings_{};
+ // Capacity is a high-water allocation, not the current source fan length.
  std::unique_ptr<FieldAnimationVertex[]> vertices_;uint32_t capacity_=0,count_=0,used_=0,uvCount_=0,attribute_=0,component_=0;
  bool active_=false,indexPending_=false,ready_=false;uint16_t index_=0;
  FieldAnimationMatrices fanMatrices_;uint64_t submittedFans_=0,submittedVertices_=0;
+ // Pending physical setters pin request bits AND the locals object identity.
  bool cullPending_=false;uint32_t cullInput_=0;
  bool matrixPending_=false;AnimationRenderCall matrixRequest_;AnimationRenderLocals* matrixLocals_=nullptr;BattleActMatrix matrixInput_{};
 };
