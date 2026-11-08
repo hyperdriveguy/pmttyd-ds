@@ -11,9 +11,9 @@ Three small-data words select the shadow work records (`r13 = 0x8041cf20`):
 
 | SDA address | Displacement | Work record |
 | --- | --- | --- |
-| `0x804150c8` | `r13−32312` | depth-shadow record |
-| `0x804150cc` | `r13−32316` | projected-shadow record |
-| `0x804150d0` | `r13−32320` | character-shadow record |
+| `0x804150e8` | `r13−32312` | depth-shadow record |
+| `0x804150e4` | `r13−32316` | projected-shadow record |
+| `0x804150e0` | `r13−32320` | character-shadow record |
 
 Two further small-data addresses hold static texture objects:
 `0x8041e738` (`r13+6168`, 16-level ramp) and `0x8041e758` (`r13+6200`, 8-level
@@ -35,7 +35,7 @@ where stated, and no bounds/sentinel checks.
 | `shadowGetDepthShadowProjTexMtx` | `0x8002bc00` | 12 | depth record `+124` (`+0x7C`) |
 | `shadowGetCharShadowProjTexMtx` | `0x8002bc94` | 12 | character record `+124` |
 | `shadowGetProjShadowProjTexMtx` | `0x8002baf0` | 12 | projected record `+124` |
-| `shadowGetCharShadowColor` | `0x8002bc88` | 12 | `word[character record + 256]` (a colour pointer) |
+| `shadowGetCharShadowColor` | `0x8002bc88` | 12 | `word[character record + 256]` (raw RGBA word) |
 | `shadowGetProjShadowColor` | `0x8002bae4` | 12 | `word[projected record + 256]` |
 | `shadowGetCharShadowProjection` | `0x8002bc7c` | 12 | `word[character record + 268]` (`+0x10C`) |
 
@@ -98,3 +98,9 @@ a pointer, and the only one with a stack frame.
 - The `72*index` table's meaning at `0x80304a60` and the valid index range.
 - `smartTexObj`'s allocation policy, the callers of all thirteen bodies, and
   any on-screen effect. No rendering or original execution comparison is claimed.
+
+2026-11-07 correction: the SDA addresses above use actual r13 arithmetic.
+Earlier c8/cc/d0 addresses were erroneous; actual depth/projected/character
+slots are e8/e4/e0. Color getters return raw packed RGBA words. The complete
+character projection getter now runs through the [native shadow process](NATIVE_SOURCE_SHADOW_PROCESS_INITIALIZATION.md)
+after whole source Init returns; other rendering/lifecycle limits remain.

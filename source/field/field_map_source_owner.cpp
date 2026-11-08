@@ -1,6 +1,7 @@
 #include "field_map_source_owner.hpp"
 #include "field_light_registry_owner.hpp"
 #include "field_camera_road_owner.hpp"
+#include "source_shadow_process.hpp"
 #include "event_ram_access.hpp"
 #include "event_memory_binding.hpp"
 #include <cstring>
@@ -20,7 +21,7 @@ std::unique_ptr<FieldMapSourceOwner> FieldMapSourceOwner::bind(EventAddressSpace
 }
 FieldMapSourceOwner::~FieldMapSourceOwner(){const std::array<const uint8_t*,4> b{{globals_.data(),work_.data(),stack_.data(),noFogColor_.data()}};while(mapped_){--mapped_;memory_.unregisterExternalRam(mappings_[mapped_],b[mapped_]);}}
 bool FieldMapSourceOwner::current() const{
- if(mapped_!=mappings_.size() || (heap_.lights && !heap_.lights->readyFor(memory_)) || (heap_.cameraRoad && !heap_.cameraRoad->currentFor(memory_)))return false;
+ if((heap_.shadows && !heap_.shadows->currentFor(memory_)) || mapped_!=mappings_.size() || (heap_.lights && !heap_.lights->readyFor(memory_)) || (heap_.cameraRoad && !heap_.cameraRoad->currentFor(memory_)))return false;
  return memory_.hasRamBacking(Work,globals_.data(),uint32_t(globals_.size())) && memory_.hasRamBacking(workAddress_,work_.data(),WorkBytes) && memory_.hasRamBacking(stackAddress_,stack_.data(),StackBytes) && memory_.hasRamBacking(heap_.address,heap_.backing,heap_.bytes) && memory_.hasRamBacking(NoFogColor,noFogColor_.data(),sizeof(uint32_t));
 }
 FieldMapSourceServices FieldMapSourceOwner::services(){FieldMapSourceServices s;s.user=this;
@@ -34,6 +35,7 @@ FieldMapSourceServices FieldMapSourceOwner::services(){FieldMapSourceServices s;
 }
 bool FieldMapSourceOwner::child(FieldMapSourceCall& q){
  if(!current())return false;
+ if(heap_.shadows && SourceShadowProcess::accepts(q.function))return heap_.shadows->service(q);
  if(heap_.lights && FieldLightRegistryOwner::accepts(q.function))return heap_.lights->service(q);
  if(heap_.cameraRoad && FieldCameraRoadOwner::accepts(q.function))return heap_.cameraRoad->service(q,services());
  auto& a=q.arguments;

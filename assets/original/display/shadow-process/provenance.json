@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "iso_id": "G8ME01 revision0",
+  "source": "main.dol initialized data",
+  "spans": [
+    {
+      "address": 2151764192,
+      "size": 16,
+      "sha256": "9952b93874baddbc91739fda14d4872168373bb19fff8ceacf08f241feeebb86"
+    },
+    {
+      "address": 2151807424,
+      "size": 76,
+      "sha256": "2a3564436d1ea771b605d9629cc6d82420a67899de0c9ecd98a633904e06cb78"
+    },
+    {
+      "address": 2151846976,
+      "size": 48,
+      "sha256": "b5d68875a4cc1e901d2728f1f81f76c386d094c303944ea58a87a1bc15b716cf"
+    },
+    {
+      "address": 2151435908,
+      "size": 60,
+      "sha256": "16a0d860dae00409363303437827e5134551420a4bd772d674377c6b9232bc34"
+    },
+    {
+      "address": 2151802200,
+      "size": 8,
+      "sha256": "60a88cabebfb891f50f144f45bddaae888ebef35e3b63371b86139fc566ea9f9"
+    },
+    {
+      "address": 2151435420,
+      "size": 244,
+      "sha256": "bc17e09c1a6c3c53dc706accbd364c7e73d176b612b095ab2b92907983a9680b"
+    }
+  ],
+  "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+  "policy": "Unchanged initialized pointers, dimensions, scalar/color constants and SDK format jump table. No BSS, initialized shadow owners, generated texture ramps or heap allocations imported."
+}

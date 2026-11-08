@@ -18,6 +18,9 @@ bool compatible(const FieldMapSourceServices& a,const FieldMapSourceServices& b)
 #undef PIN
 }
 bool root(uint32_t f){switch(f){
+ case 0x802b708c: // GXGetTexBufferSize
+ case 0x8002dcec: // shadowInit
+ case 0x8002bc7c: // shadowGetCharShadowProjection
  case 0x8000f36c: // camLoadRoad
  case 0x8000e104: // camRoadSetup
  case 0x8000f310: // camUnLoadRoad

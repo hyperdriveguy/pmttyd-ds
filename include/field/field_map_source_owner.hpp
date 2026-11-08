@@ -5,6 +5,7 @@
 namespace ttyd {
 class FieldLightRegistryOwner;
 class FieldCameraRoadOwner;
+class SourceShadowProcess;
 struct FieldMapRequest {
  FieldMapRequest()=default;FieldMapRequest(const FieldMapRequest&)=delete;
  FieldMapRequest& operator=(const FieldMapRequest&)=delete;
@@ -20,6 +21,7 @@ struct FieldMapHeapOwner {
  // Initialized process owner in this exact VM; borrowed through all holds.
  FieldLightRegistryOwner* lights=nullptr;
  FieldCameraRoadOwner* cameraRoad=nullptr;
+ SourceShadowProcess* shadows=nullptr;
 };
 // Owns actual process Work/global/private-stack backing. The original primary
 // map heap remains its existing owner's allocation; constructed MapObjs live

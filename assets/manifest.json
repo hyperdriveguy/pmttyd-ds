@@ -1,6 +1,7 @@
 {
   "schema": 1,
   "assets": [
+    {"id":"original/display/shadow-process", "kind":"event", "source":"assets/original/display/shadow-process/event.json", "output":"source-shadow-literals.pmevt", "license":"Nintendo/Intelligent Systems original game asset; no redistribution license granted"},
     {
       "id": "original/effects/primary-memory",
       "kind": "event",

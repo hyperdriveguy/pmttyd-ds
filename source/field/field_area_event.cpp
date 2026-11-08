@@ -67,6 +67,11 @@ bool loadFieldAreaEventAssets(const char* root) {
   std::fclose(extra);EventScriptAssets definitions;
   if(!definitions.load((base+"/field-light-registry.pmevt").c_str()) || !next->scripts.merge(definitions))return false;
  }
+ // Original shadow/SDK constants only; process BSS belongs to its live owner.
+ if(FILE* extra=std::fopen((base+"/source-shadow-literals.pmevt").c_str(),"rb")){
+  std::fclose(extra);EventScriptAssets input;
+  if(!input.load((base+"/source-shadow-literals.pmevt").c_str()) || !next->scripts.merge(input))return false;
+ }
  // Original camera literals/pointer words; no initialized camera/road objects.
  if(FILE* extra=std::fopen((base+"/field-camera-road-literals.pmevt").c_str(),"rb")){
   std::fclose(extra);EventScriptAssets input;

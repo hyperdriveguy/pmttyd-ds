@@ -5833,3 +5833,15 @@ request is needed for these already documented bodies. Remaining implementation:
 primary effTexSetup, actual Main32/draw/audio and camera/actor ownership, original
 reaction wrapper caller and drained display retirement. Bank readiness alone
 must not acknowledge those source children or the full Crump round trip.
+
+
+2026-11-07 native shadow initialization continuation: SourceShadowProcess now
+owns genuine cold primary/projection/depth BSS and both ramp GXTexObj records;
+complete Init, projection getter and GXGetTexBufferSize are in the fixed native
+source graph. Ready waits for full Init, including actual smart allocation,
+CPU ramps, constructors/LOD and flushes; early gate1 cannot bypass them. Optional
+map service borrowing uses the same VM and process identity. Static handoff:
+artifacts/field-shadow-init-review.md. Normal activation still requires real
+shared heap0/smart arena and GX/cache composition. First cold smart allocation
+must execute smartAutoFree(3), not a simplified NativeFileCache header. Complete
+source Init is not a native GPU residency or full shadow rendering receipt.

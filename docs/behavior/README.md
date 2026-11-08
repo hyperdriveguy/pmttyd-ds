@@ -1545,3 +1545,5 @@ retain explicit provider and process-ownership frontiers.
 - [Native original camera-road loading](camera/NATIVE_SOURCE_CAMERA_ROAD_LOADING.md): complete source wrappers/setup/shift initialization, actual shared map heap/DVD worker and borrowed camera4 lifetime.
 
 - [Native original effect process](effect/NATIVE_EFFECT_PROCESS.md): shared VM bank initialization, source driver visits, filename/cache ownership and exact-context retirement.
+
+- [Native complete source shadow process initialization](display/NATIVE_SOURCE_SHADOW_PROCESS_INITIALIZATION.md): retained Init, exact BSS/texture owners and source sizing; genuine backend composition remains required.

@@ -19457,3 +19457,68 @@ US dialogue/conditions; never convert HP thresholds or numeric results into
 story/End completion. A read-only audit also maps all15 original Mario action
 voices to single primary samples590..604; actual public-slot PCM playback remains
 unbound and pending-slot acceptance is not audibility.
+
+
+### Complete source shadow process initialization (2026-11-07)
+
+Added complete source shadowInit, projection getter and texture sizing bodies,
+408 original words. A retained process owner binds actual primary/projection/
+depth cold BSS and two source ramp texture objects, with owned private stack.
+Full Init must return before map projection queries can read its live gate;
+no prefix-only success or cold-zero bypass is accepted. Complete source CPU
+ramp loops and sizing branches run in the fixed native continuation graph.
+The backend must supply actual heap0/smart/GX/cache effects. Optional map owner
+routing shares this exact VM/process and preserves holds and backing identities.
+Initialized original constants/tables have per-span provenance and licensing;
+new imports use empty destinations. Original art and dialogue are unchanged.
+
+Validation freezes committed83f8022b plus these scoped changes, preserving
+concurrent work and staging. Full make test exits0: 591/591 C++ (183.45s),
+266/266 Python (83.251s), zero skips. Normal asset preparation compiles443
+recipes; native make all (-o assets-ready after that preparation) exits0.
+Assets-check passes443; source verification pins5524 original words in46
+complete callable boundaries. Private ARM build exits0; all632 non-main
+objects remain byte-identical to the production build.
+
+Focused tests run the whole source initializer with real original heap0 allocator,
+memset and GX constructor/LOD mechanics. Smart allocation is an explicit test
+boundary provider, not an initialized native smart arena. Tests hold actual
+children, refuse callback reentry and early gate queries, preserve prefix state,
+check all256 I8 bytes and65536 BE IA8 halfwords using independent tile coordinates,
+and check exact object fields/flush spans. They also exercise4608 source sizing
+cases across64 formats, dimensions/overflow widths, mip flags and level limits;
+query call identity, actual later gate0, completed-Init nonreplay, backend lifetime
+loss and foreign backing replacement. Initial fixture cache instrumentation and
+transposed ramp expectations were corrected before final focused/full gates;
+original CPU ramp source was unchanged. The first full CTest run passed590
+of591; the new test lacked its source-root working-directory property. That
+test registration is corrected before this final full gate; initial failure logs
+are retained.
+
+Fresh isolated normal90s Azahar smoke exits0 and its capture was inspected:
+original storybook rendering, App60FPS. The private ARM180s smoke exits0 with
+eight strict proof markers. Three exact tracked fixture functions run through
+private main; only RomFS roots/assertion/phase/proof instrumentation differs.
+Host cache hooks and smart fixture results are not native GPU/arena acceptance.
+No user emulator profile/save is touched. No original story or dialogue changes.
+
+Exact replay pins4810 source files,2226 RomFS products,8166 private inputs and
+one reference input. Source/product/object/binary identities, logs, evidence and
+captures are retained in artifacts/field-shadow-process-validation-manifest.json.
+Existing compiler/Pillow warnings and a private-main fixture indentation warning
+remain. No ISO, cache or compiled product is committed. The older shadow getter
+contract now uses correct e8/e4/e0 SDA addresses and raw RGBA color semantics.
+
+Normal Game does not yet activate this owner: generic heap0, the real shared
+smartInit/Alloc/first smartAutoFree(3)/collection chain, GX constructor bindings
+and native cache ownership must be composed. The original source map query
+remains held unless its genuine initialized process is supplied. This is full
+source initialization availability, not completed shadow rendering or playable
+prologue evidence. Static handoff is artifacts/field-shadow-init-review.md.
+
+Next: compose genuine generic process heap0 and shared smart arena initialization/
+allocation/first AutoFree/collection with the existing GX object constructors and
+native cache services, then activate full source shadow initialization before map
+admission. Genuine camera initialization, shadow rendering/material/GX capture,
+Game/EVT epochs, Crump return/afterbattle, full prologue and physical hardware
+fidelity/performance remain unfinished.

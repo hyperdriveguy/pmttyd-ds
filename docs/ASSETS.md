@@ -4389,3 +4389,12 @@ are introduced. Existing UI root storage is borrowed, not reimported. Per-asset
 provenance.json retains Nintendo/Intelligent Systems rights and grants no new
 redistribution license. Editable checked-in originals remain authoritative;
 ISO, extraction caches and compiled packs remain outside source history.
+
+Original shadow process initialized literals: `assets/original/display/shadow-process/`
+contains unchanged US revision0 main.dol pointer/dimension/scalar/color data and
+GX format dispatch table. `tools/import_source_shadow_literals.py` pins each span
+and requires an empty destination; `event.json` remains editable. Normal builds
+pack `source-shadow-literals.pmevt`. No runtime shadow BSS, heap allocation or
+generated ramp is imported. Nintendo/Intelligent Systems retain original rights;
+local source tracking grants no redistribution license. Per-span provenance and
+licensing are recorded beside the asset.

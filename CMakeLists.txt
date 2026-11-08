@@ -3185,3 +3185,9 @@ target_sources(ttyd_core PRIVATE source/effect/source_effect_texture_setup.cpp s
 add_executable(source_effect_texture_setup_tests tests/source_effect_texture_setup_tests.cpp)
 target_link_libraries(source_effect_texture_setup_tests PRIVATE ttyd_core)
 add_test(NAME source_effect_texture_setup COMMAND source_effect_texture_setup_tests)
+
+target_sources(ttyd_core PRIVATE source/display/source_shadow_process.cpp)
+add_executable(source_shadow_process_tests tests/source_shadow_process_tests.cpp)
+target_link_libraries(source_shadow_process_tests PRIVATE ttyd_core)
+add_test(NAME source_shadow_process COMMAND source_shadow_process_tests)
+set_tests_properties(source_shadow_process PROPERTIES WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
