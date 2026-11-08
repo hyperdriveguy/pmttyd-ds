@@ -5,6 +5,7 @@
 #include "event_ram_access.hpp"
 #include "event_memory_binding.hpp"
 #include <cstring>
+#include <vector>
 namespace ttyd {
 namespace {
 using namespace FieldMapSource;
@@ -12,17 +13,25 @@ constexpr uint32_t ProcessAllocate=0x800300f0,MapAllocate=0x8002ff58,Clear=0x800
 constexpr unsigned MaxNameBytes=256; // Native admission bound, not source strlen.
 }
 FieldMapSourceOwner::FieldMapSourceOwner(EventAddressSpace& m,uint32_t w,uint32_t s,const FieldMapHeapOwner& heap):memory_(m),workAddress_(w),stackAddress_(s),heap_(heap){}
+bool FieldMapSourceOwner::map(uint32_t address,uint8_t* backing,uint32_t bytes){
+ if(mapped_==mappings_.size() || !memory_.registerExternalRam(address,backing,bytes))return false;
+ mappings_[mapped_++]={address,bytes,backing};return true;
+}
 std::unique_ptr<FieldMapSourceOwner> FieldMapSourceOwner::bind(EventAddressSpace& m,uint32_t w,uint32_t s,const FieldMapHeapOwner& heap){
- if(!w || !s || (w&(CacheLineBytes-1)) || (s&(CacheLineBytes-1)) || uint64_t(w)+WorkBytes>0x100000000ULL || uint64_t(s)+StackBytes>0x100000000ULL || !heap.backing || !heap.bytes || !heap.flushProcess || !heap.flushBlock || !heap.systemCall)return {};
+ // Real source allocations supply their own address only when reached. Fixed
+ // addresses remain an explicit fixture policy, never a source heap receipt.
+ if((heap.processAllocate?w!=0:!w) || !s || (w&(CacheLineBytes-1)) || (s&(CacheLineBytes-1)) || uint64_t(w)+WorkBytes>0x100000000ULL || uint64_t(s)+StackBytes>0x100000000ULL || !heap.backing || !heap.bytes || !heap.flushProcess || !heap.flushBlock || !heap.systemCall || (heap.current && !heap.current(heap.user)))return {};
  auto o=std::unique_ptr<FieldMapSourceOwner>(new FieldMapSourceOwner(m,w,s,heap));
- auto map=[&](uint32_t a,uint8_t* b,uint32_t n){if(!m.registerExternalRam(a,b,n))return false;o->mappings_[o->mapped_++]=a;return true;};
- if(!map(Work,o->globals_.data(),uint32_t(o->globals_.size())) || !map(w,o->work_.data(),WorkBytes) || !map(s,o->stack_.data(),StackBytes) || !map(NoFogColor,o->noFogColor_.data(),sizeof(uint32_t)) || !o->current())return {};
+ if(!o->map(Work,o->globals_.data(),uint32_t(o->globals_.size())))return {};
+ if(!heap.processAllocate){if(!o->map(w,o->work_.data(),WorkBytes))return {};o->workMapped_=true;}
+ if(!o->map(s,o->stack_.data(),StackBytes) || !o->map(NoFogColor,o->noFogColor_.data(),sizeof(uint32_t)) || !o->current())return {};
  return o;
 }
-FieldMapSourceOwner::~FieldMapSourceOwner(){const std::array<const uint8_t*,4> b{{globals_.data(),work_.data(),stack_.data(),noFogColor_.data()}};while(mapped_){--mapped_;memory_.unregisterExternalRam(mappings_[mapped_],b[mapped_]);}}
+FieldMapSourceOwner::~FieldMapSourceOwner(){while(mapped_){const auto& m=mappings_[--mapped_];memory_.unregisterExternalRam(m.address,m.backing);}}
 bool FieldMapSourceOwner::current() const{
- if((heap_.shadows && !heap_.shadows->currentFor(memory_)) || mapped_!=mappings_.size() || (heap_.lights && !heap_.lights->readyFor(memory_)) || (heap_.cameraRoad && !heap_.cameraRoad->currentFor(memory_)))return false;
- return memory_.hasRamBacking(Work,globals_.data(),uint32_t(globals_.size())) && memory_.hasRamBacking(workAddress_,work_.data(),WorkBytes) && memory_.hasRamBacking(stackAddress_,stack_.data(),StackBytes) && memory_.hasRamBacking(heap_.address,heap_.backing,heap_.bytes) && memory_.hasRamBacking(NoFogColor,noFogColor_.data(),sizeof(uint32_t));
+ if((heap_.current && !heap_.current(heap_.user)) || (heap_.shadows && !heap_.shadows->currentFor(memory_)) || mapped_!=3+unsigned(workMapped_) || (heap_.lights && !heap_.lights->readyFor(memory_)) || (heap_.cameraRoad && !heap_.cameraRoad->currentFor(memory_)))return false;
+ for(unsigned i=0;i<mapped_;++i){const auto& m=mappings_[i];if(!memory_.hasRamBacking(m.address,m.backing,m.bytes))return false;}
+ return memory_.hasRamBacking(heap_.address,heap_.backing,heap_.bytes);
 }
 FieldMapSourceServices FieldMapSourceOwner::services(){FieldMapSourceServices s;s.user=this;
  s.word=[](void* u,uint32_t a,uint32_t& v){return static_cast<FieldMapSourceOwner*>(u)->memory_.readWord(a,v);};
@@ -31,7 +40,11 @@ FieldMapSourceServices FieldMapSourceOwner::services(){FieldMapSourceServices s;
  s.store=[](void* u,uint32_t a,uint32_t v){return static_cast<FieldMapSourceOwner*>(u)->memory_.writeWord(a,v);};
  s.storeHalf=[](void* u,uint32_t a,uint16_t v){return static_cast<FieldMapSourceOwner*>(u)->memory_.writeHalf(a,v);};
  s.storeByte=[](void* u,uint32_t a,uint8_t v){return static_cast<FieldMapSourceOwner*>(u)->memory_.writeByte(a,v);};
- s.call=[](void* u,FieldMapSourceCall& q){return static_cast<FieldMapSourceOwner*>(u)->child(q);};return s;
+ s.call=[](void* u,FieldMapSourceCall& q){
+  auto& o=*static_cast<FieldMapSourceOwner*>(u);
+  if(o.rawPrefix_){o.deferred_=true;return false;}
+  return o.child(q);
+ };return s;
 }
 bool FieldMapSourceOwner::child(FieldMapSourceCall& q){
  if(!current())return false;
@@ -42,7 +55,23 @@ bool FieldMapSourceOwner::child(FieldMapSourceCall& q){
  switch(q.function){
  case ProcessAllocate:
   if(a[0] || a[1]!=WorkBytes || allocated_)return false;
-  if(!allocationZeroed_){work_.fill(0);allocationZeroed_=true;}
+  if(heap_.processAllocate){
+   if(!allocationAccepted_){
+    uint32_t address=0;
+    if(!heap_.processAllocate(heap_.user,WorkBytes,address))return false;
+    workAddress_=address;allocationAccepted_=true;
+   }
+   if(!current())return false;
+   // mapInit publishes null, then reaches its own unavailable null memset.
+   if(!workAddress_){allocated_=true;q.result=0;return true;}
+   if(workAddress_&(CacheLineBytes-1))return false;
+   if(!allocationIsolated_){
+    std::vector<uint8_t> source;
+    if(!memory_.extractRam(workAddress_,WorkBytes,source))return false;
+    std::memcpy(work_.data(),source.data(),WorkBytes);allocationIsolated_=true;
+   }
+   if(!workMapped_){if(!map(workAddress_,work_.data(),WorkBytes))return false;workMapped_=true;}
+  }else if(!allocationZeroed_){work_.fill(0);allocationZeroed_=true;}
   if(!heap_.flushProcess(heap_.user,work_.data(),WorkBytes) || !current())return false;
   allocated_=true;q.result=workAddress_;return true;
  case Clear:{
@@ -65,9 +94,34 @@ bool FieldMapSourceOwner::child(FieldMapSourceCall& q){
  }
 }
 std::optional<uint32_t> FieldMapSourceOwner::invoke(FieldMapRequest& request,uint32_t f,const std::array<uint32_t,5>& a,unsigned visits){
- if(!current() || (request_ && request_!=&request))return {};
+ if(invoking_ || !current() || (request_ && request_!=&request))return {};
  if(cursor_.active && cursor_.function!=f)return {};
- request_=&request;auto result=resumeFieldMapSource(f,a,stackAddress_+StackBytes-StackGuardBytes,services(),cursor_,visits);
+ invoking_=true;struct InvocationGuard{bool& active;~InvocationGuard(){active=false;}} invocation{invoking_};
+ request_=&request;
+ std::optional<uint32_t> result;
+ unsigned remaining=visits;
+ do{
+  deferred_=false;
+  // Single-threaded synchronous source pass: semantic registries stay frozen.
+  // The memory facade's raw cache retires before any child can mutate mappings
+  // or open its own raw borrow. No pointer or admission survives this scope.
+  const bool borrowed=memory_.withRawRamAccess([&](auto&){
+   rawPrefix_=true;struct PrefixGuard{bool& active;~PrefixGuard(){active=false;}} prefix{rawPrefix_};
+   result=resumeFieldMapSource(f,a,stackAddress_+StackBytes-StackGuardBytes,services(),cursor_,remaining);
+   return true;
+  });
+  if(!borrowed || result || !cursor_.active)break;
+  const unsigned consumed=cursor_.visitsConsumed;
+  if(consumed>remaining)break; // Defensive native budget admission.
+  remaining-=consumed;
+  if(!deferred_ || !cursor_.queued || !child(cursor_.request))break;
+  // The external instruction was already charged by the raw prefix. Consume
+  // its accepted child without executing that source instruction a second time.
+  if(cursor_.request.result)cursor_.registers[3]=*cursor_.request.result;
+  if(cursor_.request.floatingResult)cursor_.floats[1]=*cursor_.request.floatingResult;
+  cursor_.pc=cursor_.lr;cursor_.queued=false;
+  if(!current())break;
+ }while(remaining);
  if(!cursor_.active)request_=nullptr;
  return result;
 }

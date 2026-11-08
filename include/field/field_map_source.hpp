@@ -50,6 +50,8 @@ struct FieldMapSourceCursor {
  FieldMapSourceServices owner;
  bool active=false,queued=false,carry=false;
  uint32_t function=0,pc=0,lr=0,ctr=0,step=0;
+ // Native budget receipt for the latest resume prefix; not source state.
+ uint32_t visitsConsumed=0;
  std::array<uint32_t,32> registers{},floats{},paired{};
  // Private binary32 scalar/paired frame; initial GQR0 is unquantized float.
  // Reached hitCalc saves scalar-promoted binary64 and both paired lanes.

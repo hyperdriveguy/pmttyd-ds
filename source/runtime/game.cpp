@@ -1,6 +1,7 @@
 #include "native_effect_process.hpp"
 #include "native_shadow_process.hpp"
 #include "native_camera_process.hpp"
+#include "native_map_process.hpp"
 #include "native_mario_constructor.hpp"
 #include "camera_road_view.hpp"
 #include "game.hpp"
@@ -1349,6 +1350,7 @@ void Game::restore(const Progress& saved) {
     if(nativeEffects_ && nativeEffects_->busy())return;
     if(nativeShadowProcess_ && nativeShadowProcess_->busy())return;
     if(nativeCameraProcess_ && nativeCameraProcess_->busy())return;
+    if(nativeMapPending())return;
     if(nativeMarioConstructor_ && nativeMarioConstructor_->busy())return;
     if(!harborGameplay.reset())return; // Native policy retirement, not source End.
     battleSequenceFacade_.retire(); // Successful native restore retires borrowed producer receipts before mutation.
@@ -1356,6 +1358,7 @@ void Game::restore(const Progress& saved) {
     const auto retainedEffects=nativeEffects_;
     const auto retainedNativeShadow=nativeShadowProcess_;
     const auto retainedNativeCamera=nativeCameraProcess_;
+    const auto retainedNativeMap=nativeMapProcess_;
     const auto retainedNativeMario=nativeMarioConstructor_;
     // A copied candidate still carries the private constructor shared_ptr.
     // Only an admitted actual field process can update its live source bytes.
@@ -1411,7 +1414,7 @@ void Game::restore(const Progress& saved) {
     else fieldParties.poses=std::move(retainedMarioPoses);
     // Preserve the same actual process incarnation through a field restore.
     // The accessor rejects a detached candidate or a different field process.
-    nativeUiStartup_=retainedUiStartup;nativeEffects_=retainedEffects;nativeShadowProcess_=retainedNativeShadow;nativeCameraProcess_=retainedNativeCamera;nativeMarioConstructor_=retainedNativeMario;
+    nativeUiStartup_=retainedUiStartup;nativeEffects_=retainedEffects;nativeShadowProcess_=retainedNativeShadow;nativeCameraProcess_=retainedNativeCamera;nativeMapProcess_=retainedNativeMap;nativeMarioConstructor_=retainedNativeMario;
     fieldParties.reinitializeMario(fieldMarioBattle); // Original live pose material clear, then light|2; clocks/resources survive.
     marioPresentation.poseUploadSerial=retainedPresentation.poseUploadSerial;
     marioPresentation.facing=retainedPresentation.facing;marioPresentation.display=retainedPresentation.display;marioPresentation.target=retainedPresentation.target;
@@ -2160,6 +2163,7 @@ void Game::updateMarioPresentation() {
 // ordinary input from advancing a locked scene, but neutral movement may keep
 // airborne/support physics alive. See game-composition guide for full order.
 void Game::tick(const Input& rawInput,const OriginalSequenceServices* sequenceServices) {
+    if(nativeMapPending()){drainNativeMap();return;}
     if(nativeAnimationPending()){drainNativeAnimation();return;}
     if(fieldParties.nativeAnimation && !fieldParties.nativeAnimation->tick(trioBattleActive || scene==Scene::Battle))return;
     if(trioAttack.outerMainPending()){

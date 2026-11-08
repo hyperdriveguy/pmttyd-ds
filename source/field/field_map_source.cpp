@@ -92,6 +92,7 @@ bool root(uint32_t f){switch(f){
 std::optional<uint32_t> resumeFieldMapSource(uint32_t function,const std::array<uint32_t,5>& args,uint32_t stackTop,const FieldMapSourceServices& s,FieldMapSourceCursor& c,unsigned visits){
  if(c.active && (c.function!=function || !compatible(c.owner,s)))return {};
  if(!c.active){if(!root(function) || !stackTop)return {};c={};c.active=true;c.function=c.pc=function;c.registers[1]=stackTop;c.registers[2]=FieldMapSource::SourceR2;c.registers[13]=FieldMapSource::SourceR13;for(unsigned i=0;i<args.size();++i)c.registers[3+i]=args[i];}
+ c.visitsConsumed=0;
  c.owner=s;auto& r=c.registers;auto& f=c.floats;
  auto word=[&](uint32_t a,uint32_t& v){uint32_t raw=0;if(!s.word || !s.word(s.user,a,raw))return false;v=raw;return true;};
  auto byte=[&](uint32_t a,uint32_t& v){uint8_t raw=0;if(!s.byte || !s.byte(s.user,a,raw))return false;v=raw;return true;};
@@ -105,6 +106,7 @@ std::optional<uint32_t> resumeFieldMapSource(uint32_t function,const std::array<
   c.queued=false;c.pc=next;return true;
  };
  while(visits--){
+  ++c.visitsConsumed;
   if(!c.pc){const auto result=r[3];c={};return result;}
   switch(c.pc){
 #include "field_map_source_program.inc"

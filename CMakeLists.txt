@@ -3385,3 +3385,10 @@ add_executable(source_mario_constructor_tests tests/source_mario_constructor_tes
 target_link_libraries(source_mario_constructor_tests PRIVATE ttyd_core)
 add_test(NAME source_mario_constructor COMMAND source_mario_constructor_tests)
 set_tests_properties(source_mario_constructor PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Actual shared field map process and original DVD/light/camera ownership.
+target_sources(ttyd_core PRIVATE source/field/native_map_process.cpp)
+add_executable(native_map_process_tests tests/native_map_process_tests.cpp)
+target_link_libraries(native_map_process_tests PRIVATE ttyd_core)
+add_test(NAME native_map_process COMMAND native_map_process_tests)
+set_tests_properties(native_map_process PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

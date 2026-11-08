@@ -22,6 +22,11 @@ struct FieldMapHeapOwner {
  FieldLightRegistryOwner* lights=nullptr;
  FieldCameraRoadOwner* cameraRoad=nullptr;
  SourceShadowProcess* shadows=nullptr;
+ // Optional real __memAlloc(heap0) provider. False retains the source child;
+ // true returns owned VM payload RAM after wrapper clear/flush, including0.
+ bool (*processAllocate)(void*,uint32_t requestedBytes,uint32_t& address)=nullptr;
+ // Pure backend heap/lifetime identity; must not recurse into this owner.
+ bool (*current)(void*)=nullptr;
 };
 // Owns actual process Work/global/private-stack backing. The original primary
 // map heap remains its existing owner's allocation; constructed MapObjs live
@@ -42,14 +47,20 @@ public:
 private:
  FieldMapSourceOwner(EventAddressSpace&,uint32_t,uint32_t,const FieldMapHeapOwner&);
  FieldMapSourceServices services();bool child(FieldMapSourceCall&);
+ bool map(uint32_t,uint8_t*,uint32_t);
  EventAddressSpace& memory_;uint32_t workAddress_,stackAddress_;
  FieldMapHeapOwner heap_;
  alignas(CacheLineBytes) std::array<uint8_t,FieldMapSource::WorkBytes> work_{};
  std::array<uint8_t,FieldMapSource::GlobalsBytes> globals_{};
  std::array<uint8_t,StackBytes> stack_{};
  std::array<uint8_t,sizeof(uint32_t)> noFogColor_{}; // Source startup BSS; survives room load/unload.
- std::array<uint32_t,4> mappings_{};unsigned mapped_=0;
+ struct Mapping {uint32_t address=0,bytes=0;uint8_t* backing=nullptr;};
+ std::array<Mapping,4> mappings_{};unsigned mapped_=0;
  bool allocationZeroed_=false,allocated_=false;
+ bool allocationAccepted_=false,allocationIsolated_=false,workMapped_=false;
+ // Source prefixes execute synchronously with frozen semantic registries.
+ // Mapping-changing/native children run only after the raw borrow retires.
+ bool invoking_=false,rawPrefix_=false,deferred_=false;
  const FieldMapRequest* request_=nullptr;
  FieldMapSourceCursor cursor_;
 };

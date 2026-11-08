@@ -1,5 +1,6 @@
 #include "camera_road_assets.hpp"
 #include "platform.hpp"
+#include "native_map_process.hpp"
 #include "field_pipe.hpp"
 #include "save.hpp"
 #include <algorithm>
@@ -116,6 +117,13 @@ int main() {
         while(aptMainLoop()){hidScanInput();if(hidKeysDown()&KEY_START)break;gfxFlushBuffers();gfxSwapBuffers();gspWaitForVBlank();}
         romfsExit();gfxExit();return 1;
     }
+    // Establish source light/map CPU ownership in the same boot VM. Loading a
+    // source room is a separate retained operation; its GX capture is unbound.
+    if(!game.initializeNativeMapProcess("romfs:",renderer.nativeMapCpuServices())){
+        renderer.shutdown();consoleInit(GFX_TOP,nullptr);std::printf("Original map startup unavailable.\nPress START to exit.\n");
+        while(aptMainLoop()){hidScanInput();if(hidKeysDown()&KEY_START)break;gfxFlushBuffers();gfxSwapBuffers();gspWaitForVBlank();}
+        romfsExit();gfxExit();return 1;
+    }
     const std::string saveDirectory="sdmc:/3ds/ttyd-2ds";
     std::string savePath=ttyd::saveSlotPath(saveDirectory,0);
     mkdir("sdmc:/3ds",0777);mkdir(saveDirectory.c_str(),0777);
@@ -127,7 +135,7 @@ int main() {
     // then stage rendering. Failure rolls collision back through the transaction
     // destructor; commit only after every owner accepts the checkpoint.
     auto restoreProgress=[&](const ttyd::Progress& checkpoint) {
-        if(game.nativePartyPending())return false;
+        if(game.nativePartyPending()||game.nativeMapPending())return false;
         if(game.nativeAnimationPending())return false;
         ttyd::CollisionTransition transaction;float height=checkpoint.elevation;
         restoreFailure.clear();
@@ -196,6 +204,9 @@ int main() {
         // Catch-up cap is five SIMULATION ticks per render iteration. Only the
         // first tick receives accumulated edges; subsequent ticks keep held state.
         while(accumulator>=1./60 && metrics.steps<5) {
+            if(game.nativeMapPending()){
+                game.drainNativeMap();accumulator=0;previous=seconds();break;
+            }
             if(frontend.screen==ttyd::FrontScreen::Playing){
                 // Drain the same native producer before any new sequence/input/
                 // audio/camera visit. A retry consumes no simulation tick/edge.
@@ -270,11 +281,11 @@ int main() {
         }
         // Native overload policy drops whole remaining ticks (and the fraction),
         // recording the count rather than changing action-command tick duration.
-        if(accumulator>=1./60 && metrics.steps==5 && !game.nativeAnimationPending()) {metrics.droppedTicks+=uint64_t(accumulator*60);accumulator=0;}
+        if(!game.nativeMapPending() && accumulator>=1./60 && metrics.steps==5 && !game.nativeAnimationPending()) {metrics.droppedTicks+=uint64_t(accumulator*60);accumulator=0;}
         metrics.simulationMs=(seconds()-simulationStart)*1000;
         // Pipe/road/reload work happens outside Game::tick. Loading may block;
         // reset wall-clock accumulation afterwards so IO time cannot age gameplay.
-        if(!game.nativeAnimationPending() && !game.nativePartyPending() && game.pipeRequest>=0 && game.fade.ready()) {
+        if(!game.nativeMapPending() && !game.nativeAnimationPending() && !game.nativePartyPending() && game.pipeRequest>=0 && game.fade.ready()) {
             ttyd::CollisionTransition transaction;
             auto ownedCandidate=std::make_unique<ttyd::Game>(game);auto& candidate=*ownedCandidate;
             const uint32_t target=game.pipeTarget();
@@ -285,7 +296,7 @@ int main() {
             else {game.cancelPipeWarp();notice="Pipe transition failed";noticeTicks=180;}
             accumulator=0;pending={};previous=seconds();
         }
-        if(!game.nativeAnimationPending() && !game.nativePartyPending() && game.warpRequest>=0 && game.fade.ready()) {
+        if(!game.nativeMapPending() && !game.nativeAnimationPending() && !game.nativePartyPending() && game.warpRequest>=0 && game.fade.ready()) {
             ttyd::CollisionTransition transaction;
             // Target ID comes from the original, validated road table.
             auto ownedCandidate=std::make_unique<ttyd::Game>(game);auto& candidate=*ownedCandidate;
@@ -300,7 +311,7 @@ int main() {
         }
         // Save-block writes carry an immutable checkpoint and presentation ticket.
         // Ordinary save requests below wait for this worker to relinquish the file.
-        if(game.saveObjects && !game.nativeAnimationPending()) {
+        if(!game.nativeMapPending() && game.saveObjects && !game.nativeAnimationPending()) {
             uint64_t ticket;ttyd::SaveBlockSwitches switches;
             if(game.saveObjects->presentation.takeWriteRequest(ticket,switches)) {
                 auto checkpoint=game.progress;
@@ -309,11 +320,11 @@ int main() {
                 if(!saveWorker.start(savePath,checkpoint,ticket))game.saveObjects->presentation.completeWrite(ticket,false);
             }
         }
-        if(!game.nativeAnimationPending() && game.saveRequested && !game.saveLocked() && !saveWorker.thread) {
+        if(!game.nativeMapPending() && !game.nativeAnimationPending() && game.saveRequested && !game.saveLocked() && !saveWorker.thread) {
             notice=ttyd::writeSave(savePath,game.progress)?"Progress saved":"Save failed; progress kept in memory";
             noticeTicks=180;game.saveRequested=false;
         }
-        if(!game.nativeAnimationPending() && game.reloadRequested) {
+        if(!game.nativeMapPending() && !game.nativeAnimationPending() && game.reloadRequested) {
             game.reloadRequested=false;ttyd::Progress checkpoint;
             const auto result=ttyd::loadSave(savePath,checkpoint);bool ok=false;
             if((result==ttyd::LoadResult::Loaded || result==ttyd::LoadResult::Recovered) && checkpoint.hp>0) {
@@ -348,6 +359,6 @@ int main() {
     }
     saveWorker.finish(); // Complete an already accepted write before closing services.
     // A battle is transient; save only the exploration checkpoint.
-    if(frontend.screen==ttyd::FrontScreen::Playing && !game.nativeAnimationPending() && !game.progress.originalStory && !game.harborEncounter.running() && !game.saveLocked() && !game.professorStory.temporaryProfessor && !game.professorStory.running() && game.scene==ttyd::Scene::Explore && !game.airborne() && !game.water.active() && !game.fade.active() && !game.arriving && game.warpRequest<0 && game.pipeRequest<0) ttyd::writeSave(savePath,game.progress);
+    if(!game.nativeMapPending() && frontend.screen==ttyd::FrontScreen::Playing && !game.nativeAnimationPending() && !game.progress.originalStory && !game.harborEncounter.running() && !game.saveLocked() && !game.professorStory.temporaryProfessor && !game.professorStory.running() && game.scene==ttyd::Scene::Explore && !game.airborne() && !game.water.active() && !game.fade.active() && !game.arriving && game.warpRequest<0 && game.pipeRequest<0) ttyd::writeSave(savePath,game.progress);
     audio.shutdown();renderer.shutdown();romfsExit();gfxExit();return 0;
 }

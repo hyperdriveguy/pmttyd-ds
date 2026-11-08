@@ -386,6 +386,12 @@ public:
     std::shared_ptr<class NativeEffectProcess> nativeEffects() const;
     std::shared_ptr<class NativeShadowProcess> nativeShadowProcess() const;
     std::shared_ptr<class NativeCameraProcess> nativeCameraProcess() const;
+    // Cold CPU process admission is distinct from retained source room loading.
+    bool initializeNativeMapProcess(const char*,const struct NativeMapCpuServices&);
+    std::shared_ptr<class NativeMapProcess> nativeMapProcess() const;
+    bool beginNativeHarborMapLoad();
+    bool nativeMapPending() const;
+    bool drainNativeMap();
     std::shared_ptr<class NativeMarioConstructor> nativeMarioConstructor() const;
     bool hasNativeFieldAnimation() const{return bool(fieldParties.nativeAnimation);}
     const BattlePose* nativeMarioPose() const;
@@ -563,6 +569,7 @@ private:
     std::shared_ptr<class NativeEffectProcess> nativeEffects_;
     std::shared_ptr<class NativeShadowProcess> nativeShadowProcess_;
     std::shared_ptr<class NativeCameraProcess> nativeCameraProcess_;
+    std::shared_ptr<class NativeMapProcess> nativeMapProcess_;
     std::shared_ptr<class NativeMarioConstructor> nativeMarioConstructor_;
     // Native facade admission only; copies/moves never inherit producer proof.
     // Last member retires first during destruction. No source-ready state.

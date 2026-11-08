@@ -309,6 +309,7 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
 // main presentation share this frame; successful CPU draw generation alone is
 // insufficient to advance a scene. Negative candidate frames mean not drawn.
 void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,OpeningSequence& opening,const char* notice) {
+    if(sourceMapFrameActive_)return;
     // Keep only the current demonstration image/scene family resident. This
     // also bounds a natural (unskipped) storybook run and letter/map overlays.
     const uint32_t phase=f.screen==FrontScreen::Demo?100:
@@ -354,7 +355,9 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,OpeningSequence& ope
     }
     // SYNCDRAW completes previous-frame consumers before reusing linear
     // arenas. Window cursors reset here; capture backing persists across frames.
-    C2D_TextBufClear(textBuffer);C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+    C2D_TextBufClear(textBuffer);
+    if(!C3D_FrameBegin(C3D_FRAME_SYNCDRAW))return;
+    sourceMapFrameActive_=true;
     windowFrameCount=0;
     windowFontCount=0;
     messageIndicatorCount=0;
@@ -516,6 +519,7 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,OpeningSequence& ope
     // Synchronize when the next scene can consume or retire captured resources;
     // otherwise an event could advance with a still-unfinished final image.
     C2D_Flush();C3D_FrameEnd(0);
+    sourceMapFrameActive_=false;
     if(mapCapture || mapTurnPresented>=0 || (mapPresented==255 && !opening.mapDisplay.opaquePresented) || voyageWhitePresented==255 || shipCaptureRequested || shipPresented>=60 || entryPresented==0 || exitPresented==255 || titlePresentedType || titleBlackPresented==255)C3D_FrameSync();
     if(ok && shipCaptureRequested && !captureOpeningShip(opening)){
         frontFailure="Original opening ship capture failed";ok=false;

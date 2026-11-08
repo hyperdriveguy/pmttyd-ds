@@ -63,6 +63,7 @@ struct Metrics { float simulationMs=0, renderMs=0, gpuMs=0, fps=0; int steps=0; 
 class Audio;
 struct MessageIconFrame;
 class TroubleQuestPresentation;
+struct NativeMapCpuServices;
 class NativeHarborRewardPresentation;
 // Scene GPU residency and service-bound buffers outlive individual draws.
 // init can fail partway;shutdown uses readiness flags and explicit release.
@@ -70,6 +71,9 @@ class NativeHarborRewardPresentation;
 class Renderer {
 public:
     bool init();
+    // Retained CPU-only source map services. Calls belong to this renderer's
+    // thread, outside every active frame; no native map GPU resources exist.
+    NativeMapCpuServices nativeMapCpuServices();
     // Actual source callback only; unknown callbacks remain unavailable. The
     // source Display owner retains its queue/camera pass across false.
     bool resumeHarborCommandDisplay(const Game&,const HarborSourceDisplayInvocation&);
@@ -543,6 +547,10 @@ private:
     void drawMap(bool battle,const Game& game,bool translucent=false,Room* supplied=nullptr,uint32_t sceneVisibleGroups=UINT32_MAX,bool alphaCapture=false);
     void updateCutaways(Room& room,const Game& game);
     bool c3dReady=false,c2dReady=false,programReady=false,atlasReady=false;
+    // New successful init gets a fresh identity; copied callbacks retain only
+    // a weak reference and cannot borrow a later renderer incarnation.
+    std::shared_ptr<const uint8_t> sourceMapCpuLifetime_;
+    bool sourceMapFrameActive_=false;
     // Frame-owned borrowed geometry/texture descriptors, prepared by top world.
     struct TrioSceneDraw {Vertex* stream=nullptr;C3D_Tex texture{};uint32_t first=0,count=0,depthMask=0;GPU_CULLMODE cull=GPU_CULL_NONE;bool depth=true;};
     std::array<std::vector<TrioSceneDraw>,2> trioSceneMaps;

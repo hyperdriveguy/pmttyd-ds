@@ -3,6 +3,7 @@
 #include "battle_scene_views.hpp"
 #include "harbor_tutorial_animation_selection.hpp"
 #include "platform.hpp"
+#include "native_map_process.hpp"
 #include "trio_enemy_pose_resources.hpp"
 #include "paper_fence_warp.hpp"
 #include "message_icons.hpp"
@@ -42,6 +43,7 @@ uint32_t shade(uint32_t c,float factor) { return rgb((c&255)*factor,((c>>8)&255)
 // Readiness flags permit cleanup after partial initialization; allocations
 // are native arenas. No copied original GPU heap/address ownership is implied.
 bool Renderer::init() {
+    sourceMapCpuLifetime_.reset();
     if(!loadItemPresentations("romfs:/item-presentations.bin") || !loadItemSelectorAssets("romfs:") || !loadPouchRevisionAssets("romfs:"))return false;
     if(!C3D_Init(C3D_DEFAULT_CMDBUF_SIZE)) return false;
     c3dReady=true;
@@ -235,7 +237,40 @@ bool Renderer::init() {
     std::fclose(metrics);if(!valid)return false;
     for(const auto& m:harborActorMetrics)for(float v:m)if(!std::isfinite(v) || std::fabs(v)>10)return false;
     for(const auto& m:harborTalkOffsets)for(float v:m)if(!std::isfinite(v) || std::fabs(v)>10)return false;
-    return loadMap("map",plaza) && loadFieldActors(0,plaza);
+    if(!loadMap("map",plaza) || !loadFieldActors(0,plaza))return false;
+    sourceMapCpuLifetime_=std::make_shared<const uint8_t>(0);
+    return true;
+}
+NativeMapCpuServices Renderer::nativeMapCpuServices() {
+    const std::weak_ptr<const uint8_t> lifetime=sourceMapCpuLifetime_;
+    const auto current=[this,lifetime] {
+        // Short-circuit before touching this after shutdown/destruction. These
+        // services share the renderer thread, never concurrent destruction.
+        const auto held=lifetime.lock();
+        return held && held==sourceMapCpuLifetime_ && c3dReady && c2dReady;
+    };
+    NativeMapCpuServices services;
+    services.current=current;
+    services.waitDrawSync=[this,current] {
+        if(!current() || sourceMapFrameActive_)return false;
+        // Installed Citro3D Begin drains its actual prior command queue; its
+        // FrameSync only waits for VBlank. This empty scope submits no map
+        // references and closes before the caller mutates CPU-owned map RAM.
+        if(!C3D_FrameBegin(0))return false;
+        sourceMapFrameActive_=true;
+        C3D_FrameEnd(0);
+        sourceMapFrameActive_=false;
+        return current();
+    };
+    services.flushBacking=[this,current](uint8_t* backing,uint32_t bytes) {
+        if(!current() || sourceMapFrameActive_ || !backing || !bytes)return false;
+        // Caller validates the complete physical VM span. No native GPU map
+        // backing is published: order synchronous CPU writes without ARM cache
+        // invalidation, which could discard dirty imported bytes.
+        std::atomic_thread_fence(std::memory_order_seq_cst);
+        return current();
+    };
+    return services;
 }
 // Native pack admission mutates its supplied pending Room as it loads;
 // callers must free partial resources on failure. Descriptor counts cap512
@@ -1618,6 +1653,7 @@ void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audio
 // before admitting battle atlases;field return reverses that dependency.
 // SYNCDRAW permits CPU arenas to be reused only after previous GPU work finishes.
 void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool audioAvailable) {
+    if(sourceMapFrameActive_)return;
     prepareEnemyHp(g);
     prepareNativeHarborMenu(g);
     prepareClassMenuFrame(g);
@@ -1641,6 +1677,7 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
     if(g.harborTutorial.running() || g.trioBattleActive)prepareAudienceDrawing();
     harborSourceFrameActive=false;
     if(!C3D_FrameBegin(C3D_FRAME_SYNCDRAW))return;
+    sourceMapFrameActive_=true;
     harborSourceFrameActive=true;
     trioScenePrepared=false;
     classVertexCount=0;classMenuSubmitReady=false;classMenuSubmissionWaiting=false;
@@ -1703,12 +1740,14 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
     C2D_Flush();
     harborSourceFrameActive=false;
     C3D_FrameEnd(0);
+    sourceMapFrameActive_=false;
     completeNativeHarborMenu(g);
 }
 // Cleanup accepts partial init. Specialized release owners and GPU sync run
 // before deleting borrowed linear buffers/textures/shaders/targets;then C2D/C3D
 // services close. This call is end-of-owner lifecycle,not a per-frame reset.
 void Renderer::shutdown() {
+    sourceMapCpuLifetime_.reset(); // Retire source-map callbacks before resources.
     releaseEnemyHp();
     releaseSourceIcons();
     releaseClassMenuDrawing();

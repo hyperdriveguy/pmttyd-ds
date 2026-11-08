@@ -1610,3 +1610,5 @@ retain explicit provider and process-ownership frontiers.
 - [Original atomic rotation-offset event](battle/ATOMIC_UNIT_ROTATE_OFFSET_EVENT.md): complete80110f9c, shared original numeric conversion and fresh per-axis sentinel/store behavior.
 
 - [Shared original field pouch backing](field/NATIVE_SHARED_SOURCE_POUCH.md): actual SDK allocation and typed inventory share one packed array; speculative checkpoint admission, worker copies and exact retirement remain explicit.
+
+- [Shared native source-map process](field/NATIVE_SHARED_MAP_PROCESS.md): real process heaps, original DVD/light/road loading, native completion fence and retained first GX capture boundary.

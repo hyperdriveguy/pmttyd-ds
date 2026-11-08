@@ -6029,3 +6029,24 @@ adopt existing handles. Room/native restore/checkpoint handoff retains ownership
 [Updated contract](../behavior/field/MARIO_CONSTRUCTOR_NATIVE_OWNER.md). Whole
 shared Mario/pouch field/battle lifecycle and source sequence return remain open;
 this implementation breadcrumb closes no unrelated documentation request.
+
+
+### Shared native map CPU integration and remaining capture request (2026-11-07)
+
+NativeMapProcess now roots actual SDK0 Work/light allocations and the existing
+SDK1 primary pool in the ready camera/shadow/UI/animation VM. It uses original
+D/T/C transfer lengths, the real cooperative DVD graph, actual UI archive
+records, source map constructors/light loop/camera road and shadow getter.
+Source mapLoad remains held at the GXBeginDisplayList callsite8002a360; G0 stays0. Normal
+Game admits Init only until capture/material translation exists. Renderer owns
+an outside-frame Citro3D queue-draining Begin/End service and lifetime guard;
+CPU-only cache adaptation does not imply source FIFO or display-list completion.
+[Contract](../behavior/field/NATIVE_SHARED_MAP_PROCESS.md).
+
+Remaining bounded implementation: bind complete mapSetMaterial80020e54 and
+GX capture resource ownership so both original material/cull passes emit real native-translated
+work and source output lengths/slots can complete. Do not replace capture with
+constant byte counts. Broader original sysWaitDrawSync token/tick/timeout traces
+and field Main/EVT clocks remain open. Read-only source/SDK handoffs and live
+performance diagnosis are pinned under artifacts/native-shared-map-*; native
+CPU construction is not an end-to-end prologue or matched Dolphin trace.

@@ -4,6 +4,7 @@
 #include "native_effect_process.hpp"
 #include "native_shadow_process.hpp"
 #include "native_camera_process.hpp"
+#include "native_map_process.hpp"
 #include "native_mario_constructor.hpp"
 namespace ttyd {
 // Native bootstrap requires a fresh pose namespace and no held producer.
@@ -91,6 +92,22 @@ std::shared_ptr<NativeMarioConstructor> Game::nativeMarioConstructor()const{
 std::shared_ptr<NativeCameraProcess> Game::nativeCameraProcess()const{
  return nativeCameraProcess_&&nativeCameraProcess_->ready()&&nativeCameraProcess_->shadows()==nativeShadowProcess()&&nativeCameraProcess_->bootPublishedFor(cameraManager)?nativeCameraProcess_:nullptr;
 }
+bool Game::initializeNativeMapProcess(const char* root,const NativeMapCpuServices& cpu){
+ if(nativeAnimationPending()||nativePartyPending())return false;
+ if(!nativeMapProcess_){auto camera=nativeCameraProcess();if(!camera)return false;
+  nativeMapProcess_=NativeMapProcess::create(camera,root,cpu,nativeCameraLibmNumerics().reciprocalSquareRoot);
+ }
+ return nativeMapProcess_&&nativeMapProcess_->initialize();
+}
+std::shared_ptr<NativeMapProcess> Game::nativeMapProcess()const{
+ return nativeMapProcess_&&nativeMapProcess_->current()&&nativeMapProcess_->cameras()==nativeCameraProcess()?nativeMapProcess_:nullptr;
+}
+bool Game::beginNativeHarborMapLoad(){
+ if(nativeAnimationPending()||nativePartyPending()||!nativeMapProcess())return false;
+ return nativeMapProcess_->loadHarbor();
+}
+bool Game::nativeMapPending()const{return nativeMapProcess_&&nativeMapProcess_->busy();}
+bool Game::drainNativeMap(){return !nativeMapProcess_||nativeMapProcess_->resume();}
 void Game::prepareNativeFieldAnimation(){
  if(!fieldParties.nativeAnimation || nativeAnimationPending())return;
  marioPresentation.update(fieldJump.motion,fieldMovement.speed,fieldMovement.headingOffsetDegrees,progress.hp,fieldCameraTickMilliseconds(fieldCameraSimulationTicks),true);
@@ -128,6 +145,7 @@ bool Game::retainNativeFieldAnimation(Game& previous,bool checkpoint){
  if(nativeAnimationPending() || previous.nativeAnimationPending())return false;
  if((nativeShadowProcess_ && nativeShadowProcess_->busy()) || (previous.nativeShadowProcess_ && previous.nativeShadowProcess_->busy()))return false;
  if((nativeCameraProcess_&&nativeCameraProcess_->busy())||(previous.nativeCameraProcess_&&previous.nativeCameraProcess_->busy()))return false;
+ if(nativeMapPending()||previous.nativeMapPending())return false;
  if((nativeMarioConstructor_ && nativeMarioConstructor_->busy()) || (previous.nativeMarioConstructor_ && previous.nativeMarioConstructor_->busy()))return false;
  const auto retainedNativeMario=previous.nativeMarioConstructor();
  const auto retainedNativePouch=retainedNativeMario?retainedNativeMario->sharedPouch():nullptr;
@@ -137,6 +155,7 @@ bool Game::retainNativeFieldAnimation(Game& previous,bool checkpoint){
  if(retainedNativePouch && previous.progress.originalPouch && previous.progress.originalPouch!=retainedNativePouch)return false;
  if(!checkpoint && retainedNativePouch && progress.originalPouch!=previous.progress.originalPouch)return false;
  const auto retainedNativeCamera=previous.nativeCameraProcess();
+ const auto retainedNativeMap=previous.nativeMapProcess();
  const auto retainedNativeShadow=previous.nativeShadowProcess();
  const auto retainedUi=previous.nativeUiStartup();
  const auto retainedEffects=previous.nativeEffects();
@@ -180,7 +199,7 @@ bool Game::retainNativeFieldAnimation(Game& previous,bool checkpoint){
  }
  // Ownership admission is complete. A later source sampler hold is reported
  // by the ordinary renderer; it is not a failed/rolled-back room transaction.
- nativeUiStartup_=retainedUi;nativeEffects_=retainedEffects;nativeShadowProcess_=retainedNativeShadow;nativeCameraProcess_=retainedNativeCamera;nativeMarioConstructor_=retainedNativeMario;
+ nativeUiStartup_=retainedUi;nativeEffects_=retainedEffects;nativeShadowProcess_=retainedNativeShadow;nativeCameraProcess_=retainedNativeCamera;nativeMapProcess_=retainedNativeMap;nativeMarioConstructor_=retainedNativeMario;
  if(retainedNativeCamera)cameraManager=previous.cameraManager; // Source camera bank survives room/checkpoint ownership handoff.
  if(retainedNativePouch && progress.originalPouch){
   // All fallible candidate/pose admission is complete. Copy bytes into the

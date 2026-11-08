@@ -1,6 +1,8 @@
 #include "field_map_source_owner.hpp"
 #include "field_map_sdk.hpp"
 #include "event_native_runtime.hpp"
+#include "event_heap_allocation.hpp"
+#include "native_field_animation.hpp"
 #include "event_script_assets.hpp"
 #include <cassert>
 #include <cstring>
@@ -80,4 +82,118 @@ void mapBoundingThresholds(const char* root){
   assert(bool(word(m,*result)&2)==bool(test[3]));
  }
 }
-int main(){originalMapOwner("romfs");mapBoundingThresholds("romfs");}
+// Real process Work allocation uses the actual cold source heap0. The small
+// independent map pool is unused here; these checks stop at original mapInit.
+void sourceHeapMapWork(const char* root){
+ constexpr uint32_t MapPool=0x88000000,PrivateStack=0x8d100000;
+ constexpr uint32_t HeapHandles=0x8041e844,SdkDescriptors=0x8041f070;
+ constexpr uint32_t DescriptorBytes=12,HeaderBytes=32,NodeNext=4,NodeSize=8;
+ constexpr unsigned SdkListVisitLimit=4096;
+ struct Backend {
+  std::shared_ptr<NativeFieldAnimation> field;
+  std::vector<uint8_t> pool=std::vector<uint8_t>(4096);
+  uint32_t address=0;unsigned allocations=0,flushes=0;
+  bool available=false,flush=false,alive=true,retireOnAllocation=false;
+  EventNativeRuntime& vm(){return field->process().vm();}
+  bool current(){
+   if(!alive || !field->process().heapGlobalsCurrent())return false;
+   if(!address)return true;
+   auto& m=vm().memory;const auto descriptor=word(m,SdkDescriptors)+DescriptorBytes*word(m,HeapHandles);
+   auto node=word(m,descriptor+NodeSize);
+   for(unsigned budget=0;node && budget<SdkListVisitLimit;++budget){
+    if(node+HeaderBytes==address)return word(m,node+NodeSize)>=WorkBytes+HeaderBytes;
+    node=word(m,node+NodeNext);
+   }
+   return false;
+  }
+  FieldMapHeapOwner services(){
+   FieldMapHeapOwner h;h.user=this;h.address=MapPool;h.bytes=uint32_t(pool.size());h.backing=pool.data();
+   h.current=[](void* p){return static_cast<Backend*>(p)->current();};
+   h.processAllocate=[](void* p,uint32_t size,uint32_t& out){
+    auto& b=*static_cast<Backend*>(p);assert(size==WorkBytes && b.allocations==0);
+    if(!b.available)return false;
+    // Deferred native child is outside the source raw prefix: both a nested
+    // service borrow and actual SDK allocation/mapping changes remain legal.
+    assert(b.vm().memory.withRawRamAccess([](auto&){return true;}));
+    out=b.address=eventHeapAllocate(0,size,b.vm().memoryBinding.services());++b.allocations;
+    if(b.retireOnAllocation){b.alive=false;b.retireOnAllocation=false;}
+    return true;
+   };
+   h.flushProcess=[](void* p,uint8_t* bytes,uint32_t size){
+    auto& b=*static_cast<Backend*>(p);assert(bytes && size==WorkBytes && reinterpret_cast<uintptr_t>(bytes)%32==0);
+    ++b.flushes;return b.flush;
+   };
+   h.flushBlock=[](void*,uint32_t){};h.systemCall=[](void*){};return h;
+  }
+ } backend;
+ EventNativePlatform platform;platform.flushBlock=[](void*,uint32_t){};platform.systemCall=[](void*){};
+ platform.truncate=[](void*,float f){return int32_t(f);};
+ platform.subtractDouble=[](void*,double a,double b){volatile double v=a-b;return v;};
+ platform.roundDoubleFloat=[](void*,double d){volatile float v=float(d);return v;};
+ backend.field=NativeFieldAnimation::create(root,NativeFileCache::create(),platform);assert(backend.field);
+ auto& m=backend.vm().memory;assert(m.registerExternalRam(MapPool,backend.pool.data(),uint32_t(backend.pool.size())));
+ assert(!FieldMapSourceOwner::bind(m,0,PrivateStack,FieldMapHeapOwner{}));
+ assert(!FieldMapSourceOwner::bind(m,MapPool,PrivateStack,backend.services()));
+ auto owner=FieldMapSourceOwner::bind(m,0,PrivateStack,backend.services());FieldMapRequest request,foreign;
+ assert(owner && owner->current() && !owner->workAddress());
+ assert(!owner->invoke(request,Init) && owner->pending() && backend.allocations==0 && word(m,Work)==0);
+ backend.available=true;
+ assert(!owner->invoke(request,Init) && backend.allocations==1 && backend.flushes==1 && word(m,Work)==0);
+ const auto address=owner->workAddress();assert(address && address==backend.address);
+ assert(word(m,address-HeaderBytes+NodeSize)>=WorkBytes+HeaderBytes);
+ assert(m.writeByte(address+7,0xed));
+ assert(!owner->invoke(foreign,Init) && backend.flushes==1);
+ assert(!owner->invoke(request,Init) && backend.allocations==1 && backend.flushes==2);
+ uint8_t marker=0;assert(m.readByte(address+7,marker) && marker==0xed);
+ backend.flush=true;
+ // One instruction acknowledges allocation; budget then stops before pointer
+ // publication and before the original second memset.
+ assert(!owner->invoke(request,Init,{},1) && owner->pendingInstruction()==0x8002af30 && word(m,Work)==0);
+ assert(m.readByte(address+7,marker) && marker==0xed);
+ assert(!owner->invoke(request,Init,{},1) && word(m,Work)==address);
+ for(unsigned i=0;owner->pending() && i<100;++i)owner->invoke(request,Init);
+ assert(!owner->pending() && word(m,ActiveGroup)==0 && word(m,Auxiliary)==0);
+ assert(m.readByte(address+7,marker) && marker==0); // Actual explicit source clear.
+ const auto descriptor=word(m,SdkDescriptors)+DescriptorBytes*word(m,HeapHandles),head=word(m,descriptor+NodeSize);
+ assert(m.writeWord(descriptor+NodeSize,0) && !owner->current());
+ assert(m.writeWord(descriptor+NodeSize,head) && owner->current());
+ std::vector<uint8_t> replacement(WorkBytes);
+ for(uint32_t i=0;i<WorkBytes;++i)assert(m.readByte(address+i,replacement[i]));
+ assert(m.unregisterExternalRam(address) && m.registerRam(address,replacement));
+ assert(!owner->current());owner.reset();
+ assert(m.matchesBytes(address,replacement.data(),WorkBytes));
+ // Actual exhaustion completed while current() is unavailable must retain the
+ // accepted null, then publish0 and hold at original memset without replay.
+ backend.address=0;backend.allocations=0;backend.flushes=0;
+ const auto freeHead=word(m,descriptor+NodeNext);assert(m.writeWord(descriptor+NodeNext,0));
+ owner=FieldMapSourceOwner::bind(m,0,PrivateStack,backend.services());assert(owner);
+ backend.retireOnAllocation=true;
+ assert(!owner->invoke(request,Init) && backend.allocations==1 && !owner->current());
+ backend.alive=true;
+ assert(!owner->invoke(request,Init) && owner->current() && backend.allocations==1 && backend.flushes==0);
+ assert(word(m,Work)==0 && !owner->workAddress() && owner->pendingInstruction()==0x8002af3c);
+ assert(!owner->invoke(request,Init) && backend.allocations==1 && owner->pendingInstruction()==0x8002af3c);
+ assert(m.writeWord(descriptor+NodeNext,freeHead));
+}
+void rawPrefixBudgets(const char* root){
+ Fixture f(root);auto& m=f.vm.memory;FieldMapRequest request,foreign;
+ f.processFlush=true;
+ // Five exact source instructions precede the allocation call instruction.
+ assert(!f.owner->invoke(request,Init,{},5));
+ assert(f.owner->pendingInstruction()==0x8002af2c && f.flushes==0 && word(m,Work)==0);
+ assert(!f.owner->invoke(foreign,Init,{},1) && f.flushes==0);
+ // An unrelated outer borrow cannot execute a prefix or consume its child.
+ assert(m.withRawRamAccess([&](auto&){
+  assert(!f.owner->invoke(request,Init,{},1));
+  assert(f.owner->pendingInstruction()==0x8002af2c && f.flushes==0);
+  return true;
+ }));
+ assert(!f.owner->invoke(request,Init,{},1));
+ assert(f.owner->pendingInstruction()==0x8002af30 && f.flushes==1 && word(m,Work)==0);
+ // Child acknowledgement uses no second source-case visit; the very next
+ // visit is the original pointer store, not a replay of allocation.
+ assert(!f.owner->invoke(request,Init,{},1));
+ assert(f.owner->pendingInstruction()==0x8002af34 && f.flushes==1 && word(m,Work)==ProcessWork);
+ assert(f.run(request,Init) && f.flushes==1 && !f.owner->pending());
+}
+int main(){rawPrefixBudgets("romfs");sourceHeapMapWork("romfs");originalMapOwner("romfs");mapBoundingThresholds("romfs");}

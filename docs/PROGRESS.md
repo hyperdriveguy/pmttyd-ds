@@ -20338,3 +20338,77 @@ Prepare/Post, field start/wait and sequence return remain unbound/incomplete.
 Connect those actual owners and verify fresh/resumed Crump victory through the
 original afterbattle scene and field return. Cold-boot profiling and New2DS
 hardware performance remain open. The full-game goal stays active.
+
+
+### Shared native map CPU process and real renderer completion fence (2026-11-07)
+
+Integrated NativeMapProcess with the ready camera/shadow/UI/animation VM. The
+original primary map-pool SDK1 allocation stays at its actual guest address;
+its complete payload is borrowed without resetting heap or map headers. Original
+lightInit/mapInit allocate two banks and Work through actual heap0. Dynamic Work
+publication preserves accepted allocations, stationary backing, held flushes,
+null returns and original explicit memset order. Literal inputs merge with the
+actual process; the relocated constructor fixture is excluded. Existing original
+harbor D/T/C transfers and DVD worker now construct540 map objects,98 collision
+joints and5 lights, load101 camera-road rows and read actual shadow projection.
+
+Renderer supplies an incarnation-checked, outside-frame Citro3D Begin/End
+completion scope. FrameSync is only VBlank pacing. This owner publishes no map
+GPU resources; its range/vertex cache leaves admit the explicit CPU-only domain
+without discarding ARM dirty data. Straight-line source prefixes borrow the raw
+RAM cache; semantic children execute after that borrow retires. Synchronous SDK
+admission restricts matrix/vector destinations and exits around numerical
+callbacks, revalidating ownership on delivery. No proof survives a hold.
+
+Game retains the same process across allowed checkpoints/transfers. Pending map
+work blocks simulation clocks, restore, room/pipe/road work, save and reload;
+native draining preserves input edges and drops IO wall-time accumulation.
+Normal startup runs Init only. Explicit Load remains held at original source
+PC8002a360/GXBeginDisplayList, with the actual65536-byte temporary and G0=0.
+No fabricated display-list bytes, lengths, source output slots or readiness.
+[Contract](behavior/field/NATIVE_SHARED_MAP_PROCESS.md).
+
+Validation uses committed5ec5979c plus these scoped changes in an isolated copy,
+with later concurrent Mario/reward commits and unrelated WIP excluded. Full make
+test exits0:631/631 C++ (266.16s),276/276 Python (50.491s),zero skips. The new map
+fixture passes in190.80s at host O0, including actual cold heaps, allocation-list
+loss/recovery, foreign physical mappings, full harbor CPU construction, retained
+capture/no replay, queued DVD Close retirement and invalidated numeric callbacks.
+Source verifier passes6110 original instructions/53 complete boundaries; material
+verifier passes806 words/6 constants/6 spans/2 imports and direct sites. Normal
+asset-ready SOUNDTRACK=gamecube compiles477 committed recipes; assets-check passes.
+Native make all (-o assets-ready after explicit preparation,-j4) exits0.
+
+Fresh isolated90-second production Azahar smoke exits0; inspected capture shows
+original storybook art and original US dialogue at displayed60FPS. A private ARM
+main invokes the production Game map owner and Renderer fence over674 identical
+non-main objects and byte-identical RomFS. An initial180-second probe
+capture exited0 but lacked its strict completion receipt and is not counted as
+passing. The diagnostic rerun exits1 at its900-second bound, also without that
+receipt. Its recorded cursor advances through original relocation/object and
+collision construction, completes98 numerical estimates, then reaches texture
+building at sourcePC8002ad40 (iteration20). No map-failure or native exception
+was reported. This is partial native progress, not proof of the capture hold,
+540/98 final construction assertions,5 lights,101-road bank or Game preclock
+checks on ARM; those gates passed on host only. Inspected pending capture is
+the deliberately frozen initial book frame, not playable map progress. Native
+load performance blocks activation and needs immediate optimization. No user
+emulator profile or saves changed. Existing compiler/Pillow deprecation warnings
+remain. Hardware timing/parity unmeasured.
+
+No new original asset import/edit or story/dialogue change. Rebuilding the prior
+cache added only the already-committed Mario-constructor product plus pipeline
+metadata. ISO/cache/pack/binary/probe outputs stay outside source history. Exact
+source/products/private/reference,674-object identity, binary, log, proof and
+capture hashes: artifacts/native-shared-map-validation-manifest.json.
+
+Next: optimize measured source CPU loading and ownership hot paths, then bind
+the complete original mapSetMaterial/mapSetLight continuation and
+actual light/texture-object children in this VM; recover/own the genuine GX
+capture FIFO/GXData packing and both original material/cull passes. That capture
+loop contains material state, not geometry emission. Keep original byte-backed
+lengths and allocations; implement real native material consumers separately.
+The documentation inbox EVT-01 records these boundaries. Source CPU loading is
+still slow; optimize measured child/ownership hot paths before production room
+activation. Complete mapLoad, source geometry rendering, normal source room Load
+activation, original runtime/pixel parity and full prologue acceptance remain open.
