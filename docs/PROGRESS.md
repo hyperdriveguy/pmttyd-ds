@@ -19912,3 +19912,84 @@ adoption and complete outer-display epochs remain unfinished. CPU VM cache hooks
 do not establish GPU completion. Next compose actual camera initialization and
 map publication with these retained source owners, then original field/battle/
 return flow. Full prologue and hardware parity remain incomplete.
+
+
+### Original Mario pose wrapper and Logo work/file lifetime (2026-11-07)
+
+Implemented whole original marioPoseInit8005ba50/0x98 over optional source
+read/store/whole-child services. It captures the initial Mario store owner,
+uses that owner for the first signed byte3d selector, refreshes global Mario
+for the next two selectors, and unconditionally stores actual signed Entry
+results into initial Mario+22c/+230/+234. Held reads/Entries/stores retain
+accepted effects without replay. NativeMarioPoseStartup borrows an existing
+backed raw2f8-byte owner in the actual animation VM and calls genuine Entry
+through its shared source pool/cache/SDK heap. It never converts the typed
+party token into a guessed raw owner. Portable tests include signed-2/negative
+selector, mutated globals/table, held effects and source reentry. Native tests
+execute three genuine shared resource Entries over an explicitly TEST-only
+actual heap record and reject equal-byte backing replacement.
+
+Implemented whole original seq_logoInit800874b0/0x18c and
+seq_logoExit8008746c/0x44, including all reset/DTV/progressive/button/video
+branches, independent repeated queries, branch-specific retrace counts, fresh
+work/GP loads and source flags. Exit preserves seven source children before
+fresh wp/file-handle loads and actual fileFree. NativeLogoStartup imports exact
+original work/pointer/path/video-input storage, retains actual shared cache
+fileAlloc/refcount lifetime across platform holds, and releases only its actual
+acquired nonzero handle after Exit children. Without a platform provider it
+runs genuine work/file acquisition then holds at OSGetResetCode. Test-only
+opaque receipts verify lifetime/order without claiming actual OS/VI/Mario draw
+completion. Normal Game does not yet bind this whole Logo owner or raw wrapper.
+
+Independent review identified two real ownership edges before final freeze:
+borrow/pin the existing DVD-root backing rather than trusting ui.current, and
+require post-child provider currentness before terminal acknowledgment. Both
+are fixed and covered: equal-byte root replacement invalidates use; a final
+Retrace retiring its provider leaves Init held, and a later admitted resume
+uses retained completion without replay. Final narrow review has no outstanding
+blocking finding. Source constructor/Main history-base prose was corrected to
+803d9848 from original lis803e plus signed addi9848, verified fresh read-only
+at all three Main ring sites and the constructor.
+
+Imported unchanged original mariost.tpl2128288 bytes/26 descriptors and five
+exact new spans into an empty tracked destination. Provenance includes source
+paths, offsets, initialized/BSS origin, hashes and retained original rights.
+The ISO is opened rb only. Import roundtrip matches all three files and rejects
+a nonempty destination. Normal recipes compile memory and copy raw title TPL;
+this title bank is now staged before actual cache catalog freeze. It uses the
+existing original plus padded-payload storage policy, adding no per-frame IO.
+
+New EVT-01 documentation request covers remaining VI/SRAM/thread/interrupt and
+explicit native platform acknowledgment. Three local reset/button/DTV leaves
+were recovered in parallel and recorded under platform contracts; the request
+excludes duplicate local-body work. While those providers remain unavailable,
+source/native owners preserve actual resource state rather than forcing false
+completion. No dialogue/story branches, order or conditions were changed.
+
+Final validation of code commit41bbf32d (includes committed Crump voice and
+normal smart/shadow base0f8fc438): make test exits0,623/623 C++ in72.97s and
+271/271 Python in42.464s. Final focused6/6 passes in6.29s. Final make all
+exits0 with SOUNDTRACK=gamecube and -o assets-ready after normal-pipeline
+compilation of17 delta recipes (two Logo,15 committed voice sources). All4992
+source files match the code commit exactly, with zero extra source-like inputs.
+Source archive, ELF/3DSX, 2255 RomFS hashes and source/review/validation evidence
+are pinned and rechecked in
+artifacts/mario-logo-startup/accepted/validation-manifest.json. Isolated45-second
+fresh-save Azahar smoke exits0; inspected capture reaches the original opening
+book without native exception. User profile/saves are untouched.
+checked 1714 markdown file(s); 0 broken link(s). Existing compiler/Pillow warnings remain. The earlier
+pre-fix full candidate also passed623 C++/271 Python; final checks above cover
+the reviewed ownership fixes and strengthened tests. Emulator boot is not
+original pixel parity, actual Logo OS/VI activation or New2DS XL performance.
+
+Next: implement genuine raw marioInit8005b5c8/0x488 with its real persistent
+heap owner and newgame/load pouch lifecycle, actual group async requests,
+motion/camera/gravity/rub/balloon/party children; preserve the existing loaded
+pouch rather than rerunning fresh initialization on resume. Bind the new raw
+pose wrapper and Logo source parents to real platform/texture/Mario providers.
+Continue actual same-VM field/battle services and BattleWork ownership, original
+reaction presentation, success/lethal completion, result/End/export/wait/field
+return, original afterbattle crowd/dialogue/party and story6 plaza transition.
+Existing earlier Crump requirements/inbox remain authoritative; host fixtures
+do not close the full fresh/resumed into/out-of-battle scene. The full goal
+stays active and incomplete.

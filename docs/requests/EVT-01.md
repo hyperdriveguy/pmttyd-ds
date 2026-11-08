@@ -5916,3 +5916,68 @@ requests. Full reaction presentation and original battle/result/field-return
 acceptance stay open. Evidence: artifacts/fade-startup/.
 
 Normal native shared smart/shadow initialization is now composed in the animation VM after UI/effects and before Mario entries. See [activation contract](../behavior/display/NATIVE_SHARED_SHADOW_BOOTSTRAP.md). Existing documented source children are implemented; camera/map publication and genuine GPU/file/display epoch services remain implementation frontiers, with no duplicate documentation request.
+
+
+### Logo platform startup request (2026-11-07)
+
+- [ ] Recover the remaining original Logo OS/video/SRAM/thread children and native acknowledgment boundary.
+
+#### Original Logo startup platform children and acknowledgment
+
+Update: the complete local OSGetResetCode/keyGetButton/U_VIGetDTVStatus bodies are now recovered in `platform-leaves.md` and `platform-leaves-evidence.json`. For these three, request actual platform binding/transitive interrupt/MMIO/current-input ownership, not duplicate local-body recovery. Full SRAM/progressive and VI source closure below remains needed.
+
+For complete original `seq_logoInit800874b0/0x18c`, document the reached platform children **after actual Logo resource acquisition**:
+
+| Child | Whole source extent | Needed behavior |
+| --- | --- | --- |
+| OSGetResetCode | 8029b544/0x38 | Exact reset-state/global versus MMIO return, repeated live call semantics |
+| U_VIGetDTVStatus | 802a5088/0x3c | VI status read and retained interrupt-token scope |
+| OSGetProgressiveMode | 8029c250/0x70 | SRAM ownership/locking, exact flag read and unlock semantics |
+| OSSetProgressiveMode | 8029c2c0/0xa4 | Actual SRAM mutation/dirty state, unlock/write propagation |
+| keyGetButton | 80005fd0/0x14 | Current same-process GP/input producer, channel0 held-button source |
+| VIConfigure | 802a4420/0x808 | Whole original mode read, state/timing/register publication and subordinate calls |
+| VIFlush | 802a4c28/0x130 | Actual pending-video state and interrupt/register/queue ownership |
+| VIWaitForRetrace | 802a3f58/0x54 | Actual counter/thread queue wait, interrupt restoration and acknowledgment |
+
+Recover full bodies and their reached transitive dependencies, with initialized/BSS span provenance, live read/store/capture order, argument/results, held-child lifetime, and any hardware/MMIO/interrupt/SRAM/thread assumptions. Original mode inputs are `sRMObjHReso8030c230/0x3c` and `sRMObjHReso_prog8030c26c/0x3c`. Preserve source branch decisions, repeated live queries, number/order of VI calls and source GP writes. In particular, a repeated child identity at another original callsite is a separate invocation; a native completed receipt cannot accidentally acknowledge both.
+
+Define the admitted 3DS platform adaptation and its **actual completion boundary** separately from original GameCube behavior. Establish which original query results may be supplied by explicit native startup policy, what real native video/input work that policy requires, and which calls must remain unavailable until a provider executes. A no-op callback, fabricated GameCube MMIO/SRAM value, native frame begin or cached status cannot silently serve as proof that complete original OS/video children ran. A real native display completion needs its own retained owner and acknowledgment. Retrying a held child must neither repeat completed source operations nor manufacture an observed retrace.
+
+The current source cursor may retain actual Logo work and its already acquired file while holding at the first unavailable platform service. Retirement/cancellation must preserve genuine file reference ownership and any partial platform work; restarting Init or forging a null Logo handle is not a completion strategy.
+
+This is **not** a request to identify/recover already documented `seq_logoInit` wrapper, root getter, formatted file allocation, fileFree, Mario pose wrapper, or Fade/Environment/Effect texture setup. Their local identities and byte sources are known. Missing actual same-process Logo cache/work and raw-Mario owner bindings remain implementation requirements. Do not duplicate those known-source requests.
+
+Fresh evidence is available in `artifacts/fade-startup/seq_logoInit.disasm` plus whole source inspection ELFs for the named small OS/input leaves and wait. `OSGetResetCode` reads source globals80412d10/14 or MMIOcc003024; DTV reads VI halfwordcc00206e under interrupt disable/restore; `keyGetButton(0)` reads actual GP+1328; retrace wait uses counter8041f1dc and queue8041f1e4. These source witnesses do not establish native providers. No existing complete matching behavior contract was located for this OS/video family in the current docs/inbox search.
+
+Required new Logo data pins, before source execution (actual existing root/GP/cache must be borrowed):
+
+| Range | Provenance | SHA-256 |
+| --- | --- | --- |
+| 0x80416108/4 | initialized DOL | `e7f01a429c356dee8dfc87ebbdc8f5b42ff043894470b8040d6c79553a4f609b` |
+| 0x8041ea80/20 | DOL BSS zero | `66687aadf862bd776c8fc18b8e9f8e20089714856ee233b3902a591d0d5f2925` |
+| 0x802c3b68/10 | initialized DOL | `a5515982f6734fd70ab2e935a5a14ba236d72e03417a57d094c74d95c5dc5c63` |
+| 0x8030c230/3c | initialized DOL | `62d87f5a2e00870f6a0904c78e3e8235c63ca518a9a7f265449ab076a829cb8d` |
+| 0x8030c26c/3c | initialized DOL | `f9d4282efa8ce3f7502091fb7ebf63f0194e39015ac3810ec8738b8a07d82e2c` |
+
+`wp80416108` is original initialized pointer8041ea80; work is32 original BSS bytes. Format802c3b68 has14 visible characters plus NUL and one original zero padding byte (16 total). The two mode records are complete60-byte original initialized inputs. Import only absent cold ranges; existing owner backing must not be overwritten. Exact source offsets/bytes are in adjacent `new-ranges.json`. Original raw root `mariost.tpl` asset size2128288 and its acquisition/free references remain separate from these cold spans; source asset tracking grants no redistribution rights.
+
+
+### Logo wrapper implementation and partial platform delivery (2026-11-07)
+
+- [x] Recover whole local reset/button/DTV query bodies; see
+  [the platform leaf contract](../behavior/platform/SOURCE_LOGO_PLATFORM_QUERY_LEAVES.md).
+- [x] Implement whole Logo Init/Exit cursors and actual shared native Logo
+  work/file acquisition and release; stage unchanged mariost.tpl before cache
+  binding. See [Logo owner](../behavior/display/SOURCE_LOGO_STARTUP.md).
+- [x] Implement whole raw Mario pose wrapper and binding to the genuine shared
+  animation Entry child; see [raw wrapper](../behavior/field/SOURCE_MARIO_POSE_STARTUP.md).
+- [ ] Complete reached VI/SRAM/thread/interrupt platform contracts and native
+  activation providers; full raw MarioInit and source sequence ownership are
+  separate implementation requirements.
+
+With no platform provider the actual native Logo owner now retains its real
+acquired texture reference and source work, holding at OSGetResetCode. It does
+not forge reset code0 or a video/retrace receipt. Final-child currentness and
+borrowed-root backing are independently checked. The new platform request stays
+open for remaining source/transitive/native ownership. Fresh exact source
+spans and independent review are under artifacts/mario-logo-startup/.

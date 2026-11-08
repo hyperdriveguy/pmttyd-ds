@@ -255,3 +255,14 @@ battle/result/return remain unverified.
 real source manager and unchanged four-image bank. This resource prerequisite
 is available in normal startup; it does not close CO-03/CO-09 effect presentation,
 CO-07 engine result/export/field return, or CO-08..10 afterbattle execution.
+
+
+[Raw Mario pose startup](../field/SOURCE_MARIO_POSE_STARTUP.md) and
+[Logo Init/Exit ownership](../display/SOURCE_LOGO_STARTUP.md) now have whole
+source wrappers and explicit native bindings. Original raw mariost.tpl is
+available in the actual cache before catalog freeze. These wrappers require
+the genuine raw Mario constructor/platform/sequence providers; normal Game
+continues its explicit canonical startup contribution. They do not close
+CO-04/05 BattleWork/sequence ownership, CO-07 result/export/field return or
+CO-09/10 original afterbattle execution. The new OS/video request is recorded
+in EVT-01 while those native providers hold honestly.

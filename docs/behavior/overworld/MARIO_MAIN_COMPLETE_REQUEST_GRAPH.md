@@ -147,7 +147,7 @@ collision, parts-delete or smartFree request in this complete body.
 Ring sites8005ab00(motion29),8005aefc(motion8),8005b0f8(common): test retained
 owner.word34 low1. If set, test owner.word4 MASK08000000; motion29 uses refreshed
 r30, other two use FRESH current Mario for the second test/XYZ. If both pass,
-load indexI=[8041e8f0], compute wrap32(803e9848+12*I), store raw XYZ8c/90/94 there.
+load indexI=[8041e8f0], compute wrap32(803d9848+12*I), store raw XYZ8c/90/94 there.
 Store wrap32(I+1) back to index. Signed new index>=8 subtracts8 ONCE and stores;
 no initial index validation, modulo normalization or clamped ring domain.
 No writes on either failed gate; other motion branches do not run this block.

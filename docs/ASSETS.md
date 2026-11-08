@@ -4474,3 +4474,25 @@ builds never import over edits. Original rights remain reserved; no new license
 is granted. Playback is finite primary-sample presentation, not full MusyX macro,
 pitch, envelope or spatial emulation. See the per-asset LICENSE/provenance and
 [ownership contract](behavior/audio/NATIVE_MARIO_ACTION_VOICE_PCM.md).
+
+
+### Original Logo startup work, video inputs and raw title bank
+
+`assets/original/display/logo-startup/` contains unchanged mariost.tpl2128288
+bytes/26 descriptors (ISO1174995732, SHA256
+e6916a8a208b5de452ab49ec7381b5540b1ece86f919575f3beb4508caf402cb),
+original initialized wp80416108, original32-byte Logo work BSS, padded
+`%s/mariost.tpl` and two complete60-byte original VI mode inputs.
+`tools/import_logo_startup_assets.py` verifies whole Logo Init/Exit and Mario
+pose-init source fingerprints plus all spans/assets. The ISO is read rb only
+and the destination must be empty. Normal recipes produce
+`logo-startup/memory.pmevt` and `logo-startup/mariost.tpl`.
+
+The complete raw title bank is staged before the actual animation file cache
+freezes its catalog; source fileAlloc/UnpackTexPalette handles its real payload.
+This adds no scaling, generated pixels or invented file alias. Source path
+`mariost.tpl` becomes actual formatted cache path `./mariost.tpl` through the
+original root/format. Original per-span paths/offsets/source-BSS distinctions/
+hashes and Nintendo/Intelligent Systems rights are in provenance.json.
+Tracking grants no redistribution rights. ISO/caches/compiled packs remain
+outside source history; checked-in edits are not overwritten.

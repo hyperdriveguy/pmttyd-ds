@@ -121,3 +121,12 @@ operands and complete-body hashes; documentation only, no native/test edits,
 no make test/all rerun, no shared progress/index edits or commit. This delivery
 follows the retained EVT-01 EntryMain camera/resource request rather than
 claiming that transitive material/raster providers are complete.
+
+
+The [whole raw wrapper and native binding](../field/SOURCE_MARIO_POSE_STARTUP.md)
+are now implemented. They consume an existing real raw owner and genuine shared
+Entry child, preserving signed selection/results and fresh global reads. Normal
+Game's typed canonical adapter is still separate until full raw MarioInit is
+bound. [Logo Init/Exit](../display/SOURCE_LOGO_STARTUP.md) now have whole retained
+wrappers and genuine native work/file lifetime; platform/sequence activation
+remains open.

@@ -22,7 +22,7 @@ at8041e900, then memset(pointer,0,2f8) at8005b5f4..600. This establishes
 five pose/resource words27c..28c=-1, initializes pouch/motion/camera/resources
 and the remaining field state. The local body has no explicit byte38 store;
 the later repeated `stw ...,38(r5)` is a DIFFERENT global position-history
-array starting803e9848, not Mario byte38. Do not mistake that disassembly
+array starting803d9848, not Mario byte38. Do not mistake that disassembly
 offset for a control-depth initialization. Pose requests locally mask word4;
 called motion/camera/resource services remain their own producers. The zeroing
 point is not proof of every final full-object field after all callbacks.

@@ -1570,3 +1570,13 @@ retain explicit provider and process-ownership frontiers.
 - [Native Mario action-voice PCM](audio/NATIVE_MARIO_ACTION_VOICE_PCM.md): finite original primary samples, actual source-bank birth ownership, real NDSP retirement and explicit macro/spatial limits.
 
 - [Normal native shared smart/shadow bootstrap](display/NATIVE_SHARED_SHADOW_BOOTSTRAP.md): actual animation VM activation, borrowed globals and retained Game lifetime.
+
+
+- [Original raw Mario pose startup](field/SOURCE_MARIO_POSE_STARTUP.md): whole
+  capture/selection/result-store wrapper and actual shared-process borrowed-owner
+  binding; full raw MarioInit remains required.
+- [Original Logo startup](display/SOURCE_LOGO_STARTUP.md): whole Init/Exit cursors,
+  original title bank and native work/file lifetime; real platform/sequence
+  activation remains required.
+- [Logo platform query leaves](platform/SOURCE_LOGO_PLATFORM_QUERY_LEAVES.md):
+  recovered reset/button/DTV bodies with actual input/MMIO/interrupt boundaries.
