@@ -18589,3 +18589,103 @@ Next: full original hitEntry/_hitEnt/triangle construction and true distance
 math, actual light/camera/material/mapDraw/GX capture providers, native async IO,
 Game/source event ownership and safe full unload. Original execution/hardware
 checks and full faithful prologue remain open; goal stays active.
+
+
+### Crump original effect requirements and low-HP harbor rendering (2026-11-07)
+
+Latest user requirement: make all prerequisites available for the Crump opening
+into and out of battle. **The complete production round trip remains unfinished.**
+The [integration checklist](behavior/story/CRUMP_OPENING_INTEGRATION_REQUIREMENTS.md)
+still requires actual same-VM field start/wait, OriginalSequence/BattleWork,
+complete controller/input/turn/result/ending/teardown, resumed beforebattle tail,
+original 276-command afterbattle and gor_01/s_bero transition. Available assets,
+source contracts and portable APIs are not installed normal Game completion.
+
+Completed increments:
+
+- `e41552c9`: original Crump fukidashi textures4..7 imported into initially empty
+  `assets/original/effects/fukidashi/`, with raw descriptors, pixel/file hashes,
+  provenance and original rights. The normal manifest overlay compiles an
+  unscaled 256x128 RGBA8 atlas plus sidecar. All four images are required: source
+  operand4 does NOT suppress bubble/shadow. Explicit nearest edge copies fix
+  the atlas builder's transparent/partial-alpha RGB alteration; regression and
+  every source/padded-texel comparison pass. Nonempty reimport is rejected.
+- `db84e4eb`: per-image provenance now identifies original `e/us/effect.tpl` and
+  explicit retained rights, rather than a temporary cache path/generic policy.
+  Fresh read-only extraction reproduces all four checked PNG bytes. ASSETS
+  records conversion/licensing. No ISO or compiled products are committed.
+- `7f7b2e02`: fixes the real black-harbor cause. Bounded ARM diagnostics showed
+  `Original field Mario sample unavailable` while the atlas was resident and
+  no producer pending. An actual native-process host fixture reproduces
+  M_S_3 with stale display80000004/published rear bank1. Original
+  RearAnime80058188 clears rear before inverse lookup/lock handling; the
+  canonical-front adapter now follows that cleanup and preserves front-bank
+  source geometry. A 64-tick story4/HP2/jump regression fails before and passes
+  after. Healthy refresh also retains display4, so S1 stays front after healing;
+  an older test's contrary rear expectation was corrected against original
+  mot_stay/ChgPose bodies. Raw inverse-name/main2000/costume ownership remains
+  outside this bounded presenter; source contracts retain those requirements.
+
+Cached tutorial presentation now reimports ordinary Mario's shared atlas when
+field entry retired it. Dedicated scene readiness cannot rely on tutorialReady
+alone. This uses existing Tex3DS import and C3D_FrameSync before admission; it
+does not implement battle teardown/return or prove repeated complete encounters.
+
+New [effect contract](behavior/effect/CRUMP_FUKIDASHI_EFFECTS.md) pins 12 complete
+original bodies / 2,608 words, all 33 reached requests, real attachments/camera,
+source-poll lifetimes, constructor SFX, all four textures, matrix/color/FIFO
+order and pending consumers. [Crowd contract](behavior/display/CRUMP_CROWD_SNAPSHOT_LIFECYCLE.md)
+pins original 40 snapshots / 400 quad architecture, camera0 three-pass capture,
+RGB5A3 copy, movable smart headers, exact ext matrices/sort/preload/reset.
+Further read-only census resolves tag1 release: `_unload80007ab4` calls extReset
+then both heap clears, then smartAutoFree(1) at80007c04. It is distinct from
+battle_exit's tag2 release. Snapshot camera/filter/EFB inheritance, original
+observations and actual native drain/reachability still need work. DEMO-01,
+EVT-01, AUDIO-01 and RESULT-01 retain explicit open production dependencies.
+New contract links: 28 checked, zero broken.
+
+Final validation uses frozen committed base 6e169d879fbd376c0e2d5154faf8b717e39636d6,
+tree 04d2bed58fd974e037af41c9c62ed4c8d6544bb7 plus the scoped feature overlays,
+not concurrent shared-worktree drafts. 4,611 tracked inputs, 2,208 compiled products
+and host core were hash-audited and archived under
+`artifacts/crump-integration-accepted/`; exact source overlay/evidence in
+`artifacts/crump-accepted-validation-manifest.json`.
+
+- `CMAKE_BUILD_PARALLEL_LEVEL=4 CTEST_PARALLEL_LEVEL=4 TRIO_ENEMY_POSE_PACK=romfs make --jobserver-style=pipe test`: 556/556 C++ in 53.24 s; 251/251 Python in 44.483 s; zero skips.
+- `make --jobserver-style=pipe all -j4 -o assets-ready SOUNDTRACK=gamecube`:0.
+  Frozen compiled pack already contains the verified manifest overlay.
+- Final normal binary `artifacts/crump-accepted-normal.3dsx`, SHA256
+  `547a6f848bffe3ce1ba3a688a3ff1126c5488393e82c067af6959c46160a7d38`.
+  Fresh isolated Azahar story4 checkpoint, physical Right/Up and A input:
+  final admission/movement/end images inspected; harbor/Mario/cast render, no
+  scene actor readiness notice. Zero native exceptions/unmapped diagnostics.
+  Captures remain field Explore: they prove neither battle entry nor return.
+- Actual original VM/texture/SDK/array/FIFO probes complete all six cast models:
+  Mario 115 texture requests / 35 fans, Goombella 75/87, Crump 105/23, subordinate 75/15,
+  c_gara 25/5, c_suifu_b 30/6. Material/GX/raster acknowledgments remain fixtures;
+  these are not native pixel or complete pose-coverage results.
+
+Preserved intermediate failures: initial integrated Python run had 4 pixel
+comparisons fail against stale private work-cache atlases and 2 skipped enemy
+checks. Matching current work caches were captured/hashed, old caches archived,
+and the original enemy fixture selected through RomFS; final gate above has
+zero skips. Initial extrusion proof exposed real transparent/partial-alpha
+gutter alteration, then passed after exact-copy repair. First low-HP full gate
+rejected one obsolete healed-rear expectation; source-confirmed front behavior
+and the original-pose regression now both pass. Initial black normal captures
+and bounded diagnostics remain in artifacts, not silently reported as successes.
+
+Existing compiler/Pillow warnings remain. No Dolphin execution, original full
+scene pixel comparison, physical New2DS XL timing/memory measurement, actual
+fukidashi playback or full crowd native draw is claimed. The source art and
+contracts are ready for those consumers; the remake/Crump goal remains active.
+
+Next: install actual same-VM harbor NPC/context/sequence ownership, compose
+source setup2 controller/menu/input/action/damage/death/result, complete true
+BattleEnd/exit/incoming field return and resume the original waiter/tail. Then
+execute unchanged afterbattle with real sailors/party/crowd/effect/audio owners
+and source story6 transition. Bind native material/texture/fan/snapshot services,
+close inherited capture state, compare original observations and measure hardware
+performance. Do not substitute a development outcome, fake waiter completion or
+forced story flag. The accepted archive is immutable; refresh only a new work
+snapshot and preserve unrelated concurrent work/staging.

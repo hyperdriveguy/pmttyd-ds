@@ -1489,3 +1489,8 @@ Original battle menu native resource/queue owners:
 - [Crump opening integration requirements](story/CRUMP_OPENING_INTEGRATION_REQUIREMENTS.md): original encounter through battle, teardown, postbattle crowd/party/audio and plaza return, with unmet production dependencies.
 
 - [Native source map loading and DVD worker](field/NATIVE_SOURCE_MAP_LOADING_AND_DVD_WORKER.md) — complete retained parents and native original-file process; real collision/GPU/Game completion remains open.
+
+### Crump opening effect and crowd prerequisites
+
+- [Original exclamation/question effects](effect/CRUMP_FUKIDASHI_EFFECTS.md): complete callback, attachment, lifetime, original textures4..7, implicit sound, matrix/FIFO and production boundaries.
+- [Crowd snapshot/cache lifecycle](display/CRUMP_CROWD_SNAPSHOT_LIFECYCLE.md): original camera0 snapshots, RGB5A3 copies, stable smart headers, ext matrices/sort and reset requirements.

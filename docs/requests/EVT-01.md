@@ -5686,3 +5686,27 @@ and retires slots. Parent waits retain their cursor/request and do not tick.
   original full parent intact; no success receipts for missing services.
 - [ ] Obtain original execution and physical New2DS XL evidence. Local static
   graphs and isolated native fixtures leave full EVT/prologue readiness open.
+
+### Crump dependency closure update (2026-11-07)
+
+New [effect](../behavior/effect/CRUMP_FUKIDASHI_EFFECTS.md) and
+[crowd snapshot](../behavior/display/CRUMP_CROWD_SNAPSHOT_LIFECYCLE.md) contracts
+close local body/resource questions while retaining real provider boundaries.
+Original effect art is now in the editable manifest. Normal same-VM battle
+entry, original engine/control/turn/result/teardown/field return, resumed
+beforebattle tail and complete276-command afterbattle remain uncomposed.
+Pre-fix isolated normal harbor drew while idle, but bounded native diagnostics
+also record `Original field Mario sample unavailable` with atlas resident and
+no producer pending. Preserve the source pose/selection/admission boundary;
+do not treat this as an unproven texture-memory failure or acknowledge a missing
+scene provider. Exact scene captures/diagnostic logs remain under
+`artifacts/azahar-crump-integrated` and `artifacts/azahar-crump-readiness`.
+
+
+The missing-sample branch is now reproduced in an actual native-process host
+fixture: story4/HP2, motion0, M_S_3, stale display80000004 and published bank1.
+Original RearAnime80058188 clears rear before inverse/lock handling. The native
+canonical-front adapter now follows that cleanup; a64-tick original-pose
+regression fails before the fix and passes after. Healthy refresh retains
+display4, so source S1 also stays front after HP recovery. This fixes a renderer
+prerequisite, not original sequence/battle/result/return composition.

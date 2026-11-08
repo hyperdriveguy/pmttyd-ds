@@ -164,3 +164,20 @@ Remaining research includes snapshot camera/copy/filter/alpha state and smart
 texture cache ownership, complete ext ordering/matrix/sort dependencies, and
 executed reference observations. The new data does not make production crowd
 simulation, draw, cancellation or completion available automatically.
+
+
+### Available effect art and recovered display lifecycles
+
+[Original fukidashi effects](../effect/CRUMP_FUKIDASHI_EFFECTS.md) now specify all
+33 scene requests, constructor cues, attachment/driver lifetime and complete
+source matrix/FIFO/material order. All four original textures4..7 are required;
+operand4 is not a background-disable flag. Unscaled editable PNGs and the normal
+256x128 atlas overlay are available under `assets/original/effects/fukidashi/`.
+Native dispatch/material/audio/display and retirement remain requirements.
+
+[Crowd snapshot lifecycle](../display/CRUMP_CROWD_SNAPSHOT_LIFECYCLE.md) recovers
+actual camera0 capture, three source passes, RGB5A3 copy, stable movable smart
+headers, ext matrices/sort/preload and reset. Snapshot camera/filter/EFB
+inheritance and original observations remain open. Tag1 release ownership
+is verified in field-map `_unload`: `extReset` precedes both heap clears and
+`smartAutoFree(1)`; native execution and draining remain unproven. Neither new contract proves production afterbattle completion.

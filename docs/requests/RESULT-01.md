@@ -200,3 +200,17 @@ Implementation breadcrumb (2026-10-15): [same-VM field battle binding](../behavi
 ### Opening Crump end-to-end return requirement (2026-11-07)
 
 Track CO-07..10 in the [opening integration contract](../behavior/story/CRUMP_OPENING_INTEGRATION_REQUIREMENTS.md): original setup2 terminal/result producer, ending/engine end bit, complete BattleEnd/battle_exit and pouch/unit/resource export, source sequence return, same beforebattle waiter and its sailor-event retirement, attached original afterbattle child, then actual GSW0=6/gor_01/s_bero transition. Normal HarborTutorial.result stays0 and running() is triggered; Game has no completed tutorial/field return bridge. Generic portable ending/sequence fixtures and the underground harness cannot prove these setup2 owners. Need original setup2 result/ending/exit trace and any tutorial-specific behavior not already covered by the local source contracts.
+
+
+### Crump resource and field-return prerequisite delivery (2026-11-07)
+
+[Opening requirements](../behavior/story/CRUMP_OPENING_INTEGRATION_REQUIREMENTS.md)
+continue to require actual result production, engine completion, complete
+BattleEnd/battle_exit and incoming field ownership before releasing the original
+waiter. The native low-HP pose-bank regression is fixed, and cached tutorial
+presentation reacquires its independently retired shared Mario atlas. These
+rendering prerequisites do not authorize a synthetic result or field return.
+[Crowd lifecycle](../behavior/display/CRUMP_CROWD_SNAPSHOT_LIFECYCLE.md) now pins
+independent tag1 release to field-map `_unload`, after extReset and both heap
+clears. Battle exit's tag2 release does not substitute for that owner. Actual
+native queue/GPU draining and full same-VM Crump round-trip proof remain open.

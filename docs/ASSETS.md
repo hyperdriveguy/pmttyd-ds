@@ -4201,3 +4201,38 @@ and `maps/gor_00/t`, and compile `field-harbor-loader-literals.pmevt`.
 Nintendo/Intelligent Systems retain all original rights; tracking grants no new
 license. These mutable-runtime inputs differ from the earlier constructor-only
 already-relocated harbor-source payload. Do not relocate that earlier pack twice.
+
+### Original Crump fukidashi art (2026-11-07)
+
+Imported into the initially empty `assets/original/effects/fukidashi/` using
+`tools/import_fukidashi_assets.py`; the source ISO was read-only. Source
+`e/us/effect.tpl` is266784 bytes, SHA256
+`3b62850fe75afb95eebb9fc240e20204d5ed320fba0fc956729f28405c2c789b`.
+Per-image sidecars and `provenance.json` retain source/index/format/dimensions,
+raw36-byte descriptors, decoded pixel/file hashes and explicit original rights.
+Nintendo/Intelligent Systems retain all rights; no redistribution license is
+granted. No ISO or compiled texture is committed.
+
+| Editable PNG | Original TPL index | Original dimensions/format | Role |
+| --- | --- | --- | --- |
+| bubble.png |4|32x64 IA4|bubble body|
+| shadow.png |5|32x64 I4|bubble shadow|
+| exclamation.png |6|96x32 I4|six horizontal source frames|
+| question.png |7|128x48 I4|four horizontal source frames|
+
+All four are required by the Crump type0/1 draw path: operand4 is not a
+background-disable flag. The manifest's `original/effects/fukidashi` atlas
+overlay emits `fukidashi.t3x` and `.atlas.json`,256x128 RGBA8, without resizing
+source pixels; two edge-extruded texels prevent adjacent-image filtering.
+Extrusion now uses explicit nearest copies, preserving even transparent and
+partial-alpha RGB values. Future source material/UV animation consumers must
+compose the atlas rectangle with original per-frame UVs and preserve source
+IA4/I4/color/alpha semantics. Asset availability is not a native effect draw.
+
+Fresh extraction reproduced all four PNG bytes; all source pixels and every
+padded texel passed comparisons. Nonempty import rejection preserved every
+checked image. Evidence: `artifacts/crump-fukidashi-pixel-proof.json`, temporary
+pack/build and fresh metadata-reimport artifacts. The
+[effect contract](behavior/effect/CRUMP_FUKIDASHI_EFFECTS.md) records exact source
+identities and remaining consumers. Normal builds retain the checked edits
+through the existing manifest overlay; reimports require an empty destination.

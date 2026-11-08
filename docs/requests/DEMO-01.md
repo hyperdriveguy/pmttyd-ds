@@ -572,3 +572,20 @@ change.
 The [opening integration requirements](../behavior/story/CRUMP_OPENING_INTEGRATION_REQUIREMENTS.md) distinguish available raw data from missing production services. Recover complete gundan1000tai_init/totsugeki/areacheck/totsuend bodies and nannpc init/Entry/SetAnimTbl/flags/size/work/subfunction lifetime, all original crowd MODEL/TPL/animation identities, per-member work/physics/visibility and shared renderer submission semantics for the 400-member scene. Source afterbattle276 words, dialogue025..033, party auxiliary kind13, 32 fukidashi and13 positional SFX calls must retain order/branches/independent events. Existing beforebattle registry omits this callback catalog; broad REL pack presence is not afterbattle execution. Need original scene traces and New2DS XL CPU/GPU/memory measurements, not a guessed crowd adapter. Private audits: crump-opening-story-resource-audit.txt and crump-opening-afterbattle-command-audit.txt.
 
 Crowd research update: complete local body evidence is now in `artifacts/crump-crowd-resource-prerequisites.txt` and its two companion manifests. All 40 templates use existing c_zako_n S_1/R_1 snapshots; the original extdrv draws 400 quad instances. No new character art is needed. 192-byte member work, 32-byte ext instances, first-call yield/allocation and local gundan bodies are recovered. Continue snapshot capture/cache/GX copy, ext matrix/sort/order, outer scheduler/cancellation and original execution evidence; do not keep already recovered template identities listed as unknown.
+
+
+### Crump availability delivery (2026-11-07)
+
+[Effect requirements](../behavior/effect/CRUMP_FUKIDASHI_EFFECTS.md) now recover
+all33 reached fukidashi calls, complete callback/constructor/Main/display,
+attachment/camera rules, source-poll lifetimes and four required primary
+effect.tpl textures. Original editable art and normal manifest overlay are
+available; no effect playback completion is claimed.
+[Crowd snapshot requirements](../behavior/display/CRUMP_CROWD_SNAPSHOT_LIFECYCLE.md)
+recover three-pass camera0 capture, RGB5A3 copy, smart-header repatching, actual
+quad/matrix/sort and reset behavior. Remaining research: inherited snapshot
+camera/filter/EFB state, actual queue
+cancellation/teardown and original rendered observations. The independent
+tag1 snapshot release caller is now verified: field-map `_unload` calls
+`extReset`, both heap clears and later `smartAutoFree(1)` at80007c04. Native owners and
+New2DS XL performance still need implementation and measurement.

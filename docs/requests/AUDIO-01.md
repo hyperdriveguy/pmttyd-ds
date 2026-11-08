@@ -97,3 +97,15 @@ two detached-tail assertions failed. Parent request remains open.
   native missing-tail observation; neither clip-duration metadata nor a burst
   of60 owner calls proves physical1000ms fade timing. Best-effort provider stays
   in place pending documentation and a realistic-cadence native retry.
+
+
+### Crump implicit effect sound requirements (2026-11-07)
+
+The [original fukidashi constructor](../behavior/effect/CRUMP_FUKIDASHI_EFFECTS.md)
+adds NPC-attached exclamation/question cues beyond explicit scene SFX commands:
+`SFX_EVT_NPC_BIKKURI_MARK1` and `SFX_EVT_NPC_QUESTION_MARK1`. Mario sentinel-1
+and fixed attachment0 skip these constructor cues. Please retain actual
+US sound-key/group/macro/sample identities, positional startup/update/overlap
+and original scheduling observations; generic reused samples do not satisfy
+these requests. The source key/branch recovery is delivered; actual native
+admission/playback remains open.

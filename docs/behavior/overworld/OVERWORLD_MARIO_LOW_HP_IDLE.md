@@ -41,7 +41,11 @@ On admitted refresh, live HP<=5 requests M_S_3/display4; if current name18
 is not already M_S_3, reset58=0 first. This refresh does **not** separately
 request M_I_S at HP0; that is the entry route. Healthy HP>5 reverts toward
 S1 only when phase44==0 and counter5a!=0: reset5a=0, preserve exact M_I_Y,
-otherwise request S1. Repeated same-name S3 requests do not restart its
+otherwise request S1. This healthy refresh does not clear display4: the only
+mot_stay display-word stores in this body OR4 on the low-HP branches.
+ChgPose also preserves4. Consequently a refreshed S1 continues to use the
+front bank through the special RearAnime suffix; HP recovery alone does not
+re-enable rear conversion. Repeated same-name S3 requests do not restart its
 animation. Signed narrowing/overflow and event-altered phase are outside
 ordinary short idle traces; do not silently replace their service behavior.
 
@@ -159,11 +163,17 @@ apply, not a cropped texture or substitute billboard.
 
 The ordinary toRearPose80056a04–bc0 comparison list includes S1 but **no
 S3 or I_S**; neither has an inverse front mapping. a/a_mario_r contains no
-M_S_3R or M_I_SR. In the rear sector, the missing conversion followed by
-inverse miss clears display80000000 at80057f68–80, preserving the original
-front name and selecting front handle22c. Front sector also clears that bit.
-Use the original front geometry and ordinary draw transform even when facing
-is in the rear sector; do not manufacture a rear pose or switch model files.
+M_S_3R or M_I_SR. Ordinary rear-sector forward/inverse misses clear
+display80000000 at80057f68–80. The actual low-HP display4 path instead takes
+the initial70000004 mask branch to80058188: when the rear bit was set,
+80058194–98 clears it BEFORE inverse lookup at800581a0. S3/I_S inverse miss
+returns at800581a8 with name and phase unchanged, preserving the front name
+and selecting front handle22c. This cleanup also applies to masked effect
+flags; effect10000000 still takes bank priority. Lock2 is checked only after
+an inverse hit, so it cannot preserve the stale rear bit. If rear was already
+clear, the special suffix returns without inverse lookup.
+Use original front geometry even in the rear sector; do not manufacture a
+rear pose or switch to the rear model file.
 
 Effect file a/e_mario contains M_I_5 index6, nonloop0..50 (18keys),
 M_I_Y index13, nonloop0..8 (7keys), and M_N_5A index21, loop0..140
