@@ -2,6 +2,13 @@
   "schema": 1,
   "assets": [
     {
+      "id": "original/effects/fukidashi-main",
+      "kind": "event",
+      "source": "assets/original/effects/fukidashi/main/event.json",
+      "output": "fukidashi-effect.pmevt",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
       "id": "original/maps/harbor-files/d",
       "kind": "pack",
       "source": "assets/original/maps/harbor-files/d.bin",
