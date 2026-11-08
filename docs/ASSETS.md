@@ -4308,3 +4308,15 @@ compiles `field-hit-literals.pmevt`; these are source bbox/radians/half/three
 constants, not precomputed collision radii or a reciprocal-square-root table.
 Nintendo/Intelligent Systems retain all rights; no redistribution license is
 granted. ISO/caches/compiled products are excluded from source history.
+
+## Original fukidashi position memory
+
+`assets/original/effects/fukidashi/position/event.json` and its provenance
+track seven initialized DOL spans used by calc_pos: the axis initializer,
+binary64 bias, radians,16,20,12 and0.5. Normal builds compile them as
+`fukidashi-position.pmevt`. `import_fukidashi_memory.py --component position`
+reads the original ISO read-only, verifies each extent by SHA256 and requires
+an empty destination. Existing `main` and `entry` imports retain exact output.
+Alignment preserves actual adjacent bytes and per-span offsets/lengths/hashes.
+Nintendo/Intelligent Systems retain original rights; tracking grants no
+redistribution license. Compiled products and original ISO remain uncommitted.

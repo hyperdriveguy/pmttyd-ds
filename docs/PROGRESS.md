@@ -18973,3 +18973,60 @@ Next: bind real source light/camera/material/mapDraw/GX services, actual Game/EV
 map epochs and active hit query/update/unload owners. Independently validate
 Gekko estimate/matrix rounding against original radius/contact traces. Full
 prologue, scene round trip and physical New2DS XL timing remain unfinished.
+
+
+### Crump prerequisites: original fukidashi placement and damage availability (2026-11-07)
+
+Committed e5559a2b adds the complete retained original calc_pos80133480 actor
+attachment calculation and its seven-span original-data pack. Entry/Position/Main
+are now separately reusable mechanics for later areas. The position continuation
+captures held camera/trigonometry/SDK children without replay, preserves wrapped
+angle arithmetic, live component reads, fused operations and null-party behavior.
+It consumes original actor/camera memory; it supplies no fabricated actor or
+native effect pointer. Existing Entry/Main import outputs remain unchanged.
+
+The broader committed-source gate exposed an unapplied packed damage integration
+behind committed lethal tests. Parallel commit1c591823 applied those journals.
+Review then found raw weapon power was insufficient for Life Shroom preflight:
+defense and sequence modifiers can make a lower-base hit lethal. Commit e3b20b92
+uses the full HP calculator on private copies followed by original application
+clamp, signed16 store, cap/floor and suppression gates. A lethal item151 route
+holds before HP, attacker flags or RNG; nonlethal item151 hits remain admitted.
+The regression checks element-defense attribute1 turning power1 into damage2 at
+HP2 versus HP3. Source damage/death services still own actual HP and hit events.
+
+Final validation on the exact committed mechanics snapshot: make test exit0,
+579/579 C++ tests in58.62s and261/261 Python tests in40.458s, zero skips; native
+make all exit0. The focused original packed lethal fixture also passes and
+reports code10717 for both source death scripts, at their existing retained
+camera/rotation services. No battle completion follows from that observation.
+
+All evidence is isolated under artifacts/fukidashi-position/. The accepted
+source archive and products plus validation-manifest.json pin tested commit
+e3b20b92,4735 source hashes and2218 RomFS hashes. The first scoped gate passed
+559/559 C++ and254/254 Python tests with native exit0. The initial wider gate
+failed the committed lethal fixture before damage/death journal application;
+its logs are retained. Corrected-run intermediates are superseded as described
+in corrected-run-note.txt. Only final-make-test.log and final-make-all.log support
+the final broader gate. Exact commands used four host workers and -j4 native;
+make all used SOUNDTRACK=gamecube and -o assets-ready after compiling the changed
+normal manifest recipes. No unrelated uncommitted source was included.
+
+Limitations: this is source-derived mechanics/availability work, not normal
+opening completion, matched Gekko/GPU pixels or physical New2DS XL performance.
+The normal beforebattle effect hook still acknowledges an unbound backend;
+Entry/Position/Main do not yet execute there. The live animation process has
+original game heaps, while HarborEncounter owns a different VM/allocator. They
+must share real owners/aliases deliberately; copying pointers or borrowing event
+IDs cannot supply that ownership. Retained sound requests are not playback.
+Actual result/export/teardown/field return and the276-command afterbattle crowd,
+message, party, audio and gor_01 transition remain required. The requirements
+contract and documentation inbox retain these explicit boundaries.
+
+Next: implement the original EVT fukidashi wrapper and effect process/driver over
+the actual live process, with source actors/camera/heap/audio and native draw
+consumers; integrate genuine same-VM sequence/setup2 battle ownership and result
+completion; resume the original beforebattle tail and afterbattle event. Then
+validate normal fresh/resume paths in isolated Azahar and compare original
+observations; measure actual 400-crowd budgets on hardware. Do not release a held
+source result or presentation service through a synthetic completion receipt.

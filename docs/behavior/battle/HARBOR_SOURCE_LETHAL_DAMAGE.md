@@ -33,7 +33,7 @@ read domain and stable owner; missing memory is not an empty inventory.
 
 ## Native admission and dynamic units
 
-The unapplied `damage-journal.json` replaces fixed private unit/part arithmetic
+The production packed damage adapter replaces fixed private unit/part arithmetic
 with `HarborTutorialPacked::battleAddress()`, `unitAddress(id)`, and the existing
 source body-part lookup over the real linked part definitions. Source IDs index
 four native calculator snapshots, not guest allocation addresses. Damage sound,
@@ -49,6 +49,18 @@ admitted synchronous callbacks do not mutate inventory between this preflight
 and the original emergency-revival query. Nonordinary status/badge branches
 remain outside this finite atomic domain.
 
+Potential lethality uses the full HP calculator on private copies of the two
+units, part, weapon and battle state, followed by the application's request
+clamp, signed16 HP store, upper cap/floor and HP-write suppression. The preview
+checks code100 and the attr10000 special-death gate before querying item151.
+This catches defense attributes, negative defense and sequence modifiers; raw
+weapon power alone cannot establish whether a hit is lethal. Preview attacker
+flag8 is private. The three admitted power callbacks only read stable guest
+memory, and later reaction/audience flags do not affect HP. This preview is a
+native availability check, not an additional source damage application; it
+consumes no RNG, publishes no guest stores and supplies no presentation.
+
+
 Without item151, the existing original application performs HP subtraction,
 lethal flags, enemy notices and final hit-event dispatch. No clamp, completion
 flag, source bank change or battle result is supplied by admission. Captured
@@ -58,8 +70,7 @@ Main/sequence/turn/controller owner.
 
 ## Genuine death-event leaves
 
-The separate unapplied `death-leaf-journal.json` supplies these reached source
-leaves in Packed.invoke:
+The production Packed.invoke adapter supplies these reached source leaves:
 
 * `801141a4/18` captures global Battle, stores word0 at B1c70, then byte0 at
   B1c74, and returns2. It does not clear neighboring bytes.

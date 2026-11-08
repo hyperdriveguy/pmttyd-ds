@@ -449,3 +449,47 @@ input-bit/provider identity and recursive-entry/reset rejection. Fixture
 children do not prove original calc_pos or sound playback. Actual EVT
 decoding/name admission, original attachment math, native material/audio
 owners, GPU queue retirement and normal scene composition remain required.
+
+
+## Portable attachment calculation (2026-11-07)
+
+`resumeFukidashiPosition` implements the complete calc_pos80133480 body.
+Its inline cursor retains camera, trigonometric inputs/rounded returns,
+wrapped secondArgument*20, SDK axis/angle/matrix and actor/party identity
+across held children. It never constructs a guest stack address or allocates
+per update. All seven original initialized-data spans are available through
+`fukidashi-position.pmevt`: axis vector, actual binary64 conversion bias,
+radian factor, base radius16, angle offset20, divisor12 and auxiliary0.5.
+The importer adds a `position` component; Main/Entry outputs remain unchanged.
+
+The two yaw reads remain independent; a held sine call does not cause its
+input to be sampled again. The matrix request captures axis/angle once, then
+attachment is freshly selected only after SDK completion. Actual
+[arbitrary-axis SDK rotation](../display/STAGE_LIGHT_AXIS_ROTATION_AND_NORMALIZE.md)
+includes normalization even if a camera-derived axis appears to be unit length.
+This differs from the char-axis wrapper used by display rotations. Do not
+simplify the separately rounded `(angle-20)+20` for secondArgument1.
+
+Each computed component freshly reads its radius, actor coordinate and stored
+input in source order. Fused multiply-add remains one original operation;
+hoisting all coordinates or replacing FMA with multiply/add changes behavior.
+The missing-party branch leaves XYZ intact, then still writes the fresh
+rotation/auxiliary tail. Raw bias is reread at both conversion sites, retaining
+the signed wrapped product rather than recomputing it as an unbounded integer.
+
+Host tests cover held camera/trig/matrix/party identity and captures, actor
+variants, live radius/coordinates after the first store, missing-party tail,
+signed product wrap, an FMA cancellation residue and negative-zero rounding.
+Actual Entry calls this helper with the existing explicitly finite native SDK
+adapter in a composition test. Fixture and finite native arithmetic do not
+establish Gekko frsqrte/libm/FPSCR equivalence or GPU presentation. Independent
+whole-body review found no concrete caller mismatch; SDK bodies/constants were
+independently re-extracted and matched their existing contract hashes. Evidence
+is private `artifacts/fukidashi-position/axis-sdk-source.txt` and its companion
+body manifests. The existing local source contracts suffice; no new unknown
+function was invented or marked closed by a placeholder.
+
+Actual runtime registration, EVT operands/name routing, shared pool scheduling,
+native audio/material/texture/queue retirement and scene playback remain open.
+Main and Entry now have an actual portable position child to bind; successful
+fixture composition does not install it into the normal Game path.

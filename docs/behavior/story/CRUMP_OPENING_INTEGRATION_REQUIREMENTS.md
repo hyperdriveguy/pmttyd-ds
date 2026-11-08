@@ -204,3 +204,14 @@ auxiliary FMA(0.5,radius/12,0.5); kind6 spin begins-450. This supplies another
 CO-03/CO-09 dependency. Actual EVT routing, attachment math, native drawing,
 sound and resource retirement still need production composition. These
 changes do not close the battle/result/field-return chain or afterbattle.
+
+
+### Original attachment calculation available
+
+The [effect position implementation](../effect/CRUMP_FUKIDASHI_EFFECTS.md#portable-attachment-calculation-2026-11-07)
+now supplies complete calc_pos with original initialized data and retained
+camera/SDK/actor ownership. Actual constructor-to-position composition is host
+tested using the explicit finite native SDK adapter; source yaw, normalization,
+FMA and live-read boundaries are preserved. This advances CO-03/CO-09 without
+closing actual EVT/draw/audio/retirement or the complete Crump battle/result/
+field-return/afterbattle production chain.

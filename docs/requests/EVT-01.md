@@ -5750,3 +5750,30 @@ frame38 and50 are uninitialized by Entry. Display constants are confirmed;
 initial camera query captures its pointer, not an early matrix snapshot.
 EVT operand/name routing, actual calc_pos/native display/audio owners and
 Crump same-VM battle/return/afterbattle production composition remain open.
+
+
+### 2026-11-07: complete original fukidashi attachment caller available
+
+The [effect contract](../behavior/effect/CRUMP_FUKIDASHI_EFFECTS.md) now
+includes calc_pos80133480 with retained camera/trig/SDK/actor children and
+original scalar/FMA/bias read ordering. Original data is available through a
+normal position-pack overlay. The existing arbitrary-axis SDK stage-light
+contract was independently verified; no new local undocumented function
+blocks this caller. Native libm/Gekko estimate parity, actual EVT/name routing,
+shared effect driver, audio/draw/retirement and Crump battle/field-return
+production composition remain open.
+
+
+The current production binding audit identifies HarborEncounterRuntime::call
+case10 as the first scene hook: it still acknowledges fukidashi without an
+actual effect owner. Its private VM provisions one SDK heap; it cannot silently
+borrow game heap3. NativeFieldAnimation's process VM already has the source
+five-heap setup and is a concrete process-owner candidate for actual effect
+manager initialization and driving. The actual field NPC registry exists in
+FieldArea's separate VM; actor/camera aliases must preserve real work and
+context lifetimes before Entry/Position are bound. Current committed Crump
+startup owners are available but not activated by normal Game/main. See private
+`artifacts/fukidashi-position/production-binding-map.txt` for exact call sites
+and available/missing owners. This is an integration finding, not permission
+to fabricate guest records, treat pending audio as playback or acknowledge
+source display without its queued consumer.
