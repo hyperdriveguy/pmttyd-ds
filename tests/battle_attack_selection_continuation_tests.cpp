@@ -1,4 +1,5 @@
 #include "battle_attack_selection.hpp"
+#include "fixtures/host_event_cache.hpp"
 #include "harbor_tutorial_packed.hpp"
 #include <cassert>
 #include <functional>
@@ -165,7 +166,9 @@ void nativeAudience() {
   assert(
       vm->memory.registerRam(0x80422b44, {0x42, 0xb4, 0, 0, 0xc2, 0x48, 0, 0}));
   auto p = std::make_unique<HarborTutorialPacked>(*vm);
+  test::HostEventCache cache(*vm);
   assert(p->provision());
+  cache.requireBattlePoolPublication();
   const auto B = HarborTutorialPacked::Battle,
              U = HarborTutorialPacked::Units + 0x1000, M = B + 0x171c;
   auto put = [&](uint32_t at, uint32_t n) {

@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "assets": {
+    "crump.model": {
+      "source_disc": "G8ME01",
+      "source_path": "a/c_kanbu",
+      "source_offset": 881045368,
+      "size": 40696,
+      "sha256": "34e4c470ee711eac49fdde6b4988c4d0d0c79d2bf1055fa58e6fe46079ccbf01",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    "crump.tpl": {
+      "source_disc": "G8ME01",
+      "source_path": "a/c_kanbu-",
+      "source_offset": 881086064,
+      "size": 291712,
+      "sha256": "077869459c3b3852fdd2f9e531b7894afa1de6c10d6a21f6ab95204edf685ce1",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    "crump-z1.json": {
+      "source_disc": "G8ME01",
+      "source_path": "a/c_kanbu",
+      "source_sha256": "34e4c470ee711eac49fdde6b4988c4d0d0c79d2bf1055fa58e6fe46079ccbf01",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "conversion": "Only original Z_1 converted after existing seven clips; same texture-cell order and unchanged atlas pixels. Normal build appends to current edited primary, never regenerates it.",
+      "reference_clips": [
+        "S_1",
+        "R_2",
+        "R_1",
+        "A_1A",
+        "A_1B",
+        "A_1C",
+        "D_1"
+      ],
+      "reference_atlas_rgba_sha256": "f022cacbca2ae54c00a906cd93fd13f41447ff0c22daa1d3838d2f146d04f98e"
+    }
+  }
+}

@@ -2572,6 +2572,7 @@ void Game::tick(const Input& rawInput,const OriginalSequenceServices* sequenceSe
         // Only source setup2 initialization/phase owns this bounded battle entry.
         if(harborEncounter.battleRequested && harborEncounter.battleSetup==2 && !harborTutorial.triggered && (progress.originalPouch?harborTutorial.beginFromPouch(ticks*1000/60,*progress.originalPouch,progress.originalStory.value_or(0)):harborTutorial.beginFresh(ticks*1000/60,progress.hp,10,progress.originalStory.value_or(0)))){
             if(!harborTutorial.bindCommandDisplayPalette(commandPalette))harborTutorial.failed=true;
+            if(!harborTutorial.bindPublicSound(publicSfx))harborTutorial.failed=true;
             scene=Scene::Battle;
         }
         if(harborEncounter.locked())return;

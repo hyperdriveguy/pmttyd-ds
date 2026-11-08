@@ -50,7 +50,7 @@ the argument registers.
 Two independent `if` blocks, each guarded by `BtlUnit_CheckStatus` and each
 using `BtlUnit_GetStatus` to read a **signed byte** from the stack.
 
-### Status 11 — the `-341` step (`0x801260b0`..`0x801260e8`)
+### Status 11 — `(2*S-1)*-341` (`0x801260b0`..`0x801260e8`)
 
 ```asm
 801260b0: li      4, 11
@@ -70,7 +70,7 @@ using `BtlUnit_GetStatus` to read a **signed byte** from the stack.
 801260e8: extsh   30, 0                ; r30 = (int16)(...)
 ```
 
-### Status 10 — the `+341` step (`0x801260ec`..`0x80126128`)
+### Status 10 — `(2*S+1)*-341` (`0x801260ec`..`0x80126128`)
 
 ```asm
 801260ec: mr      3, 26
@@ -102,8 +102,8 @@ The two forms differ only in the `±1`:
 
 | Status | id contribution |
 |--------|------------------|
-| 11 | `(int16)((2 * S + 1) * -341)` where S is the signed status byte |
-| 10 | `(int16)((2 * S - 1) * -341)` |
+| 11 | `(int16)((2 * S - 1) * -341)` where S is the signed status byte |
+| 10 | `(int16)((2 * S + 1) * -341)` |
 | neither | `0` |
 
 ## Combining and drawing (`0x8012612c`..`0x8012614c`)
@@ -117,7 +117,7 @@ The two forms differ only in the `±1`:
 80126140: addi    0, 4, -20            ; r0 = r4 - 20
 80126144: mr      4, 29                ; r4 = xyz
 80126148: extsh   30, 0                ; r30 = (int16)(irand + belong + offset - 20)
-8012614c: bl      0x800d9848           ; psndSFXOn_3D(key, xyz, id)
+8012614c: bl      0x800d9848           ; psndSFXOn_3D(key, xyz); derived pitch is applied later
 ```
 
 The start id is
@@ -136,9 +136,9 @@ outside int16 range wraps rather than saturating.
 80126150: mr      4, 30                ; r4 = derived id
 80126154: mr      30, 3                ; r30 = handle
 80126158: bl      0x800d9744           ; psndSFX_pit(handle, id)
-8012615c: addis   0, 31, 3815          ; r0 = (rawSentinel & 0xFFFF0000) + 0xE7700000
-80126160: cmplwi  0, 19840             ; 19840 == 0x4D80
-80126164: bf      2, 0x80126178        ; r0 < 0x4D80 -> use raw low byte
+8012615c: addis   0, 31, 3815          ; r0 = rawSentinel + 0x0EE70000 (word wrap)
+80126160: cmplwi  0, 19840             ; compare against 0x4D80
+80126164: bf      2, 0x80126178        ; NOT EQUAL -> use raw low byte
 80126168: mr      3, 30                ; handle
 8012616c: bl      0x800d9558           ; psndSFX_get_vol(handle)
 80126170: mr      4, 3                 ; r4 = current volume
@@ -154,35 +154,21 @@ handle is the return value.
 
 ### The volume decision, stated exactly
 
-Let `T = rawSentinel`. Compute
+This paragraph supersedes the former masked-word/range interpretation. Primary
+instructions8012615c/160/164 perform full-word `addis`, compare, then branch on
+**not equal**. Let T be the raw caller word:
 
 ```
-r0 = (T & 0xFFFF0000) + 0xE7700000        (mod 2^32)
+preserve = uint32(T + 0x0EE70000) == 0x00004D80
 ```
 
-then compare `r0` **unsigned** against `0x4D80`:
-
-| Condition | Volume used | Source |
-|-----------|-------------|--------|
-| `r0 < 0x4D80` | `T & 0xFF` | low byte of the sentinel — an **explicit** volume |
-| `r0 >= 0x4D80` | return of `psndSFX_get_vol(handle)` | the **current** volume — i.e. unchanged |
-
-The `r0 < 0x4D80` branch is only reachable when
-`(T & 0xFFFF0000)` lies in `0xE7700000 .. 0xE7704D80`, i.e. when
-`T` is in `0xE7700000 .. 0xE7704D80`.
-
-Worked case for the value used by the movement-sound callers,
-`T = 250000000 = 0x0EE6B280`:
-
-```
-T & 0xFFFF0000 = 0x0EE60000
-r0 = 0x0EE60000 + 0xE7700000 = 0xF65C0000
-0xF65C0000 >= 0x4D80   ->  preserve current volume
-```
-
-So the packed-Jump / movement-sound sentinel `250000000` selects the
-**preserve-current-volume** path, not the explicit-low-byte path. This is a
-derived value from the compared words, not an observed game trace.
+Only T=`f1194d80` (signed -250000000) takes get-volume and reapplies that
+returned byte. Every other word uses T.low8 directly. No upper-half mask or
+inequality/range test occurs. Positive250000000 (`0ee6b280`) therefore selects
+explicit volume128; it is not the source voice caller's negative sentinel.
+Both branches invoke the final volume setter and return the original On handle.
+The [retained voice contract](RETAINED_BATTLE_VOICE_AND_PUBLIC_PENDING_SOUND.md)
+and `tools/verify_source_battle_voice.py` pin these exact original bytes.
 
 ## Called functions
 
@@ -207,11 +193,11 @@ derived value from the compared words, not an observed game trace.
    order matters.
 3. The `extsb` / `extsh` narrowings at both derivations and at the start id
    are part of the contract.
-4. The volume branch is unsigned and its predicate is `r0 < 0x4D80`, not
-   `r0 >= 0x4D80`. Inverting it swaps "preserve" and "explicit", which is
-   silent and easily missed.
-5. `psndSFX_get_vol` is called **before** `psndSFX_vol`, and the handle in
-   `r30` is used for both plus the return.
+4. The volume preserve branch tests equality after full-word addition, not
+   a masked-word range or an unsigned less-than condition.
+5. Only the exact negative sentinel calls `psndSFX_get_vol` before
+   `psndSFX_vol`; other raw words call only the setter. The original On handle
+   is retained for these calls and the return.
 
 ## Remaining gaps
 

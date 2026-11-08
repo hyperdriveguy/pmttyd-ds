@@ -18845,3 +18845,68 @@ partial-record ordering across holds and original driver simulation polls.
 Compose the real same-VM Crump setup2 battle/result/return chain and unchanged
 afterbattle, obtain matched original/native scene evidence and measure actual
 New2DS XL CPU/GPU/memory behavior. The wider goal remains active.
+
+## Crump source startup, constructors and retained battle owners — 2026-11-07
+
+Implemented the retained original cold-start memory leaves, source map allocator,
+UnitSetup, whole UnitEntry and display-animation-entry continuations, and their
+shared-VM Harbor owners. Constructors now allocate real original registry units
+and parts, retain child requests across holds, create actual initialization event
+roots, and enter original model names through the native animation/resource
+owners. Missing Stage/Audience/BreakSlot services remain explicit holds.
+
+Integrated the source Init/FirstAct/Main flow, physical command-menu input,
+original weapon table/evaluation, ordinary lethal damage without revival item151,
+source death rotation/camera children, queued display-pass ownership, and original
+battle sound requests. Public sound acceptance retains a logical pending request;
+it is not evidence of audible backend playback. Original Crump Z_1 pose data and
+an original pose directory are imported separately with provenance; compilation
+appends to current editable animation data without overwriting existing art.
+
+Validation is scoped to immutable input graphs, not the concurrent working tree:
+
+- Corrected full host graph: `artifacts/crump-source-unit-entry-corrected/manifest.json`
+  SHA256 `bbf5f2eb6a7ade42b8350d9d767522186ba5b95a07bc03b0167f59b7aabbb7d7`.
+  `make test` exited0:564/564 C++ tests in220.57s,242/242 Python tests
+  in38.535s, zero skips. All13438 frozen input hashes remained unchanged.
+- Native parent graph: `artifacts/crump-source-unit-entry/manifest.json`, SHA256
+  `ec34bd016a41ba9ed5506a8cb57cae71c9555bd44cc2fe8c2cdc7e1ac74b13f5`.
+  `make all -o assets-ready SOUNDTRACK=gamecube` exited0. Native 3DSX SHA256
+  `aec1b28e84a80ec6db77403f1d4c86fa294877d276dc35d31b09ae23c65c2254`.
+  The corrected host graph changes two tests only; all13436 other inputs match
+  this native parent, as recorded in `production-identity.json`.
+- First full host attempt on this parent passed562/564 C++ tests and stopped
+  before Python. One old fixture still expected ordinary lethal damage to hold;
+  it now tests the retained real151 revival path. The new constructor fixture
+  lacked the actual event SDK heap and incorrectly expected unscheduled root
+  events in the active schedule. Both test-only corrections passed focused checks
+  before the corrected full run. Earlier554-test graph had six cache-publication
+  fixture failures; actual host publication observers replaced missing fixture
+  hooks, without changing production cache semantics. These failed runs remain
+  recorded, rather than being presented as successful validation.
+- Actual NativeFieldAnimation/Resource/UnitConstruction CPU proof passed with real
+  SDK and map heaps: Mario handles0/1/2, Crump handle3, three original init roots,
+  original Crump name pointer shared into the animation VM, and resource retirement.
+  Frozen proof: `artifacts/harbor-unit-construction-positive/frozen.json`, SHA256
+  `ffc94507960c6c96742fdee158a05aa305de155e37cd94ec8e0f5f1afaa92938`.
+  This fixture supplies field information and constructor order; it does not
+  execute the normal battle startup, event scripts or GPU path.
+- Focused strict host, ASan/UBSan, ARM compilation and original ISO source-pin
+  checks are recorded in each package manifest. Corrected graph documentation
+  check passed:1635 Markdown files, zero broken links. Normal original GameCube
+  asset preparation compiled422 editable recipes before the parent was frozen.
+
+The initial Crump battle is still not playable through the normal Game path.
+The new source owners are not yet activated in place of legacy manual setup.
+The previous isolated Azahar run was rejected because it showed a black field
+and no Crump; no new emulator/playthrough or physical-device claim is made here.
+
+Next: integrate the separately frozen actual menu factory/renderer/icon and
+matching original stage hierarchy packages; bind actual MapGetWork/process
+spotlight state, Audience/BreakSlot and retained Main children; remove remaining
+fixed BattleWork/unit assumptions and prevent scene projection from overwriting
+source-owned state; compose original field start/result/wait/cleanup with the
+same VM. Freeze simulation ticks across held Draw passes, bind real animation
+and effects, then validate physical controls, the complete Crump encounter and
+original story return in an isolated emulator profile. The wider remake goal
+remains active.

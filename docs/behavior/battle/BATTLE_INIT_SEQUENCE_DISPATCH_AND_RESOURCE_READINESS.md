@@ -35,9 +35,10 @@ execute the next state's check in this invocation.
 ## State1 field services and unit setup
 
 Request marioGetPtr();read returned address+4 flags,OR0x1,store it.No null
-guard.Then request marioGetPartyId(),IGNORE its return;request partyGetPtr().
-Returned0 omits party flag write;nonzero reads that address+4,OR0x1,stores.
-There is no interpretation of the ignored party-ID value as a readiness gate.
+guard.Then request marioGetPartyId();its returned r3 is the index consumed by
+partyGetPtr() at the next call,with no intervening r3 assignment.The complete
+800bf1b4/20 getter uses that signed index.Returned pointer0 omits the party flag
+write;nonzero reads that address+4,OR0x1,stores.The ID is not a readiness gate.
 
 Request Btl_UnitSetup(retainedB),IGNORE its scalar return;then SetSeq(B,1,
 01000002).The [complete setup caller](BATTLE_UNIT_SETUP_ACTORS_AND_REPEATED_IMPORTS.md)

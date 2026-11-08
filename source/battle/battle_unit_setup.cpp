@@ -29,7 +29,7 @@ int32_t packedBattleUnitSetup(uint32_t b,const BattleUnitSetupServices& s){
  // Equipped pouch+38a has200 signed halfwords. IDs308..319 map in this exact
  // nonmonotonic order; 314 deliberately maps zero. Do not infer bit=ID-offset.
  constexpr uint32_t bits[12]={1,2,4,8,16,128,0,256,1024,2048,512,4096};
- for(unsigned i=0;i<200;++i){const auto item=uint32_t(int32_t(int16_t(m.half(m.user,pouch+0x38a+2*i))));const auto offset=item-308;if(offset<12)store(b+0x163f4,w(b+0x163f4)|bits[offset]);}
+ for(unsigned i=0;i<200;++i){const auto item=uint32_t(int32_t(int16_t(m.half(m.user,pouch+0x38a+2*i))));const auto offset=item-308;if(offset<12 && bits[offset])store(b+0x163f4,w(b+0x163f4)|bits[offset]);}
  return 1;
 }
 }

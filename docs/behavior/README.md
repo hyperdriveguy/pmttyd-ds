@@ -1494,3 +1494,20 @@ Original battle menu native resource/queue owners:
 
 - [Original exclamation/question effects](effect/CRUMP_FUKIDASHI_EFFECTS.md): complete callback, attachment, lifetime, original textures4..7, implicit sound, matrix/FIFO and production boundaries.
 - [Crowd snapshot/cache lifecycle](display/CRUMP_CROWD_SNAPSHOT_LIFECYCLE.md): original camera0 snapshots, RGB5A3 copies, stable smart headers, ext matrices/sort and reset requirements.
+| [Harbor retained source display pass](display/HARBOR_SOURCE_DISPLAY_PASS.md) | Actual source camera receipt, retained command registration/Main/Draw, HP-first original Tattle/status gates and lifetime guards | Actual field receipt publication, all source registrations, camera/resource/GPU providers and normal activation |
+- [Harbor retained weapon production](battle/HARBOR_RETAINED_WEAPON_PRODUCTION.md): whole table, affordability, eligibility and source-order selection with explicit native providers.
+- [Harbor retained source command UI](battle/HARBOR_RETAINED_SOURCE_COMMAND_UI.md): actual retained Input/menu composition, physical controls, allocator and presentation frontiers.
+
+| [Harbor retained source flow](battle/HARBOR_RETAINED_SOURCE_FLOW.md) | Actual shared VM Main/Init/FirstAct/Turn/Phase/Move/Act composition | Native scheduler and child providers |
+| [Retained unit setup](battle/BATTLE_UNIT_SETUP_CONTINUATION.md) | Complete source parent, held constructors/equipment/imports and exact equipment scan | Actual native unit/display providers |
+| [Harbor source map pool](battle/HARBOR_SOURCE_MAP_POOL.md) | Actual nested source allocator and fresh allocation lifetimes | Actual command presentation and gameplay |
+| [Cold storage](battle/BATTLE_COLD_STORAGE.md) | Nine original storage/reset bodies | Full cold/native battle initialization |
+| [Retained battle voice and public pending sound](audio/RETAINED_BATTLE_VOICE_AND_PUBLIC_PENDING_SOUND.md) | Original voice/menu public On and real pending-slot ownership | Audible macro/voice service |
+
+- [Harbor source lethal damage](battle/HARBOR_SOURCE_LETHAL_DAMAGE.md): actual ordinary lethal admission and retained source death leaves.
+- [Harbor source death rotation and camera](battle/HARBOR_SOURCE_DEATH_ROTATION_CAMERA.md): whole original event wrappers and exact source math providers.
+- [Harbor UnitEntry resources](display/HARBOR_TUTORIAL_UNIT_ENTRY_RESOURCES.md): original initial descriptors, append-only Crump entry clip and shared CPU owners.
+
+- [Harbor source startup](battle/HARBOR_SOURCE_STARTUP.md): retained original cold and UnitSetup owners with actual process resources.
+- [Retained UnitEntry and DisplayEntry](battle/BATTLE_UNIT_ENTRY_CONTINUATION.md): original constructor and held per-part animation admission.
+- [Harbor source unit construction](battle/HARBOR_SOURCE_UNIT_CONSTRUCTION.md): actual VM/map/resource/native animation provider and original-name aliases.

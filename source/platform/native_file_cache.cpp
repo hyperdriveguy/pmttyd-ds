@@ -248,6 +248,7 @@ bool stagePrologueAnimationFiles(NativeFileCache& cache,const char* root){
   {"a/c_kuri_h",5,"field-native-c_kuri_h.draw-model.bin"},
   {"a/c_kuribo",5,"trio-enemy-kuribo.draw-model.bin"},
   {"a/hoshi",5,"field-native-hoshi.draw-model.bin"},
+  {"a/c_kanbu",5,"harbor-tutorial-crump.draw-model.bin"},
   {"a/c_kanbu_ibt",5,"field-native-c_kanbu_ibt.draw-model.bin"},
   {"a/c_zako_n",5,"field-native-c_zako_n.draw-model.bin"},
   {"a/c_gara",5,"field-native-c_gara.draw-model.bin"},

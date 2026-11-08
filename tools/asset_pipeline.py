@@ -17,9 +17,10 @@ import PIL
 from PIL import Image
 from asset_animation import decode as decode_animation, encode as encode_animation
 from asset_event import encode as encode_event
+from asset_pose_extensions import auxiliary_sources, append_animation_clips, pose_directory_outputs, compile_pose_directory
 
 ROOT = Path(__file__).resolve().parents[1]
-KINDS = {'texture', 'atlas', 'model', 'actor', 'sfx', 'music', 'animation', 'pack', 'event'}
+KINDS = {'texture', 'atlas', 'model', 'actor', 'sfx', 'music', 'animation', 'pack', 'event', 'pose-directory'}
 
 
 def digest(path):
@@ -77,6 +78,9 @@ def read_manifest(path, root):
         source = contained(root, entry['source'])
         if not source.is_file():
             raise ValueError(f'{aid}: source missing: {source}')
+        for name in auxiliary_sources(entry):
+            if not contained(root, name).is_file():
+                raise ValueError(f'{aid}: auxiliary source missing: {name}')
         names = output_names(entry)
         for name in names:
             contained(root, name)
@@ -93,6 +97,8 @@ def output_names(entry):
     suffix = {'texture': '.t3x', 'atlas': '.t3x', 'actor': '.pmmesh', 'animation': '.pmanim', 'sfx': '.wav', 'music': '.wav', 'event': '.pmevt'}
     if kind in suffix and not name.endswith(suffix[kind]):
         raise ValueError(f'{entry["id"]}: output must end in {suffix[kind]}')
+    if kind == 'pose-directory':
+        return pose_directory_outputs(name)
     if kind == 'model':
         return [name + '.vertices', name + '.batches']
     if kind in ('sfx', 'music'):
@@ -330,7 +336,7 @@ def build(manifest, root, output, work, tex3ds):
         raise ValueError('Run prepare before original converters and build')
     doc = read_manifest(manifest, root)
     output.mkdir(parents=True, exist_ok=True); work.mkdir(parents=True, exist_ok=True)
-    tool_key = digest(__file__) + digest(ROOT / 'tools/asset_animation.py') + digest(ROOT / 'tools/asset_event.py') + PIL.__version__ + sys.version
+    tool_key = digest(__file__) + digest(ROOT / 'tools/asset_animation.py') + digest(ROOT / 'tools/asset_event.py') + digest(ROOT / 'tools/asset_pose_extensions.py') + digest(ROOT / 'tools/battle_pose_directory.py') + PIL.__version__ + sys.version
     if any(e['kind'] in ('texture', 'atlas') for e in doc['assets']):
         executable = shutil.which(tex3ds) or tex3ds
         tool_key += digest(executable)
@@ -341,6 +347,8 @@ def build(manifest, root, output, work, tex3ds):
             source = contained(root, entry['source']); names = output_names(entry)
             target = contained(stage, entry['output']); target.parent.mkdir(parents=True, exist_ok=True)
             kind = entry['kind']; inputs = {entry['source']: digest(source)}
+            for extra in auxiliary_sources(entry):
+                inputs[extra] = digest(contained(root, extra))
             original_prefix = None
             if entry.get('inherit_original_visibility', False):
                 if kind != 'model':
@@ -379,9 +387,12 @@ def build(manifest, root, output, work, tex3ds):
                 elif kind == 'actor':
                     compile_actor(json.loads(source.read_text()), target)
                 elif kind == 'animation':
-                    animation = json.loads(source.read_text())
+                    animation = append_animation_clips(json.loads(source.read_text()),
+                        [json.loads(contained(root, name).read_text()) for name in entry.get('append_sources', [])])
                     json.dumps(animation, allow_nan=False)
                     target.write_bytes(encode_animation(animation))
+                elif kind == 'pose-directory':
+                    compile_pose_directory(source, target, contained(root, entry['texture_source']))
                 elif kind == 'event':
                     target.write_bytes(encode_event(json.loads(source.read_text())))
                 elif kind in ('sfx', 'music'):

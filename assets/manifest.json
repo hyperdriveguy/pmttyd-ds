@@ -2,6 +2,14 @@
   "schema": 1,
   "assets": [
     {
+      "id": "original/harbor-tutorial-crump.pose-directory",
+      "kind": "pose-directory",
+      "source": "assets/original/tutorial-unit-entry/crump.model",
+      "texture_source": "assets/original/tutorial-unit-entry/crump.tpl",
+      "output": "harbor-tutorial-crump.pose-directory.bin",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
       "id": "original/effects/fukidashi-entry",
       "kind": "event",
       "source": "assets/original/effects/fukidashi/entry/event.json",
@@ -3025,6 +3033,7 @@
       "id": "original/harbor-tutorial-crump.pmanim",
       "kind": "animation",
       "source": "assets/original/animations/harbor-tutorial-crump.json",
+      "append_sources": ["assets/original/tutorial-unit-entry/crump-z1.json"],
       "output": "harbor-tutorial-crump.pmanim",
       "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
     },

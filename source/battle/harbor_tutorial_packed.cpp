@@ -1,4 +1,5 @@
 #include "harbor_tutorial_packed.hpp"
+#include "native_battle_sound.hpp"
 #include <cassert>
 #include <cstring>
 #include <cstdlib>
@@ -23,6 +24,8 @@ namespace ttyd {
 // returning fabricated zero. word/half/byte access goes through BE VM memory;
 // real uses 4-byte bit-preserving float transport; raw operands remain undecoded.
 namespace {void required(bool ok){if(!ok)std::abort();}int32_t signByte(uint8_t b){return b<128?int32_t(b):int32_t(b)-256;}}
+uint32_t HarborTutorialPacked::battleAddress()const{return word(0x8041eb90);}
+uint32_t HarborTutorialPacked::unitAddress(int32_t id)const{return battleRegistryUnit(battleAddress(),id,nativeBattleActorServices(vm));}
 uint32_t HarborTutorialPacked::word(uint32_t a)const{uint32_t v=0;required(vm.memory.readWord(a,v));return v;}
 void HarborTutorialPacked::word(uint32_t a,uint32_t v){required(vm.memory.writeWord(a,v));}
 uint8_t HarborTutorialPacked::byte(uint32_t a)const{uint8_t v=0;required(vm.memory.readByte(a,v));return v;}
@@ -40,6 +43,7 @@ uint32_t HarborTutorialPacked::actor(EventEntry& e){const auto id=translateBattl
 // complete original UnitEntry/heap/display/equipment initialization.
 bool HarborTutorialPacked::provision(){
  for(auto span:std::array<std::pair<uint32_t,unsigned>,5>{{{0x8041eb90,4},{Battle,0x19400},{Units,0x4000},{Parts,0x4000},{MenuRam,0x4000}}})if(!vm.memory.registerRam(span.first,std::vector<uint8_t>(span.second)))return false;
+ sourceMapPool_=HarborSourceMapPool::bind(vm.memory,vm.memoryBinding.services());if(!sourceMapPool_)return false;
  word(0x8041eb90,Battle);initializePackedBattleStageFloorFields(Battle,nativeBattleActorServices(vm).memory);half(Battle+8,2);half(Battle+16,1);half(Battle+24,0);byte(Battle+0xa,1);byte(Battle+0x12,255); // Fresh source group-policy adapter.
  for(unsigned i=0;i<64;++i){word(Battle+0x120+4*i,0xffffffff);word(Battle+0x16f5c+8*i,0xffffffff);}
  BattlePadWork pad;pad.init();writePackedBattlePad(Battle+0x1d1c,pad,nativeBattleActorServices(vm));writePackedBattlePad(Battle+0xf2c,pad,nativeBattleActorServices(vm));
@@ -197,6 +201,11 @@ void HarborTutorialPacked::capture(HarborTutorial& scene){
 // event result 2 is completion, 0 wait, 255 scheduler cancellation/special return.
 // Addresses below are original US callback identities, never host pointers.
 bool HarborTutorialPacked::invoke(EventEntry& e,uint32_t function,int32_t first,int32_t& result){
+ if(function==0x80104508){
+  if(!sourceSound)return false;
+  const auto completed=sourceSound->voice(e);if(!completed)return false;
+  result=*completed;return true;
+ }
  if(function==0x801054e8)return aftereffectEvent(e,result);
  if(function==0x80107708 || function==0x80107758 || function==0x80107660 || function==0x80107548)return actionEvent(e,function,result);
  if(function==0x8010a78c){

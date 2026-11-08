@@ -48,10 +48,13 @@ store after sampling,not a presumed initial value or part of the sampler call.
 
 For nonzero mask30000000,call BtlUnit_GetBelong(retained U),sign-extend low8
 result as OWNER_SIDE. Initialize chosen=-1,index J=0. Each condition rereads
-S8(BUF.a6c) and compares signed J<count. No count snapshot/clamp. At each J,
-read S8(BUF.a6d+J) as row permutation R;row=BUF+4+36*R with word wrap. Read
-signed halfword row00 as candidate ID,fetch BattleGetUnitPtr(B,ID),then call
-BtlUnit_GetBelong and sign-extend its low8. No candidate-null or kind check.
+S8(BUF.a6c) and compares signed J<count. At each J,source801232c4 first reads
+CURRENT P68 and captures mask10000000 BEFORE the permutation byte load at
+801232c8. Then read S8(BUF.a6d+J) as row permutation R;row=BUF+4+36*R with
+word wrap. Read signed halfword row00 as candidate ID,fetch BattleGetUnitPtr(B,ID),
+then call BtlUnit_GetBelong and sign-extend its low8. No candidate-null or kind
+check. Keep the captured flag branch through these children: their mutations
+become visible on the NEXT loop-head flag read,not the current candidate.
 
 The flag branch rereads CURRENT P68 for EACH row:
 

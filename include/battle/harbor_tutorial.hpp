@@ -12,6 +12,7 @@
 #include <vector>
 #include <optional>
 namespace ttyd {
+struct PositionalSfxRegistry;
 bool loadHarborTutorialAssets(const char* root);
 // Native projection of an admitted source actor; scripts/kind are guest tokens.
 // work has the original 16 unit-work slots. poseAt is a millisecond generation
@@ -117,6 +118,10 @@ public:
     // command display registration. Reuses the same boot owner across battles;
     // never initializes/reset its color history at entry or per display pass.
     bool bindCommandDisplayPalette(std::shared_ptr<BattleCommandPalette>);
+    // Same process public pending-slot owner used by original voice/menu On.
+    // Attach after begin; no synthesized handle/sample or audible-voice receipt.
+    bool bindPublicSound(std::shared_ptr<PositionalSfxRegistry>);
+    std::optional<int32_t> startPublicMenuSound(uint32_t key);
     // Original CommandDisplay registration only. The caller retains queue and
     // cursor across waits, once per simulation display pass, and dispatches all
     // registered callbacks through the camera owner. No draw/ack/input occurs.

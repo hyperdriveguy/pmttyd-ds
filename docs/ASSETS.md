@@ -4281,3 +4281,18 @@ actual adjacent source bytes for alignment. Constants are original Y+3,
 zero and kind6 spin-450. Nintendo/Intelligent Systems retain all rights;
 tracking/import grants no redistribution license. Neither raw ISO nor
 compiled products are committed.
+
+## Tutorial UnitEntry original CPU resources
+
+`assets/original/tutorial-unit-entry/` tracks original `a/c_kanbu` MODEL and
+`a/c_kanbu-` TPL plus the editable original Z_1-only animation fragment. Per-asset
+source disc G8ME01, ISO offsets, sizes, hashes and licensing are in
+`provenance.json` and `LICENSE.txt`. Original Nintendo/Intelligent Systems rights
+are retained; tracking these sources grants no redistribution license.
+`tools/harbor_tutorial_entry_assets.py` is a one-time read-only ISO import into
+an empty destination. It never runs in normal builds or overwrites edits.
+Normal `asset_pipeline` appends Z_1 to the current dedicated Crump JSON and
+emits ignored PMPOSE02/raw MODEL/TPL companions. No texture pixels, current
+animation edits, atlas dimensions, filtering or GPU allocations are changed.
+Mario/helper reuse their existing ordinary original resources. See
+[the source admission contract](behavior/display/HARBOR_TUTORIAL_UNIT_ENTRY_RESOURCES.md).

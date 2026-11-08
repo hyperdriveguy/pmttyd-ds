@@ -1,4 +1,5 @@
 #include "battle_packed_pad.hpp"
+#include "fixtures/host_event_cache.hpp"
 #include "harbor_tutorial_packed.hpp"
 #include <cassert>
 #include <memory>
@@ -6,14 +7,17 @@ using namespace ttyd;
 struct NativeFixture {
   std::unique_ptr<EventNativeRuntime> vm =
       std::make_unique<EventNativeRuntime>(0x81000000, EventNativePlatform{});
+  std::unique_ptr<test::HostEventCache> cache;
   std::unique_ptr<HarborTutorialPacked> packed;
   NativeFixture() {
+    cache=std::make_unique<test::HostEventCache>(*vm);
     // Actual original stage-floor constants used by the native provisioner.
     assert(vm->memory.registerRam(0x80422b44,
                                   {0x42, 0xb4, 0, 0, 0xc2, 0x48, 0, 0}));
     assert(vm->memory.registerRam(0x80422d68, {0x41, 0x70, 0, 0}));
     packed = std::make_unique<HarborTutorialPacked>(*vm);
     assert(packed->provision());
+    cache->requireBattlePoolPublication();
   }
   void put(uint32_t offset, uint32_t n) {
     assert(vm->memory.writeWord(HarborTutorialPacked::Battle + offset, n));

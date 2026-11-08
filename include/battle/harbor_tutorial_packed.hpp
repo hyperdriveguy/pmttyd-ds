@@ -10,10 +10,13 @@
 #include "battle_present_item.hpp"
 #include "battle_attack_selection.hpp"
 #include "battle_action_manager_continuation.hpp"
+#include "harbor_source_map_pool.hpp"
+#include "harbor_source_command_ui.hpp"
 #include <unordered_map>
 #include <unordered_set>
 #include <optional>
 namespace ttyd {
+class NativeBattleSound;
 // Native storage/provider policy. All gameplay fields copied below retain source
 // definitions. Packed entry allocation/initialization remains a scoped adapter.
 class HarborTutorialPacked {
@@ -36,6 +39,9 @@ public:
  DisplayQueue actionDisplays;
  explicit HarborTutorialPacked(EventNativeRuntime& r):vm(r){}
  bool provision();
+ // Actual source pointer/registry; legacy fixed storage remains a native bootstrap policy.
+ uint32_t battleAddress() const;
+ uint32_t unitAddress(int32_t id) const;
  bool provisionFreshPouch(const char* originalYoshiName,const ProloguePouch* entry=nullptr);
  void importMarioPouch();
  bool provisionFreshFieldInformation(uint32_t configuration,uint32_t expectedGroup,uint32_t expectedStage);
@@ -49,6 +55,7 @@ public:
  bool menuAudienceItemOn(uint32_t output);
  std::optional<bool> attackAudienceMenu(HarborTutorial&);
  BattleMenuAudienceCursor audienceMenuCursor;
+ std::shared_ptr<NativeBattleSound> sourceSound;
  BattlePresentItemCursor presentItemCursor;
  std::optional<int32_t> presentItem();
  void captureClassRows(HarborTutorial&);
@@ -67,6 +74,12 @@ public:
  // are separate; neither implicitly schedules an attack or changes the story.
  bool weaponDecided=false,commandFinalized=false;
  bool commandInputBlocked() const{return commandUnbound!=0;}
+ // Persistent actual source command scheduling; bind once to the real runtime.
+ bool bindSourceCommandUi(HarborSourceCommandUiBinding);
+ std::optional<int32_t> resumeSourceCommandInput(HarborTutorial&);
+ bool sourceCommandInputPending()const;
+ std::optional<uint32_t> sourceCommandMapChild(const HarborSourceCommandUiRequest&);
+ std::optional<uint32_t> sourceCommandEvaluationChild(const BattleWeaponEvaluationRequest&);
  bool selectWeapon(unsigned row,HarborTutorial&,void* messageUser,uint32_t(*message)(void*,uint32_t));
  uint32_t cacheMenuLabel(uint32_t key,const char* originalText);
  uint32_t runHitEvent(int32_t id,uint32_t code);
@@ -80,6 +93,8 @@ public:
  bool invoke(EventEntry&,uint32_t function,int32_t first,int32_t& result);
  bool readWord(uint32_t address,uint32_t& value) const{return vm.memory.readWord(address,value);}
 private:
+ std::shared_ptr<HarborSourceCommandUi> sourceCommandUi;
+ std::unique_ptr<HarborSourceMapPool> sourceMapPool_;
  BattlePadSample sampledPhysical{};
  uint64_t actionManagedAt=UINT64_MAX,actionDisplayedAt=UINT64_MAX;
  BattleActionManagerCursor actionManagerCursor;

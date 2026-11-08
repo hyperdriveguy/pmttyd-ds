@@ -6,8 +6,8 @@
 #include <cassert>
 #include <iostream>
 using namespace ttyd;
-uint64_t prepareCrumpAttack(HarborTutorial& scene,int32_t hp){
- assert(scene.beginFresh(0,hp,10,4));uint64_t tick=0;
+uint64_t prepareCrumpAttack(HarborTutorial& scene,int32_t hp,const ProloguePouch* entry=nullptr){
+ if(entry){assert(scene.beginFromPouch(0,*entry,4));}else{assert(scene.beginFresh(0,hp,10,4));}uint64_t tick=0;
  for(unsigned n=0;n<1500 && !scene.introComplete;++n){
   if(scene.pendingService==0x80106980)scene.animationComplete(1);
   scene.tick((++tick)*1000/60,n%4==0?0x100:0);
@@ -41,8 +41,12 @@ void ordinaryCrumpImpact(){
  assert(!scene.failed && scene.actors[1].hp==6 && scene.result==0);
 
 }
-void retainedLethalImpact(){
- HarborTutorial scene;auto tick=prepareCrumpAttack(scene,1);BattlePadSample noInput;
+void retainedRevivalImpact(){
+ // Actual inventory bytes exercise the unbound original revival branch.
+ // Ordinary lethal/no151 now completes and has its own source-script tests.
+ constexpr unsigned CurrentHp=0x70,RegularItems=0x192;constexpr int16_t LifeShroom=151;
+ auto pouch=initializeProloguePouch("Yoshi");pouch.half(CurrentHp,1);pouch.half(RegularItems,LifeShroom);
+ HarborTutorial scene;auto tick=prepareCrumpAttack(scene,1,&pouch);BattlePadSample noInput;
  for(unsigned n=0;n<600 && scene.pendingService!=0x8010a78c;++n)scene.tick((++tick)*1000/60,0,&noInput);
  assert(!scene.failed && scene.attackActive && scene.pendingService==0x8010a78c && scene.actors[1].hp==1);
  for(unsigned n=0;n<10;++n)scene.tick((++tick)*1000/60,0,&noInput);
@@ -201,7 +205,7 @@ void nativeCommandFlow(){
 }
 int main(){
  assert(loadMessageIcons("romfs/message-icons.bin") && messageIcon(108) && messageIcon(109));
- assert(loadHarborTutorialAssets("romfs"));ordinaryCrumpImpact();retainedLethalImpact();nativeWeaponRows();nativePlayerAttack();nativeCommandFlow();sampledPlayerResult(false);sampledPlayerResult(true);HarborTutorial t;assert(t.begin(0,7));
+ assert(loadHarborTutorialAssets("romfs"));ordinaryCrumpImpact();retainedRevivalImpact();nativeWeaponRows();nativePlayerAttack();nativeCommandFlow();sampledPlayerResult(false);sampledPlayerResult(true);HarborTutorial t;assert(t.begin(0,7));
  for(uint64_t tick=1;tick<300 && !t.message.active();++tick)t.tick(tick*1000/60,0);
  uint32_t packedSystem=0;
  assert(!t.failed);assert(t.initialized);assert(t.actors[0].hp==5 && t.actors[0].maxHp==5);

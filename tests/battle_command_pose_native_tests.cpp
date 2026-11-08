@@ -1,4 +1,5 @@
 #include <memory>
+#include "fixtures/host_event_cache.hpp"
 #include "battle_command_pose_native.hpp"
 #include "battle_event_callbacks.hpp"
 #include "battle_command_pose.hpp"
@@ -10,8 +11,8 @@
 using namespace ttyd;
 int main(){
  EventScriptAssets scripts;assert(scripts.load("romfs/harbor-tutorial-events.pmevt"));
- auto vm=std::make_unique<EventNativeRuntime>(0x81000000,EventNativePlatform{});auto packed=std::make_unique<HarborTutorialPacked>(*vm);
- assert(vm->memory.importScripts(scripts));assert(packed->provision());
+ auto vm=std::make_unique<EventNativeRuntime>(0x81000000,EventNativePlatform{});test::HostEventCache cache(*vm);auto packed=std::make_unique<HarborTutorialPacked>(*vm);
+ assert(vm->memory.importScripts(scripts));assert(packed->provision());cache.requireBattlePoolPublication();
  HarborTutorialActor mario;mario.id=1;mario.kind=222;mario.hp=mario.maxHp=10;
  assert(packed->registerActor(mario));
  const auto unit=HarborTutorialPacked::Units+0x1000,part=HarborTutorialPacked::Parts+0x1000;

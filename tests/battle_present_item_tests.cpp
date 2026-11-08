@@ -1,4 +1,5 @@
 #include "battle_packed_recovery.hpp"
+#include "fixtures/host_event_cache.hpp"
 #include "battle_present_item.hpp"
 #include "harbor_tutorial_packed.hpp"
 #include <cassert>
@@ -289,7 +290,9 @@ void nativeGeneric() {
   assert(
       vm->memory.registerRam(0x80422b44, {0x42, 0xb4, 0, 0, 0xc2, 0x48, 0, 0}));
   auto p = std::make_unique<HarborTutorialPacked>(*vm);
+  test::HostEventCache cache(*vm);
   assert(p->provision());
+  cache.requireBattlePoolPublication();
   const auto B = HarborTutorialPacked::Battle;
   auto put = [&](uint32_t at, uint32_t n) {
     assert(vm->memory.writeWord(at, n));

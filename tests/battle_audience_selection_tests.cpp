@@ -1,4 +1,5 @@
 #include "battle_audience_item_on.hpp"
+#include "fixtures/host_event_cache.hpp"
 #include "battle_weapon_menu_main.hpp"
 #include "harbor_tutorial_packed.hpp"
 #include <cassert>
@@ -63,11 +64,11 @@ void retainedInterruption(){
  Fixture blocked;blocked.w[Fixture::B+0xef4]=0x40000000;assert(resumePackedBattleMenuAudienceCheck(blocked.services(),c)==false && !blocked.queries);
 }
 void nativePhysicalBridge(){
- auto ownedVM=std::make_unique<EventNativeRuntime>(0x81000000,EventNativePlatform{});auto& vm=*ownedVM;
+ auto ownedVM=std::make_unique<EventNativeRuntime>(0x81000000,EventNativePlatform{});auto& vm=*ownedVM;test::HostEventCache cache(vm);
  assert(vm.memory.registerRam(0x80422b44,{0x42,0xb4,0,0,0xc2,0x48,0,0}));
  assert(vm.memory.registerRam(0x80424988,std::vector<uint8_t>(0x48)));
  assert(vm.memory.registerRam(0x802fa104,std::vector<uint8_t>(48)));
- auto ownedPacked=std::make_unique<HarborTutorialPacked>(vm);auto& p=*ownedPacked;assert(p.provision());auto ownedScene=std::make_unique<HarborTutorial>();auto& scene=*ownedScene;
+ auto ownedPacked=std::make_unique<HarborTutorialPacked>(vm);auto& p=*ownedPacked;assert(p.provision());cache.requireBattlePoolPublication();auto ownedScene=std::make_unique<HarborTutorial>();auto& scene=*ownedScene;
  const auto B=HarborTutorialPacked::Battle,U=HarborTutorialPacked::Units;
  auto put=[&](uint32_t at,uint32_t v){assert(vm.memory.writeWord(at,v));};
  auto read=[&](uint32_t at){uint32_t v;assert(vm.memory.readWord(at,v));return v;};

@@ -1,4 +1,5 @@
 #include "harbor_tutorial.hpp"
+#include "native_battle_sound.hpp"
 #include "battle_command_palette_memory.hpp"
 #include "message_assets.hpp"
 #include "event_native_runtime.hpp"
@@ -340,6 +341,27 @@ std::optional<HarborClassMenuDrawBinding> HarborTutorial::classMenuDrawBinding(
 // Process-owned palette binds once per runtime; same owner may reattach,
 // different owner is rejected. Do not reset source color history on each battle
 // entry/display; caller owns the shared palette across scene lifetimes.
+bool HarborTutorial::bindPublicSound(std::shared_ptr<PositionalSfxRegistry> registry){
+ if(!runtime_ || !runtime_->packed || !registry)return false;
+ auto& r=*runtime_;
+ if(r.packed->sourceSound)return r.packed->sourceSound->usesRegistry(registry.get());
+ // Independent weak proof prevents a retained sound owner from extending a
+ // Runtime->Packed->sound->Runtime cycle or dereferencing an old facade.
+ struct Proof{std::weak_ptr<HarborTutorialRuntime> runtime;uint32_t battle=0;};
+ auto proof=std::make_shared<Proof>();proof->runtime=runtime_;proof->battle=r.packed->battleAddress();
+ if(!proof->battle)return false;
+ NativeBattleSoundBinding binding;binding.vm=&r.vm;binding.random=&r.packed->random;
+ binding.registry=std::move(registry);binding.lifetime=proof;binding.user=proof.get();
+ binding.current=[](void* user){auto held=static_cast<Proof*>(user)->runtime.lock();uint32_t b=0;
+  return held && held->packed && held->vm.memory.readWord(0x8041eb90,b) &&
+   b==static_cast<Proof*>(user)->battle;
+ };
+ r.packed->sourceSound=std::make_shared<NativeBattleSound>(binding);return true;
+}
+std::optional<int32_t> HarborTutorial::startPublicMenuSound(uint32_t key){
+ if(!runtime_ || !runtime_->packed || !runtime_->packed->sourceSound)return {};
+ auto held=runtime_;return held->packed->sourceSound->menu(key);
+}
 bool HarborTutorial::bindCommandDisplayPalette(std::shared_ptr<BattleCommandPalette> palette){
  if(!runtime_ || failed || !palette)return false;
  auto& r=*runtime_;
