@@ -160,7 +160,7 @@ FileAcquisitionServices NativeFileCache::services(){
 // if the first admitted acquisition holds. Initial staged type guards only new
 // loads; source reuse ignores requested type. c.type still pins held requests.
 bool NativeFileCache::filenameMatches(const std::string& path)const{
- return path.size()<name_.size() && std::equal(path.begin(),path.end(),name_.begin()) && name_[path.size()]==0;
+ return path.size()<name_.size() && std::equal(path.begin(),path.end(),name_.begin(),[](char a,uint8_t b){return uint8_t(a)==b;}) && name_[path.size()]==0;
 }
 bool NativeFileCache::publishFilename(const std::string& path){
  if(servicing_ || acquisition_.phase || async_.phase || word(Global)!=Manager || path.size()>=name_.size() || path.find('\0')!=std::string::npos)return false;

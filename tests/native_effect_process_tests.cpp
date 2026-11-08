@@ -69,6 +69,13 @@ void heldCallbacksAndExactRelease(){
  // cleanup; source auto-release frees only exact requested context1 payloads.
  assert(f.effects->retire()&&!f.effects->current()&&!f.effects->main(&f,2,update));assert(!NativeEffectProcess::create(f.ui,"romfs"));
 }
+void publishedFilenameUsesUnsignedBytes(){
+ auto files=NativeFileCache::create();const std::string name="a/"+std::string(1,char(0xe9));
+ assert(files->stage(name,0,{1,2,3,4}));EventNativeRuntime vm{0x81000000,{}};assert(files->bind(vm.memory));
+ assert(files->publishFilename(name));const auto handle=files->acquire(name,0,true);assert(handle&&*handle);
+ // Byte-preserving source filenames must compare equally on signed-char hosts.
+ assert(files->publishFilename(name)&&files->request(name,0,0,true)==handle);
+}
 void unsupportedLanguageRetainsRealFilename(){
  F f;assert(f.effects->initialize());auto& m=f.memory();const auto gp=word(m,0x80415fd0);
  put(m,gp+0x16c,2);NativeEffectUpdate absent;
@@ -87,4 +94,4 @@ void replacedColdStorageAndMissingUpdate(){
  assert(!replaced.effects->current()&&!replaced.effects->initialize()&&!replaced.effects->constructionServices().memory.word);
 }
 }
-int main(){actualInitAndFileDriver();heldCallbacksAndExactRelease();unsupportedLanguageRetainsRealFilename();replacedColdStorageAndMissingUpdate();}
+int main(){actualInitAndFileDriver();heldCallbacksAndExactRelease();publishedFilenameUsesUnsignedBytes();unsupportedLanguageRetainsRealFilename();replacedColdStorageAndMissingUpdate();}
