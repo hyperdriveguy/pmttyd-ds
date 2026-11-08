@@ -17379,3 +17379,40 @@ Goal remains active. Next: SDK matrix providers, draw wrappers/native Main/Inner
 ownership, later changed sources and remaining native/tool modules. Whole-file
 Trio numeric synthesis and whole-port documentation remain unproven; neither
 local fixtures nor hash matches establish that broader completion.
+
+### Shared animation SDK and draw-owner documentation
+
+Added 91 inline comment lines across eight implementation/header files for
+animation_sdk_matrix_binding, animation_render_sdk_binding,
+animation_draw_wrapper and animation_native_main. Explained matrix pair
+ordering, live SDK constants, axis/trig behavior, semantic camera tokens, lazy
+view pairs, normal/point publications, tagged argument limits, retained wrapper
+frontiers, persistent GQR words and linked-frame reuse/lifetimes. Added/indexed
+docs/code/animation-sdk-draw-ownership.md. Code/docs commit: `ff57a62c`.
+All eight files preserve executable tokens and string literals.
+
+Validation: existing animation_draw_wrapper and animation_native_main fixtures
+compiled and passed with both annotated implementations linked first. The four
+wrapper/native Main source/header files and both fixture sources match the prior
+validated animation-memory-selection snapshot. Tests use its coherent copied
+headers/core/ROMFS; actual Main resources, linked/cyclic holds and ownership
+checks retain that snapshot scope. New SDK/render adapters instead received
+host and ARM C++17 syntax checks against captured current committed headers.
+All four translation units passed both syntax gates. SDK/render runtime, native
+linking and GPU/hardware behavior were not exercised in this batch. Ten
+live/private documented hashes, 131 local links, 563 current and
+546 prior supporting header hashes, supporting core and 114 accepted
+product hashes passed final audits. No tests were added.
+
+Full make test/all were not repeated for comments/prose-only changes; there
+are no executable changes. Earlier full-suite/build results retain their own
+snapshot scope; these checks do not validate concurrent implementation changes.
+No asset edits/imports/conversions, ISO writes, story changes or emulator runs.
+Exact commands, logs, hashes, scoped patch and documented copies:
+artifacts/animation-sdk-ownership-code-documentation-validation/.
+
+The documentation goal remains active. Next: native Inner/group/render owners,
+remaining animation resource/publication adapters, later changed sources and
+remaining native/tool modules. Whole-file Trio numeric synthesis and full-port
+comment coverage remain unproven. Local fixtures/hash matches alone cannot
+establish that broader completion.
