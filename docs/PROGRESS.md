@@ -19030,3 +19030,53 @@ completion; resume the original beforebattle tail and afterbattle event. Then
 validate normal fresh/resume paths in isolated Azahar and compare original
 observations; measure actual 400-crowd budgets on hardware. Do not release a held
 source result or presentation service through a synthetic completion receipt.
+
+
+### Frontend legacy Mario texture residency (2026-11-07)
+
+A long post-proof storybook capture exposed demo-chest texture allocation
+failure with327KB linear space free. Static source/asset review identified the
+unused1024x1024 RGBA8 legacy Mario bank retaining4MiB throughout Book/market.
+Frontend entry now retires it after GPU sync. Reached House/HouseReturn/
+MapDisplay and Arrival Mario draws admit it before FrameBegin; capture-only map
+frames and other non-consuming scenes retire it. CPU animations remain loaded.
+Draw guards reject missing atlas instead of publishing a successful scene.
+Original book overlap, marketplace textures/three actors, story/dialogue and
+art conversion remain unchanged. No new asset import or fabricated story logic.
+
+Full host validation now passes:578/578 C++ in45.28s and261/261 Python
+in42.504s, zero skips. Full normal make all prepared434 original asset recipes
+and passed; the final battle-only relink reused the unchanged prepared pack and
+also passed. Source/asset read-only review found no concrete residency regression.
+
+Serialized checks exposed a real pre-existing battle mismatch after the first
+parallel asset rebuild caused temporary missing-pack failures. Restored actual
+battle/unit/body-part registry lookups, real no-LifeShroom admission and four
+original death leaves in separate commit1c591823. The unchanged lethal fixture
+now passes; original ten-span source proof passes. Rotation/camera, revival
+consumption and full result/field return remain unfinished. Earlier failed logs
+are retained. No fixture assertion was weakened.
+
+An uninstrumented baseline360s run reproduces the demo-chest allocation failure
+with327KB free. The first fixed360s capture was still a book page, so it does
+not prove market admission. Its physical A/title/files/new-House input run does
+show textured Mario in the House interior after retirement/re-admission, without
+native exception. Its exact initial binary was not archived before the later
+battle-only relink; those captures remain historical observations, not final
+binary identity proof.
+
+The final exact binary's fresh isolated long Azahar run exits 0. Natural
+captures at 180s and 225s show the market close-up with Peach, merchant,
+chest and original dialogue, without the allocation warning. Later physical
+A/title/files/new-House input reaches a textured Mario and Luigi in the House
+interior (house-step-60.png). All 4,731 frozen source files, 2,217 products,
+620 native objects and the executed binary are hash-pinned; executable source,
+products, objects and binary remain unchanged from preflight. Evidence is in
+artifacts/frontend-mario-residency-validation-manifest.json and the isolated
+smoke-normal-long profile. User profiles/saves are untouched. This verifies
+market admission and later House texture re-admission; Arrival re-admission,
+original matched pixels and physical hardware timing remain unmeasured.
+
+Next: continue genuine source light/ambient/camera/material/GX map activation
+and Game/EVT ownership. Full prologue/Crump round trip, original
+matched captures and physical New2DS XL measurements remain unfinished.

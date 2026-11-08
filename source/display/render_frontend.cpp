@@ -19,7 +19,9 @@ void Renderer::beginFrontend(){
     if(nativeMarioTexture.imported){Tex3DS_TextureFree(nativeMarioTexture.imported);C3D_TexDelete(&nativeMarioTexture.texture);nativeMarioTexture=Texture{};}
     nativeMarioTextureBank=-1;nativeMarioBatches.clear();
     for(auto* room:{&plaza,&stage,&trioBackground,&trioStage})freeRoom(*room);
-    if(!prepareLegacyMarioTexture())return;
+    // Book/market/title use their own actor banks. The 4MiB legacy Mario
+    // atlas belongs only to reached House/Arrival draws, admitted below.
+    if(characterTextures.imported){Tex3DS_TextureFree(characterTextures.imported);C3D_TexDelete(&characterTextures.texture);characterTextures=Texture{};}
     // Admit Title before the opening clock/music starts. Preserve these small
     // owners across the attract demo so its white exit performs no cold import.
     for(const char* name:{"title-background","title-logo","title-copyright","title-prompt","title-prompt-pattern"})
@@ -264,11 +266,13 @@ bool Renderer::frontWorld(const char* map,CameraPoint eye,CameraPoint at,const O
             ok=actor(n==1?"c_luigi":"c_paretta",scene.actorPose(n,talking),{a.position[0],a.position[1],a.position[2]},right?180:0,float(opening->now*60/1000-a.poseTick)) && ok;
         }
         if(scene.actors[0].visible) {
+            if(!characterTextures.imported)return false;
             const auto& a=scene.actors[0];const bool right=a.yaw>0 && a.yaw<180;
             const int first=count;ok=characterModel(scene.actorPose(0,false),float(opening->now*60/1000-a.poseTick),{a.position[0]*.01f,a.position[2]*.01f},a.position[1]*.01f,right?180:0,right) && ok;
             auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);if(count>first)GSPGPU_FlushDataCache(vertices+first,size_t(count-first)*sizeof(Vertex));C3D_TexBind(0,&characterTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,first,count-first);
         }
     } else if(opening && opening->part==OpeningPart::Arrival && opening->harbor.marioVisible) {
+        if(!characterTextures.imported)return false;
         const int first=count;characterModel("M_S_1",float(snapshot.ticks),{0,2.25f},.15f,180,false);
         auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);if(count>first)GSPGPU_FlushDataCache(vertices+first,size_t(count-first)*sizeof(Vertex));C3D_TexBind(0,&characterTextures.texture);C3D_DrawArrays(GPU_TRIANGLES,first,count-first);
     }
@@ -311,8 +315,18 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,OpeningSequence& ope
         f.screen==FrontScreen::Opening?200+uint32_t(opening.part==OpeningPart::MapDisplay?OpeningPart::HouseReturn:opening.part):0;
     if(phase!=frontPhase){releaseFrontend(f.screen==FrontScreen::Opening && opening.part==OpeningPart::Voyage && opening.mapTransition.entryRequested && !opening.mapTransition.entryComplete,f.screen==FrontScreen::Demo || f.screen==FrontScreen::Title || f.screen==FrontScreen::Files);frontPhase=phase;}
     if(opening.mapTransition.entryComplete && mapTurnReady){C3D_FrameSync();freeMapTurn();}
-    const bool mapWorldReady=!(f.screen==FrontScreen::Opening && opening.part==OpeningPart::Voyage && opening.mapTransition.entryRequested && !opening.mapTransition.entryComplete) || prepareFrontWorld("opening-muj_20",&opening,demo);
     const bool mapCapture=f.screen==FrontScreen::Opening && opening.part==OpeningPart::MapDisplay && opening.mapTransition.requested && !opening.mapTransition.captureReady;
+    const bool houseMario=f.screen==FrontScreen::Opening && !mapCapture &&
+        (opening.part==OpeningPart::House || opening.part==OpeningPart::HouseReturn || opening.part==OpeningPart::MapDisplay) && opening.house.actors[0].visible;
+    const bool arrivalMario=f.screen==FrontScreen::Opening && opening.part==OpeningPart::Arrival && opening.harbor.marioVisible;
+    const bool marioNeeded=houseMario || arrivalMario;
+    if(!marioNeeded && characterTextures.imported){
+        C3D_FrameSync();Tex3DS_TextureFree(characterTextures.imported);C3D_TexDelete(&characterTextures.texture);characterTextures=Texture{};
+    }
+    // Admission precedes FrameBegin and the scene completion receipt. Keep
+    // CPU animations; only the GPU atlas follows actual draw ownership.
+    const bool marioReady=!marioNeeded || prepareLegacyMarioTexture();
+    const bool mapWorldReady=!(f.screen==FrontScreen::Opening && opening.part==OpeningPart::Voyage && opening.mapTransition.entryRequested && !opening.mapTransition.entryComplete) || prepareFrontWorld("opening-muj_20",&opening,demo);
     const bool mapCaptureReady=!mapCapture || prepareMapTurn(opening.mapTransition);
     if(f.screen==FrontScreen::Demo && demo.bookComplete && !demo.book.adjusting &&
        std::any_of(frontTextures.begin(),frontTextures.end(),[](const auto& texture){return texture.name.rfind("demo-",0)==0;})) {
@@ -356,7 +370,7 @@ void Renderer::renderFrontend(Frontend& f,OpeningDemo& demo,OpeningSequence& ope
     uint8_t voyageWhitePresented=0;
     int mapPresented=-1;
     float mapTurnPresented=-1;unsigned mapTurnType=0;
-    bool ok=wakeReady && mapCaptureReady && mapWorldReady && marketReady;std::array<float,4> paperPresented{{-1,-1,-1,-1}};
+    bool ok=wakeReady && mapCaptureReady && mapWorldReady && marketReady && marioReady;std::array<float,4> paperPresented{{-1,-1,-1,-1}};
     if(f.screen==FrontScreen::Demo && demo.bookComplete) {
         const auto& scene=demo.market;
         ok=marketReady && frontWorld("opening-demo-market",{scene.eye[0],scene.eye[1],scene.eye[2]},{scene.at[0],scene.at[1],scene.at[2]},nullptr,demo);

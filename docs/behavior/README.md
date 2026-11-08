@@ -1513,3 +1513,5 @@ Original battle menu native resource/queue owners:
 - [Harbor source unit construction](battle/HARBOR_SOURCE_UNIT_CONSTRUCTION.md): actual VM/map/resource/native animation provider and original-name aliases.
 
 - [Native original map hit construction](field/NATIVE_MAP_HIT_CONSTRUCTION.md): retained source hierarchy, packed quantization, triangle winding and explicit Distance estimate boundary.
+
+- [Frontend legacy Mario residency](display/FRONTEND_LEGACY_MARIO_RESIDENCY.md): retire the unused4MiB bank during Book/market and admit it for reached House/Arrival draws.

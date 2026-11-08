@@ -589,3 +589,13 @@ cancellation/teardown and original rendered observations. The independent
 tag1 snapshot release caller is now verified: field-map `_unload` calls
 `extReset`, both heap clears and later `smartAutoFree(1)` at80007c04. Native owners and
 New2DS XL performance still need implementation and measurement.
+
+
+2026-11-07 native resource boundary: long constructor-validation capture exposed
+actual demo-chest texture admission failure with327KB linear space free. The
+storybook/market do not consume the eager1024x1024 RGBA8 legacy Mario atlas;
+its4MiB now retires after GPU sync and is admitted before reached House/Arrival
+Mario draws. Visible book overlap, all three market actors, original poses,
+messages and story order are preserved. See [residency contract](../behavior/display/FRONTEND_LEGACY_MARIO_RESIDENCY.md).
+This supplies a native resource lifetime, not complete prologue/Crump round-trip
+or original hardware/pixel/timing evidence.
