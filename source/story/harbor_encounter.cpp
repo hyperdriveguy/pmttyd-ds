@@ -41,6 +41,7 @@ bool loadHarborEncounterAssets(const char* root) {
 }
 struct HarborEncounterRuntime {
     HarborEncounter* scene=nullptr;std::optional<float> floor;
+    std::shared_ptr<ProloguePouch> pouch;
     struct Move {std::array<float,3> start{},target{};uint64_t begin=0,end=0;bool active=false;};
     std::array<Move,5> moves{};FieldScriptedJump jump;bool jumpLive=false;
     std::unordered_map<uint32_t,uint64_t> waits;
@@ -150,8 +151,11 @@ struct HarborEncounterRuntime {
             if(!jumpLive)return 0;
             const int result=jump.tick(floor);a.position[1]=jump.y;if(!(a.flags&2) && jump.phase==2 && a.pose!="M_J_1C"){a.pose="M_J_1C";a.poseAt=scene->now;}
             if(result){jumpLive=scene->scriptedJump=false;if(!(a.flags&2)){a.pose="M_S_1";a.poseAt=scene->now;}}return result;}
-        case 18:setEventValue(e,operand(e,0),scene->hp,vm.interpreterServices().operands);return 2;
-        case 19:scene->hp=value(e,0);return 2;
+        case 18:scene->hp=pouch?pouch->currentHP():scene->hp;
+            setEventValue(e,operand(e,0),scene->hp,vm.interpreterServices().operands);return 2;
+        case 19:if(pouch){pouch->setHP(value(e,0));scene->hp=pouch->currentHP();}
+            else scene->hp=value(e,0);
+            return 2;
         case 20:if(npc(e,0)!=2){scene->failed=true;return 0;}scene->battleSetup=value(e,1);return 2;
         case 21:case 22:case 23:{
             if(found->second==21)scene->battleRequested=true;
@@ -183,12 +187,12 @@ struct HarborEncounterRuntime {
 // Native pre-admission placements: floor15, roots55/105/135/160 and Z-300/-330;
 // Goombella yaw90, others270, source NPC flags0x40000620. Original resume branch
 // may overwrite these. First manager visit runs immediately with support15.
-bool HarborEncounter::begin(uint64_t time,std::array<float,3> mario,int health,bool resume){
+bool HarborEncounter::begin(uint64_t time,std::array<float,3> mario,int health,bool resume,std::shared_ptr<ProloguePouch> pouch){
     if(!ready || triggered)return false;
-    *this=HarborEncounter{};triggered=true;now=time;hp=health;
+    *this=HarborEncounter{};triggered=true;now=time;hp=pouch?pouch->currentHP():health;
     actors[0].position=mario;
     for(unsigned i=1;i<5;++i){actors[i].position={float(i==1?55:i==2?105:i==3?135:160),15,float(i<3?-300:-330)};actors[i].yaw=i==1?90:270;actors[i].flags=0x40000620;}
-    runtime_=std::make_shared<HarborEncounterRuntime>();runtime_->scene=this;
+    runtime_=std::make_shared<HarborEncounterRuntime>();runtime_->scene=this;runtime_->pouch=std::move(pouch);
     if(!runtime_->initialize(resume)){failed=true;return false;}tick(time,0,15);return !failed;
 }
 // Same-time calls are allowed; backwards time/failure stops dispatch. Advance
@@ -222,6 +226,7 @@ void HarborEncounter::tick(uint64_t time,uint32_t keys,std::optional<float> supp
             auto&root=createRootEvent(r.vm.schedule,script,10,0,r.vm.creationServices());root.locals[0]=r.nativeResume?1:0;r.nativeRootStarted=true;
         }
     }else r.advance();
+    if(r.pouch)hp=r.pouch->currentHP();
     if(message.active())message.tick(now,keys);
     r.vm.gp.timestamp=now*eventClockRate(243000000);r.vm.runManager();
     if(r.retiredBattlePending){pendingService=r.retiredBattlePending;finished=false;return;}

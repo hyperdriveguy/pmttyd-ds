@@ -472,3 +472,15 @@ This closes that finite field-storage bridge, without claiming whole original
 card-load, every battle VM/Harbor export, item UI, source End or field return.
 Existing Trio export already writes the same supplied object. Parent request
 remains open; no new unknown original body or duplicate documentation request.
+
+
+2026-11-08 native implementation breadcrumb: Harbor beforebattle now retains
+the supplied canonical pouch and uses its live signedHP for original get/set
+callbacks; Game passes the object before first execution. Source setter narrows
+low16 before signed upper-only maxHP cap. Independent read-only ISO review pins
+DOL wrappers800f0b68/4c and800f0b38/30 and leaf get800d3d30/c and set800d3d00/24
+in artifacts/harbor-pouch-hp/review.txt. Stale UI HP no longer prevents the
+original conditional minimum5 from reaching tutorial pouch import. No new
+unknown body requested: existing accessor documentation suffices. Whole legacy
+HP authority, genuine Harbor ending export and field/battle lifecycle remain
+open; this partial consumer does not close ITEM-01.

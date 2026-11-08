@@ -1536,7 +1536,8 @@ void Game::updateTemporaryProfessor() {
     }
 }
 bool Game::beginHarborEncounter(bool resume) {
-    if(!harborEncounter.begin(ticks*1000/60,{progress.position.x*100,groundHeight*100,progress.position.z*100},progress.hp,resume))return false;
+    if(!harborEncounter.begin(ticks*1000/60,{progress.position.x*100,groundHeight*100,progress.position.z*100},progress.hp,resume,progress.originalPouch))return false;
+    progress.hp=harborEncounter.hp;
     const auto& m=harborEncounter.actors[0].position;
     progress.position={m[0]*.01f,m[2]*.01f};groundHeight=progress.elevation=m[1]*.01f;
     harborStory.enabled=harborStory.triggered=harborStory.finished=true;harborCameraCursor=0;

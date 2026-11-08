@@ -2,6 +2,7 @@
 #include "message_playback.hpp"
 #include "field_scripted_jump.hpp"
 #include "field_npc_battle_event.hpp"
+#include "prologue_pouch.hpp"
 #include "native_harbor_encounter_field.hpp"
 #include <array>
 #include <memory>
@@ -41,7 +42,10 @@ public:
     // time/tick use milliseconds; resume initializes source LW0=1 (fresh0).
     // Repeated begin is rejected until the caller explicitly resets the owner.
     // floor is native jump support, distinct from VM request coordinates.
-    bool begin(uint64_t time,std::array<float,3> mario,int hp,bool resume);
+    // Supplied canonical storage owns HP; scalar is a legacy fallback only.
+    // Retain the object across held event calls and read at each source request.
+    bool begin(uint64_t time,std::array<float,3> mario,int hp,bool resume,
+               std::shared_ptr<ProloguePouch> pouch={});
     // Fresh native source path; unavailable children hold. Legacy begin remains separate.
     bool beginNativeField(uint64_t time,std::array<float,3> mario,int hp,bool resume,NativeHarborEncounterFieldConfig);
     bool nativeFieldVmIs(const EventNativeRuntime&)const;

@@ -20468,3 +20468,38 @@ finishing/fade/both-screen presentation, actual synchronized teardown and sealed
 source Wait/postbattle dialogue. Complete fresh field movement/facing and other
 reached providers before switching production admission. Fresh/resumed full
 Crump victory/return, level-up/party domains and hardware performance remain open.
+
+
+### Canonical Crump beforebattle HP binding (2026-11-08)
+
+Fixed the staged beforebattle resource handoff: HarborEncounter retains the
+supplied canonical pouch before its first manager visit. Original get/set
+requests read/write that same packed record; Game forwards the field pouch and
+updates its scalar view. Original SetHP narrows to signed16 before its upper-only
+maxHP cap; it never lower-clamps. The conditional source5HP floor now reaches
+Harbor tutorial import, rather than only changing a stale UI scalar. Null legacy
+inventory remains the explicit old scalar adapter. No allocation per tick, new
+asset import, dialogue edit, result or sequence completion is added.
+
+Focused tests pass3/3 in2.51s: packed accessor signed/narrowing/cap cases,
+unrelated-byte preservation, original022..024 order, stale/live resource reads,
+retained pending calls and normal staged Game import at5/10HP with unchanged2FP.
+Read-only ISO verification passes25 DOL spans/419 anchors, and independent source
+review confirms both original imported event wrappers and leaf accessors.
+
+The first candidate based on2a50f986 passed643 C++ tests (108.93s),278 Python
+tests (47.115s), and native make all. Concurrent map34206dcb and Crump770d7f4c
+commits then landed. Their combined source plus this scoped HP bridge is now
+under full make test/native make all validation; no combined success claim is
+made at this incremental commit. The merged native encounter path was separately
+reviewed: its own dispatch and current/advance/root ordering are preserved; only
+staged begin supplies the typed pouch. Validation results will follow.
+
+Remaining: this bridge does not route every legacy HP producer or supply actual
+field/battle/sequence ownership, canonical victory export/return, story5 resume,
+original afterbattle/crowd/effect/audio presentation, cold-load optimization or
+New2DS hardware parity/performance. The existing completion receipt supplies a
+source-based packed export; next retain the actual battle-entry canonical pouch
+and commit only a validated completed receipt once, then compose genuine field
+ticket/teardown/return owners. See artifacts/harbor-pouch-hp/next-export-audit.txt
+and the updated shared-pouch/Crump integration contracts. Full-game goal active.

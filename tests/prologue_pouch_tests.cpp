@@ -13,6 +13,14 @@ int main(){
     for(unsigned i=3;i<121;++i)assert(pouch.half(0xa0+2*i)==0);
     assert(std::strcmp(reinterpret_cast<const char*>(pouch.bytes.data()+0x5c0),"fixture name")==0);
     assert(pouch.half(6)==0);for(unsigned i=1;i<=7;++i)assert(pouch.half(14*i+6)==10);
+    // Original setter narrows before comparing and never lower-clamps.
+    const auto original=pouch.bytes;
+    for(const auto values:{std::array<int32_t,2>{12,10},{-1,-1},{65538,2},{32768,-32768},{65535,-1}}){
+        pouch.setHP(values[0]);assert(pouch.currentHP()==values[1]);
+        for(unsigned i=0;i<original.size();++i)if(i!=0x70 && i!=0x71)assert(pouch.bytes[i]==original[i]);
+    }
+    pouch.half(0x72,3);pouch.setHP(5);assert(pouch.currentHP()==3);
+    pouch.half(0x72,10);
     // Damage/FP spending supplied by the field remains current on entry.
     pouch.half(0x70,7);pouch.half(0x74,2);pouch.half(14+6,6);
     std::array<PartnerBattleSnapshot,7> snapshots{};snapshots[0].value=1;

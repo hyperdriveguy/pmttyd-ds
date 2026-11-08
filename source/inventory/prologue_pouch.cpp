@@ -14,6 +14,16 @@ std::string originalYoshiName;bool assetsReady=false;
 constexpr uint32_t Address=0x85000000;
 struct Provider {ProloguePouch pouch;const char* name;bool allocated=false;uint32_t published=0;};
 }
+namespace {
+constexpr unsigned CurrentHP=0x70, MaximumHP=0x72; // Original packed pouch fields.
+}
+int16_t ProloguePouch::currentHP() const {return half(CurrentHP);}
+void ProloguePouch::setHP(int32_t value) {
+    // Source stores low16 then reloads signed before comparing with maxHP.
+    const uint16_t bits=uint16_t(uint32_t(value));
+    half(CurrentHP,bits<0x8000?int16_t(bits):int16_t(int32_t(bits)-65536));
+    if(currentHP()>half(MaximumHP))half(CurrentHP,half(MaximumHP));
+}
 int16_t ProloguePouch::half(unsigned at) const {
     assert(at+1<bytes.size());const auto value=uint16_t(uint16_t(bytes[at])<<8|bytes[at+1]);return value<0x8000?int16_t(value):int16_t(int32_t(value)-65536);
 }

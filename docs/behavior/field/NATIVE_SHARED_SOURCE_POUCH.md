@@ -86,3 +86,35 @@ storage bridge does not route every legacy HP write or the existing staged
 Harbor HP-minimum adapter; those consumers must use the actual canonical pouch
 when the full field/battle owner is composed. No whole-resource-authority claim
 is made for legacy harness scalars.
+
+
+## Harbor beforebattle HP consumer (2026-11-08)
+
+`HarborEncounter::begin` now accepts the supplied canonical pouch and retains
+that exact object across held calls. Normal `Game::beginHarborEncounter` passes
+`Progress.originalPouch`. Its source get callback reads current packed HP at the
+actual request, rather than entry-time UI HP. Its set callback resolves the event
+operand and calls `ProloguePouch::setHP`: low16 store, signed reread and signed
+upper-only maximum cap. The source conditional minimum5 therefore updates the
+actual source-backed array before `HarborTutorial::beginFromPouch` imports it.
+The public encounter HP and Game UI scalar observe these bytes; stale scalars
+never overwrite this bound pouch. Tick refreshes the public view without a
+source write. Legacy null inventory retains the existing scalar-only adapter.
+
+This closes the staged Harbor minimum-HP mismatch described above. It does not
+synchronize every legacy HP producer, admit a foreign native owner, change the
+original conditional branch, or export battle resources after victory. The
+retained typed object is a finite same-object resource binding, not proof of
+whole raw event/process ownership or arbitrary reentrant source-global changes.
+The [source HP contract](../unit/STATE_AND_INVENTORY.md) specifies signed and
+narrowing semantics. Original beforebattle269b4 calls imported DOL wrapper
+800f0b68, which calls pouchGetHP800d3d30;269cc calls wrapper800f0b38 with5,
+which calls pouchSetHP800d3d00. Fresh read-only review and exact source pins are
+in artifacts/harbor-pouch-hp/review.txt.
+
+Existing prologue-pouch tests cover narrowing, signed negatives, upper-only
+capping and unrelated-byte preservation. Existing Harbor event tests cover
+canonical2HP with stale10HP, max3/10, a live pre-read edit to8HP, retained
+blocked-call updates, original022..024 order, unchanged unrelated packed bytes
+and normal staged Game tutorial import at5HP with unchanged2FP. These are
+resource-handoff regressions, not complete original battle/result/return proof.

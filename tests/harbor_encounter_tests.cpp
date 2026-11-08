@@ -40,6 +40,25 @@ int main(int argc,char**){
         assert(walked.battleRequested && walked.battleSetup==2 && walked.hp==5);
         assert(walked.messageOrder==e.messageOrder && walked.story==4 && walked.locked());
     }
+    // Canonical pouch wins over a stale UI scalar. Original event minimum5
+    // uses pouchSetHP, including its upper cap; no other packed byte changes.
+    for(const int maximum:{3,10}){
+        auto pouch=std::make_shared<ProloguePouch>(initializeProloguePouch("fixture name"));
+        pouch->half(0x70,2);pouch->half(0x72,int16_t(maximum));const auto before=pouch->bytes;
+        HarborEncounter packed;assert(packed.begin(0,{0,15,-100},10,false,pouch));
+        for(unsigned t=1;t<3000 && !packed.battleRequested;++t){packed.tick(t*17,t%4==0?0x100:0,15);assert(!packed.failed);}
+        assert(packed.battleRequested && packed.hp==std::min(5,maximum) && pouch->currentHP()==packed.hp);
+        assert(packed.messageOrder==e.messageOrder);
+        for(unsigned i=0;i<before.size();++i)if(i!=0x70 && i!=0x71)assert(pouch->bytes[i]==before[i]);
+        pouch->setHP(1);packed.tick(60000,0,15);assert(packed.hp==1 && pouch->currentHP()==1);
+    }
+    // A live resource edit before the actual get callback must defeat the
+    // stale scalar, and the HP>=5 arm must leave the complete pouch untouched.
+    auto live=std::make_shared<ProloguePouch>(initializeProloguePouch("fixture name"));live->setHP(2);
+    HarborEncounter delayed;assert(delayed.begin(0,{-26,15,-100},10,false,live));
+    live->setHP(8);const auto healthy=live->bytes;delayed.actors[0].position[0]=0;
+    for(unsigned t=1;t<3000 && !delayed.battleRequested;++t){delayed.tick(t*17,t%4==0?0x100:0,15);assert(!delayed.failed);}
+    assert(delayed.battleRequested && delayed.hp==8 && live->bytes==healthy);
     HarborEncounter resume;assert(resume.begin(0,{1000,1000,1000},10,true));
     assert((resume.actors[0].position==std::array<float,3>{-220,15,90}));assert(!resume.locked());
     resume.actors[0].position={0,15,-100};
@@ -90,5 +109,16 @@ int main(int argc,char**){
     assert(!tutorialGame.saveRequested);
     assert(tutorialGame.harborGameplay.stage()==NativeHarborGameplay::Stage::Command);
     assert(tutorialGame.harborTutorial.classMenuOpen && !tutorialGame.harborTutorial.weaponMenuOpen && !tutorialGame.harborTutorial.attackActive);
+    // The normal staged Game path forwards the same pouch before the event
+    // starts. The tutorial then imports the source-adjusted packed HP/FP.
+    Game packedGame;saved.originalPouch=std::make_shared<ProloguePouch>(initializeProloguePouch("fixture name"));
+    saved.originalPouch->setHP(2);saved.originalPouch->half(0x74,2);saved.hp=9;
+    packedGame.restore(saved);auto canonical=packedGame.progress.originalPouch;
+    for(unsigned t=0;t<6000 && !packedGame.harborTutorial.message.active();++t){Input input;input.confirm=t%4==0;packedGame.tick(input);assert(!packedGame.harborTutorial.failed);}
+    assert(packedGame.harborTutorial.message.id()=="mac_0_b_t1_000");
+    assert(packedGame.progress.originalPouch==canonical && canonical->currentHP()==5 && canonical->half(0x74)==2);
+    assert(packedGame.progress.hp==5 && packedGame.harborEncounter.hp==5);
+    assert(packedGame.harborTutorial.actorById(HarborTutorial::MarioId)->hp==5);
+    assert(packedGame.harborTutorial.actorById(HarborTutorial::MarioId)->maxHp==10);
     std::puts("source132-command harbor event: integer admission, resume, three messages, jump, HP floor and real battle-service barrier passed");
 }

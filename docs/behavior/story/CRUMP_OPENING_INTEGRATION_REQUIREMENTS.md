@@ -302,3 +302,15 @@ still require actual field/battle/sequence ownership, Harbor's genuine export
 into the canonical object and source control/party/position/Prepare/Post/return
 composition. No complete Crump battle or field-return receipt follows from this
 shared backing alone.
+
+
+## Canonical beforebattle HP binding (2026-11-08)
+
+The staged beforebattle owner now retains the supplied canonical pouch. Original
+get/set requests read/write its packed HP with original signed/narrowing and
+upper-only maximum cap; normal Game passes that object before the first manager
+visit. Its tutorial import therefore sees the conditional source minimum5, even
+when the UI scalar was stale. See [HP consumer boundary](../field/NATIVE_SHARED_SOURCE_POUCH.md#harbor-beforebattle-hp-consumer-2026-11-08).
+CO-03's HP resource mismatch is closed for this supplied-object path. This does
+not close actual same-VM field battle start/wait, BattleWork/sequence ownership,
+victory export/return, story5 resume or original afterbattle presentation.

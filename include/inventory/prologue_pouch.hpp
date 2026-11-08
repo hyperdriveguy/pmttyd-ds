@@ -10,6 +10,9 @@ namespace ttyd {
 // Key array starts a0, equipped badges38a; these are packed offsets, not pointers.
 struct ProloguePouch {
     std::array<uint8_t,0x5d4> bytes{};
+    // Original pouchGetHP/SetHP: signed current, narrow before upper-only cap.
+    int16_t currentHP() const;
+    void setHP(int32_t value);
     int16_t half(unsigned offset) const;
     void half(unsigned offset,int16_t value);
     int32_t keyItemCount(int32_t item) const;
