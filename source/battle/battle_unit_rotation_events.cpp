@@ -22,6 +22,7 @@ float converted(int32_t v,const BattleUnitRotationEventServices&s){
  return s.angle.motion.roundDouble(p.numericUser,s.angle.subtract(p.numericUser,encoded,bias));
 }
 }
+float convertPackedBattleRotationWord(int32_t value,const BattleUnitRotationEventServices&s){return converted(value,s);}
 void addPackedBattleUnitRotate(uint32_t unit,const std::array<float,3>&delta,const BattleUnitRotationEventServices&s){
  const auto& p=s.angle.motion.query.common.position;const auto&m=s.units.memory;assert(p.add);
  for(unsigned axis=0;axis<3;++axis){const auto a=unit+RotationOffset+4*axis;

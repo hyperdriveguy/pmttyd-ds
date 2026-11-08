@@ -46,6 +46,8 @@ bool Renderer::bindTutorialStartupResources(HarborTutorial& tutorial){
 void Renderer::releaseTutorialStartupResources(){
     retireNativeHarborNice();
     retireNativeHarborSmoke();
+    retireNativeHarborStarPoint();
+    retireNativeHarborRewards();
     if(tutorialStartupOwner){tutorialStartupOwner->setStartupResources(nullptr,nullptr,nullptr);tutorialStartupOwner=nullptr;}
     if(c3dReady)C3D_FrameSync();
     for(unsigned i=0;i<9;++i){

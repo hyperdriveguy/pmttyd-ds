@@ -6,11 +6,14 @@
 #include <cstdlib>
 #include "native_battle_sound.hpp"
 #include "native_harbor_completion.hpp"
+#include "native_harbor_reward_counter.hpp"
 #include "native_harbor_stylish.hpp"
 #include "native_harbor_nice.hpp"
 #include "native_harbor_smoke.hpp"
+#include "native_harbor_star_point.hpp"
 #include "battle_unit_coin.hpp"
 #include "battle_unit_exp.hpp"
+#include "battle_star_point_offset.hpp"
 #include "native_harbor_nice_visual.hpp"
 #include "native_ui_startup.hpp"
 #include "event_gp_language_alias.hpp"
@@ -78,10 +81,13 @@ struct HarborTutorialRuntime {
  // reload replaces the catalog owner without invalidating an existing battle.
  std::shared_ptr<BattleMenuFileCache> files=menuFiles;
  HarborTutorial* scene=nullptr;EventNativeRuntime vm;std::unique_ptr<HarborTutorialPacked> packed;
+ // Immutable native admission identity, distinct from mutable scene projection.
+ const HarborTutorial* nativeAdmissionFacade=nullptr;NativeFacadeRegistration::Proof nativeAdmissionProof;
  std::shared_ptr<const uint8_t>statusLife=std::make_shared<const uint8_t>(0);std::unique_ptr<NativeBattleStatusReader>statusReader;
  uint32_t statusBattle=0;std::shared_ptr<const uint8_t>statusBattleOwner;
  std::unique_ptr<BattleMenuFileBinding> menuBinding;BattleMenuResourceCursor menuCursor;
  std::weak_ptr<NativeHarborCompletion> nativeCompletion;bool nativeCompletionFrozen=false;
+ std::weak_ptr<NativeHarborRewardCounter> nativeRewardCounter;bool nativeRewardCounterMinted=false;
  std::shared_ptr<BattleCommandPalette> commandPalette;
  void* resourceUser=nullptr;bool(*paperReady)(void*,uint32_t,int32_t)=nullptr;bool(*niceReady)(void*,int32_t)=nullptr;
  void* fadeUser=nullptr;void(*fadeEntry)(void*,int32_t,int32_t,uint32_t)=nullptr;bool(*fadeFinished)(void*)=nullptr;
@@ -185,6 +191,61 @@ struct HarborTutorialRuntime {
   auto result=function==0x8010d9bc?resumeBattleGetExpEvent(e,s,cursor):resumeBattleStoreExpEvent(e,s,cursor);if(!result)return pending(function);
   expCalls.erase(key);if(scene->pendingService==function){scene->pendingService=0;pendingEvent=0;}return *result;
  }
+ std::map<uint64_t,BattleStarPointOffsetCursor>starOffsetCalls;
+ int starOffsetEvent(EventEntry&e){
+  constexpr uint32_t Function=0x80113f88;if(!packed)return pending(Function);
+  const uint64_t key=(uint64_t(e.id)<<32)|e.currentCommand;auto&cursor=starOffsetCalls[key];
+  BattleStarPointOffsetServices s;s.user=this;s.lifetime=statusLife;
+  s.current=[](void*p){auto&r=*static_cast<HarborTutorialRuntime*>(p);uint32_t b=0;return r.packed&&r.scene&&!r.scene->failed&&r.vm.memory.readWord(0x8041eb90,b)&&b==r.packed->battleAddress();};
+  s.word=[](void*p,uint32_t at)->std::optional<uint32_t>{uint32_t v;if(!static_cast<HarborTutorialRuntime*>(p)->vm.memory.readWord(at,v))return {};return v;};
+  s.doubleBits=[](void*p,uint32_t at)->std::optional<uint64_t>{auto&r=*static_cast<HarborTutorialRuntime*>(p);uint32_t high,low;if(!r.vm.memory.readWord(at,high)||!r.vm.memory.readWord(at+4,low))return {};return (uint64_t(high)<<32)|low;};
+  s.value=[](void*p,EventEntry&e,int32_t raw)->std::optional<int32_t>{return getEventValue(e,raw,static_cast<HarborTutorialRuntime*>(p)->vm.interpreterServices().operands);};
+  s.translate=[](void*p,EventEntry&e,int32_t selector)->std::optional<int32_t>{auto&r=*static_cast<HarborTutorialRuntime*>(p);return translateBattleActor(&e,selector,nativeBattleActorServices(r.vm));};
+  s.subtractDoubleFloat=[](void*p,double a,double b)->std::optional<float>{auto&r=*static_cast<HarborTutorialRuntime*>(p);if(!r.vm.platform.subtractDouble||!r.vm.platform.roundDoubleFloat)return {};return r.vm.platform.roundDoubleFloat(r.vm.platform.user,r.vm.platform.subtractDouble(r.vm.platform.user,a,b));};
+  s.add=[](void*p,float a,float b)->std::optional<float>{auto&r=*static_cast<HarborTutorialRuntime*>(p);if(!r.vm.platform.addFloat)return {};return r.vm.platform.addFloat(r.vm.platform.user,a,b);};
+  s.truncate=[](void*p,float value)->std::optional<int32_t>{auto&r=*static_cast<HarborTutorialRuntime*>(p);if(!r.vm.platform.truncate||!std::isfinite(value)||double(value)<-2147483648.||double(value)>=2147483648.)return {};return r.vm.platform.truncate(r.vm.platform.user,value);};
+  s.store=[](void*p,EventEntry&e,int32_t destination,int32_t value){setEventValue(e,destination,value,static_cast<HarborTutorialRuntime*>(p)->vm.interpreterServices().operands);return true;};
+  auto result=resumeBattleStarPointOffset(e,s,cursor);if(!result)return pending(Function);
+  starOffsetCalls.erase(key);if(scene->pendingService==Function){scene->pendingService=0;pendingEvent=0;}return *result;
+ }
+ struct StarPointSource {std::weak_ptr<HarborTutorialRuntime>runtime;const EventEntry*event=nullptr;uint32_t id=0,command=0,args=0;bool published=false;};
+ NativeHarborStarPointConsumer nativeStarPoint;NativeHarborStarPointSource starPointSource;
+ EventScriptAssets starPointMemory;uint64_t starPointVisit=0;
+ struct StarPointCall {NativeHarborStarPointCursor cursor;NativeHarborStarPointSource source;};
+ std::map<uint64_t,StarPointCall>starPointCalls;StarPointCall*starPointInvoking=nullptr;
+ struct NativeEffectDispatch {const EventEntry*event=nullptr;uint32_t id=0,command=0,args=0,name=0;std::string literal;};
+ std::map<uint64_t,NativeEffectDispatch>nativeEffectDispatch;
+ bool starPointCurrent()const{return nativeStarPoint.lifetime&&nativeStarPoint.current&&nativeStarPoint.current(nativeStarPoint.user);}
+ int starPointEffect(EventEntry&e){
+  constexpr uint32_t EffectFunction=0x8006d970;if(!packed||!starPointCurrent()||starPointInvoking)return pending(EffectFunction);
+  const uint64_t key=(uint64_t(e.id)<<32)|e.currentCommand;auto&call=starPointCalls[key];
+  if(!call.source.lifetime){auto owner=std::make_shared<StarPointSource>(*static_cast<StarPointSource*>(starPointSource.user));owner->event=&e;owner->id=e.id;owner->command=e.currentCommand;owner->args=e.arguments;call.source=starPointSource;call.source.user=owner.get();call.source.lifetime=owner;}
+  starPointInvoking=&call;struct Guard {StarPointCall*&p;~Guard(){p=nullptr;}}guard{starPointInvoking};
+  NativeHarborStarPointServices s;s.user=this;s.lifetime=nativeStarPoint.lifetime;
+  s.current=[](void*p){return static_cast<HarborTutorialRuntime*>(p)->starPointCurrent();};
+  s.word=[](void*p,uint32_t at)->std::optional<uint32_t>{uint32_t v;if(!static_cast<HarborTutorialRuntime*>(p)->vm.memory.readWord(at,v))return {};return v;};
+  s.byte=[](void*p,uint32_t at)->std::optional<uint8_t>{auto&r=*static_cast<HarborTutorialRuntime*>(p);constexpr uint32_t OriginalEmptyLiteral=0x8042033c;if(at>=OriginalEmptyLiteral&&at<OriginalEmptyLiteral+4){uint32_t word;if(!r.starPointMemory.readWord(OriginalEmptyLiteral,word))return {};return uint8_t(word>>(24-8*(at-OriginalEmptyLiteral)));}uint8_t v;if(!r.vm.memory.readByte(at,v))return {};return v;};
+  s.value=[](void*p,EventEntry&e,int32_t raw)->std::optional<int32_t>{return getEventValue(e,raw,static_cast<HarborTutorialRuntime*>(p)->vm.interpreterServices().operands);};
+  s.floating=[](void*p,EventEntry&e,int32_t raw)->std::optional<float>{return getEventFloat(e,raw,static_cast<HarborTutorialRuntime*>(p)->vm.interpreterServices().operands);};
+  s.spawn=[](void*p,const NativeHarborStarPointRequest&q)->std::optional<uint64_t>{auto&r=*static_cast<HarborTutorialRuntime*>(p);if(!r.starPointCurrent()||!r.nativeStarPoint.spawn)return {};if(!r.starPointInvoking)return {};auto&source=r.starPointInvoking->source;auto result=r.nativeStarPoint.spawn(r.nativeStarPoint.user,q,source);if(result&&*result)static_cast<StarPointSource*>(source.user)->published=true;return result;};
+  if(!resumeNativeHarborStarPoint(e,s,call.cursor))return pending(EffectFunction);
+  starPointCalls.erase(key);if(scene->pendingService==EffectFunction){scene->pendingService=0;pendingEvent=0;}return 2;
+ }
+ int finiteNativeEffect(EventEntry&e){
+  constexpr uint32_t EffectFunction=0x8006d970;
+  if(!packed||!scene||scene->failed||!(e.flags&1)||e.argumentCount<14)return pending(EffectFunction);
+  // Additional read-only native admission, never source getter completion.
+  // Only actual mapped literal operands are classified. Dynamic/encoded names
+  // remain unavailable before either child has executed any source prefix.
+  uint32_t name;if(!vm.memory.readWord(e.arguments+4,name))return pending(EffectFunction);
+  std::string literal;bool terminated=false;for(unsigned i=0;i<16;++i){uint8_t ch;if(!vm.memory.readByte(name+i,ch))return pending(EffectFunction);if(!ch){terminated=true;break;}literal+=char(ch);}
+  if(!terminated||(literal!="kemuri_test"&&literal!="star_point"))return pending(EffectFunction);
+  const uint64_t key=(uint64_t(e.id)<<32)|e.currentCommand;auto found=nativeEffectDispatch.find(key);
+  if(found==nativeEffectDispatch.end()){NativeEffectDispatch d;d.event=&e;d.id=e.id;d.command=e.currentCommand;d.args=e.arguments;d.name=name;d.literal=literal;found=nativeEffectDispatch.emplace(key,std::move(d)).first;}
+  const auto&d=found->second;if(d.event!=&e||d.id!=e.id||d.command!=e.currentCommand||d.args!=e.arguments||d.name!=name||d.literal!=literal)return pending(EffectFunction);
+  const int result=literal=="kemuri_test"?smokeEffect(e):starPointEffect(e);
+  if(result==2)nativeEffectDispatch.erase(key);return result;
+ }
  HarborTutorialRuntime():vm(0x81000000,platform(this)){}
  // Source clock 243MHz feeds VM tick conversion; native timestamps are ms.
  // GP base 0x81000000 is emulated RAM. Arithmetic callbacks explicitly preserve
@@ -246,9 +307,10 @@ struct HarborTutorialRuntime {
  int call(EventEntry& e,uint32_t function,bool first){
  executingEvent=e.id;
  if(first){HarborTutorialRequest r{function,e.currentCommand,scene->now,e.owner,{}};for(unsigned i=0;i<e.argumentCount;++i)r.rawOperands.push_back(raw(e,i));scene->requests.push_back(std::move(r));}
+ if(function==0x80113f88)return starOffsetEvent(e);
  if(function==0x8010d9bc||function==0x8010d980)return expEvent(e,function);
  if(function==0x8010d914||function==0x8010d8d8)return coinEvent(e,function);
- if(function==0x8006d970)return smokeEffect(e);
+ if(function==0x8006d970)return finiteNativeEffect(e);
  if(function==0x80106fa0)return niceEffect(e);
  if(function==0x80106dfc){
   if(!packed)return pending(function);
@@ -334,7 +396,7 @@ bool HarborTutorial::beginWithContext(uint64_t time,int32_t hp,int32_t maxHp,boo
  actors[0].id=CrumpId;actors[0].sourceKind=source[6];actors[1].id=MarioId;actors[1].kind=222;actors[1].movePhase=0x04000002;actors[1].hp=hp;actors[1].maxHp=maxHp;actors[1].pose="M_S_1";actors[1].position=actors[1].home={-100,0,-5};
  runtime_=std::make_shared<HarborTutorialRuntime>();
  sourceMenuRegistration_=std::make_shared<HarborSourceMenuRegistration>();sourceMenuRegistration_->runtime=runtime_;
- auto& r=*runtime_;r.scene=this;if(!r.initialize()){failed=true;return false;}actors[0].kind=signedWord(r.word(source[6]));actors[0].belong=int8_t(r.word(source[8]+4)>>24);actors[0].movePhase=r.word(source[8]+8);actors[0].hp=actors[0].maxHp=int16_t(r.word(source[6]+8)>>16);
+ auto& r=*runtime_;r.scene=this;r.nativeAdmissionFacade=this;r.nativeAdmissionProof=nativeMenuRegistration_.proof();if(!r.initialize()){failed=true;return false;}actors[0].kind=signedWord(r.word(source[6]));actors[0].belong=int8_t(r.word(source[8]+4)>>24);actors[0].movePhase=r.word(source[8]+8);actors[0].hp=actors[0].maxHp=int16_t(r.word(source[6]+8)>>16);
  for(unsigned i=0;i<3;++i){const auto v=r.word(source[8]+0xc+i*4);std::memcpy(&actors[0].position[i],&v,4);}actors[0].home=actors[0].position;
  // Source mandatory entry order is system, Mario, then the setup2 opponent.
  // Registry storage is still the bounded native adapter; this is not a claim
@@ -369,6 +431,7 @@ void HarborTutorial::tick(uint64_t time,uint32_t keys,const BattlePadSample* phy
  // Native smoke playback clock is actual accepted simulation visits, never
  // presentation/draw invocations. Missing admission cannot advance events.
  if(r.nativeSmoke.lifetime){if(r.smokeVisit==UINT64_MAX||!r.smokeCurrent()||!r.nativeSmoke.advance||!r.nativeSmoke.advance(r.nativeSmoke.user,r.smokeVisit+1))return;++r.smokeVisit;}
+ if(r.nativeStarPoint.lifetime){if(r.starPointVisit==UINT64_MAX||!r.starPointCurrent()||!r.nativeStarPoint.advance||!r.nativeStarPoint.advance(r.nativeStarPoint.user,r.starPointVisit+1))return;++r.starPointVisit;}
  if(message.active())message.tick(now,keys);
  const auto speakerSlot=visualSlot(speaker);
  if(message.poseRequestSerial!=r.messagePoseSerial && speakerSlot>=0){r.messagePoseSerial=message.poseRequestSerial;auto& a=actors[size_t(speakerSlot)];const auto& pose=message.poseRequest==MessagePlayback::PoseRequest::Talk?a.talkPose:a.stayPose;if(!pose.empty()){a.pose=pose;a.poseAt=message.poseRequestedAt;}}
@@ -479,6 +542,17 @@ std::optional<HarborClassMenuDrawBinding> HarborTutorial::classMenuDrawBinding(
 // Process-owned palette binds once per runtime; same owner may reattach,
 // different owner is rejected. Do not reset source color history on each battle
 // entry/display; caller owns the shared palette across scene lifetimes.
+bool HarborTutorial::bindNativeStarPoint(const NativeHarborStarPointConsumer&consumer,const char*sourceImage){
+ if(!runtime_||!runtime_->packed||!consumer.lifetime||!consumer.current||!consumer.current(consumer.user)||!consumer.spawn||!consumer.advance||!sourceImage)return false;
+ auto&r=*runtime_;if(r.nativeStarPoint.lifetime)return r.nativeStarPoint.lifetime==consumer.lifetime&&!r.nativeStarPoint.lifetime.owner_before(consumer.lifetime)&&!consumer.lifetime.owner_before(r.nativeStarPoint.lifetime)&&r.nativeStarPoint.user==consumer.user&&r.nativeStarPoint.current==consumer.current&&r.nativeStarPoint.spawn==consumer.spawn&&r.nativeStarPoint.advance==consumer.advance;
+ EventScriptAssets memory;NativeHarborStarPointData data;if(!memory.load(sourceImage)||!data.load(sourceImage))return false;
+ auto owner=std::make_shared<HarborTutorialRuntime::StarPointSource>();owner->runtime=runtime_;
+ NativeHarborStarPointSource source;source.user=owner.get();source.lifetime=owner;
+ source.current=[](void*p){auto&proof=*static_cast<HarborTutorialRuntime::StarPointSource*>(p);auto r=proof.runtime.lock();uint32_t b=0;if(!r||!r->packed||!r->scene||r->scene->failed||!r->vm.memory.readWord(0x8041eb90,b)||b!=r->packed->battleAddress()||!r->starPointCurrent())return false;return proof.published||!proof.event||((proof.event->flags&1)&&proof.event->id==proof.id&&proof.event->currentCommand==proof.command&&proof.event->arguments==proof.args);};
+ source.randomRaw=[](void*p)->std::optional<int32_t>{auto r=static_cast<HarborTutorialRuntime::StarPointSource*>(p)->runtime.lock();if(!r||!r->packed)return {};return r->packed->random.next();};
+ source.math=[](void*p,NativeHarborStarMath op,float a,float b,float c)->std::optional<float>{auto r=static_cast<HarborTutorialRuntime::StarPointSource*>(p)->runtime.lock();if(!r)return {};auto&s=r->vm.platform;switch(op){case NativeHarborStarMath::Add:if(s.addFloat)return s.addFloat(s.user,a,b);break;case NativeHarborStarMath::Subtract:if(s.subtractFloat)return s.subtractFloat(s.user,a,b);break;case NativeHarborStarMath::Multiply:if(s.multiplyFloat)return s.multiplyFloat(s.user,a,b);break;case NativeHarborStarMath::Divide:if(s.divideFloat)return s.divideFloat(s.user,a,b);break;case NativeHarborStarMath::MultiplyAdd:if(s.fmaFloat)return s.fmaFloat(s.user,a,b,c);break;case NativeHarborStarMath::MultiplySubtract:if(s.fmaFloat)return s.fmaFloat(s.user,a,b,-c);break;}return {};};
+ r.starPointMemory=std::move(memory);r.nativeStarPoint=consumer;r.starPointSource=std::move(source);return true;
+}
 bool HarborTutorial::bindNativeSmoke(const NativeHarborSmokeConsumer&consumer){
  if(!runtime_||!runtime_->packed||!consumer.lifetime||!consumer.current||!consumer.current(consumer.user)||!consumer.spawn||!consumer.advance)return false;
  auto&r=*runtime_;if(r.nativeSmoke.lifetime)return r.nativeSmoke.lifetime==consumer.lifetime&&r.nativeSmoke.user==consumer.user&&r.nativeSmoke.current==consumer.current&&r.nativeSmoke.spawn==consumer.spawn&&r.nativeSmoke.advance==consumer.advance;
@@ -624,6 +698,46 @@ std::optional<int32_t> HarborTutorial::inputCommand(const BattlePadSample& sampl
  r.packed->capture(*this);return result;
 }
 bool HarborTutorial::readPackedWord(uint32_t address,uint32_t& value)const{return runtime_ && runtime_->packed && runtime_->packed->readWord(address,value);}
+std::shared_ptr<NativeHarborRewardCounter>HarborTutorial::beginNativeRewardCounter(){
+ if(!runtime_||!runtime_->packed||!sourceMenuRegistration_)return {};
+ auto r=runtime_;
+ // A copy shares VM storage but cannot become the battle's admitted facade.
+ if(r->nativeAdmissionFacade!=this||!r->nativeAdmissionProof.current()||r->scene!=this||r->nativeCompletionFrozen)return {};
+ if(auto owner=r->nativeRewardCounter.lock())return owner;
+ if(r->nativeRewardCounterMinted)return {}; // Cancellation cannot award the same stock twice.
+ if(failed||!initialized||!introComplete||message.active()||attackActive||damageActive||phaseActive||pendingService||r->vm.schedule.managerActive||r->packed->hitEventsActive())return {};
+ if(r->vm.battle.capacity<0||r->vm.battle.capacity>256||(r->vm.battle.capacity&&!r->vm.battle.entries))return {};
+ for(int32_t i=0;i<r->vm.battle.capacity;++i){const auto&e=r->vm.battle.entries[i];if(!(e.flags&1))continue;
+  bool wait=false;for(const auto&actor:actors)wait|=actor.id>=0&&actor.wait&&e.owner==actor.id&&e.restartScript==actor.wait;
+  wait|=systemActor.id>=0&&systemActor.wait&&e.owner==systemActor.id&&e.restartScript==systemActor.wait;
+  if(!wait)return {};
+ }
+ const auto conclusion=nativeGameplayConclusion();if(!conclusion||*conclusion!=1||!r->packed->sourceSound)return {};
+ constexpr uint32_t BattleGlobal=0x8041eb90,PouchGlobal=0x8041eb00;
+ struct Binding {
+  std::shared_ptr<HarborTutorialRuntime>runtime;
+  std::weak_ptr<HarborSourceMenuRegistration>registration;
+  const HarborTutorial*facade=nullptr;uint32_t battle=0,pouch=0;
+  std::shared_ptr<const uint8_t>allocation;
+  bool current(){
+   auto slot=registration.lock();auto&r=*runtime;uint32_t b=0,p=0;
+   return slot&&slot->runtime.lock()==runtime&&r.packed&&r.nativeAdmissionFacade==facade&&r.nativeAdmissionProof.current()&&r.scene==facade&&!r.nativeCompletionFrozen&&r.vm.gp.battleContext==1&&
+    r.vm.memory.readWord(BattleGlobal,b)&&b==battle&&r.packed->sourceAllocationLifetime(b)==allocation&&r.vm.memory.readWord(PouchGlobal,p)&&p==pouch;
+  }
+ };
+ auto binding=std::make_shared<Binding>();binding->runtime=r;binding->registration=sourceMenuRegistration_;binding->facade=this;
+ if(!r->vm.memory.readWord(BattleGlobal,binding->battle)||!binding->battle||!r->vm.memory.readWord(PouchGlobal,binding->pouch)||!binding->pouch)return {};
+ binding->allocation=r->packed->sourceAllocationLifetime(binding->battle);
+ if((!binding->allocation&&binding->battle!=HarborTutorialPacked::Battle)||!binding->current())return {};
+ NativeHarborRewardCounterServices services;services.lifetime=binding;services.user=binding.get();
+ services.current=[](void*p){return static_cast<Binding*>(p)->current();};
+ services.word=[](void*p,uint32_t at)->std::optional<uint32_t>{auto&b=*static_cast<Binding*>(p);uint32_t v;if(!b.current()||!b.runtime->vm.memory.readWord(at,v))return {};return v;};
+ services.half=[](void*p,uint32_t at)->std::optional<uint16_t>{auto&b=*static_cast<Binding*>(p);uint16_t v;if(!b.current()||!b.runtime->vm.memory.readHalf(at,v))return {};return v;};
+ services.byte=[](void*p,uint32_t at)->std::optional<uint8_t>{auto&b=*static_cast<Binding*>(p);uint8_t v;if(!b.current()||!b.runtime->vm.memory.readByte(at,v))return {};return v;};
+ services.writeHalf=[](void*p,uint32_t at,uint16_t v){auto&b=*static_cast<Binding*>(p);return b.current()&&b.runtime->vm.memory.writeHalf(at,v);};
+ services.sound=[](void*p){auto&b=*static_cast<Binding*>(p);constexpr uint32_t StarPointSound=0x802feaa8;return b.current()&&b.runtime->packed->sourceSound&&b.runtime->packed->sourceSound->menu(StarPointSound).has_value();};
+ auto owner=std::make_shared<NativeHarborRewardCounter>(binding->battle,binding->pouch,std::move(services));r->nativeRewardCounter=owner;r->nativeRewardCounterMinted=true;return owner;
+}
 std::shared_ptr<NativeHarborCompletion>HarborTutorial::beginNativeCompletion(int32_t result){
  if(!runtime_||!runtime_->packed||!sourceMenuRegistration_)return {};
  auto r=runtime_;
@@ -656,7 +770,27 @@ std::shared_ptr<NativeHarborCompletion>HarborTutorial::beginNativeCompletion(int
  auto owner=std::make_shared<NativeHarborCompletion>(std::move(binding));
  r->nativeCompletion=owner;r->nativeCompletionFrozen=true;return owner;
 }
+std::optional<NativeHarborBattleIdentity>HarborTutorial::nativeFieldBattleIdentity()const{
+ if(!triggered||failed||!initialized||!runtime_||runtime_->nativeCompletionFrozen||!sourceMenuRegistration_||sourceMenuRegistration_->runtime.lock()!=runtime_)return {};
+ if(runtime_->nativeAdmissionFacade!=this||!runtime_->nativeAdmissionProof.current()||runtime_->scene!=this)return {};
+ const std::weak_ptr<HarborSourceMenuRegistration>slot=sourceMenuRegistration_;
+ const std::weak_ptr<HarborTutorialRuntime>weak=runtime_;
+ const auto current=[slot,weak]{const auto owner=slot.lock();if(!owner)return false;const auto runtime=weak.lock();return runtime&&runtime->nativeAdmissionProof.current()&&runtime->nativeAdmissionFacade&&runtime->scene==runtime->nativeAdmissionFacade&&owner->runtime.lock()==runtime;};
+ return NativeHarborBattleIdentity(runtime_,current,[current,weak](const NativeHarborCompletionReceipt& candidate){
+  if(!current())return false;
+  const auto runtime=weak.lock();if(!runtime)return false;
+  const auto completion=runtime->nativeCompletion.lock();if(!completion)return false;
+  const auto receipt=completion->receipt();if(!receipt)return false;
+  const auto& actual=receipt->battleLifetime;const auto& supplied=candidate.battleLifetime;
+  return actual&&supplied&&actual==supplied&&!actual.owner_before(supplied)&&!supplied.owner_before(actual)&&receipt->result==candidate.result&&receipt->pouch.bytes==candidate.pouch.bytes;
+ });
+}
 std::weak_ptr<const void>HarborTutorial::nativeGameplayLifetime()const{return runtime_;}
+NativeFacadeRegistration::Proof HarborTutorial::nativeGameplayFacadeProof()const{
+ if(!runtime_||runtime_->nativeAdmissionFacade!=this||!runtime_->nativeAdmissionProof.current()||runtime_->scene!=this)return {};
+ return runtime_->nativeAdmissionProof;
+}
+
 std::optional<int32_t>HarborTutorial::nativeGameplayConclusion(){
  if(!runtime_||!runtime_->packed||failed||attackActive||damageActive||phaseActive)return {};
  auto&r=*runtime_;r.scene=this;r.packed->publish(*this);

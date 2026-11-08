@@ -3764,6 +3764,10 @@ StatusWinMain/Disp completion. Nintendo/Intelligent Systems rights retained;
 extraction grants no distribution license. See
 [actual battle status groups](behavior/display/NATIVE_BATTLE_STATUS_GROUPS.md).
 
+Native Harbor Star Point presentation reuses original message icon404 (descriptor6050; TPL418..421, four40x40 frames at6 ticks) from this same editable atlas and compiled catalog. No additional texture, resizing or replacement art is introduced. Its source numerical dataset is packaged separately as `harbor-star-point/memory.pmevt`. Original rights and per-asset provenance remain unchanged.
+
+The native Harbor reward display also reuses original icon404 and the existing original US PointGet texture124..131 namespace in that same atlas, with the existing original message-window texture. Editable pixels/provenance and original licensing remain unchanged; no duplicate texture or new art is introduced. Numeric layout operands already exist in the original Harbor source pack and are checked byte-for-byte against the read-only ISO.
+
 ## Trio sequence-binding documentation validation inputs (2026-10-15)
 
 artifacts/trio-sequence-bindings-code-documentation-validation/source freezes
@@ -4555,3 +4559,7 @@ not8030a748. Shared immutable boot prefixes are borrowed; actual source Init
 performs runtime stores. The full native ownership and finite-service limits
 are in [the constructor contract](behavior/field/MARIO_CONSTRUCTOR_NATIVE_OWNER.md).
 Original tracking grants no redistribution license.
+
+### Original Harbor StarPoint numeric source
+
+`assets/original/effects/harbor-star-point/memory.json` retains unchanged US DOL scalar80426f08/38, signed-bias802fe540/8 and empty-literal8042033c/4 spans. `provenance.json` pins original read-only ISO offsets/hashes and complete Entry/Main/Disp/EVT/rand bodies; importer refuses nonempty destinations. Original rights remain retained and tracking grants no new license. The normal event-memory recipe compiles this into ignored `romfs/harbor-star-point/memory.pmevt`. No new artwork: native presentation uses existing original icon404 images418..421.

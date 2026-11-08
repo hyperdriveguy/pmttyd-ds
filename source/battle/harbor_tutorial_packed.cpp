@@ -22,6 +22,7 @@
 #include "battle_action_feedback.hpp"
 #include "battle_packed_unit_initialization.hpp"
 #include "battle_unit_rotation_events.hpp"
+#include "battle_unit_rotate_offset_event.hpp"
 namespace ttyd {
 // Admitted packed accesses are required invariants: failure aborts rather than
 // returning fabricated zero. word/half/byte access goes through BE VM memory;
@@ -125,7 +126,7 @@ bool HarborTutorialPacked::registerActor(HarborTutorialActor& a){
  word(u+0x140,0xffffffff);real(u+0x114,1);byte(u+0x21,1);byte(u+0x22,1);byte(u+0x23,1);
  half(u+0x108,a.maxHp);half(u+0x10c,a.hp);half(u+0x10e,int16_t(word(k+8)));half(u+0x112,int16_t(word(k+8))); // Source FP kind halfword.
  byte(u+0x189,a.belong==1?255:1);
- for(unsigned j=0;j<count;++j){const auto definition=source+0x4c*j,part=p+0x500*j;word(part,j+1<count?part+0x500:0);word(part+4,definition);word(part+0x4ec,u);byte(part+0xbd,a.belong==1?255:1);word(part+0x1c0,0xffffffff);
+ for(unsigned j=0;j<count;++j){const auto definition=source+0x4c*j,part=p+0x500*j;word(part,j+1<count?part+0x500:0);word(part+4,definition);word(part+8,word(definition+4));word(part+0x4ec,u);byte(part+0xbd,a.belong==1?255:1);word(part+0x1c0,0xffffffff);
   if(word(definition+0x40)&1)word(u+0x2d4,word(definition));
   for(unsigned axis=0;axis<3;++axis){real(part+0x24+4*axis,real(definition+0xc+4*axis));real(part+0x170+4*axis,real(definition+0x18+4*axis));real(part+0x188+4*axis,real(definition+0x24+4*axis));}
   // Copy definition attributes 0x40/0x44, defense 0x38/0x3c, pose table 0x48 into source
@@ -251,6 +252,7 @@ bool HarborTutorialPacked::invoke(EventEntry& e,uint32_t function,int32_t first,
  case 0x80105df8:{const auto args=e.arguments;const auto units=nativeBattleUnitEventServices(vm);const auto selector=units.values.resolve(units.values.user,e,int32_t(word(args)));const auto id=units.translate(units.user,e,selector);const auto u=units.unit(units.user,word(0x8041eb90),id);if(!u)return false;if(!initializePackedBattleUnitHelper(0x80127b58,u,nativeBattleActorServices(vm)))return false;result=2;return true;}
  // Whole source camera priority-limit and unit rotation wrappers. Math is
  // genuine VM platform work; no frame/readiness/render acknowledgement exists.
+ case 0x80110f9c:{if(!vm.platform.roundDoubleFloat||!vm.platform.subtractDouble)return false;BattleUnitRotationEventServices services;services.units=nativeBattleUnitEventServices(vm);services.angle=marioJump;result=battleSetUnitRotateOffsetEvent(e,services);return true;}
  case 0x8012c0ac:result=battleCameraPriorityLimitEvent(e,nativeBattleUnitEventServices(vm));return true;
  case 0x801115f8:case 0x80111720:{if(!vm.platform.fmodDouble || !vm.platform.roundDoubleFloat || !vm.platform.subtractDouble || !vm.platform.addFloat)return false;BattleUnitRotationEventServices services;services.units=nativeBattleUnitEventServices(vm);services.angle=marioJump;result=function==0x801115f8?battleAddUnitRotateEvent(e,services):battleSetUnitRotateEvent(e,services);return true;}
  // Existing whole source nomove-Y wrapper; mask bit3 is the Y-axis lock.

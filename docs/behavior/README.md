@@ -757,6 +757,7 @@ Opening title: [ordinary entry, prompt and idle return](display/NATIVE_OPENING_T
 Opening movement: [original Parakarry glide](story/NATIVE_OPENING_NPC_GLIDE.md).
 
 - [Field Mario owner, control depth and battle preparation](field/MARIO_OWNER_CONTROL_DEPTH_AND_BATTLE_PREPARE.md): source constructor memset boundary, persistent field pointer, byte-wrapping control operations, ordered preparation, two-slot party controls and ending1f cleanup.
+- [Retained field Mario battle preparation and return](field/RETAINED_MARIO_BATTLE_TRANSFER.md): whole ordered Prepare/Post and use-post/two-slot controls; concrete typed native null-party path, real owner proofs and explicit special-child holds.
 
 - [Field party current-index selection and entry gate](partner/FIELD_PARTY_CURRENT_INDEX_SELECTION.md): primary/auxiliary live pointer lookup, word0 mask8 exclusion and canonical pouch unlock before destructive construction.
 
@@ -1373,6 +1374,7 @@ Original retained battle UI text controllers:
 - [Weapon help parser](display/RETAINED_WEAPON_HELP_PARSER.md).
 - [Matrix font](display/RETAINED_MATRIX_FONT_RASTER.md).
 - [Native manual Harbor command menu](display/NATIVE_HARBOR_COMMAND_MENU.md).
+- [Native Harbor target names](display/NATIVE_HARBOR_TARGET_NAMES.md).
 - [Original native Harbor success feedback](display/NATIVE_HARBOR_NICE_EFFECTS.md).
 - [Native heap clear borrowing](event/NATIVE_HEAP_BORROW.md).
 - [Scalar font](display/RETAINED_SCALAR_FONT.md).
@@ -1419,6 +1421,8 @@ Original battle menu native resource/queue owners:
 - [Native source window process memory](display/NATIVE_SOURCE_WINDOW_MEMORY.md).
 
 - [Retained original harbor battle callbacks](field/NATIVE_HARBOR_BATTLE_CALLBACKS.md): source start/wait/regular-EVT-ID parents, actual caller VM bridge and pending-owner limits.
+- [Native Harbor field sequence admission](field/NATIVE_HARBOR_FIELD_SEQUENCE.md): actual same-VM Start/Wait, sealed runtime/ticket, completed-teardown proof and unchanged field result; private native sequence policy, not original Main acknowledgment.
+- [Harbor original admission facade](field/NATIVE_HARBOR_BATTLE_ADMISSION_FACADE.md): immutable actual entry facade/proof, copy/move rejection and sealed field-return identity separate from scene projection.
 
 
 - [Prepared native weapon UI raster](display/PREPARED_NATIVE_WEAPON_RASTER.md).
@@ -1587,9 +1591,20 @@ retain explicit provider and process-ownership frontiers.
 - [Native Crump lethal KemuTest smoke](effect/NATIVE_HARBOR_KEMUTEST_SMOKE.md): actual original smoke strip, retained source getters/RNG/math and simulation-tick native instance admission; no source guest effect-pointer or queued-display completion claim.
 
 - [Native Harbor presentation retirement](display/NATIVE_HARBOR_PRESENTATION_RETIREMENT.md): actual synchronized resource retirement; production field-return composition remains separate.
+- [Native Harbor Star Point presentation](display/NATIVE_HARBOR_STAR_POINT_PRESENTATION.md): original icon404 frames and retained native resource/instance ownership; no reward or source End receipt.
+- [Native Harbor reward presentation](display/NATIVE_HARBOR_REWARD_PRESENTATION.md): original19-star/PointGet model and real native resources; no reward or End receipt.
 
 - [Retained original unit coin event](battle/RETAINED_UNIT_COIN_EVENT.md): whole original GetCoin/unit getter, fresh trial/probability loads and actual retained RNG without speculative victory or pouch awards.
 
 - [Retained original unit EXP events](battle/RETAINED_UNIT_EXP_EVENT.md): complete original GetExp/StoreExp, source signed/type branches and retained platform math without speculative victory or pouch awards.
 
 - [Whole Mario constructor and native owner](field/MARIO_CONSTRUCTOR_NATIVE_OWNER.md): complete15body fixed graph, real shared SDK Mario/pouch allocations, original US constructor name and explicit cold/snapshot boundaries.
+
+- [Retained original star-point offset event](battle/RETAINED_STAR_POINT_OFFSET_EVENT.md): whole80113f88 and registry, ordered math/setters and actual lethal next-effect boundary.
+
+- [Native Harbor reward counter](battle/NATIVE_HARBOR_REWARD_COUNTER.md): source amount/cadence, physical acceleration and retained real-pouch writes; finite native count only.
+- [Actual Harbor reward binding](battle/NATIVE_HARBOR_REWARD_BINDING.md): source-concluded runtime/pouch/sound binding, admission-facade proof and cancellation latch; presentation/ending activation remains separate.
+
+- [Native original StarPoint particles](effect/NATIVE_HARBOR_STAR_POINT.md): finite native original constructor/Main arithmetic and retained actual RNG, separate guest pool and reward frontiers.
+
+- [Original atomic rotation-offset event](battle/ATOMIC_UNIT_ROTATE_OFFSET_EVENT.md): complete80110f9c, shared original numeric conversion and fresh per-axis sentinel/store behavior.

@@ -63,6 +63,7 @@ struct Metrics { float simulationMs=0, renderMs=0, gpuMs=0, fps=0; int steps=0; 
 class Audio;
 struct MessageIconFrame;
 class TroubleQuestPresentation;
+class NativeHarborRewardPresentation;
 // Scene GPU residency and service-bound buffers outlive individual draws.
 // init can fail partway;shutdown uses readiness flags and explicit release.
 // Call changeRoom/resource preparation outside submitted GPU frame ownership.
@@ -94,6 +95,11 @@ public:
     void retireNativeHarborMenu();
     void retireNativeHarborNice();
     void retireNativeHarborSmoke();
+    void retireNativeHarborStarPoint();
+    bool prepareNativeHarborRewardPresentation(Game&);
+    std::shared_ptr<NativeHarborRewardPresentation> nativeHarborRewardPresentation(const std::shared_ptr<const void>&) const;
+    void retireNativeHarborRewards();
+    bool nativeHarborRewardsMatch(const std::shared_ptr<const void>&) const;
     // Actual outside-frame native teardown. Caller suspends battle rendering
     // across held completion and reloads field presentation before returning.
     bool retireNativeHarborPresentation(HarborTutorial&,const std::shared_ptr<const void>&);
@@ -295,6 +301,7 @@ private:
     bool nativeHarborMenuMatches(const std::shared_ptr<const void>&) const;
     bool nativeHarborNiceMatches(const std::shared_ptr<const void>&) const;
     bool nativeHarborSmokeMatches(const std::shared_ptr<const void>&) const;
+    bool nativeHarborStarPointMatches(const std::shared_ptr<const void>&) const;
     struct NativeHarborMenu;
     std::shared_ptr<NativeHarborMenu> nativeHarborMenu;
     bool prepareNativeHarborMenu(const Game&);
@@ -318,6 +325,11 @@ private:
     bool prepareNativeHarborSmoke(Game&);void drawNativeHarborSmoke(const Game&,bool lower);
     bool prepareNativeHarborNice(Game&);
     void drawNativeHarborNice(const Game&,bool lower);
+    struct NativeHarborStarPoint;std::shared_ptr<NativeHarborStarPoint> nativeHarborStarPoint;
+    bool prepareNativeHarborStarPoint(Game&);
+    void drawNativeHarborStarPoint(const Game&,bool lower);
+    struct NativeHarborRewards;std::shared_ptr<NativeHarborRewards> nativeHarborRewards;
+    bool drawNativeHarborRewardPresentation(const Game&);
     struct Occluder {Bounds3 bounds{};std::vector<uint32_t> batches;uint64_t hiddenUntil=0;bool hidden=false;};
     // One bank/texture per model plus retained CPU sample. tick=UINT64_MAX,
     // frame=-1 invalidate the cache;key also includes pose name and sample time.

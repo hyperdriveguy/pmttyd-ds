@@ -20243,3 +20243,47 @@ alias the retained raw constructor record. Complete Logo platform/file chronolog
 whole Mario Main, cold-load profiling and target hardware field performance
 remain open. See the updated constructor contract and Crump requirements.
 The full-game goal remains active and the complete Crump round trip is not done.
+
+### Crump original star points and native reward/field owners (2026-11-07)
+
+Integrated original StarPoint constructor/Main plus real icon404 presentation in
+both battle views, source SetRotateOffset, actual target-part name construction,
+and source star offset. Added original19-icon EXP and PointGet presentation with
+independent icon retirement and60-visit PointGet exit. All art reuses the edited
+original atlas. Original numeric dataset has provenance/licensing and one normal
+manifest recipe; no generated art, extra texture or ISO enters source history.
+
+Added a finite source-derived reward counter and actual battle-VM/canonical-pouch
+binding. Physical A/B accelerates original counting; retained prefixes do not
+re-award on sound/memory holds or cancellation. Source Crump stock remains9EXP.
+Original stock/fortune/level caps and level-up/zero branches remain distinct.
+Native admission proof captures the actual battle facade once; copies/moves
+cannot borrow the original while it remains alive. Native UI uses that proof
+before facade access. Counter/UI owners do not acknowledge whole btlseqEnd or
+produce a field-return receipt. Production ending composition remains next.
+
+Integrated complete retained Mario Prepare/Post with bounded real typed native
+views, and sealed same-VM field Start/Wait sequence admission. These require
+actual host/VM/facade current proofs. Production fresh Encounter/Game providers
+are not activated. Corrected the old field-information contract: config18 is
+stored at NPC information4; it is distinct from F+20 Party4.
+
+Exact validation: artifacts/crump-star-integration/results.json pins manifest
+4775c988964f0d908426c3685bcd6bde2464e5b2a655f4253c9357555a70e635,
+16788 unchanged inputs. make test0:643/643 C++ in77.24s and278/278 Python
+in38.792s, no skips. make all0, SOUNDTRACK=gamecube, normal477 recipes and535
+editable source files unchanged. Binary SHA-256
+ eb57a8f205f5ab9843115f887832a9ce1c0ffb831364992fa1c68e48aebb078d.
+Documentation1730 files/zero broken links. This graph captures committed42a and
+owned contributions; later concurrent Mario-constructor/light commits and other
+unstaged work are outside this receipt and preserved during scoped integration.
+The first frozen field graph passed636 C++/276 Python but failed ARM at root's
+mixed-int std::clamp. It remains immutable/rejected; this fresh graph includes
+the explicitly typed correction and passes both complete gates.
+
+Next: actual full-snapshot physical fatal/StarPoint GPU evidence; complete the
+remaining original lethal callbacks and native reward/victory/fade coordinator;
+bind fresh Encounter's actual field position/control/audio/Prepare providers;
+perform actual synchronized teardown,9EXP publication and original source
+Wait/postbattle dialogue. Full fresh/resumed victory return, level-up/party
+ending domains, hardware performance and full tutorial acceptance remain open.

@@ -1413,10 +1413,11 @@ void Renderer::overlay(const Game& g) {
         }
         originalMessage(g);
         const bool nativeMenuDrawn=drawNativeHarborMenu(g);
+        const bool nativeRewardsDrawn=drawNativeHarborRewardPresentation(g);
         const bool menuRequested=g.harborTutorial.classMenuOpen||g.harborTutorial.weaponMenuOpen||g.harborTutorial.weaponTargetMenuOpen;
         if(!tutorialReady||g.harborTutorial.failed)text(!tutorialReady?"Development notice: tutorial presentation unavailable":g.prompt(),25,112,.43f,Ink);
         else if(menuRequested&&!nativeMenuDrawn&&!g.harborTutorial.sourceMenuFactory())text("Development notice: command menu assets or source model unavailable",25,112,.43f,Ink);
-        else if(!menuRequested&&g.harborTutorial.introComplete)text(g.prompt(),25,112,.43f,Ink);
+        else if(!menuRequested&&!nativeRewardsDrawn&&g.harborTutorial.introComplete)text(g.prompt(),25,112,.43f,Ink);
         return;}
     if(g.harborEncounter.locked()){originalMessage(g);if(g.harborEncounter.failed || g.harborEncounter.pendingService)text(g.prompt(),25,112,.43f,Ink);return;}
     if(auto* board=g.troubleBoardPresentation();board &&

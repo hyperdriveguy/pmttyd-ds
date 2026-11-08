@@ -8,6 +8,8 @@ struct BattleUnitRotationEventServices {
     BattleUnitEventServices units;
     BattlePackedMarioJumpServices angle;
 };
+// Public native reuse of the existing source integer conversion owner.
+float convertPackedBattleRotationWord(int32_t,const BattleUnitRotationEventServices&);
 void addPackedBattleUnitRotate(uint32_t unit,const std::array<float,3>&,
     const BattleUnitRotationEventServices&);
 void setPackedBattleUnitRotate(uint32_t unit,const std::array<float,3>&,

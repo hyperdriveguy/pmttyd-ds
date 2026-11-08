@@ -64,6 +64,8 @@ void Renderer::advanceTutorialAnimations(Game& game) {
     if(!tutorialReady || !game.harborTutorial.running())return;
     if(game.harborTutorial.running()){bindTutorialStartupResources(game.harborTutorial);advanceTutorialCurtain(game.harborTutorial);}
     prepareNativeHarborNice(game);
+    prepareNativeHarborStarPoint(game);
+    prepareNativeHarborRewardPresentation(game);
     prepareNativeHarborSmoke(game);
     for(unsigned i=0;i<3;++i) {
         const auto& a=game.harborTutorial.actors[i];
@@ -144,6 +146,7 @@ void Renderer::worldTutorial(const Game& g,bool lower) {
     drawAudienceScene(g,lower);
     drawNativeHarborNice(g,lower);
     drawNativeHarborSmoke(g,lower);
+    drawNativeHarborStarPoint(g,lower);
     if(!lower)drawTutorialCurtain();
 }
 }

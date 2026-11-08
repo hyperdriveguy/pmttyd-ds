@@ -1,6 +1,7 @@
 {
   "schema": 1,
   "assets": [
+{"id": "original/effects/harbor-star-point-data", "kind": "event", "source": "assets/original/effects/harbor-star-point/memory.json", "output": "harbor-star-point/memory.pmevt", "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"},
     {
       "id": "original/field/mario-constructor-memory",
       "kind": "event",

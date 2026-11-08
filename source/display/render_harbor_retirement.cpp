@@ -12,10 +12,10 @@ bool Renderer::retireNativeHarborPresentation(HarborTutorial& tutorial,
  // Validate all retained identities before the first native retirement.
  if(!same(tutorialStartupOwner)||!same(tutorialFadeOwner)||
     !nativeHarborMenuMatches(runtime)||!nativeHarborNiceMatches(runtime)||
-    !nativeHarborSmokeMatches(runtime))return false;
+    !nativeHarborSmokeMatches(runtime)||!nativeHarborStarPointMatches(runtime)||!nativeHarborRewardsMatch(runtime))return false;
  if(!c3dReady)return false;
  C3D_FrameSync();
- retireNativeHarborMenu();retireNativeHarborNice();retireNativeHarborSmoke();
+ retireNativeHarborMenu();retireNativeHarborNice();retireNativeHarborSmoke();retireNativeHarborStarPoint();retireNativeHarborRewards();
  releaseClassMenuDrawing();releaseWeaponMenuSurfaces();releaseAudienceDrawing();
  releaseTutorialStartupResources();releaseTutorialCurtain();
  freeRoom(harborBattleBackground);freeRoom(harborBattleStage);

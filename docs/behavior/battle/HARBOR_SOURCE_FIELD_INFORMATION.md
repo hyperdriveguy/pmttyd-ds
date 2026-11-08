@@ -17,8 +17,8 @@ The separate portable NPC setup service executes actual npcSetupBattleInfo. It
 clears200 bytes atNPC230 and32 atinformation7c; null/missing configurations return
 there without altering external NPC flags/type. Configuration1c is copied to
 informationac. Source audience modes1/2 skip initialization; other modes make
-sixteen signed-width/unsigned-add audience byte draws. It preserves the discarded
-configuration18 read; information4/c/10/14 are cleared, configuration8 copied8,
+sixteen signed-width/unsigned-add audience byte draws. After initial clearing,
+configuration18 is copied to information4; informationc/10/14 are cleared, configuration8 copied8,
 and configuration40 copiedc0. Literal configuration-1 bypasses the encoded
 saved-flag range. Weighted group/stage selection and item selection retain signed
 weights, wrapping arithmetic, source terminators and exact random consumption.
@@ -30,7 +30,9 @@ already verified group address95540c08 plus the source file delta60eb8-60c90 in
 the same relocated data section. The original pack test executes these records:
 16 audience requests plus one irand50, group95540c08, stage95540870 and one unit.
 The original80417920 item table has total0: no item draw or held item is selected.
-Configuration20000010 is read/discarded; information4 stays0.
+Configuration18 value20000010 is copied to NPC information4 (NPC+234).
+Whole npcSetupBattleInfo80043e78 loads config18 at80043f30 and stores information4
+at80043f3c. This NPC information is distinct from field I=F+20 Party4 below.
 
 Original battle_init constructs I=F+20 with source init order: Mode0, Party4,
 FirstAttack8, Result10, NPCInfoc, word14 and rule bytes18..1b are set0. It sets
