@@ -376,3 +376,29 @@ same-owner/provider integration; [AUDIO-01](../../requests/AUDIO-01.md) owns the
 implicit constructor cue bindings; [TRACE-01](../../requests/TRACE-01.md) owns
 matched original timing and presentation evidence. These parent requests remain
 open. This contract does not establish a completed Crump battle or field return.
+
+
+## Portable Main implementation (2026-11-07)
+
+`FukidashiMainCursor` and `resumeFukidashiMain` now reproduce Main80132ea8
+for all seven source kinds, using original-address byte tables and constants.
+The new `fukidashi-effect.pmevt` manifest overlay contains the 15 initialized
+DOL spans under `assets/original/effects/fukidashi/main/`. Its importer verifies
+source hashes and requires an empty destination; alignment retains original
+adjacent bytes. It neither writes the ISO nor supplies fabricated memory.
+
+One cursor invocation is one effect-driver simulation poll. Inline storage
+avoids per-update allocation. The animation/lifetime/spin prefix executes once
+across held children. Position, genuine deletion, depth and display remain
+explicit provider calls: depth uses old computed XYZ, mode uses kind after the
+position child, and camera is captured only after depth succeeds. Display
+retry preserves that complete tuple. Providers must retain actual child work
+and queued consumers; this adapter cannot turn a missing provider into success.
+
+Tests load the real pack and cover every table kind, duration loops, one-shot
+terminal deletion, 30/60-poll expiration, sentinel lifetime, signed-counter
+truncation, remaining-word wrap, kind6 spin, old/new position and retained child
+arguments. These are host invocations of the recovered source contract. They
+do not establish original execution timing, native rendering or a running
+Crump scene. Entry/EVT decoding, attachment calculation, draw/material/sound,
+effect-pool production routing and retirement remain open as listed above.

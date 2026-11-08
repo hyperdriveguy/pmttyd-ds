@@ -18689,3 +18689,50 @@ close inherited capture state, compare original observations and measure hardwar
 performance. Do not substitute a development outcome, fake waiter completion or
 forced story flag. The accepted archive is immutable; refresh only a new work
 snapshot and preserve unrelated concurrent work/staging.
+
+
+## 2026-11-07 — original fukidashi update dependency for Crump
+
+Commit `615b81ff` adds original `effFukidashiMain80132ea8` as a portable
+retained cursor for all seven kinds. Animation tables, duration/loop behavior,
+signed lifetime, kind6 spin, position/depth/display ordering and genuine delete
+children follow the recovered source. Named byte offsets document work layout;
+inline cursor storage avoids per-update allocation. Real provider/queue
+ownership remains an explicit requirement.
+
+The new normal manifest entry compiles 15 initialized original DOL spans to
+`fukidashi-effect.pmevt`. Read-only importer pins source extents by SHA256,
+retains adjacent original alignment bytes and requires an empty destination.
+Tracked provenance records offsets, lengths, hashes and retained original
+rights. A fresh ISO reimport matched both tracked JSON files byte-for-byte;
+occupied-destination rejection preserved them. The production asset pipeline
+compiled the pack and matched the actual pack loaded by host tests.
+
+Validation ran in isolated `artifacts/source-checks/npc-wander`, based on the
+previous accepted Crump archive plus only the owned source/manifest overlay;
+unrelated shared-worktree work was excluded. Final exact revision:
+
+- `CMAKE_BUILD_PARALLEL_LEVEL=4 CTEST_PARALLEL_LEVEL=4 TRIO_ENEMY_POSE_PACK=romfs make --jobserver-style=pipe test`: exit0; 557/557 C++ tests in 51.07s, 251/251 Python tests in 43.593s, zero skips.
+- `make --jobserver-style=pipe all -j4 -o assets-ready SOUNDTRACK=gamecube`: exit0. Reused accepted ISO-backed base/overlay products; compiled the new effect pack separately through `asset_pipeline.py build` and verified exact equality.
+- Tests load the real pack, cover all seven kinds, one-shot terminal deletion/holds, duration loops, 30/60-poll expiration, lifetime sentinel/wrap, signed counter truncation, complete kind6 spin and retained position/depth/display identity/order.
+- Independent full-body source review found no concrete mismatch. This is static source/ISO and host evidence; REA tools were absent from the active catalog, read-only doctor completed, and no REA execution evidence is claimed.
+
+Exact source overlay, new pack, host core and native executable are archived in
+`artifacts/fukidashi-main/accepted/`; source baseline, all hashes and final logs
+are recorded by `artifacts/fukidashi-main/validation-manifest.json`. Native
+SHA256 is `6345ced1d1f5fc75fc02926ea16dd3138bd706670572a98cdd2a8d40b1458c4e`.
+Compiler/Pillow warnings remain. No new Azahar/Dolphin playback, original
+scene pixel comparison or hardware performance measurement was performed.
+
+Limitations: this supplies Main, not the effect Entry/EVT/attachment/draw/audio
+backend or its native pool/display lifetime. It does not compose normal Game
+battle startup, controller/result/teardown, same-VM field wait return, original
+afterbattle/crowd or plaza transition. Crump integration and the wider goal
+remain incomplete. The effect and scene contracts plus EVT-01 record this
+boundary.
+
+Next: compose the same-VM setup2/battle/real result/field return and unchanged
+beforebattle tail; implement actual fukidashi Entry/EVT/attachment/material/
+sound consumers and retirement using the shared pool. Execute original
+afterbattle with its crowd, actors, party and 033-to-story6 exit, then obtain
+matched original/native captures and measure New2DS XL rendering/memory costs.

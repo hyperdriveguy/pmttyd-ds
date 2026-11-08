@@ -5710,3 +5710,14 @@ canonical-front adapter now follows that cleanup; a64-tick original-pose
 regression fails before the fix and passes after. Healthy refresh retains
 display4, so source S1 also stays front after HP recovery. This fixes a renderer
 prerequisite, not original sequence/battle/result/return composition.
+
+
+### 2026-11-07: portable fukidashi Main available, composition still open
+
+The [effect contract](../behavior/effect/CRUMP_FUKIDASHI_EFFECTS.md) now has a
+portable Main80132ea8 implementation and original initialized-data overlay for
+all seven kinds. Retained deletion/position/depth/display calls preserve source
+read order across holds. This closes the local update implementation, not
+effect dispatch/presentation: actual Entry/EVT/attachment/draw/audio providers,
+shared pool scheduling, native queue retention and map retirement still need
+production owners. Keep this request and the Crump scene requirements open.

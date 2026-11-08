@@ -4236,3 +4236,17 @@ pack/build and fresh metadata-reimport artifacts. The
 [effect contract](behavior/effect/CRUMP_FUKIDASHI_EFFECTS.md) records exact source
 identities and remaining consumers. Normal builds retain the checked edits
 through the existing manifest overlay; reimports require an empty destination.
+
+
+## Original fukidashi update memory
+
+`assets/original/effects/fukidashi/main/event.json` contains 15 initialized US
+DOL spans: both seven-kind animation pointer tables and their eight backing
+spans, the stack vector, and binary32 constants 0, 22.5, 9, -90. The normal manifest
+compiles them to `fukidashi-effect.pmevt` using the existing event container.
+`tools/import_fukidashi_memory.py` reads `sys/main.dol` through the read-only
+ISO, pins each original extent by SHA256 and rejects nonempty destinations.
+Word alignment keeps actual adjacent original bytes; no resampling or invented
+padding is used. Per-span original/packaged lengths, hashes and ISO offsets are
+in `main/provenance.json`. Nintendo/Intelligent Systems retain all original
+rights; tracking this source grants no redistribution license.

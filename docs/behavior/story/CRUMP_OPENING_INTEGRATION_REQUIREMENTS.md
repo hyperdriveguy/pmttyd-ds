@@ -181,3 +181,14 @@ headers, ext matrices/sort/preload and reset. Snapshot camera/filter/EFB
 inheritance and original observations remain open. Tag1 release ownership
 is verified in field-map `_unload`: `extReset` precedes both heap clears and
 `smartAutoFree(1)`; native execution and draining remain unproven. Neither new contract proves production afterbattle completion.
+
+
+### Portable effect update available
+
+The original seven-kind fukidashi Main and its original animation/constant pack
+are now implemented and host tested; see the
+[effect implementation boundary](../effect/CRUMP_FUKIDASHI_EFFECTS.md#portable-main-implementation-2026-11-07).
+This supplies one reusable dependency for CO-03/CO-09. Actual event construction,
+actor attachment, GPU draw, constructor sound and pool/display retirement are
+still required. No change to the uncompleted CO-04..CO-10 production chain is
+claimed by this adapter.
