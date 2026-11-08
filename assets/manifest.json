@@ -1,6 +1,20 @@
 {
   "schema": 1,
   "assets": [
+    {
+      "id": "original/display/logo-startup-memory",
+      "kind": "event",
+      "source": "assets/original/display/logo-startup/memory.json",
+      "output": "logo-startup/memory.pmevt",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/display/logo-startup-tpl",
+      "kind": "pack",
+      "source": "assets/original/display/logo-startup/mariost.tpl",
+      "output": "logo-startup/mariost.tpl",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
     {"id": "original/audio/mario-voice-ac1-1.wav", "kind": "sfx", "source": "assets/original/audio/mario-action-voice/mario-voice-ac1-1.wav", "output": "mario-voice-ac1-1.wav", "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"},
     {"id": "original/audio/mario-voice-ac1-2.wav", "kind": "sfx", "source": "assets/original/audio/mario-action-voice/mario-voice-ac1-2.wav", "output": "mario-voice-ac1-2.wav", "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"},
     {"id": "original/audio/mario-voice-ac1-3.wav", "kind": "sfx", "source": "assets/original/audio/mario-action-voice/mario-voice-ac1-3.wav", "output": "mario-voice-ac1-3.wav", "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"},

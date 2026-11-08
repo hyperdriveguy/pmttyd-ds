@@ -1,0 +1,80 @@
+{
+  "source": "US G8ME01 disc0 revision0",
+  "spans": [
+    {
+      "address": "0x800874b0",
+      "size": 396,
+      "sha256": "f48865f05382fae7aba7ffe8d636f0d27ffefee61b7232a76c06317989903860",
+      "iso_offset": 673712,
+      "source": "initialized DOL",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "address": "0x8008746c",
+      "size": 68,
+      "sha256": "54b7691885ff90c84e987575559e093c599c4c125b11f62e9cc6358bb2da3500",
+      "iso_offset": 673644,
+      "source": "initialized DOL",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "address": "0x8005ba50",
+      "size": 152,
+      "sha256": "08c3dce0e69c0c1e23422a3dbdfb3aabe5fc117761965731e76f5c30260f304a",
+      "iso_offset": 494928,
+      "source": "initialized DOL",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "address": "0x80416108",
+      "size": 4,
+      "sha256": "e7f01a429c356dee8dfc87ebbdc8f5b42ff043894470b8040d6c79553a4f609b",
+      "iso_offset": 4077640,
+      "source": "initialized DOL",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "address": "0x8041ea80",
+      "size": 32,
+      "sha256": "66687aadf862bd776c8fc18b8e9f8e20089714856ee233b3902a591d0d5f2925",
+      "iso_offset": null,
+      "source": "original DOL BSS zero initialization",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "address": "0x802c3b68",
+      "size": 16,
+      "sha256": "a5515982f6734fd70ab2e935a5a14ba236d72e03417a57d094c74d95c5dc5c63",
+      "iso_offset": 3018344,
+      "source": "initialized DOL",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "address": "0x8030c230",
+      "size": 60,
+      "sha256": "62d87f5a2e00870f6a0904c78e3e8235c63ca518a9a7f265449ab076a829cb8d",
+      "iso_offset": 3314992,
+      "source": "initialized DOL",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "address": "0x8030c26c",
+      "size": 60,
+      "sha256": "f9d4282efa8ce3f7502091fb7ebf63f0194e39015ac3810ec8738b8a07d82e2c",
+      "iso_offset": 3315052,
+      "source": "initialized DOL",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    }
+  ],
+  "textures": [
+    {
+      "path": "mariost.tpl",
+      "size": 2128288,
+      "sha256": "e6916a8a208b5de452ab49ec7381b5540b1ece86f919575f3beb4508caf402cb",
+      "iso_offset": 1174995732,
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    }
+  ],
+  "conversion": "Unchanged initialized Logo work pointer, path and VI mode inputs, original work BSS initialization and unrelocated title TPL. Shared SDK/root/GP/cache and raw Mario remain borrowed; no reimport/reset of those owners.",
+  "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+}

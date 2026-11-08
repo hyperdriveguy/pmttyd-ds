@@ -272,6 +272,7 @@ bool stagePrologueAnimationFiles(NativeFileCache& cache,const char* root){
   {"a/c_gara-",4,"field-native-c_gara.draw-textures.bin"},
   {"a/c_suifu_b-",4,"field-native-c_suifu_b.draw-textures.bin"},
   {"./e/us/effect_us.tpl",4,"effect-process/effect_us.tpl"},
+  {"./mariost.tpl",4,"logo-startup/mariost.tpl"},
   {"a/vivian.bin",0,"animation-startup/a/vivian.bin"},
   {"a/ag2tg.bin",0,"animation-startup/a/ag2tg.bin"}};
  std::vector<NativeFileCache::Source> sources;
