@@ -20,7 +20,9 @@ constexpr unsigned NameBudget=4096;
 struct NativeBattleSound::State {
  NativeBattleSoundBinding binding;SourceBattleVoiceServices services;
  std::map<uint64_t,SourceBattleVoiceCursor> voices;uint32_t pending=0;
- bool starting=false,poisoned=false;
+ std::array<std::shared_ptr<const uint8_t>,40> owned{};
+ PositionalSfxStopServices retirementBackend{};
+ bool starting=false,poisoned=false,retiring=false,retirementInvoking=false,backendBound=false,retired=false;
  bool current()const{return !poisoned && binding.vm && binding.random && binding.registry && binding.lifetime && binding.current && binding.current(binding.user);}
  std::optional<uint32_t> word(uint32_t address)const{uint32_t v=0;if(!binding.vm->memory.readWord(address,v))return {};return v;}
  std::optional<std::string> text(uint32_t address)const{
@@ -33,7 +35,7 @@ struct NativeBattleSound::State {
   return getPackedBattleStatus(unit,id,nativeBattleActorServices(*binding.vm));
  }
  std::optional<int32_t> start(uint32_t key,const std::optional<std::array<float,3>>& position){
-  pending=0x800d9934;if(!current() || starting)return {};
+  pending=0x800d9934;if(starting || retirementInvoking || retiring || !current())return {};
   // This finite binding has no started-engine stop owner. Refuse before
   // entering the nonretained original On implementation, not after mutations.
   for(const auto& slot:binding.registry->slots)
@@ -76,7 +78,10 @@ struct NativeBattleSound::State {
   source.truncate=[](void* p,float value)->std::optional<int32_t>{auto& x=*static_cast<Snapshot*>(p);return x.state->binding.vm->platform.truncate(x.state->binding.vm->platform.user,value);};
   source.milliseconds=snapshot.milliseconds;
   PositionalSfxStartRequest request;request.key=int32_t(key);request.position=position;
+  std::array<std::shared_ptr<const uint8_t>,40> before;
+  for(unsigned i=0;i<before.size();++i)before[i]=binding.registry->slotLifetime(i);
   starting=true;const auto result=startPositionalSfx(*binding.registry,request,source);starting=false;
+  for(unsigned i=0;i<before.size();++i){const auto token=binding.registry->slotLifetime(i);if(token && token!=before[i])owned[i]=token;}
   // All reached providers above are captured and total during this serialized
   // call. No caller may blindly replay On after a violated admission invariant.
   if(result)pending=0;else poisoned=true;
@@ -100,7 +105,28 @@ NativeBattleSound::NativeBattleSound(const NativeBattleSoundBinding& binding):st
  s.setVolume=[](void* p,int32_t handle,uint32_t value){return static_cast<State*>(p)->binding.registry->setVolume(handle,int32_t(value));};
 }
 NativeBattleSound::~NativeBattleSound()=default;
-std::optional<int32_t> NativeBattleSound::voice(EventEntry& e){auto& x=*state_;if(!x.current())return {};const uint64_t key=uint64_t(e.id)<<32|e.currentCommand;auto& cursor=x.voices[key];int32_t result=0;if(!resumeSourceBattleVoice(e,x.services,cursor,result)){x.pending=cursor.pending();return {};}x.voices.erase(key);x.pending=0;return result;}
+bool NativeBattleSound::retireOwned(const PositionalSfxStopServices& backend){
+ auto& x=*state_;if(x.starting || x.retirementInvoking)return false;
+ struct Guard{bool& value;explicit Guard(bool& v):value(v){value=true;}~Guard(){value=false;}} guard(x.retirementInvoking);
+ if(!x.current())return false;
+ if(x.retired)return true;
+ if(x.backendBound && (x.retirementBackend.user!=backend.user || x.retirementBackend.descriptor!=backend.descriptor || x.retirementBackend.stop!=backend.stop))return false;
+ x.retirementBackend=backend;x.backendBound=true;x.retiring=true;
+ PositionalSfxStopServices actual;actual.user=&x;
+ actual.descriptor=[](void* p,uint32_t index)->std::optional<uint32_t>{auto& s=*static_cast<State*>(p);if(!s.current())return {};return s.word(SoundRows+SoundRowBytes*index+4);};
+ actual.stop=[](void* p,PositionalSfxStopKind kind,int32_t engine){auto& s=*static_cast<State*>(p);return s.current() && s.retirementBackend.stop && s.retirementBackend.stop(s.retirementBackend.user,kind,engine);};
+ for(unsigned i=0;i<x.owned.size();++i){
+  if(!x.current())return false;
+  if(!x.owned[i])continue;
+  if(x.binding.registry->slotLifetime(i)!=x.owned[i]){x.owned[i].reset();continue;}
+  x.pending=0x800d95f8; // Original psndSFXOff
+  if(!x.binding.registry->off(int32_t(i),actual))return false;
+  x.owned[i].reset();
+ }
+ if(!x.current())return false;
+ x.voices.clear();x.retired=true;x.pending=0;return true;
+}
+std::optional<int32_t> NativeBattleSound::voice(EventEntry& e){auto& x=*state_;if(x.retiring || x.starting || x.retirementInvoking || !x.current())return {};const uint64_t key=uint64_t(e.id)<<32|e.currentCommand;auto& cursor=x.voices[key];int32_t result=0;if(!resumeSourceBattleVoice(e,x.services,cursor,result)){x.pending=cursor.pending();return {};}x.voices.erase(key);x.pending=0;return result;}
 std::optional<int32_t> NativeBattleSound::menu(uint32_t key){return state_->start(key,{});}
 std::optional<int32_t> NativeBattleSound::position(uint32_t key,const std::array<float,3>& position){return state_->start(key,position);}
 uint32_t NativeBattleSound::pending()const{return state_->pending;}

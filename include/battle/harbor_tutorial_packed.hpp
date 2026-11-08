@@ -56,6 +56,8 @@ public:
  std::shared_ptr<const uint8_t> classUiLifetime(uint32_t at) const{
   const auto it=classUiLifetimes.find(at);return it==classUiLifetimes.end()?nullptr:it->second;
  }
+ std::shared_ptr<const uint8_t> nativeWeaponPresentationLifetime()const{return nativeWeaponPresentationOwner;}
+ uint32_t nativeWeaponPresentationWork()const{constexpr uint32_t NativeWeaponWorkOffset=0xc00;return MenuRam+NativeWeaponWorkOffset;}
  bool menuAudienceItemOn(uint32_t output);
  std::optional<bool> attackAudienceMenu(HarborTutorial&);
  BattleMenuAudienceCursor audienceMenuCursor;
@@ -119,6 +121,8 @@ private:
  // Fresh native lifetime for each actual SDK class-UI allocation. Reusing its
  // guest address must not admit an old held draw or displayed publication.
  std::unordered_map<uint32_t,std::shared_ptr<const uint8_t>> classUiLifetimes;
+ // Native legacy-weapon setup identity, minted only by its real setup bridge.
+ std::shared_ptr<const uint8_t> nativeWeaponPresentationOwner;
  // First unavailable immediate Input path latches until weapon-table rebuild.
  // It prevents replaying partially completed source work without a continuation.
  // Zero means no latched block, not proof all providers have been installed.

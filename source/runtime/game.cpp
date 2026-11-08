@@ -1344,6 +1344,7 @@ void Game::restore(const Progress& saved) {
     if(nativePartyPending())return;
     if(nativeAnimationPending())return;
     if(nativeEffects_ && nativeEffects_->busy())return;
+    if(!harborGameplay.reset())return; // Native policy retirement, not source End.
     battleSequenceFacade_.retire(); // Successful native restore retires borrowed producer receipts before mutation.
     const auto retainedUiStartup=nativeUiStartup_;
     const auto retainedEffects=nativeEffects_;
@@ -2530,7 +2531,7 @@ void Game::tick(const Input& rawInput,const OriginalSequenceServices* sequenceSe
     }
     if(harborTutorial.running()) {
         const auto physical=inputProducer.channels[0].battleSample();
-        harborTutorial.tick(ticks*1000/60,(i.confirm || tap?0x100u:0u)|(i.cancel?0x200u:0u),rawInput.physicalSnapshot?&physical:nullptr);
+        harborGameplay.advance(harborTutorial,ticks,ticks*1000/60,(i.confirm || tap?0x100u:0u)|(i.cancel?0x200u:0u),rawInput.physicalSnapshot?&physical:nullptr);
         scene=Scene::Battle;saveRequested=false;return;
     }
     if(progress.room==1 && progress.originalStory==4 && !harborEncounter.triggered)beginHarborEncounter(harborResume);
@@ -2575,6 +2576,7 @@ void Game::tick(const Input& rawInput,const OriginalSequenceServices* sequenceSe
         // The original field event retains its blocking battle-start call.
         // Only source setup2 initialization/phase owns this bounded battle entry.
         if(harborEncounter.battleRequested && harborEncounter.battleSetup==2 && !harborTutorial.triggered && (progress.originalPouch?harborTutorial.beginFromPouch(ticks*1000/60,*progress.originalPouch,progress.originalStory.value_or(0)):harborTutorial.beginFresh(ticks*1000/60,progress.hp,10,progress.originalStory.value_or(0)))){
+            if(!harborGameplay.reset())return; // This block owns a successfully admitted new scene.
             if(!harborTutorial.bindCommandDisplayPalette(commandPalette))harborTutorial.failed=true;
             if(!harborTutorial.bindPublicSound(publicSfx))harborTutorial.failed=true;
             scene=Scene::Battle;

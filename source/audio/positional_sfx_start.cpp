@@ -92,6 +92,7 @@ std::optional<int32_t> startPositionalSfx(PositionalSfxRegistry& registry,const 
     // flags2(mode0)/4(other) and distance U16 are retained for later psndMain.
     registry.allocationGeneration=uint16_t(registry.allocationGeneration+1);
     slot.generation=registry.allocationGeneration;
+    registry.lifetimes_[unsigned(selected)]=std::make_shared<const uint8_t>(0);
     return int32_t(uint32_t(registry.allocationGeneration)<<8|unsigned(selected));
 }
 }

@@ -15,7 +15,7 @@ bool HarborTutorialPacked::openWeaponMenu(uint32_t type,HarborTutorial& scene,vo
  BattleWeaponMenuDecisionServices s;s.memory=nativeBattleActorServices(vm);s.user=&c;s.privateCursor=MenuRam+0xc;
  s.build=[](void* self,uint32_t b,uint32_t t){auto& c=*static_cast<Context*>(self);assert(b==c.p->battleAddress());return c.p->buildWeaponMenu(t,*c.scene,c.messageUser,c.message);};
  s.cursor=[](void* self,uint32_t menu,uint32_t t,uint32_t out){auto& p=*static_cast<Context*>(self)->p;uint32_t address=0;if(findPackedCommandCursor(menu,t,address,nativeBattlePackedSelectionServices(p.vm)))p.word(out,address);};
- s.initialize=[](void* self,uint32_t b,uint32_t,uint32_t,uint32_t){auto& c=*static_cast<Context*>(self);assert(b==c.p->battleAddress());c.p->word(c.p->battleAddress()+0x1c78,MenuRam+0xc00);c.p->byte(MenuRam+0xc14,0);c.scene->weaponMenuOpen=true;c.scene->weaponTargetMenuOpen=false;return true;};
+ s.initialize=[](void* self,uint32_t b,uint32_t,uint32_t,uint32_t){auto& c=*static_cast<Context*>(self);assert(b==c.p->battleAddress());const auto setupOwner=std::make_shared<const uint8_t>(0);c.p->nativeWeaponPresentationOwner=setupOwner;c.p->word(c.p->battleAddress()+0x1c78,MenuRam+0xc00);c.p->byte(MenuRam+0xc14,0);c.scene->weaponMenuOpen=true;c.scene->weaponTargetMenuOpen=false;return true;};
  return setupPackedBattleWeaponMenu(battleAddress(),type,setupFlag,s);
 }
 // Presentation acknowledgement is explicit. Merely building/opening rows

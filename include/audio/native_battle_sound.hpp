@@ -25,6 +25,10 @@ public:
  uint32_t pending()const;
  bool usesRegistry(const PositionalSfxRegistry*)const;
  bool usesRuntime(const EventNativeRuntime*)const;
+ // Native teardown: caller first cancels actual battle events outside render.
+ // Only actual births owned here are stopped; foreign/reused slots survive.
+ // False retains successful earlier stops and pins the backend across retries.
+ bool retireOwned(const PositionalSfxStopServices&);
 private:
  struct State;std::unique_ptr<State> state_;
 };

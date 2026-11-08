@@ -91,6 +91,7 @@ public:
     EnemyHpMetrics enemyHpMetrics(const Game&) const;
     bool drawClassMenu(const BattleClassBackend&);
     const BattleClassAssets* classMenuAssets();
+    void retireNativeHarborMenu();
     // Ready-only accessor: never imports during a held native callback.
     std::optional<BattleClassSurfaceLease> classMenuSurfaceLease()const;
     // Explicit preparation outside FrameBegin; source callbacks borrow leases.
@@ -286,6 +287,11 @@ private:
     bool prepareClassMenuFrame(const Game&);
     void releaseClassMenuFrame();
     bool resumeClassMenu(const Game&,uint32_t camera,uint32_t userdata);
+    struct NativeHarborMenu;
+    std::shared_ptr<NativeHarborMenu> nativeHarborMenu;
+    bool prepareNativeHarborMenu(const Game&);
+    bool drawNativeHarborMenu(const Game&);
+    void completeNativeHarborMenu(const Game&);
     bool prepareClassMenuDrawing();
     void releaseClassMenuDrawing();
     BattleAudienceResources audienceAssets;BattleAudienceBackend audienceBatch;

@@ -1,4 +1,5 @@
 #include "harbor_tutorial_packed.hpp"
+#include "native_harbor_action_prize.hpp"
 #include "native_battle_sound.hpp"
 #include <cassert>
 #include <cstring>
@@ -207,6 +208,7 @@ void HarborTutorialPacked::capture(HarborTutorial& scene){
 // event result 2 is completion, 0 wait, 255 scheduler cancellation/special return.
 // Addresses below are original US callback identities, never host pointers.
 bool HarborTutorialPacked::invoke(EventEntry& e,uint32_t function,int32_t first,int32_t& result){
+ if(function==0x801075c4){const auto prize=nativeHarborActionPrize(vm,e);if(!prize)return false;result=*prize;return true;}
  if(function==0x80104508){
   if(!sourceSound)return false;
   const auto completed=sourceSound->voice(e);if(!completed)return false;

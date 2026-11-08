@@ -19586,3 +19586,40 @@ EVT-01 records implementation work without filing a duplicate unknown request.
 Continue genuine setup2 gameplay/result/export/field return and original
 postbattle crowd/dialogue/party/map transition, followed by fresh/resume scene
 captures and actual hardware budgets.
+2026-11-07 — native Harbor physical command and turn driver integration
+
+The ordinary Game tutorial branch now invokes NativeHarborGameplay instead of
+only ticking an idle facade. The bounded native scheduling policy advances the
+original setup2 phase scripts, accepts actual physical command samples, dispatches
+the selected original weapon and Crump attack, and invokes the actual next-turn
+reset. Dialogue edges cannot also submit an attack. Source prize lookup is bound
+through its retained wrapper. This is a native policy, not a claim that the whole
+original BattleMain/sequence has been reconstructed.
+
+The native menu draws original source command rows with the original class icons,
+font and window art. Class/weapon input readiness is acknowledged only after the
+actual completed native frame. Runtime, allocation and model lifetimes prevent
+stale menus from releasing input. The second screen retains the continued scene.
+Sound slots now carry actual birth lifetimes, and battle-owned retirement cannot
+stop a freed/reused foreign sound with an identical numeric handle.
+
+Validation: immutable artifacts/crump-playable-integration/manifest.json SHA256
+933e0175add4bd1c34d65b8c881c81f9182a3a3699699793ce9f78426e823cd9;
+15532 inputs unchanged after both consumers terminated. Fresh make test passed
+608/608 C++ tests (82.92s) and268/268 Python tests (39.000s), zero skips. Fresh
+make -j4 all -o assets-ready SOUNDTRACK=gamecube passed. Normal assets-ready ran
+before freezing:446 recipes,486 editable source files unchanged. Native3DSX SHA256
+2fcb783e634e0541769ac4bcfa9b209574a1b281eb4ffb798e2c844c46d4a562.
+This graph is committed a6b7f75a plus these packages; concurrent effect additions
+are preserved in the shared tree but are not covered by that exact graph receipt.
+Canonical real prologue pouch save fixtures roundtrip via actual save APIs,
+HP10/max10/FP5, v8 1536bytes. Isolated Azahar with the story4 fixture remained
+black before frontend; this is explicitly NOT menu/gameplay acceptance. Startup
+tracing is isolated under artifacts/crump-startup-diagnostic, frozen inputs intact.
+
+Next: resolve actual native startup stop; capture original opening dialogue,
+visible physical menu, failed and successful command rounds. Finish real Nice
+presentation, original voice PCM lifecycle, lethal motion, battle cleanup/export,
+and genuine same-VM field result/sequence bridge. Preserve original afterbattle
+crowd/dialogue/event conditions; never infer victory or synthesize story advances.
+The initial Crump battle and broader remake are still incomplete.

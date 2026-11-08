@@ -2,10 +2,12 @@
 #include <array>
 #include <cstdint>
 #include <optional>
+#include <memory>
 //40 typed public slots retain source metadata without serializing a guest
 // record. Initialize resets key/engine/flags only; generation and other fields
 // deliberately survive a later public-bank reinitialization.
 namespace ttyd {
+struct PositionalSfxStartRequest;struct PositionalSfxStartServices;
 struct PositionalSfxSlot {
     int32_t key=0;
     uint16_t generation=0,flags=0;
@@ -40,5 +42,11 @@ struct PositionalSfxRegistry {
     bool setVolume(int32_t handle,int32_t value);
     bool setDistance(int32_t handle,int32_t value);
     bool off(int32_t handle,const PositionalSfxStopServices&);
+    // Native incarnation proof, independent of the wrapping source handle.
+    // Unknown/manual slots have no token. Compare the actual registry as well.
+    std::shared_ptr<const uint8_t> slotLifetime(unsigned index)const;
+private:
+    std::array<std::shared_ptr<const uint8_t>,40> lifetimes_{};
+    friend std::optional<int32_t> startPositionalSfx(PositionalSfxRegistry&,const PositionalSfxStartRequest&,const PositionalSfxStartServices&);
 };
 }

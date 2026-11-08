@@ -1,4 +1,6 @@
 #include "harbor_tutorial.hpp"
+#include "harbor_native_command_menu.hpp"
+#include <unordered_set>
 #include "harbor_source_audience.hpp"
 #include "battle_class_menu_messages.hpp"
 #include <cstdlib>
@@ -13,6 +15,9 @@
 #include "prologue_pouch.hpp"
 #include "battle_attack_registration.hpp"
 #include "battle_status_window.hpp"
+#include "battle_conclusion.hpp"
+#include "battle_packed_takeoff.hpp"
+#include "battle_event_callbacks.hpp"
 #include "battle_packed_status.hpp"
 #include "battle_sequence_startup.hpp"
 #include "battle_menu_file_cache.hpp"
@@ -414,7 +419,39 @@ const BattleAudienceIncarnationOwner* HarborTutorial::audienceIncarnations()cons
 // Source UI+0x14 is explicit presentation acknowledgement, not creation or draw
 // registration. Menu resource Init/End elsewhere retain separate file refs;
 // rendering, queue registration and VM destruction do not synthesize End.
-void HarborTutorial::classMenuPresented(){if(runtime_ && classMenuOpen){uint32_t w=0;if(runtime_->packed->readWord(HarborTutorialPacked::Battle+0x1c78,w) && w)runtime_->vm.memory.writeByte(w+0x14,1);}}
+
+std::optional<HarborNativeMenuSnapshot> HarborTutorial::nativeCommandMenu()const {
+ constexpr uint32_t CommandWorkOffset=0x1c78,CandidateBufferOffset=0x428,CandidateSelectionOffset=0xab7;
+ constexpr uint32_t UnitPartHeadOffset=0x14,UnitKindOffset=8,PartDefinitionOffset=4,PartNameOffset=8,YoshiKind=226,NameByteLimit=256;
+ const auto r=runtime_;
+ if(!r||failed||!initialized||!introComplete||phaseActive||attackActive||damageActive||message.active()||r->sourceDisplay||!sourceMenuRegistration_||sourceMenuRegistration_->runtime.lock()!=r)return {};
+ HarborNativeMenuSnapshot snapshot;snapshot.facade=this;snapshot.runtime=r;snapshot.registration=sourceMenuRegistration_;snapshot.facadeRegistration=nativeMenuRegistration_.proof();snapshot.battle=r->packed->battleAddress();snapshot.modelTick=now;snapshot.turn=turn;snapshot.phase=phaseWord;
+ if(!snapshot.battle||!r->packed->readWord(snapshot.battle+CommandWorkOffset,snapshot.work))return {};
+ if(weaponTargetMenuOpen){
+  snapshot.kind=HarborNativeMenuKind::Target;snapshot.type=weaponMenuType;snapshot.menuOwner=r->packed->nativeWeaponPresentationLifetime();
+  uint8_t selected=0;if(!r->vm.memory.readByte(snapshot.battle+CandidateBufferOffset+CandidateSelectionOffset,selected))return {};snapshot.selected=int8_t(selected);
+  for(const auto& target:weaponTargets){
+   const uint32_t unit=r->packed->unitAddress(target[0]);uint32_t part=0,kind=0;if(!unit||!r->packed->readWord(unit+UnitPartHeadOffset,part)||!r->packed->readWord(unit+UnitKindOffset,kind)||kind==YoshiKind)return {};
+   std::unordered_set<uint32_t> visited;
+   uint32_t firstNext=0;if(!part||!r->packed->readWord(part,firstNext))return {};
+   if(target[1]>=0&&firstNext)while(part){if(!visited.insert(part).second)return {};uint32_t next=0,definition=0,id=0;if(!r->packed->readWord(part+PartDefinitionOffset,definition)||!r->packed->readWord(definition,id))return {};if(id==uint32_t(target[1]))break;if(!r->packed->readWord(part,next))return {};part=next;}
+   uint32_t name=0;if(!part||!r->packed->readWord(part+PartNameOffset,name)||!name)return {};std::string key;bool terminated=false;for(unsigned offset=0;offset<NameByteLimit;++offset){uint8_t byte=0;if(!r->vm.memory.readByte(name+offset,byte))return {};if(!byte){terminated=true;break;}key.push_back(char(byte));}if(!terminated||key.empty())return {};const auto* label=messages.find(key.c_str());if(!label||!*label)return {};
+   HarborNativeMenuRow row{uint32_t(target[0]),uint32_t(target[1]),0,true,label};row.sourceName=name;snapshot.rows.push_back(std::move(row));
+  }
+ }else if(weaponMenuOpen){snapshot.kind=HarborNativeMenuKind::Weapon;snapshot.type=weaponMenuType;snapshot.selected=weaponRowIndex;snapshot.menuOwner=r->packed->nativeWeaponPresentationLifetime();
+  if(!snapshot.work||snapshot.work!=r->packed->nativeWeaponPresentationWork())return {};
+  for(const auto& row:weaponRows){HarborNativeMenuRow item{row.weapon,uint32_t(row.item),row.icon,row.enabled,row.label};item.sourceName=row.nameAddress;item.sourceReason=uint32_t(row.reason);item.sourceOrdinal=uint32_t(row.ordinal);item.sourceItem=uint32_t(row.item);snapshot.rows.push_back(std::move(item));}
+ }else if(classMenuOpen){snapshot.kind=HarborNativeMenuKind::Class;snapshot.selected=classRowIndex;snapshot.menuOwner=r->packed->classUiLifetime(snapshot.work);
+  for(const auto& row:classRows){HarborNativeMenuRow item{row.type,row.reason,row.icon,row.enabled,row.label};item.sourceName=row.nameAddress;item.sourceReason=row.reason;snapshot.rows.push_back(std::move(item));}
+ }else return {};
+ if(!snapshot.menuOwner||snapshot.rows.empty()||snapshot.selected<0||size_t(snapshot.selected)>=snapshot.rows.size())return {};
+ return snapshot;
+}
+bool HarborTutorial::nativeCommandMenuCurrent(const HarborNativeMenuSnapshot& snapshot)const {
+ const auto actual=nativeCommandMenu();return actual&&sameHarborNativeMenu(snapshot,*actual);
+}
+
+void HarborTutorial::classMenuPresented() const{if(runtime_ && classMenuOpen){uint32_t w=0;if(runtime_->packed->readWord(HarborTutorialPacked::Battle+0x1c78,w) && w)runtime_->vm.memory.writeByte(w+0x14,1);}}
 bool HarborTutorial::buildClassMenu(){
  if(!runtime_ || failed || !initialized || !introComplete || phaseActive || attackActive || damageActive)return false;
  auto& r=*runtime_;r.scene=this;r.packed->publish(*this);
@@ -430,7 +467,7 @@ bool HarborTutorial::openWeaponMenu(uint32_t type){
  if(opened)r.vm.memory.writeWord(r.packed->battleAddress()+0x171c,7);
  return opened;
 }
-void HarborTutorial::weaponMenuPresented(){if(runtime_ && weaponMenuOpen)runtime_->packed->weaponMenuPresented();}
+void HarborTutorial::weaponMenuPresented() const{if(runtime_ && weaponMenuOpen)runtime_->packed->weaponMenuPresented();}
 std::optional<int32_t> HarborTutorial::inputWeaponMenu(const BattlePadSample& sample){
  if(!runtime_ || failed || !weaponMenuOpen || phaseActive || attackActive || damageActive)return std::nullopt;auto& r=*runtime_;r.scene=this;r.packed->samplePhysical(now,&sample);r.packed->publish(*this);
  return r.packed->inputWeaponMenu(*this,&r,[](void* self,uint32_t key){auto& r=*static_cast<HarborTutorialRuntime*>(self);const auto id=r.text(key);return r.packed->cacheMenuLabel(key,messages.find(id.c_str()));});
@@ -442,6 +479,25 @@ std::optional<int32_t> HarborTutorial::inputCommand(const BattlePadSample& sampl
  r.packed->capture(*this);return result;
 }
 bool HarborTutorial::readPackedWord(uint32_t address,uint32_t& value)const{return runtime_ && runtime_->packed && runtime_->packed->readWord(address,value);}
+std::weak_ptr<const void>HarborTutorial::nativeGameplayLifetime()const{return runtime_;}
+std::optional<int32_t>HarborTutorial::nativeGameplayConclusion(){
+ if(!runtime_||!runtime_->packed||failed||attackActive||damageActive||phaseActive)return {};
+ auto&r=*runtime_;r.scene=this;r.packed->publish(*this);
+ BattleConclusionServices services;services.actors=nativeBattleActorServices(r.vm);services.user=&r.vm;
+ services.checkStatus=[](void*p,uint32_t u,int32_t status){return int32_t(checkPackedBattleStatus(u,status,nativeBattleActorServices(*static_cast<EventNativeRuntime*>(p))));};
+ services.enemyBelong=[](void*p,uint32_t u){return packedEnemyBelong(u,nativeBattleActorServices(*static_cast<EventNativeRuntime*>(p)));};
+ const auto battle=r.packed->battleAddress();if(!battleCheckConcluded(battle,services))return {};
+ return battleInitialEndResult(battle,services);
+}
+bool HarborTutorial::nativeGameplayNextTurn(){
+ if(!runtime_||!runtime_->packed||failed||attackActive||damageActive||phaseActive)return false;
+ auto&r=*runtime_;r.scene=this;r.packed->publish(*this);
+ BattleTurnFirstBackend backend;backend.runtime=&r.vm;
+ const auto battle=r.packed->battleAddress();
+ battleTurnFirstProcess(battle,nativeBattleTurnFirstServices(backend));
+ uint16_t next=0;const bool mapped=r.vm.memory.readHalf(battle,next);assert(mapped);(void)mapped;
+ turn=int16_t(next);r.packed->capture(*this);return true;
+}
 std::optional<NativeBattleStatusSnapshot>HarborTutorial::statusSnapshot()const{
  if(!runtime_||!runtime_->packed||failed)return {};
  auto&r=*runtime_;if(!r.statusReader){

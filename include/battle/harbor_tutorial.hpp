@@ -1,5 +1,6 @@
 #pragma once
 #include "native_battle_status.hpp"
+#include "native_facade_registration.hpp"
 #include "battle_class_display.hpp"
 #include "harbor_source_menu_factory.hpp"
 #include <functional>
@@ -46,6 +47,7 @@ struct HarborTutorialClassRow {
 struct ProloguePouch;
 struct HarborTutorialRuntime;
 struct HarborSourceMenuRegistration;
+struct HarborNativeMenuSnapshot;
 class DisplayQueue;
 struct BattleCommandPalette;
 struct BattleFooterCursor;
@@ -144,14 +146,17 @@ public:
     // caller-owned. Does not register/execute/acknowledge a display by itself.
     std::optional<HarborClassMenuDrawBinding> classMenuDrawBinding(
         const BattleActDrawServices& linked) const;
-    void classMenuPresented();
+    // Native manual-menu receipt only; no source queued callback is acknowledged.
+    std::optional<HarborNativeMenuSnapshot> nativeCommandMenu() const;
+    bool nativeCommandMenuCurrent(const HarborNativeMenuSnapshot&) const;
+    void classMenuPresented() const;
     bool classMenuOpen=false;
     bool buildClassMenu();
     std::vector<HarborTutorialClassRow> classRows;
     int32_t classRowIndex=0;
     bool buildWeaponMenu(uint32_t type);
     bool openWeaponMenu(uint32_t type);
-    void weaponMenuPresented();
+    void weaponMenuPresented() const;
     std::optional<int32_t> inputWeaponMenu(const BattlePadSample&);
     // Complete source Input owner with established menu/provider context.
     std::optional<int32_t> inputCommand(const BattlePadSample&);
@@ -166,6 +171,11 @@ public:
     bool readPackedWord(uint32_t address,uint32_t& value) const;
     std::optional<NativeBattleStatusSnapshot> statusSnapshot() const;
     bool prepareAudienceDrawing(const BattleAudienceDrawServices&) const;
+    // Port driver identity and original conclusion predicate. A numeric result
+    // is not whole End, reward export, teardown or field-return completion.
+    std::weak_ptr<const void> nativeGameplayLifetime()const;
+    std::optional<int32_t> nativeGameplayConclusion();
+    bool nativeGameplayNextTurn();
     bool running() const{return triggered;}
 private:
     friend struct HarborSourceMenuFactoryFixture;
@@ -178,5 +188,6 @@ private:
     // Copies share one actual-runtime registration; a new begin gives only
     // that facade a fresh slot. The slot never pins the VM it identifies.
     mutable std::shared_ptr<HarborSourceMenuRegistration> sourceMenuRegistration_;
+    NativeFacadeRegistration nativeMenuRegistration_;
 };
 }

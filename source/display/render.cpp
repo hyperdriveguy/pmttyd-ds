@@ -1411,7 +1411,13 @@ void Renderer::overlay(const Game& g) {
             messageIconImage(cue.icon,g.ticks,200+cue.position[0]*.5f,
                 120-cue.position[1]*.5f+frame.height*cue.scale*.25f,cue.scale,255);
         }
-        originalMessage(g);if(!tutorialReady || g.harborTutorial.failed || g.harborTutorial.introComplete)text(!tutorialReady?"Development notice: tutorial presentation unavailable":g.prompt(),25,112,.43f,Ink);return;}
+        originalMessage(g);
+        const bool nativeMenuDrawn=drawNativeHarborMenu(g);
+        const bool menuRequested=g.harborTutorial.classMenuOpen||g.harborTutorial.weaponMenuOpen||g.harborTutorial.weaponTargetMenuOpen;
+        if(!tutorialReady||g.harborTutorial.failed)text(!tutorialReady?"Development notice: tutorial presentation unavailable":g.prompt(),25,112,.43f,Ink);
+        else if(menuRequested&&!nativeMenuDrawn&&!g.harborTutorial.sourceMenuFactory())text("Development notice: command menu assets or source model unavailable",25,112,.43f,Ink);
+        else if(!menuRequested&&g.harborTutorial.introComplete)text(g.prompt(),25,112,.43f,Ink);
+        return;}
     if(g.harborEncounter.locked()){originalMessage(g);if(g.harborEncounter.failed || g.harborEncounter.pendingService)text(g.prompt(),25,112,.43f,Ink);return;}
     if(auto* board=g.troubleBoardPresentation();board &&
        (g.troubleBoardLocked() || board->message.active() || board->selection.active() || board->menu())) {
@@ -1612,6 +1618,7 @@ void Renderer::menu(const Game& g,const Metrics& m,const char* notice,bool audio
 // SYNCDRAW permits CPU arenas to be reused only after previous GPU work finishes.
 void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool audioAvailable) {
     prepareEnemyHp(g);
+    prepareNativeHarborMenu(g);
     prepareClassMenuFrame(g);
     prepareWeaponMenuFrame(g);
     prepareSourceIcons(g);
@@ -1695,6 +1702,7 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
     C2D_Flush();
     harborSourceFrameActive=false;
     C3D_FrameEnd(0);
+    completeNativeHarborMenu(g);
 }
 // Cleanup accepts partial init. Specialized release owners and GPU sync run
 // before deleting borrowed linear buffers/textures/shaders/targets;then C2D/C3D

@@ -57,6 +57,7 @@
 #include "opening_field_departure.hpp"
 #include "harbor_encounter.hpp"
 #include "harbor_tutorial.hpp"
+#include "native_harbor_gameplay.hpp"
 #include "professor_story.hpp"
 #include "trio_battle_commands.hpp"
 #include "trio_attack.hpp"
@@ -241,6 +242,7 @@ public:
     HarborStory harborStory;
     HarborEncounter harborEncounter;
     HarborTutorial harborTutorial;
+    NativeHarborGameplay harborGameplay;
     size_t harborCameraCursor=0;
     bool harborResume=false;
     bool beginHarborEncounter(bool resume);
