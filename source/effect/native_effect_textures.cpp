@@ -5,6 +5,7 @@
 #include "source_archive_layout.hpp"
 #include "source_effect_texture_setup.hpp"
 #include "source_environment_startup.hpp"
+#include "source_fade_startup.hpp"
 #include <algorithm>
 #include <array>
 #include <cstdio>
@@ -33,6 +34,13 @@ constexpr Span EnvironmentSpans[] = {{0x802f9c78, 8, 0x508c98090bcb0be6ULL},
                                      {0x802f9c80, 12, 0x77cbd085e940a32bULL},
                                      {0x803e7278, 480, 0xfcfda4c07d71b8a5ULL},
                                      {0x8041ec90, 8, 0xa8c7f832281a39c5ULL}};
+constexpr Span FadeSpans[] = {{0x802bf79c, 12, 0xa69ec3d10dd44d65ULL},
+                              {0x802bf7a8, 16, 0x11667d0167388806ULL},
+                              {0x8041e620, 4, 0x4d25767f9dce13f5ULL},
+                              {0x8041f7a8, 8, 0x1e6a92ce2112e2eaULL}};
+constexpr uint32_t FadeBytes = 22720, FadeManagerBytes = 0x360,
+                   FadeGlobal = 0x8041e620;
+constexpr uint64_t FadeHash = 0xa44418f504dc2cc4ULL;
 constexpr uint32_t EnvironmentBytes = 37248;
 constexpr uint64_t EnvironmentHash = 0x8b95563bd8932bc5ULL;
 constexpr uint32_t EntryBytes = 152, EntryStart = 0x60050000,
@@ -53,7 +61,10 @@ struct NativeSourceTextureStartup::State {
   std::string root;
   SourceEffectTextureSetupCursor setup;
   SourceEnvironmentStartupCursor environmentInit, environmentSetup;
-  bool environment = false, initialized = false, archivePinned = false;
+  bool environment = false, fade = false, initialized = false,
+       archivePinned = false, managerPublished = false;
+  uint32_t fadeManager = 0;
+  SourceFadeStartupCursor fadeInit, fadeSetup;
   std::vector<Span> spans;
   std::vector<std::pair<uint32_t, uint32_t>> borrowed;
   bool admitted = false, invalid = false;
@@ -66,6 +77,7 @@ struct NativeSourceTextureStartup::State {
     uint64_t hash = 14695981039346656037ULL;
     SourceEffectTextureSetupCursor completion;
     SourceEnvironmentStartupCursor environmentCompletion;
+    SourceFadeStartupCursor fadeCompletion;
   };
   std::array<Job, 2> jobs;
   ~State() {
@@ -88,6 +100,18 @@ struct NativeSourceTextureStartup::State {
         invalid = true;
         return false;
       }
+    if (fadeManager &&
+        !vm().memory.sharesRamWith(*identity, fadeManager, FadeManagerBytes)) {
+      invalid = true;
+      return false;
+    }
+    if (managerPublished) {
+      uint32_t actual;
+      if (!vm().memory.readWord(FadeGlobal, actual) || actual != fadeManager) {
+        invalid = true;
+        return false;
+      }
+    }
     for (auto &j : jobs) {
       if (j.handle &&
           !vm().memory.sharesRamWith(*identity, j.handle, EntryBytes)) {
@@ -109,10 +133,15 @@ struct NativeSourceTextureStartup::State {
     return v;
   }
   bool store(uint32_t a, uint32_t n, uint32_t v) {
-    return current() && (n == 1   ? vm().memory.writeByte(a, uint8_t(v))
-                         : n == 2 ? vm().memory.writeHalf(a, uint16_t(v))
-                         : n == 4 ? vm().memory.writeWord(a, v)
-                                  : false);
+    if (!current())
+      return false;
+    const bool ok = n == 1   ? vm().memory.writeByte(a, uint8_t(v))
+                    : n == 2 ? vm().memory.writeHalf(a, uint16_t(v))
+                    : n == 4 ? vm().memory.writeWord(a, v)
+                             : false;
+    if (ok && fade && a == FadeGlobal && n == 4 && v == fadeManager)
+      managerPublished = true;
+    return ok;
   }
   bool pin(uint32_t a, uint32_t n) {
     return vm().memory.shareRamTo(*identity, a, n);
@@ -130,13 +159,16 @@ struct NativeSourceTextureStartup::State {
     return false;
   }
   uint32_t size(unsigned i) const {
-    return environment ? EnvironmentBytes : Sizes[i];
+    return fade ? FadeBytes : environment ? EnvironmentBytes : Sizes[i];
   }
   uint32_t callback(unsigned i) const {
-    return environment ? 0x8019e0f0 : i ? 0x801d7a58 : 0x8005efa8;
+    return fade          ? 0x80013ca4
+           : environment ? 0x8019e0f0
+           : i           ? 0x801d7a58
+                         : 0x8005efa8;
   }
   const char *name(unsigned i) const {
-    return environment ? "env.tpl" : Names[i];
+    return fade ? "fade.tpl" : environment ? "env.tpl" : Names[i];
   }
   bool borrowArchive() {
     if (archivePinned)
@@ -151,7 +183,7 @@ struct NativeSourceTextureStartup::State {
     return true;
   }
   unsigned bank(const SourceWindowTextureSetupCall &q) const {
-    if (environment)
+    if (environment || fade)
       return 0;
     return q.callsite >= 0x801d7910 && q.callsite < 0x801d7aa0 ? 1 : 0;
   }
@@ -162,6 +194,15 @@ struct NativeSourceTextureStartup::State {
     auto &j = jobs[i];
     switch (q.function) {
     case 0x800050b4: {
+      if (fade) {
+        if (q.count != 3 || q.callsite != 0x80013bb4 ||
+            q.arguments[0] != fadeManager || q.arguments[1] ||
+            q.arguments[2] != FadeManagerBytes)
+          return {};
+        eventFillMemory(fadeManager, 0, FadeManagerBytes,
+                        vm().memoryBinding.services());
+        return fadeManager;
+      }
       if (!environment || q.count != 3 || q.arguments[1] ||
           q.arguments[2] != 0xf0 ||
           ((q.callsite != 0x8019e0b8 || q.arguments[0] != 0x803e7278) &&
@@ -172,9 +213,10 @@ struct NativeSourceTextureStartup::State {
       return q.arguments[0];
     }
     case 0x800782e4: {
-      const uint32_t name = environment ? 0x802f9c78
-                            : i         ? 0x802fbafc
-                                        : 0x802c1f38;
+      const uint32_t name = fade          ? 0x802bf79c
+                            : environment ? 0x802f9c78
+                            : i           ? 0x802fbafc
+                                          : 0x802c1f38;
       if (q.count != 3 ||
           q.arguments != std::array<uint32_t, 5>{name, 0, 0, 0, 0})
         return {};
@@ -202,21 +244,25 @@ struct NativeSourceTextureStartup::State {
       return 0x8041f494;
     }
     case 0x8026a0b8: {
-      if (q.count != (environment ? 2 : 3) || !q.destination ||
-          q.arguments[0] != (environment ? 0x802f9c80
-                             : i         ? 0x802fbb0c
-                                         : 0x802c1f44))
+      if (q.count != ((environment || fade) ? 2 : 3) || !q.destination ||
+          q.arguments[0] != (fade          ? 0x802bf7a8
+                             : environment ? 0x802f9c80
+                             : i           ? 0x802fbb0c
+                                           : 0x802c1f44))
         return {};
       std::string format, rootName, prefix;
       if (!text(q.arguments[0], format) ||
-          format != (environment ? "%s/env.tpl"
-                     : i         ? "%s/e/%s/effect_n64.tpl"
-                                 : "%s/e/%s/effect.tpl") ||
+          format != (fade          ? "%s/fade.tpl"
+                     : environment ? "%s/env.tpl"
+                     : i           ? "%s/e/%s/effect_n64.tpl"
+                                   : "%s/e/%s/effect.tpl") ||
           !text(q.arguments[1], rootName) ||
-          (!environment && !text(q.arguments[2], prefix)))
+          (!environment && !fade && !text(q.arguments[2], prefix)))
         return {};
-      const auto path = environment ? rootName + "/env.tpl"
-                                    : rootName + "/e/" + prefix + "/" + name(i);
+      const auto path = fade ? rootName + "/fade.tpl"
+                        : environment
+                            ? rootName + "/env.tpl"
+                            : rootName + "/e/" + prefix + "/" + name(i);
       if (path.size() >= PathCapacity)
         return {};
       auto cells = q.destination->cells;
@@ -241,14 +287,17 @@ struct NativeSourceTextureStartup::State {
         }
         path += char(*b);
       }
-      if (!end || path != (environment ? "./env.tpl"
-                                       : "./e/us/" + std::string(name(i))))
+      if (!end || path != (fade          ? "./fade.tpl"
+                           : environment ? "./env.tpl"
+                                         : "./e/us/" + std::string(name(i))))
         return {};
-      FILE *f = std::fopen(
-          (root + (environment ? "/environment-startup/" : "/effect-primary/") +
-           name(i))
-              .c_str(),
-          "rb");
+      FILE *f = std::fopen((root +
+                            (fade          ? "/fade-startup/"
+                             : environment ? "/environment-startup/"
+                                           : "/effect-primary/") +
+                            name(i))
+                               .c_str(),
+                           "rb");
       if (!f)
         return 0;
       if (std::fseek(f, 0, SEEK_END) || std::ftell(f) != long(size(i)) ||
@@ -289,6 +338,29 @@ struct NativeSourceTextureStartup::State {
         return {};
       return word(j.handle + 0x74);
     case 0x800300f0: {
+      if (fade && q.callsite == 0x80013ba4) {
+        if (q.count != 2 || q.arguments[0] ||
+            q.arguments[1] != FadeManagerBytes || fadeManager)
+          return {};
+        const auto a = eventHeapAllocate(0, FadeManagerBytes,
+                                         vm().memoryBinding.services());
+        if (!a)
+          return 0;
+        // Window setup transfers later heap allocations out of the arena.
+        // Isolate this earlier manager so those splits cannot move its backing.
+        std::vector<uint8_t> managerBytes;
+        if (!vm().memory.extractRam(a, FadeManagerBytes, managerBytes) ||
+            !vm().memory.registerRam(a, std::move(managerBytes))) {
+          invalid = true;
+          return {};
+        }
+        fadeManager = a;
+        if (!pin(a, FadeManagerBytes)) {
+          invalid = true;
+          return {};
+        }
+        return a;
+      }
       if (q.count != 2 || q.arguments[0] ||
           q.arguments[1] != ((size(i) + 31) & ~31u) || j.palette)
         return {};
@@ -371,8 +443,11 @@ struct NativeSourceTextureStartup::State {
   }
   bool ready() {
     if (!current() || !admitted || !jobs[0].done ||
-        (!environment && !jobs[1].done))
+        (!environment && !fade && !jobs[1].done))
       return false;
+    if (fade)
+      return initialized && managerPublished &&
+             word(fadeManager + 0x35c) == std::optional<uint32_t>(1);
     if (environment)
       return initialized && word(0x8041ec94) == std::optional<uint32_t>(1);
     auto manager = word(0x80415ee0), n64 = word(0x80419a40);
@@ -386,35 +461,39 @@ NativeSourceTextureStartup::~NativeSourceTextureStartup() = default;
 std::unique_ptr<NativeSourceTextureStartup>
 NativeSourceTextureStartup::create(std::shared_ptr<NativeUiStartup> ui,
                                    const char *root) {
-  return createProfile(std::move(ui), root, false);
+  return createProfile(std::move(ui), root, Kind::Effects);
 }
 std::unique_ptr<NativeSourceTextureStartup>
 NativeSourceTextureStartup::createEnvironment(
     std::shared_ptr<NativeUiStartup> ui, const char *root) {
-  return createProfile(std::move(ui), root, true);
+  return createProfile(std::move(ui), root, Kind::Environment);
 }
 std::unique_ptr<NativeSourceTextureStartup>
 NativeSourceTextureStartup::createProfile(std::shared_ptr<NativeUiStartup> ui,
-                                          const char *root, bool environment) {
+                                          const char *root, Kind kind) {
+  const bool environment = kind == Kind::Environment, fade = kind == Kind::Fade;
   if (!ui || !root || !ui->current() || !ui->fieldProcess())
     return {};
   auto process = ui->fieldProcess();
   auto &vm = process->process().vm();
   std::vector<Span> spans =
-      environment ? std::vector<Span>(std::begin(EnvironmentSpans),
-                                      std::end(EnvironmentSpans))
-                  : std::vector<Span>(std::begin(Spans), std::end(Spans));
+      fade ? std::vector<Span>(std::begin(FadeSpans), std::end(FadeSpans))
+      : environment ? std::vector<Span>(std::begin(EnvironmentSpans),
+                                        std::end(EnvironmentSpans))
+                    : std::vector<Span>(std::begin(Spans), std::end(Spans));
   std::vector<std::pair<uint32_t, uint32_t>> borrowed =
-      environment ? std::vector<std::pair<uint32_t, uint32_t>>{{0x8041f494, 4}}
-                  : std::vector<std::pair<uint32_t, uint32_t>>(
-                        std::begin(Borrowed), std::end(Borrowed));
+      (environment || fade)
+          ? std::vector<std::pair<uint32_t, uint32_t>>{{0x8041f494, 4}}
+          : std::vector<std::pair<uint32_t, uint32_t>>(std::begin(Borrowed),
+                                                       std::end(Borrowed));
   for (auto span : borrowed)
     if (!vm.memory.contiguousRam(span.first, span.second))
       return {};
   EventScriptAssets image;
   if (!image.load((std::string(root) +
-                   (environment ? "/environment-startup/memory.pmevt"
-                                : "/effect-primary/memory.pmevt"))
+                   (fade          ? "/fade-startup/memory.pmevt"
+                    : environment ? "/environment-startup/memory.pmevt"
+                                  : "/effect-primary/memory.pmevt"))
                       .c_str()) ||
       image.segments().size() != spans.size())
     return {};
@@ -444,9 +523,10 @@ NativeSourceTextureStartup::createProfile(std::shared_ptr<NativeUiStartup> ui,
   s.process = std::move(process);
   s.root = root;
   s.environment = environment;
+  s.fade = fade;
   s.spans = std::move(spans);
   s.borrowed = std::move(borrowed);
-  s.archivePinned = !environment;
+  s.archivePinned = !environment && !fade;
   s.identity = std::make_unique<EventAddressSpace>(
       vm.entryAddresses, vm.contextAddresses, vm.runtimeAddresses,
       vm.gpAddresses);
@@ -457,6 +537,26 @@ NativeSourceTextureStartup::createProfile(std::shared_ptr<NativeUiStartup> ui,
     if (!s.pin(span.first, span.second))
       return {};
   return out;
+}
+std::unique_ptr<NativeSourceTextureStartup>
+NativeSourceTextureStartup::createFade(std::shared_ptr<NativeUiStartup> ui,
+                                       const char *root) {
+  return createProfile(std::move(ui), root, Kind::Fade);
+}
+bool NativeSourceTextureStartup::initializeFade() {
+  if (invoking_ || !current() || !state_->fade)
+    return false;
+  Guard guard(invoking_);
+  auto &s = *state_;
+  if (s.initialized)
+    return true;
+  if (!resumeSourceFadeInit(s.services(), s.fadeInit)) {
+    s.pending = s.fadeInit.pending();
+    return false;
+  }
+  s.initialized = true;
+  s.pending = 0;
+  return true;
 }
 bool NativeSourceTextureStartup::current() const {
   return state_ && state_->current();
@@ -483,15 +583,17 @@ bool NativeSourceTextureStartup::begin() {
   auto &s = *state_;
   if (s.admitted)
     return true;
-  if (s.environment && (!s.initialized || !s.borrowArchive()))
+  if ((s.environment || s.fade) && (!s.initialized || !s.borrowArchive()))
     return false;
   const bool done =
-      s.environment
+      s.fade ? resumeSourceFadeTextures(s.services(), s.fadeSetup)
+      : s.environment
           ? resumeSourceEnvironmentTextures(s.services(), s.environmentSetup)
           : resumeSourceEffectTextureSetup(s.services(), s.setup);
   if (!done) {
-    s.pending =
-        s.environment ? s.environmentSetup.pending() : s.setup.pending();
+    s.pending = s.fade          ? s.fadeSetup.pending()
+                : s.environment ? s.environmentSetup.pending()
+                                : s.setup.pending();
     return false;
   }
   s.admitted = true;
@@ -503,7 +605,7 @@ bool NativeSourceTextureStartup::pump(uint32_t budget) {
     return false;
   Guard guard(invoking_);
   auto &s = *state_;
-  for (unsigned i = 0; i < (s.environment ? 1u : 2u); ++i) {
+  for (unsigned i = 0; i < ((s.environment || s.fade) ? 1u : 2u); ++i) {
     auto &j = s.jobs[i];
     if (!j.queued || j.done)
       continue;
@@ -550,7 +652,9 @@ bool NativeSourceTextureStartup::pump(uint32_t budget) {
     }
     if (j.delivered != j.readBytes)
       continue;
-    if (j.hash != (s.environment ? EnvironmentHash : Hashes[i])) {
+    if (j.hash != (s.fade          ? FadeHash
+                   : s.environment ? EnvironmentHash
+                                   : Hashes[i])) {
       s.invalid = true;
       return false;
     }
@@ -568,15 +672,19 @@ bool NativeSourceTextureStartup::pump(uint32_t budget) {
       return false;
     const auto services = s.services();
     const bool done =
-        s.environment ? resumeSourceEnvironmentCompletion(
-                            j.handle + 0x40, services, j.environmentCompletion)
+        s.fade ? resumeSourceFadeCompletion(j.handle + 0x40, services,
+                                            j.fadeCompletion)
+        : s.environment
+            ? resumeSourceEnvironmentCompletion(j.handle + 0x40, services,
+                                                j.environmentCompletion)
         : i ? resumeSourceEffectTextureN64Completion(j.handle + 0x40, services,
                                                      j.completion)
             : resumeSourceEffectTextureCompletion(j.handle + 0x40, services,
                                                   j.completion);
     if (!done) {
-      s.pending = s.environment ? j.environmentCompletion.pending()
-                                : j.completion.pending();
+      s.pending = s.fade          ? j.fadeCompletion.pending()
+                  : s.environment ? j.environmentCompletion.pending()
+                                  : j.completion.pending();
       return false;
     }
     uint16_t flags;
@@ -594,7 +702,8 @@ bool NativeSourceTextureStartup::ready() const {
 }
 bool NativeSourceTextureStartup::busy() const {
   return state_ &&
-         (state_->setup.active() || state_->environmentInit.active() ||
+         (state_->setup.active() || state_->fadeInit.active() ||
+          state_->fadeSetup.active() || state_->environmentInit.active() ||
           state_->environmentSetup.active() ||
           std::any_of(state_->jobs.begin(), state_->jobs.end(),
                       [](const auto &j) { return j.queued && !j.done; }));

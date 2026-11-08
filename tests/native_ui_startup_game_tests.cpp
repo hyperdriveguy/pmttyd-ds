@@ -14,6 +14,7 @@ int main(){
  p.roundDoubleFloat=[](void*,double v){volatile float f=float(v);return f;};
  auto game=std::make_unique<Game>(false);assert(game->initializeNativeUiFieldAnimation("romfs",NativeFileCache::create(),p));
  const auto effects=game->nativeEffects();assert(effects&&effects->poolReady());
+ assert(effects->fadeTexturesReady()&&effects->environmentTexturesReady()&&effects->texturesReady());
  const auto ui=game->nativeUiStartup();assert(ui&&ui->fontObject()&&game->nativeMarioPose());
  assert(ui->windowReady()&&ui->windowMemory()&&ui->windowObject(50)&&ui->windowCounts().callbacks==1&&ui->windowCounts().objectClears==51);
  const auto process=ui->fieldProcess();assert(process==game->fieldPartyState().nativeAnimation);

@@ -1,0 +1,72 @@
+{
+  "source": "US G8ME01 disc0 revision0",
+  "spans": [
+    {
+      "address": "0x80013aa4",
+      "size": 236,
+      "sha256": "c6bb7058a6a65cb509dd8fad39fbda6e2943c9d2ff76cd782d2355b31f62ad0c",
+      "iso_offset": 200100,
+      "source": "initialized DOL",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "address": "0x80013b90",
+      "size": 276,
+      "sha256": "4d9bf07a55b5e2a997ae95ba738d0773587aac5744d4b6ed49976f14a0b56837",
+      "iso_offset": 200336,
+      "source": "initialized DOL",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "address": "0x80013ca4",
+      "size": 72,
+      "sha256": "2e610a930a107427f6da57d729d7126dba310fc846d7a40270258e866f8ad3f7",
+      "iso_offset": 200612,
+      "source": "initialized DOL",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "address": "0x802bf79c",
+      "size": 12,
+      "sha256": "6a317bfc36d033d105f4837492b298dcfa9ffd28cf7b25918f5430df6719134c",
+      "iso_offset": 3000988,
+      "source": "initialized DOL",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "address": "0x802bf7a8",
+      "size": 16,
+      "sha256": "defdcc3189ba966eaf8e1b1e675d11c37dcc591e2bff459ed177c49120d3572c",
+      "iso_offset": 3001000,
+      "source": "initialized DOL",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "address": "0x8041e620",
+      "size": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "iso_offset": null,
+      "source": "original DOL BSS zero initialization",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "address": "0x8041f7a8",
+      "size": 8,
+      "sha256": "35a329e9a766e1a60f366cf4599a0ecc21be601e310be696c25bb91f31cb475b",
+      "iso_offset": 4112424,
+      "source": "initialized DOL",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    }
+  ],
+  "textures": [
+    {
+      "path": "fade.tpl",
+      "size": 22720,
+      "sha256": "ce2c99dbe41f28d5c06b777b9b0b19ed5a9fe3829f63952cae9352195fb99435",
+      "iso_offset": 948116944,
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    }
+  ],
+  "conversion": "Unchanged initialized DOL literals, original BSS initialization and unrelocated original TPL. Actual fade manager must be source heap allocated at runtime. Shared SDK/root/archive/heap remain borrowed; no reimport/reset of those owners.",
+  "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+}

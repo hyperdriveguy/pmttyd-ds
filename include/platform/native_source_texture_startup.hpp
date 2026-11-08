@@ -12,6 +12,9 @@ public:
   create(std::shared_ptr<NativeUiStartup>, const char *romfsRoot);
   static std::unique_ptr<NativeSourceTextureStartup>
   createEnvironment(std::shared_ptr<NativeUiStartup>, const char *romfsRoot);
+  static std::unique_ptr<NativeSourceTextureStartup>
+  createFade(std::shared_ptr<NativeUiStartup>, const char *romfsRoot);
+  bool initializeFade();
   ~NativeSourceTextureStartup();
   bool current() const;
   bool
@@ -23,10 +26,10 @@ public:
   uint32_t pending() const;
 
 private:
+  enum class Kind { Effects, Environment, Fade };
   NativeSourceTextureStartup();
   static std::unique_ptr<NativeSourceTextureStartup>
-  createProfile(std::shared_ptr<NativeUiStartup>, const char *,
-                bool environment);
+  createProfile(std::shared_ptr<NativeUiStartup>, const char *, Kind);
   struct State;
   std::unique_ptr<State> state_;
   bool invoking_ = false;

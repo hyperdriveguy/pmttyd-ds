@@ -29,7 +29,19 @@ bool Game::initializeNativeUiFieldAnimation(const char* root,std::shared_ptr<Nat
  // Attach to this actual process after UI's shared DVD root/language exists.
  // Pool initialization is separate from texture setup and driver/draw admission.
  if(!nativeEffects_)nativeEffects_=NativeEffectProcess::create(nativeUiStartup_,root);
+ if(!nativeEffects_ || !nativeEffects_->initializeFade())return false;
  if(!nativeEffects_ || !nativeEffects_->initialize())return false;
+ // Explicit texture-startup contribution: original Fade -> Environment ->
+ // Effect/N64 setup, then independent callbacks, before native Mario Entries.
+ // This is not whole seq_logoExit or the raw Mario pose-wrapper/logo-file tail.
+ if(!nativeEffects_->initializeEnvironment() || !nativeEffects_->beginFadeTextures() ||
+    !nativeEffects_->beginEnvironmentTextures() || !nativeEffects_->beginTextures())return false;
+ // Cold bootstrap drains supported ROMFS banks synchronously. This native IO
+ // budget is unlimited for startup; it supplies no source DVD timing/frame tick.
+ constexpr uint32_t ColdStartupIoBudget=UINT32_MAX;
+ if(!nativeEffects_->pumpFadeTextures(ColdStartupIoBudget) ||
+    !nativeEffects_->pumpEnvironmentTextures(ColdStartupIoBudget) ||
+    !nativeEffects_->pumpTextures(ColdStartupIoBudget))return false;
  auto owner=nativeUiStartup_->fieldProcess();
  if(!owner || !fieldParties.configureNativeAnimation(std::move(owner),fieldPlayerPoseResources()) || !fieldParties.initializeMario(fieldMarioBattle,{},0))return false;
  prepareNativeFieldAnimation();return nativeMarioPose()!=nullptr;

@@ -2,6 +2,20 @@
   "schema": 1,
   "assets": [
     {
+      "id": "original/display/fade-startup-memory",
+      "kind": "event",
+      "source": "assets/original/display/fade-startup/memory.json",
+      "output": "fade-startup/memory.pmevt",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/display/fade-startup-tpl",
+      "kind": "pack",
+      "source": "assets/original/display/fade-startup/fade.tpl",
+      "output": "fade-startup/fade.tpl",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
       "id": "original/display/environment-startup-memory",
       "kind": "event",
       "source": "assets/original/display/environment-startup/memory.json",

@@ -37,6 +37,10 @@ public:
  bool main(const void* owner,uint64_t visit,const NativeEffectUpdate&);
  bool mainPending()const;
  bool busy()const;
+ bool initializeFade(); // Original fadeInit may precede effect pool Init.
+ bool beginFadeTextures();
+ bool pumpFadeTextures(uint32_t byteBudget);
+ bool fadeTexturesReady()const;
  bool initializeEnvironment(); // Original envInit once on the same process.
  bool beginEnvironmentTextures();
  bool pumpEnvironmentTextures(uint32_t byteBudget);

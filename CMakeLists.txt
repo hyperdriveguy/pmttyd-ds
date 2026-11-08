@@ -3218,3 +3218,13 @@ add_executable(native_environment_startup_tests tests/native_environment_startup
 target_link_libraries(native_environment_startup_tests PRIVATE ttyd_core)
 add_test(NAME native_environment_startup COMMAND native_environment_startup_tests)
 set_tests_properties(native_environment_startup PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Whole original fade manager/texture startup over the shared native process.
+target_sources(ttyd_core PRIVATE source/display/source_fade_startup.cpp)
+add_executable(source_fade_startup_tests tests/source_fade_startup_tests.cpp)
+target_link_libraries(source_fade_startup_tests PRIVATE ttyd_core)
+add_test(NAME source_fade_startup COMMAND source_fade_startup_tests)
+add_executable(native_fade_startup_tests tests/native_fade_startup_tests.cpp)
+target_link_libraries(native_fade_startup_tests PRIVATE ttyd_core)
+add_test(NAME native_fade_startup COMMAND native_fade_startup_tests)
+set_tests_properties(native_fade_startup PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
