@@ -50,17 +50,45 @@ texture setup8008748c and marioPoseInit80087490. Original names at earlier
 80087480 and80087484 are fadeTexSetup80013aa4 and iconTexSetup8001b694,
 respectively; these calls do not imply whole fadeInit/iconInit/envInit.
 
-These bodies/resources are documented but not yet implemented/imported by the
-native effect texture work. A future shared-VM owner must preserve the single
-palette clear, distinct initialization, logical read length and handle-first
-callback. Include a nonmultiple32 logical-length fixture: the original asset's
-alignment alone cannot detect an incorrect rounded DVD read. Existing archive,
-root, finite path, DVD, source heap, memset and whole unpack providers cover the
-bounded child identities; no duplicate unknown-function request is needed.
-Environment movement, GX rendering and full original sequence activation remain
-outside this contract. Private source evidence is in artifacts/effect-primary/
-environment-frontier.txt and environment-evidence.json. No texture bytes or
-new redistribution grant are introduced here.
+The complete source Init/TexSetup/callback and original resources are now
+implemented in `source_environment_startup.hpp/.cpp` and the shared
+`NativeSourceTextureStartup` backend. `NativeEffectProcess` exposes explicit
+initializeEnvironment/beginEnvironmentTextures/pumpEnvironmentTextures and
+readiness methods on the actual UI/animation VM and SDK heap. Environment Init
+can run before Window texture setup: it borrows the existing root and cold-maps
+only the four original environment ranges. Texture admission later pins the real
+shared archive descriptors, rather than installing a duplicate table.
 
-See [native effect textures](../effect/NATIVE_EFFECT_TEXTURE_SETUP.md) and
+The two source work clears execute once; importing BSS alone does not acknowledge
+Init. Native repeated initialization and setup calls retain their completed
+history. Setup preserves actual prior source readiness, while native readiness
+also requires the real retained DVD job and complete original callback. Allocation
+capacity and logical read length remain distinct in the shared worker. Partial
+read budgets deliver only requested bytes; callback userdata, source unpack,
+close flags and final readiness execute independently of job admission.
+
+The finite native backend admits actual inactive archive exhaustion and the
+original `./env.tpl` direct-DVD path. Active archives hold for a genuine provider.
+Original37248-byte env.tpl is tracked with licensing/provenance under
+`assets/original/display/environment-startup/`. Normal manifest recipes compile
+`environment-startup/memory.pmevt` and copy `environment-startup/env.tpl`.
+Imports open the ISO read-only and refuse nonempty destinations.
+
+Portable tests include two held work clears, setup's retained archive return
+instead of a fresh global, readiness preservation, a nonmultiple32 read length
+(33 logical bytes versus64 allocation), and handle-first callback palette changes.
+The actual-VM native fixture covers Init before archive mapping, filename/work
+adjacency, once-only history, partial original TPL delivery, whole unpack and
+callback, composition with both effect banks and equal-byte descriptor replacement.
+
+Normal Game does not yet automatically execute this startup API or the complete
+original source parents. Fade Init/TexSetup remains a preceding texture owner;
+real normal activation, environment movement/GX rendering, Crump effect update,
+draw/audio/retirement and full battle/result/field-return are still open. Existing
+archive/root/path/DVD/heap/memset/unpack children cover this bounded frontier;
+no duplicate documentation request is needed. Fresh source evidence and final
+validation artifacts are under artifacts/environment-startup/.
+
+See [shared native texture startup](../platform/NATIVE_SOURCE_TEXTURE_STARTUP.md),
+[native effect textures](../effect/NATIVE_EFFECT_TEXTURE_SETUP.md) and
 [pose material provenance](../partner/FIELD_MARIO_POSE_HANDLES_AND_MATERIAL_PROVENANCE.md).

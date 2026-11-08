@@ -4423,3 +4423,21 @@ empty destination and pins the original span. Normal builds pack
 payload is imported. Per-span provenance and licensing are retained beside the
 editable source. Nintendo/Intelligent Systems retain all original rights; local
 tracking grants no redistribution license.
+
+### Original environment startup storage and texture
+
+`assets/original/display/environment-startup/` contains unchanged root `env.tpl`
+(37248 bytes,11 TPL descriptors), two exact initialized DOL literal ranges and
+original environment BSS initialization for direct palette/readiness and two
+adjacent work banks. `tools/import_environment_startup_assets.py` verifies all
+three original whole source bodies and asset hashes, reads the ISO only and
+refuses nonempty destinations. Normal manifest recipes compile
+`environment-startup/memory.pmevt` and copy `environment-startup/env.tpl`.
+No pixel scaling, generated art or replacement file path is introduced. Runtime
+original envInit performs the work clears; original UnpackTexPalette relocates
+actual heap-owned copies after DVD delivery. Shared file filename, UI/root,
+archive, SDK and heap owners are borrowed rather than reimported. Per-asset paths,
+offsets, source/BSS distinctions, hashes and retained Nintendo/Intelligent
+Systems rights are in provenance.json; tracking grants no redistribution license.
+Checked-in edits are not overwritten by imports; ISO/cache/compiled products
+stay outside source history.

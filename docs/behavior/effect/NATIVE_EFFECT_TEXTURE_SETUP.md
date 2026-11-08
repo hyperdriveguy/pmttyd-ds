@@ -84,3 +84,10 @@ See [the effect process](NATIVE_EFFECT_PROCESS.md),
 and [Crump requirements](../story/CRUMP_OPENING_INTEGRATION_REQUIREMENTS.md).
 These source identities are documented; remaining integration is implementation
 work rather than a duplicate documentation-inbox request.
+
+The native transfer implementation is now shared with the original environment
+startup as `NativeSourceTextureStartup`; `NativeEffectTextures` is a compatible
+alias selecting the unchanged default effect profile. Separate source cursors,
+two effect jobs and mandatory N64 setup are retained. See
+[shared ownership](../platform/NATIVE_SOURCE_TEXTURE_STARTUP.md). Original normal
+sequence activation still needs the preceding fade process and complete parent.

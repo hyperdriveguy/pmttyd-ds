@@ -19691,3 +19691,73 @@ owners, then activate smart/shadow initialization before source map admission.
 Genuine camera process initialization, material/GX capture, Game/EVT epochs,
 Crump return/afterbattle, full original prologue and physical hardware parity/
 performance remain unfinished.
+
+### Original environment startup and shared texture transfer (2026-11-07)
+
+Committedc1feea6b adds whole retained envInit8019e09c/0x54,
+envTexSetup8019df84/0xd4 and independent callback8019e0f0/0x40. Exact source
+ordering is preserved: two work clears before direct globals, texture setup's
+single palette clear with readiness history preserved, retained archive return
+for branch/unpack, rounded heap allocation but LOGICAL DVD read length, and
+handle-before-palette callback capture. NativeEffectProcess exposes explicit
+environment initialize/begin/pump/readiness on the actual shared UI/animation VM.
+
+NativeSourceTextureStartup now shares the real VM/heap/DVD mechanics with both
+primary/N64 effect jobs; NativeEffectTextures remains an alias preserving the
+existing default API. The environment profile cold-maps only its four new
+literal/BSS ranges, borrows the actual root and runs original envInit before
+Window archive mapping is needed. Texture begin later pins the actual shared
+archive descriptors. No UI/shadow/filename/heap owner is reimported or reset.
+Actual heap allocations, VM-owned DVD entries, independent source callbacks,
+partial budgets, job-completion readiness and busy ownership are retained.
+Environment and both effect profiles coexist without duplicate process state.
+
+Imported unchanged root env.tpl37248 bytes/11 images plus original literals/BSS
+into an empty destination, with paths/offsets/hashes/rights provenance. The ISO
+was read-only. Two normal manifest recipes compile memory and copy raw TPL.
+Roundtrip matches all three tracked files and rejects nonempty destinations.
+The environment work starts exactly after the shared filename buffer; actual
+native tests preserve its final word. Portable tests cover held work clears,
+once-only source effects, retained archive return despite global mutation,
+readiness preservation, length33/read33 versus allocation64 and live callback
+palette changes after handle capture. Native tests check init before archive
+mapping, partial original TPL delivery, whole unpack/completion, original effect
+coexistence and equal-byte archive replacement BEFORE any effect owner can mask
+the environment's independent lifetime proof.
+
+Final validation includes shared smart-arena base2bbcedb0: make test exits0,
+610/610 C++ tests in87.11s and270/270 Python tests in48.528s; focused4/4 passes
+in6.05s. Final make all exits0 with SOUNDTRACK=gamecube and -o assets-ready after
+explicit normal-pipeline compilation of four delta recipes (two environment,
+two committed shadow/smart base recipes). All4917 source files exactly match
+committedc1feea6b; no extra source-like inputs are present in source/include/
+tests/tools/assets. Source archive, ELF/3DSX,2236 RomFS hashes and evidence hashes
+are pinned and rechecked in artifacts/environment-startup/accepted/validation-manifest.json.
+Isolated45-second fresh-save Azahar smoke exits0; inspected final capture reaches
+original opening book/dialogue without native exception. User profile/saves were
+untouched. Markdown validation:1707 files, zero broken links. Existing compiler/
+Pillow warnings remain. Earlier candidate also passed610 C++/269 Python and native
+build before final shared-base/test strengthening; an initial focused fixture
+failure was missing staged candidate assets, corrected by preparing/rebuilding
+the exact delta recipes rather than replacing source Init or source readiness.
+
+Updated stale Crump CO-06/CO-07 and menu requirement boundaries against committed
+bb6a7c46: normal Game now drives physical commands/turns through a bounded native
+policy and receives submitted-frame readiness. Optional original numeric
+conclusion selection is available but is not publication, End/export/teardown or
+field wait completion. The whole original field/battle/return chain remains open.
+No original dialogue, event ordering, story branches or plot scene is rewritten.
+
+Next: implement the documented actual fadeInit80013b90/0x114 real0x360-byte
+manager and fadeTexSetup80013aa4/0xec plus independent callback80013ca4/0x48.
+Original fade.tpl22720 bytes/4 images is pinned, not imported yet. Preserve
+manager-first callback order, palette-only setup clear and rounded DVD reads;
+do not reuse environment's different callback/read semantics. Both initialization
+and texture relative startup order are now documented. All bounded children are
+known, so EVT-01 records implementation work without duplicate unknown requests.
+Then compose genuine normal source startup, actual fukidashi reaction/update/
+GX/3DS residency/draw/audio/retirement, full setup2/result/export/field return and
+original afterbattle crowd/dialogue/party/map transition. Normal Game still does
+not automatically invoke the explicit environment/effect texture APIs. Boot and
+host fixtures do not establish original pixels/Gekko math, complete Crump fresh/
+resume round trips or physical New2DS XL performance. The full goal is incomplete.

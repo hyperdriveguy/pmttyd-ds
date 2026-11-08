@@ -5876,3 +5876,23 @@ with later display/reset writers. Read-only handoff: artifacts/source-smart-aren
 Normal shared process/file/renderer adoption, genuine draw/cache/worker ownership,
 pressure/scene reinitialization and hardware budgets remain open. No file/GPU
 completion receipts are fabricated to advance those boundaries.
+
+### Actual environment startup implementation (2026-11-07)
+
+[Whole environment Init/TexSetup/callback](../behavior/display/SOURCE_ENVIRONMENT_TEXTURE_STARTUP.md)
+is now callable on the actual shared VM/heap through the native process facade.
+Its independent initialization, preserved readiness, logical read length and
+handle-first callback are retained. The common texture backend also preserves
+both effect/N64 jobs. Explicit APIs are not whole normal source sequence
+activation. The next preceding owner is actual fadeInit/fadeTexSetup/callback;
+fresh bounded evidence is in artifacts/environment-startup/. Its child identities
+are already known, so the inbox records implementation work without a duplicate
+unknown-function request. Normal reaction EVT/update/draw/audio and the complete
+Crump battle/result/field return remain open.
+
+
+[The fade prerequisite](../behavior/display/SOURCE_FADE_TEXTURE_STARTUP.md) now
+records exact whole Init/TexSetup/callback ordering and original fade.tpl identity.
+Implement its real heap manager before normal sequence activation; do not substitute
+existing battle fade mechanics or a pre-mapped manager. Broader fade consumers
+remain separate; all bounded children here are already known.
