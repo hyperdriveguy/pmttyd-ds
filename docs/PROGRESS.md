@@ -18150,3 +18150,83 @@ construction/display/equipment, lethal damage and field result/return. Resolve
 the harbor admission failure and validate ordinary play through Crump before
 claiming a playable tutorial. Guard feedback, broader battle services and the
 full goal remain incomplete.
+
+### Crump opening readiness audit and raw texture prerequisite (2026-11-07)
+
+User checkpoint: make all requirements available for the original Crump opening,
+including entering and leaving battle. The
+[ten-part integration contract](behavior/story/CRUMP_OPENING_INTEGRATION_REQUIREMENTS.md)
+now covers original field trigger/beforebattle, actual same-VM setup2/sequence,
+full tutorial control/result/ending/teardown, resumed field waiter, original
+276-command postbattle, party/crowd/audio and GSW0=6 gor_01/s_bero return.
+**This chain is not yet production-ready.** Normal HarborTutorial.running() is
+triggered, result remains0, Game only ticks the bounded battle, and actual
+sequence/menu/turn/result/export/return/postbattle owners are not composed.
+EVT-01, DEMO-01 and RESULT-01 carry explicit dependencies instead of completion
+receipts. Preserve original message IDs, speakers, branches and event lifetimes.
+
+Source commit `c85b55383188098984bb3be2d7e475be139c753a` adds the complete
+[raw texture parent](behavior/display/NATIVE_ACTUAL_VM_TEXTURE_PARENT.md),
+actual-VM TEXGet and shared SDK math binding. Seven independent raw inputs,
+repeated getter/header reads, CI branch capture, diagnostic/fallback, literal
+read timing, atomic lfd bias, live dispatch and exact matrix aliases survive
+holds. Native arithmetic retains its explicit finite/original-bias domain;
+GX/object/TLUT/material/residency and final raster services remain unavailable
+unless genuinely supplied. The strict cold image admits exactly five new
+original spans; no validation was loosened to arbitrary data.
+
+Final frozen source tree `7dae0ac9e50c69d506697b3f3830f6087e24d24c` over
+`b72b119a9f35a8f4c8158304ac1e1ddca1ff95b8`: 458/458 C++ tests in 109.39 s,
+212/212 Python in 82.061 s, zero skips, through
+`CMAKE_BUILD_PARALLEL_LEVEL=4 TRIO_ENEMY_POSE_PACK=romfs make --jobserver-style=pipe test`.
+`make --jobserver-style=pipe all -j4 -o assets-ready SOUNDTRACK=gamecube`:0.
+ARM assertions: `raw-texture=PASS ci=PASS retry=PASS dispatch=PASS sdk=PASS boot=PASS`.
+Coverage includes ordinary/CI holds at every primitive, exact dispatch tuple
+goldens, live second-pass/helper mutations, atomic bias repair, nonpositive/nine
+slots, actual original boot literals and nontrivial native matrix composition.
+Additional original graph probes complete Mario115 texture requests/35 fans
+and actual Goombella75/87 using real VM MODEL/TPL/SDK/texture/array/FIFO. Their
+remaining material/GX/raster acknowledgements are fixtures, not pixel evidence.
+
+Normal 35 s isolated startup passed; original book/dialogue viewed. Normal
+story4 harbor checkpoint plus scripted A progression **failed scene readiness**:
+black harbor, `Development notice: scene actor texture unavailable`. It did not
+prove battle entry/return. Zero native exceptions/unmapped diagnostics in all
+three isolated profiles, including the ARM probe; that does not make the black
+scene a pass. The older frozen baseline also lacks the current workspace's full
+Crump/subordinate resource catalog. A preliminary exploratory graph selected
+wrong field-player index then failed missing Crump metadata; corrected final
+probe covers actual Mario/Goombella only. The next integrated build must include
+the current scene resources and frontend-lifetime fixes, rather than treating
+this old isolated baseline as a complete Crump validation.
+
+Initial full gate rejected 21 startup-dependent tests: boot pack had 43 spans but
+runtime allowlist still 38. Exact admission/critical-word checks were synchronized;
+all final gates above passed. Normal entry point restored/rebuilt byte-identical
+SHA256 `7c8915e97b8acb4f5d6b44fa15356012664a2b2be1f34b39a5720af22d7f406d`.
+4036 frozen tracked files and 2152 products were audited then physically archived
+under `artifacts/npc-raw-texture-accepted/source` before refreshing any candidate.
+Only two compiled boot products changed: 43 spans/5500-byte PMEVT SHA256
+`99a03852b8a6e56369ae4ebd2c3c867140337370786a0362d234326ff09df999`;
+other 2150 products and editable assets unchanged. Exact source/licensing in
+ASSETS; immutable inputs/logs/captures/audits in
+`artifacts/npc-raw-texture-validation-manifest.json`. No ISO/compiled output is
+committed. Existing compiler/Pillow warnings remain; no hardware performance or
+original pixel equivalence is claimed.
+
+Crowd research now proves the original architecture: 40 cached c_zako_n pose
+snapshots (20 S_1, 20 R_1) and 400 quad instances, not 400 ordinary animated NPC
+owners. Required art already exists. Complete local body/layout/template/RNG
+witnesses are in `artifacts/crump-crowd-resource-prerequisites.txt` and companion
+manifests. Preserve 192-byte member work versus 32-byte ext instances, source
+first-call yield and all 400 work-completion waits. Raw requested sizes 124532
+bytes exclude alignment/textures and are not measured native memory. Snapshot
+camera/cache/copy/filter and ext ordering/matrix dependencies need remaining
+recovery, then a real shared snapshot/batched Citro3D owner.
+
+Next: advance integrated validation to current committed source/resources and
+repair/verify normal harbor rendering, then compose actual same-VM Crump entry,
+command/turn/result/ending/teardown/field return and original postbattle. Bind
+remaining native material/texture/fan/snapshot backends without success receipts;
+finish requested crowd documentation and obtain original/Dolphin and physical
+New2DS XL evidence. Full event/NPC/object/area and Crump goals remain active.

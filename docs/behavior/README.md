@@ -1485,3 +1485,5 @@ Original battle menu native resource/queue owners:
 
 | [Retained cold battle initialization](battle/BATTLE_COLD_INIT_CONTINUATION.md) | Whole original cold parent, exact allocation/clear, ordered child calls and stores, retained lifetimes | Native initializer services, actor construction and tutorial completion |
 | [Tutorial original animation coverage](display/HARBOR_TUTORIAL_ORIGINAL_ANIMATION_COVERAGE.md) | Existing original Mario combat bank with matching atlas/UV and shared completion/top/lower ownership | Native tutorial playthrough and remaining original services |
+- [Actual-VM animation texture parent](display/NATIVE_ACTUAL_VM_TEXTURE_PARENT.md): original seven-argument texture/coordinate setup, live reads and retained SDK/GX children.
+- [Crump opening integration requirements](story/CRUMP_OPENING_INTEGRATION_REQUIREMENTS.md): original encounter through battle, teardown, postbattle crowd/party/audio and plaza return, with unmet production dependencies.

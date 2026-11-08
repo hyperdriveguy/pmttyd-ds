@@ -4151,3 +4151,37 @@ import. Products/caches remain ignored. Importer
 existing source edits. Original Nintendo/Intelligent Systems rights retained;
 no redistribution license granted. No ISO or compiled product is committed.
 See [native map owner](behavior/field/NATIVE_MAP_OBJECT_SOURCE_OWNER.md).
+
+### Raw animation texture helper initialized data — 2026-11-07
+
+Read-only `/home/carson/games/roms/G8ME01.iso`, US disc0 revision0 DOL.
+`tools/animation_boot_image.py` adds the following unchanged initialized data
+to the existing compiled animation boot image. These are protocol/math/diagnostic
+inputs for [the actual-VM texture parent](behavior/display/NATIVE_ACTUAL_VM_TEXTURE_PARENT.md),
+including original Crump field/battle rendering prerequisites.
+
+| Data | Guest address | ISO offset (decimal) | Bytes | SHA256 |
+| --- | --- | --- | --- | --- |
+| texture-matrix-dispatch | 80306678 | 3291512 | 32 | 621974088a55ccc7461c2083621004a562ffd30760533bd1412e7de786fc279b |
+| texture-byte-bias | 802c1060 | 3007328 | 8 | 2b2979f362d94c89fe17a6e01637f14332de063fe7a544bdc5facfc046f4169f |
+| texture-warning | 802c10c4 | 3007428 | 220 | 13b19522a2cf7245b67a4860784cc3f4a164a3303e0d9ed6c395a9cd96c91c16 |
+| texture-positive-pivot | 8041fb44 | 4113348 | 4 | 1b9e0fe7b740b4e583727aa1c9d27ff8c01491f911d2de0747f8c997ef6b3498 |
+| texture-negative-pivot | 8041fb68 | 4113384 | 4 | d4661c2ebe5a3b9fc5f7f6a5f6273143d954135d35457e90530bf5c0187c18d2 |
+
+The diagnostic span includes one original alignment byte after the verified
+219-byte source format; no text is rewritten. No scaling, geometry/audio
+conversion or executable payload is involved. The compiled private outputs are
+`romfs/animation-boot/memory.pmevt` and `memory.json`. PMEVT grows from 5172 to
+5500 bytes: 268 original data bytes and 60 directory bytes, 43 total spans.
+SHA256 `99a03852b8a6e56369ae4ebd2c3c867140337370786a0362d234326ff09df999`.
+The runtime strict allowlist admits exactly these five additional spans; it is
+not relaxed to arbitrary data. Initial import of the new pack was correctly
+rejected until that allowlist was synchronized.
+
+Build output first went to the empty private `artifacts/npc-raw-texture-boot-new`
+directory and then replaced only the two compiled products in the isolated
+validation checkout. Other 2150 products and editable assets remain unchanged;
+no checked-in destination was reimported. Exact ISO provenance appears in the
+compiled JSON and private `npc-raw-texture-boot-spans.json`. No ISO or compiled
+pack/binary is committed. Nintendo/Intelligent Systems retain original rights;
+local extraction/tracking grants no new license or redistribution rights.

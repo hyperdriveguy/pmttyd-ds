@@ -5663,3 +5663,6 @@ identity transforms to bypass construction. Static evidence/fixture construction
 does not prove normal Game/prologue or physical New2DS XL performance parity.
 EVT-01 remains OPEN. Full function/word/layout/unload evidence and source
 SquareDistance correction are under artifacts/field-map-owner-evidence/.
+### Crump opening and raw texture prerequisites (2026-11-07)
+
+The [Crump integration contract](../behavior/story/CRUMP_OPENING_INTEGRATION_REQUIREMENTS.md) inventories ten required owners from field trigger through setup2, full battle/result/teardown, resumed original wait, 276-command postbattle and gor_01/s_bero return. Normal Game still starts a bounded tutorial independently, never completes its result/export/return lifecycle, and does not execute postbattle. All requirements are not yet available. The [raw texture parent](../behavior/display/NATIVE_ACTUAL_VM_TEXTURE_PARENT.md) now preserves original dynamic arguments/header reads, actual-VM TEXGet and shared SDK composition; real GX texture/material/residency and complete fan services remain unavailable. Prioritize same-VM harbor/sequence/NPC/F/result ownership and actual menu/turn/ending/exit wiring; do not replace these with success receipts. This request remains open.
