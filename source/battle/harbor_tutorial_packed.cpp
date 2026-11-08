@@ -19,6 +19,7 @@
 #include "battle_facing.hpp"
 #include "battle_action_help.hpp"
 #include "battle_action_feedback.hpp"
+#include "battle_packed_unit_initialization.hpp"
 namespace ttyd {
 // Admitted packed accesses are required invariants: failure aborts rather than
 // returning fabricated zero. word/half/byte access goes through BE VM memory;
@@ -227,6 +228,19 @@ bool HarborTutorialPacked::invoke(EventEntry& e,uint32_t function,int32_t first,
   if(u){amount=byte(u+(function==0x80113950?0x2f9:0x2fa));const auto dealt=int32_t(word(u+0x284));if(amount>dealt)amount=dealt;}
   units.values.store(units.values.user,e,destination,amount);result=2;return true;
  }
+ // Whole source _disable_restore_command_cursor801141a4/18. Capture the
+ // actual current global battle once, then preserve word/byte store order.
+ case 0x801141a4:{const auto b=word(0x8041eb90);word(b+0x1c70,0);byte(b+0x1c74,0);result=2;return true;}
+ // Whole source GetUnitKind8010ed8c/6c: resolve/translate the first operand,
+ // then capture raw output, fresh global battle, actual unit, kind and store.
+ case 0x8010ed8c:{const auto args=e.arguments;const auto units=nativeBattleUnitEventServices(vm);const auto selector=units.values.resolve(units.values.user,e,int32_t(word(args)));const auto id=units.translate(units.user,e,selector);const auto destination=int32_t(word(args+4));const auto u=units.unit(units.user,word(0x8041eb90),id);units.values.store(units.values.user,e,destination,int32_t(word(u+8)));result=2;return true;}
+ // Source OnOffStatus80105e50/bc with the genuine SetStatus27 leaf only.
+ // Other statuses remain unavailable; status is raw signed lowbyte, whereas
+ // duration/strength/on are evaluated in source order before fresh unit lookup.
+ case 0x80105e50:{const auto args=e.arguments;const auto units=nativeBattleUnitEventServices(vm);auto resolve=[&](unsigned i){return units.values.resolve(units.values.user,e,int32_t(word(args+4*i)));};const auto id=units.translate(units.user,e,resolve(0));const auto status=int8_t(uint8_t(word(args+4)));const auto duration=resolve(2),strength=resolve(3),on=resolve(4);(void)strength;const auto u=units.unit(units.user,word(0x8041eb90),id);if(status!=27 || !u)return false;byte(u+0x135,on?uint8_t(duration):0);result=2;return true;}
+ // Whole source ClearAllStatus80105df8/58, reusing the complete existing
+ // ClearStatus80127b58/54 + source Charge/change-info storage helpers.
+ case 0x80105df8:{const auto args=e.arguments;const auto units=nativeBattleUnitEventServices(vm);const auto selector=units.values.resolve(units.values.user,e,int32_t(word(args)));const auto id=units.translate(units.user,e,selector);const auto u=units.unit(units.user,word(0x8041eb90),id);if(!u)return false;if(!initializePackedBattleUnitHelper(0x80127b58,u,nativeBattleActorServices(vm)))return false;result=2;return true;}
  case 0x8010436c:if(!inviteApReport())return false;result=2;return true;
  case 0x80139af4:result=2;return true; // Complete original li2/blr AP-recovery stub.
  case 0x80139898:packedBattleAudienceAcrobatNoTry(nativeBattleActorServices(vm));result=2;return true;
