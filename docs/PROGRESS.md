@@ -18334,3 +18334,41 @@ Goal remains active. Next: remaining class/weapon native renderer and numeric/
 camera adapters, field/platform services, changed modules, broader tool coverage
 and whole-file Trio numeric synthesis. No whole-port or full-game completion
 is claimed.
+
+### Battle camera token and numeric adapter documentation
+
+Added 55 inline comment lines across battle_class_camera_bridge and the
+class/weapon native numeric implementations/headers. Explained the thirteen-slot
+0x400 native reservation versus original camera offsets, actual Main/Draw/queue
+callback/reset-epoch proof, sticky loss and short versus long lifetimes, exact
+Camera4/8 snapshots, complete twelve-word Camera8 total-reader admission,
+reserved-range non-fallback, finite signed32/FMA policies and original SDK/axis
+function tokens. Added/indexed docs/code/battle-camera-numeric.md.
+Code/docs commit: `61d18529`. All six files preserve executable tokens and
+string literals. Read the HP and weapon camera wrapper implementations/headers
+without edits: existing comments describe fixed callbacks, typed copied HP
+positions and weapon raster snapshot/finish rules; four hashes are recorded.
+
+Validation: existing battle_class_camera_bridge and battle_class_native_numeric
+fixtures compiled and passed with both freshly compiled implementations linked
+first. Four shared-camera/class-numeric source/header streams and two fixture
+bytes match prior validated animation-memory-selection support; coherent pinned
+headers/core/ROMFS supplied remaining dependencies. All three implementations
+passed host/ARM C++17 syntax against captured current committed headers.
+The newer weapon numeric interface is absent from the older support, so no
+incompatible runtime fixture reuse. Six executable comparisons, eight live/
+private documented hashes, 140 local links, four unchanged wrapper hashes,
+579 current/546 prior headers, core and 114 accepted product hashes
+passed audits. No new tests, native link/GPU execution, original numeric parity
+or hardware timing exercised.
+
+Full make test/all were not repeated for comments/prose only; there are no
+executable changes. Prior suite/build results retain their own snapshot scope
+and do not validate concurrent changes. No assets/imports/conversions, ISO
+writes, story changes or emulator runs. Exact commands/logs, hashes, scoped
+patch and documented copies:
+artifacts/battle-camera-numeric-code-documentation-validation/.
+
+Goal remains active. Next: native class/weapon frame and renderer ownership,
+remaining field/platform services, changed modules, tools and whole-file Trio
+numeric synthesis. No whole-port or full-game completion is claimed.
