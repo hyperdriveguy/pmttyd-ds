@@ -41,6 +41,10 @@ def build(iso, destination, work, root):
         height, width, fmt = struct.unpack_from('>HHI', raw, descriptor)
         output = destination / (name + '.png')
         convert_tpl(source, output, index)
+        sidecar = output.with_suffix('.png.provenance.json')
+        conversion = json.loads(sidecar.read_text())
+        conversion.update(source=SOURCE, license=LICENSE)
+        sidecar.write_text(json.dumps(conversion, indent=2) + '\n')
         with Image.open(output) as decoded:
             image = decoded.convert('RGBA')
             if image.size != (width, height):
