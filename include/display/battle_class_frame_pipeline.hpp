@@ -43,6 +43,7 @@ public:
 private:
   struct State;
   std::unique_ptr<State> state_;
+  // unavailable_ is the stable empty facade returned after ownership loss.
   BattleClassPublication publication_,unavailable_;
   bool invoking_=false,retirePending_=false;
 };

@@ -10,6 +10,7 @@ struct BattleClassNativeFrame::State {
   mutable bool invalid=false;bool dispatching=false;
   uint64_t pass=0,completed=0;
   BattleClassNativeSubmission submission;bool submitted=false;
+  // Allocation loss is sticky independently of the shorter camera epoch.
   bool current() const {
     if(invalid)return false;
     if(!binding.allocationCurrent || !binding.allocationCurrent()){invalid=true;return false;}
@@ -25,6 +26,8 @@ bool BattleClassNativeFrame::bind(BattleClassNativeFrameBinding b,
       !b.generation || !b.cameras || !b.allocationCurrent || !b.producerCurrent ||
       !b.allocationCurrent())return false;
   auto next=std::make_unique<State>();
+  // Copy backend/service bindings and pin their actual contexts/resources.
+  // An outer renderer may own this frame; explicit retire breaks that pin.
   next->binding=std::move(b);next->resources=std::move(resources);next->backend=backend;
   auto* p=next.get();
   if(!p->camera.bind(p->binding.cameras,p->binding.generation,p->binding.actors,
@@ -49,21 +52,27 @@ bool BattleClassNativeFrame::resume(uint64_t pass,const CameraMainCursor& main,
   if(!s.current() || !pass || camera!=8 || !call.active || !call.invoking ||
       call.camera!=camera || call.callback!=0x8012210c || call.userdata!=battle ||
       (s.pass && s.pass!=pass))return false;
+  // Held submission function AND userdata identities are immutable through retry.
   if(s.pass && (s.submission.user!=submission.user || s.submission.submit!=submission.submit))return false;
   const BattleClassCameraEpoch epoch{s.binding.generation,pass};
   if(!s.camera.begin(epoch,main,draw,queue,battle))return false;
   if(!s.pass){s.submission=submission;s.submitted=false;}
   s.pass=pass;s.dispatching=true;
+  // This key is native pass/allocation metadata, not a guest readiness write.
   const BattleClassPublicationKey key{s.binding.allocationOwner,s.binding.allocation,pass};
   if(!s.frame.resume(key,camera,battle) || !s.current() || !s.camera.available())return false;
   if(s.submission.submit && !s.submitted){
     const auto batch=s.frame.publication().batch();
     if(!batch)return false;
     const bool accepted=s.submission.submit(s.submission.user,*batch);
+    // Record an accepted GPU submission BEFORE later liveness/finish guards.
+    // A subsequent failure must never replay already committed presentation.
     if(accepted)s.submitted=true;
     if(!accepted || !s.current() || !s.camera.available())return false;
     if(!s.frame.admit(key))return false;
   }
+  // Optional submit absent means source-only completion; external rendering may
+  // admit the published key later. With submit present, false keeps camera held.
   if(!s.camera.finish(epoch))return false;
   s.completed=pass;s.pass=0;s.dispatching=false;return true;
 }
@@ -83,6 +92,8 @@ const BattleClassCameraBridge* BattleClassNativeFrame::camera() const {
   return invoking_ && !retiring_ && state_ && state_->current() && state_->camera.available()?
       &state_->camera:nullptr;
 }
+// Expose only a sequence that completed this outer frame, not a newly copied
+// source batch whose native submission/camera finish is still pending.
 const BattleClassPublication& BattleClassNativeFrame::publication() const {
   return state_ && !retiring_ && state_->current() && state_->completed &&
       state_->frame.publication().key().sequence==state_->completed?state_->frame.publication():unavailable_;

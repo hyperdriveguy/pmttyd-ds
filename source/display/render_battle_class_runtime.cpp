@@ -18,6 +18,8 @@ struct Renderer::ClassMenuBinding {
   BattleClassNativeFrame frame;
   std::unique_ptr<BattleClassNativeNumeric> numeric;
   std::unique_ptr<BattleClassNativeFooters> footers;
+  // Ready requires exact native generations/import identities, not merely
+  // equivalent asset bytes or reused texture addresses. No lazy repair here.
   bool current() const {
     if(!nativeAlive||!renderer||!game||!font.current()||
        renderer->battleFontLease().generation!=font.generation||!source.native.allocationCurrent||
@@ -30,6 +32,8 @@ struct Renderer::ClassMenuBinding {
     return actual&&actual->generation==surface.generation&&actual->textures==surface.textures;
   }
   bool initialize(const std::shared_ptr<ClassMenuBinding>& owner){
+    // Provider closures use weak self references. frame.bind resources below
+    // deliberately pins owner until explicit frame retirement breaks the cycle.
     const std::weak_ptr<ClassMenuBinding> weak=owner;
     const auto live=[weak]{auto p=weak.lock();return p&&p->current();};
     BattleClassNativeNumericFooters children;children.user=this;
@@ -49,6 +53,7 @@ struct Renderer::ClassMenuBinding {
       const auto* icon=messageIcon(id);if(!icon||icon->frames.empty())return nullptr;
       // Copy the actual original frame at this simulation tick. A held draw
       // keeps this tick and copied metadata; no render-frame animation clock.
+      // std::map nodes keep returned frame addresses stable across later inserts.
       return &p->iconFrames.emplace(id,icon->frame(p->sourceTick)).first->second;
     };
     auto binding=source.native;binding.allocationCurrent=live;
@@ -62,6 +67,8 @@ bool Renderer::prepareClassMenuFrame(const Game& game){
     if(classMenuBinding->current())return true;
     // A suspended source invocation may not restart its prefix under a new UI
     // or texture allocation. Only actual VM retirement cancels this context.
+    // While the same battle incarnation survives, retain this pending attempt;
+    // rebuilding with fresh resources would restart accepted source prefixes.
     if(classMenuBinding->sourcePending&&classMenuBinding->battleOwner==game.trioAttack.enemyHpAllocationOwner())return false;
   }
   releaseClassMenuFrame();
@@ -88,10 +95,14 @@ void Renderer::releaseClassMenuFrame(){
 bool Renderer::resumeClassMenu(const Game& game,uint32_t camera,uint32_t userdata){
   const auto context=classMenuBinding;
   if(!context||context->game!=&game||!context->current()||camera!=8)return false;
+  // Pin the simulation tick and original icon frame copies for one retained
+  // attempt, including source/GPU holds; rendering frames do not advance them.
   if(!context->sourcePending){context->sourceTick=game.ticks;context->iconFrames.clear();context->sourcePending=true;}
   BattleClassNativeSubmission submission{context.get(),[](void* p,const BattleClassBackend& batch){
     auto& c=*static_cast<ClassMenuBinding*>(p);
     if(!c.current())return false;
+    // No draw is attempted before the actual frame submission phase is ready.
+    // The native frame retains source completion and its camera lease on false.
     if(!c.renderer->classMenuSubmitReady){c.renderer->classMenuSubmissionWaiting=true;return false;}
     return c.renderer->drawClassMenu(batch);
   }};

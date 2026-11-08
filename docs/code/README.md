@@ -295,3 +295,7 @@ preparation/release ordering.
 [Battle camera/numeric adapters](battle-camera-numeric.md) explains virtual camera
 reservations, exact queued-epoch admission, captured total-reader domains and
 finite conversion/SDK policies.
+
+[Class frame ownership](class-frame-ownership.md) distinguishes source completion,
+publication, native submission and camera finish, with stable renderer contexts
+and pinned simulation-time icon metadata.

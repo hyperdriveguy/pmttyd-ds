@@ -20,6 +20,8 @@ struct BattleClassFramePipeline::State {
     return allocationCurrent && allocationCurrent() && backend &&
         backend->assets==assets && backend->font==font && assets && assets->ready();
   }
+  // Check allocation and immutable backend identities around each provider.
+  // Loss poisons this invocation; restoring old values cannot replay its prefix.
   template<class F> auto call(F function)->decltype(function()) {
     using R=decltype(function());
     if(invalidated || !current()){invalidated=true;return R{};}
@@ -32,6 +34,8 @@ struct BattleClassFramePipeline::State {
         BattleClassBackend& output,std::function<bool()> live)
       :owner(std::move(token)),allocation(at),source(input),raster(art),
        backend(&output),assets(output.assets),font(output.font),allocationCurrent(std::move(live)) {
+    // Wrapped callbacks use State as userdata, but forward through the original
+    // display/draw/raster/math userdata independently. Do not conflate contexts.
     display=source;display.user=this;display.draw.user=this;
     display.cursorLookup=[](void* p,uint32_t menu,uint32_t type,std::optional<uint32_t>& out) {
       auto& c=*static_cast<State*>(p);
@@ -78,6 +82,8 @@ struct BattleClassFramePipeline::State {
       return c.call([&]{return c.source.draw.pinchMark && c.source.draw.pinchMark(c.source.draw.user);});
     };
     icons.raster=raster;icons.raster.user=this;
+    // Only Camera goes to the external raster owner. Finite GX/font/texture
+    // requests are handled by this bound backend, not acknowledged as opaque calls.
     icons.raster.request=[](void* p,const BattleClassRasterRequest& request) {
       auto& c=*static_cast<State*>(p);
       return c.call([&] {
@@ -115,6 +121,8 @@ struct BattleClassFramePipeline::State {
       auto& c=*static_cast<State*>(p);const auto& m=c.raster.math;
       return c.call([&]{return m.concat?m.concat(m.user,left,right):std::optional<BattleActMatrix>{};});
     };
+    // FontString uses the backend's atomic preflight/RNG/quad contract; a held
+    // unsupported run must reject before its first externally visible effect.
     icons.fontUser=this;
     icons.retainedFontString=[](void* p,const BattleClassRasterRequest& request) {
       auto& c=*static_cast<State*>(p);
@@ -150,6 +158,8 @@ std::optional<BattleClassPublicationKey> BattleClassFramePipeline::consumeAdmiss
   if(!state_ || retirePending_ || state_->invalidated || !state_->current())return {};
   return publication_.consumeAdmission();
 }
+// Hide publication immediately; defer stable callback storage destruction until
+// an in-flight provider returns. This never executes original guest UI End.
 void BattleClassFramePipeline::retire(){
   publication_.retire();
   if(invoking_) {
@@ -174,10 +184,14 @@ bool BattleClassFramePipeline::resume(const BattleClassPublicationKey& key,uint3
     if(key.sequence!=c.key.sequence || camera!=c.camera || battle!=c.battle)return false;
   } else {
     if(key.sequence<c.completed)return false;
+    // A completed key is idempotent only with the same camera/battle operands.
     if(key.sequence==c.completed)return camera==c.camera && battle==c.battle;
     c.key=key;c.camera=camera;c.battle=battle;c.sourceComplete=false;c.active=true;
+    // Reset the mutable build queue only for a new pass, never for a retry.
     c.backend->begin();
   }
+  // Source-complete survives a later publication/native admission hold.
+  // Already accepted lookup/RNG/footer effects must not execute again.
   if(!c.sourceComplete) {
     if(!resumePackedBattleClassQueuedDisplay(c.camera,c.battle,c.display,c.queued))return false;
     c.sourceComplete=true;

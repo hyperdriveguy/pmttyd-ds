@@ -44,6 +44,7 @@ public:
   bool appendFooter(const BattleClassFooterAtlasQuad&);
   std::optional<uint32_t> footerRasterRequest(const BattleClassRasterRequest&,
                                              BattleClassFooterProvider&);
+  // Borrowed numeric services are usable only inside the guarded resume call.
   const BattleClassCameraBridge* camera() const;
   const BattleClassPublication& publication() const;
   bool admit(const BattleClassPublicationKey&);
@@ -53,6 +54,7 @@ private:
   struct State;
   std::unique_ptr<State> state_;
   BattleClassPublication unavailable_;
+  // Reentry guard plus deferred destruction requested by an in-flight provider.
   bool invoking_=false,retiring_=false;
 };
 }
