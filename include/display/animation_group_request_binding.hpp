@@ -13,6 +13,8 @@ public:
 private:
  AnimationGroupRequestBinding(EventAddressSpace&,std::shared_ptr<NativeFileCache>);
  AnimationGroupRequestServices services();bool text(uint32_t,std::string&,unsigned limit=128) const;
+ // File cache retained,VM borrowed. Both and stable binding outlive pending.
+ // Default 8192 visits is native work budget;128-byte text limit is admission.
  EventAddressSpace& memory_;std::shared_ptr<NativeFileCache> files_;AnimationGroupRequestCursor cursor_;
 };
 }

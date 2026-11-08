@@ -51,6 +51,8 @@ public:
  const AnimationNativeMain* mainOwner() const{return main_.get();}
  AnimationQuantizationState& quantization(){return quantization_;}
  const AnimationQuantizationState& quantization() const{return quantization_;}
+ // Alias/currentness proof,not a guarantee of quiescence or complete renderer.
+ // Callers separately exclude Entry/Main/selection/presentation producers.
  bool ready() const{return aliases_ && aliases_->matchesWork() && tangentMemory_ && tangentMemory_->current() && scratch_ && scratch_->current();}
  uint32_t pending() const{return cursor_.pending;}
  EventNativeRuntime& vm(){return *vm_;}
@@ -72,6 +74,7 @@ private:
  std::shared_ptr<NativeFileCache> files_;
  std::unique_ptr<EventNativeRuntime> vm_;
  AnimationInitializeCursor cursor_;
+ // Source-parent success latch survives alias-attachment failures.
  bool initialized_=false;
  // vsprintf completed before a retained _fileAlloc/Yield child.
  bool formatted_=false;

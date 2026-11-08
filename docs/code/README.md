@@ -251,3 +251,7 @@ wrapper/native Main frontiers.
 [Native render owners](animation-native-render-owners.md) explains provider
 selection, paired Copy differences, raw material/override captures and retained
 indexed-fan FIFO emission.
+
+[Animation startup and publication](animation-startup-publication.md) explains
+cold initialization/adoption, shared async preload/completion and atomic native
+mesh publication.

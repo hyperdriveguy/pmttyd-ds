@@ -5,9 +5,17 @@
 #include <cassert>
 namespace ttyd {
 namespace {
+// US cold W at803d9470 spans110hex bytes,followed by 178 binary32 tangents
+// at803d9580. This is bootstrap source storage,not an existing live allocation.
 constexpr uint32_t Work=0x803d9470;
 struct Span{uint32_t address,size;};
 // Exact source data/BSS image layout; no executable segments or arena buffers.
+// Ordered address/byte-size allowlist: render seeds/formats/warning/sort names,
+// normal Mario tokens,initialized Vivian destination,Joint/Transform tables,
+// W/tangents and roots,heap config/arena globals,Entry/facing/Main literals,
+// party token and SDK ONE/ZERO. Initialized DOL bytes override broad BSS zeros.
+// Keep synchronized with tools/animation_boot_image.py; hashes belong to that
+// read-only extractor,while this runtime verifies layout and critical words.
 constexpr Span ImageSpans[]={{0x802c103c,12},{0x802c1068,8},{0x802c1070,8},{0x802c1078,76},{0x802c11a8,48},{0x802c11d8,16},{0x802c11e8,16},{0x802c18a0,28},
  {0x80305900,0xc00},{0x80306698,0x40},{0x803066d8,0x20},{Work,0x110},{0x803d9580,178*4},{0x804151b8,40},
  {0x80415da0,16},{0x80415db4,4},{0x80415dc0,4},{0x80415dc4,4},{0x80415dc8,16},{0x80415eb0,12},{0x8041e428,12},{0x8041e458,8},
@@ -17,7 +25,12 @@ bool admittedImage(const EventScriptAssets& image){
  if(image.segments().size()!=sizeof(ImageSpans)/sizeof(*ImageSpans))return false;
  for(unsigned i=0;i<image.segments().size();++i)if(image.segments()[i].address!=ImageSpans[i].address || image.segments()[i].size!=ImageSpans[i].size)return false;
  auto word=[&](uint32_t a,uint32_t expected){uint32_t v=0;return image.readWord(a,v) && v==expected;};
+ // Critical raw float words:2,-2,3,1/16,60,1000,draw degrees->radians,
+ // W/Vivian roots,init factor3c8efa33 (distinct from draw3c8efa35),signed
+ // integer bias4330000080000000,and frame->ms16.666666 atfb40.
  if(!word(0x8041fb64,0x40000000) || !word(0x8041fb98,0xc0000000) || !word(0x8041fbb0,0x40400000) || !word(0x8041fbac,0x3d800000) || !word(0x8041fba4,0x42700000) || !word(0x8041fba8,0x447a0000) || !word(0x8041fb2c,0x3c8efa35) || !word(0x80415dc0,Work) || !word(0x80415db4,0x80305900) || !word(0x8041fbb4,0x3c8efa33) || !word(0x802c1070,0x43300000) || !word(0x802c1074,0x80000000) || !word(0x8041fb40,0x41855555))return false;
+ // Five(enabled,sizeKiB) heap rows at804151b8. First four enabled; last
+ // 100KiB row disabled. Work+tangent cold zero check excludes initialized Vivian.
  const uint32_t values[]={7300,3472,224,128,100};
  for(unsigned i=0;i<5;++i)if(!word(0x804151b8+8*i,i==4?0:1) || !word(0x804151bc+8*i,values[i]))return false;
  for(uint32_t a=Work;a<Work+0x110+178*4;a+=4)if(!word(a,0))return false;
@@ -32,8 +45,13 @@ AnimationStartupProcess::~AnimationStartupProcess(){selection_.reset();presentat
 std::unique_ptr<AnimationStartupProcess> AnimationStartupProcess::cold(std::shared_ptr<NativeFileCache> files,std::shared_ptr<BattlePosePool> pool,const EventNativePlatform& platform,const char* path,uint32_t gp,uint32_t arena,uint32_t bytes){
  // Explicit native arena policy: aligned, nonwrapping, room for all four source
  // fixed pools, descriptor reservation and a valid final free-list header.
+ // Native minimum: enabled7300+3472+224+128KiB=11124KiB,plus 128 bytes
+ // descriptor/final-free-header allowance. 32-byte alignment is allocator policy;
+ // these are admission bounds,not measured hardware memory consumption.
  constexpr uint32_t minimum=11124*1024+128;
  if(!files || !pool || !platform.flushBlock || !platform.systemCall || !gp || uint64_t(gp)+EventGpAddresses::size>0x100000000ULL || (gp<=0x80415fd0 && uint64_t(gp)+EventGpAddresses::size>0x80415fd0) || !arena || (arena&31) || (bytes&31) || bytes<minimum || uint64_t(arena)+bytes>0xffffffffULL)return {};
+ // Cold-only admission rejects ANY preexisting source/typed state. Never
+ // erase a live shared pool or re-import the image over edited runtime storage.
  if(pool->workEstablished_ || pool->sourceGuard_ || !pool->cacheMetadataReady() || std::any_of(pool->work_.begin(),pool->work_.end(),[](uint8_t b){return b!=0;}))return {};
  for(const auto& m:pool->models_)if(std::any_of(m.state.begin(),m.state.end(),[](uint8_t b){return b!=0;}))return {};
  for(const auto& t:pool->textures_)if(std::any_of(t.state.begin(),t.state.end(),[](uint8_t b){return b!=0;}))return {};
@@ -57,6 +75,8 @@ AnimationInitializeServices AnimationStartupProcess::services(){
 }
 bool AnimationStartupProcess::child(BattleSequenceCall& c){
  switch(c.function){
+ // __memAlloc(heap0,size) uses the SAME event SDK heap owner/headers,
+ // including real zero-fill/cache services; no invented bump-pointer result.
  case 0x800300f0:
   if(c.args[0]!=0)return false;
   c.result=eventHeapAllocate(0,c.args[1],vm_->memoryBinding.services());return true;
@@ -87,6 +107,8 @@ bool AnimationStartupProcess::child(BattleSequenceCall& c){
  default:return false;
  }
 }
+// Source initialization completes once,then pool/tangent/scratch aliasing can
+// retry separately. A later attachment hold must not replay allocations/files.
 bool AnimationStartupProcess::advance(){
  if(producerPending())return false;
  if(!initialized_){auto s=services();if(!initializeAnimation(s,cursor_))return false;initialized_=true;}
@@ -105,6 +127,8 @@ bool AnimationStartupProcess::entryChild(AnimationEntryCall& c){
  switch(c.function){
  case 0x80189d38:return files_->archiveType(c.args[0]);
  case 0x8018a260:return files_->release(c.args[0]);
+ // strcmp admits semantic stack arguments only in lanes0/1(mask3).
+ // Filename formatting below is bounded native adaptation,not generic varargs.
  case 0x8026d464:{
   std::string a,b;
   if(c.stackArguments&~3u)return false;
@@ -117,6 +141,8 @@ bool AnimationStartupProcess::entryChild(AnimationEntryCall& c){
   if(c.stackArguments!=1 || c.args[1]!=0x802c1068 || !text(c.args[1],format) || format!="%s/%s-" || !text(c.args[2],prefix) || !text(c.args[3],name))return false;
   c.text=prefix+"/"+name+"-";return c.text.size()<256;
  }
+ // Capture completed MODEL(type5) or TPL(type4) filename before acquire/Yield.
+ // Held file work never re-reads/reformats a changed source name on retry.
  case 0x8018a61c:
  case 0x8018a5f8:{
   const bool formatted=c.function==0x8018a61c;
@@ -131,6 +157,8 @@ bool AnimationStartupProcess::entryChild(AnimationEntryCall& c){
   auto h=files_->acquire(entryFilename_,formatted?5:4);if(!h)return false;
   c.result=*h;entryFormatted_=false;entryFilename_.clear();return true;
  }
+ // __div2i ABI is HIGH/LOW numerator and zero HIGH divisor; preserve raw
+ // signed64 quotient HIGH in result,LOW separately. Divisor0 remains a hold.
  case 0x80264ad8:{
   uint64_t result=0;
   if(c.args[2] || !nativeFieldNpcClockDivide(nullptr,uint64_t(c.args[0])<<32|c.args[1],c.args[3],result))return false;
@@ -148,6 +176,10 @@ bool AnimationStartupProcess::entryChild(AnimationEntryCall& c){
  default:return false;
  }
 }
+// Post-source native admission only:256 pose/64 model/64 texture slots,
+// positive signed refs,actual file names/counts and descriptor0 CPU geometry.
+// Preparing sidecars is not a transaction/rollback of source Entry. Source BE
+// state stays untouched; an adoption hold does not replay the completed parent.
 bool AnimationStartupProcess::adoptEntry(){
  auto& m=vm_->memory;const auto h=entry_.result;
  if(h>=256 || !pool_->sourceArraysCurrent())return false;
@@ -167,6 +199,9 @@ bool AnimationStartupProcess::adoptEntry(){
  // Sidecars only: never call typed enter/restart or overwrite source BE rows,
  // timestamp, refs, file identities, scratch pointers or untouched stale words.
  model.resource=resource;if(!texture.resource){texture.name=resource->textureName;texture.resource=resource;}
+ // Native generation/archive metadata and presentation/cache sidecars follow
+ // CPU preparation. Scratch-view admission below can still hold after these
+ // native writes;do not describe adoption as atomic whole-sidecar publication.
  p->resource=std::move(resource);p->shape=std::move(shape);p->cache=std::move(cache);p->nativeGeneration=pool_->nextGeneration_++;p->archiveType=entry_.mode==1?2:entry_.mode==0?1:0;pool_->archiveType_=p->archiveType;
  if(!scratch_ || !scratch_->current())return false;
  p->sourceBuffers=scratch_->pose(h,p->nativeGeneration);
@@ -185,6 +220,8 @@ std::optional<int32_t> AnimationStartupProcess::enter(uint32_t name,uint32_t mod
   if(!enterAnimationPose(name,mode,s,entry_))return {};
   entryComplete_=true;
  }
+ // Completed source-2 is a real model failure. Empty optional means hold;
+ // source completion remains retained while native metadata adoption waits.
  if(entry_.result==0xfffffffe){entryResource_.reset();return -2;}
  if(!adoptEntry())return {};
  const auto result=int32_t(entry_.result);entryResource_.reset();return result;

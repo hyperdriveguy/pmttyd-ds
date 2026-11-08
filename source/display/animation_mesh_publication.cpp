@@ -4,10 +4,17 @@
 #include <cmath>
 #include <cstring>
 namespace ttyd {
+// Five channels in source order:position,normal,visibility,node,texture.
+// MODEL count offsets / pose output offsets are hex;row widths 12/12/1/4/24
+// bytes. Positions/normals can instead use current shared Wf8/Wfc outputs.
 namespace {constexpr uint32_t Counts[]={0xf0,0xf8,0x13c,0x140,0x12c},Outputs[]={0x4c,0x54,0x5c,0x64,0x6c},Widths[]={12,12,1,4,24};}
 AnimationMeshPublication::AnimationMeshPublication(AnimationStartupProcess& p,std::function<bool(uint64_t)> current,bool privateCapture):process_(p),pool_(p.pool_),aliases_(*p.animationMemory()),current_(std::move(current)),privateCapture_(privateCapture){}
 AnimationMeshPublication::~AnimationMeshPublication()=default;
+// fastCapture is scoped ONLY to an admitted raw/private decode borrow. Otherwise
+// recheck active/pass/process/aliases and exact generation/resource/buffer identity.
 bool AnimationMeshPublication::available() const{if(fastCapture_)return true;const auto* p=pool_->slot(handle_);return active_ && current_(pass_) && (captureReady_ || process_.ready()) && process_.animationMemory()==&aliases_ && aliases_.aliases(*pool_,process_.vm().memory) && p && p->nativeGeneration==generation_ && p->resource==resource_ && p->sourceBuffers==buffers_;}
+// Reserve before selection/setup so a different producer cannot steal Main or
+// presentation. Same numeric handle with changed generation is a new lifetime.
 bool AnimationMeshPublication::reserve(uint32_t handle,uint64_t pass){
  if(active_)return handle==handle_ && pass==pass_ && available();
  if(!current_(pass) || !process_.ready() || handle>=256)return false;
@@ -17,6 +24,8 @@ bool AnimationMeshPublication::reserve(uint32_t handle,uint64_t pass){
 bool AnimationMeshPublication::word(uint32_t a,uint32_t& v){if(!available() || !process_.vm().memory.readWord(a,v))return false;++reads_;return true;}
 bool AnimationMeshPublication::real(uint32_t a,float& f){uint32_t v;if(!word(a,v))return false;std::memcpy(&f,&v,4);return std::isfinite(f);}
 bool AnimationMeshPublication::byte(uint32_t a,uint8_t& v){if(!available() || !process_.vm().memory.readByte(a,v))return false;++reads_;return true;}
+// Native assembly limits: 128 groups,8192 bindings,180000hex bytes/channel;
+// group nodes consume 24 floats. These are port admission,not original guards.
 bool AnimationMeshPublication::domain() const{
  if(!pose_ || counts_[0]!=pose_->positions.size() || counts_[1]!=pose_->normals.size() || counts_[2]!=pose_->visibility.size() || counts_[3]!=pose_->nodes.size() || counts_[4]!=pose_->textures.size() || (!pose_->surfaces.empty() && pose_->surfaces.size()!=counts_[4]) || pose_->groups.empty() || pose_->groups.size()>128 || pose_->bindings.size()>8192)return false;
  for(unsigned c=0;c<5;++c)if(uint64_t(counts_[c])*Widths[c]>0x180000 || uint64_t(outputs_[c])+uint64_t(counts_[c])*Widths[c]>0x100000000ull)return false;
@@ -41,6 +50,9 @@ bool AnimationMeshPublication::capture(unsigned& visits,unsigned budget){
  // Exclude every VM alias of that storage, not only current channel sources.
  // Re-prove on each borrow; scalar fallback keeps its precise read frontier.
  uint32_t guardWork=0;
+ // Fast guard elision requires caller promise that current(pass) is independent
+ // of private cursor/candidate writes,plus root/header/raw span and physical
+ // disjointness proofs. No proof survives this borrow or authorizes assembly.
  if(phase_==20 && privateCapture_ && available() && ram.bind(0x80415dc0,4) && ram.readWord(0x80415dc0,guardWork) && ram.bind(guardWork,24) && ram.disjointStorage(this,sizeof(*this))){
   auto separate=[&](const auto& v){return ram.disjointStorage(v.data(),v.size()*sizeof(v[0]));};
   bool raw=separate(candidate_.positions) && separate(candidate_.normals) && separate(candidate_.visibility) && separate(candidate_.nodes) && separate(candidate_.textures) && separate(candidate_.surfaces);
@@ -53,6 +65,9 @@ bool AnimationMeshPublication::capture(unsigned& visits,unsigned budget){
   // Each word/byte primitive checks fresh ownership. Pure cursor transitions
   // have no external effects and need no duplicate check in this read slice.
   switch(phase_){
+ // FRESH post-Main capture:W,MODEL/selected descriptor,selector,counts,
+ // pointers,then cache diagnostics. This intentionally differs from source
+ // Main/Draw's earlier captured registers;never silently recapture on retry.
  case 1:if(!word(0x80415dc0,work_))return false;++phase_;break;
  case 2:if(!word(work_,models_))return false;++phase_;break;
  case 3:if(!word(r+0x10,record_))return false;++phase_;break;
@@ -67,6 +82,9 @@ bool AnimationMeshPublication::capture(unsigned& visits,unsigned budget){
  case 12:{uint32_t value;if(!word(r+0x2c,value))return false;candidate_.next=value;++phase_;break;}
  case 13:{uint32_t v;if(!word(r+0x40,v))return false;std::memcpy(&candidate_.fraction,&v,4);++phase_;break;}
  case 14:{uint32_t v;if(!word(r+0x24,v))return false;std::memcpy(&candidate_.selectedTime,&v,4);++phase_;break;}
+ // Decode XYZ positions/normals,visibility byte,node float,then texture
+ // selector+five floats. Even absent native surface rows retain all reads.
+ // Mesh numeric lanes must be finite;diagnostic time/fraction preserve raw bits.
  case 20:if(channel_==5){phase_=30;break;}if(item_==counts_[channel_]){++channel_;item_=lane_=0;break;}
   if(channel_<2){auto& v=channel_?candidate_.normals:candidate_.positions;if(!real(outputs_[channel_]+12*item_+4*lane_,v[item_][lane_]))return false;if(++lane_==3){lane_=0;++item_;}}
   else if(channel_==2){if(!byte(outputs_[2]+item_,candidate_.visibility[item_]))return false;++item_;}
@@ -80,14 +98,20 @@ bool AnimationMeshPublication::capture(unsigned& visits,unsigned budget){
 }
 bool AnimationMeshPublication::advance(uint32_t handle,uint64_t pass,unsigned budget){
  if(!budget || !reserve(handle,pass) || !available())return false;
+ // Main runs once. Its completion advances permanently to capture and returns
+ // pending before any later assembly failure can repeat source evaluation.
  if(phase_==0){if(!process_.main_ || !process_.main_->advance(handle,pass,budget))return false;phase_=1;return false;}
  unsigned visits=0;
  while(visits<budget){
   if(!available())return false;
   if(phase_==15){if(!prepare())return false;phase_=20;++visits;continue;}
+ // 12000-vertex cap and finite XYZ/UV checks are native presentation policy.
+ // Assembly writes candidate only;successful assembly has its own terminal hold.
  if(phase_==30){if(!domain() || !pose_->assemble(candidate_) || candidate_.vertices.size()>12000 || candidate_.colors.size()!=candidate_.vertices.size())return false;for(const auto& v:candidate_.vertices)if(!std::isfinite(v.x) || !std::isfinite(v.y) || !std::isfinite(v.z) || !std::isfinite(v.u) || !std::isfinite(v.v))return false;
   phase_=31;return false; // Assembly is never repeated after success.
  }
+ // Recheck static original geometry,then ONE shape swap. Old published shape
+ // survives every earlier failure;GPU residency/Draw completion are separate.
  if(phase_==31){if(!process_.files_->modelGeometryCurrent(process_.vm().memory,model_,resource_->draw))return false;auto* target=const_cast<BattlePose*>(pool_->slot(handle_));std::swap(target->shape,candidate_);++publications_;active_=false;resource_.reset();buffers_.reset();pose_=nullptr;return true;}
 
   if(!capture(visits,budget))return false;
