@@ -18102,3 +18102,51 @@ resolve the two field-map assertions against a new frozen snapshot; add matched
 NPC, stairs/water/road and exact action-command frame checks plus hardware tests.
 This verification task concludes with an observed progression blocker; it does
 not declare the remake or its broader implementation goals complete.
+
+## 2026-11-07 — Crump preframe resources and original combat animation coverage
+
+Tutorial presentation now imports and retires GPU resources before FrameBegin;
+worldTutorial only consumes an admitted presentation. Exact Mario combat clips
+missing from the intro bank reuse the existing original ordinary battle bank,
+matching atlas and UV owner. Dedicated intro clips retain priority. Completion,
+upper/lower scene replay and message anchors use the same selected owner. No
+editable artwork, original pixel, asset recipe or dialogue was overwritten.
+
+Added retained whole cold BattleInit800f8f04 parent, separate from btlseqInit.
+It preserves source19098 allocation/clear length,46 ordered calls/stores and17
+child calls across holds; actual child0 remains a completed return. Services,
+allocation results, source information and lifetime stay retained without prefix
+replay. Native cold bootstrap/initializer services are still required.
+
+Validation: artifacts/crump-startup-presentation/manifest.json SHA256
+0fe211c2a9b0501416ee8d8cab1bd6c78a478b5a2075a995b10536aa5982e6e8,
+11008 inputs. Full make test57390 exits0:545 C++ (168.03s),238 Python
+(38.447s), zero skips. Normal original-asset make all66578 exits0; audited-cache
+make all also0. All final pinned inputs rehash unchanged after host checks.
+1621 Markdown files/zero broken links;421 asset recipes. Source verifier pins
+all312 original cold-parent bytes/call-store order; worker actual22-animation
+samples, original source checks, ARM and ASan/UBSan pass within their recorded
+scope (LeakSanitizer disabled under ptrace).
+
+Build fixture corrections are retained: initial native82010 and35898 exit2 for
+missing original symbol CSV. That input was copied/pinned explicitly. Normal
+assets-base rewrote464 path/fingerprint JSON metadata files; executable source
+and original binary/texture/animation/event products stayed unchanged. Host21350
+was explicitly interrupted130 to freeze the generated metadata before full
+host57390, not restarted on timeout. No live build ran from the rejected wrong-
+working-directory attempt15089. The final graph and native receipts are recorded
+in results.json rather than claiming the initial metadata graph stayed identical.
+
+Isolated production Azahar60972 script exits0 but is REJECTED as Crump proof:
+root inspection found a black harbor scene and explicit scene actor texture
+unavailable notice after the legacy story4 checkpoint. Occupied-file menu and
+physical input admission were observed; Crump was not reached. No user profile
+or save was changed. This remains a concrete field/presentation admission issue
+for the next native integration, not a passing tutorial test.
+
+Next: compose the newly prepared actual Main/Init/FirstAct/Turn and physical
+command UI owners; bind genuine map storage and public sound, original unit
+construction/display/equipment, lethal damage and field result/return. Resolve
+the harbor admission failure and validate ordinary play through Crump before
+claiming a playable tutorial. Guard feedback, broader battle services and the
+full goal remain incomplete.

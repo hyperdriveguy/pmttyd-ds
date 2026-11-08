@@ -1,6 +1,7 @@
 #include "battle_actor_rotation.hpp"
 #include "battle_camera_frame.hpp"
 #include "battle_scene_views.hpp"
+#include "harbor_tutorial_animation_selection.hpp"
 #include "platform.hpp"
 #include "trio_enemy_pose_resources.hpp"
 #include "paper_fence_warp.hpp"
@@ -349,6 +350,9 @@ bool Renderer::changeRoom(uint32_t room) {
 // C3D_FrameSync precedes freeing descriptors referenced by earlier draws.
 // Resource failure is explicit; do not treat a successful CPU pose as texture ready.
 bool Renderer::prepareSceneActorTextures(const Game& g) {
+    // Dedicated tutorial preparation owns its actors and the shared ordinary
+    // Mario combat atlas. Generic !trio retirement must not remove that lease.
+    if(g.harborTutorial.running())return tutorialReady && trioMarioTexture.imported;
     const bool trio=g.trioBattleActive;
     const bool quest=!trio && !g.harborEncounter.locked() && !g.storyPresentation().locked() &&
         (!std::strcmp(g.marioPresentation.selected,"M_N_5B") || !std::strcmp(g.marioPresentation.selected,"M_N_C"));
@@ -397,7 +401,7 @@ bool Renderer::prepareSceneActorTextures(const Game& g) {
 // legacy harness uses stage; tutorial owns dedicated startup maps. Battle entry
 // frees field Room before map admission; field return reloads its room/NPC bank.
 bool Renderer::prepareBattleMaps(const Game& g) {
-    if(g.harborTutorial.running())return true; // Dedicated startup owns its field retirement/battle maps.
+    if(g.harborTutorial.running())return loadTutorialPresentation(); // Admit dedicated maps/actors before FrameBegin.
     const bool legacy=!g.harborTutorial.running() && (g.scene==Scene::Battle || g.scene==Scene::Victory || g.scene==Scene::Defeat);
     const bool trio=g.trioBattleActive;
     if((trio && trioBackground.vertices && trioStage.vertices && !plaza.vertices) ||
@@ -824,7 +828,9 @@ void Renderer::originalMessage(const Game& g,const MessagePlayback* supplied,con
     if(newWindow && !supplied && tutorial && g.harborTutorial.visualSlot(g.harborTutorial.speaker)>=0) {
         const auto id=unsigned(g.harborTutorial.visualSlot(g.harborTutorial.speaker));const auto& a=g.harborTutorial.actors[id];
         messageTalkAnchor={a.position[0]*.01f,a.position[1]*.01f,a.position[2]*.01f};
-        const auto* pose=tutorialActors[id].animations.pose(a.pose.c_str());
+        const auto selected=selectHarborTutorialAnimation(id,a.pose.c_str(),tutorialActors[id].animations,
+            trioMarioAnimations?trioMarioAnimations->bank.get():nullptr);
+        const auto* pose=selected?selected->pose:nullptr;
         if(pose && pose->evaluate(float(g.harborTutorial.now-a.poseAt)*.06f,actorSample))for(const auto& v:actorSample.vertices)messageTalkAnchor.y=std::max(messageTalkAnchor.y,a.position[1]*.01f+v.y*.02f);
         const auto& mario=g.harborTutorial.actors[1].position;
         if(project(messageTalkAnchor,anchorX,anchorY) && project({mario[0]*.01f,mario[1]*.01f,mario[2]*.01f},marioX,marioY))mode=message.windowType==1?7:messageSpeakerMode(anchorX,marioX);

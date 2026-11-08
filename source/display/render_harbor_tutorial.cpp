@@ -1,6 +1,7 @@
 #include "platform.hpp"
 #include "battle_actor_rotation.hpp"
 #include "battle_scene_views.hpp"
+#include "harbor_tutorial_animation_selection.hpp"
 #include <algorithm>
 #include <cstdio>
 #include <cstring>
@@ -33,6 +34,19 @@ bool Renderer::loadTutorialPresentation() {
         C3D_TexSetFilter(&actor.image.texture,GPU_LINEAR,GPU_LINEAR);
         C3D_TexSetWrap(&actor.image.texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
     }
+    // Jump/guard/victory clips already belong to the ordinary battle bank.
+    // Preserve the checked-in tutorial clips and reuse its matching atlas for
+    // missing Mario clips; mixing that bank with the tutorial atlas corrupts UVs.
+    if(!trioMarioAnimations || !trioMarioAnimations->bank){release();return false;}
+    if(!trioMarioTexture.imported){
+        FILE* file=std::fopen("romfs:/trio-attack-mario.t3x","rb");
+        if(!file){release();return false;}
+        trioMarioTexture.imported=Tex3DS_TextureImportStdio(file,&trioMarioTexture.texture,nullptr,false);
+        std::fclose(file);
+        if(!trioMarioTexture.imported){release();return false;}
+        C3D_TexSetFilter(&trioMarioTexture.texture,GPU_LINEAR,GPU_LINEAR);
+        C3D_TexSetWrap(&trioMarioTexture.texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
+    }
     tutorialReady=true;return true;
 }
 // Pose endpoints use milliseconds*.06 (60Hz source sample clock). Notify
@@ -41,13 +55,18 @@ void Renderer::advanceTutorialAnimations(Game& game) {
     if(!tutorialReady || !game.harborTutorial.running())return;
     if(game.harborTutorial.running()){bindTutorialStartupResources(game.harborTutorial);advanceTutorialCurtain(game.harborTutorial);}
     for(unsigned i=0;i<3;++i) {
-        const auto& a=game.harborTutorial.actors[i];const auto* pose=tutorialActors[i].animations.pose(a.pose.c_str());
+        const auto& a=game.harborTutorial.actors[i];
+        const auto selected=selectHarborTutorialAnimation(i,a.pose.c_str(),tutorialActors[i].animations,
+            trioMarioAnimations?trioMarioAnimations->bank.get():nullptr);
+        const auto* pose=selected?selected->pose:nullptr;
         if(pose && pose->end>pose->start && game.harborTutorial.now>=a.poseAt && float(game.harborTutorial.now-a.poseAt)*.06f>=pose->end)
             game.harborTutorial.animationComplete(a.id);
     }
 }
 void Renderer::worldTutorial(const Game& g,bool lower) {
-    if(!loadTutorialPresentation())return;
+    // Resource imports/retirement belong to prepareBattleMaps before FrameBegin.
+    // A failed preparation stays unavailable until a later preframe retry.
+    if(!tutorialReady)return;
     // Native initial battle framing. Original mode/moveto camera requests are
     // retained by the source owner; its complete camera driver remains unbound.
     C3D_Mtx projection,view;
@@ -76,15 +95,23 @@ void Renderer::worldTutorial(const Game& g,bool lower) {
     C3D_AlphaBlend(GPU_BLEND_ADD,GPU_BLEND_ADD,GPU_SRC_ALPHA,GPU_ONE_MINUS_SRC_ALPHA,GPU_ONE,GPU_ONE_MINUS_SRC_ALPHA);
     if(!lower){count=0;tutorialDrawRanges={};}
     for(unsigned i=0;i<3;++i) {
+        const auto& a=g.harborTutorial.actors[i];
+        const auto selected=selectHarborTutorialAnimation(i,a.pose.c_str(),tutorialActors[i].animations,
+            trioMarioAnimations?trioMarioAnimations->bank.get():nullptr);
+        if(!selected)continue;
+        const bool ordinaryMario=selected->owner==HarborTutorialAnimationOwner::OrdinaryMario;
+        auto& texture=ordinaryMario?trioMarioTexture:tutorialActors[i].image;
+        if(!texture.imported)continue;
+        const float uvScale=ordinaryMario?trioMarioUVScale:tutorialActors[i].uvScale;
         if(lower){
             // Reuse the exact top-pass vertices. Other top overlays/curtain
             // keep their arena ranges; the second view writes no actor data.
             const auto span=tutorialDrawRanges[i];if(!span[1])continue;
             auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);
-            C3D_TexBind(0,&tutorialActors[i].image.texture);C3D_DrawArrays(GPU_TRIANGLES,span[0],span[1]);continue;
+            C3D_TexBind(0,&texture.texture);C3D_DrawArrays(GPU_TRIANGLES,span[0],span[1]);continue;
         }
-        const auto& a=g.harborTutorial.actors[i];if(a.id<0)continue;
-        const auto* pose=tutorialActors[i].animations.pose(a.pose.c_str());
+        if(a.id<0)continue;
+        const auto* pose=selected->pose;
         if(!pose || !pose->evaluate(float(g.harborTutorial.now-a.poseAt)*.06f,actorSample) || actorSample.vertices.size()>size_t(12000-count))continue;
         const int first=count;
         // Crump faces yaw0; Mario/Goombella yaw180. Root/model conversion
@@ -94,13 +121,13 @@ void Renderer::worldTutorial(const Game& g,bool lower) {
         const BattleActorRotation rotation(a.rotation,{});
         for(size_t n=0;n<actorSample.vertices.size() && count<12000;++n) {
             const auto& v=actorSample.vertices[n];const auto p=rotation.point(root.point(v));
-            vertex(a.position[0]*.01f+p[0],a.position[1]*.01f+p[1],a.position[2]*.01f+p[2],v.u,1-(1-v.v)*tutorialActors[i].uvScale,0xffffffff,actorSample.colors.empty()?nullptr:&actorSample.colors[n]);
+            vertex(a.position[0]*.01f+p[0],a.position[1]*.01f+p[1],a.position[2]*.01f+p[2],v.u,1-(1-v.v)*uvScale,0xffffffff,actorSample.colors.empty()?nullptr:&actorSample.colors[n]);
         }
         if(count==first)continue;
         tutorialDrawRanges[i]={first,count-first};
         GSPGPU_FlushDataCache(vertices+first,size_t(count-first)*sizeof(Vertex));
         auto* buffers=C3D_GetBufInfo();BufInfo_Init(buffers);BufInfo_Add(buffers,vertices,sizeof(Vertex),3,0x210);
-        C3D_TexBind(0,&tutorialActors[i].image.texture);C3D_DrawArrays(GPU_TRIANGLES,first,count-first);
+        C3D_TexBind(0,&texture.texture);C3D_DrawArrays(GPU_TRIANGLES,first,count-first);
     }
     drawMap(true,g,true,&harborBattleBackground);drawMap(true,g,true,&harborBattleStage);
     drawAudienceScene(g,lower);

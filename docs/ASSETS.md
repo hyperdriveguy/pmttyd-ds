@@ -1,5 +1,20 @@
 # Asset sources, organization, and provenance
 
+## Crump tutorial combat animation reuse
+
+The tutorial reuses the existing original ordinary Mario bank/atlas
+(`trio-attack-mario.pmanim`, `trio-attack-mario.t3x` and its UV sidecar) for exact
+combat clips absent from the dedicated intro bank. Existing editable sources
+`assets/original/animations/trio-attack-mario.json` and
+`assets/original/animations/harbor-tutorial-mario.json`, their manifest recipes
+and per-asset provenance remain authoritative. No source asset, pixel, recipe,
+conversion or compiled pack is replaced. Original sources are read-only ISO
+`a/b_mario` and `a/a_mario-`; Nintendo/Intelligent Systems retain all rights and
+no redistribution license is granted. The ordinary512x512 RGBA8 atlas (1MiB)
+remains separate from the dedicated512x256 atlas, and every sample keeps its
+matching texture/UV owner. See the
+[animation coverage contract](behavior/display/HARBOR_TUTORIAL_ORIGINAL_ANIMATION_COVERAGE.md).
+
 ## Sources and storage
 
 | Source or output | Location | Contents and handling |

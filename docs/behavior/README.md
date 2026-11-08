@@ -1482,3 +1482,6 @@ Original battle menu native resource/queue owners:
 - [Original light registry and native process owner](field/NATIVE_LIGHT_REGISTRY_OWNER.md): retained source allocation/entry/reset/lookup, real VM-backed banks and reached original harbor light loop; Game/Map/GPU binding remains open.
 
 - [Original map-object source owner](field/NATIVE_MAP_OBJECT_SOURCE_OWNER.md): complete process/count/lookup/scene construction/recalculation, actual VM/map-heap storage and original harbor payload; full load/unload/animation/Game integration remains open.
+
+| [Retained cold battle initialization](battle/BATTLE_COLD_INIT_CONTINUATION.md) | Whole original cold parent, exact allocation/clear, ordered child calls and stores, retained lifetimes | Native initializer services, actor construction and tutorial completion |
+| [Tutorial original animation coverage](display/HARBOR_TUTORIAL_ORIGINAL_ANIMATION_COVERAGE.md) | Existing original Mario combat bank with matching atlas/UV and shared completion/top/lower ownership | Native tutorial playthrough and remaining original services |
