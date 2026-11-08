@@ -1527,3 +1527,5 @@ retain explicit provider and process-ownership frontiers.
 [Retained original Audience initialization](battle/RETAINED_AUDIENCE_INITIALIZATION.md) preserves actual Init/Setting child and private-frame ownership.
 
 - [Original map light child binding](field/NATIVE_MAP_LIGHT_CHILD_BINDING.md): reached Entry/reset calls, actual shared ambient words, coherent process ownership and retained camera frontier.
+
+- [Native original camera-road loading](camera/NATIVE_SOURCE_CAMERA_ROAD_LOADING.md): complete source wrappers/setup/shift initialization, actual shared map heap/DVD worker and borrowed camera4 lifetime.

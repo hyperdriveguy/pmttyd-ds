@@ -18,6 +18,12 @@ bool compatible(const FieldMapSourceServices& a,const FieldMapSourceServices& b)
 #undef PIN
 }
 bool root(uint32_t f){switch(f){
+ case 0x8000f36c: // camLoadRoad
+ case 0x8000e104: // camRoadSetup
+ case 0x8000f310: // camUnLoadRoad
+ case 0x8000e8c0: // camSetTypePersp
+ case 0x800f3978: // camShiftInit
+ case 0x8002b464: // mapGetDvdRoot
  case 0x80018658: // hitEntry
  case 0x800186f4: // hitEntrySub
  case 0x8001896c: // _hitEnt

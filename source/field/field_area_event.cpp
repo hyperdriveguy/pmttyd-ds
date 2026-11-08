@@ -67,6 +67,11 @@ bool loadFieldAreaEventAssets(const char* root) {
   std::fclose(extra);EventScriptAssets definitions;
   if(!definitions.load((base+"/field-light-registry.pmevt").c_str()) || !next->scripts.merge(definitions))return false;
  }
+ // Original camera literals/pointer words; no initialized camera/road objects.
+ if(FILE* extra=std::fopen((base+"/field-camera-road-literals.pmevt").c_str(),"rb")){
+  std::fclose(extra);EventScriptAssets input;
+  if(!input.load((base+"/field-camera-road-literals.pmevt").c_str()) || !next->scripts.merge(input))return false;
+ }
  // Scoped original map inputs; runtime map-entry ownership remains separate.
  if(FILE* extra=std::fopen((base+"/field-harbor-lights-input.pmevt").c_str(),"rb")){
   std::fclose(extra);EventScriptAssets input;

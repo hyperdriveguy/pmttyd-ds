@@ -2,6 +2,20 @@
   "schema": 1,
   "assets": [
     {
+      "id": "original/maps/harbor-camera-road/c",
+      "kind": "pack",
+      "source": "assets/original/maps/harbor-camera-road/c.bin",
+      "output": "maps/gor_00/c",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/maps/harbor-camera-road/literals",
+      "kind": "event",
+      "source": "assets/original/maps/harbor-camera-road/literals.json",
+      "output": "field-camera-road-literals.pmevt",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
       "id": "original/effects/process-memory",
       "kind": "event",
       "source": "assets/original/effects/process/memory.json",

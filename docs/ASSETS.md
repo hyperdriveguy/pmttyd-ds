@@ -4347,3 +4347,19 @@ the whole source wrapper and those six spans. Conversion preserves original
 word-aligned bytes, with no generated art, dialogue or numeric substitution.
 Per-span ISO offsets/hashes and retained Nintendo/Intelligent Systems rights are
 in `provenance.json`; no redistribution license is granted.
+
+
+### Original harbor camera source transfer and literals
+
+`assets/original/maps/harbor-camera-road/` contains unchanged `m/gor_00/c`
+(2048 bytes; source offset/SHA in provenance.json) and eight exact initialized
+DOL literal/pointer/default spans, including the reached map-loader bounds and
+material-default prefix. `tools/import_harbor_camera_road.py` reads the US
+revision0 ISO read-only and refuses nonempty destinations. The two normal
+manifest recipes copy `maps/gor_00/c` and compile
+`field-camera-road-literals.pmevt`. Source code owns the mutable map-heap copy,
+all nine original pointer relocations and runtime BSS; those outputs are not
+imported as initialized camera state. Existing editable d/t, decoded road assets,
+art and dialogue remain unchanged. Nintendo/Intelligent Systems retain original
+rights; this tracking grants no redistribution license. ISO/caches/compiled
+packs are excluded from source history.

@@ -203,3 +203,17 @@ that retains queue generation/lifetimes through holds remain open. Existing
 battle callback camera admission cannot substitute for ordinary field Main.
 Static source/helper audit is complete; native consumer fixtures do not answer
 room framing or original visual/runtime tracing.
+
+
+### Original camera-road acquisition binding (2026-11-07)
+
+Native source support now covers complete LoadRoad/Setup/Unload/Perspective,
+ShiftInit and GetDvdRoot bodies, original harbor c transfer and source constants.
+The map parent can supply a same-VM road/shift process owner and actual borrowed
+camera4 entry; its retained child reuses the real map allocator and DVD worker.
+See [source loading contract](../behavior/camera/NATIVE_SOURCE_CAMERA_ROAD_LOADING.md).
+Original camInit/camEntryPersp process admission remains a normal Game prerequisite;
+source-boundary camera fixture storage does not supply it. Remaining dependencies:
+actual camera Main/road/shift clocks and view/GPU consumers, original numeric/pixel
+observations, map shadow/material/GX capture and field epochs. Partial resets
+before acquisition failure and retained timestamps must survive later integration.

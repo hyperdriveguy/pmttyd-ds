@@ -19288,3 +19288,57 @@ Continue genuine setup2 sequence/battle lifecycle/result/field return and origin
 fresh/resume runs in isolated Azahar, compare original observations and measure
 actual hardware budgets. Never replace a held source result/presentation owner
 with a synthetic completion receipt.
+
+
+### Original source camera-road acquisition (2026-11-07)
+
+Added six complete source bodies (LoadRoad/Setup/Unload/Perspective/ShiftInit/
+GetDvdRoot), 276 original instruction words, to the fixed native graph. Reached
+map camera children use a separate retained cursor/stack with identical parent
+services, real source primary map allocator and existing original DVD worker.
+The process owns actual road/shift BSS and borrows existing camera4 table/entry
+backing; it does not initialize a substitute camera. Genuine camInit/camEntryPersp
+admission is still required for normal Game activation. Source partial resets,
+original acquisition failure, nine-word relocation and retained history are
+preserved. Imported original2048-byte harbor c and eight initialized DOL spans
+into an empty destination; original rights/provenance and editable-asset policy
+are recorded. Existing d/t, art, decoded camera and story/dialogue are preserved.
+
+Validation freezes committed7e624389 plus this scoped camera-road change,
+preserving concurrent work and staging. Full make test exits0:589/589 C++
+(124.15s),265/265 Python (40.025s), zero skips. Normal make all with440 asset
+recipes and the final source incremental build exit0; assets-check passes440.
+Source verification matches5116 original words in43 complete boundaries.
+Private ARM build exits0 with all630 non-main objects byte-identical to the
+production build. Nine strict ARM proof markers pass in an isolated180s run.
+
+Tests exercise original harbor parent acquisition through the real file worker,
+retained OSYield, exact nine-word relocation, source failure behavior, camera
+history preservation, ShiftInit primitive holds/timestamp/rates, raw call identity,
+unload lifetime and mutable process NoFog storage. The parent advances to actual
+shadowGetCharShadowProjection8002bc7c at8002a2f8; G0 remains0. The fixture
+supplies a preinitialized raw camera slot/entry; this does not establish genuine
+normal camInit/camEntryPersp admission. Shadow process initialization remains a
+held dependency; no cold-zero getter result is substituted.
+
+Normal isolated40s capture was black before startup finished and is inconclusive.
+The untouched same production binary reaches the original storybook/narration
+by the separate60s capture, App60FPS, exit0. A main-only diagnostic with630
+unchanged objects also completes renderer/assets/UI/frontend startup. This
+establishes boot only, not field acceptance or hardware startup performance.
+ARM180s smoke exits0 with all nine markers. All emulator profiles/saves are
+isolated. Evidence: artifacts/field-map-camera-road-normal-boot-review.md.
+
+Exact replay pins4795 source files,2223 RomFS products and one reference input;
+private-input and product deltas, source/object/binary hashes, logs and captures
+are recorded in artifacts/field-map-camera-road-validation-manifest.json.
+Existing compiler/Pillow warnings remain; private fixture warnings concern unused
+functions. No ISO, cache or compiled product is committed. No story is changed.
+The documentation inbox records the source shadow frontier: actual cswp804150e0
+points at char_shadow_work803c9e38/11c; source shadowInit establishes gate1 and
+its real64-record pool. Typed shadow storage is not this raw process owner.
+
+Next: genuine camera process initialization and Main/view/road/shift consumers;
+actual shadow/material/GX capture and Game/EVT epochs. Active hit lifetimes,
+original math/pixel parity, physical New2DS XL performance and full prologue/
+Crump round trip remain unfinished.

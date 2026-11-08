@@ -12,12 +12,12 @@ constexpr unsigned MaxPathBytes=64;
 struct StagedFile {const char* name;uint32_t logical,transfer;};
 // Exact US harbor FST lengths. The editable transfer files retain the original
 // bytes through the next32-byte boundary, including30 actual disc-tail bytes.
-constexpr std::array<StagedFile,2> Catalog{{{"d",1039618,1039648},{"t",525792,525792}}};
+constexpr std::array<StagedFile,3> Catalog{{{"d",1039618,1039648},{"t",525792,525792},{"c",2048,2048}}};
 }
 FieldMapFileOwner::FieldMapFileOwner(EventAddressSpace& m,uint32_t t,uint32_t s,const std::string& root):memory_(m),tableAddress_(t),stackAddress_(s),root_(root){}
 std::unique_ptr<FieldMapFileOwner> FieldMapFileOwner::bind(EventAddressSpace& m,uint32_t t,uint32_t s,const std::string& root){
  if(!t || !s || (t&(CacheLine-1)) || (s&(CacheLine-1)) || root.empty() || uint64_t(t)+TableBytes>0x100000000ULL || uint64_t(s)+StackBytes>0x100000000ULL)return {};
- // Admit both complete staged transfers before unchecked source D acquisition.
+ // Admit all complete staged transfers before unchecked source acquisition.
  for(const auto& item:Catalog){const auto name=root+"/maps/gor_00/"+item.name;FILE* f=std::fopen(name.c_str(),"rb");if(!f)return {};const bool ok=std::fseek(f,0,SEEK_END)==0 && std::ftell(f)==long(item.transfer);std::fclose(f);if(!ok)return {};}
  auto o=std::unique_ptr<FieldMapFileOwner>(new FieldMapFileOwner(m,t,s,root));
  auto map=[&](uint32_t a,uint8_t* b,uint32_t n){if(!m.registerExternalRam(a,b,n))return false;o->mappings_[o->mapped_++]=a;return true;};

@@ -3111,3 +3111,5 @@ add_executable(native_effect_process_tests tests/native_effect_process_tests.cpp
 target_link_libraries(native_effect_process_tests PRIVATE ttyd_core)
 add_test(NAME native_effect_process COMMAND native_effect_process_tests)
 set_tests_properties(native_effect_process PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+target_sources(ttyd_core PRIVATE source/field/field_camera_road_owner.cpp)

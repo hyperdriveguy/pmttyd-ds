@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "iso_id": "G8ME01 revision0",
+  "source": "m/gor_00/c",
+  "source_offset": 987836276,
+  "logical_bytes": 2048,
+  "transfer_bytes": 2048,
+  "sha256": "3d6f746ec51b1ba3165ba67aee2ca1fe17deb2d11a8fda9d3181a72356246d0c",
+  "dol_spans": [
+    {
+      "address": 2151806504,
+      "size": 28,
+      "sha256": "5dcfb9fab9c516b8561fe6042750d7189e064f9f6b44abbb2efc9ef51e9848e7"
+    },
+    {
+      "address": 2151806624,
+      "size": 16,
+      "sha256": "5f16ef13e6a4567ff1b267a6e9a691a11f2f018478f76a1f15831cbe0e654cd9"
+    },
+    {
+      "address": 2151806644,
+      "size": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+    },
+    {
+      "address": 2151806668,
+      "size": 4,
+      "sha256": "b4be016994a699fb6f1a6b61fa14065baacfc6d51af90abee79ebee422889a93"
+    },
+    {
+      "address": 2151817192,
+      "size": 16,
+      "sha256": "2bdfd121d0c511aaa219cdd76fadf9a44500c0c4af7693a9bb3ba3133cd8f71a"
+    },
+    {
+      "address": 2151763880,
+      "size": 4,
+      "sha256": "6c8eca4cb5f362ac72b2bf30be380ae1e60c1f786952973d297e6d45a5485ed9"
+    },
+    {
+      "address": 2151770568,
+      "size": 4,
+      "sha256": "bc7dc434a8b5aa7f90892f5d9a6425bf172136242b433cbdf86400871871194b"
+    },
+    {
+      "address": 2150365528,
+      "size": 576,
+      "sha256": "a90f9d0c7fe83f77349a9192f5842b872436cee9cc08d688e7a78f35fb8d2b8b"
+    }
+  ],
+  "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+  "policy": "Unchanged source file; source setup owns mutable map-heap copy and exact relocation. Original initialized pointer words/literals only; no runtime camera/road/shift objects imported."
+}

@@ -4,6 +4,7 @@
 #include <memory>
 namespace ttyd {
 class FieldLightRegistryOwner;
+class FieldCameraRoadOwner;
 struct FieldMapRequest {
  FieldMapRequest()=default;FieldMapRequest(const FieldMapRequest&)=delete;
  FieldMapRequest& operator=(const FieldMapRequest&)=delete;
@@ -18,6 +19,7 @@ struct FieldMapHeapOwner {
  bool (*sdk)(void*,FieldMapSourceCall&)=nullptr;
  // Initialized process owner in this exact VM; borrowed through all holds.
  FieldLightRegistryOwner* lights=nullptr;
+ FieldCameraRoadOwner* cameraRoad=nullptr;
 };
 // Owns actual process Work/global/private-stack backing. The original primary
 // map heap remains its existing owner's allocation; constructed MapObjs live
@@ -43,7 +45,8 @@ private:
  alignas(CacheLineBytes) std::array<uint8_t,FieldMapSource::WorkBytes> work_{};
  std::array<uint8_t,FieldMapSource::GlobalsBytes> globals_{};
  std::array<uint8_t,StackBytes> stack_{};
- std::array<uint32_t,3> mappings_{};unsigned mapped_=0;
+ std::array<uint8_t,sizeof(uint32_t)> noFogColor_{}; // Source startup BSS; survives room load/unload.
+ std::array<uint32_t,4> mappings_{};unsigned mapped_=0;
  bool allocationZeroed_=false,allocated_=false;
  const FieldMapRequest* request_=nullptr;
  FieldMapSourceCursor cursor_;

@@ -2,6 +2,7 @@
 #include "field_map_source_owner.hpp"
 #include "field_map_sdk.hpp"
 #include "field_light_registry_owner.hpp"
+#include "field_camera_road_owner.hpp"
 #include "fixtures/harbor_light_golden.hpp"
 #include "event_native_runtime.hpp"
 #include "event_script_assets.hpp"
@@ -29,18 +30,24 @@ struct Fixture {
  std::unique_ptr<FieldMapFileOwner> files;
  std::unique_ptr<FieldLightRegistryOwner> lights;
  FieldLightRequest lightInit;
+ std::array<uint8_t,4> cameraSlot{};
+ std::array<uint8_t,FieldCameraRoadOwner::CameraBytes> cameraEntry{};
+ std::unique_ptr<FieldCameraRoadOwner> cameraRoad;
+ uint32_t heldCameraChild=0;
+ bool failCameraOpen=false;
  std::unique_ptr<FieldMapSourceOwner> maps;
  bool enableEstimate=false;unsigned estimates=0;
  FieldMapSdk sdk{vm.memory,[this]{return maps && maps->current();},[this](float squared)->std::optional<double>{if(!enableEstimate)return {}; ++estimates;return 1.0/std::sqrt(double(squared));}}; // Explicit native approximation, not Gekko seed parity.
  bool unloadReceipts=false;std::vector<uint32_t> resets;
  bool drawSync=false,invalidate=false;unsigned syncs=0,invalidates=0;
  uint32_t frontier=0;std::array<uint32_t,8> frontierArguments{};
- explicit Fixture(const char* root,bool withLights=false){
+ explicit Fixture(const char* root,bool withLights=false,bool withCamera=false){
   auto& m=vm.memory;EventScriptAssets original,literals;
   assert(original.load((std::string(root)+"/field-harbor-map-source.pmevt").c_str()));
   assert(literals.load((std::string(root)+"/field-harbor-loader-literals.pmevt").c_str()));
   EventScriptAssets hit;assert(hit.load((std::string(root)+"/field-hit-literals.pmevt").c_str()));
   if(withLights){EventScriptAssets light;assert(light.load((std::string(root)+"/field-light-registry.pmevt").c_str()) && original.merge(light));}
+  if(withCamera){EventScriptAssets camera;assert(camera.load((std::string(root)+"/field-camera-road-literals.pmevt").c_str()) && original.merge(camera));}
   assert(original.merge(literals) && original.merge(hit) && m.importScripts(original)); // Shared delimiter bytes agree.
   assert(m.registerExternalRam(Heap,heap.data(),uint32_t(heap.size())) && m.registerRam(PrimaryHeap,{0x88,0,0,0}));
   assert(m.writeWord(Heap,0) && m.writeWord(Heap+4,uint32_t(heap.size())) && m.writeHalf(Heap+8,0));
@@ -54,10 +61,18 @@ struct Fixture {
    FieldLightHeapServices process;process.flush=[](void*,uint8_t*,uint32_t){return true;};
    lights=FieldLightRegistryOwner::bind(m,LightHeap,process);assert(lights && lights->initialize(lightInit));owner.lights=lights.get();
   }
+  if(withCamera){
+   constexpr uint32_t CameraEntry=0x8f000000,CameraStack=0x90000000; // Port fixture addresses, not source allocations.
+   cameraEntry.fill(0x5a);
+   assert(m.registerExternalRam(FieldCameraRoadOwner::CameraSlot,cameraSlot.data(),uint32_t(cameraSlot.size())) && m.registerExternalRam(CameraEntry,cameraEntry.data(),uint32_t(cameraEntry.size())) && m.writeWord(FieldCameraRoadOwner::CameraSlot,CameraEntry));
+   cameraRoad=FieldCameraRoadOwner::bind(m,CameraStack,{cameraSlot.data(),CameraEntry,cameraEntry.data()});assert(cameraRoad);owner.cameraRoad=cameraRoad.get();
+  }
   maps=FieldMapSourceOwner::bind(m,ProcessWork,MapStack,owner);assert(maps);
  }
  bool child(FieldMapSourceCall& q){
   const auto& a=q.arguments;auto& m=vm.memory;
+  if(failCameraOpen && q.function==0x802a00b0){const auto path=text(m,a[0]);if(path.size()>2 && path.substr(path.size()-2)=="/c"){q.result=0;return true;}} // Explicit source-composition Open0 fixture.
+  if(cameraRoad && cameraRoad->pending() && q.function==heldCameraChild){frontier=q.function;frontierArguments=q.arguments;return false;}
   if(FieldMapFileOwner::accepts(q.function))return files->service(q);
   switch(q.function){
   // Explicit fixture-only GPU/cache boundary receipts. Production source owner
@@ -160,6 +175,35 @@ void originalMapLoadLights(const char* root){
  std::vector<uint8_t> replacement(AmbientBytes);assert(m.unregisterExternalRam(CraftAmbient) && m.registerExternalRam(CraftAmbient,replacement.data(),AmbientBytes));
  assert(!f.maps->current() && !f.maps->invoke(request,Load,{Inputs}));
 }
+void originalMapLoadCamera(const char* root){
+ using C=FieldCameraRoadOwner;Fixture f(root,true,true);auto& m=f.vm.memory;FieldMapRequest request;
+ assert(word(m,NoFogColor)==0);
+ assert(f.run(request,Init));text(m,Inputs,"gor_00");
+ assert(m.withRawRamAccess([&](EventAddressSpace::RawRamAccess&){return f.maps->current();}));
+ assert(m.writeWord(C::ShiftWork+0x18,0x12345678) && m.writeWord(C::ShiftWork+0x1c,0x9abcdef0));
+ f.drawSync=f.invalidate=f.enableEstimate=true;f.heldCameraChild=0x8029ccf4;
+ for(unsigned n=0;!f.frontier && n<100000;++n)assert(!f.maps->invoke(request,Load,{Inputs}));
+ assert(f.frontier==f.heldCameraChild && f.cameraRoad->pending() && word(m,ProcessWork)==0);
+ const auto container=word(m,C::RoadWork);assert(container>=Heap && word(m,C::RoadWork+0x204)==UINT32_MAX);
+ assert(word(m,C::ShiftWork+0x18)==0x12345678 && word(m,C::ShiftWork+0x1c)==0x9abcdef0);
+ assert(word(m,0x8f000000+0x88)==0 && word(m,0x8f000000+0x38)==0x5a5a5a5a);
+ FieldMapSourceCall foreign;foreign.function=CameraLoad;foreign.arguments[0]=4;assert(!f.cameraRoad->service(foreign,{}));
+ assert(m.writeWord(C::RoadWork+0x204,0x76543210));const auto pc=f.cameraRoad->pendingInstruction();
+ for(unsigned n=0;n<3;++n)assert(!f.maps->invoke(request,Load,{Inputs}));
+ assert(f.cameraRoad->pendingInstruction()==pc && word(m,C::RoadWork)==container && word(m,C::RoadWork+0x204)==0x76543210);
+ f.heldCameraChild=0;f.frontier=0;
+ for(unsigned n=0;!f.frontier && n<100000;++n)assert(!f.maps->invoke(request,Load,{0}));
+ assert(f.frontier==0x8002bc7c && f.maps->pendingInstruction()==0x8002a2f8 && !f.cameraRoad->pending() && word(m,ProcessWork)==0); // Genuine shadow process dependency, before display-list capture.
+ assert(word(m,C::RoadWork)==container && word(m,C::RoadWork+0x1d0)==101 && word(m,C::RoadWork+0x204)==0x76543210);
+ FILE* file=std::fopen((std::string(root)+"/maps/gor_00/c").c_str(),"rb");assert(file);std::array<uint8_t,2048> raw{};assert(std::fread(raw.data(),1,raw.size(),file)==raw.size());std::fclose(file);
+ for(unsigned offset=0xe8;offset<=0x108;offset+=4){const auto input=uint32_t(raw[offset])<<24|uint32_t(raw[offset+1])<<16|uint32_t(raw[offset+2])<<8|raw[offset+3];assert(word(m,container+offset)==container+input);}
+ assert(half(m,0x8f000000+2)==1 && word(m,0x8f000000+0x38)==0x41c80000 && word(m,0x8f000000+0x19c)==0);
+ assert(half(m,0x8f000000+0x82)==0x5a5a && word(m,0x8f000000+0x30)==0x5a5a5a5a && word(m,0x8f000000+0x40)==0x5a5a5a5a);
+ unsigned closeRequests=0;
+ for(unsigned n=0;n<FieldMapFileOwner::Slots;++n){const auto slot=FileTable+n*FieldMapFileOwner::SlotBytes;if((half(m,slot+0x90)&8) && text(m,slot)=="././m/gor_00/c")++closeRequests;}
+ assert(closeRequests==1);for(unsigned n=0;!f.files->pump() && n<100000;++n){}
+ for(unsigned n=0;n<FieldMapFileOwner::Slots;++n)assert(!half(m,FileTable+n*FieldMapFileOwner::SlotBytes+0x90));
+}
 void fileOwnerIdentityAndClose(const char* root){
  Fixture f(root);auto& m=f.vm.memory;const auto table=f.files->tableAddress();
  std::vector<uint8_t> replacement(FieldMapFileOwner::TableBytes);
@@ -189,13 +233,33 @@ struct GraphBus {
    if(q.function==0x802a03c0){b.reads.push_back(q.arguments);q.result=uint32_t(b.readResult);return true;}
    if(q.function==0x90000004){b.callbacks.push_back(q.arguments);return true;}
    if(q.function==0x802a0178){q.result=1;return true;}
-   return b.fixture.files->service(q) || b.fixture.sdk.advance(q);
+   return b.fixture.child(q);
   };return s;
  }
  uint32_t run(uint32_t function,const std::array<uint32_t,5>& args={},unsigned budget=4096){
   FieldMapSourceCursor c;for(unsigned i=0;i<1000000;++i){auto result=resumeFieldMapSource(function,args,MapStack-32,services(),c,budget);if(result)return *result;}assert(false);return 0;
  }
 };
+void cameraGraphContracts(const char* root){
+ using C=FieldCameraRoadOwner;Fixture f(root,false,true);auto& m=f.vm.memory;
+ assert(m.registerRam(MapStack-0x10000,std::vector<uint8_t>(0x10000)));
+ auto prepare=[&]{for(unsigned n=0;n<C::ShiftBytes;++n)assert(m.writeByte(C::ShiftWork+n,0xa5));};
+ prepare();GraphBus expected{f};assert(expected.run(CameraShiftInit)==C::ShiftWork);const auto trace=expected.trace;
+ assert(word(m,C::ShiftWork+0x18)==0xa5a5a5a5 && word(m,C::ShiftWork+0x1c)==0xa5a5a5a5);
+ assert(word(m,C::ShiftWork+0x20)==0x43960000 && word(m,C::ShiftWork+0x24)==0x40400000 && word(m,C::ShiftWork+0x28)==0x3b03126f);
+ for(unsigned hold=1;hold<=expected.operations;++hold){prepare();GraphBus actual{f};actual.hold=hold;assert(actual.run(CameraShiftInit,{},7)==C::ShiftWork && actual.trace==trace);}
+ // A genuine original Open0 branch is distinct from an unavailable provider.
+ f.failCameraOpen=true;text(m,Inputs,"./m/gor_00/c");GraphBus load{f};assert(load.run(CameraLoad,{4,Inputs})==0);
+ assert(!word(m,C::RoadWork) && half(m,0x8f000000+2)==3 && !(half(m,0x8f000000)&4) && word(m,0x8f000000+0x38)==0x41c80000);
+ assert(half(m,0x8f000000+0x82)==0x5a5a && word(m,0x8f000000+0x30)==0x5a5a5a5a);
+ assert(m.writeWord(C::RoadWork,0x12345678) && m.writeWord(C::RoadWork+0x1d0,101));
+ GraphBus unload{f};assert(unload.run(CameraUnload,{4})==0x8f000000);
+ assert(word(m,C::RoadWork)==0x12345678 && word(m,C::RoadWork+0x1d0)==101 && half(m,0x8f000000+2)==0);
+ assert(half(m,0x8f000000+0x82)==0x5a5a && word(m,0x8f000000+0x30)==0x5a5a5a5a);
+ // Camera owner must never detach a replacement process mapping.
+ std::vector<uint8_t> replacement(C::RoadBytes);assert(m.unregisterExternalRam(C::RoadWork) && m.registerExternalRam(C::RoadWork,replacement.data(),C::RoadBytes));
+ assert(!f.cameraRoad->current() && !f.maps->current());f.cameraRoad.reset();assert(m.hasRamBacking(C::RoadWork,replacement.data(),C::RoadBytes));
+}
 void preparePalette(EventAddressSpace& m){
  for(unsigned i=0;i<128;++i)assert(m.writeByte(Palette+i,0));
  assert(m.writeWord(Palette,0x0020af30) && m.writeWord(Palette+4,1) && m.writeWord(Palette+8,12));
@@ -241,6 +305,7 @@ void mapSourceBoundaryContracts(const char* root){
 
 void mapUnloadOwnership(const char* root,bool withLights=false){
  Fixture f(root,withLights);auto& m=f.vm.memory;FieldMapRequest request;assert(f.run(request,Init));
+ assert(m.writeWord(NoFogColor,0x12345678));
  std::vector<uint32_t> allocations;
  for(unsigned i=0;i<6;++i){const auto p=f.run(request,AllocateTail,{Heap,64});assert(p && *p);allocations.push_back(*p);}
  const auto work=f.maps->workAddress();assert(m.writeWord(work,1));
@@ -264,6 +329,7 @@ void mapUnloadOwnership(const char* root,bool withLights=false){
  assert(half(m,allocations[4]-24)==1); // Original borrowed archive allocation.
  assert(word(m,Archives)==0x11223344 && word(m,Archives+2*0x28)==0x55667788);
  for(unsigned i=0;i<0x28;++i){uint8_t b=1;assert(m.readByte(Archives+0x28+i,b) && !b);}
+ assert(word(m,NoFogColor)==0x12345678);
  assert(f.run(request,Free,{Heap,allocations[4]}));assert(!word(m,Heap) && !half(m,Heap+8) && word(m,Heap+4)==f.heap.size());
 }
 
@@ -319,4 +385,4 @@ void distanceServiceContracts(const char* root){
 }
 }
 
-int main(){mapUnloadOwnership("romfs",true);originalMapLoadLights("romfs");hitTriangleContracts("romfs");distanceServiceContracts("romfs");mapSourceBoundaryContracts("romfs");originalMapLoadPrefix("romfs");mapUnloadOwnership("romfs");fileOwnerIdentityAndClose("romfs");}
+int main(){cameraGraphContracts("romfs");originalMapLoadCamera("romfs");mapUnloadOwnership("romfs",true);originalMapLoadLights("romfs");hitTriangleContracts("romfs");distanceServiceContracts("romfs");mapSourceBoundaryContracts("romfs");originalMapLoadPrefix("romfs");mapUnloadOwnership("romfs");fileOwnerIdentityAndClose("romfs");}

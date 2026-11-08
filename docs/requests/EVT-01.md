@@ -5803,3 +5803,21 @@ This closes the missing parent implementation, not normal-scene effect playback.
 The remaining process/pool/driver and actor/camera/audio/native draw ownership
 are implementation work with existing contracts; do not file them as unknown
 source behavior or acknowledge their absence through synthetic completion.
+
+
+### Reached map-tail defaults and shadow frontier (2026-11-07)
+
+Original source camera acquisition now advances the harbor parent through real
+texture binding/bounds/animation preparation to shadowGetCharShadowProjection
+at8002a2f8, while G0 stays0. The map-loader rodata prefix802bf958..fb97 is
+imported with provenance;80429520 is a mapdrv .sbss2 word, not initialized ISO
+data. Source startup BSS clear gives its cold zero; native map process backing
+now preserves it across room transitions. Do not import a fabricated zero asset.
+
+The next shadow getter8002bc7c is12bytes and reads cswp804150e0→803c9e38,
+then+10c. Older documentation804150d0 is incorrect. Original shadowInit sets
+this gate1 and allocates its real pool; a fresh zero stand-in would skip initialized
+behavior. Existing typed ShadowWork is not a raw BE11c-byte source owner. Bind
+actual shared shadow process/Init/writers before acknowledging this child or
+starting real GX display-list capture. Private source proof:
+artifacts/field-map-camera-road-evidence/shadow-projection-getter.md.

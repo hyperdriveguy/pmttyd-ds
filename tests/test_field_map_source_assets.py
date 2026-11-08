@@ -8,7 +8,7 @@ from iso_assets import DEFAULT_ISO
 from import_harbor_map_source import import_source
 from verify_field_map_source import verify
 class FieldMapSourceAssets(unittest.TestCase):
- def test_complete_original_source_spans(self):self.assertEqual(verify(),4840)
+ def test_complete_original_source_spans(self):self.assertEqual(verify(),5116)
  def test_original_payload_fixups_and_scene_reproduce_editable_sources(self):
   with tempfile.TemporaryDirectory() as temporary:
    out=Path(temporary)/'new';import_source(DEFAULT_ISO,out)
@@ -51,3 +51,18 @@ class HitLiterals(unittest.TestCase):
    self.assertEqual(edited.read_text(),'retained edit')
 
 if __name__=='__main__':unittest.main()
+
+
+class HarborCameraRoad(unittest.TestCase):
+ def test_original_camera_and_initialized_literals_reproduce_sources(self):
+  from import_harbor_camera_road import import_camera
+  with tempfile.TemporaryDirectory() as temporary:
+   import_camera(DEFAULT_ISO,temporary)
+   for name in ('c.bin','literals.json','provenance.json'):
+    self.assertEqual((Path(temporary)/name).read_bytes(),(Path('assets/original/maps/harbor-camera-road')/name).read_bytes())
+ def test_existing_edits_are_retained(self):
+  from import_harbor_camera_road import import_camera
+  with tempfile.TemporaryDirectory() as temporary:
+   file=Path(temporary)/'c.bin';file.write_bytes(b'edited')
+   with self.assertRaises(ValueError):import_camera(DEFAULT_ISO,temporary)
+   self.assertEqual(file.read_bytes(),b'edited')

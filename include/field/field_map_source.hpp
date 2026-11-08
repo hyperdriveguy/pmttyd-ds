@@ -4,6 +4,7 @@
 #include <optional>
 namespace ttyd {
 namespace FieldMapSource {
+constexpr uint32_t CameraLoad=0x8000f36c,CameraUnload=0x8000f310,CameraPerspective=0x8000e8c0,CameraSetup=0x8000e104,CameraShiftInit=0x800f3978;
 constexpr uint32_t Init=0x8002af18,Find=0x8001f878,Entry=0x8002a46c;
 constexpr uint32_t EntrySub=0x8002a508,Object=0x8002a780,Count=0x8002b120,CountSub=0x8002b16c,Recalculate=0x80028130;
 // Complete original room/file/worker entries. Load publishes group count only
@@ -19,6 +20,7 @@ constexpr uint32_t FileWorker=0x80145024,FileCompare=0x80145288,Sort=0x800064fc,
 constexpr uint32_t HitEntry=0x80018658,HitEntrySub=0x800186f4,HitObject=0x8001896c,HitVertices=0x800165a8;
 constexpr uint32_t HitCount=0x158,HitArray=0x15c,HitObjectBytes=0xe4,HitTriangleBytes=0x54;
 constexpr uint32_t Work=0x8041e660,ActiveGroup=0x8041e664,Auxiliary=0x8041e668,PrimaryHeap=0x8041e808;
+constexpr uint32_t NoFogColor=0x80429520; // mapdrv .sbss2 word; cold process zero, never imported as data.
 constexpr uint32_t GlobalsBytes=0x20; // Work through display-list capture flag8041e67c.
 constexpr uint32_t GroupBytes=0x2f4,WorkBytes=2*GroupBytes,EntryBytes=0x178,ObjectBytes=0x134;
 constexpr uint32_t ObjectCount=0x150,ObjectArray=0x154,Root=0xa8;
