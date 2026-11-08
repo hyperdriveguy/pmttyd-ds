@@ -2,6 +2,17 @@
 
 ## Tool availability notice (2026-11-07)
 
+REA 6.8.0 is installed as `/home/carson/.npm-global/bin/rea` (also
+`rea-agents`), using private Node 26.13.0 under
+`/home/carson/.local/share/rea-runtime/`. Codex MCP registration and the bundled
+`/home/carson/.agents/skills/reverse-engineer-anything/SKILL.md` are installed.
+Restart Codex to load the server; a standalone MCP initialization/tools-list
+check passed (229 tools); synthetic PowerPC ELF analysis through Ghidra also
+passed. The published DOL inspect path currently fails its
+internal format schema; do not claim original-DOL analysis passed through REA.
+Direct Ghidra's separately verified DOL loader remains available. REA's Gekko
+language selection does not discover the user-only extension automatically.
+
 Ghidra is available at `/usr/bin/ghidra` (resolves to
 `/opt/ghidra/ghidraRun`). Agents may use it for original binary analysis.
 GameCubeLoader release 1.3.1 is built against Ghidra 12.1.2 and installed in

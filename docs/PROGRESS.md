@@ -1,3 +1,44 @@
+### REA installation and Codex integration (2026-11-07)
+
+Installed official npm rea-agents6.8.0 under the user-only
+/home/carson/.local/share/rea-runtime/npm prefix. Existing system Node26.11.1
+is below REA's supported patch level; downloaded Node26.13.0 from nodejs.org,
+verified its archive against official SHA256, and installed it privately under
+rea-runtime. User PATH launchers /home/carson/.npm-global/bin/rea and rea-agents
+select that runtime and existing /opt/ghidra + OpenJDK21. No root/system-package
+change, Hopper installation or original ISO access.
+
+Scoped official setup --client codex --dry-run preceded setup --client codex
+--yes. Codex MCP registration and bundled skill49/229 tools were installed;
+other clients remain untouched. Setup's script-only command would select system
+Node, so pinned only REA's command/args to absolute private Node + package script.
+Parsed before/after TOML proves unrelated configuration unchanged. Backups:
+~/.codex/config.toml.rea.backup and config.toml.rea-runtime.backup. Restart Codex
+to load the registration; this active chat has no newly connected REA tools.
+
+Validation: setup status ready; standalone MCP initialize/tools-list using the
+actual registered command passes, server rea6.8.0/229 tools/open_binary present.
+Synthetic big-endian PowerPC ELF inspect through Ghidra12.1.2 exits0, returns
+Evidence, correct8-byte .text at80003100 and one function after auto-analysis.
+A scoped doctor attempt exits1: Java probe deadline elapsed during ownership
+preparation under host load; registration and skill identities aligned. The
+subsequent actual ELF analysis proves that Java/Ghidra can start and analyze;
+the failed diagnostic is retained, not reported as passing.
+
+Synthetic DOL inspect exits1 with UNKNOWN/invalid_union: internal result-format
+schema does not admit gamecube-dol despite advertised CLI support. Do not claim
+REA DOL parity. User-only Gekko extension is also outside REA's installation
+language catalog; stock PowerPC was used for the ELF. Direct Ghidra DOL checks
+from the previous handoff remain separate. Frida's dependency install script
+was not enabled by npm; Frida/runtime instrumentation was not tested or needed.
+
+Evidence, npm integrity metadata, setup/doctor results, MCP smoke and synthetic
+ELF/DOL receipts: artifacts/rea-installation/ (ignored). No gameplay or asset
+changes; make test/all not run for installation/documentation only. Next:
+restart Codex, use supported native workflows; resolve upstream DOL schema
+validation and installation-catalog Gekko visibility before relying on REA for
+original GameCube DOL research. Existing full-game integration tasks remain open.
+
 ### GameCube loader installation verified (2026-11-07)
 
 Built upstream Cuyler36/Ghidra-GameCube-Loader release tag1.3.1 from its source
