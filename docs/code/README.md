@@ -267,3 +267,7 @@ ownership.
 [Graphics, fonts and texture planes](graphics-font-planes.md) explains process
 shader metadata lifetime, resident glyph generations, pre-RNG admission and
 retained direct-FIFO quad helpers.
+
+[Battle GPU resources](battle-gpu-resources.md) distinguishes atlas/index domains,
+retirement contracts, source-profile recognition, scalar-lane publication and
+native HP/footer material state.

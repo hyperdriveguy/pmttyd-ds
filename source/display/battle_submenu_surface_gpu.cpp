@@ -22,6 +22,7 @@ bool catalog(const std::string& path,std::array<BattleClassRegion,2>& regions){
 }
 }
 bool BattleSubmenuSurfaceLease::current()const{return generation&&texture&&generation->resident_&&generation->texture_==texture;}
+// Original bank indices 2/3 map to the two catalog rows, never footer 4..16.
 const BattleClassRegion* BattleSubmenuSurfaceLease::surface(uint32_t i)const{return current()&&i>=2&&i<=3?&generation->regions_[i-2]:nullptr;}
 BattleSubmenuSurfaceGpuResource::~BattleSubmenuSurfaceGpuResource(){retire();}
 BattleSubmenuSurfaceLease BattleSubmenuSurfaceGpuResource::lease()const{return lease_.current()?lease_:BattleSubmenuSurfaceLease{};}
@@ -38,6 +39,7 @@ bool BattleSubmenuSurfaceGpuResource::load(const char* root,const BattleClassSur
  const auto&r=*result;
  const bool ok=!retirePending_&&r.identity&&r.width==32&&r.height==32&&r.format==0&&r.count==1&&r.subWidth==32&&r.subHeight==32&&!r.rotated&&r.uv==std::array<float,4>{0,1,1,0};
  if(!ok){if(r.identity)s.release(s.user,0,r.identity);retirePending_=false;return false;}
+ // Catalog and texture become visible together in one fresh generation.
  auto generation=std::shared_ptr<BattleSubmenuSurfaceGeneration>(new BattleSubmenuSurfaceGeneration);generation->resident_=true;generation->texture_=r.identity;generation->regions_=regions;
  generation_=std::move(generation);lease_={generation_,r.identity};owner_=s;return true;
 }
@@ -65,6 +67,7 @@ bool NativeBattleSubmenuSurfaceGpu::load(const char*root){
  BattleClassSurfaceTextureServices s;s.user=state_.get();
  s.import=[](void*p,uint32_t slot,const char*path)->std::optional<BattleClassSurfaceImport>{
   auto&state=*static_cast<State*>(p);if(slot||state.imported)return {};FILE*f=std::fopen(path,"rb");if(!f)return {};
+  // One slot (0), with separate Tex3DS metadata/C3D pixel ownership.
   C3D_FrameSync();state.imported=Tex3DS_TextureImportStdio(f,&state.image,nullptr,false);std::fclose(f);if(!state.imported)return {};
   BattleClassSurfaceImport r;r.identity=&state.image;r.width=state.image.width;r.height=state.image.height;r.format=state.image.fmt;r.count=Tex3DS_GetNumSubTextures(state.imported);
   if(r.count){const auto*sub=Tex3DS_GetSubTexture(state.imported,0);r.subWidth=sub->width;r.subHeight=sub->height;r.rotated=Tex3DS_SubTextureRotated(sub);r.uv={sub->left,sub->top,sub->right,sub->bottom};}

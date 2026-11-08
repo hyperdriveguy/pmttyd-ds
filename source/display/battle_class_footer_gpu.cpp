@@ -25,9 +25,12 @@ bool BattleClassFooterGpuResource::load(
   assets_ = candidate;
   admission_ = *imported;
   owner_ = s;
+  // Value 0 is irrelevant: each shared allocation is a distinct import epoch.
   generation_ = std::make_shared<const uint8_t>(0);
   return true;
 }
+// Release precedes clearing this owner. Caller must retire borrowed packets
+// first and serialize callbacks; this owner has no reentrant-cancellation guard.
 void BattleClassFooterGpuResource::retire() {
   if (ready())
     owner_.release(owner_.user, admission_.identity);
@@ -51,6 +54,8 @@ bool BattleClassFooterGpuResource::accepts(
       return false;
   return true;
 }
+// XYZ uses row-major affine 3x4; normalized source ST maps into the exact
+// catalog region with one V flip already encoded in its endpoints.
 bool BattleClassFooterGpuResource::quad(
     uint32_t index, const BattleActMatrix &matrix,
     const std::array<std::array<float, 3>, 4> &positions,
@@ -97,6 +102,8 @@ bool validateBattleClassFooterBatch(
     const BattleClassBackend &batch,
     const BattleClassFooterGpuResource *resource) {
   for (const auto &q : batch.quads) {
+    // Ordinary class primitives admit source flags 0/16(0x10)/48(0x30);
+    // footer packets use the dedicated footer field and require flags 0.
     if (q.sourceFlags && q.sourceFlags != 16 && q.sourceFlags != 48)
       return false;
     if (q.texture == BattleClassTexture::Footer) {
@@ -154,6 +161,8 @@ bool NativeBattleClassFooterGpu::draw(const BattleClassFooterAtlasQuad &q,
                                       C3D_Tex *parked) {
   if (!resource_.accepts(q) || !shader || uniform < 0 || !parked)
     return false;
+  // XYZ/ST/RGBA shader ABI. Samplers 1/2 stay bound to a valid parked image;
+  // reset all six hardware TEV stages before configuring stage 0.
   C3D_BindProgram(shader);
   auto *attrs = C3D_GetAttrInfo();
   AttrInfo_Init(attrs);
@@ -176,6 +185,9 @@ bool NativeBattleClassFooterGpu::draw(const BattleClassFooterAtlasQuad &q,
   }
   C3D_TexEnvSrc(env, C3D_Alpha, GPU_TEXTURE0, GPU_PRIMARY_COLOR);
   C3D_TexEnvFunc(env, C3D_Alpha, GPU_MODULATE);
+  // Class UI profile: color writes without depth testing; alpha must exceed
+  // reference 8 (8-bit threshold). RGB blends SRC_ALPHA/ONE_MINUS_SRC_ALPHA;
+  // alpha uses ONE/ONE_MINUS_SRC_ALPHA, unlike the separate HP adapter.
   C3D_CullFace(GPU_CULL_NONE);
   C3D_DepthTest(false, GPU_ALWAYS, GPU_WRITE_COLOR);
   C3D_AlphaTest(true, GPU_GREATER, 8);
@@ -185,6 +197,7 @@ bool NativeBattleClassFooterGpu::draw(const BattleClassFooterAtlasQuad &q,
   for (const auto &v : q.vertices) {
     C3D_ImmSendAttrib(v.x, v.y, v.z, 1);
     C3D_ImmSendAttrib(v.u, v.v, 0, 1);
+    // Unpack source RGBA high byte first; convert 0..255 to shader 0..1.
     C3D_ImmSendAttrib(
         float(v.rgba >> 24) / 255, float((v.rgba >> 16) & 255) / 255,
         float((v.rgba >> 8) & 255) / 255, float(v.rgba & 255) / 255);

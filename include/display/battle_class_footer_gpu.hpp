@@ -19,6 +19,7 @@ struct BattleClassFooterTextureServices {
 enum class BattleClassFooterRGB { Modulate, Raster };
 struct BattleClassFooterAtlasQuad {
   const void *texture = nullptr;
+  // Reload-epoch identity only; retaining it does not own native texture pixels.
   std::shared_ptr<const uint8_t> generation;
   uint32_t index = 0;
   BattleClassFooterRGB rgb = BattleClassFooterRGB::Modulate;
@@ -31,6 +32,8 @@ struct BattleClassFooterQuadSink {
 // Portable validation/publication policy with actual native import below.
 // Explicit retire precedes source texture/catalog destruction. Sink must copy
 // the packet; successful append is geometry admission, not GPU presentation.
+// No implicit releasing destructor. Explicit retire while the callback owner
+// and C3D remain alive; import/release callbacks must not reenter this resource.
 class BattleClassFooterGpuResource {
 public:
   BattleClassFooterGpuResource() = default;

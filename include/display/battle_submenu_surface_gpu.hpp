@@ -10,6 +10,7 @@ public:
  BattleSubmenuSurfaceGeneration& operator=(const BattleSubmenuSurfaceGeneration&)=delete;
 private:
  BattleSubmenuSurfaceGeneration()=default;bool resident_=false;const void* texture_=nullptr;
+ // Immutable rows for original indices 2 and 3; native texture slot stays 0.
  std::array<BattleClassRegion,2> regions_{};
  friend class BattleSubmenuSurfaceGpuResource;friend struct BattleSubmenuSurfaceLease;
 };
@@ -33,6 +34,7 @@ public:
  bool accepts(const BattleSubmenuSurfaceLease&)const;
 private:
  BattleSubmenuSurfaceLease lease_;std::shared_ptr<BattleSubmenuSurfaceGeneration> generation_;
+ // Retained callbacks own the actual image until explicit retirement/destruction.
  BattleClassSurfaceTextureServices owner_{};bool invoking_=false,retirePending_=false;
 };
 // Prepare outside FrameBegin; import/release synchronizes live C3D. Host

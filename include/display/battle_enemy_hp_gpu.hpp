@@ -8,6 +8,7 @@
 #include <tex3ds.h>
 #endif
 namespace ttyd {
+// Native atlas admission uses PICA RGBA8=0; original bank images are CMPR=14.
 struct BattleEnemyHpTextureAdmission {const void* identity=nullptr;uint32_t width=0,height=0,format=0;};
 struct BattleEnemyHpTextureServices {
  void* user=nullptr;
@@ -17,6 +18,7 @@ struct BattleEnemyHpTextureServices {
 enum class BattleEnemyHpMaterial {TexturedModulate,TexturedRaster,UntexturedRaster};
 struct BattleEnemyHpGpuQuad {
  const void* texture=nullptr;
+ // Shared identity token keeps an epoch alive, not the borrowed GPU allocation.
  std::shared_ptr<const uint8_t> generation;
  uint32_t index=0;
  BattleEnemyHpMaterial material=BattleEnemyHpMaterial::TexturedModulate;
@@ -29,6 +31,8 @@ struct BattleEnemyHpGpuBatch {
  std::vector<BattleEnemyHpGpuQuad> quads;
  BattleEnemyHpQuadSink sink();
 };
+// Explicit retire is required; this portable resource has no releasing destructor.
+// Load/retire/import/release must be externally serialized and non-reentrant.
 class BattleEnemyHpGpuResource {
 public:
  BattleEnemyHpGpuResource()=default;
@@ -75,8 +79,12 @@ private:
  std::optional<uint32_t> texture_;
  std::optional<BattleActMatrix> matrix_;
  std::optional<BattleEnemyHpMaterial> material_;
+ // Masks track observed setters; generators_=2 is an unconfigured sentinel.
+ // channel: 1 solid/2 textured; rgb: 1 raster/2 modulate; alpha and order:
+ // 1 solid/2 textured. Zero in these local profile codes means not admitted.
  unsigned fixed_=0,descriptors_=0,attributes_=0,generators_=2,channel_=0;
  bool cull_=false,channels_=false,texgen_=false,tev_=false,colorOp_=false,alphaOp_=false;
+ // lanes_=0 is idle; otherwise one plus current scalar ordinal.
  unsigned rgb_=0,alpha_=0,order_=0,lanes_=0,stride_=0;
  std::array<std::array<float,3>,4> positions_{};
  std::array<std::array<float,2>,4> uv_{};

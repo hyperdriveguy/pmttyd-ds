@@ -22,6 +22,8 @@ private:
     friend class BattleClassSurfaceGpuResource;
     friend struct BattleClassSurfaceLease;
 };
+// Strong refs pin catalog/epoch identity only. They do not extend GPU pixel
+// lifetime; owner retirement invalidates all copied leases before native free.
 struct BattleClassSurfaceLease {
     std::shared_ptr<const BattleClassAssets> assets;
     std::shared_ptr<const BattleClassSurfaceGeneration> generation;
@@ -36,6 +38,8 @@ struct BattleClassSurfaceImport {
     bool rotated=false;
     std::array<float,4> uv{};
 };
+// Each nonnull imported identity is one acquisition owed a matching release
+// at the same slot, including rejected descriptors and an aliased second import.
 struct BattleClassSurfaceTextureServices {
     void* user=nullptr;
     std::optional<BattleClassSurfaceImport> (*import)(void*,uint32_t slot,const char*)=nullptr;
@@ -59,6 +63,7 @@ private:
     BattleClassSurfaceLease lease_;
     std::shared_ptr<BattleClassSurfaceGeneration> generation_;
     BattleClassSurfaceTextureServices services_;
+    // Callback guard serializes ownership; pending retirement cancels admission.
     bool invoking_=false,retirePending_=false;
 };
 // Actual import/release require C3D alive and execution outside FrameBegin.
