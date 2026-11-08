@@ -26,9 +26,7 @@ bool Renderer::finishingCameraPacket(const NativeCameraPacket& p){
     if(p.kind==NativeCameraCommand::Scissor){
         C3D_SetScissor(GPU_SCISSOR_NORMAL,r.x,r.y,r.x+r.width,r.y+r.height);iconScissor=p;return true;
     }
-    C3D_BindProgram(&program);C3D_Mtx transform{};
-    for(unsigned i=0;i<4;++i){auto& v=transform.r[i];v.x=p.transform[i][0];v.y=p.transform[i][1];v.z=p.transform[i][2];v.w=p.transform[i][3];}
-    C3D_FVUnifMtx4x4(GPU_VERTEX_SHADER,transformLoc,&transform);
+    animationCameraTransform(p);
     if(p.kind==NativeCameraCommand::Projection){iconTransform=p;return true;}
     auto* attrs=C3D_GetAttrInfo();AttrInfo_Init(attrs);
     AttrInfo_AddLoader(attrs,0,GPU_FLOAT,3);AttrInfo_AddLoader(attrs,1,GPU_FLOAT,2);AttrInfo_AddLoader(attrs,2,GPU_FLOAT,4);

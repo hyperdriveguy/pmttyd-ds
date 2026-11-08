@@ -2866,3 +2866,9 @@ add_executable(native_npc_render_sdk_tests tests/native_npc_render_sdk_tests.cpp
 target_link_libraries(native_npc_render_sdk_tests PRIVATE ttyd_core)
 add_test(NAME native_npc_render_sdk COMMAND native_npc_render_sdk_tests)
 set_tests_properties(native_npc_render_sdk PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+# Retained original-address field GX arrays and complete-fan staging.
+target_sources(ttyd_core PRIVATE source/display/field_animation_gpu.cpp)
+add_executable(field_animation_gpu_tests tests/field_animation_gpu_tests.cpp)
+target_link_libraries(field_animation_gpu_tests PRIVATE ttyd_core)
+add_test(NAME field_animation_gpu COMMAND field_animation_gpu_tests)
+set_tests_properties(field_animation_gpu PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

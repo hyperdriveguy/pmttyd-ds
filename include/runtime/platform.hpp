@@ -36,6 +36,7 @@
 #include "battle_submenu_packets.hpp"
 #include "battle_audience_backend.hpp"
 #include "native_camera_draw.hpp"
+#include "field_animation_gpu.hpp"
 #include "native_display_state.hpp"
 #include "native_shadow_program.hpp"
 #include "map_material_light.hpp"
@@ -68,6 +69,9 @@ class TroubleQuestPresentation;
 class Renderer {
 public:
     bool init();
+    // Call after init; Renderer and resources must outlive this retained field owner.
+    std::unique_ptr<FieldAnimationGpu> createFieldAnimationGpu(EventAddressSpace&,
+        const FieldAnimationSubmit&,const AnimationSourceRenderChildren&,std::function<bool()>);
     // Explicit optional queued HP owner. It must outlive this binding. Capture
     // pass0 disables capture but keeps building/published icon residency pinned.
     void bindEnemyHpPresentation(BattleEnemyHpOrderedPresentation*);
@@ -195,6 +199,8 @@ private:
     bool prepareShadowTexture44();
     ShadowDisplayServices finishingShadowServices();
     bool finishingDisplayPipeline(const NativeDisplayPipeline&);
+    void animationCameraTransform(const NativeCameraPacket&);
+    bool fieldAnimationCameraPacket(const NativeCameraPacket&,const NativeCameraDraw&);
     bool finishingCameraPacket(const NativeCameraPacket&);
     void resumeFinishingCamera(const Game&);
     C3D_Mtx worldTransform{};
