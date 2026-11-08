@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Import original fukidashi update data into an empty editable destination."""
+"""Import original fukidashi runtime data into an empty editable destination."""
 import argparse
 import hashlib
 import json
@@ -39,8 +39,18 @@ ENTRY_SPANS = (
     (0x8042294c, 4, '5c4ece04c9361390a40028f671ad8bb2acfb062e5cf25a422ac1a5cf5343a7e5'),
 )
 
+POSITION_SPANS = (
+    (0x802f3648, 12, '15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b'),
+    (0x802f36a0, 8, '07af8387624cf8f36152797d2f561246f21237d1d22b5c13006eacfa6f475e43'),
+    (0x804228c4, 4, '7388adb66bc2fb8cdd730d8148adcae18abd8bb48b05b7bd9b9e05efa6c09702'),
+    (0x804228e0, 4, 'c85db1dac2e3ab55c39af639eebe32fb19a81e520af19e5d6cdefa61bbeebac2'),
+    (0x8042291c, 4, '1b9e0fe7b740b4e583727aa1c9d27ff8c01491f911d2de0747f8c997ef6b3498'),
+    (0x80422950, 4, '351a96b7c338b357a0b7c9dfc38cf9cb03edc89aeb18c914de2865dc8526d5a9'),
+    (0x80422954, 4, '0c4c4bc393e01c30fa2e061446100aa919205c98ae5c5de3b770b810ad7af223'),
+)
+
 def build(iso, destination, component="main"):
-    spans = {"main": SPANS, "entry": ENTRY_SPANS}[component]
+    spans = {"main": SPANS, "entry": ENTRY_SPANS, "position": POSITION_SPANS}[component]
     destination = Path(destination)
     if destination.exists() and (not destination.is_dir() or any(destination.iterdir())):
         raise ValueError('Import destination must be empty')
@@ -74,5 +84,5 @@ def build(iso, destination, component="main"):
 if __name__ == '__main__':
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--iso',default=DEFAULT_ISO);p.add_argument('--destination',required=True)
-    p.add_argument('--component',choices=('main','entry'),default='main')
+    p.add_argument('--component',choices=('main','entry','position'),default='main')
     a=p.parse_args();build(a.iso,a.destination,a.component)

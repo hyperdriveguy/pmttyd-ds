@@ -3050,3 +3050,9 @@ add_executable(harbor_source_unit_construction_tests tests/harbor_source_unit_co
 target_link_libraries(harbor_source_unit_construction_tests PRIVATE ttyd_core)
 add_test(NAME harbor_source_unit_construction COMMAND harbor_source_unit_construction_tests)
 set_tests_properties(harbor_source_unit_construction PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+# Original camera-relative effect placement with retained SDK/actor children.
+target_sources(ttyd_core PRIVATE source/effect/fukidashi_position.cpp)
+add_executable(fukidashi_position_tests tests/fukidashi_position_tests.cpp)
+target_link_libraries(fukidashi_position_tests PRIVATE ttyd_core)
+add_test(NAME fukidashi_position COMMAND fukidashi_position_tests)
+set_tests_properties(fukidashi_position PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

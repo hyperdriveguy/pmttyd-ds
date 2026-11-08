@@ -2,6 +2,13 @@
   "schema": 1,
   "assets": [
     {
+      "id": "original/effects/fukidashi-position",
+      "kind": "event",
+      "source": "assets/original/effects/fukidashi/position/event.json",
+      "output": "fukidashi-position.pmevt",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
       "id": "original/harbor-tutorial-crump.pose-directory",
       "kind": "pose-directory",
       "source": "assets/original/tutorial-unit-entry/crump.model",
