@@ -42,12 +42,12 @@ owned backing invalidates admission; old-owner teardown preserves replacement
 mappings. Process state survives map room changes; room unload does not destroy
 or reinitialize it. FieldMapHeapOwner may borrow this exact process. Its reached
 projection child is routed only through the ready owner. Without that owner,
-the original map boundary remains explicitly held. This change does not install
-an initialized shadow process into normal Game startup.
+the original map boundary remains explicitly held. [Normal Game startup](NATIVE_SHARED_SHADOW_BOOTSTRAP.md) now installs this owner in the existing
+animation VM; map publication still requires explicit camera/map composition.
 
-The native generic heap0, shared smartInit/Alloc/AutoFree/collection ownership,
-GX constructor adapters and cache services must be composed before normal
-activation. In particular, first smartAlloc triggers actual smartAutoFree(3);
+Native generic heap0, shared smartInit/Alloc/AutoFree, GX constructor adapters
+and CPU VM cache services are composed for normal cold activation. Actual
+collection/GPU/cache lifetimes remain separate. First smartAlloc triggers actual smartAutoFree(3);
 NativeFileCache's simplified smart header is not that arena. Later shadowMain,
 collision preparation, cylinder/GX drawing, projection passes and renderer
 residency remain separate work. See [source request ownership](BATTLE_SHADOW_REQUEST_OWNER_AND_DEFERRED_PREPARATION.md),
@@ -57,4 +57,4 @@ and [the documentation inbox](../../requests/EVT-01.md).
 The [native shared smart arena](../memory/NATIVE_SOURCE_SMART_ARENA.md) now
 supplies the real source header in the integrated shadow fixture. This replaces
 its former smart allocation boundary token. Same-VM owner borrowing is available;
-normal Game activation and genuine file/GPU/cache lifetimes remain required.
+normal Game activation is composed, while genuine file/GPU/cache lifetimes remain required.

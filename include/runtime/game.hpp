@@ -384,6 +384,7 @@ public:
     bool initializeNativeUiFieldAnimation(const char*,std::shared_ptr<NativeFileCache>,const EventNativePlatform&);
     std::shared_ptr<class NativeUiStartup> nativeUiStartup() const;
     std::shared_ptr<class NativeEffectProcess> nativeEffects() const;
+    std::shared_ptr<class NativeShadowProcess> nativeShadowProcess() const;
     bool hasNativeFieldAnimation() const{return bool(fieldParties.nativeAnimation);}
     const BattlePose* nativeMarioPose() const;
     unsigned nativeMarioBank() const;
@@ -558,6 +559,7 @@ private:
     int departurePause=0;
     std::shared_ptr<class NativeUiStartup> nativeUiStartup_;
     std::shared_ptr<class NativeEffectProcess> nativeEffects_;
+    std::shared_ptr<class NativeShadowProcess> nativeShadowProcess_;
     // Native facade admission only; copies/moves never inherit producer proof.
     // Last member retires first during destruction. No source-ready state.
     NativeFacadeRegistration battleSequenceFacade_;

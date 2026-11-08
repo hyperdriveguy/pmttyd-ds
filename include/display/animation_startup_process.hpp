@@ -10,6 +10,7 @@
 #include "animation_native_main.hpp"
 #include "animation_mesh_publication.hpp"
 #include "animation_native_selection.hpp"
+#include "source_smart_arena.hpp"
 namespace ttyd {
 // Owns a cold animation subsystem's actual VM/SDK arena/work/cache aliases.
 // Runs cold startup and original Entry with real file/buffer owners. Live CPU
@@ -53,8 +54,11 @@ public:
  const AnimationQuantizationState& quantization() const{return quantization_;}
  // Alias/currentness proof,not a guarantee of quiescence or complete renderer.
  // Callers separately exclude Entry/Main/selection/presentation producers.
- bool ready() const{return aliases_ && aliases_->matchesWork() && tangentMemory_ && tangentMemory_->current() && scratch_ && scratch_->current();}
+ bool ready() const{return heapGlobalsCurrent() && aliases_ && aliases_->matchesWork() && tangentMemory_ && tangentMemory_->current() && scratch_ && scratch_->current();}
  uint32_t pending() const{return cursor_.pending;}
+ // Stable whole source heap-global backing, installed before bootstrap/users.
+ bool heapGlobalsCurrent()const;
+ std::unique_ptr<SourceSmartArena> bindSmartArena(uint32_t stackAddress,const SourceSmartArenaBackend&);
  EventNativeRuntime& vm(){return *vm_;}
  const EventNativeRuntime& vm() const{return *vm_;}
  AnimationPoolMemory* animationMemory(){return aliases_.get();}
@@ -72,6 +76,7 @@ private:
  // Reverse destruction: retire aliases, then VM, then physical file/pool owners.
  std::shared_ptr<BattlePosePool> pool_;
  std::shared_ptr<NativeFileCache> files_;
+ std::vector<uint8_t> heapGlobals_; // Physical backing survives VM/borrowed owners.
  std::unique_ptr<EventNativeRuntime> vm_;
  AnimationInitializeCursor cursor_;
  // Source-parent success latch survives alias-attachment failures.

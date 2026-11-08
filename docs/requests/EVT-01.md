@@ -5914,3 +5914,5 @@ handle later released by fileFree8008749c. The original root mariost.tpl
 identities are already documented implementation work, not new unknown-function
 requests. Full reaction presentation and original battle/result/field-return
 acceptance stay open. Evidence: artifacts/fade-startup/.
+
+Normal native shared smart/shadow initialization is now composed in the animation VM after UI/effects and before Mario entries. See [activation contract](../behavior/display/NATIVE_SHARED_SHADOW_BOOTSTRAP.md). Existing documented source children are implemented; camera/map publication and genuine GPU/file/display epoch services remain implementation frontiers, with no duplicate documentation request.

@@ -17,9 +17,11 @@ public:
  static constexpr uint32_t Pointer=0x804151e0,Work=0x803ca410,WorkBytes=0xe01c,FirstAllocation=0x8041e810;
  static constexpr uint32_t HeaderBytes=0x1c,HeaderCount=2048,LeadingGap=0xe004,UsedHead=0xe008,UsedTail=0xe00c,AvailableHead=0xe010,AvailableTail=0xe014,ReleaseCounter=0xe018;
  static constexpr uint32_t StackBytes=32*1024,StackGuardBytes=32;
+ // Optional flag backing borrows the existing exact shared word, without
+ // registering an alias or resetting history; backing outlives this owner.
  // Bind actual cold process BSS. Initialized wp and real shared heap4 globals/
  // SDK backing belong to their existing owners; never import an arena image.
- static std::unique_ptr<SourceSmartArena> bind(EventAddressSpace&,uint32_t stackAddress,const SourceSmartArenaBackend&);
+ static std::unique_ptr<SourceSmartArena> bind(EventAddressSpace&,uint32_t stackAddress,const SourceSmartArenaBackend&,uint8_t* borrowedFirstAllocation=nullptr);
  ~SourceSmartArena();
  SourceSmartArena(const SourceSmartArena&)=delete;SourceSmartArena& operator=(const SourceSmartArena&)=delete;
  bool current()const;
@@ -36,7 +38,9 @@ private:
  std::array<uint8_t,WorkBytes> work_{};
  std::array<uint8_t,4> first_{};
  std::array<uint8_t,StackBytes> stack_{};
- std::array<uint32_t,3> mappings_{};unsigned mapped_=0;
+ std::array<uint32_t,3> mappings_{};
+ std::array<const uint8_t*,3> mappedBacking_{};unsigned mapped_=0;
+ uint8_t* flagBacking_=first_.data();bool borrowedFlag_=false;
  bool initialized_=false,invoking_=false;
  FieldMapSourceCursor cursor_;
  const FieldMapSourceCall* call_=nullptr;FieldMapSourceCall operands_;

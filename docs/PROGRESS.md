@@ -19866,3 +19866,49 @@ Next: integrate those exact source leaves, bind actual presentation/audio teardo
 to the native field sequence owner, and verify fresh/resumed original dialogue,
 physical command selection, damage, victory and field return in the emulator.
 The full tutorial/battle deliverable remains unfinished and the goal stays active.
+
+
+### Normal native shared smart/shadow activation (2026-11-07)
+
+Normal Game startup now executes original smart/shadow initialization in the
+existing animation VM after UI/icons/effects and before Mario entries. It uses
+real heap4/heap0 allocations and retains the same owner through room/checkpoint
+handoff. The whole80-byte source heap globals move to stable process backing
+before bootstrap; the smart owner borrows its actual mutable first-allocation
+word without reset/remap. Matching initialized SDK bytes are reused, missing
+fragments are explicitly owned, and heap identity/replacement invalidates use.
+No assets or original dialogue/story are changed.
+
+Validation freezes committedc1feea6b plus these scoped changes, preserving
+concurrent work/staging. Full make test exits0: 611/611 C++ (330.86s),
+270/270 Python (38.119s), zero skips. Three focused executables pass, including
+actual normal Game startup, room/checkpoint retention and whole-global backing
+replacement. Normal asset preparation compiles453 recipes; assets-check passes453.
+Native make all (-o assets-ready after explicit preparation) exits0. Source
+verification retains6110 original words in53 complete boundaries. Existing
+compiler/Pillow warnings remain; no ISO/cache/compiled product is committed.
+
+Tests hold the real missing fctiwz child after completed heap/ramp prefixes,
+resume without replay, preserve mutable gate/flag history, refuse duplicate
+owners, detect actual SDK allocated-node loss and preserve replacement storage
+on teardown. A private ARM build runs two exact tracked fixtures plus checks
+normal Game startup readiness: seven strict markers pass, with all
+652 non-main native objects byte-identical to production.
+Fresh isolated normal90s and private180s Azahar smokes exit0. The normal capture
+was inspected for original opening rendering. No user emulator profile/save
+was touched. These receipts establish CPU/source bootstrap and boot, not GPU
+shadow pixels, full prologue round trips or physical New2DS XL performance.
+
+Exact replay pins4921 source files, 2236 RomFS products,
+8186 private inputs and1 reference input.
+Product regeneration includes committed baseline environment inputs; this scope
+imports no assets. Source, object, product, binary and evidence hashes are in
+artifacts/native-shadow-process-validation-manifest.json. Independent read-only
+review found no concrete blocker in the admitted cold actual-process domain.
+
+
+GPU shadow rendering/residency, actual draw synchronization, moving-file/cache
+adoption and complete outer-display epochs remain unfinished. CPU VM cache hooks
+do not establish GPU completion. Next compose actual camera initialization and
+map publication with these retained source owners, then original field/battle/
+return flow. Full prologue and hardware parity remain incomplete.

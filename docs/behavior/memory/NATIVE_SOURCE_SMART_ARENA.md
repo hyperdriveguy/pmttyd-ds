@@ -54,9 +54,10 @@ admission. This capacity is a fixture, not original absolute bounds or normal
 Game provisioning. The shadow fixture uses actual heap0 and heap4, full cold
 smart Init/Alloc/AutoFree, original ramp loops/GX constructors and coherent headers.
 Host draw-sync/cache hooks are explicit platform boundaries without live GPU
-readers. File pressure remains held. Normal Game startup, complete file/renderer
-adoption, source reinitialization scheduling, actual GPU synchronization/cache
-ownership, original observations and physical hardware budgets remain required.
+readers. File pressure remains held. [Normal Game activation](../display/NATIVE_SHARED_SHADOW_BOOTSTRAP.md) now borrows the existing process flag and
+uses its actual12MiB heap policy. Complete file/renderer adoption, source
+reinitialization scheduling, actual GPU synchronization/cache ownership, original
+observations and physical hardware budgets remain required.
 
 See [initialization](SMART_ARENA_AND_HEADER_INITIALIZATION.md),
 [allocation](SMART_ALLOCATION_HEADER_AND_GAP_PLACEMENT.md),

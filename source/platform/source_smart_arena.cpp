@@ -2,16 +2,17 @@
 namespace ttyd {
 namespace {struct Invocation {bool& flag;explicit Invocation(bool& f):flag(f){flag=true;}~Invocation(){flag=false;}};}
 SourceSmartArena::SourceSmartArena(EventAddressSpace& m,uint32_t s,const SourceSmartArenaBackend& b):memory_(m),stackAddress_(s),backend_(b){}
-std::unique_ptr<SourceSmartArena> SourceSmartArena::bind(EventAddressSpace& m,uint32_t stack,const SourceSmartArenaBackend& b){
+std::unique_ptr<SourceSmartArena> SourceSmartArena::bind(EventAddressSpace& m,uint32_t stack,const SourceSmartArenaBackend& b,uint8_t* flag){
  if(!stack || (stack&(StackGuardBytes-1)) || uint64_t(stack)+StackBytes>0x100000000ULL || !b.current || !b.call)return {};
  auto o=std::unique_ptr<SourceSmartArena>(new SourceSmartArena(m,stack,b));
- auto map=[&](uint32_t a,uint8_t* p,uint32_t n){if(!m.registerExternalRam(a,p,n))return false;o->mappings_[o->mapped_++]=a;return true;};
- if(!map(Work,o->work_.data(),WorkBytes) || !map(FirstAllocation,o->first_.data(),4) || !map(stack,o->stack_.data(),StackBytes) || !o->current())return {};
+ o->borrowedFlag_=flag!=nullptr;if(flag)o->flagBacking_=flag;
+ auto map=[&](uint32_t a,uint8_t* p,uint32_t n){if(!m.registerExternalRam(a,p,n))return false;o->mappedBacking_[o->mapped_]=p;o->mappings_[o->mapped_++]=a;return true;};
+ if(!map(Work,o->work_.data(),WorkBytes) || !(flag?m.hasRamBacking(FirstAllocation,flag,4):map(FirstAllocation,o->first_.data(),4)) || !map(stack,o->stack_.data(),StackBytes) || !o->current())return {};
  return o;
 }
-SourceSmartArena::~SourceSmartArena(){const std::array<const uint8_t*,3> p{{work_.data(),first_.data(),stack_.data()}};while(mapped_){--mapped_;memory_.unregisterExternalRam(mappings_[mapped_],p[mapped_]);}}
+SourceSmartArena::~SourceSmartArena(){while(mapped_){--mapped_;memory_.unregisterExternalRam(mappings_[mapped_],mappedBacking_[mapped_]);}}
 bool SourceSmartArena::current()const{
- if(mapped_!=mappings_.size() || !memory_.hasRamBacking(Work,work_.data(),WorkBytes) || !memory_.hasRamBacking(FirstAllocation,first_.data(),4) || !memory_.hasRamBacking(stackAddress_,stack_.data(),StackBytes))return false;
+ if(mapped_!=(borrowedFlag_?2u:3u) || !memory_.hasRamBacking(Work,work_.data(),WorkBytes) || !memory_.hasRamBacking(FirstAllocation,flagBacking_,4) || !memory_.hasRamBacking(stackAddress_,stack_.data(),StackBytes))return false;
  uint32_t pointer=0;return memory_.readWord(Pointer,pointer) && pointer==Work && backend_.current(backend_.user);
 }
 FieldMapSourceServices SourceSmartArena::services(){FieldMapSourceServices s;s.user=this;

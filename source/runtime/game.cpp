@@ -1,4 +1,5 @@
 #include "native_effect_process.hpp"
+#include "native_shadow_process.hpp"
 #include "camera_road_view.hpp"
 #include "game.hpp"
 #include "wall_geometry.hpp"
@@ -1344,10 +1345,12 @@ void Game::restore(const Progress& saved) {
     if(nativePartyPending())return;
     if(nativeAnimationPending())return;
     if(nativeEffects_ && nativeEffects_->busy())return;
+    if(nativeShadowProcess_ && nativeShadowProcess_->busy())return;
     if(!harborGameplay.reset())return; // Native policy retirement, not source End.
     battleSequenceFacade_.retire(); // Successful native restore retires borrowed producer receipts before mutation.
     const auto retainedUiStartup=nativeUiStartup_;
     const auto retainedEffects=nativeEffects_;
+    const auto retainedNativeShadow=nativeShadowProcess_;
     const auto retainedCommandPalette=commandPalette;
     const auto retainedShadows=shadows;
     const auto retainedCameras=cameraManager;
@@ -1398,7 +1401,7 @@ void Game::restore(const Progress& saved) {
     else fieldParties.poses=std::move(retainedMarioPoses);
     // Preserve the same actual process incarnation through a field restore.
     // The accessor rejects a detached candidate or a different field process.
-    nativeUiStartup_=retainedUiStartup;nativeEffects_=retainedEffects;
+    nativeUiStartup_=retainedUiStartup;nativeEffects_=retainedEffects;nativeShadowProcess_=retainedNativeShadow;
     fieldParties.reinitializeMario(fieldMarioBattle); // Original live pose material clear, then light|2; clocks/resources survive.
     marioPresentation.poseUploadSerial=retainedPresentation.poseUploadSerial;
     marioPresentation.facing=retainedPresentation.facing;marioPresentation.display=retainedPresentation.display;marioPresentation.target=retainedPresentation.target;

@@ -30,8 +30,8 @@ bool admittedImage(const EventScriptAssets& image){
  // integer bias4330000080000000,and frame->ms16.666666 atfb40.
  if(!word(0x802c1060,0x43300000) || !word(0x802c1064,0) || !word(0x8041fb44,0x3f000000) || !word(0x8041fb68,0xbf000000) || !word(0x80306678,0x8003e178) || !word(0x80306694,0x8003e1f8))return false;
  if(!word(0x8041fb64,0x40000000) || !word(0x8041fb98,0xc0000000) || !word(0x8041fbb0,0x40400000) || !word(0x8041fbac,0x3d800000) || !word(0x8041fba4,0x42700000) || !word(0x8041fba8,0x447a0000) || !word(0x8041fb2c,0x3c8efa35) || !word(0x80415dc0,Work) || !word(0x80415db4,0x80305900) || !word(0x8041fbb4,0x3c8efa33) || !word(0x802c1070,0x43300000) || !word(0x802c1074,0x80000000) || !word(0x8041fb40,0x41855555))return false;
- // Five(enabled,sizeKiB) heap rows at804151b8. First four enabled; last
- // 100KiB row disabled. Work+tangent cold zero check excludes initialized Vivian.
+ // Five(mode,value) heap rows at804151b8. First four are fixed KiB; the
+ // last takes100percent of the remainder. Cold zero excludes initialized Vivian.
  const uint32_t values[]={7300,3472,224,128,100};
  for(unsigned i=0;i<5;++i)if(!word(0x804151b8+8*i,i==4?0:1) || !word(0x804151bc+8*i,values[i]))return false;
  for(uint32_t a=Work;a<Work+0x110+178*4;a+=4)if(!word(a,0))return false;
@@ -60,11 +60,19 @@ std::unique_ptr<AnimationStartupProcess> AnimationStartupProcess::cold(std::shar
  if(!files->contains("a/vivian.bin",0) || !files->contains("a/ag2tg.bin",0))return {};
  EventScriptAssets image;if(!image.load(path) || !admittedImage(image))return {};
  auto result=std::unique_ptr<AnimationStartupProcess>(new AnimationStartupProcess(std::move(files),std::move(pool),platform,gp));auto& vm=*result->vm_;
- if(!vm.memory.importScripts(image) || !vm.memory.registerRam(arena,std::vector<uint8_t>(bytes)) || !result->files_->bind(vm.memory))return {};
+ if(!vm.memory.importScripts(image) || !vm.memory.registerRam(arena,std::vector<uint8_t>(bytes)))return {};
+ // Transfer the WHOLE cold80-byte source segment before any borrower exists.
+ // Preserve bytes/contiguity; do not split/reset the live first-smart word.
+ if(!vm.memory.extractRam(0x8041e808,80,result->heapGlobals_) || !vm.memory.registerExternalRam(0x8041e808,result->heapGlobals_.data(),80) || !result->files_->bind(vm.memory))return {};
  // These are caller/native runtime bounds, deliberately replacing source's
  // pre-OS initialization sentinels before the recovered bootstrap reads them.
  const bool bounds=vm.memory.writeWord(0x8041e430,arena) && vm.memory.writeWord(0x8041f080,arena+bytes);assert(bounds);(void)bounds;
  initializeEventMemoryPools(vm.memoryBinding.services());return result;
+}
+bool AnimationStartupProcess::heapGlobalsCurrent()const{return heapGlobals_.size()==80 && vm_->memory.hasRamBacking(0x8041e808,heapGlobals_.data(),80);}
+std::unique_ptr<SourceSmartArena> AnimationStartupProcess::bindSmartArena(uint32_t stack,const SourceSmartArenaBackend& backend){
+ if(!heapGlobalsCurrent())return {};
+ return SourceSmartArena::bind(vm_->memory,stack,backend,heapGlobals_.data()+(SourceSmartArena::FirstAllocation-0x8041e808));
 }
 AnimationInitializeServices AnimationStartupProcess::services(){
  AnimationInitializeServices s;s.memory.user=this;

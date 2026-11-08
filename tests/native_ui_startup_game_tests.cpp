@@ -2,6 +2,7 @@
 #include "game.hpp"
 #include "native_ui_startup.hpp"
 #include "native_effect_process.hpp"
+#include "native_shadow_process.hpp"
 #include <cassert>
 #include <cmath>
 #include <iostream>
@@ -13,6 +14,7 @@ int main(){
  p.subtractDouble=[](void*,double a,double b){volatile double v=a-b;return v;};
  p.roundDoubleFloat=[](void*,double v){volatile float f=float(v);return f;};
  auto game=std::make_unique<Game>(false);assert(game->initializeNativeUiFieldAnimation("romfs",NativeFileCache::create(),p));
+ const auto shadows=game->nativeShadowProcess();assert(shadows&&shadows->ready()&&shadows->counts().heap4Allocations==1);
  const auto effects=game->nativeEffects();assert(effects&&effects->poolReady());
  assert(effects->fadeTexturesReady()&&effects->environmentTexturesReady()&&effects->texturesReady());
  const auto ui=game->nativeUiStartup();assert(ui&&ui->fontObject()&&game->nativeMarioPose());
@@ -22,10 +24,12 @@ int main(){
  auto&vm=process->process().vm();uint32_t gp;assert(vm.memory.readWord(0x80415fd0,gp)&&vm.memory.writeWord(gp+0x16c,2));
  game->tick({});assert(ui->language()==2);
  auto candidate=std::make_unique<Game>(*game);assert(!candidate->nativeUiStartup()&&!candidate->nativeEffects());
- assert(candidate->retainNativeFieldAnimation(*game)&&candidate->nativeUiStartup()==ui&&candidate->nativeEffects()==effects);
- auto saved=game->progress;game->restore(saved);assert(game->nativeUiStartup()==ui&&game->nativeEffects()==effects&&ui->language()==2);
+ assert(!candidate->nativeShadowProcess());
+ assert(candidate->retainNativeFieldAnimation(*game)&&candidate->nativeUiStartup()==ui&&candidate->nativeEffects()==effects&&candidate->nativeShadowProcess()==shadows);
+ auto saved=game->progress;game->restore(saved);assert(game->nativeUiStartup()==ui&&game->nativeEffects()==effects&&game->nativeShadowProcess()==shadows&&ui->language()==2);
  auto checkpoint=std::make_unique<Game>(false);checkpoint->restore(saved);
  assert(checkpoint->retainNativeFieldAnimation(*game,true)&&checkpoint->nativeUiStartup()==ui&&ui->windowReady()&&!game->nativeUiStartup());
+ assert(checkpoint->nativeShadowProcess()==shadows&&!game->nativeShadowProcess());
  assert(checkpoint->fieldPartyState().nativeAnimation==process&&checkpoint->nativeEffects()==effects&&!game->nativeEffects()&&ui->language()==2);
  checkpoint->tick({});assert(checkpoint->nativeMarioPose()&&ui->language()==2&&ui->counts().reads==counts.reads&&ui->counts().heapAllocations==counts.heapAllocations);
  std::cout<<"actual Game UI startup/room/checkpoint process retention PASS\n";

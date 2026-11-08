@@ -2,6 +2,7 @@
 #include "native_field_animation.hpp"
 #include "native_ui_startup.hpp"
 #include "native_effect_process.hpp"
+#include "native_shadow_process.hpp"
 namespace ttyd {
 // Native bootstrap requires a fresh pose namespace and no held producer.
 // Creation/configuration/Mario Entries are ordered admissions, not a rollback
@@ -31,6 +32,10 @@ bool Game::initializeNativeUiFieldAnimation(const char* root,std::shared_ptr<Nat
  if(!nativeEffects_)nativeEffects_=NativeEffectProcess::create(nativeUiStartup_,root);
  if(!nativeEffects_ || !nativeEffects_->initializeFade())return false;
  if(!nativeEffects_ || !nativeEffects_->initialize())return false;
+ // Same source VM/heap4 and existing UI SDK bytes; complete CPU shadow Init
+ // before Mario Entry. This does not publish a GPU shadow/camera/map receipt.
+ if(!nativeShadowProcess_)nativeShadowProcess_=NativeShadowProcess::create(nativeUiStartup_,root);
+ if(!nativeShadowProcess_ || !nativeShadowProcess_->initialize())return false;
  // Explicit texture-startup contribution: original Fade -> Environment ->
  // Effect/N64 setup, then independent callbacks, before native Mario Entries.
  // This is not whole seq_logoExit or the raw Mario pose-wrapper/logo-file tail.
@@ -51,6 +56,9 @@ std::shared_ptr<NativeUiStartup> Game::nativeUiStartup() const{
 }
 std::shared_ptr<NativeEffectProcess> Game::nativeEffects() const{
  return nativeEffects_ && nativeEffects_->poolReady() && nativeEffects_->ui()==nativeUiStartup()?nativeEffects_:nullptr;
+}
+std::shared_ptr<NativeShadowProcess> Game::nativeShadowProcess()const{
+ return nativeShadowProcess_ && nativeShadowProcess_->ready() && nativeShadowProcess_->ui()==nativeUiStartup_ && nativeUiStartup_ && nativeUiStartup_->fieldProcess()==fieldParties.nativeAnimation?nativeShadowProcess_:nullptr;
 }
 void Game::prepareNativeFieldAnimation(){
  if(!fieldParties.nativeAnimation || nativeAnimationPending())return;
@@ -87,6 +95,8 @@ bool Game::retainNativeFieldAnimation(Game& previous,bool checkpoint){
  if((nativeEffects_ && nativeEffects_->busy()) || (previous.nativeEffects_ && previous.nativeEffects_->busy()))return false;
  if(nativePartyPending() || previous.nativePartyPending())return false;
  if(nativeAnimationPending() || previous.nativeAnimationPending())return false;
+ if((nativeShadowProcess_ && nativeShadowProcess_->busy()) || (previous.nativeShadowProcess_ && previous.nativeShadowProcess_->busy()))return false;
+ const auto retainedNativeShadow=previous.nativeShadowProcess();
  const auto retainedUi=previous.nativeUiStartup();
  const auto retainedEffects=previous.nativeEffects();
  auto& old=previous.fieldParties;auto& next=fieldParties;if(!old.nativeAnimation)return true;
@@ -129,7 +139,7 @@ bool Game::retainNativeFieldAnimation(Game& previous,bool checkpoint){
  }
  // Ownership admission is complete. A later source sampler hold is reported
  // by the ordinary renderer; it is not a failed/rolled-back room transaction.
- nativeUiStartup_=retainedUi;nativeEffects_=retainedEffects;
+ nativeUiStartup_=retainedUi;nativeEffects_=retainedEffects;nativeShadowProcess_=retainedNativeShadow;
  prepareNativeFieldAnimation();return true;
 }
 }

@@ -1568,3 +1568,5 @@ retain explicit provider and process-ownership frontiers.
 - [Original fade startup texture owner](display/SOURCE_FADE_TEXTURE_STARTUP.md): actual heap manager initialization, retained texture setup/callback and normal activation frontier.
 
 - [Native Mario action-voice PCM](audio/NATIVE_MARIO_ACTION_VOICE_PCM.md): finite original primary samples, actual source-bank birth ownership, real NDSP retirement and explicit macro/spatial limits.
+
+- [Normal native shared smart/shadow bootstrap](display/NATIVE_SHARED_SHADOW_BOOTSTRAP.md): actual animation VM activation, borrowed globals and retained Game lifetime.
