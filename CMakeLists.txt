@@ -2913,3 +2913,23 @@ add_test(NAME field_light_registry_owner COMMAND field_light_registry_owner_test
 set_tests_properties(field_light_registry_owner PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 
 target_sources(ttyd_core PRIVATE source/field/field_map_light_producer.cpp)
+
+target_sources(ttyd_core PRIVATE source/field/field_map_source.cpp)
+
+target_sources(ttyd_core PRIVATE source/field/field_map_source_owner.cpp)
+
+target_sources(ttyd_core PRIVATE source/field/field_map_sdk.cpp)
+
+add_executable(field_map_source_tests tests/field_map_source_tests.cpp)
+target_link_libraries(field_map_source_tests PRIVATE ttyd_core)
+add_test(NAME field_map_source COMMAND field_map_source_tests)
+add_executable(field_map_source_owner_tests tests/field_map_source_owner_tests.cpp)
+target_link_libraries(field_map_source_owner_tests PRIVATE ttyd_core)
+add_test(NAME field_map_source_owner COMMAND field_map_source_owner_tests)
+set_tests_properties(field_map_source_owner PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# Reuse the accepted shared SDK engine when composing a field-only core.
+get_target_property(_field_map_core_sources ttyd_core SOURCES)
+if(NOT "source/display/animation_sdk_matrix_binding.cpp" IN_LIST _field_map_core_sources)
+ target_sources(ttyd_core PRIVATE source/display/animation_sdk_matrix_binding.cpp)
+endif()

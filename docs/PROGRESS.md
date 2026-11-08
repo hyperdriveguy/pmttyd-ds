@@ -17899,3 +17899,84 @@ have matching annotation snapshots; these are not newly reviewed completion
 claims. Next: remaining battle packet/publication adapters and field/platform
 services, changed modules, broader tool coverage and whole-file Trio numeric
 synthesis. No whole-port or full-game completion is claimed.
+
+
+### Complete original map-object construction and native storage (2026-11-07)
+
+Implemented eight complete source bodies (Init/Find/Entry/Sub/_mapEnt/Count/Sub/
+Recalculate) as a fixed compiled native continuation graph. All1070 original
+instructions are retained with exact source boundaries/word hashes and verified
+against the read-only DOL. GPR/CR/CTR/LR, private mapped stack/SDK temporaries,
+multiple-store frontiers and external children retain progress across holds and
+budget yields without advancing simulation. Full constructor includes draw/
+material classification, ancestor flags, bounds and original scalar return.
+
+A stationary native owner maps actual process globals/work/stack and allocates
+the real308-byte object array in the existing caller-owned primary map pool via
+the recovered map allocator/cache callbacks. Distinct request tokens prevent
+cross-caller completion; physical backing checks and conditional teardown retain
+ownership. Review found a nested raw borrow in the actual SDK current callback;
+a pure backing-identity query now avoids it, and the fixture uses the real owner
+callback. Shared SDK matrix code reuses accepted291891ac dependencies. Native
+vector adaptation admits stable complete finite spans with source squared-sum
+arithmetic; exceptional/GQR/FPSCR and partial-alias parity remain unproven.
+
+Imported the exact original975520-byte harbor payload with all15974 original
+pointer fixups and original DOL literals, per-asset source hashes/licensing and
+all540 S-scene identities. Normal manifest recipe/optional area merge is wired;
+source edit protections remain intact. No initialized runtime object/matrix is
+an asset. Original ship ordinal52 receives actual source diagonal10 and
+translation(210,0,45). Full original hierarchy and later additional-matrix
+recalculation are exercised. mapEntry leaves loaded-map count0; later full-load
+publication is an explicit fixture, not claimed implemented mapLoad.
+
+Static recovery corrected older reversed child/sibling ancestry and caught that
+8029ee8c is SquareDistance, not Distance. There is no sqrt in the bbox threshold.
+SDK goldens and complete constructor cases distinguish squared169,20000,18100,
+30000 and strict flag02 equality. Original source loops/store ordering remain
+present. Initial focused failures were fixture assumptions: prologue save stores
+precede lookup global reads, and a budget yield can occur before counting finishes.
+Those fixtures now inspect the actual reached callback frontier. Initial SDK
+build misses were resolved with an exact accepted dependency closure, not copied
+moving worktree inputs. No story text or event branches were invented.
+
+Validation freezes accepted 6bed06cb source/products plus this scope and an
+exact eight-file shared-SDK dependency closure from accepted 291891ac. Other
+concurrent source/staging remain excluded and preserved. Full make test exits 0:
+504/504 C++ tests (151.42s), 236/236 Python tests (75.259s), zero skips. Focused 2/2
+pass; assets-check validates 425 recipes. Complete native make all and private
+ARM fixture build exit0. Dependency normalization invalidated 135 differing
+native source/header objects, preventing stale-header reuse. The 1070 original
+source words across all eight complete boundaries verify against the ISO.
+Existing unrelated compiler/Pillow warnings remain; new map core/owner/SDK
+sources compile without warnings after correcting one initial indentation.
+
+Fresh isolated Azahar normal 50s, ARM 100s and field 70s-warmup runs exit0. Eight
+strict ARM markers pass for graph/holds/allocation/hierarchy/matrices/lookup/
+recalc/squaredBounds. Two exact tracked fixtures run from private instrumented
+main with explicit romfs: roots; 540 other production objects remain byte-identical.
+All other source/include and runtime products match the production snapshot.
+Startup and checkpoint idle/right/left/final-idle captures manually inspected.
+Checkpoint has no active partner; no new Goombella walk-parity claim. User
+emulator profiles/saves untouched; production binary hash unchanged. No hardware
+FPS/memory or original framebuffer parity claim.
+
+Exact replay audits 4324 source files, 2197 runtime products, 1474 private inputs
+and 1 reference input. One new original map pack and its pipeline stamp are the
+only product changes; existing other products/private inputs are unchanged.
+The new recipe was built through the normal pipeline; native asset preparation
+was then skipped after exact audit. Import used an empty destination and opens
+the ISO read-only. Full source payload/fixups and DOL literal provenance/licensing
+are tracked; compiled packs/extraction caches/ISO are not committed. Frozen
+Markdown links: 1561 files, zero broken. Exact source/dependency/product/object
+hashes, source evidence, commands and logs:
+artifacts/field-map-owner-validation-manifest.json.
+
+Next: complete original map load/unload and actual root/count publication,
+source setters/mapMain animation and EVT epochs, persistent lamp callback binding
+with real lookup/SDK/retirement, then ordinary Game/material/GPU activation.
+Original unload is mapUnLoad before later EVT ReInit; freeze users across that
+interval. Full prologue dialogue/story/overworld triggers/indoor coverage and
+physical New2DS XL parity remain unfinished. EVT-01 and the full goal stay active.
+See [contract](behavior/field/NATIVE_MAP_OBJECT_SOURCE_OWNER.md) and the request
+inbox; static original evidence is under artifacts/field-map-owner-evidence/.

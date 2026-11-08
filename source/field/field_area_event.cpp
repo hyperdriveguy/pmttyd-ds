@@ -72,6 +72,11 @@ bool loadFieldAreaEventAssets(const char* root) {
   std::fclose(extra);EventScriptAssets input;
   if(!input.load((base+"/field-harbor-lights-input.pmevt").c_str()) || !next->scripts.merge(input))return false;
  }
+ // Original relocated scene payload, not initialized runtime MapObjs.
+ if(FILE* extra=std::fopen((base+"/field-harbor-map-source.pmevt").c_str(),"rb")){
+  std::fclose(extra);EventScriptAssets input;
+  if(!input.load((base+"/field-harbor-map-source.pmevt").c_str()) || !next->scripts.merge(input))return false;
+ }
  FILE* f=std::fopen((base+"/field-area-events.bin").c_str(),"rb");if(!f)return false;
  char magic[8];uint32_t count=0;
  bool ok=std::fread(magic,8,1,f)==1 && !std::memcmp(magic,"PMFAEV02",8) && std::fread(&count,4,1,f)==1 && count && count<=256;

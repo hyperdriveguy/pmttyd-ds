@@ -5638,3 +5638,28 @@ owner; its normal Game scheduling/map-matrix portion remains open. This does
 not complete the persistent lamp callbacks or establish playable prologue
 lighting. Request EVT-01 remains OPEN. Evidence is static-source and scoped
 fixtures/builds; no new original-runtime observation is claimed.
+
+
+### 2026-11-07 — Complete original map-object constructor and native owner
+
+[Map-object owner](../behavior/field/NATIVE_MAP_OBJECT_SOURCE_OWNER.md) implements
+complete Init/Find/Entry/Sub/_mapEnt/Count/Sub/Recalculate, with all1070 original
+words checked against the read-only DOL. Actual native process globals/work/
+stack and existing source map-heap allocation produce all540 original scene
+objects. Shared SDK matrices and finite raw vector children preserve the scoped
+source domain; squared bbox threshold is correct (8029ee8c is SquareDistance).
+The normal asset recipe retains the full original payload and original fixups.
+
+- [x] Recover/implement complete initial map object construction and matrix
+  recalculation, with real VM-backed objects and source lookup groups.
+- [ ] Bind complete map load/unload and source root/count publication, setter/
+  mapMain animation/EVT epochs, and stationary room/checkpoint/battle retirement.
+- [ ] Bind actual persistent lamp dispatch and SDK/lookup to these owners, then
+  ordinary Game scheduling/material/GPU lighting and original visual comparison.
+
+mapEntry does not publish G0=1; partial construction stays inaccessible until
+the full original loader returns. Do not fabricate four lamp object records or
+identity transforms to bypass construction. Static evidence/fixture construction
+does not prove normal Game/prologue or physical New2DS XL performance parity.
+EVT-01 remains OPEN. Full function/word/layout/unload evidence and source
+SquareDistance correction are under artifacts/field-map-owner-evidence/.

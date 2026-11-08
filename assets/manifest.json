@@ -1,6 +1,13 @@
 {
   "schema": 1,
   "assets": [
+{
+      "id": "original/maps/harbor-source",
+      "kind": "event",
+      "source": "assets/original/maps/harbor-source/event.json",
+      "output": "field-harbor-map-source.pmevt",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+},
     {
       "id": "original/lights/harbor-map-input",
       "kind": "event",

@@ -1480,3 +1480,5 @@ Original battle menu native resource/queue owners:
 - [Native icon loading process](display/NATIVE_SOURCE_ICON_PROCESS.md).
 
 - [Original light registry and native process owner](field/NATIVE_LIGHT_REGISTRY_OWNER.md): retained source allocation/entry/reset/lookup, real VM-backed banks and reached original harbor light loop; Game/Map/GPU binding remains open.
+
+- [Original map-object source owner](field/NATIVE_MAP_OBJECT_SOURCE_OWNER.md): complete process/count/lookup/scene construction/recalculation, actual VM/map-heap storage and original harbor payload; full load/unload/animation/Game integration remains open.

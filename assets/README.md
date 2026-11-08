@@ -194,3 +194,16 @@ Explicit fresh imports use `tools/import_light_registry_assets.py` and
 open the ISO read-only. Never run them over checked-in edits. Per-asset
 provenance records original spans/hashes and relocation bindings. Original
 rights remain retained; these sources grant no redistribution license.
+
+
+### Original harbor map source payload
+
+`assets/original/maps/harbor-source/` retains the exact original `m/gor_00/d`
+payload and all original relocation sites, applied once to native guest
+base8a000000. It includes all original joint/material/mesh data, with source
+hashes and all540 scene-node identities; runtime MapObjs and matrices are
+constructed by source logic. Normal manifest builds emit
+`field-harbor-map-source.pmevt`. `tools/import_harbor_map_source.py` reads the ISO
+read-only and refuses nonempty destinations. Never reimport over checked-in
+edits. Original Nintendo/Intelligent Systems rights remain retained; no
+redistribution license is granted.

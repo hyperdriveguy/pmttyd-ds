@@ -37,6 +37,11 @@ public:
     // One complete raw RAM span, excluding semantic providers. No pointer
     // escapes and callers must recheck after any mapping mutation.
     bool contiguousRam(uint32_t a,uint32_t n) const{return n && rawRamSpan(a,n);}
+    // Pure identity query, also safe inside an existing synchronous raw borrow.
+    // Never returns a pointer or opens a nested borrow; no mapping may mutate.
+    bool hasRamBacking(uint32_t a,const uint8_t* expected,uint32_t n) const{
+        return expected && n && rawRamSpan(a,n)==expected;
+    }
     // Synchronous borrow only: blocks this facade's storage mapping changes
     // and nested borrows. Independent semantic registries are NOT locked; caller
     // must keep them unchanged and must not call children/yield in the callback.

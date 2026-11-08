@@ -4113,3 +4113,26 @@ is granted. Raw technical products/caches stay ignored and outside source histor
 
 [Implementation scope](behavior/field/NATIVE_LIGHT_REGISTRY_OWNER.md) distinguishes
 actual source/native storage from remaining normal Game/Map and GPU activation.
+
+
+### Complete original harbor map payload for native construction (2026-11-07)
+
+`assets/original/maps/harbor-source/{event,provenance}.json` retains the975520-byte
+payload from read-only US revision0 `m/gor_00/d`, SHA256
+`d942568687b82ede86c7ea5aab0a3aea6c0df23b538257fde8ae1632bd13089b`.
+All15974 original relocation entries are applied once to native guest base
+8a000000; provenance retains every site/original relative value, payload hash,
+chunk offsets and the actual540-node S scene census. File header/fixup tables
+remain source provenance; no runtime MapEnt/MapObj/matrix/output light is
+imported. Geometry/material/texture-reference bytes remain original and receive
+no scaling/reduction/lighting edit in this source pack.
+
+Exact reached DOL literals8041f930/20,8041f9b8/4,8041e458/8 and80429358/8
+supply source map factors/half/radians/bbox threshold and shared SDK constants.
+Each span has its own original hash. A normal event manifest recipe compiles
+`field-harbor-map-source.pmevt`; area inputs optionally merge it before VM
+import. Products/caches remain ignored. Importer
+`tools/import_harbor_map_source.py` requires an empty destination and preserves
+existing source edits. Original Nintendo/Intelligent Systems rights retained;
+no redistribution license granted. No ISO or compiled product is committed.
+See [native map owner](behavior/field/NATIVE_MAP_OBJECT_SOURCE_OWNER.md).
