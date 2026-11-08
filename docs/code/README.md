@@ -259,3 +259,7 @@ mesh publication.
 [Typed animation resources](animation-typed-resources.md) explains serialized
 MODEL/TPL admission, wrap/coordinate requests, converted atlas identity and
 the typed traversal's narrower ownership domain.
+
+[Native animation lifetimes](native-animation-lifetimes.md) explains Entry/Release
+continuations, separate pending guards, Mario setup/publication and NPC lease/Draw
+ownership.

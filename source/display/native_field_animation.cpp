@@ -6,11 +6,16 @@
 #include <cstring>
 namespace ttyd {
 namespace {
+// Native policy: 162MHz bus,quarter-bus source timebase,60Hz simulation.
+// Name81800000 reserves 256 caller-owned bytes for fallback model strings.
+// Neither this clock publication nor its storage is an initialized ISO value.
 constexpr uint32_t Bus=162000000,Name=0x81800000;
 uint32_t word(const EventAddressSpace& m,uint32_t a){uint32_t v=0;const bool ok=m.readWord(a,v);assert(ok);(void)ok;return v;}
 float real(const EventAddressSpace& m,uint32_t a){const uint32_t v=word(m,a);float f;std::memcpy(&f,&v,4);return f;}
 float rounded(float x){volatile float f=x;return f;}
 }
+// One process/pool/file namespace. Native GP81000000 and 12MiB arena82000000
+// are explicit port memory policy,not measured source/hardware consumption.
 std::shared_ptr<NativeFieldAnimation> NativeFieldAnimation::create(const char* root,std::shared_ptr<NativeFileCache> files,const EventNativePlatform& platform){
  if(!root || !files || !stagePrologueAnimationFiles(*files,root) || (!files->hasYieldProvider() && !files->yieldProvider(nullptr,[](void*){return true;})))return {};
  auto n=std::shared_ptr<NativeFieldAnimation>(new NativeFieldAnimation);n->files_=std::move(files);n->pool_=std::make_shared<BattlePosePool>();
@@ -18,7 +23,12 @@ std::shared_ptr<NativeFieldAnimation> NativeFieldAnimation::create(const char* r
  if(!n->process_ || !n->process_->advance())return {};
  auto& m=n->process_->vm().memory;
  // Native platform/caller storage, never initialized ISO state or host pointers.
+ // Bus800000f8,window-root8041ec30,modeling stack803d8e70/600hex
+ // (32x48 bytes) and level/pointer8041e89c/8 are real native-owned RAM.
+ // fb40=41855555 is the original binary32 frame->millisecond coefficient.
  if(!m.registerRam(0x800000f8,std::vector<uint8_t>(4)) || !m.writeWord(0x800000f8,Bus) || !m.registerRam(0x8041ec30,std::vector<uint8_t>(4)) || !m.registerRam(Name,std::vector<uint8_t>(256)) || !m.registerRam(0x803d8e70,std::vector<uint8_t>(0x600)) || !m.registerRam(0x8041e89c,std::vector<uint8_t>(8)) || word(m,0x8041fb40)!=0x41855555)return {};
+ // Install borrowing callbacks only into THIS pool. Detached pool copies
+ // must not inherit this provider or create another source pose namespace.
  n->pool_->nativeProvider_=n.get();
  n->pool_->nativeEntry_=[](void* u,std::shared_ptr<const BattlePoseResource> r,int32_t mode,BattlePoseClock,const char* name){return static_cast<NativeFieldAnimation*>(u)->enter(std::move(r),mode,name);};
  n->pool_->nativeSourceEntry_=[](void* u,std::shared_ptr<const BattlePoseResource> r,int32_t mode,BattlePoseClock,const char* name){return static_cast<NativeFieldAnimation*>(u)->enterSource(std::move(r),mode,name);};
@@ -27,8 +37,14 @@ std::shared_ptr<NativeFieldAnimation> NativeFieldAnimation::create(const char* r
  n->pool_->nativeRelease_=[](void* u,int32_t h){return static_cast<NativeFieldAnimation*>(u)->release(h);};
  n->pool_->nativeClock_=[](const void* u,BattlePoseClock& c){return static_cast<const NativeFieldAnimation*>(u)->clock(c);};if(!n->configurePresentation({}))return {};return n;
 }
+// Unhook only our own callbacks,then destroy Inner/process while request fields
+// and this borrowed predicate context still exist. Caller owns quiescent teardown;
+// destroying the object is not source cancellation or rollback of pending work.
 NativeFieldAnimation::~NativeFieldAnimation(){if(pool_ && pool_->nativeProvider_==this){pool_->nativeEntry_=nullptr;pool_->nativeSourceEntry_=nullptr;pool_->nativeOriginalEntry_=nullptr;pool_->nativeEntryAvailable_=nullptr;pool_->nativeClock_=nullptr;pool_->nativeRelease_=nullptr;pool_->nativeProvider_=nullptr;}npcInnerBinding_.reset();process_.reset();}
 bool NativeFieldAnimation::ready() const{return process_ && process_->ready();}
+// GP root80415fd0;mode0 clock HIGH40/LOW44,nonzero HIGH38/LOW3c.
+// high32(10624dd3*(bus>>2))>>6 gives ticks/ms;both divide as signed64.
+// This read does not advance time or acquire a producer lease.
 bool NativeFieldAnimation::clock(BattlePoseClock& out) const{
  if(!ready())return false;
  const auto& m=process_->vm().memory;uint32_t gp=0,bus=0,ah=0,al=0,bh=0,bl=0;
@@ -37,6 +53,11 @@ bool NativeFieldAnimation::clock(BattlePoseClock& out) const{
  uint64_t a=0,b=0;if(!divisor || !nativeFieldNpcClockDivide(nullptr,uint64_t(ah)<<32|al,divisor,a) || !nativeFieldNpcClockDivide(nullptr,uint64_t(bh)<<32|bl,divisor,b))return false;
  out={a,b};return true;
 }
+// Preflight native GP/bus/window backing,then source retrace publication.
+// Window flag1000 bypasses its state+20 read. GP10/14 receive pause/battle;
+// raw time still advances 675000 per supplied visit,with freeze/bank logic owned
+// by publishEventRetraceTime. These guards are Entry/producer checks;Release
+// has a separate cursor and is not implicitly part of producerPending().
 bool NativeFieldAnimation::tick(bool battle,bool paused){
  if(!ready() || entryPending() || producerPending())return false;
  auto& vm=process_->vm();auto& m=vm.memory;uint32_t gp=0,bus=0,window=0;
@@ -52,14 +73,22 @@ bool NativeFieldAnimation::tick(bool battle,bool paused){
 std::optional<int32_t> NativeFieldAnimation::enterSource(std::shared_ptr<const BattlePoseResource> resource,int32_t mode,const char* requested,uint32_t originalName){
  if(!ready() || (!entering_ && producerPending()) || releasing_.active || mode<0 || mode>2 || !resource || !resource->draw || !resource->textures || !resource->bank || resource->names.empty())return {};
  const std::string name=requested?requested:resource->modelName;if(name.empty() || name.size()>=256 || name!=resource->modelName || !files_->contains("a/"+name,5) || !files_->contains("a/"+resource->textureName+"-",4))return {};
+ // Original name operand must already map to the exact NUL-terminated model
+ // string without wrapping. Preserve that source address;do not copy it into
+ // native fallback storage or silently replace it with a canonical token.
  if(originalName){
   auto& memory=process_->vm().memory;for(unsigned i=0;i<=name.size();++i){uint8_t b=0;if(uint64_t(originalName)+i>UINT32_MAX || !memory.readByte(originalName+i,b) || b!=(i<name.size()?uint8_t(name[i]):0))return {};}
  }
  // Preserve the original model-cache canonical resource, including its atlas.
  for(const auto& model:pool_->models())if(model.flags() && model.resource && model.resource->modelName==resource->modelName){resource=model.resource;break;}
+ // Capture native name/resource/mode/original-address identity once. A hold
+ // resumes the same script request;successful formatting/file work never resets.
  if(!entering_){name_=name;entering_=resource;mode_=mode;entryName_=originalName;if(!originalName){auto& m=process_->vm().memory;for(unsigned i=0;i<=name.size();++i)if(!m.writeByte(Name+i,i<name.size()?uint8_t(name[i]):0))return {};}}
  else if(entering_!=resource || mode_!=mode || name_!=name || entryName_!=originalName)return {};
  uint32_t address=Name;uint8_t mappedByte=0;
+ // Known original front/rear/event Mario,Goombella and Frankly tokens.
+ // Frankly's optional token is used only when mapped;otherwise fallback Name.
+ // Existing MODEL cache chooses canonical resource/atlas before this routing.
  for(auto pair:{std::make_pair("a_mario",0x802c18a0u),std::make_pair("a_mario_r",0x802c18a8u),std::make_pair("e_mario",0x802c18b4u),std::make_pair("c_pkr",0x804213e0u),std::make_pair("c_kuri_h",0x802cb4bcu)})if(!originalName && name==pair.first && (name!="c_kuri_h" || process_->vm().memory.readByte(pair.second,mappedByte)))address=pair.second;
  auto result=process_->enter(originalName?originalName:address,uint32_t(mode),resource);if(result){entering_.reset();name_.clear();}
  return result;
@@ -73,6 +102,9 @@ std::optional<int32_t> NativeFieldAnimation::enter(std::shared_ptr<const BattleP
 bool NativeFieldAnimation::configurePresentation(std::shared_ptr<const CameraManager> cameras){
  if(entryPending() || producerPending())return false;
  if(process_->mainConfiguration()==configuredMain_ && configuredMain_ && cameras_==cameras)return true;
+ // Semantic camera reservation81900000 differs from Inner's81910000 bank.
+ // Main configuration generation detects foreign replacement,even with address
+ // reuse. Reusing the same bank/configuration does not allocate another executor.
  AnimationFacingAddressPolicy addresses;addresses.base=0x81900000;addresses.unmapped=[this](uint32_t a,uint32_t n){return process_->vm().memory.unmappedRange(a,n);};
  // The uniquely owned process retires in our destructor body while request
  // state is still live. Its copied pass predicates borrow this owner; no cycle
@@ -80,6 +112,9 @@ bool NativeFieldAnimation::configurePresentation(std::shared_ptr<const CameraMan
  if(!process_->configureMain(cameras,addresses,[this](uint64_t pass){return (marioActive_ && marioPass_==pass) || (npcOwner_ && npcPass_==pass && npcCurrent_ && npcCurrent_());},true))return false;
  cameras_=std::move(cameras);configuredMain_=process_->mainConfiguration();return true;
 }
+// One retained native presentation request:bank priority event flag10000000,
+// then rear80000000,else front. Three handles refer to the SAME source pool.
+// Upload serial/name/start/yaw/reflection pin admission through publication.
 bool NativeFieldAnimation::mario(const MarioPresentation& mario,const std::array<int32_t,3>& handles,unsigned budget){
  if(marioActive_){
   const unsigned bank=(mario.displayFlags&0x10000000)?2:(mario.displayFlags&0x80000000)?1:0;
@@ -91,12 +126,17 @@ bool NativeFieldAnimation::mario(const MarioPresentation& mario,const std::array
  const unsigned bank=(mario.displayFlags&0x10000000)?2:(mario.displayFlags&0x80000000)?1:0;
  const int32_t handle=handles[bank];auto* p=pool_->pose(handle);if(!p || !p->sourceBuffers || !p->resource->bank->pose(mario.selected)){sampled_=-1;return false;}
  BattlePoseClock clock;if(!this->clock(clock))return false;
+ // Original fb40 scales source start frames to ms. 2^64 is an exclusive
+ // native float->uint64 conversion bound;negative/nonfinite values hold.
  const float ms=rounded(real(process_->vm().memory,0x8041fb40)*float(mario.poseStartFrame));
  if(!std::isfinite(ms) || ms<0 || double(ms)>=18446744073709551616.0 || ((selected_!=handle || uploaded_!=mario.poseUploadSerial) && p->word(0x90)!=0xffffffff))return false;
  requestRoot_=nextRoot_;requestHandle_=handle;requestBank_=bank;requestSerial_=mario.poseUploadSerial;requestStart_=mario.poseStartFrame;requestName_=mario.selected;requestYaw_=mario.drawYaw();requestReflect_=mario.reflectZ();setupDone_=false;selectionDone_=false;++marioPass_;marioActive_=true;
  if(!process_->reservePresentation(uint32_t(handle),marioPass_)){marioActive_=false;return false;}
  return resumeMario(budget);
 }
+// Setup selector runs at most once for a changed handle/upload serial. After
+// that child completes,rebase original epoch LOW1c then HIGH18 and paper88/8c.
+// Later capture/assembly holds cannot repeat selection or timestamp setup.
 bool NativeFieldAnimation::resumeMario(unsigned budget){
  if(!marioActive_ || !budget)return false;
  auto* p=pool_->pose(requestHandle_);if(!p)return false;
@@ -115,6 +155,9 @@ bool NativeFieldAnimation::resumeMario(unsigned budget){
   }
   setupDone_=true;
  }
+ // Coalesce only the two explicit publication boundaries:Main->capture and
+ // assembly->final swap. At most 3 native pumps;real child/budget holds return.
+ // Published root/yaw/reflection update ONLY with the successful shape swap.
  for(unsigned part=0;part<3;++part){
   const auto before=process_->presentationOwner()->phase();
   if(process_->present(uint32_t(requestHandle_),marioPass_,budget)){sampled_=requestHandle_;bank_=requestBank_;publishedYaw_=requestYaw_;publishedReflect_=requestReflect_;publishedRoot_=requestRoot_;marioActive_=false;return true;}

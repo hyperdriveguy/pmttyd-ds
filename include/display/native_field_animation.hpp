@@ -29,6 +29,9 @@ public:
  // Entry resumes through its invoking script, separately from Mario draining.
  bool entryPending() const{return bool(entering_);}
  bool presentationPending() const{return marioActive_ || (process_ && process_->presentationPending());}
+ // Release has its OWN active cursor;this predicate covers NPC lease,
+ // Mario/publication and process Main/selection only. Check operation-specific
+ // Release guards separately rather than treating this as a global mutex.
  bool producerPending() const{return npcOwner_ || presentationPending() || (process_ && process_->producerPending());}
  bool configurePresentation(std::shared_ptr<const CameraManager>);
  // Caller retains the complete field callback/queue/camera pass until end.
@@ -66,6 +69,8 @@ private:
  std::shared_ptr<BattlePosePool> pool_;
  std::shared_ptr<NativeFileCache> files_;
  std::unique_ptr<AnimationStartupProcess> process_;
+ // Entry and Release retain independent requests. Source Entry may finish
+ // before native adoption;source Release may invalidate typed lookup mid-call.
  std::string name_;std::shared_ptr<const BattlePoseResource> entering_;int32_t mode_=0;uint32_t entryName_=0;
  AnimationReleaseCursor releasing_;uint64_t releasingGeneration_=0;
  std::shared_ptr<const CameraManager> cameras_;uint64_t configuredMain_=0;
@@ -73,6 +78,8 @@ private:
  bool marioActive_=false,setupDone_=false,selectionDone_=false;uint64_t marioPass_=0,requestSerial_=0;
  uint32_t requestBank_=0;int32_t requestHandle_=-1;uint16_t requestStart_=0;std::string requestName_;
  float requestYaw_=0,publishedYaw_=0;bool requestReflect_=false,publishedReflect_=false;
+ // Lease spans the COMPLETE outer callback/queue,including gaps between
+ // source child invocations. End-of-child alone does not authorize retirement.
  const void* npcOwner_=nullptr;uint64_t npcPass_=0;std::function<bool()> npcCurrent_;
  bool drawNpc(const FieldNpcDrawRequest&);
  bool npcDrawCurrent() const;
@@ -83,6 +90,8 @@ private:
  std::shared_ptr<const BattlePoseResource> npcDrawResource_;
  std::shared_ptr<AnimationScratchPose> npcDrawBuffers_;
  unsigned budget_=8192;
+ // UINT64_MAX upload sentinel forces first setup;selected/sample -1 means
+ // no native published selection. raw_ is port timebase,not render frames.
  uint64_t raw_=0,uploaded_=UINT64_MAX;int32_t selected_=-1,sampled_=-1;unsigned bank_=0;
 };
 }

@@ -1,6 +1,9 @@
 #include "native_field_animation.hpp"
 #include "field_npc_main_entry_binding.hpp"
 namespace ttyd {
+// Lease token is identity,not an owning pointer or source actor address.
+// Admission is non-reentrant and quiescent;predicate/cameras/outer callback
+// owners remain valid and independent of animation writes through endNpcPass.
 bool NativeFieldAnimation::beginNpcPass(
     const void* owner,uint64_t pass,std::shared_ptr<const CameraManager> cameras,
     std::function<bool()> current){
@@ -18,6 +21,8 @@ bool NativeFieldAnimation::endNpcPass(const void* owner,uint64_t pass){
   return false;
  npcOwner_=nullptr;npcCurrent_={};return true;
 }
+// Separate borrowed facade preserves other field-service contexts. No installed
+// animation request may fall through to legacy handlers after a false result.
 FieldNpcAnimationServices NativeFieldAnimation::npcAnimationServices(){
  FieldNpcAnimationServices s;s.user=this;
  s.request=[](void* u,EventAddressSpace& memory,const FieldNpcDrawRequest& q,
@@ -30,6 +35,9 @@ FieldNpcAnimationServices NativeFieldAnimation::npcAnimationServices(){
    return false;
   // Process children retain exact raw arguments and partial source effects.
   // The public raw Main wrapper intentionally rejects an active NPC lease.
+  // Draw resumes its own wrapper first. While it is held,unrelated SetAnim/
+  // Main cannot steal the process. Source IDs:Draw8003b4d8,SetAnim80041170,
+  // Main8003ed2c. Arguments remain original words;budget is native scheduling.
   if(q.function==0x8003b4d8)return n.drawNpc(q);
   if(n.npcDrawPending())return false;
   if(q.function==0x80041170)

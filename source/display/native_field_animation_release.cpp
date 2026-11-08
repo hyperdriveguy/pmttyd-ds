@@ -1,6 +1,11 @@
 #include "native_field_animation.hpp"
 namespace ttyd {
+// Public raw Main excludes NPC lease,Mario publication,Entry and Release.
+// NPC service routing below the facade uses its own exact lease instead.
 bool NativeFieldAnimation::main(uint32_t handle,uint64_t pass,unsigned visits){return ready() && !npcOwner_ && !presentationPending() && !entering_ && !releasing_.active && process_->main(handle,pass,visits);}
+// Native handle 0..255 and generation admit a lifetime,not a copied source
+// record. After admission retain the actual slot even if model flags clear
+// makes typed pose()/cacheMetadataReady() temporarily fail through a hold.
 bool NativeFieldAnimation::release(int32_t handle){
  if(!ready() || producerPending() || entering_ || handle<0 || unsigned(handle)>=256)return false;
  // Only the initial admission may use typed metadata. Source teardown clears
@@ -20,12 +25,16 @@ bool NativeFieldAnimation::release(int32_t handle){
   return c.function==0x8018a260 && n.files_->release(c.args[0]);
  };
  if(!releaseAnimationPose(handle,s,releasing_))return false;
+ // Successful borrowed/group decrement can leave source flags live:do not
+ // retire buffers/resources in that early-return case.
  if(p->word(0))return true; // Borrowed count remains nonnegative: still live.
  // Terminal source flags are authoritative. Retire only native sidecars;
  // retain stale source words, source scratch allocation and file-cache bytes.
  p->sourceBuffers.reset();p->resource.reset();p->shape={};p->cache={};
  for(auto& model:pool_->models_)if(!model.flags())model.resource.reset();
  for(auto& texture:pool_->textures_)if(!texture.flags()){texture.resource.reset();texture.name.clear();}
+ // Invalidate native presentation selection only for this handle. Model/TPL
+ // payload collection and renderer GPU residency are NOT performed by Release.
  if(sampled_==handle)sampled_=-1;
  if(selected_==handle){selected_=-1;uploaded_=UINT64_MAX;}
  return true;
