@@ -5777,3 +5777,18 @@ startup owners are available but not activated by normal Game/main. See private
 and available/missing owners. This is an integration finding, not permission
 to fabricate guest records, treat pending audio as playback or acknowledge
 source display without its queued consumer.
+
+
+### Map loader light children and shared ambient ownership (2026-11-07)
+
+Native source loading now supports an initialized same-VM process light owner:
+reached lightEntry calls forward their actual parent operands to the retained
+Entry operation, without executing a second table loop. Exact source ambient
+words8041e6d4..db have shared mutable process backing; source stores publish
+both defaults in original order. Reached lightReInit uses the same bank owner
+and leaves ambient/presets intact. See [binding contract](../behavior/field/NATIVE_MAP_LIGHT_CHILD_BINDING.md).
+Remaining implementation/research boundary: genuine camLoadRoad8000f36c camera4
+road acquisition/reset/lifetime, unconditional camSetTypePersp, material/GX capture,
+shadow publication, Game/EVT epochs and original execution observations. Existing
+road parsing is not complete source camera ownership. No synthetic camera receipt
+or loaded map count is admitted to advance this boundary.

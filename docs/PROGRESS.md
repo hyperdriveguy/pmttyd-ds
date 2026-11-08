@@ -19157,3 +19157,60 @@ unbound: its real icon, name-window/font and final camera-mode children must
 complete before Draw can advance; the weapon callback is not its substitute.
 Read-only source audit is retained at `artifacts/harbor-target-display/REPORT.md`.
 The wider goal remains active.
+
+
+### Source map light child binding and shared ambient storage (2026-11-07)
+
+FieldMapSourceOwner can now route its actual reached lightEntry/lightReInit
+children to a supplied initialized same-VM FieldLightRegistryOwner. One stationary
+raw-call token preserves held identity and operands. The bridge preserves actual
+parent stack/color/vector addresses and scalar bits; it does not execute a second
+map-light loop. Entry index zero is successful. Missing providers remain holds.
+The light process owns exact shared ambient bytes8041e6d4..db. Original map stores
+publish defaults in source order; reset leaves ambient/presets intact. Map owner
+identity now includes this supplied process and rejects foreign backing/VM.
+
+Validation freezes committed427309fe plus these eleven scoped files, preserving
+concurrent work/staging. Full make test exits0:579/579 C++ (87.95s),261/261
+Python (80.264s), zero skips. Full normal make all with435 original asset recipes
+and the final no-change incremental gate exit0. Private ARM build exits0;
+all620 non-main native objects remain byte-identical. Assets-check passes435
+recipes; source verifier matches4840 original words in37 complete boundaries.
+Read-only review caught a nested-borrow integration defect before acceptance;
+light identity checks now use pure hasRamBacking, with a direct active-borrow
+regression. Final gates verify that exact correction. Initial logs are retained.
+
+One original harbor parent now constructs98 hit objects and five exact original
+light records through actual Entry children, publishes ambient/fog state, then
+holds at real camLoadRoad8000f36c(4,"./m/gor_00/c"). G0 remains0. Tests check
+all five source names/positions/colors/scalars, same physical renderer query
+records, no duplicate rows on retries, raw-call identity/name repair, group1
+reset and actual unload light reset after hit reset. Replaced ambient backing
+invalidates the map process. Collision seed1/sqrt remains an explicit native
+approximation; these tests do not establish Gekko numeric parity.
+
+Fresh isolated normal40s and ARM180s Azahar runs exit0; seven strict ARM proof
+markers pass. Three exact tracked fixture functions execute through private main,
+with only RomFS root/assertion/phase/proof instrumentation. The normal boot
+capture was inspected. This is not playable harbor lighting, original matched
+pixels, full prologue or physical hardware performance evidence. User emulator
+profiles/saves remain untouched. No original art/story/dialogue is changed.
+
+Exact replay pins4737 source files,2218 RomFS products,7258 private inputs and
+one reference input. Normal preparation adds only the already committed
+fukidashi-position pack plus pipeline stamp relative to the copied product set;
+this light bridge imports no new assets. Private cache additions/metadata changes
+and all source/product/object/binary hashes are pinned in
+artifacts/field-map-light-bridge-validation-manifest.json. Existing unrelated
+compiler/Pillow warnings remain; private probe warnings concern unused fixture
+functions. No ISO/cache/compiled product is committed.
+
+The documentation inbox records the remaining boundary; static camera ownership
+handoff is artifacts/field-map-light-next-camera-handoff.md. Camera setup must
+preserve its partial resets before real archive/DVD acquisition, and admit the
+original harbor c file; parsed camera data alone is not this service.
+
+Next: genuine camera4 camLoadRoad/reset/acquisition/lifetime and perspective,
+material/GX display-list capture, shadows and Game/EVT activation. Original math
+parity, active hit lifetimes, full prologue/Crump round trip and physical New2DS XL
+performance remain unfinished.

@@ -2,6 +2,7 @@
 #include "field_light_registry.hpp"
 #include "field_map_light_producer.hpp"
 #include "map_material_light.hpp"
+#include "field_map_source.hpp"
 #include <memory>
 namespace ttyd {
 class EventAddressSpace;
@@ -30,6 +31,11 @@ public:
  bool reset(FieldLightRequest&);
  std::optional<int32_t> enter(FieldLightRequest&,FieldLightEntryArguments);
  bool loadMapLights(FieldLightRequest&,uint32_t mapEntry);
+ // Bridge only the child reached by the original map parent. The same call
+ // object and operands remain stationary until acknowledged. No second loop.
+ bool service(FieldMapSourceCall&);
+ bool readyFor(const EventAddressSpace& memory) const{return &memory_==&memory && ready();}
+ static bool accepts(uint32_t function){return function==FieldLightRegistrySource::Entry || function==FieldLightRegistrySource::Reinitialize;}
  std::optional<uint32_t> find(FieldLightRequest&,uint32_t name);
  // Same physical MapLightRecord bytes exposed to source RAM; no renderer copy.
  const MapLightRecord* record(uint32_t address) const;
@@ -56,7 +62,13 @@ private:
  alignas(32) std::array<std::array<MapLightRecord,FieldLightRegistrySource::Capacity>,2> banks_{};
  std::array<MapLightRecord,4> presets_{};
  std::array<uint8_t,256+32> scratch_{}; // Format stack then map-loader XYZ/color locals.
- std::array<uint32_t,5> mappings_{};unsigned mapped_=0,allocations_=0;
+ // Actual shared process ambient words, not defaults or renderer copies.
+ // Source map loads publish these in source order; light reset leaves them.
+ std::array<uint8_t,FieldLightRegistrySource::AmbientBytes> ambient_{};
+ std::array<uint32_t,6> mappings_{};unsigned mapped_=0,allocations_=0;
+ FieldLightRequest mapRequest_;
+ const FieldMapSourceCall* mapCall_=nullptr;
+ FieldMapSourceCall mapOperands_;
  std::array<bool,2> zeroed_{};
  const FieldLightRequest* activeRequest_=nullptr;
  FieldLightRegistryCursor cursor_;

@@ -3,6 +3,7 @@
 #include "event_address_space.hpp"
 #include <memory>
 namespace ttyd {
+class FieldLightRegistryOwner;
 struct FieldMapRequest {
  FieldMapRequest()=default;FieldMapRequest(const FieldMapRequest&)=delete;
  FieldMapRequest& operator=(const FieldMapRequest&)=delete;
@@ -15,6 +16,8 @@ struct FieldMapHeapOwner {
  void (*flushBlock)(void*,uint32_t)=nullptr;
  void (*systemCall)(void*)=nullptr;
  bool (*sdk)(void*,FieldMapSourceCall&)=nullptr;
+ // Initialized process owner in this exact VM; borrowed through all holds.
+ FieldLightRegistryOwner* lights=nullptr;
 };
 // Owns actual process Work/global/private-stack backing. The original primary
 // map heap remains its existing owner's allocation; constructed MapObjs live

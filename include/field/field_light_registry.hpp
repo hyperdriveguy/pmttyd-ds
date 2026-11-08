@@ -5,6 +5,9 @@
 namespace ttyd {
 namespace FieldLightRegistrySource {
 constexpr uint32_t Work=0x8041e650, ActiveGroup=0x8041e664;
+constexpr uint32_t CraftAmbient=0x8041e6d4, PaperAmbient=0x8041e6d8;
+constexpr uint32_t AmbientBytes=2*sizeof(uint32_t);
+constexpr uint32_t Entry=0x8001bd98, Reinitialize=0x8001c1d8;
 constexpr uint32_t Presets=0x803c9630, Vectors=0x802bf870;
 constexpr uint32_t Attenuation=0x802bf900, DuplicateFormat=0x802bf930;
 constexpr uint32_t Color=0x8041f8b0, Zero=0x8041f8cc, One=0x8041f8d0;

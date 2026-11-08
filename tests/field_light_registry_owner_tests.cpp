@@ -125,4 +125,30 @@ void nativeLightSdkConstants(const char* root){
  const auto craft=Presets+RecordBytes+Position;
  assert(word(vm.memory,craft)==bits(-198) && word(vm.memory,craft+4)==bits(102) && word(vm.memory,craft+8)==bits(102));
 }
-int main(){nativeLightOwner("romfs");nativeHarborLights("romfs");nativeLightSdkConstants("romfs");}
+void originalMapLightBridge(const char* root){
+ EventNativeRuntime vm{0x81000000,{}};EventScriptAssets definitions;auto& m=vm.memory;
+ assert(definitions.load((std::string(root)+"/field-light-registry.pmevt").c_str()) && m.importScripts(definitions));
+ assert(m.registerRam(ActiveGroup,std::vector<uint8_t>(4)) && m.registerRam(InputBase,std::vector<uint8_t>(256)));
+ Flush flush;flush.available=true;FieldLightRequest init;
+ auto owner=FieldLightRegistryOwner::bind(m,HeapBase,{&flush,Flush::run});assert(owner && owner->initialize(init));
+ EventNativeRuntime foreign{0x82000000,{}};assert(owner->readyFor(m) && !owner->readyFor(foreign.memory));
+ assert(word(m,CraftAmbient)==0 && word(m,PaperAmbient)==0);
+ for(unsigned n=0;n<3;++n)assert(m.writeWord(PositionInput+4*n,bits(float(n+1))) && m.writeWord(VectorInput+4*n,0));
+ assert(m.writeWord(ColorInput,0x123456ff));
+ constexpr uint32_t MissingName=0x88000000;
+ FieldMapSourceCall call;call.function=Entry;call.arguments={MissingName,1,PositionInput,VectorInput,ColorInput,0,0,0};call.scalars={bits(0),bits(1),0};
+ assert(!owner->service(call) && !call.result && !owner->record(HeapBase)->flags());
+ auto other=call;assert(!owner->service(other));
+ call.arguments[0]=NameInput;assert(!owner->service(call));call.arguments[0]=MissingName;
+ assert(m.registerRam(MissingName,std::vector<uint8_t>{'l','a','m','p',0}));
+ assert(owner->service(call) && call.result==0 && owner->record(HeapBase)->flags()==0x1001);
+ call.result.reset();assert(owner->service(call) && call.result==1);
+ const auto duplicate=bytes(m,HeapBase+RecordBytes+Name,10);assert(std::string(duplicate.begin(),duplicate.end())==std::string("lamp_0000\0",10));
+ assert(m.writeWord(ActiveGroup,1));call.result.reset();assert(owner->service(call) && call.result==0);
+ assert(m.writeWord(CraftAmbient,0x11223344) && m.writeWord(PaperAmbient,0x55667788));
+ FieldMapSourceCall reset;reset.function=Reinitialize;assert(owner->service(reset) && !reset.result);
+ assert(!owner->record(owner->bankAddress(1))->flags() && owner->record(HeapBase)->flags()==0x1001);
+ assert(word(m,CraftAmbient)==0x11223344 && word(m,PaperAmbient)==0x55667788);
+ FieldMapSourceCall unknown;unknown.function=0x8000f36c;assert(!owner->service(unknown));
+}
+int main(){originalMapLightBridge("romfs");nativeLightOwner("romfs");nativeHarborLights("romfs");nativeLightSdkConstants("romfs");}

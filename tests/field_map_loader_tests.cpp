@@ -1,6 +1,8 @@
 #include "field_map_file_owner.hpp"
 #include "field_map_source_owner.hpp"
 #include "field_map_sdk.hpp"
+#include "field_light_registry_owner.hpp"
+#include "fixtures/harbor_light_golden.hpp"
 #include "event_native_runtime.hpp"
 #include "event_script_assets.hpp"
 #include <cassert>
@@ -25,17 +27,20 @@ struct Fixture {
  EventNativeRuntime vm{0x81000000,{}};
  std::vector<uint8_t> heap=std::vector<uint8_t>(8*1024*1024);
  std::unique_ptr<FieldMapFileOwner> files;
+ std::unique_ptr<FieldLightRegistryOwner> lights;
+ FieldLightRequest lightInit;
  std::unique_ptr<FieldMapSourceOwner> maps;
  bool enableEstimate=false;unsigned estimates=0;
  FieldMapSdk sdk{vm.memory,[this]{return maps && maps->current();},[this](float squared)->std::optional<double>{if(!enableEstimate)return {}; ++estimates;return 1.0/std::sqrt(double(squared));}}; // Explicit native approximation, not Gekko seed parity.
  bool unloadReceipts=false;std::vector<uint32_t> resets;
  bool drawSync=false,invalidate=false;unsigned syncs=0,invalidates=0;
  uint32_t frontier=0;std::array<uint32_t,8> frontierArguments{};
- explicit Fixture(const char* root){
+ explicit Fixture(const char* root,bool withLights=false){
   auto& m=vm.memory;EventScriptAssets original,literals;
   assert(original.load((std::string(root)+"/field-harbor-map-source.pmevt").c_str()));
   assert(literals.load((std::string(root)+"/field-harbor-loader-literals.pmevt").c_str()));
   EventScriptAssets hit;assert(hit.load((std::string(root)+"/field-hit-literals.pmevt").c_str()));
+  if(withLights){EventScriptAssets light;assert(light.load((std::string(root)+"/field-light-registry.pmevt").c_str()) && original.merge(light));}
   assert(original.merge(literals) && original.merge(hit) && m.importScripts(original)); // Shared delimiter bytes agree.
   assert(m.registerExternalRam(Heap,heap.data(),uint32_t(heap.size())) && m.registerRam(PrimaryHeap,{0x88,0,0,0}));
   assert(m.writeWord(Heap,0) && m.writeWord(Heap+4,uint32_t(heap.size())) && m.writeHalf(Heap+8,0));
@@ -44,6 +49,11 @@ struct Fixture {
   FieldMapHeapOwner owner;owner.user=this;owner.address=Heap;owner.bytes=uint32_t(heap.size());owner.backing=heap.data();
   owner.flushProcess=[](void*,uint8_t*,uint32_t){return true;};owner.flushBlock=[](void*,uint32_t){};owner.systemCall=[](void*){};
   owner.sdk=[](void* u,FieldMapSourceCall& q){return static_cast<Fixture*>(u)->child(q);};
+  if(withLights){
+   constexpr uint32_t LightHeap=0x8e000000; // Separate process heap0 allocation.
+   FieldLightHeapServices process;process.flush=[](void*,uint8_t*,uint32_t){return true;};
+   lights=FieldLightRegistryOwner::bind(m,LightHeap,process);assert(lights && lights->initialize(lightInit));owner.lights=lights.get();
+  }
   maps=FieldMapSourceOwner::bind(m,ProcessWork,MapStack,owner);assert(maps);
  }
  bool child(FieldMapSourceCall& q){
@@ -62,6 +72,7 @@ struct Fixture {
   case 0x8026a0b8:{const auto format=text(m,a[1]);std::string result;
    if(format=="./m/%s/d")result="./m/"+text(m,a[2])+"/d";
    else if(format=="./m/%s/t")result="./m/"+text(m,a[2])+"/t";
+   else if(format=="./m/%s/c")result="./m/"+text(m,a[2])+"/c";
    else{assert(format=="%s/%s");result=text(m,a[2])+"/"+text(m,a[3]);}
    text(m,a[0],result.c_str());q.result=uint32_t(result.size());return true;}
   default:
@@ -115,6 +126,39 @@ void originalMapLoadPrefix(const char* root){
  assert(half(m,FileTable+FieldMapFileOwner::SlotBytes+0x90)&8);
  for(unsigned i=0;!f.files->pump() && i<100000;++i){}
  assert(!half(m,FileTable+0x90) && !half(m,FileTable+FieldMapFileOwner::SlotBytes+0x90));
+}
+void originalMapLoadLights(const char* root){
+ using namespace FieldLightRegistrySource;
+ Fixture f(root,true);auto& m=f.vm.memory;FieldMapRequest request;
+ assert(f.run(request,Init));text(m,Inputs,"gor_00");
+ assert(m.withRawRamAccess([&](EventAddressSpace::RawRamAccess&){return f.maps->current();}));
+ f.drawSync=f.invalidate=f.enableEstimate=true;
+ for(unsigned n=0;!f.frontier && n<100000;++n)assert(!f.maps->invoke(request,Load,{Inputs}));
+ constexpr uint32_t CameraLoadRoad=0x8000f36c;
+ assert(f.frontier==CameraLoadRoad && f.frontierArguments[0]==4);
+ assert(text(m,f.frontierArguments[1])=="./m/gor_00/c");
+ assert(word(m,ProcessWork)==0 && f.maps->pending() && f.estimates==98);
+ assert(word(m,PaperAmbient)==0x707070ff && word(m,CraftAmbient)==0x707070ff);
+ const auto fog=word(m,ProcessWork+0x9c);
+ if(fog){for(unsigned n=0;n<5;++n)assert(word(m,ProcessWork+0x24+4*n)==word(m,fog+4*n));}
+ else{assert(!word(m,ProcessWork+0x24) && !word(m,ProcessWork+0x28));assert(word(m,ProcessWork+0x2c)==word(m,0x8041f930) && word(m,ProcessWork+0x30)==word(m,0x8041f930) && word(m,ProcessWork+0x34)==word(m,0x80429520));}
+ assert(bool(half(m,ProcessWork+4)&1)==bool(word(m,ProcessWork+0x24)));
+ const auto bank=f.lights->bankAddress(0);
+ for(unsigned n=0;n<harbor_light_fixture::Lights.size();++n){
+  const auto& golden=harbor_light_fixture::Lights[n];const auto a=bank+n*RecordBytes;
+  assert(text(m,a+Name)==golden.name && half(m,a)==(n?0x1001:0x8001));
+  for(unsigned axis=0;axis<3;++axis)assert(word(m,a+Position+4*axis)==golden.position[axis]);
+  assert(word(m,a+Rgba)==golden.color && word(m,a+Scalar0)==0 && word(m,a+Scalar1)==golden.scalar1);
+ }
+ assert(!half(m,bank+5*RecordBytes));
+ MapLightQuery query;query.function=0x8001bad0;query.maximum=8;uint32_t pending=0;
+ assert(f.lights->query(query,pending) && query.count==4 && !pending);
+ for(unsigned n=0;n<4;++n)assert(query.output[n]==f.lights->record(bank+(n+1)*RecordBytes));
+ const auto pc=f.maps->pendingInstruction();for(unsigned n=0;n<4;++n)assert(!f.maps->invoke(request,Load,{0}));
+ assert(f.maps->pendingInstruction()==pc && !half(m,bank+5*RecordBytes) && word(m,ProcessWork)==0);
+ // Same-address replacement is not publication by this process owner.
+ std::vector<uint8_t> replacement(AmbientBytes);assert(m.unregisterExternalRam(CraftAmbient) && m.registerExternalRam(CraftAmbient,replacement.data(),AmbientBytes));
+ assert(!f.maps->current() && !f.maps->invoke(request,Load,{Inputs}));
 }
 void fileOwnerIdentityAndClose(const char* root){
  Fixture f(root);auto& m=f.vm.memory;const auto table=f.files->tableAddress();
@@ -195,8 +239,8 @@ void mapSourceBoundaryContracts(const char* root){
 }
 
 
-void mapUnloadOwnership(const char* root){
- Fixture f(root);auto& m=f.vm.memory;FieldMapRequest request;assert(f.run(request,Init));
+void mapUnloadOwnership(const char* root,bool withLights=false){
+ Fixture f(root,withLights);auto& m=f.vm.memory;FieldMapRequest request;assert(f.run(request,Init));
  std::vector<uint32_t> allocations;
  for(unsigned i=0;i<6;++i){const auto p=f.run(request,AllocateTail,{Heap,64});assert(p && *p);allocations.push_back(*p);}
  const auto work=f.maps->workAddress();assert(m.writeWord(work,1));
@@ -206,11 +250,16 @@ void mapUnloadOwnership(const char* root){
  // Borrowed T must survive unload; descriptor1 alone is then deleted.
  assert(m.writeWord(Archives+0x28+0x20,allocations[4]-16) && m.writeWord(Archives+0x28+0x24,16));
  assert(m.writeWord(Archives,0x11223344) && m.writeWord(Archives+2*0x28,0x55667788));
+ if(withLights){assert(m.writeHalf(f.lights->bankAddress(0),0x1001) && m.writeWord(FieldLightRegistrySource::PaperAmbient,0x123456ff));}
  f.drawSync=true;for(unsigned i=0;!f.frontier && i<1000;++i)assert(!f.maps->invoke(request,Unload));
+ if(withLights)assert(half(m,f.lights->bankAddress(0))==0x1001); // Reset has not been reached.
  assert(f.frontier==0x80018df8 && word(m,work)==1 && !word(m,work+0x154) && !word(m,work+0x164) && !word(m,work+0x16c));
  assert(word(m,work+0x7c)==allocations[3] && half(m,allocations[3]-24)==1);
  f.unloadReceipts=true;assert(f.run(request,Unload));
- assert((f.resets==std::vector<uint32_t>{0x80018df8,0x8001c1d8,0x8019e058,0x8000f310,0x8000e8c0}));
+ if(withLights){
+  assert((f.resets==std::vector<uint32_t>{0x80018df8,0x8019e058,0x8000f310,0x8000e8c0}));
+  assert(!half(m,f.lights->bankAddress(0)) && word(m,FieldLightRegistrySource::PaperAmbient)==0x123456ff);
+ }else assert((f.resets==std::vector<uint32_t>{0x80018df8,0x8001c1d8,0x8019e058,0x8000f310,0x8000e8c0}));
  for(unsigned i=0;i<GroupBytes;++i){uint8_t b=1;assert(m.readByte(work+i,b) && !b);}
  assert(half(m,allocations[4]-24)==1); // Original borrowed archive allocation.
  assert(word(m,Archives)==0x11223344 && word(m,Archives+2*0x28)==0x55667788);
@@ -270,4 +319,4 @@ void distanceServiceContracts(const char* root){
 }
 }
 
-int main(){hitTriangleContracts("romfs");distanceServiceContracts("romfs");mapSourceBoundaryContracts("romfs");originalMapLoadPrefix("romfs");mapUnloadOwnership("romfs");fileOwnerIdentityAndClose("romfs");}
+int main(){mapUnloadOwnership("romfs",true);originalMapLoadLights("romfs");hitTriangleContracts("romfs");distanceServiceContracts("romfs");mapSourceBoundaryContracts("romfs");originalMapLoadPrefix("romfs");mapUnloadOwnership("romfs");fileOwnerIdentityAndClose("romfs");}

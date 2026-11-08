@@ -31,22 +31,24 @@ std::unique_ptr<FieldLightRegistryOwner> FieldLightRegistryOwner::bind(EventAddr
     !map(Presets,reinterpret_cast<uint8_t*>(owner->presets_.data()),uint32_t(sizeof(owner->presets_))) ||
     !map(base,reinterpret_cast<uint8_t*>(owner->banks_[0].data()),BankBytes) ||
     !map(base+BankBytes,reinterpret_cast<uint8_t*>(owner->banks_[1].data()),BankBytes) ||
-    !map(owner->scratchAddress(),owner->scratch_.data(),uint32_t(owner->scratch_.size())))return {};
+    !map(owner->scratchAddress(),owner->scratch_.data(),uint32_t(owner->scratch_.size())) ||
+    !map(CraftAmbient,owner->ambient_.data(),AmbientBytes))return {};
  return owner;
 }
 FieldLightRegistryOwner::~FieldLightRegistryOwner(){
- const std::array<const uint8_t*,5> backing{{descriptors_.data(),reinterpret_cast<const uint8_t*>(presets_.data()),reinterpret_cast<const uint8_t*>(banks_[0].data()),reinterpret_cast<const uint8_t*>(banks_[1].data()),scratch_.data()}};
+ const std::array<const uint8_t*,6> backing{{descriptors_.data(),reinterpret_cast<const uint8_t*>(presets_.data()),reinterpret_cast<const uint8_t*>(banks_[0].data()),reinterpret_cast<const uint8_t*>(banks_[1].data()),scratch_.data(),ambient_.data()}};
  while(mapped_){--mapped_;memory_.unregisterExternalRam(mappings_[mapped_],backing[mapped_]);}
 }
 bool FieldLightRegistryOwner::current() const{
  if(mapped_!=mappings_.size())return false;
- return memory_.withRawRamAccess([&](EventAddressSpace::RawRamAccess& raw){
-  return raw.aliases(Work,descriptors_.data(),uint32_t(descriptors_.size())) &&
-   raw.aliases(Presets,reinterpret_cast<const uint8_t*>(presets_.data()),uint32_t(sizeof(presets_))) &&
-   raw.aliases(bankAddress(0),reinterpret_cast<const uint8_t*>(banks_[0].data()),BankBytes) &&
-   raw.aliases(bankAddress(1),reinterpret_cast<const uint8_t*>(banks_[1].data()),BankBytes) &&
-   raw.aliases(scratchAddress(),scratch_.data(),uint32_t(scratch_.size()));
- });
+ // Identity predicates are also called inside SDK raw borrows. They must
+ // inspect backing without opening a nested borrow.
+ return memory_.hasRamBacking(Work,descriptors_.data(),uint32_t(descriptors_.size())) &&
+   memory_.hasRamBacking(Presets,reinterpret_cast<const uint8_t*>(presets_.data()),uint32_t(sizeof(presets_))) &&
+   memory_.hasRamBacking(bankAddress(0),reinterpret_cast<const uint8_t*>(banks_[0].data()),BankBytes) &&
+   memory_.hasRamBacking(bankAddress(1),reinterpret_cast<const uint8_t*>(banks_[1].data()),BankBytes) &&
+   memory_.hasRamBacking(scratchAddress(),scratch_.data(),uint32_t(scratch_.size())) &&
+   memory_.hasRamBacking(CraftAmbient,ambient_.data(),AmbientBytes);
 }
 bool FieldLightRegistryOwner::owns(uint32_t address,uint32_t size) const{
  for(unsigned group=0;group<2;++group)if(address>=bankAddress(group) && uint64_t(address)+size<=uint64_t(bankAddress(group))+BankBytes)return true;
@@ -184,6 +186,24 @@ std::optional<int32_t> FieldLightRegistryOwner::enterImpl(FieldLightEntryArgumen
  if(!current() || !ready_ || (mapCursor_.active && !mapChild) || (retained && cursor_.operation!=FieldLightOperation::Enter))return {};
  if(!retained && !admitEntry(arguments))return {};
  arguments.scratch=scratchAddress();auto s=services();return enterFieldLight(arguments,s,cursor_);
+}
+bool FieldLightRegistryOwner::service(FieldMapSourceCall& call){
+ if(!accepts(call.function) || !ready())return false;
+ if(mapCall_){
+  if(mapCall_!=&call || call.function!=mapOperands_.function ||
+     call.arguments!=mapOperands_.arguments || call.scalars!=mapOperands_.scalars)return false;
+ }else{mapCall_=&call;mapOperands_=call;}
+ if(call.function==Reinitialize){
+  if(!reset(mapRequest_))return false;
+ }else{
+  const auto& a=mapOperands_.arguments;
+  FieldLightEntryArguments entry{a[0],a[1],a[2],a[3],a[4],a[5],a[6],
+   {mapOperands_.scalars[0],mapOperands_.scalars[1]},scratchAddress()};
+  const auto index=enter(mapRequest_,entry);
+  if(!index)return false;
+  call.result=uint32_t(*index); // Entry index zero is a completed source call.
+ }
+ mapCall_=nullptr;return true;
 }
 bool FieldLightRegistryOwner::loadMapLights(FieldLightRequest& request,uint32_t mapEntry){
  if(!current() || !ready_ || (!mapCursor_.active && cursor_.operation!=FieldLightOperation::Idle))return false;
