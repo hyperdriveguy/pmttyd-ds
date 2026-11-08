@@ -25,6 +25,7 @@ public:
   AnimationFacingBinding(const AnimationFacingBinding &) = delete;
   AnimationFacingBinding &operator=(const AnimationFacingBinding &) = delete;
   bool available() const;
+  // Tests semantic reservation only; availability/lifetime is a separate guard.
   bool owns(uint32_t) const;
   std::optional<uint32_t> poseAddress(int32_t) const;
   AnimationFacingServices services();

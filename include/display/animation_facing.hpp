@@ -2,6 +2,8 @@
 #include "battle_audience_matrix.hpp"
 #include <optional>
 namespace ttyd {
+// Fixed camera/atan2 ABI: argument4 is the camera selector; scalars carry
+// negative X/Z deltas. word is camera token,number the double atan2 result.
 struct AnimationFacingCall {
   uint32_t function = 0, argument = 0, word = 0;
   std::array<float, 2> scalars{};
@@ -28,6 +30,8 @@ struct AnimationSignedWrapCursor {
   AnimationFacingServices owner;
   float left = 0, right = 0, value = 0, turn = 0, bound = 0;
 };
+// Durable copied operands and sub-cursors. This owns no producer/VM lifetime;
+// abandoning it cannot undo acknowledged pose writes or SDK child effects.
 struct AnimationFacingCursor {
   bool active = false, inner = false, pending = false, rear = false;
   uint32_t pose = 0, phase = 0;

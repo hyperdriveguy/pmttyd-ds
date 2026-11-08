@@ -3,6 +3,8 @@
 #include "event_address_space.hpp"
 #include <functional>
 namespace ttyd {
+// Same-VM node and SDK owners; no per-node heap/VM/model construction.
+// current is pure/non-reentrant and protects the source producer's lifetime.
 class AnimationNodeBinding {
 public:
  AnimationNodeBinding(EventAddressSpace&,std::function<bool()> current);

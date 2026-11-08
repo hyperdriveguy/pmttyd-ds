@@ -5,6 +5,8 @@
 #include <cstring>
 namespace ttyd {
 namespace {
+// Native semantic reservation mirrors 13 camera slots of280hex bytes.
+// Only field camera4's four heading lanes are exposed; no guest allocation.
 constexpr uint32_t Stride = 0x280, Size = 13 * Stride;
 uint32_t bits(float f) {
   uint32_t w;
@@ -31,6 +33,9 @@ std::unique_ptr<AnimationFacingBinding> AnimationFacingBinding::bind(
     return {};
   return b;
 }
+// Guard ENTIRE reservation as unmapped on every boundary, plus current pass
+// and same pool/VM aliases. Camera4 requires a published perspective field
+// view: mode2 is unavailable. These are native admission checks,not source gates.
 bool AnimationFacingBinding::available() const {
   if (!current_() || !addresses_.unmapped(addresses_.base, Size) ||
       !poses_.aliases(*pool_, memory_))
@@ -41,6 +46,8 @@ bool AnimationFacingBinding::available() const {
 bool AnimationFacingBinding::owns(uint32_t a) const {
   return a >= addresses_.base && uint64_t(a) < uint64_t(addresses_.base) + Size;
 }
+// Source array has 256 slots; this native admission adds no active/resource
+// test. Upstream pose factory/draw owner still owns those lifetime conditions.
 std::optional<uint32_t> AnimationFacingBinding::poseAddress(int32_t h) const {
   if (!available() || h < 0 || h >= 256)
     return {};
@@ -49,6 +56,8 @@ std::optional<uint32_t> AnimationFacingBinding::poseAddress(int32_t h) const {
 std::optional<uint32_t> AnimationFacingBinding::word(uint32_t a) const {
   if (!available())
     return {};
+  // Reserved tokens NEVER fall through to VM RAM. Only slot4 offsets
+  // c/14 (eye X/Z),18/20 (target X/Z) have a read meaning; others hold.
   if (owns(a)) {
     const uint32_t offset = a - addresses_.base;
     if (offset / Stride != 4)
@@ -78,6 +87,7 @@ AnimationFacingServices AnimationFacingBinding::services() {
   s.word = [](void *u, uint32_t a) {
     return static_cast<AnimationFacingBinding *>(u)->word(a);
   };
+  // Camera tokens are read-only semantic lanes, never writable aliases.
   s.store = [](void *u, uint32_t a, uint32_t w) {
     auto &b = *static_cast<AnimationFacingBinding *>(u);
     return b.available() && !b.owns(a) && b.memory_.writeWord(a, w);
@@ -92,12 +102,16 @@ AnimationFacingServices AnimationFacingBinding::services() {
       q.word = b.addresses_.base + 4 * Stride;
       return true;
     }
+    // Native atan2(double X,double Z),then caller narrows at its source point.
+    // This is a libm adapter,not measured original FPSCR/NaN-payload parity.
     if (q.function == 0x802725a0) {
       q.number = std::atan2(double(q.scalars[0]), double(q.scalars[1]));
       return true;
     }
     return false;
   };
+  // Reuse explicit finite SDK math adaptation; unavailable requests retain
+  // their source child. No identity-matrix or successful empty fallback.
   s.matrix = [](void *u, BattleAudienceMatrixRequest &q) {
     if (!static_cast<AnimationFacingBinding *>(u)->available())
       return false;

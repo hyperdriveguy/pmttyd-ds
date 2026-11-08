@@ -239,3 +239,7 @@ retained interpolation publications.
 [Animation parent ownership](animation-parent-ownership.md) explains Main/Inner
 capture boundaries, ring and flush publications, live VM providers and optional
 raw-copy admission.
+
+[Animation facing and nodes](animation-facing-nodes.md) explains camera samples,
+paper angle updates, sparse node fields, asymmetric scale gates and retained
+SDK scratch/dispatch ownership.

@@ -5,10 +5,18 @@ namespace {
 float real(uint32_t w){float f;std::memcpy(&f,&w,4);return f;}uint32_t bits(float f){uint32_t w;std::memcpy(&w,&f,4);return w;}
 bool same(const AnimationGroupNode& a,const AnimationGroupNode& b){return a.node==b.node && a.joint==b.joint && !std::memcmp(a.parent.data(),b.parent.data(),12);}
 bool same(const AnimationSourceNodeServices& a,const AnimationSourceNodeServices& b){return a.user==b.user && a.word==b.word && a.store==b.store && a.number==b.number && a.matrix==b.matrix;}
+// Exact compiled branch PCs for 16 Joint/8 Transform masks, compared against
+// LIVE guest jump tables after stack publication. Unknown captured targets hold
+// at a native implementation frontier; changing the old table cannot un-take it.
 constexpr uint32_t JointTargets[]{0x8003e5b8,0x8003e5c8,0x8003e5d0,0x8003e5d8,0x8003e5f0,0x8003e5f8,0x8003e610,0x8003e628,0x8003e650,0x8003e658,0x8003e670,0x8003e688,0x8003e6b0,0x8003e6c8,0x8003e6f0,0x8003e718};
 constexpr uint32_t TransformTargets[]{0x8003ebc8,0x8003ebd8,0x8003ebe0,0x8003ebe8,0x8003ec00,0x8003ec08,0x8003ec20,0x8003ec38};
 // Durable scratch: A0 R1 Q/offR2 S3 T4 negSP5 posSP6 offS7 negRP8 posRP9.
 AnimationSourceMatrixCall op(uint32_t fn,uint32_t out,uint32_t a=0,uint32_t b=0){AnimationSourceMatrixCall q;q.function=fn;q.output.value=out;q.left.value=a;q.right.value=b;return q;}
+// Presence masks: Joint1=T,2=parent compensation,4=own scale,8=rotation;
+// Transform1=T,2=scale/pivot,4=rotation/pivot. Preserve product grouping and
+// local output aliases; these are original cases,not a generic matrix reorder.
+// SDK identities:dd04 Identity,dd64 Concat,e230 Trans,e2b0 Scale,dff0 RotRad
+// (addresses80290000+suffix). A dispatch needs at most 3 retained SDK calls.
 void plan(AnimationSourceNodeCursor& c){
  c.count=c.step=0;auto id=[&]{c.dispatch[c.count++]=op(0x8029dd04,0);c.selected=0;};
  auto cat=[&](uint32_t a,uint32_t b,uint32_t out){c.dispatch[c.count++]=op(0x8029dd64,out,a,b);c.selected=out;};
@@ -19,6 +27,9 @@ void plan(AnimationSourceNodeCursor& c){
  }else switch(c.mask){case 0:id();break;case 1:c.selected=4;break;case 2:c.selected=3;break;case 3:cat(4,3,0);break;case 4:c.selected=1;break;case 5:cat(4,1,0);break;case 6:cat(1,3,0);break;case 7:cat(4,1,0);cat(0,3,4);break;}
 }
 }
+// Guest addresses/field offsets are hex; counts/strides are decimal. Fixed
+// Joint/Transform parents with captured float bits and native visit budget.
+// Same node/kind/parent BITS and providers must resume through every hold.
 bool resumeAnimationSourceNode(const AnimationGroupNode& input,const AnimationSourceNodeServices& s,AnimationSourceNodeCursor& c,unsigned visits){
  if(!visits)return false;
  if(!c.active){c={};c.active=true;c.input=input;c.owner=s;}
@@ -26,12 +37,17 @@ bool resumeAnimationSourceNode(const AnimationGroupNode& input,const AnimationSo
  auto read=[&](uint32_t a,uint32_t& v){auto w=s.word?s.word(s.user,a):std::nullopt;if(!w)return false;v=*w;return true;};
  auto store=[&](uint32_t a,uint32_t v){return s.store && s.store(s.user,a,v);};
  auto num=[&](AnimationNodeNumber kind,uint32_t a,uint32_t b,uint32_t& v){auto w=s.number?s.number(s.user,kind,a,b):std::nullopt;if(!w)return false;v=*w;return true;};
+ // Negate pivot components by sign-bit XOR, preserving signed zero/NaN bits.
  auto triple=[&](unsigned i,bool neg=false){return std::array<float,3>{real(c.node[i]^(neg?0x80000000u:0)),real(c.node[i+1]^(neg?0x80000000u:0)),real(c.node[i+2]^(neg?0x80000000u:0))};};
  auto any=[&](unsigned i,uint32_t literal){return real(c.node[i])!=real(literal) || real(c.node[i+1])!=real(literal) || real(c.node[i+2])!=real(literal);};
  auto call=[&](AnimationSourceMatrixCall q){if(!c.pending){c.request=q;c.pending=true;}if(!s.matrix || !s.matrix(s.user,c.request,c.locals))return false;c.pending=false;return true;};
  auto xyz=[&](uint32_t fn,unsigned out,unsigned i,bool neg=false){auto q=op(fn,out);q.xyz=triple(i,neg);return call(q);};
  auto advanceRotation=[&]{if(++c.rotation==(c.input.joint?6u:3u))c.phase=c.input.joint?100:90;else c.phase=70;};
  for(unsigned visit=0;visit<visits;++visit)switch(c.phase){
+ // Interleaved capture:translation X,live ZERO/TWO,primary angles doubled
+ // through numeric children,translation Y/Z,scale. Joint then captures
+ // secondary XYZ (12 fields); Transform captures pivots/offsets (21 fields)
+ // while skipping24/28/2c. All reached reads precede first SDK matrix child.
  case 0:if(!read(c.input.node,c.node[0]))return false;++c.phase;break;
  case 1:if(!read(0x8041fb28,c.zero))return false;++c.phase;break;
  case 2:if(!read(0x8041fb64,c.two))return false;++c.phase;break;
@@ -47,6 +63,10 @@ bool resumeAnimationSourceNode(const AnimationGroupNode& input,const AnimationSo
  case 14:if(!read(c.input.node+c.capture*4,c.node[c.capture]))return false;if(++c.capture==(c.input.joint?12u:24u))c.phase=20;break;
  case 20:c.phase=any(0,c.zero)?21:30;break;
  case 21:if(!xyz(0x8029e230,4,0))return false;c.mask|=1;c.phase=30;break;
+ // Joint parent/own-scale gates deliberately use last-axis EQUALITY:
+ // x!=ONE || y!=ONE || z==ONE. Allones admits;Z-only change can skip.
+ // Parent any-zero falls back to ONE for ALL axes;otherwise fresh ONE/parent.
+ // Transform's own-scale gate below instead uses ordinary any !=ONE.
  case 30:if(!read(0x8041fb24,c.literal))return false;c.phase=c.input.joint?31:50;break;
  case 31:c.phase=c.input.parent[0]!=real(c.literal) || c.input.parent[1]!=real(c.literal) || c.input.parent[2]==real(c.literal)?32:40;break;
  case 32:if(!read(0x8041fb28,c.literal))return false;c.phase=c.input.parent[0]==real(c.literal) || c.input.parent[1]==real(c.literal) || c.input.parent[2]==real(c.literal)?33:34;break;
@@ -59,6 +79,9 @@ bool resumeAnimationSourceNode(const AnimationGroupNode& input,const AnimationSo
  case 42:if(!xyz(0x8029e2b0,3,3))return false;c.mask|=4;c.phase=63;break;
  case 50:c.phase=any(3,c.literal)?51:52;break;
  case 51:if(!xyz(0x8029e2b0,3,3))return false;c.mask|=2;++c.phase;break;
+ // Scale pivot node3c/40/44 gates its ENTIRE offset54/58/5c block.
+ // Zero pivot suppresses even nonzero offset. Present scale performs three
+ // Trans calls then offset*positivePivot*scale*negativePivot with exact aliases.
  case 52:if(!read(0x8041fb28,c.literal))return false;c.phase=any(15,c.literal)?(c.mask&2?55:53):63;break;
  case 53:if(!read(0x8041fb28,c.literal))return false;c.phase=any(21,c.literal)?54:63;break;
  case 54:if(!xyz(0x8029e230,3,21))return false;c.mask|=2;c.phase=63;break;
@@ -68,12 +91,17 @@ bool resumeAnimationSourceNode(const AnimationGroupNode& input,const AnimationSo
  case 58:if(!call(op(0x8029dd64,0,7,6)))return false;++c.phase;break;
  case 59:if(!call(op(0x8029dd64,0,0,3)))return false;++c.phase;break;
  case 60:if(!call(op(0x8029dd64,3,0,5)))return false;c.phase=63;break;
+ // Rotation Identity is unconditional. Joint:secondary Z/Y/X,then doubled
+ // primary Z/Y/X;Transform:doubled primary Z/Y/X only. Fresh ZERO each angle;
+ // degree factor8041fb2c only if admitted. Axis 122/121/120 are ASCII z/y/x.
  case 63:if(!call(op(0x8029dd04,1)))return false;c.rotation=0;c.phase=70;break;
  case 70:if(!read(0x8041fb28,c.literal))return false;c.angle=c.node[c.input.joint && c.rotation<3?11-c.rotation:8-(c.input.joint?c.rotation-3:c.rotation)];if(real(c.angle)==real(c.literal))advanceRotation();else c.phase=71;break;
  case 71:if(!read(0x8041fb2c,c.literal))return false;++c.phase;break;
  case 72:if(!num(AnimationNodeNumber::Multiply,c.literal,c.angle,c.radians))return false;++c.phase;break;
  case 73:{auto q=op(0x8029dff0,0);q.axis=122-c.rotation%3;q.radians=real(c.radians);if(!call(q))return false;++c.phase;break;}
  case 74:if(!call(op(0x8029dd64,1,1,0)))return false;c.mask|=c.input.joint?8:4;advanceRotation();break;
+ // Rotation pivot30/34/38 and offset48/4c/50 use the same suppression
+ // rule,with distinct output-alias cases. Do not fold adjacent translations.
  case 90:if(!read(0x8041fb28,c.literal))return false;c.phase=any(12,c.literal)?(c.mask&4?93:91):100;break;
  case 91:if(!read(0x8041fb28,c.literal))return false;c.phase=any(18,c.literal)?92:100;break;
  case 92:if(!xyz(0x8029e230,1,18))return false;c.mask|=4;c.phase=100;break;
@@ -83,12 +111,17 @@ bool resumeAnimationSourceNode(const AnimationGroupNode& input,const AnimationSo
  case 96:if(!call(op(0x8029dd64,0,2,9)))return false;++c.phase;break;
  case 97:if(!call(op(0x8029dd64,1,0,1)))return false;++c.phase;break;
  case 98:if(!call(op(0x8029dd64,1,1,8)))return false;c.phase=100;break;
+ // Modeling level8041e89c increments/stores;pointer8041e8a0 becomes
+ // stackBase803d8e70+48*level BEFORE table read. Guest arithmetic wraps32.
+ // Tables80306698(Joint)/803066d8(Transform) are mutable source words.
  case 100:if(!read(0x8041e89c,c.level))return false;++c.level;++c.phase;break;
  case 101:if(!store(0x8041e89c,c.level))return false;++c.phase;break;
  case 102:if(!store(0x8041e8a0,0x803d8e70+48*c.level))return false;++c.phase;break;
  case 103:if(!read((c.input.joint?0x80306698:0x803066d8)+4*c.mask,c.target))return false;++c.phase;break;
  case 104:if(c.target!=(c.input.joint?JointTargets[c.mask]:TransformTargets[c.mask]))return false;plan(c);++c.phase;break;
  case 105:if(c.step<c.count){if(!call(c.dispatch[c.step]))return false;++c.step;}else c.phase=110;break;
+ // Reload level AFTER all local SDK effects. Concat previous guest world
+ // with selected local ->current guest world. No pointer republish or pop here.
  case 110:if(!read(0x8041e89c,c.level))return false;++c.phase;break;
  case 111:{auto q=op(0x8029dd64,0);q.left={true,0x803d8e70+48*(c.level-1)};q.right.value=c.selected;q.output={true,0x803d8e70+48*c.level};if(!call(q))return false;c.active=false;return true;}
  default:return false;
