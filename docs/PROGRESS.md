@@ -17306,3 +17306,40 @@ The documentation goal remains active. Next: outer Main/Inner ownership,
 time/replay bindings, facing/node/draw providers, later changed source and
 remaining native/tool modules. Whole-file Trio numeric coverage and broad
 port completeness remain unproven; hash inventories alone do not prove them.
+
+### Animation parent and VM binding code documentation
+
+Added 101 inline comment lines across eight implementation/header files for
+animation_main, animation_inner, animation_main_time_binding and
+animation_main_replay_binding. Explained guest pointer/index conversions,
+GQR registers and load types, captures across linked/late Main, pass shifts,
+alpha/map/GX enums, ring ownership, flush/traversal ordering, guarded numeric
+services, synchronous bias reads and narrow optional bulk-copy admission. Added
+and indexed docs/code/animation-parent-ownership.md. Code/docs commit:
+`b3a6138c`. All eight files preserve executable tokens and string literals.
+
+Validation: existing animation_main, animation_inner, animation_main_time and
+animation_main_replay host fixtures were compiled with the four annotated
+implementation objects linked first and all passed. Fixtures include source
+load/store/child holds, ring/late Main, producer identity and actual-resource
+checks. Non-scoped headers/core/ROMFS came from the previous fully validated
+animation-memory-selection private snapshot. All eight scoped executable
+streams and four fixture sources were first proven equivalent to it. A coherent
+private include tree overlaid the four annotated headers; no original supporting
+files were changed. Four ARM C++17 syntax checks passed, without native linking
+or a hardware claim. Ten live/private hashes, 126 local links, 546 private header
+hashes, supporting core hash and 114 accepted product hashes passed final audits.
+No tests were added.
+
+Full make test/all were not repeated for this comments/prose-only batch; there
+are no executable changes. Earlier full-suite/build evidence retains its own
+snapshot scope, and these fixtures do not validate concurrent runtime changes.
+No assets/imports/conversions, ISO writes, story changes or emulator runs. Exact
+commands, logs, hashes, documented copies and scoped patch are retained under
+artifacts/animation-parent-bindings-code-documentation-validation/.
+
+Goal remains active. Next: paper facing/node providers, draw wrappers/native
+Main and Inner ownership, later changed implementation files and remaining
+native/tool modules. Whole-file Trio numeric synthesis and broad comment
+coverage still need review; hash inventories and these scoped fixtures do not
+prove documentation or remake completion.
