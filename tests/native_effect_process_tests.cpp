@@ -10,7 +10,7 @@ constexpr uint32_t Manager=0x8041e908,ManagerPointer=0x80415ee0,RecordBytes=40,P
 constexpr uint32_t FukidashiMain=0x80132ea8;
 uint32_t word(EventAddressSpace& m,uint32_t a){uint32_t n=0;assert(m.readWord(a,n));return n;}
 void put(EventAddressSpace& m,uint32_t a,uint32_t n){assert(m.writeWord(a,n));}
-EventNativePlatform platform(){EventNativePlatform p;p.flushBlock=[](void*,uint32_t){};p.systemCall=[](void*){};p.truncate=[](void*,float f){return int32_t(f);};return p;}
+EventNativePlatform platform(){EventNativePlatform p;p.flushBlock=[](void*,uint32_t){};p.systemCall=[](void*){};p.truncate=[](void*,float f){return int32_t(f);};p.subtractDouble=[](void*,double a,double b){volatile double v=a-b;return v;};p.roundDoubleFloat=[](void*,double v){volatile float f=float(v);return f;};return p;}
 struct F {
  std::shared_ptr<NativeFieldAnimation> animation;std::shared_ptr<NativeUiStartup> ui;std::shared_ptr<NativeEffectProcess> effects;
  F(){animation=NativeFieldAnimation::create("romfs",NativeFileCache::create(),platform());assert(animation&&animation->ready());ui=NativeUiStartup::create(animation,"romfs");assert(ui&&ui->resumeFont());effects=NativeEffectProcess::create(ui,"romfs");assert(effects&&effects->current()&&!effects->poolReady());}
@@ -69,6 +69,26 @@ void heldCallbacksAndExactRelease(){
  // cleanup; source auto-release frees only exact requested context1 payloads.
  assert(f.effects->retire()&&!f.effects->current()&&!f.effects->main(&f,2,update));assert(!NativeEffectProcess::create(f.ui,"romfs"));
 }
+void actualPrimaryAndN64Textures(){
+ F f;assert(f.ui->resumeWindow()&&f.effects->initialize());auto&m=f.memory();
+ assert(!f.effects->texturesReady()&&f.effects->beginTextures()&&f.effects->busy());
+ const auto primary=word(m,Manager+8),n64=word(m,0x8041ecd0);
+ assert(primary&&n64&&primary!=n64&&word(m,Manager+0xc)==0&&word(m,0x8041ecd4)==0);
+ put(m,Manager+0xc,1);put(m,0x8041ecd4,1);
+ assert(!f.effects->texturesReady()&&f.effects->busy()); // Source words cannot retire native jobs.
+ put(m,Manager+0xc,0);put(m,0x8041ecd4,0);
+ assert(f.effects->beginTextures()&&word(m,Manager+8)==primary&&word(m,0x8041ecd0)==n64);
+ assert(!f.effects->pumpTextures(1)&&!f.effects->texturesReady());
+ assert(!f.effects->pumpTextures(266784-1)&&word(m,Manager+0xc)==1&&word(m,0x8041ecd4)==0);
+ assert(word(m,primary)==0x0020af30&&word(m,primary+4)==118&&word(m,primary+8)>primary);
+ assert(f.effects->pumpTextures(235776)&&f.effects->texturesReady()&&!f.effects->busy());
+ assert(word(m,n64+4)==151&&word(m,n64+8)>n64&&word(m,0x8041ecd4)==1);
+ assert(f.effects->beginTextures()&&f.effects->pumpTextures(0)&&word(m,Manager+8)==primary);
+ // Equal copied source data is not the admitted backing lifetime.
+ std::vector<uint8_t>copy(12);for(unsigned i=0;i<copy.size();++i)assert(m.readByte(0x802c1f38+i,copy[i]));
+ assert(m.unregisterRam(0x802c1f38)&&m.registerRam(0x802c1f38,std::move(copy)));
+ assert(!f.effects->current()&&!f.effects->texturesReady()&&!f.effects->pumpTextures(1));
+}
 void publishedFilenameUsesUnsignedBytes(){
  auto files=NativeFileCache::create();const std::string name="a/"+std::string(1,char(0xe9));
  assert(files->stage(name,0,{1,2,3,4}));EventNativeRuntime vm{0x81000000,{}};assert(files->bind(vm.memory));
@@ -94,4 +114,4 @@ void replacedColdStorageAndMissingUpdate(){
  assert(!replaced.effects->current()&&!replaced.effects->initialize()&&!replaced.effects->constructionServices().memory.word);
 }
 }
-int main(){actualInitAndFileDriver();heldCallbacksAndExactRelease();publishedFilenameUsesUnsignedBytes();unsupportedLanguageRetainsRealFilename();replacedColdStorageAndMissingUpdate();}
+int main(){actualPrimaryAndN64Textures();actualInitAndFileDriver();heldCallbacksAndExactRelease();publishedFilenameUsesUnsignedBytes();unsupportedLanguageRetainsRealFilename();replacedColdStorageAndMissingUpdate();}

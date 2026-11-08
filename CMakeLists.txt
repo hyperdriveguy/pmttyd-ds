@@ -3179,3 +3179,9 @@ add_test(NAME native_effect_process COMMAND native_effect_process_tests)
 set_tests_properties(native_effect_process PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 
 target_sources(ttyd_core PRIVATE source/field/field_camera_road_owner.cpp)
+
+# Original primary/N64 effect texture setup and actual native DVD ownership.
+target_sources(ttyd_core PRIVATE source/effect/source_effect_texture_setup.cpp source/effect/native_effect_textures.cpp)
+add_executable(source_effect_texture_setup_tests tests/source_effect_texture_setup_tests.cpp)
+target_link_libraries(source_effect_texture_setup_tests PRIVATE ttyd_core)
+add_test(NAME source_effect_texture_setup COMMAND source_effect_texture_setup_tests)

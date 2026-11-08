@@ -37,6 +37,9 @@ public:
  bool main(const void* owner,uint64_t visit,const NativeEffectUpdate&);
  bool mainPending()const;
  bool busy()const;
+ bool beginTextures(); // Original primary + mandatory N64 job admission.
+ bool pumpTextures(uint32_t byteBudget); // Independent actual DVD callbacks.
+ bool texturesReady()const;
  bool pumpFiles(uint32_t byteBudget); // Native cooperative IO policy, not source timing.
  bool autoRelease(uint32_t exactContext,const NativeEffectRetirement&);
  // Only available after Init. Borrowed callbacks outlive all held constructors;

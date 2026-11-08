@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "segments": [
+    {
+      "address": 2150375224,
+      "bytes": "6566666563742e74706c0000"
+    },
+    {
+      "address": 2150375236,
+      "bytes": "25732f652f25732f6566666563742e74706c0000"
+    },
+    {
+      "address": 2150611708,
+      "bytes": "6566666563745f6e36342e74706c0000"
+    },
+    {
+      "address": 2150611724,
+      "bytes": "25732f652f25732f6566666563745f6e36342e74706c0000"
+    },
+    {
+      "address": 2151832328,
+      "bytes": "6a70000075730000"
+    }
+  ],
+  "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+}

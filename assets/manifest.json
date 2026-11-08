@@ -2,6 +2,27 @@
   "schema": 1,
   "assets": [
     {
+      "id": "original/effects/primary-memory",
+      "kind": "event",
+      "source": "assets/original/effects/primary/memory.json",
+      "output": "effect-primary/memory.pmevt",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/effects/primary-effect.tpl",
+      "kind": "pack",
+      "source": "assets/original/effects/primary/effect.tpl",
+      "output": "effect-primary/effect.tpl",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/effects/primary-effect_n64.tpl",
+      "kind": "pack",
+      "source": "assets/original/effects/primary/effect_n64.tpl",
+      "output": "effect-primary/effect_n64.tpl",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
       "id": "original/maps/harbor-camera-road/c",
       "kind": "pack",
       "source": "assets/original/maps/harbor-camera-road/c.bin",
