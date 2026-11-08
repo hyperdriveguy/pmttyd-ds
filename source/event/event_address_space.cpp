@@ -1,9 +1,26 @@
 #include "event_address_space.hpp"
+#include <algorithm>
+#include <iterator>
 
 // Original32-bit big-endian memory facade: live entry/context/runtime/GP
 // fields precede RAM. 0x100000000 is the exclusive32-bit address ceiling.
 // Byte/half/word aliases update the same semantic state; this is not host RAM.
 namespace ttyd {
+namespace {
+// Guest mappings do not overlap. Keep both stores sorted through every
+// registration/import/extraction so each byte/identity lookup is logarithmic.
+// This index is the actual region order, not a retained pointer/value cache.
+template<typename Regions> auto regionAt(Regions& regions,uint32_t address){
+ const auto after=std::upper_bound(regions.begin(),regions.end(),address,
+  [](uint32_t key,const auto& region){return key<region.base;});
+ return after==regions.begin()?nullptr:&*std::prev(after);
+}
+template<typename Regions,typename Region> void insertRegion(Regions& regions,Region region){
+ const auto at=std::lower_bound(regions.begin(),regions.end(),region.base,
+  [](const auto& existing,uint32_t key){return existing.base<key;});
+ regions.insert(at,std::move(region));
+}
+}
 bool EventAddressSpace::shareRamTo(EventAddressSpace& target,uint32_t a,uint32_t n) const{
  if(!n || &target==this || rawRamBorrowed_ || target.rawRamBorrowed_)return false;
  const auto* bytes=rawRamSpan(a,n);return bytes && target.registerExternalRam(a,const_cast<uint8_t*>(bytes),n);
@@ -23,16 +40,16 @@ bool EventAddressSpace::readByte(uint32_t a,uint8_t& v) const {
     if(rawRamCache_)if(const auto* p=rawRamSpan(a,1)){v=*p;return true;}
     if(entries_.readByte(a,v) || contexts_.readByte(a,v) || runtime_.readByte(a,v) || gp_.readByte(a,v))return true;
     if(gp_.languageAliasSpan(a,1))return false;
-    for(const auto& r:ram_)if(a>=r.base && uint64_t(a)-r.base<r.bytes.size()) {v=r.bytes[a-r.base];return true;}
-    for(const auto& r:external_)if(a>=r.base && uint64_t(a)-r.base<r.size){v=r.bytes[a-r.base];return true;}
+    if(const auto* r=regionAt(ram_,a))if(uint64_t(a)-r->base<r->bytes.size()) {v=r->bytes[a-r->base];return true;}
+    if(const auto* r=regionAt(external_,a))if(uint64_t(a)-r->base<r->size){v=r->bytes[a-r->base];return true;}
     return false;
 }
 bool EventAddressSpace::writeByte(uint32_t a,uint8_t v) {
     if(rawRamCache_)if(auto* p=rawRamSpan(a,1)){*p=v;return true;}
     if(entries_.writeByte(a,v) || contexts_.writeByte(a,v) || runtime_.writeByte(a,v) || gp_.writeByte(a,v))return true;
     if(gp_.languageAliasSpan(a,1))return false;
-    for(auto& r:ram_)if(a>=r.base && uint64_t(a)-r.base<r.bytes.size()) {r.bytes[a-r.base]=v;return true;}
-    for(auto& r:external_)if(a>=r.base && uint64_t(a)-r.base<r.size){r.bytes[a-r.base]=v;return true;}
+    if(auto* r=regionAt(ram_,a))if(uint64_t(a)-r->base<r->bytes.size()) {r->bytes[a-r->base]=v;return true;}
+    if(auto* r=regionAt(external_,a))if(uint64_t(a)-r->base<r->size){r->bytes[a-r->base]=v;return true;}
     return false;
 }
 // Registration rejects overlaps using readable-byte semantics for sparse
@@ -62,7 +79,7 @@ bool EventAddressSpace::unmappedRange(uint32_t base,uint64_t size) const {
 bool EventAddressSpace::registerExternalRam(uint32_t base,uint8_t* bytes,uint32_t size){
     if(rawRamBorrowed_)return false;
     if(!bytes || !available(base,size))return false;
-    external_.push_back({base,size,bytes});return true;
+    insertRegion(external_,ExternalRegion{base,size,bytes});return true;
 }
 bool EventAddressSpace::unregisterExternalRam(uint32_t base){
     if(rawRamBorrowed_)return false;
@@ -80,7 +97,7 @@ bool EventAddressSpace::unregisterExternalRam(uint32_t base,const uint8_t* expec
 bool EventAddressSpace::registerRam(uint32_t base,std::vector<uint8_t> bytes) {
     if(rawRamBorrowed_)return false;
     if(!available(base,bytes.size()))return false;
-    ram_.push_back({base,std::move(bytes)});return true;
+    insertRegion(ram_,Region{base,std::move(bytes)});return true;
 }
 bool EventAddressSpace::unregisterRam(uint32_t base,std::vector<uint8_t>* bytes) {
     if(rawRamBorrowed_)return false;
@@ -110,7 +127,7 @@ bool EventAddressSpace::extractRam(uint32_t base,uint32_t size,std::vector<uint8
             if(right.bytes.empty())ram_.erase(ram_.begin()+i);
             else ram_[i]=std::move(right);
         } else {
-            ram_[i]=std::move(left);if(!right.bytes.empty())ram_.push_back(std::move(right));
+            ram_[i]=std::move(left);if(!right.bytes.empty())ram_.insert(ram_.begin()+i+1,std::move(right));
         }
         bytes=std::move(removed);return true;
     }
@@ -128,7 +145,7 @@ bool EventAddressSpace::importScripts(const EventScriptAssets& scripts) {
         imported.push_back(std::move(r));
     }
     if(imported.empty())return false;
-    for(auto& r:imported)ram_.push_back(std::move(r));
+    for(auto& r:imported)insertRegion(ram_,std::move(r));
     return true;
 }
 // Direct lanes apply only to one complete RAM region outside every live
@@ -147,8 +164,8 @@ const uint8_t* EventAddressSpace::rawRamSpan(uint32_t a,unsigned size) const {
         if(!entries_.mayMapRange(base,n) && !contexts_.mayMapRange(base,n) && !runtime_.mayMapRange(base,n) && !gp_.mayMapRange(base,n))rawRamCache_->remember(base,n,const_cast<uint8_t*>(bytes));
         else rawRamCache_->remember(a,size,const_cast<uint8_t*>(bytes)+(a-base)); // This exact request already passed semantic exclusion.
     };
-    for(const auto& r:ram_)if(a>=r.base && uint64_t(a)-r.base+size<=r.bytes.size()){remember(r.base,uint32_t(r.bytes.size()),r.bytes.data());return r.bytes.data()+(a-r.base);}
-    for(const auto& r:external_)if(a>=r.base && uint64_t(a)-r.base+size<=r.size){remember(r.base,r.size,r.bytes);return r.bytes+(a-r.base);}
+    if(const auto* r=regionAt(ram_,a))if(uint64_t(a)-r->base+size<=r->bytes.size()){remember(r->base,uint32_t(r->bytes.size()),r->bytes.data());return r->bytes.data()+(a-r->base);}
+    if(const auto* r=regionAt(external_,a))if(uint64_t(a)-r->base+size<=r->size){remember(r->base,r->size,r->bytes);return r->bytes+(a-r->base);}
     return nullptr;
 }
 uint8_t* EventAddressSpace::rawRamSpan(uint32_t a,unsigned size) {

@@ -7,6 +7,7 @@
 #include "field_light_registry_owner.hpp"
 #include "fixtures/harbor_light_golden.hpp"
 #include "game.hpp"
+#include "event_ram_access.hpp"
 #include <cassert>
 #include <cmath>
 #include <cstring>
@@ -55,6 +56,12 @@ void coldInitAndRetention(){
  // Both real SDK allocation lists participate in owner currentness.
  for(unsigned index=0;index<2;++index){const auto d=word(m,SdkDescriptors)+DescriptorBytes*word(m,HeapHandles+4*index),head=word(m,d+AllocatedHead);
   assert(m.writeWord(d+AllocatedHead,0)&&!map->current());assert(m.writeWord(d+AllocatedHead,head)&&map->current());
+  // Existing outer borrows must retain exact, fresh SDK-list reads. A cached
+  // success cannot authorize a later failed proof, nor vice versa.
+  assert(m.withRawRamAccess([&](auto&){
+   if(!map->current()||!m.writeWord(d+AllocatedHead,0)||map->current())return false;
+   return m.writeWord(d+AllocatedHead,head)&&map->current();
+  }));
  }
  assert(bytes(m,Archives,ArchiveBytes)==archive);
 }

@@ -26,7 +26,45 @@ struct Fixture {
     }
 };
 void word(std::vector<uint8_t>& b,unsigned at,uint32_t value) {for(unsigned i=0;i<4;++i)b[at+i]=uint8_t(value>>(24-8*i));}
+void scatteredMappings(){
+    auto f=std::make_unique<Fixture>();auto& m=f->memory;
+    constexpr uint32_t Base=0x70000000,Stride=128,Bytes=32;
+    constexpr unsigned Count=128,PermutationStep=37; // Odd step visits every power-of-two slot.
+    std::array<std::array<uint8_t,Bytes>,Count> external{};
+    for(unsigned order=0;order<Count;++order){const auto index=(order*PermutationStep)%Count;
+        std::vector<uint8_t> owned(Bytes);
+        for(unsigned byte=0;byte<Bytes;++byte){owned[byte]=uint8_t(index+byte);external[index][byte]=uint8_t(0x80^index^byte);}
+        assert(m.registerRam(Base+index*Stride,std::move(owned)));
+        assert(m.registerExternalRam(Base+index*Stride+Stride/2,external[index].data(),Bytes));
+    }
+    const auto check=[&]{
+        for(unsigned index=0;index<Count;++index){const auto base=Base+index*Stride;uint8_t value=0;
+            for(unsigned byte=0;byte<Bytes;++byte){
+                if(!m.readByte(base+byte,value)||value!=uint8_t(index+byte))return false;
+                if(!m.readByte(base+Stride/2+byte,value)||value!=external[index][byte])return false;
+            }
+            if(m.readByte(base+Bytes,value)||m.readByte(base+Stride/2+Bytes,value))return false;
+            if(!m.hasRamBacking(base+Stride/2,external[index].data(),Bytes))return false;
+        }return true;
+    };
+    assert(check()&&m.withRawRamAccess([&](auto&){return check();}));
+    constexpr unsigned SplitIndex=20,SplitOffset=8,SplitBytes=8;
+    const auto split=Base+SplitIndex*Stride+SplitOffset;std::vector<uint8_t> removed;
+    assert(m.extractRam(split,SplitBytes,removed)&&removed.size()==SplitBytes);
+    uint8_t byte=0;assert(!m.readByte(split,byte)&&m.readByte(split-1,byte)&&byte==SplitIndex+SplitOffset-1);
+    assert(m.readByte(split+SplitBytes,byte)&&byte==SplitIndex+SplitOffset+SplitBytes);
+    assert(m.registerExternalRam(split,removed.data(),SplitBytes));
+    uint32_t value=0;assert(m.readWord(split-1,value)&&value==0x1b1c1d1e); // Cross owned/extracted backing.
+    assert(m.unregisterExternalRam(split,removed.data())&&m.registerRam(split,removed)&&check());
+    assert(m.writeWord(split-1,0x12345678)&&m.readWord(split-1,value)&&value==0x12345678);
+    assert(!m.writeWord(Base+Bytes-2,0)&&m.readByte(Base+Bytes-1,byte)&&byte==Bytes-1);
+    assert(m.unregisterExternalRam(Base+Stride/2,external[0].data()));
+    assert(m.registerRam(Base+Stride/2,std::vector<uint8_t>(external[0].begin(),external[0].end())));
+    assert(!m.hasRamBacking(Base+Stride/2,external[0].data(),Bytes));
+    for(unsigned index=1;index<Count;++index)assert(m.unregisterExternalRam(Base+index*Stride+Stride/2,external[index].data()));
+}
 int main(int argc,char** argv) {
+    scatteredMappings();
     // Compare registration against the original readable-byte admission rule,
     // including unaligned edges, runtime holes, RAM and the32-bit ceiling.
     auto probe=std::make_unique<Fixture>();probe->initialize();
@@ -83,6 +121,8 @@ int main(int argc,char** argv) {
     char path[]="/tmp/pm-address-space-XXXXXX";int fd=mkstemp(path);assert(fd>=0);close(fd);
     std::vector<uint8_t> pack(52);for(unsigned i=0;i<8;++i)pack[i]="PMEVT001"[i];word(pack,8,2);word(pack,12,0x80300000);word(pack,16,12);word(pack,20,36);word(pack,24,0x8030000c);word(pack,28,4);word(pack,32,48);word(pack,36,2);word(pack,40,1);word(pack,44,0);word(pack,48,0x12345678);
     FILE* file=std::fopen(path,"wb");assert(file && std::fwrite(pack.data(),1,pack.size(),file)==pack.size());std::fclose(file);assert(assets.load(path));unlink(path);
+    // Import must preserve lookup order between existing lower/higher regions.
+    assert(f.memory.registerRam(0x802ffff0,{1,2,3,4})&&f.memory.registerRam(0x80300020,{5,6,7,8}));
     assert(f.memory.registerRam(0x8030000c,{9,8,7,6}) && !f.memory.importScripts(assets) && !f.memory.readWord(0x80300000,w));assert(f.memory.unregisterRam(0x8030000c) && f.memory.importScripts(assets));
     EventCreationServices creation;creation.user=&f;creation.manager=f.manager();creation.runtime=[](void* p) {return &static_cast<Fixture*>(p)->runtime;};creation.word=[](void* p,uint32_t a) {uint32_t v;assert(static_cast<Fixture*>(p)->memory.readWord(a,v));return v;};
     auto& root=createRootEvent(f.schedule,0x80300000,10,0,creation);assert(root.id==1 && f.runtime.nextId==2);

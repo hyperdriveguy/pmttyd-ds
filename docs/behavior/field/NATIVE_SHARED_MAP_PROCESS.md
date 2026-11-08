@@ -108,3 +108,34 @@ isolated ARM/emulator scope are recorded in [progress](../../PROGRESS.md).
 See [map object ownership](NATIVE_MAP_OBJECT_SOURCE_OWNER.md),
 [light ownership](NATIVE_LIGHT_REGISTRY_OWNER.md), and
 [camera bootstrap](../camera/NATIVE_SOURCE_CAMERA_BOOTSTRAP.md).
+
+
+## Scoped acceleration of identity proofs
+
+FieldMapSourceOwner currentness and NativeMapProcess backend currentness use
+callback-local raw RAM lookup caching. Each invocation still evaluates its
+complete identity graph and reads every SDK header, pointer, list link and
+physical backing predicate. No Boolean authorization, payload value or pointer
+survives the proof. Pure backend predicates stay on the owner thread with frozen
+semantic registries; they cannot mutate mappings, call children or yield.
+
+If an SDK/source operation already holds the raw borrow, these predicates use
+that existing lookup cache. A separate evaluated flag distinguishes a refused
+nested borrow from an evaluated false predicate: false is returned once without
+retry. Live writes to a heap-list word inside an existing borrow must invalidate
+and then restore the proof immediately. Foreign physical mappings between calls
+remain rejected, including byte-identical replacements. Actual ownership-loss,
+allocation, numerical callback and capture holds retain their original semantics.
+
+This accelerates address resolution, not source state or event progression.
+Validation and measured host/emulator limits are recorded in progress; no New
+2DS XL timing or original-runtime parity follows from a host improvement.
+
+
+RAM region stores now remain ordered by guest base through registration,
+extraction and script import. Lookup selects the preceding base by binary
+search, then validates the entire requested range. Owned/external guest ranges
+remain disjoint. Live semantic precedence and conservative raw exclusions are
+unchanged; cross-region/sparse/unaligned accesses retain byte fallback. Region
+ordering is the actual mapping store, with no persistent pointer/value cache.
+No registration, extraction, alias admission or original layout is relaxed.

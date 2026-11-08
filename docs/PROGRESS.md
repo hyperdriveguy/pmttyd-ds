@@ -20532,3 +20532,72 @@ receipt into that same object once, and compose real sequence/field ticket,
 teardown/return and original afterbattle owners. The original opening into/out
 of battle, rendering parity, cold-load performance and full-game goal remain
 unfinished; the HP bridge alone does not satisfy those requirements.
+
+
+### Native map proof caching and ordered RAM lookup (2026-11-08)
+
+Reduced source-map identity-check cost without caching authorization. Each pure
+FieldMapSourceOwner/backend currentness proof borrows a callback-local RAM lookup
+cache; exact backing, SDK list/header, pointer and lifetime predicates still read
+live state. An evaluated flag distinguishes false predicates from rejected nested
+borrows, so false is never retried. Existing source/SDK borrows reuse their cache;
+nothing crosses a child, mapping mutation or hold. Live SDK-list corruption and
+restoration inside one outer borrow is now explicitly tested.
+
+Owned/external RAM mappings stay sorted by guest base through registration,
+extraction, unregistration and script import. Byte/direct-span lookup uses binary
+search plus full-extent validation. Disjoint guest coverage, actual physical
+backing, live semantic precedence, sparse raw exclusions, BE/unaligned widths,
+cross-region fallback and failed-store prefix protection remain unchanged.
+No persistent pointer/value cache or new VM ABI. Tests shuffle128 owned/external
+pairs, verify all bytes/gaps normally and borrowed, split/restore interior storage,
+write across fragments, reject gap stores/foreign backing, and import between
+existing regions. [Memory contract](behavior/event/NATIVE_PLAIN_RAM_WORD_FAST_PATH.md),
+[map contract](behavior/field/NATIVE_SHARED_MAP_PROCESS.md).
+
+Indicative host O0 wall-clock measurements on committed34206dcb plus this scoped
+work: unchanged fixture337.305s; proof caching alone215.158s; caching plus ordered
+lookup85.599s (observed3.94x total). The first harbor Load phase changes157.504s
+→85.921s→36.196s (observed4.35x). Runs include concurrent work and optimized tests
+add nested-borrow assertions; these are not controlled target-hardware benchmarks.
+
+Full make test exits0:644/644 C++ (120.52s),278/278 Python (40.096s),zero skips.
+NativeMapProcess passes in87.20s within the full suite. Focused memory/map-owner
+checks pass2/2. Original source verifier passes6110 instructions/53 complete
+boundaries. Documentation links pass1733 files/zero broken links. Asset-ready
+SOUNDTRACK=gamecube compiles478 committed recipes and assets-check passes478.
+Native make all (-o assets-ready after preparation,-j4) exits0. No original import,
+editable source asset, manifest, dialogue or story change. Rebuilding the prior
+cache adds only the already-committed star-point product and pipeline metadata.
+
+The isolated ARM probe uses all686 identical production non-main
+objects and byte-identical RomFS. Its strict receipt now passes actual heaps,
+renderer completion fence,540 objects/98 collision joints,5 lights,101 camera-road
+rows, actual GX capture hold, no replay, SDK identity and preclock preservation.
+Receipt completion is about224.6s including30s initial smoke wait/polling,
+versus the preceding different frozen graph's900-second incomplete run. This is
+not a controlled native speedup ratio or New2DS hardware timing. Inspected probe
+capture deliberately freezes the initial book while Load is held; it is not map
+rendering. Normal fresh90-second startup smoke exits0 with original storybook
+art/US dialogue. Its first capture shows46FPS/76% emulation during concurrent
+checks; a second fresh90-second capture after this turn's checks shows49FPS/100%
+and2.24ms current frame. Do not claim60FPS or frame parity from these captures.
+No native exception or user emulator profile/save mutation. Existing warnings
+remain. An ignored benchmark-output naming collision was repaired from the exact
+baseline archive and pinned prior input hashes before ARM preparation; benchmark
+receipts are retained separately. No source/input/product was changed by recovery.
+
+Validation pins committed34206dcb plus these exact scoped edits; later concurrent
+Crump field integrations/unrelated WIP are excluded. Scoped journal replay protects
+those edits and staging. Source, assets/private/reference, all-object identity,
+binary, test, benchmark, proof and capture hashes are recorded in
+artifacts/native-map-proof-cache-validation-manifest.json. Normal startup still
+runs map Init only; original Load stays at PC8002a360/GXBeginDisplayList with G0=0.
+
+Next: complete actual mapSetMaterial/mapSetLight and GX capture FIFO/GXData
+ownership, both material/cull passes and actual byte-backed lengths/slots, then
+native material/geometry consumers. Profile remaining texture-name/child identity
+hot paths before enabling room Load in normal play: several-minute native load
+latency is still unacceptable. Measure ordinary full-loop frames on New2DS and
+compare original runtime/frames. Full prologue acceptance remains open; no map
+capture, room readiness, source geometry or matched story/battle-return claim.

@@ -8,6 +8,7 @@
 #include "field_light_registry_owner.hpp"
 #include "field_map_sdk.hpp"
 #include "event_heap_allocation.hpp"
+#include "event_ram_access.hpp"
 #include <algorithm>
 #include <cstring>
 #include <string>
@@ -82,15 +83,24 @@ struct NativeMapProcess::State {
   }return false;
  }
  bool baseCurrent()const{
-  if(!camera || !camera->ready() || !cpu.current || !cpu.current() ||
-     !camera->shadows()->ui()->fieldProcess()->process().heapGlobalsCurrent())return false;
-  auto& m=vm().memory;uint32_t actual=0;
-  if(!m.readWord(FieldMapSource::PrimaryHeap,actual)||actual!=pool || !m.readWord(PrimaryLength,actual)||actual!=bytes ||
-     !heapCurrent(0)||!heapCurrent(1))return false;
-  if(poolMapped&&!m.hasRamBacking(pool,primary.data(),bytes))return false;
-  if(inputMapped&&!m.hasRamBacking(Input,input.data(),InputBytes))return false;
-  for(unsigned i=0;i<installed;++i){const auto& l=literals[i];if(!m.hasRamBacking(l.address,l.bytes.data(),uint32_t(l.bytes.size())))return false;}
-  return true;
+  // Cache physical RAM lookups only for this pure, synchronous identity proof.
+  // Every predicate and payload/header value is still read on every call.
+  const auto check=[&]() -> bool {
+   if(!camera || !camera->ready() || !cpu.current || !cpu.current() ||
+      !camera->shadows()->ui()->fieldProcess()->process().heapGlobalsCurrent())return false;
+   auto& m=vm().memory;uint32_t actual=0;
+   if(!m.readWord(FieldMapSource::PrimaryHeap,actual)||actual!=pool || !m.readWord(PrimaryLength,actual)||actual!=bytes ||
+      !heapCurrent(0)||!heapCurrent(1))return false;
+   if(poolMapped&&!m.hasRamBacking(pool,primary.data(),bytes))return false;
+   if(inputMapped&&!m.hasRamBacking(Input,input.data(),InputBytes))return false;
+   for(unsigned i=0;i<installed;++i){const auto& l=literals[i];if(!m.hasRamBacking(l.address,l.bytes.data(),uint32_t(l.bytes.size())))return false;}
+   return true;
+  };
+  bool checked=false;
+  const bool valid=vm().memory.withRawRamAccess([&](auto&){checked=true;return check();});
+  // An enclosing raw SDK/source borrow already supplies the same accelerator.
+  // A false predicate must not be retried or mistaken for a refused borrow.
+  return checked?valid:check();
  }
  bool current()const{
   if(files&&!files->current())return false;

@@ -6050,3 +6050,24 @@ constant byte counts. Broader original sysWaitDrawSync token/tick/timeout traces
 and field Main/EVT clocks remain open. Read-only source/SDK handoffs and live
 performance diagnosis are pinned under artifacts/native-shared-map-*; native
 CPU construction is not an end-to-end prologue or matched Dolphin trace.
+
+
+### Native map identity-proof lookup acceleration (2026-11-08)
+
+The native implementation measured and integrated callback-local RAM lookup caching around
+existing pure source-map/backend identity predicates. It changes no original
+instruction, child result, SDK-list check, physical backing check or capture
+readiness. Checks remain live inside an existing SDK/source borrow and after
+ownership loss/recovery. The preceding native900-second load timeout motivates
+this work; it is not a source timing measurement. Exact validation/timings are
+recorded in PROGRESS. Complete original material/light and GX FIFO capture,
+source Load completion, geometry consumers and matched prologue acceptance stay
+open. [Contract](../behavior/field/NATIVE_SHARED_MAP_PROCESS.md).
+
+The new isolated ARM receipt reaches the actual GXBeginDisplayList hold and
+passes540 objects/98 collision joints,5 lights,101 camera-road rows, real heap
+and renderer fence identity, no replay and preclock preservation. Lookup uses
+ordered disjoint RAM regions without weakening semantic precedence. This
+replaces the preceding timeout with a completed bounded CPU-load proof; native
+load latency is still substantial, and no source capture/G0/geometry completion
+or end-to-end prologue acceptance is inferred.

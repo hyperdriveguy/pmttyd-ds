@@ -29,9 +29,18 @@ std::unique_ptr<FieldMapSourceOwner> FieldMapSourceOwner::bind(EventAddressSpace
 }
 FieldMapSourceOwner::~FieldMapSourceOwner(){while(mapped_){const auto& m=mappings_[--mapped_];memory_.unregisterExternalRam(m.address,m.backing);}}
 bool FieldMapSourceOwner::current() const{
- if((heap_.current && !heap_.current(heap_.user)) || (heap_.shadows && !heap_.shadows->currentFor(memory_)) || mapped_!=3+unsigned(workMapped_) || (heap_.lights && !heap_.lights->readyFor(memory_)) || (heap_.cameraRoad && !heap_.cameraRoad->currentFor(memory_)))return false;
- for(unsigned i=0;i<mapped_;++i){const auto& m=mappings_[i];if(!memory_.hasRamBacking(m.address,m.backing,m.bytes))return false;}
- return memory_.hasRamBacking(heap_.address,heap_.backing,heap_.bytes);
+ // Cache physical RAM lookups only for this pure, synchronous identity proof.
+ // Every predicate and payload/header value is still read on every call.
+ const auto check=[&]() -> bool {
+  if((heap_.current && !heap_.current(heap_.user)) || (heap_.shadows && !heap_.shadows->currentFor(memory_)) || mapped_!=3+unsigned(workMapped_) || (heap_.lights && !heap_.lights->readyFor(memory_)) || (heap_.cameraRoad && !heap_.cameraRoad->currentFor(memory_)))return false;
+  for(unsigned i=0;i<mapped_;++i){const auto& m=mappings_[i];if(!memory_.hasRamBacking(m.address,m.backing,m.bytes))return false;}
+  return memory_.hasRamBacking(heap_.address,heap_.backing,heap_.bytes);
+ };
+ bool checked=false;
+ const bool valid=memory_.withRawRamAccess([&](auto&){checked=true;return check();});
+ // An enclosing raw SDK/source borrow already supplies the same accelerator.
+ // A false predicate must not be retried or mistaken for a refused borrow.
+ return checked?valid:check();
 }
 FieldMapSourceServices FieldMapSourceOwner::services(){FieldMapSourceServices s;s.user=this;
  s.word=[](void* u,uint32_t a,uint32_t& v){return static_cast<FieldMapSourceOwner*>(u)->memory_.readWord(a,v);};
