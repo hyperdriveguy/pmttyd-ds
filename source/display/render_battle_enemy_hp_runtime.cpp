@@ -13,13 +13,19 @@ struct Renderer::EnemyHpBinding {
  BattleEnemyHpOrderedHpSink sink;
  std::unique_ptr<BattleEnemyHpGpuProvider> provider;
  SourceIconGXServices gx;
+ // Long proof compares BOTH numeric allocation and pinned incarnation token.
+ // Short invocation additionally requires this captured pass and actual camera.
  bool current()const{return nativeAlive && renderer && game && allocationOwner && game->trioAttack.enemyHpAllocationOwner()==allocationOwner && game->trioAttack.enemyHpAllocationCurrent(allocation);}
  bool invocation()const{return current() && pass && renderer->orderedHpPresentation==&ordered && renderer->orderedHpCapturePass==pass && bool(game->trioAttack.enemyHpCamera());}
  void initialize(){
    gx.user=this;
    gx.word=[](void* u,uint32_t a)->std::optional<uint32_t>{auto& c=*static_cast<EnemyHpBinding*>(u);if(!c.current())return {};
+     // Original icon storage gets first refusal; actual runtime VM/resource
+     // reads provide the fallback, rather than a synthesized camera/descriptor.
      const auto resource=c.renderer->sourceIcons.word(a);return resource?resource:c.game->trioAttack.enemyHpResourceWord(a);};
    gx.half=[](void* u,uint32_t a)->std::optional<uint16_t>{auto& c=*static_cast<EnemyHpBinding*>(u);if(!c.current())return {};
+     // Existing map-work adapter token 0x85000000 is a synthetic guest
+     // identity; halfword +4 exposes actual MapMaterialGroup flags.
      if(a==0x85000004){const auto* group=c.game->trioAttack.materialGroup();return group?std::optional<uint16_t>(group->flags):std::nullopt;}
      return c.renderer->sourceIcons.half(a);};
    gx.matrix=[](void* u,BattleAudienceMatrixRequest& q){auto& c=*static_cast<EnemyHpBinding*>(u);return c.invocation() && c.game->trioAttack.enemyHpMatrix(q);};
@@ -33,6 +39,8 @@ struct Renderer::EnemyHpBinding {
    BattleEnemyHpQuadSink target{this,[](void* u,const BattleEnemyHpGpuQuad& q){auto& c=*static_cast<EnemyHpBinding*>(u);return c.invocation() && c.sink.services().append(c.sink.services().user,q);}};
    provider=std::make_unique<BattleEnemyHpGpuProvider>(gpu.resource(),query,target);
  }
+ // Bind publication once per actual allocation; held source retries reopen
+ // capture for the same pass without resetting already accepted mixed entries.
  bool begin(uint64_t actual,uint64_t sourcePass){
    if(!current() || actual!=allocation || !sourcePass)return false;
    if(!publicationBound){
@@ -58,10 +66,14 @@ struct Renderer::EnemyHpBinding {
    s.begin=[](void* u,uint64_t a,uint64_t p){return static_cast<EnemyHpBinding*>(u)->begin(a,p);};
    s.publish=[](void* u,uint64_t a,uint64_t p){auto& c=*static_cast<EnemyHpBinding*>(u);
      if(!c.invocation() || a!=c.allocation || p!=c.pass || !c.game->trioAttack.enemyHpFrameComplete(p) || !c.ordered.publish(p))return false;
+     // Stop interception after whole source completion/publication, retaining
+     // immutable packets and icon residency pins for later presentation.
      c.renderer->captureEnemyHpPresentation(0);return true;};
    return s;
  }
 };
+// Out-of-frame preparation only. Reuse requires the same Game, allocation
+// value AND incarnation token; unavailable original resources remain a hold.
 bool Renderer::prepareEnemyHp(const Game& game){
  const auto allocation=game.trioAttack.enemyHpAllocation();
  const auto allocationOwner=game.trioAttack.enemyHpAllocationOwner();
@@ -75,6 +87,8 @@ bool Renderer::prepareEnemyHp(const Game& game){
 }
 void Renderer::releaseEnemyHp(){
  if(!enemyHpBinding)return;
+ // Mark retained contexts unavailable before detaching capture, discarding
+ // providers/publication and releasing native textures while C3D remains live.
  auto old=std::move(enemyHpBinding);old->nativeAlive=false;
  if(orderedHpPresentation==&old->ordered)bindEnemyHpPresentation(nullptr);
  old->ordered.retire();old->provider.reset();old->gpu.release();
@@ -85,8 +99,11 @@ bool Renderer::resumeEnemyHp(const Game& game,uint32_t camera,uint32_t userdata)
  // Begin runs once at first source admission. A held retry must reenable the
  // same exact pass only around this actual queued HP invocation.
  if(state->pass && state->ordered.buildingPass()==state->pass && !captureEnemyHpPresentation(state->pass))return false;
+ // Runtime holds this stable table context through its explicit lifetime lease.
  auto services=state->services();services.lifetime=state;
  const bool completed=game.trioAttack.resumeEnemyHpDraw(camera,userdata,services);
+ // Every return from the actual source invocation disables interception, even
+ // on a hold. The next retry explicitly reenables its unchanged building pass.
  captureEnemyHpPresentation(0);return completed;
 }
 bool Renderer::drawEnemyHp(const Game& game){
@@ -94,6 +111,8 @@ bool Renderer::drawEnemyHp(const Game& game){
  if(!state || state->game!=&game || !state->current() || !state->ordered.snapshot())return false;
  return drawEnemyHpOrdered(state->ordered,state->gpu);
 }
+// Observational counters only: no source stepping, publication validation or
+// GPU admission. An empty completed pass is not evidence of visible HP pixels.
 Renderer::EnemyHpMetrics Renderer::enemyHpMetrics(const Game& game)const{
  EnemyHpMetrics result;const auto state=enemyHpBinding;
  if(!state || state->game!=&game)return result;

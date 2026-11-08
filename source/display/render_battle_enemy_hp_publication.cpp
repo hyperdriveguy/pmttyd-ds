@@ -1,11 +1,15 @@
 #include "platform.hpp"
 namespace ttyd {
+// Borrowed presentation owner must outlive the binding. Binding resets capture;
+// pass0 disables interception without discarding building/published image pins.
 void Renderer::bindEnemyHpPresentation(BattleEnemyHpOrderedPresentation* owner){orderedHpPresentation=owner;orderedHpCapturePass=0;}
 bool Renderer::captureEnemyHpPresentation(uint64_t pass){
  if(!pass){orderedHpCapturePass=0;return true;}
  if(!orderedHpPresentation || orderedHpPresentation->buildingPass()!=pass)return false;
  orderedHpCapturePass=pass;return true;
 }
+// Query actual imported cache cells and fresh import epochs, never image-index
+// stand-ins. Pure ready lookup: a missing icon must be prepared elsewhere.
 std::optional<BattleEnemyHpIconResidency> Renderer::enemyHpIconResidency(uint32_t index)const{
  const auto image=sourceIcons.image(index);if(!image)return {};
  for(const auto& cell:sourceIconCells)if(cell.index==index && cell.gpu.imported && cell.generation){
@@ -28,6 +32,7 @@ bool Renderer::canDrawEnemyHpIcon(const BattleEnemyHpIconPacket& p)const{
  const auto actual=enemyHpIconResidency(p.packet.image);const auto& wanted=p.residency;
  return actual && actual->texture==wanted.texture && actual->generation==wanted.generation && actual->image==wanted.image && actual->width==wanted.width && actual->height==wanted.height && actual->gpuWidth==wanted.gpuWidth && actual->gpuHeight==wanted.gpuHeight && actual->format==wanted.format;
 }
+// Replay copied icon material/raster with this exact resident generation.
 bool Renderer::drawEnemyHpIcon(const BattleEnemyHpIconPacket& p){
  if(!canDrawEnemyHpIcon(p))return false;
  C3D_Tex* texture=nullptr;for(auto& cell:sourceIconCells)if(cell.index==p.packet.image && cell.gpu.imported && cell.generation==p.residency.generation){texture=&cell.gpu.texture;break;}
@@ -37,6 +42,8 @@ bool Renderer::drawEnemyHpIcon(const BattleEnemyHpIconPacket& p){
  publishSourceIconProgram(q.material,*texture);finishingDisplayPipeline(q.pipeline);
  C3D_Mtx matrix{};for(unsigned i=0;i<4;++i){auto& row=matrix.r[i];row.x=q.transform[i][0];row.y=q.transform[i][1];row.z=q.transform[i][2];row.w=q.transform[i][3];}
  C3D_FVUnifMtx4x4(GPU_VERTEX_SHADER,transformLoc,&matrix);C3D_ImmDrawBegin(GPU_TRIANGLE_FAN);
+ // Original normalized ST maps past two texels of padding on each edge;
+ // divide by power-of-two backing and apply one native V flip.
  for(unsigned i=0;i<4;++i){const auto& pos=q.quad.positions[i];const auto& uv=q.quad.uv[i];C3D_ImmSendAttrib(pos[0],pos[1],pos[2],1);C3D_ImmSendAttrib((2.f+uv[0]*p.residency.width)/p.residency.gpuWidth,1.f-(2.f+uv[1]*p.residency.height)/p.residency.gpuHeight,0,1);C3D_ImmSendAttrib(1,1,1,1);}
  C3D_ImmDrawEnd();return true;
 }
@@ -56,9 +63,13 @@ bool Renderer::drawEnemyHpOrdered(BattleEnemyHpOrderedPresentation& owner,Native
    else {const auto& p=std::get<BattleEnemyHpRasterPacket>(packet);const auto& v=p.view.viewport;const auto& s=p.view.scissor;
      C3D_SetViewport(v.x,v.y,v.width,v.height);C3D_SetScissor(GPU_SCISSOR_NORMAL,s.x,s.y,s.x+s.width,s.y+s.height);C3D_DepthMap(true,p.view.depthScale,p.view.depthOffset);
      C3D_Mtx matrix{};for(unsigned i=0;i<4;++i){auto& row=matrix.r[i];row.x=p.view.projection[i][0];row.y=p.view.projection[i][1];row.z=p.view.projection[i][2];row.w=p.view.projection[i][3];}
+     // One-quad adapter preserves this bar's copied view and source ordinal.
+     // The temporary vector is constructed here during replay, not in preflight.
      BattleEnemyHpGpuBatch single;single.quads.push_back(p.quad);if(!hp.draw(single,&program,transformLoc,matrix,&fontTexture.texture))return false;
    }
  }
+ // Restore tilted full top-screen 240x400 and reversed full depth (-1,0).
+ // No consumed marker: later render frames may replay this same valid snapshot.
  C3D_SetViewport(0,0,240,400);C3D_SetScissor(GPU_SCISSOR_DISABLE,0,0,240,400);C3D_DepthMap(true,-1,0);return true;
 }
 }

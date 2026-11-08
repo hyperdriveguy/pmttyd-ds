@@ -287,3 +287,7 @@ FIFO publication for class/submenu surfaces.
 [Window packets](window-packets.md) explains packed source texture words,
 full tiled-pixel admission, no-draw prefixes, 180 retained floats and native
 nine-quad replay.
+
+[HP/submenu renderer bridges](hp-submenu-renderer.md) explains capture scope,
+allocation tokens, source-ordered replay, projection-only HP state and native
+preparation/release ordering.
