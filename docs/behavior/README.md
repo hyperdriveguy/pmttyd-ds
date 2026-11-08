@@ -1511,3 +1511,5 @@ Original battle menu native resource/queue owners:
 - [Harbor source startup](battle/HARBOR_SOURCE_STARTUP.md): retained original cold and UnitSetup owners with actual process resources.
 - [Retained UnitEntry and DisplayEntry](battle/BATTLE_UNIT_ENTRY_CONTINUATION.md): original constructor and held per-part animation admission.
 - [Harbor source unit construction](battle/HARBOR_SOURCE_UNIT_CONSTRUCTION.md): actual VM/map/resource/native animation provider and original-name aliases.
+
+- [Native original map hit construction](field/NATIVE_MAP_HIT_CONSTRUCTION.md): retained source hierarchy, packed quantization, triangle winding and explicit Distance estimate boundary.

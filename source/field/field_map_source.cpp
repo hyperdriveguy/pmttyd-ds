@@ -7,6 +7,10 @@ float scalar(uint32_t bits){float f;std::memcpy(&f,&bits,sizeof(f));return f;}
 uint32_t bits(float f){uint32_t out;std::memcpy(&out,&f,sizeof(out));return out;}
 int32_t signedWord(uint32_t v){return v<=INT32_MAX?int32_t(v):int32_t(int64_t(v)-0x100000000LL);}
 void compare(FieldMapSourceCursor& c,unsigned field,int64_t a,int64_t b){const auto i=4*field;c.condition[i]=a<b;c.condition[i+1]=a>b;c.condition[i+2]=a==b;c.condition[i+3]=false;}
+uint64_t doubleBits(double value){uint64_t out;std::memcpy(&out,&value,sizeof(out));return out;}
+double doubleScalar(uint64_t value){double out;std::memcpy(&out,&value,sizeof(out));return out;}
+uint32_t signHalf(uint32_t value){return value&0x8000?value|0xffff0000u:value&0xffff;}
+unsigned leadingZeros(uint32_t value){unsigned count=0;for(uint32_t bit=0x80000000u;bit && !(value&bit);bit>>=1)++count;return count;}
 uint32_t rotate(uint32_t v,unsigned n){return n?(v<<n)|(v>>(32-n)):v;}
 bool compatible(const FieldMapSourceServices& a,const FieldMapSourceServices& b){
 #define PIN(f) (!a.f || a.f==b.f)
@@ -14,6 +18,10 @@ bool compatible(const FieldMapSourceServices& a,const FieldMapSourceServices& b)
 #undef PIN
 }
 bool root(uint32_t f){switch(f){
+ case 0x80018658: // hitEntry
+ case 0x800186f4: // hitEntrySub
+ case 0x8001896c: // _hitEnt
+ case 0x800165a8: // hitCalcVtxPosition
  case 0x8002af18: // mapInit
  case 0x8001f878: // mapGetMapObj
  case 0x8002a46c: // mapEntry

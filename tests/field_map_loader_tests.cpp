@@ -9,13 +9,14 @@
 #include <vector>
 #include <tuple>
 #include <algorithm>
+#include <cmath>
 using namespace ttyd;
 namespace {
 using namespace FieldMapSource;
 constexpr uint32_t ProcessWork=0x86000000,MapStack=0x87000000,Heap=0x88000000;
 constexpr uint32_t FileTable=0x89000000,WorkerStack=0x8b000000,Inputs=0x8c000000;
 constexpr uint32_t Archives=0x803dbff0,ArchiveBytes=4*0x28,OriginalPayloadBytes=975520;
-constexpr uint32_t HitEntry=0x80018658,SceneRelative=0xd2b00,CollisionRelative=0xd02d8;
+constexpr uint32_t Distance=0x8029eeb4,SceneRelative=0xd2b00,CollisionRelative=0xd02d8;
 uint32_t word(EventAddressSpace& m,uint32_t a){uint32_t w=0;assert(m.readWord(a,w));return w;}
 uint16_t half(EventAddressSpace& m,uint32_t a){uint16_t w=0;assert(m.readHalf(a,w));return w;}
 void text(EventAddressSpace& m,uint32_t a,const char* s){do{assert(m.writeByte(a++,uint8_t(*s)));}while(*s++);}
@@ -25,7 +26,8 @@ struct Fixture {
  std::vector<uint8_t> heap=std::vector<uint8_t>(8*1024*1024);
  std::unique_ptr<FieldMapFileOwner> files;
  std::unique_ptr<FieldMapSourceOwner> maps;
- FieldMapSdk sdk{vm.memory,[this]{return maps && maps->current();}};
+ bool enableEstimate=false;unsigned estimates=0;
+ FieldMapSdk sdk{vm.memory,[this]{return maps && maps->current();},[this](float squared)->std::optional<double>{if(!enableEstimate)return {}; ++estimates;return 1.0/std::sqrt(double(squared));}}; // Explicit native approximation, not Gekko seed parity.
  bool unloadReceipts=false;std::vector<uint32_t> resets;
  bool drawSync=false,invalidate=false;unsigned syncs=0,invalidates=0;
  uint32_t frontier=0;std::array<uint32_t,8> frontierArguments{};
@@ -33,7 +35,8 @@ struct Fixture {
   auto& m=vm.memory;EventScriptAssets original,literals;
   assert(original.load((std::string(root)+"/field-harbor-map-source.pmevt").c_str()));
   assert(literals.load((std::string(root)+"/field-harbor-loader-literals.pmevt").c_str()));
-  assert(original.merge(literals) && m.importScripts(original)); // Shared delimiter bytes agree.
+  EventScriptAssets hit;assert(hit.load((std::string(root)+"/field-hit-literals.pmevt").c_str()));
+  assert(original.merge(literals) && original.merge(hit) && m.importScripts(original)); // Shared delimiter bytes agree.
   assert(m.registerExternalRam(Heap,heap.data(),uint32_t(heap.size())) && m.registerRam(PrimaryHeap,{0x88,0,0,0}));
   assert(m.writeWord(Heap,0) && m.writeWord(Heap+4,uint32_t(heap.size())) && m.writeHalf(Heap+8,0));
   assert(m.registerRam(Archives,std::vector<uint8_t>(ArchiveBytes)) && m.registerRam(Inputs,std::vector<uint8_t>(512)));
@@ -88,8 +91,9 @@ void originalMapLoadPrefix(const char* root){
  for(unsigned i=0;i<15974;++i){const auto site=word(m,fixups+4*i);original.push_back({site,word(m,d+0x20+site)});}
  f.invalidate=true;
  for(unsigned i=0;!f.frontier && i<100000;++i)assert(!f.maps->invoke(request,Load,{0}));
- assert(f.frontier==HitEntry && f.frontierArguments[0]==d+0x20+CollisionRelative);
- assert(f.frontierArguments[2]==0 && word(m,ProcessWork)==0 && word(m,ProcessWork+ObjectCount)==540);
+ assert(f.frontier==Distance && word(m,ProcessWork+HitCount)==98);
+ const auto hits=word(m,ProcessWork+HitArray);assert(hits>=Heap && word(m,hits+8)==d+0x20+CollisionRelative);
+ assert(half(m,hits+0xaa)==0 && word(m,ProcessWork)==0 && word(m,ProcessWork+ObjectCount)==540);
  const auto payload=d+0x20;assert(word(m,ProcessWork+0x58)==payload && word(m,ProcessWork+0x78)==d);
  for(const auto& item:original)assert(word(m,payload+item[0])==payload+item[1]);
  const auto array=word(m,ProcessWork+ObjectArray);assert(word(m,ProcessWork+Root)==array && word(m,array+Joint)==payload+SceneRelative);
@@ -97,6 +101,16 @@ void originalMapLoadPrefix(const char* root){
  // Neither missing collision nor repeated retries can publish loaded count.
  const auto pc=f.maps->pendingInstruction();for(unsigned i=0;i<4;++i)assert(!f.maps->invoke(request,Load,{Inputs}));
  assert(pc==f.maps->pendingInstruction() && word(m,ProcessWork)==0);
+ // Resume the genuine original constructor with an explicit native estimate.
+ // Its first bbox expansion must not replay while the seed child is held.
+ const auto firstJoint=word(m,hits+8),expanded=word(m,firstJoint+0x48);
+ f.enableEstimate=true;f.frontier=0;
+ for(unsigned i=0;!f.frontier && i<100000;++i)assert(!f.maps->invoke(request,Load,{0}));
+ assert(f.frontier==0x8001bd98 && word(m,firstJoint+0x48)==expanded);
+ assert(f.estimates==98 && word(m,ProcessWork)==0);
+ unsigned objects=0,triangles=0,payloadBytes=0;
+ for(unsigned i=0;i<98;++i){const auto hit=hits+i*HitObjectBytes;assert(word(m,hit+8));++objects;const auto n=half(m,hit+0xa8);triangles+=n;if(n){assert(word(m,hit+0xac)>=Heap);payloadBytes+=n*HitTriangleBytes;}}
+ assert(objects==98 && triangles>0 && triangles<=1604 && payloadBytes<=134736);
  // Close is queued by the parent; only real source Main retires the final slot.
  assert(half(m,FileTable+FieldMapFileOwner::SlotBytes+0x90)&8);
  for(unsigned i=0;!f.files->pump() && i<100000;++i){}
@@ -131,7 +145,7 @@ struct GraphBus {
    if(q.function==0x802a03c0){b.reads.push_back(q.arguments);q.result=uint32_t(b.readResult);return true;}
    if(q.function==0x90000004){b.callbacks.push_back(q.arguments);return true;}
    if(q.function==0x802a0178){q.result=1;return true;}
-   return b.fixture.files->service(q);
+   return b.fixture.files->service(q) || b.fixture.sdk.advance(q);
   };return s;
  }
  uint32_t run(uint32_t function,const std::array<uint32_t,5>& args={},unsigned budget=4096){
@@ -204,4 +218,56 @@ void mapUnloadOwnership(const char* root){
  assert(f.run(request,Free,{Heap,allocations[4]}));assert(!word(m,Heap) && !half(m,Heap+8) && word(m,Heap+4)==f.heap.size());
 }
 
-int main(){mapSourceBoundaryContracts("romfs");originalMapLoadPrefix("romfs");mapUnloadOwnership("romfs");fileOwnerIdentityAndClose("romfs");}
+namespace {
+uint32_t floatBits(float value){uint32_t result;std::memcpy(&result,&value,4);return result;}
+void hitTriangleContracts(const char* root){
+ Fixture f(root);auto& m=f.vm.memory;FieldMapRequest init;assert(f.run(init,Init));
+ assert(m.registerRam(Elements,std::vector<uint8_t>(4096)) && m.registerRam(MapStack-0x10000,std::vector<uint8_t>(0x10000)));
+ constexpr uint32_t Hit=Elements,Joint=Elements+0x100,Mesh=Elements+0x200,Stream=Elements+0x300;
+ constexpr uint32_t Positions=Elements+0x320,Strip=Elements+0x500,Output=Elements+0x600,Vcd=Elements+0x800;
+ auto prepare=[&](bool packed,bool degenerate,unsigned quantization){
+  for(unsigned i=0;i<4096;++i)assert(m.writeByte(Elements+i,0));
+  assert(m.writeWord(Hit+8,Joint) && m.writeWord(Hit+0xac,Output));
+  for(unsigned i=0;i<12;++i)assert(m.writeWord(Hit+0xc+4*i,floatBits(i%5==0?1.0f:0.0f)));
+  assert(m.writeWord(Joint+0x5c,1) && m.writeWord(Joint+0x64,Mesh));
+  assert(m.writeByte(Mesh+3,packed) && m.writeWord(Mesh+4,1) && m.writeWord(Mesh+8,1));
+  assert(m.writeWord(Mesh+0xc,Stream) && m.writeWord(Stream,Positions) && m.writeWord(Mesh+0x10,Strip));
+  assert(m.writeWord(ProcessWork+0xa4,Vcd) && m.writeWord(Vcd+0x44,quantization));
+  const std::array<std::array<int16_t,3>,4> values{{{{0,0,0}},{{256,0,0}},{{0,256,0}},{{0,int16_t(degenerate?256:0),0}}}};
+  if(packed){assert(m.writeHalf(Strip+1,4));for(unsigned i=0;i<4;++i){assert(m.writeHalf(Strip+3+2*i,uint16_t(i)));for(unsigned j=0;j<3;++j)assert(m.writeHalf(Positions+4+6*i+2*j,uint16_t(values[i][j])));}}
+  else {assert(m.writeWord(Strip,4));for(unsigned i=0;i<4;++i){assert(m.writeHalf(Strip+4+0x18*i,uint16_t(i)));for(unsigned j=0;j<3;++j)assert(m.writeWord(Positions+4+12*i+4*j,floatBits(float(values[i][j])/256)));}}
+ };
+ for(bool packed:{false,true})for(bool degenerate:{false,true}){
+  prepare(packed,degenerate,8);GraphBus expected{f};const auto count=expected.run(HitVertices,{Hit},19);assert(count==(packed && degenerate?1u:2u));
+  const std::array<float,21> triangle{{0,0,0,0,1,0,1,0,0,1,0,0,0,-1,0,-1,1,0,0,0,-1}};
+  for(unsigned i=0;i<triangle.size();++i){const float value=triangle[i];const auto actual=word(m,Output+4*i);assert((actual&0x7fffffff)==(floatBits(value)&0x7fffffff));}
+  const auto trace=expected.trace;for(unsigned hold=1;hold<=expected.operations;++hold){prepare(packed,degenerate,8);GraphBus actual{f};actual.hold=hold;assert(actual.run(HitVertices,{Hit},7)==count && actual.trace==trace);}
+ }
+ // Signed six-bit load scale: encoded32 means multiply by2^32.
+ prepare(true,false,32);GraphBus signedScale{f};assert(signedScale.run(HitVertices,{Hit})==2);assert(word(m,Output+0x18)==floatBits(std::ldexp(256.0f,32)));
+ // Empty triangle pointer still executes scalar/pair stack save and restore.
+ assert(m.writeWord(Hit+0xac,0));GraphBus empty{f};assert(empty.run(HitVertices,{Hit})==0);
+}
+void distanceServiceContracts(const char* root){
+ Fixture f(root);auto& m=f.vm.memory;constexpr uint32_t Left=Inputs+0x80,Right=Inputs+0xa0;
+ for(unsigned i=0;i<3;++i)assert(m.writeWord(Left+4*i,floatBits(i==0?1.0f:0.0f)) && m.writeWord(Right+4*i,0));
+ bool deliver=false;unsigned calls=0;float captured=0;
+ FieldMapSdk sdk{m,[]{return true;},[&](float q)->std::optional<double>{++calls;captured=q;if(!deliver)return {};return 0.99981689453125;}};
+ FieldMapSourceCall q;q.function=Distance;q.arguments[0]=Left;q.arguments[1]=Right;
+ assert(!sdk.advance(q) && calls==1 && captured==1 && !q.floatingResult);
+ auto foreign=q;foreign.arguments[0]+=4;assert(!sdk.advance(foreign) && calls==1);
+ assert(m.writeWord(Left,floatBits(9)));deliver=true;
+ assert(sdk.advance(q) && calls==2 && captured==1 && q.floatingResult==0x3f7fffff);
+ // Cross retains fused cancellation and source final negative zero.
+ FieldMapSourceCall cross;cross.function=0x8029eca4;cross.arguments[0]=Left;cross.arguments[1]=Right;cross.arguments[2]=Inputs+0xc0;
+ const std::array<float,3> a{{0,4097,4096}},b{{0,4098,4097}};
+ for(unsigned i=0;i<3;++i)assert(m.writeWord(Left+4*i,floatBits(a[i])) && m.writeWord(Right+4*i,floatBits(b[i])));
+ assert(sdk.advance(cross) && word(m,Inputs+0xc0)==0x3f800000);
+ for(unsigned i=0;i<3;++i)assert(m.writeWord(Left+4*i,0) && m.writeWord(Right+4*i,0));
+ assert(sdk.advance(cross) && word(m,Inputs+0xc0)==0 && word(m,Inputs+0xc4)==0x80000000 && word(m,Inputs+0xc8)==0x80000000);
+ // Fresh zero distance returns exact squared zero without requesting a seed.
+ assert(m.writeWord(Left,0));q.floatingResult.reset();assert(sdk.advance(q) && q.floatingResult==0 && calls==2);
+}
+}
+
+int main(){hitTriangleContracts("romfs");distanceServiceContracts("romfs");mapSourceBoundaryContracts("romfs");originalMapLoadPrefix("romfs");mapUnloadOwnership("romfs");fileOwnerIdentityAndClose("romfs");}

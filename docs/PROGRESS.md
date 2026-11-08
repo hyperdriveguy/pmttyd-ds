@@ -18910,3 +18910,66 @@ same VM. Freeze simulation ticks across held Draw passes, bind real animation
 and effects, then validate physical controls, the complete Crump encounter and
 original story return in an isolated emulator profile. The wider remake goal
 remains active.
+
+
+### Original map collision construction (2026-11-07)
+
+Added all four complete original hit constructor bodies to the retained map
+source graph:37 bodies/4,840 verified instructions. Real map heap/shared D now
+own the hit hierarchy, source bbox expansion, packed/unpacked strips, live GQR5
+quantization, source winding, edge/cross output and post-write degenerate reject.
+SDK subtract/cross and Distance retain original rounding/grouping in their
+admitted finite domain; unavailable estimate remains held. The explicit native
+1/sqrt provider used by tests is not Gekko-exact. Private binary32 FPR/GQR0 frame
+policy executes real scalar64/pair stack transfers, not arbitrary caller FPR
+emulation. New original literal import uses an empty destination, pinned hashes,
+original rights and normal manifest recipe.
+
+Validation freezes committed a1632768 plus this exact scope; concurrent work
+and staging remain preserved. Full make test exits 0: 558/558 C++ (70.22s),
+257/257 Python (40.791s), zero skips. Normal make all, including full original
+asset preparation, and private ARM build exit 0. Assets-check validates 432
+recipes. All 4,840 instruction words match the read-only original DOL. The
+independent read-only source review found no concrete mismatch in the admitted
+stable finite/private binary32 frame domain. Existing unrelated compiler and
+Pillow warnings remain; new source/SDK compilation has no new warning.
+
+Tests exercise packed/unpacked winding and degeneracy, signed encoded32 load
+scale, empty-buffer frame effects, suspension at every reached memory/child
+primitive, held-estimate identity/capture, the published q=1 seed diagnostic,
+fused Cross cancellation and raw signed zero. Real unrelocated harbor D/T load,
+TPL/15,974 fixups/540 scene objects now continue through all 98 hit objects to
+the genuine lightEntry8001bd98 boundary. Native1/sqrt backend produces 1,569
+retained triangles/131,796 active bytes; this is a native execution census, not
+an original runtime oracle. No loaded map count is published at the missing
+light owner. First bbox expansion remains unchanged across estimate waits.
+
+Fresh isolated normal 40s and ARM 360s Azahar runs exit 0. Eight strict ARM
+markers pass: hierarchy/triangles/holds/quantization/distance/heap/unload/identity.
+The exact tracked loader fixture runs through private main with romfs: roots
+and assertions/progress/proof instrumentation; all 599 non-main production
+objects remain byte-identical. Production binary is unchanged. Normal boot
+capture was inspected. The ARM post-proof storybook capture reports demo-chest
+texture allocation/title-texture unavailability with327KB linear space free.
+Its cause is not established; a matched long uninstrumented run is needed.
+This remains a runtime limitation, despite the completed constructor proof.
+No field collision/Goombella walk, original pixel, full prologue or hardware FPS
+claim is made. User emulator profile/saves stay
+untouched. The initial focused run failed while subset asset preparation had
+removed other overlay products; normal full preparation restored them. A later
+fixture assertion still read the former hitEntry ABI after advancing to Distance;
+its expected map-index read was corrected. Final gates pass; failed logs remain.
+
+Exact replay pins 4,638 source files, 2,213 RomFS products, 6,370 private inputs
+and one reference input. Normal asset preparation adds the new hit literals and
+the previously committed fukidashi Main pack, changing only the pipeline stamp;
+all other products and reference inputs remain unchanged. Ignored pipeline
+cache additions/metadata changes are hash-pinned. Imports preserve checked-in
+edits and original rights; no ISO/cache/compiled product is committed. Evidence,
+source/product/private/object/binary hashes and logs are recorded in
+artifacts/field-map-hit-validation-manifest.json.
+
+Next: bind real source light/camera/material/mapDraw/GX services, actual Game/EVT
+map epochs and active hit query/update/unload owners. Independently validate
+Gekko estimate/matrix rounding against original radius/contact traces. Full
+prologue, scene round trip and physical New2DS XL timing remain unfinished.

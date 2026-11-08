@@ -8,7 +8,7 @@ from iso_assets import DEFAULT_ISO
 from import_harbor_map_source import import_source
 from verify_field_map_source import verify
 class FieldMapSourceAssets(unittest.TestCase):
- def test_complete_original_source_spans(self):self.assertEqual(verify(),4051)
+ def test_complete_original_source_spans(self):self.assertEqual(verify(),4840)
  def test_original_payload_fixups_and_scene_reproduce_editable_sources(self):
   with tempfile.TemporaryDirectory() as temporary:
    out=Path(temporary)/'new';import_source(DEFAULT_ISO,out)
@@ -38,5 +38,16 @@ class HarborMapFiles(unittest.TestCase):
    edited=Path(temporary)/'d.bin';edited.write_bytes(b'editable-original')
    with self.assertRaises(ValueError):import_files(DEFAULT_ISO,temporary)
    self.assertEqual(edited.read_bytes(),b'editable-original');self.assertEqual(list(Path(temporary).iterdir()),[edited])
+
+
+class HitLiterals(unittest.TestCase):
+ def test_original_constants_and_import_guard(self):
+  from import_field_hit_literals import import_literals
+  with tempfile.TemporaryDirectory() as temporary:
+   out=Path(temporary)/'new';import_literals(DEFAULT_ISO,out)
+   for name in ('event.json','provenance.json'):self.assertEqual((out/name).read_bytes(),(Path('assets/original/maps/hit-literals')/name).read_bytes())
+   edited=out/'event.json';edited.write_text('retained edit')
+   with self.assertRaises(ValueError):import_literals(DEFAULT_ISO,out)
+   self.assertEqual(edited.read_text(),'retained edit')
 
 if __name__=='__main__':unittest.main()

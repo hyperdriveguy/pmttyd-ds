@@ -80,3 +80,14 @@ The head X copy is an identity in this domain; the leaf only writes local Y.
 
 The session's next native binding, the Rogueport roads contract, is recorded
 under [OW-ROAD-01](OW-ROAD-01.md).
+
+
+2026-11-07 native constructor increment: complete hitEntry/Sub/_hitEnt/hitCalc
+bodies now join the actual retained map graph, sharing relocated D, source heap,
+E158/E15c, matrices and bbox mutations. Packed/unpacked decode, source winding,
+live GQR5 scale and post-write degenerate filtering remain source-owned. SDK
+Distance has an explicit retained binary64 estimate provider; default holds,
+1/sqrt remains an opt-in adaptation. Static input census98/85/732/1604 is not a
+transformed runtime count. Active hitMain/query ownership, exact Gekko seed and
+FPSCR/matrix numeric parity, original wall/support traces and Game integration
+remain open. Contract: [native hit construction](../behavior/field/NATIVE_MAP_HIT_CONSTRUCTION.md).

@@ -16,6 +16,8 @@ constexpr uint32_t Search=0x8001f920,SearchSub=0x8001fd48,SearchPath=0x8001f958;
 constexpr uint32_t BuildTexture=0x8002ad08,Bounds=0x8002af5c,DisplayLists=0x8002a228;
 constexpr uint32_t FileOpen=0x80144e88,FileRead=0x80144e18,FileLength=0x80144dcc,FileClose=0x80144dd4;
 constexpr uint32_t FileWorker=0x80145024,FileCompare=0x80145288,Sort=0x800064fc,SortPartition=0x80006680;
+constexpr uint32_t HitEntry=0x80018658,HitEntrySub=0x800186f4,HitObject=0x8001896c,HitVertices=0x800165a8;
+constexpr uint32_t HitCount=0x158,HitArray=0x15c,HitObjectBytes=0xe4,HitTriangleBytes=0x54;
 constexpr uint32_t Work=0x8041e660,ActiveGroup=0x8041e664,Auxiliary=0x8041e668,PrimaryHeap=0x8041e808;
 constexpr uint32_t GlobalsBytes=0x20; // Work through display-list capture flag8041e67c.
 constexpr uint32_t GroupBytes=0x2f4,WorkBytes=2*GroupBytes,EntryBytes=0x178,ObjectBytes=0x134;
@@ -46,7 +48,11 @@ struct FieldMapSourceCursor {
  FieldMapSourceServices owner;
  bool active=false,queued=false,carry=false;
  uint32_t function=0,pc=0,lr=0,ctr=0,step=0;
- std::array<uint32_t,32> registers{},floats{};
+ std::array<uint32_t,32> registers{},floats{},paired{};
+ // Private binary32 scalar/paired frame; initial GQR0 is unquantized float.
+ // Reached hitCalc saves scalar-promoted binary64 and both paired lanes.
+ // Arbitrary caller binary64 FPR/FPSCR state is outside this native ABI.
+ uint32_t gqr5=0,transfer=0;
  std::array<bool,32> condition{};
  FieldMapSourceCall request;
 };

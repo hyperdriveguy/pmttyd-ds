@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "source": "G8ME01 revision0 read-only DOL",
+  "spans": [
+    {
+      "address": 2151807032,
+      "size": 32,
+      "sha256": "0055f7787261b2154c6b4b92b355e4bb235c694398d2e0cf500393942104a471"
+    },
+    {
+      "address": 2151846804,
+      "size": 8,
+      "sha256": "f612898144a3878d184ef21814fd68d405df49bc2289b8191737d037c2ef2229"
+    }
+  ],
+  "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+  "policy": "Original initialized hit and Distance constants; no code, estimate table or synthesized radii."
+}

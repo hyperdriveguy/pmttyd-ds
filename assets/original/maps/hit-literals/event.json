@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "segments": [
+    {
+      "address": 2151807032,
+      "bytes": "000000003dcccccd412000003f800000bf8000003f0000003c8efa3500000000"
+    },
+    {
+      "address": 2151846804,
+      "bytes": "3f00000040400000"
+    }
+  ],
+  "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+}

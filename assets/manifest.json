@@ -24,6 +24,13 @@
       "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
     },
     {
+      "id": "original/maps/hit-literals",
+      "kind": "event",
+      "source": "assets/original/maps/hit-literals/event.json",
+      "output": "field-hit-literals.pmevt",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
       "id": "original/maps/harbor-files/d",
       "kind": "pack",
       "source": "assets/original/maps/harbor-files/d.bin",

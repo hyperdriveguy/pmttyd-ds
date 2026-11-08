@@ -4296,3 +4296,15 @@ emits ignored PMPOSE02/raw MODEL/TPL companions. No texture pixels, current
 animation edits, atlas dimensions, filtering or GPU allocations are changed.
 Mario/helper reuse their existing ordinary original resources. See
 [the source admission contract](behavior/display/HARBOR_TUTORIAL_UNIT_ENTRY_RESOURCES.md).
+
+
+### Original map hit constructor literals (2026-11-07)
+
+`assets/original/maps/hit-literals/{event,provenance}.json` imports the original
+initialized DOL spans8041f838/20 and80429394/8 into a new empty destination.
+`tools/import_field_hit_literals.py` opens the US revision0 ISO read-only, pins
+both SHA256 digests and refuses nonempty destinations. The normal manifest
+compiles `field-hit-literals.pmevt`; these are source bbox/radians/half/three
+constants, not precomputed collision radii or a reciprocal-square-root table.
+Nintendo/Intelligent Systems retain all rights; no redistribution license is
+granted. ISO/caches/compiled products are excluded from source history.

@@ -8,7 +8,10 @@ namespace ttyd {
 // sparse/semantic aliases and full GQR/FPSCR/exception parity remain unbound.
 class FieldMapSdk {
 public:
- FieldMapSdk(EventAddressSpace&,std::function<bool()> current);
+ // Empty/undelivered estimate retains the source Distance child. The caller
+ // chooses a Gekko model or an explicitly labeled native approximation.
+ using Estimate=std::function<std::optional<double>(float)>;
+ FieldMapSdk(EventAddressSpace&,std::function<bool()> current,Estimate={});
  FieldMapSdk(const FieldMapSdk&)=delete;FieldMapSdk& operator=(const FieldMapSdk&)=delete;
  bool advance(FieldMapSourceCall&);
 private:
@@ -16,5 +19,8 @@ private:
  EventAddressSpace& memory_;std::function<bool()> current_;
  AnimationSdkMatrixBinding matrices_;
  uint32_t destination_=0;
+ Estimate estimate_;
+ struct DistanceState {bool active=false;FieldMapSourceCall call;float squared=0,half=0,three=0;} distance_;
+ bool finishDistance(FieldMapSourceCall&);
 };
 }
