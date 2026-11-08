@@ -4414,3 +4414,12 @@ archive descriptors are borrowed rather than reimported. Per-asset source paths,
 ISO offsets, hashes, conversion and retained Nintendo/Intelligent Systems rights
 are recorded in provenance.json; no redistribution license is granted. Checked-in
 edits remain authoritative; ISO, caches and compiled packs stay outside history.
+
+Original smart/five-heap configuration: `assets/original/memory/smart-process/`
+contains unchanged US revision0 main.dol initialized size_table804151b8/28 and
+wp804151e0/4. The importer `tools/import_source_smart_literals.py` requires an
+empty destination and pins the original span. Normal builds pack
+`source-smart-literals.pmevt`. No process BSS, native arena bounds, live header or
+payload is imported. Per-span provenance and licensing are retained beside the
+editable source. Nintendo/Intelligent Systems retain all original rights; local
+tracking grants no redistribution license.

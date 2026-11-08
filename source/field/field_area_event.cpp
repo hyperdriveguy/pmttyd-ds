@@ -67,6 +67,11 @@ bool loadFieldAreaEventAssets(const char* root) {
   std::fclose(extra);EventScriptAssets definitions;
   if(!definitions.load((base+"/field-light-registry.pmevt").c_str()) || !next->scripts.merge(definitions))return false;
  }
+ // Original smart manager pointer/five-heap configuration, no live arena.
+ if(FILE* extra=std::fopen((base+"/source-smart-literals.pmevt").c_str(),"rb")){
+  std::fclose(extra);EventScriptAssets input;
+  if(!input.load((base+"/source-smart-literals.pmevt").c_str()) || !next->scripts.merge(input))return false;
+ }
  // Original shadow/SDK constants only; process BSS belongs to its live owner.
  if(FILE* extra=std::fopen((base+"/source-shadow-literals.pmevt").c_str(),"rb")){
   std::fclose(extra);EventScriptAssets input;

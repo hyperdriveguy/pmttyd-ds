@@ -5864,3 +5864,15 @@ Texture setup preserves readiness and reads logical rather than rounded DVD
 length; its callback captures the handle before palette. Implement these exact
 bodies/storage before original normal sequence activation. No undocumented
 local child remains in this bounded audit, so no duplicate request is needed.
+
+
+2026-11-07 smart source composition: complete smartInit/Alloc/AutoFree/Free/
+Garbage/TexObj plus16-byte GXInitTexObjData now execute in the native graph.
+SourceSmartArena owns actual manager/headers/first-flag BSS and can be borrowed
+by the same-VM shadow owner. The integrated shadow fixture replaces its canned
+smart header with actual original five-heap bootstrap and cold source allocation,
+including real AutoFree(3) empty traversals. Mutable first flag remains shared
+with later display/reset writers. Read-only handoff: artifacts/source-smart-arena-review.md.
+Normal shared process/file/renderer adoption, genuine draw/cache/worker ownership,
+pressure/scene reinitialization and hardware budgets remain open. No file/GPU
+completion receipts are fabricated to advance those boundaries.

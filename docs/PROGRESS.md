@@ -19623,3 +19623,71 @@ presentation, original voice PCM lifecycle, lethal motion, battle cleanup/export
 and genuine same-VM field result/sequence bridge. Preserve original afterbattle
 crowd/dialogue/event conditions; never infer victory or synthesize story advances.
 The initial Crump battle and broader remake are still incomplete.
+
+
+### Shared original smart arena and shadow composition (2026-11-07)
+
+Added complete smartInit/Alloc/AutoFree/Free/Garbage/TexObj and GXInitTexObjData,
+586 source words. SourceSmartArena owns actual cold manager/header/first-flag
+BSS with physical mapping/lifetime checks and retained native continuation.
+The same-VM shadow owner can now borrow it; its integrated fixture replaces the
+previous fake smart header with actual original five-heap bootstrap, SDK heap4
+allocation, full cold smart Init and first AutoFree(3). Allocation headers remain
+stationary while payloads move and original descriptor address bits retarget.
+Original initialized pool configuration/wp are imported with per-span provenance
+and licensing into an empty destination. No runtime heap bounds/BSS are imported.
+
+Validation freezes committed08df716f plus these scoped changes, preserving
+concurrent work and staging. Full make test exits0: 605/605 C++ (137.55s),
+270/270 Python (69.546s), zero skips. Original/normal editable asset preparation
+compiles451 recipes; native make all (-o assets-ready after that preparation)
+exits0. Assets-check passes451. Source verification pins6110 original words in53
+complete callable boundaries. Private ARM build exits0; all646 non-main native
+objects remain byte-identical to the production build.
+
+Focused tests now execute complete shadow Init with actual original five-heap
+bootstrap/configuration, real heap0/heap4 SDK allocation and full smart Init/first
+Alloc/AutoFree(3). All2048 initial header links and actual shared shadow header/
+payload bounds are checked. First flag0 really executes original two-pass source
+control flow; no fake header or premarked first flag remains. Independent original
+CPU ramp/GX object and4608 sizing checks remain. Tests additionally cover full
+versus low16 AutoFree argument semantics, tag3 recycling/tag4 marking, original
+release counter and actual held draw-sync BEFORE a header is consumed, retained
+caller identity, real overlapping unowned compaction, same-header descriptor
+retargeting/null holder, source pressure reservation and exact unimplemented file
+collection boundary, backend lifetime and foreign mapping replacement. The16MiB
+fixture arena is an explicit capacity admission, not original absolute bounds or
+a normal-game/hardware budget. Host draw-sync/cache callbacks have no GPU readers;
+file collection/thread ownership remains unavailable rather than acknowledged.
+
+Fresh isolated normal90s and private ARM180s Azahar smokes exit0. The normal
+capture was inspected for original opening rendering; nine strict ARM markers
+pass. Four exact tracked fixture functions run through private main with only
+RomFS root/assertion/phase/proof instrumentation. No user emulator profile/save
+is touched. These are source composition/boot receipts, not normal field shadow
+rendering, full prologue, original matched pixels or hardware performance.
+
+Exact replay pins4892 source files,2234 RomFS products,8182 private inputs and
+one reference input. Product additions include already committed baseline work;
+this scoped feature adds original initialized smart/five-heap literals only.
+Hashes, terminal logs, review evidence and captures are retained in
+artifacts/source-smart-arena-validation-manifest.json. Existing compiler/Pillow
+warnings remain. No ISO, cache or compiled product is committed.
+
+Normal Game activation is still unfinished. The typed NativeFileCache is not
+this shared raw arena; genuine file/renderer adoption, actual GPU synchronization/
+cache ownership, scene reset/reinitialization and pressure/worker/type relocation
+must be composed. The mutable first flag must keep sharing actual outer-display
+reset writes, not become a permanent C++ readiness bit. Static source handoff is
+artifacts/source-smart-arena-review.md. The next normal process already has
+original five-heap bootstrap in AnimationStartupProcess::cold; share its VM and
+preserve/adopt existing flag8041e810 within the broad8041e808/80 source segment.
+Do not overlay or reset that live backing. Concrete handoff:
+artifacts/source-smart-arena-next-native-handoff.md.
+
+Next: normal shared process/file/renderer adoption and actual platform draw-sync/
+cache providers, genuine scene reinitialization and pressure/worker/type-relocation
+owners, then activate smart/shadow initialization before source map admission.
+Genuine camera process initialization, material/GX capture, Game/EVT epochs,
+Crump return/afterbattle, full original prologue and physical hardware parity/
+performance remain unfinished.

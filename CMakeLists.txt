@@ -3206,3 +3206,5 @@ add_executable(source_shadow_process_tests tests/source_shadow_process_tests.cpp
 target_link_libraries(source_shadow_process_tests PRIVATE ttyd_core)
 add_test(NAME source_shadow_process COMMAND source_shadow_process_tests)
 set_tests_properties(source_shadow_process PROPERTIES WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+
+target_sources(ttyd_core PRIVATE source/platform/source_smart_arena.cpp)

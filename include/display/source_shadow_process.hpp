@@ -3,6 +3,7 @@
 #include "field_map_source.hpp"
 #include <memory>
 namespace ttyd {
+class SourceSmartArena;
 // Providers own actual process/smart allocations, GX object constructors and
 // cache services. current must cover their backing/lifetime through all holds.
 // False retains the same source child; a completed callback must include its
@@ -11,6 +12,7 @@ struct SourceShadowProcessBackend {
  void* user=nullptr;
  bool (*current)(void*)=nullptr;
  bool (*call)(void*,FieldMapSourceCall&)=nullptr;
+ SourceSmartArena* smartArena=nullptr; // Same VM and genuine shared arena; borrowed through holds.
 };
 class SourceShadowProcess {
 public:

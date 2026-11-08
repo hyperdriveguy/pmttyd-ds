@@ -8,7 +8,7 @@ from iso_assets import DEFAULT_ISO
 from import_harbor_map_source import import_source
 from verify_field_map_source import verify
 class FieldMapSourceAssets(unittest.TestCase):
- def test_complete_original_source_spans(self):self.assertEqual(verify(),5524)
+ def test_complete_original_source_spans(self):self.assertEqual(verify(),6110)
  def test_original_payload_fixups_and_scene_reproduce_editable_sources(self):
   with tempfile.TemporaryDirectory() as temporary:
    out=Path(temporary)/'new';import_source(DEFAULT_ISO,out)

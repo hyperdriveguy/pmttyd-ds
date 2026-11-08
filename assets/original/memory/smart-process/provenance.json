@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "iso_id": "G8ME01 revision0",
+  "source": "main.dol initialized data",
+  "spans": [
+    {
+      "address": 2151764408,
+      "size": 44,
+      "sha256": "f7082911b10bdedc9fdcbd5610672f5044d98ed797477ff1b1c2a4cdcfc40db6"
+    }
+  ],
+  "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+  "policy": "Unchanged original five process-heap configuration rows and smart manager pointer; no BSS, heap bounds, live headers or arena payload imported."
+}

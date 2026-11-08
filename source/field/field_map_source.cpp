@@ -18,6 +18,13 @@ bool compatible(const FieldMapSourceServices& a,const FieldMapSourceServices& b)
 #undef PIN
 }
 bool root(uint32_t f){switch(f){
+ case 0x8002fbe0: // smartInit
+ case 0x8002f540: // smartAlloc
+ case 0x8002f9cc: // smartAutoFree
+ case 0x8002f878: // smartFree
+ case 0x8002f378: // smartGarbage
+ case 0x8002f33c: // smartTexObj
+ case 0x802b76a8: // GXInitTexObjData
  case 0x802b708c: // GXGetTexBufferSize
  case 0x8002dcec: // shadowInit
  case 0x8002bc7c: // shadowGetCharShadowProjection

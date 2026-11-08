@@ -53,3 +53,8 @@ collision preparation, cylinder/GX drawing, projection passes and renderer
 residency remain separate work. See [source request ownership](BATTLE_SHADOW_REQUEST_OWNER_AND_DEFERRED_PREPARATION.md),
 [shadow source domain](ORIGINAL_ORDINARY_TEV_SDK_AND_SHADOW_SOURCE_DOMAIN.md)
 and [the documentation inbox](../../requests/EVT-01.md).
+
+The [native shared smart arena](../memory/NATIVE_SOURCE_SMART_ARENA.md) now
+supplies the real source header in the integrated shadow fixture. This replaces
+its former smart allocation boundary token. Same-VM owner borrowing is available;
+normal Game activation and genuine file/GPU/cache lifetimes remain required.

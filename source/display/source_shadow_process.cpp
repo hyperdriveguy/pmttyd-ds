@@ -1,4 +1,5 @@
 #include "source_shadow_process.hpp"
+#include "source_smart_arena.hpp"
 namespace ttyd {
 namespace {struct Invocation {bool& flag;explicit Invocation(bool& f):flag(f){flag=true;}~Invocation(){flag=false;}};}
 SourceShadowProcess::SourceShadowProcess(EventAddressSpace& m,uint32_t s,const SourceShadowProcessBackend& b):memory_(m),stackAddress_(s),backend_(b){}
@@ -11,7 +12,7 @@ std::unique_ptr<SourceShadowProcess> SourceShadowProcess::bind(EventAddressSpace
 }
 SourceShadowProcess::~SourceShadowProcess(){const std::array<const uint8_t*,5> p{{primary_.data(),projection_.data(),depth_.data(),ramps_.data(),stack_.data()}};while(mapped_){--mapped_;memory_.unregisterExternalRam(mappings_[mapped_],p[mapped_]);}}
 bool SourceShadowProcess::current()const{
- if(mapped_!=mappings_.size() || !memory_.hasRamBacking(Primary,primary_.data(),PrimaryBytes) || !memory_.hasRamBacking(ProjectionWork,projection_.data(),AuxiliaryBytes) || !memory_.hasRamBacking(DepthWork,depth_.data(),AuxiliaryBytes) || !memory_.hasRamBacking(RampObjects,ramps_.data(),RampObjectBytes) || !memory_.hasRamBacking(stackAddress_,stack_.data(),StackBytes))return false;
+ if((backend_.smartArena && !backend_.smartArena->currentFor(memory_)) || mapped_!=mappings_.size() || !memory_.hasRamBacking(Primary,primary_.data(),PrimaryBytes) || !memory_.hasRamBacking(ProjectionWork,projection_.data(),AuxiliaryBytes) || !memory_.hasRamBacking(DepthWork,depth_.data(),AuxiliaryBytes) || !memory_.hasRamBacking(RampObjects,ramps_.data(),RampObjectBytes) || !memory_.hasRamBacking(stackAddress_,stack_.data(),StackBytes))return false;
  uint32_t a=0,b=0,c=0;
  return memory_.readWord(PrimaryPointer,a) && a==Primary && memory_.readWord(ProjectionPointer,b) && b==ProjectionWork && memory_.readWord(DepthPointer,c) && c==DepthWork && backend_.current(backend_.user);
 }
@@ -24,7 +25,7 @@ FieldMapSourceServices SourceShadowProcess::services(){FieldMapSourceServices s;
  s.storeHalf=[](void* u,uint32_t a,uint16_t v){return static_cast<SourceShadowProcess*>(u)->memory_.writeHalf(a,v);};
  s.call=[](void* u,FieldMapSourceCall& q){return static_cast<SourceShadowProcess*>(u)->child(q);};return s;
 }
-bool SourceShadowProcess::child(FieldMapSourceCall& q){if(!current())return false;const bool done=backend_.call(backend_.user,q);return current() && done;}
+bool SourceShadowProcess::child(FieldMapSourceCall& q){if(!current())return false;if(backend_.smartArena && SourceSmartArena::accepts(q.function)){const bool done=backend_.smartArena->service(q);return current() && done;}const bool done=backend_.call(backend_.user,q);return current() && done;}
 bool SourceShadowProcess::initialize(unsigned visits){
  if(invoking_ || !current())return false;
  if(initialized_)return true;

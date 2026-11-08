@@ -1555,3 +1555,5 @@ retain explicit provider and process-ownership frontiers.
 
 
 - [Original environment texture startup](display/SOURCE_ENVIRONMENT_TEXTURE_STARTUP.md): distinct envInit/TexSetup, logical DVD lengths and handle-first callback; implementation frontier.
+
+- [Native shared source smart arena](memory/NATIVE_SOURCE_SMART_ARENA.md): full original initialization/allocation/release/compaction and descriptor retargeting; same-VM shadow borrowing, with real platform/file activation still required.
