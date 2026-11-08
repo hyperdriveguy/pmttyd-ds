@@ -3284,3 +3284,12 @@ add_executable(native_logo_startup_tests tests/native_logo_startup_tests.cpp)
 target_link_libraries(native_logo_startup_tests PRIVATE ttyd_core)
 add_test(NAME native_logo_startup COMMAND native_logo_startup_tests)
 set_tests_properties(native_logo_startup PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+target_sources(ttyd_core PRIVATE source/display/source_camera_bootstrap.cpp)
+
+target_sources(ttyd_core PRIVATE source/display/native_camera_process.cpp)
+
+add_executable(native_camera_process_tests tests/native_camera_process_tests.cpp)
+target_link_libraries(native_camera_process_tests PRIVATE ttyd_core)
+add_test(NAME native_camera_process COMMAND native_camera_process_tests)
+set_tests_properties(native_camera_process PROPERTIES WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})

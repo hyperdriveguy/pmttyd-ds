@@ -368,6 +368,15 @@ struct NativeSourceTextureStartup::State {
           vm().memoryBinding.allocateHeap(0, q.arguments[1]);
       if (!a)
         return 0;
+      // Later source camera/pose allocations isolate their real payloads.
+      // Keep this published palette in its own unchanged guest-address region
+      // before pinning, so splitting the remaining arena cannot move it.
+      std::vector<uint8_t> paletteBytes;
+      if (!vm().memory.extractRam(a, q.arguments[1], paletteBytes) ||
+          !vm().memory.registerRam(a, std::move(paletteBytes))) {
+        invalid = true;
+        return {};
+      }
       j.palette = a;
       j.bytes = q.arguments[1];
       if (!pin(a, j.bytes)) {

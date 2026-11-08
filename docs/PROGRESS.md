@@ -19993,3 +19993,72 @@ return, original afterbattle crowd/dialogue/party and story6 plaza transition.
 Existing earlier Crump requirements/inbox remain authoritative; host fixtures
 do not close the full fresh/resumed into/out-of-battle scene. The full goal
 stays active and incomplete.
+
+
+### Shared original camera CPU bootstrap and actual road borrowing (2026-11-07)
+
+Normal Game now executes complete original camera and perspective/ortho
+constructors for all13 records in its existing animation VM, then binds actual
+camera4 into the existing road owner. SDK allocations/headers are real and
+individually pinned; complete source wide FPR arithmetic preserves double bias,
+tangent results, frsp and callee/paired spills. The native gfx boot adaptation
+executes only the original nonnull NTSC descriptor-copy CPU contribution, with
+late pointer publication. It does not acknowledge complete DEMOInit/GX/VI or
+rerun memInit over live heaps. Original source revealed/fixed semantic/prose
+slot2=shadow,slot3=bg and table803c95f8 signed-low address errors.
+
+A single cold publication transfers raw camera values into the semantic bank;
+zero source view/extra bytes remain unavailable views. Room/checkpoint retention
+keeps the same raw/semantic owners. Retained road children now participate in
+busy guards. Later camera allocation isolation exposed previously borrowed texture
+palettes moving in the arena; palettes are now individually isolated before their
+identity is published, preserving actual source addresses, bytes and SDK metadata.
+Original dialogue, story conditions and ordering remain unchanged.
+
+Validation freezes committed0f8fc438 plus these scoped changes, preserving
+concurrent work/staging. Full make test exits0: 620/620 C++ (85.47s),
+272/272 Python (38.184s), zero skips. Both focused executables pass, including
+normal Game camera bootstrap and room/checkpoint/raw+semantic bank retention.
+Normal asset preparation compiles471 recipes; assets-check passes471. Native
+make all (-o assets-ready after explicit preparation) exits0; final incremental
+native rebuild includes the palette isolation and source slot-name corrections.
+Original source verification pins996 camera instructions (five complete callable
+bodies plus one explicitly bounded DEMO CPU contribution); existing map graph
+retains6110 original words/53 complete bodies. Import roundtrip is byte-identical,
+nonempty reimport rejects without changing files, original ISO opened rb only.
+
+Tests retain an actual first descriptor load across a budget yield despite source
+mutation, publish the render pointer last, hold real Distance and SDK tangent
+children without prefix allocation replay, execute all13 real heap0 allocations
+and camera constructors, verify raw default/view/extra/viewport/name fields,
+actual camera4 slot/record borrowing and source road busy ownership. The chosen
+binary64 tangent result proves no premature binary32 narrowing. Actual SDK
+allocated-list loss, equal-byte foreign entry replacement, semantic boot reset,
+UI retirement, duplicate cold ownership and original progressive descriptor are
+covered. Effect/fade/environment/N64 texture profiles remain ready after all
+camera allocation isolation in the actual Game path. Native libm/estimate
+providers are explicit adaptations, not original Gekko numerical observations.
+
+Private ARM build exits0 with all662 non-main native objects
+byte-identical to production. Three exact tracked fixture functions plus normal
+Game readiness assertions produce eight strict PASS markers. Fresh isolated
+normal90s and private180s Azahar smokes exit0; inspected captures show original
+opening rendering, without native exception. No user emulator profile/save is
+touched. CPU camera/road boot is not source camMain/GX/outer-display completion,
+original matched pixels, full Crump/prologue or physical hardware performance.
+
+Exact replay pins4988 source files, 2254 RomFS products,
+8222 private inputs and1 reference input.
+Normal regeneration includes already committed fade/voice assets; this scope
+adds only original initialized camera/NTSC literals. Source/object/product/binary,
+terminal log, review and capture hashes are in
+artifacts/source-camera-bootstrap-validation-manifest.json. Independent read-only
+review found no admitted cold-bootstrap blocker; its retained-road busy finding
+was addressed before freeze. Existing compiler/Pillow warnings remain. No ISO,
+cache or compiled pack/binary is committed.
+
+
+Next: compose actual same-VM mapLoad with these source camera/road and shadow
+owners, reach genuine material/GX capture with G0 still0, then source camMain,
+raw/semantic update authority and complete outer display/GPU services. Full Crump
+field/battle/return, prologue parity and hardware performance remain unfinished.

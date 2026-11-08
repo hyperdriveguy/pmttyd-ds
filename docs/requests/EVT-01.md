@@ -5981,3 +5981,5 @@ not forge reset code0 or a video/retrace receipt. Final-child currentness and
 borrowed-root backing are independently checked. The new platform request stays
 open for remaining source/transitive/native ownership. Fresh exact source
 spans and independent review are under artifacts/mario-logo-startup/.
+
+Normal Game now executes complete source camera CPU bootstrap and binds actual camera4/road ownership in the shared VM. [Contract](../behavior/camera/NATIVE_SOURCE_CAMERA_BOOTSTRAP.md). DEMO selected CPU publication is explicit native adaptation, not complete OS/GX/VI/memInit execution. Existing source contracts answer these bodies; source camMain/outer display, map/GX publication and full field/battle return remain implementation work. No duplicate unknown request.

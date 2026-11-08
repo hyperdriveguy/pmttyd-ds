@@ -4496,3 +4496,16 @@ original root/format. Original per-span paths/offsets/source-BSS distinctions/
 hashes and Nintendo/Intelligent Systems rights are in provenance.json.
 Tracking grants no redistribution rights. ISO/caches/compiled packs remain
 outside source history; checked-in edits are not overwritten.
+
+
+### Original camera bootstrap literals
+
+`assets/original/display/camera-bootstrap/` contains unchanged US revision0
+main.dol constructor names/default vectors, binary32/binary64 SDK constants and
+both original MarioSt60-byte NTSC descriptors. `event.json` compiles to
+`source-camera-literals.pmevt`; `provenance.json` pins source addresses, sizes,
+hashes and original rights. Import with `tools/import_source_camera_literals.py`
+into an empty destination only. No runtime camera table/record, render-mode BSS,
+heap or initialized GX state is imported. Native CPU selected-descriptor copying
+and complete camera/matrix constructors execute separately. Nintendo/Intelligent
+Systems rights are retained; tracking grants no redistribution license.

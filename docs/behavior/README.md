@@ -1580,3 +1580,5 @@ retain explicit provider and process-ownership frontiers.
   activation remains required.
 - [Logo platform query leaves](platform/SOURCE_LOGO_PLATFORM_QUERY_LEAVES.md):
   recovered reset/button/DTV bodies with actual input/MMIO/interrupt boundaries.
+
+- [Native shared original camera bootstrap](camera/NATIVE_SOURCE_CAMERA_BOOTSTRAP.md): all13 actual SDK entries, bounded selected-render-mode publication, source wide arithmetic and real road borrowing.

@@ -13,9 +13,10 @@ and a separate native private stack. Original initialized pointer words at
 80414fa8 and804169c8 come from the editable source literal pack. Camera4's
 actual existing table slot803c9608 and260-byte entry are borrowed with physical
 backing identities. Native admission keeps that table slot/entry stationary.
-The owner never creates, zeros or substitutes a camera entry. Normal Game must
-first execute genuine camInit/camEntryPersp ownership; fixture-initialized camera
-storage does not fulfill that prerequisite.
+The owner never creates, zeros or substitutes a camera entry. [Normal Game camera
+bootstrap](NATIVE_SOURCE_CAMERA_BOOTSTRAP.md) now executes genuine camInit/
+camEntryPersp in the same VM and supplies this actual borrow. Fixture-initialized
+camera storage is still distinct from that normal process admission.
 
 FieldMapHeapOwner::cameraRoad supplies the same-VM owner to the original parent.
 Reached load/unload/perspective wrappers remain external child boundaries. The
@@ -63,9 +64,9 @@ and [map loading](../field/NATIVE_SOURCE_MAP_LOADING_AND_DVD_WORKER.md).
 Host/source and isolated ARM validation details are recorded in
 [progress](../../PROGRESS.md). A real source harbor parent is exercised with
 explicit fixture-owned preinitialized camera storage. This is not normal Game
-activation or a claim that gameplay already uses this source camera process.
-Genuine camInit admission, camera solver/Main/GPU consumers, material/display-list
-and shadow services, Game/EVT map epochs and full prologue remain required.
+map activation. Normal Game camera CPU bootstrap and actual road borrowing are
+now composed; camera solver/Main/GPU consumers, material/display-list and later
+shadow services, Game/EVT map epochs and full prologue remain required.
 
 
 The reached later map tail also consumes the original rodata prefix at

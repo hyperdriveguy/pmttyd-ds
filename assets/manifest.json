@@ -1,6 +1,7 @@
 {
   "schema": 1,
   "assets": [
+    {"id":"original/display/camera-bootstrap", "kind":"event", "source":"assets/original/display/camera-bootstrap/event.json", "output":"source-camera-literals.pmevt", "license":"Nintendo/Intelligent Systems original game asset; no redistribution license granted"},
     {
       "id": "original/display/logo-startup-memory",
       "kind": "event",

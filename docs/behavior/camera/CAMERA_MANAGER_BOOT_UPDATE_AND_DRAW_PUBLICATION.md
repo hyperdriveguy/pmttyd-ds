@@ -12,7 +12,7 @@ original execution, hardware trace or raster-equivalence assertion.
 
 camInit allocates thirteen independent 0x260-byte camera records through
 __memAlloc800300f0(heap0,size0x260), clears each complete record, then publishes
-pointers into camPtrTbl803d95f8, slots0..12. Original constructor vectors read
+pointers into camPtrTbl803c95f8, slots0..12. Original constructor vectors read
 from camPtDefault80414fb0=(0,0,1000), target80414fbc=(0,0,0),
 camUpDefault80414fc8=(0,1,0). These are explicit input vectors.
 
@@ -37,8 +37,8 @@ aspect0x3fa22222 in inline ortho entries too, independently of their matrix.
 | --- | --- | --- | --- |
 | 0 `off` | Ortho(top240,bottom-240,left-304,right304,near1,far32768) | 0..1 | null |
 | 1 `off2` | Ortho(0,480,0,608,1,32768) | 0..1 | null |
-| 2 `bg` | Ortho(0,480,0,608,1,32768) | 0..1 | null |
-| 3 `shadow` | Ortho(0,480,0,608,1,32768) | 0..1 | null |
+| 2 `shadow` | Ortho(0,480,0,608,1,32768) | 0..1 | null |
+| 3 `bg` | Ortho(0,480,0,608,1,32768) | 0..1 | null |
 | 4 `3d` | Perspective(FOV25,aspect0x3fa22222,near1,far32768) | 0..1 | cam3dMain8000ea68 |
 | 5 `3deff_A` | Perspective(25,0x3fa22222,100,10000) | 0x3e4ccccd..0x3e99999a | camEffMain8000e974 |
 | 6 `3dimg` | Perspective(25,0x3faaaaab,1,32768) | 0..1 | camImgMain8000ea30 |

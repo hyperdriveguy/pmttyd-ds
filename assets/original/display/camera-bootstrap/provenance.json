@@ -1,0 +1,34 @@
+{
+  "schema": 1,
+  "iso_id": "G8ME01 revision0",
+  "source": "main.dol initialized data",
+  "spans": [
+    {
+      "address": 2150364632,
+      "size": 144,
+      "sha256": "be933e2af6bde701d97c19de683d3a715a0b55baf302e5afdc4b1ff5f4f3e48a"
+    },
+    {
+      "address": 2151763888,
+      "size": 36,
+      "sha256": "5372dfac66c8844e2ce8c9ad1d1e182204258d8d535e3f91e7206335015c150e"
+    },
+    {
+      "address": 2151806644,
+      "size": 168,
+      "sha256": "af907f60fff209d82b86b3310a707c59397fc94759bdaf3fc644ec440a33374f"
+    },
+    {
+      "address": 2151846776,
+      "size": 36,
+      "sha256": "f813595347a52f5c6b964cf5518d9ea4ae5c7d9c433ddddfae930b109037271b"
+    },
+    {
+      "address": 2150679208,
+      "size": 120,
+      "sha256": "2b41364ca856013a7d182ee377db148f6e70da0861ef31b45168973ec0115a1b"
+    }
+  ],
+  "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+  "policy": "Unchanged original camera names/vectors, constructor/SDK/double constants and both MarioSt NTSC descriptors; no camera table, runtime camera record, render-mode pointer/BSS, heap or GX state imported."
+}

@@ -212,8 +212,10 @@ ShiftInit and GetDvdRoot bodies, original harbor c transfer and source constants
 The map parent can supply a same-VM road/shift process owner and actual borrowed
 camera4 entry; its retained child reuses the real map allocator and DVD worker.
 See [source loading contract](../behavior/camera/NATIVE_SOURCE_CAMERA_ROAD_LOADING.md).
-Original camInit/camEntryPersp process admission remains a normal Game prerequisite;
-source-boundary camera fixture storage does not supply it. Remaining dependencies:
+[Normal source camera bootstrap](../behavior/camera/NATIVE_SOURCE_CAMERA_BOOTSTRAP.md)
+now executes original camInit/camEntryPersp for all13 actual shared-heap records
+and supplies the real camera4/road borrow. Source-boundary fixture storage remains
+distinct from this normal Game admission. Remaining dependencies:
 actual camera Main/road/shift clocks and view/GPU consumers, original numeric/pixel
 observations, map shadow/material/GX capture and field epochs. Partial resets
 before acquisition failure and retained timestamps must survive later integration.

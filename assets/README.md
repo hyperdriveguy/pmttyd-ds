@@ -209,3 +209,5 @@ edits. Original Nintendo/Intelligent Systems rights remain retained; no
 redistribution license is granted.
 
 Original unrelocated harbor D/T and exact rounded-disc tails are in `original/maps/harbor-files/`; see their provenance and `tools/import_harbor_map_files.py`. Import into an empty destination; preserve edits. These files feed the retained source loader, separately from the already-relocated constructor fixture payload.
+
+Original camera bootstrap literals are editable under `original/display/camera-bootstrap/`; source locations/hashes/rights are pinned in its provenance file. Reimport requires an empty destination.

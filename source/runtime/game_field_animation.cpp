@@ -3,6 +3,7 @@
 #include "native_ui_startup.hpp"
 #include "native_effect_process.hpp"
 #include "native_shadow_process.hpp"
+#include "native_camera_process.hpp"
 namespace ttyd {
 // Native bootstrap requires a fresh pose namespace and no held producer.
 // Creation/configuration/Mario Entries are ordered admissions, not a rollback
@@ -47,6 +48,10 @@ bool Game::initializeNativeUiFieldAnimation(const char* root,std::shared_ptr<Nat
  if(!nativeEffects_->pumpFadeTextures(ColdStartupIoBudget) ||
     !nativeEffects_->pumpEnvironmentTextures(ColdStartupIoBudget) ||
     !nativeEffects_->pumpTextures(ColdStartupIoBudget))return false;
+ // Native gfx owns the console; original selected NTSC CPU publication and
+ // all13 source camera/matrix constructors run against this same live heap.
+ if(!nativeCameraProcess_)nativeCameraProcess_=NativeCameraProcess::create(nativeShadowProcess_,root,nativeCameraLibmNumerics());
+ if(!nativeCameraProcess_||!nativeCameraProcess_->initialize()||!nativeCameraProcess_->publishBoot(cameraManager))return false;
  auto owner=nativeUiStartup_->fieldProcess();
  if(!owner || !fieldParties.configureNativeAnimation(std::move(owner),fieldPlayerPoseResources()) || !fieldParties.initializeMario(fieldMarioBattle,{},0))return false;
  prepareNativeFieldAnimation();return nativeMarioPose()!=nullptr;
@@ -59,6 +64,9 @@ std::shared_ptr<NativeEffectProcess> Game::nativeEffects() const{
 }
 std::shared_ptr<NativeShadowProcess> Game::nativeShadowProcess()const{
  return nativeShadowProcess_ && nativeShadowProcess_->ready() && nativeShadowProcess_->ui()==nativeUiStartup_ && nativeUiStartup_ && nativeUiStartup_->fieldProcess()==fieldParties.nativeAnimation?nativeShadowProcess_:nullptr;
+}
+std::shared_ptr<NativeCameraProcess> Game::nativeCameraProcess()const{
+ return nativeCameraProcess_&&nativeCameraProcess_->ready()&&nativeCameraProcess_->shadows()==nativeShadowProcess()&&nativeCameraProcess_->bootPublishedFor(cameraManager)?nativeCameraProcess_:nullptr;
 }
 void Game::prepareNativeFieldAnimation(){
  if(!fieldParties.nativeAnimation || nativeAnimationPending())return;
@@ -96,6 +104,8 @@ bool Game::retainNativeFieldAnimation(Game& previous,bool checkpoint){
  if(nativePartyPending() || previous.nativePartyPending())return false;
  if(nativeAnimationPending() || previous.nativeAnimationPending())return false;
  if((nativeShadowProcess_ && nativeShadowProcess_->busy()) || (previous.nativeShadowProcess_ && previous.nativeShadowProcess_->busy()))return false;
+ if((nativeCameraProcess_&&nativeCameraProcess_->busy())||(previous.nativeCameraProcess_&&previous.nativeCameraProcess_->busy()))return false;
+ const auto retainedNativeCamera=previous.nativeCameraProcess();
  const auto retainedNativeShadow=previous.nativeShadowProcess();
  const auto retainedUi=previous.nativeUiStartup();
  const auto retainedEffects=previous.nativeEffects();
@@ -139,7 +149,8 @@ bool Game::retainNativeFieldAnimation(Game& previous,bool checkpoint){
  }
  // Ownership admission is complete. A later source sampler hold is reported
  // by the ordinary renderer; it is not a failed/rolled-back room transaction.
- nativeUiStartup_=retainedUi;nativeEffects_=retainedEffects;nativeShadowProcess_=retainedNativeShadow;
+ nativeUiStartup_=retainedUi;nativeEffects_=retainedEffects;nativeShadowProcess_=retainedNativeShadow;nativeCameraProcess_=retainedNativeCamera;
+ if(retainedNativeCamera)cameraManager=previous.cameraManager; // Source camera bank survives room/checkpoint ownership handoff.
  prepareNativeFieldAnimation();return true;
 }
 }

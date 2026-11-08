@@ -55,6 +55,8 @@ public:
     bool main(bool fieldContext,const CameraMainServices&,CameraMainCursor&);
     bool draw(DisplayQueue&,const CameraDrawServices&,CameraDrawCursor&);
 private:
+    friend class NativeCameraProcess;
+    bool sourceBootPublished_=false; // Actual raw CPU constructor publication, not camMain/GX readiness.
     bool renderDimensionsPublished_=false;
     std::array<CameraState,13> cameras_{};
     std::optional<uint32_t> current_;
