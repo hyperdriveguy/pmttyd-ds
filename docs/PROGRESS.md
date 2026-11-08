@@ -19214,3 +19214,77 @@ Next: genuine camera4 camLoadRoad/reset/acquisition/lifetime and perspective,
 material/GX display-list capture, shadows and Game/EVT activation. Original math
 parity, active hit lifetimes, full prologue/Crump round trip and physical New2DS XL
 performance remain unfinished.
+
+### Crump prerequisites: whole original fukidashi event wrapper (2026-11-07)
+
+Committed the whole evt_eff_fukidashi8006c3c4/314 parent in b0c86eb6, including
+all modes0..4,
+invalid modes and original optional-name processing. It resolves every authored
+integer/float operand before dispatch and preserves each capture through held
+lookup, construction, implicit constructor audio or naming children. All original
+branch-specific height read/float orders remain separate, including ordinary
+party's second divisor read and kind5 override. No per-poll heap allocation is
+introduced. This is reusable for later areas, not a Crump-only reaction list.
+
+NativeFukidashiEventCall uses the caller's actual VM for operand decoding and
+raw argument/actor memory. It pins VM/host entry/ID/command/world providers and
+revalidates guest entry mapping before resuming or reporting completion. It
+rejects reentry, changed commands, reused IDs and moved/unmapped mappings. One
+adapter belongs to one command/incarnation; actual scheduler retirement remains
+mandatory for unobserved same-ID/same-command/same-address ABA reuse. It creates
+neither a private event VM nor guessed guest NPC pointers.
+
+Original initialized constants/strings are tracked under
+assets/original/effects/fukidashi/event with per-span licensing/provenance. The
+normal manifest compiles fukidashi-event.pmevt. Importer event mode retains the
+previous three modes byte-for-byte; all four fresh imports matched their tracked
+files and rejected nonempty destinations. The new source verifier passed eight
+whole-wrapper/startup/SDA2 span hashes from the read-only ISO. Correct startup
+r2=80427440 is distinct from r13=8041cf20. Independent source-order/implementation
+review found no concrete defect in the stated mapped-memory/numeric domain.
+
+Final combined validation: make test exit0,589/589 C++ tests in92.84s and
+263/263 Python tests in37.939s, zero skips. Native make all exit0. All4787 source
+hashes,2221 RomFS hashes and archived products remained identical after the
+terminal gate. The archive matches committed b0c86eb6 exactly. Documentation
+link check passed:1689 Markdown files, zero broken links.
+
+Evidence is under artifacts/fukidashi-event. The first immutable snapshot was
+base 427309fe plus the wrapper overlay,4742 source files. Its make test exited0:
+580/580 C++ tests in79.13s and261/261 Python tests in46.502s, zero skips;
+make all exited0. The focused wrapper test passed, including raw/float captures,
+exact arithmetic/read chronology, changing divisor, null parties, effect0/name
+checks, reentry, retained naming and actual VM encoded-float decoding/identity.
+
+The final combined snapshot includes concurrent menu/stage commit a6ea651e and
+our wrapper: exact committed b0c86eb6. Only 69 source files changed from the first
+snapshot. Both newly added normal hierarchy recipes compiled and matched their
+checked-in JSON exactly. A first asset build correctly rejected reusing an
+installed overlay journal; the retry used a separate cache and left prior
+products intact. Source/product identities and terminal logs are retained in
+validation-manifest.json and accepted/. Unrelated uncommitted source was excluded.
+Native commands used SOUNDTRACK=gamecube, -j4 and -o assets-ready after explicit
+changed normal-manifest asset compilation; host used four build/test workers.
+
+REA registration doctor is healthy, but no REA tools are connected to this
+session; existing AGENTS documents the DOL route schema failure. The existing
+verified PowerPC listings and fresh direct ISO pin checks were used. No settings
+or analysis-engine installation was changed, and no original execution is claimed.
+
+Limitations: the normal encounter reaction callback still has an unbound backend.
+This wrapper is now available for real composition but is not installed in that
+callback. Actual live process heap3/pool, effect Main/Position, actor/camera
+aliases, complete string/name helpers, sound playback and native draws must be
+owned together before source construction can complete there. Fixture effect
+pointers/constructor receipts are test providers. No Azahar Crump round trip,
+matched original pixels, Gekko numerical equivalence or physical New2DS XL
+performance is claimed. Menu/stage constructor availability is not complete
+battle controller/result/export/teardown/field return or afterbattle execution.
+
+Next: add the effect process/driver over the live original process with real
+heap/pool/BSS and actor/camera/audio ownership, then install this actual wrapper.
+Continue genuine setup2 sequence/battle lifecycle/result/field return and original
+276-command afterbattle crowd/dialogue/party/map transition. Validate normal
+fresh/resume runs in isolated Azahar, compare original observations and measure
+actual hardware budgets. Never replace a held source result/presentation owner
+with a synthetic completion receipt.

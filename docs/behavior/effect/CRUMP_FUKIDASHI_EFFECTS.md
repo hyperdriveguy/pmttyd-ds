@@ -493,3 +493,48 @@ Actual runtime registration, EVT operands/name routing, shared pool scheduling,
 native audio/material/texture/queue retirement and scene playback remain open.
 Main and Entry now have an actual portable position child to bind; successful
 fixture composition does not install it into the normal Game path.
+
+
+### Retained event wrapper implementation
+
+`fukidashi_event.hpp/.cpp` now supplies the complete original
+`evt_eff_fukidashi8006c3c4/314` parent, including all five attachment modes,
+invalid-mode completion and the original name-processing tail. It resolves all
+integer0..4 operands, float5..9 operands and integer10 before dispatch, capturing
+each raw operand independently before an unavailable decoder can hold. It keeps
+the original argument base and resolved values through construction/audio holds.
+The original first-call argument is unused. Completion2 follows the actual
+constructor and optional name helper, without waiting for effect expiration.
+
+Mode-specific reads remain ordered: Mario/extra party read H before2; NPC reads2
+before H; ordinary party reads2,H,kind, multiplies, reads3 and divides Y, applies
+kind5's30 override, then reloads3 and zero before dividing radius. Mario/NPC/extra
+party divide radius before zero and Y's division. Those separate float operations
+are required binary32 providers, not algebraically combined 2H/3 expressions.
+The current source r2 is80427440 (startup-pinned); wrapper constants and strings
+are80420328..8042033c. `verify_fukidashi_event.py` pins the whole wrapper, startup
+and all six initialized spans from the read-only ISO. The editable `event/` data
+pack retains those original bytes and per-span licensing/provenance.
+
+`NativeFukidashiEventCall` binds raw argument/actor memory and both decoders to
+the actual caller VM. It pins the VM, host entry, ID, command, guest mapping and
+world-service identities, rejects reentry and repeats no completed construction
+or name comparison. A finished call stays terminal. One object belongs to one
+actual command/incarnation; real retirement/cancellation remains scheduler-owned,
+including unobserved same-ID/same-command/same-address ABA reuse. This adapter
+creates neither a private VM nor an actor-pointer fallback.
+
+Regression fixtures distinguish the exact load/arithmetic orders, changed
+ordinary-party divisor, kind5 override, absent parties, fixed float bit patterns,
+raw capture before decoder holds, provider/entry identity, reentry, original-name
+comparison even after effect0/invalid mode, naming holds and actual VM encoded
+float decoding. Child constructor/name callbacks in these fixtures are explicit
+test providers. The tests do not establish native effects, audio or GPU output.
+
+The next production boundary is still the normal encounter's reaction callback.
+The wrapper is a composition API, not installed there yet. It needs the actual
+shared process heap3, effect pool/Main/Position, actor/camera aliases, source
+string helpers/SetName and audio/draw consumers with retained lifetimes. In
+particular a captured request or typed fixture pointer cannot acknowledge that
+production constructor. The naming helper's complete source contract remains
+in the existing source evidence; its production provider is separate.

@@ -5792,3 +5792,14 @@ road acquisition/reset/lifetime, unconditional camSetTypePersp, material/GX capt
 shadow publication, Game/EVT epochs and original execution observations. Existing
 road parsing is not complete source camera ownership. No synthetic camera receipt
 or loaded map count is admitted to advance this boundary.
+
+2026-11-07 implementation follow-up: whole evt_eff_fukidashi8006c3c4/314 now has
+a retained portable parent and actual-VM decoder/memory adapter, all attachment
+modes and source name tail. Independent ISO audit confirms r2=80427440 and exact
+mode-specific height read/float order. Source contract:
+[Crump fukidashi](../behavior/effect/CRUMP_FUKIDASHI_EFFECTS.md). Six initialized
+spans are imported with provenance; whole source/startup verifier is tracked.
+This closes the missing parent implementation, not normal-scene effect playback.
+The remaining process/pool/driver and actor/camera/audio/native draw ownership
+are implementation work with existing contracts; do not file them as unknown
+source behavior or acknowledge their absence through synthetic completion.

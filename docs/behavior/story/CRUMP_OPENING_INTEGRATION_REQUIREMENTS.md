@@ -215,3 +215,12 @@ tested using the explicit finite native SDK adapter; source yaw, normalization,
 FMA and live-read boundaries are preserved. This advances CO-03/CO-09 without
 closing actual EVT/draw/audio/retirement or the complete Crump battle/result/
 field-return/afterbattle production chain.
+
+
+The retained whole fukidashi event wrapper is now available in
+`fukidashi_event.hpp/.cpp`, with all modes and an actual caller-VM decoder/memory
+adapter. It composes with the committed Entry/Position/Main services and original
+six-span wrapper data pack. This advances CO-03's prerequisites but does not
+change its production boundary: the normal reaction callback still needs real
+shared-process effect/heap/camera/actor/audio/draw providers. Test constructors
+and successful source decoding do not establish that scene presentation.

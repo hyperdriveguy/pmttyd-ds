@@ -4336,3 +4336,14 @@ model or atlas. Normal builds compile the editable JSON and never reimport over
 edits. Nintendo/Intelligent Systems retain all original rights; no redistribution
 license is granted. Temporary extracts and compiled packs remain ignored. See
 [the hierarchy contract](behavior/field/HARBOR_TUTORIAL_STAGE_HIERARCHY_ASSETS.md).
+
+The original fukidashi event wrapper now has editable runtime data under
+`assets/original/effects/fukidashi/event/`: six pinned initialized DOL spans at
+80420328..8042033c (2,3,zero,`me`,30,empty). The normal manifest compiles its
+unchanged bytes to `fukidashi-event.pmevt`. `import_fukidashi_memory.py --component
+event` accepts only an empty destination; earlier Main/Entry/Position outputs
+remain byte-identical. `verify_fukidashi_event.py` independently pins startup,
+the whole source wrapper and those six spans. Conversion preserves original
+word-aligned bytes, with no generated art, dialogue or numeric substitution.
+Per-span ISO offsets/hashes and retained Nintendo/Intelligent Systems rights are
+in `provenance.json`; no redistribution license is granted.
