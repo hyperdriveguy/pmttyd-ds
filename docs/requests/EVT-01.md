@@ -5721,3 +5721,19 @@ read order across holds. This closes the local update implementation, not
 effect dispatch/presentation: actual Entry/EVT/attachment/draw/audio providers,
 shared pool scheduling, native queue retention and map retirement still need
 production owners. Keep this request and the Crump scene requirements open.
+
+
+### 2026-11-07 — Shared Window/archive address correction
+
+[Window startup](../behavior/display/NATIVE_UI_STARTUP_WINDOW_PREFIX.md)
+now uses genuine source table 803dbff0, not the unrelated zero-filled MusyX range.
+Exporter guards derive signed address/count/stride from the pinned original body;
+normal build migration accepts only the exact known stale generated pack and
+preserves edits. Active archives and missing mappings still hold. This closes
+an address error, not full ARC/DVD/source scheduler or prologue composition.
+
+- [ ] Share the actual archive backing/lifetime when composing the Window and
+  full map loader in one process. Cold-factory conflict must retain/reject,
+  never overwrite live flags or install a compatibility shadow.
+- [ ] Continue actual hit/triangle, light/camera/GX and Game/event epoch binding,
+  plus original runtime and physical New2DS XL verification.

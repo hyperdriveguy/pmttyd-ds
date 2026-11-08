@@ -18736,3 +18736,54 @@ beforebattle tail; implement actual fukidashi Entry/EVT/attachment/material/
 sound consumers and retirement using the shared pool. Execute original
 afterbattle with its crowd, actors, party and 033-to-story6 exit, then obtain
 matched original/native captures and measure New2DS XL rendering/memory costs.
+
+
+### Correct shared Window archive table and generated-cache migration (2026-11-07)
+
+Corrected native Window startup's archive table to original 803dbff0. The former
+803ebff0 lies in MusyX sequence-instance storage; identical cold zero hashes
+masked the wrong address. Native table/count/stride are named in a common header;
+original exporter independently derives signed lis/addi address and loop layout
+from the pinned complete arcOpen body. The actual exported row must match too.
+Updated gate/scan, active/split-map fixtures (including 803dc040), whole-pack
+SHA and contract. Source archive calls still retain genuine missing services.
+
+Normal Make preparation now migrates only the exact known legacy generated
+pack+metadata, publishing a newly built empty-destination result with rollback.
+Edited/unknown outputs remain refused and preserved; direct import stays strict.
+Only ignored compiled cold-state products change. No editable source asset or
+ISO writes, story/dialogue changes or weakened cold-map admission. Future map/UI
+composition must share actual archive backing rather than duplicate/clear it.
+
+Validation freezes committed 23b6b9fb plus these ten scoped files; concurrent
+work/staging remain preserved. Full make test exits 0: 557/557 C++ (242.64s),
+256/256 Python (66.709s), zero skips. Six exporter/migration tests and five focused
+native UI fixtures pass. Normal make all runs full asset preparation and exits 0;
+430 asset recipes validate. Initial preparation lacked ignored map head inputs;
+only missing inputs were copied after byte comparison, then preparation resumed.
+No source import or editable asset overwrite was used.
+
+Fresh isolated normal 40s and private ARM 300s Azahar runs exit 0. Two exact
+tracked font/Window fixtures produce seven strict PASS markers: font, window,
+archive, holds, heap, jobs and callbacks. All 598 non-main production objects
+remain byte-identical; production binary is unchanged. Private main adapts test
+romfs: paths and adds assertions/progress/proof only. The first wrapper missed
+compound romfs paths and failed; its source/binary/log are retained. Corrected
+100s run reached Window without failure but exceeded its capture deadline; the
+longer final run completes. Normal boot image was inspected. The private ARM post-proof storybook capture
+shows demo-chest/title texture-unavailable notices after fixture allocations;
+its numerical/ownership proof passes, but that capture is not a clean visual
+playthrough. No original pixel, Goombella walking, hardware timing or complete
+map-transition claim. User saves
+and emulator profile remain untouched.
+
+Exact replay pins 4,626 source files, 2,211 RomFS products, 6,364 private inputs
+and one reference input. Normal preparation adds five already-defined products
+and changes only the pipeline stamp plus Window pack/metadata; private cache
+regeneration is hash-recorded. Known compiler/Pillow warnings remain. Complete
+source/product/object/binary hashes, logs and failed attempts are recorded in
+artifacts/ui-archive-address-validation-manifest.json.
+
+Next: native original hit/triangle construction and distance math, source light/
+camera/material/mapDraw/GX capture and actual Game/EVT load/unload epochs. Full
+prologue, original traces and hardware checks remain open; goal stays active.

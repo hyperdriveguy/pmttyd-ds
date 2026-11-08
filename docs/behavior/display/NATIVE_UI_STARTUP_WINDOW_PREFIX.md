@@ -12,7 +12,7 @@ The retained [Window Setup, callback and unpack owners](RETAINED_WINDOW_TEXTURE_
 execute their complete original bodies. Setup `8007fbd8` clears the actual
 palette/ready globals `8041ea18/8041ea1c`, then calls `arcOpen` with the original
 `font/msgWindow.tpl` string. The finite native archive adapter scans the actual
-four 40-byte descriptors at `803ebff0`. Unknown descriptors hold; an active
+four 40-byte descriptors at `803dbff0`. Unknown descriptors hold; an active
 archive reaches the unsupported original `ARCOpen80078198` and remains held.
 Only genuine exhaustion of four inactive descriptors admits the DVD branch.
 The archive branch itself never publishes Ready1.
@@ -108,3 +108,37 @@ other DVD jobs, later LogoExit children, normal battle scheduling/GPU admission
 and full original startup remain explicit external owners. Nintendo and
 Intelligent Systems retain original rights. No license or redistribution right
 is granted by extraction; ISO, raw files and compiled packs remain ignored.
+
+
+## Signed archive-address correction (2026-11-07)
+
+The actual shared table is `803dbff0`: source `arcOpen800782e4/d4` forms
+`803e0000 + sign_extend(bff0)`, then scans four 40-byte descriptors. The earlier
+`803ebff0` was an unsigned-low reconstruction error and points inside MusyX
+sequence-instance storage. Both spans are cold BSS zeros; payload hashes alone
+cannot distinguish them. `SourceArchiveLayout` names the native table/count/
+stride. The exporter independently checks address/count/stride against the
+pinned whole original body and validates the actual exported span selection.
+
+The native adapter, its admission gate and delayed/split-map fixtures now use
+the correct address, including second split chunk `803dc040`. Source flags and
+original active-archive hold/exhaustion order are unchanged. An active archive
+still reaches the real unsupported ARCOpen boundary; no fake archive success
+was introduced. Native table installation still requires unmapped cold storage.
+A later same-process map/archive service must share that actual backing and
+lifetime; it cannot initialize a second zero table or overwrite live flags.
+
+Normal Make builds explicitly opt into `--migrate-generated-cache` for the
+ignored `romfs/source-window-startup` output. Migration accepts only the exact
+known previous complete pack/metadata pair (legacy whole-pack SHA256
+`cbb8a9711aff88735eb8b2ee129f93eb8d35484a2f12ebfc1f8bca76677da8be`). It
+constructs the replacement in an empty temporary directory, retains the old
+folder until publication, and rolls back a failed rename. Edited/unknown data,
+metadata or extra files are refused without replacement. The ordinary `build`
+importer remains strict. No editable source asset or ISO is overwritten.
+New pack SHA256 is
+`2afaa984dfd08c90bf7674e2df468bf9dff9b2b02873d01f601417714fba5b96`.
+Original rights/licensing and the zero-byte span hashes remain unchanged.
+
+Static evidence and independent symbol review are in
+`artifacts/ui-archive-address-review.md`; this is not an original runtime trace.

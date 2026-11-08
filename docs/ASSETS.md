@@ -4250,3 +4250,19 @@ Word alignment keeps actual adjacent original bytes; no resampling or invented
 padding is used. Per-span original/packaged lengths, hashes and ISO offsets are
 in `main/provenance.json`. Nintendo/Intelligent Systems retain all original
 rights; tracking this source grants no redistribution license.
+
+
+### Correct window archive cold-state address (2026-11-07)
+
+`tools/source_window_startup_assets.py` now derives the shared archive table
+`803dbff0` and its four 40-byte layout from the pinned original `arcOpen` body.
+The former `803ebff0` points into unrelated MusyX BSS despite equal cold bytes.
+Only PMEVT address metadata and source provenance address/whole-pack hash change;
+the 160 zero bytes and original window literals remain exact original input.
+New generated pack SHA256:
+`2afaa984dfd08c90bf7674e2df468bf9dff9b2b02873d01f601417714fba5b96`.
+Normal Make preparation explicitly migrates only the exact known legacy generated
+pack+metadata via an empty temporary output; edited/unknown caches remain
+untouched and fail. Direct imports still require empty or exact existing output.
+Original Nintendo/Intelligent Systems rights are retained; no source asset edits,
+new licensing grant, ISO writes or compiled pack commits.

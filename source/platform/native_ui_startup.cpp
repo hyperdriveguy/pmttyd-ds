@@ -1,4 +1,5 @@
 #include "native_ui_startup.hpp"
+#include "source_archive_layout.hpp"
 #include "native_source_resource_path_formatter.hpp"
 #include "source_mario_dvd_root.hpp"
 #include <cmath>
@@ -42,7 +43,7 @@ struct Image {
 };
 //256 cold slot objects already exist. Require zero flags/resource/generation,
 // not null object pointers; held Entry or Release excludes startup admission.
-constexpr Span WindowSpans[]={{0x802c0140,72,0xf24d0347b758c182ULL},{0x802c3080,40,0x143f03009da1047dULL},{0x803ebff0,160,0x81b169c331cabfa5ULL},{0x8041ea18,16,0x88201fb960ff6465ULL}};
+constexpr Span WindowSpans[]={{0x802c0140,72,0xf24d0347b758c182ULL},{0x802c3080,40,0x143f03009da1047dULL},{SourceArchiveLayout::Descriptors,SourceArchiveLayout::TableBytes,0x81b169c331cabfa5ULL},{0x8041ea18,16,0x88201fb960ff6465ULL}};
 struct WindowImage {
  EventScriptAssets source;std::array<std::vector<uint8_t>,4>bytes;EventAddressSpace*installed=nullptr;bool retained=false;
  ~WindowImage(){if(installed&&!retained)for(const auto&s:WindowSpans)installed->unregisterRam(s.address);}
@@ -165,8 +166,8 @@ struct NativeUiStartup::State:std::enable_shared_from_this<NativeUiStartup::Stat
   case 0x800782e4:{
    if(q.count!=3||q.arguments!=std::array<uint32_t,5>{0x802c3080,0,0,0,0})return {};
    if(archiveHeld){windowPending=0x80078198;return {};}
-   if(!gate(NativeUiStartupBoundary::WindowArchive,0x803ebff0,160))return {};
-   while(archiveIndex<4){uint16_t flags;if(!vm().memory.readHalf(0x803ebff0+40*archiveIndex,flags))return {};if(flags&1){archiveHeld=true;windowPending=0x80078198;return {};}++archiveIndex;++wc.archiveDescriptors;}
+   if(!gate(NativeUiStartupBoundary::WindowArchive,SourceArchiveLayout::Descriptors,SourceArchiveLayout::TableBytes))return {};
+   while(archiveIndex<SourceArchiveLayout::DescriptorCount){uint16_t flags;if(!vm().memory.readHalf(SourceArchiveLayout::Descriptors+SourceArchiveLayout::DescriptorBytes*archiveIndex,flags))return {};if(flags&1){archiveHeld=true;windowPending=0x80078198;return {};}++archiveIndex;++wc.archiveDescriptors;}
    return 0; // Actual whole inactive four-descriptor source exhaustion.
   }
   case 0x80007388:if(q.count)return {};return sourceMarioDvdRoot(OriginalMarioDvdSourceR2);
