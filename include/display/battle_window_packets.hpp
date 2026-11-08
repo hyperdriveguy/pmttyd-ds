@@ -11,6 +11,7 @@ public:~BattleWindowSurfaceGeneration()=default;
 private:BattleWindowSurfaceGeneration()=default;bool resident_=false;const void*texture_=nullptr;
  friend class BattleWindowSurfaceResource;friend struct BattleWindowSurfaceLease;
 };
+// Strong generation identity does not own the borrowed native texture pixels.
 struct BattleWindowSurfaceLease {
  std::shared_ptr<const BattleWindowSurfaceGeneration>generation;const void*texture=nullptr;
  bool current()const;
@@ -27,6 +28,8 @@ public:
  bool accepts(const BattleWindowSurfaceLease&)const;
 private:std::shared_ptr<BattleWindowSurfaceGeneration>generation_;
 };
+// Original output address, complete known 32-byte GX object, descriptor and
+// genuine producer lifetime; native surface ownership is a separate proof.
 struct BattleWindowTextureObject {
  uint32_t address=0;AnimationTPLImage image;std::array<uint32_t,8>bytes{};
  std::shared_ptr<const void>lifetime;void*user=nullptr;bool(*current)(void*)=nullptr;
@@ -57,10 +60,14 @@ private:
  const BattleWindowSurfaceResource&resource_;BattleWindowSurfaceLease lease_;
  BattleSubmenuCameraProof camera_;BattleWindowQueryServices query_;BattleWindowPacketSink sink_;
  std::optional<BattleWindowTextureObject>texture_;std::optional<BattleActMatrix>matrix_;std::optional<uint32_t>color_;
+ // Local setter masks and one-based pending float ordinal (zero is idle).
  uint32_t state_=0,descriptors_=0,formats_=0,lanes_=0;
  std::array<std::array<float,5>,36>vertices_{};BattleWindowPacketPtr pending_;std::optional<WindowPrimitiveRequest>last_;
+ // Reentry is refused; observed owner loss permanently poisons this provider.
  bool poisoned_=false,invoking_=false;bool current(bool sourceOnly=false);
 };
+// Explicit prepare outside FrameBegin; retire packets and release while C3D
+// lives. Ready-only texture/canDraw access never imports or repairs source state.
 class NativeBattleWindowSurfaceGpu {
 public:
  NativeBattleWindowSurfaceGpu();~NativeBattleWindowSurfaceGpu();

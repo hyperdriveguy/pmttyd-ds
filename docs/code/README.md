@@ -283,3 +283,7 @@ reservations and whole-submission retry rules.
 [Battle surface packets](battle-surface-packets.md) explains source TPL/GX object
 identity, independent constructor snapshots, inherited state and retained final
 FIFO publication for class/submenu surfaces.
+
+[Window packets](window-packets.md) explains packed source texture words,
+full tiled-pixel admission, no-draw prefixes, 180 retained floats and native
+nine-quad replay.
