@@ -17665,3 +17665,45 @@ unfinished. EVT-01 and the full prologue goal remain active. Continue with the
 original MapObj lookup/matrix producer boundary, then bind actual lamp events
 before activating normal Game scheduling. See
 [contract](behavior/field/NATIVE_LIGHT_REGISTRY_OWNER.md), asset ledger and inbox.
+
+### Typed animation resource and texture documentation
+
+Added 55 inline comment lines across seven MODEL/TPL/texture/typed-traversal
+implementation/header files and replaced a stale two-line resident-bank
+description with the explicit package-ownership rule. Explained file-relative
+versus VM offsets, native table/cell/crop bounds, wrap bits, distinct TEXGet
+queries, T24 matrix grouping, caller-owned resume invariants, typed/raw node
+capture differences and the narrower flag20 frontier. Added/indexed
+docs/code/animation-typed-resources.md. Code/docs commit: `e007911f`.
+All seven files preserve executable tokens and string literals.
+
+Also read animation_buffer_refresh and animation_node_draw implementations/
+headers without edits: their existing comments already explain the reviewed
+workspace, offset, recovery and asymmetric-gate details. Exact four-file hashes
+are recorded; this is file-specific review, not a whole-port completion claim.
+
+Validation: existing animation_texture and animation_draw_traversal fixtures
+compiled and passed with the three current portable implementations linked
+first. Their three header APIs are token-compatible with the prior validated
+animation-memory-selection snapshot, whose coherent supporting headers/core/ROMFS
+were used. Actual resource/texture/traversal checks retain that support scope.
+Three portable host and all four ARM translation-unit syntax checks passed
+against captured current committed headers, including render_animation_texture.
+Resident GPU runtime/native linking/hardware were not exercised. Nine live/
+private documented hashes, 131 local links, 571 current/546 prior header
+hashes, supporting core and 114 accepted product hashes passed audits. No tests
+were added.
+
+Full make test/all were not repeated for comments/prose-only changes; there
+are no executable changes. Prior full-suite/build results retain their own
+snapshot scope; concurrent implementations are excluded. No asset edits/imports/
+conversions, ISO writes, story changes or emulator runs. Evidence:
+artifacts/animation-typed-resources-code-documentation-validation/.
+
+Refreshed tracked source/include inventory includes C/C++/header/inc/PICA/GLSL
+kinds: 91 changed annotation snapshots,
+155 without snapshots and explicit partial Trio review.
+Matching hashes are review aids, not proof of adequate comments or completion;
+tools/tests/untracked code remain outside this inventory. Goal remains active.
+Next: native_field_animation/release/NPC lifetime adapters, then remaining
+battle/field/platform/tool modules and whole-file Trio numeric synthesis.
