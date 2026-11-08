@@ -1468,3 +1468,5 @@ Original battle menu native resource/queue owners:
 
 - [Native queued original Window bridge](display/NATIVE_QUEUED_WEAPON_WINDOW_BRIDGE.md).
 - [Native render camera and shared SDK](display/NATIVE_RENDER_CAMERA_AND_SDK.md): lazy camera tokens, original shared Concat and retained point/normal children.
+
+- [Retained field animation GX arrays and native state](display/NATIVE_FIELD_ANIMATION_GPU_STAGING.md): actual-VM indexed fans, wait repair, reusable storage, independent Citro3D camera/cull publication; material and raster backends remain explicit.

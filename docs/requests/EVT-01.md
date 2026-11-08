@@ -5611,3 +5611,7 @@ and point stages identify their original meanings.
 Original Mario executes real CPU nodes and camera/shape SDK operations; only
 GPU/material/cache effects remain fixture acknowledgements in this validation.
 No story/dialogue or editable asset was changed. EVT-01 and the goal stay OPEN.
+
+### Field GX array/native state implementation (2026-11-07)
+
+[Field GPU staging](../behavior/display/NATIVE_FIELD_ANIMATION_GPU_STAGING.md) now consumes the actual original-VM position, normal, RGBA and up to eight UV arrays and source FIFO indices after real CPU/SDK render nodes. A dedicated Renderer bridge publishes field camera matrices/scissor/cull through Citro3D. Complete fans retain data across waits; no battle atlas/material owner is borrowed. The original Mario graph has explicit fixture material/texture/cache/raster acknowledgements in tests. Keep this request open for genuine field material/light/texture/dummy-state and native complete-fan submission, actual startup/camera/shared-GX scheduling and release/ordinary Game integration. Original/Dolphin mirrored-cull and pixel observations plus physical New2DS XL frame/memory measurements are still needed; API acknowledgements and emulator boot/navigation are not those observations. Existing raw render/material contracts remain authoritative; this adds native ownership, not newly measured original constants.

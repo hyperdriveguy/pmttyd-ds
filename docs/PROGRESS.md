@@ -17450,3 +17450,64 @@ Goal remains active. Next: remaining animation resource/request/startup and
 publication adapters, later changed implementations and remaining native/tool
 modules. Whole-file Trio numeric synthesis and whole-port comment coverage
 remain unproven; local fixtures or hash matches do not establish completion.
+
+
+### Actual-VM field GX array staging and native state (2026-11-07)
+
+Source commit `b94776995693d20469a0ea8e5a51c0f4953f03e3` adds
+[retained field GPU staging](behavior/display/NATIVE_FIELD_ANIMATION_GPU_STAGING.md).
+The raw original render graph now has a reusable field owner for position/normal
+matrix registers, current matrix, cull, descriptor/format/array registers and
+indexed triangle fans. All eleven original attribute lanes read actual VM byte
+addresses; completed components and complete fans survive backend waits. The
+buffer grows to the largest admitted source low16 count and is reused. Zero and
+short fans, all-face culling, sparse repair, stale ownership and request mutation
+have explicit coverage. GXClearVtxDesc preserves array/format registers.
+
+A separate Renderer factory binds field viewport/scissor, projection/view-model
+uniforms and cull through Citro3D. Shared uniform publication also serves the
+existing finishing camera path. Viewport reasserts acknowledged field scissor;
+failed cull requests pin the exact original request/mode until acknowledgement.
+The genuine field dummy/material owner and textured/lit fan submission remain
+explicit unavailable services; no battle material or atlas history is borrowed.
+
+Exact final validation used private source tree
+`b72b119a9f35a8f4c8158304ac1e1ddca1ff95b8` over baseline
+`1542a383138043e41ab281f4f3267bb337d8b5e9`, excluding concurrent workstreams.
+`CMAKE_BUILD_PARALLEL_LEVEL=4 TRIO_ENEMY_POSE_PACK=romfs make --jobserver-style=pipe test`:
+457/457 C++ tests in 96.74 s and 212/212 Python tests in 41.081 s, zero skips.
+`make --jobserver-style=pipe all -j4 -o assets-ready SOUNDTRACK=gamecube`: 0.
+The original Mario graph executes real CPU/SDK nodes, actual VM arrays and FIFO
+indices, including a retained final-fan wait that blocks tick/config/pass release.
+Material/texture/cache/final raster acknowledgements in that test are fixtures.
+
+Isolated ARM assertions passed `arrays=PASS retry=PASS graph=PASS sdk=PASS native-state=PASS`,
+including full 65,535-count staging/reuse, old-cull repair and actual Renderer
+Citro3D camera/uniform/cull calls. Normal entry point restored and rebuilt to
+byte-identical `.3dsx` SHA256
+`d66291d5149e04ee8d3d04ecbb17020b682808fa5ce79877e5e11c5da12ca547`.
+Independent fresh 35 s normal startup and 65 s normal field plus navigation profiles
+passed; original book/dialogue and Rogueport movement images were viewed. All
+three profiles have zero native exception/unmapped-access diagnostics. These
+normal captures exercise the existing gameplay renderer, not activation of the
+new raw NPC GPU path. Concurrent build/emulator load precludes a performance
+conclusion from displayed frame rates. No Dolphin or physical-device parity
+observation was made.
+
+Final audit: 4031 frozen tracked files exact, 2152 packed products byte-identical,
+no asset import/conversion or licensing change. Existing compiler warnings and
+Pillow deprecations remain; private ARM test inclusion adds test indentation
+warnings. The initial private CMake slice accidentally included a concurrent
+light registration and new fixture compilation needed include/optional-backend
+corrections; all were fixed before the final gates. Evidence and complete input
+hashes: `artifacts/npc-field-gpu-validation-manifest.json`; logs, ARM patch and
+profiles use the `npc-field-gpu`/`azahar-npc-field-gpu` prefixes. Shared Git index
+and unrelated work were preserved; this is no combined-current-HEAD gate claim.
+
+Next: bind genuine field material/light/texture/cache and dummy-state ownership
+from raw live ABI arguments, then supply complete native fan submission with
+correct normals/transparency and prepared GPU resources. Connect original camera,
+Area/init/Main/event scheduling and resource release to normal gameplay only
+when their waits and lifetimes compose. Continue EVT-01 inbox work and obtain
+matched original/Dolphin rendering plus physical New2DS XL timing/memory evidence.
+The original NPC/field integration and full-game goal remain incomplete.
