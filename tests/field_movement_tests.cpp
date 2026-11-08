@@ -37,8 +37,9 @@ void idleCases() {
     hp=5;w.late(services);CHECK(w.phase==4); // Initial stable low-HP gate exits before tail reread.
     hp=7;w.mainFlags=8;w.late(services);CHECK(w.phase==0 && pose=="M_S_1");
     w.phase=4;w.late(services);CHECK(w.phase==4); // Exact S1 cancellation guard retains phase.
-    MarioPresentation presentation;presentation.displayFlags=4;presentation.requestPose("M_S_3");
+    MarioPresentation presentation;presentation.displayFlags=0x80000004;presentation.requestPose("M_S_3");
     presentation.update(0,0,0,5,100,true);CHECK(presentation.supported && !std::strcmp(presentation.selected,"M_S_3") && (presentation.displayFlags&4));
+    CHECK(!(presentation.displayFlags&0x80000000)); // Front-only low-HP pose after a rear-sector idle.
     presentation.update(0,0,0,5,200,true);CHECK(presentation.poseStartMilliseconds==100);
     presentation.display=91;presentation.offset=20;CHECK(close(presentation.adjustMoveDirection(),110) && presentation.display==180 && presentation.target==180);
     presentation.display=450;CHECK(close(presentation.adjustMoveDirection(),290) && presentation.display==0);
@@ -65,7 +66,10 @@ void idleCases() {
     clearCollision();Game game;game.progress.hp=7;game.tick({});CHECK(game.fieldIdle.refresh==1);
     game.progress.hp=2;for(int n=0;n<59;++n)game.tick({});CHECK(!std::strcmp(game.marioPresentation.selected,"M_S_1R"));
     game.tick({});CHECK(!std::strcmp(game.marioPresentation.selected,"M_S_3") && game.marioPresentation.supported);
-    game.progress.hp=7;game.tick({});CHECK(!std::strcmp(game.marioPresentation.selected,"M_S_1R"));
+    // Original healthy refresh requests S1 without clearing retained display4;
+    // RearAnime's special suffix therefore keeps the front bank after healing.
+    game.progress.hp=7;game.tick({});CHECK(!std::strcmp(game.marioPresentation.selected,"M_S_1"));
+    CHECK((game.marioPresentation.displayFlags&4) && !(game.marioPresentation.displayFlags&0x80000000));
     game.fieldIdle.count=2999;game.tick({});CHECK(game.fieldIdle.phase==1);
     game.tick({});CHECK(game.fieldIdle.phase==2 && game.fieldIdle.count==49 && !std::strcmp(game.marioPresentation.selected,"M_I_5"));
     CHECK(game.marioPresentation.displayFlags&0x10000000);

@@ -73,4 +73,25 @@ void gameLifetime(const char* root){
  auto checkpoint=std::make_unique<Game>(false);checkpoint->restore(saved);assert(checkpoint->retainNativeFieldAnimation(*game,true));assert(checkpoint->fieldPartyState().nativeAnimation==owner && checkpoint->fieldPartyState().originalPool==pool);
  checkpoint->tick({});assert(checkpoint->nativeMarioPose());
 }
-int main(){runNativeFieldAnimationFixture("romfs");gameLifetime("romfs");}
+void lowHpHarborResume(const char* root){
+ // Story4 restores an ordinary rear pose before the low-HP idle owner requests
+ // front-only M_S_3/display4. The original special RearAnime suffix must retire
+ // the stale rear handle even while the player remains in the rear sector.
+ assert(loadHarborEncounterAssets(root));
+ auto game=std::make_unique<Game>(false);
+ assert(game->initializeNativeFieldAnimation(root,NativeFileCache::create(),platform()));
+ auto saved=game->progress;saved.room=1;saved.originalStory=4;saved.position={0,-1};saved.hp=2;
+ game->restore(saved);bool breathing=false;
+ constexpr unsigned SimulationTicks=64,JumpCadenceTicks=16,JumpHeldTicks=6,MaximumDrainVisits=100;
+ for(unsigned tick=0;tick<SimulationTicks;++tick){
+  Input input;input.confirm=tick%JumpCadenceTicks==0;input.jumpHeld=tick%JumpCadenceTicks<JumpHeldTicks;game->tick(input);
+  for(unsigned drain=0;game->nativeAnimationPending() && drain<MaximumDrainVisits;++drain)game->drainNativeAnimation();
+  assert(!game->nativeAnimationPending() && game->nativeMarioPose());
+  if(!std::strcmp(game->marioPresentation.selected,"M_S_3")){
+   breathing=true;assert(game->nativeMarioBank()==0);
+   assert(!(game->marioPresentation.displayFlags&0x80000000u));
+  }
+ }
+ assert(breathing);
+}
+int main(){runNativeFieldAnimationFixture("romfs");gameLifetime("romfs");lowHpHarborResume("romfs");}

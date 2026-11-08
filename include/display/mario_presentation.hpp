@@ -14,7 +14,7 @@ struct MarioPresentation {
     uint32_t displayFlags=0;
     bool queuedPose=false;
     unsigned previousMotion=~0u;
-    const char* front="M_S_1";
+    const char* front="M_S_1"; // Canonical front name retained separately from selected rear name.
     const char* selected="M_S_1R";
     uint64_t poseUploadSerial=0; // Counts admitted original pending uploads, including equal-name restarts.
     uint64_t poseStartMilliseconds=0;
@@ -98,8 +98,9 @@ struct MarioPresentation {
         (void)hp;
         supported=motion<=3 || motion==10 || motion==11 || motion==15 || motion==31 || motion==33;
         const float heading=wrap(facing-offset);const bool rear=heading<=70 || heading>=290;
+        const bool specialPose=(displayFlags&0x70000004u)!=0;
         const char* next=front;
-        if(rear) {
+        if(rear && !specialPose) {
             if(std::strcmp(front,"M_S_1")==0)next="M_S_1R";
             else if(std::strcmp(front,"M_W_1")==0)next="M_W_1R";
             else if(std::strcmp(front,"M_R_1")==0)next="M_R_1R";
@@ -108,7 +109,13 @@ struct MarioPresentation {
         }
         // Match selected model to the original rear-name producer. Effect
         // selection remains higher priority in marioAnimeId.
-        if(next!=front)displayFlags|=0x80000000u;
+        // Original RearAnime's special suffix80058188 clears the rear bit
+        // BEFORE inverse lookup. Low-HP display4/M_S_3 has no inverse, so it
+        // keeps the front name and must use a_mario even in the rear sector.
+        // This adapter already retains the canonical front view. The original
+        // raw-name inverse lookup/lock/writer remains with the source owner.
+        if(specialPose)displayFlags&=~0x80000000u;
+        else if(next!=front)displayFlags|=0x80000000u;
         else if(!rear || !(displayFlags&0x70000004))displayFlags&=~0x80000000u;
         // Original conversion lists have no M_I_U pair; ordinary misses use the front handle.
         if(std::strcmp(front,"M_I_U")==0 && !(displayFlags&0x70000004))displayFlags&=~0x80000000u;
