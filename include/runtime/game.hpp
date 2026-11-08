@@ -380,6 +380,7 @@ public:
     // legacy animation-only entry remains explicit for existing mechanics tests.
     bool initializeNativeUiFieldAnimation(const char*,std::shared_ptr<NativeFileCache>,const EventNativePlatform&);
     std::shared_ptr<class NativeUiStartup> nativeUiStartup() const;
+    std::shared_ptr<class NativeEffectProcess> nativeEffects() const;
     bool hasNativeFieldAnimation() const{return bool(fieldParties.nativeAnimation);}
     const BattlePose* nativeMarioPose() const;
     unsigned nativeMarioBank() const;
@@ -553,6 +554,7 @@ private:
     bool departureParentStarted=false;
     int departurePause=0;
     std::shared_ptr<class NativeUiStartup> nativeUiStartup_;
+    std::shared_ptr<class NativeEffectProcess> nativeEffects_;
 };
 struct CollisionSnapshot;
 // Stages a room's collision; destruction restores the previous data unless committed.

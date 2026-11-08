@@ -1,0 +1,70 @@
+{
+  "source": "US G8ME01 disc0 revision0",
+  "spans": [
+    {
+      "address": "0x802c1f20",
+      "bytes": 24,
+      "sha256": "c8280fa8f6b9556cea470b3b5d3ae736b216fc86c28cceb20444e1bcfe63c779",
+      "source": "initialized DOL",
+      "iso_offset": 3011104,
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "address": "0x80415ee0",
+      "bytes": 4,
+      "sha256": "99950f034476db441242aee98cde760c7c67c267f19b4dc9487e7f18c98dd800",
+      "source": "initialized DOL",
+      "iso_offset": 4077088,
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "address": "0x80415ee4",
+      "bytes": 28,
+      "sha256": "bb679a19398dfd1ef48a1da7bccad8b0510f027a20d2e900438f68fab5e9cf55",
+      "source": "initialized DOL",
+      "iso_offset": 4077092,
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "address": "0x80419a40",
+      "bytes": 4,
+      "sha256": "91748e09007693d05c5d49ca9394b7c6f76e2423217fdabf20189eefb560ddfe",
+      "source": "initialized DOL",
+      "iso_offset": 4092288,
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "address": "0x8041e908",
+      "bytes": 24,
+      "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0",
+      "source": "original DOL BSS zero initialization",
+      "iso_offset": null,
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "address": "0x8041ecd0",
+      "bytes": 8,
+      "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+      "source": "original DOL BSS zero initialization",
+      "iso_offset": null,
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "address": "0x80420180",
+      "bytes": 28,
+      "sha256": "560468cb70f238277f7929eea027e1a31ece0dbcf9c084bfb74b3a2703f664b9",
+      "source": "initialized DOL",
+      "iso_offset": 4114944,
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    }
+  ],
+  "texture": {
+    "path": "e/us/effect_us.tpl",
+    "sha256": "93ef5d667ded662d6abf13133082bef138f9c88132365ff8b11f8abf2129dd14",
+    "size": 106880,
+    "iso_offset": 945299184,
+    "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+  },
+  "conversion": "Original initialized bytes and original BSS zeros; padded format retains original adjacent bytes. TPL is unchanged and unrelocated. DVD root remains owned by existing UI startup.",
+  "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+}

@@ -159,13 +159,20 @@ FileAcquisitionServices NativeFileCache::services(){
 // One held path owns current_ and acquisition_ until completion. Freeze even
 // if the first admitted acquisition holds. Initial staged type guards only new
 // loads; source reuse ignores requested type. c.type still pins held requests.
-std::optional<uint32_t> NativeFileCache::acquire(const std::string& path,uint32_t type){
- if(servicing_ || async_.phase || word(Global)!=Manager)return {};
+bool NativeFileCache::filenameMatches(const std::string& path)const{
+ return path.size()<name_.size() && std::equal(path.begin(),path.end(),name_.begin()) && name_[path.size()]==0;
+}
+bool NativeFileCache::publishFilename(const std::string& path){
+ if(servicing_ || acquisition_.phase || async_.phase || word(Global)!=Manager || path.size()>=name_.size() || path.find('\0')!=std::string::npos)return false;
+ std::copy(path.begin(),path.end(),name_.begin());name_[path.size()]=0;return true;
+}
+std::optional<uint32_t> NativeFileCache::acquire(const std::string& path,uint32_t type,bool published){
+ if(servicing_ || async_.phase || word(Global)!=Manager || (published && !filenameMatches(path)))return {};
  if(!acquisition_.phase){
   File* file=nullptr;for(auto& f:files_)if(f->path==path){file=f.get();break;}
   // Bound native new-file domain. Cached source reuse still ignores type.
   if(!file || (!file->entry && type!=file->type))return {};
-  current_=file;std::copy(path.begin(),path.end(),name_.begin());name_[path.size()]=0;frozen_=true;
+  current_=file;if(!published){std::copy(path.begin(),path.end(),name_.begin());name_[path.size()]=0;}frozen_=true;
  }else if(!current_ || current_->path!=path)return {};
  uint32_t result=0;if(!acquirePackedFile(Name,type,services(),acquisition_,result))return {};
  if(result)current_->entry=result;
@@ -188,13 +195,13 @@ FileAsyncServices NativeFileCache::asyncServices(){
  };
  return s;
 }
-std::optional<uint32_t> NativeFileCache::request(const std::string& path,uint32_t type,uint32_t completion){
- if(servicing_ || acquisition_.phase || word(Global)!=Manager || completion)return {};
+std::optional<uint32_t> NativeFileCache::request(const std::string& path,uint32_t type,uint32_t completion,bool published){
+ if(servicing_ || acquisition_.phase || word(Global)!=Manager || completion || (published && !filenameMatches(path)))return {};
  if(!async_.phase){
   File* file=nullptr;for(auto& f:files_)if(f->path==path){file=f.get();break;}
   // Missing native catalog entries are unsupported; never fabricate source-1.
   if(!file || (!file->entry && file->type!=type))return {};
-  current_=file;std::copy(path.begin(),path.end(),name_.begin());name_[path.size()]=0;frozen_=true;
+  current_=file;if(!published){std::copy(path.begin(),path.end(),name_.begin());name_[path.size()]=0;}frozen_=true;
  }else if(!current_ || current_->path!=path)return {};
  uint32_t result=0;if(!requestPackedFile(Name,type,completion,asyncServices(),async_,result))return {};
  if(result && result!=0xffffffff)current_->entry=result;
@@ -264,6 +271,7 @@ bool stagePrologueAnimationFiles(NativeFileCache& cache,const char* root){
   {"a/c_zako_n-",4,"field-native-c_zako_n.draw-textures.bin"},
   {"a/c_gara-",4,"field-native-c_gara.draw-textures.bin"},
   {"a/c_suifu_b-",4,"field-native-c_suifu_b.draw-textures.bin"},
+  {"./e/us/effect_us.tpl",4,"effect-process/effect_us.tpl"},
   {"a/vivian.bin",0,"animation-startup/a/vivian.bin"},
   {"a/ag2tg.bin",0,"animation-startup/a/ag2tg.bin"}};
  std::vector<NativeFileCache::Source> sources;

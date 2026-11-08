@@ -28,11 +28,15 @@ public:
  // One serialized retained acquisition; nullopt means unavailable, engaged0
  // completed source failure. New-file type must match staged bytes, but actual
  // source filename-only hits may reuse them for a different requested type.
- std::optional<uint32_t> acquire(const std::string&,uint32_t type);
+ // A finite formatted wrapper publishes the real shared filename first.
+ // Publication refuses another held acquisition/request. published=true then
+ // consumes that actual buffer without a duplicate copy; it must stay stable.
+ bool publishFilename(const std::string&);
+ std::optional<uint32_t> acquire(const std::string&,uint32_t type,bool published=false);
  // Original async request over this same file pool. Empty means native hold;
  // engaged0 is source polling, not acquisition. Completion callbacks currently
  // admit only0; unknown function providers must be bound before broader use.
- std::optional<uint32_t> request(const std::string&,uint32_t type,uint32_t completion=0);
+ std::optional<uint32_t> request(const std::string&,uint32_t type,uint32_t completion=0,bool published=false);
  // Cooperative staged-ROMFS worker policy. Copies at most byteBudget actual
  // bytes across queued files, then runs original completion/relocation/close.
  // This is an explicit IO boundary, not GameCube DVD/thread timing.
@@ -84,6 +88,7 @@ private:
  uint8_t byte(uint32_t);void byte(uint32_t,uint8_t);
  uint16_t half(uint32_t);void half(uint32_t,uint16_t);
  uint32_t word(uint32_t);void word(uint32_t,uint32_t);
+ bool filenameMatches(const std::string&)const;
  EventMemoryServices memory();
  FileAcquisitionServices services();
  FileAsyncServices asyncServices();

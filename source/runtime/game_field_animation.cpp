@@ -1,6 +1,7 @@
 #include "game.hpp"
 #include "native_field_animation.hpp"
 #include "native_ui_startup.hpp"
+#include "native_effect_process.hpp"
 namespace ttyd {
 // Native bootstrap requires a fresh pose namespace and no held producer.
 // Creation/configuration/Mario Entries are ordered admissions, not a rollback
@@ -25,12 +26,19 @@ bool Game::initializeNativeUiFieldAnimation(const char* root,std::shared_ptr<Nat
  // Held allocator/delivery/SDK children retain this exact actual process and
  // prefix. No Mario Entry may interleave or authorize incomplete UI history.
  if(!nativeUiStartup_->resumeIcons())return false;
+ // Attach to this actual process after UI's shared DVD root/language exists.
+ // Pool initialization is separate from texture setup and driver/draw admission.
+ if(!nativeEffects_)nativeEffects_=NativeEffectProcess::create(nativeUiStartup_,root);
+ if(!nativeEffects_ || !nativeEffects_->initialize())return false;
  auto owner=nativeUiStartup_->fieldProcess();
  if(!owner || !fieldParties.configureNativeAnimation(std::move(owner),fieldPlayerPoseResources()) || !fieldParties.initializeMario(fieldMarioBattle,{},0))return false;
  prepareNativeFieldAnimation();return nativeMarioPose()!=nullptr;
 }
 std::shared_ptr<NativeUiStartup> Game::nativeUiStartup() const{
  return nativeUiStartup_ && nativeUiStartup_->current() && nativeUiStartup_->fontObject() && nativeUiStartup_->windowReady() && nativeUiStartup_->fieldProcess()==fieldParties.nativeAnimation?nativeUiStartup_:nullptr;
+}
+std::shared_ptr<NativeEffectProcess> Game::nativeEffects() const{
+ return nativeEffects_ && nativeEffects_->poolReady() && nativeEffects_->ui()==nativeUiStartup()?nativeEffects_:nullptr;
 }
 void Game::prepareNativeFieldAnimation(){
  if(!fieldParties.nativeAnimation || nativeAnimationPending())return;
@@ -64,9 +72,11 @@ bool Game::nativeMarioReflect() const{return fieldParties.nativeAnimation && fie
 // checkpoint providers admit may its role views reconnect to the same source
 // pool. Reject new/stale speculative handles instead of fabricating adoption.
 bool Game::retainNativeFieldAnimation(Game& previous,bool checkpoint){
+ if((nativeEffects_ && nativeEffects_->busy()) || (previous.nativeEffects_ && previous.nativeEffects_->busy()))return false;
  if(nativePartyPending() || previous.nativePartyPending())return false;
  if(nativeAnimationPending() || previous.nativeAnimationPending())return false;
  const auto retainedUi=previous.nativeUiStartup();
+ const auto retainedEffects=previous.nativeEffects();
  auto& old=previous.fieldParties;auto& next=fieldParties;if(!old.nativeAnimation)return true;
  BattlePoseClock clock;
  if(!old.nativeAnimation->ready() || !old.nativeAnimation->clock(clock))return false;
@@ -107,7 +117,7 @@ bool Game::retainNativeFieldAnimation(Game& previous,bool checkpoint){
  }
  // Ownership admission is complete. A later source sampler hold is reported
  // by the ordinary renderer; it is not a failed/rolled-back room transaction.
- nativeUiStartup_=retainedUi;
+ nativeUiStartup_=retainedUi;nativeEffects_=retainedEffects;
  prepareNativeFieldAnimation();return true;
 }
 }

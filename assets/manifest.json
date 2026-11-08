@@ -2,6 +2,20 @@
   "schema": 1,
   "assets": [
     {
+      "id": "original/effects/process-memory",
+      "kind": "event",
+      "source": "assets/original/effects/process/memory.json",
+      "output": "effect-process/memory.pmevt",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/effects/process-us-library",
+      "kind": "pack",
+      "source": "assets/original/effects/process/effect_us.tpl",
+      "output": "effect-process/effect_us.tpl",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
       "id": "original/effects/fukidashi-event",
       "kind": "event",
       "source": "assets/original/effects/fukidashi/event/event.json",
