@@ -30,6 +30,38 @@ struct NativeHarborFinishingBindingFixture {
   q.arguments[1]=43;assert(!t.nativeRewardFinishingChild(q)&&t.actors[1].pose=="M_R_1");
   q.arguments={*mario,0x802feafc,0xf1194d80,0};q.function=0x8012619c;q.count=4;assert(!t.nativeRewardFinishingChild(q));
   SourceBattleVoiceCursor voice;q.voice=&voice;const auto sound=t.nativeRewardFinishingChild(q);assert(sound&&t.nativeRewardFinishingChild(q)==sound);
+  // Exercise the original 24-record leaf on actual battle-owned RAM, with
+  // distinct starting percentages and untouched flags/handles/volume bytes.
+  constexpr uint32_t RecordsOffset=0x2858+0x133fc,Stride=0x24,Count=24;
+  const auto records=*battle+RecordsOffset;
+  std::vector<uint8_t> before(Stride*Count);
+  for(uint32_t i=0;i<before.size();++i){before[i]=uint8_t(i*7+3);assert(r.vm.memory.writeByte(records+i,before[i]));}
+  auto unchanged=[&]{for(uint32_t i=0;i<before.size();++i){uint8_t v=0;assert(r.vm.memory.readByte(records+i,v)&&v==before[i]);}};
+  q={};q.function=0x8019fddc;q.count=2;q.arguments={0,30,0,0};
+  auto bad=q;bad.arguments[1]=29;assert(!t.nativeRewardFinishingChild(bad));
+  bad=q;bad.arguments[0]=1;assert(!t.nativeRewardFinishingChild(bad));
+  bad=q;bad.count=1;assert(!t.nativeRewardFinishingChild(bad));
+  assert(!copy.nativeRewardFinishingChild(q));unchanged();
+  // A nested borrow or a hole in the LAST record must reject all stores.
+  assert(r.vm.memory.withRawRamAccess([&](auto&){assert(!t.nativeRewardFinishingChild(q));return true;}));unchanged();
+  std::vector<uint8_t> tail;const auto last=records+Stride*Count-1;
+  assert(r.vm.memory.extractRam(last,1,tail));assert(!t.nativeRewardFinishingChild(q));
+  for(uint32_t i=0;i+1<before.size();++i){uint8_t v=0;assert(r.vm.memory.readByte(records+i,v)&&v==before[i]);}
+  assert(r.vm.memory.registerRam(last,std::move(tail)));
+  // The finite provider requires one contiguous owned span. Restore the
+  // original battle allocation after the missing-byte admission check.
+  std::vector<uint8_t> prefix,suffix;
+  assert(r.vm.memory.extractRam(records,Stride*Count-1,prefix));
+  assert(r.vm.memory.extractRam(last,1,suffix));prefix.insert(prefix.end(),suffix.begin(),suffix.end());
+  assert(r.vm.memory.registerRam(records,std::move(prefix)));
+  assert(t.nativeRewardFinishingChild(q)==0);
+  auto expected=before;
+  for(uint32_t slot=0;slot<Count;++slot){const auto at=slot*Stride;
+   expected[at+0x1f]=before[at+0x1e];expected[at+0x20]=0;
+   for(uint32_t i=0x10;i<0x1c;++i)expected[at+i]=0;
+   expected[at+0x1b]=30;
+  }
+  for(uint32_t i=0;i<expected.size();++i){uint8_t v=0;assert(r.vm.memory.readByte(records+i,v)&&v==expected[i]);}
   t=HarborTutorial{};assert(!copy.nativeRewardBattleAddress()&&!copy.nativeRewardReadByte(*mario+0x138)&&!copy.nativeRewardFinishingChild(q));
  }
 };

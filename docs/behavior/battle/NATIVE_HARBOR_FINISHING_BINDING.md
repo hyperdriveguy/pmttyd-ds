@@ -27,3 +27,20 @@ animation/voice raster/playback, whole End, fade, teardown or field return.
 
 See [victory event](NATIVE_HARBOR_VICTORY_EVENT.md) and
 [reward flow](NATIVE_HARBOR_REWARD_FLOW.md).
+
+The ordinary source AudienceVolume child at `0x8019fddc` accepts exactly
+`(0,30)`. It invokes the recovered 24-record setter on the actual battle VM,
+capturing each current percentage as its fade start, targeting zero, clearing
+elapsed/lifetime fade and setting duration30 source main visits. This schedules
+the source sound records; it is not a backend PCM fade-completion receipt.
+Before the void source stores, a synchronous raw-RAM borrow admits the actual
+battle-pointer word and the complete contiguous writable sound-record span.
+Missing storage, nested borrows, unsupported arguments and foreign/stale
+facades hold before any record changes. The bounded borrow accelerates the
+original getter/store calls without retaining pointers or allocating per visit.
+
+The focused binding fixture checks every byte in all24 actual records, including
+untouched flags/handles/volume fields, and removes the final byte to verify that
+an unavailable last record cannot leave earlier records partially changed.
+Production finishing still needs the actual field ticket/NPC work, two-screen
+opaque presentation receipt and retained completion/teardown services.

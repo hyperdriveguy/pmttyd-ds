@@ -20812,3 +20812,21 @@ teardown. Finish the canonical Mario field view and fresh source movement,
 Fukidashi/effect/texture/camera providers before production source field entry.
 Fresh/resumed original Crump victory/return and full prologue/hardware fidelity
 remain unfinished; the full-game goal stays active.
+
+### Crump finishing audience-volume child (2026-11-08)
+
+Bound the ordinary original AudienceVolume(0,30) finishing child to the recovered
+24-record source setter on the actual admitted Harbor VM. A synchronous raw-RAM
+borrow validates the actual battle pointer and all writable record storage before
+any source stores, and accelerates the repeated original getters/stores. This
+schedules source-volume fades; it does not acknowledge native PCM completion.
+Original flags, handles and unrelated volume fields are preserved.
+
+Focused native_harbor_finishing_binding passes in the isolated committed334d4aba
+candidate plus this owned change. All24 record byte comparisons, invalid argument,
+copy/stale, nested-borrow and missing-last-byte/no-partial-prefix cases pass.
+Full make test and make all validation is pending below; no new emulator or
+hardware claim. The staged encounter still lacks a real field battle ticket.
+Next: compose actual finishing/fade, sealed field NPC work, retained completion,
+GPU/audio teardown and canonical pouch return before accepting the original
+postbattle scene. Full Crump into/out-of-battle and full-game goals remain open.

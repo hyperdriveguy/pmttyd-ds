@@ -8,6 +8,7 @@
 #include "native_harbor_completion.hpp"
 #include "native_harbor_reward_counter.hpp"
 #include "battle_data_child.hpp"
+#include "battle_audience_sound.hpp"
 #include "native_harbor_finishing.hpp"
 #include "battle_packed_pose_lookup.hpp"
 #include "battle_packed_part.hpp"
@@ -822,7 +823,26 @@ std::optional<uint32_t>HarborTutorial::nativeRewardFinishingChild(const NativeHa
  const auto actors=nativeBattleActorServices(r.vm);const auto&memory=actors.memory;
  constexpr uint32_t GetMario=0x800f87a8,GetParty=0x800f8728,CheckStatus=0x80127814,
   UnitSound=0x8012619c,BodyName=0x801275f4,BodyType=0x80127640,
-  OriginalVictoryName=0x80427298,OriginalFloatSentinel=0xf1194d80;
+  OriginalVictoryName=0x80427298,OriginalFloatSentinel=0xf1194d80,
+  AudienceVolume=0x8019fddc;
+ if(q.function==AudienceVolume){
+  if(q.count!=2||q.arguments[0]!=0||q.arguments[1]!=30)return {};
+  // This source leaf only schedules the 24 record fades. Preflight actual
+  // writable RAM before its void stores; absent storage must hold without a
+  // partial prefix. The synchronous borrow also accelerates the source calls.
+  constexpr uint32_t BattlePointer=0x8041eb90,AudienceOffset=0x2858,
+   SoundRecordsOffset=0x133fc,SoundRecordStride=0x24,SoundRecordCount=24;
+  const uint64_t records=uint64_t(*battle)+AudienceOffset+SoundRecordsOffset;
+  constexpr uint32_t RecordBytes=SoundRecordStride*SoundRecordCount;
+  if(records+RecordBytes>0x100000000ULL)return {};
+  const bool applied=r.vm.memory.withRawRamAccess([&](auto&ram){
+   uint32_t current=0;
+   if(!ram.bind(BattlePointer,4)||!ram.readWord(BattlePointer,current)||current!=*battle||
+      !ram.bind(uint32_t(records),RecordBytes))return false;
+   setAllBattleAudienceVolumes(0,30,actors);return true;
+  });
+  return applied?std::optional<uint32_t>(0):std::nullopt;
+ }
  if(q.function==GetMario||q.function==GetParty){
   if(q.count!=1||q.arguments[0]!=*battle)return {};
   return q.function==GetMario?battleMarioUnit(*battle,actors):battlePartyUnit(*battle,actors);
