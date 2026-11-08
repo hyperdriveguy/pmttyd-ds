@@ -81,9 +81,10 @@ The actual-VM native fixture covers Init before archive mapping, filename/work
 adjacency, once-only history, partial original TPL delivery, whole unpack and
 callback, composition with both effect banks and equal-byte descriptor replacement.
 
-Normal Game does not yet automatically execute this startup API or the complete
-original source parents. Fade Init/TexSetup remains a preceding texture owner;
-real normal activation, environment movement/GX rendering, Crump effect update,
+Normal Game now executes this startup API after the actual fade owner and
+before Effect/N64 setup, draining independent callbacks before native Mario
+entries. Complete original source parents and raw Mario/logo-file tail,
+environment movement/GX rendering, Crump effect update,
 draw/audio/retirement and full battle/result/field-return are still open. Existing
 archive/root/path/DVD/heap/memset/unpack children cover this bounded frontier;
 no duplicate documentation request is needed. Fresh source evidence and final

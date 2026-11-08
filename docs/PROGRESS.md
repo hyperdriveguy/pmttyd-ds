@@ -19761,3 +19761,69 @@ original afterbattle crowd/dialogue/party/map transition. Normal Game still does
 not automatically invoke the explicit environment/effect texture APIs. Boot and
 host fixtures do not establish original pixels/Gekko math, complete Crump fresh/
 resume round trips or physical New2DS XL performance. The full goal is incomplete.
+
+
+### Original fade owner and normal texture startup contribution (2026-11-07)
+
+Implemented whole original fadeInit80013b90/0x114, fadeTexSetup80013aa4/0xec
+and independent DVD callback80013ca4/0x48 over the actual shared animation
+VM/heap0/UI/root/archive/SDK/unpack owners. Init allocates the real0x360-byte
+manager and preserves exact first-row manager/zero/word74/one ordering, five
+row writes and final fresh-manager stores. Texture setup clears palette only,
+preserves source readiness and uses rounded allocation AND read size. Callback
+captures manager before handle, unpacks through that captured manager, closes
+and refreshes the manager for readiness. Separate portable cursors retain holds
+without replaying accepted stores or children.
+
+The shared NativeSourceTextureStartup backend has a fade profile, separate
+manager/palette lifetimes and original DVD userdata/progress/flags/callback.
+Native readiness requires actual completed jobs and source ready1. The native
+retry fixture exposed manager backing moving when later Window heap transfers
+split the original arena. The manager is now isolated at its unchanged source
+heap address before pin/publication; the fixture proves Fade Init before Window
+remains valid. Replacement of published global/backing rejects further use.
+Independent read-only review found no blocker after this fix.
+
+Normal Game now runs Fade Init before Effect Init and invokes Environment Init,
+then Fade/Environment/Effect/N64 texture setup and independent callbacks before
+native Mario entries. Cold startup drains these finite banks synchronously with
+an explicit unlimited native IO budget; this is no original DVD timing claim.
+Actual-Game startup tests require all three profiles ready. The source parents
+marioStInit/seq_logoExit are not thereby complete. Existing original dialogue,
+story event order/conditions and branches are unchanged.
+
+Imported unchanged original fade.tpl22720 bytes/four descriptors and four exact
+literal/BSS spans into an empty tracked destination, with source paths/offsets/
+hashes/rights provenance. The ISO was opened rb only. Normal manifest recipes
+compile memory and copy raw TPL. Fresh import roundtrip matches all three files
+and nonempty destination is rejected. No generated art or source-history cache.
+
+Validation of code commit93ba0179: make test exits0,612/612 C++ tests in129.37s
+and270/270 Python tests in66.952s. Focused5/5 passes in9.99s. make all
+exits0 with SOUNDTRACK=gamecube and -o assets-ready following explicit normal
+pipeline compilation of both delta recipes. All4927 source files exactly match
+that commit, with zero extra source-like inputs. Source archive, ELF/3DSX,
+2238 RomFS hashes and evidence are pinned/rechecked in
+artifacts/fade-startup/accepted/validation-manifest.json. Isolated45-second
+fresh-save Azahar smoke exits0; inspected capture reaches the original opening
+book without native exception. User profile/saves are untouched. Markdown
+validation:1708 files, zero broken links. Existing compiler/Pillow warnings
+remain. These checks do not establish original pixels or hardware performance.
+
+The Crump requirement audit is updated, including distinction between a default
+facade result0 and genuine optional original numeric conclusion selection.
+Highest remaining scene requirements are actual same-VM field/battle services
+and BattleWork ownership, reaction EVT/Main/draw/audio, action-success/lethal
+completion, source result/End/export/wait/field return, executable original
+afterbattle crowd/dialogue/party path and story6 plaza transition. Existing
+EVT-01/DEMO-01 requests cover those; no duplicate unknown request was created.
+
+Next bounded startup work: raw marioPoseInit8005ba50/0x98 must store actual signed
+Entry results into captured source Mario+22c/+230/+234 while later selectors
+refresh global Mario. Typed canonical pose handles do not implement that raw
+wrapper. Acquire the genuine logo work/fileAlloc owner and stage original
+mariost.tpl2128288 bytes before catalog binding, then use the actual handle for
+source fileFree8008749c. Fresh read-only captures/source hashes and exact next
+frontier are under artifacts/fade-startup/. Whole source startup, Crump fresh/
+resume into/out-of-battle round trips and physical New2DS XL performance remain
+incomplete; the full goal stays active.

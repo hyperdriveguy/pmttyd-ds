@@ -5896,3 +5896,21 @@ records exact whole Init/TexSetup/callback ordering and original fade.tpl identi
 Implement its real heap manager before normal sequence activation; do not substitute
 existing battle fade mechanics or a pre-mapped manager. Broader fade consumers
 remain separate; all bounded children here are already known.
+
+
+### Actual fade owner and normal texture contribution (2026-11-07)
+
+[Whole fade Init/TexSetup/callback](../behavior/display/SOURCE_FADE_TEXTURE_STARTUP.md)
+now uses the real source heap manager, original literals/BSS and unchanged
+fade.tpl with independent retained DVD completion. Exact first-row load/store
+interleaving, rounded read size and manager-first callback differ from other
+profiles and are tested. Normal Game runs Fade/Environment/Effect/N64 setup and
+completions before native Mario entries. Whole marioStInit/seq_logoExit remains
+open: raw marioPoseInit8005ba50/0x98 must store three actual signed Entry results
+through captured source Mario+22c/+230/+234 while selection uses fresh Mario
+reads, and the genuine logo work/fileAlloc acquisition owner must supply the
+handle later released by fileFree8008749c. The original root mariost.tpl
+(2128288 bytes) still needs staging before file-catalog binding. These local
+identities are already documented implementation work, not new unknown-function
+requests. Full reaction presentation and original battle/result/field-return
+acceptance stay open. Evidence: artifacts/fade-startup/.

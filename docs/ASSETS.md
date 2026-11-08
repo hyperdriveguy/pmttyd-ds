@@ -4441,3 +4441,21 @@ offsets, source/BSS distinctions, hashes and retained Nintendo/Intelligent
 Systems rights are in provenance.json; tracking grants no redistribution license.
 Checked-in edits are not overwritten by imports; ISO/cache/compiled products
 stay outside source history.
+
+
+### Original fade manager startup and texture
+
+`assets/original/display/fade-startup/` tracks unchanged root `fade.tpl`
+(22720 bytes, four descriptors, ISO offset948116944, SHA256
+ce2c99dbe41f28d5c06b777b9b0b19ed5a9fe3829f63952cae9352195fb99435),
+two padded original path literals, original manager-pointer BSS and initialized
+binary32 zero/one. `tools/import_fade_startup_assets.py` verifies all three whole
+source bodies and exact span/texture hashes, reads the ISO with rb and refuses
+a nonempty destination. Memory compiles to `fade-startup/memory.pmevt`; raw TPL
+copies to `fade-startup/fade.tpl` through normal manifest recipes. No scaling or
+geometry conversion is applied. The manager itself comes from original runtime
+heap0 allocation, not imported bytes. Whole original unpack relocates the real
+heap-owned texture after delivery. Per-asset source paths, ISO offsets, BSS
+origin and Nintendo/Intelligent Systems rights remain in provenance.json.
+Tracking grants no redistribution license; caches/compiled packs/ISO remain
+outside source history, and checked-in edits are not overwritten.

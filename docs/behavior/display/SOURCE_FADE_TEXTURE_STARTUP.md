@@ -10,8 +10,9 @@ c6bb7058a6a65cb509dd8fad39fbda6e2943c9d2ff76cd782d2355b31f62ad0c,
 ## Actual manager initialization
 
 Original fadeInit allocates heap0 size0x360, publishes the actual result through
-8041e620 and clears that allocation using original memset. It loads binary32
-zero8041f7a8 and one8041f7ac once. Five rows at manager offsets0,0xa8,0x150,
+8041e620 and clears that allocation using original memset. The first row reads
+the manager, loads binary32 zero8041f7a8, stores row+74=-1, then loads
+one8041f7ac before row+78=-1. Five rows at manager offsets0,0xa8,0x150,
 0x1f8 and0x2a0 each use a fresh manager pointer and write word-1 at row+74/+78,
 float0 at+24/+28/+80/+84, float1 at+98 and word0 at+ac. These hexadecimal field
 offsets and row order are authoritative, including stores extending into the
@@ -51,20 +52,35 @@ After whole unpack, it closes the captured handle, reloads the manager and write
 Root fade.tpl is22720 bytes with4 TPL descriptors, ISO offset948116944,
 SHA256ce2c99dbe41f28d5c06b777b9b0b19ed5a9fe3829f63952cae9352195fb99435.
 New literals802bf79c/0xc and802bf7a8/0x10 preserve original padding.
-No fade bank is imported by this contract. Original rights are unchanged.
+The unchanged bank and four original literal/BSS spans are tracked under
+`assets/original/display/fade-startup/`, with per-span provenance and licensing.
+The importer pins all three bodies and refuses nonempty destinations; normal
+manifest recipes compile memory and copy raw TPL. Original rights are unchanged.
 Do not confuse this bank with
 [fade10's embedded white texel](BATTLE_END_FADE10_TEXTURE_CONSUMER.md).
 
 Original marioStInit calls fadeInit at8006fdd4, before shadow/effect/Mario/env
 initialization (other intervening children still matter). Original seq_logoExit
 calls fadeTexSetup at80087480, after font/window texture setup and before
-icon/environment/effect texture setup and marioPoseInit. The native UI prefix
-and explicit environment/effect APIs do not implement that whole sequence.
+icon/environment/effect texture setup and marioPoseInit. The native contribution does not implement that whole sequence.
 
-Implement the genuine fade manager and these whole bodies over shared original
-VM/heap/SDK/root/archive/unpack ownership before completing normal activation.
-The [common native texture transfer backend](../platform/NATIVE_SOURCE_TEXTURE_STARTUP.md)
-can supply retained DVD mechanics while preserving fade-specific cursor order.
+`SourceFadeStartupCursor` implements all three whole bodies, including resumable
+accepted-store history and source manager/constant capture. The
+[common native texture transfer backend](../platform/NATIVE_SOURCE_TEXTURE_STARTUP.md)
+now supplies the actual shared VM/heap/SDK/root/archive/unpack and independent
+fade callback. The real0x360 heap allocation is isolated at its unchanged guest
+address before publication, so later Window heap transfers cannot move its
+backing. Replacing its global or backing invalidates the native owner.
+
+Normal Game initializes Fade before Effect and runs Environment Init, then
+Fade/Environment/Effect/N64 texture setup and independent completions before
+native Mario entries. Cold startup drains supported banks synchronously with an
+explicit unlimited native IO budget, not an original DVD timing claim. The
+actual-Game fixture requires all three profiles ready. The earlier-Init native
+fixture also covers Window loading between Fade Init and texture admission.
+Whole marioStInit/seq_logoExit, raw marioPoseInit storing signed results into
+actual Mario+22c/+230/+234, and the original logo-file allocation/free owner
+remain open. Typed canonical party handles alone do not implement that wrapper.
 All bounded direct children are already identified; no duplicate unknown-function
 request is needed. Broader fade updates/raster/completion remain with their
 existing contracts. Fresh binaries, exact source order, source offsets and hashes

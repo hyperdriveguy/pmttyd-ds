@@ -1,16 +1,16 @@
 # Shared original native texture startup
 
 `NativeSourceTextureStartup` shares one implementation of actual-VM heap/DVD
-ownership between the original effect primary/N64 and environment startup
+ownership between the original effect primary/N64, environment and fade startup
 profiles. `NativeEffectTextures` remains an alias preserving the established
 effect API; create selects the effect profile, createEnvironment the environment
-profile. Source cursors stay separate and preserve each original driver's
+profile, createFade the fade profile. Source cursors stay separate and preserve each original driver's
 initialization, path, size, live reads and callback order. This is process startup,
 not a Crump-specific sprite loader or a per-area duplicate texture bank.
 
 ## Shared ownership and transfers
 
-Both profiles retain the actual NativeUiStartup/field-animation process, source
+All profiles retain the actual NativeUiStartup/field-animation process, source
 SDK heap0 and actual VM registries. Cold admission pins exact original new
 initialized/BSS ranges and refuses occupied mappings; borrowed UI/root/manager
 state is never reimported/reset. Each profile's nonexecuting identity facade
@@ -28,7 +28,7 @@ GameCube heap placement or DVD thread timing.
 
 Allocation bytes and readBytes are distinct. The environment reads original
 logical length even when its allocation rounds to32; effect drivers request
-rounded reads. A pump delivers at most its actual byte budget, uses a synchronous
+rounded reads, as does fade. A pump delivers at most its actual byte budget, uses a synchronous
 raw-memory borrow for word/byte copies and runs whole original completion only
 after verified transfer. No raw pointer escapes, callback runs or yield occurs
 inside that borrow. Original texture hashes admit the supported source domain;
@@ -55,6 +55,13 @@ palette/readiness. Texture setup clears only palette, uses no language selector
 and reads logical length. Its callback captures handle before direct palette.
 Only its one genuine job is required for readiness.
 
+The [fade profile](../display/SOURCE_FADE_TEXTURE_STARTUP.md) imports four new
+ranges, borrows root and later archive ownership, and runs real heap0 manager
+initialization before texture admission. Manager backing is isolated at the
+same guest address before pin/publication to survive later UI arena extraction.
+Palette and manager allocations remain distinct. It preserves palette-only
+setup clear, rounded read size and manager-first callback capture.
+
 The native archive adapter supports actual four-inactive-descriptor exhaustion;
 active descriptors hold for their whole archive provider. Exact original source
 paths are authoritative. No forced language fallback, shared-filename mutation,
@@ -62,7 +69,9 @@ private execution VM, fabricated allocator, callback receipt or placeholder art
 is introduced. These process resources can be retained by later areas through
 the existing Game effect-process owner instead of copying per-room banks.
 
-Normal source sequence activation, actual effect/environment render/audio queues,
+Normal Game now executes the three texture profiles and completions before
+native Mario entries. Whole original source sequence parents, the raw Mario
+pose-wrapper/logo-file tail, actual effect/environment render/audio queues,
 source math/pixel fidelity and physical New2DS XL performance remain separate
 acceptance work. The common transfer implementation adds no per-frame renderer
 work or performance claim.

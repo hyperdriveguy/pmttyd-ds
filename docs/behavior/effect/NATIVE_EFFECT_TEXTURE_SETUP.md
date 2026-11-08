@@ -72,9 +72,9 @@ license is granted. Existing editable asset imports are never overwritten.
 
 The sole original direct primary setup caller is seq_logoExit8008748c, after
 the original environment setup8019df84 and before marioPoseInit. This API does not claim that complete logo
-Exit: its preceding environment owner and remaining sequence children must be
-bound before original normal sequence activation. Normal Game owns the effect
-process but does not yet call these texture methods automatically. Source Main
+Exit: remaining original parent/sequence children still need binding. Normal
+Game now invokes Fade/Environment/Effect/N64 setup and drains independent
+completions before native Mario entries. Source Main
 callbacks, actual GX/3DS texture residency/draw, audio and retirement still need
 production consumers. Texture bytes/readiness do not establish rendered Crump
 reactions or a complete field/battle/result/field-return story chain.
@@ -90,4 +90,5 @@ startup as `NativeSourceTextureStartup`; `NativeEffectTextures` is a compatible
 alias selecting the unchanged default effect profile. Separate source cursors,
 two effect jobs and mandatory N64 setup are retained. See
 [shared ownership](../platform/NATIVE_SOURCE_TEXTURE_STARTUP.md). Original normal
-sequence activation still needs the preceding fade process and complete parent.
+sequence activation now has the preceding fade process; the complete parent
+and raw Mario/logo-file tail remain open.
