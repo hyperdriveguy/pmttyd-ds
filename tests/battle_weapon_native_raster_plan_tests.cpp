@@ -1,5 +1,6 @@
 #include <memory>
 #include "battle_weapon_native_raster_plan.hpp"
+#include "battle_weapon_icon_evidence.hpp"
 #include <cassert>
 #include <fstream>
 #include <filesystem>
@@ -9,6 +10,14 @@
 #include <iostream>
 using namespace ttyd;
 namespace {
+// Explicit TEST process owner. Real cold/history capture executes; this is not
+// a receipt for native GXInit or the normal source scheduler.
+std::shared_ptr<SourceGxInheritedState> testHistory(std::shared_ptr<const void> process){
+ auto h=std::make_shared<SourceGxInheritedState>();SourceGxInheritedBinding b;b.process=std::move(process);b.current=[](void*){return true;};b.coldCurrent=b.current;assert(h->bind(b)&&h->initializeCold());return h;
+}
+std::shared_ptr<BattleWeaponIconEvidence> testEvidence(const std::shared_ptr<SourceGxInheritedState>&h,std::shared_ptr<const void> process){
+ auto e=BattleWeaponIconEvidence::create(h,4097,std::move(process),[]{return true;});assert(e&&e->retain(h,h->capture()));return e;
+}
 uint32_t be(const std::vector<uint8_t>&v,unsigned a){assert(a+4<=v.size());return uint32_t(v[a])<<24|uint32_t(v[a+1])<<16|uint32_t(v[a+2])<<8|v[a+3];}
 std::vector<uint8_t> actualNativeAtlas(){
  std::ifstream iso("/home/carson/games/roms/G8ME01.iso",std::ios::binary);assert(iso);std::vector<uint8_t>b(321984);iso.seekg(947396944);iso.read(reinterpret_cast<char*>(b.data()),b.size());assert(iso&&be(b,0)==0x20af30);const auto h=be(b,be(b,8)),start=be(b,h+8);
@@ -23,7 +32,7 @@ struct Fixture {
  std::shared_ptr<BattleWeaponOrderedBatch>batch=std::make_shared<BattleWeaponOrderedBatch>();
  bool alive=true,reenter=false;const BattleWeaponRasterPlan*checking=nullptr;unsigned queries=0;std::filesystem::path dir;
  Fixture(){MessageFont original;assert(original.load("romfs/font.pmfont"));assert(font.adopt(original,{this,512,256,0,1,512,256,false,{0,1,1,0}}));auto atlas=actualNativeAtlas();assert(window.adopt({this,128,128,0,1,128,128,false,{0,1,1,0}},atlas.data(),atlas.size()));
- dir=std::filesystem::temp_directory_path()/("pm-raster-plan-"+std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));std::filesystem::create_directory(dir);FILE*f=std::fopen((dir/"battle-submenu-surfaces.bin").c_str(),"wb");assert(f);uint32_t count=2;std::fwrite("PMBSUB01",8,1,f);std::fwrite(&count,4,1,f);for(unsigned i=0;i<2;++i){uint32_t index=i+2;unsigned x=i?22:2,w=i?8:16;BattleClassRegion r{w,24,float(x)/32,1-2.f/32,float(x+w)/32,1-26.f/32};std::fwrite(&index,4,1,f);std::fwrite(&r,sizeof(r),1,f);}std::fclose(f);BattleClassSurfaceTextureServices gpu;gpu.user=this;gpu.import=[](void*p,uint32_t,const char*)->std::optional<BattleClassSurfaceImport>{return BattleClassSurfaceImport{p,32,32,0,1,32,32,false,{0,1,1,0}};};gpu.release=[](void*,uint32_t,const void*){};assert(submenu.load(dir.string().c_str(),gpu));batch->allocationOwner=owner;batch->sourceResourceOwner=resources;batch->allocation=0x88000200;batch->generation=7;batch->pass=3;
+ dir=std::filesystem::temp_directory_path()/("pm-raster-plan-"+std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));std::filesystem::create_directory(dir);FILE*f=std::fopen((dir/"battle-submenu-surfaces.bin").c_str(),"wb");assert(f);uint32_t count=2;std::fwrite("PMBSUB01",8,1,f);std::fwrite(&count,4,1,f);for(unsigned i=0;i<2;++i){uint32_t index=i+2;unsigned x=i?22:2,w=i?8:16;BattleClassRegion r{w,24,float(x)/32,1-2.f/32,float(x+w)/32,1-26.f/32};std::fwrite(&index,4,1,f);std::fwrite(&r,sizeof(r),1,f);}std::fclose(f);BattleClassSurfaceTextureServices gpu;gpu.user=this;gpu.import=[](void*p,uint32_t,const char*)->std::optional<BattleClassSurfaceImport>{return BattleClassSurfaceImport{p,32,32,0,1,32,32,false,{0,1,1,0}};};gpu.release=[](void*,uint32_t,const void*){};assert(submenu.load(dir.string().c_str(),gpu));batch->allocationOwner=owner;batch->sourceResourceOwner=resources;batch->allocation=0x88000200;batch->generation=7;batch->pass=3;auto h=testHistory(resources);batch->iconEvidence=testEvidence(h,resources);
  }
  ~Fixture(){submenu.retire();window.retire();font.retire();std::filesystem::remove_all(dir);}
  BattleWeaponRasterResources refs(){return {&font,&submenu,&window};}
@@ -36,7 +45,14 @@ struct Fixture {
 };
 void geometry(){Fixture f;f.mixed();const auto p=prepareBattleWeaponRasterGeometry(&f,f.batch,f.refs());assert(p&&p->batch()==f.batch&&p->primitives().size()==6);assert(p->current(&f,f.refs())&&!p->current(nullptr,f.refs()));const auto&v=p->primitives();assert(v[0].kind==BattleWeaponRasterKind::Window&&v[0].count==36&&v[0].vertices[2].u==72.f/128&&v[0].vertices[2].v==1-72.f/128);assert(v[0].transform[0][3]==7&&v[0].transform[1][3]==-5);assert(v[1].kind==BattleWeaponRasterKind::Font&&v[1].count==4&&v[1].vertices[0].u==16.f/512&&v[1].vertices[0].v==1-2.f/256&&v[1].vertices[0].rgba==0x98765400);assert(v[2].kind==BattleWeaponRasterKind::Submenu&&v[2].vertices[0].x==5&&v[2].vertices[0].y==7&&v[2].transform[0][3]==0);assert(v[3].kind==BattleWeaponRasterKind::Icon&&v[3].vertices[0].u==2.f/32&&v[3].vertices[2].v==1-22.f/32&&v[3].iconMaterial.mode==NativeIconPlan::Grayscale&&v[3].iconPipeline.sourceBlend==4);assert(v[4].kind==BattleWeaponRasterKind::Font&&v[5].kind==BattleWeaponRasterKind::Window);f.checking=p.get();f.reenter=true;assert(p->current(&f,f.refs()));f.reenter=false;const auto queries=f.queries;for(const auto&i:v)for(unsigned q=0;q<i.count;q+=4)for(unsigned k=0;k<4;++k)assert(i.vertices[q+k].rgba||i.kind==BattleWeaponRasterKind::Font);assert(f.queries==queries); // prepared replay needs no provider queries
 }
-void invalid(){Fixture f;f.mixed();auto refs=f.refs();refs.window=nullptr;assert(!prepareBattleWeaponRasterGeometry(&f,f.batch,refs));refs=f.refs();refs.submenu=nullptr;assert(!prepareBattleWeaponRasterGeometry(&f,f.batch,refs));refs=f.refs();refs.font=nullptr;assert(!prepareBattleWeaponRasterGeometry(&f,f.batch,refs));auto last=std::make_shared<BattleWindowPacket>(*f.panel());last->vertices[35][0]=std::numeric_limits<float>::infinity();f.batch->packets.back()=BattleWindowPacketPtr(last);assert(!prepareBattleWeaponRasterGeometry(&f,f.batch,f.refs()));last->vertices[35][0]=2;last->matrix[0]=std::numeric_limits<float>::max();assert(!prepareBattleWeaponRasterGeometry(&f,f.batch,f.refs()));f.mixed();auto icon=f.icon();icon.packet.transform[0][0]=std::numeric_limits<float>::max();icon.packet.quad.positions[0][0]=2;f.batch->packets[3]=icon;assert(!prepareBattleWeaponRasterGeometry(&f,f.batch,f.refs()));f.mixed();last=std::make_shared<BattleWindowPacket>(*f.panel());last->camera.pass=4;f.batch->packets.back()=BattleWindowPacketPtr(last);assert(!prepareBattleWeaponRasterGeometry(&f,f.batch,f.refs()));}
+void invalid(){Fixture f;f.mixed();auto saved=f.batch->iconEvidence;f.batch->iconEvidence.reset();assert(!prepareBattleWeaponRasterGeometry(&f,f.batch,f.refs()));f.batch->iconEvidence=saved;auto refs=f.refs();refs.window=nullptr;assert(!prepareBattleWeaponRasterGeometry(&f,f.batch,refs));refs=f.refs();refs.submenu=nullptr;assert(!prepareBattleWeaponRasterGeometry(&f,f.batch,refs));refs=f.refs();refs.font=nullptr;assert(!prepareBattleWeaponRasterGeometry(&f,f.batch,refs));auto last=std::make_shared<BattleWindowPacket>(*f.panel());last->vertices[35][0]=std::numeric_limits<float>::infinity();f.batch->packets.back()=BattleWindowPacketPtr(last);assert(!prepareBattleWeaponRasterGeometry(&f,f.batch,f.refs()));last->vertices[35][0]=2;last->matrix[0]=std::numeric_limits<float>::max();assert(!prepareBattleWeaponRasterGeometry(&f,f.batch,f.refs()));f.mixed();auto icon=f.icon();icon.packet.transform[0][0]=std::numeric_limits<float>::max();icon.packet.quad.positions[0][0]=2;f.batch->packets[3]=icon;assert(!prepareBattleWeaponRasterGeometry(&f,f.batch,f.refs()));f.mixed();last=std::make_shared<BattleWindowPacket>(*f.panel());last->camera.pass=4;f.batch->packets.back()=BattleWindowPacketPtr(last);assert(!prepareBattleWeaponRasterGeometry(&f,f.batch,f.refs()));}
 void lifetime(){Fixture f;f.mixed();auto p=prepareBattleWeaponRasterGeometry(&f,f.batch,f.refs());assert(p);f.alive=false;assert(!p->current(&f,f.refs()));f.alive=true;f.window.retire();assert(!p->current(&f,f.refs()));Fixture g;g.mixed();p=prepareBattleWeaponRasterGeometry(&g,g.batch,g.refs());assert(p);auto old=g.font.lease();g.font.retire();MessageFont font;assert(font.load("romfs/font.pmfont"));assert(g.font.adopt(font,{&g,512,256,0,1,512,256,false,{0,1,1,0}}));assert(g.font.lease().texture==old.texture&&g.font.lease().generation!=old.generation);g.mixed();assert(!p->current(&g,g.refs()));assert(prepareBattleWeaponRasterGeometry(&g,g.batch,g.refs()));Fixture e;auto empty=prepareBattleWeaponRasterGeometry(&e,e.batch,e.refs());assert(empty&&empty->primitives().empty());}
 }
-int main(){geometry();invalid();lifetime();std::cout<<"weapon native raster geometry tests PASS\n";}
+void planEvidenceLifetime(){
+ Fixture f;f.mixed();auto plan=prepareBattleWeaponRasterGeometry(&f,f.batch,f.refs());assert(plan);
+ std::weak_ptr<const BattleWeaponIconEvidence> old=f.batch->iconEvidence;
+ auto replacement=std::make_shared<BattleWeaponOrderedBatch>(*f.batch);replacement->iconEvidence=testEvidence(testHistory(f.resources),f.resources);f.batch=replacement;
+ assert(!old.expired()&&plan->current(&f,f.refs()));
+ plan.reset();assert(old.expired()); // actual plan owns its completed pass, not later context metadata
+}
+int main(){planEvidenceLifetime();geometry();invalid();lifetime();std::cout<<"weapon native raster geometry tests PASS\n";}

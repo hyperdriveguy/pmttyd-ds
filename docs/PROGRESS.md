@@ -19080,3 +19080,80 @@ original matched pixels and physical hardware timing remain unmeasured.
 Next: continue genuine source light/ambient/camera/material/GX map activation
 and Game/EVT ownership. Full prologue/Crump round trip, original
 matched captures and physical New2DS XL measurements remain unfinished.
+
+## Original Crump menu/icon, stage and audience source components — 2026-11-07
+
+Added the actual source menu factory and renderer consumer, original Icon source
+matrix/GX/texture routing, and per-pass batch-owned icon evidence. Renderer
+callbacks require the genuine frame/pass/camera/resource owners; stale batches
+cannot borrow a newer pass's proof. Physical command input remains available.
+The source menu uses original resources and message content. This does not yet
+activate those owners through the normal Game battle path.
+
+Added retained whole StageInit/StageObjectInit/SpotInit, AudienceInit/SettingAudience,
+and BreakSlotInit parents. Calls preserve original order, arguments, partial
+stores, private captures and allocation lifetimes across holds. Unknown resource,
+audio, positive audience-entry and other external children remain unavailable;
+none are acknowledged merely to pass a startup gate. Original audience private
+words remain known/unknown rather than being replaced with fabricated stack data.
+
+Imported original stg_00_0 hierarchy (144nodes/7995vertices) and a separate correct
+Harbor bti_01 base (108nodes/11829vertices), retaining provenance and original
+rights. Existing Trio11721-vertex base and editable art were preserved. New
+products are `harbor-tutorial-stg_00_0.mapobj` and `harbor-tutorial-bti_01.mapobj`.
+These native hierarchy products do not themselves create original process map
+work or substitute their `world_root` converter root for the actual source root.
+
+Validation: immutable `artifacts/crump-menu-stage-integration/manifest.json`,
+SHA256 `20cd5d0bacdd44fd36222e656e83109bc49ac7e54b6d1b2e82d0299afae8b72d`,
+contains14350 inputs, parent corrected13438. Full headers/core/native sources
+were rebuilt together, including the changed OrderedBatch/RasterPlan ABI.
+
+- Initial parent full host run passed572/573 C++ tests in262.98s; Python
+  was not reached. One old class-surface fixture supplied an icon without the
+  newly mandatory per-pass evidence. The exact four-anchor test-only correction
+  uses the actual history/evidence owner and passed its focused strict suite.
+- Corrected graph `artifacts/crump-menu-stage-corrected/manifest.json`, SHA256
+  `a9f34ddec1bf48164d2ee5f6fd08b1fd9b26de54444b7bcb92edb59d793e542b`,
+  changes that one test only. Other14349 inputs, including all production,
+  match the native parent. `CMAKE_BUILD_PARALLEL_LEVEL=4 CTEST_PARALLEL_LEVEL=4
+  make test` exited0:573/573 C++ tests in102.48s and244/244 Python tests
+  in99.698s, zero skips.
+- `make all -o assets-ready SOUNDTRACK=gamecube` exited0. Native3DSX SHA256
+  `8c98ade18592fb2aaf3846b2a164e933aee54479fce7d729b7fdb8237a84cb11`.
+- Normal original asset preparation exited0 and compiled424 editable recipes.
+  All prior editable source assets were unchanged; only the two approved new
+  hierarchy recipes were added. Both new products match their checked-in JSON.
+  Asset metadata/products and package authority hashes are retained in the
+  integration directory. Each package also records strict host, ASan/UBSan,
+  ARM and original ISO source-pin checks with their precise coverage limits.
+- After the corrected terminal run, all14350 input hashes matched the frozen
+  manifest. Final results SHA256:
+  `2e29a0f8a1d3af672c08ef2f8430ec6eedaae4428c259c9453c9e2e1b07e9694`.
+  Documentation links passed:1643 Markdown files, zero broken links.
+
+No new Azahar/Dolphin playthrough, GPU appearance comparison or physical-device
+performance claim is made. The initial Crump encounter still needs normal Game
+activation and original field/start/result/wait/return composition.
+
+Source review identified an important ordering requirement: rank0 original
+seq_battleMain calls bmapLoad(bti_01,stg_00_0), producing actual map bank1 with
+base slot0 and foreground slot1 before battle cold setup. The existing source
+map owner can be reused, but its DVD catalog currently admits gor_00 only and
+no production caller binds the owner. Correct source map roots are bti_S/S;
+converter hierarchy roots must not be substituted for MapGetWork's pointer chain.
+
+Next work already prepared separately, outside this validated graph: retained
+bmapLoad and source MapGrpFlagOn/Off parents, actual startup BreakSlot binding,
+source-runtime address fixes (scene publication remains separately deferred),
+and callback registration without fixture B/U/P provisioning. Full integration
+of these candidates remains pending. Actual pool adoption must reuse the nested
+pool created by the original battle sequence, with producer/lifetime ownership;
+it must not reconstruct globals or cold-reset a second arena. Bind genuine map,
+audience, animation, effects and Main/Draw owners, freeze simulation across held
+Draw passes, then verify the complete encounter with physical controls and
+original postbattle story return. Target-selection display80120a44 also remains
+unbound: its real icon, name-window/font and final camera-mode children must
+complete before Draw can advance; the weapon callback is not its substitute.
+Read-only source audit is retained at `artifacts/harbor-target-display/REPORT.md`.
+The wider goal remains active.

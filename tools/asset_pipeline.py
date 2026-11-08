@@ -18,9 +18,10 @@ from PIL import Image
 from asset_animation import decode as decode_animation, encode as encode_animation
 from asset_event import encode as encode_event
 from asset_pose_extensions import auxiliary_sources, append_animation_clips, pose_directory_outputs, compile_pose_directory
+from stage_hierarchy_assets import encode as encode_stage_hierarchy
 
 ROOT = Path(__file__).resolve().parents[1]
-KINDS = {'texture', 'atlas', 'model', 'actor', 'sfx', 'music', 'animation', 'pack', 'event', 'pose-directory'}
+KINDS = {'texture', 'atlas', 'model', 'actor', 'sfx', 'music', 'animation', 'pack', 'event', 'pose-directory', 'stage-hierarchy'}
 
 
 def digest(path):
@@ -97,6 +98,10 @@ def output_names(entry):
     suffix = {'texture': '.t3x', 'atlas': '.t3x', 'actor': '.pmmesh', 'animation': '.pmanim', 'sfx': '.wav', 'music': '.wav', 'event': '.pmevt'}
     if kind in suffix and not name.endswith(suffix[kind]):
         raise ValueError(f'{entry["id"]}: output must end in {suffix[kind]}')
+    if kind == 'stage-hierarchy':
+        if not name.endswith('.mapobj'):
+            raise ValueError('Stage hierarchy output requires .mapobj suffix')
+        return [name]
     if kind == 'pose-directory':
         return pose_directory_outputs(name)
     if kind == 'model':
@@ -336,7 +341,7 @@ def build(manifest, root, output, work, tex3ds):
         raise ValueError('Run prepare before original converters and build')
     doc = read_manifest(manifest, root)
     output.mkdir(parents=True, exist_ok=True); work.mkdir(parents=True, exist_ok=True)
-    tool_key = digest(__file__) + digest(ROOT / 'tools/asset_animation.py') + digest(ROOT / 'tools/asset_event.py') + digest(ROOT / 'tools/asset_pose_extensions.py') + digest(ROOT / 'tools/battle_pose_directory.py') + PIL.__version__ + sys.version
+    tool_key = digest(__file__) + digest(ROOT / 'tools/asset_animation.py') + digest(ROOT / 'tools/asset_event.py') + digest(ROOT / 'tools/asset_pose_extensions.py') + digest(ROOT / 'tools/battle_pose_directory.py') + digest(ROOT / 'tools/stage_hierarchy_assets.py') + PIL.__version__ + sys.version
     if any(e['kind'] in ('texture', 'atlas') for e in doc['assets']):
         executable = shutil.which(tex3ds) or tex3ds
         tool_key += digest(executable)
@@ -391,6 +396,8 @@ def build(manifest, root, output, work, tex3ds):
                         [json.loads(contained(root, name).read_text()) for name in entry.get('append_sources', [])])
                     json.dumps(animation, allow_nan=False)
                     target.write_bytes(encode_animation(animation))
+                elif kind == 'stage-hierarchy':
+                    target.write_bytes(encode_stage_hierarchy(json.loads(source.read_text())))
                 elif kind == 'pose-directory':
                     compile_pose_directory(source, target, contained(root, entry['texture_source']))
                 elif kind == 'event':

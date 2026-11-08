@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "assets": {
+    "bti_01-hierarchy.json": {
+      "source_disc": "G8ME01",
+      "source_path": "m/bti_01/d",
+      "source_offset": 966028632,
+      "size": 181042,
+      "sha256": "213c62e758be15bc0731b3fa58558d1b2c565ea1c96e91111ea07b52cf751ca8",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "selected_rel_sha256": "d4965f21254ecf1a78e5d66ea12a0b000eed3f123032af6ab3cb0f703d3f185a",
+      "template_sha256": "b9f0813b11775f3f327f91acaf856a9fddf52af221b8059bf7907faa872709a6",
+      "hierarchy_pack_sha256": "86477e4d83bf3d3461d4559641dae2696788b14c0c4f5c06cc19c852a1b2bfa4",
+      "conversion": "Original complete node hierarchy/parent order/local affine matrices and original template vertex bindings; exact matching original Harbor base geometry selection, no texture or geometry replacement.",
+      "units": "Original local node/vertex coordinates. Existing StageMapObjects applies its documented root*.1/native translation boundary.",
+      "native_limits": "Existing PMMAP001 owner admitted domain: <=1000000 vertices, <=4096 nodes, <64-byte ASCII names, finite float32 matrices/points.",
+      "decoder": "tools/map_convert.py: existing original map decoder adapted from noclip.website/world.ts (MIT); no new asset license"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "assets": {
+    "stg_00_0-hierarchy.json": {
+      "source_disc": "G8ME01",
+      "source_path": "m/stg_00_0/d",
+      "source_offset": 1130056948,
+      "size": 129290,
+      "sha256": "0c5d16504d645f05d2569b017c6c755bdad8d913482619a6c25aca7d89542b82",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "selected_rel_sha256": "d4965f21254ecf1a78e5d66ea12a0b000eed3f123032af6ab3cb0f703d3f185a",
+      "template_sha256": "3201b73b5767495b0944367170c182267ee248efa211b1124b8f9a486f483410",
+      "hierarchy_pack_sha256": "0155df110e0112dccf39bf8a2dbe414d97a0a7ccb21f2933bbf502ce5ea5620c",
+      "conversion": "Original complete node hierarchy/parent order/local affine matrices and original template vertex bindings; same source-selected A1/A2/B/C geometry conversion, no texture or geometry replacement.",
+      "units": "Original local node/vertex coordinates. Existing StageMapObjects applies its documented root*.1/native translation boundary.",
+      "native_limits": "Existing PMMAP001 owner admitted domain: <=1000000 vertices, <=4096 nodes, <64-byte ASCII names, finite float32 matrices/points.",
+      "decoder": "tools/map_convert.py: existing original map decoder adapted from noclip.website/world.ts (MIT); no new asset license"
+    }
+  }
+}

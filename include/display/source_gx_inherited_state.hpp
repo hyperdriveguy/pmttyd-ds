@@ -43,6 +43,8 @@ public:
  SourceGxInheritedState&operator=(const SourceGxInheritedState&)=delete;
  bool bind(SourceGxInheritedBinding);
  bool current()const;
+ // Pure actual private Lifetime identity; no value/byte equivalence admission.
+ bool ownsSnapshot(const std::shared_ptr<const SourceGxInheritedSnapshot>&)const;
  // Exact bounded native cold contribution from pinned __GXInitGX source:
  // original private fog-color capture and all operations3088..3220. Executes
  // once per actual native cold process; NEVER proves reached/completed GXInit,

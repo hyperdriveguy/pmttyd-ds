@@ -1,4 +1,5 @@
 #include "battle_weapon_native_raster_plan.hpp"
+#include "battle_weapon_icon_evidence.hpp"
 #include <cmath>
 namespace ttyd {namespace {
 struct Checking{bool&value;explicit Checking(bool&v):value(v){value=true;}~Checking(){value=false;}};
@@ -16,7 +17,7 @@ bool resources(const BattleWeaponOrderedBatch&b,const BattleWeaponRasterResource
   else if(const auto*p=std::get_if<BattleSubmenuPacketPtr>(&q)){if(!*p||!r.submenu||!validateBattleSubmenuPacket(**p,*r.submenu)||(*p)->camera.generation!=b.generation||(*p)->camera.pass!=b.pass||(*p)->sourceResourceOwner!=b.sourceResourceOwner||(*p)->sourceResourceOwner.owner_before(b.sourceResourceOwner)||b.sourceResourceOwner.owner_before((*p)->sourceResourceOwner))return false;}
   else if(const auto*p=std::get_if<BattleWindowPacketPtr>(&q)){if(!*p||!r.window||!validateBattleWindowPacket(**p,*r.window)||(*p)->camera.generation!=b.generation||(*p)->camera.pass!=b.pass)return false;}
   else if(const auto*p=std::get_if<BattleClassSurfacePacketPtr>(&q)){if(!*p||!r.classes||!validateBattleClassSurfacePacket(**p,*r.classes)||(*p)->camera.generation!=b.generation||(*p)->camera.pass!=b.pass||(*p)->sourceResourceOwner!=b.sourceResourceOwner||(*p)->sourceResourceOwner.owner_before(b.sourceResourceOwner)||b.sourceResourceOwner.owner_before((*p)->sourceResourceOwner))return false;}
-  else{const auto&icon=std::get<BattleEnemyHpIconPacket>(q);if(!validBattleEnemyHpIconPacket(icon.packet)||!validBattleEnemyHpIconResidency(icon.residency))return false;}
+  else{const auto&icon=std::get<BattleEnemyHpIconPacket>(q);if(!b.iconEvidence||!b.iconEvidence->size()||!b.iconEvidence->current()||!validBattleEnemyHpIconPacket(icon.packet)||!validBattleEnemyHpIconResidency(icon.residency))return false;}
  }return true;
 }
 bool camera(BattleWeaponRasterPrimitive&o,const BattleSubmenuCameraProof&c){

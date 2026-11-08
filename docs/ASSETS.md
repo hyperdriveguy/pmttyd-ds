@@ -4320,3 +4320,19 @@ an empty destination. Existing `main` and `entry` imports retain exact output.
 Alignment preserves actual adjacent bytes and per-span offsets/lengths/hashes.
 Nintendo/Intelligent Systems retain original rights; tracking grants no
 redistribution license. Compiled products and original ISO remain uncommitted.
+## Original Harbor tutorial stage hierarchies
+
+Editable original hierarchy/binding sources are tracked in
+`assets/original/tutorial-stage/stg_00_0-hierarchy.json` and
+`assets/original/tutorial-stage/base/bti_01-hierarchy.json`, each with adjacent
+provenance and licensing. Read-only US ISO sources are `m/stg_00_0/d` and
+`m/bti_01/d`; the selected original `gor.rel` stage chooses A1/A2/B/C and the
+matching Harbor base. The foreground has 144 nodes/7,995 vertices; the base has
+108 nodes/11,829 vertices. The existing Trio 11,721-vertex base remains unchanged.
+New distinct normal-build products are `harbor-tutorial-stg_00_0.mapobj` and
+`harbor-tutorial-bti_01.mapobj`. Conversion preserves original node order,
+matrices and source-local bindings; it imports no replacement art and changes no
+model or atlas. Normal builds compile the editable JSON and never reimport over
+edits. Nintendo/Intelligent Systems retain all original rights; no redistribution
+license is granted. Temporary extracts and compiled packs remain ignored. See
+[the hierarchy contract](behavior/field/HARBOR_TUTORIAL_STAGE_HIERARCHY_ASSETS.md).

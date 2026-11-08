@@ -58,6 +58,12 @@ public:
   DisplayQueue *registrationQueue();
   bool sealRegistrations();
   bool resume(); // completed successful CameraMain, then CameraDraw, reset LAST
+  // Metadata queries never establish a successful source-camera receipt.
+  std::shared_ptr<CameraManager> cameraManager() const;
+  uint32_t battleAddress() const;
+  uint64_t generation() const;
+  bool runtimeIs(const std::shared_ptr<const void>&) const;
+  bool acceptsInvocation(const HarborSourceDisplayInvocation&) const;
   bool current() const;
   bool complete(uint64_t pass) const;
   bool cameraMainCurrent(BattleClassCameraEpoch) const;

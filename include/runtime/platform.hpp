@@ -69,6 +69,9 @@ class TroubleQuestPresentation;
 class Renderer {
 public:
     bool init();
+    // Actual source callback only; unknown callbacks remain unavailable. The
+    // source Display owner retains its queue/camera pass across false.
+    bool resumeHarborCommandDisplay(const Game&,const HarborSourceDisplayInvocation&);
     // Call after init; Renderer and resources must outlive this retained field owner.
     std::unique_ptr<FieldAnimationGpu> createFieldAnimationGpu(EventAddressSpace&,
         const FieldAnimationSubmit&,const AnimationSourceRenderChildren&,std::function<bool()>);
@@ -276,6 +279,10 @@ private:
     struct ClassMenuBinding;
     std::shared_ptr<ClassMenuBinding> classMenuBinding;
     bool classMenuSubmitReady=false,classMenuSubmissionWaiting=false;
+    bool harborSourceFrameActive=false;
+    bool resumeHarborClassMenu(const Game&,const HarborSourceDisplayInvocation&);
+    bool resumeHarborWeaponMenu(const Game&,const HarborSourceDisplayInvocation&);
+    void resumeHarborSourceCamera(const Game&);
     bool prepareClassMenuFrame(const Game&);
     void releaseClassMenuFrame();
     bool resumeClassMenu(const Game&,uint32_t camera,uint32_t userdata);

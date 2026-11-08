@@ -1,4 +1,6 @@
 #include "harbor_tutorial.hpp"
+#include "battle_class_menu_messages.hpp"
+#include <cstdlib>
 #include "native_battle_sound.hpp"
 #include "battle_command_palette_memory.hpp"
 #include "message_assets.hpp"
@@ -50,7 +52,11 @@ bool loadHarborTutorialAssets(const char* root){
  menuFiles=std::move(files);
  scripts=std::move(p);messages=std::move(m);font=std::move(f);source=entries;callbacks=std::move(table);ready=true;return true;
 }
+struct HarborSourceMenuRegistration {std::weak_ptr<HarborTutorialRuntime> runtime;};
 struct HarborTutorialRuntime {
+ std::shared_ptr<HarborSourceDisplayPass> sourceDisplay;
+ std::shared_ptr<HarborSourceMenuFactory> sourceMenuFactory;
+ std::shared_ptr<const MessageAssets> sourceMenuMessages=std::make_shared<const MessageAssets>(messages);
  // Shared backing outlives this VM and its borrowed external mappings. Asset
  // reload replaces the catalog owner without invalidating an existing battle.
  std::shared_ptr<BattleMenuFileCache> files=menuFiles;
@@ -200,7 +206,9 @@ bool HarborTutorial::beginFromPouch(uint64_t time,const ProloguePouch& entry,int
 // context. Original setup/kind tables supply opponent/system fields.
 bool HarborTutorial::beginWithContext(uint64_t time,int32_t hp,int32_t maxHp,bool freshPouch,int32_t story,const ProloguePouch* entry){if(!ready || triggered)return false;*this=HarborTutorial{};triggered=true;now=time;
  actors[0].id=CrumpId;actors[0].sourceKind=source[6];actors[1].id=MarioId;actors[1].kind=222;actors[1].movePhase=0x04000002;actors[1].hp=hp;actors[1].maxHp=maxHp;actors[1].pose="M_S_1";actors[1].position=actors[1].home={-100,0,-5};
- runtime_=std::make_shared<HarborTutorialRuntime>();auto& r=*runtime_;r.scene=this;if(!r.initialize()){failed=true;return false;}actors[0].kind=signedWord(r.word(source[6]));actors[0].belong=int8_t(r.word(source[8]+4)>>24);actors[0].movePhase=r.word(source[8]+8);actors[0].hp=actors[0].maxHp=int16_t(r.word(source[6]+8)>>16);
+ runtime_=std::make_shared<HarborTutorialRuntime>();
+ sourceMenuRegistration_=std::make_shared<HarborSourceMenuRegistration>();sourceMenuRegistration_->runtime=runtime_;
+ auto& r=*runtime_;r.scene=this;if(!r.initialize()){failed=true;return false;}actors[0].kind=signedWord(r.word(source[6]));actors[0].belong=int8_t(r.word(source[8]+4)>>24);actors[0].movePhase=r.word(source[8]+8);actors[0].hp=actors[0].maxHp=int16_t(r.word(source[6]+8)>>16);
  for(unsigned i=0;i<3;++i){const auto v=r.word(source[8]+0xc+i*4);std::memcpy(&actors[0].position[i],&v,4);}actors[0].home=actors[0].position;
  // Source mandatory entry order is system, Mario, then the setup2 opponent.
  // Registry storage is still the bounded native adapter; this is not a claim
@@ -369,9 +377,32 @@ bool HarborTutorial::bindCommandDisplayPalette(std::shared_ptr<BattleCommandPale
  if(!bindBattleCommandPaletteMemory(r.vm.memory,*palette))return false;
  r.commandPalette=std::move(palette);return true;
 }
+bool HarborTutorial::setHarborSourceDisplayPass(std::shared_ptr<HarborSourceDisplayPass> display){
+ const auto r=runtime_;if(!r||failed||!display||!display->runtimeIs(r)||display->battleAddress()!=r->packed->battleAddress())return false;
+ if(r->sourceDisplay)return r->sourceDisplay==display;
+ r->sourceDisplay=std::move(display);return true;
+}
+std::shared_ptr<HarborSourceMenuFactory> HarborTutorial::sourceMenuFactory() const {
+ const auto r=runtime_;if(!r||failed||!r->sourceDisplay)return {};
+ if(!sourceMenuRegistration_){sourceMenuRegistration_=std::make_shared<HarborSourceMenuRegistration>();sourceMenuRegistration_->runtime=r;}
+ if(sourceMenuRegistration_->runtime.lock()!=r)return {};
+ if(r->sourceMenuFactory)return r->sourceMenuFactory;
+ const std::weak_ptr<HarborTutorialRuntime> weak=r;
+ const std::weak_ptr<HarborSourceMenuRegistration> registration=sourceMenuRegistration_;
+ const uint32_t b=r->packed->battleAddress();if(!b||b!=r->sourceDisplay->battleAddress())return {};
+ HarborSourceMenuFactoryBinding binding;binding.vm=&r->vm;binding.battle=b;binding.runtime=r;binding.display=r->sourceDisplay;binding.files=r->files;binding.messages=r->sourceMenuMessages;
+ binding.current=[weak,registration,b,files=r->files]{const auto r=weak.lock();const auto slot=registration.lock();return r&&slot&&slot->runtime.lock()==r&&r->files==files&&r->packed->battleAddress()==b;};
+ binding.uiLifetime=[weak](uint32_t w){const auto r=weak.lock();return r?r->packed->classUiLifetime(w):nullptr;};
+ binding.random=[weak](uint32_t bound){const auto r=weak.lock();if(!r)std::abort();return uint32_t(r->packed->random.bounded(int32_t(bound)));};
+ for(const auto&key:originalBattleClassMenuMessageKeys())if(const auto pointer=r->packed->cachedMenuLabelAddress(key.source))binding.existingMessages.emplace_back(key.id,*pointer);
+ r->sourceMenuFactory=HarborSourceMenuFactory::create(std::move(binding));return r->sourceMenuFactory;
+}
+std::optional<TrioClassMenuFrameBinding> HarborTutorial::classMenuFrameBinding(const BattleActDrawServices& linked)const{const auto factory=sourceMenuFactory();return factory?factory->classBinding(linked):std::nullopt;}
+std::optional<TrioWeaponMenuFrameBinding> HarborTutorial::weaponMenuFrameBinding(const BattleWeaponDrawServices& linked)const{const auto factory=sourceMenuFactory();return factory?factory->weaponBinding(linked):std::nullopt;}
+std::shared_ptr<BattleWeaponSourceMemory> HarborTutorial::weaponMenuSourceMemory(std::shared_ptr<NativeUiStartup> startup,const char* image)const{const auto factory=sourceMenuFactory();return factory?factory->weaponMemory(std::move(startup),image):nullptr;}
 bool HarborTutorial::registerCommandDisplay(DisplayQueue& queue,BattleFooterCursor& cursor){
  if(!runtime_ || failed || !runtime_->commandPalette)return false;
- return registerBattleCommandDisplay(HarborTutorialPacked::Battle,
+ return registerBattleCommandDisplay(runtime_->packed->battleAddress(),
    *runtime_->commandPalette,queue,cursor,nativeBattleActorServices(runtime_->vm));
 }
 const BattleAudienceIncarnationOwner* HarborTutorial::audienceIncarnations()const{

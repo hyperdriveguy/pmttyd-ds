@@ -7,6 +7,7 @@
 #include "battle_enemy_hp_publication.hpp"
 #include <variant>
 namespace ttyd {
+class BattleWeaponIconEvidence;
 // Vector position is successful source emission order across all five leaf kinds.
 using BattleWeaponOrderedPacket=std::variant<BattleFontGlyphPacket,BattleSubmenuPacketPtr,BattleEnemyHpIconPacket,BattleWindowPacketPtr,BattleClassSurfacePacketPtr>;
 struct BattleWeaponOrderedBatch {
@@ -15,6 +16,8 @@ struct BattleWeaponOrderedBatch {
  // Native ownership/pass metadata, never source elapsed ticks or render frames.
  uint32_t allocation=0;uint64_t generation=0,pass=0;
  std::vector<BattleWeaponOrderedPacket> packets;
+ // One pass of genuine source icon Load evidence, independent of later passes.
+ std::shared_ptr<const BattleWeaponIconEvidence> iconEvidence;
 };
 struct BattleWeaponOrderedBinding {
  std::shared_ptr<const uint8_t> allocationOwner;
@@ -38,6 +41,9 @@ struct BattleWeaponOrderedBinding {
  // presentation effect; retain the sealed batch unchanged for a later retry.
  // True commits once. Exactly one of draw/tryDraw must be supplied.
  bool(*tryDraw)(void*,const BattleWeaponOrderedBatch&)=nullptr;
+ // Optional for no-icon batches only. Actual accepted icons require a current,
+ // nonempty pass-owned witness; this callback must not capture/replay source.
+ std::shared_ptr<const BattleWeaponIconEvidence>(*iconEvidence)(void*,uint64_t)=nullptr;
 };
 class BattleWeaponOrderedPublication {
 public:
@@ -67,6 +73,7 @@ private:
  // One pre-RNG reservation is an ordering barrier, not a published packet.
  std::optional<BattleFontGlyphPacket> pending_;
  std::shared_ptr<const BattleWeaponOrderedBatch> sealed_;
+ std::shared_ptr<const BattleWeaponIconEvidence> iconEvidence_;
  bool live();bool source(uint64_t);bool preflight(const std::vector<BattleWeaponOrderedPacket>&);
  bool enter();void leave();
  struct Guard{BattleWeaponOrderedPublication&self;~Guard(){self.leave();}};

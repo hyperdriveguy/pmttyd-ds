@@ -3,6 +3,7 @@
 #include "battle_class_raster_continuation.hpp"
 #include "source_palette_texture_object.hpp"
 #include "battle_weapon_ordered_publication.hpp"
+#include "battle_weapon_icon_evidence.hpp"
 #include "battle_weapon_native_raster_plan.hpp"
 #include <cassert>
 #include <cmath>
@@ -149,9 +150,15 @@ void orderedAndPrepared(){
  MessageFont originalFont;assert(originalFont.load("romfs/font.pmfont"));assert(font.adopt(originalFont,{&font,512,256,0,1,512,256,false,{0,1,1,0}}));
  auto*file=std::fopen((f.dir/"battle-submenu-surfaces.bin").c_str(),"wb");assert(file);uint32_t count=2;std::fwrite("PMBSUB01",8,1,file);std::fwrite(&count,4,1,file);for(unsigned i=0;i<2;++i){uint32_t index=i+2;unsigned x=i?22:2,w=i?8:16;BattleClassRegion r{w,24,float(x)/32,1-2.f/32,float(x+w)/32,1-26.f/32};std::fwrite(&index,4,1,file);std::fwrite(&r,sizeof(r),1,file);}std::fclose(file);
  BattleClassSurfaceTextureServices gpu;gpu.user=&submenu;gpu.import=[](void*p,uint32_t,const char*)->std::optional<BattleClassSurfaceImport>{return BattleClassSurfaceImport{p,32,32,0,1,32,32,false,{0,1,1,0}};};gpu.release=[](void*,uint32_t,const void*){};assert(submenu.load(f.dir.string().c_str(),gpu));
- struct Context{Fixture*f;bool testComplete=false,ready=false;unsigned draws=0;std::vector<size_t>order;std::shared_ptr<const uint8_t>allocation=std::make_shared<const uint8_t>(1),icons=std::make_shared<const uint8_t>(2);};Context c{};c.f=&f;
+ struct Context{Fixture*f;std::shared_ptr<BattleWeaponIconEvidence>iconEvidence;bool testComplete=false,ready=false;unsigned draws=0;std::vector<size_t>order;std::shared_ptr<const uint8_t>allocation=std::make_shared<const uint8_t>(1),icons=std::make_shared<const uint8_t>(2);};Context c{};c.f=&f;
+ // Explicit TEST cold contribution for this typed manual-icon publication
+ // harness. It is not original Icon completion or normal native GXInit.
+ auto iconHistory=std::make_shared<SourceGxInheritedState>();SourceGxInheritedBinding iconProcess;iconProcess.process=f.life;iconProcess.user=&f;iconProcess.current=[](void*p){return static_cast<Fixture*>(p)->live;};iconProcess.coldCurrent=[](void*){return true;};assert(iconHistory->bind(iconProcess)&&iconHistory->initializeCold());
+ c.iconEvidence=BattleWeaponIconEvidence::create(iconHistory,4097,f.life,[&f]{return f.live;});assert(c.iconEvidence&&c.iconEvidence->retain(iconHistory,iconHistory->capture(1)));
+
  BattleWeaponOrderedPublication ordered;BattleWeaponOrderedBinding binding;binding.allocationOwner=c.allocation;binding.sourceResourceOwner=f.life;binding.resources=f.life;binding.allocation=Fixture::W;binding.generation=9;binding.capacity=16;binding.user=&c;binding.font=&font;binding.submenu=&submenu;binding.classes=&f.resource;
  binding.current=[](void*p,uint32_t w,uint64_t g){return static_cast<Context*>(p)->f->live&&w==Fixture::W&&g==9;};binding.sourceCurrent=[](void*p,uint64_t pass){auto&c=*static_cast<Context*>(p);return c.f->live&&c.f->executing&&pass==7;};binding.sourceComplete=[](void*p,uint64_t){return static_cast<Context*>(p)->testComplete;};binding.icon=[](void*p,uint32_t image)->std::optional<BattleEnemyHpIconResidency>{auto&c=*static_cast<Context*>(p);return BattleEnemyHpIconResidency{p,c.icons,image,16,20,32,32,0};};binding.ready=[](void*p,const BattleWeaponOrderedBatch&){return static_cast<Context*>(p)->ready;};binding.draw=[](void*p,const BattleWeaponOrderedBatch&b){auto&c=*static_cast<Context*>(p);++c.draws;for(const auto&q:b.packets)c.order.push_back(q.index());};
+ binding.iconEvidence=[](void*p,uint64_t)->std::shared_ptr<const BattleWeaponIconEvidence>{return static_cast<Context*>(p)->iconEvidence;};
  assert(ordered.bind(binding)&&ordered.begin(7));f.append=[&](BattleClassSurfacePacketPtr p){return ordered.appendClassSurface(7,std::move(p));};
  BattleFontGlyphPacket glyph;glyph.font=font.lease();glyph.matrix=Fixture::identity();glyph.quad.right=8;glyph.quad.bottom=20;glyph.quad.u1=8;glyph.quad.v1=20;glyph.quad.rgba=0x12345600;glyph.raster.viewport=glyph.raster.scissor={0,0,240,400};for(unsigned i=0;i<4;++i)glyph.raster.projection[i][i]=1;
  assert(ordered.reserveFont(7,glyph));assert(!f.circleOnce()&&f.provider->partial()&&f.packets.empty());const auto prefix=f.trace;assert(!f.circleOnce()&&f.trace==prefix);ordered.commitFont(7,glyph);f.reachIcon();assert(!ordered.seal(7));

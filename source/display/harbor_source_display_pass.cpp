@@ -358,6 +358,28 @@ bool HarborSourceDisplayPass::cameraMainCurrent(
          e.pass == state_->pass && state_->phase == State::Phase::Draw &&
          !state_->main.active && state_->main.index == SourceCameraCount;
 }
+std::shared_ptr<CameraManager> HarborSourceDisplayPass::cameraManager() const {
+  return state_ ? state_->binding.cameras : nullptr;
+}
+uint32_t HarborSourceDisplayPass::battleAddress() const { return state_ ? state_->binding.battle : 0; }
+uint64_t HarborSourceDisplayPass::generation() const { return state_ ? state_->binding.generation : 0; }
+bool HarborSourceDisplayPass::runtimeIs(const std::shared_ptr<const void>& runtime) const {
+  const auto actual = state_ ? state_->binding.runtime.lock() : nullptr;
+  return actual && runtime && actual.get() == runtime.get() &&
+      !actual.owner_before(runtime) && !runtime.owner_before(actual);
+}
+bool HarborSourceDisplayPass::acceptsInvocation(const HarborSourceDisplayInvocation& q) const {
+  if (!invoking_ || !current() || state_->phase != State::Phase::Draw) return false;
+  const auto& s = *state_;
+  const auto& d = s.draw.display;
+  const auto* record = s.queue.current();
+  return q.generation == s.binding.generation && q.pass == s.pass &&
+      &q.main == &s.main && &q.draw == &s.draw && &q.queue == &s.queue &&
+      d.active && d.invoking && record && q.camera == s.draw.index &&
+      q.camera == d.camera && q.camera == record->camera &&
+      q.callback == d.callback && q.callback == record->callback &&
+      q.battle == d.userdata && q.battle == record->userdata;
+}
 uint32_t HarborSourceDisplayPass::pending() const {
   return state_ ? state_->pending : 0;
 }

@@ -1515,3 +1515,13 @@ Original battle menu native resource/queue owners:
 - [Native original map hit construction](field/NATIVE_MAP_HIT_CONSTRUCTION.md): retained source hierarchy, packed quantization, triangle winding and explicit Distance estimate boundary.
 
 - [Frontend legacy Mario residency](display/FRONTEND_LEGACY_MARIO_RESIDENCY.md): retire the unused4MiB bank during Book/market and admit it for reached House/Arrival draws.
+| [Harbor actual source menu bindings](display/HARBOR_ACTUAL_SOURCE_MENU_BINDINGS.md) | Actual VM/UI/file/message owners, separate camera and W generations, public-runtime registration and genuine queued frame admission | Renderer source selection, original field camera receipt, all source registrations and native presentation |
+| [Harbor queued original menu Renderer consumer](display/HARBOR_QUEUED_RENDERER_MENU_CONSUMER.md) | Actual factory source selection, callback-only Class/Weapon Frames, held outer draw cadence and native-frame GPU admission | Actual source camera/GX producers, complete registrations, Icon/Target leaves and normal activation |
+- [Harbor queued weapon source icon admission](display/HARBOR_WEAPON_SOURCE_ICON_ADMISSION.md)
+[Original Harbor tutorial stage hierarchy assets](field/HARBOR_TUTORIAL_STAGE_HIERARCHY_ASSETS.md) document the matching editable foreground/base resources and remaining process binding.
+[Original weapon Icon packet resources](display/WEAPON_SOURCE_ICON_PACKETS.md) and
+[retained original Stage initialization](battle/RETAINED_STAGE_INITIALIZATION.md)
+retain explicit provider and process-ownership frontiers.
+
+| [Retained break-slot initialization](battle/RETAINED_BREAK_SLOT_INITIALIZATION.md) | Whole original cold initializer with retained private arrays and child calls |
+[Retained original Audience initialization](battle/RETAINED_AUDIENCE_INITIALIZATION.md) preserves actual Init/Setting child and private-frame ownership.

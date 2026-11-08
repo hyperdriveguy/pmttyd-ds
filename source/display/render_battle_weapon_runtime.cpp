@@ -12,6 +12,8 @@
 #include "battle_weapon_help.hpp"
 #include "battle_weapon_window_bridge.hpp"
 #include "battle_weapon_source_font.hpp"
+#include "battle_weapon_source_icon.hpp"
+#include "battle_weapon_icon_evidence.hpp"
 #include "battle_packed_pouch.hpp"
 namespace ttyd {
 // This concrete queued route preserves unbound native children as source waits.
@@ -22,6 +24,9 @@ struct Renderer::WeaponMenuBinding {
   std::shared_ptr<BattleWeaponSourceTextures>textures;
   std::shared_ptr<NativeUiStartup>startup;
   std::shared_ptr<const SourceGxInheritedSnapshot>fontOrdinary;
+  std::shared_ptr<NativeSourceIconProcess>iconSource;
+  std::shared_ptr<SourceGxInheritedState>iconHistory;
+
   BattleFontLease font;BattleClassSurfaceLease classes;BattleSubmenuSurfaceLease submenu;
   std::weak_ptr<WeaponMenuBinding>context;bool alive=true;mutable bool invalid=false,checking=false;
   // Reentrant proof queries return unavailable; observed actual owner or inherited
@@ -30,11 +35,14 @@ struct Renderer::WeaponMenuBinding {
    if(checking||invalid)return false;
    checking=true;struct Guard{bool&v;~Guard(){v=false;}}guard{checking};
    const bool ok=alive&&memory&&memory->current()&&font.current()&&classes.current()&&submenu.current()&&source.native.allocationCurrent&&source.native.allocationCurrent()&&source.native.sourceResourceCurrent&&source.native.sourceResourceCurrent();
-   if(!ok||(fontOrdinary&&!fontOrdinary->current()))invalid=true;
+   if(!ok){invalid=true;return false;}
+   // The actual public runtime/allocation guard precedes IconProcess VM reads.
+   if((iconSource&&!iconSource->current())||(iconHistory&&(!startup||startup->gxHistory()!=iconHistory))||(fontOrdinary&&!fontOrdinary->current()))invalid=true;
    return !invalid;
   }
  };
  Renderer*renderer=nullptr;const Game*game=nullptr;std::shared_ptr<Proof>proof;
+ std::shared_ptr<HarborSourceMenuFactory>harbor;
  std::shared_ptr<const uint8_t>battleOwner;
  BattleWeaponNativeFrame frame;std::unique_ptr<BattleWeaponNativeNumeric>numeric;
  std::shared_ptr<BattleWeaponOrderedPublication>ordered;
@@ -46,6 +54,9 @@ struct Renderer::WeaponMenuBinding {
  BattleWeaponCursor cursor;BattleWeaponHelpCursor help;
  BattleWindowSurfaceResource absentWindowSurface;std::unique_ptr<BattleWeaponWindowBridge>windowChild;
  std::unique_ptr<BattleWeaponSourceFont>fontChild;
+ std::unique_ptr<BattleWeaponSourceIcon>iconChild;
+ std::shared_ptr<BattleWeaponSourceIconPin>iconPin;
+ std::shared_ptr<BattleWeaponIconEvidence>iconEvidence;
  struct HelpText {std::weak_ptr<WeaponMenuBinding>context;const BattleWeaponHelpBytes*bytes=nullptr;uint32_t offset=0;};
  std::shared_ptr<HelpText>helpText;
  std::unique_ptr<BattleClassSurfacePacketProvider>classPackets;
@@ -65,7 +76,10 @@ struct Renderer::WeaponMenuBinding {
   const auto view=frame.camera()->view();if(!view)return false;
   // New-pass leaf contexts capture this camera once. Held begin/draw retries
   // reuse them; no new window/font/private-text owner replaces a source prefix.
-  pass=actualPass;sealed.reset();plan.reset();windowChild.reset();fontChild.reset();helpText.reset();
+  if(!iconEvidence||pass!=actualPass){
+   auto evidence=BattleWeaponIconEvidence::create(proof->iconHistory,WeaponMenuMixedPacketCapacity+1,proof,[p=proof]{return p->current();});if(!evidence)return false;iconEvidence=std::move(evidence);
+  }
+  pass=actualPass;sealed.reset();plan.reset();windowChild.reset();fontChild.reset();iconChild.reset();helpText.reset();
   BattleSubmenuCameraProof camera;camera.lifetime=proof;camera.user=proof.get();camera.generation=proof->source.native.generation;camera.pass=pass;camera.camera=8;
   camera.projection=view->matrices.projection;camera.viewport=view->viewport;
   for(unsigned i=0;i<4;++i)camera.scissor[i]=view->scissor[i];
@@ -98,6 +112,50 @@ struct Renderer::WeaponMenuBinding {
  // Original font entrypoints: DefaultStart77b4c, DrawColor777e0, Palette77844,
  // Scale77758, Width75528, Centered76a10, Matrix76cdc, Scalar773d0,
  // OutlineOff77aa8/On77ab4 (all addresses below have base 0x80000000).
+ // Native reservations, not original guest stack/object placement. Every
+ // intersecting VM/startup/camera/common-object span still has first refusal.
+ static constexpr uint32_t IconPrivateObjectAddress=0x60018020;
+ static constexpr uint32_t CommonPrivateObjectAddress=0x60018000;
+ static constexpr uint32_t TextureObjectBytes=32,VirtualCameraStride=0x400,VirtualCameraCount=13;
+ static constexpr size_t WeaponMenuMixedPacketCapacity=4096;
+ bool ensureIcon(){
+  if(!sourceCurrent()||!gx||!iconPin||!iconEvidence)return false;
+  if(iconChild)return iconChild->current();
+  const auto process=proof->startup?proof->startup->iconProcess():nullptr;
+  if(!process||!process->current())return false;
+  if(proof->iconSource&&proof->iconSource!=process)return false;
+  proof->iconSource=process;
+  const auto view=frame.camera()->view();if(!view)return false;
+  BattleWeaponSourceIconBinding b;b.textures.process=process;b.textures.lifetime=proof;
+  b.textures.privateAddress=IconPrivateObjectAddress;
+  b.textures.longCurrent=[p=proof]{return p->current();};
+  const std::weak_ptr<WeaponMenuBinding>weak=proof->context;
+  b.textures.sourceCurrent=[weak]{auto c=weak.lock();return c&&c->sourceCurrent();};
+  b.textures.unmapped=[p=proof](uint32_t a,uint32_t n){
+   if(!p->current()||!n||uint64_t(a)+n>0x100000000ULL||p->memory->owns(a,n)||!p->iconSource||p->iconSource->owns(a,n))return false;
+   const auto overlap=[a,n](uint32_t base,uint32_t bytes){return uint64_t(a)<uint64_t(base)+bytes&&uint64_t(base)<uint64_t(a)+n;};
+   return !overlap(p->source.native.addresses.base,VirtualCameraCount*VirtualCameraStride)&&!overlap(CommonPrivateObjectAddress,TextureObjectBytes);
+  };
+  b.textures.truncate=[weak](float v)->std::optional<int32_t>{auto c=weak.lock();return c?c->numeric->truncate(v):std::nullopt;};
+  b.camera.lifetime=proof;b.camera.user=proof.get();b.camera.generation=proof->source.native.generation;b.camera.pass=pass;b.camera.camera=8;
+  b.camera.projection=view->matrices.projection;b.camera.viewport=view->viewport;for(unsigned i=0;i<4;++i)b.camera.scissor[i]=view->scissor[i];
+  b.camera.current=[](void*p,const BattleSubmenuCameraProof&q){auto&f=*static_cast<Proof*>(p);return f.current()&&q.generation==f.source.native.generation&&q.camera==8;};
+  b.gx=gx;b.pin=iconPin;
+  b.word=[weak](uint32_t a)->std::optional<uint32_t>{auto c=weak.lock();return c?c->numeric->word(a):std::nullopt;};
+  b.half=[weak](uint32_t a)->std::optional<uint16_t>{auto c=weak.lock();return c&&c->sourceCurrent()?c->proof->memory->half(a):std::nullopt;};
+  b.cameraAddress=[weak](std::optional<uint32_t>i)->std::optional<uint32_t>{auto c=weak.lock();return c?c->numeric->camera(i):std::nullopt;};
+  b.matrix=[weak](BattleAudienceMatrixRequest&q){auto c=weak.lock();return c&&c->numeric->matrix(q);};
+  b.residency=[weak](uint32_t image)->std::optional<BattleEnemyHpIconResidency>{auto c=weak.lock();return c&&c->sourceCurrent()?c->renderer->enemyHpIconResidency(image):std::nullopt;};
+  b.append=[weak](const RetainedIconPacket&q){auto c=weak.lock();return c&&c->sourceCurrent()&&c->ordered->appendIcon(c->pass,q);};
+  b.retainOrdinary=[weak](std::shared_ptr<const SourceGxInheritedSnapshot>q){auto c=weak.lock();return c&&c->sourceCurrent()&&c->iconEvidence&&c->proof->startup&&c->proof->startup->gxHistory()==c->proof->iconHistory&&c->iconEvidence->retain(c->proof->iconHistory,std::move(q));};
+  iconChild=BattleWeaponSourceIcon::create(std::move(b));return bool(iconChild);
+ }
+ std::optional<uint32_t>iconRequest(uint32_t function,const std::vector<uint32_t>&integers,const std::vector<float>&reals,const std::optional<BattleActMatrix>&matrix){
+  const bool color=function==0x8001a4bc,plain=function==0x8001a6e0;
+  if((!color&&!plain)||integers.size()!=(color?3u:2u)||!reals.empty()||!matrix||!ensureIcon())return {};
+  BattleAudienceIconRequest request;request.function=function;request.flags=integers[0];request.icon=integers[1];request.matrix=*matrix;if(color)request.rgba=integers[2];
+  return iconChild->resumeMatrix(request)?std::optional<uint32_t>(0):std::nullopt;
+ }
  static bool fontFunction(uint32_t f){switch(f){case 0x80077b4c:case 0x800777e0:case 0x80077844:case 0x80077758:case 0x80075528:case 0x80076a10:case 0x80076cdc:case 0x800773d0:case 0x80077aa8:case 0x80077ab4:return true;default:return false;}}
  // Total source ABI facade: absent mapped reads/stores abort rather than
  // supplying zero/implicit success. Optional readiness uses the memory owner.
@@ -161,6 +219,7 @@ struct Renderer::WeaponMenuBinding {
  // direct GX/TEX calls still need their actual typed provider below.
  std::optional<uint32_t>subRasterCall(const BattleSubIconRasterCall&q){
   if(!sourceCurrent())return {};
+  if((q.function==0x8001a4bc||q.function==0x8001a6e0)&&!q.privateText)return iconRequest(q.function,q.integers,q.reals,q.matrix);
   if(fontFunction(q.function)){BattleWeaponSourceFontCall f;f.function=q.function;f.integers=q.integers;f.reals=q.reals;f.matrix=q.matrix;f.privateText=q.privateText;return fontRequest(f);}
   if(q.function==0x8000f2fc&&q.integers==std::vector<uint32_t>{8}&&q.reals.empty()&&!q.matrix&&!q.privateText){const auto n=numeric->raster();return n.request(n.user,{BattleClassRasterService::Camera,{8},{},{}});}
   if(q.function==0x80103a14&&q.integers.empty()&&q.reals.empty()&&!q.matrix&&!q.privateText)return resumeBattleSubmenuInit(submenuSource,submenuInit)?std::optional<uint32_t>(0):std::nullopt;
@@ -209,10 +268,10 @@ struct Renderer::WeaponMenuBinding {
   // Original DrawMainIcon80119abc; observable class order retains its own cursor.
   if(q.function==0x80119abc&&q.count==2&&q.output){
    BattleClassDrawContinuationServices s;s.raster=numeric->raster();s.raster.user=this;
-   s.raster.request=[](void*p,const BattleClassRasterRequest&r)->std::optional<uint32_t>{auto&c=*static_cast<WeaponMenuBinding*>(p);if(!c.sourceCurrent())return {};if(r.function==BattleClassRasterService::Camera){const auto n=c.numeric->raster();return n.request(n.user,r);}if(fontFunction(uint32_t(r.function))){BattleWeaponSourceFontCall f;f.function=uint32_t(r.function);f.integers=r.integers;f.reals=r.reals;f.matrix=r.matrix;return c.fontRequest(f);}return c.classRaster->request(r);};
+   s.raster.request=[](void*p,const BattleClassRasterRequest&r)->std::optional<uint32_t>{auto&c=*static_cast<WeaponMenuBinding*>(p);if(!c.sourceCurrent())return {};if(r.function==BattleClassRasterService::IconColor||r.function==BattleClassRasterService::Icon)return c.iconRequest(uint32_t(r.function),r.integers,r.reals,r.matrix);if(r.function==BattleClassRasterService::Camera){const auto n=c.numeric->raster();return n.request(n.user,r);}if(fontFunction(uint32_t(r.function))){BattleWeaponSourceFontCall f;f.function=uint32_t(r.function);f.integers=r.integers;f.reals=r.reals;f.matrix=r.matrix;return c.fontRequest(f);}return c.classRaster->request(r);};
    s.raster.truncate=[](void*p,float v){return static_cast<WeaponMenuBinding*>(p)->numeric->truncate(v);};s.raster.identity=[](void*p){return static_cast<WeaponMenuBinding*>(p)->numeric->identity();};
    // Actual source font children above own their retained globals/GX/glyphs.
-   // Missing icon children remain real source waits until their owner binds.
+   // Icon Matrix children below use the same genuine retained CPU/GX owner.
    return resumeBattleClassObservableDraw(q.arguments[0],q.arguments[1],q.output->classes,s,classes)?std::optional<uint32_t>(0):std::nullopt;
   }
   // Original SubIcon80119024 retains parent and raster child independently.
@@ -224,7 +283,7 @@ struct Renderer::WeaponMenuBinding {
   // Original weapon cursor80117a6c; icon services must still be genuinely bound.
   if(q.function==0x80117a6c&&q.count==0&&q.cursorWindow){
    BattleWeaponCursorServices s;s.actors=proof->source.native.actors;s.lifetime=proof;s.user=this;s.current=[](void*p){return static_cast<WeaponMenuBinding*>(p)->sourceCurrent();};s.interpolate=[](void*p,int32_t m,int32_t step,int32_t d,float a,float b){auto n=static_cast<WeaponMenuBinding*>(p)->numeric->draw();return n.interpolate(n.user,m,step,d,a,b);};s.fma=[](void*p,float a,float b,float d){return static_cast<WeaponMenuBinding*>(p)->numeric->fma(a,b,d);};
-   s.icons.user=this;s.icons.word=[](void*p,uint32_t a){return static_cast<WeaponMenuBinding*>(p)->numeric->word(a);};s.icons.half=[](void*p,uint32_t a){return static_cast<WeaponMenuBinding*>(p)->proof->memory->half(a);};s.icons.currentCamera=[](void*p){return static_cast<WeaponMenuBinding*>(p)->numeric->camera();};s.icons.matrix=[](void*p,BattleAudienceMatrixRequest&r){return static_cast<WeaponMenuBinding*>(p)->numeric->matrix(r);};
+   if(!ensureIcon())return {};s.icons=iconChild->matrixServices();
    return resumePackedBattleWeaponCursor(*q.cursorWindow,s,cursor)?std::optional<uint32_t>(0):std::nullopt;
   }
   // Original help80117c1c owns captured positions, text and window child order.
@@ -246,16 +305,20 @@ struct Renderer::WeaponMenuBinding {
   proof->textures=BattleWeaponSourceTextures::create(proof->source,proof->memory,0x60018000,[weak]{auto c=weak.lock();return c&&c->sourceCurrent();},[weak](float v)->std::optional<int32_t>{auto c=weak.lock();return c?c->numeric->truncate(v):std::nullopt;});
   if(!proof->textures)return false;
   const auto history=proof->startup?proof->startup->gxHistory():nullptr;if(!history)return false;
+  proof->iconHistory=history;
   gx=std::make_shared<SourceGxSetterRouting>(history,proof,[weak]{auto c=weak.lock();return c&&c->sourceCurrent();});
-  ordered=std::make_shared<BattleWeaponOrderedPublication>();BattleWeaponOrderedBinding b;b.allocationOwner=proof->source.native.allocationOwner;b.sourceResourceOwner=proof->source.native.sourceResourceOwner;b.resources=proof;b.allocation=proof->source.native.allocation;b.generation=proof->source.native.generation;b.capacity=4096;b.user=proof.get();b.font=&renderer->battleFontGpu;b.submenu=renderer->weaponMenuSurfaceResources();b.window=renderer->windowPrimitiveSurfaceResources();b.classes=&renderer->classSurfaceGpu->resource();
+  ordered=std::make_shared<BattleWeaponOrderedPublication>();BattleWeaponOrderedBinding b;b.allocationOwner=proof->source.native.allocationOwner;b.sourceResourceOwner=proof->source.native.sourceResourceOwner;b.resources=proof;b.allocation=proof->source.native.allocation;b.generation=proof->source.native.generation;b.capacity=WeaponMenuMixedPacketCapacity;b.user=proof.get();b.font=&renderer->battleFontGpu;b.submenu=renderer->weaponMenuSurfaceResources();b.window=renderer->windowPrimitiveSurfaceResources();b.classes=&renderer->classSurfaceGpu->resource();
   b.current=[](void*p,uint32_t a,uint64_t g){auto&f=*static_cast<Proof*>(p);return a==f.source.native.allocation&&g==f.source.native.generation&&f.current();};
   b.sourceCurrent=[](void*p,uint64_t pass){auto c=lock(p);return c&&c->pass==pass&&c->sourceCurrent();};b.sourceComplete=[](void*p,uint64_t pass){auto c=lock(p);return c&&c->frame.sourceComplete(pass);};
   b.icon=[](void*p,uint32_t image)->std::optional<BattleEnemyHpIconResidency>{auto c=lock(p);return c&&c->current()?c->renderer->enemyHpIconResidency(image):std::nullopt;};
   // Prepare one immutable native raster plan before the first GPU effect.
   // tryDraw false at the submission-phase gate preserves that same plan/batch.
   b.ready=[](void*p,const BattleWeaponOrderedBatch&q){auto c=lock(p);if(!c||!c->sourceCurrent()||c->sealed.get()!=&q)return false;if(!c->plan)c->plan=c->renderer->prepareWeaponOrderedRaster(c->sealed);return c->plan&&c->renderer->canDrawWeaponOrderedRaster(*c->plan);};
-  b.tryDraw=[](void*p,const BattleWeaponOrderedBatch&q){auto c=lock(p);if(!c||!c->sourceCurrent()||c->sealed.get()!=&q||!c->plan)return false;if(!c->renderer->weaponMenuSubmitReady){c->renderer->weaponMenuSubmissionWaiting=true;return false;}return c->renderer->submitWeaponOrderedRaster(*c->plan);};
+  b.tryDraw=[](void*p,const BattleWeaponOrderedBatch&q){auto c=lock(p);if(!c||(c->harbor&&!c->renderer->harborSourceFrameActive)||!c->sourceCurrent()||c->sealed.get()!=&q||!c->plan)return false;if(!c->renderer->weaponMenuSubmitReady){c->renderer->weaponMenuSubmissionWaiting=true;return false;}return c->renderer->submitWeaponOrderedRaster(*c->plan);};
+  b.iconEvidence=[](void*p,uint64_t pass)->std::shared_ptr<const BattleWeaponIconEvidence>{auto c=lock(p);return c&&c->current()&&c->pass==pass?c->iconEvidence:nullptr;};
   if(!ordered->bind(b))return false;
+  iconPin=std::make_shared<BattleWeaponSourceIconPin>(ordered,proof,[p=proof]{return p->current();});
+  if(!renderer->weaponSourceIconPins.attach(iconPin))return false;
   auto s=numeric->weapon();s.user=this;s.current=[](void*p){return static_cast<WeaponMenuBinding*>(p)->sourceCurrent();};s.request=[](void*p,const BattleWeaponDrawRequest&q){return static_cast<WeaponMenuBinding*>(p)->child(q);};s.truncate=[](void*p,float v){return static_cast<WeaponMenuBinding*>(p)->numeric->truncate(v);};s.fma=[](void*p,float a,float b,float d){return static_cast<WeaponMenuBinding*>(p)->numeric->fma(a,b,d);};s.identity=[](void*p){return static_cast<WeaponMenuBinding*>(p)->numeric->identity();};
   auto submit=ordered->submission();submit.user=proof.get();submit.begin=[](void*p,uint64_t pass){auto c=lock(p);return c&&c->begin(pass);};submit.seal=[](void*p,uint64_t pass)->std::shared_ptr<const void>{auto c=lock(p);if(!c)return {};c->sealed=c->ordered->seal(pass);return c->sealed;};submit.submit=[](void*p,uint64_t pass,const std::shared_ptr<const void>&batch){auto c=lock(p);return c&&c->sealed&&batch.get()==c->sealed.get()&&!batch.owner_before(c->sealed)&&!c->sealed.owner_before(batch)&&c->ordered->submit(pass,c->sealed);};submit.current=[](void*p,const std::shared_ptr<const void>&batch){auto c=lock(p);return c&&c->sealed&&batch.get()==c->sealed.get()&&!batch.owner_before(c->sealed)&&!c->sealed.owner_before(batch)&&c->ordered->validate(c->sealed);};
   return frame.bind(proof->source.native,self,s,submit);
@@ -264,22 +327,33 @@ struct Renderer::WeaponMenuBinding {
 // Pending work under the same allocation cannot be silently rebuilt. A released
 // pending incarnation is remembered and rejected until a fresh allocation token.
 bool Renderer::prepareWeaponMenuFrame(const Game&game){
- const auto source=game.trioAttack.weaponMenuFrameBinding({});
- if(weaponMenuBinding&&weaponMenuBinding->game==&game){
-  if(game.trioBattleActive&&weaponMenuBinding->current())return true;
-  if(weaponMenuBinding->pending&&(!source||source->native.allocationOwner==weaponMenuBinding->proof->source.native.allocationOwner))return false;
+ const bool isHarbor=!game.trioBattleActive&&game.harborTutorial.running();
+ const auto factory=isHarbor?game.harborTutorial.sourceMenuFactory():nullptr;
+ const auto source=factory?factory->weaponBinding({}):game.trioAttack.weaponMenuFrameBinding({});
+ if(weaponMenuBinding&&weaponMenuBinding->game==&game&&weaponMenuBinding->harbor==factory){
+  if((game.trioBattleActive||factory)&&weaponMenuBinding->current()){
+   if(weaponMenuBinding->iconChild)if(const auto image=weaponMenuBinding->iconChild->pendingImage())if(!prepareSourceIconImage(*image,weaponMenuBinding->iconPin))return false;
+   return true;
+  }
+  if(weaponMenuBinding->pending&&(factory||!source||source->native.allocationOwner==weaponMenuBinding->proof->source.native.allocationOwner))return false;
  }
  releaseWeaponMenuFrame();
- if(!game.trioBattleActive||!source||weaponMenuAbandonedAllocation==source->native.allocationOwner)return false;
+ if((!game.trioBattleActive&&!factory)||!source||weaponMenuAbandonedAllocation==source->native.allocationOwner)return false;
  weaponMenuAbandonedAllocation.reset();
  const auto startup=game.nativeUiStartup();if(!startup)return false;
+ if(startup->windowReady()&&!prepareWindowPrimitiveSurface())return false;
  if(!prepareClassMenuDrawing()||!prepareWeaponMenuSurfaces())return false;
  const auto classes=classMenuSurfaceLease();const auto submenu=weaponMenuSurfaceLease();const auto font=battleFontLease();if(!classes||!submenu||!font.current())return false;
- const auto memory=game.trioAttack.weaponMenuSourceMemory(startup,"romfs:/source-ui-startup/memory.pmevt");if(!memory)return false;
- auto c=std::make_shared<WeaponMenuBinding>();c->renderer=this;c->game=&game;c->proof=std::make_shared<WeaponMenuBinding::Proof>();c->proof->source=*source;c->proof->memory=memory;c->proof->startup=startup;c->proof->font=font;c->proof->classes=*classes;c->proof->submenu=*submenu;c->battleOwner=game.trioAttack.enemyHpAllocationOwner();
+ const auto memory=factory?factory->weaponMemory(startup,"romfs:/source-ui-startup/memory.pmevt"):game.trioAttack.weaponMenuSourceMemory(startup,"romfs:/source-ui-startup/memory.pmevt");if(!memory)return false;
+ auto c=std::make_shared<WeaponMenuBinding>();c->renderer=this;c->game=&game;c->proof=std::make_shared<WeaponMenuBinding::Proof>();c->proof->source=*source;c->proof->memory=memory;c->proof->startup=startup;c->proof->font=font;c->proof->classes=*classes;c->proof->submenu=*submenu;c->harbor=factory;c->battleOwner=factory?source->native.allocationOwner:game.trioAttack.enemyHpAllocationOwner();
  if(!c->current()||!c->initialize(c))return false;
  weaponMenuBinding=std::move(c);return true;
 }
-void Renderer::releaseWeaponMenuFrame(){if(!weaponMenuBinding)return;auto old=std::move(weaponMenuBinding);if(old->pending)weaponMenuAbandonedAllocation=old->proof->source.native.allocationOwner;old->alive=false;old->proof->alive=false;if(old->ordered)old->ordered->retire();old->frame.retire();}
-bool Renderer::resumeWeaponMenu(const Game&game,uint32_t camera,uint32_t userdata){const auto c=weaponMenuBinding;if(!c||c->game!=&game||camera!=8||!c->current())return false;c->pending=true;const bool complete=game.trioAttack.resumeWeaponMenuFrame(camera,userdata,c->frame);if(complete){c->completedPass=c->pass;c->pending=false;}return complete;}
+void Renderer::releaseWeaponMenuFrame(){if(!weaponMenuBinding)return;auto old=std::move(weaponMenuBinding);if(old->pending)weaponMenuAbandonedAllocation=old->proof->source.native.allocationOwner;old->alive=false;old->proof->alive=false;if(old->iconPin)old->iconPin->retire();if(old->ordered)old->ordered->retire();old->frame.retire();}
+bool Renderer::resumeWeaponMenu(const Game&game,uint32_t camera,uint32_t userdata){const auto c=weaponMenuBinding;if(!c||c->harbor||c->game!=&game||camera!=8||!c->current())return false;c->pending=true;const bool complete=game.trioAttack.resumeWeaponMenuFrame(camera,userdata,c->frame);if(complete){c->completedPass=c->pass;c->pending=false;}return complete;}
+bool Renderer::resumeHarborWeaponMenu(const Game&game,const HarborSourceDisplayInvocation&q){
+ const auto c=weaponMenuBinding;const auto factory=game.harborTutorial.sourceMenuFactory();
+ if(!harborSourceFrameActive||game.trioBattleActive||!c||!factory||c->harbor!=factory||c->game!=&game||!c->current())return false;
+ c->pending=true;const bool done=factory->resumeWeapon(q,c->frame);if(done){c->completedPass=c->pass;c->pending=false;}return done;
+}
 }

@@ -1,4 +1,5 @@
 #include "battle_weapon_ordered_publication.hpp"
+#include "battle_weapon_icon_evidence.hpp"
 #include <algorithm>
 #include <cstdlib>
 #include <cmath>
@@ -63,7 +64,7 @@ bool BattleWeaponOrderedPublication::begin(uint64_t pass){
  if(pass_==pass)return !sealed_;
  if(pass<=lastPass_||pending_||(pass_&&!submitted_))return false;
  if(!binding_.sourceCurrent(binding_.user,pass)||!live())return false;
- pass_=lastPass_=pass;submitted_=false;sealed_.reset();building_.clear();return true;
+ pass_=lastPass_=pass;submitted_=false;sealed_.reset();building_.clear();iconEvidence_.reset();return true;
 }
 // Reserve before the glyph kernel's two RNG calls. A pending reservation
 // permits only bit-identical retry and blocks every sibling append/seal.
@@ -108,15 +109,19 @@ bool BattleWeaponOrderedPublication::appendIcon(uint64_t pass,const RetainedIcon
  if(!enter())return false;
  Guard guard{*this};
  if(!source(pass)||sealed_||pending_||building_.size()>=binding_.capacity||!iconGeometry(p))return false;
+ const auto evidence=binding_.iconEvidence?binding_.iconEvidence(binding_.user,pass):nullptr;
+ if(!evidence||!evidence->size()||!evidence->current()||!source(pass))return false;
+ if(iconEvidence_&&(evidence!=iconEvidence_||evidence.owner_before(iconEvidence_)||iconEvidence_.owner_before(evidence)))return false;
  const auto r=binding_.icon(binding_.user,p.image);
  if(!r||r->image!=p.image||!validBattleEnemyHpIconResidency(*r)||!source(pass))return false;
- building_.emplace_back(BattleEnemyHpIconPacket{p,*r});return true;
+ if(!evidence->current()||!source(pass))return false;
+ building_.emplace_back(BattleEnemyHpIconPacket{p,*r});iconEvidence_=evidence;return true;
 }
 bool BattleWeaponOrderedPublication::preflight(const std::vector<BattleWeaponOrderedPacket>&packets){
  for(const auto&q:packets){
   if(const auto*p=std::get_if<BattleFontGlyphPacket>(&q)){if(!binding_.font->accepts(p->font)||!validBattleFontGlyphPacket(*p))return false;}
   else if(const auto*p=std::get_if<BattleSubmenuPacketPtr>(&q)){if(!*p||!validateBattleSubmenuPacket(**p,*binding_.submenu)||!submenuGeometry(**p))return false;}
-  else if(const auto*icon=std::get_if<BattleEnemyHpIconPacket>(&q)){if(!iconGeometry(icon->packet)||!validBattleEnemyHpIconResidency(icon->residency))return false;const auto r=binding_.icon(binding_.user,icon->packet.image);if(!r||!same(*r,icon->residency))return false;}
+  else if(const auto*icon=std::get_if<BattleEnemyHpIconPacket>(&q)){if(!iconEvidence_||!iconEvidence_->size()||!iconEvidence_->current()||!iconGeometry(icon->packet)||!validBattleEnemyHpIconResidency(icon->residency))return false;const auto r=binding_.icon(binding_.user,icon->packet.image);if(!r||!same(*r,icon->residency))return false;}
   else if(const auto*cp=std::get_if<BattleClassSurfacePacketPtr>(&q)){if(!*cp||!binding_.classes||(*cp)->camera.pass!=pass_||(*cp)->camera.generation!=binding_.generation||!validateBattleClassSurfacePacket(**cp,*binding_.classes))return false;}
   else {const auto&p=std::get<BattleWindowPacketPtr>(q);if(!p||!binding_.window||p->camera.pass!=pass_||p->camera.generation!=binding_.generation||!validateBattleWindowPacket(*p,*binding_.window))return false;}
   if(!live())return false;
@@ -131,7 +136,7 @@ std::shared_ptr<const BattleWeaponOrderedBatch> BattleWeaponOrderedPublication::
  if(!source(pass)||pending_)return {};
  if(sealed_)return sealed_;
  if(!binding_.sourceComplete(binding_.user,pass)||!source(pass)||!preflight(building_))return {};
- auto p=std::make_shared<BattleWeaponOrderedBatch>();p->allocationOwner=binding_.allocationOwner;p->sourceResourceOwner=binding_.sourceResourceOwner;p->allocation=binding_.allocation;p->generation=binding_.generation;p->pass=pass;p->packets=building_;sealed_=p;return sealed_;
+ auto p=std::make_shared<BattleWeaponOrderedBatch>();p->allocationOwner=binding_.allocationOwner;p->sourceResourceOwner=binding_.sourceResourceOwner;p->allocation=binding_.allocation;p->generation=binding_.generation;p->pass=pass;p->packets=building_;p->iconEvidence=iconEvidence_;sealed_=p;return sealed_;
 }
 // Reject both copied structs and same-address aliases with unrelated ownership.
 bool BattleWeaponOrderedPublication::validate(const std::shared_ptr<const BattleWeaponOrderedBatch>&p){

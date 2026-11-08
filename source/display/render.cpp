@@ -1631,7 +1631,9 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
     // Frame-local cursors reset to0 AFTER the synchronization boundary;borrowed
     // GPU buffers below persist as allocations,not independent frame copies.
     if(g.harborTutorial.running() || g.trioBattleActive)prepareAudienceDrawing();
+    harborSourceFrameActive=false;
     if(!C3D_FrameBegin(C3D_FRAME_SYNCDRAW))return;
+    harborSourceFrameActive=true;
     trioScenePrepared=false;
     classVertexCount=0;classMenuSubmitReady=false;classMenuSubmissionWaiting=false;
     weaponMenuSubmitReady=false;weaponMenuSubmissionWaiting=false;
@@ -1641,7 +1643,7 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
     messageIndicatorCount=0;
     const bool battle=g.scene==Scene::Battle || g.scene==Scene::Victory || g.scene==Scene::Defeat;
     C3D_RenderTargetClear(top,C3D_CLEAR_ALL,battle?0xA6CBD8FF:0,0);
-    if(C3D_FrameDrawOn(top))resumeFinishingCamera(g);
+    if(C3D_FrameDrawOn(top)){resumeFinishingCamera(g);resumeHarborSourceCamera(g);}
     // The independent world adapter establishes its own state; the queued
     // source pass restores its retained backend state at next frame admission.
     C3D_SetViewport(0,0,240,400);C3D_SetScissor(GPU_SCISSOR_DISABLE,0,0,240,400);C3D_DepthMap(true,-1,0);
@@ -1654,7 +1656,7 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
     // GPU submission. Complete that SAME callback after the independent world
     // adapter and original HP layer, before advancing the source display queue.
     classMenuSubmitReady=true;weaponMenuSubmitReady=true;
-    if((classMenuSubmissionWaiting||weaponMenuSubmissionWaiting)&&C3D_FrameDrawOn(top))resumeFinishingCamera(g);
+    if((classMenuSubmissionWaiting||weaponMenuSubmissionWaiting)&&C3D_FrameDrawOn(top)){resumeFinishingCamera(g);resumeHarborSourceCamera(g);}
     if(!g.trioBattleActive)drawFieldItemGet(g);
     C2D_Prepare();C2D_SceneBegin(top);overlay(g);
     if(!battleMapsReady)text(actorTexturesReady?"Development notice: battle map unavailable":"Development notice: scene actor texture unavailable",16,220,.42f,Ink);
@@ -1691,6 +1693,7 @@ void Renderer::render(const Game& g,const Metrics& m,const char* notice,bool aud
         text("Development notice: field restoration pending",12,76,.42f,rgb(255,255,255));
     }
     C2D_Flush();
+    harborSourceFrameActive=false;
     C3D_FrameEnd(0);
 }
 // Cleanup accepts partial init. Specialized release owners and GPU sync run

@@ -1,6 +1,7 @@
 #pragma once
 #include "native_battle_status.hpp"
 #include "battle_class_display.hpp"
+#include "harbor_source_menu_factory.hpp"
 #include <functional>
 #include "message_playback.hpp"
 #include "battle_defense.hpp"
@@ -44,6 +45,7 @@ struct HarborTutorialClassRow {
 };
 struct ProloguePouch;
 struct HarborTutorialRuntime;
+struct HarborSourceMenuRegistration;
 class DisplayQueue;
 struct BattleCommandPalette;
 struct BattleFooterCursor;
@@ -126,6 +128,12 @@ public:
     // cursor across waits, once per simulation display pass, and dispatches all
     // registered callbacks through the camera owner. No draw/ack/input occurs.
     bool registerCommandDisplay(DisplayQueue&,BattleFooterCursor&);
+    // Bind once to this actual runtime; no receipt or camera mode is manufactured.
+    bool setHarborSourceDisplayPass(std::shared_ptr<HarborSourceDisplayPass>);
+    std::shared_ptr<HarborSourceMenuFactory> sourceMenuFactory() const;
+    std::optional<TrioClassMenuFrameBinding> classMenuFrameBinding(const BattleActDrawServices&) const;
+    std::optional<TrioWeaponMenuFrameBinding> weaponMenuFrameBinding(const BattleWeaponDrawServices&) const;
+    std::shared_ptr<BattleWeaponSourceMemory> weaponMenuSourceMemory(std::shared_ptr<NativeUiStartup>,const char* image) const;
     // Borrowed actual-VM lifecycle metadata; unknown births remain unknown.
     // Keep this scene alive and still prove current scene/display/visibility
     // before using an identity. This getter does not initialize an audience.
@@ -160,10 +168,14 @@ public:
     bool prepareAudienceDrawing(const BattleAudienceDrawServices&) const;
     bool running() const{return triggered;}
 private:
+    friend struct HarborSourceMenuFactoryFixture;
     uint32_t dispatchHit(int32_t,uint32_t,uint32_t,bool direct);
     bool beginWithContext(uint64_t,int32_t,int32_t,bool freshPouch,int32_t originalStory,const ProloguePouch* entry=nullptr);
     // Shared because held draw bindings can keep the VM/cache alive. Such a
     // binding must still validate current UI ownership before each dispatch.
     std::shared_ptr<HarborTutorialRuntime> runtime_;
+    // Copies share one actual-runtime registration; a new begin gives only
+    // that facade a fresh slot. The slot never pins the VM it identifies.
+    mutable std::shared_ptr<HarborSourceMenuRegistration> sourceMenuRegistration_;
 };
 }

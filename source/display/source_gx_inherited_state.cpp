@@ -141,5 +141,9 @@ std::shared_ptr<const SourceGxInheritedSnapshot>SourceGxInheritedState::capture(
  return out;
 }
 void SourceGxInheritedState::retire(){if(state_)state_->life->alive=false;}
+bool SourceGxInheritedState::ownsSnapshot(const std::shared_ptr<const SourceGxInheritedSnapshot>&snapshot)const{
+ if(!snapshot||!state_||snapshot->lifetime_!=state_->life)return false;
+ return current()&&snapshot->current();
+}
 bool SourceGxInheritedSnapshot::current()const{return lifetime_&&lifetime_->valid();}
 }

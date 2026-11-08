@@ -8,6 +8,7 @@ namespace ttyd {
 struct Renderer::ClassMenuBinding {
   Renderer* renderer=nullptr;const Game* game=nullptr;
   TrioClassMenuFrameBinding source;
+  std::shared_ptr<HarborSourceMenuFactory> harbor;
   std::shared_ptr<const uint8_t> battleOwner,footerGeneration;
   BattleClassSurfaceLease surface;
   const BattleClassFooterGpuResource* footerResource=nullptr;
@@ -62,23 +63,25 @@ struct Renderer::ClassMenuBinding {
   }
 };
 bool Renderer::prepareClassMenuFrame(const Game& game){
-  if(!game.trioBattleActive){releaseClassMenuFrame();return false;}
-  if(classMenuBinding&&classMenuBinding->game==&game){
+  const bool harbor=!game.trioBattleActive&&game.harborTutorial.running();
+  const auto factory=harbor?game.harborTutorial.sourceMenuFactory():nullptr;
+  if(!game.trioBattleActive&&!factory){releaseClassMenuFrame();return false;}
+  if(classMenuBinding&&classMenuBinding->game==&game&&classMenuBinding->harbor==factory){
     if(classMenuBinding->current())return true;
     // A suspended source invocation may not restart its prefix under a new UI
     // or texture allocation. Only actual VM retirement cancels this context.
     // While the same battle incarnation survives, retain this pending attempt;
     // rebuilding with fresh resources would restart accepted source prefixes.
-    if(classMenuBinding->sourcePending&&classMenuBinding->battleOwner==game.trioAttack.enemyHpAllocationOwner())return false;
+    if(classMenuBinding->sourcePending&&(factory?classMenuBinding->harbor==factory:classMenuBinding->battleOwner==game.trioAttack.enemyHpAllocationOwner()))return false;
   }
   releaseClassMenuFrame();
-  const auto source=game.trioAttack.classMenuFrameBinding({});
+  const auto source=factory?factory->classBinding({}):game.trioAttack.classMenuFrameBinding({});
   if(!source)return false;
   if(!prepareClassMenuDrawing()||!fontTexture.imported||!messageIconTexture.imported)return false;
   const auto surface=classMenuSurfaceLease();const auto* footer=classFooterResources();
   if(!surface||!surface->current()||!footer||!footer->ready()||harborMessageFont().glyphs.empty())return false;
   auto candidate=std::make_shared<ClassMenuBinding>();candidate->renderer=this;candidate->game=&game;
-  candidate->source=*source;candidate->battleOwner=game.trioAttack.enemyHpAllocationOwner();
+  candidate->source=*source;candidate->harbor=factory;candidate->battleOwner=factory?source->native.allocationOwner:game.trioAttack.enemyHpAllocationOwner();
   candidate->surface=*surface;candidate->footerResource=footer;candidate->footerGeneration=footer->generation();
   candidate->fontTexture=fontTexture.imported;candidate->iconTexture=messageIconTexture.imported;
   candidate->font=battleFontLease();
@@ -94,7 +97,7 @@ void Renderer::releaseClassMenuFrame(){
 }
 bool Renderer::resumeClassMenu(const Game& game,uint32_t camera,uint32_t userdata){
   const auto context=classMenuBinding;
-  if(!context||context->game!=&game||!context->current()||camera!=8)return false;
+  if(!context||context->harbor||context->game!=&game||!context->current()||camera!=8)return false;
   // Pin the simulation tick and original icon frame copies for one retained
   // attempt, including source/GPU holds; rendering frames do not advance them.
   if(!context->sourcePending){context->sourceTick=game.ticks;context->iconFrames.clear();context->sourcePending=true;}
@@ -109,5 +112,12 @@ bool Renderer::resumeClassMenu(const Game& game,uint32_t camera,uint32_t userdat
   const bool completed=game.trioAttack.resumeClassMenuFrame(camera,userdata,context->frame,submission);
   if(completed)context->sourcePending=false;
   return completed;
+}
+bool Renderer::resumeHarborClassMenu(const Game&game,const HarborSourceDisplayInvocation&q){
+  const auto context=classMenuBinding;const auto factory=game.harborTutorial.sourceMenuFactory();
+  if(!harborSourceFrameActive||game.trioBattleActive||!context||!factory||context->harbor!=factory||context->game!=&game||!context->current())return false;
+  if(!context->sourcePending){context->sourceTick=game.ticks;context->iconFrames.clear();context->sourcePending=true;}
+  BattleClassNativeSubmission submission{context.get(),[](void*p,const BattleClassBackend&batch){auto&c=*static_cast<ClassMenuBinding*>(p);if(!c.current()||!c.renderer->harborSourceFrameActive)return false;if(!c.renderer->classMenuSubmitReady){c.renderer->classMenuSubmissionWaiting=true;return false;}return c.renderer->drawClassMenu(batch);}};
+  const bool done=factory->resumeClass(q,context->frame,submission);if(done)context->sourcePending=false;return done;
 }
 }

@@ -82,6 +82,9 @@ public:
  std::optional<uint32_t> sourceCommandEvaluationChild(const BattleWeaponEvaluationRequest&);
  bool selectWeapon(unsigned row,HarborTutorial&,void* messageUser,uint32_t(*message)(void*,uint32_t));
  uint32_t cacheMenuLabel(uint32_t key,const char* originalText);
+ std::optional<uint32_t> cachedMenuLabelAddress(uint32_t key) const {
+  const auto at=menuText.find(key);return at==menuText.end()?std::nullopt:std::optional<uint32_t>(at->second);
+ }
  uint32_t runHitEvent(int32_t id,uint32_t code);
  uint32_t runHitEventDirect(int32_t id,uint32_t code,uint32_t script);
  bool hitEventsActive();

@@ -2,6 +2,20 @@
   "schema": 1,
   "assets": [
     {
+      "id": "original/harbor-tutorial-stg_00_0.mapobj",
+      "kind": "stage-hierarchy",
+      "source": "assets/original/tutorial-stage/stg_00_0-hierarchy.json",
+      "output": "harbor-tutorial-stg_00_0.mapobj",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/harbor-tutorial-bti_01.mapobj",
+      "kind": "stage-hierarchy",
+      "source": "assets/original/tutorial-stage/base/bti_01-hierarchy.json",
+      "output": "harbor-tutorial-bti_01.mapobj",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
       "id": "original/effects/fukidashi-position",
       "kind": "event",
       "source": "assets/original/effects/fukidashi/position/event.json",

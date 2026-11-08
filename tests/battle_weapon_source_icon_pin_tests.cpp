@@ -1,5 +1,6 @@
 #include <memory>
 #include "battle_weapon_source_icon_pin.hpp"
+#include "battle_weapon_icon_evidence.hpp"
 #include <cassert>
 #include <chrono>
 #include <cstdio>
@@ -12,15 +13,24 @@
 #include "source_palette_texture_object.hpp"
 using namespace ttyd;
 namespace {
+// Explicit TEST process owner. Real cold/history capture executes; this is not
+// a receipt for native GXInit or the normal source scheduler.
+std::shared_ptr<SourceGxInheritedState> testHistory(std::shared_ptr<const void> process){
+ auto h=std::make_shared<SourceGxInheritedState>();SourceGxInheritedBinding b;b.process=std::move(process);b.current=[](void*){return true;};b.coldCurrent=b.current;assert(h->bind(b)&&h->initializeCold());return h;
+}
+std::shared_ptr<BattleWeaponIconEvidence> testEvidence(const std::shared_ptr<SourceGxInheritedState>&h,std::shared_ptr<const void> process){
+ auto e=BattleWeaponIconEvidence::create(h,4097,std::move(process),[]{return true;});assert(e&&e->retain(h,h->capture()));return e;
+}
 struct Fixture {
  BattleWeaponOrderedPublication owner;BattleFontGpuResource font;BattleSubmenuSurfaceGpuResource submenu;
  std::shared_ptr<const uint8_t> allocation=std::make_shared<const uint8_t>(1);
  std::shared_ptr<const void> resources=std::make_shared<const int>(2);
  std::shared_ptr<const uint8_t> iconGeneration=std::make_shared<const uint8_t>(3);
+ std::shared_ptr<SourceGxInheritedState> history;std::shared_ptr<BattleWeaponIconEvidence> evidence;
  std::filesystem::path dir;
  bool alive=true,executing=true,complete=false,ready=false,iconAvailable=true,reenter=false,retireOnReady=false;
  unsigned draws=0;std::vector<size_t> order;
- Fixture(){
+ Fixture(){history=testHistory(resources);evidence=testEvidence(history,resources);
   MessageFont original;assert(original.load("romfs/font.pmfont"));assert(font.adopt(original,{this,512,256,0,1,512,256,false,{0,1,1,0}}));
   dir=std::filesystem::temp_directory_path()/("pm-weapon-ordered-"+std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));std::filesystem::create_directory(dir);
   FILE*f=std::fopen((dir/"battle-submenu-surfaces.bin").c_str(),"wb");assert(f);uint32_t count=2;std::fwrite("PMBSUB01",8,1,f);std::fwrite(&count,4,1,f);
@@ -34,6 +44,7 @@ struct Fixture {
   b.sourceCurrent=[](void*p,uint64_t pass){return static_cast<Fixture*>(p)->executing&&(pass==1||pass==2);};
   b.sourceComplete=[](void*p,uint64_t){return static_cast<Fixture*>(p)->complete;};
   b.icon=[](void*p,uint32_t image)->std::optional<BattleEnemyHpIconResidency>{auto&f=*static_cast<Fixture*>(p);if(f.reenter){assert(!f.owner.begin(1));assert(!f.owner.appendIcon(1,f.icon()));assert(!f.owner.seal(1));}if(!f.iconAvailable)return {};return BattleEnemyHpIconResidency{p,f.iconGeneration,image,16,20,32,32,0};};
+  b.iconEvidence=[](void*p,uint64_t)->std::shared_ptr<const BattleWeaponIconEvidence>{return static_cast<Fixture*>(p)->evidence;};
   b.ready=[](void*p,const BattleWeaponOrderedBatch&){auto&f=*static_cast<Fixture*>(p);if(f.retireOnReady)f.owner.retire();return f.ready;};
   b.draw=[](void*p,const BattleWeaponOrderedBatch&batch){auto&f=*static_cast<Fixture*>(p);++f.draws;for(const auto&q:batch.packets)f.order.push_back(q.index());};return b;
  }
