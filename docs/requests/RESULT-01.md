@@ -226,3 +226,13 @@ without writes. No new source-body request is needed for this documented export
 leaf. Real ending/reward/presentation/audio coordination, sealed field return,
 source wait/afterbattle and original playthrough remain open; this partial
 resource handoff does not close RESULT-01.
+
+2026-11-08 native implementation breadcrumb: actual Renderer presentation
+retirement now retains an independent current-facade/runtime barrier across
+held completion. Normal frames skip combat preparation and submit black target
+clears; copied/foreign owners and in-frame retirement reject. This closes a
+native resource-recreation hazard and adds no original source-body claim.
+Current source public-sound slots remain pending/engine-1; after real NDSP
+retirement their original Off path needs no invented backend adapter. Active
+unsupported engines still hold. Real field resource reload/admission, completion
+composition, sealed ticket return and original wait/afterbattle remain OPEN.

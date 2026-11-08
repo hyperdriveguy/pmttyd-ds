@@ -20857,8 +20857,23 @@ was added. This does not supply a finishing receipt or field reload.
 Focused actual-adapter test passes with real Harbor facade/runtime and a TEST
 GPU boundary, including foreign control blocks, copied facades, active-frame
 rejection, resource holds, both target clears, failed FrameBegin/target and
-same-address replacement. Independent review and full make test/make all are
-pending. No new emulator capture or hardware measurement.
+same-address replacement. A second genuinely admitted live Game also cannot
+overwrite a still-current retirement barrier; rejection precedes GPU sync/free.
+Independent reviews found no material issue, and all existing finishing/fade
+package integration anchors still apply once.
+
+Full frozen validation passes for committed 8ee6820a:
+make test0, 674/674 C++ in 108.9s, 283 Python in 39.925s;
+make all0 with SOUNDTRACK=gamecube. Exact source archive/hash checks pin
+5255 files, no extra implementation inputs and the unchanged 2265-file
+original pack previously compiled through 482 editable recipes. Native3DSX
+SHA256 b0e86b0fe806a3b1be5038e3274592cac60d8399d578ff57b591efe073ea82c5.
+Receipt: artifacts/harbor-native-return-services/accepted/validation-manifest.json,
+with static source archive, binaries, logs, audits and reviews. The earlier631ae49a
+full checks also passed and remain under first-accepted. This receipt covers the
+immutable committed source, excluding preserved concurrent WIP. Existing
+compiler/Pillow warnings remain. No new emulator capture, native pixel receipt
+or hardware measurement; the focused GPU boundary is TEST-only.
 Next: retain actual completion after genuine finishing/both-screen admission,
 retire audio, commit the canonical pouch and admit real same-room field
 resources/ticket return without resetting Game. Original wait/afterbattle and

@@ -186,3 +186,9 @@ presentation before allowing field rendering. Game/Harbor replacement is not a
 field-return shortcut. Focused tests execute the actual retirement adapter with
 real admitted Harbor facade/runtime and a TEST GPU boundary; no hardware or
 pixel claim follows from that fixture.
+
+A still-current retirement barrier also participates in preflight: another
+genuinely admitted live facade/runtime cannot overwrite it after the other GPU
+owners have already been freed. Rejection precedes synchronization or resource
+changes. Assignment/move/destruction retires the old immutable facade proof,
+so a new incarnation can acquire its own barrier after normal admission.

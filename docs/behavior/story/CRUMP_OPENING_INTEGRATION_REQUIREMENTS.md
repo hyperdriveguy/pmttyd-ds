@@ -348,3 +348,10 @@ its own proofs: freezing ending access and retiring the reward model must not
 cause a held completion to depend again on the retired presentation guard.
 Original wait/Post/afterbattle execution, crowd/effect/audio presentation and
 fresh/resumed into-and-out-of-battle acceptance remain required for CO-08..10.
+
+Durable [native presentation retirement](../battle/NATIVE_HARBOR_COMPLETION_POLICY.md#presentation-retirement-across-held-completion-2026-11-08)
+is now available for CO-07: held completion no longer allows normal rendering
+to re-import combat resources. The exact runtime/facade barrier submits black
+frames on both screens without changing Game/story/result. It does not supply
+the finishing opaque receipt or incoming field reload/admission; these and the
+real field ticket/afterbattle composition remain open.
