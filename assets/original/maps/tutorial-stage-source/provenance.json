@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "iso_id": "G8ME01 revision0",
+  "files": [
+    {
+      "file": "bti_01/d.bin",
+      "source": "m/bti_01/d",
+      "source_offset": 966028632,
+      "logical_bytes": 181042,
+      "transfer_bytes": 181056,
+      "source_sha256": "213c62e758be15bc0731b3fa58558d1b2c565ea1c96e91111ea07b52cf751ca8",
+      "transfer_sha256": "626800e10f10aa22117507bab44a189ee4267384c19ad8b48b434ae669167c5c",
+      "trailing_hex": "00000020af30000000100000000c",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "file": "bti_01/t.bin",
+      "source": "m/bti_01/t",
+      "source_offset": 966209676,
+      "logical_bytes": 58976,
+      "transfer_bytes": 58976,
+      "source_sha256": "18f1efc8f976ca5c82e5ed325c51432c7f2adc43edd25bd8ce86a60365ef7bc3",
+      "transfer_sha256": "18f1efc8f976ca5c82e5ed325c51432c7f2adc43edd25bd8ce86a60365ef7bc3",
+      "trailing_hex": "",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "file": "stg_00_0/d.bin",
+      "source": "m/stg_00_0/d",
+      "source_offset": 1130056948,
+      "logical_bytes": 129290,
+      "transfer_bytes": 129312,
+      "source_sha256": "0c5d16504d645f05d2569b017c6c755bdad8d913482619a6c25aca7d89542b82",
+      "transfer_sha256": "f0f2b5ad7596f849a8f6d8b4c1d199ebfd04f9c9cdeb1aaff6391833a64b91f2",
+      "trailing_hex": "00000020af30000000080000000c0000004c00000000",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "file": "stg_00_0/t.bin",
+      "source": "m/stg_00_0/t",
+      "source_offset": 1130186240,
+      "logical_bytes": 119168,
+      "transfer_bytes": 119168,
+      "source_sha256": "a0343ddf7199fb8ff1c19f701e1b4572f9d960a232737745d638be85dfb61767",
+      "transfer_sha256": "a0343ddf7199fb8ff1c19f701e1b4572f9d960a232737745d638be85dfb61767",
+      "trailing_hex": "",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    }
+  ],
+  "conversion": "Exact unrelocated original D/T plus actual ISO bytes through the next32-byte DVD boundary. No synthesized padding, geometry conversion, palette relocation or asset edit replacement.",
+  "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+}

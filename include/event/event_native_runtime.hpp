@@ -2,6 +2,7 @@
 #include "event_entry_storage.hpp"
 #include "event_interpreter.hpp"
 #include <memory>
+#include "native_facade_registration.hpp"
 
 namespace ttyd {
 class BattleAudienceIncarnationOwner;
@@ -50,6 +51,7 @@ public:
     // Returned closures borrow this runtime and consult its current platform
     // callbacks at invocation. Context selection follows current mapped GP;
     // provider replacement/cancellation and outer scheduling remain caller-owned.
+    NativeFacadeRegistration::Proof nativeFacadeProof()const{return facade_.proof();}
     EventManagerServices managerServices();
     EventCreationServices creationServices();
     EventInterpreterServices interpreterServices();
@@ -74,5 +76,9 @@ public:
     EventEntryStorage entryStorage{entryAddresses,contextAddresses,memoryBinding};
     // Immutable metadata owner; only actual audience lifecycle hooks populate it.
     const std::shared_ptr<BattleAudienceIncarnationOwner> audienceIncarnations;
+private:
+    // Last member retires before any borrowed facade/storage during destruction.
+    // Original event-context Init/ReInit do not replace this native VM facade.
+    NativeFacadeRegistration facade_;
 };
 }

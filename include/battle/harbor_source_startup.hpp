@@ -4,6 +4,8 @@
 #include "battle_unit_setup_continuation.hpp"
 #include "event_native_runtime.hpp"
 #include "harbor_source_map_pool.hpp"
+#include "harbor_source_audience.hpp"
+#include "harbor_source_audience_noise.hpp"
 #include "harbor_source_unit_construction.hpp"
 #include <functional>
 
@@ -21,6 +23,16 @@ struct HarborSourceStartupBinding {
     // Other actual equipment providers. Returning nullopt
     // preserves this exact request; no legacy actor registration is substituted.
     std::function<std::optional<BattleUnitSetupOutput>(const BattleUnitSetupRequest&)> unitChild;
+    // Already-staged actual shared file owner/source pack. Missing frontend
+    // owners remain held by the retained source audience parent.
+    std::shared_ptr<NativeFileCache> audienceFiles;
+    std::shared_ptr<const EventScriptAssets> audienceSourceData;
+    std::function<std::optional<BattleAudienceSetupOutput>(const BattleAudienceSetupRequest&)> audienceChild;
+    std::function<std::optional<uint32_t>(const BattleAudienceAddNumInvocation&)> audienceAdd;
+    std::shared_ptr<NativeBattleSound> audienceSound;
+    std::shared_ptr<PositionalSfxRegistry> audienceRegistry;
+    // Explicit separate native policy, default preserves original unknowns.
+    HarborAudienceNoisePrivatePolicy audienceNoisePolicy = HarborAudienceNoisePrivatePolicy::PreserveUnknown;
 };
 class HarborSourceStartup {
 public:

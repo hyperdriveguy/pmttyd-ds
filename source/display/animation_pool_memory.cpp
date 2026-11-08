@@ -1,5 +1,6 @@
 #include "animation_pool_memory.hpp"
 #include "event_address_space.hpp"
+#include "event_native_runtime.hpp"
 #include <algorithm>
 #include <cassert>
 namespace ttyd {
@@ -66,7 +67,16 @@ std::unique_ptr<AnimationPoolMemory> AnimationPoolMemory::bind(std::shared_ptr<B
 // Root and six pointer/count words prove layout here. Caller must still keep
 // this owner's actual external rows installed; this is not a mapping-generation
 // detector for arbitrary external unregister/replacement.
+std::unique_ptr<AnimationPoolMemory> AnimationPoolMemory::bind(std::shared_ptr<BattlePosePool> pool,EventNativeRuntime&vm){
+ auto view=bind(std::move(pool),vm.memory);if(view){view->vmBound_=true;view->vmLife_=vm.nativeFacadeProof();}return view;
+}
+void AnimationPoolMemory::abandonExpiredVm(){
+ if(!vmBound_||vmLife_.current())return;
+ if(pool_->sourceGuardUser_==this){pool_->sourceGuard_=nullptr;pool_->sourceGuardUser_=nullptr;pool_->sourceMemory_=nullptr;}
+ active_=false;
+}
 bool AnimationPoolMemory::matchesWork() const{
+ if(vmBound_&&!vmLife_.current())return false;
  uint32_t root=0;
  return active_ && memory_.readWord(0x80415dc0,root) && root==work_ && memory_.matchesBytes(work_,header_.data(),uint32_t(header_.size()));
 }
@@ -74,6 +84,7 @@ bool AnimationPoolMemory::matchesWork() const{
 // a rewind image after successful attachment. Release the source guard before
 // replacing aliases; teardown requires the same exclusive mapping ownership.
 bool AnimationPoolMemory::detach(){
+ if(vmBound_&&!vmLife_.current()){abandonExpiredVm();return true;}
  if(!active_)return true;
  // Capture from the authoritative backing, including all changes performed
  // since attachment. Old snapshots are only for failed-attachment rollback.

@@ -1,5 +1,17 @@
 # Asset sources, organization, and provenance
 
+Original tutorial map DVD sources are editable under
+`assets/original/maps/tutorial-stage-source/`, with per-file original ISO offsets,
+logical/transfer SHA-256 and licensing in `provenance.json` and `LICENSE.txt`.
+The empty-destination importer retains unchanged D/T payloads plus actual disc
+bytes through each 32-byte read boundary, including nonzero14/22-byte D tails.
+Four normal `pack` recipes produce `maps/tutorial-stage/bti_01/{d,t}` and
+`maps/tutorial-stage/stg_00_0/{d,t}` without relocation, reencoding or reimport.
+Existing models, atlases, hierarchy editables and gor_00 files are untouched.
+Nintendo/Intelligent Systems retain original rights; no redistribution license
+is granted. See [the file contract](behavior/field/TUTORIAL_STAGE_FILE_CATALOG.md).
+
+
 ## Crump tutorial combat animation reuse
 
 The tutorial reuses the existing original ordinary Mario bank/atlas

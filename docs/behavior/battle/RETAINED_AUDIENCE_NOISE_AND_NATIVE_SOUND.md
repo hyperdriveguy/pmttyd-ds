@@ -1,0 +1,35 @@
+# Retained audience noise and actual native sound acceptance
+
+`BattleAudienceNoiseCursor` owns the complete original `BattleAudienceSoundNoiseAlways801a0b88/164` parent. `HarborSourceAudienceNoise` binds that parent at the actual cold audience callsite `801a8584` to an actual VM/map allocation, source data, numeric services and `NativeBattleSound`/public registry. It does not establish that the normal tutorial has reached that callsite or that a sound is audible.
+
+## Original source graph
+
+The parent independently captures its audience and sound-slot-2 addresses, scans right and left halves, and only then reads the slot's active flag. Each half owns the complete `201c → 1fa0 → 29c0 → 8664` scan semantics. The count excludes actor states 12, 13 and 17. Every existence check preserves its discarded Base query before its fresh ActorPtr query: with two half scans the parent performs exactly 604 source B-global reads. The existing immediate `battleAudienceHalfCount` has only two queries per slot; it is retained unchanged as a stable-memory final-value reference, not used for this new source-read trace.
+
+Positive counts select the four original name strings at `802fa574/588/59c/5b0` through whole `strcpy` requests. Their successful partial private writes survive child holds. Zero count sets category zero and performs no private-name write. The source then calls `Sound1` regardless of zero count. The private 64-byte area corresponding to SP08..47 starts unknown in the default continuation; no fabricated guest SP is exposed. Cross-callee original stack reuse has not been reconstructed by this package.
+
+The returned handle is stored and freshly reloaded. A real `-1` skips activation and volume publication. Otherwise the source active/lifetime/fade writes precede a separately retained `getVolume` call, whose captured input and acknowledged prefix survive every hold. An already-active slot skips restarting only on a new source invocation. Retrying a held volume request cannot take that earlier active-slot branch.
+
+## Concrete native binding
+
+The native binding requires the actual pool allocation token, B-global, strong lifetime/current proof, source pack and the real sound owner using the same VM and public registry. It rejects allocation address reuse, replaced numeric callbacks/userdata, source text changes and reentry. The caller pins VM/storage/provider topology through synchronous reads and callbacks; a current callback may not invalidate those resources while returning true.
+
+Positive copied names use a finite nonalias native C-string copy into the owned optional-byte buffer, with original immutable byte identities checked. This is an explicit ordinary-string native equivalence; it does not reproduce SDK read-ahead or invent guest stack aliases. Sound1 accepts a known NUL-terminated private string only if it is byte-equal to the actual original source string. That real static address is passed to native lookup. The original negative-pointer/strcmp branch observes equal bytes, and no consumer in this admitted graph observes private pointer identity. Unknown text remains held before numeric or public sound effects.
+
+The whole SoundInfo1 arithmetic path uses actual VM callbacks and actual source scalars, preserving operation boundaries in the finite 0..100-per-half domain. All reached immutable scalars are admitted before numeric effects. A violated numeric/lifetime domain is poisoned, rather than blindly replayed. The requested source position is passed through a narrow `NativeBattleSound::position` extension to its existing atomic public-On owner. Real public pending allocation, subsequent volume setting and late volume lookup execute against the same registry. There is no assigned index, synthetic handle or audible-driver acknowledgement.
+
+A pending logical slot is genuine API acceptance. Actual PSND Main/backend/NDSP provisioning remains separate. Existing unsupported started-engine domains hold before On mutations; this binding retains prior SoundInfo1 work across that hold.
+
+## Separate cold-only policy for review
+
+`HarborAudienceNoisePrivatePolicy::PreserveUnknown` is the default. The separate `EmptyColdPrivateName` option initializes only native private byte zero to NUL; all other bytes remain unknown. That initialization is a native adaptation, not a measured behavior or original source store. It is admitted only for the actual cold callsite by this binding, and no production activation is included.
+
+The actual original empty string at `804218c8` is checked against the known private NUL before lookup. Concrete tests show **the first name-table row already matches the empty string** and its descriptor is zero. Consequently the real lookup returns `-1` at the original descriptor-zero branch, without allocating a public slot. This is not a table miss or a fabricated failed request. The source stores that actual result and follows its normal failed-handle branch. Root review and an explicit caller choice are required before enabling this option; default source-private unknowns still hold.
+
+## Evidence and validation
+
+`verify_battle_audience_noise.py` pins 21 complete bodies/data spans from the read-only US revision-0 DOL, including Noise, half/getter helpers, SoundInfo1/Sound1, strcpy, public On/volume functions, first table row and actual empty string. No original PPC execution is claimed.
+
+Focused tests use complete corrected13438 headers/core, the genuine original Harbor pack, actual map allocations and real original name/descriptor tables. Standalone test allocation/registry construction is not cold startup or story evidence. Stable-memory differential tests cover all category boundaries, active/failed branches and final guest bytes. Typed TEST child protocols hold each child twice, prove prefix/identity/reentry behavior and the 604-read trace. Actual positive native tests prove positioned pending-slot acceptance/volume, no RNG use and no restart. A complete actual retained Init/cache/noise integration test retains the default unknown-name hold; under the separately labeled empty-private TEST policy it completes the retained Init and its genuine following volume/empty-target operations, without a TEST audio acknowledgement. This remains a standalone source-controller fixture, not proof of cold BattleInit/story admission. An explicit unsupported-engine TEST state proves numerical prefixes do not replay across native admission holds. The separate empty-private TEST policy proves row-0 descriptor rejection and unchanged allocation generation/RNG. Default unknown, allocation ABA and callback replacement remain held.
+
+Registration and integration journals live under `artifacts/harbor-audience-noise-validation/`. Apply the small Sound position extension first, then the new core/test registration and the startup journal after the frozen [audience binding](HARBOR_SOURCE_AUDIENCE_BINDING.md) journal. Actual startup construction must supply its real sound/registry. Source default, story progression and presentation readiness remain unchanged by these proposals.

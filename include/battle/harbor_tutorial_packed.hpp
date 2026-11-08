@@ -39,9 +39,13 @@ public:
  DisplayQueue actionDisplays;
  explicit HarborTutorialPacked(EventNativeRuntime& r):vm(r){}
  bool provision();
+ // Native callback/backend configuration only; no guest mapping or stores.
+ // Invoke once on a fresh callback registry, before any source event runs.
+ bool registerEventServices();
  // Actual source pointer/registry; legacy fixed storage remains a native bootstrap policy.
  uint32_t battleAddress() const;
  uint32_t unitAddress(int32_t id) const;
+ std::shared_ptr<const uint8_t> sourceAllocationLifetime(uint32_t address) const;
  bool provisionFreshPouch(const char* originalYoshiName,const ProloguePouch* entry=nullptr);
  void importMarioPouch();
  bool provisionFreshFieldInformation(uint32_t configuration,uint32_t expectedGroup,uint32_t expectedStage);
@@ -98,9 +102,12 @@ public:
 private:
  std::shared_ptr<HarborSourceCommandUi> sourceCommandUi;
  std::unique_ptr<HarborSourceMapPool> sourceMapPool_;
+ friend struct HarborDynamicAddressesFixture;
+ uint32_t attackSelectionBattle=0,attackSelectionUnit=0;std::shared_ptr<const uint8_t> attackSelectionBattleOwner,attackSelectionUnitOwner;
  BattlePadSample sampledPhysical{};
  uint64_t actionManagedAt=UINT64_MAX,actionDisplayedAt=UINT64_MAX;
  BattleActionManagerCursor actionManagerCursor;
+ uint32_t actionBattle=0;std::shared_ptr<const uint8_t> actionBattleOwner;
  BattlePadSample actionPhysical{};uint64_t actionInvocationAt=UINT64_MAX;
  bool actionDisplayReady=false;
  std::array<bool,4> registered{};
@@ -122,7 +129,7 @@ private:
  bool aftereffectEvent(EventEntry&,int32_t&);
  bool inviteApReport();
  bool actionEvent(EventEntry&,uint32_t,int32_t&);
- uint32_t damageSoundUnit=Units+0x1000;
+ uint32_t damageSoundUnit=0; // Set to the actual addressed defender by directDamage.
  bool checkDamageCore(uint32_t attacker,uint32_t defender,uint32_t part,uint32_t weapon,uint32_t flags,int32_t& result);
  void readDamage(unsigned id);void writeDamage(unsigned id);
  DamageApplicationServices damageApplication();

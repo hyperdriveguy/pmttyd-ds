@@ -18,6 +18,10 @@ public:
  uint32_t pouchAddress() const{return pouchAddress_;}
 private:
  friend class BattleSequenceBinding;
+ friend class BattleSequenceNestedPoolReceipt;
+ bool aliases(const EventAddressSpace&)const;
+ bool ownsPrimaryAllocation(uint32_t,uint32_t,const EventAddressSpace&)const;
+ void unregisterOwnAliases(EventAddressSpace&,const std::vector<uint32_t>&)const;
  BattleSequenceStorage(std::shared_ptr<ProloguePouch>,uint32_t,uint32_t,uint32_t);
  std::shared_ptr<ProloguePouch> pouch_;
  uint32_t arenaAddress_,pouchAddress_;

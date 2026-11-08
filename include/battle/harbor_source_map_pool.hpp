@@ -5,6 +5,7 @@
 #include <unordered_map>
 
 namespace ttyd {
+class EventNativeRuntime;class BattleSequenceNestedPoolReceipt;
 // Native address/capacity policy only. Actual allocation, nested source pool,
 // splitting, clearing and frees execute the original map allocator helpers.
 class HarborSourceMapPool {
@@ -13,6 +14,8 @@ public:
     static constexpr uint32_t ArenaBytes = 1024 * 1024;
     static std::unique_ptr<HarborSourceMapPool> bind(EventAddressSpace&,
                                                    const EventMemoryServices&);
+    // Adopt only a completed actual source producer; no writes, clears or aliases.
+    static std::unique_ptr<HarborSourceMapPool> adopt(EventNativeRuntime&, std::shared_ptr<const BattleSequenceNestedPoolReceipt>);
     ~HarborSourceMapPool();
     HarborSourceMapPool(const HarborSourceMapPool&) = delete;
     HarborSourceMapPool& operator=(const HarborSourceMapPool&) = delete;
@@ -24,11 +27,14 @@ public:
     std::shared_ptr<const uint8_t> allocationLifetime(uint32_t address) const;
 private:
     HarborSourceMapPool(EventAddressSpace&, const EventMemoryServices&);
+    HarborSourceMapPool(EventAddressSpace&, const EventMemoryServices&, std::shared_ptr<const BattleSequenceNestedPoolReceipt>);
     EventAddressSpace& memory_;
     EventMemoryServices services_;
     std::vector<uint8_t> arena_;
     std::array<uint8_t, 20> globals_{}; // Original8041e808..8041e81b.
     std::unordered_map<uint32_t, std::shared_ptr<const uint8_t>> allocations_;
+    std::shared_ptr<const BattleSequenceNestedPoolReceipt> receipt_;
+    bool invoking_ = false;
     uint32_t root_ = 0;
     bool arenaMapped_ = false, globalsMapped_ = false;
 };

@@ -11,7 +11,7 @@ namespace ttyd {
 bool HarborTutorialPacked::inviteApReport() {
   // PointInc's full bingo producer remains unbound. Admit this report only
   // when the original chance byte cannot request it; preserve the RNG draw.
-  if (byte(Battle + 0x18ffc + 0xa))
+  if (byte(battleAddress() + 0x18ffc + 0xa))
     return false;
   BattleApReportServices s;
   s.memory = nativeBattleActorServices(vm);

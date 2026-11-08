@@ -14,6 +14,14 @@ The [current US completion assessment and priorities](meta/US_COMPLETION_AND_PRI
 supersede older next-task lists: prioritize shipped event/command bindings and
 complete gameplay sequences before further general-library edge-case recovery.
 
+[Retained original battle-map loading](field/RETAINED_BATTLE_MAP_LOAD.md) preserves bank publication and source cleanup ordering.
+
+[Retained original map group flags](field/RETAINED_MAP_GROUP_FLAGS.md) preserve original lookup, deferred-name queue and recursive-child boundaries.
+
+[Retained original recursive MapObj flags](field/RETAINED_MAP_OBJECT_FLAGS.md) compare exact source heap effects against a test-only instruction oracle.
+
+[Harbor event services without fixture storage](battle/HARBOR_EVENT_SERVICES_WITHOUT_FIXTURE_STORAGE.md) separates native callback registration from fixed actor storage.
+
 ## Subsystem folders
 
 Documents are grouped by owning subsystem. New files must be added to the folder
@@ -348,6 +356,7 @@ suffix.
 | [Hit damage-return sets](battle/BATTLE_HIT_DAMAGE_RETURN_SETS.md) | Complete heap-copy event entry, name-search dispatch, recursive marking walk with +216/+220 children and r5-gated +220 phase | Record/tree provenance, SDA value, lifetimes and effects |
 | [Bottomless event chain](overworld/OVERWORLD_BOTTOMLESS_EVENT_CHAIN.md) | Complete triple-converting event entry into mixed store triple with one live table lane, contrasted with all-dead sibling | Table contents, offset meanings, cadence and effects |
 | [Map-change init and fade leaves](field/FIELD_MAP_CHANGE_AND_FADE_LEAVES.md) | Complete next-map buffers/shop-gate flag and map/area fade parameter blocks, snapshot-corroborated gp offsets | Buffer lifetimes, bdsw identity, cadence and transitions |
+| [Tutorial stage file catalog](field/TUTORIAL_STAGE_FILE_CATALOG.md) | Immutable original base/foreground DVD file catalog, exact nonzero rounded tails and real retained file jobs | Process map bank, source cache/light services and native stage activation |
 | [Fade entry dispatch](display/DISPLAY_FADE_ENTRY_DISPATCH.md) | Complete normalization, type dispatch tree, slot init blocks and common tail with ISO-read jump tables | Entry lifetimes, name indexing, allocator internals and on-screen fades |
 | [Landing query 2](overworld/OVERWORLD_LANDING_QUERY_2.md) | Complete five-probe loop with direction switch, hitVec variant dispatch, lane quantization and angle tail | Flag/offset/table meanings, f5 value, cadence and landing effects |
 | [Unit status check](battle/BATTLE_UNIT_CHECK_STATUS.md) | Complete null-gated GetStatus/6-compare/+759 test with exact {0,1} domain | GetStatus internals, code table, ownership and effects |
@@ -1501,6 +1510,9 @@ Original battle menu native resource/queue owners:
 | [Harbor retained source flow](battle/HARBOR_RETAINED_SOURCE_FLOW.md) | Actual shared VM Main/Init/FirstAct/Turn/Phase/Move/Act composition | Native scheduler and child providers |
 | [Retained unit setup](battle/BATTLE_UNIT_SETUP_CONTINUATION.md) | Complete source parent, held constructors/equipment/imports and exact equipment scan | Actual native unit/display providers |
 | [Harbor source map pool](battle/HARBOR_SOURCE_MAP_POOL.md) | Actual nested source allocator and fresh allocation lifetimes | Actual command presentation and gameplay |
+| [Native source pool adoption](battle/NATIVE_SOURCE_NESTED_POOL_ADOPTION.md) | Actual completed field producer receipt, exclusive lease and native facade lifetime | Genuine cold Crump startup |
+| [Actual battle camera producer receipt](battle/ACTUAL_FIELD_BATTLE_CAMERA_RECEIPT.md) | Completed original camera 4 mode setter, actual manager and native lifetime | Source display pass producer admission |
+| [Actual field-to-Harbor admission](battle/ACTUAL_FIELD_TO_HARBOR_STARTUP_ADMISSION.md) | Real BattleInit source call, adopted field VM/pool and retained Startup | Native cold source boundary |
 | [Cold storage](battle/BATTLE_COLD_STORAGE.md) | Nine original storage/reset bodies | Full cold/native battle initialization |
 | [Retained battle voice and public pending sound](audio/RETAINED_BATTLE_VOICE_AND_PUBLIC_PENDING_SOUND.md) | Original voice/menu public On and real pending-slot ownership | Audible macro/voice service |
 
@@ -1511,6 +1523,7 @@ Original battle menu native resource/queue owners:
 - [Harbor source startup](battle/HARBOR_SOURCE_STARTUP.md): retained original cold and UnitSetup owners with actual process resources.
 - [Retained UnitEntry and DisplayEntry](battle/BATTLE_UNIT_ENTRY_CONTINUATION.md): original constructor and held per-part animation admission.
 - [Harbor source unit construction](battle/HARBOR_SOURCE_UNIT_CONSTRUCTION.md): actual VM/map/resource/native animation provider and original-name aliases.
+- [Harbor dynamic source addresses](battle/HARBOR_DYNAMIC_SOURCE_ADDRESSES.md): actual B/registry/unit/part access and retained allocation guards; projection ownership remains separate.
 
 - [Native original map hit construction](field/NATIVE_MAP_HIT_CONSTRUCTION.md): retained source hierarchy, packed quantization, triangle winding and explicit Distance estimate boundary.
 

@@ -1,4 +1,5 @@
 #include "harbor_tutorial.hpp"
+#include "harbor_source_audience.hpp"
 #include "battle_class_menu_messages.hpp"
 #include <cstdlib>
 #include "native_battle_sound.hpp"
@@ -49,6 +50,7 @@ bool loadHarborTutorialAssets(const char* root){
  if(!ok)return false;
  auto files=std::make_shared<BattleMenuFileCache>();
  if(!files->load((base+"/battle-class-common.tpl").c_str()))return false;
+ if(!stageHarborAudienceFiles(*files->files(),base.c_str()))return false;
  menuFiles=std::move(files);
  scripts=std::move(p);messages=std::move(m);font=std::move(f);source=entries;callbacks=std::move(table);ready=true;return true;
 }
@@ -62,6 +64,7 @@ struct HarborTutorialRuntime {
  std::shared_ptr<BattleMenuFileCache> files=menuFiles;
  HarborTutorial* scene=nullptr;EventNativeRuntime vm;std::unique_ptr<HarborTutorialPacked> packed;
  std::shared_ptr<const uint8_t>statusLife=std::make_shared<const uint8_t>(0);std::unique_ptr<NativeBattleStatusReader>statusReader;
+ uint32_t statusBattle=0;std::shared_ptr<const uint8_t>statusBattleOwner;
  std::unique_ptr<BattleMenuFileBinding> menuBinding;BattleMenuResourceCursor menuCursor;
  std::shared_ptr<BattleCommandPalette> commandPalette;
  void* resourceUser=nullptr;bool(*paperReady)(void*,uint32_t,int32_t)=nullptr;bool(*niceReady)(void*,int32_t)=nullptr;
@@ -115,7 +118,7 @@ struct HarborTutorialRuntime {
   s.windowOff=[](void* self){auto& r=*static_cast<HarborTutorialRuntime*>(self);packedBattleStatusWindowSet(0x2744,false,r.statusWindowServices());};
   s.create=[](void* self,uint32_t script,int32_t priority,uint32_t flags){auto& r=*static_cast<HarborTutorialRuntime*>(self);auto& e=createRootEvent(r.vm.schedule,script,priority,flags,r.vm.creationServices());r.attackRoot=e.id;return &e;};
   s.advance=[](void* self,uint32_t b,int32_t channel){auto& r=*static_cast<HarborTutorialRuntime*>(self);packedBattleIncrementSequence(b,uint32_t(channel),nativeBattleActorServices(r.vm).memory);};
-  registerBattleAttackState6(HarborTutorialPacked::Battle,s);
+  registerBattleAttackState6(packed->battleAddress(),s);
  }
  bool exists(uint32_t id){for(int32_t i=0;i<vm.battle.capacity;++i)if(vm.battle.entries[i].id==id && (vm.battle.entries[i].flags&1))return true;return false;}
  // Source pose tables are (type, name) 8-byte rows; 80 is a native scan bound.
@@ -272,7 +275,7 @@ bool HarborTutorial::dispatchSelectedAttack(){
  auto& r=*runtime_;r.scene=this;r.packed->publish(*this);
  // Explicit confirmed-command scheduler entry, analogous to the trio launch;
  // not an implementation of Input's pending/progress loop or target UI.
- const auto b=HarborTutorialPacked::Battle;
+ const auto b=r.packed->battleAddress();
  if(!r.vm.memory.writeWord(b+0x420,MarioId) || !r.vm.memory.writeWord(b+0x171c+0x540,weaponMenuType))return false;
  if(!r.packed->commandFinalized && !r.packed->selectAttackEvent())return false;
  r.packed->commandFinalized=false;
@@ -320,7 +323,7 @@ bool HarborTutorial::openClassMenu(){
  if(!runtime_ || failed || !initialized || !introComplete || phaseActive || attackActive || damageActive)return false;
  auto& r=*runtime_;r.scene=this;r.packed->publish(*this);
  if(!r.packed->buildClassMenu(*this,&r,[](void* self,uint32_t key){auto& r=*static_cast<HarborTutorialRuntime*>(self);const auto id=r.text(key);return r.packed->cacheMenuLabel(key,messages.find(id.c_str()));}))return false;
- r.vm.memory.writeWord(HarborTutorialPacked::Battle+0x171c,0);
+ r.vm.memory.writeWord(r.packed->battleAddress()+0x171c,0);
  const auto result=r.packed->commandInput(*this,&r,[](void* self,uint32_t key){auto& r=*static_cast<HarborTutorialRuntime*>(self);const auto id=r.text(key);return r.packed->cacheMenuLabel(key,messages.find(id.c_str()));});
  r.packed->capture(*this);return result.has_value();
 }
@@ -424,7 +427,7 @@ bool HarborTutorial::openWeaponMenu(uint32_t type){
  if(!runtime_ || failed || !initialized || !introComplete || phaseActive || attackActive || damageActive)return false;auto& r=*runtime_;r.scene=this;r.packed->publish(*this);
  const bool opened=r.packed->openWeaponMenu(type,*this,&r,[](void* self,uint32_t key){auto& r=*static_cast<HarborTutorialRuntime*>(self);const auto id=r.text(key);return r.packed->cacheMenuLabel(key,messages.find(id.c_str()));});
  // Explicit native confirmed-class entry into source Input state7.
- if(opened)r.vm.memory.writeWord(HarborTutorialPacked::Battle+0x171c,7);
+ if(opened)r.vm.memory.writeWord(r.packed->battleAddress()+0x171c,7);
  return opened;
 }
 void HarborTutorial::weaponMenuPresented(){if(runtime_ && weaponMenuOpen)runtime_->packed->weaponMenuPresented();}
@@ -441,7 +444,11 @@ std::optional<int32_t> HarborTutorial::inputCommand(const BattlePadSample& sampl
 bool HarborTutorial::readPackedWord(uint32_t address,uint32_t& value)const{return runtime_ && runtime_->packed && runtime_->packed->readWord(address,value);}
 std::optional<NativeBattleStatusSnapshot>HarborTutorial::statusSnapshot()const{
  if(!runtime_||!runtime_->packed||failed)return {};
- auto&r=*runtime_;if(!r.statusReader)r.statusReader=std::make_unique<NativeBattleStatusReader>(r.vm,r.statusLife,&r,[](void*p){auto&r=*static_cast<HarborTutorialRuntime*>(p);uint32_t b=0;return r.packed&&r.vm.memory.contiguousRam(HarborTutorialPacked::Battle,0x19100)&&r.vm.memory.readWord(0x8041eb90,b)&&b==HarborTutorialPacked::Battle;});
+ auto&r=*runtime_;if(!r.statusReader){
+  r.statusBattle=r.packed->battleAddress();r.statusBattleOwner=r.packed->sourceAllocationLifetime(r.statusBattle);
+  if(!r.statusBattleOwner&&r.statusBattle!=HarborTutorialPacked::Battle)return {};
+  r.statusReader=std::make_unique<NativeBattleStatusReader>(r.vm,r.statusLife,&r,[](void*p){auto&r=*static_cast<HarborTutorialRuntime*>(p);uint32_t b=0;return r.packed&&r.vm.memory.readWord(0x8041eb90,b)&&b==r.statusBattle&&r.packed->sourceAllocationLifetime(b)==r.statusBattleOwner&&r.vm.memory.contiguousRam(b,0x19100);});
+ }
  return r.statusReader->snapshot();
 }
 bool HarborTutorial::prepareAudienceDrawing(const BattleAudienceDrawServices& supplied)const{if(!runtime_ || !runtime_->packed)return false;auto services=supplied;services.actors=nativeBattleActorServices(runtime_->vm);return drawPackedBattleAudience(services);}

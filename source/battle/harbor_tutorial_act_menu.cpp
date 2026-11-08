@@ -78,7 +78,7 @@ HarborTutorialPacked::actMenu(HarborTutorial &scene, void *messageUser,
     // UI allocation failure is unavailable, not an empty successful class menu.
     case F::ClassTable:
       return p.buildClassMenu(*c.scene, c.messageUser, c.message)
-                 ? std::optional<uint32_t>(p.word(Battle + 0x171c + 0x498 + 8))
+                 ? std::optional<uint32_t>(p.word(p.battleAddress() + 0x171c + 0x498 + 8))
                  : missing();
     case F::Init:
     case F::End: {
@@ -139,11 +139,11 @@ HarborTutorialPacked::actMenu(HarborTutorial &scene, void *messageUser,
     // General source pad words: 0xf44 trigger, 0xfbc repeat, 0x1034 current held.
     // All sound IDs are retained presentation requests; no playback claim.
     case F::Trigger:
-      return p.word(Battle + 0xf44) & a[0];
+      return p.word(p.battleAddress() + 0xf44) & a[0];
     case F::Repeat:
-      return p.word(Battle + 0xfbc) & a[0];
+      return p.word(p.battleAddress() + 0xfbc) & a[0];
     case F::Now:
-      return p.word(Battle + 0x1034) & a[0];
+      return p.word(p.battleAddress() + 0x1034) & a[0];
     case F::Sound:
       c.scene->weaponMenuSounds.push_back(a[0]);
       return 0;
@@ -156,10 +156,10 @@ HarborTutorialPacked::actMenu(HarborTutorial &scene, void *messageUser,
       return count ? std::optional<uint32_t>(uint32_t(*count)) : missing();
     }
     case F::CameraMode:
-      setBattleCameraMode(Battle, int32_t(a[0]), int32_t(a[1]), p.camera);
+      setBattleCameraMode(p.battleAddress(), int32_t(a[0]), int32_t(a[1]), p.camera);
       return 0;
     case F::CameraSpeed:
-      setBattleCameraSpeed(Battle, int32_t(a[0]), int32_t(a[1]), p.camera);
+      setBattleCameraSpeed(p.battleAddress(), int32_t(a[0]), int32_t(a[1]), p.camera);
       return 0;
     case F::Audience: {
       const auto result = p.attackAudienceMenu(*c.scene);
@@ -170,10 +170,10 @@ HarborTutorialPacked::actMenu(HarborTutorial &scene, void *messageUser,
     }
     return missing();
   };
-  const auto result = setup ? (setupPackedBattleActMenu(Battle, flag, s)
+  const auto result = setup ? (setupPackedBattleActMenu(battleAddress(), flag, s)
                                    ? std::optional<int32_t>(0)
                                    : std::nullopt)
-                            : mainPackedBattleActMenu(Battle, s);
+                            : mainPackedBattleActMenu(battleAddress(), s);
   // Reflect source row mutations even on an unavailable visit. Scene rows
   // are diagnostic/presentation projections, not proof of whole menu completion.
   captureClassRows(scene);

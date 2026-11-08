@@ -9,7 +9,7 @@ namespace ttyd {
 std::optional<bool> HarborTutorialPacked::attackAudienceMenu(HarborTutorial& scene){
  struct Context {HarborTutorialPacked* packed;HarborTutorial* scene;} context{this,&scene};
  BattleMenuAudienceServices s;s.memory=nativeBattleActorServices(vm);s.user=&context;s.privateItem=MenuRam+0x14;
- s.trigger=[](void* p,uint32_t mask){return static_cast<Context*>(p)->packed->word(Battle+0xf44)&mask;};
+ s.trigger=[](void* p,uint32_t mask){return static_cast<Context*>(p)->packed->word(static_cast<Context*>(p)->packed->battleAddress()+0xf44)&mask;};
  s.mario=[](void* p,uint32_t b){return battleMarioUnit(b,nativeBattleActorServices(static_cast<Context*>(p)->packed->vm));};
  s.itemOn=[](void* p,uint32_t output,int32_t,int32_t,int32_t,int32_t){return static_cast<Context*>(p)->packed->menuAudienceItemOn(output);};
  s.setTarget=[](void* p,int32_t target){packedBattleAudienceSetTarget(target,nativeBattleActorServices(static_cast<Context*>(p)->packed->vm));};

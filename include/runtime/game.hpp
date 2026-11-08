@@ -1,4 +1,5 @@
 #pragma once
+#include "native_facade_registration.hpp"
 #include "item_selection_presentation.hpp"
 #include "goomba_hand_in.hpp"
 #include "goomba_acquisition.hpp"
@@ -555,6 +556,9 @@ private:
     int departurePause=0;
     std::shared_ptr<class NativeUiStartup> nativeUiStartup_;
     std::shared_ptr<class NativeEffectProcess> nativeEffects_;
+    // Native facade admission only; copies/moves never inherit producer proof.
+    // Last member retires first during destruction. No source-ready state.
+    NativeFacadeRegistration battleSequenceFacade_;
 };
 struct CollisionSnapshot;
 // Stages a room's collision; destruction restores the previous data unless committed.

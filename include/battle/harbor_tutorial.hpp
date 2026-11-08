@@ -173,6 +173,7 @@ private:
     bool beginWithContext(uint64_t,int32_t,int32_t,bool freshPouch,int32_t originalStory,const ProloguePouch* entry=nullptr);
     // Shared because held draw bindings can keep the VM/cache alive. Such a
     // binding must still validate current UI ownership before each dispatch.
+    friend struct HarborDynamicAddressesFixture;
     std::shared_ptr<HarborTutorialRuntime> runtime_;
     // Copies share one actual-runtime registration; a new begin gives only
     // that facade a fresh slot. The slot never pins the VM it identifies.

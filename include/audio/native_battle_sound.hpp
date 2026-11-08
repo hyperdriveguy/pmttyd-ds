@@ -20,8 +20,11 @@ public:
  NativeBattleSound& operator=(const NativeBattleSound&)=delete;
  std::optional<int32_t> voice(EventEntry&);
  std::optional<int32_t> menu(uint32_t key);
+ // Same atomic real source On owner with an actual captured source position.
+ std::optional<int32_t> position(uint32_t key,const std::array<float,3>&);
  uint32_t pending()const;
  bool usesRegistry(const PositionalSfxRegistry*)const;
+ bool usesRuntime(const EventNativeRuntime*)const;
 private:
  struct State;std::unique_ptr<State> state_;
 };

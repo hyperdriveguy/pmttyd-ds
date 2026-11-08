@@ -108,14 +108,14 @@ HarborTutorialPacked::commandInput(HarborTutorial &scene, void *messageUser,
     case F::LightOff:
       return 0; // Original complete leaves are blr.
     case F::Trigger:
-      return p.word(Battle + 0xf44) & a[0];
+      return p.word(p.battleAddress() + 0xf44) & a[0];
     case F::Sound:
       c.scene->weaponMenuSounds.push_back(a[0]);
       return 0;
     // Narrow native acting-Mario/menu identity. Selection is separate from
     // creating attack roots; no HP/phase/outcome is inferred here.
     case F::SelectAttack:
-      if (a[0] != Units + 0x1000 || a[1] != Battle + 0x171c)
+      if (a[0] != p.unitAddress(1) || a[1] != p.battleAddress() + 0x171c)
         return missing();
       return p.selectAttackEvent() ? std::optional<uint32_t>(0) : missing();
     default:
@@ -143,10 +143,10 @@ HarborTutorialPacked::commandInput(HarborTutorial &scene, void *messageUser,
       return true;
     };
     t.repeat = [](void *self, uint32_t mask) {
-      return static_cast<Context *>(self)->p->word(Battle + 0xfbc) & mask;
+      return static_cast<Context *>(self)->p->word(static_cast<Context *>(self)->p->battleAddress() + 0xfbc) & mask;
     };
     t.trigger = [](void *self, uint32_t mask) {
-      return static_cast<Context *>(self)->p->word(Battle + 0xf44) & mask;
+      return static_cast<Context *>(self)->p->word(static_cast<Context *>(self)->p->battleAddress() + 0xf44) & mask;
     };
     t.sound = [](void *self, uint32_t key) {
       static_cast<Context *>(self)->scene->weaponMenuSounds.push_back(key);
@@ -186,7 +186,7 @@ HarborTutorialPacked::commandInput(HarborTutorial &scene, void *messageUser,
   // Source result 1 marks finalization; optional 0 still completes a visit.
   // If no child diagnostic exists, 0x801229d8 identifies unavailable Input itself.
   // This latch is native admission metadata, not a source command-state write.
-  const auto result = packedBattleCommandInput(Battle, s);
+  const auto result = packedBattleCommandInput(battleAddress(), s);
   if (!result)
     commandUnbound =
         scene.commandInputPending ? scene.commandInputPending : 0x801229d8;

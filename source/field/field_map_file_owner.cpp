@@ -2,6 +2,8 @@
 #include "event_ram_access.hpp"
 #include <cstring>
 #include <vector>
+#include <limits>
+#include <set>
 namespace ttyd {
 namespace {
 constexpr uint32_t ConvertPath=0x8029fdbc,Open=0x802a00b0,Read=0x802a03c0,Close=0x802a0178;
@@ -9,17 +11,45 @@ constexpr uint32_t Yield=0x8029ccf4,Clear=0x800050b4,Copy=0x8000519c,CopyString=
 constexpr uint32_t FileInfo=0x40,LogicalLength=0x34,State=0x90;
 constexpr uint16_t Used=0x8000;
 constexpr unsigned MaxPathBytes=64;
-struct StagedFile {const char* name;uint32_t logical,transfer;};
-// Exact US harbor FST lengths. The editable transfer files retain the original
-// bytes through the next32-byte boundary, including30 actual disc-tail bytes.
-constexpr std::array<StagedFile,3> Catalog{{{"d",1039618,1039648},{"t",525792,525792},{"c",2048,2048}}};
+std::optional<std::string> canonicalSource(std::string path){
+ if(path.rfind("././m/",0)==0)path.erase(0,2);
+ if(path.rfind("./m/",0)!=0 || path.size()>=MaxPathBytes)return {};
+ return path;
 }
-FieldMapFileOwner::FieldMapFileOwner(EventAddressSpace& m,uint32_t t,uint32_t s,const std::string& root):memory_(m),tableAddress_(t),stackAddress_(s),root_(root){}
+bool relative(const std::string& path){
+ if(path.empty() || path.front()=='/' || path.back()=='/' || path.find("//")!=std::string::npos)return false;
+ size_t first=0;
+ while(first<path.size()){const auto end=path.find('/',first),count=(end==std::string::npos?path.size():end)-first;const auto part=path.substr(first,count);if(part=="." || part=="..")return false;if(end==std::string::npos)break;first=end+1;}
+ for(unsigned char c:path)if(!((c>='a'&&c<='z')||(c>='A'&&c<='Z')||(c>='0'&&c<='9')||c=='_'||c=='-'||c=='.'||c=='/'))return false;
+ return true;
+}
+std::optional<FieldMapFileCatalog> admitCatalog(const FieldMapFileCatalog& input){
+ if(input.empty() || input.size()>std::numeric_limits<unsigned>::max())return {};
+ FieldMapFileCatalog result;std::set<std::string> sourcePaths,destinations;
+ for(const auto& row:input){
+  const auto source=canonicalSource(row.sourcePath);const auto rounded=(uint64_t(row.logicalBytes)+31)&~uint64_t(31);
+  if(!source || !relative(source->substr(2)) || !relative(row.relativePath) || !row.logicalBytes || rounded>UINT32_MAX || rounded!=row.transferBytes || !sourcePaths.insert(*source).second || !destinations.insert(row.relativePath).second)return {};
+  result.push_back({*source,row.relativePath,row.logicalBytes,row.transferBytes});
+ }
+ return result;
+}
+}
+const FieldMapFileCatalog& FieldMapFileOwner::originalHarborCatalog(){
+ // Exact original gor_00 FST and32-byte transfer lengths; caller edits cannot
+ // mutate this compatibility catalog or any manager's private copied records.
+ static const FieldMapFileCatalog rows{{"./m/gor_00/d","maps/gor_00/d",1039618,1039648},{"./m/gor_00/t","maps/gor_00/t",525792,525792},{"./m/gor_00/c","maps/gor_00/c",2048,2048}};
+ return rows;
+}
+FieldMapFileOwner::FieldMapFileOwner(EventAddressSpace& m,uint32_t t,uint32_t s,const std::string& root,const FieldMapFileCatalog& catalog):memory_(m),tableAddress_(t),stackAddress_(s),root_(root),catalog_(catalog){}
 std::unique_ptr<FieldMapFileOwner> FieldMapFileOwner::bind(EventAddressSpace& m,uint32_t t,uint32_t s,const std::string& root){
+ return bind(m,t,s,root,originalHarborCatalog());
+}
+std::unique_ptr<FieldMapFileOwner> FieldMapFileOwner::bind(EventAddressSpace& m,uint32_t t,uint32_t s,const std::string& root,const FieldMapFileCatalog& catalog){
+ const auto admitted=admitCatalog(catalog);if(!admitted)return {};
  if(!t || !s || (t&(CacheLine-1)) || (s&(CacheLine-1)) || root.empty() || uint64_t(t)+TableBytes>0x100000000ULL || uint64_t(s)+StackBytes>0x100000000ULL)return {};
  // Admit all complete staged transfers before unchecked source acquisition.
- for(const auto& item:Catalog){const auto name=root+"/maps/gor_00/"+item.name;FILE* f=std::fopen(name.c_str(),"rb");if(!f)return {};const bool ok=std::fseek(f,0,SEEK_END)==0 && std::ftell(f)==long(item.transfer);std::fclose(f);if(!ok)return {};}
- auto o=std::unique_ptr<FieldMapFileOwner>(new FieldMapFileOwner(m,t,s,root));
+ for(const auto& item:*admitted){const auto name=root+"/"+item.relativePath;FILE* f=std::fopen(name.c_str(),"rb");if(!f)return {};const bool ok=std::fseek(f,0,SEEK_END)==0 && std::ftell(f)==long(item.transferBytes);std::fclose(f);if(!ok)return {};}
+ auto o=std::unique_ptr<FieldMapFileOwner>(new FieldMapFileOwner(m,t,s,root,*admitted));
  auto map=[&](uint32_t a,uint8_t* b,uint32_t n){if(!m.registerExternalRam(a,b,n))return false;o->mappings_[o->mapped_++]=a;return true;};
  if(!map(Globals,o->globals_.data(),GlobalsBytes) || !map(t,o->table_.data(),TableBytes) || !map(SortScratch,o->sort_.data(),SortScratchBytes) || !map(SortGlobals,o->sortGlobals_.data(),SortGlobalsBytes) || !map(s,o->stack_.data(),StackBytes) || !o->current())return {};
  // Native platform bootstrap: one cold process table and enabled cooperative
@@ -40,7 +70,8 @@ bool FieldMapFileOwner::text(uint32_t address,std::string& out) const{
 }
 std::optional<unsigned> FieldMapFileOwner::path(uint32_t address) const{
  std::string value;if(!text(address,value))return {};
- for(unsigned i=0;i<Catalog.size();++i)if(value==std::string("././m/gor_00/")+Catalog[i].name || value==std::string("./m/gor_00/")+Catalog[i].name)return i;
+ const auto canonical=canonicalSource(value);if(!canonical)return {};
+ for(unsigned i=0;i<catalog_.size();++i)if(*canonical==catalog_[i].sourcePath)return i;
  return {};
 }
 std::optional<unsigned> FieldMapFileOwner::slot(uint32_t info) const{
@@ -55,17 +86,17 @@ bool FieldMapFileOwner::service(FieldMapSourceCall& q){
  uint32_t table=0;if(!memory_.readWord(TablePointer,table) || table!=tableAddress_)return false;
  const auto& a=q.arguments;
  switch(q.function){
- case ConvertPath:{const auto index=path(a[0]);q.result=index?uint32_t(*index):UINT32_MAX;return true;}
+ case ConvertPath:{const auto index=path(a[0]);if(!index)return false;q.result=uint32_t(*index);return true;}
  case Open:{
   const auto index=path(a[0]),entry=slot(a[1]);if(!index || !entry || files_[*entry])return false;
   const uint32_t handle=tableAddress_+*entry*SlotBytes;uint16_t state=0;
   if(!memory_.readHalf(handle+State,state) || !(state&Used) || !memory_.contiguousRam(a[1],LogicalLength+4))return false;
-  const auto name=root_+"/maps/gor_00/"+Catalog[*index].name;FILE* f=std::fopen(name.c_str(),"rb");if(!f){q.result=0;return true;}
-  files_[*entry]=f;memory_.writeWord(a[1]+LogicalLength,Catalog[*index].logical);q.result=1;return true;
+  const auto name=root_+"/"+catalog_[*index].relativePath;FILE* f=std::fopen(name.c_str(),"rb");if(!f){q.result=0;return true;}
+  files_[*entry]=f;memory_.writeWord(a[1]+LogicalLength,catalog_[*index].logicalBytes);q.result=1;return true;
  }
  case Read:{
   const auto entry=slot(a[0]);if(!entry || !files_[*entry] || a[4]!=2 || !memory_.contiguousRam(a[1],a[2]))return false;
-  const auto index=path(tableAddress_+*entry*SlotBytes);if(!index || uint64_t(a[3])+a[2]>Catalog[*index].transfer)return false;
+  const auto index=path(tableAddress_+*entry*SlotBytes);if(!index || uint64_t(a[3])+a[2]>catalog_[*index].transferBytes)return false;
   // Complete native transfer before source Main is allowed to publish flags.
   // Storage mappings stay stationary throughout this synchronous native IO.
   std::vector<uint8_t> bytes(a[2]);FILE* f=files_[*entry];

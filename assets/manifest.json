@@ -115,34 +115,34 @@
       "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
       "format": "rgba8"
     },
-{
+    {
       "id": "original/maps/harbor-source",
       "kind": "event",
       "source": "assets/original/maps/harbor-source/event.json",
       "output": "field-harbor-map-source.pmevt",
       "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
-},
+    },
     {
       "id": "original/lights/harbor-map-input",
       "kind": "event",
       "source": "assets/original/lights/harbor-map-input/event.json",
       "output": "field-harbor-lights-input.pmevt",
       "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
-},
+    },
     {
       "id": "original/lights/registry-definition",
       "kind": "event",
       "source": "assets/original/lights/registry-definition/event.json",
       "output": "field-light-registry.pmevt",
       "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
-},
+    },
     {
       "id": "original/events/harbor-area-init",
       "kind": "event",
       "source": "assets/original/events/harbor-area-init/event.json",
       "output": "field-harbor-init.pmevt",
       "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
-},
+    },
     {
       "id": "original/characters.t3x",
       "kind": "texture",
@@ -3096,7 +3096,9 @@
       "id": "original/harbor-tutorial-crump.pmanim",
       "kind": "animation",
       "source": "assets/original/animations/harbor-tutorial-crump.json",
-      "append_sources": ["assets/original/tutorial-unit-entry/crump-z1.json"],
+      "append_sources": [
+        "assets/original/tutorial-unit-entry/crump-z1.json"
+      ],
       "output": "harbor-tutorial-crump.pmanim",
       "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
     },
@@ -3218,7 +3220,10 @@
       "source": "assets/original/audio/battle.wav",
       "output": "battle.wav",
       "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
-      "loop": [55944, 1169000]
+      "loop": [
+        55944,
+        1169000
+      ]
     },
     {
       "id": "original/confirm.wav",
@@ -3282,7 +3287,10 @@
       "source": "assets/original/audio/harbor-danger.wav",
       "output": "harbor-danger.wav",
       "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
-      "loop": [51128, 1615544]
+      "loop": [
+        51128,
+        1615544
+      ]
     },
     {
       "id": "original/harbor-tutorial-music.wav",
@@ -3290,7 +3298,10 @@
       "source": "assets/original/audio/harbor-tutorial-music.wav",
       "output": "harbor-tutorial-music.wav",
       "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
-      "loop": [117824, 1048768]
+      "loop": [
+        117824,
+        1048768
+      ]
     },
     {
       "id": "original/hit.wav",
@@ -3340,7 +3351,10 @@
       "source": "assets/original/audio/opening-house.wav",
       "output": "opening-house.wav",
       "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
-      "loop": [138824, 1814680]
+      "loop": [
+        138824,
+        1814680
+      ]
     },
     {
       "id": "original/opening-map-turn.wav",
@@ -3355,7 +3369,10 @@
       "source": "assets/original/audio/opening-sailing.wav",
       "output": "opening-sailing.wav",
       "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
-      "loop": [384664, 2342984]
+      "loop": [
+        384664,
+        2342984
+      ]
     },
     {
       "id": "original/opening-voyage.wav",
@@ -3370,7 +3387,10 @@
       "source": "assets/original/audio/professor-music.wav",
       "output": "professor-music.wav",
       "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
-      "loop": [0, 1843184]
+      "loop": [
+        0,
+        1843184
+      ]
     },
     {
       "id": "original/rogueport.wav",
@@ -3378,7 +3398,10 @@
       "source": "assets/original/audio/rogueport.wav",
       "output": "rogueport.wav",
       "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
-      "loop": [106848, 3284008]
+      "loop": [
+        106848,
+        3284008
+      ]
     },
     {
       "id": "original/save-block.wav",
@@ -3400,7 +3423,10 @@
       "source": "assets/original/audio/title.wav",
       "output": "title.wav",
       "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
-      "loop": [980504, 3684128]
+      "loop": [
+        980504,
+        3684128
+      ]
     },
     {
       "id": "original/underground-music.wav",
@@ -3408,7 +3434,10 @@
       "source": "assets/original/audio/underground-music.wav",
       "output": "underground-music.wav",
       "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
-      "loop": [56, 1777762]
+      "loop": [
+        56,
+        1777762
+      ]
     },
     {
       "id": "original/victory.wav",
@@ -3432,6 +3461,34 @@
       "format": "rgba8",
       "license": "Nintendo/Intelligent Systems original game assets; all original rights retained; tracking grants no redistribution license",
       "provenance": "assets/original/ui-message-icons/provenance.json"
+    },
+    {
+      "id": "original/maps/tutorial-stage-source/bti_01/d",
+      "kind": "pack",
+      "source": "assets/original/maps/tutorial-stage-source/bti_01/d.bin",
+      "output": "maps/tutorial-stage/bti_01/d",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/maps/tutorial-stage-source/bti_01/t",
+      "kind": "pack",
+      "source": "assets/original/maps/tutorial-stage-source/bti_01/t.bin",
+      "output": "maps/tutorial-stage/bti_01/t",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/maps/tutorial-stage-source/stg_00_0/d",
+      "kind": "pack",
+      "source": "assets/original/maps/tutorial-stage-source/stg_00_0/d.bin",
+      "output": "maps/tutorial-stage/stg_00_0/d",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "id": "original/maps/tutorial-stage-source/stg_00_0/t",
+      "kind": "pack",
+      "source": "assets/original/maps/tutorial-stage-source/stg_00_0/t.bin",
+      "output": "maps/tutorial-stage/stg_00_0/t",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
     }
   ]
 }

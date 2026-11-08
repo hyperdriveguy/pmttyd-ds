@@ -11,22 +11,25 @@ namespace ttyd {
 bool HarborTutorialPacked::actionManager(uint64_t time) {
   if (!actionManagerCursor.active()) {
     if (actionManagedAt == time)
-      return true;
+      return battleAddress()==actionBattle&&sourceAllocationLifetime(actionBattle)==actionBattleOwner;
     // An admitted sample owns this whole manager call, including any wait.
     // Queue reset belongs only to the next invocation, never a held child.
     actionDisplays.reinitialize();
     actionDisplayReady = false;
     if (!physicalCurrent || sampledAt != time)
       return true;
+    actionBattle=battleAddress();actionBattleOwner=sourceAllocationLifetime(actionBattle);
+    if(!actionBattleOwner&&actionBattle!=Battle)return false;
     actionPhysical = sampledPhysical;
     actionInvocationAt = time;
   }
+  if(battleAddress()!=actionBattle||sourceAllocationLifetime(actionBattle)!=actionBattleOwner)return false;
   BattleActionManagerServices s;
   s.memory = nativeBattleActorServices(vm);
   s.user = this;
   s.pad = [](void *self, uint32_t address, int32_t channel) {
     auto &p = *static_cast<HarborTutorialPacked *>(self);
-    if (channel != 0 || address != Battle + 0x1d1c)
+    if (channel != 0 || address != p.actionBattle + 0x1d1c)
       return false;
     auto pad = readPackedBattlePad(address, nativeBattleActorServices(p.vm));
     pad.update(p.actionPhysical);
@@ -69,7 +72,7 @@ bool HarborTutorialPacked::actionManager(uint64_t time) {
                                   argument,
                                   priority) == DisplayAdmission::Registered;
   };
-  if (!resumePackedBattleActionCommandManager(Battle, s, actionManagerCursor))
+  if (!resumePackedBattleActionCommandManager(actionBattle, s, actionManagerCursor))
     return false;
   actionManagedAt = actionInvocationAt;
   actionDisplayReady = true;
@@ -86,16 +89,17 @@ bool HarborTutorialPacked::actionDisplay(uint64_t time, HarborTutorial &scene) {
     return false;
   }
   if (actionDisplayReady && actionDisplayedAt == actionManagedAt)
-    return true;
+    return battleAddress()==actionBattle&&sourceAllocationLifetime(actionBattle)==actionBattleOwner;
   scene.actionCommandIcons.clear();
   if (!actionDisplayReady)
     return true;
+  if(battleAddress()!=actionBattle||sourceAllocationLifetime(actionBattle)!=actionBattleOwner)return false;
   // Admission precedes callback effects. Borrowed queue records are consumed
   // once per native simulation sample, never by a repeated screen draw.
   for (uint32_t i = 0; i < actionDisplays.count(); ++i) {
     const auto *r = actionDisplays.ordered(i);
     if (!r || r->camera != 8 || r->callback != 0x8012a7cc ||
-        r->userdata != Battle || !messageIcon(108) || !messageIcon(109))
+        r->userdata != actionBattle || !messageIcon(108) || !messageIcon(109))
       return false;
   }
   actionDisplayedAt = actionManagedAt;

@@ -1344,6 +1344,7 @@ void Game::restore(const Progress& saved) {
     if(nativePartyPending())return;
     if(nativeAnimationPending())return;
     if(nativeEffects_ && nativeEffects_->busy())return;
+    battleSequenceFacade_.retire(); // Successful native restore retires borrowed producer receipts before mutation.
     const auto retainedUiStartup=nativeUiStartup_;
     const auto retainedEffects=nativeEffects_;
     const auto retainedCommandPalette=commandPalette;

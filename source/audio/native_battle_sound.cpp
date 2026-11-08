@@ -102,6 +102,8 @@ NativeBattleSound::NativeBattleSound(const NativeBattleSoundBinding& binding):st
 NativeBattleSound::~NativeBattleSound()=default;
 std::optional<int32_t> NativeBattleSound::voice(EventEntry& e){auto& x=*state_;if(!x.current())return {};const uint64_t key=uint64_t(e.id)<<32|e.currentCommand;auto& cursor=x.voices[key];int32_t result=0;if(!resumeSourceBattleVoice(e,x.services,cursor,result)){x.pending=cursor.pending();return {};}x.voices.erase(key);x.pending=0;return result;}
 std::optional<int32_t> NativeBattleSound::menu(uint32_t key){return state_->start(key,{});}
+std::optional<int32_t> NativeBattleSound::position(uint32_t key,const std::array<float,3>& position){return state_->start(key,position);}
 uint32_t NativeBattleSound::pending()const{return state_->pending;}
 bool NativeBattleSound::usesRegistry(const PositionalSfxRegistry* registry)const{return state_->binding.registry.get()==registry;}
+bool NativeBattleSound::usesRuntime(const EventNativeRuntime* vm)const{return state_->binding.vm==vm;}
 }

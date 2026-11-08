@@ -1,4 +1,7 @@
 #include "battle_sequence_binding.hpp"
+#include "battle_sequence_camera_receipt.hpp"
+#include "harbor_source_field_admission.hpp"
+#include "harbor_source_display_pass.hpp"
 #include "game.hpp"
 #include "event_native_runtime.hpp"
 #include "event_controls.hpp"
@@ -6,7 +9,20 @@
 #include "field_battle_information.hpp"
 #include "event_memory_release.hpp"
 namespace ttyd {
-BattleSequenceBinding::BattleSequenceBinding(Game& game,EventNativeRuntime& vm):game_(game),vm_(vm),process_(game.battleSequenceProcess),npcs_(game.originalFieldNpcs){}
+namespace {bool poolBacking(EventAddressSpace&m,uint32_t address,const uint8_t*bytes,uint32_t size){return m.withRawRamAccess([&](EventAddressSpace::RawRamAccess&r){return r.matchesBacking(address,size,bytes);});}}
+BattleSequenceBinding::BattleSequenceBinding(Game& game,EventNativeRuntime& vm):game_(game),vm_(vm),process_(game.battleSequenceProcess),npcs_(game.originalFieldNpcs),gameLife_(game.battleSequenceFacade_.proof()),vmLife_(vm.nativeFacadeProof()){}
+bool BattleSequenceBinding::facadeCurrent()const{
+ if(!facade_.proof().current()||!gameLife_.current()||!vmLife_.current())return false;
+ return process_&&game_.battleSequenceProcess==process_&&game_.originalFieldNpcs==npcs_&&(!storage_||(process_->storage==storage_&&storage_->pouch_==game_.progress.originalPouch&&storage_->aliases(vm_.memory)));
+}
+std::shared_ptr<const BattleSequenceNestedPoolReceipt> BattleSequenceBinding::nestedPoolReceipt()const{return nestedPool_&&nestedPool_->current()?nestedPool_:nullptr;}
+HarborBattleCameraReceipt BattleSequenceBinding::battleCameraReceipt()const{return cameraReceipt_?cameraReceipt_->publication():HarborBattleCameraReceipt{};}
+bool BattleSequenceBinding::bindHarborSourceServices(std::shared_ptr<const HarborSourceFieldServices> services){
+ if(invoking_||!facadeCurrent()||!services||!services->lifetime||!services->current)return false;
+ if(harborServices_){const auto original=harborServicesIdentity_.lock();return original==services&&!original.owner_before(services)&&!services.owner_before(original); }
+ harborServicesIdentity_=services;harborServices_=std::make_shared<const HarborSourceFieldServices>(*services);return true;
+}
+std::shared_ptr<HarborSourceFieldAdmission> BattleSequenceBinding::sourceHarbor()const{return harborAdmission_&&harborAdmission_->current()?harborAdmission_:nullptr;}
 // Bind BEFORE legacy snapshot B exists and only with established field NPC
 // owner. Failed script import may reuse only a COMPLETE byte-identical source
 // view; it does not repair partial/conflicting mappings or reset live state.
@@ -27,35 +43,41 @@ std::unique_ptr<BattleSequenceBinding> BattleSequenceBinding::bind(Game& game,Ev
     if(result->process_->storage && !result->attachStorage(result->process_->storage))return {};
     return result;
 }
-BattleSequenceBinding::~BattleSequenceBinding(){for(auto a:storageMappings_)vm_.memory.unregisterExternalRam(a);if(mapped_)vm_.memory.unregisterExternalRam(0x8041e968);}
+BattleSequenceBinding::~BattleSequenceBinding(){
+ facade_.retire();if(nestedPool_)nestedPool_->retire();
+ if(!vmLife_.current())return;
+ if(storage_)storage_->unregisterOwnAliases(vm_.memory,storageMappings_);
+ if(mapped_&&poolBacking(vm_.memory,0x8041e968,process_->savedMode.data(),4))vm_.memory.unregisterExternalRam(0x8041e968);
+}
 // Actual field party/NPC shared pool identity must agree. Bind existing W/RAM
 // before entry/init; no synthetic empty animation pool replaces missing owners.
 bool BattleSequenceBinding::attachAnimationPool(){
-    if(animationMemory_ || entered_ || init_.active || fieldInit_.active || !game_.fieldParties.originalPool || game_.fieldParties.originalPool!=npcs_->poses().sharedPool())return false;
-    animationMemory_=AnimationPoolMemory::bind(game_.fieldParties.originalPool,vm_.memory);return bool(animationMemory_);
+    if(!facadeCurrent() || animationMemory_ || entered_ || init_.active || fieldInit_.active || !game_.fieldParties.originalPool || game_.fieldParties.originalPool!=npcs_->poses().sharedPool())return false;
+    animationMemory_=AnimationPoolMemory::bind(game_.fieldParties.originalPool,vm_);return bool(animationMemory_);
 }
 // Five alias spans: heap globals8041e808(20bytes), pouch/battle pointer cells,
 // source arena and original pouch. Partial map failure unregisters only completed
 // spans; process storage publishes only after all mappings succeed.
 bool BattleSequenceBinding::attachStorage(std::shared_ptr<BattleSequenceStorage> owner){
-    if(!owner || owner->pouch_!=game_.progress.originalPouch || !storageMappings_.empty() || fieldInit_.active || (process_->storage && process_->storage!=owner))return false;
+    if(!facadeCurrent() || !owner || owner->pouch_!=game_.progress.originalPouch || !storageMappings_.empty() || fieldInit_.active || (process_->storage && process_->storage!=owner))return false;
     struct Span {uint32_t address;uint8_t* bytes;uint32_t size;};
     const Span spans[]={{0x8041e808,owner->globals_.data(),20},{0x8041eb00,owner->pouchPointer_.data(),4},{0x8041eb90,owner->battlePointer_.data(),4},{owner->arenaAddress_,owner->arena_.data(),uint32_t(owner->arena_.size())},{owner->pouchAddress_,owner->pouch_->bytes.data(),uint32_t(owner->pouch_->bytes.size())}};
     for(const auto& span:spans){if(!vm_.memory.registerExternalRam(span.address,span.bytes,span.size)){for(auto a:storageMappings_)vm_.memory.unregisterExternalRam(a);storageMappings_.clear();return false;}storageMappings_.push_back(span.address);}
-    process_->storage=std::move(owner);return true;
+    storage_=owner;process_->storage=std::move(owner);return true;
 }
 // Require exact VM facade, attached owner, actual flush/barrier providers and
 // source allocator admission before effects. Allocation is the shared primary
 // map arena; a different facade cannot stand in merely by matching addresses.
 std::optional<uint32_t> BattleSequenceBinding::allocateMap(uint32_t root,uint32_t bytes,EventAddressSpace& facade){
-    if(&facade!=&vm_.memory || storageMappings_.empty() || !process_->storage || !vm_.platform.flushBlock || !vm_.platform.systemCall || !process_->storage->canAllocate(root,bytes,facade))return {};
+    if(!facadeCurrent() || &facade!=&vm_.memory || storageMappings_.empty() || !process_->storage || !vm_.platform.flushBlock || !vm_.platform.systemCall || !process_->storage->canAllocate(root,bytes,facade))return {};
+    uint32_t primary=0;if(!vm_.memory.readWord(0x8041e808,primary)||root!=primary)return {}; // Nested lease allocations belong only to its adopted owner.
     return eventMapAllocate(root,bytes,vm_.memoryBinding.services());
 }
 // Walk32-byte-aligned source heap headers: validate full header/payload span,
 // live-used bit and monotonic nonoverlapping next. A matching payload address
 // alone cannot prove current allocation ownership or sufficient size.
 bool BattleSequenceBinding::ownsMapAllocation(uint32_t payload,uint32_t bytes,const EventAddressSpace& facade) const{
-    if(&facade!=&vm_.memory || storageMappings_.empty() || !process_->storage)return false;
+    if(!facadeCurrent() || &facade!=&vm_.memory || storageMappings_.empty() || !process_->storage)return false;
     const auto& owner=*process_->storage;uint32_t root=0;if(!facade.readWord(0x8041e808,root))return false;
     const uint64_t end=uint64_t(owner.arenaAddress_)+owner.arena_.size();
     for(uint32_t h=root;;){uint32_t next=0,size=0;uint16_t used=0;
@@ -69,6 +91,7 @@ bool BattleSequenceBinding::ownsMapAllocation(uint32_t payload,uint32_t bytes,co
 // GP+168 field work identity and active owned actor at F+8. This is no-effects
 // native admission, not source NPC initialization or completed battle setup.
 bool BattleSequenceBinding::admitEntry() const{
+    if(!facadeCurrent())return false;
     uint32_t gp=0,f=0,n=0,flags=0;
     return (!game_.fieldParties.originalPool || game_.fieldParties.originalPool==npcs_->poses().sharedPool()) && !game_.trioAttack.cameras() && vm_.memory.readWord(0x80415fd0,gp) && vm_.memory.readWord(gp+0x168,f) && f==npcs_->fieldWorkAddress() && vm_.memory.readWord(f+8,n) && npcs_->ownsFieldActor(n) && vm_.memory.readWord(n,flags) && (flags&1);
 }
@@ -84,6 +107,8 @@ uint32_t BattleSequenceBinding::pending() const{
 // Entered becomes true only after complete Init. Stack-local bridge closures
 // are rebuilt per call; retained child cursors belong to this facade, not them.
 bool BattleSequenceBinding::callback(uint32_t fn,OriginalSequenceWork& work,const BattleSequenceEntryServices& backend,const SoundFlagServices& sound){
+    if(invoking_||!facadeCurrent())return false;
+    invoking_=true;struct Invocation{bool&v;~Invocation(){v=false;}}invocation{invoking_};
     if((fn!=0x80073f20 && fn!=0x80073b24) || &work!=&game_.originalSequence->state.work || game_.trioAttack.cameras())return false;
     if(fn==0x80073f20 && !init_.active && !admitEntry())return false;
     if(fn==0x80073b24 && !entered_)return false;
@@ -99,15 +124,23 @@ bool BattleSequenceBinding::callback(uint32_t fn,OriginalSequenceWork& work,cons
         case 0x800d5eb0:
             if(!binding.storageMappings_.empty())return binding.vm_.memory.readWord(0x8041eb00,c.result);
             break;
-        case 0x8000e95c:{if(c.args[0]!=4 || c.args[1]!=2 || !game.cameraManager)return false;auto* camera=game.cameraManager->camera(4);if(!camera)return false;camera->mode=2;return true;}
+        case 0x8000e95c:{if(c.args[0]!=4 || c.args[1]!=2 || !game.cameraManager)return false;auto* camera=game.cameraManager->camera(4);if(!camera)return false;camera->mode=2;binding.cameraReceipt_=BattleSequenceCameraReceipt::capture(binding);return true;}
         // Actual map pool allocation requires source capacity0x64000 and
         // platform cache/barrier hooks. Camera call admits only source(4, 2);
         // saved-switch call only(0, 0xf5de0180). Others delegate to real backend.
         case 0x80030078:{
             const auto& storage=binding.process_->storage;uint32_t root=0;
             if(!storage || binding.storageMappings_.empty() || !binding.vm_.platform.flushBlock || !binding.vm_.platform.systemCall || !binding.vm_.memory.readWord(0x8041e808,root) || !storage->canAllocate(root,0x64000,binding.vm_.memory))return false;
-            allocateEventBattleMapPool(binding.vm_.memoryBinding.services());return true;
+            auto receipt=BattleSequenceNestedPoolReceipt::prepare(binding);if(!receipt)return false;
+            allocateEventBattleMapPool(binding.vm_.memoryBinding.services());
+            // The actual void callee completed. Metadata failure must never
+            // replay its successful source allocation on a retry.
+            (void)receipt->complete();binding.nestedPool_=std::move(receipt);return true;
         }
+        case 0x800f8f04:
+            if(!binding.harborServices_)break; // Preserve an existing genuine external provider.
+            if(!binding.harborAdmission_)binding.harborAdmission_=HarborSourceFieldAdmission::prepare(binding);
+            return binding.harborAdmission_&&binding.harborAdmission_->resumeCold(c.args[0]);
         case 0x80114518:initializePackedBattleInformation(c.args[0],binding.vm_.memoryBinding.services());return true;
         case 0x80114598:return binding.vm_.memory.writeWord(c.args[0],c.args[1]);
         case 0x80114590:return binding.vm_.memory.writeWord(c.args[0]+4,c.args[1]);

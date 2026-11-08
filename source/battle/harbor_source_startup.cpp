@@ -1,5 +1,6 @@
 #include "harbor_source_startup.hpp"
 #include "battle_cold_storage.hpp"
+#include "battle_break_slot_init_continuation.hpp"
 #include "battle_camera_frame.hpp"
 #include "battle_event_callbacks.hpp"
 #include "battle_packed_unit_equipment.hpp"
@@ -22,7 +23,15 @@ struct HarborSourceStartup::State {
     BattleColdInitCursor cold;
     BattleUnitSetupCursor setup;
     BattleMenuResourceCursor menu;
+    BattleBreakSlotInitCursor breakSlot;
+    struct SlotAllocation {
+        uint32_t address, bytes;
+        std::shared_ptr<const uint8_t> lifetime;
+    };
+    std::vector<SlotAllocation> slotAllocations;
     std::unique_ptr<HarborSourceUnitConstruction> units;
+    std::unique_ptr<HarborSourceAudience> audience;
+    std::unique_ptr<HarborSourceAudienceNoise> audienceNoise;
     bool advanceUnit = false;
     std::optional<BattleColdInitRequest> heldColdChild;
     std::shared_ptr<const uint8_t> battleLifetime;
@@ -37,6 +46,11 @@ struct HarborSourceStartup::State {
         if (!binding.pool->current()) { invalid = true; return false; }
         if (battleLifetime && binding.pool->allocationLifetime(battle) != battleLifetime) {
             invalid = true; return false;
+        }
+        for (const auto& allocation : slotAllocations) {
+            if (binding.pool->allocationLifetime(allocation.address) != allocation.lifetime) {
+                invalid = true; return false;
+            }
         }
         if (published && word(BattleColdPointerCell) != battle) invalid = true;
         return !invalid;
@@ -80,6 +94,107 @@ struct HarborSourceStartup::State {
         pending = 0;
         return true;
     }
+    std::optional<uint32_t> slotCall(const BattleBreakSlotInitRequest& q) {
+        if (!current()) return {};
+        auto& memory = binding.vm->memory;
+        switch (q.function) {
+        case 0x8020524c: // Whole original pure controller getter.
+            return word(BattleColdPointerCell) + 0x1616c;
+        case 0x80205210: // Complete reel getter, including its fresh global load.
+            return word(BattleColdPointerCell) + 0x1616c + 0x18 + q.argument * 0x5c;
+        case 0x800050b4:
+            if (q.argument != battle + 0x1616c || q.bytes != 0x134 ||
+                !memory.contiguousRam(q.argument, q.bytes)) return {};
+            return eventFillMemory(q.argument, 0, q.bytes, actors().memory);
+        case 0x800f8934: {
+            const auto allocation = binding.pool->allocate(binding.pool->root(), q.argument);
+            if (!allocation) return {};
+            if (*allocation) {
+                const auto lifetime = binding.pool->allocationLifetime(*allocation);
+                if (!lifetime) return {};
+                slotAllocations.push_back({*allocation, q.argument, lifetime});
+            }
+            return allocation;
+        }
+        case 0x8000519c: {
+            // Explicit native admission: every private source word is known,
+            // destination lies in its real owned allocation, and no partial
+            // copy occurs if this child cannot yet be admitted.
+            if (!q.bytes) return 0;
+            if (!q.privateSourceOffset || (*q.privateSourceOffset & 3) || (q.bytes & 3) ||
+                uint64_t(*q.privateSourceOffset) + q.bytes > q.privateWords.size() * 4) return {};
+            bool owned = false;
+            for (const auto& allocation : slotAllocations)
+                if (allocation.address == q.argument && q.bytes <= allocation.bytes) owned = true;
+            if (!owned || !memory.contiguousRam(q.argument, q.bytes)) return {};
+            for (uint32_t i = 0; i < q.bytes; i += 4)
+                if (!q.privateWords[(*q.privateSourceOffset + i) / 4]) return {};
+            for (uint32_t i = 0; i < q.bytes; i += 4)
+                required(memory.writeWord(q.argument + i, *q.privateWords[(*q.privateSourceOffset + i) / 4]));
+            return 0;
+        }
+        default: return {};
+        }
+    }
+    bool slotInit() {
+        // Admission reads do not publish or replace source data. The parent
+        // performs its own original ordered captures after its controller call.
+        if (!breakSlot.active()) {
+            for (unsigned i = 0; i < 21; ++i) {
+                uint32_t ignored;
+                if (!binding.vm->memory.readWord(0x802fe040 + 4 * i, ignored)) return false;
+            }
+            if (!binding.vm->memory.contiguousRam(battle + 0x1616c, 0x134)) return false;
+        }
+        BattleBreakSlotInitServices services;
+        services.actors = actors(); services.lifetime = binding.lifetime; services.user = this;
+        services.current = [](void* p) { return static_cast<State*>(p)->current(); };
+        services.call = [](void* p, const BattleBreakSlotInitRequest& q) {
+            return static_cast<State*>(p)->slotCall(q);
+        };
+        const bool done = resumePackedBattleBreakSlotInit(services, breakSlot);
+        if (!done && breakSlot.pending()) pending = breakSlot.pending();
+        return done;
+    }
+    std::optional<BattleAudienceSetupOutput> audienceNoiseCall(const BattleAudienceSetupRequest& q) {
+        if (!binding.audienceSound || !binding.audienceRegistry) return {};
+        if (!audienceNoise) {
+            HarborSourceAudienceNoiseBinding b;
+            b.vm = binding.vm; b.pool = binding.pool; b.battle = battle;
+            b.lifetime = binding.lifetime; b.current = [this] { return current(); };
+            b.sourceData = binding.audienceSourceData;
+            b.sound = binding.audienceSound; b.registry = binding.audienceRegistry;
+            b.policy = binding.audienceNoisePolicy;
+            audienceNoise = HarborSourceAudienceNoise::create(std::move(b));
+            if (!audienceNoise) return {};
+        }
+        if (!audienceNoise->resume(q)) return {};
+        return BattleAudienceSetupOutput{};
+    }
+    bool audienceInit() {
+        if (!audience) {
+            HarborSourceAudienceBinding a;
+            a.vm = binding.vm; a.pool = binding.pool; a.battle = battle;
+            a.lifetime = binding.lifetime;
+            a.current = [this] { return current(); };
+            a.files = binding.audienceFiles; a.sourceData = binding.audienceSourceData;
+            a.child = [this](const BattleAudienceSetupRequest& q) {
+                if (q.function == 0x801a0b88 && q.callsite == 0x801a8584 &&
+                    binding.audienceSound && binding.audienceRegistry)
+                    return audienceNoiseCall(q);
+                return binding.audienceChild ? binding.audienceChild(q) : std::nullopt;
+            };
+            a.addAudience = binding.audienceAdd;
+            audience = HarborSourceAudience::create(std::move(a));
+            if (!audience) return false;
+        }
+        if (!audience->resume()) {
+            pending = audienceNoise && audienceNoise->pending() ? audienceNoise->pending() :
+                (audience->pending() ? audience->pending() : 0x801a83f8);
+            return false;
+        }
+        return true;
+    }
     std::optional<uint32_t> coldCall(const BattleColdInitRequest& q) {
         pending = q.function;
         if (!current()) return {};
@@ -105,6 +220,9 @@ struct HarborSourceStartup::State {
             return 0;
         }
         if (q.function == 0x801030f8) return displayInit() ? std::optional<uint32_t>(0) : std::nullopt;
+        if (q.function == 0x801a83f8 && q.callsite == 0x800f9020)
+            return audienceInit() ? std::optional<uint32_t>(0) : std::nullopt;
+        if (q.function == 0x8020507c) return slotInit() ? std::optional<uint32_t>(0) : std::nullopt;
         if (!heldColdChild) heldColdChild = q;
         // Stable child identity even though the cold parent's request is a
         // read-only value transport. The underlying child owns its continuation.
