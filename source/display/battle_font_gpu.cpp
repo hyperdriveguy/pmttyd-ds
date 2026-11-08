@@ -2,12 +2,16 @@
 #include <cmath>
 #include <cstdlib>
 namespace ttyd {namespace {
+// Exact admitted US font catalog: 162 glyphs, height 22, 512x256 atlas. These are
+// package identity/layout checks, not a glyph cap for arbitrary source BFN data.
 bool metadata(const MessageFont& f){
  if(f.glyphs.size()!=162)return false;
  for(auto m:f.mapping)if(m>=f.glyphs.size())return false;
  for(const auto&g:f.glyphs)if(g.height!=22||uint32_t(g.x)+g.width>512||uint32_t(g.y)+g.height>256)return false;
  return true;
 }
+// Tilted native top-screen raster uses 240x400 viewport/scissor coordinates.
+// Reversed PICA depth admits scale [-1,0], offset [0,1]; all projections stay finite.
 bool rect(const NativeCameraRect&r){return r.width&&r.height&&r.x<=240&&r.y<=400&&uint64_t(r.x)+r.width<=240&&uint64_t(r.y)+r.height<=400;}
 bool raster(const BattleFontRasterView&r){
  if(!rect(r.viewport)||!rect(r.scissor)||!std::isfinite(r.depthScale)||!std::isfinite(r.depthOffset)||r.depthScale>0||r.depthScale< -1||r.depthOffset<0||r.depthOffset>1)return false;
@@ -15,7 +19,7 @@ bool raster(const BattleFontRasterView&r){
  return true;
 }
 bool matrix(const BattleActMatrix&m){for(float f:m)if(!std::isfinite(f))return false;return true;}
-// Conservative native finite domain: validate the exact composed4x4 and all
+// Conservative native finite domain: validate the exact composed 4x4 and all
 // shader clip lanes before glyph RNG/admission. Do not divide by W or cull:
 // singular, offscreen, zero-area and transparent source glyphs remain valid.
 bool geometry(const BattleFontGlyphPacket&p){
@@ -30,6 +34,8 @@ bool geometry(const BattleFontGlyphPacket&p){
   if(c==3){const volatile float next=sum+p.raster.projection[r][3];if(!std::isfinite(next))return false;sum=next;}
   transform[r][c]=sum;
  }
+ // Four glyph corners use source integer XY with Z=0, W=1. Test every
+ // product/sum BEFORE RNG, without perspective division or visibility culling.
  const auto&q=p.quad;
  const float points[4][4]={{float(q.left),float(q.top),0,1},{float(q.right),float(q.top),0,1},
                            {float(q.right),float(q.bottom),0,1},{float(q.left),float(q.bottom),0,1}};
@@ -46,6 +52,9 @@ bool same(const WindowFontQuad&a,const WindowFontQuad&b){return a.left==b.left&&
 }
 bool BattleFontLease::current()const{return generation&&generation->resident_&&font&&font==generation->font_&&texture&&texture==generation->texture_;}
 BattleFontGpuResource::~BattleFontGpuResource(){retire();}
+// Native import format 0=RGBA8, one whole unrotated 512x256 image, UV0/1/1/0.
+// Adoption copies metadata and creates a fresh opaque generation; texture memory
+// remains borrowed. Retired leases cannot revive when an address is reused.
 bool BattleFontGpuResource::adopt(const MessageFont&f,const BattleClassSurfaceImport&i){
  if(generation_||!metadata(f)||!i.identity||i.width!=512||i.height!=256||i.format!=0||i.count!=1||i.subWidth!=512||i.subHeight!=256||i.rotated||i.uv!=std::array<float,4>{0,1,1,0})return false;
  auto generation=std::shared_ptr<BattleFontGeneration>(new BattleFontGeneration);
@@ -69,16 +78,24 @@ CameraProjectionMatrix battleFontGlyphTransform(const BattleFontGlyphPacket&p){
  }
  return out;
 }
+// Publication lifetime can outlast the source callback/camera pass. Once a
+// checked lifetime fails, invalid_ is sticky; later true predicates cannot revive it.
 bool BattleFontGlyphSink::current()const{
  if(!bound_||invalid_)return false;
  if(!binding_.font.current()||!binding_.publicationCurrent||!binding_.publicationCurrent()){invalid_=true;return false;}
  return true;
 }
+// Source operations additionally check short currentness and poison on failure.
+// snapshot() checks only long publication currentness, not the finished camera pass.
 bool BattleFontGlyphSink::source(){if(!current()||!binding_.sourceCurrent||!binding_.sourceCurrent()){invalid_=true;return false;}return true;}
+// Reserve capacity before source RNG; ordered admission/emit must be paired.
+// Sink is one-shot: bound_ stays set after retirement, so it cannot rebind itself.
 bool BattleFontGlyphSink::bind(BattleFontGlyphBinding b){
  if(bool(b.orderedAdmit)!=bool(b.orderedEmit)||bound_||running_||!b.font.current()||!b.resources||!b.capacity||!raster(b.raster)||!b.sourceCurrent||!b.publicationCurrent||!b.ordinaryProfile||!b.random||!b.publicationCurrent()||!b.sourceCurrent())return false;
  building_.reserve(b.capacity);binding_=std::move(b);bound_=true;invalid_=false;return true;
 }
+// Source matrix slot 0 and TEV color-register slot 1 are distinct retained loads.
+// No default identity or color is synthesized before glyph admission.
 bool BattleFontGlyphSink::loadMatrix(const BattleActMatrix&m,uint32_t slot){
  if(running_||pending_||published_||slot!=0||!matrix(m)||!source())return false;
  matrix_=m;return true;
@@ -87,6 +104,9 @@ bool BattleFontGlyphSink::tevColor(uint32_t slot,uint32_t rgba){
  if(running_||pending_||published_||slot!=1||!source())return false;
  color_=rgba;return true;
 }
+// Ordinary source GX profile and full geometry/storage admission precede the
+// two irand(64) calls owned by the glyph kernel. Offscreen/blank/transparent
+// glyphs still retain source effects; capacity is native policy, not source count.
 bool BattleFontGlyphSink::admit(const WindowFontQuad&q){
  if(pending_||published_||!matrix_||!color_||q.rgba!=*color_||building_.size()>=binding_.capacity||!source()||!binding_.ordinaryProfile()||!source())return false;
  BattleFontGlyphPacket p{binding_.font,q,*matrix_,binding_.raster};if(!validBattleFontGlyphPacket(p))return false;
@@ -109,6 +129,9 @@ SourceMatrixFontAtomicGlyphServices BattleFontGlyphSink::glyphServices(){
  s.random=[](void*p,uint32_t bound){return static_cast<BattleFontGlyphSink*>(p)->binding_.random(bound);};
  s.emit=[](void*p,const WindowFontQuad&q){static_cast<BattleFontGlyphSink*>(p)->emit(q);};return s;
 }
+// Pin resource context through the invocation. Retirement before admission can
+// hold; retirement/reentry after accepted RNG/emit violates the atomic contract.
+// Cleanup requested during the call is deferred until this guard unwinds.
 bool BattleFontGlyphSink::glyph(const SourceMatrixFontGlyph&q){
  if(running_||retireRequested_)return false;
  const auto resources=binding_.resources;running_=true;
@@ -116,6 +139,8 @@ bool BattleFontGlyphSink::glyph(const SourceMatrixFontGlyph&q){
  if(!source())return false;
  return drawSourceMatrixFontAtomicGlyph(q,glyphServices());
 }
+// Publication moves one completed immutable leaf; it does not finish the outer
+// mixed packet sequence, source display callback, camera queue or GPU submission.
 bool BattleFontGlyphSink::publish(){
  if(running_||publishing_||pending_||published_||!source())return false;
  publishing_=true;published_=std::make_shared<const std::vector<BattleFontGlyphPacket>>(std::move(building_));publishing_=false;return true;

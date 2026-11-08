@@ -14,6 +14,8 @@ enum class BattleTexturePlaneCall : uint32_t {
   AlphaOp=0x802b8a50,AlphaIn=0x802b89a4,Order=0x802b8e30,TevOp=0x802b88d4,
   TextureWidth=0x802b76c4,TextureHeight=0x802b76d4,Begin=0x802b5a6c
 };
+// Kind selects actual SDK/GX call versus one FIFO scalar. An engaged zero
+// return can be a valid acknowledgment; only empty optional means unavailable.
 struct BattleTexturePlaneRequest {
   BattleTexturePlaneKind kind=BattleTexturePlaneKind::Call;
   BattleTexturePlaneCall function=BattleTexturePlaneCall::Cull;
@@ -27,8 +29,8 @@ struct BattleTexturePlaneServices {
   // Query return: actual camera / opaque texture object / format / dimensions.
   // Other calls acknowledge void with optional0. FIFO kind identifies a single
   // original CC008000 float/byte write; function is unused for FIFO requests.
-  // TextureObject arguments are actual palette,index; LoadTexture arguments
-  // handle,slot0; all texture queries receive that retained opaque handle.
+  // TextureObject arguments are actual palette, index; LoadTexture arguments
+  // handle, slot 0; all texture queries receive that retained opaque handle.
   std::optional<uint32_t> (*request)(void*,const BattleTexturePlaneRequest&)=nullptr;
   // Actual SDK matrix calls: Copy8029dd30 / Concat8029dd64 and, for the
   // linked TexPlane wrapper, Scale8029e2b0 / Trans8029e230. False must retain any partial
@@ -42,6 +44,7 @@ public:
   BattleTexturePlaneCursor(const BattleTexturePlaneCursor&)=delete;
   BattleTexturePlaneCursor& operator=(const BattleTexturePlaneCursor&)=delete;
   bool active() const;
+  // Caller must separately own cancellation/teardown of already committed effects.
   void reset();
 private:
   struct State;

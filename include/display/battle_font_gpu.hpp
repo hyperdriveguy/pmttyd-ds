@@ -15,6 +15,8 @@ private:
  const void* texture_=nullptr;std::shared_ptr<const MessageFont> font_;
  friend class BattleFontGpuResource;friend struct BattleFontLease;
 };
+// Strong generation/metadata refs preserve identity, not native texture storage.
+// Real texture owner must retire generation before replacing/freeing its pixels.
 struct BattleFontLease {
  std::shared_ptr<const BattleFontGeneration> generation;
  std::shared_ptr<const MessageFont> font;
@@ -84,6 +86,8 @@ private:
  std::shared_ptr<const std::vector<BattleFontGlyphPacket>> published_;
  std::optional<BattleFontGlyphPacket> pending_;
  std::optional<BattleActMatrix> matrix_;std::optional<uint32_t> color_;
+ // invalid_ is permanent for this sink. Source checks and long-publication
+ // checks have different call sites; neither permits resurrection after failure.
  bool bound_=false,publishing_=false,invoking_=false,running_=false,retireRequested_=false;mutable bool invalid_=false;
  bool current()const;bool source();bool admit(const WindowFontQuad&);
  void emit(const WindowFontQuad&);

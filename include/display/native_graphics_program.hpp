@@ -7,5 +7,6 @@ bool prepareNativeGraphicsParkingProgram();
 // No allocation/draw/RNG. Requires live C3D; false means never prepared. Park
 // after GPU synchronization before freeing scene/C2D shaders. The shader/DVLB
 // remain alive across every C3D_Fini/reinit until process exit.
+// Host build deliberately reports unavailable; it has no graphics context.
 bool bindNativeGraphicsParkingProgram();
 }

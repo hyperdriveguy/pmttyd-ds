@@ -7,6 +7,10 @@ using Q=BattleTexturePlaneRequest;
 Q request(F function,std::vector<uint32_t> integers={}) {
   Q q;q.function=function;q.integers=std::move(integers);return q;
 }
+// Original GX enums: attr9=POS,11=CLR0,13=TEX0; desc1=DIRECT. Format0
+// uses XYZ1/F32type4, RGBA1/RGBA8type5, ST1/F32. Channel4=COLOR0A0,
+// lighting0, ambientREG0/materialVTX1, lights0, diffuseCLAMP2/attenNONE2.
+// Texgen0: typeMATRIX2x4=1, sourceTEX0=4, identity60, postidentity125, normalize0.
 const std::vector<Q> init{
   request(F::Cull,{0}),request(F::ClearDescriptors),
   request(F::Descriptor,{9,1}),request(F::Descriptor,{11,1}),request(F::Descriptor,{13,1}),
@@ -14,6 +18,9 @@ const std::vector<Q> init{
   request(F::AttributeFormat,{0,13,1,4,0}),request(F::Channels,{1}),
   request(F::ChannelControl,{4,0,0,1,0,2,2}),request(F::TextureGenerators,{1}),
   request(F::TextureGenerator,{0,1,4,60,0,125})};
+// EXACT format 0 branch: RGB=RASC10 (ZERO15 elsewhere), alpha=RASA5*TEXA4
+// (ZERO7 endpoints). TEV ADD0, biasZERO0, scale1 token0, clamp1, outputPREV0.
+// Order(stage0, coord0, map0, COLOR0A0=4). Other formats request MODULATE token0.
 const std::vector<Q> intensity{
   request(F::TevStages,{1}),request(F::ColorOp,{0,0,0,0,1,0}),
   request(F::ColorIn,{0,15,15,15,10}),request(F::AlphaOp,{0,0,0,0,1,0}),
@@ -33,6 +40,8 @@ bool same(const BattleTexturePlaneServices& a,const BattleTexturePlaneServices& 
 enum class Phase {Init,Copy,Camera,View,Concat,LoadMatrix,Color,Palette,
                   Texture,LoadTexture,Format,Material,Width,Height,Begin,Fifo};
 }
+// part0=Plane2,1=Init-only,2=PlainGX-only. Borrowed base/RGBA/color arrays
+// retain object identity across holds but load values at their source usepoints.
 struct BattleTexturePlaneCursor::State {
   BattleTexturePlaneServices owner;
   unsigned part=0;
@@ -53,6 +62,7 @@ struct BattleTexturePlaneCursor::State {
 BattleTexturePlaneCursor::BattleTexturePlaneCursor()=default;
 BattleTexturePlaneCursor::~BattleTexturePlaneCursor()=default;
 bool BattleTexturePlaneCursor::active() const{return bool(state_);}
+// Explicit reset discards retained state; it does not undo prior SDK/GX/FIFO work.
 void BattleTexturePlaneCursor::reset(){state_.reset();}
 bool BattleTexturePlaneCursor::resumePart(unsigned part,const BattleActMatrix* base,uint32_t texture,
     const uint32_t* rgba,const std::array<uint32_t,4>* colors,
@@ -70,6 +80,9 @@ bool BattleTexturePlaneCursor::resumePart(unsigned part,const BattleActMatrix* b
   auto& c=*cursor.state_;const auto& m=s.actors.memory;
   const auto word=[&](uint32_t address){return m.word(m.user,address);};
   const auto real=[&](uint32_t address){return scalar(word(address));};
+  // Texture dimension narrows LOW16 into unsigned double43300000: low,
+  // unlike signed XOR-bias conversions. Fresh half at 0x80422234 and bias at 0x802ee400
+  // are read separately for width/height; zero dimensions are not rejected here.
   const auto dimension=[&](uint32_t n) {
     // Exact source unsigned16 insertion, fresh .5 then fresh binary64 bias.
     const float half=real(0x80422234);
@@ -110,7 +123,11 @@ bool BattleTexturePlaneCursor::resumePart(unsigned part,const BattleActMatrix* b
     if(!acknowledge())return false;
     c.phase=Phase::Color;break;
   }
+  // Plane2 reads borrowed RGBA only AFTER matrix upload. PlainGX instead
+  // borrows four words directly and does not perform Init/Copy/camera work.
   case Phase::Color:c.color=*c.rgba;c.localColors.fill(c.color);c.phase=Phase::Palette;break;
+  // B+163f8 ->FileEntry+a0 holder ->actual palette. Texture queries/load
+  // use the returned opaque handle, not the source index as a native texture ID.
   case Phase::Palette:
     c.battle=currentBattleAddress(s.actors);
     c.palette=word(word(word(c.battle+0x163f8)+0xa0));c.phase=Phase::Texture;break;
@@ -137,11 +154,16 @@ bool BattleTexturePlaneCursor::resumePart(unsigned part,const BattleActMatrix* b
     prepare(request(F::TextureHeight,{c.handle}));const auto value=acknowledge();if(!value)return false;
     c.halfHeight=dimension(*value);c.phase=Phase::Begin;break;
   }
+  // GXBegin primitive 128(0x80)=QUADS, format 0, four vertices. 36 scalar writes follow:
+  // per vertex XYZ3 floats, RGBA4 bytes, ST2 floats (nine acknowledged lanes).
   case Phase::Begin:
     prepare(request(F::Begin,{128,0,4}));if(!acknowledge())return false;
     c.index=0;c.phase=Phase::Fifo;break;
   case Phase::Fifo: {
     if(c.index==36){cursor.reset();return true;}
+    // c.pending pins the already loaded scalar through a held FIFO effect.
+    // Live ZERO at 0x80422240/ONE at 0x8042224c and color read-ahead must not be hoisted
+    // into an eager quad snapshot or postponed until its eventual store.
     if(!c.pending) {
       Q q;const auto vertex=c.index/9,lane=c.index%9;
       const auto& sourceColors=c.borrowedColors?*c.borrowedColors:c.localColors;

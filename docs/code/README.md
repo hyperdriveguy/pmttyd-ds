@@ -263,3 +263,7 @@ the typed traversal's narrower ownership domain.
 [Native animation lifetimes](native-animation-lifetimes.md) explains Entry/Release
 continuations, separate pending guards, Mario setup/publication and NPC lease/Draw
 ownership.
+
+[Graphics, fonts and texture planes](graphics-font-planes.md) explains process
+shader metadata lifetime, resident glyph generations, pre-RNG admission and
+retained direct-FIFO quad helpers.
