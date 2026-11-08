@@ -220,7 +220,7 @@ bool Game::beginHarborTutorialFromField(){
  if(!owner||!progress.originalPouch)return progress.originalPouch?
   harborTutorial.beginFromPouch(time,*progress.originalPouch,story):harborTutorial.beginFresh(time,progress.hp,10,story);
  NativeHarborFieldPouchBinding binding;binding.owner=owner;binding.pouch=progress.originalPouch;
- const auto proof=harborPouchFacade_.proof();
+ const auto proof=battleSequenceFacade_.proof();
  const std::weak_ptr<NativeMarioConstructor> weakOwner=owner;const std::weak_ptr<ProloguePouch> weakPouch=progress.originalPouch;
  binding.current=[this,proof,weakOwner,weakPouch]{
   if(!proof.current())return false;
@@ -232,7 +232,7 @@ bool Game::beginHarborTutorialFromField(){
  return harborTutorial.beginFromNativePouch(time,story,std::move(binding));
 }
 bool Game::commitHarborPouchReturn(const NativeHarborCompletionReceipt& receipt){
- const auto proof=harborPouchFacade_.proof();
+ const auto proof=battleSequenceFacade_.proof();
  const auto owner=nativeMarioConstructor();if(!owner||!progress.originalPouch)return false;
  const auto pouch=harborTutorial.commitNativePouchReturn(receipt,owner,progress.originalPouch);
  if(!pouch||!proof.current())return false;

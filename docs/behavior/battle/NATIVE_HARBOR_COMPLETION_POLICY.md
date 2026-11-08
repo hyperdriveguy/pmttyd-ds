@@ -118,7 +118,9 @@ predicate: check proof before borrowing Game, then verify its admitted public
 constructor and current canonical pointer/control blocks. Copies, moves,
 destruction and checkpoint reconstruction cannot inherit field write permission.
 The callback holds only weak field references; it adds no ownership cycle.
-Existing const-reference/fresh legacy battle entry retains its prior behavior
+The binding reuses the existing Game battle-sequence facade registration, whose
+last-member declaration retires it before owned resources. No duplicate lifetime
+registration/allocation is added. Existing const-reference/fresh legacy battle entry retains its prior behavior
 and has no canonical-return permission. Absent legacy inventory stays absent.
 
 `HarborTutorial::commitNativePouchReturn` requires this actual facade/runtime,

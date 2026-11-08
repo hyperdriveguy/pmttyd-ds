@@ -450,7 +450,6 @@ public:
     const GoombaReward& fieldReward() const {return goombaReward;}
     const std::vector<FieldNpcSoundRequest>& fieldNpcSounds() const{return npcSoundRequests;}
 private:
-    NativeFacadeRegistration harborPouchFacade_;
     void updateNativeFieldAnimation();
     void prepareNativeFieldAnimation();
     void troubleBoardEventMain(const Input&);

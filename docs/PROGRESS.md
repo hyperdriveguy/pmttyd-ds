@@ -20648,3 +20648,14 @@ owner control blocks and different pouch objects. The normal Game wrapper passes
 its admitted public owner and current Progress pointer. No source behavior,
 result/sequence or asset changes. Strengthened focused tests pass2/2 in4.89s; full
 revalidation is running and results will follow.
+
+
+Pouch field-facade lifetime reuse (2026-11-08): hardened9d29efcb passes658 C++
+in99.77s,278 Python in39.886s and native make all; its exact snapshot is at
+artifacts/harbor-pouch-return/hardened-accepted/validation-manifest.json.
+The final binding reuses existing Game::battleSequenceFacade_ rather than adding
+a duplicate registration. Its last-member declaration retires proof before
+owned resource destruction, and original native restore already retires it
+before mutation. This removes one C++ allocation per Game while preserving
+copy/move/restore invalidation. No source readiness/result/sequence is inferred.
+Final focused/full/native checks are running and will be recorded separately.
