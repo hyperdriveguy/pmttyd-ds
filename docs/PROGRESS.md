@@ -20825,8 +20825,18 @@ Original flags, handles and unrelated volume fields are preserved.
 Focused native_harbor_finishing_binding passes in the isolated committed334d4aba
 candidate plus this owned change. All24 record byte comparisons, invalid argument,
 copy/stale, nested-borrow and missing-last-byte/no-partial-prefix cases pass.
-Full make test and make all validation is pending below; no new emulator or
-hardware claim. The staged encounter still lacks a real field battle ticket.
+Full frozen validation now passes for committed c8a8d00d:
+make test0, 673/673 C++ in92.51s and 283 Python in38.12s;
+make all0, SOUNDTRACK=gamecube, after explicit assets-ready0 (482 editable
+recipes). Exact archive checks pin 5253 source files, no extra implementation
+inputs and 2265 unchanged prepared RomFS files. Native3DSX SHA256
+98bde55fd4a5067b4139ada7b2310a018e8cde610cec3a2080ac12f0858e5184. Independent scoped review found
+no material issue. Receipt: artifacts/harbor-ending-audience/accepted/validation-manifest.json;
+static logs/review, source archive and binaries are retained beside it. This
+validates that immutable source; concurrent uncommitted work remains outside
+the receipt. Existing compiler/Pillow warnings remain. No new emulator capture
+or target-hardware measurement. The staged encounter still lacks a real field
+battle ticket.
 Next: compose actual finishing/fade, sealed field NPC work, retained completion,
 GPU/audio teardown and canonical pouch return before accepting the original
 postbattle scene. Full Crump into/out-of-battle and full-game goals remain open.

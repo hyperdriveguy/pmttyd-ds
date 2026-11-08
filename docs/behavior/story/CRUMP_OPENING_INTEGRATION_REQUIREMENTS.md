@@ -327,3 +327,24 @@ the ending coordinator, complete the source battle/field sequence, release the
 original wait, publish story5 or execute afterbattle/crowd/dialogue. The normal
 return API remains unavailable until its real completion services produce the
 matching receipt; no HP/conclusion shortcut invokes it.
+
+## Native ordinary ending resource availability (2026-11-08)
+
+The native Crump ending has owned battle/victory music, original relief and
+StarPointGet1 samples, actual source key40 victory-event retirement and positive
+Star Point reward services. The finite finishing controller has actual
+Mario/party/status, source body-name/type42 and original voice children. The
+[finishing binding](../battle/NATIVE_HARBOR_FINISHING_BINDING.md) now also binds
+the original AudienceVolume(0,30) child over all24 actual source sound records,
+with whole writable-span admission before stores. This schedules source fades;
+it does not prove DSP silence or complete ordinary ending execution.
+
+CO-07 remains open. Normal composition still requires a real entered field
+battle ticket/NPC owner, admitted fade with actual opaque presentation on both
+screens, retained completion and synchronized graphics/audio teardown. Only the
+matching completed receipt can export to the canonical field pouch and admit
+the field return. After finishing becomes genuinely ready, completion must keep
+its own proofs: freezing ending access and retiring the reward model must not
+cause a held completion to depend again on the retired presentation guard.
+Original wait/Post/afterbattle execution, crowd/effect/audio presentation and
+fresh/resumed into-and-out-of-battle acceptance remain required for CO-08..10.
