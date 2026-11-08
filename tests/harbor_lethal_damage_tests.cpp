@@ -34,6 +34,21 @@ struct F {
 void lethalMario(){F f;f.relocate();const auto hp=f.u(1)+0x10c;assert(f.damage(false,CrumpWeapon));assert(f.h(hp)==0&&f.h(HarborTutorialPacked::Units+0x1000+0x10c)==1);}
 void lethalEnemy(){F f;f.relocate();assert(f.damage(true,JumpWeapon));assert(f.h(f.u(2)+0x10c)==0&&f.h(HarborTutorialPacked::Units+0x2000+0x10c)==1);}
 void revivalHeld(){F f;f.h(f.w(SourcePouch)+0x192+38,LifeShroom);assert(!f.damage(false,CrumpWeapon)&&f.h(f.u(1)+0x10c)==1);f.h(f.w(SourcePouch)+0x192+38,0);assert(f.damage(false,CrumpWeapon)&&!f.h(f.u(1)+0x10c));F enemy;enemy.w(enemy.u(2)+0x308,LifeShroom);assert(!enemy.damage(true,0x803538a8)&&enemy.h(enemy.u(2)+0x10c)==1);}
+// Base power1 becomes2 through the original element-defense attribute1.
+// A nonlethal151 hit remains admitted; a lethal151 hit holds before RNG/flags.
+void modifiedDamageRevival(){
+ for(uint16_t hp:{uint16_t(2),uint16_t(3)}){
+  F f;f.relocate();const auto unit=f.u(1),part=f.w(unit+0x14);
+  constexpr uint32_t DefenseAttributes=0x85300000;
+  assert(f.vm.memory.registerRam(DefenseAttributes,std::vector<uint8_t>(5,1)));
+  f.w(part+0x1b8,DefenseAttributes);f.h(unit+0x108,hp);f.h(unit+0x10c,hp);
+  f.h(f.w(SourcePouch)+0x192+38,LifeShroom);
+  const auto random=f.packed.random.state,flags=f.w(f.u(2)+0x27c);
+  const bool admitted=f.damage(false,CrumpWeapon);
+  assert(admitted==(hp==3));assert(f.h(unit+0x10c)==(admitted?1:hp));
+  if(!admitted){assert(f.packed.random.state==random&&f.w(f.u(2)+0x27c)==flags);}
+ }
+}
 void sourceDeathLeaves(){F f;f.relocate();auto& e=f.vm.battle.entries[1];e.arguments=f.packed.battleAddress()+0x19040;e.argumentCount=5;e.owner=1;auto call=[&](uint32_t fn,std::initializer_list<uint32_t>values){unsigned i=0;for(auto v:values)f.w(e.arguments+4*i++,v);int32_t result=99;const auto ok=f.packed.invoke(e,fn,1,result);assert(!ok||result==2);return ok;};
  const auto b=f.packed.battleAddress(),u=f.u(1);f.w(b+0x1c70,99);f.w(b+0x1c74,0x7fabcdef);assert(call(0x801141a4,{}));assert(f.w(b+0x1c70)==0&&f.w(b+0x1c74)==0x00abcdef);
  assert(call(0x8010ed8c,{1,uint32_t(-30000000)}));assert(e.locals[0]==222);
@@ -67,4 +82,4 @@ void originalMarioDeathEvent(){
  std::cout<<"Original Mario lethal hit-event code="<<std::hex<<code<<" next service="<<scene.pendingService<<std::dec<<" (not battle-result completion)\n";
 }
 }
-int main(){lethalMario();lethalEnemy();revivalHeld();sourceDeathLeaves();guardEffectsHeld();originalMarioDeathEvent();originalCrumpDeathEvent();std::cout<<"actual packed source ordinary lethal/no151, dynamic registry and revival admission tests PASS\n";}
+int main(){lethalMario();lethalEnemy();revivalHeld();modifiedDamageRevival();sourceDeathLeaves();guardEffectsHeld();originalMarioDeathEvent();originalCrumpDeathEvent();std::cout<<"actual packed source ordinary lethal/no151, dynamic registry and revival admission tests PASS\n";}

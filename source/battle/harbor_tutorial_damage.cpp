@@ -6,6 +6,7 @@
 #include "battle_weapon_cost.hpp"
 #include "pouch_item_count.hpp"
 #include "battle_packed_part.hpp"
+#include <algorithm>
 #include <cassert>
 #include <cstdlib>
 namespace ttyd {
@@ -106,8 +107,27 @@ bool HarborTutorialPacked::checkDamageCore(uint32_t a,uint32_t d,uint32_t part,u
  // A real player/partner LifeShroom path needs its downstream consumption and
  // revival event owner. Validate the actual complete pouch count domain BEFORE
  // any live damage/RNG. Missing memory is unavailable, never itemCount0.
- const auto base=weapon.hpPower(&damageUnits[ai],weapon,damageUnits[di],damageParts[di]);
- if(damageUnits[di].hp<=base){
+ // These three admitted power callbacks only read guest memory. Calculate on
+ // private copies so defense/sequence modifiers cannot bypass revival admission;
+ // special flag4 must not publish attacker flag8 during this preflight. Later
+ // reaction/audience bits do not affect HP, and admitted counters add no flags.
+ auto previewAttacker=damageUnits[ai],previewDefender=damageUnits[di];
+ auto previewPart=damageParts[di];auto previewWeapon=weapon;
+ DamageBattleState previewBattle;previewBattle.actionResult=word(battleAddress()+0x1cb8);previewBattle.mode=byte(battleAddress()+0x18ff9);
+ uint32_t previewCode=0;
+ const auto calculated=calculateHpDamage(&previewAttacker,previewDefender,previewPart,previewWeapon,previewCode,checkedFlags,previewBattle,storedDamageStatusServices());
+ // Match the application's [-99,99] request clamp and signed16 HP store,
+ // including suppressed HP writes and the upper cap, before testing death.
+ constexpr int32_t MaximumHpRequest=99;
+ constexpr uint32_t SuppressUnitHp=0x40000000,SuppressPartHp=0x800000,SpecialDeath=0x10000,LethalEvent=0x100;
+ auto remaining=previewDefender.hp;
+ if(!(previewDefender.attributes&SuppressUnitHp) && !(previewPart.attributes&SuppressPartHp)){
+  const auto request=std::clamp(calculated,-MaximumHpRequest,MaximumHpRequest);
+  const uint16_t stored=uint16_t(uint32_t(remaining)-uint32_t(request));
+  remaining=stored<0x8000?int32_t(stored):int32_t(stored)-0x10000;
+  remaining=std::max<int32_t>(0,std::min(remaining,previewDefender.maxHp));
+ }
+ if(remaining<=0 && (previewCode&LethalEvent) && !(previewDefender.attributes&SpecialDeath)){
   const auto kind=damageUnits[di].kind;
   if(kind==MarioKind || (kind>=FirstPartnerKind && kind<=LastPartnerKind)){
    uint32_t pouch=0;if(!vm.memory.readWord(PouchPointer,pouch))return false;
