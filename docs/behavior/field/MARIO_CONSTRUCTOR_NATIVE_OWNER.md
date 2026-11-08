@@ -189,3 +189,44 @@ NPC/effect ownership or battle services. Remaining opening obligations stay in
 [Crump integration requirements](../story/CRUMP_OPENING_INTEGRATION_REQUIREMENTS.md)
 and the [documentation inbox](../../DOCUMENTATION_REQUESTS.md). No new unknown
 source request is needed for the fifteen pinned local bodies.
+
+
+## Normal native Game startup and retention
+
+Normal `Game::initializeNativeUiFieldAnimation` now runs this whole constructor
+in the existing UI/animation process before its environment/texture startup
+contribution. It then drains the same cache's actual pending ROMFS group jobs
+with an explicit unlimited cold IO budget and calls the retained
+`initializePoses` facade, which owns one `NativeMarioPoseStartup`. Source holds
+retain that same wrapper, including its original unconditional handle stores.
+`FieldPartyRegistry::adoptMarioSourcePoses` preflights all three existing source
+handles, resource identities, mode2 and archive0, then creates typed role views.
+It performs no Entry, allocation or default writes. Negative source handles
+remain raw source results and fail native rendering admission. The legacy
+non-UI/harness initialization path remains separately named.
+
+`Game::nativeMarioConstructor()` exposes the ready constructor/pose owner only
+when its UI process is the same admitted field animation process. Detached Game
+copies do not acquire that receipt; room/checkpoint ownership handoff explicitly
+retains it. Restore and handoff refuse a held constructor/pose wrapper. Actual
+Mario/pouch addresses, three handles and backing remain stable across the tested
+room, native restore and checkpoint transfer. `native_ui_startup_game_tests`
+checks exactly three occupied source pose slots after startup, raw/typed handle
+agreement, shared process identity and retained owners. The standalone native
+constructor fixture also repeats the completed facade without new Entries.
+
+An existing packed `progress.originalPouch` can be copied after genuine fresh
+constructor completion during cold native saved-state admission. This is explicit
+native snapshot policy, not original card-load or field-return acknowledgment.
+Later typed pouch/control/position/party writes do not become automatic raw
+source aliases. Binding the complete shared Mario/pouch field/battle lifecycle,
+whole Mario Main, Prepare/Post and the source sequence return remains required.
+Normal boot success and these ownership checks do not prove a Crump round trip.
+
+
+Native backing admission first tests each complete span, then binary-searches
+the largest backed prefix only when a span crosses allocation boundaries. The
+contiguous-prefix predicate is monotone for the fixed address. This preserves
+all fragment identities and refusal behavior while removing the32,768-probe
+private-stack walk; no source values, aliases or currentness checks are cached.
+Per-instruction ownership checks and full rechecks across children remain.

@@ -92,9 +92,10 @@ void actualConstructorAndPoseOwner() {
   assert(ui->resumeWindow() && owner->current());
   assert(animation->files()->advanceAsync(UINT32_MAX));
   const auto resources = fieldPlayerPoseResources();
-  auto poses = NativeMarioPoseStartup::bind(
-      animation, {resources[0], resources[1], resources[2]});
-  assert(poses && poses->resume() && poses->ready());
+  assert(owner->initializePoses({resources[0], resources[1], resources[2]}) && owner->posesReady());
+  const auto handles=owner->poseHandles();
+  assert(owner->initializePoses({resources[0], resources[1], resources[2]}) && owner->poseHandles()==handles);
+  assert(!animation->pool()->pose(3)); // Completed wrapper must not repeat Entries.
   for (unsigned i = 0; i < 3; ++i)
     assert(animation->pool()->pose(int32_t(word(m, mario + 0x22c + 4 * i))));
   assert(
@@ -104,7 +105,7 @@ void actualConstructorAndPoseOwner() {
   auto copied = old;
   assert(m.registerRam(mario, std::move(copied)));
   assert(!owner->current() && !owner->ready() && !owner->initialize() &&
-         !poses->ready());
+         !owner->posesReady());
 }
 } // namespace
 int main() { actualConstructorAndPoseOwner(); }

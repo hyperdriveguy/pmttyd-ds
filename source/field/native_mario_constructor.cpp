@@ -1,4 +1,5 @@
 #include "native_mario_constructor.hpp"
+#include "native_mario_pose_startup.hpp"
 #include "animation_group_request_binding.hpp"
 #include "event_heap_allocation.hpp"
 #include "event_memory_opcodes.hpp"
@@ -64,6 +65,7 @@ struct NativeMarioConstructor::State {
   std::vector<std::pair<uint32_t, uint32_t>> backing;
   std::unique_ptr<AnimationGroupRequestBinding> groups;
   FieldMapSourceCursor cursor;
+  std::unique_ptr<NativeMarioPoseStartup> poses;
   uint32_t mario = 0, pouch = 0;
   bool marioPublished = false, pouchPublished = false, initialized = false,
        invalid = false;
@@ -72,11 +74,19 @@ struct NativeMarioConstructor::State {
     // Shared boot prefixes and our suffixes remain separate actual allocations.
     // Pin each real contiguous backing, without remapping an existing prefix.
     while (bytes) {
-      uint32_t run = 1;
-      if (!vm().memory.contiguousRam(address, run))
-        return false;
-      while (run < bytes && vm().memory.contiguousRam(address, run + 1))
-        ++run;
+      uint32_t run = bytes;
+      if (!vm().memory.contiguousRam(address, run)) {
+        if (!vm().memory.contiguousRam(address, 1)) return false;
+        // Contiguous-prefix admission is monotone at a fixed address. Find
+        // the actual fragment boundary without probing every stack byte.
+        uint32_t first = 1, last = bytes;
+        while (first < last) {
+          const auto middle = first + (last - first + 1) / 2;
+          if (vm().memory.contiguousRam(address, middle)) first = middle;
+          else last = middle - 1;
+        }
+        run = first;
+      }
       if (!vm().memory.shareRamTo(*identity, address, run))
         return false;
       backing.push_back({address, run});
@@ -340,10 +350,10 @@ bool NativeMarioConstructor::ready() const {
   return current() && state_->initialized;
 }
 bool NativeMarioConstructor::busy() const {
-  return state_ && state_->cursor.active;
+  return state_ && (state_->cursor.active || (state_->poses && state_->poses->pending()));
 }
 uint32_t NativeMarioConstructor::pending() const {
-  return state_ ? state_->cursor.pc : 0;
+  return state_ ? (state_->poses && state_->poses->pending() ? state_->poses->pendingAddress() : state_->cursor.pc) : 0;
 }
 uint32_t NativeMarioConstructor::marioAddress() const {
   return current() ? state_->mario : 0;
@@ -369,6 +379,28 @@ bool NativeMarioConstructor::initialize(unsigned visits) {
     return false;
   s.initialized = true;
   return true;
+}
+bool NativeMarioConstructor::initializePoses(
+    std::array<std::shared_ptr<const BattlePoseResource>, 3> resources) {
+  if (invoking_ || !ready()) return false;
+  Guard guard(invoking_);
+  if (!state_->poses)
+    state_->poses = NativeMarioPoseStartup::bind(state_->animation, std::move(resources));
+  return state_->poses && state_->poses->resume();
+}
+bool NativeMarioConstructor::posesReady() const {
+  return ready() && state_->poses && state_->poses->ready();
+}
+std::array<int32_t, 3> NativeMarioConstructor::poseHandles() const {
+  std::array<int32_t, 3> result{{-1, -1, -1}};
+  if (!posesReady()) return result;
+  for (unsigned i = 0; i < result.size(); ++i) {
+    uint32_t raw;
+    if (!state_->vm().memory.readWord(state_->mario + MarioPoseHandleOffset + sizeof(uint32_t) * i, raw))
+      return {{-1, -1, -1}};
+    result[i] = raw <= INT32_MAX ? int32_t(raw) : int32_t(int64_t(raw) - 0x100000000LL);
+  }
+  return result;
 }
 bool NativeMarioConstructor::adoptPouchSnapshot(const ProloguePouch &snapshot) {
   if (invoking_ || !ready() || busy() || state_->animation->entryPending() ||

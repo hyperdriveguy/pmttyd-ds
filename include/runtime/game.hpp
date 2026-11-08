@@ -386,6 +386,7 @@ public:
     std::shared_ptr<class NativeEffectProcess> nativeEffects() const;
     std::shared_ptr<class NativeShadowProcess> nativeShadowProcess() const;
     std::shared_ptr<class NativeCameraProcess> nativeCameraProcess() const;
+    std::shared_ptr<class NativeMarioConstructor> nativeMarioConstructor() const;
     bool hasNativeFieldAnimation() const{return bool(fieldParties.nativeAnimation);}
     const BattlePose* nativeMarioPose() const;
     unsigned nativeMarioBank() const;
@@ -562,6 +563,7 @@ private:
     std::shared_ptr<class NativeEffectProcess> nativeEffects_;
     std::shared_ptr<class NativeShadowProcess> nativeShadowProcess_;
     std::shared_ptr<class NativeCameraProcess> nativeCameraProcess_;
+    std::shared_ptr<class NativeMarioConstructor> nativeMarioConstructor_;
     // Native facade admission only; copies/moves never inherit producer proof.
     // Last member retires first during destruction. No source-ready state.
     NativeFacadeRegistration battleSequenceFacade_;

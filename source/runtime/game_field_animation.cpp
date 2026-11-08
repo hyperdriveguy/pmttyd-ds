@@ -4,6 +4,7 @@
 #include "native_effect_process.hpp"
 #include "native_shadow_process.hpp"
 #include "native_camera_process.hpp"
+#include "native_mario_constructor.hpp"
 namespace ttyd {
 // Native bootstrap requires a fresh pose namespace and no held producer.
 // Creation/configuration/Mario Entries are ordered admissions, not a rollback
@@ -33,13 +34,22 @@ bool Game::initializeNativeUiFieldAnimation(const char* root,std::shared_ptr<Nat
  if(!nativeEffects_)nativeEffects_=NativeEffectProcess::create(nativeUiStartup_,root);
  if(!nativeEffects_ || !nativeEffects_->initializeFade())return false;
  if(!nativeEffects_ || !nativeEffects_->initialize())return false;
+ // Whole original marioInit publishes actual SDK Mario/pouch records in this
+ // same process. Constructor polling does not stand in for group completion.
+ if(!nativeMarioConstructor_)nativeMarioConstructor_=NativeMarioConstructor::create(nativeUiStartup_,root);
+ if(!nativeMarioConstructor_ || !nativeMarioConstructor_->initialize())return false;
+ // Explicit native saved-state handoff after fresh Init, never rerun pouchInit.
+ // Later typed field/battle services still require their shared raw-owner bridge.
+ if(!nativeMarioConstructor_->posesReady() && !nativeMarioConstructor_->busy() && progress.originalPouch &&
+    !nativeMarioConstructor_->adoptPouchSnapshot(*progress.originalPouch))return false;
  // Same source VM/heap4 and existing UI SDK bytes; complete CPU shadow Init
  // before Mario Entry. This does not publish a GPU shadow/camera/map receipt.
  if(!nativeShadowProcess_)nativeShadowProcess_=NativeShadowProcess::create(nativeUiStartup_,root);
  if(!nativeShadowProcess_ || !nativeShadowProcess_->initialize())return false;
  // Explicit texture-startup contribution: original Fade -> Environment ->
  // Effect/N64 setup, then independent callbacks, before native Mario Entries.
- // This is not whole seq_logoExit or the raw Mario pose-wrapper/logo-file tail.
+ // The raw Mario pose wrapper follows; whole Logo platform/file chronology
+ // still belongs to its separately retained source owner.
  if(!nativeEffects_->initializeEnvironment() || !nativeEffects_->beginFadeTextures() ||
     !nativeEffects_->beginEnvironmentTextures() || !nativeEffects_->beginTextures())return false;
  // Cold bootstrap drains supported ROMFS banks synchronously. This native IO
@@ -53,7 +63,11 @@ bool Game::initializeNativeUiFieldAnimation(const char* root,std::shared_ptr<Nat
  if(!nativeCameraProcess_)nativeCameraProcess_=NativeCameraProcess::create(nativeShadowProcess_,root,nativeCameraLibmNumerics());
  if(!nativeCameraProcess_||!nativeCameraProcess_->initialize()||!nativeCameraProcess_->publishBoot(cameraManager))return false;
  auto owner=nativeUiStartup_->fieldProcess();
- if(!owner || !fieldParties.configureNativeAnimation(std::move(owner),fieldPlayerPoseResources()) || !fieldParties.initializeMario(fieldMarioBattle,{},0))return false;
+ if(!owner || !owner->files()->advanceAsync(ColdStartupIoBudget))return false;
+ const auto resources=fieldPlayerPoseResources();
+ if(!nativeMarioConstructor_->initializePoses({resources[0],resources[1],resources[2]}))return false;
+ if(!fieldParties.configureNativeAnimation(owner,resources) ||
+    !fieldParties.adoptMarioSourcePoses(fieldMarioBattle,nativeMarioConstructor_->poseHandles()))return false;
  prepareNativeFieldAnimation();return nativeMarioPose()!=nullptr;
 }
 std::shared_ptr<NativeUiStartup> Game::nativeUiStartup() const{
@@ -64,6 +78,10 @@ std::shared_ptr<NativeEffectProcess> Game::nativeEffects() const{
 }
 std::shared_ptr<NativeShadowProcess> Game::nativeShadowProcess()const{
  return nativeShadowProcess_ && nativeShadowProcess_->ready() && nativeShadowProcess_->ui()==nativeUiStartup_ && nativeUiStartup_ && nativeUiStartup_->fieldProcess()==fieldParties.nativeAnimation?nativeShadowProcess_:nullptr;
+}
+std::shared_ptr<NativeMarioConstructor> Game::nativeMarioConstructor()const{
+ return nativeMarioConstructor_ && nativeMarioConstructor_->posesReady() &&
+   nativeMarioConstructor_->ui()==nativeUiStartup()?nativeMarioConstructor_:nullptr;
 }
 std::shared_ptr<NativeCameraProcess> Game::nativeCameraProcess()const{
  return nativeCameraProcess_&&nativeCameraProcess_->ready()&&nativeCameraProcess_->shadows()==nativeShadowProcess()&&nativeCameraProcess_->bootPublishedFor(cameraManager)?nativeCameraProcess_:nullptr;
@@ -105,6 +123,8 @@ bool Game::retainNativeFieldAnimation(Game& previous,bool checkpoint){
  if(nativeAnimationPending() || previous.nativeAnimationPending())return false;
  if((nativeShadowProcess_ && nativeShadowProcess_->busy()) || (previous.nativeShadowProcess_ && previous.nativeShadowProcess_->busy()))return false;
  if((nativeCameraProcess_&&nativeCameraProcess_->busy())||(previous.nativeCameraProcess_&&previous.nativeCameraProcess_->busy()))return false;
+ if((nativeMarioConstructor_ && nativeMarioConstructor_->busy()) || (previous.nativeMarioConstructor_ && previous.nativeMarioConstructor_->busy()))return false;
+ const auto retainedNativeMario=previous.nativeMarioConstructor();
  const auto retainedNativeCamera=previous.nativeCameraProcess();
  const auto retainedNativeShadow=previous.nativeShadowProcess();
  const auto retainedUi=previous.nativeUiStartup();
@@ -149,7 +169,7 @@ bool Game::retainNativeFieldAnimation(Game& previous,bool checkpoint){
  }
  // Ownership admission is complete. A later source sampler hold is reported
  // by the ordinary renderer; it is not a failed/rolled-back room transaction.
- nativeUiStartup_=retainedUi;nativeEffects_=retainedEffects;nativeShadowProcess_=retainedNativeShadow;nativeCameraProcess_=retainedNativeCamera;
+ nativeUiStartup_=retainedUi;nativeEffects_=retainedEffects;nativeShadowProcess_=retainedNativeShadow;nativeCameraProcess_=retainedNativeCamera;nativeMarioConstructor_=retainedNativeMario;
  if(retainedNativeCamera)cameraManager=previous.cameraManager; // Source camera bank survives room/checkpoint ownership handoff.
  prepareNativeFieldAnimation();return true;
 }

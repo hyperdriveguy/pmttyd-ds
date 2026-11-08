@@ -6020,3 +6020,12 @@ renderer-owned outside-frame Begin/End scope for the pre-load native fence.
 Read-only handoffs: artifacts/shared-map-allocation-review.md and
 artifacts/native-shared-map-render-handoff.md. These are implementation/static
 findings, not an original Dolphin execution trace or completed opening demo.
+
+
+Normal native Game now composes the whole Mario constructor and raw pose wrapper
+in its shared UI/animation VM. `Game::nativeMarioConstructor()` exposes actual
+Mario/pouch guest addresses only for that admitted process; typed pose roles
+adopt existing handles. Room/native restore/checkpoint handoff retains ownership.
+[Updated contract](../behavior/field/MARIO_CONSTRUCTOR_NATIVE_OWNER.md). Whole
+shared Mario/pouch field/battle lifecycle and source sequence return remain open;
+this implementation breadcrumb closes no unrelated documentation request.

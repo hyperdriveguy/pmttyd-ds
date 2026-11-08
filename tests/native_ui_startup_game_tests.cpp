@@ -4,6 +4,7 @@
 #include "native_effect_process.hpp"
 #include "native_shadow_process.hpp"
 #include "native_camera_process.hpp"
+#include "native_mario_constructor.hpp"
 #include <cassert>
 #include <cmath>
 #include <iostream>
@@ -15,6 +16,15 @@ int main(){
  p.subtractDouble=[](void*,double a,double b){volatile double v=a-b;return v;};
  p.roundDoubleFloat=[](void*,double v){volatile float f=float(v);return f;};
  auto game=std::make_unique<Game>(false);assert(game->initializeNativeUiFieldAnimation("romfs",NativeFileCache::create(),p));
+ const auto mario=game->nativeMarioConstructor();assert(mario&&mario->ready()&&mario->posesReady());
+ const auto sourceMario=mario->marioAddress(),sourcePouch=mario->pouchAddress();assert(sourceMario&&sourcePouch);
+ const auto sourceHandles=mario->poseHandles();
+ for(unsigned i=0;i<sourceHandles.size();++i){
+  assert(sourceHandles[i]==game->fieldMarioBattleState().poseHandles[i]);
+  const auto* view=game->fieldPartyState().pose(sourceHandles[i]);assert(view&&view->original());
+ }
+ unsigned marioCount=0;for(int32_t i=0;i<256;++i)if(game->fieldPartyState().originalPool->pose(i))++marioCount;
+ assert(marioCount==3); // Source Entries are adopted, never repeated by the typed registry.
  const auto cameras=game->nativeCameraProcess();assert(cameras&&cameras->ready()&&cameras->counts().allocations==13&&cameras->roads());
  const auto bank=game->cameraManager;
  const auto shadows=game->nativeShadowProcess();assert(shadows&&shadows->ready()&&shadows->counts().heap4Allocations==1);
@@ -30,12 +40,16 @@ int main(){
  assert(!candidate->nativeShadowProcess()&&!candidate->nativeCameraProcess());
  assert(candidate->retainNativeFieldAnimation(*game)&&candidate->nativeUiStartup()==ui&&candidate->nativeEffects()==effects&&candidate->nativeShadowProcess()==shadows);
  assert(candidate->nativeCameraProcess()==cameras&&candidate->cameraManager==bank);
+ assert(candidate->nativeMarioConstructor()==mario&&mario->marioAddress()==sourceMario&&mario->pouchAddress()==sourcePouch);
  auto saved=game->progress;game->restore(saved);assert(game->nativeUiStartup()==ui&&game->nativeEffects()==effects&&game->nativeShadowProcess()==shadows&&ui->language()==2);
  assert(game->nativeCameraProcess()==cameras&&game->cameraManager==bank);
+ assert(game->nativeMarioConstructor()==mario&&mario->poseHandles()==sourceHandles);
  auto checkpoint=std::make_unique<Game>(false);checkpoint->restore(saved);
  assert(checkpoint->retainNativeFieldAnimation(*game,true)&&checkpoint->nativeUiStartup()==ui&&ui->windowReady()&&!game->nativeUiStartup());
  assert(checkpoint->nativeShadowProcess()==shadows&&!game->nativeShadowProcess());
  assert(checkpoint->nativeCameraProcess()==cameras&&checkpoint->cameraManager==bank&&!game->nativeCameraProcess());
+ assert(checkpoint->nativeMarioConstructor()==mario&&!game->nativeMarioConstructor());
+ assert(mario->marioAddress()==sourceMario&&mario->pouchAddress()==sourcePouch&&mario->poseHandles()==sourceHandles);
  assert(checkpoint->fieldPartyState().nativeAnimation==process&&checkpoint->nativeEffects()==effects&&!game->nativeEffects()&&ui->language()==2);
  checkpoint->tick({});assert(checkpoint->nativeMarioPose()&&ui->language()==2&&ui->counts().reads==counts.reads&&ui->counts().heapAllocations==counts.heapAllocations);
  std::cout<<"actual Game UI startup/room/checkpoint process retention PASS\n";

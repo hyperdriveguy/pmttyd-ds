@@ -20196,3 +20196,50 @@ remain unverified. Read-only handoffs: artifacts/shared-map-allocation-review.md
 artifacts/native-shared-map-render-handoff.md and
 artifacts/shared-map-light-allocation-next.md. Documentation inbox breadcrumb
 added to EVT-01; its parent request remains open.
+
+
+### Normal raw Mario constructor/pose startup — 2026-11-07
+
+Normal Game now runs the whole original Mario/pouch constructor in its existing
+UI/animation/file-cache process, then drains genuine group IO and runs retained
+source marioPoseInit. FieldPartyRegistry adopts those three actual handles after
+resource/mode/archive validation, with no duplicate Entries. The admitted
+Game::nativeMarioConstructor exposes actual Mario/pouch guest addresses. Tests
+verify exactly three source poses, raw/typed handle agreement, idempotent facade
+completion and the same owner/addresses/handles through room, native restore and
+checkpoint ownership transfer. Detached Game copies cannot claim that receipt.
+Constructor/pose holds prevent ownership handoff. Packed-pouch snapshot import
+is explicitly native saved-state policy after fresh Init, not source card load.
+
+Native backing pinning now tests complete spans first and binary-searches split
+allocation prefixes, removing the32,768-probe private-stack bytewalk while
+preserving all backing identities/currentness checks. This is a structural
+probe-count reduction, not a measured target frame-rate improvement. Whole
+source values remain fresh across external children and instruction holds.
+
+Final frozen combined graph includes5ec5979c field-light allocation changes,
+committed camera/Crump-menu work and this scoped startup contribution. Exact
+make test passed630 C++ tests in119.29s and276 Python tests in44.241s; make all
+passed with the GameCube soundtrack. Five asset recipes added since the former
+cache baseline were explicitly prepared/compiled, including camera literals,
+constructor memory, smoke art/data and harbor NPC tags. All5055 frozen source
+inputs match; no extra implementation/test inputs;2260 RomFS files are pinned.
+Logs/products/source receipt: artifacts/mario-game-startup/accepted/validation-manifest.json.
+
+Final isolated fresh-save Azahar run used the exact optimized 3DSX and no input.
+Capture45s is black,75s shows the original book cover,105/120s show the opening
+book; inspected75/120s report60 FPS. No native exception or unmapped-read log.
+This is boot/constructor/pose availability evidence, not Crump battle/return or
+New2DS hardware performance. Earlier45s-only run was insufficient; an extended
+run and read-only local GDB sample found early ROMFS preload before constructor
+execution. Whole cold-boot timing is not attributed to that single sample.
+User emulator profiles/saves were untouched. Slow cold startup remains open.
+
+Next: bind the same authoritative field/battle Mario/pouch lifecycle and actual
+Prepare/Post transitive services, source field start/wait and sequence return;
+verify fresh/resumed Crump victory, original dialogue order and full field
+return. Later typed pouch/control/position/party writes do not yet automatically
+alias the retained raw constructor record. Complete Logo platform/file chronology,
+whole Mario Main, cold-load profiling and target hardware field performance
+remain open. See the updated constructor contract and Crump requirements.
+The full-game goal remains active and the complete Crump round trip is not done.

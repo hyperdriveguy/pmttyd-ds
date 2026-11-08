@@ -161,6 +161,22 @@ struct FieldPartyRegistry {
         }
         return true;
     }
+    // Adopt three already completed source marioPoseInit Entries. This makes
+    // role views only; no allocation, Entry replay, default stores or rollback.
+    bool adoptMarioSourcePoses(FieldMarioBattleState& mario,const std::array<int32_t,3>& handles) {
+        constexpr std::array<uint32_t,3> tokens{{0x802c18a0,0x802c18a8,0x802c18b4}};
+        if(!nativeAnimation || !originalPool || nativeAnimation->pool()!=originalPool)return false;
+        for(unsigned i=0;i<handles.size();++i){
+            const auto h=handles[i];
+            if(h<0 || unsigned(h)>=poses.size() || poses[unsigned(h)])return false;
+            for(unsigned j=0;j<i;++j)if(handles[j]==h)return false;
+            const auto* pose=originalPool->pose(h);
+            if(!pose || pose->resource!=originalResources[i] || pose->word(0xc)!=2 || pose->archiveType!=0)return false;
+        }
+        for(unsigned i=0;i<handles.size();++i)
+            poses[unsigned(handles[i])]=std::make_unique<FieldPartyPose>(originalPool,handles[i],tokens[i]);
+        mario.poseHandles=handles;return true;
+    }
     void reinitializeMario(const FieldMarioBattleState& mario) {
         for(auto handle:mario.poseHandles)if(auto* owner=pose(handle))owner->materialFlags=0;
         for(auto handle:mario.poseHandles)if(auto* owner=pose(handle))owner->materialLightFlags|=2;

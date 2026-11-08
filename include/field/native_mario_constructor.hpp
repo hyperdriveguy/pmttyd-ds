@@ -13,6 +13,11 @@ public:
   ~NativeMarioConstructor();
   bool
   initialize(unsigned visits = 65536); // Native cold-work budget, not ticks.
+  // Whole raw marioPoseInit over this same constructor-owned source record.
+  // Each source Entry runs once; typed role views may then adopt its handles.
+  bool initializePoses(std::array<std::shared_ptr<const BattlePoseResource>, 3>);
+  bool posesReady() const;
+  std::array<int32_t, 3> poseHandles() const;
   bool current() const;
   bool ready() const;
   bool busy() const;

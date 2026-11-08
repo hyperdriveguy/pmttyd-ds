@@ -266,3 +266,23 @@ continues its explicit canonical startup contribution. They do not close
 CO-04/05 BattleWork/sequence ownership, CO-07 result/export/field return or
 CO-09/10 original afterbattle execution. The new OS/video request is recorded
 in EVT-01 while those native providers hold honestly.
+
+
+## Actual Mario constructor and pose availability (2026-11-07)
+
+Normal native Game startup now executes whole original Mario/pouch/party/reset
+constructor bodies, actual SDK heap0 allocations and source marioPoseInit in the
+shared UI/animation VM and file cache. Typed field Mario roles adopt the three
+existing source handles without duplicate Entries; actual records and handles
+survive the tested room/restore/checkpoint handoffs. The admitted owner is
+`Game::nativeMarioConstructor()`; its `marioAddress()` and `pouchAddress()` are
+actual guest SDK allocations, never the typed `FieldMarioOwnerAddress` token.
+See [ownership and limits](../field/MARIO_CONSTRUCTOR_NATIVE_OWNER.md).
+
+This makes the real raw constructor owner available to CO-04/CO-07 composition.
+It does not bind whole Mario Main, every typed position/control/party/pouch write,
+source Prepare/Post transitive children, field start/wait, BattleWork sequence
+ownership or result/end/return. Explicit packed-pouch snapshot admission is
+native saved-state policy. Require the same live authoritative field/battle
+state before treating a source Prepare/Post completion as production return.
+The full fresh/resumed Crump opening-to-battle-to-field acceptance remains open.
