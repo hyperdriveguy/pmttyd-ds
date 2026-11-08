@@ -18488,3 +18488,36 @@ artifacts/weapon-frame-ownership-code-documentation-validation/.
 Goal remains active. Next: remaining source memory/texture/font/cursor/help
 services, field/platform adapters, changed modules, tools and whole-file Trio
 numeric synthesis. No whole-port or full-game completion is claimed.
+
+### Weapon source memory and TEX result documentation
+
+Added 50 inline comment lines across battle_weapon_source_memory and
+battle_weapon_source_textures implementations/headers. Explained owner-first
+read/store routing and overlap versus readable extents, actual shared GP-language
+alias and persistent binding, exact three literal spans/FNV constants, thirteen
+source metadata read sites and mask, original common-bank chain, private 32-byte
+output versus camera reservation, byte-wise constructor clear, narrow unsigned
+byte/binary64 conversion, exact constructor witness and completed-result
+acknowledgement. Corrected the stale two-line header claim that no alias is
+installed and broadened the existing read-owner comment to startup allocations.
+Added/indexed docs/code/weapon-source-resources.md. Code/docs commit:
+`1f1a525f`. All four files preserve executable tokens and string literals.
+
+Validation: both implementations passed host/ARM C++17 syntax against a coherent
+captured current committed include tree. Four executable-stream comparisons,
+six live/private documented hashes, 139 local links and 579 supporting
+header hashes passed audits. These newer source-memory/texture interfaces are
+absent from the older supporting runtime library; no incompatible runtime
+fixture reuse. No new tests, actual source execution, native link/GPU work or
+hardware behavior exercised.
+
+Full make test/all were not repeated for comments/prose only; there are no
+executable changes. Prior suite/build results retain their own snapshot scope
+and do not validate concurrent changes. No assets/imports/conversions, ISO
+writes, story changes or emulator runs. Exact syntax commands/logs, hashes,
+scoped patch and documented copies:
+artifacts/weapon-source-resources-code-documentation-validation/.
+
+Goal remains active. Next: source font/cursor/help services and remaining
+field/platform adapters, changed modules, broader tool coverage and whole-file
+Trio numeric synthesis. No whole-port or full-game completion is claimed.
