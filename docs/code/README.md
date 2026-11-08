@@ -299,3 +299,7 @@ finite conversion/SDK policies.
 [Class frame ownership](class-frame-ownership.md) distinguishes source completion,
 publication, native submission and camera finish, with stable renderer contexts
 and pinned simulation-time icon metadata.
+
+[Weapon frame ownership](weapon-frame-ownership.md) explains source versus frame
+completion, independent proof storage, held TEX/text children, native capacities
+and the prepared submission barrier.

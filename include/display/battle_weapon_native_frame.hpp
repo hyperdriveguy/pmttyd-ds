@@ -21,6 +21,7 @@ struct BattleWeaponNativeFrameBinding {
  std::shared_ptr<const CameraManager> cameras;
  BattleActorServices actors;
  BattleClassCameraAddressPolicy addresses;
+ // UI allocation incarnation and common-bank resource lifetime are independent.
  std::function<bool()> allocationCurrent,sourceResourceCurrent;
  std::function<bool(BattleClassCameraEpoch)> producerCurrent;
 };
@@ -45,6 +46,7 @@ public:
  bool sourceComplete(uint64_t pass)const;
  uint64_t publishedPass()const;
  std::shared_ptr<const void> publication()const;
+ // Source-cursor diagnostic only, not the state of external seal/submission.
  uint32_t pending()const;
  void retire();
 private:

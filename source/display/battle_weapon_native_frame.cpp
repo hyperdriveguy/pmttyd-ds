@@ -7,6 +7,7 @@ struct BattleWeaponNativeFrame::State {
  BattleWeaponNativeSubmission sink;
  BattleWeaponCameraBridge camera;
  BattleWeaponDrawCursor cursor;
+ // Zero means unstarted; sourcePass can complete before submitted/finished pass.
  uint64_t pass=0,completed=0,sourcePass=0;
  const DisplayRecord* record=nullptr;
  bool invalid=false,dispatching=false,begun=false,drawn=false,submitted=false;
@@ -20,6 +21,8 @@ struct BattleWeaponNativeFrame::State {
   return current()&&camera.available();
  }
  bool batchCurrent(){if(!current()||!batch)return false;if(!sink.current||!sink.current(sink.user,batch)){invalid=true;return false;}return current();}
+ // Preserve original callback userdata while installing State as the guarded
+ // facade. Optional results are exposed only after the short proof rechecks.
  void wrap(){
   source=original;source.user=this;
   source.current=[](void*p){return static_cast<State*>(p)->sourceCurrent();};
@@ -52,16 +55,20 @@ bool BattleWeaponNativeFrame::resume(uint64_t pass,const CameraMainCursor& main,
  auto&s=*state_;const auto&d=draw.display;
  if(!s.current()||!pass||camera!=8||battle!=s.binding.battle||!d.active||!d.invoking||d.camera!=8||
  d.callback!=0x80121ce8||d.userdata!=battle||(s.pass&&s.pass!=pass)||pass<=s.completed)return false;
+ // The exact borrowed queue record is fixed, not just equal callback operands.
+ // The camera bridge separately rejects queue reset/repopulation by reset epoch.
  if(s.record&&s.record!=queue.current())return false;
  const BattleClassCameraEpoch epoch{s.binding.generation,pass};
  if(!s.camera.begin(epoch,main,draw,queue,battle))return false;
  s.dispatching=true;
+ // Reset stage latches only when opening a genuinely new producer pass.
  if(!s.pass){s.pass=pass;s.record=queue.current();s.begun=s.drawn=s.submitted=false;s.batch.reset();}
  if(!s.sourceCurrent())return false;
  // Latch acknowledged begin and source draw independently. Once drawn,
  // waiting for seal/submit cannot restart source setters, glyph RNG or W writes.
  if(!s.begun){const bool ok=s.sink.begin(s.sink.user,pass);if(ok)s.begun=true;if(!ok||!s.sourceCurrent())return false;}
  if(!s.drawn){if(!resumePackedBattleWeaponQueuedDraw(camera,battle,s.source,s.cursor)||!s.sourceCurrent())return false;s.drawn=true;s.sourcePass=pass;}
+ // Empty seal is a hold after source completion; the source cursor stays drawn.
  if(!s.batch){auto batch=s.sink.seal(s.sink.user,pass);if(!s.sourceCurrent())return false;if(!batch)return false;s.batch=std::move(batch);}
  if(!s.batchCurrent()||!s.sourceCurrent())return false;
  // Latch real submit success BEFORE post-call guards. A later invalidation
@@ -73,6 +80,8 @@ bool BattleWeaponNativeFrame::resume(uint64_t pass,const CameraMainCursor& main,
 const BattleWeaponCameraBridge* BattleWeaponNativeFrame::camera()const{
  return invoking_&&!retiring_&&state_&&state_->dispatching&&state_->current()&&state_->camera.available()?&state_->camera:nullptr;
 }
+// Source completion proof is available to seal while this camera lease is held;
+// it does not itself expose a drawable batch or acknowledge GPU submission.
 bool BattleWeaponNativeFrame::sourceComplete(uint64_t pass)const{return !retiring_&&state_&&state_->current()&&pass&&pass==state_->sourcePass&&pass==(state_->pass?state_->pass:state_->completed);}
 // Expose only a completely submitted, camera-finished, still-current batch.
 // Starting a later pass hides the previous batch; inspection never starts draw.
@@ -80,6 +89,8 @@ std::shared_ptr<const void> BattleWeaponNativeFrame::publication()const{
  return !invoking_&&!retiring_&&state_&&state_->completed&&!state_->pass&&state_->batchCurrent()?state_->batch:nullptr;
 }
 uint64_t BattleWeaponNativeFrame::publishedPass()const{return publication()?state_->completed:0;}
+// pending() names only the retained source child frontier. It can be zero while
+// seal/submit/finish still holds, so zero does not establish frame completion.
 uint32_t BattleWeaponNativeFrame::pending()const{return state_?state_->cursor.pending():0;}
 // Invalidate immediately during callbacks, defer destruction until resume's
 // guard unwinds. Metadata retirement does not run guest End/free or cleanup.
