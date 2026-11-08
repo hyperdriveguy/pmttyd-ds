@@ -1,0 +1,139 @@
+{
+  "schema": 1,
+  "iso_id": "G8ME01 revision0",
+  "source": "m/gor_00/d",
+  "source_sha256": "d942568687b82ede86c7ea5aab0a3aea6c0df23b538257fde8ae1632bd13089b",
+  "table_file_offset": 920988,
+  "payload_file_offset": 32,
+  "records": [
+    {
+      "index": 0,
+      "file_offset": 921012,
+      "address": 2299399604,
+      "size": 68,
+      "sha256": "0326c5327f1215abefd3f3898db55bdc611650c4a94bb5214ef9bfe7945d0c8e"
+    },
+    {
+      "index": 1,
+      "file_offset": 921080,
+      "address": 2299399672,
+      "size": 68,
+      "sha256": "8efdd89008441c1ebd0c722f4312b802dce7ac423b1cc53e2d0f11b0ad2f6df9"
+    },
+    {
+      "index": 2,
+      "file_offset": 921148,
+      "address": 2299399740,
+      "size": 68,
+      "sha256": "5c811395a749be495b1816ac0a46f3c8caf45e87bb635db36b60f98ad4dec832"
+    },
+    {
+      "index": 3,
+      "file_offset": 921216,
+      "address": 2299399808,
+      "size": 68,
+      "sha256": "5915ec7fd85eff3cf9439e848970442dd45415804d8f24aef1f0ff0864de7f83"
+    },
+    {
+      "index": 4,
+      "file_offset": 921284,
+      "address": 2299399876,
+      "size": 68,
+      "sha256": "4c7a1c80e59227f70d7fc03e8910dad9cf330c2e2343c25174a87f04f0a87439"
+    }
+  ],
+  "bindings": [
+    {
+      "file_offset": 920992,
+      "original_relative": 920980,
+      "target_file_offset": 921012,
+      "native": 2299399604
+    },
+    {
+      "file_offset": 921012,
+      "original_relative": 974298,
+      "target_file_offset": 974330,
+      "native": 2299452922
+    },
+    {
+      "file_offset": 921016,
+      "original_relative": 974312,
+      "target_file_offset": 974344,
+      "native": 2299452936
+    },
+    {
+      "file_offset": 920996,
+      "original_relative": 921048,
+      "target_file_offset": 921080,
+      "native": 2299399672
+    },
+    {
+      "file_offset": 921080,
+      "original_relative": 974325,
+      "target_file_offset": 974357,
+      "native": 2299452949
+    },
+    {
+      "file_offset": 921084,
+      "original_relative": 974337,
+      "target_file_offset": 974369,
+      "native": 2299452961
+    },
+    {
+      "file_offset": 921000,
+      "original_relative": 921116,
+      "target_file_offset": 921148,
+      "native": 2299399740
+    },
+    {
+      "file_offset": 921148,
+      "original_relative": 974348,
+      "target_file_offset": 974380,
+      "native": 2299452972
+    },
+    {
+      "file_offset": 921152,
+      "original_relative": 974360,
+      "target_file_offset": 974392,
+      "native": 2299452984
+    },
+    {
+      "file_offset": 921004,
+      "original_relative": 921184,
+      "target_file_offset": 921216,
+      "native": 2299399808
+    },
+    {
+      "file_offset": 921216,
+      "original_relative": 974371,
+      "target_file_offset": 974403,
+      "native": 2299452995
+    },
+    {
+      "file_offset": 921220,
+      "original_relative": 974383,
+      "target_file_offset": 974415,
+      "native": 2299453007
+    },
+    {
+      "file_offset": 921008,
+      "original_relative": 921252,
+      "target_file_offset": 921284,
+      "native": 2299399876
+    },
+    {
+      "file_offset": 921284,
+      "original_relative": 974394,
+      "target_file_offset": 974426,
+      "native": 2299453018
+    },
+    {
+      "file_offset": 921288,
+      "original_relative": 974406,
+      "target_file_offset": 974438,
+      "native": 2299453030
+    }
+  ],
+  "policy": "Exact original light-table/68-byte records/strings and real alignment neighbors. Only documented file-relative pointer fields relocate to an explicit native guest base. No map-entry runtime record, matrices, light outputs, code or invented light arguments are imported. Whole map loader remains separate.",
+  "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+}

@@ -4084,3 +4084,32 @@ converter identity. Only a missing destination permits import. Existing-cache
 verification is read-only and rejects any difference; no asset edit is replaced.
 Nintendo/Intelligent Systems retain original rights; no redistribution license
 is granted. Raw technical products/caches stay ignored and outside source history.
+
+
+### Original field light definitions and harbor map inputs (2026-11-07)
+
+- `assets/original/lights/registry-definition/{event,provenance}.json`: exact US
+  revision0 `sys/main.dol` spans802bf870/e4,802bfc88/3c,8041f8b0/2c,
+  8041f944/4 and80429358/8. Retains preset vectors/colors, kind/name/format
+  strings, attenuation/scalars and neighboring SDK ONE/ZERO. The actual Scale
+  child reads ZERO only. Native BSS/heap outputs are not copied asset presets.
+- `assets/original/lights/harbor-map-input/{event,provenance}.json`: original
+  `m/gor_00/d` SHA256
+  `d942568687b82ede86c7ea5aab0a3aea6c0df23b538257fde8ae1632bd13089b`;
+  table at filee0d9c, five68-byte records and original referenced strings plus
+  alignment neighbors. Pointer fields add the source payload offset20 and
+  explicit native guest base89000000; provenance lists every binding and each
+  unrelocated source-record hash. No geometry, authored matrix or output light
+  was fabricated or imported here.
+- Conversion: exact big-endian byte spans and documented pointer relocation,
+  no texture scaling, lighting adjustment or geometry reduction. Manifest event
+  recipes compile `field-light-registry.pmevt` and
+  `field-harbor-lights-input.pmevt`; compiled products/caches stay ignored.
+  Optional native area loading merges these immutable inputs before VM import.
+- Importers: `tools/import_light_registry_assets.py` and
+  `tools/import_harbor_light_inputs.py`, read-only ISO access, empty destination
+  required. Existing checked-in edits are preserved. Original Nintendo /
+  Intelligent Systems rights retained; no redistribution license is granted.
+
+[Implementation scope](behavior/field/NATIVE_LIGHT_REGISTRY_OWNER.md) distinguishes
+actual source/native storage from remaining normal Game/Map and GPU activation.

@@ -2888,3 +2888,19 @@ foreach(icon_test source_icon_setup native_source_icon_memory native_source_icon
  add_test(NAME ${icon_test} COMMAND ${icon_test}_tests)
  set_tests_properties(${icon_test} PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 endforeach()
+
+target_sources(ttyd_core PRIVATE source/field/field_light_registry.cpp)
+
+target_sources(ttyd_core PRIVATE source/field/field_light_registry_owner.cpp)
+
+add_executable(field_light_registry_tests tests/field_light_registry_tests.cpp)
+target_link_libraries(field_light_registry_tests PRIVATE ttyd_core)
+add_test(NAME field_light_registry COMMAND field_light_registry_tests)
+set_tests_properties(field_light_registry PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+add_executable(field_light_registry_owner_tests tests/field_light_registry_owner_tests.cpp)
+target_link_libraries(field_light_registry_owner_tests PRIVATE ttyd_core)
+add_test(NAME field_light_registry_owner COMMAND field_light_registry_owner_tests)
+set_tests_properties(field_light_registry_owner PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+target_sources(ttyd_core PRIVATE source/field/field_map_light_producer.cpp)

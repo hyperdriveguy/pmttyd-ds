@@ -62,6 +62,16 @@ bool loadFieldAreaEventAssets(const char* root) {
      !harbor.readWord(HarborInitializer+HarborInitializerBytes,trailing) || !next->scripts.merge(harbor))return false;
   hasHarbor=true;
  }
+ // Immutable light definitions merge before process-owner BSS/heap mappings.
+ if(FILE* extra=std::fopen((base+"/field-light-registry.pmevt").c_str(),"rb")){
+  std::fclose(extra);EventScriptAssets definitions;
+  if(!definitions.load((base+"/field-light-registry.pmevt").c_str()) || !next->scripts.merge(definitions))return false;
+ }
+ // Scoped original map inputs; runtime map-entry ownership remains separate.
+ if(FILE* extra=std::fopen((base+"/field-harbor-lights-input.pmevt").c_str(),"rb")){
+  std::fclose(extra);EventScriptAssets input;
+  if(!input.load((base+"/field-harbor-lights-input.pmevt").c_str()) || !next->scripts.merge(input))return false;
+ }
  FILE* f=std::fopen((base+"/field-area-events.bin").c_str(),"rb");if(!f)return false;
  char magic[8];uint32_t count=0;
  bool ok=std::fread(magic,8,1,f)==1 && !std::memcmp(magic,"PMFAEV02",8) && std::fread(&count,4,1,f)==1 && count && count<=256;

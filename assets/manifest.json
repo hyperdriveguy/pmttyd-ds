@@ -2,6 +2,20 @@
   "schema": 1,
   "assets": [
     {
+      "id": "original/lights/harbor-map-input",
+      "kind": "event",
+      "source": "assets/original/lights/harbor-map-input/event.json",
+      "output": "field-harbor-lights-input.pmevt",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+},
+    {
+      "id": "original/lights/registry-definition",
+      "kind": "event",
+      "source": "assets/original/lights/registry-definition/event.json",
+      "output": "field-light-registry.pmevt",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+},
+    {
       "id": "original/events/harbor-area-init",
       "kind": "event",
       "source": "assets/original/events/harbor-area-init/event.json",

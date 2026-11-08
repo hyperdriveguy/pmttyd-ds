@@ -29,7 +29,12 @@ void MapMaterialLightWork::resetSelected(){
 // 81/8081(hex) find ordinary/ambient candidates; 1 is active, 8000 is ambient.
 // More than8 active records needs source sort service800064fc, not truncation.
 bool mapLightBankQuery(const MapMaterialLightWork& w,MapLightQuery& q,uint32_t& pending){
-    pending=q.function;const auto& b=w.banks[w.selector==1?1:0];if(!b.known || b.count<0 || b.count>32)return false;
+    const auto& bank=w.banks[w.selector==1?1:0];
+    return mapLightBankQuery(MapLightBankView{bank.known,bank.count,bank.records.data()},q,pending);
+}
+bool mapLightBankQuery(const MapLightBankView& b,MapLightQuery& q,uint32_t& pending){
+    pending=q.function;
+    if(!b.known || b.count<0 || b.count>32 || (b.count && !b.records))return false;
     if(q.function==0x8001b984 || q.function==0x8001b9f0){
         const uint16_t mask=q.function==0x8001b984?0x81:0x8081;const MapLightRecord* found=nullptr;
         for(int32_t i=0;i<b.count;++i)if((b.records[i].flags()&mask)==mask){found=&b.records[i];break;}

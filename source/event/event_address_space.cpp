@@ -69,6 +69,14 @@ bool EventAddressSpace::unregisterExternalRam(uint32_t base){
     for(size_t i=0;i<external_.size();++i)if(external_[i].base==base){external_.erase(external_.begin()+i);return true;}
     return false;
 }
+bool EventAddressSpace::unregisterExternalRam(uint32_t base,const uint8_t* expected){
+    if(rawRamBorrowed_ || !expected)return false;
+    for(size_t i=0;i<external_.size();++i)if(external_[i].base==base){
+        if(external_[i].bytes!=expected)return false;
+        external_.erase(external_.begin()+i);return true;
+    }
+    return false;
+}
 bool EventAddressSpace::registerRam(uint32_t base,std::vector<uint8_t> bytes) {
     if(rawRamBorrowed_)return false;
     if(!available(base,bytes.size()))return false;

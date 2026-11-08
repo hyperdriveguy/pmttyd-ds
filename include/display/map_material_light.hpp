@@ -10,6 +10,8 @@ struct MapLightRecord {
 // Two independently owned banks, 32 allocated records each. Known=false
 // distinguishes absent source ownership from a known empty scene.
 struct MapLightBank {bool known=false;int32_t count=32;std::array<MapLightRecord,32> records{};};
+// Borrow the actual source owner without copying live records into a renderer bank.
+struct MapLightBankView {bool known=false;int32_t count=0;const MapLightRecord* records=nullptr;};
 struct MapMaterialFog {uint32_t enabled=0,type=0,rgba=0;float start=0,end=0;};
 struct MapMaterialLightWork {
     std::array<MapLightBank,2> banks{};uint32_t selector=0;
@@ -29,6 +31,7 @@ struct MapLightQuery {
 // Exact bank scan/order/filter for <=8 active records. A larger census holds
 // at source sort dependency; presets require their separate live producer.
 bool mapLightBankQuery(const MapMaterialLightWork&,MapLightQuery&,uint32_t& pending);
+bool mapLightBankQuery(const MapLightBankView&,MapLightQuery&,uint32_t& pending);
 struct MapMaterialLightServices {
     void* user=nullptr;
     bool (*query)(void*,MapLightQuery&,uint32_t& pending)=nullptr;

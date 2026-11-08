@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "iso_id": "G8ME01 revision0",
+  "spans": [
+    {
+      "source": "sys/main.dol",
+      "address": 2150365296,
+      "size": 228,
+      "sha256": "dd74f37ea4710bab0e2f958748c64249d2c71be1d70ee8489f3885db1cceee59"
+    },
+    {
+      "source": "sys/main.dol",
+      "address": 2150366344,
+      "size": 60,
+      "sha256": "9193d4588956a9665f0a7463faa48af2bad62287c1deca879d7ca89d1e137410"
+    },
+    {
+      "source": "sys/main.dol",
+      "address": 2151807152,
+      "size": 44,
+      "sha256": "7d1c10ada880bebe7ceed261e8019293d1c48dcd49f60a7bd4622b2e706079db"
+    },
+    {
+      "source": "sys/main.dol",
+      "address": 2151807300,
+      "size": 4,
+      "sha256": "b9e69238a01189ddad0c70c62fc04d362b55ee6eefaa558dd13fc45ac1d665be"
+    },
+    {
+      "source": "sys/main.dol",
+      "address": 2151846744,
+      "size": 8,
+      "sha256": "e416065dd951359ab79d557107324f0f8fb0142494f2523ca9fdac35f1ac3d18"
+    }
+  ],
+  "policy": "Exact initialized DOL preset vectors, attenuation table, duplicate-name format, names, scalar constants and SDK ONE/ZERO. Native BSS records/allocations are runtime owners, not copied initialized presets.",
+  "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+}

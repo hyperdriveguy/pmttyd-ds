@@ -19,6 +19,9 @@ public:
     // Big-endian byte aliases share one process owner across separate VM lifetimes.
     bool registerExternalRam(uint32_t base,uint8_t* bytes,uint32_t size);
     bool unregisterExternalRam(uint32_t base);
+    // Owner teardown must not remove a replacement registered at the same guest
+    // address. This checks raw external identity, including shadowed mappings.
+    bool unregisterExternalRam(uint32_t base,const uint8_t* expectedBacking);
     // Borrow stable admitted raw storage into a second VM at the SAME guest
     // address. Source storage/semantic mappings outlive the view unchanged.
     // Retire target external mapping before changing/destroying source RAM.

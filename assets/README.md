@@ -177,3 +177,20 @@ The manifest texture overlays `message-icons.t3x` after the ISO-backed base pack
 Painting within existing cells preserves the original compiled catalog. Changes
 to relative cell layout must update the base converter/catalog at the same time;
 normal builds preserve the checked-in PNG.
+
+
+### Original light definitions and harbor inputs
+
+`assets/original/lights/registry-definition/` retains the original initialized
+DOL vectors, colors, attenuation/format/name/scalar and SDK constants.
+`assets/original/lights/harbor-map-input/` retains the original five harbor
+light records, table and names from `m/gor_00/d`, relocating only documented
+payload-relative pointer fields to an explicit native guest base. Runtime light
+banks/presets and MapEnt/matrices remain native owners. Normal manifest builds
+emit `field-light-registry.pmevt` and `field-harbor-lights-input.pmevt`.
+
+Explicit fresh imports use `tools/import_light_registry_assets.py` and
+`tools/import_harbor_light_inputs.py`; both refuse a nonempty destination and
+open the ISO read-only. Never run them over checked-in edits. Per-asset
+provenance records original spans/hashes and relocation bindings. Original
+rights remain retained; these sources grant no redistribution license.

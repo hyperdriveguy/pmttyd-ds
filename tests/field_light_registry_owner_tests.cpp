@@ -1,0 +1,128 @@
+#include "field_light_registry_owner.hpp"
+#include "event_native_runtime.hpp"
+#include "event_script_assets.hpp"
+#include "fixtures/harbor_light_golden.hpp"
+#include <cassert>
+#include <cstring>
+#include <string>
+#include <vector>
+using namespace ttyd;
+namespace {
+using namespace FieldLightRegistrySource;
+constexpr uint32_t HeapBase=0x86000000,InputBase=0x87000000;
+constexpr uint32_t NameInput=InputBase,PositionInput=InputBase+0x80,VectorInput=InputBase+0x90,ColorInput=InputBase+0xa0;
+uint32_t bits(float value){uint32_t out=0;std::memcpy(&out,&value,4);return out;}
+uint32_t word(EventAddressSpace& memory,uint32_t address){uint32_t value=0;assert(memory.readWord(address,value));return value;}
+void text(EventAddressSpace& memory,uint32_t address,const char* value){for(unsigned n=0;;++n){assert(memory.writeByte(address+n,uint8_t(value[n])));if(!value[n])break;}}
+std::vector<uint8_t> bytes(EventAddressSpace& memory,uint32_t address,uint32_t size){std::vector<uint8_t> out(size);for(uint32_t n=0;n<size;++n)assert(memory.readByte(address+n,out[n]));return out;}
+struct Flush {
+ bool available=false;unsigned calls=0;
+ std::array<uint8_t*,2> pointers{};
+ static bool run(void* user,uint8_t* data,uint32_t size){auto& f=*static_cast<Flush*>(user);assert(size==Capacity*RecordBytes && reinterpret_cast<uintptr_t>(data)%32==0);++f.calls;if(!f.pointers[0])f.pointers[0]=data;else if(data!=f.pointers[0])f.pointers[1]=data;return f.available;}
+};
+}
+void nativeLightOwner(const char* root){
+ FieldLightRequest request,otherRequest;
+ EventNativeRuntime vm{0x81000000,{}};EventScriptAssets definitions;const std::string base=root;
+ assert(definitions.load((base+"/field-light-registry.pmevt").c_str()) && vm.memory.importScripts(definitions));
+ assert(vm.memory.registerRam(ActiveGroup,std::vector<uint8_t>(4)) && vm.memory.registerRam(InputBase,std::vector<uint8_t>(256)));
+ Flush flush;FieldLightHeapServices heap{&flush,Flush::run};auto owner=FieldLightRegistryOwner::bind(vm.memory,HeapBase,heap);assert(owner);
+ assert(!FieldLightRegistryOwner::bind(vm.memory,HeapBase,heap));
+ assert(!owner->initialize(request) && owner->pending() && !owner->ready());
+ assert(word(vm.memory,Work)==Capacity && word(vm.memory,Work+4)==0);
+ MapLightQuery q;q.function=0x8001bad0;q.maximum=8;uint32_t pending=0;assert(!owner->query(q,pending) && pending==q.function);
+ assert(vm.memory.writeByte(HeapBase+7,0xee));flush.available=true;assert(!owner->initialize(otherRequest) && flush.calls==1);
+ assert(owner->initialize(request) && owner->ready() && !owner->pending() && flush.calls==3 && flush.pointers[0]!=flush.pointers[1]);
+ assert(word(vm.memory,Work+4)==HeapBase && word(vm.memory,Work+12)==HeapBase+Capacity*RecordBytes);
+ uint8_t marker=0;assert(vm.memory.readByte(HeapBase+7,marker) && marker==0xee); // Held cache child never re-zeroed.
+ assert(owner->preset(1) && owner->preset(1)->flags()==0x1040 && word(vm.memory,Presets+RecordBytes+Position)==bits(-600));
+ for(unsigned index=0;index<4;++index){assert(owner->preset(index)->color()==0xffffffff && word(vm.memory,Presets+index*RecordBytes+Reference)==0);}
+ assert(owner->find(request,0x8041f8c4)==0); // Static PAPER is not an ordinary scene entry.
+ text(vm.memory,NameInput,"lamp");for(unsigned n=0;n<3;++n){assert(vm.memory.writeWord(PositionInput+4*n,bits(float(n+1))) && vm.memory.writeWord(VectorInput+4*n,bits(float(n+4))));}assert(vm.memory.writeWord(ColorInput,0x123456ff));
+ FieldLightEntryArguments a{NameInput,1,PositionInput,VectorInput,ColorInput,0,2,{bits(0),bits(1)},0};
+ assert(owner->enter(request,a)==0 && owner->find(request,NameInput)==HeapBase);
+ const auto* light=owner->record(HeapBase);assert(light && light->flags()==0x1081 && light->color()==0x123456ff);
+ q={};q.function=0x8001bad0;q.maximum=8;q.mask=0x80;assert(owner->query(q,pending) && q.count==1 && q.output[0]==light && !pending);
+ assert(vm.memory.writeWord(HeapBase+Rgba,0xabcdef01) && light->color()==0xabcdef01); // Same physical renderer/source bytes.
+ assert(owner->enter(request,a)==1);assert(owner->enter(request,a)==2);
+ std::array<char,NameBytes> name{};for(unsigned n=0;n<name.size();++n){uint8_t b=0;assert(vm.memory.readByte(HeapBase+2*RecordBytes+Name+n,b));name[n]=char(b);if(!b)break;}assert(std::string(name.data())=="lamp_0000_0001");
+ // Other signed groups select field bank0; exact1 owns the other allocation.
+ assert(vm.memory.writeWord(ActiveGroup,1) && owner->enter(request,a)==0 && owner->find(request,NameInput)==owner->bankAddress(1));
+ assert(owner->reset(request) && owner->find(request,NameInput)==0 && light->flags()==0x1081 && owner->preset(1)->flags()==0x1040);
+ assert(vm.memory.writeWord(ActiveGroup,2) && owner->find(request,NameInput)==HeapBase);
+ // Wrong physical mapping holds even if every replacement byte is identical.
+ auto copy=bytes(vm.memory,HeapBase,Capacity*RecordBytes);auto* backing=const_cast<uint8_t*>(light->bytes.data());
+ assert(vm.memory.unregisterExternalRam(HeapBase) && vm.memory.registerRam(HeapBase,copy));
+ assert(!owner->record(HeapBase) && !owner->enter(request,a) && !owner->query(q,pending));
+ assert(vm.memory.unregisterRam(HeapBase) && vm.memory.registerExternalRam(HeapBase,backing,Capacity*RecordBytes));
+ assert(owner->record(HeapBase)==light);
+ // A failed raw name read remains a retained source compare; consumers/reset
+ // cannot discard it. Repair the same operand backing and finish that request.
+ constexpr uint32_t MissingName=0x88000000;
+ assert(!owner->find(request,MissingName) && owner->pending() && !owner->reset(request) && !owner->query(q,pending));
+ assert(vm.memory.registerRam(MissingName,std::vector<uint8_t>{'n','o',0,0}));assert(!owner->find(otherRequest,MissingName) && owner->pending());assert(owner->find(request,MissingName)==0 && !owner->pending());
+ // Typed native admission rejects out-of-range attenuation and a full bank
+ // before clear/format/publication; the complete core separately tests overrun.
+ auto invalid=a;invalid.attenuation=4;const auto before=bytes(vm.memory,HeapBase,Capacity*RecordBytes);assert(!owner->enter(request,invalid) && bytes(vm.memory,HeapBase,Capacity*RecordBytes)==before && !owner->pending());
+ for(unsigned index=0;index<Capacity;++index){assert(vm.memory.writeHalf(HeapBase+index*RecordBytes,1));text(vm.memory,HeapBase+index*RecordBytes+Name,"busy");}
+ const auto full=bytes(vm.memory,HeapBase,Capacity*RecordBytes);const auto scratch=bytes(vm.memory,owner->scratchAddress(),256);
+ assert(!owner->enter(request,a) && !owner->pending() && bytes(vm.memory,HeapBase,Capacity*RecordBytes)==full && bytes(vm.memory,owner->scratchAddress(),256)==scratch);
+ assert(owner->reset(request) && light->flags()==0 && owner->preset(1)->flags()==0x1040);
+ // Process allocations and descriptor pointers survive room-style reset.
+ assert(word(vm.memory,Work)==Capacity && word(vm.memory,Work+4)==HeapBase && flush.calls==3);
+}
+void nativeHarborLights(const char* root){
+ using namespace harbor_light_fixture;
+ FieldLightRequest request,otherRequest;
+ EventNativeRuntime vm{0x81000000,{}};const std::string base=root;
+ EventScriptAssets definitions,input;assert(definitions.load((base+"/field-light-registry.pmevt").c_str()) && input.load((base+"/field-harbor-lights-input.pmevt").c_str()));
+ assert(vm.memory.importScripts(definitions) && vm.memory.importScripts(input));
+ assert(vm.memory.registerRam(ActiveGroup,std::vector<uint8_t>(4)) && vm.memory.registerRam(MapEntry,std::vector<uint8_t>(0x100)));
+ assert(vm.memory.writeWord(MapEntry+FieldMapLightSource::TableField,Table));
+ Flush flush;flush.available=true;auto owner=FieldLightRegistryOwner::bind(vm.memory,HeapBase,{&flush,Flush::run});assert(owner && owner->initialize(request));
+ assert(owner->loadMapLights(request,MapEntry) && !owner->pending());
+ for(unsigned index=0;index<Lights.size();++index){
+  const auto address=HeapBase+index*RecordBytes;const auto* record=owner->record(address);assert(record && record->flags()==(index?0x1001:0x8001) && record->color()==Lights[index].color);
+  for(unsigned byte=0;;++byte){uint8_t value=0;assert(vm.memory.readByte(address+Name+byte,value) && value==uint8_t(Lights[index].name[byte]));if(!value)break;}
+  for(unsigned axis=0;axis<3;++axis){assert(word(vm.memory,address+Position+4*axis)==Lights[index].position[axis] && word(vm.memory,address+Reference+4*axis)==Lights[index].position[axis]);}
+  assert(word(vm.memory,address+Vector)==0x27fce83b && word(vm.memory,address+Vector+4)==0x43340000 && word(vm.memory,address+Vector+8)==0);
+  assert(word(vm.memory,address+Scalar0)==0 && word(vm.memory,address+Scalar1)==Lights[index].scalar1);
+  assert(word(vm.memory,address+Coefficients)==bits(1) && word(vm.memory,address+Coefficients+4)==0 && word(vm.memory,address+Coefficients+8)==0);
+ }
+ MapLightQuery query;query.function=0x8001bad0;query.maximum=8;uint32_t pending=0;assert(owner->query(query,pending) && query.count==4 && !pending);
+ for(unsigned index=0;index<4;++index)assert(query.output[index]==owner->record(HeapBase+(index+1)*RecordBytes));
+ assert(owner->reset(request) && owner->record(HeapBase)->flags()==0 && owner->preset(1)->flags()==0x1040);
+ // Preserve completed rows while a later source field is unavailable. A later
+ // fresh table count governs termination, without replaying the first Entry.
+ const auto second=word(vm.memory,Table+8);std::vector<uint8_t> nameWord;
+ assert(vm.memory.extractRam(second,4,nameWord));
+ assert(!owner->loadMapLights(request,MapEntry) && owner->pending() && word(vm.memory,HeapBase+Position)==Lights[0].position[0]);
+ assert(!owner->query(query,pending) && !owner->reset(request));
+ assert(vm.memory.registerRam(second,nameWord) && vm.memory.writeWord(Table,2));
+ assert(!owner->loadMapLights(otherRequest,MapEntry) && owner->pending());
+ assert(owner->loadMapLights(request,MapEntry) && !owner->pending());
+ assert(owner->record(HeapBase)->flags()==0x8001 && owner->record(HeapBase+RecordBytes)->flags()==0x1001 && owner->record(HeapBase+2*RecordBytes)->flags()==0);
+ assert(owner->reset(request));
+ // Unknown kinds retain default point type. A nonmatching magic skips FLAGS
+ // even when that source word is unmapped; it is not a mandatory preload read.
+ const auto first=word(vm.memory,Table+4);constexpr uint32_t UnknownName=0x87000000;
+ assert(vm.memory.registerRam(UnknownName,std::vector<uint8_t>{'o','t','h','e','r',0,0,0}));
+ assert(vm.memory.writeWord(Table,1) && vm.memory.writeWord(first+FieldMapLightSource::Kind,UnknownName) && vm.memory.writeWord(first+FieldMapLightSource::Magic,0));
+ std::vector<uint8_t> flags;assert(vm.memory.extractRam(first+FieldMapLightSource::Flags,4,flags));
+ assert(owner->loadMapLights(request,MapEntry) && owner->record(HeapBase)->flags()==0x1001);
+ // Teardown removes only this owner's physical mappings, never an external
+ // replacement that happens to have the same original guest address.
+ auto replacement=bytes(vm.memory,HeapBase,Capacity*RecordBytes);
+ assert(vm.memory.unregisterExternalRam(HeapBase) && vm.memory.registerExternalRam(HeapBase,replacement.data(),uint32_t(replacement.size())));
+ owner.reset();assert(bytes(vm.memory,HeapBase,Capacity*RecordBytes)==replacement);
+ assert(vm.memory.unregisterExternalRam(HeapBase,replacement.data()));
+}
+void nativeLightSdkConstants(const char* root){
+ FieldLightRequest request;EventNativeRuntime vm{0x81000000,{}};EventScriptAssets definitions;
+ assert(definitions.load((std::string(root)+"/field-light-registry.pmevt").c_str()) && vm.memory.importScripts(definitions));
+ std::vector<uint8_t> one;assert(vm.memory.extractRam(0x80429358,4,one) && vm.memory.writeWord(0x8042935c,bits(2)));
+ Flush flush;flush.available=true;auto owner=FieldLightRegistryOwner::bind(vm.memory,HeapBase,{&flush,Flush::run});assert(owner && owner->initialize(request));
+ const auto craft=Presets+RecordBytes+Position;
+ assert(word(vm.memory,craft)==bits(-198) && word(vm.memory,craft+4)==bits(102) && word(vm.memory,craft+8)==bits(102));
+}
+int main(){nativeLightOwner("romfs");nativeHarborLights("romfs");nativeLightSdkConstants("romfs");}

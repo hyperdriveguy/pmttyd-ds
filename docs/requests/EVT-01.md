@@ -5615,3 +5615,26 @@ No story/dialogue or editable asset was changed. EVT-01 and the goal stay OPEN.
 ### Field GX array/native state implementation (2026-11-07)
 
 [Field GPU staging](../behavior/display/NATIVE_FIELD_ANIMATION_GPU_STAGING.md) now consumes the actual original-VM position, normal, RGBA and up to eight UV arrays and source FIFO indices after real CPU/SDK render nodes. A dedicated Renderer bridge publishes field camera matrices/scissor/cull through Citro3D. Complete fans retain data across waits; no battle atlas/material owner is borrowed. The original Mario graph has explicit fixture material/texture/cache/raster acknowledgements in tests. Keep this request open for genuine field material/light/texture/dummy-state and native complete-fan submission, actual startup/camera/shared-GX scheduling and release/ordinary Game integration. Original/Dolphin mirrored-cull and pixel observations plus physical New2DS XL frame/memory measurements are still needed; API acknowledgements and emulator boot/navigation are not those observations. Existing raw render/material contracts remain authoritative; this adds native ownership, not newly measured original constants.
+
+
+### 2026-11-07 — Original light registry and reached map producer
+
+[Native light owner](../behavior/field/NATIVE_LIGHT_REGISTRY_OWNER.md) implements
+retained original Init/ReInit/Entry/NameToPtr and the complete reached `_mapLoad`
+light loop. Real aligned native bank/preset bytes are shared with VM and query
+consumers, with actual allocation flush retries, physical backing checks and
+stationary caller tokens. Exact original harbor inputs produce all five source
+records; imports retain provenance and only documented pointer relocation.
+
+- [x] Recover and implement local source registry and reached map-light loop,
+  native heap/bank owner and direct queries against its actual record bytes.
+- [ ] Supply actual MapEnt storage/base/dynamic matrices and native event
+  callback dispatch/retirement; compose original harbor lamp roots with Game.
+- [ ] Activate material/GPU light consumers and compare original rendering;
+  profile physical New2DS XL performance.
+
+The earlier lightInit/lightEntry checklist is partially answered by this local
+owner; its normal Game scheduling/map-matrix portion remains open. This does
+not complete the persistent lamp callbacks or establish playable prologue
+lighting. Request EVT-01 remains OPEN. Evidence is static-source and scoped
+fixtures/builds; no new original-runtime observation is claimed.

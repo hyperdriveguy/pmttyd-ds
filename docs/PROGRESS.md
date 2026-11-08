@@ -17595,3 +17595,73 @@ changed modules, then remaining field/native/tool code. The broad documentation
 coverage audit and whole-file Trio numeric synthesis remain unfinished; scoped
 fixtures/hash matches alone do not prove whole-port documentation or remake
 completion.
+
+
+### Original light registry, native process storage and harbor producer (2026-11-07)
+
+Implemented retained original lightInit/ReInit/Entry/NameToPtr plus the complete
+reached `_mapLoad` light loop. Native process-owned aligned arrays/presets are
+actual external VM RAM, queried without a renderer copy. Allocation preserves
+zero/flush waits, callers retain stationary request tokens, and physical mapping
+identity prevents replacement bytes from impersonating live ownership. Source
+hard32 duplicate behavior, cumulative naming, mutable input ordering and raw
+full-array behavior remain in the portable core; typed native admission bounds
+its stable original-map input domain before effects. Source IDs/offsets/phases
+are named. Native finite SDK helpers use live ZERO and preserve source grouping;
+full exceptional/FPSCR/GQR parity remains unverified.
+
+Added editable original DOL light definitions and the actual harbor light table,
+five68-byte records and strings, with documented pointer relocation and per-asset
+provenance. The original payload begins at file offset20. Initial extraction
+caught an incorrect relative-offset assumption before writing the destination;
+the corrected importer reproduces the checked-in sources. Both fresh importers
+reject nonempty destinations; existing editable assets remain unchanged. Two
+normal manifest event entries merge into optional area inputs before VM import.
+No runtime MapEnt/matrix/output records are fabricated as imported assets.
+
+Focused fixtures cover every reached registry primitive hold, null/partial
+allocation, mutable aliases/fresh reads, duplicate/full banks, exact source group
+reset/lookup, cache flush retries, physical identity and conditional teardown,
+caller pinning, actual five-light source outputs, later-row repair/fresh count
+termination and live SDK ZERO without an extraneous ONE dependency. ISO-backed
+Python checks reproduce both imports and preserve existing edits. A read-only
+review confirmed the final request pinning and SDK correction.
+
+Validation uses the accepted f39ad6d9 source/products plus only this scope;
+concurrent unrelated work and staging remain excluded and preserved. Full
+make test exits 0: 502/502 C++ tests (95.24s) and 233/233 Python tests (42.459s),
+zero skips. Focused 2/2 pass; assets-check validates 424 recipes. Native make all
+and the private ARM fixture build exit0. Dependency normalization invalidated
+133 differing source/header objects; native source inputs are coherent.
+Existing unrelated compiler/Pillow warnings remain; no new light-owner compiler
+warning was observed.
+
+Isolated Azahar normal 50s, ARM 100s and field 70s-warmup runs exit0. Eight ARM
+markers pass for registry/holds/allocation/identity/requests/harbor/mapRepair/
+sdkConstants. Two exact tracked fixtures run from a private instrumented main;
+all 536 other production objects are reused unchanged, with explicit romfs:
+asset roots. Startup and checkpoint idle/right/left/final-idle captures were
+manually inspected. This checkpoint has no active partner; no new Goombella
+walk-parity claim. User emulator saves/profile remain untouched; production
+binary hash is unchanged.
+
+Exact replay audits 4303 source files, 2196 runtime products, 1474 private inputs
+and 1 reference input. Two new original event packs and their combined pipeline
+stamp are the only product changes. All existing other products and private
+inputs remain unchanged. Only the new recipes were compiled through the normal
+asset pipeline, then native asset preparation was skipped after exact audits.
+Imports used empty destinations; adding map-loop constant spans was an explicit
+editable source update with provenance, not a reimport over edits. ISO access
+stayed read-only. No compiled packs, extraction caches or ISO are committed.
+Frozen documentation links: 1560 files, zero broken. Exact hashes, commands,
+fixtures and logs: artifacts/field-light-owner-validation-manifest.json.
+
+Limitations/next: ordinary Game/MapEnt owner/dispatch and retirement, actual map
+base/dynamic matrix publication, persistent lamp root providers and GPU lighting
+remain open. The reached loop fixture's explicit MapEnt header is not the full
+map loader. Static original evidence is not Dolphin/hardware parity. Full
+prologue story/event/indoor coverage and physical New2DS XL performance remain
+unfinished. EVT-01 and the full prologue goal remain active. Continue with the
+original MapObj lookup/matrix producer boundary, then bind actual lamp events
+before activating normal Game scheduling. See
+[contract](behavior/field/NATIVE_LIGHT_REGISTRY_OWNER.md), asset ledger and inbox.
