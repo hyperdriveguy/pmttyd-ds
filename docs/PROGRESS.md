@@ -17756,3 +17756,35 @@ and native animation/resource presentation. Tutorial texture loading also occurs
 inside an active frame and has a separately prepared preframe fix. Complete
 Crump input/actions/turns/result/unchanged postbattle story are still required;
 no playable tutorial or full-goal completion is claimed here.
+
+### Native field animation lifetime documentation
+
+Added 79 inline comment lines across native_field_animation.hpp and the four
+native_field_animation/native_field_animation_release/native_field_npc_animation/
+native_field_npc_draw implementations. Explained native clock/address policy,
+canonical model/atlas identity, original name operands, teardown ordering,
+partial source Release versus typed lookup, Mario request/setup/publication
+and NPC lease/Draw child ownership. Explicitly documented Release's separate
+cursor rather than treating producerPending() as a universal mutex. Added/
+indexed docs/code/native-animation-lifetimes.md. Code/docs commit: `7222ef17`.
+Executable tokens and string literals are unchanged in all five scoped files.
+
+Validation: all four implementations passed host and ARM C++17 syntax checks
+against a coherent captured current committed include tree. Five executable
+stream comparisons, seven live/private documented hashes, 134 local links and
+572 current supporting header hashes passed final audits. The older runtime
+library was not reused: current native Entry/callback interfaces differ from
+that earlier supporting snapshot. No runtime fixtures, native linking or hardware
+behavior were exercised; no new tests were added.
+
+Full make test/all were not repeated for this comments/prose-only batch; there
+are no executable changes. Prior full-suite/build results retain their own
+snapshot scope and do not validate concurrent changes. No assets/imports/
+conversions, ISO writes, story changes or emulator runs. Exact syntax commands,
+logs, source/header hashes, scoped patch and documented copies:
+artifacts/native-animation-lifetimes-code-documentation-validation/.
+
+Goal remains active. Next: remaining native graphics/platform and battle/field
+service adapters, changed modules and the broader comment/numeric coverage audit.
+Whole-file Trio numeric synthesis remains incomplete. Neither unchanged tokens
+nor syntax checks prove whole-port documentation or full-game completion.
