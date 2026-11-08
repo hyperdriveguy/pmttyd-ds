@@ -9,6 +9,8 @@ struct AnimationRenderArgument {AnimationRenderKind kind=AnimationRenderKind::Sc
 struct AnimationRenderCall {
  uint32_t function=0,count=0;std::array<AnimationRenderArgument,8> arguments{};
 };
+// Local matrix/vector/color slots preserve source stack identities across holds.
+// Slot IDs are not guest pointers; vectors/colors retain raw float/color words.
 struct AnimationRenderLocals {
  // InvXpose can return without writing; an unavailable normal stays unavailable.
  std::array<std::optional<BattleActMatrix>,2> matrices;
@@ -28,6 +30,9 @@ struct AnimationSourceRenderServices {
  std::optional<uint16_t> (*half)(void*,uint32_t)=nullptr;
  AnimationSourceRenderChildren children;
 };
+// Fixed retained parent state. found flags mean first matching texture kind,
+// not successful binding;pending pins one child request. fifoValue pins one
+// loaded index through a held FIFO write. No per-vertex heap storage is needed.
 struct AnimationSourceRenderCursor {
  bool active=false,pending=false,found1=false,found2=false;
  uint32_t input=0,phase=0,result=0,w=0,d=0,p=0,h=0,b=0,draw=0,drawCount=0;
@@ -43,6 +48,7 @@ struct AnimationSourceRenderCursor {
 };
 // Complete renderProc8003c884 local body. Input is only the raw shape index;
 // camera/matrices/material/GX/FIFO are explicit retained children, never receipts.
+// Default 128 budgets native switch visits,not original iterations or frames.
 bool resumeAnimationSourceRender(uint32_t shape,const AnimationSourceRenderServices&,
  AnimationSourceRenderCursor&,unsigned visits=128);
 }

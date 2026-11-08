@@ -6,6 +6,8 @@
 #include "event_address_space.hpp"
 #include <functional>
 namespace ttyd {
+// Whole node/render providers are exclusive. renderChildren supplies unfinished
+// calls of the owned raw renderer only when whole render provider is absent.
 struct NativeNpcGroupBackend {
  void* user=nullptr;
  bool (*node)(void*,EventAddressSpace&,const AnimationGroupNode&)=nullptr;
@@ -29,6 +31,7 @@ private:
  EventAddressSpace& memory_;NativeNpcGroupBackend backend_;std::function<bool()> current_;
  AnimationNodeBinding node_;
  std::unique_ptr<AnimationRenderSdkBinding> sdk_;AnimationRenderBinding render_;
+ // Pair progress and recursive group frames share this producer lifetime.
  AnimationGroupCursor cursor_;bool copying_=false,pairLoaded_=false;
  uint32_t copySource_=0,copyDestination_=0,pair_=0;std::array<uint32_t,2> words_{};
 };

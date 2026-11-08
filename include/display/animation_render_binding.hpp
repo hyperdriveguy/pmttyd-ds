@@ -11,6 +11,7 @@ public:
  bool advance(uint32_t shape,unsigned visits=128);
 private:
  AnimationSourceRenderServices source();
+ // Borrowed owners remain stable until final FIFO and all outer cursors drain.
  EventAddressSpace& memory_;AnimationSourceRenderChildren children_;
  std::function<bool()> current_;AnimationSourceRenderCursor cursor_;
 };

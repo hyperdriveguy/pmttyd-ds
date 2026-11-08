@@ -5,6 +5,8 @@
 #include "native_npc_inner_services.hpp"
 namespace ttyd {
 class NativeFieldAnimation;
+// Backend is copied by value; user points to caller-owned retained services.
+// CPU ownership does not turn cache/GPU callback absence into completion.
 struct NativeNpcInnerBackend {
  void* user=nullptr;
  // Present selects owned actual-VM dispProc; backend context outlives holds.
@@ -33,6 +35,7 @@ private:
  NativeFieldAnimation& native_;NativeNpcInnerBackend backend_;AnimationInnerCursor cursor_;
  std::unique_ptr<AnimationFacingBinding> facing_;
  std::shared_ptr<const CameraManager> facingCameras_;uint64_t facingConfiguration_=0;
+ // One retained finite-domain Copy; successful pairs are not rolled back.
  bool copying_=false,pairLoaded_=false;uint32_t copyAddress_=0,copyPair_=0;
  BattleActMatrix copyInput_{};std::array<uint32_t,2> copyWords_{};
 };

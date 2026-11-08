@@ -247,3 +247,7 @@ SDK scratch/dispatch ownership.
 [SDK matrices and draw ownership](animation-sdk-draw-ownership.md) explains
 paired capture/store order, lazy camera views, normal/point updates and retained
 wrapper/native Main frontiers.
+
+[Native render owners](animation-native-render-owners.md) explains provider
+selection, paired Copy differences, raw material/override captures and retained
+indexed-fan FIFO emission.
