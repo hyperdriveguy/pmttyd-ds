@@ -1542,3 +1542,5 @@ retain explicit provider and process-ownership frontiers.
 - [Original map light child binding](field/NATIVE_MAP_LIGHT_CHILD_BINDING.md): reached Entry/reset calls, actual shared ambient words, coherent process ownership and retained camera frontier.
 
 - [Native original camera-road loading](camera/NATIVE_SOURCE_CAMERA_ROAD_LOADING.md): complete source wrappers/setup/shift initialization, actual shared map heap/DVD worker and borrowed camera4 lifetime.
+
+- [Native original effect process](effect/NATIVE_EFFECT_PROCESS.md): shared VM bank initialization, source driver visits, filename/cache ownership and exact-context retirement.

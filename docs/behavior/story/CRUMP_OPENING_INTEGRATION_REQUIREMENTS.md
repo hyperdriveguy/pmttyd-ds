@@ -224,3 +224,11 @@ six-span wrapper data pack. This advances CO-03's prerequisites but does not
 change its production boundary: the normal reaction callback still needs real
 shared-process effect/heap/camera/actor/audio/draw providers. Test constructors
 and successful source decoding do not establish that scene presentation.
+
+
+The [native effect process](../effect/NATIVE_EFFECT_PROCESS.md) now supplies the
+original source bank/heap/manager/cache owner in normal Game startup and retains
+it across room/checkpoint transitions. This advances CO-03 prerequisites. Actual
+reaction EVT binding, primary textures, callback updates, draw/audio consumers
+and retirement remain required; the full into-battle and out-of-battle story
+chain is still open. Startup and fixture success do not close that acceptance.

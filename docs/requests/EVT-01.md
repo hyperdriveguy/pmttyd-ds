@@ -5821,3 +5821,15 @@ behavior. Existing typed ShadowWork is not a raw BE11c-byte source owner. Bind
 actual shared shadow process/Init/writers before acknowledging this child or
 starting real GX display-list capture. Private source proof:
 artifacts/field-map-camera-road-evidence/shadow-projection-getter.md.
+
+### Native effect process implementation (2026-11-07)
+
+[The native effect process](../behavior/effect/NATIVE_EFFECT_PROCESS.md) now
+runs original effInit in normal Game startup over the actual UI/animation VM,
+real SDK heap and shared cache. Complete retained driver visits and exact-context
+AutoRelease are callable with explicit retained providers. Fresh ISO evidence
+confirms effInit immediately precedes marioInit. No new source documentation
+request is needed for these already documented bodies. Remaining implementation:
+primary effTexSetup, actual Main32/draw/audio and camera/actor ownership, original
+reaction wrapper caller and drained display retirement. Bank readiness alone
+must not acknowledge those source children or the full Crump round trip.

@@ -4375,3 +4375,17 @@ imported as initialized camera state. Existing editable d/t, decoded road assets
 art and dialogue remain unchanged. Nintendo/Intelligent Systems retain original
 rights; this tracking grants no redistribution license. ISO/caches/compiled
 packs are excluded from source history.
+
+### Original native effect process assets
+
+`assets/original/effects/process/` tracks seven exact source initialized/BSS
+ranges in memory.json plus the unchanged106880-byte `e/us/effect_us.tpl`.
+`tools/import_effect_process_assets.py` reads the original US revision0 ISO
+read-only, records original paths/offsets/hashes and refuses nonempty destinations.
+The normal manifest compiles `effect-process/memory.pmevt` and copies
+`effect-process/effect_us.tpl`; the latter is the language bank, distinct from
+primary `e/us/effect.tpl`. No resampling, generated pixels or source replacements
+are introduced. Existing UI root storage is borrowed, not reimported. Per-asset
+provenance.json retains Nintendo/Intelligent Systems rights and grants no new
+redistribution license. Editable checked-in originals remain authoritative;
+ISO, extraction caches and compiled packs remain outside source history.

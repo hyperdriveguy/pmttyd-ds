@@ -19342,3 +19342,54 @@ Next: genuine camera process initialization and Main/view/road/shift consumers;
 actual shadow/material/GX capture and Game/EVT epochs. Active hit lifetimes,
 original math/pixel parity, physical New2DS XL performance and full prologue/
 Crump round trip remain unfinished.
+
+### Original effect process in native startup (2026-11-07)
+
+Committed1ac51816 adds the original effect bank to normal Game startup using the
+actual UI/field-animation VM, shared source heaps and shared file cache. Cold
+attachment imports seven pinned source initialized/BSS ranges, borrows the
+existing DVD root and preserves actual backing identity. Original effInit runs
+once immediately before Mario initialization, matching fresh ISO call evidence;
+its512 records use the real20480-byte heap0 allocation. Room/checkpoint transfers
+retain the same facade and refuse transfer during held operations. Complete
+source Main visits and exact-context AutoRelease are exposed with retained
+callback/quiescence owners, without fake updater or cancellation receipts.
+
+Original106880-byte language bank e/us/effect_us.tpl and exact memory ranges
+are imported read-only with provenance/licensing, compiled by normal manifest
+recipes and staged before cache freeze. Shared filename publication preserves
+source formatter/cache ordering and archive-mode history. Unsupported languages
+retain their actual names rather than silently selecting US. Committeddd44843f
+fixes published filename comparison for unsigned bytes; its high-byte regression
+covers both actual cache acquisition and request reuse.
+
+Validation: frozen candidate matches all4795 tracked files ofdd44843f exactly;
+source archive,2223 RomFS hashes, ELF/3DSX and evidence hashes are retained in
+artifacts/effect-process/accepted/validation-manifest.json. Final make test exits0:
+590/590 C++ tests in71.63s and263/263 Python tests in39.101s. Final make all exits0
+with SOUNDTRACK=gamecube and -o assets-ready after explicit compilation of both
+new normal recipes. Focused filename regression exits0. Read-only ISO import
+roundtrip matches all three assets and refuses nonempty destinations; source
+driver verifier passes14 bodies/186 anchors/eight spans/four direct calls.
+Markdown check:1696 files, zero broken links. Isolated45-second fresh-save Azahar
+smoke exits0; inspected final capture reaches original opening book/dialogue
+without native exception. Initial sandbox launch could not bind Xvfb sockets;
+approved isolated display-access retry succeeded. User emulator profile and saves
+were untouched. The earlier pre-byte-fix full gate also passed590 C++/263 Python.
+
+Limitations: bank-ready is not primary-texture-ready or actual effect drawing.
+Normal Game does not yet schedule source effect Main visits or install original
+reaction EVT callbacks, actual Main32/draw/audio and actor/camera owners. No full
+Crump into-battle/result/teardown/field-return/afterbattle run, original matched
+pixels, Gekko numeric parity or physical New2DS XL performance is claimed.
+Concurrent source-camera work83f8022b is outside this exact frozen validation
+cohort. The full remake and current Crump objective remain incomplete.
+
+Next: implement whole original effTexSetup8005ee0c/0x114 and completion
+callback8005efa8/0x48 on this same process, stage primary e/us/effect.tpl266784
+bytes and establish actual manager+8/+c via original archive/DVD/unpack owners.
+Existing effect contracts cover these identities; no duplicate documentation
+request is needed. Then bind actual fukidashi event/update/render/audio lifetime,
+continue genuine setup2 controller/result/export/field return and original
+276-command afterbattle crowd/dialogue/party/map transition. Validate full fresh
+and resume Crump round trips and measure actual hardware rendering budgets.
